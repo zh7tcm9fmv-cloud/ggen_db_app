@@ -1,20 +1,23 @@
 /**
  * Ko-fi donate promo — Maria mascot + speech bubble pointing at #kofiHeaderLink.
- * Preview: KOFI_PROMO_DELAY_MS = 0, KOFI_PROMO_PREVIEW = true (shows every visit).
- * Production: set DELAY_MS = 120000, PREVIEW = false.
+ * Production: 2 min on site; defers while a detail modal is open.
  */
 (function (global) {
   'use strict';
 
-  var KOFI_PROMO_DELAY_MS = 0;
-  var KOFI_PROMO_PREVIEW = true;
+  var KOFI_PROMO_DELAY_MS = 120000;
+  var KOFI_PROMO_PREVIEW = false;
+  var KOFI_PROMO_DEFER_AFTER_DETAIL_MS = 500;
   var KOFI_PROMO_STORAGE_KEY = 'ggen_kofi_donate_promo_v1';
   var MARIA_IMG = '/static/images/UI/UI_TacticalTraining_Logo_maria.webp';
-  var KOFI_URL = 'https://ko-fi.com/E1E21WL8RV';
-  var KOFI_IC = 'https://storage.ko-fi.com/cdn/cup-border.png';
+  var PROMO_TEXT_FALLBACK =
+    'Thank you for visiting! If you\u2019ve found our website useful, please consider donating to help us keep it free and accessible.';
 
   var _shown = false;
+  var _promoDue = false;
   var _resizeTimer = null;
+  var _deferTimer = null;
+  var _detailObs = null;
 
   function promoImgUrl(path) {
     if (typeof global.imgUrl === 'function') return global.imgUrl(path);
@@ -62,6 +65,84 @@
     }
   }
 
+  function isDetailModalOpen() {
+    var modal = document.getElementById('detailModal');
+    return !!(modal && modal.classList.contains('active'));
+  }
+
+  function getPromoText() {
+    return promoT('kofi_donate_promo_text', PROMO_TEXT_FALLBACK);
+  }
+
+  function splitPromoLines(text) {
+    var t = String(text || '').trim();
+    if (!t) return [''];
+    var m = t.match(/^(.+?[.!?])\s+(.+)$/);
+    if (m) return [m[1], m[2]];
+    return [t];
+  }
+
+  function renderSlotText(restart) {
+    var root = document.getElementById('kofiDonatePromo');
+    var textEl = document.getElementById('kofiDonatePromoText');
+    if (!textEl) return;
+
+    var full = getPromoText();
+    textEl.textContent = '';
+    textEl.setAttribute('aria-label', full);
+
+    splitPromoLines(full).forEach(function (line, i) {
+      var lineEl = document.createElement('span');
+      lineEl.className = 'kofi-promo-slot-line';
+      lineEl.style.setProperty('--kofi-slot-delay', (0.38 + i * 0.16) + 's');
+      var inner = document.createElement('span');
+      inner.className = 'kofi-promo-slot-inner';
+      inner.textContent = line;
+      lineEl.appendChild(inner);
+      textEl.appendChild(lineEl);
+    });
+
+    if (root) {
+      root.classList.remove('is-text-ready');
+      if (restart !== false) {
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            if (root.classList.contains('is-visible')) root.classList.add('is-text-ready');
+          });
+        });
+      }
+    }
+  }
+
+  function canShowPromoNow() {
+    if (_shown) return false;
+    if (!forceShowFromQuery() && isDismissed()) return false;
+    if (!document.getElementById('kofiDonatePromo')) return false;
+    if (!document.getElementById('kofiHeaderLink')) return false;
+    if (isDetailModalOpen()) return false;
+    return _promoDue || forceShowFromQuery();
+  }
+
+  function tryShowPromo() {
+    if (!canShowPromoNow()) {
+      if (isDetailModalOpen() && (_promoDue || forceShowFromQuery())) _promoDue = true;
+      return;
+    }
+    openKofiDonatePromo();
+  }
+
+  function onPromoTimerFire() {
+    if (_shown || isDismissed()) return;
+    _promoDue = true;
+    tryShowPromo();
+  }
+
+  function onDetailModalClosed() {
+    if (!_promoDue || _shown || isDismissed()) return;
+    clearTimeout(_deferTimer);
+    _deferTimer = global.setTimeout(tryShowPromo, KOFI_PROMO_DEFER_AFTER_DETAIL_MS);
+  }
+
   function getEls() {
     return {
       root: document.getElementById('kofiDonatePromo'),
@@ -99,6 +180,7 @@
     originY = Math.max(0, Math.min(originY, 35));
     els.panel.style.setProperty('--kofi-promo-origin-x', originX.toFixed(1) + '%');
     els.panel.style.setProperty('--kofi-promo-origin-y', originY.toFixed(1) + '%');
+    setTargetHighlight(true);
   }
 
   function clearEnteringState() {
@@ -114,7 +196,7 @@
   function closeKofiDonatePromo(persist) {
     var els = getEls();
     if (!els.root || !els.root.classList.contains('is-visible')) return;
-    els.root.classList.remove('is-visible', 'is-entering');
+    els.root.classList.remove('is-visible', 'is-entering', 'is-text-ready');
     els.root.setAttribute('aria-hidden', 'true');
     setTargetHighlight(false);
     if (persist !== false) markDismissed();
@@ -124,15 +206,20 @@
     var els = getEls();
     if (!els.root || !els.panel || !els.target || _shown) return;
     if (!forceShowFromQuery() && isDismissed()) return;
+    if (isDetailModalOpen()) {
+      _promoDue = true;
+      return;
+    }
 
     var maria = els.root.querySelector('.kofi-donate-promo-maria');
     if (maria && !maria.getAttribute('src')) maria.src = promoImgUrl(MARIA_IMG);
+
+    renderSlotText(true);
 
     _shown = true;
     els.root.hidden = false;
     els.root.classList.add('is-visible', 'is-entering');
     els.root.setAttribute('aria-hidden', 'false');
-    setTargetHighlight(true);
     requestAnimationFrame(function () {
       positionPromo();
       requestAnimationFrame(positionPromo);
@@ -143,7 +230,22 @@
   function scheduleShow() {
     if (!document.getElementById('kofiDonatePromo') || !document.getElementById('kofiHeaderLink')) return;
     if (!forceShowFromQuery() && isDismissed()) return;
-    global.setTimeout(openKofiDonatePromo, Math.max(0, KOFI_PROMO_DELAY_MS));
+    if (forceShowFromQuery()) {
+      _promoDue = true;
+      global.setTimeout(tryShowPromo, 0);
+      return;
+    }
+    global.setTimeout(onPromoTimerFire, Math.max(0, KOFI_PROMO_DELAY_MS));
+  }
+
+  function watchDetailModal() {
+    var modal = document.getElementById('detailModal');
+    if (!modal || _detailObs) return;
+    _detailObs = new MutationObserver(function () {
+      if (isDetailModalOpen()) return;
+      onDetailModalClosed();
+    });
+    _detailObs.observe(modal, { attributes: true, attributeFilter: ['class'] });
   }
 
   function bindEvents() {
@@ -176,33 +278,23 @@
     }, { passive: true });
 
     document.addEventListener('keydown', function (ev) {
-      if (ev.key === 'Escape') closeKofiDonatePromo(true);
+      if (ev.key === 'Escape' && root.classList.contains('is-visible')) closeKofiDonatePromo(true);
     });
+
+    watchDetailModal();
   }
 
   function syncPromoI18n() {
-    var text = document.getElementById('kofiDonatePromoText');
-    var cta = document.getElementById('kofiDonatePromoCta');
     var closeBtn = document.querySelector('#kofiDonatePromo .kofi-donate-promo-close');
-    if (text) {
-      text.textContent = promoT(
-        'kofi_donate_promo_text',
-        'Thank you for visiting! If you\u2019ve found our website useful, please consider donating to help us keep it free and accessible.'
-      );
-    }
-    if (cta) {
-      var lbl = promoT('support_kofi_btn', 'Support on Ko-fi');
-      cta.setAttribute('aria-label', lbl);
-      var span = cta.querySelector('.kofi-donate-promo-cta-label');
-      if (span) span.textContent = lbl;
-    }
     if (closeBtn) {
       closeBtn.setAttribute('aria-label', promoT('whats_new_close', 'Close'));
     }
+    renderSlotText(!!(document.getElementById('kofiDonatePromo') && document.getElementById('kofiDonatePromo').classList.contains('is-visible')));
   }
 
   function init() {
     bindEvents();
+    renderSlotText(false);
     syncPromoI18n();
     scheduleShow();
   }
