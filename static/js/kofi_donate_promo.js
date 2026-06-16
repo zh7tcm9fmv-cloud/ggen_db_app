@@ -66,9 +66,6 @@
     return {
       root: document.getElementById('kofiDonatePromo'),
       panel: document.querySelector('#kofiDonatePromo .kofi-donate-promo-panel'),
-      connector: document.getElementById('kofiDonatePromoConnector'),
-      line: document.getElementById('kofiDonatePromoLine'),
-      dot: document.getElementById('kofiDonatePromoDot'),
       target: document.getElementById('kofiHeaderLink'),
     };
   }
@@ -80,8 +77,8 @@
     var tr = els.target.getBoundingClientRect();
     if (!tr.width || !tr.height) return;
 
-    var panelW = els.panel.offsetWidth || 320;
-    var panelH = els.panel.offsetHeight || 120;
+    var panelW = els.panel.offsetWidth || 360;
+    var panelH = els.panel.offsetHeight || 140;
     var gap = 10;
     var left = tr.left + tr.width * 0.5 - panelW * 0.72;
     var top = tr.bottom + gap + 12;
@@ -94,22 +91,19 @@
     els.root.style.left = Math.round(left) + 'px';
     els.root.style.top = Math.round(top) + 'px';
 
-    var pr = els.panel.getBoundingClientRect();
-    var x1 = pr.right - 36;
-    var y1 = pr.top + 6;
-    var x2 = tr.left + tr.width * 0.5;
-    var y2 = tr.top + tr.height * 0.5;
+    var targetCx = tr.left + tr.width * 0.5;
+    var targetCy = tr.top + tr.height * 0.5;
+    var originX = ((targetCx - left) / panelW) * 100;
+    var originY = ((targetCy - top) / panelH) * 100;
+    originX = Math.max(8, Math.min(originX, 92));
+    originY = Math.max(0, Math.min(originY, 35));
+    els.panel.style.setProperty('--kofi-promo-origin-x', originX.toFixed(1) + '%');
+    els.panel.style.setProperty('--kofi-promo-origin-y', originY.toFixed(1) + '%');
+  }
 
-    if (els.line) {
-      els.line.setAttribute('x1', String(x1));
-      els.line.setAttribute('y1', String(y1));
-      els.line.setAttribute('x2', String(x2));
-      els.line.setAttribute('y2', String(y2));
-    }
-    if (els.dot) {
-      els.dot.setAttribute('cx', String(x2));
-      els.dot.setAttribute('cy', String(y2));
-    }
+  function clearEnteringState() {
+    var root = document.getElementById('kofiDonatePromo');
+    if (root) root.classList.remove('is-entering');
   }
 
   function setTargetHighlight(on) {
@@ -120,9 +114,8 @@
   function closeKofiDonatePromo(persist) {
     var els = getEls();
     if (!els.root || !els.root.classList.contains('is-visible')) return;
-    els.root.classList.remove('is-visible');
+    els.root.classList.remove('is-visible', 'is-entering');
     els.root.setAttribute('aria-hidden', 'true');
-    if (els.connector) els.connector.hidden = true;
     setTargetHighlight(false);
     if (persist !== false) markDismissed();
   }
@@ -137,14 +130,14 @@
 
     _shown = true;
     els.root.hidden = false;
-    els.root.classList.add('is-visible');
+    els.root.classList.add('is-visible', 'is-entering');
     els.root.setAttribute('aria-hidden', 'false');
-    if (els.connector) els.connector.hidden = false;
     setTargetHighlight(true);
     requestAnimationFrame(function () {
       positionPromo();
       requestAnimationFrame(positionPromo);
     });
+    global.setTimeout(clearEnteringState, 650);
   }
 
   function scheduleShow() {
@@ -163,6 +156,13 @@
         ev.preventDefault();
         ev.stopPropagation();
         closeKofiDonatePromo(true);
+      });
+    }
+
+    var panel = root.querySelector('.kofi-donate-promo-panel');
+    if (panel) {
+      panel.addEventListener('animationend', function (ev) {
+        if (ev.animationName === 'kofi-promo-panel-enter') clearEnteringState();
       });
     }
 

@@ -2,57 +2,58 @@
 .kofi-donate-promo{
   position:fixed;
   z-index:105;
-  max-width:min(360px,calc(100vw - 24px));
+  max-width:min(420px,calc(100vw - 24px));
   pointer-events:none;
   opacity:0;
   visibility:hidden;
-  transform:translateY(8px) scale(.98);
-  transition:opacity .35s ease,transform .35s ease,visibility .35s;
+  transition:opacity .28s ease,visibility .28s;
 }
 .kofi-donate-promo.is-visible{
   opacity:1;
   visibility:visible;
-  transform:translateY(0) scale(1);
   pointer-events:auto;
-}
-.kofi-donate-promo-connector{
-  position:fixed;
-  inset:0;
-  width:100%;
-  height:100%;
-  pointer-events:none;
-  z-index:104;
-  overflow:visible;
-}
-.kofi-donate-promo-connector line{
-  stroke:rgba(0,212,255,.45);
-  stroke-width:2;
-  stroke-dasharray:6 5;
-  animation:kofi-donate-promo-dash 1.4s linear infinite;
-}
-.kofi-donate-promo-connector circle{
-  fill:rgba(69,128,230,.85);
-  filter:drop-shadow(0 0 6px rgba(0,212,255,.55));
-  animation:kofi-donate-promo-dot-pulse 2.4s ease-in-out infinite;
-}
-@keyframes kofi-donate-promo-dash{
-  to{stroke-dashoffset:-22}
-}
-@keyframes kofi-donate-promo-dot-pulse{
-  0%,100%{r:4;opacity:.85}
-  50%{r:5.5;opacity:1}
 }
 .kofi-donate-promo-panel{
   position:relative;
   display:flex;
   align-items:flex-end;
-  gap:10px;
-  padding:12px 12px 14px 10px;
+  gap:12px;
+  padding:14px 14px 16px 12px;
   background:linear-gradient(165deg,rgba(26,34,54,.98),rgba(20,28,46,.98));
   border:1px solid rgba(0,212,255,.28);
   border-radius:var(--radius-lg);
   box-shadow:var(--shadow-lg),0 0 24px rgba(69,128,230,.12);
+  transform-origin:var(--kofi-promo-origin-x,82%) var(--kofi-promo-origin-y,0%);
+}
+.kofi-donate-promo.is-visible.is-entering .kofi-donate-promo-panel{
+  animation:kofi-promo-panel-enter .58s var(--kofi-promo-spring,cubic-bezier(.34,1.56,.64,1)) forwards,
+             kofi-donate-promo-panel-pulse 3.2s ease-in-out .62s infinite;
+}
+.kofi-donate-promo.is-visible:not(.is-entering) .kofi-donate-promo-panel{
+  opacity:1;
+  transform:scale(1) translateY(0);
+  filter:blur(0);
+  clip-path:inset(0% 0% 0% 0% round var(--radius-lg));
   animation:kofi-donate-promo-panel-pulse 3.2s ease-in-out infinite;
+}
+@supports (animation-timing-function:linear(0,1)){
+  .kofi-donate-promo{
+    --kofi-promo-spring:linear(0,.008,.031 2.4%,.128 5.4%,.536 12.8%,.731 16.8%,.872 21%,.938 25.3%,.976 29.9%,.994 35%,1 40.5%,1.006 47%,1.002 55.9%,1);
+  }
+}
+@keyframes kofi-promo-panel-enter{
+  0%{
+    opacity:0;
+    transform:scale(.68) translateY(10px);
+    filter:blur(14px);
+    clip-path:inset(42% 38% 42% 38% round 28px);
+  }
+  100%{
+    opacity:1;
+    transform:scale(1) translateY(0);
+    filter:blur(0);
+    clip-path:inset(0% 0% 0% 0% round var(--radius-lg));
+  }
 }
 @keyframes kofi-donate-promo-panel-pulse{
   0%,100%{box-shadow:var(--shadow-lg),0 0 0 0 rgba(0,212,255,0)}
@@ -86,10 +87,10 @@
   height:14px;
 }
 .kofi-donate-promo-maria-wrap{
-  flex:0 0 72px;
-  width:72px;
+  flex:0 0 104px;
+  width:104px;
   align-self:flex-end;
-  filter:drop-shadow(0 4px 10px rgba(0,0,0,.45));
+  filter:drop-shadow(0 4px 12px rgba(0,0,0,.5));
 }
 .kofi-donate-promo-maria{
   display:block;
@@ -113,15 +114,33 @@
 .kofi-donate-promo-bubble::before{
   content:'';
   position:absolute;
-  top:-9px;
-  right:28px;
-  width:16px;
-  height:16px;
+  top:-11px;
+  right:18px;
+  width:18px;
+  height:18px;
   background:rgba(0,0,0,.28);
   border-top:1px solid rgba(255,255,255,.08);
   border-left:1px solid rgba(255,255,255,.08);
   transform:rotate(45deg);
   box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+}
+.kofi-donate-promo-bubble::after{
+  content:'';
+  position:absolute;
+  top:-28px;
+  right:22px;
+  width:0;
+  height:0;
+  border-left:7px solid transparent;
+  border-right:7px solid transparent;
+  border-bottom:14px solid rgba(0,212,255,.22);
+  filter:drop-shadow(0 0 6px rgba(0,212,255,.35));
+  animation:kofi-promo-tail-glow 2.6s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes kofi-promo-tail-glow{
+  0%,100%{opacity:.55;transform:translateY(0)}
+  50%{opacity:1;transform:translateY(-2px)}
 }
 .kofi-donate-promo-text{
   margin:0;
@@ -164,20 +183,26 @@
   50%{box-shadow:0 0 0 2px rgba(0,212,255,.55),0 0 14px rgba(69,128,230,.35),0 2px 8px rgba(0,0,0,.25)}
 }
 @media (prefers-reduced-motion:reduce){
-  .kofi-donate-promo-panel,.kofi-donate-promo-connector line,.kofi-donate-promo-connector circle,#kofiHeaderLink.kofi-donate-promo-target-highlight{
-    animation:none;
+  .kofi-donate-promo-panel,.kofi-donate-promo-bubble::after,#kofiHeaderLink.kofi-donate-promo-target-highlight{
+    animation:none!important;
   }
   .kofi-donate-promo{
     transition:none;
   }
+  .kofi-donate-promo-panel{
+    clip-path:none;
+    filter:none;
+    transform:none;
+    opacity:1;
+  }
 }
 @media (max-width:768px){
   .kofi-donate-promo{
-    max-width:min(320px,calc(100vw - 20px));
+    max-width:min(360px,calc(100vw - 20px));
   }
   .kofi-donate-promo-maria-wrap{
-    flex-basis:64px;
-    width:64px;
+    flex-basis:88px;
+    width:88px;
   }
   .kofi-donate-promo-text{
     font-size:12px;
