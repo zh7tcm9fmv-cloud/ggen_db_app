@@ -1,31 +1,26 @@
 /**
- * Ko-fi donate promo — Maria mascot + speech bubble pointing at #kofiHeaderLink.
- * Live: 2 min visible time per page visit; defers while a detail modal is open.
- * Dismiss lasts for the current tab session only — closing the tab starts a new visit.
+ * Ko-fi donate promo — Maria + speech bubble near #kofiHeaderLink.
+ * Shows 2 minutes after page load. Hidden for 24h after close (X) or Ko-fi header click.
  */
 (function (global) {
   'use strict';
 
   var KOFI_PROMO_DELAY_MS = 120000;
-  var KOFI_PROMO_PREVIEW = false;
-  var KOFI_PROMO_DEFER_AFTER_DETAIL_MS = 500;
-  var KOFI_PROMO_RETRY_MS = 3000;
-  var KOFI_PROMO_DISMISS_KEY = 'ggen_kofi_donate_promo_v3';
-  var LEGACY_DISMISS_KEYS = ['ggen_kofi_donate_promo_v1', 'ggen_kofi_donate_promo_v2'];
-  var LEGACY_ENGAGE_KEYS = ['ggen_kofi_promo_engaged_ms_v2'];
+  var KOFI_PROMO_SNOOZE_MS = 24 * 60 * 60 * 1000;
+  var KOFI_PROMO_SNOOZE_KEY = 'ggen_kofi_promo_snooze_until';
+  var LEGACY_KEYS = [
+    'ggen_kofi_donate_promo_v1',
+    'ggen_kofi_donate_promo_v2',
+    'ggen_kofi_donate_promo_v3',
+    'ggen_kofi_promo_engaged_ms_v2',
+  ];
   var MARIA_IMG = '/static/images/UI/UI_TacticalTraining_Logo_maria.webp';
   var PROMO_TEXT_FALLBACK =
     'Thank you for visiting! If you\u2019ve found our website useful, please consider donating to help us keep it free and accessible.';
 
   var _shown = false;
-  var _promoDue = false;
+  var _showTimer = null;
   var _resizeTimer = null;
-  var _deferTimer = null;
-  var _fireTimer = null;
-  var _retryTimer = null;
-  var _accumulatedMs = 0;
-  var _visibleSince = null;
-  var _detailObs = null;
 
   function promoImgUrl(path) {
     if (typeof global.imgUrl === 'function') return global.imgUrl(path);
@@ -48,31 +43,12 @@
     return fallback;
   }
 
-  function clearLegacyPromoStorage() {
+  function clearLegacyStorage() {
     try {
-      LEGACY_DISMISS_KEYS.forEach(function (key) {
+      LEGACY_KEYS.forEach(function (key) {
         global.localStorage.removeItem(key);
         global.sessionStorage.removeItem(key);
       });
-      LEGACY_ENGAGE_KEYS.forEach(function (key) {
-        global.sessionStorage.removeItem(key);
-      });
-    } catch (_) {}
-  }
-
-  function isDismissed() {
-    if (KOFI_PROMO_PREVIEW) return false;
-    try {
-      return global.sessionStorage.getItem(KOFI_PROMO_DISMISS_KEY) === '1';
-    } catch (_) {
-      return false;
-    }
-  }
-
-  function markDismissed() {
-    if (KOFI_PROMO_PREVIEW) return;
-    try {
-      global.sessionStorage.setItem(KOFI_PROMO_DISMISS_KEY, '1');
     } catch (_) {}
   }
 
@@ -84,98 +60,31 @@
     }
   }
 
-  function isDetailModalOpen() {
-    var modal = document.getElementById('detailModal');
-    return !!(modal && modal.classList.contains('active'));
-  }
-
-  function pauseVisibleClock() {
-    if (_visibleSince != null) {
-      _accumulatedMs += global.Date.now() - _visibleSince;
-      _visibleSince = null;
+  function isSnoozed() {
+    if (forceShowFromQuery()) return false;
+    try {
+      var until = parseInt(global.localStorage.getItem(KOFI_PROMO_SNOOZE_KEY) || '0', 10);
+      return until > global.Date.now();
+    } catch (_) {
+      return false;
     }
   }
 
-  function getEngagedMs() {
-    var total = _accumulatedMs;
-    if (_visibleSince != null) total += global.Date.now() - _visibleSince;
-    return total;
+  function snoozePromo() {
+    try {
+      global.localStorage.setItem(
+        KOFI_PROMO_SNOOZE_KEY,
+        String(global.Date.now() + KOFI_PROMO_SNOOZE_MS)
+      );
+    } catch (_) {}
+    cancelShowTimer();
   }
 
-  function clearEngagementTimers() {
-    if (_fireTimer) {
-      global.clearTimeout(_fireTimer);
-      _fireTimer = null;
+  function cancelShowTimer() {
+    if (_showTimer) {
+      global.clearTimeout(_showTimer);
+      _showTimer = null;
     }
-    if (_retryTimer) {
-      global.clearInterval(_retryTimer);
-      _retryTimer = null;
-    }
-  }
-
-  function stopEngagementTimer() {
-    clearEngagementTimers();
-    global.document.removeEventListener('visibilitychange', onVisibilityChange);
-    pauseVisibleClock();
-  }
-
-  function onVisibilityChange() {
-    if (global.document.hidden) {
-      pauseVisibleClock();
-      clearEngagementTimers();
-      return;
-    }
-    if (_shown || isDismissed()) return;
-    _visibleSince = global.Date.now();
-    armFireTimer();
-  }
-
-  function armFireTimer() {
-    clearEngagementTimers();
-    if (_shown || isDismissed()) return;
-
-    var remaining = KOFI_PROMO_DELAY_MS - getEngagedMs();
-    if (remaining <= 0) {
-      onPromoTimerDue();
-      return;
-    }
-
-    _fireTimer = global.setTimeout(onPromoTimerDue, remaining);
-  }
-
-  function onPromoTimerDue() {
-    if (_shown || isDismissed()) {
-      stopEngagementTimer();
-      return;
-    }
-    if (getEngagedMs() < KOFI_PROMO_DELAY_MS) {
-      armFireTimer();
-      return;
-    }
-    _promoDue = true;
-    tryShowPromo();
-    if (_shown) {
-      stopEngagementTimer();
-      return;
-    }
-    if (!_retryTimer) {
-      _retryTimer = global.setInterval(function () {
-        if (_shown || isDismissed()) {
-          stopEngagementTimer();
-          return;
-        }
-        if (_promoDue) tryShowPromo();
-      }, KOFI_PROMO_RETRY_MS);
-    }
-  }
-
-  function startEngagementTimer() {
-    stopEngagementTimer();
-    _accumulatedMs = 0;
-    _promoDue = false;
-    _visibleSince = global.document.hidden ? null : global.Date.now();
-    global.document.addEventListener('visibilitychange', onVisibilityChange);
-    armFireTimer();
   }
 
   function getPromoText() {
@@ -233,29 +142,6 @@
     });
   }
 
-  function canShowPromoNow() {
-    if (_shown) return false;
-    if (!forceShowFromQuery() && isDismissed()) return false;
-    if (!document.getElementById('kofiDonatePromo')) return false;
-    if (!document.getElementById('kofiHeaderLink')) return false;
-    if (isDetailModalOpen()) return false;
-    return _promoDue || forceShowFromQuery() || KOFI_PROMO_PREVIEW;
-  }
-
-  function tryShowPromo() {
-    if (!canShowPromoNow()) {
-      if (isDetailModalOpen() && (_promoDue || forceShowFromQuery())) _promoDue = true;
-      return;
-    }
-    openKofiDonatePromo();
-  }
-
-  function onDetailModalClosed() {
-    if (!_promoDue || _shown || isDismissed()) return;
-    clearTimeout(_deferTimer);
-    _deferTimer = global.setTimeout(tryShowPromo, KOFI_PROMO_DEFER_AFTER_DETAIL_MS);
-  }
-
   function getEls() {
     return {
       root: document.getElementById('kofiDonatePromo'),
@@ -306,25 +192,21 @@
     if (target) target.classList.toggle('kofi-donate-promo-target-highlight', !!on);
   }
 
-  function closeKofiDonatePromo(persist) {
+  function closeKofiDonatePromo(snooze) {
     var els = getEls();
     if (!els.root || !els.root.classList.contains('is-visible')) return;
     els.root.classList.remove('is-visible', 'is-entering', 'is-text-ready');
     els.root.setAttribute('aria-hidden', 'true');
     els.root.hidden = true;
     setTargetHighlight(false);
-    stopEngagementTimer();
-    if (persist !== false) markDismissed();
+    if (snooze !== false) snoozePromo();
   }
 
   function openKofiDonatePromo() {
+    if (_shown || isSnoozed()) return;
+
     var els = getEls();
-    if (!els.root || !els.panel || !els.target || _shown) return;
-    if (!forceShowFromQuery() && isDismissed()) return;
-    if (isDetailModalOpen()) {
-      _promoDue = true;
-      return;
-    }
+    if (!els.root || !els.panel || !els.target) return;
 
     var maria = els.root.querySelector('.kofi-donate-promo-maria');
     if (maria && !maria.getAttribute('src')) maria.src = promoImgUrl(MARIA_IMG);
@@ -332,12 +214,11 @@
     renderSlotText(false);
 
     _shown = true;
-    _promoDue = true;
+    cancelShowTimer();
     els.root.hidden = false;
     els.root.classList.add('is-visible', 'is-entering');
     els.root.setAttribute('aria-hidden', 'false');
     startSlotTextAnimation();
-    stopEngagementTimer();
     requestAnimationFrame(function () {
       positionPromo();
       requestAnimationFrame(positionPromo);
@@ -347,23 +228,11 @@
 
   function scheduleShow() {
     if (!document.getElementById('kofiDonatePromo') || !document.getElementById('kofiHeaderLink')) return;
-    if (!forceShowFromQuery() && isDismissed()) return;
-    if (forceShowFromQuery() || KOFI_PROMO_PREVIEW) {
-      _promoDue = true;
-      tryShowPromo();
-      return;
-    }
-    startEngagementTimer();
-  }
+    if (isSnoozed()) return;
 
-  function watchDetailModal() {
-    var modal = document.getElementById('detailModal');
-    if (!modal || _detailObs) return;
-    _detailObs = new MutationObserver(function () {
-      if (isDetailModalOpen()) return;
-      onDetailModalClosed();
-    });
-    _detailObs.observe(modal, { attributes: true, attributeFilter: ['class'] });
+    cancelShowTimer();
+    var delay = forceShowFromQuery() ? 0 : KOFI_PROMO_DELAY_MS;
+    _showTimer = global.setTimeout(openKofiDonatePromo, delay);
   }
 
   function bindEvents() {
@@ -376,6 +245,14 @@
         ev.preventDefault();
         ev.stopPropagation();
         closeKofiDonatePromo(true);
+      });
+    }
+
+    var kofiLink = document.getElementById('kofiHeaderLink');
+    if (kofiLink) {
+      kofiLink.addEventListener('click', function () {
+        snoozePromo();
+        if (root.classList.contains('is-visible')) closeKofiDonatePromo(false);
       });
     }
 
@@ -398,8 +275,6 @@
     document.addEventListener('keydown', function (ev) {
       if (ev.key === 'Escape' && root.classList.contains('is-visible')) closeKofiDonatePromo(true);
     });
-
-    watchDetailModal();
   }
 
   function syncPromoI18n() {
@@ -413,21 +288,8 @@
     }
   }
 
-  function getPromoStatus() {
-    return {
-      dismissed: isDismissed(),
-      engagedMs: getEngagedMs(),
-      remainingMs: Math.max(0, KOFI_PROMO_DELAY_MS - getEngagedMs()),
-      promoDue: _promoDue,
-      shown: _shown,
-      detailOpen: isDetailModalOpen(),
-      hasPromoEl: !!document.getElementById('kofiDonatePromo'),
-      hasKofiLink: !!document.getElementById('kofiHeaderLink'),
-    };
-  }
-
   function init() {
-    clearLegacyPromoStorage();
+    clearLegacyStorage();
     bindEvents();
     renderSlotText(false);
     syncPromoI18n();
@@ -447,7 +309,5 @@
     open: openKofiDonatePromo,
     reposition: positionPromo,
     syncI18n: syncPromoI18n,
-    getEngagedMs: getEngagedMs,
-    getStatus: getPromoStatus,
   };
 })(typeof window !== 'undefined' ? window : globalThis);

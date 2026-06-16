@@ -47,15 +47,20 @@ app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 # keeps serving the same ?v= after app.js edits until the server restarts, and browsers
 # keep an old cached bundle (users never see DC / weapon UI fixes).
 def _app_js_bundle_version_tag():
-    base = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'js')
+    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
+    assets = (
+        ('js', 'app.js'),
+        ('js', 'kofi_donate_promo.js'),
+        ('css', 'kofi_donate_promo.css'),
+    )
     parts = []
-    for name in ('app.js', 'kofi_donate_promo.js'):
-        p = os.path.join(base, name)
+    for subdir, name in assets:
+        p = os.path.join(root, subdir, name)
         try:
             st = os.stat(p)
-            parts.append(f'{name}:{st.st_mtime_ns}:{st.st_size}')
+            parts.append(f'{subdir}/{name}:{st.st_mtime_ns}:{st.st_size}')
         except OSError:
-            parts.append(f'{name}:0')
+            parts.append(f'{subdir}/{name}:0')
     return hashlib.sha256('|'.join(parts).encode()).hexdigest()[:16]
 
 # Optional: set INDEX_HTML_CACHE_CONTROL e.g. "public, max-age=120" in production so repeat visits skip re-downloading HTML shell.

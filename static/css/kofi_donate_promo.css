@@ -1,7 +1,7 @@
 /* Ko-fi donate promo — Maria + comic bubble pointing at header Ko-fi link */
 .kofi-donate-promo{
   position:fixed;
-  z-index:105;
+  z-index:250;
   max-width:min(420px,calc(100vw - 24px));
   pointer-events:none;
   opacity:0;
