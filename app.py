@@ -1577,6 +1577,7 @@ def classify_unit_weapon_trait_debuff_keys(line):
 
     if (
         'physical weapon power down' in sl
+        or re.search(r'decrease\s+physical\s+weapon\s+power', sl)
         or '物理武装パワーダウン' in s
         or re.search(r'物理武装POWER\d*%減少', s)
         or '物理武裝power下降' in sl
@@ -1587,6 +1588,7 @@ def classify_unit_weapon_trait_debuff_keys(line):
         keys.add('wp_phys')
     if (
         'beam weapon power down' in sl
+        or re.search(r'decrease\s+beam\s+weapon\s+power', sl)
         or 'ビーム武装パワーダウン' in s
         or re.search(r'ビーム武装POWER\d*%減少', s)
         or '光束武裝power下降' in sl
@@ -1601,6 +1603,7 @@ def classify_unit_weapon_trait_debuff_keys(line):
         keys.add('wp_beam')
     if (
         'special weapon power down' in sl
+        or re.search(r'decrease\s+special\s+weapon\s+power', sl)
         or '特殊武装パワーダウン' in s
         or re.search(r'特殊武装POWER\d*%減少', s)
         or '特殊武裝power下降' in sl
@@ -15638,8 +15641,7 @@ def list_units():
         for urow in pr:
             _uid = urow['id']
             urow['grid_abilities'] = collect_unit_grid_abilities(_uid, ld, ldc, lc, stat_mode)
-    # Full weapon-debuff filter catalog exposed to the UI (keys omitted here are not used in-game yet).
-    _wbp = sorted(UNIT_WEAPON_DEBUFF_FILTER_KEYS)
+    _wbp = sorted(WEAPON_DEBUFF_KEYS_PRESENT_UNION)
     _mech_rows = mechanism_list_filter_rows_from_ids(mechanism_union, ld)
     result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg, 'weapon_range': weapon_range_arg, 'weapon_range_non_map': weapon_range_non_map_arg, 'map_weapon_range': map_weapon_range_arg, 'weapon_debuff_present_keys': _wbp, 'mechanism': mechanism_arg, 'mechanism_present': _mech_rows, 'stat_bounds': stat_bounds}
     set_cached_response(ck, result); return jsonify(convert_image_urls(result))
