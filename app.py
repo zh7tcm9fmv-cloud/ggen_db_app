@@ -1412,8 +1412,8 @@ def parse_weapon_range_non_map_ssp_ex_flag(val):
     return s in ('1', 'true', 'yes', 'on')
 
 
-def unit_weapon_subset_max_range(uid, ld, lc, stat_mode, subset):
-    """Max effective range among non-MAP weapons; subset 'ssp_ex' (EX type + SSP id suffix) or 'non_map' (all grid weapons)."""
+def _unit_weapon_subset_effective_ranges(uid, ld, lc, stat_mode, subset):
+    """Effective max-range values for each eligible non-MAP weapon in subset."""
     sm = (stat_mode or 'normal').strip().lower()
     if sm not in ('normal', 'sp', 'ssp'):
         sm = 'normal'
@@ -1421,8 +1421,7 @@ def unit_weapon_subset_max_range(uid, ld, lc, stat_mode, subset):
     wtm = ld.get('weapon_trait_map', {}) or {}
     wcm = ld.get('weapon_capability_map', {}) or {}
     wtdm = ld.get('weapon_trait_detail_map', {}) or {}
-    best = 0
-    any_eligible = False
+    ranges = set()
     for wp in unit_weapon_map.get(uid, []) or []:
         wid = normalize_id(wp.get('id'))
         if not wid or wid == '0':
@@ -1436,7 +1435,6 @@ def unit_weapon_subset_max_range(uid, ld, lc, stat_mode, subset):
                 continue
         elif subset != 'non_map':
             continue
-        any_eligible = True
         ws = resolve_weapon_stats(
             wm, weapon_status_map, weapon_correction_map,
             wtm, wcm, growth_pattern_map, weapon_trait_change_map, wtdm,
@@ -1457,11 +1455,28 @@ def unit_weapon_subset_max_range(uid, ld, lc, stat_mode, subset):
                         bonus += int(enh.get('value', 0) or 0)
                 break
         eff = max(0, rx + bonus)
-        if eff > best:
-            best = eff
-    if not any_eligible:
+        if eff > 0:
+            ranges.add(int(eff))
+    return ranges
+
+
+def unit_weapon_subset_max_range(uid, ld, lc, stat_mode, subset):
+    """Max effective range among non-MAP weapons; subset 'ssp_ex' (EX type + SSP id suffix) or 'non_map' (all grid weapons)."""
+    ranges = _unit_weapon_subset_effective_ranges(uid, ld, lc, stat_mode, subset)
+    if not ranges:
         return None
-    return int(best)
+    return max(ranges)
+
+
+def unit_weapon_subset_has_range_tier(uid, ld, lc, stat_mode, subset, tier):
+    """True when any eligible weapon in subset reaches the given range tier (1..6)."""
+    try:
+        want = int(tier)
+    except Exception:
+        return False
+    if want < 1 or want > 6:
+        return False
+    return want in _unit_weapon_subset_effective_ranges(uid, ld, lc, stat_mode, subset)
 
 
 def iter_unit_weapon_trait_texts(uid, ld, lang_code, stat_mode='normal'):
@@ -1912,20 +1927,22 @@ def unit_highest_damage_weapon_max_range(uid, ld, lc, stat_mode='normal'):
 def unit_matches_weapon_range_filter(uid, ld, lc, want_filter, stat_mode='normal', combine='and'):
     if want_filter is None:
         return True
-    got = unit_weapon_subset_max_range(uid, ld, lc, stat_mode, 'ssp_ex')
-    if got is None:
-        return False
-    return apply_browse_combine_match(want_filter, lambda x: got == int(x), combine)
+    return apply_browse_combine_match(
+        want_filter,
+        lambda x: unit_weapon_subset_has_range_tier(uid, ld, lc, stat_mode, 'ssp_ex', x),
+        combine,
+    )
 
 
 def unit_matches_weapon_range_non_map_filter(uid, ld, lc, want_filter, stat_mode='normal', combine='and', subset='non_map'):
     if want_filter is None:
         return True
     ss = subset if subset in ('non_map', 'ssp_ex') else 'non_map'
-    got = unit_weapon_subset_max_range(uid, ld, lc, stat_mode, ss)
-    if got is None:
-        return False
-    return apply_browse_combine_match(want_filter, lambda x: got == int(x), combine)
+    return apply_browse_combine_match(
+        want_filter,
+        lambda x: unit_weapon_subset_has_range_tier(uid, ld, lc, stat_mode, ss, x),
+        combine,
+    )
 
 
 def collect_unit_weapon_range_debuff_keys(uid, ld, lc, stat_mode='normal'):
@@ -14427,9 +14444,8 @@ def _precompute_weapon_range_values_present(subset):
         return frozenset()
     out = set()
     for uid in unit_info_map:
-        got = unit_weapon_subset_max_range(uid, ld, 'EN', 'normal', subset)
-        if got is not None and int(got) > 0:
-            out.add(str(int(got)))
+        for rv in _unit_weapon_subset_effective_ranges(uid, ld, 'EN', 'normal', subset):
+            out.add(str(int(rv)))
     return frozenset(out)
 
 
