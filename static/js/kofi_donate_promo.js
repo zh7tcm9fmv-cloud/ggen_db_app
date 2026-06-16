@@ -1,6 +1,7 @@
 /**
  * Ko-fi donate promo — Maria mascot + speech bubble pointing at #kofiHeaderLink.
- * Live: 2 min active time on site; defers while a detail modal is open.
+ * Live: 2 min visible time per page visit; defers while a detail modal is open.
+ * Dismiss lasts for the current tab session only — closing the tab starts a new visit.
  */
 (function (global) {
   'use strict';
@@ -8,9 +9,10 @@
   var KOFI_PROMO_DELAY_MS = 120000;
   var KOFI_PROMO_PREVIEW = false;
   var KOFI_PROMO_DEFER_AFTER_DETAIL_MS = 500;
-  var KOFI_PROMO_TICK_MS = 2000;
-  var KOFI_PROMO_STORAGE_KEY = 'ggen_kofi_donate_promo_v2';
-  var KOFI_PROMO_ENGAGE_KEY = 'ggen_kofi_promo_engaged_ms_v2';
+  var KOFI_PROMO_RETRY_MS = 3000;
+  var KOFI_PROMO_DISMISS_KEY = 'ggen_kofi_donate_promo_v3';
+  var LEGACY_DISMISS_KEYS = ['ggen_kofi_donate_promo_v1', 'ggen_kofi_donate_promo_v2'];
+  var LEGACY_ENGAGE_KEYS = ['ggen_kofi_promo_engaged_ms_v2'];
   var MARIA_IMG = '/static/images/UI/UI_TacticalTraining_Logo_maria.webp';
   var PROMO_TEXT_FALLBACK =
     'Thank you for visiting! If you\u2019ve found our website useful, please consider donating to help us keep it free and accessible.';
@@ -19,7 +21,9 @@
   var _promoDue = false;
   var _resizeTimer = null;
   var _deferTimer = null;
-  var _engageTimer = null;
+  var _fireTimer = null;
+  var _retryTimer = null;
+  var _accumulatedMs = 0;
   var _visibleSince = null;
   var _detailObs = null;
 
@@ -44,20 +48,31 @@
     return fallback;
   }
 
+  function clearLegacyPromoStorage() {
+    try {
+      LEGACY_DISMISS_KEYS.forEach(function (key) {
+        global.localStorage.removeItem(key);
+        global.sessionStorage.removeItem(key);
+      });
+      LEGACY_ENGAGE_KEYS.forEach(function (key) {
+        global.sessionStorage.removeItem(key);
+      });
+    } catch (_) {}
+  }
+
   function isDismissed() {
     if (KOFI_PROMO_PREVIEW) return false;
     try {
-      if (global.sessionStorage.getItem(KOFI_PROMO_STORAGE_KEY) === '1') return true;
-      if (global.localStorage.getItem(KOFI_PROMO_STORAGE_KEY) === '1') return true;
-    } catch (_) {}
-    return false;
+      return global.sessionStorage.getItem(KOFI_PROMO_DISMISS_KEY) === '1';
+    } catch (_) {
+      return false;
+    }
   }
 
   function markDismissed() {
     if (KOFI_PROMO_PREVIEW) return;
     try {
-      sessionStorage.setItem(KOFI_PROMO_STORAGE_KEY, '1');
-      localStorage.setItem(KOFI_PROMO_STORAGE_KEY, '1');
+      global.sessionStorage.setItem(KOFI_PROMO_DISMISS_KEY, '1');
     } catch (_) {}
   }
 
@@ -74,72 +89,93 @@
     return !!(modal && modal.classList.contains('active'));
   }
 
-  function readStoredEngagedMs() {
-    try {
-      var v = global.sessionStorage.getItem(KOFI_PROMO_ENGAGE_KEY);
-      return v ? Math.max(0, parseInt(v, 10) || 0) : 0;
-    } catch (_) {
-      return 0;
+  function pauseVisibleClock() {
+    if (_visibleSince != null) {
+      _accumulatedMs += global.Date.now() - _visibleSince;
+      _visibleSince = null;
     }
-  }
-
-  function writeStoredEngagedMs(ms) {
-    try {
-      global.sessionStorage.setItem(KOFI_PROMO_ENGAGE_KEY, String(Math.max(0, Math.round(ms))));
-    } catch (_) {}
   }
 
   function getEngagedMs() {
-    var total = readStoredEngagedMs();
-    if (!global.document.hidden && _visibleSince != null) {
-      total += global.Date.now() - _visibleSince;
-    }
+    var total = _accumulatedMs;
+    if (_visibleSince != null) total += global.Date.now() - _visibleSince;
     return total;
   }
 
-  function flushEngagedMs() {
-    writeStoredEngagedMs(getEngagedMs());
-    if (!global.document.hidden) _visibleSince = global.Date.now();
+  function clearEngagementTimers() {
+    if (_fireTimer) {
+      global.clearTimeout(_fireTimer);
+      _fireTimer = null;
+    }
+    if (_retryTimer) {
+      global.clearInterval(_retryTimer);
+      _retryTimer = null;
+    }
   }
 
   function stopEngagementTimer() {
-    if (_engageTimer) {
-      global.clearInterval(_engageTimer);
-      _engageTimer = null;
-    }
+    clearEngagementTimers();
     global.document.removeEventListener('visibilitychange', onVisibilityChange);
-    flushEngagedMs();
-    _visibleSince = null;
+    pauseVisibleClock();
   }
 
   function onVisibilityChange() {
     if (global.document.hidden) {
-      flushEngagedMs();
-      _visibleSince = null;
+      pauseVisibleClock();
+      clearEngagementTimers();
       return;
     }
+    if (_shown || isDismissed()) return;
     _visibleSince = global.Date.now();
-    tickEngagement();
+    armFireTimer();
   }
 
-  function tickEngagement() {
+  function armFireTimer() {
+    clearEngagementTimers();
+    if (_shown || isDismissed()) return;
+
+    var remaining = KOFI_PROMO_DELAY_MS - getEngagedMs();
+    if (remaining <= 0) {
+      onPromoTimerDue();
+      return;
+    }
+
+    _fireTimer = global.setTimeout(onPromoTimerDue, remaining);
+  }
+
+  function onPromoTimerDue() {
     if (_shown || isDismissed()) {
       stopEngagementTimer();
       return;
     }
-    if (getEngagedMs() >= KOFI_PROMO_DELAY_MS) {
-      _promoDue = true;
-      tryShowPromo();
-      if (_shown) stopEngagementTimer();
+    if (getEngagedMs() < KOFI_PROMO_DELAY_MS) {
+      armFireTimer();
+      return;
+    }
+    _promoDue = true;
+    tryShowPromo();
+    if (_shown) {
+      stopEngagementTimer();
+      return;
+    }
+    if (!_retryTimer) {
+      _retryTimer = global.setInterval(function () {
+        if (_shown || isDismissed()) {
+          stopEngagementTimer();
+          return;
+        }
+        if (_promoDue) tryShowPromo();
+      }, KOFI_PROMO_RETRY_MS);
     }
   }
 
   function startEngagementTimer() {
     stopEngagementTimer();
+    _accumulatedMs = 0;
+    _promoDue = false;
     _visibleSince = global.document.hidden ? null : global.Date.now();
     global.document.addEventListener('visibilitychange', onVisibilityChange);
-    tickEngagement();
-    _engageTimer = global.setInterval(tickEngagement, KOFI_PROMO_TICK_MS);
+    armFireTimer();
   }
 
   function getPromoText() {
@@ -275,6 +311,7 @@
     if (!els.root || !els.root.classList.contains('is-visible')) return;
     els.root.classList.remove('is-visible', 'is-entering', 'is-text-ready');
     els.root.setAttribute('aria-hidden', 'true');
+    els.root.hidden = true;
     setTargetHighlight(false);
     stopEngagementTimer();
     if (persist !== false) markDismissed();
@@ -311,12 +348,7 @@
   function scheduleShow() {
     if (!document.getElementById('kofiDonatePromo') || !document.getElementById('kofiHeaderLink')) return;
     if (!forceShowFromQuery() && isDismissed()) return;
-    if (forceShowFromQuery()) {
-      _promoDue = true;
-      tryShowPromo();
-      return;
-    }
-    if (KOFI_PROMO_PREVIEW) {
+    if (forceShowFromQuery() || KOFI_PROMO_PREVIEW) {
       _promoDue = true;
       tryShowPromo();
       return;
@@ -363,8 +395,6 @@
       requestAnimationFrame(positionPromo);
     }, { passive: true });
 
-    global.addEventListener('pagehide', flushEngagedMs);
-
     document.addEventListener('keydown', function (ev) {
       if (ev.key === 'Escape' && root.classList.contains('is-visible')) closeKofiDonatePromo(true);
     });
@@ -383,7 +413,21 @@
     }
   }
 
+  function getPromoStatus() {
+    return {
+      dismissed: isDismissed(),
+      engagedMs: getEngagedMs(),
+      remainingMs: Math.max(0, KOFI_PROMO_DELAY_MS - getEngagedMs()),
+      promoDue: _promoDue,
+      shown: _shown,
+      detailOpen: isDetailModalOpen(),
+      hasPromoEl: !!document.getElementById('kofiDonatePromo'),
+      hasKofiLink: !!document.getElementById('kofiHeaderLink'),
+    };
+  }
+
   function init() {
+    clearLegacyPromoStorage();
     bindEvents();
     renderSlotText(false);
     syncPromoI18n();
@@ -404,5 +448,6 @@
     reposition: positionPromo,
     syncI18n: syncPromoI18n,
     getEngagedMs: getEngagedMs,
+    getStatus: getPromoStatus,
   };
 })(typeof window !== 'undefined' ? window : globalThis);
