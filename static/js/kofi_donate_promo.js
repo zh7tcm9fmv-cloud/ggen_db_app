@@ -95,7 +95,7 @@
     splitPromoLines(full).forEach(function (line, i) {
       var lineEl = document.createElement('span');
       lineEl.className = 'kofi-promo-slot-line';
-      lineEl.style.setProperty('--kofi-slot-delay', (0.38 + i * 0.16) + 's');
+      lineEl.style.setProperty('--kofi-slot-delay', (0.58 + i * 0.26) + 's');
       var inner = document.createElement('span');
       inner.className = 'kofi-promo-slot-inner';
       inner.textContent = line;
@@ -237,7 +237,7 @@
       positionPromo();
       requestAnimationFrame(positionPromo);
     });
-    global.setTimeout(clearEnteringState, 650);
+    global.setTimeout(clearEnteringState, 1050);
   }
 
   function scheduleShow() {

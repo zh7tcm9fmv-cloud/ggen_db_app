@@ -6,7 +6,10 @@
   pointer-events:none;
   opacity:0;
   visibility:hidden;
-  transition:opacity .28s ease,visibility .28s;
+  --kofi-promo-enter-duration:.92s;
+  --kofi-promo-enter-ease:cubic-bezier(.22,1,.36,1);
+  --kofi-promo-slot-duration:.76s;
+  transition:opacity .48s ease-out,visibility .48s ease-out;
 }
 .kofi-donate-promo.is-visible{
   opacity:1;
@@ -30,27 +33,26 @@
   transform-origin:var(--kofi-promo-origin-x,82%) var(--kofi-promo-origin-y,0%);
 }
 .kofi-donate-promo.is-visible.is-entering .kofi-donate-promo-panel{
-  animation:kofi-promo-panel-enter .58s var(--kofi-promo-spring,cubic-bezier(.34,1.56,.64,1)) forwards,
-             kofi-donate-promo-panel-pulse 3.2s ease-in-out .62s infinite;
+  animation:kofi-promo-panel-enter var(--kofi-promo-enter-duration) var(--kofi-promo-enter-ease) forwards,
+             kofi-donate-promo-panel-pulse 3.6s ease-in-out calc(var(--kofi-promo-enter-duration) + .12s) infinite;
 }
 .kofi-donate-promo.is-visible:not(.is-entering) .kofi-donate-promo-panel{
   opacity:1;
   transform:scale(1) translateY(0);
   filter:blur(0);
   clip-path:inset(0% 0% 0% 0% round var(--radius-lg));
-  animation:kofi-donate-promo-panel-pulse 3.2s ease-in-out infinite;
-}
-@supports (animation-timing-function:linear(0,1)){
-  .kofi-donate-promo{
-    --kofi-promo-spring:linear(0,.008,.031 2.4%,.128 5.4%,.536 12.8%,.731 16.8%,.872 21%,.938 25.3%,.976 29.9%,.994 35%,1 40.5%,1.006 47%,1.002 55.9%,1);
-  }
+  animation:kofi-donate-promo-panel-pulse 3.6s ease-in-out infinite;
 }
 @keyframes kofi-promo-panel-enter{
   0%{
     opacity:0;
-    transform:scale(.68) translateY(10px);
-    filter:blur(14px);
-    clip-path:inset(42% 38% 42% 38% round 28px);
+    transform:scale(.74) translateY(14px);
+    filter:blur(16px);
+    clip-path:inset(40% 36% 40% 36% round 28px);
+  }
+  55%{
+    opacity:.92;
+    filter:blur(4px);
   }
   100%{
     opacity:1;
@@ -180,11 +182,11 @@
   will-change:transform,opacity;
 }
 .kofi-donate-promo.is-text-ready .kofi-promo-slot-inner{
-  animation:kofi-promo-slot-in .54s cubic-bezier(.22,1,.36,1) forwards;
+  animation:kofi-promo-slot-in var(--kofi-promo-slot-duration) cubic-bezier(.22,1,.36,1) forwards;
   animation-delay:var(--kofi-slot-delay,0s);
 }
 @keyframes kofi-promo-slot-in{
-  0%{transform:translateY(115%);opacity:0}
+  0%{transform:translateY(108%);opacity:0}
   100%{transform:translateY(0);opacity:1}
 }
 #kofiHeaderLink.kofi-donate-promo-target-highlight{
