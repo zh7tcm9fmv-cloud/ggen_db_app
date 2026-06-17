@@ -6,5 +6,9 @@
   {
     "id": 310100000000220004,
     "value": "クリアで<material=MaterialName>ダイヤ2,000個</material>獲得！\n<size=70%>ステージへの挑戦に必要なチケットは\n劇場特典で入手できます。</size>"
+  },
+  {
+    "id": 310100000000220010,
+    "value": "25周年記念特別ステージ！\nクリアで<material=MaterialName>特別な称号</material>を獲得！"
   }
 ]

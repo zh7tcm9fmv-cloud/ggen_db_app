@@ -283,5 +283,24 @@
     "MotifTypeIndex": 2,
     "RankingTopPercentileDisplayScoreThreshold": 200000,
     "IsSkipShopReset": false
+  },
+  {
+    "EventId": 300016,
+    "LeagueRankGroupId": 1,
+    "LeagueSeasonRewardGroupId": 16,
+    "LeagueBuffTargetSetId": 300016,
+    "LeagueIngameConfigGroupId": 1,
+    "LeagueMatchingGroupId": 1,
+    "BuffId": 300003,
+    "SeasonStartAnimationColorTypeIndex": 1,
+    "StageId": 90600101,
+    "LimitTurnCount": 5,
+    "LeagueStageInitialPositionGroupSetId": 2,
+    "LeagueChallengeModeEntryScoreThreshold": 150000,
+    "LeagueChallengeModeMatchingGroupId": 2,
+    "MotifId": 300016,
+    "MotifTypeIndex": 2,
+    "RankingTopPercentileDisplayScoreThreshold": 200000,
+    "IsSkipShopReset": false
   }
 ]

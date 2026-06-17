@@ -1160,7 +1160,15 @@
     "value": "Psycho Gundam"
   },
   {
+    "id": 110100001080003860,
+    "value": "Psycho Gundam"
+  },
+  {
     "id": 110100001080003900,
+    "value": "Psycho Gundam [MA]"
+  },
+  {
+    "id": 110100001080003960,
     "value": "Psycho Gundam [MA]"
   },
   {
@@ -7352,7 +7360,15 @@
     "value": "A huge transformable mobile armor for Newtypes developed by the Murasame Laboratory, the Japanese branch of the Federation Forces' Newtype Laboratories.\nDesigned to capture and defend bases, this formidable machine boasts wide-ranging firepower and is protected by I-Field generators.\nIts main form is the so-called mobile fortress, which is capable of flight thanks to the Minovsky craft system.\nVulnerable points such as joints are covered in armor, giving it robust defenses worthy of the fortress title.\nIn MS form, it can demonstrate its maximum firepower, and can use its bare hands to fight other mobile suits in close combat situations.\nThis makes it a useful form for anti-MS battle.\nIts most distinctive feature is the psycommu system used to control the machine and its various weapons, and registered Newtype pilots can even use the system to control the machine from the outside.\nHowever, this system also forces the pilot to fight, placing a huge burden on their psyche."
   },
   {
+    "id": 110200001080003860,
+    "value": "A huge transformable mobile armor for Newtypes developed by the Murasame Laboratory, the Japanese branch of the Federation Forces' Newtype Laboratories.\nDesigned to capture and defend bases, this formidable machine boasts wide-ranging firepower and is protected by I-Field generators.\nIts main form is the so-called mobile fortress, which is capable of flight thanks to the Minovsky craft system.\nVulnerable points such as joints are covered in armor, giving it robust defenses worthy of the fortress title.\nIn MS form, it can demonstrate its maximum firepower, and can use its bare hands to fight other mobile suits in close combat situations.\nThis makes it a useful form for anti-MS battle.\nIts most distinctive feature is the psycommu system used to control the machine and its various weapons, and registered Newtype pilots can even use the system to control the machine from the outside.\nHowever, this system also forces the pilot to fight, placing a huge burden on their psyche."
+  },
+  {
     "id": 110200001080003900,
+    "value": "-"
+  },
+  {
+    "id": 110200001080003960,
     "value": "-"
   },
   {
@@ -13248,7 +13264,15 @@
     "value": "Psycho Gundam"
   },
   {
+    "id": 110300001080003860,
+    "value": "Psycho Gundam"
+  },
+  {
     "id": 110300001080003900,
+    "value": "Psycho Gundam [MA]"
+  },
+  {
+    "id": 110300001080003960,
     "value": "Psycho Gundam [MA]"
   },
   {
@@ -19644,7 +19668,15 @@
     "value": "Psycho Gundam"
   },
   {
+    "id": 110400001080003860,
+    "value": "Psycho Gundam"
+  },
+  {
     "id": 110400001080003900,
+    "value": "Psycho Gundam [MA]"
+  },
+  {
+    "id": 110400001080003960,
     "value": "Psycho Gundam [MA]"
   },
   {

@@ -6065,6 +6065,11 @@
     "TargetId": 1080001600
   },
   {
+    "CharacterId": 1080001601,
+    "AcquisitionMethodTypeIndex": 26,
+    "TargetId": 8100204
+  },
+  {
     "CharacterId": 1080001900,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1080001900

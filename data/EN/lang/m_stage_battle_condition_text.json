@@ -2301,7 +2301,7 @@
   },
   {
     "id": 130300001440010301,
-    "value": "Destroy third force ???."
+    "value": "Destroy third force [???]."
   },
   {
     "id": 130300001440010304,
@@ -7653,7 +7653,7 @@
   },
   {
     "id": 130300009050002804,
-    "value": "Defeat ???. / Guest force Jona is defeated.\nAll of your units are destroyed. / Limit: 3 turns."
+    "value": "Defeat [???]. / Guest force Jona is defeated.\nAll of your units are destroyed. / Limit: 3 turns."
   },
   {
     "id": 130300009051000101,
@@ -8165,7 +8165,7 @@
   },
   {
     "id": 130300009052002805,
-    "value": "Defeat ???. / Guest force Jona is defeated.\nAll of your units are destroyed. / Limit: 3 turns."
+    "value": "Defeat [???]. / Guest force Jona is defeated.\nAll of your units are destroyed. / Limit: 3 turns."
   },
   {
     "id": 130300009052002901,
@@ -9338,5 +9338,13 @@
   {
     "id": 131000000000000102,
     "value": "Destroy all enemy units."
+  },
+  {
+    "id": 1303000009900011401,
+    "value": "Destroy all enemy units."
+  },
+  {
+    "id": 1303000009900011404,
+    "value": "All of your units are destroyed.\nAmuro Ray and Guest force destroyed."
   }
 ]

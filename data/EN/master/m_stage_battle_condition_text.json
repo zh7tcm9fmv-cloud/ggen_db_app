@@ -16569,6 +16569,20 @@
     "UnitId": 0
   },
   {
+    "StageBattleConditionSetId": 99000114,
+    "CategoryTypeIndex": 1,
+    "SortOrder": 1,
+    "TextLanguageId": 1303000009900011401,
+    "UnitId": 1003000110
+  },
+  {
+    "StageBattleConditionSetId": 99000114,
+    "CategoryTypeIndex": 3,
+    "SortOrder": 4,
+    "TextLanguageId": 1303000009900011404,
+    "UnitId": 0
+  },
+  {
     "StageBattleConditionSetId": 99990101,
     "CategoryTypeIndex": 1,
     "SortOrder": 1,

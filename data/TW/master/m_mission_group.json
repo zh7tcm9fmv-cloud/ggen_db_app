@@ -84,8 +84,8 @@
     "EventId": 0,
     "MissionResetTypeIndex": 2,
     "SortOrder": 1,
-    "AvailableScheduleId": 2605301502,
-    "ReceivableScheduleId": 2605301503,
+    "AvailableScheduleId": 2606301502,
+    "ReceivableScheduleId": 2606301503,
     "TransitionId": 37000000000000,
     "MissionGroupCategoryTypeIndex": 1
   },
@@ -4597,6 +4597,66 @@
     "AvailableScheduleId": 2604301801,
     "ReceivableScheduleId": 2604301801,
     "TransitionId": 560030002001,
+    "MissionGroupCategoryTypeIndex": 5
+  },
+  {
+    "Id": 3100081001,
+    "EventId": 0,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 13,
+    "AvailableScheduleId": 2606301801,
+    "ReceivableScheduleId": 2606301801,
+    "TransitionId": 56000008101601,
+    "MissionGroupCategoryTypeIndex": 5
+  },
+  {
+    "Id": 3100081002,
+    "EventId": 0,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 14,
+    "AvailableScheduleId": 2606301801,
+    "ReceivableScheduleId": 2606301801,
+    "TransitionId": 56000008101601,
+    "MissionGroupCategoryTypeIndex": 5
+  },
+  {
+    "Id": 3100081003,
+    "EventId": 0,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 15,
+    "AvailableScheduleId": 2606301801,
+    "ReceivableScheduleId": 2606301801,
+    "TransitionId": 56000008101701,
+    "MissionGroupCategoryTypeIndex": 5
+  },
+  {
+    "Id": 3100081004,
+    "EventId": 0,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 16,
+    "AvailableScheduleId": 2606301801,
+    "ReceivableScheduleId": 2606301801,
+    "TransitionId": 56000008101701,
+    "MissionGroupCategoryTypeIndex": 5
+  },
+  {
+    "Id": 3100081005,
+    "EventId": 0,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 17,
+    "AvailableScheduleId": 2606301801,
+    "ReceivableScheduleId": 2606301801,
+    "TransitionId": 56000008101801,
+    "MissionGroupCategoryTypeIndex": 5
+  },
+  {
+    "Id": 3100081006,
+    "EventId": 0,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 18,
+    "AvailableScheduleId": 2606301801,
+    "ReceivableScheduleId": 2606301801,
+    "TransitionId": 56000008101801,
     "MissionGroupCategoryTypeIndex": 5
   },
   {

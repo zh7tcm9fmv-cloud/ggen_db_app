@@ -1261,7 +1261,11 @@
   },
   {
     "id": 150100171080003800,
-    "value": "SSR Psycho Gundam Limit Break Material"
+    "value": "SSR Psycho Gundam (Durability) Limit Break Material"
+  },
+  {
+    "id": 150100171080003860,
+    "value": "SSR Psycho Gundam (Attack) Limit Break Material"
   },
   {
     "id": 150100171080003900,
@@ -5800,6 +5804,10 @@
     "value": "Mobile Suit Gundam: Cross Dimension 0079 Series SP Conversion Chips"
   },
   {
+    "id": 150100240000010810,
+    "value": "Mobile Suit Z Gundam: A New Translation Series SP Conversion Chips"
+  },
+  {
     "id": 150100240000011112,
     "value": "Zaku-Tag SP Conversion Chips"
   },
@@ -5868,8 +5876,16 @@
     "value": "Char's Zaku II (THE ORIGIN) SP Conversion Chips"
   },
   {
+    "id": 150100241080003860,
+    "value": "Psycho Gundam SP Conversion Chips"
+  },
+  {
     "id": 150100241305000300,
     "value": "Gundam Astray Gold Frame Amatsu Mina SP Conversion Chips"
+  },
+  {
+    "id": 150100250000010810,
+    "value": "Mobile Suit Z Gundam: A New Translation Series SP Conversion Badge"
   },
   {
     "id": 150100250000021002,
@@ -5880,6 +5896,10 @@
     "value": "Ramba Ral SP Conversion Badge"
   },
   {
+    "id": 150100251080001601,
+    "value": "Amuro Ray SP Conversion Badge"
+  },
+  {
     "id": 150100251300002502,
     "value": "Andrew Waldfeld SP Conversion Badge"
   },
@@ -5888,12 +5908,24 @@
     "value": "The Sorcery of Nymph Circe Special Stage Ticket"
   },
   {
+    "id": 150100260099000114,
+    "value": "Gundam Ace: 25th Anniversary Special Stage Challenge Ticket"
+  },
+  {
     "id": 150100270001001008,
     "value": "Jaburo Area"
   },
   {
     "id": 150100270001001013,
     "value": "A Baoa Qu Area"
+  },
+  {
+    "id": 150100270001081007,
+    "value": "Hong Kong City Area"
+  },
+  {
+    "id": 150100270001081012,
+    "value": "Gryps 2 Area"
   },
   {
     "id": 150100270001300008,
@@ -5910,6 +5942,10 @@
   {
     "id": 150100280200100001,
     "value": "Mobile Suit Gundam Challenge"
+  },
+  {
+    "id": 150100280208100001,
+    "value": "Mobile Suit Z Gundam: A New Translation Challenge"
   },
   {
     "id": 150100280230000001,
@@ -7189,7 +7225,11 @@
   },
   {
     "id": 150200171080003800,
-    "value": "An item used to perform Limit Break on SSR Psycho Gundam"
+    "value": "An item used to perform Limit Break on SSR Psycho Gundam (Durability)"
+  },
+  {
+    "id": 150200171080003860,
+    "value": "An item used to perform Limit Break on SSR Psycho Gundam (Attack)"
   },
   {
     "id": 150200171080003900,
@@ -11728,6 +11768,10 @@
     "value": "Usable on non-UR units from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {
+    "id": 150200240000010810,
+    "value": "Usable on non-UR units from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
     "id": 150200240000011112,
     "value": "Usable on non-UR units bearing the above tag.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
@@ -11796,8 +11840,16 @@
     "value": "Usable on Char's Zaku II (THE ORIGIN)  (SSR/ Support / Mobile Suit Gundam).\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {
+    "id": 150200241080003860,
+    "value": "Usable on Psycho Gundam (SSR / Attack / Mobile Suit Z Gundam: A New Translation).\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
     "id": 150200241305000300,
     "value": "Usable on Gundam Astray Gold Frame Amatsu Mina (SSR / Support / Mobile Suit Gundam SEED).\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
+    "id": 150200250000010810,
+    "value": "Usable on non-UR characters from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {
     "id": 150200250000021002,
@@ -11808,6 +11860,10 @@
     "value": "Usable on Ramba Ral (SSR/ Support / Mobile Suit Gundam).\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {
+    "id": 150200251080001601,
+    "value": "Usable on Amuro Ray (SSR/ Attack / Mobile Suit Z Gundam: A New Translation).\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
     "id": 150200251300002502,
     "value": "Usable on Andrew Waldfeld (SSR / Support / Mobile Suit Gundam SEED).\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
@@ -11816,11 +11872,23 @@
     "value": "Ticket required for attempting the Mobile Suit Gundam HATHAWAY The Sorcery of Nymph Circe special stage."
   },
   {
+    "id": 150200260099000114,
+    "value": "A ticket necessary for attempting the Gundam Ace: 25th Anniversary Special Stage."
+  },
+  {
     "id": 150200270001001008,
     "value": "Battle maps that can be set as Home screen backgrounds."
   },
   {
     "id": 150200270001001013,
+    "value": "Battle maps that can be set as Home screen backgrounds."
+  },
+  {
+    "id": 150200270001081007,
+    "value": "Battle maps that can be set as Home screen backgrounds."
+  },
+  {
+    "id": 150200270001081012,
     "value": "Battle maps that can be set as Home screen backgrounds."
   },
   {
@@ -11837,6 +11905,10 @@
   },
   {
     "id": 150200280200100001,
+    "value": "A Home screen animation that you can acquire as a Challenge Main Stage completion reward."
+  },
+  {
+    "id": 150200280208100001,
     "value": "A Home screen animation that you can acquire as a Challenge Main Stage completion reward."
   },
   {

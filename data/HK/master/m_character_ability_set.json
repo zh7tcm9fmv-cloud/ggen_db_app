@@ -3888,6 +3888,38 @@
     "ScheduleId": 2510309902
   },
   {
+    "CharacterId": 1080001601,
+    "SortOrder": 1,
+    "AbilityId": 2001003,
+    "RequiredLevel": 1,
+    "SpAbilityId": 2001003,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1080001601,
+    "SortOrder": 2,
+    "AbilityId": 2001803,
+    "RequiredLevel": 10,
+    "SpAbilityId": 2001803,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1080001601,
+    "SortOrder": 3,
+    "AbilityId": 2026601,
+    "RequiredLevel": 45,
+    "SpAbilityId": 2026601,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1080001601,
+    "SortOrder": 4,
+    "AbilityId": 2000201,
+    "RequiredLevel": 80,
+    "SpAbilityId": 2000201,
+    "ScheduleId": 0
+  },
+  {
     "CharacterId": 1080001900,
     "SortOrder": 1,
     "AbilityId": 2001002,

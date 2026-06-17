@@ -9940,6 +9940,20 @@
     "NpcGroupName": "group03"
   },
   {
+    "MapGroupId": 990000101402000023,
+    "MapNpcId": 990000101402000002,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "hiiro"
+  },
+  {
+    "MapGroupId": 990000101402000023,
+    "MapNpcId": 990000101402000003,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "hiiro"
+  },
+  {
     "MapGroupId": 2200070020200000001,
     "MapNpcId": 22000700202000002,
     "GroupUnitTypeIndex": 3,

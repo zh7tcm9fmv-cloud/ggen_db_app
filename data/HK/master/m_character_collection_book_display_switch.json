@@ -600,6 +600,11 @@
     "CharacterId": 1080001600
   },
   {
+    "CharacterCollectionBookId": 8000008,
+    "DisplayPriority": 1080001601,
+    "CharacterId": 1080001601
+  },
+  {
     "CharacterCollectionBookId": 8000009,
     "DisplayPriority": 1,
     "CharacterId": 1080001900

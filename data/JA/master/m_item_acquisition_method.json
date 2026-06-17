@@ -17820,6 +17820,16 @@
     "TargetId": 10
   },
   {
+    "ItemId": 270001081007,
+    "AcquisitionMethodTypeIndex": 27,
+    "TargetId": 810
+  },
+  {
+    "ItemId": 270001081012,
+    "AcquisitionMethodTypeIndex": 27,
+    "TargetId": 810
+  },
+  {
     "ItemId": 270001300008,
     "AcquisitionMethodTypeIndex": 27,
     "TargetId": 3000
@@ -17833,6 +17843,11 @@
     "ItemId": 280200100001,
     "AcquisitionMethodTypeIndex": 27,
     "TargetId": 10
+  },
+  {
+    "ItemId": 280208100001,
+    "AcquisitionMethodTypeIndex": 27,
+    "TargetId": 810
   },
   {
     "ItemId": 280230000001,

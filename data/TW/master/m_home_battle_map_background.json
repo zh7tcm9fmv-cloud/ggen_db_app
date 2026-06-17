@@ -18,6 +18,24 @@
     "ThumbnailResourceId": "hbm_map_bg_0025_01"
   },
   {
+    "MapId": 1081007,
+    "ReleaseConditionTypeIndex": 1,
+    "TargetId": 270001081007,
+    "ScheduleId": 2606303201,
+    "SortOrder": 8101,
+    "NameLanguageId": 370100000001081007,
+    "ThumbnailResourceId": "hbm_map_bg_0011_02"
+  },
+  {
+    "MapId": 1081012,
+    "ReleaseConditionTypeIndex": 1,
+    "TargetId": 270001081012,
+    "ScheduleId": 2606303202,
+    "SortOrder": 8102,
+    "NameLanguageId": 370100000001081012,
+    "ThumbnailResourceId": "hbm_map_bg_0094_01"
+  },
+  {
     "MapId": 1095017,
     "ReleaseConditionTypeIndex": 0,
     "TargetId": 0,

@@ -15145,6 +15145,26 @@
     "AbilityId": 2001802
   },
   {
+    "MapNpcCharacterAbilitySetId": 29900011001000104,
+    "SortOrder": 1,
+    "AbilityId": 2001802
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29900011001000104,
+    "SortOrder": 2,
+    "AbilityId": 6120001
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29900011001000104,
+    "SortOrder": 3,
+    "AbilityId": 6108206
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29900011001000104,
+    "SortOrder": 4,
+    "AbilityId": 2004703
+  },
+  {
     "MapNpcCharacterAbilitySetId": 29900011001000401,
     "SortOrder": 1,
     "AbilityId": 2001802
@@ -15173,6 +15193,16 @@
     "MapNpcCharacterAbilitySetId": 29900011001001801,
     "SortOrder": 1,
     "AbilityId": 2001802
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29900011001001802,
+    "SortOrder": 1,
+    "AbilityId": 2001802
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29900011001001802,
+    "SortOrder": 2,
+    "AbilityId": 6120501
   },
   {
     "MapNpcCharacterAbilitySetId": 29900011001003301,
@@ -15290,6 +15320,16 @@
     "AbilityId": 6109001
   },
   {
+    "MapNpcCharacterAbilitySetId": 29900011210001501,
+    "SortOrder": 1,
+    "AbilityId": 6120701
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29900011210001601,
+    "SortOrder": 1,
+    "AbilityId": 6120801
+  },
+  {
     "MapNpcCharacterAbilitySetId": 29900011219000101,
     "SortOrder": 1,
     "AbilityId": 2001004
@@ -15308,6 +15348,26 @@
     "MapNpcCharacterAbilitySetId": 29900011219000101,
     "SortOrder": 4,
     "AbilityId": 2000501
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29900011219000102,
+    "SortOrder": 1,
+    "AbilityId": 6120601
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29900011219000102,
+    "SortOrder": 2,
+    "AbilityId": 6102301
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29900011219000103,
+    "SortOrder": 1,
+    "AbilityId": 6120601
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29900011219000103,
+    "SortOrder": 2,
+    "AbilityId": 6102306
   },
   {
     "MapNpcCharacterAbilitySetId": 29900011370001901,

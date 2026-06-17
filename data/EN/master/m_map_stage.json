@@ -5658,6 +5658,12 @@
     "MapId": 1330012
   },
   {
+    "Id": 990000101402000000,
+    "StageId": 99000114,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1300004
+  },
+  {
     "Id": 999900100102000000,
     "StageId": 99990101,
     "StageDifficultyTypeIndex": 1,

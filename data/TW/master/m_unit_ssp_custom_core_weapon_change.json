@@ -1255,9 +1255,19 @@
     "AfterWeaponId": 108000380090
   },
   {
+    "Id": 108000386001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000386090
+  },
+  {
     "Id": 108000390001,
     "BeforeWeaponId": 0,
     "AfterWeaponId": 108000390090
+  },
+  {
+    "Id": 108000396001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 108000396090
   },
   {
     "Id": 108000400001,

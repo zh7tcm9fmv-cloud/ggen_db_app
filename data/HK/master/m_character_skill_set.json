@@ -2080,6 +2080,22 @@
     "ScheduleId": 0
   },
   {
+    "CharacterId": 1080001601,
+    "SortOrder": 1,
+    "CharacterSkillId": 160050101,
+    "RequiredLevel": 1,
+    "SpCharacterSkillId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1080001601,
+    "SortOrder": 2,
+    "CharacterSkillId": 180160301,
+    "RequiredLevel": 30,
+    "SpCharacterSkillId": 0,
+    "ScheduleId": 0
+  },
+  {
     "CharacterId": 1080001900,
     "SortOrder": 1,
     "CharacterSkillId": 240110201,

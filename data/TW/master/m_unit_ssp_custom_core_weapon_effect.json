@@ -2424,6 +2424,18 @@
     "BattlePowerRatingPointRatePercent": 5
   },
   {
+    "Id": 108000386001,
+    "TargetWeaponId": 108000386002,
+    "WeaponTraitId": 320310201,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 108000386003,
+    "TargetWeaponId": 108000386090,
+    "WeaponTraitId": 320310301,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
     "Id": 108000390001,
     "TargetWeaponId": 108000390002,
     "WeaponTraitId": 320030501,
@@ -2433,6 +2445,12 @@
     "Id": 108000390003,
     "TargetWeaponId": 108000390090,
     "WeaponTraitId": 320090501,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 108000396003,
+    "TargetWeaponId": 108000396090,
+    "WeaponTraitId": 320310301,
     "BattlePowerRatingPointRatePercent": 5
   },
   {

@@ -14,6 +14,13 @@
     "ForcedDisplayScheduleId": 2604303204
   },
   {
+    "ItemId": 280208100001,
+    "MovieResourceId": "sha_a_280208100001",
+    "ThumbnailResourceId": "sha_i_280208100001",
+    "SortOrder": 8101,
+    "ForcedDisplayScheduleId": 2606303202
+  },
+  {
     "ItemId": 280230000001,
     "MovieResourceId": "sha_a_280230000001",
     "ThumbnailResourceId": "sha_i_280230000001",

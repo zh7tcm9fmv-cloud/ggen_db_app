@@ -7936,6 +7936,54 @@
     "TargetValue4": 0
   },
   {
+    "Id": 310008100101,
+    "GameEventConditionTypeIndex": 276,
+    "TargetValue1": 8101601,
+    "TargetValue2": 1003,
+    "TargetValue3": 1,
+    "TargetValue4": 0
+  },
+  {
+    "Id": 310008100201,
+    "GameEventConditionTypeIndex": 276,
+    "TargetValue1": 8101601,
+    "TargetValue2": 1017,
+    "TargetValue3": 1,
+    "TargetValue4": 0
+  },
+  {
+    "Id": 310008100301,
+    "GameEventConditionTypeIndex": 276,
+    "TargetValue1": 8101701,
+    "TargetValue2": 1016,
+    "TargetValue3": 1,
+    "TargetValue4": 0
+  },
+  {
+    "Id": 310008100401,
+    "GameEventConditionTypeIndex": 273,
+    "TargetValue1": 8101701,
+    "TargetValue2": 3,
+    "TargetValue3": 1,
+    "TargetValue4": 0
+  },
+  {
+    "Id": 310008100501,
+    "GameEventConditionTypeIndex": 276,
+    "TargetValue1": 8101801,
+    "TargetValue2": 1011,
+    "TargetValue3": 1,
+    "TargetValue4": 0
+  },
+  {
+    "Id": 310008100601,
+    "GameEventConditionTypeIndex": 276,
+    "TargetValue1": 8101801,
+    "TargetValue2": 1119,
+    "TargetValue3": 1,
+    "TargetValue4": 0
+  },
+  {
     "Id": 1100100010101,
     "GameEventConditionTypeIndex": 216,
     "TargetValue1": 10,

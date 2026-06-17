@@ -6,5 +6,9 @@
   {
     "id": 310100000000220004,
     "value": "Get <material=MaterialName>2000 Diamonds</material>!\n<size=70%>Stage ticket promo codes\ncan be obtained at theaters.</size>"
+  },
+  {
+    "id": 310100000000220010,
+    "value": "25th Anniversary Special Stage!\nClear the stage to earn a <material=MaterialName>special title</material>!"
   }
 ]
