@@ -284,6 +284,10 @@
   z-index: 3;
   padding: 10px min(11%, 92px) 12px;
   gap: 8px;
+  align-items: stretch;
+}
+.ml-boost-card:not(.ml-boost-card--portraits) .ml-boost-inner {
+  align-items: stretch;
 }
 .ml-boost-card.ml-boost-card--spark-bg.ml-boost-card--portraits {
   background: #0a0610;
@@ -327,8 +331,22 @@
   font-weight: 800;
   color: #fff;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
-  margin: 2px 0 0;
+  margin: 0;
   letter-spacing: 0.03em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.ml-boost-tag-section {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px 12px;
+  width: 100%;
+  max-width: min(520px, 100%);
+  align-self: stretch;
+  margin-top: 4px;
 }
 .ml-boost-pct {
   font-size: clamp(15px, 2.35vw, 18px);
@@ -337,16 +355,21 @@
   letter-spacing: 0.03em;
   margin-top: 6px;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+  align-self: stretch;
+  max-width: min(520px, 100%);
+  text-align: left;
 }
 .ml-boost-tags {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 10px 14px;
-  width: min(520px, 100%);
-  margin-top: 8px;
+  width: auto;
+  flex: 1 1 auto;
+  min-width: 0;
+  margin-top: 0;
 }
 .ml-boost-tags .tag-composite {
   flex-shrink: 0;
