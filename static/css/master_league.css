@@ -145,26 +145,33 @@
   z-index: 0;
 }
 .ml-boost-card--spark-bg {
-  background: #120810;
+  background: #0a0610;
+}
+.ml-boost-spark-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  pointer-events: none;
+  z-index: 0;
 }
 .ml-boost-card--spark-bg::before {
-  opacity: 1;
-  filter: none;
-  background-size: cover;
-  background-position: center top;
+  display: none;
 }
 .ml-boost-card--spark-bg::after {
   background:
-    linear-gradient(180deg, rgba(8, 6, 14, 0.42) 0%, rgba(8, 6, 14, 0.12) 42%, rgba(8, 6, 14, 0.38) 100%),
-    linear-gradient(90deg, rgba(8, 6, 14, 0.55) 0%, rgba(8, 6, 14, 0.08) 20%, rgba(8, 6, 14, 0.08) 80%, rgba(8, 6, 14, 0.55) 100%);
+    linear-gradient(180deg, rgba(8, 6, 14, 0.38) 0%, rgba(8, 6, 14, 0.1) 42%, rgba(8, 6, 14, 0.34) 100%),
+    linear-gradient(90deg, rgba(8, 6, 14, 0.48) 0%, rgba(8, 6, 14, 0.06) 20%, rgba(8, 6, 14, 0.06) 80%, rgba(8, 6, 14, 0.48) 100%);
 }
-.ml-boost-card--spark-bg.ml-boost-card--portraits::before {
-  opacity: 0.96;
+.ml-boost-card--spark-bg.ml-boost-card--portraits {
+  background: #0a0610;
 }
 .ml-boost-card--spark-bg.ml-boost-card--portraits::after {
   background:
-    radial-gradient(ellipse 46% 72% at 50% 44%, rgba(8, 6, 14, 0.72) 0%, rgba(8, 6, 14, 0.38) 42%, transparent 72%),
-    linear-gradient(90deg, rgba(8, 6, 14, 0.45) 0%, rgba(8, 6, 14, 0.04) 18%, transparent 50%, rgba(8, 6, 14, 0.04) 82%, rgba(8, 6, 14, 0.45) 100%);
+    radial-gradient(ellipse 46% 72% at 50% 44%, rgba(8, 6, 14, 0.62) 0%, rgba(8, 6, 14, 0.28) 42%, transparent 72%),
+    linear-gradient(90deg, rgba(8, 6, 14, 0.38) 0%, rgba(8, 6, 14, 0.03) 18%, transparent 50%, rgba(8, 6, 14, 0.03) 82%, rgba(8, 6, 14, 0.38) 100%);
 }
 .ml-boost-card::after {
   content: '';
@@ -179,7 +186,7 @@
 .ml-boost-portraits {
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: 1;
   pointer-events: none;
   overflow: hidden;
 }
@@ -278,6 +285,17 @@
   padding: 10px min(11%, 92px) 12px;
   gap: 8px;
 }
+.ml-boost-card.ml-boost-card--spark-bg.ml-boost-card--portraits {
+  background: #0a0610;
+}
+.ml-boost-card.ml-boost-card--spark-bg.ml-boost-card--portraits::before {
+  display: none;
+}
+.ml-boost-card.ml-boost-card--spark-bg.ml-boost-card--portraits::after {
+  background:
+    radial-gradient(ellipse 46% 72% at 50% 44%, rgba(8, 6, 14, 0.62) 0%, rgba(8, 6, 14, 0.28) 42%, transparent 72%),
+    linear-gradient(90deg, rgba(8, 6, 14, 0.38) 0%, rgba(8, 6, 14, 0.03) 18%, transparent 50%, rgba(8, 6, 14, 0.03) 82%, rgba(8, 6, 14, 0.38) 100%);
+}
 .ml-boost-stage-row {
   display: flex;
   align-items: center;
@@ -305,18 +323,19 @@
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.75));
 }
 .ml-boost-heading {
-  font-size: clamp(18px, 2.6vw, 24px);
-  font-weight: 900;
+  font-size: clamp(12px, 1.75vw, 15px);
+  font-weight: 800;
   color: #fff;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
   margin: 2px 0 0;
+  letter-spacing: 0.03em;
 }
 .ml-boost-pct {
-  font-size: 13px;
-  font-weight: 800;
+  font-size: clamp(15px, 2.35vw, 18px);
+  font-weight: 900;
   color: #fff;
-  letter-spacing: 0.04em;
-  margin-top: 4px;
+  letter-spacing: 0.03em;
+  margin-top: 6px;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
 }
 .ml-boost-tags {
@@ -325,12 +344,28 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 8px 12px;
+  gap: 10px 14px;
   width: min(520px, 100%);
   margin-top: 8px;
 }
 .ml-boost-tags .tag-composite {
   flex-shrink: 0;
+  height: 34px;
+  filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.65));
+}
+.ml-boost-tags .tag-part-icon {
+  width: 34px;
+  height: 34px;
+}
+.ml-boost-tags .tag-icon-fg {
+  width: 20px;
+  height: 20px;
+}
+.ml-boost-tags .tag-part-value {
+  height: 34px;
+  font-size: 15px;
+  padding: 0 12px;
+  color: #eef4ff;
 }
 
 /* Info panels */
