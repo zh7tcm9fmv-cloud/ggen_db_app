@@ -8473,7 +8473,37 @@ def build_unit_transform_partner_map():
     return partner
 
 
+def build_unit_transform_family_map():
+    """Map each main unit id to itself plus all in-game transform alternates (e.g. MS ↔ MA)."""
+    alt_by_main = {}
+    for u, row in unit_info_map.items():
+        mid = normalize_id(row.get('main_unit_id', u))
+        if mid == '0':
+            mid = u
+        if u != mid and _unit_qualifies_as_transform_partner(u):
+            alt_by_main.setdefault(mid, []).append(u)
+    families = {}
+    for mid, alts in alt_by_main.items():
+        families[mid] = [mid] + alts
+    for u, row in unit_info_map.items():
+        mid = normalize_id(row.get('main_unit_id', u))
+        if mid == '0':
+            mid = u
+        if u == mid:
+            families.setdefault(mid, [mid])
+    return families
+
+
 unit_transform_partner_map = build_unit_transform_partner_map()
+unit_transform_family_map = build_unit_transform_family_map()
+
+
+def _unit_ids_for_terrain_filter(uid, info):
+    """Main unit row plus transform alternates when evaluating terrain browse filters."""
+    mid = normalize_id(info.get('main_unit_id', uid))
+    if mid == '0':
+        mid = uid
+    return unit_transform_family_map.get(mid, [uid])
 
 
 def _precompute_sdc_data():
@@ -14605,24 +14635,120 @@ def _unit_terrain_levels_for_mode(uid, info, stat_mode='normal'):
     return levels
 
 
-def unit_matches_terrain_filter(uid, info, want_filter, stat_mode='normal', combine='and'):
+def _unit_terrain_filter_item_match(levels, item):
+    if len(item) == 3:
+        name, lv, ge = item
+    else:
+        name, lv = item
+        ge = False
+    got = _terrain_tier_norm(levels.get(name, 1))
+    req = _terrain_tier_norm(lv)
+    if ge:
+        return got >= req
+    return got == req
+
+
+def _unit_terrain_filter_match_count(uid, info, want_filter, stat_mode='normal'):
+    if not want_filter:
+        return 0
+    levels = _unit_terrain_levels_for_mode(uid, info, stat_mode)
+    return sum(1 for item in want_filter if _unit_terrain_filter_item_match(levels, item))
+
+
+def _unit_form_matches_terrain_filter(uid, info, want_filter, stat_mode='normal', combine='and'):
     if want_filter is None:
         return True
     levels = _unit_terrain_levels_for_mode(uid, info, stat_mode)
 
     def _item_ok(item):
-        if len(item) == 3:
-            name, lv, ge = item
-        else:
-            name, lv = item
-            ge = False
-        got = _terrain_tier_norm(levels.get(name, 1))
-        req = _terrain_tier_norm(lv)
-        if ge:
-            return got >= req
-        return got == req
+        return _unit_terrain_filter_item_match(levels, item)
 
     return apply_browse_combine_match(want_filter, _item_ok, combine)
+
+
+def unit_matches_terrain_filter(uid, info, want_filter, stat_mode='normal', combine='and'):
+    if want_filter is None:
+        return True
+    for fid in _unit_ids_for_terrain_filter(uid, info):
+        finfo = unit_info_map.get(fid)
+        if finfo and _unit_form_matches_terrain_filter(fid, finfo, want_filter, stat_mode, combine):
+            return True
+    return False
+
+
+def _unit_terrain_filter_display_id(uid, info, want_filter, stat_mode='normal', combine='and'):
+    """Browse list thumb/name: prefer the transform alternate when it alone satisfies the terrain filter."""
+    if not want_filter:
+        return uid
+    if _unit_form_matches_terrain_filter(uid, info, want_filter, stat_mode, combine):
+        return uid
+    best_id = uid
+    best_count = -1
+    for fid in _unit_ids_for_terrain_filter(uid, info):
+        finfo = unit_info_map.get(fid)
+        if not finfo:
+            continue
+        if _unit_form_matches_terrain_filter(fid, finfo, want_filter, stat_mode, combine):
+            return fid
+        cnt = _unit_terrain_filter_match_count(fid, finfo, want_filter, stat_mode)
+        if cnt > best_count:
+            best_count = cnt
+            best_id = fid
+    return best_id
+
+
+def _unit_browse_list_stats_for_display(display_uid, stat_mode, cond_list):
+    ue = UNIT_BROWSE_LIST_ROW_CACHE.get(display_uid)
+    if not ue:
+        return {'Attack': 0, 'Defense': 0, 'Mobility': 0, 'HP': 0, 'EN': 0, 'Move': 0}
+    if stat_mode == 'normal' and not cond_list:
+        return ue['nc']
+    lb = ue['lb']
+    sm = stat_mode if stat_mode != 'normal' else 'normal'
+    return _unit_lb_row_to_api(lb, sm, cond_list) if lb else ue['nc']
+
+
+def _unit_browse_list_row_apply_display_form(urow, display_uid, ld, lc, stat_mode, cond_list):
+    if normalize_id(display_uid) == normalize_id(urow.get('id')):
+        return urow
+    dinfo = unit_info_map.get(normalize_id(display_uid))
+    if not dinfo:
+        return urow
+    dlid = ld['unit_id_map'].get(display_uid, '')
+    dname = ld['unit_text_map'].get(dlid, '') if dlid else ''
+    if not dname:
+        dname = f'Unknown ({display_uid})'
+    dri = dinfo.get('rarity', '1')
+    drole_id = dinfo.get('role', '0')
+    acq = str(dinfo.get('acquisition_route', '0'))
+    ai = ACQUISITION_ROUTE_ICONS.get(acq, '')
+    si = [ai] if ai else []
+    thum = find_list_thumb(dinfo.get('resource_ids', []), display_uid, 'images/unit_portraits')
+    fs = _unit_browse_list_stats_for_display(display_uid, stat_mode, cond_list)
+    urow.update({
+        'id': display_uid,
+        'name': dname,
+        'role': resolve_role_label(drole_id, lc),
+        'role_id': drole_id,
+        'role_sort': ROLE_SORT.get(drole_id, 3),
+        'role_icon': ROLE_ICON_MAP.get(drole_id, ''),
+        'rarity': RARITY_MAP.get(dri, 'N'),
+        'rarity_id': dri,
+        'rarity_sort': RARITY_SORT.get(dri, 4),
+        'rarity_icon': RARITY_ICON_MAP.get(dri, ''),
+        'special_icons': si,
+        'thum': thum or '',
+        'acquisition_icon': ai or '',
+        'is_ultimate': bool(dinfo.get('is_ultimate', False)),
+        'is_limited_time': display_uid in LIMITED_TIME_UNIT_IDS,
+        'ATK': fs.get('Attack', fs.get('ATK', 0)),
+        'DEF': fs.get('Defense', fs.get('DEF', 0)),
+        'MOB': fs.get('Mobility', fs.get('MOB', 0)),
+        'HP': fs.get('HP', 0),
+        'EN': fs.get('EN', 0),
+        'MOV': fs.get('Move', fs.get('MOV', 0)),
+    })
+    return urow
 
 
 def unit_passes_browse_pool_filters(
@@ -15769,6 +15895,9 @@ def list_units():
         if ai: si.append(ai)
         thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
         urow = {'id': uid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'series': ser_list, 'is_ultimate': bool(info.get('is_ultimate', False)), 'is_limited_time': uid in LIMITED_TIME_UNIT_IDS, 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))}
+        if terrain_filter is not None and not id_seek:
+            display_uid = _unit_terrain_filter_display_id(uid, info, terrain_filter, stat_mode, _cbu['terrain_combine'])
+            _unit_browse_list_row_apply_display_form(urow, display_uid, ld, lc, stat_mode, cond_list)
         _rec_brief = unit_list_recommend_character_brief(uid, info, ld, lc)
         if _rec_brief:
             urow['recommend_character'] = _rec_brief
