@@ -144,6 +144,28 @@
   pointer-events: none;
   z-index: 0;
 }
+.ml-boost-card--spark-bg {
+  background: #120810;
+}
+.ml-boost-card--spark-bg::before {
+  opacity: 1;
+  filter: none;
+  background-size: cover;
+  background-position: center top;
+}
+.ml-boost-card--spark-bg::after {
+  background:
+    linear-gradient(180deg, rgba(8, 6, 14, 0.42) 0%, rgba(8, 6, 14, 0.12) 42%, rgba(8, 6, 14, 0.38) 100%),
+    linear-gradient(90deg, rgba(8, 6, 14, 0.55) 0%, rgba(8, 6, 14, 0.08) 20%, rgba(8, 6, 14, 0.08) 80%, rgba(8, 6, 14, 0.55) 100%);
+}
+.ml-boost-card--spark-bg.ml-boost-card--portraits::before {
+  opacity: 0.96;
+}
+.ml-boost-card--spark-bg.ml-boost-card--portraits::after {
+  background:
+    radial-gradient(ellipse 46% 72% at 50% 44%, rgba(8, 6, 14, 0.72) 0%, rgba(8, 6, 14, 0.38) 42%, transparent 72%),
+    linear-gradient(90deg, rgba(8, 6, 14, 0.45) 0%, rgba(8, 6, 14, 0.04) 18%, transparent 50%, rgba(8, 6, 14, 0.04) 82%, rgba(8, 6, 14, 0.45) 100%);
+}
 .ml-boost-card::after {
   content: '';
   position: absolute;
@@ -283,42 +305,29 @@
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.75));
 }
 .ml-boost-heading {
-  font-size: clamp(20px, 3vw, 28px);
+  font-size: clamp(18px, 2.6vw, 24px);
   font-weight: 900;
   color: #fff;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
-  margin: 2px 0 4px;
+  margin: 2px 0 0;
 }
 .ml-boost-pct {
   font-size: 13px;
   font-weight: 800;
   color: #fff;
-  letter-spacing: 0.06em;
-  margin-top: -4px;
+  letter-spacing: 0.04em;
+  margin-top: 4px;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
 }
 .ml-boost-tags {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  width: min(520px, 100%);
-  margin-top: 4px;
-}
-.ml-boost-tag-line {
-  display: flex;
-  align-items: center;
+  flex-direction: row;
   flex-wrap: wrap;
-  gap: 8px;
+  align-items: center;
   justify-content: center;
-  width: 100%;
-}
-.ml-boost-tag-prefix {
-  font-size: clamp(14px, 2vw, 16px);
-  font-weight: 800;
-  color: #fff;
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
-  white-space: nowrap;
+  gap: 8px 12px;
+  width: min(520px, 100%);
+  margin-top: 8px;
 }
 .ml-boost-tags .tag-composite {
   flex-shrink: 0;

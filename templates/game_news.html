@@ -140,13 +140,6 @@ body{font-family:'ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,'Segoe UI',s
   .nav-tabs::-webkit-scrollbar{display:none}
   .nav-tab{padding:12px 16px;font-size:15px;flex-shrink:0;min-height:44px}
   .main-content{padding:16px 12px 28px;max-width:100%;min-width:0;box-sizing:border-box}
-  .game-news-main{padding-top:6px;padding-bottom:10px}
-  .game-news-stage{min-height:0;flex:1 1 auto}
-  .game-news-stage-inner{padding:8px 10px 10px;min-height:0;flex:1 1 auto}
-  .game-news-toolbar{margin-bottom:6px;gap:6px}
-  .game-news-toolbar h1{font-size:1.1rem}
-  .game-news-frame-wrap{flex:1 1 auto;min-height:0}
-  .game-news-frame-wrap iframe{min-height:calc(100dvh - 148px);height:calc(100dvh - 148px);max-height:none}
   .game-news-toolbar{flex-direction:column;align-items:flex-start}
 }
 @media(max-width:480px){
@@ -161,7 +154,7 @@ body{font-family:'ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,'Segoe UI',s
 }
 </style>
 </head>
-<body>
+<body class="game-news-page">
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJB85F92"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -184,7 +177,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <h1 id="gameNewsPageTitle">Game News</h1>
 </div>
 <div class="game-news-frame-wrap">
-<iframe id="gameNewsFrame" title="SD Gundam G Generation ETERNAL — update information" src="about:blank" referrerpolicy="no-referrer-when-downgrade"></iframe>
+<iframe id="gameNewsFrame" title="SD Gundam G Generation ETERNAL — update information" src="about:blank" referrerpolicy="no-referrer-when-downgrade" scrolling="yes"></iframe>
 </div>
 </div>
 </div>

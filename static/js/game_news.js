@@ -101,6 +101,37 @@ function releaseBackgroundScrollLock() {
   if (_scrollLock === 0) document.documentElement.classList.remove('page-scroll-lock');
 }
 
+function syncGameNewsMobileFrameHeight() {
+  const wrap = document.querySelector('.game-news-frame-wrap');
+  const ifr = document.getElementById('gameNewsFrame');
+  if (!wrap || !ifr) return;
+  if (window.matchMedia('(min-width: 769px)').matches) {
+    wrap.style.height = '';
+    wrap.style.minHeight = '';
+    ifr.style.height = '';
+    ifr.style.minHeight = '';
+    return;
+  }
+  const top = wrap.getBoundingClientRect().top;
+  const root = getComputedStyle(document.documentElement);
+  const safeBottom = parseFloat(root.getPropertyValue('--safe-bottom')) || 0;
+  const vh = window.visualViewport?.height || window.innerHeight;
+  const h = Math.max(320, Math.floor(vh - top - safeBottom - 8));
+  wrap.style.height = `${h}px`;
+  wrap.style.minHeight = `${h}px`;
+  ifr.style.height = '100%';
+  ifr.style.minHeight = '100%';
+}
+
+function initGameNewsMobileFrameLayout() {
+  if (S._gameNewsFrameLayoutInit) return;
+  S._gameNewsFrameLayoutInit = true;
+  const onSync = () => syncGameNewsMobileFrameHeight();
+  window.addEventListener('resize', onSync);
+  window.addEventListener('orientationchange', () => setTimeout(onSync, 120));
+  if (window.visualViewport) window.visualViewport.addEventListener('resize', onSync);
+}
+
 async function ensureJpModeUnlockedForSwitch(l) {
   const lc = (l || '').toUpperCase();
   if (lc !== 'JP' && lc !== 'JA') return true;
@@ -177,6 +208,7 @@ function applyGameNewsUi() {
   if (mq) mq.setAttribute('alt', am.hint);
   const mcb = document.getElementById('alipayhkModalCloseBtn');
   if (mcb) mcb.setAttribute('aria-label', u.close);
+  requestAnimationFrame(syncGameNewsMobileFrameHeight);
 }
 
 function renderLangDD() {
@@ -269,7 +301,10 @@ window.addEventListener('storage', (e) => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  loadLangs();
+  initGameNewsMobileFrameLayout();
+  loadLangs().then(() => {
+    syncGameNewsMobileFrameHeight();
+  });
 });
 
 window.toggleLangDropdown = toggleLangDropdown;
