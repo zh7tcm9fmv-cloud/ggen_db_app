@@ -5434,6 +5434,25 @@ def create_unit_specialize_material_target_map(d):
         }
     return lookup
 
+def create_limit_break_item_unit_map(m):
+    """LimitBreakItemId → unit Id (prefer canonical MainUnitId row when variants share an item)."""
+    candidates = {}
+    for item in extract_data_list(m):
+        if not isinstance(item, dict):
+            continue
+        lbid = normalize_id(item.get('LimitBreakItemId') or item.get('limitBreakItemId'))
+        uid = normalize_id(item.get('Id') or item.get('id'))
+        if lbid == '0' or uid == '0':
+            continue
+        main_uid = normalize_id(item.get('MainUnitId') or item.get('mainUnitId') or uid)
+        if main_uid == '0':
+            main_uid = uid
+        is_canonical = uid == main_uid
+        prev = candidates.get(lbid)
+        if not prev or (is_canonical and not prev[1]):
+            candidates[lbid] = (uid, is_canonical)
+    return {k: v[0] for k, v in candidates.items()}
+
 def create_profile_title_info_map(d):
     lookup = {}
     for item in extract_data_list(d):
@@ -7770,6 +7789,7 @@ unit_skill_info_map = create_unit_skill_info_map(unit_skill_master_data) if unit
 unit_skill_set_lookup = create_unit_skill_set_lookup(unit_skill_set_content_data) if unit_skill_set_content_data else {}
 unit_skill_trait_by_skill = create_unit_skill_trait_by_skill_lookup(unit_skill_trait_master_data) if unit_skill_trait_master_data else {}
 unit_info_map = create_unit_info_map(unit_master_data); unit_stat_map = create_unit_status_map(unit_status_data)
+limit_break_item_unit_map = create_limit_break_item_unit_map(unit_master_data) if unit_master_data else {}
 LIMITED_TIME_UNIT_IDS = frozenset({
     '1150000150', '1095002550', '1200003950', '1330000750', '1114000150', '1501002250', '1430003450',
     '1080000150', '1085000450', '1330000150', '1339000150', '1400000550', '1230003850', '1125001450', '1125001150',
@@ -9910,6 +9930,13 @@ def _resolve_unit_thumb_for_specialize_material_item(item_id):
     uinfo = (unit_info_map or {}).get(uid, {})
     return find_list_thumb(uinfo.get('resource_ids', []), uid, 'images/unit_portraits') or ''
 
+def _resolve_unit_thumb_for_limit_break_material_item(item_id):
+    uid = (limit_break_item_unit_map or {}).get(normalize_id(item_id), '')
+    if not uid:
+        return ''
+    uinfo = (unit_info_map or {}).get(uid, {})
+    return find_list_thumb(uinfo.get('resource_ids', []), uid, 'images/unit_portraits') or ''
+
 
 def _game_item_icon_url(resource_id):
     """Item icon — exchange medals on Master League CDN; regular items on Item CDN."""
@@ -10048,15 +10075,20 @@ def _decorate_reward_rows(rows, lc):
                 lb_unit_name = _extract_limit_break_unit_name(reward_name)
                 if lb_unit_name:
                     lb_thumb = _find_unit_thumb_by_display_name(lb_unit_name, lc, iri)
+                if not lb_thumb:
+                    lb_thumb = _resolve_unit_thumb_for_limit_break_material_item(tid)
                 if lb_thumb:
                     lb_use_limit_overlay = True
-            elif not reward_icon:
-                sp_unit = _resolve_unit_thumb_for_specialize_material_item(tid)
-                if sp_unit:
-                    sp_chip_base = _SP_CHIP_SSR_BASE
-                    sp_chip_frame = _SP_CHIP_FRAME
-                    sp_chip_unit = sp_unit
-            lb_frames = _LB_FRAME_BY_RARITY.get(iri) if lb_thumb else None
+            sp_unit = _resolve_unit_thumb_for_specialize_material_item(tid)
+            if sp_unit:
+                sp_chip_base = _SP_CHIP_SSR_BASE
+                sp_chip_frame = _SP_CHIP_FRAME
+                sp_chip_unit = sp_unit
+            if lb_thumb:
+                if lb_use_limit_overlay:
+                    lb_frames = {'base': _SP_CHIP_SSR_BASE, 'bottom_frame': ''}
+                else:
+                    lb_frames = _LB_FRAME_BY_RARITY.get(iri)
         else:
             reward_name = f"Reward {rid}"
         out.append({
