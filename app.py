@@ -5420,6 +5420,20 @@ def create_item_info_map(d):
         }
     return lookup
 
+def create_unit_specialize_material_target_map(d):
+    lookup = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        iid = normalize_id(item.get('ItemId') or item.get('itemId'))
+        if iid == '0':
+            continue
+        lookup[iid] = {
+            'target_type_index': normalize_id(item.get('TargetTypeIndex') or item.get('targetTypeIndex')),
+            'target_id': normalize_id(item.get('TargetId') or item.get('targetId')),
+        }
+    return lookup
+
 def create_profile_title_info_map(d):
     lookup = {}
     for item in extract_data_list(d):
@@ -7478,6 +7492,7 @@ tower_event_stage_data = load_json(os.path.join(BASE_DIR, "m_tower_event_stage.j
 tower_event_stage_appeal_reward_data = load_json(os.path.join(BASE_DIR, "m_tower_event_stage_appeal_reward.json"))
 reward_data = load_json(os.path.join(BASE_DIR, "m_reward.json"))
 item_data = load_json(os.path.join(BASE_DIR, "m_item.json"))
+unit_specialize_material_target_data = load_json(os.path.join(BASE_DIR, "m_unit_specialize_material_target.json"))
 stage_master_data = load_json(os.path.join(BASE_DIR, "m_stage.json"))
 stage_drop_data = load_json(os.path.join(BASE_DIR, "m_stage_drop.json"))
 stage_drop_content_data = load_json(os.path.join(BASE_DIR, "m_stage_drop_content.json"))
@@ -7611,6 +7626,10 @@ tower_event_stage_group_map = create_tower_event_stage_group_map(tower_event_sta
 tower_event_stage_map = create_tower_event_stage_map(tower_event_stage_data) if tower_event_stage_data else {}
 reward_map = create_reward_map(reward_data) if reward_data else {}
 item_info_map = create_item_info_map(item_data) if item_data else {}
+unit_specialize_material_target_map = (
+    create_unit_specialize_material_target_map(unit_specialize_material_target_data)
+    if unit_specialize_material_target_data else {}
+)
 profile_title_info_map = create_profile_title_info_map(profile_title_data) if profile_title_data else {}
 reward_set_rewards_map = {}
 for _rid, _rrow in (reward_map or {}).items():
@@ -9850,18 +9869,44 @@ def _game_images_webp_path(folder_key, filename):
     return f'/static/images/{folder_key}/{fname}'
 
 
+# Unit-target SP conversion chips with blank master ResourceId (runtime-composite in-game).
+_UNIT_SPECIALIZE_MATERIAL_SPM = {
+    '241080003860': 'spm_0026',  # Psycho Gundam SP Conversion Chip
+}
+
+
 def _resolve_item_icon_resource_id(item_id, item_row=None):
-    """Item icon ResourceId — some series SP chips ship with blank ResourceId in master."""
+    """Item icon ResourceId — some series/unit SP chips ship with blank ResourceId in master."""
     row = item_row if isinstance(item_row, dict) else (item_info_map or {}).get(normalize_id(item_id), {})
     rid = str((row or {}).get('resource_id') or '').strip()
     if rid:
         return rid
     iid = normalize_id(item_id)
+    rid = _UNIT_SPECIALIZE_MATERIAL_SPM.get(iid, '')
+    if rid:
+        return rid
     m = re.match(r'^24000001(\d+)$', iid)
     if not m:
         return ''
     badge = (item_info_map or {}).get(f'25000001{m.group(1)}', {})
     return str((badge or {}).get('resource_id') or '').strip()
+
+def _resolve_unit_id_for_specialize_material_item(item_id):
+    """Unit-target SP chips (blank ResourceId) resolve icons via m_unit_specialize_material_target."""
+    info = (unit_specialize_material_target_map or {}).get(normalize_id(item_id), {})
+    if not info:
+        return ''
+    if normalize_id(info.get('target_type_index')) != '1':
+        return ''
+    uid = normalize_id(info.get('target_id'))
+    return uid if uid != '0' else ''
+
+def _resolve_unit_thumb_for_specialize_material_item(item_id):
+    uid = _resolve_unit_id_for_specialize_material_item(item_id)
+    if not uid:
+        return ''
+    uinfo = (unit_info_map or {}).get(uid, {})
+    return find_list_thumb(uinfo.get('resource_ids', []), uid, 'images/unit_portraits') or ''
 
 
 def _game_item_icon_url(resource_id):
@@ -9944,6 +9989,7 @@ def _decorate_reward_rows(rows, lc):
         reward_desc = ''
         lb_thumb = ''
         lb_frames = None
+        lb_use_limit_overlay = False
         cri = crole = cacq = ori = uri = urole = uacq = ''
         if rt == '10':
             reward_name = get_ui_label(lc, 'reward_diamonds')
@@ -9993,11 +10039,14 @@ def _decorate_reward_rows(rows, lc):
             rid_item = _resolve_item_icon_resource_id(tid, item)
             if rid_item:
                 reward_icon = _game_item_icon_url(rid_item)
-            lb_thumb = ''
             if _is_limit_break_material_item_name(reward_name):
                 lb_unit_name = _extract_limit_break_unit_name(reward_name)
                 if lb_unit_name:
                     lb_thumb = _find_unit_thumb_by_display_name(lb_unit_name, lc, iri)
+                if lb_thumb:
+                    lb_use_limit_overlay = True
+            elif not reward_icon:
+                lb_thumb = _resolve_unit_thumb_for_specialize_material_item(tid)
             lb_frames = _LB_FRAME_BY_RARITY.get(iri) if lb_thumb else None
         else:
             reward_name = f"Reward {rid}"
@@ -10017,7 +10066,7 @@ def _decorate_reward_rows(rows, lc):
             'role_icon': (ROLE_ICON_MAP.get(crole, '') if rt == '2' else (ROLE_ICON_MAP.get(urole, '') if rt == '3' else '')),
             'acquisition_icon': (ACQUISITION_ROUTE_ICONS.get(cacq, '') if rt == '2' else (ACQUISITION_ROUTE_ICONS.get(uacq, '') if rt == '3' else '')),
             'lb_thumb_base': (lb_frames.get('base', '') if rt not in ('2', '3', '8', '30') and lb_frames else ''),
-            'lb_thumb_limit_frame': ('/static/images/UI/UI_Common_Limit_Break_Frame.webp' if rt not in ('2', '3', '8', '30') and lb_frames else ''),
+            'lb_thumb_limit_frame': ('/static/images/UI/UI_Common_Limit_Break_Frame.webp' if rt not in ('2', '3', '8', '30') and lb_frames and lb_use_limit_overlay else ''),
             'lb_thumb_bottom_frame': (lb_frames.get('bottom_frame', '') if rt not in ('2', '3', '8', '30') and lb_frames else ''),
             'lb_thumb_unit': (lb_thumb if rt not in ('2', '3', '8', '30') else ''),
         })
