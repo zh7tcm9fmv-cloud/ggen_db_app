@@ -17344,7 +17344,7 @@ def _ml_resolve_buff_target_name(target_type, target_id, lineage_lookup, series_
 def api_master_league():
     """Master League seasons: boosts, terrain, ranks, schedules, scoring config."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'master_league_v16_{lc}'
+    ck = f'master_league_v17_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
@@ -17482,7 +17482,6 @@ def api_master_league():
 
     now_ms = int(datetime.now(timezone.utc).timestamp() * 1000)
     seasons = []
-    active_event_id = None
 
     for lx in extract_data_list(m_league_event):
         if not isinstance(lx, dict):
@@ -17505,8 +17504,6 @@ def api_master_league():
         status = 'ended'
         if start_ms and end_ms and start_ms <= now_ms < end_ms:
             status = 'active'
-            if active_event_id is None:
-                active_event_id = event_id
         elif start_ms and now_ms < start_ms:
             status = 'upcoming'
 
@@ -17601,6 +17598,7 @@ def api_master_league():
         })
 
     seasons.sort(key=lambda s: safe_int(s.get('season_number'), 0))
+    active_event_id = seasons[-1]['event_id'] if seasons else None
 
     ingame_cfg = {}
     for row in extract_data_list(m_ingame):
@@ -17633,14 +17631,6 @@ def api_master_league():
             'bonus_value': safe_int(row.get('BonusValue'), 0),
         })
     rank_bonuses.sort(key=lambda x: x['rank_type_index'])
-
-    if active_event_id is None and seasons:
-        for s in reversed(seasons):
-            if s.get('status') == 'upcoming':
-                active_event_id = s['event_id']
-                break
-        if active_event_id is None:
-            active_event_id = seasons[-1]['event_id']
 
     out = {
         'lang': lc,
