@@ -9893,7 +9893,6 @@ def _game_images_webp_path(folder_key, filename):
 _UNIT_SPECIALIZE_MATERIAL_SPM = {
     '241080003860': 'spm_0026',  # Psycho Gundam SP Conversion Chip (baked fallback)
 }
-_SP_CHIP_SSR_BASE = '/static/images/UI/UI_Common_Tmb_Square_SSR_Base.webp'
 _SP_CHIP_FRAME = '/static/images/UI/UI_Common_Sp_Frame.webp'
 
 
@@ -10081,12 +10080,11 @@ def _decorate_reward_rows(rows, lc):
                     lb_use_limit_overlay = True
             sp_unit = _resolve_unit_thumb_for_specialize_material_item(tid)
             if sp_unit:
-                sp_chip_base = _SP_CHIP_SSR_BASE
                 sp_chip_frame = _SP_CHIP_FRAME
                 sp_chip_unit = sp_unit
             if lb_thumb:
                 if lb_use_limit_overlay:
-                    lb_frames = {'base': _SP_CHIP_SSR_BASE, 'bottom_frame': ''}
+                    lb_frames = {'base': '', 'bottom_frame': ''}
                 else:
                     lb_frames = _LB_FRAME_BY_RARITY.get(iri)
         else:
