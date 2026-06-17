@@ -9850,6 +9850,20 @@ def _game_images_webp_path(folder_key, filename):
     return f'/static/images/{folder_key}/{fname}'
 
 
+function _resolve_item_icon_resource_id(item_id, item_row=None):
+    """Item icon ResourceId — some series SP chips ship with blank ResourceId in master."""
+    row = item_row if isinstance(item_row, dict) else (item_info_map or {}).get(normalize_id(item_id), {})
+    rid = str((row or {}).get('resource_id') or '').strip()
+    if rid:
+        return rid
+    iid = normalize_id(item_id)
+    m = re.match(r'^24000001(\d+)$', iid)
+    if not m:
+        return ''
+    badge = (item_info_map or {}).get(f'25000001{m.group(1)}', {})
+    return str((badge or {}).get('resource_id') or '').strip()
+
+
 def _game_item_icon_url(resource_id):
     """Item icon — exchange medals on Master League CDN; regular items on Item CDN."""
     rid = str(resource_id or '').strip()
@@ -9976,7 +9990,7 @@ def _decorate_reward_rows(rows, lc):
                 reward_desc = str(item_text_map.get(dlid) or '').strip()
             if not reward_name:
                 reward_name = f"Item {tid}"
-            rid_item = str(item.get('resource_id') or '').strip()
+            rid_item = _resolve_item_icon_resource_id(tid, item)
             if rid_item:
                 reward_icon = _game_item_icon_url(rid_item)
             lb_thumb = ''
