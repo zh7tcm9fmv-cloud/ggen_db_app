@@ -9850,7 +9850,7 @@ def _game_images_webp_path(folder_key, filename):
     return f'/static/images/{folder_key}/{fname}'
 
 
-function _resolve_item_icon_resource_id(item_id, item_row=None):
+def _resolve_item_icon_resource_id(item_id, item_row=None):
     """Item icon ResourceId — some series SP chips ship with blank ResourceId in master."""
     row = item_row if isinstance(item_row, dict) else (item_info_map or {}).get(normalize_id(item_id), {})
     rid = str((row or {}).get('resource_id') or '').strip()
