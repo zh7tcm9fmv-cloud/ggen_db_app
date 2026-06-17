@@ -477,7 +477,7 @@ function clearRankingBrowseFilters(which){if(which==='rankChar'){S.listRankCharS
 function refreshRankingFilterLabels(){updateRarityFilterButtonLabel('rankChar');updateRoleFilterButtonLabel('rankChar');updateSourceFilterButtonLabel('rankChar');updateLineageFilterButtonLabel('rankChar');updateSeriesFilterButtonLabel('rankChar');updateSkillBrowseFilterLabel('rankChar');updateAbilBrowseFilterLabel('rankChar');updateRarityFilterButtonLabel('rankUnit');updateRoleFilterButtonLabel('rankUnit');updateSourceFilterButtonLabel('rankUnit');updateLineageFilterButtonLabel('rankUnit');updateSeriesFilterButtonLabel('rankUnit');updateSkillBrowseFilterLabel('rankUnit');updateUnitTerrainFilterLabel();updateUnitWeaponDebuffFilterLabel();updateUnitMapWeaponRangeFilterLabel('rankUnit');updateUnitWeaponRangeNonMapFilterLabel();updateUnitMechanismFilterLabel();fillSourcePanel('rankChar');fillSourcePanel('rankUnit');syncRankListStatToggleUi()}
 function onRankingTabShown(){document.querySelectorAll('.ranking-mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.rankingMode===S.ranking.mode));const ch=document.getElementById('rankingCharToolbarHost'),un=document.getElementById('rankingUnitToolbarHost');if(ch)ch.style.display=S.ranking.mode==='characters'?'block':'none';if(un)un.style.display=S.ranking.mode==='units'?'block':'none';if(S.ranking.mode==='units')ensureUnitWeaponRangeFilterDom();syncRankingFiltersFromBrowse();invalidateRankingBrowseFilterPanels();refreshRankingFilterLabels();syncMapWeaponRangeFilterVisibility();renderRankingStatPills();syncRankListStatToggleUi();syncRankingViewModeUi();void loadRankingList(S.ranking.mode==='characters'?S.ranking.pageChar:S.ranking.pageUnit)}
 function resetEphemeralBrowseFilterDomState(){['char','unit','rankChar','rankUnit'].forEach(which=>{const rp=rarityPrefix(which);rarityKeysFor(which).forEach(k=>{const el=document.getElementById(rp+'Rarity'+k);if(el)el.checked=true});const ltEl=document.getElementById(rp+'RarityLT');if(ltEl)ltEl.checked=true;const rpf=rolePrefix(which);ROLE_LIST_IDS.forEach(id=>{const el=document.getElementById(rpf+'Role'+id);if(el)el.checked=true})})}
-document.addEventListener('DOMContentLoaded',async()=>{removeLegacyBrowseTableStickyBars();try{const _bsd=sessionStorage.getItem('ggen_bt_sort');if(_bsd==='asc'||_bsd==='desc')S.btBannerSortDir=_bsd}catch(_){}loadPersistedListView();loadPersistedListGridVariant();applyModEffectDropdownIcons();await loadLangs();loadPersistedListStatToggles();resetEphemeralBrowseFilterDomState();applyLang();['characters','units','supporters','stages','modifications'].forEach(t=>{syncListViewToggleUI(t);applyListViewVisibility(t)});syncGridVariantBadge('char');syncGridVariantBadge('unit');buildTableHeaders();initSearchHints();syncBrowseSearchWidths();let _bwResize;window.addEventListener('resize',()=>{clearTimeout(_bwResize);_bwResize=setTimeout(()=>{syncBrowseSearchWidths();syncRankingTailControlsPlacement()},120)});initSeriesIconNav();bindSearchRecallObserver();syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();primeBrowseTabIfNeeded('characters');setupKeys();initDetailBrowseSwipe();initScrollTopFab();initBannerTimelineExtras();initCmpSafeArea();initBrowseHistory();syncCmpMobilePickChrome();initDetailPrefetchIntentHandlers();bindRewardDetailDelegation();bindUnitLbVideoDelegation();wireTbPickerBodyClicks();wireDcPickerBodyClicks();wireStageMapNpcClicks();const _qs=new URLSearchParams(location.search);const _hasDcShare=!!(_qs.get('d')||_qs.get('dc'));const _tabRaw=String(_qs.get('tab')||'').trim();const _hasTbShare=!!_qs.get('team')&&(_tabRaw==='TB'||_tabRaw==='team_builder');if(!urlTabParamBlocksBrowseShortPath(_qs.get('tab'))&&applyBrowseShortPathOnLoad()){if(_hasDcShare)try{await _dcCheckUrlParams()}catch(e){console.warn('dc share restore',e)}if(_hasTbShare)_tbCheckUrlParams();stagesOrModsTabFromQueryOnLoad()}else{_dcCheckUrlParams();_tbCheckUrlParams();stagesOrModsTabFromQueryOnLoad()}updateCompareUI()});
+document.addEventListener('DOMContentLoaded',async()=>{removeLegacyBrowseTableStickyBars();try{const _bsd=sessionStorage.getItem('ggen_bt_sort');if(_bsd==='asc'||_bsd==='desc')S.btBannerSortDir=_bsd}catch(_){}loadPersistedListView();loadPersistedListGridVariant();applyModEffectDropdownIcons();await loadLangs();loadPersistedListStatToggles();resetEphemeralBrowseFilterDomState();applyLang();['characters','units','supporters','stages','modifications'].forEach(t=>{syncListViewToggleUI(t);applyListViewVisibility(t)});syncGridVariantBadge('char');syncGridVariantBadge('unit');buildTableHeaders();initSearchHints();syncBrowseSearchWidths();let _bwResize;window.addEventListener('resize',()=>{clearTimeout(_bwResize);_bwResize=setTimeout(()=>{syncBrowseSearchWidths();syncRankingTailControlsPlacement()},120)});initSeriesIconNav();bindSearchRecallObserver();syncListCharToggle();syncListUnitStatToggles();syncListCondToggles();primeBrowseTabIfNeeded('characters');setupKeys();initDetailBrowseSwipe();initDetailModalChromeScroll();initScrollTopFab();initBannerTimelineExtras();initCmpSafeArea();initBrowseHistory();syncCmpMobilePickChrome();initDetailPrefetchIntentHandlers();bindRewardDetailDelegation();bindUnitLbVideoDelegation();wireTbPickerBodyClicks();wireDcPickerBodyClicks();wireStageMapNpcClicks();const _qs=new URLSearchParams(location.search);const _hasDcShare=!!(_qs.get('d')||_qs.get('dc'));const _tabRaw=String(_qs.get('tab')||'').trim();const _hasTbShare=!!_qs.get('team')&&(_tabRaw==='TB'||_tabRaw==='team_builder');if(!urlTabParamBlocksBrowseShortPath(_qs.get('tab'))&&applyBrowseShortPathOnLoad()){if(_hasDcShare)try{await _dcCheckUrlParams()}catch(e){console.warn('dc share restore',e)}if(_hasTbShare)_tbCheckUrlParams();stagesOrModsTabFromQueryOnLoad()}else{_dcCheckUrlParams();_tbCheckUrlParams();stagesOrModsTabFromQueryOnLoad()}updateCompareUI()});
 const LANG_STORAGE_KEY='ggen_lang';
 function readPersistedLang(){try{const s=localStorage.getItem(LANG_STORAGE_KEY);return s&&String(s).trim()||''}catch(e){return''}}
 function persistLang(l){try{if(l)localStorage.setItem(LANG_STORAGE_KEY,String(l))}catch(e){}}
@@ -1900,6 +1900,8 @@ document.body.classList.remove('detail-modal-open');
 releaseBackgroundScrollLock();
 const mc=document.getElementById('modalContent');
 if(mc)mc.className='modal-content';
+const chrome=document.getElementById('modalDetailChrome');
+if(chrome)chrome.classList.remove('modal-detail-chrome--scrolled');
 S.currentDetailData=null;
 S.currentDetailType=null;
 S.conditionalPassiveActive=false;
@@ -2429,6 +2431,24 @@ async function _fetchBrowseNavPage(type,page){try{if(type==='character'){const u
 async function detailBrowseNavStep(delta){const st=_detailBrowseNavState();if(!st||!detailBrowseNavEligible())return;const idx=st.index+delta;if(idx>=0&&idx<st.ids.length){openDetail(st.type,st.ids[idx]);return}const crossPageOk=!(st.cacheKey&&String(st.cacheKey).startsWith('ranking:'));if(!crossPageOk)return;if(delta<0&&st.page>1){const d=await _fetchBrowseNavPage(st.type,st.page-1);if(!d||!d.rows||!d.rows.length)return;_updateBrowseNavCache(st.type,d,st.page-1);openDetail(st.type,String(d.rows[d.rows.length-1].id));return}if(delta>0&&st.page<st.total_pages){const d=await _fetchBrowseNavPage(st.type,st.page+1);if(!d||!d.rows||!d.rows.length)return;_updateBrowseNavCache(st.type,d,st.page+1);openDetail(st.type,String(d.rows[0].id))}}
 function syncDetailBrowseNavUi(){}
 function initDetailBrowseSwipe(){if(S._detailSwipeInit)return;S._detailSwipeInit=1;const m=document.getElementById('detailModal');if(!m)return;let x0=0,y0=0,tracking=false;m.addEventListener('touchstart',e=>{if(!m.classList.contains('active')||!detailBrowseNavEligible())return;if(!e.touches||e.touches.length!==1)return;x0=e.touches[0].clientX;y0=e.touches[0].clientY;tracking=true},{passive:true});m.addEventListener('touchend',e=>{if(!tracking)return;tracking=false;if(!m.classList.contains('active')||!detailBrowseNavEligible())return;const t=e.changedTouches&&e.changedTouches[0];if(!t)return;const dx=t.clientX-x0,dy=t.clientY-y0;if(Math.abs(dx)<52||Math.abs(dx)<Math.abs(dy)*1.25)return;void detailBrowseNavStep(dx<0?1:-1)},{passive:true})}
+function updateModalDetailChromeScroll(){
+const chrome=document.getElementById('modalDetailChrome');
+const m=document.getElementById('detailModal');
+const mc=document.getElementById('modalContent');
+if(!chrome)return;
+let st=0;
+if(mc&&mc.scrollHeight>mc.clientHeight+1)st=Math.max(st,mc.scrollTop||0);
+if(m&&m.scrollHeight>m.clientHeight+1)st=Math.max(st,m.scrollTop||0);
+chrome.classList.toggle('modal-detail-chrome--scrolled',st>8);
+}
+function initDetailModalChromeScroll(){
+if(S._detailModalChromeScrollInit)return;
+S._detailModalChromeScrollInit=1;
+const m=document.getElementById('detailModal');
+const mc=document.getElementById('modalContent');
+const onScroll=()=>updateModalDetailChromeScroll();
+[m,mc].forEach(el=>{if(el)el.addEventListener('scroll',onScroll,{passive:true})});
+}
 function adjustDetailModalLayout(){
 const mc=document.getElementById('modalContent');
 if(!mc||!mc.classList.contains('modal-content'))return;
@@ -2463,6 +2483,9 @@ if(eid)idSlot.appendChild(eid);
 mc.classList.add('modal-content--has-chrome');
 mc.classList.toggle('modal-content--has-top-label',!!lbl);
 mc.classList.toggle('modal-content--has-entity-id',!!eid);
+chrome.classList.remove('modal-detail-chrome--scrolled');
+if(typeof initDetailModalChromeScroll==='function')initDetailModalChromeScroll();
+requestAnimationFrame(updateModalDetailChromeScroll);
 if(typeof ResizeObserver!=='undefined'){
 if(!S._detailModalLayoutObs){
 S._detailModalLayoutObs=new ResizeObserver(()=>adjustDetailModalLayout());

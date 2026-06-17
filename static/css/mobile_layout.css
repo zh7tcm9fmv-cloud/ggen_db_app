@@ -569,23 +569,39 @@
   .game-news-main {
     min-height: 0;
     flex: 1 1 auto;
+    padding-top: 6px;
+    padding-bottom: 10px;
   }
 
   .game-news-stage {
-    min-height: calc(100dvh - var(--safe-top) - 120px);
+    min-height: 0;
+    flex: 1 1 auto;
   }
 
   .game-news-stage-inner {
-    min-height: calc(100dvh - var(--safe-top) - 180px);
+    min-height: 0;
+    flex: 1 1 auto;
+    padding: 8px 10px 10px;
+  }
+
+  .game-news-toolbar {
+    margin-bottom: 6px;
+    flex-shrink: 0;
+  }
+
+  .game-news-toolbar h1 {
+    font-size: 1.1rem;
   }
 
   .game-news-frame-wrap {
-    min-height: calc(100dvh - var(--safe-top) - var(--safe-bottom) - 220px);
+    flex: 1 1 auto;
+    min-height: 0;
   }
 
   .game-news-frame-wrap iframe {
-    min-height: calc(100dvh - var(--safe-top) - var(--safe-bottom) - 220px);
-    height: calc(100dvh - var(--safe-top) - var(--safe-bottom) - 220px);
+    min-height: calc(100dvh - var(--safe-top) - 132px);
+    height: calc(100dvh - var(--safe-top) - 132px);
+    max-height: none;
   }
 }
 

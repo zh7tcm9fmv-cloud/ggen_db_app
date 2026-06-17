@@ -993,10 +993,11 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .modal-close--chrome{position:static;top:auto;right:auto;flex-shrink:0}
 #detailModal .modal-content{--modal-detail-gutter:14px;container-type:inline-size;container-name:modal-detail}
 #detailModal .modal-content.char-detail,#detailModal .modal-content.unit-detail{--modal-detail-gutter:14px}
-.modal-detail-chrome{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:max(10px,env(safe-area-inset-top,0px)) max(var(--modal-detail-gutter,14px),env(safe-area-inset-right,0px)) 10px max(var(--modal-detail-gutter,14px),env(safe-area-inset-left,0px));border-bottom:1px solid rgba(42,54,84,.55);background:rgba(0,0,0,.18);position:sticky;top:0;z-index:100;min-height:44px;box-sizing:border-box}
+.modal-detail-chrome{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:max(10px,env(safe-area-inset-top,0px)) max(var(--modal-detail-gutter,14px),env(safe-area-inset-right,0px)) 10px max(var(--modal-detail-gutter,14px),env(safe-area-inset-left,0px));border-bottom:1px solid rgba(42,54,84,.55);background:var(--bg-modal);position:sticky;top:0;z-index:100;min-height:44px;box-sizing:border-box;flex-shrink:0}
 .modal-detail-chrome-start{display:flex;align-items:center;min-width:0;flex:1 1 auto}
 .modal-detail-chrome-end{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-shrink:0;min-width:0}
-.modal-detail-chrome-id{display:flex;align-items:center;min-width:0}
+.modal-detail-chrome-id{display:flex;align-items:center;min-width:0;max-width:min(240px,42vw);overflow:hidden;transition:opacity .15s ease,max-width .15s ease,margin .15s ease}
+.modal-detail-chrome--scrolled .modal-detail-chrome-id{opacity:0;max-width:0;margin:0;pointer-events:none}
 .modal-detail-chrome .modal-top-label{position:static;top:auto;left:auto;margin:0;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:13px;padding:4px 11px 4px 13px}
 .modal-detail-chrome .modal-entity-id{position:static;top:auto;right:auto;margin:0;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:min(240px,42vw)}
 .modal-content--has-chrome .detail-back-strip{padding:10px var(--modal-detail-gutter,14px) 0;background:rgba(0,0,0,0.12)}

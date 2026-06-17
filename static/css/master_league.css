@@ -292,9 +292,10 @@
 .ml-boost-pct {
   font-size: 13px;
   font-weight: 800;
-  color: #fecaca;
+  color: #fff;
   letter-spacing: 0.06em;
   margin-top: -4px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
 }
 .ml-boost-tags {
   display: flex;
@@ -315,7 +316,7 @@
 .ml-boost-tag-prefix {
   font-size: clamp(14px, 2vw, 16px);
   font-weight: 800;
-  color: #fecaca;
+  color: #fff;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
   white-space: nowrap;
 }
