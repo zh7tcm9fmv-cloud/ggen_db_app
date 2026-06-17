@@ -9871,8 +9871,10 @@ def _game_images_webp_path(folder_key, filename):
 
 # Unit-target SP conversion chips with blank master ResourceId (runtime-composite in-game).
 _UNIT_SPECIALIZE_MATERIAL_SPM = {
-    '241080003860': 'spm_0026',  # Psycho Gundam SP Conversion Chip
+    '241080003860': 'spm_0026',  # Psycho Gundam SP Conversion Chip (baked fallback)
 }
+_SP_CHIP_SSR_BASE = '/static/images/UI/UI_Common_Tmb_Square_SSR_Base.webp'
+_SP_CHIP_FRAME = '/static/images/UI/UI_Common_Sp_Frame.webp'
 
 
 def _resolve_item_icon_resource_id(item_id, item_row=None):
@@ -9990,6 +9992,9 @@ def _decorate_reward_rows(rows, lc):
         lb_thumb = ''
         lb_frames = None
         lb_use_limit_overlay = False
+        sp_chip_base = ''
+        sp_chip_unit = ''
+        sp_chip_frame = ''
         cri = crole = cacq = ori = uri = urole = uacq = ''
         if rt == '10':
             reward_name = get_ui_label(lc, 'reward_diamonds')
@@ -10046,7 +10051,11 @@ def _decorate_reward_rows(rows, lc):
                 if lb_thumb:
                     lb_use_limit_overlay = True
             elif not reward_icon:
-                lb_thumb = _resolve_unit_thumb_for_specialize_material_item(tid)
+                sp_unit = _resolve_unit_thumb_for_specialize_material_item(tid)
+                if sp_unit:
+                    sp_chip_base = _SP_CHIP_SSR_BASE
+                    sp_chip_frame = _SP_CHIP_FRAME
+                    sp_chip_unit = sp_unit
             lb_frames = _LB_FRAME_BY_RARITY.get(iri) if lb_thumb else None
         else:
             reward_name = f"Reward {rid}"
@@ -10069,6 +10078,9 @@ def _decorate_reward_rows(rows, lc):
             'lb_thumb_limit_frame': ('/static/images/UI/UI_Common_Limit_Break_Frame.webp' if rt not in ('2', '3', '8', '30') and lb_frames and lb_use_limit_overlay else ''),
             'lb_thumb_bottom_frame': (lb_frames.get('bottom_frame', '') if rt not in ('2', '3', '8', '30') and lb_frames else ''),
             'lb_thumb_unit': (lb_thumb if rt not in ('2', '3', '8', '30') else ''),
+            'sp_chip_base': (sp_chip_base if rt not in ('2', '3', '8', '30') else ''),
+            'sp_chip_unit': (sp_chip_unit if rt not in ('2', '3', '8', '30') else ''),
+            'sp_chip_frame': (sp_chip_frame if rt not in ('2', '3', '8', '30') else ''),
         })
     return out
 
