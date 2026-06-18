@@ -20,6 +20,7 @@ import re
 import math
 import unicodedata
 import hashlib
+import random
 import sys
 import atexit
 import signal
@@ -17278,9 +17279,10 @@ ML_STAGE_TERRAIN_FLAG_ORDER = (
 ML_IMAGE_SUBDIR = 'Master%20League'
 # Gundam SEED — fallback when a "SEED Series" lineage tag has no direct player-unit match.
 ML_SEED_SERIES_SET_ID = '10000000000002000'
-ML_SERIES_SHOWCASE_PREFER = {
-    ML_SEED_SERIES_SET_ID: ('1200003900', '1200005300', '1200005200', '1200002300'),
-}
+# Urube Gundam variants — still eligible but heavily downweighted in random showcase picks.
+ML_SHOWCASE_DOWNWEIGHT_UNIT_IDS = frozenset({
+    '1200005600', '1200005601', '1200005602',
+})
 # League promotion emblems — CDN WebP under images/Master League/ (Bronze=001 … Master=006).
 ML_RANK_EMBLEM_RESOURCE = {
     6: 'UI_Event_ML_Emblem_001',
@@ -17332,15 +17334,25 @@ def _ml_series_set_id(series_id):
     return f'1000000000000{sid}'
 
 
-def _ml_showcase_unit_score(uid):
+def _ml_showcase_unit_has_portrait(uid):
     info = unit_info_map.get(uid, {}) if isinstance(unit_info_map, dict) else {}
-    r = safe_int(info.get('rarity'), 1)
-    u = safe_int(uid, 0)
-    main_gacha = 1 if 1200000000 <= u < 1210000000 else 0
-    player = 1 if str(uid).startswith('12') else 0
     rids = info.get('resource_ids', []) if isinstance(info, dict) else []
-    has_art = 1 if find_portrait(rids, uid, 'images/unit_portraits') else 0
-    return (player, main_gacha, r, has_art, u)
+    return bool(find_portrait(rids, uid, 'images/unit_portraits'))
+
+
+def _ml_showcase_pick_weight(uid):
+    """Weighted random pick — rarity/player-unit bias; Urube variants minimized."""
+    info = unit_info_map.get(uid, {}) if isinstance(unit_info_map, dict) else {}
+    w = max(1, safe_int(info.get('rarity'), 1))
+    u = safe_int(uid, 0)
+    if str(uid).startswith('12'):
+        w += 2
+    if 1200000000 <= u < 1210000000:
+        w += 1
+    canon = _ml_showcase_canonical_unit_id(uid)
+    if uid in ML_SHOWCASE_DOWNWEIGHT_UNIT_IDS or canon in ML_SHOWCASE_DOWNWEIGHT_UNIT_IDS:
+        w = 1
+    return w
 
 
 def _ml_showcase_canonical_unit_id(uid):
@@ -17378,26 +17390,28 @@ def _ml_pick_showcase_unit_for_tag(tag, used_ids, series_set_by_series_id):
     if ttype == 1:
         set_id = series_set_by_series_id.get(tid, _ml_series_set_id(tid))
         cands = [uid for uid, sid in (unit_ser_map or {}).items()
-                 if sid == set_id and str(uid).startswith('12') and uid not in used_ids]
+                 if sid == set_id and str(uid).startswith('12') and uid not in used_ids
+                 and _ml_showcase_unit_has_portrait(uid)]
     elif ttype == 2:
-        cands = [uid for uid, lids in (unit_lin_map or {}).items()
-                 if tid in lids and str(uid).startswith('12') and uid not in used_ids]
-        cands = [u for u in cands if safe_int((unit_info_map.get(u) or {}).get('rarity'), 0) >= 4]
+        cands = []
+        for uid in (unit_lin_map or {}):
+            if uid in used_ids:
+                continue
+            if not _entity_matches_one_lineage(unit_lin_map, uid, tid):
+                continue
+            if safe_int((unit_info_map.get(uid) or {}).get('rarity'), 0) < 4:
+                continue
+            if not _ml_showcase_unit_has_portrait(uid):
+                continue
+            cands.append(uid)
         if not cands and tid == '1089':
             cands = [uid for uid, sid in (unit_ser_map or {}).items()
-                     if sid == ML_SEED_SERIES_SET_ID and str(uid).startswith('12') and uid not in used_ids]
+                     if sid == ML_SEED_SERIES_SET_ID and str(uid).startswith('12') and uid not in used_ids
+                     and _ml_showcase_unit_has_portrait(uid)]
     if not cands:
         return None
-    if ttype == 2 and tid == '1089':
-        for prefer in ML_SERIES_SHOWCASE_PREFER.get(ML_SEED_SERIES_SET_ID, ()):
-            if prefer in cands:
-                return prefer
-    if ttype == 1:
-        set_id = series_set_by_series_id.get(tid, _ml_series_set_id(tid))
-        for prefer in ML_SERIES_SHOWCASE_PREFER.get(set_id, ()):
-            if prefer in cands:
-                return prefer
-    return max(cands, key=_ml_showcase_unit_score)
+    weights = [_ml_showcase_pick_weight(u) for u in cands]
+    return random.choices(cands, weights=weights, k=1)[0]
 
 
 def _ml_unit_portrait_payload(unit_id, lc):
@@ -17568,7 +17582,7 @@ def _ml_resolve_buff_target_name(target_type, target_id, lineage_lookup, series_
 def api_master_league():
     """Master League seasons: boosts, terrain, ranks, schedules, scoring config."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'master_league_v19_{lc}'
+    ck = f'master_league_v20_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
