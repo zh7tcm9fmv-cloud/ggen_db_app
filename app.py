@@ -494,7 +494,7 @@ UI_LABELS = {
         'restriction_recover_mp': '使用時恢復{}MP。',
         'map_weapon_designate_spots': '最多可指定{}個位置。',
         'stage_recommended_cp': '推薦戰力：{}', 'stage_no_prefix': 'No. {}', 'sortie_group': '小隊 {}',
-        'restriction_applies_unit': '僅適用於機體', 'restriction_applies_both': '適用於機體與角色',
+        'restriction_applies_unit': '僅適用於單位', 'restriction_applies_both': '適用於單位與角色',
         'restriction_applies_characters': '適用於角色',
         'terrain_space': '宇宙', 'terrain_atmospheric': '空中', 'terrain_ground': '地上', 'terrain_amphibious': '水陸', 'terrain_unknown': '未知',
         'victory_conditions': '勝利條件', 'defeat_conditions': '敗北條件', 'none': '無',
@@ -515,7 +515,7 @@ UI_LABELS = {
         'restriction_recover_mp': '使用時恢復{}MP。',
         'map_weapon_designate_spots': '最多可指定{}個位置。',
         'stage_recommended_cp': '推薦戰力：{}', 'stage_no_prefix': 'No. {}', 'sortie_group': '小隊 {}',
-        'restriction_applies_unit': '僅適用於機體', 'restriction_applies_both': '適用於機體與角色',
+        'restriction_applies_unit': '僅適用於單位', 'restriction_applies_both': '適用於單位與角色',
         'restriction_applies_characters': '適用於角色',
         'terrain_space': '宇宙', 'terrain_atmospheric': '空中', 'terrain_ground': '地面', 'terrain_amphibious': '水中', 'terrain_unknown': '未知',
         'victory_conditions': '勝利條件', 'defeat_conditions': '敗北條件', 'none': '無',
@@ -16166,7 +16166,7 @@ def _option_part_condition_line_from_tags(tags, lc):
     if not names:
         return ''
     if lc in ('TW', 'HK'):
-        return f"裝備於擁有以下標籤的機體時：{', '.join(names)}"
+        return f"裝備於擁有以下標籤的單位時：{', '.join(names)}"
     if lc in ('JA', 'JP'):
         return f"以下タグを持つユニット装備時：{', '.join(names)}"
     return f"When equipped to a Unit possessing: {', '.join(names)}."
