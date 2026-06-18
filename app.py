@@ -17353,6 +17353,13 @@ def _ml_showcase_canonical_unit_id(uid):
     return mid
 
 
+def _ml_showcase_name_key(name):
+    """Normalize display name so variants like 'Foo (EX)' share one banner slot."""
+    s = str(name or '').strip().lower()
+    s = re.sub(r'\s*\([^)]*\)\s*$', '', s).strip()
+    return s
+
+
 def _ml_showcase_blocked_unit_ids(uid):
     uid = normalize_id(uid)
     canon = _ml_showcase_canonical_unit_id(uid)
@@ -17431,6 +17438,7 @@ def _ml_resolve_boost_portraits(boost_tags, lc, series_set_by_series_id):
     portraits = []
     blocked_uids = set()
     blocked_portraits = set()
+    blocked_names = set()
     sides = ('left', 'right')
     for tag in boost_tags or []:
         if len(portraits) >= len(sides):
@@ -17447,7 +17455,13 @@ def _ml_resolve_boost_portraits(boost_tags, lc, series_set_by_series_id):
                 uid = None
                 continue
             portrait = str(payload.get('portrait') or '').strip()
+            name_key = _ml_showcase_name_key(payload.get('name'))
             if portrait and portrait in blocked_portraits:
+                blocked_uids.update(_ml_showcase_blocked_unit_ids(uid))
+                uid = None
+                payload = None
+                continue
+            if name_key and name_key in blocked_names:
                 blocked_uids.update(_ml_showcase_blocked_unit_ids(uid))
                 uid = None
                 payload = None
@@ -17461,6 +17475,9 @@ def _ml_resolve_boost_portraits(boost_tags, lc, series_set_by_series_id):
         portrait = str(payload.get('portrait') or '').strip()
         if portrait:
             blocked_portraits.add(portrait)
+        name_key = _ml_showcase_name_key(payload.get('name'))
+        if name_key:
+            blocked_names.add(name_key)
     return portraits
 
 
