@@ -17343,6 +17343,25 @@ def _ml_showcase_unit_score(uid):
     return (player, main_gacha, r, has_art, u)
 
 
+def _ml_showcase_canonical_unit_id(uid):
+    """Main unit id for MS/MA pairs (one showcase slot per in-game unit)."""
+    uid = normalize_id(uid)
+    info = unit_info_map.get(uid, {}) if isinstance(unit_info_map, dict) else {}
+    mid = normalize_id(info.get('main_unit_id', uid))
+    if mid == '0':
+        mid = uid
+    return mid
+
+
+def _ml_showcase_blocked_unit_ids(uid):
+    uid = normalize_id(uid)
+    canon = _ml_showcase_canonical_unit_id(uid)
+    blocked = {uid, canon}
+    for fid in unit_transform_family_map.get(canon, [canon]):
+        blocked.add(normalize_id(fid))
+    return blocked
+
+
 def _ml_pick_showcase_unit_for_tag(tag, used_ids, series_set_by_series_id):
     ttype = safe_int(tag.get('type_index'), 0)
     tid = normalize_id(tag.get('target_id'))
@@ -17410,20 +17429,38 @@ def _ml_season_uses_spark_banner(season_num, status):
 
 def _ml_resolve_boost_portraits(boost_tags, lc, series_set_by_series_id):
     portraits = []
-    used = set()
+    blocked_uids = set()
+    blocked_portraits = set()
     sides = ('left', 'right')
-    for i, tag in enumerate(boost_tags or []):
-        if i >= len(sides):
+    for tag in boost_tags or []:
+        if len(portraits) >= len(sides):
             break
-        uid = _ml_pick_showcase_unit_for_tag(tag, used, series_set_by_series_id)
-        if not uid:
+        uid = None
+        payload = None
+        for _ in range(24):
+            uid = _ml_pick_showcase_unit_for_tag(tag, blocked_uids, series_set_by_series_id)
+            if not uid:
+                break
+            payload = _ml_unit_portrait_payload(uid, lc)
+            if not payload:
+                blocked_uids.add(normalize_id(uid))
+                uid = None
+                continue
+            portrait = str(payload.get('portrait') or '').strip()
+            if portrait and portrait in blocked_portraits:
+                blocked_uids.update(_ml_showcase_blocked_unit_ids(uid))
+                uid = None
+                payload = None
+                continue
+            break
+        if not uid or not payload:
             continue
-        payload = _ml_unit_portrait_payload(uid, lc)
-        if not payload:
-            continue
-        payload['side'] = sides[i]
+        payload['side'] = sides[len(portraits)]
         portraits.append(payload)
-        used.add(uid)
+        blocked_uids.update(_ml_showcase_blocked_unit_ids(uid))
+        portrait = str(payload.get('portrait') or '').strip()
+        if portrait:
+            blocked_portraits.add(portrait)
     return portraits
 
 
@@ -17514,7 +17551,7 @@ def _ml_resolve_buff_target_name(target_type, target_id, lineage_lookup, series_
 def api_master_league():
     """Master League seasons: boosts, terrain, ranks, schedules, scoring config."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'master_league_v18_{lc}'
+    ck = f'master_league_v19_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
