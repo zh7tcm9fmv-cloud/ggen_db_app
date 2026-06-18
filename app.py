@@ -17397,6 +17397,17 @@ def _ml_unit_portrait_payload(unit_id, lc):
     }
 
 
+ML_LEGACY_SPARK_BANNER_MAX_SEASON = 8
+
+
+def _ml_season_uses_spark_banner(season_num, status):
+    """Early ML seasons (0–8) had no motif banner art; use the FrontSpark card like upcoming seasons."""
+    if status == 'upcoming':
+        return True
+    sn = safe_int(season_num, -1)
+    return 0 <= sn <= ML_LEGACY_SPARK_BANNER_MAX_SEASON
+
+
 def _ml_resolve_boost_portraits(boost_tags, lc, series_set_by_series_id):
     portraits = []
     used = set()
@@ -17503,7 +17514,7 @@ def _ml_resolve_buff_target_name(target_type, target_id, lineage_lookup, series_
 def api_master_league():
     """Master League seasons: boosts, terrain, ranks, schedules, scoring config."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'master_league_v17_{lc}'
+    ck = f'master_league_v18_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
@@ -17670,9 +17681,10 @@ def api_master_league():
         buff_pct = buff_pct_by_id.get(buff_id, 0)
         bset = normalize_id(lx.get('LeagueBuffTargetSetId') or lx.get('leagueBuffTargetSetId') or '0')
         boost_tags = buff_targets_by_set.get(bset, [])
+        spark_banner = _ml_season_uses_spark_banner(season_num, status)
         boost_portraits = (
             _ml_resolve_boost_portraits(boost_tags, lc, series_set_by_series_id)
-            if status == 'upcoming' else []
+            if spark_banner else []
         )
 
         stage_id = normalize_id(lx.get('StageId') or lx.get('stageId') or '0')
@@ -17752,6 +17764,7 @@ def api_master_league():
             'score_milestones': score_milestones,
             'motif_id': motif_id if motif_id != '0' else None,
             'motif_images': motif_images,
+            'spark_banner': spark_banner,
             'top_percentile_threshold': safe_int(lx.get('RankingTopPercentileDisplayScoreThreshold') or lx.get('rankingTopPercentileDisplayScoreThreshold'), 0),
             'is_skip_shop_reset': bool(lx.get('IsSkipShopReset')),
         })
