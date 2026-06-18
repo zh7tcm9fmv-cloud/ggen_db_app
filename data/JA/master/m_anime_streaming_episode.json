@@ -10,7 +10,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0011_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0011_01",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120001,
@@ -23,7 +23,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0012_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0012_01",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 200001,
@@ -36,7 +36,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0020_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0020_01",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 900001,
@@ -49,7 +49,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0090_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0090_01",
     "ScheduleId": 2601102801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 900002,
@@ -62,7 +62,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0090_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0090_02",
     "ScheduleId": 2601102801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 900003,
@@ -75,7 +75,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0090_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0090_03",
     "ScheduleId": 2601102801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 910001,
@@ -88,7 +88,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0091_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0091_01",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 910002,
@@ -101,7 +101,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0091_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0091_02",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 910003,
@@ -114,7 +114,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0091_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0091_03",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 1300001,
@@ -127,7 +127,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0130_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0130_01",
     "ScheduleId": 2602402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 1300002,
@@ -140,7 +140,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0130_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0130_02",
     "ScheduleId": 2602402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 1300003,
@@ -153,7 +153,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0130_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0130_03",
     "ScheduleId": 2602402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 1300004,
@@ -166,7 +166,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0130_04",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0130_04",
     "ScheduleId": 2602402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 1300005,
@@ -179,7 +179,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0130_05",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0130_05",
     "ScheduleId": 2602402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 1300006,
@@ -192,7 +192,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0130_06",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0130_06",
     "ScheduleId": 2602402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 1300007,
@@ -205,7 +205,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0130_07",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0130_07",
     "ScheduleId": 2602402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 1300008,
@@ -218,7 +218,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0130_08",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0130_08",
     "ScheduleId": 2602402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 1300009,
@@ -231,7 +231,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0130_09",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0130_09",
     "ScheduleId": 2602402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 1300010,
@@ -244,7 +244,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0130_10",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0130_10",
     "ScheduleId": 2602402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 1300011,
@@ -257,7 +257,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0130_11",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0130_11",
     "ScheduleId": 2602402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 1700001,
@@ -270,7 +270,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0170_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0170_01",
     "ScheduleId": 2512302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 1700002,
@@ -283,7 +283,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0170_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0170_02",
     "ScheduleId": 2512302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 1700003,
@@ -296,7 +296,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0170_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0170_03",
     "ScheduleId": 2512302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 1700004,
@@ -309,7 +309,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0170_04",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0170_04",
     "ScheduleId": 2512302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 1700005,
@@ -322,7 +322,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0170_05",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0170_05",
     "ScheduleId": 2512302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 1700006,
@@ -335,7 +335,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0170_06",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0170_06",
     "ScheduleId": 2512302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 3200001,
@@ -348,7 +348,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0320_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0320_01",
     "ScheduleId": 2604502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 3300001,
@@ -361,7 +361,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0330_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0330_01",
     "ScheduleId": 2604502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 6000001,
@@ -374,7 +374,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_01",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 6000002,
@@ -387,7 +387,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_02",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 6000003,
@@ -400,7 +400,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_03",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 6000004,
@@ -413,7 +413,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_04",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_04",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 6000005,
@@ -426,7 +426,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_05",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_05",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 6000006,
@@ -439,7 +439,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_06",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_06",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 6000007,
@@ -452,7 +452,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_07",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_07",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 6000008,
@@ -465,7 +465,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_08",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_08",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 6000009,
@@ -478,7 +478,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_09",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_09",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 6000010,
@@ -491,7 +491,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_10",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_10",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 6000011,
@@ -504,7 +504,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_11",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_11",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 6000012,
@@ -517,7 +517,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_12",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_12",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 6000013,
@@ -530,7 +530,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_13",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_13",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 8010001,
@@ -543,7 +543,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0801_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0801_01",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 8020001,
@@ -556,7 +556,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0802_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0802_01",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 8030001,
@@ -569,7 +569,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0803_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0803_01",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500001,
@@ -582,7 +582,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_01",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500002,
@@ -595,7 +595,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_02",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500003,
@@ -608,7 +608,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_03",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500004,
@@ -621,7 +621,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_04",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_04",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500005,
@@ -634,7 +634,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_05",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_05",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500006,
@@ -647,7 +647,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_06",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_06",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500007,
@@ -660,7 +660,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_07",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_07",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500008,
@@ -673,7 +673,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_08",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_08",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500009,
@@ -686,7 +686,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_09",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_09",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500010,
@@ -699,7 +699,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_10",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_10",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500011,
@@ -712,7 +712,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_11",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_11",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500012,
@@ -725,7 +725,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_12",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_12",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500013,
@@ -738,7 +738,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_13",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_13",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500014,
@@ -751,7 +751,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_14",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_14",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500015,
@@ -764,7 +764,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_15",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_15",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500016,
@@ -777,7 +777,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_16",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_16",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500017,
@@ -790,7 +790,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_17",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_17",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500018,
@@ -803,7 +803,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_18",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_18",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500019,
@@ -816,7 +816,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_19",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_19",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500020,
@@ -829,7 +829,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_20",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_20",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500021,
@@ -842,7 +842,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_21",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_21",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500022,
@@ -855,7 +855,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_22",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_22",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500023,
@@ -868,7 +868,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_23",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_23",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500024,
@@ -881,7 +881,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_24",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_24",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500025,
@@ -894,7 +894,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_25",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_25",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500026,
@@ -907,7 +907,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_26",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_26",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500027,
@@ -920,7 +920,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_27",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_27",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500028,
@@ -933,7 +933,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_28",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_28",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500029,
@@ -946,7 +946,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_29",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_29",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500030,
@@ -959,7 +959,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_30",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_30",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500031,
@@ -972,7 +972,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_31",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_31",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500032,
@@ -985,7 +985,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_32",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_32",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500033,
@@ -998,7 +998,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_33",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_33",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500034,
@@ -1011,7 +1011,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_34",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_34",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500035,
@@ -1024,7 +1024,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_35",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_35",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500036,
@@ -1037,7 +1037,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_36",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_36",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500037,
@@ -1050,7 +1050,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_37",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_37",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500038,
@@ -1063,7 +1063,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_38",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_38",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500039,
@@ -1076,7 +1076,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_39",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_39",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500040,
@@ -1089,7 +1089,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_40",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_40",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500041,
@@ -1102,7 +1102,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_41",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_41",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500042,
@@ -1115,7 +1115,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_42",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_42",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500043,
@@ -1128,7 +1128,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_43",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_43",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500044,
@@ -1141,7 +1141,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_44",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_44",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500045,
@@ -1154,7 +1154,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_45",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_45",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500046,
@@ -1167,7 +1167,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_46",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_46",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 9500047,
@@ -1180,7 +1180,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0950_47",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0950_47",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 11000001,
@@ -1193,7 +1193,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1100_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1100_01",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 12600001,
@@ -1206,7 +1206,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_01",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 12600002,
@@ -1219,7 +1219,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_02",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 12600003,
@@ -1232,7 +1232,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_03",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 12600004,
@@ -1245,7 +1245,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_04",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_04",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 12600005,
@@ -1258,7 +1258,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_05",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_05",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 12600006,
@@ -1271,7 +1271,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_06",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_06",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 12600007,
@@ -1284,7 +1284,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_07",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_07",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 12600008,
@@ -1297,7 +1297,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_08",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_08",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 12600009,
@@ -1310,7 +1310,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_09",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_09",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 12600010,
@@ -1323,7 +1323,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_10",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_10",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 12600011,
@@ -1336,7 +1336,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_11",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_11",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 12600012,
@@ -1349,7 +1349,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_12",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_12",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 12600013,
@@ -1362,7 +1362,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_13",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_13",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 12600014,
@@ -1375,7 +1375,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_14",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_14",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 12600015,
@@ -1388,7 +1388,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_15",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_15",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 12600016,
@@ -1401,7 +1401,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_16",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_16",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 12600017,
@@ -1414,7 +1414,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_17",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_17",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 12600018,
@@ -1427,7 +1427,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_18",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_18",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 12600019,
@@ -1440,7 +1440,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_19",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_19",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 12600020,
@@ -1453,7 +1453,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_20",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_20",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 12600021,
@@ -1466,7 +1466,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_21",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_21",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 12600022,
@@ -1479,7 +1479,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_22",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_22",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 14400001,
@@ -1492,7 +1492,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1440_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1440_01",
     "ScheduleId": 2604402802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 15000001,
@@ -1505,7 +1505,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1500_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1500_01",
     "ScheduleId": 2511402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000001,
@@ -1518,7 +1518,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_01",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000002,
@@ -1531,7 +1531,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_02",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000003,
@@ -1544,7 +1544,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_03",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000004,
@@ -1557,7 +1557,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_04",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_04",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000005,
@@ -1570,7 +1570,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_05",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_05",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000006,
@@ -1583,7 +1583,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_06",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_06",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000007,
@@ -1596,7 +1596,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_07",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_07",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000008,
@@ -1609,7 +1609,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_08",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_08",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000009,
@@ -1622,7 +1622,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_09",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_09",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000010,
@@ -1635,7 +1635,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_10",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_10",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000011,
@@ -1648,7 +1648,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_11",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_11",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000012,
@@ -1661,7 +1661,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_12",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_12",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000013,
@@ -1674,7 +1674,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_13",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_13",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000014,
@@ -1687,7 +1687,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_14",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_14",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000015,
@@ -1700,7 +1700,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_15",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_15",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000016,
@@ -1713,7 +1713,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_16",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_16",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000017,
@@ -1726,7 +1726,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_17",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_17",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000018,
@@ -1739,7 +1739,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_18",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_18",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000019,
@@ -1752,7 +1752,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_19",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_19",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000020,
@@ -1765,7 +1765,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_20",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_20",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000021,
@@ -1778,7 +1778,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_21",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_21",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000022,
@@ -1791,7 +1791,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_22",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_22",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000023,
@@ -1804,7 +1804,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_23",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_23",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000024,
@@ -1817,7 +1817,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_24",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_24",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000025,
@@ -1830,7 +1830,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_25",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_25",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000026,
@@ -1843,7 +1843,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_26",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_26",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000027,
@@ -1856,7 +1856,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_27",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_27",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000028,
@@ -1869,7 +1869,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_28",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_28",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000029,
@@ -1882,7 +1882,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_29",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_29",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000030,
@@ -1895,7 +1895,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_30",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_30",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000031,
@@ -1908,7 +1908,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_31",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_31",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000032,
@@ -1921,7 +1921,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_32",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_32",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000033,
@@ -1934,7 +1934,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_33",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_33",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000034,
@@ -1947,7 +1947,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_34",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_34",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000035,
@@ -1960,7 +1960,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_35",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_35",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000036,
@@ -1973,7 +1973,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_36",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_36",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000037,
@@ -1986,7 +1986,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_37",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_37",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000038,
@@ -1999,7 +1999,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_38",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_38",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000039,
@@ -2012,7 +2012,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_39",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_39",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000040,
@@ -2025,7 +2025,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_40",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_40",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000041,
@@ -2038,7 +2038,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_41",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_41",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000042,
@@ -2051,7 +2051,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_42",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_42",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000043,
@@ -2064,7 +2064,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_43",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_43",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000044,
@@ -2077,7 +2077,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_44",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_44",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000045,
@@ -2090,7 +2090,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_45",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_45",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000046,
@@ -2103,7 +2103,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_46",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_46",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000047,
@@ -2116,7 +2116,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_47",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_47",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000048,
@@ -2129,7 +2129,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_48",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_48",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20000049,
@@ -2142,7 +2142,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_49",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_49",
     "ScheduleId": 2510502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000001,
@@ -2155,7 +2155,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_01",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000002,
@@ -2168,7 +2168,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_02",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000003,
@@ -2181,7 +2181,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_03",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000004,
@@ -2194,7 +2194,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_04",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_04",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000005,
@@ -2207,7 +2207,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_05",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_05",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000006,
@@ -2220,7 +2220,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_06",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_06",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000007,
@@ -2233,7 +2233,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_07",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_07",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000008,
@@ -2246,7 +2246,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_08",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_08",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000009,
@@ -2259,7 +2259,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_09",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_09",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000010,
@@ -2272,7 +2272,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_10",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_10",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000011,
@@ -2285,7 +2285,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_11",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_11",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000012,
@@ -2298,7 +2298,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_12",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_12",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000013,
@@ -2311,7 +2311,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_13",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_13",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000014,
@@ -2324,7 +2324,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_14",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_14",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000015,
@@ -2337,7 +2337,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_15",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_15",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000016,
@@ -2350,7 +2350,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_16",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_16",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000017,
@@ -2363,7 +2363,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_17",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_17",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000018,
@@ -2376,7 +2376,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_18",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_18",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000019,
@@ -2389,7 +2389,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_19",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_19",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000020,
@@ -2402,7 +2402,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_20",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_20",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000021,
@@ -2415,7 +2415,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_21",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_21",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000022,
@@ -2428,7 +2428,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_22",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_22",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000023,
@@ -2441,7 +2441,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_23",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_23",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000024,
@@ -2454,7 +2454,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_24",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_24",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000025,
@@ -2467,7 +2467,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_25",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_25",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000026,
@@ -2480,7 +2480,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_26",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_26",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000027,
@@ -2493,7 +2493,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_27",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_27",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000028,
@@ -2506,7 +2506,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_28",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_28",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000029,
@@ -2519,7 +2519,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_29",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_29",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000030,
@@ -2532,7 +2532,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_30",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_30",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000031,
@@ -2545,7 +2545,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_31",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_31",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000032,
@@ -2558,7 +2558,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_32",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_32",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000033,
@@ -2571,7 +2571,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_33",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_33",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000034,
@@ -2584,7 +2584,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_34",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_34",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000035,
@@ -2597,7 +2597,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_35",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_35",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000036,
@@ -2610,7 +2610,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_36",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_36",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000037,
@@ -2623,7 +2623,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_37",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_37",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000038,
@@ -2636,7 +2636,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_38",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_38",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000039,
@@ -2649,7 +2649,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_39",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_39",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000040,
@@ -2662,7 +2662,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_40",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_40",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000041,
@@ -2675,7 +2675,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_41",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_41",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000042,
@@ -2688,7 +2688,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_42",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_42",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000043,
@@ -2701,7 +2701,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_43",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_43",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000044,
@@ -2714,7 +2714,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_44",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_44",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000045,
@@ -2727,7 +2727,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_45",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_45",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000046,
@@ -2740,7 +2740,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_46",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_46",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000047,
@@ -2753,7 +2753,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_47",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_47",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000048,
@@ -2766,7 +2766,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_48",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_48",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21000049,
@@ -2779,7 +2779,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2100_49",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2100_49",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21900001,
@@ -2792,7 +2792,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2190_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2190_01",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21900002,
@@ -2805,7 +2805,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2190_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2190_02",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 21900003,
@@ -2818,7 +2818,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2190_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2190_03",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000001,
@@ -2831,7 +2831,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_01",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000002,
@@ -2844,7 +2844,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_02",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000003,
@@ -2857,7 +2857,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_03",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000004,
@@ -2870,7 +2870,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_04",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_04",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000005,
@@ -2883,7 +2883,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_05",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_05",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000006,
@@ -2896,7 +2896,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_06",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_06",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000007,
@@ -2909,7 +2909,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_07",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_07",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000008,
@@ -2922,7 +2922,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_08",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_08",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000009,
@@ -2935,7 +2935,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_09",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_09",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000010,
@@ -2948,7 +2948,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_10",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_10",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000011,
@@ -2961,7 +2961,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_11",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_11",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000012,
@@ -2974,7 +2974,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_12",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_12",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000013,
@@ -2987,7 +2987,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_13",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_13",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000014,
@@ -3000,7 +3000,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_14",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_14",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000015,
@@ -3013,7 +3013,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_15",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_15",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000016,
@@ -3026,7 +3026,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_16",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_16",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000017,
@@ -3039,7 +3039,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_17",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_17",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000018,
@@ -3052,7 +3052,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_18",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_18",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000019,
@@ -3065,7 +3065,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_19",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_19",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000020,
@@ -3078,7 +3078,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_20",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_20",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000021,
@@ -3091,7 +3091,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_21",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_21",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000022,
@@ -3104,7 +3104,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_22",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_22",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000023,
@@ -3117,7 +3117,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_23",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_23",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000024,
@@ -3130,7 +3130,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_24",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_24",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000025,
@@ -3143,7 +3143,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_25",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_25",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000026,
@@ -3156,7 +3156,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_26",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_26",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000027,
@@ -3169,7 +3169,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_27",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_27",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000028,
@@ -3182,7 +3182,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_28",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_28",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000029,
@@ -3195,7 +3195,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_29",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_29",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000030,
@@ -3208,7 +3208,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_30",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_30",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000031,
@@ -3221,7 +3221,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_31",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_31",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000032,
@@ -3234,7 +3234,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_32",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_32",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000033,
@@ -3247,7 +3247,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_33",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_33",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000034,
@@ -3260,7 +3260,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_34",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_34",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000035,
@@ -3273,7 +3273,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_35",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_35",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000036,
@@ -3286,7 +3286,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_36",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_36",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000037,
@@ -3299,7 +3299,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_37",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_37",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000038,
@@ -3312,7 +3312,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_38",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_38",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 23000039,
@@ -3325,7 +3325,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_39",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_39",
     "ScheduleId": 2601409901,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 30010001,
@@ -3338,7 +3338,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3001_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3001_01",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 30010002,
@@ -3351,7 +3351,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3001_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3001_02",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 30010003,
@@ -3364,7 +3364,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3001_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3001_03",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210001,
@@ -3377,7 +3377,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_01",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210002,
@@ -3390,7 +3390,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_02",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210003,
@@ -3403,7 +3403,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_03",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210004,
@@ -3416,7 +3416,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_04",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_04",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210005,
@@ -3429,7 +3429,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_05",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_05",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210006,
@@ -3442,7 +3442,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_06",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_06",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210007,
@@ -3455,7 +3455,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_07",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_07",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210008,
@@ -3468,7 +3468,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_08",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_08",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210009,
@@ -3481,7 +3481,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_09",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_09",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210010,
@@ -3494,7 +3494,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_10",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_10",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210011,
@@ -3507,7 +3507,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_11",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_11",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210012,
@@ -3520,7 +3520,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_12",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_12",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210013,
@@ -3533,7 +3533,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_13",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_13",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210014,
@@ -3546,7 +3546,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_14",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_14",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210015,
@@ -3559,7 +3559,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_15",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_15",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210016,
@@ -3572,7 +3572,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_16",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_16",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210017,
@@ -3585,7 +3585,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_17",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_17",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210018,
@@ -3598,7 +3598,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_18",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_18",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210019,
@@ -3611,7 +3611,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_19",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_19",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210020,
@@ -3624,7 +3624,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_20",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_20",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210021,
@@ -3637,7 +3637,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_21",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_21",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210022,
@@ -3650,7 +3650,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_22",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_22",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210023,
@@ -3663,7 +3663,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_23",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_23",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210024,
@@ -3676,7 +3676,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_24",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_24",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210025,
@@ -3689,7 +3689,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_25",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_25",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210026,
@@ -3702,7 +3702,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_26",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_26",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210027,
@@ -3715,7 +3715,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_27",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_27",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210028,
@@ -3728,7 +3728,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_28",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_28",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210029,
@@ -3741,7 +3741,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_29",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_29",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210030,
@@ -3754,7 +3754,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_30",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_30",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210031,
@@ -3767,7 +3767,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_31",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_31",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210032,
@@ -3780,7 +3780,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_32",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_32",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210033,
@@ -3793,7 +3793,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_33",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_33",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210034,
@@ -3806,7 +3806,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_34",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_34",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210035,
@@ -3819,7 +3819,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_35",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_35",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210036,
@@ -3832,7 +3832,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_36",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_36",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210037,
@@ -3845,7 +3845,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_37",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_37",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210038,
@@ -3858,7 +3858,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_38",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_38",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210039,
@@ -3871,7 +3871,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_39",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_39",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210040,
@@ -3884,7 +3884,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_40",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_40",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210041,
@@ -3897,7 +3897,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_41",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_41",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210042,
@@ -3910,7 +3910,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_42",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_42",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210043,
@@ -3923,7 +3923,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_43",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_43",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210044,
@@ -3936,7 +3936,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_44",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_44",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210045,
@@ -3949,7 +3949,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_45",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_45",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210046,
@@ -3962,7 +3962,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_46",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_46",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210047,
@@ -3975,7 +3975,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_47",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_47",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210048,
@@ -3988,7 +3988,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_48",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_48",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210049,
@@ -4001,7 +4001,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_49",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_49",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33210050,
@@ -4014,7 +4014,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3321_50",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3321_50",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33220001,
@@ -4027,7 +4027,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3322_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3322_01",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33220002,
@@ -4040,7 +4040,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3322_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3322_02",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33220003,
@@ -4053,7 +4053,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3322_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3322_03",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33220004,
@@ -4066,7 +4066,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3322_04",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3322_04",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 33600001,
@@ -4079,7 +4079,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3360_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3360_01",
     "ScheduleId": 2606102801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37000001,
@@ -4092,7 +4092,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3700_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3700_01",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37000002,
@@ -4105,7 +4105,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3700_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3700_02",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37000003,
@@ -4118,7 +4118,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3700_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3700_03",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37000004,
@@ -4131,7 +4131,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3700_04",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3700_04",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37000005,
@@ -4144,7 +4144,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3700_05",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3700_05",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37000006,
@@ -4157,7 +4157,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3700_06",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3700_06",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37000007,
@@ -4170,7 +4170,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3700_07",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3700_07",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37000008,
@@ -4183,7 +4183,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3700_08",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3700_08",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37000009,
@@ -4196,7 +4196,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3700_09",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3700_09",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37000010,
@@ -4209,7 +4209,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3700_10",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3700_10",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37000011,
@@ -4222,7 +4222,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3700_11",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3700_11",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37000012,
@@ -4235,7 +4235,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3700_12",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3700_12",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37000013,
@@ -4248,7 +4248,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3700_13",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3700_13",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37000014,
@@ -4261,7 +4261,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3700_14",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3700_14",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37000015,
@@ -4274,7 +4274,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3700_15",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3700_15",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37000016,
@@ -4287,7 +4287,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3700_16",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3700_16",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37000017,
@@ -4300,7 +4300,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3700_17",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3700_17",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37000018,
@@ -4313,7 +4313,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3700_18",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3700_18",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37000019,
@@ -4326,7 +4326,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3700_19",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3700_19",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37000020,
@@ -4339,7 +4339,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3700_20",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3700_20",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37000021,
@@ -4352,7 +4352,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3700_21",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3700_21",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37000022,
@@ -4365,7 +4365,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3700_22",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3700_22",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37000023,
@@ -4378,7 +4378,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3700_23",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3700_23",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37000024,
@@ -4391,7 +4391,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3700_24",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3700_24",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37000025,
@@ -4404,7 +4404,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3700_25",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3700_25",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37010001,
@@ -4417,7 +4417,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3701_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3701_01",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37010002,
@@ -4430,7 +4430,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3701_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3701_02",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37010003,
@@ -4443,7 +4443,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3701_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3701_03",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37010004,
@@ -4456,7 +4456,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3701_04",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3701_04",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37010005,
@@ -4469,7 +4469,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3701_05",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3701_05",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37010006,
@@ -4482,7 +4482,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3701_06",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3701_06",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37010007,
@@ -4495,7 +4495,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3701_07",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3701_07",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37010008,
@@ -4508,7 +4508,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3701_08",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3701_08",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37010009,
@@ -4521,7 +4521,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3701_09",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3701_09",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37010010,
@@ -4534,7 +4534,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3701_10",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3701_10",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37010011,
@@ -4547,7 +4547,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3701_11",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3701_11",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37010012,
@@ -4560,7 +4560,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3701_12",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3701_12",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37010013,
@@ -4573,7 +4573,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3701_13",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3701_13",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37010014,
@@ -4586,7 +4586,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3701_14",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3701_14",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37010015,
@@ -4599,7 +4599,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3701_15",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3701_15",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37010016,
@@ -4612,7 +4612,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3701_16",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3701_16",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37010017,
@@ -4625,7 +4625,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3701_17",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3701_17",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37010018,
@@ -4638,7 +4638,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3701_18",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3701_18",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37010019,
@@ -4651,7 +4651,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3701_19",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3701_19",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37010020,
@@ -4664,7 +4664,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3701_20",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3701_20",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37010021,
@@ -4677,7 +4677,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3701_21",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3701_21",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37010022,
@@ -4690,7 +4690,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3701_22",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3701_22",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37010023,
@@ -4703,7 +4703,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3701_23",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3701_23",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37010024,
@@ -4716,7 +4716,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3701_24",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3701_24",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 37010025,
@@ -4729,7 +4729,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_3701_25",
     "LargeThumbnailResourceId": "thum_anime_ep_l_3701_25",
     "ScheduleId": 2603502801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000001,
@@ -4742,7 +4742,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_01",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000002,
@@ -4755,7 +4755,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_02",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000003,
@@ -4768,7 +4768,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_03",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000004,
@@ -4781,7 +4781,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_04",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_04",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000005,
@@ -4794,7 +4794,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_05",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_05",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000006,
@@ -4807,7 +4807,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_06",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_06",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000007,
@@ -4820,7 +4820,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_07",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_07",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000008,
@@ -4833,7 +4833,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_08",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_08",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000009,
@@ -4846,7 +4846,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_09",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_09",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000010,
@@ -4859,7 +4859,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_10",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_10",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000011,
@@ -4872,7 +4872,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_11",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_11",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000012,
@@ -4885,7 +4885,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_12",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_12",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000013,
@@ -4898,7 +4898,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_13",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_13",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000014,
@@ -4911,7 +4911,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_14",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_14",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000015,
@@ -4924,7 +4924,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_15",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_15",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000016,
@@ -4937,7 +4937,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_16",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_16",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000017,
@@ -4950,7 +4950,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_17",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_17",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000018,
@@ -4963,7 +4963,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_18",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_18",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000019,
@@ -4976,7 +4976,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_19",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_19",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000020,
@@ -4989,7 +4989,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_20",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_20",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000021,
@@ -5002,7 +5002,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_21",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_21",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000022,
@@ -5015,7 +5015,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_22",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_22",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000023,
@@ -5028,7 +5028,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_23",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_23",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000024,
@@ -5041,7 +5041,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_24",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_24",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000025,
@@ -5054,7 +5054,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_25",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_25",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000026,
@@ -5067,7 +5067,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_26",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_26",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000027,
@@ -5080,7 +5080,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_27",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_27",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000028,
@@ -5093,7 +5093,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_28",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_28",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000029,
@@ -5106,7 +5106,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_29",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_29",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000030,
@@ -5119,7 +5119,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_30",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_30",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000031,
@@ -5132,7 +5132,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_31",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_31",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000032,
@@ -5145,7 +5145,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_32",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_32",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000033,
@@ -5158,7 +5158,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_33",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_33",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000034,
@@ -5171,7 +5171,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_34",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_34",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000035,
@@ -5184,7 +5184,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_35",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_35",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000036,
@@ -5197,7 +5197,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_36",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_36",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000037,
@@ -5210,7 +5210,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_37",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_37",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000038,
@@ -5223,7 +5223,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_38",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_38",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000039,
@@ -5236,7 +5236,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_39",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_39",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000040,
@@ -5249,7 +5249,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_40",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_40",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000041,
@@ -5262,7 +5262,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_41",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_41",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000042,
@@ -5275,7 +5275,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_42",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_42",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000043,
@@ -5288,7 +5288,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_43",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_43",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000044,
@@ -5301,7 +5301,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_44",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_44",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000045,
@@ -5314,7 +5314,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_45",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_45",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000046,
@@ -5327,7 +5327,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_46",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_46",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000047,
@@ -5340,7 +5340,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_47",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_47",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000048,
@@ -5353,7 +5353,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_48",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_48",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 40000049,
@@ -5366,7 +5366,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4000_49",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4000_49",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43000001,
@@ -5379,7 +5379,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_01",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43000002,
@@ -5392,7 +5392,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_02",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43000003,
@@ -5405,7 +5405,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_03",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43000004,
@@ -5418,7 +5418,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_04",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_04",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43000005,
@@ -5431,7 +5431,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_05",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_05",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43000006,
@@ -5444,7 +5444,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_06",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_06",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43000007,
@@ -5457,7 +5457,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_07",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_07",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43000008,
@@ -5470,7 +5470,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_08",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_08",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43000009,
@@ -5483,7 +5483,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_09",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_09",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43000010,
@@ -5496,7 +5496,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_10",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_10",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43000011,
@@ -5509,7 +5509,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_11",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_11",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43000012,
@@ -5522,7 +5522,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_12",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_12",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43000013,
@@ -5535,7 +5535,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_13",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_13",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43000014,
@@ -5548,7 +5548,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_14",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_14",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43000015,
@@ -5561,7 +5561,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_15",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_15",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43000016,
@@ -5574,7 +5574,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_16",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_16",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43000017,
@@ -5587,7 +5587,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_17",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_17",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43000018,
@@ -5600,7 +5600,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_18",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_18",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43000019,
@@ -5613,7 +5613,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_19",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_19",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43000020,
@@ -5626,7 +5626,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_20",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_20",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43000021,
@@ -5639,7 +5639,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_21",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_21",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43000022,
@@ -5652,7 +5652,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_22",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_22",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43000023,
@@ -5665,7 +5665,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_23",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_23",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43000024,
@@ -5678,7 +5678,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_24",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_24",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43000025,
@@ -5691,7 +5691,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_25",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_25",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43010001,
@@ -5704,7 +5704,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_01",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43010002,
@@ -5717,7 +5717,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_02",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43010003,
@@ -5730,7 +5730,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_03",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43010004,
@@ -5743,7 +5743,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_04",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_04",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43010005,
@@ -5756,7 +5756,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_05",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_05",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43010006,
@@ -5769,7 +5769,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_06",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_06",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43010007,
@@ -5782,7 +5782,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_07",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_07",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43010008,
@@ -5795,7 +5795,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_08",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_08",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43010009,
@@ -5808,7 +5808,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_09",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_09",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43010010,
@@ -5821,7 +5821,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_10",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_10",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43010011,
@@ -5834,7 +5834,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_11",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_11",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43010012,
@@ -5847,7 +5847,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_12",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_12",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43010013,
@@ -5860,7 +5860,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_13",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_13",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43010014,
@@ -5873,7 +5873,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_14",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_14",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43010015,
@@ -5886,7 +5886,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_15",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_15",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43010016,
@@ -5899,7 +5899,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_16",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_16",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43010017,
@@ -5912,7 +5912,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_17",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_17",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43010018,
@@ -5925,7 +5925,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_18",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_18",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43010019,
@@ -5938,7 +5938,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_19",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_19",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43010020,
@@ -5951,7 +5951,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_20",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_20",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43010021,
@@ -5964,7 +5964,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_21",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_21",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43010022,
@@ -5977,7 +5977,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_22",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_22",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43010023,
@@ -5990,7 +5990,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_23",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_23",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43010024,
@@ -6003,7 +6003,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_24",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_24",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 43010025,
@@ -6016,7 +6016,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_25",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_25",
     "ScheduleId": 2510802801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 50100001,
@@ -6029,7 +6029,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_01",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 50100002,
@@ -6042,7 +6042,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_02",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 50100003,
@@ -6055,7 +6055,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_03",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 50100004,
@@ -6068,7 +6068,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_04",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_04",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 50100005,
@@ -6081,7 +6081,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_05",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_05",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 50100006,
@@ -6094,7 +6094,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_06",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_06",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 50100007,
@@ -6107,7 +6107,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_07",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_07",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 50100008,
@@ -6120,7 +6120,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_08",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_08",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 50100009,
@@ -6133,7 +6133,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_09",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_09",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 50100010,
@@ -6146,7 +6146,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_10",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_10",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 50100011,
@@ -6159,7 +6159,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_11",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_11",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 50100012,
@@ -6172,7 +6172,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_12",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_12",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 50100013,
@@ -6185,7 +6185,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_13",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_13",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 50100014,
@@ -6198,7 +6198,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_14",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_14",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 50100015,
@@ -6211,7 +6211,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_15",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_15",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 50100016,
@@ -6224,7 +6224,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_16",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_16",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 50100017,
@@ -6237,7 +6237,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_17",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_17",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 50100018,
@@ -6250,7 +6250,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_18",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_18",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 50100019,
@@ -6263,7 +6263,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_19",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_19",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 50100020,
@@ -6276,7 +6276,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_20",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_20",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 50100021,
@@ -6289,7 +6289,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_21",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_21",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 50100022,
@@ -6302,7 +6302,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_22",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_22",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 50100023,
@@ -6315,7 +6315,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_23",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_23",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 50100024,
@@ -6328,7 +6328,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_24",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_24",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 50100025,
@@ -6341,7 +6341,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_25",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_25",
     "ScheduleId": 2512302802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 100110001,
@@ -6354,7 +6354,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0011_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0011_01",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 100120001,
@@ -6367,7 +6367,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0012_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0012_01",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 100200001,
@@ -6380,7 +6380,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0020_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0020_01",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 100900001,
@@ -6393,7 +6393,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0090_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0090_01",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 100900002,
@@ -6406,7 +6406,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0090_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0090_02",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 100900003,
@@ -6419,7 +6419,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0090_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0090_03",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 101300001,
@@ -6432,7 +6432,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0130_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0130_01",
     "ScheduleId": 2606102802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 101300002,
@@ -6445,7 +6445,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0130_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0130_02",
     "ScheduleId": 2606102802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 101300003,
@@ -6458,7 +6458,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0130_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0130_03",
     "ScheduleId": 2606102802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 101300004,
@@ -6471,7 +6471,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0130_04",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0130_04",
     "ScheduleId": 2606102802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 101300005,
@@ -6484,7 +6484,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0130_05",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0130_05",
     "ScheduleId": 2606102802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 101300006,
@@ -6497,7 +6497,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0130_06",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0130_06",
     "ScheduleId": 2606102802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 101300007,
@@ -6510,7 +6510,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0130_07",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0130_07",
     "ScheduleId": 2606102802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 101300008,
@@ -6523,7 +6523,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0130_08",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0130_08",
     "ScheduleId": 2606102802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 101300009,
@@ -6536,7 +6536,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0130_09",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0130_09",
     "ScheduleId": 2606102802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 101300010,
@@ -6549,7 +6549,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0130_10",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0130_10",
     "ScheduleId": 2606102802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 101300011,
@@ -6562,7 +6562,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0130_11",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0130_11",
     "ScheduleId": 2606102802,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 101700001,
@@ -6575,7 +6575,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0170_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0170_01",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 101700002,
@@ -6588,7 +6588,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0170_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0170_02",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 101700003,
@@ -6601,7 +6601,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0170_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0170_03",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 101700004,
@@ -6614,7 +6614,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0170_04",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0170_04",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 101700005,
@@ -6627,7 +6627,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0170_05",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0170_05",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 101700006,
@@ -6640,7 +6640,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0170_06",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0170_06",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 106000001,
@@ -6653,7 +6653,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_01",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 106000002,
@@ -6666,7 +6666,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_02",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 106000003,
@@ -6679,7 +6679,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_03",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 106000004,
@@ -6692,7 +6692,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_04",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_04",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 106000005,
@@ -6705,7 +6705,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_05",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_05",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 106000006,
@@ -6718,7 +6718,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_06",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_06",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 106000007,
@@ -6731,7 +6731,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_07",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_07",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 106000008,
@@ -6744,7 +6744,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_08",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_08",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 106000009,
@@ -6757,7 +6757,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_09",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_09",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 106000010,
@@ -6770,7 +6770,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_10",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_10",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 106000011,
@@ -6783,7 +6783,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_11",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_11",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 106000012,
@@ -6796,7 +6796,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_12",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_12",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 106000013,
@@ -6809,7 +6809,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0600_13",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0600_13",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 108010001,
@@ -6822,7 +6822,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0801_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0801_01",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 108020001,
@@ -6835,7 +6835,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0802_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0802_01",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 108030001,
@@ -6848,7 +6848,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_0803_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_0803_01",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 111000001,
@@ -6861,7 +6861,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1100_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1100_01",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 112600001,
@@ -6874,7 +6874,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_01",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 112600002,
@@ -6887,7 +6887,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_02",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 112600003,
@@ -6900,7 +6900,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_03",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 112600004,
@@ -6913,7 +6913,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_04",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_04",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 112600005,
@@ -6926,7 +6926,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_05",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_05",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 112600006,
@@ -6939,7 +6939,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_06",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_06",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 112600007,
@@ -6952,7 +6952,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_07",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_07",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 112600008,
@@ -6965,7 +6965,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_08",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_08",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 112600009,
@@ -6978,7 +6978,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_09",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_09",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 112600010,
@@ -6991,7 +6991,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_10",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_10",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 112600011,
@@ -7004,7 +7004,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_11",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_11",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 112600012,
@@ -7017,7 +7017,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_12",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_12",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 112600013,
@@ -7030,7 +7030,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_13",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_13",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 112600014,
@@ -7043,7 +7043,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_14",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_14",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 112600015,
@@ -7056,7 +7056,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_15",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_15",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 112600016,
@@ -7069,7 +7069,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_16",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_16",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 112600017,
@@ -7082,7 +7082,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_17",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_17",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 112600018,
@@ -7095,7 +7095,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_18",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_18",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 112600019,
@@ -7108,7 +7108,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_19",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_19",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 112600020,
@@ -7121,7 +7121,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_20",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_20",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 112600021,
@@ -7134,7 +7134,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_21",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_21",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 112600022,
@@ -7147,7 +7147,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_1250_22",
     "LargeThumbnailResourceId": "thum_anime_ep_l_1250_22",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000001,
@@ -7160,7 +7160,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_01",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000002,
@@ -7173,7 +7173,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_02",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000003,
@@ -7186,7 +7186,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_03",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000004,
@@ -7199,7 +7199,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_04",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_04",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000005,
@@ -7212,7 +7212,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_05",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_05",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000006,
@@ -7225,7 +7225,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_06",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_06",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000007,
@@ -7238,7 +7238,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_07",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_07",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000008,
@@ -7251,7 +7251,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_08",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_08",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000009,
@@ -7264,7 +7264,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_09",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_09",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000010,
@@ -7277,7 +7277,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_10",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_10",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000011,
@@ -7290,7 +7290,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_11",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_11",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000012,
@@ -7303,7 +7303,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_12",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_12",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000013,
@@ -7316,7 +7316,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_13",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_13",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000014,
@@ -7329,7 +7329,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_14",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_14",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000015,
@@ -7342,7 +7342,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_15",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_15",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000016,
@@ -7355,7 +7355,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_16",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_16",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000017,
@@ -7368,7 +7368,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_17",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_17",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000018,
@@ -7381,7 +7381,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_18",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_18",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000019,
@@ -7394,7 +7394,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_19",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_19",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000020,
@@ -7407,7 +7407,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_20",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_20",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000021,
@@ -7420,7 +7420,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_21",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_21",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000022,
@@ -7433,7 +7433,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_22",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_22",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000023,
@@ -7446,7 +7446,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_23",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_23",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000024,
@@ -7459,7 +7459,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_24",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_24",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000025,
@@ -7472,7 +7472,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_25",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_25",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000026,
@@ -7485,7 +7485,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_26",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_26",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000027,
@@ -7498,7 +7498,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_27",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_27",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000028,
@@ -7511,7 +7511,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_28",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_28",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000029,
@@ -7524,7 +7524,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_29",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_29",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000030,
@@ -7537,7 +7537,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_30",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_30",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000031,
@@ -7550,7 +7550,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_31",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_31",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000032,
@@ -7563,7 +7563,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_32",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_32",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000033,
@@ -7576,7 +7576,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_33",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_33",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000034,
@@ -7589,7 +7589,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_34",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_34",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000035,
@@ -7602,7 +7602,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_35",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_35",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000036,
@@ -7615,7 +7615,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_36",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_36",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000037,
@@ -7628,7 +7628,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_37",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_37",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000038,
@@ -7641,7 +7641,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_38",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_38",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000039,
@@ -7654,7 +7654,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_39",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_39",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000040,
@@ -7667,7 +7667,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_40",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_40",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000041,
@@ -7680,7 +7680,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_41",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_41",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000042,
@@ -7693,7 +7693,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_42",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_42",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000043,
@@ -7706,7 +7706,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_43",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_43",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000044,
@@ -7719,7 +7719,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_44",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_44",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000045,
@@ -7732,7 +7732,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_45",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_45",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000046,
@@ -7745,7 +7745,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_46",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_46",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000047,
@@ -7758,7 +7758,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_47",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_47",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000048,
@@ -7771,7 +7771,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_48",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_48",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 120000049,
@@ -7784,7 +7784,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2000_49",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2000_49",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000001,
@@ -7797,7 +7797,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_01",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000002,
@@ -7810,7 +7810,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_02",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000003,
@@ -7823,7 +7823,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_03",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000004,
@@ -7836,7 +7836,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_04",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_04",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000005,
@@ -7849,7 +7849,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_05",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_05",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000006,
@@ -7862,7 +7862,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_06",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_06",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000007,
@@ -7875,7 +7875,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_07",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_07",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000008,
@@ -7888,7 +7888,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_08",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_08",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000009,
@@ -7901,7 +7901,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_09",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_09",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000010,
@@ -7914,7 +7914,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_10",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_10",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000011,
@@ -7927,7 +7927,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_11",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_11",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000012,
@@ -7940,7 +7940,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_12",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_12",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000013,
@@ -7953,7 +7953,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_13",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_13",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000014,
@@ -7966,7 +7966,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_14",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_14",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000015,
@@ -7979,7 +7979,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_15",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_15",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000016,
@@ -7992,7 +7992,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_16",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_16",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000017,
@@ -8005,7 +8005,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_17",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_17",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000018,
@@ -8018,7 +8018,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_18",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_18",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000019,
@@ -8031,7 +8031,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_19",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_19",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000020,
@@ -8044,7 +8044,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_20",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_20",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000021,
@@ -8057,7 +8057,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_21",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_21",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000022,
@@ -8070,7 +8070,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_22",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_22",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000023,
@@ -8083,7 +8083,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_23",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_23",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000024,
@@ -8096,7 +8096,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_24",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_24",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000025,
@@ -8109,7 +8109,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_25",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_25",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000026,
@@ -8122,7 +8122,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_26",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_26",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000027,
@@ -8135,7 +8135,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_27",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_27",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000028,
@@ -8148,7 +8148,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_28",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_28",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000029,
@@ -8161,7 +8161,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_29",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_29",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000030,
@@ -8174,7 +8174,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_30",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_30",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000031,
@@ -8187,7 +8187,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_31",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_31",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000032,
@@ -8200,7 +8200,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_32",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_32",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000033,
@@ -8213,7 +8213,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_33",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_33",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000034,
@@ -8226,7 +8226,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_34",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_34",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000035,
@@ -8239,7 +8239,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_35",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_35",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000036,
@@ -8252,7 +8252,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_36",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_36",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000037,
@@ -8265,7 +8265,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_37",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_37",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000038,
@@ -8278,7 +8278,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_38",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_38",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 123000039,
@@ -8291,7 +8291,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_2300_39",
     "LargeThumbnailResourceId": "thum_anime_ep_l_2300_39",
     "ScheduleId": 2604402801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143000001,
@@ -8304,7 +8304,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_01",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143000002,
@@ -8317,7 +8317,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_02",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143000003,
@@ -8330,7 +8330,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_03",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143000004,
@@ -8343,7 +8343,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_04",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_04",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143000005,
@@ -8356,7 +8356,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_05",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_05",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143000006,
@@ -8369,7 +8369,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_06",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_06",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143000007,
@@ -8382,7 +8382,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_07",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_07",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143000008,
@@ -8395,7 +8395,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_08",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_08",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143000009,
@@ -8408,7 +8408,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_09",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_09",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143000010,
@@ -8421,7 +8421,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_10",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_10",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143000011,
@@ -8434,7 +8434,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_11",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_11",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143000012,
@@ -8447,7 +8447,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_12",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_12",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143000013,
@@ -8460,7 +8460,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_13",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_13",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143000014,
@@ -8473,7 +8473,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_14",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_14",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143000015,
@@ -8486,7 +8486,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_15",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_15",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143000016,
@@ -8499,7 +8499,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_16",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_16",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143000017,
@@ -8512,7 +8512,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_17",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_17",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143000018,
@@ -8525,7 +8525,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_18",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_18",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143000019,
@@ -8538,7 +8538,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_19",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_19",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143000020,
@@ -8551,7 +8551,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_20",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_20",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143000021,
@@ -8564,7 +8564,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_21",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_21",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143000022,
@@ -8577,7 +8577,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_22",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_22",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143000023,
@@ -8590,7 +8590,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_23",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_23",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143000024,
@@ -8603,7 +8603,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_24",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_24",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143000025,
@@ -8616,7 +8616,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4300_25",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4300_25",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143010001,
@@ -8629,7 +8629,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_01",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143010002,
@@ -8642,7 +8642,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_02",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143010003,
@@ -8655,7 +8655,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_03",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143010004,
@@ -8668,7 +8668,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_04",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_04",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143010005,
@@ -8681,7 +8681,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_05",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_05",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143010006,
@@ -8694,7 +8694,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_06",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_06",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143010007,
@@ -8707,7 +8707,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_07",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_07",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143010008,
@@ -8720,7 +8720,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_08",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_08",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143010009,
@@ -8733,7 +8733,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_09",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_09",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143010010,
@@ -8746,7 +8746,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_10",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_10",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143010011,
@@ -8759,7 +8759,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_11",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_11",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143010012,
@@ -8772,7 +8772,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_12",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_12",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143010013,
@@ -8785,7 +8785,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_13",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_13",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143010014,
@@ -8798,7 +8798,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_14",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_14",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143010015,
@@ -8811,7 +8811,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_15",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_15",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143010016,
@@ -8824,7 +8824,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_16",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_16",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143010017,
@@ -8837,7 +8837,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_17",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_17",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143010018,
@@ -8850,7 +8850,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_18",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_18",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143010019,
@@ -8863,7 +8863,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_19",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_19",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143010020,
@@ -8876,7 +8876,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_20",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_20",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143010021,
@@ -8889,7 +8889,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_21",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_21",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143010022,
@@ -8902,7 +8902,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_22",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_22",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143010023,
@@ -8915,7 +8915,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_23",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_23",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143010024,
@@ -8928,7 +8928,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_24",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_24",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 143010025,
@@ -8941,7 +8941,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_4301_25",
     "LargeThumbnailResourceId": "thum_anime_ep_l_4301_25",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 150100001,
@@ -8954,7 +8954,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_01",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_01",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 150100002,
@@ -8967,7 +8967,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_02",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_02",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 150100003,
@@ -8980,7 +8980,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_03",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_03",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 150100004,
@@ -8993,7 +8993,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_04",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_04",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 150100005,
@@ -9006,7 +9006,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_05",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_05",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 150100006,
@@ -9019,7 +9019,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_06",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_06",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 150100007,
@@ -9032,7 +9032,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_07",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_07",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 150100008,
@@ -9045,7 +9045,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_08",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_08",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 150100009,
@@ -9058,7 +9058,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_09",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_09",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 150100010,
@@ -9071,7 +9071,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_10",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_10",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 150100011,
@@ -9084,7 +9084,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_11",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_11",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 150100012,
@@ -9097,7 +9097,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_12",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_12",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 150100013,
@@ -9110,7 +9110,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_13",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_13",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 150100014,
@@ -9123,7 +9123,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_14",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_14",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 150100015,
@@ -9136,7 +9136,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_15",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_15",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 150100016,
@@ -9149,7 +9149,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_16",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_16",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 150100017,
@@ -9162,7 +9162,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_17",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_17",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 150100018,
@@ -9175,7 +9175,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_18",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_18",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 150100019,
@@ -9188,7 +9188,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_19",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_19",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 150100020,
@@ -9201,7 +9201,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_20",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_20",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 150100021,
@@ -9214,7 +9214,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_21",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_21",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 150100022,
@@ -9227,7 +9227,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_22",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_22",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 150100023,
@@ -9240,7 +9240,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_23",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_23",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 150100024,
@@ -9253,7 +9253,7 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_24",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_24",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 150100025,
@@ -9266,6 +9266,6 @@
     "SmallThumbnailResourceId": "thum_anime_ep_l_5010_25",
     "LargeThumbnailResourceId": "thum_anime_ep_l_5010_25",
     "ScheduleId": 2604302801,
-    "Unknown_Col_10": 0
+    "SwitchScheduleId": 0
   }
 ]

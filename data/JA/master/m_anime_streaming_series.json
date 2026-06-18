@@ -8,7 +8,7 @@
     "SortOrder": 9600011,
     "ScheduleId": 2512302802,
     "ThumbnailResourceId": "thum_anime_top_0011_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 12,
@@ -19,7 +19,7 @@
     "SortOrder": 9600012,
     "ScheduleId": 2512302802,
     "ThumbnailResourceId": "thum_anime_top_0012_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 20,
@@ -30,7 +30,7 @@
     "SortOrder": 9500020,
     "ScheduleId": 2512302802,
     "ThumbnailResourceId": "thum_anime_top_0020_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 90,
@@ -41,7 +41,7 @@
     "SortOrder": 9400090,
     "ScheduleId": 2601102801,
     "ThumbnailResourceId": "thum_anime_top_0090_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 91,
@@ -52,7 +52,7 @@
     "SortOrder": 9100090,
     "ScheduleId": 2604302801,
     "ThumbnailResourceId": "thum_anime_top_0091_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 130,
@@ -63,7 +63,7 @@
     "SortOrder": 9300130,
     "ScheduleId": 2602402801,
     "ThumbnailResourceId": "thum_anime_top_0130_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 170,
@@ -74,7 +74,7 @@
     "SortOrder": 9800170,
     "ScheduleId": 2512302801,
     "ThumbnailResourceId": "thum_anime_top_0170_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 320,
@@ -85,7 +85,7 @@
     "SortOrder": 8800320,
     "ScheduleId": 2604502801,
     "ThumbnailResourceId": "thum_anime_top_0320_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 330,
@@ -96,7 +96,7 @@
     "SortOrder": 8800330,
     "ScheduleId": 2604502801,
     "ThumbnailResourceId": "thum_anime_top_0330_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 600,
@@ -107,7 +107,7 @@
     "SortOrder": 10000600,
     "ScheduleId": 2510502801,
     "ThumbnailResourceId": "thum_anime_top_0600_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 801,
@@ -118,7 +118,7 @@
     "SortOrder": 9600811,
     "ScheduleId": 2512302802,
     "ThumbnailResourceId": "thum_anime_top_0801_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 802,
@@ -129,7 +129,7 @@
     "SortOrder": 9600812,
     "ScheduleId": 2512302802,
     "ThumbnailResourceId": "thum_anime_top_0802_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 803,
@@ -140,7 +140,7 @@
     "SortOrder": 9600813,
     "ScheduleId": 2512302802,
     "ThumbnailResourceId": "thum_anime_top_0803_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 950,
@@ -151,7 +151,7 @@
     "SortOrder": 9100950,
     "ScheduleId": 2604302801,
     "ThumbnailResourceId": "thum_anime_top_0950_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 1100,
@@ -162,7 +162,7 @@
     "SortOrder": 9701100,
     "ScheduleId": 2512302802,
     "ThumbnailResourceId": "thum_anime_top_1100_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 1260,
@@ -173,7 +173,7 @@
     "SortOrder": 10001260,
     "ScheduleId": 2510502801,
     "ThumbnailResourceId": "thum_anime_top_1250_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 1440,
@@ -184,7 +184,7 @@
     "SortOrder": 9001440,
     "ScheduleId": 2604402802,
     "ThumbnailResourceId": "thum_anime_top_1440_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 1500,
@@ -195,7 +195,7 @@
     "SortOrder": 9801500,
     "ScheduleId": 2511402801,
     "ThumbnailResourceId": "thum_anime_top_1500_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 2000,
@@ -206,7 +206,7 @@
     "SortOrder": 10002000,
     "ScheduleId": 2510502801,
     "ThumbnailResourceId": "thum_anime_top_2000_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 2100,
@@ -217,7 +217,7 @@
     "SortOrder": 9102100,
     "ScheduleId": 2604302801,
     "ThumbnailResourceId": "thum_anime_top_2100_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 2190,
@@ -228,7 +228,7 @@
     "SortOrder": 9202190,
     "ScheduleId": 2603502801,
     "ThumbnailResourceId": "thum_anime_top_2190_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 2300,
@@ -239,7 +239,7 @@
     "SortOrder": 9400050,
     "ScheduleId": 2601409901,
     "ThumbnailResourceId": "thum_anime_top_2300_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 3001,
@@ -250,7 +250,7 @@
     "SortOrder": 9103001,
     "ScheduleId": 2604302801,
     "ThumbnailResourceId": "thum_anime_top_3001_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 3321,
@@ -261,7 +261,7 @@
     "SortOrder": 9703321,
     "ScheduleId": 2512302802,
     "ThumbnailResourceId": "thum_anime_top_3321_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 3322,
@@ -272,7 +272,7 @@
     "SortOrder": 9103322,
     "ScheduleId": 2604302801,
     "ThumbnailResourceId": "thum_anime_top_3322_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 3360,
@@ -283,7 +283,7 @@
     "SortOrder": 8703360,
     "ScheduleId": 2606102801,
     "ThumbnailResourceId": "thum_anime_top_3360_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 3700,
@@ -294,7 +294,7 @@
     "SortOrder": 9203700,
     "ScheduleId": 2603502801,
     "ThumbnailResourceId": "thum_anime_top_3700_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 3701,
@@ -305,7 +305,7 @@
     "SortOrder": 9203701,
     "ScheduleId": 2603502801,
     "ThumbnailResourceId": "thum_anime_top_3701_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 4000,
@@ -316,7 +316,7 @@
     "SortOrder": 9104000,
     "ScheduleId": 2604302801,
     "ThumbnailResourceId": "thum_anime_top_4000_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 4300,
@@ -327,7 +327,7 @@
     "SortOrder": 9904300,
     "ScheduleId": 2510802801,
     "ThumbnailResourceId": "thum_anime_top_4300_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 4301,
@@ -338,7 +338,7 @@
     "SortOrder": 9904301,
     "ScheduleId": 2510802801,
     "ThumbnailResourceId": "thum_anime_top_4301_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 5010,
@@ -349,7 +349,7 @@
     "SortOrder": 9705010,
     "ScheduleId": 2512302802,
     "ThumbnailResourceId": "thum_anime_top_5010_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 10011,
@@ -360,7 +360,7 @@
     "SortOrder": 9100011,
     "ScheduleId": 2604302801,
     "ThumbnailResourceId": "thum_anime_top_0011_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 10012,
@@ -371,7 +371,7 @@
     "SortOrder": 9100012,
     "ScheduleId": 2604302801,
     "ThumbnailResourceId": "thum_anime_top_0012_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 10020,
@@ -382,7 +382,7 @@
     "SortOrder": 9100010,
     "ScheduleId": 2604302801,
     "ThumbnailResourceId": "thum_anime_top_0020_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 10090,
@@ -393,7 +393,7 @@
     "SortOrder": 9100091,
     "ScheduleId": 2604302801,
     "ThumbnailResourceId": "thum_anime_top_0090_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 10130,
@@ -404,7 +404,7 @@
     "SortOrder": 8600130,
     "ScheduleId": 2606102802,
     "ThumbnailResourceId": "thum_anime_top_0130_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 10170,
@@ -415,7 +415,7 @@
     "SortOrder": 9100170,
     "ScheduleId": 2604302801,
     "ThumbnailResourceId": "thum_anime_top_0170_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 10600,
@@ -426,7 +426,7 @@
     "SortOrder": 9100600,
     "ScheduleId": 2604302801,
     "ThumbnailResourceId": "thum_anime_top_0600_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 10801,
@@ -437,7 +437,7 @@
     "SortOrder": 9100801,
     "ScheduleId": 2604302801,
     "ThumbnailResourceId": "thum_anime_top_0801_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 10802,
@@ -448,7 +448,7 @@
     "SortOrder": 9100802,
     "ScheduleId": 2604302801,
     "ThumbnailResourceId": "thum_anime_top_0802_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 10803,
@@ -459,7 +459,7 @@
     "SortOrder": 9100803,
     "ScheduleId": 2604302801,
     "ThumbnailResourceId": "thum_anime_top_0803_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 11100,
@@ -470,7 +470,7 @@
     "SortOrder": 9101100,
     "ScheduleId": 2604302801,
     "ThumbnailResourceId": "thum_anime_top_1100_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 11260,
@@ -481,7 +481,7 @@
     "SortOrder": 9101260,
     "ScheduleId": 2604302801,
     "ThumbnailResourceId": "thum_anime_top_1250_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 12000,
@@ -492,7 +492,7 @@
     "SortOrder": 9102000,
     "ScheduleId": 2604302801,
     "ThumbnailResourceId": "thum_anime_top_2000_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 12300,
@@ -503,7 +503,7 @@
     "SortOrder": 8902300,
     "ScheduleId": 2604402801,
     "ThumbnailResourceId": "thum_anime_top_2300_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 14300,
@@ -514,7 +514,7 @@
     "SortOrder": 9104300,
     "ScheduleId": 2604302801,
     "ThumbnailResourceId": "thum_anime_top_4300_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 14301,
@@ -525,7 +525,7 @@
     "SortOrder": 9104301,
     "ScheduleId": 2604302801,
     "ThumbnailResourceId": "thum_anime_top_4301_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   },
   {
     "Id": 15010,
@@ -536,6 +536,6 @@
     "SortOrder": 9105010,
     "ScheduleId": 2604302801,
     "ThumbnailResourceId": "thum_anime_top_5010_01",
-    "Unknown_Col_8": 0
+    "SwitchScheduleId": 0
   }
 ]
