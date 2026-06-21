@@ -1210,17 +1210,28 @@ def parse_list_series_filter(val):
         return None
     if len(seen) == 1:
         return seen[0]
-    return frozenset(seen)
+    return tuple(seen)
+
+
+def _ordered_filter_cache_ids(items):
+    """Preserve caller order for tuple/list (and_or priority); sort sets only."""
+    if isinstance(items, tuple):
+        return [str(x).replace('%', '')[:48] for x in items if str(x).strip()]
+    if isinstance(items, list):
+        return [str(x).replace('%', '')[:48] for x in items if str(x).strip()]
+    if isinstance(items, (frozenset, set)):
+        return sorted(str(x).replace('%', '')[:48] for x in items if str(x).strip())
+    return []
 
 
 def lineage_filter_cache_fragment(lid):
     if lid is None:
         return 'l0'
     if isinstance(lid, (frozenset, set, list, tuple)):
-        if not lid:
+        xs = _ordered_filter_cache_ids(lid)
+        if not xs:
             return 'l0'
-        xs = sorted(str(x).replace('%', '')[:48] for x in lid)
-        return 'l' + '__'.join(xs)[:220]
+        return ('l' + '__'.join(xs))[:220]
     return 'l' + str(lid).replace('%', '')[:48]
 
 
@@ -1983,8 +1994,8 @@ def unit_matches_weapon_debuff_filter(uid, ld, lc, want_filter, _memo=None, stat
 def series_filter_cache_fragment(sid):
     if sid is None:
         return 's0'
-    if isinstance(sid, (frozenset, set)):
-        xs = sorted(str(x).replace('%', '')[:48] for x in sid if str(x).strip())
+    if isinstance(sid, (frozenset, set, list, tuple)):
+        xs = _ordered_filter_cache_ids(sid)
         if not xs:
             return 's0'
         return ('s' + '__'.join(xs))[:220]
