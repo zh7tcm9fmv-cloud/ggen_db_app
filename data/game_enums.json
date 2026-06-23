@@ -1,8 +1,8 @@
 {
-  "version": "2.2.0",
-  "source": "C:\\Users\\Mikew0911\\Desktop\\dump\\dump2.2.0.cs",
+  "version": "2.3.0",
+  "source": "C:\\Users\\Mikew0911\\Desktop\\dump\\dump2.3.0.cs; ref C:\\Users\\Mikew0911\\Desktop\\dump\\Enum_Values_dump2.3.0.txt",
   "namespace": "Eternal.Domain.Enums",
-  "enum_count": 259,
+  "enum_count": 262,
   "enums": {
     "AIAttackConditionType": {
       "entries": {
@@ -872,6 +872,18 @@
         "1": "Simple"
       }
     },
+    "ComicSeriesType": {
+      "entries": {
+        "0": "None",
+        "1": "Comics",
+        "2": "Magazine"
+      },
+      "labels": {
+        "0": "None",
+        "1": "Comics",
+        "2": "Magazine"
+      }
+    },
     "ConditionType": {
       "entries": {
         "0": "None",
@@ -1094,7 +1106,8 @@
         "422": "ComicSubscriptionPaymentShopItemId",
         "423": "MaxHomeUnitStyleSlotNumber",
         "424": "StoryEventNormalStageOnceSkipCountLimit",
-        "425": "UnitSspMaterialRequiredCount"
+        "425": "UnitSspMaterialRequiredCount",
+        "426": "AnimeSwitchScheduleId"
       },
       "labels": {
         "0": "None",
@@ -1283,7 +1296,8 @@
         "422": "Comic Subscription Payment Shop Item Id",
         "423": "Max Home Unit Style Slot Number",
         "424": "Story Event Normal Stage Once Skip Count Limit",
-        "425": "Unit Ssp Material Required Count"
+        "425": "Unit Ssp Material Required Count",
+        "426": "Anime Switch Schedule Id"
       }
     },
     "CurrencyType": {
@@ -1816,6 +1830,18 @@
         "2": "Unit",
         "3": "Character",
         "4": "Supporter"
+      }
+    },
+    "EnhanceMaterialTargetType": {
+      "entries": {
+        "0": "None",
+        "1": "Series",
+        "2": "Tag"
+      },
+      "labels": {
+        "0": "None",
+        "1": "Series",
+        "2": "Tag"
       }
     },
     "EternalRoadStrategyInfoTabType": {
@@ -2355,7 +2381,11 @@
         "280": "CountHomeSpecialAnimationChange",
         "281": "CountMainStageChallengeClearWithOnlyUnitSeries",
         "282": "CountStageClearWithOnlyUnitCampaign",
-        "283": "CountStageClearWithUnitCampaign"
+        "283": "CountStageClearWithUnitCampaign",
+        "284": "CountMainStageChallengeClearWithJustUnitCount",
+        "285": "CountMainStageChallengeClearWithOnlyUnitRarityOrLess",
+        "286": "CountMainStageChallengeClearWithOnlyCharacterRarityOrLess",
+        "287": "CountMainStageChallengeClearWithOnlyCharacterSeries"
       },
       "labels": {
         "0": "None",
@@ -2571,7 +2601,11 @@
         "280": "Count Home Special Animation Change",
         "281": "Count Main Stage Challenge Clear With Only Unit Series",
         "282": "Count Stage Clear With Only Unit Campaign",
-        "283": "Count Stage Clear With Unit Campaign"
+        "283": "Count Stage Clear With Unit Campaign",
+        "284": "Count Main Stage Challenge Clear With Just Unit Count",
+        "285": "Count Main Stage Challenge Clear With Only Unit Rarity Or Less",
+        "286": "Count Main Stage Challenge Clear With Only Character Rarity Or Less",
+        "287": "Count Main Stage Challenge Clear With Only Character Series"
       }
     },
     "GameFunctionReleaseConditionType": {
@@ -2629,7 +2663,8 @@
         "36": "HomeBattleMapEdit",
         "37": "HomeBgm",
         "38": "SpecialHomeAnimation",
-        "39": "HomeAnimationRandomPlay"
+        "39": "HomeAnimationRandomPlay",
+        "40": "ComicAndMagazineTab"
       },
       "labels": {
         "0": "None",
@@ -2671,7 +2706,8 @@
         "36": "Home Battle Map Edit",
         "37": "Home Bgm",
         "38": "Special Home Animation",
-        "39": "Home Animation Random Play"
+        "39": "Home Animation Random Play",
+        "40": "Comic And Magazine Tab"
       }
     },
     "GashaAppealBackgroundType": {
@@ -3974,6 +4010,20 @@
         "40": "Home Battle Map Background Release"
       }
     },
+    "KIdAgeStatusType": {
+      "entries": {
+        "0": "None",
+        "1": "DigitalMinor",
+        "2": "DigitalYouth",
+        "3": "LegalAdult"
+      },
+      "labels": {
+        "0": "None",
+        "1": "Digital Minor",
+        "2": "Digital Youth",
+        "3": "Legal Adult"
+      }
+    },
     "KIdPermissionChangeType": {
       "entries": {
         "0": "None",
@@ -4013,7 +4063,8 @@
         "6": "Multiplayer",
         "7": "Profiling",
         "8": "PushNotifications",
-        "9": "PublicProfile"
+        "9": "PublicProfile",
+        "10": "ShareToSocialMedia"
       },
       "labels": {
         "0": "None",
@@ -4025,7 +4076,8 @@
         "6": "Multiplayer",
         "7": "Profiling",
         "8": "Push Notifications",
-        "9": "Public Profile"
+        "9": "Public Profile",
+        "10": "Share To Social Media"
       }
     },
     "LanguageType": {
@@ -4629,7 +4681,8 @@
         "2": "Transformation",
         "3": "Sd",
         "4": "Escape",
-        "5": "PostEscape"
+        "5": "PostEscape",
+        "6": "Conversion"
       },
       "labels": {
         "0": "None",
@@ -4637,7 +4690,8 @@
         "2": "Transformation",
         "3": "Sd",
         "4": "Escape",
-        "5": "Post Escape"
+        "5": "Post Escape",
+        "6": "Conversion"
       }
     },
     "MissionCategoryType": {
@@ -6482,7 +6536,8 @@
         "106": "TerrainIncapableToCapable",
         "107": "PostAttackMove",
         "108": "WeaponMpDamageValueAddition",
-        "109": "DamageBarrierMaxHpRate"
+        "109": "DamageBarrierMaxHpRate",
+        "110": "DamageCut"
       },
       "labels": {
         "0": "None",
@@ -6581,7 +6636,8 @@
         "106": "Terrain Incapable To Capable",
         "107": "Post Attack Move",
         "108": "Weapon Mp Damage Value Addition",
-        "109": "Damage Barrier Max Hp Rate"
+        "109": "Damage Barrier Max Hp Rate",
+        "110": "Damage Cut"
       }
     },
     "TransitionType": {
@@ -6904,7 +6960,9 @@
         "3": "DefenseChangeRateDurationTurn",
         "4": "PostAttackMoveDurationCount",
         "5": "WeaponEnFreeDurationCount",
-        "6": "DamageBarrierMaxHpRate"
+        "6": "DamageBarrierMaxHpRate",
+        "7": "MobilityChangeRate",
+        "8": "FirstDamageCut"
       },
       "labels": {
         "0": "None",
@@ -6913,7 +6971,9 @@
         "3": "Defense Change Rate Duration Turn",
         "4": "Post Attack Move Duration Count",
         "5": "Weapon En Free Duration Count",
-        "6": "Damage Barrier Max Hp Rate"
+        "6": "Damage Barrier Max Hp Rate",
+        "7": "Mobility Change Rate",
+        "8": "First Damage Cut"
       }
     },
     "UnitStandbyType": {

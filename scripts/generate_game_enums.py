@@ -17,9 +17,18 @@ OUT = ROOT / "data" / "game_enums.json"
 
 DEFAULT_DUMP_CANDIDATES = [
     Path(os.environ.get("DUMP_CS", "")),
+    ROOT.parent / "dump" / "dump2.3.0.cs",
+    Path(r"C:\Users\Mikew0911\Desktop\dump\dump2.3.0.cs"),
     ROOT.parent / "dump" / "dump2.2.0.cs",
     Path(r"C:\Users\Mikew0911\Desktop\dump\dump2.2.0.cs"),
 ]
+
+DEFAULT_ENUM_VALUES_TXT = Path(
+    os.environ.get(
+        "ENUM_VALUES_TXT",
+        r"C:\Users\Mikew0911\Desktop\dump\Enum_Values_dump2.3.0.txt",
+    )
+)
 
 ORIGINAL_RE = re.compile(
     r'\[OriginalName\("([^"]+)"\)\]\s*\n\s*public const \w+ \w+ = (\d+);'
@@ -108,9 +117,17 @@ def main():
     vm = re.search(r"dump(\d+\.\d+\.\d+)\.cs", dump_path.name, re.I)
     if vm:
         version = vm.group(1)
+    enum_values_txt = DEFAULT_ENUM_VALUES_TXT
+    if not enum_values_txt.is_file():
+        sibling = dump_path.parent / f"Enum_Values_dump{version}.txt"
+        if sibling.is_file():
+            enum_values_txt = sibling
+    source = str(dump_path)
+    if enum_values_txt.is_file():
+        source = f"{dump_path}; ref {enum_values_txt}"
     payload = {
         "version": version,
-        "source": str(dump_path),
+        "source": source,
         "namespace": "Eternal.Domain.Enums",
         "enum_count": len(enums),
         "enums": enums,
