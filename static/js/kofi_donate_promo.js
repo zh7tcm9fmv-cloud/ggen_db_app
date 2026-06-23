@@ -18,7 +18,6 @@
   var MARIA_IMG = '/static/images/UI/UI_TacticalTraining_Logo_maria.webp';
   var PROMO_TEXT_FALLBACK =
     'Thanks for stopping by! \uD83D\uDC99\nIf you enjoy our site, support us on Ko-fi to help keep it free \u2014 and get exclusive sneak peeks + bonus content in return!';
-  var PROMO_BG_IMG = '/static/images/Login/login_bg_F91.webp';
 
   var _shown = false;
   var _snoozedUntil = 0;
@@ -218,9 +217,6 @@
 
     var maria = els.root.querySelector('.kofi-donate-promo-maria');
     if (maria && !maria.getAttribute('src')) maria.src = promoImgUrl(MARIA_IMG);
-
-    var bgImg = els.root.querySelector('.kofi-donate-promo-bg-img');
-    if (bgImg && !bgImg.getAttribute('src')) bgImg.src = promoImgUrl(PROMO_BG_IMG);
 
     renderSlotText(false);
 
