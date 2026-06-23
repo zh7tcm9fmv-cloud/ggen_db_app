@@ -1245,7 +1245,7 @@
   },
   {
     "id": 140700000300290102,
-    "value": "Increased Beam Damage [1 turn] LV 1"
+    "value": "Increased Beam Damage Taken [1 turn] LV 1"
   },
   {
     "id": 140700000300290201,
@@ -1253,7 +1253,7 @@
   },
   {
     "id": 140700000300290202,
-    "value": "Increased Beam Damage [1 turn] LV 2"
+    "value": "Increased Beam Damage Taken [1 turn] LV 2"
   },
   {
     "id": 140700000300290301,
@@ -1261,7 +1261,7 @@
   },
   {
     "id": 140700000300290302,
-    "value": "Increased Beam Damage [1 turn] LV 3"
+    "value": "Increased Beam Damage Taken [1 turn] LV 3"
   },
   {
     "id": 140700000300290401,
@@ -1269,7 +1269,7 @@
   },
   {
     "id": 140700000300290402,
-    "value": "Increased Beam Damage [1 turn] LV 4"
+    "value": "Increased Beam Damage Taken [1 turn] LV 4"
   },
   {
     "id": 140700000300290501,
@@ -1277,7 +1277,7 @@
   },
   {
     "id": 140700000300290502,
-    "value": "Increased Beam Damage [1 turn] LV 5"
+    "value": "Increased Beam Damage Taken [1 turn] LV 5"
   },
   {
     "id": 140700000300290601,
@@ -1285,7 +1285,7 @@
   },
   {
     "id": 140700000300290602,
-    "value": "Increased Beam Damage [1 turn] LV 6"
+    "value": "Increased Beam Damage Taken [1 turn] LV 6"
   },
   {
     "id": 140700000300290701,
@@ -1293,7 +1293,7 @@
   },
   {
     "id": 140700000300290702,
-    "value": "Increased Beam Damage [1 turn] LV 7"
+    "value": "Increased Beam Damage Taken [1 turn] LV 7"
   },
   {
     "id": 140700000300290801,
@@ -1301,7 +1301,7 @@
   },
   {
     "id": 140700000300290802,
-    "value": "Increased Beam Damage [1 turn] LV 8"
+    "value": "Increased Beam Damage Taken [1 turn] LV 8"
   },
   {
     "id": 140700000300290901,
@@ -1309,7 +1309,7 @@
   },
   {
     "id": 140700000300290902,
-    "value": "Increased Beam Damage [1 turn] LV 9"
+    "value": "Increased Beam Damage Taken [1 turn] LV 9"
   },
   {
     "id": 140700000300300101,
@@ -1317,7 +1317,7 @@
   },
   {
     "id": 140700000300300102,
-    "value": "Increased Physical Damage [1 turn] LV 1"
+    "value": "Increased Physical Damage Taken [1 turn] LV 1"
   },
   {
     "id": 140700000300300201,
@@ -1325,7 +1325,7 @@
   },
   {
     "id": 140700000300300202,
-    "value": "Increased Physical Damage [1 turn] LV 2"
+    "value": "Increased Physical Damage Taken [1 turn] LV 2"
   },
   {
     "id": 140700000300300301,
@@ -1333,7 +1333,7 @@
   },
   {
     "id": 140700000300300302,
-    "value": "Increased Physical Damage [1 turn] LV 3"
+    "value": "Increased Physical Damage Taken [1 turn] LV 3"
   },
   {
     "id": 140700000300300401,
@@ -1341,7 +1341,7 @@
   },
   {
     "id": 140700000300300402,
-    "value": "Increased Physical Damage [1 turn] LV 4"
+    "value": "Increased Physical Damage Taken [1 turn] LV 4"
   },
   {
     "id": 140700000300300501,
@@ -1349,7 +1349,7 @@
   },
   {
     "id": 140700000300300502,
-    "value": "Increased Physical Damage [1 turn] LV 5"
+    "value": "Increased Physical Damage Taken [1 turn] LV 5"
   },
   {
     "id": 140700000300300601,
@@ -1357,7 +1357,7 @@
   },
   {
     "id": 140700000300300602,
-    "value": "Increased Physical Damage [1 turn] LV 6"
+    "value": "Increased Physical Damage Taken [1 turn] LV 6"
   },
   {
     "id": 140700000300300701,
@@ -1365,7 +1365,7 @@
   },
   {
     "id": 140700000300300702,
-    "value": "Increased Physical Damage [1 turn] LV 7"
+    "value": "Increased Physical Damage Taken [1 turn] LV 7"
   },
   {
     "id": 140700000300300801,
@@ -1373,7 +1373,7 @@
   },
   {
     "id": 140700000300300802,
-    "value": "Increased Physical Damage [1 turn] LV 8"
+    "value": "Increased Physical Damage Taken [1 turn] LV 8"
   },
   {
     "id": 140700000300300901,
@@ -1381,7 +1381,7 @@
   },
   {
     "id": 140700000300300902,
-    "value": "Increased Physical Damage [1 turn] LV 9"
+    "value": "Increased Physical Damage Taken [1 turn] LV 9"
   },
   {
     "id": 140700000300310101,
@@ -1389,7 +1389,7 @@
   },
   {
     "id": 140700000300310102,
-    "value": "Increased Special Damage [1 turn] LV 1"
+    "value": "Increased Special Damage Taken [1 turn] LV 1"
   },
   {
     "id": 140700000300310201,
@@ -1397,7 +1397,7 @@
   },
   {
     "id": 140700000300310202,
-    "value": "Increased Special Damage [1 turn] LV 2"
+    "value": "Increased Special Damage Taken [1 turn] LV 2"
   },
   {
     "id": 140700000300310301,
@@ -1405,7 +1405,7 @@
   },
   {
     "id": 140700000300310302,
-    "value": "Increased Special Damage [1 turn] LV 3"
+    "value": "Increased Special Damage Taken [1 turn] LV 3"
   },
   {
     "id": 140700000300310401,
@@ -1413,7 +1413,7 @@
   },
   {
     "id": 140700000300310402,
-    "value": "Increased Special Damage [1 turn] LV 4"
+    "value": "Increased Special Damage Taken [1 turn] LV 4"
   },
   {
     "id": 140700000300310501,
@@ -1421,7 +1421,7 @@
   },
   {
     "id": 140700000300310502,
-    "value": "Increased Special Damage [1 turn] LV 5"
+    "value": "Increased Special Damage Taken [1 turn] LV 5"
   },
   {
     "id": 140700000300310601,
@@ -1429,7 +1429,7 @@
   },
   {
     "id": 140700000300310602,
-    "value": "Increased Special Damage [1 turn] LV 6"
+    "value": "Increased Special Damage Taken [1 turn] LV 6"
   },
   {
     "id": 140700000300310701,
@@ -1437,7 +1437,7 @@
   },
   {
     "id": 140700000300310702,
-    "value": "Increased Special Damage [1 turn] LV 7"
+    "value": "Increased Special Damage Taken [1 turn] LV 7"
   },
   {
     "id": 140700000300310801,
@@ -1445,7 +1445,7 @@
   },
   {
     "id": 140700000300310802,
-    "value": "Increased Special Damage [1 turn] LV 8"
+    "value": "Increased Special Damage Taken [1 turn] LV 8"
   },
   {
     "id": 140700000300310901,
@@ -1453,7 +1453,7 @@
   },
   {
     "id": 140700000300310902,
-    "value": "Increased Special Damage [1 turn] LV 9"
+    "value": "Increased Special Damage Taken [1 turn] LV 9"
   },
   {
     "id": 140700000300320101,
@@ -2181,7 +2181,7 @@
   },
   {
     "id": 140700000300420102,
-    "value": "Increased Beam Damage [1 turn] LV 1"
+    "value": "Increased Beam Damage Taken [1 turn] LV 1"
   },
   {
     "id": 140700000300420201,
@@ -2189,7 +2189,7 @@
   },
   {
     "id": 140700000300420202,
-    "value": "Increased Beam Damage [1 turn] LV 2"
+    "value": "Increased Beam Damage Taken [1 turn] LV 2"
   },
   {
     "id": 140700000300420301,
@@ -2197,7 +2197,7 @@
   },
   {
     "id": 140700000300420302,
-    "value": "Increased Beam Damage [1 turn] LV 3"
+    "value": "Increased Beam Damage Taken [1 turn] LV 3"
   },
   {
     "id": 140700000300420401,
@@ -2205,7 +2205,7 @@
   },
   {
     "id": 140700000300420402,
-    "value": "Increased Beam Damage [1 turn] LV 4"
+    "value": "Increased Beam Damage Taken [1 turn] LV 4"
   },
   {
     "id": 140700000300420501,
@@ -2213,7 +2213,7 @@
   },
   {
     "id": 140700000300420502,
-    "value": "Increased Beam Damage [1 turn] LV 5"
+    "value": "Increased Beam Damage Taken [1 turn] LV 5"
   },
   {
     "id": 140700000300420601,
@@ -2221,7 +2221,7 @@
   },
   {
     "id": 140700000300420602,
-    "value": "Increased Beam Damage [1 turn] LV 6"
+    "value": "Increased Beam Damage Taken [1 turn] LV 6"
   },
   {
     "id": 140700000300420701,
@@ -2229,7 +2229,7 @@
   },
   {
     "id": 140700000300420702,
-    "value": "Increased Beam Damage [1 turn] LV 7"
+    "value": "Increased Beam Damage Taken [1 turn] LV 7"
   },
   {
     "id": 140700000300420801,
@@ -2237,7 +2237,7 @@
   },
   {
     "id": 140700000300420802,
-    "value": "Increased Beam Damage [1 turn] LV 8"
+    "value": "Increased Beam Damage Taken [1 turn] LV 8"
   },
   {
     "id": 140700000300420901,
@@ -2245,7 +2245,7 @@
   },
   {
     "id": 140700000300420902,
-    "value": "Increased Beam Damage [1 turn] LV 9"
+    "value": "Increased Beam Damage Taken [1 turn] LV 9"
   },
   {
     "id": 140700000300430101,
@@ -2253,7 +2253,7 @@
   },
   {
     "id": 140700000300430102,
-    "value": "Increased Physical Damage [1 turn] LV 1"
+    "value": "Increased Physical Damage Taken [1 turn] LV 1"
   },
   {
     "id": 140700000300430201,
@@ -2261,7 +2261,7 @@
   },
   {
     "id": 140700000300430202,
-    "value": "Increased Physical Damage [1 turn] LV 2"
+    "value": "Increased Physical Damage Taken [1 turn] LV 2"
   },
   {
     "id": 140700000300430301,
@@ -2269,7 +2269,7 @@
   },
   {
     "id": 140700000300430302,
-    "value": "Increased Physical Damage [1 turn] LV 3"
+    "value": "Increased Physical Damage Taken [1 turn] LV 3"
   },
   {
     "id": 140700000300430401,
@@ -2277,7 +2277,7 @@
   },
   {
     "id": 140700000300430402,
-    "value": "Increased Physical Damage [1 turn] LV 4"
+    "value": "Increased Physical Damage Taken [1 turn] LV 4"
   },
   {
     "id": 140700000300430501,
@@ -2285,7 +2285,7 @@
   },
   {
     "id": 140700000300430502,
-    "value": "Increased Physical Damage [1 turn] LV 5"
+    "value": "Increased Physical Damage Taken [1 turn] LV 5"
   },
   {
     "id": 140700000300430601,
@@ -2293,7 +2293,7 @@
   },
   {
     "id": 140700000300430602,
-    "value": "Increased Physical Damage [1 turn] LV 6"
+    "value": "Increased Physical Damage Taken [1 turn] LV 6"
   },
   {
     "id": 140700000300430701,
@@ -2301,7 +2301,7 @@
   },
   {
     "id": 140700000300430702,
-    "value": "Increased Physical Damage [1 turn] LV 7"
+    "value": "Increased Physical Damage Taken [1 turn] LV 7"
   },
   {
     "id": 140700000300430801,
@@ -2309,7 +2309,7 @@
   },
   {
     "id": 140700000300430802,
-    "value": "Increased Physical Damage [1 turn] LV 8"
+    "value": "Increased Physical Damage Taken [1 turn] LV 8"
   },
   {
     "id": 140700000300430901,
@@ -2317,7 +2317,7 @@
   },
   {
     "id": 140700000300430902,
-    "value": "Increased Physical Damage [1 turn] LV 9"
+    "value": "Increased Physical Damage Taken [1 turn] LV 9"
   },
   {
     "id": 140700000300440101,
@@ -2325,7 +2325,7 @@
   },
   {
     "id": 140700000300440102,
-    "value": "Increased Special Damage [1 turn] LV 1"
+    "value": "Increased Special Damage Taken [1 turn] LV 1"
   },
   {
     "id": 140700000300440201,
@@ -2333,7 +2333,7 @@
   },
   {
     "id": 140700000300440202,
-    "value": "Increased Special Damage [1 turn] LV 2"
+    "value": "Increased Special Damage Taken [1 turn] LV 2"
   },
   {
     "id": 140700000300440301,
@@ -2341,7 +2341,7 @@
   },
   {
     "id": 140700000300440302,
-    "value": "Increased Special Damage [1 turn] LV 3"
+    "value": "Increased Special Damage Taken [1 turn] LV 3"
   },
   {
     "id": 140700000300440401,
@@ -2349,7 +2349,7 @@
   },
   {
     "id": 140700000300440402,
-    "value": "Increased Special Damage [1 turn] LV 4"
+    "value": "Increased Special Damage Taken [1 turn] LV 4"
   },
   {
     "id": 140700000300440501,
@@ -2357,7 +2357,7 @@
   },
   {
     "id": 140700000300440502,
-    "value": "Increased Special Damage [1 turn] LV 5"
+    "value": "Increased Special Damage Taken [1 turn] LV 5"
   },
   {
     "id": 140700000300440601,
@@ -2365,7 +2365,7 @@
   },
   {
     "id": 140700000300440602,
-    "value": "Increased Special Damage [1 turn] LV 6"
+    "value": "Increased Special Damage Taken [1 turn] LV 6"
   },
   {
     "id": 140700000300440701,
@@ -2373,7 +2373,7 @@
   },
   {
     "id": 140700000300440702,
-    "value": "Increased Special Damage [1 turn] LV 7"
+    "value": "Increased Special Damage Taken [1 turn] LV 7"
   },
   {
     "id": 140700000300440801,
@@ -2381,7 +2381,7 @@
   },
   {
     "id": 140700000300440802,
-    "value": "Increased Special Damage [1 turn] LV 8"
+    "value": "Increased Special Damage Taken [1 turn] LV 8"
   },
   {
     "id": 140700000300440901,
@@ -2389,7 +2389,7 @@
   },
   {
     "id": 140700000300440902,
-    "value": "Increased Special Damage [1 turn] LV 9"
+    "value": "Increased Special Damage Taken [1 turn] LV 9"
   },
   {
     "id": 140700000300450101,
@@ -2965,7 +2965,7 @@
   },
   {
     "id": 140700000300590402,
-    "value": "Decreased  MP "
+    "value": "Decreased MP"
   },
   {
     "id": 140700000300590403,
@@ -2977,7 +2977,7 @@
   },
   {
     "id": 140700000300590502,
-    "value": "Decreased  MP "
+    "value": "Decreased MP"
   },
   {
     "id": 140700000300590503,
@@ -2989,7 +2989,7 @@
   },
   {
     "id": 140700000300590602,
-    "value": "Decreased  MP "
+    "value": "Decreased MP"
   },
   {
     "id": 140700000300590603,
@@ -3001,7 +3001,7 @@
   },
   {
     "id": 140700000300590702,
-    "value": "Decreased  MP "
+    "value": "Decreased MP"
   },
   {
     "id": 140700000300590703,
@@ -3013,7 +3013,7 @@
   },
   {
     "id": 140700000300590802,
-    "value": "Decreased  MP "
+    "value": "Decreased MP"
   },
   {
     "id": 140700000300590803,
@@ -3025,7 +3025,7 @@
   },
   {
     "id": 140700000300590902,
-    "value": "Decreased  MP "
+    "value": "Decreased MP"
   },
   {
     "id": 140700000300590903,
@@ -3793,7 +3793,7 @@
   },
   {
     "id": 140700000300720103,
-    "value": "With More Remaining HP, Higher Weapon Power LV 1"
+    "value": "Scaling Weapon Power (More Remaining HP) LV 1"
   },
   {
     "id": 140700000300720201,
@@ -3801,7 +3801,7 @@
   },
   {
     "id": 140700000300720203,
-    "value": "With More Remaining HP, Higher Weapon Power LV 1"
+    "value": "Scaling Weapon Power (More Remaining HP) LV 1"
   },
   {
     "id": 140700000300720301,
@@ -3809,7 +3809,7 @@
   },
   {
     "id": 140700000300720303,
-    "value": "With More Remaining HP, Higher Weapon Power LV 1"
+    "value": "Scaling Weapon Power (More Remaining HP) LV 1"
   },
   {
     "id": 140700000300720401,
@@ -3817,7 +3817,7 @@
   },
   {
     "id": 140700000300720403,
-    "value": "With More Remaining HP, Higher Weapon Power LV 1"
+    "value": "Scaling Weapon Power (More Remaining HP) LV 1"
   },
   {
     "id": 140700000300720501,
@@ -3825,7 +3825,7 @@
   },
   {
     "id": 140700000300720503,
-    "value": "With More Remaining HP, Higher Weapon Power LV 1"
+    "value": "Scaling Weapon Power (More Remaining HP) LV 1"
   },
   {
     "id": 140700000300720601,
@@ -3833,7 +3833,7 @@
   },
   {
     "id": 140700000300720603,
-    "value": "With More Remaining HP, Higher Weapon Power LV 1"
+    "value": "Scaling Weapon Power (More Remaining HP) LV 1"
   },
   {
     "id": 140700000300720701,
@@ -3841,7 +3841,7 @@
   },
   {
     "id": 140700000300720703,
-    "value": "With More Remaining HP, Higher Weapon Power LV 1"
+    "value": "Scaling Weapon Power (More Remaining HP) LV 1"
   },
   {
     "id": 140700000300720801,
@@ -3849,7 +3849,7 @@
   },
   {
     "id": 140700000300720803,
-    "value": "With More Remaining HP, Higher Weapon Power LV 1"
+    "value": "Scaling Weapon Power (More Remaining HP) LV 1"
   },
   {
     "id": 140700000300720901,
@@ -3857,7 +3857,7 @@
   },
   {
     "id": 140700000300720903,
-    "value": "With More Remaining HP, Higher Weapon Power LV 1"
+    "value": "Scaling Weapon Power (More Remaining HP) LV 1"
   },
   {
     "id": 140700000300750101,
@@ -4781,39 +4781,39 @@
   },
   {
     "id": 140700000310220101,
-    "value": "With More Remaining HP, Higher Weapon Power LV 1"
+    "value": "Scaling Weapon Power (More Remaining HP) LV 1"
   },
   {
     "id": 140700000310220201,
-    "value": "With More Remaining HP, Higher Weapon Power LV 2"
+    "value": "Scaling Weapon Power (More Remaining HP) LV 2"
   },
   {
     "id": 140700000310220301,
-    "value": "With More Remaining HP, Higher Weapon Power LV 3"
+    "value": "Scaling Weapon Power (More Remaining HP) LV 3"
   },
   {
     "id": 140700000310220401,
-    "value": "With More Remaining HP, Higher Weapon Power LV 4"
+    "value": "Scaling Weapon Power (More Remaining HP) LV 4"
   },
   {
     "id": 140700000310220501,
-    "value": "With More Remaining HP, Higher Weapon Power LV 5"
+    "value": "Scaling Weapon Power (More Remaining HP) LV 5"
   },
   {
     "id": 140700000310220601,
-    "value": "With More Remaining HP, Higher Weapon Power LV 6"
+    "value": "Scaling Weapon Power (More Remaining HP) LV 6"
   },
   {
     "id": 140700000310220701,
-    "value": "With More Remaining HP, Higher Weapon Power LV 7"
+    "value": "Scaling Weapon Power (More Remaining HP) LV 7"
   },
   {
     "id": 140700000310220801,
-    "value": "With More Remaining HP, Higher Weapon Power LV 8"
+    "value": "Scaling Weapon Power (More Remaining HP) LV 8"
   },
   {
     "id": 140700000310220901,
-    "value": "With More Remaining HP, Higher Weapon Power LV 9"
+    "value": "Scaling Weapon Power (More Remaining HP) LV 9"
   },
   {
     "id": 140700000310240101,
@@ -4925,11 +4925,11 @@
   },
   {
     "id": 140700000310300101,
-    "value": "With Less Remaining HP, Higher Weapon Power LV 1"
+    "value": "Scaling Weapon Power (Less Remaining HP)  LV 1"
   },
   {
     "id": 140700000310300201,
-    "value": "With Less Remaining HP, Higher Weapon Power LV 2"
+    "value": "Scaling Weapon Power (Less Remaining HP)  LV 2"
   },
   {
     "id": 140700000310300301,
@@ -4937,7 +4937,7 @@
   },
   {
     "id": 140700000310300401,
-    "value": "With Less Remaining HP, Higher Weapon Power LV 4"
+    "value": "Scaling Weapon Power (Less Remaining HP)  LV 4"
   },
   {
     "id": 140700000310300501,
@@ -8173,75 +8173,75 @@
   },
   {
     "id": 140800000300130101,
-    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 5%)."
+    "value": "The closer the enemy is, the more Weapon Power increases (up to 5%)."
   },
   {
     "id": 140800000300130201,
-    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 7%)."
+    "value": "The closer the enemy is, the more Weapon Power increases (up to 7%)."
   },
   {
     "id": 140800000300130301,
-    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 10%)."
+    "value": "The closer the enemy is, the more Weapon Power increases (up to 10%)."
   },
   {
     "id": 140800000300130401,
-    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 12%)."
+    "value": "The closer the enemy is, the more Weapon Power increases (up to 12%)."
   },
   {
     "id": 140800000300130501,
-    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 15%)."
+    "value": "The closer the enemy is, the more Weapon Power increases (up to 15%)."
   },
   {
     "id": 140800000300130601,
-    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 17%)."
+    "value": "The closer the enemy is, the more Weapon Power increases (up to 17%)."
   },
   {
     "id": 140800000300130701,
-    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 20%)."
+    "value": "The closer the enemy is, the more Weapon Power increases (up to 20%)."
   },
   {
     "id": 140800000300130801,
-    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 22%)."
+    "value": "The closer the enemy is, the more Weapon Power increases (up to 22%)."
   },
   {
     "id": 140800000300130901,
-    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 25%)."
+    "value": "The closer the enemy is, the more Weapon Power increases (up to 25%)."
   },
   {
     "id": 140800000300140101,
-    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 5%)."
+    "value": "The farther the enemy is, the more Weapon Power increases (up to 5%)."
   },
   {
     "id": 140800000300140201,
-    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 7%)."
+    "value": "The farther the enemy is, the more Weapon Power increases (up to 7%)."
   },
   {
     "id": 140800000300140301,
-    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 10%)."
+    "value": "The farther the enemy is, the more Weapon Power increases (up to 10%)."
   },
   {
     "id": 140800000300140401,
-    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 12%)."
+    "value": "The farther the enemy is, the more Weapon Power increases (up to 12%)."
   },
   {
     "id": 140800000300140501,
-    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 15%)."
+    "value": "The farther the enemy is, the more Weapon Power increases (up to 15%)."
   },
   {
     "id": 140800000300140601,
-    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 17%)."
+    "value": "The farther the enemy is, the more Weapon Power increases (up to 17%)."
   },
   {
     "id": 140800000300140701,
-    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 20%)."
+    "value": "The farther the enemy is, the more Weapon Power increases (up to 20%)."
   },
   {
     "id": 140800000300140801,
-    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 22%)."
+    "value": "The farther the enemy is, the more Weapon Power increases (up to 22%)."
   },
   {
     "id": 140800000300140901,
-    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 25%)."
+    "value": "The farther the enemy is, the more Weapon Power increases (up to 25%)."
   },
   {
     "id": 140800000300150101,
@@ -8281,55 +8281,55 @@
   },
   {
     "id": 140800000300160101,
-    "value": "Inflict \"Damage Taken from Physical Weapons Up 10%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 10%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300160201,
-    "value": "Inflict \"Damage Taken from Physical Weapons Up 15%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 15%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300160301,
-    "value": "Inflict \"Damage Taken from Physical Weapons Up 20%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 20%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300160401,
-    "value": "Inflict \"Damage Taken from Physical Weapons Up 25%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 25%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300160501,
-    "value": "Inflict \"Damage Taken from Physical Weapons Up 30%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 30%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300160601,
-    "value": "Inflict \"Damage Taken from Physical Weapons Up 35%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 35%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300160701,
-    "value": "Inflict \"Damage Taken from Physical Weapons Up 40%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 40%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300160801,
-    "value": "Inflict \"Damage Taken from Physical Weapons Up 45%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 45%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300160901,
-    "value": "Inflict \"Damage Taken from Physical Weapons Up 50%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 50%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300170101,
-    "value": "Inflict \"Damage Taken from Beam Weapons Up 10%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Beam Weapons Up 10%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300170201,
-    "value": "Inflict \"Damage Taken from Beam Weapons Up 15%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Beam Weapons Up 15%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300170301,
-    "value": "Inflict \"Damage Taken from Beam Weapons Up 20%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Beam Weapons Up 20%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300170401,
-    "value": "Inflict \"Damage Taken from Beam Weapons Up 25%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Beam Weapons Up 25%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300170501,
@@ -8337,55 +8337,55 @@
   },
   {
     "id": 140800000300170601,
-    "value": "Inflict \"Damage Taken from Beam Weapons Up 35%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Beam Weapons Up 35%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300170701,
-    "value": "Inflict \"Damage Taken from Beam Weapons Up 40%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Beam Weapons Up 40%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300170801,
-    "value": "Inflict \"Damage Taken from Beam Weapons Up 45%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Beam Weapons Up 45%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300170901,
-    "value": "Inflict \"Damage Taken from Beam Weapons Up 50%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Beam Weapons Up 50%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300180101,
-    "value": "Inflict \"Damage Taken from Special Weapons Up 10%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Special Weapons Up 10%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300180201,
-    "value": "Inflict \"Damage Taken from Special Weapons Up 15%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Special Weapons Up 15%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300180301,
-    "value": "Inflict \"Damage Taken from Special Weapons Up 20%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Special Weapons Up 20%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300180401,
-    "value": "Inflict \"Damage Taken from Special Weapons Up 25%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Special Weapons Up 25%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300180501,
-    "value": "Inflict \"Damage Taken from Special Weapons Up 30%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Special Weapons Up 30%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300180601,
-    "value": "Inflict \"Damage Taken from Special Weapons Up 35%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Special Weapons Up 35%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300180701,
-    "value": "Inflict \"Damage Taken from Special Weapons Up 40%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Special Weapons Up 40%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300180801,
-    "value": "Inflict \"Damage Taken from Special Weapons Up 45%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Special Weapons Up 45%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300180901,
-    "value": "Inflict \"Damage Taken from Special Weapons Up 50%\" on the enemy[1 turn]."
+    "value": "Inflict \"Damage Taken from Special Weapons Up 50%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300190101,
@@ -9369,7 +9369,7 @@
   },
   {
     "id": 140800000300340101,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300340102,
@@ -9377,7 +9377,7 @@
   },
   {
     "id": 140800000300340201,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300340202,
@@ -9385,7 +9385,7 @@
   },
   {
     "id": 140800000300340301,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300340302,
@@ -9393,7 +9393,7 @@
   },
   {
     "id": 140800000300340401,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300340402,
@@ -9401,7 +9401,7 @@
   },
   {
     "id": 140800000300340501,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300340502,
@@ -9409,7 +9409,7 @@
   },
   {
     "id": 140800000300340601,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300340602,
@@ -9417,7 +9417,7 @@
   },
   {
     "id": 140800000300340701,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300340702,
@@ -9425,7 +9425,7 @@
   },
   {
     "id": 140800000300340801,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300340802,
@@ -9433,7 +9433,7 @@
   },
   {
     "id": 140800000300340901,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300340902,
@@ -9441,151 +9441,151 @@
   },
   {
     "id": 140800000300350101,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300350102,
-    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 5%)."
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 5%)."
   },
   {
     "id": 140800000300350201,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300350202,
-    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 7%)."
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 7%)."
   },
   {
     "id": 140800000300350301,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300350302,
-    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 10%)."
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 10%)."
   },
   {
     "id": 140800000300350401,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300350402,
-    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 12%)."
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 12%)."
   },
   {
     "id": 140800000300350501,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300350502,
-    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 15%)."
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 15%)."
   },
   {
     "id": 140800000300350601,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300350602,
-    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 17%)."
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 17%)."
   },
   {
     "id": 140800000300350701,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300350702,
-    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 20%)."
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 20%)."
   },
   {
     "id": 140800000300350801,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300350802,
-    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 22%)."
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 22%)."
   },
   {
     "id": 140800000300350901,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300350902,
-    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 25%)."
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 25%)."
   },
   {
     "id": 140800000300360101,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300360102,
-    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 5%)."
+    "value": "The closer the enemy is, the more Weapon Power increases (up to 5%)."
   },
   {
     "id": 140800000300360201,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300360202,
-    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 7%)."
+    "value": "The closer the enemy is, the more Weapon Power increases (up to 7%)."
   },
   {
     "id": 140800000300360301,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300360302,
-    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 10%)."
+    "value": "The closer the enemy is, the more Weapon Power increases (up to 10%)."
   },
   {
     "id": 140800000300360401,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300360402,
-    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 12%)."
+    "value": "The closer the enemy is, the more Weapon Power increases (up to 12%)."
   },
   {
     "id": 140800000300360501,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300360502,
-    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 15%)."
+    "value": "The closer the enemy is, the more Weapon Power increases (up to 15%)."
   },
   {
     "id": 140800000300360601,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300360602,
-    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 17%)."
+    "value": "The closer the enemy is, the more Weapon Power increases (up to 17%)."
   },
   {
     "id": 140800000300360701,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300360702,
-    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 20%)."
+    "value": "The closer the enemy is, the more Weapon Power increases (up to 20%)."
   },
   {
     "id": 140800000300360801,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300360802,
-    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 22%)."
+    "value": "The closer the enemy is, the more Weapon Power increases (up to 22%)."
   },
   {
     "id": 140800000300360901,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300360902,
-    "value": "The closer you are to the enemy, the greater Weapon Power increases (up to 25%)."
+    "value": "The closer the enemy is, the more Weapon Power increases (up to 25%)."
   },
   {
     "id": 140800000300370101,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300370102,
@@ -9593,7 +9593,7 @@
   },
   {
     "id": 140800000300370201,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300370202,
@@ -9601,7 +9601,7 @@
   },
   {
     "id": 140800000300370301,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300370302,
@@ -9609,7 +9609,7 @@
   },
   {
     "id": 140800000300370401,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300370402,
@@ -9617,7 +9617,7 @@
   },
   {
     "id": 140800000300370501,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300370502,
@@ -9625,7 +9625,7 @@
   },
   {
     "id": 140800000300370601,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300370602,
@@ -9633,7 +9633,7 @@
   },
   {
     "id": 140800000300370701,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300370702,
@@ -9641,7 +9641,7 @@
   },
   {
     "id": 140800000300370801,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300370802,
@@ -9649,7 +9649,7 @@
   },
   {
     "id": 140800000300370901,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300370902,
@@ -9657,7 +9657,7 @@
   },
   {
     "id": 140800000300380101,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300380102,
@@ -9665,7 +9665,7 @@
   },
   {
     "id": 140800000300380201,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300380202,
@@ -9673,7 +9673,7 @@
   },
   {
     "id": 140800000300380301,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300380302,
@@ -9681,7 +9681,7 @@
   },
   {
     "id": 140800000300380401,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300380402,
@@ -9689,7 +9689,7 @@
   },
   {
     "id": 140800000300380501,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300380502,
@@ -9697,7 +9697,7 @@
   },
   {
     "id": 140800000300380601,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300380602,
@@ -9705,7 +9705,7 @@
   },
   {
     "id": 140800000300380701,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300380702,
@@ -9713,7 +9713,7 @@
   },
   {
     "id": 140800000300380801,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300380802,
@@ -9721,7 +9721,7 @@
   },
   {
     "id": 140800000300380901,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300380902,
@@ -9729,79 +9729,79 @@
   },
   {
     "id": 140800000300390101,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300390102,
-    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 5%)."
+    "value": "The farther the enemy is, the more Weapon Power increases (up to 5%)."
   },
   {
     "id": 140800000300390201,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300390202,
-    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 7%)."
+    "value": "The farther the enemy is, the more Weapon Power increases (up to 7%)."
   },
   {
     "id": 140800000300390301,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300390302,
-    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 10%)."
+    "value": "The farther the enemy is, the more Weapon Power increases (up to 10%)."
   },
   {
     "id": 140800000300390401,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300390402,
-    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 12%)."
+    "value": "The farther the enemy is, the more Weapon Power increases (up to 12%)."
   },
   {
     "id": 140800000300390501,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300390502,
-    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 15%)."
+    "value": "The farther the enemy is, the more Weapon Power increases (up to 15%)."
   },
   {
     "id": 140800000300390601,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300390602,
-    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 17%)."
+    "value": "The farther the enemy is, the more Weapon Power increases (up to 17%)."
   },
   {
     "id": 140800000300390701,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300390702,
-    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 20%)."
+    "value": "The farther the enemy is, the more Weapon Power increases (up to 20%)."
   },
   {
     "id": 140800000300390801,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300390802,
-    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 22%)."
+    "value": "The farther the enemy is, the more Weapon Power increases (up to 22%)."
   },
   {
     "id": 140800000300390901,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300390902,
-    "value": "The farther you are from the enemy, the greater Weapon Power increases (up to 25%)."
+    "value": "The farther the enemy is, the more Weapon Power increases (up to 25%)."
   },
   {
     "id": 140800000300400101,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300400102,
@@ -9809,7 +9809,7 @@
   },
   {
     "id": 140800000300400201,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300400202,
@@ -9817,7 +9817,7 @@
   },
   {
     "id": 140800000300400301,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300400302,
@@ -9825,7 +9825,7 @@
   },
   {
     "id": 140800000300400401,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300400402,
@@ -9833,7 +9833,7 @@
   },
   {
     "id": 140800000300400501,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300400502,
@@ -9841,7 +9841,7 @@
   },
   {
     "id": 140800000300400601,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300400602,
@@ -9849,7 +9849,7 @@
   },
   {
     "id": 140800000300400701,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300400702,
@@ -9857,7 +9857,7 @@
   },
   {
     "id": 140800000300400801,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300400802,
@@ -9865,7 +9865,7 @@
   },
   {
     "id": 140800000300400901,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300400902,
@@ -9873,79 +9873,79 @@
   },
   {
     "id": 140800000300410101,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300410102,
-    "value": "The lower your remaining HP is, the greater Weapon Power increases (up to 5%)."
+    "value": "The lower this unit's remaining HP, the more Weapon Power increases (up to 5%)."
   },
   {
     "id": 140800000300410201,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300410202,
-    "value": "The lower your remaining HP is, the greater Weapon Power increases (up to 7%)."
+    "value": "The lower this unit's remaining HP, the more Weapon Power increases (up to 7%)."
   },
   {
     "id": 140800000300410301,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300410302,
-    "value": "The lower your remaining HP is, the greater Weapon Power increases (up to 10%)."
+    "value": "The lower this unit's remaining HP, the more Weapon Power increases (up to 10%)."
   },
   {
     "id": 140800000300410401,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300410402,
-    "value": "The lower your remaining HP is, the greater Weapon Power increases (up to 12%)."
+    "value": "The lower this unit's remaining HP, the more Weapon Power increases (up to 12%)."
   },
   {
     "id": 140800000300410501,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300410502,
-    "value": "The lower your remaining HP is, the greater Weapon Power increases (up to 15%)."
+    "value": "The lower this unit's remaining HP, the more Weapon Power increases (up to 15%)."
   },
   {
     "id": 140800000300410601,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300410602,
-    "value": "The lower your remaining HP is, the greater Weapon Power increases (up to 17%)."
+    "value": "The lower this unit's remaining HP, the more Weapon Power increases (up to 17%)."
   },
   {
     "id": 140800000300410701,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300410702,
-    "value": "The lower your remaining HP is, the greater Weapon Power increases (up to 20%)."
+    "value": "The lower this unit's remaining HP, the more Weapon Power increases (up to 20%)."
   },
   {
     "id": 140800000300410801,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300410802,
-    "value": "The lower your remaining HP is, the greater Weapon Power increases (up to 22%)."
+    "value": "The lower this unit's remaining HP, the more Weapon Power increases (up to 22%)."
   },
   {
     "id": 140800000300410901,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300410902,
-    "value": "The lower your remaining HP is, the greater Weapon Power increases (up to 25%)."
+    "value": "The lower this unit's remaining HP, the more Weapon Power increases (up to 25%)."
   },
   {
     "id": 140800000300420101,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300420102,
@@ -9953,7 +9953,7 @@
   },
   {
     "id": 140800000300420201,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300420202,
@@ -9961,7 +9961,7 @@
   },
   {
     "id": 140800000300420301,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300420302,
@@ -9969,7 +9969,7 @@
   },
   {
     "id": 140800000300420401,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300420402,
@@ -9977,7 +9977,7 @@
   },
   {
     "id": 140800000300420501,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300420502,
@@ -9985,7 +9985,7 @@
   },
   {
     "id": 140800000300420601,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300420602,
@@ -9993,7 +9993,7 @@
   },
   {
     "id": 140800000300420701,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300420702,
@@ -10001,7 +10001,7 @@
   },
   {
     "id": 140800000300420801,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300420802,
@@ -10009,7 +10009,7 @@
   },
   {
     "id": 140800000300420901,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300420902,
@@ -10017,7 +10017,7 @@
   },
   {
     "id": 140800000300430101,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300430102,
@@ -10025,7 +10025,7 @@
   },
   {
     "id": 140800000300430201,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300430202,
@@ -10033,7 +10033,7 @@
   },
   {
     "id": 140800000300430301,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300430302,
@@ -10041,7 +10041,7 @@
   },
   {
     "id": 140800000300430401,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300430402,
@@ -10049,7 +10049,7 @@
   },
   {
     "id": 140800000300430501,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300430502,
@@ -10057,7 +10057,7 @@
   },
   {
     "id": 140800000300430601,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300430602,
@@ -10065,7 +10065,7 @@
   },
   {
     "id": 140800000300430701,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300430702,
@@ -10073,7 +10073,7 @@
   },
   {
     "id": 140800000300430801,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300430802,
@@ -10081,7 +10081,7 @@
   },
   {
     "id": 140800000300430901,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300430902,
@@ -10089,7 +10089,7 @@
   },
   {
     "id": 140800000300440101,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300440102,
@@ -10097,7 +10097,7 @@
   },
   {
     "id": 140800000300440201,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300440202,
@@ -10105,7 +10105,7 @@
   },
   {
     "id": 140800000300440301,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300440302,
@@ -10113,7 +10113,7 @@
   },
   {
     "id": 140800000300440401,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300440402,
@@ -10121,7 +10121,7 @@
   },
   {
     "id": 140800000300440501,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300440502,
@@ -10129,7 +10129,7 @@
   },
   {
     "id": 140800000300440601,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300440602,
@@ -10137,7 +10137,7 @@
   },
   {
     "id": 140800000300440701,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300440702,
@@ -10145,7 +10145,7 @@
   },
   {
     "id": 140800000300440801,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300440802,
@@ -10153,7 +10153,7 @@
   },
   {
     "id": 140800000300440901,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300440902,
@@ -10161,7 +10161,7 @@
   },
   {
     "id": 140800000300450101,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300450102,
@@ -10169,7 +10169,7 @@
   },
   {
     "id": 140800000300450201,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300450202,
@@ -10177,7 +10177,7 @@
   },
   {
     "id": 140800000300450301,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300450302,
@@ -10185,7 +10185,7 @@
   },
   {
     "id": 140800000300450401,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300450402,
@@ -10193,7 +10193,7 @@
   },
   {
     "id": 140800000300450501,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300450502,
@@ -10201,7 +10201,7 @@
   },
   {
     "id": 140800000300450601,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300450602,
@@ -10209,7 +10209,7 @@
   },
   {
     "id": 140800000300450701,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300450702,
@@ -10217,7 +10217,7 @@
   },
   {
     "id": 140800000300450801,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300450802,
@@ -10225,7 +10225,7 @@
   },
   {
     "id": 140800000300450901,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300450902,
@@ -10233,7 +10233,7 @@
   },
   {
     "id": 140800000300460101,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300460102,
@@ -10241,7 +10241,7 @@
   },
   {
     "id": 140800000300460201,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300460202,
@@ -10249,7 +10249,7 @@
   },
   {
     "id": 140800000300460301,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300460302,
@@ -10257,7 +10257,7 @@
   },
   {
     "id": 140800000300460401,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300460402,
@@ -10265,7 +10265,7 @@
   },
   {
     "id": 140800000300460501,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300460502,
@@ -10273,7 +10273,7 @@
   },
   {
     "id": 140800000300460601,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300460602,
@@ -10281,7 +10281,7 @@
   },
   {
     "id": 140800000300460701,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300460702,
@@ -10289,7 +10289,7 @@
   },
   {
     "id": 140800000300460801,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300460802,
@@ -10297,7 +10297,7 @@
   },
   {
     "id": 140800000300460901,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300460902,
@@ -10305,7 +10305,7 @@
   },
   {
     "id": 140800000300470901,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300480101,
@@ -10417,7 +10417,7 @@
   },
   {
     "id": 140800000300510101,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300510102,
@@ -10425,7 +10425,7 @@
   },
   {
     "id": 140800000300510201,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300510202,
@@ -10433,7 +10433,7 @@
   },
   {
     "id": 140800000300510301,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300510302,
@@ -10441,7 +10441,7 @@
   },
   {
     "id": 140800000300510401,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300510402,
@@ -10449,7 +10449,7 @@
   },
   {
     "id": 140800000300510501,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300510502,
@@ -10457,7 +10457,7 @@
   },
   {
     "id": 140800000300510601,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300510602,
@@ -10465,7 +10465,7 @@
   },
   {
     "id": 140800000300510701,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300510702,
@@ -10473,7 +10473,7 @@
   },
   {
     "id": 140800000300510801,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300510802,
@@ -10481,7 +10481,7 @@
   },
   {
     "id": 140800000300510901,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300510902,
@@ -10489,7 +10489,7 @@
   },
   {
     "id": 140800000300520101,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300520102,
@@ -10497,7 +10497,7 @@
   },
   {
     "id": 140800000300520201,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300520202,
@@ -10505,7 +10505,7 @@
   },
   {
     "id": 140800000300520301,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300520302,
@@ -10513,7 +10513,7 @@
   },
   {
     "id": 140800000300520401,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300520402,
@@ -10521,7 +10521,7 @@
   },
   {
     "id": 140800000300520501,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300520502,
@@ -10529,7 +10529,7 @@
   },
   {
     "id": 140800000300520601,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300520602,
@@ -10537,7 +10537,7 @@
   },
   {
     "id": 140800000300520701,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300520702,
@@ -10545,7 +10545,7 @@
   },
   {
     "id": 140800000300520801,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300520802,
@@ -10553,7 +10553,7 @@
   },
   {
     "id": 140800000300520901,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300520902,
@@ -10561,7 +10561,7 @@
   },
   {
     "id": 140800000300530101,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300530102,
@@ -10569,7 +10569,7 @@
   },
   {
     "id": 140800000300530201,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300530202,
@@ -10577,7 +10577,7 @@
   },
   {
     "id": 140800000300530301,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300530302,
@@ -10585,7 +10585,7 @@
   },
   {
     "id": 140800000300530401,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300530402,
@@ -10593,7 +10593,7 @@
   },
   {
     "id": 140800000300530501,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300530502,
@@ -10601,7 +10601,7 @@
   },
   {
     "id": 140800000300530601,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300530602,
@@ -10609,7 +10609,7 @@
   },
   {
     "id": 140800000300530701,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300530702,
@@ -10617,7 +10617,7 @@
   },
   {
     "id": 140800000300530801,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300530802,
@@ -10625,7 +10625,7 @@
   },
   {
     "id": 140800000300530901,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300530902,
@@ -10633,27 +10633,27 @@
   },
   {
     "id": 140800000300540101,
-    "value": "Inflict \"The max range of Beam Weapon is decrease by 1\" on the enemy [1 turn]."
+    "value": "Inflict \"Decrease beam weapon max range by 1\" on the enemy [1 turn(s)]."
   },
   {
     "id": 140800000300540201,
-    "value": "Inflict \"The max range of Beam Weapon is decrease by 2\" on the enemy [1 turn]."
+    "value": "Inflict \"Decrease beam weapon max range by 2\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300540301,
-    "value": "Inflict \"The max range of Beam Weapon is decrease by 3\" on the enemy [1 turn]."
+    "value": "Inflict \"Decrease beam weapon max range by 3\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300550101,
-    "value": "Inflict \"The max range of Physical Weapon is decrease by 1\" on the enemy (1 turn(s))."
+    "value": "Inflict \"Decrease physical weapon max range by 1\" on the enemy (1 turn(s))."
   },
   {
     "id": 140800000300550201,
-    "value": "Inflict \"The max range of Physical Weapon is decrease by 2\" on the enemy (1 turn(s))."
+    "value": "Inflict \"Decrease physical weapon max range by 2\" on the enemy (1 turn(s))."
   },
   {
     "id": 140800000300550301,
-    "value": "Inflict \"The max range of Physical Weapon is decrease by 3\" on the enemy (1 turn(s))."
+    "value": "Inflict \"Decrease physical weapon max range by 3\" on the enemy (1 turn(s))."
   },
   {
     "id": 140800000300570101,
@@ -10693,7 +10693,7 @@
   },
   {
     "id": 140800000300590101,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300590102,
@@ -10705,7 +10705,7 @@
   },
   {
     "id": 140800000300590201,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300590202,
@@ -10717,7 +10717,7 @@
   },
   {
     "id": 140800000300590301,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300590302,
@@ -10729,7 +10729,7 @@
   },
   {
     "id": 140800000300590401,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300590402,
@@ -10741,7 +10741,7 @@
   },
   {
     "id": 140800000300590501,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300590502,
@@ -10753,7 +10753,7 @@
   },
   {
     "id": 140800000300590601,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300590602,
@@ -10765,7 +10765,7 @@
   },
   {
     "id": 140800000300590701,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300590702,
@@ -10777,7 +10777,7 @@
   },
   {
     "id": 140800000300590801,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300590802,
@@ -10789,7 +10789,7 @@
   },
   {
     "id": 140800000300590901,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300590902,
@@ -11161,7 +11161,7 @@
   },
   {
     "id": 140800000300660101,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300660102,
@@ -11173,7 +11173,7 @@
   },
   {
     "id": 140800000300660201,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300660202,
@@ -11185,7 +11185,7 @@
   },
   {
     "id": 140800000300660301,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300660302,
@@ -11197,7 +11197,7 @@
   },
   {
     "id": 140800000300660401,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300660402,
@@ -11209,7 +11209,7 @@
   },
   {
     "id": 140800000300660501,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300660502,
@@ -11221,7 +11221,7 @@
   },
   {
     "id": 140800000300660601,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300660602,
@@ -11233,7 +11233,7 @@
   },
   {
     "id": 140800000300660701,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300660702,
@@ -11245,7 +11245,7 @@
   },
   {
     "id": 140800000300660801,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300660802,
@@ -11257,7 +11257,7 @@
   },
   {
     "id": 140800000300660901,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300660902,
@@ -11269,111 +11269,111 @@
   },
   {
     "id": 140800000300670102,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 5%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 5%) at the start of battle."
   },
   {
     "id": 140800000300670202,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 7%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 7%) at the start of battle."
   },
   {
     "id": 140800000300670302,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 10%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 10%) at the start of battle."
   },
   {
     "id": 140800000300670402,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 12%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 12%) at the start of battle."
   },
   {
     "id": 140800000300670502,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 15%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 15%) at the start of battle."
   },
   {
     "id": 140800000300670602,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 17%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 17%) at the start of battle."
   },
   {
     "id": 140800000300670702,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 20%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 20%) at the start of battle."
   },
   {
     "id": 140800000300670802,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 22%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 22%) at the start of battle."
   },
   {
     "id": 140800000300670902,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 25%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 25%) at the start of battle."
   },
   {
     "id": 140800000300680101,
-    "value": "Absolute Hit. Weapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300680102,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 5%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 5%) at the start of battle."
   },
   {
     "id": 140800000300680201,
-    "value": "Absolute Hit. Weapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300680202,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 7%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 7%) at the start of battle."
   },
   {
     "id": 140800000300680301,
-    "value": "Absolute Hit. Weapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300680302,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 10%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 10%) at the start of battle."
   },
   {
     "id": 140800000300680401,
-    "value": "Absolute Hit. Weapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300680402,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 12%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 12%) at the start of battle."
   },
   {
     "id": 140800000300680501,
-    "value": "Absolute Hit. Weapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300680502,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 15%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 15%) at the start of battle."
   },
   {
     "id": 140800000300680601,
-    "value": "Absolute Hit. Weapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300680602,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 17%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 17%) at the start of battle."
   },
   {
     "id": 140800000300680701,
-    "value": "Absolute Hit. Weapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300680702,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 20%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 20%) at the start of battle."
   },
   {
     "id": 140800000300680801,
-    "value": "Absolute Hit. Weapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300680802,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 22%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 22%) at the start of battle."
   },
   {
     "id": 140800000300680901,
-    "value": "Absolute Hit. Weapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300680902,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 25%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 25%) at the start of battle."
   },
   {
     "id": 140800000300690101,
@@ -11453,7 +11453,7 @@
   },
   {
     "id": 140800000300700102,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 5%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 5%) at the start of battle."
   },
   {
     "id": 140800000300700201,
@@ -11461,7 +11461,7 @@
   },
   {
     "id": 140800000300700202,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 7%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 7%) at the start of battle."
   },
   {
     "id": 140800000300700301,
@@ -11469,7 +11469,7 @@
   },
   {
     "id": 140800000300700302,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 10%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 10%) at the start of battle."
   },
   {
     "id": 140800000300700401,
@@ -11477,7 +11477,7 @@
   },
   {
     "id": 140800000300700402,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 12%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 12%) at the start of battle."
   },
   {
     "id": 140800000300700501,
@@ -11485,7 +11485,7 @@
   },
   {
     "id": 140800000300700502,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 15%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 15%) at the start of battle."
   },
   {
     "id": 140800000300700601,
@@ -11493,7 +11493,7 @@
   },
   {
     "id": 140800000300700602,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 17%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 17%) at the start of battle."
   },
   {
     "id": 140800000300700701,
@@ -11501,7 +11501,7 @@
   },
   {
     "id": 140800000300700702,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 20%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 20%) at the start of battle."
   },
   {
     "id": 140800000300700801,
@@ -11509,7 +11509,7 @@
   },
   {
     "id": 140800000300700802,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 22%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 22%) at the start of battle."
   },
   {
     "id": 140800000300700901,
@@ -11517,7 +11517,7 @@
   },
   {
     "id": 140800000300700902,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 25%) at the start of battle."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 25%) at the start of battle."
   },
   {
     "id": 140800000300720101,
@@ -11665,7 +11665,7 @@
   },
   {
     "id": 140800000300780101,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300780102,
@@ -11673,7 +11673,7 @@
   },
   {
     "id": 140800000300780201,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300780202,
@@ -11681,7 +11681,7 @@
   },
   {
     "id": 140800000300780301,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300780302,
@@ -11689,7 +11689,7 @@
   },
   {
     "id": 140800000300780401,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300780402,
@@ -11697,7 +11697,7 @@
   },
   {
     "id": 140800000300780501,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300780502,
@@ -11705,7 +11705,7 @@
   },
   {
     "id": 140800000300780601,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300780602,
@@ -11713,7 +11713,7 @@
   },
   {
     "id": 140800000300780701,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300780702,
@@ -11721,7 +11721,7 @@
   },
   {
     "id": 140800000300780801,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300780802,
@@ -11729,7 +11729,7 @@
   },
   {
     "id": 140800000300780901,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300780902,
@@ -11845,7 +11845,7 @@
   },
   {
     "id": 140800000300800101,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300800102,
@@ -11853,7 +11853,7 @@
   },
   {
     "id": 140800000300800201,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300800202,
@@ -11861,7 +11861,7 @@
   },
   {
     "id": 140800000300800301,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300800302,
@@ -11869,7 +11869,7 @@
   },
   {
     "id": 140800000300800401,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300800402,
@@ -11877,7 +11877,7 @@
   },
   {
     "id": 140800000300800501,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300800502,
@@ -11885,7 +11885,7 @@
   },
   {
     "id": 140800000300800601,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300800602,
@@ -11893,7 +11893,7 @@
   },
   {
     "id": 140800000300800701,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300800702,
@@ -11901,7 +11901,7 @@
   },
   {
     "id": 140800000300800801,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300800802,
@@ -11909,7 +11909,7 @@
   },
   {
     "id": 140800000300800901,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300800902,
@@ -11917,7 +11917,7 @@
   },
   {
     "id": 140800000300810101,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300810102,
@@ -11925,7 +11925,7 @@
   },
   {
     "id": 140800000300810201,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300810202,
@@ -11933,7 +11933,7 @@
   },
   {
     "id": 140800000300810301,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300810302,
@@ -11941,7 +11941,7 @@
   },
   {
     "id": 140800000300810401,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300810402,
@@ -11949,7 +11949,7 @@
   },
   {
     "id": 140800000300810501,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300810502,
@@ -11957,7 +11957,7 @@
   },
   {
     "id": 140800000300810601,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300810602,
@@ -11965,7 +11965,7 @@
   },
   {
     "id": 140800000300810701,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300810702,
@@ -11973,7 +11973,7 @@
   },
   {
     "id": 140800000300810801,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300810802,
@@ -11981,7 +11981,7 @@
   },
   {
     "id": 140800000300810901,
-    "value": "Absolute Hit\nWeapon Attribute Damage Reduction Null"
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
   },
   {
     "id": 140800000300810902,
@@ -12801,39 +12801,39 @@
   },
   {
     "id": 140800000310380101,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 5%)."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 5%) at the start of battle."
   },
   {
     "id": 140800000310380201,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 7%)."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 7%) at the start of battle."
   },
   {
     "id": 140800000310380301,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 10%)."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 10%) at the start of battle."
   },
   {
     "id": 140800000310380401,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 12%)."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 12%) at the start of battle."
   },
   {
     "id": 140800000310380501,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 15%)."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 15%) at the start of battle."
   },
   {
     "id": 140800000310380601,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 17%)."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 17%) at the start of battle."
   },
   {
     "id": 140800000310380701,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 20%)."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 20%) at the start of battle."
   },
   {
     "id": 140800000310380801,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 22%)."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 22%) at the start of battle."
   },
   {
     "id": 140800000310380901,
-    "value": "The higher your MP is, the greater Weapon Power increases (up to 25%)."
+    "value": "The higher own MP is, the more Weapon Power increases (up to 25%) at the start of battle."
   },
   {
     "id": 140800000310400901,

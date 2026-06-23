@@ -445,7 +445,7 @@
   },
   {
     "id": 170300000001011021,
-    "value": "Units have the following stats:\n\n- HP\nThe unit's durability. HP decreases when the unit is attacked by enemies, and the unit is destroyed once its HP reaches 0.\n\n- EN\nEN is consumed when weapons are used. Weapons cannot be used without EN.\n\n- ATK\nAffects the amount of damage dealt to enemy units.\n\n- DEF\nAffects the amount of damage taken from enemy units.\n\n- MOB\nAffects unit's Accuracy and Evasion.\n\n- MOV\nDetermines how far a unit can move.\n*A unit can move a minimum of 1 square even while affected by MOV reduction effects.\n When a unit is affected by both negative and positive MOV modififers, the sum of all modififers is used to determine its final MOV."
+    "value": "Units have the following stats:\n\n- HP\nThe unit's durability. HP decreases when the unit is attacked by enemies, and the unit is defeated once its HP reaches 0.\n\n- EN\nEN is consumed when weapons are used. Weapons cannot be used without EN.\n\n- ATK\nAffects the amount of damage dealt to enemy units.\n\n- DEF\nAffects the amount of damage taken from enemy units.\n\n- MOB\nAffects unit's Accuracy and Evasion.\n\n- MOV\nDetermines how far a unit can move.\n*A unit can move a minimum of 1 square even while affected by MOV reduction effects.\n When a unit is affected by both negative and positive MOV modififers, the sum of all modififers is used to determine its final MOV."
   },
   {
     "id": 170300000001011031,
@@ -465,7 +465,7 @@
   },
   {
     "id": 170300000001011071,
-    "value": "Certain units can wield special weapons.\nUnlike regular weapons, MAP Weapons can attack multiple units within range at once, deal damage to the entire area, restore HP or increase MP of allies, etc.\n\nNotes on MAP Weapons:\n- Except for certain special MAP Weapons, they cannot be used after moving.\n- Bonus Actions will not be triggered upon destroying an enemy unit with a MAP Weapon.\n- Auto Bonus Actions will not activate after using MAP Weapons.\n- MAP Weapons have a limited number of uses."
+    "value": "Certain units can wield special weapons.\nUnlike regular weapons, MAP Weapons can attack multiple units within range at once, deal damage to the entire area, restore HP or increase MP of allies, etc.\n\nNotes on MAP Weapons:\n- Except for certain special MAP Weapons, they cannot be used after moving.\n- Bonus Actions will not be triggered upon defeating an enemy unit with a MAP Weapon.\n- Auto Bonus Actions will not activate after using MAP Weapons.\n- MAP Weapons have a limited number of uses."
   },
   {
     "id": 170300000001011081,
@@ -589,7 +589,7 @@
   },
   {
     "id": 170300000001061021,
-    "value": "Forces represent the affiliation of each unit during battle.\nBelow are the different types of forces:\n\n- Your Forces\nForces that are controlled and assembled by the player.\nYou can perform actions during your designated phase.\n\n- Guest Forces\nForces that are part of the storyline and are assigned for each stage.\nWhile they are not assembled by the player, they can still be controlled during your designated phase.\nCaptures are possible when Guest Forces destroy enemy units.\n\n- Enemy Forces\nThe opposing forces against Your (Player) Forces, Third Forces, and Friendly Forces.\nTheir actions are automatically executed during the Enemy phase.\n\n- Third Forces\nThe opposing forces against Your (Player) Forces, Enemy Forces, and Friendly Forces.\nTheir actions are automatically executed during the Third phase.\n\n- Friendly Forces\nThe opposing forces against Enemy Forces and Third Forces.\nTheir actions are automatically executed during the Friendly phase."
+    "value": "Forces represent the affiliation of each unit during battle.\nBelow are the different types of forces:\n\n- Your Forces\nForces that are controlled and assembled by the player.\nYou can perform actions during your designated phase.\n\n- Guest Forces\nForces that are part of the storyline and are assigned for each stage.\nWhile they are not assembled by the player, they can still be controlled during your designated phase.\nCaptures are possible when Guest Forces defeat enemy units.\n\n- Enemy Forces\nThe opposing forces against Your (Player) Forces, Third Forces, and Friendly Forces.\nTheir actions are automatically executed during the Enemy phase.\n\n- Third Forces\nThe opposing forces against Your (Player) Forces, Enemy Forces, and Friendly Forces.\nTheir actions are automatically executed during the Third phase.\n\n- Friendly Forces\nThe opposing forces against Enemy Forces and Third Forces.\nTheir actions are automatically executed during the Friendly phase."
   },
   {
     "id": 170300000001061031,
@@ -645,7 +645,7 @@
   },
   {
     "id": 170300000001081031,
-    "value": "A Chance Step occurs during battle when an enemy unit is destroyed.\n\nWhen a Chance Step occurs, a unit that has destroyed another unit can perform an additional action.\nThere is a limited number of Bonus Actions during each phase, which depends on the abilities of the character on board.\n\nIf a Chance Step would be activated, Chance Step activates before skill and ability effects that affect actions."
+    "value": "A Chance Step occurs during battle when an enemy unit is defeated.\n\nWhen a Chance Step occurs, a unit that has defeated another unit can perform an additional action.\nThere is a limited number of Bonus Actions during each phase, which depends on the abilities of the character on board.\n\nIf a Chance Step would be activated, Chance Step activates before skill and ability effects that affect actions."
   },
   {
     "id": 170300000001081041,

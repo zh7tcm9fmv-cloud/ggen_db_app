@@ -205,43 +205,43 @@
   },
   {
     "id": 140100000100110101,
-    "value": "HP Restoration (Single Unit) LV 1"
+    "value": "HP Restoration (Self) LV 1"
   },
   {
     "id": 140100000100110201,
-    "value": "HP Restoration (Single Unit) LV 2"
+    "value": "HP Restoration (Self) LV 2"
   },
   {
     "id": 140100000100110301,
-    "value": "HP Restoration (Single Unit) LV 3"
+    "value": "HP Restoration (Self) LV 3"
   },
   {
     "id": 140100000100110401,
-    "value": "HP Restoration (Single Unit) LV 4"
+    "value": "HP Restoration (Self) LV 4"
   },
   {
     "id": 140100000100110501,
-    "value": "HP Restoration (Single Unit) LV 5"
+    "value": "HP Restoration (Self) LV 5"
   },
   {
     "id": 140100000100120101,
-    "value": "EN Recovery (Single Unit) LV 1"
+    "value": "EN Recovery (Self) LV 1"
   },
   {
     "id": 140100000100120201,
-    "value": "EN Recovery (Single Unit) LV 2"
+    "value": "EN Recovery (Self) LV 2"
   },
   {
     "id": 140100000100120301,
-    "value": "EN Recovery (Single Unit) LV 3"
+    "value": "EN Recovery (Self) LV 3"
   },
   {
     "id": 140100000100120401,
-    "value": "EN Recovery (Single Unit) LV 4"
+    "value": "EN Recovery (Self) LV 4"
   },
   {
     "id": 140100000100120501,
-    "value": "EN Recovery (Single Unit) LV 5"
+    "value": "EN Recovery (Self) LV 5"
   },
   {
     "id": 140100000100130100,
@@ -1365,11 +1365,11 @@
   },
   {
     "id": 140100000100760201,
-    "value": "(Vigor conditions) Increased MOB LV 2"
+    "value": "(Cnd: Vigor) Increased MOB LV 2"
   },
   {
     "id": 140100000100760301,
-    "value": "(Vigor conditions) Increased MOB LV 3"
+    "value": "(Cnd: Vigor) Increased MOB LV 3"
   },
   {
     "id": 140100000100770100,
@@ -1489,23 +1489,23 @@
   },
   {
     "id": 140100000100860101,
-    "value": "(Range Condition) Damage Reduction LV 1"
+    "value": "(Range conditions) Damage Reduction LV 1"
   },
   {
     "id": 140100000100860201,
-    "value": "(Range Condition) Damage Reduction LV 2"
+    "value": "(Range conditions) Damage Reduction LV 2"
   },
   {
     "id": 140100000100860301,
-    "value": "(Range Condition) Damage Reduction LV 3"
+    "value": "(Range conditions) Damage Reduction LV 3"
   },
   {
     "id": 140100000100860401,
-    "value": "(Range Condition) Damage Reduction LV 4"
+    "value": "(Range conditions) Damage Reduction LV 4"
   },
   {
     "id": 140100000100860501,
-    "value": "(Range Condition) Damage Reduction LV 5"
+    "value": "(Range conditions) Damage Reduction LV 5"
   },
   {
     "id": 140100000100870201,
@@ -1593,15 +1593,15 @@
   },
   {
     "id": 140100000100980101,
-    "value": "(No. of battles conditions) Increased ATK LV 1"
+    "value": "(Cnd: Battle - Count) Increased ATK LV 1"
   },
   {
     "id": 140100000100980201,
-    "value": "(No. of battles conditions) Increased ATK LV 2"
+    "value": "(Cnd: Battle - Count) Increased ATK LV 2"
   },
   {
     "id": 140100000100980301,
-    "value": "(No. of battles conditions) Increased ATK LV 3"
+    "value": "(Cnd: Battle - Count) Increased ATK LV 3"
   },
   {
     "id": 140100000101000100,
@@ -1733,19 +1733,19 @@
   },
   {
     "id": 140100000101150101,
-    "value": "(When supporting) Increased ATK LV 1"
+    "value": "(Action: Support) Increased ATK LV 1"
   },
   {
     "id": 140100000101150201,
-    "value": "(When supporting) Increased ATK LV2"
+    "value": "(Action: Support) Increased ATK LV 2"
   },
   {
     "id": 140100000101160201,
-    "value": "(When countering) Increased ATK LV2"
+    "value": "(Action: Counter) Increased ATK LV 2"
   },
   {
     "id": 140100000101160401,
-    "value": "(When countering) Increased ATK LV 4"
+    "value": "(Action: Counter) Increased ATK LV 4"
   },
   {
     "id": 140100000101180101,
@@ -1753,7 +1753,7 @@
   },
   {
     "id": 140100000101190101,
-    "value": "Aptitude: Songstress LV1"
+    "value": "Aptitude: Songstress LV 1"
   },
   {
     "id": 140100000101210201,
@@ -1821,7 +1821,7 @@
   },
   {
     "id": 140100000101270101,
-    "value": "(Vigor conditions) Improve Decrease ATK Effect LV 1"
+    "value": "(Cnd: Vigor) Improve Decrease ATK Effect LV 1"
   },
   {
     "id": 140100000101280101,
@@ -1829,7 +1829,7 @@
   },
   {
     "id": 140100000101300101,
-    "value": "(Tag conditions) Increased MOV LV 1"
+    "value": "(Cnd: Tag) Increased MOV LV 1"
   },
   {
     "id": 140100000101310100,
@@ -1873,19 +1873,19 @@
   },
   {
     "id": 140100000101340201,
-    "value": "(Battle conditions) Increased ATK LV 2"
+    "value": "(Cnd: Battle) Increased ATK LV 2"
   },
   {
     "id": 140100000101340301,
-    "value": "(Battle conditions) Increased ATK LV 3"
+    "value": "(Cnd: Battle) Increased ATK LV 3"
   },
   {
     "id": 140100000101350100,
-    "value": "Advantage:  Celestial Being LV 1"
+    "value": "Advantage: Celestial Being LV 1"
   },
   {
     "id": 140100000101350200,
-    "value": "Advantage:  Celestial Being LV 2"
+    "value": "Advantage: Celestial Being LV 2"
   },
   {
     "id": 140100000101360101,
@@ -1893,15 +1893,15 @@
   },
   {
     "id": 140100000101370200,
-    "value": "Advantage:  Mobile Suit Gundam 00 LV 2"
+    "value": "Advantage: Mobile Suit Gundam 00 LV 2"
   },
   {
     "id": 140100000101370300,
-    "value": "Advantage:  Mobile Suit Gundam 00 LV 3"
+    "value": "Advantage: Mobile Suit Gundam 00 LV 3"
   },
   {
     "id": 140100000101370400,
-    "value": "Advantage:  Mobile Suit Gundam 00 LV 4"
+    "value": "Advantage: Mobile Suit Gundam 00 LV 4"
   },
   {
     "id": 140100000101380200,
@@ -1937,7 +1937,7 @@
   },
   {
     "id": 140100000101420101,
-    "value": "(Squad conditions) Increased ATK LV 1"
+    "value": "(Cnd: Squad) Increased ATK LV 1"
   },
   {
     "id": 140100000101430100,
@@ -1961,23 +1961,23 @@
   },
   {
     "id": 140100000101480100,
-    "value": "(When countering or choosing to Evade) Increased EVA LV 1"
+    "value": "(Cnd: Counter or Evade) Increased EVA LV 1"
   },
   {
     "id": 140100000101480200,
-    "value": "(When countering or choosing to Evade) Increased EVA LV 2"
+    "value": "(Cnd: Counter or Evade) Increased EVA LV 2"
   },
   {
     "id": 140100000101480300,
-    "value": "(When countering or choosing to Evade) Increased EVA LV 3"
+    "value": "(Cnd: Counter or Evade) Increased EVA LV 3"
   },
   {
     "id": 140100000101480400,
-    "value": "(When countering or choosing to Evade) Increased EVA LV 4"
+    "value": "(Cnd: Counter or Evade) Increased EVA LV 4"
   },
   {
     "id": 140100000101480500,
-    "value": "(When countering or choosing to Evade) Increased EVA LV 5"
+    "value": "(Cnd: Counter or Evade) Increased EVA LV 5"
   },
   {
     "id": 140100000101490200,
@@ -1993,23 +1993,23 @@
   },
   {
     "id": 140100000101520100,
-    "value": "(Regular & Vigor Conditions) Increased ATK  LV 1"
+    "value": "(Permanent, Cnd: Vigor) Increased ATK LV 1"
   },
   {
     "id": 140100000101520200,
-    "value": "(Regular & Vigor Conditions) Increased ATK  LV 2"
+    "value": "(Permanent, Cnd: Vigor) Increased ATK LV 2"
   },
   {
     "id": 140100000101520300,
-    "value": "(Regular & Vigor Conditions) Increased ATK  LV 3"
+    "value": "(Permanent, Cnd: Vigor) Increased ATK LV 3"
   },
   {
     "id": 140100000101520400,
-    "value": "(Regular & Vigor Conditions) Increased ATK  LV 4"
+    "value": "(Permanent, Cnd: Vigor) Increased ATK LV 4"
   },
   {
     "id": 140100000101520500,
-    "value": "(Regular & Vigor Conditions) Increased ATK  LV 5"
+    "value": "(Permanent, Cnd: Vigor) Increased ATK LV 5"
   },
   {
     "id": 140100000101540100,
@@ -3789,23 +3789,23 @@
   },
   {
     "id": 140100000200980100,
-    "value": "Affinity: Mobile Suit Gundam the Witch from Mercury LV 1"
+    "value": "Affinity: The Witch from Mercury LV 1"
   },
   {
     "id": 140100000200980200,
-    "value": "Affinity: Mobile Suit Gundam the Witch from Mercury LV 2"
+    "value": "Affinity: The Witch from Mercury LV 2"
   },
   {
     "id": 140100000200980300,
-    "value": "Affinity: Mobile Suit Gundam the Witch from Mercury LV 3"
+    "value": "Affinity: The Witch from Mercury LV 3"
   },
   {
     "id": 140100000200980400,
-    "value": "Affinity: Mobile Suit Gundam the Witch from Mercury LV 4"
+    "value": "Affinity: The Witch from Mercury LV 4"
   },
   {
     "id": 140100000200980500,
-    "value": "Affinity: Mobile Suit Gundam the Witch from Mercury LV 5"
+    "value": "Affinity: The Witch from Mercury LV 5"
   },
   {
     "id": 140100000200990101,
@@ -4365,11 +4365,11 @@
   },
   {
     "id": 140100000201410101,
-    "value": "(Series conditions) Support Attack / Counter Support LV1"
+    "value": "(Series conditions) Support Attack / Counter Support LV 1"
   },
   {
     "id": 140100000201420101,
-    "value": "(Series conditions) Support Defense LV1"
+    "value": "(Series conditions) Support Defense LV 1"
   },
   {
     "id": 140100000201430101,
@@ -4793,11 +4793,11 @@
   },
   {
     "id": 140100000202200101,
-    "value": "(Series conditions) Chance Step Increase LV 1"
+    "value": "(Cnd: Series) Chance Step Increase LV 1"
   },
   {
     "id": 140100000202210101,
-    "value": "(Series conditions) Support Attack / Counter Support LV 1"
+    "value": "(Cnd: Series) Support Attack / Counter Support LV 1"
   },
   {
     "id": 140100000202220100,
@@ -4809,11 +4809,11 @@
   },
   {
     "id": 140100000202230104,
-    "value": "(Tag conditions)Increased ATK"
+    "value": "(Cnd: Tag) Increased ATK"
   },
   {
     "id": 140100000202230105,
-    "value": "(Tag conditions)Increased DEF"
+    "value": "(Cnd: Tag) Increased DEF"
   },
   {
     "id": 140100000202240300,
@@ -4849,23 +4849,23 @@
   },
   {
     "id": 140100000202270101,
-    "value": "(Series conditions) Support Attack / Counter Support LV 1"
+    "value": "(Cnd: Series) Support Attack / Counter Support LV 1"
   },
   {
     "id": 140100000202280101,
-    "value": "(Series conditions) Support Defense LV 1"
+    "value": "(Cnd: Series) Support Defense LV 1"
   },
   {
     "id": 140100000202290101,
-    "value": "(Tag conditions)Increased MP LV 1"
+    "value": "(Cnd: Tag) Increased MP LV 1"
   },
   {
     "id": 140100000202300101,
-    "value": "(Tag conditions) Chance Step Increase LV 1"
+    "value": "(Cnd: Tag) Chance Step Increase LV 1"
   },
   {
     "id": 140100000202310101,
-    "value": "(Squad conditions) Increased ATK LV 1"
+    "value": "(Cnd: Squad) Increased ATK LV 1"
   },
   {
     "id": 140100000202320101,
@@ -4873,7 +4873,7 @@
   },
   {
     "id": 140100000202330101,
-    "value": "(Tag conditions) Support Attack / Counter Support LV 1"
+    "value": "(Cnd: Tag) Support Attack / Counter Support LV 1"
   },
   {
     "id": 140100000202340100,
@@ -4893,7 +4893,7 @@
   },
   {
     "id": 140100000202370101,
-    "value": "(Series conditions) Chance Step Increase LV 1"
+    "value": "(Cnd: Series) Chance Step Increase LV 1"
   },
   {
     "id": 140100000202380100,
@@ -4905,15 +4905,15 @@
   },
   {
     "id": 140100000202400101,
-    "value": "(Tag conditions) Support Attack / Counter Support LV 1"
+    "value": "(Cnd: Tag) Support Attack / Counter Support LV 1"
   },
   {
     "id": 140100000202410101,
-    "value": "(Series conditions) Support Defense LV 1"
+    "value": "(Cnd: Series) Support Defense LV 1"
   },
   {
     "id": 140100000202420101,
-    "value": "(Tag conditions) Chance Step Increase LV 1"
+    "value": "(Cnd: Tag) Chance Step Increase LV 1"
   },
   {
     "id": 140100000202430100,
@@ -4929,15 +4929,15 @@
   },
   {
     "id": 140100000202440212,
-    "value": "(Vigor conditions) Damage Reduced"
+    "value": "(Cnd: Vigor) Reduced Damage"
   },
   {
     "id": 140100000202440213,
-    "value": "(Vigor conditions)Increased Melee"
+    "value": "(Cnd: Vigor) Increased Melee"
   },
   {
     "id": 140100000202440214,
-    "value": "(Vigor conditions)Increased Reaction"
+    "value": "(Cnd: Vigor) Increased Reaction"
   },
   {
     "id": 140100000202440220,
@@ -4953,15 +4953,15 @@
   },
   {
     "id": 140100000202440312,
-    "value": "(Vigor conditions) Damage Reduced"
+    "value": "(Cnd: Vigor) Reduced Damage"
   },
   {
     "id": 140100000202440313,
-    "value": "(Vigor conditions)Increased Melee"
+    "value": "(Cnd: Vigor) Increased Melee"
   },
   {
     "id": 140100000202440314,
-    "value": "(Vigor conditions)Increased Reaction"
+    "value": "(Cnd: Vigor) Increased Reaction"
   },
   {
     "id": 140100000202440401,
@@ -4973,7 +4973,7 @@
   },
   {
     "id": 140100000202450103,
-    "value": "(Series conditions) Increased ATK"
+    "value": "(Cnd: Series) Increased ATK"
   },
   {
     "id": 140100000202460100,
@@ -4981,7 +4981,7 @@
   },
   {
     "id": 140100000202470101,
-    "value": "(Tag conditions)HP Restoration (Single Unit) LV 1"
+    "value": "(Cnd: Tag) HP Restoration (Single Unit) LV 1"
   },
   {
     "id": 140100000202480100,
@@ -4989,15 +4989,15 @@
   },
   {
     "id": 140100000202490101,
-    "value": "(Series conditions) Support Attack / Counter Support LV 1"
+    "value": "(Cnd: Series) Support Attack / Counter Support LV 1"
   },
   {
     "id": 140100000202500101,
-    "value": "(Tag conditions) Support Attack / Counter Support LV 1"
+    "value": "(Cnd: Tag) Support Attack / Counter Support LV 1"
   },
   {
     "id": 140100000202510101,
-    "value": "(Tag conditions) Support Attack / Counter Support LV 1"
+    "value": "(Cnd: Tag) Support Attack / Counter Support LV 1"
   },
   {
     "id": 140100000202520400,
@@ -5041,7 +5041,7 @@
   },
   {
     "id": 140100000202590101,
-    "value": "(Series conditions) Chance Step Increase LV 1"
+    "value": "(Cnd: Series) Chance Step Increase LV 1"
   },
   {
     "id": 140100000202600101,
@@ -5597,111 +5597,111 @@
   },
   {
     "id": 140100000300150101,
-    "value": "Increased Physical Damage [1 turn] LV 1"
+    "value": "Increased Physical Damage Taken [1 turn] LV 1"
   },
   {
     "id": 140100000300150201,
-    "value": "Increased Physical Damage [1 turn] LV 2"
+    "value": "Increased Physical Damage Taken [1 turn] LV 2"
   },
   {
     "id": 140100000300150301,
-    "value": "Increased Physical Damage [1 turn] LV 3"
+    "value": "Increased Physical Damage Taken [1 turn] LV 3"
   },
   {
     "id": 140100000300150401,
-    "value": "Increased Physical Damage [1 turn] LV 4"
+    "value": "Increased Physical Damage Taken [1 turn] LV 4"
   },
   {
     "id": 140100000300150501,
-    "value": "Increased Physical Damage [1 turn] LV 5"
+    "value": "Increased Physical Damage Taken [1 turn] LV 5"
   },
   {
     "id": 140100000300150601,
-    "value": "Increased Physical Damage [1 turn] LV 6"
+    "value": "Increased Physical Damage Taken [1 turn] LV 6"
   },
   {
     "id": 140100000300150701,
-    "value": "Increased Physical Damage [1 turn] LV 7"
+    "value": "Increased Physical Damage Taken [1 turn] LV 7"
   },
   {
     "id": 140100000300150801,
-    "value": "Increased Physical Damage [1 turn] LV 8"
+    "value": "Increased Physical Damage Taken [1 turn] LV 8"
   },
   {
     "id": 140100000300150901,
-    "value": "Increased Physical Damage [1 turn] LV 9"
+    "value": "Increased Physical Damage Taken [1 turn] LV 9"
   },
   {
     "id": 140100000300160101,
-    "value": "Increased Beam Damage [1 turn] LV 1"
+    "value": "Increased Beam Damage Taken [1 turn] LV 1"
   },
   {
     "id": 140100000300160201,
-    "value": "Increased Beam Damage [1 turn] LV 2"
+    "value": "Increased Beam Damage Taken [1 turn] LV 2"
   },
   {
     "id": 140100000300160301,
-    "value": "Increased Beam Damage [1 turn] LV 3"
+    "value": "Increased Beam Damage Taken [1 turn] LV 3"
   },
   {
     "id": 140100000300160401,
-    "value": "Increased Beam Damage [1 turn] LV 4"
+    "value": "Increased Beam Damage Taken [1 turn] LV 4"
   },
   {
     "id": 140100000300160501,
-    "value": "Increased Beam Damage [1 turn] LV 5"
+    "value": "Increased Beam Damage Taken [1 turn] LV 5"
   },
   {
     "id": 140100000300160601,
-    "value": "Increased Beam Damage [1 turn] LV 6"
+    "value": "Increased Beam Damage Taken [1 turn] LV 6"
   },
   {
     "id": 140100000300160701,
-    "value": "Increased Beam Damage [1 turn] LV 7"
+    "value": "Increased Beam Damage Taken [1 turn] LV 7"
   },
   {
     "id": 140100000300160801,
-    "value": "Increased Beam Damage [1 turn] LV 8"
+    "value": "Increased Beam Damage Taken [1 turn] LV 8"
   },
   {
     "id": 140100000300160901,
-    "value": "Increased Beam Damage [1 turn] LV 9"
+    "value": "Increased Beam Damage Taken [1 turn] LV 9"
   },
   {
     "id": 140100000300170101,
-    "value": "Increased Special Damage [1 turn] LV 1"
+    "value": "Increased Special Damage Taken [1 turn] LV 1"
   },
   {
     "id": 140100000300170201,
-    "value": "Increased Special Damage [1 turn] LV 2"
+    "value": "Increased Special Damage Taken [1 turn] LV 2"
   },
   {
     "id": 140100000300170301,
-    "value": "Increased Special Damage [1 turn] LV 3"
+    "value": "Increased Special Damage Taken [1 turn] LV 3"
   },
   {
     "id": 140100000300170401,
-    "value": "Increased Special Damage [1 turn] LV 4"
+    "value": "Increased Special Damage Taken [1 turn] LV 4"
   },
   {
     "id": 140100000300170501,
-    "value": "Increased Special Damage [1 turn] LV 5"
+    "value": "Increased Special Damage Taken [1 turn] LV 5"
   },
   {
     "id": 140100000300170601,
-    "value": "Increased Special Damage [1 turn] LV 6"
+    "value": "Increased Special Damage Taken [1 turn] LV 6"
   },
   {
     "id": 140100000300170701,
-    "value": "Increased Special Damage [1 turn] LV 7"
+    "value": "Increased Special Damage Taken [1 turn] LV 7"
   },
   {
     "id": 140100000300170801,
-    "value": "Increased Special Damage [1 turn] LV 8"
+    "value": "Increased Special Damage Taken [1 turn] LV 8"
   },
   {
     "id": 140100000300170901,
-    "value": "Increased Special Damage [1 turn] LV 9"
+    "value": "Increased Special Damage Taken [1 turn] LV 9"
   },
   {
     "id": 140100000300180101,
@@ -6445,15 +6445,15 @@
   },
   {
     "id": 140100000310220201,
-    "value": "With More Remaining HP, Higher Weapon Power LV 2"
+    "value": "Scaling Weapon Power (More Remaining HP) LV 2"
   },
   {
     "id": 140100000310220301,
-    "value": "With More Remaining HP, Higher Weapon Power LV 3"
+    "value": "Scaling Weapon Power (More Remaining HP) LV 3"
   },
   {
     "id": 140100000310220401,
-    "value": "With More Remaining HP, Higher Weapon Power LV 4"
+    "value": "Scaling Weapon Power (More Remaining HP) LV 4"
   },
   {
     "id": 140100000310220501,
@@ -6585,39 +6585,39 @@
   },
   {
     "id": 140100000310300101,
-    "value": "With Less Remaining HP, Higher Weapon Power LV 1"
+    "value": "Scaling Weapon Power (Less Remaining HP)  LV 1"
   },
   {
     "id": 140100000310300201,
-    "value": "With Less Remaining HP, Higher Weapon Power LV 2"
+    "value": "Scaling Weapon Power (Less Remaining HP)  LV 2"
   },
   {
     "id": 140100000310300301,
-    "value": "With Less Remaining HP, Higher Weapon Power LV 3"
+    "value": "Scaling Weapon Power (Less Remaining HP)  LV 3"
   },
   {
     "id": 140100000310300401,
-    "value": "With Less Remaining HP, Higher Weapon Power LV 4"
+    "value": "Scaling Weapon Power (Less Remaining HP)  LV 4"
   },
   {
     "id": 140100000310300501,
-    "value": "With Less Remaining HP, Higher Weapon Power LV 5"
+    "value": "Scaling Weapon Power (Less Remaining HP)  LV 5"
   },
   {
     "id": 140100000310300601,
-    "value": "With Less Remaining HP, Higher Weapon Power LV 6"
+    "value": "Scaling Weapon Power (Less Remaining HP)  LV 6"
   },
   {
     "id": 140100000310300701,
-    "value": "With Less Remaining HP, Higher Weapon Power LV 7"
+    "value": "Scaling Weapon Power (Less Remaining HP)  LV 7"
   },
   {
     "id": 140100000310300801,
-    "value": "With Less Remaining HP, Higher Weapon Power LV 8"
+    "value": "Scaling Weapon Power (Less Remaining HP)  LV 8"
   },
   {
     "id": 140100000310300901,
-    "value": "With Less Remaining HP, Higher Weapon Power LV 9"
+    "value": "Scaling Weapon Power (Less Remaining HP)  LV 9"
   },
   {
     "id": 140100000310320101,

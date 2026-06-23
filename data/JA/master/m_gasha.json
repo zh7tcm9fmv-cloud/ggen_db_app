@@ -1626,5 +1626,27 @@
     "SnsShareMessageLanguageId": 0,
     "TopCautionTextLanguageId": 0,
     "GashaTicketToRareMedalConvertRate": 0
+  },
+  {
+    "Id": 2606400403,
+    "NameLanguageId": 220100002606400403,
+    "LogoResourceId": "gasha_logo_2606400403",
+    "GashaTypeIndex": 1,
+    "AppealBannerId": 2606400101,
+    "AppealTextLanguageId": 220400002504100101,
+    "ScheduleId": 2606401701,
+    "LimitRollCountResetTypeIndex": 1,
+    "LimitRollCount": 0,
+    "IsShown": true,
+    "GashaPointExchangeId": 2606400403,
+    "SortOrder": 1000,
+    "RollConditionSetId": 0,
+    "GashaAppealMovieResourceId": "",
+    "GashaAppealMoviePriority": 0,
+    "CautionTextLanguageId": 220900000000000001,
+    "GashaMovieSettingId": 0,
+    "SnsShareMessageLanguageId": 0,
+    "TopCautionTextLanguageId": 0,
+    "GashaTicketToRareMedalConvertRate": 0
   }
 ]

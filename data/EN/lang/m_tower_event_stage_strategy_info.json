@@ -121,7 +121,7 @@
   },
   {
     "id": 290200907001110101,
-    "value": "The victory condition for this stage is to <material=MaterialName>Kira Yamato and enemy units destroyed</material>.\n\nFreedom Gundam  <material=MaterialName>has an ability with the When Vigor is Supercharged or higher, Increase DEF by 300%. effect</material>."
+    "value": "The victory condition for this stage is to <material=MaterialName>Kira Yamato and enemy units defeated</material>.\n\nFreedom Gundam  <material=MaterialName>has an ability with the When Vigor is Supercharged or higher, Increase DEF by 300%. effect</material>."
   },
   {
     "id": 290200907001110102,
@@ -465,7 +465,7 @@
   },
   {
     "id": 290200907002150101,
-    "value": "Burning Gundam is a unit that appears after Shining Gundam (Super Mode) has been destroyed, possessing <material=MaterialName>extremely high stats and When the enemy attacks from 2 spaces or more,reduce damage taken by 50%. abilities</material>."
+    "value": "Burning Gundam is a unit that appears after Shining Gundam (Super Mode) has been defeated, possessing <material=MaterialName>extremely high stats and When the enemy attacks from 2 spaces or more,reduce damage taken by 50%. abilities</material>."
   },
   {
     "id": 290200907002150201,
@@ -521,7 +521,7 @@
   },
   {
     "id": 290200907002190101,
-    "value": "Heero Yuy (EW)  <material=MaterialName>has an ability with the When Relena Darlian (EW) in your squad is destroyed:\nIncrease own ATK and DEF by 200%. effect</material>."
+    "value": "Heero Yuy (EW)  <material=MaterialName>has an ability with the When Relena Darlian (EW) in your squad is defeated:\nIncrease own ATK and DEF by 200%. effect</material>."
   },
   {
     "id": 290200907002190202,
@@ -533,7 +533,7 @@
   },
   {
     "id": 290200907002190204,
-    "value": "Altron Gundam (EW) is a Friendly Force unit with <material=MaterialName>high ATK</material>. It will <material=MaterialName>appear once a certain unit is destroyed.</material>"
+    "value": "Altron Gundam (EW) is a Friendly Force unit with <material=MaterialName>high ATK</material>. It will <material=MaterialName>appear once a certain unit is defeated.</material>"
   },
   {
     "id": 290200907002200101,
@@ -589,11 +589,11 @@
   },
   {
     "id": 290300907001060203,
-    "value": "Prioritize destroying Graze Ein."
+    "value": "Prioritize defeating Graze Ein."
   },
   {
     "id": 290300907001060204,
-    "value": "Prioritize destroying Graze Ritter (Instructor/Duel Type)."
+    "value": "Prioritize defeating Graze Ritter (Instructor/Duel Type)."
   },
   {
     "id": 290300907001070201,
@@ -657,7 +657,7 @@
   },
   {
     "id": 290300907001100203,
-    "value": "Quickly destroy it before it activates an ability."
+    "value": "Quickly defeat it before it activates an ability."
   },
   {
     "id": 290300907001110201,
@@ -665,7 +665,7 @@
   },
   {
     "id": 290300907001110202,
-    "value": "Prioritize destroying Lacus Clyne."
+    "value": "Prioritize defeating Lacus Clyne."
   },
   {
     "id": 290300907001110203,
@@ -697,11 +697,11 @@
   },
   {
     "id": 290300907001130201,
-    "value": "Prioritize destroying GM Sniper Custom."
+    "value": "Prioritize defeating GM Sniper Custom."
   },
   {
     "id": 290300907001130202,
-    "value": "Prioritize destroying GM Sniper II."
+    "value": "Prioritize defeating GM Sniper II."
   },
   {
     "id": 290300907001130203,
@@ -797,7 +797,7 @@
   },
   {
     "id": 290300907001180204,
-    "value": "Prioritize destroying this unit."
+    "value": "Prioritize defeating this unit."
   },
   {
     "id": 290300907001190101,
@@ -805,7 +805,7 @@
   },
   {
     "id": 290300907001190201,
-    "value": "Prioritize destroying Miorine Rembran."
+    "value": "Prioritize defeating Miorine Rembran."
   },
   {
     "id": 290300907001190202,
@@ -861,7 +861,7 @@
   },
   {
     "id": 290300907002060203,
-    "value": "Prioritize destroying Talia Gladys."
+    "value": "Prioritize defeating Talia Gladys."
   },
   {
     "id": 290300907002070201,
@@ -869,11 +869,11 @@
   },
   {
     "id": 290300907002070202,
-    "value": "Prioritize destroying Haman Karn."
+    "value": "Prioritize defeating Haman Karn."
   },
   {
     "id": 290300907002070203,
-    "value": "Prioritize destroying Glemy Toto."
+    "value": "Prioritize defeating Glemy Toto."
   },
   {
     "id": 290300907002080202,
@@ -881,7 +881,7 @@
   },
   {
     "id": 290300907002090101,
-    "value": "Aim to destroy the targets by using Gundam Bael's enhancement effects."
+    "value": "Aim to defeat the targets by using Gundam Bael's enhancement effects."
   },
   {
     "id": 290300907002090201,
@@ -893,7 +893,7 @@
   },
   {
     "id": 290300907002090203,
-    "value": "Aim to destroy the targets by using Gundam Bael's enhancement effects."
+    "value": "Aim to defeat the targets by using Gundam Bael's enhancement effects."
   },
   {
     "id": 290300907002090205,
@@ -901,11 +901,11 @@
   },
   {
     "id": 290300907002100101,
-    "value": "Destroy the targets by utilizing Neo Zeong's MAP Weapon."
+    "value": "Defeat the targets by utilizing Neo Zeong's MAP Weapon."
   },
   {
     "id": 290300907002100203,
-    "value": "Destroy the targets by utilizing Neo Zeong's MAP Weapon."
+    "value": "Defeat the targets by utilizing Neo Zeong's MAP Weapon."
   },
   {
     "id": 290300907002110101,
@@ -913,7 +913,7 @@
   },
   {
     "id": 290300907002110201,
-    "value": "Destroy the targets by utilizing Shamblo's MAP Weapon."
+    "value": "Defeat the targets by utilizing Shamblo's MAP Weapon."
   },
   {
     "id": 290300907002110202,
@@ -969,7 +969,7 @@
   },
   {
     "id": 290300907002170101,
-    "value": "Since the targets do not move until the final turn, destroy them by utilizing Counter."
+    "value": "Since the targets do not move until the final turn, defeat them by utilizing Counter."
   },
   {
     "id": 290300907002170202,
@@ -997,7 +997,7 @@
   },
   {
     "id": 290300907002190101,
-    "value": "Utilize the area effects of Friendly Force and Neutral reinforcement units to destroy the enemy."
+    "value": "Utilize the area effects of Friendly Force and Neutral reinforcement units to defeat the enemy."
   },
   {
     "id": 290300907002190202,

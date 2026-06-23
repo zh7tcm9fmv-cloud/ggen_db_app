@@ -105,23 +105,23 @@
   },
   {
     "id": 141200000100060101,
-    "value": "Increases Accuracy by 5%."
+    "value": "Increase Accuracy by 5%."
   },
   {
     "id": 141200000100060201,
-    "value": "Increases Accuracy by 7%."
+    "value": "Increase Accuracy by 7%."
   },
   {
     "id": 141200000100060301,
-    "value": "Increases Accuracy by 10%."
+    "value": "Increase Accuracy by 10%."
   },
   {
     "id": 141200000100060401,
-    "value": "Increases Accuracy by 12%."
+    "value": "Increase Accuracy by 12%."
   },
   {
     "id": 141200000100060501,
-    "value": "Increases Accuracy by 15%."
+    "value": "Increase Accuracy by 15%."
   },
   {
     "id": 141200000100070101,
@@ -485,23 +485,23 @@
   },
   {
     "id": 141200000100230101,
-    "value": "When damage taken is 3000 or less, there is no effect."
+    "value": "Negate damage when damage taken is 3000 or less."
   },
   {
     "id": 141200000100230201,
-    "value": "When damage taken is 3500 or less, there is no effect."
+    "value": "Negate damage when damage taken is 3500 or less."
   },
   {
     "id": 141200000100230301,
-    "value": "When damage taken is 4000 or less, there is no effect."
+    "value": "Negate damage when damage taken is 4000 or less."
   },
   {
     "id": 141200000100230401,
-    "value": "When damage taken is 4500 or less, there is no effect."
+    "value": "Negate damage when damage taken is 4500 or less."
   },
   {
     "id": 141200000100230501,
-    "value": "When damage taken is 5000 or less, there is no effect."
+    "value": "Negate damage when damage taken is 5000 or less."
   },
   {
     "id": 141200000100240101,
@@ -605,43 +605,43 @@
   },
   {
     "id": 141200000100280101,
-    "value": "Increase own EVA by 5% when choosing to Evade."
+    "value": "Increase own EVA by 5% when Evade was chosen."
   },
   {
     "id": 141200000100280201,
-    "value": "Increase own EVA by 10% when choosing to Evade."
+    "value": "Increase own EVA by 10% when Evade was chosen."
   },
   {
     "id": 141200000100280301,
-    "value": "Increase own EVA by 15% when choosing to Evade."
+    "value": "Increase own EVA by 15% when Evade was chosen."
   },
   {
     "id": 141200000100280401,
-    "value": "Increase own EVA by 20% when choosing to Evade."
+    "value": "Increase own EVA by 20% when Evade was chosen."
   },
   {
     "id": 141200000100280501,
-    "value": "Increase own EVA by 25% when choosing to Evade."
+    "value": "Increase own EVA by 25% when Evade was chosen."
   },
   {
     "id": 141200000100290101,
-    "value": "Increase own EVA by 5% when choosing to Evade."
+    "value": "Increase own EVA by 5% when Evade was chosen."
   },
   {
     "id": 141200000100290201,
-    "value": "Increase own EVA by 10% when choosing to Evade."
+    "value": "Increase own EVA by 10% when Evade was chosen."
   },
   {
     "id": 141200000100290301,
-    "value": "Increase own EVA by 15% when choosing to Evade."
+    "value": "Increase own EVA by 15% when Evade was chosen."
   },
   {
     "id": 141200000100290401,
-    "value": "Increase own EVA by 20% when choosing to Evade."
+    "value": "Increase own EVA by 20% when Evade was chosen."
   },
   {
     "id": 141200000100290501,
-    "value": "Increase own EVA by 25% when choosing to Evade."
+    "value": "Increase own EVA by 25% when Evade was chosen."
   },
   {
     "id": 141200000100300101,
@@ -885,7 +885,7 @@
   },
   {
     "id": 141200000100420101,
-    "value": "When defending or executing Support Defense, and\nwhen the enemy attacks with a beam ranged weapon,\nreduce damage taken by 30%."
+    "value": "When defending or executing Support Defense,\nreduce damage taken by 30% when the enemy attacks with a beam ranged weapon."
   },
   {
     "id": 141200000100420201,
@@ -1193,7 +1193,7 @@
   },
   {
     "id": 141200000100520201,
-    "value": "Increase own ATK and DEF by 20%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 20%."
   },
   {
     "id": 141200000100520202,
@@ -1201,7 +1201,7 @@
   },
   {
     "id": 141200000100520301,
-    "value": "Increase own ATK and DEF by 25%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 25%."
   },
   {
     "id": 141200000100520302,
@@ -1209,7 +1209,7 @@
   },
   {
     "id": 141200000100520401,
-    "value": "Increase own ATK and DEF by 30%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 30%."
   },
   {
     "id": 141200000100520402,
@@ -1217,7 +1217,7 @@
   },
   {
     "id": 141200000100520501,
-    "value": "Increase own ATK and DEF by 35%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 35%."
   },
   {
     "id": 141200000100520502,
@@ -1225,7 +1225,7 @@
   },
   {
     "id": 141200000100530101,
-    "value": "Increase own ATK and DEF by 15%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 15%."
   },
   {
     "id": 141200000100530102,
@@ -1233,7 +1233,7 @@
   },
   {
     "id": 141200000100530201,
-    "value": "Increase own ATK and DEF by 20%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 20%."
   },
   {
     "id": 141200000100530202,
@@ -1241,7 +1241,7 @@
   },
   {
     "id": 141200000100530301,
-    "value": "Increase own ATK and DEF by 25%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 25%."
   },
   {
     "id": 141200000100530302,
@@ -1249,7 +1249,7 @@
   },
   {
     "id": 141200000100530401,
-    "value": "Increase own ATK and DEF by 30%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 30%."
   },
   {
     "id": 141200000100530402,
@@ -1257,7 +1257,7 @@
   },
   {
     "id": 141200000100530501,
-    "value": "Increase own ATK and DEF by 35%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 35%."
   },
   {
     "id": 141200000100530502,
@@ -1265,7 +1265,7 @@
   },
   {
     "id": 141200000100540101,
-    "value": "Increase own ATK and DEF by 15%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 15%."
   },
   {
     "id": 141200000100540102,
@@ -1273,7 +1273,7 @@
   },
   {
     "id": 141200000100540201,
-    "value": "Increase own ATK and DEF by 20%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 20%."
   },
   {
     "id": 141200000100540202,
@@ -1281,7 +1281,7 @@
   },
   {
     "id": 141200000100540301,
-    "value": "Increase own ATK and DEF by 25%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 25%."
   },
   {
     "id": 141200000100540302,
@@ -1289,7 +1289,7 @@
   },
   {
     "id": 141200000100540401,
-    "value": "Increase own ATK and DEF by 30%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 30%."
   },
   {
     "id": 141200000100540402,
@@ -1297,7 +1297,7 @@
   },
   {
     "id": 141200000100540501,
-    "value": "Increase own ATK and DEF by 35%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 35%."
   },
   {
     "id": 141200000100540502,
@@ -1305,7 +1305,7 @@
   },
   {
     "id": 141200000100550101,
-    "value": "Increase own ATK and DEF by 15%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 15%."
   },
   {
     "id": 141200000100550102,
@@ -1313,7 +1313,7 @@
   },
   {
     "id": 141200000100550201,
-    "value": "Increase own ATK and DEF by 20%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 20%."
   },
   {
     "id": 141200000100550202,
@@ -1321,7 +1321,7 @@
   },
   {
     "id": 141200000100550301,
-    "value": "Increase own ATK and DEF by 25%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 25%."
   },
   {
     "id": 141200000100550302,
@@ -1329,7 +1329,7 @@
   },
   {
     "id": 141200000100550401,
-    "value": "Increase own ATK and DEF by 30%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 30%."
   },
   {
     "id": 141200000100550402,
@@ -1337,7 +1337,7 @@
   },
   {
     "id": 141200000100550501,
-    "value": "Increase own ATK and DEF by 35%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 35%."
   },
   {
     "id": 141200000100550502,
@@ -1345,7 +1345,7 @@
   },
   {
     "id": 141200000100560101,
-    "value": "Increase own ATK and DEF by 15%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 15%."
   },
   {
     "id": 141200000100560102,
@@ -1353,7 +1353,7 @@
   },
   {
     "id": 141200000100560201,
-    "value": "Increase own ATK and DEF by 20%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 20%."
   },
   {
     "id": 141200000100560202,
@@ -1361,7 +1361,7 @@
   },
   {
     "id": 141200000100560301,
-    "value": "Increase own ATK and DEF by 25%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 25%."
   },
   {
     "id": 141200000100560302,
@@ -1369,7 +1369,7 @@
   },
   {
     "id": 141200000100560401,
-    "value": "Increase own ATK and DEF by 30%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 30%."
   },
   {
     "id": 141200000100560402,
@@ -1377,7 +1377,7 @@
   },
   {
     "id": 141200000100560501,
-    "value": "Increase own ATK and DEF by 35%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 35%."
   },
   {
     "id": 141200000100560502,
@@ -1385,23 +1385,23 @@
   },
   {
     "id": 141200000100570101,
-    "value": "When damage taken is 3000 or less, there is no effect."
+    "value": "Negate damage when damage taken is 3000 or less."
   },
   {
     "id": 141200000100580101,
-    "value": "When damage taken is 3500 or less, there is no effect."
+    "value": "Negate damage when damage taken is 3500 or less."
   },
   {
     "id": 141200000100590101,
-    "value": "When damage taken is 4000 or less, there is no effect."
+    "value": "Negate damage when damage taken is 4000 or less."
   },
   {
     "id": 141200000100600101,
-    "value": "When damage taken is 4500 or less, there is no effect."
+    "value": "Negate damage when damage taken is 4500 or less."
   },
   {
     "id": 141200000100610101,
-    "value": "When damage taken is 5000 or less, there is no effect."
+    "value": "Negate damage when damage taken is 5000 or less."
   },
   {
     "id": 141200000100620101,
@@ -1425,63 +1425,63 @@
   },
   {
     "id": 141200000100630101,
-    "value": "When HP is full,\nIncrease ATK by 15%."
+    "value": "When HP is full, increase own ATK by 15%."
   },
   {
     "id": 141200000100630201,
-    "value": "When HP is full,\nIncrease ATK by 20%."
+    "value": "When HP is full, increase own ATK by 20%."
   },
   {
     "id": 141200000100630301,
-    "value": "When HP is full,\nIncrease ATK by 25%."
+    "value": "When HP is full, increase own ATK by 25%."
   },
   {
     "id": 141200000100630401,
-    "value": "When HP is full,\nIncrease ATK by 30%."
+    "value": "When HP is full, increase own ATK by 30%."
   },
   {
     "id": 141200000100630501,
-    "value": "When HP is full,\nIncrease ATK by 35%."
+    "value": "When HP is full, increase own ATK by 35%."
   },
   {
     "id": 141200000100640101,
-    "value": "When HP is 25% or below,\nIncrease ATK by 15%."
+    "value": "When HP is 25% or below, increase own ATK by 15%."
   },
   {
     "id": 141200000100640201,
-    "value": "When HP is 25% or below,\nIncrease ATK by 20%."
+    "value": "When HP is 25% or below, increase own ATK by 20%."
   },
   {
     "id": 141200000100640301,
-    "value": "When HP is 25% or below,\nIncrease ATK by 25%."
+    "value": "When HP is 25% or below, increase own ATK by 25%."
   },
   {
     "id": 141200000100640401,
-    "value": "When HP is 25% or below,\nIncrease ATK by 30%."
+    "value": "When HP is 25% or below, increase own ATK by 30%."
   },
   {
     "id": 141200000100640501,
-    "value": "When HP is 25% or below,\nIncrease ATK by 35%."
+    "value": "When HP is 25% or below, increase own ATK by 35%."
   },
   {
     "id": 141200000100650101,
-    "value": "When HP is 50% or below,\nIncrease DEF by 5%."
+    "value": "When HP is 50% or below, increase own DEF by 5%."
   },
   {
     "id": 141200000100650201,
-    "value": "When HP is 50% or below,\nIncrease DEF by 10%."
+    "value": "When HP is 50% or below, increase own DEF by 10%."
   },
   {
     "id": 141200000100650301,
-    "value": "When HP is 50% or below,\nIncrease DEF by 15%."
+    "value": "When HP is 50% or below, increase own DEF by 15%."
   },
   {
     "id": 141200000100650401,
-    "value": "When HP is 50% or below,\nIncrease DEF by 20%."
+    "value": "When HP is 50% or below, increase own DEF by 20%."
   },
   {
     "id": 141200000100650501,
-    "value": "When HP is 50% or below,\nIncrease DEF by 25%."
+    "value": "When HP is 50% or below, increase own DEF by 25%."
   },
   {
     "id": 141200000100660101,
@@ -1493,19 +1493,19 @@
   },
   {
     "id": 141200000100670101,
-    "value": "When the enemy attacks with a physical ranged weapon,\nreduce own damage taken by 10%."
+    "value": "When the enemy attacks with physical ranged weapons,\nreduce own damage taken by 10%."
   },
   {
     "id": 141200000100670201,
-    "value": "When the enemy attacks with physical ranged weapons,\nReduce damage taken by 20%."
+    "value": "When the enemy attacks with physical ranged weapons,\nreduce own damage taken by 20%."
   },
   {
     "id": 141200000100670301,
-    "value": "When the enemy attacks with a physical ranged weapon,\nreduce own damage taken by 30%."
+    "value": "When the enemy attacks with physical ranged weapons,\nreduce own damage taken by 30%."
   },
   {
     "id": 141200000100670401,
-    "value": "When the enemy attacks with physical ranged weapons,\nReduce damage taken by 40%."
+    "value": "When the enemy attacks with physical ranged weapons,\nreduce own damage taken by 40%."
   },
   {
     "id": 141200000100680201,
@@ -1517,7 +1517,7 @@
   },
   {
     "id": 141200000100690101,
-    "value": "Restore own HP and EN by 5% at the start of every turn"
+    "value": "Restore own HP and EN by 5% at the start of every turn."
   },
   {
     "id": 141200000100690102,
@@ -1525,7 +1525,7 @@
   },
   {
     "id": 141200000100690201,
-    "value": "Restore own HP and EN by 10% at the start of every turn"
+    "value": "Restore own HP and EN by 10% at the start of every turn."
   },
   {
     "id": 141200000100690202,
@@ -1533,7 +1533,7 @@
   },
   {
     "id": 141200000100690301,
-    "value": "Restore own HP and EN by 15% at the start of every turn"
+    "value": "Restore own HP and EN by 15% at the start of every turn."
   },
   {
     "id": 141200000100690302,
@@ -1541,7 +1541,7 @@
   },
   {
     "id": 141200000100690401,
-    "value": "Restore own HP and EN by 20% at the start of every turn"
+    "value": "Restore own HP and EN by 20% at the start of every turn."
   },
   {
     "id": 141200000100690402,
@@ -1549,7 +1549,7 @@
   },
   {
     "id": 141200000100690501,
-    "value": "Restore own HP and EN by 25% at the start of every turn"
+    "value": "Restore own HP and EN by 25% at the start of every turn."
   },
   {
     "id": 141200000100690502,
@@ -1577,7 +1577,7 @@
   },
   {
     "id": 141200000100710101,
-    "value": "Increase own ATK and DEF by 15%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 15%."
   },
   {
     "id": 141200000100710102,
@@ -1585,7 +1585,7 @@
   },
   {
     "id": 141200000100710201,
-    "value": "Increase own ATK and DEF by 20%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 20%."
   },
   {
     "id": 141200000100710202,
@@ -1593,7 +1593,7 @@
   },
   {
     "id": 141200000100710301,
-    "value": "Increase own ATK and DEF by 25%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 25%."
   },
   {
     "id": 141200000100710302,
@@ -1601,7 +1601,7 @@
   },
   {
     "id": 141200000100710401,
-    "value": "Increase own ATK and DEF by 30%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 30%."
   },
   {
     "id": 141200000100710402,
@@ -1609,7 +1609,7 @@
   },
   {
     "id": 141200000100710501,
-    "value": "Increase own ATK and DEF by 35%\nwhen enemies are from the specified series."
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 35%."
   },
   {
     "id": 141200000100710502,
@@ -1637,7 +1637,7 @@
   },
   {
     "id": 141200000100730101,
-    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 15%"
+    "value": "When engaging an enemy with a specified tag, increase own ATK and DEF by 15%."
   },
   {
     "id": 141200000100730102,
@@ -1645,7 +1645,7 @@
   },
   {
     "id": 141200000100730201,
-    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 20%"
+    "value": "When engaging an enemy with a specified tag, increase own ATK and DEF by 20%."
   },
   {
     "id": 141200000100730202,
@@ -1653,7 +1653,7 @@
   },
   {
     "id": 141200000100730301,
-    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 25%"
+    "value": "When engaging an enemy with a specified tag, increase own ATK and DEF by 25%."
   },
   {
     "id": 141200000100730302,
@@ -1661,7 +1661,7 @@
   },
   {
     "id": 141200000100730401,
-    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 30%"
+    "value": "When engaging an enemy with a specified tag, increase own ATK and DEF by 30%."
   },
   {
     "id": 141200000100730402,
@@ -1669,7 +1669,7 @@
   },
   {
     "id": 141200000100730501,
-    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 35%"
+    "value": "When engaging an enemy with a specified tag, increase own ATK and DEF by 35%."
   },
   {
     "id": 141200000100730502,
@@ -1677,7 +1677,7 @@
   },
   {
     "id": 141200000100740201,
-    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 20%"
+    "value": "When engaging an enemy with a specified tag, increase own ATK and DEF by 20%."
   },
   {
     "id": 141200000100740202,
@@ -1685,15 +1685,15 @@
   },
   {
     "id": 141200000100750201,
-    "value": "When the enemy attacks with physical  or beam  weapons,\nReduce damage taken by 20%."
+    "value": "When the enemy attacks with physical or beam weapons,\nreduce damage taken by 20%."
   },
   {
     "id": 141200000100750301,
-    "value": "When the enemy attacks with physical  or beam  weapons,\nReduce damage taken by 30%."
+    "value": "When the enemy attacks with physical or beam weapons,\nreduce damage taken by 30%."
   },
   {
     "id": 141200000100760201,
-    "value": "When Vigor is Max or higher,\nIncrease Mobility by 10%."
+    "value": "When Vigor is Max or higher,\nincrease Mobility by 10%."
   },
   {
     "id": 141200000100760301,
@@ -1813,11 +1813,11 @@
   },
   {
     "id": 141200000100820201,
-    "value": "When HP is 50% or above,\nIncrease DEF by 10%."
+    "value": "When HP is 50% or above,\nincrease DEF by 10%."
   },
   {
     "id": 141200000100820301,
-    "value": "When HP is 50% or above,\nIncrease DEF by 15%."
+    "value": "When HP is 50% or above,\nincrease DEF by 15%."
   },
   {
     "id": 141200000100830101,
@@ -1917,19 +1917,19 @@
   },
   {
     "id": 141200000100870201,
-    "value": "When Vigor is MAX or higher,\nIncrease ATK by 10%."
+    "value": "When Vigor is Max or higher,\nincrease ATK by 10%."
   },
   {
     "id": 141200000100870301,
-    "value": "When Vigor is MAX or higher,\nIncrease ATK by 15%."
+    "value": "When Vigor is Max or higher,\nincrease ATK by 15%."
   },
   {
     "id": 141200000100880201,
-    "value": "When Vigor is MAX or higher,\nIncrease DEF by 10%."
+    "value": "When Vigor is Max or higher,\nincrease DEF by 10%."
   },
   {
     "id": 141200000100890201,
-    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 20%"
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 20%."
   },
   {
     "id": 141200000100890202,
@@ -1937,7 +1937,7 @@
   },
   {
     "id": 141200000100890301,
-    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 25%"
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 25%."
   },
   {
     "id": 141200000100890302,
@@ -1945,7 +1945,7 @@
   },
   {
     "id": 141200000100890401,
-    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 30%"
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 30%."
   },
   {
     "id": 141200000100890402,
@@ -1953,7 +1953,7 @@
   },
   {
     "id": 141200000100900201,
-    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 20%"
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 20%."
   },
   {
     "id": 141200000100900202,
@@ -1961,7 +1961,7 @@
   },
   {
     "id": 141200000100900301,
-    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 25%"
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 25%."
   },
   {
     "id": 141200000100900302,
@@ -1969,7 +1969,7 @@
   },
   {
     "id": 141200000100900401,
-    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 30%"
+    "value": "When engaging an enemy from a specified series, increase own ATK and DEF by 30%."
   },
   {
     "id": 141200000100900402,
@@ -1977,7 +1977,7 @@
   },
   {
     "id": 141200000100910101,
-    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 15%"
+    "value": "When engaging an enemy with a specified tag,\nincrease own ATK and DEF by 15%."
   },
   {
     "id": 141200000100910102,
@@ -2021,7 +2021,7 @@
   },
   {
     "id": 141200000100930201,
-    "value": "When the enemy attacks with  ranged weapons,\nReduce damage taken by 20%."
+    "value": "When the enemy attacks with ranged weapons,\nreduce damage taken by 20%."
   },
   {
     "id": 141200000100930301,
@@ -2029,7 +2029,7 @@
   },
   {
     "id": 141200000100940201,
-    "value": "When Vigor is MAX or higher,\nIncrease own ATK and MOB by 7%."
+    "value": "When Vigor is Max or higher,\nincrease own ATK and MOB by 7%."
   },
   {
     "id": 141200000100940202,
@@ -2037,7 +2037,7 @@
   },
   {
     "id": 141200000100940301,
-    "value": "When Vigor is MAX or higher,\nIncrease own ATK and MOB by 10%."
+    "value": "When Vigor is Max or higher,\nincrease own ATK and MOB by 10%."
   },
   {
     "id": 141200000100940302,
@@ -2045,7 +2045,7 @@
   },
   {
     "id": 141200000100950301,
-    "value": "When Vigor is MAX or higher,\nincrease DEF and MOB by 10%."
+    "value": "When Vigor is Max or higher,\nincrease DEF and MOB by 10%."
   },
   {
     "id": 141200000100950302,
@@ -2053,7 +2053,7 @@
   },
   {
     "id": 141200000100960101,
-    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 15%"
+    "value": "When engaging an enemy with a specified tag,\nincrease own ATK and DEF by 15%."
   },
   {
     "id": 141200000100960102,
@@ -2061,7 +2061,7 @@
   },
   {
     "id": 141200000100960201,
-    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 20%"
+    "value": "When engaging an enemy with a specified tag,\nincrease own ATK and DEF by 20%."
   },
   {
     "id": 141200000100960202,
@@ -2069,7 +2069,7 @@
   },
   {
     "id": 141200000100970201,
-    "value": "When the enemy attacks with physical  or beam  weapons,\nReduce damage taken by 20%."
+    "value": "When the enemy attacks with physical or beam  weapons,\nreduce damage taken by 20%."
   },
   {
     "id": 141200000100980101,
@@ -2097,7 +2097,7 @@
   },
   {
     "id": 141200000101000101,
-    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 15%"
+    "value": "When engaging an enemy from a specified series,\nincrease own ATK and DEF by 15%."
   },
   {
     "id": 141200000101000102,
@@ -2105,7 +2105,7 @@
   },
   {
     "id": 141200000101000201,
-    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 20%"
+    "value": "When engaging an enemy from a specified series,\nincrease own ATK and DEF by 20%."
   },
   {
     "id": 141200000101000202,
@@ -2113,7 +2113,7 @@
   },
   {
     "id": 141200000101000301,
-    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 25%"
+    "value": "When engaging an enemy from a specified series,\nincrease own ATK and DEF by 25%."
   },
   {
     "id": 141200000101000302,
@@ -2121,7 +2121,7 @@
   },
   {
     "id": 141200000101000401,
-    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 30%"
+    "value": "When engaging an enemy from a specified series,\nincrease own ATK and DEF by 30%."
   },
   {
     "id": 141200000101000402,
@@ -2129,11 +2129,11 @@
   },
   {
     "id": 141200000101010101,
-    "value": "When Vigor is Supercharged or higher,\nThe max range of Beam Weapon is increased by 1."
+    "value": "When Vigor is Supercharged or higher,\nincrease max range of Beam Weapons by 1."
   },
   {
     "id": 141200000101020201,
-    "value": "When HP is 50% or below,\nRestore Hp by 30% (once only)."
+    "value": "When HP is 50% or below,\nrestore HP by 30% (once only)."
   },
   {
     "id": 141200000101030201,
@@ -2161,7 +2161,7 @@
   },
   {
     "id": 141200000101040202,
-    "value": "When Vigor is Supercharged or higher,\nIncrease own MOV by1."
+    "value": "When Vigor is Supercharged or higher,\nincrease own MOV by 1."
   },
   {
     "id": 141200000101040301,
@@ -2169,15 +2169,15 @@
   },
   {
     "id": 141200000101040302,
-    "value": "When Vigor is Supercharged or higher,\nIncrease own MOV by1."
+    "value": "When Vigor is Supercharged or higher,\nincrease own MOV by 1."
   },
   {
     "id": 141200000101050101,
-    "value": "When for characters with specified tags,\nThe max range of Beam Weapon is increased by 1."
+    "value": "When engaging an enemy with a specified tag,\nincrease max range of Beam Weapons by 1."
   },
   {
     "id": 141200000101060101,
-    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 15%"
+    "value": "When engaging an enemy with a specified tag,\nincrease own ATK and DEF by 15%."
   },
   {
     "id": 141200000101060102,
@@ -2185,15 +2185,15 @@
   },
   {
     "id": 141200000101070101,
-    "value": "When Vigor is Supercharged or higher,\nIncrease own MOV by1."
+    "value": "When Vigor is Supercharged or higher,\nincrease own MOV by 1."
   },
   {
     "id": 141200000101080201,
-    "value": "When HP is 50% or below,\nIncrease ATK by 10%."
+    "value": "When HP is 50% or below,\nincrease ATK by 10%."
   },
   {
     "id": 141200000101080202,
-    "value": "When HP is 25% or below,\nIncrease ATK by 20%."
+    "value": "When HP is 25% or below,\nincrease ATK by 20%."
   },
   {
     "id": 141200000101090101,
@@ -2237,7 +2237,7 @@
   },
   {
     "id": 141200000101100101,
-    "value": "Increase ATK by 5%.\nIncrease Max EN by 5%."
+    "value": "Increase ATK by 5%.\nIncrease max EN by 5%."
   },
   {
     "id": 141200000101100102,
@@ -2245,7 +2245,7 @@
   },
   {
     "id": 141200000101100201,
-    "value": "Increase ATK by 10%.\nIncrease Max EN by 5%."
+    "value": "Increase ATK by 10%.\nIncrease max EN by 5%."
   },
   {
     "id": 141200000101100202,
@@ -2277,7 +2277,7 @@
   },
   {
     "id": 141200000101110201,
-    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 20%"
+    "value": "When engaging an enemy from a specified series,\nincrease own ATK and DEF by 20%."
   },
   {
     "id": 141200000101110202,
@@ -2285,7 +2285,7 @@
   },
   {
     "id": 141200000101110301,
-    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 25%"
+    "value": "When engaging an enemy from a specified series,\nincrease own ATK and DEF by 25%."
   },
   {
     "id": 141200000101110302,
@@ -2293,7 +2293,7 @@
   },
   {
     "id": 141200000101110401,
-    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 30%"
+    "value": "When engaging an enemy from a specified series,\nincrease own ATK and DEF by 30%."
   },
   {
     "id": 141200000101110402,
@@ -2301,7 +2301,7 @@
   },
   {
     "id": 141200000101120201,
-    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 20%"
+    "value": "When engaging an enemy from a specified series,\nincrease own ATK and DEF by 20%."
   },
   {
     "id": 141200000101120202,
@@ -2309,7 +2309,7 @@
   },
   {
     "id": 141200000101120301,
-    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 25%"
+    "value": "When engaging an enemy from a specified series,\nincrease own ATK and DEF by 25%."
   },
   {
     "id": 141200000101120302,
@@ -2317,7 +2317,7 @@
   },
   {
     "id": 141200000101120401,
-    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 30%"
+    "value": "When engaging an enemy from a specified series,\nincrease own ATK and DEF by 30%."
   },
   {
     "id": 141200000101120402,
@@ -2325,7 +2325,7 @@
   },
   {
     "id": 141200000101130101,
-    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 15%"
+    "value": "When engaging an enemy with a specified tag,\nincrease own ATK and DEF by 15%."
   },
   {
     "id": 141200000101130102,
@@ -2341,11 +2341,11 @@
   },
   {
     "id": 141200000101150101,
-    "value": "Increase own ATK by 5%\nwhen executing Support Attack/Counter."
+    "value": "When executing a Support Attack or Counter,\nincrease ATK by 5%."
   },
   {
     "id": 141200000101150201,
-    "value": "Increase own ATK by 10%\nwhen executing Support Attack/Counter."
+    "value": "When executing a Support Attack or Counter,\nincrease ATK by 10%."
   },
   {
     "id": 141200000101160201,
@@ -2357,7 +2357,7 @@
   },
   {
     "id": 141200000101180101,
-    "value": "When Vigor is Supercharged or higher,\nThe max range of Physical or Beam Weapon is increased by 1."
+    "value": "When Vigor is Supercharged or higher,\nincrease max range of Physical or Beam Weapons by 1."
   },
   {
     "id": 141200000101190101,
@@ -2365,11 +2365,11 @@
   },
   {
     "id": 141200000101210201,
-    "value": "When HP is full,\nIncrease DEF by 20%."
+    "value": "When HP is full,\nincrease DEF by 20%."
   },
   {
     "id": 141200000101220101,
-    "value": "When Vigor is Supercharged or higher,\nthe max range of Physical Weapon is increased by 1."
+    "value": "When Vigor is Supercharged or higher,\nincrease max range of Physical Weapons by 1."
   },
   {
     "id": 141200000101230101,
@@ -2413,7 +2413,7 @@
   },
   {
     "id": 141200000101240101,
-    "value": "When Vigor is Supercharged or higher,\nImprove decrease DEF weapon effects by 5% additively."
+    "value": "When Vigor is Supercharged or higher,\nimprove decrease DEF weapon effects by 5% additively."
   },
   {
     "id": 141200000101240201,
@@ -2433,7 +2433,7 @@
   },
   {
     "id": 141200000101250201,
-    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 20%"
+    "value": "When engaging an enemy from a specified series,\nincrease own ATK and DEF by 20%."
   },
   {
     "id": 141200000101250202,
@@ -2441,7 +2441,7 @@
   },
   {
     "id": 141200000101250301,
-    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 25%"
+    "value": "When engaging an enemy from a specified series,\nincrease own ATK and DEF by 25%."
   },
   {
     "id": 141200000101250302,
@@ -2449,7 +2449,7 @@
   },
   {
     "id": 141200000101250401,
-    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 30%"
+    "value": "When engaging an enemy from a specified series,\nIncrease own ATK and DEF by 30%."
   },
   {
     "id": 141200000101250402,
@@ -2457,7 +2457,7 @@
   },
   {
     "id": 141200000101260101,
-    "value": "When enemies are from the specified tags.\nincrease own ATK and DEF by 15%"
+    "value": "When enemies have specified tags,\nincrease ATK and DEF by 15%."
   },
   {
     "id": 141200000101260102,
@@ -2473,11 +2473,11 @@
   },
   {
     "id": 141200000101300101,
-    "value": "When the piloting character has a specified tag,\nIncrease own MOV by1."
+    "value": "When the piloting character has a specified tag,\nincrease own MOV by 1."
   },
   {
     "id": 141200000101310101,
-    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 15%"
+    "value": "When enemies have specified tags,\nincrease ATK and DEF by 15%."
   },
   {
     "id": 141200000101310102,
@@ -2485,7 +2485,7 @@
   },
   {
     "id": 141200000101310201,
-    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 20%"
+    "value": "When enemies have specified tags,\nincrease ATK and DEF by 20%."
   },
   {
     "id": 141200000101310202,
@@ -2493,7 +2493,7 @@
   },
   {
     "id": 141200000101310301,
-    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 25%"
+    "value": "When enemies have specified tags,\nincrease ATK and DEF by 25%."
   },
   {
     "id": 141200000101310302,
@@ -2501,7 +2501,7 @@
   },
   {
     "id": 141200000101310401,
-    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 30%"
+    "value": "When enemies have specified tags,\nincrease ATK and DEF by 30%."
   },
   {
     "id": 141200000101310402,
@@ -2509,7 +2509,7 @@
   },
   {
     "id": 141200000101310501,
-    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 35%"
+    "value": "When enemies have specified tags,\nincrease ATK and DEF by 35%."
   },
   {
     "id": 141200000101310502,
@@ -2517,35 +2517,35 @@
   },
   {
     "id": 141200000101320101,
-    "value": "When the enemy attacks with physical  or beam  weapons,\nReduce damage taken by 5%."
+    "value": "When the enemy attacks with physical or beam weapons,\nreduce damage taken by 5%."
   },
   {
     "id": 141200000101320102,
-    "value": "When damage taken is 3000 or less, there is no effect."
+    "value": "When damage taken is 3000 or less, negate damage taken."
   },
   {
     "id": 141200000101320201,
-    "value": "When the enemy attacks with physical  or beam  weapons,\nReduce damage taken by 10%."
+    "value": "When the enemy attacks with physical or beam weapons,\nreduce damage taken by 10%."
   },
   {
     "id": 141200000101320202,
-    "value": "When damage taken is 3500 or less, there is no effect."
+    "value": "When damage taken is 3500 or less, negate damage taken."
   },
   {
     "id": 141200000101320301,
-    "value": "When the enemy attacks with physical  or beam  weapons,\nReduce damage taken by 15%."
+    "value": "When the enemy attacks with physical or beam weapons,\nreduce damage taken by 15%."
   },
   {
     "id": 141200000101320302,
-    "value": "When damage taken is 4000 or less, there is no effect."
+    "value": "When damage taken is 4000 or less, negate damage taken."
   },
   {
     "id": 141200000101320401,
-    "value": "When the enemy attacks with physical  or beam  weapons,\nReduce damage taken by 20%."
+    "value": "When the enemy attacks with physical or beam weapons,\nreduce damage taken by 20%."
   },
   {
     "id": 141200000101320402,
-    "value": "When damage taken is 4500 or less, there is no effect."
+    "value": "When damage taken is 4500 or less, negate damage taken."
   },
   {
     "id": 141200000101330301,
@@ -2553,15 +2553,15 @@
   },
   {
     "id": 141200000101340201,
-    "value": "In a one-on-one battle\nIncrease own ATK by 10%."
+    "value": "In a one-on-one battle,\nincrease ATK by 10%."
   },
   {
     "id": 141200000101340301,
-    "value": "In a one-on-one battle\nIncrease own ATK by 15%."
+    "value": "In a one-on-one battle,\nincrease ATK by 15%."
   },
   {
     "id": 141200000101350101,
-    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 15%"
+    "value": "When enemies have specified tags,\nincrease ATK and DEF by 15%."
   },
   {
     "id": 141200000101350102,
@@ -2569,7 +2569,7 @@
   },
   {
     "id": 141200000101350201,
-    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 20%"
+    "value": "When enemies have specified tags,\nincrease ATK and DEF by 20%."
   },
   {
     "id": 141200000101350202,
@@ -2577,11 +2577,11 @@
   },
   {
     "id": 141200000101360101,
-    "value": "When the enemy attacks with beam ranged weapons,\nReduce damage taken by 30%."
+    "value": "When the enemy attacks with beam ranged weapons,\nreduce damage taken by 30%."
   },
   {
     "id": 141200000101370201,
-    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 20%"
+    "value": "When battling enemies from specified series,\nincrease ATK and DEF by 20%."
   },
   {
     "id": 141200000101370202,
@@ -2589,7 +2589,7 @@
   },
   {
     "id": 141200000101370301,
-    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 25%"
+    "value": "When battling enemies from specified series,\nincrease ATK and DEF by 25%."
   },
   {
     "id": 141200000101370302,
@@ -2597,7 +2597,7 @@
   },
   {
     "id": 141200000101370401,
-    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 30%"
+    "value": "When battling enemies from specified series,\nincrease ATK and DEF by 30%."
   },
   {
     "id": 141200000101370402,
@@ -2605,7 +2605,7 @@
   },
   {
     "id": 141200000101380201,
-    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 20%"
+    "value": "When battling enemies from specified series,\nincrease ATK and DEF by 20%."
   },
   {
     "id": 141200000101380202,
@@ -2613,7 +2613,7 @@
   },
   {
     "id": 141200000101380301,
-    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 25%"
+    "value": "When battling enemies from specified series,\nincrease ATK and DEF by 25%."
   },
   {
     "id": 141200000101380302,
@@ -2621,7 +2621,7 @@
   },
   {
     "id": 141200000101380401,
-    "value": "When enemies are from the specified series.\nIncrease own ATK and DEF by 30%"
+    "value": "When battling enemies from specified series,\nincrease ATK and DEF by 30%."
   },
   {
     "id": 141200000101380402,
@@ -2629,7 +2629,7 @@
   },
   {
     "id": 141200000101390201,
-    "value": "Increase own ATK and DEF by 10%"
+    "value": "Increase ATK and DEF by 10%."
   },
   {
     "id": 141200000101390202,
@@ -2637,7 +2637,7 @@
   },
   {
     "id": 141200000101390301,
-    "value": "Increase own ATK and DEF by 15%"
+    "value": "Increase ATK and DEF by 15%."
   },
   {
     "id": 141200000101390302,
@@ -2673,47 +2673,47 @@
   },
   {
     "id": 141200000101430101,
-    "value": "When the enemy attacks with physical  or beam  weapons,\nReduce damage taken by 5%."
+    "value": "When the enemy attacks with physical or beam weapons,\nreduce damage taken by 5%."
   },
   {
     "id": 141200000101430102,
-    "value": "When damage taken is 3000 or less, there is no effect."
+    "value": "When damage taken is 3000 or less, negate damage taken."
   },
   {
     "id": 141200000101440101,
-    "value": "When the enemy attacks with physical  or beam  weapons,\nReduce damage taken by 10%."
+    "value": "When the enemy attacks with physical or beam weapons,\nreduce damage taken by 10%."
   },
   {
     "id": 141200000101440102,
-    "value": "When damage taken is 3500 or less, there is no effect."
+    "value": "When damage taken is 3500 or less, negate damage taken."
   },
   {
     "id": 141200000101450101,
-    "value": "When the enemy attacks with physical  or beam  weapons,\nReduce damage taken by 15%."
+    "value": "When the enemy attacks with physical or beam weapons,\nreduce damage taken by 15%."
   },
   {
     "id": 141200000101450102,
-    "value": "When damage taken is 4000 or less, there is no effect."
+    "value": "When damage taken is 4000 or less, negate damage taken."
   },
   {
     "id": 141200000101460101,
-    "value": "When the enemy attacks with physical  or beam  weapons,\nReduce damage taken by 20%."
+    "value": "When the enemy attacks with physical or beam weapons,\nreduce damage taken by 20%."
   },
   {
     "id": 141200000101460102,
-    "value": "When damage taken is 4500 or less, there is no effect."
+    "value": "When damage taken is 4500 or less, negate damage taken."
   },
   {
     "id": 141200000101470101,
-    "value": "When the enemy attacks with physical  or beam  weapons,\nReduce damage taken by 25%."
+    "value": "When the enemy attacks with physical or beam weapons,\nreduce damage taken by 25%."
   },
   {
     "id": 141200000101470102,
-    "value": "When damage taken is 5000 or less, there is no effect."
+    "value": "When damage taken is 5000 or less, negate damage taken."
   },
   {
     "id": 141200000101480101,
-    "value": "Increase own EVA by 5% when choosing to Evade."
+    "value": "When evade is selected, increase Evasion by 5%."
   },
   {
     "id": 141200000101480102,
@@ -2721,7 +2721,7 @@
   },
   {
     "id": 141200000101480201,
-    "value": "Increase own EVA by 10% when choosing to Evade."
+    "value": "When evade is selected, increase Evasion by 10%."
   },
   {
     "id": 141200000101480202,
@@ -2729,7 +2729,7 @@
   },
   {
     "id": 141200000101480301,
-    "value": "Increase own EVA by 15% when choosing to Evade."
+    "value": "When evade is selected, increase Evasion by 15%."
   },
   {
     "id": 141200000101480302,
@@ -2737,7 +2737,7 @@
   },
   {
     "id": 141200000101480401,
-    "value": "Increase own EVA by 20% when choosing to Evade."
+    "value": "When evade is selected, increase Evasion by 20%."
   },
   {
     "id": 141200000101480402,
@@ -2745,7 +2745,7 @@
   },
   {
     "id": 141200000101480501,
-    "value": "Increase own EVA by 25% when choosing to Evade."
+    "value": "When evade is selected, increase Evasion by 25%."
   },
   {
     "id": 141200000101480502,
@@ -2757,7 +2757,7 @@
   },
   {
     "id": 141200000101490202,
-    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 20%"
+    "value": "When battling enemies with specified tags,\nincrease ATK and DEF by 20%."
   },
   {
     "id": 141200000101490203,
@@ -2765,7 +2765,7 @@
   },
   {
     "id": 141200000101500201,
-    "value": "When enemies are from the specified tags.\nIncrease own ATK and DEF by 20%"
+    "value": "When battling enemies with specified tags,\nincrease ATK and DEF by 20%."
   },
   {
     "id": 141200000101500202,
@@ -2885,7 +2885,7 @@
   },
   {
     "id": 141200000101560102,
-    "value": "When battling enemies with specified tags,\nincrease ATK and DEF by 15%"
+    "value": "When battling enemies with specified tags,\nincrease ATK and DEF by 15%."
   },
   {
     "id": 141200000101560103,
@@ -2897,7 +2897,7 @@
   },
   {
     "id": 141200000101560202,
-    "value": "When battling enemies with specified tags,\nincrease ATK and DEF by 20%"
+    "value": "When battling enemies with specified tags,\nincrease ATK and DEF by 20%."
   },
   {
     "id": 141200000101560203,
@@ -2909,7 +2909,7 @@
   },
   {
     "id": 141200000101560302,
-    "value": "When battling enemies with specified tags,\nincrease ATK and DEF by 25%"
+    "value": "When battling enemies with specified tags,\nincrease ATK and DEF by 25%."
   },
   {
     "id": 141200000101560303,
@@ -2921,7 +2921,7 @@
   },
   {
     "id": 141200000101560402,
-    "value": "When battling enemies with specified tags,\nincrease ATK and DEF by 35%"
+    "value": "When battling enemies with specified tags,\nincrease ATK and DEF by 35%."
   },
   {
     "id": 141200000101560403,
@@ -2933,7 +2933,7 @@
   },
   {
     "id": 141200000101560502,
-    "value": "When battling enemies with specified tags,\nincrease ATK and DEF by 20%"
+    "value": "When battling enemies with specified tags,\nincrease ATK and DEF by 20%."
   },
   {
     "id": 141200000101560503,
@@ -3649,7 +3649,7 @@
   },
   {
     "id": 141200000200280101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200280102,
@@ -3657,7 +3657,7 @@
   },
   {
     "id": 141200000200280201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%,\nand reduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200280202,
@@ -3857,7 +3857,7 @@
   },
   {
     "id": 141200000200350101,
-    "value": "When piloting units with specified tags\nIncrease damage dealt to enemies by 15%, and\nreduce damage taken by  15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000200350102,
@@ -3865,7 +3865,7 @@
   },
   {
     "id": 141200000200360101,
-    "value": "When piloting units with specified tags\nIncrease damage dealt to enemies by 15%, and\nreduce damage taken by  15%."
+    "value": "When piloting units with specified tags, \nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000200360102,
@@ -3873,7 +3873,7 @@
   },
   {
     "id": 141200000200370101,
-    "value": "When piloting units with specified tags\nIncrease damage dealt to enemies by 15%, and\nreduce damage taken by  15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000200370102,
@@ -3881,7 +3881,7 @@
   },
   {
     "id": 141200000200380101,
-    "value": "When piloting units with specified tags\nIncrease damage dealt to enemies by 15%, and\nreduce damage taken by  15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000200380102,
@@ -3889,11 +3889,11 @@
   },
   {
     "id": 141200000200390101,
-    "value": "Support Attack/Counter +1 time(s)"
+    "value": "Support Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000200390102,
-    "value": "When piloting units with specified tags\nIncrease damage dealt to enemies by 15%, and\nreduce damage taken by  15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000200390103,
@@ -3901,11 +3901,11 @@
   },
   {
     "id": 141200000200400101,
-    "value": "Support Attack/Counter +1 time(s)"
+    "value": "Support Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000200400102,
-    "value": "When piloting units with specified tags\nIncrease damage dealt to enemies by 15%, and\nreduce damage taken by  15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000200400103,
@@ -3913,11 +3913,11 @@
   },
   {
     "id": 141200000200410101,
-    "value": "Support Attack/Counter +1 time(s)"
+    "value": "Support Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000200410102,
-    "value": "When piloting units with specified tags\nIncrease damage dealt to enemies by 15%, and\nreduce damage taken by  15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000200410103,
@@ -3925,11 +3925,11 @@
   },
   {
     "id": 141200000200420101,
-    "value": "Support Attack/Counter +1 time(s)"
+    "value": "Support Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000200420102,
-    "value": "When piloting units from specified series,\nIncrease damage dealt to enemies by 15%, and\nreduce damage taken by  15%."
+    "value": "When piloting units from specified series,\nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000200420103,
@@ -3937,11 +3937,11 @@
   },
   {
     "id": 141200000200430101,
-    "value": "Increase own DEF by 20%\nwhen executing Support Defense."
+    "value": "When executing Support Defense,\nincrease own DEF by 20%."
   },
   {
     "id": 141200000200430102,
-    "value": "When piloting units with specified tags\nIncrease damage dealt to enemies by 15%, and\nreduce damage taken by  15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000200430103,
@@ -3949,11 +3949,11 @@
   },
   {
     "id": 141200000200440101,
-    "value": "Support Defense +1 time"
+    "value": "Support Defense +1 time(s)."
   },
   {
     "id": 141200000200440102,
-    "value": "When piloting units with specified tags\nIncrease damage dealt to enemies by 15%, and\nreduce damage taken by  15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000200440103,
@@ -3961,11 +3961,11 @@
   },
   {
     "id": 141200000200450101,
-    "value": "Support Defense +1 time"
+    "value": "Support Defense +1 time(s)."
   },
   {
     "id": 141200000200450102,
-    "value": "When piloting units with specified tags\nIncrease damage dealt to enemies by 15%, and\nreduce damage taken by  15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000200450103,
@@ -3973,11 +3973,11 @@
   },
   {
     "id": 141200000200460101,
-    "value": "Chance Step +1 time(s)"
+    "value": "Chance Step +1 time(s)."
   },
   {
     "id": 141200000200460102,
-    "value": "When piloting units with specified tags\nreduce damage taken by  15%."
+    "value": "When piloting units with specified tags,\nreduce damage taken by 15%."
   },
   {
     "id": 141200000200470101,
@@ -4009,11 +4009,11 @@
   },
   {
     "id": 141200000200480201,
-    "value": "Support Defense +1 time"
+    "value": "Support Defense +1 time(s)."
   },
   {
     "id": 141200000200480202,
-    "value": "When piloting units with specified types, and\nexecuting Support Defense,\nreduce damage taken by  20%."
+    "value": "When piloting units with specified types \nand executing Support Defense,\nreduce damage taken by 20%."
   },
   {
     "id": 141200000200480301,
@@ -4081,51 +4081,51 @@
   },
   {
     "id": 141200000200500101,
-    "value": "Support Attack/Counter +1 time(s)"
+    "value": "Support Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000200500102,
-    "value": "When piloting units with specified types, and\nexecuting Support Attack/Counter,\nreduce own weapon EN consumption by 5%."
+    "value": "When piloting units with specified types\nand executing Support Attack/Counter,\nreduce own weapon EN consumption by 5%."
   },
   {
     "id": 141200000200500201,
-    "value": "Support Attack/Counter +1 time(s)"
+    "value": "Support Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000200500202,
-    "value": "When piloting units with specified types, and\nexecuting Support Attack/Counter,\nreduce own weapon EN consumption by 10%."
+    "value": "When piloting units with specified types\nand executing Support Attack/Counter,\nreduce own weapon EN consumption by 10%."
   },
   {
     "id": 141200000200500301,
-    "value": "Support Attack/Counter +1 time(s)"
+    "value": "Support Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000200500302,
-    "value": "When piloting units with specified types, and\nexecuting Support Attack/Counter,\nreduce own weapon EN consumption by 15%."
+    "value": "When piloting units with specified types\nand executing Support Attack/Counter,\nreduce own weapon EN consumption by 15%."
   },
   {
     "id": 141200000200500401,
-    "value": "Support Attack/Counter +1 time(s)"
+    "value": "Support Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000200500402,
-    "value": "When piloting units with specified types, and\nexecuting Support Attack/Counter,\nreduce own weapon EN consumption by 20%."
+    "value": "When piloting units with specified types\nand executing Support Attack/Counter,\nreduce own weapon EN consumption by 20%."
   },
   {
     "id": 141200000200500501,
-    "value": "Support Attack/Counter +1 time(s)"
+    "value": "Support Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000200500502,
-    "value": "When piloting units with specified types, and\nexecuting Support Attack/Counter,\nreduce own weapon EN consumption by 25%."
+    "value": "When piloting units with specified types\nand executing Support Attack/Counter,\nreduce own weapon EN consumption by 25%."
   },
   {
     "id": 141200000200510101,
-    "value": "Support Attack/Counter +2 time(s)"
+    "value": "Support Attack/Counter +2 time(s)."
   },
   {
     "id": 141200000200510102,
-    "value": "When piloting units with specified types, and\nexecuting Support Attack/Counter,\nreduce own weapon EN consumption by 5%."
+    "value": "When piloting units with specified types\nand executing Support Attack/Counter,\nreduce own weapon EN consumption by 5%."
   },
   {
     "id": 141200000200510201,
@@ -4165,11 +4165,11 @@
   },
   {
     "id": 141200000200520102,
-    "value": "When piloting units from a specified tag that also has a specified series,\nrestore squad HP by 5% at the start of every turn."
+    "value": "When piloting units from a specified tags that also has a specified series,\nrestore squad HP by 5% at the start of every turn."
   },
   {
     "id": 141200000200530101,
-    "value": "When piloting units with specified tags,\nIncrease Ranged by 20%.\nIncrease own MOV by1."
+    "value": "When piloting units with specified tags,\nincrease Ranged by 20%\nand increase own MOV by 1."
   },
   {
     "id": 141200000200530102,
@@ -4185,7 +4185,7 @@
   },
   {
     "id": 141200000200530301,
-    "value": "When piloting units with specified tags,\nIncrease Ranged by 30%.\nIncrease own MOV by1."
+    "value": "When piloting units with specified tags,\nincrease Ranged by 30%\nand increase own MOV by 1."
   },
   {
     "id": 141200000200530302,
@@ -4221,7 +4221,7 @@
   },
   {
     "id": 141200000200550101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200550102,
@@ -4229,7 +4229,7 @@
   },
   {
     "id": 141200000200550201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200550202,
@@ -4261,7 +4261,7 @@
   },
   {
     "id": 141200000200560101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200560102,
@@ -4269,7 +4269,7 @@
   },
   {
     "id": 141200000200560201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200560202,
@@ -4301,7 +4301,7 @@
   },
   {
     "id": 141200000200570101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200570102,
@@ -4309,7 +4309,7 @@
   },
   {
     "id": 141200000200570201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200570202,
@@ -4341,7 +4341,7 @@
   },
   {
     "id": 141200000200580101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200580102,
@@ -4349,7 +4349,7 @@
   },
   {
     "id": 141200000200580201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200580202,
@@ -4381,7 +4381,7 @@
   },
   {
     "id": 141200000200590101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200590102,
@@ -4389,7 +4389,7 @@
   },
   {
     "id": 141200000200590201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200590202,
@@ -4421,7 +4421,7 @@
   },
   {
     "id": 141200000200600101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200600102,
@@ -4461,7 +4461,7 @@
   },
   {
     "id": 141200000200610101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200610102,
@@ -4469,7 +4469,7 @@
   },
   {
     "id": 141200000200610201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200610202,
@@ -4501,7 +4501,7 @@
   },
   {
     "id": 141200000200620101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200620102,
@@ -4509,7 +4509,7 @@
   },
   {
     "id": 141200000200620201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200620202,
@@ -4541,7 +4541,7 @@
   },
   {
     "id": 141200000200630101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200630102,
@@ -4549,7 +4549,7 @@
   },
   {
     "id": 141200000200630201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200630202,
@@ -4557,7 +4557,7 @@
   },
   {
     "id": 141200000200630301,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 15%, and\nreduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000200630302,
@@ -4581,7 +4581,7 @@
   },
   {
     "id": 141200000200640101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200640102,
@@ -4589,7 +4589,7 @@
   },
   {
     "id": 141200000200640201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200640202,
@@ -4621,7 +4621,7 @@
   },
   {
     "id": 141200000200650101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200650102,
@@ -4629,7 +4629,7 @@
   },
   {
     "id": 141200000200650201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200650202,
@@ -4661,7 +4661,7 @@
   },
   {
     "id": 141200000200660101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200660102,
@@ -4669,7 +4669,7 @@
   },
   {
     "id": 141200000200660201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200660202,
@@ -4701,7 +4701,7 @@
   },
   {
     "id": 141200000200670101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200670102,
@@ -4709,7 +4709,7 @@
   },
   {
     "id": 141200000200670201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200670202,
@@ -4781,7 +4781,7 @@
   },
   {
     "id": 141200000200690101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200690102,
@@ -4789,7 +4789,7 @@
   },
   {
     "id": 141200000200690201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200690202,
@@ -4829,7 +4829,7 @@
   },
   {
     "id": 141200000200700201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200700202,
@@ -4901,7 +4901,7 @@
   },
   {
     "id": 141200000200720101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200720102,
@@ -4909,7 +4909,7 @@
   },
   {
     "id": 141200000200720201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200720202,
@@ -4917,7 +4917,7 @@
   },
   {
     "id": 141200000200720301,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 15%, and\nreduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000200720302,
@@ -4941,7 +4941,7 @@
   },
   {
     "id": 141200000200730101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200730102,
@@ -4949,7 +4949,7 @@
   },
   {
     "id": 141200000200730201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200730202,
@@ -4957,7 +4957,7 @@
   },
   {
     "id": 141200000200730301,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 15%, and\nreduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000200730302,
@@ -4981,7 +4981,7 @@
   },
   {
     "id": 141200000200740101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200740102,
@@ -4989,7 +4989,7 @@
   },
   {
     "id": 141200000200740201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200740202,
@@ -5109,7 +5109,7 @@
   },
   {
     "id": 141200000200770201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200770202,
@@ -5141,7 +5141,7 @@
   },
   {
     "id": 141200000200780101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200780102,
@@ -5149,7 +5149,7 @@
   },
   {
     "id": 141200000200780201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200780202,
@@ -5221,7 +5221,7 @@
   },
   {
     "id": 141200000200800101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200800102,
@@ -5229,7 +5229,7 @@
   },
   {
     "id": 141200000200800201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200800202,
@@ -5261,7 +5261,7 @@
   },
   {
     "id": 141200000200810101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200810102,
@@ -5269,7 +5269,7 @@
   },
   {
     "id": 141200000200810201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200810202,
@@ -5301,7 +5301,7 @@
   },
   {
     "id": 141200000200820101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200820102,
@@ -5309,7 +5309,7 @@
   },
   {
     "id": 141200000200820201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200820202,
@@ -5341,7 +5341,7 @@
   },
   {
     "id": 141200000200830101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200830102,
@@ -5349,7 +5349,7 @@
   },
   {
     "id": 141200000200830201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200830202,
@@ -5381,7 +5381,7 @@
   },
   {
     "id": 141200000200840101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200840102,
@@ -5389,7 +5389,7 @@
   },
   {
     "id": 141200000200840201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200840202,
@@ -5429,7 +5429,7 @@
   },
   {
     "id": 141200000200850201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200850202,
@@ -5661,7 +5661,7 @@
   },
   {
     "id": 141200000200910101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200910102,
@@ -5669,7 +5669,7 @@
   },
   {
     "id": 141200000200910201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200910202,
@@ -5701,7 +5701,7 @@
   },
   {
     "id": 141200000200920101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200920102,
@@ -5709,7 +5709,7 @@
   },
   {
     "id": 141200000200920201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200920202,
@@ -5741,7 +5741,7 @@
   },
   {
     "id": 141200000200930101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200930102,
@@ -5749,7 +5749,7 @@
   },
   {
     "id": 141200000200930201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200930202,
@@ -5781,7 +5781,7 @@
   },
   {
     "id": 141200000200940101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200940102,
@@ -5789,7 +5789,7 @@
   },
   {
     "id": 141200000200940201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200940202,
@@ -5829,7 +5829,7 @@
   },
   {
     "id": 141200000200950201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200950202,
@@ -5901,15 +5901,15 @@
   },
   {
     "id": 141200000200970101,
-    "value": "Chance Step +1 time(s)"
+    "value": "Chance Step +1 time(s)."
   },
   {
     "id": 141200000200970102,
-    "value": "When piloting units with specified tags\nreduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nreduce damage taken by 15%."
   },
   {
     "id": 141200000200980101,
-    "value": "When piloting units from specified series,\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units from specified series,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000200980102,
@@ -5917,7 +5917,7 @@
   },
   {
     "id": 141200000200980201,
-    "value": "When piloting units from specified series,\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units from specified series,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000200980202,
@@ -5925,7 +5925,7 @@
   },
   {
     "id": 141200000200980301,
-    "value": "When piloting units from specified series,\nincrease damage dealt to enemies by 15%, and\nreduce damage taken by 15%."
+    "value": "When piloting units from specified series,\nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000200980302,
@@ -5969,43 +5969,43 @@
   },
   {
     "id": 141200000201000101,
-    "value": "Support Defense +1 time"
+    "value": "Support Defense +1 time(s)."
   },
   {
     "id": 141200000201000102,
-    "value": "When piloting units with specified types, and\nexecuting Support Defense,\nincrease own DEF by 5%."
+    "value": "When piloting units with specified types and\nexecuting Support Defense,\nincrease own DEF by 5%."
   },
   {
     "id": 141200000201000201,
-    "value": "Support Defense +1 time"
+    "value": "Support Defense +1 time(s)."
   },
   {
     "id": 141200000201000202,
-    "value": "When piloting units with specified types, and\nexecuting Support Defense,\nincrease own DEF by 10%."
+    "value": "When piloting units with specified types and\nexecuting Support Defense,\nincrease own DEF by 10%."
   },
   {
     "id": 141200000201000301,
-    "value": "Support Defense +1 time"
+    "value": "Support Defense +1 time(s)."
   },
   {
     "id": 141200000201000302,
-    "value": "When piloting units with specified types, and\nexecuting Support Defense,\nincrease own DEF by 15%."
+    "value": "When piloting units with specified types and\nexecuting Support Defense,\nincrease own DEF by 15%."
   },
   {
     "id": 141200000201000401,
-    "value": "Support Defense +1 time"
+    "value": "Support Defense +1 time(s)."
   },
   {
     "id": 141200000201000402,
-    "value": "When piloting units with specified types, and\nexecuting Support Defense,\nincrease own DEF by 20%."
+    "value": "When piloting units with specified types and\nexecuting Support Defense,\nincrease own DEF by 20%."
   },
   {
     "id": 141200000201000501,
-    "value": "Support Defense +1 time"
+    "value": "Support Defense +1 time(s)."
   },
   {
     "id": 141200000201000502,
-    "value": "When piloting units with specified types, and\nexecuting Support Defense,\nincrease own DEF by 25%."
+    "value": "When piloting units with specified types and\nexecuting Support Defense,\nincrease own DEF by 25%."
   },
   {
     "id": 141200000201010101,
@@ -6817,19 +6817,19 @@
   },
   {
     "id": 141200000201230101,
-    "value": "When piloting units from specified tags and with specified series,\nChance Step +1 time."
+    "value": "When piloting units from specified tags and with specified series,\nChance Step +1 time(s)."
   },
   {
     "id": 141200000201240101,
-    "value": "When piloting units from specified tags and with specified series,\nSupport Attack/Counter +1 time."
+    "value": "When piloting units from specified tags and with specified series,\nSupport Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000201250101,
-    "value": "Increase own DEF by 20%\nwhen executing Support Defense."
+    "value": "When executing Support Defense,\nincrease own DEF by 20%."
   },
   {
     "id": 141200000201250102,
-    "value": "When piloting units with specified tags\nIncrease damage dealt to enemies by 15%, and\nreduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000201250103,
@@ -6837,15 +6837,15 @@
   },
   {
     "id": 141200000201260101,
-    "value": "Chance Step +1 time(s)"
+    "value": "Chance Step +1 time(s)."
   },
   {
     "id": 141200000201260102,
-    "value": "When piloting units with specified tags\nreduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nreduce damage taken by 15%."
   },
   {
     "id": 141200000201270101,
-    "value": "When piloting units from specified series,\nIncrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units from specified series,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000201270102,
@@ -6853,7 +6853,7 @@
   },
   {
     "id": 141200000201270201,
-    "value": "When piloting units from specified series,\nIncrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units from specified series,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000201270202,
@@ -6901,31 +6901,31 @@
   },
   {
     "id": 141200000201290301,
-    "value": "Support Attack/Counter +1 time(s)"
+    "value": "Support Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000201290302,
-    "value": "When piloting units with specified types, and\nexecuting Support Attack/Counter,\nIncrease ATK by 15%."
+    "value": "When piloting units with specified types\nand executing Support Attack/Counter,\nincrease ATK by 15%."
   },
   {
     "id": 141200000201290401,
-    "value": "Support Attack/Counter +1 time(s)"
+    "value": "Support Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000201290402,
-    "value": "When piloting units with specified types, and\nexecuting Support Attack/Counter,\nIncrease ATK by 20%."
+    "value": "When piloting units with specified types\nand executing Support Attack/Counter,\nincrease ATK by 20%."
   },
   {
     "id": 141200000201290501,
-    "value": "Support Attack/Counter +1 time(s)"
+    "value": "Support Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000201290502,
-    "value": "When piloting units with specified types, and\nexecuting Support Attack/Counter,\nIncrease ATK by 25%."
+    "value": "When piloting units with specified types\nand executing Support Attack/Counter,\nincrease ATK by 25%."
   },
   {
     "id": 141200000201310101,
-    "value": "When piloting units with specified tags\nIncrease damage dealt to enemies by 15%, and\nreduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000201310102,
@@ -6973,15 +6973,15 @@
   },
   {
     "id": 141200000201360101,
-    "value": "When piloting units from specified series,\nSupport Attack/Counter +1 time."
+    "value": "When piloting units from specified series,\nSupport Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000201370101,
-    "value": "When piloting units are of the specified type,\nincrease own ATK by 20% when countering."
+    "value": "When piloting units from specified types,\nincrease own ATK by 20% when countering."
   },
   {
     "id": 141200000201370102,
-    "value": "When piloting units from specified series,\nIncrease damage dealt to enemies by 15%, and\nreduce damage taken by 15%."
+    "value": "When piloting units from specified series,\nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000201370103,
@@ -6989,11 +6989,11 @@
   },
   {
     "id": 141200000201380101,
-    "value": "Chance Step +1 time(s)"
+    "value": "Chance Step +1 time(s)."
   },
   {
     "id": 141200000201380102,
-    "value": "When piloting Hi-Nu Gundam (EX), if Vigor is Supercharged or higher, the max range of Beam or Special Weapon is increased by 1."
+    "value": "When piloting Hi-Nu Gundam (EX)\nand Vigor is Supercharged or higher,\nincrease max range of Beam or Special Weapon by 1."
   },
   {
     "id": 141200000201380103,
@@ -7009,7 +7009,7 @@
   },
   {
     "id": 141200000201410101,
-    "value": "When piloting units from specified series,\nsupport Attack/Counter +1 time"
+    "value": "When piloting units from specified series,\nSupport Attack/Counter +1 time"
   },
   {
     "id": 141200000201420101,
@@ -7021,7 +7021,7 @@
   },
   {
     "id": 141200000201450101,
-    "value": "When piloting units with specified tags\nincrease damage dealt with own weapons by 10%, and\nincrease Mobility by 10%."
+    "value": "When piloting units from specified series,\nincrease damage dealt with own weapons by 10%\nand increase Mobility by 10%."
   },
   {
     "id": 141200000201450102,
@@ -7033,7 +7033,7 @@
   },
   {
     "id": 141200000201460102,
-    "value": "When piloting units with specified tags,\nIncrease damage dealt to the enemy by 15%.\nReduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to the enemy by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000201460103,
@@ -7041,7 +7041,7 @@
   },
   {
     "id": 141200000201470201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000201470202,
@@ -7049,7 +7049,7 @@
   },
   {
     "id": 141200000201480101,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000201480102,
@@ -7057,7 +7057,7 @@
   },
   {
     "id": 141200000201480201,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000201480202,
@@ -7089,7 +7089,7 @@
   },
   {
     "id": 141200000201490101,
-    "value": "Support Attack/Counter +1 time"
+    "value": "Support Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000201490102,
@@ -7097,15 +7097,15 @@
   },
   {
     "id": 141200000201500101,
-    "value": "Support Attack/Counter +1 time(s)"
+    "value": "Support Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000201500102,
-    "value": "When piloting units with specified tags,\nIncrease damage dealt to the enemy by 15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to the enemy by 15%."
   },
   {
     "id": 141200000201500103,
-    "value": "When piloting Psycho Zaku (EX), if Vigor is Supercharged or higher, \nThe max range of Physical or Beam Weapon is increased by 1."
+    "value": "When piloting Psycho Zaku (EX)\nand Vigor is Supercharged or higher, \nincrease max range of Physical or Beam Weapon by 1."
   },
   {
     "id": 141200000201510101,
@@ -7113,19 +7113,19 @@
   },
   {
     "id": 141200000201510102,
-    "value": "When piloting units with specified tags,\nIncrease Defense by 15%."
+    "value": "When piloting units with specified tags,\nincrease Defense by 15%."
   },
   {
     "id": 141200000201510103,
-    "value": "When piloting units with specified tags,\nReduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nreduce damage taken by 15%."
   },
   {
     "id": 141200000201520101,
-    "value": "When piloting Master Gundam (EX), if Vigor is Supercharged or higher, \nIncrease own MOV by1."
+    "value": "When piloting Master Gundam (EX)\nand Vigor is Supercharged or higher, \nincrease own MOV by 1."
   },
   {
     "id": 141200000201520102,
-    "value": "When piloting units with specified tags,\nIncrease damage dealt to the enemy by 15%.\nIncrease Critical Rate by 15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to the enemy by 15%\nand increase Critical Rate by 15%."
   },
   {
     "id": 141200000201520103,
@@ -7141,7 +7141,7 @@
   },
   {
     "id": 141200000201530201,
-    "value": "When piloting units from specified series,\nincrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units from specified series,\nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000201530202,
@@ -7173,11 +7173,11 @@
   },
   {
     "id": 141200000201540101,
-    "value": "When piloting units with specified tags,\nChance Step +1 time(s)"
+    "value": "When piloting units with specified tags,\nChance Step +1 time(s)."
   },
   {
     "id": 141200000201550101,
-    "value": "When piloting units with specified tags,\nSupport Attack/Counter +1 time(s)"
+    "value": "When piloting units with specified tags,\nSupport Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000201560101,
@@ -7185,11 +7185,11 @@
   },
   {
     "id": 141200000201570101,
-    "value": "Support Attack/Counter +1 time(s)"
+    "value": "Support Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000201570102,
-    "value": "When piloting units with specified tags,\nIncrease damage dealt to the enemy by 15%.\nReduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to the enemy by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000201570103,
@@ -7197,7 +7197,7 @@
   },
   {
     "id": 141200000201580101,
-    "value": "When piloting units with specified tags,\nIncrease damage dealt to the enemy by 15%.\nReduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to the enemy by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000201580102,
@@ -7205,15 +7205,15 @@
   },
   {
     "id": 141200000201580103,
-    "value": "When HP is 25% or below,\nRestore Hp by 25% (once only)."
+    "value": "When HP is 25% or below,\nrestore HP by 25% (once only)."
   },
   {
     "id": 141200000201590101,
-    "value": "When piloting Qubeley (ZZ) (EX), Increase ATK by 4% (up to 20%)\nfor each Unit bearing the above tag in the same squad."
+    "value": "For each unit in the same squad with specified tags,\nincrease ATK by 4% (up to 20%)\nwhen piloting Qubeley (ZZ) (EX)."
   },
   {
     "id": 141200000201590102,
-    "value": "When piloting units with specified tags,\nIncrease damage dealt to the enemy by 15%.\nReduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to the enemy by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000201590103,
@@ -7233,11 +7233,11 @@
   },
   {
     "id": 141200000201610101,
-    "value": "When piloting units from specified series,\nSupport Attack/Counter +1 time(s)"
+    "value": "When piloting units from specified series,\nSupport Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000201620101,
-    "value": "When piloting units from specified series,\nSupport Attack/Counter +1 time(s)"
+    "value": "When piloting units from specified series,\nSupport Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000201630101,
@@ -7245,19 +7245,19 @@
   },
   {
     "id": 141200000201640101,
-    "value": "When piloting units from specified series,\nChance Step will trigger 1 time at the end of combat regardless of whether or not an enemy has been destroyed."
+    "value": "When piloting units from specified series,\nChance Step will trigger 1 time at the end of combat regardless of whether or not an enemy has been defeated."
   },
   {
     "id": 141200000201650101,
-    "value": "When piloting units from specified series,\nChance Step +1 time(s)"
+    "value": "When piloting units from specified series,\nChance Step +1 time(s)."
   },
   {
     "id": 141200000201660301,
-    "value": "When piloting units with specified tags,\nIncrease Critical Rate by 15%."
+    "value": "When piloting units with specified tags,\nincrease Critical Rate by 15%."
   },
   {
     "id": 141200000201660401,
-    "value": "When piloting units with specified tags,\nIncrease Critical Rate by 20%."
+    "value": "When piloting units with specified tags,\nincrease Critical Rate by 20%."
   },
   {
     "id": 141200000201670101,
@@ -7289,7 +7289,7 @@
   },
   {
     "id": 141200000201690301,
-    "value": "When piloting units with specified tags,\nIncrease MP by 6.\nIncrease Reaction by 50%."
+    "value": "When piloting units with specified tags,\nincrease MP by 6\nand increase Reaction by 50%."
   },
   {
     "id": 141200000201690302,
@@ -7301,7 +7301,7 @@
   },
   {
     "id": 141200000201730101,
-    "value": "When piloting units from specified series,\nSupport Attack/Counter +1 time(s)"
+    "value": "When piloting units from specified series,\nSupport Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000201740101,
@@ -7309,27 +7309,27 @@
   },
   {
     "id": 141200000201750101,
-    "value": "When piloting units from specified series,\nChance Step +1 time(s)"
+    "value": "When piloting units from specified series,\nChance Step +1 time(s)."
   },
   {
     "id": 141200000201760101,
-    "value": "Support Attack/Counter +1 time(s)"
+    "value": "Support Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000201760102,
-    "value": "When piloting Unicorn Gundam (Destroy Mode / Awakened) (EX), if Vigor is Supercharged or higher, \nSupport Attack/Counter +1 time(s)"
+    "value": "When piloting Unicorn Gundam (Destroy Mode / Awakened) (EX) and Vigor is Supercharged or higher, \nSupport Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000201760103,
-    "value": "When piloting Unicorn Gundam (Destroy Mode / Awakened) (EX),\nImprove decrease DEF weapon effects by 5% additively."
+    "value": "When piloting Unicorn Gundam (Destroy Mode / Awakened) (EX),\nimprove decrease DEF weapon effects by 5% additively."
   },
   {
     "id": 141200000201770101,
-    "value": "When piloting Burning Gundam (EX),\n Reduce weapons MP consumption by 2."
+    "value": "When piloting Burning Gundam (EX),\nreduce weapons MP consumption by 2."
   },
   {
     "id": 141200000201770102,
-    "value": "When piloting units with specified tags,\nIncrease damage dealt to the enemy by 15%.\nReduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to the enemy by 15%,\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000201770103,
@@ -7337,11 +7337,11 @@
   },
   {
     "id": 141200000201780101,
-    "value": "When executing Support Defense.\nIncrease DEF by 20%."
+    "value": "When executing Support Defense,\nincrease DEF by 20%."
   },
   {
     "id": 141200000201780102,
-    "value": "When piloting units with specified tags,\nIncrease MP by 6.\nReduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nincrease MP by 6\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000201780103,
@@ -7353,15 +7353,15 @@
   },
   {
     "id": 141200000201790102,
-    "value": "When piloting Gundam GP03 (EX),\n Improve decrease ATK weapon effects by 5% additively."
+    "value": "When piloting Gundam GP03 (EX),\nimprove decrease ATK weapon effects by 5% additively."
   },
   {
     "id": 141200000201790103,
-    "value": "When piloting units with specified tags,\nReduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nreduce damage taken by 15%."
   },
   {
     "id": 141200000201800101,
-    "value": "When piloting Neue Ziel (EX), Increase ATK by 3% (up to 15%)\nfor each Unit bearing the above tag in the same squad."
+    "value": "For each unit in the same squad with specified tags,\nincrease ATK by 3% (up to 15%)\nwhen piloting Neue Ziel (EX)."
   },
   {
     "id": 141200000201800102,
@@ -7377,7 +7377,7 @@
   },
   {
     "id": 141200000201820101,
-    "value": "When piloting units from specified series,\nSupport Defense +1 time."
+    "value": "When piloting units from specified series,\nSupport Defense +1 time(s)."
   },
   {
     "id": 141200000201830101,
@@ -7421,7 +7421,7 @@
   },
   {
     "id": 141200000201840201,
-    "value": "When piloting units with specified tags,\nIncrease Critical Rate by 7%.\nIncrease own Ranged and Melee by 10%."
+    "value": "When piloting units with specified tags,\nincrease Critical Rate by 7%\nand increase own Ranged and Melee by 10%."
   },
   {
     "id": 141200000201840202,
@@ -7433,7 +7433,7 @@
   },
   {
     "id": 141200000201840301,
-    "value": "When piloting units with specified tags,\nIncrease Critical Rate by 10%.\nIncrease own Ranged and Melee by 12%."
+    "value": "When piloting units with specified tags,\nincrease Critical Rate by 10%\nand increase own Ranged and Melee by 12%."
   },
   {
     "id": 141200000201840302,
@@ -7457,7 +7457,7 @@
   },
   {
     "id": 141200000201860101,
-    "value": "When piloting units with specified tags,\nCan execute Support Defense when an enemy responds to an ally's attack with a counter during a fight.\nIncrease damage dealt to the enemy by 15%.\nReduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to the enemy by 15%,\nreduce damage taken by 15%,\nand can execute Support Defense when an enemy responds to an ally's attack with a counter during a fight."
   },
   {
     "id": 141200000201860102,
@@ -7473,11 +7473,11 @@
   },
   {
     "id": 141200000201880401,
-    "value": "When piloting units with specified tags,\nIncrease MP by 6."
+    "value": "When piloting units with specified tags,\nincrease MP by 6."
   },
   {
     "id": 141200000201890101,
-    "value": "Chance Step +1 time,\nwhen piloting units from specified tags and with specified series."
+    "value": "When piloting units from a specified tag that also have a specified series,\nChance Step +1 time(s)."
   },
   {
     "id": 141200000201900101,
@@ -7485,11 +7485,11 @@
   },
   {
     "id": 141200000201910101,
-    "value": "When piloting Blue Destiny Unit-1 (EX), \nChance Step will trigger 1 time at the end of combat regardless of whether or not an enemy has been destroyed."
+    "value": "When piloting Blue Destiny Unit-1 (EX), \nChance Step will trigger 1 time at the end of combat regardless of whether or not an enemy has been defeated."
   },
   {
     "id": 141200000201910102,
-    "value": "When piloting units with specified tags,\nIncrease damage dealt to the enemy by 15%.\nReduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to the enemy by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000201910103,
@@ -7497,19 +7497,19 @@
   },
   {
     "id": 141200000201920101,
-    "value": "Support Attack/Counter +1 time"
+    "value": "Support Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000201920102,
-    "value": "When piloting Sinanju (EX), if Vigor is Supercharged or higher, \nIncrease own MOV by1."
+    "value": "When piloting Sinanju (EX) and Vigor is Supercharged or higher, \nincrease own MOV by 1."
   },
   {
     "id": 141200000201920103,
-    "value": "When piloting units with specified tags,\nIncrease damage dealt to the enemy by 15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to the enemy by 15%."
   },
   {
     "id": 141200000201930101,
-    "value": "When piloting units with specified tags,\nIncrease damage dealt to the enemy by 5%.\nReduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to the enemy by 5%\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000201930102,
@@ -7517,7 +7517,7 @@
   },
   {
     "id": 141200000201930201,
-    "value": "When piloting units with specified tags,\nIncrease damage dealt to the enemy by 10%.\nReduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to the enemy by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000201930202,
@@ -7537,27 +7537,27 @@
   },
   {
     "id": 141200000201950101,
-    "value": "When piloting units from specified series,\nsupport Attack/Counter +1 time"
+    "value": "When piloting units from specified series,\nsupport Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000201960101,
-    "value": "When piloting units with specified tags,\nChance Step +1 time"
+    "value": "When piloting units with specified tags,\nChance Step +1 time(s)."
   },
   {
     "id": 141200000201970101,
-    "value": "Chance Step +1 time"
+    "value": "Chance Step +1 time(s)."
   },
   {
     "id": 141200000201970102,
-    "value": "When piloting units with specified tags,\nReduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nreduce damage taken by 15%."
   },
   {
     "id": 141200000201980101,
-    "value": "When piloting units are of the specified type,\nincrease own ATK by 20% when countering."
+    "value": "When piloting units with the specified type,\nincrease own ATK by 20% when countering."
   },
   {
     "id": 141200000201980102,
-    "value": "When piloting units from specified series,\nIncrease MP by 6.\nReduce damage taken by 15%."
+    "value": "When piloting units from specified series,\nincrease MP by 6,\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000201980103,
@@ -7565,7 +7565,7 @@
   },
   {
     "id": 141200000201990101,
-    "value": "Support Attack/Counter +1 time(s)"
+    "value": "Support Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000201990102,
@@ -7585,7 +7585,7 @@
   },
   {
     "id": 141200000202000101,
-    "value": "When piloting units with specified tags\nIncrease MP by 6.\nincrease damage dealt to enemies by 15%, and\nreduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nincrease MP by 6,\nincrease damage dealt to enemies by 15%,\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000202000102,
@@ -7601,7 +7601,7 @@
   },
   {
     "id": 141200000202020201,
-    "value": "When piloting units with specified tags,\nIncrease damage dealt to the enemy by 10%.\nReduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to the enemy by 10%\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000202020202,
@@ -7613,15 +7613,15 @@
   },
   {
     "id": 141200000202040101,
-    "value": "When piloting units from specified series,\nChance Step +1 time."
+    "value": "When piloting units from specified series,\nChance Step +1 time(s)."
   },
   {
     "id": 141200000202050101,
-    "value": "When piloting units from specified series,\nSupport Attack/Counter +1 time."
+    "value": "When piloting units from specified series,\nSupport Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000202060101,
-    "value": "When piloting units from specified series,\nSupport Defense +1 time."
+    "value": "When piloting units from specified series,\nSupport Defense +1 time(s)."
   },
   {
     "id": 141200000202070101,
@@ -7629,11 +7629,11 @@
   },
   {
     "id": 141200000202080101,
-    "value": "When piloting Destiny Gundam (EX),\nIncrease MP by 2."
+    "value": "When piloting Destiny Gundam (EX):\nIncrease MP by 2"
   },
   {
     "id": 141200000202080102,
-    "value": "\"Supercharged EX 1 (Shinn Asuka)\" (1 turn)\nIncrease own Critical Rate, Melee, and Reaction by 20%\nApply MP Lock to self\n\nWhen effect ends:\n\"Supercharged EX 2 (Shinn Asuka)\" (1 turn)\nActivate Guaranteed Critical \nIncrease own Melee and Reaction by 50%\nApply MP Lock to self\n\nWhen effect ends:\nDecrease own MP by 12"
+    "value": "\"Supercharged EX 1 (Shinn Asuka)\" (1 turn)\nIncrease own Critical Rate, Melee, and Reaction by 20%\nApply MP Lock to self\n\nWhen \"Supercharged EX 1 (Shinn Asuka)\" ends:\n\"Supercharged EX 2 (Shinn Asuka)\" (1 turn)\nActivate Guaranteed Critical \nIncrease own Melee and Reaction by 50%\nApply MP Lock to self\n\nWhen \"Supercharged EX 2 (Shinn Asuka)\" ends:\nDecrease own MP by 12"
   },
   {
     "id": 141200000202080103,
@@ -7713,19 +7713,19 @@
   },
   {
     "id": 141200000202090101,
-    "value": "Chance Step +1 time"
+    "value": "Chance Step +1 time(s)."
   },
   {
     "id": 141200000202090102,
-    "value": "When piloting Gundam Calibarn (Final Battle) (EX),\nReduce weapons HP consumption by 5%."
+    "value": "When piloting Gundam Calibarn (Final Battle) (EX),\nreduce weapon's HP consumption by 5%."
   },
   {
     "id": 141200000202090103,
-    "value": "When piloting units with specified tags,\nReduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nreduce damage taken by 15%."
   },
   {
     "id": 141200000202100101,
-    "value": "When piloting units with specified tags,\nSupport Attack/Counter +1 time(s)"
+    "value": "When piloting units with specified tags,\nSupport Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000202110101,
@@ -7733,23 +7733,23 @@
   },
   {
     "id": 141200000202120101,
-    "value": "When piloting units from specified series,\nIncrease own MOV by1."
+    "value": "When piloting units from specified series,\nincrease own MOV by 1."
   },
   {
     "id": 141200000202130101,
-    "value": "When piloting units are of the specified type,\nincrease own ATK by 20% when countering."
+    "value": "When piloting units of the specified type,\nincrease own ATK by 20% when countering."
   },
   {
     "id": 141200000202130102,
-    "value": "When piloting units with specified tags,\nIncrease MP by 6."
+    "value": "When piloting units with specified tags,\nincrease MP by 6,"
   },
   {
     "id": 141200000202130103,
-    "value": "Increase Critical Rate by 25%."
+    "value": "increase Critical Rate by 25%,"
   },
   {
     "id": 141200000202130104,
-    "value": "Increase own Melee and Reaction by 25%."
+    "value": "and increase own Melee and Reaction by 25%."
   },
   {
     "id": 141200000202130105,
@@ -7761,7 +7761,7 @@
   },
   {
     "id": 141200000202140102,
-    "value": "When piloting Big-Rang (EX),\nincreases the Increased HP effect of HP Supply MAP Weapons by +20%."
+    "value": "When piloting Big-Rang (EX),\nincrease Restore HP effect of HP Supply MAP Weapons by +20%."
   },
   {
     "id": 141200000202140103,
@@ -7781,11 +7781,11 @@
   },
   {
     "id": 141200000202150101,
-    "value": "When piloting units from specified series,\nChance Step +1 time(s)"
+    "value": "When piloting units from specified series,\nChance Step +1 time(s)."
   },
   {
     "id": 141200000202160101,
-    "value": "When piloting units from specified series,\nSupport Attack/Counter +1 time(s)"
+    "value": "When piloting units from specified series,\nSupport Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000202170101,
@@ -7793,7 +7793,7 @@
   },
   {
     "id": 141200000202180101,
-    "value": "When piloting units with specified tags,\nIncrease MP by 6.\nIncrease damage dealt to the enemy by 15%.\nReduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nincrease MP by 6,\nincrease damage dealt to the enemy by 15%,\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000202180102,
@@ -7805,11 +7805,11 @@
   },
   {
     "id": 141200000202190101,
-    "value": "Support Attack/Counter +1 time(s)"
+    "value": "Support Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000202190102,
-    "value": "When piloting units from specified series,\nIncrease damage dealt to the enemy by 15%.\nReduce damage taken by 15%."
+    "value": "When piloting units from specified series,\nincrease damage dealt to the enemy by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000202190103,
@@ -7817,27 +7817,27 @@
   },
   {
     "id": 141200000202200101,
-    "value": "When piloting units from specified series,\nChance Step +1 time"
+    "value": "When piloting units from specified series,\nChance Step +1 time(s)."
   },
   {
     "id": 141200000202210101,
-    "value": "When piloting units from specified series,\nSupport Attack/Counter +1 time"
+    "value": "When piloting units from specified series,\nSupport Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000202220101,
-    "value": "Chance Step +1 time"
+    "value": "Chance Step +1 time(s)."
   },
   {
     "id": 141200000202220102,
-    "value": "When piloting Gundam Astray Red Frame Custom (EX),\nReduce weapons EN consumption by 25%."
+    "value": "When piloting Gundam Astray Red Frame Custom (EX),\nreduce weapon EN consumption by 25%."
   },
   {
     "id": 141200000202220103,
-    "value": "Reduce damage taken by 15%\nwhen piloting units with specified tags."
+    "value": "When piloting units with specified tags,\nreduce damage taken by 15%."
   },
   {
     "id": 141200000202230101,
-    "value": "When piloting Gundam Astray Gold Frame Amatsu Mina (EX),\nReduce weapons EN consumption by 15%."
+    "value": "When piloting Gundam Astray Gold Frame Amatsu Mina (EX),\nreduce weapon EN consumption by 15%."
   },
   {
     "id": 141200000202230102,
@@ -7861,7 +7861,7 @@
   },
   {
     "id": 141200000202240301,
-    "value": "Increase own Awaken and Reaction by 15%."
+    "value": "Increase Awaken and Reaction by 15%."
   },
   {
     "id": 141200000202240302,
@@ -7877,7 +7877,7 @@
   },
   {
     "id": 141200000202250201,
-    "value": "Increase own Awaken and Reaction by 10%."
+    "value": "Increase Awaken and Reaction by 10%."
   },
   {
     "id": 141200000202250202,
@@ -7885,7 +7885,7 @@
   },
   {
     "id": 141200000202250301,
-    "value": "Increase own Awaken and Reaction by 15%."
+    "value": "Increase Awaken and Reaction by 15%."
   },
   {
     "id": 141200000202250302,
@@ -7893,7 +7893,7 @@
   },
   {
     "id": 141200000202250401,
-    "value": "Increase own Awaken and Reaction by 20%."
+    "value": "Increase Awaken and Reaction by 20%."
   },
   {
     "id": 141200000202250402,
@@ -7901,7 +7901,7 @@
   },
   {
     "id": 141200000202260201,
-    "value": "Increase own Ranged and Melee by 10%."
+    "value": "Increase Ranged and Melee by 10%."
   },
   {
     "id": 141200000202260202,
@@ -7909,7 +7909,7 @@
   },
   {
     "id": 141200000202260301,
-    "value": "Increase own Ranged and Melee by 15%."
+    "value": "Increase Ranged and Melee by 15%."
   },
   {
     "id": 141200000202260302,
@@ -7917,7 +7917,7 @@
   },
   {
     "id": 141200000202260501,
-    "value": "Increase own Ranged and Melee by 25%."
+    "value": "Increase Ranged and Melee by 25%."
   },
   {
     "id": 141200000202260502,
@@ -7925,11 +7925,11 @@
   },
   {
     "id": 141200000202270101,
-    "value": "When piloting units from specified series,\nSupport Attack/Counter +1 time"
+    "value": "When piloting units from specified series,\nSupport Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000202280101,
-    "value": "When piloting units from specified series,\nSupport Defense +1 time"
+    "value": "When piloting units from specified series,\nSupport Defense +1 time(s)."
   },
   {
     "id": 141200000202290101,
@@ -7937,11 +7937,11 @@
   },
   {
     "id": 141200000202300101,
-    "value": "When piloting units with specified tags,\nChance Step +1 time"
+    "value": "When piloting units with specified tags,\nChance Step +1 time(s)."
   },
   {
     "id": 141200000202310101,
-    "value": "When piloting units from specified series,\nIncrease ATK by 2% (up to 10%)\nfor each Unit bearing the above tag in the same squad."
+    "value": "For each unit in the same squad with specified tags,\nincrease ATK by 2% (up to 10%)\nwhen piloting units from specified series."
   },
   {
     "id": 141200000202320101,
@@ -7949,11 +7949,11 @@
   },
   {
     "id": 141200000202330101,
-    "value": "When piloting units with specified tags,\nSupport Attack/Counter +1 time(s)"
+    "value": "When piloting units with specified tags,\nSupport Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000202340101,
-    "value": "When piloting units with specified tags\nIncrease damage dealt to enemies by 5%, and\nreduce damage taken by 5%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 5%,\nand reduce damage taken by 5%."
   },
   {
     "id": 141200000202340102,
@@ -7961,7 +7961,7 @@
   },
   {
     "id": 141200000202340201,
-    "value": "When piloting units with specified tags\nIncrease damage dealt to enemies by 10%, and\nreduce damage taken by 10%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 10%,\nand reduce damage taken by 10%."
   },
   {
     "id": 141200000202340202,
@@ -7969,15 +7969,15 @@
   },
   {
     "id": 141200000202350101,
-    "value": "Support Attack/Counter +1 time"
+    "value": "Support Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000202350102,
-    "value": "When piloting units with specified tags,\nIncrease MP by 5."
+    "value": "When piloting units with specified tags,\nincrease MP by 5."
   },
   {
     "id": 141200000202350103,
-    "value": "When piloting Gundam AGE-2 Normal (EX), if Vigor is Supercharged or higher, \nSupport Attack/Counter +1 time\nimprove increase beam damage taken weapon effects by 5% additively."
+    "value": "When piloting Gundam AGE-2 Normal (EX), if Vigor is Supercharged or higher, \nSupport Attack/Counter +1 time(s),\nand improve increase beam damage taken weapon effects by 5% additively."
   },
   {
     "id": 141200000202350104,
@@ -7985,11 +7985,11 @@
   },
   {
     "id": 141200000202360101,
-    "value": "When piloting a unit with the [Condition 1] tag,\nincrease own ATK by 3%\nfor each squad unit bearing the [Condition 2] tag (up to 15%)."
+    "value": "For each unit in the same squad with the [Condition 2] tag,\nincrease ATK by 3% (up to 15%)\nwhen piloting units with the [Condition 1] tag."
   },
   {
     "id": 141200000202360102,
-    "value": "When piloting units with specified tags\nIncrease damage dealt to enemies by 15%, and\nreduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%,\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000202360103,
@@ -7997,15 +7997,15 @@
   },
   {
     "id": 141200000202370101,
-    "value": "When piloting units from specified series,\nChance Step +1 time"
+    "value": "When piloting units from specified series,\nChance Step +1 time(s)."
   },
   {
     "id": 141200000202380101,
-    "value": "Support Defense +1 time"
+    "value": "Support Defense +1 time(s)."
   },
   {
     "id": 141200000202380102,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 15%, and\nreduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%,\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000202380103,
@@ -8013,11 +8013,11 @@
   },
   {
     "id": 141200000202390101,
-    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%, and reduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%,\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000202390102,
-    "value": "Also reduce weapons EN consumption by 15%."
+    "value": "Reduce weapon EN consumption by 15%."
   },
   {
     "id": 141200000202390103,
@@ -8025,7 +8025,7 @@
   },
   {
     "id": 141200000202400101,
-    "value": "When piloting units with specified tags,\nSupport Attack/Counter +1 time(s)"
+    "value": "When piloting units with specified tags,\nSupport Attack/Counter +1 time."
   },
   {
     "id": 141200000202410101,
@@ -8033,19 +8033,19 @@
   },
   {
     "id": 141200000202420101,
-    "value": "When piloting units with specified tags,\nChance Step +1 time(s)"
+    "value": "When piloting units with specified tags,\nChance Step +1 time(s)."
   },
   {
     "id": 141200000202430101,
-    "value": "Chance Step +1 time"
+    "value": "Chance Step +1 time(s)."
   },
   {
     "id": 141200000202430102,
-    "value": "When piloting Wing Gundam Zero (EW) (EX),\n Reduce weapons MP consumption by 3."
+    "value": "When piloting Wing Gundam Zero (EW) (EX),\nreduce weapon MP consumption by 3."
   },
   {
     "id": 141200000202430103,
-    "value": "When piloting units with specified tags,\nIncrease MP by 5."
+    "value": "When piloting units with specified tags,\nincrease MP by 5."
   },
   {
     "id": 141200000202430104,
@@ -8053,7 +8053,7 @@
   },
   {
     "id": 141200000202440101,
-    "value": "Support Defense +1 time"
+    "value": "Support Defense +1 time(s)."
   },
   {
     "id": 141200000202440102,
@@ -8137,15 +8137,15 @@
   },
   {
     "id": 141200000202440401,
-    "value": "Decrease MP by 12"
+    "value": "Decrease MP by 12."
   },
   {
     "id": 141200000202450101,
-    "value": "Support Attack/Counter +1 time(s)"
+    "value": "Support Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000202450102,
-    "value": "When piloting Tallgeese III (EX),\nincreases ATK by 5% for units bearing the above series in the same squad (permanent)."
+    "value": "When piloting Tallgeese III (EX),\nincrease ATK by 5% of units in the same squad from specified series (permanent)."
   },
   {
     "id": 141200000202450103,
@@ -8153,15 +8153,15 @@
   },
   {
     "id": 141200000202450104,
-    "value": "When piloting Tallgeese III (EX), if Vigor is Supercharged or higher, \nThe max range of Beam Weapon is increased by 1."
+    "value": "When piloting Tallgeese III (EX), if Vigor is Supercharged or higher, \nincrease beam weapon max range by 1."
   },
   {
     "id": 141200000202460101,
-    "value": "When piloting Ex-S Gundam (EX), \nchance Step will trigger 1 time at the end of combat regardless of whether or not an enemy has been destroyed."
+    "value": "When piloting Ex-S Gundam (EX), \nchance Step will trigger 1 time at the end of combat regardless of whether or not an enemy has been defeated."
   },
   {
     "id": 141200000202460102,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 15%, and\nreduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%,\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000202460103,
@@ -8169,11 +8169,11 @@
   },
   {
     "id": 141200000202470101,
-    "value": "Restore own HP 5% at the start of every turn.\nwhen piloting units with specified tags."
+    "value": "When piloting units with specified tags,\nrestore HP 5% at the start of every turn."
   },
   {
     "id": 141200000202480101,
-    "value": "Support Attack/Counter +1 time(s)"
+    "value": "Support Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000202480102,
@@ -8181,19 +8181,19 @@
   },
   {
     "id": 141200000202490101,
-    "value": "When piloting units from specified series,\nSupport Attack/Counter +1 time"
+    "value": "When piloting units with specified tags,\nSupport Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000202500101,
-    "value": "When piloting units with specified tags,\nSupport Attack/Counter +1 time(s)"
+    "value": "When piloting units with specified tags,\nSupport Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000202510101,
-    "value": "When piloting units with specified tags,\nsupport Attack/Counter +1 time(s)"
+    "value": "When piloting units with specified tags,\nSupport Attack/Counter +1 time(s)."
   },
   {
     "id": 141200000202520401,
-    "value": "Increase own Ranged and Awaken by 20%."
+    "value": "Increase Ranged and Awaken by 20%."
   },
   {
     "id": 141200000202520402,
@@ -8269,7 +8269,7 @@
   },
   {
     "id": 141200000202570102,
-    "value": "When piloting units with specified tags\nincrease damage dealt to enemies by 15%, \nand reduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%, \nand reduce damage taken by 15%."
   },
   {
     "id": 141200000202570103,
@@ -8281,7 +8281,7 @@
   },
   {
     "id": 141200000202580102,
-    "value": "When Vigor is Supercharged or higher, \nincrease Awaken and Reaction by 25%\nbut decrease Defense by 25%."
+    "value": "When Vigor is Supercharged or higher,\nincrease Awaken and Reaction by 25%,\nand decrease DEF by 25%."
   },
   {
     "id": 141200000202580103,
@@ -17317,7 +17317,7 @@
   },
   {
     "id": 141200000611360101,
-    "value": "When Yurin L'Ciel in your squad is destroyed:\nIncrease own ATK and DEF by 200%.\nRestore own HP by 100%."
+    "value": "When Yurin L'Ciel in your squad is defeated:\nIncrease own ATK and DEF by 200%.\nRestore own HP by 100%."
   },
   {
     "id": 141200000611360102,
@@ -17329,7 +17329,7 @@
   },
   {
     "id": 141200000611360201,
-    "value": "When Yurin L'Ciel in your squad is destroyed:\nIncrease own ATK and DEF by 200%.\nRestore own HP by 100%."
+    "value": "When Yurin L'Ciel in your squad is defeated:\nIncrease own ATK and DEF by 200%.\nRestore own HP by 100%."
   },
   {
     "id": 141200000611360202,
@@ -17349,7 +17349,7 @@
   },
   {
     "id": 141200000611380101,
-    "value": "When Woolf Enneacle in your squad is destroyed:\nIncrease own ATK and DEF by 200%.\nRestore own HP by 100%."
+    "value": "When Woolf Enneacle in your squad is defeated:\nIncrease own ATK and DEF by 200%.\nRestore own HP by 100%."
   },
   {
     "id": 141200000611380102,
@@ -17381,15 +17381,15 @@
   },
   {
     "id": 141200000611440101,
-    "value": "When Aina Sakhalin in your squad is destroyed:\nIncrease MP by 12."
+    "value": "When Aina Sakhalin in your squad is defeated:\nIncrease MP by 12."
   },
   {
     "id": 141200000611450101,
-    "value": "When Norris Packard in your squad is destroyed:\nIncrease MP by 12."
+    "value": "When Norris Packard in your squad is defeated:\nIncrease MP by 12."
   },
   {
     "id": 141200000611460101,
-    "value": "When Amuro Ray in your squad is destroyed:\nIncrease own ATK by 200%.\nIncrease own DEF by 200%.\nRestore own HP by 10%.\nforce-activate Chance Step +1 time"
+    "value": "When Amuro Ray in your squad is defeated:\nIncrease own ATK by 200%.\nIncrease own DEF by 200%.\nRestore own HP by 10%.\nforce-activate Chance Step +1 time"
   },
   {
     "id": 141200000611460102,
@@ -17417,7 +17417,7 @@
   },
   {
     "id": 141200000611460201,
-    "value": "When Banagher Links in your squad is destroyed:\nIncrease own ATK by 200%.\nIncrease own DEF by 200%.\nRestore own HP by 10%.\nforce-activate Chance Step +1 time"
+    "value": "When Banagher Links in your squad is defeated:\nIncrease own ATK by 200%.\nIncrease own DEF by 200%.\nRestore own HP by 10%.\nforce-activate Chance Step +1 time"
   },
   {
     "id": 141200000611460202,
@@ -17445,7 +17445,7 @@
   },
   {
     "id": 141200000611460301,
-    "value": "When Asemu Asuno in your squad is destroyed:\nIncrease own ATK by 200%.\nIncrease own DEF by 200%.\nRestore own HP by 10%.\nforce-activate Chance Step +1 time"
+    "value": "When Asemu Asuno in your squad is defeated:\nIncrease own ATK by 200%.\nIncrease own DEF by 200%.\nRestore own HP by 10%.\nforce-activate Chance Step +1 time"
   },
   {
     "id": 141200000611460302,
@@ -17517,7 +17517,7 @@
   },
   {
     "id": 141200000611580101,
-    "value": "When the enemy squad's Setsuna F. Seiei is destroyed,\nincrease own ATK by 200%."
+    "value": "When the enemy squad's Setsuna F. Seiei is defeated,\nincrease own ATK by 200%."
   },
   {
     "id": 141200000611580102,
@@ -17525,7 +17525,7 @@
   },
   {
     "id": 141200000611590101,
-    "value": "When your squad's Kati Mannequin is destroyed,\nincrease own ATK by 200%."
+    "value": "When your squad's Kati Mannequin is defeated,\nincrease own ATK by 200%."
   },
   {
     "id": 141200000611590102,
@@ -17533,7 +17533,7 @@
   },
   {
     "id": 141200000611600101,
-    "value": "When your squad's Soma Peries is destroyed,\nincrease own ATK by 300%."
+    "value": "When your squad's Soma Peries is defeated,\nincrease own ATK by 300%."
   },
   {
     "id": 141200000611600102,
@@ -17609,7 +17609,7 @@
   },
   {
     "id": 141200000611770101,
-    "value": "When Haro in your squad is destroyed:\nDown own DEF by 30% [1 turn(s)] "
+    "value": "When Haro in your squad is defeated:\nDown own DEF by 30% [1 turn(s)] "
   },
   {
     "id": 141200000611770111,
@@ -17617,7 +17617,7 @@
   },
   {
     "id": 141200000611770201,
-    "value": "When Psycho Haro in your squad is destroyed:\nThe max range of own Beam Weapon is decrease by 1 [1 turn(s)] "
+    "value": "When Psycho Haro in your squad is defeated:\nThe max range of own Beam Weapon is decrease by 1 [1 turn(s)] "
   },
   {
     "id": 141200000611770211,
@@ -17685,7 +17685,7 @@
   },
   {
     "id": 141200000611920101,
-    "value": "When Relena Darlian (EW) in your squad is destroyed:\nIncrease own ATK and DEF by 200%."
+    "value": "When Relena Darlian (EW) in your squad is defeated:\nIncrease own ATK and DEF by 200%."
   },
   {
     "id": 141200000611920102,
@@ -17701,7 +17701,7 @@
   },
   {
     "id": 141200000611930101,
-    "value": "When Heero Yuy (EW) in your squad is destroyed:\nIncrease own ATK and DEF by 200%."
+    "value": "When Heero Yuy (EW) in your squad is defeated:\nIncrease own ATK and DEF by 200%."
   },
   {
     "id": 141200000611930102,

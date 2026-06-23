@@ -261,7 +261,7 @@
   },
   {
     "id": 170800000000500301,
-    "value": "Destroy enemy units with weapons in your possession to trigger\nbonus actions."
+    "value": "Defeat enemy units with weapons in your possession to trigger\nbonus actions."
   },
   {
     "id": 170800000000500401,
@@ -273,15 +273,15 @@
   },
   {
     "id": 170800000000500801,
-    "value": "Destroying enemy units raises Vigor. Raising Vigor increases damage, allowing you to\ndestroy units with high HP."
+    "value": "Defeating enemy units raises Vigor. Raising Vigor increases damage, allowing you to\ndefeat units with high HP."
   },
   {
     "id": 170800000000500901,
-    "value": "Destroy enemy units by using Transform to extend Movement and range."
+    "value": "Defeat enemy units by using Transform to extend Movement and range."
   },
   {
     "id": 170800000000501001,
-    "value": "Use MAP Weapons to destroy multiple enemy units at once."
+    "value": "Use MAP Weapons to defeat multiple enemy units at once."
   },
   {
     "id": 170800000000501101,
@@ -297,19 +297,19 @@
   },
   {
     "id": 170800000000501401,
-    "value": "Use weapons from a distance where Power is maximized to destroy enemy units by\ninflicting maximum damage."
+    "value": "Use weapons from a distance where Power is maximized to defeat enemy units by\ninflicting maximum damage."
   },
   {
     "id": 170800000000501501,
-    "value": "First, use weapons with the effect of reducing enemy units' Defense, then destroy them\nwhile the damage you deal is increased."
+    "value": "First, use weapons with the effect of reducing enemy units' Defense, then defeat them\nwhile the damage you deal is increased."
   },
   {
     "id": 170800000000501601,
-    "value": "First, use weapons with the effect of reducing enemy units' Attack, then destroy them\nwhile the damage you receive is decreased."
+    "value": "First, use weapons with the effect of reducing enemy units' Attack, then defeat them\nwhile the damage you receive is decreased."
   },
   {
     "id": 170800000000510001,
-    "value": "Certain units will result in a defeat when destroyed.\nStrategize so that their HP does not get too low."
+    "value": "Certain units will result in a defeat when defeated.\nStrategize so that their HP does not get too low."
   },
   {
     "id": 170800000000510002,
@@ -345,7 +345,7 @@
   },
   {
     "id": 170800000000520103,
-    "value": "Move the Units out of its way, then strike the enemy with weapons capable of inflicting an effect.\nThis way, you'll destroy them with a single counterattack!"
+    "value": "Move the Units out of its way, then strike the enemy with weapons capable of inflicting an effect.\nThis way, you'll defeat them with a single counterattack!"
   },
   {
     "id": 170800000000520201,
@@ -453,7 +453,7 @@
   },
   {
     "id": 170800000000900014,
-    "value": "Dummy balloons appear during the Mobile Suit Gundam 0080: War in the Pocket boss battle.\nThe more you destroy, the more Supplier Medals you can acquire."
+    "value": "Dummy balloons appear during the Mobile Suit Gundam 0080: War in the Pocket boss battle.\nThe more you defeat, the more Supplier Medals you can acquire."
   },
   {
     "id": 170800000000900015,
@@ -513,7 +513,7 @@
   },
   {
     "id": 170800000000910004,
-    "value": "A battle with a new difficulty, where all enemy stats (EN excluded) gradually increase.\nThe victory conditions are changed to \"Destroy all enemy units.\""
+    "value": "A battle with a new difficulty, where all enemy stats (EN excluded) gradually increase.\nThe victory conditions are changed to \"Defeat all enemy units.\""
   },
   {
     "id": 170800000000910005,

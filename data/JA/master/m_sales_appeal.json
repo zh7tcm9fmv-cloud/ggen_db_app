@@ -1129,5 +1129,31 @@
     "Priority": 20,
     "ShouldTransition": false,
     "ContentImageResourceId": "2606100701"
+  },
+  {
+    "Id": 2606400301,
+    "DisplayConditionSetId": 35260640040301,
+    "ScheduleId": 2606401701,
+    "IsInfiniteDisplay": false,
+    "SalesAppealDisplaySourceSetId": 2606400301,
+    "TransitionId": 28002606400403,
+    "SalesAppealTargetTypeIndex": 3,
+    "TargetId": 0,
+    "Priority": 11,
+    "ShouldTransition": true,
+    "ContentImageResourceId": "2606400301"
+  },
+  {
+    "Id": 2606400701,
+    "DisplayConditionSetId": 18001225105001,
+    "ScheduleId": 2606402801,
+    "IsInfiniteDisplay": false,
+    "SalesAppealDisplaySourceSetId": 2606400701,
+    "TransitionId": 0,
+    "SalesAppealTargetTypeIndex": 3,
+    "TargetId": 0,
+    "Priority": 20,
+    "ShouldTransition": false,
+    "ContentImageResourceId": "2606400701"
   }
 ]
