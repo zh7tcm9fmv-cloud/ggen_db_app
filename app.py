@@ -1275,6 +1275,7 @@ UNIT_WEAPON_DEBUFF_FILTER_KEYS = frozenset({
     'range_6',
     'mp_1',
     'preemptive',
+    'absolute_hit',
     'map_weapon',
     'enemy_def_atk',
 })
@@ -1674,7 +1675,23 @@ def classify_unit_weapon_trait_debuff_keys(line):
     if _trait_text_indicates_preemptive_strike(s):
         keys.add('preemptive')
 
+    if _trait_text_indicates_absolute_hit(s):
+        keys.add('absolute_hit')
+
     return frozenset(keys)
+
+
+def _trait_text_indicates_absolute_hit(text):
+    """True if trait line names the Absolute Hit weapon effect (EN / JA / zh-Hant)."""
+    if not text:
+        return False
+    s = str(text).strip()
+    sl = s.lower()
+    return (
+        'absolute hit' in sl
+        or '絶対命中' in s
+        or '絕對命中' in s
+    )
 
 
 def _trait_text_indicates_preemptive_strike(text):
