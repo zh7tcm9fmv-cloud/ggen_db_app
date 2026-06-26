@@ -23,6 +23,7 @@
   column-gap:10px;
   align-items:end;
   padding:10px 10px 14px;
+  overflow:hidden;
   background:linear-gradient(165deg,rgba(26,34,54,.98),rgba(20,28,46,.98));
   border:1px solid rgba(0,212,255,.28);
   border-radius:var(--radius-lg);
@@ -34,6 +35,25 @@
   transform-origin:var(--kofi-promo-origin-x,82%) var(--kofi-promo-origin-y,0%);
   -webkit-backface-visibility:hidden;
   backface-visibility:hidden;
+}
+.kofi-donate-promo-panel::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:0;
+  background-image:var(--kofi-promo-panel-bg,url('/static/images/Background/obg_013_garage.webp'));
+  background-size:cover;
+  background-position:center 42%;
+  background-repeat:no-repeat;
+  pointer-events:none;
+}
+.kofi-donate-promo-panel::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:0;
+  background:linear-gradient(165deg,rgba(26,34,54,.72),rgba(20,28,46,.82));
+  pointer-events:none;
 }
 .kofi-donate-promo.is-visible:not(.is-entering) .kofi-donate-promo-panel{
   opacity:1;
@@ -134,6 +154,8 @@
   height:14px;
 }
 .kofi-donate-promo-maria-wrap{
+  position:relative;
+  z-index:1;
   grid-column:1;
   grid-row:1;
   width:128px;
@@ -147,6 +169,8 @@
   object-fit:contain;
 }
 .kofi-donate-promo-copy{
+  position:relative;
+  z-index:1;
   grid-column:2;
   grid-row:1;
   display:flex;
