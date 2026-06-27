@@ -8512,10 +8512,9 @@ const atkAfterPair=pr.unitAtk;
 defShow=pr.unitDefVal;
 const advAtkPct=_dcAdvantageTagAtkPctFromAbilities(ud,S.dc.defNpc);
 const atkAfterCounter=_dcApplyCounterOwnAtkToUnitAtk(atkAfterPair);
-const atkAfterSupCnt=_dcApplySupportCounterAtkToUnitAtk(atkAfterCounter);
 const advGrAtk=uEff.advantageFlatGrowthAtk|0;
 const advGrDef=uEff.advantageFlatGrowthDef|0;
-const atkShowPreTurn=_dcApplyAdvantageTagAtkToUnitAtk(atkAfterSupCnt,advAtkPct,advGrAtk);
+const atkShowPreTurn=_dcApplyAdvantageTagAtkToUnitAtk(atkAfterCounter,advAtkPct,advGrAtk);
 const atkShow=atkShowPreTurn;
 const advAtkFlat=(advAtkPct|0)>0?Math.floor(Math.max(0,advGrAtk)*(advAtkPct|0)/100):0;
 const advDefFlat=(advAtkPct|0)>0?Math.floor(Math.max(0,advGrDef)*(advAtkPct|0)/100):0;
@@ -8524,7 +8523,7 @@ const unitTurnAtkOn=S.dc.unitTurnBuffAtk&&(utb.atkPct|0)>0;
 const unitTurnDefOn=S.dc.unitTurnBuffDef&&(utb.defPct|0)>0;
 const pairActive=(atkAfterPair!==atkS||defShow!==defS);
 const counterActive=(atkAfterCounter!==atkAfterPair);
-const supCntActive=(atkAfterSupCnt!==atkAfterCounter);
+const supCntActive=(_dcEffectiveSupportCounterAtkPct()|0)>0;
 const advantageTagActive=(advAtkPct|0)>0&&S.dc.applyAdvantageEnemyTag!==false;
 const leaderAtkActive=(uEff.leaderPct|0)>0;
 const dEx=uEff.deltaExAtk|0;
@@ -8579,7 +8578,7 @@ const exSq=_dcEffectiveExSquadAtkPct();
 const atkAfterPair=_dcPilotPairUnitAtkDefPct(atkS,uEff.unitDefVal).unitAtk;
 const advAtkPct=_dcAdvantageTagAtkPctFromAbilities(ud,S.dc.defNpc);
 const advGrAtk=uEff.advantageFlatGrowthAtk|0;
-const atkMid=_dcApplyAdvantageTagAtkToUnitAtk(_dcApplySupportCounterAtkToUnitAtk(_dcApplyCounterOwnAtkToUnitAtk(atkAfterPair)),advAtkPct,advGrAtk);
+const atkMid=_dcApplyAdvantageTagAtkToUnitAtk(_dcApplyCounterOwnAtkToUnitAtk(atkAfterPair),advAtkPct,advGrAtk);
 const atkDisp=atkMid;
 const atkBonusRe=Math.max(0,atkDisp-(uEff.atkDbCorePassive|0));
 const bonusEl=document.getElementById('dcAtkUnitAtkInlineBonus');
@@ -8618,14 +8617,13 @@ sub.setAttribute('aria-hidden','true');
 sub.textContent='';
 main.removeAttribute('title');
 const atkAfterCounter=_dcApplyCounterOwnAtkToUnitAtk(atkAfterPair);
-const atkAfterSup=_dcApplySupportCounterAtkToUnitAtk(atkAfterCounter);
 const utb=_dcGetDetectedUnitTurnBuffPercents(ud);
 const unitTurnAtkOn=!!(S.dc.unitTurnBuffAtk&&(utb.atkPct|0)>0);
 const leaderOn=(uEff.leaderPct|0)>0;
 const pairOn=atkAfterPair!==atkS;
 const counterOn=atkAfterCounter!==atkAfterPair;
-const supOn=atkAfterSup!==atkAfterCounter;
-const advOn=(advAtkPct|0)>0&&S.dc.applyAdvantageEnemyTag!==false&&atkMid!==atkAfterSup;
+const supOn=(_dcEffectiveSupportCounterAtkPct()|0)>0;
+const advOn=(advAtkPct|0)>0&&S.dc.applyAdvantageEnemyTag!==false&&atkMid!==atkAfterCounter;
 const sheetBuffMlGo=!!S.dc.masterLeagueBuff||!!S.dc.grandOffensiveBuff;
 const otherBuff=sheetBuffMlGo||leaderOn||pairOn||counterOn||supOn||advOn||unitTurnAtkOn;
 const cpAtkPos=uCp&&b>a;
@@ -8912,19 +8910,17 @@ const unitOk=!!(ud&&!ud._manual&&String(ud.role_id)==='3');
 if(!pilotOk||rawPct<=0||!unitOk)return '';
 return `${String(cd.id||'')}|${String(ud.id||'')}|${rawPct}`;
 }
-function _dcEffectiveSupportCounterAtkPct(){
-if(!S.dc.supportCounterAtk)return 0;
-const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;
+function _dcEffectiveSupportCounterAtkPctFromCtx(ctx){
+const c=ctx||{};
+if(!c.supportCounterAtk)return 0;
+const cd=c.atkCharData,ud=c.atkUnitData;
 if(!cd||cd._manual||!_dcCharIsSupportRole(cd))return 0;
 if(!ud||ud._manual||String(ud.role_id)!=='3')return 0;
-return Math.max(0,S.dc._supportCounterAtkPct|0);
+return Math.max(0,c._supportCounterAtkPct|0);
 }
-function _dcApplySupportCounterAtkToUnitAtk(unitAtk){
-const F=Math.floor;
-const p=_dcEffectiveSupportCounterAtkPct();
-if(p<=0)return unitAtk;
-return F(Math.max(0,Number(unitAtk)||0)*(100+p)/100);
-}
+function _dcEffectiveSupportCounterAtkPct(){return _dcEffectiveSupportCounterAtkPctFromCtx(S.dc);}
+/** Legacy post-multiply path — support-counter % now stacks in the same growth % bucket as OP/leader/squad (matches in-game unit panel). */
+function _dcApplySupportCounterAtkToUnitAtk(unitAtk){return unitAtk;}
 
 function _dcParsePilotAbilBonuses(cd){
 const b={dmgDealt:0,critDmg:0,dmgTaken:0,atkPct:0,items:[]};
@@ -10739,6 +10735,7 @@ const pctHp=F(hpBase*(100+pHp+(opPct.HP|0)+lp+sheetBuffPct)/100)-coreHp;
 const hpHtml=L(pctHp,'Option part %, leader skill %, Master League / Grand Offensive (HP)')+L(opFlat.HP|0,'Option part flat HP')+L(hpSupport|0,'Supporter HP support');
 const scAtk=c.squadCondAtkPct|0;
 const scDef=c.squadCondDefPct|0;
+const supCnt=_dcEffectiveSupportCounterAtkPctFromCtx(c);
 const coreDef=F(defBase*(100+pDef)/100);
 const pctDef=F(defBase*(100+pDef+(opPct.Defense|0)+lp+sheetBuffPct+(scDef|0))/100)-coreDef;
 const defHtml=L(pctDef,'Option part %, leader skill %, Master League / Grand Offensive (DEF)'+(scDef?' · Squad conditions':''))+L(opFlat.Defense|0,'Option part flat Defense');
@@ -10746,8 +10743,8 @@ const coreMob=F(mobBase*(100+pMob)/100);
 const pctMob=F(mobBase*(100+pMob+(opPct.Mobility|0)+lp+sheetBuffPct)/100)-coreMob;
 const mobHtml=L(pctMob,'Option part %, leader skill %, Master League / Grand Offensive (MOB)')+L(opFlat.Mobility|0,'Option part flat Mobility');
 const coreAtk=F(atkBase*(100+pAtk)/100);
-const pctAtkNoEx=F(atkBase*(100+pAtk+opAt+tAtk+sheetBuffPct+lp+(scAtk|0))/100)-coreAtk;
-const atkHtml=L(pctAtkNoEx,'Option part %, 1-turn MS ATK %, leader %, ML/GO, squad conditions (EX squad % is on the EX line below)')+L(opFlat.Attack|0,'Option part flat Attack')+L(atkSupport|0,'Supporter ATK support');
+const pctAtkNoEx=F(atkBase*(100+pAtk+opAt+tAtk+sheetBuffPct+lp+(scAtk|0)+(supCnt|0))/100)-coreAtk;
+const atkHtml=L(pctAtkNoEx,'Option part %, 1-turn MS ATK %, leader %, ML/GO, squad conditions, Support Attack/Counter % (EX squad % is on the EX line below)')+L(opFlat.Attack|0,'Option part flat Attack')+L(atkSupport|0,'Supporter ATK support');
 return{hpHtml,atkHtml,defHtml,mobHtml};
 }
 /** opts.forDamage: true → ceil % buckets (Firered damage ⑧); false/omit → floor (database / unit panel). */
@@ -10758,6 +10755,7 @@ const R=forDamage?C:F;
 const c=ctx||{};
 const scAtk=c.squadCondAtkPct|0;
 const scDef=c.squadCondDefPct|0;
+const supCnt=_dcEffectiveSupportCounterAtkPctFromCtx(c);
 const mlPct=c.masterLeagueBuff?50:0;
 const goPct=c.grandOffensiveBuff?100:0;
 const sheetBuffPct=mlPct+goPct;
@@ -10797,15 +10795,15 @@ const unitAtkExSquadBase=R(atkBase*(100+pAtk+sheetBuffPct)/100);
 const unitDefExSquadBase=R(defBase*(100+pDef+sheetBuffPct)/100);
 const unitAtkGrowthAfterOptions=R(atkBase*(100+pAtk+opAt+tAtk+sheetBuffPct)/100);
 const sumAtkPctNoEx=(pAtk+opAt+tAtk+sheetBuffPct+lp)|0;
-const sumAtkPctFull=sumAtkPctNoEx+(exSq|0)+(scAtk|0);
+const sumAtkPctFull=sumAtkPctNoEx+(exSq|0)+(scAtk|0)+(supCnt|0);
 let unitAtk=R(atkBase*(100+sumAtkPctFull)/100)+(opFlat.Attack|0)+(atkSupport|0);
 let deltaExAtk=0;
-if((exSq|0)>0)deltaExAtk=R(atkBase*(100+sumAtkPctNoEx+exSq)/100)-R(atkBase*(100+sumAtkPctNoEx)/100);
+if((exSq|0)>0)deltaExAtk=R(atkBase*(100+sumAtkPctNoEx+exSq+(scAtk|0)+(supCnt|0))/100)-R(atkBase*(100+sumAtkPctNoEx+(scAtk|0)+(supCnt|0))/100);
 const hpDbCorePassive=F(hpBase*(100+pHp)/100);
 const defDbCorePassive=F(defBase*(100+pDef)/100);
 const mobDbCorePassive=F(mobBase*(100+pMob)/100);
 const atkDbCorePassive=F(atkBase*(100+pAtk)/100);
-return{unitAtk,unitHp,unitDefVal,unitMob,unitMove,atkSupport,leaderPct,unitAtkExSquadBase,unitAtkGrowthAfterOptions,unitDefExSquadBase,deltaExAtk,advantageFlatGrowthAtk:atkBase,advantageFlatGrowthDef:defBase,hpDbCorePassive,defDbCorePassive,mobDbCorePassive,atkDbCorePassive};
+return{unitAtk,unitHp,unitDefVal,unitMob,unitMove,atkSupport,leaderPct,supportCounterPct:supCnt|0,unitAtkExSquadBase,unitAtkGrowthAfterOptions,unitDefExSquadBase,deltaExAtk,advantageFlatGrowthAtk:atkBase,advantageFlatGrowthDef:defBase,hpDbCorePassive,defDbCorePassive,mobDbCorePassive,atkDbCorePassive};
 }
 function _dcGetModifiedAttackerUnitStats(atkUnitStats){return _dcGetModifiedAttackerUnitStatsFromCtx(S.dc,atkUnitStats);}
 function _dcPilotAtkStatLabelForWeapon(wpn){
@@ -10836,7 +10834,6 @@ unitAtk=pairUd.unitAtk;unitDefVal=pairUd.unitDefVal;
 const counterOwnAtkPct=_dcGetCounterOwnAtkPct();
 unitAtk=_dcApplyCounterOwnAtkToUnitAtk(unitAtk);
 const supportCounterAtkPctApplied=_dcEffectiveSupportCounterAtkPct();
-unitAtk=_dcApplySupportCounterAtkToUnitAtk(unitAtk);
 const advantageTagAtkPct=_dcAdvantageTagAtkPctFromAbilities(ud,npc);
 unitAtk=_dcApplyAdvantageTagAtkToUnitAtk(unitAtk,advantageTagAtkPct,uMod.advantageFlatGrowthAtk|0);
 let charAtk=_dcGetCharAtkStatWithSkills(atkCharStats,wpn);
