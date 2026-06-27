@@ -339,6 +339,10 @@ dc_def_npc_map_bonuses:'NPC分隊バフ',dc_def_npc_map_bonuses_tip:'オフに�
 Object.assign(T.TW,{npc_unit_cond_targets:'條件被動 — 加成對象單位',npc_unit_cond_target_short:'加成單位'});
 Object.assign(T.HK,{npc_unit_cond_targets:'條件被動 — 加成對象單位',npc_unit_cond_target_short:'加成單位'});
 Object.assign(T.JA,{npc_unit_cond_targets:'条件付きパッシブ — 対象ユニット',npc_unit_cond_target_short:'対象ユニット'});
+Object.assign(T.EN,{dc_support_counter_title:'Support Attack/Counter — MS ATK %',dc_support_counter_tip:'Support-type attacker MS plus this pilot: optional MS ATK % during Support Attack/Counter. Parsed from pilot ability text.',dc_support_counter_desc:'When executing Support Attack/Counter — +{pct}% MS ATK',dc_support_counter_tip_disabled:'This pilot\'s ATK boost applies only when piloting a Support-type (role) mobile suit. Pick a Support-class attacker unit to enable the bonus in damage math (turns On automatically when the pairing becomes eligible).',dc_support_counter_tip_enabled:'Support-type MS + this pilot: MS ATK % while executing Support Attack/Counter. Auto-On when you pair with a Support-role unit; turn Off to compare without the bonus.',dc_support_counter_pilot_note:'Support-role pilot: +{pct}% MS ATK when executing Support Attack/Counter on a <strong>Support-type (role)</strong> attacker MS. With other unit roles the pilot can still use Support Attack mechanics, but this ATK&nbsp;% does not apply—Attacker Parameters shows the toggle dimmed until the attacker MS is Support-class.',dc_support_counter_battle_stat:'Support Attack/Counter MS ATK'});
+Object.assign(T.TW,{dc_support_counter_title:'支援攻擊／反擊 — 機體攻擊力 %',dc_support_counter_tip:'支援型攻擊機與此駕駛員：執行支援攻擊／反擊時可選的機體攻擊力 %。數值由駕駛員能力文字解析。',dc_support_counter_desc:'執行支援攻擊／反擊時 — 機體攻擊力 +{pct}%',dc_support_counter_tip_disabled:'此駕駛員的攻擊力加成僅在搭乘支援型（角色）機體時生效。請選擇支援型攻擊機以納入傷害計算（符合條件時會自動開啟）。',dc_support_counter_tip_enabled:'支援型機體＋此駕駛員：執行支援攻擊／反擊時的機體攻擊力 %。與支援型機體配對時自動開啟；關閉可比較無加成時的傷害。',dc_support_counter_pilot_note:'支援型駕駛員：對<strong>支援型（角色）</strong>攻擊機執行支援攻擊／反擊時，機體攻擊力 +{pct}%。其他機體類型仍可使用支援攻擊機制，但此攻擊力&nbsp;% 不適用—請在攻擊方參數選擇支援型攻擊機以啟用（未符合時切換為灰色）。',dc_support_counter_battle_stat:'支援攻擊／反擊 機體攻擊力'});
+Object.assign(T.HK,{dc_support_counter_title:'支援攻擊／反擊 — 機體攻擊力 %',dc_support_counter_tip:'支援型攻擊機與此駕駛員：執行支援攻擊／反擊時可選的機體攻擊力 %。數值由駕駛員能力文字解析。',dc_support_counter_desc:'執行支援攻擊／反擊時 — 機體攻擊力 +{pct}%',dc_support_counter_tip_disabled:'此駕駛員的攻擊力加成僅在搭乘支援型（角色）機體時生效。請選擇支援型攻擊機以納入傷害計算（符合條件時會自動開啟）。',dc_support_counter_tip_enabled:'支援型機體＋此駕駛員：執行支援攻擊／反擊時的機體攻擊力 %。與支援型機體配對時自動開啟；關閉可比較無加成時的傷害。',dc_support_counter_pilot_note:'支援型駕駛員：對<strong>支援型（角色）</strong>攻擊機執行支援攻擊／反擊時，機體攻擊力 +{pct}%。其他機體類型仍可使用支援攻擊機制，但此攻擊力&nbsp;% 不適用—請在攻擊方參數選擇支援型攻擊機以啟用（未符合時切換為灰色）。',dc_support_counter_battle_stat:'支援攻擊／反擊 機體攻擊力'});
+Object.assign(T.JA,{dc_support_counter_title:'支援攻撃・支援反撃 — 機体攻撃力 %',dc_support_counter_tip:'支援型の攻撃機とこのパイロット：支援攻撃・支援反撃実行時の任意の機体攻撃力％。パイロット能力文から解析。',dc_support_counter_desc:'支援攻撃・支援反撃実行時 — 攻撃力 +{pct}%',dc_support_counter_tip_disabled:'このパイロットの攻撃力上昇は、支援型（ロール）の機体搭乗時のみ有効です。支援型攻撃機を選ぶとダメージ計算に反映されます（条件を満たすと自動でON）。',dc_support_counter_tip_enabled:'支援型機体＋このパイロット：支援攻撃・支援反撃中の機体攻撃力％。支援型機体と組み合わせると自動ON。OFFにするとボーナスなしのダメージと比較できます。',dc_support_counter_pilot_note:'支援型パイロット：<strong>支援型（ロール）</strong>の攻撃機で支援攻撃・支援反撃を実行した場合、ユニット攻撃力 +{pct}%。他タイプの機体でも支援攻撃は使えますが、この攻撃力&nbsp;% は反映されません—攻撃側パラメータで支援型攻撃機を選ぶと有効になります（未対応時はトグルが灰色）。',dc_support_counter_battle_stat:'支援攻撃・支援反撃 機体攻撃力'});
 STAT_NAME_MAP.JA={'Ranged':'射撃','Melee':'格闘','Awaken':'覚醒','Defense':'防御力','Reaction':'反応','HP':'HP','EN':'EN','Attack':'攻撃力','ATK':'攻撃力','DEF':'防御力','MOB':'機動力','Mobility':'機動力','Move':'移動力'};STAT_NAME_MAP.JP=STAT_NAME_MAP.JA;
 TERRAIN_NAME_MAP.JA={'Space':'宇宙','Atmospheric':'空中','Ground':'地上','Sea':'水上','Underwater':'水中'};TERRAIN_NAME_MAP.JP=TERRAIN_NAME_MAP.JA;
 ROLE_NAME_MAP.JA={'Attack':'攻撃型','Defense':'耐久型','Support':'支援型'};ROLE_NAME_MAP.JP=ROLE_NAME_MAP.JA;
@@ -4919,6 +4923,15 @@ _dcRefreshFinalWpnPowPlaceholder();
 _dcRefreshDtuInputHighlights();
 _dcRefreshDefDebuffInputStyle();
 _dcRefreshDmgIncreaseVigorSub();
+_dcApplySupportCounterLang();
+_dcUpdateSupportCounterAtkUi();
+}
+function _dcApplySupportCounterLang(rawPct){
+const titleEl=document.getElementById('dcAtkSupportCounterTitle');
+if(titleEl){titleEl.textContent=t('dc_support_counter_title');titleEl.title=t('dc_support_counter_tip')}
+const pct=rawPct!=null&&rawPct!==''?rawPct|0:(S.dc._supportCounterAtkPct|0);
+const note=document.getElementById('dcAtkSupportCounterPilotNote');
+if(note&&pct>0)note.innerHTML=t('dc_support_counter_pilot_note').replace('{pct}',String(pct));
 }
 function _dcRefreshDmgIncreaseVigorSub(){
 const el=document.getElementById('dcDmgIncreaseVigorSub');
@@ -8736,7 +8749,7 @@ area.innerHTML+=_dcHtmlSheetBuffToggles();
 _dcRenderPilotBonuses(area,cd);
 _dcRenderPilotSkills(area,cd);
 const supCntPilotPct=!cd._manual?_dcParseMaxSupportCounterAtkPctFromChar(cd):0;
-if(supCntPilotPct>0){area.insertAdjacentHTML('beforeend',`<div class="dc-support-counter-pilot-note" id="dcAtkSupportCounterPilotNote">Support-role pilot: +${supCntPilotPct}% MS ATK when executing Support Attack/Counter on a <strong>Support-type (role)</strong> attacker MS. With other unit roles the pilot can still use Support Attack mechanics, but this ATK&nbsp;% does not apply—Attacker Parameters shows the toggle dimmed until the attacker MS is Support-class.</div>`)}
+if(supCntPilotPct>0){area.insertAdjacentHTML('beforeend',`<div class="dc-support-counter-pilot-note" id="dcAtkSupportCounterPilotNote">${t('dc_support_counter_pilot_note').replace('{pct}',String(supCntPilotPct))}</div>`)}
 _dcRecalcPilotBonuses(false);
 _dcUpdateExSquadAtkGroupVisibility();
 _dcUpdateSquadConditionGroupVisibility();
@@ -10647,9 +10660,10 @@ tog.setAttribute('aria-pressed','false');
 w.classList.add('is-disabled');
 w.style.opacity='0.55';
 tog.tabIndex=-1;
+_dcApplySupportCounterLang(rawPct);
 if(lbl){
-lbl.textContent=`When executing Support Attack/Counter — +${rawPct}% MS ATK`;
-lbl.title='This pilot\'s ATK boost applies only when piloting a Support-type (role) mobile suit. Pick a Support-class attacker unit to enable the bonus in damage math (turns On automatically when the pairing becomes eligible).';
+lbl.textContent=t('dc_support_counter_desc').replace('{pct}',String(rawPct));
+lbl.title=t('dc_support_counter_tip_disabled');
 }
 _dcSyncSupportCounterHighlight();
 return;
@@ -10661,9 +10675,10 @@ const prev=snapMap[si]!=null?String(snapMap[si]):null;
 if(prev!==kNow)S.dc.supportCounterAtk=true;
 snapMap[si]=kNow;
 tog.tabIndex=0;
+_dcApplySupportCounterLang(rawPct);
 if(lbl){
-lbl.textContent=`When executing Support Attack/Counter — +${rawPct}% MS ATK`;
-lbl.title='Support-type MS + this pilot: MS ATK % while executing Support Attack/Counter. Auto-On when you pair with a Support-role unit; turn Off to compare without the bonus.';
+lbl.textContent=t('dc_support_counter_desc').replace('{pct}',String(rawPct));
+lbl.title=t('dc_support_counter_tip_enabled');
 }
 const onv=!!S.dc.supportCounterAtk;
 tog.classList.toggle('active',onv);
