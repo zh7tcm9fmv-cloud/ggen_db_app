@@ -5860,6 +5860,9 @@ if(o.td!==undefined){const n=parseInt(o.td,10);if(!Number.isNaN(n)&&n>=0)slot._w
 if(o.th!==undefined){const n=parseInt(o.th,10);if(!Number.isNaN(n)&&n>=0)slot._wpnTraitHpPow=n}
 if(o.ucp)slot.unitCondPassive=true;
 if(o.ccp)slot.charCondPassive=true;
+else if(slot.atkCharData&&slot.atkUnitData&&!slot.atkCharData._manual&&!slot.atkUnitData._manual){
+slot.charCondPassive=_dcShouldAutoCharCondPassive(slot.atkCharData,slot.atkUnitData);
+}
 if(o.cex!==undefined){const n=parseInt(o.cex,10);if(!Number.isNaN(n)&&n>=0)slot.dcSuperchargedExTier=n}
 if(slot.atkCharData&&!slot.atkCharData._manual){const _xt=slot.atkCharData.ex_supercharged_tiers;if(_xt&&_xt.length>1)slot.dcSuperchargedExTier=Math.min(Math.max(0,slot.dcSuperchargedExTier|0),_xt.length-1);else slot.dcSuperchargedExTier=0}
 if(o.acoa)slot.atkCounterOwnAtk=true;
@@ -8165,6 +8168,42 @@ const ac=active?' active':'';
 return`<span class="list-cond-toggle dc-dc-cp-chip${ac}"><span class="cp-word-pad"><span class="cp-wide"><span class="cp-wide-c" aria-hidden="true">C</span><span aria-hidden="true">P</span></span></span></span>`;
 }
 function _dcCharHasConditional(cd){if(!cd)return false;return cd.has_conditional_passive!=null?cd.has_conditional_passive:!!cd.has_ex_stats}
+/** Character EX/CP is tied to a specific MS (recommend unit or pair maps from API). */
+function _dcCharHasPairRequirement(cd){
+if(!cd||cd._manual)return false;
+if(cd.recommend_unit&&cd.recommend_unit.id)return true;
+const pm=cd.pair_unit_stat_mod;
+if(pm&&Object.keys(pm).length)return true;
+const cm=cd.pair_unit_counter_atk_mod;
+if(cm&&Object.keys(cm).length)return true;
+return false;
+}
+/** True when the selected unit and pilot satisfy pair-gated CP criteria. */
+function _dcUnitCharPairMatch(cd,ud){
+if(!cd||!ud||cd._manual||ud._manual)return false;
+const uid=String(ud.id||''),cid=String(cd.id||'');
+if(cd.recommend_unit&&String(cd.recommend_unit.id)===uid)return true;
+if(ud.recommend_character&&String(ud.recommend_character.id)===cid)return true;
+const pm=cd.pair_unit_stat_mod;
+if(pm&&pm[uid])return true;
+const cm=cd.pair_unit_counter_atk_mod;
+if(cm&&cm[uid]!=null)return true;
+return false;
+}
+/** Default pilot CP on in DC when pairing matches (or when CP is not pair-gated). */
+function _dcShouldAutoCharCondPassive(cd,ud){
+if(!cd||!ud||cd._manual||ud._manual)return false;
+if(!_dcCharHasConditional(cd))return false;
+if(_dcCharHasPairRequirement(cd))return _dcUnitCharPairMatch(cd,ud);
+return true;
+}
+/** Sync pilot CP from unit+character pairing. Call on pick / share load — not every render — so manual toggle can override until the pair changes. */
+function _dcSyncCharCondPassiveFromPair(){
+const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;
+if(!cd||!ud||cd._manual||ud._manual)return;
+S.dc.charCondPassive=_dcShouldAutoCharCondPassive(cd,ud);
+if(!S.dc.charCondPassive)S.dc.dcSuperchargedExTier=0;
+}
 function _dcGetCharStatsForCp(charCpOn){
 const cd=S.dc.atkCharData;if(!cd)return[];
 const mode=S.dc.charStatMode||'normal';
@@ -10240,13 +10279,16 @@ const rec=d.recommend_character;const isSD=d.body_type==='3';
 S.dc._unitIsSD=isSD;
 if(rec&&rec.id&&(!S.dc.atkCharData||S.dc.atkCharData.id!==rec.id)){
 try{const cr=await fetch(`/api/character/${rec.id}?lang=${S.lang}`);const cd=await cr.json();
-S.dc.atkChar=rec.id;S.dc.atkCharData=cd;S.dc.charStatMode='normal';S.dc.charCondPassive=false;S.dc.dcSuperchargedExTier=0;}catch(_){}
+S.dc.atkChar=rec.id;S.dc.atkCharData=cd;S.dc.charStatMode='normal';S.dc.dcSuperchargedExTier=0;}catch(_){}
 }
 }else{
-S.dc.atkChar=id;S.dc.atkCharData=d;S.dc.charStatMode='normal';S.dc.charCondPassive=false;S.dc.dcSuperchargedExTier=0;
+S.dc.atkChar=id;S.dc.atkCharData=d;S.dc.charStatMode='normal';S.dc.dcSuperchargedExTier=0;
 S.dc.optionParts=[];S.dc.supporters=[];
 }
-_dcAutoSetVigor();
+_dcSyncCharCondPassiveFromPair();
+const autoV=S.dc.atkCharData&&_dcShouldAutoSuperchargedVigorOnCharCp(S.dc.atkCharData);
+if(S.dc.charCondPassive&&autoV)setDcMp('super');
+else _dcAutoSetVigor();
 if(_dcCharShouldShowSquadCondUi(S.dc.atkCharData,S.dc.atkUnitData))S.dc.squadCondPct=_dcDefaultSquadCondPctForCdUd(S.dc.atkCharData,S.dc.atkUnitData);
 else S.dc.squadCondPct=0;
 renderDcAtkUnit();renderDcAtkChar();
@@ -10894,9 +10936,11 @@ const offExp=((5000-atkCombined)*30)/100000;
 const defExp=((5000-defCombined)*3)/100000;
 const offenseComponent=(10000/100)/(EXP(offExp)+1);
 const defenseComponent=(-4000/100)/(EXP(defExp)+1);
+/** ⑦ Firered: RoundUp each correction slice before add (off/def components can be negative — ceil each × baseDamage separately). */
+const offenseCorrection=C(offenseComponent*baseDamage);
+const defenseCorrection=C(defenseComponent*baseDamage);
 const damageCorrection=(offenseComponent+defenseComponent)*baseDamage;
-const battleDamage=C((baseDamage+damageCorrection)*terrainCorrection);
-
+const isExWeapon=!!wpn.is_ex;
 const userDmgIncreasePct=S.dc.dmgIncrease||0;
 const userCritDmgUpPct=S.dc.critDmgUp||0;
 const dmgTakenUpPct=_dcWeaponDtuSumPct(wpn);
@@ -10904,8 +10948,16 @@ const dmgTakenUpTyped=dmgTakenUpPct||0;
 const dmgTakenUpGeneric=0;
 const dmgTakenDownPilotPct=S.dc.dmgTakenDownPilot||0;
 const dmgTakenDownUnitPct=S.dc.dmgTakenDownUnit||0;
-const isExWeapon=!!wpn.is_ex;
 const takenDown=dmgTakenDownPilotPct+(isExWeapon?0:dmgTakenDownUnitPct);
+const normalMultEarly=userDmgIncreasePct+vigorDmgBonusPct+dmgTakenUpPct-takenDown;
+let battleDamage=C((baseDamage+damageCorrection)*terrainCorrection);
+if(defendMult===1){
+const battleDamageSplit=C((baseDamage+offenseCorrection+defenseCorrection)*terrainCorrection);
+const pct=normalMultEarly|0;
+/** When N>0 and N%×BD is integral, +1 BD also bumps scaledNormal — skip split (Qubeley 244944). */
+const skipSplit=pct>0&&((battleDamage*pct)%100===0);
+if(!skipSplit&&battleDamageSplit===battleDamage+1)battleDamage=battleDamageSplit;
+}
 
 const totalNormalMultPct=userDmgIncreasePct+vigorDmgBonusPct+dmgTakenUpPct-takenDown;
 const scaledNormal=C(totalNormalMultPct*battleDamage/100);
