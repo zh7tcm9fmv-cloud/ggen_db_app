@@ -60,18 +60,8 @@ function calcNormal({
   const defExp = ((5000 - defCombined) * 3) / 100000;
   const offenseComponent = 100 / (EXP(offExp) + 1);
   const defenseComponent = -40 / (EXP(defExp) + 1);
-  const offenseCorrection = C(offenseComponent * baseDamage);
-  const defenseCorrection = C(defenseComponent * baseDamage);
   const damageCorrection = (offenseComponent + defenseComponent) * baseDamage;
   let battleDamage = C((baseDamage + damageCorrection) * terrainCorrection);
-  if (defendMult === 1) {
-    const battleDamageSplit = C(
-      (baseDamage + offenseCorrection + defenseCorrection) * terrainCorrection
-    );
-    const pct = totalNormalMultPct | 0;
-    const skipSplit = pct > 0 && (battleDamage * pct) % 100 === 0;
-    if (!skipSplit && battleDamageSplit === battleDamage + 1) battleDamage = battleDamageSplit;
-  }
   const scaledNormal = C((totalNormalMultPct * battleDamage) / 100);
   const combinedNormal = (battleDamage + scaledNormal) * defendMult;
   const normalDmg = MX(0, C(combinedNormal));
@@ -134,24 +124,6 @@ const r = calcNormal(scenario);
 console.log('DEF:', `${defTotal} → ${unitDef} after ${defDebuffPct}%`);
 console.log('Nominal WP:', scenario.weaponPowerNominal, '→ combat WP:', r.combatWeaponPower);
 console.log('battleDamage:', r.battleDamage, 'normalDmg:', r.normalDmg, 'TARGET:', TARGET, r.normalDmg === TARGET ? '✓' : '✗');
-
-console.log('\nGreat Zeong-style split correction (+1 when N=0, off/def correction ceiled separately):');
-const gzSplit = calcNormal({
-  unitAtk: 14007,
-  charAtk: 807,
-  charDef: 705,
-  unitDefAfterDebuff: 25072,
-  weaponPowerNominal: 5545,
-  defDebuffPct: 0,
-  hasFinalWeaponOverride: false,
-  terrainPct: 0,
-  totalNormalMultPct: 0,
-  defendMult: 1,
-});
-console.log(
-  `  ua=14007 wp=5545 → normalDmg ${gzSplit.normalDmg} (want 28501) ${gzSplit.normalDmg === 28501 ? '✓' : '✗'}`
-);
-if (gzSplit.normalDmg !== 28501) process.exitCode = 1;
 
 /* defendMult=1: sheet steps match integer ceil(B×(100+N)/100); avoid B×(1+N/100) float (e.g. 244944.00000003 → wrong ceil). */
 const Btest = r.battleDamage;
