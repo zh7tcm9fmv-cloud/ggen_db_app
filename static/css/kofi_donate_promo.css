@@ -259,16 +259,16 @@
   100%{transform:translate3d(0,0,0);opacity:1}
 }
 
-/* UR-tier gradient emphasis on perk keywords */
+/* UI_Common_Tmb_Square_UR_Frame.webp — bottom glow band sampled left→right */
 .kofi-promo-kw{
   display:inline;
   font-weight:800;
-  background:linear-gradient(135deg,#ff6b35,#ffd700,#ff6b35);
+  background:linear-gradient(90deg,#dccfff 0%,#f3bcff 24%,#d8fffd 52%,#7cecff 78%,#175f77 100%);
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
   -webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 0 4px rgba(255,215,0,.5));
+  filter:drop-shadow(0 0 5px rgba(124,236,255,.48)) drop-shadow(0 0 8px rgba(243,188,255,.34));
 }
 
 #kofiHeaderLink.kofi-donate-promo-target-highlight{
