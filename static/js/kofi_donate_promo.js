@@ -19,6 +19,25 @@
   var PROMO_TEXT_FALLBACK =
     'Thanks for stopping by! \uD83D\uDC99\nIf you enjoy our site, support us on Ko-fi to help keep it free \u2014 and get exclusive sneak peeks + bonus content in return!';
 
+  var PERK_KEYWORD_RES = [
+    /exclusive sneak peeks/gi,
+    /bonus content/gi,
+    /搶先看|獨家預覽|独家预览|加成內容|加成内容|獎勵內容|奖励内容/g,
+    /先行(?:公開|预览|預覽)?|おまけ|特典(?:コンテンツ)?/g,
+  ];
+
+  var PREVIEW_IMAGES = [
+    { path: '/static/images/UI/UI_Home_Banner_Base.webp', labelKey: 'kofi_promo_preview_events', labelFb: 'Events' },
+    { path: '/static/images/Background/obg_041_space.webp', labelKey: 'kofi_promo_preview_banners', labelFb: 'Banners' },
+    { path: '/static/images/unit_portraits/story_event_ub_g3080u00400_200010.webp', labelKey: 'kofi_promo_preview_units', labelFb: 'Units' },
+  ];
+
+  var PERK_ITEMS = [
+    { key: 'kofi_promo_perk_1', fb: 'Early banners & event previews' },
+    { key: 'kofi_promo_perk_2', fb: 'Bonus database & calculator notes' },
+    { key: 'kofi_promo_perk_3', fb: 'Supporter-only Ko-fi posts' },
+  ];
+
   var _shown = false;
   var _snoozedUntil = 0;
   var _showTimer = null;
@@ -94,25 +113,194 @@
     return [t];
   }
 
+  function isPerksLine(line) {
+    var s = String(line || '');
+    return /sneak peek|bonus content|搶先看|獨家|独家|加成內容|加成内容|先行|おまけ|特典/i.test(s);
+  }
+
+  /** Split CTA line into intro + perks phrase + outro when possible. */
+  function parsePerksLine(line) {
+    var s = String(line || '').trim();
+    var m = s.match(/^(.+?\bget\s+)(.+?)(\s+in return!?)?$/i);
+    if (m) {
+      return { intro: m[1], phrase: m[2].trim(), outro: (m[3] || '').trim() };
+    }
+    m = s.match(/^(.+?[—–-]\s*and get\s+)(.+?)(\s+in return!?)?$/i);
+    if (m) {
+      return { intro: m[1], phrase: m[2].trim(), outro: (m[3] || '').trim() };
+    }
+    return { intro: '', phrase: s, outro: '' };
+  }
+
+  function wrapPerkKeywords(text) {
+    var s = String(text || '');
+    if (!s) return '';
+    var hits = [];
+    PERK_KEYWORD_RES.forEach(function (re) {
+      var copy = new RegExp(re.source, re.flags);
+      var m;
+      while ((m = copy.exec(s)) !== null) {
+        hits.push({ start: m.index, end: m.index + m[0].length, text: m[0] });
+      }
+    });
+    if (!hits.length) return escHtml(s);
+    hits.sort(function (a, b) { return a.start - b.start; });
+    var merged = [];
+    hits.forEach(function (h) {
+      var last = merged[merged.length - 1];
+      if (last && h.start < last.end) return;
+      merged.push(h);
+    });
+    var out = '';
+    var pos = 0;
+    merged.forEach(function (h, i) {
+      out += escHtml(s.slice(pos, h.start));
+      out += '<span class="kofi-promo-kw" style="--kofi-kw-delay:' + (0.12 * i).toFixed(2) + 's">' + escHtml(h.text) + '</span>';
+      pos = h.end;
+    });
+    out += escHtml(s.slice(pos));
+    return out;
+  }
+
+  function escHtml(str) {
+    return String(str || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function appendSlotLine(parent, lineHtmlOrText, delay, asHtml) {
+    var lineEl = document.createElement('span');
+    lineEl.className = 'kofi-promo-slot-line';
+    lineEl.style.setProperty('--kofi-slot-delay', delay + 's');
+    var inner = document.createElement('span');
+    inner.className = 'kofi-promo-slot-inner';
+    if (asHtml) inner.innerHTML = lineHtmlOrText;
+    else inner.textContent = lineHtmlOrText;
+    lineEl.appendChild(inner);
+    parent.appendChild(lineEl);
+  }
+
+  function renderPreviewStrip(container) {
+    var strip = document.createElement('div');
+    strip.className = 'kofi-donate-promo-preview-strip';
+    strip.setAttribute('role', 'group');
+    strip.setAttribute('aria-label', promoT('kofi_promo_preview_group', 'Supporter preview samples'));
+
+    PREVIEW_IMAGES.forEach(function (item, i) {
+      var tile = document.createElement('div');
+      tile.className = 'kofi-donate-promo-preview-tile';
+      tile.style.setProperty('--kofi-preview-delay', (0.9 + i * 0.12) + 's');
+
+      var img = document.createElement('img');
+      img.className = 'kofi-donate-promo-preview-img';
+      img.src = promoImgUrl(item.path);
+      img.alt = '';
+      img.loading = 'lazy';
+      img.decoding = 'async';
+      img.draggable = false;
+
+      var cap = document.createElement('span');
+      cap.className = 'kofi-donate-promo-preview-cap';
+      cap.textContent = promoT(item.labelKey, item.labelFb);
+
+      tile.appendChild(img);
+      tile.appendChild(cap);
+      strip.appendChild(tile);
+    });
+
+    container.appendChild(strip);
+  }
+
+  function renderPerksCard(line, slotBaseDelay) {
+    var wrap = document.getElementById('kofiDonatePromoPerks');
+    if (!wrap) return;
+    wrap.innerHTML = '';
+    wrap.hidden = true;
+    wrap.setAttribute('aria-hidden', 'true');
+
+    var parts = parsePerksLine(line);
+    if (!parts.phrase) return;
+
+    wrap.hidden = false;
+    wrap.setAttribute('aria-hidden', 'false');
+    wrap.style.setProperty('--kofi-perks-delay', slotBaseDelay + 's');
+
+    var card = document.createElement('div');
+    card.className = 'kofi-donate-promo-perks-card';
+
+    var head = document.createElement('div');
+    head.className = 'kofi-donate-promo-perks-head';
+    head.innerHTML =
+      '<span class="kofi-donate-promo-perks-badge" aria-hidden="true"></span>' +
+      '<span class="kofi-donate-promo-perks-title">' +
+      escHtml(promoT('kofi_promo_perks_title', 'Supporter perks')) +
+      '</span>';
+
+    var phraseRow = document.createElement('p');
+    phraseRow.className = 'kofi-donate-promo-perks-phrase';
+    var phraseHtml = wrapPerkKeywords(parts.phrase);
+    if (parts.intro) {
+      phraseRow.innerHTML =
+        '<span class="kofi-donate-promo-perks-intro">' + escHtml(parts.intro) + '</span>' + phraseHtml;
+    } else {
+      phraseRow.innerHTML = phraseHtml;
+    }
+    if (parts.outro) {
+      phraseRow.innerHTML += '<span class="kofi-donate-promo-perks-outro">' + escHtml(' ' + parts.outro) + '</span>';
+    }
+
+    var list = document.createElement('ul');
+    list.className = 'kofi-donate-promo-perks-list';
+    PERK_ITEMS.forEach(function (item, i) {
+      var li = document.createElement('li');
+      li.className = 'kofi-donate-promo-perks-item';
+      li.style.setProperty('--kofi-perk-delay', (slotBaseDelay + 0.18 + i * 0.1) + 's');
+      li.innerHTML =
+        '<span class="kofi-donate-promo-perks-tick" aria-hidden="true"></span>' +
+        '<span>' + escHtml(promoT(item.key, item.fb)) + '</span>';
+      list.appendChild(li);
+    });
+
+    card.appendChild(head);
+    card.appendChild(phraseRow);
+    card.appendChild(list);
+    renderPreviewStrip(card);
+    wrap.appendChild(card);
+  }
+
   function renderSlotText(restart) {
     var root = document.getElementById('kofiDonatePromo');
     var textEl = document.getElementById('kofiDonatePromoText');
     if (!textEl) return;
 
     var full = getPromoText();
+    var lines = splitPromoLines(full);
     textEl.textContent = '';
     textEl.setAttribute('aria-label', full);
 
-    splitPromoLines(full).forEach(function (line, i) {
-      var lineEl = document.createElement('span');
-      lineEl.className = 'kofi-promo-slot-line';
-      lineEl.style.setProperty('--kofi-slot-delay', (0.58 + i * 0.26) + 's');
-      var inner = document.createElement('span');
-      inner.className = 'kofi-promo-slot-inner';
-      inner.textContent = line;
-      lineEl.appendChild(inner);
-      textEl.appendChild(lineEl);
+    var perksLine = null;
+    var slotIdx = 0;
+    lines.forEach(function (line) {
+      if (isPerksLine(line)) {
+        perksLine = line;
+        return;
+      }
+      appendSlotLine(textEl, line, 0.58 + slotIdx * 0.26, false);
+      slotIdx += 1;
     });
+
+    if (perksLine) {
+      renderPerksCard(perksLine, 0.58 + slotIdx * 0.26);
+    } else {
+      var perksWrap = document.getElementById('kofiDonatePromoPerks');
+      if (perksWrap) {
+        perksWrap.innerHTML = '';
+        perksWrap.hidden = true;
+        perksWrap.setAttribute('aria-hidden', 'true');
+      }
+    }
 
     if (root) {
       root.classList.remove('is-text-ready');
@@ -136,7 +324,7 @@
       root.classList.add('is-text-ready');
       global.setTimeout(function () {
         if (root.classList.contains('is-visible')) root.classList.add('is-text-fallback');
-      }, 1600);
+      }, 2200);
     });
   }
 
@@ -231,6 +419,7 @@
       requestAnimationFrame(positionPromo);
     });
     global.setTimeout(clearEnteringState, 1050);
+    global.setTimeout(positionPromo, 1300);
   }
 
   function scheduleShow() {
@@ -291,6 +480,7 @@
     renderSlotText(false);
     if (document.getElementById('kofiDonatePromo') && document.getElementById('kofiDonatePromo').classList.contains('is-visible')) {
       startSlotTextAnimation();
+      requestAnimationFrame(positionPromo);
     }
   }
 
