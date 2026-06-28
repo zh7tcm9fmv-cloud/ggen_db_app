@@ -231,6 +231,11 @@
   display:block;
   overflow:hidden;
 }
+.kofi-promo-slot-line:has(.kofi-promo-kw){
+  overflow:visible;
+  padding:3px 1px;
+  margin:-3px -1px;
+}
 .kofi-promo-slot-inner{
   display:block;
   transform:translate3d(0,110%,0);
@@ -265,11 +270,10 @@
   font-weight:800;
   letter-spacing:.04em;
   color:#fff;
-  padding:1px 7px 2px 5px;
+  padding:1px 6px 2px;
   margin:0 1px;
   border:1px solid rgba(255,255,255,.88);
-  border-radius:3px 1px 1px 3px;
-  clip-path:polygon(0 0,calc(100% - 6px) 0,100% 100%,0 100%);
+  border-radius:4px;
   background:linear-gradient(125deg,#db2777 0%,#a855f7 28%,#7c3aed 52%,#c026d3 74%,#2563eb 100%);
   box-shadow:
     0 1px 0 rgba(255,255,255,.24) inset,
@@ -283,6 +287,8 @@
     drop-shadow(0 2px 3px rgba(0,0,0,.82))
     drop-shadow(0 4px 10px rgba(0,0,0,.58))
     drop-shadow(0 0 14px rgba(168,85,247,.42));
+  -webkit-box-decoration-break:clone;
+  box-decoration-break:clone;
 }
 
 #kofiHeaderLink.kofi-donate-promo-target-highlight{
