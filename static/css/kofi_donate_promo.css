@@ -259,16 +259,19 @@
   100%{transform:translate3d(0,0,0);opacity:1}
 }
 
-/* UI_Common_Tmb_Square_UR_Frame.webp — bottom glow band sampled left→right */
+/* UI_Common_Tmb_Square_UR_Base.webp — diagonal fill (TR cyan → BL purple), stops brightened for dark bubble */
 .kofi-promo-kw{
   display:inline;
   font-weight:800;
-  background:linear-gradient(90deg,#dccfff 0%,#f3bcff 24%,#d8fffd 52%,#7cecff 78%,#175f77 100%);
+  letter-spacing:.01em;
+  background:linear-gradient(135deg,#c9fcff 0%,#6ed4e8 24%,#7eb0e0 50%,#9a8fd4 76%,#d5cbff 100%);
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
   -webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 0 5px rgba(124,236,255,.48)) drop-shadow(0 0 8px rgba(243,188,255,.34));
+  -webkit-text-stroke:.35px rgba(8,14,28,.62);
+  paint-order:stroke fill;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.55)) drop-shadow(0 0 8px rgba(110,212,232,.32));
 }
 
 #kofiHeaderLink.kofi-donate-promo-target-highlight{
