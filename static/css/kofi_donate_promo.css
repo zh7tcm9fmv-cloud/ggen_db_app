@@ -2,7 +2,7 @@
 .kofi-donate-promo{
   position:fixed;
   z-index:250;
-  max-width:min(448px,calc(100vw - 24px));
+  max-width:min(420px,calc(100vw - 24px));
   pointer-events:none;
   opacity:0;
   visibility:hidden;
@@ -194,9 +194,6 @@
   border:1px solid rgba(0,212,255,.16);
   border-radius:12px 12px 12px 4px;
   box-shadow:inset 0 1px 0 rgba(255,255,255,.05);
-  display:flex;
-  flex-direction:column;
-  gap:8px;
 }
 .kofi-donate-promo-bubble::before{
   content:'';
@@ -247,10 +244,7 @@
   animation-delay:var(--kofi-slot-delay,0s);
 }
 /* Fallback: never leave text hidden if Safari skips the slot animation trigger */
-.kofi-donate-promo.is-visible.is-text-fallback .kofi-promo-slot-inner,
-.kofi-donate-promo.is-visible.is-text-fallback .kofi-donate-promo-perks-card,
-.kofi-donate-promo.is-visible.is-text-fallback .kofi-donate-promo-perks-item,
-.kofi-donate-promo.is-visible.is-text-fallback .kofi-donate-promo-preview-tile{
+.kofi-donate-promo.is-visible.is-text-fallback .kofi-promo-slot-inner{
   -webkit-animation:none;
   animation:none;
   transform:translate3d(0,0,0);
@@ -265,233 +259,16 @@
   100%{transform:translate3d(0,0,0);opacity:1}
 }
 
-/* D — gradient keyword emphasis on perk phrases */
+/* UR-tier gradient emphasis on perk keywords */
 .kofi-promo-kw{
   display:inline;
   font-weight:800;
-  background:linear-gradient(105deg,#ffe08a 0%,#00d4ff 42%,#4580e6 72%,#ffe08a 100%);
-  background-size:220% auto;
+  background:linear-gradient(135deg,#ff6b35,#ffd700,#ff6b35);
   -webkit-background-clip:text;
   background-clip:text;
   color:transparent;
   -webkit-text-fill-color:transparent;
-  filter:drop-shadow(0 0 8px rgba(0,212,255,.28));
-  animation:kofi-promo-kw-shimmer 2.8s ease-in-out infinite,kofi-promo-kw-pulse 2.2s ease-in-out infinite;
-  animation-delay:var(--kofi-kw-delay,0s),calc(var(--kofi-kw-delay,0s) + .35s);
-}
-@-webkit-keyframes kofi-promo-kw-shimmer{
-  0%,100%{background-position:0% center}
-  50%{background-position:100% center}
-}
-@keyframes kofi-promo-kw-shimmer{
-  0%,100%{background-position:0% center}
-  50%{background-position:100% center}
-}
-@-webkit-keyframes kofi-promo-kw-pulse{
-  0%,100%{filter:drop-shadow(0 0 6px rgba(0,212,255,.22))}
-  50%{filter:drop-shadow(0 0 12px rgba(255,224,138,.45))}
-}
-@keyframes kofi-promo-kw-pulse{
-  0%,100%{filter:drop-shadow(0 0 6px rgba(0,212,255,.22))}
-  50%{filter:drop-shadow(0 0 12px rgba(255,224,138,.45))}
-}
-
-/* F — mini supporter reward card */
-.kofi-donate-promo-perks{
-  display:block;
-}
-.kofi-donate-promo-perks-card{
-  position:relative;
-  padding:9px 10px 10px;
-  border-radius:10px;
-  border:1px solid rgba(255,208,120,.34);
-  background:
-    linear-gradient(145deg,rgba(255,208,120,.1),rgba(69,128,230,.08) 42%,rgba(0,0,0,.28) 100%);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,.07),
-    0 0 0 1px rgba(0,212,255,.08),
-    0 8px 18px rgba(0,0,0,.28);
-  overflow:hidden;
-  opacity:0;
-  transform:translate3d(0,12px,0) scale(.98);
-}
-.kofi-donate-promo-perks-card::before{
-  content:'';
-  position:absolute;
-  left:0;
-  top:0;
-  bottom:0;
-  width:3px;
-  background:linear-gradient(180deg,#ffe08a,#00d4ff 55%,#4580e6);
-  box-shadow:0 0 12px rgba(0,212,255,.35);
-}
-.kofi-donate-promo.is-text-ready .kofi-donate-promo-perks-card{
-  animation:kofi-promo-perks-in .78s cubic-bezier(.22,1,.36,1) forwards;
-  animation-delay:var(--kofi-perks-delay,.84s);
-}
-@-webkit-keyframes kofi-promo-perks-in{
-  0%{opacity:0;transform:translate3d(0,12px,0) scale(.98)}
-  100%{opacity:1;transform:translate3d(0,0,0) scale(1)}
-}
-@keyframes kofi-promo-perks-in{
-  0%{opacity:0;transform:translate3d(0,12px,0) scale(.98)}
-  100%{opacity:1;transform:translate3d(0,0,0) scale(1)}
-}
-.kofi-donate-promo-perks-head{
-  display:flex;
-  align-items:center;
-  gap:7px;
-  margin:0 0 6px 2px;
-}
-.kofi-donate-promo-perks-badge{
-  width:18px;
-  height:18px;
-  border-radius:4px;
-  flex:0 0 auto;
-  background:
-    linear-gradient(135deg,rgba(255,224,138,.95),rgba(0,212,255,.85));
-  box-shadow:0 0 10px rgba(255,208,120,.35);
-  position:relative;
-}
-.kofi-donate-promo-perks-badge::after{
-  content:'';
-  position:absolute;
-  inset:4px;
-  border-radius:2px;
-  border:1px solid rgba(255,255,255,.55);
-}
-.kofi-donate-promo-perks-title{
-  font-size:10px;
-  font-weight:800;
-  letter-spacing:.08em;
-  text-transform:uppercase;
-  color:#ffe08a;
-  text-shadow:0 0 10px rgba(255,208,120,.25);
-}
-.kofi-donate-promo-perks-phrase{
-  margin:0 0 7px;
-  font-size:12px;
-  line-height:1.42;
-  font-weight:600;
-  color:var(--text-primary);
-}
-.kofi-donate-promo-perks-intro,
-.kofi-donate-promo-perks-outro{
-  color:var(--text-secondary);
-  font-weight:600;
-}
-.kofi-donate-promo-perks-list{
-  list-style:none;
-  margin:0 0 8px;
-  padding:0;
-  display:flex;
-  flex-direction:column;
-  gap:4px;
-}
-.kofi-donate-promo-perks-item{
-  display:flex;
-  align-items:flex-start;
-  gap:7px;
-  font-size:11px;
-  line-height:1.35;
-  color:var(--text-primary);
-  font-weight:600;
-  opacity:0;
-  transform:translate3d(-6px,0,0);
-}
-.kofi-donate-promo.is-text-ready .kofi-donate-promo-perks-item{
-  animation:kofi-promo-perk-tick-in .55s cubic-bezier(.22,1,.36,1) forwards;
-  animation-delay:var(--kofi-perk-delay,.95s);
-}
-@-webkit-keyframes kofi-promo-perk-tick-in{
-  0%{opacity:0;transform:translate3d(-6px,0,0)}
-  100%{opacity:1;transform:translate3d(0,0,0)}
-}
-@keyframes kofi-promo-perk-tick-in{
-  0%{opacity:0;transform:translate3d(-6px,0,0)}
-  100%{opacity:1;transform:translate3d(0,0,0)}
-}
-.kofi-donate-promo-perks-tick{
-  flex:0 0 auto;
-  width:14px;
-  height:14px;
-  margin-top:1px;
-  border-radius:50%;
-  background:linear-gradient(145deg,rgba(0,212,255,.25),rgba(69,128,230,.45));
-  border:1px solid rgba(0,212,255,.45);
-  position:relative;
-  box-shadow:0 0 8px rgba(0,212,255,.18);
-}
-.kofi-donate-promo-perks-tick::after{
-  content:'';
-  position:absolute;
-  left:4px;
-  top:2px;
-  width:4px;
-  height:7px;
-  border-right:2px solid #bff6ff;
-  border-bottom:2px solid #bff6ff;
-  transform:rotate(45deg);
-}
-
-/* E — blurred teaser preview strip */
-.kofi-donate-promo-preview-strip{
-  display:grid;
-  grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:6px;
-}
-.kofi-donate-promo-preview-tile{
-  position:relative;
-  border-radius:8px;
-  overflow:hidden;
-  border:1px solid rgba(0,212,255,.22);
-  background:rgba(0,0,0,.35);
-  aspect-ratio:16/10;
-  opacity:0;
-  transform:translate3d(0,8px,0);
-  cursor:default;
-}
-.kofi-donate-promo.is-text-ready .kofi-donate-promo-preview-tile{
-  animation:kofi-promo-preview-in .62s cubic-bezier(.22,1,.36,1) forwards;
-  animation-delay:var(--kofi-preview-delay,1s);
-}
-@-webkit-keyframes kofi-promo-preview-in{
-  0%{opacity:0;transform:translate3d(0,8px,0)}
-  100%{opacity:1;transform:translate3d(0,0,0)}
-}
-@keyframes kofi-promo-preview-in{
-  0%{opacity:0;transform:translate3d(0,8px,0)}
-  100%{opacity:1;transform:translate3d(0,0,0)}
-}
-.kofi-donate-promo-preview-img{
-  display:block;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  object-position:center;
-  filter:blur(5px) saturate(.72) brightness(.72);
-  transform:scale(1.08);
-  transition:filter .35s ease,transform .35s ease;
-}
-.kofi-donate-promo-preview-tile:hover .kofi-donate-promo-preview-img,
-.kofi-donate-promo-preview-tile:focus-within .kofi-donate-promo-preview-img{
-  filter:blur(0) saturate(1.05) brightness(.95);
-  transform:scale(1.02);
-}
-.kofi-donate-promo-preview-cap{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  padding:3px 5px;
-  font-size:9px;
-  font-weight:700;
-  letter-spacing:.04em;
-  text-transform:uppercase;
-  text-align:center;
-  color:#e8f7ff;
-  background:linear-gradient(180deg,transparent,rgba(0,0,0,.72));
-  pointer-events:none;
+  filter:drop-shadow(0 0 4px rgba(255,215,0,.5));
 }
 
 #kofiHeaderLink.kofi-donate-promo-target-highlight{
@@ -532,20 +309,9 @@
   100%{opacity:0;transform:scale(1.52)}
 }
 @media (prefers-reduced-motion:reduce){
-  .kofi-donate-promo-panel,#kofiHeaderLink.kofi-donate-promo-target-highlight::before,#kofiHeaderLink.kofi-donate-promo-target-highlight::after,.kofi-promo-slot-inner,.kofi-promo-kw,.kofi-donate-promo-perks-card,.kofi-donate-promo-perks-item,.kofi-donate-promo-preview-tile{
+  .kofi-donate-promo-panel,#kofiHeaderLink.kofi-donate-promo-target-highlight::before,#kofiHeaderLink.kofi-donate-promo-target-highlight::after,.kofi-promo-slot-inner{
     -webkit-animation:none!important;
     animation:none!important;
-  }
-  .kofi-donate-promo-preview-img{
-    filter:blur(2px) saturate(.85) brightness(.85);
-    transition:none;
-  }
-  .kofi-donate-promo-preview-tile:hover .kofi-donate-promo-preview-img{
-    filter:blur(1px) saturate(.95) brightness(.92);
-  }
-  .kofi-donate-promo-perks-card,.kofi-donate-promo-perks-item,.kofi-donate-promo-preview-tile{
-    opacity:1;
-    transform:none;
   }
   #kofiHeaderLink.kofi-donate-promo-target-highlight{
     box-shadow:0 0 0 2px rgba(0,212,255,.45),0 0 14px rgba(69,128,230,.45)!important;
@@ -566,7 +332,7 @@
 }
 @media (max-width:768px){
   .kofi-donate-promo{
-    max-width:min(380px,calc(100vw - 20px));
+    max-width:min(360px,calc(100vw - 20px));
   }
   .kofi-donate-promo-panel{
     grid-template-columns:minmax(0,104px) minmax(0,1fr);
