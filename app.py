@@ -11926,18 +11926,21 @@ def _build_browse_list_performance_caches():
 
 
 def _schedule_browse_list_performance_caches():
-    """Build browse row caches before the worker serves traffic (fast list APIs from first request)."""
-    global _BROWSE_LIST_CACHE_BUILDING
-    _BROWSE_LIST_CACHE_BUILDING = True
-    _BROWSE_LIST_CACHE_READY.clear()
-    try:
-        _build_browse_list_performance_caches()
-        _prewarm_default_browse_list_api_caches()
-    except Exception as e:
-        print(f'Browse list perf caches: build failed: {e}')
-    finally:
-        _BROWSE_LIST_CACHE_BUILDING = False
-        _BROWSE_LIST_CACHE_READY.set()
+    """Build browse row caches in a background thread so gunicorn can bind while warming."""
+    def _run():
+        global _BROWSE_LIST_CACHE_BUILDING
+        _BROWSE_LIST_CACHE_BUILDING = True
+        _BROWSE_LIST_CACHE_READY.clear()
+        try:
+            _build_browse_list_performance_caches()
+            _prewarm_default_browse_list_api_caches()
+        except Exception as e:
+            print(f'Browse list perf caches: build failed: {e}')
+        finally:
+            _BROWSE_LIST_CACHE_BUILDING = False
+            _BROWSE_LIST_CACHE_READY.set()
+
+    threading.Thread(target=_run, name='browse-list-cache', daemon=True).start()
 
 
 def _prewarm_default_browse_list_api_caches():
@@ -20274,7 +20277,7 @@ def serve_spa(path):
             return jsonify({'error': 'Not found'}), 404
     return _serve_index()
 
-# Build browse caches after all list-route helpers exist; blocks worker start until ready.
+# Kick off browse cache warm-up without blocking the worker from accepting traffic.
 _schedule_browse_list_performance_caches()
 
 if __name__ == '__main__':
