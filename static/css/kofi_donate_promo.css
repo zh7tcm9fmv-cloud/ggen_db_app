@@ -138,64 +138,104 @@
 }
 .kofi-donate-promo-close{
   position:absolute;
-  top:-11px;
-  right:-11px;
-  z-index:4;
-  width:26px;
-  height:26px;
+  top:-14px;
+  right:-14px;
+  z-index:6;
+  width:28px;
+  height:28px;
   padding:0;
-  border:1px solid transparent;
-  border-radius:var(--radius-sm);
-  background:rgba(0,0,0,.52);
-  color:var(--text-secondary);
+  border:1px solid rgba(255,255,255,.28);
+  border-radius:8px;
+  background:linear-gradient(145deg,rgba(255,255,255,.16),rgba(0,212,255,.1));
+  -webkit-backdrop-filter:blur(12px) saturate(1.25);
+  backdrop-filter:blur(12px) saturate(1.25);
+  color:#fff;
   cursor:pointer;
   display:flex;
   align-items:center;
   justify-content:center;
   opacity:0;
   visibility:hidden;
-  transform:scale(.82);
   pointer-events:none;
+  transform-origin:100% 0%;
+  transform:scale(.35);
+  filter:blur(14px);
+  clip-path:inset(48% 0 0 48% round 100%);
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.24) inset,
+    0 8px 20px rgba(0,0,0,.42);
   transition:
-    opacity .24s ease,
-    visibility .24s ease,
-    transform .24s cubic-bezier(.22,1,.36,1),
+    opacity .2s ease,
+    visibility .2s ease,
+    transform .2s ease,
+    filter .2s ease,
+    clip-path .2s ease,
     color .15s ease,
     background .15s ease,
     border-color .15s ease;
 }
-.kofi-donate-promo-panel:hover .kofi-donate-promo-close,
-.kofi-donate-promo-panel:focus-within .kofi-donate-promo-close,
+.kofi-donate-promo-copy.is-close-visible .kofi-donate-promo-close,
+.kofi-donate-promo-copy:has(.kofi-donate-promo-bubble:hover) .kofi-donate-promo-close,
+.kofi-donate-promo-close:hover,
 .kofi-donate-promo-close:focus-visible{
   opacity:1;
   visibility:visible;
-  transform:scale(1);
   pointer-events:auto;
-  animation:kofi-promo-close-in .24s cubic-bezier(.22,1,.36,1) both;
+  animation:kofi-promo-close-morph .48s cubic-bezier(.22,1,.36,1) forwards;
 }
 .kofi-donate-promo-close:hover{
-  color:var(--text-primary);
-  background:rgba(0,212,255,.18);
-  border-color:rgba(0,212,255,.35);
+  color:#fff;
+  background:linear-gradient(145deg,rgba(255,255,255,.22),rgba(0,212,255,.18));
+  border-color:rgba(0,212,255,.42);
 }
 .kofi-donate-promo-close .ui-close-icon svg{
   width:14px;
   height:14px;
 }
-@-webkit-keyframes kofi-promo-close-in{
-  0%{opacity:0;transform:scale(.78)}
-  100%{opacity:1;transform:scale(1)}
+@-webkit-keyframes kofi-promo-close-morph{
+  0%{
+    opacity:0;
+    transform:scale(.35);
+    filter:blur(14px) saturate(1.15);
+    clip-path:inset(48% 0 0 48% round 100%);
+  }
+  55%{
+    opacity:.94;
+    transform:scale(1.06);
+    filter:blur(1px) saturate(1.08);
+    clip-path:inset(8% 0 0 8% round 12px);
+  }
+  100%{
+    opacity:1;
+    transform:scale(1);
+    filter:blur(0) saturate(1);
+    clip-path:inset(0 0 0 0 round 8px);
+  }
 }
-@keyframes kofi-promo-close-in{
-  0%{opacity:0;transform:scale(.78)}
-  100%{opacity:1;transform:scale(1)}
+@keyframes kofi-promo-close-morph{
+  0%{
+    opacity:0;
+    transform:scale(.35);
+    filter:blur(14px) saturate(1.15);
+    clip-path:inset(48% 0 0 48% round 100%);
+  }
+  55%{
+    opacity:.94;
+    transform:scale(1.06);
+    filter:blur(1px) saturate(1.08);
+    clip-path:inset(8% 0 0 8% round 12px);
+  }
+  100%{
+    opacity:1;
+    transform:scale(1);
+    filter:blur(0) saturate(1);
+    clip-path:inset(0 0 0 0 round 8px);
+  }
 }
 @media (hover:none),(pointer:coarse){
-  .kofi-donate-promo-panel:active .kofi-donate-promo-close,
-  .kofi-donate-promo-panel:focus-within .kofi-donate-promo-close{
+  .kofi-donate-promo-copy.is-close-visible .kofi-donate-promo-close{
     opacity:1;
     visibility:visible;
-    transform:scale(1);
     pointer-events:auto;
   }
 }
@@ -225,6 +265,7 @@
   grid-row:1;
   min-width:0;
   align-self:end;
+  overflow:visible;
 }
 .kofi-donate-promo-bubble{
   position:relative;
@@ -367,6 +408,14 @@
   .kofi-donate-promo-close:focus-visible{
     transform:none;
   }
+  .kofi-donate-promo-copy.is-close-visible .kofi-donate-promo-close,
+  .kofi-donate-promo-copy:has(.kofi-donate-promo-bubble:hover) .kofi-donate-promo-close,
+  .kofi-donate-promo-close:hover,
+  .kofi-donate-promo-close:focus-visible{
+    clip-path:inset(0 0 0 0 round 8px);
+    filter:none;
+    transform:none;
+  }
   #kofiHeaderLink.kofi-donate-promo-target-highlight{
     box-shadow:0 0 0 2px rgba(0,212,255,.45),0 0 14px rgba(69,128,230,.45)!important;
   }
@@ -407,10 +456,10 @@
     line-height:1.4;
   }
   .kofi-donate-promo-close{
-    top:-9px;
-    right:-9px;
-    width:24px;
-    height:24px;
+    top:-12px;
+    right:-12px;
+    width:26px;
+    height:26px;
   }
   .kofi-donate-promo-close .ui-close-icon svg{
     width:12px;

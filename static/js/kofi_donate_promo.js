@@ -267,6 +267,8 @@
     els.root.setAttribute('aria-hidden', 'true');
     els.root.hidden = true;
     setTargetHighlight(false);
+    var copy = els.root.querySelector('.kofi-donate-promo-copy');
+    if (copy) copy.classList.remove('is-close-visible');
     if (snooze !== false) snoozePromo();
   }
 
@@ -315,6 +317,19 @@
         ev.stopPropagation();
         closeKofiDonatePromo(true);
       });
+    }
+
+    var copy = root.querySelector('.kofi-donate-promo-copy');
+    if (copy) {
+      copy.addEventListener('mouseenter', function () {
+        copy.classList.add('is-close-visible');
+      });
+      copy.addEventListener('mouseleave', function () {
+        copy.classList.remove('is-close-visible');
+      });
+      copy.addEventListener('touchstart', function () {
+        copy.classList.add('is-close-visible');
+      }, { passive: true });
     }
 
     var kofiLink = document.getElementById('kofiHeaderLink');
