@@ -6234,7 +6234,7 @@ def create_char_skill_info_map(d):
     for item in extract_data_list(d):
         if isinstance(item, dict):
             s = normalize_id(item.get('Id') or item.get('id'))
-            if s != '0': lk[s] = {'name_lang_id': normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId')), 'desc_lang_id': normalize_id(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId')), 'resource_id': str(item.get('ResourceId') or item.get('resourceId') or '')}
+            if s != '0': lk[s] = {'name_lang_id': normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId')), 'desc_lang_id': normalize_id(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId')), 'resource_id': str(item.get('ResourceId') or item.get('resourceId') or ''), 'sp': safe_int(item.get('Sp') or item.get('sp'), 0)}
     return lk
 
 def create_skill_text_map(d):
@@ -10901,7 +10901,8 @@ def resolve_char_skill(sid, ld, sv, isp):
     if name == 'Unknown' and fallback_name:
         name = fallback_name
     ri = info.get('resource_id', '') or ld.get('skill_resource_map', {}).get(sid, ''); icf = find_trait_icon(ri)
-    return {'id': sid, 'name': name, 'sort': sv, 'details': [desc] if desc else [], 'icon': f"/static/images/Trait/{icf}" if icf else '', 'has_icon': bool(icf), 'is_ex': False, 'is_sp': isp, 'frame_overlay': '', 'resource_id': ri}
+    sp = safe_int(info.get('sp'), 0)
+    return {'id': sid, 'name': name, 'sort': sv, 'details': [desc] if desc else [], 'icon': f"/static/images/Trait/{icf}" if icf else '', 'has_icon': bool(icf), 'is_ex': False, 'is_sp': isp, 'frame_overlay': '', 'resource_id': ri, 'sp': sp}
 
 def resolve_unit_skill(usid, ld, sv):
     stm = ld.get('skill_text_map', {}); info = unit_skill_info_map.get(usid, {})
