@@ -2,7 +2,7 @@
 .kofi-donate-promo{
   position:fixed;
   z-index:250;
-  max-width:min(420px,calc(100vw - 24px));
+  overflow:visible;
   pointer-events:none;
   opacity:0;
   visibility:hidden;
@@ -24,6 +24,7 @@
   align-items:end;
   padding:8px;
   overflow:visible;
+  max-width:min(420px,calc(100vw - 24px));
   background:linear-gradient(165deg,rgba(26,34,54,.98),rgba(20,28,46,.98));
   border:1px solid rgba(0,212,255,.28);
   border-radius:var(--radius-lg);
@@ -138,9 +139,9 @@
 }
 .kofi-donate-promo-close{
   position:absolute;
-  top:-14px;
-  right:-14px;
-  z-index:6;
+  top:0;
+  left:0;
+  z-index:10;
   width:28px;
   height:28px;
   padding:0;
@@ -174,8 +175,8 @@
     background .15s ease,
     border-color .15s ease;
 }
-.kofi-donate-promo-copy.is-close-visible .kofi-donate-promo-close,
-.kofi-donate-promo-copy:has(.kofi-donate-promo-bubble:hover) .kofi-donate-promo-close,
+.kofi-donate-promo.is-close-visible .kofi-donate-promo-close,
+.kofi-donate-promo:has(.kofi-donate-promo-bubble:hover) .kofi-donate-promo-close,
 .kofi-donate-promo-close:hover,
 .kofi-donate-promo-close:focus-visible{
   opacity:1;
@@ -233,7 +234,7 @@
   }
 }
 @media (hover:none),(pointer:coarse){
-  .kofi-donate-promo-copy.is-close-visible .kofi-donate-promo-close{
+  .kofi-donate-promo.is-close-visible .kofi-donate-promo-close{
     opacity:1;
     visibility:visible;
     pointer-events:auto;
@@ -408,8 +409,8 @@
   .kofi-donate-promo-close:focus-visible{
     transform:none;
   }
-  .kofi-donate-promo-copy.is-close-visible .kofi-donate-promo-close,
-  .kofi-donate-promo-copy:has(.kofi-donate-promo-bubble:hover) .kofi-donate-promo-close,
+  .kofi-donate-promo.is-close-visible .kofi-donate-promo-close,
+  .kofi-donate-promo:has(.kofi-donate-promo-bubble:hover) .kofi-donate-promo-close,
   .kofi-donate-promo-close:hover,
   .kofi-donate-promo-close:focus-visible{
     clip-path:inset(0 0 0 0 round 8px);
@@ -434,10 +435,8 @@
   }
 }
 @media (max-width:768px){
-  .kofi-donate-promo{
-    max-width:min(340px,calc(100vw - 20px));
-  }
   .kofi-donate-promo-panel{
+    max-width:min(340px,calc(100vw - 20px));
     grid-template-columns:minmax(0,92px) minmax(0,1fr);
     column-gap:6px;
     padding:6px;

@@ -218,6 +218,14 @@
     };
   }
 
+  function positionCloseBtn(root, bubble, closeBtn) {
+    if (!root || !bubble || !closeBtn) return;
+    var bubbleRect = bubble.getBoundingClientRect();
+    var rootRect = root.getBoundingClientRect();
+    closeBtn.style.top = Math.round(bubbleRect.top - rootRect.top - 16) + 'px';
+    closeBtn.style.left = Math.round(bubbleRect.right - rootRect.left + 8) + 'px';
+  }
+
   function positionPromo() {
     var els = getEls();
     if (!els.root || !els.panel || !els.target || !els.root.classList.contains('is-visible')) return;
@@ -225,24 +233,40 @@
     var tr = els.target.getBoundingClientRect();
     if (!tr.width || !tr.height) return;
 
-    var panelW = els.panel.offsetWidth || 360;
-    var panelH = els.panel.offsetHeight || 140;
-    var gap = 10;
-    var left = tr.left + tr.width * 0.5 - panelW * 0.72;
-    var top = tr.bottom + gap + 12;
+    var bubble = els.root.querySelector('.kofi-donate-promo-bubble');
+    var closeBtn = els.root.querySelector('.kofi-donate-promo-close');
+    if (!bubble) return;
 
-    left = Math.max(12, Math.min(left, global.innerWidth - panelW - 12));
+    var gap = 10;
+    var top = tr.bottom + gap + 8;
+    var panelH = els.panel.offsetHeight || 140;
     if (top + panelH > global.innerHeight - 12) {
       top = Math.max(tr.top - panelH - gap - 8, 72);
     }
 
+    var kofiCx = tr.left + tr.width * 0.5;
+    var left = kofiCx - els.root.offsetWidth * 0.5;
+
     els.root.style.left = Math.round(left) + 'px';
     els.root.style.top = Math.round(top) + 'px';
 
+    var br = bubble.getBoundingClientRect();
+    var adjust = kofiCx - (br.left + br.width * 0.5);
+    if (Math.abs(adjust) > 0.5) {
+      left += adjust;
+      var rootW = els.root.offsetWidth || els.panel.offsetWidth || 360;
+      left = Math.max(12, Math.min(left, global.innerWidth - rootW - 12));
+      els.root.style.left = Math.round(left) + 'px';
+    }
+
+    positionCloseBtn(els.root, bubble, closeBtn);
+
+    var panelW = els.panel.offsetWidth || 360;
     var targetCx = tr.left + tr.width * 0.5;
     var targetCy = tr.top + tr.height * 0.5;
-    var originX = ((targetCx - left) / panelW) * 100;
-    var originY = ((targetCy - top) / panelH) * 100;
+    var rootRect = els.root.getBoundingClientRect();
+    var originX = ((targetCx - rootRect.left) / panelW) * 100;
+    var originY = ((targetCy - rootRect.top) / panelH) * 100;
     originX = Math.max(8, Math.min(originX, 92));
     originY = Math.max(0, Math.min(originY, 35));
     els.panel.style.setProperty('--kofi-promo-origin-x', originX.toFixed(1) + '%');
@@ -267,8 +291,7 @@
     els.root.setAttribute('aria-hidden', 'true');
     els.root.hidden = true;
     setTargetHighlight(false);
-    var copy = els.root.querySelector('.kofi-donate-promo-copy');
-    if (copy) copy.classList.remove('is-close-visible');
+    els.root.classList.remove('is-close-visible');
     if (snooze !== false) snoozePromo();
   }
 
@@ -322,14 +345,20 @@
     var copy = root.querySelector('.kofi-donate-promo-copy');
     if (copy) {
       copy.addEventListener('mouseenter', function () {
-        copy.classList.add('is-close-visible');
+        root.classList.add('is-close-visible');
       });
-      copy.addEventListener('mouseleave', function () {
-        copy.classList.remove('is-close-visible');
+      copy.addEventListener('mouseleave', function (ev) {
+        if (closeBtn && ev.relatedTarget && closeBtn.contains(ev.relatedTarget)) return;
+        root.classList.remove('is-close-visible');
       });
       copy.addEventListener('touchstart', function () {
-        copy.classList.add('is-close-visible');
+        root.classList.add('is-close-visible');
       }, { passive: true });
+    }
+    if (closeBtn) {
+      closeBtn.addEventListener('mouseenter', function () {
+        root.classList.add('is-close-visible');
+      });
     }
 
     var kofiLink = document.getElementById('kofiHeaderLink');
