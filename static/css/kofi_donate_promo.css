@@ -139,8 +139,8 @@
 }
 .kofi-donate-promo-close{
   position:absolute;
-  top:0;
-  left:0;
+  top:5px;
+  right:5px;
   z-index:10;
   width:28px;
   height:28px;
@@ -175,8 +175,9 @@
     background .15s ease,
     border-color .15s ease;
 }
-.kofi-donate-promo.is-close-visible .kofi-donate-promo-close,
-.kofi-donate-promo:has(.kofi-donate-promo-bubble:hover) .kofi-donate-promo-close,
+.kofi-donate-promo-bubble:hover .kofi-donate-promo-close,
+.kofi-donate-promo-bubble:focus-within .kofi-donate-promo-close,
+.kofi-donate-promo-panel.is-close-visible .kofi-donate-promo-bubble .kofi-donate-promo-close,
 .kofi-donate-promo-close:hover,
 .kofi-donate-promo-close:focus-visible{
   opacity:1;
@@ -234,7 +235,7 @@
   }
 }
 @media (hover:none),(pointer:coarse){
-  .kofi-donate-promo.is-close-visible .kofi-donate-promo-close{
+  .kofi-donate-promo-panel.is-close-visible .kofi-donate-promo-bubble .kofi-donate-promo-close{
     opacity:1;
     visibility:visible;
     pointer-events:auto;
@@ -270,7 +271,7 @@
 }
 .kofi-donate-promo-bubble{
   position:relative;
-  padding:9px 11px 10px;
+  padding:9px 34px 10px 11px;
   background:rgba(0,0,0,.32);
   border:1px solid rgba(0,212,255,.16);
   border-radius:12px 12px 12px 4px;
@@ -404,13 +405,14 @@
     -webkit-animation:none!important;
     animation:none!important;
   }
-  .kofi-donate-promo-panel:hover .kofi-donate-promo-close,
-  .kofi-donate-promo-panel:focus-within .kofi-donate-promo-close,
+  .kofi-donate-promo-panel:hover .kofi-donate-promo-bubble .kofi-donate-promo-close,
+  .kofi-donate-promo-panel:focus-within .kofi-donate-promo-bubble .kofi-donate-promo-close,
   .kofi-donate-promo-close:focus-visible{
     transform:none;
   }
-  .kofi-donate-promo.is-close-visible .kofi-donate-promo-close,
-  .kofi-donate-promo:has(.kofi-donate-promo-bubble:hover) .kofi-donate-promo-close,
+  .kofi-donate-promo-bubble:hover .kofi-donate-promo-close,
+  .kofi-donate-promo-bubble:focus-within .kofi-donate-promo-close,
+  .kofi-donate-promo-panel.is-close-visible .kofi-donate-promo-bubble .kofi-donate-promo-close,
   .kofi-donate-promo-close:hover,
   .kofi-donate-promo-close:focus-visible{
     clip-path:inset(0 0 0 0 round 8px);
@@ -448,15 +450,15 @@
     max-height:108px;
   }
   .kofi-donate-promo-bubble{
-    padding:8px 9px 9px;
+    padding:8px 32px 9px 9px;
   }
   .kofi-donate-promo-text{
     font-size:12px;
     line-height:1.4;
   }
   .kofi-donate-promo-close{
-    top:-12px;
-    right:-12px;
+    top:4px;
+    right:4px;
     width:26px;
     height:26px;
   }

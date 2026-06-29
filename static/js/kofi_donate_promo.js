@@ -19,12 +19,22 @@
   var PROMO_TEXT_FALLBACK =
     'Thanks for stopping by! \uD83D\uDC99\nIf you enjoy our site, support us on Ko-fi to help keep it free \u2014 and get exclusive sneak peeks + bonus content in return!';
 
-  var PERK_KEYWORD_RES = [
-    /exclusive sneak peeks/gi,
-    /bonus content/gi,
-    /搶先看|獨家預覽|独家预览|加成內容|加成内容|獎勵內容|奖励内容/g,
-    /先行(?:公開|预览|預覽)?|おまけ|特典(?:コンテンツ)?/g,
+  var PERK_PHRASE_KEYS = [
+    { key: 'kofi_promo_kw_sneak', fb: 'exclusive sneak peeks' },
+    { key: 'kofi_promo_kw_bonus', fb: 'bonus content' },
   ];
+
+  function getPerkPhrases() {
+    return PERK_PHRASE_KEYS.map(function (item) {
+      return promoT(item.key, item.fb);
+    }).filter(function (p) {
+      return p && String(p).trim();
+    });
+  }
+
+  function escRegex(str) {
+    return String(str || '').replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
 
   var _shown = false;
   var _snoozedUntil = 0;
@@ -102,18 +112,20 @@
   }
 
   function isPerksLine(line) {
-    var s = String(line || '');
-    return /sneak peek|bonus content|搶先看|獨家|独家|加成內容|加成内容|先行|おまけ|特典/i.test(s);
+    var s = String(line || '').toLowerCase();
+    return getPerkPhrases().some(function (p) {
+      return s.indexOf(String(p).toLowerCase()) >= 0;
+    });
   }
 
   function wrapPerkKeywords(text) {
     var s = String(text || '');
     if (!s) return '';
     var hits = [];
-    PERK_KEYWORD_RES.forEach(function (re) {
-      var copy = new RegExp(re.source, re.flags);
+    getPerkPhrases().forEach(function (phrase) {
+      var re = new RegExp(escRegex(phrase), 'gi');
       var m;
-      while ((m = copy.exec(s)) !== null) {
+      while ((m = re.exec(s)) !== null) {
         hits.push({ start: m.index, end: m.index + m[0].length, text: m[0] });
       }
     });
@@ -218,14 +230,6 @@
     };
   }
 
-  function positionCloseBtn(root, bubble, closeBtn) {
-    if (!root || !bubble || !closeBtn) return;
-    var bubbleRect = bubble.getBoundingClientRect();
-    var rootRect = root.getBoundingClientRect();
-    closeBtn.style.top = Math.round(bubbleRect.top - rootRect.top - 16) + 'px';
-    closeBtn.style.left = Math.round(bubbleRect.right - rootRect.left + 8) + 'px';
-  }
-
   function positionPromo() {
     var els = getEls();
     if (!els.root || !els.panel || !els.target || !els.root.classList.contains('is-visible')) return;
@@ -234,7 +238,6 @@
     if (!tr.width || !tr.height) return;
 
     var bubble = els.root.querySelector('.kofi-donate-promo-bubble');
-    var closeBtn = els.root.querySelector('.kofi-donate-promo-close');
     if (!bubble) return;
 
     var gap = 10;
@@ -244,22 +247,23 @@
       top = Math.max(tr.top - panelH - gap - 8, 72);
     }
 
-    var kofiCx = tr.left + tr.width * 0.5;
-    var left = kofiCx - els.root.offsetWidth * 0.5;
-
-    els.root.style.left = Math.round(left) + 'px';
+    els.root.style.left = '0px';
     els.root.style.top = Math.round(top) + 'px';
 
     var br = bubble.getBoundingClientRect();
-    var adjust = kofiCx - (br.left + br.width * 0.5);
+    var adjust = tr.right - br.right;
+    var left = (els.root.offsetLeft || 0) + adjust;
+    var rootW = els.root.offsetWidth || els.panel.offsetWidth || 360;
+    left = Math.max(12, Math.min(left, global.innerWidth - rootW - 12));
+    els.root.style.left = Math.round(left) + 'px';
+
+    br = bubble.getBoundingClientRect();
+    adjust = tr.right - br.right;
     if (Math.abs(adjust) > 0.5) {
       left += adjust;
-      var rootW = els.root.offsetWidth || els.panel.offsetWidth || 360;
       left = Math.max(12, Math.min(left, global.innerWidth - rootW - 12));
       els.root.style.left = Math.round(left) + 'px';
     }
-
-    positionCloseBtn(els.root, bubble, closeBtn);
 
     var panelW = els.panel.offsetWidth || 360;
     var targetCx = tr.left + tr.width * 0.5;
@@ -291,7 +295,8 @@
     els.root.setAttribute('aria-hidden', 'true');
     els.root.hidden = true;
     setTargetHighlight(false);
-    els.root.classList.remove('is-close-visible');
+    var panel = els.root.querySelector('.kofi-donate-promo-panel');
+    if (panel) panel.classList.remove('is-close-visible');
     if (snooze !== false) snoozePromo();
   }
 
@@ -342,23 +347,13 @@
       });
     }
 
-    var copy = root.querySelector('.kofi-donate-promo-copy');
-    if (copy) {
-      copy.addEventListener('mouseenter', function () {
-        root.classList.add('is-close-visible');
-      });
-      copy.addEventListener('mouseleave', function (ev) {
-        if (closeBtn && ev.relatedTarget && closeBtn.contains(ev.relatedTarget)) return;
-        root.classList.remove('is-close-visible');
-      });
-      copy.addEventListener('touchstart', function () {
-        root.classList.add('is-close-visible');
+    var panel = root.querySelector('.kofi-donate-promo-panel');
+    if (panel) {
+      panel.addEventListener('touchstart', function () {
+        panel.classList.add('is-close-visible');
       }, { passive: true });
-    }
-    if (closeBtn) {
-      closeBtn.addEventListener('mouseenter', function () {
-        root.classList.add('is-close-visible');
-      });
+      panel.addEventListener('animationend', onPanelAnimationEnd);
+      panel.addEventListener('webkitAnimationEnd', onPanelAnimationEnd);
     }
 
     var kofiLink = document.getElementById('kofiHeaderLink');
@@ -367,12 +362,6 @@
         snoozePromo();
         if (root.classList.contains('is-visible')) closeKofiDonatePromo(false);
       });
-    }
-
-    var panel = root.querySelector('.kofi-donate-promo-panel');
-    if (panel) {
-      panel.addEventListener('animationend', onPanelAnimationEnd);
-      panel.addEventListener('webkitAnimationEnd', onPanelAnimationEnd);
     }
 
     global.addEventListener('resize', function () {
