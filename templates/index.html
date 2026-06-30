@@ -1527,11 +1527,16 @@ justify-content:center !important;
 html:not(.cmp-mobile-pick) .list-grid-cmp-wrap{display:none!important}
 html:not(.cmp-mobile-pick) #charTable .cmp-cb-cell,html:not(.cmp-mobile-pick) #unitTable .cmp-cb-cell{display:none!important}
 html:not(.cmp-page-active) #cmpFloat,html:not(.cmp-mobile-pick) #cmpFloat{display:none!important;bottom:-120px!important;transform:none!important;visibility:hidden!important;pointer-events:none!important;background:transparent!important;opacity:0!important}
-html.cmp-mobile-pick .list-grid-card--cmp.cmp-is-selected{position:relative;z-index:2;border-color:rgba(0,212,255,.62);background:rgba(0,212,255,.09);box-shadow:0 10px 28px rgba(0,0,0,.42),0 0 0 2px rgba(0,212,255,.42),0 0 22px rgba(0,212,255,.28);transform:translateY(-2px)}
-html.cmp-mobile-pick .list-grid-card--cmp.cmp-is-selected:hover{border-color:rgba(0,212,255,.72);box-shadow:0 12px 32px rgba(0,0,0,.48),0 0 0 2px rgba(0,212,255,.5),0 0 26px rgba(0,212,255,.34)}
-html.cmp-mobile-pick .list-grid-card--cmp.cmp-is-selected .list-thumb-portrait,html.cmp-mobile-pick .list-grid-card--cmp.cmp-is-selected .list-thumb-composite{filter:drop-shadow(0 8px 16px rgba(0,212,255,.32)) drop-shadow(0 3px 10px rgba(0,0,0,.55))}
-html.cmp-mobile-pick #charTable tr.cmp-is-selected,html.cmp-mobile-pick #unitTable tr.cmp-is-selected{position:relative;z-index:1;background:rgba(0,212,255,.08)!important;box-shadow:inset 0 0 0 2px rgba(0,212,255,.45),0 6px 18px rgba(0,212,255,.16)}
-html.cmp-mobile-pick #charTable tr.cmp-is-selected .list-thumb-portrait,html.cmp-mobile-pick #unitTable tr.cmp-is-selected .list-thumb-portrait{filter:drop-shadow(0 4px 12px rgba(0,212,255,.28)) drop-shadow(0 2px 6px rgba(0,0,0,.45))}
+html.cmp-mobile-pick .list-grid-card--cmp.cmp-is-selected{position:relative;z-index:1;border-color:rgba(74,144,217,.45);background:var(--bg-card-hover);box-shadow:var(--shadow-surface);transform:none}
+html.cmp-mobile-pick .list-grid-card--cmp.cmp-is-selected::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:0 2px 2px 0;background:var(--accent-cyan);opacity:.75;pointer-events:none}
+html.cmp-mobile-pick .list-grid-card--cmp.cmp-is-selected:hover{border-color:rgba(0,212,255,.42);background:var(--bg-card-hover);box-shadow:var(--shadow-surface),0 4px 14px rgba(0,0,0,.22)}
+html.cmp-mobile-pick .list-grid-card--cmp.cmp-is-selected .list-grid-card-name{color:var(--accent-cyan)}
+html.cmp-mobile-pick .list-grid-card--cmp.cmp-is-selected .list-thumb-portrait,html.cmp-mobile-pick .list-grid-card--cmp.cmp-is-selected .list-thumb-composite{filter:none}
+html.cmp-mobile-pick #charTable tr.cmp-is-selected,html.cmp-mobile-pick #unitTable tr.cmp-is-selected{position:relative;z-index:1;background:linear-gradient(90deg,rgba(0,212,255,.11) 0%,rgba(0,212,255,.04) 10%,var(--bg-card-hover) 28%)!important;box-shadow:none}
+html.cmp-mobile-pick #charTable tr.cmp-is-selected::before,html.cmp-mobile-pick #unitTable tr.cmp-is-selected::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent-cyan);opacity:.8;border-radius:0 2px 2px 0;pointer-events:none}
+html.cmp-mobile-pick #charTable tr.cmp-is-selected:hover,html.cmp-mobile-pick #unitTable tr.cmp-is-selected:hover{background:linear-gradient(90deg,rgba(0,212,255,.13) 0%,rgba(0,212,255,.05) 10%,var(--bg-card-hover) 28%)!important}
+html.cmp-mobile-pick #charTable tr.cmp-is-selected .name-text,html.cmp-mobile-pick #unitTable tr.cmp-is-selected .name-text{color:var(--accent-cyan)}
+html.cmp-mobile-pick #charTable tr.cmp-is-selected .list-thumb-portrait,html.cmp-mobile-pick #unitTable tr.cmp-is-selected .list-thumb-portrait{filter:none}
 html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
 @media(max-width:768px){
 .cmp-mobile-pick-toggle{width:34px;height:30px}
