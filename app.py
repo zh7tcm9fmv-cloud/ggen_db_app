@@ -2331,6 +2331,31 @@ def _leader_skill_pct_from_desc(desc):
     return 0
 
 
+LIMITED_SUPPORTER_LEADER_PCT = 44
+
+
+def _supporter_max_tier3_leader_pct(sid, leader_text_map):
+    """Highest leader-skill % among LB3 rows (EN text)."""
+    max_pct = 0
+    for ls in supporter_leader_map.get(normalize_id(sid), []):
+        if ls.get('tier') != 3:
+            continue
+        desc = leader_text_map.get(ls.get('desc_lang_id', ''), '')
+        max_pct = max(max_pct, _leader_skill_pct_from_desc(desc))
+    return max_pct
+
+
+def _compute_limited_time_supporter_ids():
+    """Limited pickup supporters: tier-3 leader skill buff is 44% (standard UR cap is lower)."""
+    raw = load_json(os.path.join(LANG_PATHS['EN']['lang'], 'm_supporter_leader_skill_content.json'))
+    text_map = create_lang_text_map(raw) if raw else {}
+    out = set()
+    for sid in supporter_leader_map:
+        if _supporter_max_tier3_leader_pct(sid, text_map) == LIMITED_SUPPORTER_LEADER_PCT:
+            out.add(normalize_id(sid))
+    return frozenset(out)
+
+
 def _resolve_supporter_leader_skill_applies(ls):
     """Separate leader-skill rows at the same LB tier are either/or — keep only the best match.
 
@@ -7855,15 +7880,7 @@ LIMITED_TIME_CHARACTER_IDS = frozenset(_compute_limited_time_character_ids()) | 
         '1162000102',
     )
 )
-LIMITED_TIME_SUPPORTER_IDS = frozenset(
-    normalize_id(x) for x in (
-        '1110000150',
-        '1300000450',
-        '1125000250',
-        '1330000250',
-        '1370000550',
-    )
-)
+LIMITED_TIME_SUPPORTER_IDS = _compute_limited_time_supporter_ids()
 unit_lin_map = create_unit_lineage_link_map(unit_lineage_data); unit_ter_map = create_terrain_map(unit_terrain_data)
 option_parts_lineage_map = create_option_parts_lineage_map(option_parts_lineage_data) if option_parts_lineage_data else {}
 option_part_series_map = {}
@@ -16959,6 +16976,7 @@ def api_latest_release():
             'type': 'supporter', 'id': sid, 'name': name, 'thum': thum or '',
             'rarity': RARITY_MAP.get(str(ri), 'N'), 'rarity_id': str(ri),
             'acquisition_icon': acq_icon or '',
+            'is_limited_time': normalize_id(sid) in LIMITED_TIME_SUPPORTER_IDS,
         })
 
     out_list = []
