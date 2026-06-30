@@ -1148,6 +1148,104 @@
     "IsSubscription": false
   },
   {
+    "ProductGroupId": 226065001,
+    "StoreTypeIndex": 1,
+    "ProductId": "ed",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226065001,
+    "StoreTypeIndex": 2,
+    "ProductId": "ed",
+    "JpyPrice": 1000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226065002,
+    "StoreTypeIndex": 1,
+    "ProductId": "ec",
+    "JpyPrice": 3800,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226065003,
+    "StoreTypeIndex": 2,
+    "ProductId": "ec",
+    "JpyPrice": 3800,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226065004,
+    "StoreTypeIndex": 1,
+    "ProductId": "ef",
+    "JpyPrice": 1500,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226065004,
+    "StoreTypeIndex": 2,
+    "ProductId": "ef",
+    "JpyPrice": 1500,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226065004,
+    "StoreTypeIndex": 3,
+    "ProductId": "ef",
+    "JpyPrice": 1500,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226065004,
+    "StoreTypeIndex": 4,
+    "ProductId": "ef",
+    "JpyPrice": 1500,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226065005,
+    "StoreTypeIndex": 1,
+    "ProductId": "eg",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226065005,
+    "StoreTypeIndex": 2,
+    "ProductId": "eg",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226065005,
+    "StoreTypeIndex": 3,
+    "ProductId": "eg",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226065005,
+    "StoreTypeIndex": 4,
+    "ProductId": "eg",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226065006,
+    "StoreTypeIndex": 3,
+    "ProductId": "eh",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226065006,
+    "StoreTypeIndex": 4,
+    "ProductId": "eh",
+    "JpyPrice": 10000,
+    "IsSubscription": false
+  },
+  {
     "ProductGroupId": 325041001,
     "StoreTypeIndex": 2,
     "ProductId": "gpp_a",
@@ -1186,6 +1284,20 @@
     "ProductGroupId": 525105001,
     "StoreTypeIndex": 2,
     "ProductId": "sub_ab",
+    "JpyPrice": 480,
+    "IsSubscription": true
+  },
+  {
+    "ProductGroupId": 526064501,
+    "StoreTypeIndex": 1,
+    "ProductId": "sub_ac",
+    "JpyPrice": 480,
+    "IsSubscription": true
+  },
+  {
+    "ProductGroupId": 526064501,
+    "StoreTypeIndex": 2,
+    "ProductId": "sub_ac",
     "JpyPrice": 480,
     "IsSubscription": true
   }

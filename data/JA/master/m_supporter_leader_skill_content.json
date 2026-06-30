@@ -952,6 +952,62 @@
     "SortOrder": 1
   },
   {
+    "SupporterLeaderSkillContentSetId": 116200015000,
+    "SupporterLeaderSkillTraitSetId": 100300,
+    "DescriptionLanguageId": 160700000000100300,
+    "TraitConditionSetId": 1000200,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 116200015001,
+    "SupporterLeaderSkillTraitSetId": 100360,
+    "DescriptionLanguageId": 160700000000100360,
+    "TraitConditionSetId": 1000200,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 116200015002,
+    "SupporterLeaderSkillTraitSetId": 100400,
+    "DescriptionLanguageId": 160700000000100400,
+    "TraitConditionSetId": 1000200,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 116200015003,
+    "SupporterLeaderSkillTraitSetId": 100440,
+    "DescriptionLanguageId": 160700000000100440,
+    "TraitConditionSetId": 1000200,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 116200025000,
+    "SupporterLeaderSkillTraitSetId": 100180,
+    "DescriptionLanguageId": 160700000000100180,
+    "TraitConditionSetId": 1000565,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 116200025001,
+    "SupporterLeaderSkillTraitSetId": 100220,
+    "DescriptionLanguageId": 160700000000100220,
+    "TraitConditionSetId": 1000565,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 116200025002,
+    "SupporterLeaderSkillTraitSetId": 100240,
+    "DescriptionLanguageId": 160700000000100240,
+    "TraitConditionSetId": 1000565,
+    "SortOrder": 1
+  },
+  {
+    "SupporterLeaderSkillContentSetId": 116200025003,
+    "SupporterLeaderSkillTraitSetId": 100260,
+    "DescriptionLanguageId": 160700000000100260,
+    "TraitConditionSetId": 1000565,
+    "SortOrder": 1
+  },
+  {
     "SupporterLeaderSkillContentSetId": 120000015000,
     "SupporterLeaderSkillTraitSetId": 100250,
     "DescriptionLanguageId": 160700000000100250,

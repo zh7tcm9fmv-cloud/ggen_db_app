@@ -28,6 +28,14 @@
     "value": "-Items will be received upon purchase and when you first log in following renewal.\n*If the items exceed your inventory limit, they will be sent to your Gifts.\n*For details about the Premium Unit Assembly Ticket rates, please tap \"Unit Assembly\" on the bottom of the Main Screen, then \"Premium Unit Assembly\" > \"Details/Drop Rate\" > \"Drop Rate\".\n*Limited Time AP Packs are valid for 30 days from the date they are received.\nLimited Time AP Packs that have not been used by the end of the 30-day period will be lost."
   },
   {
+    "id": 193105260645010401,
+    "value": "-Eternal Pass II is valid for a period of one month following purchase, and will be automatically renewed at the end of this period.\n*The one-month period ends on the same date and time as the date and time of purchase in the following month.\n   Ex.: If you purchase Eternal Pass II on January 1 at 1:00 JST, it will be valid until February 1 at 12:59 JST.\n*If the equivalent date does not exist in the following month, the validity period will end on the closest date in the following month.\nEx.: If you purchase Eternal Pass II on March 31 at 1:00 JST, it will be valid until April 30 at 12:59 JST.\n*If Eternal Pass II is purchased/renewed near the beginning or ending of the month, the validity period may be altered by several days depending on when it is reflected to your platform.\n-If you want to cancel Eternal Pass II, do so at least three days (72 hours) prior to the next automatic renewal.\n*If you cancel Eternal Pass II within three days (72 hours) of the next automatic renewal, it may be reflected to your platform on a different date, causing cancellation to not be completed when you intended.\n-You will still be able to enjoy the benefits of Eternal Pass II until the end of the validity period, even if you cancel it partway through.\nEx.: If you purchase Eternal Pass II on January 1 at 1:00 JST and cancel it on January 2, you will still receive the benefits until February 1 at 12:59 JST."
+  },
+  {
+    "id": 193105260645010501,
+    "value": "-Eternal Pass II is valid for a period of one month following purchase, and will be automatically renewed at the end of this period.\n*The one-month period ends on the same date and time as the date and time of purchase in the following month.\n   Ex.: If you purchase Eternal Pass II on January 1 at 1:00 JST, it will be valid until February 1 at 12:59 JST.\n*If the equivalent date does not exist in the following month, the validity period will end on the closest date in the following month.\nEx.: If you purchase Eternal Pass II on March 31 at 1:00 JST, it will be valid until April 30 at 12:59 JST.\n*If Eternal Pass II is purchased/renewed near the beginning or ending of the month, the validity period may be altered by several days depending on when it is reflected to your platform.\n-If you want to cancel Eternal Pass II, do so at least three days (72 hours) prior to the next automatic renewal.\n*If you cancel Eternal Pass II within three days (72 hours) of the next automatic renewal, it may be reflected to your platform on a different date, causing cancellation to not be completed when you intended.\n-You will still be able to enjoy the benefits of Eternal Pass II until the end of the validity period, even if you cancel it partway through.\nEx.: If you purchase Eternal Pass II on January 1 at 1:00 JST and cancel it on January 2, you will still receive the benefits until February 1 at 12:59 JST."
+  },
+  {
     "id": 193400000000000001,
     "value": "About the Validity Period and Auto-Renewal"
   },
@@ -53,6 +61,14 @@
   },
   {
     "id": 193400000000000008,
+    "value": "Service Details 2"
+  },
+  {
+    "id": 193405260645010201,
+    "value": "Service Details 1"
+  },
+  {
+    "id": 193405260645010301,
     "value": "Service Details 2"
   }
 ]

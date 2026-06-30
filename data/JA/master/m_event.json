@@ -182,6 +182,19 @@
     "EventTopDisplayPriority": 26055001
   },
   {
+    "Id": 100015,
+    "EventTypeIndex": 3,
+    "ResourceId": "ie_banner_100015",
+    "ScheduleId": 2606501001,
+    "ChallengeScheduleId": 2606501001,
+    "EventBonusSetId": 0,
+    "PickupRewardSetId": 0,
+    "TitleLanguageId": 250100000000100001,
+    "PointItemId": 0,
+    "ShopId": 0,
+    "EventTopDisplayPriority": 26065001
+  },
+  {
     "Id": 110001,
     "EventTypeIndex": 5,
     "ResourceId": "te_banner_100",

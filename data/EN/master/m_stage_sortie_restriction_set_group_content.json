@@ -160,6 +160,11 @@
     "TargetId": 1440
   },
   {
+    "StageSortieRestrictionSetGroupId": 120021,
+    "SortieRestrictionTypeIndex": 1,
+    "TargetId": 1620
+  },
+  {
     "StageSortieRestrictionSetGroupId": 130001,
     "SortieRestrictionTypeIndex": 2,
     "TargetId": 1001

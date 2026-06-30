@@ -38,5 +38,15 @@
     "PaymentShopItemId": 226043002,
     "RewardTypeIndex": 26,
     "ResourceId": "shop_payment_item_set_226043001"
+  },
+  {
+    "PaymentShopItemId": 226065002,
+    "RewardTypeIndex": 26,
+    "ResourceId": "shop_payment_item_set_226065002"
+  },
+  {
+    "PaymentShopItemId": 226065003,
+    "RewardTypeIndex": 26,
+    "ResourceId": "shop_payment_item_set_226065002"
   }
 ]

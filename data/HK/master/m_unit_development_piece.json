@@ -2020,6 +2020,296 @@
     "BeforeUnitDevelopmentPieceId": 0
   },
   {
+    "Id": 116201000000,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 0,
+    "ColNumber": 0,
+    "UnitId": 1162001900,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 50,
+    "BeforeUnitDevelopmentPieceId": 0
+  },
+  {
+    "Id": 116201000006,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 6,
+    "ColNumber": 0,
+    "UnitId": 1162002000,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 50,
+    "BeforeUnitDevelopmentPieceId": 0
+  },
+  {
+    "Id": 116201000012,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 12,
+    "ColNumber": 0,
+    "UnitId": 1159000200,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 50,
+    "BeforeUnitDevelopmentPieceId": 0
+  },
+  {
+    "Id": 116201002002,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 2,
+    "ColNumber": 2,
+    "UnitId": 1162000500,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 50,
+    "BeforeUnitDevelopmentPieceId": 116201000000
+  },
+  {
+    "Id": 116201002006,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 6,
+    "ColNumber": 2,
+    "UnitId": 1162000800,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 50,
+    "BeforeUnitDevelopmentPieceId": 116201000006
+  },
+  {
+    "Id": 116201002010,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 10,
+    "ColNumber": 2,
+    "UnitId": 1159000300,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 50,
+    "BeforeUnitDevelopmentPieceId": 116201000012
+  },
+  {
+    "Id": 116201002012,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 12,
+    "ColNumber": 2,
+    "UnitId": 1159000400,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 50,
+    "BeforeUnitDevelopmentPieceId": 116201000012
+  },
+  {
+    "Id": 116201002014,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 14,
+    "ColNumber": 2,
+    "UnitId": 1159000500,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 50,
+    "BeforeUnitDevelopmentPieceId": 116201000012
+  },
+  {
+    "Id": 116201004000,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 0,
+    "ColNumber": 4,
+    "UnitId": 1162000600,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 50,
+    "BeforeUnitDevelopmentPieceId": 116201000000
+  },
+  {
+    "Id": 116201004006,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 6,
+    "ColNumber": 4,
+    "UnitId": 1162000900,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 50,
+    "BeforeUnitDevelopmentPieceId": 116201002006
+  },
+  {
+    "Id": 116201004010,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 10,
+    "ColNumber": 4,
+    "UnitId": 1159000900,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 50,
+    "BeforeUnitDevelopmentPieceId": 116201002010
+  },
+  {
+    "Id": 116201006006,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 6,
+    "ColNumber": 6,
+    "UnitId": 1162000400,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 55,
+    "BeforeUnitDevelopmentPieceId": 116201004006
+  },
+  {
+    "Id": 116201006010,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 10,
+    "ColNumber": 6,
+    "UnitId": 1159000600,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 55,
+    "BeforeUnitDevelopmentPieceId": 116201004010
+  },
+  {
+    "Id": 116201006012,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 12,
+    "ColNumber": 6,
+    "UnitId": 1159000700,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 55,
+    "BeforeUnitDevelopmentPieceId": 116201002012
+  },
+  {
+    "Id": 116201006014,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 14,
+    "ColNumber": 6,
+    "UnitId": 1159000800,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 55,
+    "BeforeUnitDevelopmentPieceId": 116201002014
+  },
+  {
+    "Id": 116201008002,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 2,
+    "ColNumber": 8,
+    "UnitId": 1155000100,
+    "IsMultipleUnitDevelopment": true,
+    "InitialLevel": 55,
+    "BeforeUnitDevelopmentPieceId": 116201002002
+  },
+  {
+    "Id": 116201008006,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 6,
+    "ColNumber": 8,
+    "UnitId": 1162001400,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 55,
+    "BeforeUnitDevelopmentPieceId": 116201006006
+  },
+  {
+    "Id": 116201008008,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 8,
+    "ColNumber": 8,
+    "UnitId": 1162001200,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 55,
+    "BeforeUnitDevelopmentPieceId": 116201006006
+  },
+  {
+    "Id": 116201010000,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 0,
+    "ColNumber": 10,
+    "UnitId": 1155000300,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 55,
+    "BeforeUnitDevelopmentPieceId": 116201008002
+  },
+  {
+    "Id": 116201010006,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 6,
+    "ColNumber": 10,
+    "UnitId": 1162000300,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 55,
+    "BeforeUnitDevelopmentPieceId": 116201008006
+  },
+  {
+    "Id": 116201012000,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 0,
+    "ColNumber": 12,
+    "UnitId": 1155000500,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 60,
+    "BeforeUnitDevelopmentPieceId": 116201010000
+  },
+  {
+    "Id": 116201012002,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 2,
+    "ColNumber": 12,
+    "UnitId": 1155000200,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 60,
+    "BeforeUnitDevelopmentPieceId": 116201008002
+  },
+  {
+    "Id": 116201012004,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 4,
+    "ColNumber": 12,
+    "UnitId": 1162000100,
+    "IsMultipleUnitDevelopment": true,
+    "InitialLevel": 60,
+    "BeforeUnitDevelopmentPieceId": 116201008002
+  },
+  {
+    "Id": 116201012006,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 6,
+    "ColNumber": 12,
+    "UnitId": 1162001600,
+    "IsMultipleUnitDevelopment": true,
+    "InitialLevel": 60,
+    "BeforeUnitDevelopmentPieceId": 116201008008
+  },
+  {
+    "Id": 116201012008,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 8,
+    "ColNumber": 12,
+    "UnitId": 1163000200,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 60,
+    "BeforeUnitDevelopmentPieceId": 116201008008
+  },
+  {
+    "Id": 116201012012,
+    "UnitDevelopmentDiagramId": 116201,
+    "RowNumber": 12,
+    "ColNumber": 12,
+    "UnitId": 1159001000,
+    "IsMultipleUnitDevelopment": true,
+    "InitialLevel": 60,
+    "BeforeUnitDevelopmentPieceId": 116201006012
+  },
+  {
+    "Id": 116202000000,
+    "UnitDevelopmentDiagramId": 116202,
+    "RowNumber": 0,
+    "ColNumber": 0,
+    "UnitId": 1157000200,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 1,
+    "BeforeUnitDevelopmentPieceId": 0
+  },
+  {
+    "Id": 116202002000,
+    "UnitDevelopmentDiagramId": 116202,
+    "RowNumber": 0,
+    "ColNumber": 2,
+    "UnitId": 1157000201,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 50,
+    "BeforeUnitDevelopmentPieceId": 0
+  },
+  {
+    "Id": 116202004000,
+    "UnitDevelopmentDiagramId": 116202,
+    "RowNumber": 0,
+    "ColNumber": 4,
+    "UnitId": 1157000202,
+    "IsMultipleUnitDevelopment": false,
+    "InitialLevel": 80,
+    "BeforeUnitDevelopmentPieceId": 0
+  },
+  {
     "Id": 120001000004,
     "UnitDevelopmentDiagramId": 120001,
     "RowNumber": 4,

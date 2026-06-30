@@ -4312,6 +4312,10 @@
     "value": "MOV Down LV 1"
   },
   {
+    "id": 140700000300870101,
+    "value": "Self-Destruct"
+  },
+  {
     "id": 140700000310010101,
     "value": "Decreased ATK [1 turn] LV 1"
   },
@@ -11377,43 +11381,43 @@
   },
   {
     "id": 140800000300690101,
-    "value": "Inflict \"ATK Down 10%\" on the enemy [1 turn]."
+    "value": "Preemptive Strike"
   },
   {
     "id": 140800000300690102,
-    "value": "Preemptive Strike"
+    "value": "Inflict \"ATK Down 10%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300690201,
-    "value": "Inflict \"ATK Down 15%\" on the enemy [1 turn]."
+    "value": "Preemptive Strike"
   },
   {
     "id": 140800000300690202,
-    "value": "Preemptive Strike"
+    "value": "Inflict \"ATK Down 15%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300690301,
-    "value": "Inflict \"ATK Down 20%\" on the enemy [1 turn]."
+    "value": "Preemptive Strike"
   },
   {
     "id": 140800000300690302,
-    "value": "Preemptive Strike"
+    "value": "Inflict \"ATK Down 20%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300690401,
-    "value": "Inflict \"ATK Down 25%\" on the enemy [1 turn]."
+    "value": "Preemptive Strike"
   },
   {
     "id": 140800000300690402,
-    "value": "Preemptive Strike"
+    "value": "Inflict \"ATK Down 25%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300690501,
-    "value": "Inflict \"ATK Down 30%\" on the enemy [1 turn]."
+    "value": "Preemptive Strike"
   },
   {
     "id": 140800000300690502,
-    "value": "Preemptive Strike"
+    "value": "Inflict \"ATK Down 30%\" on the enemy [1 turn]."
   },
   {
     "id": 140800000300690601,
@@ -12042,6 +12046,10 @@
   {
     "id": 140800000300860102,
     "value": "Inflict \"MOV Down by 1\" on the enemy (1 turn)."
+  },
+  {
+    "id": 140800000300870101,
+    "value": "This unit becomes unable to fight."
   },
   {
     "id": 140800000310010101,

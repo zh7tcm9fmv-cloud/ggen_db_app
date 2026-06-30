@@ -484,6 +484,17 @@
     "FilterNameLanguageId": 200300000000001500
   },
   {
+    "Id": 1540,
+    "WorldId": 0,
+    "NameLanguageId": 200100000000001540,
+    "DescriptionLanguageId": 200200000000001540,
+    "ResourceId": "series_1540",
+    "SortOrder": 11630,
+    "ScheduleId": 2606509901,
+    "ScenarioStageSeriesId": 0,
+    "FilterNameLanguageId": 200300000000001540
+  },
+  {
     "Id": 1550,
     "WorldId": 1,
     "NameLanguageId": 200100000000001550,
@@ -495,15 +506,48 @@
     "FilterNameLanguageId": 200300000000001550
   },
   {
+    "Id": 1570,
+    "WorldId": 0,
+    "NameLanguageId": 200100000000001570,
+    "DescriptionLanguageId": 200200000000001570,
+    "ResourceId": "series_1570",
+    "SortOrder": 12330,
+    "ScheduleId": 2606509901,
+    "ScenarioStageSeriesId": 0,
+    "FilterNameLanguageId": 200300000000001570
+  },
+  {
+    "Id": 1590,
+    "WorldId": 0,
+    "NameLanguageId": 200100000000001590,
+    "DescriptionLanguageId": 200200000000001590,
+    "ResourceId": "series_1590",
+    "SortOrder": 12320,
+    "ScheduleId": 2606509901,
+    "ScenarioStageSeriesId": 0,
+    "FilterNameLanguageId": 200300000000001590
+  },
+  {
     "Id": 1620,
     "WorldId": 0,
     "NameLanguageId": 200100000000001620,
     "DescriptionLanguageId": 200200000000001620,
     "ResourceId": "series_1620",
-    "SortOrder": 12300,
+    "SortOrder": 330,
     "ScheduleId": 2509601801,
-    "ScenarioStageSeriesId": 0,
+    "ScenarioStageSeriesId": 1620,
     "FilterNameLanguageId": 200300000000001620
+  },
+  {
+    "Id": 1630,
+    "WorldId": 0,
+    "NameLanguageId": 200100000000001630,
+    "DescriptionLanguageId": 200200000000001630,
+    "ResourceId": "series_1630",
+    "SortOrder": 12310,
+    "ScheduleId": 2606509901,
+    "ScenarioStageSeriesId": 0,
+    "FilterNameLanguageId": 200300000000001630
   },
   {
     "Id": 1660,

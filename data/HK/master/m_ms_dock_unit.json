@@ -210,6 +210,26 @@
     "ScheduleId": 2511409901
   },
   {
+    "Id": 1162000100,
+    "ResourceId": "g1620u00100",
+    "NameLanguageId": 110100001162000100,
+    "ProfileLanguageId": 110200001162000100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 1620,
+    "ModelNumber": "F91",
+    "ScheduleId": 2606509901
+  },
+  {
+    "Id": 1162000300,
+    "ResourceId": "g1620u00300",
+    "NameLanguageId": 110100001162000300,
+    "ProfileLanguageId": 110200001162000300,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 1620,
+    "ModelNumber": "XM-07",
+    "ScheduleId": 2606509901
+  },
+  {
     "Id": 1200000100,
     "ResourceId": "g2000u00100",
     "NameLanguageId": 110100001200000100,

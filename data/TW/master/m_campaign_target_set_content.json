@@ -2721,5 +2721,12 @@
     "CampaignTargetTypeIndex": 7,
     "TargetId": 0,
     "TransitionId": 35000000000000
+  },
+  {
+    "Id": 42606450101,
+    "CampaignTargetSetId": 426064501,
+    "CampaignTargetTypeIndex": 1,
+    "TargetId": 0,
+    "TransitionId": 19000000000000
   }
 ]

@@ -10,6 +10,11 @@
     "UnitSkillId": 114400055000
   },
   {
+    "UnitId": 1163000150,
+    "SortOrder": 1,
+    "UnitSkillId": 116300015000
+  },
+  {
     "UnitId": 1370005950,
     "SortOrder": 1,
     "UnitSkillId": 137000595000

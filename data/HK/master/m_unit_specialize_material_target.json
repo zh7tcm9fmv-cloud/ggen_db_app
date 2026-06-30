@@ -66,6 +66,12 @@
     "TargetId": 1500
   },
   {
+    "ItemId": 240000011620,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 2,
+    "TargetId": 1620
+  },
+  {
     "ItemId": 240000012190,
     "TargetIndex": 1,
     "TargetTypeIndex": 2,

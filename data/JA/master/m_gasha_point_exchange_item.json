@@ -2165,5 +2165,93 @@
     "Limit": 1,
     "SortOrder": 4,
     "ResourceId": ""
+  },
+  {
+    "Id": 260650030101,
+    "GashaPointExchangeId": 2606500301,
+    "GashaContentDetailId": 0,
+    "GashaPointExchangeItemTypeIndex": 1,
+    "TargetId": 11163000150,
+    "Point": 200,
+    "Limit": 0,
+    "SortOrder": 1,
+    "ResourceId": ""
+  },
+  {
+    "Id": 260650030102,
+    "GashaPointExchangeId": 2606500301,
+    "GashaContentDetailId": 0,
+    "GashaPointExchangeItemTypeIndex": 1,
+    "TargetId": 11155000250,
+    "Point": 200,
+    "Limit": 0,
+    "SortOrder": 2,
+    "ResourceId": ""
+  },
+  {
+    "Id": 260650030103,
+    "GashaPointExchangeId": 2606500301,
+    "GashaContentDetailId": 0,
+    "GashaPointExchangeItemTypeIndex": 1,
+    "TargetId": 11155000610,
+    "Point": 40,
+    "Limit": 0,
+    "SortOrder": 4,
+    "ResourceId": ""
+  },
+  {
+    "Id": 260650030104,
+    "GashaPointExchangeId": 2606500301,
+    "GashaContentDetailId": 0,
+    "GashaPointExchangeItemTypeIndex": 1,
+    "TargetId": 11159000110,
+    "Point": 40,
+    "Limit": 0,
+    "SortOrder": 5,
+    "ResourceId": ""
+  },
+  {
+    "Id": 260650030105,
+    "GashaPointExchangeId": 2606500301,
+    "GashaContentDetailId": 0,
+    "GashaPointExchangeItemTypeIndex": 1,
+    "TargetId": 11162001310,
+    "Point": 40,
+    "Limit": 0,
+    "SortOrder": 6,
+    "ResourceId": ""
+  },
+  {
+    "Id": 260650030106,
+    "GashaPointExchangeId": 2606500301,
+    "GashaContentDetailId": 0,
+    "GashaPointExchangeItemTypeIndex": 1,
+    "TargetId": 11162001510,
+    "Point": 40,
+    "Limit": 0,
+    "SortOrder": 7,
+    "ResourceId": ""
+  },
+  {
+    "Id": 260650030107,
+    "GashaPointExchangeId": 2606500301,
+    "GashaContentDetailId": 0,
+    "GashaPointExchangeItemTypeIndex": 1,
+    "TargetId": 21162000150,
+    "Point": 300,
+    "Limit": 1,
+    "SortOrder": 3,
+    "ResourceId": ""
+  },
+  {
+    "Id": 260650030108,
+    "GashaPointExchangeId": 2606500301,
+    "GashaContentDetailId": 0,
+    "GashaPointExchangeItemTypeIndex": 1,
+    "TargetId": 21162000250,
+    "Point": 60,
+    "Limit": 0,
+    "SortOrder": 8,
+    "ResourceId": ""
   }
 ]

@@ -366,5 +366,29 @@
     "PanelMissionGroupId": 260450011,
     "RewardSetId": 17002604500113,
     "BackgroundImageResourceId": "pm_lbg_2604500131"
+  },
+  {
+    "Id": 2606500111,
+    "Level": 1,
+    "PanelCompleteRewardResourceId": "",
+    "PanelMissionGroupId": 260650011,
+    "RewardSetId": 17002606500111,
+    "BackgroundImageResourceId": "pm_lbg_2606500111"
+  },
+  {
+    "Id": 2606500112,
+    "Level": 2,
+    "PanelCompleteRewardResourceId": "",
+    "PanelMissionGroupId": 260650011,
+    "RewardSetId": 17002606500112,
+    "BackgroundImageResourceId": "pm_lbg_2606500111"
+  },
+  {
+    "Id": 2606500113,
+    "Level": 3,
+    "PanelCompleteRewardResourceId": "",
+    "PanelMissionGroupId": 260650011,
+    "RewardSetId": 17002606500113,
+    "BackgroundImageResourceId": "pm_lbg_2606500131"
   }
 ]

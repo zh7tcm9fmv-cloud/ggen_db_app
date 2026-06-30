@@ -11858,6 +11858,17 @@
     "TargetLimit": 0
   },
   {
+    "Id": 300870101,
+    "ResourceId": "trait_10150100",
+    "NameLanguageId": 140700000300870101,
+    "DescriptionLanguageId": 140800000300870101,
+    "WeaponTraitTypeIndex": 4,
+    "TargetValue": 0,
+    "ApplyRate": 100,
+    "ApplyConditionSetId": 0,
+    "TargetLimit": 0
+  },
+  {
     "Id": 310010101,
     "ResourceId": "trait_10030200",
     "NameLanguageId": 140700000310010101,
@@ -21275,7 +21286,7 @@
   },
   {
     "Id": 700480101,
-    "ResourceId": "",
+    "ResourceId": "trait_10010400",
     "NameLanguageId": 140700000700480101,
     "DescriptionLanguageId": 140800000700480101,
     "WeaponTraitTypeIndex": 10,

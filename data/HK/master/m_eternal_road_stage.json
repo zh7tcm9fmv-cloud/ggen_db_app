@@ -242,6 +242,17 @@
     "MapBgOffsetY": 0
   },
   {
+    "StageId": 90500029,
+    "StageDifficultyTypeIndex": 1,
+    "StageNumber": 23,
+    "DisplayUnitId": 1162000100,
+    "StageNameLanguageId": 130100000090500029,
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
+  },
+  {
     "StageId": 90510001,
     "StageDifficultyTypeIndex": 2,
     "StageNumber": 1,
@@ -583,6 +594,17 @@
     "MapBgOffsetY": 0
   },
   {
+    "StageId": 90510037,
+    "StageDifficultyTypeIndex": 2,
+    "StageNumber": 32,
+    "DisplayUnitId": 1162001600,
+    "StageNameLanguageId": 130100000090510037,
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
+  },
+  {
     "StageId": 90520001,
     "StageDifficultyTypeIndex": 3,
     "StageNumber": 1,
@@ -633,7 +655,7 @@
     "DisplayUnitId": 1007000200,
     "StageNameLanguageId": 130100000090520005,
     "StrategyInfoScheduleId": 0,
-    "InitialMinimapPosY": 0,
+    "InitialMinimapPosY": 14,
     "MapBgOffsetX": 0,
     "MapBgOffsetY": 0
   },
@@ -754,7 +776,7 @@
     "DisplayUnitId": 1114000200,
     "StageNameLanguageId": 130100000090520018,
     "StrategyInfoScheduleId": 0,
-    "InitialMinimapPosY": 0,
+    "InitialMinimapPosY": 18,
     "MapBgOffsetX": 0,
     "MapBgOffsetY": 0
   },
@@ -765,7 +787,7 @@
     "DisplayUnitId": 1330000100,
     "StageNameLanguageId": 130100000090520019,
     "StrategyInfoScheduleId": 0,
-    "InitialMinimapPosY": 0,
+    "InitialMinimapPosY": 21,
     "MapBgOffsetX": 0,
     "MapBgOffsetY": 0
   },
@@ -863,6 +885,17 @@
     "StageNumber": 26,
     "DisplayUnitId": 1001001900,
     "StageNameLanguageId": 130100000090520029,
+    "StrategyInfoScheduleId": 0,
+    "InitialMinimapPosY": 0,
+    "MapBgOffsetX": 0,
+    "MapBgOffsetY": 0
+  },
+  {
+    "StageId": 90520030,
+    "StageDifficultyTypeIndex": 3,
+    "StageNumber": 27,
+    "DisplayUnitId": 1162001600,
+    "StageNameLanguageId": 130100000090520030,
     "StrategyInfoScheduleId": 0,
     "InitialMinimapPosY": 0,
     "MapBgOffsetX": 0,

@@ -28,8 +28,64 @@
     "value": "Hint 2"
   },
   {
+    "id": 360190520005000001,
+    "value": "Hint 1"
+  },
+  {
+    "id": 360190520005000002,
+    "value": "Hint 2"
+  },
+  {
+    "id": 360190520005000003,
+    "value": "Hint 3"
+  },
+  {
+    "id": 360190520005000004,
+    "value": "Hint 4-1"
+  },
+  {
+    "id": 360190520005000005,
+    "value": "Hint 4-2"
+  },
+  {
     "id": 360190520017000001,
     "value": "Hint"
+  },
+  {
+    "id": 360190520018000001,
+    "value": "Hint 1"
+  },
+  {
+    "id": 360190520018000002,
+    "value": "Hint 2"
+  },
+  {
+    "id": 360190520018000003,
+    "value": "Hint 3"
+  },
+  {
+    "id": 360190520018000004,
+    "value": "Hint 4"
+  },
+  {
+    "id": 360190520019000001,
+    "value": "Hint 1"
+  },
+  {
+    "id": 360190520019000002,
+    "value": "Hint 2"
+  },
+  {
+    "id": 360190520021000001,
+    "value": "Hint 1"
+  },
+  {
+    "id": 360190520021000002,
+    "value": "Hint 2-1"
+  },
+  {
+    "id": 360190520021000003,
+    "value": "Hint 2-2"
   },
   {
     "id": 360290520001000001,
@@ -56,7 +112,63 @@
     "value": "Enemies with red effects have powerful abilities.\nPrioritize the enemy with \"Increased DEF (All)\" to defeat\nthe rest efficiently."
   },
   {
+    "id": 360290520005000001,
+    "value": "In this stage, enemy reinforcements appear when you defeat\n5 units and 12 units, respectively.\nKeep track of how many you have defeated."
+  },
+  {
+    "id": 360290520005000002,
+    "value": "The G-3 Gundam is a powerful unit with extremely high ATK\nand an ability that grants Chance Steps.\nPrioritize defeating it."
+  },
+  {
+    "id": 360290520005000003,
+    "value": "Destroying 5 enemy units spawns many reinforcements with\nSupport Attacks. Spawn the reinforcements on your turn and\ntarget the Support Attack units to reduce incoming damage."
+  },
+  {
+    "id": 360290520005000004,
+    "value": "In this stage, the reinforcements that appear after defeating\n12 enemy units are positioned at a long range.\nLeverage MAP Weapons to defeat them efficiently."
+  },
+  {
+    "id": 360290520005000005,
+    "value": "In this stage, the reinforcements that appear after defeating\n12 enemy units are positioned at a long range.\nLeverage MAP Weapons to defeat them efficiently."
+  },
+  {
     "id": 360290520017000001,
     "value": "A large number of enemy units are deployed in this stage,\nand as you clear mission objectives, even more will appear.\nLeverage MAP Weapons to defeat the enemy efficiently."
+  },
+  {
+    "id": 360290520018000001,
+    "value": "The Alpha Azierus possess the \n\"HP Restoration (All Units)\" ability.\nPrioritize defeating them."
+  },
+  {
+    "id": 360290520018000002,
+    "value": "At the beginning of turns 2 and 3, Jagd Dogas appear\nas enemy reinforcements. Since two of them possess the\n\"Increased DEF (All Units)\" ability, prioritize defeating them."
+  },
+  {
+    "id": 360290520018000003,
+    "value": "The enemy Nightingale will use its MAP Weapon when 1 or more\nallied units are within range, so plan your route carefully."
+  },
+  {
+    "id": 360290520018000004,
+    "value": "Without destroying all Alpha Azierus, isolating them 4 tiles or\nmore from the Nightingale or placing an allied unit in between\nprevents Support Defend, allowing to attack the Nightingale."
+  },
+  {
+    "id": 360290520019000001,
+    "value": "In this stage, the high-ATK Destiny Gundam appears within the\nthird force. It attacks nearby units, friends or foes.\nTake position carefully to let it attack enemy forces."
+  },
+  {
+    "id": 360290520019000002,
+    "value": "The Destiny Gundam deals approximately 500,000 damage to the\nDom Trooper. Use MAP Weapons on the enemy forces and\nreduce the Dom Trooper's HP to around 500,000."
+  },
+  {
+    "id": 360290520021000001,
+    "value": "For this stage, reaching the target area satisfies the victory\ncondition. You can do this by clearing out enemies in the area,\nor by using mobility-type MAP Weapons to quickly reach the area."
+  },
+  {
+    "id": 360290520021000002,
+    "value": "In this stage, reinforcements appear when you defeat certain\nunits. Pay attention to the order in which\nyou defeat them to reach the target area efficiently."
+  },
+  {
+    "id": 360290520021000003,
+    "value": "In this stage, reinforcements appear when you defeat certain\nunits. Pay attention to the order in which\nyou defeat them to reach the target area efficiently."
   }
 ]

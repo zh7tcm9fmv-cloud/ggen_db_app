@@ -8116,6 +8116,42 @@
     "value": "Prototype Beam Rifle"
   },
   {
+    "id": 120100115400010001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100115400010002,
+    "value": "Short Beam Rifle"
+  },
+  {
+    "id": 120100115400010003,
+    "value": "Missile Launcher"
+  },
+  {
+    "id": 120100115400010090,
+    "value": "Missile Launcher SSP"
+  },
+  {
+    "id": 120100115500010001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100115500010002,
+    "value": "Head Vulcan Gun"
+  },
+  {
+    "id": 120100115500010003,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100115500010004,
+    "value": "A.R (Type-A.R)"
+  },
+  {
+    "id": 120100115500010090,
+    "value": "Beam Rifle SSP"
+  },
+  {
     "id": 120100115500011001,
     "value": "Beam Saber"
   },
@@ -8129,11 +8165,359 @@
   },
   {
     "id": 120100115500011004,
-    "value": "AR (AR-Type)"
+    "value": "A.R (Type-A.R)"
   },
   {
     "id": 120100115500011090,
-    "value": "AR (AR-Type) SSP"
+    "value": "A.R (Type-A.R)"
+  },
+  {
+    "id": 120100115500015001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100115500015002,
+    "value": "Head Vulcan Gun"
+  },
+  {
+    "id": 120100115500015003,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100115500015004,
+    "value": "A.R (Type-A.R)"
+  },
+  {
+    "id": 120100115500020001,
+    "value": "Arm-Mounted 5-Tube Rocket Pack"
+  },
+  {
+    "id": 120100115500020002,
+    "value": "Quadruple Beam Cannon"
+  },
+  {
+    "id": 120100115500020003,
+    "value": "Mega Beam Cannon"
+  },
+  {
+    "id": 120100115500020004,
+    "value": "Barrage"
+  },
+  {
+    "id": 120100115500020090,
+    "value": "Mega Beam Cannon SSP"
+  },
+  {
+    "id": 120100115500025001,
+    "value": "Arm-Mounted 5-Tube Rocket Pack"
+  },
+  {
+    "id": 120100115500025002,
+    "value": "Quadruple Beam Cannon"
+  },
+  {
+    "id": 120100115500025003,
+    "value": "Mega Beam Cannon"
+  },
+  {
+    "id": 120100115500025004,
+    "value": "Barrage"
+  },
+  {
+    "id": 120100115500025005,
+    "value": "Barrage EX"
+  },
+  {
+    "id": 120100115500030001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100115500030002,
+    "value": "Head Vulcan Gun"
+  },
+  {
+    "id": 120100115500030003,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100115500030090,
+    "value": "Beam Rifle SSP"
+  },
+  {
+    "id": 120100115500040001,
+    "value": "Twin Missile Launcher"
+  },
+  {
+    "id": 120100115500040002,
+    "value": "Long Rifle (Beam)"
+  },
+  {
+    "id": 120100115500040003,
+    "value": "Long Rifle (Projectile)"
+  },
+  {
+    "id": 120100115500040004,
+    "value": "Snipe"
+  },
+  {
+    "id": 120100115500040090,
+    "value": "Long Rifle (Beam) SSP"
+  },
+  {
+    "id": 120100115500050001,
+    "value": "Beam Lancer"
+  },
+  {
+    "id": 120100115500050002,
+    "value": "Beam Lancer (Ranged)"
+  },
+  {
+    "id": 120100115500050003,
+    "value": "Machine Cannon"
+  },
+  {
+    "id": 120100115500050090,
+    "value": "Beam Lancer SSP"
+  },
+  {
+    "id": 120100115500061001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100115500061002,
+    "value": "Head Vulcan Gun"
+  },
+  {
+    "id": 120100115500061003,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100115500061090,
+    "value": "Beam Rifle SSP"
+  },
+  {
+    "id": 120100115500070001,
+    "value": "Waist-Mounted Twin Anti-MS Grenades"
+  },
+  {
+    "id": 120100115500070002,
+    "value": "Beam Machine Gun"
+  },
+  {
+    "id": 120100115500070003,
+    "value": "C.A (Type-C.A)"
+  },
+  {
+    "id": 120100115500070090,
+    "value": "C.A (Type-C.A) SSP"
+  },
+  {
+    "id": 120100115700020001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100115700020002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100115700020003,
+    "value": "VSBR"
+  },
+  {
+    "id": 120100115700020004,
+    "value": "VSBR"
+  },
+  {
+    "id": 120100115700020101,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100115700020102,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100115700020103,
+    "value": "VSBR"
+  },
+  {
+    "id": 120100115700020104,
+    "value": "VSBR"
+  },
+  {
+    "id": 120100115700020201,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100115700020202,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100115700020203,
+    "value": "VSBR"
+  },
+  {
+    "id": 120100115700020204,
+    "value": "VSBR"
+  },
+  {
+    "id": 120100115900011001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100115900011002,
+    "value": "Beam Shield"
+  },
+  {
+    "id": 120100115900011003,
+    "value": "Beam Launcher"
+  },
+  {
+    "id": 120100115900011090,
+    "value": "Beam Launcher SSP"
+  },
+  {
+    "id": 120100115900020001,
+    "value": "Sea Snake"
+  },
+  {
+    "id": 120100115900020002,
+    "value": "Twin Vulcan Cannon"
+  },
+  {
+    "id": 120100115900020090,
+    "value": "Sea Snake SSP"
+  },
+  {
+    "id": 120100115900030001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100115900030002,
+    "value": "Beam Launcher"
+  },
+  {
+    "id": 120100115900030090,
+    "value": "Beam Launcher SSP"
+  },
+  {
+    "id": 120100115900040001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100115900040002,
+    "value": "Beam Rod"
+  },
+  {
+    "id": 120100115900040003,
+    "value": "5-Barrel Machine Gun"
+  },
+  {
+    "id": 120100115900040090,
+    "value": "Beam Rod SSP"
+  },
+  {
+    "id": 120100115900050001,
+    "value": "Heat Claw"
+  },
+  {
+    "id": 120100115900050002,
+    "value": "Beam Cannon"
+  },
+  {
+    "id": 120100115900050090,
+    "value": "Heat Claw SSP"
+  },
+  {
+    "id": 120100115900060001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100115900060002,
+    "value": "Heat Rod"
+  },
+  {
+    "id": 120100115900060090,
+    "value": "Beam Saber SSP"
+  },
+  {
+    "id": 120100115900070001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100115900070002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100115900070090,
+    "value": "Beam Rifle SSP"
+  },
+  {
+    "id": 120100115900080001,
+    "value": "Mega Particle Cannon"
+  },
+  {
+    "id": 120100115900080002,
+    "value": "Anti-Air Missile Launcher"
+  },
+  {
+    "id": 120100115900080090,
+    "value": "Mega Particle Cannon SSP"
+  },
+  {
+    "id": 120100115900090001,
+    "value": "Grenade Launcher"
+  },
+  {
+    "id": 120100115900090002,
+    "value": "Beam Bazooka"
+  },
+  {
+    "id": 120100115900090090,
+    "value": "Grenade Launcher SSP"
+  },
+  {
+    "id": 120100115900100001,
+    "value": "Mega Particle Cannon (Barrage)"
+  },
+  {
+    "id": 120100115900100002,
+    "value": "Anti-Ship Mega Particle Cannon"
+  },
+  {
+    "id": 120100115900100003,
+    "value": "Mega Particle Cannon (Barrage)"
+  },
+  {
+    "id": 120100115900100004,
+    "value": "Anti-Ship Mega Particle Cannon"
+  },
+  {
+    "id": 120100115900100090,
+    "value": "Anti-Ship Mega Particle Cannon SSP"
+  },
+  {
+    "id": 120100116200010001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100116200010002,
+    "value": "Chest Mega Machine Cannon"
+  },
+  {
+    "id": 120100116200010003,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100116200010004,
+    "value": "VSBR"
+  },
+  {
+    "id": 120100116200010005,
+    "value": "M.E.P.E."
+  },
+  {
+    "id": 120100116200010090,
+    "value": "VSBR SSP"
   },
   {
     "id": 120100116200015001,
@@ -8154,6 +8538,290 @@
   {
     "id": 120100116200015005,
     "value": "M.E.P.E. EX"
+  },
+  {
+    "id": 120100116200030001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100116200030002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100116200030003,
+    "value": "Beam Launcher"
+  },
+  {
+    "id": 120100116200030090,
+    "value": "Beam Launcher SSP"
+  },
+  {
+    "id": 120100116200040001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100116200040002,
+    "value": "Shot Lancer"
+  },
+  {
+    "id": 120100116200040003,
+    "value": "Shot Lancer (Ranged)"
+  },
+  {
+    "id": 120100116200040004,
+    "value": "Heavy Machine Gun"
+  },
+  {
+    "id": 120100116200040090,
+    "value": "Shot Lancer SSP"
+  },
+  {
+    "id": 120100116200050001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100116200050002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100116200050090,
+    "value": "Beam Rifle SSP"
+  },
+  {
+    "id": 120100116200060001,
+    "value": "Double Beam Gun"
+  },
+  {
+    "id": 120100116200060002,
+    "value": "Quadruple Machine Cannon"
+  },
+  {
+    "id": 120100116200060090,
+    "value": "Quadruple Machine Cannon SSP"
+  },
+  {
+    "id": 120100116200080001,
+    "value": "Dual Beam Gun"
+  },
+  {
+    "id": 120100116200080002,
+    "value": "Shot Lancer"
+  },
+  {
+    "id": 120100116200080090,
+    "value": "Shot Lancer SSP"
+  },
+  {
+    "id": 120100116200090001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100116200090002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100116200090090,
+    "value": "Beam Rifle SSP"
+  },
+  {
+    "id": 120100116200100001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100116200100002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100116200101001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100116200101002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100116200101090,
+    "value": "Beam Rifle SSP"
+  },
+  {
+    "id": 120100116200120001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100116200120002,
+    "value": "Heavy Machine Gun"
+  },
+  {
+    "id": 120100116200120003,
+    "value": "Shot Lancer"
+  },
+  {
+    "id": 120100116200120090,
+    "value": "Heavy Machine Gun SSP"
+  },
+  {
+    "id": 120100116200130001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100116200130002,
+    "value": "Heavy Machine Gun"
+  },
+  {
+    "id": 120100116200130003,
+    "value": "Shot Lancer"
+  },
+  {
+    "id": 120100116200131001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100116200131002,
+    "value": "Heavy Machine Gun"
+  },
+  {
+    "id": 120100116200131003,
+    "value": "Shot Lancer"
+  },
+  {
+    "id": 120100116200131090,
+    "value": "Shot Lancer SSP"
+  },
+  {
+    "id": 120100116200140001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100116200140002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100116200140003,
+    "value": "Diffuse Beam Cannon"
+  },
+  {
+    "id": 120100116200140090,
+    "value": "Diffuse Beam Cannon SSP"
+  },
+  {
+    "id": 120100116200150001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100116200150002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100116200150003,
+    "value": "Diffuse Beam Cannon"
+  },
+  {
+    "id": 120100116200151001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100116200151002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100116200151003,
+    "value": "Diffuse Beam Cannon"
+  },
+  {
+    "id": 120100116200151090,
+    "value": "Diffuse Beam Cannon SSP"
+  },
+  {
+    "id": 120100116200160001,
+    "value": "Diffuse Beam Cannon"
+  },
+  {
+    "id": 120100116200160002,
+    "value": "Mega Beam Cannon"
+  },
+  {
+    "id": 120100116200160003,
+    "value": "Tentacler Rod"
+  },
+  {
+    "id": 120100116200160004,
+    "value": "Bug"
+  },
+  {
+    "id": 120100116200160090,
+    "value": "Tentacler Rod SSP"
+  },
+  {
+    "id": 120100116200170001,
+    "value": "Assault"
+  },
+  {
+    "id": 120100116200170002,
+    "value": "Bug"
+  },
+  {
+    "id": 120100116200180001,
+    "value": "Self-Destruct"
+  },
+  {
+    "id": 120100116200190001,
+    "value": "5-Barrel Finger Launcher"
+  },
+  {
+    "id": 120100116200190002,
+    "value": "200mm Cannon"
+  },
+  {
+    "id": 120100116200190090,
+    "value": "200mm Cannon SSP"
+  },
+  {
+    "id": 120100116200200001,
+    "value": "Quadruple Shot Claw"
+  },
+  {
+    "id": 120100116200200002,
+    "value": "Shot Lancer"
+  },
+  {
+    "id": 120100116200200090,
+    "value": "Shot Lancer SSP"
+  },
+  {
+    "id": 120100116300015001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100116300015002,
+    "value": "Improved VSBR (Barrage)"
+  },
+  {
+    "id": 120100116300015003,
+    "value": "Improved VSBR (Auto)"
+  },
+  {
+    "id": 120100116300015004,
+    "value": "Twin VSBR EX"
+  },
+  {
+    "id": 120100116300015005,
+    "value": "Twin VSBR"
+  },
+  {
+    "id": 120100116300020001,
+    "value": "Shot Lancer"
+  },
+  {
+    "id": 120100116300020002,
+    "value": "Anti-Ship Missile"
+  },
+  {
+    "id": 120100116300020003,
+    "value": "Heavy Machine Gun"
+  },
+  {
+    "id": 120100116300020090,
+    "value": "Anti-Ship Missile SSP"
   },
   {
     "id": 120100116600025001,
@@ -22166,6 +22834,18 @@
   {
     "id": 120100212500040003,
     "value": "Minovsky Particle Diffuser"
+  },
+  {
+    "id": 120100216200010001,
+    "value": "Anti-Air Attack"
+  },
+  {
+    "id": 120100216200010002,
+    "value": "Missile Barrage"
+  },
+  {
+    "id": 120100216200010003,
+    "value": "Bombardment"
   },
   {
     "id": 120100220000010001,

@@ -12,6 +12,12 @@
     "Bgm": "bgm_1500_0001"
   },
   {
+    "Id": 1620,
+    "ScenarioStageSeriesId": 1620,
+    "ScheduleId": 2606509903,
+    "Bgm": "bgm_1620_0001"
+  },
+  {
     "Id": 2190,
     "ScenarioStageSeriesId": 2190,
     "ScheduleId": 2603609902,

@@ -2408,6 +2408,114 @@
     "value": "All of your units are defeated."
   },
   {
+    "id": 130300001620010301,
+    "value": "Guest force Seabook Arno reaches the target area.\nDefeat all enemy units."
+  },
+  {
+    "id": 130300001620010302,
+    "value": "Guest force Seabook Arno reaches the target area.\nDefeat all enemy units."
+  },
+  {
+    "id": 130300001620010304,
+    "value": "All of your units defeated.\nGuest force Seabook Arno defeated."
+  },
+  {
+    "id": 130300001620010305,
+    "value": "All of your units defeated.\nGuest force Seabook Arno defeated."
+  },
+  {
+    "id": 130300001620020301,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300001620020304,
+    "value": "All of your units defeated.\nGuest force Seabook Arno defeated."
+  },
+  {
+    "id": 130300001620030401,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300001620030402,
+    "value": "Defeat Zabine Chareux."
+  },
+  {
+    "id": 130300001620030404,
+    "value": "All of your units defeated.\nGuest force Seabook Arno defeated."
+  },
+  {
+    "id": 130300001620030405,
+    "value": "All of your units are defeated.\nSeabook Arno and Guest force defeated."
+  },
+  {
+    "id": 130300001620040301,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300001620040302,
+    "value": "Defeat 6 enemies."
+  },
+  {
+    "id": 130300001620040304,
+    "value": "All of your units are defeated.\nSeabook Arno and Guest force defeated."
+  },
+  {
+    "id": 130300001620040305,
+    "value": "All of your units are defeated.\nSeabook Arno and Guest force defeated."
+  },
+  {
+    "id": 130300001620050201,
+    "value": "Defeat Carozzo Ronah."
+  },
+  {
+    "id": 130300001620050202,
+    "value": "Defeat Carozzo Ronah."
+  },
+  {
+    "id": 130300001620050204,
+    "value": "All of your units defeated.\nGuest force Seabook Arno defeated."
+  },
+  {
+    "id": 130300001620050205,
+    "value": "All of your units are defeated.\nSeabook Arno and Guest force defeated."
+  },
+  {
+    "id": 130300001620060101,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300001620060103,
+    "value": "Defeat all enemies within 2 turns."
+  },
+  {
+    "id": 130300001620060104,
+    "value": "All of your units are defeated."
+  },
+  {
+    "id": 130300001620070101,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300001620070103,
+    "value": "Defeat all enemies within 2 turns."
+  },
+  {
+    "id": 130300001620070104,
+    "value": "All of your units are defeated."
+  },
+  {
+    "id": 130300001620080101,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300001620080103,
+    "value": "Defeat all enemies within 2 turns."
+  },
+  {
+    "id": 130300001620080104,
+    "value": "All of your units are defeated."
+  },
+  {
     "id": 130300002000010401,
     "value": "Defeat Michelo Chariot."
   },
@@ -6352,6 +6460,14 @@
     "value": "All of your units are defeated.\nLimit: 5 turns."
   },
   {
+    "id": 130300009020002001,
+    "value": "Defeat Gundam F90 (Mars Independent Zeon Forces)."
+  },
+  {
+    "id": 130300009020002004,
+    "value": "All of your units are defeated.\nLimit: 5 turns."
+  },
+  {
     "id": 130300009021000101,
     "value": "Defeat Red Gundam(0085)."
   },
@@ -6489,6 +6605,14 @@
   },
   {
     "id": 130300009021001904,
+    "value": "All of your units are defeated.\nLimit: 5 turns."
+  },
+  {
+    "id": 130300009021002001,
+    "value": "Defeat Gundam F90 (Mars Independent Zeon Forces)."
+  },
+  {
+    "id": 130300009021002004,
     "value": "All of your units are defeated.\nLimit: 5 turns."
   },
   {
@@ -6637,6 +6761,14 @@
   },
   {
     "id": 130300009022001904,
+    "value": "All of your units are defeated.\nLimit: 5 turns."
+  },
+  {
+    "id": 130300009022002001,
+    "value": "Defeat Gundam F90 (Mars Independent Zeon Forces)."
+  },
+  {
+    "id": 130300009022002004,
     "value": "All of your units are defeated.\nLimit: 5 turns."
   },
   {
@@ -6797,6 +6929,14 @@
   },
   {
     "id": 130300009023001904,
+    "value": "All of your units are defeated.\nLimit: 5 turns."
+  },
+  {
+    "id": 130300009023002001,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300009023002004,
     "value": "All of your units are defeated.\nLimit: 5 turns."
   },
   {
@@ -7656,6 +7796,14 @@
     "value": "Defeat [???]. / Guest force Jona is defeated.\nAll of your units are defeated. / Limit: 3 turns."
   },
   {
+    "id": 130300009050002901,
+    "value": "Defeat Seabook Arno."
+  },
+  {
+    "id": 130300009050002904,
+    "value": "All of your units are defeated.\nLimit: 3 turns."
+  },
+  {
     "id": 130300009051000101,
     "value": "Defeat all enemy units."
   },
@@ -7928,6 +8076,14 @@
     "value": "Guest force Jona Basta is defeated.\nAll of your units are defeated. / Limit: 3 turns."
   },
   {
+    "id": 130300009051003701,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300009051003704,
+    "value": "All of your units are defeated.\nLimit: 3 turns."
+  },
+  {
     "id": 130300009052000101,
     "value": "Defeat all enemy units."
   },
@@ -8173,6 +8329,14 @@
   },
   {
     "id": 130300009052002904,
+    "value": "All of your units are defeated.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300009052003001,
+    "value": "Defeat Carozzo Ronah."
+  },
+  {
+    "id": 130300009052003004,
     "value": "All of your units are defeated.\nLimit: 3 turns."
   },
   {

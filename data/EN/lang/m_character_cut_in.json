@@ -32,6 +32,38 @@
     "value": "Don't mind if I do!"
   },
   {
+    "id": 100701001000100009,
+    "value": "I see it! Direct hit!"
+  },
+  {
+    "id": 100701001000100010,
+    "value": "I see it! Direct hit!"
+  },
+  {
+    "id": 100701001000100011,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701001000100012,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701001000100013,
+    "value": "I see it! Fin funnels!"
+  },
+  {
+    "id": 100701001000100014,
+    "value": "I see it! Fin funnels!"
+  },
+  {
+    "id": 100701001000100015,
+    "value": "I can see their movements! Fangs!"
+  },
+  {
+    "id": 100701001000100016,
+    "value": "I can see their movements! Fangs!"
+  },
+  {
     "id": 100701001000200001,
     "value": "Heh! You're wasting your time!"
   },
@@ -128,6 +160,14 @@
     "value": "Please make it!"
   },
   {
+    "id": 100701001000400009,
+    "value": "Even I should be able to do it...!"
+  },
+  {
+    "id": 100701001000400010,
+    "value": "Even I should be able to do it...!"
+  },
+  {
     "id": 100701001000500001,
     "value": "How about this?!"
   },
@@ -192,6 +232,14 @@
     "value": "No offense!"
   },
   {
+    "id": 100701001000600009,
+    "value": "You get it!? Now I'm gettin' serious...!"
+  },
+  {
+    "id": 100701001000600010,
+    "value": "You get it!? Now I'm gettin' serious...!"
+  },
+  {
     "id": 100701001001800001,
     "value": "Down you go!"
   },
@@ -222,6 +270,30 @@
   {
     "id": 100701001001800008,
     "value": "I'll end this with one blow!"
+  },
+  {
+    "id": 100701001001800009,
+    "value": "Am I not a Newtype too?!"
+  },
+  {
+    "id": 100701001001800010,
+    "value": "Am I not a Newtype too?!"
+  },
+  {
+    "id": 100701001001800011,
+    "value": "There?! Funnels!"
+  },
+  {
+    "id": 100701001001800012,
+    "value": "There?! Funnels!"
+  },
+  {
+    "id": 100701001001800013,
+    "value": "Heh...Fangs!"
+  },
+  {
+    "id": 100701001001800014,
+    "value": "Heh...Fangs!"
   },
   {
     "id": 100701001001900001,
@@ -256,6 +328,22 @@
     "value": "Get out of my way!"
   },
   {
+    "id": 100701001001900009,
+    "value": "This feeling... I can see it!"
+  },
+  {
+    "id": 100701001001900010,
+    "value": "This feeling... I can see it!"
+  },
+  {
+    "id": 100701001001900011,
+    "value": "This should even the odds! Funnels!"
+  },
+  {
+    "id": 100701001001900012,
+    "value": "This should even the odds! Funnels!"
+  },
+  {
     "id": 100701001002100001,
     "value": "Dammit!"
   },
@@ -286,6 +374,14 @@
   {
     "id": 100701001002100008,
     "value": "Hrrrah!"
+  },
+  {
+    "id": 100701001002100009,
+    "value": "Argh! It's over for you!"
+  },
+  {
+    "id": 100701001002100010,
+    "value": "Argh! It's over for you!"
   },
   {
     "id": 100701001002800001,
@@ -320,6 +416,14 @@
     "value": "I'll take 'em out in one go!"
   },
   {
+    "id": 100701001002800009,
+    "value": "It worked on me too?!"
+  },
+  {
+    "id": 100701001002800010,
+    "value": "It worked on me too?!"
+  },
+  {
     "id": 100701001003300001,
     "value": "You're mine!"
   },
@@ -350,6 +454,14 @@
   {
     "id": 100701001003300008,
     "value": "Pointless!"
+  },
+  {
+    "id": 100701001003300009,
+    "value": "You're not going anywhere!"
+  },
+  {
+    "id": 100701001003300010,
+    "value": "You're not going anywhere!"
   },
   {
     "id": 100701001003900001,
@@ -384,6 +496,14 @@
     "value": "What a fool...!"
   },
   {
+    "id": 100701001003900009,
+    "value": "Alright, go!"
+  },
+  {
+    "id": 100701001003900010,
+    "value": "Alright, go!"
+  },
+  {
     "id": 100701001004100001,
     "value": "Gotcha!"
   },
@@ -414,6 +534,14 @@
   {
     "id": 100701001004100008,
     "value": "You're finished!"
+  },
+  {
+    "id": 100701001004100009,
+    "value": "Time to break this out!"
+  },
+  {
+    "id": 100701001004100010,
+    "value": "Time to break this out!"
   },
   {
     "id": 100701001004200001,
@@ -448,6 +576,14 @@
     "value": "Too slow!"
   },
   {
+    "id": 100701001004200009,
+    "value": "You won't get away!"
+  },
+  {
+    "id": 100701001004200010,
+    "value": "You won't get away!"
+  },
+  {
     "id": 100701001004300001,
     "value": "You're mine!"
   },
@@ -478,6 +614,14 @@
   {
     "id": 100701001004300008,
     "value": "Eat this!"
+  },
+  {
+    "id": 100701001004300009,
+    "value": "Go!"
+  },
+  {
+    "id": 100701001004300010,
+    "value": "Go!"
   },
   {
     "id": 100701001004800001,
@@ -512,6 +656,14 @@
     "value": "Whoooa!"
   },
   {
+    "id": 100701001004800009,
+    "value": "You're done for!"
+  },
+  {
+    "id": 100701001004800010,
+    "value": "You're done for!"
+  },
+  {
     "id": 100701001005000001,
     "value": "Fall!"
   },
@@ -542,6 +694,14 @@
   {
     "id": 100701001005000008,
     "value": "Such futility..."
+  },
+  {
+    "id": 100701001005000009,
+    "value": "Hehehe... With this, victory is certain!"
+  },
+  {
+    "id": 100701001005000010,
+    "value": "Hehehe... With this, victory is certain!"
   },
   {
     "id": 100701007000100001,
@@ -592,6 +752,14 @@
     "value": "Careless!"
   },
   {
+    "id": 100701007000100013,
+    "value": "Brace yourself!"
+  },
+  {
+    "id": 100701007000100014,
+    "value": "Brace yourself!"
+  },
+  {
     "id": 100701007000200001,
     "value": "Time to wrap this up!"
   },
@@ -624,6 +792,14 @@
     "value": "Way too slow!"
   },
   {
+    "id": 100701007000200009,
+    "value": "You won't get away from me!"
+  },
+  {
+    "id": 100701007000200010,
+    "value": "You won't get away from me!"
+  },
+  {
     "id": 100701009000100001,
     "value": "You—!!!"
   },
@@ -654,6 +830,14 @@
   {
     "id": 100701009000100008,
     "value": "Please hit!"
+  },
+  {
+    "id": 100701009000100009,
+    "value": "Grk! Pace yourself... Imagine it's a simulation!"
+  },
+  {
+    "id": 100701009000100010,
+    "value": "Grk! Pace yourself... Imagine it's a simulation!"
   },
   {
     "id": 100701009000200001,
@@ -720,6 +904,14 @@
     "value": "Don't move a muscle!"
   },
   {
+    "id": 100701009000300009,
+    "value": "Please hit!"
+  },
+  {
+    "id": 100701009000300010,
+    "value": "Please hit!"
+  },
+  {
     "id": 100701009000700001,
     "value": "Try this on for size!"
   },
@@ -750,6 +942,14 @@
   {
     "id": 100701009000700008,
     "value": "You're going way up in flames!!!"
+  },
+  {
+    "id": 100701009000700009,
+    "value": "Time to set off some fireworks!"
+  },
+  {
+    "id": 100701009000700010,
+    "value": "Time to set off some fireworks!"
   },
   {
     "id": 100701009000800001,
@@ -784,6 +984,14 @@
     "value": "Take this!"
   },
   {
+    "id": 100701009000800009,
+    "value": "It doesn't matter how this looks, it's now or\nnever!"
+  },
+  {
+    "id": 100701009000800010,
+    "value": "It doesn't matter how this looks, it's now or\nnever!"
+  },
+  {
     "id": 100701009000900001,
     "value": "You're done for!"
   },
@@ -814,6 +1022,14 @@
   {
     "id": 100701009000900008,
     "value": "I can't keep up! There's no way!"
+  },
+  {
+    "id": 100701009000900009,
+    "value": "Let's see you try and keep up with these moves!"
+  },
+  {
+    "id": 100701009000900010,
+    "value": "Let's see you try and keep up with these moves!"
   },
   {
     "id": 100701009001000001,
@@ -880,6 +1096,14 @@
     "value": "You're on the hook now!"
   },
   {
+    "id": 100701009001100009,
+    "value": "Oh, I'm gonna reel ya in sooner or later!"
+  },
+  {
+    "id": 100701009001100010,
+    "value": "Oh, I'm gonna reel ya in sooner or later!"
+  },
+  {
     "id": 100701009001201001,
     "value": "Fall!"
   },
@@ -910,6 +1134,14 @@
   {
     "id": 100701009001201008,
     "value": "Sloppy!"
+  },
+  {
+    "id": 100701009001201009,
+    "value": "You're not getting away from me!"
+  },
+  {
+    "id": 100701009001201010,
+    "value": "You're not getting away from me!"
   },
   {
     "id": 100701009001300001,
@@ -976,6 +1208,14 @@
     "value": "I won't let you get away!"
   },
   {
+    "id": 100701013000100009,
+    "value": "You've slipped away for the last time!"
+  },
+  {
+    "id": 100701013000100010,
+    "value": "You've slipped away for the last time!"
+  },
+  {
     "id": 100701013000200001,
     "value": "See how you like this!"
   },
@@ -1006,6 +1246,14 @@
   {
     "id": 100701013000200008,
     "value": "Don't get cocky!"
+  },
+  {
+    "id": 100701013000200009,
+    "value": "You're not going anywhere!"
+  },
+  {
+    "id": 100701013000200010,
+    "value": "You're not going anywhere!"
   },
   {
     "id": 100701013000300001,
@@ -1040,6 +1288,14 @@
     "value": "Gotcha!"
   },
   {
+    "id": 100701013000300009,
+    "value": "I'll smash every last one of you!"
+  },
+  {
+    "id": 100701013000300010,
+    "value": "I'll smash every last one of you!"
+  },
+  {
     "id": 100701013000400001,
     "value": "Yes! I got you locked down!"
   },
@@ -1070,6 +1326,14 @@
   {
     "id": 100701013000400008,
     "value": "Like I said, you're not going anywhere!"
+  },
+  {
+    "id": 100701013000400009,
+    "value": "Bout time to blow this shindig!"
+  },
+  {
+    "id": 100701013000400010,
+    "value": "Bout time to blow this shindig!"
   },
   {
     "id": 100701013000900001,
@@ -1104,6 +1368,14 @@
     "value": "That's insane!"
   },
   {
+    "id": 100701013000900009,
+    "value": "I'll find a way!"
+  },
+  {
+    "id": 100701013000900010,
+    "value": "I'll find a way!"
+  },
+  {
     "id": 100701013001000001,
     "value": "Wahahahaha!"
   },
@@ -1134,6 +1406,14 @@
   {
     "id": 100701013001000008,
     "value": "You don't know who you're up against!"
+  },
+  {
+    "id": 100701013001000009,
+    "value": "Face me and I'll put you out of your misery!"
+  },
+  {
+    "id": 100701013001000010,
+    "value": "Face me and I'll put you out of your misery!"
   },
   {
     "id": 100701013001100001,
@@ -1168,6 +1448,14 @@
     "value": "There's no escape!"
   },
   {
+    "id": 100701013001100009,
+    "value": "Fool! Ever seen anything like this before?!"
+  },
+  {
+    "id": 100701013001100010,
+    "value": "Fool! Ever seen anything like this before?!"
+  },
+  {
     "id": 100701017000200001,
     "value": "You...!"
   },
@@ -1198,6 +1486,22 @@
   {
     "id": 100701017000200008,
     "value": "Gotcha!"
+  },
+  {
+    "id": 100701017000200009,
+    "value": "All right! Nice job, kid!"
+  },
+  {
+    "id": 100701017000200010,
+    "value": "All right! Nice job, kid!"
+  },
+  {
+    "id": 100701017000200011,
+    "value": "This matters to me too! Funnels!"
+  },
+  {
+    "id": 100701017000200012,
+    "value": "This matters to me too! Funnels!"
   },
   {
     "id": 100701017000300001,
@@ -1232,6 +1536,14 @@
     "value": "Too easy!"
   },
   {
+    "id": 100701017000300009,
+    "value": "Too easy! Where are you even looking?!"
+  },
+  {
+    "id": 100701017000300010,
+    "value": "Too easy! Where are you even looking?!"
+  },
+  {
     "id": 100701017000400001,
     "value": "Hah! You're done!"
   },
@@ -1264,6 +1576,38 @@
     "value": "Kinda simple, aren't ya?!"
   },
   {
+    "id": 100701017000400009,
+    "value": "Oh you're not going anywhere!"
+  },
+  {
+    "id": 100701017000400010,
+    "value": "Oh you're not going anywhere!"
+  },
+  {
+    "id": 100701017000400011,
+    "value": "Try and hide all you want..."
+  },
+  {
+    "id": 100701017000400012,
+    "value": "Try and hide all you want..."
+  },
+  {
+    "id": 100701017000400013,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701017000400014,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701017000400015,
+    "value": "I don't have much of a clue,\nbut the enemy's over there!"
+  },
+  {
+    "id": 100701017000400016,
+    "value": "I don't have much of a clue,\nbut the enemy's over there!"
+  },
+  {
     "id": 100701017000500001,
     "value": "This is where you die!!!"
   },
@@ -1294,6 +1638,14 @@
   {
     "id": 100701017000500008,
     "value": "Go to Hell!"
+  },
+  {
+    "id": 100701017000500009,
+    "value": "I'm gonna wreck you with this!"
+  },
+  {
+    "id": 100701017000500010,
+    "value": "I'm gonna wreck you with this!"
   },
   {
     "id": 100701017000600001,
@@ -1360,6 +1712,14 @@
     "value": "It's no use!"
   },
   {
+    "id": 100701017000800009,
+    "value": "This should be well within my capabilities!"
+  },
+  {
+    "id": 100701017000800010,
+    "value": "This should be well within my capabilities!"
+  },
+  {
     "id": 100701021000100001,
     "value": "Bastard... Ready for more?!"
   },
@@ -1392,6 +1752,46 @@
     "value": "You're sloppy!"
   },
   {
+    "id": 100701021000100009,
+    "value": "Take aim! Commence barrage!"
+  },
+  {
+    "id": 100701021000100010,
+    "value": "Take aim! Commence barrage!"
+  },
+  {
+    "id": 100701021000100011,
+    "value": "I see it! Right there!"
+  },
+  {
+    "id": 100701021000100012,
+    "value": "I see it! Right there!"
+  },
+  {
+    "id": 100701021000100013,
+    "value": "Who cares about your funnels?!"
+  },
+  {
+    "id": 100701021000100014,
+    "value": "Who cares about your funnels?!"
+  },
+  {
+    "id": 100701021000100015,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701021000100016,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701021000100017,
+    "value": "Fly, GUND-Bits!"
+  },
+  {
+    "id": 100701021000100018,
+    "value": "Fly, GUND-Bits!"
+  },
+  {
     "id": 100701021000200001,
     "value": "It's over!"
   },
@@ -1422,6 +1822,46 @@
   {
     "id": 100701021000200008,
     "value": "Whoooa!"
+  },
+  {
+    "id": 100701021000200009,
+    "value": "Heh... Nothing ventured, I guess."
+  },
+  {
+    "id": 100701021000200010,
+    "value": "Heh... Nothing ventured, I guess."
+  },
+  {
+    "id": 100701021000200011,
+    "value": "So this is the Psycommu?"
+  },
+  {
+    "id": 100701021000200012,
+    "value": "So this is the Psycommu?"
+  },
+  {
+    "id": 100701021000200013,
+    "value": "I see it... Right there!"
+  },
+  {
+    "id": 100701021000200014,
+    "value": "I see it... Right there!"
+  },
+  {
+    "id": 100701021000200015,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701021000200016,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701021000200017,
+    "value": "Now let's chase 'em down!"
+  },
+  {
+    "id": 100701021000200018,
+    "value": "Now let's chase 'em down!"
   },
   {
     "id": 100701021000300001,
@@ -1648,6 +2088,46 @@
     "value": "There's no fleeing!"
   },
   {
+    "id": 100701022000100009,
+    "value": "I can see it...!"
+  },
+  {
+    "id": 100701022000100010,
+    "value": "I can see it...!"
+  },
+  {
+    "id": 100701022000100011,
+    "value": "I see the enemy! Over there!"
+  },
+  {
+    "id": 100701022000100012,
+    "value": "I see the enemy! Over there!"
+  },
+  {
+    "id": 100701022000100013,
+    "value": "Funnels, the enemy is over there!"
+  },
+  {
+    "id": 100701022000100014,
+    "value": "Funnels, the enemy is over there!"
+  },
+  {
+    "id": 100701022000100015,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701022000100016,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701022000100017,
+    "value": "GUND-BITs!"
+  },
+  {
+    "id": 100701022000100018,
+    "value": "GUND-BITs!"
+  },
+  {
     "id": 100701022000200001,
     "value": "There, you're at my mercy now!"
   },
@@ -1678,6 +2158,14 @@
   {
     "id": 100701022000200008,
     "value": "Didn't you hear me?! Go down!"
+  },
+  {
+    "id": 100701022000200009,
+    "value": "There! You're at my mercy now!!!"
+  },
+  {
+    "id": 100701022000200010,
+    "value": "There! You're at my mercy now!!!"
   },
   {
     "id": 100701022000300001,
@@ -1736,6 +2224,14 @@
     "value": "Give it up!"
   },
   {
+    "id": 100701022000600009,
+    "value": "HAHA! You're not going anywhere!"
+  },
+  {
+    "id": 100701022000600010,
+    "value": "HAHA! You're not going anywhere!"
+  },
+  {
     "id": 100701022000700001,
     "value": "Don't!!!"
   },
@@ -1758,6 +2254,14 @@
   {
     "id": 100701022000700006,
     "value": "Stay away!"
+  },
+  {
+    "id": 100701022000700007,
+    "value": "I can see it!"
+  },
+  {
+    "id": 100701022000700008,
+    "value": "I can see it!"
   },
   {
     "id": 100701031000100001,
@@ -1792,6 +2296,14 @@
     "value": "Thanks much!"
   },
   {
+    "id": 100701031000100009,
+    "value": "Here's another technique I got!"
+  },
+  {
+    "id": 100701031000100010,
+    "value": "Here's another technique I got!"
+  },
+  {
     "id": 100701031000102001,
     "value": "Blow up, dammit!"
   },
@@ -1822,6 +2334,38 @@
   {
     "id": 100701031000102008,
     "value": "Let it rip!"
+  },
+  {
+    "id": 100701031000102009,
+    "value": "I can handle anything, even this magic!"
+  },
+  {
+    "id": 100701031000102010,
+    "value": "I can handle anything, even this magic!"
+  },
+  {
+    "id": 100701031000102011,
+    "value": "So I can use funnels, huh!"
+  },
+  {
+    "id": 100701031000102012,
+    "value": "So I can use funnels, huh!"
+  },
+  {
+    "id": 100701031000102013,
+    "value": "I'll pound the beat of my Fangs into you!"
+  },
+  {
+    "id": 100701031000102014,
+    "value": "I'll pound the beat of my Fangs into you!"
+  },
+  {
+    "id": 100701031000102015,
+    "value": "I'll eliminate anyone in my way!"
+  },
+  {
+    "id": 100701031000102016,
+    "value": "I'll eliminate anyone in my way!"
   },
   {
     "id": 100701031000300001,
@@ -1872,6 +2416,38 @@
     "value": "Down you go!"
   },
   {
+    "id": 100701031000301009,
+    "value": "Yes, High Priest."
+  },
+  {
+    "id": 100701031000301010,
+    "value": "Yes, High Priest."
+  },
+  {
+    "id": 100701031000301011,
+    "value": "I'll lead the way."
+  },
+  {
+    "id": 100701031000301012,
+    "value": "I'll lead the way."
+  },
+  {
+    "id": 100701031000301013,
+    "value": "Rip everything to shreds!"
+  },
+  {
+    "id": 100701031000301014,
+    "value": "Rip everything to shreds!"
+  },
+  {
+    "id": 100701031000301015,
+    "value": "Now, do your thing."
+  },
+  {
+    "id": 100701031000301016,
+    "value": "Now, do your thing."
+  },
+  {
     "id": 100701031000602001,
     "value": "Get outta the way!"
   },
@@ -1902,6 +2478,14 @@
   {
     "id": 100701031000602008,
     "value": "Don't get in my way!"
+  },
+  {
+    "id": 100701031000602009,
+    "value": "Check this one out!"
+  },
+  {
+    "id": 100701031000602010,
+    "value": "Check this one out!"
   },
   {
     "id": 100701031000603001,
@@ -1936,6 +2520,38 @@
     "value": "I won't miss!"
   },
   {
+    "id": 100701031000603009,
+    "value": "I'll show you what I can do!"
+  },
+  {
+    "id": 100701031000603010,
+    "value": "I'll show you what I can do!"
+  },
+  {
+    "id": 100701031000603011,
+    "value": "That's one wild weapon."
+  },
+  {
+    "id": 100701031000603012,
+    "value": "That's one wild weapon."
+  },
+  {
+    "id": 100701031000603013,
+    "value": "Fangs! Go and bite them!"
+  },
+  {
+    "id": 100701031000603014,
+    "value": "Fangs! Go and bite them!"
+  },
+  {
+    "id": 100701031000603015,
+    "value": "Punch a hole in 'em!"
+  },
+  {
+    "id": 100701031000603016,
+    "value": "Punch a hole in 'em!"
+  },
+  {
     "id": 100701031000900001,
     "value": "I've got it!"
   },
@@ -1966,6 +2582,38 @@
   {
     "id": 100701031000900008,
     "value": "Time for the finish!"
+  },
+  {
+    "id": 100701031000900009,
+    "value": "A Newtype weapon, huh?"
+  },
+  {
+    "id": 100701031000900010,
+    "value": "A Newtype weapon, huh?"
+  },
+  {
+    "id": 100701031000900011,
+    "value": "Heh, guess I gotta use it."
+  },
+  {
+    "id": 100701031000900012,
+    "value": "Heh, guess I gotta use it."
+  },
+  {
+    "id": 100701031000900013,
+    "value": "C'mon! Fly, Fangs!"
+  },
+  {
+    "id": 100701031000900014,
+    "value": "C'mon! Fly, Fangs!"
+  },
+  {
+    "id": 100701031000900015,
+    "value": "I don't really get it, but I'll handle it!"
+  },
+  {
+    "id": 100701031000900016,
+    "value": "I don't really get it, but I'll handle it!"
   },
   {
     "id": 100701031001500001,
@@ -2000,6 +2648,38 @@
     "value": "You're dead!"
   },
   {
+    "id": 100701031001500009,
+    "value": "I see it—there!"
+  },
+  {
+    "id": 100701031001500010,
+    "value": "I see it—there!"
+  },
+  {
+    "id": 100701031001500011,
+    "value": "GO!!!"
+  },
+  {
+    "id": 100701031001500012,
+    "value": "GO!!!"
+  },
+  {
+    "id": 100701031001500013,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701031001500014,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701031001500015,
+    "value": "I'm counting on you! Go!"
+  },
+  {
+    "id": 100701031001500016,
+    "value": "I'm counting on you! Go!"
+  },
+  {
     "id": 100701031001600001,
     "value": "There!"
   },
@@ -2030,6 +2710,38 @@
   {
     "id": 100701031001600008,
     "value": "Take this!"
+  },
+  {
+    "id": 100701031001600009,
+    "value": "I'm not sure I've got the hang of it, but still..."
+  },
+  {
+    "id": 100701031001600010,
+    "value": "I'm not sure I've got the hang of it, but still..."
+  },
+  {
+    "id": 100701031001600011,
+    "value": "Go, funnels!"
+  },
+  {
+    "id": 100701031001600012,
+    "value": "Go, funnels!"
+  },
+  {
+    "id": 100701031001600013,
+    "value": "Fangs!"
+  },
+  {
+    "id": 100701031001600014,
+    "value": "Fangs!"
+  },
+  {
+    "id": 100701031001600015,
+    "value": "G-Get them!"
+  },
+  {
+    "id": 100701031001600016,
+    "value": "G-Get them!"
   },
   {
     "id": 100701031001700001,
@@ -2064,6 +2776,38 @@
     "value": "Aaagh!"
   },
   {
+    "id": 100701031001700009,
+    "value": "There!"
+  },
+  {
+    "id": 100701031001700010,
+    "value": "There!"
+  },
+  {
+    "id": 100701031001700011,
+    "value": "Funnels! Get going!"
+  },
+  {
+    "id": 100701031001700012,
+    "value": "Funnels! Get going!"
+  },
+  {
+    "id": 100701031001700013,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701031001700014,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701031001700015,
+    "value": "This sensation... What's going on?"
+  },
+  {
+    "id": 100701031001700016,
+    "value": "This sensation... What's going on?"
+  },
+  {
     "id": 100701031001800001,
     "value": "Aaagh!"
   },
@@ -2094,6 +2838,38 @@
   {
     "id": 100701031001800008,
     "value": "I can't miss!"
+  },
+  {
+    "id": 100701031001800009,
+    "value": "Let me show you how it's done."
+  },
+  {
+    "id": 100701031001800010,
+    "value": "Let me show you how it's done."
+  },
+  {
+    "id": 100701031001800011,
+    "value": "Funnels! There's your enemy!"
+  },
+  {
+    "id": 100701031001800012,
+    "value": "Funnels! There's your enemy!"
+  },
+  {
+    "id": 100701031001800013,
+    "value": "Fangs, cut a path open!"
+  },
+  {
+    "id": 100701031001800014,
+    "value": "Fangs, cut a path open!"
+  },
+  {
+    "id": 100701031001800015,
+    "value": "Get them!"
+  },
+  {
+    "id": 100701031001800016,
+    "value": "Get them!"
   },
   {
     "id": 100701031001900001,
@@ -2128,6 +2904,38 @@
     "value": "I'll make it count!"
   },
   {
+    "id": 100701031001900009,
+    "value": "Never thought I'd be acting like some Newtype."
+  },
+  {
+    "id": 100701031001900010,
+    "value": "Never thought I'd be acting like some Newtype."
+  },
+  {
+    "id": 100701031001900011,
+    "value": "Do I have what it takes to handle this thing?"
+  },
+  {
+    "id": 100701031001900012,
+    "value": "Do I have what it takes to handle this thing?"
+  },
+  {
+    "id": 100701031001900013,
+    "value": "Fangs! Fly!"
+  },
+  {
+    "id": 100701031001900014,
+    "value": "Fangs! Fly!"
+  },
+  {
+    "id": 100701031001900015,
+    "value": "Get 'em!"
+  },
+  {
+    "id": 100701031001900016,
+    "value": "Get 'em!"
+  },
+  {
     "id": 100701031002000001,
     "value": "Hyah!"
   },
@@ -2160,6 +2968,38 @@
     "value": "Fool!"
   },
   {
+    "id": 100701031002000009,
+    "value": "I see it! That way!"
+  },
+  {
+    "id": 100701031002000010,
+    "value": "I see it! That way!"
+  },
+  {
+    "id": 100701031002000011,
+    "value": "Give me any weapon! I'll handle it!"
+  },
+  {
+    "id": 100701031002000012,
+    "value": "Give me any weapon! I'll handle it!"
+  },
+  {
+    "id": 100701031002000013,
+    "value": "Fangs! Tear the enemy apart!"
+  },
+  {
+    "id": 100701031002000014,
+    "value": "Fangs! Tear the enemy apart!"
+  },
+  {
+    "id": 100701031002000015,
+    "value": "Go! The enemy's there!"
+  },
+  {
+    "id": 100701031002000016,
+    "value": "Go! The enemy's there!"
+  },
+  {
     "id": 100701031002100001,
     "value": "Yahhh!"
   },
@@ -2189,6 +3029,38 @@
   },
   {
     "id": 100701031002100008,
+    "value": "GO!"
+  },
+  {
+    "id": 100701031002100009,
+    "value": "I can hear the High Priest's voice!"
+  },
+  {
+    "id": 100701031002100010,
+    "value": "I can hear the High Priest's voice!"
+  },
+  {
+    "id": 100701031002100011,
+    "value": "Be my hands and feet!"
+  },
+  {
+    "id": 100701031002100012,
+    "value": "Be my hands and feet!"
+  },
+  {
+    "id": 100701031002100013,
+    "value": "Tear the enemy apart!"
+  },
+  {
+    "id": 100701031002100014,
+    "value": "Tear the enemy apart!"
+  },
+  {
+    "id": 100701031002100015,
+    "value": "GO!"
+  },
+  {
+    "id": 100701031002100016,
     "value": "GO!"
   },
   {
@@ -2544,6 +3416,14 @@
     "value": "For a new era!"
   },
   {
+    "id": 100701055001400007,
+    "value": "Psycommu... Let's give it a try."
+  },
+  {
+    "id": 100701055001400008,
+    "value": "Psycommu... Let's give it a try."
+  },
+  {
     "id": 100701055001500001,
     "value": "Shut up!"
   },
@@ -2624,6 +3504,22 @@
     "value": "Die!!!"
   },
   {
+    "id": 100701060000101011,
+    "value": "GOOO!!!"
+  },
+  {
+    "id": 100701060000101012,
+    "value": "GOOO!!!"
+  },
+  {
+    "id": 100701060000101013,
+    "value": "Will this work?! Fin funnels!"
+  },
+  {
+    "id": 100701060000101014,
+    "value": "Will this work?! Fin funnels!"
+  },
+  {
     "id": 100701060000200001,
     "value": "Here we go!"
   },
@@ -2654,6 +3550,14 @@
   {
     "id": 100701060000200008,
     "value": "Ah... Please hit!"
+  },
+  {
+    "id": 100701060000200009,
+    "value": "You WANT to become my prey?"
+  },
+  {
+    "id": 100701060000200010,
+    "value": "You WANT to become my prey?"
   },
   {
     "id": 100701060000300001,
@@ -2688,6 +3592,14 @@
     "value": "Gotta pay attention!"
   },
   {
+    "id": 100701060000300009,
+    "value": "You're not getting away!"
+  },
+  {
+    "id": 100701060000300010,
+    "value": "You're not getting away!"
+  },
+  {
     "id": 100701060000400001,
     "value": "Better grit those teeth!"
   },
@@ -2718,6 +3630,14 @@
   {
     "id": 100701060000400008,
     "value": "Hey! Over here!"
+  },
+  {
+    "id": 100701060000400009,
+    "value": "Here's a present for ya! Open it up, ya bastard!"
+  },
+  {
+    "id": 100701060000400010,
+    "value": "Here's a present for ya! Open it up, ya bastard!"
   },
   {
     "id": 100701060000500001,
@@ -2752,6 +3672,14 @@
     "value": "What exactly are you looking at?!"
   },
   {
+    "id": 100701060000500009,
+    "value": "No way am I kicking the bucket here!"
+  },
+  {
+    "id": 100701060000500010,
+    "value": "No way am I kicking the bucket here!"
+  },
+  {
     "id": 100701060000600001,
     "value": "You're mine!"
   },
@@ -2782,6 +3710,14 @@
   {
     "id": 100701060000600008,
     "value": "Too damn slow!"
+  },
+  {
+    "id": 100701060000600009,
+    "value": "All right, let's see how you handle this one!"
+  },
+  {
+    "id": 100701060000600010,
+    "value": "All right, let's see how you handle this one!"
   },
   {
     "id": 100701060001500001,
@@ -2830,6 +3766,14 @@
   {
     "id": 100701060001500012,
     "value": "Nrrrgh...!"
+  },
+  {
+    "id": 100701060001500013,
+    "value": "There's nowhere to run!"
+  },
+  {
+    "id": 100701060001500014,
+    "value": "There's nowhere to run!"
   },
   {
     "id": 100701060001600001,
@@ -2888,6 +3832,14 @@
     "value": "And just where are you looking?!"
   },
   {
+    "id": 100701060002000009,
+    "value": "Take that!"
+  },
+  {
+    "id": 100701060002000010,
+    "value": "Take that!"
+  },
+  {
     "id": 100701060002200001,
     "value": "At this range, I've got a shot!"
   },
@@ -2918,6 +3870,14 @@
   {
     "id": 100701060002200008,
     "value": "You're not getting away!"
+  },
+  {
+    "id": 100701060002200009,
+    "value": "Go!"
+  },
+  {
+    "id": 100701060002200010,
+    "value": "Go!"
   },
   {
     "id": 100701068000100001,
@@ -2960,6 +3920,22 @@
     "value": "This is our chance!"
   },
   {
+    "id": 100701068000100011,
+    "value": "I've found you."
+  },
+  {
+    "id": 100701068000100012,
+    "value": "I've found you."
+  },
+  {
+    "id": 100701068000100013,
+    "value": "Hold still!"
+  },
+  {
+    "id": 100701068000100014,
+    "value": "Hold still!"
+  },
+  {
     "id": 100701069000100001,
     "value": "Let's go!"
   },
@@ -2990,6 +3966,38 @@
   {
     "id": 100701069000100008,
     "value": "I can read your every move!"
+  },
+  {
+    "id": 100701069000100009,
+    "value": "Saw it!"
+  },
+  {
+    "id": 100701069000100010,
+    "value": "Saw it!"
+  },
+  {
+    "id": 100701069000100011,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701069000100012,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701069000100013,
+    "value": "Fangs! Launch!"
+  },
+  {
+    "id": 100701069000100014,
+    "value": "Fangs! Launch!"
+  },
+  {
+    "id": 100701069000100015,
+    "value": "GUND-BITs...come on!"
+  },
+  {
+    "id": 100701069000100016,
+    "value": "GUND-BITs...come on!"
   },
   {
     "id": 100701080000100001,
@@ -3024,6 +4032,22 @@
     "value": "Take this!"
   },
   {
+    "id": 100701080000100009,
+    "value": "Got you now, go!"
+  },
+  {
+    "id": 100701080000100010,
+    "value": "Got you now, go!"
+  },
+  {
+    "id": 100701080000100011,
+    "value": "This is one for the funnels!"
+  },
+  {
+    "id": 100701080000100012,
+    "value": "This is one for the funnels!"
+  },
+  {
     "id": 100701080000200001,
     "value": "Go to hell!"
   },
@@ -3054,6 +4078,22 @@
   {
     "id": 100701080000200008,
     "value": "Don't underestimate me!"
+  },
+  {
+    "id": 100701080000200009,
+    "value": "I saw that! And I should be able to pull it off\ntoo!"
+  },
+  {
+    "id": 100701080000200010,
+    "value": "I saw that! And I should be able to pull it off\ntoo!"
+  },
+  {
+    "id": 100701080000200011,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701080000200012,
+    "value": "Funnels, go!"
   },
   {
     "id": 100701080000300001,
@@ -3088,6 +4128,14 @@
     "value": "Whoooa!"
   },
   {
+    "id": 100701080000300009,
+    "value": "Whoa there! Thought you could get away?"
+  },
+  {
+    "id": 100701080000300010,
+    "value": "Whoa there! Thought you could get away?"
+  },
+  {
     "id": 100701080000400001,
     "value": "You're mine!"
   },
@@ -3118,6 +4166,14 @@
   {
     "id": 100701080000400008,
     "value": "Sloppy!"
+  },
+  {
+    "id": 100701080000400009,
+    "value": "Here I come! Let's dance!"
+  },
+  {
+    "id": 100701080000400010,
+    "value": "Here I come! Let's dance!"
   },
   {
     "id": 100701080000500001,
@@ -3184,6 +4240,14 @@
     "value": "C'mon, hit!"
   },
   {
+    "id": 100701080000502009,
+    "value": "Pathetic! You thought you could get away?"
+  },
+  {
+    "id": 100701080000502010,
+    "value": "Pathetic! You thought you could get away?"
+  },
+  {
     "id": 100701080000700001,
     "value": "At this distance...!"
   },
@@ -3214,6 +4278,14 @@
   {
     "id": 100701080000700008,
     "value": "C'mon, hit!"
+  },
+  {
+    "id": 100701080000700009,
+    "value": "I'll show them what I'm made of!"
+  },
+  {
+    "id": 100701080000700010,
+    "value": "I'll show them what I'm made of!"
   },
   {
     "id": 100701080000800001,
@@ -3280,6 +4352,14 @@
     "value": "I've got you now!"
   },
   {
+    "id": 100701080001200009,
+    "value": "I won't let you get away!"
+  },
+  {
+    "id": 100701080001200010,
+    "value": "I won't let you get away!"
+  },
+  {
     "id": 100701080001300001,
     "value": "Now you're mine!"
   },
@@ -3310,6 +4390,14 @@
   {
     "id": 100701080001300008,
     "value": "There's nowhere to run!"
+  },
+  {
+    "id": 100701080001300009,
+    "value": "Th-This is nothing!"
+  },
+  {
+    "id": 100701080001300010,
+    "value": "Th-This is nothing!"
   },
   {
     "id": 100701080001400001,
@@ -3366,6 +4454,14 @@
   {
     "id": 100701080001600008,
     "value": "Graaah!"
+  },
+  {
+    "id": 100701080001600009,
+    "value": "This sensation... I'll be using this, thank you!"
+  },
+  {
+    "id": 100701080001600010,
+    "value": "This sensation... I'll be using this, thank you!"
   },
   {
     "id": 100701080001700001,
@@ -3432,6 +4528,14 @@
     "value": "Graaah!"
   },
   {
+    "id": 100701080001900009,
+    "value": "You're not gonna see this one coming!"
+  },
+  {
+    "id": 100701080001900010,
+    "value": "You're not gonna see this one coming!"
+  },
+  {
     "id": 100701080002000001,
     "value": "Gotcha!"
   },
@@ -3462,6 +4566,14 @@
   {
     "id": 100701080002000008,
     "value": "You're a novice!"
+  },
+  {
+    "id": 100701080002000009,
+    "value": "Restraining the target!"
+  },
+  {
+    "id": 100701080002000010,
+    "value": "Restraining the target!"
   },
   {
     "id": 100701080002700001,
@@ -3496,6 +4608,14 @@
     "value": "It's over!"
   },
   {
+    "id": 100701080002700009,
+    "value": "There's no escape!"
+  },
+  {
+    "id": 100701080002700010,
+    "value": "There's no escape!"
+  },
+  {
     "id": 100701080002800001,
     "value": "How about this?!"
   },
@@ -3526,6 +4646,14 @@
   {
     "id": 100701080002800008,
     "value": "It's no use!"
+  },
+  {
+    "id": 100701080002800009,
+    "value": "I already know your moves! There's nowhere to run!"
+  },
+  {
+    "id": 100701080002800010,
+    "value": "I already know your moves! There's nowhere to run!"
   },
   {
     "id": 100701080002900001,
@@ -3560,6 +4688,14 @@
     "value": "Hey! Over here!"
   },
   {
+    "id": 100701080002900009,
+    "value": "You're not slipping through my grasp!"
+  },
+  {
+    "id": 100701080002900010,
+    "value": "You're not slipping through my grasp!"
+  },
+  {
     "id": 100701080003000001,
     "value": "Go to hell!"
   },
@@ -3582,6 +4718,14 @@
   {
     "id": 100701080003000006,
     "value": "You're finished!"
+  },
+  {
+    "id": 100701080003000007,
+    "value": "I'll destroy them quickly!"
+  },
+  {
+    "id": 100701080003000008,
+    "value": "I'll destroy them quickly!"
   },
   {
     "id": 100701080003100001,
@@ -3616,6 +4760,14 @@
     "value": "Give it up!"
   },
   {
+    "id": 100701080003100009,
+    "value": "Stay still!"
+  },
+  {
+    "id": 100701080003100010,
+    "value": "Stay still!"
+  },
+  {
     "id": 100701080003300001,
     "value": "You're mine!"
   },
@@ -3648,6 +4800,14 @@
     "value": "Outta my way!"
   },
   {
+    "id": 100701080003300009,
+    "value": "Get outta the way!"
+  },
+  {
+    "id": 100701080003300010,
+    "value": "Get outta the way!"
+  },
+  {
     "id": 100701080003400001,
     "value": "Direct hit!"
   },
@@ -3678,6 +4838,14 @@
   {
     "id": 100701080003400008,
     "value": "Hey! Over here!"
+  },
+  {
+    "id": 100701080003400009,
+    "value": "I'm gonna blow you apart!"
+  },
+  {
+    "id": 100701080003400010,
+    "value": "I'm gonna blow you apart!"
   },
   {
     "id": 100701080003600001,
@@ -3744,6 +4912,22 @@
     "value": "I won't go easy on you!"
   },
   {
+    "id": 100701080003900009,
+    "value": "Try and dodge this!"
+  },
+  {
+    "id": 100701080003900010,
+    "value": "Try and dodge this!"
+  },
+  {
+    "id": 100701080003900011,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701080003900012,
+    "value": "Funnels, go!"
+  },
+  {
     "id": 100701095000100001,
     "value": "We'll make this one count!"
   },
@@ -3792,6 +4976,22 @@
     "value": "You are too naive!"
   },
   {
+    "id": 100701095000100013,
+    "value": "You're not getting away!"
+  },
+  {
+    "id": 100701095000100014,
+    "value": "You're not getting away!"
+  },
+  {
+    "id": 100701095000100015,
+    "value": "Hit 'em! Funnels!"
+  },
+  {
+    "id": 100701095000100016,
+    "value": "Hit 'em! Funnels!"
+  },
+  {
     "id": 100701095000200001,
     "value": "You're mine!"
   },
@@ -3822,6 +5022,14 @@
   {
     "id": 100701095000200008,
     "value": "It's no use!"
+  },
+  {
+    "id": 100701095000200009,
+    "value": "Go! Now!"
+  },
+  {
+    "id": 100701095000200010,
+    "value": "Go! Now!"
   },
   {
     "id": 100701095000300001,
@@ -3856,6 +5064,14 @@
     "value": "This is too easy!"
   },
   {
+    "id": 100701095000300009,
+    "value": "How do you like this?!"
+  },
+  {
+    "id": 100701095000300010,
+    "value": "How do you like this?!"
+  },
+  {
     "id": 100701095000400001,
     "value": "You're mine!"
   },
@@ -3886,6 +5102,14 @@
   {
     "id": 100701095000400008,
     "value": "This is too easy!"
+  },
+  {
+    "id": 100701095000400009,
+    "value": "I've got you!"
+  },
+  {
+    "id": 100701095000400010,
+    "value": "I've got you!"
   },
   {
     "id": 100701095000500001,
@@ -3920,6 +5144,14 @@
     "value": "Dodge this!"
   },
   {
+    "id": 100701095000500009,
+    "value": "Here I come!"
+  },
+  {
+    "id": 100701095000500010,
+    "value": "Here I come!"
+  },
+  {
     "id": 100701095000600001,
     "value": "Gotcha!"
   },
@@ -3950,6 +5182,14 @@
   {
     "id": 100701095000600008,
     "value": "Hit 'em!"
+  },
+  {
+    "id": 100701095000600009,
+    "value": "I can do this!"
+  },
+  {
+    "id": 100701095000600010,
+    "value": "I can do this!"
   },
   {
     "id": 100701095001800001,
@@ -3992,6 +5232,30 @@
     "value": "Rgh!"
   },
   {
+    "id": 100701095001800011,
+    "value": "Try and dodge this!"
+  },
+  {
+    "id": 100701095001800012,
+    "value": "Try and dodge this!"
+  },
+  {
+    "id": 100701095001800013,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701095001800014,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701095001800015,
+    "value": "There! Fangs!"
+  },
+  {
+    "id": 100701095001800016,
+    "value": "There! Fangs!"
+  },
+  {
     "id": 100701095002000001,
     "value": "That dastard... Always interfering with my plans!"
   },
@@ -4022,6 +5286,38 @@
   {
     "id": 100701095002000008,
     "value": "Get ready!"
+  },
+  {
+    "id": 100701095002000011,
+    "value": "Now... This is the end!"
+  },
+  {
+    "id": 100701095002000012,
+    "value": "Now... This is the end!"
+  },
+  {
+    "id": 100701095002000013,
+    "value": "Time to use the funnels!"
+  },
+  {
+    "id": 100701095002000014,
+    "value": "Time to use the funnels!"
+  },
+  {
+    "id": 100701095002000015,
+    "value": "Here come the Fangs!"
+  },
+  {
+    "id": 100701095002000016,
+    "value": "Here come the Fangs!"
+  },
+  {
+    "id": 100701095002000017,
+    "value": "Go forth, GUND-BIT!"
+  },
+  {
+    "id": 100701095002000018,
+    "value": "Go forth, GUND-BIT!"
   },
   {
     "id": 100701095002001001,
@@ -4096,6 +5392,14 @@
     "value": "You wish!"
   },
   {
+    "id": 100701095002100009,
+    "value": "Prepare yourself!"
+  },
+  {
+    "id": 100701095002100010,
+    "value": "Prepare yourself!"
+  },
+  {
     "id": 100701095002900001,
     "value": "The enemy! My chest is going to explode!"
   },
@@ -4126,6 +5430,14 @@
   {
     "id": 100701095002900008,
     "value": "Ahahahaha!"
+  },
+  {
+    "id": 100701095002900009,
+    "value": "Aim carefully!"
+  },
+  {
+    "id": 100701095002900010,
+    "value": "Aim carefully!"
   },
   {
     "id": 100701095002901001,
@@ -4256,6 +5568,14 @@
     "value": "Give it up!"
   },
   {
+    "id": 100701095003200009,
+    "value": "Who are you to challenge me?!"
+  },
+  {
+    "id": 100701095003200010,
+    "value": "Who are you to challenge me?!"
+  },
+  {
     "id": 100701095003300001,
     "value": "Go down, already!"
   },
@@ -4286,6 +5606,22 @@
   {
     "id": 100701095003300008,
     "value": "Phooey!"
+  },
+  {
+    "id": 100701095003300009,
+    "value": "This feeling right now... I can see it!"
+  },
+  {
+    "id": 100701095003300010,
+    "value": "This feeling right now... I can see it!"
+  },
+  {
+    "id": 100701095003300011,
+    "value": "Funnels! Get 'em!"
+  },
+  {
+    "id": 100701095003300012,
+    "value": "Funnels! Get 'em!"
   },
   {
     "id": 100701095003400001,
@@ -4352,6 +5688,14 @@
     "value": "Pointless!"
   },
   {
+    "id": 100701095003500009,
+    "value": "C'mon!"
+  },
+  {
+    "id": 100701095003500010,
+    "value": "C'mon!"
+  },
+  {
     "id": 100701095004300001,
     "value": "I'm going to tear you apart!"
   },
@@ -4382,6 +5726,14 @@
   {
     "id": 100701095004300008,
     "value": "Fool!"
+  },
+  {
+    "id": 100701095004300009,
+    "value": "You damned rat! Stop scurrying around!"
+  },
+  {
+    "id": 100701095004300010,
+    "value": "You damned rat! Stop scurrying around!"
   },
   {
     "id": 100701099000100001,
@@ -4416,6 +5768,14 @@
     "value": "Whoooa!"
   },
   {
+    "id": 100701099000100009,
+    "value": "I'll show you how this thing's MEANT to be used!"
+  },
+  {
+    "id": 100701099000100010,
+    "value": "I'll show you how this thing's MEANT to be used!"
+  },
+  {
     "id": 100701110000100001,
     "value": "Go to hell!"
   },
@@ -4446,6 +5806,38 @@
   {
     "id": 100701110000100008,
     "value": "Hrrrah!"
+  },
+  {
+    "id": 100701110000100009,
+    "value": "Got you! There!"
+  },
+  {
+    "id": 100701110000100010,
+    "value": "Got you! There!"
+  },
+  {
+    "id": 100701110000100011,
+    "value": "Funnels! Gooo!!!"
+  },
+  {
+    "id": 100701110000100012,
+    "value": "Funnels! Gooo!!!"
+  },
+  {
+    "id": 100701110000100013,
+    "value": "As if! Funnels!"
+  },
+  {
+    "id": 100701110000100014,
+    "value": "As if! Funnels!"
+  },
+  {
+    "id": 100701110000100015,
+    "value": "Fangs!"
+  },
+  {
+    "id": 100701110000100016,
+    "value": "Fangs!"
   },
   {
     "id": 100701110000200001,
@@ -4486,6 +5878,30 @@
   {
     "id": 100701110000200010,
     "value": "Blast! Get out of my way!"
+  },
+  {
+    "id": 100701110000200011,
+    "value": "There? ...Go!"
+  },
+  {
+    "id": 100701110000200012,
+    "value": "There? ...Go!"
+  },
+  {
+    "id": 100701110000200013,
+    "value": "That's where you were... Funnels!!!"
+  },
+  {
+    "id": 100701110000200014,
+    "value": "That's where you were... Funnels!!!"
+  },
+  {
+    "id": 100701110000200015,
+    "value": "Direct hit! Fangs!"
+  },
+  {
+    "id": 100701110000200016,
+    "value": "Direct hit! Fangs!"
   },
   {
     "id": 100701110000400001,
@@ -4624,6 +6040,22 @@
     "value": "Sink!"
   },
   {
+    "id": 100701110000700011,
+    "value": "Found you!"
+  },
+  {
+    "id": 100701110000700012,
+    "value": "Found you!"
+  },
+  {
+    "id": 100701110000700013,
+    "value": "Funnels, go take them down!"
+  },
+  {
+    "id": 100701110000700014,
+    "value": "Funnels, go take them down!"
+  },
+  {
     "id": 100701110000800001,
     "value": "You're not going anywhere!"
   },
@@ -4662,6 +6094,22 @@
   {
     "id": 100701110000800010,
     "value": "Take this!"
+  },
+  {
+    "id": 100701110000800011,
+    "value": "That's it! Die already!"
+  },
+  {
+    "id": 100701110000800012,
+    "value": "That's it! Die already!"
+  },
+  {
+    "id": 100701110000800013,
+    "value": "Funnels! Take them down!"
+  },
+  {
+    "id": 100701110000800014,
+    "value": "Funnels! Take them down!"
   },
   {
     "id": 100701110000900001,
@@ -4728,6 +6176,38 @@
     "value": "Hrrrah!"
   },
   {
+    "id": 100701125000100009,
+    "value": "This feeling... Go!!!"
+  },
+  {
+    "id": 100701125000100010,
+    "value": "This feeling... Go!!!"
+  },
+  {
+    "id": 100701125000100011,
+    "value": "Funnels! Hit, damn it!"
+  },
+  {
+    "id": 100701125000100012,
+    "value": "Funnels! Hit, damn it!"
+  },
+  {
+    "id": 100701125000100013,
+    "value": "There! Fangs!"
+  },
+  {
+    "id": 100701125000100014,
+    "value": "There! Fangs!"
+  },
+  {
+    "id": 100701125000100015,
+    "value": "Go! GUND-BITs!"
+  },
+  {
+    "id": 100701125000100016,
+    "value": "Go! GUND-BITs!"
+  },
+  {
     "id": 100701125000200001,
     "value": "I'm in this mess because of you!"
   },
@@ -4758,6 +6238,30 @@
   {
     "id": 100701125000200008,
     "value": "Out of the way!"
+  },
+  {
+    "id": 100701125000200009,
+    "value": "Go!"
+  },
+  {
+    "id": 100701125000200010,
+    "value": "Go!"
+  },
+  {
+    "id": 100701125000200011,
+    "value": "Cut the crap! Funnels!"
+  },
+  {
+    "id": 100701125000200012,
+    "value": "Cut the crap! Funnels!"
+  },
+  {
+    "id": 100701125000200013,
+    "value": "Take this! Fangs!"
+  },
+  {
+    "id": 100701125000200014,
+    "value": "Take this! Fangs!"
   },
   {
     "id": 100701125000201001,
@@ -4824,6 +6328,22 @@
     "value": "You're going to get thrashed right here and now!"
   },
   {
+    "id": 100701125000300009,
+    "value": "I'm seeing it.... That's where you were!"
+  },
+  {
+    "id": 100701125000300010,
+    "value": "I'm seeing it.... That's where you were!"
+  },
+  {
+    "id": 100701125000300011,
+    "value": "Go! Funnels!!!"
+  },
+  {
+    "id": 100701125000300012,
+    "value": "Go! Funnels!!!"
+  },
+  {
     "id": 100701125000900001,
     "value": "Take this!"
   },
@@ -4872,6 +6392,14 @@
     "value": "Begone!"
   },
   {
+    "id": 100701125000900013,
+    "value": "This moment is your last—savor it!"
+  },
+  {
+    "id": 100701125000900014,
+    "value": "This moment is your last—savor it!"
+  },
+  {
     "id": 100701125001000001,
     "value": "Get off my back!"
   },
@@ -4918,6 +6446,22 @@
   {
     "id": 100701125001000012,
     "value": "I WILL shoot you down!"
+  },
+  {
+    "id": 100701125001000013,
+    "value": "Die!"
+  },
+  {
+    "id": 100701125001000014,
+    "value": "Die!"
+  },
+  {
+    "id": 100701125001000015,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701125001000016,
+    "value": "Funnels!"
   },
   {
     "id": 100701125001100001,
@@ -5248,6 +6792,46 @@
     "value": "Weak!"
   },
   {
+    "id": 100701144000100013,
+    "value": "Don't give those enemy units an inch!"
+  },
+  {
+    "id": 100701144000100014,
+    "value": "Don't give those enemy units an inch!"
+  },
+  {
+    "id": 100701144000100015,
+    "value": "I see it... There!"
+  },
+  {
+    "id": 100701144000100016,
+    "value": "I see it... There!"
+  },
+  {
+    "id": 100701144000100017,
+    "value": "Go, funnels!"
+  },
+  {
+    "id": 100701144000100018,
+    "value": "Go, funnels!"
+  },
+  {
+    "id": 100701144000100021,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701144000100022,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701144000100023,
+    "value": "Please! Go this way!"
+  },
+  {
+    "id": 100701144000100024,
+    "value": "Please! Go this way!"
+  },
+  {
     "id": 100701144000201001,
     "value": "C'mon!"
   },
@@ -5278,6 +6862,38 @@
   {
     "id": 100701144000201008,
     "value": "I'll give the world a fresh start!"
+  },
+  {
+    "id": 100701144000201009,
+    "value": "I feel it... I can feel it!\nYou're there, aren't you?"
+  },
+  {
+    "id": 100701144000201010,
+    "value": "I feel it... I can feel it!\nYou're there, aren't you?"
+  },
+  {
+    "id": 100701144000201011,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701144000201012,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701144000201013,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701144000201014,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701144000201015,
+    "value": "C'mon, do your job!"
+  },
+  {
+    "id": 100701144000201016,
+    "value": "C'mon, do your job!"
   },
   {
     "id": 100701144000300001,
@@ -5312,6 +6928,38 @@
     "value": "Haaah!"
   },
   {
+    "id": 100701144000300009,
+    "value": "The psycommu...\nI wonder if I can use it."
+  },
+  {
+    "id": 100701144000300010,
+    "value": "The psycommu...\nI wonder if I can use it."
+  },
+  {
+    "id": 100701144000300011,
+    "value": "Funnels, the enemy is over there!"
+  },
+  {
+    "id": 100701144000300012,
+    "value": "Funnels, the enemy is over there!"
+  },
+  {
+    "id": 100701144000300013,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701144000300014,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701144000300015,
+    "value": "GUND-BITs!"
+  },
+  {
+    "id": 100701144000300016,
+    "value": "GUND-BITs!"
+  },
+  {
     "id": 100701144000400001,
     "value": "You're not going anywhere!"
   },
@@ -5342,6 +6990,38 @@
   {
     "id": 100701144000400008,
     "value": "This is it!"
+  },
+  {
+    "id": 100701144000400009,
+    "value": "I see it too! Let's do this!"
+  },
+  {
+    "id": 100701144000400010,
+    "value": "I see it too! Let's do this!"
+  },
+  {
+    "id": 100701144000400011,
+    "value": "Funnels, there's the enemy!"
+  },
+  {
+    "id": 100701144000400012,
+    "value": "Funnels, there's the enemy!"
+  },
+  {
+    "id": 100701144000400013,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701144000400014,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701144000400015,
+    "value": "GUND-Bits, go!"
+  },
+  {
+    "id": 100701144000400016,
+    "value": "GUND-Bits, go!"
   },
   {
     "id": 100701144000500001,
@@ -5376,6 +7056,38 @@
     "value": "How do you like this?!"
   },
   {
+    "id": 100701144000500009,
+    "value": "I sense hostility... There!"
+  },
+  {
+    "id": 100701144000500010,
+    "value": "I sense hostility... There!"
+  },
+  {
+    "id": 100701144000500011,
+    "value": "Go, funnels!"
+  },
+  {
+    "id": 100701144000500012,
+    "value": "Go, funnels!"
+  },
+  {
+    "id": 100701144000500013,
+    "value": "Fangs, don't go crazy on me!"
+  },
+  {
+    "id": 100701144000500014,
+    "value": "Fangs, don't go crazy on me!"
+  },
+  {
+    "id": 100701144000500015,
+    "value": "GUND-Bits, you can sense human will too, right?"
+  },
+  {
+    "id": 100701144000500016,
+    "value": "GUND-Bits, you can sense human will too, right?"
+  },
+  {
     "id": 100701150000100001,
     "value": "You're through!"
   },
@@ -5406,6 +7118,46 @@
   {
     "id": 100701150000100008,
     "value": "It'll be sorted out one way or another!"
+  },
+  {
+    "id": 100701150000100009,
+    "value": "Whatever the weapon, I'll use it to its fullest!"
+  },
+  {
+    "id": 100701150000100010,
+    "value": "Whatever the weapon, I'll use it to its fullest!"
+  },
+  {
+    "id": 100701150000100011,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701150000100012,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701150000100013,
+    "value": "At this range, it's a guaranteed hit!"
+  },
+  {
+    "id": 100701150000100014,
+    "value": "At this range, it's a guaranteed hit!"
+  },
+  {
+    "id": 100701150000100015,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701150000100016,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701150000100017,
+    "value": "I'll throw off the enemy's aim with GUND-BITs!"
+  },
+  {
+    "id": 100701150000100018,
+    "value": "I'll throw off the enemy's aim with GUND-BITs!"
   },
   {
     "id": 100701150000200001,
@@ -5440,6 +7192,46 @@
     "value": "Take this, will ya!"
   },
   {
+    "id": 100701150000200009,
+    "value": "Enemy spotted!"
+  },
+  {
+    "id": 100701150000200010,
+    "value": "Enemy spotted!"
+  },
+  {
+    "id": 100701150000200011,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701150000200012,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701150000200013,
+    "value": "I won't let you escape!"
+  },
+  {
+    "id": 100701150000200014,
+    "value": "I won't let you escape!"
+  },
+  {
+    "id": 100701150000200015,
+    "value": "Fangs!"
+  },
+  {
+    "id": 100701150000200016,
+    "value": "Fangs!"
+  },
+  {
+    "id": 100701150000200017,
+    "value": "GUND-BITs! I can use these!"
+  },
+  {
+    "id": 100701150000200018,
+    "value": "GUND-BITs! I can use these!"
+  },
+  {
     "id": 100701150000300001,
     "value": "Here!"
   },
@@ -5470,6 +7262,38 @@
   {
     "id": 100701150000300008,
     "value": "Over there!"
+  },
+  {
+    "id": 100701150000300009,
+    "value": "Enemy...spotted! There!"
+  },
+  {
+    "id": 100701150000300010,
+    "value": "Enemy...spotted! There!"
+  },
+  {
+    "id": 100701150000300011,
+    "value": "Funnels, launch!"
+  },
+  {
+    "id": 100701150000300012,
+    "value": "Funnels, launch!"
+  },
+  {
+    "id": 100701150000300013,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701150000300014,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701150000300015,
+    "value": "GUND-BITs!"
+  },
+  {
+    "id": 100701150000300016,
+    "value": "GUND-BITs!"
   },
   {
     "id": 100701150000400001,
@@ -5504,6 +7328,38 @@
     "value": "You're going down!"
   },
   {
+    "id": 100701150000400009,
+    "value": "No clue what a Psycommu is,\nbut here it goes!"
+  },
+  {
+    "id": 100701150000400010,
+    "value": "No clue what a Psycommu is,\nbut here it goes!"
+  },
+  {
+    "id": 100701150000400011,
+    "value": "Time to deploy some funnels!"
+  },
+  {
+    "id": 100701150000400012,
+    "value": "Time to deploy some funnels!"
+  },
+  {
+    "id": 100701150000400013,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701150000400014,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701150000400015,
+    "value": "GUND-BITs!"
+  },
+  {
+    "id": 100701150000400016,
+    "value": "GUND-BITs!"
+  },
+  {
     "id": 100701150000501001,
     "value": "I hope it hits."
   },
@@ -5536,6 +7392,38 @@
     "value": "Get out of the way, if you'd be so kind."
   },
   {
+    "id": 100701150000501009,
+    "value": "What is this?"
+  },
+  {
+    "id": 100701150000501010,
+    "value": "What is this?"
+  },
+  {
+    "id": 100701150000501011,
+    "value": "Off you go."
+  },
+  {
+    "id": 100701150000501012,
+    "value": "Off you go."
+  },
+  {
+    "id": 100701150000501013,
+    "value": "I suppose I have to use these..."
+  },
+  {
+    "id": 100701150000501014,
+    "value": "I suppose I have to use these..."
+  },
+  {
+    "id": 100701150000501015,
+    "value": "Go and do as you please."
+  },
+  {
+    "id": 100701150000501016,
+    "value": "Go and do as you please."
+  },
+  {
     "id": 100701150000601001,
     "value": "Hagh!"
   },
@@ -5558,6 +7446,14 @@
   {
     "id": 100701150000601006,
     "value": "There!"
+  },
+  {
+    "id": 100701150000601007,
+    "value": "I bet you're dying to get a taste of this."
+  },
+  {
+    "id": 100701150000601008,
+    "value": "I bet you're dying to get a taste of this."
   },
   {
     "id": 100701150000800001,
@@ -5592,6 +7488,38 @@
     "value": "That's what you get!"
   },
   {
+    "id": 100701150000800009,
+    "value": "I'll trust this intuition!"
+  },
+  {
+    "id": 100701150000800010,
+    "value": "I'll trust this intuition!"
+  },
+  {
+    "id": 100701150000800011,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701150000800012,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701150000800013,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701150000800014,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701150000800015,
+    "value": "GUND-BITs..."
+  },
+  {
+    "id": 100701150000800016,
+    "value": "GUND-BITs..."
+  },
+  {
     "id": 100701150000900001,
     "value": "Eat this!"
   },
@@ -5624,6 +7552,38 @@
     "value": "This ends here!"
   },
   {
+    "id": 100701150000900009,
+    "value": "I'll make use of any weapon I can!"
+  },
+  {
+    "id": 100701150000900010,
+    "value": "I'll make use of any weapon I can!"
+  },
+  {
+    "id": 100701150000900011,
+    "value": "Fly away!"
+  },
+  {
+    "id": 100701150000900012,
+    "value": "Fly away!"
+  },
+  {
+    "id": 100701150000900013,
+    "value": "Do your work, Fangs!"
+  },
+  {
+    "id": 100701150000900014,
+    "value": "Do your work, Fangs!"
+  },
+  {
+    "id": 100701150000900015,
+    "value": "GUND-BITs!"
+  },
+  {
+    "id": 100701150000900016,
+    "value": "GUND-BITs!"
+  },
+  {
     "id": 100701150001100001,
     "value": "I know!"
   },
@@ -5648,44 +7608,260 @@
     "value": "C'mon, hit!"
   },
   {
-    "id": 100701155000100001,
-    "value": "Hit!"
+    "id": 100701155000100011,
+    "value": "C'mon, hit!"
   },
   {
-    "id": 100701155000100002,
-    "value": "Hit!"
+    "id": 100701155000100012,
+    "value": "C'mon, hit!"
   },
   {
-    "id": 100701155000100003,
-    "value": "Down you go!"
+    "id": 100701155000100013,
+    "value": "Go down, already!"
   },
   {
-    "id": 100701155000100004,
-    "value": "Down you go!"
+    "id": 100701155000100014,
+    "value": "Go down, already!"
   },
   {
-    "id": 100701155000100005,
-    "value": "You're mine!"
+    "id": 100701155000100015,
+    "value": "Gotcha!"
   },
   {
-    "id": 100701155000100006,
-    "value": "You're mine!"
+    "id": 100701155000100016,
+    "value": "Gotcha!"
   },
   {
-    "id": 100701155000100007,
+    "id": 100701155000100017,
     "value": "You won't get away from me!"
   },
   {
-    "id": 100701155000100008,
+    "id": 100701155000100018,
     "value": "You won't get away from me!"
   },
   {
-    "id": 100701155000100009,
+    "id": 100701155000100019,
     "value": "You're sloppy!"
   },
   {
-    "id": 100701155000100010,
+    "id": 100701155000100020,
     "value": "You're sloppy!"
+  },
+  {
+    "id": 100701155000100021,
+    "value": "Now I can see!"
+  },
+  {
+    "id": 100701155000100022,
+    "value": "Now I can see!"
+  },
+  {
+    "id": 100701155000100023,
+    "value": "Funnels! There's the enemy!"
+  },
+  {
+    "id": 100701155000100024,
+    "value": "Funnels! There's the enemy!"
+  },
+  {
+    "id": 100701155000100025,
+    "value": "Fly! Fangs!"
+  },
+  {
+    "id": 100701155000100026,
+    "value": "Fly! Fangs!"
+  },
+  {
+    "id": 100701155000100027,
+    "value": "GO!"
+  },
+  {
+    "id": 100701155000100028,
+    "value": "GO!"
+  },
+  {
+    "id": 100701155000200001,
+    "value": "I'll get this done!"
+  },
+  {
+    "id": 100701155000200002,
+    "value": "I'll get this done!"
+  },
+  {
+    "id": 100701155000200003,
+    "value": "Hold still!"
+  },
+  {
+    "id": 100701155000200004,
+    "value": "Hold still!"
+  },
+  {
+    "id": 100701155000200005,
+    "value": "Let's go!"
+  },
+  {
+    "id": 100701155000200006,
+    "value": "Let's go!"
+  },
+  {
+    "id": 100701155000200007,
+    "value": "There!"
+  },
+  {
+    "id": 100701155000200008,
+    "value": "There!"
+  },
+  {
+    "id": 100701155000200009,
+    "value": "See how you like this!"
+  },
+  {
+    "id": 100701155000200010,
+    "value": "See how you like this!"
+  },
+  {
+    "id": 100701155000300001,
+    "value": "Your life is mine!"
+  },
+  {
+    "id": 100701155000300002,
+    "value": "Your life is mine!"
+  },
+  {
+    "id": 100701155000300003,
+    "value": "I hope you're ready!"
+  },
+  {
+    "id": 100701155000300004,
+    "value": "I hope you're ready!"
+  },
+  {
+    "id": 100701155000300005,
+    "value": "Hahaha! Utterly futile!"
+  },
+  {
+    "id": 100701155000300006,
+    "value": "Hahaha! Utterly futile!"
+  },
+  {
+    "id": 100701155000300007,
+    "value": "You fool!"
+  },
+  {
+    "id": 100701155000300008,
+    "value": "You fool!"
+  },
+  {
+    "id": 100701155000300009,
+    "value": "You're not getting away!"
+  },
+  {
+    "id": 100701155000300010,
+    "value": "You're not getting away!"
+  },
+  {
+    "id": 100701155000400001,
+    "value": "Watch closely!"
+  },
+  {
+    "id": 100701155000400002,
+    "value": "Watch closely!"
+  },
+  {
+    "id": 100701155000400003,
+    "value": "Prepare yourself!"
+  },
+  {
+    "id": 100701155000400004,
+    "value": "Prepare yourself!"
+  },
+  {
+    "id": 100701155000400005,
+    "value": "Here I come!"
+  },
+  {
+    "id": 100701155000400006,
+    "value": "Here I come!"
+  },
+  {
+    "id": 100701155000400007,
+    "value": "Get out of my way!"
+  },
+  {
+    "id": 100701155000400008,
+    "value": "Get out of my way!"
+  },
+  {
+    "id": 100701155000400009,
+    "value": "I should manage it from this distance!"
+  },
+  {
+    "id": 100701155000400010,
+    "value": "I should manage it from this distance!"
+  },
+  {
+    "id": 100701159000100001,
+    "value": "I've got you now!"
+  },
+  {
+    "id": 100701159000100002,
+    "value": "I've got you now!"
+  },
+  {
+    "id": 100701159000100003,
+    "value": "Eat this!"
+  },
+  {
+    "id": 100701159000100004,
+    "value": "Eat this!"
+  },
+  {
+    "id": 100701159000100005,
+    "value": "It's over!"
+  },
+  {
+    "id": 100701159000100006,
+    "value": "It's over!"
+  },
+  {
+    "id": 100701159000100007,
+    "value": "Die!"
+  },
+  {
+    "id": 100701159000100008,
+    "value": "Die!"
+  },
+  {
+    "id": 100701159000100009,
+    "value": "Let me show you how to wield this power!"
+  },
+  {
+    "id": 100701159000100010,
+    "value": "Let me show you how to wield this power!"
+  },
+  {
+    "id": 100701159000100011,
+    "value": "Funnels, destroy the enemy!"
+  },
+  {
+    "id": 100701159000100012,
+    "value": "Funnels, destroy the enemy!"
+  },
+  {
+    "id": 100701159000100013,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701159000100014,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701159000100015,
+    "value": "Eliminate the enemy!"
+  },
+  {
+    "id": 100701159000100016,
+    "value": "Eliminate the enemy!"
   },
   {
     "id": 100701162000100001,
@@ -5718,6 +7894,382 @@
   {
     "id": 100701162000100008,
     "value": "Down you go!"
+  },
+  {
+    "id": 100701162000100009,
+    "value": "Go!"
+  },
+  {
+    "id": 100701162000100010,
+    "value": "Go!"
+  },
+  {
+    "id": 100701162000100011,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701162000100012,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701162000100013,
+    "value": "I'm not out of this yet! Funnels!"
+  },
+  {
+    "id": 100701162000100014,
+    "value": "I'm not out of this yet! Funnels!"
+  },
+  {
+    "id": 100701162000102001,
+    "value": "Wh-Why, you!"
+  },
+  {
+    "id": 100701162000102002,
+    "value": "Wh-Why, you!"
+  },
+  {
+    "id": 100701162000102003,
+    "value": "How's this?!"
+  },
+  {
+    "id": 100701162000102004,
+    "value": "How's this?!"
+  },
+  {
+    "id": 100701162000102005,
+    "value": "Damn you!"
+  },
+  {
+    "id": 100701162000102006,
+    "value": "Damn you!"
+  },
+  {
+    "id": 100701162000102007,
+    "value": "Down you go!"
+  },
+  {
+    "id": 100701162000102008,
+    "value": "Down you go!"
+  },
+  {
+    "id": 100701162000102009,
+    "value": "Go!"
+  },
+  {
+    "id": 100701162000102010,
+    "value": "Go!"
+  },
+  {
+    "id": 100701162000102011,
+    "value": "I'm not out of this yet! Funnels!"
+  },
+  {
+    "id": 100701162000102012,
+    "value": "I'm not out of this yet! Funnels!"
+  },
+  {
+    "id": 100701162000102013,
+    "value": "Fangs! Aim for the machines only!"
+  },
+  {
+    "id": 100701162000102014,
+    "value": "Fangs! Aim for the machines only!"
+  },
+  {
+    "id": 100701162000102015,
+    "value": "Come on, go!"
+  },
+  {
+    "id": 100701162000102016,
+    "value": "Come on, go!"
+  },
+  {
+    "id": 100701162000202001,
+    "value": "Hahhh!"
+  },
+  {
+    "id": 100701162000202002,
+    "value": "Hahhh!"
+  },
+  {
+    "id": 100701162000202003,
+    "value": "Take this!"
+  },
+  {
+    "id": 100701162000202004,
+    "value": "Take this!"
+  },
+  {
+    "id": 100701162000202005,
+    "value": "There's no other way!"
+  },
+  {
+    "id": 100701162000202006,
+    "value": "There's no other way!"
+  },
+  {
+    "id": 100701162000202007,
+    "value": "Now!"
+  },
+  {
+    "id": 100701162000202008,
+    "value": "Now!"
+  },
+  {
+    "id": 100701162000202009,
+    "value": "I see you... There!"
+  },
+  {
+    "id": 100701162000202010,
+    "value": "I see you... There!"
+  },
+  {
+    "id": 100701162000202011,
+    "value": "Funnels! Go!"
+  },
+  {
+    "id": 100701162000202012,
+    "value": "Funnels! Go!"
+  },
+  {
+    "id": 100701162000202013,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701162000202014,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701162000202015,
+    "value": "Don't fail me! The enemy's there!"
+  },
+  {
+    "id": 100701162000202016,
+    "value": "Don't fail me! The enemy's there!"
+  },
+  {
+    "id": 100701162000300001,
+    "value": "I have you!"
+  },
+  {
+    "id": 100701162000300002,
+    "value": "I have you!"
+  },
+  {
+    "id": 100701162000300003,
+    "value": "Your life is mine!"
+  },
+  {
+    "id": 100701162000300004,
+    "value": "Your life is mine!"
+  },
+  {
+    "id": 100701162000300005,
+    "value": "You're not getting away!"
+  },
+  {
+    "id": 100701162000300006,
+    "value": "You're not getting away!"
+  },
+  {
+    "id": 100701162000300007,
+    "value": "There!"
+  },
+  {
+    "id": 100701162000300008,
+    "value": "There!"
+  },
+  {
+    "id": 100701162000300009,
+    "value": "You're not going anywhere!"
+  },
+  {
+    "id": 100701162000300010,
+    "value": "You're not going anywhere!"
+  },
+  {
+    "id": 100701162000500001,
+    "value": "Say your prayers!"
+  },
+  {
+    "id": 100701162000500002,
+    "value": "Say your prayers!"
+  },
+  {
+    "id": 100701162000500003,
+    "value": "Die!"
+  },
+  {
+    "id": 100701162000500004,
+    "value": "Die!"
+  },
+  {
+    "id": 100701162000500005,
+    "value": "Got you!"
+  },
+  {
+    "id": 100701162000500006,
+    "value": "Got you!"
+  },
+  {
+    "id": 100701162000500007,
+    "value": "You damn—!"
+  },
+  {
+    "id": 100701162000500008,
+    "value": "You damn—!"
+  },
+  {
+    "id": 100701162000500009,
+    "value": "Hit!"
+  },
+  {
+    "id": 100701162000500010,
+    "value": "Hit!"
+  },
+  {
+    "id": 100701162000600001,
+    "value": "Your time has come!"
+  },
+  {
+    "id": 100701162000600002,
+    "value": "Your time has come!"
+  },
+  {
+    "id": 100701162000600003,
+    "value": "Begone!"
+  },
+  {
+    "id": 100701162000600004,
+    "value": "Begone!"
+  },
+  {
+    "id": 100701162000600005,
+    "value": "Out of my sight!"
+  },
+  {
+    "id": 100701162000600006,
+    "value": "Out of my sight!"
+  },
+  {
+    "id": 100701162000600007,
+    "value": "I'll crush you into dust!"
+  },
+  {
+    "id": 100701162000600008,
+    "value": "I'll crush you into dust!"
+  },
+  {
+    "id": 100701162000600009,
+    "value": "I've got you!"
+  },
+  {
+    "id": 100701162000600010,
+    "value": "I've got you!"
+  },
+  {
+    "id": 100701162000800001,
+    "value": "You bastard!"
+  },
+  {
+    "id": 100701162000800002,
+    "value": "You bastard!"
+  },
+  {
+    "id": 100701162000800003,
+    "value": "GO!!!"
+  },
+  {
+    "id": 100701162000800004,
+    "value": "GO!!!"
+  },
+  {
+    "id": 100701162000800005,
+    "value": "I've got you!"
+  },
+  {
+    "id": 100701162000800006,
+    "value": "I've got you!"
+  },
+  {
+    "id": 100701162000800007,
+    "value": "Why you—!"
+  },
+  {
+    "id": 100701162000800008,
+    "value": "Why you—!"
+  },
+  {
+    "id": 100701162000800009,
+    "value": "Get 'em!"
+  },
+  {
+    "id": 100701162000800010,
+    "value": "Get 'em!"
+  },
+  {
+    "id": 100701162000900001,
+    "value": "You underestimated me."
+  },
+  {
+    "id": 100701162000900002,
+    "value": "You underestimated me."
+  },
+  {
+    "id": 100701162000900003,
+    "value": "You're worthless!"
+  },
+  {
+    "id": 100701162000900004,
+    "value": "You're worthless!"
+  },
+  {
+    "id": 100701162000900005,
+    "value": "I applaud your effort."
+  },
+  {
+    "id": 100701162000900006,
+    "value": "I applaud your effort."
+  },
+  {
+    "id": 100701162000900007,
+    "value": "Now die!"
+  },
+  {
+    "id": 100701162000900008,
+    "value": "Now die!"
+  },
+  {
+    "id": 100701162000900009,
+    "value": "Even I see the enemy now..."
+  },
+  {
+    "id": 100701162000900010,
+    "value": "Even I see the enemy now..."
+  },
+  {
+    "id": 100701162000900011,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701162000900012,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701162000900013,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701162000900014,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701162000900015,
+    "value": "There's the enemy!"
+  },
+  {
+    "id": 100701162000900016,
+    "value": "There's the enemy!"
   },
   {
     "id": 100701166000100001,
@@ -5760,6 +8312,14 @@
     "value": "C'mon!"
   },
   {
+    "id": 100701166000100011,
+    "value": "I see it! There!"
+  },
+  {
+    "id": 100701166000100012,
+    "value": "I see it! There!"
+  },
+  {
     "id": 100701200000100001,
     "value": "You're mine!"
   },
@@ -5790,6 +8350,14 @@
   {
     "id": 100701200000100008,
     "value": "Whoooa!"
+  },
+  {
+    "id": 100701200000100009,
+    "value": "GO! BITS!"
+  },
+  {
+    "id": 100701200000100010,
+    "value": "GO! BITS!"
   },
   {
     "id": 100701200000200001,
@@ -5824,6 +8392,14 @@
     "value": "I'm taking my shot!"
   },
   {
+    "id": 100701200000200009,
+    "value": "Lets wrap this up!"
+  },
+  {
+    "id": 100701200000200010,
+    "value": "Lets wrap this up!"
+  },
+  {
     "id": 100701200000300001,
     "value": "Hiyaaah!"
   },
@@ -5854,6 +8430,14 @@
   {
     "id": 100701200000300008,
     "value": "Gotcha!"
+  },
+  {
+    "id": 100701200000300009,
+    "value": "Get blown away!"
+  },
+  {
+    "id": 100701200000300010,
+    "value": "Get blown away!"
   },
   {
     "id": 100701200000400001,
@@ -5888,6 +8472,14 @@
     "value": "Accept your fate!"
   },
   {
+    "id": 100701200000400009,
+    "value": "Receive my baptism!"
+  },
+  {
+    "id": 100701200000400010,
+    "value": "Receive my baptism!"
+  },
+  {
     "id": 100701200000500001,
     "value": "I'll take you dooown!"
   },
@@ -5918,6 +8510,14 @@
   {
     "id": 100701200000500008,
     "value": "Outta my way!"
+  },
+  {
+    "id": 100701200000500009,
+    "value": "You're not getting away! Give up!"
+  },
+  {
+    "id": 100701200000500010,
+    "value": "You're not getting away! Give up!"
   },
   {
     "id": 100701200000600001,
@@ -5960,6 +8560,14 @@
     "value": "Here!"
   },
   {
+    "id": 100701200000600011,
+    "value": "It's time to unveil my ace in the hole!"
+  },
+  {
+    "id": 100701200000600012,
+    "value": "It's time to unveil my ace in the hole!"
+  },
+  {
     "id": 100701200000700001,
     "value": "There!"
   },
@@ -5992,6 +8600,14 @@
     "value": "Take this!"
   },
   {
+    "id": 100701200000700009,
+    "value": "I wont let you go any further!"
+  },
+  {
+    "id": 100701200000700010,
+    "value": "I wont let you go any further!"
+  },
+  {
     "id": 100701200000902001,
     "value": "I've got you!"
   },
@@ -6022,6 +8638,14 @@
   {
     "id": 100701200000902008,
     "value": "Ahhh!"
+  },
+  {
+    "id": 100701200000902009,
+    "value": "As I suspected!"
+  },
+  {
+    "id": 100701200000902010,
+    "value": "As I suspected!"
   },
   {
     "id": 100701200001200001,
@@ -6064,6 +8688,22 @@
     "value": "Hyaaah!"
   },
   {
+    "id": 100701200001200011,
+    "value": "Go! Attack my opponent!"
+  },
+  {
+    "id": 100701200001200012,
+    "value": "Go! Attack my opponent!"
+  },
+  {
+    "id": 100701200001200013,
+    "value": "Go, funnels!"
+  },
+  {
+    "id": 100701200001200014,
+    "value": "Go, funnels!"
+  },
+  {
     "id": 100701200002500001,
     "value": "Farewell!"
   },
@@ -6094,6 +8734,14 @@
   {
     "id": 100701200002500008,
     "value": "There's no escape!"
+  },
+  {
+    "id": 100701200002500009,
+    "value": "I will not lose!"
+  },
+  {
+    "id": 100701200002500010,
+    "value": "I will not lose!"
   },
   {
     "id": 100701200002501001,
@@ -6168,6 +8816,14 @@
     "value": "Careless!"
   },
   {
+    "id": 100701200002700009,
+    "value": "I see right through you!"
+  },
+  {
+    "id": 100701200002700010,
+    "value": "I see right through you!"
+  },
+  {
     "id": 100701200002800001,
     "value": "Say your prayers!"
   },
@@ -6198,6 +8854,14 @@
   {
     "id": 100701200002800008,
     "value": "How do you like this?!"
+  },
+  {
+    "id": 100701200002800009,
+    "value": "I'm not letting you get away!"
+  },
+  {
+    "id": 100701200002800010,
+    "value": "I'm not letting you get away!"
   },
   {
     "id": 100701200002802001,
@@ -6264,6 +8928,14 @@
     "value": "You're getting on my nerves!"
   },
   {
+    "id": 100701200003600009,
+    "value": "It's my turn!"
+  },
+  {
+    "id": 100701200003600010,
+    "value": "It's my turn!"
+  },
+  {
     "id": 100701210000100001,
     "value": "Down you go!"
   },
@@ -6294,6 +8966,14 @@
   {
     "id": 100701210000100008,
     "value": "Move!"
+  },
+  {
+    "id": 100701210000100009,
+    "value": "Target acquired. Guidance system, commence the attack!"
+  },
+  {
+    "id": 100701210000100010,
+    "value": "Target acquired. Guidance system, commence the attack!"
   },
   {
     "id": 100701210000200001,
@@ -6328,6 +9008,30 @@
     "value": "Awww yeaaaah!"
   },
   {
+    "id": 100701210000200009,
+    "value": "Go already!"
+  },
+  {
+    "id": 100701210000200010,
+    "value": "Go already!"
+  },
+  {
+    "id": 100701210000200011,
+    "value": "Get out there, funnels!"
+  },
+  {
+    "id": 100701210000200012,
+    "value": "Get out there, funnels!"
+  },
+  {
+    "id": 100701210000200013,
+    "value": "Oh, you're going to like my fangs!"
+  },
+  {
+    "id": 100701210000200014,
+    "value": "Oh, you're going to like my fangs!"
+  },
+  {
     "id": 100701210000300001,
     "value": "I'll destroy you!"
   },
@@ -6358,6 +9062,38 @@
   {
     "id": 100701210000300008,
     "value": "Get lost."
+  },
+  {
+    "id": 100701210000300009,
+    "value": "This will be the end for you!"
+  },
+  {
+    "id": 100701210000300010,
+    "value": "This will be the end for you!"
+  },
+  {
+    "id": 100701210000300011,
+    "value": "I'll show you what I've got!"
+  },
+  {
+    "id": 100701210000300012,
+    "value": "I'll show you what I've got!"
+  },
+  {
+    "id": 100701210000300013,
+    "value": "Now!"
+  },
+  {
+    "id": 100701210000300014,
+    "value": "Now!"
+  },
+  {
+    "id": 100701210000300015,
+    "value": "I'll use my Fangs!"
+  },
+  {
+    "id": 100701210000300016,
+    "value": "I'll use my Fangs!"
   },
   {
     "id": 100701210000400001,
@@ -6392,6 +9128,22 @@
     "value": "I'll stop you!"
   },
   {
+    "id": 100701210000400009,
+    "value": "Here I come!"
+  },
+  {
+    "id": 100701210000400010,
+    "value": "Here I come!"
+  },
+  {
+    "id": 100701210000400011,
+    "value": "Let's go, funnels!"
+  },
+  {
+    "id": 100701210000400012,
+    "value": "Let's go, funnels!"
+  },
+  {
     "id": 100701210000401001,
     "value": "You're afraid, aren't you?"
   },
@@ -6424,6 +9176,14 @@
     "value": "Farewell..."
   },
   {
+    "id": 100701210000401009,
+    "value": "I just have to destroy them all!"
+  },
+  {
+    "id": 100701210000401010,
+    "value": "I just have to destroy them all!"
+  },
+  {
     "id": 100701210000600001,
     "value": "Gotcha!"
   },
@@ -6454,6 +9214,14 @@
   {
     "id": 100701210000600008,
     "value": "Out of my way!"
+  },
+  {
+    "id": 100701210000600009,
+    "value": "Let's show them what we can do!"
+  },
+  {
+    "id": 100701210000600010,
+    "value": "Let's show them what we can do!"
   },
   {
     "id": 100701210001400001,
@@ -6496,6 +9264,14 @@
     "value": "This will end it!"
   },
   {
+    "id": 100701210001400011,
+    "value": "Too slow! You're mine now!"
+  },
+  {
+    "id": 100701210001400012,
+    "value": "Too slow! You're mine now!"
+  },
+  {
     "id": 100701210001500001,
     "value": "I've gotten rid of all distractions!"
   },
@@ -6526,6 +9302,22 @@
   {
     "id": 100701210001500008,
     "value": "Weak!"
+  },
+  {
+    "id": 100701210001500009,
+    "value": "Heh... There!"
+  },
+  {
+    "id": 100701210001500010,
+    "value": "Heh... There!"
+  },
+  {
+    "id": 100701210001500011,
+    "value": "Fangs!"
+  },
+  {
+    "id": 100701210001500012,
+    "value": "Fangs!"
   },
   {
     "id": 100701210001600001,
@@ -6560,6 +9352,22 @@
     "value": "You're wasting your time!"
   },
   {
+    "id": 100701210001600009,
+    "value": "I see you... There!"
+  },
+  {
+    "id": 100701210001600010,
+    "value": "I see you... There!"
+  },
+  {
+    "id": 100701210001600011,
+    "value": "Fangs!"
+  },
+  {
+    "id": 100701210001600012,
+    "value": "Fangs!"
+  },
+  {
     "id": 100701210001700001,
     "value": "This will finish you!"
   },
@@ -6590,6 +9398,14 @@
   {
     "id": 100701210001700008,
     "value": "Dodge this!"
+  },
+  {
+    "id": 100701210001700009,
+    "value": "This will finish you!"
+  },
+  {
+    "id": 100701210001700010,
+    "value": "This will finish you!"
   },
   {
     "id": 100701210001900001,
@@ -6624,6 +9440,30 @@
     "value": "This shall be a very palpable hit!"
   },
   {
+    "id": 100701210001900009,
+    "value": "Move it!"
+  },
+  {
+    "id": 100701210001900010,
+    "value": "Move it!"
+  },
+  {
+    "id": 100701210001900011,
+    "value": "Funnels are no laughing matter!"
+  },
+  {
+    "id": 100701210001900012,
+    "value": "Funnels are no laughing matter!"
+  },
+  {
+    "id": 100701210001900013,
+    "value": "A bite from these fangs will leave quite the scar!"
+  },
+  {
+    "id": 100701210001900014,
+    "value": "A bite from these fangs will leave quite the scar!"
+  },
+  {
     "id": 100701217000200001,
     "value": "It's over!"
   },
@@ -6654,6 +9494,14 @@
   {
     "id": 100701217000200008,
     "value": "Pointless!"
+  },
+  {
+    "id": 100701217000200009,
+    "value": "I'll use this for design reference!"
+  },
+  {
+    "id": 100701217000200010,
+    "value": "I'll use this for design reference!"
   },
   {
     "id": 100701217000300001,
@@ -6696,6 +9544,22 @@
     "value": "Hiyaaah!"
   },
   {
+    "id": 100701217000300011,
+    "value": "Hehe, I'm counting on you!"
+  },
+  {
+    "id": 100701217000300012,
+    "value": "Hehe, I'm counting on you!"
+  },
+  {
+    "id": 100701217000300013,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701217000300014,
+    "value": "Funnels!"
+  },
+  {
     "id": 100701219000100001,
     "value": "This is the end."
   },
@@ -6726,6 +9590,30 @@
   {
     "id": 100701219000100008,
     "value": "Get out of the way already!"
+  },
+  {
+    "id": 100701219000100009,
+    "value": "I see it clear as day!"
+  },
+  {
+    "id": 100701219000100010,
+    "value": "I see it clear as day!"
+  },
+  {
+    "id": 100701219000100011,
+    "value": "Funnels! Go!"
+  },
+  {
+    "id": 100701219000100012,
+    "value": "Funnels! Go!"
+  },
+  {
+    "id": 100701219000100013,
+    "value": "Understood, Fangs!"
+  },
+  {
+    "id": 100701219000100014,
+    "value": "Understood, Fangs!"
   },
   {
     "id": 100701219000201001,
@@ -6792,6 +9680,38 @@
     "value": "Hahhh!"
   },
   {
+    "id": 100701219000300009,
+    "value": "I'll show you what I've got!"
+  },
+  {
+    "id": 100701219000300010,
+    "value": "I'll show you what I've got!"
+  },
+  {
+    "id": 100701219000300011,
+    "value": "Now!"
+  },
+  {
+    "id": 100701219000300012,
+    "value": "Now!"
+  },
+  {
+    "id": 100701219000300013,
+    "value": "This is not just for show!"
+  },
+  {
+    "id": 100701219000300014,
+    "value": "This is not just for show!"
+  },
+  {
+    "id": 100701219000300015,
+    "value": "I'll use my Fangs!"
+  },
+  {
+    "id": 100701219000300016,
+    "value": "I'll use my Fangs!"
+  },
+  {
     "id": 100701219000400001,
     "value": "Don't miss!"
   },
@@ -6824,6 +9744,38 @@
     "value": "GOOO!!!"
   },
   {
+    "id": 100701219000400009,
+    "value": "This is it! Now!"
+  },
+  {
+    "id": 100701219000400010,
+    "value": "This is it! Now!"
+  },
+  {
+    "id": 100701219000400011,
+    "value": "Let's go, funnels!"
+  },
+  {
+    "id": 100701219000400012,
+    "value": "Let's go, funnels!"
+  },
+  {
+    "id": 100701219000400013,
+    "value": "Here we go, fin funnels!"
+  },
+  {
+    "id": 100701219000400014,
+    "value": "Here we go, fin funnels!"
+  },
+  {
+    "id": 100701219000400015,
+    "value": "I'm using my Fangs!"
+  },
+  {
+    "id": 100701219000400016,
+    "value": "I'm using my Fangs!"
+  },
+  {
     "id": 100701219000500001,
     "value": "Eat this!"
   },
@@ -6854,6 +9806,38 @@
   {
     "id": 100701219000500008,
     "value": "Aaaaaaaah!"
+  },
+  {
+    "id": 100701219000500009,
+    "value": "Now!"
+  },
+  {
+    "id": 100701219000500010,
+    "value": "Now!"
+  },
+  {
+    "id": 100701219000500011,
+    "value": "Don't take me lightly! Funnels!"
+  },
+  {
+    "id": 100701219000500012,
+    "value": "Don't take me lightly! Funnels!"
+  },
+  {
+    "id": 100701219000500013,
+    "value": "Go, fin funnels!"
+  },
+  {
+    "id": 100701219000500014,
+    "value": "Go, fin funnels!"
+  },
+  {
+    "id": 100701219000500015,
+    "value": "Go, Fangs!"
+  },
+  {
+    "id": 100701219000500016,
+    "value": "Go, Fangs!"
   },
   {
     "id": 100701219000600001,
@@ -6900,6 +9884,30 @@
     "value": "People like you must be stopped!"
   },
   {
+    "id": 100701219000600012,
+    "value": "Go and do it!"
+  },
+  {
+    "id": 100701219000600013,
+    "value": "Go and do it!"
+  },
+  {
+    "id": 100701219000600014,
+    "value": "Go, Funnels!"
+  },
+  {
+    "id": 100701219000600015,
+    "value": "Go, Funnels!"
+  },
+  {
+    "id": 100701219000600016,
+    "value": "Fangs, get out there!"
+  },
+  {
+    "id": 100701219000600017,
+    "value": "Fangs, get out there!"
+  },
+  {
     "id": 100701219000700001,
     "value": "This will finish you!"
   },
@@ -6932,6 +9940,38 @@
     "value": "Just try and stop me!"
   },
   {
+    "id": 100701219000700009,
+    "value": "Heh... There!"
+  },
+  {
+    "id": 100701219000700010,
+    "value": "Heh... There!"
+  },
+  {
+    "id": 100701219000700011,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701219000700012,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701219000700013,
+    "value": "Here we go, fin funnels!"
+  },
+  {
+    "id": 100701219000700014,
+    "value": "Here we go, fin funnels!"
+  },
+  {
+    "id": 100701219000700015,
+    "value": "Fangs!"
+  },
+  {
+    "id": 100701219000700016,
+    "value": "Fangs!"
+  },
+  {
     "id": 100701230000100001,
     "value": "Aaah!"
   },
@@ -6962,6 +10002,14 @@
   {
     "id": 100701230000100008,
     "value": "Get themmm!"
+  },
+  {
+    "id": 100701230000100011,
+    "value": "I'll show you what I've got!"
+  },
+  {
+    "id": 100701230000100012,
+    "value": "I'll show you what I've got!"
   },
   {
     "id": 100701230000200001,
@@ -7008,6 +10056,30 @@
     "value": "The future of the people...I want to protect it...!"
   },
   {
+    "id": 100701230000200012,
+    "value": "That power... It's the same as mine...!"
+  },
+  {
+    "id": 100701230000200013,
+    "value": "That power... It's the same as mine...!"
+  },
+  {
+    "id": 100701230000200014,
+    "value": "I'll be the guide... Funnel!"
+  },
+  {
+    "id": 100701230000200015,
+    "value": "I'll be the guide... Funnel!"
+  },
+  {
+    "id": 100701230000200016,
+    "value": "How pitiful... Fangs...!"
+  },
+  {
+    "id": 100701230000200017,
+    "value": "How pitiful... Fangs...!"
+  },
+  {
     "id": 100701230000300001,
     "value": "You're mine!"
   },
@@ -7038,6 +10110,14 @@
   {
     "id": 100701230000300008,
     "value": "Hey you!"
+  },
+  {
+    "id": 100701230000300009,
+    "value": "Get back here!"
+  },
+  {
+    "id": 100701230000300010,
+    "value": "Get back here!"
   },
   {
     "id": 100701230000400001,
@@ -7072,6 +10152,14 @@
     "value": "Okay!"
   },
   {
+    "id": 100701230000400009,
+    "value": "I won't let you get away!"
+  },
+  {
+    "id": 100701230000400010,
+    "value": "I won't let you get away!"
+  },
+  {
     "id": 100701230000500001,
     "value": "Now!"
   },
@@ -7102,6 +10190,30 @@
   {
     "id": 100701230000500008,
     "value": "Weak!"
+  },
+  {
+    "id": 100701230000500009,
+    "value": "I can see it now..."
+  },
+  {
+    "id": 100701230000500010,
+    "value": "I can see it now..."
+  },
+  {
+    "id": 100701230000500011,
+    "value": "Guh... Funnels! Go!"
+  },
+  {
+    "id": 100701230000500012,
+    "value": "Guh... Funnels! Go!"
+  },
+  {
+    "id": 100701230000500013,
+    "value": "I see you! Fangs!"
+  },
+  {
+    "id": 100701230000500014,
+    "value": "I see you! Fangs!"
   },
   {
     "id": 100701230000600001,
@@ -7168,6 +10280,14 @@
     "value": "This is it for you!"
   },
   {
+    "id": 100701230001100009,
+    "value": "Found you!"
+  },
+  {
+    "id": 100701230001100010,
+    "value": "Found you!"
+  },
+  {
     "id": 100701230001200001,
     "value": "Now!"
   },
@@ -7198,6 +10318,14 @@
   {
     "id": 100701230001200008,
     "value": "Too damn slow!"
+  },
+  {
+    "id": 100701230001200009,
+    "value": "I'm unleashing my power!"
+  },
+  {
+    "id": 100701230001200010,
+    "value": "I'm unleashing my power!"
   },
   {
     "id": 100701230001300001,
@@ -7232,6 +10360,30 @@
     "value": "Begone!"
   },
   {
+    "id": 100701230001300009,
+    "value": "Hold your ace close to your chest..."
+  },
+  {
+    "id": 100701230001300010,
+    "value": "Hold your ace close to your chest..."
+  },
+  {
+    "id": 100701230001300011,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701230001300012,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701230001300013,
+    "value": "This is not just for show!"
+  },
+  {
+    "id": 100701230001300014,
+    "value": "This is not just for show!"
+  },
+  {
     "id": 100701230001400001,
     "value": "Die!"
   },
@@ -7262,6 +10414,30 @@
   {
     "id": 100701230001400008,
     "value": "It's over for you!"
+  },
+  {
+    "id": 100701230001400009,
+    "value": "You can't escape this!"
+  },
+  {
+    "id": 100701230001400010,
+    "value": "You can't escape this!"
+  },
+  {
+    "id": 100701230001400011,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701230001400012,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701230001400013,
+    "value": "Not just for show!"
+  },
+  {
+    "id": 100701230001400014,
+    "value": "Not just for show!"
   },
   {
     "id": 100701230002501001,
@@ -7296,6 +10472,30 @@
     "value": "Gotcha!"
   },
   {
+    "id": 100701230002501009,
+    "value": "Here we go, then!"
+  },
+  {
+    "id": 100701230002501010,
+    "value": "Here we go, then!"
+  },
+  {
+    "id": 100701230002501011,
+    "value": "I see it! Funnels!"
+  },
+  {
+    "id": 100701230002501012,
+    "value": "I see it! Funnels!"
+  },
+  {
+    "id": 100701230002501013,
+    "value": "Fangs!"
+  },
+  {
+    "id": 100701230002501014,
+    "value": "Fangs!"
+  },
+  {
     "id": 100701230002600001,
     "value": "That should do it!"
   },
@@ -7328,6 +10528,14 @@
     "value": "I've no choice!"
   },
   {
+    "id": 100701230002600009,
+    "value": "You're mine!"
+  },
+  {
+    "id": 100701230002600010,
+    "value": "You're mine!"
+  },
+  {
     "id": 100701240001900001,
     "value": "Out of my way!"
   },
@@ -7358,6 +10566,14 @@
   {
     "id": 100701240001900008,
     "value": "Stay back!"
+  },
+  {
+    "id": 100701240001900009,
+    "value": "You fell right into my trap!"
+  },
+  {
+    "id": 100701240001900010,
+    "value": "You fell right into my trap!"
   },
   {
     "id": 100701300000100001,
@@ -7400,6 +10616,22 @@
     "value": "I won't let you do it!"
   },
   {
+    "id": 100701300000100011,
+    "value": "Get out there!"
+  },
+  {
+    "id": 100701300000100012,
+    "value": "Get out there!"
+  },
+  {
+    "id": 100701300000100013,
+    "value": "Good work, Fangs!"
+  },
+  {
+    "id": 100701300000100014,
+    "value": "Good work, Fangs!"
+  },
+  {
     "id": 100701300000200001,
     "value": "You've got to strike when the chance presents itself!"
   },
@@ -7430,6 +10662,14 @@
   {
     "id": 100701300000200008,
     "value": "Yeeeaaah!"
+  },
+  {
+    "id": 100701300000200009,
+    "value": "This feeling... I've got you!"
+  },
+  {
+    "id": 100701300000200010,
+    "value": "This feeling... I've got you!"
   },
   {
     "id": 100701300000300001,
@@ -7560,6 +10800,14 @@
     "value": "Oraaa!"
   },
   {
+    "id": 100701300001400009,
+    "value": "Found you!"
+  },
+  {
+    "id": 100701300001400010,
+    "value": "Found you!"
+  },
+  {
     "id": 100701300001500001,
     "value": "Eliminate!"
   },
@@ -7592,6 +10840,14 @@
     "value": "Destruction!"
   },
   {
+    "id": 100701300001500009,
+    "value": "Found you!"
+  },
+  {
+    "id": 100701300001500010,
+    "value": "Found you!"
+  },
+  {
     "id": 100701300001600001,
     "value": "Now you die!"
   },
@@ -7622,6 +10878,14 @@
   {
     "id": 100701300001600008,
     "value": "Uraaaagh!"
+  },
+  {
+    "id": 100701300001600009,
+    "value": "Raagh! Go!"
+  },
+  {
+    "id": 100701300001600010,
+    "value": "Raagh! Go!"
   },
   {
     "id": 100701300001700001,
@@ -7664,6 +10928,30 @@
     "value": "Just stop doing what you're doing!"
   },
   {
+    "id": 100701300001700011,
+    "value": "Now!"
+  },
+  {
+    "id": 100701300001700012,
+    "value": "Now!"
+  },
+  {
+    "id": 100701300001700013,
+    "value": "Funnels, gooo!!!"
+  },
+  {
+    "id": 100701300001700014,
+    "value": "Funnels, gooo!!!"
+  },
+  {
+    "id": 100701300001700015,
+    "value": "Fangs!"
+  },
+  {
+    "id": 100701300001700016,
+    "value": "Fangs!"
+  },
+  {
     "id": 100701300001800001,
     "value": "Down you go!"
   },
@@ -7694,6 +10982,30 @@
   {
     "id": 100701300001800008,
     "value": "You're finished!"
+  },
+  {
+    "id": 100701300001800009,
+    "value": "I shall make good use of this!"
+  },
+  {
+    "id": 100701300001800010,
+    "value": "I shall make good use of this!"
+  },
+  {
+    "id": 100701300001800011,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701300001800012,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701300001800013,
+    "value": "Heh... Fangs!"
+  },
+  {
+    "id": 100701300001800014,
+    "value": "Heh... Fangs!"
   },
   {
     "id": 100701300001900001,
@@ -7728,6 +11040,22 @@
     "value": "I'm not letting you get away!"
   },
   {
+    "id": 100701300001900009,
+    "value": "They're right there, get them!"
+  },
+  {
+    "id": 100701300001900010,
+    "value": "They're right there, get them!"
+  },
+  {
+    "id": 100701300001900011,
+    "value": "Enjoy my Funnels!"
+  },
+  {
+    "id": 100701300001900012,
+    "value": "Enjoy my Funnels!"
+  },
+  {
     "id": 100701300002000001,
     "value": "I can do this!"
   },
@@ -7758,6 +11086,14 @@
   {
     "id": 100701300002000008,
     "value": "I think I'll wrap things up now!"
+  },
+  {
+    "id": 100701300002000009,
+    "value": "You didn't think I'd run away, did you?"
+  },
+  {
+    "id": 100701300002000010,
+    "value": "You didn't think I'd run away, did you?"
   },
   {
     "id": 100701300002100001,
@@ -7792,6 +11128,14 @@
     "value": "Dodge this!"
   },
   {
+    "id": 100701300002100009,
+    "value": "If I just attack first..."
+  },
+  {
+    "id": 100701300002100010,
+    "value": "If I just attack first..."
+  },
+  {
     "id": 100701300002200001,
     "value": "You're going down!"
   },
@@ -7824,6 +11168,14 @@
     "value": "Raaaahh!"
   },
   {
+    "id": 100701300002200009,
+    "value": "I can make use of any kind of weapon!"
+  },
+  {
+    "id": 100701300002200010,
+    "value": "I can make use of any kind of weapon!"
+  },
+  {
     "id": 100701300002500001,
     "value": "This is it for you!"
   },
@@ -7854,6 +11206,14 @@
   {
     "id": 100701300002500008,
     "value": "Down you go!"
+  },
+  {
+    "id": 100701300002500009,
+    "value": "Looks like you underestimated me!"
+  },
+  {
+    "id": 100701300002500010,
+    "value": "Looks like you underestimated me!"
   },
   {
     "id": 100701300003200001,
@@ -7932,6 +11292,22 @@
     "value": "This is to keep things from getting any worse!"
   },
   {
+    "id": 100701300003203012,
+    "value": "You leave me no choice!"
+  },
+  {
+    "id": 100701300003203013,
+    "value": "You leave me no choice!"
+  },
+  {
+    "id": 100701300003203014,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701300003203015,
+    "value": "Funnels!"
+  },
+  {
     "id": 100701300003400001,
     "value": "Dammit!"
   },
@@ -7996,6 +11372,14 @@
     "value": "Direct hit!"
   },
   {
+    "id": 100701300003500009,
+    "value": "This should do it!"
+  },
+  {
+    "id": 100701300003500010,
+    "value": "This should do it!"
+  },
+  {
     "id": 100701300003600001,
     "value": "How do you like that!?"
   },
@@ -8028,6 +11412,14 @@
     "value": "You're wasting your time!"
   },
   {
+    "id": 100701300003600009,
+    "value": "Uhm, this should work, right!?"
+  },
+  {
+    "id": 100701300003600010,
+    "value": "Uhm, this should work, right!?"
+  },
+  {
     "id": 100701300003700001,
     "value": "Prepare yourself!"
   },
@@ -8058,6 +11450,14 @@
   {
     "id": 100701300003700008,
     "value": "I won't let you do as you please!"
+  },
+  {
+    "id": 100701300003700009,
+    "value": "You won't get away!"
+  },
+  {
+    "id": 100701300003700010,
+    "value": "You won't get away!"
   },
   {
     "id": 100701300003900001,
@@ -8124,6 +11524,14 @@
     "value": "Ready or not, here I come!"
   },
   {
+    "id": 100701304000100009,
+    "value": "I shall lead the attack!"
+  },
+  {
+    "id": 100701304000100010,
+    "value": "I shall lead the attack!"
+  },
+  {
     "id": 100701304000200001,
     "value": "Here's a little something for you!"
   },
@@ -8154,6 +11562,14 @@
   {
     "id": 100701304000200008,
     "value": "Ahhhh Yeaaaah!"
+  },
+  {
+    "id": 100701304000200009,
+    "value": "You're hopeless!"
+  },
+  {
+    "id": 100701304000200010,
+    "value": "You're hopeless!"
   },
   {
     "id": 100701304000400001,
@@ -8188,6 +11604,14 @@
     "value": "Your defenses are full of holes!"
   },
   {
+    "id": 100701304000400009,
+    "value": "Attacking in the dark is my specialty!"
+  },
+  {
+    "id": 100701304000400010,
+    "value": "Attacking in the dark is my specialty!"
+  },
+  {
     "id": 100701304000500001,
     "value": "I shall take immediate action!"
   },
@@ -8218,6 +11642,14 @@
   {
     "id": 100701304000500008,
     "value": "I'll disinfect you!"
+  },
+  {
+    "id": 100701304000500009,
+    "value": "This battlefield is ailing..."
+  },
+  {
+    "id": 100701304000500010,
+    "value": "This battlefield is ailing..."
   },
   {
     "id": 100701305000100001,
@@ -8258,6 +11690,14 @@
   {
     "id": 100701305000100010,
     "value": "Don't underestimate me!"
+  },
+  {
+    "id": 100701305000100011,
+    "value": "I get how this works... I'll get 'em!"
+  },
+  {
+    "id": 100701305000100012,
+    "value": "I get how this works... I'll get 'em!"
   },
   {
     "id": 100701305000400001,
@@ -8324,6 +11764,30 @@
     "value": "Useless!"
   },
   {
+    "id": 100701305000700011,
+    "value": "I was born ready. Using the DRAGOONs!"
+  },
+  {
+    "id": 100701305000700012,
+    "value": "I was born ready. Using the DRAGOONs!"
+  },
+  {
+    "id": 100701305000700013,
+    "value": "There... Strike!"
+  },
+  {
+    "id": 100701305000700014,
+    "value": "There... Strike!"
+  },
+  {
+    "id": 100701305000700015,
+    "value": "This calls for fangs!"
+  },
+  {
+    "id": 100701305000700016,
+    "value": "This calls for fangs!"
+  },
+  {
     "id": 100701305000800001,
     "value": "You little...!"
   },
@@ -8346,6 +11810,14 @@
   {
     "id": 100701305000800006,
     "value": "Just disappear!"
+  },
+  {
+    "id": 100701305000800007,
+    "value": "This should do it... Go!"
+  },
+  {
+    "id": 100701305000800008,
+    "value": "This should do it... Go!"
   },
   {
     "id": 100701305001200001,
@@ -8378,6 +11850,22 @@
   {
     "id": 100701305001200008,
     "value": "Now for the coup de grace!"
+  },
+  {
+    "id": 100701305001200009,
+    "value": "Heh. We move!"
+  },
+  {
+    "id": 100701305001200010,
+    "value": "Heh. We move!"
+  },
+  {
+    "id": 100701305001200011,
+    "value": "Don't waste your energy struggling! Funnels!"
+  },
+  {
+    "id": 100701305001200012,
+    "value": "Don't waste your energy struggling! Funnels!"
   },
   {
     "id": 100701305001300001,
@@ -8444,6 +11932,14 @@
     "value": "Brace yourself!"
   },
   {
+    "id": 100701305001400009,
+    "value": "La Ronde des Lutins."
+  },
+  {
+    "id": 100701305001400010,
+    "value": "La Ronde des Lutins."
+  },
+  {
     "id": 100701306000100001,
     "value": "Dyaaagh!!"
   },
@@ -8508,6 +12004,38 @@
     "value": "I'll end this!"
   },
   {
+    "id": 100701308000100009,
+    "value": "I can handle this!"
+  },
+  {
+    "id": 100701308000100010,
+    "value": "I can handle this!"
+  },
+  {
+    "id": 100701308000100011,
+    "value": "Using DRAGOONs!"
+  },
+  {
+    "id": 100701308000100012,
+    "value": "Using DRAGOONs!"
+  },
+  {
+    "id": 100701308000100013,
+    "value": "I see it! Funnels!"
+  },
+  {
+    "id": 100701308000100014,
+    "value": "I see it! Funnels!"
+  },
+  {
+    "id": 100701308000100015,
+    "value": "Fangs are dangerous, but..."
+  },
+  {
+    "id": 100701308000100016,
+    "value": "Fangs are dangerous, but..."
+  },
+  {
     "id": 100701308000200001,
     "value": "You won't escape!"
   },
@@ -8538,6 +12066,30 @@
   {
     "id": 100701308000200008,
     "value": "Small fry..."
+  },
+  {
+    "id": 100701308000200009,
+    "value": "Hahahah! Go on!"
+  },
+  {
+    "id": 100701308000200010,
+    "value": "Hahahah! Go on!"
+  },
+  {
+    "id": 100701308000200011,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701308000200012,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701308000200013,
+    "value": "Get rid of them, Fangs!"
+  },
+  {
+    "id": 100701308000200014,
+    "value": "Get rid of them, Fangs!"
   },
   {
     "id": 100701308000300001,
@@ -8628,6 +12180,14 @@
     "value": "It's more fun than you'd think."
   },
   {
+    "id": 100701310000100015,
+    "value": "I'll show you how it's done."
+  },
+  {
+    "id": 100701310000100016,
+    "value": "I'll show you how it's done."
+  },
+  {
     "id": 100701310000200001,
     "value": "A wild card, huh?"
   },
@@ -8684,6 +12244,14 @@
     "value": "Take 'em out!"
   },
   {
+    "id": 100701310000200015,
+    "value": "Now, go!"
+  },
+  {
+    "id": 100701310000200016,
+    "value": "Now, go!"
+  },
+  {
     "id": 100701330000101001,
     "value": "There!"
   },
@@ -8722,6 +12290,30 @@
   {
     "id": 100701330000101010,
     "value": "Say goodbye!"
+  },
+  {
+    "id": 100701330000101011,
+    "value": "There it is! My opening!"
+  },
+  {
+    "id": 100701330000101012,
+    "value": "There it is! My opening!"
+  },
+  {
+    "id": 100701330000101013,
+    "value": "The DRAGOON System will end this!"
+  },
+  {
+    "id": 100701330000101014,
+    "value": "The DRAGOON System will end this!"
+  },
+  {
+    "id": 100701330000101015,
+    "value": "Go, fangs!"
+  },
+  {
+    "id": 100701330000101016,
+    "value": "Go, fangs!"
   },
   {
     "id": 100701330000201001,
@@ -8764,6 +12356,30 @@
     "value": "I've got you!"
   },
   {
+    "id": 100701330000201011,
+    "value": "Take that!"
+  },
+  {
+    "id": 100701330000201012,
+    "value": "Take that!"
+  },
+  {
+    "id": 100701330000201013,
+    "value": "Using the DRAGOON system!"
+  },
+  {
+    "id": 100701330000201014,
+    "value": "Using the DRAGOON system!"
+  },
+  {
+    "id": 100701330000201015,
+    "value": "Get out their, Fangs!"
+  },
+  {
+    "id": 100701330000201016,
+    "value": "Get out their, Fangs!"
+  },
+  {
     "id": 100701330000400001,
     "value": "Time for a bullseye!"
   },
@@ -8796,6 +12412,14 @@
     "value": "Oh, quit it!"
   },
   {
+    "id": 100701330000400009,
+    "value": "I'll master any weapon you give me!"
+  },
+  {
+    "id": 100701330000400010,
+    "value": "I'll master any weapon you give me!"
+  },
+  {
     "id": 100701330000500001,
     "value": "I've got you!"
   },
@@ -8826,6 +12450,14 @@
   {
     "id": 100701330000500008,
     "value": "Perish!"
+  },
+  {
+    "id": 100701330000500009,
+    "value": "Try and evade this!"
+  },
+  {
+    "id": 100701330000500010,
+    "value": "Try and evade this!"
   },
   {
     "id": 100701330000600001,
@@ -8892,6 +12524,14 @@
     "value": "You're wasting your time!"
   },
   {
+    "id": 100701330000900009,
+    "value": "Shoot 'em down!"
+  },
+  {
+    "id": 100701330000900010,
+    "value": "Shoot 'em down!"
+  },
+  {
     "id": 100701330001000001,
     "value": "Okay, let's do this!"
   },
@@ -8932,6 +12572,14 @@
     "value": "I'll take every chance to bring you down!"
   },
   {
+    "id": 100701330001000011,
+    "value": "Not so fast!"
+  },
+  {
+    "id": 100701330001000012,
+    "value": "Not so fast!"
+  },
+  {
     "id": 100701330001100001,
     "value": "I've got you!!"
   },
@@ -8962,6 +12610,14 @@
   {
     "id": 100701330001100008,
     "value": "Haaaaaaaa!"
+  },
+  {
+    "id": 100701330001100009,
+    "value": "I can see the enemy clearly!"
+  },
+  {
+    "id": 100701330001100010,
+    "value": "I can see the enemy clearly!"
   },
   {
     "id": 100701330001300001,
@@ -8996,6 +12652,30 @@
     "value": "I'll get yoooou!"
   },
   {
+    "id": 100701330001300009,
+    "value": "Take this!"
+  },
+  {
+    "id": 100701330001300010,
+    "value": "Take this!"
+  },
+  {
+    "id": 100701330001300011,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701330001300012,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701330001300013,
+    "value": "Go, Fangs!"
+  },
+  {
+    "id": 100701330001300014,
+    "value": "Go, Fangs!"
+  },
+  {
     "id": 100701330001400001,
     "value": "There's no point in retaliating!"
   },
@@ -9026,6 +12706,14 @@
   {
     "id": 100701330001400008,
     "value": "I'm going to stop you!"
+  },
+  {
+    "id": 100701330001400009,
+    "value": "Such a prime target! I'm going after it!"
+  },
+  {
+    "id": 100701330001400010,
+    "value": "Such a prime target! I'm going after it!"
   },
   {
     "id": 100701330001402001,
@@ -9060,6 +12748,14 @@
     "value": "This is as far as you go!"
   },
   {
+    "id": 100701330001403009,
+    "value": "Right there!"
+  },
+  {
+    "id": 100701330001403010,
+    "value": "Right there!"
+  },
+  {
     "id": 100701330001500001,
     "value": "I've got you!"
   },
@@ -9090,6 +12786,14 @@
   {
     "id": 100701330001500008,
     "value": "I'll show you!"
+  },
+  {
+    "id": 100701330001500009,
+    "value": "Ha! Get out there!"
+  },
+  {
+    "id": 100701330001500010,
+    "value": "Ha! Get out there!"
   },
   {
     "id": 100701330001600001,
@@ -9124,6 +12828,14 @@
     "value": "Eat this!"
   },
   {
+    "id": 100701330001600009,
+    "value": "That one...must die..."
+  },
+  {
+    "id": 100701330001600010,
+    "value": "That one...must die..."
+  },
+  {
     "id": 100701330001700001,
     "value": "You're going down!"
   },
@@ -9154,6 +12866,14 @@
   {
     "id": 100701330001700008,
     "value": "Nope, not happening!"
+  },
+  {
+    "id": 100701330001700009,
+    "value": "Go already!"
+  },
+  {
+    "id": 100701330001700010,
+    "value": "Go already!"
   },
   {
     "id": 100701330001800001,
@@ -9188,6 +12908,22 @@
     "value": "Haaaaaaaaa!"
   },
   {
+    "id": 100701330001800009,
+    "value": "I have no choice but to use this..."
+  },
+  {
+    "id": 100701330001800010,
+    "value": "I have no choice but to use this..."
+  },
+  {
+    "id": 100701330001800011,
+    "value": "The Fangs should be good enough!"
+  },
+  {
+    "id": 100701330001800012,
+    "value": "The Fangs should be good enough!"
+  },
+  {
     "id": 100701330001900001,
     "value": "I've got you!"
   },
@@ -9218,6 +12954,14 @@
   {
     "id": 100701330001900008,
     "value": "Hyaaah!"
+  },
+  {
+    "id": 100701330001900009,
+    "value": "Go! Now!"
+  },
+  {
+    "id": 100701330001900010,
+    "value": "Go! Now!"
   },
   {
     "id": 100701330002001001,
@@ -9252,6 +12996,14 @@
     "value": "Take this!"
   },
   {
+    "id": 100701330002001009,
+    "value": "Take that!"
+  },
+  {
+    "id": 100701330002001010,
+    "value": "Take that!"
+  },
+  {
     "id": 100701330002200001,
     "value": "Gotcha!"
   },
@@ -9282,6 +13034,14 @@
   {
     "id": 100701330002200008,
     "value": "This is as far as you go!"
+  },
+  {
+    "id": 100701330002200009,
+    "value": "Fall!"
+  },
+  {
+    "id": 100701330002200010,
+    "value": "Fall!"
   },
   {
     "id": 100701330002400001,
@@ -9316,6 +13076,38 @@
     "value": "Eat this!"
   },
   {
+    "id": 100701330002400009,
+    "value": "Caught you! You won't get away!"
+  },
+  {
+    "id": 100701330002400010,
+    "value": "Caught you! You won't get away!"
+  },
+  {
+    "id": 100701330002400011,
+    "value": "Funnels, deploy!"
+  },
+  {
+    "id": 100701330002400012,
+    "value": "Funnels, deploy!"
+  },
+  {
+    "id": 100701330002400013,
+    "value": "Go, Fangs!"
+  },
+  {
+    "id": 100701330002400014,
+    "value": "Go, Fangs!"
+  },
+  {
+    "id": 100701330002400015,
+    "value": "The GUND-BITs won't miss!"
+  },
+  {
+    "id": 100701330002400016,
+    "value": "The GUND-BITs won't miss!"
+  },
+  {
     "id": 100701330002500001,
     "value": "There!"
   },
@@ -9346,6 +13138,38 @@
   {
     "id": 100701330002500008,
     "value": "Go down!"
+  },
+  {
+    "id": 100701330002500009,
+    "value": "Heh, I can read it all!"
+  },
+  {
+    "id": 100701330002500010,
+    "value": "Heh, I can read it all!"
+  },
+  {
+    "id": 100701330002500011,
+    "value": "Here's the finish! Funnels!"
+  },
+  {
+    "id": 100701330002500012,
+    "value": "Here's the finish! Funnels!"
+  },
+  {
+    "id": 100701330002500013,
+    "value": "Let's go, Fangs!"
+  },
+  {
+    "id": 100701330002500014,
+    "value": "Let's go, Fangs!"
+  },
+  {
+    "id": 100701330002500015,
+    "value": "Take this... GUND-BITs!"
+  },
+  {
+    "id": 100701330002500016,
+    "value": "Take this... GUND-BITs!"
   },
   {
     "id": 100701330002600001,
@@ -9380,6 +13204,38 @@
     "value": "Gragh!"
   },
   {
+    "id": 100701330002600009,
+    "value": "Found you!"
+  },
+  {
+    "id": 100701330002600010,
+    "value": "Found you!"
+  },
+  {
+    "id": 100701330002600011,
+    "value": "Fly away!"
+  },
+  {
+    "id": 100701330002600012,
+    "value": "Fly away!"
+  },
+  {
+    "id": 100701330002600013,
+    "value": "Do your work, Fangs!"
+  },
+  {
+    "id": 100701330002600014,
+    "value": "Do your work, Fangs!"
+  },
+  {
+    "id": 100701330002600015,
+    "value": "GUND-BITs, go!"
+  },
+  {
+    "id": 100701330002600016,
+    "value": "GUND-BITs, go!"
+  },
+  {
     "id": 100701336000100001,
     "value": "I'll end this!"
   },
@@ -9410,6 +13266,62 @@
   {
     "id": 100701336000100008,
     "value": "Pain is only temporary."
+  },
+  {
+    "id": 100701336000100009,
+    "value": "Enemy sighted. Commencing attack."
+  },
+  {
+    "id": 100701336000100010,
+    "value": "Enemy sighted. Commencing attack."
+  },
+  {
+    "id": 100701336000100011,
+    "value": "Firing funnels."
+  },
+  {
+    "id": 100701336000100012,
+    "value": "Firing funnels."
+  },
+  {
+    "id": 100701336000100013,
+    "value": "Fangs!"
+  },
+  {
+    "id": 100701336000100014,
+    "value": "Fangs!"
+  },
+  {
+    "id": 100701336000100015,
+    "value": "I see it...There!"
+  },
+  {
+    "id": 100701336000100016,
+    "value": "I see it...There!"
+  },
+  {
+    "id": 100701336000100017,
+    "value": "Attack the enemy, funnels!"
+  },
+  {
+    "id": 100701336000100018,
+    "value": "Attack the enemy, funnels!"
+  },
+  {
+    "id": 100701336000100019,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701336000100020,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701336000100021,
+    "value": "GUND-Bits...the target's over there."
+  },
+  {
+    "id": 100701336000100022,
+    "value": "GUND-Bits...the target's over there."
   },
   {
     "id": 100701336000200001,
@@ -9444,6 +13356,38 @@
     "value": "Got you!"
   },
   {
+    "id": 100701336000200009,
+    "value": "Hmph, I can see everything!"
+  },
+  {
+    "id": 100701336000200010,
+    "value": "Hmph, I can see everything!"
+  },
+  {
+    "id": 100701336000200011,
+    "value": "Is that all?"
+  },
+  {
+    "id": 100701336000200012,
+    "value": "Is that all?"
+  },
+  {
+    "id": 100701336000200013,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701336000200014,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701336000200015,
+    "value": "Go, GUND-Bits!"
+  },
+  {
+    "id": 100701336000200016,
+    "value": "Go, GUND-Bits!"
+  },
+  {
     "id": 100701336000300001,
     "value": "This ought to put you in your place!"
   },
@@ -9474,6 +13418,22 @@
   {
     "id": 100701336000300008,
     "value": "I've got you!"
+  },
+  {
+    "id": 100701336000300009,
+    "value": "I shall make good use of this!"
+  },
+  {
+    "id": 100701336000300010,
+    "value": "I shall make good use of this!"
+  },
+  {
+    "id": 100701336000300011,
+    "value": "Get out there, Funnels!"
+  },
+  {
+    "id": 100701336000300012,
+    "value": "Get out there, Funnels!"
   },
   {
     "id": 100701336000500001,
@@ -9508,6 +13468,38 @@
     "value": "How's this?!"
   },
   {
+    "id": 100701336000500009,
+    "value": "The enemy is visible?\nThat changes things..."
+  },
+  {
+    "id": 100701336000500010,
+    "value": "The enemy is visible?\nThat changes things..."
+  },
+  {
+    "id": 100701336000500011,
+    "value": "Funnels, do your thing!"
+  },
+  {
+    "id": 100701336000500012,
+    "value": "Funnels, do your thing!"
+  },
+  {
+    "id": 100701336000500013,
+    "value": "Launch, Fangs!"
+  },
+  {
+    "id": 100701336000500014,
+    "value": "Launch, Fangs!"
+  },
+  {
+    "id": 100701336000500015,
+    "value": "GUND-Bits, give 'em hell!"
+  },
+  {
+    "id": 100701336000500016,
+    "value": "GUND-Bits, give 'em hell!"
+  },
+  {
     "id": 100701336000600001,
     "value": "Raaagh!"
   },
@@ -9538,6 +13530,30 @@
   {
     "id": 100701336000600008,
     "value": "Go down!"
+  },
+  {
+    "id": 100701336000600009,
+    "value": "It's nice when the enemy's in sight!"
+  },
+  {
+    "id": 100701336000600010,
+    "value": "It's nice when the enemy's in sight!"
+  },
+  {
+    "id": 100701336000600011,
+    "value": "Over there, funnels!"
+  },
+  {
+    "id": 100701336000600012,
+    "value": "Over there, funnels!"
+  },
+  {
+    "id": 100701336000600013,
+    "value": "You won't touch me! Fangs!"
+  },
+  {
+    "id": 100701336000600014,
+    "value": "You won't touch me! Fangs!"
   },
   {
     "id": 100701336000700001,
@@ -9572,6 +13588,38 @@
     "value": "How's this?!"
   },
   {
+    "id": 100701336000700009,
+    "value": "You're right where I expected!"
+  },
+  {
+    "id": 100701336000700010,
+    "value": "You're right where I expected!"
+  },
+  {
+    "id": 100701336000700011,
+    "value": "Funnels! Over there!"
+  },
+  {
+    "id": 100701336000700012,
+    "value": "Funnels! Over there!"
+  },
+  {
+    "id": 100701336000700013,
+    "value": "Fangs, fly!"
+  },
+  {
+    "id": 100701336000700014,
+    "value": "Fangs, fly!"
+  },
+  {
+    "id": 100701336000700015,
+    "value": "GUND-Bits! I hope this works!"
+  },
+  {
+    "id": 100701336000700016,
+    "value": "GUND-Bits! I hope this works!"
+  },
+  {
     "id": 100701370000100001,
     "value": "You're mine!"
   },
@@ -9602,6 +13650,14 @@
   {
     "id": 100701370000100008,
     "value": "Pointless!"
+  },
+  {
+    "id": 100701370000100009,
+    "value": "I'll stop them!"
+  },
+  {
+    "id": 100701370000100010,
+    "value": "I'll stop them!"
   },
   {
     "id": 100701370000200001,
@@ -9636,6 +13692,14 @@
     "value": "You're wasting your time!"
   },
   {
+    "id": 100701370000200009,
+    "value": "Going for a pinpoint strike!"
+  },
+  {
+    "id": 100701370000200010,
+    "value": "Going for a pinpoint strike!"
+  },
+  {
     "id": 100701370000300001,
     "value": "I have you now!"
   },
@@ -9666,6 +13730,22 @@
   {
     "id": 100701370000300008,
     "value": "This should take you down!"
+  },
+  {
+    "id": 100701370000300009,
+    "value": "I'll master this!"
+  },
+  {
+    "id": 100701370000300010,
+    "value": "I'll master this!"
+  },
+  {
+    "id": 100701370000300011,
+    "value": "Here goes! Funnels!"
+  },
+  {
+    "id": 100701370000300012,
+    "value": "Here goes! Funnels!"
   },
   {
     "id": 100701370000302001,
@@ -9700,6 +13780,22 @@
     "value": "Hey you!"
   },
   {
+    "id": 100701370000302009,
+    "value": "I'm seeing it!"
+  },
+  {
+    "id": 100701370000302010,
+    "value": "I'm seeing it!"
+  },
+  {
+    "id": 100701370000302011,
+    "value": "Out of my way! Funnels!"
+  },
+  {
+    "id": 100701370000302012,
+    "value": "Out of my way! Funnels!"
+  },
+  {
     "id": 100701370000400001,
     "value": "Gotcha!"
   },
@@ -9730,6 +13826,22 @@
   {
     "id": 100701370000400008,
     "value": "Pointless."
+  },
+  {
+    "id": 100701370000400009,
+    "value": "Don't go thinking you can get away!"
+  },
+  {
+    "id": 100701370000400010,
+    "value": "Don't go thinking you can get away!"
+  },
+  {
+    "id": 100701370000400011,
+    "value": "Funnels, gooo!!!"
+  },
+  {
+    "id": 100701370000400012,
+    "value": "Funnels, gooo!!!"
   },
   {
     "id": 100701370000500001,
@@ -9796,6 +13908,14 @@
     "value": "This'll hit!"
   },
   {
+    "id": 100701370000901009,
+    "value": "Ready when you are!"
+  },
+  {
+    "id": 100701370000901010,
+    "value": "Ready when you are!"
+  },
+  {
     "id": 100701370001500001,
     "value": "You're mine!"
   },
@@ -9826,6 +13946,14 @@
   {
     "id": 100701370001500008,
     "value": "Get wrecked!"
+  },
+  {
+    "id": 100701370001500009,
+    "value": "Here goes!"
+  },
+  {
+    "id": 100701370001500010,
+    "value": "Here goes!"
   },
   {
     "id": 100701370001600001,
@@ -9860,6 +13988,14 @@
     "value": "RAAGH!"
   },
   {
+    "id": 100701370001600009,
+    "value": "Here I go!"
+  },
+  {
+    "id": 100701370001600010,
+    "value": "Here I go!"
+  },
+  {
     "id": 100701370001700001,
     "value": "Die already!"
   },
@@ -9890,6 +14026,14 @@
   {
     "id": 100701370001700008,
     "value": "Aha!"
+  },
+  {
+    "id": 100701370001700009,
+    "value": "I can use this stuff, too!"
+  },
+  {
+    "id": 100701370001700010,
+    "value": "I can use this stuff, too!"
   },
   {
     "id": 100701370001900001,
@@ -9924,6 +14068,14 @@
     "value": "Join your fellow trash!"
   },
   {
+    "id": 100701370001900009,
+    "value": "Heh, there you are!"
+  },
+  {
+    "id": 100701370001900010,
+    "value": "Heh, there you are!"
+  },
+  {
     "id": 100701370002600001,
     "value": "Down you go!"
   },
@@ -9946,6 +14098,22 @@
   {
     "id": 100701370002600008,
     "value": "Too easy!"
+  },
+  {
+    "id": 100701370002600009,
+    "value": "I've got you in my sights now!"
+  },
+  {
+    "id": 100701370002600010,
+    "value": "I've got you in my sights now!"
+  },
+  {
+    "id": 100701370002600011,
+    "value": "They're called Graham Funnels for a reason!"
+  },
+  {
+    "id": 100701370002600012,
+    "value": "They're called Graham Funnels for a reason!"
   },
   {
     "id": 100701370003100001,
@@ -9980,6 +14148,22 @@
     "value": "Ragh!"
   },
   {
+    "id": 100701370003100009,
+    "value": "Get a load of my special technique!"
+  },
+  {
+    "id": 100701370003100010,
+    "value": "Get a load of my special technique!"
+  },
+  {
+    "id": 100701370003100011,
+    "value": "Go, Special Funnels!"
+  },
+  {
+    "id": 100701370003100012,
+    "value": "Go, Special Funnels!"
+  },
+  {
     "id": 100701370003300001,
     "value": "Gotcha!"
   },
@@ -10010,6 +14194,14 @@
   {
     "id": 100701370003300008,
     "value": "Raagh!"
+  },
+  {
+    "id": 100701370003300009,
+    "value": "Go!"
+  },
+  {
+    "id": 100701370003300010,
+    "value": "Go!"
   },
   {
     "id": 100701370003400001,
@@ -10044,6 +14236,14 @@
     "value": "Pointless!"
   },
   {
+    "id": 100701370003400009,
+    "value": "I'll bring them down!"
+  },
+  {
+    "id": 100701370003400010,
+    "value": "I'll bring them down!"
+  },
+  {
     "id": 100701370003502001,
     "value": "You may die now!"
   },
@@ -10074,6 +14274,30 @@
   {
     "id": 100701370003502008,
     "value": "You're mine!"
+  },
+  {
+    "id": 100701370003502009,
+    "value": "All too predictable!"
+  },
+  {
+    "id": 100701370003502010,
+    "value": "All too predictable!"
+  },
+  {
+    "id": 100701370003502011,
+    "value": "To battle! Fin Funnels!"
+  },
+  {
+    "id": 100701370003502012,
+    "value": "To battle! Fin Funnels!"
+  },
+  {
+    "id": 100701370003502013,
+    "value": "Fin Fangs!"
+  },
+  {
+    "id": 100701370003502014,
+    "value": "Fin Fangs!"
   },
   {
     "id": 100701370003600001,
@@ -10140,6 +14364,30 @@
     "value": "Nice try!"
   },
   {
+    "id": 100701370003700009,
+    "value": "Watch me land this shot!"
+  },
+  {
+    "id": 100701370003700010,
+    "value": "Watch me land this shot!"
+  },
+  {
+    "id": 100701370003700011,
+    "value": "There! Funnels!"
+  },
+  {
+    "id": 100701370003700012,
+    "value": "There! Funnels!"
+  },
+  {
+    "id": 100701370003700013,
+    "value": "Hit, Fangs!"
+  },
+  {
+    "id": 100701370003700014,
+    "value": "Hit, Fangs!"
+  },
+  {
     "id": 100701370004001001,
     "value": "Here I go!"
   },
@@ -10170,6 +14418,22 @@
   {
     "id": 100701370004001008,
     "value": "You're going down!"
+  },
+  {
+    "id": 100701370004001009,
+    "value": "Let's do this!"
+  },
+  {
+    "id": 100701370004001010,
+    "value": "Let's do this!"
+  },
+  {
+    "id": 100701370004001011,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701370004001012,
+    "value": "Funnels!"
   },
   {
     "id": 100701370004100001,
@@ -10204,6 +14468,22 @@
     "value": "Hit!"
   },
   {
+    "id": 100701370004100009,
+    "value": "Go! Now!"
+  },
+  {
+    "id": 100701370004100010,
+    "value": "Go! Now!"
+  },
+  {
+    "id": 100701370004100011,
+    "value": "Fangs! Slash them to pieces!"
+  },
+  {
+    "id": 100701370004100012,
+    "value": "Fangs! Slash them to pieces!"
+  },
+  {
     "id": 100701370004300001,
     "value": "Ahahahaha!"
   },
@@ -10234,6 +14514,22 @@
   {
     "id": 100701370004300008,
     "value": "Here!"
+  },
+  {
+    "id": 100701370004300009,
+    "value": "It's all so clear!"
+  },
+  {
+    "id": 100701370004300010,
+    "value": "It's all so clear!"
+  },
+  {
+    "id": 100701370004300011,
+    "value": "Go on now, Fangs!"
+  },
+  {
+    "id": 100701370004300012,
+    "value": "Go on now, Fangs!"
   },
   {
     "id": 100701370004400001,
@@ -10268,6 +14564,30 @@
     "value": "Don't get in my way!"
   },
   {
+    "id": 100701370004400009,
+    "value": "I see it!"
+  },
+  {
+    "id": 100701370004400010,
+    "value": "I see it!"
+  },
+  {
+    "id": 100701370004400011,
+    "value": "Now! Funnels!"
+  },
+  {
+    "id": 100701370004400012,
+    "value": "Now! Funnels!"
+  },
+  {
+    "id": 100701370004400013,
+    "value": "Go ahead, Fangs!"
+  },
+  {
+    "id": 100701370004400014,
+    "value": "Go ahead, Fangs!"
+  },
+  {
     "id": 100701370004500001,
     "value": "Gnahhh!"
   },
@@ -10298,6 +14618,30 @@
   {
     "id": 100701370004500008,
     "value": "DEYAAAGH!!"
+  },
+  {
+    "id": 100701370004500009,
+    "value": "I see the enemy, clear as day!"
+  },
+  {
+    "id": 100701370004500010,
+    "value": "I see the enemy, clear as day!"
+  },
+  {
+    "id": 100701370004500011,
+    "value": "Strike, Bushido Funnels!!"
+  },
+  {
+    "id": 100701370004500012,
+    "value": "Strike, Bushido Funnels!!"
+  },
+  {
+    "id": 100701370004500013,
+    "value": "Deadly attack! Bushido Fangs!"
+  },
+  {
+    "id": 100701370004500014,
+    "value": "Deadly attack! Bushido Fangs!"
   },
   {
     "id": 100701370004600001,
@@ -10332,6 +14676,22 @@
     "value": "Hahhhh!"
   },
   {
+    "id": 100701370004600009,
+    "value": "GO!"
+  },
+  {
+    "id": 100701370004600010,
+    "value": "GO!"
+  },
+  {
+    "id": 100701370004600011,
+    "value": "I'm counting on you, funnels!"
+  },
+  {
+    "id": 100701370004600012,
+    "value": "I'm counting on you, funnels!"
+  },
+  {
     "id": 100701370004700001,
     "value": "You won't escape!"
   },
@@ -10364,6 +14724,14 @@
     "value": "It's over for you!"
   },
   {
+    "id": 100701370004700009,
+    "value": "Using special armament!"
+  },
+  {
+    "id": 100701370004700010,
+    "value": "Using special armament!"
+  },
+  {
     "id": 100701370004800001,
     "value": "Haaah!"
   },
@@ -10394,6 +14762,14 @@
   {
     "id": 100701370004800008,
     "value": "Get out of my sight!"
+  },
+  {
+    "id": 100701370004800009,
+    "value": "Go!"
+  },
+  {
+    "id": 100701370004800010,
+    "value": "Go!"
   },
   {
     "id": 100701370004900001,
@@ -10460,6 +14836,14 @@
     "value": "Going for a strike!"
   },
   {
+    "id": 100701370005000009,
+    "value": "I see you now!"
+  },
+  {
+    "id": 100701370005000010,
+    "value": "I see you now!"
+  },
+  {
     "id": 100701370005100001,
     "value": "Out of my way!"
   },
@@ -10490,6 +14874,38 @@
   {
     "id": 100701370005100008,
     "value": "RAAGH!"
+  },
+  {
+    "id": 100701370005100009,
+    "value": "I got this!"
+  },
+  {
+    "id": 100701370005100010,
+    "value": "I got this!"
+  },
+  {
+    "id": 100701370005100011,
+    "value": "Rifle Bits!"
+  },
+  {
+    "id": 100701370005100012,
+    "value": "Rifle Bits!"
+  },
+  {
+    "id": 100701370005100013,
+    "value": "Funnels, over there!"
+  },
+  {
+    "id": 100701370005100014,
+    "value": "Funnels, over there!"
+  },
+  {
+    "id": 100701370005100015,
+    "value": "Have a taste of my Fangs!"
+  },
+  {
+    "id": 100701370005100016,
+    "value": "Have a taste of my Fangs!"
   },
   {
     "id": 100701370005200001,
@@ -10524,6 +14940,30 @@
     "value": "Wake up!"
   },
   {
+    "id": 100701370005200009,
+    "value": "I see it! Go!"
+  },
+  {
+    "id": 100701370005200010,
+    "value": "I see it! Go!"
+  },
+  {
+    "id": 100701370005200011,
+    "value": "In that case, funnels!"
+  },
+  {
+    "id": 100701370005200012,
+    "value": "In that case, funnels!"
+  },
+  {
+    "id": 100701370005200013,
+    "value": "Fangs!"
+  },
+  {
+    "id": 100701370005200014,
+    "value": "Fangs!"
+  },
+  {
     "id": 100701370005300001,
     "value": "Destroy!"
   },
@@ -10554,6 +14994,30 @@
   {
     "id": 100701370005300008,
     "value": "Allow me!"
+  },
+  {
+    "id": 100701370005300009,
+    "value": "Found you!"
+  },
+  {
+    "id": 100701370005300010,
+    "value": "Found you!"
+  },
+  {
+    "id": 100701370005300011,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701370005300012,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701370005300013,
+    "value": "Fangs!"
+  },
+  {
+    "id": 100701370005300014,
+    "value": "Fangs!"
   },
   {
     "id": 100701370006101001,
@@ -10588,6 +15052,22 @@
     "value": "Sink!!"
   },
   {
+    "id": 100701370006101009,
+    "value": "I know all of your moves!"
+  },
+  {
+    "id": 100701370006101010,
+    "value": "I know all of your moves!"
+  },
+  {
+    "id": 100701370006101011,
+    "value": "Fangs!"
+  },
+  {
+    "id": 100701370006101012,
+    "value": "Fangs!"
+  },
+  {
     "id": 100701375000100001,
     "value": "Here we go!"
   },
@@ -10618,6 +15098,30 @@
   {
     "id": 100701375000100008,
     "value": "You're finished!"
+  },
+  {
+    "id": 100701375000100009,
+    "value": "This weapon should do the trick!"
+  },
+  {
+    "id": 100701375000100010,
+    "value": "This weapon should do the trick!"
+  },
+  {
+    "id": 100701375000100011,
+    "value": "Uh, funnels!"
+  },
+  {
+    "id": 100701375000100012,
+    "value": "Uh, funnels!"
+  },
+  {
+    "id": 100701375000100013,
+    "value": "Using fangs!"
+  },
+  {
+    "id": 100701375000100014,
+    "value": "Using fangs!"
   },
   {
     "id": 100701375000300001,
@@ -10652,6 +15156,14 @@
     "value": "Raaagh!"
   },
   {
+    "id": 100701375000300009,
+    "value": "Time to move in! Attack!"
+  },
+  {
+    "id": 100701375000300010,
+    "value": "Time to move in! Attack!"
+  },
+  {
     "id": 100701378000100001,
     "value": "Take this!"
   },
@@ -10684,6 +15196,14 @@
     "value": "You're finished!"
   },
   {
+    "id": 100701378000100009,
+    "value": "There's no weapon I can't handle!"
+  },
+  {
+    "id": 100701378000100010,
+    "value": "There's no weapon I can't handle!"
+  },
+  {
     "id": 100701379000200001,
     "value": "It's gonna hit!"
   },
@@ -10714,6 +15234,22 @@
   {
     "id": 100701379000200008,
     "value": "Ready to attack!"
+  },
+  {
+    "id": 100701379000200009,
+    "value": "Time to go..."
+  },
+  {
+    "id": 100701379000200010,
+    "value": "Time to go..."
+  },
+  {
+    "id": 100701379000200011,
+    "value": "Get 'em, Fangs!"
+  },
+  {
+    "id": 100701379000200012,
+    "value": "Get 'em, Fangs!"
   },
   {
     "id": 100701382100100001,
@@ -10772,6 +15308,38 @@
     "value": "Here!"
   },
   {
+    "id": 100701400000100009,
+    "value": "I should be able to use this...!"
+  },
+  {
+    "id": 100701400000100010,
+    "value": "I should be able to use this...!"
+  },
+  {
+    "id": 100701400000100011,
+    "value": "Now! Funnels!"
+  },
+  {
+    "id": 100701400000100012,
+    "value": "Now! Funnels!"
+  },
+  {
+    "id": 100701400000100013,
+    "value": "Now! Fangs!"
+  },
+  {
+    "id": 100701400000100014,
+    "value": "Now! Fangs!"
+  },
+  {
+    "id": 100701400000100015,
+    "value": "GUND-BITs!"
+  },
+  {
+    "id": 100701400000100016,
+    "value": "GUND-BITs!"
+  },
+  {
     "id": 100701400000201001,
     "value": "Please, you have to understand! This is\nmeaningless!"
   },
@@ -10802,6 +15370,30 @@
   {
     "id": 100701400000201008,
     "value": "Stay away!"
+  },
+  {
+    "id": 100701400000201009,
+    "value": "Please, don't shoot me!"
+  },
+  {
+    "id": 100701400000201010,
+    "value": "Please, don't shoot me!"
+  },
+  {
+    "id": 100701400000201011,
+    "value": "If this is how I have to push you back... Funnels!"
+  },
+  {
+    "id": 100701400000201012,
+    "value": "If this is how I have to push you back... Funnels!"
+  },
+  {
+    "id": 100701400000201013,
+    "value": "GUND-BITs, please find your mark!"
+  },
+  {
+    "id": 100701400000201014,
+    "value": "GUND-BITs, please find your mark!"
   },
   {
     "id": 100701400000700001,
@@ -10836,6 +15428,38 @@
     "value": "How do ya like this?!"
   },
   {
+    "id": 100701400000700009,
+    "value": "Not sure what this is, but here goes!"
+  },
+  {
+    "id": 100701400000700010,
+    "value": "Not sure what this is, but here goes!"
+  },
+  {
+    "id": 100701400000700011,
+    "value": "Funnels! Fly!"
+  },
+  {
+    "id": 100701400000700012,
+    "value": "Funnels! Fly!"
+  },
+  {
+    "id": 100701400000700013,
+    "value": "I kinda like that name! Rip them apart,\nWolf Fangs!"
+  },
+  {
+    "id": 100701400000700014,
+    "value": "I kinda like that name! Rip them apart,\nWolf Fangs!"
+  },
+  {
+    "id": 100701400000700015,
+    "value": "Get 'em, GUND-BITs!"
+  },
+  {
+    "id": 100701400000700016,
+    "value": "Get 'em, GUND-BITs!"
+  },
+  {
     "id": 100701400000800001,
     "value": "I told you to die already!"
   },
@@ -10866,6 +15490,14 @@
   {
     "id": 100701400000800008,
     "value": "Chew on this!"
+  },
+  {
+    "id": 100701400000800009,
+    "value": "Was that?! I can see it too?!"
+  },
+  {
+    "id": 100701400000800010,
+    "value": "Was that?! I can see it too?!"
   },
   {
     "id": 100701400001400001,
@@ -10900,6 +15532,14 @@
     "value": "Bye-bye!"
   },
   {
+    "id": 100701400001400009,
+    "value": "Crush them!"
+  },
+  {
+    "id": 100701400001400010,
+    "value": "Crush them!"
+  },
+  {
     "id": 100701400001601001,
     "value": "Prepare yourself!"
   },
@@ -10930,6 +15570,30 @@
   {
     "id": 100701400001601008,
     "value": "Don't waste your time!"
+  },
+  {
+    "id": 100701400001601009,
+    "value": "Open your eyes and watch carefully!"
+  },
+  {
+    "id": 100701400001601010,
+    "value": "Open your eyes and watch carefully!"
+  },
+  {
+    "id": 100701400001601011,
+    "value": "Time to turn the tables! Funnels!"
+  },
+  {
+    "id": 100701400001601012,
+    "value": "Time to turn the tables! Funnels!"
+  },
+  {
+    "id": 100701400001601013,
+    "value": "All right! Fangs!"
+  },
+  {
+    "id": 100701400001601014,
+    "value": "All right! Fangs!"
   },
   {
     "id": 100701400001700001,
@@ -10964,6 +15628,38 @@
     "value": "Rah!"
   },
   {
+    "id": 100701400001700009,
+    "value": "Found you! Raaah!"
+  },
+  {
+    "id": 100701400001700010,
+    "value": "Found you! Raaah!"
+  },
+  {
+    "id": 100701400001700011,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701400001700012,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701400001700013,
+    "value": "Here we go, fin funnels!"
+  },
+  {
+    "id": 100701400001700014,
+    "value": "Here we go, fin funnels!"
+  },
+  {
+    "id": 100701400001700015,
+    "value": "Now, Fangs!"
+  },
+  {
+    "id": 100701400001700016,
+    "value": "Now, Fangs!"
+  },
+  {
     "id": 100701400001800001,
     "value": "You've got quite the nerve."
   },
@@ -10994,6 +15690,38 @@
   {
     "id": 100701400001800008,
     "value": "Take this!"
+  },
+  {
+    "id": 100701400001800009,
+    "value": "If only I had such power..."
+  },
+  {
+    "id": 100701400001800010,
+    "value": "If only I had such power..."
+  },
+  {
+    "id": 100701400001800011,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701400001800012,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701400001800013,
+    "value": "Go, Fin Funnels!"
+  },
+  {
+    "id": 100701400001800014,
+    "value": "Go, Fin Funnels!"
+  },
+  {
+    "id": 100701400001800015,
+    "value": "Bite down, Fangs!"
+  },
+  {
+    "id": 100701400001800016,
+    "value": "Bite down, Fangs!"
   },
   {
     "id": 100701400001900001,
@@ -11028,6 +15756,38 @@
     "value": "Today, you are my prey!"
   },
   {
+    "id": 100701400001900009,
+    "value": "Let us see if you can dodge this!"
+  },
+  {
+    "id": 100701400001900010,
+    "value": "Let us see if you can dodge this!"
+  },
+  {
+    "id": 100701400001900011,
+    "value": "Funnels, now dance!"
+  },
+  {
+    "id": 100701400001900012,
+    "value": "Funnels, now dance!"
+  },
+  {
+    "id": 100701400001900013,
+    "value": "Only to be handled by the elite, fin funnels!"
+  },
+  {
+    "id": 100701400001900014,
+    "value": "Only to be handled by the elite, fin funnels!"
+  },
+  {
+    "id": 100701400001900015,
+    "value": "Hunt them down, Fangs!"
+  },
+  {
+    "id": 100701400001900016,
+    "value": "Hunt them down, Fangs!"
+  },
+  {
     "id": 100701400002000001,
     "value": "How about this?"
   },
@@ -11058,6 +15818,46 @@
   {
     "id": 100701400002000008,
     "value": "You're mine!"
+  },
+  {
+    "id": 100701400002000009,
+    "value": "I see it!"
+  },
+  {
+    "id": 100701400002000010,
+    "value": "I see it!"
+  },
+  {
+    "id": 100701400002000011,
+    "value": "I can do this too! Funnels!"
+  },
+  {
+    "id": 100701400002000012,
+    "value": "I can do this too! Funnels!"
+  },
+  {
+    "id": 100701400002000013,
+    "value": "I can be an X-Rounder too...!"
+  },
+  {
+    "id": 100701400002000014,
+    "value": "I can be an X-Rounder too...!"
+  },
+  {
+    "id": 100701400002000015,
+    "value": "Now! Fangs!"
+  },
+  {
+    "id": 100701400002000016,
+    "value": "Now! Fangs!"
+  },
+  {
+    "id": 100701400002000017,
+    "value": "Good to go, GUND-BITs?"
+  },
+  {
+    "id": 100701400002000018,
+    "value": "Good to go, GUND-BITs?"
   },
   {
     "id": 100701400002101001,
@@ -11092,6 +15892,14 @@
     "value": "Now!"
   },
   {
+    "id": 100701400002101009,
+    "value": "I see you!"
+  },
+  {
+    "id": 100701400002101010,
+    "value": "I see you!"
+  },
+  {
     "id": 100701400002200001,
     "value": "Hyaaah!"
   },
@@ -11122,6 +15930,38 @@
   {
     "id": 100701400002200008,
     "value": "C'mon!"
+  },
+  {
+    "id": 100701400002200009,
+    "value": "I don't really get it, but let's do this!"
+  },
+  {
+    "id": 100701400002200010,
+    "value": "I don't really get it, but let's do this!"
+  },
+  {
+    "id": 100701400002200011,
+    "value": "Get 'em, Funnels!"
+  },
+  {
+    "id": 100701400002200012,
+    "value": "Get 'em, Funnels!"
+  },
+  {
+    "id": 100701400002200013,
+    "value": "I'm counting on you, Fangs!"
+  },
+  {
+    "id": 100701400002200014,
+    "value": "I'm counting on you, Fangs!"
+  },
+  {
+    "id": 100701400002200015,
+    "value": "GUND-BITs, go!"
+  },
+  {
+    "id": 100701400002200016,
+    "value": "GUND-BITs, go!"
   },
   {
     "id": 100701400002300001,
@@ -11156,6 +15996,38 @@
     "value": "This should do it!"
   },
   {
+    "id": 100701400002300009,
+    "value": "I can do it, I can do it..."
+  },
+  {
+    "id": 100701400002300010,
+    "value": "I can do it, I can do it..."
+  },
+  {
+    "id": 100701400002300011,
+    "value": "Funnels, launch!"
+  },
+  {
+    "id": 100701400002300012,
+    "value": "Funnels, launch!"
+  },
+  {
+    "id": 100701400002300013,
+    "value": "Fangs, there's your prey!"
+  },
+  {
+    "id": 100701400002300014,
+    "value": "Fangs, there's your prey!"
+  },
+  {
+    "id": 100701400002300015,
+    "value": "I hope the GUND-BITs will do their job!"
+  },
+  {
+    "id": 100701400002300016,
+    "value": "I hope the GUND-BITs will do their job!"
+  },
+  {
     "id": 100701400002400001,
     "value": "Hmph!"
   },
@@ -11186,6 +16058,38 @@
   {
     "id": 100701400002400008,
     "value": "I'm taking you down!"
+  },
+  {
+    "id": 100701400002400009,
+    "value": "Maybe I'm not suited for it,\nbut here goes nothing!"
+  },
+  {
+    "id": 100701400002400010,
+    "value": "Maybe I'm not suited for it,\nbut here goes nothing!"
+  },
+  {
+    "id": 100701400002400011,
+    "value": "Go, funnels!"
+  },
+  {
+    "id": 100701400002400012,
+    "value": "Go, funnels!"
+  },
+  {
+    "id": 100701400002400013,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701400002400014,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701400002400015,
+    "value": "Take flight, GUND BITs!"
+  },
+  {
+    "id": 100701400002400016,
+    "value": "Take flight, GUND BITs!"
   },
   {
     "id": 100701400002500001,
@@ -11220,6 +16124,38 @@
     "value": "So, who's next?"
   },
   {
+    "id": 100701400002500009,
+    "value": "Whatever this prediction ability is,\nI'll make good use of it!"
+  },
+  {
+    "id": 100701400002500010,
+    "value": "Whatever this prediction ability is,\nI'll make good use of it!"
+  },
+  {
+    "id": 100701400002500011,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701400002500012,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701400002500013,
+    "value": "Wolf Fangs, time to feast!"
+  },
+  {
+    "id": 100701400002500014,
+    "value": "Wolf Fangs, time to feast!"
+  },
+  {
+    "id": 100701400002500015,
+    "value": "GUND-BITs, go!"
+  },
+  {
+    "id": 100701400002500016,
+    "value": "GUND-BITs, go!"
+  },
+  {
     "id": 100701400002603001,
     "value": "Tah!"
   },
@@ -11250,6 +16186,38 @@
   {
     "id": 100701400002603008,
     "value": "Hyah!"
+  },
+  {
+    "id": 100701400002603009,
+    "value": "Let's see what this Psycommu thing is capable of!"
+  },
+  {
+    "id": 100701400002603010,
+    "value": "Let's see what this Psycommu thing is capable of!"
+  },
+  {
+    "id": 100701400002603011,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701400002603012,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701400002603013,
+    "value": "Fangs! Tear the enemy apart!"
+  },
+  {
+    "id": 100701400002603014,
+    "value": "Fangs! Tear the enemy apart!"
+  },
+  {
+    "id": 100701400002603015,
+    "value": "GUND-BITs, get them!"
+  },
+  {
+    "id": 100701400002603016,
+    "value": "GUND-BITs, get them!"
   },
   {
     "id": 100701400002700001,
@@ -11284,6 +16252,38 @@
     "value": "You're done for!"
   },
   {
+    "id": 100701400002700009,
+    "value": "I'll show you an X-Rounder's power."
+  },
+  {
+    "id": 100701400002700010,
+    "value": "I'll show you an X-Rounder's power."
+  },
+  {
+    "id": 100701400002700011,
+    "value": "Funnels, obey my commands!"
+  },
+  {
+    "id": 100701400002700012,
+    "value": "Funnels, obey my commands!"
+  },
+  {
+    "id": 100701400002700013,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701400002700014,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701400002700015,
+    "value": "Go, get them!"
+  },
+  {
+    "id": 100701400002700016,
+    "value": "Go, get them!"
+  },
+  {
     "id": 100701400002800001,
     "value": "Graaaaaah!"
   },
@@ -11314,6 +16314,38 @@
   {
     "id": 100701400002800008,
     "value": "Hah!"
+  },
+  {
+    "id": 100701400002800009,
+    "value": "Lemme see if I can use the Psycommu..."
+  },
+  {
+    "id": 100701400002800010,
+    "value": "Lemme see if I can use the Psycommu..."
+  },
+  {
+    "id": 100701400002800011,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701400002800012,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701400002800013,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701400002800014,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701400002800015,
+    "value": "There's the enemy! Take them out!"
+  },
+  {
+    "id": 100701400002800016,
+    "value": "There's the enemy! Take them out!"
   },
   {
     "id": 100701400002900001,
@@ -11348,6 +16380,38 @@
     "value": "Too easy!"
   },
   {
+    "id": 100701400002900009,
+    "value": "I'll make full use of this weapon."
+  },
+  {
+    "id": 100701400002900010,
+    "value": "I'll make full use of this weapon."
+  },
+  {
+    "id": 100701400002900011,
+    "value": "Funnels, there's the enemy!"
+  },
+  {
+    "id": 100701400002900012,
+    "value": "Funnels, there's the enemy!"
+  },
+  {
+    "id": 100701400002900013,
+    "value": "Get 'em, Fangs!"
+  },
+  {
+    "id": 100701400002900014,
+    "value": "Get 'em, Fangs!"
+  },
+  {
+    "id": 100701400002900015,
+    "value": "You'd better not take an X-Rounder lightly."
+  },
+  {
+    "id": 100701400002900016,
+    "value": "You'd better not take an X-Rounder lightly."
+  },
+  {
     "id": 100701400003401001,
     "value": "Hah!"
   },
@@ -11380,6 +16444,38 @@
     "value": "Give it up!"
   },
   {
+    "id": 100701400003401009,
+    "value": "Let's give this a try."
+  },
+  {
+    "id": 100701400003401010,
+    "value": "Let's give this a try."
+  },
+  {
+    "id": 100701400003401011,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701400003401012,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701400003401013,
+    "value": "Fangs!"
+  },
+  {
+    "id": 100701400003401014,
+    "value": "Fangs!"
+  },
+  {
+    "id": 100701400003401015,
+    "value": "Go, get them!"
+  },
+  {
+    "id": 100701400003401016,
+    "value": "Go, get them!"
+  },
+  {
     "id": 100701430000100001,
     "value": "Down you go!"
   },
@@ -11410,6 +16506,46 @@
   {
     "id": 100701430000100008,
     "value": "I'll crush you!"
+  },
+  {
+    "id": 100701430000100009,
+    "value": "Um, how do you use this thing?"
+  },
+  {
+    "id": 100701430000100010,
+    "value": "Um, how do you use this thing?"
+  },
+  {
+    "id": 100701430000100011,
+    "value": "Get 'em, Funnels."
+  },
+  {
+    "id": 100701430000100012,
+    "value": "Get 'em, Funnels."
+  },
+  {
+    "id": 100701430000100013,
+    "value": "Go get 'em, Fangs."
+  },
+  {
+    "id": 100701430000100014,
+    "value": "Go get 'em, Fangs."
+  },
+  {
+    "id": 100701430000100015,
+    "value": "Um... I guess it's kind of like having a tail."
+  },
+  {
+    "id": 100701430000100016,
+    "value": "Um... I guess it's kind of like having a tail."
+  },
+  {
+    "id": 100701430000100017,
+    "value": "They're supposed to be amazing."
+  },
+  {
+    "id": 100701430000100018,
+    "value": "They're supposed to be amazing."
   },
   {
     "id": 100701430000200001,
@@ -11476,6 +16612,14 @@
     "value": "There's nowhere to run now!"
   },
   {
+    "id": 100701430000300009,
+    "value": "I-Is this how you use it?"
+  },
+  {
+    "id": 100701430000300010,
+    "value": "I-Is this how you use it?"
+  },
+  {
     "id": 100701430000400001,
     "value": "You're going dooooown!"
   },
@@ -11506,6 +16650,14 @@
   {
     "id": 100701430000400008,
     "value": "RAAAGH!"
+  },
+  {
+    "id": 100701430000400009,
+    "value": "I get how this works... I'll get 'em!"
+  },
+  {
+    "id": 100701430000400010,
+    "value": "I get how this works... I'll get 'em!"
   },
   {
     "id": 100701430000500001,
@@ -11668,6 +16820,22 @@
     "value": "I'll get you!!"
   },
   {
+    "id": 100701430000902009,
+    "value": "I get how this works... I'll get 'em!"
+  },
+  {
+    "id": 100701430000902010,
+    "value": "I get how this works... I'll get 'em!"
+  },
+  {
+    "id": 100701430000902011,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701430000902012,
+    "value": "Funnels!"
+  },
+  {
     "id": 100701430001002001,
     "value": "Don't miss!"
   },
@@ -11732,6 +16900,14 @@
     "value": "We'll stop the enemy!"
   },
   {
+    "id": 100701430001200009,
+    "value": "I can make this work too!"
+  },
+  {
+    "id": 100701430001200010,
+    "value": "I can make this work too!"
+  },
+  {
     "id": 100701430001300001,
     "value": "I'm not letting you get away!"
   },
@@ -11762,6 +16938,14 @@
   {
     "id": 100701430001300008,
     "value": "Just handle it the way you always do."
+  },
+  {
+    "id": 100701430001300009,
+    "value": "Go do your thing."
+  },
+  {
+    "id": 100701430001300010,
+    "value": "Go do your thing."
   },
   {
     "id": 100701430001900001,
@@ -11828,6 +17012,14 @@
     "value": "Outta my way!"
   },
   {
+    "id": 100701430002000009,
+    "value": "*chuckle*"
+  },
+  {
+    "id": 100701430002000010,
+    "value": "*chuckle*"
+  },
+  {
     "id": 100701430002100001,
     "value": "Haah!"
   },
@@ -11860,6 +17052,14 @@
     "value": "Bingo!"
   },
   {
+    "id": 100701430002100009,
+    "value": "I'm not used to handling these kinds of weapons!"
+  },
+  {
+    "id": 100701430002100010,
+    "value": "I'm not used to handling these kinds of weapons!"
+  },
+  {
     "id": 100701430002200001,
     "value": "This should stop you!"
   },
@@ -11890,6 +17090,14 @@
   {
     "id": 100701430002200008,
     "value": "I'll stop you!"
+  },
+  {
+    "id": 100701430002200009,
+    "value": "I see it! Right there!"
+  },
+  {
+    "id": 100701430002200010,
+    "value": "I see it! Right there!"
   },
   {
     "id": 100701430002500001,
@@ -11986,6 +17194,30 @@
   {
     "id": 100701430002602008,
     "value": "I'm taking you down!"
+  },
+  {
+    "id": 100701430002602009,
+    "value": "I can't let you get away!"
+  },
+  {
+    "id": 100701430002602010,
+    "value": "I can't let you get away!"
+  },
+  {
+    "id": 100701430002602011,
+    "value": "Go, Funnels!!"
+  },
+  {
+    "id": 100701430002602012,
+    "value": "Go, Funnels!!"
+  },
+  {
+    "id": 100701430002602013,
+    "value": "Fangs, get them!"
+  },
+  {
+    "id": 100701430002602014,
+    "value": "Fangs, get them!"
   },
   {
     "id": 100701430002700001,
@@ -12108,6 +17340,14 @@
     "value": "Yeaaaaah!"
   },
   {
+    "id": 100701430003600009,
+    "value": "There's nowhere to hide now!"
+  },
+  {
+    "id": 100701430003600010,
+    "value": "There's nowhere to hide now!"
+  },
+  {
     "id": 100701430004200001,
     "value": "Your time is up."
   },
@@ -12138,6 +17378,14 @@
   {
     "id": 100701430004200008,
     "value": "Pathetic."
+  },
+  {
+    "id": 100701430004200009,
+    "value": "Here's another way of fighting!"
+  },
+  {
+    "id": 100701430004200010,
+    "value": "Here's another way of fighting!"
   },
   {
     "id": 100701430005000001,
@@ -12236,6 +17484,30 @@
     "value": "Gotcha!"
   },
   {
+    "id": 100701430005400009,
+    "value": "I'll make use of any weapon!"
+  },
+  {
+    "id": 100701430005400010,
+    "value": "I'll make use of any weapon!"
+  },
+  {
+    "id": 100701430005400011,
+    "value": "Right there, Funnels!"
+  },
+  {
+    "id": 100701430005400012,
+    "value": "Right there, Funnels!"
+  },
+  {
+    "id": 100701430005400013,
+    "value": "Go out, Fangs!!"
+  },
+  {
+    "id": 100701430005400014,
+    "value": "Go out, Fangs!!"
+  },
+  {
     "id": 100701430005500001,
     "value": "Oraaa!"
   },
@@ -12300,6 +17572,14 @@
     "value": "Your actions are futile."
   },
   {
+    "id": 100701430005700009,
+    "value": "Now that I have this weapon..."
+  },
+  {
+    "id": 100701430005700010,
+    "value": "Now that I have this weapon..."
+  },
+  {
     "id": 100701430005800001,
     "value": "I'll finish you!"
   },
@@ -12330,6 +17610,30 @@
   {
     "id": 100701430005800008,
     "value": "Such wasted effort."
+  },
+  {
+    "id": 100701430005800009,
+    "value": "I can see clearly now..."
+  },
+  {
+    "id": 100701430005800010,
+    "value": "I can see clearly now..."
+  },
+  {
+    "id": 100701430005800011,
+    "value": "Go out, Funnels."
+  },
+  {
+    "id": 100701430005800012,
+    "value": "Go out, Funnels."
+  },
+  {
+    "id": 100701430005800013,
+    "value": "Fangs... Go destroy."
+  },
+  {
+    "id": 100701430005800014,
+    "value": "Fangs... Go destroy."
   },
   {
     "id": 100701431000100001,
@@ -12364,6 +17668,30 @@
     "value": "Aaah!"
   },
   {
+    "id": 100701431000100009,
+    "value": "I'll use anything it takes to bring you down!"
+  },
+  {
+    "id": 100701431000100010,
+    "value": "I'll use anything it takes to bring you down!"
+  },
+  {
+    "id": 100701431000100011,
+    "value": "Go funnels!"
+  },
+  {
+    "id": 100701431000100012,
+    "value": "Go funnels!"
+  },
+  {
+    "id": 100701431000100013,
+    "value": "Fangs!"
+  },
+  {
+    "id": 100701431000100014,
+    "value": "Fangs!"
+  },
+  {
     "id": 100701431000400001,
     "value": "Haaah!"
   },
@@ -12396,6 +17724,22 @@
     "value": "No way!"
   },
   {
+    "id": 100701431000400009,
+    "value": "Run and hide! I'll still find you!"
+  },
+  {
+    "id": 100701431000400010,
+    "value": "Run and hide! I'll still find you!"
+  },
+  {
+    "id": 100701431000400011,
+    "value": "Funnels! Go!"
+  },
+  {
+    "id": 100701431000400012,
+    "value": "Funnels! Go!"
+  },
+  {
     "id": 100701431000500001,
     "value": "Hit 'em!"
   },
@@ -12426,6 +17770,22 @@
   {
     "id": 100701431000500008,
     "value": "Hope you're ready!"
+  },
+  {
+    "id": 100701431000500009,
+    "value": "Oooh! Saw that coming!"
+  },
+  {
+    "id": 100701431000500010,
+    "value": "Oooh! Saw that coming!"
+  },
+  {
+    "id": 100701431000500011,
+    "value": "Gonna let the Funnels take care of this."
+  },
+  {
+    "id": 100701431000500012,
+    "value": "Gonna let the Funnels take care of this."
   },
   {
     "id": 100701431000600001,
@@ -12492,6 +17852,14 @@
     "value": "You don't belong up there!"
   },
   {
+    "id": 100701431000700009,
+    "value": "Sometimes it's good to change things up!"
+  },
+  {
+    "id": 100701431000700010,
+    "value": "Sometimes it's good to change things up!"
+  },
+  {
     "id": 100701431000801001,
     "value": "Oh, no you don't!"
   },
@@ -12522,6 +17890,22 @@
   {
     "id": 100701431000801008,
     "value": "Scatter!"
+  },
+  {
+    "id": 100701431000801009,
+    "value": "Let's see if you can run from this?"
+  },
+  {
+    "id": 100701431000801010,
+    "value": "Let's see if you can run from this?"
+  },
+  {
+    "id": 100701431000801011,
+    "value": "There's no running from Funnels!"
+  },
+  {
+    "id": 100701431000801012,
+    "value": "There's no running from Funnels!"
   },
   {
     "id": 100701431000900001,
@@ -12556,6 +17940,30 @@
     "value": "Not getting away!"
   },
   {
+    "id": 100701431000900009,
+    "value": "Got it! Right there!"
+  },
+  {
+    "id": 100701431000900010,
+    "value": "Got it! Right there!"
+  },
+  {
+    "id": 100701431000900011,
+    "value": "Do you thing, Funnels!"
+  },
+  {
+    "id": 100701431000900012,
+    "value": "Do you thing, Funnels!"
+  },
+  {
+    "id": 100701431000900013,
+    "value": "Go Fangs!"
+  },
+  {
+    "id": 100701431000900014,
+    "value": "Go Fangs!"
+  },
+  {
     "id": 100701431001000001,
     "value": "Move!"
   },
@@ -12586,6 +17994,30 @@
   {
     "id": 100701431001000008,
     "value": "This is it!"
+  },
+  {
+    "id": 100701431001000009,
+    "value": "This'll vaporize you!"
+  },
+  {
+    "id": 100701431001000010,
+    "value": "This'll vaporize you!"
+  },
+  {
+    "id": 100701431001000011,
+    "value": "Funnels! Do your thing!"
+  },
+  {
+    "id": 100701431001000012,
+    "value": "Funnels! Do your thing!"
+  },
+  {
+    "id": 100701431001000013,
+    "value": "Fangs!"
+  },
+  {
+    "id": 100701431001000014,
+    "value": "Fangs!"
   },
   {
     "id": 100701431001100001,
@@ -12620,6 +18052,14 @@
     "value": "There!"
   },
   {
+    "id": 100701431001100009,
+    "value": "None can escape us!"
+  },
+  {
+    "id": 100701431001100010,
+    "value": "None can escape us!"
+  },
+  {
     "id": 100701431001200001,
     "value": "Got you!"
   },
@@ -12650,6 +18090,30 @@
   {
     "id": 100701431001200008,
     "value": "Right there!"
+  },
+  {
+    "id": 100701431001200009,
+    "value": "Then maybe this... I see it!"
+  },
+  {
+    "id": 100701431001200010,
+    "value": "Then maybe this... I see it!"
+  },
+  {
+    "id": 100701431001200011,
+    "value": "Dance for me, Funnels!"
+  },
+  {
+    "id": 100701431001200012,
+    "value": "Dance for me, Funnels!"
+  },
+  {
+    "id": 100701431001200013,
+    "value": "Fangs! Go!"
+  },
+  {
+    "id": 100701431001200014,
+    "value": "Fangs! Go!"
   },
   {
     "id": 100701433000100001,
@@ -12708,6 +18172,14 @@
     "value": "No!"
   },
   {
+    "id": 100701500000100005,
+    "value": "See ya later!"
+  },
+  {
+    "id": 100701500000100006,
+    "value": "See ya later!"
+  },
+  {
     "id": 100701500000500001,
     "value": "You damn—!"
   },
@@ -12738,6 +18210,38 @@
   {
     "id": 100701500000500008,
     "value": "There!"
+  },
+  {
+    "id": 100701500000500009,
+    "value": "Over there! I can see it!"
+  },
+  {
+    "id": 100701500000500010,
+    "value": "Over there! I can see it!"
+  },
+  {
+    "id": 100701500000500011,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701500000500012,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701500000500013,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701500000500014,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701500000500015,
+    "value": "What is this? Some kind of a joke?"
+  },
+  {
+    "id": 100701500000500016,
+    "value": "What is this? Some kind of a joke?"
   },
   {
     "id": 100701501000100001,
@@ -12780,6 +18284,38 @@
     "value": "Th-there!"
   },
   {
+    "id": 100701501000100011,
+    "value": "I see it...! There!"
+  },
+  {
+    "id": 100701501000100012,
+    "value": "I see it...! There!"
+  },
+  {
+    "id": 100701501000100013,
+    "value": "Launch! Funnels!"
+  },
+  {
+    "id": 100701501000100014,
+    "value": "Launch! Funnels!"
+  },
+  {
+    "id": 100701501000100015,
+    "value": "Please! F-Fangs!"
+  },
+  {
+    "id": 100701501000100016,
+    "value": "Please! F-Fangs!"
+  },
+  {
+    "id": 100701501000100017,
+    "value": "Let's go, everyone!"
+  },
+  {
+    "id": 100701501000100018,
+    "value": "Let's go, everyone!"
+  },
+  {
     "id": 100701501000104001,
     "value": "There!"
   },
@@ -12810,6 +18346,46 @@
   {
     "id": 100701501000104008,
     "value": "I'll stop you here!"
+  },
+  {
+    "id": 100701501000104009,
+    "value": "I sense...something, but what?"
+  },
+  {
+    "id": 100701501000104010,
+    "value": "I sense...something, but what?"
+  },
+  {
+    "id": 100701501000104011,
+    "value": "Funnels, please hit your mark!"
+  },
+  {
+    "id": 100701501000104012,
+    "value": "Funnels, please hit your mark!"
+  },
+  {
+    "id": 100701501000104013,
+    "value": "I'll manage this with Fangs!"
+  },
+  {
+    "id": 100701501000104014,
+    "value": "I'll manage this with Fangs!"
+  },
+  {
+    "id": 100701501000104015,
+    "value": "All right...the GUND-BITs, then!"
+  },
+  {
+    "id": 100701501000104016,
+    "value": "All right...the GUND-BITs, then!"
+  },
+  {
+    "id": 100701501000104017,
+    "value": "I've got so many things I want to do!"
+  },
+  {
+    "id": 100701501000104018,
+    "value": "I've got so many things I want to do!"
   },
   {
     "id": 100701501000200001,
@@ -12848,6 +18424,14 @@
     "value": "You'll regret that!"
   },
   {
+    "id": 100701501000200013,
+    "value": "Saw it!"
+  },
+  {
+    "id": 100701501000200014,
+    "value": "Saw it!"
+  },
+  {
     "id": 100701501000300001,
     "value": "Tch!"
   },
@@ -12878,6 +18462,30 @@
   {
     "id": 100701501000300008,
     "value": "There!"
+  },
+  {
+    "id": 100701501000300009,
+    "value": "You're going down!"
+  },
+  {
+    "id": 100701501000300010,
+    "value": "You're going down!"
+  },
+  {
+    "id": 100701501000300011,
+    "value": "Funnels!!!"
+  },
+  {
+    "id": 100701501000300012,
+    "value": "Funnels!!!"
+  },
+  {
+    "id": 100701501000300013,
+    "value": "Go, Fangs!"
+  },
+  {
+    "id": 100701501000300014,
+    "value": "Go, Fangs!"
   },
   {
     "id": 100701501000302001,
@@ -12944,6 +18552,38 @@
     "value": "Pointless."
   },
   {
+    "id": 100701501000400009,
+    "value": "Surround them."
+  },
+  {
+    "id": 100701501000400010,
+    "value": "Surround them."
+  },
+  {
+    "id": 100701501000400011,
+    "value": "Funnels"
+  },
+  {
+    "id": 100701501000400012,
+    "value": "Funnels"
+  },
+  {
+    "id": 100701501000400013,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701501000400014,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701501000400015,
+    "value": "Permet score three."
+  },
+  {
+    "id": 100701501000400016,
+    "value": "Permet score three."
+  },
+  {
     "id": 100701501000500001,
     "value": "This will end it!"
   },
@@ -12974,6 +18614,38 @@
   {
     "id": 100701501000500008,
     "value": "It's over!"
+  },
+  {
+    "id": 100701501000500009,
+    "value": "There you are! Go!"
+  },
+  {
+    "id": 100701501000500010,
+    "value": "There you are! Go!"
+  },
+  {
+    "id": 100701501000500011,
+    "value": "There?! Funnels!"
+  },
+  {
+    "id": 100701501000500012,
+    "value": "There?! Funnels!"
+  },
+  {
+    "id": 100701501000500013,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701501000500014,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701501000500015,
+    "value": "I have no choice but to use this"
+  },
+  {
+    "id": 100701501000500016,
+    "value": "I have no choice but to use this"
   },
   {
     "id": 100701501000600001,
@@ -13008,6 +18680,38 @@
     "value": "All right!"
   },
   {
+    "id": 100701501000600009,
+    "value": "I can see it too! Give 'em hell!"
+  },
+  {
+    "id": 100701501000600010,
+    "value": "I can see it too! Give 'em hell!"
+  },
+  {
+    "id": 100701501000600011,
+    "value": "Funnels! Teach 'em a lesson!"
+  },
+  {
+    "id": 100701501000600012,
+    "value": "Funnels! Teach 'em a lesson!"
+  },
+  {
+    "id": 100701501000600013,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701501000600014,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701501000600015,
+    "value": "It's go time!"
+  },
+  {
+    "id": 100701501000600016,
+    "value": "It's go time!"
+  },
+  {
     "id": 100701501001300001,
     "value": "You took your eyes off me."
   },
@@ -13038,6 +18742,38 @@
   {
     "id": 100701501001300008,
     "value": "Right there!"
+  },
+  {
+    "id": 100701501001300009,
+    "value": "I see it! There!"
+  },
+  {
+    "id": 100701501001300010,
+    "value": "I see it! There!"
+  },
+  {
+    "id": 100701501001300011,
+    "value": "Out of my way! Funnels!"
+  },
+  {
+    "id": 100701501001300012,
+    "value": "Out of my way! Funnels!"
+  },
+  {
+    "id": 100701501001300013,
+    "value": "I'll intercept that with Fangs!"
+  },
+  {
+    "id": 100701501001300014,
+    "value": "I'll intercept that with Fangs!"
+  },
+  {
+    "id": 100701501001300015,
+    "value": "I'll use the swarm weapon!"
+  },
+  {
+    "id": 100701501001300016,
+    "value": "I'll use the swarm weapon!"
   },
   {
     "id": 100701501001400001,
@@ -13072,6 +18808,38 @@
     "value": "I'll teach you a lesson!"
   },
   {
+    "id": 100701501001400009,
+    "value": "You're wide open!"
+  },
+  {
+    "id": 100701501001400010,
+    "value": "You're wide open!"
+  },
+  {
+    "id": 100701501001400011,
+    "value": "My Funnels, go!"
+  },
+  {
+    "id": 100701501001400012,
+    "value": "My Funnels, go!"
+  },
+  {
+    "id": 100701501001400013,
+    "value": "Fly, my Fangs!"
+  },
+  {
+    "id": 100701501001400014,
+    "value": "Fly, my Fangs!"
+  },
+  {
+    "id": 100701501001400015,
+    "value": "Here come the GUND-BITs!"
+  },
+  {
+    "id": 100701501001400016,
+    "value": "Here come the GUND-BITs!"
+  },
+  {
     "id": 100701501001500001,
     "value": "A hit."
   },
@@ -13102,6 +18870,38 @@
   {
     "id": 100701501001500008,
     "value": "Please don't be mad at me, okay?!"
+  },
+  {
+    "id": 100701501001500009,
+    "value": "This sensation... Is it really all right?"
+  },
+  {
+    "id": 100701501001500010,
+    "value": "This sensation... Is it really all right?"
+  },
+  {
+    "id": 100701501001500011,
+    "value": "I'll handle this with Funnels!"
+  },
+  {
+    "id": 100701501001500012,
+    "value": "I'll handle this with Funnels!"
+  },
+  {
+    "id": 100701501001500013,
+    "value": "Please hit, Fangs!"
+  },
+  {
+    "id": 100701501001500014,
+    "value": "Please hit, Fangs!"
+  },
+  {
+    "id": 100701501001500015,
+    "value": "I'd rather not use the GUND-BITs, but..."
+  },
+  {
+    "id": 100701501001500016,
+    "value": "I'd rather not use the GUND-BITs, but..."
   },
   {
     "id": 100701501001600001,
@@ -13136,6 +18936,38 @@
     "value": "How'd you like that!"
   },
   {
+    "id": 100701501001600009,
+    "value": "Got you! There!"
+  },
+  {
+    "id": 100701501001600010,
+    "value": "Got you! There!"
+  },
+  {
+    "id": 100701501001600011,
+    "value": "These Funnels should do it!"
+  },
+  {
+    "id": 100701501001600012,
+    "value": "These Funnels should do it!"
+  },
+  {
+    "id": 100701501001600013,
+    "value": "Get 'em, Fangs!"
+  },
+  {
+    "id": 100701501001600014,
+    "value": "Get 'em, Fangs!"
+  },
+  {
+    "id": 100701501001600015,
+    "value": "Don't use the Antidote, okay?!"
+  },
+  {
+    "id": 100701501001600016,
+    "value": "Don't use the Antidote, okay?!"
+  },
+  {
     "id": 100701501001700001,
     "value": "Move."
   },
@@ -13166,6 +18998,38 @@
   {
     "id": 100701501001700008,
     "value": "In your dreams."
+  },
+  {
+    "id": 100701501001700009,
+    "value": "The Psycommu tells me everything."
+  },
+  {
+    "id": 100701501001700010,
+    "value": "The Psycommu tells me everything."
+  },
+  {
+    "id": 100701501001700011,
+    "value": "Go, Funnels."
+  },
+  {
+    "id": 100701501001700012,
+    "value": "Go, Funnels."
+  },
+  {
+    "id": 100701501001700013,
+    "value": "Time to counter with Fangs."
+  },
+  {
+    "id": 100701501001700014,
+    "value": "Time to counter with Fangs."
+  },
+  {
+    "id": 100701501001700015,
+    "value": "The GUND FORMAT guides us."
+  },
+  {
+    "id": 100701501001700016,
+    "value": "The GUND FORMAT guides us."
   },
   {
     "id": 100701501001900001,
@@ -13200,6 +19064,38 @@
     "value": "Ahahahaha!"
   },
   {
+    "id": 100701501001900009,
+    "value": "Ahahaha, I'll shoot 'em all down!"
+  },
+  {
+    "id": 100701501001900010,
+    "value": "Ahahaha, I'll shoot 'em all down!"
+  },
+  {
+    "id": 100701501001900011,
+    "value": "Get 'em, funnels!"
+  },
+  {
+    "id": 100701501001900012,
+    "value": "Get 'em, funnels!"
+  },
+  {
+    "id": 100701501001900013,
+    "value": "Crush 'em, Fangs!"
+  },
+  {
+    "id": 100701501001900014,
+    "value": "Crush 'em, Fangs!"
+  },
+  {
+    "id": 100701501001900015,
+    "value": "Permet score three!"
+  },
+  {
+    "id": 100701501001900016,
+    "value": "Permet score three!"
+  },
+  {
     "id": 100701501002000001,
     "value": "Perish!"
   },
@@ -13230,6 +19126,38 @@
   {
     "id": 100701501002000008,
     "value": "Just disappear!"
+  },
+  {
+    "id": 100701501002000009,
+    "value": "Launch."
+  },
+  {
+    "id": 100701501002000010,
+    "value": "Launch."
+  },
+  {
+    "id": 100701501002000011,
+    "value": "Funnels"
+  },
+  {
+    "id": 100701501002000012,
+    "value": "Funnels"
+  },
+  {
+    "id": 100701501002000013,
+    "value": "Fangs"
+  },
+  {
+    "id": 100701501002000014,
+    "value": "Fangs"
+  },
+  {
+    "id": 100701501002000015,
+    "value": "Permet score three."
+  },
+  {
+    "id": 100701501002000016,
+    "value": "Permet score three."
   },
   {
     "id": 100701501002101001,
@@ -13264,6 +19192,38 @@
     "value": "Right there!"
   },
   {
+    "id": 100701501002101009,
+    "value": "What's this going on in my head!"
+  },
+  {
+    "id": 100701501002101010,
+    "value": "What's this going on in my head!"
+  },
+  {
+    "id": 100701501002101011,
+    "value": "Funnels, gooo!!!"
+  },
+  {
+    "id": 100701501002101012,
+    "value": "Funnels, gooo!!!"
+  },
+  {
+    "id": 100701501002101013,
+    "value": "Fangs!"
+  },
+  {
+    "id": 100701501002101014,
+    "value": "Fangs!"
+  },
+  {
+    "id": 100701501002101015,
+    "value": "Then...how about this?!"
+  },
+  {
+    "id": 100701501002101016,
+    "value": "Then...how about this?!"
+  },
+  {
     "id": 100701501002601001,
     "value": "I had it now!"
   },
@@ -13294,6 +19254,38 @@
   {
     "id": 100701501002601008,
     "value": "You're mine!"
+  },
+  {
+    "id": 100701501002601009,
+    "value": "All right! Go!"
+  },
+  {
+    "id": 100701501002601010,
+    "value": "All right! Go!"
+  },
+  {
+    "id": 100701501002601011,
+    "value": "Go, funnels!"
+  },
+  {
+    "id": 100701501002601012,
+    "value": "Go, funnels!"
+  },
+  {
+    "id": 100701501002601013,
+    "value": "Fangs!"
+  },
+  {
+    "id": 100701501002601014,
+    "value": "Fangs!"
+  },
+  {
+    "id": 100701501002601015,
+    "value": "Never thought I'd get into one of these."
+  },
+  {
+    "id": 100701501002601016,
+    "value": "Never thought I'd get into one of these."
   },
   {
     "id": 100701501002700001,
@@ -13328,6 +19320,38 @@
     "value": "There!"
   },
   {
+    "id": 100701501002700009,
+    "value": "Is this the enemy position I'm sensing?"
+  },
+  {
+    "id": 100701501002700010,
+    "value": "Is this the enemy position I'm sensing?"
+  },
+  {
+    "id": 100701501002700011,
+    "value": "I'll blind the enemy!"
+  },
+  {
+    "id": 100701501002700012,
+    "value": "I'll blind the enemy!"
+  },
+  {
+    "id": 100701501002700013,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701501002700014,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701501002700015,
+    "value": "Never thought I'd end up using a witch's weapon."
+  },
+  {
+    "id": 100701501002700016,
+    "value": "Never thought I'd end up using a witch's weapon."
+  },
+  {
     "id": 100701501002800001,
     "value": "I'm not out yet!"
   },
@@ -13358,6 +19382,38 @@
   {
     "id": 100701501002800008,
     "value": "Easy!"
+  },
+  {
+    "id": 100701501002800009,
+    "value": "This sensation... I don't fully understand it..."
+  },
+  {
+    "id": 100701501002800010,
+    "value": "This sensation... I don't fully understand it..."
+  },
+  {
+    "id": 100701501002800011,
+    "value": "I've been saving the Funnels for this!"
+  },
+  {
+    "id": 100701501002800012,
+    "value": "I've been saving the Funnels for this!"
+  },
+  {
+    "id": 100701501002800013,
+    "value": "Time for Fangs!"
+  },
+  {
+    "id": 100701501002800014,
+    "value": "Time for Fangs!"
+  },
+  {
+    "id": 100701501002800015,
+    "value": "If I need to deploy the GUND-BITs, I will!"
+  },
+  {
+    "id": 100701501002800016,
+    "value": "If I need to deploy the GUND-BITs, I will!"
   },
   {
     "id": 100701501002900001,
@@ -13392,6 +19448,38 @@
     "value": "Is that it?"
   },
   {
+    "id": 100701501002900009,
+    "value": "Wow, this is pretty easy to use."
+  },
+  {
+    "id": 100701501002900010,
+    "value": "Wow, this is pretty easy to use."
+  },
+  {
+    "id": 100701501002900011,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701501002900012,
+    "value": "Funnels, go!"
+  },
+  {
+    "id": 100701501002900013,
+    "value": "Fangs, take flight."
+  },
+  {
+    "id": 100701501002900014,
+    "value": "Fangs, take flight."
+  },
+  {
+    "id": 100701501002900015,
+    "value": "Don't take me aboard this thing!"
+  },
+  {
+    "id": 100701501002900016,
+    "value": "Don't take me aboard this thing!"
+  },
+  {
     "id": 100701600000100001,
     "value": "I'll show them!"
   },
@@ -13422,6 +19510,38 @@
   {
     "id": 100701600000100008,
     "value": "Here it comes!"
+  },
+  {
+    "id": 100701600000100009,
+    "value": "It's no use trying to escape!"
+  },
+  {
+    "id": 100701600000100010,
+    "value": "It's no use trying to escape!"
+  },
+  {
+    "id": 100701600000100011,
+    "value": "There, I can feel it... Funnels!"
+  },
+  {
+    "id": 100701600000100012,
+    "value": "There, I can feel it... Funnels!"
+  },
+  {
+    "id": 100701600000100013,
+    "value": "Funnels! Gooo!!!"
+  },
+  {
+    "id": 100701600000100014,
+    "value": "Funnels! Gooo!!!"
+  },
+  {
+    "id": 100701600000100015,
+    "value": "You can't get away from me... FANGS!"
+  },
+  {
+    "id": 100701600000100016,
+    "value": "You can't get away from me... FANGS!"
   },
   {
     "id": 100701600000200001,
@@ -13456,6 +19576,38 @@
     "value": "There!"
   },
   {
+    "id": 100701600000200009,
+    "value": "An opening! Nowww!"
+  },
+  {
+    "id": 100701600000200010,
+    "value": "An opening! Nowww!"
+  },
+  {
+    "id": 100701600000200011,
+    "value": "Get 'em, funnels!"
+  },
+  {
+    "id": 100701600000200012,
+    "value": "Get 'em, funnels!"
+  },
+  {
+    "id": 100701600000200013,
+    "value": "Funnels! Gooo!!!"
+  },
+  {
+    "id": 100701600000200014,
+    "value": "Funnels! Gooo!!!"
+  },
+  {
+    "id": 100701600000200015,
+    "value": "Go get 'em, fangs!"
+  },
+  {
+    "id": 100701600000200016,
+    "value": "Go get 'em, fangs!"
+  },
+  {
     "id": 100701604000100001,
     "value": "Gotcha!"
   },
@@ -13486,6 +19638,14 @@
   {
     "id": 100701604000100008,
     "value": "I'm gonna grind you to dust!"
+  },
+  {
+    "id": 100701604000100009,
+    "value": "I'll use this!"
+  },
+  {
+    "id": 100701604000100010,
+    "value": "I'll use this!"
   },
   {
     "id": 100701604000300001,
@@ -13520,6 +19680,38 @@
     "value": "Haaa!"
   },
   {
+    "id": 100701604000300009,
+    "value": "I see it all! Over there!"
+  },
+  {
+    "id": 100701604000300010,
+    "value": "I see it all! Over there!"
+  },
+  {
+    "id": 100701604000300011,
+    "value": "Funnels, get 'em!"
+  },
+  {
+    "id": 100701604000300012,
+    "value": "Funnels, get 'em!"
+  },
+  {
+    "id": 100701604000300013,
+    "value": "Fly! Fangs!"
+  },
+  {
+    "id": 100701604000300014,
+    "value": "Fly! Fangs!"
+  },
+  {
+    "id": 100701604000300015,
+    "value": "GUND-BITs! Do your thing!"
+  },
+  {
+    "id": 100701604000300016,
+    "value": "GUND-BITs! Do your thing!"
+  },
+  {
     "id": 100701700000100001,
     "value": "Here I come!"
   },
@@ -13552,6 +19744,14 @@
     "value": "Hyah!"
   },
   {
+    "id": 100701700000100009,
+    "value": "Take this!"
+  },
+  {
+    "id": 100701700000100010,
+    "value": "Take this!"
+  },
+  {
     "id": 100701705000200001,
     "value": "Mwahaha!"
   },
@@ -13582,6 +19782,14 @@
   {
     "id": 100701705000200008,
     "value": "It is over!"
+  },
+  {
+    "id": 100701705000200009,
+    "value": "I will scatter you to the wind!"
+  },
+  {
+    "id": 100701705000200010,
+    "value": "I will scatter you to the wind!"
   },
   {
     "id": 100701705000300001,
@@ -13984,6 +20192,14 @@
     "value": "Hmph!"
   },
   {
+    "id": 100701705001700009,
+    "value": "I will show you my power!"
+  },
+  {
+    "id": 100701705001700010,
+    "value": "I will show you my power!"
+  },
+  {
     "id": 100701705001900001,
     "value": "Hmph!"
   },
@@ -14128,6 +20344,22 @@
     "value": "Ahahaha!"
   },
   {
+    "id": 100701764000100009,
+    "value": "My head... I can see!"
+  },
+  {
+    "id": 100701764000100010,
+    "value": "My head... I can see!"
+  },
+  {
+    "id": 100701764000100011,
+    "value": "This sensation... Funnels!"
+  },
+  {
+    "id": 100701764000100012,
+    "value": "This sensation... Funnels!"
+  },
+  {
     "id": 100701850000100001,
     "value": "You're mine!"
   },
@@ -14176,6 +20408,22 @@
     "value": "Here we go!"
   },
   {
+    "id": 100701850000100013,
+    "value": "I saw it..."
+  },
+  {
+    "id": 100701850000100014,
+    "value": "I saw it..."
+  },
+  {
+    "id": 100701850000100015,
+    "value": "Let's see you dodge these Funnels!"
+  },
+  {
+    "id": 100701850000100016,
+    "value": "Let's see you dodge these Funnels!"
+  },
+  {
     "id": 100701850000200001,
     "value": "Gotcha!"
   },
@@ -14206,6 +20454,14 @@
   {
     "id": 100701850000200008,
     "value": "You are too naive!"
+  },
+  {
+    "id": 100701850000200009,
+    "value": "You're not going anywhere!"
+  },
+  {
+    "id": 100701850000200010,
+    "value": "You're not going anywhere!"
   },
   {
     "id": 100701850000300001,
@@ -14240,6 +20496,14 @@
     "value": "Yaaah!"
   },
   {
+    "id": 100701850000300009,
+    "value": "I see it! Please!"
+  },
+  {
+    "id": 100701850000300010,
+    "value": "I see it! Please!"
+  },
+  {
     "id": 100701850000500001,
     "value": "Gooooo!"
   },
@@ -14270,6 +20534,14 @@
   {
     "id": 100701850000500008,
     "value": "Destruction!"
+  },
+  {
+    "id": 100701850000500009,
+    "value": "Not just for show!"
+  },
+  {
+    "id": 100701850000500010,
+    "value": "Not just for show!"
   },
   {
     "id": 100701850000600001,
@@ -14304,6 +20576,14 @@
     "value": "Take this!"
   },
   {
+    "id": 100701850000600009,
+    "value": "Alright... Let's go!"
+  },
+  {
+    "id": 100701850000600010,
+    "value": "Alright... Let's go!"
+  },
+  {
     "id": 100701850000700001,
     "value": "Gotcha!"
   },
@@ -14334,6 +20614,14 @@
   {
     "id": 100701850000700008,
     "value": "Haaah!"
+  },
+  {
+    "id": 100701850000700009,
+    "value": "Gotta pay attention... Got'cha!"
+  },
+  {
+    "id": 100701850000700010,
+    "value": "Gotta pay attention... Got'cha!"
   },
   {
     "id": 100701850000800001,
@@ -14368,6 +20656,14 @@
     "value": "Eat this!"
   },
   {
+    "id": 100701850000800009,
+    "value": "Destroy the enemy!"
+  },
+  {
+    "id": 100701850000800010,
+    "value": "Destroy the enemy!"
+  },
+  {
     "id": 100701850001000001,
     "value": "You...!"
   },
@@ -14398,6 +20694,14 @@
   {
     "id": 100701850001000008,
     "value": "Too slow!"
+  },
+  {
+    "id": 100701850001000009,
+    "value": "Go on!"
+  },
+  {
+    "id": 100701850001000010,
+    "value": "Go on!"
   },
   {
     "id": 100701850001100001,
@@ -14432,6 +20736,14 @@
     "value": "Graghh!"
   },
   {
+    "id": 100701850001100009,
+    "value": "Way too obvious!"
+  },
+  {
+    "id": 100701850001100010,
+    "value": "Way too obvious!"
+  },
+  {
     "id": 100701850001200001,
     "value": "Gotcha!"
   },
@@ -14462,6 +20774,14 @@
   {
     "id": 100701850001200008,
     "value": "An opening!"
+  },
+  {
+    "id": 100701850001200009,
+    "value": "Clear for attack!"
+  },
+  {
+    "id": 100701850001200010,
+    "value": "Clear for attack!"
   },
   {
     "id": 100701850001300001,
@@ -14496,6 +20816,14 @@
     "value": "Stay away!"
   },
   {
+    "id": 100701850001300009,
+    "value": "Oh, who even cares anymore!"
+  },
+  {
+    "id": 100701850001300010,
+    "value": "Oh, who even cares anymore!"
+  },
+  {
     "id": 100701850001500001,
     "value": "You're mine!"
   },
@@ -14526,6 +20854,38 @@
   {
     "id": 100701850001500008,
     "value": "Get a load of this!"
+  },
+  {
+    "id": 100701850001500009,
+    "value": "Right... There!"
+  },
+  {
+    "id": 100701850001500010,
+    "value": "Right... There!"
+  },
+  {
+    "id": 100701850001500011,
+    "value": "C'mon, funnels! Finish them off!"
+  },
+  {
+    "id": 100701850001500012,
+    "value": "C'mon, funnels! Finish them off!"
+  },
+  {
+    "id": 100701850001500013,
+    "value": "GO!!! Fangs!!!"
+  },
+  {
+    "id": 100701850001500014,
+    "value": "GO!!! Fangs!!!"
+  },
+  {
+    "id": 100701850001500015,
+    "value": "You're going to pay for that! Sic them!"
+  },
+  {
+    "id": 100701850001500016,
+    "value": "You're going to pay for that! Sic them!"
   },
   {
     "id": 100701850001600001,
@@ -14560,6 +20920,14 @@
     "value": "Strike down evil!"
   },
   {
+    "id": 100701850001600009,
+    "value": "From a position like this..."
+  },
+  {
+    "id": 100701850001600010,
+    "value": "From a position like this..."
+  },
+  {
     "id": 100701850001700001,
     "value": "You crum-bum!"
   },
@@ -14582,6 +20950,14 @@
   {
     "id": 100701850001700006,
     "value": "I can see it! ...Or I think I can see it!"
+  },
+  {
+    "id": 100701850001700007,
+    "value": "Oi! I'll teach you how to really fight!"
+  },
+  {
+    "id": 100701850001700008,
+    "value": "Oi! I'll teach you how to really fight!"
   },
   {
     "id": 100701850001800001,
@@ -14616,6 +20992,14 @@
     "value": "You won't dodge this!"
   },
   {
+    "id": 100701850001800009,
+    "value": "I can see it... There you are!"
+  },
+  {
+    "id": 100701850001800010,
+    "value": "I can see it... There you are!"
+  },
+  {
     "id": 100701850001900001,
     "value": "You're done for!"
   },
@@ -14646,6 +21030,14 @@
   {
     "id": 100701850001900008,
     "value": "You've much to learn!"
+  },
+  {
+    "id": 100701850001900009,
+    "value": "Right, then! Here we go!"
+  },
+  {
+    "id": 100701850001900010,
+    "value": "Right, then! Here we go!"
   },
   {
     "id": 100701850002000001,
@@ -14680,6 +21072,14 @@
     "value": "Safe travels!"
   },
   {
+    "id": 100701850002000009,
+    "value": "Off you go!"
+  },
+  {
+    "id": 100701850002000010,
+    "value": "Off you go!"
+  },
+  {
     "id": 100701850002100001,
     "value": "Fall!"
   },
@@ -14710,6 +21110,14 @@
   {
     "id": 100701850002100008,
     "value": "Time to vanish, now!"
+  },
+  {
+    "id": 100701850002100009,
+    "value": "They'll be picking your pieces up for weeks!"
+  },
+  {
+    "id": 100701850002100010,
+    "value": "They'll be picking your pieces up for weeks!"
   },
   {
     "id": 100701850002200001,
@@ -14744,6 +21152,14 @@
     "value": "Ooohohoho!"
   },
   {
+    "id": 100701850002200009,
+    "value": "Go on, get out there!"
+  },
+  {
+    "id": 100701850002200010,
+    "value": "Go on, get out there!"
+  },
+  {
     "id": 100701850002300001,
     "value": "You're mine!"
   },
@@ -14774,6 +21190,14 @@
   {
     "id": 100701850002300008,
     "value": "No problemo!"
+  },
+  {
+    "id": 100701850002300009,
+    "value": "I am DEFINITELY going to hit with this!"
+  },
+  {
+    "id": 100701850002300010,
+    "value": "I am DEFINITELY going to hit with this!"
   },
   {
     "id": 100701850002400001,
@@ -14808,6 +21232,14 @@
     "value": "Farewell..."
   },
   {
+    "id": 100701850002400009,
+    "value": "It's all so clear..."
+  },
+  {
+    "id": 100701850002400010,
+    "value": "It's all so clear..."
+  },
+  {
     "id": 100701850002500001,
     "value": "How do you like this?"
   },
@@ -14830,6 +21262,14 @@
   {
     "id": 100701850002500006,
     "value": "Heh!"
+  },
+  {
+    "id": 100701850002500007,
+    "value": "Let's get this done!"
+  },
+  {
+    "id": 100701850002500008,
+    "value": "Let's get this done!"
   },
   {
     "id": 100701850002600001,
@@ -14864,6 +21304,14 @@
     "value": "Enough of this!"
   },
   {
+    "id": 100701850002600009,
+    "value": "This is our chance!"
+  },
+  {
+    "id": 100701850002600010,
+    "value": "This is our chance!"
+  },
+  {
     "id": 100701850002700001,
     "value": "Here we go!"
   },
@@ -14886,6 +21334,14 @@
   {
     "id": 100701850002700006,
     "value": "Hiyaaah!"
+  },
+  {
+    "id": 100701850002700007,
+    "value": "Everything good?"
+  },
+  {
+    "id": 100701850002700008,
+    "value": "Everything good?"
   },
   {
     "id": 100701850002800001,
@@ -14920,6 +21376,14 @@
     "value": "That was pitiful..."
   },
   {
+    "id": 100701850002800009,
+    "value": "If I follow this predicted course..."
+  },
+  {
+    "id": 100701850002800010,
+    "value": "If I follow this predicted course..."
+  },
+  {
     "id": 100701850003000001,
     "value": "Ha!"
   },
@@ -14950,6 +21414,14 @@
   {
     "id": 100701850003000008,
     "value": "FIRE!"
+  },
+  {
+    "id": 100701850003000009,
+    "value": "I'm opening a way forward!"
+  },
+  {
+    "id": 100701850003000010,
+    "value": "I'm opening a way forward!"
   },
   {
     "id": 100701850003100001,
@@ -14984,6 +21456,14 @@
     "value": "ORAH!"
   },
   {
+    "id": 100701850003100009,
+    "value": "There!"
+  },
+  {
+    "id": 100701850003100010,
+    "value": "There!"
+  },
+  {
     "id": 100701850003200001,
     "value": "Teyah!"
   },
@@ -15016,6 +21496,14 @@
     "value": "Hyah!"
   },
   {
+    "id": 100701850003200009,
+    "value": "Saw it!"
+  },
+  {
+    "id": 100701850003200010,
+    "value": "Saw it!"
+  },
+  {
     "id": 100701850003300001,
     "value": "Deya!"
   },
@@ -15038,6 +21526,14 @@
   {
     "id": 100701850003300006,
     "value": "Take this!"
+  },
+  {
+    "id": 100701850003300007,
+    "value": "Go get 'em!"
+  },
+  {
+    "id": 100701850003300008,
+    "value": "Go get 'em!"
   },
   {
     "id": 100701850003600001,
@@ -15080,6 +21576,30 @@
     "value": "Be at peace..."
   },
   {
+    "id": 100701850003600011,
+    "value": "I can see it!"
+  },
+  {
+    "id": 100701850003600012,
+    "value": "I can see it!"
+  },
+  {
+    "id": 100701850003600013,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701850003600014,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701850003600015,
+    "value": "Fangs!"
+  },
+  {
+    "id": 100701850003600016,
+    "value": "Fangs!"
+  },
+  {
     "id": 100701850003900001,
     "value": "Disintegrate!"
   },
@@ -15110,5 +21630,37 @@
   {
     "id": 100701850003900008,
     "value": "Die!"
+  },
+  {
+    "id": 100701850003900009,
+    "value": "Enemies sighted! Enemies sighted!"
+  },
+  {
+    "id": 100701850003900010,
+    "value": "Enemies sighted! Enemies sighted!"
+  },
+  {
+    "id": 100701850003900011,
+    "value": "Go! Get them!"
+  },
+  {
+    "id": 100701850003900012,
+    "value": "Go! Get them!"
+  },
+  {
+    "id": 100701850003900013,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701850003900014,
+    "value": "Fly, Fangs!"
+  },
+  {
+    "id": 100701850003900015,
+    "value": "Fly! Get them!"
+  },
+  {
+    "id": 100701850003900016,
+    "value": "Fly! Get them!"
   }
 ]

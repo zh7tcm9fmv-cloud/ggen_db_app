@@ -35,6 +35,11 @@
     "CompleteRewardSetId": 291500002000
   },
   {
+    "Id": 162001,
+    "ClearRewardSetId": 291620001000,
+    "CompleteRewardSetId": 291620002000
+  },
+  {
     "Id": 200001,
     "ClearRewardSetId": 292000001000,
     "CompleteRewardSetId": 292000002000

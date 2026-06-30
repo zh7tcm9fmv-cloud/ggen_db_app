@@ -18,5 +18,15 @@
     "TransitionId": 89260335000001,
     "Priority": 2,
     "ScheduleId": 2606432001
+  },
+  {
+    "Id": 52606450101,
+    "PaymentShopItemId": 526064501,
+    "FirstViewResourceId": "526064501",
+    "AppealDescriptionLanguageId": 193200000526064501,
+    "NoticeDescriptionLanguageId": 193300000526064501,
+    "TransitionId": 54000000000000,
+    "Priority": 1,
+    "ScheduleId": 0
   }
 ]

@@ -316,8 +316,32 @@
     "value": "Series Clear Reward Pack (NT)"
   },
   {
+    "id": 190122606500100001,
+    "value": "Series Clear Reward Pack (F91)"
+  },
+  {
+    "id": 190122606500200001,
+    "value": "Music Pack Vol. 5"
+  },
+  {
+    "id": 190122606500400001,
+    "value": "9 Million DLs Value Diamond Pack A"
+  },
+  {
+    "id": 190122606500500001,
+    "value": "9 Million DLs Value Diamond Pack B"
+  },
+  {
+    "id": 190122606500600001,
+    "value": "Web Store-limited 9 Million DLs Value Diamond Pack"
+  },
+  {
     "id": 190152510500100001,
     "value": "Eternal Pass"
+  },
+  {
+    "id": 190152606450100001,
+    "value": "Eternal Pass II"
   },
   {
     "id": 190210000000100001,
@@ -572,7 +596,27 @@
     "value": "[1 Time Only] Pack containing Diamond x430, SSR Unit Limit Break Material x1, AP Pack x1, Development Material (NT) x100, Unit Upgrade Data SSR x10, Character Upgrade Data SSR x10, and Supporter Upgrade Data SSR x10."
   },
   {
+    "id": 190222606500100001,
+    "value": "[1 Time Only] Pack containing Diamond x430, SSR Unit Limit Break Material x1, AP Pack x1, Development Material (F91) x100, Unit Upgrade Data SSR x10, Character Upgrade Data SSR x10, and Supporter Upgrade Data SSR x10."
+  },
+  {
+    "id": 190222606500200001,
+    "value": "[Notes]\n* Unlocked music can only be used on the platform where the Music Pack was purchased.\n* Unlocked music cannot be transferred between platforms.\n* Music will be downloaded when a Music Pack is purchased. A Wi-Fi connection is recommended when purchasing.\n\n[Pack Contents]\nSelectalble Music x51\nPremium Unit Assembly Ticket x6\nUnit Upgrade Data SSR x10\nCharacter Upgrade Data SSR x10\nSupporter Upgrade Data SSR x10\n\n[List of Selectalble Music]\nKikan [M-7]\nSenshi [M-8]\nⅦ\nHatenaki Tatakai [M22]\nEien no Tobira\nGroovy Duel\nThunderbolt New Theme\nHyoujou no Haisou\nBianca's Army March\nAcrobatic Fight-2\nNanyou Doumei-1\nSymphonicsuiteNT No.1\nSymphonicsuiteNT No.2\nSymphonicsuiteNT No.4\nVigilante Ver 0.5 + @\nEnforcement Rush\nCodename : WIND\nBattlefield\nFinal Attack\nRiot of Citizens\nDuel!\nClash at The Stratosphere\nSorrowful Memory\nLAST IMPRESSION\nLift Off\nChiru Inochi, Ikiru Inochi\nSTRIKE NOIR\nSTARGAZER ～Hoshi no Tobira\nINNOVATION\nPOSSIBILITY\nFighting Forces\nTake-Off\nPower Attack\nInterception\nMEMENTO MORI\nO-RAISER\nOO-RAISER\nHakanakumo Towano Kanashi\nNamida No Mukou\nGUNDAM AGE -100nen no Monogatari-\nTatakai no Kakugo\nShiroi Ookami\nKyoshu\nGUNDAM AGE-2: Unmei no Saki e\nVagan Syurai\nZeydra\nHajimari no Yokan\nAbyss-tai\nAsu E\nsharp #\nMirai no Moyo"
+  },
+  {
+    "id": 190222606500400001,
+    "value": "[1-Time Only]\nDiamond Value Pack!\n\n[Pack Contents]\n- Diamond x1,500\n- [9 Million DLs] 1 SSR or Higher Unit Guaranteed Unit Assembly Ticket x1"
+  },
+  {
+    "id": 190222606500500001,
+    "value": "[1-Time Only]\nDiamond Value Pack!\n\n[Pack Contents]\n- Diamond x10,000\n- [9 Million DLs] 1 UR Unit Guaranteed 5-Pull Unit Assembly Ticket x1"
+  },
+  {
     "id": 190252510500100001,
     "value": "Eternal Pass is a monthly service that increases your number of daily stage attempts and includes gift items."
+  },
+  {
+    "id": 190252606450100001,
+    "value": "Eternal Pass II is a monthly service that increases the number of Main Stage skips available and includes gift items."
   }
 ]

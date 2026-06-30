@@ -1524,6 +1524,18 @@
     "IsDisplayUpDown": false
   },
   {
+    "Id": 360250301,
+    "TargetLineageId": 0,
+    "TargetUnitRoleTypeIndex": 0,
+    "TraitTypeIndex": 1,
+    "TraitValue": 15,
+    "ResourceId": "trait_10010401",
+    "NameLanguageId": 140500000360250301,
+    "DescriptionLanguageId": 140600000360250301,
+    "BuffLabelColorTypeIndex": 5,
+    "IsDisplayUpDown": false
+  },
+  {
     "Id": 370260101,
     "TargetLineageId": 1090,
     "TargetUnitRoleTypeIndex": 0,

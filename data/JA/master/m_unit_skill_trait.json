@@ -36,6 +36,30 @@
     "ActiveTraitConditionSetId": 0
   },
   {
+    "Id": 116300015011,
+    "UnitSkillId": 116300015000,
+    "NameLanguageId": 141500116300015011,
+    "DescriptionLanguageId": 141600116300015011,
+    "ResourceId": "trait_10050101",
+    "TraitTypeIndex": 8,
+    "TraitValue": 100,
+    "BuffLabelColorTypeIndex": 3,
+    "IsDisplayUpDown": false,
+    "ActiveTraitConditionSetId": 0
+  },
+  {
+    "Id": 116300015012,
+    "UnitSkillId": 116300015000,
+    "NameLanguageId": 141500116300015012,
+    "DescriptionLanguageId": 141600116300015012,
+    "ResourceId": "trait_10060101",
+    "TraitTypeIndex": 7,
+    "TraitValue": 10,
+    "BuffLabelColorTypeIndex": 3,
+    "IsDisplayUpDown": false,
+    "ActiveTraitConditionSetId": 0
+  },
+  {
     "Id": 137000595011,
     "UnitSkillId": 137000595000,
     "NameLanguageId": 141500137000595011,

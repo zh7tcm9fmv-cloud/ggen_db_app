@@ -2232,12 +2232,192 @@
     "value": "Damaged Alyzeus"
   },
   {
+    "id": 110100001154000100,
+    "value": "F80 Gunraid"
+  },
+  {
+    "id": 110100001155000100,
+    "value": "Gundam F90"
+  },
+  {
     "id": 110100001155000110,
     "value": "Gundam F90"
   },
   {
+    "id": 110100001155000150,
+    "value": "Gundam F90"
+  },
+  {
+    "id": 110100001155000200,
+    "value": "Gundam F90 A.D.S. Type"
+  },
+  {
+    "id": 110100001155000250,
+    "value": "Gundam F90 A.D.S. Type (EX)"
+  },
+  {
+    "id": 110100001155000300,
+    "value": "Gundam F90 II"
+  },
+  {
+    "id": 110100001155000400,
+    "value": "Gundam F90 II L Type"
+  },
+  {
+    "id": 110100001155000500,
+    "value": "Gundam F90 II I Type"
+  },
+  {
+    "id": 110100001155000610,
+    "value": "Gundam F90 Unit 2"
+  },
+  {
+    "id": 110100001155000700,
+    "value": "Gundam F90 (Mars Independent Zeon Forces)"
+  },
+  {
+    "id": 110100001157000200,
+    "value": "Vigna-Zirah (Gundam Type)"
+  },
+  {
+    "id": 110100001157000201,
+    "value": "Vigna-Zirah (Gundam Type)"
+  },
+  {
+    "id": 110100001157000202,
+    "value": "Vigna-Zirah (Gundam Type)"
+  },
+  {
+    "id": 110100001159000110,
+    "value": "RF Gelgoog (Charles Rochester)"
+  },
+  {
+    "id": 110100001159000200,
+    "value": "RF Zaku"
+  },
+  {
+    "id": 110100001159000300,
+    "value": "RF Dom"
+  },
+  {
+    "id": 110100001159000400,
+    "value": "RF Gouf"
+  },
+  {
+    "id": 110100001159000500,
+    "value": "RF Z'Gok"
+  },
+  {
+    "id": 110100001159000600,
+    "value": "RF Gyan"
+  },
+  {
+    "id": 110100001159000700,
+    "value": "RF Gelgoog"
+  },
+  {
+    "id": 110100001159000800,
+    "value": "RF Adzam"
+  },
+  {
+    "id": 110100001159000900,
+    "value": "RF Desert Dom"
+  },
+  {
+    "id": 110100001159001000,
+    "value": "Grand Zam"
+  },
+  {
+    "id": 110100001162000100,
+    "value": "Gundam F91"
+  },
+  {
     "id": 110100001162000150,
     "value": "Gundam F91 (EX)"
+  },
+  {
+    "id": 110100001162000300,
+    "value": "Vigna-Ghina"
+  },
+  {
+    "id": 110100001162000400,
+    "value": "Berga-Dalas"
+  },
+  {
+    "id": 110100001162000500,
+    "value": "Heavygun"
+  },
+  {
+    "id": 110100001162000600,
+    "value": "G-Cannon"
+  },
+  {
+    "id": 110100001162000800,
+    "value": "Den'an-Zon"
+  },
+  {
+    "id": 110100001162000900,
+    "value": "Den'an-Gei"
+  },
+  {
+    "id": 110100001162001000,
+    "value": "Den'an-Gei (Black Vanguard)"
+  },
+  {
+    "id": 110100001162001010,
+    "value": "Den'an-Gei (Black Vanguard)"
+  },
+  {
+    "id": 110100001162001200,
+    "value": "Berga-Giros"
+  },
+  {
+    "id": 110100001162001300,
+    "value": "Berga-Giros (Black Vanguard)"
+  },
+  {
+    "id": 110100001162001310,
+    "value": "Berga-Giros (Black Vanguard)"
+  },
+  {
+    "id": 110100001162001400,
+    "value": "Dahgi-Iris"
+  },
+  {
+    "id": 110100001162001500,
+    "value": "Dahgi-Iris (Earth Federation Forces)"
+  },
+  {
+    "id": 110100001162001510,
+    "value": "Dahgi-Iris (Earth Federation Forces)"
+  },
+  {
+    "id": 110100001162001600,
+    "value": "Rafflesia"
+  },
+  {
+    "id": 110100001162001700,
+    "value": "Bug"
+  },
+  {
+    "id": 110100001162001800,
+    "value": "Bug"
+  },
+  {
+    "id": 110100001162001900,
+    "value": "Guntank R44"
+  },
+  {
+    "id": 110100001162002000,
+    "value": "Ebirhu-S"
+  },
+  {
+    "id": 110100001163000150,
+    "value": "Gundam F91 (Twin VSBR) (EX)"
+  },
+  {
+    "id": 110100001163000200,
+    "value": "Berga-Giros (Enhanced Armament Type)"
   },
   {
     "id": 110100001166000250,
@@ -6084,6 +6264,14 @@
     "value": "Damascus"
   },
   {
+    "id": 110100002162000100,
+    "value": "Space Ark"
+  },
+  {
+    "id": 110100002162000200,
+    "value": "Zamouth Garr"
+  },
+  {
     "id": 110100002200000100,
     "value": "Gorby II"
   },
@@ -7061,11 +7249,11 @@
   },
   {
     "id": 110200001060000420,
-    "value": "-"
+    "value": "An experimental machine, tested in absolute secrecy as part of the Gundam Development Project conducted by the Federation Forces and Anaheim Electronics.\nIt was developed as the mobile suit unit of the mobile weapon Dendrobium.\nTo help it combine with the armed base Orchis, it was given tail binders to improve its handling and mobility, and its cockpit used a panoramic monitor and linear seat to help the pilot control its vast array of weapons.\nIt also featured folding arms, necessary for it to work in tandem with the armed base Orchis.\nBecause it took a long time to resupply the armed base, the mobile suit unit was outfitted with the capabilities to hold its own in solo space combat."
   },
   {
     "id": 110200001060000450,
-    "value": "An experimental machine that combined the features of a mobile suit and mobile armor, tested in absolute secrecy as part of the Gundam Development Project conducted by the Federation Forces and Anaheim Electronics.\nIt was loaded with every weapon imaginable, in an effort to fulfill the Gundam Development Project's concept of \"history's strongest mobile weapon.\"\nBecause it was assumed that this machine would be used mainly to defend bases in space, the armed base Orchis was developed into a massive weapon storage unit.\nIt was highly mobile thanks to its huge propellant supply, and its armament included a mega beam cannon with incredible firepower.\nCombined with a beam weapon-nullifying I-Field generator, these gave it overwhelming combat capabilities."
+    "value": "An experimental machine, tested in absolute secrecy as part of the Gundam Development Project conducted by the Federation Forces and Anaheim Electronics.\nIt was developed as the mobile suit unit of the mobile weapon Dendrobium.\nTo help it combine with the armed base Orchis, it was given tail binders to improve its handling and mobility, and its cockpit used a panoramic monitor and linear seat to help the pilot control its vast array of weapons.\nIt also featured folding arms, necessary for it to work in tandem with the armed base Orchis.\nBecause it took a long time to resupply the armed base, the mobile suit unit was outfitted with the capabilities to hold its own in solo space combat."
   },
   {
     "id": 110200001060000500,
@@ -8352,12 +8540,176 @@
     "value": "A prototype mass-production model of the RX-93 Nu-Gundam.\nIts machine specs are approximately 80% of Nu-Gundam's.\nMinor changes were made for this machine to function as the foundation of Alyzeus, and the block structure of the head part and groin joints were changed."
   },
   {
+    "id": 110200001154000100,
+    "value": "The F80 Gunraid is a mobile suit in the F8 series, developed as a prototype for adapting the F90 into a general-purpose mass-produced machine.\nIts design was handled by S.N.R.I.'s N.M.S.D. Lab, while its production was undertaken by Zimmad Co.\nDrawing on operational data from the already-deployed F90, the frame was designed to allow the hardpoints to form joints with nearly every F90 mission pack.\nIn addition to the standard-issued beam rifle, beam saber, and Vulcan cannons, its loadout includes optional artillery such as a triple machine cannon, beam cannons, and a hyper bazooka.\nOriginally, it was designed to serve as the successor to the RGM-109 Heavygun, the EFF's main mobile suit.\nThree of the F80s produced were operated by the Death Guns, a mercenary trio serving the EFF's Jupiter Division, during the assault on Olympus Base in the First Oldsmobile War that broke out on Mars in U.C. 0121.\nEach of the trio's mobile suits was outfitted with an anti-beam mantle and equipped with an O-, G-, or Q-type mission pack. By leveraging combination attacks, they closed the gaps in performance between their three machines and the Gundam F90 used by the Mars Independent Zeon Forces."
+  },
+  {
     "id": 110200001155000100,
     "value": "A prototype mobile suit developed as a testbed by S.N.R.I., a proponent of mobile suit miniaturization.\nThe F90 forms the base of the machine, and despite specializing in melee combat, it only comes equipped with basic weaponry, allowing excellent mobility.\nHowever, by attaching and detaching various mission packs to the hardpoints covering its body, it can respond flexibly to a wide range of missions."
   },
   {
+    "id": 110200001155000150,
+    "value": "A prototype mobile suit developed as a testbed by S.N.R.I., a proponent of mobile suit miniaturization.\nThe F90 forms the base of the machine, and despite specializing in melee combat, it only comes equipped with basic weaponry, allowing excellent mobility.\nHowever, by attaching and detaching various mission packs to the hardpoints covering its body, it can respond flexibly to a wide range of missions."
+  },
+  {
+    "id": 110200001155000200,
+    "value": "One of the F90 variants.\nDef Stallion equipped the mobile suit with every last spare optional armament for the final battle against the Mars Independent Zeon Forces.\nCombining the loadouts of the Assault, Support, and Destroy types, it is capable of responding to a wide range of combat situations."
+  },
+  {
+    "id": 110200001155000250,
+    "value": "One of the F90 variants.\nDef Stallion equipped the mobile suit with every last spare optional armament for the final battle against the Mars Independent Zeon Forces.\nCombining the loadouts of the Assault, Support, and Destroy types, it is capable of responding to a wide range of combat situations."
+  },
+  {
+    "id": 110200001155000300,
+    "value": "A revised and reinforced design for the F90 (Unit 2).\nAfter it was stolen and altered by the Mars Independent Zeon Forces, also known as Oldsmobile, Unit 2 was recovered in battle by the EFF and returned to the S.N.R.I. for overhaul.\nBecause the mobile suit was heavily damaged when the Federation Forces recovered it (reportedly 60% destroyed), a large number of new parts were employed in its refurbishment. Along with a refreshed color scheme, the redesigned chest and shoulders stand out among the many changes made.\nThe hardpoints for optional equipment installed across the frame were fully restored, allowing it to employ every mission pack developed for the original F90.\nThe simple loadout consists of a beam rifle, beam saber, and shield, and the design preserves the concept of interlocking mission packs.\nOn the other hand, a prototype bio-computer that served as the basis for the one used in the F91 was installed inside. Improvements to its basic performance were also made, including enhancements to the generator and thrusters.\nAs a result, it outclasses Unit 1 in terms of overall specifications."
+  },
+  {
+    "id": 110200001155000400,
+    "value": "The L (Long Range) Type is a long-range design for sniping from extreme distances.\nIts defining feature is the extended long rifle supported by a specialized backpack and hardpoints on the waist.\nThe incorporation of beam-guided I-Field generation technology into the barrel resulted in a revolutionary system capable of firing both beams and projectiles.\nWith the diffusion rate reduced to a minimum, the rifle fires a beam that boasts an effective range of over 100 km, comparable to the distance between colonies within a Side.\nThe rifle projectiles, meanwhile, were fitted with vernier pellets on the shank and base. By detonating the projectiles after firing them, their trajectories can be altered, making them semi-guided.\nMemory chips installed in the tips can be programmed with trajectories, enabling enemies and bases outside the direct line of fire to be targeted.\nIn addition, missile launchers were mounted on both arms.\nA composite optical sensor for precision targeting was mounted on the left shoulder, while a thermoscope was mounted on the backpack.\nThe equipment was configured to ensure accurate sniping from a long range."
+  },
+  {
+    "id": 110200001155000500,
+    "value": "The I (Intercept) Type, a pack developed for the F90 and F90II, has been designed around the concepts of interception and pursuit.\nReportedly developed alongside the F90II, its use on the mobile suit has been confirmed in actual deployment.\nThe most prominent feature is the large flight shield that enables solo flight. When in use, it deploys underneath the machine and functions as a sub-flight system.\nAdditionally, thrust-boosting units were mounted on the legs to improve acceleration during flight, achieving stable flight performance.\nThe loadout features a specialized beam lancer.\nWhile it can be used as a melee weapon, including thrusting with the lengthy lancer section, it was also designed to fire diffuse beams.\nBy pairing the solo flight capability of the flight shield with the wide attack range of the beam lancer, the design allows for lightning-fast hit-and-run tactics."
+  },
+  {
+    "id": 110200001155000600,
+    "value": "The F90, developed by the S.N.R.I. as part of the Formula Project, was considered for mass production as the EFF's next-generation main mobile suit in U.C. 112 for its high performance and innovative design.\nInitially, two prototypes were produced to demonstrate the technology, and in U.C. 120, both underwent operational testing by the 13th Test Corps (the 13th Independent Mobile Fleet).\nHowever, one of the protypes was stolen by the Zeon remnant forces known as Oldsmobile. Namely, Unit 2.\nUnit 2 possesses nearly identical performance to the simultaneously developed Unit 1 and preserves all the defining features of the F90, including a miniaturized frame, multiple hardpoints for exceptional expandability, and various optional armaments that interlock with those hardpoints.\nOn the other hand, the computers installed in the two prototypes reportedly differ in artificial personality: Unit 1 incorporates a combat program based on Amuro Ray, whereas Unit 2 incorporates one based on Char Aznable.\nAfter it was stolen by Oldsmobile, Unit 2 underwent extensive modifications to meet the Mars Independent Zeon Forces' specifications, including the color scheme. It was then deployed in combat, where it earned victories over mobile suits such as Geara Doga Custom and Jegan.\nLater, the EFF successfully recovered the mobile suit in battle. They not only repaired the damage, but also performed a complete overhaul, restoring it as the F90II."
+  },
+  {
+    "id": 110200001155000700,
+    "value": "A design for Unit 2 of the F90, reportedly incorporating a combat program based on Char Aznable. The Mars Independent Zeon Forces, also known as Oldsmobile, performed modifications of their own on the mobile suit after stealing it.\nWhile the defining features of the F90 are its exceptional expandability, refitting mechanisms, and the various mission packs that leveraged them, Oldsmobile lacked such packs. Instead, they undertook modifications to improve its standalone performance and ease of maintenance.\nIn addition to performance upgrades, compatibility with existing maintenance parts and surplus components were also taken into account, leading to such alterations as enlarged sensors, added apogee motors, and new spike armor on the left shoulder. Ultimately, 80% of its exterior was replaced.\nWith a frame that leaves power tubing exposed and a predominantly white-and-red color scheme, its design strongly evokes Zeon mobile suit aesthetics despite being a Gundam type.\nIt was piloted by Bosch, an EFF lieutenant and Oldsmobile spy, who recorded victories over Sid Amber's Geara Doga Custom and Eric's Jegan.\nThe mobile suit was eventually destroyed in an engagement with the F90 piloted by Def Stallion. It was subsequently recovered by the EFF."
+  },
+  {
+    "id": 110200001157000200,
+    "value": "A prototype mobile suit developed in parallel with the Vigna-Ghina.\nHaving obtained information on the S.N.R.I.'s F (Formula) Project through Anaheim, the Crossbone Vanguard equipped it with the VSBR that they developed independently."
+  },
+  {
+    "id": 110200001157000201,
+    "value": "-"
+  },
+  {
+    "id": 110200001157000202,
+    "value": "-"
+  },
+  {
+    "id": 110200001159000100,
+    "value": "The personal machine of Major Charles Rochester, an Oldsmobile ace pilot.\nThis special mobile suit was developed with the Crossbone Vanguard's latest technology."
+  },
+  {
+    "id": 110200001159000200,
+    "value": "A mass-produced mobile suit of the Mars Independent Zeon Forces.\nIt is a refined variant of the Zaku II, the main mobile suit of the old Zeon forces.\nWhile the exterior remains virtually identical to its predecessor, the interior has undergone a total refinement, resulting in performance that surpasses the Geara Doga.\nTo compensate for its lack of firepower, it is additionally equipped with the Sea Snake, an electric-shock weapon designed for anti-mobile suit combat.\nAs the main mobile suit of the Mars Independent Zeon Forces, numerous units thereof were deployed in the operation to capture the prototype Gundams and the combat that broke out on Mars."
+  },
+  {
+    "id": 110200001159000300,
+    "value": "A mass-produced mobile suit of the Mars Independent Zeon Forces.\nIt is a refined variant of the Dom, a heavy mobile suit of the old Zeon forces, developed for space combat.\nCompared to its predecessor, it features reinforced armor and a loadout that has been entirely swapped with beam weapons. Additionally, twin diffuse mega particle cannons were installed in the chest.\nDespite boasting high performance, it was only produced in small numbers."
+  },
+  {
+    "id": 110200001159000400,
+    "value": "A mass-produced mobile suit of the Mars Independent Zeon Forces.\nIt is a refined variant of the Gouf, a ground-combat mobile suit of the old Zeon forces.\nThe tip of the heat rod, its main weapon, has been fitted with a beam weapon, boosting firepower.\nIt also shares units with the RF Zaku, ensuring compatible parts between the two.\nWith low production numbers, it was mainly operated by ace pilots."
+  },
+  {
+    "id": 110200001159000500,
+    "value": "A mass-produced mobile suit of the Mars Independent Zeon Forces.\nIt is a refined variant of the Z'Gok, an amphibious mobile suit of the former Zeon forces, mainly developed to enhance combat capability on land.\nBoth arms have been refitted with heat claws, and its mobility on land has been improved.\nIt was also equipped with hydrojets, enabling operational endurance underwater that rivals a submarine."
+  },
+  {
+    "id": 110200001159000600,
+    "value": "A mass-produced mobile suit of the Mars Independent Zeon Forces.\nIt is a refined variant of the Gyan, a prototype mobile suit of the old Zeon forces, developed with an emphasis on close-combat capability.\nAlthough it boasts high performance within the RF series, its high cost limited production to a small number for senior officers and ace pilots."
+  },
+  {
+    "id": 110200001159000700,
+    "value": "A mass-produced mobile suit of the Mars Independent Zeon Forces.\nIt is a refined variant of the Gelgoog, a mobile suit of the old Zeon forces.\nDeveloped with a focus on high mobility, it is capable of fighting on equal terms with the Federation's state-of-the-art mobile suits.\nWhile it boasts the highest performance within the RF series, its costs were proportionally high, and its production numbers were low.\nConsequently, it was only piloted by a small number of senior officers.\nIts parts are compatible with the RF Dom."
+  },
+  {
+    "id": 110200001159000800,
+    "value": "A mass-produced mobile armor of the Mars Independent Zeon Forces.\nIt is a refined variant of the Adzam, a mobile armor of the old Zeon forces, modified for space combat.\nResponsible for interception missions in Mars orbit, it possesses sufficient thrust of its own for atmospheric escape.\nArmed with mega particle canons and multi-warhead missiles, and further equipped with a beam-disrupting–⁠screen generator, it mainly demonstrates its effectiveness in anti-ship combat.\nFour units were deployed to intercept the Federation fleet when combat broke out on Mars. While they recorded numerous victories, all four were ultimately destroyed."
+  },
+  {
+    "id": 110200001159000900,
+    "value": "A mass-produced mobile suit of the Mars Independent Zeon Forces.\nAs an RF Dom Ground Type, it is a localized machine developed with an emphasis on desert combat.\nWith improvements to the power transmission system to concentrate output directly into the legs, it possesses enhanced hovering capability."
+  },
+  {
+    "id": 110200001159001000,
+    "value": "A mass-produced mobile armor of the Mars Independent Zeon Forces.\nBased on the Big Zam, a heavy mobile armor of the old Zeon forces, it was redesigned for ground combat.\nAs the trump card for the Earth invasion operation, it demonstrates high mobility by hovering.\nIt is also equipped with a large mega particle cannon, granting it formidable firepower.\nDevelopment stalled, however, and the Mars Independent Zeon Forces were defeated before it could be completed."
+  },
+  {
+    "id": 110200001162000100,
+    "value": "A mobile suit developed by S.N.R.I. (Strategic Naval Research Institute), which specializes in mobile suit miniaturization. It has \"achieved the maximum performance mobile suits are capable of at the present point in time (U.C. 0123).\"\nIts entire structure, from basic frame to armor, is densely packed, and its Biosensor measures pilot skill, enabling it to fully demonstrate its capabilities."
+  },
+  {
     "id": 110200001162000150,
-    "value": "A mobile suit developed by S.N.R.I.(Strategic Naval Research Institute), which specializes in mobile suit miniaturization.\nIt has \"achieved the maximum performance mobile suits are capable of at the present point in time (U.C.0123).\"\nIts entire structure, from basic frame to armor, is densely packed, and its Biosensor measures pilot skill, enabling it to fully demonstrate its capabilities."
+    "value": "A mobile suit developed by S.N.R.I. (Strategic Naval Research Institute), which specializes in mobile suit miniaturization. It has \"achieved the maximum performance mobile suits are capable of at the present point in time (U.C. 0123).\"\nIts entire structure, from basic frame to armor, is densely packed, and its Biosensor measures pilot skill, enabling it to fully demonstrate its capabilities."
+  },
+  {
+    "id": 110200001162000300,
+    "value": "A high-ranking officer MS developed by the Crossbone Vanguard.\nIt stands apart from the Den'an and Berga series MS, demonstrating excellent mobility thanks to its improved Fin Nozzles.\nBerah Ronah (a.k.a. Cecily Fairchild) was assigned as its pilot."
+  },
+  {
+    "id": 110200001162000400,
+    "value": "A melee-type mobile suit for commanders of the Crossbone Vanguard.\nIts shelf nozzles deliver overwhelming mobility and maneuverability, enabling advanced anti-mobile suit combat.\nSince it was designed for combat inside colonies, its main weapon is a shot lancer."
+  },
+  {
+    "id": 110200001162000500,
+    "value": "A mobile suit developed by Anaheim Electronics Co. at the request of the EFF upon adopting the Formula Project, a small mobile suit development plan proposed by the S.N.R.I. (Strategic Naval Research Institute).\nServing as the successor to the Jegan type, it was the EFF's first mass-produced small mobile suit.\nAs cost reduction in development and production was the main goal, the generator is equivalent to the one in the Jegan type; however, through miniaturization without sacrificing existing mobile suit performance, the full weight was cut to less than half while boosting output by approximately 20%, resulting in mobility and maneuverability surpassing those of the Jegan type.\nIn the early U.C. 100s, with no major opposing factions remaining and reduced development and production costs, it was formally adopted to serve as an interim mobile suit until next-generation machines could be developed.\nAlthough it would eventually be outclassed by the rise of small mobile suits among the machines developed by the S.N.R.I. and Crossbone Vanguard, it reportedly remained in active service as a mobile suit for defense in remote regions where the latest machines could not be deployed."
+  },
+  {
+    "id": 110200001162000600,
+    "value": "A mass-produced mobile suit incorporating the concept of the F90 (S Type), it continues the legacy of the One Year War–era Guncannon series.\nOriginally, it was designed by the S.N.R.I. (Strategic Naval Research Institute) as a prototype for mass-producing the F90 (S Type); however, Anaheim Electronics Co. redesigned it to utilize their existing generators, thrusters, and other units.\nAs a result, they achieved greater ease in production by ensuring compatibility with the Heavygun, including maintenance parts.\nRestricting its functions to those of a specialized support machine reduced its weight and transmission loss, distinguishing it from conventional mass-produced mobile suits in terms of performance, particularly the thrust-to-weight ratio—it even surpasses the Heavygun in certain functions. In these ways and more, Anaheim successfully improved its standalone performance.\nConsequently, it can respond to situations flexibly, beyond providing support, reportedly operating at times without the quadruple machine cannons on its shoulders, for improved mobility and maneuverability."
+  },
+  {
+    "id": 110200001162000800,
+    "value": "A small mobile suit developed early in the Crossbone Vanguard's history as its main mass-produced machine.\nMeitza Ronah, honoring the will of his father—the founder of the vast Buch Konzern—espoused the ideology of Cosmo aristocratism and sought to found Cosmo Babylonia. To that end, he organized the Crossbone Vanguard in secret as its military arm and launched an invasion of the newly established Frontier Side to use it as a base.\nThis machine employs armor material with strength and weight comparable to Gundarium alloy, features high-performance goggle-type dual-eye sensors, and achieves excellent mobility through frame miniaturization and multiple auxiliary thrusters. The surplus energy provided by its next-generation generator even makes a beam shield practical.\nIts loadout includes a weapon called the shot lancer, which fires the tip of the lancer with an explosive charge, making it a melee-type mobile suit that leverages its mobility. While the base model of the Den'an series, it is regarded as a forerunner of the second-generation mobile suits, demonstrating a tremendous performance advantage over the EFF's main mobile suits of the same era."
+  },
+  {
+    "id": 110200001162000900,
+    "value": "A mass-produced combat-type mobile suit of the Crossbone Vanguard.\nOne of the Den'an series, it was developed with hit-and-run tactics that leverage its mobility.\nIt is equipped with a beam rifle as its main weapon, but its loadout does not include a shot lancer.\nWith its well-balanced performance, it became one of the Crossbone forces' main mobile suits during the Babylonia Founding War."
+  },
+  {
+    "id": 110200001162001000,
+    "value": "A small, high-performance combat-type mobile suit developed by the Crossbone Vanguard.\nWhereas the Den'an-Zon was mainly designed in consideration of close-range combat, its loadout was chosen for mid-range support, bombardment, and mid-air combat.\nThe all-black color scheme of these mobile suits earned the Black Vanguard its name."
+  },
+  {
+    "id": 110200001162001200,
+    "value": "A combat-type mobile suit of the Crossbone Vanguard.\nA higher-performance variant of the Berga-Dalas, it boasts enhanced versatility. Like its predecessor, it was developed for commander use.\nWith enhanced thrust and sensors, its overall performance surpasses that of the Berga-Dalas.\nMachine guns were also added inside the shot lancer, while the lancer itself became detachable."
+  },
+  {
+    "id": 110200001162001300,
+    "value": "A higher-performance Berga-series mobile suit designed for commander use after the Dessa Type, a prototype small mobile suit of the Crossbone Vanguard.\nThe predecessor of the Berga series was a melee-type mobile suit that featured shelf nozzles—movable thrusters developed by externalizing the generator and functioning as an AMBAC system—to achieve mobility surpassing that of the Den'an series. Its loadout included an upgraded version of the shot lancer used in the Den'an series.\nAs a melee-type for commander use, this machine improves versatility by making the shot lancer detachable from the manipulator, increasing the number of upgraded shelf nozzles, removing redundant apogee motors, and altering the shape of the attitude-control verniers. These changes improve the thrust-to-weight ratio and boost mobility and maneuverability; however, the machine demands proficient piloting skills to exploit its full potential.\nIt was operated as the commander-type mobile suit of the Black Vanguard, the Crossbone Vanguard's elite squadron, with Zabine Chareux as its pilot."
+  },
+  {
+    "id": 110200001162001400,
+    "value": "A commander-use reconnaissance-type mobile suit of the Crossbone Vanguard.\nThe Crossbone Vanguard develops its mobile suits according to its strategic planning, and its machines can be broadly divided into three categories: melee-type, combat-type, and reconnaissance-type.\nRather than being confined to the role of a reconnaissance-type, this machine is capable of conducting operations involving combat. Based on a commander-spec frame design distinguished from standard Den'an-series mobile suits in terms of weapon output and thrust, it also features a commander-type generator, achieving high thrust and higher weapon output.\nLong-range sensors and a newly developed Doppler radar are mounted across the frame, granting it a search range equivalent to five or six Den'an-series mobile suits, and it possesses the processing power to analyze the data it collects.\nDespite being classified as a reconnaissance-type, its loadout boasts considerable combat capability, from a range of weapons suited for carrying out combat missions to the high-firepower triple diffuse beam cannon in the abdomen."
+  },
+  {
+    "id": 110200001162001500,
+    "value": "A commander-use reconnaissance-type mobile suit of the Crossbone Vanguard.\nPrimarily developed for reconnaissance and patrol, its loadout does not include a beam shield, as such equipment would interfere with its numerous sensors."
+  },
+  {
+    "id": 110200001162001600,
+    "value": "A prototype mobile armor of the Crossbone Vanguard.\nA giant mobile armor designed for Cyber-Newtype use, it was developed to carry out the Rafflesia Project—the brainchild of Carozzo Ronah, the supreme commander of the Crossbone forces.\nIt features a novel Psycommu system, enabling the pilot to fully control the machine by thought.\nEach of the five leaf units houses twenty-five offensive tendrils called tentacler rods, and the mobile armor is further armed with an array of beam cannons.\nIt could even generate an I-Field barrier, making it the most powerful mobile weapon of its era.\nIn the battle that unfolded at Frontier Side, it demonstrated enough destructive power to annihilate an entire Federation Forces fleet on its own, but was subsequently destroyed by the Gundam F91.\nIts pilot was Carozzo Ronah."
+  },
+  {
+    "id": 110200001162001700,
+    "value": "-"
+  },
+  {
+    "id": 110200001162001800,
+    "value": "-"
+  },
+  {
+    "id": 110200001162001900,
+    "value": "A mobile suit restored from a machine reportedly prototyped as part of the Formula Project, which aimed to miniaturize mobile suits.\nEven after the U.C. 100s, certain senior officials within the EFF continued to advocate for the effectiveness of the Guntank's long-range bombardment specialization. One of the models in the F5 series conceptualized as an AFV-type mobile suit with a fusion reactor and tank-form deformation mechanism is considered to be this machine's prototype.\nCombining the functions of the G-Bull and a transformable mobile suit, it was intended for long-range bombardment; however, miniaturization compromised its performance, and it was ultimately abandoned after failing to receive formal adoption. It was then privately acquired by Roy Jung, a former commodore in the EFF, who refurbished various sections while preserving the weapons and ammunition in preparation for emergencies.\nDuring the Crossbone Vanguard invasion, he attempted to sortie in this display piece from the war museum he ran, but as little more than a military enthusiast, he was unable to contribute to the resistance.\nIt should be noted that the mobile suit's designation and model number, forty-four, are not standard and simply reflect the age of the owner at the time he acquired it."
+  },
+  {
+    "id": 110200001162002000,
+    "value": "A mass-produced reconnaissance mobile suit of the Crossbone Vanguard.\nDeveloped for reconnaissance, it was the smallest mobile suit among the Crossbone forces.\nA remote-guided recon pod is mounted on the right shoulder, which it launches to carry out reconnaissance.\nIts loadout also includes weapons such as a shot claw and spray gun, enabling it to engage in limited combat."
+  },
+  {
+    "id": 110200001163000150,
+    "value": "Features a new backpack with two additional VSBRs.\nIn total, it comes equipped with four VSBRs.\nThese improved VSBRs are fitted with auxiliary thrusters, providing an additional boost to thrust."
+  },
+  {
+    "id": 110200001163000200,
+    "value": "A commander-type mobile suit of the Crossbone Vanguard.\nIt is a heavily armed variant that swaps the shelf nozzles with ASATs (anti-satellite weapons) and features anti-vessel missiles mounted on the legs."
   },
   {
     "id": 110200001166000250,
@@ -9161,7 +9513,7 @@
   },
   {
     "id": 110200001300000870,
-    "value": "-"
+    "value": "One of the GAT-X series Mobile Suits, the Duel Gundam was a joint development between the Atlantic Federation and Morgenroete, Inc. in the fight against the ZAFT's Mobile Suits.\nThe GAT-X series is loaded with the latest in experimental Beam Weapon tech to offer performance that puts the ZAFT's mass-produced varieties to shame.\nSpecial Phase Shift Armor offers near-total immunity to physical damage while active but shifts down once the battery's energy runs out, deactivating and returning the armor to its original gray color.\nA standard suit designed with flexibility in mind, it elects to keep its weapons simple with Beam Sabers and Beam Rifles.\nBeing the nearest of the GAT-X series to completion, it was used as a base model for later suits."
   },
   {
     "id": 110200001300000900,
@@ -10197,7 +10549,7 @@
   },
   {
     "id": 110200001370009220,
-    "value": "-"
+    "value": "The Seraphim Gundam when using the Seravee Gundam's GNHW/B (GN Heavy Weapon/Beam) weapons loadout.\nThe Seravee Gundam's additional equipment like the GN Verniers and hip GN Cannons are connected to the Seraphim Gundam in backpack mode, allowing the Seraphim Gundam to use them even when separated."
   },
   {
     "id": 110200001370009300,
@@ -11782,6 +12134,14 @@
   {
     "id": 110200002144000100,
     "value": "A Clop-class space cruiser that was the Shezarr Team's mothership during Operation Phoenix Hunt.\nIts expanded hangar bay sets it apart from other ships in the same class, featuring an auxiliary lower hangar and an enlarged upper hangar.\nAbayev served as its captain."
+  },
+  {
+    "id": 110200002162000100,
+    "value": "A training ship converted from the worn-out Clop-class.\nWhile some sections, such as engineering, were scaled back, the basic structure remains unchanged, including the combat bridge.\nThe bow has been fitted with a catapult, behind which lies a mobile suit deck.\nIt was caught up in a Crossbone Vanguard attack while conducting crew training near Frontier Side."
+  },
+  {
+    "id": 110200002162000200,
+    "value": "-"
   },
   {
     "id": 110200002200000100,
@@ -14336,12 +14696,192 @@
     "value": "Damaged Alyzeus"
   },
   {
+    "id": 110300001154000100,
+    "value": "F80 Gunraid"
+  },
+  {
+    "id": 110300001155000100,
+    "value": "Gundam F90"
+  },
+  {
     "id": 110300001155000110,
     "value": "Gundam F90"
   },
   {
+    "id": 110300001155000150,
+    "value": "Gundam F90"
+  },
+  {
+    "id": 110300001155000200,
+    "value": "Gundam F90 A.D.S. Type"
+  },
+  {
+    "id": 110300001155000250,
+    "value": "Gundam F90 A.D.S. Type (EX)"
+  },
+  {
+    "id": 110300001155000300,
+    "value": "Gundam F90 Ⅱ"
+  },
+  {
+    "id": 110300001155000400,
+    "value": "Gundam F90 Ⅱ L Type"
+  },
+  {
+    "id": 110300001155000500,
+    "value": "Gundam F90 Ⅱ I Type"
+  },
+  {
+    "id": 110300001155000610,
+    "value": "Gundam F90 Unit 2"
+  },
+  {
+    "id": 110300001155000700,
+    "value": "Gundam F90 (Mars Independent Zeon Forces)"
+  },
+  {
+    "id": 110300001157000200,
+    "value": "Vigna-Zirah (Gundam Type)"
+  },
+  {
+    "id": 110300001157000201,
+    "value": "Vigna-Zirah (Gundam Type)"
+  },
+  {
+    "id": 110300001157000202,
+    "value": "Vigna-Zirah (Gundam Type)"
+  },
+  {
+    "id": 110300001159000110,
+    "value": "RF Gelgoog (Charles Rochester)"
+  },
+  {
+    "id": 110300001159000200,
+    "value": "RF Zaku"
+  },
+  {
+    "id": 110300001159000300,
+    "value": "RF Dom"
+  },
+  {
+    "id": 110300001159000400,
+    "value": "RF Gouf"
+  },
+  {
+    "id": 110300001159000500,
+    "value": "RF Z'Gok"
+  },
+  {
+    "id": 110300001159000600,
+    "value": "RF Gyan"
+  },
+  {
+    "id": 110300001159000700,
+    "value": "RF Gelgoog"
+  },
+  {
+    "id": 110300001159000800,
+    "value": "RF Adzam"
+  },
+  {
+    "id": 110300001159000900,
+    "value": "RF Desert Dom"
+  },
+  {
+    "id": 110300001159001000,
+    "value": "Grand Zam"
+  },
+  {
+    "id": 110300001162000100,
+    "value": "Gundam F91"
+  },
+  {
     "id": 110300001162000150,
     "value": "Gundam F91 (EX)"
+  },
+  {
+    "id": 110300001162000300,
+    "value": "Vigna-Ghina"
+  },
+  {
+    "id": 110300001162000400,
+    "value": "Berga-Dalas"
+  },
+  {
+    "id": 110300001162000500,
+    "value": "Heavygun"
+  },
+  {
+    "id": 110300001162000600,
+    "value": "G-Cannon"
+  },
+  {
+    "id": 110300001162000800,
+    "value": "Den'an-Zon"
+  },
+  {
+    "id": 110300001162000900,
+    "value": "Den'an-Gei"
+  },
+  {
+    "id": 110300001162001000,
+    "value": "Den'an-Gei (Black Vanguard)"
+  },
+  {
+    "id": 110300001162001010,
+    "value": "Den'an-Gei (Black Vanguard)"
+  },
+  {
+    "id": 110300001162001200,
+    "value": "Berga-Giros"
+  },
+  {
+    "id": 110300001162001300,
+    "value": "Berga-Giros (Black Vanguard)"
+  },
+  {
+    "id": 110300001162001310,
+    "value": "Berga-Giros (Black Vanguard)"
+  },
+  {
+    "id": 110300001162001400,
+    "value": "Dahgi-Iris"
+  },
+  {
+    "id": 110300001162001500,
+    "value": "Dahgi-Iris (Earth Federation Forces)"
+  },
+  {
+    "id": 110300001162001510,
+    "value": "Dahgi-Iris (Earth Federation Forces)"
+  },
+  {
+    "id": 110300001162001600,
+    "value": "Rafflesia"
+  },
+  {
+    "id": 110300001162001700,
+    "value": "Bug"
+  },
+  {
+    "id": 110300001162001800,
+    "value": "Bug"
+  },
+  {
+    "id": 110300001162001900,
+    "value": "Guntank R44"
+  },
+  {
+    "id": 110300001162002000,
+    "value": "Ebirhu-S"
+  },
+  {
+    "id": 110300001163000150,
+    "value": "Gundam F91 (Twin VSBR) (EX)"
+  },
+  {
+    "id": 110300001163000200,
+    "value": "Berga-Giros (Enhanced Armament Type)"
   },
   {
     "id": 110300001166000250,
@@ -18188,6 +18728,14 @@
     "value": "Damascus"
   },
   {
+    "id": 110300002162000100,
+    "value": "Space Ark"
+  },
+  {
+    "id": 110300002162000200,
+    "value": "Zamouth Garr"
+  },
+  {
     "id": 110300002200000100,
     "value": "Gorby II"
   },
@@ -20740,12 +21288,192 @@
     "value": "Damaged Alyzeus"
   },
   {
+    "id": 110400001154000100,
+    "value": "F80 Gunraid"
+  },
+  {
+    "id": 110400001155000100,
+    "value": "Gundam F90"
+  },
+  {
     "id": 110400001155000110,
     "value": "Gundam F90"
   },
   {
+    "id": 110400001155000150,
+    "value": "Gundam F90"
+  },
+  {
+    "id": 110400001155000200,
+    "value": "Gundam F90 A.D.S. Type"
+  },
+  {
+    "id": 110400001155000250,
+    "value": "Gundam F90 A.D.S. Type (EX)"
+  },
+  {
+    "id": 110400001155000300,
+    "value": "Gundam F90 II"
+  },
+  {
+    "id": 110400001155000400,
+    "value": "Gundam F90 II L Type"
+  },
+  {
+    "id": 110400001155000500,
+    "value": "Gundam F90 II I Type"
+  },
+  {
+    "id": 110400001155000610,
+    "value": "Gundam F90 Unit 2"
+  },
+  {
+    "id": 110400001155000700,
+    "value": "Gundam F90 (Mars Independent Zeon Forces)"
+  },
+  {
+    "id": 110400001157000200,
+    "value": "Vigna-Zirah (Gundam Type)"
+  },
+  {
+    "id": 110400001157000201,
+    "value": "Vigna-Zirah (Gundam Type)"
+  },
+  {
+    "id": 110400001157000202,
+    "value": "Vigna-Zirah (Gundam Type)"
+  },
+  {
+    "id": 110400001159000110,
+    "value": "RF Gelgoog (Charles Rochester)"
+  },
+  {
+    "id": 110400001159000200,
+    "value": "RF Zaku"
+  },
+  {
+    "id": 110400001159000300,
+    "value": "RF Dom"
+  },
+  {
+    "id": 110400001159000400,
+    "value": "RF Gouf"
+  },
+  {
+    "id": 110400001159000500,
+    "value": "RF Z'Gok"
+  },
+  {
+    "id": 110400001159000600,
+    "value": "RF Gyan"
+  },
+  {
+    "id": 110400001159000700,
+    "value": "RF Gelgoog"
+  },
+  {
+    "id": 110400001159000800,
+    "value": "RF Adzam"
+  },
+  {
+    "id": 110400001159000900,
+    "value": "RF Desert Dom"
+  },
+  {
+    "id": 110400001159001000,
+    "value": "Grand Zam"
+  },
+  {
+    "id": 110400001162000100,
+    "value": "Gundam F91"
+  },
+  {
     "id": 110400001162000150,
     "value": "Gundam F91 (EX)"
+  },
+  {
+    "id": 110400001162000300,
+    "value": "Vigna-Ghina"
+  },
+  {
+    "id": 110400001162000400,
+    "value": "Berga-Dalas"
+  },
+  {
+    "id": 110400001162000500,
+    "value": "Heavygun"
+  },
+  {
+    "id": 110400001162000600,
+    "value": "G-Cannon"
+  },
+  {
+    "id": 110400001162000800,
+    "value": "Den'an-Zon"
+  },
+  {
+    "id": 110400001162000900,
+    "value": "Den'an-Gei"
+  },
+  {
+    "id": 110400001162001000,
+    "value": "Den'an-Gei (Black Vanguard)"
+  },
+  {
+    "id": 110400001162001010,
+    "value": "Den'an-Gei (Black Vanguard)"
+  },
+  {
+    "id": 110400001162001200,
+    "value": "Berga-Giros"
+  },
+  {
+    "id": 110400001162001300,
+    "value": "Berga-Giros (Black Vanguard)"
+  },
+  {
+    "id": 110400001162001310,
+    "value": "Berga-Giros (Black Vanguard)"
+  },
+  {
+    "id": 110400001162001400,
+    "value": "Dahgi-Iris"
+  },
+  {
+    "id": 110400001162001500,
+    "value": "Dahgi-Iris (Earth Federation Forces)"
+  },
+  {
+    "id": 110400001162001510,
+    "value": "Dahgi-Iris (Earth Federation Forces)"
+  },
+  {
+    "id": 110400001162001600,
+    "value": "Rafflesia"
+  },
+  {
+    "id": 110400001162001700,
+    "value": "Bug"
+  },
+  {
+    "id": 110400001162001800,
+    "value": "Bug"
+  },
+  {
+    "id": 110400001162001900,
+    "value": "Guntank R44"
+  },
+  {
+    "id": 110400001162002000,
+    "value": "Ebirhu-S"
+  },
+  {
+    "id": 110400001163000150,
+    "value": "Gundam F91 (Twin VSBR) (EX)"
+  },
+  {
+    "id": 110400001163000200,
+    "value": "Berga-Giros (Enhanced Armament Type)"
   },
   {
     "id": 110400001166000250,
@@ -24590,6 +25318,14 @@
   {
     "id": 110400002144000100,
     "value": "Damascus"
+  },
+  {
+    "id": 110400002162000100,
+    "value": "Space Ark"
+  },
+  {
+    "id": 110400002162000200,
+    "value": "Zamouth Garr"
   },
   {
     "id": 110400002200000100,

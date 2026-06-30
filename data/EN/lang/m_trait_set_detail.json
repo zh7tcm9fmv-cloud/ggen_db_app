@@ -1624,6 +1624,10 @@
     "value": "(Vigor conditions)  Beam Weapons Max Range Up LV 1"
   },
   {
+    "id": 140100000101020101,
+    "value": "(HP conditions) HP Restoration LV 1"
+  },
+  {
     "id": 140100000101020201,
     "value": "(HP conditions) HP Restoration LV 2"
   },
@@ -2076,8 +2080,36 @@
     "value": "(Cnd: Vigor) Increased MOV LV 1"
   },
   {
+    "id": 140100000101600100,
+    "value": "(Vigor conditions) Increased ATK & Critical Rate LV 1"
+  },
+  {
     "id": 140100000101600300,
     "value": "(Vigor conditions) Increased ATK & Critical Rate LV 3"
+  },
+  {
+    "id": 140100000101610200,
+    "value": "(HP conditions) Increased ATK & MOV LV 2"
+  },
+  {
+    "id": 140100000101620200,
+    "value": "Advantage: Mobile Suit Gundam F91 LV 2"
+  },
+  {
+    "id": 140100000101620300,
+    "value": "Advantage: Mobile Suit Gundam F91 LV 3"
+  },
+  {
+    "id": 140100000101620400,
+    "value": "Advantage: Mobile Suit Gundam F91 LV 4"
+  },
+  {
+    "id": 140100000101630101,
+    "value": "(Vigor conditions) Special Weapons Max Range Up LV 1"
+  },
+  {
+    "id": 140100000101640101,
+    "value": "(HP conditions) Increased MOV LV 1"
   },
   {
     "id": 140100000101650101,
@@ -5086,6 +5118,42 @@
   {
     "id": 140100000202670200,
     "value": "Affinity: Mobile Suit Gundam SEED DESTINY LV 2"
+  },
+  {
+    "id": 140100000202680100,
+    "value": "(Cnd. Series) Apply Increased ATK & DEF LV 1"
+  },
+  {
+    "id": 140100000202680103,
+    "value": "(Cnd. Series) Increased ATK LV 1"
+  },
+  {
+    "id": 140100000202680104,
+    "value": "(Cnd. Series) Increased DEF LV 1"
+  },
+  {
+    "id": 140100000202690100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000202700100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000202710101,
+    "value": "(Series conditions) Support Defense (Counter) LV 1"
+  },
+  {
+    "id": 140100000202720101,
+    "value": "(Series conditions) Support Attack / Counter Support LV 1"
+  },
+  {
+    "id": 140100000202730100,
+    "value": "Affinity: Mobile Suit Gundam F91 LV 1"
+  },
+  {
+    "id": 140100000202730200,
+    "value": "Affinity: Mobile Suit Gundam F91 LV 2"
   },
   {
     "id": 140100000202780100,
@@ -10324,12 +10392,72 @@
     "value": "Supplemental Space Parts SSR (Mobile Suit Gundam: Cross Dimension 0079)"
   },
   {
+    "id": 140100000406630100,
+    "value": "Heavyweight Defense Boost R (Mobile Suit Gundam F91)"
+  },
+  {
+    "id": 140100000406640101,
+    "value": "Add-On Armor R (Mobile Suit Gundam F91)"
+  },
+  {
+    "id": 140100000406650101,
+    "value": "Booster Parts R (Mobile Suit Gundam F91)"
+  },
+  {
+    "id": 140100000406660100,
+    "value": "Heavyweight Attack Boost R (Mobile Suit Gundam F91)"
+  },
+  {
+    "id": 140100000406670101,
+    "value": "Reinforced Armor R (Mobile Suit Gundam F91)"
+  },
+  {
+    "id": 140100000406680101,
+    "value": "Limiter OFF R (Mobile Suit Gundam F91)"
+  },
+  {
+    "id": 140100000406690101,
+    "value": "Booster Parts SR (Crossbone Vanguard)"
+  },
+  {
+    "id": 140100000406700101,
+    "value": "Reinforced Armor SR (Crossbone Vanguard)"
+  },
+  {
+    "id": 140100000406710101,
+    "value": "Limiter OFF SR (Crossbone Vanguard)"
+  },
+  {
+    "id": 140100000406720101,
+    "value": "Add-On Armor SR (Rearm)"
+  },
+  {
+    "id": 140100000406730101,
+    "value": "Booster Parts SR (Rearm)"
+  },
+  {
+    "id": 140100000406740101,
+    "value": "Limiter OFF SR (Rearm)"
+  },
+  {
     "id": 140100000406750101,
     "value": "Add-On Armor SR (Mobile Suit Gundam: Cross Dimension 0079)"
   },
   {
     "id": 140100000406760101,
     "value": "Limiter OFF SR (Mobile Suit Gundam: Cross Dimension 0079)"
+  },
+  {
+    "id": 140100000406770100,
+    "value": "Add-On Armor  SR (Fierce Enemy Assault)"
+  },
+  {
+    "id": 140100000406780100,
+    "value": "Limiter OFF  SSR (Fierce Enemy Assault)"
+  },
+  {
+    "id": 140100000406790101,
+    "value": "Limiter OFF  SSR (Mobile Suit Gundam F91)"
   },
   {
     "id": 140100000406800101,
@@ -11638,6 +11766,34 @@
   {
     "id": 140100000511270101,
     "value": "Advantage: Blu Duel Gundam"
+  },
+  {
+    "id": 140100000511280101,
+    "value": "(Range Condition) Damage Reduction"
+  },
+  {
+    "id": 140100000511290101,
+    "value": "(When performing bonus actions) Increased ATK"
+  },
+  {
+    "id": 140100000511300101,
+    "value": "(Battle conditions) Increased DEF"
+  },
+  {
+    "id": 140100000511310101,
+    "value": "(HP conditions) Increased MOV"
+  },
+  {
+    "id": 140100000511320101,
+    "value": "(HP conditions) Guaranteed Bonus Action"
+  },
+  {
+    "id": 140100000511330101,
+    "value": "(Range Condition) Increased ATK"
+  },
+  {
+    "id": 140100000511340101,
+    "value": "(Battle conditions) Reinforcements"
   },
   {
     "id": 140100000530010100,
@@ -13368,6 +13524,14 @@
     "value": "(Unit conditions) Damage Reduced"
   },
   {
+    "id": 140100000611990101,
+    "value": "(Defeat Conditions) Increased ATK"
+  },
+  {
+    "id": 140100000611990102,
+    "value": "(Defeat Conditions) Increased ATK"
+  },
+  {
     "id": 140100000612000101,
     "value": "You're no Newtype!"
   },
@@ -13388,6 +13552,22 @@
     "value": "You're just the warrior I knew you were!"
   },
   {
+    "id": 140100000612100101,
+    "value": "(Character conditions) Increased ATK"
+  },
+  {
+    "id": 140100000612110101,
+    "value": "Increased ATK"
+  },
+  {
+    "id": 140100000612120101,
+    "value": "(Character conditions)  Boost Range"
+  },
+  {
+    "id": 140100000612130101,
+    "value": "Boost Range"
+  },
+  {
     "id": 140100000612140101,
     "value": "Increased DEF"
   },
@@ -13398,6 +13578,14 @@
   {
     "id": 140100000612160101,
     "value": "(Character conditions) Increased DEF"
+  },
+  {
+    "id": 140100000612180101,
+    "value": "Increased ATK"
+  },
+  {
+    "id": 140100000612190101,
+    "value": "(Character conditions)  Increased ATK"
   },
   {
     "id": 140100000699000101,

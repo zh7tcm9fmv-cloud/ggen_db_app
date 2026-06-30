@@ -13,7 +13,7 @@
   },
   {
     "id": 100200001001000400,
-    "value": "A girl who became a refugee after Zeon's attack on SIDE 7, and escaped aboard the Federation Forces warship White Base.\nShe has worked as a medic and communications officer for the White Base ever since.\nShe is actually the daughter of Zeon Zum Deikun, the founder of the Republic of Zeon, and her real name is Artesia Som Deikun. Her brother is Zeon ace pilot Char Aznable, which adds further complications.\nShe is intellectual yet bold in her actions, and shows signs of Newtype ability. Because of this, she was chosen as the pilot for the Core Booster."
+    "value": "A girl who became a refugee after Zeon’s attack on Side 7, she escaped aboard the Federation Forces’ warship White Base and has worked as a medic and communications officer for the White Base ever since.\nShe is actually the daughter of Zeon Zum Deikun, the founder of the Republic of Zeon, and her real name is Artesia Som Deikun. Her brother is the Zeon ace pilot Char Aznable, also known as the \"Red Comet,\" which adds further complication.\nIntellectual yet bold in her actions, she shows signs of Newtype ability; because of this, she was chosen as the pilot for the Core Booster."
   },
   {
     "id": 100200001001000500,
@@ -660,8 +660,48 @@
     "value": "A test pilot for S.N.R.I.\nHe was enlisted in the Federation Forces to perform operational tests on the Gundam F90 and piloted Unit 1.\nHowever, he was attacked by the Mars Zeon Independence Army during a test flight, and he was assigned to the Federation fleet to take part in the retaliatory mission.\nOn Mars, he engaged with Unit 2 and defeated it, returning home in one piece."
   },
   {
+    "id": 100200001155000200,
+    "value": "A test pilot for S.N.R.I.\nHe has a cheerful, good-natured personality and is obsessed with mobile suits. He is also a close friend of Def.\nHe was enlisted in the Federation Forces to perform operational tests on the Gundam F90 and piloted Unit 2.\nHowever, the Mars Zeon Independence Army attacked him during a test flight and stole Unit 2.\nHe then joined the Federation Forces' suppression operation and took part in the ensuing combat on Mars.\nAlthough his mobile suit was destroyed in battle, he returned home in one piece."
+  },
+  {
+    "id": 100200001155000300,
+    "value": "A pilot for the Mars Zeon Independence Army.\nHe fought in the Second Neo Zeon War and served as commander for the Federation Forces' F90 test corps.\nHowever, he was secretly passing information to the Mars Zeon Independence Army, which led to their successful theft of a prototype.\nHe joined the 13th Independent Mobile Fleet and took part in the invasion of Mars, but led a group of like-minded comrades to mutiny during battle and seized the flagship Admiral Tianem.\nHe fired upon the Federation ships, inflicting heavy damage.\nHe then retreated to the Mars base and sortied in the F90 Unit 2, but was ultimately defeated and killed by Def in Unit 1."
+  },
+  {
+    "id": 100200001155000400,
+    "value": "An officer in the Federation Forces.\nDespite being an elite officer in the Tactical Intelligence Division, she has a friendly and cheerful disposition.\nShe was mainly responsible for collecting test data on the Gundam F90 series.\nHowever, after the Mars Zeon Independence Army attacked during a test flight, she joined the 13th Independent Mobile Fleet in the suppression operation on Mars.\nShe was captured during battle, but was later released and returned unharmed."
+  },
+  {
+    "id": 100200001159000100,
+    "value": "Appears in the game Formula Wars 0122.\nHe was a commander in the Oldsmobile Army during the Second Oldsmobile War.\nHe was twenty-five years old and held the rank of major.\nHe led the Charles Fleet in battle against Bergh Squelette's Gundam F90, piloting a custom Gelgoog in the final stage."
+  },
+  {
     "id": 100200001162000100,
-    "value": "A young man in the resistance.\nHe is the protagonist of Mobile Suit Gundam F91.\nHe was an ordinary high school student living on the newly established colony Frontier IV until the Crossbone Vanguard attacked and he escaped with his friends.\nAfterwards, he took refuge aboard the training ship Space Ark, the base of the resistance, and became the pilot of its prototype mobile suit Gundam F91."
+    "value": "A young man in the resistance.\nHe is the protagonist of Mobile Suit Gundam F91.\nHe was an ordinary high school student living on the newly established colony Frontier IV, until the Crossbone Vanguard attacked and he was forced to escape with his friends.\nAfterwards, he took refuge aboard the training ship Space Ark, the base of the resistance, and became the pilot of its prototype mobile suit Gundam F91."
+  },
+  {
+    "id": 100200001162000203,
+    "value": "She is a close friend of Seabook Arno and the step-daughter of a baker on Frontier IV.\nHer true identity is Berah Ronah, the granddaughter of Cosmo Babylonia's founder, Meitza Ronah.\nWhen the Crossbone Vanguard invaded Frontier Side, she tried to escape the colony with Seabook, but was captured by her step-father, Theo, and handed over to the Crossbone forces.\nShe became a reluctant symbol of Cosmo Babylonia until she was reunited with Seabook on the battlefield and joined the resistance.\nIn a later battle, her biological father, Carozzo Ronah, destroyed her mobile suit while piloting the Rafflesia and hurled her into space, but Seabook rescued her."
+  },
+  {
+    "id": 100200001162000300,
+    "value": "A mobile suit pilot for the Crossbone Vanguard.\nThe oldest son of Carozzo Ronah, with a different mother to his younger sister, Berah Ronah.\nDuring the assault on Frontier Side, he recovered Berah under the order of his grandfather, Meitza, after which he continued suppressing the area.\nHe can be something of a glory hound, sometimes even disobeying orders in his overeagerness—perhaps a manifestation of his youthful inexperience."
+  },
+  {
+    "id": 100200001162000500,
+    "value": "A mobile suit pilot for the Crossbone Vanguard.\nThough only a cadet, she was a highly capable pilot who served as the leader of a reconnaissance team.\nShe harbored feelings for Zabine Chareux, her commanding officer, but grew jealous over his efforts to win Berah Ronah's favor and defected to the resistance.\nShe later fought Zabine as part of the resistance, but was overpowered and killed in the battle."
+  },
+  {
+    "id": 100200001162000600,
+    "value": "The supreme commander of the Crossbone Vanguard.\nHe was a Cyber-Newtype and Cecily Fairchild's biological father.\nMost people knew him as Iron Mask.\nHe was the son-in-law of Cosmo Babylonia's founder, Meitza Ronah, and formed a private army, the Crossbone Vanguard, in order to realize his father-in-law's vision.\nAt the same time, he subjected himself to Cyber-Newtype experiments.\nHis enhancements were extraordinary, allowing him to function in space unprotected, pry open a mobile suit's hatch with his bare hands, and even operate a mobile armor with brainwaves.\nHowever, these enhancements warped his mind, and he secretly developed the weapons known as Bugs to wipe out most of humanity.\nIn the assault on Frontier Side, he tested the Bugs' capabilities and succeeded in destroying one colony.\nHe also piloted the Rafflesia and annihilated a Federation fleet.\nShortly afterward, however, he was killed by Seabook Arno's F91."
+  },
+  {
+    "id": 100200001162000800,
+    "value": "A Federation Forces mobile suit pilot.\nOriginally a cadet, he joined the resistance against the Crossbone Vanguard invasion and became a mobile suit pilot.\nAlthough prone to sarcasm, he has a gentle nature.\nHe piloted the Heavygun and fought alongside the F91, but was killed when a new Crossbone Vanguard weapon called a Bug destroyed his mobile suit."
+  },
+  {
+    "id": 100200001162000900,
+    "value": "A mobile suit pilot for the Crossbone Vanguard.\nHe commands the elite Black Vanguard and is an exceptionally capable pilot in his own right.\nHe has a chivalric disposition and loathes indiscriminate killing.\nHe enjoys the trust of the Crossbone Vanguard's top brass, even serving as Princess Berah Ronah's aide, but many despise him as an upstart."
   },
   {
     "id": 100200001166000100,
@@ -993,7 +1033,7 @@
   },
   {
     "id": 100200001330000201,
-    "value": "Pilot of the Freedom Gundam, reputed to be the most powerful Mobile Suit, in the last great war.\nThough he remains kindhearted, the toll of so many battles has turned him into a man of forceful conviction.\nLiving quietly with Lacus Clyne after the war, his life took a turn after she was saved from the jaws of death.\nHe vowed to stand against the coming chaos and find the road to peace along with his friends on the Archangel.\nThough his Freedom Gundam was shot down by Shinn Asuka's Impulse Gundam during the Alliance's Operation Angel down, he returned to the battlefield after receiving the Strike Freedom Gundam from Lacus. \nGilbert Dullindal's subsequent revelation of the \"Destiny Plan\" saw him join the decisive battle in space to prevent it from coming to fruition."
+    "value": "Pilot of the Freedom Gundam, reputed to be the most powerful Mobile Suit, in the last great war.\nThough he remains kindhearted, the toll of so many battles has turned him into a man of forceful conviction.\nLiving quietly with Lacus Clyne after the war, his life took a turn after she was saved from the jaws of death.\nHe vowed to stand against the coming chaos and find the road to peace along with his friends on the Archangel.\nThough his Freedom Gundam was shot down by Shinn Asuka's Impulse Gundam during ZAFT's Operation Angel Down, he returned to the battlefield after receiving the Strike Freedom Gundam from Lacus. \nGilbert Dullindal's subsequent revelation of the \"Destiny Plan\" saw him join the decisive battle in space to prevent it from coming to fruition."
   },
   {
     "id": 100200001330000401,

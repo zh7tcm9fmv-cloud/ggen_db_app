@@ -468,6 +468,10 @@
     "value": "HP Repair (Range) LV 5"
   },
   {
+    "id": 140500000360250301,
+    "value": "HP Repair Lite LV 3"
+  },
+  {
     "id": 140500000370260101,
     "value": "HP Repair (Range) LV 3"
   },
@@ -557,19 +561,19 @@
   },
   {
     "id": 140600000001600501,
-    "value": "During the next movement after activating the effect, increase MOV by 1."
+    "value": "During the next movement after activating the effect MOV +1 in all terrain."
   },
   {
     "id": 140600000001600502,
-    "value": "During the next movement after activating the effect, increase MOV by 2."
+    "value": "During the next movement after activating the effect MOV +2 in all terrain."
   },
   {
     "id": 140600000001600503,
-    "value": "During the next movement after activating the effect, increase MOV by 3."
+    "value": "During the next movement after activating the effect MOV +3 in all terrain."
   },
   {
     "id": 140600000001600504,
-    "value": "During the next movement after activating the effect, increase MOV by 4."
+    "value": "During the next movement after activating the effect MOV +4 in all terrain."
   },
   {
     "id": 140600000001600505,
@@ -946,6 +950,10 @@
   {
     "id": 140600000350240501,
     "value": "Allies in range:\nRestore HP by 30%"
+  },
+  {
+    "id": 140600000360250301,
+    "value": "Restore HP by 15%."
   },
   {
     "id": 140600000370260101,

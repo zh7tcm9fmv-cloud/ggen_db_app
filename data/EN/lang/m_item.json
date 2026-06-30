@@ -2060,12 +2060,152 @@
     "value": "SSR Alyzeus Limit Break Material"
   },
   {
+    "id": 150100171154000100,
+    "value": "SSR F80 Gunraid Limit Break Material"
+  },
+  {
+    "id": 150100171155000100,
+    "value": "SR Gundam F90 Limit Break Material"
+  },
+  {
     "id": 150100171155000110,
     "value": "SSR Gundam F90 Limit Break Material"
   },
   {
+    "id": 150100171155000200,
+    "value": "SSR Gundam F90 A.D.S. Type Limit Break Material"
+  },
+  {
+    "id": 150100171155000250,
+    "value": "UR Gundam F90 A.D.S. Type (EX) Limit Break Material"
+  },
+  {
+    "id": 150100171155000300,
+    "value": "SR Gundam F90 II Limit Break Material"
+  },
+  {
+    "id": 150100171155000500,
+    "value": "SSR Gundam F90 II I Type Limit Break Material"
+  },
+  {
+    "id": 150100171155000610,
+    "value": "SSR Gundam F90 Unit 2 Limit Break Material"
+  },
+  {
+    "id": 150100171155000700,
+    "value": "SSR Gundam F90 (Mars Independent Zeon Forces) Limit Break Material"
+  },
+  {
+    "id": 150100171159000110,
+    "value": "SSR RF Gelgoog (Charles Rochester) Limit Break Material"
+  },
+  {
+    "id": 150100171159000200,
+    "value": "N RF Zaku Limit Break Material"
+  },
+  {
+    "id": 150100171159000300,
+    "value": "R RF Dom Limit Break Material"
+  },
+  {
+    "id": 150100171159000400,
+    "value": "R RF Gouf Limit Break Material"
+  },
+  {
+    "id": 150100171159000500,
+    "value": "R RF Z'Gok Limit Break Material"
+  },
+  {
+    "id": 150100171159000600,
+    "value": "SR RF Gyan Limit Break Material"
+  },
+  {
+    "id": 150100171159000700,
+    "value": "SR RF Gelgoog Limit Break Material"
+  },
+  {
+    "id": 150100171159000800,
+    "value": "SR RF Adzam Limit Break Material"
+  },
+  {
+    "id": 150100171159000900,
+    "value": "R RF Desert Dom Limit Break Material"
+  },
+  {
+    "id": 150100171159001000,
+    "value": "SSR Grand Zam Limit Break Material"
+  },
+  {
+    "id": 150100171162000100,
+    "value": "SSR Gundam F91 Limit Break Material"
+  },
+  {
     "id": 150100171162000150,
     "value": "UR Gundam F91 (EX) Limit Break Material"
+  },
+  {
+    "id": 150100171162000300,
+    "value": "SR Vigna-Ghina Limit Break Material"
+  },
+  {
+    "id": 150100171162000400,
+    "value": "SR Berga-Dalas Limit Break Material"
+  },
+  {
+    "id": 150100171162000500,
+    "value": "R Heavygun Limit Break Material"
+  },
+  {
+    "id": 150100171162000600,
+    "value": "R G-Cannon Limit Break Material"
+  },
+  {
+    "id": 150100171162000800,
+    "value": "R Den'an-Zon Limit Break Material"
+  },
+  {
+    "id": 150100171162000900,
+    "value": "R Den'an-Gei Limit Break Material"
+  },
+  {
+    "id": 150100171162001010,
+    "value": "SR Den'an-Gei (Black Vanguard) Limit Break Material"
+  },
+  {
+    "id": 150100171162001200,
+    "value": "SR Berga-Giros Limit Break Material"
+  },
+  {
+    "id": 150100171162001310,
+    "value": "SSR Berga-Giros (Black Vanguard) Limit Break Material"
+  },
+  {
+    "id": 150100171162001400,
+    "value": "SR Dahgi-Iris Limit Break Material"
+  },
+  {
+    "id": 150100171162001510,
+    "value": "SSR Dahgi-Iris (Earth Federation Forces) Limit Break Material"
+  },
+  {
+    "id": 150100171162001600,
+    "value": "SSR Rafflesia Limit Break Material"
+  },
+  {
+    "id": 150100171162001900,
+    "value": "N Guntank R44 Limit Break Material"
+  },
+  {
+    "id": 150100171162002000,
+    "value": "N Ebirhu-S Limit Break Material"
+  },
+  {
+    "id": 150100171163000150,
+    "value": "UR Gundam F91 (Twin VSBR) (EX) Limit Break Material"
+  },
+  {
+    "id": 150100171163000200,
+    "value": "SSR Berga-Giros (Enhanced Armament Type) Limit Break Material"
   },
   {
     "id": 150100171166000250,
@@ -4860,6 +5000,10 @@
     "value": "Development Material (HATHAWAY)"
   },
   {
+    "id": 150100180000001620,
+    "value": "Development Material (F91)"
+  },
+  {
     "id": 150100180000002000,
     "value": "Development Material (G)"
   },
@@ -5126,6 +5270,30 @@
   {
     "id": 150100181150000200,
     "value": "Penelope Technical Journal"
+  },
+  {
+    "id": 150100181155000200,
+    "value": "Gundam F90 A.D.S. Type's Technical Journal"
+  },
+  {
+    "id": 150100181155000500,
+    "value": "Gundam F90 II I Type's Technical Journal"
+  },
+  {
+    "id": 150100181159001000,
+    "value": "Grand Zam's Technical Journal"
+  },
+  {
+    "id": 150100181162000100,
+    "value": "Gundam F91's Technical Journal"
+  },
+  {
+    "id": 150100181162001600,
+    "value": "Rafflesia's Technical Journal"
+  },
+  {
+    "id": 150100181163000200,
+    "value": "Berga-Giros (Enhanced Armament Type)'s Technical Journal"
   },
   {
     "id": 150100181200001100,
@@ -5568,6 +5736,10 @@
     "value": "[8 Million DLs] 1 SSR or Higher Unit Guaranteed Unit Assembly Ticket"
   },
   {
+    "id": 150100191300000007,
+    "value": "[9 Million DLs] 1 SSR or Higher Unit Guaranteed Unit Assembly Ticket"
+  },
+  {
     "id": 150100191400000001,
     "value": "UR Unit Guaranteed Unit Assembly Ticket"
   },
@@ -5602,6 +5774,10 @@
   {
     "id": 150100191400000009,
     "value": "1st Anniversary Unit Assembly Ticket (Up to 47 Free Pulls)"
+  },
+  {
+    "id": 150100191400000010,
+    "value": "[9 Million DLs] 1 UR Unit Guaranteed 5-Pull Unit Assembly Ticket"
   },
   {
     "id": 150100200000000001,
@@ -5826,6 +6002,10 @@
   {
     "id": 150100240000011500,
     "value": "Mobile Suit Gundam HATHAWAY Series SP Conversion Chips"
+  },
+  {
+    "id": 150100240000011620,
+    "value": "Mobile Suit Gundam F91 Series SP Conversion Chips"
   },
   {
     "id": 150100240000013000,
@@ -8024,12 +8204,152 @@
     "value": "An item used to perform Limit Break on SSR Alyzeus"
   },
   {
+    "id": 150200171154000100,
+    "value": "An item used to perform Limit Break on SSR F80 Gunraid"
+  },
+  {
+    "id": 150200171155000100,
+    "value": "An item used to perform Limit Break on SR Gundam F90"
+  },
+  {
     "id": 150200171155000110,
     "value": "An item used to perform Limit Break on SSR Gundam F90"
   },
   {
+    "id": 150200171155000200,
+    "value": "An item used to perform Limit Break on SSR Gundam F90 A.D.S. Type"
+  },
+  {
+    "id": 150200171155000250,
+    "value": "An item used to perform Limit Break on UR Gundam F90 A.D.S. Type (EX)"
+  },
+  {
+    "id": 150200171155000300,
+    "value": "An item used to perform Limit Break on SR Gundam F90 II"
+  },
+  {
+    "id": 150200171155000500,
+    "value": "An item used to perform Limit Break on SSR Gundam F90 II I Type"
+  },
+  {
+    "id": 150200171155000610,
+    "value": "An item used to perform Limit Break on SSR Gundam F90 Unit 2"
+  },
+  {
+    "id": 150200171155000700,
+    "value": "An item used to perform Limit Break on SSR Gundam F90 (Mars Independent Zeon Forces)"
+  },
+  {
+    "id": 150200171159000110,
+    "value": "An item used to perform Limit Break on SSR RF Gelgoog (Charles Rochester)"
+  },
+  {
+    "id": 150200171159000200,
+    "value": "An item used to perform Limit Break on N RF Zaku"
+  },
+  {
+    "id": 150200171159000300,
+    "value": "An item used to perform Limit Break on R RF Dom"
+  },
+  {
+    "id": 150200171159000400,
+    "value": "An item used to perform Limit Break on R RF Gouf"
+  },
+  {
+    "id": 150200171159000500,
+    "value": "An item used to perform Limit Break on R RF Z'Gok"
+  },
+  {
+    "id": 150200171159000600,
+    "value": "An item used to perform Limit Break on SR RF Gyan"
+  },
+  {
+    "id": 150200171159000700,
+    "value": "An item used to perform Limit Break on SR RF Gelgoog"
+  },
+  {
+    "id": 150200171159000800,
+    "value": "An item used to perform Limit Break on SR RF Adzam"
+  },
+  {
+    "id": 150200171159000900,
+    "value": "An item used to perform Limit Break on R RF Desert Dom"
+  },
+  {
+    "id": 150200171159001000,
+    "value": "An item used to perform Limit Break on SSR Grand Zam"
+  },
+  {
+    "id": 150200171162000100,
+    "value": "An item used to perform Limit Break on SSR Gundam F91"
+  },
+  {
     "id": 150200171162000150,
     "value": "An item used to perform Limit Break on UR Gundam F91 (EX)"
+  },
+  {
+    "id": 150200171162000300,
+    "value": "An item used to perform Limit Break on SR Vigna-Ghina"
+  },
+  {
+    "id": 150200171162000400,
+    "value": "An item used to perform Limit Break on SR Berga-Dalas"
+  },
+  {
+    "id": 150200171162000500,
+    "value": "An item used to perform Limit Break on R Heavygun"
+  },
+  {
+    "id": 150200171162000600,
+    "value": "An item used to perform Limit Break on R G-Cannon"
+  },
+  {
+    "id": 150200171162000800,
+    "value": "An item used to perform Limit Break on R Den'an-Zon"
+  },
+  {
+    "id": 150200171162000900,
+    "value": "An item used to perform Limit Break on R Den'an-Gei"
+  },
+  {
+    "id": 150200171162001010,
+    "value": "An item used to perform Limit Break on SR Den'an-Gei (Black Vanguard)"
+  },
+  {
+    "id": 150200171162001200,
+    "value": "An item used to perform Limit Break on SR Berga-Giros"
+  },
+  {
+    "id": 150200171162001310,
+    "value": "An item used to perform Limit Break on SSR Berga-Giros (Black Vanguard)"
+  },
+  {
+    "id": 150200171162001400,
+    "value": "An item used to perform Limit Break on SR Dahgi-Iris"
+  },
+  {
+    "id": 150200171162001510,
+    "value": "An item used to perform Limit Break on SSR Dahgi-Iris (Earth Federation Forces)"
+  },
+  {
+    "id": 150200171162001600,
+    "value": "An item used to perform Limit Break on SSR Rafflesia"
+  },
+  {
+    "id": 150200171162001900,
+    "value": "An item used to perform Limit Break on N Guntank R44"
+  },
+  {
+    "id": 150200171162002000,
+    "value": "An item used to perform Limit Break on N Ebirhu-S"
+  },
+  {
+    "id": 150200171163000150,
+    "value": "An item used to perform Limit Break on UR Gundam F91 (Twin VSBR) (EX)"
+  },
+  {
+    "id": 150200171163000200,
+    "value": "An item used to perform Limit Break on SSR Berga-Giros (Enhanced Armament Type)"
   },
   {
     "id": 150200171166000250,
@@ -10824,6 +11144,10 @@
     "value": "Material required for developing units that appear on the [Mobile Suit Gundam HATHAWAY] diagram."
   },
   {
+    "id": 150200180000001620,
+    "value": "Material required for developing units that appear on the [Mobile Suit Gundam F91] diagram."
+  },
+  {
     "id": 150200180000002000,
     "value": "Material required for developing units that appear on the [Mobile Fighter G Gundam] diagram."
   },
@@ -11090,6 +11414,30 @@
   {
     "id": 150200181150000200,
     "value": "Material required to develop Penelope appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181155000200,
+    "value": "Material required to develop Gundam F90 A.D.S. Type appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181155000500,
+    "value": "Material required to develop Gundam F90 II I Type appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181159001000,
+    "value": "Material required to develop Grand Zam appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181162000100,
+    "value": "Material required to develop Gundam F91 appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181162001600,
+    "value": "Material required to develop Rafflesia appearing in the Development Diagram."
+  },
+  {
+    "id": 150200181163000200,
+    "value": "Material required to develop Berga-Giros (Enhanced Armament Type) appearing in the Development Diagram."
   },
   {
     "id": 150200181200001100,
@@ -11532,6 +11880,10 @@
     "value": "A ticket that lets you use the [8 Million DLs] 1 SSR or Higher Unit Guaranteed Unit Assembly."
   },
   {
+    "id": 150200191300000007,
+    "value": "A ticket that lets you use the [9 Million DLs] 1 SSR or Higher Unit Guaranteed Unit Assembly."
+  },
+  {
     "id": 150200191400000001,
     "value": "A ticket that lets you use the UR Unit Guaranteed Unit Assembly."
   },
@@ -11566,6 +11918,10 @@
   {
     "id": 150200191400000009,
     "value": "A ticket that lets you use the 1st Anniversary Unit Assembly (Up to 47 Free Pulls)."
+  },
+  {
+    "id": 150200191400000010,
+    "value": "A ticket that lets you use the [9 Million DLs] 1 UR Unit Guaranteed 5-Pull Unit Assembly."
   },
   {
     "id": 150200200000000001,
@@ -11789,6 +12145,10 @@
   },
   {
     "id": 150200240000011500,
+    "value": "Usable on non-UR units from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
+    "id": 150200240000011620,
     "value": "Usable on non-UR units from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {

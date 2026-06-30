@@ -12,6 +12,14 @@
     "value": "Strike and Move"
   },
   {
+    "id": 141500116300015011,
+    "value": "Initial Damage Nullification"
+  },
+  {
+    "id": 141500116300015012,
+    "value": "Increased MOB LV 2"
+  },
+  {
     "id": 141500137000595011,
     "value": "Increased ATK"
   },
@@ -30,6 +38,14 @@
   {
     "id": 141600114400055012,
     "value": "Can move once more after attacking. (Excluding MAP Weapons.)"
+  },
+  {
+    "id": 141600116300015011,
+    "value": "Nullifies the first instance of damage taken."
+  },
+  {
+    "id": 141600116300015012,
+    "value": "Increase own MOB by 10% until the Initial Damage Nullification effect expires."
   },
   {
     "id": 141600137000595011,

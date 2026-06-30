@@ -1506,6 +1506,12 @@
     "PositionNumber": 5
   },
   {
+    "Id": 697101096,
+    "GroupFormationIdxId": 3564541783,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
     "Id": 698719793,
     "GroupFormationIdxId": 1413552796,
     "ForceNumber": 2,
@@ -1556,6 +1562,12 @@
   {
     "Id": 713496226,
     "GroupFormationIdxId": 3906355390,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 713878715,
+    "GroupFormationIdxId": 3564541783,
     "ForceNumber": 1,
     "PositionNumber": 5
   },
@@ -1704,6 +1716,12 @@
     "PositionNumber": 5
   },
   {
+    "Id": 760772992,
+    "GroupFormationIdxId": 4066347663,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
     "Id": 762465082,
     "GroupFormationIdxId": 4167599440,
     "ForceNumber": 1,
@@ -1746,10 +1764,22 @@
     "PositionNumber": 4
   },
   {
+    "Id": 777550611,
+    "GroupFormationIdxId": 4066347663,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
     "Id": 779242701,
     "GroupFormationIdxId": 4167599440,
     "ForceNumber": 1,
     "PositionNumber": 4
+  },
+  {
+    "Id": 780989191,
+    "GroupFormationIdxId": 3564541783,
+    "ForceNumber": 1,
+    "PositionNumber": 1
   },
   {
     "Id": 784154827,
@@ -1788,6 +1818,12 @@
     "PositionNumber": 3
   },
   {
+    "Id": 797766810,
+    "GroupFormationIdxId": 3564541783,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
     "Id": 801454161,
     "GroupFormationIdxId": 2817644434,
     "ForceNumber": 2,
@@ -1810,6 +1846,12 @@
     "GroupFormationIdxId": 1178028835,
     "ForceNumber": 1,
     "PositionNumber": 2
+  },
+  {
+    "Id": 814544429,
+    "GroupFormationIdxId": 3564541783,
+    "ForceNumber": 1,
+    "PositionNumber": 3
   },
   {
     "Id": 815357848,
@@ -1854,6 +1896,12 @@
     "PositionNumber": 1
   },
   {
+    "Id": 827883468,
+    "GroupFormationIdxId": 4066347663,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
     "Id": 832135467,
     "GroupFormationIdxId": 232856504,
     "ForceNumber": 2,
@@ -1890,6 +1938,12 @@
     "PositionNumber": 2
   },
   {
+    "Id": 861438706,
+    "GroupFormationIdxId": 4066347663,
+    "ForceNumber": 1,
+    "PositionNumber": 3
+  },
+  {
     "Id": 868042922,
     "GroupFormationIdxId": 564168246,
     "ForceNumber": 1,
@@ -1924,6 +1978,12 @@
     "GroupFormationIdxId": 1150876592,
     "ForceNumber": 1,
     "PositionNumber": 3
+  },
+  {
+    "Id": 878216325,
+    "GroupFormationIdxId": 4066347663,
+    "ForceNumber": 1,
+    "PositionNumber": 2
   },
   {
     "Id": 884820541,
@@ -2940,6 +3000,12 @@
     "PositionNumber": 1
   },
   {
+    "Id": 1425164856,
+    "GroupFormationIdxId": 3948800231,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
     "Id": 1428734105,
     "GroupFormationIdxId": 190121956,
     "ForceNumber": 2,
@@ -2974,6 +3040,12 @@
     "GroupFormationIdxId": 3821689842,
     "ForceNumber": 1,
     "PositionNumber": 4
+  },
+  {
+    "Id": 1441942475,
+    "GroupFormationIdxId": 3948800231,
+    "ForceNumber": 2,
+    "PositionNumber": 2
   },
   {
     "Id": 1442486152,
@@ -3016,6 +3088,12 @@
     "GroupFormationIdxId": 2545584958,
     "ForceNumber": 1,
     "PositionNumber": 5
+  },
+  {
+    "Id": 1458720094,
+    "GroupFormationIdxId": 3948800231,
+    "ForceNumber": 2,
+    "PositionNumber": 1
   },
   {
     "Id": 1459263771,
@@ -3144,6 +3222,12 @@
     "PositionNumber": 1
   },
   {
+    "Id": 1525830570,
+    "GroupFormationIdxId": 3948800231,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
     "Id": 1526374247,
     "GroupFormationIdxId": 1908856156,
     "ForceNumber": 2,
@@ -3172,6 +3256,12 @@
     "GroupFormationIdxId": 4026467887,
     "ForceNumber": 1,
     "PositionNumber": 2
+  },
+  {
+    "Id": 1542608189,
+    "GroupFormationIdxId": 3948800231,
+    "ForceNumber": 2,
+    "PositionNumber": 4
   },
   {
     "Id": 1543151866,
@@ -4704,6 +4794,12 @@
     "PositionNumber": 1
   },
   {
+    "Id": 2306474339,
+    "GroupFormationIdxId": 3948800231,
+    "ForceNumber": 1,
+    "PositionNumber": 1
+  },
+  {
     "Id": 2307129754,
     "GroupFormationIdxId": 285571663,
     "ForceNumber": 1,
@@ -4764,6 +4860,12 @@
     "PositionNumber": 5
   },
   {
+    "Id": 2323251958,
+    "GroupFormationIdxId": 3948800231,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
     "Id": 2325727732,
     "GroupFormationIdxId": 1634855149,
     "ForceNumber": 2,
@@ -4798,6 +4900,12 @@
     "GroupFormationIdxId": 336278238,
     "ForceNumber": 2,
     "PositionNumber": 1
+  },
+  {
+    "Id": 2340029577,
+    "GroupFormationIdxId": 3948800231,
+    "ForceNumber": 1,
+    "PositionNumber": 3
   },
   {
     "Id": 2342505351,
@@ -4842,6 +4950,12 @@
     "PositionNumber": 4
   },
   {
+    "Id": 2356807196,
+    "GroupFormationIdxId": 3948800231,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
     "Id": 2359282970,
     "GroupFormationIdxId": 1634855149,
     "ForceNumber": 2,
@@ -4880,6 +4994,12 @@
   {
     "Id": 2372158757,
     "GroupFormationIdxId": 863017656,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
+    "Id": 2373584815,
+    "GroupFormationIdxId": 3948800231,
     "ForceNumber": 1,
     "PositionNumber": 5
   },
@@ -5178,6 +5298,12 @@
     "PositionNumber": 4
   },
   {
+    "Id": 2546074110,
+    "GroupFormationIdxId": 906300052,
+    "ForceNumber": 1,
+    "PositionNumber": 5
+  },
+  {
     "Id": 2555084962,
     "GroupFormationIdxId": 3545286182,
     "ForceNumber": 2,
@@ -5196,6 +5322,12 @@
     "PositionNumber": 5
   },
   {
+    "Id": 2562851729,
+    "GroupFormationIdxId": 906300052,
+    "ForceNumber": 1,
+    "PositionNumber": 4
+  },
+  {
     "Id": 2570380638,
     "GroupFormationIdxId": 3533165133,
     "ForceNumber": 2,
@@ -5206,6 +5338,12 @@
     "GroupFormationIdxId": 4099958611,
     "ForceNumber": 2,
     "PositionNumber": 4
+  },
+  {
+    "Id": 2579629348,
+    "GroupFormationIdxId": 906300052,
+    "ForceNumber": 1,
+    "PositionNumber": 3
   },
   {
     "Id": 2585385448,
@@ -5226,6 +5364,12 @@
     "PositionNumber": 5
   },
   {
+    "Id": 2596406967,
+    "GroupFormationIdxId": 906300052,
+    "ForceNumber": 1,
+    "PositionNumber": 2
+  },
+  {
     "Id": 2602163067,
     "GroupFormationIdxId": 1595882284,
     "ForceNumber": 1,
@@ -5242,6 +5386,12 @@
     "GroupFormationIdxId": 3533165133,
     "ForceNumber": 2,
     "PositionNumber": 2
+  },
+  {
+    "Id": 2613184586,
+    "GroupFormationIdxId": 906300052,
+    "ForceNumber": 1,
+    "PositionNumber": 1
   },
   {
     "Id": 2619237468,
@@ -6654,6 +6804,12 @@
     "PositionNumber": 1
   },
   {
+    "Id": 3382273616,
+    "GroupFormationIdxId": 906300052,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
     "Id": 3392614177,
     "GroupFormationIdxId": 950326165,
     "ForceNumber": 1,
@@ -6670,6 +6826,12 @@
     "GroupFormationIdxId": 4166091213,
     "ForceNumber": 1,
     "PositionNumber": 2
+  },
+  {
+    "Id": 3399051235,
+    "GroupFormationIdxId": 906300052,
+    "ForceNumber": 2,
+    "PositionNumber": 5
   },
   {
     "Id": 3402012656,
@@ -6816,6 +6978,12 @@
     "PositionNumber": 4
   },
   {
+    "Id": 3466161711,
+    "GroupFormationIdxId": 906300052,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
     "Id": 3469123132,
     "GroupFormationIdxId": 3520476511,
     "ForceNumber": 2,
@@ -6846,6 +7014,12 @@
     "PositionNumber": 5
   },
   {
+    "Id": 3482939330,
+    "GroupFormationIdxId": 906300052,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
     "Id": 3485900751,
     "GroupFormationIdxId": 3520476511,
     "ForceNumber": 2,
@@ -6874,6 +7048,12 @@
     "GroupFormationIdxId": 2550005775,
     "ForceNumber": 1,
     "PositionNumber": 2
+  },
+  {
+    "Id": 3499716949,
+    "GroupFormationIdxId": 906300052,
+    "ForceNumber": 2,
+    "PositionNumber": 3
   },
   {
     "Id": 3502690928,
@@ -6978,6 +7158,12 @@
     "PositionNumber": 1
   },
   {
+    "Id": 3548423742,
+    "GroupFormationIdxId": 4066347663,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
     "Id": 3548676660,
     "GroupFormationIdxId": 2762726478,
     "ForceNumber": 1,
@@ -7006,6 +7192,12 @@
     "GroupFormationIdxId": 2926375328,
     "ForceNumber": 2,
     "PositionNumber": 2
+  },
+  {
+    "Id": 3565201361,
+    "GroupFormationIdxId": 4066347663,
+    "ForceNumber": 2,
+    "PositionNumber": 5
   },
   {
     "Id": 3565454279,
@@ -7038,6 +7230,12 @@
     "PositionNumber": 3
   },
   {
+    "Id": 3581978980,
+    "GroupFormationIdxId": 4066347663,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
     "Id": 3582231898,
     "GroupFormationIdxId": 2762726478,
     "ForceNumber": 1,
@@ -7060,6 +7258,12 @@
     "GroupFormationIdxId": 2170364751,
     "ForceNumber": 2,
     "PositionNumber": 2
+  },
+  {
+    "Id": 3598756599,
+    "GroupFormationIdxId": 4066347663,
+    "ForceNumber": 2,
+    "PositionNumber": 3
   },
   {
     "Id": 3601338705,
@@ -7116,6 +7320,12 @@
     "PositionNumber": 1
   },
   {
+    "Id": 3624207958,
+    "GroupFormationIdxId": 3564541783,
+    "ForceNumber": 2,
+    "PositionNumber": 5
+  },
+  {
     "Id": 3624846613,
     "GroupFormationIdxId": 3283941873,
     "ForceNumber": 2,
@@ -7134,6 +7344,12 @@
     "PositionNumber": 4
   },
   {
+    "Id": 3632311837,
+    "GroupFormationIdxId": 4066347663,
+    "ForceNumber": 2,
+    "PositionNumber": 1
+  },
+  {
     "Id": 3634893943,
     "GroupFormationIdxId": 1983958562,
     "ForceNumber": 1,
@@ -7146,6 +7362,12 @@
     "PositionNumber": 2
   },
   {
+    "Id": 3640985577,
+    "GroupFormationIdxId": 3564541783,
+    "ForceNumber": 2,
+    "PositionNumber": 4
+  },
+  {
     "Id": 3642177507,
     "GroupFormationIdxId": 262747204,
     "ForceNumber": 1,
@@ -7154,6 +7376,12 @@
   {
     "Id": 3657633601,
     "GroupFormationIdxId": 2787611883,
+    "ForceNumber": 2,
+    "PositionNumber": 3
+  },
+  {
+    "Id": 3657763196,
+    "GroupFormationIdxId": 3564541783,
     "ForceNumber": 2,
     "PositionNumber": 3
   },
@@ -7182,6 +7410,12 @@
     "PositionNumber": 4
   },
   {
+    "Id": 3674540815,
+    "GroupFormationIdxId": 3564541783,
+    "ForceNumber": 2,
+    "PositionNumber": 2
+  },
+  {
     "Id": 3675583491,
     "GroupFormationIdxId": 105343357,
     "ForceNumber": 2,
@@ -7204,6 +7438,12 @@
     "GroupFormationIdxId": 2787611883,
     "ForceNumber": 2,
     "PositionNumber": 5
+  },
+  {
+    "Id": 3691318434,
+    "GroupFormationIdxId": 3564541783,
+    "ForceNumber": 2,
+    "PositionNumber": 1
   },
   {
     "Id": 3694648470,

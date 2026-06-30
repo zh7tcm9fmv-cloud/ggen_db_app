@@ -288,6 +288,24 @@
     "SeriesId": 0
   },
   {
+    "Id": 1620,
+    "TitleNameLanguageId": 130200000000001620,
+    "LogoResourceId": "series_1620",
+    "BromideResourceId": "g1620u00100",
+    "ReleaseConditionScenarioStageClearCount": 0,
+    "ReleaseConditionScenarioStageId": 14400403,
+    "DifficultyIndex": 1,
+    "ScheduleId": 0,
+    "LaneNumber": 2,
+    "SortOrder": 70,
+    "Bgm": "bgm_0000_0122",
+    "AssetDownloadTimingTypeIndex": 3,
+    "RecommendedCombatPower": 80000,
+    "UnitDevelopmentSeriesId": 1620,
+    "GlobalSortOrder": 130,
+    "SeriesId": 0
+  },
+  {
     "Id": 2000,
     "TitleNameLanguageId": 130200000000002000,
     "LogoResourceId": "series_2000",

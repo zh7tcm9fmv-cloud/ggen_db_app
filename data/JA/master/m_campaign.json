@@ -4244,5 +4244,16 @@
     "DescriptionLanguageId": 250200000425105004,
     "CampaignTargetUserTypeIndex": 4,
     "CampaignTargetUserTypeTargetId": 525105001
+  },
+  {
+    "Id": 426064501,
+    "TargetUserTypeIndex": 1,
+    "CampaignTargetSetId": 426064501,
+    "CampaignEffectId": 426064501,
+    "ScheduleId": 2606452001,
+    "SortOrder": 526064501,
+    "DescriptionLanguageId": 250200000426064501,
+    "CampaignTargetUserTypeIndex": 4,
+    "CampaignTargetUserTypeTargetId": 526064501
   }
 ]

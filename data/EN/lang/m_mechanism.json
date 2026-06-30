@@ -28,6 +28,10 @@
     "value": "Escape Function (Max)"
   },
   {
+    "id": 140900000000000008,
+    "value": "Refit"
+  },
+  {
     "id": 141000000000000001,
     "value": "This further reduces damage when defending or using Support Defense.\nReduce damage taken by 20%."
   },
@@ -54,5 +58,9 @@
   {
     "id": 141000000000000007,
     "value": "Transforms into a different unit when HP falls to 0 during battle and Vigor is Max or higher (once per battle)\n*If the post-evacuation unit only has a terrain capability of \"dash\", evacuation will not occur."
+  },
+  {
+    "id": 141000000000000008,
+    "value": "Unit acquires Refit capability.\nChanges weapons, type, and stats."
   }
 ]

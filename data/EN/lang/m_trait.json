@@ -2132,6 +2132,10 @@
     "value": "When Vigor is Supercharged or higher,\nincrease max range of Beam Weapons by 1."
   },
   {
+    "id": 141200000101020101,
+    "value": "When HP is 50% or below,\nrestore own HP by 20%. (1 times)."
+  },
+  {
     "id": 141200000101020201,
     "value": "When HP is 50% or below,\nrestore HP by 30% (once only)."
   },
@@ -2960,12 +2964,60 @@
     "value": "When Vigor is MAX or higher,\nIncrease own MOV by 1."
   },
   {
+    "id": 141200000101600101,
+    "value": "When Vigor is Supercharged or higher,\nincrease ATK by 5%."
+  },
+  {
+    "id": 141200000101600102,
+    "value": "increase Critical Rate by 10%."
+  },
+  {
     "id": 141200000101600301,
     "value": "When Vigor is Supercharged, \nincrease ATK by 10%"
   },
   {
     "id": 141200000101600302,
     "value": "and increase Critical Rate by 30%."
+  },
+  {
+    "id": 141200000101610201,
+    "value": "When HP is 75% or above,\nincrease own ATK by 15%\nand increase own MOV by 1."
+  },
+  {
+    "id": 141200000101610202,
+    "value": ""
+  },
+  {
+    "id": 141200000101620201,
+    "value": "Increase own ATK and DEF by 20%\nwhen enemies are from the specified series."
+  },
+  {
+    "id": 141200000101620202,
+    "value": ""
+  },
+  {
+    "id": 141200000101620301,
+    "value": "Increase own ATK and DEF by 25%\nwhen enemies are from the specified series."
+  },
+  {
+    "id": 141200000101620302,
+    "value": ""
+  },
+  {
+    "id": 141200000101620401,
+    "value": "Increase own ATK and DEF by 30%\nwhen enemies are from the specified series."
+  },
+  {
+    "id": 141200000101620402,
+    "value": ""
+  },
+  {
+    "id": 141200000101630101,
+    "value": "When Vigor is Supercharged or higher,\nthe max range of Special Weapon is increased by 1."
+  },
+  {
+    "id": 141200000101640101,
+    "value": "When HP is 75% or above,\nincrease own MOV by1."
   },
   {
     "id": 141200000101650101,
@@ -5997,7 +6049,7 @@
   },
   {
     "id": 141200000201000402,
-    "value": "When piloting units with specified types and\nexecuting Support Defense,\nincrease own DEF by 20%."
+    "value": "When piloting units with specified types, and\nexecuting Support Defense,\nincrease own DEF by 20%."
   },
   {
     "id": 141200000201000501,
@@ -7341,11 +7393,19 @@
   },
   {
     "id": 141200000201780102,
-    "value": "When piloting units with specified tags,\nincrease MP by 6\nand reduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nincrease MP by 6,\nincrease damage dealt to the enemy by 15%,\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000201780103,
     "value": ""
+  },
+  {
+    "id": 141200000201780104,
+    "value": ""
+  },
+  {
+    "id": 141200000201780105,
+    "value": "When Vigor is Supercharged or higher, \nincrease Awaken by 15%."
   },
   {
     "id": 141200000201790101,
@@ -8389,6 +8449,70 @@
   },
   {
     "id": 141200000202670202,
+    "value": ""
+  },
+  {
+    "id": 141200000202680101,
+    "value": "Increase ATK and DEF by 3%\nto all units in the same squad from the specified series. (Permanent)"
+  },
+  {
+    "id": 141200000202680102,
+    "value": ""
+  },
+  {
+    "id": 141200000202680103,
+    "value": "Increase ATK by 3%."
+  },
+  {
+    "id": 141200000202680104,
+    "value": "Increase DEF by 3%."
+  },
+  {
+    "id": 141200000202690101,
+    "value": "When HP is 75% or above,\nincrease damage dealt to enemies by 15%\nand increase Ranged by 15%."
+  },
+  {
+    "id": 141200000202690102,
+    "value": ""
+  },
+  {
+    "id": 141200000202690103,
+    "value": "When piloting units from specified series,\nChance Step +1 time."
+  },
+  {
+    "id": 141200000202700101,
+    "value": "Support Attack/Counter +1 time"
+  },
+  {
+    "id": 141200000202700102,
+    "value": "When piloting units with specified tags,\nincrease MP by 6"
+  },
+  {
+    "id": 141200000202700103,
+    "value": "and increase damage dealt to enemies by 15%."
+  },
+  {
+    "id": 141200000202710101,
+    "value": "When piloting units with specified series,\nCan execute Support Defense when an enemy responds to an ally's attack with a counter during a fight."
+  },
+  {
+    "id": 141200000202720101,
+    "value": "When piloting units from specified series,\nsupport Attack/Counter +1 time"
+  },
+  {
+    "id": 141200000202730101,
+    "value": "When piloting units from specified series,\nIncrease damage dealt to enemies by 5%\nand reduce damage taken by 5%."
+  },
+  {
+    "id": 141200000202730102,
+    "value": ""
+  },
+  {
+    "id": 141200000202730201,
+    "value": "When piloting units from specified series,\nIncrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
+  },
+  {
+    "id": 141200000202730202,
     "value": ""
   },
   {
@@ -14216,12 +14340,88 @@
     "value": ""
   },
   {
+    "id": 141200000406630101,
+    "value": "Increase DEF by 250.\nDecrease Mobility by 50."
+  },
+  {
+    "id": 141200000406630102,
+    "value": ""
+  },
+  {
+    "id": 141200000406640101,
+    "value": "Increase Max HP by 2000."
+  },
+  {
+    "id": 141200000406650101,
+    "value": "Increase Mobility by 200."
+  },
+  {
+    "id": 141200000406660101,
+    "value": "Increase ATK by 250.\nDecrease Mobility by 50."
+  },
+  {
+    "id": 141200000406660102,
+    "value": ""
+  },
+  {
+    "id": 141200000406670101,
+    "value": "Increase DEF by 200."
+  },
+  {
+    "id": 141200000406680101,
+    "value": "Increase ATK by 200."
+  },
+  {
+    "id": 141200000406690101,
+    "value": "Increase Mobility by 8%."
+  },
+  {
+    "id": 141200000406700101,
+    "value": "Increase DEF by 8%."
+  },
+  {
+    "id": 141200000406710101,
+    "value": "Increase ATK by 8%."
+  },
+  {
+    "id": 141200000406720101,
+    "value": "Increase Max HP by 8%."
+  },
+  {
+    "id": 141200000406730101,
+    "value": "Increase Mobility by 8%."
+  },
+  {
+    "id": 141200000406740101,
+    "value": "Increase ATK by 8%."
+  },
+  {
     "id": 141200000406750101,
     "value": "Increase Max HP by 8%."
   },
   {
     "id": 141200000406760101,
     "value": "Increase ATK by 8%."
+  },
+  {
+    "id": 141200000406770101,
+    "value": "Increase Max HP by 5%."
+  },
+  {
+    "id": 141200000406770102,
+    "value": "Increase Max HP by 2%.\nwhen equipped to Gundam F90 (Mars Independent Zeon Forces)."
+  },
+  {
+    "id": 141200000406780101,
+    "value": "Increase ATK by 8%."
+  },
+  {
+    "id": 141200000406780102,
+    "value": "Increase ATK by 2%.\nwhen equipped to Gundam F90 (Mars Independent Zeon Forces)."
+  },
+  {
+    "id": 141200000406790101,
+    "value": "Increase ATK by 12%."
   },
   {
     "id": 141200000406800101,
@@ -15618,6 +15818,34 @@
   {
     "id": 141200000511270101,
     "value": "Increase own ATK by 300%\nwhen Blu Duel Gundam is the enemy."
+  },
+  {
+    "id": 141200000511280101,
+    "value": "When the enemy attacks from 6 spaces or more,\nreduce damage taken by 50%."
+  },
+  {
+    "id": 141200000511290101,
+    "value": "When Chance Step activates, increase ATK by 100%."
+  },
+  {
+    "id": 141200000511300101,
+    "value": "When executing a Support Attack/Counter or Support Defense during battle,\nIncrease DEF by 500%."
+  },
+  {
+    "id": 141200000511310101,
+    "value": "When HP is 75% or below,\nIncrease own MOV by5."
+  },
+  {
+    "id": 141200000511320101,
+    "value": "When HP is 75% or below,\nForce activate Chance Step 2 time."
+  },
+  {
+    "id": 141200000511330101,
+    "value": "When the enemy attacks from 6 or more spaces away,\nIncrease ATK by 300%."
+  },
+  {
+    "id": 141200000511340101,
+    "value": "At the end of combat,\nGundam F91 appear as reinforcements."
   },
   {
     "id": 141200000511360101,
@@ -17732,6 +17960,14 @@
     "value": "As long as there is a surviving Pluma in the squad,\nReduce damage taken by 100%."
   },
   {
+    "id": 141200000611990101,
+    "value": "When Crossbone Vanguard Soldier in your squad is defeated:\nIncrease own ATK by 10%."
+  },
+  {
+    "id": 141200000611990102,
+    "value": "Increase ATK by 10%."
+  },
+  {
     "id": 141200000612000101,
     "value": "Increase all Stats by 25%."
   },
@@ -17832,6 +18068,22 @@
     "value": ""
   },
   {
+    "id": 141200000612100101,
+    "value": "Increase ATK by 100%\nfor squad units piloted by Seabook Arno at the start of every turn."
+  },
+  {
+    "id": 141200000612110101,
+    "value": "Increase ATK by 100%."
+  },
+  {
+    "id": 141200000612120101,
+    "value": "The max range of Weapon is increased by 2\nfor squad units piloted by Carozzo Ronah."
+  },
+  {
+    "id": 141200000612130101,
+    "value": "The max range of Weapon is increased by 2."
+  },
+  {
     "id": 141200000612140101,
     "value": "Increase DEF by 100%."
   },
@@ -17842,6 +18094,14 @@
   {
     "id": 141200000612160101,
     "value": "Increase DEF by 100%\nfor squad units piloted by Sven Cal Bayang."
+  },
+  {
+    "id": 141200000612180101,
+    "value": "Increase ATK by 50%."
+  },
+  {
+    "id": 141200000612190101,
+    "value": "Increase ATK by 50%\nfor squad units piloted by Carozzo Ronah."
   },
   {
     "id": 141200000699000101,

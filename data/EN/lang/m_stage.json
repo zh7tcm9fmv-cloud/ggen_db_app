@@ -1632,6 +1632,10 @@
     "value": "Mobile Suit Gundam Narrative"
   },
   {
+    "id": 130100000090500029,
+    "value": "Mobile Suit Gundam F91"
+  },
+  {
     "id": 130100000090510001,
     "value": "U.C. Series"
   },
@@ -1748,6 +1752,10 @@
     "value": "Mobile Suit Gundam Narrative"
   },
   {
+    "id": 130100000090510037,
+    "value": "Mobile Suit Gundam F91"
+  },
+  {
     "id": 130100000090520001,
     "value": "U.C. Series"
   },
@@ -1846,6 +1854,10 @@
   {
     "id": 130100000090520029,
     "value": "Underwater Use"
+  },
+  {
+    "id": 130100000090520030,
+    "value": "Mobile Suit Gundam F91"
   },
   {
     "id": 130100000090800103,
@@ -2177,6 +2189,18 @@
   },
   {
     "id": 130300001440060103,
+    "value": "Defeat all enemies within 2 turns."
+  },
+  {
+    "id": 130300001620060103,
+    "value": "Defeat all enemies within 2 turns."
+  },
+  {
+    "id": 130300001620070103,
+    "value": "Defeat all enemies within 2 turns."
+  },
+  {
+    "id": 130300001620080103,
     "value": "Defeat all enemies within 2 turns."
   },
   {

@@ -1468,6 +1468,30 @@
     "value": "Heavyweight Attack Boost R (Mobile Suit Gundam Narrative)"
   },
   {
+    "id": 270100000000200290,
+    "value": "Heavyweight Defense Boost R (Mobile Suit Gundam F91)"
+  },
+  {
+    "id": 270100000000200291,
+    "value": "Add-On Armor R (Mobile Suit Gundam F91)"
+  },
+  {
+    "id": 270100000000200292,
+    "value": "Booster Parts R (Mobile Suit Gundam F91)"
+  },
+  {
+    "id": 270100000000200293,
+    "value": "Heavyweight Attack Boost R (Mobile Suit Gundam F91)"
+  },
+  {
+    "id": 270100000000200294,
+    "value": "Reinforced Armor R (Mobile Suit Gundam F91)"
+  },
+  {
+    "id": 270100000000200295,
+    "value": "Limiter OFF R (Mobile Suit Gundam F91)"
+  },
+  {
     "id": 270100000000300001,
     "value": "Add-On Armor SR (Mobile Suit Gundam SEED Astray)"
   },
@@ -2320,12 +2344,40 @@
     "value": "Add-On Armor  SR (Fierce Enemy Assault)"
   },
   {
+    "id": 270100000000300219,
+    "value": "Booster Parts SR (Crossbone Vanguard)"
+  },
+  {
+    "id": 270100000000300220,
+    "value": "Reinforced Armor SR (Crossbone Vanguard)"
+  },
+  {
+    "id": 270100000000300221,
+    "value": "Limiter OFF SR (Crossbone Vanguard)"
+  },
+  {
+    "id": 270100000000300222,
+    "value": "Add-On Armor SR (Rearm)"
+  },
+  {
+    "id": 270100000000300223,
+    "value": "Booster Parts SR (Rearm)"
+  },
+  {
+    "id": 270100000000300224,
+    "value": "Limiter OFF SR (Rearm)"
+  },
+  {
     "id": 270100000000300225,
     "value": "Add-On Armor SR (Mobile Suit Gundam: Cross Dimension 0079)"
   },
   {
     "id": 270100000000300226,
     "value": "Limiter OFF SR (Mobile Suit Gundam: Cross Dimension 0079)"
+  },
+  {
+    "id": 270100000000300227,
+    "value": "Add-On Armor  SR (Fierce Enemy Assault)"
   },
   {
     "id": 270100000000300228,
@@ -2662,5 +2714,13 @@
   {
     "id": 270100000000400084,
     "value": "Supplemental Space Parts SSR (Mobile Suit Gundam: Cross Dimension 0079)"
+  },
+  {
+    "id": 270100000000400085,
+    "value": "Limiter OFF  SSR (Fierce Enemy Assault)"
+  },
+  {
+    "id": 270100000000400086,
+    "value": "Limiter OFF  SSR (Mobile Suit Gundam F91)"
   }
 ]

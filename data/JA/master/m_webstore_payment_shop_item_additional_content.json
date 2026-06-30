@@ -40,5 +40,19 @@
     "StoreTypeIndex": 4,
     "PaidDiamondCount": 0,
     "BonusRewardSetId": 18020226036008
+  },
+  {
+    "Id": 22606500404,
+    "PaymentShopItemId": 226065004,
+    "StoreTypeIndex": 4,
+    "PaidDiamondCount": 0,
+    "BonusRewardSetId": 18020226065004
+  },
+  {
+    "Id": 22606500504,
+    "PaymentShopItemId": 226065005,
+    "StoreTypeIndex": 4,
+    "PaidDiamondCount": 0,
+    "BonusRewardSetId": 18020226065005
   }
 ]

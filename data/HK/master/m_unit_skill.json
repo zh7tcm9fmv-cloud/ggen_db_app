@@ -28,6 +28,20 @@
     "MultiTargetCount": 0
   },
   {
+    "Id": 116300015000,
+    "NameLanguageId": 141300116300015000,
+    "DescriptionLanguageId": 141400116300015000,
+    "ResourceId": "trait_11540103",
+    "StartEffectResourceId": "ef_mpc_0094_01_mepe_f91",
+    "ActiveEffectResourceId": "ef_mpc_0094_01_mepe_f91_loop",
+    "Duration": 1,
+    "UsageLimit": 1,
+    "MultiTargetTypeIndex": 0,
+    "MultiTargetRangeMin": 0,
+    "MultiTargetRangeMax": 0,
+    "MultiTargetCount": 0
+  },
+  {
     "Id": 137000595000,
     "NameLanguageId": 141300137000595000,
     "DescriptionLanguageId": 141400137000595000,

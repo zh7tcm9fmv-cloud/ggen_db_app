@@ -54,5 +54,13 @@
     "DescriptionLanguageId": 141000000000000007,
     "MechanismTypeIndex": 5,
     "Value": 0
+  },
+  {
+    "Id": 8,
+    "ResourceId": "mechanism_0009",
+    "NameLanguageId": 140900000000000008,
+    "DescriptionLanguageId": 141000000000000008,
+    "MechanismTypeIndex": 6,
+    "Value": 0
   }
 ]

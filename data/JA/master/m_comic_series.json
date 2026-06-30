@@ -28,5 +28,165 @@
     "ComicSeriesTypeIndex": 1,
     "ComicReleaseConditionTypeIndex": 0,
     "TargetValue": 0
+  },
+  {
+    "Id": 10092,
+    "NameLanguageId": 350100000000010092,
+    "CoverThumbnailResourceId": "comic_cover_10092",
+    "Priority": 294786132,
+    "ScheduleId": 2606453101,
+    "ComicSeriesTypeIndex": 1,
+    "ComicReleaseConditionTypeIndex": 2,
+    "TargetValue": 0
+  },
+  {
+    "Id": 10110,
+    "NameLanguageId": 350100000000010110,
+    "CoverThumbnailResourceId": "comic_cover_10110",
+    "Priority": 294786114,
+    "ScheduleId": 2606453101,
+    "ComicSeriesTypeIndex": 1,
+    "ComicReleaseConditionTypeIndex": 2,
+    "TargetValue": 0
+  },
+  {
+    "Id": 10120,
+    "NameLanguageId": 350100000000010120,
+    "CoverThumbnailResourceId": "comic_cover_10120",
+    "Priority": 294786104,
+    "ScheduleId": 2606453101,
+    "ComicSeriesTypeIndex": 1,
+    "ComicReleaseConditionTypeIndex": 2,
+    "TargetValue": 0
+  },
+  {
+    "Id": 10630,
+    "NameLanguageId": 350100000000010630,
+    "CoverThumbnailResourceId": "comic_cover_10630",
+    "Priority": 294785594,
+    "ScheduleId": 2606453101,
+    "ComicSeriesTypeIndex": 1,
+    "ComicReleaseConditionTypeIndex": 2,
+    "TargetValue": 0
+  },
+  {
+    "Id": 11270,
+    "NameLanguageId": 350100000000011270,
+    "CoverThumbnailResourceId": "comic_cover_11270",
+    "Priority": 294784954,
+    "ScheduleId": 2606453101,
+    "ComicSeriesTypeIndex": 1,
+    "ComicReleaseConditionTypeIndex": 2,
+    "TargetValue": 0
+  },
+  {
+    "Id": 11440,
+    "NameLanguageId": 350100000000011440,
+    "CoverThumbnailResourceId": "comic_cover_11440",
+    "Priority": 294784784,
+    "ScheduleId": 2606453101,
+    "ComicSeriesTypeIndex": 1,
+    "ComicReleaseConditionTypeIndex": 2,
+    "TargetValue": 0
+  },
+  {
+    "Id": 11550,
+    "NameLanguageId": 350100000000011550,
+    "CoverThumbnailResourceId": "comic_cover_11550",
+    "Priority": 294784674,
+    "ScheduleId": 2606453101,
+    "ComicSeriesTypeIndex": 1,
+    "ComicReleaseConditionTypeIndex": 2,
+    "TargetValue": 0
+  },
+  {
+    "Id": 11560,
+    "NameLanguageId": 350100000000011560,
+    "CoverThumbnailResourceId": "comic_cover_11560",
+    "Priority": 294784664,
+    "ScheduleId": 2606453101,
+    "ComicSeriesTypeIndex": 1,
+    "ComicReleaseConditionTypeIndex": 2,
+    "TargetValue": 0
+  },
+  {
+    "Id": 12100,
+    "NameLanguageId": 350100000000012100,
+    "CoverThumbnailResourceId": "comic_cover_12100",
+    "Priority": 294784124,
+    "ScheduleId": 2606453101,
+    "ComicSeriesTypeIndex": 1,
+    "ComicReleaseConditionTypeIndex": 2,
+    "TargetValue": 0
+  },
+  {
+    "Id": 12190,
+    "NameLanguageId": 350100000000012190,
+    "CoverThumbnailResourceId": "comic_cover_12190",
+    "Priority": 294784034,
+    "ScheduleId": 2606453101,
+    "ComicSeriesTypeIndex": 1,
+    "ComicReleaseConditionTypeIndex": 2,
+    "TargetValue": 0
+  },
+  {
+    "Id": 12300,
+    "NameLanguageId": 350100000000012300,
+    "CoverThumbnailResourceId": "comic_cover_12300",
+    "Priority": 294783924,
+    "ScheduleId": 2606453101,
+    "ComicSeriesTypeIndex": 1,
+    "ComicReleaseConditionTypeIndex": 2,
+    "TargetValue": 0
+  },
+  {
+    "Id": 13050,
+    "NameLanguageId": 350100000000013050,
+    "CoverThumbnailResourceId": "comic_cover_13050",
+    "Priority": 294783174,
+    "ScheduleId": 2606453101,
+    "ComicSeriesTypeIndex": 1,
+    "ComicReleaseConditionTypeIndex": 2,
+    "TargetValue": 0
+  },
+  {
+    "Id": 13060,
+    "NameLanguageId": 350100000000013060,
+    "CoverThumbnailResourceId": "comic_cover_13060",
+    "Priority": 294783164,
+    "ScheduleId": 2606453101,
+    "ComicSeriesTypeIndex": 1,
+    "ComicReleaseConditionTypeIndex": 2,
+    "TargetValue": 0
+  },
+  {
+    "Id": 13360,
+    "NameLanguageId": 350100000000013360,
+    "CoverThumbnailResourceId": "comic_cover_13360",
+    "Priority": 294782864,
+    "ScheduleId": 2606453101,
+    "ComicSeriesTypeIndex": 1,
+    "ComicReleaseConditionTypeIndex": 2,
+    "TargetValue": 0
+  },
+  {
+    "Id": 14300,
+    "NameLanguageId": 350100000000014300,
+    "CoverThumbnailResourceId": "comic_cover_14300",
+    "Priority": 294781924,
+    "ScheduleId": 2606453101,
+    "ComicSeriesTypeIndex": 1,
+    "ComicReleaseConditionTypeIndex": 2,
+    "TargetValue": 0
+  },
+  {
+    "Id": 14301,
+    "NameLanguageId": 350100000000014301,
+    "CoverThumbnailResourceId": "comic_cover_14301",
+    "Priority": 294781923,
+    "ScheduleId": 2606453101,
+    "ComicSeriesTypeIndex": 1,
+    "ComicReleaseConditionTypeIndex": 2,
+    "TargetValue": 0
   }
 ]

@@ -82,5 +82,33 @@
     "StoreTypeIndex": 4,
     "PaidDiamondCount": 400,
     "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22606500403,
+    "PaymentShopItemId": 226065004,
+    "StoreTypeIndex": 3,
+    "PaidDiamondCount": 120,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22606500404,
+    "PaymentShopItemId": 226065004,
+    "StoreTypeIndex": 4,
+    "PaidDiamondCount": 120,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22606500503,
+    "PaymentShopItemId": 226065005,
+    "StoreTypeIndex": 3,
+    "PaidDiamondCount": 800,
+    "BonusRewardSetId": 0
+  },
+  {
+    "Id": 22606500504,
+    "PaymentShopItemId": 226065005,
+    "StoreTypeIndex": 4,
+    "PaidDiamondCount": 800,
+    "BonusRewardSetId": 0
   }
 ]

@@ -136,6 +136,18 @@
     "value": "EN Restoration"
   },
   {
+    "id": 160400001162000150,
+    "value": "HP Restoration / EN Restoration"
+  },
+  {
+    "id": 160400001162000151,
+    "value": ""
+  },
+  {
+    "id": 160400001162000250,
+    "value": "EN Restoration"
+  },
+  {
     "id": 160400001200000150,
     "value": "EN Restoration"
   },
@@ -458,6 +470,18 @@
   {
     "id": 160500001150000360,
     "value": "Allies in range:\nRestore EN by 35%"
+  },
+  {
+    "id": 160500001162000150,
+    "value": "Allies in range:\nRestore HP by 20%\nRestore EN by 25%"
+  },
+  {
+    "id": 160500001162000151,
+    "value": ""
+  },
+  {
+    "id": 160500001162000250,
+    "value": "Allies in range:\nRestore EN by 40%"
   },
   {
     "id": 160500001200000150,

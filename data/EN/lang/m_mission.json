@@ -1484,6 +1484,18 @@
     "value": "Register 850 different types of units to the database."
   },
   {
+    "id": 180100110011900126,
+    "value": "Register 900 different types of units to the database."
+  },
+  {
+    "id": 180100110011900127,
+    "value": "Register 950 different types of units to the database."
+  },
+  {
+    "id": 180100110011900128,
+    "value": "Register 1000 different types of units to the database."
+  },
+  {
     "id": 180100110012000101,
     "value": "Register 10 different types of characters to the database."
   },
@@ -1776,6 +1788,26 @@
     "value": "Level up 600 unit type(s) to maximum"
   },
   {
+    "id": 180100110012500136,
+    "value": "Level up 620 unit type(s) to maximum"
+  },
+  {
+    "id": 180100110012500137,
+    "value": "Level up 640 unit type(s) to maximum"
+  },
+  {
+    "id": 180100110012500138,
+    "value": "Level up 660 unit type(s) to maximum"
+  },
+  {
+    "id": 180100110012500139,
+    "value": "Level up 680 unit type(s) to maximum"
+  },
+  {
+    "id": 180100110012500140,
+    "value": "Level up 700 unit type(s) to maximum"
+  },
+  {
     "id": 180100110012600101,
     "value": "Raise Limit Break to 3 or higher for 10 unit type(s)"
   },
@@ -1916,6 +1948,26 @@
     "value": "Raise Limit Break to 3 or higher for 600 unit type(s)"
   },
   {
+    "id": 180100110012600136,
+    "value": "Raise Limit Break to 3 or higher for 620 unit type(s)"
+  },
+  {
+    "id": 180100110012600137,
+    "value": "Raise Limit Break to 3 or higher for 640 unit type(s)"
+  },
+  {
+    "id": 180100110012600138,
+    "value": "Raise Limit Break to 3 or higher for 660 unit type(s)"
+  },
+  {
+    "id": 180100110012600139,
+    "value": "Raise Limit Break to 3 or higher for 680 unit type(s)"
+  },
+  {
+    "id": 180100110012600140,
+    "value": "Raise Limit Break to 3 or higher for 700 unit type(s)"
+  },
+  {
     "id": 180100200010000101,
     "value": "Clear EXPERT No.1 U.C. Series with only development units/other units."
   },
@@ -2020,6 +2072,10 @@
     "value": "Clear EXPERT No.26: Underwater Use with only development units/other units."
   },
   {
+    "id": 180100200010002701,
+    "value": "Clear EXPERT No.27: Mobile Suit Gundam F91 with only development units/other units."
+  },
+  {
     "id": 180100200010100101,
     "value": "Clear EXPERT No.1 U.C. Series with 10 surviving units."
   },
@@ -2122,6 +2178,10 @@
   {
     "id": 180100200010102601,
     "value": "Clear EXPERT No.26: Underwater Use with 10 surviving units."
+  },
+  {
+    "id": 180100200010102701,
+    "value": "Clear EXPERT No.27: Mobile Suit Gundam F91 with 10 surviving units."
   },
   {
     "id": 180100200010200101,
@@ -9030,6 +9090,230 @@
   {
     "id": 180100260620031001,
     "value": "Clear \"[Special] Total War: Hard-4\" from the story event with only Mobile Suit Gundam SEED C.E. 73 -Stargazer- series or Tenacious tag units in your formation."
+  },
+  {
+    "id": 180100260650011101,
+    "value": "Reach [SSR]F80 Gunraid level 10 or higher."
+  },
+  {
+    "id": 180100260650011102,
+    "value": "Reach [SSR]F80 Gunraid level 20 or higher."
+  },
+  {
+    "id": 180100260650011103,
+    "value": "Upgrade 5 weapons."
+  },
+  {
+    "id": 180100260650011104,
+    "value": "Use 500 AP."
+  },
+  {
+    "id": 180100260650011105,
+    "value": "Clear any Main Stage 10 times."
+  },
+  {
+    "id": 180100260650011106,
+    "value": "Complete a character request 3 times."
+  },
+  {
+    "id": 180100260650011107,
+    "value": "Clear any event stage 5 times. (Exc. Tactical Training / Instructor's Challenge)"
+  },
+  {
+    "id": 180100260650011108,
+    "value": "Develop 5 units."
+  },
+  {
+    "id": 180100260650011109,
+    "value": "Dismantle 5 unit(s)."
+  },
+  {
+    "id": 180100260650011201,
+    "value": "Reach [SSR]F80 Gunraid level 40 or higher."
+  },
+  {
+    "id": 180100260650011202,
+    "value": "Reach [SSR]F80 Gunraid level 60 or higher."
+  },
+  {
+    "id": 180100260650011203,
+    "value": "Upgrade 10 weapons."
+  },
+  {
+    "id": 180100260650011204,
+    "value": "Use 1,000 AP."
+  },
+  {
+    "id": 180100260650011205,
+    "value": "Clear any Main Stage 15 times."
+  },
+  {
+    "id": 180100260650011206,
+    "value": "Complete a character request 5 times."
+  },
+  {
+    "id": 180100260650011207,
+    "value": "Clear any event stage 10 times. (Exc. Tactical Training / Instructor's Challenge)"
+  },
+  {
+    "id": 180100260650011208,
+    "value": "Develop units from the \"Mobile Suit Gundam F91\" series 5 times."
+  },
+  {
+    "id": 180100260650011209,
+    "value": "Clear stage 5 of the \"Mobile Suit Gundam F91\" series."
+  },
+  {
+    "id": 180100260650011301,
+    "value": "Reach [SSR]F80 Gunraid level 70 or higher."
+  },
+  {
+    "id": 180100260650011302,
+    "value": "Reach [SSR]F80 Gunraid level 90 or higher."
+  },
+  {
+    "id": 180100260650011303,
+    "value": "Upgrade 15 weapons."
+  },
+  {
+    "id": 180100260650011304,
+    "value": "Use 1,500 AP."
+  },
+  {
+    "id": 180100260650011305,
+    "value": "Clear any Main Stage 20 times."
+  },
+  {
+    "id": 180100260650011306,
+    "value": "Complete a character request 10 times."
+  },
+  {
+    "id": 180100260650011307,
+    "value": "Clear any event stage 20 times. (Exc. Tactical Training / Instructor's Challenge)"
+  },
+  {
+    "id": 180100260650011308,
+    "value": "Get all Development Diagrams from series \"Mobile Suit Gundam F91\" to one hundred percent."
+  },
+  {
+    "id": 180100260650011309,
+    "value": "Clear all stages (incl. HARD difficulty) from the \"Mobile Suit Gundam F91\" series."
+  },
+  {
+    "id": 180100260650020001,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam F91.\""
+  },
+  {
+    "id": 180100260650020002,
+    "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam F91\" with a Battle Score of <sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\"><sprite name=\"UI_Stage_Icon_BattleValuation_Normal_Enable\">."
+  },
+  {
+    "id": 180100260650041101,
+    "value": "Clear the Fierce Enemy Assault: \"Gundam F90 (Mars Independent Zeon Forces)\" stage on NORMAL difficulty or higher 1 time(s)."
+  },
+  {
+    "id": 180100260650041102,
+    "value": "Clear the Fierce Enemy Assault: \"Gundam F90 (Mars Independent Zeon Forces)\" stage on NORMAL difficulty or higher 3 time(s)."
+  },
+  {
+    "id": 180100260650041103,
+    "value": "Clear the Fierce Enemy Assault: \"Gundam F90 (Mars Independent Zeon Forces)\" stage on NORMAL difficulty or higher 5 time(s)."
+  },
+  {
+    "id": 180100260650041201,
+    "value": "Clear the Fierce Enemy Assault: \"Gundam F90 (Mars Independent Zeon Forces)\" stage on HARD difficulty or higher 5 time(s)."
+  },
+  {
+    "id": 180100260650041301,
+    "value": "Clear the Fierce Enemy Assault: \"Gundam F90 (Mars Independent Zeon Forces)\" stage on EXPERT difficulty or higher 5 time(s)."
+  },
+  {
+    "id": 180100260650041302,
+    "value": "Clear the Fierce Enemy Assault: \"Gundam F90 (Mars Independent Zeon Forces)\" stage on EXPERT difficulty or higher 10 time(s)."
+  },
+  {
+    "id": 180100260650041303,
+    "value": "Clear the Fierce Enemy Assault: \"Gundam F90 (Mars Independent Zeon Forces)\" stage on EXPERT difficulty or higher 20 time(s)."
+  },
+  {
+    "id": 180100260650041304,
+    "value": "Clear the Fierce Enemy Assault: \"Gundam F90 (Mars Independent Zeon Forces)\" stage on EXPERT difficulty or higher 25 time(s)."
+  },
+  {
+    "id": 180100260650041305,
+    "value": "Clear the Fierce Enemy Assault: \"Gundam F90 (Mars Independent Zeon Forces)\" stage on EXPERT difficulty or higher 30 time(s)."
+  },
+  {
+    "id": 180100260650041306,
+    "value": "Clear the Fierce Enemy Assault: \"Gundam F90 (Mars Independent Zeon Forces)\" stage on EXPERT difficulty or higher 35 time(s)."
+  },
+  {
+    "id": 180100260650041307,
+    "value": "Clear the Fierce Enemy Assault: \"Gundam F90 (Mars Independent Zeon Forces)\" stage on EXPERT difficulty or higher 40 time(s)."
+  },
+  {
+    "id": 180100260650041401,
+    "value": "Clear the Fierce Enemy Assault: \"Gundam F90 (Mars Independent Zeon Forces)\" stage on NORMAL difficulty or higher 10 time(s)."
+  },
+  {
+    "id": 180100260650041501,
+    "value": "Clear the Fierce Enemy Assault: \"Gundam F90 (Mars Independent Zeon Forces)\" stage on HARD difficulty or higher 10 time(s)."
+  },
+  {
+    "id": 180100260650041601,
+    "value": "Clear the Fierce Enemy Assault: \"Gundam F90 (Mars Independent Zeon Forces)\" stage on EXPERT difficulty or higher 15 time(s)."
+  },
+  {
+    "id": 180100260650080001,
+    "value": "Reach Request Rank 2 for Seabook Arno."
+  },
+  {
+    "id": 180100260650080002,
+    "value": "Reach Request Rank 3 for Seabook Arno."
+  },
+  {
+    "id": 180100260650080003,
+    "value": "Reach Request Rank 4 for Seabook Arno."
+  },
+  {
+    "id": 180100260650080004,
+    "value": "Reach Request Rank 5 for Seabook Arno."
+  },
+  {
+    "id": 180100260650080005,
+    "value": "Reach Request Rank 2 for Carozzo Ronah."
+  },
+  {
+    "id": 180100260650080006,
+    "value": "Reach Request Rank 3 for Carozzo Ronah."
+  },
+  {
+    "id": 180100260650080007,
+    "value": "Reach Request Rank 4 for Carozzo Ronah."
+  },
+  {
+    "id": 180100260650080008,
+    "value": "Reach Request Rank 5 for Carozzo Ronah."
+  },
+  {
+    "id": 180100260650080009,
+    "value": "Reach Request Rank 2 for Cecily Fairchild."
+  },
+  {
+    "id": 180100260650080010,
+    "value": "Reach Request Rank 3 for Cecily Fairchild."
+  },
+  {
+    "id": 180100260650080011,
+    "value": "Reach Request Rank 4 for Cecily Fairchild."
+  },
+  {
+    "id": 180100260650080012,
+    "value": "Reach Request Rank 5 for Cecily Fairchild."
+  },
+  {
+    "id": 180100260650090001,
+    "value": "Get all Development Diagrams from series \"Mobile Suit Gundam F91\" to one hundred percent."
   },
   {
     "id": 180100300010200101,

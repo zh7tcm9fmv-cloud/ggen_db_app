@@ -300,8 +300,32 @@
     "value": "シリーズクリアボーナスパック(NT)"
   },
   {
+    "id": 190122606500100001,
+    "value": "シリーズクリアボーナスパック(F91)"
+  },
+  {
+    "id": 190122606500200001,
+    "value": "サウンドパック vol.5"
+  },
+  {
+    "id": 190122606500400001,
+    "value": "900万DL記念お得ダイヤパックA"
+  },
+  {
+    "id": 190122606500500001,
+    "value": "900万DL記念お得ダイヤパックB"
+  },
+  {
+    "id": 190122606500600001,
+    "value": "WebStore限定900万DL記念お得ダイヤパック"
+  },
+  {
     "id": 190152510500100001,
     "value": "エターナルパス"
+  },
+  {
+    "id": 190152606450100001,
+    "value": "エターナルパスⅡ"
   },
   {
     "id": 190210000000100001,
@@ -540,7 +564,27 @@
     "value": "【1回限定】ダイヤx430、SSRユニット限界突破素材x1、APパックx1、開発素材(NT)x100、ユニット強化データSSRx10、キャラクター強化データSSRx10、サポーター強化データSSRx10が一緒になったパック"
   },
   {
+    "id": 190222606500100001,
+    "value": "【1回限定】ダイヤx430、SSRユニット限界突破素材x1、APパックx1、開発素材(F91)x100、ユニット強化データSSRx10、キャラクター強化データSSRx10、サポーター強化データSSRx10が一緒になったパック"
+  },
+  {
+    "id": 190222606500200001,
+    "value": "【注意事項】\n※解放されたBGMは、サウンドパックの購入を行ったプラットフォーム上でのプレイ時のみ、お楽しみいただけます。\n※BGMの解放状況は、プラットフォームを跨いで引き継ぐことはできません。\n※サウンドパックの購入時、BGMのダウンロードが行われます。Wi-Fi環境での購入をおすすめします。\n\n【商品内容】\n設定可能なBGM×51曲\nプレミアムガシャチケット×6\nユニット強化データSSRx10\nキャラクター強化データSSRx10\nサポーター強化データSSRx10\n\n【設定可能なBGM一覧】\n帰還 [M-7]\n戦士 [M-8]\nⅦ\n果てなき戦い [M22]\n永遠の扉\nGroovy Duel\nThunderbolt New Theme\n氷上の敗走\nBianca's Army March\nAcrobatic Fight-2\n南洋同盟-1\nSymphonicsuiteNT No.1\nSymphonicsuiteNT No.2\nSymphonicsuiteNT No.4\nVigilante Ver 0.5 + @\nEnforcement Rush\nCodename : WIND\nBattlefield\nFinal Attack\nRiot of Citizens\nDuel!\nClash at The Stratosphere\nSorrowful Memory\nLAST IMPRESSION\nリフトオフ\n散る命、生きる命\nストライクノワール\nSTARGAZER ～星の扉\nINNOVATION\nPOSSIBILITY\nFighting Forces\nTake-Off\nPower Attack\nInterception\nMEMENTO MORI\nO-RAISER\nOO-RAISER\n儚くも永久のカナシ\n泪のムコウ\nガンダムAGE〜100年の物語\n戦いの覚悟\n白い狼\n強襲\nガンダムAGE-2 〜運命の先へ\nヴェイガン襲来\nゼイドラ\n始まりの予感\nアビス隊\n明日へ\nsharp #\n未来の模様"
+  },
+  {
+    "id": 190222606500400001,
+    "value": "【1回限定】\nお得なダイヤパック！\n\n【商品内容】\n・ダイヤ×1,500\n・[900万DL記念]SSR以上ユニット1体確定ガシャチケット×1"
+  },
+  {
+    "id": 190222606500500001,
+    "value": "【1回限定】\nお得なダイヤパック！\n\n【商品内容】\n・ダイヤ×10,000\n・[900万DL記念]URユニット1体確定5連ガシャチケット×1"
+  },
+  {
     "id": 190252510500100001,
     "value": "「エターナルパス」は、購入することでステージ挑戦回数アップの効果やアイテムの付与を受けられる月額サービスです。"
+  },
+  {
+    "id": 190252606450100001,
+    "value": "「エターナルパスⅡ」は、購入することでメインステージスキップ可能回数アップの効果やアイテムの付与を受けられる月額サービスです。"
   }
 ]

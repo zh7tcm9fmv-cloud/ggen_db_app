@@ -1485,12 +1485,102 @@
     "IsHideVoiceButton": false
   },
   {
+    "Id": 15500002,
+    "DefaultCharacterId": 1155000200,
+    "SortOrder": 15500002,
+    "SeriesId": 1550,
+    "DescriptionLanguageId": 100200001155000200,
+    "ScheduleId": 2606509901,
+    "IsHideVoiceButton": false
+  },
+  {
+    "Id": 15500003,
+    "DefaultCharacterId": 1155000400,
+    "SortOrder": 15500003,
+    "SeriesId": 1550,
+    "DescriptionLanguageId": 100200001155000400,
+    "ScheduleId": 2606509901,
+    "IsHideVoiceButton": false
+  },
+  {
+    "Id": 15500004,
+    "DefaultCharacterId": 1155000300,
+    "SortOrder": 15500004,
+    "SeriesId": 1550,
+    "DescriptionLanguageId": 100200001155000300,
+    "ScheduleId": 2606509901,
+    "IsHideVoiceButton": false
+  },
+  {
+    "Id": 15900001,
+    "DefaultCharacterId": 1159000100,
+    "SortOrder": 15900001,
+    "SeriesId": 1590,
+    "DescriptionLanguageId": 100200001159000100,
+    "ScheduleId": 2606509901,
+    "IsHideVoiceButton": false
+  },
+  {
     "Id": 16200001,
     "DefaultCharacterId": 1162000100,
     "SortOrder": 16200001,
     "SeriesId": 1620,
     "DescriptionLanguageId": 100200001162000100,
     "ScheduleId": 2509609901,
+    "IsHideVoiceButton": false
+  },
+  {
+    "Id": 16200002,
+    "DefaultCharacterId": 1162000203,
+    "SortOrder": 16200002,
+    "SeriesId": 1620,
+    "DescriptionLanguageId": 100200001162000203,
+    "ScheduleId": 2606509901,
+    "IsHideVoiceButton": false
+  },
+  {
+    "Id": 16200003,
+    "DefaultCharacterId": 1162000800,
+    "SortOrder": 16200003,
+    "SeriesId": 1620,
+    "DescriptionLanguageId": 100200001162000800,
+    "ScheduleId": 2606509901,
+    "IsHideVoiceButton": false
+  },
+  {
+    "Id": 16200004,
+    "DefaultCharacterId": 1162000600,
+    "SortOrder": 16200004,
+    "SeriesId": 1620,
+    "DescriptionLanguageId": 100200001162000600,
+    "ScheduleId": 2606509901,
+    "IsHideVoiceButton": false
+  },
+  {
+    "Id": 16200005,
+    "DefaultCharacterId": 1162000900,
+    "SortOrder": 16200005,
+    "SeriesId": 1620,
+    "DescriptionLanguageId": 100200001162000900,
+    "ScheduleId": 2606509901,
+    "IsHideVoiceButton": false
+  },
+  {
+    "Id": 16200006,
+    "DefaultCharacterId": 1162000300,
+    "SortOrder": 16200006,
+    "SeriesId": 1620,
+    "DescriptionLanguageId": 100200001162000300,
+    "ScheduleId": 2606509901,
+    "IsHideVoiceButton": false
+  },
+  {
+    "Id": 16200007,
+    "DefaultCharacterId": 1162000500,
+    "SortOrder": 16200007,
+    "SeriesId": 1620,
+    "DescriptionLanguageId": 100200001162000500,
+    "ScheduleId": 2606509901,
     "IsHideVoiceButton": false
   },
   {

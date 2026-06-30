@@ -1116,5 +1116,83 @@
     "Priority": 11,
     "ShouldTransition": true,
     "ContentImageResourceId": "2606400301"
+  },
+  {
+    "Id": 2606450201,
+    "DisplayConditionSetId": 18001226064501,
+    "ScheduleId": 2606452001,
+    "IsInfiniteDisplay": false,
+    "SalesAppealDisplaySourceSetId": 2606450201,
+    "TransitionId": 46000526064501,
+    "SalesAppealTargetTypeIndex": 1,
+    "TargetId": 0,
+    "Priority": 19,
+    "ShouldTransition": true,
+    "ContentImageResourceId": "2606450201"
+  },
+  {
+    "Id": 2606500201,
+    "DisplayConditionSetId": 18001226065001,
+    "ScheduleId": 2606502003,
+    "IsInfiniteDisplay": false,
+    "SalesAppealDisplaySourceSetId": 2606500201,
+    "TransitionId": 46000226065001,
+    "SalesAppealTargetTypeIndex": 1,
+    "TargetId": 0,
+    "Priority": 1,
+    "ShouldTransition": true,
+    "ContentImageResourceId": "2606500201"
+  },
+  {
+    "Id": 2606500202,
+    "DisplayConditionSetId": 18001226065002,
+    "ScheduleId": 2606509904,
+    "IsInfiniteDisplay": false,
+    "SalesAppealDisplaySourceSetId": 2606500202,
+    "TransitionId": 46000226065002,
+    "SalesAppealTargetTypeIndex": 1,
+    "TargetId": 0,
+    "Priority": 1,
+    "ShouldTransition": true,
+    "ContentImageResourceId": "2606500202"
+  },
+  {
+    "Id": 2606500203,
+    "DisplayConditionSetId": 18001226065003,
+    "ScheduleId": 2606509904,
+    "IsInfiniteDisplay": false,
+    "SalesAppealDisplaySourceSetId": 2606500203,
+    "TransitionId": 46000226065003,
+    "SalesAppealTargetTypeIndex": 1,
+    "TargetId": 0,
+    "Priority": 1,
+    "ShouldTransition": true,
+    "ContentImageResourceId": "2606500202"
+  },
+  {
+    "Id": 2606500204,
+    "DisplayConditionSetId": 18001226065004,
+    "ScheduleId": 2606502002,
+    "IsInfiniteDisplay": false,
+    "SalesAppealDisplaySourceSetId": 2606500204,
+    "TransitionId": 46000226065004,
+    "SalesAppealTargetTypeIndex": 1,
+    "TargetId": 0,
+    "Priority": 21,
+    "ShouldTransition": true,
+    "ContentImageResourceId": "2606500204"
+  },
+  {
+    "Id": 2606500501,
+    "DisplayConditionSetId": 99082606500001,
+    "ScheduleId": 2606502701,
+    "IsInfiniteDisplay": false,
+    "SalesAppealDisplaySourceSetId": 2606500501,
+    "TransitionId": 0,
+    "SalesAppealTargetTypeIndex": 3,
+    "TargetId": 0,
+    "Priority": 31,
+    "ShouldTransition": false,
+    "ContentImageResourceId": "2606500501"
   }
 ]
