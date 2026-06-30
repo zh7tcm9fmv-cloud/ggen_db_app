@@ -1527,16 +1527,15 @@ justify-content:center !important;
 html:not(.cmp-mobile-pick) .list-grid-cmp-wrap{display:none!important}
 html:not(.cmp-mobile-pick) #charTable .cmp-cb-cell,html:not(.cmp-mobile-pick) #unitTable .cmp-cb-cell{display:none!important}
 html:not(.cmp-page-active) #cmpFloat,html:not(.cmp-mobile-pick) #cmpFloat{display:none!important;bottom:-120px!important;transform:none!important;visibility:hidden!important;pointer-events:none!important;background:transparent!important;opacity:0!important}
-html.cmp-mobile-pick .list-grid-card--cmp.cmp-is-selected{position:relative;z-index:1;border-color:rgba(74,144,217,.45);background:var(--bg-card-hover);box-shadow:var(--shadow-surface);transform:none}
-html.cmp-mobile-pick .list-grid-card--cmp.cmp-is-selected::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:0 2px 2px 0;background:var(--accent-cyan);opacity:.75;pointer-events:none}
-html.cmp-mobile-pick .list-grid-card--cmp.cmp-is-selected:hover{border-color:rgba(0,212,255,.42);background:var(--bg-card-hover);box-shadow:var(--shadow-surface),0 4px 14px rgba(0,0,0,.22)}
-html.cmp-mobile-pick .list-grid-card--cmp.cmp-is-selected .list-grid-card-name{color:var(--accent-cyan)}
+html.cmp-mobile-pick .list-grid-card--cmp.cmp-is-selected{position:relative;z-index:1;border-color:var(--border-accent);background:var(--bg-card-hover);box-shadow:var(--shadow-surface);transform:none}
+html.cmp-mobile-pick .list-grid-card--cmp.cmp-is-selected:hover{border-color:var(--accent-blue);background:var(--bg-card-hover);box-shadow:var(--shadow-surface),0 4px 14px rgba(0,0,0,.22)}
 html.cmp-mobile-pick .list-grid-card--cmp.cmp-is-selected .list-thumb-portrait,html.cmp-mobile-pick .list-grid-card--cmp.cmp-is-selected .list-thumb-composite{filter:none}
-html.cmp-mobile-pick #charTable tr.cmp-is-selected,html.cmp-mobile-pick #unitTable tr.cmp-is-selected{position:relative;z-index:1;background:linear-gradient(90deg,rgba(0,212,255,.11) 0%,rgba(0,212,255,.04) 10%,var(--bg-card-hover) 28%)!important;box-shadow:none}
-html.cmp-mobile-pick #charTable tr.cmp-is-selected::before,html.cmp-mobile-pick #unitTable tr.cmp-is-selected::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent-cyan);opacity:.8;border-radius:0 2px 2px 0;pointer-events:none}
-html.cmp-mobile-pick #charTable tr.cmp-is-selected:hover,html.cmp-mobile-pick #unitTable tr.cmp-is-selected:hover{background:linear-gradient(90deg,rgba(0,212,255,.13) 0%,rgba(0,212,255,.05) 10%,var(--bg-card-hover) 28%)!important}
-html.cmp-mobile-pick #charTable tr.cmp-is-selected .name-text,html.cmp-mobile-pick #unitTable tr.cmp-is-selected .name-text{color:var(--accent-cyan)}
-html.cmp-mobile-pick #charTable tr.cmp-is-selected .list-thumb-portrait,html.cmp-mobile-pick #unitTable tr.cmp-is-selected .list-thumb-portrait{filter:none}
+#charTable tbody tr.cmp-is-selected,#unitTable tbody tr.cmp-is-selected{position:relative;z-index:2;background:transparent!important;box-shadow:none}
+#charTable tbody tr.cmp-is-selected td,#unitTable tbody tr.cmp-is-selected td{background:var(--bg-card-hover)!important;border-top:1px solid var(--border-accent);border-bottom:1px solid var(--border-accent);border-left:none;border-right:none;box-shadow:none!important}
+#charTable tbody tr.cmp-is-selected td:first-child,#unitTable tbody tr.cmp-is-selected td:first-child{border-left:1px solid var(--border-accent);border-top-left-radius:var(--radius-sm);border-bottom-left-radius:var(--radius-sm)}
+#charTable tbody tr.cmp-is-selected td:last-child,#unitTable tbody tr.cmp-is-selected td:last-child{border-right:1px solid var(--border-accent);border-top-right-radius:var(--radius-sm);border-bottom-right-radius:var(--radius-sm)}
+#charTable tbody tr.cmp-is-selected:hover td,#unitTable tbody tr.cmp-is-selected:hover td{background:var(--bg-card-hover)!important}
+#charTable tbody tr.cmp-is-selected .list-thumb-portrait,#unitTable tbody tr.cmp-is-selected .list-thumb-portrait{filter:none}
 html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px + env(safe-area-inset-bottom,0px))}
 @media(max-width:768px){
 .cmp-mobile-pick-toggle{width:34px;height:30px}
