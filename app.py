@@ -3282,15 +3282,24 @@ def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, pair_c_map, ex_map, pa
         lines = [ln.strip() for ln in re.split(r'\r?\n+', txt) if ln.strip()]
         if not lines:
             lines = [txt]
-        tgt_ex = pair_ex_map if pair_uid else ex_map
+        hp_high_gate_active = False
         for line in lines:
             if _char_trait_line_is_squad_unit_effect(line, bab):
                 continue
+            if _is_conditional_stat_text(line) and _unit_hp_threshold_active_at_assumed_full_hp(line):
+                hp_high_gate_active = True
+                continue
             bonuses = extract_stat_percent_char(line, txt, char_id=char_id)
             if not bonuses:
+                if _is_conditional_stat_text(line):
+                    hp_high_gate_active = False
                 continue
+            if hp_high_gate_active:
+                tgt = u_map
+            else:
+                tgt = pair_ex_map if pair_uid else ex_map
             for s, p in bonuses.items():
-                tgt_ex[s] += p
+                tgt[s] += p
         return
     lines = [ln.strip() for ln in re.split(r'\r?\n+', txt) if ln.strip()]
     if not lines:
@@ -7845,9 +7854,14 @@ def _compute_limited_time_character_ids():
     return frozenset(out)
 
 
-LIMITED_TIME_CHARACTER_IDS = frozenset(_compute_limited_time_character_ids()) | frozenset({
-    normalize_id('1705000200'),
-})
+LIMITED_TIME_CHARACTER_IDS = frozenset(_compute_limited_time_character_ids()) | frozenset(
+    normalize_id(x) for x in (
+        '1705000200',
+        # F91 pickup pilots (1162000150 → 1162000100, 1163000150 → 1162000102)
+        '1162000100',
+        '1162000102',
+    )
+)
 LIMITED_TIME_SUPPORTER_IDS = frozenset(
     normalize_id(x) for x in (
         '1110000150',
@@ -9410,8 +9424,6 @@ def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
                     cond_prefix = True
                 is_cond = itc or cond_prefix
                 hp_assumed_active = bool(hp_high_gate_active and not is_cond and (part_stats or flat_move))
-                if hp_assumed_active:
-                    hp_high_gate_active = False
                 line_cond = _unit_line_ms_stats_conditional_bucket(part, hc, ie, is_cond, ability_cond, ad, di, hp_assumed_active)
                 if enemy_adv_atk_def:
                     line_cond = True
@@ -9517,8 +9529,6 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
                     cond_prefix = True
                 is_cond = itc or cond_prefix
                 hp_assumed_active = bool(hp_high_gate_active and not is_cond and (part_stats or flat_move))
-                if hp_assumed_active:
-                    hp_high_gate_active = False
                 line_cond = _unit_line_ms_stats_conditional_bucket(part, hc, ie, is_cond, ability_cond, ad, di, hp_assumed_active)
                 if enemy_adv_atk_def:
                     line_cond = True
@@ -12658,6 +12668,64 @@ def _tier_scoring_guide():
     }
 
 
+def _tier_mockup_apply_live_limited_flags(row, kind):
+    """Overlay is_limited_time from runtime overrides (published tier JSON can be stale)."""
+    if not isinstance(row, dict):
+        return
+    eid = normalize_id(row.get('id'))
+    if not eid or eid == '0':
+        return
+    if kind == 'unit':
+        lim = eid in LIMITED_TIME_UNIT_IDS
+    elif kind == 'character':
+        lim = eid in LIMITED_TIME_CHARACTER_IDS
+    elif kind == 'supporter':
+        lim = eid in LIMITED_TIME_SUPPORTER_IDS
+    else:
+        return
+    row['is_limited_time'] = lim
+    if lim and row.get('pull_priority') == 'normal':
+        row['pull_priority'] = 'high' if kind != 'supporter' else 'critical'
+
+
+def _tier_mockup_walk_apply_limited(payload):
+    if not isinstance(payload, dict):
+        return
+    for key in ('units_meta',):
+        for tier_rows in (payload.get(key) or {}).values():
+            if not isinstance(tier_rows, list):
+                continue
+            for row in tier_rows:
+                _tier_mockup_apply_live_limited_flags(row, 'unit')
+                for pilot in row.get('top_pilots') or []:
+                    _tier_mockup_apply_live_limited_flags(pilot, 'character')
+    for key in ('characters_meta',):
+        for tier_rows in (payload.get(key) or {}).values():
+            if not isinstance(tier_rows, list):
+                continue
+            for row in tier_rows:
+                _tier_mockup_apply_live_limited_flags(row, 'character')
+    for key in ('supporters_meta',):
+        for tier_rows in (payload.get(key) or {}).values():
+            if not isinstance(tier_rows, list):
+                continue
+            for row in tier_rows:
+                _tier_mockup_apply_live_limited_flags(row, 'supporter')
+    for key, kind in (
+        ('units_top30', 'unit'),
+        ('characters_top30', 'character'),
+        ('supporters_all', 'supporter'),
+    ):
+        rows = payload.get(key)
+        if not isinstance(rows, list):
+            continue
+        for row in rows:
+            _tier_mockup_apply_live_limited_flags(row, kind)
+            if kind == 'unit':
+                for pilot in row.get('top_pilots') or []:
+                    _tier_mockup_apply_live_limited_flags(pilot, 'character')
+
+
 def _tier_mockup_thumb(entity_id, kind):
     """List thumbnail for tier list cards (same resolution chain as browse APIs)."""
     eid = normalize_id(entity_id)
@@ -12824,6 +12892,7 @@ def api_tier_mockup():
         return jsonify({'error': 'tier_mockup_v2.json not found — run scripts/tier_rank_mockup.py'}), 404
     with open(path, 'r', encoding='utf-8') as f:
         payload = json.load(f)
+    _tier_mockup_walk_apply_limited(payload)
     for key in ('units_meta',):
         buckets = payload.get(key) or {}
         for tier_rows in buckets.values():
@@ -17056,7 +17125,7 @@ def _banner_timeline_supporter_item(sid, ld):
 def api_banner_timeline():
     """Gacha banner list with schedules, appeal art, and featured units/characters from master chains."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'banner_tl_v7_{lc}'
+    ck = f'banner_tl_v8_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=1800, convert_images=True)
@@ -19785,7 +19854,7 @@ def get_character(char_id):
                 uthum = find_list_thumb(uinfo.get('resource_ids', []), rec_uid_for_pair, 'images/unit_portraits')
                 uacq = uinfo.get('acquisition_route', '0')
                 uai = ACQUISITION_ROUTE_ICONS.get(uacq, '')
-                recommend_unit = {'id': rec_uid_for_pair, 'name': uname, 'rarity': RARITY_MAP.get(uri, 'N'), 'rarity_icon': RARITY_ICON_MAP.get(uri, ''), 'role': resolve_role_label(urole, lc), 'role_icon': ROLE_ICON_MAP.get(urole, ''), 'thum': uthum or '', 'acquisition_icon': uai or ''}
+                recommend_unit = {'id': rec_uid_for_pair, 'name': uname, 'rarity': RARITY_MAP.get(uri, 'N'), 'rarity_icon': RARITY_ICON_MAP.get(uri, ''), 'role': resolve_role_label(urole, lc), 'role_icon': ROLE_ICON_MAP.get(urole, ''), 'thum': uthum or '', 'acquisition_icon': uai or '', 'is_limited_time': rec_uid_for_pair in LIMITED_TIME_UNIT_IDS}
         spbn_u, spbn_c, spbn_pair, spen, spen_pair, spbs_u, spbs_c, spbs_pair, spes, spes_pair, trait_pair_unit_ids = _accumulate_character_trait_percent_buckets(ac, char_id, ldc)
         pair_ok, pair_units, _ = _character_trait_pair_gate(char_id, trait_pair_unit_ids)
         sne = []; swe = []; ssne = []; sswe = []
@@ -19970,8 +20039,6 @@ def get_unit(unit_id):
                         cond_prefix = True
                     is_cond = itc or cond_prefix
                     hp_assumed_active = bool(hp_high_gate_active and not is_cond and (part_stats or flat_move or wpn_stats))
-                    if hp_assumed_active:
-                        hp_high_gate_active = False
                     line_cond = _unit_line_ms_stats_conditional_bucket(part, hc, ie, is_cond, ability_cond, ad, di, hp_assumed_active)
                     if enemy_adv_atk_def:
                         line_cond = True
