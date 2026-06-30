@@ -2843,7 +2843,10 @@ def ability_details_imply_ex_piloting_ex_unit(details):
 
 # MechanismSetId -> mechanism fragment ids for browse filter. Do not embed synthetic '2x2' here:
 # large footprint is determined only by OccupiedAreaId==2 (same as get_unit is_large / mechanism banner).
-MECH_MAP_TABLE = {'1': ['1'], '2': ['2'], '3': ['1', '2'], '5': ['4'], '6': ['1', '5'], '7': ['6'], '8': ['1', '7'], '9': ['1', '6']}
+MECH_MAP_TABLE = {
+    '1': ['1'], '2': ['2'], '3': ['1', '2'], '5': ['4'], '6': ['1', '5'], '7': ['6'], '8': ['1', '7'], '9': ['1', '6'],
+    '10': ['7'], '11': ['8'], '12': ['1', '8'],
+}
 # '3' = m_mechanism SD (not assigned via m_mechanism_set); tied to body type / legacy unit-id prefixes (see _unit_has_sd_mechanism).
 ALL_MECHANISM_FILTER_IDS = frozenset(m for mids in MECH_MAP_TABLE.values() for m in mids) | frozenset({'2x2', '3'})
 
