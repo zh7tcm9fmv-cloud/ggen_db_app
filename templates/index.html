@@ -2211,9 +2211,13 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 .list-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:14px;align-items:stretch}
 .list-grid-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:12px 10px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;cursor:pointer;transition:var(--transition);min-height:0;box-shadow:var(--shadow-surface)}
 .list-grid-card:hover{border-color:var(--accent-orange);background:var(--bg-card-hover);box-shadow:var(--shadow-surface),0 4px 18px rgba(0,0,0,.28)}
-#unitGrid .list-grid-card.list-detail-active{border-color:var(--accent-cyan);background:rgba(0,212,255,.07);box-shadow:0 0 0 2px rgba(0,212,255,.45),0 4px 20px rgba(0,212,255,.12)}
-#unitGrid .list-grid-card.list-detail-active:hover{border-color:var(--accent-cyan)}
-#unitBody tr.list-detail-active td{background:rgba(0,212,255,.09);box-shadow:inset 3px 0 0 0 var(--accent-cyan)}
+#unitGrid .list-grid-card.list-detail-active{border-color:var(--border-accent);background:var(--bg-card-hover);box-shadow:var(--shadow-surface)}
+#unitGrid .list-grid-card.list-detail-active:hover{border-color:var(--accent-blue);background:var(--bg-card-hover)}
+#unitBody tr.list-detail-active{position:relative;z-index:2;background:transparent!important;box-shadow:none}
+#unitBody tr.list-detail-active td{background:var(--bg-card-hover)!important;border-top:1px solid var(--border-accent);border-bottom:1px solid var(--border-accent);border-left:none;border-right:none;box-shadow:none!important}
+#unitBody tr.list-detail-active td:first-child{border-left:1px solid var(--border-accent);border-top-left-radius:var(--radius-sm);border-bottom-left-radius:var(--radius-sm)}
+#unitBody tr.list-detail-active td:last-child{border-right:1px solid var(--border-accent);border-top-right-radius:var(--radius-sm);border-bottom-right-radius:var(--radius-sm)}
+#unitBody tr.list-detail-active:hover td{background:var(--bg-card-hover)!important}
 .list-grid-card-thumb{width:100%;display:flex;justify-content:center;align-items:center;min-height:0}
 .list-grid-card-thumb .list-thumb-composite{margin:0 auto}
 .list-grid-card-body{width:100%;min-width:0;display:flex;flex-direction:column;gap:6px}
