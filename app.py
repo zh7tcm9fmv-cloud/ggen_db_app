@@ -3282,24 +3282,15 @@ def _add_char_trait_pct_to_buckets(bab, d2, u_map, c_map, pair_c_map, ex_map, pa
         lines = [ln.strip() for ln in re.split(r'\r?\n+', txt) if ln.strip()]
         if not lines:
             lines = [txt]
-        hp_high_gate_active = False
+        tgt_ex = pair_ex_map if pair_uid else ex_map
         for line in lines:
             if _char_trait_line_is_squad_unit_effect(line, bab):
                 continue
-            if _is_conditional_stat_text(line) and _unit_hp_threshold_active_at_assumed_full_hp(line):
-                hp_high_gate_active = True
-                continue
             bonuses = extract_stat_percent_char(line, txt, char_id=char_id)
             if not bonuses:
-                if _is_conditional_stat_text(line):
-                    hp_high_gate_active = False
                 continue
-            if hp_high_gate_active:
-                tgt = u_map
-            else:
-                tgt = pair_ex_map if pair_uid else ex_map
             for s, p in bonuses.items():
-                tgt[s] += p
+                tgt_ex[s] += p
         return
     lines = [ln.strip() for ln in re.split(r'\r?\n+', txt) if ln.strip()]
     if not lines:
