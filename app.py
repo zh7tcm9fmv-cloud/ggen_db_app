@@ -7828,8 +7828,8 @@ LIMITED_TIME_UNIT_IDS = frozenset({
     '1144000550',
     # Nightingale (EX): RecommendCharacterId 1110000202
     '1114000250',
-    # F91 pickup: RecommendCharacterId 1162000102 / 1162000100
-    '1163000150', '1162000150',
+    # F91 pickup: RecommendCharacterId 1162000102
+    '1163000150',
 })
 
 
@@ -7848,8 +7848,7 @@ def _compute_limited_time_character_ids():
 LIMITED_TIME_CHARACTER_IDS = frozenset(_compute_limited_time_character_ids()) | frozenset(
     normalize_id(x) for x in (
         '1705000200',
-        # F91 pickup pilots (1162000150 → 1162000100, 1163000150 → 1162000102)
-        '1162000100',
+        # F91 pickup pilot (1163000150 → 1162000102)
         '1162000102',
     )
 )
@@ -7860,7 +7859,6 @@ LIMITED_TIME_SUPPORTER_IDS = frozenset(
         '1125000250',
         '1330000250',
         '1370000550',
-        '1162000150',
     )
 )
 unit_lin_map = create_unit_lineage_link_map(unit_lineage_data); unit_ter_map = create_terrain_map(unit_terrain_data)
