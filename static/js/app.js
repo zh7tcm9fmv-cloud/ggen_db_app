@@ -379,12 +379,8 @@ SR:{lr:'/static/images/UI/UI_Common_Tmb_Supporter_SR_Frame_01.webp',tb:'/static/
 R:{lr:'/static/images/UI/UI_Common_Tmb_Supporter_R_Frame_01.webp',tb:'/static/images/UI/UI_Common_Tmb_Supporter_R_Frame_02.webp'},
 N:{lr:'/static/images/UI/UI_Common_Tmb_Supporter_N_Frame_01.webp',tb:'/static/images/UI/UI_Common_Tmb_Supporter_N_Frame_02.webp'}
 };
-const SUPPORTER_TB_FRAME_EFFECT_MAP={
-UR:{lr:'/static/images/UI/UI_Common_Tmb_Supporter_UR_Frame_01_Effect.webp',tb:'/static/images/UI/UI_Common_Tmb_Supporter_UR_Frame_02_Effect.webp'}
-};
 function supporterTbFramePaths(row){
 const r=(row&&row.rarity)||'N';
-if(row&&row.is_limited_time&&r==='UR'&&SUPPORTER_TB_FRAME_EFFECT_MAP.UR)return SUPPORTER_TB_FRAME_EFFECT_MAP.UR;
 return SUPPORTER_TB_FRAME_MAP[r]||SUPPORTER_TB_FRAME_MAP.N;
 }
 const LB_ICONS={'None':'/static/images/UI/UI_Common_Icon_Grade_M_None.webp','Neutral':'/static/images/UI/UI_Common_Icon_Grade_M_Neutral.webp','Max':'/static/images/UI/UI_Common_Icon_Grade_M_Max.webp'};
