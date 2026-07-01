@@ -2717,17 +2717,20 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 .tb-supp-portrait-only-img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;object-position:center center;display:block}
 .tb-picker-option-list{display:flex;flex-direction:column;gap:6px;width:100%;max-width:100%;box-sizing:border-box}
 .tb-picker-option-list .tb-picker-item.cmp-picker-item{width:100%;box-sizing:border-box}
-.tb-supp-tb-composite{position:relative;overflow:hidden;border-radius:10px;margin:0;flex-shrink:0;-webkit-tap-highlight-color:transparent;align-self:flex-start;--tb-supp-side-w:29%;--tb-supp-bottom-h:22%;--tb-supp-bottom-w:46%;--tb-supp-portrait-x:21%;--tb-supp-portrait-top:8%;--tb-supp-portrait-bottom:calc(var(--tb-supp-bottom-h) + 1.5%)}
+.tb-supp-tb-composite{position:relative;overflow:hidden;border-radius:10px;margin:0;flex-shrink:0;-webkit-tap-highlight-color:transparent;align-self:flex-start;--tb-supp-side-w:27%;--tb-supp-end-h:10%;--tb-supp-end-w:48%;--tb-supp-portrait-x:13%;--tb-supp-portrait-y:9%}
 .tb-supp-tb-back{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .tb-supp-tb-back .list-thumb-base{position:absolute;inset:0;width:100%;height:100%;margin:0;object-fit:contain;object-position:center;display:block;border:0}
-.tb-supp-tb-composite .tb-supp-tb-portrait-wrap{z-index:1;top:var(--tb-supp-portrait-top);left:var(--tb-supp-portrait-x);right:var(--tb-supp-portrait-x);bottom:var(--tb-supp-portrait-bottom);display:flex;align-items:center;justify-content:center;overflow:hidden}
-.tb-supp-tb-composite .tb-supp-tb-portrait-wrap .list-thumb-portrait{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:cover;object-position:center top;display:block}
+.tb-supp-tb-composite .tb-supp-tb-portrait-wrap{z-index:1;top:var(--tb-supp-portrait-y);left:var(--tb-supp-portrait-x);right:var(--tb-supp-portrait-x);bottom:var(--tb-supp-portrait-y);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.tb-supp-tb-composite .tb-supp-tb-portrait-wrap .list-thumb-portrait{width:100%;height:100%;max-width:100%;max-height:100%;object-fit:cover;object-position:center center;display:block}
 .tb-supp-tb-side{position:absolute;top:0;bottom:0;width:var(--tb-supp-side-w);height:100%;z-index:2;pointer-events:none;object-fit:contain;object-position:center;margin:0;border:0;display:block}
 .tb-supp-tb-side--left{left:0;object-position:left center}
 .tb-supp-tb-side--right{right:0;transform:scaleX(-1);object-position:right center}
-.tb-supp-tb-bottom{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:var(--tb-supp-bottom-w);max-width:100%;height:var(--tb-supp-bottom-h);z-index:3;pointer-events:none;object-fit:contain;object-position:center bottom;margin:0;border:0;display:block}
-.tb-supp-tb-composite .tb-supp-tb-side picture,.tb-supp-tb-composite .tb-supp-tb-bottom picture{display:block;width:100%;height:100%;margin:0 auto}
-.tb-supp-tb-composite .tb-supp-tb-side img,.tb-supp-tb-composite .tb-supp-tb-bottom img{width:100%;height:100%;object-fit:contain;object-position:inherit;display:block;border:0;vertical-align:middle}
+.tb-supp-tb-end{position:absolute;left:50%;width:var(--tb-supp-end-w);max-width:100%;height:var(--tb-supp-end-h);z-index:3;pointer-events:none;object-fit:contain;margin:0;border:0;display:block}
+.tb-supp-tb-top{top:0;transform:translateX(-50%) scaleY(-1);object-position:center top}
+.tb-supp-tb-bottom{bottom:0;transform:translateX(-50%);object-position:center bottom}
+.tb-supp-tb-composite .list-thumb-icons{position:absolute;inset:0;z-index:4;pointer-events:none}
+.tb-supp-tb-composite .tb-supp-tb-side picture,.tb-supp-tb-composite .tb-supp-tb-end picture{display:block;width:100%;height:100%;margin:0 auto}
+.tb-supp-tb-composite .tb-supp-tb-side img,.tb-supp-tb-composite .tb-supp-tb-end img{width:100%;height:100%;object-fit:contain;object-position:inherit;display:block;border:0;vertical-align:middle}
 .tb-long-card--empty{position:absolute;inset:0;display:flex;flex-direction:column;align-items:stretch;justify-content:stretch}
 .tb-long-card--empty .tb-slot-add-ms{position:relative;inset:auto;flex:1;display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,.72);min-height:0}
 .tb-slot.is-sel{border-color:var(--accent-cyan)}

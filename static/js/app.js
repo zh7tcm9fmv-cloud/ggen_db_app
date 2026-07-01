@@ -372,8 +372,21 @@ const RARITY_FRAME_MAP={'UR':'/static/images/UI/UI_Common_Tmb_Square_UR_Frame.we
 const TB_LONG_BASE_MAP={'UR':'/static/images/UI/UI_Common_Tmb_Long_UR_Base.webp','SSR':'/static/images/UI/UI_Common_Tmb_Long_SSR_Base.webp','SR':'/static/images/UI/UI_Common_Tmb_Long_SR_Base.webp','R':'/static/images/UI/UI_Common_Tmb_Long_R_Base.webp','N':'/static/images/UI/UI_Common_Tmb_Long_N_Base.webp'};
 const SUPPORTER_BASE_MAP={'UR':'/static/images/UI/UI_Common_Tmb_Square_Supporter_Base_UR.webp','SSR':'/static/images/UI/UI_Common_Tmb_Square_Supporter_Base_SSR.webp','SR':'/static/images/UI/UI_Common_Tmb_Square_Supporter_Base_SR.webp','R':'/static/images/UI/UI_Common_Tmb_Square_Supporter_Base_R.webp','N':'/static/images/UI/UI_Common_Tmb_Square_Supporter_Base_N.webp'};
 const TB_SUPPORTER_TB_BASE='/static/images/UI/UI_Common_Tmb_Supporter_Base.webp';
-const TB_SUPPORTER_TB_FRAME_LR='/static/images/UI/UI_Common_Tmb_Supporter_UR_Frame_01.webp';
-const TB_SUPPORTER_TB_FRAME_BT='/static/images/UI/UI_Common_Tmb_Supporter_UR_Frame_02.webp';
+const SUPPORTER_TB_FRAME_MAP={
+UR:{lr:'/static/images/UI/UI_Common_Tmb_Supporter_UR_Frame_01.webp',tb:'/static/images/UI/UI_Common_Tmb_Supporter_UR_Frame_02.webp'},
+SSR:{lr:'/static/images/UI/UI_Common_Tmb_Supporter_SSR_Frame_01.webp',tb:'/static/images/UI/UI_Common_Tmb_Supporter_SSR_Frame_02.webp'},
+SR:{lr:'/static/images/UI/UI_Common_Tmb_Supporter_SR_Frame_01.webp',tb:'/static/images/UI/UI_Common_Tmb_Supporter_SR_Frame_02.webp'},
+R:{lr:'/static/images/UI/UI_Common_Tmb_Supporter_R_Frame_01.webp',tb:'/static/images/UI/UI_Common_Tmb_Supporter_R_Frame_02.webp'},
+N:{lr:'/static/images/UI/UI_Common_Tmb_Supporter_N_Frame_01.webp',tb:'/static/images/UI/UI_Common_Tmb_Supporter_N_Frame_02.webp'}
+};
+const SUPPORTER_TB_FRAME_EFFECT_MAP={
+UR:{lr:'/static/images/UI/UI_Common_Tmb_Supporter_UR_Frame_01_Effect.webp',tb:'/static/images/UI/UI_Common_Tmb_Supporter_UR_Frame_02_Effect.webp'}
+};
+function supporterTbFramePaths(row){
+const r=(row&&row.rarity)||'N';
+if(row&&row.is_limited_time&&r==='UR'&&SUPPORTER_TB_FRAME_EFFECT_MAP.UR)return SUPPORTER_TB_FRAME_EFFECT_MAP.UR;
+return SUPPORTER_TB_FRAME_MAP[r]||SUPPORTER_TB_FRAME_MAP.N;
+}
 const LB_ICONS={'None':'/static/images/UI/UI_Common_Icon_Grade_M_None.webp','Neutral':'/static/images/UI/UI_Common_Icon_Grade_M_Neutral.webp','Max':'/static/images/UI/UI_Common_Icon_Grade_M_Max.webp'};
 const CMP_LB_TIER_PIPS=[[LB_ICONS.None,LB_ICONS.None,LB_ICONS.None],[LB_ICONS.Neutral,LB_ICONS.None,LB_ICONS.None],[LB_ICONS.Neutral,LB_ICONS.Neutral,LB_ICONS.None],[LB_ICONS.Max,LB_ICONS.Max,LB_ICONS.Max]];
 function cmpLbPipsRow(a0,a1,a2){return [a0,a1,a2].map(src=>`<img src="${imgUrl(src)}" alt="" loading="lazy" decoding="async" fetchpriority="low">`).join('')}
@@ -1650,7 +1663,7 @@ async function maybeUnlockNpcView(q,data){if(!isLikelyIdQuery(q))return false;co
 // A malformed brace here can accidentally change scope for many later globals.
 function renderListThumb(row,type,size,opts){
 const o=opts||{};
-if(type==='supp'&&row.is_limited_time)return renderTbSupporterCardThumb(row,size);
+if(type==='supp')return renderTbSupporterCardThumb(row,size,o);
 const r=row.rarity||'N';
 const ld=size?'eager':'lazy';
 const npcNeutral=o.npcDetailThumb&&(type==='unit'||type==='char');
@@ -1704,19 +1717,28 @@ const src=(s&&s.portrait)||(s&&s.thum)||'';
 if(!src)return`<div class="tb-supp-portrait-only tb-supp-portrait-only--empty" style="width:${sz}px;height:${sz}px" aria-hidden="true"><span>🎧</span></div>`;
 return`<div class="tb-supp-portrait-only" style="width:${sz}px;height:${sz}px">${imgTag(src,{cls:'tb-supp-portrait-only-img',webp:true,alt:'',loading:'eager',onerror:"this.style.display='none'"})}</div>`;
 }
-function renderTbSupporterCardThumb(row,size){
+function renderTbSupporterCardThumb(row,size,opts){
+const o=opts||{};
 const sz=size||96;
-const ld='eager';
+const ld=size?'eager':'lazy';
 const thumErr="var w=this.closest('.list-thumb-portrait-wrap');var ph=w&&w.querySelector('.list-thumb-placeholder');if(ph){ph.style.display='flex'}this.style.display='none'";
 let portrait='';
 const suppImg=(row&&row.portrait)||(row&&row.thum)||'';
 if(suppImg){portrait=pictureRasterHtml(suppImg,{cls:'list-thumb-portrait',loading:ld,decoding:'async',onerror:thumErr,lazy:false})}
 portrait+=`<div class="list-thumb-placeholder" style="display:${suppImg?'none':'flex'}">🎧</div>`;
+const frames=supporterTbFramePaths(row);
 const baseInner=pictureRasterHtml(TB_SUPPORTER_TB_BASE,{cls:'list-thumb-base',loading:ld,decoding:'async',alt:'',lazy:false});
-const frL=pictureRasterHtml(TB_SUPPORTER_TB_FRAME_LR,{cls:'tb-supp-tb-side tb-supp-tb-side--left',loading:ld,decoding:'async',alt:'',lazy:false});
-const frR=pictureRasterHtml(TB_SUPPORTER_TB_FRAME_LR,{cls:'tb-supp-tb-side tb-supp-tb-side--right',loading:ld,decoding:'async',alt:'',lazy:false});
-const frB=pictureRasterHtml(TB_SUPPORTER_TB_FRAME_BT,{cls:'tb-supp-tb-bottom',loading:ld,decoding:'async',alt:'',lazy:false});
-return`<div class="tb-supp-tb-composite" style="width:${sz}px;height:${sz}px"><div class="tb-supp-tb-back">${baseInner}</div><div class="list-thumb-portrait-wrap tb-supp-tb-portrait-wrap">${portrait}</div>${frL}${frR}${frB}</div>`;
+const frL=pictureRasterHtml(frames.lr,{cls:'tb-supp-tb-side tb-supp-tb-side--left',loading:ld,decoding:'async',alt:'',lazy:false});
+const frR=pictureRasterHtml(frames.lr,{cls:'tb-supp-tb-side tb-supp-tb-side--right',loading:ld,decoding:'async',alt:'',lazy:false});
+const frT=pictureRasterHtml(frames.tb,{cls:'tb-supp-tb-end tb-supp-tb-top',loading:ld,decoding:'async',alt:'',lazy:false});
+const frB=pictureRasterHtml(frames.tb,{cls:'tb-supp-tb-end tb-supp-tb-bottom',loading:ld,decoding:'async',alt:'',lazy:false});
+let icons='';
+if(!o.pickerThumb&&row&&row.acquisition_icon){
+icons+=`<span class="list-thumb-icon-wrap">${pictureRasterHtml(row.acquisition_icon,{cls:'list-thumb-acq-icon',loading:ld,decoding:'async',alt:'',lazy:false})}</span>`;
+}
+const iconsWrap=icons?`<div class="list-thumb-icons">${icons}</div>`:'';
+const pk=o.pickerThumb?' tb-supp-tb-composite--picker':'';
+return`<div class="tb-supp-tb-composite${pk}" style="width:${sz}px;height:${sz}px"><div class="tb-supp-tb-back">${baseInner}</div><div class="list-thumb-portrait-wrap tb-supp-tb-portrait-wrap">${portrait}</div>${frL}${frR}${frT}${frB}${iconsWrap}</div>`;
 }
 function buildTableHeaders(){const cs=S.characters,us=S.units,ss=S.supporters;const _csl=k=>`<span class="th-full">${t('col_'+k.toLowerCase())}</span><span class="th-mob">${tableStatMobLabel(k)}</span>`;const _usl=k=>{const full=t('col_'+k.toLowerCase());const mob=unitTableStatHeaderLabel(k);return mob===full?full:`<span class="th-full">${full}</span><span class="th-mob">${mob}</span>`};const _spl=suppTableHeaderLabel;document.getElementById('charThead').innerHTML=`<tr><th class="col-thum" style="cursor:default"></th><th class="col-name ${cs.sort==='name'?'sort-active':''}" onclick="sortCol('characters','name')">${t('col_name')} <span class="sort-arrow">${cs.sort==='name'?(cs.dir==='desc'?'▼':'▲'):'▲'}</span></th><th class="col-stat ${cs.sort==='Ranged'?'sort-active':''}" title="${esc(t('col_ranged'))}" onclick="sortCol('characters','Ranged')">${_csl('Ranged')} <span class="sort-arrow">${cs.sort==='Ranged'?(cs.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${cs.sort==='Melee'?'sort-active':''}" title="${esc(t('col_melee'))}" onclick="sortCol('characters','Melee')">${_csl('Melee')} <span class="sort-arrow">${cs.sort==='Melee'?(cs.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${cs.sort==='Awaken'?'sort-active':''}" title="${esc(t('col_awaken'))}" onclick="sortCol('characters','Awaken')">${_csl('Awaken')} <span class="sort-arrow">${cs.sort==='Awaken'?(cs.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${cs.sort==='Defense'?'sort-active':''}" title="${esc(t('col_defense'))}" onclick="sortCol('characters','Defense')">${_csl('Defense')} <span class="sort-arrow">${cs.sort==='Defense'?(cs.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${cs.sort==='Reaction'?'sort-active':''}" title="${esc(t('col_reaction'))}" onclick="sortCol('characters','Reaction')">${_csl('Reaction')} <span class="sort-arrow">${cs.sort==='Reaction'?(cs.dir==='desc'?'▼':'▲'):'▼'}</span></th></tr>`;document.getElementById('unitThead').innerHTML=`<tr><th class="col-thum" style="cursor:default"></th><th class="col-name ${us.sort==='name'?'sort-active':''}" onclick="sortCol('units','name')">${t('col_name')} <span class="sort-arrow">${us.sort==='name'?(us.dir==='desc'?'▼':'▲'):'▲'}</span></th><th class="col-stat ${us.sort==='HP'?'sort-active':''}" title="${esc(t('col_hp'))}" onclick="sortCol('units','HP')">${_usl('HP')} <span class="sort-arrow">${us.sort==='HP'?(us.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${us.sort==='EN'?'sort-active':''}" title="${esc(t('col_en'))}" onclick="sortCol('units','EN')">${_usl('EN')} <span class="sort-arrow">${us.sort==='EN'?(us.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${us.sort==='ATK'?'sort-active':''}" title="${esc(t('col_atk'))}" onclick="sortCol('units','ATK')">${_usl('ATK')} <span class="sort-arrow">${us.sort==='ATK'?(us.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${us.sort==='DEF'?'sort-active':''}" title="${esc(t('col_def'))}" onclick="sortCol('units','DEF')">${_usl('DEF')} <span class="sort-arrow">${us.sort==='DEF'?(us.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${us.sort==='MOB'?'sort-active':''}" title="${esc(t('col_mob'))}" onclick="sortCol('units','MOB')">${_usl('MOB')} <span class="sort-arrow">${us.sort==='MOB'?(us.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${us.sort==='MOV'?'sort-active':''}" title="${esc(t('col_mov'))}" onclick="sortCol('units','MOV')">${_usl('MOV')} <span class="sort-arrow">${us.sort==='MOV'?(us.dir==='desc'?'▼':'▲'):'▼'}</span></th></tr>`;document.getElementById('suppThead').innerHTML=`<tr><th class="col-thum" style="cursor:default"></th><th class="col-name ${ss.sort==='name'?'sort-active':''}" onclick="sortCol('supporters','name')">${t('col_name')} <span class="sort-arrow">${ss.sort==='name'?(ss.dir==='desc'?'▼':'▲'):'▲'}</span></th><th class="col-tag ${ss.sort==='series_tag'?'sort-active':''}" title="${esc(t('col_series_tag'))}" onclick="sortCol('supporters','series_tag')">${_spl('col_series_tag')} <span class="sort-arrow">${ss.sort==='series_tag'?(ss.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-boost ${ss.sort==='boost'?'sort-active':''}" title="${esc(t('col_boost'))}" onclick="sortCol('supporters','boost')">${_spl('col_boost')} <span class="sort-arrow">${ss.sort==='boost'?(ss.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-skill" style="cursor:default" title="${esc(t('sec_active_skills'))}">${_spl('sec_active_skills')}</th></tr>`;const st=S.stages;const ms=S.modifications;document.getElementById('modThead').innerHTML=`<tr><th class="col-thum" style="cursor:default;width:48px"></th><th class="col-name ${ms.sort==='name'?'sort-active':''}" onclick="sortColMod('name')">${t('col_name')} <span class="sort-arrow">${ms.sort==='name'?(ms.dir==='desc'?'▼':'▲'):'▲'}</span></th><th class="col-tag ${ms.sort==='tags'?'sort-active':''}" onclick="sortColMod('tags')">${t('col_series_tag')} <span class="sort-arrow">${ms.sort==='tags'?(ms.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-details ${ms.sort==='details'?'sort-active':''}" onclick="sortColMod('details')">${t('col_details')} <span class="sort-arrow">${ms.sort==='details'?(ms.dir==='desc'?'▼':'▲'):'▲'}</span></th></tr>`;document.getElementById('stageThead').innerHTML=`<tr><th class="col-thum" style="cursor:default"></th><th class="col-diff" style="cursor:default">${t('col_stage_diff')}</th><th class="col-number ${st.sort==='stage_number'?'sort-active':''}" onclick="sortColStage('stage_number')">${t('col_stage_no')} <span class="sort-arrow">${st.sort==='stage_number'?(st.dir==='desc'?'▼':'▲'):'▲'}</span></th><th class="col-name" style="cursor:default">${t('col_name')}</th><th class="col-cp" style="cursor:default">${t('col_stage_cp')}</th><th class="col-terrain" style="cursor:default">${t('col_stage_terrain')}</th></tr>`}
 const DEFAULT_BROWSE_LIST_PER_PAGE=50;
