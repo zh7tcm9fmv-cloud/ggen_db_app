@@ -1693,6 +1693,18 @@ def _weapon_max_range_decrease_filter_keys(text):
         or re.search(r'reduce\s+physical\s+weapon\s+max\s+range', sl)
     ):
         keys.add('range_phys')
+    # Type-agnostic max-range down (all weapon types) — match both filter keys for now.
+    if (
+        re.search(r'(?<!beam )(?<!physical )weapons max range down', sl)
+        or ('the max range of weapon' in sl and ('decrease' in sl or 'down' in sl))
+        or '武装最大射程ダウン' in s
+        or '武裝最大射程降低' in s
+        or re.search(r'(?<!ビーム)(?<!物理)武装の最大射程が\d+減少', s)
+        or re.search(r'(?<!光束)(?<!物理)(?<!鐳射)武裝的最大射程減少', s)
+        or re.search(r'decrease\s+special\s+weapon\s+max\s+range', sl)
+        or re.search(r'reduce\s+special\s+weapon\s+max\s+range', sl)
+    ):
+        keys.update(('range_beam', 'range_phys'))
     return frozenset(keys)
 
 
