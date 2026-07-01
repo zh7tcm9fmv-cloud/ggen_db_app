@@ -132,7 +132,7 @@
     "AvailableScheduleId": 0,
     "ReceivableScheduleId": 0,
     "IsHidden": false,
-    "GooglePlayGameServiceAchievementsId": 0
+    "GooglePlayGameServiceAchievementsId": 110010000001
   },
   {
     "Id": 110010100101,
@@ -5172,7 +5172,7 @@
     "AvailableScheduleId": 0,
     "ReceivableScheduleId": 0,
     "IsHidden": false,
-    "GooglePlayGameServiceAchievementsId": 0
+    "GooglePlayGameServiceAchievementsId": 110011900101
   },
   {
     "Id": 110011900102,
@@ -8337,7 +8337,7 @@
     "AvailableScheduleId": 0,
     "ReceivableScheduleId": 0,
     "IsHidden": false,
-    "GooglePlayGameServiceAchievementsId": 0
+    "GooglePlayGameServiceAchievementsId": 250110011101
   },
   {
     "Id": 250110011102,
@@ -8427,7 +8427,7 @@
     "AvailableScheduleId": 0,
     "ReceivableScheduleId": 0,
     "IsHidden": false,
-    "GooglePlayGameServiceAchievementsId": 0
+    "GooglePlayGameServiceAchievementsId": 250110011107
   },
   {
     "Id": 250110011108,
