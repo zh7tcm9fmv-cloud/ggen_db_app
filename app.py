@@ -1434,6 +1434,12 @@ def parse_weapon_range_non_map_ssp_ex_flag(val):
     return s in ('1', 'true', 'yes', 'on')
 
 
+def _weapon_is_ssp_ex_grid_weapon(wid, wt):
+    """EX weapons and SSP custom-core ids (…80 / …90) — not counted in default range filter."""
+    w = normalize_id(wid)
+    return str(wt) == '2' or w.endswith('90') or w.endswith('80')
+
+
 def _unit_weapon_subset_effective_ranges(uid, ld, lc, stat_mode, subset):
     """Effective max-range values for each eligible non-MAP weapon in subset."""
     sm = (stat_mode or 'normal').strip().lower()
@@ -1453,9 +1459,12 @@ def _unit_weapon_subset_effective_ranges(uid, ld, lc, stat_mode, subset):
         if wt == '3':
             continue
         if subset == 'ssp_ex':
-            if wt != '2' and not (wid.endswith('90') or wid.endswith('80')):
+            if not _weapon_is_ssp_ex_grid_weapon(wid, wt):
                 continue
-        elif subset != 'non_map':
+        elif subset == 'non_map':
+            if _weapon_is_ssp_ex_grid_weapon(wid, wt):
+                continue
+        else:
             continue
         ws = resolve_weapon_stats(
             wm, weapon_status_map, weapon_correction_map,
@@ -1464,7 +1473,7 @@ def _unit_weapon_subset_effective_ranges(uid, ld, lc, stat_mode, subset):
         )
         rx = int(ws.get('range_max', 0) or 0)
         bonus = 0
-        if sm == 'ssp':
+        if sm == 'ssp' and subset == 'ssp_ex':
             mwid = normalize_id(wm.get('main_weapon_id', '0') or '0')
             for cid in (wid, mwid):
                 if not cid or cid == '0':
@@ -1483,7 +1492,7 @@ def _unit_weapon_subset_effective_ranges(uid, ld, lc, stat_mode, subset):
 
 
 def unit_weapon_subset_max_range(uid, ld, lc, stat_mode, subset):
-    """Max effective range among non-MAP weapons; subset 'ssp_ex' (EX type + SSP id suffix) or 'non_map' (all grid weapons)."""
+    """Max effective range among non-MAP weapons; subset 'ssp_ex' (EX + SSP ids) or 'non_map' (base grid weapons only)."""
     ranges = _unit_weapon_subset_effective_ranges(uid, ld, lc, stat_mode, subset)
     if not ranges:
         return None
