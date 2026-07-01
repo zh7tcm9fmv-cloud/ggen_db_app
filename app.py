@@ -2377,13 +2377,29 @@ def _supporter_max_tier3_leader_pct(sid, leader_text_map):
     return max_pct
 
 
+def _supporter_is_limited_pickup_by_leader_skill(sid, leader_text_map):
+    """True when LB3 grants 44% on a single tag (not dual-tag AND 28%+44% rows)."""
+    tier3 = [ls for ls in supporter_leader_map.get(normalize_id(sid), []) if ls.get('tier') == 3]
+    if not tier3:
+        return False
+    pcts = []
+    for ls in tier3:
+        desc = leader_text_map.get(ls.get('desc_lang_id', ''), '')
+        pcts.append(_leader_skill_pct_from_desc(desc))
+    if max(pcts) != LIMITED_SUPPORTER_LEADER_PCT:
+        return False
+    if len(tier3) >= 2 and any(p < LIMITED_SUPPORTER_LEADER_PCT for p in pcts):
+        return False
+    return True
+
+
 def _compute_limited_time_supporter_ids():
-    """Limited pickup supporters: tier-3 leader skill buff is 44% (standard UR cap is lower)."""
+    """Limited pickup supporters: tier-3 leader skill buff is 44% on one tag (standard UR cap)."""
     raw = load_json(os.path.join(LANG_PATHS['EN']['lang'], 'm_supporter_leader_skill_content.json'))
     text_map = create_lang_text_map(raw) if raw else {}
     out = set()
     for sid in supporter_leader_map:
-        if _supporter_max_tier3_leader_pct(sid, text_map) == LIMITED_SUPPORTER_LEADER_PCT:
+        if _supporter_is_limited_pickup_by_leader_skill(sid, text_map):
             out.add(normalize_id(sid))
     return frozenset(out)
 
