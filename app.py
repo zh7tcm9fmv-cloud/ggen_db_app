@@ -1650,26 +1650,7 @@ def classify_unit_weapon_trait_debuff_keys(line):
     ):
         keys.add('wp_spec')
 
-    if (
-        '光束武裝最大射程' in s
-        or '光束武裝的最大射程' in s
-        or '鐳射武裝最大射程' in s
-        or '鐳射武裝的最大射程' in s
-        or 'ビーム武装最大射程' in s
-        or 'beam weapons max range down' in sl
-        or ('max range of beam' in sl and 'decrease' in sl)
-        or 'ビーム武装の最大射程' in s
-    ):
-        keys.add('range_beam')
-    elif (
-        '物理武裝最大射程' in s
-        or '物理武裝的最大射程' in s
-        or '物理武装最大射程' in s
-        or 'physical weapons max range down' in sl
-        or ('max range of physical' in sl and 'decrease' in sl)
-        or '物理武装の最大射程' in s
-    ):
-        keys.add('range_phys')
+    keys.update(_weapon_max_range_decrease_filter_keys(s))
 
     # Preemptive Strike (often on SSP weapon lines; EN / JA+TW data use mixed phrasing)
     if _trait_text_indicates_preemptive_strike(s):
@@ -1679,6 +1660,45 @@ def classify_unit_weapon_trait_debuff_keys(line):
         keys.add('absolute_hit')
 
     return frozenset(keys)
+
+
+def _weapon_max_range_decrease_filter_keys(text):
+    """Return range_beam / range_phys debuff filter keys for max-range-down trait lines."""
+    if not text:
+        return frozenset()
+    s = str(text).strip()
+    sl = s.lower()
+    keys = set()
+    if (
+        '光束武裝最大射程' in s
+        or '光束武裝的最大射程' in s
+        or '鐳射武裝最大射程' in s
+        or '鐳射武裝的最大射程' in s
+        or 'ビーム武装最大射程' in s
+        or 'beam weapons max range down' in sl
+        or ('max range of beam' in sl and 'decrease' in sl)
+        or 'ビーム武装の最大射程' in s
+        or re.search(r'decrease\s+beam\s+weapon\s+max\s+range', sl)
+        or re.search(r'reduce\s+beam\s+weapon\s+max\s+range', sl)
+    ):
+        keys.add('range_beam')
+    if (
+        '物理武裝最大射程' in s
+        or '物理武裝的最大射程' in s
+        or '物理武装最大射程' in s
+        or 'physical weapons max range down' in sl
+        or ('max range of physical' in sl and 'decrease' in sl)
+        or '物理武装の最大射程' in s
+        or re.search(r'decrease\s+physical\s+weapon\s+max\s+range', sl)
+        or re.search(r'reduce\s+physical\s+weapon\s+max\s+range', sl)
+    ):
+        keys.add('range_phys')
+    return frozenset(keys)
+
+
+def _trait_text_indicates_weapon_max_range_decrease(text):
+    """True if trait line inflicts a weapon max-range decrease (EN / JA / zh-Hant)."""
+    return bool(_weapon_max_range_decrease_filter_keys(text))
 
 
 def _trait_text_indicates_absolute_hit(text):
@@ -11153,7 +11173,11 @@ def eval_icon_color(tl, wt):
     for tr in tl:
         trl = (tr or '').lower()
         tro = tr or ''
-        if 'the max range of' in trl or '最大射程' in tro:
+        if (
+            _trait_text_indicates_weapon_max_range_decrease(tr)
+            or 'the max range of' in trl
+            or '最大射程' in tro
+        ):
             hp = True
             continue
         if re.search(r'(decrease|reduce)s?\s+target', trl) or 'inflict' in trl:
