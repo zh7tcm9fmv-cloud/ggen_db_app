@@ -8012,7 +8012,11 @@ def coalesce_ability_resource_id(ab_id, trait_set_id=''):
     return ''
 
 SDC_DETAIL_MARKER = "Can execute Support Defense when an enemy responds to an ally's attack with a counter during a fight."
-SDC_EXPLICIT_IDS = {'1501000103'}
+SDC_DETAIL_PHRASE_RE = re.compile(
+    r"\b(?:and\s+)?can\s+execute\s+support\s+defense\s+when\s+an\s+enemy\s+responds\s+to\s+an\s+ally['\u2019]?s\s+attack\s+with\s+a\s+counter",
+    re.IGNORECASE | re.DOTALL,
+)
+SDC_EXPLICIT_ABILITY_IDS = {'2018601'}
 CHANCE_STEP_EX_FILTER_ID = 'chance_step_ex'
 CHANCE_STEP_EX_FILTER_NAME = 'Chance Step x2'
 CHANCE_STEP_PLUS_ONE_RE = re.compile(r'chance\s*step\s*\+\s*1(?!\d)', re.IGNORECASE)
@@ -8593,11 +8597,21 @@ def _unit_ids_for_terrain_filter(uid, info):
     return unit_transform_family_map.get(mid, [uid])
 
 
+def _ability_detail_has_sdc_counter_effect(text):
+    """True when ability detail text grants Support Defense on enemy counter (EN phrasing)."""
+    if not text:
+        return False
+    blob = str(text)
+    if SDC_DETAIL_MARKER in blob:
+        return True
+    return bool(SDC_DETAIL_PHRASE_RE.search(blob))
+
+
 def _precompute_sdc_data():
     """Find all character ability IDs whose detail text contains the SDC marker.
     Also includes any explicitly listed IDs (e.g. EX abilities with same content).
     Returns (set_of_ids, representative_non_ex_id)."""
-    sdc_ids = set(SDC_EXPLICIT_IDS)
+    sdc_ids = set(SDC_EXPLICIT_ABILITY_IDS)
     representative_id = ''
     ld = LANG_DATA.get(CALC_LANG, LANG_DATA.get(DEFAULT_LANG, {}))
     ldc = ld
@@ -8628,7 +8642,7 @@ def _precompute_sdc_data():
                 d.get('text', '') if isinstance(d, dict) else str(d)
                 for d in bab.get('details', [])
             )
-            if SDC_DETAIL_MARKER in detail_blob:
+            if _ability_detail_has_sdc_counter_effect(detail_blob):
                 sdc_ids.add(aid)
                 if not bab.get('is_ex') and ri == '4' and not representative_id:
                     representative_id = aid
