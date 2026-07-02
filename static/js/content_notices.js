@@ -3,6 +3,7 @@
   const GAME_NEWS_SEEN_KEY = 'ggen_game_news_seen';
   const WHATS_NEW_SEEN_KEY = 'ggen_whats_new_seen';
   const LATEST_RELEASE_SEEN_KEY = 'ggen_latest_release_seen';
+  const KOFI_POST_SEEN_KEY = 'ggen_kofi_post_seen';
   const PAGE_VISITS_KEY = 'ggen_page_visits';
   /** Nav tabs that show a notice until the user opens the page once. Bump version to re-notify everyone. */
   const PAGE_VISIT_NOTICES = [{ pageId: 'master_league', tabId: 'navMasterLeagueTab', version: '1' }];
@@ -19,6 +20,7 @@
     btBanners: null,
     btVoteMine: {},
     btVoteTotals: {},
+    kofiPost: null,
   };
 
   function readPersistedLang() {
@@ -184,6 +186,47 @@
       };
       localStorage.setItem(key, JSON.stringify(next));
     } catch (_) {}
+  }
+
+  function updateKofiPostNotice(show) {
+    const link = document.getElementById('kofiHeaderLink');
+    if (!link) return;
+    link.classList.add('ui-notice-anchor');
+    setNotice(link, show);
+  }
+
+  async function bootstrapKofiPost() {
+    const link = document.getElementById('kofiHeaderLink');
+    ensureNoticeFlare(link);
+    if (link && !link.dataset.kofiNoticeBound) {
+      link.dataset.kofiNoticeBound = '1';
+      link.addEventListener('click', () => markKofiPostSeen());
+    }
+    const seen = readGlobalSeen(KOFI_POST_SEEN_KEY);
+    try {
+      const r = await fetch(
+        '/api/kofi/status?last_seen_fp=' + encodeURIComponent(seen.fp || ''),
+        { credentials: 'same-origin', cache: 'no-store' }
+      );
+      if (!r.ok) {
+        updateKofiPostNotice(false);
+        return;
+      }
+      const d = await r.json();
+      state.kofiPost = d;
+      updateKofiPostNotice(!!d.has_new);
+    } catch (_) {
+      updateKofiPostNotice(false);
+    }
+  }
+
+  function markKofiPostSeen() {
+    const fp = state.kofiPost && state.kofiPost.content_fp ? String(state.kofiPost.content_fp) : '';
+    if (fp) {
+      writeGlobalSeen(KOFI_POST_SEEN_KEY, { fp, at: Date.now() });
+      if (state.kofiPost) state.kofiPost = Object.assign({}, state.kofiPost, { has_new: false });
+    }
+    updateKofiPostNotice(false);
   }
 
   function updateGameNewsNotice(show) {
@@ -467,6 +510,7 @@
         ev.key === GAME_NEWS_SEEN_KEY ||
         ev.key === WHATS_NEW_SEEN_KEY ||
         ev.key === LATEST_RELEASE_SEEN_KEY ||
+        ev.key === KOFI_POST_SEEN_KEY ||
         ev.key === PAGE_VISITS_KEY ||
         ev.key === 'ggen_bt_vote_notice_off'
       ) {
@@ -490,6 +534,7 @@
       bootstrapLatestRelease(),
       bootstrapWhatsNew(),
       bootstrapBtVotes(state.lang),
+      bootstrapKofiPost(),
     ]);
     bootstrapPageVisitNotices();
     refreshHomeAggregate();
@@ -504,6 +549,8 @@
     markGameNewsSeenForLang,
     markLatestReleaseSeen,
     markWhatsNewSeen,
+    markKofiPostSeen,
+    bootstrapKofiPost,
     markPageVisitSeen,
     bootstrapPageVisitNotices,
     updateBtVoteNotices,
@@ -516,6 +563,7 @@
     GAME_NEWS_SEEN_KEY,
     WHATS_NEW_SEEN_KEY,
     LATEST_RELEASE_SEEN_KEY,
+    KOFI_POST_SEEN_KEY,
     PAGE_VISITS_KEY,
     PAGE_VISIT_NOTICES,
     setLang(lang) {

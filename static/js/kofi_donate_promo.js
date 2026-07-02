@@ -359,10 +359,14 @@
     var kofiLink = document.getElementById('kofiHeaderLink');
     if (kofiLink) {
       kofiLink.addEventListener('click', function () {
+        if (global.GgenContentNotices && typeof global.GgenContentNotices.markKofiPostSeen === 'function') {
+          global.GgenContentNotices.markKofiPostSeen();
+        }
         snoozePromo();
         if (root.classList.contains('is-visible')) closeKofiDonatePromo(false);
       });
     }
+
 
     global.addEventListener('resize', function () {
       clearTimeout(_resizeTimer);

@@ -13344,6 +13344,130 @@ def _game_news_status_payload(lang_code, last_seen_at=0, last_seen_fp=''):
     }
 
 
+KOFI_PAGE_URL = (os.environ.get('KOFI_PAGE_URL') or 'https://ko-fi.com/E1E21WL8RV').strip()
+KOFI_PUBLISH_SECRET = (os.environ.get('KOFI_PUBLISH_SECRET') or '').strip()
+
+
+def _kofi_updates_write_path():
+    vol = (os.environ.get('GGEN_PERSISTENT_DIR') or os.environ.get('RAILWAY_VOLUME_MOUNT_PATH') or '').strip()
+    if vol:
+        return os.path.join(vol, 'kofi_updates.json')
+    return os.path.join(app_dir, 'data', 'persistent', 'kofi_updates.json')
+
+
+def _kofi_updates_bundled_path():
+    return os.path.join(app_dir, 'data', 'kofi_updates.json')
+
+
+def _load_kofi_updates():
+    """Latest Ko-fi post marker for header notice (persistent file overrides bundled default)."""
+    paths = [_kofi_updates_write_path(), _kofi_updates_bundled_path()]
+    for path in paths:
+        try:
+            with open(path, encoding='utf-8') as f:
+                row = json.load(f)
+            if isinstance(row, dict):
+                return {
+                    'content_fp': str(row.get('content_fp') or '').strip(),
+                    'posted_at': int(row.get('posted_at') or 0),
+                    'title': str(row.get('title') or '').strip(),
+                    'post_url': str(row.get('post_url') or '').strip(),
+                }
+        except (OSError, json.JSONDecodeError, TypeError, ValueError):
+            continue
+    return {'content_fp': '', 'posted_at': 0, 'title': '', 'post_url': ''}
+
+
+def _save_kofi_updates(row):
+    out = {
+        'content_fp': str((row or {}).get('content_fp') or '').strip(),
+        'posted_at': int((row or {}).get('posted_at') or 0),
+        'title': str((row or {}).get('title') or '').strip(),
+        'post_url': str((row or {}).get('post_url') or '').strip(),
+    }
+    path = _kofi_updates_write_path()
+    parent = os.path.dirname(path)
+    if parent:
+        os.makedirs(parent, exist_ok=True)
+    tmp = path + '.tmp'
+    with open(tmp, 'w', encoding='utf-8') as f:
+        json.dump(out, f, ensure_ascii=False, indent=2)
+        f.write('\n')
+    os.replace(tmp, path)
+    return out
+
+
+def _kofi_make_content_fp(posted_at, title='', post_url=''):
+    raw = f'{int(posted_at)}|{str(title or "").strip()}|{str(post_url or "").strip()}'
+    return hashlib.sha256(raw.encode('utf-8')).hexdigest()[:32]
+
+
+def _kofi_status_payload(last_seen_fp=''):
+    row = _load_kofi_updates()
+    fp = row.get('content_fp') or ''
+    seen_fp = (last_seen_fp or '').strip()
+    has_new = bool(fp) and fp != seen_fp
+    return {
+        'has_new': has_new,
+        'content_fp': fp,
+        'posted_at': int(row.get('posted_at') or 0),
+        'title': row.get('title') or '',
+        'post_url': row.get('post_url') or '',
+        'page_url': KOFI_PAGE_URL,
+    }
+
+
+def _kofi_publish_authorized():
+    if not KOFI_PUBLISH_SECRET:
+        return False
+    auth = (request.headers.get('Authorization') or '').strip()
+    if auth.lower().startswith('bearer '):
+        token = auth[7:].strip()
+    else:
+        token = (request.headers.get('X-Kofi-Publish-Secret') or '').strip()
+    if not token:
+        return False
+    try:
+        return secrets.compare_digest(token, KOFI_PUBLISH_SECRET)
+    except Exception:
+        return token == KOFI_PUBLISH_SECRET
+
+
+@app.route('/api/kofi/status')
+def api_kofi_status():
+    """Unread Ko-fi post indicator for header Support button."""
+    last_seen_fp = request.args.get('last_seen_fp', '')
+    payload = _kofi_status_payload(last_seen_fp)
+    r = jsonify(payload)
+    r.headers['Cache-Control'] = 'public, max-age=60'
+    return r
+
+
+@app.route('/api/kofi/publish', methods=['POST'])
+def api_kofi_publish():
+    """Mark a new Ko-fi post (call after publishing on Ko-fi). Requires KOFI_PUBLISH_SECRET."""
+    if not _kofi_publish_authorized():
+        return jsonify({'error': 'unauthorized'}), 401
+    body = request.get_json(silent=True) or {}
+    title = str(body.get('title') or '').strip()
+    post_url = str(body.get('post_url') or body.get('url') or '').strip()
+    posted_at = body.get('posted_at')
+    try:
+        posted_at = int(posted_at) if posted_at is not None else int(time.time())
+    except (TypeError, ValueError):
+        posted_at = int(time.time())
+    if post_url and not post_url.startswith('http'):
+        post_url = 'https://ko-fi.com/' + post_url.lstrip('/')
+    fp = _kofi_make_content_fp(posted_at, title, post_url)
+    row = _save_kofi_updates({
+        'content_fp': fp,
+        'posted_at': posted_at,
+        'title': title,
+        'post_url': post_url,
+    })
+    return jsonify({'ok': True, **row, 'page_url': KOFI_PAGE_URL})
+
+
 @app.route('/api/game_news/status')
 def api_game_news_status():
     """Unread Game News indicator — mirrors official NEW badges (released/updated timestamps)."""

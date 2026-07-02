@@ -519,3 +519,20 @@
     gap:6px;
   }
 }
+
+/* Ko-fi header button — new post notice (ui-notice-flare styles live in index.html) */
+.kofi-header-link.ui-notice-anchor{
+  position:relative;
+  overflow:visible;
+}
+.kofi-header-link .ui-notice-flare{
+  top:-6px;
+  right:-6px;
+  width:18px;
+  height:18px;
+  pointer-events:none;
+}
+.kofi-header-link.has-ui-notice{
+  border-color:rgba(255,90,90,.65)!important;
+  box-shadow:0 0 0 1px rgba(255,70,70,.45),0 0 10px rgba(255,60,60,.25)!important;
+}
