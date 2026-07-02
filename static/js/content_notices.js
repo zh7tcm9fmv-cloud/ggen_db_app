@@ -202,7 +202,7 @@
   }
 
   function isKofiNoticeEnabled() {
-    return !!(state.kofiNotice && state.kofiNotice.notice_enabled);
+    return !!(state.kofiNotice && state.kofiNotice.notice_enabled && state.kofiNotice.has_new);
   }
 
   function notifyKofiPromoNoticeLine() {
@@ -249,6 +249,7 @@
       state.kofiNotice = Object.assign({}, state.kofiNotice, { has_new: false });
     }
     updateKofiNotice(false);
+    notifyKofiPromoNoticeLine();
   }
 
   /** @deprecated use markKofiNoticeSeen */
