@@ -9547,7 +9547,7 @@ m=txt.match(/(?:the\s+)?(?:closer|farther|further)\s+(?:you\s+are(?:\s+(?:to|fro
 if(!m&&zh)m=txt.match(/距離敵方越(?:近|遠)，武裝POWER越為提升（最高提升(\d+)%）/);
 if(!m&&isJa){m=txt.match(/敵から(?:近い|遠い)ほど武装POWERが上昇[（(]最大(\d+)%上昇[）)]/);}
 if(m){const p=parseInt(m[1],10)||0;traits.distPowerMax=Math.max(traits.distPowerMax,p);noteHit(raw);}
-m=txt.match(/(?:lower|higher)\s+(?:your\s+)?remaining\s+HP.*?weapon\s+power\s+increases?\s*\(\s*up\s+to\s+(\d+)%(?:\s+increase)?\s*\)/i);
+m=txt.match(/(?:the\s+)?(?:lower|higher)\s+(?:(?:this\s+unit'?s|your)\s+)?remaining\s+HP.*?(?:more|greater)\s+weapon\s+power\s+increases?\s*\(\s*up\s+to\s+(\d+)%(?:\s+increase)?\s*\)/i);
 if(!m&&zh)m=txt.match(/自身剩餘HP越(?:高|低)，武裝POWER越為提升（最高提升(\d+)%）/);
 if(!m&&isJa)m=txt.match(/自身の残HPが(?:多い|少ない)ほど武装POWERが上昇（最大(\d+)%上昇）/);
 if(m){const p=parseInt(m[1],10)||0;traits.hpPowerMax=Math.max(traits.hpPowerMax,p);noteHit(raw);}
