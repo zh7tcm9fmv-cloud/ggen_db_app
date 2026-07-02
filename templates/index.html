@@ -2156,9 +2156,20 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 .unit-debuff-item--map-wrt{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;justify-items:start;column-gap:6px;text-align:left;padding:6px 8px;min-width:0}
 .unit-debuff-item--map-wrt>span{display:block;width:auto;text-align:left;white-space:normal;word-break:break-word;font-size:11px;line-height:1.25}
 .unit-debuff-grid--map-wrt{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
-.unit-debuff-item--map-wrt-sub{grid-column:2;margin-left:0;padding:5px 8px;border-style:dashed;background:rgba(26,34,54,.45);font-size:11px;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:6px;text-align:left}
-.unit-debuff-item--map-wrt-span{grid-column:1 / -1}
+.map-wrt-type-block{display:flex;flex-direction:column;border:1px solid var(--border-color);border-radius:8px;background:rgba(26,34,54,.6);overflow:hidden;min-width:0}
+.map-wrt-type-block.is-active{border-color:var(--accent-cyan);background:rgba(6,182,212,.12)}
+.map-wrt-type-block .map-wrt-type-main{border:none;border-radius:0;background:transparent;width:100%}
+.map-wrt-type-block .map-wrt-type-main.is-active{border:none;background:transparent;box-shadow:none}
+.map-wrt-type-subs{display:grid;grid-template-rows:0fr;opacity:0;overflow:hidden;pointer-events:none}
+.map-wrt-type-subs.is-open{grid-template-rows:1fr;opacity:1;pointer-events:auto;animation:map-wrt-subs-in .28s ease forwards}
+.map-wrt-type-subs-inner{min-height:0;overflow:hidden}
+.map-wrt-type-sub{border:none!important;border-top:1px dashed rgba(56,189,248,.28)!important;border-radius:0!important;background:rgba(26,34,54,.45)!important;width:100%;padding:5px 8px!important;font-size:11px}
+.map-wrt-type-sub.is-active{background:rgba(6,182,212,.18)!important}
+.unit-debuff-item--map-wrt-sub{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:6px;text-align:left}
 .unit-debuff-item--map-wrt-sub .unit-map-sub-filter-icon{width:22px;height:22px;object-fit:contain;flex-shrink:0}
+.unit-debuff-item--map-wrt-span{grid-column:1 / -1}
+@keyframes map-wrt-subs-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+@media (prefers-reduced-motion:reduce){.map-wrt-type-subs.is-open{animation:none}}
 .unit-debuff-grid--map-wrt .map-wrt-filter-icon-preview{width:46px;min-width:46px;height:42px}
 .unit-debuff-grid--map-wrt .map-wrt-am-filter-icon{width:30px;height:30px}
 .map-wrt-filter-icon-preview{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:58px;min-width:58px;height:52px;overflow:hidden;line-height:0;pointer-events:none}
