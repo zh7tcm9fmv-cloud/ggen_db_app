@@ -8630,7 +8630,7 @@ const supCntActive=(_dcEffectiveSupportCounterAtkPct()|0)>0;
 const advantageTagActive=(advAtkPct|0)>0&&S.dc.applyAdvantageEnemyTag!==false;
 const leaderAtkActive=(uEff.leaderPct|0)>0;
 const dEx=uEff.deltaExAtk|0;
-const atkExSub=exSq>0?`<div id="dcAtkUnitAtkExSub" class="stat-card-bonus" title="EX squad % delta within the same % bucket as the panel (panel uses floor; damage ⑧ may use ceil on MS ATK).">+${fmtN(dEx)} · EX squad +${exSq}%</div>`:`<div id="dcAtkUnitAtkExSub" style="display:none" aria-hidden="true"></div>`;
+const atkExSub=exSq>0?`<div id="dcAtkUnitAtkExSub" class="stat-card-bonus" title="EX squad % delta within the same % bucket as the panel (floor; same value used in damage ⑧).">+${fmtN(dEx)} · EX squad +${exSq}%</div>`:`<div id="dcAtkUnitAtkExSub" style="display:none" aria-hidden="true"></div>`;
 const atkSpanClass=hAtk==='dc-stat-val--penalized'?'dc-stat-val--penalized':((exSq>0||hAtk||leaderAtkActive||pairActive||counterActive||supCntActive||advantageTagActive||unitTurnAtkOn||sheetBuffOn)?'dc-stat-val--buffed':'');
 let atkMainTitle=exSq>0?(counterActive?'Includes EX squad ATK % and own ATK when countering (unit)':'Includes EX squad ATK %'):(counterActive?'Includes own ATK when countering (unit)':'');
 if(supCntActive){atkMainTitle=(atkMainTitle?atkMainTitle+'; ':'')+'Support Attack/Counter +% MS ATK (pilot)'}
@@ -10825,7 +10825,7 @@ cb.disabled=false;
 _dcApplyAutoAdvantageForPsycommuDefender();
 cb.checked=S.dc.applyAdvantageEnemyTag!==false;
 }
-/** Green +lines under MS HP/ATK/DEF/MOB: % bucket uses floor to match database stat display; damage calc uses ceil separately via forDamage. */
+/** Green +lines under MS HP/ATK/DEF/MOB: % bucket uses floor to match database stat display and in-game damage (same as panel MS ATK). */
 function _dcMsStatEnhancementLinesHtml(ctx,atkUnitStats){
 const F=Math.floor;
 const c=ctx||{};
@@ -10873,7 +10873,7 @@ const pctAtkNoEx=F(atkBase*(100+pAtk+opAt+tAtk+sheetBuffPct+lp+(scAtk|0)+(supCnt
 const atkHtml=L(pctAtkNoEx,'Option part %, 1-turn MS ATK %, leader %, ML/GO, squad conditions, Support Attack/Counter % (EX squad % is on the EX line below)')+L(opFlat.Attack|0,'Option part flat Attack')+L(atkSupport|0,'Supporter ATK support');
 return{hpHtml,atkHtml,defHtml,mobHtml};
 }
-/** opts.forDamage: true → ceil % buckets (Firered damage ⑧); false/omit → floor (database / unit panel). */
+/** opts.forDamage: legacy flag — true ceil % buckets (unused in calculateDamage; kept for probes). Default floor matches panel + in-game MS stats. */
 function _dcGetModifiedAttackerUnitStatsFromCtx(ctx,atkUnitStats,opts){
 const F=Math.floor,C=Math.ceil;
 const forDamage=!!(opts&&opts.forDamage);
@@ -10953,7 +10953,7 @@ if(!wpns.length)return null;
 const wpn=wpns[S.dc.wpnIdx];if(!wpn)return null;
 const lvData=_dcWeaponLevelRow(wpn,S.dc.wpnLv);
 
-const uMod=_dcGetModifiedAttackerUnitStatsFromCtx(S.dc,atkUnitStats,{forDamage:true});
+const uMod=_dcGetModifiedAttackerUnitStatsFromCtx(S.dc,atkUnitStats);
 let unitAtk=uMod.unitAtk,unitHp=uMod.unitHp,unitDefVal=uMod.unitDefVal,unitMob=uMod.unitMob,unitMove=uMod.unitMove;
 const pairUd=_dcPilotPairUnitAtkDefPct(unitAtk,unitDefVal);
 unitAtk=pairUd.unitAtk;unitDefVal=pairUd.unitDefVal;
