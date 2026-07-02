@@ -9547,22 +9547,28 @@ m=txt.match(/(?:the\s+)?(?:closer|farther|further)\s+(?:you\s+are(?:\s+(?:to|fro
 if(!m&&zh)m=txt.match(/距離敵方越(?:近|遠)，武裝POWER越為提升（最高提升(\d+)%）/);
 if(!m&&isJa){m=txt.match(/敵から(?:近い|遠い)ほど武装POWERが上昇[（(]最大(\d+)%上昇[）)]/);}
 if(m){const p=parseInt(m[1],10)||0;traits.distPowerMax=Math.max(traits.distPowerMax,p);noteHit(raw);}
-m=txt.match(/(?:the\s+)?(?:lower|higher)\s+(?:(?:this\s+unit'?s|your)\s+)?remaining\s+HP.*?(?:more|greater)\s+weapon\s+power\s+increases?\s*\(\s*up\s+to\s+(\d+)%(?:\s+increase)?\s*\)/i);
+m=txt.match(/(?:the\s+)?(?:lower|higher)\s+(?:(?:this\s+unit'?s|your|own)\s+)?remaining\s+HP.*?(?:more|greater)\s+weapon\s+power\s+increases?\s*\(\s*up\s+to\s+(\d+)%(?:\s+increase)?\s*\)/i);
 if(!m&&zh)m=txt.match(/自身剩餘HP越(?:高|低)，武裝POWER越為提升（最高提升(\d+)%）/);
 if(!m&&isJa)m=txt.match(/自身の残HPが(?:多い|少ない)ほど武装POWERが上昇（最大(\d+)%上昇）/);
 if(m){const p=parseInt(m[1],10)||0;traits.hpPowerMax=Math.max(traits.hpPowerMax,p);noteHit(raw);}
 m=txt.match(/(?:With\s+More|With\s+Less)\s+Remaining\s+HP,?\s*Higher\s+Weapon\s+Power\s*LV\s*(\d+)/i);
 if(m){const p=_dcWeaponPowLvToMaxPct(m[1]);if(p){traits.hpPowerMax=Math.max(traits.hpPowerMax,p);noteHit(raw);}}
+m=txt.match(/Scaling\s+Weapon\s+Power\s+\((?:More|Less)\s+Remaining\s+HP\)\s*LV\s*(\d+)/i);
+if(m){const p=_dcWeaponPowLvToMaxPct(m[1]);if(p){traits.hpPowerMax=Math.max(traits.hpPowerMax,p);noteHit(raw);}}
 if(zh){m=txt.match(/剩餘HP越(?:高|低)武裝POWER提升\s*LV\s*(\d+)/i);if(m){const p=_dcWeaponPowLvToMaxPct(m[1]);if(p){traits.hpPowerMax=Math.max(traits.hpPowerMax,p);noteHit(raw);}}}
 if(isJa){m=txt.match(/残HP(?:多い|少ない)ほど武装POWER上昇\s*LV\s*(\d+)/i);if(m){const p=_dcWeaponPowLvToMaxPct(m[1]);if(p){traits.hpPowerMax=Math.max(traits.hpPowerMax,p);noteHit(raw);}}}
-m=txt.match(/the\s+higher\s+your\s+MP\s+is,?\s*the\s+greater\s+weapon\s+power\s+increases?\s*\(\s*up\s+to\s+(\d+)%(?:\s+increase)?\s*\)/i);
+m=txt.match(/the\s+higher\s+(?:your|own)\s+MP\s+is,?\s*the\s+(?:greater|more)\s+weapon\s+power\s+increases?\s*\(\s*up\s+to\s+(\d+)%(?:\s+increase)?\s*\)(?:\s+at\s+the\s+start\s+of\s+battle)?\.?/i);
 if(m){const p=parseInt(m[1],10)||0;traits.mpPowerMax=Math.max(traits.mpPowerMax,p);noteHit(raw);}
 if(zh){m=txt.match(/(?:戰鬥開始時，)?自身MP越高，武裝POWER越為提升（最高提升(\d+)%）/);if(m){const p=parseInt(m[1],10)||0;traits.mpPowerMax=Math.max(traits.mpPowerMax,p);noteHit(raw);}}
-if(isJa){m=txt.match(/戦闘開始時、自身のMPが多いほど武装POWERが上昇（最大(\d+)%上昇）/);if(m){const p=parseInt(m[1],10)||0;traits.mpPowerMax=Math.max(traits.mpPowerMax,p);noteHit(raw);}}
+if(isJa){m=txt.match(/(?:戦闘開始時、)?自身のMPが多いほど武装POWERが上昇（最大(\d+)%上昇）/);if(m){const p=parseInt(m[1],10)||0;traits.mpPowerMax=Math.max(traits.mpPowerMax,p);noteHit(raw);}}
 m=txt.match(/Scaling\s+Weapon\s+Power\s+\(High\s+(?:Max\s+)?MP\)(?:\s*LV\s*(\d+))?/i);
 if(m){const p=m[1]?_dcWeaponPowLvToMaxPct(m[1]):0;if(p){traits.mpPowerMax=Math.max(traits.mpPowerMax,p);noteHit(raw);}}
 if(zh){m=txt.match(/MP越高武裝POWER提升\s*LV\s*(\d+)/i);if(m){const p=_dcWeaponPowLvToMaxPct(m[1]);if(p){traits.mpPowerMax=Math.max(traits.mpPowerMax,p);noteHit(raw);}}}
-if(isJa){m=txt.match(/MP高いほど武装POWER上昇\s*LV\s*(\d+)/i);if(m){const p=_dcWeaponPowLvToMaxPct(m[1]);if(p){traits.mpPowerMax=Math.max(traits.mpPowerMax,p);noteHit(raw);}}}
+if(isJa){m=txt.match(/MP(?:高い|多い)ほど武装POWER上昇\s*LV\s*(\d+)/i);if(m){const p=_dcWeaponPowLvToMaxPct(m[1]);if(p){traits.mpPowerMax=Math.max(traits.mpPowerMax,p);noteHit(raw);}}}
+m=txt.match(/Increased\s+(?:Close|Long)\s+Range\s+Weapon\s+Power\s*LV\s*(\d+)/i);
+if(m){const p=_dcWeaponPowLvToMaxPct(m[1]);if(p){traits.distPowerMax=Math.max(traits.distPowerMax,p);noteHit(raw);}}
+if(zh){m=txt.match(/(?:近距離|遠距離)時武裝POWER提升\s*LV\s*(\d+)/i);if(m){const p=_dcWeaponPowLvToMaxPct(m[1]);if(p){traits.distPowerMax=Math.max(traits.distPowerMax,p);noteHit(raw);}}}
+if(isJa){m=txt.match(/(?:近距離|遠距離)時武装POWER上昇\s*LV\s*(\d+)/i);if(m){const p=_dcWeaponPowLvToMaxPct(m[1]);if(p){traits.distPowerMax=Math.max(traits.distPowerMax,p);noteHit(raw);}}}
 });
 _dcApplySspCorePowBonus(traits,sspCoreBonus,wpn);
 traits.powTraitHitSet=hit;
