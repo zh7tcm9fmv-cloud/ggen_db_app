@@ -93,3 +93,28 @@ Setup script: `scripts/feedback_google_sheets_webapp.gs`
 Logs after deploy should show `site_feedback: sheets=on`. Submissions appear as new rows in the sheet (same idea as Google Form responses, but the on-site form stays unchanged).
 
 Local dev still writes to `data/persistent/site_feedback.jsonl` when Sheets is not configured.
+
+---
+
+## Ko-fi header notice (admin toggle)
+
+Visitors see a red flare on **Support on Ko-fi** only when you turn it on from the admin page.
+
+| Variable | Value |
+|----------|--------|
+| `GGEN_KOFI_NOTICE_SECRET` | Long random string (admin password) |
+
+1. Add the variable on Railway and redeploy.
+2. Open **`/admin/kofi-notice`** (bookmark it).
+3. Enter the secret → **Show notice** when you want the flare live → **Hide notice** when done.
+
+State is stored in `data/persistent/kofi_notice.json` (or your Railway volume). Without a volume it resets on redeploy.
+
+Optional API (same secret as Bearer token):
+
+```bash
+curl -X POST https://ggendb.up.railway.app/api/kofi/notice/set \
+  -H "Authorization: Bearer YOUR_SECRET" \
+  -H "Content-Type: application/json" \
+  -d "{\"enabled\":true}"
+```

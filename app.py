@@ -13345,47 +13345,50 @@ def _game_news_status_payload(lang_code, last_seen_at=0, last_seen_fp=''):
 
 
 KOFI_PAGE_URL = (os.environ.get('KOFI_PAGE_URL') or 'https://ko-fi.com/E1E21WL8RV').strip()
-KOFI_PUBLISH_SECRET = (os.environ.get('KOFI_PUBLISH_SECRET') or '').strip()
+KOFI_NOTICE_SECRET = (
+    os.environ.get('GGEN_KOFI_NOTICE_SECRET')
+    or os.environ.get('KOFI_PUBLISH_SECRET')
+    or ''
+).strip()
 
 
-def _kofi_updates_write_path():
+def _kofi_notice_write_path():
     vol = (os.environ.get('GGEN_PERSISTENT_DIR') or os.environ.get('RAILWAY_VOLUME_MOUNT_PATH') or '').strip()
     if vol:
-        return os.path.join(vol, 'kofi_updates.json')
-    return os.path.join(app_dir, 'data', 'persistent', 'kofi_updates.json')
+        return os.path.join(vol, 'kofi_notice.json')
+    return os.path.join(app_dir, 'data', 'persistent', 'kofi_notice.json')
 
 
-def _kofi_updates_bundled_path():
-    return os.path.join(app_dir, 'data', 'kofi_updates.json')
+def _kofi_notice_bundled_path():
+    return os.path.join(app_dir, 'data', 'kofi_notice.json')
 
 
-def _load_kofi_updates():
-    """Latest Ko-fi post marker for header notice (persistent file overrides bundled default)."""
-    paths = [_kofi_updates_write_path(), _kofi_updates_bundled_path()]
+def _load_kofi_notice():
+    """Admin-controlled Ko-fi header notice (persistent file overrides bundled default)."""
+    paths = [_kofi_notice_write_path(), _kofi_notice_bundled_path()]
     for path in paths:
         try:
             with open(path, encoding='utf-8') as f:
                 row = json.load(f)
             if isinstance(row, dict):
                 return {
-                    'content_fp': str(row.get('content_fp') or '').strip(),
-                    'posted_at': int(row.get('posted_at') or 0),
-                    'title': str(row.get('title') or '').strip(),
-                    'post_url': str(row.get('post_url') or '').strip(),
+                    'notice_enabled': bool(row.get('notice_enabled')),
+                    'notice_version': max(0, int(row.get('notice_version') or 0)),
+                    'updated_at': max(0, int(row.get('updated_at') or 0)),
                 }
         except (OSError, json.JSONDecodeError, TypeError, ValueError):
             continue
-    return {'content_fp': '', 'posted_at': 0, 'title': '', 'post_url': ''}
+    return {'notice_enabled': False, 'notice_version': 0, 'updated_at': 0}
 
 
-def _save_kofi_updates(row):
+def _save_kofi_notice(row):
+    prev = _load_kofi_notice()
     out = {
-        'content_fp': str((row or {}).get('content_fp') or '').strip(),
-        'posted_at': int((row or {}).get('posted_at') or 0),
-        'title': str((row or {}).get('title') or '').strip(),
-        'post_url': str((row or {}).get('post_url') or '').strip(),
+        'notice_enabled': bool((row or {}).get('notice_enabled', prev.get('notice_enabled'))),
+        'notice_version': max(0, int((row or {}).get('notice_version', prev.get('notice_version') or 0))),
+        'updated_at': max(0, int((row or {}).get('updated_at', prev.get('updated_at') or 0))),
     }
-    path = _kofi_updates_write_path()
+    path = _kofi_notice_write_path()
     parent = os.path.dirname(path)
     if parent:
         os.makedirs(parent, exist_ok=True)
@@ -13397,73 +13400,123 @@ def _save_kofi_updates(row):
     return out
 
 
-def _kofi_make_content_fp(posted_at, title='', post_url=''):
-    raw = f'{int(posted_at)}|{str(title or "").strip()}|{str(post_url or "").strip()}'
-    return hashlib.sha256(raw.encode('utf-8')).hexdigest()[:32]
-
-
-def _kofi_status_payload(last_seen_fp=''):
-    row = _load_kofi_updates()
-    fp = row.get('content_fp') or ''
-    seen_fp = (last_seen_fp or '').strip()
-    has_new = bool(fp) and fp != seen_fp
+def _kofi_notice_status_payload(last_seen_version=0):
+    row = _load_kofi_notice()
+    version = int(row.get('notice_version') or 0)
+    enabled = bool(row.get('notice_enabled'))
+    try:
+        seen = max(0, int(last_seen_version or 0))
+    except (TypeError, ValueError):
+        seen = 0
+    has_new = enabled and version > seen
     return {
         'has_new': has_new,
-        'content_fp': fp,
-        'posted_at': int(row.get('posted_at') or 0),
-        'title': row.get('title') or '',
-        'post_url': row.get('post_url') or '',
+        'notice_enabled': enabled,
+        'notice_version': version,
+        'updated_at': int(row.get('updated_at') or 0),
         'page_url': KOFI_PAGE_URL,
     }
 
 
-def _kofi_publish_authorized():
-    if not KOFI_PUBLISH_SECRET:
+def _kofi_notice_secret_configured():
+    return bool(KOFI_NOTICE_SECRET)
+
+
+def _kofi_notice_admin_session_ok():
+    return session.get('kofi_notice_admin_unlocked') is True
+
+
+def _kofi_notice_bearer_authorized():
+    if not KOFI_NOTICE_SECRET:
         return False
     auth = (request.headers.get('Authorization') or '').strip()
     if auth.lower().startswith('bearer '):
         token = auth[7:].strip()
     else:
-        token = (request.headers.get('X-Kofi-Publish-Secret') or '').strip()
+        token = (request.headers.get('X-Kofi-Notice-Secret') or '').strip()
     if not token:
         return False
     try:
-        return secrets.compare_digest(token, KOFI_PUBLISH_SECRET)
+        return secrets.compare_digest(token, KOFI_NOTICE_SECRET)
     except Exception:
-        return token == KOFI_PUBLISH_SECRET
+        return token == KOFI_NOTICE_SECRET
+
+
+def _kofi_notice_admin_authorized():
+    return _kofi_notice_admin_session_ok() or _kofi_notice_bearer_authorized()
 
 
 @app.route('/api/kofi/status')
 def api_kofi_status():
-    """Unread Ko-fi post indicator for header Support button."""
-    last_seen_fp = request.args.get('last_seen_fp', '')
-    payload = _kofi_status_payload(last_seen_fp)
+    """Ko-fi header notice indicator for visitors."""
+    last_seen_version = request.args.get('last_seen_version', '0')
+    payload = _kofi_notice_status_payload(last_seen_version)
     r = jsonify(payload)
     r.headers['Cache-Control'] = 'public, max-age=60'
     return r
 
 
-@app.route('/api/kofi/publish', methods=['POST'])
-def api_kofi_publish():
-    """Mark a new Ko-fi post (call after publishing on Ko-fi). Requires KOFI_PUBLISH_SECRET."""
-    if not _kofi_publish_authorized():
+@app.route('/admin/kofi-notice')
+def admin_kofi_notice_page():
+    r = make_response(render_template(
+        'admin_kofi_notice.html',
+        image_cdn=IMAGE_CDN or '',
+        game_images_use_cdn=GAME_IMAGES_USE_CDN,
+    ))
+    r.headers['Cache-Control'] = 'no-store'
+    return r
+
+
+@app.route('/api/kofi/notice/admin/status')
+def api_kofi_notice_admin_status():
+    """Admin panel state (no secret in response)."""
+    row = _load_kofi_notice()
+    return jsonify({
+        'configured': _kofi_notice_secret_configured(),
+        'unlocked': _kofi_notice_admin_authorized(),
+        'notice_enabled': bool(row.get('notice_enabled')),
+        'notice_version': int(row.get('notice_version') or 0),
+        'updated_at': int(row.get('updated_at') or 0),
+        'page_url': KOFI_PAGE_URL,
+    })
+
+
+@app.route('/api/kofi/notice/unlock', methods=['POST'])
+def api_kofi_notice_unlock():
+    if not KOFI_NOTICE_SECRET:
+        return jsonify({'ok': False, 'error': 'not_configured'}), 503
+    data = request.get_json(force=True, silent=True) or {}
+    pw = (data.get('password') or data.get('secret') or '').strip()
+    if not pw:
+        return jsonify({'ok': False, 'error': 'missing_password'}), 400
+    try:
+        ok = secrets.compare_digest(pw, KOFI_NOTICE_SECRET)
+    except Exception:
+        ok = pw == KOFI_NOTICE_SECRET
+    if not ok:
+        return jsonify({'ok': False, 'error': 'invalid_password'}), 403
+    session['kofi_notice_admin_unlocked'] = True
+    return jsonify({'ok': True})
+
+
+@app.route('/api/kofi/notice/set', methods=['POST'])
+def api_kofi_notice_set():
+    """Turn the Ko-fi header notice on (bumps version) or off."""
+    if not _kofi_notice_admin_authorized():
         return jsonify({'error': 'unauthorized'}), 401
     body = request.get_json(silent=True) or {}
-    title = str(body.get('title') or '').strip()
-    post_url = str(body.get('post_url') or body.get('url') or '').strip()
-    posted_at = body.get('posted_at')
-    try:
-        posted_at = int(posted_at) if posted_at is not None else int(time.time())
-    except (TypeError, ValueError):
-        posted_at = int(time.time())
-    if post_url and not post_url.startswith('http'):
-        post_url = 'https://ko-fi.com/' + post_url.lstrip('/')
-    fp = _kofi_make_content_fp(posted_at, title, post_url)
-    row = _save_kofi_updates({
-        'content_fp': fp,
-        'posted_at': posted_at,
-        'title': title,
-        'post_url': post_url,
+    if 'enabled' not in body:
+        return jsonify({'error': 'missing_enabled'}), 400
+    enabled = bool(body.get('enabled'))
+    prev = _load_kofi_notice()
+    now = int(time.time())
+    version = int(prev.get('notice_version') or 0)
+    if enabled:
+        version += 1
+    row = _save_kofi_notice({
+        'notice_enabled': enabled,
+        'notice_version': version,
+        'updated_at': now,
     })
     return jsonify({'ok': True, **row, 'page_url': KOFI_PAGE_URL})
 

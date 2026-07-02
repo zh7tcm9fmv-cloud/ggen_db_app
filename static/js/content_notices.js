@@ -3,7 +3,7 @@
   const GAME_NEWS_SEEN_KEY = 'ggen_game_news_seen';
   const WHATS_NEW_SEEN_KEY = 'ggen_whats_new_seen';
   const LATEST_RELEASE_SEEN_KEY = 'ggen_latest_release_seen';
-  const KOFI_POST_SEEN_KEY = 'ggen_kofi_post_seen';
+  const KOFI_NOTICE_SEEN_KEY = 'ggen_kofi_notice_seen';
   const PAGE_VISITS_KEY = 'ggen_page_visits';
   /** Nav tabs that show a notice until the user opens the page once. Bump version to re-notify everyone. */
   const PAGE_VISIT_NOTICES = [{ pageId: 'master_league', tabId: 'navMasterLeagueTab', version: '1' }];
@@ -20,7 +20,7 @@
     btBanners: null,
     btVoteMine: {},
     btVoteTotals: {},
-    kofiPost: null,
+    kofiNotice: null,
   };
 
   function readPersistedLang() {
@@ -188,45 +188,64 @@
     } catch (_) {}
   }
 
-  function updateKofiPostNotice(show) {
+  function readKofiNoticeSeenVersion() {
+    const row = readGlobalSeen(KOFI_NOTICE_SEEN_KEY);
+    const v = Number(row.fp);
+    return Number.isFinite(v) && v >= 0 ? v : 0;
+  }
+
+  function updateKofiNotice(show) {
     const link = document.getElementById('kofiHeaderLink');
     if (!link) return;
     link.classList.add('ui-notice-anchor');
     setNotice(link, show);
   }
 
-  async function bootstrapKofiPost() {
+  async function bootstrapKofiNotice() {
     const link = document.getElementById('kofiHeaderLink');
     ensureNoticeFlare(link);
     if (link && !link.dataset.kofiNoticeBound) {
       link.dataset.kofiNoticeBound = '1';
-      link.addEventListener('click', () => markKofiPostSeen());
+      link.addEventListener('click', () => markKofiNoticeSeen());
     }
-    const seen = readGlobalSeen(KOFI_POST_SEEN_KEY);
+    const seenVersion = readKofiNoticeSeenVersion();
     try {
       const r = await fetch(
-        '/api/kofi/status?last_seen_fp=' + encodeURIComponent(seen.fp || ''),
+        '/api/kofi/status?last_seen_version=' + encodeURIComponent(String(seenVersion)),
         { credentials: 'same-origin', cache: 'no-store' }
       );
       if (!r.ok) {
-        updateKofiPostNotice(false);
+        updateKofiNotice(false);
         return;
       }
       const d = await r.json();
-      state.kofiPost = d;
-      updateKofiPostNotice(!!d.has_new);
+      state.kofiNotice = d;
+      updateKofiNotice(!!d.has_new);
     } catch (_) {
-      updateKofiPostNotice(false);
+      updateKofiNotice(false);
     }
   }
 
-  function markKofiPostSeen() {
-    const fp = state.kofiPost && state.kofiPost.content_fp ? String(state.kofiPost.content_fp) : '';
-    if (fp) {
-      writeGlobalSeen(KOFI_POST_SEEN_KEY, { fp, at: Date.now() });
-      if (state.kofiPost) state.kofiPost = Object.assign({}, state.kofiPost, { has_new: false });
+  function markKofiNoticeSeen() {
+    const version =
+      state.kofiNotice && state.kofiNotice.notice_version != null
+        ? Math.max(0, Number(state.kofiNotice.notice_version) || 0)
+        : readKofiNoticeSeenVersion();
+    writeGlobalSeen(KOFI_NOTICE_SEEN_KEY, { fp: String(version), at: Date.now() });
+    if (state.kofiNotice) {
+      state.kofiNotice = Object.assign({}, state.kofiNotice, { has_new: false });
     }
-    updateKofiPostNotice(false);
+    updateKofiNotice(false);
+  }
+
+  /** @deprecated use markKofiNoticeSeen */
+  function markKofiPostSeen() {
+    markKofiNoticeSeen();
+  }
+
+  /** @deprecated use bootstrapKofiNotice */
+  async function bootstrapKofiPost() {
+    return bootstrapKofiNotice();
   }
 
   function updateGameNewsNotice(show) {
@@ -510,7 +529,7 @@
         ev.key === GAME_NEWS_SEEN_KEY ||
         ev.key === WHATS_NEW_SEEN_KEY ||
         ev.key === LATEST_RELEASE_SEEN_KEY ||
-        ev.key === KOFI_POST_SEEN_KEY ||
+        ev.key === KOFI_NOTICE_SEEN_KEY ||
         ev.key === PAGE_VISITS_KEY ||
         ev.key === 'ggen_bt_vote_notice_off'
       ) {
@@ -534,7 +553,7 @@
       bootstrapLatestRelease(),
       bootstrapWhatsNew(),
       bootstrapBtVotes(state.lang),
-      bootstrapKofiPost(),
+      bootstrapKofiNotice(),
     ]);
     bootstrapPageVisitNotices();
     refreshHomeAggregate();
@@ -549,7 +568,9 @@
     markGameNewsSeenForLang,
     markLatestReleaseSeen,
     markWhatsNewSeen,
+    markKofiNoticeSeen,
     markKofiPostSeen,
+    bootstrapKofiNotice,
     bootstrapKofiPost,
     markPageVisitSeen,
     bootstrapPageVisitNotices,
@@ -563,7 +584,8 @@
     GAME_NEWS_SEEN_KEY,
     WHATS_NEW_SEEN_KEY,
     LATEST_RELEASE_SEEN_KEY,
-    KOFI_POST_SEEN_KEY,
+    KOFI_NOTICE_SEEN_KEY,
+    KOFI_POST_SEEN_KEY: KOFI_NOTICE_SEEN_KEY,
     PAGE_VISITS_KEY,
     PAGE_VISIT_NOTICES,
     setLang(lang) {

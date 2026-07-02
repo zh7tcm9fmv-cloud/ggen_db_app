@@ -1,0 +1,83 @@
+{% extends "info_page.html" %}
+{% block title %}Ko-fi notice — Admin{% endblock %}
+{% block head_extra %}
+<style>
+  .kofi-admin-card {
+    margin-top: 1.25rem;
+    padding: 1.25rem 1.1rem;
+    border-radius: 12px;
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    background: rgba(15, 23, 42, 0.65);
+  }
+  .kofi-admin-status {
+    display: grid;
+    gap: 0.35rem;
+    margin: 0 0 1rem;
+    font-size: 0.95rem;
+  }
+  .kofi-admin-status strong { color: #f8fafc; }
+  .kofi-admin-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+  }
+  .kofi-admin-btn {
+    appearance: none;
+    border: 1px solid rgba(56, 189, 248, 0.45);
+    background: rgba(56, 189, 248, 0.12);
+    color: #e0f2fe;
+    border-radius: 8px;
+    padding: 0.55rem 0.95rem;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .kofi-admin-btn:hover { background: rgba(56, 189, 248, 0.2); }
+  .kofi-admin-btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+  .kofi-admin-btn--off {
+    border-color: rgba(248, 113, 113, 0.45);
+    background: rgba(248, 113, 113, 0.12);
+    color: #fee2e2;
+  }
+  .kofi-admin-btn--off:hover { background: rgba(248, 113, 113, 0.2); }
+  .kofi-admin-msg {
+    min-height: 1.25rem;
+    margin-top: 0.85rem;
+    font-size: 0.875rem;
+    color: #94a3b8;
+  }
+  .kofi-admin-msg.is-error { color: #fca5a5; }
+  .kofi-admin-msg.is-ok { color: #86efac; }
+  .kofi-admin-login {
+    display: grid;
+    gap: 0.75rem;
+    max-width: 22rem;
+  }
+  .kofi-admin-login input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.55rem 0.7rem;
+    border-radius: 8px;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    background: #0f172a;
+    color: #e2e8f0;
+  }
+  .kofi-admin-hint {
+    margin-top: 1rem;
+    font-size: 0.82rem;
+    color: #64748b;
+    line-height: 1.5;
+  }
+</style>
+{% endblock %}
+{% block content %}
+<h1>Ko-fi header notice</h1>
+<p class="muted">Turn the red flare on the Support on Ko-fi button on or off whenever you want.</p>
+<div id="kofiAdminRoot" class="kofi-admin-card" aria-live="polite">
+  <p class="muted">Loading…</p>
+</div>
+<p class="kofi-admin-hint">Bookmark this page. Set <code>GGEN_KOFI_NOTICE_SECRET</code> on Railway (any long random string). Without a persistent volume, the on/off state resets on redeploy unless you mount one.</p>
+{% endblock %}
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/admin_kofi_notice.js') }}" defer></script>
+{% endblock %}
