@@ -17,7 +17,7 @@
   ];
   var MARIA_IMG = '/static/images/UI/UI_TacticalTraining_Logo_maria.webp';
   var PROMO_TEXT_FALLBACK =
-    'Thanks for stopping by! \uD83D\uDC99\nIf you enjoy our site, support us on Ko-fi to help keep it free \u2014 and get exclusive sneak peeks + bonus content in return!';
+    'Thank you for visiting! \uD83D\uDC99\nIf you enjoy our site, please support us on Ko-fi to help keep it free. In return, you\u2019ll receive exclusive sneak peeks and bonus content.\nI have added a red notification dot that will appear when new exclusive content is available.';
 
   var PERK_PHRASE_KEYS = [
     { key: 'kofi_promo_kw_sneak', fb: 'exclusive sneak peeks' },
