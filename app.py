@@ -15088,6 +15088,86 @@ def _unit_role_filter_display_id(uid, info, role_filter):
     return uid
 
 
+def _unit_shape_filters_active(role_filter, terrain_filter, weapon_range_filter, weapon_range_non_map_filter, map_weapon_range_filter):
+    return any(x is not None for x in (role_filter, terrain_filter, weapon_range_filter, weapon_range_non_map_filter, map_weapon_range_filter))
+
+
+def _unit_form_matches_map_weapon_range_filter(fid, want_filter, combine='and'):
+    if want_filter is None:
+        return True
+    have = collect_unit_map_weapon_range_types(fid)
+    if not have:
+        return False
+    return apply_browse_combine_match(want_filter, lambda x: x in have, combine)
+
+
+def _unit_form_matches_shape_filters(
+    fid, finfo, ld, lc, stat_mode, *,
+    role_filter=None, terrain_filter=None, weapon_range_filter=None,
+    weapon_range_non_map_filter=None, map_weapon_range_filter=None,
+    weapon_range_non_map_ssp_ex=False,
+    terrain_combine='and', weapon_range_combine='and',
+    weapon_range_non_map_combine='and', map_weapon_range_combine='and',
+):
+    """True when this single unit form satisfies all active browse shape filters."""
+    if role_filter is not None:
+        if not role_filter:
+            return False
+        if not _unit_form_matches_role_filter(fid, finfo, role_filter):
+            return False
+    if terrain_filter is not None:
+        if not _unit_form_matches_terrain_filter(fid, finfo, terrain_filter, stat_mode, terrain_combine):
+            return False
+    if weapon_range_filter is not None:
+        if not apply_browse_combine_match(
+            weapon_range_filter,
+            lambda x, _fid=fid: unit_weapon_subset_has_range_tier(_fid, ld, lc, stat_mode, 'ssp_ex', x),
+            weapon_range_combine,
+        ):
+            return False
+    if weapon_range_non_map_filter is not None:
+        subset = 'ssp_ex' if weapon_range_non_map_ssp_ex else 'non_map'
+        if not _unit_form_matches_weapon_range_non_map_filter(
+                fid, ld, lc, weapon_range_non_map_filter, stat_mode, weapon_range_non_map_combine, subset):
+            return False
+    if map_weapon_range_filter is not None:
+        if not _unit_form_matches_map_weapon_range_filter(fid, map_weapon_range_filter, map_weapon_range_combine):
+            return False
+    return True
+
+
+def unit_matches_shape_filters(uid, info, ld, lc, stat_mode, **kwargs):
+    """Pass when some transform/Refit family form matches every active shape filter."""
+    if not _unit_shape_filters_active(
+            kwargs.get('role_filter'), kwargs.get('terrain_filter'),
+            kwargs.get('weapon_range_filter'), kwargs.get('weapon_range_non_map_filter'),
+            kwargs.get('map_weapon_range_filter')):
+        return True
+    for fid in _unit_ids_for_terrain_filter(uid, info):
+        finfo = unit_info_map.get(fid)
+        if finfo and _unit_form_matches_shape_filters(fid, finfo, ld, lc, stat_mode, **kwargs):
+            return True
+    return False
+
+
+def _unit_shape_filter_display_id(uid, info, ld, lc, stat_mode, **kwargs):
+    """Browse list row: show the family form that satisfies all active shape filters."""
+    if not _unit_shape_filters_active(
+            kwargs.get('role_filter'), kwargs.get('terrain_filter'),
+            kwargs.get('weapon_range_filter'), kwargs.get('weapon_range_non_map_filter'),
+            kwargs.get('map_weapon_range_filter')):
+        return uid
+    if _unit_form_matches_shape_filters(uid, info, ld, lc, stat_mode, **kwargs):
+        return uid
+    for fid in _unit_ids_for_terrain_filter(uid, info):
+        if fid == uid:
+            continue
+        finfo = unit_info_map.get(fid)
+        if finfo and _unit_form_matches_shape_filters(fid, finfo, ld, lc, stat_mode, **kwargs):
+            return fid
+    return uid
+
+
 def _unit_terrain_filter_display_id(uid, info, want_filter, stat_mode='normal', combine='and'):
     """Browse list thumb/name: prefer the transform alternate when it alone satisfies the terrain filter."""
     if not want_filter:
@@ -15205,11 +15285,20 @@ def unit_passes_browse_pool_filters(
         _muid = uid
     if uid != _muid and not id_seek:
         return False
-    if role_filter is not None:
-        if not role_filter:
-            return False
-        if not id_seek and not unit_matches_role_filter(uid, info, role_filter):
-            return False
+    _shape_kw = dict(
+        role_filter=role_filter,
+        terrain_filter=terrain_filter if apply_terrain else None,
+        weapon_range_filter=weapon_range_filter if apply_weapon_range else None,
+        weapon_range_non_map_filter=weapon_range_non_map_filter if apply_weapon_range_non_map else None,
+        map_weapon_range_filter=map_weapon_range_filter if apply_map_weapon_range else None,
+        weapon_range_non_map_ssp_ex=weapon_range_non_map_ssp_ex,
+        terrain_combine=terrain_combine,
+        weapon_range_combine=weapon_range_combine,
+        weapon_range_non_map_combine=weapon_range_non_map_combine,
+        map_weapon_range_combine=map_weapon_range_combine,
+    )
+    if not id_seek and not unit_matches_shape_filters(uid, info, ld, lc, stat_mode, **_shape_kw):
+        return False
     if rarity_filter is not None:
         if not rarity_filter:
             return False
@@ -15224,9 +15313,6 @@ def unit_passes_browse_pool_filters(
     if source_filter is not None:
         if not id_seek and not entity_matches_source_category(acq_route, role_id, source_filter):
             return False
-    if apply_terrain and terrain_filter is not None:
-        if not id_seek and not unit_matches_terrain_filter(uid, info, terrain_filter, stat_mode, terrain_combine):
-            return False
     if apply_lineage and lineage_filter is not None:
         if not id_seek and not entity_matches_lineage(unit_lin_map, uid, lineage_filter, lineage_combine):
             return False
@@ -15238,18 +15324,6 @@ def unit_passes_browse_pool_filters(
             return False
     if apply_weapon_debuff and weapon_debuff_filter:
         if not id_seek and not unit_matches_weapon_debuff_filter(uid, ld, lc, weapon_debuff_filter, _memo=None, stat_mode=stat_mode, combine=weapon_debuff_combine):
-            return False
-    if apply_weapon_range and weapon_range_filter is not None:
-        if not id_seek and not unit_matches_weapon_range_filter(uid, ld, lc, weapon_range_filter, stat_mode=stat_mode, combine=weapon_range_combine, info=info):
-            return False
-    if apply_weapon_range_non_map and weapon_range_non_map_filter is not None:
-        _wrnm_sub = 'ssp_ex' if weapon_range_non_map_ssp_ex else 'non_map'
-        if not id_seek and not unit_matches_weapon_range_non_map_filter(
-                uid, ld, lc, weapon_range_non_map_filter, stat_mode=stat_mode, combine=weapon_range_non_map_combine,
-                subset=_wrnm_sub, info=info):
-            return False
-    if apply_map_weapon_range and map_weapon_range_filter is not None:
-        if not id_seek and not unit_matches_map_weapon_range_filter(uid, map_weapon_range_filter, combine=map_weapon_range_combine):
             return False
     lid = ld['unit_id_map'].get(uid, '')
     name = ld['unit_text_map'].get(lid, '') if lid else ''
@@ -16177,7 +16251,7 @@ def list_units():
     want_stat_bounds_u = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
     sbu_ck = 'sbd1' if want_stat_bounds_u else 'sbd0'
     rb_u_ck = 'rb1' if ranking_bulk_u else 'rb0'
-    ck = f"ul42_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul43_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     warming = _browse_list_warming_guard('unit')
@@ -16199,11 +16273,6 @@ def list_units():
             _muid = uid
         if uid != _muid and not id_seek:
             continue
-        if role_filter is not None:
-            if not role_filter:
-                continue
-            if not id_seek and not unit_matches_role_filter(uid, info, role_filter):
-                continue
         if rarity_filter is not None:
             if not rarity_filter:
                 continue
@@ -16218,9 +16287,6 @@ def list_units():
         if source_filter is not None:
             if not id_seek and not entity_matches_source_category(acq_route, role_id, source_filter):
                 continue
-        if terrain_filter is not None:
-            if not id_seek and not unit_matches_terrain_filter(uid, info, terrain_filter, stat_mode, _cbu['terrain_combine']):
-                continue
         if lineage_filter is not None:
             if not id_seek and not entity_matches_lineage(unit_lin_map, uid, lineage_filter, _cbu['lineage_combine']):
                 continue
@@ -16230,6 +16296,20 @@ def list_units():
         if ability_filter is not None:
             if not id_seek and not entity_matches_unit_abilities_filter(uid, ability_filter, _cbu['ability_combine']):
                 continue
+        _shape_kw = dict(
+            role_filter=role_filter,
+            terrain_filter=terrain_filter,
+            weapon_range_filter=weapon_range_filter,
+            weapon_range_non_map_filter=weapon_range_non_map_filter,
+            map_weapon_range_filter=map_weapon_range_filter,
+            weapon_range_non_map_ssp_ex=weapon_range_non_map_ssp_ex,
+            terrain_combine=_cbu['terrain_combine'],
+            weapon_range_combine=_cbu['weapon_range_combine'],
+            weapon_range_non_map_combine=_cbu['weapon_range_non_map_combine'],
+            map_weapon_range_combine=_cbu['map_weapon_range_combine'],
+        )
+        if not id_seek and not unit_matches_shape_filters(uid, info, ld, lc, stat_mode, **_shape_kw):
+            continue
         lid = ld['unit_id_map'].get(uid, ''); name = ld['unit_text_map'].get(lid, '') if lid else ''
         if not name:
             name = f'Unknown ({uid})'
@@ -16294,18 +16374,6 @@ def list_units():
             _debuff_memo[uid] = dk
             if not id_seek and not unit_matches_weapon_debuff_filter(uid, ld, lc, weapon_debuff_filter, _debuff_memo, stat_mode, combine=_cbu['weapon_debuff_combine']):
                 continue
-        if weapon_range_filter is not None:
-            if not id_seek and not unit_matches_weapon_range_filter(uid, ld, lc, weapon_range_filter, stat_mode, combine=_cbu['weapon_range_combine'], info=info):
-                continue
-        if weapon_range_non_map_filter is not None:
-            _wrnm_sub = 'ssp_ex' if weapon_range_non_map_ssp_ex else 'non_map'
-            if not id_seek and not unit_matches_weapon_range_non_map_filter(
-                    uid, ld, lc, weapon_range_non_map_filter, stat_mode, combine=_cbu['weapon_range_non_map_combine'],
-                    subset=_wrnm_sub, info=info):
-                continue
-        if map_weapon_range_filter is not None:
-            if not id_seek and not unit_matches_map_weapon_range_filter(uid, map_weapon_range_filter, combine=_cbu['map_weapon_range_combine']):
-                continue
         mechanism_union |= set(UNIT_MECHANISM_MIDS_CACHE.get(uid, ()))
         if mechanism_filter:
             if not id_seek and not unit_matches_mechanism_filter(info, mechanism_filter, uid, combine=mechanism_combine):
@@ -16325,17 +16393,8 @@ def list_units():
         thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
         urow = {'id': uid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'series': ser_list, 'is_ultimate': bool(info.get('is_ultimate', False)), 'is_limited_time': uid in LIMITED_TIME_UNIT_IDS, 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))}
         display_uid = uid
-        if role_filter is not None and not id_seek:
-            display_uid = _unit_role_filter_display_id(uid, info, role_filter)
-        if terrain_filter is not None and not id_seek:
-            display_uid = _unit_terrain_filter_display_id(uid, info, terrain_filter, stat_mode, _cbu['terrain_combine'])
-        if weapon_range_non_map_filter is not None and not id_seek:
-            wr_display = _unit_weapon_range_non_map_filter_display_id(
-                uid, info, ld, lc, weapon_range_non_map_filter, stat_mode,
-                _cbu['weapon_range_non_map_combine'], _wrnm_sub,
-            )
-            if wr_display != uid:
-                display_uid = wr_display
+        if not id_seek:
+            display_uid = _unit_shape_filter_display_id(uid, info, ld, lc, stat_mode, **_shape_kw)
         if display_uid != uid:
             _unit_browse_list_row_apply_display_form(urow, display_uid, ld, lc, stat_mode, cond_list)
         _rec_brief = unit_list_recommend_character_brief(uid, info, ld, lc)
