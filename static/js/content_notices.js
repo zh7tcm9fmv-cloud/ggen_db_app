@@ -201,6 +201,18 @@
     setNotice(link, show);
   }
 
+  function isKofiNoticeEnabled() {
+    return !!(state.kofiNotice && state.kofiNotice.notice_enabled);
+  }
+
+  function notifyKofiPromoNoticeLine() {
+    try {
+      if (global.KofiDonatePromo && typeof global.KofiDonatePromo.refreshNoticeLine === 'function') {
+        global.KofiDonatePromo.refreshNoticeLine();
+      }
+    } catch (_) {}
+  }
+
   async function bootstrapKofiNotice() {
     const link = document.getElementById('kofiHeaderLink');
     ensureNoticeFlare(link);
@@ -221,6 +233,7 @@
       const d = await r.json();
       state.kofiNotice = d;
       updateKofiNotice(!!d.has_new);
+      notifyKofiPromoNoticeLine();
     } catch (_) {
       updateKofiNotice(false);
     }
@@ -572,6 +585,7 @@
     markKofiPostSeen,
     bootstrapKofiNotice,
     bootstrapKofiPost,
+    isKofiNoticeEnabled,
     markPageVisitSeen,
     bootstrapPageVisitNotices,
     updateBtVoteNotices,

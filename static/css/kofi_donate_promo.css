@@ -313,7 +313,8 @@
   display:block;
   overflow:hidden;
 }
-.kofi-promo-slot-line:has(.kofi-promo-kw){
+.kofi-promo-slot-line:has(.kofi-promo-kw),
+.kofi-promo-slot-line--notice{
   overflow:visible;
   padding:1px 0;
   margin:0;
@@ -457,7 +458,8 @@
     line-height:1.52;
     gap:5px;
   }
-  .kofi-promo-slot-line:has(.kofi-promo-kw){
+  .kofi-promo-slot-line:has(.kofi-promo-kw),
+  .kofi-promo-slot-line--notice{
     padding:2px 0;
   }
   .kofi-donate-promo-close{
