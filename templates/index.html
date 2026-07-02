@@ -2163,9 +2163,9 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 .map-wrt-type-subs{display:grid;grid-template-rows:0fr;opacity:0;overflow:hidden;pointer-events:none}
 .map-wrt-type-subs.is-open{grid-template-rows:1fr;opacity:1;pointer-events:auto;animation:map-wrt-subs-in .28s ease forwards}
 .map-wrt-type-subs-inner{min-height:0;overflow:hidden}
-.map-wrt-type-sub{border:none!important;border-top:1px dashed rgba(56,189,248,.28)!important;border-radius:0!important;background:rgba(26,34,54,.45)!important;width:100%;padding:5px 8px!important;font-size:11px}
+.map-wrt-type-sub{border:none!important;border-top:1px dashed rgba(56,189,248,.28)!important;border-radius:0!important;background:rgba(26,34,54,.45)!important;width:100%;padding:5px 8px!important;font-size:11px;display:flex!important;align-items:center;justify-content:center;gap:6px;text-align:center}
 .map-wrt-type-sub.is-active{background:rgba(6,182,212,.18)!important}
-.unit-debuff-item--map-wrt-sub{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:6px;text-align:left}
+.map-wrt-type-sub>span{text-align:center;width:auto}
 .unit-debuff-item--map-wrt-sub .unit-map-sub-filter-icon{width:22px;height:22px;object-fit:contain;flex-shrink:0}
 .unit-debuff-item--map-wrt-span{grid-column:1 / -1}
 @keyframes map-wrt-subs-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
