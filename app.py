@@ -1416,7 +1416,7 @@ def _weapon_map_filter_tags_for_weapon(wid, wm, ws, unit_id):
     if mrt not in MAP_WEAPON_RANGE_TYPE_VALUES or mrt == 0:
         return frozenset()
     tags = {str(mrt)}
-    if mrt == 1 and is_map_weapon_after_move_unit_weapon(unit_id, wid, wt):
+    if is_map_weapon_after_move_unit_weapon(unit_id, wid, wt):
         tags.add('1:am')
     if mrt == 2:
         mc = ws.get('map_coords') or []
@@ -16352,7 +16352,7 @@ def list_units():
     want_stat_bounds_u = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
     sbu_ck = 'sbd1' if want_stat_bounds_u else 'sbd0'
     rb_u_ck = 'rb1' if ranking_bulk_u else 'rb0'
-    ck = f"ul44_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul45_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     warming = _browse_list_warming_guard('unit')
@@ -16464,15 +16464,20 @@ def list_units():
             if not search_row_matches_query(sq, ss, ser_names_lower, ser_list, entity_id=uid, primary=(q_scope in ('primary', 'name_id'))):
                 continue
         _ld_f, _lc_f = _lang_data_for_weapon_debuff_filter(ld, lc)
-        wmap = UNIT_WEAPON_DEBUFF_KEYS_CACHE.get(lc)
         if weapon_debuff_filter:
-            if wmap is not None and uid in wmap:
-                trait_dk = wmap[uid]
-            else:
-                trait_dk = frozenset()
-            range_dk = collect_unit_weapon_range_debuff_keys(uid, _ld_f, _lc_f, stat_mode)
-            dk = frozenset(set(trait_dk) | set(range_dk))
-            _debuff_memo[uid] = dk
+            if uid not in _debuff_memo:
+                if stat_mode == 'normal':
+                    wmap = UNIT_WEAPON_DEBUFF_KEYS_CACHE.get(lc)
+                    if wmap is not None and uid in wmap:
+                        trait_dk = wmap[uid]
+                    else:
+                        trait_dk = frozenset()
+                else:
+                    trait_dk = collect_unit_weapon_trait_only_debuff_keys(
+                        uid, _ld_f, _lc_f, stat_mode=stat_mode,
+                    )
+                range_dk = collect_unit_weapon_range_debuff_keys(uid, _ld_f, _lc_f, stat_mode)
+                _debuff_memo[uid] = frozenset(set(trait_dk) | set(range_dk))
             if not id_seek and not unit_matches_weapon_debuff_filter(uid, ld, lc, weapon_debuff_filter, _debuff_memo, stat_mode, combine=_cbu['weapon_debuff_combine']):
                 continue
         mechanism_union |= set(UNIT_MECHANISM_MIDS_CACHE.get(uid, ()))
