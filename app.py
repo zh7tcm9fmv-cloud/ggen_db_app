@@ -1344,7 +1344,8 @@ def unit_weapon_range_filter_cache_fragment(expr):
 
 
 MAP_WEAPON_RANGE_TYPE_VALUES = frozenset(range(0, 7))
-MAP_WEAPON_RANGE_SUB_TAGS = frozenset({'1:am', '2:snipe'})
+MAP_WEAPON_RANGE_SUB_TAGS = frozenset({'am', '2:snipe'})
+MAP_WEAPON_RANGE_LEGACY_TAG_ALIASES = {'1:am': 'am'}
 
 
 def _weapon_is_ssp_custom_map_weapon(wid, wt):
@@ -1365,7 +1366,7 @@ def _map_weapon_eligible_for_browse(wid, wt, stat_mode='normal'):
 
 
 def parse_map_weapon_range_filter(val):
-    """Comma-separated MapWeaponRangeTypeIndex (0..6) and sub-tags (1:am, 2:snipe)."""
+    """Comma-separated MapWeaponRangeTypeIndex (0..6) and sub-tags (am, 2:snipe)."""
     if val is None:
         return None
     s = (val or '').strip()
@@ -1374,6 +1375,7 @@ def parse_map_weapon_range_filter(val):
     out = []
     seen = set()
     for token in [p.strip() for p in s.replace(';', ',').split(',') if p.strip()]:
+        token = MAP_WEAPON_RANGE_LEGACY_TAG_ALIASES.get(token, token)
         if token in MAP_WEAPON_RANGE_SUB_TAGS:
             if token not in seen:
                 seen.add(token)
@@ -1417,7 +1419,7 @@ def _weapon_map_filter_tags_for_weapon(wid, wm, ws, unit_id):
         return frozenset()
     tags = {str(mrt)}
     if is_map_weapon_after_move_unit_weapon(unit_id, wid, wt):
-        tags.add('1:am')
+        tags.add('am')
     if mrt == 2:
         mc = ws.get('map_coords') or []
         if len(mc) == 1:
@@ -1426,7 +1428,7 @@ def _weapon_map_filter_tags_for_weapon(wid, wm, ws, unit_id):
 
 
 def collect_unit_map_weapon_range_tags(uid, stat_mode='normal', ld=None, lc=None):
-    """Tags from MAP weapons: base type (1..6) plus sub-tags (1:am, 2:snipe)."""
+    """Tags from MAP weapons: base type (1..6) plus sub-tags (am, 2:snipe)."""
     uid = normalize_id(uid)
     tags = set()
     ld_f = ld or LANG_DATA.get('EN', {})
@@ -1503,11 +1505,16 @@ def build_unit_browse_map_weapon_preview(uid, stat_mode='normal', ld=None, lc=No
         if score <= best_score:
             continue
         best_score = score
+        uinfo = unit_info_map.get(uid) or {}
         best = {
             'map_range_type': str(wm.get('map_range_type', '0') or '0'),
             'map_coords': [dict(c) for c in (ws.get('map_coords') or [])],
             'shooting_coords': [dict(c) for c in (ws.get('shooting_coords') or [])],
             'is_dash': bool(ws.get('is_dash', False)),
+            'map_single_pou': bool(ws.get('map_single_pou', False)),
+            'map_dash_dual_wide': bool(ws.get('map_dash_dual_wide', False)),
+            'map_dash_dual_end_coords': [dict(c) for c in (ws.get('map_dash_dual_end_coords') or [])],
+            'is_large': safe_int(uinfo.get('occupied_area_id'), 1) == 2,
             'ammo': int(ws.get('ammo', 0) or 0),
             'map_can_use_after_move': is_map_weapon_after_move_unit_weapon(uid, wid, wt),
         }
@@ -16352,7 +16359,7 @@ def list_units():
     want_stat_bounds_u = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
     sbu_ck = 'sbd1' if want_stat_bounds_u else 'sbd0'
     rb_u_ck = 'rb1' if ranking_bulk_u else 'rb0'
-    ck = f"ul45_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul46_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     warming = _browse_list_warming_guard('unit')
