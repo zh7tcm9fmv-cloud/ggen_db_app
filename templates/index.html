@@ -1764,16 +1764,17 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 .dc-result-box{background:rgba(26,34,54,.7);border:1px solid var(--border-color);border-radius:var(--radius-md);padding:20px;text-align:center}
 .dc-battle-stats-overlay{position:fixed;inset:0;z-index:200;background:#0f172a;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding:24px 12px;overflow-y:auto;box-sizing:border-box}
 .dc-battle-stats-panel{position:relative;max-width:min(1280px,96vw);width:100%;background:#1e293b;border:1px solid var(--border-color);border-radius:12px;padding:20px 20px 24px;box-shadow:0 24px 48px rgba(0,0,0,.55);margin:20px auto;opacity:1}
-.dc-battle-stats-title{font-size:18px;font-weight:800;color:var(--accent-cyan);margin:0 0 16px;padding-right:40px}
-.dc-battle-stats-body{font-size:13px;line-height:1.55;color:var(--text-primary)}
+.dc-battle-stats-title{font-size:18px;font-weight:800;font-family:var(--font-body);color:var(--accent-cyan);margin:0 0 16px;padding-right:40px}
+.dc-battle-stats-body{font-size:13px;line-height:1.55;color:var(--text-primary);font-family:var(--font-body)}
 .dc-battle-stats-attackers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:14px;align-items:start;margin-bottom:18px}
 .dc-battle-stats-section{margin-bottom:18px;min-width:0;padding:10px;border-radius:8px;border:1px solid transparent;background:rgba(15,23,42,.35)}
 .dc-battle-stats-attackers-grid .dc-battle-stats-section{margin-bottom:0;height:100%;box-sizing:border-box}
 .dc-battle-stats-section--active{border-color:rgba(56,189,248,.35);background:rgba(56,189,248,.06)}
-.dc-battle-stats-section h3{font-size:12px;font-weight:700;color:var(--accent-gold);margin:0 0 10px;text-transform:uppercase;letter-spacing:.04em}
-.dc-battle-stats-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:6px 0;border-bottom:1px solid rgba(148,163,184,.2)}
-.dc-battle-stats-row span:first-child{color:var(--text-secondary);flex:1;min-width:0}
-.dc-battle-stats-row span:last-child{font-weight:700;color:var(--text-primary);text-align:right;font-family:'RobotoMediumNumbers',monospace;flex-shrink:0;max-width:55%}
+.dc-battle-stats-section h3{font-size:12px;font-weight:700;font-family:var(--font-body);color:var(--accent-gold);margin:0 0 10px;text-transform:uppercase;letter-spacing:.04em}
+.dc-battle-stats-row{display:flex;justify-content:space-between;align-items:baseline;gap:12px;padding:6px 0;border-bottom:1px solid rgba(148,163,184,.2);font-family:var(--font-body)}
+.dc-battle-stats-lab{color:var(--text-secondary);flex:1;min-width:0;font-size:13px;font-weight:500}
+.dc-battle-stats-val{font-weight:600;color:var(--text-primary);text-align:right;flex-shrink:0;max-width:55%;font-family:var(--font-body);font-size:13px;line-height:1.35;word-break:break-word}
+.dc-battle-stats-val--num{font-family:'RobotoMediumNumbers',monospace;font-weight:700;font-size:14px}
 .dc-battle-stats-row--diff-pos{background:linear-gradient(90deg,rgba(20,83,45,.08),transparent)}
 .dc-battle-stats-row--diff-neg{background:linear-gradient(90deg,rgba(127,29,29,.12),transparent)}
 .dc-bs-delta{display:inline-block;margin-left:6px;padding:1px 6px;border-radius:999px;font-size:10px;font-weight:700;vertical-align:middle}
@@ -1781,8 +1782,8 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 .dc-bs-delta--neg{color:#fda4af;background:rgba(190,24,93,.16);border:1px solid rgba(251,113,133,.35)}
 .dc-battle-stats-block{margin:8px 0 12px;padding-bottom:12px;border-bottom:1px solid rgba(148,163,184,.22)}
 .dc-battle-stats-section>.dc-battle-stats-block:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
-.dc-battle-stats-block-label{font-size:11px;font-weight:700;color:var(--accent-gold);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
-.dc-battle-stats-block-body{font-size:12px;line-height:1.5;color:var(--text-primary)}
+.dc-battle-stats-block-label{font-size:11px;font-weight:700;font-family:var(--font-body);color:var(--accent-gold);text-transform:uppercase;letter-spacing:.04em;margin-bottom:8px}
+.dc-battle-stats-block-body{font-size:12px;line-height:1.5;color:var(--text-primary);font-family:var(--font-body)}
 .dc-battle-stats-footer{margin-top:20px;padding-top:16px;border-top:1px solid rgba(148,163,184,.25);display:flex;flex-direction:column;align-items:center;gap:8px}
 .dc-battle-stats-copy-btn{font-size:12px;padding:8px 18px}
 .dc-battle-stats-copy-msg{text-align:center;font-size:11px;color:#22c55e;min-height:1.2em}
@@ -2154,6 +2155,10 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 .unit-debuff-item.filter-opt-unavailable.is-active{border-color:rgba(255,255,255,.12);background:rgba(26,34,54,.32);box-shadow:none}
 .unit-debuff-item--map-wrt{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;justify-items:start;column-gap:8px;text-align:left;padding:8px 10px}
 .unit-debuff-item--map-wrt>span{display:block;width:auto;text-align:left;white-space:normal;word-break:break-word}
+.unit-debuff-grid--map-wrt{gap:4px}
+.unit-debuff-grid-row--map-wrt-full,.unit-debuff-grid-row--map-wrt-sub{grid-template-columns:minmax(0,1fr)}
+.unit-debuff-item--map-wrt-sub{margin-left:14px;padding:6px 10px 6px 12px;border-style:dashed;background:rgba(26,34,54,.45);font-size:11px}
+.unit-debuff-item--map-wrt-sub .unit-map-sub-filter-icon{width:28px;height:28px;object-fit:contain;flex-shrink:0}
 .map-wrt-filter-icon-preview{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:58px;min-width:58px;height:52px;overflow:hidden;line-height:0;pointer-events:none}
 .map-wrt-filter-icon-preview--toolbar{width:40px;min-width:40px;height:40px}
 .map-wrt-filter-icon-preview .map-wrt-filter-icon-grid-wrap{padding:0;gap:0;width:max-content;max-width:none;overflow:visible}
@@ -2163,6 +2168,12 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 .unit-debuff-fill{display:block;min-height:42px;border-radius:8px;visibility:hidden;pointer-events:none;box-sizing:border-box}
 #unitWeaponDebuffFilterPanel,#rankUnitWeaponDebuffFilterPanel,#unitWeaponRangeNonMapFilterPanel,#rankUnitWeaponRangeNonMapFilterPanel,#unitMapWeaponRangeFilterPanel,#rankUnitMapWeaponRangeFilterPanel{min-width:min(96vw,500px);max-width:min(96vw,560px)}
 .weapon-range-non-map-panel,.map-wrt-filter-panel{min-width:min(96vw,420px)!important}
+.unit-map-preview{display:flex;align-items:center;gap:10px;margin-top:8px;padding:6px 8px;border-radius:8px;border:1px solid rgba(56,189,248,.22);background:rgba(15,23,42,.55);max-width:max-content;opacity:0;transform:translateY(6px);animation:unit-map-preview-in .38s ease forwards}
+.unit-map-preview-ammo{display:inline-flex;align-items:baseline;gap:4px;font-size:11px;line-height:1.2;color:var(--text-secondary)}
+.unit-map-preview-ammo-val{font-family:'RobotoMediumNumbers',monospace;font-weight:700;color:var(--accent-cyan);font-size:13px}
+.list-grid-card--map-preview .unit-map-preview{margin-top:6px;max-width:100%}
+@keyframes unit-map-preview-in{to{opacity:1;transform:translateY(0)}}
+@media (prefers-reduced-motion:reduce){.unit-map-preview{animation:none;opacity:1;transform:none}}
 .skill-filter-panel{min-width:min(92vw,420px);max-width:min(92vw,480px)}
 .skill-filter-panel.ability-filter-panel{min-width:min(96vw,560px);max-width:min(96vw,640px)}
 .skill-filter-panel:has(.filter-panel-scroll-inner .skill-filter-grid-browse){overflow:visible;max-height:none}

@@ -1344,10 +1344,28 @@ def unit_weapon_range_filter_cache_fragment(expr):
 
 
 MAP_WEAPON_RANGE_TYPE_VALUES = frozenset(range(0, 7))
+MAP_WEAPON_RANGE_SUB_TAGS = frozenset({'1:am', '2:snipe'})
+
+
+def _weapon_is_ssp_custom_map_weapon(wid, wt):
+    """SSP custom-core MAP weapon ids (…80 / …90) — hidden from browse unless stat_mode=ssp."""
+    if str(wt) != '3':
+        return False
+    w = normalize_id(wid)
+    return w.endswith('80') or w.endswith('90')
+
+
+def _map_weapon_eligible_for_browse(wid, wt, stat_mode='normal'):
+    sm = (stat_mode or 'normal').strip().lower()
+    if sm not in ('normal', 'sp', 'ssp'):
+        sm = 'normal'
+    if sm == 'ssp':
+        return str(wt) == '3'
+    return str(wt) == '3' and not _weapon_is_ssp_custom_map_weapon(wid, wt)
 
 
 def parse_map_weapon_range_filter(val):
-    """Comma-separated MapWeaponRangeTypeIndex values (0..6) for MAP weapon sub-filter."""
+    """Comma-separated MapWeaponRangeTypeIndex (0..6) and sub-tags (1:am, 2:snipe)."""
     if val is None:
         return None
     s = (val or '').strip()
@@ -1356,15 +1374,21 @@ def parse_map_weapon_range_filter(val):
     out = []
     seen = set()
     for token in [p.strip() for p in s.replace(';', ',').split(',') if p.strip()]:
+        if token in MAP_WEAPON_RANGE_SUB_TAGS:
+            if token not in seen:
+                seen.add(token)
+                out.append(token)
+            continue
         try:
             rv = int(token)
         except Exception:
             continue
         if rv not in MAP_WEAPON_RANGE_TYPE_VALUES:
             continue
-        if rv not in seen:
-            seen.add(rv)
-            out.append(rv)
+        key = str(rv)
+        if key not in seen:
+            seen.add(key)
+            out.append(key)
     if not out:
         return None
     return tuple(out)
@@ -1375,43 +1399,119 @@ def map_weapon_range_filter_cache_fragment(expr):
         return 'mwr0'
     xs = []
     for x in expr:
-        try:
-            xs.append(str(int(x)))
-        except Exception:
-            continue
+        xs.append(str(x))
     if not xs:
         return 'mwr0'
     return ('mwr' + '__'.join(xs))[:220]
 
 
-def collect_unit_map_weapon_range_types(uid):
-    """Set of MapWeaponRangeTypeIndex values on this unit's MAP weapons (weapon_type 3)."""
-    acc = set()
+def _weapon_map_filter_tags_for_weapon(wid, wm, ws, unit_id):
+    wt = str(wm.get('weapon_type', '1') or '1')
+    if wt != '3':
+        return frozenset()
+    try:
+        mrt = int(normalize_id(wm.get('map_range_type', '0') or '0', '0'))
+    except Exception:
+        mrt = 0
+    if mrt not in MAP_WEAPON_RANGE_TYPE_VALUES or mrt == 0:
+        return frozenset()
+    tags = {str(mrt)}
+    if mrt == 1 and is_map_weapon_after_move_unit_weapon(unit_id, wid, wt):
+        tags.add('1:am')
+    if mrt == 2:
+        mc = ws.get('map_coords') or []
+        if len(mc) == 1:
+            tags.add('2:snipe')
+    return frozenset(tags)
+
+
+def collect_unit_map_weapon_range_tags(uid, stat_mode='normal', ld=None, lc=None):
+    """Tags from MAP weapons: base type (1..6) plus sub-tags (1:am, 2:snipe)."""
     uid = normalize_id(uid)
+    tags = set()
+    ld_f = ld or LANG_DATA.get('EN', {})
+    lc_f = lc or 'EN'
+    wtm = ld_f.get('weapon_trait_map', {}) or {}
+    wcm = ld_f.get('weapon_capability_map', {}) or {}
+    wtdm = ld_f.get('weapon_trait_detail_map', {}) or {}
     for wp in unit_weapon_map.get(uid, []) or []:
         wid = normalize_id(wp.get('id'))
         if not wid or wid == '0':
             continue
         wm = weapon_info_map.get(wid, {})
         wt = str(wm.get('weapon_type', '1') or '1')
-        if wt != '3':
+        if not _map_weapon_eligible_for_browse(wid, wt, stat_mode):
             continue
+        ws = resolve_weapon_stats(
+            wm, weapon_status_map, weapon_correction_map,
+            wtm, wcm, growth_pattern_map, weapon_trait_change_map, wtdm,
+            wid=wid, lang_code=lc_f, unit_id=uid,
+        )
+        tags |= _weapon_map_filter_tags_for_weapon(wid, wm, ws, uid)
+    return frozenset(tags)
+
+
+def collect_unit_map_weapon_range_types(uid, stat_mode='normal', ld=None, lc=None):
+    """Legacy: base MapWeaponRangeTypeIndex set (for audits)."""
+    tags = collect_unit_map_weapon_range_tags(uid, stat_mode, ld, lc)
+    out = set()
+    for t in tags:
         try:
-            mrt = int(normalize_id(wm.get('map_range_type', '0') or '0', '0'))
+            out.add(int(t))
         except Exception:
-            mrt = 0
-        if mrt in MAP_WEAPON_RANGE_TYPE_VALUES:
-            acc.add(mrt)
-    return frozenset(acc)
+            continue
+    return frozenset(out)
 
 
-def unit_matches_map_weapon_range_filter(uid, want_filter, combine='and'):
+def unit_matches_map_weapon_range_filter(uid, want_filter, combine='and', stat_mode='normal', ld=None, lc=None):
     if want_filter is None:
         return True
-    have = collect_unit_map_weapon_range_types(uid)
+    have = collect_unit_map_weapon_range_tags(uid, stat_mode, ld, lc)
     if not have:
         return False
-    return apply_browse_combine_match(want_filter, lambda x: x in have, combine)
+    return apply_browse_combine_match(want_filter, lambda x: str(x) in have, combine)
+
+
+def build_unit_browse_map_weapon_preview(uid, stat_mode='normal', ld=None, lc=None, want_filter=None):
+    """Best matching MAP weapon grid + ammo for unit browse rows when MAP filters are active."""
+    uid = normalize_id(uid)
+    ld_f = ld or LANG_DATA.get('EN', {})
+    lc_f = lc or 'EN'
+    wtm = ld_f.get('weapon_trait_map', {}) or {}
+    wcm = ld_f.get('weapon_capability_map', {}) or {}
+    wtdm = ld_f.get('weapon_trait_detail_map', {}) or {}
+    want = [str(x) for x in want_filter] if want_filter else None
+    best = None
+    best_score = -1
+    for wp in unit_weapon_map.get(uid, []) or []:
+        wid = normalize_id(wp.get('id'))
+        if not wid or wid == '0':
+            continue
+        wm = weapon_info_map.get(wid, {})
+        wt = str(wm.get('weapon_type', '1') or '1')
+        if not _map_weapon_eligible_for_browse(wid, wt, stat_mode):
+            continue
+        ws = resolve_weapon_stats(
+            wm, weapon_status_map, weapon_correction_map,
+            wtm, wcm, growth_pattern_map, weapon_trait_change_map, wtdm,
+            wid=wid, lang_code=lc_f, unit_id=uid,
+        )
+        tags = _weapon_map_filter_tags_for_weapon(wid, wm, ws, uid)
+        if want and not any(t in tags for t in want):
+            continue
+        score = sum(1 for t in tags if not want or t in want)
+        if score <= best_score:
+            continue
+        best_score = score
+        best = {
+            'map_range_type': str(wm.get('map_range_type', '0') or '0'),
+            'map_coords': [dict(c) for c in (ws.get('map_coords') or [])],
+            'shooting_coords': [dict(c) for c in (ws.get('shooting_coords') or [])],
+            'is_dash': bool(ws.get('is_dash', False)),
+            'ammo': int(ws.get('ammo', 0) or 0),
+            'map_can_use_after_move': is_map_weapon_after_move_unit_weapon(uid, wid, wt),
+        }
+    return best
 
 
 def unit_weapon_range_non_map_filter_cache_fragment(expr, ssp_ex_only=False):
@@ -1893,7 +1993,7 @@ def collect_unit_weapon_trait_only_debuff_keys(uid, ld, lc, stat_mode='normal'):
         wid = wp['id']
         wm = weapon_info_map.get(wid, {})
         wt = str(wm.get('weapon_type', '1') or '1')
-        if wt == '3':
+        if wt == '3' and _map_weapon_eligible_for_browse(wid, wt, stat_mode):
             acc.add('map_weapon')
             break
     return frozenset(acc)
@@ -15092,13 +15192,13 @@ def _unit_shape_filters_active(role_filter, terrain_filter, weapon_range_filter,
     return any(x is not None for x in (role_filter, terrain_filter, weapon_range_filter, weapon_range_non_map_filter, map_weapon_range_filter))
 
 
-def _unit_form_matches_map_weapon_range_filter(fid, want_filter, combine='and'):
+def _unit_form_matches_map_weapon_range_filter(fid, want_filter, combine='and', stat_mode='normal', ld=None, lc=None):
     if want_filter is None:
         return True
-    have = collect_unit_map_weapon_range_types(fid)
+    have = collect_unit_map_weapon_range_tags(fid, stat_mode, ld, lc)
     if not have:
         return False
-    return apply_browse_combine_match(want_filter, lambda x: x in have, combine)
+    return apply_browse_combine_match(want_filter, lambda x: str(x) in have, combine)
 
 
 def _unit_form_matches_shape_filters(
@@ -15131,7 +15231,8 @@ def _unit_form_matches_shape_filters(
                 fid, ld, lc, weapon_range_non_map_filter, stat_mode, weapon_range_non_map_combine, subset):
             return False
     if map_weapon_range_filter is not None:
-        if not _unit_form_matches_map_weapon_range_filter(fid, map_weapon_range_filter, map_weapon_range_combine):
+        if not _unit_form_matches_map_weapon_range_filter(
+                fid, map_weapon_range_filter, map_weapon_range_combine, stat_mode, ld, lc):
             return False
     return True
 
@@ -16251,7 +16352,7 @@ def list_units():
     want_stat_bounds_u = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
     sbu_ck = 'sbd1' if want_stat_bounds_u else 'sbd0'
     rb_u_ck = 'rb1' if ranking_bulk_u else 'rb0'
-    ck = f"ul43_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul44_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     warming = _browse_list_warming_guard('unit')
@@ -16397,6 +16498,17 @@ def list_units():
             display_uid = _unit_shape_filter_display_id(uid, info, ld, lc, stat_mode, **_shape_kw)
         if display_uid != uid:
             _unit_browse_list_row_apply_display_form(urow, display_uid, ld, lc, stat_mode, cond_list)
+        _map_preview_active = (
+            (weapon_debuff_filter and 'map_weapon' in weapon_debuff_filter)
+            or map_weapon_range_filter is not None
+        )
+        if _map_preview_active and not id_seek:
+            _prev_uid = normalize_id(display_uid)
+            _map_prev = build_unit_browse_map_weapon_preview(
+                _prev_uid, stat_mode, ld, lc, map_weapon_range_filter,
+            )
+            if _map_prev:
+                urow['map_weapon_preview'] = _map_prev
         _rec_brief = unit_list_recommend_character_brief(uid, info, ld, lc)
         if _rec_brief:
             urow['recommend_character'] = _rec_brief
