@@ -17250,7 +17250,7 @@ def _banner_timeline_supporter_item(sid, ld):
 def api_banner_timeline():
     """Gacha banner list with schedules, appeal art, and featured units/characters from master chains."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'banner_tl_v8_{lc}'
+    ck = f'banner_tl_v9_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=1800, convert_images=True)
@@ -17376,10 +17376,12 @@ def api_banner_timeline():
         name = gasha_name_map.get(name_lid, '') if name_lid != '0' else ''
         abid = normalize_id(gx.get('AppealBannerId') or gx.get('appealBannerId') or '0')
         appeal = appeal_by_id.get(abid) if abid != '0' else None
-        resource_id = str((appeal or {}).get('ResourceId') or (appeal or {}).get('resourceId') or '').strip()
-        banner_url = ''
-        if resource_id:
-            banner_url = f'/static/images/Gasha/{resource_id}_{suffix}.webp'
+        logo_resource_id = str(gx.get('LogoResourceId') or gx.get('logoResourceId') or '').strip()
+        appeal_resource_id = str((appeal or {}).get('ResourceId') or (appeal or {}).get('resourceId') or '').strip()
+        logo_url = f'/static/images/Gasha/{logo_resource_id}_{suffix}.webp' if logo_resource_id else ''
+        appeal_banner_url = (
+            f'/static/images/Gasha/{appeal_resource_id}_{suffix}.webp' if appeal_resource_id else '')
+        banner_url = appeal_banner_url
 
         gs = safe_int(gx.get('ScheduleId') or gx.get('scheduleId'), 0)
         sched = normalize_id(gs) if gs != 0 else '0'
@@ -17456,6 +17458,11 @@ def api_banner_timeline():
                         featured_units.append(ui)
                         seen_u_set.add(rut)
 
+        # Premium Unit Assembly pools have no m_gasha_pickup rows — use m_gasha LogoResourceId
+        # (gasha_logo_*) for the timeline thumb instead of home-screen appeal art (gasha_*).
+        if logo_url and not featured_units and not featured_chars and not featured_supporters:
+            banner_url = logo_url
+
         gms_id = safe_int(gx.get('GashaMovieSettingId') or gx.get('gashaMovieSettingId'), 0)
         gms_key = normalize_id(gms_id) if gms_id != 0 else '0'
 
@@ -17466,6 +17473,7 @@ def api_banner_timeline():
             'vote_enabled': _bt_banner_vote_enabled(
                 gasha_id, featured_units, featured_chars, featured_supporters),
             'banner_url': banner_url,
+            'logo_url': logo_url,
             'schedule_id': sched,
             'start_ms': start_ms,
             'end_ms': end_ms,
