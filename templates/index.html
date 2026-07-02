@@ -2153,12 +2153,14 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 .unit-debuff-item span{display:block;width:100%;white-space:normal;word-break:break-word;hyphens:auto;color:inherit;-webkit-text-fill-color:inherit}
 .unit-debuff-item.is-active{border-color:var(--accent-cyan);background:rgba(6,182,212,.12)}
 .unit-debuff-item.filter-opt-unavailable.is-active{border-color:rgba(255,255,255,.12);background:rgba(26,34,54,.32);box-shadow:none}
-.unit-debuff-item--map-wrt{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;justify-items:start;column-gap:8px;text-align:left;padding:8px 10px}
-.unit-debuff-item--map-wrt>span{display:block;width:auto;text-align:left;white-space:normal;word-break:break-word}
-.unit-debuff-grid--map-wrt{gap:4px}
-.unit-debuff-grid-row--map-wrt-full,.unit-debuff-grid-row--map-wrt-sub{grid-template-columns:minmax(0,1fr)}
-.unit-debuff-item--map-wrt-sub{margin-left:14px;padding:6px 10px 6px 12px;border-style:dashed;background:rgba(26,34,54,.45);font-size:11px}
-.unit-debuff-item--map-wrt-sub .unit-map-sub-filter-icon{width:28px;height:28px;object-fit:contain;flex-shrink:0}
+.unit-debuff-item--map-wrt{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;justify-items:start;column-gap:6px;text-align:left;padding:6px 8px;min-width:0}
+.unit-debuff-item--map-wrt>span{display:block;width:auto;text-align:left;white-space:normal;word-break:break-word;font-size:11px;line-height:1.25}
+.unit-debuff-grid--map-wrt{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+.unit-debuff-item--map-wrt-sub{grid-column:2;margin-left:0;padding:5px 8px;border-style:dashed;background:rgba(26,34,54,.45);font-size:11px;display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;column-gap:6px;text-align:left}
+.unit-debuff-item--map-wrt-span{grid-column:1 / -1}
+.unit-debuff-item--map-wrt-sub .unit-map-sub-filter-icon{width:22px;height:22px;object-fit:contain;flex-shrink:0}
+.unit-debuff-grid--map-wrt .map-wrt-filter-icon-preview{width:46px;min-width:46px;height:42px}
+.unit-debuff-grid--map-wrt .map-wrt-am-filter-icon{width:30px;height:30px}
 .map-wrt-filter-icon-preview{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:58px;min-width:58px;height:52px;overflow:hidden;line-height:0;pointer-events:none}
 .map-wrt-filter-icon-preview--toolbar{width:40px;min-width:40px;height:40px}
 .map-wrt-filter-icon-preview .map-wrt-filter-icon-grid-wrap{padding:0;gap:0;width:max-content;max-width:none;overflow:visible}
@@ -2169,7 +2171,8 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 .map-wrt-filter-toolbar-label{display:inline-flex;align-items:center;gap:6px;max-width:min(240px,52vw)}
 .unit-debuff-fill{display:block;min-height:42px;border-radius:8px;visibility:hidden;pointer-events:none;box-sizing:border-box}
 #unitWeaponDebuffFilterPanel,#rankUnitWeaponDebuffFilterPanel,#unitWeaponRangeNonMapFilterPanel,#rankUnitWeaponRangeNonMapFilterPanel,#unitMapWeaponRangeFilterPanel,#rankUnitMapWeaponRangeFilterPanel{min-width:min(96vw,500px);max-width:min(96vw,560px)}
-.weapon-range-non-map-panel,.map-wrt-filter-panel{min-width:min(96vw,420px)!important}
+.weapon-range-non-map-panel,.map-wrt-filter-panel{min-width:min(96vw,360px)!important;max-width:min(96vw,360px)}
+.map-wrt-filter-panel:not([hidden]){overflow-y:visible;max-height:none}
 .unit-map-preview{display:flex;align-items:center;gap:10px;margin-top:8px;padding:6px 8px;border-radius:8px;border:1px solid rgba(56,189,248,.22);background:rgba(15,23,42,.55);max-width:max-content;opacity:0;transform:translateY(6px);animation:unit-map-preview-in .38s ease forwards}
 .unit-map-preview-ammo{display:inline-flex;align-items:baseline;gap:4px;font-size:11px;line-height:1.2;color:var(--text-secondary)}
 .unit-map-preview-ammo-val{font-family:'RobotoMediumNumbers',monospace;font-weight:700;color:var(--accent-cyan);font-size:13px}
@@ -2425,6 +2428,7 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
     box-shadow:0 10px 36px rgba(0,0,0,.52);
     border-radius:var(--radius-md)
   }
+  .list-toolbar .map-wrt-filter-panel.filter-dropdown-panel:not([hidden]){max-height:none;overflow-y:visible}
   /* --- Large grids / long panels: viewport sheet — exclude .filter-dropdown-panel (:not prevents [hidden]/display bleed) --- */
   .list-toolbar .rarity-filter-panel:not([hidden]):not(.filter-dropdown-panel),
   .list-toolbar .role-filter-panel:not([hidden]):not(.filter-dropdown-panel),
