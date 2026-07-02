@@ -11033,13 +11033,7 @@ const dmgTakenUpGeneric=0;
 const dmgTakenDownPilotPct=S.dc.dmgTakenDownPilot||0;
 const dmgTakenDownUnitPct=S.dc.dmgTakenDownUnit||0;
 const takenDown=dmgTakenDownPilotPct+(isExWeapon?0:dmgTakenDownUnitPct);
-const normalMultEarly=userDmgIncreasePct+vigorDmgBonusPct+dmgTakenUpPct-takenDown;
 let battleDamage=C((baseDamage+damageCorrection)*terrainCorrection);
-const battleDamageSplit=C((baseDamage+offenseCorrection+defenseCorrection)*terrainCorrection);
-const pct=normalMultEarly|0;
-/** When N>0 and N%×BD is integral, +1 BD also bumps scaledNormal — skip split (Qubeley 244944). */
-const skipSplit=pct>0&&((battleDamage*pct)%100===0);
-if(!skipSplit&&battleDamageSplit===battleDamage+1)battleDamage=battleDamageSplit;
 
 const totalNormalMultPct=userDmgIncreasePct+vigorDmgBonusPct+dmgTakenUpPct-takenDown;
 const scaledNormal=C(totalNormalMultPct*battleDamage/100);
