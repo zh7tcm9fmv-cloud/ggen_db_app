@@ -3576,7 +3576,8 @@ if(S.spActive){sr=(cp&&d.sp_stats_with_ex)?d.sp_stats_with_ex:d.sp_stats;bs=d.sp
 else{sr=(cp&&d.stats_with_ex)?d.stats_with_ex:d.stats;bs=d.stats}
 }else{sr=(cp&&d.stats_with_ex)?d.stats_with_ex:d.stats;bs=d.stats}
 }
-if(type==='unit'&&S.pilotConditionalPassiveActive&&S.pilotCondCharData){sr=_detailApplyPilotStatBonusRows(sr,d);bs=sr.map(s=>Object.assign({},s,{total:s.base|0,bonus:0}))}
+let prePilotSr=null;
+if(type==='unit'&&S.pilotConditionalPassiveActive&&S.pilotCondCharData){prePilotSr=sr.map(s=>Object.assign({},s));sr=_detailApplyPilotStatBonusRows(sr,d)}
 let th='';
 if(hcf||(type==='unit'&&d.has_pilot_cond_passive)){th=`<div class="detail-cond-toggle-stack">`;
 if(hcf){const cplab=t('conditional_passive');th+=`<div class="conditional-toggle"><div class="toggle-clickable ${S.conditionalPassiveActive?'active':''}" role="button" tabindex="0" onclick="toggleConditionalPassive(!S.conditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleConditionalPassive(!S.conditionalPassiveActive)}"><span class="toggle-control-slot"><span class="toggle-switch"></span></span><span class="toggle-label">${esc(cplab)}</span></div></div>`}
@@ -3596,11 +3597,11 @@ const mobHint=(type==='unit'&&d&&d.strategy_hint_mob_icon)?imgUrlWebp(imgUrlPref
 const ucGold=type==='unit'&&isCurrentDetailUnitConditionCpTarget();
 const pilotGold=type==='unit'&&!!S.pilotConditionalPassiveActive;
 const body=sr.map((s,i)=>{
-const b=bs[i];const pilotBon=!!(s.pilot_bonus>0);const hcb=(cp&&s.total>b.total)||(pilotBon&&s.total>(b.total|0));const hcp=cp&&s.total<b.total;let eb='';
-if(hcp){const cpDelta=s.total-b.total;eb=`<div class="stat-card-bonus stat-card-penalty">(${fmtN(cpDelta)})</div>`}
+const b=bs[i];const pilotBon=!!(s.pilot_bonus>0);const prePilotTot=prePilotSr?prePilotSr[i].total|0:s.total|0;const cpHi=cp&&prePilotTot>(b.total|0);const pilotHi=pilotBon&&s.total>prePilotTot;const hcb=cpHi||pilotHi;const hcp=cp&&prePilotTot<(b.total|0);let eb='';
+if(hcp){const cpDelta=prePilotTot-(b.total|0);eb=`<div class="stat-card-bonus stat-card-penalty">(${fmtN(cpDelta)})</div>`}
 else if(s.bonus>0){const showSsp=(type==='unit'&&S.sspActive&&s.name==='Move');eb=`<div class="stat-card-bonus">${showSsp?`<img src="${imgUrl('/static/images/UI/UI_Common_Icon_Ssp.webp')}" alt="SSP" style="height:14px;vertical-align:-2px;margin-right:4px;" onerror="this.style.display='none'">`:''}+${fmtN(s.bonus)}</div>`}
-const cardHi=hcb?(ucGold?'has-cond-bonus--gold':(pilotGold&&pilotBon?'has-cond-bonus--pilot':'has-cond-bonus')):hcp?'has-cond-penalty':'';
-const valHi=hcb?(ucGold?'has-bonus-val--gold':(pilotGold&&pilotBon?'has-bonus-val--pilot':'has-bonus-val')):hcp?'has-penalty-val':'';
+const cardHi=hcb?(ucGold&&cpHi&&!pilotHi?'has-cond-bonus--gold':(pilotGold&&pilotHi?'has-cond-bonus--pilot':'has-cond-bonus')):hcp?'has-cond-penalty':'';
+const valHi=hcb?(ucGold&&cpHi&&!pilotHi?'has-bonus-val--gold':(pilotGold&&pilotHi?'has-bonus-val--pilot':'has-bonus-val')):hcp?'has-penalty-val':'';
 const statHintFor=(nm)=>{if(type!=='unit')return'';if(nm==='Attack'&&atkHint)return atkHint;if(nm==='HP'&&hpHint)return hpHint;if(nm==='EN'&&enHint)return enHint;if(nm==='Defense'&&defHint)return defHint;if(nm==='Mobility'&&mobHint)return mobHint;if(nm==='Move'&&mvHint)return mvHint;return''};
 const statHintImg=(nm)=>{const src=statHintFor(nm);return src?`<img class="strategy-hint-badge strategy-hint-badge--stat-value" src="${src}" alt="" width="22" height="22" loading="lazy" decoding="async" onerror="gameImageUrlFallback(this)">`:''};
 const useSimpleStatCard=!isRankingView||(type==='unit'&&!!statHintFor(s.name));
