@@ -1342,8 +1342,10 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .detail-cond-toggle-stack>.conditional-toggle,.detail-cond-toggle-stack>.detail-pilot-ep-block{display:flex;flex-direction:column;align-items:flex-end;width:100%;margin:0}
 .detail-cond-toggle-stack .toggle-clickable{display:inline-flex!important;align-items:center;gap:8px;max-width:100%}
 .detail-cond-toggle-stack .toggle-control-slot{flex:0 0 44px;width:44px;display:inline-flex;align-items:center;justify-content:center}
-.detail-cond-toggle-stack .detail-pilot-ep-block{gap:6px}
-.detail-cond-toggle-stack .detail-pilot-stack-row{margin-top:0}
+.detail-cond-toggle-stack .detail-pilot-ep-block{gap:0}
+.detail-pilot-ep-label-col{display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-width:0;flex:1 1 auto}
+.detail-pilot-ep-label-col .toggle-label{align-self:flex-start}
+.detail-pilot-ep-label-col .detail-pilot-stack-row{align-self:stretch;width:100%;padding:0;margin-top:0;justify-content:flex-start}
 .weapon-card-header--pilot-ep-boost{animation:npc-card-highlight-pulse-purple 1.15s ease-in-out 8;box-shadow:inset 0 0 0 2px rgba(192,132,252,.72),0 0 18px rgba(168,85,247,.38)}
 .weapon-trait-pep-note{margin-top:4px;font-size:13px;font-weight:700;color:#5d9cec;font-style:italic;line-height:1.35}
 .weapon-trait-line--pilot-boost .weapon-trait-pep-note{display:block}

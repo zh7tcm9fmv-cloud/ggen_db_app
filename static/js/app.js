@@ -3162,7 +3162,13 @@ return bonuses;
 }
 function _collectPilotWeaponEffectAdditiveBonuses(ud){
 const merged=new Map();
-if(!S.pilotConditionalPassiveActive||!ud||!S.pilotCondCharData)return merged;
+if(!S.pilotConditionalPassiveActive||!ud)return merged;
+const embedded=ud.pilot_weapon_effect_bonuses;
+if(embedded&&typeof embedded==='object'){
+Object.entries(embedded).forEach(([k,v])=>{const n=parseInt(v,10)||0;if(n)merged.set(k,n)});
+if(merged.size)return merged;
+}
+if(!S.pilotCondCharData)return merged;
 const cd=S.pilotCondCharData;
 (cd.abilities||[]).forEach(ab=>{
 (ab.details||[]).forEach(d2=>{
@@ -3219,7 +3225,14 @@ return out;
 }
 function _detailPilotAffinityWeaponStatBonuses(ud){
 const out={acc:0,crit:0};
-if(!S.pilotConditionalPassiveActive||!ud||!S.pilotCondCharData)return out;
+if(!S.pilotConditionalPassiveActive||!ud)return out;
+const embedded=ud.pilot_tag_weapon_stat_bonuses;
+if(embedded&&typeof embedded==='object'){
+out.acc=parseInt(embedded.acc,10)||0;
+out.crit=parseInt(embedded.crit,10)||0;
+if(out.acc||out.crit)return out;
+}
+if(!S.pilotCondCharData)return out;
 const cd=S.pilotCondCharData;
 (cd.abilities||[]).forEach(ab=>{
 (ab.details||[]).forEach(d2=>{
@@ -3457,7 +3470,7 @@ const cur=Math.max(1,Math.min(stackInfo.maxStacks,S.pilotCondStackCount|0||stack
 const pct=Math.min(stackInfo.maxPct,stackInfo.per*cur);
 const stackLab=t('pilot_exclusive_stack_label')||'Pilot exclusive stack level';
 const enterCls=S._pilotStackSliderAnimate?' detail-pilot-stack-row--enter':'';
-return`<div class="detail-pilot-stack-row is-open${enterCls}"><input type="range" class="detail-pilot-stack-slider" min="1" max="${stackInfo.maxStacks}" step="1" value="${cur}" aria-valuemin="1" aria-valuemax="${stackInfo.maxStacks}" aria-valuenow="${cur}" aria-label="${escAttr(stackLab)}" oninput="setPilotCondStackCount(this.value)"><span class="detail-pilot-stack-val">+${pct}%</span></div>`;
+return`<div class="detail-pilot-stack-row is-open${enterCls}" onclick="event.stopPropagation()"><input type="range" class="detail-pilot-stack-slider" min="1" max="${stackInfo.maxStacks}" step="1" value="${cur}" aria-valuemin="1" aria-valuemax="${stackInfo.maxStacks}" aria-valuenow="${cur}" aria-label="${escAttr(stackLab)}" oninput="setPilotCondStackCount(this.value)"><span class="detail-pilot-stack-val">+${pct}%</span></div>`;
 }
 function _detailPilotStatBonusPcts(ud){
 const z={atk:0,def:0};
@@ -3567,7 +3580,7 @@ if(type==='unit'&&S.pilotConditionalPassiveActive&&S.pilotCondCharData){sr=_deta
 let th='';
 if(hcf||(type==='unit'&&d.has_pilot_cond_passive)){th=`<div class="detail-cond-toggle-stack">`;
 if(hcf){const cplab=t('conditional_passive');th+=`<div class="conditional-toggle"><div class="toggle-clickable ${S.conditionalPassiveActive?'active':''}" role="button" tabindex="0" onclick="toggleConditionalPassive(!S.conditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleConditionalPassive(!S.conditionalPassiveActive)}"><span class="toggle-control-slot"><span class="toggle-switch"></span></span><span class="toggle-label">${esc(cplab)}</span></div></div>`}
-if(type==='unit'&&d.has_pilot_cond_passive){const pplab=t('pilot_exclusive_passive')||'Pilot Exclusive Passive';const stackHtml=_detailPilotStackSliderHtml(d);th+=`<div class="detail-pilot-ep-block"><div class="conditional-toggle detail-pilot-ep-toggle"><div class="toggle-clickable ${S.pilotConditionalPassiveActive?'active':''}" role="button" tabindex="0" title="${escAttr(pplab)}" aria-label="${escAttr(pplab)}" onclick="togglePilotConditionalPassive(!S.pilotConditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togglePilotConditionalPassive(!S.pilotConditionalPassiveActive)}"><span class="toggle-control-slot">${_detailPilotEpChipSpanHtml(!!S.pilotConditionalPassiveActive)}</span><span class="toggle-label">${esc(pplab)}</span></div></div>${stackHtml}</div>`}
+if(type==='unit'&&d.has_pilot_cond_passive){const pplab=t('pilot_exclusive_passive')||'Pilot Exclusive Passive';const stackHtml=_detailPilotStackSliderHtml(d);th+=`<div class="detail-pilot-ep-block"><div class="conditional-toggle detail-pilot-ep-toggle"><div class="toggle-clickable ${S.pilotConditionalPassiveActive?'active':''}" role="button" tabindex="0" title="${escAttr(pplab)}" aria-label="${escAttr(pplab)}" onclick="togglePilotConditionalPassive(!S.pilotConditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togglePilotConditionalPassive(!S.pilotConditionalPassiveActive)}"><span class="toggle-control-slot">${_detailPilotEpChipSpanHtml(!!S.pilotConditionalPassiveActive)}</span><div class="detail-pilot-ep-label-col"><span class="toggle-label">${esc(pplab)}</span>${stackHtml}</div></div></div></div>`}
 th+=`</div>`}
 let exRow='';
 if(type==='character'&&cp&&d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1){const ti=Math.min(Math.max(0,S.charSuperchargedExTier|0),d.ex_supercharged_tiers.length-1);exRow=`<div class="detail-ex-tier-row" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;margin:0 0 8px 0">`+d.ex_supercharged_tiers.map((t,idx)=>`<button type="button" class="dc-lb-btn${idx===ti?' active':''}" style="font-size:11px;line-height:1.25;max-width:100%;white-space:normal;text-align:center;padding:6px 8px" onclick="setCharSuperchargedExTier(${idx})">${esc(t.label||('EX '+t.tier))}</button>`).join('')+`</div>`}

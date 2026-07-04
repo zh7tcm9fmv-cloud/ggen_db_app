@@ -1901,6 +1901,176 @@ def _ability_text_implies_pilot_weapon_effect_additive(txt):
     return False
 
 
+def _ability_phrase_to_weapon_effect_keys(phrase):
+    """Map pilot ability phrase fragments to weapon-effect bonus keys (mirrors app.js)."""
+    p = str(phrase or '').strip().lower()
+    s = str(phrase or '')
+    keys = set()
+    if re.match(r'^def$', p, re.I):
+        keys.add('def_dn')
+    if re.match(r'^atk$', p, re.I):
+        keys.add('atk_dn')
+    if re.match(r'^mob$', p, re.I):
+        keys.add('mob_dn')
+    if re.match(r'^acc$', p, re.I):
+        keys.add('acc_dn')
+    if re.search(r'beam.*damage taken|damage taken.*beam|ビーム武装被ダメージ', p + s, re.I):
+        keys.add('dmg_beam')
+    if re.search(r'physical.*damage taken|damage taken.*physical|物理武装被ダメージ', p + s, re.I):
+        keys.add('dmg_phys')
+    if re.search(r'special.*damage taken|damage taken.*special|特殊武装被ダメージ', p + s, re.I):
+        keys.add('dmg_spec')
+    if re.search(r'def|防御力|防禦力', p + s) and re.search(r'decrease|down|減少', p + s, re.I):
+        keys.add('def_dn')
+    if re.search(r'atk|attack|攻撃力|攻擊力', p + s, re.I) and re.search(r'decrease|down|減少', p + s, re.I):
+        keys.add('atk_dn')
+    if re.search(r'mob|mobility|機動力', p + s, re.I) and re.search(r'decrease|down|減少', p + s, re.I):
+        keys.add('mob_dn')
+    if re.search(r'acc|accuracy|命中', p + s, re.I) and re.search(r'decrease|down|減少', p + s, re.I):
+        keys.add('acc_dn')
+    if re.search(r'ビーム武装被ダメージ上昇|ビーム.*被ダメージ.*上昇', s):
+        keys.add('dmg_beam')
+    if re.search(r'遭光束武裝攻擊時.*損傷提升|遭光束武裝攻擊時所受損傷提升', s):
+        keys.add('dmg_beam')
+    if re.search(r'物理武装被ダメージ上昇', s):
+        keys.add('dmg_phys')
+    if re.search(r'特殊武装被ダメージ上昇', s):
+        keys.add('dmg_spec')
+    if re.search(r'防御力減少', s):
+        keys.add('def_dn')
+    if re.search(r'防禦力減少', s):
+        keys.add('def_dn')
+    if re.search(r'攻撃力減少', s):
+        keys.add('atk_dn')
+    if re.search(r'攻擊力減少', s):
+        keys.add('atk_dn')
+    return keys
+
+
+def _parse_pilot_weapon_effect_additive_from_text(text, uid, ld):
+    """Parse additive weapon-effect % from a pilot ability line for this unit."""
+    bonuses = {}
+    s = str(text or '')
+    if not s:
+        return bonuses
+    if not re.search(r'when\s+piloting|搭乘|搭乗', s, re.I):
+        return bonuses
+    if not _pilot_text_targets_unit(uid, ld, s):
+        return bonuses
+    re_en = re.compile(
+        r'improve\s+((?:(?:increase|decrease)\s+)?.+?)\s+weapon effects by\s+(\d+)\s*%\s+additively',
+        re.I)
+    for m in re_en.finditer(s):
+        pct = int(m.group(2) or 0)
+        if not pct:
+            continue
+        for k in _ability_phrase_to_weapon_effect_keys(m.group(1)):
+            bonuses[k] = max(bonuses.get(k, 0), pct)
+    re_ja = re.compile(r'(.+?)の武装効果値が(\d+)%加算')
+    for m in re_ja.finditer(s):
+        pct = int(m.group(2) or 0)
+        if not pct:
+            continue
+        for k in _ability_phrase_to_weapon_effect_keys(m.group(1)):
+            bonuses[k] = max(bonuses.get(k, 0), pct)
+    re_tw = re.compile(r'(.+?)的武裝效果值增加(\d+)%')
+    for m in re_tw.finditer(s):
+        pct = int(m.group(2) or 0)
+        if not pct:
+            continue
+        for k in _ability_phrase_to_weapon_effect_keys(m.group(1)):
+            bonuses[k] = max(bonuses.get(k, 0), pct)
+    return bonuses
+
+
+def _recommend_ur_pilot_id_for_unit(uid):
+    uid = normalize_id(uid)
+    info = unit_info_map.get(uid)
+    if not info:
+        return '0'
+    rc = normalize_id(info.get('recommend_character_id') or '0')
+    if rc == '0':
+        rc = MANUAL_UNIT_RECOMMEND_CHARACTER_MAP.get(uid, '0')
+    if rc == '0' or rc not in char_info_map:
+        return '0'
+    if RARITY_MAP.get(char_info_map[rc].get('rarity', '1')) != 'UR':
+        return '0'
+    return rc
+
+
+def _collect_pilot_weapon_effect_additive_bonuses(uid, ld, lc, stat_mode='normal'):
+    """Recommend UR pilot: additive weapon-effect % when piloting this unit."""
+    merged = {}
+    rc = _recommend_ur_pilot_id_for_unit(uid)
+    if rc == '0':
+        return merged
+    for ad in _char_ability_entries_for_pilot_cond(rc, ld, lc, stat_mode):
+        for d2 in ad.get('details', []) or []:
+            txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
+            if not txt:
+                continue
+            if not re.search(
+                    r'when\s+piloting|搭乘|搭乗|weapon effects by|武装効果値が\d+%加算|武裝效果.*?加算',
+                    txt, re.I):
+                continue
+            for k, v in _parse_pilot_weapon_effect_additive_from_text(txt, uid, ld).items():
+                merged[k] = max(merged.get(k, 0), v)
+    return merged
+
+
+def _extract_pilot_weapon_stat_pct_from_text(txt):
+    """ACC/Crit % from pilot tag-affinity ability lines."""
+    s = str(txt or '')
+    out = {'acc': 0, 'crit': 0}
+    m = re.search(
+        r'Increases?\s+own\s+(?:ACC|Accuracy)\s+and\s+(?:EVA|EVADE|Evasion)\s+by\s+(\d+)\s*%',
+        s, re.I)
+    if m:
+        out['acc'] = max(out['acc'], int(m.group(1) or 0))
+    m = re.search(
+        r'Increases?\s+own\s+(?:ACC|Accuracy)\s+and\s+(?:Critical|CRIT)\s+by\s+(\d+)\s*%',
+        s, re.I)
+    if m:
+        p = int(m.group(1) or 0)
+        out['acc'] = max(out['acc'], p)
+        out['crit'] = max(out['crit'], p)
+    m = re.search(r'Increases?\s+(?:own\s+)?(?:ACC|Accuracy)\s+by\s+(\d+)\s*%', s, re.I)
+    if m:
+        out['acc'] = max(out['acc'], int(m.group(1) or 0))
+    m = re.search(r'Increases?\s+(?:own\s+)?(?:Critical|CRIT)\s+by\s+(\d+)\s*%', s, re.I)
+    if m:
+        out['crit'] = max(out['crit'], int(m.group(1) or 0))
+    m = re.search(r'自身の命中率と回避率が(\d+)%上昇', s)
+    if m:
+        out['acc'] = max(out['acc'], int(m.group(1) or 0))
+    m = re.search(r'自身命中率(?:及|和)閃避率提升(\d+)%', s)
+    if m:
+        out['acc'] = max(out['acc'], int(m.group(1) or 0))
+    return out
+
+
+def _collect_pilot_tag_weapon_stat_bonuses(uid, ld, lc, stat_mode='normal'):
+    """Recommend UR pilot: ACC/Crit when piloting units with matching tags."""
+    out = {'acc': 0, 'crit': 0}
+    rc = _recommend_ur_pilot_id_for_unit(uid)
+    if rc == '0':
+        return out
+    for ad in _char_ability_entries_for_pilot_cond(rc, ld, lc, stat_mode):
+        for d2 in ad.get('details', []) or []:
+            if not isinstance(d2, dict):
+                continue
+            txt = d2.get('text', '') or ''
+            if not _ability_text_implies_pilot_tag_affinity_weapon_stat(txt):
+                continue
+            req_tags = _collect_detail_lineage_tag_names(d2)
+            if not req_tags or not _unit_has_any_lineage_tag(uid, lc, req_tags):
+                continue
+            row = _extract_pilot_weapon_stat_pct_from_text(txt)
+            out['acc'] = max(out['acc'], row['acc'])
+            out['crit'] = max(out['crit'], row['crit'])
+    return out
+
+
 def _ability_text_implies_pilot_tag_affinity_weapon_stat(txt):
     """Pilot affinity: ACC/Crit (etc.) when piloting units with specified tags."""
     if not txt or not isinstance(txt, str):
@@ -21370,7 +21540,9 @@ def get_unit(unit_id):
             for mod in _collect_unit_cp_weapon_range_modifiers(unit_id, ld, lc, stat_mode_arg)
             if mod.get('cp_eligible')
         ]
-        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'has_cond_weapon_range': _has_cond_weapon_range, 'has_pilot_cond_passive': _has_pilot_cond, 'cp_weapon_range_mods': _cp_wpn_range_mods, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id, 'gacha_pull_movie_id': _gacha_pull_movie_id}
+        _pilot_wpn_fx = _collect_pilot_weapon_effect_additive_bonuses(unit_id, ld, lc, stat_mode_arg) if _has_pilot_cond else {}
+        _pilot_tag_wpn = _collect_pilot_tag_weapon_stat_bonuses(unit_id, ld, lc, stat_mode_arg) if _has_pilot_cond else {'acc': 0, 'crit': 0}
+        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'has_cond_weapon_range': _has_cond_weapon_range, 'has_pilot_cond_passive': _has_pilot_cond, 'cp_weapon_range_mods': _cp_wpn_range_mods, 'pilot_weapon_effect_bonuses': _pilot_wpn_fx, 'pilot_tag_weapon_stat_bonuses': _pilot_tag_wpn, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id, 'gacha_pull_movie_id': _gacha_pull_movie_id}
         if _tpid:
             result['transform_partner_id'] = _tpid
         if view_ranking:
