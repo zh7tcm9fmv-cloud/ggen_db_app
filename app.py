@@ -1599,6 +1599,22 @@ def _parse_weapon_max_range_increases_from_text(text):
         if key not in seen:
             seen.add(key)
             out.append((types, inc))
+    for m in re.finditer(r'increase\s+beam\s+weapon\s+max\s+range\s+by\s+(\d+)', sl, re.I):
+        types = frozenset({'beam'})
+        inc = int(m.group(1))
+        key = (types, inc)
+        if key not in seen:
+            seen.add(key)
+            out.append((types, inc))
+    for m in re.finditer(
+            r'((?:beam|physical|special)(?:\s+or\s+(?:beam|physical|special))*\s+weapon)\s+max\s+range\s+is\s+increased\s+by\s+(\d+)',
+            sl, re.I):
+        types = _weapon_range_type_keys_from_phrase(m.group(1))
+        inc = int(m.group(2))
+        key = (types, inc)
+        if key not in seen:
+            seen.add(key)
+            out.append((types, inc))
     for m in re.finditer(r'max\s+range\s+of\s+(.+?)\s+(?:weapon\s+)?is\s+increased\s+by\s+(\d+)', sl, re.I):
         types = _weapon_range_type_keys_from_phrase(m.group(1))
         inc = int(m.group(2))
