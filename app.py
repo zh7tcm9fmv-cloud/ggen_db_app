@@ -8061,7 +8061,11 @@ def trait_text_implies_show_target_condition_tags(en_text, display_text):
         return True
     if '上記シリーズ' in blob or '指定シリーズ' in blob:
         return True
-    if '上述' in blob and '系列' in blob:
+    if '上述' in blob and ('系列' in blob or '標籤' in blob or '标签' in blob):
+        return True
+    if '上記' in blob and 'タグ' in blob:
+        return True
+    if '指定' in blob and ('標籤' in blob or '标签' in blob or 'タグ' in blob):
         return True
     return False
 
@@ -8194,12 +8198,16 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
         if '[condition' in txt:
             return True
         # Heuristic: only attach implicit condition tags on clearly conditional lines.
+        disp = str(info_row.get('display_text') or '')
         return (
             (' when ' in (' ' + txt))
             or (' if ' in (' ' + txt))
             or ('specified' in txt)
             or ('above tag' in txt)
             or ('above series' in txt)
+            or bool(re.search(r'搭乘|搭乗', disp))
+            or ('上述' in disp)
+            or ('上記' in disp)
         )
     for idx, info in enumerate(trait_info):
         nums = [n for n in (info.get('condition_nums') or []) if isinstance(n, int) and n > 0]

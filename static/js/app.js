@@ -3320,7 +3320,7 @@ if(!/when piloting|搭乘|搭乗/i.test(tx))return false;
 const pilotPhrase=_pilotExclusiveAbilityPilotPhrase(tx);
 if(!pilotPhrase||!_pilotTextTargetsUnit(ud,pilotPhrase))return false;
 if(/max range|最大射程|武[裝装]的最大射程|武装の最大射程/i.test(tx))return true;
-if(/increases ATK and DEF|increased ATK and DEF|gain increased ATK and DEF|increase ATK by|grant \+\d+% ATK and DEF|攻撃力と防御力|攻擊力與防禦力/i.test(tx))return true;
+if(/increases ATK and DEF|increased ATK and DEF|gain increased ATK and DEF|increase ATK by|grant \+\d+% ATK and DEF|攻撃力と防御力|攻擊力與防禦力|攻擊力、防禦力提升|「攻擊力提升\d+%」、「防禦力提升\d+%」|賦予「攻擊力提升/i.test(tx))return true;
 if(/improve\s+.+?\s+weapon effects by\s+\d+\s*%\s+additively/i.test(tx))return true;
 if(/武装効果値が\d+%加算/.test(tx)||/武裝效果.*?加算/.test(tx))return true;
 const cd=charData||S.pilotCondCharData||S.currentDetailData;
@@ -7201,14 +7201,14 @@ return!!(cd&&ud&&String(cd.id)===TB_QUBELEY_ZZ_PILOT_ID&&String(ud.id)===TB_PLUS
 function _scTextImpliesSquadBuff(txt){
 if(!txt)return false;
 if(/支援攻擊|支援攻撃|support attack/i.test(txt))return false;
-return/同部隊|部隊內|same squad|in the same squad|in your squad|for each (?:unit |)bearing.*squad|squad unit bearing|each squad unit/i.test(txt);
+return/同部隊|部隊內|所屬部隊|自身所屬部隊|same squad|in the same squad|in your squad|for each (?:unit |)bearing.*squad|squad unit bearing|each squad unit|每有\d*架|上述「標籤」|上述标签|上記タグ/i.test(txt);
 }
 /** True when ATK+DEF bonus stacks per qualifying squad unit (input 0–5 = count), not a single flat N% row. */
 function _scTraitLineImpliesPerSquadUnitFlatStack(raw){
 const s=String(raw||'');
 if(!/same squad|in the same squad|同部隊|部隊內/i.test(s))return false;
 // "for each … bearing" stacks per qualifying unit; "for units bearing" is receiver scope only (flat N% aura).
-if(/for each (?:unit |)bearing|each unit bearing|for each squad unit bearing|each squad unit bearing|for each Unit bearing|各機体|各部隊/i.test(s))return true;
+if(/for each (?:unit |)bearing|each unit bearing|for each squad unit bearing|each squad unit bearing|for each Unit bearing|各機体|各部隊|每有\d*架|每有1架/i.test(s))return true;
 return false;
 }
 function _scParseSquadLineStats(txt){
@@ -7265,7 +7265,7 @@ return{kind:'dual_stack_atk',perUnit:parsed.per,max:parsed.max,pilotGroups:[g1],
 if(parsed.kind==='stack_atk'){
 if(G.length>=2){
 const gPilot=G.find(x=>/condition\s*1/i.test(String(x.label||'')))||G[0];
-const gCount=G.find(x=>/condition\s*2|target tags/i.test(String(x.label||'')))||G[1];
+const gCount=G.find(x=>/condition\s*2|target tags|boost target/i.test(String(x.label||'')))||G[1];
 if(!((gCount.conditions||[]).length))return null;
 return{kind:'stack_atk',perUnit:parsed.per,max:parsed.max,pilotGroups:[gPilot],countGroup:gCount,affectsDef:false,inputCap:parsed.max};
 }
@@ -7279,7 +7279,7 @@ const maxSlots=5;
 const cap=perU?maxSlots:parsed.flat;
 if(G.length>=2){
 const gPilot=G[0];
-const gRecv=G.find(x=>/target tags/i.test(String(x.label||'')))||G[1];
+const gRecv=G.find(x=>/target tags|boost target/i.test(String(x.label||'')))||G[1];
 return{kind:'flat_ad',flatPct:parsed.flat,pilotGroups:[gPilot],recvGroup:gRecv,affectsDef:true,inputCap:cap,flatPerUnit:perU};
 }
 if(G.length===1)return{kind:'flat_ad',flatPct:parsed.flat,pilotGroups:[G[0]],recvGroup:G[0],affectsDef:true,inputCap:cap,flatPerUnit:perU};
@@ -7289,7 +7289,7 @@ if(parsed.kind==='flat_atk'){
 const perU=!!parsed.perSquadUnit;
 if(G.length>=2){
 const gPilot=G[0];
-const gRecv=G.find(x=>/target tags/i.test(String(x.label||'')))||G[1];
+const gRecv=G.find(x=>/target tags|boost target/i.test(String(x.label||'')))||G[1];
 return{kind:'flat_atk',flatPct:parsed.flat,pilotGroups:[gPilot],recvGroup:gRecv,affectsDef:false,inputCap:parsed.flat,flatPerUnit:perU};
 }
 if(G.length===1)return{kind:'flat_atk',flatPct:parsed.flat,pilotGroups:[G[0]],recvGroup:G[0],affectsDef:false,inputCap:parsed.flat,flatPerUnit:perU};
