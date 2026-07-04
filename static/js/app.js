@@ -3112,6 +3112,7 @@ if(/mob|mobility|機動力/.test(p+s)&&/decrease|down|減少/.test(p+s))keys.add
 if(/acc|accuracy|命中/.test(p+s)&&/decrease|down|減少/.test(p+s))keys.add('acc_dn');
 if(/ビーム武装被ダメージ上昇|ビーム.*被ダメージ.*上昇/.test(s))keys.add('dmg_beam');
 if(/遭光束武裝攻擊時.*損傷提升|遭光束武裝攻擊時所受損傷提升/.test(s))keys.add('dmg_beam');
+if(/遭鐳射武裝攻擊時.*損傷提升|遭鐳射武裝攻擊時所受損傷提升/.test(s))keys.add('dmg_beam');
 if(/物理武装被ダメージ上昇/.test(s))keys.add('dmg_phys');
 if(/特殊武装被ダメージ上昇/.test(s))keys.add('dmg_spec');
 if(/防御力減少/.test(s))keys.add('def_dn');
@@ -3124,10 +3125,10 @@ function _traitLineWeaponEffectKeys(line){
 const s=String(line||'');
 const sl=s.toLowerCase();
 const keys=new Set();
-if(/damage taken from beam|damage taken from beam weapons up|ビーム武装(?:による)?被ダメージ|光束.*被|遭光束武裝攻擊時[，,]?受到的?損傷提升/i.test(s))keys.add('dmg_beam');
+if(/damage taken from beam|damage taken from beam weapons up|ビーム武装(?:による)?被ダメージ|光束.*被|遭光束武裝攻擊時[，,]?受到的?損傷提升|遭鐳射武裝攻擊時[，,]?受到的?損傷提升/i.test(s))keys.add('dmg_beam');
 if(/damage taken from physical|damage taken from physical weapons up|物理武装(?:による)?被ダメージ|遭物理武裝攻擊時[，,]?受到的?損傷提升/i.test(s))keys.add('dmg_phys');
 if(/damage taken from special|damage taken from special weapons up|特殊武装(?:による)?被ダメージ|遭特殊武裝攻擊時[，,]?受到的?損傷提升/i.test(s))keys.add('dmg_spec');
-if(/\bdef down\b/i.test(sl)||/防御力\s*\d+\s*%?\s*減少|防禦力\s*\d+\s*%?\s*減少|防御力減少|防禦力減少/.test(s))keys.add('def_dn');
+if(/\bdef down\b/i.test(sl)||/防御力\s*\d+\s*%?\s*減少|防禦力\s*\d+\s*%?\s*減少|防御力減少|防禦力減少|防禦力減少\s*\d+\s*%|防御力減少\s*\d+\s*%/.test(s))keys.add('def_dn');
 if(/\batk down\b/i.test(sl)||/攻撃力\s*\d+\s*%?\s*減少|攻擊力\s*\d+\s*%?\s*減少|攻撃力減少|攻擊力減少/.test(s))keys.add('atk_dn');
 if(/\bmob down\b/i.test(sl)||/機動力\s*\d+\s*%?\s*減少|機動力減少/.test(s))keys.add('mob_dn');
 if(/\bacc down\b/i.test(sl)||/命中率\s*\d+\s*%?\s*減少|命中率減少/.test(s))keys.add('acc_dn');
@@ -3174,14 +3175,14 @@ const cd=S.pilotCondCharData;
 (ab.details||[]).forEach(d2=>{
 const tx=(typeof d2==='object'?d2.text:d2)||'';
 if(!tx)return;
-if(!/when piloting|搭乘|搭乗|weapon effects by|武装効果値が\d+%加算|武裝效果值增加\d+%/i.test(tx))return;
+if(!/when piloting|搭乘|搭乗|weapon effects by|武装効果値が\d+%加算|武裝效果值增加\d+%|武裝效果.*?增加\d+%/i.test(tx))return;
 _parsePilotWeaponEffectAdditiveFromText(tx,ud).forEach((v,k)=>merged.set(k,Math.max(merged.get(k)||0,v)));
 });
 });
 return merged;
 }
 function _textImpliesPilotingTagAffinity(tx){
-return /piloting units with specified tags|指定.*?タグ|指定.*?標籤|指定.*?标签/i.test(String(tx||''));
+return /piloting units with specified tags|指定.*?タグ|指定.*?標籤|指定.*?标签|含有上述「標籤」|搭乘單位含有上述「標籤」|上記の「タグ」|搭乗ユニットが上記の「タグ」|critical rate|暴擊率|暴击率|爆擊率/i.test(String(tx||''));
 }
 function _collectLineageTagNamesFromAbilityDetail(detail){
 const names=new Set();
@@ -3217,10 +3218,14 @@ m=s.match(/Increases?\s+(?:own\s+)?(?:ACC|Accuracy)\s+by\s+(\d+)\s*%/i);
 if(m)out.acc=Math.max(out.acc,parseInt(m[1],10)||0);
 m=s.match(/Increases?\s+(?:own\s+)?(?:Critical|CRIT)\s+by\s+(\d+)\s*%/i);
 if(m)out.crit=Math.max(out.crit,parseInt(m[1],10)||0);
+m=s.match(/Increases?\s+own\s+critical rate by\s+(\d+)\s*%/i);
+if(m)out.crit=Math.max(out.crit,parseInt(m[1],10)||0);
 m=s.match(/自身の命中率と回避率が(\d+)%上昇/);
 if(m)out.acc=Math.max(out.acc,parseInt(m[1],10)||0);
 m=s.match(/自身命中率(?:及|和)閃避率提升(\d+)%/);
 if(m)out.acc=Math.max(out.acc,parseInt(m[1],10)||0);
+m=s.match(/自身(?:的)?(?:暴擊|暴击|爆擊)率提升(\d+)%/);
+if(m)out.crit=Math.max(out.crit,parseInt(m[1],10)||0);
 return out;
 }
 function _detailPilotAffinityWeaponStatBonuses(ud){
@@ -3300,6 +3305,8 @@ m=String(tx||'').match(/搭乘(?:單位為)?「([^」]+)」/);
 if(m)return m[1];
 m=String(tx||'').match(/「([^」]+)」\s*搭乗/);
 if(m)return m[1];
+m=String(tx||'').match(/搭乗ユニットが「([^」]+)」/);
+if(m)return m[1];
 return'';
 }
 function _pilotExclusiveAbilityTextMatchesUnit(ud,text,charData){
@@ -3309,7 +3316,7 @@ if(_pilotTagAffinityTextMatchesUnit(ud,tx,charData))return true;
 if(/when piloting character/i.test(tx)){
 if(/grant \+\d+% ATK and DEF|grants \+\d+% ATK and DEF|same squad|in your squad/i.test(tx))return true;
 }
-if(!/when piloting|搭乘/i.test(tx))return false;
+if(!/when piloting|搭乘|搭乗/i.test(tx))return false;
 const pilotPhrase=_pilotExclusiveAbilityPilotPhrase(tx);
 if(!pilotPhrase||!_pilotTextTargetsUnit(ud,pilotPhrase))return false;
 if(/max range|最大射程|武[裝装]的最大射程|武装の最大射程/i.test(tx))return true;
@@ -3358,6 +3365,10 @@ const reWeaponMaxInc=/when\s+piloting\s+(.+?)[,\s][\s\S]{0,220}?((?:beam|physica
 while((m=reWeaponMaxInc.exec(s))!==null)push(m[1],m[2],m[3]);
 const reIsIncreased=/when\s+piloting\s+(.+?)[,\s][\s\S]{0,200}?max\s+range\s+of\s+(.+?)\s+(?:weapons?\s+)?is\s+increased\s+by\s+(\d+)/gi;
 while((m=reIsIncreased.exec(s))!==null)push(m[1],m[2],m[3]);
+const reJaUnit=/搭乗ユニットが「([^」]+)」[\s\S]{0,320}?((?:物理|ビーム|特殊)(?:[、及](?:物理|ビーム|特殊))*)武装の最大射程が(\d+)上昇/g;
+while((m=reJaUnit.exec(s))!==null)push(m[1],m[2],m[3]);
+const reJaPilot=/「([^」]+)」\s*搭乗時[\s\S]{0,120}?((?:物理|ビーム|特殊)(?:[、及](?:物理|ビーム|特殊))*)武装の最大射程が(\d+)上昇/g;
+while((m=reJaPilot.exec(s))!==null)push(m[1],m[2],m[3]);
 });
 const seen=new Set();
 return mods.filter(m=>{const k=m.wpnTypes+'|'+m.inc;if(seen.has(k))return false;seen.add(k);return true});
