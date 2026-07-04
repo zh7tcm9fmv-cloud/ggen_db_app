@@ -3119,11 +3119,14 @@ return'';
 function _pilotExclusiveAbilityTextMatchesUnit(ud,text,charData){
 const tx=String(text||'');
 if(!ud||!tx)return false;
+if(/when piloting character/i.test(tx)){
+if(/grant \+\d+% ATK and DEF|grants \+\d+% ATK and DEF|same squad|in your squad/i.test(tx))return true;
+}
 if(!/when piloting|搭乘/i.test(tx))return false;
 const pilotPhrase=_pilotExclusiveAbilityPilotPhrase(tx);
 if(!pilotPhrase||!_pilotTextTargetsUnit(ud,pilotPhrase))return false;
 if(/max range|最大射程|武[裝装]的最大射程|武装の最大射程/i.test(tx))return true;
-if(/increases ATK and DEF|increased ATK and DEF|gain increased ATK and DEF|increase ATK by|攻撃力と防御力|攻擊力與防禦力/i.test(tx))return true;
+if(/increases ATK and DEF|increased ATK and DEF|gain increased ATK and DEF|increase ATK by|grant \+\d+% ATK and DEF|攻撃力と防御力|攻擊力與防禦力/i.test(tx))return true;
 const cd=charData||S.pilotCondCharData||S.currentDetailData;
 const pm=cd&&cd.pair_unit_stat_mod;
 if(pm&&pm[String(ud.id||'')])return true;
@@ -3161,6 +3164,18 @@ const onChar=!!cid;
 document.querySelectorAll('.detail-rec-link-card[data-rec-char-id]').forEach(card=>{
 card.classList.toggle('detail-rec-link-card--pilot-cond-target',onUnit);
 });
+if(onUnit){
+const ud=S.currentDetailData;
+const cd=S.pilotCondCharData;
+document.querySelectorAll('#detailAbilitiesContainer .ability-detail-chunk').forEach(chunk=>{
+const block=chunk.querySelector('.ability-detail-block');
+if(!block)return;
+const tx=String(block.textContent||'');
+const hit=_pilotExclusiveAbilityTextMatchesUnit(ud,tx,cd);
+block.classList.toggle('ability-detail-block--pilot-cond-highlight',hit);
+});
+return;
+}
 if(!onChar){
 document.querySelectorAll('.ability-detail-block--pilot-cond-highlight').forEach(el=>el.classList.remove('ability-detail-block--pilot-cond-highlight'));
 return;

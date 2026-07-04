@@ -1876,6 +1876,27 @@ def _unit_has_cp_weapon_range(uid, ld, lc, stat_mode):
     return any(m.get('cp_eligible') for m in _collect_unit_cp_weapon_range_modifiers(uid, ld, lc, stat_mode))
 
 
+def _ability_text_implies_pilot_gated_squad_stat(txt):
+    """Trait line grants MS ATK/DEF (or similar) to squad units behind a pilot gate."""
+    if not txt or not isinstance(txt, str):
+        return False
+    return bool(re.search(
+        r'increases ATK and DEF|increased ATK and DEF|gain increased ATK and DEF|'
+        r'grant\s+\+\d+%\s+ATK\s+and\s+DEF|grants\s+\+\d+%\s+ATK\s+and\s+DEF|'
+        r'Increase ATK by|increase ATK by|same squad|in your squad|units in your squad|'
+        r'攻撃力と防御力|攻擊力與防禦力|同部隊|部隊內',
+        txt, re.I))
+
+
+def _unit_ability_text_implies_pilot_cond_passive(txt):
+    """MS ability: pilot-character-gated squad stat buff (e.g. Phenex Narrative/Newtype → NT-D)."""
+    if not txt or not isinstance(txt, str):
+        return False
+    if not re.search(r'when\s+piloting\s+character|パイロット|駕駛員|操縦.*?キャラ', txt, re.I):
+        return False
+    return _ability_text_implies_pilot_gated_squad_stat(txt)
+
+
 def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal'):
     """UR recommend pilot grants pilot-gated stats or weapon range for this unit."""
     uid = normalize_id(uid)
@@ -1910,11 +1931,13 @@ def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal'):
                 continue
             if not _pilot_text_targets_unit(uid, ld, txt):
                 continue
-            if re.search(
-                    r'increases ATK and DEF|increased ATK and DEF|gain increased ATK and DEF|'
-                    r'Increase ATK by|increase ATK by|same squad|in your squad|units in your squad|'
-                    r'攻撃力と防御力|攻擊力與防禦力|同部隊|部隊內',
-                    txt, re.I):
+            if _ability_text_implies_pilot_gated_squad_stat(txt):
+                _PILOT_COND_PASSIVE_CACHE[cache_key] = True
+                return True
+    for ad in _unit_ability_entries_for_weapon_range(uid, ld, lc, stat_mode):
+        for d2 in ad.get('details', []) or []:
+            txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
+            if _unit_ability_text_implies_pilot_cond_passive(txt):
                 _PILOT_COND_PASSIVE_CACHE[cache_key] = True
                 return True
     _PILOT_COND_PASSIVE_CACHE[cache_key] = False
