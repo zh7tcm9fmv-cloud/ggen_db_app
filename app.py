@@ -1901,6 +1901,19 @@ def _ability_text_implies_pilot_weapon_effect_additive(txt):
     return False
 
 
+def _ability_text_implies_pilot_tag_affinity_weapon_stat(txt):
+    """Pilot affinity: ACC/Crit (etc.) when piloting units with specified tags."""
+    if not txt or not isinstance(txt, str):
+        return False
+    if not re.search(
+            r'piloting units with specified tags|指定.*?タグ|指定.*?標籤|指定.*?标签',
+            txt, re.I):
+        return False
+    return bool(re.search(
+        r'ACC|Accuracy|Critical|CRIT|命中率|クリティカル|暴擊|暴击',
+        txt, re.I))
+
+
 def _unit_ability_text_implies_pilot_cond_passive(txt):
     """MS ability: pilot-character-gated squad stat buff (e.g. Phenex Narrative/Newtype → NT-D)."""
     if not txt or not isinstance(txt, str):
@@ -1940,16 +1953,22 @@ def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal'):
     for ad in _char_ability_entries_for_pilot_cond(rc, ld, lc, stat_mode):
         for d2 in ad.get('details', []) or []:
             txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
-            if not txt or not re.search(r'when\s+piloting|搭乘', txt, re.I):
+            if not txt:
                 continue
-            if not _pilot_text_targets_unit(uid, ld, txt):
-                continue
-            if _ability_text_implies_pilot_gated_squad_stat(txt):
-                _PILOT_COND_PASSIVE_CACHE[cache_key] = True
-                return True
-            if _ability_text_implies_pilot_weapon_effect_additive(txt):
-                _PILOT_COND_PASSIVE_CACHE[cache_key] = True
-                return True
+            if re.search(r'when\s+piloting|搭乘', txt, re.I):
+                if not _pilot_text_targets_unit(uid, ld, txt):
+                    continue
+                if _ability_text_implies_pilot_gated_squad_stat(txt):
+                    _PILOT_COND_PASSIVE_CACHE[cache_key] = True
+                    return True
+                if _ability_text_implies_pilot_weapon_effect_additive(txt):
+                    _PILOT_COND_PASSIVE_CACHE[cache_key] = True
+                    return True
+            elif _ability_text_implies_pilot_tag_affinity_weapon_stat(txt):
+                req_tags = _collect_detail_lineage_tag_names(d2) if isinstance(d2, dict) else []
+                if req_tags and _unit_has_any_lineage_tag(uid, lc, req_tags):
+                    _PILOT_COND_PASSIVE_CACHE[cache_key] = True
+                    return True
     for ad in _unit_ability_entries_for_weapon_range(uid, ld, lc, stat_mode):
         for d2 in ad.get('details', []) or []:
             txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
@@ -14646,6 +14665,21 @@ def _collect_detail_lineage_tag_names(detail):
         if isinstance(g, dict):
             _add(g.get('conditions'))
     return names
+
+
+def _unit_has_any_lineage_tag(uid, lc, req_tag_names):
+    """True if playable unit carries any of the lineage tag names from a pilot affinity ability."""
+    if not req_tag_names:
+        return False
+    unit_tags = {
+        (t.get('name') or '').strip().lower()
+        for t in resolve_tags(unit_lin_map, normalize_id(uid), lc, 'unit')
+        if (t.get('name') or '').strip()
+    }
+    for rn in req_tag_names:
+        if str(rn).strip().lower() in unit_tags:
+            return True
+    return False
 
 
 def _canonical_keys_for_lineage_tag_names(tag_names, lc=DEFAULT_LANG):
