@@ -1735,7 +1735,172 @@ def _conditional_passive_weapon_range_bonus(uid, wid, wm, ld, lc, stat_mode, con
             continue
         if _weapon_row_matches_range_type_keys(wm, mod.get('type_keys') or frozenset()):
             bonus += int(mod.get('inc', 0) or 0)
+    for mod in _collect_pilot_weapon_range_modifiers(uid, ld, lc, stat_mode):
+        if _weapon_row_matches_range_type_keys(wm, mod.get('type_keys') or frozenset()):
+            bonus += int(mod.get('inc', 0) or 0)
     return bonus
+
+
+_PILOT_WEAPON_RANGE_MOD_CACHE = {}
+_PILOT_COND_PASSIVE_CACHE = {}
+
+
+def _normalize_piloting_name(s):
+    return re.sub(r'\s+', ' ', re.sub(r'[^a-z0-9\u3040-\u9fff]+', ' ', str(s or '').lower())).strip()
+
+
+def _unit_name_matches_piloting_phrase(unit_id, ld, phrase):
+    """True when ability \"When piloting …\" names this unit (EN / JA / zh-Hant)."""
+    uid = normalize_id(unit_id)
+    lid = ld.get('unit_id_map', {}).get(uid, '')
+    uname = ld.get('unit_text_map', {}).get(lid, '') if lid else ''
+    if not uname or not phrase:
+        return False
+    uf = _normalize_piloting_name(uname)
+    up = _normalize_piloting_name(phrase)
+    ub = _normalize_piloting_name(re.sub(r'\([^)]*\)', '', uname))
+    pb = _normalize_piloting_name(re.sub(r'\([^)]*\)', '', phrase))
+    if not uf or not up:
+        return False
+    return (pb in uf or uf in up or pb in ub or ub in pb or up in uf or uf in up)
+
+
+def _extract_piloting_unit_phrase_from_text(text):
+    if not text:
+        return ''
+    s = str(text)
+    m = re.search(r'when\s+piloting\s+([^\n,]+)', s, re.I)
+    if m:
+        return m.group(1).strip()
+    m = re.search(r'搭乘(?:單位為)?「([^」]+)」', s)
+    if m:
+        return m.group(1).strip()
+    m = re.search(r'when\s+piloting\s+(.+?)(?:\n|,|\.)', s, re.I | re.S)
+    if m:
+        return m.group(1).strip()
+    return ''
+
+
+def _char_ability_entries_for_pilot_cond(char_id, ld, lc, stat_mode='normal'):
+    """Resolved character ability rows for pilot-conditional parsing."""
+    char_id = normalize_id(char_id)
+    sm = (stat_mode or 'normal').strip().lower()
+    if sm not in ('normal', 'sp', 'ssp'):
+        sm = 'normal'
+    ldc = LANG_DATA.get(lc) or ld
+    fa = [x for x in extract_data_list(char_abil) if normalize_id(x.get('CharacterId', '')) == char_id]
+    rows = []
+    for ab in sorted(fa, key=lambda x: int(x.get('SortOrder', 0) or 0)):
+        bid = normalize_id(ab.get('AbilityId', ''))
+        spid = normalize_id(ab.get('SpAbilityId') or ab.get('spAbilityId') or '0')
+        use_id = bid
+        if sm == 'sp' and spid not in ('0', 'None', '', bid):
+            use_id = spid
+        try:
+            bab = build_ability_entry(
+                use_id, ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map,
+                ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map,
+                ld['lineage_lookup'], ld['series_name_map'], ability_resource_map,
+                ld['abil_desc_map'], sort_order=int(ab.get('SortOrder', 0) or 0), lang_code=lc,
+            )
+        except Exception:
+            continue
+        rows.append(bab)
+    return rows
+
+
+def _pilot_text_targets_unit(uid, ld, text):
+    """True when pilot-gated ability line applies to this unit MS."""
+    uid = normalize_id(uid)
+    pilot_phrase = _extract_piloting_unit_phrase_from_text(text)
+    if pilot_phrase and _unit_name_matches_piloting_phrase(uid, ld, pilot_phrase):
+        return True
+    lid = ld.get('unit_id_map', {}).get(uid, '')
+    uname = ld.get('unit_text_map', {}).get(lid, '') if lid else ''
+    if not uname:
+        return False
+    sl = str(text).lower()
+    ul = uname.lower()
+    if ul not in sl:
+        return False
+    return bool(re.search(r'when\s+piloting|搭乘', sl, re.I))
+
+
+def _collect_pilot_weapon_range_modifiers(uid, ld, lc, stat_mode):
+    """Recommend UR pilot: max-range increases gated on piloting this unit."""
+    uid = normalize_id(uid)
+    cache_key = (uid, (stat_mode or 'normal').strip().lower(), lc)
+    hit = _PILOT_WEAPON_RANGE_MOD_CACHE.get(cache_key)
+    if hit is not None:
+        return hit
+    mods = []
+    info = unit_info_map.get(uid)
+    if info:
+        rc = normalize_id(info.get('recommend_character_id') or '0')
+        if rc == '0':
+            rc = MANUAL_UNIT_RECOMMEND_CHARACTER_MAP.get(uid, '0')
+        if rc != '0' and rc in char_info_map:
+            cri = char_info_map[rc].get('rarity', '1')
+            if RARITY_MAP.get(cri) == 'UR':
+                for ad in _char_ability_entries_for_pilot_cond(rc, ld, lc, stat_mode):
+                    for d2 in ad.get('details', []) or []:
+                        txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
+                        if not txt or not re.search(r'when\s+piloting|搭乘', txt, re.I):
+                            continue
+                        if not _pilot_text_targets_unit(uid, ld, txt):
+                            continue
+                        for types, inc in _parse_weapon_max_range_increases_from_text(txt):
+                            mods.append({'type_keys': types, 'inc': inc})
+    _PILOT_WEAPON_RANGE_MOD_CACHE[cache_key] = mods
+    return mods
+
+
+def _unit_has_cp_weapon_range(uid, ld, lc, stat_mode):
+    return any(m.get('cp_eligible') for m in _collect_unit_cp_weapon_range_modifiers(uid, ld, lc, stat_mode))
+
+
+def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal'):
+    """UR recommend pilot grants pilot-gated stats or weapon range for this unit."""
+    uid = normalize_id(uid)
+    cache_key = (uid, lc)
+    hit = _PILOT_COND_PASSIVE_CACHE.get(cache_key)
+    if hit is not None:
+        return hit
+    info = unit_info_map.get(uid)
+    if not info:
+        _PILOT_COND_PASSIVE_CACHE[cache_key] = False
+        return False
+    rc = normalize_id(info.get('recommend_character_id') or '0')
+    if rc == '0':
+        rc = MANUAL_UNIT_RECOMMEND_CHARACTER_MAP.get(uid, '0')
+    if rc == '0' or rc not in char_info_map:
+        _PILOT_COND_PASSIVE_CACHE[cache_key] = False
+        return False
+    if RARITY_MAP.get(char_info_map[rc].get('rarity', '1')) != 'UR':
+        _PILOT_COND_PASSIVE_CACHE[cache_key] = False
+        return False
+    pair_row = (CHAR_PAIR_UNIT_STAT_MOD_PCT.get(rc) or {}).get(uid)
+    if pair_row:
+        _PILOT_COND_PASSIVE_CACHE[cache_key] = True
+        return True
+    if _collect_pilot_weapon_range_modifiers(uid, ld, lc, stat_mode):
+        _PILOT_COND_PASSIVE_CACHE[cache_key] = True
+        return True
+    for ad in _char_ability_entries_for_pilot_cond(rc, ld, lc, stat_mode):
+        for d2 in ad.get('details', []) or []:
+            txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
+            if not txt or not re.search(r'when\s+piloting|搭乘', txt, re.I):
+                continue
+            if not _pilot_text_targets_unit(uid, ld, txt):
+                continue
+            if re.search(
+                    r'increases ATK and DEF|Increase ATK by|increase ATK by|same squad|'
+                    r'攻撃力と防御力|攻擊力與防禦力|同部隊|部隊內',
+                    txt, re.I):
+                _PILOT_COND_PASSIVE_CACHE[cache_key] = True
+                return True
+    _PILOT_COND_PASSIVE_CACHE[cache_key] = False
+    return False
 
 
 def _unit_weapon_subset_effective_ranges(uid, ld, lc, stat_mode, subset, cond_active=False):
@@ -16566,7 +16731,7 @@ def list_units():
     want_stat_bounds_u = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
     sbu_ck = 'sbd1' if want_stat_bounds_u else 'sbd0'
     rb_u_ck = 'rb1' if ranking_bulk_u else 'rb0'
-    ck = f"ul51_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul52_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     warming = _browse_list_warming_guard('unit')
@@ -20680,7 +20845,7 @@ def get_unit(unit_id):
         if stat_mode_arg not in ('normal', 'sp', 'ssp'):
             stat_mode_arg = 'normal'
         cond_for_ranking = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-        ck = f"u_{unit_id}_{lc}_ssp14_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"u_{unit_id}_{lc}_ssp15_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -21055,7 +21220,14 @@ def get_unit(unit_id):
             _muid = unit_id
         _lb_movie_id = resolve_unit_limit_break_movie_id(info, unit_id)
         _gacha_pull_movie_id = resolve_unit_gacha_pull_movie_id(info, unit_id)
-        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id, 'gacha_pull_movie_id': _gacha_pull_movie_id}
+        _has_cond_weapon_range = _unit_has_cp_weapon_range(unit_id, ld, lc, stat_mode_arg)
+        _has_pilot_cond = _unit_has_pilot_cond_passive(unit_id, ld, lc, stat_mode_arg)
+        _cp_wpn_range_mods = [
+            {'types': sorted(mod.get('type_keys') or []), 'inc': int(mod.get('inc', 0) or 0)}
+            for mod in _collect_unit_cp_weapon_range_modifiers(unit_id, ld, lc, stat_mode_arg)
+            if mod.get('cp_eligible')
+        ]
+        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'has_cond_weapon_range': _has_cond_weapon_range, 'has_pilot_cond_passive': _has_pilot_cond, 'cp_weapon_range_mods': _cp_wpn_range_mods, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id, 'gacha_pull_movie_id': _gacha_pull_movie_id}
         if _tpid:
             result['transform_partner_id'] = _tpid
         if view_ranking:
