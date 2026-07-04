@@ -1888,6 +1888,19 @@ def _ability_text_implies_pilot_gated_squad_stat(txt):
         txt, re.I))
 
 
+def _ability_text_implies_pilot_weapon_effect_additive(txt):
+    """Pilot-gated additive buff to inflicted weapon effect values (e.g. DEF Down / beam damage taken)."""
+    if not txt or not isinstance(txt, str):
+        return False
+    if re.search(r'improve\s+.+?\s+weapon effects by\s+\d+\s*%\s+additively', txt, re.I):
+        return True
+    if re.search(r'武装効果値が\d+%加算', txt):
+        return True
+    if re.search(r'武裝效果.*?加算', txt):
+        return True
+    return False
+
+
 def _unit_ability_text_implies_pilot_cond_passive(txt):
     """MS ability: pilot-character-gated squad stat buff (e.g. Phenex Narrative/Newtype → NT-D)."""
     if not txt or not isinstance(txt, str):
@@ -1932,6 +1945,9 @@ def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal'):
             if not _pilot_text_targets_unit(uid, ld, txt):
                 continue
             if _ability_text_implies_pilot_gated_squad_stat(txt):
+                _PILOT_COND_PASSIVE_CACHE[cache_key] = True
+                return True
+            if _ability_text_implies_pilot_weapon_effect_additive(txt):
                 _PILOT_COND_PASSIVE_CACHE[cache_key] = True
                 return True
     for ad in _unit_ability_entries_for_weapon_range(uid, ld, lc, stat_mode):
