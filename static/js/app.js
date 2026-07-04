@@ -2906,16 +2906,13 @@ function renderCharacterExtraInfo(d){if(!d)return'';const s=d.detail_npc_context
 function renderCharShell(d){const isNpc=!!(d&&d.detail_npc_context);const metaCore=!isNpc?(`${d.rarity_icon?`<img class="detail-rarity-icon" src="${imgUrl(d.rarity_icon)}" alt="${d.rarity}" loading="lazy">`:`<span class="rarity-badge rarity-${d.rarity}">${d.rarity}</span>`}<span class="detail-role-label">${d.role_icon?`<img src="${imgUrl(d.role_icon)}" alt="${d.role}" loading="lazy">`:''}${esc(tRole(d.role))}${d.acquisition_icon?`<img class="detail-meta-icon" src="${imgUrl(d.acquisition_icon)}" alt="" loading="lazy">`:''}</span>`):'';const metaSp=d.has_sp?`<div style="display:flex;gap:6px;align-items:center;margin-left:8px;"><button id="spToggleBtnChar" class="sp-toggle-btn${S.spActive?' active':''}" onclick="toggleStatState('sp')"><img src="${imgUrl('/static/images/UI/UI_Common_Icon_Sp.webp')}" alt="SP" loading="lazy"></button></div>`:'';return`<div class="modal-top-label">${t('char_data')}</div><div class="modal-entity-id">ID: ${d.id}</div>${renderDetailBackStrip(d)}<div class="detail-header char-detail-header${d.detail_return?' char-detail-header--tight-top':''}"><div class="detail-portrait-stack"><div class="detail-portrait-wrap">${d.portrait?detailHeroPortraitImgTag(d.portrait,{cls:'detail-portrait',alt:esc(d.name),onerror:"this.outerHTML='<div class=\\'detail-portrait-placeholder\\'>👤</div>'"}) :'<div class="detail-portrait-placeholder">👤</div>'}</div><div class="detail-rec-shortcut-wrap detail-rec-shortcut--mobile">${renderRecommendUnitCard(d)}</div></div><div class="detail-title-area char-detail-title-area"><div class="char-detail-head-row"><div class="char-detail-head-main"><div class="detail-name">${esc(d.name)}</div><div class="detail-meta${isNpc?' detail-meta--npc':''}">${metaCore}${metaSp}</div><div id="charExtraInfo"></div><div id="npcUnitCondTargets"></div>${renderLimitedTimeBanner(d,'character')}</div><div class="detail-rec-shortcut-wrap detail-rec-shortcut--desktop">${renderRecommendUnitCard(d)}</div></div>${renderSeries(d.series,'characters')}${renderTags(d.tags)}<div class="header-stats-wrapper"><div id="detailStatsWrapper"></div></div></div>${renderDetailRankToggleSlotHtml(d,'character')}</div><div class="detail-body"><div id="detailAbilitiesContainer"></div><div id="detailSkillsContainer"></div></div>`}
 function _detailUnitCpWeaponRangeBonus(wpn,unitData){
 if(!S.conditionalPassiveActive||!unitData||!Array.isArray(unitData.cp_weapon_range_mods))return 0;
-const WPN_ATTR_TYPES={'1':'beam','2':'physical','3':'special','4':'beam','5':'beam','6':'physical','7':'beam'};
 const wpnKeySet=new Set(_dcWeaponAttributeKeys(wpn));
-const wpnAttrLabel=(wpn.attribute||'').toLowerCase();
-const wpnTypeLabel=WPN_ATTR_TYPES[wpn.weapon_type]||'';
 let bonus=0;
 (unitData.cp_weapon_range_mods||[]).forEach(mod=>{
 const types=mod.types||mod.type_keys||[];
 const inc=mod.inc|0;
 if(!inc)return;
-const ok=types.some(t=>{const tl=String(t).toLowerCase();return wpnKeySet.has(tl)||wpnAttrLabel.includes(tl)||wpnTypeLabel.includes(tl)});
+const ok=types.some(t=>{const tl=String(t).toLowerCase();return wpnKeySet.has(tl)});
 if(ok)bonus+=inc;
 });
 return bonus;
@@ -3104,12 +3101,9 @@ if(tl.includes('special')||tl.includes('特殊'))return'special';
 return tl;
 }
 function _pilotRangeTypeKeysMatchWeapon(wpnTypesStr,wpn){
-const WPN_ATTR_TYPES={'1':'beam','2':'physical','3':'special','4':'beam','5':'beam','6':'physical','7':'beam'};
 const wpnKeySet=new Set(_dcWeaponAttributeKeys(wpn));
-const wpnAttrLabel=(wpn.attribute||'').toLowerCase();
-const wpnTypeLabel=WPN_ATTR_TYPES[wpn.weapon_type]||'';
 const types=String(wpnTypesStr||'').split(/\s+or\s+|,\s*|\s+and\s+|\s*\/\s*|\s*、\s*/);
-return types.some(t=>{const key=_normalizePilotWeaponTypeToken(t);return key&&(wpnKeySet.has(key)||wpnAttrLabel.includes(key)||wpnTypeLabel.includes(key))});
+return types.some(t=>{const key=_normalizePilotWeaponTypeToken(t);return key&&wpnKeySet.has(key)});
 }
 function _pilotExclusiveAbilityPilotPhrase(tx){
 let m=String(tx||'').match(/when\s+piloting\s+([^,\n]+(?:\(EX\))?)/i);
