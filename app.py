@@ -3759,6 +3759,10 @@ def _is_conditional_stat_text(t):
     # JA / TW / HK: gated squad / series lines (split by newline in data; single-line still flagged).
     if '包含上述' in raw or 'を含む時' in raw or '含む時' in raw:
         return True
+    if _trait_line_is_vigor_supercharged_gate(tl, raw):
+        return True
+    if re.search(r'戰意為|战意为|テンションが|気力が', raw):
+        return True
     return False
 
 
@@ -3771,7 +3775,7 @@ def trait_title_implies_conditional_stat_bonuses(name):
     low = name.lower()
     en_markers = (
         '(battle conditions)', '(tag conditions)', '(series conditions)',
-        '(hp conditions)', '(vigor conditions)', '(no. of battles conditions)',
+        '(hp conditions)', '(vigor conditions)', '(cnd: vigor)', '(no. of battles conditions)',
         '(when supporting)', '(map conditions)', '(ally conditions)',
         '(unit conditions)', '(unit condition)',
     )
@@ -3781,12 +3785,13 @@ def trait_title_implies_conditional_stat_bonuses(name):
         '（戰鬥條件）', '（战斗条件）', '（標籤條件）', '（标签条件）',
         '（系列條件）', '（系列条件）', '（戰鬥次數條件）', '（战斗次数条件）',
         '（體力條件）', '（体力条件）', '（氣勢條件）', '（气势条件）',
+        '（戰意條件）', '（战意条件）',
         '（支援時', '（選擇閃避開始戰鬥時）',
         '（機體條件）', '（机体条件）',
     )
     if any(m in name for m in cjk_markers):
         return True
-    if any(m in name for m in ('シリーズ条件', 'タグ条件', '戦闘条件', '戦闘回数条件', 'HP条件', '気力条件', '支援時', '機体条件')):
+    if any(m in name for m in ('シリーズ条件', 'タグ条件', '戦闘条件', '戦闘回数条件', 'HP条件', '気力条件', 'テンション条件', '支援時', '機体条件')):
         return True
     return False
 
