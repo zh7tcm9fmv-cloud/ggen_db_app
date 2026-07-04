@@ -3099,6 +3099,10 @@ function _abilityPhraseToWeaponEffectKeys(phrase){
 const p=String(phrase||'').trim().toLowerCase();
 const s=String(phrase||'');
 const keys=new Set();
+if(/^def$/i.test(p))keys.add('def_dn');
+if(/^atk$/i.test(p))keys.add('atk_dn');
+if(/^mob$/i.test(p))keys.add('mob_dn');
+if(/^acc$/i.test(p))keys.add('acc_dn');
 if(/beam.*damage taken|damage taken.*beam|ビーム武装被ダメージ/i.test(p+s))keys.add('dmg_beam');
 if(/physical.*damage taken|damage taken.*physical|物理武装被ダメージ/i.test(p+s))keys.add('dmg_phys');
 if(/special.*damage taken|damage taken.*special|特殊武装被ダメージ/i.test(p+s))keys.add('dmg_spec');
@@ -3107,23 +3111,26 @@ if(/atk|attack|攻撃力|攻擊力/.test(p+s)&&/decrease|down|減少/.test(p+s))
 if(/mob|mobility|機動力/.test(p+s)&&/decrease|down|減少/.test(p+s))keys.add('mob_dn');
 if(/acc|accuracy|命中/.test(p+s)&&/decrease|down|減少/.test(p+s))keys.add('acc_dn');
 if(/ビーム武装被ダメージ上昇|ビーム.*被ダメージ.*上昇/.test(s))keys.add('dmg_beam');
+if(/遭光束武裝攻擊時.*損傷提升|遭光束武裝攻擊時所受損傷提升/.test(s))keys.add('dmg_beam');
 if(/物理武装被ダメージ上昇/.test(s))keys.add('dmg_phys');
 if(/特殊武装被ダメージ上昇/.test(s))keys.add('dmg_spec');
 if(/防御力減少/.test(s))keys.add('def_dn');
+if(/防禦力減少/.test(s))keys.add('def_dn');
 if(/攻撃力減少/.test(s))keys.add('atk_dn');
+if(/攻擊力減少/.test(s))keys.add('atk_dn');
 return keys;
 }
 function _traitLineWeaponEffectKeys(line){
 const s=String(line||'');
 const sl=s.toLowerCase();
 const keys=new Set();
-if(/damage taken from beam|damage taken from beam weapons up|ビーム武装による被ダメージ|光束.*被/i.test(s))keys.add('dmg_beam');
-if(/damage taken from physical|damage taken from physical weapons up|物理武装による被ダメージ/i.test(s))keys.add('dmg_phys');
-if(/damage taken from special|damage taken from special weapons up|特殊武装による被ダメージ/i.test(s))keys.add('dmg_spec');
-if(/\bdef down\b/i.test(sl)||/防御力減少|防禦力減少/.test(s))keys.add('def_dn');
-if(/\batk down\b/i.test(sl)||/攻撃力減少|攻擊力減少/.test(s))keys.add('atk_dn');
-if(/\bmob down\b/i.test(sl)||/機動力減少/.test(s))keys.add('mob_dn');
-if(/\bacc down\b/i.test(sl)||/命中率減少/.test(s))keys.add('acc_dn');
+if(/damage taken from beam|damage taken from beam weapons up|ビーム武装(?:による)?被ダメージ|光束.*被|遭光束武裝攻擊時[，,]?受到的?損傷提升/i.test(s))keys.add('dmg_beam');
+if(/damage taken from physical|damage taken from physical weapons up|物理武装(?:による)?被ダメージ|遭物理武裝攻擊時[，,]?受到的?損傷提升/i.test(s))keys.add('dmg_phys');
+if(/damage taken from special|damage taken from special weapons up|特殊武装(?:による)?被ダメージ|遭特殊武裝攻擊時[，,]?受到的?損傷提升/i.test(s))keys.add('dmg_spec');
+if(/\bdef down\b/i.test(sl)||/防御力\s*\d+\s*%?\s*減少|防禦力\s*\d+\s*%?\s*減少|防御力減少|防禦力減少/.test(s))keys.add('def_dn');
+if(/\batk down\b/i.test(sl)||/攻撃力\s*\d+\s*%?\s*減少|攻擊力\s*\d+\s*%?\s*減少|攻撃力減少|攻擊力減少/.test(s))keys.add('atk_dn');
+if(/\bmob down\b/i.test(sl)||/機動力\s*\d+\s*%?\s*減少|機動力減少/.test(s))keys.add('mob_dn');
+if(/\bacc down\b/i.test(sl)||/命中率\s*\d+\s*%?\s*減少|命中率減少/.test(s))keys.add('acc_dn');
 return keys;
 }
 function _parsePilotWeaponEffectAdditiveFromText(tx,ud){
@@ -3133,7 +3140,7 @@ if(!s)return bonuses;
 const pilotPhrase=_pilotExclusiveAbilityPilotPhrase(s);
 if(pilotPhrase&&!_pilotTextTargetsUnit(ud,pilotPhrase))return bonuses;
 let m;
-const reEn=/improve\s+(?:(?:increase|decrease)\s+)?(.+?)\s+weapon effects by\s+(\d+)\s*%\s+additively/gi;
+const reEn=/improve\s+((?:(?:increase|decrease)\s+)?.+?)\s+weapon effects by\s+(\d+)\s*%\s+additively/gi;
 while((m=reEn.exec(s))!==null){
 const pct=parseInt(m[2],10)||0;
 if(!pct)continue;
@@ -3141,6 +3148,12 @@ _abilityPhraseToWeaponEffectKeys(m[1]).forEach(k=>bonuses.set(k,Math.max(bonuses
 }
 const reJa=/(.+?)の武装効果値が(\d+)%加算/g;
 while((m=reJa.exec(s))!==null){
+const pct=parseInt(m[2],10)||0;
+if(!pct)continue;
+_abilityPhraseToWeaponEffectKeys(m[1]).forEach(k=>bonuses.set(k,Math.max(bonuses.get(k)||0,pct)));
+}
+const reTw=/(.+?)的武裝效果值增加(\d+)%/g;
+while((m=reTw.exec(s))!==null){
 const pct=parseInt(m[2],10)||0;
 if(!pct)continue;
 _abilityPhraseToWeaponEffectKeys(m[1]).forEach(k=>bonuses.set(k,Math.max(bonuses.get(k)||0,pct)));
@@ -3154,7 +3167,7 @@ const cd=S.pilotCondCharData;
 (cd.abilities||[]).forEach(ab=>{
 (ab.details||[]).forEach(d2=>{
 const tx=(typeof d2==='object'?d2.text:d2)||'';
-if(!/when piloting|搭乘/i.test(tx))return;
+if(!/when piloting|搭乘|搭乗/i.test(tx))return;
 _parsePilotWeaponEffectAdditiveFromText(tx,ud).forEach((v,k)=>merged.set(k,Math.max(merged.get(k)||0,v)));
 });
 });
@@ -3250,7 +3263,7 @@ return{html:out+`<div class="weapon-trait-pep-note">${esc(note)}</div>`,changed:
 }
 function _weaponTraitsHavePilotEffectBoost(traits,pepBonuses){
 if(!pepBonuses||!pepBonuses.size)return false;
-return(traits||[]).some(tr=>_applyPilotWeaponEffectAdditiveToTraitLine(String(tr||''),pepBonuses).changed);
+return(traits||[]).some(tr=>String(tr||'').split(/\r?\n/).some(l=>{const t=l.trim();return t&&_applyPilotWeaponEffectAdditiveToTraitLine(t,pepBonuses).changed;}));
 }
 function _normalizePilotWeaponTypeToken(t){
 const tl=String(t||'').trim().toLowerCase().replace(/\s+weapons?\s*$/,'').trim();
@@ -3270,6 +3283,8 @@ if(m)return m[1];
 m=String(tx||'').match(/when\s+piloting\s+(.+?)\s+and\s+vigor/i);
 if(m)return m[1];
 m=String(tx||'').match(/搭乘(?:單位為)?「([^」]+)」/);
+if(m)return m[1];
+m=String(tx||'').match(/「([^」]+)」\s*搭乗/);
 if(m)return m[1];
 return'';
 }
