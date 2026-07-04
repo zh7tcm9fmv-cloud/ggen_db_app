@@ -1741,19 +1741,20 @@ def _collect_unit_cp_weapon_range_modifiers(uid, ld, lc, stat_mode):
     return mods
 
 
-def _conditional_passive_weapon_range_bonus(uid, wid, wm, ld, lc, stat_mode, cond_active):
-    """Extra max-range from CP-on MS abilities (e.g. Vigor-gated beam range up)."""
-    if not cond_active:
-        return 0
+def _conditional_passive_weapon_range_bonus(
+        uid, wid, wm, ld, lc, stat_mode, cond_active=False, pilot_cond_active=False):
+    """Extra max-range from CP-on MS abilities and/or pilot-exclusive passives."""
     bonus = 0
-    for mod in _collect_unit_cp_weapon_range_modifiers(uid, ld, lc, stat_mode):
-        if not mod.get('cp_eligible'):
-            continue
-        if _weapon_row_matches_range_type_keys(wm, mod.get('type_keys') or frozenset()):
-            bonus += int(mod.get('inc', 0) or 0)
-    for mod in _collect_pilot_weapon_range_modifiers(uid, ld, lc, stat_mode):
-        if _weapon_row_matches_range_type_keys(wm, mod.get('type_keys') or frozenset()):
-            bonus += int(mod.get('inc', 0) or 0)
+    if cond_active:
+        for mod in _collect_unit_cp_weapon_range_modifiers(uid, ld, lc, stat_mode):
+            if not mod.get('cp_eligible'):
+                continue
+            if _weapon_row_matches_range_type_keys(wm, mod.get('type_keys') or frozenset()):
+                bonus += int(mod.get('inc', 0) or 0)
+    if pilot_cond_active:
+        for mod in _collect_pilot_weapon_range_modifiers(uid, ld, lc, stat_mode):
+            if _weapon_row_matches_range_type_keys(wm, mod.get('type_keys') or frozenset()):
+                bonus += int(mod.get('inc', 0) or 0)
     return bonus
 
 
@@ -1919,7 +1920,8 @@ def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal'):
     return False
 
 
-def _unit_weapon_subset_effective_ranges(uid, ld, lc, stat_mode, subset, cond_active=False):
+def _unit_weapon_subset_effective_ranges(
+        uid, ld, lc, stat_mode, subset, cond_active=False, pilot_cond_active=False):
     """Effective max-range values for each eligible non-MAP weapon in subset."""
     sm = (stat_mode or 'normal').strip().lower()
     if sm not in ('normal', 'sp', 'ssp'):
@@ -1954,7 +1956,8 @@ def _unit_weapon_subset_effective_ranges(uid, ld, lc, stat_mode, subset, cond_ac
         )
         rx = int(ws.get('range_max', 0) or 0)
         bonus = _ssp_weapon_range_bonus(wid, wm) if sm == 'ssp' else 0
-        bonus += _conditional_passive_weapon_range_bonus(uid, wid, wm, ld, lc, sm, cond_active)
+        bonus += _conditional_passive_weapon_range_bonus(
+            uid, wid, wm, ld, lc, sm, cond_active, pilot_cond_active)
         eff = max(0, rx + bonus)
         if eff > 0:
             ranges.add(int(eff))
@@ -1970,15 +1973,18 @@ def _weapon_range_non_map_filter_subset(stat_mode, ssp_ex_only=False):
     return 'non_map'
 
 
-def unit_weapon_subset_max_range(uid, ld, lc, stat_mode, subset, cond_active=False):
+def unit_weapon_subset_max_range(
+        uid, ld, lc, stat_mode, subset, cond_active=False, pilot_cond_active=False):
     """Max effective range among non-MAP weapons; subset 'ssp_ex' (EX + SSP ids) or 'non_map' (base grid weapons only)."""
-    ranges = _unit_weapon_subset_effective_ranges(uid, ld, lc, stat_mode, subset, cond_active)
+    ranges = _unit_weapon_subset_effective_ranges(
+        uid, ld, lc, stat_mode, subset, cond_active, pilot_cond_active)
     if not ranges:
         return None
     return max(ranges)
 
 
-def unit_weapon_subset_has_range_tier(uid, ld, lc, stat_mode, subset, tier, cond_active=False):
+def unit_weapon_subset_has_range_tier(
+        uid, ld, lc, stat_mode, subset, tier, cond_active=False, pilot_cond_active=False):
     """True when any eligible weapon in subset reaches the given range tier (1..6)."""
     try:
         want = int(tier)
@@ -1986,7 +1992,8 @@ def unit_weapon_subset_has_range_tier(uid, ld, lc, stat_mode, subset, tier, cond
         return False
     if want < 1 or want > 6:
         return False
-    return want in _unit_weapon_subset_effective_ranges(uid, ld, lc, stat_mode, subset, cond_active)
+    return want in _unit_weapon_subset_effective_ranges(
+        uid, ld, lc, stat_mode, subset, cond_active, pilot_cond_active)
 
 
 def iter_unit_weapon_trait_texts(uid, ld, lang_code, stat_mode='normal'):
@@ -2378,7 +2385,8 @@ def collect_unit_weapon_trait_only_debuff_keys(uid, ld, lc, stat_mode='normal'):
     return frozenset(acc)
 
 
-def unit_has_non_map_weapon_max_range_ge(uid, ld, lc, stat_mode='normal', need_max=6, cond_active=False):
+def unit_has_non_map_weapon_max_range_ge(
+        uid, ld, lc, stat_mode='normal', need_max=6, cond_active=False, pilot_cond_active=False):
     """True if any grid (non-MAP) weapon has max_range + SSP / CP range bonus ≥ need_max under stat_mode."""
     sm = (stat_mode or 'normal').strip().lower()
     if sm not in ('normal', 'sp', 'ssp'):
@@ -2402,7 +2410,8 @@ def unit_has_non_map_weapon_max_range_ge(uid, ld, lc, stat_mode='normal', need_m
         )
         rx = int(ws.get('range_max', 0) or 0)
         bonus = _ssp_weapon_range_bonus(wid, wm) if sm == 'ssp' else 0
-        bonus += _conditional_passive_weapon_range_bonus(uid, wid, wm, ld, lc, sm, cond_active)
+        bonus += _conditional_passive_weapon_range_bonus(
+            uid, wid, wm, ld, lc, sm, cond_active, pilot_cond_active)
         if rx + bonus >= int(need_max):
             return True
     return False
@@ -2471,7 +2480,9 @@ def unit_highest_damage_weapon_max_range(uid, ld, lc, stat_mode='normal'):
     return int(best_range or 0)
 
 
-def unit_matches_weapon_range_filter(uid, ld, lc, want_filter, stat_mode='normal', combine='and', info=None, cond_active=False):
+def unit_matches_weapon_range_filter(
+        uid, ld, lc, want_filter, stat_mode='normal', combine='and', info=None,
+        cond_active=False, pilot_cond_active=False):
     if want_filter is None:
         return True
     finfo = info if info is not None else unit_info_map.get(normalize_id(uid), {})
@@ -2479,7 +2490,7 @@ def unit_matches_weapon_range_filter(uid, ld, lc, want_filter, stat_mode='normal
         if apply_browse_combine_match(
             want_filter,
             lambda x, _fid=fid: unit_weapon_subset_has_range_tier(
-                _fid, ld, lc, stat_mode, 'ssp_ex', x, cond_active),
+                _fid, ld, lc, stat_mode, 'ssp_ex', x, cond_active, pilot_cond_active),
             combine,
         ):
             return True
@@ -2487,33 +2498,38 @@ def unit_matches_weapon_range_filter(uid, ld, lc, want_filter, stat_mode='normal
 
 
 def _unit_form_matches_weapon_range_non_map_filter(
-        uid, ld, lc, want_filter, stat_mode='normal', combine='and', subset='non_map', cond_active=False):
+        uid, ld, lc, want_filter, stat_mode='normal', combine='and', subset='non_map',
+        cond_active=False, pilot_cond_active=False):
     if want_filter is None:
         return True
     ss = subset if subset in ('non_map', 'ssp_ex', 'all') else 'non_map'
     return apply_browse_combine_match(
         want_filter,
-        lambda x: unit_weapon_subset_has_range_tier(uid, ld, lc, stat_mode, ss, x, cond_active),
+        lambda x: unit_weapon_subset_has_range_tier(
+            uid, ld, lc, stat_mode, ss, x, cond_active, pilot_cond_active),
         combine,
     )
 
 
 def unit_matches_weapon_range_non_map_filter(
         uid, ld, lc, want_filter, stat_mode='normal', combine='and', subset='non_map', info=None,
-        cond_active=False):
+        cond_active=False, pilot_cond_active=False):
     if want_filter is None:
         return True
     finfo = info if info is not None else unit_info_map.get(normalize_id(uid), {})
     for fid in _unit_ids_for_terrain_filter(uid, finfo):
         if _unit_form_matches_weapon_range_non_map_filter(
-                fid, ld, lc, want_filter, stat_mode, combine, subset, cond_active):
+                fid, ld, lc, want_filter, stat_mode, combine, subset, cond_active, pilot_cond_active):
             return True
     return False
 
 
-def collect_unit_weapon_range_debuff_keys(uid, ld, lc, stat_mode='normal', cond_active=False):
+def collect_unit_weapon_range_debuff_keys(
+        uid, ld, lc, stat_mode='normal', cond_active=False, pilot_cond_active=False):
     """Tiered max-range filter; range_6 includes SSP Custom Core range (type 4) when listing with stat_mode=ssp."""
-    if unit_has_non_map_weapon_max_range_ge(uid, ld, lc, stat_mode=stat_mode, need_max=6, cond_active=cond_active):
+    if unit_has_non_map_weapon_max_range_ge(
+            uid, ld, lc, stat_mode=stat_mode, need_max=6,
+            cond_active=cond_active, pilot_cond_active=pilot_cond_active):
         return frozenset({'range_6'})
     return frozenset()
 
@@ -15435,13 +15451,15 @@ def _precompute_unit_terrain_filter_tokens_present():
     return frozenset(out)
 
 
-def _precompute_weapon_range_values_present(subset, stat_mode='normal', cond_active=False):
+def _precompute_weapon_range_values_present(
+        subset, stat_mode='normal', cond_active=False, pilot_cond_active=False):
     ld = LANG_DATA.get('EN')
     if not ld:
         return frozenset()
     out = set()
     for uid in unit_info_map:
-        for rv in _unit_weapon_subset_effective_ranges(uid, ld, 'EN', stat_mode, subset, cond_active):
+        for rv in _unit_weapon_subset_effective_ranges(
+                uid, ld, 'EN', stat_mode, subset, cond_active, pilot_cond_active):
             out.add(str(int(rv)))
     return frozenset(out)
 
@@ -15452,11 +15470,36 @@ WEAPON_RANGE_SSP_EX_SSP_VALUES_PRESENT = _precompute_weapon_range_values_present
 WEAPON_RANGE_NON_MAP_VALUES_PRESENT = _precompute_weapon_range_values_present('non_map')
 WEAPON_RANGE_NON_MAP_SSP_VALUES_PRESENT = _precompute_weapon_range_values_present('non_map', 'ssp')
 WEAPON_RANGE_ALL_SSP_VALUES_PRESENT = _precompute_weapon_range_values_present('all', 'ssp')
-WEAPON_RANGE_NON_MAP_COND_VALUES_PRESENT = _precompute_weapon_range_values_present('non_map', 'normal', True)
-WEAPON_RANGE_NON_MAP_SSP_COND_VALUES_PRESENT = _precompute_weapon_range_values_present('non_map', 'ssp', True)
-WEAPON_RANGE_ALL_SSP_COND_VALUES_PRESENT = _precompute_weapon_range_values_present('all', 'ssp', True)
-WEAPON_RANGE_SSP_EX_COND_VALUES_PRESENT = _precompute_weapon_range_values_present('ssp_ex', 'normal', True)
-WEAPON_RANGE_SSP_EX_SSP_COND_VALUES_PRESENT = _precompute_weapon_range_values_present('ssp_ex', 'ssp', True)
+WEAPON_RANGE_NON_MAP_COND_VALUES_PRESENT = _precompute_weapon_range_values_present(
+    'non_map', 'normal', cond_active=True, pilot_cond_active=False)
+WEAPON_RANGE_NON_MAP_SSP_COND_VALUES_PRESENT = _precompute_weapon_range_values_present(
+    'non_map', 'ssp', cond_active=True, pilot_cond_active=False)
+WEAPON_RANGE_ALL_SSP_COND_VALUES_PRESENT = _precompute_weapon_range_values_present(
+    'all', 'ssp', cond_active=True, pilot_cond_active=False)
+WEAPON_RANGE_SSP_EX_COND_VALUES_PRESENT = _precompute_weapon_range_values_present(
+    'ssp_ex', 'normal', cond_active=True, pilot_cond_active=False)
+WEAPON_RANGE_SSP_EX_SSP_COND_VALUES_PRESENT = _precompute_weapon_range_values_present(
+    'ssp_ex', 'ssp', cond_active=True, pilot_cond_active=False)
+WEAPON_RANGE_NON_MAP_PILOT_COND_VALUES_PRESENT = _precompute_weapon_range_values_present(
+    'non_map', 'normal', cond_active=False, pilot_cond_active=True)
+WEAPON_RANGE_NON_MAP_SSP_PILOT_COND_VALUES_PRESENT = _precompute_weapon_range_values_present(
+    'non_map', 'ssp', cond_active=False, pilot_cond_active=True)
+WEAPON_RANGE_ALL_SSP_PILOT_COND_VALUES_PRESENT = _precompute_weapon_range_values_present(
+    'all', 'ssp', cond_active=False, pilot_cond_active=True)
+WEAPON_RANGE_SSP_EX_PILOT_COND_VALUES_PRESENT = _precompute_weapon_range_values_present(
+    'ssp_ex', 'normal', cond_active=False, pilot_cond_active=True)
+WEAPON_RANGE_SSP_EX_SSP_PILOT_COND_VALUES_PRESENT = _precompute_weapon_range_values_present(
+    'ssp_ex', 'ssp', cond_active=False, pilot_cond_active=True)
+WEAPON_RANGE_NON_MAP_FULL_COND_VALUES_PRESENT = _precompute_weapon_range_values_present(
+    'non_map', 'normal', cond_active=True, pilot_cond_active=True)
+WEAPON_RANGE_NON_MAP_SSP_FULL_COND_VALUES_PRESENT = _precompute_weapon_range_values_present(
+    'non_map', 'ssp', cond_active=True, pilot_cond_active=True)
+WEAPON_RANGE_ALL_SSP_FULL_COND_VALUES_PRESENT = _precompute_weapon_range_values_present(
+    'all', 'ssp', cond_active=True, pilot_cond_active=True)
+WEAPON_RANGE_SSP_EX_FULL_COND_VALUES_PRESENT = _precompute_weapon_range_values_present(
+    'ssp_ex', 'normal', cond_active=True, pilot_cond_active=True)
+WEAPON_RANGE_SSP_EX_SSP_FULL_COND_VALUES_PRESENT = _precompute_weapon_range_values_present(
+    'ssp_ex', 'ssp', cond_active=True, pilot_cond_active=True)
 
 
 def resolve_npc_map_terrain(unit_id, map_npc_id, lc):
@@ -15590,6 +15633,7 @@ def _unit_form_matches_shape_filters(
     terrain_combine='and', weapon_range_combine='and',
     weapon_range_non_map_combine='and', map_weapon_range_combine='and',
     cond_active=False,
+    pilot_cond_active=False,
 ):
     """True when this single unit form satisfies all active browse shape filters."""
     if role_filter is not None:
@@ -15604,7 +15648,7 @@ def _unit_form_matches_shape_filters(
         if not apply_browse_combine_match(
             weapon_range_filter,
             lambda x, _fid=fid: unit_weapon_subset_has_range_tier(
-                _fid, ld, lc, stat_mode, 'ssp_ex', x, cond_active),
+                _fid, ld, lc, stat_mode, 'ssp_ex', x, cond_active, pilot_cond_active),
             weapon_range_combine,
         ):
             return False
@@ -15612,7 +15656,7 @@ def _unit_form_matches_shape_filters(
         subset = _weapon_range_non_map_filter_subset(stat_mode, weapon_range_non_map_ssp_ex)
         if not _unit_form_matches_weapon_range_non_map_filter(
                 fid, ld, lc, weapon_range_non_map_filter, stat_mode, weapon_range_non_map_combine, subset,
-                cond_active):
+                cond_active, pilot_cond_active):
             return False
     if map_weapon_range_filter is not None:
         if not _unit_form_matches_map_weapon_range_filter(
@@ -15675,12 +15719,13 @@ def _unit_terrain_filter_display_id(uid, info, want_filter, stat_mode='normal', 
 
 
 def _unit_weapon_range_non_map_filter_display_id(
-        uid, info, ld, lc, want_filter, stat_mode='normal', combine='and', subset='non_map', cond_active=False):
+        uid, info, ld, lc, want_filter, stat_mode='normal', combine='and', subset='non_map',
+        cond_active=False, pilot_cond_active=False):
     """Browse list thumb/name: prefer the transform alternate when it alone satisfies the non-MAP weapon range filter."""
     if not want_filter:
         return uid
     if _unit_form_matches_weapon_range_non_map_filter(
-            uid, ld, lc, want_filter, stat_mode, combine, subset, cond_active):
+            uid, ld, lc, want_filter, stat_mode, combine, subset, cond_active, pilot_cond_active):
         return uid
     for fid in _unit_ids_for_terrain_filter(uid, info):
         if fid == uid:
@@ -15689,7 +15734,7 @@ def _unit_weapon_range_non_map_filter_display_id(
         if not finfo:
             continue
         if _unit_form_matches_weapon_range_non_map_filter(
-                fid, ld, lc, want_filter, stat_mode, combine, subset, cond_active):
+                fid, ld, lc, want_filter, stat_mode, combine, subset, cond_active, pilot_cond_active):
             return fid
     return uid
 
@@ -15756,8 +15801,9 @@ def unit_passes_browse_pool_filters(
     weapon_range_filter=None, apply_weapon_range=True, weapon_range_non_map_filter=None, apply_weapon_range_non_map=True,
     weapon_range_non_map_ssp_ex=False,
     map_weapon_range_filter=None, apply_map_weapon_range=True,
-    lineage_combine='and', series_combine='or', ability_combine='and', terrain_combine='and', weapon_debuff_combine='and', weapon_range_combine='and', weapon_range_non_map_combine='and', map_weapon_range_combine='and',
+    lineage_combine='and', series_combine='or', ability_combine='and', terrain_combine='and', weapon_debuff_combine='and', weapon_range_combine='and',     weapon_range_non_map_combine='and', map_weapon_range_combine='and',
     cond_active=False,
+    pilot_cond_active=False,
 ):
     """list_units inclusion with optional lineage/series/ability filter steps (for scoped browse dropdowns)."""
     if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
@@ -15786,6 +15832,7 @@ def unit_passes_browse_pool_filters(
         weapon_range_non_map_combine=weapon_range_non_map_combine,
         map_weapon_range_combine=map_weapon_range_combine,
         cond_active=cond_active,
+        pilot_cond_active=pilot_cond_active,
     )
     if not id_seek and not unit_matches_shape_filters(uid, info, ld, lc, stat_mode, **_shape_kw):
         return False
@@ -15963,6 +16010,7 @@ def lineages_for_unit_browse_filtered(ld, lc, args):
     weapon_range_non_map_ssp_ex = parse_weapon_range_non_map_ssp_ex_flag(args.get('weapon_range_non_map_ssp_ex'))
     map_weapon_range_filter = parse_map_weapon_range_filter(args.get('map_weapon_range', '').strip())
     cond_active = args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
+    pilot_cond_active = args.get('pilot_cond', '').strip().lower() in ('1', 'true', 'yes')
     _cbu = browse_combo_from_unit_args(args)
     short_ids = set()
     for uid, info in unit_info_map.items():
@@ -15973,7 +16021,7 @@ def lineages_for_unit_browse_filtered(ld, lc, args):
             weapon_range_non_map_ssp_ex=weapon_range_non_map_ssp_ex,
             map_weapon_range_filter=map_weapon_range_filter,
             q_scope=_qsc, apply_lineage=False, apply_series=True, apply_ability=True, apply_terrain=True,
-            cond_active=cond_active,
+            cond_active=cond_active, pilot_cond_active=pilot_cond_active,
             **_cbu,
         ):
             continue
@@ -16004,6 +16052,7 @@ def series_for_unit_browse_filtered(ld, lc, args):
     weapon_range_non_map_ssp_ex = parse_weapon_range_non_map_ssp_ex_flag(args.get('weapon_range_non_map_ssp_ex'))
     map_weapon_range_filter = parse_map_weapon_range_filter(args.get('map_weapon_range', '').strip())
     cond_active = args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
+    pilot_cond_active = args.get('pilot_cond', '').strip().lower() in ('1', 'true', 'yes')
     _cbu = browse_combo_from_unit_args(args)
     ssm = ld.get('ser_set_map', {})
     sl = ld.get('series_list', [])
@@ -16017,7 +16066,7 @@ def series_for_unit_browse_filtered(ld, lc, args):
             weapon_range_non_map_ssp_ex=weapon_range_non_map_ssp_ex,
             map_weapon_range_filter=map_weapon_range_filter,
             q_scope=_qsc, apply_lineage=True, apply_series=False, apply_ability=True, apply_terrain=True,
-            cond_active=cond_active,
+            cond_active=cond_active, pilot_cond_active=pilot_cond_active,
             **_cbu,
         ):
             continue
@@ -16388,6 +16437,7 @@ def abilities_for_unit_browse_filtered(ld, lc, args):
     weapon_range_non_map_ssp_ex = parse_weapon_range_non_map_ssp_ex_flag(args.get('weapon_range_non_map_ssp_ex'))
     map_weapon_range_filter = parse_map_weapon_range_filter(args.get('map_weapon_range', '').strip())
     cond_active = args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
+    pilot_cond_active = args.get('pilot_cond', '').strip().lower() in ('1', 'true', 'yes')
     _cbu = browse_combo_from_unit_args(args)
     ldc = get_calc_lang_data()
     seen = {}
@@ -16402,7 +16452,7 @@ def abilities_for_unit_browse_filtered(ld, lc, args):
             weapon_range_non_map_ssp_ex=weapon_range_non_map_ssp_ex,
             map_weapon_range_filter=map_weapon_range_filter,
             q_scope=_qsc, apply_ability=False, apply_terrain=True,
-            cond_active=cond_active,
+            cond_active=cond_active, pilot_cond_active=pilot_cond_active,
             **_cbu,
         ):
             continue
@@ -16699,6 +16749,7 @@ def list_units():
     stat_mode = request.args.get('stat_mode', 'normal').strip().lower()
     if stat_mode not in ('normal', 'sp', 'ssp'): stat_mode = 'normal'
     cond_list = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
+    pilot_cond_list = request.args.get('pilot_cond', '').strip().lower() in ('1', 'true', 'yes')
     source_arg = request.args.get('source', '').strip()
     source_filter = parse_list_source_filter(source_arg)
     source_ck = source_filter_cache_fragment(source_filter)
@@ -16747,7 +16798,7 @@ def list_units():
     want_stat_bounds_u = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
     sbu_ck = 'sbd1' if want_stat_bounds_u else 'sbd0'
     rb_u_ck = 'rb1' if ranking_bulk_u else 'rb0'
-    ck = f"ul52_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul53_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     warming = _browse_list_warming_guard('unit')
@@ -16804,6 +16855,7 @@ def list_units():
             weapon_range_non_map_combine=_cbu['weapon_range_non_map_combine'],
             map_weapon_range_combine=_cbu['map_weapon_range_combine'],
             cond_active=cond_list,
+            pilot_cond_active=pilot_cond_list,
         )
         if not id_seek and not unit_matches_shape_filters(uid, info, ld, lc, stat_mode, **_shape_kw):
             continue
@@ -16873,7 +16925,8 @@ def list_units():
                         uid, _ld_f, _lc_f, stat_mode=stat_mode,
                     )
                 range_dk = collect_unit_weapon_range_debuff_keys(
-                    uid, _ld_f, _lc_f, stat_mode, cond_active=cond_list,
+                    uid, _ld_f, _lc_f, stat_mode,
+                    cond_active=cond_list, pilot_cond_active=pilot_cond_list,
                 )
                 _debuff_memo[uid] = frozenset(set(trait_dk) | set(range_dk))
             if not id_seek and not unit_matches_weapon_debuff_filter(uid, ld, lc, weapon_debuff_filter, _debuff_memo, stat_mode, combine=_cbu['weapon_debuff_combine']):
@@ -16944,7 +16997,7 @@ def list_units():
             urow['grid_abilities'] = collect_unit_grid_abilities(_uid, ld, ldc, lc, stat_mode)
     _wbp = sorted(WEAPON_DEBUFF_KEYS_PRESENT_UNION)
     _mech_rows = mechanism_list_filter_rows_from_ids(mechanism_union, ld)
-    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg, 'weapon_range': weapon_range_arg, 'weapon_range_non_map': weapon_range_non_map_arg, 'map_weapon_range': map_weapon_range_arg, 'weapon_debuff_present_keys': _wbp, 'terrain_present_tokens': sorted(UNIT_TERRAIN_FILTER_TOKENS_PRESENT), 'weapon_range_ssp_ex_present': sorted(WEAPON_RANGE_SSP_EX_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_present': sorted(WEAPON_RANGE_SSP_EX_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_present': sorted(WEAPON_RANGE_NON_MAP_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_present': sorted(WEAPON_RANGE_NON_MAP_SSP_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_present': sorted(WEAPON_RANGE_ALL_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_cond_present': sorted(WEAPON_RANGE_NON_MAP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_cond_present': sorted(WEAPON_RANGE_ALL_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_cond_present': sorted(WEAPON_RANGE_SSP_EX_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_COND_VALUES_PRESENT, key=int), 'mechanism': mechanism_arg, 'mechanism_present': _mech_rows, 'stat_bounds': stat_bounds}
+    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg, 'weapon_range': weapon_range_arg, 'weapon_range_non_map': weapon_range_non_map_arg, 'map_weapon_range': map_weapon_range_arg, 'weapon_debuff_present_keys': _wbp, 'terrain_present_tokens': sorted(UNIT_TERRAIN_FILTER_TOKENS_PRESENT), 'weapon_range_ssp_ex_present': sorted(WEAPON_RANGE_SSP_EX_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_present': sorted(WEAPON_RANGE_SSP_EX_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_present': sorted(WEAPON_RANGE_NON_MAP_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_present': sorted(WEAPON_RANGE_NON_MAP_SSP_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_present': sorted(WEAPON_RANGE_ALL_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_cond_present': sorted(WEAPON_RANGE_NON_MAP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_cond_present': sorted(WEAPON_RANGE_ALL_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_cond_present': sorted(WEAPON_RANGE_SSP_EX_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_pilot_cond_present': sorted(WEAPON_RANGE_ALL_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_full_cond_present': sorted(WEAPON_RANGE_ALL_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_FULL_COND_VALUES_PRESENT, key=int), 'mechanism': mechanism_arg, 'mechanism_present': _mech_rows, 'stat_bounds': stat_bounds}
     set_cached_response(ck, result); return jsonify(convert_image_urls(result))
 
 # Option part trait text → primary stat groups (matches front-end _dcParseOptionPartBonuses + TW phrasing).
