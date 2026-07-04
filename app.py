@@ -1911,7 +1911,8 @@ def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal'):
             if not _pilot_text_targets_unit(uid, ld, txt):
                 continue
             if re.search(
-                    r'increases ATK and DEF|Increase ATK by|increase ATK by|same squad|'
+                    r'increases ATK and DEF|increased ATK and DEF|gain increased ATK and DEF|'
+                    r'Increase ATK by|increase ATK by|same squad|in your squad|units in your squad|'
                     r'攻撃力と防御力|攻擊力與防禦力|同部隊|部隊內',
                     txt, re.I):
                 _PILOT_COND_PASSIVE_CACHE[cache_key] = True
