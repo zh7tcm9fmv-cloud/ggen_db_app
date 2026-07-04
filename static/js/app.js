@@ -3249,7 +3249,7 @@ return out;
 }
 function _pepWeaponEffectNoteLabel(bonus,keys){
 const decKeys=['def_dn','atk_dn','mob_dn','acc_dn'];
-const isDec=[...keys].some(k=>decKeys.has(k));
+const isDec=[...keys].some(k=>decKeys.includes(k));
 return isDec?`(${bonus}% Additional Decrease)`:`(${bonus}% Additional Increase)`;
 }
 function _applyPilotWeaponEffectAdditiveToTraitLine(line,bonuses){
