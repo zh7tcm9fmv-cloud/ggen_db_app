@@ -3250,6 +3250,16 @@ S.pilotCondStackCount=Math.max(1,Math.min(info.maxStacks,Number(n)||0));
 invalidateDetailRankingCachesForPerspectiveChange();
 updateDetailDynamicSections('unit');
 }
+function _detailPilotStackSliderHtml(ud){
+if(!S.pilotConditionalPassiveActive||!ud||!S.pilotCondCharData)return'';
+const stackInfo=_detailPilotStackSliderInfo(ud);
+if(!stackInfo)return'';
+const cur=Math.max(1,Math.min(stackInfo.maxStacks,S.pilotCondStackCount|0||stackInfo.maxStacks));
+const pct=Math.min(stackInfo.maxPct,stackInfo.per*cur);
+const stackLab=t('pilot_exclusive_stack_label')||'Pilot exclusive stack level';
+const enterCls=S._pilotStackSliderAnimate?' detail-pilot-stack-row--enter':'';
+return`<div class="detail-pilot-stack-row is-open${enterCls}"><input type="range" class="detail-pilot-stack-slider" min="1" max="${stackInfo.maxStacks}" step="1" value="${cur}" aria-valuemin="1" aria-valuemax="${stackInfo.maxStacks}" aria-valuenow="${cur}" aria-label="${escAttr(stackLab)}" oninput="setPilotCondStackCount(this.value)"><span class="detail-pilot-stack-val">+${pct}%</span></div>`;
+}
 function _detailPilotStatBonusPcts(ud){
 const z={atk:0,def:0};
 if(!S.pilotConditionalPassiveActive||!ud||!S.pilotCondCharData)return z;
@@ -3307,21 +3317,32 @@ return bonus;
 }
 function togglePilotConditionalPassive(c){
 S.pilotConditionalPassiveActive=!!c;
-if(!c)S.pilotCondStackCount=0;
+if(!c){S.pilotCondStackCount=0;S._pilotStackSliderAnimate=false}
+else S._pilotStackSliderAnimate=true;
 invalidateDetailRankingCachesForPerspectiveChange();
 const d=S.currentDetailData;
 const needFetch=c&&d&&d.has_pilot_cond_passive&&d.recommend_character&&d.recommend_character.id&&(!S.pilotCondCharData||String(S.pilotCondCharData.id)!==String(d.recommend_character.id));
+const afterRender=()=>{
+if(S._pilotStackSliderAnimate){
+requestAnimationFrame(()=>{
+document.querySelectorAll('.detail-pilot-stack-row--enter').forEach(el=>{
+el.addEventListener('animationend',()=>{el.classList.remove('detail-pilot-stack-row--enter');S._pilotStackSliderAnimate=false},{once:true});
+});
+});
+}
+syncPilotCondHighlights();
+};
 if(needFetch){
 void ensurePilotCondCharData(d,true).then(()=>{
 if(S.pilotConditionalPassiveActive&&d)_detailInitPilotCondStackCount(d);
 if(S.currentDetailType==='unit'||S.currentDetailType==='character')updateDetailDynamicSections(S.currentDetailType);
-syncPilotCondHighlights();
+afterRender();
 }).catch(()=>{});
 return;
 }
 if(c&&d&&S.pilotCondCharData)_detailInitPilotCondStackCount(d);
 updateDetailDynamicSections(S.currentDetailType);
-syncPilotCondHighlights();
+afterRender();
 }
 function updateDetailDynamicSections(type){const d=S.currentDetailData;if(type!=='supporter'&&type!=='stage'){document.getElementById('detailStatsWrapper').innerHTML=renderStatsWrapper(d,type);ensureDetailRankingToggleDom(type);applyDetailRankingInline(type)}if(type==='character'){const extra=document.getElementById('charExtraInfo');if(extra)extra.innerHTML=renderCharacterExtraInfo(d);const ucHost=document.getElementById('npcUnitCondTargets');if(ucHost)ucHost.innerHTML=renderNpcUnitConditionTargetsRow(d);document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),false,S.spActive);document.getElementById('detailSkillsContainer').innerHTML=renderSkills(d.skills,S.spActive);syncNpcUnitConditionHighlights();syncAffinityExPairHighlights();syncPilotCondHighlights()}else if(type==='unit'){syncUnitLbVideoUi();document.getElementById('detailAbilitiesContainer').innerHTML=renderAbilsDynamic(d.abilities,t('sec_abilities'),S.sspActive,false);document.getElementById('detailUnitSkillsContainer').innerHTML=renderSkills(d.skills||[],false);const modEl=document.getElementById('detailModifiersContainer');if(modEl)modEl.innerHTML=renderModifiers(d.modifiers||[]);document.getElementById('detailWeaponsContainer').innerHTML=renderWeaponsDynamic(withNpcMapWeaponStrategyHints(d.weapons,d),S.sspActive,d);document.getElementById('detailMechanismsContainer').innerHTML=renderMechanisms(d.mechanisms);const tr=document.getElementById('detailUnitTerrainRow');if(tr){const base=d.terrain||[];const ter=S.sspActive&&(d.terrain_ssp&&d.terrain_ssp.length)?d.terrain_ssp:base;const hasTerrainEnh=!!(S.sspActive&&(d.has_terrain_enhancement===true||(d.terrain_ssp&&d.terrain&&d.terrain_ssp.some((ts,i)=>ts.level!==(d.terrain[i]?.level??-1)))));tr.innerHTML=renderHeaderTerrain(ter,S.sspActive,hasTerrainEnh)}syncPilotCondHighlights()}else if(type==='supporter'){let lh='';if(d.leader_skills&&d.leader_skills.length){lh=`<div class="detail-section"><div class="section-title">${t('sec_leader_skill')}</div><div class="ability-list">${d.leader_skills.map(ls=>{let ts2=ls.tags.map(t=>t.name).join(',');return`<div class="ability-item" style="flex-direction:column;gap:10px;cursor:pointer;" onclick="openTagModal('${esc(ts2)}','${ls.separator}')"><div class="ability-detail" style="margin:0;">${esc(ls.desc)}</div>${ls.tags&&ls.tags.length?`<div class="detail-tags-row" style="margin-top:0;align-items:center;">${renderSkillTags([{tags:ls.tags,separator:ls.separator}])}</div>`:''}</div>`}).join('')}</div></div>`}document.getElementById('detailLeaderSkillContainer').innerHTML=lh;let ah='';if(d.active_skills&&d.active_skills.length){ah=`<div class="detail-section"><div class="section-title">${t('sec_active_skills')}</div><div class="ability-list">${d.active_skills.map(sk=>`<div class="ability-item"><div class="ability-icon-wrap">${renderAbilIcon({icon:sk.icon})}</div><div class="ability-info"><div class="ability-name">${esc(sk.name)}</div><div class="ability-detail" style="margin:0;white-space:pre-wrap;">${esc(sk.desc)}</div></div></div>`).join('')}</div></div>`}document.getElementById('detailAbilitiesContainer').innerHTML=ah}else if(type==='stage'){document.getElementById('detailStageRestrictionsContainer').innerHTML=renderStageRestrictions(d);document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(d);document.getElementById('detailNpcContainer').innerHTML=renderNpcDetails(d.npc_details||[],d.id,S._stageDetailUiRestore);syncNpcUnitConditionHighlights();const kickTape=()=>kickStageHazardTapeAnimations(document.getElementById('detailStageRestrictionsContainer'));requestAnimationFrame(()=>requestAnimationFrame(kickTape));setTimeout(kickTape,400)}if(type==='character'||type==='unit')requestAnimationFrame(adjustDetailModalLayout)}
 function renderStatsWrapper(d,type){
@@ -3348,17 +3369,7 @@ else{sr=(cp&&d.stats_with_ex)?d.stats_with_ex:d.stats;bs=d.stats}
 if(type==='unit'&&S.pilotConditionalPassiveActive&&S.pilotCondCharData){sr=_detailApplyPilotStatBonusRows(sr,d);bs=sr.map(s=>Object.assign({},s,{total:s.base|0,bonus:0}))}
 let th='';
 if(hcf){const cplab=t('conditional_passive');th=`<div class="conditional-toggle" style="justify-content:flex-end;margin-bottom:8px;"><div class="toggle-clickable ${S.conditionalPassiveActive?'active':''}" role="button" tabindex="0" onclick="toggleConditionalPassive(!S.conditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleConditionalPassive(!S.conditionalPassiveActive)}"><span class="toggle-switch"></span><span class="toggle-label">${esc(cplab)}</span></div></div>`}
-if(type==='unit'&&d.has_pilot_cond_passive){const pplab=t('pilot_exclusive_passive')||'Pilot Exclusive Passive';th+=`<div class="conditional-toggle detail-pilot-ep-toggle" style="justify-content:flex-end;margin-bottom:8px;"><div class="toggle-clickable ${S.pilotConditionalPassiveActive?'active':''}" role="button" tabindex="0" title="${escAttr(pplab)}" aria-label="${escAttr(pplab)}" onclick="togglePilotConditionalPassive(!S.pilotConditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togglePilotConditionalPassive(!S.pilotConditionalPassiveActive)}"><span class="toggle-label toggle-label--pilot-ep-chip">${_detailPilotEpChipSpanHtml(!!S.pilotConditionalPassiveActive)}</span><span class="toggle-label detail-pilot-ep-text">${esc(pplab)}</span></div></div>`}
-let pilotStackRow='';
-if(type==='unit'&&S.pilotConditionalPassiveActive&&S.pilotCondCharData){
-const stackInfo=_detailPilotStackSliderInfo(d);
-if(stackInfo){
-const cur=Math.max(1,Math.min(stackInfo.maxStacks,S.pilotCondStackCount|0||stackInfo.maxStacks));
-const pct=Math.min(stackInfo.maxPct,stackInfo.per*cur);
-const stackLab=t('pilot_exclusive_stack_label')||'Squad units (max ATK +{max}%)';
-pilotStackRow=`<div class="detail-pilot-stack-row" style="display:flex;align-items:center;gap:10px;justify-content:flex-end;margin:0 0 8px 0;flex-wrap:wrap"><label class="detail-pilot-stack-label" style="font-size:11px;color:var(--text-muted)">${esc(String(stackLab).replace('{max}',String(stackInfo.maxPct)))}</label><input type="range" class="detail-pilot-stack-slider" min="1" max="${stackInfo.maxStacks}" step="1" value="${cur}" aria-valuemin="1" aria-valuemax="${stackInfo.maxStacks}" aria-valuenow="${cur}" aria-label="${escAttr(stackLab)}" oninput="setPilotCondStackCount(this.value)"><span class="detail-pilot-stack-val" style="font-size:11px;color:var(--accent-cyan);min-width:3.5em;text-align:right">+${pct}%</span></div>`;
-}
-}
+if(type==='unit'&&d.has_pilot_cond_passive){const pplab=t('pilot_exclusive_passive')||'Pilot Exclusive Passive';const stackHtml=_detailPilotStackSliderHtml(d);th+=`<div class="detail-pilot-ep-block"><div class="conditional-toggle detail-pilot-ep-toggle"><div class="toggle-clickable ${S.pilotConditionalPassiveActive?'active':''}" role="button" tabindex="0" title="${escAttr(pplab)}" aria-label="${escAttr(pplab)}" onclick="togglePilotConditionalPassive(!S.pilotConditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togglePilotConditionalPassive(!S.pilotConditionalPassiveActive)}"><span class="toggle-label toggle-label--pilot-ep-chip">${_detailPilotEpChipSpanHtml(!!S.pilotConditionalPassiveActive)}</span><span class="toggle-label detail-pilot-ep-text">${esc(pplab)}</span></div></div>${stackHtml}</div>`}
 let exRow='';
 if(type==='character'&&cp&&d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1){const ti=Math.min(Math.max(0,S.charSuperchargedExTier|0),d.ex_supercharged_tiers.length-1);exRow=`<div class="detail-ex-tier-row" style="display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;margin:0 0 8px 0">`+d.ex_supercharged_tiers.map((t,idx)=>`<button type="button" class="dc-lb-btn${idx===ti?' active':''}" style="font-size:11px;line-height:1.25;max-width:100%;white-space:normal;text-align:center;padding:6px 8px" onclick="setCharSuperchargedExTier(${idx})">${esc(t.label||('EX '+t.tier))}</button>`).join('')+`</div>`}
 const isRankingView=!!(d&&d.view_ranking&&(type==='character'||type==='unit'));
@@ -3385,7 +3396,7 @@ if(useSimpleStatCard)return`<div class="stat-card ${cardHi}"><div class="stat-ca
 const meta=detailRankingMetaFor(type,d.id,s.name);const loading=!meta||!meta.rank||!meta.total;const w=loading?62:detailRankingBarWidth(meta);const splitPos=!loading;let posHtml='...';if(!loading){const rk=Number(meta.rank)||0,tt=Number(meta.total)||0;if(S.lang==='EN')posHtml=`<span class="stat-rank-pos-main">${rk}${ordinalSuffixEn(rk)}/</span><span class="stat-rank-pos-total">${tt}</span>`;else posHtml=`<span class="stat-rank-pos-main">${fmtN(rk)}位 /</span><span class="stat-rank-pos-total">${fmtN(tt)}</span>`}
 return`<div class="stat-card stat-card--ranking ${cardHi} ${loading?'is-loading':''}"><div class="stat-rank-head"><div class="stat-card-label stat-rank-label">${esc(tStat(s.name,type))}</div><div class="stat-rank-bar"><span class="stat-rank-fill ${loading?'is-loading':''}" style="width:${w.toFixed(2)}%"></span></div><div class="stat-rank-pos ${loading?'is-loading':''} ${splitPos?'is-split':''}">${posHtml}</div></div><div class="stat-card-value stat-rank-value ${valHi}">${fmtN(s.total)}</div>${eb}</div>`
 }).join('');
-return`${th}${pilotStackRow}${exRow}<div class="${gridCls}">${body}</div>`
+return`${th}${exRow}<div class="${gridCls}">${body}</div>`
 }
 function toggleConditionalPassive(c){S.conditionalPassiveActive=c;if(!c)S.charSuperchargedExTier=0;invalidateDetailRankingCachesForPerspectiveChange();updateDetailDynamicSections(S.currentDetailType);syncNpcUnitConditionHighlights()}
 function setCharSuperchargedExTier(i){const d=S.currentDetailData,arr=d&&d.ex_supercharged_tiers;if(!arr||!arr.length)return;const n=arr.length;S.charSuperchargedExTier=Math.max(0,Math.min(Number(i)||0,n-1));updateDetailDynamicSections('character')}
