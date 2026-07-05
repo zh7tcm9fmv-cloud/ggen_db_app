@@ -268,6 +268,9 @@
   --ability-ex-inset-right: 4.35%;
   --ability-ex-inset-bottom: 4.4%;
   --ability-ex-inset-left: 6%;
+  /* UI_CharaAbilities_Tmb_Square_Normal_Base.webp chamfer (164×163): TR 6px, BL 12px */
+  --ability-ex-chamfer-tr: 3.66%;
+  --ability-ex-chamfer-bl: 7.32%;
   display: block;
   overflow: visible;
 }
@@ -281,6 +284,14 @@
   z-index: 1;
   overflow: hidden;
   box-sizing: border-box;
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--ability-ex-chamfer-tr)) 0,
+    100% var(--ability-ex-chamfer-tr),
+    100% 100%,
+    var(--ability-ex-chamfer-bl) 100%,
+    0 calc(100% - var(--ability-ex-chamfer-bl))
+  );
 }
 
 .ability-icon-stack--ex .ability-icon-base {
