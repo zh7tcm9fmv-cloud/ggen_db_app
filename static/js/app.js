@@ -1752,7 +1752,7 @@ return`<div class="list-thumb-composite${pk}${hz}"${sz}>${frame?`<div class="lis
 }
 function renderTagModalThumb(row,type){
 const typ=type==='unit'?'unit':'char';
-return renderListThumb({thum:row.thum,rarity:row.rarity||'N',role_icon:row.role_icon||'',acquisition_icon:row.acquisition_icon||''},typ,64);
+return renderListThumb({thum:row.thum,rarity:row.rarity||'N'},typ,64,{pickerThumb:true});
 }
 function renderTbSupporterPortraitOnly(s,size){
 const sz=size||96;
