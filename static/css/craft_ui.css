@@ -1,0 +1,262 @@
+/**
+ * Interface Craft–inspired surface polish for GGen Database.
+ * Layered card depth, spring motion, subtle grain, glass chrome.
+ */
+
+:root {
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-craft: color 0.28s var(--ease-out-soft),
+    background-color 0.28s var(--ease-out-soft),
+    border-color 0.28s var(--ease-out-soft),
+    box-shadow 0.32s var(--ease-spring),
+    transform 0.32s var(--ease-spring),
+    opacity 0.24s var(--ease-out-soft);
+  --shadow-craft-card:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.18),
+    0 1px 0 rgba(0, 0, 0, 0.28),
+    0 8px 24px rgba(0, 0, 0, 0.22);
+  --shadow-craft-card-hover:
+    inset 0 1px 0 rgba(255, 255, 255, 0.09),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2),
+    0 2px 0 rgba(0, 0, 0, 0.24),
+    0 14px 36px rgba(0, 0, 0, 0.34),
+    0 0 0 1px rgba(0, 212, 255, 0.08);
+  --shadow-craft-modal:
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    0 2px 0 rgba(0, 0, 0, 0.35),
+    0 24px 64px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(74, 144, 217, 0.12);
+  --craft-card-lift: translateY(-3px) scale(1.015);
+}
+
+/* Ambient depth + film grain */
+.bg-pattern {
+  background-image:
+    radial-gradient(ellipse 120% 80% at 12% -8%, rgba(74, 144, 217, 0.09) 0%, transparent 52%),
+    radial-gradient(ellipse 90% 70% at 88% 108%, rgba(168, 85, 247, 0.07) 0%, transparent 48%),
+    radial-gradient(ellipse 60% 40% at 50% 50%, rgba(0, 212, 255, 0.025) 0%, transparent 70%);
+}
+
+.bg-pattern::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.045;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+
+/* Glass header chrome */
+.app-header {
+  background-color: rgba(17, 24, 39, 0.82);
+  background-image: linear-gradient(
+    180deg,
+    rgba(17, 24, 39, 0.94) 0%,
+    rgba(10, 14, 23, 0.88) 100%
+  );
+  backdrop-filter: blur(14px) saturate(1.15);
+  -webkit-backdrop-filter: blur(14px) saturate(1.15);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 4px 24px rgba(0, 0, 0, 0.28);
+}
+
+.nav-tabs-shell {
+  background: linear-gradient(
+    180deg,
+    rgba(10, 14, 23, 0.55) 0%,
+    rgba(10, 14, 23, 0) 100%
+  );
+  border-bottom: 1px solid rgba(42, 54, 84, 0.65);
+}
+
+.nav-tab {
+  transition: var(--transition-craft);
+}
+
+.nav-tab:hover {
+  color: var(--text-primary);
+}
+
+.nav-tab.active {
+  text-shadow: 0 0 18px rgba(0, 212, 255, 0.22);
+}
+
+/* Physical card surfaces */
+.lr-card,
+.list-grid-card,
+.ranking-row,
+.list-grid-wrap,
+.data-table-wrapper,
+.detail-body .detail-section,
+.tag-modal-content,
+.cmp-modal,
+.cmp-picker,
+.dc-modal,
+.lr-lock-modal {
+  transition: var(--transition-craft);
+}
+
+.lr-card,
+.list-grid-card,
+.ranking-row {
+  box-shadow: var(--shadow-craft-card);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .lr-card:hover,
+  .list-grid-card:hover,
+  .ranking-row:hover {
+    transform: var(--craft-card-lift);
+    box-shadow: var(--shadow-craft-card-hover);
+  }
+
+  .lr-card:active,
+  .list-grid-card:active,
+  .ranking-row:active {
+    transform: translateY(-1px) scale(1.008);
+    transition-duration: 0.12s;
+  }
+}
+
+.list-grid-card:hover {
+  border-color: rgba(255, 149, 0, 0.65);
+}
+
+.ranking-row:hover {
+  border-color: rgba(0, 212, 255, 0.5);
+}
+
+/* Browse table frame */
+.data-table-wrapper {
+  box-shadow: var(--shadow-craft-card);
+  background: linear-gradient(
+    180deg,
+    rgba(17, 24, 39, 0.98) 0%,
+    rgba(17, 24, 39, 0.92) 100%
+  );
+}
+
+.data-table thead th {
+  background: linear-gradient(
+    180deg,
+    rgba(26, 34, 54, 0.98) 0%,
+    rgba(22, 30, 48, 0.96) 100%
+  );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 3px 6px -2px rgba(0, 0, 0, 0.5);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .data-table tbody tr {
+    transition: var(--transition-craft);
+  }
+
+  .data-table tbody tr:hover {
+    box-shadow: inset 3px 0 0 rgba(0, 212, 255, 0.55);
+  }
+}
+
+/* Detail modal craft entrance */
+@keyframes craftModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal-content,
+.tag-modal-content,
+.cmp-modal,
+.cmp-picker,
+.dc-modal {
+  animation: craftModalIn 0.42s var(--ease-spring) both;
+  box-shadow: var(--shadow-craft-modal);
+  border-color: rgba(74, 144, 217, 0.28);
+}
+
+.detail-body .detail-section {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 6px 20px rgba(0, 0, 0, 0.18);
+}
+
+.detail-body .detail-section > .section-title {
+  background: linear-gradient(
+    180deg,
+    rgba(16, 22, 36, 0.96) 0%,
+    rgba(13, 19, 33, 0.92) 100%
+  );
+  box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.03);
+}
+
+/* Tactile controls */
+.page-btn,
+.lr-load-more-btn,
+.filter-input,
+.role-filter-btn,
+.rarity-filter-btn {
+  transition: var(--transition-craft);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .page-btn:not(:disabled):hover,
+  .lr-load-more-btn:hover {
+    transform: translateY(-1px);
+  }
+
+  .page-btn:not(:disabled):active,
+  .lr-load-more-btn:active {
+    transform: translateY(0) scale(0.98);
+  }
+}
+
+.filter-input-wrap--organic .filter-input--organic:focus {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.04),
+    0 0 0 2px rgba(0, 212, 255, 0.22),
+    0 8px 24px rgba(0, 0, 0, 0.22);
+}
+
+/* Scrollbar polish */
+::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: background 0.2s var(--ease-out-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --craft-card-lift: none;
+  }
+
+  .lr-card,
+  .list-grid-card,
+  .ranking-row,
+  .page-btn,
+  .lr-load-more-btn {
+    transition: border-color 0.15s ease, background-color 0.15s ease,
+      box-shadow 0.15s ease;
+  }
+
+  .modal-content,
+  .tag-modal-content,
+  .cmp-modal,
+  .cmp-picker,
+  .dc-modal {
+    animation: none;
+  }
+
+  #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-shimmer {
+    animation: none;
+  }
+}
