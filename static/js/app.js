@@ -1744,7 +1744,10 @@ icons+=`<span class="list-thumb-icon-wrap">${pictureRasterHtml(row.acquisition_i
 }
 const hz=frame?' list-thumb-has-frame':'';
 const pk=o.pickerThumb?' list-thumb-composite--picker':'';
-const sz=size?` style="width:${size}px;height:${size}px"`:'';
+const styleParts=[];
+if(size)styleParts.push(`width:${size}px;height:${size}px`);
+if(frame)styleParts.push(`--thumb-inner-mask:url('${imgUrl(base).replace(/'/g,'\\27')}')`);
+const sz=styleParts.length?` style="${styleParts.join(';')}"`:'';
 const baseEl=pictureRasterHtml(base,{cls:'list-thumb-base',loading:ld,decoding:'async',alt:'',lazy:false});
 const frameEl=frame?pictureRasterHtml(frame,{cls:'list-thumb-frame',loading:ld,decoding:'async',alt:'',lazy:false}):'';
 const iconsWrap=icons?`<div class="list-thumb-icons">${icons}</div>`:'';

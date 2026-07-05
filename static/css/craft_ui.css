@@ -355,11 +355,12 @@
   object-fit: contain;
 }
 
-/* Framed list thumbs — clip to frame opening, portrait flush on bottom inner edge */
+/* Framed list thumbs — base-plate mask + bottom anchor (no gap, no rainbow protrusion) */
 .list-thumb-composite.list-thumb-has-frame:not(.list-thumb-composite--picker) {
-  --thumb-portrait-inset-top: 8.9%;
-  --thumb-portrait-inset-side: 8.9%;
-  --thumb-portrait-inset-bottom: 6%;
+  --thumb-portrait-inset-top: 7.8%;
+  --thumb-portrait-inset-side: 7.8%;
+  /* Frame floor inner edge — same cut as EX ability rainbow strip */
+  --thumb-portrait-inset-bottom: 4.29%;
 }
 
 .list-thumb-composite.list-thumb-has-frame:not(.list-thumb-composite--picker) .list-thumb-portrait-wrap,
@@ -372,9 +373,19 @@
   left: var(--thumb-portrait-inset-side);
   right: var(--thumb-portrait-inset-side);
   bottom: var(--thumb-portrait-inset-bottom);
-  align-items: center;
-  justify-content: flex-end;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
   overflow: hidden;
+  box-sizing: border-box;
+  -webkit-mask-image: var(--thumb-inner-mask, url("/static/images/UI/UI_Common_Tmb_Square_UR_Base.webp"));
+  mask-image: var(--thumb-inner-mask, url("/static/images/UI/UI_Common_Tmb_Square_UR_Base.webp"));
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
 }
 
 .list-thumb-composite.list-thumb-has-frame:not(.list-thumb-composite--picker) .list-thumb-portrait-wrap .list-thumb-portrait,
@@ -383,12 +394,14 @@
 .detail-rec-link-thumb-wrap .list-thumb-composite.list-thumb-has-frame:not(.list-thumb-composite--picker) .list-thumb-portrait-wrap .list-thumb-portrait,
 .lr-card-thumb .list-thumb-composite.list-thumb-has-frame:not(.list-thumb-composite--picker) .list-thumb-portrait-wrap .list-thumb-portrait,
 .list-grid-card-thumb .list-thumb-composite.list-thumb-has-frame:not(.list-thumb-composite--picker) .list-thumb-portrait-wrap .list-thumb-portrait {
-  width: auto;
-  height: auto;
-  max-width: 94%;
-  max-height: 100%;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
   object-fit: contain;
   object-position: center bottom;
+  flex-shrink: 1;
+  display: block;
 }
 
 @media (max-width: 768px) {
@@ -398,7 +411,5 @@
     left: var(--thumb-portrait-inset-side);
     right: var(--thumb-portrait-inset-side);
     bottom: var(--thumb-portrait-inset-bottom);
-    align-items: center;
-    justify-content: flex-end;
   }
 }
