@@ -376,3 +376,26 @@
 .cmp-card-thum-wrap .list-thumb-composite.list-thumb-has-frame:not(.list-thumb-composite--picker) .list-thumb-portrait-wrap .list-thumb-portrait {
   object-position: center bottom;
 }
+
+/* Characters browse — original centered portrait in frame (no bottom tuck / clip) */
+#panel-characters .list-thumb-composite.list-thumb-has-frame .list-thumb-portrait-wrap {
+  top: 8px;
+  left: 8px;
+  right: 8px;
+  bottom: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
+#panel-characters .list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait {
+  object-position: center calc(50% + var(--portrait-optical-y, 0px));
+}
+
+@media (max-width: 768px) {
+  #panel-characters .list-thumb-composite.list-thumb-has-frame .list-thumb-portrait-wrap {
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 7px;
+  }
+}
