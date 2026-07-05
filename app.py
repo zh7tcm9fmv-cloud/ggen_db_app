@@ -3474,6 +3474,7 @@ def is_map_weapon_after_move_unit_weapon(unit_id, wid, wt):
     return bool(u and (u, w) in MAP_WEAPON_AFTER_MOVE_PAIRS)
 EX_WEAPON_OVERLAY = '/static/images/WeaponIcon/UI_Battle_Button_FooterList_IconBaseEX_MiniIcon.webp'
 ABILITY_FRAME_OVERLAY = '/static/images/UI/UI_CharaAbilities_Tmb_Square_Normal_Frame.webp'
+ABILITY_FRAME_BASE = '/static/images/UI/UI_Common_Tmb_Square_UR_Base.webp'
 DEFAULT_CORRECTION = {'power_rate': 120, 'en_rate': 90, 'hit_rate': 100, 'crit_rate': 100, 'map_ammo': 1}
 ATTACK_ATTR_TYPES = {
     '1': [{'label': 'Ranged', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Ranged_S.webp'}],
@@ -8325,7 +8326,7 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
             disp_name = ex_character_ability_display_label(lang_code)
     else:
         disp_name = ab_name
-    return {'id': ab_id, 'name': ab_name, 'display_name': disp_name, 'sort': sort_order, 'details': details, 'icon': f"/static/images/Trait/{icon_file}" if icon_file else '', 'has_icon': has_icon, 'is_ex': ex_frame, 'frame_overlay': ABILITY_FRAME_OVERLAY if (has_icon and ex_frame) else '', 'resource_id': res_id}
+    return {'id': ab_id, 'name': ab_name, 'display_name': disp_name, 'sort': sort_order, 'details': details, 'icon': f"/static/images/Trait/{icon_file}" if icon_file else '', 'has_icon': has_icon, 'is_ex': ex_frame, 'frame_base': ABILITY_FRAME_BASE if (has_icon and ex_frame) else '', 'frame_overlay': ABILITY_FRAME_OVERLAY if (has_icon and ex_frame) else '', 'resource_id': res_id}
 
 # ═══════════════════════════════════════════════════════
 # LOAD ALL DATA

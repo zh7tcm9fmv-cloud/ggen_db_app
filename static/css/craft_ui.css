@@ -260,3 +260,67 @@
     animation: none;
   }
 }
+
+/* EX character ability icons: UR base layer + portrait flush inside square frame */
+.ability-icon-stack--ex {
+  display: block;
+  overflow: hidden;
+}
+
+.ability-icon-stack--ex .ability-icon-back {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.ability-icon-stack--ex .ability-icon-base {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  object-fit: contain;
+  object-position: center bottom;
+  display: block;
+  border: 0;
+}
+
+.ability-icon-stack--ex .ability-icon-portrait-wrap {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  right: 3px;
+  bottom: 3px;
+  z-index: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  box-sizing: border-box;
+}
+
+.ability-icon-stack--ex .ability-icon-portrait-wrap .ability-icon {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+  background: transparent;
+}
+
+.ability-icon-stack--ex .ability-frame-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  transform: none;
+  object-fit: contain;
+  object-position: center bottom;
+  z-index: 2;
+  pointer-events: none;
+}
