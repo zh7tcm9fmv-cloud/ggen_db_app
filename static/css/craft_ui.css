@@ -355,11 +355,19 @@
   object-fit: contain;
 }
 
-/* Framed list thumbs site-wide — portrait inset matches UR frame inner opening at any size */
+/* Framed list thumbs site-wide — inner opening matches UR frame at any thumb size */
 .list-thumb-composite.list-thumb-has-frame:not(.list-thumb-composite--picker) {
   --thumb-portrait-inset-top: 7.8%;
   --thumb-portrait-inset-side: 7.8%;
-  --thumb-portrait-inset-bottom: 5%;
+  --thumb-portrait-inset-bottom: 5.5%;
+}
+
+.list-thumb-composite.list-thumb-has-frame:not(.list-thumb-composite--picker) .list-thumb-back,
+.cmp-card-thum-wrap .list-thumb-composite.list-thumb-has-frame:not(.list-thumb-composite--picker) .list-thumb-back {
+  top: var(--thumb-portrait-inset-top);
+  left: var(--thumb-portrait-inset-side);
+  right: var(--thumb-portrait-inset-side);
+  bottom: var(--thumb-portrait-inset-bottom);
 }
 
 .list-thumb-composite.list-thumb-has-frame:not(.list-thumb-composite--picker) .list-thumb-portrait-wrap,
@@ -368,34 +376,27 @@
   left: var(--thumb-portrait-inset-side);
   right: var(--thumb-portrait-inset-side);
   bottom: var(--thumb-portrait-inset-bottom);
-  align-items: flex-end;
-  justify-content: center;
+  align-items: center;
+  justify-content: flex-end;
+  overflow: hidden;
 }
 
 .list-thumb-composite.list-thumb-has-frame:not(.list-thumb-composite--picker) .list-thumb-portrait-wrap .list-thumb-portrait,
 .cmp-card-thum-wrap .list-thumb-composite.list-thumb-has-frame:not(.list-thumb-composite--picker) .list-thumb-portrait-wrap .list-thumb-portrait {
+  max-width: 94%;
+  max-height: 94%;
+  object-fit: contain;
   object-position: center bottom;
 }
 
-/* Characters browse — original centered portrait in frame (no bottom tuck / clip) */
-#panel-characters .list-thumb-composite.list-thumb-has-frame .list-thumb-portrait-wrap {
-  top: 8px;
-  left: 8px;
-  right: 8px;
-  bottom: 10px;
-  align-items: center;
-  justify-content: center;
-}
-
-#panel-characters .list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait {
-  object-position: center calc(50% + var(--portrait-optical-y, 0px));
-}
-
 @media (max-width: 768px) {
-  #panel-characters .list-thumb-composite.list-thumb-has-frame .list-thumb-portrait-wrap {
-    top: 5px;
-    left: 5px;
-    right: 5px;
-    bottom: 7px;
+  .list-thumb-composite.list-thumb-has-frame:not(.list-thumb-composite--picker) .list-thumb-back,
+  .cmp-card-thum-wrap .list-thumb-composite.list-thumb-has-frame:not(.list-thumb-composite--picker) .list-thumb-back,
+  .list-thumb-composite.list-thumb-has-frame:not(.list-thumb-composite--picker) .list-thumb-portrait-wrap,
+  .cmp-card-thum-wrap .list-thumb-composite.list-thumb-has-frame:not(.list-thumb-composite--picker) .list-thumb-portrait-wrap {
+    top: var(--thumb-portrait-inset-top);
+    left: var(--thumb-portrait-inset-side);
+    right: var(--thumb-portrait-inset-side);
+    bottom: var(--thumb-portrait-inset-bottom);
   }
 }
