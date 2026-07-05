@@ -261,12 +261,13 @@
   }
 }
 
-/* EX ability icons — hard-cut base + portrait to frame inner plate (measured from game assets) */
+/* EX ability icons — hard-cut base + portrait inside rainbow frame (measured from game assets) */
 .ability-icon-stack--ex {
-  /* Base plate position when frame is object-fit:contain in the stack (184×182 in 70px) */
+  /* Inner plate + frame object-fit:contain bottom in 70px stack (184×182 frame, 164×163 base) */
   --ability-ex-inset-top: 11.43%;
   --ability-ex-inset-right: 5.43%;
-  --ability-ex-inset-bottom: 0%;
+  /* Bottom rainbow border inner edge — clips base/portrait below the frame floor */
+  --ability-ex-inset-bottom: 4.29%;
   --ability-ex-inset-left: 5.43%;
   display: block;
   overflow: visible;
