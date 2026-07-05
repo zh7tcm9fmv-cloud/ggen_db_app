@@ -338,7 +338,7 @@
   overflow: visible;
 }
 
-/* Tag / skill modal entity thumbs — list composite at 64px, portrait tucked to frame bottom */
+/* Tag / skill modal entity thumbs — list composite at 64px */
 .tag-unit-icon-wrapper {
   overflow: hidden;
 }
@@ -349,34 +349,30 @@
   margin: 0;
 }
 
-.tag-unit-icon-wrapper .list-thumb-composite.list-thumb-has-frame .list-thumb-portrait-wrap {
-  top: 6px;
-  left: 6px;
-  right: 6px;
-  bottom: 7px;
-}
-
 .tag-unit-icon-wrapper .list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait {
   max-width: 94%;
   max-height: 94%;
   object-fit: contain;
-  object-position: center bottom;
 }
 
-/* Unit Assembly + Latest Release + detail recommend shortcuts — portrait wrap scaled to UR frame */
-#panel-banner_timeline .list-thumb-composite.list-thumb-has-frame .list-thumb-portrait-wrap,
-#panel-latest_release .list-thumb-composite.list-thumb-has-frame .list-thumb-portrait-wrap,
-.detail-rec-link-thumb-wrap .list-thumb-composite.list-thumb-has-frame .list-thumb-portrait-wrap {
-  top: 7.8%;
-  left: 7.8%;
-  right: 7.8%;
-  bottom: 5%;
+/* Framed list thumbs site-wide — portrait inset matches UR frame inner opening at any size */
+.list-thumb-composite.list-thumb-has-frame:not(.list-thumb-composite--picker) {
+  --thumb-portrait-inset-top: 7.8%;
+  --thumb-portrait-inset-side: 7.8%;
+  --thumb-portrait-inset-bottom: 5%;
+}
+
+.list-thumb-composite.list-thumb-has-frame:not(.list-thumb-composite--picker) .list-thumb-portrait-wrap,
+.cmp-card-thum-wrap .list-thumb-composite.list-thumb-has-frame:not(.list-thumb-composite--picker) .list-thumb-portrait-wrap {
+  top: var(--thumb-portrait-inset-top);
+  left: var(--thumb-portrait-inset-side);
+  right: var(--thumb-portrait-inset-side);
+  bottom: var(--thumb-portrait-inset-bottom);
   align-items: flex-end;
   justify-content: center;
 }
 
-#panel-banner_timeline .list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait,
-#panel-latest_release .list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait,
-.detail-rec-link-thumb-wrap .list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait {
+.list-thumb-composite.list-thumb-has-frame:not(.list-thumb-composite--picker) .list-thumb-portrait-wrap .list-thumb-portrait,
+.cmp-card-thum-wrap .list-thumb-composite.list-thumb-has-frame:not(.list-thumb-composite--picker) .list-thumb-portrait-wrap .list-thumb-portrait {
   object-position: center bottom;
 }
