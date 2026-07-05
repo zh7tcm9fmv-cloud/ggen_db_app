@@ -363,9 +363,10 @@
   object-position: center bottom;
 }
 
-/* Unit Assembly + Latest Release — portrait wrap scaled to UR frame inner opening */
+/* Unit Assembly + Latest Release + detail recommend shortcuts — portrait wrap scaled to UR frame */
 #panel-banner_timeline .list-thumb-composite.list-thumb-has-frame .list-thumb-portrait-wrap,
-#panel-latest_release .list-thumb-composite.list-thumb-has-frame .list-thumb-portrait-wrap {
+#panel-latest_release .list-thumb-composite.list-thumb-has-frame .list-thumb-portrait-wrap,
+.detail-rec-link-thumb-wrap .list-thumb-composite.list-thumb-has-frame .list-thumb-portrait-wrap {
   top: 7.8%;
   left: 7.8%;
   right: 7.8%;
@@ -375,6 +376,7 @@
 }
 
 #panel-banner_timeline .list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait,
-#panel-latest_release .list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait {
+#panel-latest_release .list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait,
+.detail-rec-link-thumb-wrap .list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait {
   object-position: center bottom;
 }
