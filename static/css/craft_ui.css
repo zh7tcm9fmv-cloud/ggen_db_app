@@ -261,8 +261,9 @@
   }
 }
 
-/* EX character ability icons: UR base + portrait fit inside CharaAbilities frame */
+/* EX character ability icons — match in-game CharaAbilities stack (base + portrait + UR frame) */
 .ability-icon-stack--ex {
+  --ability-ex-chamfer: 17%;
   --ability-ex-frame-nudge-y: 1px;
   display: block;
   overflow: visible;
@@ -288,31 +289,35 @@
   border: 0;
 }
 
-/* Same inset ratios as list-thumb frames (8/8/8/10 on 90px), scales at 70/56/48px */
+/* Portrait fills inner window: bottom/sides flush, chamfered like game frame */
 .ability-icon-stack--ex .ability-icon-portrait-wrap {
   position: absolute;
-  top: 8.9%;
-  left: 8.9%;
-  right: 8.9%;
-  bottom: 11.1%;
+  inset: 0;
   z-index: 1;
-  overflow: visible;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  overflow: hidden;
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--ability-ex-chamfer)) 0,
+    100% var(--ability-ex-chamfer),
+    100% 100%,
+    var(--ability-ex-chamfer) 100%,
+    0 calc(100% - var(--ability-ex-chamfer))
+  );
   box-sizing: border-box;
 }
 
 .ability-icon-stack--ex .ability-icon-portrait-wrap .ability-icon {
-  width: auto;
-  height: auto;
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
-  object-position: center calc(50% + var(--portrait-optical-y, -1px));
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+  object-position: center bottom;
   display: block;
   background: transparent;
   border: none;
+  transform: scale(1.06);
+  transform-origin: center bottom;
 }
 
 .ability-icon-stack--ex .ability-frame-overlay {

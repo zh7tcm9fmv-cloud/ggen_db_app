@@ -3474,7 +3474,7 @@ def is_map_weapon_after_move_unit_weapon(unit_id, wid, wt):
     return bool(u and (u, w) in MAP_WEAPON_AFTER_MOVE_PAIRS)
 EX_WEAPON_OVERLAY = '/static/images/WeaponIcon/UI_Battle_Button_FooterList_IconBaseEX_MiniIcon.webp'
 ABILITY_FRAME_OVERLAY = '/static/images/UI/UI_CharaAbilities_Tmb_Square_Normal_Frame.webp'
-ABILITY_FRAME_BASE = '/static/images/UI/UI_Common_Tmb_Square_UR_Base.webp'
+ABILITY_FRAME_BASE = '/static/images/UI/UI_CharaAbilities_Tmb_Square_Normal_Base.webp'
 DEFAULT_CORRECTION = {'power_rate': 120, 'en_rate': 90, 'hit_rate': 100, 'crit_rate': 100, 'map_ammo': 1}
 ATTACK_ATTR_TYPES = {
     '1': [{'label': 'Ranged', 'icon': '/static/images/WeaponIcon/UI_Common_TypeIcon_Ranged_S.webp'}],
