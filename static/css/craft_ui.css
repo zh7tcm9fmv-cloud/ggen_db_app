@@ -261,10 +261,11 @@
   }
 }
 
-/* EX character ability icons: UR base layer + portrait flush inside square frame */
+/* EX character ability icons: UR base + portrait fit inside CharaAbilities frame */
 .ability-icon-stack--ex {
+  --ability-ex-frame-nudge-y: 1px;
   display: block;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .ability-icon-stack--ex .ability-icon-back {
@@ -287,29 +288,31 @@
   border: 0;
 }
 
+/* Same inset ratios as list-thumb frames (8/8/8/10 on 90px), scales at 70/56/48px */
 .ability-icon-stack--ex .ability-icon-portrait-wrap {
   position: absolute;
-  top: 3px;
-  left: 3px;
-  right: 3px;
-  bottom: 3px;
+  top: 8.9%;
+  left: 8.9%;
+  right: 8.9%;
+  bottom: 11.1%;
   z-index: 1;
-  overflow: hidden;
+  overflow: visible;
   display: flex;
-  align-items: stretch;
-  justify-content: stretch;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
 }
 
 .ability-icon-stack--ex .ability-icon-portrait-wrap .ability-icon {
-  width: 100%;
-  height: 100%;
-  max-width: none;
-  max-height: none;
-  object-fit: cover;
-  object-position: center top;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center calc(50% + var(--portrait-optical-y, -1px));
   display: block;
   background: transparent;
+  border: none;
 }
 
 .ability-icon-stack--ex .ability-frame-overlay {
@@ -318,7 +321,8 @@
   width: 100%;
   height: 100%;
   margin: 0;
-  transform: none;
+  transform: translateY(var(--ability-ex-frame-nudge-y));
+  transform-origin: center bottom;
   object-fit: contain;
   object-position: center bottom;
   z-index: 2;
