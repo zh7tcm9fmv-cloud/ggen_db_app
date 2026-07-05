@@ -263,12 +263,12 @@
 
 /* EX ability icons — hard-cut base + portrait inside rainbow frame (measured from game assets) */
 .ability-icon-stack--ex {
-  /* CharaAbilities frame inner opening at 70px stack (object-fit:contain, bottom) */
-  --ability-ex-inset-top: 5.71%;
-  --ability-ex-inset-right: 7.14%;
+  /* Base plate + frame object-fit:contain bottom in 70px stack (184×182 frame, 164×163 base) */
+  --ability-ex-inset-top: 11.43%;
+  --ability-ex-inset-right: 5.43%;
   /* Bottom rainbow border inner edge — clips base/portrait below the frame floor */
   --ability-ex-inset-bottom: 4.29%;
-  --ability-ex-inset-left: 7.14%;
+  --ability-ex-inset-left: 5.43%;
   display: block;
   overflow: visible;
 }
@@ -312,7 +312,7 @@
   height: 100% !important;
   max-width: none;
   max-height: none;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center bottom;
   display: block;
   background: transparent;
@@ -350,15 +350,15 @@
 }
 
 .tag-unit-icon-wrapper .list-thumb-composite.list-thumb-has-frame .list-thumb-portrait-wrap {
-  top: 5px;
-  left: 5px;
-  right: 5px;
-  bottom: 5px;
+  top: 6px;
+  left: 6px;
+  right: 6px;
+  bottom: 7px;
 }
 
 .tag-unit-icon-wrapper .list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait {
-  max-width: 100%;
-  max-height: 100%;
+  max-width: 94%;
+  max-height: 94%;
   object-fit: contain;
   object-position: center bottom;
 }
