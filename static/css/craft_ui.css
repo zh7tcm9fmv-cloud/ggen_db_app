@@ -363,8 +363,9 @@
   object-position: center bottom;
 }
 
-/* Unit Assembly — portrait wrap scaled to UR frame inner opening (58–74px tiles) */
-#panel-banner_timeline .list-thumb-composite.list-thumb-has-frame .list-thumb-portrait-wrap {
+/* Unit Assembly + Latest Release — portrait wrap scaled to UR frame inner opening */
+#panel-banner_timeline .list-thumb-composite.list-thumb-has-frame .list-thumb-portrait-wrap,
+#panel-latest_release .list-thumb-composite.list-thumb-has-frame .list-thumb-portrait-wrap {
   top: 7.8%;
   left: 7.8%;
   right: 7.8%;
@@ -373,6 +374,7 @@
   justify-content: center;
 }
 
-#panel-banner_timeline .list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait {
+#panel-banner_timeline .list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait,
+#panel-latest_release .list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait {
   object-position: center bottom;
 }
