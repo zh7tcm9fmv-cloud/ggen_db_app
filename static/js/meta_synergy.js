@@ -658,9 +658,15 @@
 
   function setRankMode(modeId) {
     if (!rankModeDef(modeId)) return;
+    if (state.rankMode === modeId && state.groups.length) {
+      renderRankModes();
+      renderContent();
+      return;
+    }
     state.rankMode = modeId;
     renderRankModes();
-    renderContent();
+    state.cacheKey = null;
+    loadRankings(false);
   }
 
   function toggleExcludeShinn() {

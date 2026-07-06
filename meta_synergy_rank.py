@@ -2741,51 +2741,70 @@ def _copy_pilot_skills_from_main(main_rankings, variant_rankings):
     return out
 
 
-def _ensure_group_enriched(g, lc):
-    """Backfill weapon/subtitle and pilot skills once per cached unit group."""
-    if not g or g.get('_msy_enriched'):
+def _slim_rankings_for_mode(rankings, rank_mode):
+    if not isinstance(rankings, dict) or not rank_mode:
+        return rankings
+    block = rankings.get(rank_mode)
+    return {rank_mode: block} if block else {}
+
+
+def _ensure_group_enriched(g, lc, rank_mode='super_crit'):
+    """Backfill weapon/subtitle and pilot skills once per cached unit group (per rank mode)."""
+    if not g:
         return g
-    rankings = g.get('rankings') or {}
-    sample = None
-    for _mode, block in rankings.items():
-        pilots = (block or {}).get('pilots') or []
-        if pilots:
-            sample = pilots[0]
-            break
-    if g.get('weapon_info') and sample and sample.get('active_skills'):
-        g['_msy_enriched'] = True
-        return g
+    rank_mode = rank_mode or 'super_crit'
+    done_modes = g.get('_msy_enriched_rm')
+    if not isinstance(done_modes, dict):
+        done_modes = {}
+        g['_msy_enriched_rm'] = done_modes
+    block = (g.get('rankings') or {}).get(rank_mode) or {}
+    pilots = block.get('pilots') or []
+    if rank_mode in done_modes and g.get('weapon_info'):
+        if not pilots or pilots[0].get('active_skills'):
+            return g
     uid = _app().normalize_id((g.get('unit') or {}).get('id'))
-    if uid:
-        if not g.get('weapon_info'):
-            wi = _weapon_info_for_msy(uid, lc)
-            if wi:
-                g['weapon_info'] = wi
+    if uid and not g.get('weapon_info'):
+        wi = _weapon_info_for_msy(uid, lc)
+        if wi:
+            g['weapon_info'] = wi
         info = _app().unit_info_map.get(uid) or {}
         is_sd = _is_sd_unit(uid, info)
         g['is_sd'] = is_sd
         if is_sd:
             g['bundled_pilot_id'] = _bundled_pilot_id(uid)
-    if g.get('rankings'):
-        g['rankings'] = _enrich_rankings_pilots(g['rankings'], lc)
+    if g.get('rankings') and rank_mode not in done_modes:
+        src = (g.get('rankings') or {}).get(rank_mode)
+        if src:
+            enriched = _enrich_rankings_pilots({rank_mode: src}, lc)
+            g['rankings'] = dict(g.get('rankings') or {})
+            g['rankings'][rank_mode] = enriched.get(rank_mode, src)
+            done_modes[rank_mode] = True
     if g.get('rankings_no_cp'):
-        g['rankings_no_cp'] = _copy_pilot_skills_from_main(g.get('rankings'), g['rankings_no_cp'])
-    if g.get('pilots') and not (g['pilots'][0].get('active_skills') if g['pilots'] else False):
-        g['pilots'] = [_enrich_pilot_row(p, lc) for p in g['pilots']]
-    g['_msy_enriched'] = True
+        slim_cp = _slim_rankings_for_mode(g['rankings_no_cp'], rank_mode)
+        cp_block = (slim_cp or {}).get(rank_mode) or {}
+        cp_pilots = cp_block.get('pilots') or []
+        if cp_pilots and not cp_pilots[0].get('active_skills'):
+            g['rankings_no_cp'] = dict(g.get('rankings_no_cp') or {})
+            g['rankings_no_cp'][rank_mode] = _copy_pilot_skills_from_main(
+                g.get('rankings'), {rank_mode: cp_block},
+            ).get(rank_mode, cp_block)
     return g
 
 
 def _normalize_group_for_mode(g, rank_mode):
     block = (g.get('rankings') or {}).get(rank_mode)
     if block:
+        rankings = _slim_rankings_for_mode(g.get('rankings'), rank_mode)
+        rankings_no_cp = g.get('rankings_no_cp')
+        if rankings_no_cp:
+            rankings_no_cp = _slim_rankings_for_mode(rankings_no_cp, rank_mode)
         return {
             'unit': g.get('unit'),
             'weapon_elems': g.get('weapon_elems'),
             'max_damage': block.get('max_damage', 0),
             'pilots': block.get('pilots') or [],
-            'rankings': g.get('rankings'),
-            'rankings_no_cp': g.get('rankings_no_cp'),
+            'rankings': rankings,
+            'rankings_no_cp': rankings_no_cp,
             'weapon_info': g.get('weapon_info'),
             'is_sd': g.get('is_sd', False),
             'bundled_pilot_id': g.get('bundled_pilot_id'),
@@ -2934,7 +2953,7 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
         _merge_groups_into_cache(cache_key, page_groups_raw)
     expanded = []
     for g in page_groups_raw:
-        _ensure_group_enriched(g, lc)
+        _ensure_group_enriched(g, lc, rank_mode)
         row = _group_for_def_tier(g, dt) if g.get('rankings_by_tier') else g
         if row:
             norm = _normalize_group_for_mode(row, rank_mode)

@@ -9334,9 +9334,9 @@ def _browse_list_warming_guard(kind):
     cache = CHAR_BROWSE_LIST_ROW_CACHE if kind == 'char' else UNIT_BROWSE_LIST_ROW_CACHE
     if cache:
         return None
-    resp = jsonify({'error': 'warming_up', 'retry_after': 1})
+    resp = jsonify({'error': 'warming_up', 'retry_after': 2})
     resp.status_code = 503
-    resp.headers['Retry-After'] = '1'
+    resp.headers['Retry-After'] = '2'
     return resp
 
 
