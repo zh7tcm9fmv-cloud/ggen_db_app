@@ -5,17 +5,11 @@
     loading: false,
     allGroups: [],
     settings: null,
-    metric: 'peak',
+    metric: 'super_crit',
     vigor: 'super',
     defTier: 3,
-    unitRarity: 'UR',
-    unitRole: '1',
-    pilotRarity: 'ALL',
-    pilotRoles: ['1', '2', '3'],
-    lbTier: 3,
     topPilots: 10,
     unitQ: '',
-    view: 'grouped',
     page: 1,
     perPage: 50,
     cacheKey: null
@@ -45,7 +39,7 @@
     return typeof global.imgUrl === 'function' ? global.imgUrl(path) : path;
   }
 
-  function thumbRow(entity, kind, size) {
+  function unitThumb(entity) {
     if (!entity) return '';
     var row = {
       thum: entity.thum || '',
@@ -55,74 +49,69 @@
       is_ultimate: entity.is_ultimate
     };
     if (typeof global.renderListThumb === 'function') {
-      return global.renderListThumb(row, kind, size || 44);
+      return global.renderListThumb(row, 'unit', 48);
     }
     return '';
   }
 
-  function metaIcons(entity) {
-    if (!entity) return '';
-    var html = '';
-    if (entity.rarity_icon) {
-      html += '<img class="msy-meta-icon msy-meta-rarity" src="' + escAttr(imgUrl(entity.rarity_icon)) + '" alt="" loading="lazy" decoding="async">';
-    }
-    if (entity.role_icon) {
-      html += '<img class="msy-meta-icon msy-meta-role" src="' + escAttr(imgUrl(entity.role_icon)) + '" alt="" loading="lazy" decoding="async">';
-    }
-    return html ? '<span class="msy-meta-icons">' + html + '</span>' : '';
-  }
-
-  function metricLabel(metric) {
-    var map = {
-      peak: 'msy_metric_peak',
-      super_crit: 'msy_metric_super_crit',
-      crit: 'msy_metric_crit',
-      normal: 'msy_metric_normal',
-      expected: 'msy_metric_expected'
+  /** Lazy-loaded pilot thumbs — avoids hundreds of eager requests on the full top-50 list. */
+  function pilotThumb(entity) {
+    if (!entity || typeof global.renderListThumb !== 'function') return '';
+    var row = {
+      thum: entity.portrait || entity.thum || '',
+      rarity: entity.rarity || 'N',
+      role_icon: entity.role_icon || ''
     };
-    return t(map[metric] || 'msy_metric_peak');
+    var inner = global.renderListThumb(row, 'char', null);
+    return '<div class="msy-pilot-thumb-slot">' + inner + '</div>';
   }
 
-  function metricValue(row, metric) {
-    if (!row) return 0;
-    if (metric === 'peak') return row.peak_dmg || row.super_crit_dmg || row.score || 0;
-    if (metric === 'crit') return row.crit_dmg || 0;
-    if (metric === 'normal') return row.normal_dmg || 0;
-    if (metric === 'expected') return row.expected_dmg || 0;
-    return row.super_crit_dmg || row.score || 0;
+  function roleIconHtml(entity) {
+    if (!entity || !entity.role_icon) return '';
+    if (typeof global.pictureRasterHtml === 'function') {
+      return global.pictureRasterHtml(entity.role_icon, {
+        cls: 'msy-role-icon',
+        loading: 'lazy',
+        decoding: 'async',
+        alt: '',
+        lazy: false
+      });
+    }
+    return '<img class="msy-role-icon" src="' + escAttr(imgUrl(entity.role_icon)) + '" alt="" loading="lazy" decoding="async">';
   }
 
-  function paginateGroups(groups) {
-    var total = groups.length;
-    var page = Math.max(1, state.page | 0);
-    var perPage = Math.max(1, Math.min(100, state.perPage | 0));
-    var start = (page - 1) * perPage;
-    return {
-      groups: groups.slice(start, start + perPage),
-      total: total,
-      totalPages: Math.max(1, Math.ceil(total / perPage)),
-      page: page,
-      perPage: perPage
-    };
+  function buildFilterQuery() {
+    var parts = [];
+    if (typeof global.getRoleQuerySuffix === 'function') {
+      parts.push(global.getRoleQuerySuffix('msyUnit').replace(/^&/, ''));
+    }
+    if (typeof global.getRarityQuerySuffix === 'function') {
+      parts.push(global.getRarityQuerySuffix('msyUnit').replace(/^&/, ''));
+    }
+    if (typeof global.getSourceQuerySuffix === 'function') {
+      parts.push(global.getSourceQuerySuffix('msyUnit').replace(/^&/, ''));
+    }
+    if (typeof global.getSeriesQuerySuffix === 'function') {
+      parts.push(global.getSeriesQuerySuffix('msyUnit').replace(/^&/, ''));
+    }
+    return parts.filter(Boolean).join('&');
   }
 
   function buildApiUrl(full) {
     var lang = (global.S && global.S.lang) || 'EN';
+    var fq = buildFilterQuery();
     var q = [
       'lang=' + encodeURIComponent(lang),
-      'unit_rarity=' + encodeURIComponent(state.unitRarity),
-      'unit_role=' + encodeURIComponent(state.unitRole),
-      'pilot_rarity=' + encodeURIComponent(state.pilotRarity),
-      'pilot_roles=' + encodeURIComponent(state.pilotRoles.join(',')),
       'metric=' + encodeURIComponent(state.metric),
       'vigor=' + encodeURIComponent(state.vigor),
       'def_tier=' + encodeURIComponent(String(state.defTier)),
-      'lb_tier=' + encodeURIComponent(String(state.lbTier)),
+      'lb_tier=3',
       'top_pilots=' + encodeURIComponent(String(state.topPilots)),
       'unit_q=' + encodeURIComponent(state.unitQ || ''),
       'page=1',
       'per_page=10000'
     ];
+    if (fq) q.push(fq);
     if (full) q.push('full=1');
     return '/api/meta_synergy_rankings?' + q.join('&');
   }
@@ -130,14 +119,10 @@
   function cacheKeyForState() {
     return [
       (global.S && global.S.lang) || 'EN',
-      state.unitRarity,
-      state.unitRole,
-      state.pilotRarity,
-      state.pilotRoles.join(','),
+      buildFilterQuery(),
       state.metric,
       state.vigor,
       state.defTier,
-      state.lbTier,
       state.topPilots,
       state.unitQ
     ].join('|');
@@ -148,49 +133,80 @@
     if (el) el.textContent = t('msy_hero_sub');
     el = document.getElementById('msySearchInput');
     if (el) el.placeholder = t('msy_search_ph');
-    el = document.getElementById('msyViewGroupedBtn');
-    if (el) el.textContent = t('msy_view_grouped');
-    el = document.getElementById('msyViewTableBtn');
-    if (el) el.textContent = t('msy_view_table');
-    document.querySelectorAll('[data-msy-metric]').forEach(function (btn) {
-      btn.textContent = metricLabel(btn.getAttribute('data-msy-metric'));
-    });
-    renderMetricPills();
+    el = document.getElementById('msyEmptyText');
+    if (el) el.textContent = t('msy_empty');
   }
 
-  function renderMetricPills() {
-    document.querySelectorAll('.msy-metric-pill').forEach(function (btn) {
-      btn.classList.toggle('active', btn.getAttribute('data-msy-metric') === state.metric);
-    });
+  function initFilterLabels() {
+    if (typeof global.fillRolePanelIcons === 'function') global.fillRolePanelIcons('msyUnit');
+    if (typeof global.fillRarityPanelIcons === 'function') global.fillRarityPanelIcons('msyUnit');
+    if (typeof global.fillSourcePanel === 'function') global.fillSourcePanel('msyUnit');
+    if (typeof global.updateRoleFilterButtonLabel === 'function') global.updateRoleFilterButtonLabel('msyUnit');
+    if (typeof global.updateRarityFilterButtonLabel === 'function') global.updateRarityFilterButtonLabel('msyUnit');
+    if (typeof global.updateSourceFilterButtonLabel === 'function') global.updateSourceFilterButtonLabel('msyUnit');
+    if (typeof global.updateSeriesFilterButtonLabel === 'function') global.updateSeriesFilterButtonLabel('msyUnit');
+    var clr = document.getElementById('msyUnitBrowseFiltersClearBtn');
+    if (clr && typeof global.t === 'function') clr.title = t('filter_clear_all');
   }
 
   function renderStatus(filteredTotal) {
     var el = document.getElementById('msyStatus');
+    var countEl = document.getElementById('msyToolbarCount');
+    if (countEl) {
+      countEl.innerHTML = '<span class="result-count-num">' + fmtN(filteredTotal) + '</span> ' + esc(t('count_unit'));
+    }
     if (!el) return;
-    var metric = metricLabel(state.metric);
-    var vigorLbl = t('dc_vigor_super');
-    if (state.vigor === 'max') vigorLbl = t('dc_vigor_max');
-    else if (state.vigor === 'high') vigorLbl = t('dc_vigor_high');
-    else if (state.vigor === 'medium') vigorLbl = t('dc_vigor_medium');
     var note = (state.settings && state.settings.defender_note) || '';
     el.innerHTML =
       '<span class="msy-status-chip">' + esc(t('msy_status_units').replace('{n}', fmtN(filteredTotal))) + '</span>' +
-      '<span class="msy-status-chip">' + esc(t('msy_status_metric').replace('{m}', metric)) + '</span>' +
-      '<span class="msy-status-chip">' + esc(t('msy_status_vigor').replace('{v}', vigorLbl)) + '</span>' +
+      '<span class="msy-status-chip">' + esc(t('msy_status_metric').replace('{m}', t('msy_metric_super_crit'))) + '</span>' +
+      '<span class="msy-status-chip">' + esc(t('msy_status_vigor').replace('{v}', t('dc_vigor_super'))) + '</span>' +
       (note ? '<span class="msy-status-note">' + esc(note) + '</span>' : '');
   }
 
-  function renderPilotActions(unitId, pilot) {
-    var cid = pilot.char && pilot.char.id;
+  function renderPilotCard(unitId, pilot) {
+    var c = pilot.char || {};
+    var dmg = pilot.super_crit_dmg || pilot.score || 0;
+    var sub = '';
+    if (pilot.guaranteed_crit) {
+      sub = '<div class="msy-pilot-sub msy-pilot-sub--gc">' + esc(t('msy_guaranteed_crit')) + '</div>';
+    } else if (pilot.crit_rate) {
+      sub = '<div class="msy-pilot-sub">' + esc(t('msy_crit_rate')).replace('{n}', String(pilot.crit_rate)) + '</div>';
+    }
     return (
-      '<button type="button" class="msy-act-btn" title="' + escAttr(t('msy_open_sim')) + '" onclick="GgenMetaSynergy.openInSimulator(\'' + escJs(unitId) + '\',\'' + escJs(cid) + '\')">↗</button>' +
-      '<button type="button" class="msy-act-btn" title="' + escAttr(t('msy_open_unit')) + '" onclick="GgenMetaSynergy.openDetailUnit(\'' + escJs(unitId) + '\')">U</button>' +
-      '<button type="button" class="msy-act-btn" title="' + escAttr(t('msy_open_char')) + '" onclick="GgenMetaSynergy.openDetailChar(\'' + escJs(cid) + '\')">P</button>'
+      '<div class="msy-pilot-card">' +
+        '<span class="msy-pilot-rank">' + (pilot.rank || '') + '</span>' +
+        '<div class="msy-pilot-thumb">' + pilotThumb(c) + '</div>' +
+        '<div class="msy-pilot-body">' +
+          '<div class="msy-pilot-name-row">' +
+            roleIconHtml(c) +
+            '<span class="msy-pilot-name" title="' + escAttr(c.name || '') + '">' + esc(c.name) + '</span>' +
+          '</div>' +
+          sub +
+        '</div>' +
+        '<div class="msy-pilot-dmg">' + fmtN(dmg) + '</div>' +
+        '<div class="msy-pilot-actions">' +
+          '<button type="button" class="msy-act-btn" title="' + escAttr(t('msy_open_sim')) + '" onclick="GgenMetaSynergy.openInSimulator(\'' + escJs(unitId) + '\',\'' + escJs(c.id) + '\')">↗</button>' +
+          '<button type="button" class="msy-act-btn" title="' + escAttr(t('msy_open_char')) + '" onclick="GgenMetaSynergy.openDetailChar(\'' + escJs(c.id) + '\')">P</button>' +
+        '</div>' +
+      '</div>'
     );
   }
 
-  function renderGrouped(groups, startRank) {
-    var metric = state.metric;
+  function renderPilotGrid(pilots, unitId) {
+    var list = (pilots || []).slice(0, 10);
+    var half = Math.ceil(list.length / 2);
+    var left = list.slice(0, half);
+    var right = list.slice(half);
+    function col(items) {
+      return '<div class="msy-pilot-col">' + items.map(function (p) {
+        return renderPilotCard(unitId, p);
+      }).join('') + '</div>';
+    }
+    return '<div class="msy-pilot-grid">' + col(left) + col(right) + '</div>';
+  }
+
+  function renderGroups(groups, startRank) {
     var html = '<div class="msy-groups">';
     groups.forEach(function (g, gi) {
       var rank = (startRank || 0) + gi + 1;
@@ -198,76 +214,40 @@
       html += '<article class="msy-unit-card">';
       html += '<header class="msy-unit-head">';
       html += '<span class="msy-unit-rank">' + rank + '</span>';
-      html += '<div class="msy-unit-thumb">' + thumbRow(u, 'unit', 48) + '</div>';
+      html += '<div class="msy-unit-thumb">' + unitThumb(u) + '</div>';
       html += '<div class="msy-unit-main">';
-      html += '<div class="msy-unit-name-row"><span class="msy-unit-name">' + esc(u.name) + '</span>' + metaIcons(u) + '</div>';
+      html += '<div class="msy-unit-name-row">';
+      html += roleIconHtml(u);
+      html += '<span class="msy-unit-name">' + esc(u.name) + '</span>';
+      html += '</div>';
       if (g.weapon_elems) {
         html += '<div class="msy-unit-elem">&lt;' + esc(g.weapon_elems) + '&gt;</div>';
       }
       html += '</div>';
       html += '<div class="msy-unit-peak">';
       html += '<div class="msy-unit-peak-val">' + fmtN(g.max_damage) + '</div>';
-      html += '<div class="msy-unit-peak-lbl">' + esc(metricLabel(metric)) + '</div>';
+      html += '<div class="msy-unit-peak-lbl">' + esc(t('msy_metric_super_crit')) + '</div>';
       html += '</div>';
       html += '</header>';
-      html += '<div class="msy-pilot-list">';
-      (g.pilots || []).forEach(function (p) {
-        var c = p.char || {};
-        var main = metricValue(p, metric);
-        html += '<div class="msy-pilot-row">';
-        html += '<span class="msy-pilot-rank">' + (p.rank || '') + '</span>';
-        html += '<div class="msy-pilot-thumb">' + thumbRow(c, 'char', 40) + '</div>';
-        html += '<div class="msy-pilot-main">';
-        html += '<div class="msy-pilot-name-row"><span class="msy-pilot-name">' + esc(c.name) + '</span>' + metaIcons(c) + '</div>';
-        if (p.crit_rate && !p.guaranteed_crit) {
-          html += '<div class="msy-pilot-sub">' + esc(t('msy_crit_rate')).replace('{n}', String(p.crit_rate)) + '</div>';
-        } else if (p.guaranteed_crit) {
-          html += '<div class="msy-pilot-sub msy-pilot-sub--gc">' + esc(t('msy_guaranteed_crit')) + '</div>';
-        }
-        html += '</div>';
-        html += '<div class="msy-pilot-mini">';
-        html += '<span title="' + escAttr(t('msy_metric_expected')) + '">' + esc(t('msy_abbr_exp')) + ' ' + fmtN(p.expected_dmg) + '</span>';
-        html += '<span title="' + escAttr(t('msy_metric_crit')) + '">' + esc(t('msy_abbr_crit')) + ' ' + fmtN(p.crit_dmg) + '</span>';
-        html += '</div>';
-        html += '<div class="msy-pilot-score">' + fmtN(main) + '</div>';
-        html += '<div class="msy-pilot-actions">' + renderPilotActions(u.id, p) + '</div>';
-        html += '</div>';
-      });
-      html += '</div></article>';
+      html += renderPilotGrid(g.pilots, u.id);
+      html += '</article>';
     });
     html += '</div>';
     return html;
   }
 
-  function renderTable(groups, startRank) {
-    var metric = state.metric;
-    var html = '<div class="msy-table-wrap"><table class="msy-table"><thead><tr>';
-    html += '<th>#</th><th>' + esc(t('tab_unit')) + '</th><th>' + esc(t('tab_char')) + '</th>';
-    html += '<th>' + esc(metricLabel(metric)) + '</th>';
-    html += '<th>' + esc(t('msy_metric_expected')) + '</th>';
-    html += '<th>' + esc(t('msy_metric_crit')) + '</th>';
-    html += '<th>' + esc(t('msy_metric_normal')) + '</th>';
-    html += '<th></th></tr></thead><tbody>';
-    var rowNum = startRank || 0;
-    groups.forEach(function (g) {
-      (g.pilots || []).forEach(function (p) {
-        rowNum++;
-        var u = g.unit || {};
-        var c = p.char || {};
-        html += '<tr>';
-        html += '<td>' + rowNum + '</td>';
-        html += '<td><div class="msy-td-entity">' + thumbRow(u, 'unit', 32) + '<span>' + esc(u.name) + '</span>' + metaIcons(u) + '</div></td>';
-        html += '<td><div class="msy-td-entity">' + thumbRow(c, 'char', 32) + '<span>' + esc(c.name) + '</span>' + metaIcons(c) + '</div></td>';
-        html += '<td class="msy-td-dmg">' + fmtN(metricValue(p, metric)) + '</td>';
-        html += '<td>' + fmtN(p.expected_dmg) + '</td>';
-        html += '<td>' + fmtN(p.crit_dmg) + '</td>';
-        html += '<td>' + fmtN(p.normal_dmg) + '</td>';
-        html += '<td>' + renderPilotActions(u.id, p) + '</td>';
-        html += '</tr>';
-      });
-    });
-    html += '</tbody></table></div>';
-    return html;
+  function paginateGroups(groups) {
+    var total = groups.length;
+    var page = Math.max(1, state.page | 0);
+    var perPage = Math.max(1, Math.min(50, state.perPage | 0));
+    var start = (page - 1) * perPage;
+    return {
+      groups: groups.slice(start, start + perPage),
+      total: total,
+      totalPages: Math.max(1, Math.ceil(total / perPage)),
+      page: page,
+      perPage: perPage
+    };
   }
 
   function renderPagination(meta) {
@@ -298,9 +278,7 @@
       return;
     }
     if (empty) empty.style.display = 'none';
-    host.innerHTML = state.view === 'table'
-      ? renderTable(meta.groups, startRank)
-      : renderGrouped(meta.groups, startRank);
+    host.innerHTML = renderGroups(meta.groups, startRank);
     renderPagination(meta);
   }
 
@@ -336,7 +314,7 @@
     }
   }
 
-  function debouncedReload() {
+  function scheduleReload() {
     clearTimeout(state._reloadTimer);
     state._reloadTimer = setTimeout(function () {
       state.cacheKey = null;
@@ -346,28 +324,8 @@
 
   function onTabShown() {
     applyLangStatic();
+    initFilterLabels();
     loadRankings(false);
-  }
-
-  function setMetric(metric) {
-    state.metric = metric;
-    renderMetricPills();
-    renderContent();
-  }
-
-  function setVigor(vigor) {
-    state.vigor = vigor;
-    state.cacheKey = null;
-    loadRankings(true);
-  }
-
-  function setView(view) {
-    state.view = view;
-    var g = document.getElementById('msyViewGroupedBtn');
-    var tb = document.getElementById('msyViewTableBtn');
-    if (g) g.classList.toggle('active', view === 'grouped');
-    if (tb) tb.classList.toggle('active', view === 'table');
-    renderContent();
   }
 
   function goPage(p) {
@@ -427,32 +385,17 @@
     if (search) {
       search.addEventListener('input', function () {
         state.unitQ = search.value.trim();
-        debouncedReload();
+        scheduleReload();
       });
     }
-    document.querySelectorAll('[data-msy-filter]').forEach(function (el) {
-      el.addEventListener('change', function () {
-        var key = el.getAttribute('data-msy-filter');
-        if (key === 'unit_rarity') state.unitRarity = el.value;
-        else if (key === 'unit_role') state.unitRole = el.value;
-        else if (key === 'pilot_rarity') state.pilotRarity = el.value;
-        else if (key === 'pilot_role') {
-          var roles = [];
-          document.querySelectorAll('[data-msy-pilot-role]:checked').forEach(function (cb) {
-            roles.push(cb.value);
-          });
-          state.pilotRoles = roles.length ? roles : ['1', '2', '3'];
-        } else if (key === 'vigor') setVigor(el.value);
-        else if (key === 'def_tier') state.defTier = Math.max(1, Math.min(3, parseInt(el.value, 10) || 3));
+    var defSel = document.getElementById('msyDefTierSelect');
+    if (defSel) {
+      defSel.addEventListener('change', function () {
+        state.defTier = Math.max(1, Math.min(3, parseInt(defSel.value, 10) || 3));
         state.cacheKey = null;
         loadRankings(true);
       });
-    });
-    document.querySelectorAll('.msy-metric-pill').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        setMetric(btn.getAttribute('data-msy-metric'));
-      });
-    });
+    }
   }
 
   function init() {
@@ -464,13 +407,12 @@
     init: init,
     onTabShown: onTabShown,
     applyLangStatic: applyLangStatic,
-    setMetric: setMetric,
-    setView: setView,
     goPage: goPage,
     openDetailUnit: openDetailUnit,
     openDetailChar: openDetailChar,
     openInSimulator: openInSimulator,
-    loadRankings: loadRankings
+    loadRankings: loadRankings,
+    scheduleReload: scheduleReload
   };
 
   if (document.readyState === 'loading') {

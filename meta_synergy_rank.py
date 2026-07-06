@@ -570,11 +570,13 @@ def _entity_brief_char(cid, lc):
     cid = A.normalize_id(cid)
     info = A.char_info_map.get(cid) or {}
     ri = str(info.get('rarity', '1'))
-    thum = A.find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits')
+    portrait = A.find_portrait(info.get('resource_ids', []), cid, 'images/portraits')
+    thum = A.find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits') or portrait
     return {
         'id': cid,
         'name': _resolve_char_name(cid, lc),
         'thum': thum or '',
+        'portrait': portrait or thum or '',
         'rarity': A.RARITY_MAP.get(ri, 'N'),
         'rarity_id': ri,
         'rarity_icon': A.RARITY_ICON_MAP.get(ri, ''),
@@ -611,11 +613,15 @@ def _settings_note(def_tier):
 def build_meta_synergy_rankings(
     lc='EN',
     *,
-    unit_rarity='UR',
-    unit_role='1',
+    unit_rarity='ALL',
+    unit_role='ALL',
+    rarity=None,
+    role=None,
+    series_id=None,
+    source=None,
     pilot_rarity='ALL',
     pilot_roles=None,
-    metric='peak',
+    metric='super_crit',
     vigor='super',
     lb_tier=3,
     def_tier=3,
@@ -627,14 +633,34 @@ def build_meta_synergy_rankings(
 ):
     A = _app()
     lc = lc or A.DEFAULT_LANG
+    ld = _ldc(lc)
+    unit_ser_map = ld.get('unit_ser_map', {})
     exclude = set()
     for p in exclude_pairs or []:
         if isinstance(p, (list, tuple)) and len(p) >= 2:
             exclude.add((A.normalize_id(p[0]), A.normalize_id(p[1])))
     pilot_roles = pilot_roles or ('1', '2', '3')
     pilot_role_set = {str(r) for r in pilot_roles}
-    rarity_filter = None if not unit_rarity or unit_rarity.upper() == 'ALL' else unit_rarity.upper()
     pilot_rarity_filter = None if not pilot_rarity or pilot_rarity.upper() == 'ALL' else pilot_rarity.upper()
+
+    rarity_raw = (rarity if rarity is not None else unit_rarity) or ''
+    if str(rarity_raw).upper() in ('ALL', ''):
+        rarity_filter = None
+    elif ',' in str(rarity_raw) or str(rarity_raw).upper() in ('LT', 'ULT', 'NLT', '__NONE__'):
+        rarity_filter = A.parse_list_rarity_filter(str(rarity_raw))
+    elif str(rarity_raw).upper() in A.RARITY_LETTERS:
+        rarity_filter = A.parse_list_rarity_filter(str(rarity_raw).upper())
+    else:
+        rarity_filter = None
+
+    role_raw = role if role is not None else unit_role
+    if role_raw is None or str(role_raw).upper() in ('ALL', ''):
+        role_filter = None
+    else:
+        role_filter = A.parse_list_role_filter(str(role_raw))
+
+    series_filter = A.parse_list_series_filter(series_id or '')
+    source_filter = A.parse_list_source_filter(source or '')
 
     unit_rows = []
     q_lower = (unit_q or '').strip().lower()
@@ -643,11 +669,28 @@ def build_meta_synergy_rankings(
         if not info:
             continue
         ri = str(info.get('rarity', '1'))
-        role = str(info.get('role', '0'))
-        if rarity_filter and A.RARITY_MAP.get(ri, 'N') != rarity_filter:
-            continue
-        if unit_role and unit_role != 'ALL' and role != str(unit_role):
-            continue
+        role_id = str(info.get('role', '0'))
+        if role_filter is not None:
+            if not role_filter:
+                continue
+            if not A.unit_matches_role_filter(uid, info, role_filter):
+                continue
+        if rarity_filter is not None:
+            if not rarity_filter:
+                continue
+            letter = A.RARITY_MAP.get(ri, 'N')
+            lim = uid in A.LIMITED_TIME_UNIT_IDS
+            if not A.row_matches_rarity_filter(
+                rarity_filter, letter, lim, bool(info.get('is_ultimate', False)),
+            ):
+                continue
+        acq_route = str(info.get('acquisition_route', '0'))
+        if source_filter is not None:
+            if not A.entity_matches_source_category(acq_route, role_id, source_filter):
+                continue
+        if series_filter is not None:
+            if not A.entity_matches_series(unit_ser_map.get(uid, ''), series_filter, lc):
+                continue
         name = _resolve_unit_name(uid, lc).lower()
         if q_lower and q_lower not in name and q_lower not in uid:
             continue
@@ -672,7 +715,7 @@ def build_meta_synergy_rankings(
         'super_crit': 'super_crit_dmg',
         'expected': 'expected_dmg',
         'peak': 'peak_dmg',
-    }.get(metric, 'peak_dmg')
+    }.get(metric, 'super_crit_dmg')
 
     groups = []
     for uid in unit_rows:
@@ -739,8 +782,10 @@ def build_meta_synergy_rankings(
         'def_tier': dt,
         'defender_tiers': defender_tiers_public(),
         'settings': {
-            'unit_rarity': unit_rarity,
-            'unit_role': unit_role,
+            'unit_rarity': rarity_raw,
+            'unit_role': role_raw,
+            'series_id': series_id or '',
+            'source': source or '',
             'pilot_rarity': pilot_rarity,
             'pilot_roles': list(pilot_role_set),
             'lb_tier': lb_tier,
@@ -756,11 +801,13 @@ def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
     def_tier = max(1, min(3, int(kwargs.get('def_tier', 3) or 3)))
     cache_key = (
         lc or 'EN',
-        kwargs.get('unit_rarity', 'UR'),
-        kwargs.get('unit_role', '1'),
+        kwargs.get('rarity') or kwargs.get('unit_rarity', 'ALL'),
+        kwargs.get('role') or kwargs.get('unit_role', 'ALL'),
+        kwargs.get('series_id') or '',
+        kwargs.get('source') or '',
         kwargs.get('pilot_rarity', 'ALL'),
         tuple(sorted(str(r) for r in (kwargs.get('pilot_roles') or ('1', '2', '3')))),
-        kwargs.get('metric', 'peak'),
+        kwargs.get('metric', 'super_crit'),
         kwargs.get('vigor', 'super'),
         int(kwargs.get('lb_tier', 3) or 3),
         def_tier,
@@ -776,7 +823,7 @@ def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
     start = (page - 1) * per_page
     page_groups = all_groups[start:start + per_page]
     total_pages = max(1, (total + per_page - 1) // per_page)
-    metric = kwargs.get('metric', 'peak')
+    metric = kwargs.get('metric', 'super_crit')
     vigor = kwargs.get('vigor', 'super')
     pilot_role_set = {str(r) for r in (kwargs.get('pilot_roles') or ('1', '2', '3'))}
     dt = def_tier
@@ -793,8 +840,10 @@ def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
         'def_tier': dt,
         'defender_tiers': defender_tiers_public(),
         'settings': {
-            'unit_rarity': kwargs.get('unit_rarity', 'UR'),
-            'unit_role': kwargs.get('unit_role', '1'),
+            'unit_rarity': kwargs.get('rarity') or kwargs.get('unit_rarity', 'ALL'),
+            'unit_role': kwargs.get('role') or kwargs.get('unit_role', 'ALL'),
+            'series_id': kwargs.get('series_id') or '',
+            'source': kwargs.get('source') or '',
             'pilot_rarity': kwargs.get('pilot_rarity', 'ALL'),
             'pilot_roles': list(pilot_role_set),
             'lb_tier': int(kwargs.get('lb_tier', 3) or 3),

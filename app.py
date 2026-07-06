@@ -13753,12 +13753,16 @@ def api_video_proxy(folder, filename):
 def api_meta_synergy_rankings():
     """Unit × pilot max-damage synergy rankings (Firered damage sheet)."""
     lc = request.args.get('lang', DEFAULT_LANG)
-    unit_rarity = request.args.get('unit_rarity', 'UR')
-    unit_role = request.args.get('unit_role', '1')
+    unit_rarity = request.args.get('unit_rarity', 'ALL')
+    unit_role = request.args.get('unit_role', 'ALL')
+    rarity = request.args.get('rarity', '').strip() or None
+    role = request.args.get('role', '').strip() or None
+    series_id = request.args.get('series_id', '').strip()
+    source = request.args.get('source', '').strip()
     pilot_rarity = request.args.get('pilot_rarity', 'ALL')
     pilot_roles_raw = request.args.get('pilot_roles', '1,2,3')
     pilot_roles = tuple(x.strip() for x in pilot_roles_raw.split(',') if x.strip()) or ('1', '2', '3')
-    metric = request.args.get('metric', 'peak')
+    metric = request.args.get('metric', 'super_crit')
     vigor = request.args.get('vigor', 'super')
     lb_tier = request.args.get('lb_tier', '3', type=int)
     def_tier = request.args.get('def_tier', '3', type=int)
@@ -13780,6 +13784,10 @@ def api_meta_synergy_rankings():
         lc=lc,
         unit_rarity=unit_rarity,
         unit_role=unit_role,
+        rarity=rarity,
+        role=role,
+        series_id=series_id or None,
+        source=source or None,
         pilot_rarity=pilot_rarity,
         pilot_roles=pilot_roles,
         metric=metric,
@@ -13795,8 +13803,8 @@ def api_meta_synergy_rankings():
     if not full:
         payload = {k: v for k, v in payload.items() if k != 'all_groups'}
     ck = (
-        f'msy_{lc}_{unit_rarity}_{unit_role}_{pilot_rarity}_'
-        f'{",".join(pilot_roles)}_{metric}_{vigor}_{lb_tier}_{def_tier}_{top_pilots}_'
+        f'msy_{lc}_{rarity or unit_rarity}_{role or unit_role}_{series_id}_{source}_'
+        f'{pilot_rarity}_{",".join(pilot_roles)}_{metric}_{vigor}_{lb_tier}_{def_tier}_{top_pilots}_'
         f'{unit_q}_{page}_{per_page}_{"full" if full else "page"}_'
         f'{hash(tuple(exclude_pairs))}'
     )
