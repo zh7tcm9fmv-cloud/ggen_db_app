@@ -243,11 +243,120 @@
   transition: width 0.55s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+.msy-bar-val {
   font-size: 11px;
   font-weight: 800;
   color: var(--accent-cyan);
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
+}
+
+.msy-vbar-chart {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 6px 4px;
+  min-height: 190px;
+}
+
+.msy-vbar-col {
+  flex: 1;
+  min-width: 0;
+  max-width: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  opacity: 0;
+  animation: msyBarIn 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--msy-bar-delay, 0ms);
+}
+
+.msy-vbar-val {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  line-height: 1.1;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.msy-vbar-stack {
+  width: 100%;
+  max-width: 34px;
+  height: 120px;
+  display: flex;
+  align-items: flex-end;
+  border-radius: 4px 4px 0 0;
+  background: rgba(90, 104, 132, 0.2);
+  overflow: hidden;
+}
+
+.msy-vbar-fill {
+  width: 100%;
+  height: 0;
+  border-radius: inherit;
+  background: linear-gradient(180deg, rgba(0, 212, 255, 0.95), rgba(0, 212, 255, 0.45));
+  transition: height 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.msy-vbar-open {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.msy-vbar-open:hover .msy-vbar-thumb {
+  outline: 1px solid rgba(0, 212, 255, 0.45);
+}
+
+.msy-vbar-thumb .msy-pilot-thumb-slot,
+.msy-vbar-thumb .list-thumb-composite {
+  width: 34px;
+  height: 34px;
+}
+
+.msy-vbar-rank {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.msy-pilot-open {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+}
+
+.msy-pilot-open:hover .msy-pilot-name {
+  color: var(--accent-cyan);
+}
+
+.msy-chart-btn.active {
+  border-color: var(--accent-cyan);
+  background: rgba(0, 212, 255, 0.14);
+  color: var(--accent-cyan);
+}
+
+.msy-unit-card--chart .msy-pilot-grid {
+  display: none;
 }
 
 .msy-chart-empty {
@@ -341,7 +450,15 @@
   min-height: 30px;
   padding: 4px 8px;
   font-size: 11px;
-  max-width: 220px;
+  max-width: 260px;
+  min-width: 148px;
+}
+
+.msy-def-tier-lbl-text {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  white-space: nowrap;
 }
 
 .msy-def-custom {
@@ -351,9 +468,10 @@
 }
 
 .msy-def-input {
-  width: 72px;
+  width: 88px;
+  min-width: 88px;
   min-height: 30px;
-  padding: 4px 6px;
+  padding: 4px 8px;
   font-size: 11px;
 }
 

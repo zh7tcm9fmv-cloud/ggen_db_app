@@ -16,6 +16,7 @@
     total: 0,
     totalPages: 1,
     settings: null,
+    defenderTiers: null,
     rankMode: 'super_crit',
     vigor: 'super',
     defTier: 1,
@@ -26,8 +27,9 @@
     page: 1,
     perPage: 50,
     cacheKey: null,
+    tierCache: {},
     excludeUrUnits: {},
-    chartUnitId: null
+    unitViewMode: {}
   };
 
   function t(key) {
@@ -52,6 +54,11 @@
 
   function imgUrl(path) {
     return typeof global.imgUrl === 'function' ? global.imgUrl(path) : path;
+  }
+
+  function rankModeIconHtml(path) {
+    var src = path && path.indexOf('/static/') === 0 ? path : '/static/images/UI/UI_Tention_Up_01.webp';
+    return '<img class="msy-rank-mode-icon" src="' + escAttr(src) + '" width="28" height="28" alt="" decoding="async" loading="eager" onerror="this.onerror=null;if(typeof gameImageUrlFallback===\'function\')gameImageUrlFallback(this)">';
   }
 
   function rasterImg(path, opts) {
@@ -158,18 +165,36 @@
     return parts.filter(Boolean).join('&');
   }
 
-  function buildApiUrl() {
+  function cacheKeyBase() {
+    return [
+      (global.S && global.S.lang) || 'EN',
+      buildFilterQuery(),
+      state.vigor,
+      state.defUnitOverride,
+      state.defCharOverride,
+      state.topPilots
+    ].join('|');
+  }
+
+  function cacheKeyForState() {
+    return cacheKeyBase() + '|dt:' + state.defTier + '|pg:' + state.page;
+  }
+
+  function buildApiUrl(opts) {
+    opts = opts || {};
     var lang = (global.S && global.S.lang) || 'EN';
     var fq = buildFilterQuery();
+    var defTier = opts.defTier != null ? opts.defTier : state.defTier;
+    var page = opts.page != null ? opts.page : state.page;
     var q = [
       'lang=' + encodeURIComponent(lang),
       'vigor=' + encodeURIComponent(state.vigor),
-      'def_tier=' + encodeURIComponent(String(state.defTier)),
+      'def_tier=' + encodeURIComponent(String(defTier)),
       'lb_tier=3',
       'top_pilots=' + encodeURIComponent(String(state.topPilots)),
       'unit_q=' + encodeURIComponent(state.unitQ || ''),
       'rank_mode=' + encodeURIComponent(state.rankMode),
-      'page=' + encodeURIComponent(String(state.page)),
+      'page=' + encodeURIComponent(String(page)),
       'per_page=' + encodeURIComponent(String(state.perPage))
     ];
     if (state.defUnitOverride && state.defCharOverride) {
@@ -180,22 +205,29 @@
     return '/api/meta_synergy_rankings?' + q.join('&');
   }
 
-  function cacheKeyForState() {
-    return [
-      (global.S && global.S.lang) || 'EN',
-      buildFilterQuery(),
-      state.vigor,
-      state.defTier,
-      state.defUnitOverride,
-      state.defCharOverride,
-      state.topPilots,
-      state.rankMode,
-      state.page
-    ].join('|');
+  function tierCacheKey(defTier) {
+    return cacheKeyBase() + '|dt:' + defTier;
   }
 
-  function searchCacheKeyForState() {
-    return cacheKeyForState() + '|q:' + (state.unitQ || '');
+  function applyPayload(d, defTier) {
+    state.groups = d.groups || [];
+    state.total = d.total || 0;
+    state.totalPages = d.total_pages || 1;
+    state.page = d.page || state.page;
+    state.settings = d.settings || null;
+    if (d.defender_tiers) {
+      state.defenderTiers = d.defender_tiers;
+      populateDefTierSelect(d.defender_tiers);
+    }
+    state.cacheKey = cacheKeyForState();
+    state.tierCache[tierCacheKey(defTier != null ? defTier : state.defTier)] = {
+      groups: state.groups,
+      total: state.total,
+      totalPages: state.totalPages,
+      page: state.page,
+      settings: state.settings
+    };
+    renderContent();
   }
 
   function renderRankModes() {
@@ -205,7 +237,7 @@
     RANK_MODES.forEach(function (m) {
       var active = state.rankMode === m.id;
       html += '<button type="button" class="msy-rank-mode' + (active ? ' active' : '') + '" role="tab" aria-selected="' + (active ? 'true' : 'false') + '" data-msy-rank-mode="' + escAttr(m.id) + '" onclick="GgenMetaSynergy.setRankMode(\'' + escJs(m.id) + '\')">';
-      html += rasterImg(m.icon, { cls: 'msy-rank-mode-icon', loading: 'lazy', decoding: 'async', alt: '', lazy: false, extra: ' width="28" height="28"' });
+      html += rankModeIconHtml(m.icon);
       html += '<span class="msy-rank-mode-label">' + esc(t(m.labelKey)) + '</span>';
       html += '</button>';
     });
@@ -217,6 +249,8 @@
     if (el) el.placeholder = t('msy_search_ph');
     el = document.getElementById('msyEmptyText');
     if (el) el.textContent = t('msy_empty');
+    el = document.getElementById('msyDefTierLabel');
+    if (el) el.textContent = t('msy_def_difficulty');
     renderRankModes();
   }
 
@@ -227,18 +261,15 @@
     var labels = {
       1: t('msy_def_hard3'),
       2: t('msy_def_challenge'),
-      3: t('msy_def_eternal'),
-      4: t('msy_def_avg')
+      3: t('msy_def_eternal')
     };
     sel.innerHTML = '';
-    ['1', '2', '3', '4'].forEach(function (k) {
+    ['1', '2', '3'].forEach(function (k) {
       var row = tiers[k] || tiers[String(k)] || {};
       var lbl = labels[k] || row.label || ('Tier ' + k);
-      var u = row.unit_def != null ? row.unit_def : '';
-      var c = row.char_def != null ? row.char_def : '';
       var opt = document.createElement('option');
       opt.value = k;
-      opt.textContent = lbl + (u !== '' ? ' (' + u + ' / ' + c + ')' : '');
+      opt.textContent = lbl;
       if (k === cur) opt.selected = true;
       sel.appendChild(opt);
     });
@@ -265,6 +296,8 @@
     if (defChar) defChar.placeholder = t('msy_def_char_ph');
     var defIcon = document.getElementById('msyDefTierIcon');
     if (defIcon) defIcon.src = imgUrl(DEF_ICON);
+    var defLbl = document.getElementById('msyDefTierLabel');
+    if (defLbl) defLbl.textContent = t('msy_def_difficulty');
   }
 
   function renderStatus() {
@@ -301,9 +334,9 @@
     );
   }
 
-  function chartBtnHtml(unitId) {
+  function chartBtnHtml(unitId, active) {
     return (
-      '<button type="button" class="msy-act-btn msy-chart-btn" title="' + escAttr(t('msy_chart')) + '" onclick="GgenMetaSynergy.openChart(\'' + escJs(unitId) + '\')">' +
+      '<button type="button" class="msy-act-btn msy-chart-btn' + (active ? ' active' : '') + '" title="' + escAttr(t('msy_chart')) + '" aria-pressed="' + (active ? 'true' : 'false') + '" onclick="GgenMetaSynergy.toggleChartView(\'' + escJs(unitId) + '\')">' +
         '<svg class="msy-chart-btn-svg" viewBox="0 0 16 16" aria-hidden="true" focusable="false">' +
           '<rect x="1" y="9" width="3" height="6" rx="0.6"></rect>' +
           '<rect x="6" y="5" width="3" height="10" rx="0.6"></rect>' +
@@ -325,18 +358,19 @@
     return (
       '<div class="msy-pilot-card">' +
         '<span class="msy-pilot-rank">' + (pilot.rank || '') + '</span>' +
-        '<div class="msy-pilot-thumb">' + pilotThumb(c) + '</div>' +
-        '<div class="msy-pilot-body">' +
-          '<div class="msy-pilot-name-row">' +
-            roleIconHtml(c) +
-            '<span class="msy-pilot-name" title="' + escAttr(c.name || '') + '">' + esc(c.name) + '</span>' +
+        '<button type="button" class="msy-pilot-open" title="' + escAttr(t('msy_open_char')) + '" onclick="GgenMetaSynergy.openDetailChar(\'' + escJs(c.id) + '\')">' +
+          '<div class="msy-pilot-thumb">' + pilotThumb(c) + '</div>' +
+          '<div class="msy-pilot-body">' +
+            '<div class="msy-pilot-name-row">' +
+              roleIconHtml(c) +
+              '<span class="msy-pilot-name" title="' + escAttr(c.name || '') + '">' + esc(c.name) + '</span>' +
+            '</div>' +
+            sub +
           '</div>' +
-          sub +
-        '</div>' +
+        '</button>' +
         '<div class="msy-pilot-dmg">' + fmtN(dmg) + '</div>' +
         '<div class="msy-pilot-actions">' +
           '<button type="button" class="msy-act-btn" title="' + escAttr(t('msy_open_sim')) + '" onclick="GgenMetaSynergy.openInSimulator(\'' + escJs(unitId) + '\',\'' + escJs(c.id) + '\')">↗</button>' +
-          '<button type="button" class="msy-act-btn" title="' + escAttr(t('msy_open_char')) + '" onclick="GgenMetaSynergy.openDetailChar(\'' + escJs(c.id) + '\')">P</button>' +
         '</div>' +
       '</div>'
     );
@@ -355,6 +389,38 @@
     return '<div class="msy-pilot-grid">' + col(left) + col(right) + '</div>';
   }
 
+  function renderVerticalBarChart(pilots, mode, unitId) {
+    var list = (pilots || []).slice(0, 10);
+    if (!list.length) return '<div class="msy-chart-empty">' + esc(t('msy_empty')) + '</div>';
+    var max = 1;
+    list.forEach(function (p) {
+      max = Math.max(max, pilotDamage(p, mode) || 0);
+    });
+    var html = '<div class="msy-vbar-chart" data-msy-unit="' + escAttr(unitId) + '">';
+    list.forEach(function (p, i) {
+      var c = p.char || {};
+      var dmg = pilotDamage(p, mode);
+      var pct = Math.max(6, Math.round((dmg / max) * 100));
+      html += '<div class="msy-vbar-col" style="--msy-bar-delay:' + (i * 28) + 'ms">';
+      html += '<div class="msy-vbar-val">' + fmtN(dmg) + '</div>';
+      html += '<div class="msy-vbar-stack"><div class="msy-vbar-fill" data-msy-height="' + pct + '" style="height:0"></div></div>';
+      html += '<button type="button" class="msy-vbar-open" title="' + escAttr(c.name || '') + '" onclick="GgenMetaSynergy.openDetailChar(\'' + escJs(c.id) + '\')">';
+      html += '<div class="msy-vbar-thumb">' + pilotThumb(c) + '</div>';
+      html += '<div class="msy-vbar-rank">' + (p.rank || (i + 1)) + '</div>';
+      html += '</button>';
+      html += '</div>';
+    });
+    html += '</div>';
+    return html;
+  }
+
+  function animateBarFills(root) {
+    if (!root) return;
+    root.querySelectorAll('.msy-vbar-fill').forEach(function (el) {
+      el.style.height = (el.getAttribute('data-msy-height') || '0') + '%';
+    });
+  }
+
   function renderGroups(groups, startRank, mode) {
     var html = '<div class="msy-groups">';
     groups.forEach(function (g, gi) {
@@ -363,7 +429,8 @@
       var rank = (startRank || 0) + gi + 1;
       var u = row.unit;
       var excludeUr = !!state.excludeUrUnits[u.id];
-      html += '<article class="msy-unit-card' + (row.is_sd ? ' msy-unit-card--sd' : '') + '">';
+      var chartMode = state.unitViewMode[u.id] === 'chart';
+      html += '<article class="msy-unit-card' + (row.is_sd ? ' msy-unit-card--sd' : '') + (chartMode ? ' msy-unit-card--chart' : '') + '">';
       html += '<header class="msy-unit-head">';
       html += '<span class="msy-unit-rank">' + rank + '</span>';
       html += '<div class="msy-unit-thumb">' + unitThumb(u) + '</div>';
@@ -379,7 +446,7 @@
       }
       html += '</div>';
       html += '<div class="msy-unit-tools">';
-      html += chartBtnHtml(u.id);
+      html += chartBtnHtml(u.id, chartMode);
       html += excludeUrBtnHtml(u.id, excludeUr, row.is_sd);
       html += '</div>';
       html += '<div class="msy-unit-peak">';
@@ -387,34 +454,12 @@
       html += '<div class="msy-unit-peak-lbl">' + esc(t(mode.metricKey)) + '</div>';
       html += '</div>';
       html += '</header>';
-      html += renderPilotGrid(row.pilots, u.id, mode);
+      if (chartMode) {
+        html += renderVerticalBarChart(row.pilots, mode, u.id);
+      } else {
+        html += renderPilotGrid(row.pilots, u.id, mode);
+      }
       html += '</article>';
-    });
-    html += '</div>';
-    return html;
-  }
-
-  function renderBarChart(pilots, mode, unitName) {
-    var list = (pilots || []).slice(0, 20);
-    if (!list.length) return '<div class="msy-chart-empty">' + esc(t('msy_empty')) + '</div>';
-    var max = 1;
-    list.forEach(function (p) {
-      max = Math.max(max, pilotDamage(p, mode) || 0);
-    });
-    var html = '<div class="msy-bar-chart">';
-    list.forEach(function (p, i) {
-      var c = p.char || {};
-      var dmg = pilotDamage(p, mode);
-      var pct = Math.max(4, Math.round((dmg / max) * 100));
-      html += '<div class="msy-bar-row" style="--msy-bar-delay:' + (i * 28) + 'ms">';
-      html += '<span class="msy-bar-rank">' + (p.rank || (i + 1)) + '</span>';
-      html += '<div class="msy-bar-thumb">' + pilotThumb(c) + '</div>';
-      html += '<div class="msy-bar-main">';
-      html += '<div class="msy-bar-name-row">' + roleIconHtml(c) + '<span class="msy-bar-name">' + esc(c.name) + '</span></div>';
-      html += '<div class="msy-bar-track"><div class="msy-bar-fill" data-msy-width="' + pct + '" style="width:0"></div></div>';
-      html += '</div>';
-      html += '<div class="msy-bar-val">' + fmtN(dmg) + '</div>';
-      html += '</div>';
     });
     html += '</div>';
     return html;
@@ -450,6 +495,9 @@
     if (empty) empty.style.display = 'none';
     host.innerHTML = renderGroups(state.groups, startRank, mode);
     renderPagination();
+    requestAnimationFrame(function () {
+      host.querySelectorAll('.msy-vbar-chart').forEach(function (el) { animateBarFills(el); });
+    });
   }
 
   function setLoading(on, warming) {
@@ -463,10 +511,44 @@
     }
   }
 
+  function prefetchDefTiers() {
+    [1, 2, 3].forEach(function (tier) {
+      if (tier === state.defTier) return;
+      var key = tierCacheKey(tier);
+      if (state.tierCache[key]) return;
+      fetch(buildApiUrl({ defTier: tier, page: 1 }), { credentials: 'same-origin' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (d) {
+          if (!d || d.warming) return;
+          state.tierCache[key] = {
+            groups: d.groups || [],
+            total: d.total || 0,
+            totalPages: d.total_pages || 1,
+            page: 1,
+            settings: d.settings || null
+          };
+        })
+        .catch(function () {});
+    });
+  }
+
   async function loadRankings(force) {
     var key = cacheKeyForState();
     if (!force && state.cacheKey === key && state.groups.length) {
       applySearchFromCache();
+      return;
+    }
+    var tierKey = tierCacheKey(state.defTier);
+    if (force && state.tierCache[tierKey] && state.page === 1 && !state.unitQ) {
+      var cached = state.tierCache[tierKey];
+      state.groups = cached.groups;
+      state.total = cached.total;
+      state.totalPages = cached.totalPages;
+      state.page = cached.page || 1;
+      state.settings = cached.settings;
+      state.cacheKey = key;
+      renderContent();
+      prefetchDefTiers();
       return;
     }
     setLoading(true, false);
@@ -481,14 +563,8 @@
         }
         if (!r.ok) throw new Error('HTTP ' + r.status);
         var d = await r.json();
-        state.groups = d.groups || [];
-        state.total = d.total || 0;
-        state.totalPages = d.total_pages || 1;
-        state.page = d.page || state.page;
-        state.settings = d.settings || null;
-        state.cacheKey = key;
-        if (d.defender_tiers) populateDefTierSelect(d.defender_tiers);
-        renderContent();
+        applyPayload(d, state.defTier);
+        prefetchDefTiers();
         break;
       }
     } catch (e) {
@@ -502,20 +578,23 @@
   }
 
   function applySearchFromCache() {
-    var r = fetch(buildApiUrl(), { credentials: 'same-origin' });
-    r.then(function (resp) {
-      if (!resp.ok) return null;
-      return resp.json();
-    }).then(function (d) {
-      if (!d || d.warming) return;
-      state.groups = d.groups || [];
-      state.total = d.total || 0;
-      state.totalPages = d.total_pages || 1;
-      state.page = d.page || state.page;
-      renderContent();
-    }).catch(function () {
-      renderContent();
-    });
+    fetch(buildApiUrl(), { credentials: 'same-origin' })
+      .then(function (resp) {
+        if (!resp.ok) return null;
+        return resp.json();
+      })
+      .then(function (d) {
+        if (!d || d.warming) return;
+        state.groups = d.groups || [];
+        state.total = d.total || 0;
+        state.totalPages = d.total_pages || 1;
+        state.page = d.page || state.page;
+        state.cacheKey = cacheKeyForState();
+        renderContent();
+      })
+      .catch(function () {
+        renderContent();
+      });
   }
 
   function scheduleSearchReload() {
@@ -530,18 +609,18 @@
     clearTimeout(state._reloadTimer);
     state._reloadTimer = setTimeout(function () {
       state.cacheKey = null;
+      state.tierCache = {};
       state.page = 1;
       loadRankings(true);
-    }, 320);
+    }, 480);
   }
 
   function setRankMode(modeId) {
     if (!rankModeDef(modeId)) return;
     state.rankMode = modeId;
     state.page = 1;
-    state.cacheKey = null;
     renderRankModes();
-    loadRankings(true);
+    applySearchFromCache();
   }
 
   function toggleExcludeUr(unitId) {
@@ -557,51 +636,18 @@
     return null;
   }
 
-  function openChart(unitId) {
-    var g = findGroup(unitId);
-    if (!g || !g.unit) return;
-    var mode = rankModeDef(state.rankMode);
-    var row = viewGroup(g, mode.id);
-    if (!row) return;
-    var ov = document.getElementById('msyChartOverlay');
-    var title = document.getElementById('msyChartTitle');
-    var sub = document.getElementById('msyChartSub');
-    var body = document.getElementById('msyChartBody');
-    if (!ov || !body) return;
-    state.chartUnitId = unitId;
-    if (title) title.textContent = g.unit.name || '';
-    if (sub) sub.textContent = t(mode.metricKey);
-    body.innerHTML = renderBarChart(row.pilots, mode, g.unit.name);
-    ov.classList.add('active');
-    ov.setAttribute('aria-hidden', 'false');
-    if (typeof global.applyBackgroundScrollLock === 'function') global.applyBackgroundScrollLock();
-    requestAnimationFrame(function () {
-      ov.classList.add('is-visible');
-      requestAnimationFrame(function () {
-        body.querySelectorAll('.msy-bar-fill').forEach(function (el) {
-          el.style.width = (el.getAttribute('data-msy-width') || '0') + '%';
-        });
-      });
-    });
-  }
-
-  function closeChart() {
-    var ov = document.getElementById('msyChartOverlay');
-    if (!ov || !ov.classList.contains('active')) return;
-    ov.classList.remove('is-visible');
-    state.chartUnitId = null;
-    window.setTimeout(function () {
-      ov.classList.remove('active');
-      ov.setAttribute('aria-hidden', 'true');
-      var body = document.getElementById('msyChartBody');
-      if (body) body.innerHTML = '';
-      if (typeof global.releaseBackgroundScrollLock === 'function') global.releaseBackgroundScrollLock();
-    }, 220);
+  function toggleChartView(unitId) {
+    if (state.unitViewMode[unitId] === 'chart') delete state.unitViewMode[unitId];
+    else state.unitViewMode[unitId] = 'chart';
+    renderContent();
   }
 
   function onTabShown() {
     applyLangStatic();
     initFilterLabels();
+    if (typeof global.ensureMsyBrowseFilters === 'function') {
+      void global.ensureMsyBrowseFilters();
+    }
     loadRankings(false);
   }
 
@@ -620,6 +666,22 @@
     if (typeof global.openDetail === 'function') global.openDetail('character', id);
   }
 
+  function resolveDefenderStats() {
+    var tiers = state.defenderTiers || {};
+    var dt = String(state.defTier || '1');
+    if (state.defUnitOverride && state.defCharOverride) {
+      return {
+        unitDef: parseInt(state.defUnitOverride, 10) || 0,
+        charDef: parseInt(state.defCharOverride, 10) || 0
+      };
+    }
+    var row = tiers[dt] || tiers[String(parseInt(dt, 10))] || {};
+    return {
+      unitDef: row.unit_def || 3819,
+      charDef: row.char_def || 193
+    };
+  }
+
   async function openInSimulator(unitId, charId) {
     if (typeof global.switchTab !== 'function') return;
     global.switchTab('calculator');
@@ -631,6 +693,41 @@
       var cd = await cr.json();
       if (ud.error || cd.error) return;
       if (!global.S || !global.S.dc) return;
+
+      var defStats = resolveDefenderStats();
+      if (typeof global.setDcDefTargetMode === 'function') {
+        global.setDcDefTargetMode('custom');
+      }
+      (function (pack) {
+        function setv(id, v) {
+          var el = document.getElementById(id);
+          if (el) el.value = v;
+        }
+        setv('dcDefManual_uName', pack.un);
+        setv('dcDefManual_cName', pack.cn);
+        setv('dcDefManual_uHP', pack.uHP);
+        setv('dcDefManual_uATK', pack.uATK);
+        setv('dcDefManual_uDEF', pack.uDEF);
+        setv('dcDefManual_uMOB', pack.uMOB);
+        setv('dcDefManual_cRNG', pack.cRNG);
+        setv('dcDefManual_cMEL', pack.cMEL);
+        setv('dcDefManual_cAWK', pack.cAWK);
+        setv('dcDefManual_cDEF', pack.cDEF);
+        setv('dcDefManual_cREA', pack.cREA);
+      })({
+        un: 'Defender (MSY)',
+        cn: 'Defender Pilot (MSY)',
+        uHP: 0,
+        uATK: 0,
+        uDEF: defStats.unitDef,
+        uMOB: 0,
+        cRNG: 0,
+        cMEL: 0,
+        cAWK: 0,
+        cDEF: defStats.charDef,
+        cREA: 0
+      });
+
       global.S.dc.atkUnit = unitId;
       global.S.dc.atkUnitData = ud;
       if (typeof global._dcPickBestWeaponIndices === 'function') {
@@ -644,6 +741,7 @@
       global.S.dc.atkCharData = cd;
       global.S.dc.charStatMode = 'normal';
       global.S.dc.charCondPassive = true;
+      global.S.dc.defLbTier = 3;
       if (typeof global.setDcMp === 'function') global.setDcMp(state.vigor || 'super');
       if (global.S.dc.atkCharData && global.S.dc.atkCharData.ex_supercharged_tiers &&
           global.S.dc.atkCharData.ex_supercharged_tiers.length > 1 && global.S.dc.charCondPassive) {
@@ -651,6 +749,7 @@
       }
       if (typeof global.renderDcAtkUnit === 'function') global.renderDcAtkUnit();
       if (typeof global.renderDcAtkChar === 'function') global.renderDcAtkChar();
+      if (typeof global.renderDcDefStats === 'function') global.renderDcDefStats();
       if (typeof global._dcRecalcPilotBonuses === 'function') global._dcRecalcPilotBonuses(true);
       if (typeof global.onDcParamChange === 'function') global.onDcParamChange();
     } catch (_) {}
@@ -669,10 +768,23 @@
     var defSel = document.getElementById('msyDefTierSelect');
     if (defSel) {
       defSel.addEventListener('change', function () {
-        state.defTier = Math.max(1, Math.min(4, parseInt(defSel.value, 10) || 1));
-        state.cacheKey = null;
+        var nextTier = Math.max(1, Math.min(3, parseInt(defSel.value, 10) || 1));
+        state.defTier = nextTier;
         state.page = 1;
-        loadRankings(true);
+        state.cacheKey = null;
+        var tierKey = tierCacheKey(nextTier);
+        if (state.tierCache[tierKey] && !state.unitQ) {
+          var cached = state.tierCache[tierKey];
+          state.groups = cached.groups;
+          state.total = cached.total;
+          state.totalPages = cached.totalPages;
+          state.settings = cached.settings;
+          state.cacheKey = cacheKeyForState();
+          renderContent();
+          prefetchDefTiers();
+        } else {
+          loadRankings(true);
+        }
       });
     }
     var defUnit = document.getElementById('msyDefUnitInput');
@@ -681,6 +793,7 @@
       state.defUnitOverride = defUnit && defUnit.value.trim() ? defUnit.value.trim() : '';
       state.defCharOverride = defChar && defChar.value.trim() ? defChar.value.trim() : '';
       state.cacheKey = null;
+      state.tierCache = {};
       state.page = 1;
       loadRankings(true);
     }
@@ -692,12 +805,6 @@
       defChar.addEventListener('change', onDefOverrideChange);
       defChar.addEventListener('keydown', function (e) { if (e.key === 'Enter') onDefOverrideChange(); });
     }
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && state.chartUnitId) {
-        e.preventDefault();
-        closeChart();
-      }
-    });
   }
 
   function init() {
@@ -717,8 +824,7 @@
     loadRankings: loadRankings,
     scheduleReload: scheduleReload,
     toggleExcludeUr: toggleExcludeUr,
-    openChart: openChart,
-    closeChart: closeChart
+    toggleChartView: toggleChartView
   };
 
   if (document.readyState === 'loading') {

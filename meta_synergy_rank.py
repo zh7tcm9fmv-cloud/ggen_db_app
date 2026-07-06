@@ -211,8 +211,8 @@ def _defender_tiers():
     ch_u, ch_c = _stage_npc_max_defs('101701')
     et_u, et_c = _psycho_gundam_stage_defs('90520001')
     return {
-        1: {'unit_def': 3819, 'char_def': 193, 'label': 'Hard 3'},
-        2: {'unit_def': ch_u or 7051, 'char_def': ch_c or 509, 'label': 'Challenge Hard 3'},
+        1: {'unit_def': 3819, 'char_def': 193, 'label': 'Story Hard'},
+        2: {'unit_def': ch_u or 7051, 'char_def': ch_c or 509, 'label': 'Challenge Hard'},
         3: {'unit_def': et_u or 25072, 'char_def': et_c or 705, 'label': 'Eternal Expert'},
         4: {'unit_def': avg_u, 'char_def': avg_c, 'label': 'Avg NPC'},
     }
@@ -382,9 +382,23 @@ def _ability_blob_lines(bab):
     return lines
 
 
-def _char_is_attack_role(cid):
+def _char_role(cid):
     info = _app().char_info_map.get(_app().normalize_id(cid)) or {}
-    return str(info.get('role', '0')) == '1'
+    return str(info.get('role', '0'))
+
+
+def _unit_role(uid):
+    info = _app().unit_info_map.get(_app().normalize_id(uid)) or {}
+    return str(info.get('role', '0'))
+
+
+def _char_is_attack_role(cid):
+    return _char_role(cid) == '1'
+
+
+def _pilot_role_matches_unit(uid, cid):
+    """Only pair pilots whose role matches the unit role (Attack↔Attack, etc.)."""
+    return _char_role(cid) == _unit_role(uid)
 
 
 def _msy_unit_tag_ids(uid, lc):
@@ -717,7 +731,7 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
     guaranteed_crit = _char_guaranteed_crit(cid, lc)
 
     vp = _VIGOR.get(vigor) or _VIGOR['super']
-    def_debuff = min(_DEF_DEBUFF_CAP, max(_DEF_DEBUFF_CAP, int(wpn.get('debuff') or 0)))
+    def_debuff = min(_DEF_DEBUFF_CAP, max(0, int(wpn.get('debuff') or 0)))
     unit_def_after = _sim_def_after_debuff(def_total, 0, def_debuff)
     dmg_mult = dmg_dealt + vp['dmg_bonus_pct']
 
@@ -779,7 +793,14 @@ def _eligible_pilots_for_unit(uid, pilot_ids, exclude):
         if not bp or (uid, bp) in exclude:
             return []
         return [bp]
-    return [cid for cid in pilot_ids if (uid, cid) not in exclude]
+    out = []
+    for cid in pilot_ids:
+        if (uid, cid) in exclude:
+            continue
+        if not _pilot_role_matches_unit(uid, cid):
+            continue
+        out.append(cid)
+    return out
 
 
 def _filter_non_ur(pilot_ids):
@@ -1042,9 +1063,9 @@ def _settings_note(def_tier, *, def_unit_override=None, def_char_override=None):
         def_tier, def_unit_override=def_unit_override, def_char_override=def_char_override,
     )
     return (
-        f"Max-damage sim: CP on, super vigor, active skills, LB3, Attack pilots. "
-        f"Def ({label}): MS DEF {u:,}, pilot DEF {c:,} "
-        f"(−{_DEF_DEBUFF_CAP}% debuff cap)"
+        f"Max-damage sim: CP on, super vigor, active skills, LB3; pilots matched to unit role. "
+        f"Difficulty ({label}): MS DEF {u:,}, pilot DEF {c:,} "
+        f"(weapon DEF debuff capped at {_DEF_DEBUFF_CAP}%)"
     )
 
 
@@ -1228,7 +1249,7 @@ def _rankings_cache_key(lc, def_tier, kwargs):
     du = kwargs.get('def_unit_override')
     dc = kwargs.get('def_char_override')
     return (
-        '_v3',
+        '_v4',
         lc or 'EN',
         kwargs.get('rarity') or kwargs.get('unit_rarity', 'ALL'),
         kwargs.get('role') or kwargs.get('unit_role', 'ALL'),
