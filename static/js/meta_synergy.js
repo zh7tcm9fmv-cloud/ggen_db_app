@@ -23,7 +23,7 @@
     topPilots: 10,
     unitQ: '',
     page: 1,
-    perPage: 50,
+    perPage: 25,
     cacheKey: null,
     tierCache: {},
     charCondPassiveOn: true,

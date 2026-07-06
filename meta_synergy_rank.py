@@ -1995,6 +1995,7 @@ _WPN_TYPE_LABEL = {'1': 'Normal', '2': 'Active', '3': 'Map'}
 _SKILL_AUTO_ACTIVE_RE = re.compile(r'(?:damage\s+dealt|造成的損傷|傷害|ダメージ)', re.I)
 
 
+@lru_cache(maxsize=2048)
 def _weapon_info_for_msy(uid, lc):
     A = _app()
     uid = A.normalize_id(uid)
@@ -2023,6 +2024,7 @@ def _weapon_info_for_msy(uid, lc):
     }
 
 
+@lru_cache(maxsize=8192)
 def _msy_auto_active_skill_ids(cid, lc):
     A = _app()
     ld = _ldc(lc)
@@ -2052,6 +2054,7 @@ def _msy_auto_active_skill_ids(cid, lc):
     return {sid for _, sid in dmg_by_base.values()}
 
 
+@lru_cache(maxsize=8192)
 def _msy_pilot_active_skills(cid, lc):
     A = _app()
     ld = _ldc(lc)
@@ -2706,26 +2709,71 @@ def _enrich_rankings_pilots(rankings, lc):
     return out
 
 
-def _enrich_group_for_api(g, lc):
-    """Backfill weapon/subtitle and pilot skills for older published caches."""
-    if not g:
+def _copy_pilot_skills_from_main(main_rankings, variant_rankings):
+    """Reuse resolved active_skills from main rankings for CP-off variants."""
+    if not isinstance(main_rankings, dict) or not isinstance(variant_rankings, dict):
+        return variant_rankings
+    skill_by_cid = {}
+    for block in main_rankings.values():
+        for pilot in (block or {}).get('pilots') or []:
+            cid = _app().normalize_id((pilot.get('char') or {}).get('id'))
+            if cid and pilot.get('active_skills'):
+                skill_by_cid[cid] = pilot['active_skills']
+    if not skill_by_cid:
+        return variant_rankings
+    out = {}
+    for mode, block in variant_rankings.items():
+        if not isinstance(block, dict):
+            out[mode] = block
+            continue
+        pilots = block.get('pilots') or []
+        if pilots and not pilots[0].get('active_skills'):
+            block = dict(block)
+            patched = []
+            for pilot in pilots:
+                row = dict(pilot)
+                cid = _app().normalize_id((row.get('char') or {}).get('id'))
+                if cid in skill_by_cid:
+                    row['active_skills'] = skill_by_cid[cid]
+                patched.append(row)
+            block['pilots'] = patched
+        out[mode] = block
+    return out
+
+
+def _ensure_group_enriched(g, lc):
+    """Backfill weapon/subtitle and pilot skills once per cached unit group."""
+    if not g or g.get('_msy_enriched'):
         return g
-    out = dict(g)
-    uid = _app().normalize_id((out.get('unit') or {}).get('id'))
+    rankings = g.get('rankings') or {}
+    sample = None
+    for _mode, block in rankings.items():
+        pilots = (block or {}).get('pilots') or []
+        if pilots:
+            sample = pilots[0]
+            break
+    if g.get('weapon_info') and sample and sample.get('active_skills'):
+        g['_msy_enriched'] = True
+        return g
+    uid = _app().normalize_id((g.get('unit') or {}).get('id'))
     if uid:
-        if not out.get('weapon_info'):
-            out['weapon_info'] = _weapon_info_for_msy(uid, lc)
+        if not g.get('weapon_info'):
+            wi = _weapon_info_for_msy(uid, lc)
+            if wi:
+                g['weapon_info'] = wi
         info = _app().unit_info_map.get(uid) or {}
         is_sd = _is_sd_unit(uid, info)
-        out['is_sd'] = is_sd
+        g['is_sd'] = is_sd
         if is_sd:
-            out['bundled_pilot_id'] = _bundled_pilot_id(uid)
-    for key in ('rankings', 'rankings_no_ur', 'rankings_no_shinn', 'rankings_no_cp', 'rankings_no_gc'):
-        if out.get(key):
-            out[key] = _enrich_rankings_pilots(out[key], lc)
-    if out.get('pilots') and not (out['pilots'][0].get('active_skills') if out['pilots'] else False):
-        out['pilots'] = [_enrich_pilot_row(p, lc) for p in out['pilots']]
-    return out
+            g['bundled_pilot_id'] = _bundled_pilot_id(uid)
+    if g.get('rankings'):
+        g['rankings'] = _enrich_rankings_pilots(g['rankings'], lc)
+    if g.get('rankings_no_cp'):
+        g['rankings_no_cp'] = _copy_pilot_skills_from_main(g.get('rankings'), g['rankings_no_cp'])
+    if g.get('pilots') and not (g['pilots'][0].get('active_skills') if g['pilots'] else False):
+        g['pilots'] = [_enrich_pilot_row(p, lc) for p in g['pilots']]
+    g['_msy_enriched'] = True
+    return g
 
 
 def _normalize_group_for_mode(g, rank_mode):
@@ -2737,9 +2785,6 @@ def _normalize_group_for_mode(g, rank_mode):
             'max_damage': block.get('max_damage', 0),
             'pilots': block.get('pilots') or [],
             'rankings': g.get('rankings'),
-            'rankings_no_ur': g.get('rankings_no_ur'),
-            'rankings_no_shinn': g.get('rankings_no_shinn'),
-            'rankings_no_gc': g.get('rankings_no_gc'),
             'rankings_no_cp': g.get('rankings_no_cp'),
             'weapon_info': g.get('weapon_info'),
             'is_sd': g.get('is_sd', False),
@@ -2889,11 +2934,12 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
         _merge_groups_into_cache(cache_key, page_groups_raw)
     expanded = []
     for g in page_groups_raw:
+        _ensure_group_enriched(g, lc)
         row = _group_for_def_tier(g, dt) if g.get('rankings_by_tier') else g
         if row:
             norm = _normalize_group_for_mode(row, rank_mode)
             if norm:
-                expanded.append(_enrich_group_for_api(norm, lc))
+                expanded.append(norm)
     total_pages = max(1, (total + per_page - 1) // per_page)
     role_raw = kwargs.get('role') or kwargs.get('unit_role')
     if role_raw is None or str(role_raw).upper() in ('ALL', ''):
