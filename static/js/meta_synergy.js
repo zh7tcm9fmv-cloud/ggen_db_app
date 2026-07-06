@@ -123,10 +123,10 @@
     var row = {
       thum: entity.portrait || entity.thum || '',
       rarity: entity.rarity || 'N',
-      role_icon: entity.role_icon || ''
+      role_icon: entity.role_icon || '',
+      acquisition_icon: entity.acquisition_icon || ''
     };
-    var inner = global.renderListThumb(row, 'char', null, { pickerThumb: true });
-    return '<div class="msy-pilot-thumb-slot">' + inner + '</div>';
+    return global.renderListThumb(row, 'char', 44);
   }
 
   function roleIconHtml(entity) {
@@ -153,6 +153,9 @@
     }
     if (typeof global.getSeriesQuerySuffix === 'function') {
       parts.push(global.getSeriesQuerySuffix('msyUnit').replace(/^&/, ''));
+    }
+    if (typeof global.getSeriesOpSuffix === 'function') {
+      parts.push(global.getSeriesOpSuffix('msyUnit').replace(/^&/, ''));
     }
     if (typeof global.getLineageQuerySuffix === 'function') {
       parts.push(global.getLineageQuerySuffix('msyUnit').replace(/^&/, ''));
@@ -361,7 +364,6 @@
           '<div class="msy-pilot-thumb">' + pilotThumb(c) + '</div>' +
           '<div class="msy-pilot-body">' +
             '<div class="msy-pilot-name-row">' +
-              roleIconHtml(c) +
               '<span class="msy-pilot-name" title="' + escAttr(c.name || '') + '">' + esc(c.name) + '</span>' +
             '</div>' +
             sub +

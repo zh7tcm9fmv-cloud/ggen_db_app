@@ -206,7 +206,7 @@
   color: var(--text-muted);
 }
 
-.msy-bar-thumb .msy-pilot-thumb-slot,
+.msy-bar-thumb .msy-pilot-thumb .list-thumb-composite,
 .msy-bar-thumb .list-thumb-composite {
   width: 36px;
   height: 36px;
@@ -319,7 +319,7 @@
   outline: 1px solid rgba(0, 212, 255, 0.45);
 }
 
-.msy-vbar-thumb .msy-pilot-thumb-slot,
+.msy-vbar-thumb .msy-pilot-thumb .list-thumb-composite,
 .msy-vbar-thumb .list-thumb-composite {
   width: 34px;
   height: 34px;
@@ -589,13 +589,7 @@
   height: 48px;
 }
 
-.msy-pilot-thumb-slot {
-  width: 44px;
-  height: 44px;
-  position: relative;
-}
-
-.msy-pilot-thumb-slot .list-thumb-composite {
+.msy-pilot-thumb .list-thumb-composite {
   width: 44px;
   height: 44px;
 }

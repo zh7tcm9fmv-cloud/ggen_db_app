@@ -422,16 +422,25 @@ def _msy_char_tag_ids(cid, lc):
     }
 
 
+def _unit_series_set_id(uid, info=None):
+    """SeriesSetId for a unit (global map — not per-lang LANG_DATA)."""
+    A = _app()
+    uid = A.normalize_id(uid)
+    info = info or A.unit_info_map.get(uid) or {}
+    raw = A.unit_ser_map.get(uid) or info.get('series_set') or ''
+    raw = str(raw).strip()
+    return raw if raw and raw not in ('0', 'None') else ''
+
+
 def _msy_unit_series_ids(uid, lc):
     A = _app()
-    ld = _ldc(lc)
     uid = A.normalize_id(uid)
-    raw = ld.get('unit_ser_map', {}).get(uid, '')
-    if isinstance(raw, (list, tuple)):
-        return {A.normalize_id(x) for x in raw if x}
-    if raw:
-        return {A.normalize_id(raw)}
-    return set()
+    out = set()
+    for s in A.resolve_series(_unit_series_set_id(uid), lc):
+        sid = A.normalize_id(s.get('id'))
+        if sid and sid not in ('', '0'):
+            out.add(sid)
+    return out
 
 
 def _msy_match_one_condition(cond, uid, cid, lc):
@@ -683,7 +692,7 @@ _char_pair_cache = {}
 _rankings_result_cache = {}
 _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
-_MSY_DISK_VERSION = 'v6'
+_MSY_DISK_VERSION = 'v7'
 _MSY_BUILD_WORKERS = max(1, min(4, int(os.environ.get('MSY_BUILD_WORKERS', '1') or '1')))
 
 _MAX_UNITS_FULL_SIM = 120
@@ -1272,8 +1281,6 @@ def build_meta_synergy_rankings(
 ):
     A = _app()
     lc = lc or A.DEFAULT_LANG
-    ld = _ldc(lc)
-    unit_ser_map = ld.get('unit_ser_map', {})
     exclude = set()
     for p in exclude_pairs or []:
         if isinstance(p, (list, tuple)) and len(p) >= 2:
@@ -1329,7 +1336,7 @@ def build_meta_synergy_rankings(
             if not A.entity_matches_source_category(acq_route, role_id, source_filter):
                 continue
         if series_filter is not None:
-            if not A.entity_matches_series(unit_ser_map.get(uid, ''), series_filter, lc):
+            if not A.entity_matches_series(_unit_series_set_id(uid, info), series_filter, lc):
                 continue
         if lineage_filter is not None:
             if not A.entity_matches_lineage(A.unit_lin_map, uid, lineage_filter, lineage_combine):
@@ -1484,10 +1491,10 @@ def _parse_browse_filters(kwargs, lc):
         'role_filter': role_filter,
         'rarity_filter': rarity_filter,
         'series_filter': A.parse_list_series_filter(kwargs.get('series_id') or ''),
+        'series_combine': A.normalize_filter_combine_op(kwargs.get('series_op') or 'or', 'or'),
         'source_filter': A.parse_list_source_filter(kwargs.get('source') or ''),
         'lineage_filter': A.parse_list_lineage_filter(kwargs.get('lineage_id') or ''),
         'lineage_combine': A.normalize_filter_combine_op(kwargs.get('lineage_op') or 'and', 'and'),
-        'unit_ser_map': _ldc(lc).get('unit_ser_map', {}),
     }
 
 
@@ -1519,8 +1526,10 @@ def _unit_passes_browse_filters(uid, info, lc, filters):
             return False
     series_filter = filters.get('series_filter')
     if series_filter is not None:
-        unit_ser_map = filters.get('unit_ser_map') or {}
-        if not A.entity_matches_series(unit_ser_map.get(uid, ''), series_filter, lc):
+        if not A.entity_matches_series(
+            _unit_series_set_id(uid, info), series_filter, lc,
+            filters.get('series_combine', 'or'),
+        ):
             return False
     lineage_filter = filters.get('lineage_filter')
     if lineage_filter is not None:
@@ -1551,7 +1560,7 @@ def _filter_master_groups(groups, lc, filters):
 
 def _master_cache_key(lc, kwargs):
     return (
-        '_v6_master',
+        '_v7_master',
         lc or 'EN',
         int(kwargs.get('lb_tier', 3) or 3),
         int(kwargs.get('top_pilots', 20) or 20),
@@ -1784,6 +1793,67 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
             'def_char_override': dc,
             'defender_note': _settings_note(dt, def_unit_override=du, def_char_override=dc),
         },
+    }
+
+
+def _msy_sim_unit_ids(lc='EN'):
+    """Playable units with a valid EX weapon (MSY ranking pool)."""
+    A = _app()
+    lc = lc or A.DEFAULT_LANG
+    out = []
+    for uid in sorted(A.unit_list_playable_ids):
+        info = A.unit_info_map.get(uid)
+        if not info:
+            continue
+        if not _cached_best_ex_weapon(uid, _unit_stat_mode(str(info.get('rarity', '1'))), lc):
+            continue
+        out.append(uid)
+    return out
+
+
+def msy_browse_filter_pools(lc='EN', query_args=None):
+    """Series/lineage filter options scoped to MSY sim-eligible units."""
+    A = _app()
+    lc = lc or A.DEFAULT_LANG
+    args = dict(query_args or {})
+    filters = _parse_browse_filters({
+        'rarity': args.get('rarity'),
+        'role': args.get('role'),
+        'source': args.get('source'),
+        'series_id': args.get('series_id'),
+        'series_op': args.get('series_op'),
+        'lineage_id': args.get('lineage_id'),
+        'lineage_op': args.get('lineage_op'),
+    }, lc)
+    unit_ids = []
+    for uid in _msy_sim_unit_ids(lc):
+        info = A.unit_info_map.get(uid)
+        if info and _unit_passes_browse_filters(uid, info, lc, filters):
+            unit_ids.append(uid)
+    series_seen = {}
+    lineage_seen = {}
+    for uid in unit_ids:
+        info = A.unit_info_map.get(uid) or {}
+        for s in A.resolve_series(_unit_series_set_id(uid, info), lc):
+            sid = A.normalize_id(s.get('id'))
+            if sid and sid not in ('', '0') and sid not in series_seen:
+                series_seen[sid] = {
+                    'id': sid,
+                    'name': s.get('name') or sid,
+                    'icon': s.get('icon') or '',
+                }
+        for t in A.resolve_tags(A.unit_lin_map, uid, lc, 'unit'):
+            lid = A.normalize_id(t.get('id'))
+            if not lid or lid in lineage_seen:
+                continue
+            lineage_seen[lid] = {
+                'id': lid,
+                'name': t.get('name') or lid,
+                'icon': t.get('icon') or '',
+            }
+    return {
+        'series': sorted(series_seen.values(), key=lambda x: (x.get('name') or '').lower()),
+        'lineages': sorted(lineage_seen.values(), key=lambda x: (x.get('name') or '').lower()),
     }
 
 

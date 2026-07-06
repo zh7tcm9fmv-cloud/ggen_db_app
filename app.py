@@ -13777,6 +13777,7 @@ def api_meta_synergy_rankings():
     def_char_override = int(def_char_raw) if def_char_raw.isdigit() else None
     lineage_id = request.args.get('lineage_id', '').strip()
     lineage_op = request.args.get('lineage_op', '').strip()
+    series_op = request.args.get('series_op', '').strip()
     top_pilots = request.args.get('top_pilots', '20', type=int)
     page = request.args.get('page', '1', type=int)
     per_page = request.args.get('per_page', '50', type=int)
@@ -13800,6 +13801,7 @@ def api_meta_synergy_rankings():
             rarity=rarity,
             role=role,
             series_id=series_id or None,
+            series_op=series_op or None,
             source=source or None,
             lineage_id=lineage_id or None,
             lineage_op=lineage_op or None,
@@ -13843,6 +13845,22 @@ def api_meta_synergy_rankings():
         import traceback
         traceback.print_exc()
         return jsonify({'error': 'meta_synergy_rankings_failed', 'detail': str(e)}), 500
+
+
+@app.route('/api/msy_browse_filters')
+def api_msy_browse_filters():
+    """Browse filter pools (series/lineage) scoped to MSY sim-eligible units."""
+    lc = request.args.get('lang', DEFAULT_LANG)
+    import meta_synergy_rank as msr
+    try:
+        pools = msr.msy_browse_filter_pools(lc=lc, query_args=request.args)
+        return jsonify_cacheable(pools, f'msy_bf_{lc}_{hash(tuple(sorted(request.args.items()))) & 0xffff:x}',
+                                 public=True, max_age=3600, convert_images=True)
+    except Exception as e:
+        print(f'api_msy_browse_filters failed: {e}')
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': 'msy_browse_filters_failed', 'detail': str(e)}), 500
 
 
 @app.route('/api/tier_mockup')
