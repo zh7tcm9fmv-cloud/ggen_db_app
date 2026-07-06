@@ -637,7 +637,17 @@ def _weapon_def_debuff_from_ws(ws, wm, uid, ld, lc, stat_mode):
     return debuff
 
 
-def _best_ex_weapon(uid, stat_mode, lc):
+def _weapon_entry_power(ws):
+    power = int(ws.get('power', 0) or 0)
+    levels = ws.get('levels') or {}
+    if isinstance(levels, dict) and levels:
+        mx_lv = max(int(k) for k in levels.keys() if str(k).isdigit())
+        power = max(power, int((levels.get(mx_lv) or levels.get(str(mx_lv)) or {}).get('power', 0) or 0))
+    return power
+
+
+def _best_ranking_weapon(uid, stat_mode, lc):
+    """Highest-power non-map weapon (active + normal), matching Damage Simulator weapon list."""
     A = _app()
     ldc = _ldc(lc)
     wtm = ldc.get('weapon_trait_map', {}) or {}
@@ -648,7 +658,8 @@ def _best_ex_weapon(uid, stat_mode, lc):
     for wp in A.unit_weapon_map.get(A.normalize_id(uid), []) or []:
         wid = A.normalize_id(wp.get('id'))
         wm = A.weapon_info_map.get(wid, {})
-        if str(wm.get('weapon_type', '1') or '1') != '2':
+        wt = str(wm.get('weapon_type', '1') or '1')
+        if wt == '3':
             continue
         try:
             ws = A.resolve_weapon_stats(
@@ -658,17 +669,20 @@ def _best_ex_weapon(uid, stat_mode, lc):
             )
         except Exception:
             continue
-        levels = ws.get('levels') or {}
-        power = int(ws.get('power', 0) or 0)
-        if isinstance(levels, dict) and levels:
-            mx_lv = max(int(k) for k in levels.keys() if str(k).isdigit())
-            power = max(power, int((levels.get(mx_lv) or levels.get(str(mx_lv)) or {}).get('power', 0) or 0))
+        power = _weapon_entry_power(ws)
+        if power <= 0:
+            continue
         debuff = _weapon_def_debuff_from_ws(ws, wm, uid, ldc, lc, stat_mode)
         if power > best_power:
             best_power = power
             best = {'wid': wid, 'wm': wm, 'ws': ws, 'power': power, 'debuff': debuff,
-                    'attr': wm.get('attack_attribute', '1')}
+                    'attr': wm.get('attack_attribute', '1'), 'weapon_type': wt}
     return best
+
+
+def _best_ex_weapon(uid, stat_mode, lc):
+    """Legacy alias — ranking uses best non-map weapon, not EX-only."""
+    return _best_ranking_weapon(uid, stat_mode, lc)
 
 
 def _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok):
@@ -692,12 +706,13 @@ _char_pair_cache = {}
 _rankings_result_cache = {}
 _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
-_MSY_DISK_VERSION = 'v7'
+_MSY_DISK_VERSION = 'v8'
 _MSY_BUILD_WORKERS = max(1, min(4, int(os.environ.get('MSY_BUILD_WORKERS', '1') or '1')))
 
 _MAX_UNITS_FULL_SIM = 120
 _PREFILTER_THRESHOLD = 80
-_TOP_PILOTS_PREFILTER = 48
+_TOP_PILOTS_PREFILTER = 128
+_FULL_SIM_PILOT_CAP = 128
 # Each rank tab uses the vigor tier required in-game for that hit type (Damage Simulator rules).
 _RANK_MODE_VIGOR = (
     ('super_crit', 'super_crit_dmg', 'super'),
@@ -975,14 +990,14 @@ def _best_pilot_by_stat(uid, pilot_ids, wpn, lc, exclude):
     eligible = _eligible_pilots_for_unit(uid, pilot_ids, exclude)
     if not eligible:
         return None
-    attr = wpn.get('attr', '1')
+    info = _app().unit_info_map.get(_app().normalize_id(uid)) or {}
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
     best_cid = None
-    best_atk = -1
+    best_score = -1.0
     for cid in eligible:
-        totals, _ = _cached_char_pair_totals(cid, uid, lc)
-        atk = _pilot_atk_for_weapon(totals, attr, 0)
-        if atk > best_atk:
-            best_atk = atk
+        sc = _cheap_pilot_score(uid, cid, info, wpn, stat_mode, lc)
+        if sc > best_score:
+            best_score = sc
             best_cid = cid
     return best_cid
 
@@ -1020,6 +1035,23 @@ def _prefilter_unit_ids(unit_rows, pilot_ids, lc, lb_tier, vigor, def_tier, excl
     return [uid for _, uid in scored[:_MAX_UNITS_FULL_SIM]]
 
 
+def _cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc):
+    """Unit×pilot damage proxy for prefilter (skills, affinity, pair ATK)."""
+    totals, pair_ok = _cached_char_pair_totals(cid, uid, lc)
+    skill_dmg, skill_atk_pct = _char_skill_bonuses(cid, lc)
+    char_atk = _pilot_atk_for_weapon(totals, unit_wpn.get('attr'), skill_atk_pct)
+    unit_atk = _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok)
+    dmg_dealt, crit_up = _char_pilot_dmg_bonuses(cid, uid, lc, cp_on=True)
+    wp = float(unit_wpn.get('power') or 0)
+    score = (unit_atk + 2.0 * char_atk) * wp
+    if dmg_dealt or crit_up:
+        score *= (1.0 + (dmg_dealt + crit_up) / 100.0)
+    if pair_ok:
+        score *= 1.12
+    score += float(skill_dmg) * 500.0
+    return score
+
+
 def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclude, top_pilots, metric, *,
                              def_unit_override=None, def_char_override=None, def_tiers=None):
     A = _app()
@@ -1034,14 +1066,17 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
         return None
 
     need = max(_TOP_PILOTS_PREFILTER, int(top_pilots or 10) + 8)
-    cheap_scored = []
-    for cid in active_pilots:
-        totals, pair_ok = _cached_char_pair_totals(cid, uid, lc)
-        char_atk = _pilot_atk_for_weapon(totals, unit_wpn.get('attr'), 0)
-        unit_atk = _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok)
-        cheap_scored.append((unit_atk * char_atk, cid))
-    cheap_scored.sort(key=lambda x: (-x[0], x[1]))
-    candidates = [cid for _, cid in cheap_scored[:need]]
+    if len(active_pilots) <= _FULL_SIM_PILOT_CAP:
+        candidates = list(active_pilots)
+    else:
+        cheap_scored = []
+        for cid in active_pilots:
+            cheap_scored.append((
+                _cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc),
+                cid,
+            ))
+        cheap_scored.sort(key=lambda x: (-x[0], x[1]))
+        candidates = [cid for _, cid in cheap_scored[:need]]
 
     tiers = tuple(def_tiers) if def_tiers else (def_tier,)
     use_multi_tier = (
@@ -1065,10 +1100,10 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
         if not all_pairs_nu and non_ur:
             nu_scored = []
             for cid in non_ur:
-                totals, pair_ok = _cached_char_pair_totals(cid, uid, lc)
-                char_atk = _pilot_atk_for_weapon(totals, unit_wpn.get('attr'), 0)
-                unit_atk = _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok)
-                nu_scored.append((unit_atk * char_atk, cid))
+                nu_scored.append((
+                    _cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc),
+                    cid,
+                ))
             nu_scored.sort(key=lambda x: (-x[0], x[1]))
             nu_candidates = [cid for _, cid in nu_scored[:need]]
             all_pairs_nu = _multi_vigor_pairs_for_candidates(
@@ -1468,6 +1503,149 @@ def _filter_groups_by_unit_q(groups, unit_q, lc):
     return out
 
 
+def _unit_matches_q(uid, info, unit_q, lc):
+    q_lower = (unit_q or '').strip().lower()
+    if not q_lower:
+        return True
+    uid = _app().normalize_id(uid)
+    name = _resolve_unit_name(uid, lc).lower()
+    return q_lower in name or q_lower in uid.lower()
+
+
+def _browse_request_active(browse, unit_q):
+    if (unit_q or '').strip():
+        return True
+    return any(
+        browse.get(k) is not None
+        for k in ('role_filter', 'rarity_filter', 'series_filter', 'source_filter', 'lineage_filter')
+    )
+
+
+def _msy_rankable_unit_ids(lc='EN'):
+    """Playable units with a sim-eligible weapon (non-map, max power)."""
+    A = _app()
+    lc = lc or A.DEFAULT_LANG
+    out = []
+    for uid in sorted(A.unit_list_playable_ids):
+        info = A.unit_info_map.get(uid)
+        if not info:
+            continue
+        stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+        if _cached_best_ex_weapon(uid, stat_mode, lc):
+            out.append(uid)
+    return out
+
+
+def _msy_default_master_unit_ids(lc='EN'):
+    """Default bundled master cache: units whose best weapon is an active skill (EX meta pool)."""
+    A = _app()
+    lc = lc or A.DEFAULT_LANG
+    out = []
+    for uid in _msy_rankable_unit_ids(lc):
+        info = A.unit_info_map.get(uid) or {}
+        stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+        wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
+        if wpn and str(wpn.get('weapon_type', '1') or '1') == '2':
+            out.append(uid)
+    return out
+
+
+def _filtered_rankable_unit_ids(lc, browse, unit_q=''):
+    ids = []
+    for uid in _msy_rankable_unit_ids(lc):
+        info = _app().unit_info_map.get(uid)
+        if not info:
+            continue
+        if not _unit_passes_browse_filters(uid, info, lc, browse):
+            continue
+        if not _unit_matches_q(uid, info, unit_q, lc):
+            continue
+        ids.append(uid)
+    return ids
+
+
+def _exclude_set_from_kwargs(kwargs):
+    exclude = set()
+    for p in kwargs.get('exclude_pairs') or []:
+        if isinstance(p, (list, tuple)) and len(p) >= 2:
+            exclude.add((_app().normalize_id(p[0]), _app().normalize_id(p[1])))
+    return exclude
+
+
+def _cheap_unit_peak_score(uid, lc, kwargs):
+    """Fast unit sort key for filtered browse (weapon power × unit ATK)."""
+    A = _app()
+    uid = A.normalize_id(uid)
+    info = A.unit_info_map.get(uid) or {}
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
+    if not wpn:
+        return 0
+    block = A._unit_max_lb_stat_block(uid, info, A.unit_stat_map.get(uid, {}), _ldc(lc))
+    if not block:
+        return 0
+    fs = A._unit_lb_row_to_api(block, stat_mode, True)
+    unit_atk = float(fs.get('ATK', 0) or 0)
+    return unit_atk * float(wpn.get('power') or 0)
+
+
+def _ordered_unit_ids_for_browse(unit_ids, master_groups, lc, kwargs, rank_mode):
+    by_uid = {}
+    for g in master_groups or []:
+        uid = _app().normalize_id((g.get('unit') or {}).get('id'))
+        if uid:
+            by_uid[uid] = g
+    scored = []
+    for uid in unit_ids:
+        uid = _app().normalize_id(uid)
+        g = by_uid.get(uid)
+        if g:
+            rk = g.get('rankings') or {}
+            block = rk.get(rank_mode) or rk.get('super_crit') or rk.get('crit') or rk.get('normal') or {}
+            sc = block.get('max_damage') or g.get('max_damage') or 0
+        else:
+            sc = _cheap_unit_peak_score(uid, lc, kwargs)
+        scored.append((sc, uid))
+    scored.sort(key=lambda x: (-x[0], x[1]))
+    return [uid for _, uid in scored]
+
+
+def _resolve_groups_for_unit_ids(unit_ids, master_groups, lc, kwargs, *, browse_fast=False):
+    A = _app()
+    by_uid = {}
+    for g in master_groups or []:
+        uid = A.normalize_id((g.get('unit') or {}).get('id'))
+        if uid:
+            by_uid[uid] = g
+    out = []
+    to_build = []
+    for uid in unit_ids:
+        uid = A.normalize_id(uid)
+        if uid in by_uid:
+            out.append(by_uid[uid])
+        else:
+            to_build.append(uid)
+    if to_build:
+        exclude = _exclude_set_from_kwargs(kwargs)
+        top_p = 10 if browse_fast else int(kwargs.get('top_pilots', 20) or 20)
+        built = _build_all_unit_groups(
+            to_build,
+            list(_pilot_pool_ids()),
+            lc,
+            int(kwargs.get('lb_tier', 3) or 3),
+            'super',
+            1,
+            exclude,
+            top_p,
+            'super_crit',
+            def_unit_override=kwargs.get('def_unit_override'),
+            def_char_override=kwargs.get('def_char_override'),
+            def_tiers=None if browse_fast else _MSY_STD_DEF_TIERS,
+        )
+        out.extend(built)
+    return out
+
+
 def _parse_browse_filters(kwargs, lc):
     """Parse unit browse filter kwargs (same semantics as /api/units)."""
     A = _app()
@@ -1560,7 +1738,7 @@ def _filter_master_groups(groups, lc, filters):
 
 def _master_cache_key(lc, kwargs):
     return (
-        '_v7_master',
+        '_v8_master',
         lc or 'EN',
         int(kwargs.get('lb_tier', 3) or 3),
         int(kwargs.get('top_pilots', 20) or 20),
@@ -1580,14 +1758,7 @@ def build_meta_synergy_master(lc='EN', *, lb_tier=3, top_pilots=20, exclude_pair
             exclude.add((A.normalize_id(p[0]), A.normalize_id(p[1])))
 
     pilot_ids = list(_pilot_pool_ids())
-    unit_ids = []
-    for uid in sorted(A.unit_list_playable_ids):
-        info = A.unit_info_map.get(uid)
-        if not info:
-            continue
-        if not _cached_best_ex_weapon(uid, _unit_stat_mode(str(info.get('rarity', '1'))), lc):
-            continue
-        unit_ids.append(uid)
+    unit_ids = _msy_default_master_unit_ids(lc)
 
     use_multi_tier = not def_unit_override and not def_char_override
     def_tiers = _MSY_STD_DEF_TIERS if use_multi_tier else None
@@ -1738,20 +1909,39 @@ def _warming_payload(rank_mode, vigor, def_tier, kwargs):
 def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, page, per_page, vigor,
                                 def_tier, kwargs, unit_q=''):
     dt = max(1, min(4, int(def_tier or 1)))
-    browse = _parse_browse_filters(kwargs, kwargs.get('lc', 'EN'))
-    filtered = _filter_master_groups(groups, kwargs.get('lc', 'EN'), browse)
+    lc = kwargs.get('lc', 'EN')
+    browse = _parse_browse_filters(kwargs, lc)
+    page = max(1, int(page or 1))
+    per_page = max(1, min(100, int(per_page or 50)))
+    browse_active = _browse_request_active(browse, unit_q)
+    if browse_active:
+        unit_ids = _filtered_rankable_unit_ids(lc, browse, unit_q)
+        ordered_ids = _ordered_unit_ids_for_browse(unit_ids, groups, lc, kwargs, rank_mode)
+        total = len(ordered_ids)
+        start = (page - 1) * per_page
+        page_uids = ordered_ids[start:start + per_page]
+        filtered = _resolve_groups_for_unit_ids(page_uids, groups, lc, kwargs, browse_fast=True)
+        by_uid = {_app().normalize_id((g.get('unit') or {}).get('id')): g for g in filtered}
+        filtered = [by_uid[uid] for uid in page_uids if uid in by_uid]
+    else:
+        filtered = _filter_master_groups(groups, lc, browse)
+        total = None
     expanded = []
     for g in filtered:
         row = _group_for_def_tier(g, dt) if g.get('rankings_by_tier') else g
         if row:
             expanded.append(row)
-    sorted_groups = _sort_groups_by_mode(expanded, rank_mode)
-    sorted_groups = _filter_groups_by_unit_q(sorted_groups, unit_q, kwargs.get('lc', 'EN'))
-    total = len(sorted_groups)
-    page = max(1, int(page or 1))
-    per_page = max(1, min(100, int(per_page or 50)))
-    start = (page - 1) * per_page
-    raw_page = sorted_groups[start:start + per_page]
+    sorted_groups = _sort_groups_by_mode(expanded, rank_mode) if not browse_active else expanded
+    if not browse_active:
+        sorted_groups = _filter_groups_by_unit_q(sorted_groups, unit_q, lc)
+        total = len(sorted_groups)
+    if total is None:
+        total = len(sorted_groups)
+    start = (page - 1) * per_page if browse_active else (page - 1) * per_page
+    if browse_active:
+        raw_page = sorted_groups
+    else:
+        raw_page = sorted_groups[start:start + per_page]
     page_groups = []
     for g in raw_page:
         row = _normalize_group_for_mode(g, rank_mode)
@@ -1797,18 +1987,8 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
 
 
 def _msy_sim_unit_ids(lc='EN'):
-    """Playable units with a valid EX weapon (MSY ranking pool)."""
-    A = _app()
-    lc = lc or A.DEFAULT_LANG
-    out = []
-    for uid in sorted(A.unit_list_playable_ids):
-        info = A.unit_info_map.get(uid)
-        if not info:
-            continue
-        if not _cached_best_ex_weapon(uid, _unit_stat_mode(str(info.get('rarity', '1'))), lc):
-            continue
-        out.append(uid)
-    return out
+    """Rankable units (used for MSY browse-filter option pools)."""
+    return _msy_rankable_unit_ids(lc)
 
 
 def msy_browse_filter_pools(lc='EN', query_args=None):

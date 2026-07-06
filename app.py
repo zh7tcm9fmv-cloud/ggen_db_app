@@ -13834,10 +13834,10 @@ def api_meta_synergy_rankings():
             payload = {k: v for k, v in payload.items() if k != 'all_groups'}
         pilot_roles_key = ','.join(pilot_roles) if pilot_roles else ''
         ck = (
-            f'msy_{lc}_{rarity or unit_rarity}_{role or unit_role}_{series_id}_{source}_'
-            f'{pilot_rarity}_{pilot_roles_key}_{metric}_{vigor}_{lb_tier}_{def_tier}_{top_pilots}_'
-            f'{rank_mode}_{unit_q}_{page}_{per_page}_{"full" if full else "page"}_'
-            f'{hash(tuple(exclude_pairs))}'
+            f'msy_{lc}_{rarity or unit_rarity}_{role or unit_role}_{series_id}_{series_op}_'
+            f'{source}_{lineage_id}_{lineage_op}_{pilot_rarity}_{pilot_roles_key}_{metric}_{vigor}_'
+            f'{lb_tier}_{def_tier}_{top_pilots}_{rank_mode}_{unit_q}_{page}_{per_page}_'
+            f'{"full" if full else "page"}_{hash(tuple(exclude_pairs))}'
         )
         return jsonify_cacheable(payload, ck, public=True, max_age=3600, convert_images=True)
     except Exception as e:

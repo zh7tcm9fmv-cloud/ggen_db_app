@@ -108,8 +108,6 @@
     var row = {
       thum: entity.thum || '',
       rarity: entity.rarity || 'N',
-      role_icon: entity.role_icon || '',
-      acquisition_icon: entity.acquisition_icon || '',
       is_ultimate: entity.is_ultimate
     };
     if (typeof global.renderListThumb === 'function') {
@@ -122,9 +120,7 @@
     if (!entity || typeof global.renderListThumb !== 'function') return '';
     var row = {
       thum: entity.portrait || entity.thum || '',
-      rarity: entity.rarity || 'N',
-      role_icon: entity.role_icon || '',
-      acquisition_icon: entity.acquisition_icon || ''
+      rarity: entity.rarity || 'N'
     };
     return global.renderListThumb(row, 'char', 44);
   }
@@ -205,7 +201,10 @@
   }
 
   function tierCacheKey(defTier, rankMode) {
-    return cacheKeyBase() + '|dt:' + (defTier != null ? defTier : state.defTier) + '|rm:' + (rankMode || state.rankMode);
+    return cacheKeyForState().replace(/\|pg:\d+/, '|pg:1').replace(
+      /\|rm:[^|]+/,
+      '|rm:' + (rankMode || state.rankMode)
+    ).replace(/\|dt:\d+/, '|dt:' + (defTier != null ? defTier : state.defTier));
   }
 
   function applyPayload(d, defTier) {
@@ -221,7 +220,7 @@
     state.cacheKey = cacheKeyForState();
     var tk = tierCacheKey(defTier != null ? defTier : state.defTier, state.rankMode);
     state.tierCache[tk] = {
-      cacheKey: cacheKeyBase(),
+      cacheKey: cacheKeyForState().replace(/\|pg:\d+/, '|pg:1'),
       groups: state.groups,
       total: state.total,
       totalPages: state.totalPages,
@@ -301,6 +300,20 @@
     if (defLbl) defLbl.textContent = t('msy_def_difficulty');
   }
 
+  function updateDefTierStats() {
+    var el = document.getElementById('msyDefTierStats');
+    if (!el) return;
+    var tiers = state.defenderTiers || {};
+    var dt = String(state.defTier || '1');
+    var row = tiers[dt] || tiers[String(dt)];
+    if (!row) {
+      el.textContent = '';
+      return;
+    }
+    el.textContent = 'MS DEF ' + fmtN(row.unit_def) + ' · Pilot DEF ' + fmtN(row.char_def);
+    el.title = row.label || '';
+  }
+
   function renderStatus() {
     var mode = rankModeDef(state.rankMode);
     var el = document.getElementById('msyStatus');
@@ -316,6 +329,7 @@
       '<span class="msy-status-chip">' + esc(t('msy_status_metric').replace('{m}', t(mode.metricKey))) + '</span>' +
       '<span class="msy-status-chip">' + esc(t('msy_status_vigor').replace('{v}', vigorLbl)) + '</span>' +
       (note ? '<span class="msy-status-note">' + esc(note) + '</span>' : '');
+    updateDefTierStats();
   }
 
   function pilotDamage(pilot, mode) {
@@ -364,6 +378,7 @@
           '<div class="msy-pilot-thumb">' + pilotThumb(c) + '</div>' +
           '<div class="msy-pilot-body">' +
             '<div class="msy-pilot-name-row">' +
+              roleIconHtml(c) +
               '<span class="msy-pilot-name" title="' + escAttr(c.name || '') + '">' + esc(c.name) + '</span>' +
             '</div>' +
             sub +
@@ -534,7 +549,7 @@
         .then(function (d) {
           if (!d || d.warming) return;
           state.tierCache[key] = {
-            cacheKey: cacheKeyBase(),
+            cacheKey: cacheKeyForState().replace(/\|pg:\d+/, '|pg:1'),
             groups: d.groups || [],
             total: d.total || 0,
             totalPages: d.total_pages || 1,
@@ -556,7 +571,7 @@
         .then(function (d) {
           if (!d || d.warming) return;
           state.tierCache[key] = {
-            cacheKey: cacheKeyBase(),
+            cacheKey: cacheKeyForState().replace(/\|pg:\d+/, '|pg:1'),
             groups: d.groups || [],
             total: d.total || 0,
             totalPages: d.total_pages || 1,
@@ -568,14 +583,20 @@
     });
   }
 
+  function syncSearchFromDom() {
+    var el = document.getElementById('msySearchInput');
+    if (el) state.unitQ = el.value.trim();
+  }
+
   async function loadRankings(force) {
+    syncSearchFromDom();
     var key = cacheKeyForState();
     if (!force && state.cacheKey === key && state.groups.length) {
       renderContent();
       return;
     }
     var tierKey = tierCacheKey(state.defTier, state.rankMode);
-    if (!force && state.tierCache[tierKey] && state.tierCache[tierKey].cacheKey === cacheKeyBase()) {
+    if (!force && state.tierCache[tierKey] && state.tierCache[tierKey].cacheKey === cacheKeyForState().replace(/\|pg:\d+/, '|pg:1')) {
       var hit = state.tierCache[tierKey];
       state.groups = hit.groups;
       state.total = hit.total;
@@ -634,7 +655,8 @@
     state._searchTimer = setTimeout(function () {
       state.page = 1;
       state.cacheKey = null;
-      loadRankings(false);
+      state.tierCache = {};
+      loadRankings(true);
     }, 180);
   }
 
@@ -643,7 +665,8 @@
     state._reloadTimer = setTimeout(function () {
       state.page = 1;
       state.cacheKey = null;
-      loadRankings(false);
+      state.tierCache = {};
+      loadRankings(true);
     }, 180);
   }
 
@@ -653,7 +676,7 @@
     state.page = 1;
     renderRankModes();
     var tierKey = tierCacheKey(state.defTier, modeId);
-    if (state.tierCache[tierKey] && state.tierCache[tierKey].cacheKey === cacheKeyBase()) {
+    if (state.tierCache[tierKey] && state.tierCache[tierKey].cacheKey === cacheKeyForState().replace(/\|pg:\d+/, '|pg:1')) {
       var hit = state.tierCache[tierKey];
       state.groups = hit.groups;
       state.total = hit.total;
@@ -819,8 +842,9 @@
         state.defTier = nextTier;
         state.page = 1;
         state.cacheKey = null;
+        updateDefTierStats();
         var tierKey = tierCacheKey(nextTier, state.rankMode);
-        if (state.tierCache[tierKey] && state.tierCache[tierKey].cacheKey === cacheKeyBase()) {
+        if (state.tierCache[tierKey] && state.tierCache[tierKey].cacheKey === cacheKeyForState().replace(/\|pg:\d+/, '|pg:1')) {
           var cached = state.tierCache[tierKey];
           state.groups = cached.groups;
           state.total = cached.total;
