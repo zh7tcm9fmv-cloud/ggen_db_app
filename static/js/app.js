@@ -5473,6 +5473,7 @@ if(!prev||lv>prev.lv)byBase.set(base,{id:String(sk.id),lv});
 });
 byBase.forEach(({id})=>{S.dc._activeSkills[id]=true});
 }
+const DC_GUARANTEED_CRIT_RE=/guaranteed\s+critical|grant\s+guaranteed\s+critical|activate\s+guaranteed\s+critical|確定クリティカル|確定.*クリティカル/i;
 const DC_WPN_ELEM={'1':'beam','2':'physical','3':'special','4':'beam','5':'beam','6':'physical','7':'beam'};
 const DC_WPN_ELEM_LABEL={beam:'Beam',physical:'Physical',special:'Special'};
 const DC_WPN_ATTR_ID_KEYS={'1':['physical'],'2':['beam'],'3':['special'],'4':['beam','physical'],'5':['physical','special'],'6':['beam','special'],'7':['beam','physical','special'],'8':['beam','physical']};

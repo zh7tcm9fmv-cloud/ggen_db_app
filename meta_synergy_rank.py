@@ -1030,7 +1030,7 @@ _char_pair_cache = {}
 _rankings_result_cache = {}
 _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
-_MSY_DISK_VERSION = 'v11'
+_MSY_DISK_VERSION = 'v12'
 SHINN_EX_CHAR_ID = '1330000103'
 _MSY_BUILD_WORKERS = max(1, min(4, int(os.environ.get('MSY_BUILD_WORKERS', '1') or '1')))
 
@@ -1583,6 +1583,153 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
     return out
 
 
+def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, exclude, metric='super_crit'):
+    """Build one MSY unit group from Damage Simulator pair results."""
+    A = _app()
+    uid = A.normalize_id(uid)
+    info = A.unit_info_map.get(uid) or {}
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    unit_wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
+    if not unit_wpn or not pairs_by_tier:
+        return None
+
+    active_pilots = _eligible_pilots_for_unit(uid, pilot_ids, exclude)
+    if not active_pilots:
+        return None
+    active_set = set(active_pilots)
+    need = max(_TOP_PILOTS_PREFILTER, int(top_pilots or 10) + 8)
+
+    def _filter_pairs(all_pairs):
+        return [(cid, bv) for cid, bv in all_pairs if cid in active_set and bv]
+
+    def _rankings_no_ur_for_tier(dt, all_pairs):
+        non_ur = _filter_non_ur(active_pilots)
+        if len(non_ur) >= len(active_pilots):
+            return _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc)
+        nu_cids = set(non_ur)
+        filtered = [(cid, bv) for cid, bv in all_pairs if cid in nu_cids]
+        return _rankings_from_multi_vigor_pairs(filtered, top_pilots, lc) if filtered else {}
+
+    def _rankings_no_shinn_for_tier(dt, all_pairs):
+        non_shinn = _filter_non_shinn(active_pilots)
+        if len(non_shinn) >= len(active_pilots):
+            return _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc)
+        ns_cids = set(non_shinn)
+        filtered = [(cid, bv) for cid, bv in all_pairs if cid in ns_cids]
+        return _rankings_from_multi_vigor_pairs(filtered, top_pilots, lc) if filtered else {}
+
+    def _rankings_no_gc_for_tier(dt, all_pairs):
+        non_gc = _filter_non_guaranteed_crit(uid, active_pilots, unit_wpn, lc, exclude)
+        if len(non_gc) >= len(active_pilots):
+            return _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc)
+        ng_cids = set(non_gc)
+        filtered = [(cid, bv) for cid, bv in all_pairs if cid in ng_cids]
+        return _rankings_from_multi_vigor_pairs(filtered, top_pilots, lc) if filtered else {}
+
+    use_multi_tier = len(pairs_by_tier) > 1
+    if use_multi_tier:
+        rankings_by_tier = {}
+        rankings_no_ur_by_tier = {}
+        rankings_no_shinn_by_tier = {}
+        rankings_no_gc_by_tier = {}
+        for dt, raw_pairs in pairs_by_tier.items():
+            pairs = _filter_pairs(raw_pairs)
+            if not pairs:
+                continue
+            rk = _rankings_from_multi_vigor_pairs(pairs, top_pilots, lc)
+            if rk:
+                rankings_by_tier[int(dt)] = rk
+                rankings_no_ur_by_tier[int(dt)] = _rankings_no_ur_for_tier(dt, pairs)
+                rankings_no_shinn_by_tier[int(dt)] = _rankings_no_shinn_for_tier(dt, pairs)
+                rankings_no_gc_by_tier[int(dt)] = _rankings_no_gc_for_tier(dt, pairs)
+        if not rankings_by_tier:
+            return None
+        dt_primary = next(iter(sorted(rankings_by_tier)))
+        rankings = rankings_by_tier[dt_primary]
+        rankings_no_ur = rankings_no_ur_by_tier.get(dt_primary) or rankings
+        rankings_no_shinn = rankings_no_shinn_by_tier.get(dt_primary) or rankings
+        rankings_no_gc = rankings_no_gc_by_tier.get(dt_primary) or rankings
+    else:
+        dt = int(next(iter(pairs_by_tier)))
+        pairs = _filter_pairs(pairs_by_tier[dt])
+        if not pairs:
+            return None
+        rankings = _rankings_from_multi_vigor_pairs(pairs, top_pilots, lc)
+        if not rankings:
+            return None
+        rankings_no_ur = _rankings_no_ur_for_tier(dt, pairs)
+        rankings_no_shinn = _rankings_no_shinn_for_tier(dt, pairs)
+        rankings_no_gc = _rankings_no_gc_for_tier(dt, pairs)
+        rankings_by_tier = None
+        rankings_no_ur_by_tier = None
+        rankings_no_shinn_by_tier = None
+        rankings_no_gc_by_tier = None
+
+    primary = rankings.get('super_crit') or rankings.get('crit') or rankings.get('normal')
+    if not primary:
+        return None
+    is_sd = _is_sd_unit(uid, info)
+    out = {
+        'unit': _entity_brief_unit(uid, lc),
+        'weapon_elems': _weapon_elem_label(uid, lc),
+        'rankings': rankings,
+        'rankings_no_ur': rankings_no_ur,
+        'rankings_no_shinn': rankings_no_shinn,
+        'rankings_no_gc': rankings_no_gc,
+        'max_damage': primary['max_damage'],
+        'metric': metric,
+        'pilots': primary['pilots'],
+        'is_sd': is_sd,
+        'bundled_pilot_id': _bundled_pilot_id(uid) if is_sd else None,
+    }
+    if rankings_by_tier:
+        out['rankings_by_tier'] = rankings_by_tier
+        out['rankings_no_ur_by_tier'] = rankings_no_ur_by_tier
+        out['rankings_no_shinn_by_tier'] = rankings_no_shinn_by_tier
+        out['rankings_no_gc_by_tier'] = rankings_no_gc_by_tier
+    return out
+
+
+def save_published_master_cache(cache_key, result):
+    """Write MSY master cache to data/published/ (for Railway deploy)."""
+    path = _msy_published_path(cache_key)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    payload = {
+        'version': _MSY_DISK_VERSION,
+        'cache_key': list(cache_key),
+        'groups': result.get('groups') or [],
+        'total_pilot_candidates': result.get('total_pilot_candidates', 0),
+    }
+    tmp = path + '.tmp'
+    with gzip.open(tmp, 'wt', encoding='utf-8') as f:
+        json.dump(payload, f, ensure_ascii=False, separators=(',', ':'))
+    os.replace(tmp, path)
+    print(f'MSY published cache saved: {len(payload["groups"])} units ({path})')
+    return path
+
+
+def dc_candidate_pilots_for_unit(uid, pilot_ids, exclude, lc):
+    """Prefilter pilots for DC evaluation (same cap as Python build)."""
+    uid = _app().normalize_id(uid)
+    info = _app().unit_info_map.get(uid) or {}
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    unit_wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
+    if not unit_wpn:
+        return []
+    active = _eligible_pilots_for_unit(uid, pilot_ids, exclude)
+    if not active:
+        return []
+    need = max(_TOP_PILOTS_PREFILTER, 128)
+    if len(active) <= _FULL_SIM_PILOT_CAP:
+        return list(active)
+    cheap_scored = [
+        (_cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc), cid)
+        for cid in active
+    ]
+    cheap_scored.sort(key=lambda x: (-x[0], x[1]))
+    return [cid for _, cid in cheap_scored[:need]]
+
+
 def _build_all_unit_groups(unit_ids, pilot_ids, lc, lb_tier, vigor, def_tier, exclude, top_pilots, metric, *,
                              def_unit_override=None, def_char_override=None, def_tiers=None,
                              on_progress=None):
@@ -1941,8 +2088,7 @@ def _unit_matches_q(uid, info, unit_q, lc):
 
 
 def _browse_request_active(browse, unit_q):
-    if (unit_q or '').strip():
-        return True
+    """Browse filters only — text search (unit_q) filters the master cache in memory."""
     return any(
         browse.get(k) is not None
         for k in ('role_filter', 'rarity_filter', 'series_filter', 'source_filter', 'lineage_filter')
@@ -2166,7 +2312,7 @@ def _filter_master_groups(groups, lc, filters):
 
 def _master_cache_key(lc, kwargs):
     return (
-        '_v11_master',
+        '_v12_dc_master',
         lc or 'EN',
         int(kwargs.get('lb_tier', 3) or 3),
         int(kwargs.get('top_pilots', 20) or 20),
@@ -2343,35 +2489,17 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
     browse = _parse_browse_filters(kwargs, lc)
     page = max(1, int(page or 1))
     per_page = max(1, min(100, int(per_page or 50)))
-    browse_active = _browse_request_active(browse, unit_q)
-    if browse_active:
-        unit_ids = _filtered_rankable_unit_ids(lc, browse, unit_q)
-        ordered_ids = _ordered_unit_ids_for_browse(unit_ids, groups, lc, kwargs, rank_mode)
-        total = len(ordered_ids)
-        start = (page - 1) * per_page
-        page_uids = ordered_ids[start:start + per_page]
-        filtered = _resolve_groups_for_unit_ids(page_uids, groups, lc, kwargs, browse_fast=True)
-        by_uid = {_app().normalize_id((g.get('unit') or {}).get('id')): g for g in filtered}
-        filtered = [by_uid[uid] for uid in page_uids if uid in by_uid]
-    else:
-        filtered = _filter_master_groups(groups, lc, browse)
-        total = None
+    filtered = _filter_master_groups(groups, lc, browse)
+    filtered = _filter_groups_by_unit_q(filtered, unit_q, lc)
     expanded = []
     for g in filtered:
         row = _group_for_def_tier(g, dt) if g.get('rankings_by_tier') else g
         if row:
             expanded.append(row)
-    sorted_groups = _sort_groups_by_mode(expanded, rank_mode) if not browse_active else expanded
-    if not browse_active:
-        sorted_groups = _filter_groups_by_unit_q(sorted_groups, unit_q, lc)
-        total = len(sorted_groups)
-    if total is None:
-        total = len(sorted_groups)
-    start = (page - 1) * per_page if browse_active else (page - 1) * per_page
-    if browse_active:
-        raw_page = sorted_groups
-    else:
-        raw_page = sorted_groups[start:start + per_page]
+    sorted_groups = _sort_groups_by_mode(expanded, rank_mode)
+    total = len(sorted_groups)
+    start = (page - 1) * per_page
+    raw_page = sorted_groups[start:start + per_page]
     page_groups = []
     for g in raw_page:
         row = _normalize_group_for_mode(g, rank_mode)
@@ -2468,49 +2596,22 @@ def msy_browse_filter_pools(lc='EN', query_args=None):
 
 
 def prewarm_default_rankings():
-    """Background-build default MSY rankings (first /msy paint after deploy)."""
+    """Load published MSY rankings cache (built via scripts/build_msy_rankings_dc.py)."""
     A = _app()
     lc = A.DEFAULT_LANG
     kwargs = {
-        'unit_rarity': 'ALL',
-        'unit_role': 'ALL',
-        'rarity': None,
-        'role': None,
-        'series_id': None,
-        'source': None,
-        'pilot_rarity': 'ALL',
-        'pilot_roles': None,
-        'metric': 'super_crit',
-        'vigor': 'super',
         'lb_tier': 3,
         'top_pilots': 20,
-        'exclude_pairs': None,
-        'lineage_id': None,
-        'lineage_op': None,
         'def_unit_override': None,
         'def_char_override': None,
     }
-    def_tier = 1
-    cache_key = _rankings_cache_key(lc, def_tier, kwargs)
-
-    def _do_build():
-        t0 = __import__('time').perf_counter()
-        result = build_meta_synergy_master(
-            lc=lc,
-            lb_tier=int(kwargs.get('lb_tier', 3) or 3),
-            top_pilots=int(kwargs.get('top_pilots', 20) or 20),
-            exclude_pairs=kwargs.get('exclude_pairs'),
-            def_unit_override=kwargs.get('def_unit_override'),
-            def_char_override=kwargs.get('def_char_override'),
-        )
-        groups = result.get('groups') or []
-        elapsed = __import__('time').perf_counter() - t0
-        print(f'MSY prewarm: {len(groups)} units ({elapsed:.1f}s)')
-        return result
-
-    _, warming = _ensure_rankings_cache(cache_key, _do_build)
-    if warming:
-        print('MSY prewarm: started background build')
+    cache_key = _rankings_cache_key(lc, 1, kwargs)
+    disk = _load_master_from_disk(cache_key)
+    if disk:
+        _rankings_result_cache[cache_key] = disk
+        print(f'MSY prewarm: loaded {len(disk.get("groups") or [])} units from disk')
+        return
+    print('MSY prewarm: no published cache — run scripts/build_msy_rankings_dc.py')
 
 
 def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
@@ -2524,6 +2625,10 @@ def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
     cache_key = _master_cache_key(lc, kwargs)
 
     def _do_build(on_progress=None):
+        if os.environ.get('MSY_ALLOW_PYTHON_BUILD', '').strip() not in ('1', 'true', 'yes'):
+            raise RuntimeError(
+                'MSY Python build disabled — run scripts/build_msy_rankings_dc.py and deploy published cache'
+            )
         return build_meta_synergy_master(
             lc=lc,
             lb_tier=int(kwargs.get('lb_tier', 3) or 3),
