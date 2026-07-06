@@ -2748,8 +2748,8 @@ def _slim_rankings_for_mode(rankings, rank_mode):
     return {rank_mode: block} if block else {}
 
 
-def _ensure_group_enriched(g, lc, rank_mode='super_crit'):
-    """Backfill weapon/subtitle and pilot skills once per cached unit group (per rank mode)."""
+def _ensure_group_enriched(g, lc, rank_mode='super_crit', include_skills=True):
+    """Backfill weapon/subtitle and (optionally) pilot skills once per cached unit group (per rank mode)."""
     if not g:
         return g
     rank_mode = rank_mode or 'super_crit'
@@ -2760,7 +2760,7 @@ def _ensure_group_enriched(g, lc, rank_mode='super_crit'):
     block = (g.get('rankings') or {}).get(rank_mode) or {}
     pilots = block.get('pilots') or []
     if rank_mode in done_modes and g.get('weapon_info'):
-        if not pilots or pilots[0].get('active_skills'):
+        if not include_skills or not pilots or pilots[0].get('active_skills'):
             return g
     uid = _app().normalize_id((g.get('unit') or {}).get('id'))
     if uid and not g.get('weapon_info'):
@@ -2772,14 +2772,16 @@ def _ensure_group_enriched(g, lc, rank_mode='super_crit'):
         g['is_sd'] = is_sd
         if is_sd:
             g['bundled_pilot_id'] = _bundled_pilot_id(uid)
-    if g.get('rankings') and rank_mode not in done_modes:
+    if include_skills and g.get('rankings') and rank_mode not in done_modes:
         src = (g.get('rankings') or {}).get(rank_mode)
         if src:
             enriched = _enrich_rankings_pilots({rank_mode: src}, lc)
             g['rankings'] = dict(g.get('rankings') or {})
             g['rankings'][rank_mode] = enriched.get(rank_mode, src)
             done_modes[rank_mode] = True
-    if g.get('rankings_no_cp'):
+    elif not include_skills and g.get('weapon_info') and rank_mode not in done_modes:
+        done_modes[rank_mode] = True
+    if include_skills and g.get('rankings_no_cp'):
         slim_cp = _slim_rankings_for_mode(g['rankings_no_cp'], rank_mode)
         cp_block = (slim_cp or {}).get(rank_mode) or {}
         cp_pilots = cp_block.get('pilots') or []
@@ -2933,7 +2935,7 @@ def _warming_payload(rank_mode, vigor, def_tier, kwargs):
 
 
 def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, page, per_page, vigor,
-                                def_tier, kwargs, unit_q='', cache_key=None):
+                                def_tier, kwargs, unit_q='', cache_key=None, include_skills=True):
     dt = max(1, min(4, int(def_tier or 3)))
     lc = kwargs.get('lc', 'EN')
     browse = _parse_browse_filters(kwargs, lc)
@@ -2953,7 +2955,7 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
         _merge_groups_into_cache(cache_key, page_groups_raw)
     expanded = []
     for g in page_groups_raw:
-        _ensure_group_enriched(g, lc, rank_mode)
+        _ensure_group_enriched(g, lc, rank_mode, include_skills=include_skills)
         row = _group_for_def_tier(g, dt) if g.get('rankings_by_tier') else g
         if row:
             norm = _normalize_group_for_mode(row, rank_mode)
@@ -3074,6 +3076,9 @@ def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
     per_page = max(1, min(100, int(kwargs.pop('per_page', 50) or 50)))
     unit_q = kwargs.pop('unit_q', '') or ''
     def_tier = max(1, min(4, int(kwargs.pop('def_tier', 1) or 1)))
+    include_skills = kwargs.pop('include_skills', True)
+    if isinstance(include_skills, str):
+        include_skills = include_skills not in ('0', 'false', 'no', '')
     vigor = _VIGOR_FOR_RANK_MODE.get(rank_mode, kwargs.pop('vigor', 'super') or 'super')
     kwargs.pop('vigor', None)
     cache_key = _master_cache_key(lc, kwargs)
@@ -3109,6 +3114,7 @@ def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
                 kwargs=kwargs,
                 unit_q=unit_q,
                 cache_key=cache_key,
+                include_skills=include_skills,
             )
             payload['warming'] = True
             payload['partial'] = bool(partial.get('partial'))
@@ -3129,7 +3135,20 @@ def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
         kwargs=kwargs,
         unit_q=unit_q,
         cache_key=cache_key,
+        include_skills=include_skills,
     )
     if cached.get('legacy'):
         payload['cache_incomplete'] = True
     return payload
+
+
+def build_msy_pilot_skills_batch(lc, char_ids):
+    """Resolve active skill metadata for a batch of pilot character ids (MSY UI lazy load)."""
+    lc = lc or 'EN'
+    out = {}
+    for raw in char_ids or []:
+        cid = _app().normalize_id(raw)
+        if not cid or cid in out:
+            continue
+        out[cid] = _msy_pilot_active_skills(cid, lc)
+    return out

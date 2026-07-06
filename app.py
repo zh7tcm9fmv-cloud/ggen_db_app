@@ -13790,6 +13790,7 @@ def api_meta_synergy_rankings():
     per_page = request.args.get('per_page', '50', type=int)
     rank_mode = request.args.get('rank_mode', 'super_crit').strip() or 'super_crit'
     unit_q = request.args.get('unit_q', '')
+    include_skills = request.args.get('include_skills', '0') not in ('0', 'false', 'no', '')
     full = request.args.get('full', '0') in ('1', 'true', 'yes')
     exclude_pairs = []
     for part in (request.args.get('exclude') or '').split(';'):
@@ -13826,6 +13827,7 @@ def api_meta_synergy_rankings():
             rank_mode=rank_mode,
             unit_q=unit_q,
             exclude_pairs=exclude_pairs or None,
+            include_skills=include_skills,
         )
     except Exception as e:
         print(f'api_meta_synergy_rankings failed: {e}')
@@ -13852,6 +13854,17 @@ def api_meta_synergy_rankings():
         import traceback
         traceback.print_exc()
         return jsonify({'error': 'meta_synergy_rankings_failed', 'detail': str(e)}), 500
+
+
+@app.route('/api/meta_synergy_pilot_skills')
+def api_meta_synergy_pilot_skills():
+    """Batch active-skill metadata for MSY pilot cards (lazy load after slim rankings payload)."""
+    lc = request.args.get('lang', DEFAULT_LANG)
+    raw = request.args.get('char_ids', '').strip()
+    char_ids = [x.strip() for x in raw.split(',') if x.strip()][:150]
+    import meta_synergy_rank as msr
+    skills = msr.build_msy_pilot_skills_batch(lc, char_ids)
+    return jsonify_cacheable({'skills_by_char': skills}, f'msy_skills_{lc}_{hash(tuple(char_ids)) & 0xffff:x}', public=True, max_age=3600, convert_images=True)
 
 
 @app.route('/api/msy_browse_filters')

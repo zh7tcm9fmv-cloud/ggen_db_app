@@ -243,7 +243,8 @@
       'unit_q=' + encodeURIComponent(state.unitQ || ''),
       'rank_mode=' + encodeURIComponent(opts.rankMode != null ? opts.rankMode : state.rankMode),
       'page=' + encodeURIComponent(String(page)),
-      'per_page=' + encodeURIComponent(String(state.perPage))
+      'per_page=' + encodeURIComponent(String(state.perPage)),
+      'include_skills=0'
     ];
     if (fq) q.push(fq);
     return '/api/meta_synergy_rankings?' + q.join('&');
@@ -280,6 +281,74 @@
     renderContent();
     if (d.cache_incomplete) {
       showWarmingBanner(true, t('msy_warming_partial') || t('msy_warming') || 'Updating rankings…');
+    }
+  }
+
+  function collectPilotCharIds(groups) {
+    var ids = [];
+    (groups || []).forEach(function (g) {
+      (g.pilots || []).forEach(function (p) {
+        var id = p && p.char && p.char.id;
+        if (id && !(p.active_skills && p.active_skills.length)) ids.push(String(id));
+      });
+      ['rankings', 'rankings_no_cp'].forEach(function (key) {
+        var block = g[key];
+        if (!block || typeof block !== 'object') return;
+        Object.keys(block).forEach(function (modeKey) {
+          var modeBlock = block[modeKey];
+          ((modeBlock && modeBlock.pilots) || []).forEach(function (p) {
+            var pid = p && p.char && p.char.id;
+            if (pid && !(p.active_skills && p.active_skills.length)) ids.push(String(pid));
+          });
+        });
+      });
+    });
+    var seen = {};
+    return ids.filter(function (id) {
+      if (seen[id]) return false;
+      seen[id] = 1;
+      return true;
+    });
+  }
+
+  function applySkillsToGroups(groups, map) {
+    if (!map) return;
+    (groups || []).forEach(function (g) {
+      (g.pilots || []).forEach(function (p) {
+        var id = p && p.char && String(p.char.id);
+        if (id && map[id]) p.active_skills = map[id];
+      });
+      ['rankings', 'rankings_no_cp'].forEach(function (key) {
+        var block = g[key];
+        if (!block || typeof block !== 'object') return;
+        Object.keys(block).forEach(function (modeKey) {
+          var modeBlock = block[modeKey];
+          ((modeBlock && modeBlock.pilots) || []).forEach(function (p) {
+            var pid = p && p.char && String(p.char.id);
+            if (pid && map[pid]) p.active_skills = map[pid];
+          });
+        });
+      });
+    });
+  }
+
+  async function fetchPilotSkillsBatch(groups) {
+    var ids = collectPilotCharIds(groups);
+    if (!ids.length) return;
+    var lang = (global.S && global.S.lang) || 'EN';
+    var gen = state._loadGen;
+    for (var i = 0; i < ids.length; i += 80) {
+      if (gen !== state._loadGen) return;
+      var slice = ids.slice(i, i + 80);
+      var url = '/api/meta_synergy_pilot_skills?lang=' + encodeURIComponent(lang) + '&char_ids=' + encodeURIComponent(slice.join(','));
+      try {
+        var r = await fetch(url, { credentials: 'same-origin' });
+        if (!r.ok) continue;
+        var d = await r.json();
+        if (gen !== state._loadGen) return;
+        applySkillsToGroups(state.groups, d.skills_by_char || {});
+        renderContent();
+      } catch (_) {}
     }
   }
 
@@ -605,6 +674,7 @@
         if (d && d.warming) {
           if (d.groups && d.groups.length) {
             applyPayload(d, state.defTier);
+            void fetchPilotSkillsBatch(state.groups);
             setLoading(false, false);
             showWarmingBanner(true);
             state._warmPolls = (state._warmPolls || 0) + 1;
@@ -623,6 +693,7 @@
         if (!r.ok) throw new Error('HTTP ' + r.status);
         showWarmingBanner(false);
         applyPayload(d, state.defTier);
+        void fetchPilotSkillsBatch(state.groups);
         break;
       }
     } catch (e) {
