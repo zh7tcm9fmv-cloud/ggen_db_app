@@ -1030,7 +1030,7 @@ _char_pair_cache = {}
 _rankings_result_cache = {}
 _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
-_MSY_DISK_VERSION = 'v12'
+_MSY_DISK_VERSION = 'v13'
 SHINN_EX_CHAR_ID = '1330000103'
 _MSY_BUILD_WORKERS = max(1, min(4, int(os.environ.get('MSY_BUILD_WORKERS', '1') or '1')))
 
@@ -2312,7 +2312,7 @@ def _filter_master_groups(groups, lc, filters):
 
 def _master_cache_key(lc, kwargs):
     return (
-        '_v12_dc_master',
+        '_v13_dc_master',
         lc or 'EN',
         int(kwargs.get('lb_tier', 3) or 3),
         int(kwargs.get('top_pilots', 20) or 20),

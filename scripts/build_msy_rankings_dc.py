@@ -21,7 +21,6 @@ EVAL_UNIT_JS = """
 async ({ unitId, pilotIds, defTiers, lang }) => {
   const ud = await fetch(`/api/unit/${unitId}?lang=${lang}&lb_tier=3`).then(r => r.json());
   if (!ud || ud.error) return { error: ud && ud.error, unitId };
-  const bw = _dcPickBestWeaponIndices(ud);
   const vigors = ['super', 'max', 'high'];
   const charCache = {};
   async function loadChar(cid) {
@@ -37,36 +36,51 @@ async ({ unitId, pilotIds, defTiers, lang }) => {
       cRNG: 0, cMEL: 0, cAWK: 0, cDEF: cDef, cREA: 0,
     });
   }
+  function buildMsySlot(cd, vigor) {
+    const slot = _dcCreateEmptyAttackerSlot();
+    slot.atkUnit = String(unitId);
+    slot.atkChar = String(cd.id);
+    slot.atkUnitData = ud;
+    slot.atkCharData = cd;
+    const bw = _dcPickBestWeaponIndices(ud);
+    slot.wpnIdx = bw.wpnIdx;
+    slot.wpnLv = bw.wpnLv;
+    slot.lbTier = 3;
+    slot.unitStatMode = 'normal';
+    slot.unitCondPassive = true;
+    slot.charStatMode = 'normal';
+    slot.mpLevel = _dcNormMpLevel(vigor);
+    slot.terrainMode = 'normal';
+    slot.terrain = 0;
+    slot.optionParts = [];
+    slot.supporters = [];
+    slot.supportCounterAtk = false;
+    slot.finalWpnPow = 0;
+    slot.applyAdvantageEnemyTag = true;
+    slot.charCondPassive = typeof _dcShouldAutoCharCondPassive === 'function'
+      ? _dcShouldAutoCharCondPassive(cd, ud) : true;
+    slot.dcSuperchargedExTier = 0;
+    if (slot.charCondPassive && cd.ex_supercharged_tiers && cd.ex_supercharged_tiers.length > 1
+        && _dcNormMpLevel(vigor) === 'super') {
+      slot.dcSuperchargedExTier = cd.ex_supercharged_tiers.length - 1;
+    }
+    S.dc.atkCharData = cd;
+    S.dc.atkUnitData = ud;
+    S.dc.charStatMode = 'normal';
+    S.dc._activeSkills = {};
+    if (typeof _dcAutoEnableMaxDamageSkills === 'function') _dcAutoEnableMaxDamageSkills();
+    slot._activeSkills = { ...(S.dc._activeSkills || {}) };
+    return slot;
+  }
   function evalPair(cd, uDef, cDef, vigor) {
     S.dc.defTargetMode = 'custom';
     S.dc.defNpc = defNpc(uDef, cDef);
-    S.dc.atkUnit = String(unitId);
-    S.dc.atkUnitData = ud;
-    S.dc.atkChar = String(cd.id);
-    S.dc.atkCharData = cd;
-    S.dc.lbTier = 3;
-    S.dc.defLbTier = 3;
-    S.dc.wpnIdx = bw.wpnIdx;
-    S.dc.wpnLv = bw.wpnLv;
-    S.dc.unitStatMode = 'normal';
-    S.dc.unitCondPassive = true;
-    S.dc.charStatMode = 'normal';
-    S.dc.optionParts = [];
-    S.dc.supporters = [];
-    S.dc.supportCounterAtk = false;
-    S.dc.finalWpnPow = 0;
-    S.dc.terrain = 0;
-    S.dc.terrainMode = 'normal';
-    S.dc.defending = false;
-    S.dc.shield = false;
-    S.dc.applyAdvantageEnemyTag = true;
-    setDcMp(vigor);
-    S.dc.charCondPassive = true;
-    if (typeof _dcSyncCharCondPassiveFromPair === 'function') _dcSyncCharCondPassiveFromPair();
-    if (typeof _dcSyncSuperchargedExTierForVigor === 'function') _dcSyncSuperchargedExTierForVigor();
-    if (typeof _dcAutoEnableMaxDamageSkills === 'function') _dcAutoEnableMaxDamageSkills();
-    if (typeof _dcRecalcPilotBonuses === 'function') _dcRecalcPilotBonuses(true);
-    const r = calculateDamage();
+    const slot = buildMsySlot(cd, vigor);
+    if (!S.dc.atkSlots || !Array.isArray(S.dc.atkSlots)) S.dc.atkSlots = [null, null, null];
+    S.dc.atkSlotIndex = 0;
+    S.dc.atkSlots[0] = slot;
+    let r = null;
+    try { r = _dcCalculateDamageWithSlot(0); } catch (e) { r = null; }
     if (!r) return null;
     const critRate = Math.min(100, Math.max(0, r.critical | 0));
     const gc = typeof _dcCharGuaranteedCritActive === 'function' ? _dcCharGuaranteedCritActive() : false;
@@ -119,7 +133,7 @@ async def build_units(base: str, lang: str, unit_ids, pilot_ids, exclude, top_pi
         page = await browser.new_page()
         await page.goto(f"{base}/?tab=calculator", wait_until="networkidle", timeout=180_000)
         await page.wait_for_function(
-            "() => typeof calculateDamage === 'function' && typeof _dcPickBestWeaponIndices === 'function'",
+            "() => typeof calculateDamage === 'function' && typeof _dcCalculateDamageWithSlot === 'function' && typeof _dcCreateEmptyAttackerSlot === 'function'",
             timeout=180_000,
         )
         await page.evaluate("() => { if (typeof initDmgCalc === 'function') initDmgCalc(); }")

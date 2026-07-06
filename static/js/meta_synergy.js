@@ -81,19 +81,51 @@
     return RANK_MODES[0];
   }
 
+  function pilotMatchesExclusions(pilot, noUr, noGc, noShinn) {
+    if (!pilot) return false;
+    var c = pilot.char || {};
+    var cid = String(c.id || '');
+    if (noShinn && cid === SHINN_EX_CHAR_ID) return false;
+    if (noGc && pilot.guaranteed_crit) return false;
+    if (noUr && String(c.rarity || '').toUpperCase() === 'UR') return false;
+    return true;
+  }
+
+  function rerankPilotBlock(block, modeId, noUr, noGc, noShinn) {
+    if (!block) return null;
+    if (!noUr && !noGc && !noShinn) return block;
+    var mode = rankModeDef(modeId);
+    var scored = (block.pilots || []).filter(function (p) {
+      return pilotMatchesExclusions(p, noUr, noGc, noShinn);
+    }).map(function (p) {
+      return { pilot: p, score: pilotDamage(p, mode) };
+    }).filter(function (x) { return x.score > 0; });
+    scored.sort(function (a, b) { return b.score - a.score || String(a.pilot.char.id).localeCompare(String(b.pilot.char.id)); });
+    if (!scored.length) return null;
+    var pilots = scored.map(function (x, i) {
+      var row = Object.assign({}, x.pilot, { rank: i + 1, score: x.score });
+      return row;
+    });
+    return { max_damage: scored[0].score, pilots: pilots, vigor: block.vigor };
+  }
+
   function groupBlock(g, modeId, noUr, noGc, noShinn) {
     if (!g) return null;
     var src;
-    if (noGc) src = g.rankings_no_gc || g.rankings || {};
-    else if (noShinn) src = g.rankings_no_shinn || g.rankings || {};
+    if (noShinn) src = g.rankings_no_shinn || g.rankings || {};
+    else if (noGc) src = g.rankings_no_gc || g.rankings || {};
     else if (noUr) src = g.rankings_no_ur || g.rankings || {};
     else src = g.rankings || {};
     var block = src[modeId];
-    if (block) return block;
-    if (!noUr && !noGc && !noShinn && modeId === 'super_crit' && g.pilots) {
-      return { max_damage: g.max_damage, pilots: g.pilots };
+    if (!block && !noUr && !noGc && !noShinn && modeId === 'super_crit' && g.pilots) {
+      block = { max_damage: g.max_damage, pilots: g.pilots };
     }
-    return null;
+    if (!block) return null;
+    if ((noShinn && noGc) || (noShinn && noUr) || (noGc && noUr)) {
+      return rerankPilotBlock(block, modeId, noUr, noGc, noShinn);
+    }
+    if (noShinn && src === (g.rankings_no_shinn || g.rankings)) return block;
+    return block;
   }
 
   function viewGroup(g, modeId) {
@@ -868,15 +900,12 @@
       global.S.dc.atkChar = charId;
       global.S.dc.atkCharData = cd;
       global.S.dc.charStatMode = 'normal';
-      global.S.dc.charCondPassive = true;
       global.S.dc.defLbTier = 3;
       var mode = rankModeDef(state.rankMode);
       if (typeof global.setDcMp === 'function') global.setDcMp(mode.vigor || 'super');
-      if (global.S.dc.atkCharData && global.S.dc.atkCharData.ex_supercharged_tiers &&
-          global.S.dc.atkCharData.ex_supercharged_tiers.length > 1 && global.S.dc.charCondPassive) {
-        global.S.dc.dcSuperchargedExTier = global.S.dc.atkCharData.ex_supercharged_tiers.length - 1;
-      }
-      if (typeof global.setDcCharCondPassive === 'function') global.setDcCharCondPassive(true);
+      if (typeof global._dcSyncCharCondPassiveFromPair === 'function') global._dcSyncCharCondPassiveFromPair();
+      else global.S.dc.charCondPassive = true;
+      if (typeof global._dcSyncSuperchargedExTierForVigor === 'function') global._dcSyncSuperchargedExTierForVigor();
       if (typeof global.renderDcAtkUnit === 'function') global.renderDcAtkUnit();
       if (typeof global.renderDcAtkChar === 'function') global.renderDcAtkChar();
       if (typeof global.renderDcDefStats === 'function') global.renderDcDefStats();
