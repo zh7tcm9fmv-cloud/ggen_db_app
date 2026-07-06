@@ -378,6 +378,11 @@
   font-variant-numeric: tabular-nums;
 }
 
+.msy-pilot-sub--gc {
+  color: var(--accent-cyan);
+  font-weight: 700;
+}
+
 @media (max-width: 760px) {
   .msy-pilot-row {
     grid-template-columns: 22px 40px minmax(0, 1fr) 68px;

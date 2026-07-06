@@ -5,8 +5,9 @@
     loading: false,
     allGroups: [],
     settings: null,
-    metric: 'super_crit',
+    metric: 'peak',
     vigor: 'super',
+    defTier: 3,
     unitRarity: 'UR',
     unitRole: '1',
     pilotRarity: 'ALL',
@@ -73,16 +74,18 @@
 
   function metricLabel(metric) {
     var map = {
+      peak: 'msy_metric_peak',
       super_crit: 'msy_metric_super_crit',
       crit: 'msy_metric_crit',
       normal: 'msy_metric_normal',
       expected: 'msy_metric_expected'
     };
-    return t(map[metric] || 'msy_metric_super_crit');
+    return t(map[metric] || 'msy_metric_peak');
   }
 
   function metricValue(row, metric) {
     if (!row) return 0;
+    if (metric === 'peak') return row.peak_dmg || row.super_crit_dmg || row.score || 0;
     if (metric === 'crit') return row.crit_dmg || 0;
     if (metric === 'normal') return row.normal_dmg || 0;
     if (metric === 'expected') return row.expected_dmg || 0;
@@ -113,6 +116,7 @@
       'pilot_roles=' + encodeURIComponent(state.pilotRoles.join(',')),
       'metric=' + encodeURIComponent(state.metric),
       'vigor=' + encodeURIComponent(state.vigor),
+      'def_tier=' + encodeURIComponent(String(state.defTier)),
       'lb_tier=' + encodeURIComponent(String(state.lbTier)),
       'top_pilots=' + encodeURIComponent(String(state.topPilots)),
       'unit_q=' + encodeURIComponent(state.unitQ || ''),
@@ -132,6 +136,7 @@
       state.pilotRoles.join(','),
       state.metric,
       state.vigor,
+      state.defTier,
       state.lbTier,
       state.topPilots,
       state.unitQ
@@ -214,8 +219,10 @@
         html += '<div class="msy-pilot-thumb">' + thumbRow(c, 'char', 40) + '</div>';
         html += '<div class="msy-pilot-main">';
         html += '<div class="msy-pilot-name-row"><span class="msy-pilot-name">' + esc(c.name) + '</span>' + metaIcons(c) + '</div>';
-        if (p.crit_rate) {
+        if (p.crit_rate && !p.guaranteed_crit) {
           html += '<div class="msy-pilot-sub">' + esc(t('msy_crit_rate')).replace('{n}', String(p.crit_rate)) + '</div>';
+        } else if (p.guaranteed_crit) {
+          html += '<div class="msy-pilot-sub msy-pilot-sub--gc">' + esc(t('msy_guaranteed_crit')) + '</div>';
         }
         html += '</div>';
         html += '<div class="msy-pilot-mini">';
@@ -402,6 +409,10 @@
       global.S.dc.charStatMode = 'normal';
       global.S.dc.charCondPassive = true;
       if (typeof global.setDcMp === 'function') global.setDcMp(state.vigor || 'super');
+      if (global.S.dc.atkCharData && global.S.dc.atkCharData.ex_supercharged_tiers &&
+          global.S.dc.atkCharData.ex_supercharged_tiers.length > 1 && global.S.dc.charCondPassive) {
+        global.S.dc.dcSuperchargedExTier = global.S.dc.atkCharData.ex_supercharged_tiers.length - 1;
+      }
       if (typeof global.renderDcAtkUnit === 'function') global.renderDcAtkUnit();
       if (typeof global.renderDcAtkChar === 'function') global.renderDcAtkChar();
       if (typeof global._dcRecalcPilotBonuses === 'function') global._dcRecalcPilotBonuses(true);
@@ -432,6 +443,7 @@
           });
           state.pilotRoles = roles.length ? roles : ['1', '2', '3'];
         } else if (key === 'vigor') setVigor(el.value);
+        else if (key === 'def_tier') state.defTier = Math.max(1, Math.min(3, parseInt(el.value, 10) || 3));
         state.cacheKey = null;
         loadRankings(true);
       });

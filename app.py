@@ -13758,9 +13758,10 @@ def api_meta_synergy_rankings():
     pilot_rarity = request.args.get('pilot_rarity', 'ALL')
     pilot_roles_raw = request.args.get('pilot_roles', '1,2,3')
     pilot_roles = tuple(x.strip() for x in pilot_roles_raw.split(',') if x.strip()) or ('1', '2', '3')
-    metric = request.args.get('metric', 'super_crit')
+    metric = request.args.get('metric', 'peak')
     vigor = request.args.get('vigor', 'super')
     lb_tier = request.args.get('lb_tier', '3', type=int)
+    def_tier = request.args.get('def_tier', '3', type=int)
     top_pilots = request.args.get('top_pilots', '10', type=int)
     page = request.args.get('page', '1', type=int)
     per_page = request.args.get('per_page', '50', type=int)
@@ -13784,6 +13785,7 @@ def api_meta_synergy_rankings():
         metric=metric,
         vigor=vigor,
         lb_tier=lb_tier,
+        def_tier=def_tier,
         top_pilots=top_pilots,
         page=page,
         per_page=per_page,
@@ -13794,7 +13796,7 @@ def api_meta_synergy_rankings():
         payload = {k: v for k, v in payload.items() if k != 'all_groups'}
     ck = (
         f'msy_{lc}_{unit_rarity}_{unit_role}_{pilot_rarity}_'
-        f'{",".join(pilot_roles)}_{metric}_{vigor}_{lb_tier}_{top_pilots}_'
+        f'{",".join(pilot_roles)}_{metric}_{vigor}_{lb_tier}_{def_tier}_{top_pilots}_'
         f'{unit_q}_{page}_{per_page}_{"full" if full else "page"}_'
         f'{hash(tuple(exclude_pairs))}'
     )
