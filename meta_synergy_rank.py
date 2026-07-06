@@ -1033,7 +1033,7 @@ _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
 SHINN_EX_CHAR_ID = '1330000103'
 _MSY_BUILD_WORKERS = max(1, min(4, int(os.environ.get('MSY_BUILD_WORKERS', '1') or '1')))
-_MSY_PAGE_BUILD_LIMIT = max(0, min(10, int(os.environ.get('MSY_PAGE_BUILD_LIMIT', '0') or '0')))
+_MSY_PAGE_BUILD_LIMIT = max(0, min(10, int(os.environ.get('MSY_PAGE_BUILD_LIMIT', '8') or '8')))
 # Older published caches to load when the current v14 master file is missing (Railway deploy).
 _MSY_LEGACY_MASTER_CACHE_KEYS = (
     ('_v13_dc_master', 'EN', 3, 20, None, None),
@@ -1089,11 +1089,8 @@ def _msy_python_build_allowed():
 
 
 def _msy_page_build_allowed():
-    if _MSY_PAGE_BUILD_LIMIT <= 0:
-        return False
-    if _msy_python_build_allowed():
-        return True
-    return os.environ.get('MSY_ALLOW_PAGE_BUILD', '').strip().lower() in ('1', 'true', 'yes')
+    """On-demand builds for the current results page (bounded by _MSY_PAGE_BUILD_LIMIT)."""
+    return _MSY_PAGE_BUILD_LIMIT > 0
 
 
 def _trim_group_pilots(g, top_n):
@@ -2500,9 +2497,12 @@ def _resolve_groups_for_unit_ids(unit_ids, master_groups, lc, kwargs, *, browse_
         else:
             to_build.append(uid)
     if to_build:
-        build_cap = _MSY_PAGE_BUILD_LIMIT if max_build is None else max(0, int(max_build))
         if not _msy_page_build_allowed():
             build_cap = 0
+        elif max_build is None:
+            build_cap = _MSY_PAGE_BUILD_LIMIT
+        else:
+            build_cap = min(_MSY_PAGE_BUILD_LIMIT, max(0, int(max_build)))
         if build_cap > 0:
             to_build = to_build[:build_cap]
             exclude = _exclude_set_from_kwargs(kwargs)
@@ -2800,6 +2800,12 @@ def _normalize_group_for_mode(g, rank_mode):
         rankings_no_cp = g.get('rankings_no_cp')
         if rankings_no_cp:
             rankings_no_cp = _slim_rankings_for_mode(rankings_no_cp, rank_mode)
+        rankings_no_ur = g.get('rankings_no_ur')
+        if rankings_no_ur:
+            rankings_no_ur = _slim_rankings_for_mode(rankings_no_ur, rank_mode)
+        rankings_no_shinn = g.get('rankings_no_shinn')
+        if rankings_no_shinn:
+            rankings_no_shinn = _slim_rankings_for_mode(rankings_no_shinn, rank_mode)
         return {
             'unit': g.get('unit'),
             'weapon_elems': g.get('weapon_elems'),
@@ -2807,6 +2813,8 @@ def _normalize_group_for_mode(g, rank_mode):
             'pilots': block.get('pilots') or [],
             'rankings': rankings,
             'rankings_no_cp': rankings_no_cp,
+            'rankings_no_ur': rankings_no_ur,
+            'rankings_no_shinn': rankings_no_shinn,
             'weapon_info': g.get('weapon_info'),
             'is_sd': g.get('is_sd', False),
             'bundled_pilot_id': g.get('bundled_pilot_id'),
@@ -2948,8 +2956,10 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
     page_ids = ordered_ids[start:start + per_page]
     kwargs_resolve = dict(kwargs)
     kwargs_resolve['def_tier'] = dt
+    page_build_cap = min(_MSY_PAGE_BUILD_LIMIT, per_page) if _msy_page_build_allowed() else 0
     page_groups_raw = _resolve_groups_for_unit_ids(
         page_ids, groups, lc, kwargs_resolve, browse_fast=True, def_tier=dt,
+        max_build=page_build_cap,
     )
     if cache_key:
         _merge_groups_into_cache(cache_key, page_groups_raw)

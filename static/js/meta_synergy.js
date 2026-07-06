@@ -112,19 +112,14 @@
     if (!g) return null;
     var src;
     if (!state.charCondPassiveOn && g.rankings_no_cp) src = g.rankings_no_cp;
-    else if (noShinn) src = g.rankings_no_shinn || g.rankings || {};
-    else if (noUr) src = g.rankings_no_ur || g.rankings || {};
+    else if (noShinn && g.rankings_no_shinn) src = g.rankings_no_shinn;
+    else if (noUr && g.rankings_no_ur) src = g.rankings_no_ur;
     else src = g.rankings || {};
     var block = src[modeId];
     if (!block && !noUr && !noShinn && state.charCondPassiveOn && modeId === 'super_crit' && g.pilots) {
       block = { max_damage: g.max_damage, pilots: g.pilots };
     }
     if (!block) return null;
-    if (noUr && noShinn) {
-      return rerankPilotBlock(block, modeId, noUr, noShinn);
-    }
-    if (noUr && src === (g.rankings_no_ur || g.rankings)) return block;
-    if (noShinn && src === (g.rankings_no_shinn || g.rankings)) return block;
     if (noUr || noShinn) {
       return rerankPilotBlock(block, modeId, noUr, noShinn);
     }
@@ -291,7 +286,7 @@
         var id = p && p.char && p.char.id;
         if (id && !(p.active_skills && p.active_skills.length)) ids.push(String(id));
       });
-      ['rankings', 'rankings_no_cp'].forEach(function (key) {
+      ['rankings', 'rankings_no_cp', 'rankings_no_ur', 'rankings_no_shinn'].forEach(function (key) {
         var block = g[key];
         if (!block || typeof block !== 'object') return;
         Object.keys(block).forEach(function (modeKey) {
@@ -318,7 +313,7 @@
         var id = p && p.char && String(p.char.id);
         if (id && map[id]) p.active_skills = map[id];
       });
-      ['rankings', 'rankings_no_cp'].forEach(function (key) {
+      ['rankings', 'rankings_no_cp', 'rankings_no_ur', 'rankings_no_shinn'].forEach(function (key) {
         var block = g[key];
         if (!block || typeof block !== 'object') return;
         Object.keys(block).forEach(function (modeKey) {
@@ -420,6 +415,7 @@
   }
 
   function initFilterLabels() {
+    if (typeof global.ensureUnitUltRarityRow === 'function') global.ensureUnitUltRarityRow('msyUnit');
     if (typeof global.fillRolePanelIcons === 'function') global.fillRolePanelIcons('msyUnit');
     if (typeof global.fillRarityPanelIcons === 'function') global.fillRarityPanelIcons('msyUnit');
     if (typeof global.fillSourcePanel === 'function') global.fillSourcePanel('msyUnit');
@@ -456,9 +452,7 @@
     var mode = rankModeDef(state.rankMode);
     var el = document.getElementById('msyStatus');
     var countEl = document.getElementById('msyToolbarCount');
-    if (countEl) {
-      countEl.innerHTML = '<span class="result-count-num">' + fmtN(state.total) + '</span> ' + esc(t('count_unit'));
-    }
+    if (countEl) countEl.style.display = 'none';
     if (!el) return;
     var vigorLbl = t(mode.vigorLabelKey || 'dc_vigor_super');
     el.innerHTML =
@@ -490,7 +484,8 @@
 
   function pilotSkillsHtml(pilot) {
     var skills = pilot.active_skills || [];
-    if (!skills.length) return '';
+    var active = skills.filter(function (sk) { return sk && sk.active; });
+    if (!active.length && !skills.length) return '';
     var html = '<div class="msy-pilot-skills">';
     skills.forEach(function (sk) {
       html += '<span class="msy-pilot-skill' + (sk.active ? ' msy-pilot-skill--active' : '') + '" title="' + escAttr(sk.name || '') + '">';
@@ -501,6 +496,12 @@
       }
       html += '</span>';
     });
+    if (active.length) {
+      html += '<div class="msy-pilot-skill-labels">' + active.map(function (sk) {
+        var nm = String(sk.name || '').replace(/\s*LV\s*\d+\s*$/i, '').trim();
+        return '<span class="msy-pilot-skill-label">' + esc(nm || sk.name || '') + '</span>';
+      }).join('') + '</div>';
+    }
     html += '</div>';
     return html;
   }
