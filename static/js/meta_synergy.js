@@ -27,6 +27,7 @@
     cacheKey: null,
     tierCache: {},
     excludeUrUnits: {},
+    excludeGuaranteedCrit: false,
     unitViewMode: {}
   };
 
@@ -77,12 +78,15 @@
     return RANK_MODES[0];
   }
 
-  function groupBlock(g, modeId, noUr) {
+  function groupBlock(g, modeId, noUr, noGc) {
     if (!g) return null;
-    var src = noUr ? (g.rankings_no_ur || g.rankings || {}) : (g.rankings || {});
+    var src;
+    if (noGc) src = g.rankings_no_gc || g.rankings || {};
+    else if (noUr) src = g.rankings_no_ur || g.rankings || {};
+    else src = g.rankings || {};
     var block = src[modeId];
     if (block) return block;
-    if (!noUr && modeId === 'super_crit' && g.pilots) {
+    if (!noUr && !noGc && modeId === 'super_crit' && g.pilots) {
       return { max_damage: g.max_damage, pilots: g.pilots };
     }
     return null;
@@ -90,7 +94,8 @@
 
   function viewGroup(g, modeId) {
     var noUr = !!(g.unit && state.excludeUrUnits[g.unit.id]);
-    var block = groupBlock(g, modeId, noUr);
+    var noGc = !!state.excludeGuaranteedCrit;
+    var block = groupBlock(g, modeId, noUr, noGc);
     if (!block) return null;
     return {
       unit: g.unit,
@@ -99,7 +104,8 @@
       pilots: block.pilots || [],
       is_sd: g.is_sd,
       rankings: g.rankings,
-      rankings_no_ur: g.rankings_no_ur
+      rankings_no_ur: g.rankings_no_ur,
+      rankings_no_gc: g.rankings_no_gc
     };
   }
 
@@ -253,6 +259,12 @@
     if (el) el.textContent = t('msy_empty');
     el = document.getElementById('msyDefTierLabel');
     if (el) el.textContent = t('msy_def_difficulty');
+    el = document.getElementById('msyExcludeGcBtn');
+    if (el) {
+      el.title = state.excludeGuaranteedCrit ? t('msy_exclude_gc_on') : t('msy_exclude_gc');
+      el.setAttribute('aria-pressed', state.excludeGuaranteedCrit ? 'true' : 'false');
+      el.classList.toggle('active', state.excludeGuaranteedCrit);
+    }
     renderRankModes();
   }
 
@@ -698,6 +710,12 @@
     renderContent();
   }
 
+  function toggleExcludeGuaranteedCrit() {
+    state.excludeGuaranteedCrit = !state.excludeGuaranteedCrit;
+    applyLangStatic();
+    renderContent();
+  }
+
   function findGroup(unitId) {
     for (var i = 0; i < state.groups.length; i++) {
       if (state.groups[i].unit && state.groups[i].unit.id === unitId) return state.groups[i];
@@ -896,6 +914,7 @@
     loadRankings: loadRankings,
     scheduleReload: scheduleReload,
     toggleExcludeUr: toggleExcludeUr,
+    toggleExcludeGuaranteedCrit: toggleExcludeGuaranteedCrit,
     toggleChartView: toggleChartView
   };
 

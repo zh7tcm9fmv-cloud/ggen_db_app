@@ -55,6 +55,45 @@ _SKILL_ATK_RE = re.compile(
     r'自身(射擊值|格鬥值|覺醒值).{0,12}提升(\d+)%',
     re.I,
 )
+_SKILL_CRIT_RE = re.compile(
+    r'[Ii]ncreases?\s+(?:own\s+)?critical rate by\s*(\d+)\s*%|'
+    r'自身(?:的)?(?:暴擊|暴击|爆擊)率提升(\d+)%|'
+    r'クリティカル(?:発生)?率.{0,8}?(\d+)\s*[%％]',
+    re.I,
+)
+
+_POW_LV_MAX_PCT = (5, 7, 10, 12, 15, 17, 20, 22, 25)
+
+_WEAPON_TRAIT_PATTERNS = (
+    ('dist_en', re.compile(
+        r'(?:the\s+)?(?:closer|farther|further)\s+(?:you\s+are(?:\s+(?:to|from)\s+the\s+enemy)?|the\s+enemy\s+is).*?'
+        r'(?:greater|more)\s+weapon\s+power\s+increases?\s*\(\s*up\s+to\s+(\d+)%(?:\s+increase)?\s*\)', re.I)),
+    ('dist_zh', re.compile(r'距離敵方越(?:近|遠)，武裝POWER越為提升（最高提升(\d+)%）')),
+    ('dist_ja', re.compile(r'敵から(?:近い|遠い)ほど武装POWERが上昇[（(]最大(\d+)%上昇[）)]')),
+    ('hp_en', re.compile(
+        r'(?:the\s+)?(?:lower|higher)\s+(?:(?:this\s+unit\'?s|your|own)\s+)?remaining\s+HP.*?(?:more|greater)\s+'
+        r'weapon\s+power\s+increases?\s*\(\s*up\s+to\s+(\d+)%(?:\s+increase)?\s*\)', re.I)),
+    ('hp_zh', re.compile(r'自身剩餘HP越(?:高|低)，武裝POWER越為提升（最高提升(\d+)%）')),
+    ('hp_ja', re.compile(r'自身の残HPが(?:多い|少ない)ほど武装POWERが上昇（最大(\d+)%上昇）')),
+    ('hp_lv_en', re.compile(r'(?:With\s+More|With\s+Less)\s+Remaining\s+HP,?\s*Higher\s+Weapon\s+Power\s*LV\s*(\d+)', re.I)),
+    ('hp_lv_en2', re.compile(r'Scaling\s+Weapon\s+Power\s+\((?:More|Less)\s+Remaining\s+HP\)\s*LV\s*(\d+)', re.I)),
+    ('hp_lv_zh', re.compile(r'剩餘HP越(?:高|低)武裝POWER提升\s*LV\s*(\d+)', re.I)),
+    ('hp_lv_ja', re.compile(r'残HP(?:多い|少ない)ほど武装POWER上昇\s*LV\s*(\d+)', re.I)),
+    ('mp_en', re.compile(
+        r'the\s+higher\s+(?:your|own)\s+MP\s+is,?\s*the\s+(?:greater|more)\s+weapon\s+power\s+increases?\s*\('
+        r'\s*up\s+to\s+(\d+)%(?:\s+increase)?\s*\)(?:\s+at\s+the\s+start\s+of\s+battle)?\.?', re.I)),
+    ('mp_zh', re.compile(r'(?:戰鬥開始時，)?自身MP越高，武裝POWER越為提升（最高提升(\d+)%）')),
+    ('mp_ja', re.compile(r'(?:戦闘開始時、)?自身のMPが多いほど武装POWERが上昇（最大(\d+)%上昇）')),
+    ('mp_lv_en', re.compile(r'Scaling\s+Weapon\s+Power\s+\(High\s+(?:Max\s+)?MP\)(?:\s*LV\s*(\d+))?', re.I)),
+    ('mp_lv_zh', re.compile(r'MP越高武裝POWER提升\s*LV\s*(\d+)', re.I)),
+    ('mp_lv_ja', re.compile(r'MP(?:高い|多い)ほど武装POWER上昇\s*LV\s*(\d+)', re.I)),
+    ('dist_lv_en', re.compile(r'Increased\s+(?:Close|Long)\s+Range\s+Weapon\s+Power\s*LV\s*(\d+)', re.I)),
+    ('dist_lv_zh', re.compile(r'(?:近距離|遠距離)時武裝POWER提升\s*LV\s*(\d+)', re.I)),
+    ('dist_lv_ja', re.compile(r'(?:近距離|遠距離)時武装POWER上昇\s*LV\s*(\d+)', re.I)),
+    ('core_en', re.compile(
+        r'Custom\s+Core\s+(?:Effect\s+)?(?:Maximum|Max(?:imum)?)\s+Up\s*(?:\(\s*(\d+)\s*%\s*\)|(\d+)\s*%)', re.I)),
+    ('core_ja', re.compile(r'Custom\s+Core(?:效果)?.*?最大(?:値)?上昇.*?(\d+)\s*[%％]')),
+)
 
 _ATTACK_ATTR_TO_KEYS = {
     '1': ('Ranged',),
@@ -609,32 +648,287 @@ def _char_skill_bonuses(cid, lc):
     return dmg, atk_pct
 
 
-def _weapon_def_debuff_from_ws(ws, wm, uid, ld, lc, stat_mode):
+def _weapon_pow_lv_to_max_pct(lv):
+    try:
+        i = int(lv) - 1
+    except (TypeError, ValueError):
+        return 0
+    return _POW_LV_MAX_PCT[i] if 0 <= i < len(_POW_LV_MAX_PCT) else 0
+
+
+def _parse_weapon_scaling_traits(trait_lines, *, include_ssp=True):
+    """Mirror static/js/app.js _dcParseWeaponTraits power-scaling fields."""
+    dist_power = hp_power = mp_power = dist_core = 0
+    for raw in trait_lines or []:
+        txt = str(raw or '').replace('\n', ' ')
+        if not txt:
+            continue
+        matched = False
+        for name, pat in _WEAPON_TRAIT_PATTERNS:
+            m = pat.search(txt)
+            if not m:
+                continue
+            g = m.group(1) if m.lastindex else None
+            if g is None and name == 'mp_lv_en':
+                p = 0
+            elif g and str(g).isdigit():
+                p = _weapon_pow_lv_to_max_pct(g) if 'lv' in name else int(g)
+            elif name == 'mp_lv_en':
+                p = 0
+            else:
+                continue
+            matched = True
+            if name.startswith('dist') and 'core' not in name:
+                dist_power = max(dist_power, p)
+            elif name.startswith('hp'):
+                hp_power = max(hp_power, p)
+            elif name.startswith('mp'):
+                mp_power = max(mp_power, p)
+            elif name.startswith('core'):
+                dist_core = max(dist_core, p)
+            break
+        if matched:
+            continue
+    return {
+        'dist_power_max': dist_power,
+        'hp_power_max': hp_power,
+        'mp_power_max': mp_power,
+        'dist_core_max': dist_core,
+    }
+
+
+def _weapon_trait_lines(ws, wm, uid, ld, lc, stat_mode, level_idx=-1):
+    """Collect weapon trait text blobs for a level (DC-style)."""
     A = _app()
-    debuff = 0
+    lines = []
+    levels = ws.get('levels') or {}
+    if isinstance(levels, dict) and levels:
+        keys = sorted(int(k) for k in levels.keys() if str(k).isdigit())
+        if level_idx >= 0 and keys:
+            li = keys[min(max(0, level_idx), len(keys) - 1)]
+            lv = levels.get(li) or levels.get(str(li)) or {}
+            for tr in (lv.get('traits') or []):
+                lines.append(str(tr or ''))
+        else:
+            for k in keys:
+                lv = levels.get(k) or levels.get(str(k)) or {}
+                for tr in (lv.get('traits') or []):
+                    lines.append(str(tr or ''))
     for tr in (ws.get('traits') or []):
-        b, v = A.parse_enemy_def_debuff_pcts_from_trait_text(str(tr or ''))
-        debuff = max(debuff, b, v)
+        lines.append(str(tr or ''))
+    sm = (stat_mode or 'normal').strip().lower()
+    if sm == 'ssp':
+        wid = A.normalize_id(wm.get('id'))
+        mwid = A.normalize_id(wm.get('main_weapon_id') or '0')
+        wtdm = ld.get('weapon_trait_detail_map', {}) or {}
+        ccl = '[Custom Core Effect] ' if (lc or 'EN').upper() == 'EN' else '[Custom Core效果] '
+        for cid2 in (wid, mwid):
+            if not cid2 or cid2 == '0':
+                continue
+            for tid in A.unit_ssp_weapon_effect_map.get(cid2) or []:
+                tt = wtdm.get(tid, '')
+                if tt:
+                    ft = ccl + tt
+                    if ft not in lines:
+                        lines.append(ft)
+            break
+    return lines
+
+
+def _ssp_power_bonus(wid, wm):
+    A = _app()
+    bonus = 0
+    wid = A.normalize_id(wid)
+    mwid = A.normalize_id(wm.get('main_weapon_id') or '0')
+    for cid2 in (wid, mwid):
+        if not cid2 or cid2 == '0':
+            continue
+        for enh in A.unit_ssp_weapon_enhance_map.get(cid2) or []:
+            if str(enh.get('type')) == '1':
+                bonus += int(enh.get('value', 0) or 0)
+        break
+    return bonus
+
+
+def _weapon_level_row(ws, level_idx):
+    levels = ws.get('levels') or {}
+    if isinstance(levels, dict) and levels:
+        keys = sorted(int(k) for k in levels.keys() if str(k).isdigit())
+        if not keys:
+            return {'power': int(ws.get('power', 0) or 0), 'critical': int(ws.get('critical', 0) or 0)}
+        li = keys[min(max(0, level_idx), len(keys) - 1)]
+        lv = levels.get(li) or levels.get(str(li)) or {}
+        return {
+            'power': int(lv.get('power', 0) or ws.get('power', 0) or 0),
+            'critical': int(lv.get('critical', 0) or ws.get('critical', 0) or 0),
+        }
+    return {'power': int(ws.get('power', 0) or 0), 'critical': int(ws.get('critical', 0) or 0)}
+
+
+def _computed_weapon_power_at_level(ws, wm, uid, ld, lc, stat_mode, level_idx):
+    """ceil(basePower * (1 + traitPct/100)) + SSP flat — matches DC."""
+    lv = _weapon_level_row(ws, level_idx)
+    base = int(lv.get('power', 0) or 0)
+    traits = _parse_weapon_scaling_traits(
+        _weapon_trait_lines(ws, wm, uid, ld, lc, stat_mode, level_idx=level_idx),
+    )
+    trait_dist = min(100, traits['dist_power_max'] + traits['dist_core_max'])
+    trait_scale = traits['hp_power_max'] + traits['mp_power_max']
+    scaled = math.ceil(base * (1 + (trait_dist + trait_scale) / 100))
+    ssp_flat = _ssp_power_bonus(wm.get('id'), wm) if stat_mode == 'ssp' else 0
+    return scaled + ssp_flat
+
+
+def _best_weapon_level_index(ws, wm, uid, ld, lc, stat_mode):
+    levels = ws.get('levels') or {}
+    if isinstance(levels, dict) and levels:
+        keys = sorted(int(k) for k in levels.keys() if str(k).isdigit())
+        if not keys:
+            return 0
+        best_pow = -1
+        best_j = 0
+        best_raw = -1
+        for j, k in enumerate(keys):
+            p = _computed_weapon_power_at_level(ws, wm, uid, ld, lc, stat_mode, j)
+            raw = int((levels.get(k) or levels.get(str(k)) or {}).get('power', 0) or 0)
+            if p > best_pow or (p == best_pow and (raw > best_raw or (raw == best_raw and j > best_j))):
+                best_pow, best_j, best_raw = p, j, raw
+        return best_j
+    return 0
+
+
+def _weapon_def_debuff_components(ws, wm, uid, ld, lc, stat_mode, pep_def_dn=0):
+    """Return (base_pct, supercharged_only_pct) with optional PEP additive on def_dn."""
+    A = _app()
+    base_m = vig_m = 0
+
+    def _accum(text):
+        nonlocal base_m, vig_m
+        b, v = A.parse_enemy_def_debuff_pcts_from_trait_text(str(text or ''))
+        if pep_def_dn and b:
+            b = min(100, b + pep_def_dn)
+        if pep_def_dn and v:
+            v = min(100, v + pep_def_dn)
+        base_m = max(base_m, b)
+        vig_m = max(vig_m, v)
+
+    for tr in (ws.get('traits') or []):
+        _accum(tr)
     levels = ws.get('levels') or {}
     level_rows = levels.values() if isinstance(levels, dict) else levels
     for lv in level_rows or []:
         if isinstance(lv, dict):
             for tr in (lv.get('traits') or []):
-                b, v = A.parse_enemy_def_debuff_pcts_from_trait_text(str(tr or ''))
-                debuff = max(debuff, b, v)
-    sm = (stat_mode or 'normal').strip().lower()
-    if sm == 'ssp':
-        wid = A.normalize_id(wm.get('id'))
-        mwid = A.normalize_id(wm.get('main_weapon_id') or '0')
-        for cid2 in (wid, mwid):
-            if not cid2 or cid2 == '0':
+                _accum(tr)
+    for line in _weapon_trait_lines(ws, wm, uid, ld, lc, stat_mode):
+        _accum(line)
+    return base_m, vig_m
+
+
+def _effective_def_debuff_pct(ws, wm, uid, ld, lc, stat_mode, vigor, pep_def_dn=0):
+    base_m, vig_m = _weapon_def_debuff_components(ws, wm, uid, ld, lc, stat_mode, pep_def_dn)
+    use_super = (vigor or 'super') == 'super'
+    raw = max(base_m, vig_m if use_super else base_m)
+    return min(_DEF_DEBUFF_CAP, max(0, int(raw)))
+
+
+def _collect_pilot_pep_bonuses(cid, uid, lc):
+    """Pilot weapon-effect PEP for this unit×pilot (not recommend UR)."""
+    A = _app()
+    ld = _ldc(lc)
+    uid = A.normalize_id(uid)
+    cid = A.normalize_id(cid)
+    merged = {}
+    for bab in _build_char_ac_calc(cid, lc):
+        for src in (bab, bab.get('sp_replacement')):
+            if not src:
                 continue
-            for tid in A.unit_ssp_weapon_effect_map.get(cid2) or []:
-                tt = (ld.get('weapon_trait_detail_map', {}) or {}).get(tid, '')
-                b, v = A.parse_enemy_def_debuff_pcts_from_trait_text(str(tt or ''))
-                debuff = max(debuff, b, v)
-            break
-    return debuff
+            for d2 in src.get('details') or []:
+                if isinstance(d2, dict):
+                    txt = str(d2.get('text') or '')
+                    detail = d2
+                else:
+                    txt = str(d2 or '')
+                    detail = None
+                if not txt:
+                    continue
+                if not re.search(
+                    r'when\s+piloting|搭乘|搭乗|weapon effects by|武装効果値が\d+%加算|武裝效果值增加\d+%|武裝效果.*?增加\d+%',
+                    txt, re.I,
+                ):
+                    continue
+                if not _pilot_bonus_text_applies(uid, cid, ld, lc, txt, detail):
+                    continue
+                for k, v in A._parse_pilot_weapon_effect_additive_from_text(txt, uid, ld).items():
+                    merged[k] = max(merged.get(k, 0), v)
+    return merged
+
+
+def _pilot_affinity_weapon_crit(cid, uid, lc):
+    """Tag-affinity ACC/Crit bonuses from the ranked pilot (CP on)."""
+    A = _app()
+    ld = _ldc(lc)
+    uid = A.normalize_id(uid)
+    cid = A.normalize_id(cid)
+    out = 0
+    for bab in _build_char_ac_calc(cid, lc):
+        for src in (bab, bab.get('sp_replacement')):
+            if not src:
+                continue
+            for d2 in src.get('details') or []:
+                if not isinstance(d2, dict):
+                    continue
+                txt = str(d2.get('text') or '')
+                if not A._trait_detail_implies_piloting_tag_affinity(txt):
+                    continue
+                names = A._collect_detail_lineage_tag_names(d2)
+                if names and not A._unit_has_any_lineage_tag(uid, lc, names):
+                    continue
+                row = A._extract_pilot_weapon_stat_pct_from_text(txt)
+                out = max(out, int(row.get('crit') or 0))
+    return out
+
+
+def _char_skill_crit_rate(cid, lc):
+    A = _app()
+    cid = A.normalize_id(cid)
+    crit = 0
+    fs = [x for x in A.extract_data_list(A.char_skill) if A.normalize_id(x.get('CharacterId', '')) == cid]
+    seen = set()
+    for sk in sorted(fs, key=lambda x: int(x.get('SortOrder', 0))):
+        sid = A.normalize_id(sk.get('CharacterSkillId') or sk.get('SkillId') or '')
+        if not sid or sid in seen or sid == '0':
+            continue
+        seen.add(sid)
+        resolved = A.resolve_char_skill(sid, _ldc(lc), int(sk.get('SortOrder', 0)), False)
+        blob = '\n'.join(
+            str(x.get('text') if isinstance(x, dict) else x or '')
+            for x in (resolved.get('details') or [])
+        ) + '\n' + str(resolved.get('desc') or '')
+        for m in _SKILL_CRIT_RE.finditer(blob):
+            for g in m.groups():
+                if g and str(g).isdigit():
+                    crit = max(crit, int(g))
+    return crit
+
+
+def _weapon_grants_guaranteed_crit(ws, wm, uid, ld, lc, stat_mode):
+    for line in _weapon_trait_lines(ws, wm, uid, ld, lc, stat_mode):
+        if _GUARANTEED_CRIT_RE.search(str(line or '')):
+            return True
+    return False
+
+
+def _pair_guaranteed_crit(uid, cid, lc, wpn, crit_rate):
+    if _char_guaranteed_crit(cid, lc):
+        return True
+    if wpn and _weapon_grants_guaranteed_crit(
+        wpn.get('ws'), wpn.get('wm'), uid, _ldc(lc), lc, _unit_stat_mode(
+            str((_app().unit_info_map.get(_app().normalize_id(uid)) or {}).get('rarity', '1')),
+        ),
+    ):
+        return True
+    return int(crit_rate or 0) >= 100
 
 
 def _weapon_entry_power(ws):
@@ -647,15 +941,16 @@ def _weapon_entry_power(ws):
 
 
 def _best_ranking_weapon(uid, stat_mode, lc):
-    """Highest-power non-map weapon (active + normal), matching Damage Simulator weapon list."""
+    """Highest computed-power non-map weapon (active + normal), matching Damage Simulator."""
     A = _app()
     ldc = _ldc(lc)
+    uid = A.normalize_id(uid)
     wtm = ldc.get('weapon_trait_map', {}) or {}
     wcm = ldc.get('weapon_capability_map', {}) or {}
     wtdm = ldc.get('weapon_trait_detail_map', {}) or {}
     best = None
     best_power = -1
-    for wp in A.unit_weapon_map.get(A.normalize_id(uid), []) or []:
+    for wp in A.unit_weapon_map.get(uid, []) or []:
         wid = A.normalize_id(wp.get('id'))
         wm = A.weapon_info_map.get(wid, {})
         wt = str(wm.get('weapon_type', '1') or '1')
@@ -669,14 +964,19 @@ def _best_ranking_weapon(uid, stat_mode, lc):
             )
         except Exception:
             continue
-        power = _weapon_entry_power(ws)
+        lv_idx = _best_weapon_level_index(ws, wm, uid, ldc, lc, stat_mode)
+        power = _computed_weapon_power_at_level(ws, wm, uid, ldc, lc, stat_mode, lv_idx)
         if power <= 0:
             continue
-        debuff = _weapon_def_debuff_from_ws(ws, wm, uid, ldc, lc, stat_mode)
+        lv_row = _weapon_level_row(ws, lv_idx)
         if power > best_power:
             best_power = power
-            best = {'wid': wid, 'wm': wm, 'ws': ws, 'power': power, 'debuff': debuff,
-                    'attr': wm.get('attack_attribute', '1'), 'weapon_type': wt}
+            best = {
+                'wid': wid, 'wm': wm, 'ws': ws, 'power': power,
+                'wpn_lv': lv_idx,
+                'base_crit': int(lv_row.get('critical', 0) or 0),
+                'attr': wm.get('attack_attribute', '1'), 'weapon_type': wt,
+            }
     return best
 
 
@@ -706,7 +1006,7 @@ _char_pair_cache = {}
 _rankings_result_cache = {}
 _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
-_MSY_DISK_VERSION = 'v8'
+_MSY_DISK_VERSION = 'v9'
 _MSY_BUILD_WORKERS = max(1, min(4, int(os.environ.get('MSY_BUILD_WORKERS', '1') or '1')))
 
 _MAX_UNITS_FULL_SIM = 120
@@ -823,6 +1123,7 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
         return None
     ri = str(info.get('rarity', '1'))
     stat_mode = _unit_stat_mode(ri)
+    ldc = _ldc(lc)
     if wpn is None:
         wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
     if not wpn or wpn['power'] <= 0:
@@ -840,10 +1141,21 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
 
     dmg_dealt, crit_up = _char_pilot_dmg_bonuses(cid, uid, lc, cp_on=True)
     dmg_dealt += skill_dmg
-    guaranteed_crit = _char_guaranteed_crit(cid, lc)
+
+    pep = _collect_pilot_pep_bonuses(cid, uid, lc)
+    pep_def_dn = int(pep.get('def_dn') or 0)
+    def_debuff = _effective_def_debuff_pct(
+        wpn['ws'], wpn['wm'], uid, ldc, lc, stat_mode, vigor, pep_def_dn,
+    )
+
+    crit_rate = int(wpn.get('base_crit') or 0)
+    crit_rate += _pilot_affinity_weapon_crit(cid, uid, lc)
+    crit_rate += _char_skill_crit_rate(cid, lc)
+    crit_rate = min(100, max(0, crit_rate))
+
+    guaranteed_crit = _pair_guaranteed_crit(uid, cid, lc, wpn, crit_rate)
 
     vp = _VIGOR.get(vigor) or _VIGOR['super']
-    def_debuff = min(_DEF_DEBUFF_CAP, max(0, int(wpn.get('debuff') or 0)))
     unit_def_after = _sim_def_after_debuff(def_total, 0, def_debuff)
     dmg_mult = dmg_dealt + vp['dmg_bonus_pct']
 
@@ -858,7 +1170,6 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
         crit_dmg_up_pct=crit_up,
         vigor=vigor,
     )
-    crit_rate = int(wpn['ws'].get('critical', 0) or 0) if wpn.get('ws') else 0
     expected = int(normal * (100 - crit_rate) / 100 + super_crit * crit_rate / 100)
     peak = super_crit if guaranteed_crit else max(super_crit, expected)
 
@@ -922,6 +1233,32 @@ def _filter_non_ur(pilot_ids):
         ri = str((A.char_info_map.get(cid) or {}).get('rarity', '1'))
         if A.RARITY_MAP.get(ri, 'N') != 'UR':
             out.append(cid)
+    return out
+
+
+def _filter_non_guaranteed_crit(uid, pilot_ids, unit_wpn, lc, exclude):
+    """Drop pilots with guaranteed crit (ability, EX weapon trait, or 100% crit rate)."""
+    A = _app()
+    uid = A.normalize_id(uid)
+    info = A.unit_info_map.get(uid) or {}
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    ldc = _ldc(lc)
+    out = []
+    for cid in pilot_ids:
+        if (uid, cid) in exclude:
+            continue
+        if _char_guaranteed_crit(cid, lc):
+            continue
+        if unit_wpn and _weapon_grants_guaranteed_crit(
+            unit_wpn.get('ws'), unit_wpn.get('wm'), uid, ldc, lc, stat_mode,
+        ):
+            continue
+        crit = int(unit_wpn.get('base_crit') or 0) if unit_wpn else 0
+        crit += _pilot_affinity_weapon_crit(cid, uid, lc)
+        crit += _char_skill_crit_rate(cid, lc)
+        if crit >= 100:
+            continue
+        out.append(cid)
     return out
 
 
@@ -1112,9 +1449,31 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
             )
         return _rankings_from_multi_vigor_pairs(all_pairs_nu, top_pilots, lc)
 
+    def _rankings_no_gc_for_tier(dt, all_pairs):
+        non_gc = _filter_non_guaranteed_crit(uid, active_pilots, unit_wpn, lc, exclude)
+        if len(non_gc) >= len(active_pilots):
+            return _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc)
+        ng_cids = set(non_gc)
+        all_pairs_ng = [(cid, bv) for cid, bv in all_pairs if cid in ng_cids]
+        if not all_pairs_ng and non_gc:
+            ng_scored = []
+            for cid in non_gc:
+                ng_scored.append((
+                    _cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc),
+                    cid,
+                ))
+            ng_scored.sort(key=lambda x: (-x[0], x[1]))
+            ng_candidates = [cid for _, cid in ng_scored[:need]]
+            all_pairs_ng = _multi_vigor_pairs_for_candidates(
+                uid, ng_candidates, lc, lb_tier, dt, unit_wpn,
+                def_unit_override=def_unit_override, def_char_override=def_char_override,
+            )
+        return _rankings_from_multi_vigor_pairs(all_pairs_ng, top_pilots, lc)
+
     if use_multi_tier:
         rankings_by_tier = {}
         rankings_no_ur_by_tier = {}
+        rankings_no_gc_by_tier = {}
         for dt in tiers:
             pairs = _pairs_for_tier(dt)
             if not pairs:
@@ -1123,11 +1482,13 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
             if rk:
                 rankings_by_tier[int(dt)] = rk
                 rankings_no_ur_by_tier[int(dt)] = _rankings_no_ur_for_tier(dt, pairs)
+                rankings_no_gc_by_tier[int(dt)] = _rankings_no_gc_for_tier(dt, pairs)
         if not rankings_by_tier:
             return None
         dt_primary = int(def_tier) if int(def_tier) in rankings_by_tier else next(iter(rankings_by_tier))
         rankings = rankings_by_tier[dt_primary]
         rankings_no_ur = rankings_no_ur_by_tier.get(dt_primary) or rankings
+        rankings_no_gc = rankings_no_gc_by_tier.get(dt_primary) or rankings
     else:
         dt = int(tiers[0])
         all_pairs = _pairs_for_tier(dt)
@@ -1137,8 +1498,10 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
         if not rankings:
             return None
         rankings_no_ur = _rankings_no_ur_for_tier(dt, all_pairs)
+        rankings_no_gc = _rankings_no_gc_for_tier(dt, all_pairs)
         rankings_by_tier = None
         rankings_no_ur_by_tier = None
+        rankings_no_gc_by_tier = None
 
     primary = rankings.get('super_crit') or rankings.get('crit') or rankings.get('normal')
     is_sd = _is_sd_unit(uid, info)
@@ -1147,6 +1510,7 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
         'weapon_elems': _weapon_elem_label(uid, lc),
         'rankings': rankings,
         'rankings_no_ur': rankings_no_ur,
+        'rankings_no_gc': rankings_no_gc,
         'max_damage': primary['max_damage'],
         'metric': metric,
         'pilots': primary['pilots'],
@@ -1156,6 +1520,7 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
     if rankings_by_tier:
         out['rankings_by_tier'] = rankings_by_tier
         out['rankings_no_ur_by_tier'] = rankings_no_ur_by_tier
+        out['rankings_no_gc_by_tier'] = rankings_no_gc_by_tier
     return out
 
 
@@ -1473,6 +1838,7 @@ def _group_for_def_tier(g, def_tier):
     if not rankings:
         return None
     rnub = (g.get('rankings_no_ur_by_tier') or {}).get(dt) or (g.get('rankings_no_ur_by_tier') or {}).get(str(dt))
+    rngc = (g.get('rankings_no_gc_by_tier') or {}).get(dt) or (g.get('rankings_no_gc_by_tier') or {}).get(str(dt))
     primary = rankings.get('super_crit') or rankings.get('crit') or rankings.get('normal')
     if not primary:
         return None
@@ -1481,6 +1847,7 @@ def _group_for_def_tier(g, def_tier):
         'weapon_elems': g.get('weapon_elems'),
         'rankings': rankings,
         'rankings_no_ur': rnub or rankings,
+        'rankings_no_gc': rngc or g.get('rankings_no_gc') or rankings,
         'max_damage': primary.get('max_damage', 0),
         'metric': g.get('metric'),
         'pilots': primary.get('pilots') or [],
@@ -1738,7 +2105,7 @@ def _filter_master_groups(groups, lc, filters):
 
 def _master_cache_key(lc, kwargs):
     return (
-        '_v8_master',
+        '_v9_master',
         lc or 'EN',
         int(kwargs.get('lb_tier', 3) or 3),
         int(kwargs.get('top_pilots', 20) or 20),
@@ -1810,6 +2177,7 @@ def _normalize_group_for_mode(g, rank_mode):
             'pilots': block.get('pilots') or [],
             'rankings': g.get('rankings'),
             'rankings_no_ur': g.get('rankings_no_ur'),
+            'rankings_no_gc': g.get('rankings_no_gc'),
             'is_sd': g.get('is_sd', False),
             'bundled_pilot_id': g.get('bundled_pilot_id'),
         }
