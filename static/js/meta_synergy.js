@@ -510,6 +510,18 @@
     }
   }
 
+  function showWarmingBanner(on, text) {
+    var host = document.getElementById('msyWarmingBanner');
+    if (!host) return;
+    if (!on) {
+      host.style.display = 'none';
+      host.textContent = '';
+      return;
+    }
+    host.style.display = '';
+    host.textContent = text || t('msy_warming_partial') || t('msy_warming') || 'Updating rankings…';
+  }
+
   function prefetchDefTiers() {
     [1, 2, 3].forEach(function (tier) {
       if (tier === state.defTier) return;
@@ -573,17 +585,34 @@
       return;
     }
     setLoading(true, false);
+    showWarmingBanner(false);
+    state._warmPolls = 0;
     try {
       while (true) {
         var r = await fetch(buildApiUrl(), { credentials: 'same-origin' });
-        if (r.status === 202) {
-          var warmData = await r.json();
-          setLoading(true, true);
-          await sleep(Math.max(1000, (warmData.retry_after || 3) * 1000));
+        var d = null;
+        if (r.status === 202 || r.ok) {
+          d = await r.json();
+        }
+        if (d && d.warming) {
+          if (d.groups && d.groups.length) {
+            applyPayload(d, state.defTier);
+            setLoading(false, false);
+            showWarmingBanner(true);
+          } else {
+            setLoading(true, true);
+            showWarmingBanner(false);
+          }
+          state._warmPolls = (state._warmPolls || 0) + 1;
+          if (state._warmPolls >= 36) {
+            showWarmingBanner(true, t('msy_warming_slow') || 'Rankings are still building. Results may be incomplete — try refreshing in a minute.');
+            break;
+          }
+          await sleep(Math.max(3000, (d.retry_after || 5) * 1000));
           continue;
         }
         if (!r.ok) throw new Error('HTTP ' + r.status);
-        var d = await r.json();
+        showWarmingBanner(false);
         applyPayload(d, state.defTier);
         prefetchDefTiers();
         break;

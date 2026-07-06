@@ -12812,11 +12812,8 @@ def _schedule_browse_list_performance_caches():
         try:
             _build_browse_list_performance_caches()
             _prewarm_default_browse_list_api_caches()
-            try:
-                import meta_synergy_rank as msr
-                msr.prewarm_default_rankings()
-            except Exception as e:
-                print(f'MSY prewarm schedule failed: {e}')
+            # MSY rankings load from bundled/persistent cache on first /msy visit only —
+            # never prewarm here (CPU-heavy sim would slow the whole site at startup).
         except Exception as e:
             print(f'Browse list perf caches: build failed: {e}')
         finally:
@@ -13828,7 +13825,8 @@ def api_meta_synergy_rankings():
         return jsonify({'error': 'meta_synergy_rankings_failed', 'detail': str(e)}), 500
     if payload.get('warming'):
         ck = f'msy_warming_{lc}_{hash(tuple(sorted(request.args.items()))) & 0xffff:x}'
-        return jsonify_cacheable(payload, ck, public=True, max_age=0, convert_images=True), 202
+        status = 200 if payload.get('groups') else 202
+        return jsonify_cacheable(payload, ck, public=True, max_age=0, convert_images=True), status
     if not full:
         payload = {k: v for k, v in payload.items() if k != 'all_groups'}
     ck = (

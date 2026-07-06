@@ -684,6 +684,7 @@ _rankings_result_cache = {}
 _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v6'
+_MSY_BUILD_WORKERS = max(1, min(4, int(os.environ.get('MSY_BUILD_WORKERS', '1') or '1')))
 
 _MAX_UNITS_FULL_SIM = 120
 _PREFILTER_THRESHOLD = 80
@@ -698,47 +699,60 @@ _MSY_VIGOR_LEVELS = ('super', 'max', 'high')
 _VIGOR_FOR_RANK_MODE = {mode: vigor for mode, _dmg, vigor in _RANK_MODE_VIGOR}
 
 
+def _msy_app_root():
+    return os.path.dirname(os.path.abspath(_app().__file__))
+
+
 def _msy_persistent_dir():
     vol = (os.environ.get('GGEN_PERSISTENT_DIR') or os.environ.get('RAILWAY_VOLUME_MOUNT_PATH') or '').strip()
     if vol:
         d = os.path.join(vol, 'meta_synergy')
     else:
-        root = os.path.dirname(os.path.abspath(_app().__file__))
-        d = os.path.join(root, 'data', 'persistent', 'meta_synergy')
+        d = os.path.join(_msy_app_root(), 'data', 'persistent', 'meta_synergy')
     os.makedirs(d, exist_ok=True)
     return d
 
 
-def _msy_disk_path(cache_key):
+def _msy_cache_basename(cache_key):
     tag, lc, lb_tier, top_pilots, du, dc = cache_key
     du_s = str(du) if du is not None else '0'
     dc_s = str(dc) if dc is not None else '0'
-    name = f'msy_{tag}_{lc}_lb{lb_tier}_tp{top_pilots}_du{du_s}_dc{dc_s}.json.gz'
-    return os.path.join(_msy_persistent_dir(), name)
+    return f'msy_{tag}_{lc}_lb{lb_tier}_tp{top_pilots}_du{du_s}_dc{dc_s}.json.gz'
+
+
+def _msy_disk_path(cache_key):
+    return os.path.join(_msy_persistent_dir(), _msy_cache_basename(cache_key))
+
+
+def _msy_published_path(cache_key):
+    return os.path.join(_msy_app_root(), 'data', 'published', _msy_cache_basename(cache_key))
 
 
 def _load_master_from_disk(cache_key):
-    path = _msy_disk_path(cache_key)
-    if not os.path.isfile(path):
-        return None
-    try:
-        with gzip.open(path, 'rt', encoding='utf-8') as f:
-            data = json.load(f)
-        if data.get('version') != _MSY_DISK_VERSION:
-            return None
-        if tuple(data.get('cache_key') or ()) != tuple(cache_key):
-            return None
-        groups = data.get('groups')
-        if not groups:
-            return None
-        print(f'MSY disk cache hit: {len(groups)} units ({path})')
-        return {
-            'groups': groups,
-            'total_pilot_candidates': int(data.get('total_pilot_candidates') or 0),
-        }
-    except Exception as e:
-        print(f'MSY disk cache load failed ({path}): {e}')
-        return None
+    for label, path in (
+        ('persistent', _msy_disk_path(cache_key)),
+        ('published', _msy_published_path(cache_key)),
+    ):
+        if not os.path.isfile(path):
+            continue
+        try:
+            with gzip.open(path, 'rt', encoding='utf-8') as f:
+                data = json.load(f)
+            if data.get('version') != _MSY_DISK_VERSION:
+                continue
+            if tuple(data.get('cache_key') or ()) != tuple(cache_key):
+                continue
+            groups = data.get('groups')
+            if not groups:
+                continue
+            print(f'MSY {label} cache hit: {len(groups)} units ({path})')
+            return {
+                'groups': groups,
+                'total_pilot_candidates': int(data.get('total_pilot_candidates') or 0),
+            }
+        except Exception as e:
+            print(f'MSY disk cache load failed ({path}): {e}')
+    return None
 
 
 def _save_master_to_disk(cache_key, result):
@@ -1102,11 +1116,27 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
 
 
 def _build_all_unit_groups(unit_ids, pilot_ids, lc, lb_tier, vigor, def_tier, exclude, top_pilots, metric, *,
-                             def_unit_override=None, def_char_override=None, def_tiers=None):
+                             def_unit_override=None, def_char_override=None, def_tiers=None,
+                             on_progress=None):
     if not unit_ids:
         return []
     groups = []
-    workers = min(8, max(1, len(unit_ids)))
+    workers = min(_MSY_BUILD_WORKERS, max(1, len(unit_ids)))
+    if workers <= 1:
+        for uid in unit_ids:
+            try:
+                g = _build_single_unit_group(
+                    uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclude, top_pilots, metric,
+                    def_unit_override=def_unit_override, def_char_override=def_char_override,
+                    def_tiers=def_tiers,
+                )
+                if g:
+                    groups.append(g)
+                    if on_progress:
+                        on_progress(list(groups))
+            except Exception as e:
+                print(f'MSY unit build error: {e}')
+        return groups
     with ThreadPoolExecutor(max_workers=workers) as ex:
         futs = [
             ex.submit(
@@ -1122,8 +1152,12 @@ def _build_all_unit_groups(unit_ids, pilot_ids, lc, lb_tier, vigor, def_tier, ex
                 g = fut.result()
                 if g:
                     groups.append(g)
+                    if on_progress and len(groups) % 5 == 0:
+                        on_progress(list(groups))
             except Exception as e:
                 print(f'MSY unit build error: {e}')
+    if on_progress and groups:
+        on_progress(list(groups))
     return groups
 
 
@@ -1527,7 +1561,7 @@ def _master_cache_key(lc, kwargs):
 
 
 def build_meta_synergy_master(lc='EN', *, lb_tier=3, top_pilots=20, exclude_pairs=None,
-                            def_unit_override=None, def_char_override=None):
+                            def_unit_override=None, def_char_override=None, on_progress=None):
     """One-time full rankings build (all units, all roles). Filters applied afterward."""
     A = _app()
     lc = lc or A.DEFAULT_LANG
@@ -1552,11 +1586,23 @@ def build_meta_synergy_master(lc='EN', *, lb_tier=3, top_pilots=20, exclude_pair
         unit_ids, pilot_ids, lc, lb_tier, 'super', 1, exclude, top_pilots, 'super_crit',
         def_unit_override=def_unit_override, def_char_override=def_char_override,
         def_tiers=def_tiers,
+        on_progress=on_progress,
     )
     return {
         'groups': groups,
         'total_pilot_candidates': len(pilot_ids),
     }
+
+
+def _store_partial_master(cache_key, groups, total_pilot_candidates=0):
+    if not groups:
+        return
+    with _rankings_build_lock:
+        _rankings_result_cache[cache_key] = {
+            'groups': groups,
+            'total_pilot_candidates': total_pilot_candidates,
+            'partial': True,
+        }
 
 
 def _rankings_cache_key(lc, def_tier, kwargs):
@@ -1613,12 +1659,17 @@ def _ensure_rankings_cache(cache_key, build_fn):
         _rankings_inflight.add(cache_key)
 
     def _worker():
+        tpc = len(_pilot_pool_ids())
         try:
-            result = build_fn()
-            _rankings_result_cache[cache_key] = result
+            def _on_progress(groups):
+                _store_partial_master(cache_key, groups, total_pilot_candidates=tpc)
+
+            result = build_fn(on_progress=_on_progress)
+            with _rankings_build_lock:
+                _rankings_result_cache[cache_key] = result
             _save_master_to_disk(cache_key, result)
         except Exception as e:
-            print(f'MSY rankings build failed ({cache_key[:48]}…): {e}')
+            print(f'MSY rankings build failed ({cache_key!r}): {e}')
             import traceback
             traceback.print_exc()
             with _rankings_build_lock:
@@ -1792,7 +1843,7 @@ def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
     kwargs.pop('vigor', None)
     cache_key = _master_cache_key(lc, kwargs)
 
-    def _do_build():
+    def _do_build(on_progress=None):
         return build_meta_synergy_master(
             lc=lc,
             lb_tier=int(kwargs.get('lb_tier', 3) or 3),
@@ -1800,10 +1851,29 @@ def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
             exclude_pairs=kwargs.get('exclude_pairs'),
             def_unit_override=kwargs.get('def_unit_override'),
             def_char_override=kwargs.get('def_char_override'),
+            on_progress=on_progress,
         )
 
     cached, warming = _ensure_rankings_cache(cache_key, _do_build)
     if warming:
+        partial = _rankings_result_cache.get(cache_key)
+        if partial and (partial.get('groups') or []):
+            kwargs['lc'] = lc
+            payload = _cached_payload_from_groups(
+                partial.get('groups') or [],
+                total_pilot_candidates=partial.get('total_pilot_candidates', 0),
+                rank_mode=rank_mode,
+                page=page,
+                per_page=per_page,
+                vigor=vigor,
+                def_tier=def_tier,
+                kwargs=kwargs,
+                unit_q=unit_q,
+            )
+            payload['warming'] = True
+            payload['partial'] = bool(partial.get('partial'))
+            payload['retry_after'] = 5
+            return payload
         return _warming_payload(rank_mode, vigor, def_tier, kwargs)
 
     all_groups = cached.get('groups') or []

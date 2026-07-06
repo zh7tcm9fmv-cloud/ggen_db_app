@@ -508,6 +508,18 @@
   min-width: 0;
 }
 
+.msy-warming-banner {
+  display: none;
+  margin: 0 0 8px;
+  padding: 8px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  background: rgba(245, 158, 11, 0.1);
+  color: #fcd34d;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
 .msy-list-shell {
   position: relative;
   min-height: 160px;
