@@ -1,7 +1,6 @@
 (function (global) {
   'use strict';
 
-  var SQUAD_SIZE = 5;
   var state = {
     loading: false,
     allGroups: [],
@@ -18,7 +17,6 @@
     view: 'grouped',
     page: 1,
     perPage: 50,
-    squad: Array(SQUAD_SIZE).fill(null),
     cacheKey: null
   };
 
@@ -42,11 +40,35 @@
     return typeof global.fmtN === 'function' ? global.fmtN(n) : String(n);
   }
 
-  function renderThumb(entity, type, size) {
+  function imgUrl(path) {
+    return typeof global.imgUrl === 'function' ? global.imgUrl(path) : path;
+  }
+
+  function thumbRow(entity, kind, size) {
+    if (!entity) return '';
+    var row = {
+      thum: entity.thum || '',
+      rarity: entity.rarity || 'N',
+      role_icon: entity.role_icon || '',
+      acquisition_icon: entity.acquisition_icon || '',
+      is_ultimate: entity.is_ultimate
+    };
     if (typeof global.renderListThumb === 'function') {
-      return global.renderListThumb(entity, type, size || 44);
+      return global.renderListThumb(row, kind, size || 44);
     }
     return '';
+  }
+
+  function metaIcons(entity) {
+    if (!entity) return '';
+    var html = '';
+    if (entity.rarity_icon) {
+      html += '<img class="msy-meta-icon msy-meta-rarity" src="' + escAttr(imgUrl(entity.rarity_icon)) + '" alt="" loading="lazy" decoding="async">';
+    }
+    if (entity.role_icon) {
+      html += '<img class="msy-meta-icon msy-meta-role" src="' + escAttr(imgUrl(entity.role_icon)) + '" alt="" loading="lazy" decoding="async">';
+    }
+    return html ? '<span class="msy-meta-icons">' + html + '</span>' : '';
   }
 
   function metricLabel(metric) {
@@ -65,44 +87,6 @@
     if (metric === 'normal') return row.normal_dmg || 0;
     if (metric === 'expected') return row.expected_dmg || 0;
     return row.super_crit_dmg || row.score || 0;
-  }
-
-  function squadUsedIds() {
-    var units = {};
-    var chars = {};
-    state.squad.forEach(function (slot) {
-      if (!slot) return;
-      if (slot.unitId) units[slot.unitId] = true;
-      if (slot.charId) chars[slot.charId] = true;
-    });
-    return { units: units, chars: chars };
-  }
-
-  function filterGroupsForSquad(groups) {
-    var used = squadUsedIds();
-    var out = [];
-    groups.forEach(function (g) {
-      var uid = g.unit && g.unit.id;
-      if (uid && used.units[uid]) return;
-      var pilots = (g.pilots || []).filter(function (p) {
-        var cid = p.char && p.char.id;
-        return !(cid && used.chars[cid]);
-      });
-      if (!pilots.length) return;
-      var metric = state.metric;
-      var maxScore = metricValue(pilots[0], metric);
-      out.push({
-        unit: g.unit,
-        weapon_elems: g.weapon_elems,
-        max_damage: maxScore,
-        metric: metric,
-        pilots: pilots
-      });
-    });
-    out.sort(function (a, b) {
-      return (b.max_damage || 0) - (a.max_damage || 0) || String(a.unit.name).localeCompare(String(b.unit.name));
-    });
-    return out;
   }
 
   function paginateGroups(groups) {
@@ -155,17 +139,8 @@
   }
 
   function applyLangStatic() {
-    var el;
-    el = document.getElementById('msyHeroTitle');
-    if (el) el.textContent = t('tab_meta_synergy');
-    el = document.getElementById('msyHeroSub');
+    var el = document.getElementById('msyHeroSub');
     if (el) el.textContent = t('msy_hero_sub');
-    el = document.getElementById('msySquadTitle');
-    if (el) el.textContent = t('msy_squad_title');
-    el = document.getElementById('msySquadHint');
-    if (el) el.textContent = t('msy_squad_hint');
-    el = document.getElementById('msySquadResetBtn');
-    if (el) el.textContent = t('msy_squad_reset');
     el = document.getElementById('msySearchInput');
     if (el) el.placeholder = t('msy_search_ph');
     el = document.getElementById('msyViewGroupedBtn');
@@ -175,7 +150,6 @@
     document.querySelectorAll('[data-msy-metric]').forEach(function (btn) {
       btn.textContent = metricLabel(btn.getAttribute('data-msy-metric'));
     });
-    renderSquadSlots();
     renderMetricPills();
   }
 
@@ -183,33 +157,6 @@
     document.querySelectorAll('.msy-metric-pill').forEach(function (btn) {
       btn.classList.toggle('active', btn.getAttribute('data-msy-metric') === state.metric);
     });
-  }
-
-  function renderSquadSlots() {
-    var host = document.getElementById('msySquadSlots');
-    if (!host) return;
-    var filled = state.squad.filter(Boolean).length;
-    var countEl = document.getElementById('msySquadCount');
-    if (countEl) countEl.textContent = filled + '/' + SQUAD_SIZE;
-
-    var html = '';
-    for (var i = 0; i < SQUAD_SIZE; i++) {
-      var slot = state.squad[i];
-      html += '<div class="msy-squad-slot' + (slot ? ' is-filled' : '') + '" data-msy-slot="' + i + '" onclick="GgenMetaSynergy.onSquadSlotClick(' + i + ')">';
-      html += '<div class="msy-squad-slot-num">' + t('msy_squad_slot').replace('{n}', String(i + 1)) + '</div>';
-      if (!slot) {
-        html += '<div class="msy-squad-slot-empty">' + esc(t('msy_squad_empty')) + '</div>';
-      } else {
-        html += '<div class="msy-squad-pair">';
-        html += renderThumb(slot.unit, 'unit', 40);
-        html += renderThumb(slot.char, 'char', 40);
-        html += '</div>';
-        html += '<div class="msy-squad-pair-names"><div>' + esc(slot.unit.name) + '</div><div>' + esc(slot.char.name) + '</div></div>';
-        html += '<div class="msy-squad-dmg">' + fmtN(slot.score) + '</div>';
-      }
-      html += '</div>';
-    }
-    host.innerHTML = html;
   }
 
   function renderStatus(filteredTotal) {
@@ -222,19 +169,18 @@
     else if (state.vigor === 'medium') vigorLbl = t('dc_vigor_medium');
     var note = (state.settings && state.settings.defender_note) || '';
     el.innerHTML =
-      '<span>' + esc(t('msy_status_units').replace('{n}', fmtN(filteredTotal))) + '</span>' +
-      '<span>' + esc(t('msy_status_metric').replace('{m}', metric)) + '</span>' +
-      '<span>' + esc(t('msy_status_vigor').replace('{v}', vigorLbl)) + '</span>' +
-      (note ? '<span class="msy-def-note">' + esc(note) + '</span>' : '');
+      '<span class="msy-status-chip">' + esc(t('msy_status_units').replace('{n}', fmtN(filteredTotal))) + '</span>' +
+      '<span class="msy-status-chip">' + esc(t('msy_status_metric').replace('{m}', metric)) + '</span>' +
+      '<span class="msy-status-chip">' + esc(t('msy_status_vigor').replace('{v}', vigorLbl)) + '</span>' +
+      (note ? '<span class="msy-status-note">' + esc(note) + '</span>' : '');
   }
 
   function renderPilotActions(unitId, pilot) {
     var cid = pilot.char && pilot.char.id;
     return (
-      '<button type="button" class="msy-icon-btn" onclick="GgenMetaSynergy.openDetailUnit(\'' + escJs(unitId) + '\')">' + esc(t('msy_open_unit')) + '</button>' +
-      '<button type="button" class="msy-icon-btn" onclick="GgenMetaSynergy.openDetailChar(\'' + escJs(cid) + '\')">' + esc(t('msy_open_char')) + '</button>' +
-      '<button type="button" class="msy-icon-btn" onclick="GgenMetaSynergy.addToSquad(\'' + escJs(unitId) + '\',\'' + escJs(cid) + '\')">' + esc(t('msy_add_squad')) + '</button>' +
-      '<button type="button" class="msy-icon-btn" onclick="GgenMetaSynergy.openInSimulator(\'' + escJs(unitId) + '\',\'' + escJs(cid) + '\')">' + esc(t('msy_open_sim')) + '</button>'
+      '<button type="button" class="msy-act-btn" title="' + escAttr(t('msy_open_sim')) + '" onclick="GgenMetaSynergy.openInSimulator(\'' + escJs(unitId) + '\',\'' + escJs(cid) + '\')">↗</button>' +
+      '<button type="button" class="msy-act-btn" title="' + escAttr(t('msy_open_unit')) + '" onclick="GgenMetaSynergy.openDetailUnit(\'' + escJs(unitId) + '\')">U</button>' +
+      '<button type="button" class="msy-act-btn" title="' + escAttr(t('msy_open_char')) + '" onclick="GgenMetaSynergy.openDetailChar(\'' + escJs(cid) + '\')">P</button>'
     );
   }
 
@@ -245,37 +191,38 @@
       var rank = (startRank || 0) + gi + 1;
       var u = g.unit || {};
       html += '<article class="msy-unit-card">';
-      html += '<div class="msy-unit-head">';
-      html += '<div class="msy-unit-rank-badge">' + rank + '</div>';
-      html += renderThumb(u, 'unit', 56);
-      html += '<div class="msy-unit-meta">';
-      html += '<div class="msy-unit-name">' + esc(u.name) + '</div>';
-      html += '<div class="msy-unit-tags">';
-      html += '<span>' + esc(u.rarity || '') + '</span>';
-      html += '<span>·</span>';
-      html += '<span>' + esc(u.role || '') + '</span>';
+      html += '<header class="msy-unit-head">';
+      html += '<span class="msy-unit-rank">' + rank + '</span>';
+      html += '<div class="msy-unit-thumb">' + thumbRow(u, 'unit', 48) + '</div>';
+      html += '<div class="msy-unit-main">';
+      html += '<div class="msy-unit-name-row"><span class="msy-unit-name">' + esc(u.name) + '</span>' + metaIcons(u) + '</div>';
       if (g.weapon_elems) {
-        html += '<span>·</span><span>&lt;' + esc(g.weapon_elems) + '&gt;</span>';
+        html += '<div class="msy-unit-elem">&lt;' + esc(g.weapon_elems) + '&gt;</div>';
       }
-      html += '</div></div>';
-      html += '<div class="msy-unit-max"><div class="msy-unit-max-val">' + fmtN(g.max_damage) + '</div>';
-      html += '<div class="msy-unit-max-lbl">' + esc(metricLabel(metric)) + '</div></div>';
       html += '</div>';
+      html += '<div class="msy-unit-peak">';
+      html += '<div class="msy-unit-peak-val">' + fmtN(g.max_damage) + '</div>';
+      html += '<div class="msy-unit-peak-lbl">' + esc(metricLabel(metric)) + '</div>';
+      html += '</div>';
+      html += '</header>';
       html += '<div class="msy-pilot-list">';
       (g.pilots || []).forEach(function (p) {
         var c = p.char || {};
         var main = metricValue(p, metric);
         html += '<div class="msy-pilot-row">';
-        html += '<div class="msy-pilot-rank">' + (p.rank || '') + '</div>';
-        html += renderThumb(c, 'char', 44);
-        html += '<div class="msy-pilot-info"><div class="msy-pilot-name">' + esc(c.name) + '</div>';
-        html += '<div class="msy-pilot-sub">' + esc(c.rarity || '') + ' · ' + esc(c.role || '') +
-          (p.crit_rate ? ' · ' + esc(t('msy_crit_rate')).replace('{n}', String(p.crit_rate)) : '') + '</div></div>';
-        html += '<div class="msy-pilot-scores">';
+        html += '<span class="msy-pilot-rank">' + (p.rank || '') + '</span>';
+        html += '<div class="msy-pilot-thumb">' + thumbRow(c, 'char', 40) + '</div>';
+        html += '<div class="msy-pilot-main">';
+        html += '<div class="msy-pilot-name-row"><span class="msy-pilot-name">' + esc(c.name) + '</span>' + metaIcons(c) + '</div>';
+        if (p.crit_rate) {
+          html += '<div class="msy-pilot-sub">' + esc(t('msy_crit_rate')).replace('{n}', String(p.crit_rate)) + '</div>';
+        }
+        html += '</div>';
+        html += '<div class="msy-pilot-mini">';
         html += '<span title="' + escAttr(t('msy_metric_expected')) + '">' + esc(t('msy_abbr_exp')) + ' ' + fmtN(p.expected_dmg) + '</span>';
         html += '<span title="' + escAttr(t('msy_metric_crit')) + '">' + esc(t('msy_abbr_crit')) + ' ' + fmtN(p.crit_dmg) + '</span>';
         html += '</div>';
-        html += '<div class="msy-pilot-score-main">' + fmtN(main) + '</div>';
+        html += '<div class="msy-pilot-score">' + fmtN(main) + '</div>';
         html += '<div class="msy-pilot-actions">' + renderPilotActions(u.id, p) + '</div>';
         html += '</div>';
       });
@@ -302,8 +249,8 @@
         var c = p.char || {};
         html += '<tr>';
         html += '<td>' + rowNum + '</td>';
-        html += '<td>' + esc(u.name) + '</td>';
-        html += '<td>' + esc(c.name) + '</td>';
+        html += '<td><div class="msy-td-entity">' + thumbRow(u, 'unit', 32) + '<span>' + esc(u.name) + '</span>' + metaIcons(u) + '</div></td>';
+        html += '<td><div class="msy-td-entity">' + thumbRow(c, 'char', 32) + '<span>' + esc(c.name) + '</span>' + metaIcons(c) + '</div></td>';
         html += '<td class="msy-td-dmg">' + fmtN(metricValue(p, metric)) + '</td>';
         html += '<td>' + fmtN(p.expected_dmg) + '</td>';
         html += '<td>' + fmtN(p.crit_dmg) + '</td>';
@@ -331,8 +278,7 @@
   }
 
   function renderContent() {
-    var filtered = filterGroupsForSquad(state.allGroups);
-    var meta = paginateGroups(filtered);
+    var meta = paginateGroups(state.allGroups);
     renderStatus(meta.total);
     var startRank = (meta.page - 1) * meta.perPage;
     var host = document.getElementById('msyContent');
@@ -376,7 +322,7 @@
     } catch (e) {
       var host = document.getElementById('msyContent');
       if (host) {
-        host.innerHTML = '<div class="msy-loading-banner">' + esc(String(e)) + '</div>';
+        host.innerHTML = '<div class="msy-error">' + esc(String(e)) + '</div>';
       }
     } finally {
       setLoading(false);
@@ -421,51 +367,6 @@
     state.page = Math.max(1, p | 0);
     renderContent();
     try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (_) { window.scrollTo(0, 0); }
-  }
-
-  function resetSquad() {
-    state.squad = Array(SQUAD_SIZE).fill(null);
-    renderSquadSlots();
-    renderContent();
-  }
-
-  function onSquadSlotClick(idx) {
-    if (state.squad[idx]) {
-      state.squad[idx] = null;
-      renderSquadSlots();
-      renderContent();
-    }
-  }
-
-  function findPairData(unitId, charId) {
-    var found = null;
-    state.allGroups.some(function (g) {
-      if (String(g.unit.id) !== String(unitId)) return false;
-      return (g.pilots || []).some(function (p) {
-        if (String(p.char.id) === String(charId)) {
-          found = { unit: g.unit, char: p.char, pilot: p, group: g };
-          return true;
-        }
-        return false;
-      });
-    });
-    return found;
-  }
-
-  function addToSquad(unitId, charId) {
-    var idx = state.squad.findIndex(function (s) { return !s; });
-    if (idx < 0) return;
-    var data = findPairData(unitId, charId);
-    if (!data) return;
-    state.squad[idx] = {
-      unitId: unitId,
-      charId: charId,
-      unit: data.unit,
-      char: data.char,
-      score: metricValue(data.pilot, state.metric)
-    };
-    renderSquadSlots();
-    renderContent();
   }
 
   function openDetailUnit(id) {
@@ -554,9 +455,6 @@
     setMetric: setMetric,
     setView: setView,
     goPage: goPage,
-    resetSquad: resetSquad,
-    onSquadSlotClick: onSquadSlotClick,
-    addToSquad: addToSquad,
     openDetailUnit: openDetailUnit,
     openDetailChar: openDetailChar,
     openInSimulator: openInSimulator,

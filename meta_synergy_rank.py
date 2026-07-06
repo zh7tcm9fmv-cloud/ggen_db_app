@@ -240,16 +240,41 @@ def _best_ex_weapon(uid, stat_mode, lc):
         if isinstance(levels, dict) and levels:
             mx_lv = max(int(k) for k in levels.keys() if str(k).isdigit())
             power = max(power, int((levels.get(mx_lv) or levels.get(str(mx_lv)) or {}).get('power', 0) or 0))
-        debuff = 0
-        for line in A.iter_unit_weapon_trait_texts(uid, ld, lc, stat_mode=stat_mode):
-            b, v = A.parse_enemy_def_debuff_pcts_from_trait_text(line)
-            debuff = max(debuff, b, v)
+        debuff = _weapon_def_debuff_from_ws(ws, wm, uid, ld, lc, stat_mode)
         if power > best_power:
             best_power = power
             best_debuff = debuff
             best = {'wid': wid, 'wm': wm, 'ws': ws, 'power': power, 'debuff': debuff,
                     'attr': wm.get('attack_attribute', '1')}
     return best
+
+
+def _weapon_def_debuff_from_ws(ws, wm, uid, ld, lc, stat_mode):
+    A = _app()
+    debuff = 0
+    for tr in (ws.get('traits') or []):
+        b, v = A.parse_enemy_def_debuff_pcts_from_trait_text(str(tr or ''))
+        debuff = max(debuff, b, v)
+    levels = ws.get('levels') or {}
+    level_rows = levels.values() if isinstance(levels, dict) else levels
+    for lv in level_rows or []:
+        if isinstance(lv, dict):
+            for tr in (lv.get('traits') or []):
+                b, v = A.parse_enemy_def_debuff_pcts_from_trait_text(str(tr or ''))
+                debuff = max(debuff, b, v)
+    sm = (stat_mode or 'normal').strip().lower()
+    if sm == 'ssp':
+        wid = A.normalize_id(wm.get('id'))
+        mwid = A.normalize_id(wm.get('main_weapon_id') or '0')
+        for cid2 in (wid, mwid):
+            if not cid2 or cid2 == '0':
+                continue
+            for tid in A.unit_ssp_weapon_effect_map.get(cid2) or []:
+                tt = (ld.get('weapon_trait_detail_map', {}) or {}).get(tid, '')
+                b, v = A.parse_enemy_def_debuff_pcts_from_trait_text(str(tt or ''))
+                debuff = max(debuff, b, v)
+            break
+    return debuff
 
 
 def _unit_atk(uid, info, stat_mode, cond=True):
@@ -311,16 +336,17 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', cond=Tru
     char_def = float(totals.get('Defense', 0) or 0)
     dmg_dealt, crit_up = _char_dmg_bonuses(cid, lc)
     vp = _VIGOR.get(vigor) or _VIGOR['super']
-    def_debuff = max(int(def_debuff_pct or 0), int(wpn.get('debuff') or 0))
+    def_debuff = min(40, max(int(def_debuff_pct or 0), int(wpn.get('debuff') or 0)))
     unit_def_after = _sim_def_after_debuff(def_total, 0, def_debuff)
+    dmg_mult = dmg_dealt + vp['dmg_bonus_pct']
     normal, battle, cwp = _calc_damage_core(
         unit_atk, char_atk, char_def, unit_def_after, wpn['power'],
         def_debuff_pct=def_debuff,
-        extra_dmg_pct=dmg_dealt + vp['dmg_bonus_pct'] + def_debuff,
+        extra_dmg_pct=dmg_mult,
     )
     plain_crit, super_crit = _calc_crit_damage(
         battle, cwp,
-        extra_dmg_pct=dmg_dealt + vp['dmg_bonus_pct'] + def_debuff,
+        extra_dmg_pct=dmg_mult,
         crit_dmg_up_pct=crit_up,
         vigor=vigor,
     )
@@ -364,7 +390,7 @@ def _entity_brief_char(cid, lc):
     info = A.char_info_map.get(cid) or {}
     ri = str(info.get('rarity', '1'))
     name = _resolve_char_name(cid, lc)
-    thum = A.find_list_thumb(info.get('resource_ids', []), cid, 'images/character_portraits')
+    thum = A.find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits')
     return {
         'id': cid,
         'name': name,
