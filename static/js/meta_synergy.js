@@ -23,7 +23,7 @@
     topPilots: 10,
     unitQ: '',
     page: 1,
-    perPage: 25,
+    perPage: 20,
     cacheKey: null,
     tierCache: {},
     charCondPassiveOn: true,
@@ -81,12 +81,21 @@
     return RANK_MODES[0];
   }
 
+  var RARITY_ID_TO_LETTER = { '6': 'UR', '5': 'SSR', '4': 'SR', '3': 'R', '2': 'N', '1': 'N' };
+
+  function pilotRarityLetter(c) {
+    if (!c) return 'N';
+    var letter = String(c.rarity || '').trim().toUpperCase();
+    if (letter && letter !== 'N') return letter;
+    return RARITY_ID_TO_LETTER[String(c.rarity_id || '').trim()] || letter || 'N';
+  }
+
   function pilotMatchesExclusions(pilot, noUr, noShinn) {
     if (!pilot) return false;
     var c = pilot.char || {};
     var cid = String(c.id || '');
     if (noShinn && cid === SHINN_EX_CHAR_ID) return false;
-    if (noUr && String(c.rarity || '').toUpperCase() === 'UR') return false;
+    if (noUr && pilotRarityLetter(c) === 'UR') return false;
     return true;
   }
 
@@ -110,12 +119,22 @@
 
   function groupBlock(g, modeId, noUr, noShinn) {
     if (!g) return null;
-    var src;
-    if (!state.charCondPassiveOn && g.rankings_no_cp) src = g.rankings_no_cp;
-    else if (noShinn && g.rankings_no_shinn) src = g.rankings_no_shinn;
-    else if (noUr && g.rankings_no_ur) src = g.rankings_no_ur;
-    else src = g.rankings || {};
-    var block = src[modeId];
+    if (!state.charCondPassiveOn && g.rankings_no_cp) {
+      var cpBlock = (g.rankings_no_cp || {})[modeId];
+      if (cpBlock) return cpBlock;
+    }
+    if (noUr && noShinn) {
+      return rerankPilotBlock((g.rankings || {})[modeId], modeId, true, true);
+    }
+    if (noUr && g.rankings_no_ur) {
+      var urBlock = (g.rankings_no_ur || {})[modeId];
+      if (urBlock) return urBlock;
+    }
+    if (noShinn && g.rankings_no_shinn) {
+      var shBlock = (g.rankings_no_shinn || {})[modeId];
+      if (shBlock) return shBlock;
+    }
+    var block = (g.rankings || {})[modeId];
     if (!block && !noUr && !noShinn && state.charCondPassiveOn && modeId === 'super_crit' && g.pilots) {
       block = { max_damage: g.max_damage, pilots: g.pilots };
     }
@@ -666,7 +685,18 @@
         if (loadGen !== state._loadGen) return;
         var fetchOpts = { credentials: 'same-origin' };
         if (state._fetchCtrl) fetchOpts.signal = state._fetchCtrl.signal;
-        var r = await fetch(buildApiUrl(), fetchOpts);
+        var timeoutMs = 45000;
+        var timeoutId = setTimeout(function () {
+          if (state._fetchCtrl) {
+            try { state._fetchCtrl.abort(); } catch (_) {}
+          }
+        }, timeoutMs);
+        var r;
+        try {
+          r = await fetch(buildApiUrl(), fetchOpts);
+        } finally {
+          clearTimeout(timeoutId);
+        }
         var d = null;
         if (r.status === 202 || r.ok) {
           d = await r.json();
@@ -699,6 +729,7 @@
       }
     } catch (e) {
       if (e && e.name === 'AbortError') return;
+      state.groups = [];
       var host = document.getElementById('msyContent');
       if (host) {
         host.innerHTML = '<div class="msy-error">' + esc(String(e)) + '</div>';

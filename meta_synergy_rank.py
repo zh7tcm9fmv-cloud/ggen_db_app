@@ -1033,7 +1033,7 @@ _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
 SHINN_EX_CHAR_ID = '1330000103'
 _MSY_BUILD_WORKERS = max(1, min(4, int(os.environ.get('MSY_BUILD_WORKERS', '1') or '1')))
-_MSY_PAGE_BUILD_LIMIT = max(0, min(10, int(os.environ.get('MSY_PAGE_BUILD_LIMIT', '8') or '8')))
+_MSY_PAGE_BUILD_LIMIT = max(0, min(10, int(os.environ.get('MSY_PAGE_BUILD_LIMIT', '0') or '0')))
 # Older published caches to load when the current v14 master file is missing (Railway deploy).
 _MSY_LEGACY_MASTER_CACHE_KEYS = (
     ('_v13_dc_master', 'EN', 3, 20, None, None),
@@ -1990,6 +1990,21 @@ def _weapon_elem_label(uid, lc):
 
 _WPN_TYPE_LABEL = {'1': 'Normal', '2': 'Active', '3': 'Map'}
 _SKILL_AUTO_ACTIVE_RE = re.compile(r'(?:damage\s+dealt|造成的損傷|傷害|ダメージ)', re.I)
+_AWAKEN_BOOST_SKILL_ID_RE = re.compile(r'^200170[1-5]01$')
+
+
+def _msy_skill_relevant_for_sim(blob, sid='', name=''):
+    """Skills that MSY damage sim auto-applies at max level (display + active flags)."""
+    text = str(blob or '')
+    if _SKILL_DMG_RE.search(text) or _SKILL_ATK_RE.search(text):
+        return True
+    sid = str(sid or '').strip()
+    if sid and _AWAKEN_BOOST_SKILL_ID_RE.match(sid):
+        return True
+    nm = str(name or '')
+    if re.search(r'awaken\s+boost|覺醒值增幅|覚醒ブースト', nm, re.I):
+        return True
+    return False
 
 
 @lru_cache(maxsize=2048)
@@ -2041,7 +2056,7 @@ def _msy_auto_active_skill_ids(cid, lc):
             str(x.get('text') if isinstance(x, dict) else x or '')
             for x in (resolved.get('details') or [])
         ) + '\n' + str(resolved.get('desc') or '')
-        if not _SKILL_AUTO_ACTIVE_RE.search(blob):
+        if not _msy_skill_relevant_for_sim(blob, sid, name):
             continue
         lv_m = re.search(r'\bLV\s*(\d+)\b', name, re.I)
         lv = int(lv_m.group(1)) if lv_m else 0
@@ -2073,7 +2088,7 @@ def _msy_pilot_active_skills(cid, lc):
             str(x.get('text') if isinstance(x, dict) else x or '')
             for x in (resolved.get('details') or [])
         ) + '\n' + str(resolved.get('desc') or '')
-        if not _SKILL_AUTO_ACTIVE_RE.search(blob):
+        if not _msy_skill_relevant_for_sim(blob, sid, name):
             continue
         if base in seen_base:
             continue
@@ -2942,6 +2957,16 @@ def _warming_payload(rank_mode, vigor, def_tier, kwargs):
     }
 
 
+def _browse_filters_active(browse, unit_q=''):
+    if str(unit_q or '').strip():
+        return True
+    if not browse:
+        return False
+    return any(browse.get(k) is not None for k in (
+        'role_filter', 'rarity_filter', 'series_filter', 'source_filter', 'lineage_filter',
+    ))
+
+
 def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, page, per_page, vigor,
                                 def_tier, kwargs, unit_q='', cache_key=None, include_skills=True):
     dt = max(1, min(4, int(def_tier or 3)))
@@ -2949,14 +2974,25 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
     browse = _parse_browse_filters(kwargs, lc)
     page = max(1, int(page or 1))
     per_page = max(1, min(100, int(per_page or 50)))
-    matching_ids = _filtered_rankable_unit_ids(lc, browse, unit_q)
-    ordered_ids = _ordered_unit_ids_for_browse(matching_ids, groups, lc, kwargs, rank_mode)
+    by_uid = {}
+    for g in groups or []:
+        uid = _app().normalize_id((g.get('unit') or {}).get('id'))
+        if uid:
+            by_uid[uid] = g
+    filters_active = _browse_filters_active(browse, unit_q)
+    if filters_active:
+        all_filtered = _filtered_rankable_unit_ids(lc, browse, unit_q)
+        ordered_ids = _ordered_unit_ids_for_browse(all_filtered, groups, lc, kwargs, rank_mode)
+        # Only serve pre-ranked units — on-demand builds block the worker for minutes.
+        ordered_ids = [uid for uid in ordered_ids if uid in by_uid]
+    else:
+        ordered_ids = _ordered_unit_ids_for_browse(list(by_uid.keys()), groups, lc, kwargs, rank_mode)
     total = len(ordered_ids)
     start = (page - 1) * per_page
     page_ids = ordered_ids[start:start + per_page]
     kwargs_resolve = dict(kwargs)
     kwargs_resolve['def_tier'] = dt
-    page_build_cap = min(_MSY_PAGE_BUILD_LIMIT, per_page) if _msy_page_build_allowed() else 0
+    page_build_cap = 0
     page_groups_raw = _resolve_groups_for_unit_ids(
         page_ids, groups, lc, kwargs_resolve, browse_fast=True, def_tier=dt,
         max_build=page_build_cap,
@@ -2992,6 +3028,7 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
         'vigor': vigor,
         'def_tier': dt,
         'defender_tiers': defender_tiers_public(),
+        'cache_scope': 'filtered_cache' if filters_active else 'ranked_cache',
         'settings': {
             'unit_rarity': kwargs.get('rarity') or kwargs.get('unit_rarity', 'ALL'),
             'unit_role': kwargs.get('role') or kwargs.get('unit_role', 'ALL'),
