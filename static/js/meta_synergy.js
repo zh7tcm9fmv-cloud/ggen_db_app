@@ -295,6 +295,8 @@
     renderContent();
     if (d.cache_incomplete) {
       showWarmingBanner(true, t('msy_warming_partial') || t('msy_warming') || 'Updating rankings…');
+    } else if (!d.warming) {
+      showWarmingBanner(false);
     }
   }
 
@@ -668,7 +670,7 @@
   async function loadRankings(force) {
     syncSearchFromDom();
     var key = cacheKeyForState();
-    if (!force && state.cacheKey === key && state.groups.length) {
+    if (!force && state.cacheKey === key && state.groups.length && !state.cacheIncomplete) {
       renderContent();
       return;
     }
@@ -685,7 +687,7 @@
         if (loadGen !== state._loadGen) return;
         var fetchOpts = { credentials: 'same-origin' };
         if (state._fetchCtrl) fetchOpts.signal = state._fetchCtrl.signal;
-        var timeoutMs = 45000;
+        var timeoutMs = 55000;
         var timeoutId = setTimeout(function () {
           if (state._fetchCtrl) {
             try { state._fetchCtrl.abort(); } catch (_) {}
@@ -722,9 +724,13 @@
         }
         if (d && d.error) throw new Error(d.detail || d.error);
         if (!r.ok) throw new Error('HTTP ' + r.status);
-        showWarmingBanner(false);
         applyPayload(d, state.defTier);
         void fetchPilotSkillsBatch(state.groups);
+        if (d.cache_incomplete && state.groups.length < state.perPage && (state._warmPolls || 0) < 2) {
+          state._warmPolls = (state._warmPolls || 0) + 1;
+          await sleep(3500);
+          continue;
+        }
         break;
       }
     } catch (e) {
