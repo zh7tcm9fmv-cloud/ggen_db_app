@@ -26,7 +26,7 @@ _CRIT125_TRIM_DIV = 1181
 _DEF_DEBUFF_CAP = 40
 
 _DMG_DEALT_RE = re.compile(
-    r'damage dealt.{0,16}(\d+)\s*%|'
+    r'[Ii]ncrease\s+(?:own\s+)?damage\s+dealt(?:\s+to\s+(?:the\s+)?enem(?:y|ies))?\s+(?:with\s+.+?\s+)?by\s+(\d+)%|'
     r'(\d+)\s*%\s*(?:more|additional).{0,12}damage|'
     r'与(?:え|与)(?:る|与)?.{0,8}?(\d+)\s*[%％].{0,8}?ダメージ|'
     r'造成.{0,8}?(\d+)\s*[%％].{0,8}?傷害',
@@ -46,7 +46,7 @@ _GUARANTEED_CRIT_RE = re.compile(
     re.I,
 )
 _SKILL_DMG_RE = re.compile(
-    r'[Ii]ncreases?\s+(?:own\s+)?damage\s+dealt.{0,24}by\s*(\d+)%|'
+    r'[Ii]ncrease(?:s)?\s+(?:own\s+)?damage\s+dealt(?:\s+to\s+(?:the\s+)?enem(?:y|ies))?\s+(?:with\s+.+?\s+)?by\s*(\d+)%|'
     r'對敵方造成的損傷提升(\d+)%',
     re.I,
 )
@@ -400,9 +400,14 @@ def _char_totals_for_pair_max(cid, uid, lc):
     return totals, pair_ok
 
 
-def _char_guaranteed_crit(cid, lc):
+def _char_guaranteed_crit(cid, lc, *, vigor='super', cp_on=True):
+    """Guaranteed crit: passive ability, or Supercharged EX 2 at super vigor (e.g. Shinn)."""
+    if not cp_on or str(vigor or 'super') != 'super':
+        return False
     A = _app()
     for bab in _build_char_ac_calc(cid, lc):
+        if bab.get('is_ex'):
+            continue
         for blob_src in (bab, bab.get('sp_replacement') or {}):
             if not blob_src:
                 continue
@@ -411,6 +416,16 @@ def _char_guaranteed_crit(cid, lc):
                 parts.append(str((d2 or {}).get('text') or d2 or ''))
             if _GUARANTEED_CRIT_RE.search('\n'.join(parts)):
                 return True
+    for bab in _build_char_ac_calc(cid, lc):
+        if not bab.get('is_ex'):
+            continue
+        for d2 in bab.get('details') or []:
+            txt = str((d2 or {}).get('text') or d2 or '') if isinstance(d2, dict) else str(d2 or '')
+            if not txt:
+                continue
+            for tier, _label, chunk in A._slice_supercharged_ex_tier_sections(txt):
+                if tier == 2 and _GUARANTEED_CRIT_RE.search(chunk):
+                    return True
     return False
 
 
@@ -611,7 +626,8 @@ def _char_pilot_dmg_bonuses(cid, uid, lc, *, cp_on=True):
                 for m in _DMG_DEALT_RE.finditer(txt):
                     for g in m.groups():
                         if g:
-                            dmg_dealt = max(dmg_dealt, int(g))
+                            dmg_dealt += int(g)
+                            break
                 for m in _CRIT_DMG_RE.finditer(txt):
                     for g in m.groups():
                         if g:
@@ -623,7 +639,7 @@ def _char_skill_bonuses(cid, lc):
     A = _app()
     ld = _ldc(lc)
     cid = A.normalize_id(cid)
-    dmg = 0
+    dmg_by_base = {}
     atk_pct = 0
     fs = [x for x in A.extract_data_list(A.char_skill) if A.normalize_id(x.get('CharacterId', '')) == cid]
     seen = set()
@@ -633,19 +649,24 @@ def _char_skill_bonuses(cid, lc):
             continue
         seen.add(sid)
         resolved = A.resolve_char_skill(sid, ld, int(sk.get('SortOrder', 0)), False)
+        name = str(resolved.get('name') or '')
+        base = re.sub(r'\s*LV\s*\d+\s*$', '', name, flags=re.I).strip().lower()
         blob = '\n'.join(
             str(x.get('text') if isinstance(x, dict) else x or '')
             for x in (resolved.get('details') or [])
         ) + '\n' + str(resolved.get('desc') or '')
+        sk_dmg = 0
         for m in _SKILL_DMG_RE.finditer(blob):
-            for g in m.groups():
-                if g and str(g).isdigit():
-                    dmg = max(dmg, int(g))
+            g = m.group(m.lastindex)
+            if g and str(g).isdigit():
+                sk_dmg = max(sk_dmg, int(g))
+        if sk_dmg > 0:
+            dmg_by_base[base] = max(dmg_by_base.get(base, 0), sk_dmg)
         for m in _SKILL_ATK_RE.finditer(blob):
             g = m.group(m.lastindex)
             if g and str(g).isdigit():
                 atk_pct = max(atk_pct, int(g))
-    return dmg, atk_pct
+    return sum(dmg_by_base.values()), atk_pct
 
 
 def _weapon_pow_lv_to_max_pct(lv):
@@ -919,8 +940,8 @@ def _weapon_grants_guaranteed_crit(ws, wm, uid, ld, lc, stat_mode):
     return False
 
 
-def _pair_guaranteed_crit(uid, cid, lc, wpn, crit_rate):
-    if _char_guaranteed_crit(cid, lc):
+def _pair_guaranteed_crit(uid, cid, lc, wpn, crit_rate, *, vigor='super'):
+    if _char_guaranteed_crit(cid, lc, vigor=vigor, cp_on=True):
         return True
     if wpn and _weapon_grants_guaranteed_crit(
         wpn.get('ws'), wpn.get('wm'), uid, _ldc(lc), lc, _unit_stat_mode(
@@ -1006,7 +1027,7 @@ _char_pair_cache = {}
 _rankings_result_cache = {}
 _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
-_MSY_DISK_VERSION = 'v9'
+_MSY_DISK_VERSION = 'v10'
 _MSY_BUILD_WORKERS = max(1, min(4, int(os.environ.get('MSY_BUILD_WORKERS', '1') or '1')))
 
 _MAX_UNITS_FULL_SIM = 120
@@ -1153,7 +1174,7 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
     crit_rate += _char_skill_crit_rate(cid, lc)
     crit_rate = min(100, max(0, crit_rate))
 
-    guaranteed_crit = _pair_guaranteed_crit(uid, cid, lc, wpn, crit_rate)
+    guaranteed_crit = _pair_guaranteed_crit(uid, cid, lc, wpn, crit_rate, vigor=vigor)
 
     vp = _VIGOR.get(vigor) or _VIGOR['super']
     unit_def_after = _sim_def_after_debuff(def_total, 0, def_debuff)
@@ -1247,7 +1268,7 @@ def _filter_non_guaranteed_crit(uid, pilot_ids, unit_wpn, lc, exclude):
     for cid in pilot_ids:
         if (uid, cid) in exclude:
             continue
-        if _char_guaranteed_crit(cid, lc):
+        if _char_guaranteed_crit(cid, lc, vigor='super', cp_on=True):
             continue
         if unit_wpn and _weapon_grants_guaranteed_crit(
             unit_wpn.get('ws'), unit_wpn.get('wm'), uid, ldc, lc, stat_mode,
@@ -2105,7 +2126,7 @@ def _filter_master_groups(groups, lc, filters):
 
 def _master_cache_key(lc, kwargs):
     return (
-        '_v9_master',
+        '_v10_master',
         lc or 'EN',
         int(kwargs.get('lb_tier', 3) or 3),
         int(kwargs.get('top_pilots', 20) or 20),

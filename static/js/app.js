@@ -5406,6 +5406,71 @@ if(blob.includes('supercharged')&&blob.includes('shinn'))return true;
 if(abRaw.includes('超一擊')&&abRaw.includes('飛鳥'))return true;
 return false;
 }
+const DC_GUARANTEED_CRIT_RE=/guaranteed\s+critical|grant\s+guaranteed\s+critical|activate\s+guaranteed\s+critical|確定クリティカル|確定.*クリティカル/i;
+function _dcSliceSuperchargedExTierSections(blob){
+if(!blob)return[];
+const s=String(blob);
+const rx=/(?:Supercharged\s+EX|超一擊EX)\s*([12])\b/gi;
+const matches=[...s.matchAll(rx)];
+if(matches.length<2)return[];
+const out=[];
+for(let i=0;i<matches.length;i++){
+const m=matches[i];
+const tier=parseInt(m[1],10);
+const start=m.index|0;
+const end=matches[i+1]?matches[i+1].index|0:s.length;
+out.push({tier,chunk:s.slice(start,end)});
+}
+return out;
+}
+function _dcPilotExAbilityBlobs(cd){
+const out=[];
+if(!cd||!Array.isArray(cd.abilities))return out;
+cd.abilities.forEach(ab=>{
+if(!ab||!ab.is_ex)return;
+const r=_dcResolveCharAbilityForMode(ab);
+if(!r)return;
+let blob=String(r.name||'')+'\n';
+(r.details||[]).forEach(d=>{blob+=String((d&&d.text)||'')+'\n'});
+out.push(blob);
+});
+return out;
+}
+function _dcSuperchargedExTierHasGuaranteedCrit(cd,tierNum){
+for(const blob of _dcPilotExAbilityBlobs(cd)){
+for(const sl of _dcSliceSuperchargedExTierSections(blob)){
+if(sl.tier===tierNum&&DC_GUARANTEED_CRIT_RE.test(sl.chunk))return true;
+}
+}
+return false;
+}
+function _dcSyncSuperchargedExTierForVigor(){
+const cd=S.dc.atkCharData;
+if(!cd||!S.dc.charCondPassive){S.dc.dcSuperchargedExTier=0;return;}
+const tiers=cd.ex_supercharged_tiers;
+if(!tiers||tiers.length<2){S.dc.dcSuperchargedExTier=0;return;}
+if(_dcNormMpLevel(S.dc.mpLevel)==='super')S.dc.dcSuperchargedExTier=tiers.length-1;
+}
+function _dcAutoEnableMaxDamageSkills(){
+const cd=S.dc.atkCharData;
+if(!cd||cd._manual)return;
+const skills=_dcPilotSkillsVisibleForDc(cd)||[];
+if(!skills.length)return;
+S.dc._activeSkills=S.dc._activeSkills||{};
+const byBase=new Map();
+skills.forEach(sk=>{
+const rsk=_dcResolveSkillForDcMode(sk);
+const fullNm=(rsk.name||sk.name||'').trim();
+const base=fullNm.replace(/\s*LV\s*\d+\s*$/i,'').trim().toLowerCase();
+const lvM=fullNm.match(/\bLV\s*(\d+)\b/i);
+const lv=lvM?parseInt(lvM[1],10):0;
+const desc=[...(rsk.details||[]).map(d=>typeof d==='string'?d:(d&&d.text)||''),rsk.desc||'',rsk.sp_desc||''].join(' ');
+if(!/(?:damage\s+dealt|造成的損傷|傷害)/i.test(desc))return;
+const prev=byBase.get(base);
+if(!prev||lv>prev.lv)byBase.set(base,{id:String(sk.id),lv});
+});
+byBase.forEach(({id})=>{S.dc._activeSkills[id]=true});
+}
 const DC_WPN_ELEM={'1':'beam','2':'physical','3':'special','4':'beam','5':'beam','6':'physical','7':'beam'};
 const DC_WPN_ELEM_LABEL={beam:'Beam',physical:'Physical',special:'Special'};
 const DC_WPN_ATTR_ID_KEYS={'1':['physical'],'2':['beam'],'3':['special'],'4':['beam','physical'],'5':['physical','special'],'6':['beam','special'],'7':['beam','physical','special'],'8':['beam','physical']};
@@ -8851,6 +8916,9 @@ return false;
 function _dcShouldAutoCharCondPassive(cd,ud){
 if(!cd||!ud||cd._manual||ud._manual)return false;
 if(!_dcCharHasConditional(cd))return false;
+/** Super vigor max-damage: Supercharged EX pilots (e.g. Shinn) use CP + EX 2 without unit affinity. */
+if(_dcNormMpLevel(S.dc.mpLevel)==='super'&&cd.ex_supercharged_tiers&&cd.ex_supercharged_tiers.length>1)return true;
+if(_dcIsShinnAsukaCharacter(cd)&&_dcNormMpLevel(S.dc.mpLevel)==='super')return true;
 if(_dcCharHasPairRequirement(cd)&&!_dcUnitCharPairMatch(cd,ud))return false;
 const vReq=_dcCharCpVigorRequirement(cd);
 if(vReq&&!_dcVigorAtLeast(S.dc.mpLevel,vReq))return false;
@@ -8862,15 +8930,25 @@ const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;
 if(!cd||!ud||cd._manual||ud._manual)return;
 S.dc.charCondPassive=_dcShouldAutoCharCondPassive(cd,ud);
 if(!S.dc.charCondPassive)S.dc.dcSuperchargedExTier=0;
-else if(cd.ex_supercharged_tiers&&cd.ex_supercharged_tiers.length>1)S.dc.dcSuperchargedExTier=cd.ex_supercharged_tiers.length-1;
+else _dcSyncSuperchargedExTierForVigor();
 }
 function _dcCharGuaranteedCritActive(){
 const cd=S.dc.atkCharData;
 if(!cd||!S.dc.charCondPassive)return false;
-const re=/guaranteed\s+critical|grant\s+guaranteed\s+critical|activate\s+guaranteed\s+critical|確定クリティカル|確定.*クリティカル/i;
-function scanAb(ab){if(!ab)return false;const r=_dcResolveCharAbilityForMode(ab);if(!r)return false;let blob=String(r.name||'')+'\n';(r.details||[]).forEach(d=>{blob+=String((d&&d.text)||'')+'\n'});return re.test(blob)}
-if(!Array.isArray(cd.abilities))return false;
-return cd.abilities.some(scanAb);
+function scanAb(ab){
+if(!ab||ab.is_ex)return false;
+const r=_dcResolveCharAbilityForMode(ab);
+if(!r)return false;
+let blob=String(r.name||'')+'\n';
+(r.details||[]).forEach(d=>{blob+=String((d&&d.text)||'')+'\n'});
+return DC_GUARANTEED_CRIT_RE.test(blob);
+}
+if(Array.isArray(cd.abilities)&&cd.abilities.some(scanAb))return true;
+if(_dcNormMpLevel(S.dc.mpLevel)==='super'&&cd.ex_supercharged_tiers&&cd.ex_supercharged_tiers.length>1){
+const maxTi=cd.ex_supercharged_tiers.length-1;
+if((S.dc.dcSuperchargedExTier|0)>=maxTi&&_dcSuperchargedExTierHasGuaranteedCrit(cd,2))return true;
+}
+return false;
 }
 function _dcGetCharStatsForCp(charCpOn){
 const cd=S.dc.atkCharData;if(!cd)return[];
@@ -9375,8 +9453,8 @@ function setDcMasterLeagueBuff(on){S.dc.masterLeagueBuff=!!on;renderDcAtkUnit();
 function setDcGrandOffensiveBuff(on){S.dc.grandOffensiveBuff=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function toggleDcMasterLeagueBuff(){setDcMasterLeagueBuff(!S.dc.masterLeagueBuff)}
 function toggleDcGrandOffensiveBuff(){setDcGrandOffensiveBuff(!S.dc.grandOffensiveBuff)}
-function setDcCharCondPassive(on){S.dc.charCondPassive=!!on;if(!on){S.dc.dcSuperchargedExTier=0}else if(S.dc.atkCharData&&S.dc.atkCharData.ex_supercharged_tiers&&S.dc.atkCharData.ex_supercharged_tiers.length>1){S.dc.dcSuperchargedExTier=S.dc.atkCharData.ex_supercharged_tiers.length-1}renderDcAtkUnit();renderDcAtkChar();if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);const autoV=S.dc.atkCharData&&_dcShouldAutoSuperchargedVigorOnCharCp(S.dc.atkCharData);if(on&&autoV)setDcMp('super');else if(!on&&autoV)_dcAutoSetVigor();else onDcParamChange()}
-function setDcSuperchargedExTier(i){const cd=S.dc.atkCharData,arr=cd&&cd.ex_supercharged_tiers;if(!arr||arr.length<2)return;const n=arr.length;S.dc.dcSuperchargedExTier=Math.max(0,Math.min(Number(i)||0,n-1));renderDcAtkUnit();renderDcAtkChar();if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);else onDcParamChange()}
+function setDcCharCondPassive(on){S.dc.charCondPassive=!!on;if(!on)S.dc.dcSuperchargedExTier=0;else _dcSyncSuperchargedExTierForVigor();renderDcAtkUnit();renderDcAtkChar();if(S.dc.atkCharData&&!S.dc.atkCharData._manual){_dcAutoEnableMaxDamageSkills();_dcRecalcPilotBonuses(true)}const autoV=S.dc.atkCharData&&_dcShouldAutoSuperchargedVigorOnCharCp(S.dc.atkCharData);if(on&&autoV)setDcMp('super');else if(!on&&autoV)_dcAutoSetVigor();else onDcParamChange()}
+function setDcSuperchargedExTier(i){const cd=S.dc.atkCharData,arr=cd&&cd.ex_supercharged_tiers;if(!arr||arr.length<2)return;const n=arr.length;S.dc.dcSuperchargedExTier=Math.max(0,Math.min(Number(i)||0,n-1));renderDcAtkUnit();renderDcAtkChar();if(S.dc.atkCharData&&!S.dc.atkCharData._manual){_dcAutoEnableMaxDamageSkills();_dcRecalcPilotBonuses(true)}else onDcParamChange()}
 function toggleDcUnitCondPassive(){setDcUnitCondPassive(!S.dc.unitCondPassive)}
 function toggleDcCharCondPassive(){setDcCharCondPassive(!S.dc.charCondPassive)}
 
@@ -9849,7 +9927,7 @@ const rsk=_dcResolveSkillForDcMode(sk);
 const detailLines=(rsk.details||[]).map(d=>typeof d==='string'?d:(d&&d.text)||'').join(' ');
 const desc=[detailLines,rsk.desc||'',rsk.sp_desc||''].filter(Boolean).join(' ');
 let m;
-m=desc.match(/[Ii]ncreases?\s+(?:own\s+)?damage\s+dealt\s+(?:to\s+(?:the\s+)?enem(?:y|ies)\s+)?(?:with\s+.+?\s+)?by\s*(\d+)%/i);
+m=desc.match(/[Ii]ncrease(?:s)?\s+(?:own\s+)?damage\s+dealt\s+(?:to\s+(?:the\s+)?enem(?:y|ies)\s+)?(?:with\s+.+?\s+)?by\s*(\d+)%/i);
 if(!m&&_dcIsZhCalcLang())m=desc.match(/對敵方造成的損傷提升(\d+)%/);
 if(m)b.dmgDealt+=parseInt(m[1],10);
 m=desc.match(/[Ii]ncreases?\s+(?:own\s+)?DEF(?:ense)?\s+by\s*(\d+)%/i);
@@ -10683,7 +10761,12 @@ const ccpChanged=!!S.dc.charCondPassive!==prevCcp;
 if(S.dc.atkUnitData&&(newKey!==prevKey||!!S.dc.unitCondPassive!==prevUcp))renderDcAtkUnit();
 if(ccpChanged)renderDcAtkChar();
 if(S.dc.atkUnitData)renderDcWeaponArea();
-if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(false);
+if(_dcNormMpLevel(S.dc.mpLevel)==='super'){
+_dcSyncSuperchargedExTierForVigor();
+_dcAutoEnableMaxDamageSkills();
+if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);
+else onDcParamChange();
+}else if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(false);
 else onDcParamChange();
 }
 function setDcDefend(v){

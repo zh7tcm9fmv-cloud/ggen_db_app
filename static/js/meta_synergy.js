@@ -835,9 +835,11 @@
           global.S.dc.atkCharData.ex_supercharged_tiers.length > 1 && global.S.dc.charCondPassive) {
         global.S.dc.dcSuperchargedExTier = global.S.dc.atkCharData.ex_supercharged_tiers.length - 1;
       }
+      if (typeof global.setDcCharCondPassive === 'function') global.setDcCharCondPassive(true);
       if (typeof global.renderDcAtkUnit === 'function') global.renderDcAtkUnit();
       if (typeof global.renderDcAtkChar === 'function') global.renderDcAtkChar();
       if (typeof global.renderDcDefStats === 'function') global.renderDcDefStats();
+      if (typeof global._dcAutoEnableMaxDamageSkills === 'function') global._dcAutoEnableMaxDamageSkills();
       if (typeof global._dcRecalcPilotBonuses === 'function') global._dcRecalcPilotBonuses(true);
       if (typeof global.onDcParamChange === 'function') global.onDcParamChange();
     } catch (_) {}
