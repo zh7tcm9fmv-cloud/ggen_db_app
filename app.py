@@ -1503,7 +1503,8 @@ def build_unit_browse_map_weapon_previews(uid, stat_mode='normal', ld=None, lc=N
         if want and not any(t in tags for t in want):
             continue
         score = sum(1 for t in tags if not want or t in want)
-        matches.append((score, wid, {
+        sort_ord = int(wp.get('sort') or 0)
+        matches.append((score, sort_ord, wid, {
             'weapon_id': wid,
             'map_range_type': str(wm.get('map_range_type', '0') or '0'),
             'map_coords': [dict(c) for c in (ws.get('map_coords') or [])],
@@ -1518,8 +1519,8 @@ def build_unit_browse_map_weapon_previews(uid, stat_mode='normal', ld=None, lc=N
         }))
     if not matches:
         return []
-    matches.sort(key=lambda x: (-x[0], x[1]))
-    return [m[2] for m in matches]
+    matches.sort(key=lambda x: (-x[0], x[1], x[2]))
+    return [m[3] for m in matches]
 
 
 def build_unit_browse_map_weapon_preview(uid, stat_mode='normal', ld=None, lc=None, want_filter=None):
