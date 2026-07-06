@@ -1033,6 +1033,13 @@ _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
 SHINN_EX_CHAR_ID = '1330000103'
 _MSY_BUILD_WORKERS = max(1, min(4, int(os.environ.get('MSY_BUILD_WORKERS', '1') or '1')))
+_MSY_PAGE_BUILD_LIMIT = max(0, min(10, int(os.environ.get('MSY_PAGE_BUILD_LIMIT', '2') or '2')))
+# Older published caches to load when the current v14 master file is missing (Railway deploy).
+_MSY_LEGACY_MASTER_CACHE_KEYS = (
+    ('_v13_dc_master', 'EN', 3, 20, None, None),
+    ('_v12_dc_master', 'EN', 3, 20, None, None),
+    ('_v11_master', 'EN', 3, 20, None, None),
+)
 
 _MAX_UNITS_FULL_SIM = 120
 _PREFILTER_THRESHOLD = 80
@@ -1077,7 +1084,52 @@ def _msy_published_path(cache_key):
     return os.path.join(_msy_app_root(), 'data', 'published', _msy_cache_basename(cache_key))
 
 
-def _load_master_from_disk(cache_key):
+def _msy_python_build_allowed():
+    return os.environ.get('MSY_ALLOW_PYTHON_BUILD', '').strip().lower() in ('1', 'true', 'yes')
+
+
+def _msy_page_build_allowed():
+    if _msy_python_build_allowed():
+        return True
+    return os.environ.get('MSY_ALLOW_PAGE_BUILD', '1').strip().lower() in ('1', 'true', 'yes')
+
+
+def _trim_group_pilots(g, top_n):
+    """Trim pilot lists inside a group blob to top_n entries per ranking block."""
+    if not g or top_n <= 0:
+        return g
+    g = dict(g)
+    top_n = int(top_n)
+
+    def _trim_block(block):
+        if not block or not isinstance(block, dict):
+            return block
+        block = dict(block)
+        pilots = block.get('pilots') or []
+        if len(pilots) > top_n:
+            block['pilots'] = pilots[:top_n]
+        return block
+
+    def _trim_rankings(rk):
+        if not rk or not isinstance(rk, dict):
+            return rk
+        return {k: _trim_block(v) for k, v in rk.items()}
+
+    for key in ('rankings', 'rankings_no_ur', 'rankings_no_shinn', 'rankings_no_gc', 'rankings_no_cp'):
+        if g.get(key):
+            g[key] = _trim_rankings(g[key])
+    for key in ('rankings_by_tier', 'rankings_no_ur_by_tier', 'rankings_no_shinn_by_tier',
+                'rankings_no_gc_by_tier', 'rankings_no_cp_by_tier'):
+        blob = g.get(key)
+        if not blob:
+            continue
+        g[key] = {dt: _trim_rankings(rk) for dt, rk in blob.items()}
+    if g.get('pilots') and len(g['pilots']) > top_n:
+        g['pilots'] = g['pilots'][:top_n]
+    return g
+
+
+def _load_master_from_disk(cache_key, *, allow_legacy=False):
     for label, path in (
         ('persistent', _msy_disk_path(cache_key)),
         ('published', _msy_published_path(cache_key)),
@@ -1101,7 +1153,47 @@ def _load_master_from_disk(cache_key):
             }
         except Exception as e:
             print(f'MSY disk cache load failed ({path}): {e}')
-    return None
+
+    if not allow_legacy:
+        return None
+
+    want_top = int(cache_key[3] or 10)
+    best = None
+    best_n = 0
+    best_label = ''
+    for legacy_key in _MSY_LEGACY_MASTER_CACHE_KEYS:
+        for label, path in (
+            ('published', _msy_published_path(legacy_key)),
+            ('persistent', _msy_disk_path(legacy_key)),
+        ):
+            if not os.path.isfile(path):
+                continue
+            try:
+                with gzip.open(path, 'rt', encoding='utf-8') as f:
+                    data = json.load(f)
+                groups = data.get('groups')
+                if not groups:
+                    continue
+                n = len(groups)
+                if n > best_n or (n == best_n and label == 'published' and best_label != 'published'):
+                    trimmed = groups
+                    if want_top and want_top < int(legacy_key[3] or 20):
+                        trimmed = [_trim_group_pilots(g, want_top) for g in groups]
+                    best = {
+                        'groups': trimmed,
+                        'total_pilot_candidates': int(data.get('total_pilot_candidates') or 0),
+                        'legacy': True,
+                    }
+                    best_n = n
+                    best_label = label
+            except Exception as e:
+                print(f'MSY legacy disk cache load failed ({path}): {e}')
+    if best:
+        print(
+            f'MSY legacy {best_label} cache hit: {best_n} units '
+            f'(wanted {cache_key[0]})'
+        )
+    return best
 
 
 def _save_master_to_disk(cache_key, result):
@@ -2229,22 +2321,32 @@ def _ordered_unit_ids_for_browse(unit_ids, master_groups, lc, kwargs, rank_mode)
         uid = _app().normalize_id((g.get('unit') or {}).get('id'))
         if uid:
             by_uid[uid] = g
-    scored = []
-    for uid in unit_ids:
+
+    def _score(uid):
         uid = _app().normalize_id(uid)
         g = by_uid.get(uid)
         if g:
             rk = g.get('rankings') or {}
             block = rk.get(rank_mode) or rk.get('super_crit') or rk.get('crit') or rk.get('normal') or {}
-            sc = block.get('max_damage') or g.get('max_damage') or 0
+            return block.get('max_damage') or g.get('max_damage') or 0
+        return _cheap_unit_peak_score(uid, lc, kwargs)
+
+    cached = []
+    uncached = []
+    for uid in unit_ids:
+        uid = _app().normalize_id(uid)
+        sc = _score(uid)
+        if uid in by_uid:
+            cached.append((sc, uid))
         else:
-            sc = _cheap_unit_peak_score(uid, lc, kwargs)
-        scored.append((sc, uid))
-    scored.sort(key=lambda x: (-x[0], x[1]))
-    return [uid for _, uid in scored]
+            uncached.append((sc, uid))
+    cached.sort(key=lambda x: (-x[0], x[1]))
+    uncached.sort(key=lambda x: (-x[0], x[1]))
+    return [uid for _, uid in cached] + [uid for _, uid in uncached]
 
 
-def _resolve_groups_for_unit_ids(unit_ids, master_groups, lc, kwargs, *, browse_fast=False, def_tier=3):
+def _resolve_groups_for_unit_ids(unit_ids, master_groups, lc, kwargs, *, browse_fast=False, def_tier=3,
+                                   max_build=None):
     A = _app()
     by_uid = {}
     for g in master_groups or []:
@@ -2260,25 +2362,32 @@ def _resolve_groups_for_unit_ids(unit_ids, master_groups, lc, kwargs, *, browse_
         else:
             to_build.append(uid)
     if to_build:
-        exclude = _exclude_set_from_kwargs(kwargs)
-        top_p = int(kwargs.get('top_pilots', 10) or 10)
-        dt = max(1, min(4, int(kwargs.get('def_tier', def_tier) or def_tier)))
-        built = _build_all_unit_groups(
-            to_build,
-            list(_pilot_pool_ids()),
-            lc,
-            int(kwargs.get('lb_tier', 3) or 3),
-            'super',
-            dt,
-            exclude,
-            top_p,
-            'super_crit',
-            def_unit_override=kwargs.get('def_unit_override'),
-            def_char_override=kwargs.get('def_char_override'),
-            def_tiers=None if browse_fast else _MSY_STD_DEF_TIERS,
-        )
-        out.extend(built)
-    return out
+        build_cap = _MSY_PAGE_BUILD_LIMIT if max_build is None else max(0, int(max_build))
+        if not _msy_page_build_allowed():
+            build_cap = 0
+        if build_cap > 0:
+            to_build = to_build[:build_cap]
+            exclude = _exclude_set_from_kwargs(kwargs)
+            top_p = int(kwargs.get('top_pilots', 10) or 10)
+            dt = max(1, min(4, int(kwargs.get('def_tier', def_tier) or def_tier)))
+            built = _build_all_unit_groups(
+                to_build,
+                list(_pilot_pool_ids()),
+                lc,
+                int(kwargs.get('lb_tier', 3) or 3),
+                'super',
+                dt,
+                exclude,
+                top_p,
+                'super_crit',
+                def_unit_override=kwargs.get('def_unit_override'),
+                def_char_override=kwargs.get('def_char_override'),
+                def_tiers=None if browse_fast else _MSY_STD_DEF_TIERS,
+            )
+            out.extend(built)
+    # Preserve caller page order.
+    out_by_uid = {A.normalize_id((g.get('unit') or {}).get('id')): g for g in out}
+    return [out_by_uid[uid] for uid in unit_ids if uid in out_by_uid]
 
 
 def _parse_browse_filters(kwargs, lc):
@@ -2456,11 +2565,34 @@ def _normalize_group_for_mode(g, rank_mode):
     return None
 
 
+def _merge_groups_into_cache(cache_key, new_groups):
+    """Append freshly built unit groups to the in-memory master cache."""
+    if not new_groups:
+        return
+    with _rankings_build_lock:
+        entry = _rankings_result_cache.get(cache_key)
+        if entry is None:
+            entry = {'groups': [], 'total_pilot_candidates': len(_pilot_pool_ids())}
+            _rankings_result_cache[cache_key] = entry
+        by_uid = {}
+        for g in entry.get('groups') or []:
+            uid = _app().normalize_id((g.get('unit') or {}).get('id'))
+            if uid:
+                by_uid[uid] = g
+        merged = list(entry.get('groups') or [])
+        for g in new_groups:
+            uid = _app().normalize_id((g.get('unit') or {}).get('id'))
+            if uid and uid not in by_uid:
+                merged.append(g)
+                by_uid[uid] = g
+        entry['groups'] = merged
+
+
 def _ensure_rankings_cache(cache_key, build_fn):
     cached = _rankings_result_cache.get(cache_key)
     if cached is not None:
         return cached, False
-    disk = _load_master_from_disk(cache_key)
+    disk = _load_master_from_disk(cache_key, allow_legacy=True)
     if disk is not None:
         _rankings_result_cache[cache_key] = disk
         return disk, False
@@ -2468,10 +2600,17 @@ def _ensure_rankings_cache(cache_key, build_fn):
         cached = _rankings_result_cache.get(cache_key)
         if cached is not None:
             return cached, False
-        disk = _load_master_from_disk(cache_key)
+        disk = _load_master_from_disk(cache_key, allow_legacy=True)
         if disk is not None:
             _rankings_result_cache[cache_key] = disk
             return disk, False
+        if not _msy_python_build_allowed():
+            empty = {
+                'groups': [],
+                'total_pilot_candidates': len(_pilot_pool_ids()),
+            }
+            _rankings_result_cache[cache_key] = empty
+            return empty, False
         if cache_key in _rankings_inflight:
             return None, True
         _rankings_inflight.add(cache_key)
@@ -2545,7 +2684,7 @@ def _warming_payload(rank_mode, vigor, def_tier, kwargs):
 
 
 def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, page, per_page, vigor,
-                                def_tier, kwargs, unit_q=''):
+                                def_tier, kwargs, unit_q='', cache_key=None):
     dt = max(1, min(4, int(def_tier or 3)))
     lc = kwargs.get('lc', 'EN')
     browse = _parse_browse_filters(kwargs, lc)
@@ -2561,6 +2700,8 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
     page_groups_raw = _resolve_groups_for_unit_ids(
         page_ids, groups, lc, kwargs_resolve, browse_fast=True, def_tier=dt,
     )
+    if cache_key:
+        _merge_groups_into_cache(cache_key, page_groups_raw)
     expanded = []
     for g in page_groups_raw:
         row = _group_for_def_tier(g, dt) if g.get('rankings_by_tier') else g
@@ -2669,7 +2810,7 @@ def prewarm_default_rankings():
         'def_char_override': None,
     }
     cache_key = _rankings_cache_key(lc, 3, kwargs)
-    disk = _load_master_from_disk(cache_key)
+    disk = _load_master_from_disk(cache_key, allow_legacy=True)
     if disk:
         _rankings_result_cache[cache_key] = disk
         print(f'MSY prewarm: loaded {len(disk.get("groups") or [])} units from disk')
@@ -2688,7 +2829,7 @@ def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
     cache_key = _master_cache_key(lc, kwargs)
 
     def _do_build(on_progress=None):
-        if os.environ.get('MSY_ALLOW_PYTHON_BUILD', '').strip() not in ('1', 'true', 'yes'):
+        if not _msy_python_build_allowed():
             raise RuntimeError(
                 'MSY Python build disabled — run scripts/build_msy_rankings_dc.py and deploy published cache'
             )
@@ -2717,6 +2858,7 @@ def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
                 def_tier=def_tier,
                 kwargs=kwargs,
                 unit_q=unit_q,
+                cache_key=cache_key,
             )
             payload['warming'] = True
             payload['partial'] = bool(partial.get('partial'))
@@ -2736,5 +2878,8 @@ def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
         def_tier=def_tier,
         kwargs=kwargs,
         unit_q=unit_q,
+        cache_key=cache_key,
     )
+    if cached.get('legacy'):
+        payload['cache_incomplete'] = True
     return payload

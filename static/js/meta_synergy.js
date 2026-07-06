@@ -271,6 +271,9 @@
     renderContent();
     prefetchDefTiers();
     prefetchRankModes();
+    if (d.cache_incomplete) {
+      showWarmingBanner(true, t('msy_warming_partial') || t('msy_warming') || 'Updating rankings…');
+    }
   }
 
   function renderRankModes() {
@@ -634,13 +637,14 @@
             showWarmingBanner(false);
           }
           state._warmPolls = (state._warmPolls || 0) + 1;
-          if (state._warmPolls >= 36) {
+          if (state._warmPolls >= 8) {
             showWarmingBanner(true, t('msy_warming_slow') || 'Rankings are still building. Results may be incomplete — try refreshing in a minute.');
             break;
           }
-          await sleep(Math.max(3000, (d.retry_after || 5) * 1000));
+          await sleep(Math.max(2000, (d.retry_after || 3) * 1000));
           continue;
         }
+        if (d && d.error) throw new Error(d.detail || d.error);
         if (!r.ok) throw new Error('HTTP ' + r.status);
         showWarmingBanner(false);
         applyPayload(d, state.defTier);
