@@ -13823,19 +13823,26 @@ def api_meta_synergy_rankings():
         import traceback
         traceback.print_exc()
         return jsonify({'error': 'meta_synergy_rankings_failed', 'detail': str(e)}), 500
-    if payload.get('warming'):
-        ck = f'msy_warming_{lc}_{hash(tuple(sorted(request.args.items()))) & 0xffff:x}'
-        status = 200 if payload.get('groups') else 202
-        return jsonify_cacheable(payload, ck, public=True, max_age=0, convert_images=True), status
-    if not full:
-        payload = {k: v for k, v in payload.items() if k != 'all_groups'}
-    ck = (
-        f'msy_{lc}_{rarity or unit_rarity}_{role or unit_role}_{series_id}_{source}_'
-        f'{pilot_rarity}_{",".join(pilot_roles)}_{metric}_{vigor}_{lb_tier}_{def_tier}_{top_pilots}_'
-        f'{rank_mode}_{unit_q}_{page}_{per_page}_{"full" if full else "page"}_'
-        f'{hash(tuple(exclude_pairs))}'
-    )
-    return jsonify_cacheable(payload, ck, public=True, max_age=3600, convert_images=True)
+    try:
+        if payload.get('warming'):
+            ck = f'msy_warming_{lc}_{hash(tuple(sorted(request.args.items()))) & 0xffff:x}'
+            status = 200 if payload.get('groups') else 202
+            return jsonify_cacheable(payload, ck, public=True, max_age=0, convert_images=True), status
+        if not full:
+            payload = {k: v for k, v in payload.items() if k != 'all_groups'}
+        pilot_roles_key = ','.join(pilot_roles) if pilot_roles else ''
+        ck = (
+            f'msy_{lc}_{rarity or unit_rarity}_{role or unit_role}_{series_id}_{source}_'
+            f'{pilot_rarity}_{pilot_roles_key}_{metric}_{vigor}_{lb_tier}_{def_tier}_{top_pilots}_'
+            f'{rank_mode}_{unit_q}_{page}_{per_page}_{"full" if full else "page"}_'
+            f'{hash(tuple(exclude_pairs))}'
+        )
+        return jsonify_cacheable(payload, ck, public=True, max_age=3600, convert_images=True)
+    except Exception as e:
+        print(f'api_meta_synergy_rankings response failed: {e}')
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': 'meta_synergy_rankings_failed', 'detail': str(e)}), 500
 
 
 @app.route('/api/tier_mockup')
