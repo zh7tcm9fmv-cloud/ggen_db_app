@@ -570,6 +570,8 @@ def _pilot_bonus_text_applies(uid, cid, ld, lc, text, detail=None):
     txt = str(text or '')
     if not txt:
         return False
+    if A._trait_line_is_supercharged_ex_section(txt):
+        return True
     if _pilot_tag_affinity_matches_unit(uid, lc, txt, detail):
         return True
     if re.search(r'when piloting character', txt, re.I):
@@ -605,8 +607,9 @@ def _char_pilot_dmg_bonuses(cid, uid, lc, *, cp_on=True):
                     cond_groups = []
                 if not txt:
                     continue
-                has_cond = bool(cond_groups) or bool(
-                    re.search(r'when\s+|if\s+|搭乗|時', txt, re.I)
+                has_cond = bool(cond_groups) or (
+                    not A._trait_line_is_supercharged_ex_section(txt)
+                    and bool(re.search(r'when\s+|if\s+|搭乗|時', txt, re.I))
                 )
                 if has_cond:
                     if not cp_on:
@@ -1027,7 +1030,8 @@ _char_pair_cache = {}
 _rankings_result_cache = {}
 _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
-_MSY_DISK_VERSION = 'v10'
+_MSY_DISK_VERSION = 'v11'
+SHINN_EX_CHAR_ID = '1330000103'
 _MSY_BUILD_WORKERS = max(1, min(4, int(os.environ.get('MSY_BUILD_WORKERS', '1') or '1')))
 
 _MAX_UNITS_FULL_SIM = 120
@@ -1257,6 +1261,12 @@ def _filter_non_ur(pilot_ids):
     return out
 
 
+def _filter_non_shinn(pilot_ids):
+    A = _app()
+    sid = A.normalize_id(SHINN_EX_CHAR_ID)
+    return [cid for cid in pilot_ids if A.normalize_id(cid) != sid]
+
+
 def _filter_non_guaranteed_crit(uid, pilot_ids, unit_wpn, lc, exclude):
     """Drop pilots with guaranteed crit (ability, EX weapon trait, or 100% crit rate)."""
     A = _app()
@@ -1470,6 +1480,27 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
             )
         return _rankings_from_multi_vigor_pairs(all_pairs_nu, top_pilots, lc)
 
+    def _rankings_no_shinn_for_tier(dt, all_pairs):
+        non_shinn = _filter_non_shinn(active_pilots)
+        if len(non_shinn) >= len(active_pilots):
+            return _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc)
+        ns_cids = set(non_shinn)
+        all_pairs_ns = [(cid, bv) for cid, bv in all_pairs if cid in ns_cids]
+        if not all_pairs_ns and non_shinn:
+            ns_scored = []
+            for cid in non_shinn:
+                ns_scored.append((
+                    _cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc),
+                    cid,
+                ))
+            ns_scored.sort(key=lambda x: (-x[0], x[1]))
+            ns_candidates = [cid for _, cid in ns_scored[:need]]
+            all_pairs_ns = _multi_vigor_pairs_for_candidates(
+                uid, ns_candidates, lc, lb_tier, dt, unit_wpn,
+                def_unit_override=def_unit_override, def_char_override=def_char_override,
+            )
+        return _rankings_from_multi_vigor_pairs(all_pairs_ns, top_pilots, lc)
+
     def _rankings_no_gc_for_tier(dt, all_pairs):
         non_gc = _filter_non_guaranteed_crit(uid, active_pilots, unit_wpn, lc, exclude)
         if len(non_gc) >= len(active_pilots):
@@ -1494,6 +1525,7 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
     if use_multi_tier:
         rankings_by_tier = {}
         rankings_no_ur_by_tier = {}
+        rankings_no_shinn_by_tier = {}
         rankings_no_gc_by_tier = {}
         for dt in tiers:
             pairs = _pairs_for_tier(dt)
@@ -1503,12 +1535,14 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
             if rk:
                 rankings_by_tier[int(dt)] = rk
                 rankings_no_ur_by_tier[int(dt)] = _rankings_no_ur_for_tier(dt, pairs)
+                rankings_no_shinn_by_tier[int(dt)] = _rankings_no_shinn_for_tier(dt, pairs)
                 rankings_no_gc_by_tier[int(dt)] = _rankings_no_gc_for_tier(dt, pairs)
         if not rankings_by_tier:
             return None
         dt_primary = int(def_tier) if int(def_tier) in rankings_by_tier else next(iter(rankings_by_tier))
         rankings = rankings_by_tier[dt_primary]
         rankings_no_ur = rankings_no_ur_by_tier.get(dt_primary) or rankings
+        rankings_no_shinn = rankings_no_shinn_by_tier.get(dt_primary) or rankings
         rankings_no_gc = rankings_no_gc_by_tier.get(dt_primary) or rankings
     else:
         dt = int(tiers[0])
@@ -1519,9 +1553,11 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
         if not rankings:
             return None
         rankings_no_ur = _rankings_no_ur_for_tier(dt, all_pairs)
+        rankings_no_shinn = _rankings_no_shinn_for_tier(dt, all_pairs)
         rankings_no_gc = _rankings_no_gc_for_tier(dt, all_pairs)
         rankings_by_tier = None
         rankings_no_ur_by_tier = None
+        rankings_no_shinn_by_tier = None
         rankings_no_gc_by_tier = None
 
     primary = rankings.get('super_crit') or rankings.get('crit') or rankings.get('normal')
@@ -1531,6 +1567,7 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
         'weapon_elems': _weapon_elem_label(uid, lc),
         'rankings': rankings,
         'rankings_no_ur': rankings_no_ur,
+        'rankings_no_shinn': rankings_no_shinn,
         'rankings_no_gc': rankings_no_gc,
         'max_damage': primary['max_damage'],
         'metric': metric,
@@ -1541,6 +1578,7 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
     if rankings_by_tier:
         out['rankings_by_tier'] = rankings_by_tier
         out['rankings_no_ur_by_tier'] = rankings_no_ur_by_tier
+        out['rankings_no_shinn_by_tier'] = rankings_no_shinn_by_tier
         out['rankings_no_gc_by_tier'] = rankings_no_gc_by_tier
     return out
 
@@ -1859,6 +1897,7 @@ def _group_for_def_tier(g, def_tier):
     if not rankings:
         return None
     rnub = (g.get('rankings_no_ur_by_tier') or {}).get(dt) or (g.get('rankings_no_ur_by_tier') or {}).get(str(dt))
+    rnsh = (g.get('rankings_no_shinn_by_tier') or {}).get(dt) or (g.get('rankings_no_shinn_by_tier') or {}).get(str(dt))
     rngc = (g.get('rankings_no_gc_by_tier') or {}).get(dt) or (g.get('rankings_no_gc_by_tier') or {}).get(str(dt))
     primary = rankings.get('super_crit') or rankings.get('crit') or rankings.get('normal')
     if not primary:
@@ -1868,6 +1907,7 @@ def _group_for_def_tier(g, def_tier):
         'weapon_elems': g.get('weapon_elems'),
         'rankings': rankings,
         'rankings_no_ur': rnub or rankings,
+        'rankings_no_shinn': rnsh or g.get('rankings_no_shinn') or rankings,
         'rankings_no_gc': rngc or g.get('rankings_no_gc') or rankings,
         'max_damage': primary.get('max_damage', 0),
         'metric': g.get('metric'),
@@ -2126,7 +2166,7 @@ def _filter_master_groups(groups, lc, filters):
 
 def _master_cache_key(lc, kwargs):
     return (
-        '_v10_master',
+        '_v11_master',
         lc or 'EN',
         int(kwargs.get('lb_tier', 3) or 3),
         int(kwargs.get('top_pilots', 20) or 20),
@@ -2198,6 +2238,7 @@ def _normalize_group_for_mode(g, rank_mode):
             'pilots': block.get('pilots') or [],
             'rankings': g.get('rankings'),
             'rankings_no_ur': g.get('rankings_no_ur'),
+            'rankings_no_shinn': g.get('rankings_no_shinn'),
             'rankings_no_gc': g.get('rankings_no_gc'),
             'is_sd': g.get('is_sd', False),
             'bundled_pilot_id': g.get('bundled_pilot_id'),

@@ -3986,6 +3986,13 @@ def _clean_supercharged_ex_tier_label(lb):
     return s.strip().strip('"').strip("'")
 
 
+def _trait_line_is_supercharged_ex_section(text):
+    """True when text is part of a Supercharged EX 1/2 chain (not piloting-a-specific-MS gated)."""
+    if not text or not isinstance(text, str):
+        return False
+    return bool(re.search(r'(?:Supercharged\s+EX|超一擊EX)\s*[12]\b', text, re.IGNORECASE))
+
+
 def _slice_supercharged_ex_tier_sections(blob):
     """Split EX trait text at Supercharged EX 1 / 2 (EN) or 超一擊EX1 / 2 (ZH) headers. Returns [(tier, label, chunk), ...]."""
     if not blob or not isinstance(blob, str):

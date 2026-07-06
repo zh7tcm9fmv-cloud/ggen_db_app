@@ -8,6 +8,8 @@
   ];
 
   var UR_ICON = '/static/images/UI/UI_Common_RarityIcon_UR.webp';
+  var SHINN_EX_CHAR_ID = '1330000103';
+  var shinnPortraitUrl = '';
 
   var state = {
     loading: false,
@@ -27,6 +29,7 @@
     cacheKey: null,
     tierCache: {},
     excludeUrUnits: {},
+    excludeShinnUnits: {},
     excludeGuaranteedCrit: false,
     unitViewMode: {}
   };
@@ -78,15 +81,16 @@
     return RANK_MODES[0];
   }
 
-  function groupBlock(g, modeId, noUr, noGc) {
+  function groupBlock(g, modeId, noUr, noGc, noShinn) {
     if (!g) return null;
     var src;
     if (noGc) src = g.rankings_no_gc || g.rankings || {};
+    else if (noShinn) src = g.rankings_no_shinn || g.rankings || {};
     else if (noUr) src = g.rankings_no_ur || g.rankings || {};
     else src = g.rankings || {};
     var block = src[modeId];
     if (block) return block;
-    if (!noUr && !noGc && modeId === 'super_crit' && g.pilots) {
+    if (!noUr && !noGc && !noShinn && modeId === 'super_crit' && g.pilots) {
       return { max_damage: g.max_damage, pilots: g.pilots };
     }
     return null;
@@ -94,8 +98,9 @@
 
   function viewGroup(g, modeId) {
     var noUr = !!(g.unit && state.excludeUrUnits[g.unit.id]);
+    var noShinn = !!(g.unit && state.excludeShinnUnits[g.unit.id]);
     var noGc = !!state.excludeGuaranteedCrit;
-    var block = groupBlock(g, modeId, noUr, noGc);
+    var block = groupBlock(g, modeId, noUr, noGc, noShinn);
     if (!block) return null;
     return {
       unit: g.unit,
@@ -105,6 +110,7 @@
       is_sd: g.is_sd,
       rankings: g.rankings,
       rankings_no_ur: g.rankings_no_ur,
+      rankings_no_shinn: g.rankings_no_shinn,
       rankings_no_gc: g.rankings_no_gc
     };
   }
@@ -350,6 +356,21 @@
     return pilot.score || 0;
   }
 
+  function excludeShinnBtnHtml(unitId, active, isSd) {
+    if (isSd) return '';
+    var thumb = shinnPortraitUrl || '';
+    return (
+      '<button type="button" class="msy-act-btn msy-exclude-shinn-btn' + (active ? ' active' : '') + '" title="' + escAttr(active ? t('msy_exclude_shinn_on') : t('msy_exclude_shinn')) + '" onclick="GgenMetaSynergy.toggleExcludeShinn(\'' + escJs(unitId) + '\')">' +
+        '<span class="msy-exclude-shinn-icon">' +
+          (thumb
+            ? rasterImg(thumb, { cls: 'msy-exclude-shinn-portrait', loading: 'lazy', alt: 'Shinn', lazy: false })
+            : '<span class="msy-exclude-shinn-fallback" aria-hidden="true">S</span>') +
+          '<span class="msy-exclude-shinn-x" aria-hidden="true"></span>' +
+        '</span>' +
+      '</button>'
+    );
+  }
+
   function excludeUrBtnHtml(unitId, active, isSd) {
     if (isSd) return '';
     return (
@@ -457,6 +478,7 @@
       var rank = (startRank || 0) + gi + 1;
       var u = row.unit;
       var excludeUr = !!state.excludeUrUnits[u.id];
+      var excludeShinn = !!state.excludeShinnUnits[u.id];
       var chartMode = state.unitViewMode[u.id] === 'chart';
       html += '<article class="msy-unit-card' + (row.is_sd ? ' msy-unit-card--sd' : '') + (chartMode ? ' msy-unit-card--chart' : '') + '">';
       html += '<header class="msy-unit-head">';
@@ -475,6 +497,7 @@
       html += '</div>';
       html += '<div class="msy-unit-tools">';
       html += chartBtnHtml(u.id, chartMode);
+      html += excludeShinnBtnHtml(u.id, excludeShinn, row.is_sd);
       html += excludeUrBtnHtml(u.id, excludeUr, row.is_sd);
       html += '</div>';
       html += '<div class="msy-unit-peak">';
@@ -704,6 +727,12 @@
     loadRankings(false);
   }
 
+  function toggleExcludeShinn(unitId) {
+    if (state.excludeShinnUnits[unitId]) delete state.excludeShinnUnits[unitId];
+    else state.excludeShinnUnits[unitId] = true;
+    renderContent();
+  }
+
   function toggleExcludeUr(unitId) {
     if (state.excludeUrUnits[unitId]) delete state.excludeUrUnits[unitId];
     else state.excludeUrUnits[unitId] = true;
@@ -727,6 +756,18 @@
     if (state.unitViewMode[unitId] === 'chart') delete state.unitViewMode[unitId];
     else state.unitViewMode[unitId] = 'chart';
     renderContent();
+  }
+
+  function ensureShinnPortrait() {
+    if (shinnPortraitUrl) return Promise.resolve(shinnPortraitUrl);
+    var lang = (global.S && global.S.lang) || 'EN';
+    return fetch('/api/character/' + encodeURIComponent(SHINN_EX_CHAR_ID) + '?lang=' + encodeURIComponent(lang) + '&view=ranking')
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        shinnPortraitUrl = (d && (d.thum || d.portrait)) || '';
+        return shinnPortraitUrl;
+      })
+      .catch(function () { return ''; });
   }
 
   function onTabShown() {
@@ -902,6 +943,7 @@
   function init() {
     bindControls();
     applyLangStatic();
+    void ensureShinnPortrait();
   }
 
   global.GgenMetaSynergy = {
@@ -916,6 +958,7 @@
     loadRankings: loadRankings,
     scheduleReload: scheduleReload,
     toggleExcludeUr: toggleExcludeUr,
+    toggleExcludeShinn: toggleExcludeShinn,
     toggleExcludeGuaranteedCrit: toggleExcludeGuaranteedCrit,
     toggleChartView: toggleChartView
   };
