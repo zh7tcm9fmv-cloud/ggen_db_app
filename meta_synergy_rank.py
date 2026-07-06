@@ -5,7 +5,10 @@ active skills, super vigor, NPC DEF tiers.
 """
 from __future__ import annotations
 
+import gzip
+import json
 import math
+import os
 import re
 import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
@@ -680,15 +683,80 @@ _char_pair_cache = {}
 _rankings_result_cache = {}
 _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
+_MSY_DISK_VERSION = 'v6'
 
 _MAX_UNITS_FULL_SIM = 120
 _PREFILTER_THRESHOLD = 80
 _TOP_PILOTS_PREFILTER = 48
-_RANK_MODES = (
-    ('super_crit', 'super_crit_dmg'),
-    ('crit', 'crit_dmg'),
-    ('normal', 'normal_dmg'),
+# Each rank tab uses the vigor tier required in-game for that hit type (Damage Simulator rules).
+_RANK_MODE_VIGOR = (
+    ('super_crit', 'super_crit_dmg', 'super'),
+    ('crit', 'crit_dmg', 'max'),
+    ('normal', 'normal_dmg', 'high'),
 )
+_MSY_VIGOR_LEVELS = ('super', 'max', 'high')
+_VIGOR_FOR_RANK_MODE = {mode: vigor for mode, _dmg, vigor in _RANK_MODE_VIGOR}
+
+
+def _msy_persistent_dir():
+    vol = (os.environ.get('GGEN_PERSISTENT_DIR') or os.environ.get('RAILWAY_VOLUME_MOUNT_PATH') or '').strip()
+    if vol:
+        d = os.path.join(vol, 'meta_synergy')
+    else:
+        root = os.path.dirname(os.path.abspath(_app().__file__))
+        d = os.path.join(root, 'data', 'persistent', 'meta_synergy')
+    os.makedirs(d, exist_ok=True)
+    return d
+
+
+def _msy_disk_path(cache_key):
+    tag, lc, lb_tier, top_pilots, du, dc = cache_key
+    du_s = str(du) if du is not None else '0'
+    dc_s = str(dc) if dc is not None else '0'
+    name = f'msy_{tag}_{lc}_lb{lb_tier}_tp{top_pilots}_du{du_s}_dc{dc_s}.json.gz'
+    return os.path.join(_msy_persistent_dir(), name)
+
+
+def _load_master_from_disk(cache_key):
+    path = _msy_disk_path(cache_key)
+    if not os.path.isfile(path):
+        return None
+    try:
+        with gzip.open(path, 'rt', encoding='utf-8') as f:
+            data = json.load(f)
+        if data.get('version') != _MSY_DISK_VERSION:
+            return None
+        if tuple(data.get('cache_key') or ()) != tuple(cache_key):
+            return None
+        groups = data.get('groups')
+        if not groups:
+            return None
+        print(f'MSY disk cache hit: {len(groups)} units ({path})')
+        return {
+            'groups': groups,
+            'total_pilot_candidates': int(data.get('total_pilot_candidates') or 0),
+        }
+    except Exception as e:
+        print(f'MSY disk cache load failed ({path}): {e}')
+        return None
+
+
+def _save_master_to_disk(cache_key, result):
+    path = _msy_disk_path(cache_key)
+    try:
+        payload = {
+            'version': _MSY_DISK_VERSION,
+            'cache_key': list(cache_key),
+            'groups': result.get('groups') or [],
+            'total_pilot_candidates': result.get('total_pilot_candidates', 0),
+        }
+        tmp = path + '.tmp'
+        with gzip.open(tmp, 'wt', encoding='utf-8') as f:
+            json.dump(payload, f, ensure_ascii=False, separators=(',', ':'))
+        os.replace(tmp, path)
+        print(f'MSY disk cache saved: {len(payload["groups"])} units ({path})')
+    except Exception as e:
+        print(f'MSY disk cache save failed ({path}): {e}')
 
 
 def _cached_best_ex_weapon(uid, stat_mode, lc):
@@ -819,11 +887,15 @@ def _filter_non_ur(pilot_ids):
     return out
 
 
-def _rankings_from_pairs(all_pairs, top_pilots, lc):
+def _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc):
+    """Build super/crit/normal leaderboards using the correct vigor per mode."""
     rankings = {}
-    for mode, dmg_key in _RANK_MODES:
+    for mode, dmg_key, vigor_key in _RANK_MODE_VIGOR:
         scored = []
-        for cid, d in all_pairs:
+        for cid, by_vigor in all_pairs:
+            d = (by_vigor or {}).get(vigor_key)
+            if not d:
+                continue
             sc = d.get(dmg_key, 0) or 0
             if sc <= 0:
                 continue
@@ -834,6 +906,7 @@ def _rankings_from_pairs(all_pairs, top_pilots, lc):
         top = scored[: max(1, int(top_pilots or 10))]
         rankings[mode] = {
             'max_damage': top[0][0],
+            'vigor': vigor_key,
             'pilots': [
                 {
                     'rank': i + 1,
@@ -846,12 +919,31 @@ def _rankings_from_pairs(all_pairs, top_pilots, lc):
                     'guaranteed_crit': d['guaranteed_crit'],
                     'crit_rate': d['crit_rate'],
                     'pair_ok': d['pair_ok'],
+                    'vigor': vigor_key,
                     'score': sc,
                 }
                 for i, (sc, cid, d) in enumerate(top)
             ],
         }
     return rankings
+
+
+def _multi_vigor_pairs_for_candidates(uid, candidates, lc, lb_tier, def_tier, unit_wpn, *,
+                                      def_unit_override=None, def_char_override=None):
+    pairs = []
+    for cid in candidates:
+        by_vigor = {}
+        for v in _MSY_VIGOR_LEVELS:
+            dmg = compute_pair_damage(
+                uid, cid, lc, lb_tier=lb_tier, vigor=v,
+                def_tier=def_tier, def_unit_override=def_unit_override,
+                def_char_override=def_char_override, wpn=unit_wpn,
+            )
+            if dmg:
+                by_vigor[v] = dmg
+        if by_vigor:
+            pairs.append((cid, by_vigor))
+    return pairs
 
 
 def _best_pilot_by_stat(uid, pilot_ids, wpn, lc, exclude):
@@ -936,23 +1028,17 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
     )
 
     def _pairs_for_tier(dt):
-        pairs = []
-        for cid in candidates:
-            dmg = compute_pair_damage(
-                uid, cid, lc, lb_tier=lb_tier, vigor=vigor,
-                def_tier=dt, def_unit_override=def_unit_override,
-                def_char_override=def_char_override, wpn=unit_wpn,
-            )
-            if dmg:
-                pairs.append((cid, dmg))
-        return pairs
+        return _multi_vigor_pairs_for_candidates(
+            uid, candidates, lc, lb_tier, dt, unit_wpn,
+            def_unit_override=def_unit_override, def_char_override=def_char_override,
+        )
 
     def _rankings_no_ur_for_tier(dt, all_pairs):
         non_ur = _filter_non_ur(active_pilots)
         if len(non_ur) >= len(active_pilots):
-            return _rankings_from_pairs(all_pairs, top_pilots, lc)
+            return _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc)
         nu_cids = set(non_ur)
-        all_pairs_nu = [(cid, d) for cid, d in all_pairs if cid in nu_cids]
+        all_pairs_nu = [(cid, bv) for cid, bv in all_pairs if cid in nu_cids]
         if not all_pairs_nu and non_ur:
             nu_scored = []
             for cid in non_ur:
@@ -962,15 +1048,11 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
                 nu_scored.append((unit_atk * char_atk, cid))
             nu_scored.sort(key=lambda x: (-x[0], x[1]))
             nu_candidates = [cid for _, cid in nu_scored[:need]]
-            for cid in nu_candidates:
-                dmg = compute_pair_damage(
-                    uid, cid, lc, lb_tier=lb_tier, vigor=vigor,
-                    def_tier=dt, def_unit_override=def_unit_override,
-                    def_char_override=def_char_override, wpn=unit_wpn,
-                )
-                if dmg:
-                    all_pairs_nu.append((cid, dmg))
-        return _rankings_from_pairs(all_pairs_nu, top_pilots, lc)
+            all_pairs_nu = _multi_vigor_pairs_for_candidates(
+                uid, nu_candidates, lc, lb_tier, dt, unit_wpn,
+                def_unit_override=def_unit_override, def_char_override=def_char_override,
+            )
+        return _rankings_from_multi_vigor_pairs(all_pairs_nu, top_pilots, lc)
 
     if use_multi_tier:
         rankings_by_tier = {}
@@ -979,7 +1061,7 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
             pairs = _pairs_for_tier(dt)
             if not pairs:
                 continue
-            rk = _rankings_from_pairs(pairs, top_pilots, lc)
+            rk = _rankings_from_multi_vigor_pairs(pairs, top_pilots, lc)
             if rk:
                 rankings_by_tier[int(dt)] = rk
                 rankings_no_ur_by_tier[int(dt)] = _rankings_no_ur_for_tier(dt, pairs)
@@ -993,7 +1075,7 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
         all_pairs = _pairs_for_tier(dt)
         if not all_pairs:
             return None
-        rankings = _rankings_from_pairs(all_pairs, top_pilots, lc)
+        rankings = _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc)
         if not rankings:
             return None
         rankings_no_ur = _rankings_no_ur_for_tier(dt, all_pairs)
@@ -1122,7 +1204,8 @@ def _settings_note(def_tier, *, def_unit_override=None, def_char_override=None):
         def_tier, def_unit_override=def_unit_override, def_char_override=def_char_override,
     )
     return (
-        f"Max-damage sim: CP on, super vigor, active skills, LB3; pilots matched to unit role. "
+        f"Max-damage sim: CP on, active skills, LB3; pilots matched to unit role. "
+        f"Super Crit @ Super vigor, Crit @ Max, Normal @ High. "
         f"Difficulty ({label}): MS DEF {u:,}, pilot DEF {c:,} "
         f"(weapon DEF debuff capped at {_DEF_DEBUFF_CAP}%)"
     )
@@ -1344,29 +1427,140 @@ def _filter_groups_by_unit_q(groups, unit_q, lc):
     return out
 
 
-def _rankings_cache_key(lc, def_tier, kwargs):
-    du = kwargs.get('def_unit_override')
-    dc = kwargs.get('def_char_override')
-    tier_key = def_tier if (du or dc) else 'multi'
+def _parse_browse_filters(kwargs, lc):
+    """Parse unit browse filter kwargs (same semantics as /api/units)."""
+    A = _app()
+    rarity_raw = kwargs.get('rarity') or kwargs.get('unit_rarity') or ''
+    if str(rarity_raw).upper() in ('ALL', ''):
+        rarity_filter = None
+    elif ',' in str(rarity_raw) or str(rarity_raw).upper() in ('LT', 'ULT', 'NLT', '__NONE__'):
+        rarity_filter = A.parse_list_rarity_filter(str(rarity_raw))
+    elif str(rarity_raw).upper() in A.RARITY_LETTERS:
+        rarity_filter = A.parse_list_rarity_filter(str(rarity_raw).upper())
+    else:
+        rarity_filter = None
+
+    role_raw = kwargs.get('role') if kwargs.get('role') is not None else kwargs.get('unit_role')
+    if role_raw is None or str(role_raw).upper() in ('ALL', ''):
+        role_filter = None
+    else:
+        role_filter = A.parse_list_role_filter(str(role_raw))
+
+    return {
+        'role_filter': role_filter,
+        'rarity_filter': rarity_filter,
+        'series_filter': A.parse_list_series_filter(kwargs.get('series_id') or ''),
+        'source_filter': A.parse_list_source_filter(kwargs.get('source') or ''),
+        'lineage_filter': A.parse_list_lineage_filter(kwargs.get('lineage_id') or ''),
+        'lineage_combine': A.normalize_filter_combine_op(kwargs.get('lineage_op') or 'and', 'and'),
+        'unit_ser_map': _ldc(lc).get('unit_ser_map', {}),
+    }
+
+
+def _unit_passes_browse_filters(uid, info, lc, filters):
+    A = _app()
+    uid = A.normalize_id(uid)
+    ri = str(info.get('rarity', '1'))
+    role_id = str(info.get('role', '0'))
+    role_filter = filters.get('role_filter')
+    if role_filter is not None:
+        if not role_filter:
+            return False
+        if not A.unit_matches_role_filter(uid, info, role_filter):
+            return False
+    rarity_filter = filters.get('rarity_filter')
+    if rarity_filter is not None:
+        if not rarity_filter:
+            return False
+        letter = A.RARITY_MAP.get(ri, 'N')
+        lim = uid in A.LIMITED_TIME_UNIT_IDS
+        if not A.row_matches_rarity_filter(
+            rarity_filter, letter, lim, bool(info.get('is_ultimate', False)),
+        ):
+            return False
+    source_filter = filters.get('source_filter')
+    if source_filter is not None:
+        acq_route = str(info.get('acquisition_route', '0'))
+        if not A.entity_matches_source_category(acq_route, role_id, source_filter):
+            return False
+    series_filter = filters.get('series_filter')
+    if series_filter is not None:
+        unit_ser_map = filters.get('unit_ser_map') or {}
+        if not A.entity_matches_series(unit_ser_map.get(uid, ''), series_filter, lc):
+            return False
+    lineage_filter = filters.get('lineage_filter')
+    if lineage_filter is not None:
+        if not A.entity_matches_lineage(
+            A.unit_lin_map, uid, lineage_filter, filters.get('lineage_combine', 'and'),
+        ):
+            return False
+    return True
+
+
+def _filter_master_groups(groups, lc, filters):
+    A = _app()
+    if not filters or not any(
+        filters.get(k) is not None
+        for k in ('role_filter', 'rarity_filter', 'series_filter', 'source_filter', 'lineage_filter')
+    ):
+        return list(groups or [])
+    out = []
+    for g in groups or []:
+        uid = A.normalize_id((g.get('unit') or {}).get('id'))
+        info = A.unit_info_map.get(uid)
+        if not info:
+            continue
+        if _unit_passes_browse_filters(uid, info, lc, filters):
+            out.append(g)
+    return out
+
+
+def _master_cache_key(lc, kwargs):
     return (
-        '_v5',
+        '_v6_master',
         lc or 'EN',
-        kwargs.get('rarity') or kwargs.get('unit_rarity', 'ALL'),
-        kwargs.get('role') or kwargs.get('unit_role', 'ALL'),
-        kwargs.get('series_id') or '',
-        kwargs.get('source') or '',
-        kwargs.get('lineage_id') or '',
-        kwargs.get('lineage_op') or '',
-        kwargs.get('pilot_rarity', 'ALL'),
-        tuple(sorted(str(r) for r in (kwargs.get('pilot_roles') or ()))),
-        kwargs.get('vigor', 'super'),
         int(kwargs.get('lb_tier', 3) or 3),
-        tier_key,
-        du,
-        dc,
-        int(kwargs.get('top_pilots', 10) or 10),
-        tuple(tuple(p) for p in (kwargs.get('exclude_pairs') or ())),
+        int(kwargs.get('top_pilots', 20) or 20),
+        kwargs.get('def_unit_override'),
+        kwargs.get('def_char_override'),
     )
+
+
+def build_meta_synergy_master(lc='EN', *, lb_tier=3, top_pilots=20, exclude_pairs=None,
+                            def_unit_override=None, def_char_override=None):
+    """One-time full rankings build (all units, all roles). Filters applied afterward."""
+    A = _app()
+    lc = lc or A.DEFAULT_LANG
+    exclude = set()
+    for p in exclude_pairs or []:
+        if isinstance(p, (list, tuple)) and len(p) >= 2:
+            exclude.add((A.normalize_id(p[0]), A.normalize_id(p[1])))
+
+    pilot_ids = list(_pilot_pool_ids())
+    unit_ids = []
+    for uid in sorted(A.unit_list_playable_ids):
+        info = A.unit_info_map.get(uid)
+        if not info:
+            continue
+        if not _cached_best_ex_weapon(uid, _unit_stat_mode(str(info.get('rarity', '1'))), lc):
+            continue
+        unit_ids.append(uid)
+
+    use_multi_tier = not def_unit_override and not def_char_override
+    def_tiers = _MSY_STD_DEF_TIERS if use_multi_tier else None
+    groups = _build_all_unit_groups(
+        unit_ids, pilot_ids, lc, lb_tier, 'super', 1, exclude, top_pilots, 'super_crit',
+        def_unit_override=def_unit_override, def_char_override=def_char_override,
+        def_tiers=def_tiers,
+    )
+    return {
+        'groups': groups,
+        'total_pilot_candidates': len(pilot_ids),
+    }
+
+
+def _rankings_cache_key(lc, def_tier, kwargs):
+    return _master_cache_key(lc, kwargs)
 
 
 def _sort_groups_by_mode(groups, rank_mode):
@@ -1402,19 +1596,31 @@ def _ensure_rankings_cache(cache_key, build_fn):
     cached = _rankings_result_cache.get(cache_key)
     if cached is not None:
         return cached, False
+    disk = _load_master_from_disk(cache_key)
+    if disk is not None:
+        _rankings_result_cache[cache_key] = disk
+        return disk, False
     with _rankings_build_lock:
         cached = _rankings_result_cache.get(cache_key)
         if cached is not None:
             return cached, False
+        disk = _load_master_from_disk(cache_key)
+        if disk is not None:
+            _rankings_result_cache[cache_key] = disk
+            return disk, False
         if cache_key in _rankings_inflight:
             return None, True
         _rankings_inflight.add(cache_key)
 
     def _worker():
         try:
-            _rankings_result_cache[cache_key] = build_fn()
+            result = build_fn()
+            _rankings_result_cache[cache_key] = result
+            _save_master_to_disk(cache_key, result)
         except Exception as e:
             print(f'MSY rankings build failed ({cache_key[:48]}…): {e}')
+            import traceback
+            traceback.print_exc()
             with _rankings_build_lock:
                 _rankings_inflight.discard(cache_key)
             return
@@ -1472,8 +1678,10 @@ def _warming_payload(rank_mode, vigor, def_tier, kwargs):
 def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, page, per_page, vigor,
                                 def_tier, kwargs, unit_q=''):
     dt = max(1, min(4, int(def_tier or 1)))
+    browse = _parse_browse_filters(kwargs, kwargs.get('lc', 'EN'))
+    filtered = _filter_master_groups(groups, kwargs.get('lc', 'EN'), browse)
     expanded = []
-    for g in groups or []:
+    for g in filtered:
         row = _group_for_def_tier(g, dt) if g.get('rankings_by_tier') else g
         if row:
             expanded.append(row)
@@ -1556,16 +1764,18 @@ def prewarm_default_rankings():
 
     def _do_build():
         t0 = __import__('time').perf_counter()
-        raw = build_meta_synergy_rankings(
-            lc=lc, page=1, per_page=10000, def_tier=def_tier, **kwargs,
+        result = build_meta_synergy_master(
+            lc=lc,
+            lb_tier=int(kwargs.get('lb_tier', 3) or 3),
+            top_pilots=int(kwargs.get('top_pilots', 20) or 20),
+            exclude_pairs=kwargs.get('exclude_pairs'),
+            def_unit_override=kwargs.get('def_unit_override'),
+            def_char_override=kwargs.get('def_char_override'),
         )
-        groups = raw.get('all_groups') or raw.get('groups') or []
+        groups = result.get('groups') or []
         elapsed = __import__('time').perf_counter() - t0
         print(f'MSY prewarm: {len(groups)} units ({elapsed:.1f}s)')
-        return {
-            'groups': groups,
-            'total_pilot_candidates': raw.get('total_pilot_candidates', 0),
-        }
+        return result
 
     _, warming = _ensure_rankings_cache(cache_key, _do_build)
     if warming:
@@ -1578,25 +1788,26 @@ def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
     per_page = max(1, min(100, int(kwargs.pop('per_page', 50) or 50)))
     unit_q = kwargs.pop('unit_q', '') or ''
     def_tier = max(1, min(4, int(kwargs.pop('def_tier', 1) or 1)))
-    vigor = kwargs.get('vigor', 'super')
-    kwargs['lc'] = lc
-    use_multi = not kwargs.get('def_unit_override') and not kwargs.get('def_char_override')
-    cache_key = _rankings_cache_key(lc, def_tier if not use_multi else None, kwargs)
+    vigor = _VIGOR_FOR_RANK_MODE.get(rank_mode, kwargs.pop('vigor', 'super') or 'super')
+    kwargs.pop('vigor', None)
+    cache_key = _master_cache_key(lc, kwargs)
 
     def _do_build():
-        raw = build_meta_synergy_rankings(
-            lc=lc, page=1, per_page=10000, def_tier=def_tier, **kwargs,
+        return build_meta_synergy_master(
+            lc=lc,
+            lb_tier=int(kwargs.get('lb_tier', 3) or 3),
+            top_pilots=int(kwargs.get('top_pilots', 20) or 20),
+            exclude_pairs=kwargs.get('exclude_pairs'),
+            def_unit_override=kwargs.get('def_unit_override'),
+            def_char_override=kwargs.get('def_char_override'),
         )
-        return {
-            'groups': raw.get('all_groups') or raw.get('groups') or [],
-            'total_pilot_candidates': raw.get('total_pilot_candidates', 0),
-        }
 
     cached, warming = _ensure_rankings_cache(cache_key, _do_build)
     if warming:
         return _warming_payload(rank_mode, vigor, def_tier, kwargs)
 
     all_groups = cached.get('groups') or []
+    kwargs['lc'] = lc
     payload = _cached_payload_from_groups(
         all_groups,
         total_pilot_candidates=cached.get('total_pilot_candidates', 0),

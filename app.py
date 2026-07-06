@@ -13795,31 +13795,37 @@ def api_meta_synergy_rankings():
         if uid.strip() and cid.strip():
             exclude_pairs.append((uid.strip(), cid.strip()))
     import meta_synergy_rank as msr
-    payload = msr.build_meta_synergy_rankings_cached(
-        lc=lc,
-        unit_rarity=unit_rarity,
-        unit_role=unit_role,
-        rarity=rarity,
-        role=role,
-        series_id=series_id or None,
-        source=source or None,
-        lineage_id=lineage_id or None,
-        lineage_op=lineage_op or None,
-        pilot_rarity=pilot_rarity,
-        pilot_roles=pilot_roles,
-        metric=metric,
-        vigor=vigor,
-        lb_tier=lb_tier,
-        def_tier=def_tier,
-        def_unit_override=def_unit_override,
-        def_char_override=def_char_override,
-        top_pilots=top_pilots,
-        page=page,
-        per_page=per_page,
-        rank_mode=rank_mode,
-        unit_q=unit_q,
-        exclude_pairs=exclude_pairs or None,
-    )
+    try:
+        payload = msr.build_meta_synergy_rankings_cached(
+            lc=lc,
+            unit_rarity=unit_rarity,
+            unit_role=unit_role,
+            rarity=rarity,
+            role=role,
+            series_id=series_id or None,
+            source=source or None,
+            lineage_id=lineage_id or None,
+            lineage_op=lineage_op or None,
+            pilot_rarity=pilot_rarity,
+            pilot_roles=pilot_roles,
+            metric=metric,
+            vigor=vigor,
+            lb_tier=lb_tier,
+            def_tier=def_tier,
+            def_unit_override=def_unit_override,
+            def_char_override=def_char_override,
+            top_pilots=top_pilots,
+            page=page,
+            per_page=per_page,
+            rank_mode=rank_mode,
+            unit_q=unit_q,
+            exclude_pairs=exclude_pairs or None,
+        )
+    except Exception as e:
+        print(f'api_meta_synergy_rankings failed: {e}')
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': 'meta_synergy_rankings_failed', 'detail': str(e)}), 500
     if payload.get('warming'):
         ck = f'msy_warming_{lc}_{hash(tuple(sorted(request.args.items()))) & 0xffff:x}'
         return jsonify_cacheable(payload, ck, public=True, max_age=0, convert_images=True), 202

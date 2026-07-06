@@ -420,7 +420,15 @@
 }
 
 .msy-rank-mode-label {
-  white-space: nowrap;
+  white-space: normal;
+  line-height: 1.2;
+  text-align: left;
+}
+
+.msy-toolbar .browse-toolbar-top-row {
+  flex-wrap: wrap;
+  gap: 8px;
+  row-gap: 6px;
 }
 
 .msy-toolbar {
@@ -495,6 +503,9 @@
 .msy-status-note {
   font-size: 10px;
   color: var(--text-muted);
+  flex: 1 1 100%;
+  line-height: 1.35;
+  min-width: 0;
 }
 
 .msy-list-shell {
@@ -653,7 +664,7 @@
 
 .msy-pilot-card {
   display: grid;
-  grid-template-columns: 20px 44px minmax(0, 1fr) auto auto;
+  grid-template-columns: 20px minmax(0, 1fr) auto auto;
   align-items: center;
   gap: 6px;
   padding: 4px 6px;

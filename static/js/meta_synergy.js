@@ -2,9 +2,9 @@
   'use strict';
 
   var RANK_MODES = [
-    { id: 'super_crit', labelKey: 'msy_rank_super_crit', metricKey: 'msy_metric_super_crit', dmgField: 'super_crit_dmg', icon: '/static/images/UI/UI_Tention_Up_03.webp' },
-    { id: 'crit', labelKey: 'msy_rank_crit', metricKey: 'msy_metric_crit', dmgField: 'crit_dmg', icon: '/static/images/UI/UI_Tention_Up_01.webp' },
-    { id: 'normal', labelKey: 'msy_rank_normal', metricKey: 'msy_metric_normal', dmgField: 'normal_dmg', icon: '/static/images/UI/UI_Tention_Up_02.webp' }
+    { id: 'super_crit', labelKey: 'msy_rank_super_crit', metricKey: 'msy_metric_super_crit', dmgField: 'super_crit_dmg', vigor: 'super', vigorLabelKey: 'dc_vigor_super', icon: '/static/images/UI/UI_Tention_Up_03.webp' },
+    { id: 'crit', labelKey: 'msy_rank_crit', metricKey: 'msy_metric_crit', dmgField: 'crit_dmg', vigor: 'max', vigorLabelKey: 'dc_vigor_max', icon: '/static/images/UI/UI_Tention_Up_01.webp' },
+    { id: 'normal', labelKey: 'msy_rank_normal', metricKey: 'msy_metric_normal', dmgField: 'normal_dmg', vigor: 'high', vigorLabelKey: 'dc_vigor_high', icon: '/static/images/UI/UI_Tention_Up_02.webp' }
   ];
 
   var UR_ICON = '/static/images/UI/UI_Common_RarityIcon_UR.webp';
@@ -17,7 +17,6 @@
     settings: null,
     defenderTiers: null,
     rankMode: 'super_crit',
-    vigor: 'super',
     defTier: 1,
     defUnitOverride: '',
     defCharOverride: '',
@@ -167,16 +166,15 @@
   function cacheKeyBase() {
     return [
       (global.S && global.S.lang) || 'EN',
-      buildFilterQuery(),
-      state.vigor,
       state.defUnitOverride,
       state.defCharOverride,
-      state.topPilots
+      state.topPilots,
+      buildFilterQuery()
     ].join('|');
   }
 
   function cacheKeyForState() {
-    return cacheKeyBase() + '|dt:' + state.defTier + '|pg:' + state.page;
+    return cacheKeyBase() + '|rm:' + state.rankMode + '|dt:' + state.defTier + '|pg:' + state.page + '|q:' + (state.unitQ || '');
   }
 
   function buildApiUrl(opts) {
@@ -187,12 +185,11 @@
     var page = opts.page != null ? opts.page : state.page;
     var q = [
       'lang=' + encodeURIComponent(lang),
-      'vigor=' + encodeURIComponent(state.vigor),
       'def_tier=' + encodeURIComponent(String(defTier)),
       'lb_tier=3',
       'top_pilots=' + encodeURIComponent(String(state.topPilots)),
       'unit_q=' + encodeURIComponent(state.unitQ || ''),
-      'rank_mode=' + encodeURIComponent(state.rankMode),
+      'rank_mode=' + encodeURIComponent(opts.rankMode != null ? opts.rankMode : state.rankMode),
       'page=' + encodeURIComponent(String(page)),
       'per_page=' + encodeURIComponent(String(state.perPage))
     ];
@@ -204,8 +201,8 @@
     return '/api/meta_synergy_rankings?' + q.join('&');
   }
 
-  function tierCacheKey(defTier) {
-    return cacheKeyBase() + '|dt:' + defTier;
+  function tierCacheKey(defTier, rankMode) {
+    return cacheKeyBase() + '|dt:' + (defTier != null ? defTier : state.defTier) + '|rm:' + (rankMode || state.rankMode);
   }
 
   function applyPayload(d, defTier) {
@@ -219,7 +216,9 @@
       populateDefTierSelect(d.defender_tiers);
     }
     state.cacheKey = cacheKeyForState();
-    state.tierCache[tierCacheKey(defTier != null ? defTier : state.defTier)] = {
+    var tk = tierCacheKey(defTier != null ? defTier : state.defTier, state.rankMode);
+    state.tierCache[tk] = {
+      cacheKey: cacheKeyBase(),
       groups: state.groups,
       total: state.total,
       totalPages: state.totalPages,
@@ -227,6 +226,8 @@
       settings: state.settings
     };
     renderContent();
+    prefetchDefTiers();
+    prefetchRankModes();
   }
 
   function renderRankModes() {
@@ -306,10 +307,11 @@
     }
     if (!el) return;
     var note = (state.settings && state.settings.defender_note) || '';
+    var vigorLbl = t(mode.vigorLabelKey || 'dc_vigor_super');
     el.innerHTML =
       '<span class="msy-status-chip">' + esc(t('msy_status_units').replace('{n}', fmtN(state.total))) + '</span>' +
       '<span class="msy-status-chip">' + esc(t('msy_status_metric').replace('{m}', t(mode.metricKey))) + '</span>' +
-      '<span class="msy-status-chip">' + esc(t('msy_status_vigor').replace('{v}', t('dc_vigor_super'))) + '</span>' +
+      '<span class="msy-status-chip">' + esc(t('msy_status_vigor').replace('{v}', vigorLbl)) + '</span>' +
       (note ? '<span class="msy-status-note">' + esc(note) + '</span>' : '');
   }
 
@@ -511,17 +513,40 @@
   function prefetchDefTiers() {
     [1, 2, 3].forEach(function (tier) {
       if (tier === state.defTier) return;
-      var key = tierCacheKey(tier);
+      var key = tierCacheKey(tier, state.rankMode);
       if (state.tierCache[key]) return;
-      fetch(buildApiUrl({ defTier: tier, page: 1 }), { credentials: 'same-origin' })
+      fetch(buildApiUrl({ defTier: tier, page: state.page }), { credentials: 'same-origin' })
         .then(function (r) { return r.ok ? r.json() : null; })
         .then(function (d) {
           if (!d || d.warming) return;
           state.tierCache[key] = {
+            cacheKey: cacheKeyBase(),
             groups: d.groups || [],
             total: d.total || 0,
             totalPages: d.total_pages || 1,
-            page: 1,
+            page: d.page || state.page,
+            settings: d.settings || null
+          };
+        })
+        .catch(function () {});
+    });
+  }
+
+  function prefetchRankModes() {
+    RANK_MODES.forEach(function (m) {
+      if (m.id === state.rankMode) return;
+      var key = tierCacheKey(state.defTier, m.id);
+      if (state.tierCache[key]) return;
+      fetch(buildApiUrl({ rankMode: m.id, page: state.page }), { credentials: 'same-origin' })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (d) {
+          if (!d || d.warming) return;
+          state.tierCache[key] = {
+            cacheKey: cacheKeyBase(),
+            groups: d.groups || [],
+            total: d.total || 0,
+            totalPages: d.total_pages || 1,
+            page: d.page || state.page,
             settings: d.settings || null
           };
         })
@@ -532,20 +557,19 @@
   async function loadRankings(force) {
     var key = cacheKeyForState();
     if (!force && state.cacheKey === key && state.groups.length) {
-      applySearchFromCache();
+      renderContent();
       return;
     }
-    var tierKey = tierCacheKey(state.defTier);
-    if (force && state.tierCache[tierKey] && state.page === 1 && !state.unitQ) {
-      var cached = state.tierCache[tierKey];
-      state.groups = cached.groups;
-      state.total = cached.total;
-      state.totalPages = cached.totalPages;
-      state.page = cached.page || 1;
-      state.settings = cached.settings;
+    var tierKey = tierCacheKey(state.defTier, state.rankMode);
+    if (!force && state.tierCache[tierKey] && state.tierCache[tierKey].cacheKey === cacheKeyBase()) {
+      var hit = state.tierCache[tierKey];
+      state.groups = hit.groups;
+      state.total = hit.total;
+      state.totalPages = hit.totalPages;
+      state.page = hit.page || state.page;
+      state.settings = hit.settings;
       state.cacheKey = key;
       renderContent();
-      prefetchDefTiers();
       return;
     }
     setLoading(true, false);
@@ -574,42 +598,22 @@
     }
   }
 
-  function applySearchFromCache() {
-    fetch(buildApiUrl(), { credentials: 'same-origin' })
-      .then(function (resp) {
-        if (!resp.ok) return null;
-        return resp.json();
-      })
-      .then(function (d) {
-        if (!d || d.warming) return;
-        state.groups = d.groups || [];
-        state.total = d.total || 0;
-        state.totalPages = d.total_pages || 1;
-        state.page = d.page || state.page;
-        state.cacheKey = cacheKeyForState();
-        renderContent();
-      })
-      .catch(function () {
-        renderContent();
-      });
-  }
-
   function scheduleSearchReload() {
     clearTimeout(state._searchTimer);
     state._searchTimer = setTimeout(function () {
       state.page = 1;
-      applySearchFromCache();
+      state.cacheKey = null;
+      loadRankings(false);
     }, 180);
   }
 
   function scheduleReload() {
     clearTimeout(state._reloadTimer);
     state._reloadTimer = setTimeout(function () {
-      state.cacheKey = null;
-      state.tierCache = {};
       state.page = 1;
-      loadRankings(true);
-    }, 480);
+      state.cacheKey = null;
+      loadRankings(false);
+    }, 180);
   }
 
   function setRankMode(modeId) {
@@ -617,7 +621,21 @@
     state.rankMode = modeId;
     state.page = 1;
     renderRankModes();
-    applySearchFromCache();
+    var tierKey = tierCacheKey(state.defTier, modeId);
+    if (state.tierCache[tierKey] && state.tierCache[tierKey].cacheKey === cacheKeyBase()) {
+      var hit = state.tierCache[tierKey];
+      state.groups = hit.groups;
+      state.total = hit.total;
+      state.totalPages = hit.totalPages;
+      state.page = hit.page || 1;
+      state.settings = hit.settings;
+      state.cacheKey = cacheKeyForState();
+      renderContent();
+      prefetchRankModes();
+      return;
+    }
+    state.cacheKey = null;
+    loadRankings(false);
   }
 
   function toggleExcludeUr(unitId) {
@@ -651,7 +669,7 @@
   function goPage(p) {
     state.page = Math.max(1, p | 0);
     state.cacheKey = null;
-    loadRankings(true);
+    loadRankings(false);
     try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (_) { window.scrollTo(0, 0); }
   }
 
@@ -739,7 +757,8 @@
       global.S.dc.charStatMode = 'normal';
       global.S.dc.charCondPassive = true;
       global.S.dc.defLbTier = 3;
-      if (typeof global.setDcMp === 'function') global.setDcMp(state.vigor || 'super');
+      var mode = rankModeDef(state.rankMode);
+      if (typeof global.setDcMp === 'function') global.setDcMp(mode.vigor || 'super');
       if (global.S.dc.atkCharData && global.S.dc.atkCharData.ex_supercharged_tiers &&
           global.S.dc.atkCharData.ex_supercharged_tiers.length > 1 && global.S.dc.charCondPassive) {
         global.S.dc.dcSuperchargedExTier = global.S.dc.atkCharData.ex_supercharged_tiers.length - 1;
@@ -769,8 +788,8 @@
         state.defTier = nextTier;
         state.page = 1;
         state.cacheKey = null;
-        var tierKey = tierCacheKey(nextTier);
-        if (state.tierCache[tierKey] && !state.unitQ) {
+        var tierKey = tierCacheKey(nextTier, state.rankMode);
+        if (state.tierCache[tierKey] && state.tierCache[tierKey].cacheKey === cacheKeyBase()) {
           var cached = state.tierCache[tierKey];
           state.groups = cached.groups;
           state.total = cached.total;
@@ -779,8 +798,9 @@
           state.cacheKey = cacheKeyForState();
           renderContent();
           prefetchDefTiers();
+          prefetchRankModes();
         } else {
-          loadRankings(true);
+          loadRankings(false);
         }
       });
     }
