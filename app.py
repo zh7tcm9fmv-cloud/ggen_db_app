@@ -51,6 +51,7 @@ def _app_js_bundle_version_tag():
     root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
     assets = (
         ('js', 'app.js'),
+        ('js', 'meta_synergy.js'),
         ('js', 'kofi_donate_promo.js'),
         ('css', 'kofi_donate_promo.css'),
     )
@@ -92,6 +93,9 @@ def _apply_static_cache_headers(response):
     if not path.startswith('/static/'):
         return response
     ext = os.path.splitext(path)[1].lower()
+    if path.endswith('/js/app.js') or path.endswith('/js/meta_synergy.js'):
+        response.headers['Cache-Control'] = 'no-cache, must-revalidate'
+        return response
     if ext not in _STATIC_CACHEABLE_EXT:
         return response
     response.headers.setdefault('Cache-Control', f'public, max-age={_STATIC_CACHE_MAX_AGE}')
@@ -12811,7 +12815,7 @@ def _build_browse_list_performance_caches():
 
 
 def _schedule_browse_list_performance_caches():
-    """Build browse row caches in a background thread so gunicorn can bind while warming."""
+    """Build browse row caches in a background thread (local dev fallback only)."""
     def _run():
         global _BROWSE_LIST_CACHE_BUILDING
         _BROWSE_LIST_CACHE_BUILDING = True
@@ -12819,8 +12823,6 @@ def _schedule_browse_list_performance_caches():
         try:
             _build_browse_list_performance_caches()
             _prewarm_default_browse_list_api_caches()
-            # MSY rankings load from bundled/persistent cache on first /msy visit only —
-            # never prewarm here (CPU-heavy sim would slow the whole site at startup).
         except Exception as e:
             print(f'Browse list perf caches: build failed: {e}')
         finally:
@@ -12828,6 +12830,24 @@ def _schedule_browse_list_performance_caches():
             _BROWSE_LIST_CACHE_READY.set()
 
     threading.Thread(target=_run, name='browse-list-cache', daemon=True).start()
+
+
+def _start_browse_cache_warmup():
+    """Build browse row caches before serving list APIs (avoids 503 warming loops)."""
+    global _BROWSE_LIST_CACHE_BUILDING
+    if CHAR_BROWSE_LIST_ROW_CACHE and UNIT_BROWSE_LIST_ROW_CACHE:
+        _BROWSE_LIST_CACHE_READY.set()
+        return
+    _BROWSE_LIST_CACHE_BUILDING = True
+    _BROWSE_LIST_CACHE_READY.clear()
+    try:
+        _build_browse_list_performance_caches()
+        _prewarm_default_browse_list_api_caches()
+    except Exception as e:
+        print(f'Browse list perf caches: build failed: {e}')
+    finally:
+        _BROWSE_LIST_CACHE_BUILDING = False
+        _BROWSE_LIST_CACHE_READY.set()
 
 
 def _prewarm_default_browse_list_api_caches():
@@ -13405,14 +13425,16 @@ def _serve_index():
 
 @app.route('/health')
 def health_check():
-    return jsonify({
-        'ok': True,
+    ready = bool(CHAR_BROWSE_LIST_ROW_CACHE and UNIT_BROWSE_LIST_ROW_CACHE)
+    payload = {
+        'ok': ready,
         'browse_cache': {
             'chars': len(CHAR_BROWSE_LIST_ROW_CACHE),
             'units': len(UNIT_BROWSE_LIST_ROW_CACHE),
             'building': _BROWSE_LIST_CACHE_BUILDING,
         },
-    })
+    }
+    return jsonify(payload), (200 if ready else 503)
 
 
 @app.route('/')
@@ -21760,8 +21782,8 @@ def serve_spa(path):
             return jsonify({'error': 'Not found'}), 404
     return _serve_index()
 
-# Kick off browse cache warm-up without blocking the worker from accepting traffic.
-_schedule_browse_list_performance_caches()
+# Build browse list caches before serving (Railway healthcheck waits until ready).
+_start_browse_cache_warmup()
 
 if __name__ == '__main__':
     for d in ["static/images/portraits","static/images/unit_portraits","static/images/Trait","static/images/Trait/thum","static/images/Terrain","static/images/WeaponIcon","static/images/UI","static/images/Logo-Series","static/images/Background","static/images/Rarity"]:
