@@ -18,7 +18,8 @@ if ROOT not in sys.path:
 import meta_synergy_rank as msy
 
 EVAL_UNIT_JS = """
-async ({ unitId, pilotIds, defTiers, lang }) => {
+async ({ unitId, pilotIds, defTiers, lang, cpOn }) => {
+  const cpEnabled = cpOn !== false;
   const ud = await fetch(`/api/unit/${unitId}?lang=${lang}&lb_tier=3`).then(r => r.json());
   if (!ud || ud.error) return { error: ud && ud.error, unitId };
   const vigors = ['super', 'max', 'high'];
@@ -57,8 +58,8 @@ async ({ unitId, pilotIds, defTiers, lang }) => {
     slot.supportCounterAtk = false;
     slot.finalWpnPow = 0;
     slot.applyAdvantageEnemyTag = true;
-    slot.charCondPassive = typeof _dcShouldAutoCharCondPassive === 'function'
-      ? _dcShouldAutoCharCondPassive(cd, ud) : true;
+    slot.charCondPassive = cpEnabled && (typeof _dcShouldAutoCharCondPassive === 'function'
+      ? _dcShouldAutoCharCondPassive(cd, ud) : true);
     slot.dcSuperchargedExTier = 0;
     if (slot.charCondPassive && cd.ex_supercharged_tiers && cd.ex_supercharged_tiers.length > 1
         && _dcNormMpLevel(vigor) === 'super') {
@@ -143,25 +144,19 @@ async def build_units(base: str, lang: str, unit_ids, pilot_ids, exclude, top_pi
             for k, v in def_tiers.items() if int(k) in msy._MSY_STD_DEF_TIERS
         }
 
-        groups = []
-        ids = unit_ids[:limit] if limit else unit_ids
-        t0 = time.perf_counter()
-        for i, uid in enumerate(ids):
-            candidates = msy.dc_candidate_pilots_for_unit(uid, pilot_ids, exclude, lang)
-            if not candidates:
-                continue
-            raw = await page.evaluate(
+        async def eval_unit(uid, candidates, cp_on):
+            return await page.evaluate(
                 EVAL_UNIT_JS,
                 {
                     'unitId': uid,
                     'pilotIds': candidates,
                     'defTiers': def_tier_payload,
                     'lang': lang,
+                    'cpOn': cp_on,
                 },
             )
-            if not raw or raw.get('error'):
-                print(f"  skip {uid}: {raw and raw.get('error')}")
-                continue
+
+        def pairs_from_raw(raw):
             by_tier = {}
             for dt, pairs in (raw.get('byTier') or {}).items():
                 py_pairs = []
@@ -182,8 +177,25 @@ async def build_units(base: str, lang: str, unit_ids, pilot_ids, exclude, top_pi
                         py_pairs.append((cid, dmg_by_v))
                 if py_pairs:
                     by_tier[int(dt)] = py_pairs
+            return by_tier
+
+        groups = []
+        ids = unit_ids[:limit] if limit else unit_ids
+        t0 = time.perf_counter()
+        for i, uid in enumerate(ids):
+            candidates = msy.dc_candidate_pilots_for_unit(uid, pilot_ids, exclude, lang)
+            if not candidates:
+                continue
+            raw = await eval_unit(uid, candidates, True)
+            if not raw or raw.get('error'):
+                print(f"  skip {uid}: {raw and raw.get('error')}")
+                continue
+            by_tier = pairs_from_raw(raw)
+            raw_no_cp = await eval_unit(uid, candidates, False)
+            by_tier_no_cp = pairs_from_raw(raw_no_cp) if raw_no_cp and not raw_no_cp.get('error') else None
             g = msy.assemble_unit_group_from_dc(
                 uid, by_tier, pilot_ids, lang, top_pilots, exclude,
+                pairs_by_tier_no_cp=by_tier_no_cp,
             )
             if g:
                 groups.append(g)
@@ -203,7 +215,7 @@ def main():
     ap = argparse.ArgumentParser(description='Build MSY cache from Damage Simulator')
     ap.add_argument('--base', default=os.environ.get('MSY_DC_BASE', 'http://127.0.0.1:5050'))
     ap.add_argument('--lang', default='EN')
-    ap.add_argument('--top-pilots', type=int, default=20)
+    ap.add_argument('--top-pilots', type=int, default=10)
     ap.add_argument('--limit', type=int, default=0, help='Max units (0 = all)')
     ap.add_argument('--unit', action='append', default=[], help='Single unit id (repeatable)')
     ap.add_argument('--out', default='', help='Optional JSON debug output path')
@@ -215,7 +227,7 @@ def main():
     if args.unit:
         unit_ids = [msy._app().normalize_id(u) for u in args.unit]
     else:
-        unit_ids = msy._msy_default_master_unit_ids(lang)
+        unit_ids = msy._msy_rankable_unit_ids(lang)
 
     def_tiers = msy._defender_tiers()
     limit = args.limit or None

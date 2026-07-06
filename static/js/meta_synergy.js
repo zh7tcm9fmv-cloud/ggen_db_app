@@ -19,19 +19,16 @@
     settings: null,
     defenderTiers: null,
     rankMode: 'super_crit',
-    defTier: 1,
-    defUnitOverride: '',
-    defCharOverride: '',
-    topPilots: 20,
+    defTier: 3,
+    topPilots: 10,
     unitQ: '',
     page: 1,
     perPage: 50,
     cacheKey: null,
     tierCache: {},
+    charCondPassiveOn: true,
     excludeUrUnits: {},
     excludeShinnUnits: {},
-    excludeGuaranteedCrit: false,
-    unitViewMode: {}
   };
 
   function t(key) {
@@ -81,22 +78,21 @@
     return RANK_MODES[0];
   }
 
-  function pilotMatchesExclusions(pilot, noUr, noGc, noShinn) {
+  function pilotMatchesExclusions(pilot, noUr, noShinn) {
     if (!pilot) return false;
     var c = pilot.char || {};
     var cid = String(c.id || '');
     if (noShinn && cid === SHINN_EX_CHAR_ID) return false;
-    if (noGc && pilot.guaranteed_crit) return false;
     if (noUr && String(c.rarity || '').toUpperCase() === 'UR') return false;
     return true;
   }
 
-  function rerankPilotBlock(block, modeId, noUr, noGc, noShinn) {
+  function rerankPilotBlock(block, modeId, noUr, noShinn) {
     if (!block) return null;
-    if (!noUr && !noGc && !noShinn) return block;
+    if (!noUr && !noShinn) return block;
     var mode = rankModeDef(modeId);
     var scored = (block.pilots || []).filter(function (p) {
-      return pilotMatchesExclusions(p, noUr, noGc, noShinn);
+      return pilotMatchesExclusions(p, noUr, noShinn);
     }).map(function (p) {
       return { pilot: p, score: pilotDamage(p, mode) };
     }).filter(function (x) { return x.score > 0; });
@@ -109,20 +105,20 @@
     return { max_damage: scored[0].score, pilots: pilots, vigor: block.vigor };
   }
 
-  function groupBlock(g, modeId, noUr, noGc, noShinn) {
+  function groupBlock(g, modeId, noUr, noShinn) {
     if (!g) return null;
     var src;
-    if (noShinn) src = g.rankings_no_shinn || g.rankings || {};
-    else if (noGc) src = g.rankings_no_gc || g.rankings || {};
+    if (!state.charCondPassiveOn && g.rankings_no_cp) src = g.rankings_no_cp;
+    else if (noShinn) src = g.rankings_no_shinn || g.rankings || {};
     else if (noUr) src = g.rankings_no_ur || g.rankings || {};
     else src = g.rankings || {};
     var block = src[modeId];
-    if (!block && !noUr && !noGc && !noShinn && modeId === 'super_crit' && g.pilots) {
+    if (!block && !noUr && !noShinn && state.charCondPassiveOn && modeId === 'super_crit' && g.pilots) {
       block = { max_damage: g.max_damage, pilots: g.pilots };
     }
     if (!block) return null;
-    if ((noShinn && noGc) || (noShinn && noUr) || (noGc && noUr)) {
-      return rerankPilotBlock(block, modeId, noUr, noGc, noShinn);
+    if (noShinn && noUr) {
+      return rerankPilotBlock(block, modeId, noUr, noShinn);
     }
     if (noShinn && src === (g.rankings_no_shinn || g.rankings)) return block;
     return block;
@@ -131,8 +127,7 @@
   function viewGroup(g, modeId) {
     var noUr = !!(g.unit && state.excludeUrUnits[g.unit.id]);
     var noShinn = !!(g.unit && state.excludeShinnUnits[g.unit.id]);
-    var noGc = !!state.excludeGuaranteedCrit;
-    var block = groupBlock(g, modeId, noUr, noGc, noShinn);
+    var block = groupBlock(g, modeId, noUr, noShinn);
     if (!block) return null;
     return {
       unit: g.unit,
@@ -143,8 +138,15 @@
       rankings: g.rankings,
       rankings_no_ur: g.rankings_no_ur,
       rankings_no_shinn: g.rankings_no_shinn,
-      rankings_no_gc: g.rankings_no_gc
+      rankings_no_cp: g.rankings_no_cp
     };
+  }
+
+  function expandedUnitSearchQuery(q) {
+    if (typeof global.expandUnitSearchQuery === 'function') {
+      return global.expandUnitSearchQuery(q || '');
+    }
+    return String(q || '').trim();
   }
 
   function unitThumb(entity) {
@@ -209,9 +211,8 @@
   function cacheKeyBase() {
     return [
       (global.S && global.S.lang) || 'EN',
-      state.defUnitOverride,
-      state.defCharOverride,
       state.topPilots,
+      state.charCondPassiveOn ? 'cp1' : 'cp0',
       buildFilterQuery()
     ].join('|');
   }
@@ -236,10 +237,6 @@
       'page=' + encodeURIComponent(String(page)),
       'per_page=' + encodeURIComponent(String(state.perPage))
     ];
-    if (state.defUnitOverride && state.defCharOverride) {
-      q.push('def_unit=' + encodeURIComponent(String(state.defUnitOverride)));
-      q.push('def_char=' + encodeURIComponent(String(state.defCharOverride)));
-    }
     if (fq) q.push(fq);
     return '/api/meta_synergy_rankings?' + q.join('&');
   }
@@ -297,11 +294,11 @@
     if (el) el.textContent = t('msy_empty');
     el = document.getElementById('msyDefTierLabel');
     if (el) el.textContent = t('msy_def_difficulty');
-    el = document.getElementById('msyExcludeGcBtn');
+    el = document.getElementById('msyCpToggleBtn');
     if (el) {
-      el.title = state.excludeGuaranteedCrit ? t('msy_exclude_gc_on') : t('msy_exclude_gc');
-      el.setAttribute('aria-pressed', state.excludeGuaranteedCrit ? 'true' : 'false');
-      el.classList.toggle('active', state.excludeGuaranteedCrit);
+      el.title = state.charCondPassiveOn ? t('msy_cp_on') : t('msy_cp_off');
+      el.setAttribute('aria-pressed', state.charCondPassiveOn ? 'true' : 'false');
+      el.classList.toggle('active', state.charCondPassiveOn);
     }
     renderRankModes();
   }
@@ -309,7 +306,7 @@
   function populateDefTierSelect(tiers) {
     var sel = document.getElementById('msyDefTierSelect');
     if (!sel || !tiers) return;
-    var cur = String(state.defTier || '1');
+    var cur = String(state.defTier || '3');
     var labels = {
       1: t('msy_def_hard3'),
       2: t('msy_def_challenge'),
@@ -342,10 +339,6 @@
       clr.title = t('filter_clear_all');
       clr.setAttribute('aria-label', t('filter_clear_all'));
     }
-    var defUnit = document.getElementById('msyDefUnitInput');
-    var defChar = document.getElementById('msyDefCharInput');
-    if (defUnit) defUnit.placeholder = t('msy_def_unit_ph');
-    if (defChar) defChar.placeholder = t('msy_def_char_ph');
     var defLbl = document.getElementById('msyDefTierLabel');
     if (defLbl) defLbl.textContent = t('msy_def_difficulty');
   }
@@ -415,18 +408,6 @@
     );
   }
 
-  function chartBtnHtml(unitId, active) {
-    return (
-      '<button type="button" class="msy-act-btn msy-chart-btn' + (active ? ' active' : '') + '" title="' + escAttr(t('msy_chart')) + '" aria-pressed="' + (active ? 'true' : 'false') + '" onclick="GgenMetaSynergy.toggleChartView(\'' + escJs(unitId) + '\')">' +
-        '<svg class="msy-chart-btn-svg" viewBox="0 0 16 16" aria-hidden="true" focusable="false">' +
-          '<rect x="1" y="9" width="3" height="6" rx="0.6"></rect>' +
-          '<rect x="6" y="5" width="3" height="10" rx="0.6"></rect>' +
-          '<rect x="11" y="2" width="3" height="13" rx="0.6"></rect>' +
-        '</svg>' +
-      '</button>'
-    );
-  }
-
   function renderPilotCard(unitId, pilot, mode) {
     var c = pilot.char || {};
     var dmg = pilotDamage(pilot, mode);
@@ -470,38 +451,6 @@
     return '<div class="msy-pilot-grid">' + col(left) + col(right) + '</div>';
   }
 
-  function renderVerticalBarChart(pilots, mode, unitId) {
-    var list = (pilots || []).slice(0, 10);
-    if (!list.length) return '<div class="msy-chart-empty">' + esc(t('msy_empty')) + '</div>';
-    var max = 1;
-    list.forEach(function (p) {
-      max = Math.max(max, pilotDamage(p, mode) || 0);
-    });
-    var html = '<div class="msy-vbar-chart" data-msy-unit="' + escAttr(unitId) + '">';
-    list.forEach(function (p, i) {
-      var c = p.char || {};
-      var dmg = pilotDamage(p, mode);
-      var pct = Math.max(6, Math.round((dmg / max) * 100));
-      html += '<div class="msy-vbar-col" style="--msy-bar-delay:' + (i * 28) + 'ms">';
-      html += '<div class="msy-vbar-val">' + fmtN(dmg) + '</div>';
-      html += '<div class="msy-vbar-stack"><div class="msy-vbar-fill" data-msy-height="' + pct + '" style="height:0"></div></div>';
-      html += '<button type="button" class="msy-vbar-open" title="' + escAttr(c.name || '') + '" onclick="GgenMetaSynergy.openDetailChar(\'' + escJs(c.id) + '\')">';
-      html += '<div class="msy-vbar-thumb">' + pilotThumb(c) + '</div>';
-      html += '<div class="msy-vbar-rank">' + (p.rank || (i + 1)) + '</div>';
-      html += '</button>';
-      html += '</div>';
-    });
-    html += '</div>';
-    return html;
-  }
-
-  function animateBarFills(root) {
-    if (!root) return;
-    root.querySelectorAll('.msy-vbar-fill').forEach(function (el) {
-      el.style.height = (el.getAttribute('data-msy-height') || '0') + '%';
-    });
-  }
-
   function renderGroups(groups, startRank, mode) {
     var html = '<div class="msy-groups">';
     groups.forEach(function (g, gi) {
@@ -511,8 +460,7 @@
       var u = row.unit;
       var excludeUr = !!state.excludeUrUnits[u.id];
       var excludeShinn = !!state.excludeShinnUnits[u.id];
-      var chartMode = state.unitViewMode[u.id] === 'chart';
-      html += '<article class="msy-unit-card' + (row.is_sd ? ' msy-unit-card--sd' : '') + (chartMode ? ' msy-unit-card--chart' : '') + '">';
+      html += '<article class="msy-unit-card' + (row.is_sd ? ' msy-unit-card--sd' : '') + '">';
       html += '<header class="msy-unit-head">';
       html += '<span class="msy-unit-rank">' + rank + '</span>';
       html += '<div class="msy-unit-thumb">' + unitThumb(u) + '</div>';
@@ -528,7 +476,6 @@
       }
       html += '</div>';
       html += '<div class="msy-unit-tools">';
-      html += chartBtnHtml(u.id, chartMode);
       html += excludeShinnBtnHtml(u.id, excludeShinn, row.is_sd);
       html += excludeUrBtnHtml(u.id, excludeUr, row.is_sd);
       html += '</div>';
@@ -537,11 +484,7 @@
       html += '<div class="msy-unit-peak-lbl">' + esc(t(mode.metricKey)) + '</div>';
       html += '</div>';
       html += '</header>';
-      if (chartMode) {
-        html += renderVerticalBarChart(row.pilots, mode, u.id);
-      } else {
-        html += renderPilotGrid(row.pilots, u.id, mode);
-      }
+      html += renderPilotGrid(row.pilots, u.id, mode);
       html += '</article>';
     });
     html += '</div>';
@@ -578,9 +521,6 @@
     if (empty) empty.style.display = 'none';
     host.innerHTML = renderGroups(state.groups, startRank, mode);
     renderPagination();
-    requestAnimationFrame(function () {
-      host.querySelectorAll('.msy-vbar-chart').forEach(function (el) { animateBarFills(el); });
-    });
   }
 
   function setLoading(on, warming) {
@@ -652,7 +592,7 @@
 
   function syncSearchFromDom() {
     var el = document.getElementById('msySearchInput');
-    if (el) state.unitQ = el.value.trim();
+    if (el) state.unitQ = expandedUnitSearchQuery(el.value.trim());
   }
 
   async function loadRankings(force) {
@@ -771,8 +711,8 @@
     renderContent();
   }
 
-  function toggleExcludeGuaranteedCrit() {
-    state.excludeGuaranteedCrit = !state.excludeGuaranteedCrit;
+  function toggleCharCondPassive() {
+    state.charCondPassiveOn = !state.charCondPassiveOn;
     applyLangStatic();
     renderContent();
   }
@@ -782,12 +722,6 @@
       if (state.groups[i].unit && state.groups[i].unit.id === unitId) return state.groups[i];
     }
     return null;
-  }
-
-  function toggleChartView(unitId) {
-    if (state.unitViewMode[unitId] === 'chart') delete state.unitViewMode[unitId];
-    else state.unitViewMode[unitId] = 'chart';
-    renderContent();
   }
 
   function ensureShinnPortrait() {
@@ -903,8 +837,11 @@
       global.S.dc.defLbTier = 3;
       var mode = rankModeDef(state.rankMode);
       if (typeof global.setDcMp === 'function') global.setDcMp(mode.vigor || 'super');
-      if (typeof global._dcSyncCharCondPassiveFromPair === 'function') global._dcSyncCharCondPassiveFromPair();
-      else global.S.dc.charCondPassive = true;
+      if (typeof global._dcSyncCharCondPassiveFromPair === 'function' && state.charCondPassiveOn) {
+        global._dcSyncCharCondPassiveFromPair();
+      } else {
+        global.S.dc.charCondPassive = !!state.charCondPassiveOn;
+      }
       if (typeof global._dcSyncSuperchargedExTierForVigor === 'function') global._dcSyncSuperchargedExTierForVigor();
       if (typeof global.renderDcAtkUnit === 'function') global.renderDcAtkUnit();
       if (typeof global.renderDcAtkChar === 'function') global.renderDcAtkChar();
@@ -921,7 +858,7 @@
     var search = document.getElementById('msySearchInput');
     if (search) {
       search.addEventListener('input', function () {
-        state.unitQ = search.value.trim();
+        state.unitQ = expandedUnitSearchQuery(search.value.trim());
         scheduleSearchReload();
       });
     }
@@ -949,24 +886,6 @@
         }
       });
     }
-    var defUnit = document.getElementById('msyDefUnitInput');
-    var defChar = document.getElementById('msyDefCharInput');
-    function onDefOverrideChange() {
-      state.defUnitOverride = defUnit && defUnit.value.trim() ? defUnit.value.trim() : '';
-      state.defCharOverride = defChar && defChar.value.trim() ? defChar.value.trim() : '';
-      state.cacheKey = null;
-      state.tierCache = {};
-      state.page = 1;
-      loadRankings(true);
-    }
-    if (defUnit) {
-      defUnit.addEventListener('change', onDefOverrideChange);
-      defUnit.addEventListener('keydown', function (e) { if (e.key === 'Enter') onDefOverrideChange(); });
-    }
-    if (defChar) {
-      defChar.addEventListener('change', onDefOverrideChange);
-      defChar.addEventListener('keydown', function (e) { if (e.key === 'Enter') onDefOverrideChange(); });
-    }
   }
 
   function init() {
@@ -988,8 +907,7 @@
     scheduleReload: scheduleReload,
     toggleExcludeUr: toggleExcludeUr,
     toggleExcludeShinn: toggleExcludeShinn,
-    toggleExcludeGuaranteedCrit: toggleExcludeGuaranteedCrit,
-    toggleChartView: toggleChartView
+    toggleCharCondPassive: toggleCharCondPassive
   };
 
   if (document.readyState === 'loading') {

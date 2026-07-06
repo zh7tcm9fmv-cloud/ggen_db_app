@@ -13777,7 +13777,7 @@ def api_meta_synergy_rankings():
     metric = request.args.get('metric', 'super_crit')
     vigor = request.args.get('vigor', 'super')
     lb_tier = request.args.get('lb_tier', '3', type=int)
-    def_tier = request.args.get('def_tier', '1', type=int)
+    def_tier = request.args.get('def_tier', '3', type=int)
     def_unit_raw = request.args.get('def_unit', '').strip()
     def_char_raw = request.args.get('def_char', '').strip()
     def_unit_override = int(def_unit_raw) if def_unit_raw.isdigit() else None
@@ -13785,7 +13785,7 @@ def api_meta_synergy_rankings():
     lineage_id = request.args.get('lineage_id', '').strip()
     lineage_op = request.args.get('lineage_op', '').strip()
     series_op = request.args.get('series_op', '').strip()
-    top_pilots = request.args.get('top_pilots', '20', type=int)
+    top_pilots = request.args.get('top_pilots', '10', type=int)
     page = request.args.get('page', '1', type=int)
     per_page = request.args.get('per_page', '50', type=int)
     rank_mode = request.args.get('rank_mode', 'super_crit').strip() or 'super_crit'
