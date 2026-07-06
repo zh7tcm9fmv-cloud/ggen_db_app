@@ -14,11 +14,259 @@
 }
 
 .msy-intro {
-  margin: 0 0 10px;
-  font-size: 12px;
-  line-height: 1.5;
+  display: none;
+}
+
+.msy-def-tier-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  display: block;
+}
+
+.msy-unit-tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.msy-chart-btn-svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+  display: block;
+}
+
+.msy-exclude-ur-icon {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.msy-exclude-ur-rarity {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  display: block;
+}
+
+.msy-exclude-ur-x {
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+}
+
+.msy-exclude-ur-x::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 130%;
+  height: 2px;
+  background: #ef4444;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
+}
+
+.msy-exclude-ur-btn.active {
+  border-color: rgba(239, 68, 68, 0.65);
+  color: #fca5a5;
+  background: rgba(239, 68, 68, 0.12);
+}
+
+.msy-unit-card--sd .msy-unit-head {
+  background: rgba(148, 163, 184, 0.08);
+}
+
+.msy-unit-elem--sd {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.msy-chart-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 540;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 0.22s ease;
+}
+
+.msy-chart-overlay.active {
+  display: flex;
+}
+
+.msy-chart-overlay.is-visible {
+  opacity: 1;
+}
+
+.msy-chart-panel {
+  position: relative;
+  width: min(640px, 100%);
+  max-height: min(82vh, 760px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-surface);
+  transform: scale(0.96) translateY(8px);
+  opacity: 0;
+  transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.24s ease;
+}
+
+.msy-chart-overlay.is-visible .msy-chart-panel {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+
+.msy-chart-close {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  z-index: 2;
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: rgba(8, 12, 24, 0.55);
   color: var(--text-secondary);
-  max-width: 72ch;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.msy-chart-close:hover {
+  color: var(--accent-cyan);
+}
+
+.msy-chart-head {
+  position: relative;
+  padding: 14px 42px 10px 14px;
+  border-bottom: 1px solid rgba(90, 104, 132, 0.35);
+}
+
+.msy-chart-title {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+
+.msy-chart-sub {
+  margin: 4px 0 0;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.msy-chart-body {
+  padding: 10px 12px 14px;
+  overflow: auto;
+}
+
+.msy-bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.msy-bar-row {
+  display: grid;
+  grid-template-columns: 22px 36px minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(6px);
+  animation: msyBarIn 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: var(--msy-bar-delay, 0ms);
+}
+
+@keyframes msyBarIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.msy-bar-rank {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.msy-bar-thumb .msy-pilot-thumb-slot,
+.msy-bar-thumb .list-thumb-composite {
+  width: 36px;
+  height: 36px;
+}
+
+.msy-bar-name-row {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  margin-bottom: 4px;
+}
+
+.msy-bar-name {
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.msy-bar-track {
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(90, 104, 132, 0.25);
+  overflow: hidden;
+}
+
+.msy-bar-fill {
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(0, 212, 255, 0.55), rgba(0, 212, 255, 0.95));
+  transition: width 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--accent-cyan);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.msy-chart-empty {
+  padding: 20px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .msy-chart-overlay,
+  .msy-chart-panel,
+  .msy-bar-row,
+  .msy-bar-fill {
+    transition: none !important;
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 .msy-rank-modes {

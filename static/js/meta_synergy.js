@@ -7,6 +7,9 @@
     { id: 'normal', labelKey: 'msy_rank_normal', metricKey: 'msy_metric_normal', dmgField: 'normal_dmg', icon: '/static/images/UI/UI_Tention_Up_02.webp' }
   ];
 
+  var UR_ICON = '/static/images/UI/UI_Common_RarityIcon_UR.webp';
+  var DEF_ICON = '/static/images/Trait/trait_10230100.webp';
+
   var state = {
     loading: false,
     groups: [],
@@ -16,11 +19,13 @@
     rankMode: 'super_crit',
     vigor: 'super',
     defTier: 3,
-    topPilots: 10,
+    topPilots: 20,
     unitQ: '',
     page: 1,
     perPage: 50,
-    cacheKey: null
+    cacheKey: null,
+    excludeUrUnits: {},
+    chartUnitId: null
   };
 
   function t(key) {
@@ -47,6 +52,13 @@
     return typeof global.imgUrl === 'function' ? global.imgUrl(path) : path;
   }
 
+  function rasterImg(path, opts) {
+    if (typeof global.pictureRasterHtml === 'function') {
+      return global.pictureRasterHtml(path, opts || {});
+    }
+    return '<img src="' + escAttr(imgUrl(path)) + '" alt="">';
+  }
+
   function sleep(ms) {
     return new Promise(function (resolve) { setTimeout(resolve, ms); });
   }
@@ -56,6 +68,32 @@
       if (RANK_MODES[i].id === modeId) return RANK_MODES[i];
     }
     return RANK_MODES[0];
+  }
+
+  function groupBlock(g, modeId, noUr) {
+    if (!g) return null;
+    var src = noUr ? (g.rankings_no_ur || g.rankings || {}) : (g.rankings || {});
+    var block = src[modeId];
+    if (block) return block;
+    if (!noUr && modeId === 'super_crit' && g.pilots) {
+      return { max_damage: g.max_damage, pilots: g.pilots };
+    }
+    return null;
+  }
+
+  function viewGroup(g, modeId) {
+    var noUr = !!(g.unit && state.excludeUrUnits[g.unit.id]);
+    var block = groupBlock(g, modeId, noUr);
+    if (!block) return null;
+    return {
+      unit: g.unit,
+      weapon_elems: g.weapon_elems,
+      max_damage: block.max_damage || 0,
+      pilots: block.pilots || [],
+      is_sd: g.is_sd,
+      rankings: g.rankings,
+      rankings_no_ur: g.rankings_no_ur
+    };
   }
 
   function unitThumb(entity) {
@@ -86,16 +124,13 @@
 
   function roleIconHtml(entity) {
     if (!entity || !entity.role_icon) return '';
-    if (typeof global.pictureRasterHtml === 'function') {
-      return global.pictureRasterHtml(entity.role_icon, {
-        cls: 'msy-role-icon',
-        loading: 'lazy',
-        decoding: 'async',
-        alt: '',
-        lazy: false
-      });
-    }
-    return '<img class="msy-role-icon" src="' + escAttr(imgUrl(entity.role_icon)) + '" alt="" loading="lazy" decoding="async">';
+    return rasterImg(entity.role_icon, {
+      cls: 'msy-role-icon',
+      loading: 'lazy',
+      decoding: 'async',
+      alt: '',
+      lazy: false
+    });
   }
 
   function buildFilterQuery() {
@@ -153,7 +188,7 @@
     RANK_MODES.forEach(function (m) {
       var active = state.rankMode === m.id;
       html += '<button type="button" class="msy-rank-mode' + (active ? ' active' : '') + '" role="tab" aria-selected="' + (active ? 'true' : 'false') + '" data-msy-rank-mode="' + escAttr(m.id) + '" onclick="GgenMetaSynergy.setRankMode(\'' + escJs(m.id) + '\')">';
-      html += '<img class="msy-rank-mode-icon" src="' + escAttr(imgUrl(m.icon)) + '" alt="" width="28" height="28" loading="lazy" decoding="async">';
+      html += rasterImg(m.icon, { cls: 'msy-rank-mode-icon', loading: 'lazy', decoding: 'async', alt: '', lazy: false, extra: ' width="28" height="28"' });
       html += '<span class="msy-rank-mode-label">' + esc(t(m.labelKey)) + '</span>';
       html += '</button>';
     });
@@ -161,9 +196,7 @@
   }
 
   function applyLangStatic() {
-    var el = document.getElementById('msyHeroSub');
-    if (el) el.textContent = t('msy_hero_sub');
-    el = document.getElementById('msySearchInput');
+    var el = document.getElementById('msySearchInput');
     if (el) el.placeholder = t('msy_search_ph');
     el = document.getElementById('msyEmptyText');
     if (el) el.textContent = t('msy_empty');
@@ -179,7 +212,13 @@
     if (typeof global.updateSourceFilterButtonLabel === 'function') global.updateSourceFilterButtonLabel('msyUnit');
     if (typeof global.updateSeriesFilterButtonLabel === 'function') global.updateSeriesFilterButtonLabel('msyUnit');
     var clr = document.getElementById('msyUnitBrowseFiltersClearBtn');
-    if (clr && typeof global.t === 'function') clr.title = t('filter_clear_all');
+    if (clr) {
+      clr.textContent = t('browse_filters_clear');
+      clr.title = t('filter_clear_all');
+      clr.setAttribute('aria-label', t('filter_clear_all'));
+    }
+    var defIcon = document.getElementById('msyDefTierIcon');
+    if (defIcon) defIcon.src = imgUrl(DEF_ICON);
   }
 
   function renderStatus() {
@@ -202,6 +241,30 @@
     if (!pilot) return 0;
     if (mode.dmgField && pilot[mode.dmgField]) return pilot[mode.dmgField];
     return pilot.score || 0;
+  }
+
+  function excludeUrBtnHtml(unitId, active, isSd) {
+    if (isSd) return '';
+    return (
+      '<button type="button" class="msy-act-btn msy-exclude-ur-btn' + (active ? ' active' : '') + '" title="' + escAttr(active ? t('msy_exclude_ur_on') : t('msy_exclude_ur')) + '" onclick="GgenMetaSynergy.toggleExcludeUr(\'' + escJs(unitId) + '\')">' +
+        '<span class="msy-exclude-ur-icon">' +
+          rasterImg(UR_ICON, { cls: 'msy-exclude-ur-rarity', loading: 'lazy', alt: 'UR', lazy: false }) +
+          '<span class="msy-exclude-ur-x" aria-hidden="true"></span>' +
+        '</span>' +
+      '</button>'
+    );
+  }
+
+  function chartBtnHtml(unitId) {
+    return (
+      '<button type="button" class="msy-act-btn msy-chart-btn" title="' + escAttr(t('msy_chart')) + '" onclick="GgenMetaSynergy.openChart(\'' + escJs(unitId) + '\')">' +
+        '<svg class="msy-chart-btn-svg" viewBox="0 0 16 16" aria-hidden="true" focusable="false">' +
+          '<rect x="1" y="9" width="3" height="6" rx="0.6"></rect>' +
+          '<rect x="6" y="5" width="3" height="10" rx="0.6"></rect>' +
+          '<rect x="11" y="2" width="3" height="13" rx="0.6"></rect>' +
+        '</svg>' +
+      '</button>'
+    );
   }
 
   function renderPilotCard(unitId, pilot, mode) {
@@ -249,9 +312,12 @@
   function renderGroups(groups, startRank, mode) {
     var html = '<div class="msy-groups">';
     groups.forEach(function (g, gi) {
+      var row = viewGroup(g, mode.id);
+      if (!row || !row.unit) return;
       var rank = (startRank || 0) + gi + 1;
-      var u = g.unit || {};
-      html += '<article class="msy-unit-card">';
+      var u = row.unit;
+      var excludeUr = !!state.excludeUrUnits[u.id];
+      html += '<article class="msy-unit-card' + (row.is_sd ? ' msy-unit-card--sd' : '') + '">';
       html += '<header class="msy-unit-head">';
       html += '<span class="msy-unit-rank">' + rank + '</span>';
       html += '<div class="msy-unit-thumb">' + unitThumb(u) + '</div>';
@@ -260,17 +326,49 @@
       html += roleIconHtml(u);
       html += '<span class="msy-unit-name">' + esc(u.name) + '</span>';
       html += '</div>';
-      if (g.weapon_elems) {
+      if (row.is_sd) {
+        html += '<div class="msy-unit-elem msy-unit-elem--sd">' + esc(t('msy_sd_note')) + '</div>';
+      } else if (g.weapon_elems) {
         html += '<div class="msy-unit-elem">&lt;' + esc(g.weapon_elems) + '&gt;</div>';
       }
       html += '</div>';
+      html += '<div class="msy-unit-tools">';
+      html += chartBtnHtml(u.id);
+      html += excludeUrBtnHtml(u.id, excludeUr, row.is_sd);
+      html += '</div>';
       html += '<div class="msy-unit-peak">';
-      html += '<div class="msy-unit-peak-val">' + fmtN(g.max_damage) + '</div>';
+      html += '<div class="msy-unit-peak-val">' + fmtN(row.max_damage) + '</div>';
       html += '<div class="msy-unit-peak-lbl">' + esc(t(mode.metricKey)) + '</div>';
       html += '</div>';
       html += '</header>';
-      html += renderPilotGrid(g.pilots, u.id, mode);
+      html += renderPilotGrid(row.pilots, u.id, mode);
       html += '</article>';
+    });
+    html += '</div>';
+    return html;
+  }
+
+  function renderBarChart(pilots, mode, unitName) {
+    var list = (pilots || []).slice(0, 20);
+    if (!list.length) return '<div class="msy-chart-empty">' + esc(t('msy_empty')) + '</div>';
+    var max = 1;
+    list.forEach(function (p) {
+      max = Math.max(max, pilotDamage(p, mode) || 0);
+    });
+    var html = '<div class="msy-bar-chart">';
+    list.forEach(function (p, i) {
+      var c = p.char || {};
+      var dmg = pilotDamage(p, mode);
+      var pct = Math.max(4, Math.round((dmg / max) * 100));
+      html += '<div class="msy-bar-row" style="--msy-bar-delay:' + (i * 28) + 'ms">';
+      html += '<span class="msy-bar-rank">' + (p.rank || (i + 1)) + '</span>';
+      html += '<div class="msy-bar-thumb">' + pilotThumb(c) + '</div>';
+      html += '<div class="msy-bar-main">';
+      html += '<div class="msy-bar-name-row">' + roleIconHtml(c) + '<span class="msy-bar-name">' + esc(c.name) + '</span></div>';
+      html += '<div class="msy-bar-track"><div class="msy-bar-fill" data-msy-width="' + pct + '" style="width:0"></div></div>';
+      html += '</div>';
+      html += '<div class="msy-bar-val">' + fmtN(dmg) + '</div>';
+      html += '</div>';
     });
     html += '</div>';
     return html;
@@ -326,13 +424,11 @@
       return;
     }
     setLoading(true, false);
-    var warming = false;
     try {
       while (true) {
         var r = await fetch(buildApiUrl(), { credentials: 'same-origin' });
         if (r.status === 202) {
           var warmData = await r.json();
-          warming = true;
           setLoading(true, true);
           await sleep(Math.max(1000, (warmData.retry_after || 3) * 1000));
           continue;
@@ -374,6 +470,61 @@
     state.cacheKey = null;
     renderRankModes();
     loadRankings(true);
+  }
+
+  function toggleExcludeUr(unitId) {
+    if (state.excludeUrUnits[unitId]) delete state.excludeUrUnits[unitId];
+    else state.excludeUrUnits[unitId] = true;
+    renderContent();
+  }
+
+  function findGroup(unitId) {
+    for (var i = 0; i < state.groups.length; i++) {
+      if (state.groups[i].unit && state.groups[i].unit.id === unitId) return state.groups[i];
+    }
+    return null;
+  }
+
+  function openChart(unitId) {
+    var g = findGroup(unitId);
+    if (!g || !g.unit) return;
+    var mode = rankModeDef(state.rankMode);
+    var row = viewGroup(g, mode.id);
+    if (!row) return;
+    var ov = document.getElementById('msyChartOverlay');
+    var title = document.getElementById('msyChartTitle');
+    var sub = document.getElementById('msyChartSub');
+    var body = document.getElementById('msyChartBody');
+    if (!ov || !body) return;
+    state.chartUnitId = unitId;
+    if (title) title.textContent = g.unit.name || '';
+    if (sub) sub.textContent = t(mode.metricKey);
+    body.innerHTML = renderBarChart(row.pilots, mode, g.unit.name);
+    ov.classList.add('active');
+    ov.setAttribute('aria-hidden', 'false');
+    if (typeof global.applyBackgroundScrollLock === 'function') global.applyBackgroundScrollLock();
+    requestAnimationFrame(function () {
+      ov.classList.add('is-visible');
+      requestAnimationFrame(function () {
+        body.querySelectorAll('.msy-bar-fill').forEach(function (el) {
+          el.style.width = (el.getAttribute('data-msy-width') || '0') + '%';
+        });
+      });
+    });
+  }
+
+  function closeChart() {
+    var ov = document.getElementById('msyChartOverlay');
+    if (!ov || !ov.classList.contains('active')) return;
+    ov.classList.remove('is-visible');
+    state.chartUnitId = null;
+    window.setTimeout(function () {
+      ov.classList.remove('active');
+      ov.setAttribute('aria-hidden', 'true');
+      var body = document.getElementById('msyChartBody');
+      if (body) body.innerHTML = '';
+      if (typeof global.releaseBackgroundScrollLock === 'function') global.releaseBackgroundScrollLock();
+    }, 220);
   }
 
   function onTabShown() {
@@ -452,6 +603,12 @@
         loadRankings(true);
       });
     }
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && state.chartUnitId) {
+        e.preventDefault();
+        closeChart();
+      }
+    });
   }
 
   function init() {
@@ -469,7 +626,10 @@
     openDetailChar: openDetailChar,
     openInSimulator: openInSimulator,
     loadRankings: loadRankings,
-    scheduleReload: scheduleReload
+    scheduleReload: scheduleReload,
+    toggleExcludeUr: toggleExcludeUr,
+    openChart: openChart,
+    closeChart: closeChart
   };
 
   if (document.readyState === 'loading') {

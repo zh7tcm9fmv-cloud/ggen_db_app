@@ -558,85 +558,45 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
     }
 
 
-def _best_pilot_by_stat(uid, pilot_ids, wpn, lc, exclude):
-    if not wpn:
-        return None
-    attr = wpn.get('attr', '1')
-    best_cid = None
-    best_atk = -1
-    for cid in pilot_ids:
-        if (uid, cid) in exclude:
-            continue
-        totals, _ = _cached_char_pair_totals(cid, uid, lc)
-        atk = _pilot_atk_for_weapon(totals, attr, 0)
-        if atk > best_atk:
-            best_atk = atk
-            best_cid = cid
-    return best_cid
-
-
-def _prefilter_unit_ids(unit_rows, pilot_ids, lc, lb_tier, vigor, def_tier, exclude):
+def _bundled_pilot_id(uid):
     A = _app()
-    scored = []
-    for uid in unit_rows:
-        info = A.unit_info_map.get(uid) or {}
-        stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
-        unit_wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
-        if not unit_wpn:
-            continue
-        best_cid = _best_pilot_by_stat(uid, pilot_ids, unit_wpn, lc, exclude)
-        if not best_cid:
-            continue
-        dmg = compute_pair_damage(
-            uid, best_cid, lc, lb_tier=lb_tier, vigor=vigor,
-            def_tier=def_tier, wpn=unit_wpn,
-        )
-        if not dmg:
-            continue
-        sc = max(
-            dmg.get('super_crit_dmg', 0) or 0,
-            dmg.get('crit_dmg', 0) or 0,
-            dmg.get('normal_dmg', 0) or 0,
-        )
-        scored.append((sc, uid))
-    scored.sort(key=lambda x: (-x[0], x[1]))
-    return [uid for _, uid in scored[:_MAX_UNITS_FULL_SIM]]
-
-
-def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclude, top_pilots, metric):
-    A = _app()
+    uid = A.normalize_id(uid)
     info = A.unit_info_map.get(uid) or {}
-    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
-    unit_wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
-    if not unit_wpn:
-        return None
+    rec = A.normalize_id(info.get('recommend_character_id') or '0')
+    if rec == '0':
+        rec = A.normalize_id(A.MANUAL_UNIT_RECOMMEND_CHARACTER_MAP.get(uid, '0'))
+    if rec != '0' and rec in A.char_info_map:
+        return rec
+    return None
 
-    need = max(_TOP_PILOTS_PREFILTER, int(top_pilots or 10) + 8)
-    cheap_scored = []
+
+def _is_sd_unit(uid, info=None):
+    A = _app()
+    info = info or A.unit_info_map.get(A.normalize_id(uid)) or {}
+    return A._unit_has_sd_mechanism(info, uid)
+
+
+def _eligible_pilots_for_unit(uid, pilot_ids, exclude):
+    uid = _app().normalize_id(uid)
+    if _is_sd_unit(uid):
+        bp = _bundled_pilot_id(uid)
+        if not bp or (uid, bp) in exclude:
+            return []
+        return [bp]
+    return [cid for cid in pilot_ids if (uid, cid) not in exclude]
+
+
+def _filter_non_ur(pilot_ids):
+    A = _app()
+    out = []
     for cid in pilot_ids:
-        if (uid, cid) in exclude:
-            continue
-        totals, pair_ok = _cached_char_pair_totals(cid, uid, lc)
-        char_atk = _pilot_atk_for_weapon(totals, unit_wpn.get('attr'), 0)
-        unit_atk = _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok)
-        cheap_scored.append((unit_atk * char_atk, cid))
-    if not cheap_scored:
-        return None
-    cheap_scored.sort(key=lambda x: (-x[0], x[1]))
-    candidates = [cid for _, cid in cheap_scored[:need]]
+        ri = str((A.char_info_map.get(cid) or {}).get('rarity', '1'))
+        if A.RARITY_MAP.get(ri, 'N') != 'UR':
+            out.append(cid)
+    return out
 
-    all_pairs = []
-    for cid in candidates:
-        dmg = compute_pair_damage(
-            uid, cid, lc, lb_tier=lb_tier, vigor=vigor,
-            def_tier=def_tier, wpn=unit_wpn,
-        )
-        if not dmg:
-            continue
-        all_pairs.append((cid, dmg))
-    if not all_pairs:
-        return None
 
+def _rankings_from_pairs(all_pairs, top_pilots, lc):
     rankings = {}
     for mode, dmg_key in _RANK_MODES:
         scored = []
@@ -668,18 +628,131 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
                 for i, (sc, cid, d) in enumerate(top)
             ],
         }
+    return rankings
 
+
+def _best_pilot_by_stat(uid, pilot_ids, wpn, lc, exclude):
+    if not wpn:
+        return None
+    attr = wpn.get('attr', '1')
+    best_cid = None
+    best_atk = -1
+    for cid in pilot_ids:
+        if (uid, cid) in exclude:
+            continue
+        totals, _ = _cached_char_pair_totals(cid, uid, lc)
+        atk = _pilot_atk_for_weapon(totals, attr, 0)
+        if atk > best_atk:
+            best_atk = atk
+            best_cid = cid
+    return best_cid
+
+
+def _prefilter_unit_ids(unit_rows, pilot_ids, lc, lb_tier, vigor, def_tier, exclude):
+    A = _app()
+    scored = []
+    for uid in unit_rows:
+        info = A.unit_info_map.get(uid) or {}
+        stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+        unit_wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
+        if not unit_wpn:
+            continue
+        if _is_sd_unit(uid, info):
+            best_cid = _bundled_pilot_id(uid)
+        else:
+            best_cid = _best_pilot_by_stat(uid, pilot_ids, unit_wpn, lc, exclude)
+        if not best_cid or (uid, best_cid) in exclude:
+            continue
+        dmg = compute_pair_damage(
+            uid, best_cid, lc, lb_tier=lb_tier, vigor=vigor,
+            def_tier=def_tier, wpn=unit_wpn,
+        )
+        if not dmg:
+            continue
+        sc = max(
+            dmg.get('super_crit_dmg', 0) or 0,
+            dmg.get('crit_dmg', 0) or 0,
+            dmg.get('normal_dmg', 0) or 0,
+        )
+        scored.append((sc, uid))
+    scored.sort(key=lambda x: (-x[0], x[1]))
+    return [uid for _, uid in scored[:_MAX_UNITS_FULL_SIM]]
+
+
+def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclude, top_pilots, metric):
+    A = _app()
+    info = A.unit_info_map.get(uid) or {}
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    unit_wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
+    if not unit_wpn:
+        return None
+
+    active_pilots = _eligible_pilots_for_unit(uid, pilot_ids, exclude)
+    if not active_pilots:
+        return None
+
+    need = max(_TOP_PILOTS_PREFILTER, int(top_pilots or 10) + 8)
+    cheap_scored = []
+    for cid in active_pilots:
+        totals, pair_ok = _cached_char_pair_totals(cid, uid, lc)
+        char_atk = _pilot_atk_for_weapon(totals, unit_wpn.get('attr'), 0)
+        unit_atk = _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok)
+        cheap_scored.append((unit_atk * char_atk, cid))
+    cheap_scored.sort(key=lambda x: (-x[0], x[1]))
+    candidates = [cid for _, cid in cheap_scored[:need]]
+
+    all_pairs = []
+    for cid in candidates:
+        dmg = compute_pair_damage(
+            uid, cid, lc, lb_tier=lb_tier, vigor=vigor,
+            def_tier=def_tier, wpn=unit_wpn,
+        )
+        if not dmg:
+            continue
+        all_pairs.append((cid, dmg))
+    if not all_pairs:
+        return None
+
+    rankings = _rankings_from_pairs(all_pairs, top_pilots, lc)
     if not rankings:
         return None
 
+    non_ur = _filter_non_ur(active_pilots)
+    if len(non_ur) < len(active_pilots):
+        nu_cids = set(non_ur)
+        all_pairs_nu = [(cid, d) for cid, d in all_pairs if cid in nu_cids]
+        if not all_pairs_nu and non_ur:
+            nu_scored = []
+            for cid in non_ur:
+                totals, pair_ok = _cached_char_pair_totals(cid, uid, lc)
+                char_atk = _pilot_atk_for_weapon(totals, unit_wpn.get('attr'), 0)
+                unit_atk = _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok)
+                nu_scored.append((unit_atk * char_atk, cid))
+            nu_scored.sort(key=lambda x: (-x[0], x[1]))
+            nu_candidates = [cid for _, cid in nu_scored[:need]]
+            for cid in nu_candidates:
+                dmg = compute_pair_damage(
+                    uid, cid, lc, lb_tier=lb_tier, vigor=vigor,
+                    def_tier=def_tier, wpn=unit_wpn,
+                )
+                if dmg:
+                    all_pairs_nu.append((cid, dmg))
+        rankings_no_ur = _rankings_from_pairs(all_pairs_nu, top_pilots, lc)
+    else:
+        rankings_no_ur = rankings
+
     primary = rankings.get('super_crit') or rankings.get('crit') or rankings.get('normal')
+    is_sd = _is_sd_unit(uid, info)
     return {
         'unit': _entity_brief_unit(uid, lc),
         'weapon_elems': _weapon_elem_label(uid, lc),
         'rankings': rankings,
+        'rankings_no_ur': rankings_no_ur,
         'max_damage': primary['max_damage'],
         'metric': metric,
         'pilots': primary['pilots'],
+        'is_sd': is_sd,
+        'bundled_pilot_id': _bundled_pilot_id(uid) if is_sd else None,
     }
 
 
@@ -786,7 +859,7 @@ def build_meta_synergy_rankings(
     vigor='super',
     lb_tier=3,
     def_tier=3,
-    top_pilots=10,
+    top_pilots=20,
     page=1,
     per_page=50,
     exclude_pairs=None,
@@ -922,6 +995,7 @@ def build_meta_synergy_rankings(
 
 def _rankings_cache_key(lc, def_tier, kwargs):
     return (
+        '_v2',
         lc or 'EN',
         kwargs.get('rarity') or kwargs.get('unit_rarity', 'ALL'),
         kwargs.get('role') or kwargs.get('unit_role', 'ALL'),
@@ -958,6 +1032,9 @@ def _normalize_group_for_mode(g, rank_mode):
             'max_damage': block.get('max_damage', 0),
             'pilots': block.get('pilots') or [],
             'rankings': g.get('rankings'),
+            'rankings_no_ur': g.get('rankings_no_ur'),
+            'is_sd': g.get('is_sd', False),
+            'bundled_pilot_id': g.get('bundled_pilot_id'),
         }
     if rank_mode == 'super_crit' and g.get('pilots'):
         return g
@@ -1081,7 +1158,7 @@ def prewarm_default_rankings():
         'metric': 'super_crit',
         'vigor': 'super',
         'lb_tier': 3,
-        'top_pilots': 10,
+        'top_pilots': 20,
         'unit_q': '',
         'exclude_pairs': None,
     }

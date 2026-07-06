@@ -13771,7 +13771,7 @@ def api_meta_synergy_rankings():
     vigor = request.args.get('vigor', 'super')
     lb_tier = request.args.get('lb_tier', '3', type=int)
     def_tier = request.args.get('def_tier', '3', type=int)
-    top_pilots = request.args.get('top_pilots', '10', type=int)
+    top_pilots = request.args.get('top_pilots', '20', type=int)
     page = request.args.get('page', '1', type=int)
     per_page = request.args.get('per_page', '50', type=int)
     rank_mode = request.args.get('rank_mode', 'super_crit').strip() or 'super_crit'
