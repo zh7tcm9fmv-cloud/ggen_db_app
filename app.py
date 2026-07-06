@@ -13765,12 +13765,18 @@ def api_meta_synergy_rankings():
     series_id = request.args.get('series_id', '').strip()
     source = request.args.get('source', '').strip()
     pilot_rarity = request.args.get('pilot_rarity', 'ALL')
-    pilot_roles_raw = request.args.get('pilot_roles', '1,2,3')
-    pilot_roles = tuple(x.strip() for x in pilot_roles_raw.split(',') if x.strip()) or ('1', '2', '3')
+    pilot_roles_raw = request.args.get('pilot_roles', '1')
+    pilot_roles = tuple(x.strip() for x in pilot_roles_raw.split(',') if x.strip()) or ('1',)
     metric = request.args.get('metric', 'super_crit')
     vigor = request.args.get('vigor', 'super')
     lb_tier = request.args.get('lb_tier', '3', type=int)
-    def_tier = request.args.get('def_tier', '3', type=int)
+    def_tier = request.args.get('def_tier', '1', type=int)
+    def_unit_raw = request.args.get('def_unit', '').strip()
+    def_char_raw = request.args.get('def_char', '').strip()
+    def_unit_override = int(def_unit_raw) if def_unit_raw.isdigit() else None
+    def_char_override = int(def_char_raw) if def_char_raw.isdigit() else None
+    lineage_id = request.args.get('lineage_id', '').strip()
+    lineage_op = request.args.get('lineage_op', '').strip()
     top_pilots = request.args.get('top_pilots', '20', type=int)
     page = request.args.get('page', '1', type=int)
     per_page = request.args.get('per_page', '50', type=int)
@@ -13794,12 +13800,16 @@ def api_meta_synergy_rankings():
         role=role,
         series_id=series_id or None,
         source=source or None,
+        lineage_id=lineage_id or None,
+        lineage_op=lineage_op or None,
         pilot_rarity=pilot_rarity,
         pilot_roles=pilot_roles,
         metric=metric,
         vigor=vigor,
         lb_tier=lb_tier,
         def_tier=def_tier,
+        def_unit_override=def_unit_override,
+        def_char_override=def_char_override,
         top_pilots=top_pilots,
         page=page,
         per_page=per_page,

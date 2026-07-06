@@ -18,7 +18,9 @@
     settings: null,
     rankMode: 'super_crit',
     vigor: 'super',
-    defTier: 3,
+    defTier: 1,
+    defUnitOverride: '',
+    defCharOverride: '',
     topPilots: 20,
     unitQ: '',
     page: 1,
@@ -147,6 +149,12 @@
     if (typeof global.getSeriesQuerySuffix === 'function') {
       parts.push(global.getSeriesQuerySuffix('msyUnit').replace(/^&/, ''));
     }
+    if (typeof global.getLineageQuerySuffix === 'function') {
+      parts.push(global.getLineageQuerySuffix('msyUnit').replace(/^&/, ''));
+    }
+    if (typeof global.getLineageOpSuffix === 'function') {
+      parts.push(global.getLineageOpSuffix('msyUnit').replace(/^&/, ''));
+    }
     return parts.filter(Boolean).join('&');
   }
 
@@ -164,6 +172,10 @@
       'page=' + encodeURIComponent(String(state.page)),
       'per_page=' + encodeURIComponent(String(state.perPage))
     ];
+    if (state.defUnitOverride && state.defCharOverride) {
+      q.push('def_unit=' + encodeURIComponent(String(state.defUnitOverride)));
+      q.push('def_char=' + encodeURIComponent(String(state.defCharOverride)));
+    }
     if (fq) q.push(fq);
     return '/api/meta_synergy_rankings?' + q.join('&');
   }
@@ -174,11 +186,16 @@
       buildFilterQuery(),
       state.vigor,
       state.defTier,
+      state.defUnitOverride,
+      state.defCharOverride,
       state.topPilots,
-      state.unitQ,
       state.rankMode,
       state.page
     ].join('|');
+  }
+
+  function searchCacheKeyForState() {
+    return cacheKeyForState() + '|q:' + (state.unitQ || '');
   }
 
   function renderRankModes() {
@@ -203,6 +220,30 @@
     renderRankModes();
   }
 
+  function populateDefTierSelect(tiers) {
+    var sel = document.getElementById('msyDefTierSelect');
+    if (!sel || !tiers) return;
+    var cur = String(state.defTier || '1');
+    var labels = {
+      1: t('msy_def_hard3'),
+      2: t('msy_def_challenge'),
+      3: t('msy_def_eternal'),
+      4: t('msy_def_avg')
+    };
+    sel.innerHTML = '';
+    ['1', '2', '3', '4'].forEach(function (k) {
+      var row = tiers[k] || tiers[String(k)] || {};
+      var lbl = labels[k] || row.label || ('Tier ' + k);
+      var u = row.unit_def != null ? row.unit_def : '';
+      var c = row.char_def != null ? row.char_def : '';
+      var opt = document.createElement('option');
+      opt.value = k;
+      opt.textContent = lbl + (u !== '' ? ' (' + u + ' / ' + c + ')' : '');
+      if (k === cur) opt.selected = true;
+      sel.appendChild(opt);
+    });
+  }
+
   function initFilterLabels() {
     if (typeof global.fillRolePanelIcons === 'function') global.fillRolePanelIcons('msyUnit');
     if (typeof global.fillRarityPanelIcons === 'function') global.fillRarityPanelIcons('msyUnit');
@@ -211,12 +252,17 @@
     if (typeof global.updateRarityFilterButtonLabel === 'function') global.updateRarityFilterButtonLabel('msyUnit');
     if (typeof global.updateSourceFilterButtonLabel === 'function') global.updateSourceFilterButtonLabel('msyUnit');
     if (typeof global.updateSeriesFilterButtonLabel === 'function') global.updateSeriesFilterButtonLabel('msyUnit');
+    if (typeof global.updateLineageFilterButtonLabel === 'function') global.updateLineageFilterButtonLabel('msyUnit');
     var clr = document.getElementById('msyUnitBrowseFiltersClearBtn');
     if (clr) {
       clr.textContent = t('browse_filters_clear');
       clr.title = t('filter_clear_all');
       clr.setAttribute('aria-label', t('filter_clear_all'));
     }
+    var defUnit = document.getElementById('msyDefUnitInput');
+    var defChar = document.getElementById('msyDefCharInput');
+    if (defUnit) defUnit.placeholder = t('msy_def_unit_ph');
+    if (defChar) defChar.placeholder = t('msy_def_char_ph');
     var defIcon = document.getElementById('msyDefTierIcon');
     if (defIcon) defIcon.src = imgUrl(DEF_ICON);
   }
@@ -420,7 +466,7 @@
   async function loadRankings(force) {
     var key = cacheKeyForState();
     if (!force && state.cacheKey === key && state.groups.length) {
-      renderContent();
+      applySearchFromCache();
       return;
     }
     setLoading(true, false);
@@ -441,6 +487,7 @@
         state.page = d.page || state.page;
         state.settings = d.settings || null;
         state.cacheKey = key;
+        if (d.defender_tiers) populateDefTierSelect(d.defender_tiers);
         renderContent();
         break;
       }
@@ -452,6 +499,31 @@
     } finally {
       setLoading(false, false);
     }
+  }
+
+  function applySearchFromCache() {
+    var r = fetch(buildApiUrl(), { credentials: 'same-origin' });
+    r.then(function (resp) {
+      if (!resp.ok) return null;
+      return resp.json();
+    }).then(function (d) {
+      if (!d || d.warming) return;
+      state.groups = d.groups || [];
+      state.total = d.total || 0;
+      state.totalPages = d.total_pages || 1;
+      state.page = d.page || state.page;
+      renderContent();
+    }).catch(function () {
+      renderContent();
+    });
+  }
+
+  function scheduleSearchReload() {
+    clearTimeout(state._searchTimer);
+    state._searchTimer = setTimeout(function () {
+      state.page = 1;
+      applySearchFromCache();
+    }, 180);
   }
 
   function scheduleReload() {
@@ -591,17 +663,34 @@
     if (search) {
       search.addEventListener('input', function () {
         state.unitQ = search.value.trim();
-        scheduleReload();
+        scheduleSearchReload();
       });
     }
     var defSel = document.getElementById('msyDefTierSelect');
     if (defSel) {
       defSel.addEventListener('change', function () {
-        state.defTier = Math.max(1, Math.min(3, parseInt(defSel.value, 10) || 3));
+        state.defTier = Math.max(1, Math.min(4, parseInt(defSel.value, 10) || 1));
         state.cacheKey = null;
         state.page = 1;
         loadRankings(true);
       });
+    }
+    var defUnit = document.getElementById('msyDefUnitInput');
+    var defChar = document.getElementById('msyDefCharInput');
+    function onDefOverrideChange() {
+      state.defUnitOverride = defUnit && defUnit.value.trim() ? defUnit.value.trim() : '';
+      state.defCharOverride = defChar && defChar.value.trim() ? defChar.value.trim() : '';
+      state.cacheKey = null;
+      state.page = 1;
+      loadRankings(true);
+    }
+    if (defUnit) {
+      defUnit.addEventListener('change', onDefOverrideChange);
+      defUnit.addEventListener('keydown', function (e) { if (e.key === 'Enter') onDefOverrideChange(); });
+    }
+    if (defChar) {
+      defChar.addEventListener('change', onDefOverrideChange);
+      defChar.addEventListener('keydown', function (e) { if (e.key === 'Enter') onDefOverrideChange(); });
     }
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && state.chartUnitId) {

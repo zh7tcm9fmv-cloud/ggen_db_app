@@ -145,39 +145,92 @@ def _calc_crit_damage(battle_damage, combat_wp, *, extra_dmg_pct=0, crit_dmg_up_
     return int(plain_crit), int(super_crit)
 
 
+def _stage_npc_max_defs(stage_id):
+    """Highest NPC unit/character DEF on a stage (via stage detail API)."""
+    A = _app()
+    try:
+        client = A.app.test_client()
+        r = client.get(f'/api/stage/{stage_id}?lang=EN')
+        if r.status_code != 200:
+            return None, None
+        payload = r.get_json() or {}
+    except Exception:
+        return None, None
+    max_u = max_c = 0
+    for n in payload.get('npc_details') or []:
+        u = n.get('unit') or {}
+        c = n.get('character') or {}
+        if u:
+            ud = u.get('defense') or (u.get('stats_raw') or {}).get('Defense')
+            if ud:
+                max_u = max(max_u, int(ud))
+        if c:
+            cd = c.get('defense') or (c.get('stats_raw') or {}).get('Defense')
+            if cd:
+                max_c = max(max_c, int(cd))
+    return (max_u or None), (max_c or None)
+
+
+def _psycho_gundam_stage_defs(stage_id):
+    """Eternal Expert reference: Psycho Gundam unit DEF + paired pilot DEF."""
+    A = _app()
+    try:
+        client = A.app.test_client()
+        r = client.get(f'/api/stage/{stage_id}?lang=EN')
+        if r.status_code != 200:
+            return None, None
+        payload = r.get_json() or {}
+    except Exception:
+        return None, None
+    for n in payload.get('npc_details') or []:
+        u = n.get('unit') or {}
+        if 'psycho' not in str(u.get('name', '')).lower():
+            continue
+        c = n.get('character') or {}
+        ud = u.get('defense') or (u.get('stats_raw') or {}).get('Defense')
+        cd = c.get('defense') or (c.get('stats_raw') or {}).get('Defense')
+        return (int(ud) if ud else None), (int(cd) if cd else None)
+    return _stage_npc_max_defs(stage_id)
+
+
 @lru_cache(maxsize=1)
 def _defender_tiers():
-    """Three NPC DEF tiers: below-average mean, overall mean, above-average mean (default tier 3)."""
+    """Game-accurate DEF presets: Hard 3, Challenge Hard 3, Eternal Expert, Avg NPC."""
     A = _app()
-    unit_defs = []
-    char_defs = []
+    uall, call = [], []
     for item in A.extract_data_list(A.map_npc_unit_data):
         d = int(item.get('Defense', 0) or 0)
         if d > 0:
-            unit_defs.append(d)
+            uall.append(d)
     for item in A.extract_data_list(A.map_npc_character_data):
         d = int(item.get('Defense', 0) or 0)
         if d > 0:
-            char_defs.append(d)
-
-    def _split(vals, fallback_u, fallback_c):
-        if not vals:
-            return fallback_u, fallback_c
-        avg = sum(vals) / len(vals)
-        low = [v for v in vals if v < avg]
-        high = [v for v in vals if v >= avg]
-        t1 = int(sum(low) / len(low)) if low else int(avg * 0.67)
-        t2 = int(avg)
-        t3 = int(sum(high) / len(high)) if high else int(avg * 1.33)
-        return (t1, t2, t3)
-
-    u1, u2, u3 = _split(unit_defs, 15000, 500)
-    c1, c2, c3 = _split(char_defs, 189, 298)
+            call.append(d)
+    avg_u = int(sum(uall) / len(uall)) if uall else 4997
+    avg_c = int(sum(call) / len(call)) if call else 298
+    ch_u, ch_c = _stage_npc_max_defs('101701')
+    et_u, et_c = _psycho_gundam_stage_defs('90520001')
     return {
-        1: {'unit_def': u1, 'char_def': c1, 'label': 'Low'},
-        2: {'unit_def': u2, 'char_def': c2, 'label': 'Mid'},
-        3: {'unit_def': u3, 'char_def': c3, 'label': 'High'},
+        1: {'unit_def': 3819, 'char_def': 193, 'label': 'Hard 3'},
+        2: {'unit_def': ch_u or 7051, 'char_def': ch_c or 509, 'label': 'Challenge Hard 3'},
+        3: {'unit_def': et_u or 25072, 'char_def': et_c or 705, 'label': 'Eternal Expert'},
+        4: {'unit_def': avg_u, 'char_def': avg_c, 'label': 'Avg NPC'},
     }
+
+
+def _resolve_defender_stats(def_tier, *, def_unit_override=None, def_char_override=None):
+    tiers = _defender_tiers()
+    if def_unit_override is not None and def_char_override is not None:
+        try:
+            u = int(def_unit_override)
+            c = int(def_char_override)
+            if u > 0 and c > 0:
+                return u, c, 'Custom'
+        except (TypeError, ValueError):
+            pass
+    tier_key = max(1, min(4, int(def_tier or 1)))
+    row = tiers.get(tier_key) or tiers[1]
+    return int(row['unit_def']), int(row['char_def']), row['label']
 
 
 def defender_tiers_public():
@@ -329,18 +382,160 @@ def _ability_blob_lines(bab):
     return lines
 
 
-def _char_pilot_dmg_bonuses(cid, lc, *, cp_on=True):
-    """Max pilot passive dmg/crit bonuses — conditional lines count when CP is on (max-damage sim)."""
+def _char_is_attack_role(cid):
+    info = _app().char_info_map.get(_app().normalize_id(cid)) or {}
+    return str(info.get('role', '0')) == '1'
+
+
+def _msy_unit_tag_ids(uid, lc):
+    A = _app()
+    return {
+        A.normalize_id(t.get('id'))
+        for t in A.resolve_tags(A.unit_lin_map, A.normalize_id(uid), lc, 'unit')
+        if t.get('id')
+    }
+
+
+def _msy_char_tag_ids(cid, lc):
+    A = _app()
+    return {
+        A.normalize_id(t.get('id'))
+        for t in A.resolve_tags(A.char_lin_map, A.normalize_id(cid), lc, 'char')
+        if t.get('id')
+    }
+
+
+def _msy_unit_series_ids(uid, lc):
+    A = _app()
+    ld = _ldc(lc)
+    uid = A.normalize_id(uid)
+    raw = ld.get('unit_ser_map', {}).get(uid, '')
+    if isinstance(raw, (list, tuple)):
+        return {A.normalize_id(x) for x in raw if x}
+    if raw:
+        return {A.normalize_id(raw)}
+    return set()
+
+
+def _msy_match_one_condition(cond, uid, cid, lc):
+    A = _app()
+    if not isinstance(cond, dict):
+        return False
+    cid = A.normalize_id(cid)
+    uid = A.normalize_id(uid)
+    c_id = A.normalize_id(cond.get('id'))
+    src = str(cond.get('source') or '')
+    typ = str(cond.get('type') or '')
+    ut = _msy_unit_tag_ids(uid, lc)
+    usr = _msy_unit_series_ids(uid, lc)
+    ct = _msy_char_tag_ids(cid, lc)
+    char_info = A.char_info_map.get(cid) or {}
+    char_series = set()
+    for s in (char_info.get('series') or []):
+        if isinstance(s, dict) and s.get('id'):
+            char_series.add(A.normalize_id(s['id']))
+    if src == 'unit_ids':
+        return uid == c_id
+    if src == 'character_ids':
+        return cid == c_id
+    if src == 'character_series':
+        return c_id in char_series
+    if src in ('char_tags',) or typ == 'character':
+        return c_id in ct
+    if src in ('unit_tags', 'group_tags') or typ == 'unit':
+        return c_id in ut
+    if typ == 'series' or src == 'series':
+        if src == 'character_series':
+            return c_id in char_series
+        return c_id in usr
+    if typ == 'unit_role' or src == 'types':
+        rid = str(c_id or '').replace('role_', '')
+        info = A.unit_info_map.get(uid) or {}
+        return str(info.get('role', '0')) == rid
+    return False
+
+
+def _msy_condition_group_matches(uid, cid, lc, grp):
+    conds = (grp or {}).get('conditions') or []
+    if not conds:
+        return True
+    tag_conds = [c for c in conds if str((c or {}).get('source') or '') in ('unit_tags', 'group_tags')]
+    other = [c for c in conds if c not in tag_conds]
+    tag_part = (not tag_conds) or any(_msy_match_one_condition(c, uid, cid, lc) for c in tag_conds)
+    other_part = (not other) or all(_msy_match_one_condition(c, uid, cid, lc) for c in other)
+    return tag_part and other_part
+
+
+def _msy_ability_cond_meets(uid, cid, lc, cond_groups):
+    if not cond_groups:
+        return True
+    return all(_msy_condition_group_matches(uid, cid, lc, grp) for grp in cond_groups)
+
+
+def _pilot_tag_affinity_matches_unit(uid, lc, text, detail=None):
+    A = _app()
+    if not A._trait_detail_implies_piloting_tag_affinity(text):
+        return False
+    d = detail if isinstance(detail, dict) else {'text': text}
+    names = A._collect_detail_lineage_tag_names(d)
+    if names:
+        return A._unit_has_any_lineage_tag(uid, lc, names)
+    return False
+
+
+def _pilot_bonus_text_applies(uid, cid, ld, lc, text, detail=None):
+    """Whether a pilot ability line's dmg/crit bonus applies to this unit (mirrors DC)."""
+    A = _app()
+    uid = A.normalize_id(uid)
+    txt = str(text or '')
+    if not txt:
+        return False
+    if _pilot_tag_affinity_matches_unit(uid, lc, txt, detail):
+        return True
+    if re.search(r'when piloting character', txt, re.I):
+        if re.search(
+            r'grant \+\d+% ATK and DEF|grants \+\d+% ATK and DEF|same squad|in your squad',
+            txt, re.I,
+        ):
+            return True
+    if not re.search(r'when piloting|搭乘|搭乗', txt, re.I):
+        return True
+    return A._pilot_text_targets_unit(uid, ld, txt)
+
+
+def _char_pilot_dmg_bonuses(cid, uid, lc, *, cp_on=True):
+    """Pilot passive dmg/crit bonuses for a specific unit×pilot pair (DC rules)."""
+    A = _app()
+    ld = _ldc(lc)
+    uid = A.normalize_id(uid)
+    cid = A.normalize_id(cid)
+    is_attack = _char_is_attack_role(cid)
     dmg_dealt = crit_up = 0
     for bab in _build_char_ac_calc(cid, lc):
         for src in (bab, bab.get('sp_replacement')):
             if not src:
                 continue
-            for txt in _ability_blob_lines(src):
+            for d2 in src.get('details') or []:
+                if isinstance(d2, dict):
+                    txt = str(d2.get('text') or '')
+                    cond_groups = d2.get('condition_groups') or []
+                else:
+                    txt = str(d2 or '')
+                    cond_groups = []
                 if not txt:
                     continue
-                has_cond = bool(re.search(r'when\s+|if\s+|搭乗|時', txt, re.I))
-                if has_cond and not cp_on:
+                has_cond = bool(cond_groups) or bool(
+                    re.search(r'when\s+|if\s+|搭乗|時', txt, re.I)
+                )
+                if has_cond:
+                    if not cp_on:
+                        continue
+                    if cond_groups:
+                        if not _msy_ability_cond_meets(uid, cid, lc, cond_groups):
+                            continue
+                    elif not _pilot_bonus_text_applies(uid, cid, ld, lc, txt, d2 if isinstance(d2, dict) else None):
+                        continue
+                elif not is_attack:
                     continue
                 for m in _DMG_DEALT_RE.finditer(txt):
                     for g in m.groups():
@@ -490,7 +685,8 @@ def _cached_char_pair_totals(cid, uid, lc):
     return _char_pair_cache[key]
 
 
-def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier=3, wpn=None):
+def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier=1,
+                        def_unit_override=None, def_char_override=None, wpn=None):
     A = _app()
     uid = A.normalize_id(uid)
     cid = A.normalize_id(cid)
@@ -506,18 +702,17 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
     if not wpn or wpn['power'] <= 0:
         return None
 
-    tiers = _defender_tiers()
-    tier_key = max(1, min(3, int(def_tier or 3)))
-    def_row = tiers.get(tier_key) or tiers[3]
-    def_total = int(def_row['unit_def'])
-    defender_char_def = float(def_row['char_def'])
+    def_total, defender_char_def, def_label = _resolve_defender_stats(
+        def_tier, def_unit_override=def_unit_override, def_char_override=def_char_override,
+    )
+    tier_key = max(1, min(4, int(def_tier or 1)))
 
     totals, pair_ok = _cached_char_pair_totals(cid, uid, lc)
     skill_dmg, skill_atk_pct = _char_skill_bonuses(cid, lc)
     char_atk = _pilot_atk_for_weapon(totals, wpn.get('attr'), skill_atk_pct)
     unit_atk = _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok)
 
-    dmg_dealt, crit_up = _char_pilot_dmg_bonuses(cid, lc, cp_on=True)
+    dmg_dealt, crit_up = _char_pilot_dmg_bonuses(cid, uid, lc, cp_on=True)
     dmg_dealt += skill_dmg
     guaranteed_crit = _char_guaranteed_crit(cid, lc)
 
@@ -554,6 +749,7 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
         'def_tier': tier_key,
         'def_unit_def': def_total,
         'def_char_def': int(defender_char_def),
+        'def_label': def_label,
         'pair_ok': pair_ok,
     }
 
@@ -648,7 +844,8 @@ def _best_pilot_by_stat(uid, pilot_ids, wpn, lc, exclude):
     return best_cid
 
 
-def _prefilter_unit_ids(unit_rows, pilot_ids, lc, lb_tier, vigor, def_tier, exclude):
+def _prefilter_unit_ids(unit_rows, pilot_ids, lc, lb_tier, vigor, def_tier, exclude, *,
+                        def_unit_override=None, def_char_override=None):
     A = _app()
     scored = []
     for uid in unit_rows:
@@ -665,7 +862,8 @@ def _prefilter_unit_ids(unit_rows, pilot_ids, lc, lb_tier, vigor, def_tier, excl
             continue
         dmg = compute_pair_damage(
             uid, best_cid, lc, lb_tier=lb_tier, vigor=vigor,
-            def_tier=def_tier, wpn=unit_wpn,
+            def_tier=def_tier, def_unit_override=def_unit_override,
+            def_char_override=def_char_override, wpn=unit_wpn,
         )
         if not dmg:
             continue
@@ -679,7 +877,8 @@ def _prefilter_unit_ids(unit_rows, pilot_ids, lc, lb_tier, vigor, def_tier, excl
     return [uid for _, uid in scored[:_MAX_UNITS_FULL_SIM]]
 
 
-def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclude, top_pilots, metric):
+def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclude, top_pilots, metric, *,
+                             def_unit_override=None, def_char_override=None):
     A = _app()
     info = A.unit_info_map.get(uid) or {}
     stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
@@ -705,7 +904,8 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
     for cid in candidates:
         dmg = compute_pair_damage(
             uid, cid, lc, lb_tier=lb_tier, vigor=vigor,
-            def_tier=def_tier, wpn=unit_wpn,
+            def_tier=def_tier, def_unit_override=def_unit_override,
+            def_char_override=def_char_override, wpn=unit_wpn,
         )
         if not dmg:
             continue
@@ -733,7 +933,8 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
             for cid in nu_candidates:
                 dmg = compute_pair_damage(
                     uid, cid, lc, lb_tier=lb_tier, vigor=vigor,
-                    def_tier=def_tier, wpn=unit_wpn,
+                    def_tier=def_tier, def_unit_override=def_unit_override,
+                    def_char_override=def_char_override, wpn=unit_wpn,
                 )
                 if dmg:
                     all_pairs_nu.append((cid, dmg))
@@ -756,7 +957,8 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
     }
 
 
-def _build_all_unit_groups(unit_ids, pilot_ids, lc, lb_tier, vigor, def_tier, exclude, top_pilots, metric):
+def _build_all_unit_groups(unit_ids, pilot_ids, lc, lb_tier, vigor, def_tier, exclude, top_pilots, metric, *,
+                             def_unit_override=None, def_char_override=None):
     if not unit_ids:
         return []
     groups = []
@@ -766,6 +968,7 @@ def _build_all_unit_groups(unit_ids, pilot_ids, lc, lb_tier, vigor, def_tier, ex
             ex.submit(
                 _build_single_unit_group, uid, pilot_ids, lc, lb_tier, vigor,
                 def_tier, exclude, top_pilots, metric,
+                def_unit_override=def_unit_override, def_char_override=def_char_override,
             )
             for uid in unit_ids
         ]
@@ -834,12 +1037,13 @@ def _pilot_pool_ids():
     return tuple(sorted(_app().char_list_playable_ids))
 
 
-def _settings_note(def_tier):
-    tiers = _defender_tiers()
-    row = tiers.get(max(1, min(3, int(def_tier or 3)))) or tiers[3]
+def _settings_note(def_tier, *, def_unit_override=None, def_char_override=None):
+    u, c, label = _resolve_defender_stats(
+        def_tier, def_unit_override=def_unit_override, def_char_override=def_char_override,
+    )
     return (
-        f"Max-damage sim: CP on, super vigor, active skills, LB3. "
-        f"Def tier {def_tier} ({row['label']}): MS DEF {row['unit_def']:,}, pilot DEF {row['char_def']:,} "
+        f"Max-damage sim: CP on, super vigor, active skills, LB3, Attack pilots. "
+        f"Def ({label}): MS DEF {u:,}, pilot DEF {c:,} "
         f"(−{_DEF_DEBUFF_CAP}% debuff cap)"
     )
 
@@ -853,12 +1057,16 @@ def build_meta_synergy_rankings(
     role=None,
     series_id=None,
     source=None,
+    lineage_id=None,
+    lineage_op=None,
     pilot_rarity='ALL',
     pilot_roles=None,
     metric='super_crit',
     vigor='super',
     lb_tier=3,
-    def_tier=3,
+    def_tier=1,
+    def_unit_override=None,
+    def_char_override=None,
     top_pilots=20,
     page=1,
     per_page=50,
@@ -873,7 +1081,7 @@ def build_meta_synergy_rankings(
     for p in exclude_pairs or []:
         if isinstance(p, (list, tuple)) and len(p) >= 2:
             exclude.add((A.normalize_id(p[0]), A.normalize_id(p[1])))
-    pilot_roles = pilot_roles or ('1', '2', '3')
+    pilot_roles = pilot_roles or ('1',)
     pilot_role_set = {str(r) for r in pilot_roles}
     pilot_rarity_filter = None if not pilot_rarity or pilot_rarity.upper() == 'ALL' else pilot_rarity.upper()
 
@@ -895,9 +1103,10 @@ def build_meta_synergy_rankings(
 
     series_filter = A.parse_list_series_filter(series_id or '')
     source_filter = A.parse_list_source_filter(source or '')
+    lineage_filter = A.parse_list_lineage_filter(lineage_id or '')
+    lineage_combine = A.normalize_filter_combine_op(lineage_op or 'and', 'and')
 
     unit_rows = []
-    q_lower = (unit_q or '').strip().lower()
     for uid in sorted(A.unit_list_playable_ids):
         info = A.unit_info_map.get(uid)
         if not info:
@@ -925,9 +1134,9 @@ def build_meta_synergy_rankings(
         if series_filter is not None:
             if not A.entity_matches_series(unit_ser_map.get(uid, ''), series_filter, lc):
                 continue
-        name = _resolve_unit_name(uid, lc).lower()
-        if q_lower and q_lower not in name and q_lower not in uid:
-            continue
+        if lineage_filter is not None:
+            if not A.entity_matches_lineage(A.unit_lin_map, uid, lineage_filter, lineage_combine):
+                continue
         if not _cached_best_ex_weapon(uid, _unit_stat_mode(ri), lc):
             continue
         unit_rows.append(uid)
@@ -947,10 +1156,12 @@ def build_meta_synergy_rankings(
     if len(unit_rows) > _PREFILTER_THRESHOLD:
         sim_units = _prefilter_unit_ids(
             unit_rows, pilot_ids, lc, lb_tier, vigor, def_tier, exclude,
+            def_unit_override=def_unit_override, def_char_override=def_char_override,
         )
 
     groups = _build_all_unit_groups(
         sim_units, pilot_ids, lc, lb_tier, vigor, def_tier, exclude, top_pilots, metric,
+        def_unit_override=def_unit_override, def_char_override=def_char_override,
     )
 
     groups.sort(
@@ -965,7 +1176,7 @@ def build_meta_synergy_rankings(
     start = (page - 1) * per_page
     page_groups = groups[start:start + per_page]
     total_pages = max(1, (total + per_page - 1) // per_page)
-    dt = max(1, min(3, int(def_tier or 3)))
+    dt = max(1, min(4, int(def_tier or 1)))
 
     return {
         'groups': page_groups,
@@ -984,30 +1195,55 @@ def build_meta_synergy_rankings(
             'unit_role': role_raw,
             'series_id': series_id or '',
             'source': source or '',
+            'lineage_id': lineage_id or '',
+            'lineage_op': lineage_op or '',
             'pilot_rarity': pilot_rarity,
             'pilot_roles': list(pilot_role_set),
             'lb_tier': lb_tier,
             'def_tier': dt,
-            'defender_note': _settings_note(dt),
+            'def_unit_override': def_unit_override,
+            'def_char_override': def_char_override,
+            'defender_note': _settings_note(
+                dt, def_unit_override=def_unit_override, def_char_override=def_char_override,
+            ),
         },
     }
 
 
+def _filter_groups_by_unit_q(groups, unit_q, lc):
+    q_lower = (unit_q or '').strip().lower()
+    if not q_lower:
+        return groups
+    out = []
+    for g in groups:
+        u = g.get('unit') or {}
+        uid = str(u.get('id') or '')
+        name = str(u.get('name') or '').lower()
+        if q_lower in name or q_lower in uid.lower():
+            out.append(g)
+    return out
+
+
 def _rankings_cache_key(lc, def_tier, kwargs):
+    du = kwargs.get('def_unit_override')
+    dc = kwargs.get('def_char_override')
     return (
-        '_v2',
+        '_v3',
         lc or 'EN',
         kwargs.get('rarity') or kwargs.get('unit_rarity', 'ALL'),
         kwargs.get('role') or kwargs.get('unit_role', 'ALL'),
         kwargs.get('series_id') or '',
         kwargs.get('source') or '',
+        kwargs.get('lineage_id') or '',
+        kwargs.get('lineage_op') or '',
         kwargs.get('pilot_rarity', 'ALL'),
-        tuple(sorted(str(r) for r in (kwargs.get('pilot_roles') or ('1', '2', '3')))),
+        tuple(sorted(str(r) for r in (kwargs.get('pilot_roles') or ('1',)))),
         kwargs.get('vigor', 'super'),
         int(kwargs.get('lb_tier', 3) or 3),
         def_tier,
+        du,
+        dc,
         int(kwargs.get('top_pilots', 10) or 10),
-        (kwargs.get('unit_q') or '').strip().lower(),
         tuple(tuple(p) for p in (kwargs.get('exclude_pairs') or ())),
     )
 
@@ -1071,8 +1307,10 @@ def _ensure_rankings_cache(cache_key, build_fn):
 
 
 def _warming_payload(rank_mode, vigor, def_tier, kwargs):
-    pilot_role_set = {str(r) for r in (kwargs.get('pilot_roles') or ('1', '2', '3'))}
+    pilot_role_set = {str(r) for r in (kwargs.get('pilot_roles') or ('1',))}
     dt = def_tier
+    du = kwargs.get('def_unit_override')
+    dc = kwargs.get('def_char_override')
     return {
         'warming': True,
         'retry_after': 3,
@@ -1092,17 +1330,23 @@ def _warming_payload(rank_mode, vigor, def_tier, kwargs):
             'unit_role': kwargs.get('role') or kwargs.get('unit_role', 'ALL'),
             'series_id': kwargs.get('series_id') or '',
             'source': kwargs.get('source') or '',
+            'lineage_id': kwargs.get('lineage_id') or '',
+            'lineage_op': kwargs.get('lineage_op') or '',
             'pilot_rarity': kwargs.get('pilot_rarity', 'ALL'),
             'pilot_roles': list(pilot_role_set),
             'lb_tier': int(kwargs.get('lb_tier', 3) or 3),
             'def_tier': dt,
-            'defender_note': _settings_note(dt),
+            'def_unit_override': du,
+            'def_char_override': dc,
+            'defender_note': _settings_note(dt, def_unit_override=du, def_char_override=dc),
         },
     }
 
 
-def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, page, per_page, vigor, def_tier, kwargs):
+def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, page, per_page, vigor,
+                                def_tier, kwargs, unit_q=''):
     sorted_groups = _sort_groups_by_mode(groups, rank_mode)
+    sorted_groups = _filter_groups_by_unit_q(sorted_groups, unit_q, kwargs.get('lc', 'EN'))
     total = len(sorted_groups)
     page = max(1, int(page or 1))
     per_page = max(1, min(100, int(per_page or 50)))
@@ -1114,8 +1358,10 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
         if row:
             page_groups.append(row)
     total_pages = max(1, (total + per_page - 1) // per_page)
-    pilot_role_set = {str(r) for r in (kwargs.get('pilot_roles') or ('1', '2', '3'))}
+    pilot_role_set = {str(r) for r in (kwargs.get('pilot_roles') or ('1',))}
     dt = def_tier
+    du = kwargs.get('def_unit_override')
+    dc = kwargs.get('def_char_override')
     return {
         'groups': page_groups,
         'total': total,
@@ -1133,11 +1379,15 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
             'unit_role': kwargs.get('role') or kwargs.get('unit_role', 'ALL'),
             'series_id': kwargs.get('series_id') or '',
             'source': kwargs.get('source') or '',
+            'lineage_id': kwargs.get('lineage_id') or '',
+            'lineage_op': kwargs.get('lineage_op') or '',
             'pilot_rarity': kwargs.get('pilot_rarity', 'ALL'),
             'pilot_roles': list(pilot_role_set),
             'lb_tier': int(kwargs.get('lb_tier', 3) or 3),
             'def_tier': dt,
-            'defender_note': _settings_note(dt),
+            'def_unit_override': du,
+            'def_char_override': dc,
+            'defender_note': _settings_note(dt, def_unit_override=du, def_char_override=dc),
         },
     }
 
@@ -1154,15 +1404,18 @@ def prewarm_default_rankings():
         'series_id': None,
         'source': None,
         'pilot_rarity': 'ALL',
-        'pilot_roles': ('1', '2', '3'),
+        'pilot_roles': ('1',),
         'metric': 'super_crit',
         'vigor': 'super',
         'lb_tier': 3,
         'top_pilots': 20,
-        'unit_q': '',
         'exclude_pairs': None,
+        'lineage_id': None,
+        'lineage_op': None,
+        'def_unit_override': None,
+        'def_char_override': None,
     }
-    def_tier = 3
+    def_tier = 1
     cache_key = _rankings_cache_key(lc, def_tier, kwargs)
 
     def _do_build():
@@ -1187,8 +1440,10 @@ def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
     rank_mode = kwargs.pop('rank_mode', 'super_crit') or 'super_crit'
     page = max(1, int(kwargs.pop('page', 1) or 1))
     per_page = max(1, min(100, int(kwargs.pop('per_page', 50) or 50)))
-    def_tier = max(1, min(3, int(kwargs.pop('def_tier', 3) or 3)))
+    unit_q = kwargs.pop('unit_q', '') or ''
+    def_tier = max(1, min(4, int(kwargs.pop('def_tier', 1) or 1)))
     vigor = kwargs.get('vigor', 'super')
+    kwargs['lc'] = lc
     cache_key = _rankings_cache_key(lc, def_tier, kwargs)
 
     def _do_build():
@@ -1214,5 +1469,6 @@ def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
         vigor=vigor,
         def_tier=def_tier,
         kwargs=kwargs,
+        unit_q=unit_q,
     )
     return payload

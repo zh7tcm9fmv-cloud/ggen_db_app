@@ -341,6 +341,20 @@
   min-height: 30px;
   padding: 4px 8px;
   font-size: 11px;
+  max-width: 220px;
+}
+
+.msy-def-custom {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.msy-def-input {
+  width: 72px;
+  min-height: 30px;
+  padding: 4px 6px;
+  font-size: 11px;
 }
 
 .msy-status {
