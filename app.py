@@ -13749,6 +13749,58 @@ def api_video_proxy(folder, filename):
     return Response(stream_with_context(generate()), status=status, headers=out_headers)
 
 
+@app.route('/api/meta_synergy_rankings')
+def api_meta_synergy_rankings():
+    """Unit × pilot max-damage synergy rankings (Firered damage sheet)."""
+    lc = request.args.get('lang', DEFAULT_LANG)
+    unit_rarity = request.args.get('unit_rarity', 'UR')
+    unit_role = request.args.get('unit_role', '1')
+    pilot_rarity = request.args.get('pilot_rarity', 'ALL')
+    pilot_roles_raw = request.args.get('pilot_roles', '1,2,3')
+    pilot_roles = tuple(x.strip() for x in pilot_roles_raw.split(',') if x.strip()) or ('1', '2', '3')
+    metric = request.args.get('metric', 'super_crit')
+    vigor = request.args.get('vigor', 'super')
+    lb_tier = request.args.get('lb_tier', '3', type=int)
+    top_pilots = request.args.get('top_pilots', '10', type=int)
+    page = request.args.get('page', '1', type=int)
+    per_page = request.args.get('per_page', '50', type=int)
+    unit_q = request.args.get('unit_q', '')
+    full = request.args.get('full', '0') in ('1', 'true', 'yes')
+    exclude_pairs = []
+    for part in (request.args.get('exclude') or '').split(';'):
+        part = part.strip()
+        if not part or ':' not in part:
+            continue
+        uid, cid = part.split(':', 1)
+        if uid.strip() and cid.strip():
+            exclude_pairs.append((uid.strip(), cid.strip()))
+    import meta_synergy_rank as msr
+    payload = msr.build_meta_synergy_rankings_cached(
+        lc=lc,
+        unit_rarity=unit_rarity,
+        unit_role=unit_role,
+        pilot_rarity=pilot_rarity,
+        pilot_roles=pilot_roles,
+        metric=metric,
+        vigor=vigor,
+        lb_tier=lb_tier,
+        top_pilots=top_pilots,
+        page=page,
+        per_page=per_page,
+        unit_q=unit_q,
+        exclude_pairs=exclude_pairs or None,
+    )
+    if not full:
+        payload = {k: v for k, v in payload.items() if k != 'all_groups'}
+    ck = (
+        f'msy_{lc}_{unit_rarity}_{unit_role}_{pilot_rarity}_'
+        f'{",".join(pilot_roles)}_{metric}_{vigor}_{lb_tier}_{top_pilots}_'
+        f'{unit_q}_{page}_{per_page}_{"full" if full else "page"}_'
+        f'{hash(tuple(exclude_pairs))}'
+    )
+    return jsonify_cacheable(payload, ck, public=True, max_age=3600, convert_images=True)
+
+
 @app.route('/api/tier_mockup')
 def api_tier_mockup():
     """Serve offline tier mockup JSON with portrait thumbnails."""
