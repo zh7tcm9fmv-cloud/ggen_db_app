@@ -524,6 +524,7 @@ def _char_pilot_dmg_bonuses(cid, uid, lc, *, cp_on=True):
     uid = A.normalize_id(uid)
     cid = A.normalize_id(cid)
     is_attack = _char_is_attack_role(cid)
+    unit_is_attack = _unit_role(uid) == '1'
     dmg_dealt = crit_up = 0
     for bab in _build_char_ac_calc(cid, lc):
         for src in (bab, bab.get('sp_replacement')):
@@ -550,6 +551,11 @@ def _char_pilot_dmg_bonuses(cid, uid, lc, *, cp_on=True):
                     elif not _pilot_bonus_text_applies(uid, cid, ld, lc, txt, d2 if isinstance(d2, dict) else None):
                         continue
                 elif not is_attack:
+                    continue
+                elif unit_is_attack and is_attack and re.search(
+                    r'support attack|counter attack|ally|squad member|teammate|same squad',
+                    txt, re.I,
+                ) and not re.search(r'when piloting|搭乘|搭乗', txt, re.I):
                     continue
                 for m in _DMG_DEALT_RE.finditer(txt):
                     for g in m.groups():
@@ -851,12 +857,13 @@ def _rankings_from_pairs(all_pairs, top_pilots, lc):
 def _best_pilot_by_stat(uid, pilot_ids, wpn, lc, exclude):
     if not wpn:
         return None
+    eligible = _eligible_pilots_for_unit(uid, pilot_ids, exclude)
+    if not eligible:
+        return None
     attr = wpn.get('attr', '1')
     best_cid = None
     best_atk = -1
-    for cid in pilot_ids:
-        if (uid, cid) in exclude:
-            continue
+    for cid in eligible:
         totals, _ = _cached_char_pair_totals(cid, uid, lc)
         atk = _pilot_atk_for_weapon(totals, attr, 0)
         if atk > best_atk:
@@ -899,7 +906,7 @@ def _prefilter_unit_ids(unit_rows, pilot_ids, lc, lb_tier, vigor, def_tier, excl
 
 
 def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclude, top_pilots, metric, *,
-                             def_unit_override=None, def_char_override=None):
+                             def_unit_override=None, def_char_override=None, def_tiers=None):
     A = _app()
     info = A.unit_info_map.get(uid) or {}
     stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
@@ -921,25 +928,29 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
     cheap_scored.sort(key=lambda x: (-x[0], x[1]))
     candidates = [cid for _, cid in cheap_scored[:need]]
 
-    all_pairs = []
-    for cid in candidates:
-        dmg = compute_pair_damage(
-            uid, cid, lc, lb_tier=lb_tier, vigor=vigor,
-            def_tier=def_tier, def_unit_override=def_unit_override,
-            def_char_override=def_char_override, wpn=unit_wpn,
-        )
-        if not dmg:
-            continue
-        all_pairs.append((cid, dmg))
-    if not all_pairs:
-        return None
+    tiers = tuple(def_tiers) if def_tiers else (def_tier,)
+    use_multi_tier = (
+        len(tiers) > 1
+        and not def_unit_override
+        and not def_char_override
+    )
 
-    rankings = _rankings_from_pairs(all_pairs, top_pilots, lc)
-    if not rankings:
-        return None
+    def _pairs_for_tier(dt):
+        pairs = []
+        for cid in candidates:
+            dmg = compute_pair_damage(
+                uid, cid, lc, lb_tier=lb_tier, vigor=vigor,
+                def_tier=dt, def_unit_override=def_unit_override,
+                def_char_override=def_char_override, wpn=unit_wpn,
+            )
+            if dmg:
+                pairs.append((cid, dmg))
+        return pairs
 
-    non_ur = _filter_non_ur(active_pilots)
-    if len(non_ur) < len(active_pilots):
+    def _rankings_no_ur_for_tier(dt, all_pairs):
+        non_ur = _filter_non_ur(active_pilots)
+        if len(non_ur) >= len(active_pilots):
+            return _rankings_from_pairs(all_pairs, top_pilots, lc)
         nu_cids = set(non_ur)
         all_pairs_nu = [(cid, d) for cid, d in all_pairs if cid in nu_cids]
         if not all_pairs_nu and non_ur:
@@ -954,18 +965,44 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
             for cid in nu_candidates:
                 dmg = compute_pair_damage(
                     uid, cid, lc, lb_tier=lb_tier, vigor=vigor,
-                    def_tier=def_tier, def_unit_override=def_unit_override,
+                    def_tier=dt, def_unit_override=def_unit_override,
                     def_char_override=def_char_override, wpn=unit_wpn,
                 )
                 if dmg:
                     all_pairs_nu.append((cid, dmg))
-        rankings_no_ur = _rankings_from_pairs(all_pairs_nu, top_pilots, lc)
+        return _rankings_from_pairs(all_pairs_nu, top_pilots, lc)
+
+    if use_multi_tier:
+        rankings_by_tier = {}
+        rankings_no_ur_by_tier = {}
+        for dt in tiers:
+            pairs = _pairs_for_tier(dt)
+            if not pairs:
+                continue
+            rk = _rankings_from_pairs(pairs, top_pilots, lc)
+            if rk:
+                rankings_by_tier[int(dt)] = rk
+                rankings_no_ur_by_tier[int(dt)] = _rankings_no_ur_for_tier(dt, pairs)
+        if not rankings_by_tier:
+            return None
+        dt_primary = int(def_tier) if int(def_tier) in rankings_by_tier else next(iter(rankings_by_tier))
+        rankings = rankings_by_tier[dt_primary]
+        rankings_no_ur = rankings_no_ur_by_tier.get(dt_primary) or rankings
     else:
-        rankings_no_ur = rankings
+        dt = int(tiers[0])
+        all_pairs = _pairs_for_tier(dt)
+        if not all_pairs:
+            return None
+        rankings = _rankings_from_pairs(all_pairs, top_pilots, lc)
+        if not rankings:
+            return None
+        rankings_no_ur = _rankings_no_ur_for_tier(dt, all_pairs)
+        rankings_by_tier = None
+        rankings_no_ur_by_tier = None
 
     primary = rankings.get('super_crit') or rankings.get('crit') or rankings.get('normal')
     is_sd = _is_sd_unit(uid, info)
-    return {
+    out = {
         'unit': _entity_brief_unit(uid, lc),
         'weapon_elems': _weapon_elem_label(uid, lc),
         'rankings': rankings,
@@ -976,10 +1013,14 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
         'is_sd': is_sd,
         'bundled_pilot_id': _bundled_pilot_id(uid) if is_sd else None,
     }
+    if rankings_by_tier:
+        out['rankings_by_tier'] = rankings_by_tier
+        out['rankings_no_ur_by_tier'] = rankings_no_ur_by_tier
+    return out
 
 
 def _build_all_unit_groups(unit_ids, pilot_ids, lc, lb_tier, vigor, def_tier, exclude, top_pilots, metric, *,
-                             def_unit_override=None, def_char_override=None):
+                             def_unit_override=None, def_char_override=None, def_tiers=None):
     if not unit_ids:
         return []
     groups = []
@@ -990,6 +1031,7 @@ def _build_all_unit_groups(unit_ids, pilot_ids, lc, lb_tier, vigor, def_tier, ex
                 _build_single_unit_group, uid, pilot_ids, lc, lb_tier, vigor,
                 def_tier, exclude, top_pilots, metric,
                 def_unit_override=def_unit_override, def_char_override=def_char_override,
+                def_tiers=def_tiers,
             )
             for uid in unit_ids
         ]
@@ -1053,6 +1095,23 @@ def _weapon_elem_label(uid, lc):
     return {'1': 'Beam', '2': 'Physical', '3': 'Special', '7': 'Special'}.get(attr, 'Mixed')
 
 
+_MSY_ALL_PILOT_ROLES = ('1', '2', '3')
+_MSY_STD_DEF_TIERS = (1, 2, 3)
+
+
+def _pilot_role_set_for_filters(role_filter, pilot_roles):
+    """Pilot pool must match unit role filter (same as Units browse tab)."""
+    if pilot_roles is not None:
+        explicit = {str(r) for r in pilot_roles if str(r).strip()}
+        if explicit:
+            return explicit
+    if role_filter is not None:
+        if not role_filter:
+            return set()
+        return {str(r) for r in role_filter}
+    return {str(r) for r in _MSY_ALL_PILOT_ROLES}
+
+
 @lru_cache(maxsize=1)
 def _pilot_pool_ids():
     return tuple(sorted(_app().char_list_playable_ids))
@@ -1102,8 +1161,6 @@ def build_meta_synergy_rankings(
     for p in exclude_pairs or []:
         if isinstance(p, (list, tuple)) and len(p) >= 2:
             exclude.add((A.normalize_id(p[0]), A.normalize_id(p[1])))
-    pilot_roles = pilot_roles or ('1',)
-    pilot_role_set = {str(r) for r in pilot_roles}
     pilot_rarity_filter = None if not pilot_rarity or pilot_rarity.upper() == 'ALL' else pilot_rarity.upper()
 
     rarity_raw = (rarity if rarity is not None else unit_rarity) or ''
@@ -1121,6 +1178,8 @@ def build_meta_synergy_rankings(
         role_filter = None
     else:
         role_filter = A.parse_list_role_filter(str(role_raw))
+
+    pilot_role_set = _pilot_role_set_for_filters(role_filter, pilot_roles)
 
     series_filter = A.parse_list_series_filter(series_id or '')
     source_filter = A.parse_list_source_filter(source or '')
@@ -1180,28 +1239,40 @@ def build_meta_synergy_rankings(
             def_unit_override=def_unit_override, def_char_override=def_char_override,
         )
 
+    use_multi_tier = (
+        not def_unit_override
+        and not def_char_override
+    )
+    def_tiers = _MSY_STD_DEF_TIERS if use_multi_tier else None
+
     groups = _build_all_unit_groups(
         sim_units, pilot_ids, lc, lb_tier, vigor, def_tier, exclude, top_pilots, metric,
         def_unit_override=def_unit_override, def_char_override=def_char_override,
+        def_tiers=def_tiers,
     )
 
-    groups.sort(
+    dt = max(1, min(4, int(def_tier or 1)))
+    display_groups = groups
+    if use_multi_tier:
+        display_groups = [_group_for_def_tier(g, dt) for g in groups]
+        display_groups = [g for g in display_groups if g]
+
+    display_groups.sort(
         key=lambda g: (
             -((g.get('rankings') or {}).get('super_crit', {}).get('max_damage', g.get('max_damage', 0))),
             (g.get('unit') or {}).get('name', '').lower(),
         ),
     )
-    total = len(groups)
+    total = len(display_groups)
     page = max(1, int(page or 1))
     per_page = max(1, min(100, int(per_page or 50)))
     start = (page - 1) * per_page
-    page_groups = groups[start:start + per_page]
+    page_groups = display_groups[start:start + per_page]
     total_pages = max(1, (total + per_page - 1) // per_page)
-    dt = max(1, min(4, int(def_tier or 1)))
 
     return {
         'groups': page_groups,
-        'all_groups': groups,
+        'all_groups': groups if use_multi_tier else display_groups,
         'total': total,
         'total_pilot_candidates': len(pilot_ids),
         'page': page,
@@ -1231,6 +1302,34 @@ def build_meta_synergy_rankings(
     }
 
 
+def _group_for_def_tier(g, def_tier):
+    """Expand a multi-tier group blob into a single-tier view for sorting/display."""
+    if not g:
+        return None
+    dt = int(def_tier or 1)
+    rbt = g.get('rankings_by_tier')
+    if not rbt:
+        return g
+    rankings = rbt.get(dt) or rbt.get(str(dt))
+    if not rankings:
+        return None
+    rnub = (g.get('rankings_no_ur_by_tier') or {}).get(dt) or (g.get('rankings_no_ur_by_tier') or {}).get(str(dt))
+    primary = rankings.get('super_crit') or rankings.get('crit') or rankings.get('normal')
+    if not primary:
+        return None
+    return {
+        'unit': g.get('unit'),
+        'weapon_elems': g.get('weapon_elems'),
+        'rankings': rankings,
+        'rankings_no_ur': rnub or rankings,
+        'max_damage': primary.get('max_damage', 0),
+        'metric': g.get('metric'),
+        'pilots': primary.get('pilots') or [],
+        'is_sd': g.get('is_sd', False),
+        'bundled_pilot_id': g.get('bundled_pilot_id'),
+    }
+
+
 def _filter_groups_by_unit_q(groups, unit_q, lc):
     q_lower = (unit_q or '').strip().lower()
     if not q_lower:
@@ -1248,8 +1347,9 @@ def _filter_groups_by_unit_q(groups, unit_q, lc):
 def _rankings_cache_key(lc, def_tier, kwargs):
     du = kwargs.get('def_unit_override')
     dc = kwargs.get('def_char_override')
+    tier_key = def_tier if (du or dc) else 'multi'
     return (
-        '_v4',
+        '_v5',
         lc or 'EN',
         kwargs.get('rarity') or kwargs.get('unit_rarity', 'ALL'),
         kwargs.get('role') or kwargs.get('unit_role', 'ALL'),
@@ -1258,10 +1358,10 @@ def _rankings_cache_key(lc, def_tier, kwargs):
         kwargs.get('lineage_id') or '',
         kwargs.get('lineage_op') or '',
         kwargs.get('pilot_rarity', 'ALL'),
-        tuple(sorted(str(r) for r in (kwargs.get('pilot_roles') or ('1',)))),
+        tuple(sorted(str(r) for r in (kwargs.get('pilot_roles') or ()))),
         kwargs.get('vigor', 'super'),
         int(kwargs.get('lb_tier', 3) or 3),
-        def_tier,
+        tier_key,
         du,
         dc,
         int(kwargs.get('top_pilots', 10) or 10),
@@ -1328,7 +1428,12 @@ def _ensure_rankings_cache(cache_key, build_fn):
 
 
 def _warming_payload(rank_mode, vigor, def_tier, kwargs):
-    pilot_role_set = {str(r) for r in (kwargs.get('pilot_roles') or ('1',))}
+    role_raw = kwargs.get('role') or kwargs.get('unit_role')
+    if role_raw is None or str(role_raw).upper() in ('ALL', ''):
+        role_filter = None
+    else:
+        role_filter = _app().parse_list_role_filter(str(role_raw))
+    pilot_role_set = _pilot_role_set_for_filters(role_filter, kwargs.get('pilot_roles'))
     dt = def_tier
     du = kwargs.get('def_unit_override')
     dc = kwargs.get('def_char_override')
@@ -1366,7 +1471,13 @@ def _warming_payload(rank_mode, vigor, def_tier, kwargs):
 
 def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, page, per_page, vigor,
                                 def_tier, kwargs, unit_q=''):
-    sorted_groups = _sort_groups_by_mode(groups, rank_mode)
+    dt = max(1, min(4, int(def_tier or 1)))
+    expanded = []
+    for g in groups or []:
+        row = _group_for_def_tier(g, dt) if g.get('rankings_by_tier') else g
+        if row:
+            expanded.append(row)
+    sorted_groups = _sort_groups_by_mode(expanded, rank_mode)
     sorted_groups = _filter_groups_by_unit_q(sorted_groups, unit_q, kwargs.get('lc', 'EN'))
     total = len(sorted_groups)
     page = max(1, int(page or 1))
@@ -1379,8 +1490,12 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
         if row:
             page_groups.append(row)
     total_pages = max(1, (total + per_page - 1) // per_page)
-    pilot_role_set = {str(r) for r in (kwargs.get('pilot_roles') or ('1',))}
-    dt = def_tier
+    role_raw = kwargs.get('role') or kwargs.get('unit_role')
+    if role_raw is None or str(role_raw).upper() in ('ALL', ''):
+        role_filter = None
+    else:
+        role_filter = _app().parse_list_role_filter(str(role_raw))
+    pilot_role_set = _pilot_role_set_for_filters(role_filter, kwargs.get('pilot_roles'))
     du = kwargs.get('def_unit_override')
     dc = kwargs.get('def_char_override')
     return {
@@ -1425,7 +1540,7 @@ def prewarm_default_rankings():
         'series_id': None,
         'source': None,
         'pilot_rarity': 'ALL',
-        'pilot_roles': ('1',),
+        'pilot_roles': None,
         'metric': 'super_crit',
         'vigor': 'super',
         'lb_tier': 3,
@@ -1465,7 +1580,8 @@ def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
     def_tier = max(1, min(4, int(kwargs.pop('def_tier', 1) or 1)))
     vigor = kwargs.get('vigor', 'super')
     kwargs['lc'] = lc
-    cache_key = _rankings_cache_key(lc, def_tier, kwargs)
+    use_multi = not kwargs.get('def_unit_override') and not kwargs.get('def_char_override')
+    cache_key = _rankings_cache_key(lc, def_tier if not use_multi else None, kwargs)
 
     def _do_build():
         raw = build_meta_synergy_rankings(

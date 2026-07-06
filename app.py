@@ -13765,8 +13765,11 @@ def api_meta_synergy_rankings():
     series_id = request.args.get('series_id', '').strip()
     source = request.args.get('source', '').strip()
     pilot_rarity = request.args.get('pilot_rarity', 'ALL')
-    pilot_roles_raw = request.args.get('pilot_roles', '1')
-    pilot_roles = tuple(x.strip() for x in pilot_roles_raw.split(',') if x.strip()) or ('1',)
+    pilot_roles_raw = request.args.get('pilot_roles', '').strip()
+    pilot_roles = (
+        tuple(x.strip() for x in pilot_roles_raw.split(',') if x.strip())
+        if pilot_roles_raw else None
+    )
     metric = request.args.get('metric', 'super_crit')
     vigor = request.args.get('vigor', 'super')
     lb_tier = request.args.get('lb_tier', '3', type=int)

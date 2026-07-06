@@ -8,7 +8,6 @@
   ];
 
   var UR_ICON = '/static/images/UI/UI_Common_RarityIcon_UR.webp';
-  var DEF_ICON = '/static/images/Trait/trait_10230100.webp';
 
   var state = {
     loading: false,
@@ -127,7 +126,7 @@
       rarity: entity.rarity || 'N',
       role_icon: entity.role_icon || ''
     };
-    var inner = global.renderListThumb(row, 'char', null);
+    var inner = global.renderListThumb(row, 'char', null, { pickerThumb: true });
     return '<div class="msy-pilot-thumb-slot">' + inner + '</div>';
   }
 
@@ -294,8 +293,6 @@
     var defChar = document.getElementById('msyDefCharInput');
     if (defUnit) defUnit.placeholder = t('msy_def_unit_ph');
     if (defChar) defChar.placeholder = t('msy_def_char_ph');
-    var defIcon = document.getElementById('msyDefTierIcon');
-    if (defIcon) defIcon.src = imgUrl(DEF_ICON);
     var defLbl = document.getElementById('msyDefTierLabel');
     if (defLbl) defLbl.textContent = t('msy_def_difficulty');
   }
