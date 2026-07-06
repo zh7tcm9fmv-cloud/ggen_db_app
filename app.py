@@ -12812,6 +12812,11 @@ def _schedule_browse_list_performance_caches():
         try:
             _build_browse_list_performance_caches()
             _prewarm_default_browse_list_api_caches()
+            try:
+                import meta_synergy_rank as msr
+                msr.prewarm_default_rankings()
+            except Exception as e:
+                print(f'MSY prewarm schedule failed: {e}')
         except Exception as e:
             print(f'Browse list perf caches: build failed: {e}')
         finally:
@@ -13769,6 +13774,7 @@ def api_meta_synergy_rankings():
     top_pilots = request.args.get('top_pilots', '10', type=int)
     page = request.args.get('page', '1', type=int)
     per_page = request.args.get('per_page', '50', type=int)
+    rank_mode = request.args.get('rank_mode', 'super_crit').strip() or 'super_crit'
     unit_q = request.args.get('unit_q', '')
     full = request.args.get('full', '0') in ('1', 'true', 'yes')
     exclude_pairs = []
@@ -13797,15 +13803,19 @@ def api_meta_synergy_rankings():
         top_pilots=top_pilots,
         page=page,
         per_page=per_page,
+        rank_mode=rank_mode,
         unit_q=unit_q,
         exclude_pairs=exclude_pairs or None,
     )
+    if payload.get('warming'):
+        ck = f'msy_warming_{lc}_{hash(tuple(sorted(request.args.items()))) & 0xffff:x}'
+        return jsonify_cacheable(payload, ck, public=True, max_age=0, convert_images=True), 202
     if not full:
         payload = {k: v for k, v in payload.items() if k != 'all_groups'}
     ck = (
         f'msy_{lc}_{rarity or unit_rarity}_{role or unit_role}_{series_id}_{source}_'
         f'{pilot_rarity}_{",".join(pilot_roles)}_{metric}_{vigor}_{lb_tier}_{def_tier}_{top_pilots}_'
-        f'{unit_q}_{page}_{per_page}_{"full" if full else "page"}_'
+        f'{rank_mode}_{unit_q}_{page}_{per_page}_{"full" if full else "page"}_'
         f'{hash(tuple(exclude_pairs))}'
     )
     return jsonify_cacheable(payload, ck, public=True, max_age=3600, convert_images=True)

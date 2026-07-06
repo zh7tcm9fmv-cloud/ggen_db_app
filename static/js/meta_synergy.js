@@ -9,7 +9,9 @@
 
   var state = {
     loading: false,
-    allGroups: [],
+    groups: [],
+    total: 0,
+    totalPages: 1,
     settings: null,
     rankMode: 'super_crit',
     vigor: 'super',
@@ -43,6 +45,10 @@
 
   function imgUrl(path) {
     return typeof global.imgUrl === 'function' ? global.imgUrl(path) : path;
+  }
+
+  function sleep(ms) {
+    return new Promise(function (resolve) { setTimeout(resolve, ms); });
   }
 
   function rankModeDef(modeId) {
@@ -109,7 +115,7 @@
     return parts.filter(Boolean).join('&');
   }
 
-  function buildApiUrl(full) {
+  function buildApiUrl() {
     var lang = (global.S && global.S.lang) || 'EN';
     var fq = buildFilterQuery();
     var q = [
@@ -119,11 +125,11 @@
       'lb_tier=3',
       'top_pilots=' + encodeURIComponent(String(state.topPilots)),
       'unit_q=' + encodeURIComponent(state.unitQ || ''),
-      'page=1',
-      'per_page=10000'
+      'rank_mode=' + encodeURIComponent(state.rankMode),
+      'page=' + encodeURIComponent(String(state.page)),
+      'per_page=' + encodeURIComponent(String(state.perPage))
     ];
     if (fq) q.push(fq);
-    if (full) q.push('full=1');
     return '/api/meta_synergy_rankings?' + q.join('&');
   }
 
@@ -134,46 +140,10 @@
       state.vigor,
       state.defTier,
       state.topPilots,
-      state.unitQ
+      state.unitQ,
+      state.rankMode,
+      state.page
     ].join('|');
-  }
-
-  function normalizeGroupForMode(g, modeId) {
-    var rankings = g.rankings || {};
-    var block = rankings[modeId];
-    if (block) {
-      return {
-        unit: g.unit,
-        weapon_elems: g.weapon_elems,
-        max_damage: block.max_damage,
-        pilots: block.pilots || []
-      };
-    }
-    if (modeId === 'super_crit' && g.pilots) {
-      return {
-        unit: g.unit,
-        weapon_elems: g.weapon_elems,
-        max_damage: g.max_damage,
-        pilots: g.pilots || []
-      };
-    }
-    return null;
-  }
-
-  function groupsForMode(groups, modeId) {
-    var out = [];
-    (groups || []).forEach(function (g) {
-      var row = normalizeGroupForMode(g, modeId);
-      if (row && row.pilots && row.pilots.length) out.push(row);
-    });
-    out.sort(function (a, b) {
-      var da = (a.max_damage || 0) - (b.max_damage || 0);
-      if (da !== 0) return da > 0 ? -1 : 1;
-      var na = (a.unit && a.unit.name) || '';
-      var nb = (b.unit && b.unit.name) || '';
-      return na.localeCompare(nb);
-    });
-    return out;
   }
 
   function renderRankModes() {
@@ -212,17 +182,17 @@
     if (clr && typeof global.t === 'function') clr.title = t('filter_clear_all');
   }
 
-  function renderStatus(filteredTotal) {
+  function renderStatus() {
     var mode = rankModeDef(state.rankMode);
     var el = document.getElementById('msyStatus');
     var countEl = document.getElementById('msyToolbarCount');
     if (countEl) {
-      countEl.innerHTML = '<span class="result-count-num">' + fmtN(filteredTotal) + '</span> ' + esc(t('count_unit'));
+      countEl.innerHTML = '<span class="result-count-num">' + fmtN(state.total) + '</span> ' + esc(t('count_unit'));
     }
     if (!el) return;
     var note = (state.settings && state.settings.defender_note) || '';
     el.innerHTML =
-      '<span class="msy-status-chip">' + esc(t('msy_status_units').replace('{n}', fmtN(filteredTotal))) + '</span>' +
+      '<span class="msy-status-chip">' + esc(t('msy_status_units').replace('{n}', fmtN(state.total))) + '</span>' +
       '<span class="msy-status-chip">' + esc(t('msy_status_metric').replace('{m}', t(mode.metricKey))) + '</span>' +
       '<span class="msy-status-chip">' + esc(t('msy_status_vigor').replace('{v}', t('dc_vigor_super'))) + '</span>' +
       (note ? '<span class="msy-status-note">' + esc(note) + '</span>' : '');
@@ -306,83 +276,85 @@
     return html;
   }
 
-  function paginateGroups(groups) {
-    var total = groups.length;
-    var page = Math.max(1, state.page | 0);
-    var perPage = Math.max(1, Math.min(50, state.perPage | 0));
-    var start = (page - 1) * perPage;
-    return {
-      groups: groups.slice(start, start + perPage),
-      total: total,
-      totalPages: Math.max(1, Math.ceil(total / perPage)),
-      page: page,
-      perPage: perPage
-    };
-  }
-
-  function renderPagination(meta) {
+  function renderPagination() {
     var host = document.getElementById('msyPagination');
     if (!host) return;
-    if (!meta || meta.totalPages <= 1) {
+    if (state.totalPages <= 1) {
       host.innerHTML = '';
       return;
     }
     if (typeof global.renderPagination === 'function') {
-      host.innerHTML = global.renderPagination(meta.page, meta.totalPages, 'GgenMetaSynergy.goPage');
+      host.innerHTML = global.renderPagination(state.page, state.totalPages, 'GgenMetaSynergy.goPage');
       return;
     }
-    host.innerHTML = '<span>' + meta.page + ' / ' + meta.totalPages + '</span>';
+    host.innerHTML = '<span>' + state.page + ' / ' + state.totalPages + '</span>';
   }
 
   function renderContent() {
     var mode = rankModeDef(state.rankMode);
-    var ranked = groupsForMode(state.allGroups, state.rankMode);
-    var meta = paginateGroups(ranked);
-    renderStatus(meta.total);
-    var startRank = (meta.page - 1) * meta.perPage;
+    renderStatus();
+    var startRank = (state.page - 1) * state.perPage;
     var host = document.getElementById('msyContent');
     var empty = document.getElementById('msyEmpty');
     if (!host) return;
-    if (!meta.groups.length) {
+    if (!state.groups.length) {
       host.innerHTML = '';
-      if (empty) empty.style.display = '';
-      renderPagination(meta);
+      if (empty) empty.style.display = state.loading ? 'none' : '';
+      renderPagination();
       return;
     }
     if (empty) empty.style.display = 'none';
-    host.innerHTML = renderGroups(meta.groups, startRank, mode);
-    renderPagination(meta);
+    host.innerHTML = renderGroups(state.groups, startRank, mode);
+    renderPagination();
   }
 
-  function setLoading(on) {
+  function setLoading(on, warming) {
     state.loading = !!on;
     var el = document.getElementById('msyLoading');
-    if (el) el.style.display = on ? 'flex' : 'none';
+    if (!el) return;
+    el.style.display = on ? 'flex' : 'none';
+    var msg = el.querySelector('.msy-loading-text');
+    if (msg) {
+      msg.textContent = warming ? (t('msy_warming') || 'Computing rankings…') : (t('loading') || 'Loading…');
+    }
   }
 
   async function loadRankings(force) {
     var key = cacheKeyForState();
-    if (!force && state.cacheKey === key && state.allGroups.length) {
+    if (!force && state.cacheKey === key && state.groups.length) {
       renderContent();
       return;
     }
-    setLoading(true);
+    setLoading(true, false);
+    var warming = false;
     try {
-      var r = await fetch(buildApiUrl(true), { credentials: 'same-origin' });
-      if (!r.ok) throw new Error('HTTP ' + r.status);
-      var d = await r.json();
-      state.allGroups = d.all_groups || d.groups || [];
-      state.settings = d.settings || null;
-      state.cacheKey = key;
-      state.page = 1;
-      renderContent();
+      while (true) {
+        var r = await fetch(buildApiUrl(), { credentials: 'same-origin' });
+        if (r.status === 202) {
+          var warmData = await r.json();
+          warming = true;
+          setLoading(true, true);
+          await sleep(Math.max(1000, (warmData.retry_after || 3) * 1000));
+          continue;
+        }
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        var d = await r.json();
+        state.groups = d.groups || [];
+        state.total = d.total || 0;
+        state.totalPages = d.total_pages || 1;
+        state.page = d.page || state.page;
+        state.settings = d.settings || null;
+        state.cacheKey = key;
+        renderContent();
+        break;
+      }
     } catch (e) {
       var host = document.getElementById('msyContent');
       if (host) {
         host.innerHTML = '<div class="msy-error">' + esc(String(e)) + '</div>';
       }
     } finally {
-      setLoading(false);
+      setLoading(false, false);
     }
   }
 
@@ -390,6 +362,7 @@
     clearTimeout(state._reloadTimer);
     state._reloadTimer = setTimeout(function () {
       state.cacheKey = null;
+      state.page = 1;
       loadRankings(true);
     }, 320);
   }
@@ -398,8 +371,9 @@
     if (!rankModeDef(modeId)) return;
     state.rankMode = modeId;
     state.page = 1;
+    state.cacheKey = null;
     renderRankModes();
-    renderContent();
+    loadRankings(true);
   }
 
   function onTabShown() {
@@ -410,7 +384,8 @@
 
   function goPage(p) {
     state.page = Math.max(1, p | 0);
-    renderContent();
+    state.cacheKey = null;
+    loadRankings(true);
     try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (_) { window.scrollTo(0, 0); }
   }
 
@@ -473,6 +448,7 @@
       defSel.addEventListener('change', function () {
         state.defTier = Math.max(1, Math.min(3, parseInt(defSel.value, 10) || 3));
         state.cacheKey = null;
+        state.page = 1;
         loadRankings(true);
       });
     }

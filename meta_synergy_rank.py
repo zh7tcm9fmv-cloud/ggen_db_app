@@ -7,6 +7,8 @@ from __future__ import annotations
 
 import math
 import re
+import threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from functools import lru_cache
 
 _VIGOR = {
@@ -461,6 +463,17 @@ def _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok):
 _unit_weapon_cache = {}
 _char_pair_cache = {}
 _rankings_result_cache = {}
+_rankings_build_lock = threading.Lock()
+_rankings_inflight = set()
+
+_MAX_UNITS_FULL_SIM = 120
+_PREFILTER_THRESHOLD = 80
+_TOP_PILOTS_PREFILTER = 48
+_RANK_MODES = (
+    ('super_crit', 'super_crit_dmg'),
+    ('crit', 'crit_dmg'),
+    ('normal', 'normal_dmg'),
+)
 
 
 def _cached_best_ex_weapon(uid, stat_mode, lc):
@@ -543,6 +556,154 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
         'def_char_def': int(defender_char_def),
         'pair_ok': pair_ok,
     }
+
+
+def _best_pilot_by_stat(uid, pilot_ids, wpn, lc, exclude):
+    if not wpn:
+        return None
+    attr = wpn.get('attr', '1')
+    best_cid = None
+    best_atk = -1
+    for cid in pilot_ids:
+        if (uid, cid) in exclude:
+            continue
+        totals, _ = _cached_char_pair_totals(cid, uid, lc)
+        atk = _pilot_atk_for_weapon(totals, attr, 0)
+        if atk > best_atk:
+            best_atk = atk
+            best_cid = cid
+    return best_cid
+
+
+def _prefilter_unit_ids(unit_rows, pilot_ids, lc, lb_tier, vigor, def_tier, exclude):
+    A = _app()
+    scored = []
+    for uid in unit_rows:
+        info = A.unit_info_map.get(uid) or {}
+        stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+        unit_wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
+        if not unit_wpn:
+            continue
+        best_cid = _best_pilot_by_stat(uid, pilot_ids, unit_wpn, lc, exclude)
+        if not best_cid:
+            continue
+        dmg = compute_pair_damage(
+            uid, best_cid, lc, lb_tier=lb_tier, vigor=vigor,
+            def_tier=def_tier, wpn=unit_wpn,
+        )
+        if not dmg:
+            continue
+        sc = max(
+            dmg.get('super_crit_dmg', 0) or 0,
+            dmg.get('crit_dmg', 0) or 0,
+            dmg.get('normal_dmg', 0) or 0,
+        )
+        scored.append((sc, uid))
+    scored.sort(key=lambda x: (-x[0], x[1]))
+    return [uid for _, uid in scored[:_MAX_UNITS_FULL_SIM]]
+
+
+def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclude, top_pilots, metric):
+    A = _app()
+    info = A.unit_info_map.get(uid) or {}
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    unit_wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
+    if not unit_wpn:
+        return None
+
+    need = max(_TOP_PILOTS_PREFILTER, int(top_pilots or 10) + 8)
+    cheap_scored = []
+    for cid in pilot_ids:
+        if (uid, cid) in exclude:
+            continue
+        totals, pair_ok = _cached_char_pair_totals(cid, uid, lc)
+        char_atk = _pilot_atk_for_weapon(totals, unit_wpn.get('attr'), 0)
+        unit_atk = _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok)
+        cheap_scored.append((unit_atk * char_atk, cid))
+    if not cheap_scored:
+        return None
+    cheap_scored.sort(key=lambda x: (-x[0], x[1]))
+    candidates = [cid for _, cid in cheap_scored[:need]]
+
+    all_pairs = []
+    for cid in candidates:
+        dmg = compute_pair_damage(
+            uid, cid, lc, lb_tier=lb_tier, vigor=vigor,
+            def_tier=def_tier, wpn=unit_wpn,
+        )
+        if not dmg:
+            continue
+        all_pairs.append((cid, dmg))
+    if not all_pairs:
+        return None
+
+    rankings = {}
+    for mode, dmg_key in _RANK_MODES:
+        scored = []
+        for cid, d in all_pairs:
+            sc = d.get(dmg_key, 0) or 0
+            if sc <= 0:
+                continue
+            scored.append((sc, cid, d))
+        if not scored:
+            continue
+        scored.sort(key=lambda x: (-x[0], x[1]))
+        top = scored[: max(1, int(top_pilots or 10))]
+        rankings[mode] = {
+            'max_damage': top[0][0],
+            'pilots': [
+                {
+                    'rank': i + 1,
+                    'char': _entity_brief_char(cid, lc),
+                    'normal_dmg': d['normal_dmg'],
+                    'crit_dmg': d['crit_dmg'],
+                    'super_crit_dmg': d['super_crit_dmg'],
+                    'expected_dmg': d['expected_dmg'],
+                    'peak_dmg': d['peak_dmg'],
+                    'guaranteed_crit': d['guaranteed_crit'],
+                    'crit_rate': d['crit_rate'],
+                    'pair_ok': d['pair_ok'],
+                    'score': sc,
+                }
+                for i, (sc, cid, d) in enumerate(top)
+            ],
+        }
+
+    if not rankings:
+        return None
+
+    primary = rankings.get('super_crit') or rankings.get('crit') or rankings.get('normal')
+    return {
+        'unit': _entity_brief_unit(uid, lc),
+        'weapon_elems': _weapon_elem_label(uid, lc),
+        'rankings': rankings,
+        'max_damage': primary['max_damage'],
+        'metric': metric,
+        'pilots': primary['pilots'],
+    }
+
+
+def _build_all_unit_groups(unit_ids, pilot_ids, lc, lb_tier, vigor, def_tier, exclude, top_pilots, metric):
+    if not unit_ids:
+        return []
+    groups = []
+    workers = min(8, max(1, len(unit_ids)))
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        futs = [
+            ex.submit(
+                _build_single_unit_group, uid, pilot_ids, lc, lb_tier, vigor,
+                def_tier, exclude, top_pilots, metric,
+            )
+            for uid in unit_ids
+        ]
+        for fut in as_completed(futs):
+            try:
+                g = fut.result()
+                if g:
+                    groups.append(g)
+            except Exception as e:
+                print(f'MSY unit build error: {e}')
+    return groups
 
 
 def _entity_brief_unit(uid, lc):
@@ -709,74 +870,22 @@ def build_meta_synergy_rankings(
             continue
         pilot_ids.append(cid)
 
-    _rank_modes = (
-        ('super_crit', 'super_crit_dmg'),
-        ('crit', 'crit_dmg'),
-        ('normal', 'normal_dmg'),
+    sim_units = unit_rows
+    if len(unit_rows) > _PREFILTER_THRESHOLD:
+        sim_units = _prefilter_unit_ids(
+            unit_rows, pilot_ids, lc, lb_tier, vigor, def_tier, exclude,
+        )
+
+    groups = _build_all_unit_groups(
+        sim_units, pilot_ids, lc, lb_tier, vigor, def_tier, exclude, top_pilots, metric,
     )
 
-    groups = []
-    for uid in unit_rows:
-        info = A.unit_info_map.get(uid) or {}
-        stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
-        unit_wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
-        all_pairs = []
-        for cid in pilot_ids:
-            if (uid, cid) in exclude:
-                continue
-            dmg = compute_pair_damage(uid, cid, lc, lb_tier=lb_tier, vigor=vigor, def_tier=def_tier, wpn=unit_wpn)
-            if not dmg:
-                continue
-            all_pairs.append((cid, dmg))
-        if not all_pairs:
-            continue
-
-        rankings = {}
-        for mode, dmg_key in _rank_modes:
-            scored = []
-            for cid, d in all_pairs:
-                sc = d.get(dmg_key, 0) or 0
-                if sc <= 0:
-                    continue
-                scored.append((sc, cid, d))
-            if not scored:
-                continue
-            scored.sort(key=lambda x: (-x[0], x[1]))
-            top = scored[: max(1, int(top_pilots or 10))]
-            rankings[mode] = {
-                'max_damage': top[0][0],
-                'pilots': [
-                    {
-                        'rank': i + 1,
-                        'char': _entity_brief_char(cid, lc),
-                        'normal_dmg': d['normal_dmg'],
-                        'crit_dmg': d['crit_dmg'],
-                        'super_crit_dmg': d['super_crit_dmg'],
-                        'expected_dmg': d['expected_dmg'],
-                        'peak_dmg': d['peak_dmg'],
-                        'guaranteed_crit': d['guaranteed_crit'],
-                        'crit_rate': d['crit_rate'],
-                        'pair_ok': d['pair_ok'],
-                        'score': sc,
-                    }
-                    for i, (sc, cid, d) in enumerate(top)
-                ],
-            }
-
-        if not rankings:
-            continue
-
-        primary = rankings.get('super_crit') or rankings.get('crit') or rankings.get('normal')
-        groups.append({
-            'unit': _entity_brief_unit(uid, lc),
-            'weapon_elems': _weapon_elem_label(uid, lc),
-            'rankings': rankings,
-            'max_damage': primary['max_damage'],
-            'metric': metric,
-            'pilots': primary['pilots'],
-        })
-
-    groups.sort(key=lambda g: (-(g.get('rankings') or {}).get('super_crit', {}).get('max_damage', g.get('max_damage', 0)), g['unit']['name'].lower()))
+    groups.sort(
+        key=lambda g: (
+            -((g.get('rankings') or {}).get('super_crit', {}).get('max_damage', g.get('max_damage', 0))),
+            (g.get('unit') or {}).get('name', '').lower(),
+        ),
+    )
     total = len(groups)
     page = max(1, int(page or 1))
     per_page = max(1, min(100, int(per_page or 50)))
@@ -811,11 +920,8 @@ def build_meta_synergy_rankings(
     }
 
 
-def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
-    page = max(1, int(kwargs.pop('page', 1) or 1))
-    per_page = max(1, min(100, int(kwargs.pop('per_page', 50) or 50)))
-    def_tier = max(1, min(3, int(kwargs.pop('def_tier', 3) or 3)))
-    cache_key = (
+def _rankings_cache_key(lc, def_tier, kwargs):
+    return (
         lc or 'EN',
         kwargs.get('rarity') or kwargs.get('unit_rarity', 'ALL'),
         kwargs.get('role') or kwargs.get('unit_role', 'ALL'),
@@ -830,27 +936,77 @@ def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
         (kwargs.get('unit_q') or '').strip().lower(),
         tuple(tuple(p) for p in (kwargs.get('exclude_pairs') or ())),
     )
-    if cache_key not in _rankings_result_cache:
-        raw = build_meta_synergy_rankings(lc=lc, page=1, per_page=10000, def_tier=def_tier, **kwargs)
-        _rankings_result_cache[cache_key] = raw.get('all_groups') or raw.get('groups') or []
-    all_groups = _rankings_result_cache[cache_key]
-    total = len(all_groups)
-    start = (page - 1) * per_page
-    page_groups = all_groups[start:start + per_page]
-    total_pages = max(1, (total + per_page - 1) // per_page)
-    metric = kwargs.get('metric', 'super_crit')
-    vigor = kwargs.get('vigor', 'super')
+
+
+def _sort_groups_by_mode(groups, rank_mode):
+    rank_mode = rank_mode or 'super_crit'
+
+    def _key(g):
+        block = (g.get('rankings') or {}).get(rank_mode) or {}
+        md = block.get('max_damage', 0) or g.get('max_damage', 0) or 0
+        return (-md, ((g.get('unit') or {}).get('name') or '').lower())
+
+    return sorted(groups, key=_key)
+
+
+def _normalize_group_for_mode(g, rank_mode):
+    block = (g.get('rankings') or {}).get(rank_mode)
+    if block:
+        return {
+            'unit': g.get('unit'),
+            'weapon_elems': g.get('weapon_elems'),
+            'max_damage': block.get('max_damage', 0),
+            'pilots': block.get('pilots') or [],
+            'rankings': g.get('rankings'),
+        }
+    if rank_mode == 'super_crit' and g.get('pilots'):
+        return g
+    return None
+
+
+def _ensure_rankings_cache(cache_key, build_fn):
+    cached = _rankings_result_cache.get(cache_key)
+    if cached is not None:
+        return cached, False
+    with _rankings_build_lock:
+        cached = _rankings_result_cache.get(cache_key)
+        if cached is not None:
+            return cached, False
+        if cache_key in _rankings_inflight:
+            return None, True
+        _rankings_inflight.add(cache_key)
+
+    def _worker():
+        try:
+            _rankings_result_cache[cache_key] = build_fn()
+        except Exception as e:
+            print(f'MSY rankings build failed ({cache_key[:48]}…): {e}')
+            with _rankings_build_lock:
+                _rankings_inflight.discard(cache_key)
+            return
+        with _rankings_build_lock:
+            _rankings_inflight.discard(cache_key)
+
+    threading.Thread(
+        target=_worker, daemon=True, name=f'msy-rank-{hash(cache_key) & 0xffff:x}',
+    ).start()
+    return None, True
+
+
+def _warming_payload(rank_mode, vigor, def_tier, kwargs):
     pilot_role_set = {str(r) for r in (kwargs.get('pilot_roles') or ('1', '2', '3'))}
     dt = def_tier
     return {
-        'groups': page_groups,
-        'all_groups': all_groups,
-        'total': total,
+        'warming': True,
+        'retry_after': 3,
+        'groups': [],
+        'total': 0,
         'total_pilot_candidates': 0,
-        'page': page,
-        'per_page': per_page,
-        'total_pages': total_pages,
-        'metric': metric,
+        'page': 1,
+        'per_page': 50,
+        'total_pages': 1,
+        'rank_mode': rank_mode or 'super_crit',
+        'metric': kwargs.get('metric', 'super_crit'),
         'vigor': vigor,
         'def_tier': dt,
         'defender_tiers': defender_tiers_public(),
@@ -866,3 +1022,120 @@ def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
             'defender_note': _settings_note(dt),
         },
     }
+
+
+def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, page, per_page, vigor, def_tier, kwargs):
+    sorted_groups = _sort_groups_by_mode(groups, rank_mode)
+    total = len(sorted_groups)
+    page = max(1, int(page or 1))
+    per_page = max(1, min(100, int(per_page or 50)))
+    start = (page - 1) * per_page
+    raw_page = sorted_groups[start:start + per_page]
+    page_groups = []
+    for g in raw_page:
+        row = _normalize_group_for_mode(g, rank_mode)
+        if row:
+            page_groups.append(row)
+    total_pages = max(1, (total + per_page - 1) // per_page)
+    pilot_role_set = {str(r) for r in (kwargs.get('pilot_roles') or ('1', '2', '3'))}
+    dt = def_tier
+    return {
+        'groups': page_groups,
+        'total': total,
+        'total_pilot_candidates': total_pilot_candidates,
+        'page': page,
+        'per_page': per_page,
+        'total_pages': total_pages,
+        'rank_mode': rank_mode or 'super_crit',
+        'metric': kwargs.get('metric', 'super_crit'),
+        'vigor': vigor,
+        'def_tier': dt,
+        'defender_tiers': defender_tiers_public(),
+        'settings': {
+            'unit_rarity': kwargs.get('rarity') or kwargs.get('unit_rarity', 'ALL'),
+            'unit_role': kwargs.get('role') or kwargs.get('unit_role', 'ALL'),
+            'series_id': kwargs.get('series_id') or '',
+            'source': kwargs.get('source') or '',
+            'pilot_rarity': kwargs.get('pilot_rarity', 'ALL'),
+            'pilot_roles': list(pilot_role_set),
+            'lb_tier': int(kwargs.get('lb_tier', 3) or 3),
+            'def_tier': dt,
+            'defender_note': _settings_note(dt),
+        },
+    }
+
+
+def prewarm_default_rankings():
+    """Background-build default MSY rankings (first /msy paint after deploy)."""
+    A = _app()
+    lc = A.DEFAULT_LANG
+    kwargs = {
+        'unit_rarity': 'ALL',
+        'unit_role': 'ALL',
+        'rarity': None,
+        'role': None,
+        'series_id': None,
+        'source': None,
+        'pilot_rarity': 'ALL',
+        'pilot_roles': ('1', '2', '3'),
+        'metric': 'super_crit',
+        'vigor': 'super',
+        'lb_tier': 3,
+        'top_pilots': 10,
+        'unit_q': '',
+        'exclude_pairs': None,
+    }
+    def_tier = 3
+    cache_key = _rankings_cache_key(lc, def_tier, kwargs)
+
+    def _do_build():
+        t0 = __import__('time').perf_counter()
+        raw = build_meta_synergy_rankings(
+            lc=lc, page=1, per_page=10000, def_tier=def_tier, **kwargs,
+        )
+        groups = raw.get('all_groups') or raw.get('groups') or []
+        elapsed = __import__('time').perf_counter() - t0
+        print(f'MSY prewarm: {len(groups)} units ({elapsed:.1f}s)')
+        return {
+            'groups': groups,
+            'total_pilot_candidates': raw.get('total_pilot_candidates', 0),
+        }
+
+    _, warming = _ensure_rankings_cache(cache_key, _do_build)
+    if warming:
+        print('MSY prewarm: started background build')
+
+
+def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
+    rank_mode = kwargs.pop('rank_mode', 'super_crit') or 'super_crit'
+    page = max(1, int(kwargs.pop('page', 1) or 1))
+    per_page = max(1, min(100, int(kwargs.pop('per_page', 50) or 50)))
+    def_tier = max(1, min(3, int(kwargs.pop('def_tier', 3) or 3)))
+    vigor = kwargs.get('vigor', 'super')
+    cache_key = _rankings_cache_key(lc, def_tier, kwargs)
+
+    def _do_build():
+        raw = build_meta_synergy_rankings(
+            lc=lc, page=1, per_page=10000, def_tier=def_tier, **kwargs,
+        )
+        return {
+            'groups': raw.get('all_groups') or raw.get('groups') or [],
+            'total_pilot_candidates': raw.get('total_pilot_candidates', 0),
+        }
+
+    cached, warming = _ensure_rankings_cache(cache_key, _do_build)
+    if warming:
+        return _warming_payload(rank_mode, vigor, def_tier, kwargs)
+
+    all_groups = cached.get('groups') or []
+    payload = _cached_payload_from_groups(
+        all_groups,
+        total_pilot_candidates=cached.get('total_pilot_candidates', 0),
+        rank_mode=rank_mode,
+        page=page,
+        per_page=per_page,
+        vigor=vigor,
+        def_tier=def_tier,
+        kwargs=kwargs,
+    )
+    return payload
