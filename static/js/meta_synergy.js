@@ -27,8 +27,11 @@
     cacheKey: null,
     tierCache: {},
     charCondPassiveOn: true,
-    excludeUrUnits: {},
-    excludeShinnUnits: {},
+    excludeUrGlobal: false,
+    excludeShinnGlobal: false,
+    cacheIncomplete: false,
+    _fetchCtrl: null,
+    _loadGen: 0,
   };
 
   function t(key) {
@@ -117,21 +120,26 @@
       block = { max_damage: g.max_damage, pilots: g.pilots };
     }
     if (!block) return null;
-    if (noShinn && noUr) {
+    if (noUr && noShinn) {
       return rerankPilotBlock(block, modeId, noUr, noShinn);
     }
+    if (noUr && src === (g.rankings_no_ur || g.rankings)) return block;
     if (noShinn && src === (g.rankings_no_shinn || g.rankings)) return block;
+    if (noUr || noShinn) {
+      return rerankPilotBlock(block, modeId, noUr, noShinn);
+    }
     return block;
   }
 
   function viewGroup(g, modeId) {
-    var noUr = !!(g.unit && state.excludeUrUnits[g.unit.id]);
-    var noShinn = !!(g.unit && state.excludeShinnUnits[g.unit.id]);
+    var noUr = state.excludeUrGlobal;
+    var noShinn = state.excludeShinnGlobal;
     var block = groupBlock(g, modeId, noUr, noShinn);
     if (!block) return null;
     return {
       unit: g.unit,
       weapon_elems: g.weapon_elems,
+      weapon_info: g.weapon_info,
       max_damage: block.max_damage || 0,
       pilots: block.pilots || [],
       is_sd: g.is_sd,
@@ -259,6 +267,7 @@
       populateDefTierSelect(d.defender_tiers);
     }
     state.cacheKey = cacheKeyForState();
+    state.cacheIncomplete = !!d.cache_incomplete;
     var tk = tierCacheKey(defTier != null ? defTier : state.defTier, state.rankMode);
     state.tierCache[tk] = {
       cacheKey: cacheKeyForState().replace(/\|pg:\d+/, '|pg:1'),
@@ -269,10 +278,29 @@
       settings: state.settings
     };
     renderContent();
-    prefetchDefTiers();
-    prefetchRankModes();
     if (d.cache_incomplete) {
       showWarmingBanner(true, t('msy_warming_partial') || t('msy_warming') || 'Updating rankings…');
+    }
+  }
+
+  function syncGlobalFilterButtons() {
+    var cpBtn = document.getElementById('msyCpToggleBtn');
+    if (cpBtn) {
+      cpBtn.title = state.charCondPassiveOn ? t('msy_cp_on') : t('msy_cp_off');
+      cpBtn.setAttribute('aria-pressed', state.charCondPassiveOn ? 'true' : 'false');
+      cpBtn.classList.toggle('active', state.charCondPassiveOn);
+    }
+    var urBtn = document.getElementById('msyExcludeUrBtn');
+    if (urBtn) {
+      urBtn.title = state.excludeUrGlobal ? t('msy_exclude_ur_on') : t('msy_exclude_ur');
+      urBtn.setAttribute('aria-pressed', state.excludeUrGlobal ? 'true' : 'false');
+      urBtn.classList.toggle('active', state.excludeUrGlobal);
+    }
+    var shBtn = document.getElementById('msyExcludeShinnBtn');
+    if (shBtn) {
+      shBtn.title = state.excludeShinnGlobal ? t('msy_exclude_shinn_on') : t('msy_exclude_shinn');
+      shBtn.setAttribute('aria-pressed', state.excludeShinnGlobal ? 'true' : 'false');
+      shBtn.classList.toggle('active', state.excludeShinnGlobal);
     }
   }
 
@@ -297,12 +325,7 @@
     if (el) el.textContent = t('msy_empty');
     el = document.getElementById('msyDefTierLabel');
     if (el) el.textContent = t('msy_def_difficulty');
-    el = document.getElementById('msyCpToggleBtn');
-    if (el) {
-      el.title = state.charCondPassiveOn ? t('msy_cp_on') : t('msy_cp_off');
-      el.setAttribute('aria-pressed', state.charCondPassiveOn ? 'true' : 'false');
-      el.classList.toggle('active', state.charCondPassiveOn);
-    }
+    syncGlobalFilterButtons();
     renderRankModes();
   }
 
@@ -368,47 +391,55 @@
       countEl.innerHTML = '<span class="result-count-num">' + fmtN(state.total) + '</span> ' + esc(t('count_unit'));
     }
     if (!el) return;
-    var note = (state.settings && state.settings.defender_note) || '';
     var vigorLbl = t(mode.vigorLabelKey || 'dc_vigor_super');
     el.innerHTML =
       '<span class="msy-status-chip">' + esc(t('msy_status_units').replace('{n}', fmtN(state.total))) + '</span>' +
       '<span class="msy-status-chip">' + esc(t('msy_status_metric').replace('{m}', t(mode.metricKey))) + '</span>' +
-      '<span class="msy-status-chip">' + esc(t('msy_status_vigor').replace('{v}', vigorLbl)) + '</span>' +
-      (note ? '<span class="msy-status-note">' + esc(note) + '</span>' : '');
+      '<span class="msy-status-chip">' + esc(t('msy_status_vigor').replace('{v}', vigorLbl)) + '</span>';
     updateDefTierStats();
+  }
+
+  function weaponSubtitleHtml(g, row) {
+    if (row.is_sd) {
+      return '<div class="msy-unit-elem msy-unit-elem--sd">' + esc(t('msy_sd_note')) + '</div>';
+    }
+    var wi = g.weapon_info;
+    if (!wi) {
+      if (g.weapon_elems) {
+        return '<div class="msy-unit-elem">&lt;' + esc(g.weapon_elems) + '&gt;</div>';
+      }
+      return '';
+    }
+    var parts = [];
+    if (wi.name) parts.push(String(wi.name));
+    if (wi.weapon_type) parts.push(String(wi.weapon_type));
+    if (wi.attribute) parts.push('<' + wi.attribute + '>');
+    if (wi.attack_types && wi.attack_types.length) parts.push(wi.attack_types.join('/'));
+    if (wi.power) parts.push(fmtN(wi.power) + ' PWR');
+    return '<div class="msy-unit-weapon">' + esc(parts.join(' · ')) + '</div>';
+  }
+
+  function pilotSkillsHtml(pilot) {
+    var skills = pilot.active_skills || [];
+    if (!skills.length) return '';
+    var html = '<div class="msy-pilot-skills">';
+    skills.forEach(function (sk) {
+      html += '<span class="msy-pilot-skill' + (sk.active ? ' msy-pilot-skill--active' : '') + '" title="' + escAttr(sk.name || '') + '">';
+      if (sk.icon) {
+        html += rasterImg(sk.icon, { cls: 'msy-pilot-skill-ic', loading: 'lazy', alt: '', lazy: true });
+      } else {
+        html += '<span class="msy-pilot-skill-fallback">' + esc((sk.name || '?').charAt(0)) + '</span>';
+      }
+      html += '</span>';
+    });
+    html += '</div>';
+    return html;
   }
 
   function pilotDamage(pilot, mode) {
     if (!pilot) return 0;
     if (mode.dmgField && pilot[mode.dmgField]) return pilot[mode.dmgField];
     return pilot.score || 0;
-  }
-
-  function excludeShinnBtnHtml(unitId, active, isSd) {
-    if (isSd) return '';
-    var thumb = shinnPortraitUrl || '';
-    return (
-      '<button type="button" class="msy-act-btn msy-exclude-shinn-btn' + (active ? ' active' : '') + '" title="' + escAttr(active ? t('msy_exclude_shinn_on') : t('msy_exclude_shinn')) + '" onclick="GgenMetaSynergy.toggleExcludeShinn(\'' + escJs(unitId) + '\')">' +
-        '<span class="msy-exclude-shinn-icon">' +
-          (thumb
-            ? rasterImg(thumb, { cls: 'msy-exclude-shinn-portrait', loading: 'lazy', alt: 'Shinn', lazy: false })
-            : '<span class="msy-exclude-shinn-fallback" aria-hidden="true">S</span>') +
-          '<span class="msy-exclude-shinn-x" aria-hidden="true"></span>' +
-        '</span>' +
-      '</button>'
-    );
-  }
-
-  function excludeUrBtnHtml(unitId, active, isSd) {
-    if (isSd) return '';
-    return (
-      '<button type="button" class="msy-act-btn msy-exclude-ur-btn' + (active ? ' active' : '') + '" title="' + escAttr(active ? t('msy_exclude_ur_on') : t('msy_exclude_ur')) + '" onclick="GgenMetaSynergy.toggleExcludeUr(\'' + escJs(unitId) + '\')">' +
-        '<span class="msy-exclude-ur-icon">' +
-          rasterImg(UR_ICON, { cls: 'msy-exclude-ur-rarity', loading: 'lazy', alt: 'UR', lazy: false }) +
-          '<span class="msy-exclude-ur-x" aria-hidden="true"></span>' +
-        '</span>' +
-      '</button>'
-    );
   }
 
   function renderPilotCard(unitId, pilot, mode) {
@@ -430,6 +461,7 @@
               roleIconHtml(c) +
               '<span class="msy-pilot-name" title="' + escAttr(c.name || '') + '">' + esc(c.name) + '</span>' +
             '</div>' +
+            pilotSkillsHtml(pilot) +
             sub +
           '</div>' +
         '</button>' +
@@ -461,8 +493,6 @@
       if (!row || !row.unit) return;
       var rank = (startRank || 0) + gi + 1;
       var u = row.unit;
-      var excludeUr = !!state.excludeUrUnits[u.id];
-      var excludeShinn = !!state.excludeShinnUnits[u.id];
       html += '<article class="msy-unit-card' + (row.is_sd ? ' msy-unit-card--sd' : '') + '">';
       html += '<header class="msy-unit-head">';
       html += '<span class="msy-unit-rank">' + rank + '</span>';
@@ -472,15 +502,7 @@
       html += roleIconHtml(u);
       html += '<span class="msy-unit-name">' + esc(u.name) + '</span>';
       html += '</div>';
-      if (row.is_sd) {
-        html += '<div class="msy-unit-elem msy-unit-elem--sd">' + esc(t('msy_sd_note')) + '</div>';
-      } else if (g.weapon_elems) {
-        html += '<div class="msy-unit-elem">&lt;' + esc(g.weapon_elems) + '&gt;</div>';
-      }
-      html += '</div>';
-      html += '<div class="msy-unit-tools">';
-      html += excludeShinnBtnHtml(u.id, excludeShinn, row.is_sd);
-      html += excludeUrBtnHtml(u.id, excludeUr, row.is_sd);
+      html += weaponSubtitleHtml(g, row);
       html += '</div>';
       html += '<div class="msy-unit-peak">';
       html += '<div class="msy-unit-peak-val">' + fmtN(row.max_damage) + '</div>';
@@ -549,50 +571,6 @@
     host.textContent = text || t('msy_warming_partial') || t('msy_warming') || 'Updating rankings…';
   }
 
-  function prefetchDefTiers() {
-    [1, 2, 3].forEach(function (tier) {
-      if (tier === state.defTier) return;
-      var key = tierCacheKey(tier, state.rankMode);
-      if (state.tierCache[key]) return;
-      fetch(buildApiUrl({ defTier: tier, page: state.page }), { credentials: 'same-origin' })
-        .then(function (r) { return r.ok ? r.json() : null; })
-        .then(function (d) {
-          if (!d || d.warming) return;
-          state.tierCache[key] = {
-            cacheKey: cacheKeyForState().replace(/\|pg:\d+/, '|pg:1'),
-            groups: d.groups || [],
-            total: d.total || 0,
-            totalPages: d.total_pages || 1,
-            page: d.page || state.page,
-            settings: d.settings || null
-          };
-        })
-        .catch(function () {});
-    });
-  }
-
-  function prefetchRankModes() {
-    RANK_MODES.forEach(function (m) {
-      if (m.id === state.rankMode) return;
-      var key = tierCacheKey(state.defTier, m.id);
-      if (state.tierCache[key]) return;
-      fetch(buildApiUrl({ rankMode: m.id, page: state.page }), { credentials: 'same-origin' })
-        .then(function (r) { return r.ok ? r.json() : null; })
-        .then(function (d) {
-          if (!d || d.warming) return;
-          state.tierCache[key] = {
-            cacheKey: cacheKeyForState().replace(/\|pg:\d+/, '|pg:1'),
-            groups: d.groups || [],
-            total: d.total || 0,
-            totalPages: d.total_pages || 1,
-            page: d.page || state.page,
-            settings: d.settings || null
-          };
-        })
-        .catch(function () {});
-    });
-  }
-
   function syncSearchFromDom() {
     var el = document.getElementById('msySearchInput');
     if (el) state.unitQ = expandedUnitSearchQuery(el.value.trim());
@@ -605,59 +583,58 @@
       renderContent();
       return;
     }
-    var tierKey = tierCacheKey(state.defTier, state.rankMode);
-    if (!force && state.tierCache[tierKey] && state.tierCache[tierKey].cacheKey === cacheKeyForState().replace(/\|pg:\d+/, '|pg:1')) {
-      var hit = state.tierCache[tierKey];
-      state.groups = hit.groups;
-      state.total = hit.total;
-      state.totalPages = hit.totalPages;
-      state.page = hit.page || state.page;
-      state.settings = hit.settings;
-      state.cacheKey = key;
-      renderContent();
-      return;
+    if (state._fetchCtrl) {
+      try { state._fetchCtrl.abort(); } catch (_) {}
     }
+    state._fetchCtrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    var loadGen = ++state._loadGen;
     setLoading(true, false);
     showWarmingBanner(false);
     state._warmPolls = 0;
     try {
       while (true) {
-        var r = await fetch(buildApiUrl(), { credentials: 'same-origin' });
+        if (loadGen !== state._loadGen) return;
+        var fetchOpts = { credentials: 'same-origin' };
+        if (state._fetchCtrl) fetchOpts.signal = state._fetchCtrl.signal;
+        var r = await fetch(buildApiUrl(), fetchOpts);
         var d = null;
         if (r.status === 202 || r.ok) {
           d = await r.json();
         }
+        if (loadGen !== state._loadGen) return;
         if (d && d.warming) {
           if (d.groups && d.groups.length) {
             applyPayload(d, state.defTier);
             setLoading(false, false);
             showWarmingBanner(true);
-          } else {
-            setLoading(true, true);
-            showWarmingBanner(false);
+            state._warmPolls = (state._warmPolls || 0) + 1;
+            if (state._warmPolls >= 2) {
+              showWarmingBanner(true, t('msy_warming_slow') || 'Rankings are still building. Results may be incomplete — try refreshing in a minute.');
+              break;
+            }
+            await sleep(Math.max(1200, (d.retry_after || 2) * 1000));
+            continue;
           }
-          state._warmPolls = (state._warmPolls || 0) + 1;
-          if (state._warmPolls >= 8) {
-            showWarmingBanner(true, t('msy_warming_slow') || 'Rankings are still building. Results may be incomplete — try refreshing in a minute.');
-            break;
-          }
-          await sleep(Math.max(2000, (d.retry_after || 3) * 1000));
-          continue;
+          applyPayload(d, state.defTier);
+          showWarmingBanner(true, t('msy_warming_slow') || 'Rankings are still building. Results may be incomplete — try refreshing in a minute.');
+          break;
         }
         if (d && d.error) throw new Error(d.detail || d.error);
         if (!r.ok) throw new Error('HTTP ' + r.status);
         showWarmingBanner(false);
         applyPayload(d, state.defTier);
-        prefetchDefTiers();
         break;
       }
     } catch (e) {
+      if (e && e.name === 'AbortError') return;
       var host = document.getElementById('msyContent');
       if (host) {
         host.innerHTML = '<div class="msy-error">' + esc(String(e)) + '</div>';
       }
     } finally {
-      setLoading(false, false);
+      if (loadGen === state._loadGen) {
+        setLoading(false, false);
+      }
     }
   }
 
@@ -666,9 +643,8 @@
     state._searchTimer = setTimeout(function () {
       state.page = 1;
       state.cacheKey = null;
-      state.tierCache = {};
       loadRankings(true);
-    }, 180);
+    }, 400);
   }
 
   function scheduleReload() {
@@ -676,42 +652,26 @@
     state._reloadTimer = setTimeout(function () {
       state.page = 1;
       state.cacheKey = null;
-      state.tierCache = {};
       loadRankings(true);
-    }, 180);
+    }, 400);
   }
 
   function setRankMode(modeId) {
     if (!rankModeDef(modeId)) return;
     state.rankMode = modeId;
-    state.page = 1;
     renderRankModes();
-    var tierKey = tierCacheKey(state.defTier, modeId);
-    if (state.tierCache[tierKey] && state.tierCache[tierKey].cacheKey === cacheKeyForState().replace(/\|pg:\d+/, '|pg:1')) {
-      var hit = state.tierCache[tierKey];
-      state.groups = hit.groups;
-      state.total = hit.total;
-      state.totalPages = hit.totalPages;
-      state.page = hit.page || 1;
-      state.settings = hit.settings;
-      state.cacheKey = cacheKeyForState();
-      renderContent();
-      prefetchRankModes();
-      return;
-    }
-    state.cacheKey = null;
-    loadRankings(false);
-  }
-
-  function toggleExcludeShinn(unitId) {
-    if (state.excludeShinnUnits[unitId]) delete state.excludeShinnUnits[unitId];
-    else state.excludeShinnUnits[unitId] = true;
     renderContent();
   }
 
-  function toggleExcludeUr(unitId) {
-    if (state.excludeUrUnits[unitId]) delete state.excludeUrUnits[unitId];
-    else state.excludeUrUnits[unitId] = true;
+  function toggleExcludeShinn() {
+    state.excludeShinnGlobal = !state.excludeShinnGlobal;
+    syncGlobalFilterButtons();
+    renderContent();
+  }
+
+  function toggleExcludeUr() {
+    state.excludeUrGlobal = !state.excludeUrGlobal;
+    syncGlobalFilterButtons();
     renderContent();
   }
 
@@ -728,13 +688,26 @@
     return null;
   }
 
+  function updateGlobalShinnBtn() {
+    var btn = document.getElementById('msyExcludeShinnBtn');
+    if (!btn || !shinnPortraitUrl) return;
+    var icon = btn.querySelector('.msy-exclude-shinn-icon');
+    if (!icon) return;
+    icon.innerHTML = rasterImg(shinnPortraitUrl, { cls: 'msy-exclude-shinn-portrait', loading: 'lazy', alt: 'Shinn', lazy: false }) +
+      '<span class="msy-exclude-shinn-x" aria-hidden="true"></span>';
+  }
+
   function ensureShinnPortrait() {
-    if (shinnPortraitUrl) return Promise.resolve(shinnPortraitUrl);
+    if (shinnPortraitUrl) {
+      updateGlobalShinnBtn();
+      return Promise.resolve(shinnPortraitUrl);
+    }
     var lang = (global.S && global.S.lang) || 'EN';
     return fetch('/api/character/' + encodeURIComponent(SHINN_EX_CHAR_ID) + '?lang=' + encodeURIComponent(lang) + '&view=ranking')
       .then(function (r) { return r.json(); })
       .then(function (d) {
         shinnPortraitUrl = (d && (d.thum || d.portrait)) || '';
+        updateGlobalShinnBtn();
         return shinnPortraitUrl;
       })
       .catch(function () { return ''; });
@@ -874,20 +847,7 @@
         state.page = 1;
         state.cacheKey = null;
         updateDefTierStats();
-        var tierKey = tierCacheKey(nextTier, state.rankMode);
-        if (state.tierCache[tierKey] && state.tierCache[tierKey].cacheKey === cacheKeyForState().replace(/\|pg:\d+/, '|pg:1')) {
-          var cached = state.tierCache[tierKey];
-          state.groups = cached.groups;
-          state.total = cached.total;
-          state.totalPages = cached.totalPages;
-          state.settings = cached.settings;
-          state.cacheKey = cacheKeyForState();
-          renderContent();
-          prefetchDefTiers();
-          prefetchRankModes();
-        } else {
-          loadRankings(false);
-        }
+        loadRankings(true);
       });
     }
   }

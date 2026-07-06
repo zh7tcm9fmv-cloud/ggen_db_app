@@ -1033,7 +1033,7 @@ _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
 SHINN_EX_CHAR_ID = '1330000103'
 _MSY_BUILD_WORKERS = max(1, min(4, int(os.environ.get('MSY_BUILD_WORKERS', '1') or '1')))
-_MSY_PAGE_BUILD_LIMIT = max(0, min(10, int(os.environ.get('MSY_PAGE_BUILD_LIMIT', '2') or '2')))
+_MSY_PAGE_BUILD_LIMIT = max(0, min(10, int(os.environ.get('MSY_PAGE_BUILD_LIMIT', '0') or '0')))
 # Older published caches to load when the current v14 master file is missing (Railway deploy).
 _MSY_LEGACY_MASTER_CACHE_KEYS = (
     ('_v13_dc_master', 'EN', 3, 20, None, None),
@@ -1089,9 +1089,11 @@ def _msy_python_build_allowed():
 
 
 def _msy_page_build_allowed():
+    if _MSY_PAGE_BUILD_LIMIT <= 0:
+        return False
     if _msy_python_build_allowed():
         return True
-    return os.environ.get('MSY_ALLOW_PAGE_BUILD', '1').strip().lower() in ('1', 'true', 'yes')
+    return os.environ.get('MSY_ALLOW_PAGE_BUILD', '').strip().lower() in ('1', 'true', 'yes')
 
 
 def _trim_group_pilots(g, top_n):
@@ -1308,16 +1310,53 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
     }
 
 
+@lru_cache(maxsize=1)
+def _linked_char_by_unit():
+    """UnitId → Linked CharacterId from master m_linked_character_unit."""
+    A = _app()
+    path = os.path.join(_msy_app_root(), 'data', 'EN', 'master', 'm_linked_character_unit.json')
+    out = {}
+    try:
+        with open(path, encoding='utf-8') as fh:
+            rows = json.load(fh)
+        for row in rows or []:
+            uid = A.normalize_id(row.get('UnitId'))
+            cid = A.normalize_id(row.get('CharacterId'))
+            if uid and cid and cid in A.char_info_map:
+                out[uid] = cid
+    except (OSError, json.JSONDecodeError, TypeError, ValueError):
+        pass
+    return out
+
+
 def _bundled_pilot_id(uid):
     A = _app()
     uid = A.normalize_id(uid)
-    info = A.unit_info_map.get(uid) or {}
-    rec = A.normalize_id(info.get('recommend_character_id') or '0')
-    if rec == '0':
-        rec = A.normalize_id(A.MANUAL_UNIT_RECOMMEND_CHARACTER_MAP.get(uid, '0'))
+    linked = _linked_char_by_unit()
+    rec = linked.get(uid)
+    if not rec:
+        info = A.unit_info_map.get(uid) or {}
+        rec = A.normalize_id(info.get('recommend_character_id') or '0')
+        if rec == '0':
+            rec = A.normalize_id(A.MANUAL_UNIT_RECOMMEND_CHARACTER_MAP.get(uid, '0'))
     if rec != '0' and rec in A.char_info_map:
         return rec
     return None
+
+
+@lru_cache(maxsize=1)
+def _linked_character_ids():
+    """Characters bound to SD units (Linked Character) — cannot pilot other units."""
+    A = _app()
+    out = set(_linked_char_by_unit().values())
+    for uid in A.unit_list_playable_ids:
+        info = A.unit_info_map.get(uid)
+        if not info or not A._unit_has_sd_mechanism(info, uid):
+            continue
+        bp = _bundled_pilot_id(uid)
+        if bp:
+            out.add(A.normalize_id(bp))
+    return frozenset(out)
 
 
 def _is_sd_unit(uid, info=None):
@@ -1333,13 +1372,17 @@ def _eligible_pilots_for_unit(uid, pilot_ids, exclude):
         if not bp or (uid, bp) in exclude:
             return []
         return [bp]
+    linked = _linked_character_ids()
     out = []
     for cid in pilot_ids:
-        if (uid, cid) in exclude:
+        cid_n = _app().normalize_id(cid)
+        if cid_n in linked:
             continue
-        if not _pilot_role_matches_unit(uid, cid):
+        if (uid, cid_n) in exclude:
             continue
-        out.append(cid)
+        if not _pilot_role_matches_unit(uid, cid_n):
+            continue
+        out.append(cid_n)
     return out
 
 
@@ -1418,6 +1461,7 @@ def _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc):
                     'crit_rate': d['crit_rate'],
                     'pair_ok': d['pair_ok'],
                     'vigor': vigor_key,
+                    'active_skills': _msy_pilot_active_skills(cid, lc),
                     'score': sc,
                 }
                 for i, (sc, cid, d) in enumerate(top)
@@ -1667,6 +1711,7 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
     out = {
         'unit': _entity_brief_unit(uid, lc),
         'weapon_elems': _weapon_elem_label(uid, lc),
+        'weapon_info': _weapon_info_for_msy(uid, lc),
         'rankings': rankings,
         'rankings_no_ur': rankings_no_ur,
         'rankings_no_shinn': rankings_no_shinn,
@@ -1789,6 +1834,7 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
     out = {
         'unit': _entity_brief_unit(uid, lc),
         'weapon_elems': _weapon_elem_label(uid, lc),
+        'weapon_info': _weapon_info_for_msy(uid, lc),
         'rankings': rankings,
         'rankings_no_ur': rankings_no_ur,
         'rankings_no_shinn': rankings_no_shinn,
@@ -1945,6 +1991,102 @@ def _weapon_elem_label(uid, lc):
     return {'1': 'Beam', '2': 'Physical', '3': 'Special', '7': 'Special'}.get(attr, 'Mixed')
 
 
+_WPN_TYPE_LABEL = {'1': 'Normal', '2': 'Active', '3': 'Map'}
+_SKILL_AUTO_ACTIVE_RE = re.compile(r'(?:damage\s+dealt|造成的損傷|傷害|ダメージ)', re.I)
+
+
+def _weapon_info_for_msy(uid, lc):
+    A = _app()
+    uid = A.normalize_id(uid)
+    info = A.unit_info_map.get(uid) or {}
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
+    if not wpn:
+        return None
+    wm = wpn.get('wm') or {}
+    ld = _ldc(lc)
+    wid = wpn.get('wid')
+    wn = ld.get('weapon_text_map', {}).get(wm.get('name_lang_id', '0'), 'Unknown')
+    ai = wm.get('attribute', '0')
+    attr_label = A.resolve_weapon_attribute_label(ai, ld)
+    at = A.resolve_attack_attribute_types(wm.get('attack_attribute', '0'), ld)
+    wt = str(wm.get('weapon_type', '1') or '1')
+    attack_types = [str(x.get('label') or '').strip() for x in (at or []) if x.get('label')]
+    return {
+        'id': wid,
+        'name': wn,
+        'weapon_type': _WPN_TYPE_LABEL.get(wt, wt),
+        'attribute': attr_label,
+        'attack_types': attack_types,
+        'power': int(wpn.get('power') or 0),
+        'level': int(wpn.get('wpn_lv', 0) or 0) + 1,
+    }
+
+
+def _msy_auto_active_skill_ids(cid, lc):
+    A = _app()
+    ld = _ldc(lc)
+    cid = A.normalize_id(cid)
+    dmg_by_base = {}
+    fs = [x for x in A.extract_data_list(A.char_skill) if A.normalize_id(x.get('CharacterId', '')) == cid]
+    seen = set()
+    for sk in sorted(fs, key=lambda x: int(x.get('SortOrder', 0))):
+        sid = A.normalize_id(sk.get('CharacterSkillId') or sk.get('SkillId') or '')
+        if not sid or sid in seen or sid == '0':
+            continue
+        seen.add(sid)
+        resolved = A.resolve_char_skill(sid, ld, int(sk.get('SortOrder', 0)), False)
+        name = str(resolved.get('name') or '')
+        base = re.sub(r'\s*LV\s*\d+\s*$', '', name, flags=re.I).strip().lower()
+        blob = '\n'.join(
+            str(x.get('text') if isinstance(x, dict) else x or '')
+            for x in (resolved.get('details') or [])
+        ) + '\n' + str(resolved.get('desc') or '')
+        if not _SKILL_AUTO_ACTIVE_RE.search(blob):
+            continue
+        lv_m = re.search(r'\bLV\s*(\d+)\b', name, re.I)
+        lv = int(lv_m.group(1)) if lv_m else 0
+        prev = dmg_by_base.get(base)
+        if not prev or lv > prev[0]:
+            dmg_by_base[base] = (lv, sid)
+    return {sid for _, sid in dmg_by_base.values()}
+
+
+def _msy_pilot_active_skills(cid, lc):
+    A = _app()
+    ld = _ldc(lc)
+    cid = A.normalize_id(cid)
+    active_ids = _msy_auto_active_skill_ids(cid, lc)
+    out = []
+    seen_base = set()
+    fs = [x for x in A.extract_data_list(A.char_skill) if A.normalize_id(x.get('CharacterId', '')) == cid]
+    seen = set()
+    for sk in sorted(fs, key=lambda x: int(x.get('SortOrder', 0))):
+        sid = A.normalize_id(sk.get('CharacterSkillId') or sk.get('SkillId') or '')
+        if not sid or sid in seen or sid == '0':
+            continue
+        seen.add(sid)
+        resolved = A.resolve_char_skill(sid, ld, int(sk.get('SortOrder', 0)), False)
+        name = str(resolved.get('name') or '')
+        base = re.sub(r'\s*LV\s*\d+\s*$', '', name, flags=re.I).strip().lower()
+        blob = '\n'.join(
+            str(x.get('text') if isinstance(x, dict) else x or '')
+            for x in (resolved.get('details') or [])
+        ) + '\n' + str(resolved.get('desc') or '')
+        if not _SKILL_AUTO_ACTIVE_RE.search(blob):
+            continue
+        if base in seen_base:
+            continue
+        seen_base.add(base)
+        out.append({
+            'id': sid,
+            'name': name,
+            'icon': resolved.get('icon') or '',
+            'active': sid in active_ids,
+        })
+    return out
+
+
 _MSY_ALL_PILOT_ROLES = ('1', '2', '3')
 _MSY_STD_DEF_TIERS = (1, 2, 3)
 
@@ -1968,15 +2110,7 @@ def _pilot_pool_ids():
 
 
 def _settings_note(def_tier, *, def_unit_override=None, def_char_override=None):
-    u, c, label = _resolve_defender_stats(
-        def_tier, def_unit_override=def_unit_override, def_char_override=def_char_override,
-    )
-    return (
-        f"Max-damage sim: CP on, active skills, LB3; pilots matched to unit role. "
-        f"Super Crit @ Super vigor, Crit @ Max, Normal @ High. "
-        f"Difficulty ({label}): MS DEF {u:,}, pilot DEF {c:,} "
-        f"(weapon DEF debuff capped at {_DEF_DEBUFF_CAP}%)"
-    )
+    return ''
 
 
 def build_meta_synergy_rankings(
@@ -2172,6 +2306,7 @@ def _group_for_def_tier(g, def_tier):
     return {
         'unit': g.get('unit'),
         'weapon_elems': g.get('weapon_elems'),
+        'weapon_info': g.get('weapon_info'),
         'rankings': rankings,
         'rankings_no_ur': rnub or rankings,
         'rankings_no_shinn': rnsh or g.get('rankings_no_shinn') or rankings,
@@ -2544,6 +2679,55 @@ def _sort_groups_by_mode(groups, rank_mode):
     return sorted(groups, key=_key)
 
 
+def _enrich_pilot_row(pilot, lc):
+    if not pilot or pilot.get('active_skills'):
+        return pilot
+    cid = _app().normalize_id((pilot.get('char') or {}).get('id'))
+    if not cid:
+        return pilot
+    row = dict(pilot)
+    row['active_skills'] = _msy_pilot_active_skills(cid, lc)
+    return row
+
+
+def _enrich_rankings_pilots(rankings, lc):
+    if not isinstance(rankings, dict):
+        return rankings
+    out = {}
+    for mode, block in rankings.items():
+        if not isinstance(block, dict):
+            out[mode] = block
+            continue
+        pilots = block.get('pilots') or []
+        if pilots and not pilots[0].get('active_skills'):
+            block = dict(block)
+            block['pilots'] = [_enrich_pilot_row(p, lc) for p in pilots]
+        out[mode] = block
+    return out
+
+
+def _enrich_group_for_api(g, lc):
+    """Backfill weapon/subtitle and pilot skills for older published caches."""
+    if not g:
+        return g
+    out = dict(g)
+    uid = _app().normalize_id((out.get('unit') or {}).get('id'))
+    if uid:
+        if not out.get('weapon_info'):
+            out['weapon_info'] = _weapon_info_for_msy(uid, lc)
+        info = _app().unit_info_map.get(uid) or {}
+        is_sd = _is_sd_unit(uid, info)
+        out['is_sd'] = is_sd
+        if is_sd:
+            out['bundled_pilot_id'] = _bundled_pilot_id(uid)
+    for key in ('rankings', 'rankings_no_ur', 'rankings_no_shinn', 'rankings_no_cp', 'rankings_no_gc'):
+        if out.get(key):
+            out[key] = _enrich_rankings_pilots(out[key], lc)
+    if out.get('pilots') and not (out['pilots'][0].get('active_skills') if out['pilots'] else False):
+        out['pilots'] = [_enrich_pilot_row(p, lc) for p in out['pilots']]
+    return out
+
+
 def _normalize_group_for_mode(g, rank_mode):
     block = (g.get('rankings') or {}).get(rank_mode)
     if block:
@@ -2557,6 +2741,7 @@ def _normalize_group_for_mode(g, rank_mode):
             'rankings_no_shinn': g.get('rankings_no_shinn'),
             'rankings_no_gc': g.get('rankings_no_gc'),
             'rankings_no_cp': g.get('rankings_no_cp'),
+            'weapon_info': g.get('weapon_info'),
             'is_sd': g.get('is_sd', False),
             'bundled_pilot_id': g.get('bundled_pilot_id'),
         }
@@ -2708,7 +2893,7 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
         if row:
             norm = _normalize_group_for_mode(row, rank_mode)
             if norm:
-                expanded.append(norm)
+                expanded.append(_enrich_group_for_api(norm, lc))
     total_pages = max(1, (total + per_page - 1) // per_page)
     role_raw = kwargs.get('role') or kwargs.get('unit_role')
     if role_raw is None or str(role_raw).upper() in ('ALL', ''):

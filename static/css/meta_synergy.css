@@ -68,9 +68,17 @@
   width: 130%;
   height: 2px;
   background: #ef4444;
-  transform: translate(-50%, -50%) rotate(-45deg);
+  transform: translate(-50%, -50%) rotate(-45deg) scaleX(0.2);
   border-radius: 2px;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+.msy-exclude-ur-btn.active .msy-exclude-ur-x::before,
+.msy-global-filter-btn.msy-exclude-ur-btn.active .msy-exclude-ur-x::before {
+  opacity: 1;
+  transform: translate(-50%, -50%) rotate(-45deg) scaleX(1);
 }
 
 .msy-exclude-ur-btn.active {
@@ -125,9 +133,17 @@
   width: 130%;
   height: 2px;
   background: #ef4444;
-  transform: translate(-50%, -50%) rotate(-45deg);
+  transform: translate(-50%, -50%) rotate(-45deg) scaleX(0.2);
   border-radius: 2px;
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+.msy-exclude-shinn-btn.active .msy-exclude-shinn-x::before,
+.msy-global-filter-btn.msy-exclude-shinn-btn.active .msy-exclude-shinn-x::before {
+  opacity: 1;
+  transform: translate(-50%, -50%) rotate(-45deg) scaleX(1);
 }
 
 .msy-exclude-shinn-btn.active {
@@ -857,4 +873,80 @@
     padding-top: 6px;
     margin-top: 2px;
   }
+}
+
+.msy-global-toggles {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 4px;
+}
+
+.msy-global-filter-btn {
+  min-width: 34px;
+  min-height: 30px;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(90, 104, 132, 0.45);
+  background: rgba(8, 12, 24, 0.55);
+  color: var(--text-secondary);
+  cursor: pointer;
+  line-height: 1;
+}
+
+.msy-global-filter-btn:hover {
+  border-color: var(--accent-cyan);
+}
+
+.msy-global-filter-btn.active {
+  border-color: rgba(239, 68, 68, 0.65);
+  background: rgba(239, 68, 68, 0.12);
+}
+
+.msy-unit-weapon {
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.msy-pilot-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 4px;
+}
+
+.msy-pilot-skill {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: 1px solid rgba(90, 104, 132, 0.45);
+  background: rgba(8, 12, 24, 0.65);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.55;
+  filter: grayscale(0.35);
+  transition: opacity 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.msy-pilot-skill--active {
+  opacity: 1;
+  filter: none;
+  border-color: rgba(0, 212, 255, 0.75);
+  box-shadow: 0 0 0 1px rgba(0, 212, 255, 0.25);
+}
+
+.msy-pilot-skill-ic {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  display: block;
+}
+
+.msy-pilot-skill-fallback {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
 }
