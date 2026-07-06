@@ -21,6 +21,51 @@
   max-width: 72ch;
 }
 
+.msy-rank-modes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 12px;
+}
+
+.msy-rank-mode {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 6px 8px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  background: rgba(8, 12, 24, 0.55);
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.msy-rank-mode:hover {
+  border-color: rgba(0, 212, 255, 0.45);
+  color: var(--text-primary);
+}
+
+.msy-rank-mode.active {
+  border-color: var(--accent-cyan);
+  background: rgba(0, 212, 255, 0.12);
+  color: var(--accent-cyan);
+  box-shadow: 0 0 0 1px rgba(0, 212, 255, 0.18);
+}
+
+.msy-rank-mode-icon {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.msy-rank-mode-label {
+  white-space: nowrap;
+}
+
 .msy-toolbar {
   margin-bottom: 8px;
 }

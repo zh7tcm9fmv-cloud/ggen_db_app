@@ -1,11 +1,17 @@
 (function (global) {
   'use strict';
 
+  var RANK_MODES = [
+    { id: 'super_crit', labelKey: 'msy_rank_super_crit', metricKey: 'msy_metric_super_crit', dmgField: 'super_crit_dmg', icon: '/static/images/UI/UI_Tention_Up_03.webp' },
+    { id: 'crit', labelKey: 'msy_rank_crit', metricKey: 'msy_metric_crit', dmgField: 'crit_dmg', icon: '/static/images/UI/UI_Tention_Up_01.webp' },
+    { id: 'normal', labelKey: 'msy_rank_normal', metricKey: 'msy_metric_normal', dmgField: 'normal_dmg', icon: '/static/images/UI/UI_Tention_Up_02.webp' }
+  ];
+
   var state = {
     loading: false,
     allGroups: [],
     settings: null,
-    metric: 'super_crit',
+    rankMode: 'super_crit',
     vigor: 'super',
     defTier: 3,
     topPilots: 10,
@@ -39,6 +45,13 @@
     return typeof global.imgUrl === 'function' ? global.imgUrl(path) : path;
   }
 
+  function rankModeDef(modeId) {
+    for (var i = 0; i < RANK_MODES.length; i++) {
+      if (RANK_MODES[i].id === modeId) return RANK_MODES[i];
+    }
+    return RANK_MODES[0];
+  }
+
   function unitThumb(entity) {
     if (!entity) return '';
     var row = {
@@ -54,7 +67,6 @@
     return '';
   }
 
-  /** Lazy-loaded pilot thumbs — avoids hundreds of eager requests on the full top-50 list. */
   function pilotThumb(entity) {
     if (!entity || typeof global.renderListThumb !== 'function') return '';
     var row = {
@@ -102,7 +114,6 @@
     var fq = buildFilterQuery();
     var q = [
       'lang=' + encodeURIComponent(lang),
-      'metric=' + encodeURIComponent(state.metric),
       'vigor=' + encodeURIComponent(state.vigor),
       'def_tier=' + encodeURIComponent(String(state.defTier)),
       'lb_tier=3',
@@ -120,12 +131,63 @@
     return [
       (global.S && global.S.lang) || 'EN',
       buildFilterQuery(),
-      state.metric,
       state.vigor,
       state.defTier,
       state.topPilots,
       state.unitQ
     ].join('|');
+  }
+
+  function normalizeGroupForMode(g, modeId) {
+    var rankings = g.rankings || {};
+    var block = rankings[modeId];
+    if (block) {
+      return {
+        unit: g.unit,
+        weapon_elems: g.weapon_elems,
+        max_damage: block.max_damage,
+        pilots: block.pilots || []
+      };
+    }
+    if (modeId === 'super_crit' && g.pilots) {
+      return {
+        unit: g.unit,
+        weapon_elems: g.weapon_elems,
+        max_damage: g.max_damage,
+        pilots: g.pilots || []
+      };
+    }
+    return null;
+  }
+
+  function groupsForMode(groups, modeId) {
+    var out = [];
+    (groups || []).forEach(function (g) {
+      var row = normalizeGroupForMode(g, modeId);
+      if (row && row.pilots && row.pilots.length) out.push(row);
+    });
+    out.sort(function (a, b) {
+      var da = (a.max_damage || 0) - (b.max_damage || 0);
+      if (da !== 0) return da > 0 ? -1 : 1;
+      var na = (a.unit && a.unit.name) || '';
+      var nb = (b.unit && b.unit.name) || '';
+      return na.localeCompare(nb);
+    });
+    return out;
+  }
+
+  function renderRankModes() {
+    var host = document.getElementById('msyRankModes');
+    if (!host) return;
+    var html = '';
+    RANK_MODES.forEach(function (m) {
+      var active = state.rankMode === m.id;
+      html += '<button type="button" class="msy-rank-mode' + (active ? ' active' : '') + '" role="tab" aria-selected="' + (active ? 'true' : 'false') + '" data-msy-rank-mode="' + escAttr(m.id) + '" onclick="GgenMetaSynergy.setRankMode(\'' + escJs(m.id) + '\')">';
+      html += '<img class="msy-rank-mode-icon" src="' + escAttr(imgUrl(m.icon)) + '" alt="" width="28" height="28" loading="lazy" decoding="async">';
+      html += '<span class="msy-rank-mode-label">' + esc(t(m.labelKey)) + '</span>';
+      html += '</button>';
+    });
+    host.innerHTML = html;
   }
 
   function applyLangStatic() {
@@ -135,6 +197,7 @@
     if (el) el.placeholder = t('msy_search_ph');
     el = document.getElementById('msyEmptyText');
     if (el) el.textContent = t('msy_empty');
+    renderRankModes();
   }
 
   function initFilterLabels() {
@@ -150,6 +213,7 @@
   }
 
   function renderStatus(filteredTotal) {
+    var mode = rankModeDef(state.rankMode);
     var el = document.getElementById('msyStatus');
     var countEl = document.getElementById('msyToolbarCount');
     if (countEl) {
@@ -159,14 +223,20 @@
     var note = (state.settings && state.settings.defender_note) || '';
     el.innerHTML =
       '<span class="msy-status-chip">' + esc(t('msy_status_units').replace('{n}', fmtN(filteredTotal))) + '</span>' +
-      '<span class="msy-status-chip">' + esc(t('msy_status_metric').replace('{m}', t('msy_metric_super_crit'))) + '</span>' +
+      '<span class="msy-status-chip">' + esc(t('msy_status_metric').replace('{m}', t(mode.metricKey))) + '</span>' +
       '<span class="msy-status-chip">' + esc(t('msy_status_vigor').replace('{v}', t('dc_vigor_super'))) + '</span>' +
       (note ? '<span class="msy-status-note">' + esc(note) + '</span>' : '');
   }
 
-  function renderPilotCard(unitId, pilot) {
+  function pilotDamage(pilot, mode) {
+    if (!pilot) return 0;
+    if (mode.dmgField && pilot[mode.dmgField]) return pilot[mode.dmgField];
+    return pilot.score || 0;
+  }
+
+  function renderPilotCard(unitId, pilot, mode) {
     var c = pilot.char || {};
-    var dmg = pilot.super_crit_dmg || pilot.score || 0;
+    var dmg = pilotDamage(pilot, mode);
     var sub = '';
     if (pilot.guaranteed_crit) {
       sub = '<div class="msy-pilot-sub msy-pilot-sub--gc">' + esc(t('msy_guaranteed_crit')) + '</div>';
@@ -193,20 +263,20 @@
     );
   }
 
-  function renderPilotGrid(pilots, unitId) {
+  function renderPilotGrid(pilots, unitId, mode) {
     var list = (pilots || []).slice(0, 10);
     var half = Math.ceil(list.length / 2);
     var left = list.slice(0, half);
     var right = list.slice(half);
     function col(items) {
       return '<div class="msy-pilot-col">' + items.map(function (p) {
-        return renderPilotCard(unitId, p);
+        return renderPilotCard(unitId, p, mode);
       }).join('') + '</div>';
     }
     return '<div class="msy-pilot-grid">' + col(left) + col(right) + '</div>';
   }
 
-  function renderGroups(groups, startRank) {
+  function renderGroups(groups, startRank, mode) {
     var html = '<div class="msy-groups">';
     groups.forEach(function (g, gi) {
       var rank = (startRank || 0) + gi + 1;
@@ -226,10 +296,10 @@
       html += '</div>';
       html += '<div class="msy-unit-peak">';
       html += '<div class="msy-unit-peak-val">' + fmtN(g.max_damage) + '</div>';
-      html += '<div class="msy-unit-peak-lbl">' + esc(t('msy_metric_super_crit')) + '</div>';
+      html += '<div class="msy-unit-peak-lbl">' + esc(t(mode.metricKey)) + '</div>';
       html += '</div>';
       html += '</header>';
-      html += renderPilotGrid(g.pilots, u.id);
+      html += renderPilotGrid(g.pilots, u.id, mode);
       html += '</article>';
     });
     html += '</div>';
@@ -265,7 +335,9 @@
   }
 
   function renderContent() {
-    var meta = paginateGroups(state.allGroups);
+    var mode = rankModeDef(state.rankMode);
+    var ranked = groupsForMode(state.allGroups, state.rankMode);
+    var meta = paginateGroups(ranked);
     renderStatus(meta.total);
     var startRank = (meta.page - 1) * meta.perPage;
     var host = document.getElementById('msyContent');
@@ -278,7 +350,7 @@
       return;
     }
     if (empty) empty.style.display = 'none';
-    host.innerHTML = renderGroups(meta.groups, startRank);
+    host.innerHTML = renderGroups(meta.groups, startRank, mode);
     renderPagination(meta);
   }
 
@@ -320,6 +392,14 @@
       state.cacheKey = null;
       loadRankings(true);
     }, 320);
+  }
+
+  function setRankMode(modeId) {
+    if (!rankModeDef(modeId)) return;
+    state.rankMode = modeId;
+    state.page = 1;
+    renderRankModes();
+    renderContent();
   }
 
   function onTabShown() {
@@ -407,6 +487,7 @@
     init: init,
     onTabShown: onTabShown,
     applyLangStatic: applyLangStatic,
+    setRankMode: setRankMode,
     goPage: goPage,
     openDetailUnit: openDetailUnit,
     openDetailChar: openDetailChar,

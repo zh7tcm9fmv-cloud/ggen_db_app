@@ -709,58 +709,74 @@ def build_meta_synergy_rankings(
             continue
         pilot_ids.append(cid)
 
-    metric_key = {
-        'normal': 'normal_dmg',
-        'crit': 'crit_dmg',
-        'super_crit': 'super_crit_dmg',
-        'expected': 'expected_dmg',
-        'peak': 'peak_dmg',
-    }.get(metric, 'super_crit_dmg')
+    _rank_modes = (
+        ('super_crit', 'super_crit_dmg'),
+        ('crit', 'crit_dmg'),
+        ('normal', 'normal_dmg'),
+    )
 
     groups = []
     for uid in unit_rows:
         info = A.unit_info_map.get(uid) or {}
         stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
         unit_wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
-        pairs = []
+        all_pairs = []
         for cid in pilot_ids:
             if (uid, cid) in exclude:
                 continue
             dmg = compute_pair_damage(uid, cid, lc, lb_tier=lb_tier, vigor=vigor, def_tier=def_tier, wpn=unit_wpn)
             if not dmg:
                 continue
-            score = dmg.get(metric_key, 0) or 0
-            if score <= 0:
-                continue
-            pairs.append((score, cid, dmg))
-        if not pairs:
+            all_pairs.append((cid, dmg))
+        if not all_pairs:
             continue
-        pairs.sort(key=lambda x: (-x[0], x[1]))
-        top = pairs[: max(1, int(top_pilots or 10))]
+
+        rankings = {}
+        for mode, dmg_key in _rank_modes:
+            scored = []
+            for cid, d in all_pairs:
+                sc = d.get(dmg_key, 0) or 0
+                if sc <= 0:
+                    continue
+                scored.append((sc, cid, d))
+            if not scored:
+                continue
+            scored.sort(key=lambda x: (-x[0], x[1]))
+            top = scored[: max(1, int(top_pilots or 10))]
+            rankings[mode] = {
+                'max_damage': top[0][0],
+                'pilots': [
+                    {
+                        'rank': i + 1,
+                        'char': _entity_brief_char(cid, lc),
+                        'normal_dmg': d['normal_dmg'],
+                        'crit_dmg': d['crit_dmg'],
+                        'super_crit_dmg': d['super_crit_dmg'],
+                        'expected_dmg': d['expected_dmg'],
+                        'peak_dmg': d['peak_dmg'],
+                        'guaranteed_crit': d['guaranteed_crit'],
+                        'crit_rate': d['crit_rate'],
+                        'pair_ok': d['pair_ok'],
+                        'score': sc,
+                    }
+                    for i, (sc, cid, d) in enumerate(top)
+                ],
+            }
+
+        if not rankings:
+            continue
+
+        primary = rankings.get('super_crit') or rankings.get('crit') or rankings.get('normal')
         groups.append({
             'unit': _entity_brief_unit(uid, lc),
             'weapon_elems': _weapon_elem_label(uid, lc),
-            'max_damage': top[0][0],
+            'rankings': rankings,
+            'max_damage': primary['max_damage'],
             'metric': metric,
-            'pilots': [
-                {
-                    'rank': i + 1,
-                    'char': _entity_brief_char(cid, lc),
-                    'normal_dmg': d['normal_dmg'],
-                    'crit_dmg': d['crit_dmg'],
-                    'super_crit_dmg': d['super_crit_dmg'],
-                    'expected_dmg': d['expected_dmg'],
-                    'peak_dmg': d['peak_dmg'],
-                    'guaranteed_crit': d['guaranteed_crit'],
-                    'crit_rate': d['crit_rate'],
-                    'pair_ok': d['pair_ok'],
-                    'score': sc,
-                }
-                for i, (sc, cid, d) in enumerate(top)
-            ],
+            'pilots': primary['pilots'],
         })
 
-    groups.sort(key=lambda g: (-g['max_damage'], g['unit']['name'].lower()))
+    groups.sort(key=lambda g: (-(g.get('rankings') or {}).get('super_crit', {}).get('max_damage', g.get('max_damage', 0)), g['unit']['name'].lower()))
     total = len(groups)
     page = max(1, int(page or 1))
     per_page = max(1, min(100, int(per_page or 50)))
@@ -798,7 +814,7 @@ def build_meta_synergy_rankings(
 def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
     page = max(1, int(kwargs.pop('page', 1) or 1))
     per_page = max(1, min(100, int(kwargs.pop('per_page', 50) or 50)))
-    def_tier = max(1, min(3, int(kwargs.get('def_tier', 3) or 3)))
+    def_tier = max(1, min(3, int(kwargs.pop('def_tier', 3) or 3)))
     cache_key = (
         lc or 'EN',
         kwargs.get('rarity') or kwargs.get('unit_rarity', 'ALL'),
@@ -807,7 +823,6 @@ def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
         kwargs.get('source') or '',
         kwargs.get('pilot_rarity', 'ALL'),
         tuple(sorted(str(r) for r in (kwargs.get('pilot_roles') or ('1', '2', '3')))),
-        kwargs.get('metric', 'super_crit'),
         kwargs.get('vigor', 'super'),
         int(kwargs.get('lb_tier', 3) or 3),
         def_tier,
