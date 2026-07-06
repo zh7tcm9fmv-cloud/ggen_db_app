@@ -2217,9 +2217,12 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 .weapon-range-non-map-panel,.map-wrt-filter-panel{min-width:min(96vw,360px)!important;max-width:min(96vw,360px)}
 .map-wrt-filter-panel:not([hidden]){overflow-y:visible;max-height:none}
 .unit-map-preview{display:flex;align-items:center;gap:10px;margin-top:8px;padding:6px 8px;border-radius:8px;border:1px solid rgba(56,189,248,.22);background:rgba(15,23,42,.55);max-width:max-content;opacity:0;transform:translateY(6px);animation:unit-map-preview-in .38s ease forwards}
+.unit-map-preview-stack{display:flex;flex-direction:column;align-items:flex-start;gap:6px;margin-top:8px;max-width:max-content}
+.unit-map-preview-stack .unit-map-preview{margin-top:0}
 .unit-map-preview-ammo{display:inline-flex;align-items:baseline;gap:4px;font-size:11px;line-height:1.2;color:var(--text-secondary)}
 .unit-map-preview-ammo-val{font-family:'RobotoMediumNumbers',monospace;font-weight:700;color:var(--accent-cyan);font-size:13px}
 .list-grid-card--map-preview .unit-map-preview{margin-top:6px;max-width:100%}
+.list-grid-card--map-preview .unit-map-preview-stack{margin-top:6px;max-width:100%}
 @keyframes unit-map-preview-in{to{opacity:1;transform:translateY(0)}}
 @media (prefers-reduced-motion:reduce){.unit-map-preview{animation:none;opacity:1;transform:none}}
 .skill-filter-panel{min-width:min(92vw,420px);max-width:min(92vw,480px)}

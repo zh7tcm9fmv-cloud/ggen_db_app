@@ -1474,8 +1474,8 @@ def unit_matches_map_weapon_range_filter(uid, want_filter, combine='and', stat_m
     return apply_browse_combine_match(want_filter, lambda x: str(x) in have, combine)
 
 
-def build_unit_browse_map_weapon_preview(uid, stat_mode='normal', ld=None, lc=None, want_filter=None):
-    """Best matching MAP weapon grid + ammo for unit browse rows when MAP filters are active."""
+def build_unit_browse_map_weapon_previews(uid, stat_mode='normal', ld=None, lc=None, want_filter=None):
+    """All matching MAP weapon grids + ammo for unit browse rows when MAP filters are active."""
     uid = normalize_id(uid)
     ld_f = ld or LANG_DATA.get('EN', {})
     lc_f = lc or 'EN'
@@ -1483,8 +1483,9 @@ def build_unit_browse_map_weapon_preview(uid, stat_mode='normal', ld=None, lc=No
     wcm = ld_f.get('weapon_capability_map', {}) or {}
     wtdm = ld_f.get('weapon_trait_detail_map', {}) or {}
     want = [str(x) for x in want_filter] if want_filter else None
-    best = None
-    best_score = -1
+    matches = []
+    uinfo = unit_info_map.get(uid) or {}
+    is_large = safe_int(uinfo.get('occupied_area_id'), 1) == 2
     for wp in unit_weapon_map.get(uid, []) or []:
         wid = normalize_id(wp.get('id'))
         if not wid or wid == '0':
@@ -1502,11 +1503,8 @@ def build_unit_browse_map_weapon_preview(uid, stat_mode='normal', ld=None, lc=No
         if want and not any(t in tags for t in want):
             continue
         score = sum(1 for t in tags if not want or t in want)
-        if score <= best_score:
-            continue
-        best_score = score
-        uinfo = unit_info_map.get(uid) or {}
-        best = {
+        matches.append((score, wid, {
+            'weapon_id': wid,
             'map_range_type': str(wm.get('map_range_type', '0') or '0'),
             'map_coords': [dict(c) for c in (ws.get('map_coords') or [])],
             'shooting_coords': [dict(c) for c in (ws.get('shooting_coords') or [])],
@@ -1514,11 +1512,20 @@ def build_unit_browse_map_weapon_preview(uid, stat_mode='normal', ld=None, lc=No
             'map_single_pou': bool(ws.get('map_single_pou', False)),
             'map_dash_dual_wide': bool(ws.get('map_dash_dual_wide', False)),
             'map_dash_dual_end_coords': [dict(c) for c in (ws.get('map_dash_dual_end_coords') or [])],
-            'is_large': safe_int(uinfo.get('occupied_area_id'), 1) == 2,
+            'is_large': is_large,
             'ammo': int(ws.get('ammo', 0) or 0),
             'map_can_use_after_move': is_map_weapon_after_move_unit_weapon(uid, wid, wt),
-        }
-    return best
+        }))
+    if not matches:
+        return []
+    matches.sort(key=lambda x: (-x[0], x[1]))
+    return [m[2] for m in matches]
+
+
+def build_unit_browse_map_weapon_preview(uid, stat_mode='normal', ld=None, lc=None, want_filter=None):
+    """Best matching MAP weapon grid + ammo for unit browse rows when MAP filters are active."""
+    previews = build_unit_browse_map_weapon_previews(uid, stat_mode, ld, lc, want_filter)
+    return previews[0] if previews else None
 
 
 def unit_weapon_range_non_map_filter_cache_fragment(expr, ssp_ex_only=False):
@@ -17245,11 +17252,12 @@ def list_units():
         )
         if _map_preview_active and not id_seek:
             _prev_uid = normalize_id(display_uid)
-            _map_prev = build_unit_browse_map_weapon_preview(
+            _map_prevs = build_unit_browse_map_weapon_previews(
                 _prev_uid, stat_mode, ld, lc, map_weapon_range_filter,
             )
-            if _map_prev:
-                urow['map_weapon_preview'] = _map_prev
+            if _map_prevs:
+                urow['map_weapon_previews'] = _map_prevs
+                urow['map_weapon_preview'] = _map_prevs[0]
         _rec_brief = unit_list_recommend_character_brief(uid, info, ld, lc)
         if _rec_brief:
             urow['recommend_character'] = _rec_brief
