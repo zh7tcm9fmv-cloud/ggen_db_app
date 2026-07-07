@@ -25,6 +25,7 @@
     totalPages: 1,
     settings: null,
     defenderTiers: null,
+    filteredBrowse: false,
     rankMode: 'super_crit',
     defTier: 3,
     topPilots: 10,
@@ -225,11 +226,50 @@
     });
   }
 
+  function msyRoleFilterQuery() {
+    var ids = ['1', '2', '3'];
+    var sel = [];
+    var missing = false;
+    ids.forEach(function (id) {
+      var el = document.getElementById('msyUnitRole' + id);
+      if (!el) missing = true;
+      else if (el.checked) sel.push(id);
+    });
+    if (missing) {
+      if (typeof global.getRoleQuerySuffix === 'function') {
+        return global.getRoleQuerySuffix('msyUnit').replace(/^&/, '');
+      }
+      return '';
+    }
+    if (!sel.length) return 'role=__NONE__';
+    if (sel.length === ids.length) return '';
+    return 'role=' + encodeURIComponent(sel.join(','));
+  }
+
+  function hasActiveBrowseFilters() {
+    if ((state.unitQ || '').trim()) return true;
+    var roleQ = msyRoleFilterQuery();
+    if (roleQ) return true;
+    var parts = [];
+    if (typeof global.getRarityQuerySuffix === 'function') {
+      parts.push(global.getRarityQuerySuffix('msyUnit').replace(/^&/, ''));
+    }
+    if (typeof global.getSourceQuerySuffix === 'function') {
+      parts.push(global.getSourceQuerySuffix('msyUnit').replace(/^&/, ''));
+    }
+    if (typeof global.getSeriesQuerySuffix === 'function') {
+      parts.push(global.getSeriesQuerySuffix('msyUnit').replace(/^&/, ''));
+    }
+    if (typeof global.getLineageQuerySuffix === 'function') {
+      parts.push(global.getLineageQuerySuffix('msyUnit').replace(/^&/, ''));
+    }
+    return parts.some(Boolean);
+  }
+
   function buildFilterQuery() {
     var parts = [];
-    if (typeof global.getRoleQuerySuffix === 'function') {
-      parts.push(global.getRoleQuerySuffix('msyUnit').replace(/^&/, ''));
-    }
+    var roleQ = msyRoleFilterQuery();
+    if (roleQ) parts.push(roleQ);
     if (typeof global.getRarityQuerySuffix === 'function') {
       parts.push(global.getRarityQuerySuffix('msyUnit').replace(/^&/, ''));
     }
@@ -329,6 +369,7 @@
     state.total = d.total || 0;
     state.totalPages = d.total_pages || 1;
     state.page = d.page || state.page;
+    state.filteredBrowse = !!d.filtered_browse;
     state.settings = d.settings || null;
     if (d.defender_tiers) {
       state.defenderTiers = d.defender_tiers;
@@ -603,10 +644,22 @@
     if (countEl) countEl.style.display = 'none';
     if (!el) return;
     var vigorLbl = t(mode.vigorLabelKey || 'dc_vigor_super');
-    el.innerHTML =
-      '<span class="msy-status-chip">' + esc(t('msy_status_units').replace('{n}', fmtN(state.total))) + '</span>' +
+    var shown = state.groups.length;
+    var chips =
+      '<span class="msy-status-chip">' + esc(t('msy_status_showing').replace('{n}', fmtN(shown))) + '</span>';
+    if (state.filteredBrowse || hasActiveBrowseFilters()) {
+      chips += '<span class="msy-status-chip">' + esc(t('msy_status_match').replace('{n}', fmtN(state.total))) + '</span>';
+    } else {
+      chips += '<span class="msy-status-chip">' + esc(
+        t('msy_status_page')
+          .replace('{page}', fmtN(state.page))
+          .replace('{pages}', fmtN(state.totalPages))
+      ) + '</span>';
+    }
+    chips +=
       '<span class="msy-status-chip">' + esc(t('msy_status_metric').replace('{m}', t(mode.metricKey))) + '</span>' +
       '<span class="msy-status-chip">' + esc(t('msy_status_vigor').replace('{v}', vigorLbl)) + '</span>';
+    el.innerHTML = chips;
     updateDefTierStats();
   }
 
@@ -887,9 +940,9 @@
     showWarmingBanner(false);
     var poll = 0;
     var skillsFetched = false;
-    var browseFiltered = !!buildFilterQuery() || !!(state.unitQ || '').trim();
+    var browseFiltered = hasActiveBrowseFilters();
     try {
-      if (browseFiltered && poll === 0 && !force) {
+      if (poll === 0) {
         var summaryOpts = { credentials: 'same-origin' };
         if (state._fetchCtrl) summaryOpts.signal = state._fetchCtrl.signal;
         try {
@@ -911,7 +964,7 @@
         if (loadGen !== state._loadGen) return;
         var fetchOpts = { credentials: 'same-origin' };
         if (state._fetchCtrl) fetchOpts.signal = state._fetchCtrl.signal;
-        var timeoutMs = poll === 0 ? (browseFiltered ? 22000 : 55000) : (browseFiltered ? 16000 : 35000);
+        var timeoutMs = poll === 0 ? (browseFiltered ? 18000 : 35000) : (browseFiltered ? 12000 : 22000);
         var timeoutId = setTimeout(function () {
           if (state._fetchCtrl) {
             try { state._fetchCtrl.abort(); } catch (_) {}
@@ -1073,6 +1126,9 @@
   function onTabShown() {
     applyLangStatic();
     initFilterLabels();
+    if (typeof global.updateRoleFilterButtonLabel === 'function') {
+      global.updateRoleFilterButtonLabel('msyUnit');
+    }
     if (typeof global.ensureMsyBrowseFilters === 'function') {
       void global.ensureMsyBrowseFilters();
     }

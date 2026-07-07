@@ -2073,10 +2073,13 @@ def _build_all_unit_groups(unit_ids, pilot_ids, lc, lb_tier, vigor, def_tier, ex
     return groups
 
 
-def _entity_brief_unit(uid, lc):
+def _entity_brief_unit(uid, lc, role_filter=None):
     A = _app()
     uid = A.normalize_id(uid)
     info = A.unit_info_map.get(uid) or {}
+    if role_filter:
+        uid = A._unit_role_filter_display_id(uid, info, role_filter)
+        info = A.unit_info_map.get(uid) or info
     ri = str(info.get('rarity', '1'))
     thum = A.find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
     return {
@@ -2649,7 +2652,7 @@ def _ordered_unit_ids_for_browse(unit_ids, master_groups, lc, kwargs, rank_mode,
 
     browse_active = _browse_filters_active(browse or {}, unit_q)
 
-    if not browse_active and same_role_only:
+    if not browse_active:
         cached_scored = []
         uncached_scored = []
         for uid in unit_ids:
@@ -2662,14 +2665,6 @@ def _ordered_unit_ids_for_browse(unit_ids, master_groups, lc, kwargs, rank_mode,
         cached_scored.sort(key=lambda x: (-x[0], x[1]))
         uncached_scored.sort(key=lambda x: (-x[0], x[1]))
         return [uid for _, uid in cached_scored] + [uid for _, uid in uncached_scored]
-
-    if not browse_active:
-        uncached_scored = []
-        for uid in unit_ids:
-            uid = A.normalize_id(uid)
-            uncached_scored.append((_cheap_unit_peak_score(uid, lc, kwargs), uid))
-        uncached_scored.sort(key=lambda x: (-x[0], x[1]))
-        return [uid for _, uid in uncached_scored]
 
     scored = []
     for uid in unit_ids:
@@ -3184,7 +3179,7 @@ def _warming_payload(rank_mode, vigor, def_tier, kwargs):
     }
 
 
-def _stub_group_for_uid(uid, lc, kwargs, rank_mode, def_tier):
+def _stub_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, *, role_filter=None):
     """Fast placeholder row for filtered browse (unit shell + estimated peak damage)."""
     A = _app()
     uid = A.normalize_id(uid)
@@ -3194,7 +3189,7 @@ def _stub_group_for_uid(uid, lc, kwargs, rank_mode, def_tier):
     is_sd = _is_sd_unit(uid, info)
     block = {'max_damage': est, 'pilots': []}
     return {
-        'unit': _entity_brief_unit(uid, lc),
+        'unit': _entity_brief_unit(uid, lc, role_filter=role_filter),
         'weapon_elems': _weapon_elem_label(uid, lc),
         'weapon_info': wi,
         'max_damage': est,
@@ -3214,6 +3209,8 @@ def _cached_summary_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
     browse = _parse_browse_filters(kwargs, lc)
     page = max(1, int(page or 1))
     per_page = max(1, min(100, int(per_page or 50)))
+    browse_active = _browse_filters_active(browse, unit_q)
+    role_filter = browse.get('role_filter')
     matching_ids = _filtered_rankable_unit_ids(lc, browse, unit_q)
     working_groups = list(groups or [])
     ordered_ids = _ordered_unit_ids_for_browse(
@@ -3232,26 +3229,25 @@ def _cached_summary_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
     for uid in page_ids:
         uid = _app().normalize_id(uid)
         g = by_uid.get(uid)
-        if g:
+        if g and not browse_active:
             row = _group_for_def_tier(g, dt) if g.get('rankings_by_tier') else g
             if row and not row.get('pending'):
                 if include_skills:
                     _ensure_group_enriched(row, lc, rank_mode, include_skills=True)
                 norm = _normalize_group_for_mode(row, rank_mode)
                 if norm:
+                    if role_filter:
+                        u = norm.get('unit') or {}
+                        norm = dict(norm)
+                        norm['unit'] = _entity_brief_unit(u.get('id'), lc, role_filter=role_filter)
                     expanded.append(norm)
                     continue
-        expanded.append(_stub_group_for_uid(uid, lc, kwargs, rank_mode, dt))
+        expanded.append(_stub_group_for_uid(uid, lc, kwargs, rank_mode, dt, role_filter=role_filter))
     expanded.sort(key=lambda g: (
         -_unit_browse_sort_damage(g, rank_mode, dt),
         _app().normalize_id((g.get('unit') or {}).get('id')),
     ))
     total_pages = max(1, (total + per_page - 1) // per_page)
-    role_raw = kwargs.get('role') or kwargs.get('unit_role')
-    if role_raw is None or str(role_raw).upper() in ('ALL', ''):
-        role_filter = None
-    else:
-        role_filter = _app().parse_list_role_filter(str(role_raw))
     pilot_role_set = _pilot_role_set_for_filters(role_filter, kwargs.get('pilot_roles'))
     du = kwargs.get('def_unit_override')
     dc = kwargs.get('def_char_override')
@@ -3269,6 +3265,7 @@ def _cached_summary_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
         'defender_tiers': defender_tiers_public(),
         'summary': True,
         'cache_incomplete': True,
+        'filtered_browse': browse_active,
         'settings': {
             'unit_rarity': kwargs.get('rarity') or kwargs.get('unit_rarity', 'ALL'),
             'unit_role': kwargs.get('role') or kwargs.get('unit_role', 'ALL'),
@@ -3320,12 +3317,17 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
     if cache_key:
         _merge_groups_into_cache(cache_key, page_groups_raw)
     expanded = []
+    role_filter = browse.get('role_filter')
     for g in page_groups_raw:
         _ensure_group_enriched(g, lc, rank_mode, include_skills=include_skills)
         row = _group_for_def_tier(g, dt) if g.get('rankings_by_tier') else g
         if row:
             norm = _normalize_group_for_mode(row, rank_mode)
             if norm:
+                if role_filter:
+                    u = norm.get('unit') or {}
+                    norm = dict(norm)
+                    norm['unit'] = _entity_brief_unit(u.get('id'), lc, role_filter=role_filter)
                 expanded.append(norm)
     expanded.sort(key=lambda g: (
         -_unit_browse_sort_damage(g, rank_mode, dt),
@@ -3354,6 +3356,7 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
         'def_tier': dt,
         'defender_tiers': defender_tiers_public(),
         'cache_incomplete': page_incomplete,
+        'filtered_browse': browse_active,
         'settings': {
             'unit_rarity': kwargs.get('rarity') or kwargs.get('unit_rarity', 'ALL'),
             'unit_role': kwargs.get('role') or kwargs.get('unit_role', 'ALL'),
