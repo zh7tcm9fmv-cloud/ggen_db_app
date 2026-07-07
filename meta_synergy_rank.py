@@ -1614,6 +1614,54 @@ def _rankings_no_cp_for_tier_lite(dt, all_pairs, top_pilots, uid, lc, lb_tier, u
     return _rankings_from_multi_vigor_pairs(pairs_ncp, top_pilots, lc) if pairs_ncp else {}
 
 
+def _ensure_rankings_no_cp(g, lc, rank_mode, def_tier, kwargs):
+    """Backfill CP-off rankings when missing (legacy cache / fast browse builds)."""
+    if not g or g.get('pending') or g.get('pilot_preview'):
+        return g
+    A = _app()
+    rank_mode = rank_mode or 'super_crit'
+    rncp = g.get('rankings_no_cp') or {}
+    cp_block = (rncp.get(rank_mode) if isinstance(rncp, dict) else None) or {}
+    if cp_block.get('pilots'):
+        return g
+    block = (g.get('rankings') or {}).get(rank_mode)
+    if not block or not block.get('pilots'):
+        return g
+    uid = A.normalize_id((g.get('unit') or {}).get('id'))
+    if not uid:
+        return g
+    info = A.unit_info_map.get(uid) or {}
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    unit_wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
+    if not unit_wpn:
+        return g
+    top_p = int((kwargs or {}).get('top_pilots', 10) or 10)
+    lb = int((kwargs or {}).get('lb_tier', 3) or 3)
+    dt = max(1, min(4, int(def_tier or 3)))
+    top_cids = []
+    for pilot in block.get('pilots') or []:
+        cid = A.normalize_id((pilot.get('char') or {}).get('id'))
+        if cid and cid not in top_cids:
+            top_cids.append(cid)
+    if not top_cids:
+        return g
+    pairs_on = _multi_vigor_pairs_for_candidates(
+        uid, top_cids, lc, lb, dt, unit_wpn,
+        cp_on=True, lite=True, rank_mode=rank_mode,
+    )
+    if not pairs_on:
+        return g
+    built = _rankings_no_cp_for_tier_lite(
+        dt, pairs_on, top_p, uid, lc, lb, unit_wpn,
+        rank_mode=rank_mode,
+    )
+    if not built:
+        return g
+    out = dict(g)
+    out['rankings_no_cp'] = built
+    return out
+
+
 def _best_pilot_by_stat(uid, pilot_ids, wpn, lc, exclude, same_role_only=False):
     if not wpn:
         return None
@@ -1914,7 +1962,11 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
             return None
         if lite and browse_fast:
             rankings_no_gc = rankings
-            rankings_no_cp = None
+            rankings_no_cp = _rankings_no_cp_for_tier_lite(
+                dt, all_pairs, top_pilots, uid, lc, lb_tier, unit_wpn,
+                def_unit_override=def_unit_override, def_char_override=def_char_override,
+                rank_mode=rank_mode,
+            )
             rankings_no_ur = _rankings_no_ur_pool_lite(
                 uid, active_pilots, top_pilots, lc, lb_tier, dt, unit_wpn,
                 need, info, stat_mode, def_unit_override=def_unit_override,
@@ -3564,6 +3616,7 @@ def _cached_summary_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
         if _is_ready_cached_group(g):
             row = _group_for_def_tier(g, dt) if g.get('rankings_by_tier') else g
             if row:
+                row = _ensure_rankings_no_cp(row, lc, rank_mode, dt, kwargs)
                 if include_skills:
                     _ensure_group_enriched(row, lc, rank_mode, include_skills=True)
                 norm = _normalize_group_for_mode(row, rank_mode)
@@ -3684,6 +3737,7 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
     page_groups_raw = filled_raw
     expanded = []
     for g in page_groups_raw:
+        g = _ensure_rankings_no_cp(g, lc, rank_mode, dt, kwargs)
         _ensure_group_enriched(g, lc, rank_mode, include_skills=include_skills)
         row = _group_for_def_tier(g, dt) if g.get('rankings_by_tier') else g
         if row:

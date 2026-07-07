@@ -647,7 +647,7 @@
 }
 
 .msy-def-tier-stats {
-  display: none;
+  display: none !important;
 }
 
 .msy-global-toggles {

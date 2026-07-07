@@ -765,16 +765,8 @@
       '<span class="msy-status-chip">' + esc(t('msy_status_showing').replace('{n}', fmtN(shown))) + '</span>';
     if (state.filteredBrowse || hasActiveBrowseFilters()) {
       chips += '<span class="msy-status-chip">' + esc(t('msy_status_match').replace('{n}', fmtN(state.total))) + '</span>';
-    } else {
-      chips += '<span class="msy-status-chip">' + esc(
-        t('msy_status_page')
-          .replace('{page}', fmtN(state.page))
-          .replace('{pages}', fmtN(state.totalPages))
-      ) + '</span>';
     }
-    chips +=
-      '<span class="msy-status-chip">' + esc(t('msy_status_metric').replace('{m}', t(mode.metricKey))) + '</span>' +
-      '<span class="msy-status-chip">' + esc(t('msy_status_vigor').replace('{v}', vigorLbl)) + '</span>';
+    chips += '<span class="msy-status-chip">' + esc(t('msy_status_vigor').replace('{v}', vigorLbl)) + '</span>';
     el.innerHTML = chips;
     updateDefTierStats();
   }
@@ -1307,8 +1299,19 @@
 
   function toggleCharCondPassive() {
     state.charCondPassiveOn = !state.charCondPassiveOn;
-    applyLangStatic();
+    syncGlobalFilterButtons();
     invalidateRenderSignature();
+    var missingNoCp = (state.groups || []).some(function (g) {
+      if (!g || g.pending || g.pilot_preview) return true;
+      if (!g.rankings_no_cp) return true;
+      var blk = g.rankings_no_cp[state.rankMode];
+      return !(blk && blk.pilots && blk.pilots.length);
+    });
+    if (missingNoCp) {
+      clearPageCache();
+      loadRankings(false);
+      return;
+    }
     renderContent(true);
   }
 
