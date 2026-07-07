@@ -118,6 +118,7 @@
   }
 
   function groupBlock(g, modeId, noUr, noShinn) {
+    if (noUr) noShinn = true;
     if (!g) return null;
     if (!state.charCondPassiveOn && g.rankings_no_cp) {
       var cpBlock = (g.rankings_no_cp || {})[modeId];
@@ -300,70 +301,115 @@
     }
   }
 
-  function collectPilotCharIds(groups) {
-    var ids = [];
+  function collectPilotSkillPairs(groups) {
+    var pairs = [];
+    var charIds = [];
+    var seenPair = {};
+    var seenChar = {};
+    function addPilot(unitId, p) {
+      var id = p && p.char && p.char.id;
+      if (!id || !unitId) return;
+      var cid = String(id);
+      var uid = String(unitId);
+      var pairKey = uid + ':' + cid;
+      var needsSkills = !(p.active_skills && p.active_skills.length);
+      var needsAffinity = p.affinity_matches === undefined;
+      if (!needsSkills && !needsAffinity) return;
+      if (!seenPair[pairKey]) {
+        seenPair[pairKey] = 1;
+        pairs.push({ unitId: uid, charId: cid });
+      }
+      if (needsSkills && !seenChar[cid]) {
+        seenChar[cid] = 1;
+        charIds.push(cid);
+      }
+    }
     (groups || []).forEach(function (g) {
-      (g.pilots || []).forEach(function (p) {
-        var id = p && p.char && p.char.id;
-        if (id && !(p.active_skills && p.active_skills.length)) ids.push(String(id));
-      });
+      var unitId = g.unit && g.unit.id;
+      if (!unitId) return;
+      (g.pilots || []).forEach(function (p) { addPilot(unitId, p); });
       ['rankings', 'rankings_no_cp', 'rankings_no_ur', 'rankings_no_shinn'].forEach(function (key) {
         var block = g[key];
         if (!block || typeof block !== 'object') return;
         Object.keys(block).forEach(function (modeKey) {
           var modeBlock = block[modeKey];
-          ((modeBlock && modeBlock.pilots) || []).forEach(function (p) {
-            var pid = p && p.char && p.char.id;
-            if (pid && !(p.active_skills && p.active_skills.length)) ids.push(String(pid));
-          });
+          ((modeBlock && modeBlock.pilots) || []).forEach(function (p) { addPilot(unitId, p); });
         });
       });
     });
-    var seen = {};
-    return ids.filter(function (id) {
-      if (seen[id]) return false;
-      seen[id] = 1;
-      return true;
+    return { pairs: pairs, charIds: charIds };
+  }
+
+  function applySkillsToGroups(groups, map, affinityMap) {
+    if (!map && !affinityMap) return;
+    (groups || []).forEach(function (g) {
+      var unitId = g.unit && String(g.unit.id || '');
+      function patchPilot(p) {
+        if (!p || !p.char) return;
+        var id = String(p.char.id || '');
+        if (map && map[id]) p.active_skills = map[id];
+        if (affinityMap && unitId) {
+          var pairKey = unitId + ':' + id;
+          if (Object.prototype.hasOwnProperty.call(affinityMap, pairKey)) {
+            p.affinity_matches = affinityMap[pairKey];
+          }
+        }
+      }
+      (g.pilots || []).forEach(patchPilot);
+      ['rankings', 'rankings_no_cp', 'rankings_no_ur', 'rankings_no_shinn'].forEach(function (key) {
+        var block = g[key];
+        if (!block || typeof block !== 'object') return;
+        Object.keys(block).forEach(function (modeKey) {
+          var modeBlock = block[modeKey];
+          ((modeBlock && modeBlock.pilots) || []).forEach(patchPilot);
+        });
+      });
     });
   }
 
-  function applySkillsToGroups(groups, map) {
-    if (!map) return;
-    (groups || []).forEach(function (g) {
-      (g.pilots || []).forEach(function (p) {
-        var id = p && p.char && String(p.char.id);
-        if (id && map[id]) p.active_skills = map[id];
-      });
-      ['rankings', 'rankings_no_cp', 'rankings_no_ur', 'rankings_no_shinn'].forEach(function (key) {
-        var block = g[key];
-        if (!block || typeof block !== 'object') return;
-        Object.keys(block).forEach(function (modeKey) {
-          var modeBlock = block[modeKey];
-          ((modeBlock && modeBlock.pilots) || []).forEach(function (p) {
-            var pid = p && p.char && String(p.char.id);
-            if (pid && map[pid]) p.active_skills = map[pid];
-          });
-        });
-      });
-    });
+  function scheduleSkillsRender() {
+    clearTimeout(state._skillsRenderTimer);
+    state._skillsRenderTimer = setTimeout(function () {
+      renderContent();
+    }, 60);
   }
 
   async function fetchPilotSkillsBatch(groups) {
-    var ids = collectPilotCharIds(groups);
-    if (!ids.length) return;
+    var req = collectPilotSkillPairs(groups);
+    if (!req.charIds.length && !req.pairs.length) return;
     var lang = (global.S && global.S.lang) || 'EN';
     var gen = state._loadGen;
-    for (var i = 0; i < ids.length; i += 80) {
+    var charParam = req.charIds.join(',');
+    if (!req.pairs.length) {
+      for (var ci = 0; ci < req.charIds.length; ci += 80) {
+        if (gen !== state._loadGen) return;
+        var charSlice = req.charIds.slice(ci, ci + 80);
+        try {
+          var r0 = await fetch('/api/meta_synergy_pilot_skills?lang=' + encodeURIComponent(lang) + '&char_ids=' + encodeURIComponent(charSlice.join(',')), { credentials: 'same-origin' });
+          if (!r0.ok) continue;
+          var d0 = await r0.json();
+          if (gen !== state._loadGen) return;
+          applySkillsToGroups(state.groups, d0.skills_by_char || {}, d0.affinity_by_pair || {});
+          scheduleSkillsRender();
+        } catch (_) {}
+      }
+      return;
+    }
+    for (var i = 0; i < req.pairs.length; i += 40) {
       if (gen !== state._loadGen) return;
-      var slice = ids.slice(i, i + 80);
-      var url = '/api/meta_synergy_pilot_skills?lang=' + encodeURIComponent(lang) + '&char_ids=' + encodeURIComponent(slice.join(','));
+      var chunkPairs = req.pairs.slice(i, i + 40);
+      var q = ['lang=' + encodeURIComponent(lang)];
+      if (charParam) q.push('char_ids=' + encodeURIComponent(charParam));
+      q.push('pairs=' + encodeURIComponent(chunkPairs.map(function (x) {
+        return x.unitId + ':' + x.charId;
+      }).join(',')));
       try {
-        var r = await fetch(url, { credentials: 'same-origin' });
+        var r = await fetch('/api/meta_synergy_pilot_skills?' + q.join('&'), { credentials: 'same-origin' });
         if (!r.ok) continue;
         var d = await r.json();
         if (gen !== state._loadGen) return;
-        applySkillsToGroups(state.groups, d.skills_by_char || {});
-        renderContent();
+        applySkillsToGroups(state.groups, d.skills_by_char || {}, d.affinity_by_pair || {});
+        scheduleSkillsRender();
       } catch (_) {}
     }
   }
@@ -383,9 +429,14 @@
     }
     var shBtn = document.getElementById('msyExcludeShinnBtn');
     if (shBtn) {
-      shBtn.title = state.excludeShinnGlobal ? t('msy_exclude_shinn_on') : t('msy_exclude_shinn');
-      shBtn.setAttribute('aria-pressed', state.excludeShinnGlobal ? 'true' : 'false');
-      shBtn.classList.toggle('active', state.excludeShinnGlobal);
+      var hideShinn = state.excludeUrGlobal;
+      shBtn.style.display = hideShinn ? 'none' : '';
+      shBtn.setAttribute('aria-hidden', hideShinn ? 'true' : 'false');
+      if (!hideShinn) {
+        shBtn.title = state.excludeShinnGlobal ? t('msy_exclude_shinn_on') : t('msy_exclude_shinn');
+        shBtn.setAttribute('aria-pressed', state.excludeShinnGlobal ? 'true' : 'false');
+        shBtn.classList.toggle('active', state.excludeShinnGlobal);
+      }
     }
   }
 
@@ -518,11 +569,42 @@
       html += '</span>';
     });
     if (active.length) {
-      html += '<div class="msy-pilot-skill-labels">' + active.map(function (sk) {
+      html += '<div class="msy-pilot-skill-lines">';
+      active.forEach(function (sk) {
         var nm = String(sk.name || '').replace(/\s*LV\s*\d+\s*$/i, '').trim();
-        return '<span class="msy-pilot-skill-label">' + esc(nm || sk.name || '') + '</span>';
-      }).join('') + '</div>';
+        var lv = sk.level ? ('LV ' + sk.level) : (/\bLV\s*\d+\b/i.test(sk.name || '') ? String(sk.name).match(/\bLV\s*\d+\b/i)[0] : '');
+        var detail = (sk.details && sk.details[0]) || sk.desc || '';
+        html += '<div class="msy-pilot-skill-line">';
+        html += '<span class="msy-pilot-skill-name">' + esc(nm || sk.name || '') + '</span>';
+        if (lv) html += '<span class="msy-pilot-skill-lv">' + esc(lv) + '</span>';
+        if (detail) html += '<div class="msy-pilot-skill-desc">' + esc(detail) + '</div>';
+        html += '</div>';
+      });
+      html += '</div>';
     }
+    html += '</div>';
+    return html;
+  }
+
+  function pilotAffinityHtml(pilot) {
+    var aff = pilot.affinity_matches || [];
+    if (!aff.length) return '';
+    var html = '<div class="msy-pilot-affinity">';
+    aff.forEach(function (row) {
+      html += '<div class="msy-pilot-affinity-row">';
+      if (row.ability) {
+        html += '<div class="msy-pilot-affinity-ability">' + esc(row.ability) + '</div>';
+      }
+      if (row.tags && row.tags.length) {
+        html += '<div class="msy-pilot-affinity-tags">' + row.tags.map(function (tag) {
+          return '<span class="msy-pilot-affinity-tag">' + esc(tag) + '</span>';
+        }).join('') + '</div>';
+      }
+      if (row.detail) {
+        html += '<div class="msy-pilot-affinity-detail">' + esc(row.detail) + '</div>';
+      }
+      html += '</div>';
+    });
     html += '</div>';
     return html;
   }
@@ -553,13 +635,11 @@
               '<span class="msy-pilot-name" title="' + escAttr(c.name || '') + '">' + esc(c.name) + '</span>' +
             '</div>' +
             pilotSkillsHtml(pilot) +
+            pilotAffinityHtml(pilot) +
             sub +
           '</div>' +
         '</button>' +
         '<div class="msy-pilot-dmg">' + fmtN(dmg) + '</div>' +
-        '<div class="msy-pilot-actions">' +
-          '<button type="button" class="msy-act-btn" title="' + escAttr(t('msy_open_sim')) + '" onclick="GgenMetaSynergy.openInSimulator(\'' + escJs(unitId) + '\',\'' + escJs(c.id) + '\')">↗</button>' +
-        '</div>' +
       '</div>'
     );
   }
@@ -667,6 +747,8 @@
     if (el) state.unitQ = expandedUnitSearchQuery(el.value.trim());
   }
 
+  var MAX_LOAD_POLLS = 2;
+
   async function loadRankings(force) {
     syncSearchFromDom();
     var key = cacheKeyForState();
@@ -681,13 +763,14 @@
     var loadGen = ++state._loadGen;
     setLoading(true, false);
     showWarmingBanner(false);
-    state._warmPolls = 0;
+    var poll = 0;
+    var skillsFetched = false;
     try {
-      while (true) {
+      while (poll <= MAX_LOAD_POLLS) {
         if (loadGen !== state._loadGen) return;
         var fetchOpts = { credentials: 'same-origin' };
         if (state._fetchCtrl) fetchOpts.signal = state._fetchCtrl.signal;
-        var timeoutMs = 55000;
+        var timeoutMs = poll === 0 ? 55000 : 35000;
         var timeoutId = setTimeout(function () {
           if (state._fetchCtrl) {
             try { state._fetchCtrl.abort(); } catch (_) {}
@@ -704,34 +787,34 @@
           d = await r.json();
         }
         if (loadGen !== state._loadGen) return;
-        if (d && d.warming) {
-          if (d.groups && d.groups.length) {
-            applyPayload(d, state.defTier);
-            void fetchPilotSkillsBatch(state.groups);
-            setLoading(false, false);
-            showWarmingBanner(true);
-            state._warmPolls = (state._warmPolls || 0) + 1;
-            if (state._warmPolls >= 2) {
-              showWarmingBanner(true, t('msy_warming_slow') || 'Rankings are still building. Results may be incomplete — try refreshing in a minute.');
-              break;
-            }
-            await sleep(Math.max(1200, (d.retry_after || 2) * 1000));
-            continue;
-          }
-          applyPayload(d, state.defTier);
-          showWarmingBanner(true, t('msy_warming_slow') || 'Rankings are still building. Results may be incomplete — try refreshing in a minute.');
-          break;
-        }
         if (d && d.error) throw new Error(d.detail || d.error);
-        if (!r.ok) throw new Error('HTTP ' + r.status);
-        applyPayload(d, state.defTier);
-        void fetchPilotSkillsBatch(state.groups);
-        if (d.cache_incomplete && state.groups.length < state.perPage && (state._warmPolls || 0) < 2) {
-          state._warmPolls = (state._warmPolls || 0) + 1;
-          await sleep(3500);
+        if (!r.ok && !d) throw new Error('HTTP ' + r.status);
+
+        var hasGroups = d && d.groups && d.groups.length;
+        if (d) applyPayload(d, state.defTier);
+        if (hasGroups) setLoading(false, false);
+
+        if (d && d.warming) {
+          showWarmingBanner(true, hasGroups
+            ? (t('msy_warming_partial') || t('msy_warming') || 'Updating rankings…')
+            : (t('msy_warming_slow') || 'Rankings are still building. Results may be incomplete — try refreshing in a minute.'));
+          poll++;
+          if (poll > MAX_LOAD_POLLS) break;
+          await sleep(Math.max(1200, (d.retry_after || 2) * 1000));
+          continue;
+        }
+
+        if (d && d.cache_incomplete && state.groups.length < state.perPage && poll < MAX_LOAD_POLLS) {
+          showWarmingBanner(true, t('msy_warming_partial') || t('msy_warming') || 'Updating rankings…');
+          poll++;
+          await sleep(2200);
           continue;
         }
         break;
+      }
+      if (!skillsFetched && state.groups.length) {
+        skillsFetched = true;
+        void fetchPilotSkillsBatch(state.groups);
       }
     } catch (e) {
       if (e && e.name === 'AbortError') return;
@@ -786,6 +869,7 @@
 
   function toggleExcludeUr() {
     state.excludeUrGlobal = !state.excludeUrGlobal;
+    if (state.excludeUrGlobal) state.excludeShinnGlobal = true;
     syncGlobalFilterButtons();
     renderContent();
   }
@@ -852,98 +936,6 @@
     if (typeof global.openDetail === 'function') global.openDetail('character', id);
   }
 
-  function resolveDefenderStats() {
-    var tiers = state.defenderTiers || {};
-    var dt = String(state.defTier || '1');
-    if (state.defUnitOverride && state.defCharOverride) {
-      return {
-        unitDef: parseInt(state.defUnitOverride, 10) || 0,
-        charDef: parseInt(state.defCharOverride, 10) || 0
-      };
-    }
-    var row = tiers[dt] || tiers[String(parseInt(dt, 10))] || {};
-    return {
-      unitDef: row.unit_def || 3819,
-      charDef: row.char_def || 193
-    };
-  }
-
-  async function openInSimulator(unitId, charId) {
-    if (typeof global.switchTab !== 'function') return;
-    global.switchTab('calculator');
-    try {
-      var lang = (global.S && global.S.lang) || 'EN';
-      var ur = await fetch('/api/unit/' + encodeURIComponent(unitId) + '?lang=' + encodeURIComponent(lang));
-      var ud = await ur.json();
-      var cr = await fetch('/api/character/' + encodeURIComponent(charId) + '?lang=' + encodeURIComponent(lang));
-      var cd = await cr.json();
-      if (ud.error || cd.error) return;
-      if (!global.S || !global.S.dc) return;
-
-      var defStats = resolveDefenderStats();
-      if (typeof global.setDcDefTargetMode === 'function') {
-        global.setDcDefTargetMode('custom');
-      }
-      (function (pack) {
-        function setv(id, v) {
-          var el = document.getElementById(id);
-          if (el) el.value = v;
-        }
-        setv('dcDefManual_uName', pack.un);
-        setv('dcDefManual_cName', pack.cn);
-        setv('dcDefManual_uHP', pack.uHP);
-        setv('dcDefManual_uATK', pack.uATK);
-        setv('dcDefManual_uDEF', pack.uDEF);
-        setv('dcDefManual_uMOB', pack.uMOB);
-        setv('dcDefManual_cRNG', pack.cRNG);
-        setv('dcDefManual_cMEL', pack.cMEL);
-        setv('dcDefManual_cAWK', pack.cAWK);
-        setv('dcDefManual_cDEF', pack.cDEF);
-        setv('dcDefManual_cREA', pack.cREA);
-      })({
-        un: 'Defender (MSY)',
-        cn: 'Defender Pilot (MSY)',
-        uHP: 0,
-        uATK: 0,
-        uDEF: defStats.unitDef,
-        uMOB: 0,
-        cRNG: 0,
-        cMEL: 0,
-        cAWK: 0,
-        cDEF: defStats.charDef,
-        cREA: 0
-      });
-
-      global.S.dc.atkUnit = unitId;
-      global.S.dc.atkUnitData = ud;
-      if (typeof global._dcPickBestWeaponIndices === 'function') {
-        var bw = global._dcPickBestWeaponIndices(ud);
-        global.S.dc.wpnIdx = bw.wpnIdx;
-        global.S.dc.wpnLv = bw.wpnLv;
-      }
-      global.S.dc.unitStatMode = 'normal';
-      global.S.dc.unitCondPassive = true;
-      global.S.dc.atkChar = charId;
-      global.S.dc.atkCharData = cd;
-      global.S.dc.charStatMode = 'normal';
-      global.S.dc.defLbTier = 3;
-      var mode = rankModeDef(state.rankMode);
-      if (typeof global.setDcMp === 'function') global.setDcMp(mode.vigor || 'super');
-      if (typeof global._dcSyncCharCondPassiveFromPair === 'function' && state.charCondPassiveOn) {
-        global._dcSyncCharCondPassiveFromPair();
-      } else {
-        global.S.dc.charCondPassive = !!state.charCondPassiveOn;
-      }
-      if (typeof global._dcSyncSuperchargedExTierForVigor === 'function') global._dcSyncSuperchargedExTierForVigor();
-      if (typeof global.renderDcAtkUnit === 'function') global.renderDcAtkUnit();
-      if (typeof global.renderDcAtkChar === 'function') global.renderDcAtkChar();
-      if (typeof global.renderDcDefStats === 'function') global.renderDcDefStats();
-      if (typeof global._dcAutoEnableMaxDamageSkills === 'function') global._dcAutoEnableMaxDamageSkills();
-      if (typeof global._dcRecalcPilotBonuses === 'function') global._dcRecalcPilotBonuses(true);
-      if (typeof global.onDcParamChange === 'function') global.onDcParamChange();
-    } catch (_) {}
-  }
-
   function bindControls() {
     if (state._bound) return;
     state._bound = true;
@@ -981,7 +973,6 @@
     goPage: goPage,
     openDetailUnit: openDetailUnit,
     openDetailChar: openDetailChar,
-    openInSimulator: openInSimulator,
     loadRankings: loadRankings,
     scheduleReload: scheduleReload,
     toggleExcludeUr: toggleExcludeUr,

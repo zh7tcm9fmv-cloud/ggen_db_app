@@ -889,6 +889,51 @@ def _collect_pilot_pep_bonuses(cid, uid, lc):
     return merged
 
 
+def _msy_pilot_unit_affinities(cid, uid, lc):
+    """Tag-affinity ability lines that match this unit×pilot pair (for MSY UI)."""
+    A = _app()
+    uid = A.normalize_id(uid)
+    cid = A.normalize_id(cid)
+    unit_tag_map = {}
+    for t in A.resolve_tags(A.unit_lin_map, uid, lc, 'unit'):
+        nm = (t.get('name') or '').strip()
+        if nm:
+            unit_tag_map[nm.lower()] = nm
+    if not unit_tag_map:
+        return []
+    out = []
+    seen = set()
+    for bab in _build_char_ac_calc(cid, lc):
+        ab_name = str(bab.get('name') or '').strip()
+        for src in (bab, bab.get('sp_replacement')):
+            if not src:
+                continue
+            for d2 in src.get('details') or []:
+                if not isinstance(d2, dict):
+                    continue
+                txt = str(d2.get('text') or '').strip()
+                if not txt or not A._trait_detail_implies_piloting_tag_affinity(txt):
+                    continue
+                req_names = A._collect_detail_lineage_tag_names(d2)
+                matched = []
+                for rn in req_names:
+                    disp = unit_tag_map.get(str(rn).strip().lower())
+                    if disp:
+                        matched.append(disp)
+                if not matched:
+                    continue
+                key = (ab_name, tuple(sorted(matched)), txt[:120])
+                if key in seen:
+                    continue
+                seen.add(key)
+                out.append({
+                    'ability': ab_name,
+                    'tags': matched,
+                    'detail': txt,
+                })
+    return out
+
+
 def _pilot_affinity_weapon_crit(cid, uid, lc):
     """Tag-affinity ACC/Crit bonuses from the ranked pilot (CP on)."""
     A = _app()
@@ -2102,11 +2147,26 @@ def _msy_pilot_active_skills(cid, lc):
         if base in seen_base:
             continue
         seen_base.add(base)
+        details = []
+        for x in (resolved.get('details') or []):
+            if isinstance(x, dict):
+                t = str(x.get('text') or '').strip()
+            else:
+                t = str(x or '').strip()
+            if t:
+                details.append(t)
+        desc = str(resolved.get('desc') or '').strip()
+        if desc and desc not in details:
+            details.insert(0, desc)
+        level_m = re.search(r'LV\s*(\d+)', name, re.I)
         out.append({
             'id': sid,
             'name': name,
             'icon': resolved.get('icon') or '',
             'active': sid in active_ids,
+            'level': int(level_m.group(1)) if level_m else None,
+            'desc': desc or (details[0] if details else ''),
+            'details': details,
         })
     return out
 
@@ -2509,8 +2569,17 @@ def _ordered_unit_ids_for_browse(unit_ids, master_groups, lc, kwargs, rank_mode,
     return [uid for _, uid in scored]
 
 
+def _browse_filters_active(browse, unit_q=''):
+    if (unit_q or '').strip():
+        return True
+    for k in ('role_filter', 'rarity_filter', 'series_filter', 'source_filter', 'lineage_filter'):
+        if browse.get(k) is not None:
+            return True
+    return False
+
+
 def _resolve_groups_for_unit_ids(unit_ids, master_groups, lc, kwargs, *, browse_fast=False, def_tier=3,
-                                   max_build=None, page_build_lite=False):
+                                   max_build=None, page_build_lite=False, build_budget_sec=None):
     A = _app()
     by_uid = {}
     for g in master_groups or []:
@@ -2537,7 +2606,8 @@ def _resolve_groups_for_unit_ids(unit_ids, master_groups, lc, kwargs, *, browse_
             exclude = _exclude_set_from_kwargs(kwargs)
             top_p = int(kwargs.get('top_pilots', 10) or 10)
             dt = max(1, min(4, int(kwargs.get('def_tier', def_tier) or def_tier)))
-            deadline = time.monotonic() + _MSY_PAGE_BUILD_BUDGET_SEC
+            budget = build_budget_sec if build_budget_sec is not None else _MSY_PAGE_BUILD_BUDGET_SEC
+            deadline = time.monotonic() + budget
             pilot_ids = list(_pilot_pool_ids())
             lb = int(kwargs.get('lb_tier', 3) or 3)
             du = kwargs.get('def_unit_override')
@@ -3009,11 +3079,18 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
     page_ids = ordered_ids[start:start + per_page]
     kwargs_resolve = dict(kwargs)
     kwargs_resolve['def_tier'] = dt
+    filtered_browse = _browse_filters_active(browse, unit_q)
     page_build_cap = min(_MSY_PAGE_BUILD_LIMIT, per_page) if _msy_page_build_allowed() else 0
+    if filtered_browse and total <= 40:
+        page_build_cap = min(per_page, max(page_build_cap, len(page_ids)))
+    build_budget = _MSY_PAGE_BUILD_BUDGET_SEC
+    if filtered_browse and total <= 30:
+        build_budget = min(45.0, _MSY_PAGE_BUILD_BUDGET_SEC * 1.5)
     page_groups_raw = _resolve_groups_for_unit_ids(
         page_ids, groups, lc, kwargs_resolve, browse_fast=True, def_tier=dt,
         max_build=page_build_cap,
         page_build_lite=True,
+        build_budget_sec=build_budget,
     )
     if cache_key:
         _merge_groups_into_cache(cache_key, page_groups_raw)
@@ -3212,13 +3289,26 @@ def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
     return payload
 
 
-def build_msy_pilot_skills_batch(lc, char_ids):
-    """Resolve active skill metadata for a batch of pilot character ids (MSY UI lazy load)."""
+def build_msy_pilot_skills_batch(lc, char_ids, pairs=None):
+    """Resolve active skill + unit affinity metadata for MSY pilot cards (lazy load)."""
     lc = lc or 'EN'
-    out = {}
+    A = _app()
+    skills = {}
+    affinity = {}
     for raw in char_ids or []:
-        cid = _app().normalize_id(raw)
-        if not cid or cid in out:
+        cid = A.normalize_id(raw)
+        if not cid or cid in skills:
             continue
-        out[cid] = _msy_pilot_active_skills(cid, lc)
-    return out
+        skills[cid] = _msy_pilot_active_skills(cid, lc)
+    for pair in pairs or []:
+        if not isinstance(pair, (list, tuple)) or len(pair) < 2:
+            continue
+        uid = A.normalize_id(pair[0])
+        cid = A.normalize_id(pair[1])
+        if not uid or not cid:
+            continue
+        key = f'{uid}:{cid}'
+        if key in affinity:
+            continue
+        affinity[key] = _msy_pilot_unit_affinities(cid, uid, lc)
+    return {'skills_by_char': skills, 'affinity_by_pair': affinity}

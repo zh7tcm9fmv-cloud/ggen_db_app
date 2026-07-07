@@ -815,8 +815,8 @@
 
 .msy-pilot-card {
   display: grid;
-  grid-template-columns: 20px minmax(0, 1fr) auto auto;
-  align-items: center;
+  grid-template-columns: 20px minmax(0, 1fr) auto;
+  align-items: start;
   gap: 6px;
   padding: 4px 6px;
   border-radius: var(--radius-sm);
@@ -978,4 +978,83 @@
   font-weight: 600;
   color: var(--accent-cyan);
   line-height: 1.25;
+}
+
+.msy-pilot-skill-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  margin-top: 3px;
+}
+
+.msy-pilot-skill-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 6px;
+}
+
+.msy-pilot-skill-name {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent-cyan);
+}
+
+.msy-pilot-skill-lv {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.msy-pilot-skill-desc {
+  flex: 1 1 100%;
+  font-size: 9px;
+  line-height: 1.35;
+  color: var(--text-muted);
+}
+
+.msy-pilot-affinity {
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.msy-pilot-affinity-row {
+  padding: 3px 5px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  background: rgba(0, 212, 255, 0.04);
+}
+
+.msy-pilot-affinity-ability {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--accent-cyan);
+}
+
+.msy-pilot-affinity-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 2px;
+}
+
+.msy-pilot-affinity-tag {
+  font-size: 9px;
+  font-weight: 600;
+  color: #fff;
+  padding: 1px 5px;
+  border-radius: 8px;
+  background: rgba(0, 212, 255, 0.18);
+  border: 1px solid rgba(0, 212, 255, 0.35);
+}
+
+.msy-pilot-affinity-detail {
+  font-size: 9px;
+  line-height: 1.35;
+  color: var(--text-muted);
+  margin-top: 2px;
 }

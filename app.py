@@ -13880,13 +13880,22 @@ def api_meta_synergy_rankings():
 
 @app.route('/api/meta_synergy_pilot_skills')
 def api_meta_synergy_pilot_skills():
-    """Batch active-skill metadata for MSY pilot cards (lazy load after slim rankings payload)."""
+    """Batch active-skill + affinity metadata for MSY pilot cards (lazy load after slim rankings payload)."""
     lc = request.args.get('lang', DEFAULT_LANG)
     raw = request.args.get('char_ids', '').strip()
     char_ids = [x.strip() for x in raw.split(',') if x.strip()][:150]
+    pairs = []
+    for part in (request.args.get('pairs') or '').split(','):
+        part = part.strip()
+        if ':' not in part:
+            continue
+        uid, cid = part.split(':', 1)
+        if uid.strip() and cid.strip():
+            pairs.append((uid.strip(), cid.strip()))
     import meta_synergy_rank as msr
-    skills = msr.build_msy_pilot_skills_batch(lc, char_ids)
-    return jsonify_cacheable({'skills_by_char': skills}, f'msy_skills_{lc}_{hash(tuple(char_ids)) & 0xffff:x}', public=True, max_age=3600, convert_images=True)
+    payload = msr.build_msy_pilot_skills_batch(lc, char_ids, pairs=pairs or None)
+    cache_key = f'msy_skills_{lc}_{hash(tuple(char_ids)) & 0xffff:x}_{hash(tuple(pairs)) & 0xffff:x}'
+    return jsonify_cacheable(payload, cache_key, public=True, max_age=3600, convert_images=True)
 
 
 @app.route('/api/msy_browse_filters')
