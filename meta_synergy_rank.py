@@ -488,6 +488,13 @@ def _pilot_role_matches_unit(uid, cid):
     return _char_role(cid) == _unit_role(uid)
 
 
+def _same_role_only_from_kwargs(kwargs):
+    v = (kwargs or {}).get('same_role_only')
+    if isinstance(v, str):
+        return v.lower() in ('1', 'true', 'yes')
+    return bool(v)
+
+
 def _msy_unit_tag_ids(uid, lc):
     A = _app()
     return {
@@ -1108,7 +1115,7 @@ _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
 SHINN_EX_CHAR_ID = '1330000103'
 _MSY_BUILD_WORKERS = max(1, min(6, int(os.environ.get('MSY_BUILD_WORKERS', '4') or '4')))
-_MSY_PAGE_BUILD_LIMIT = max(0, min(25, int(os.environ.get('MSY_PAGE_BUILD_LIMIT', '10') or '10')))
+_MSY_PAGE_BUILD_LIMIT = max(0, min(40, int(os.environ.get('MSY_PAGE_BUILD_LIMIT', '40') or '40')))
 _MSY_PAGE_BUILD_BUDGET_SEC = max(5.0, min(60.0, float(os.environ.get('MSY_PAGE_BUILD_BUDGET_SEC', '18') or '18')))
 _MSY_BROWSE_BUILD_BUDGET_SEC = max(6.0, min(45.0, float(os.environ.get('MSY_BROWSE_BUILD_BUDGET_SEC', '16') or '16')))
 _MSY_LITE_PILOT_NEED = max(10, min(20, int(os.environ.get('MSY_LITE_PILOT_NEED', '12') or '12')))
@@ -1446,7 +1453,7 @@ def _is_sd_unit(uid, info=None):
     return A._unit_has_sd_mechanism(info, uid)
 
 
-def _eligible_pilots_for_unit(uid, pilot_ids, exclude):
+def _eligible_pilots_for_unit(uid, pilot_ids, exclude, same_role_only=False):
     uid = _app().normalize_id(uid)
     if _is_sd_unit(uid):
         bp = _bundled_pilot_id(uid)
@@ -1461,7 +1468,7 @@ def _eligible_pilots_for_unit(uid, pilot_ids, exclude):
             continue
         if (uid, cid_n) in exclude:
             continue
-        if not _pilot_role_matches_unit(uid, cid_n):
+        if same_role_only and not _pilot_role_matches_unit(uid, cid_n):
             continue
         out.append(cid_n)
     return out
@@ -1595,10 +1602,10 @@ def _rankings_no_cp_for_tier_lite(dt, all_pairs, top_pilots, uid, lc, lb_tier, u
     return _rankings_from_multi_vigor_pairs(pairs_ncp, top_pilots, lc) if pairs_ncp else {}
 
 
-def _best_pilot_by_stat(uid, pilot_ids, wpn, lc, exclude):
+def _best_pilot_by_stat(uid, pilot_ids, wpn, lc, exclude, same_role_only=False):
     if not wpn:
         return None
-    eligible = _eligible_pilots_for_unit(uid, pilot_ids, exclude)
+    eligible = _eligible_pilots_for_unit(uid, pilot_ids, exclude, same_role_only=same_role_only)
     if not eligible:
         return None
     info = _app().unit_info_map.get(_app().normalize_id(uid)) or {}
@@ -1665,7 +1672,7 @@ def _cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc):
 
 def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclude, top_pilots, metric, *,
                              def_unit_override=None, def_char_override=None, def_tiers=None, lite=False,
-                             rank_mode='super_crit'):
+                             rank_mode='super_crit', same_role_only=False):
     A = _app()
     info = A.unit_info_map.get(uid) or {}
     stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
@@ -1673,7 +1680,7 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
     if not unit_wpn:
         return None
 
-    active_pilots = _eligible_pilots_for_unit(uid, pilot_ids, exclude)
+    active_pilots = _eligible_pilots_for_unit(uid, pilot_ids, exclude, same_role_only=same_role_only)
     if not active_pilots:
         return None
 
@@ -1858,7 +1865,7 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
 
 
 def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, exclude, metric='super_crit',
-                                pairs_by_tier_no_cp=None):
+                                pairs_by_tier_no_cp=None, same_role_only=False):
     """Build one MSY unit group from Damage Simulator pair results."""
     A = _app()
     uid = A.normalize_id(uid)
@@ -1868,7 +1875,7 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
     if not unit_wpn or not pairs_by_tier:
         return None
 
-    active_pilots = _eligible_pilots_for_unit(uid, pilot_ids, exclude)
+    active_pilots = _eligible_pilots_for_unit(uid, pilot_ids, exclude, same_role_only=same_role_only)
     if not active_pilots:
         return None
     active_set = set(active_pilots)
@@ -2432,6 +2439,7 @@ def build_meta_synergy_rankings(
             'lineage_op': lineage_op or '',
             'pilot_rarity': pilot_rarity,
             'pilot_roles': list(pilot_role_set),
+            'same_role_only': False,
             'lb_tier': lb_tier,
             'def_tier': dt,
             'def_unit_override': def_unit_override,
@@ -2632,6 +2640,7 @@ def _estimate_uncached_unit_damage(uid, lc, kwargs):
 def _ordered_unit_ids_for_browse(unit_ids, master_groups, lc, kwargs, rank_mode, def_tier=None,
                                    *, browse=None, unit_q=''):
     A = _app()
+    same_role_only = _same_role_only_from_kwargs(kwargs)
     by_uid = {}
     for g in master_groups or []:
         uid = A.normalize_id((g.get('unit') or {}).get('id'))
@@ -2640,7 +2649,7 @@ def _ordered_unit_ids_for_browse(unit_ids, master_groups, lc, kwargs, rank_mode,
 
     browse_active = _browse_filters_active(browse or {}, unit_q)
 
-    if not browse_active:
+    if not browse_active and same_role_only:
         cached_scored = []
         uncached_scored = []
         for uid in unit_ids:
@@ -2654,10 +2663,18 @@ def _ordered_unit_ids_for_browse(unit_ids, master_groups, lc, kwargs, rank_mode,
         uncached_scored.sort(key=lambda x: (-x[0], x[1]))
         return [uid for _, uid in cached_scored] + [uid for _, uid in uncached_scored]
 
+    if not browse_active:
+        uncached_scored = []
+        for uid in unit_ids:
+            uid = A.normalize_id(uid)
+            uncached_scored.append((_cheap_unit_peak_score(uid, lc, kwargs), uid))
+        uncached_scored.sort(key=lambda x: (-x[0], x[1]))
+        return [uid for _, uid in uncached_scored]
+
     scored = []
     for uid in unit_ids:
         uid = A.normalize_id(uid)
-        g = by_uid.get(uid)
+        g = by_uid.get(uid) if same_role_only else None
         if g:
             sc = _unit_browse_sort_damage(g, rank_mode, def_tier)
         else:
@@ -2680,6 +2697,7 @@ def _resolve_groups_for_unit_ids(unit_ids, master_groups, lc, kwargs, *, browse_
                                    max_build=None, page_build_lite=False, build_budget_sec=None,
                                    rank_mode='super_crit'):
     A = _app()
+    same_role_only = _same_role_only_from_kwargs(kwargs)
     by_uid = {}
     for g in master_groups or []:
         uid = A.normalize_id((g.get('unit') or {}).get('id'))
@@ -2689,7 +2707,7 @@ def _resolve_groups_for_unit_ids(unit_ids, master_groups, lc, kwargs, *, browse_
     to_build = []
     for uid in unit_ids:
         uid = A.normalize_id(uid)
-        if uid in by_uid:
+        if same_role_only and uid in by_uid:
             out.append(by_uid[uid])
         else:
             to_build.append(uid)
@@ -2719,7 +2737,7 @@ def _resolve_groups_for_unit_ids(unit_ids, master_groups, lc, kwargs, *, browse_
                 return _build_single_unit_group(
                     uid, pilot_ids, lc, lb, 'super', dt, exclude, top_p, 'super_crit',
                     def_unit_override=du, def_char_override=dc, def_tiers=tiers, lite=page_build_lite,
-                    rank_mode=rank_mode,
+                    rank_mode=rank_mode, same_role_only=same_role_only,
                 )
 
             if workers <= 1:
@@ -3156,6 +3174,7 @@ def _warming_payload(rank_mode, vigor, def_tier, kwargs):
             'lineage_op': kwargs.get('lineage_op') or '',
             'pilot_rarity': kwargs.get('pilot_rarity', 'ALL'),
             'pilot_roles': list(pilot_role_set),
+            'same_role_only': _same_role_only_from_kwargs(kwargs),
             'lb_tier': int(kwargs.get('lb_tier', 3) or 3),
             'def_tier': dt,
             'def_unit_override': du,
@@ -3259,6 +3278,7 @@ def _cached_summary_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
             'lineage_op': kwargs.get('lineage_op') or '',
             'pilot_rarity': kwargs.get('pilot_rarity', 'ALL'),
             'pilot_roles': list(pilot_role_set),
+            'same_role_only': _same_role_only_from_kwargs(kwargs),
             'lb_tier': int(kwargs.get('lb_tier', 3) or 3),
             'def_tier': dt,
             'def_unit_override': du,
@@ -3343,6 +3363,7 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
             'lineage_op': kwargs.get('lineage_op') or '',
             'pilot_rarity': kwargs.get('pilot_rarity', 'ALL'),
             'pilot_roles': list(pilot_role_set),
+            'same_role_only': _same_role_only_from_kwargs(kwargs),
             'lb_tier': int(kwargs.get('lb_tier', 3) or 3),
             'def_tier': dt,
             'def_unit_override': du,

@@ -13815,6 +13815,7 @@ def api_meta_synergy_rankings():
     include_skills = request.args.get('include_skills', '0') not in ('0', 'false', 'no', '')
     summary = request.args.get('summary', '0') in ('1', 'true', 'yes')
     full = request.args.get('full', '0') in ('1', 'true', 'yes')
+    same_role_only = request.args.get('same_role_only', '0') in ('1', 'true', 'yes')
     exclude_pairs = []
     for part in (request.args.get('exclude') or '').split(';'):
         part = part.strip()
@@ -13852,6 +13853,7 @@ def api_meta_synergy_rankings():
             exclude_pairs=exclude_pairs or None,
             include_skills=include_skills,
             summary=summary,
+            same_role_only=same_role_only,
         )
     except Exception as e:
         print(f'api_meta_synergy_rankings failed: {e}')
@@ -13870,7 +13872,7 @@ def api_meta_synergy_rankings():
             f'msy_{lc}_{rarity or unit_rarity}_{role or unit_role}_{series_id}_{series_op}_'
             f'{source}_{lineage_id}_{lineage_op}_{pilot_rarity}_{pilot_roles_key}_{metric}_{vigor}_'
             f'{lb_tier}_{def_tier}_{top_pilots}_{rank_mode}_{unit_q}_{page}_{per_page}_'
-            f'{"full" if full else "page"}_{hash(tuple(exclude_pairs))}'
+            f'{"full" if full else "page"}_{int(same_role_only)}_{hash(tuple(exclude_pairs))}'
         )
         return jsonify_cacheable(payload, ck, public=True, max_age=3600, convert_images=True)
     except Exception as e:

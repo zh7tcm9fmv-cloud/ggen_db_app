@@ -10,6 +10,13 @@
   var UR_ICON = '/static/images/UI/UI_Common_RarityIcon_UR.webp';
   var SHINN_EX_CHAR_ID = '1330000103';
   var shinnPortraitUrl = '';
+  var MSY_ROLE_ICONS = {
+    '1': '/static/images/UI/UI_Common_TypeIcon_Attack_M.webp',
+    '2': '/static/images/UI/UI_Common_TypeIcon_Defense_M.webp',
+    '3': '/static/images/UI/UI_Common_TypeIcon_Support_M.webp'
+  };
+  var MSY_PER_PAGE_OPTIONS = [10, 20, 40];
+  var MSY_PER_PAGE_STORAGE_KEY = 'ggen_msy_per_page';
 
   var state = {
     loading: false,
@@ -29,6 +36,7 @@
     charCondPassiveOn: true,
     excludeUrGlobal: false,
     excludeShinnGlobal: false,
+    sameRoleOnly: false,
     cacheIncomplete: false,
     pageCache: {},
     _fetchCtrl: null,
@@ -243,11 +251,28 @@
     return parts.filter(Boolean).join('&');
   }
 
+  function readStoredPerPage() {
+    try {
+      var v = parseInt(localStorage.getItem(MSY_PER_PAGE_STORAGE_KEY), 10);
+      if (MSY_PER_PAGE_OPTIONS.indexOf(v) >= 0) return v;
+    } catch (_) {}
+    return 10;
+  }
+
+  function syncPerPageToDom() {
+    var el = document.getElementById('msyPerPage');
+    if (!el) return;
+    var val = String(state.perPage);
+    if (el.value !== val) el.value = val;
+  }
+
   function cacheKeyBase() {
     return [
       (global.S && global.S.lang) || 'EN',
       state.topPilots,
       state.charCondPassiveOn ? 'cp1' : 'cp0',
+      state.sameRoleOnly ? 'sr1' : 'sr0',
+      'pp:' + state.perPage,
       buildFilterQuery()
     ].join('|');
   }
@@ -273,6 +298,7 @@
       'per_page=' + encodeURIComponent(String(state.perPage)),
       'include_skills=0'
     ];
+    if (state.sameRoleOnly) q.push('same_role_only=1');
     if (opts.summary) q.push('summary=1');
     if (fq) q.push(fq);
     return '/api/meta_synergy_rankings?' + q.join('&');
@@ -464,6 +490,30 @@
         shBtn.classList.toggle('active', state.excludeShinnGlobal);
       }
     }
+    var srBtn = document.getElementById('msySameRoleBtn');
+    if (srBtn) {
+      srBtn.title = state.sameRoleOnly ? t('msy_same_role_on') : t('msy_same_role');
+      srBtn.setAttribute('aria-label', state.sameRoleOnly ? t('msy_same_role_on') : t('msy_same_role'));
+      srBtn.setAttribute('aria-pressed', state.sameRoleOnly ? 'true' : 'false');
+      srBtn.classList.toggle('active', state.sameRoleOnly);
+    }
+  }
+
+  function ensureSameRoleBtnIcons() {
+    var host = document.querySelector('#msySameRoleBtn .msy-same-role-icons');
+    if (!host || host.dataset.ready) return;
+    var html = '';
+    ['1', '2', '3'].forEach(function (id) {
+      html += rasterImg(MSY_ROLE_ICONS[id], {
+        cls: 'msy-same-role-chip',
+        loading: 'lazy',
+        decoding: 'async',
+        alt: '',
+        lazy: false
+      });
+    });
+    host.innerHTML = html;
+    host.dataset.ready = '1';
   }
 
   function renderRankModes() {
@@ -725,7 +775,7 @@
         html += renderPilotGrid(row.pilots, u.id, mode);
       } else if (g.pending) {
         html += '<div class="msy-pilot-loading">' + esc(t('msy_pilot_loading') || 'Loading pilots…') + '</div>';
-      } else if (state.excludeUrGlobal || state.excludeShinnGlobal) {
+      } else if (state.excludeUrGlobal || state.excludeShinnGlobal || state.sameRoleOnly) {
         html += '<div class="msy-pilot-empty">' + esc(t('msy_no_eligible_pilots') || 'No eligible pilots for this filter.') + '</div>';
       }
       html += '</article>';
@@ -963,6 +1013,12 @@
     loadRankings(false);
   }
 
+  function toggleSameRoleOnly() {
+    state.sameRoleOnly = !state.sameRoleOnly;
+    syncGlobalFilterButtons();
+    scheduleReload();
+  }
+
   function toggleExcludeShinn() {
     state.excludeShinnGlobal = !state.excludeShinnGlobal;
     syncGlobalFilterButtons();
@@ -1036,6 +1092,22 @@
     try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (_) { window.scrollTo(0, 0); }
   }
 
+  function setPerPage(n) {
+    n = parseInt(n, 10);
+    if (MSY_PER_PAGE_OPTIONS.indexOf(n) < 0) return;
+    if (state.perPage === n && state.groups.length && !state.loading) return;
+    state.perPage = n;
+    syncPerPageToDom();
+    try { localStorage.setItem(MSY_PER_PAGE_STORAGE_KEY, String(n)); } catch (_) {}
+    state.page = 1;
+    state.cacheKey = null;
+    clearPageCache();
+    state.groups = [];
+    renderContent();
+    setLoading(true, false);
+    loadRankings(true);
+  }
+
   function openDetailUnit(id) {
     if (typeof global.openDetail === 'function') global.openDetail('unit', id);
   }
@@ -1069,6 +1141,9 @@
   }
 
   function init() {
+    state.perPage = readStoredPerPage();
+    syncPerPageToDom();
+    ensureSameRoleBtnIcons();
     bindControls();
     applyLangStatic();
     void ensureShinnPortrait();
@@ -1080,12 +1155,14 @@
     applyLangStatic: applyLangStatic,
     setRankMode: setRankMode,
     goPage: goPage,
+    setPerPage: setPerPage,
     openDetailUnit: openDetailUnit,
     openDetailChar: openDetailChar,
     loadRankings: loadRankings,
     scheduleReload: scheduleReload,
     toggleExcludeUr: toggleExcludeUr,
     toggleExcludeShinn: toggleExcludeShinn,
+    toggleSameRoleOnly: toggleSameRoleOnly,
     toggleCharCondPassive: toggleCharCondPassive
   };
 
