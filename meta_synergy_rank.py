@@ -300,15 +300,24 @@ def _resolve_char_name(cid, lc):
     return name or f'Unknown ({cid})'
 
 
-def _pilot_atk_for_weapon(totals, attack_attr, skill_atk_pct=0):
+def _pilot_formula_stat(totals, attack_attr, skill_atk_pct=0):
+    """Return (char_atk, stat_label) used in the damage formula for this weapon attr."""
     keys = _ATTACK_ATTR_TO_KEYS.get(str(attack_attr or '1'), ('Ranged',))
-    vals = []
+    best_val = 0.0
+    best_key = keys[0] if keys else 'Ranged'
     for k in keys:
         v = float(totals.get(k, 0) or 0)
         if skill_atk_pct and v > 0:
             v += math.floor(v * skill_atk_pct / 100)
-        vals.append(v)
-    return max(vals) if vals else 0.0
+        if v > best_val:
+            best_val = v
+            best_key = k
+    return int(best_val), best_key
+
+
+def _pilot_atk_for_weapon(totals, attack_attr, skill_atk_pct=0):
+    val, _ = _pilot_formula_stat(totals, attack_attr, skill_atk_pct)
+    return float(val)
 
 
 def _build_char_ac_calc(cid, lc):
@@ -398,6 +407,26 @@ def _char_totals_for_pair_max(cid, uid, lc):
             if pair_ok:
                 pct += spbn_pair[s] + spen_pair[s]
             totals[s] = bv + math.floor(bv * pct / 100) if bv > 0 else 0
+    return totals, pair_ok
+
+
+def _char_totals_for_pair_no_cp(cid, uid, lc):
+    """CP off: growth + unconditional trait % only (matches get_character stats)."""
+    A = _app()
+    ldc = _calc_lang_data()
+    cid = A.normalize_id(cid)
+    uid = A.normalize_id(uid)
+    grown, _ = _char_grown(cid)
+    ac = _build_char_ac_calc(cid, lc)
+    buckets = A._accumulate_character_trait_percent_buckets(ac, cid, ldc)
+    spbn_u = buckets[0]
+    trait_pair_unit_ids = buckets[10]
+    pair_ok = _pair_ok_for_unit(uid, cid, trait_pair_unit_ids)
+    totals = {}
+    for s in A.CHAR_STAT_ORDER:
+        bv = grown.get(s, 0)
+        pct = spbn_u[s]
+        totals[s] = bv + math.floor(bv * pct / 100) if bv > 0 else 0
     return totals, pair_ok
 
 
@@ -1267,10 +1296,13 @@ def _cached_best_ex_weapon(uid, stat_mode, lc):
     return _unit_weapon_cache[key]
 
 
-def _cached_char_pair_totals(cid, uid, lc):
-    key = (str(cid), str(uid), str(lc))
+def _cached_char_pair_totals(cid, uid, lc, *, cp_on=True):
+    key = (str(cid), str(uid), str(lc), bool(cp_on))
     if key not in _char_pair_cache:
-        _char_pair_cache[key] = _char_totals_for_pair_max(cid, uid, lc)
+        if cp_on:
+            _char_pair_cache[key] = _char_totals_for_pair_max(cid, uid, lc)
+        else:
+            _char_pair_cache[key] = _char_totals_for_pair_no_cp(cid, uid, lc)
     return _char_pair_cache[key]
 
 
@@ -1297,10 +1329,10 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
     )
     tier_key = max(1, min(4, int(def_tier or 1)))
 
-    totals, pair_ok = _cached_char_pair_totals(cid, uid, lc)
+    totals, pair_ok = _cached_char_pair_totals(cid, uid, lc, cp_on=cp_on)
     skill_dmg, skill_atk_pct = _char_skill_bonuses(cid, lc)
-    char_atk = _pilot_atk_for_weapon(totals, wpn.get('attr'), skill_atk_pct)
-    unit_atk = _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok)
+    char_atk, formula_stat = _pilot_formula_stat(totals, wpn.get('attr'), skill_atk_pct)
+    unit_atk = _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok and cp_on)
 
     dmg_dealt, crit_up = _char_pilot_dmg_bonuses(cid, uid, lc, cp_on=cp_on)
     dmg_dealt += skill_dmg
@@ -1351,6 +1383,8 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
         'def_char_def': int(defender_char_def),
         'def_label': def_label,
         'pair_ok': pair_ok,
+        'char_atk': char_atk,
+        'formula_stat': formula_stat,
     }
 
 
@@ -1504,6 +1538,8 @@ def _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc):
                     'guaranteed_crit': d['guaranteed_crit'],
                     'crit_rate': d['crit_rate'],
                     'pair_ok': d['pair_ok'],
+                    'char_atk': d.get('char_atk', 0),
+                    'formula_stat': d.get('formula_stat', ''),
                     'vigor': vigor_key,
                     'active_skills': _msy_pilot_active_skills(cid, lc),
                     'score': sc,

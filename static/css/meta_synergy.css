@@ -768,10 +768,17 @@
 }
 
 .msy-unit-elem,
-.msy-pilot-sub {
+.msy-pilot-sub,
+.msy-pilot-formula-stat {
   font-size: 10px;
   color: var(--text-muted);
   margin-top: 2px;
+}
+
+.msy-pilot-formula-stat {
+  color: var(--accent-cyan);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 
 .msy-unit-peak {

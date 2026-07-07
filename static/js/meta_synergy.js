@@ -640,14 +640,28 @@
     return pilot.score || 0;
   }
 
+  function pilotFormulaStatHtml(pilot) {
+    if (!pilot || !pilot.formula_stat || pilot.char_atk == null) return '';
+    var statKey = {
+      Ranged: 'stat_ranged',
+      Melee: 'stat_melee',
+      Awaken: 'stat_awaken'
+    }[pilot.formula_stat] || '';
+    var label = statKey ? (t(statKey) || pilot.formula_stat) : pilot.formula_stat;
+    var line = t('msy_formula_stat')
+      ? t('msy_formula_stat').replace('{stat}', label).replace('{val}', fmtN(pilot.char_atk))
+      : (label + ': ' + fmtN(pilot.char_atk));
+    return '<div class="msy-pilot-formula-stat">' + esc(line) + '</div>';
+  }
+
   function renderPilotCard(unitId, pilot, mode) {
     var c = pilot.char || {};
     var dmg = pilotDamage(pilot, mode);
-    var sub = '';
+    var sub = pilotFormulaStatHtml(pilot);
     if (pilot.guaranteed_crit) {
-      sub = '<div class="msy-pilot-sub msy-pilot-sub--gc">' + esc(t('msy_guaranteed_crit')) + '</div>';
+      sub += '<div class="msy-pilot-sub msy-pilot-sub--gc">' + esc(t('msy_guaranteed_crit')) + '</div>';
     } else if (pilot.crit_rate) {
-      sub = '<div class="msy-pilot-sub">' + esc(t('msy_crit_rate')).replace('{n}', String(pilot.crit_rate)) + '</div>';
+      sub += '<div class="msy-pilot-sub">' + esc(t('msy_crit_rate')).replace('{n}', String(pilot.crit_rate)) + '</div>';
     }
     return (
       '<div class="msy-pilot-card">' +
