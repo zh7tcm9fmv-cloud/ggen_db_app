@@ -427,6 +427,7 @@
         g.unit.id,
         g.pending ? 'p' : '',
         g.pilot_preview ? 'v' : '',
+        g.index_only ? 'i' : '',
         row ? row.max_damage : 0,
         row ? pilotListSignature(row.pilots, mode) : ''
       ].join('|');
@@ -995,6 +996,9 @@
         html += renderPilotGrid(row.pilots, u.id, mode);
       } else if (g.pending) {
         html += renderPilotSkeletonGrid();
+      } else if (g.index_only) {
+        html += '<div class="msy-pilot-empty msy-index-only">' +
+          esc(t('msy_index_only') || 'Pilot rankings not precomputed for this unit.') + '</div>';
       } else if (!g.pending && (state.excludeUrGlobal || state.excludeShinnGlobal || state.sameRoleOnly)) {
         html += '<div class="msy-pilot-empty">' + esc(t('msy_no_eligible_pilots') || 'No eligible pilots for this filter.') + '</div>';
       }
@@ -1184,11 +1188,12 @@
             if (sumData && sumData.groups && sumData.groups.length) {
               applyPayload(sumData, state.defTier);
               setLoading(false, false);
-              showWarmingBanner(true, t('msy_pilot_loading') || t('msy_warming_partial') || 'Loading pilots…');
               if (browseFiltered) {
-                void loadRankingsPilotsBackground(loadGen);
+                rememberPagePayload(cacheKeyForState(), sumData);
+                void fetchPilotSkillsBatch(state.groups);
                 return;
               }
+              showWarmingBanner(true, t('msy_pilot_loading') || t('msy_warming_partial') || 'Loading pilots…');
             }
           }
         } catch (sumErr) {

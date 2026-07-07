@@ -1224,6 +1224,8 @@ _MSY_LEGACY_MASTER_CACHE_KEYS = (
     ('_v12_dc_master', 'EN', 3, 20, None, None),
     ('_v11_master', 'EN', 3, 20, None, None),
 )
+_MSY_SORT_DAMAGE_INDEX = {}
+_MSY_SORT_DAMAGE_INDEX_LOCK = threading.Lock()
 
 _MAX_UNITS_FULL_SIM = 120
 _PREFILTER_THRESHOLD = 80
@@ -3167,9 +3169,81 @@ _CHEAP_SCORE_TO_DAMAGE = 480.0
 _MSY_ORDER_PREBUILD_LIMIT = 0
 
 
-def _estimate_uncached_unit_damage(uid, lc, kwargs):
+def _msy_sort_index_path(lc):
+    return os.path.join(_msy_app_root(), 'data', 'published', f'msy_sort_index_{lc or "EN"}.json.gz')
+
+
+def _load_msy_sort_index_from_disk(lc):
+    path = _msy_sort_index_path(lc)
+    if not os.path.isfile(path):
+        return None
+    try:
+        with gzip.open(path, 'rt', encoding='utf-8') as f:
+            data = json.load(f)
+        if not isinstance(data, dict):
+            return None
+        A = _app()
+        return {A.normalize_id(k): int(v or 0) for k, v in data.items()}
+    except Exception as e:
+        print(f'MSY sort index load failed ({path}): {e}')
+        return None
+
+
+def _build_msy_sort_damage_index(lc, master_groups=None):
+    """Precompute per-unit browse sort keys (sim peak when cached, else weapon×ATK proxy)."""
+    A = _app()
+    lc = lc or A.DEFAULT_LANG
+    idx = {}
+    for g in master_groups or []:
+        uid = A.normalize_id((g.get('unit') or {}).get('id'))
+        if not uid:
+            continue
+        dm = _unit_browse_sort_damage(g, 'super_crit', None) or g.get('max_damage') or 0
+        if dm:
+            idx[uid] = int(dm)
+    for uid in _msy_rankable_unit_ids(lc):
+        uid = A.normalize_id(uid)
+        if uid in idx:
+            continue
+        idx[uid] = int(_cheap_unit_peak_score(uid, lc, {}) / _CHEAP_SCORE_TO_DAMAGE)
+    return idx
+
+
+def _ensure_msy_sort_damage_index(lc='EN', master_groups=None):
+    lc = lc or 'EN'
+    with _MSY_SORT_DAMAGE_INDEX_LOCK:
+        cached = _MSY_SORT_DAMAGE_INDEX.get(lc)
+        if cached is not None:
+            return cached
+    disk = _load_msy_sort_index_from_disk(lc)
+    if disk is not None:
+        with _MSY_SORT_DAMAGE_INDEX_LOCK:
+            _MSY_SORT_DAMAGE_INDEX[lc] = disk
+            return disk
+    idx = _build_msy_sort_damage_index(lc, master_groups)
+    with _MSY_SORT_DAMAGE_INDEX_LOCK:
+        _MSY_SORT_DAMAGE_INDEX[lc] = idx
+        return idx
+
+
+def save_published_sort_index(lc='EN', master_groups=None):
+    """Write browse sort index for instant filtered MSY browse (no per-request scoring)."""
+    lc = lc or 'EN'
+    idx = _build_msy_sort_damage_index(lc, master_groups)
+    path = _msy_sort_index_path(lc)
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with gzip.open(path, 'wt', encoding='utf-8') as f:
+        json.dump(idx, f, separators=(',', ':'))
+    with _MSY_SORT_DAMAGE_INDEX_LOCK:
+        _MSY_SORT_DAMAGE_INDEX[lc] = idx
+    return path
+
+
+def _estimate_uncached_unit_damage(uid, lc, kwargs, *, sort_index=None):
     """Rough super-crit peak proxy for units not yet in the master cache."""
-    return _cheap_unit_peak_score(uid, lc, kwargs) / _CHEAP_SCORE_TO_DAMAGE
+    if sort_index is None:
+        sort_index = _ensure_msy_sort_damage_index(lc)
+    return sort_index.get(_app().normalize_id(uid), 0)
 
 
 def _ordered_unit_ids_for_browse(unit_ids, master_groups, lc, kwargs, rank_mode, def_tier=None,
@@ -3183,6 +3257,7 @@ def _ordered_unit_ids_for_browse(unit_ids, master_groups, lc, kwargs, rank_mode,
             by_uid[uid] = g
 
     browse_active = _browse_filters_active(browse or {}, unit_q)
+    sort_index = _ensure_msy_sort_damage_index(lc, master_groups) if browse_active else None
 
     if not browse_active:
         cached_scored = []
@@ -3204,7 +3279,7 @@ def _ordered_unit_ids_for_browse(unit_ids, master_groups, lc, kwargs, rank_mode,
         if g:
             sc = _unit_browse_sort_damage(g, rank_mode, def_tier)
         else:
-            sc = _estimate_uncached_unit_damage(uid, lc, kwargs)
+            sc = sort_index.get(uid, 0)
         scored.append((sc, uid))
     scored.sort(key=lambda x: (-x[0], x[1]))
     return [uid for _, uid in scored]
@@ -3670,6 +3745,7 @@ def _normalize_group_for_mode(g, rank_mode):
             'pending': g.get('pending'),
             'cross_role_built': g.get('cross_role_built'),
             'pilot_preview': g.get('pilot_preview'),
+            'index_only': g.get('index_only'),
         }
     if rank_mode == 'super_crit' and g.get('pilots'):
         return g
@@ -3994,6 +4070,56 @@ def _stub_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, *, role_filter=Non
     }
 
 
+def _index_shell_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, *, role_filter=None, sort_index=None):
+    """Instant filtered-browse row: unit shell + precomputed peak damage, no pilot sim."""
+    A = _app()
+    uid = A.normalize_id(uid)
+    info = A.unit_info_map.get(uid) or {}
+    if sort_index is None:
+        sort_index = _ensure_msy_sort_damage_index(lc)
+    est = int(sort_index.get(uid, 0))
+    wi = _weapon_info_for_msy(uid, lc)
+    is_sd = _is_sd_unit(uid, info)
+    block = {'max_damage': est, 'pilots': [], 'vigor': _VIGOR_FOR_RANK_MODE.get(rank_mode, 'super')}
+    return {
+        'unit': _entity_brief_unit(uid, lc, role_filter=role_filter),
+        'weapon_elems': _weapon_elem_label(uid, lc),
+        'weapon_info': wi,
+        'max_damage': est,
+        'index_only': True,
+        'rankings': {rank_mode: block},
+        'pilots': [],
+        'is_sd': is_sd,
+        'bundled_pilot_id': _bundled_pilot_id(uid) if is_sd else None,
+    }
+
+
+def _filtered_browse_row_for_uid(uid, by_uid, lc, kwargs, rank_mode, def_tier, role_filter, sort_index,
+                                  *, include_skills=True):
+    """Serve cached sim rows when available; otherwise precomputed index shell (no on-demand sim)."""
+    A = _app()
+    uid = A.normalize_id(uid)
+    g = by_uid.get(uid)
+    if _is_ready_cached_group(g):
+        row = _group_for_def_tier(g, def_tier) if g.get('rankings_by_tier') else g
+        if row:
+            row = _ensure_passive_variant_for_request(row, lc, rank_mode, def_tier, kwargs)
+            if include_skills:
+                _ensure_group_enriched(row, lc, rank_mode, include_skills=True)
+            norm = _normalize_group_for_mode(row, rank_mode)
+            if norm:
+                if role_filter:
+                    u = norm.get('unit') or {}
+                    norm = dict(norm)
+                    norm['unit'] = _entity_brief_unit(u.get('id'), lc, role_filter=role_filter)
+                return norm
+    shell = _index_shell_group_for_uid(
+        uid, lc, kwargs, rank_mode, def_tier, role_filter=role_filter, sort_index=sort_index,
+    )
+    norm = _normalize_group_for_mode(shell, rank_mode)
+    return norm or shell
+
+
 def _cached_summary_from_groups(groups, *, total_pilot_candidates, rank_mode, page, per_page, vigor,
                                  def_tier, kwargs, unit_q='', include_skills=True):
     """Instant filtered browse shell — no on-demand unit builds."""
@@ -4018,7 +4144,14 @@ def _cached_summary_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
         uid = _app().normalize_id((g.get('unit') or {}).get('id'))
         if uid:
             by_uid[uid] = g
+    sort_index = _ensure_msy_sort_damage_index(lc, working_groups) if browse_active else None
+
     def _summary_row_for_uid(uid):
+        if browse_active:
+            return _filtered_browse_row_for_uid(
+                uid, by_uid, lc, kwargs, rank_mode, dt, role_filter, sort_index,
+                include_skills=include_skills,
+            )
         uid = _app().normalize_id(uid)
         g = by_uid.get(uid)
         if _is_ready_cached_group(g):
@@ -4066,6 +4199,7 @@ def _cached_summary_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
         'defender_tiers': defender_tiers_public(),
         'summary': True,
         'cache_incomplete': any(g.get('pilot_preview') or g.get('pending') for g in expanded),
+        'index_browse': browse_active,
         'filtered_browse': browse_active,
         'settings': {
             'unit_rarity': kwargs.get('rarity') or kwargs.get('unit_rarity', 'ALL'),
@@ -4106,53 +4240,63 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
     kwargs_resolve = dict(kwargs)
     kwargs_resolve['def_tier'] = dt
     filtered_browse = browse_active
-    if filtered_browse:
-        page_build_cap = min(_MSY_BROWSE_PAGE_BUILD_LIMIT, per_page) if _msy_page_build_allowed() else 0
-        build_budget = _MSY_BROWSE_BUILD_BUDGET_SEC
-    else:
-        page_build_cap = min(_MSY_PAGE_BUILD_LIMIT, per_page) if _msy_page_build_allowed() else 0
-        build_budget = _MSY_PAGE_BUILD_BUDGET_SEC
     master_by_uid = {}
     for g in working_groups:
         uid = _app().normalize_id((g.get('unit') or {}).get('id'))
         if uid:
             master_by_uid[uid] = g
-    if page_ids and all(
-        _is_ready_cached_group(master_by_uid.get(_app().normalize_id(uid)))
-        for uid in page_ids
-    ):
-        page_build_cap = 0
-    page_groups_raw = _resolve_groups_for_unit_ids(
-        page_ids, working_groups, lc, kwargs_resolve, browse_fast=True, def_tier=dt,
-        max_build=page_build_cap,
-        page_build_lite=True,
-        build_budget_sec=build_budget,
-        rank_mode=rank_mode,
-        unit_q=unit_q,
-    )
-    if cache_key:
-        _merge_groups_into_cache(cache_key, page_groups_raw)
-    built_by_uid = {}
-    for g in page_groups_raw:
-        uid = _app().normalize_id((g.get('unit') or {}).get('id'))
-        if uid:
-            built_by_uid[uid] = g
     role_filter = browse.get('role_filter')
-    filled_raw = []
-    for uid in page_ids:
-        uid = _app().normalize_id(uid)
-        if uid in built_by_uid:
-            filled_raw.append(built_by_uid[uid])
-            continue
-        cached = built_by_uid.get(uid) or next(
-            (x for x in working_groups if _app().normalize_id((x.get('unit') or {}).get('id')) == uid),
-            None,
+
+    if filtered_browse:
+        sort_index = _ensure_msy_sort_damage_index(lc, working_groups)
+        page_groups_raw = []
+        for uid in page_ids:
+            uid = _app().normalize_id(uid)
+            cached = master_by_uid.get(uid)
+            if _is_ready_cached_group(cached):
+                page_groups_raw.append(cached)
+            else:
+                page_groups_raw.append(_index_shell_group_for_uid(
+                    uid, lc, kwargs, rank_mode, dt, role_filter=role_filter, sort_index=sort_index,
+                ))
+    else:
+        page_build_cap = min(_MSY_PAGE_BUILD_LIMIT, per_page) if _msy_page_build_allowed() else 0
+        build_budget = _MSY_PAGE_BUILD_BUDGET_SEC
+        if page_ids and all(
+            _is_ready_cached_group(master_by_uid.get(_app().normalize_id(uid)))
+            for uid in page_ids
+        ):
+            page_build_cap = 0
+        page_groups_raw = _resolve_groups_for_unit_ids(
+            page_ids, working_groups, lc, kwargs_resolve, browse_fast=True, def_tier=dt,
+            max_build=page_build_cap,
+            page_build_lite=True,
+            build_budget_sec=build_budget,
+            rank_mode=rank_mode,
+            unit_q=unit_q,
         )
-        if _is_ready_cached_group(cached):
-            filled_raw.append(cached)
-        else:
-            filled_raw.append(_preview_group_for_uid(uid, lc, kwargs, rank_mode, dt, role_filter=role_filter))
-    page_groups_raw = filled_raw
+        if cache_key:
+            _merge_groups_into_cache(cache_key, page_groups_raw)
+        built_by_uid = {}
+        for g in page_groups_raw:
+            uid = _app().normalize_id((g.get('unit') or {}).get('id'))
+            if uid:
+                built_by_uid[uid] = g
+        filled_raw = []
+        for uid in page_ids:
+            uid = _app().normalize_id(uid)
+            if uid in built_by_uid:
+                filled_raw.append(built_by_uid[uid])
+                continue
+            cached = built_by_uid.get(uid) or next(
+                (x for x in working_groups if _app().normalize_id((x.get('unit') or {}).get('id')) == uid),
+                None,
+            )
+            if _is_ready_cached_group(cached):
+                filled_raw.append(cached)
+            else:
+                filled_raw.append(_preview_group_for_uid(uid, lc, kwargs, rank_mode, dt, role_filter=role_filter))
+        page_groups_raw = filled_raw
     expanded = []
     for g in page_groups_raw:
         g = _ensure_passive_variant_for_request(g, lc, rank_mode, dt, kwargs)
@@ -4194,6 +4338,7 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
         'def_tier': dt,
         'defender_tiers': defender_tiers_public(),
         'cache_incomplete': page_incomplete,
+        'index_browse': filtered_browse,
         'filtered_browse': browse_active,
         'settings': {
             'unit_rarity': kwargs.get('rarity') or kwargs.get('unit_rarity', 'ALL'),
@@ -4280,6 +4425,13 @@ def prewarm_default_rankings():
     if disk:
         _rankings_result_cache[cache_key] = disk
         print(f'MSY prewarm: loaded {len(disk.get("groups") or [])} units from disk')
+        def _prewarm_sort_index():
+            try:
+                path = save_published_sort_index(lc, disk.get('groups'))
+                print(f'MSY prewarm: sort index ready ({len(_MSY_SORT_DAMAGE_INDEX.get(lc) or {})} units) -> {path}')
+            except Exception as e:
+                print(f'MSY prewarm: sort index build failed: {e}')
+        threading.Thread(target=_prewarm_sort_index, daemon=True).start()
         return
     print('MSY prewarm: no published cache — run scripts/build_msy_rankings_dc.py')
 

@@ -254,6 +254,8 @@ def main():
     path = msy.save_published_master_cache(cache_key, result)
     msy._save_master_to_disk(cache_key, result)
     print(f"Saved: {path}")
+    sort_path = msy.save_published_sort_index(lang, groups)
+    print(f"Sort index: {sort_path} ({len(msy._MSY_SORT_DAMAGE_INDEX.get(lang) or {})} units)")
 
     if args.out:
         with open(args.out, 'w', encoding='utf-8') as f:
