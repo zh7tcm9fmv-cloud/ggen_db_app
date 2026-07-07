@@ -359,32 +359,30 @@
     }
   }
 
+  function sameGroupIdSet(a, b) {
+    if (!a || !b || a.length !== b.length) return false;
+    var idsA = a.map(function (g) { return g && g.unit ? String(g.unit.id) : ''; }).sort().join('\0');
+    var idsB = b.map(function (g) { return g && g.unit ? String(g.unit.id) : ''; }).sort().join('\0');
+    return idsA === idsB && idsA.length > 0;
+  }
+
   function mergeGroupsByUnit(prev, next) {
     if (!next || !next.length) return prev || [];
     if (!prev || !prev.length) return next;
+    if (!sameGroupIdSet(prev, next)) return next;
     var nextBy = {};
     next.forEach(function (g) {
       if (g && g.unit && g.unit.id != null) nextBy[String(g.unit.id)] = g;
     });
     var merged = [];
-    var used = {};
     prev.forEach(function (g) {
       if (!g || !g.unit) return;
       var id = String(g.unit.id);
       var n = nextBy[id];
-      if (n) {
-        used[id] = true;
-        if (g.pending && !n.pending) merged.push(n);
-        else if (!g.pending && n.pending) merged.push(g);
-        else merged.push(n);
-      } else {
-        merged.push(g);
-      }
-    });
-    next.forEach(function (g) {
-      if (!g || !g.unit) return;
-      var id = String(g.unit.id);
-      if (!used[id]) merged.push(g);
+      if (!n) return;
+      if (g.pending && !n.pending) merged.push(n);
+      else if (!g.pending && n.pending) merged.push(g);
+      else merged.push(n);
     });
     return merged.length ? merged : next;
   }
@@ -393,7 +391,7 @@
     var incoming = d.groups || [];
     if (!incoming.length && state.groups && state.groups.length && (d.cache_incomplete || d.summary)) {
       incoming = state.groups;
-    } else if (incoming.length && state.groups && state.groups.length) {
+    } else if (incoming.length && state.groups && state.groups.length && sameGroupIdSet(state.groups, incoming)) {
       incoming = mergeGroupsByUnit(state.groups, incoming);
     }
     state.groups = incoming;
@@ -1093,6 +1091,8 @@
     state._searchTimer = setTimeout(function () {
       state.page = 1;
       state.cacheKey = null;
+      state.groups = [];
+      state.total = 0;
       clearPageCache();
       setLoading(true, false);
       renderContent();
