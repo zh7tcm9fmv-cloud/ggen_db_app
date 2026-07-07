@@ -1946,13 +1946,19 @@ def _prefilter_unit_ids(unit_rows, pilot_ids, lc, lb_tier, vigor, def_tier, excl
     return [uid for _, uid in scored[:_MAX_UNITS_FULL_SIM]]
 
 
-def _cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc):
+def _cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc, *, cp_on=True, pep_on=True):
     """Unit×pilot damage proxy for prefilter (skills, affinity, pair ATK)."""
-    totals, pair_ok = _cached_char_pair_totals(cid, uid, lc)
+    totals, pair_ok = _cached_char_pair_totals(cid, uid, lc, cp_on=cp_on)
     skill_dmg, skill_atk_pct = _char_skill_bonuses(cid, lc)
     char_atk = _pilot_atk_for_weapon(totals, unit_wpn.get('attr'), skill_atk_pct)
-    unit_atk = _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok)
-    dmg_dealt, crit_up = _char_pilot_dmg_bonuses(cid, uid, lc, cp_on=True)
+    unit_atk = _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok, cp_on=cp_on)
+    if pep_on:
+        pep_atk_pct = _pilot_pep_unit_stat_bonus_pct(
+            cid, uid, lc, cp_on=cp_on, pair_ok=pair_ok,
+        )
+        if pep_atk_pct:
+            unit_atk = math.floor(unit_atk * (100 + pep_atk_pct) / 100)
+    dmg_dealt, crit_up = _char_pilot_dmg_bonuses(cid, uid, lc, cp_on=cp_on)
     wp = float(unit_wpn.get('power') or 0)
     score = (unit_atk + 2.0 * char_atk) * wp
     if dmg_dealt or crit_up:
@@ -2908,6 +2914,7 @@ def _group_for_def_tier(g, def_tier):
     rngc = (g.get('rankings_no_gc_by_tier') or {}).get(dt) or (g.get('rankings_no_gc_by_tier') or {}).get(str(dt))
     rncp = (g.get('rankings_no_cp_by_tier') or {}).get(dt) or (g.get('rankings_no_cp_by_tier') or {}).get(str(dt))
     rnpep = (g.get('rankings_no_pep_by_tier') or {}).get(dt) or (g.get('rankings_no_pep_by_tier') or {}).get(str(dt))
+    rncp_pep = (g.get('rankings_no_cp_pep_by_tier') or {}).get(dt) or (g.get('rankings_no_cp_pep_by_tier') or {}).get(str(dt))
     primary = rankings.get('super_crit') or rankings.get('crit') or rankings.get('normal')
     if not primary:
         return None
@@ -2921,6 +2928,7 @@ def _group_for_def_tier(g, def_tier):
         'rankings_no_gc': rngc or g.get('rankings_no_gc') or rankings,
         'rankings_no_cp': rncp or g.get('rankings_no_cp') or rankings,
         'rankings_no_pep': rnpep or g.get('rankings_no_pep') or rankings,
+        'rankings_no_cp_pep': rncp_pep or g.get('rankings_no_cp_pep') or rankings,
         'max_damage': primary.get('max_damage', 0),
         'metric': g.get('metric'),
         'pilots': primary.get('pilots') or [],
@@ -3552,6 +3560,9 @@ def _normalize_group_for_mode(g, rank_mode):
         rankings_no_pep = g.get('rankings_no_pep')
         if rankings_no_pep:
             rankings_no_pep = _slim_rankings_for_mode(rankings_no_pep, rank_mode)
+        rankings_no_cp_pep = g.get('rankings_no_cp_pep')
+        if rankings_no_cp_pep:
+            rankings_no_cp_pep = _slim_rankings_for_mode(rankings_no_cp_pep, rank_mode)
         rankings_no_ur = g.get('rankings_no_ur')
         if rankings_no_ur:
             rankings_no_ur = _slim_rankings_for_mode(rankings_no_ur, rank_mode)
@@ -3566,6 +3577,7 @@ def _normalize_group_for_mode(g, rank_mode):
             'rankings': rankings,
             'rankings_no_cp': rankings_no_cp,
             'rankings_no_pep': rankings_no_pep,
+            'rankings_no_cp_pep': rankings_no_cp_pep,
             'rankings_no_ur': rankings_no_ur,
             'rankings_no_shinn': rankings_no_shinn,
             'weapon_info': g.get('weapon_info'),
@@ -3724,7 +3736,8 @@ def _preview_pilot_id_sample():
     return [ids[i] for i in range(0, len(ids), step)][:cap]
 
 
-def _cheap_pilot_top_for_unit(uid, lc, kwargs, need, info, unit_wpn, stat_mode, *, non_ur_only=False):
+def _cheap_pilot_top_for_unit(uid, lc, kwargs, need, info, unit_wpn, stat_mode, *, non_ur_only=False,
+                              cp_on=True, pep_on=True):
     """Score a bounded pilot sample for one unit (preview / fast browse)."""
     import heapq
     A = _app()
@@ -3736,7 +3749,7 @@ def _cheap_pilot_top_for_unit(uid, lc, kwargs, need, info, unit_wpn, stat_mode, 
     if _is_sd_unit(uid, info):
         bp = _bundled_pilot_id(uid)
         if bp and (uid, bp) not in exclude:
-            sc = _cheap_pilot_score(uid, bp, info, unit_wpn, stat_mode, lc)
+            sc = _cheap_pilot_score(uid, bp, info, unit_wpn, stat_mode, lc, cp_on=cp_on, pep_on=pep_on)
             return [(sc, bp)]
         return []
     heap = []
@@ -3752,7 +3765,7 @@ def _cheap_pilot_top_for_unit(uid, lc, kwargs, need, info, unit_wpn, stat_mode, 
             ri = str((A.char_info_map.get(cid_n) or {}).get('rarity', '1'))
             if A.RARITY_MAP.get(ri, 'N') == 'UR':
                 continue
-        sc = _cheap_pilot_score(uid, cid_n, info, unit_wpn, stat_mode, lc)
+        sc = _cheap_pilot_score(uid, cid_n, info, unit_wpn, stat_mode, lc, cp_on=cp_on, pep_on=pep_on)
         if len(heap) < need:
             heapq.heappush(heap, (sc, cid_n))
         elif sc > heap[0][0]:
@@ -3771,10 +3784,11 @@ def _cheap_pilot_top_candidates(uid, active_pilots, need, info, unit_wpn, stat_m
 
 
 def _cheap_preview_pilot_rows(uid, active_pilots, top_pilots, info, unit_wpn, stat_mode, lc, *,
-                              non_ur_only=False, kwargs=None):
+                              non_ur_only=False, kwargs=None, cp_on=True, pep_on=True):
     """Instant pilot cards from cheap affinity/stat scores (no damage sim)."""
     scored = _cheap_pilot_top_for_unit(
         uid, lc, kwargs or {}, top_pilots, info, unit_wpn, stat_mode, non_ur_only=non_ur_only,
+        cp_on=cp_on, pep_on=pep_on,
     )
     rows = []
     attr = str(unit_wpn.get('attr', '1'))
@@ -3805,6 +3819,22 @@ def _cheap_preview_pilot_rows(uid, active_pilots, top_pilots, info, unit_wpn, st
     return rows
 
 
+def _preview_rankings_block(uid, lc, kwargs, rank_mode, info, unit_wpn, stat_mode, top_p, *,
+                            cp_on=True, pep_on=True):
+    """One rank-mode preview block for a CP/PEP variant."""
+    pilots = _cheap_preview_pilot_rows(
+        uid, [], top_p, info, unit_wpn, stat_mode, lc, non_ur_only=False, kwargs=kwargs,
+        cp_on=cp_on, pep_on=pep_on,
+    )
+    if not pilots:
+        return None
+    return {
+        'max_damage': pilots[0]['score'],
+        'pilots': pilots,
+        'vigor': _VIGOR_FOR_RANK_MODE.get(rank_mode, 'super'),
+    }
+
+
 def _preview_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, *, role_filter=None):
     """Fast pilot preview for browse/search rows (upgraded to full sim in background)."""
     A = _app()
@@ -3815,14 +3845,14 @@ def _preview_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, *, role_filter=
     if not unit_wpn:
         return _stub_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, role_filter=role_filter)
     top_p = int(kwargs.get('top_pilots', 10) or 10)
-    pilots = _cheap_preview_pilot_rows(
-        uid, [], top_p, info, unit_wpn, stat_mode, lc, non_ur_only=False, kwargs=kwargs,
+    block = _preview_rankings_block(
+        uid, lc, kwargs, rank_mode, info, unit_wpn, stat_mode, top_p, cp_on=True, pep_on=True,
     )
-    if not pilots:
+    if not block:
         return _stub_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, role_filter=role_filter)
+    pilots = block['pilots']
     nu_pilots = [p for p in pilots if str((p.get('char') or {}).get('rarity') or '').upper() != 'UR']
     max_damage = pilots[0]['score']
-    block = {'max_damage': max_damage, 'pilots': pilots, 'vigor': _VIGOR_FOR_RANK_MODE.get(rank_mode, 'super')}
     nu_block = None
     if nu_pilots:
         nu_block = {
@@ -3830,6 +3860,15 @@ def _preview_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, *, role_filter=
             'pilots': nu_pilots[:top_p],
             'vigor': block['vigor'],
         }
+    block_ncp = _preview_rankings_block(
+        uid, lc, kwargs, rank_mode, info, unit_wpn, stat_mode, top_p, cp_on=False, pep_on=True,
+    )
+    block_npep = _preview_rankings_block(
+        uid, lc, kwargs, rank_mode, info, unit_wpn, stat_mode, top_p, cp_on=True, pep_on=False,
+    )
+    block_off = _preview_rankings_block(
+        uid, lc, kwargs, rank_mode, info, unit_wpn, stat_mode, top_p, cp_on=False, pep_on=False,
+    )
     wi = _weapon_info_for_msy(uid, lc)
     is_sd = _is_sd_unit(uid, info)
     out = {
@@ -3843,6 +3882,12 @@ def _preview_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, *, role_filter=
         'is_sd': is_sd,
         'bundled_pilot_id': _bundled_pilot_id(uid) if is_sd else None,
     }
+    if block_ncp:
+        out['rankings_no_cp'] = {rank_mode: block_ncp}
+    if block_npep:
+        out['rankings_no_pep'] = {rank_mode: block_npep}
+    if block_off:
+        out['rankings_no_cp_pep'] = {rank_mode: block_off}
     if nu_block:
         out['rankings_no_ur'] = {rank_mode: nu_block}
     return out

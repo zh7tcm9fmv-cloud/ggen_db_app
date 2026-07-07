@@ -428,7 +428,8 @@
         row ? row.max_damage : 0,
         row ? pilotListSignature(row.pilots, mode) : ''
       ].join('|');
-    }).join(';') + '::' + state.page + '::' + mode.id;
+    }).join(';') + '::' + state.page + '::' + mode.id + '::' +
+      (state.charCondPassiveOn ? 'cp1' : 'cp0') + (state.pilotCondPassiveOn ? 'pep1' : 'pep0');
   }
 
   function scheduleContentRender(immediate) {
@@ -1329,23 +1330,24 @@
   }
 
   function passiveToggleNeedsRefetch() {
+    var modeId = state.rankMode;
     return (state.groups || []).some(function (g) {
-      if (!g || g.pending || g.pilot_preview) return true;
-      if (!state.charCondPassiveOn) {
-        if (!g.rankings_no_cp) return true;
-        var cpBlk = g.rankings_no_cp[state.rankMode];
-        if (!(cpBlk && cpBlk.pilots && cpBlk.pilots.length)) return true;
-        if (!state.pilotCondPassiveOn) {
-          if (!g.rankings_no_cp_pep) return true;
-          var offBlk = g.rankings_no_cp_pep[state.rankMode];
-          if (!(offBlk && offBlk.pilots && offBlk.pilots.length)) return true;
-        }
-      } else if (!state.pilotCondPassiveOn) {
-        if (!g.rankings_no_pep) return true;
-        var pepBlk = g.rankings_no_pep[state.rankMode];
-        if (!(pepBlk && pepBlk.pilots && pepBlk.pilots.length)) return true;
+      if (!g || g.pending) return true;
+      if (!state.charCondPassiveOn && !state.pilotCondPassiveOn) {
+        var offBlk = g.rankings_no_cp_pep && g.rankings_no_cp_pep[modeId];
+        return !(offBlk && offBlk.pilots && offBlk.pilots.length);
       }
-      return false;
+      if (!state.charCondPassiveOn) {
+        var cpBlk = g.rankings_no_cp && g.rankings_no_cp[modeId];
+        return !(cpBlk && cpBlk.pilots && cpBlk.pilots.length);
+      }
+      if (!state.pilotCondPassiveOn) {
+        var pepBlk = g.rankings_no_pep && g.rankings_no_pep[modeId];
+        return !(pepBlk && pepBlk.pilots && pepBlk.pilots.length);
+      }
+      var onBlk = (g.rankings && g.rankings[modeId]) || null;
+      if (onBlk && onBlk.pilots && onBlk.pilots.length) return false;
+      return !(g.pilots && g.pilots.length);
     });
   }
 
