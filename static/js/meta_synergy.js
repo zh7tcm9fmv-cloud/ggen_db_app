@@ -568,7 +568,11 @@
       srBtn.setAttribute('aria-pressed', state.sameRoleOnly ? 'true' : 'false');
       srBtn.classList.toggle('active', state.sameRoleOnly);
       var srGlyph = srBtn.querySelector('.msy-same-role-glyph');
-      if (srGlyph) srGlyph.textContent = state.sameRoleOnly ? '=' : '≠';
+      if (srGlyph) {
+        srGlyph.textContent = state.sameRoleOnly ? '=' : '≠';
+        srGlyph.classList.toggle('is-on', state.sameRoleOnly);
+        srGlyph.classList.toggle('is-off', !state.sameRoleOnly);
+      }
     }
   }
 
@@ -773,7 +777,7 @@
     return '<div class="msy-pilot-formula-stat">' + esc(line) + '</div>';
   }
 
-  function renderPilotCard(unitId, pilot, mode) {
+  function renderPilotCard(unitId, pilot, mode, pilotIdx) {
     var c = pilot.char || {};
     var dmg = pilotDamage(pilot, mode);
     var sub = pilotFormulaStatHtml(pilot);
@@ -783,7 +787,7 @@
       sub += '<div class="msy-pilot-sub">' + esc(t('msy_crit_rate')).replace('{n}', String(pilot.crit_rate)) + '</div>';
     }
     return (
-      '<div class="msy-pilot-card">' +
+      '<div class="msy-pilot-card msy-pilot-card--cascade" style="--msy-pilot-i:' + (pilotIdx | 0) + '">' +
         '<span class="msy-pilot-rank">' + (pilot.rank || '') + '</span>' +
         '<button type="button" class="msy-pilot-open" title="' + escAttr(t('msy_open_char')) + '" onclick="GgenMetaSynergy.openDetailChar(\'' + escJs(c.id) + '\')">' +
           '<div class="msy-pilot-thumb">' + pilotThumb(c) + '</div>' +
@@ -802,14 +806,48 @@
     );
   }
 
+  function renderPilotSkeletonCard(pilotIdx) {
+    return (
+      '<div class="msy-pilot-card msy-pilot-card--skeleton" style="--msy-pilot-i:' + (pilotIdx | 0) + '" aria-hidden="true">' +
+        '<span class="msy-pilot-rank msy-skel-bar"></span>' +
+        '<div class="msy-pilot-skel-body">' +
+          '<div class="msy-pilot-skel-thumb"></div>' +
+          '<div class="msy-pilot-skel-lines">' +
+            '<div class="msy-skel-line"></div>' +
+            '<div class="msy-skel-line msy-skel-line--short"></div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="msy-skel-dmg"></div>' +
+      '</div>'
+    );
+  }
+
+  function renderPilotSkeletonGrid() {
+    var half = 5;
+    var left = [];
+    var right = [];
+    var i;
+    for (i = 0; i < half; i++) left.push(renderPilotSkeletonCard(i));
+    for (i = 0; i < half; i++) right.push(renderPilotSkeletonCard(half + i));
+    return (
+      '<div class="msy-pilot-grid msy-pilot-grid--loading" aria-busy="true">' +
+        '<div class="msy-pilot-col">' + left.join('') + '</div>' +
+        '<div class="msy-pilot-col">' + right.join('') + '</div>' +
+      '</div>'
+    );
+  }
+
   function renderPilotGrid(pilots, unitId, mode) {
     var list = (pilots || []).slice(0, 10);
     var half = Math.ceil(list.length / 2);
     var left = list.slice(0, half);
     var right = list.slice(half);
+    var idx = 0;
     function col(items) {
       return '<div class="msy-pilot-col">' + items.map(function (p) {
-        return renderPilotCard(unitId, p, mode);
+        var html = renderPilotCard(unitId, p, mode, idx);
+        idx += 1;
+        return html;
       }).join('') + '</div>';
     }
     return '<div class="msy-pilot-grid">' + col(left) + col(right) + '</div>';
@@ -842,7 +880,7 @@
       if (row.pilots && row.pilots.length) {
         html += renderPilotGrid(row.pilots, u.id, mode);
       } else if (g.pending) {
-        html += '<div class="msy-pilot-loading">' + esc(t('msy_pilot_loading') || 'Loading pilots…') + '</div>';
+        html += renderPilotSkeletonGrid();
       } else if (!g.pending && (state.excludeUrGlobal || state.excludeShinnGlobal || state.sameRoleOnly)) {
         html += '<div class="msy-pilot-empty">' + esc(t('msy_no_eligible_pilots') || 'No eligible pilots for this filter.') + '</div>';
       }

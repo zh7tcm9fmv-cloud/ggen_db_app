@@ -196,22 +196,45 @@
 }
 
 .msy-same-role-btn {
-  min-width: 34px;
-  padding: 4px 8px;
+  min-width: 44px;
+  min-height: 36px;
+  padding: 6px 11px;
 }
 
 .msy-same-role-glyph {
   display: inline-block;
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: 0.02em;
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: 0;
   line-height: 1;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  color: inherit;
+  transition: color 0.15s ease, transform 0.15s ease, text-shadow 0.15s ease;
+}
+
+.msy-same-role-glyph.is-off {
+  color: #67e8f9;
+  text-shadow: 0 0 10px rgba(103, 232, 249, 0.35);
+}
+
+.msy-same-role-glyph.is-on {
+  color: #86efac;
+  text-shadow: 0 0 10px rgba(134, 239, 172, 0.4);
+  transform: scale(1.08);
+}
+
+.msy-same-role-btn:not(.active) {
+  border-color: rgba(103, 232, 249, 0.45);
+  background: rgba(8, 18, 32, 0.72);
+}
+
+.msy-same-role-btn.active {
+  border-color: rgba(74, 222, 128, 0.8);
+  background: rgba(22, 101, 52, 0.28);
+  box-shadow: 0 0 0 1px rgba(74, 222, 128, 0.22);
 }
 
 .msy-same-role-btn.active .msy-same-role-glyph {
-  color: #fca5a5;
+  color: #86efac;
 }
 
 .msy-unit-card--sd .msy-unit-head {
@@ -832,6 +855,97 @@
   grid-template-columns: 1fr 1fr;
   gap: 0;
   padding: 6px 8px 8px;
+}
+
+.msy-pilot-grid--loading {
+  min-height: 120px;
+}
+
+@keyframes msy-pilot-cascade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes msy-pilot-skel-shimmer {
+  0% { opacity: 0.45; }
+  50% { opacity: 0.9; }
+  100% { opacity: 0.45; }
+}
+
+.msy-pilot-card--cascade {
+  animation: msy-pilot-cascade-in 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--msy-pilot-i, 0) * 52ms);
+}
+
+.msy-pilot-card--skeleton {
+  pointer-events: none;
+  animation: msy-pilot-cascade-in 0.42s ease both, msy-pilot-skel-shimmer 1.4s ease-in-out infinite;
+  animation-delay: calc(var(--msy-pilot-i, 0) * 52ms), calc(var(--msy-pilot-i, 0) * 80ms);
+}
+
+.msy-pilot-skel-body {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.msy-pilot-skel-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  background: rgba(90, 104, 132, 0.28);
+  flex-shrink: 0;
+}
+
+.msy-pilot-skel-lines {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-top: 4px;
+}
+
+.msy-skel-line {
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(90, 104, 132, 0.32);
+}
+
+.msy-skel-line--short {
+  width: 62%;
+}
+
+.msy-skel-bar,
+.msy-skel-dmg {
+  border-radius: 4px;
+  background: rgba(90, 104, 132, 0.28);
+}
+
+.msy-skel-bar {
+  width: 12px;
+  height: 10px;
+  margin-top: 6px;
+}
+
+.msy-skel-dmg {
+  width: 42px;
+  height: 12px;
+  margin-top: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .msy-pilot-card--cascade,
+  .msy-pilot-card--skeleton {
+    animation: none;
+  }
 }
 
 .msy-pilot-col {
