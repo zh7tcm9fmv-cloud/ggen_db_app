@@ -172,6 +172,18 @@
     return pilotGroupBlock(g, modeId, noUr, noShinn);
   }
 
+  function pilotsForGroup(g, modeId) {
+    if (!g) return [];
+    var noUr = state.excludeUrGlobal;
+    var noShinn = state.excludeShinnGlobal;
+    var pilotBlock = pilotGroupBlock(g, modeId, noUr, noShinn);
+    if (pilotBlock && pilotBlock.pilots && pilotBlock.pilots.length) return pilotBlock.pilots;
+    if (g.pilots && g.pilots.length) return g.pilots;
+    var block = g.rankings && g.rankings[modeId];
+    if (block && block.pilots && block.pilots.length) return block.pilots;
+    return [];
+  }
+
   function viewGroup(g, modeId) {
     if (!g || !g.unit) return null;
     var noUr = state.excludeUrGlobal;
@@ -185,7 +197,7 @@
       max_damage: (noUr || noShinn)
         ? ((pilotBlock && pilotBlock.max_damage) || 0)
         : ((fullBlock && fullBlock.max_damage) || g.max_damage || 0),
-      pilots: (pilotBlock && pilotBlock.pilots) || [],
+      pilots: pilotsForGroup(g, modeId),
       is_sd: g.is_sd,
       rankings: g.rankings,
       rankings_no_ur: g.rankings_no_ur,
@@ -465,10 +477,18 @@
       var art = articles[gi++];
       if (!art) return;
       var cards = art.querySelectorAll('.msy-pilot-card:not(.msy-pilot-card--skeleton)');
-      var pilots = (row.pilots || []).slice(0, 10);
+      var pilots = pilotsForGroup(g, mode.id).slice(0, 10);
       pilots.forEach(function (p, pi) {
         var card = cards[pi];
         if (!card) return;
+        var dmgCol = card.querySelector('.msy-pilot-dmg-col');
+        if (dmgCol) {
+          var fsHtml = pilotFormulaStatHtml(p);
+          if (fsHtml && !dmgCol.querySelector('.msy-pilot-formula-stat')) {
+            dmgCol.insertAdjacentHTML('beforeend', fsHtml);
+            patched += 1;
+          }
+        }
         var open = card.querySelector('.msy-pilot-open .msy-pilot-body');
         if (!open) return;
         var skHtml = pilotSkillsHtml(p);
@@ -521,7 +541,7 @@
       page: state.page,
       settings: state.settings
     };
-    var immediate = !hadGroups && state.groups.length;
+    var immediate = (!hadGroups && state.groups.length) || state.filteredBrowse;
     scheduleContentRender(immediate);
     if (d.cache_incomplete) {
       showWarmingBanner(true, t('msy_warming_partial') || t('msy_warming') || 'Updating rankings…');
@@ -993,6 +1013,8 @@
       html += '</header>';
       if (row.pilots && row.pilots.length) {
         html += renderPilotGrid(row.pilots, u.id, mode);
+      } else if ((g.pilots && g.pilots.length) || (g.rankings && g.rankings[mode.id] && g.rankings[mode.id].pilots && g.rankings[mode.id].pilots.length)) {
+        html += renderPilotGrid(pilotsForGroup(g, mode.id), u.id, mode);
       } else if (g.pending) {
         html += renderPilotSkeletonGrid();
       } else if (!g.pending && (state.excludeUrGlobal || state.excludeShinnGlobal || state.sameRoleOnly)) {

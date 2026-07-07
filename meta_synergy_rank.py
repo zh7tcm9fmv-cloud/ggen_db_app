@@ -327,6 +327,12 @@ def _pilot_atk_for_weapon(totals, attack_attr, skill_atk_pct=0):
     return float(val)
 
 
+def _formula_char_atk_for_pair(cid, uid, lc, attack_attr, *, cp_on=True):
+    """Char ATK used in the damage formula (pair CP totals — matches calculateDamage charAtk)."""
+    totals, _ = _cached_char_pair_totals(cid, uid, lc, cp_on=cp_on)
+    return _pilot_formula_stat(totals, attack_attr)
+
+
 def _build_char_ac_calc(cid, lc):
     A = _app()
     ldc = _calc_lang_data()
@@ -1441,8 +1447,8 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
     tier_key = max(1, min(4, int(def_tier or 1)))
 
     totals, pair_ok = _cached_char_pair_totals(cid, uid, lc, cp_on=cp_on)
-    skill_dmg, skill_atk_pct = _char_skill_bonuses(cid, lc)
-    char_atk, formula_stat = _pilot_formula_stat(totals, wpn.get('attr'), skill_atk_pct)
+    skill_dmg, _skill_atk_pct = _char_skill_bonuses(cid, lc)
+    char_atk, formula_stat = _formula_char_atk_for_pair(cid, uid, lc, wpn.get('attr'), cp_on=cp_on)
     unit_atk = _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok, cp_on=cp_on)
     if pep_on:
         pep_atk_pct = _pilot_pep_unit_stat_bonus_pct(
@@ -1788,8 +1794,8 @@ def _backfill_pilot_formula_stats(g, lc, rank_mode='super_crit', kwargs=None):
         cid = A.normalize_id((pilot.get('char') or {}).get('id'))
         if not cid:
             return
-        totals = _grown_totals_for_formula(cid)
-        char_atk, formula_stat = _pilot_formula_stat(totals, attr, 0)
+        cp_on = _passive_cp_on_from_kwargs(kwargs or {})
+        char_atk, formula_stat = _formula_char_atk_for_pair(cid, uid, lc, attr, cp_on=cp_on)
         pilot['char_atk'] = char_atk
         pilot['formula_stat'] = formula_stat
 
@@ -2035,8 +2041,8 @@ def _prefilter_unit_ids(unit_rows, pilot_ids, lc, lb_tier, vigor, def_tier, excl
 def _cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc, *, cp_on=True, pep_on=True):
     """Unit×pilot damage proxy for prefilter (skills, affinity, pair ATK)."""
     totals, pair_ok = _cached_char_pair_totals(cid, uid, lc, cp_on=cp_on)
-    skill_dmg, skill_atk_pct = _char_skill_bonuses(cid, lc)
-    char_atk = _pilot_atk_for_weapon(totals, unit_wpn.get('attr'), skill_atk_pct)
+    skill_dmg, _skill_atk_pct = _char_skill_bonuses(cid, lc)
+    char_atk = float(_formula_char_atk_for_pair(cid, uid, lc, unit_wpn.get('attr'), cp_on=cp_on)[0])
     unit_atk = _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok, cp_on=cp_on)
     if pep_on:
         pep_atk_pct = _pilot_pep_unit_stat_bonus_pct(
@@ -3877,10 +3883,9 @@ def _is_ready_cached_group(g):
 
 def _preview_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc, *, cp_on=True, pep_on=True):
     """Lightweight pilot ranking for instant preview cards (no pair-total sim)."""
-    grown, _ = _char_grown(cid)
-    attr = str(unit_wpn.get('attr', '1'))
-    stat_key = {'1': 'ranged', '2': 'melee', '3': 'awaken'}.get(attr, 'melee')
-    char_atk = float(grown.get(stat_key, 0) or 0)
+    char_atk = float(_formula_char_atk_for_pair(
+        cid, uid, lc, unit_wpn.get('attr'), cp_on=cp_on,
+    )[0])
     unit_atk = _unit_atk_max(uid, info, stat_mode, lc, cid, False, cp_on=cp_on)
     if pep_on:
         pep_atk_pct = _pilot_pep_unit_stat_bonus_pct(cid, uid, lc, cp_on=cp_on, pair_ok=False)
@@ -3967,8 +3972,7 @@ def _cheap_preview_pilot_rows(uid, active_pilots, top_pilots, info, unit_wpn, st
             dmg = top_dmg
         else:
             dmg = max(1, int(round(top_dmg * float(score) / float(top_score))))
-        totals = _grown_totals_for_formula(cid)
-        char_atk, formula_stat = _pilot_formula_stat(totals, attr, 0)
+        char_atk, formula_stat = _formula_char_atk_for_pair(cid, uid, lc, attr, cp_on=cp_on)
         rows.append({
             'rank': i + 1,
             'char': _entity_brief_char(cid, lc),

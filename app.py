@@ -13878,7 +13878,8 @@ def api_meta_synergy_rankings():
             f'{lb_tier}_{def_tier}_{top_pilots}_{rank_mode}_{unit_q}_{page}_{per_page}_'
             f'{"full" if full else "page"}_{int(same_role_only)}_{hash(tuple(exclude_pairs))}'
         )
-        return jsonify_cacheable(payload, ck, public=True, max_age=3600, convert_images=True)
+        cache_max_age = 0 if (summary or payload.get('filtered_browse')) else 3600
+        return jsonify_cacheable(payload, ck, public=True, max_age=cache_max_age, convert_images=True)
     except Exception as e:
         print(f'api_meta_synergy_rankings response failed: {e}')
         import traceback
