@@ -4096,7 +4096,8 @@ def _index_shell_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, *, role_fil
 
 def _filtered_browse_row_for_uid(uid, by_uid, lc, kwargs, rank_mode, def_tier, role_filter, sort_index,
                                   *, include_skills=True):
-    """Serve cached sim rows when available; otherwise precomputed index shell (no on-demand sim)."""
+    """Cached sim when available; otherwise fast preview pilots for this page row only."""
+    del sort_index
     A = _app()
     uid = A.normalize_id(uid)
     g = by_uid.get(uid)
@@ -4104,6 +4105,7 @@ def _filtered_browse_row_for_uid(uid, by_uid, lc, kwargs, rank_mode, def_tier, r
         row = _group_for_def_tier(g, def_tier) if g.get('rankings_by_tier') else g
         if row:
             row = _ensure_passive_variant_for_request(row, lc, rank_mode, def_tier, kwargs)
+            row = _backfill_pilot_formula_stats(row, lc, rank_mode, kwargs)
             if include_skills:
                 _ensure_group_enriched(row, lc, rank_mode, include_skills=True)
             norm = _normalize_group_for_mode(row, rank_mode)
@@ -4113,11 +4115,10 @@ def _filtered_browse_row_for_uid(uid, by_uid, lc, kwargs, rank_mode, def_tier, r
                     norm = dict(norm)
                     norm['unit'] = _entity_brief_unit(u.get('id'), lc, role_filter=role_filter)
                 return norm
-    shell = _index_shell_group_for_uid(
-        uid, lc, kwargs, rank_mode, def_tier, role_filter=role_filter, sort_index=sort_index,
-    )
-    norm = _normalize_group_for_mode(shell, rank_mode)
-    return norm or shell
+    preview = _preview_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, role_filter=role_filter)
+    preview = _backfill_pilot_formula_stats(preview, lc, rank_mode, kwargs)
+    norm = _normalize_group_for_mode(preview, rank_mode)
+    return norm or preview
 
 
 def _cached_summary_from_groups(groups, *, total_pilot_candidates, rank_mode, page, per_page, vigor,
@@ -4158,6 +4159,7 @@ def _cached_summary_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
             row = _group_for_def_tier(g, dt) if g.get('rankings_by_tier') else g
             if row:
                 row = _ensure_passive_variant_for_request(row, lc, rank_mode, dt, kwargs)
+                row = _backfill_pilot_formula_stats(row, lc, rank_mode, kwargs)
                 if include_skills:
                     _ensure_group_enriched(row, lc, rank_mode, include_skills=True)
                 norm = _normalize_group_for_mode(row, rank_mode)
@@ -4248,7 +4250,6 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
     role_filter = browse.get('role_filter')
 
     if filtered_browse:
-        sort_index = _ensure_msy_sort_damage_index(lc, working_groups)
         page_groups_raw = []
         for uid in page_ids:
             uid = _app().normalize_id(uid)
@@ -4256,8 +4257,8 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
             if _is_ready_cached_group(cached):
                 page_groups_raw.append(cached)
             else:
-                page_groups_raw.append(_index_shell_group_for_uid(
-                    uid, lc, kwargs, rank_mode, dt, role_filter=role_filter, sort_index=sort_index,
+                page_groups_raw.append(_preview_group_for_uid(
+                    uid, lc, kwargs, rank_mode, dt, role_filter=role_filter,
                 ))
     else:
         page_build_cap = min(_MSY_PAGE_BUILD_LIMIT, per_page) if _msy_page_build_allowed() else 0
