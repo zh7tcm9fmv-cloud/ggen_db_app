@@ -2546,7 +2546,17 @@ def _unit_browse_sort_damage(g, rank_mode, def_tier=None):
     return block.get('max_damage') or row.get('max_damage') or 0
 
 
-def _ordered_unit_ids_for_browse(unit_ids, master_groups, lc, kwargs, rank_mode, def_tier=None):
+_CHEAP_SCORE_TO_DAMAGE = 480.0
+_MSY_ORDER_PREBUILD_LIMIT = 50
+
+
+def _estimate_uncached_unit_damage(uid, lc, kwargs):
+    """Rough super-crit peak proxy for units not yet in the master cache."""
+    return _cheap_unit_peak_score(uid, lc, kwargs) / _CHEAP_SCORE_TO_DAMAGE
+
+
+def _ordered_unit_ids_for_browse(unit_ids, master_groups, lc, kwargs, rank_mode, def_tier=None,
+                                   *, browse=None, unit_q=''):
     A = _app()
     by_uid = {}
     for g in master_groups or []:
@@ -2554,17 +2564,31 @@ def _ordered_unit_ids_for_browse(unit_ids, master_groups, lc, kwargs, rank_mode,
         if uid:
             by_uid[uid] = g
 
-    def _score(uid):
-        uid = A.normalize_id(uid)
-        g = by_uid.get(uid)
-        if g:
-            return _unit_browse_sort_damage(g, rank_mode, def_tier)
-        return _cheap_unit_peak_score(uid, lc, kwargs)
+    browse_active = _browse_filters_active(browse or {}, unit_q)
+
+    if not browse_active:
+        cached_scored = []
+        uncached_scored = []
+        for uid in unit_ids:
+            uid = A.normalize_id(uid)
+            g = by_uid.get(uid)
+            if g:
+                cached_scored.append((_unit_browse_sort_damage(g, rank_mode, def_tier), uid))
+            else:
+                uncached_scored.append((_cheap_unit_peak_score(uid, lc, kwargs), uid))
+        cached_scored.sort(key=lambda x: (-x[0], x[1]))
+        uncached_scored.sort(key=lambda x: (-x[0], x[1]))
+        return [uid for _, uid in cached_scored] + [uid for _, uid in uncached_scored]
 
     scored = []
     for uid in unit_ids:
         uid = A.normalize_id(uid)
-        scored.append((_score(uid), uid))
+        g = by_uid.get(uid)
+        if g:
+            sc = _unit_browse_sort_damage(g, rank_mode, def_tier)
+        else:
+            sc = _estimate_uncached_unit_damage(uid, lc, kwargs)
+        scored.append((sc, uid))
     scored.sort(key=lambda x: (-x[0], x[1]))
     return [uid for _, uid in scored]
 
@@ -3073,7 +3097,34 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
     page = max(1, int(page or 1))
     per_page = max(1, min(100, int(per_page or 50)))
     matching_ids = _filtered_rankable_unit_ids(lc, browse, unit_q)
-    ordered_ids = _ordered_unit_ids_for_browse(matching_ids, groups, lc, kwargs, rank_mode, def_tier=dt)
+    working_groups = list(groups or [])
+    browse_active = _browse_filters_active(browse, unit_q)
+    if browse_active and len(matching_ids) <= _MSY_ORDER_PREBUILD_LIMIT and _msy_page_build_allowed():
+        kwargs_pre = dict(kwargs)
+        kwargs_pre['def_tier'] = dt
+        existing = {
+            _app().normalize_id((g.get('unit') or {}).get('id'))
+            for g in working_groups
+            if (g.get('unit') or {}).get('id')
+        }
+        uncached_match = [
+            uid for uid in matching_ids
+            if _app().normalize_id(uid) not in existing
+        ]
+        if uncached_match:
+            built = _resolve_groups_for_unit_ids(
+                uncached_match, working_groups, lc, kwargs_pre, browse_fast=True, def_tier=dt,
+                max_build=len(uncached_match), page_build_lite=True,
+                build_budget_sec=min(60.0, _MSY_PAGE_BUILD_BUDGET_SEC * 2),
+            )
+            if built:
+                working_groups.extend(built)
+                if cache_key:
+                    _merge_groups_into_cache(cache_key, built)
+    ordered_ids = _ordered_unit_ids_for_browse(
+        matching_ids, working_groups, lc, kwargs, rank_mode, def_tier=dt,
+        browse=browse, unit_q=unit_q,
+    )
     total = len(ordered_ids)
     start = (page - 1) * per_page
     page_ids = ordered_ids[start:start + per_page]
@@ -3087,7 +3138,7 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
     if filtered_browse and total <= 30:
         build_budget = min(45.0, _MSY_PAGE_BUILD_BUDGET_SEC * 1.5)
     page_groups_raw = _resolve_groups_for_unit_ids(
-        page_ids, groups, lc, kwargs_resolve, browse_fast=True, def_tier=dt,
+        page_ids, working_groups, lc, kwargs_resolve, browse_fast=True, def_tier=dt,
         max_build=page_build_cap,
         page_build_lite=True,
         build_budget_sec=build_budget,
