@@ -2474,34 +2474,39 @@ def _cheap_unit_peak_score(uid, lc, kwargs):
     return unit_atk * float(wpn.get('power') or 0)
 
 
-def _ordered_unit_ids_for_browse(unit_ids, master_groups, lc, kwargs, rank_mode):
+def _unit_browse_sort_damage(g, rank_mode, def_tier=None):
+    """Peak damage for a unit group in the active rank mode (for browse ordering)."""
+    if not g:
+        return 0
+    row = g
+    if def_tier and g.get('rankings_by_tier'):
+        row = _group_for_def_tier(g, def_tier) or g
+    rk = row.get('rankings') or {}
+    block = rk.get(rank_mode) or rk.get('super_crit') or rk.get('crit') or rk.get('normal') or {}
+    return block.get('max_damage') or row.get('max_damage') or 0
+
+
+def _ordered_unit_ids_for_browse(unit_ids, master_groups, lc, kwargs, rank_mode, def_tier=None):
+    A = _app()
     by_uid = {}
     for g in master_groups or []:
-        uid = _app().normalize_id((g.get('unit') or {}).get('id'))
+        uid = A.normalize_id((g.get('unit') or {}).get('id'))
         if uid:
             by_uid[uid] = g
 
     def _score(uid):
-        uid = _app().normalize_id(uid)
+        uid = A.normalize_id(uid)
         g = by_uid.get(uid)
         if g:
-            rk = g.get('rankings') or {}
-            block = rk.get(rank_mode) or rk.get('super_crit') or rk.get('crit') or rk.get('normal') or {}
-            return block.get('max_damage') or g.get('max_damage') or 0
+            return _unit_browse_sort_damage(g, rank_mode, def_tier)
         return _cheap_unit_peak_score(uid, lc, kwargs)
 
-    cached = []
-    uncached = []
+    scored = []
     for uid in unit_ids:
-        uid = _app().normalize_id(uid)
-        sc = _score(uid)
-        if uid in by_uid:
-            cached.append((sc, uid))
-        else:
-            uncached.append((sc, uid))
-    cached.sort(key=lambda x: (-x[0], x[1]))
-    uncached.sort(key=lambda x: (-x[0], x[1]))
-    return [uid for _, uid in cached] + [uid for _, uid in uncached]
+        uid = A.normalize_id(uid)
+        scored.append((_score(uid), uid))
+    scored.sort(key=lambda x: (-x[0], x[1]))
+    return [uid for _, uid in scored]
 
 
 def _resolve_groups_for_unit_ids(unit_ids, master_groups, lc, kwargs, *, browse_fast=False, def_tier=3,
@@ -2998,7 +3003,7 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
     page = max(1, int(page or 1))
     per_page = max(1, min(100, int(per_page or 50)))
     matching_ids = _filtered_rankable_unit_ids(lc, browse, unit_q)
-    ordered_ids = _ordered_unit_ids_for_browse(matching_ids, groups, lc, kwargs, rank_mode)
+    ordered_ids = _ordered_unit_ids_for_browse(matching_ids, groups, lc, kwargs, rank_mode, def_tier=dt)
     total = len(ordered_ids)
     start = (page - 1) * per_page
     page_ids = ordered_ids[start:start + per_page]
@@ -3020,6 +3025,10 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
             norm = _normalize_group_for_mode(row, rank_mode)
             if norm:
                 expanded.append(norm)
+    expanded.sort(key=lambda g: (
+        -_unit_browse_sort_damage(g, rank_mode, dt),
+        _app().normalize_id((g.get('unit') or {}).get('id')),
+    ))
     total_pages = max(1, (total + per_page - 1) // per_page)
     page_incomplete = len(expanded) < len(page_ids)
     role_raw = kwargs.get('role') or kwargs.get('unit_role')
