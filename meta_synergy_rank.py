@@ -3870,12 +3870,41 @@ def _get_browse_payload_cache(key):
     return entry['payload']
 
 
+def _group_quality_rank(g):
+    """Higher = better cached row (prefer full sim over preview/pending)."""
+    if not g:
+        return -1
+    if g.get('cross_role_built'):
+        return 3
+    if not g.get('pilot_preview') and not g.get('pending'):
+        return 2
+    if g.get('pilot_preview'):
+        return 1
+    return 0
+
+
+def _group_has_ranked_pilots(g, rank_mode='super_crit'):
+    """True when a group carries a real top-pilot ranking block."""
+    if not g or g.get('pending') or g.get('pilot_preview'):
+        return False
+    rm = rank_mode or 'super_crit'
+    for key in (rm, 'super_crit', 'crit', 'normal'):
+        block = (g.get('rankings') or {}).get(key)
+        if block and (block.get('pilots') or []):
+            return True
+    return bool(g.get('pilots'))
+
+
 def _set_browse_payload_cache(key, payload):
     if not key or not payload:
         return
     if payload.get('warming') or payload.get('partial'):
         return
+    if payload.get('cache_incomplete'):
+        return
     if not payload.get('groups'):
+        return
+    if any((g or {}).get('pending') or (g or {}).get('pilot_preview') for g in payload.get('groups') or []):
         return
     _rankings_browse_payload_cache[key] = {'ts': time.monotonic(), 'payload': payload}
     if len(_rankings_browse_payload_cache) > 48:
@@ -4111,9 +4140,17 @@ def _merge_groups_into_cache(cache_key, new_groups):
         merged = list(entry.get('groups') or [])
         for g in new_groups:
             uid = _app().normalize_id((g.get('unit') or {}).get('id'))
-            if uid and uid not in by_uid:
-                merged.append(g)
-                by_uid[uid] = g
+            if not uid:
+                continue
+            prev = by_uid.get(uid)
+            if prev:
+                if _group_quality_rank(g) > _group_quality_rank(prev):
+                    merged = [x for x in merged if _app().normalize_id((x.get('unit') or {}).get('id')) != uid]
+                    merged.append(g)
+                    by_uid[uid] = g
+                continue
+            merged.append(g)
+            by_uid[uid] = g
         entry['groups'] = merged
 
 
@@ -4471,9 +4508,13 @@ def _resolve_browse_page_groups(page_ids, working_groups, lc, kwargs, rank_mode,
         if uid:
             master_by_uid[uid] = g
     page_build_cap = min(_MSY_PAGE_BUILD_LIMIT, len(page_ids or [])) if _msy_page_build_allowed() else 0
-    build_budget = _MSY_PAGE_BUILD_BUDGET_SEC
+    page_n = max(1, len(page_ids or []))
+    build_budget = max(
+        _MSY_PAGE_BUILD_BUDGET_SEC,
+        min(120.0, float(page_n) * 12.0),
+    )
     if page_ids and all(
-        _is_ready_cached_group(master_by_uid.get(_app().normalize_id(uid)))
+        _group_has_ranked_pilots(master_by_uid.get(_app().normalize_id(uid)), rank_mode)
         for uid in page_ids
     ):
         page_build_cap = 0
@@ -4496,15 +4537,26 @@ def _resolve_browse_page_groups(page_ids, working_groups, lc, kwargs, rank_mode,
     for uid in page_ids or []:
         uid = _app().normalize_id(uid)
         if uid in built_by_uid:
-            filled_raw.append(built_by_uid[uid])
-            continue
+            g = built_by_uid[uid]
+            if _group_has_ranked_pilots(g, rank_mode):
+                filled_raw.append(g)
+                continue
         cached = built_by_uid.get(uid) or master_by_uid.get(uid)
-        if _is_ready_cached_group(cached):
+        if _is_ready_cached_group(cached) and _group_has_ranked_pilots(cached, rank_mode):
             filled_raw.append(cached)
-        else:
-            filled_raw.append(_stub_group_for_uid(
-                uid, lc, kwargs, rank_mode, dt, role_filter=role_filter,
-            ))
+            continue
+        if _msy_page_build_allowed():
+            built = _build_browse_group_for_uid(
+                uid, lc, kwargs_resolve, rank_mode, dt, role_filter=role_filter,
+            )
+            if built and _group_has_ranked_pilots(built, rank_mode):
+                if cache_key:
+                    _merge_groups_into_cache(cache_key, [built])
+                filled_raw.append(built)
+                continue
+        filled_raw.append(_stub_group_for_uid(
+            uid, lc, kwargs, rank_mode, dt, role_filter=role_filter,
+        ))
     return filled_raw
 
 
