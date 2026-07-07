@@ -990,9 +990,9 @@
       html += '<div class="msy-unit-peak-val">' + fmtN(row.max_damage) + '</div>';
       html += '</div>';
       html += '</header>';
-      if (row.pilots && row.pilots.length && !g.pilot_preview) {
+      if (row.pilots && row.pilots.length) {
         html += renderPilotGrid(row.pilots, u.id, mode);
-      } else if (g.pending || g.pilot_preview) {
+      } else if (g.pending) {
         html += renderPilotSkeletonGrid();
       } else if (!g.pending && (state.excludeUrGlobal || state.excludeShinnGlobal || state.sameRoleOnly)) {
         html += '<div class="msy-pilot-empty">' + esc(t('msy_no_eligible_pilots') || 'No eligible pilots for this filter.') + '</div>';
@@ -1089,19 +1089,25 @@
   }
 
   function groupNeedsPilotBuild(g) {
-    return !!(g && (g.pending || g.pilot_preview));
+    return !!(g && g.pending);
   }
 
   function hasPendingPilotGroups() {
     return (state.groups || []).some(groupNeedsPilotBuild);
   }
 
+  function hasPreviewPilotGroups() {
+    return (state.groups || []).some(function (g) {
+      return !!(g && g.pilot_preview);
+    });
+  }
+
   async function loadRankingsPilotsBackground(loadGen) {
     var poll = 0;
-    var maxPilotPolls = 48;
+    var maxPilotPolls = 12;
     while (poll < maxPilotPolls) {
       if (loadGen !== state._loadGen) return;
-      if (!hasPendingPilotGroups()) {
+      if (!hasPendingPilotGroups() && !hasPreviewPilotGroups()) {
         showWarmingBanner(false);
         return;
       }
@@ -1115,14 +1121,18 @@
           applyPayload(d, state.defTier);
           rememberPagePayload(cacheKeyForState(), d);
           void fetchPilotSkillsBatch(state.groups);
+          if (!hasPendingPilotGroups()) {
+            showWarmingBanner(false);
+          }
         }
-        if (!d || !d.cache_incomplete || !hasPendingPilotGroups()) {
+        if (!d || !hasPreviewPilotGroups() || !d.cache_incomplete) {
           showWarmingBanner(false);
           return;
         }
         poll++;
-        await sleep(80);
+        await sleep(300);
       } catch (_) {
+        showWarmingBanner(false);
         return;
       }
     }
@@ -1130,7 +1140,7 @@
   }
 
   var MAX_LOAD_POLLS = 5;
-  var MSY_FILTER_FETCH_MS = 10000;
+  var MSY_FILTER_FETCH_MS = 1600;
   var MSY_DEFAULT_FETCH_MS = 12000;
 
   async function loadRankings(force) {
@@ -1160,7 +1170,7 @@
     var poll = 0;
     var skillsFetched = false;
     var browseFiltered = hasActiveBrowseFilters();
-    var maxPolls = browseFiltered ? 8 : MAX_LOAD_POLLS;
+    var maxPolls = browseFiltered ? 1 : MAX_LOAD_POLLS;
     var fetchMs = browseFiltered ? MSY_FILTER_FETCH_MS : MSY_DEFAULT_FETCH_MS;
     try {
       if (poll === 0) {
@@ -1176,6 +1186,7 @@
               showWarmingBanner(true, t('msy_pilot_loading') || t('msy_warming_partial') || 'Loading pilots…');
               if (browseFiltered) {
                 void loadRankingsPilotsBackground(loadGen);
+                return;
               }
             }
           }
@@ -1225,7 +1236,7 @@
           continue;
         }
 
-        if (d && d.cache_incomplete && hasPendingPilotGroups() && poll < maxPolls) {
+        if (d && d.cache_incomplete && state.groups.length < state.perPage && poll < maxPolls) {
           showWarmingBanner(true, t('msy_warming_partial') || t('msy_warming') || 'Updating rankings…');
           poll++;
           await sleep(browseFiltered ? 600 : 1400);
@@ -1236,9 +1247,6 @@
       if (!skillsFetched && state.groups.length) {
         skillsFetched = true;
         void fetchPilotSkillsBatch(state.groups);
-      }
-      if (loadGen === state._loadGen && hasPendingPilotGroups()) {
-        void loadRankingsPilotsBackground(loadGen);
       }
     } catch (e) {
       if (e && e.name === 'AbortError') return;

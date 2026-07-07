@@ -1212,10 +1212,10 @@ SHINN_EX_CHAR_ID = '1330000103'
 _MSY_BUILD_WORKERS = max(1, min(8, int(os.environ.get('MSY_BUILD_WORKERS', '6') or '6')))
 _MSY_PAGE_BUILD_LIMIT = max(0, min(40, int(os.environ.get('MSY_PAGE_BUILD_LIMIT', '40') or '40')))
 _MSY_PAGE_BUILD_BUDGET_SEC = max(5.0, min(60.0, float(os.environ.get('MSY_PAGE_BUILD_BUDGET_SEC', '18') or '18')))
-_MSY_BROWSE_BUILD_BUDGET_SEC = max(1.0, min(45.0, float(os.environ.get('MSY_BROWSE_BUILD_BUDGET_SEC', '24') or '24')))
-_MSY_BROWSE_PAGE_BUILD_LIMIT = max(0, min(20, int(os.environ.get('MSY_BROWSE_PAGE_BUILD_LIMIT', '20') or '20')))
-_MSY_LITE_PILOT_NEED = max(6, min(16, int(os.environ.get('MSY_LITE_PILOT_NEED', '10') or '10')))
-_MSY_LITE_PILOT_CAP = max(6, min(20, int(os.environ.get('MSY_LITE_PILOT_CAP', '10') or '10')))
+_MSY_BROWSE_BUILD_BUDGET_SEC = max(1.0, min(45.0, float(os.environ.get('MSY_BROWSE_BUILD_BUDGET_SEC', '14') or '14')))
+_MSY_BROWSE_PAGE_BUILD_LIMIT = max(0, min(20, int(os.environ.get('MSY_BROWSE_PAGE_BUILD_LIMIT', '12') or '12')))
+_MSY_LITE_PILOT_NEED = max(6, min(16, int(os.environ.get('MSY_LITE_PILOT_NEED', '8') or '8')))
+_MSY_LITE_PILOT_CAP = max(6, min(20, int(os.environ.get('MSY_LITE_PILOT_CAP', '8') or '8')))
 _MSY_LITE_NON_UR_RESERVE = max(2, min(6, int(os.environ.get('MSY_LITE_NON_UR_RESERVE', '4') or '4')))
 _MSY_PREVIEW_PILOT_SCAN = max(16, min(80, int(os.environ.get('MSY_PREVIEW_PILOT_SCAN', '32') or '32')))
 # Older published caches to load when the current v14 master file is missing (Railway deploy).
@@ -3725,7 +3725,7 @@ def _preview_pilot_id_sample():
 
 
 def _cheap_pilot_top_for_unit(uid, lc, kwargs, need, info, unit_wpn, stat_mode, *, non_ur_only=False):
-    """Score eligible pilots for one unit (preview estimate / fast browse)."""
+    """Score a bounded pilot sample for one unit (preview / fast browse)."""
     import heapq
     A = _app()
     uid = A.normalize_id(uid)
@@ -3740,9 +3740,13 @@ def _cheap_pilot_top_for_unit(uid, lc, kwargs, need, info, unit_wpn, stat_mode, 
             return [(sc, bp)]
         return []
     heap = []
-    for cid in _eligible_pilots_for_unit(uid, list(_pilot_pool_ids()), exclude, same_role_only=same_role_only):
+    for cid in _preview_pilot_id_sample():
         cid_n = A.normalize_id(cid)
         if cid_n in linked:
+            continue
+        if (uid, cid_n) in exclude:
+            continue
+        if same_role_only and not _pilot_role_matches_unit(uid, cid_n):
             continue
         if non_ur_only:
             ri = str((A.char_info_map.get(cid_n) or {}).get('rarity', '1'))
@@ -3774,8 +3778,13 @@ def _cheap_preview_pilot_rows(uid, active_pilots, top_pilots, info, unit_wpn, st
     )
     rows = []
     attr = str(unit_wpn.get('attr', '1'))
+    top_score = scored[0][0] if scored else 0.0
+    top_dmg = max(1, int(top_score / _CHEAP_SCORE_TO_DAMAGE)) if top_score > 0 else 1
     for i, (score, cid) in enumerate(scored):
-        dmg = max(1, int(score / _CHEAP_SCORE_TO_DAMAGE))
+        if i == 0 or top_score <= 0:
+            dmg = top_dmg
+        else:
+            dmg = max(1, int(round(top_dmg * float(score) / float(top_score))))
         totals = _grown_totals_for_formula(cid)
         char_atk, formula_stat = _pilot_formula_stat(totals, attr, 0)
         rows.append({
@@ -3797,7 +3806,7 @@ def _cheap_preview_pilot_rows(uid, active_pilots, top_pilots, info, unit_wpn, st
 
 
 def _preview_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, *, role_filter=None):
-    """Fast unit shell while full pilot sim runs — never show fake per-pilot damage."""
+    """Fast pilot preview for browse/search rows (upgraded to full sim in background)."""
     A = _app()
     uid = A.normalize_id(uid)
     info = A.unit_info_map.get(uid) or {}
@@ -3805,14 +3814,22 @@ def _preview_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, *, role_filter=
     unit_wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
     if not unit_wpn:
         return _stub_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, role_filter=role_filter)
-    scored = _cheap_pilot_top_for_unit(
-        uid, lc, kwargs, 1, info, unit_wpn, stat_mode, non_ur_only=False,
+    top_p = int(kwargs.get('top_pilots', 10) or 10)
+    pilots = _cheap_preview_pilot_rows(
+        uid, [], top_p, info, unit_wpn, stat_mode, lc, non_ur_only=False, kwargs=kwargs,
     )
-    if scored:
-        max_damage = max(1, int(scored[0][0] / _CHEAP_SCORE_TO_DAMAGE))
-    else:
-        max_damage = max(1, int(_estimate_uncached_unit_damage(uid, lc, kwargs)))
-    block = {'max_damage': max_damage, 'pilots': [], 'vigor': _VIGOR_FOR_RANK_MODE.get(rank_mode, 'super')}
+    if not pilots:
+        return _stub_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, role_filter=role_filter)
+    nu_pilots = [p for p in pilots if str((p.get('char') or {}).get('rarity') or '').upper() != 'UR']
+    max_damage = pilots[0]['score']
+    block = {'max_damage': max_damage, 'pilots': pilots, 'vigor': _VIGOR_FOR_RANK_MODE.get(rank_mode, 'super')}
+    nu_block = None
+    if nu_pilots:
+        nu_block = {
+            'max_damage': nu_pilots[0]['score'],
+            'pilots': nu_pilots[:top_p],
+            'vigor': block['vigor'],
+        }
     wi = _weapon_info_for_msy(uid, lc)
     is_sd = _is_sd_unit(uid, info)
     out = {
@@ -3820,13 +3837,14 @@ def _preview_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, *, role_filter=
         'weapon_elems': _weapon_elem_label(uid, lc),
         'weapon_info': wi,
         'max_damage': max_damage,
-        'pending': True,
         'pilot_preview': True,
         'rankings': {rank_mode: block},
-        'pilots': [],
+        'pilots': pilots,
         'is_sd': is_sd,
         'bundled_pilot_id': _bundled_pilot_id(uid) if is_sd else None,
     }
+    if nu_block:
+        out['rankings_no_ur'] = {rank_mode: nu_block}
     return out
 
 
