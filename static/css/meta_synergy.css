@@ -861,32 +861,10 @@
   min-height: 120px;
 }
 
-@keyframes msy-pilot-cascade-in {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes msy-pilot-skel-shimmer {
-  0% { opacity: 0.45; }
-  50% { opacity: 0.9; }
-  100% { opacity: 0.45; }
-}
-
-.msy-pilot-card--cascade {
-  animation: msy-pilot-cascade-in 0.38s cubic-bezier(0.22, 1, 0.36, 1) both;
-  animation-delay: calc(var(--msy-pilot-i, 0) * 52ms);
-}
-
 .msy-pilot-card--skeleton {
   pointer-events: none;
-  animation: msy-pilot-cascade-in 0.42s ease both, msy-pilot-skel-shimmer 1.4s ease-in-out infinite;
-  animation-delay: calc(var(--msy-pilot-i, 0) * 52ms), calc(var(--msy-pilot-i, 0) * 80ms);
+  opacity: 0.72;
+  animation: msy-pilot-skel-shimmer 1.6s ease-in-out infinite;
 }
 
 .msy-pilot-skel-body {
@@ -929,6 +907,12 @@
   background: rgba(90, 104, 132, 0.28);
 }
 
+@keyframes msy-pilot-skel-shimmer {
+  0% { opacity: 0.55; }
+  50% { opacity: 0.85; }
+  100% { opacity: 0.55; }
+}
+
 .msy-skel-bar {
   width: 12px;
   height: 10px;
@@ -942,9 +926,9 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .msy-pilot-card--cascade,
   .msy-pilot-card--skeleton {
     animation: none;
+    opacity: 0.72;
   }
 }
 

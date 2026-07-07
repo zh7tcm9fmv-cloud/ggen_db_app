@@ -37,6 +37,9 @@
     pageCache: {},
     _fetchCtrl: null,
     _loadGen: 0,
+    _lastRenderSig: '',
+    _contentRenderTimer: null,
+    _skillsRenderTimer: null,
   };
 
   function t(key) {
@@ -388,7 +391,93 @@
     return merged.length ? merged : next;
   }
 
+  function pilotListSignature(pilots, mode) {
+    return (pilots || []).slice(0, 10).map(function (p) {
+      var c = p.char || {};
+      return [
+        c.id || '',
+        pilotDamage(p, mode),
+        (p.active_skills && p.active_skills.length) || 0,
+        (p.affinity_matches && p.affinity_matches.length) || 0
+      ].join(':');
+    }).join(',');
+  }
+
+  function groupsRenderSignature(groups, mode) {
+    if (!mode) return '';
+    return (groups || []).map(function (g) {
+      if (!g || !g.unit) return '';
+      var row = viewGroup(g, mode.id);
+      return [
+        g.unit.id,
+        g.pending ? 'p' : '',
+        g.pilot_preview ? 'v' : '',
+        row ? row.max_damage : 0,
+        row ? pilotListSignature(row.pilots, mode) : ''
+      ].join('|');
+    }).join(';') + '::' + state.page + '::' + mode.id;
+  }
+
+  function scheduleContentRender(immediate) {
+    clearTimeout(state._contentRenderTimer);
+    if (immediate) {
+      state._contentRenderTimer = null;
+      renderContent(true);
+      return;
+    }
+    state._contentRenderTimer = setTimeout(function () {
+      state._contentRenderTimer = null;
+      renderContent(false);
+    }, 240);
+  }
+
+  function invalidateRenderSignature() {
+    state._lastRenderSig = '';
+  }
+
+  function patchPilotEnrichment(groups, mode) {
+    var host = document.getElementById('msyContent');
+    if (!host || !mode) return false;
+    var articles = host.querySelectorAll('.msy-unit-card');
+    if (!articles.length) return false;
+    var patched = 0;
+    var gi = 0;
+    (groups || []).forEach(function (g) {
+      if (!g || !g.unit) return;
+      var row = viewGroup(g, mode.id);
+      if (!row) return;
+      var art = articles[gi++];
+      if (!art) return;
+      var cards = art.querySelectorAll('.msy-pilot-card:not(.msy-pilot-card--skeleton)');
+      var pilots = (row.pilots || []).slice(0, 10);
+      pilots.forEach(function (p, pi) {
+        var card = cards[pi];
+        if (!card) return;
+        var open = card.querySelector('.msy-pilot-open .msy-pilot-body');
+        if (!open) return;
+        var skHtml = pilotSkillsHtml(p);
+        var affHtml = pilotAffinityHtml(p);
+        if (skHtml && !open.querySelector('.msy-pilot-skills')) {
+          var nameRow = open.querySelector('.msy-pilot-name-row');
+          if (nameRow) {
+            nameRow.insertAdjacentHTML('afterend', skHtml);
+            patched += 1;
+          }
+        }
+        if (affHtml && !open.querySelector('.msy-pilot-affinity')) {
+          var anchor = open.querySelector('.msy-pilot-skills') || open.querySelector('.msy-pilot-name-row');
+          if (anchor) {
+            anchor.insertAdjacentHTML('afterend', affHtml);
+            patched += 1;
+          }
+        }
+      });
+    });
+    return patched > 0;
+  }
+
   function applyPayload(d, defTier) {
+    var hadGroups = !!(state.groups && state.groups.length);
     var incoming = d.groups || [];
     if (!incoming.length && state.groups && state.groups.length && (d.cache_incomplete || d.summary)) {
       incoming = state.groups;
@@ -416,7 +505,8 @@
       page: state.page,
       settings: state.settings
     };
-    renderContent();
+    var immediate = !hadGroups && state.groups.length;
+    scheduleContentRender(immediate);
     if (d.cache_incomplete) {
       showWarmingBanner(true, t('msy_warming_partial') || t('msy_warming') || 'Updating rankings…');
     } else if (!d.warming) {
@@ -493,8 +583,13 @@
   function scheduleSkillsRender() {
     clearTimeout(state._skillsRenderTimer);
     state._skillsRenderTimer = setTimeout(function () {
-      renderContent();
-    }, 60);
+      var mode = rankModeDef(state.rankMode);
+      if (patchPilotEnrichment(state.groups, mode)) {
+        state._lastRenderSig = groupsRenderSignature(state.groups, mode);
+        return;
+      }
+      scheduleContentRender(false);
+    }, 300);
   }
 
   async function fetchPilotSkillsBatch(groups) {
@@ -777,7 +872,7 @@
     return '<div class="msy-pilot-formula-stat">' + esc(line) + '</div>';
   }
 
-  function renderPilotCard(unitId, pilot, mode, pilotIdx) {
+  function renderPilotCard(unitId, pilot, mode) {
     var c = pilot.char || {};
     var dmg = pilotDamage(pilot, mode);
     var sub = pilotFormulaStatHtml(pilot);
@@ -787,7 +882,7 @@
       sub += '<div class="msy-pilot-sub">' + esc(t('msy_crit_rate')).replace('{n}', String(pilot.crit_rate)) + '</div>';
     }
     return (
-      '<div class="msy-pilot-card msy-pilot-card--cascade" style="--msy-pilot-i:' + (pilotIdx | 0) + '">' +
+      '<div class="msy-pilot-card">' +
         '<span class="msy-pilot-rank">' + (pilot.rank || '') + '</span>' +
         '<button type="button" class="msy-pilot-open" title="' + escAttr(t('msy_open_char')) + '" onclick="GgenMetaSynergy.openDetailChar(\'' + escJs(c.id) + '\')">' +
           '<div class="msy-pilot-thumb">' + pilotThumb(c) + '</div>' +
@@ -806,9 +901,9 @@
     );
   }
 
-  function renderPilotSkeletonCard(pilotIdx) {
+  function renderPilotSkeletonCard() {
     return (
-      '<div class="msy-pilot-card msy-pilot-card--skeleton" style="--msy-pilot-i:' + (pilotIdx | 0) + '" aria-hidden="true">' +
+      '<div class="msy-pilot-card msy-pilot-card--skeleton" aria-hidden="true">' +
         '<span class="msy-pilot-rank msy-skel-bar"></span>' +
         '<div class="msy-pilot-skel-body">' +
           '<div class="msy-pilot-skel-thumb"></div>' +
@@ -827,8 +922,8 @@
     var left = [];
     var right = [];
     var i;
-    for (i = 0; i < half; i++) left.push(renderPilotSkeletonCard(i));
-    for (i = 0; i < half; i++) right.push(renderPilotSkeletonCard(half + i));
+    for (i = 0; i < half; i++) left.push(renderPilotSkeletonCard());
+    for (i = 0; i < half; i++) right.push(renderPilotSkeletonCard());
     return (
       '<div class="msy-pilot-grid msy-pilot-grid--loading" aria-busy="true">' +
         '<div class="msy-pilot-col">' + left.join('') + '</div>' +
@@ -842,12 +937,9 @@
     var half = Math.ceil(list.length / 2);
     var left = list.slice(0, half);
     var right = list.slice(half);
-    var idx = 0;
     function col(items) {
       return '<div class="msy-pilot-col">' + items.map(function (p) {
-        var html = renderPilotCard(unitId, p, mode, idx);
-        idx += 1;
-        return html;
+        return renderPilotCard(unitId, p, mode);
       }).join('') + '</div>';
     }
     return '<div class="msy-pilot-grid">' + col(left) + col(right) + '</div>';
@@ -923,9 +1015,15 @@
     host.innerHTML = h;
   }
 
-  function renderContent() {
+  function renderContent(force) {
     var mode = rankModeDef(state.rankMode);
     renderStatus();
+    var sig = groupsRenderSignature(state.groups, mode);
+    if (!force && sig === state._lastRenderSig) {
+      renderPagination();
+      return;
+    }
+    state._lastRenderSig = sig;
     var startRank = (state.page - 1) * state.perPage;
     var host = document.getElementById('msyContent');
     var empty = document.getElementById('msyEmpty');
@@ -1024,7 +1122,7 @@
       return;
     }
     if (!force && state.cacheKey === key && state.groups.length && !state.cacheIncomplete) {
-      renderContent();
+      renderContent(false);
       return;
     }
     if (state._fetchCtrl) {
@@ -1032,6 +1130,10 @@
     }
     state._fetchCtrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
     var loadGen = ++state._loadGen;
+    clearTimeout(state._contentRenderTimer);
+    clearTimeout(state._skillsRenderTimer);
+    state._contentRenderTimer = null;
+    state._skillsRenderTimer = null;
     setLoading(true, false);
     showWarmingBanner(false);
     var poll = 0;
@@ -1137,8 +1239,9 @@
       state.groups = [];
       state.total = 0;
       clearPageCache();
+      invalidateRenderSignature();
       setLoading(true, false);
-      renderContent();
+      renderContent(true);
       loadRankings(true);
     }, 300);
   }
@@ -1151,8 +1254,9 @@
       state.groups = [];
       state.total = 0;
       clearPageCache();
+      invalidateRenderSignature();
       setLoading(true, false);
-      renderContent();
+      renderContent(true);
       loadRankings(true);
     }, 250);
   }
@@ -1161,7 +1265,7 @@
     if (!rankModeDef(modeId)) return;
     if (state.rankMode === modeId && state.groups.length) {
       renderRankModes();
-      renderContent();
+      renderContent(true);
       return;
     }
     state.rankMode = modeId;
@@ -1181,20 +1285,23 @@
   function toggleExcludeShinn() {
     state.excludeShinnGlobal = !state.excludeShinnGlobal;
     syncGlobalFilterButtons();
-    renderContent();
+    invalidateRenderSignature();
+    renderContent(true);
   }
 
   function toggleExcludeUr() {
     state.excludeUrGlobal = !state.excludeUrGlobal;
     if (state.excludeUrGlobal) state.excludeShinnGlobal = true;
     syncGlobalFilterButtons();
-    renderContent();
+    invalidateRenderSignature();
+    renderContent(true);
   }
 
   function toggleCharCondPassive() {
     state.charCondPassiveOn = !state.charCondPassiveOn;
     applyLangStatic();
-    renderContent();
+    invalidateRenderSignature();
+    renderContent(true);
   }
 
   function findGroup(unitId) {
@@ -1248,7 +1355,8 @@
     state.page = next;
     state.cacheKey = null;
     state.groups = [];
-    renderContent();
+    invalidateRenderSignature();
+    renderContent(true);
     setLoading(true, false);
     loadRankings(false);
     try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (_) { window.scrollTo(0, 0); }
@@ -1265,7 +1373,8 @@
     state.cacheKey = null;
     clearPageCache();
     state.groups = [];
-    renderContent();
+    invalidateRenderSignature();
+    renderContent(true);
     setLoading(true, false);
     loadRankings(true);
   }
