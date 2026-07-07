@@ -2437,26 +2437,47 @@ def _lite_candidates_for_unit(uid, active_pilots, need, info, unit_wpn, stat_mod
     return merged[:pilot_cap]
 
 
-def _rankings_no_ur_pool_lite(uid, active_pilots, top_pilots, lc, lb_tier, def_tier, unit_wpn,
-                               need, info, stat_mode, *, def_unit_override=None, def_char_override=None,
-                               rank_mode='super_crit'):
-    """Sim max-damage rankings from the non-UR pilot pool only (lite / browse builds)."""
-    non_ur = _filter_non_ur(active_pilots)
-    if not non_ur:
+def _rankings_filtered_pool_lite(uid, active_pilots, filter_fn, top_pilots, lc, lb_tier, def_tier, unit_wpn,
+                                 need, info, stat_mode, *, def_unit_override=None, def_char_override=None,
+                                 rank_mode='super_crit'):
+    """Sim max-damage rankings from a filtered pilot pool (non-UR, non-Shinn, etc.)."""
+    filtered = filter_fn(active_pilots)
+    if not filtered:
         return {}
-    nu_scored = [
+    scored = [
         (_cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc), cid)
-        for cid in non_ur
+        for cid in filtered
     ]
-    nu_scored.sort(key=lambda x: (-x[0], x[1]))
+    scored.sort(key=lambda x: (-x[0], x[1]))
     cap = max(int(top_pilots or 10) + 2, min(need, _MSY_LITE_PILOT_CAP))
-    nu_candidates = [cid for _, cid in nu_scored[:cap]]
+    candidates = [cid for _, cid in scored[:cap]]
     pairs = _multi_vigor_pairs_for_candidates(
-        uid, nu_candidates, lc, lb_tier, def_tier, unit_wpn,
+        uid, candidates, lc, lb_tier, def_tier, unit_wpn,
         def_unit_override=def_unit_override, def_char_override=def_char_override,
         cp_on=True, lite=True, rank_mode=rank_mode,
     )
     return _rankings_from_multi_vigor_pairs(pairs, top_pilots, lc) if pairs else {}
+
+
+def _rankings_no_ur_pool_lite(uid, active_pilots, top_pilots, lc, lb_tier, def_tier, unit_wpn,
+                               need, info, stat_mode, *, def_unit_override=None, def_char_override=None,
+                               rank_mode='super_crit'):
+    """Sim max-damage rankings from the non-UR pilot pool only (lite / browse builds)."""
+    return _rankings_filtered_pool_lite(
+        uid, active_pilots, _filter_non_ur, top_pilots, lc, lb_tier, def_tier, unit_wpn,
+        need, info, stat_mode, def_unit_override=def_unit_override,
+        def_char_override=def_char_override, rank_mode=rank_mode,
+    )
+
+
+def _rankings_no_shinn_pool_lite(uid, active_pilots, top_pilots, lc, lb_tier, def_tier, unit_wpn,
+                                  need, info, stat_mode, *, def_unit_override=None, def_char_override=None,
+                                  rank_mode='super_crit'):
+    return _rankings_filtered_pool_lite(
+        uid, active_pilots, _filter_non_shinn, top_pilots, lc, lb_tier, def_tier, unit_wpn,
+        need, info, stat_mode, def_unit_override=def_unit_override,
+        def_char_override=def_char_override, rank_mode=rank_mode,
+    )
 
 
 def _rankings_variant_for_tier_lite(filter_fn, active_pilots, all_pairs, top_pilots, uid, lc, lb_tier,
@@ -2550,45 +2571,27 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
 
     def _rankings_no_ur_for_tier(dt, all_pairs):
         non_ur = _filter_non_ur(active_pilots)
+        if not non_ur:
+            return {}
         if len(non_ur) >= len(active_pilots):
             return _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc)
-        nu_cids = set(non_ur)
-        all_pairs_nu = [(cid, bv) for cid, bv in all_pairs if cid in nu_cids]
-        if not all_pairs_nu and non_ur:
-            nu_scored = []
-            for cid in non_ur:
-                nu_scored.append((
-                    _cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc),
-                    cid,
-                ))
-            nu_scored.sort(key=lambda x: (-x[0], x[1]))
-            nu_candidates = [cid for _, cid in nu_scored[:need]]
-            all_pairs_nu = _multi_vigor_pairs_for_candidates(
-                uid, nu_candidates, lc, lb_tier, dt, unit_wpn,
-                def_unit_override=def_unit_override, def_char_override=def_char_override,
-            )
-        return _rankings_from_multi_vigor_pairs(all_pairs_nu, top_pilots, lc)
+        return _rankings_no_ur_pool_lite(
+            uid, active_pilots, top_pilots, lc, lb_tier, dt, unit_wpn,
+            need, info, stat_mode, def_unit_override=def_unit_override,
+            def_char_override=def_char_override, rank_mode=rank_mode,
+        )
 
     def _rankings_no_shinn_for_tier(dt, all_pairs):
         non_shinn = _filter_non_shinn(active_pilots)
+        if not non_shinn:
+            return {}
         if len(non_shinn) >= len(active_pilots):
             return _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc)
-        ns_cids = set(non_shinn)
-        all_pairs_ns = [(cid, bv) for cid, bv in all_pairs if cid in ns_cids]
-        if not all_pairs_ns and non_shinn:
-            ns_scored = []
-            for cid in non_shinn:
-                ns_scored.append((
-                    _cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc),
-                    cid,
-                ))
-            ns_scored.sort(key=lambda x: (-x[0], x[1]))
-            ns_candidates = [cid for _, cid in ns_scored[:need]]
-            all_pairs_ns = _multi_vigor_pairs_for_candidates(
-                uid, ns_candidates, lc, lb_tier, dt, unit_wpn,
-                def_unit_override=def_unit_override, def_char_override=def_char_override,
-            )
-        return _rankings_from_multi_vigor_pairs(all_pairs_ns, top_pilots, lc)
+        return _rankings_no_shinn_pool_lite(
+            uid, active_pilots, top_pilots, lc, lb_tier, dt, unit_wpn,
+            need, info, stat_mode, def_unit_override=def_unit_override,
+            def_char_override=def_char_override, rank_mode=rank_mode,
+        )
 
     def _rankings_no_gc_for_tier(dt, all_pairs):
         non_gc = _filter_non_guaranteed_crit(uid, active_pilots, unit_wpn, lc, exclude)
@@ -2767,19 +2770,25 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
 
     def _rankings_no_ur_for_tier(dt, all_pairs):
         non_ur = _filter_non_ur(active_pilots)
+        if not non_ur:
+            return {}
         if len(non_ur) >= len(active_pilots):
             return _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc)
-        nu_cids = set(non_ur)
-        filtered = [(cid, bv) for cid, bv in all_pairs if cid in nu_cids]
-        return _rankings_from_multi_vigor_pairs(filtered, top_pilots, lc) if filtered else {}
+        return _rankings_no_ur_pool_lite(
+            uid, active_pilots, top_pilots, lc, 3, dt, unit_wpn,
+            need, info, stat_mode, rank_mode=metric,
+        )
 
     def _rankings_no_shinn_for_tier(dt, all_pairs):
         non_shinn = _filter_non_shinn(active_pilots)
+        if not non_shinn:
+            return {}
         if len(non_shinn) >= len(active_pilots):
             return _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc)
-        ns_cids = set(non_shinn)
-        filtered = [(cid, bv) for cid, bv in all_pairs if cid in ns_cids]
-        return _rankings_from_multi_vigor_pairs(filtered, top_pilots, lc) if filtered else {}
+        return _rankings_no_shinn_pool_lite(
+            uid, active_pilots, top_pilots, lc, 3, dt, unit_wpn,
+            need, info, stat_mode, rank_mode=metric,
+        )
 
     def _rankings_no_gc_for_tier(dt, all_pairs):
         non_gc = _filter_non_guaranteed_crit(uid, active_pilots, unit_wpn, lc, exclude)
@@ -4319,10 +4328,10 @@ def _cheap_preview_pilot_rows(uid, active_pilots, top_pilots, info, unit_wpn, st
 
 
 def _preview_rankings_block(uid, lc, kwargs, rank_mode, info, unit_wpn, stat_mode, top_p, *,
-                            cp_on=True, pep_on=True):
+                            cp_on=True, pep_on=True, non_ur_only=False):
     """One rank-mode preview block for a CP/PEP variant."""
     pilots = _cheap_preview_pilot_rows(
-        uid, [], top_p, info, unit_wpn, stat_mode, lc, non_ur_only=False, kwargs=kwargs,
+        uid, [], top_p, info, unit_wpn, stat_mode, lc, non_ur_only=non_ur_only, kwargs=kwargs,
         cp_on=cp_on, pep_on=pep_on,
     )
     if not pilots:
@@ -4351,26 +4360,20 @@ def _preview_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, *, role_filter=
     )
     if not block:
         return _stub_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, role_filter=role_filter)
-    pilots = block['pilots']
-    nu_pilots = [p for p in pilots if str((p.get('char') or {}).get('rarity') or '').upper() != 'UR']
-    max_damage = pilots[0]['score']
-    nu_block = None
-    if nu_pilots:
-        nu_block = {
-            'max_damage': nu_pilots[0]['score'],
-            'pilots': nu_pilots[:top_p],
-            'vigor': block['vigor'],
-        }
+    nu_block = _preview_rankings_block(
+        uid, lc, kwargs, rank_mode, info, unit_wpn, stat_mode, top_p,
+        cp_on=cp_on, pep_on=pep_on, non_ur_only=True,
+    )
     wi = _weapon_info_for_msy(uid, lc)
     is_sd = _is_sd_unit(uid, info)
     out = {
         'unit': _entity_brief_unit(uid, lc, role_filter=role_filter),
         'weapon_elems': _weapon_elem_label(uid, lc),
         'weapon_info': wi,
-        'max_damage': max_damage,
+        'max_damage': block['max_damage'],
         'pilot_preview': True,
         'rankings': {rank_mode: block},
-        'pilots': pilots,
+        'pilots': block['pilots'],
         'is_sd': is_sd,
         'bundled_pilot_id': _bundled_pilot_id(uid) if is_sd else None,
     }
