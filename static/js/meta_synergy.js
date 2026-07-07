@@ -350,6 +350,8 @@
       'include_skills=0'
     ];
     if (state.sameRoleOnly) q.push('same_role_only=1');
+    if (!state.charCondPassiveOn) q.push('cp_on=0');
+    if (!state.pilotCondPassiveOn) q.push('pep_on=0');
     if (opts.summary) q.push('summary=1');
     if (fq) q.push(fq);
     return '/api/meta_synergy_rankings?' + q.join('&');
@@ -780,9 +782,7 @@
     if (countEl) countEl.style.display = 'none';
     if (!el) return;
     var vigorLbl = t(mode.vigorLabelKey || 'dc_vigor_super');
-    var shown = state.groups.length;
-    var chips =
-      '<span class="msy-status-chip">' + esc(t('msy_status_showing').replace('{n}', fmtN(shown))) + '</span>';
+    var chips = '';
     if (state.filteredBrowse || hasActiveBrowseFilters()) {
       chips += '<span class="msy-status-chip">' + esc(t('msy_status_match').replace('{n}', fmtN(state.total))) + '</span>';
     }
@@ -1355,24 +1355,18 @@
     state.charCondPassiveOn = !state.charCondPassiveOn;
     syncGlobalFilterButtons();
     invalidateRenderSignature();
-    if (passiveToggleNeedsRefetch()) {
-      clearPageCache();
-      loadRankings(false);
-      return;
-    }
-    renderContent(true);
+    clearPageCache();
+    state.cacheKey = null;
+    loadRankings(false);
   }
 
   function togglePilotCondPassive() {
     state.pilotCondPassiveOn = !state.pilotCondPassiveOn;
     syncGlobalFilterButtons();
     invalidateRenderSignature();
-    if (passiveToggleNeedsRefetch()) {
-      clearPageCache();
-      loadRankings(false);
-      return;
-    }
-    renderContent(true);
+    clearPageCache();
+    state.cacheKey = null;
+    loadRankings(false);
   }
 
   function findGroup(unitId) {

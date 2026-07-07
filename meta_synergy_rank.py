@@ -1751,6 +1751,90 @@ def _rankings_no_cp_pep_for_tier_lite(dt, all_pairs, top_pilots, uid, lc, lb_tie
     return _rankings_from_multi_vigor_pairs(pairs_off, top_pilots, lc) if pairs_off else {}
 
 
+def _passive_cp_on_from_kwargs(kwargs):
+    v = (kwargs or {}).get('cp_on')
+    if v is None:
+        return True
+    return str(v) not in ('0', 'false', 'no', '')
+
+
+def _passive_pep_on_from_kwargs(kwargs):
+    v = (kwargs or {}).get('pep_on')
+    if v is None:
+        return True
+    return str(v) not in ('0', 'false', 'no', '')
+
+
+def _backfill_pilot_formula_stats(g, lc, rank_mode='super_crit', kwargs=None):
+    """Fill char_atk / formula_stat on pilot rows (disk cache omits these)."""
+    if not g:
+        return g
+    A = _app()
+    uid = A.normalize_id((g.get('unit') or {}).get('id'))
+    if not uid:
+        return g
+    info = A.unit_info_map.get(uid) or {}
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    unit_wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
+    if not unit_wpn:
+        return g
+    attr = str(unit_wpn.get('attr', '1'))
+
+    def _patch_pilot(pilot):
+        if not pilot:
+            return
+        cid = A.normalize_id((pilot.get('char') or {}).get('id'))
+        if not cid:
+            return
+        totals = _grown_totals_for_formula(cid)
+        char_atk, formula_stat = _pilot_formula_stat(totals, attr, 0)
+        pilot['char_atk'] = char_atk
+        pilot['formula_stat'] = formula_stat
+
+    def _patch_block(block):
+        if not block:
+            return
+        for pilot in block.get('pilots') or []:
+            _patch_pilot(pilot)
+
+    rank_mode = rank_mode or 'super_crit'
+    for key in (
+        'rankings', 'rankings_no_cp', 'rankings_no_pep', 'rankings_no_cp_pep',
+        'rankings_no_ur', 'rankings_no_shinn',
+    ):
+        rk = g.get(key)
+        if isinstance(rk, dict):
+            _patch_block(rk.get(rank_mode))
+    for tier_rk in (g.get('rankings_by_tier') or {}).values():
+        if isinstance(tier_rk, dict):
+            _patch_block(tier_rk.get(rank_mode))
+    for tier_map in (
+        g.get('rankings_no_cp_by_tier'), g.get('rankings_no_pep_by_tier'),
+        g.get('rankings_no_cp_pep_by_tier'),
+    ):
+        if isinstance(tier_map, dict):
+            for tier_rk in tier_map.values():
+                if isinstance(tier_rk, dict):
+                    _patch_block(tier_rk.get(rank_mode))
+    _patch_block({'pilots': g.get('pilots') or []})
+    return g
+
+
+def _ensure_passive_variant_for_request(g, lc, rank_mode, def_tier, kwargs):
+    """Backfill CP/PEP-off rankings only when the client requests that toggle state."""
+    if not g or g.get('pending'):
+        return g
+    cp_on = _passive_cp_on_from_kwargs(kwargs)
+    pep_on = _passive_pep_on_from_kwargs(kwargs)
+    if cp_on and pep_on:
+        return g
+    if not cp_on and not pep_on:
+        return _ensure_rankings_no_cp_pep(g, lc, rank_mode, def_tier, kwargs)
+    if not cp_on:
+        return _ensure_rankings_no_cp(g, lc, rank_mode, def_tier, kwargs)
+    return _ensure_rankings_no_pep(g, lc, rank_mode, def_tier, kwargs)
+
+
 def _ensure_rankings_no_cp(g, lc, rank_mode, def_tier, kwargs):
     """Backfill CP-off rankings when missing (legacy cache / fast browse builds)."""
     if not g or g.get('pending') or g.get('pilot_preview'):
@@ -3102,17 +3186,16 @@ def _ordered_unit_ids_for_browse(unit_ids, master_groups, lc, kwargs, rank_mode,
 
     if not browse_active:
         cached_scored = []
-        uncached_scored = []
+        uncached_ids = []
         for uid in unit_ids:
             uid = A.normalize_id(uid)
             g = by_uid.get(uid)
             if g:
                 cached_scored.append((_unit_browse_sort_damage(g, rank_mode, def_tier), uid))
             else:
-                uncached_scored.append((_cheap_unit_peak_score(uid, lc, kwargs), uid))
+                uncached_ids.append(uid)
         cached_scored.sort(key=lambda x: (-x[0], x[1]))
-        uncached_scored.sort(key=lambda x: (-x[0], x[1]))
-        return [uid for _, uid in cached_scored] + [uid for _, uid in uncached_scored]
+        return [uid for _, uid in cached_scored] + uncached_ids
 
     scored = []
     for uid in unit_ids:
@@ -3336,9 +3419,6 @@ def _master_cache_key(lc, kwargs):
 
 
 def _browse_payload_cache_key(lc, rank_mode, page, per_page, unit_q, def_tier, kwargs, summary_only):
-    browse = _parse_browse_filters(kwargs, lc or 'EN')
-    if not _browse_filters_active(browse, unit_q) and not summary_only:
-        return None
     return (
         lc or 'EN',
         rank_mode or 'super_crit',
@@ -3347,6 +3427,8 @@ def _browse_payload_cache_key(lc, rank_mode, page, per_page, unit_q, def_tier, k
         (unit_q or '').strip().lower(),
         int(def_tier or 3),
         bool(summary_only),
+        bool(_passive_cp_on_from_kwargs(kwargs)),
+        bool(_passive_pep_on_from_kwargs(kwargs)),
         kwargs.get('rarity') or kwargs.get('unit_rarity') or '',
         kwargs.get('role') or kwargs.get('unit_role') or '',
         kwargs.get('series_id') or '',
@@ -3375,7 +3457,9 @@ def _get_browse_payload_cache(key):
 def _set_browse_payload_cache(key, payload):
     if not key or not payload:
         return
-    if payload.get('cache_incomplete') or payload.get('warming') or payload.get('partial'):
+    if payload.get('warming') or payload.get('partial'):
+        return
+    if not payload.get('groups'):
         return
     _rankings_browse_payload_cache[key] = {'ts': time.monotonic(), 'payload': payload}
     if len(_rankings_browse_payload_cache) > 48:
@@ -3715,13 +3799,17 @@ def _is_ready_cached_group(g):
     return bool(g) and not g.get('pending') and not g.get('pilot_preview')
 
 
-def _preview_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc):
+def _preview_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc, *, cp_on=True, pep_on=True):
     """Lightweight pilot ranking for instant preview cards (no pair-total sim)."""
     grown, _ = _char_grown(cid)
     attr = str(unit_wpn.get('attr', '1'))
     stat_key = {'1': 'ranged', '2': 'melee', '3': 'awaken'}.get(attr, 'melee')
     char_atk = float(grown.get(stat_key, 0) or 0)
-    unit_atk = _unit_atk_max(uid, info, stat_mode, lc, cid, False)
+    unit_atk = _unit_atk_max(uid, info, stat_mode, lc, cid, False, cp_on=cp_on)
+    if pep_on:
+        pep_atk_pct = _pilot_pep_unit_stat_bonus_pct(cid, uid, lc, cp_on=cp_on, pair_ok=False)
+        if pep_atk_pct:
+            unit_atk = math.floor(unit_atk * (100 + pep_atk_pct) / 100)
     wp = float(unit_wpn.get('power') or 0)
     return (unit_atk + 2.0 * char_atk) * wp
 
@@ -3753,6 +3841,7 @@ def _cheap_pilot_top_for_unit(uid, lc, kwargs, need, info, unit_wpn, stat_mode, 
             return [(sc, bp)]
         return []
     heap = []
+    use_fast_score = cp_on and pep_on
     for cid in _preview_pilot_id_sample():
         cid_n = A.normalize_id(cid)
         if cid_n in linked:
@@ -3765,7 +3854,10 @@ def _cheap_pilot_top_for_unit(uid, lc, kwargs, need, info, unit_wpn, stat_mode, 
             ri = str((A.char_info_map.get(cid_n) or {}).get('rarity', '1'))
             if A.RARITY_MAP.get(ri, 'N') == 'UR':
                 continue
-        sc = _cheap_pilot_score(uid, cid_n, info, unit_wpn, stat_mode, lc, cp_on=cp_on, pep_on=pep_on)
+        if use_fast_score:
+            sc = _preview_pilot_score(uid, cid_n, info, unit_wpn, stat_mode, lc, cp_on=cp_on, pep_on=pep_on)
+        else:
+            sc = _cheap_pilot_score(uid, cid_n, info, unit_wpn, stat_mode, lc, cp_on=cp_on, pep_on=pep_on)
         if len(heap) < need:
             heapq.heappush(heap, (sc, cid_n))
         elif sc > heap[0][0]:
@@ -3845,8 +3937,10 @@ def _preview_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, *, role_filter=
     if not unit_wpn:
         return _stub_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, role_filter=role_filter)
     top_p = int(kwargs.get('top_pilots', 10) or 10)
+    cp_on = _passive_cp_on_from_kwargs(kwargs)
+    pep_on = _passive_pep_on_from_kwargs(kwargs)
     block = _preview_rankings_block(
-        uid, lc, kwargs, rank_mode, info, unit_wpn, stat_mode, top_p, cp_on=True, pep_on=True,
+        uid, lc, kwargs, rank_mode, info, unit_wpn, stat_mode, top_p, cp_on=cp_on, pep_on=pep_on,
     )
     if not block:
         return _stub_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, role_filter=role_filter)
@@ -3860,15 +3954,6 @@ def _preview_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, *, role_filter=
             'pilots': nu_pilots[:top_p],
             'vigor': block['vigor'],
         }
-    block_ncp = _preview_rankings_block(
-        uid, lc, kwargs, rank_mode, info, unit_wpn, stat_mode, top_p, cp_on=False, pep_on=True,
-    )
-    block_npep = _preview_rankings_block(
-        uid, lc, kwargs, rank_mode, info, unit_wpn, stat_mode, top_p, cp_on=True, pep_on=False,
-    )
-    block_off = _preview_rankings_block(
-        uid, lc, kwargs, rank_mode, info, unit_wpn, stat_mode, top_p, cp_on=False, pep_on=False,
-    )
     wi = _weapon_info_for_msy(uid, lc)
     is_sd = _is_sd_unit(uid, info)
     out = {
@@ -3882,12 +3967,6 @@ def _preview_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, *, role_filter=
         'is_sd': is_sd,
         'bundled_pilot_id': _bundled_pilot_id(uid) if is_sd else None,
     }
-    if block_ncp:
-        out['rankings_no_cp'] = {rank_mode: block_ncp}
-    if block_npep:
-        out['rankings_no_pep'] = {rank_mode: block_npep}
-    if block_off:
-        out['rankings_no_cp_pep'] = {rank_mode: block_off}
     if nu_block:
         out['rankings_no_ur'] = {rank_mode: nu_block}
     return out
@@ -3945,9 +4024,7 @@ def _cached_summary_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
         if _is_ready_cached_group(g):
             row = _group_for_def_tier(g, dt) if g.get('rankings_by_tier') else g
             if row:
-                row = _ensure_rankings_no_cp(row, lc, rank_mode, dt, kwargs)
-                row = _ensure_rankings_no_pep(row, lc, rank_mode, dt, kwargs)
-                row = _ensure_rankings_no_cp_pep(row, lc, rank_mode, dt, kwargs)
+                row = _ensure_passive_variant_for_request(row, lc, rank_mode, dt, kwargs)
                 if include_skills:
                     _ensure_group_enriched(row, lc, rank_mode, include_skills=True)
                 norm = _normalize_group_for_mode(row, rank_mode)
@@ -4035,6 +4112,16 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
     else:
         page_build_cap = min(_MSY_PAGE_BUILD_LIMIT, per_page) if _msy_page_build_allowed() else 0
         build_budget = _MSY_PAGE_BUILD_BUDGET_SEC
+    master_by_uid = {}
+    for g in working_groups:
+        uid = _app().normalize_id((g.get('unit') or {}).get('id'))
+        if uid:
+            master_by_uid[uid] = g
+    if page_ids and all(
+        _is_ready_cached_group(master_by_uid.get(_app().normalize_id(uid)))
+        for uid in page_ids
+    ):
+        page_build_cap = 0
     page_groups_raw = _resolve_groups_for_unit_ids(
         page_ids, working_groups, lc, kwargs_resolve, browse_fast=True, def_tier=dt,
         max_build=page_build_cap,
@@ -4068,9 +4155,8 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
     page_groups_raw = filled_raw
     expanded = []
     for g in page_groups_raw:
-        g = _ensure_rankings_no_cp(g, lc, rank_mode, dt, kwargs)
-        g = _ensure_rankings_no_pep(g, lc, rank_mode, dt, kwargs)
-        g = _ensure_rankings_no_cp_pep(g, lc, rank_mode, dt, kwargs)
+        g = _ensure_passive_variant_for_request(g, lc, rank_mode, dt, kwargs)
+        g = _backfill_pilot_formula_stats(g, lc, rank_mode, kwargs)
         _ensure_group_enriched(g, lc, rank_mode, include_skills=include_skills)
         row = _group_for_def_tier(g, dt) if g.get('rankings_by_tier') else g
         if row:

@@ -13816,6 +13816,8 @@ def api_meta_synergy_rankings():
     summary = request.args.get('summary', '0') in ('1', 'true', 'yes')
     full = request.args.get('full', '0') in ('1', 'true', 'yes')
     same_role_only = request.args.get('same_role_only', '0') in ('1', 'true', 'yes')
+    cp_on = request.args.get('cp_on', '1') not in ('0', 'false', 'no', '')
+    pep_on = request.args.get('pep_on', '1') not in ('0', 'false', 'no', '')
     exclude_pairs = []
     for part in (request.args.get('exclude') or '').split(';'):
         part = part.strip()
@@ -13854,6 +13856,8 @@ def api_meta_synergy_rankings():
             include_skills=include_skills,
             summary=summary,
             same_role_only=same_role_only,
+            cp_on=cp_on,
+            pep_on=pep_on,
         )
     except Exception as e:
         print(f'api_meta_synergy_rankings failed: {e}')
