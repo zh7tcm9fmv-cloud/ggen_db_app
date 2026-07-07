@@ -141,7 +141,7 @@
     if (!noUr && !noShinn) return fullGroupBlock(g, modeId);
     if (noUr && g.rankings_no_ur) {
       var urBlock = (g.rankings_no_ur || {})[modeId];
-      if (urBlock) {
+      if (urBlock && (urBlock.pilots || []).length) {
         if (noShinn) return rerankPilotBlock(urBlock, modeId, false, true) || urBlock;
         return urBlock;
       }
@@ -843,8 +843,6 @@
       if (row.pilots && row.pilots.length) {
         html += renderPilotGrid(row.pilots, u.id, mode);
       } else if (g.pending) {
-        html += '<div class="msy-pilot-loading">' + esc(t('msy_pilot_loading') || 'Loading pilots…') + '</div>';
-      } else if ((state.excludeUrGlobal || state.excludeShinnGlobal) && fullGroupBlock(g, mode.id) && (fullGroupBlock(g, mode.id).pilots || []).length) {
         html += '<div class="msy-pilot-loading">' + esc(t('msy_pilot_loading') || 'Loading pilots…') + '</div>';
       } else if (!g.pending && (state.excludeUrGlobal || state.excludeShinnGlobal || state.sameRoleOnly)) {
         html += '<div class="msy-pilot-empty">' + esc(t('msy_no_eligible_pilots') || 'No eligible pilots for this filter.') + '</div>';

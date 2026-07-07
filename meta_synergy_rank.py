@@ -1703,6 +1703,28 @@ def _lite_candidates_for_unit(uid, active_pilots, need, info, unit_wpn, stat_mod
     return merged[:pilot_cap]
 
 
+def _rankings_no_ur_pool_lite(uid, active_pilots, top_pilots, lc, lb_tier, def_tier, unit_wpn,
+                               need, info, stat_mode, *, def_unit_override=None, def_char_override=None,
+                               rank_mode='super_crit'):
+    """Sim max-damage rankings from the non-UR pilot pool only (lite / browse builds)."""
+    non_ur = _filter_non_ur(active_pilots)
+    if not non_ur:
+        return {}
+    nu_scored = [
+        (_cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc), cid)
+        for cid in non_ur
+    ]
+    nu_scored.sort(key=lambda x: (-x[0], x[1]))
+    cap = max(int(top_pilots or 10) + 2, min(need, _MSY_LITE_PILOT_CAP))
+    nu_candidates = [cid for _, cid in nu_scored[:cap]]
+    pairs = _multi_vigor_pairs_for_candidates(
+        uid, nu_candidates, lc, lb_tier, def_tier, unit_wpn,
+        def_unit_override=def_unit_override, def_char_override=def_char_override,
+        cp_on=True, lite=True, rank_mode=rank_mode,
+    )
+    return _rankings_from_multi_vigor_pairs(pairs, top_pilots, lc) if pairs else {}
+
+
 def _rankings_variant_for_tier_lite(filter_fn, active_pilots, all_pairs, top_pilots, uid, lc, lb_tier,
                                     def_tier, unit_wpn, need, info, stat_mode, *, def_unit_override=None,
                                     def_char_override=None, rank_mode='super_crit', browse_fast=False):
@@ -1883,10 +1905,10 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
         if lite and browse_fast:
             rankings_no_gc = rankings
             rankings_no_cp = None
-            rankings_no_ur = _rankings_variant_for_tier_lite(
-                _filter_non_ur, active_pilots, all_pairs, top_pilots, uid, lc, lb_tier, dt, unit_wpn,
+            rankings_no_ur = _rankings_no_ur_pool_lite(
+                uid, active_pilots, top_pilots, lc, lb_tier, dt, unit_wpn,
                 need, info, stat_mode, def_unit_override=def_unit_override,
-                def_char_override=def_char_override, rank_mode=rank_mode, browse_fast=True,
+                def_char_override=def_char_override, rank_mode=rank_mode,
             )
             rankings_no_shinn = _rankings_variant_for_tier_lite(
                 _filter_non_shinn, active_pilots, all_pairs, top_pilots, uid, lc, lb_tier, dt, unit_wpn,
@@ -1900,7 +1922,11 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
                 def_unit_override=def_unit_override, def_char_override=def_char_override,
                 rank_mode=rank_mode,
             )
-            rankings_no_ur = None
+            rankings_no_ur = _rankings_no_ur_pool_lite(
+                uid, active_pilots, top_pilots, lc, lb_tier, dt, unit_wpn,
+                need, info, stat_mode, def_unit_override=def_unit_override,
+                def_char_override=def_char_override, rank_mode=rank_mode,
+            )
             rankings_no_shinn = None
         else:
             rankings_no_ur = _rankings_no_ur_for_tier(dt, all_pairs)
