@@ -196,6 +196,18 @@
     max-width: none;
   }
 
+  #panel-meta_synergy .list-toolbar-left--browse > .msy-def-tier-wrap {
+    grid-column: 1 / -1;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+  }
+
+  #panel-meta_synergy .list-toolbar.msy-toolbar,
+  #panel-meta_synergy .msy-toolbar .list-toolbar-left--browse {
+    overflow: visible;
+  }
+
   #panel-supporters .list-toolbar > .list-toolbar-left,
   #panel-modifications .list-toolbar > .list-toolbar-left,
   #panel-stages .list-toolbar > .list-toolbar-left {
