@@ -13897,6 +13897,8 @@ def api_meta_synergy_rankings():
     unit_q = request.args.get('unit_q', '')
     include_skills = request.args.get('include_skills', '0') not in ('0', 'false', 'no', '')
     summary = request.args.get('summary', '0') in ('1', 'true', 'yes')
+    pilot_build_raw = request.args.get('pilot_build', '').strip()
+    pilot_build = int(pilot_build_raw) if pilot_build_raw.isdigit() else None
     full = request.args.get('full', '0') in ('1', 'true', 'yes')
     same_role_only = request.args.get('same_role_only', '0') in ('1', 'true', 'yes')
     cp_on = request.args.get('cp_on', '1') not in ('0', 'false', 'no', '')
@@ -13938,6 +13940,7 @@ def api_meta_synergy_rankings():
             exclude_pairs=exclude_pairs or None,
             include_skills=include_skills,
             summary=summary,
+            pilot_build=pilot_build,
             same_role_only=same_role_only,
             cp_on=cp_on,
             pep_on=pep_on,

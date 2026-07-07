@@ -1565,6 +1565,7 @@ _MSY_PAGE_BUILD_LIMIT = max(0, min(40, int(os.environ.get('MSY_PAGE_BUILD_LIMIT'
 _MSY_PAGE_BUILD_BUDGET_SEC = max(5.0, min(60.0, float(os.environ.get('MSY_PAGE_BUILD_BUDGET_SEC', '18') or '18')))
 _MSY_BROWSE_BUILD_BUDGET_SEC = max(1.0, min(45.0, float(os.environ.get('MSY_BROWSE_BUILD_BUDGET_SEC', '14') or '14')))
 _MSY_BROWSE_PAGE_BUILD_LIMIT = max(0, min(20, int(os.environ.get('MSY_BROWSE_PAGE_BUILD_LIMIT', '12') or '12')))
+_MSY_PILOT_BUILD_PER_REQUEST = max(1, min(4, int(os.environ.get('MSY_PILOT_BUILD_PER_REQUEST', '2') or '2')))
 _MSY_LITE_PILOT_NEED = max(6, min(16, int(os.environ.get('MSY_LITE_PILOT_NEED', '8') or '8')))
 _MSY_LITE_PILOT_CAP = max(6, min(20, int(os.environ.get('MSY_LITE_PILOT_CAP', '8') or '8')))
 _MSY_LITE_NON_UR_RESERVE = max(2, min(6, int(os.environ.get('MSY_LITE_NON_UR_RESERVE', '4') or '4')))
@@ -3904,7 +3905,7 @@ def _set_browse_payload_cache(key, payload):
         return
     if not payload.get('groups'):
         return
-    if any((g or {}).get('pending') or (g or {}).get('pilot_preview') for g in payload.get('groups') or []):
+    if any((g or {}).get('pending') or (g or {}).get('pilot_preview') or (g or {}).get('index_only') for g in payload.get('groups') or []):
         return
     _rankings_browse_payload_cache[key] = {'ts': time.monotonic(), 'payload': payload}
     if len(_rankings_browse_payload_cache) > 48:
@@ -4497,8 +4498,9 @@ def _build_browse_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, *, role_fi
 
 
 def _resolve_browse_page_groups(page_ids, working_groups, lc, kwargs, rank_mode, def_tier, *,
-                                unit_q='', cache_key=None, role_filter=None):
-    """Page units: master cache first, then bounded on-demand real sim (never cheap preview)."""
+                                unit_q='', cache_key=None, role_filter=None, pilot_build_limit=None):
+    """Page units: cache first; bounded real-sim builds; instant index shells for the rest."""
+    del unit_q
     dt = max(1, min(4, int(def_tier or 3)))
     kwargs_resolve = dict(kwargs)
     kwargs_resolve['def_tier'] = dt
@@ -4507,57 +4509,63 @@ def _resolve_browse_page_groups(page_ids, working_groups, lc, kwargs, rank_mode,
         uid = _app().normalize_id((g.get('unit') or {}).get('id'))
         if uid:
             master_by_uid[uid] = g
-    page_build_cap = min(_MSY_PAGE_BUILD_LIMIT, len(page_ids or [])) if _msy_page_build_allowed() else 0
-    page_n = max(1, len(page_ids or []))
-    build_budget = max(
-        _MSY_PAGE_BUILD_BUDGET_SEC,
-        min(120.0, float(page_n) * 12.0),
-    )
-    if page_ids and all(
-        _group_has_ranked_pilots(master_by_uid.get(_app().normalize_id(uid)), rank_mode)
-        for uid in page_ids
-    ):
-        page_build_cap = 0
-    page_groups_raw = _resolve_groups_for_unit_ids(
-        page_ids, working_groups, lc, kwargs_resolve, browse_fast=True, def_tier=dt,
-        max_build=page_build_cap,
-        page_build_lite=True,
-        build_budget_sec=build_budget,
-        rank_mode=rank_mode,
-        unit_q=unit_q,
-    )
-    if cache_key:
-        _merge_groups_into_cache(cache_key, page_groups_raw)
+    sort_index = _ensure_msy_sort_damage_index(lc, working_groups)
+    if pilot_build_limit is None:
+        pilot_build_limit = _MSY_PILOT_BUILD_PER_REQUEST
+    pilot_build_limit = max(0, int(pilot_build_limit or 0))
+
+    def _shell(uid):
+        shell = _index_shell_group_for_uid(
+            uid, lc, kwargs, rank_mode, dt, role_filter=role_filter, sort_index=sort_index,
+        )
+        if pilot_build_limit > 0:
+            shell = dict(shell)
+            shell['pending'] = True
+        return shell
+
+    if pilot_build_limit == 0:
+        out = []
+        for uid in page_ids or []:
+            uid = _app().normalize_id(uid)
+            cached = master_by_uid.get(uid)
+            if cached and _group_has_ranked_pilots(cached, rank_mode):
+                out.append(cached)
+            else:
+                out.append(_index_shell_group_for_uid(
+                    uid, lc, kwargs, rank_mode, dt, role_filter=role_filter, sort_index=sort_index,
+                ))
+        return out
+
     built_by_uid = {}
-    for g in page_groups_raw:
-        uid = _app().normalize_id((g.get('unit') or {}).get('id'))
-        if uid:
-            built_by_uid[uid] = g
-    filled_raw = []
+    built_count = 0
     for uid in page_ids or []:
         uid = _app().normalize_id(uid)
-        if uid in built_by_uid:
-            g = built_by_uid[uid]
-            if _group_has_ranked_pilots(g, rank_mode):
-                filled_raw.append(g)
-                continue
-        cached = built_by_uid.get(uid) or master_by_uid.get(uid)
-        if _is_ready_cached_group(cached) and _group_has_ranked_pilots(cached, rank_mode):
-            filled_raw.append(cached)
+        cached = master_by_uid.get(uid)
+        if cached and _group_has_ranked_pilots(cached, rank_mode):
             continue
-        if _msy_page_build_allowed():
-            built = _build_browse_group_for_uid(
-                uid, lc, kwargs_resolve, rank_mode, dt, role_filter=role_filter,
-            )
-            if built and _group_has_ranked_pilots(built, rank_mode):
-                if cache_key:
-                    _merge_groups_into_cache(cache_key, [built])
-                filled_raw.append(built)
-                continue
-        filled_raw.append(_stub_group_for_uid(
-            uid, lc, kwargs, rank_mode, dt, role_filter=role_filter,
-        ))
-    return filled_raw
+        if built_count >= pilot_build_limit or not _msy_page_build_allowed():
+            continue
+        built = _build_browse_group_for_uid(
+            uid, lc, kwargs_resolve, rank_mode, dt, role_filter=role_filter,
+        )
+        if built and _group_has_ranked_pilots(built, rank_mode):
+            if cache_key:
+                _merge_groups_into_cache(cache_key, [built])
+            built_by_uid[uid] = built
+            built_count += 1
+
+    out = []
+    for uid in page_ids or []:
+        uid = _app().normalize_id(uid)
+        cached = master_by_uid.get(uid)
+        if cached and _group_has_ranked_pilots(cached, rank_mode):
+            out.append(cached)
+            continue
+        if uid in built_by_uid:
+            out.append(built_by_uid[uid])
+            continue
+        out.append(_shell(uid))
+    return out
 
 
 def _filtered_browse_row_for_uid(uid, by_uid, lc, kwargs, rank_mode, def_tier, role_filter, sort_index,
@@ -4621,7 +4629,7 @@ def _cached_summary_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
     if browse_active:
         page_groups_raw = _resolve_browse_page_groups(
             page_ids, working_groups, lc, kwargs, rank_mode, dt,
-            unit_q=unit_q, role_filter=role_filter,
+            unit_q=unit_q, role_filter=role_filter, pilot_build_limit=0,
         )
         expanded = []
         for g in page_groups_raw:
@@ -4687,7 +4695,9 @@ def _cached_summary_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
         'def_tier': dt,
         'defender_tiers': defender_tiers_public(),
         'summary': True,
-        'cache_incomplete': any(g.get('pilot_preview') or g.get('pending') for g in expanded),
+        'cache_incomplete': any(
+            not _group_has_ranked_pilots(g, rank_mode) for g in expanded
+        ),
         'index_browse': browse_active,
         'filtered_browse': browse_active,
         'settings': {
@@ -4727,9 +4737,13 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
     start = (page - 1) * per_page
     page_ids = ordered_ids[start:start + per_page]
     role_filter = browse.get('role_filter')
+    pilot_build_limit = kwargs.get('pilot_build')
+    if pilot_build_limit is None:
+        pilot_build_limit = _MSY_PILOT_BUILD_PER_REQUEST
     page_groups_raw = _resolve_browse_page_groups(
         page_ids, working_groups, lc, kwargs, rank_mode, dt,
         unit_q=unit_q, cache_key=cache_key, role_filter=role_filter,
+        pilot_build_limit=pilot_build_limit,
     )
     expanded = []
     for g in page_groups_raw:
@@ -4750,7 +4764,9 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
         _app().normalize_id((g.get('unit') or {}).get('id')),
     ))
     total_pages = max(1, (total + per_page - 1) // per_page)
-    page_incomplete = any(g.get('pending') or g.get('pilot_preview') for g in expanded) or len(expanded) < len(page_ids)
+    page_incomplete = any(
+        not _group_has_ranked_pilots(g, rank_mode) for g in expanded
+    ) or len(expanded) < len(page_ids)
     role_raw = kwargs.get('role') or kwargs.get('unit_role')
     if role_raw is None or str(role_raw).upper() in ('ALL', ''):
         role_filter = None
@@ -4878,6 +4894,11 @@ def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
     def_tier = max(1, min(4, int(kwargs.pop('def_tier', 1) or 1)))
     include_skills = kwargs.pop('include_skills', True)
     summary_only = kwargs.pop('summary', False)
+    pilot_build = kwargs.pop('pilot_build', None)
+    if summary_only:
+        kwargs['pilot_build'] = 0
+    elif pilot_build is not None:
+        kwargs['pilot_build'] = max(0, min(4, int(pilot_build or 0)))
     if isinstance(include_skills, str):
         include_skills = include_skills not in ('0', 'false', 'no', '')
     vigor = _VIGOR_FOR_RANK_MODE.get(rank_mode, kwargs.pop('vigor', 'super') or 'super')
