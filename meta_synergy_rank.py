@@ -3715,25 +3715,26 @@ def _ensure_group_enriched(g, lc, rank_mode='super_crit', include_skills=True):
     return g
 
 
+def _slim_variant_rankings_if_populated(rankings, rank_mode):
+    """Slim CP/PEP variant blobs only when they contain pilot rows (skip empty shells)."""
+    if not rankings:
+        return None
+    slim = _slim_rankings_for_mode(rankings, rank_mode)
+    block = (slim or {}).get(rank_mode) or {}
+    if block.get('pilots'):
+        return slim
+    return None
+
+
 def _normalize_group_for_mode(g, rank_mode):
     block = (g.get('rankings') or {}).get(rank_mode)
     if block:
         rankings = _slim_rankings_for_mode(g.get('rankings'), rank_mode)
-        rankings_no_cp = g.get('rankings_no_cp')
-        if rankings_no_cp:
-            rankings_no_cp = _slim_rankings_for_mode(rankings_no_cp, rank_mode)
-        rankings_no_pep = g.get('rankings_no_pep')
-        if rankings_no_pep:
-            rankings_no_pep = _slim_rankings_for_mode(rankings_no_pep, rank_mode)
-        rankings_no_cp_pep = g.get('rankings_no_cp_pep')
-        if rankings_no_cp_pep:
-            rankings_no_cp_pep = _slim_rankings_for_mode(rankings_no_cp_pep, rank_mode)
-        rankings_no_ur = g.get('rankings_no_ur')
-        if rankings_no_ur:
-            rankings_no_ur = _slim_rankings_for_mode(rankings_no_ur, rank_mode)
-        rankings_no_shinn = g.get('rankings_no_shinn')
-        if rankings_no_shinn:
-            rankings_no_shinn = _slim_rankings_for_mode(rankings_no_shinn, rank_mode)
+        rankings_no_cp = _slim_variant_rankings_if_populated(g.get('rankings_no_cp'), rank_mode)
+        rankings_no_pep = _slim_variant_rankings_if_populated(g.get('rankings_no_pep'), rank_mode)
+        rankings_no_cp_pep = _slim_variant_rankings_if_populated(g.get('rankings_no_cp_pep'), rank_mode)
+        rankings_no_ur = _slim_variant_rankings_if_populated(g.get('rankings_no_ur'), rank_mode)
+        rankings_no_shinn = _slim_variant_rankings_if_populated(g.get('rankings_no_shinn'), rank_mode)
         return {
             'unit': g.get('unit'),
             'weapon_elems': g.get('weapon_elems'),

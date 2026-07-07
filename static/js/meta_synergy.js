@@ -126,18 +126,22 @@
     return { max_damage: scored[0].score, pilots: pilots, vigor: block.vigor };
   }
 
+  function blockHasPilots(block) {
+    return !!(block && block.pilots && block.pilots.length);
+  }
+
   function fullGroupBlock(g, modeId) {
     if (!g) return null;
     var block = null;
     if (!state.charCondPassiveOn && !state.pilotCondPassiveOn && g.rankings_no_cp_pep) {
       var offBlock = (g.rankings_no_cp_pep || {})[modeId];
-      if (offBlock) block = offBlock;
+      if (blockHasPilots(offBlock)) block = offBlock;
     } else if (!state.charCondPassiveOn && g.rankings_no_cp) {
       var cpBlock = (g.rankings_no_cp || {})[modeId];
-      if (cpBlock) block = cpBlock;
+      if (blockHasPilots(cpBlock)) block = cpBlock;
     } else if (!state.pilotCondPassiveOn && g.rankings_no_pep) {
       var pepBlock = (g.rankings_no_pep || {})[modeId];
-      if (pepBlock) block = pepBlock;
+      if (blockHasPilots(pepBlock)) block = pepBlock;
     }
     if (!block) {
       block = (g.rankings || {})[modeId];
@@ -195,7 +199,7 @@
       weapon_elems: g.weapon_elems,
       weapon_info: g.weapon_info,
       max_damage: (noUr || noShinn)
-        ? ((pilotBlock && pilotBlock.max_damage) || 0)
+        ? ((pilotBlock && blockHasPilots(pilotBlock) && pilotBlock.max_damage) || g.max_damage || 0)
         : ((fullBlock && fullBlock.max_damage) || g.max_damage || 0),
       pilots: pilotsForGroup(g, modeId),
       is_sd: g.is_sd,
@@ -1011,10 +1015,9 @@
       html += '<div class="msy-unit-peak-val">' + fmtN(row.max_damage) + '</div>';
       html += '</div>';
       html += '</header>';
-      if (row.pilots && row.pilots.length) {
-        html += renderPilotGrid(row.pilots, u.id, mode);
-      } else if ((g.pilots && g.pilots.length) || (g.rankings && g.rankings[mode.id] && g.rankings[mode.id].pilots && g.rankings[mode.id].pilots.length)) {
-        html += renderPilotGrid(pilotsForGroup(g, mode.id), u.id, mode);
+      var gridPilots = pilotsForGroup(g, mode.id);
+      if (gridPilots.length) {
+        html += renderPilotGrid(gridPilots, u.id, mode);
       } else if (g.pending) {
         html += renderPilotSkeletonGrid();
       } else if (!g.pending && (state.excludeUrGlobal || state.excludeShinnGlobal || state.sameRoleOnly)) {
