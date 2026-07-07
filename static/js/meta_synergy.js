@@ -1001,7 +1001,7 @@
       var rank = (startRank || 0) + gi + 1;
       var u = row.unit;
       html += '<article class="msy-unit-card' + (row.is_sd ? ' msy-unit-card--sd' : '') + '">';
-      html += '<header class="msy-unit-head">';
+      html += '<header class="msy-unit-head" role="button" tabindex="0" title="' + escAttr(t('msy_open_unit') || 'Unit') + '" onclick="GgenMetaSynergy.openDetailUnit(\'' + escJs(u.id) + '\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();GgenMetaSynergy.openDetailUnit(\'' + escJs(u.id) + '\')}">';
       html += '<span class="msy-unit-rank">' + rank + '</span>';
       html += '<div class="msy-unit-thumb">' + unitThumb(u) + '</div>';
       html += '<div class="msy-unit-main">';

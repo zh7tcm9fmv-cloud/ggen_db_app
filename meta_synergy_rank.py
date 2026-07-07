@@ -327,10 +327,200 @@ def _pilot_atk_for_weapon(totals, attack_attr, skill_atk_pct=0):
     return float(val)
 
 
+_AWAKEN_FLOOR900_LT_RE = re.compile(r'Awaken\s+of\s+less\s+than\s+900|覺醒值未滿\s*900|覚醒値が\s*900\s*未満', re.I)
+_AWAKEN_FLOOR900_TO_RE = re.compile(r'Awaken\s+to\s+900|提升至\s*900|900.*?(?:上昇|向上|する)', re.I)
+
+
+def _unit_ability_text_is_awaken_floor900(txt):
+    s = str(txt or '').replace('\r\n', '\n').replace('\n', ' ')
+    return bool(_AWAKEN_FLOOR900_LT_RE.search(s) and _AWAKEN_FLOOR900_TO_RE.search(s))
+
+
+@lru_cache(maxsize=4096)
+def _unit_grants_pilot_awaken_floor900(uid, lc, stat_mode='normal'):
+    """Mirror app.js _dcUnitGrantsPilotAwakenFloor900 (e.g. Ex-S ALICE LV 2)."""
+    A = _app()
+    uid = A.normalize_id(uid)
+    ld = _ldc(lc)
+    sm = str(stat_mode or 'normal').strip().lower()
+    for bab in A._unit_ability_entries_for_weapon_range(uid, ld, lc, sm):
+        aid = A.normalize_id(bab.get('id') or '')
+        if aid == '1015102':
+            return True
+        for d2 in bab.get('details') or []:
+            txt = str((d2 or {}).get('text') or d2 or '') if isinstance(d2, dict) else str(d2 or '')
+            if _unit_ability_text_is_awaken_floor900(txt):
+                return True
+    return False
+
+
+def _parse_skill_desc_atk_pct(blob, sid='', name=''):
+    """Mirror app.js _dcParseSkillDescAtkPct for active-skill stat %."""
+    out = {'Ranged': 0, 'Melee': 0, 'Awaken': 0}
+    s = '\n'.join(x for x in (str(blob or ''), str(name or ''), str(sid or '')) if x)
+    if not s.strip():
+        return out
+    pair_re = re.compile(
+        r'Increases?\s+(?:own\s+)?(Ranged|Melee|Awaken)\s+and\s+(Ranged|Melee|Awaken)\s+by\s*(\d+)%',
+        re.I,
+    )
+    for m in pair_re.finditer(s):
+        p = int(m.group(3) or 0)
+        out[m.group(1)] += p
+        out[m.group(2)] += p
+    m_tri = re.search(
+        r'Increases?\s+(?:own\s+)?(Ranged|Melee|Awaken)\s*,\s*(Ranged|Melee|Awaken)\s+and\s+'
+        r'(Ranged|Melee|Awaken)\s+by\s*(\d+)%',
+        s, re.I,
+    )
+    if m_tri:
+        p = int(m_tri.group(4) or 0)
+        out[m_tri.group(1)] += p
+        out[m_tri.group(2)] += p
+        out[m_tri.group(3)] += p
+    m_tri_ox = re.search(
+        r'Increases?\s+(?:own\s+)?(Ranged|Melee|Awaken)\s*,\s*(Ranged|Melee|Awaken)\s*,\s*and\s+'
+        r'(Ranged|Melee|Awaken)\s+by\s*(\d+)%',
+        s, re.I,
+    )
+    if m_tri_ox:
+        p = int(m_tri_ox.group(4) or 0)
+        out[m_tri_ox.group(1)] += p
+        out[m_tri_ox.group(2)] += p
+        out[m_tri_ox.group(3)] += p
+    for m in re.finditer(r'Increases?\s+(?:own\s+)?(Ranged|Melee|Awaken)\s+by\s*(\d+)%', s, re.I):
+        out[m.group(1)] += int(m.group(2) or 0)
+    m_atk = re.search(r'Increases?\s+(?:own\s+)?(?:ATK|Attack)\s+by\s*(\d+)%', s, re.I)
+    if m_atk:
+        p = int(m_atk.group(1) or 0)
+        out['Ranged'] += p
+        out['Melee'] += p
+        out['Awaken'] += p
+    zh_map = {'射擊值': 'Ranged', '格鬥值': 'Melee', '覺醒值': 'Awaken'}
+    m_zh = re.search(r'自身(射擊值|格鬥值|覺醒值)((?:及(?:射擊值|格鬥值|覺醒值))*)提升(\d+)%', s)
+    if m_zh:
+        p = int(m_zh.group(3) or 0)
+        k0 = zh_map.get(m_zh.group(1))
+        if k0:
+            out[k0] += p
+        for zm in re.finditer(r'及(射擊值|格鬥值|覺醒值)', m_zh.group(2) or ''):
+            kk = zh_map.get(zm.group(1))
+            if kk:
+                out[kk] += p
+    else:
+        for pat, key in (
+            (r'自身射擊值提升(\d+)%', 'Ranged'),
+            (r'自身格鬥值提升(\d+)%', 'Melee'),
+            (r'自身[覚覺]醒值提升(\d+)%', 'Awaken'),
+        ):
+            m = re.search(pat, s)
+            if m:
+                out[key] += int(m.group(1) or 0)
+    ja_map = {'射撃値': 'Ranged', '格闘値': 'Melee', '覚醒値': 'Awaken'}
+    for m in re.finditer(r'自身の(射撃値|格闘値|覚醒値)が(\d+)(?:%|％)上昇', s):
+        kk = ja_map.get(m.group(1))
+        if kk:
+            out[kk] += int(m.group(2) or 0)
+    if out['Awaken'] == 0:
+        for pat in (
+            r'覚醒ブースト\s*LV\.?\s*(\d+)',
+            r'Awaken\s+Boost\s*LV\.?\s*(\d+)',
+            r'覺醒值增幅\s*LV\.?\s*(\d+)',
+        ):
+            m = re.search(pat, s, re.I)
+            if m:
+                lv = int(m.group(1) or 0)
+                if 1 <= lv <= 5:
+                    out['Awaken'] = lv * 5
+                    break
+        if out['Awaken'] == 0 and sid:
+            id_m = re.match(r'^200170([1-5])01$', str(sid))
+            if id_m:
+                out['Awaken'] = int(id_m.group(1)) * 5
+    return out
+
+
+@lru_cache(maxsize=8192)
+def _active_skill_stat_pct(cid, lc):
+    """Sum Ranged/Melee/Awaken % from auto-enabled active skills only."""
+    A = _app()
+    ld = _ldc(lc)
+    cid = A.normalize_id(cid)
+    active_ids = _msy_auto_active_skill_ids(cid, lc)
+    out = {'Ranged': 0, 'Melee': 0, 'Awaken': 0}
+    fs = [x for x in A.extract_data_list(A.char_skill) if A.normalize_id(x.get('CharacterId', '')) == cid]
+    seen = set()
+    for sk in sorted(fs, key=lambda x: int(x.get('SortOrder', 0))):
+        sid = A.normalize_id(sk.get('CharacterSkillId') or sk.get('SkillId') or '')
+        if not sid or sid in seen or sid == '0' or sid not in active_ids:
+            continue
+        seen.add(sid)
+        resolved = A.resolve_char_skill(sid, ld, int(sk.get('SortOrder', 0)), False)
+        name = str(resolved.get('name') or '')
+        blob = '\n'.join(
+            str(x.get('text') if isinstance(x, dict) else x or '')
+            for x in (resolved.get('details') or [])
+        ) + '\n' + str(resolved.get('desc') or '')
+        add = _parse_skill_desc_atk_pct(blob, sid, name)
+        for k in out:
+            out[k] += add[k]
+    return out
+
+
+def _pilot_active_skill_pct_bonus(base, pct):
+    p = max(0, int(pct or 0))
+    b = max(0, int(base or 0))
+    if b <= 0 or p <= 0:
+        return 0
+    return math.floor(b * p / 100)
+
+
+def _pilot_skill_adjusted_stat(grown, totals, stat_name, pct):
+    """Mirror app.js _dcPilotSkillAdjustedStat: passive total + floor(base × skill%)."""
+    p = max(0, int(pct or 0))
+    passive_total = int(round(float(totals.get(stat_name, 0) or 0)))
+    if p <= 0:
+        return passive_total
+    base = max(0, int(grown.get(stat_name, 0) or 0))
+    return passive_total + _pilot_active_skill_pct_bonus(base, p)
+
+
+def _pilot_awaken_adjusted(grown, totals, uid, lc, stat_mode, pct):
+    """Mirror app.js _dcPilotAwakenAdjustedForDc."""
+    passive_total = int(round(float(totals.get('Awaken', 0) or 0)))
+    if not _unit_grants_pilot_awaken_floor900(uid, lc, stat_mode):
+        return _pilot_skill_adjusted_stat(grown, totals, 'Awaken', pct)
+    if passive_total >= 900:
+        return _pilot_skill_adjusted_stat(grown, totals, 'Awaken', pct)
+    base = max(0, int(grown.get('Awaken', 0) or 0))
+    p = max(0, int(pct or 0))
+    return 900 + (_pilot_active_skill_pct_bonus(base, p) if p > 0 else 0)
+
+
+def _char_atk_with_skills_for_pair(cid, uid, lc, attack_attr, *, cp_on=True):
+    """Char ATK for damage formula — pair CP totals + active skill % + unit awaken floor."""
+    totals, _ = _cached_char_pair_totals(cid, uid, lc, cp_on=cp_on)
+    grown, _ = _char_grown(cid)
+    sk = _active_skill_stat_pct(cid, lc)
+    info = _app().unit_info_map.get(_app().normalize_id(uid)) or {}
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    keys = _ATTACK_ATTR_TO_KEYS.get(str(attack_attr or '1'), ('Ranged',))
+    best_val = 0
+    best_key = keys[0] if keys else 'Ranged'
+    for k in keys:
+        if k == 'Awaken':
+            v = _pilot_awaken_adjusted(grown, totals, uid, lc, stat_mode, sk.get('Awaken', 0))
+        else:
+            v = _pilot_skill_adjusted_stat(grown, totals, k, sk.get(k, 0))
+        if v > best_val:
+            best_val = v
+            best_key = k
+    return int(best_val), best_key
+
+
 def _formula_char_atk_for_pair(cid, uid, lc, attack_attr, *, cp_on=True):
     """Char ATK used in the damage formula (pair CP totals — matches calculateDamage charAtk)."""
-    totals, _ = _cached_char_pair_totals(cid, uid, lc, cp_on=cp_on)
-    return _pilot_formula_stat(totals, attack_attr)
+    return _char_atk_with_skills_for_pair(cid, uid, lc, attack_attr, cp_on=cp_on)
 
 
 def _build_char_ac_calc(cid, lc):
@@ -722,6 +912,37 @@ def _char_skill_bonuses(cid, lc):
     return sum(dmg_by_base.values()), atk_pct
 
 
+def _char_active_skill_dmg_bonuses(cid, lc):
+    """Damage-dealt % from auto-enabled active skills only (matches _dcGetActiveSkillBonuses)."""
+    A = _app()
+    ld = _ldc(lc)
+    cid = A.normalize_id(cid)
+    active_ids = _msy_auto_active_skill_ids(cid, lc)
+    dmg_by_base = {}
+    fs = [x for x in A.extract_data_list(A.char_skill) if A.normalize_id(x.get('CharacterId', '')) == cid]
+    seen = set()
+    for sk in sorted(fs, key=lambda x: int(x.get('SortOrder', 0))):
+        sid = A.normalize_id(sk.get('CharacterSkillId') or sk.get('SkillId') or '')
+        if not sid or sid in seen or sid == '0' or sid not in active_ids:
+            continue
+        seen.add(sid)
+        resolved = A.resolve_char_skill(sid, ld, int(sk.get('SortOrder', 0)), False)
+        name = str(resolved.get('name') or '')
+        base = re.sub(r'\s*LV\s*\d+\s*$', '', name, flags=re.I).strip().lower()
+        blob = '\n'.join(
+            str(x.get('text') if isinstance(x, dict) else x or '')
+            for x in (resolved.get('details') or [])
+        ) + '\n' + str(resolved.get('desc') or '')
+        sk_dmg = 0
+        for m in _SKILL_DMG_RE.finditer(blob):
+            g = m.group(m.lastindex)
+            if g and str(g).isdigit():
+                sk_dmg = max(sk_dmg, int(g))
+        if sk_dmg > 0:
+            dmg_by_base[base] = max(dmg_by_base.get(base, 0), sk_dmg)
+    return sum(dmg_by_base.values())
+
+
 def _weapon_pow_lv_to_max_pct(lv):
     try:
         i = int(lv) - 1
@@ -1097,12 +1318,13 @@ def _pilot_affinity_weapon_crit(cid, uid, lc):
 def _char_skill_crit_rate(cid, lc):
     A = _app()
     cid = A.normalize_id(cid)
+    active_ids = _msy_auto_active_skill_ids(cid, lc)
     crit = 0
     fs = [x for x in A.extract_data_list(A.char_skill) if A.normalize_id(x.get('CharacterId', '')) == cid]
     seen = set()
     for sk in sorted(fs, key=lambda x: int(x.get('SortOrder', 0))):
         sid = A.normalize_id(sk.get('CharacterSkillId') or sk.get('SkillId') or '')
-        if not sid or sid in seen or sid == '0':
+        if not sid or sid in seen or sid == '0' or sid not in active_ids:
             continue
         seen.add(sid)
         resolved = A.resolve_char_skill(sid, _ldc(lc), int(sk.get('SortOrder', 0)), False)
@@ -1447,7 +1669,7 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
     tier_key = max(1, min(4, int(def_tier or 1)))
 
     totals, pair_ok = _cached_char_pair_totals(cid, uid, lc, cp_on=cp_on)
-    skill_dmg, _skill_atk_pct = _char_skill_bonuses(cid, lc)
+    skill_dmg = _char_active_skill_dmg_bonuses(cid, lc)
     char_atk, formula_stat = _formula_char_atk_for_pair(cid, uid, lc, wpn.get('attr'), cp_on=cp_on)
     unit_atk = _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok, cp_on=cp_on)
     if pep_on:
