@@ -1,0 +1,37 @@
+{
+  "EN": {
+    "pilot": "1430000105",
+    "has": true,
+    "wfx": {},
+    "tag": {
+      "acc": 0,
+      "crit": 0
+    },
+    "range": [],
+    "abs": [
+      "Increase own critical rate by 20%\nwhen piloting units with specified tags."
+    ]
+  },
+  "TW": {
+    "pilot": "1430000105",
+    "has": false,
+    "wfx": {},
+    "tag": {
+      "acc": 0,
+      "crit": 0
+    },
+    "range": [],
+    "abs": []
+  },
+  "HK": {
+    "pilot": "1430000105",
+    "has": false,
+    "wfx": {},
+    "tag": {
+      "acc": 0,
+      "crit": 0
+    },
+    "range": [],
+    "abs": []
+  }
+}

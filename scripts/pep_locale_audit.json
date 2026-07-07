@@ -1,0 +1,704 @@
+[
+  {
+    "lang": "EN",
+    "char": "1125000102",
+    "unit": "1125001450",
+    "abilities": [
+      {
+        "text": "Support Attack/Counter +1 time(s).",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      },
+      {
+        "text": "When piloting units with specified types\nand executing Support Attack/Counter,\nreduce own weapon EN consumption by 25%.",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": [
+          {
+            "id": "role_3",
+            "name": "Support Type",
+            "type": "unit_role",
+            "source": "types"
+          }
+        ]
+      },
+      {
+        "text": "Increase own ACC and EVA by 12%\nwhen piloting units with specified tags.",
+        "targets": false,
+        "wfx": false,
+        "tag": true,
+        "conds": [
+          {
+            "id": "1061",
+            "name": "NT-D",
+            "type": "unit",
+            "source": "unit_tags"
+          }
+        ]
+      },
+      {
+        "text": "Support Attack/Counter +1 time(s).",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      },
+      {
+        "text": "When piloting Unicorn Gundam (Destroy Mode / Awakened) (EX) and Vigor is Supercharged or higher, \nSupport Attack/Counter +1 time(s).",
+        "targets": true,
+        "wfx": false,
+        "tag": false,
+        "conds": [
+          {
+            "id": "1125001450",
+            "name": "Unicorn Gundam (Destroy Mode / Awakened) (EX)",
+            "type": "unit",
+            "source": "unit_ids"
+          }
+        ]
+      },
+      {
+        "text": "When piloting Unicorn Gundam (Destroy Mode / Awakened) (EX),\nimprove decrease DEF weapon effects by 5% additively.",
+        "targets": true,
+        "wfx": true,
+        "tag": false,
+        "conds": [
+          {
+            "id": "1125001450",
+            "name": "Unicorn Gundam (Destroy Mode / Awakened) (EX)",
+            "type": "unit",
+            "source": "unit_ids"
+          }
+        ]
+      },
+      {
+        "text": "Increase Awaken by 5%.",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      }
+    ],
+    "has_pilot_cond": true,
+    "wpn_fx": {
+      "def_dn": 5
+    },
+    "tag_fx": {
+      "acc": 12,
+      "crit": 0
+    }
+  },
+  {
+    "lang": "EN",
+    "char": "1400002000",
+    "unit": "1400000550",
+    "abilities": [
+      {
+        "text": "Support Attack/Counter +1 time(s).",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      },
+      {
+        "text": "When piloting units with specified types\nand executing Support Attack/Counter,\nincrease ATK by 25%.",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": [
+          {
+            "id": "role_3",
+            "name": "Support Type",
+            "type": "unit_role",
+            "source": "types"
+          }
+        ]
+      },
+      {
+        "text": "Increase Ranged and Melee by 25%.",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      },
+      {
+        "text": "Support Attack/Counter +1 time(s).",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      },
+      {
+        "text": "When piloting units with specified tags,\nincrease MP by 5.",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": [
+          {
+            "id": "1047",
+            "name": "Earth Federation Forces (AGE)",
+            "type": "unit",
+            "source": "unit_tags"
+          }
+        ]
+      },
+      {
+        "text": "When piloting Gundam AGE-2 Normal (EX), if Vigor is Supercharged or higher, \nSupport Attack/Counter +1 time(s),\nand improve increase beam damage taken weapon effects by 5% additively.",
+        "targets": true,
+        "wfx": true,
+        "tag": false,
+        "conds": [
+          {
+            "id": "1400000550",
+            "name": "Gundam AGE-2 Normal (EX)",
+            "type": "unit",
+            "source": "unit_ids"
+          }
+        ]
+      },
+      {
+        "text": "Increase Ranged by 5%.",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      }
+    ],
+    "has_pilot_cond": true,
+    "wpn_fx": {
+      "dmg_beam": 5
+    },
+    "tag_fx": {
+      "acc": 0,
+      "crit": 0
+    }
+  },
+  {
+    "lang": "TW",
+    "char": "1125000102",
+    "unit": "1125001450",
+    "abilities": [
+      {
+        "text": "「支援攻擊／反擊」+1次",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      },
+      {
+        "text": "搭乘單位含有上述「類型」，\n自身進行支援攻擊、支援反擊時，自身武裝消耗EN減輕25%",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": [
+          {
+            "id": "role_3",
+            "name": "支援型",
+            "type": "unit_role",
+            "source": "types"
+          }
+        ]
+      },
+      {
+        "text": "搭乘單位含有上述「標籤」時，\n自身命中率及閃避率提升12%",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": [
+          {
+            "id": "1061",
+            "name": "NT-D",
+            "type": "unit",
+            "source": "unit_tags"
+          }
+        ]
+      },
+      {
+        "text": "「支援攻擊／反擊」+1次",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      },
+      {
+        "text": "搭乘單位為「獨角獸鋼彈 (毀滅模式 / 覺醒) (EX)」且自身戰意為「超一擊」以上時，\n「支援攻擊／反擊」+1次",
+        "targets": true,
+        "wfx": false,
+        "tag": false,
+        "conds": [
+          {
+            "id": "1125001450",
+            "name": "獨角獸鋼彈 (毀滅模式 / 覺醒) (EX)",
+            "type": "unit",
+            "source": "unit_ids"
+          }
+        ]
+      },
+      {
+        "text": "搭乘「獨角獸鋼彈 (毀滅模式 / 覺醒) (EX)」時，\n防禦力減少的武裝效果值增加5%",
+        "targets": true,
+        "wfx": false,
+        "tag": false,
+        "conds": [
+          {
+            "id": "1125001450",
+            "name": "獨角獸鋼彈 (毀滅模式 / 覺醒) (EX)",
+            "type": "unit",
+            "source": "unit_ids"
+          }
+        ]
+      },
+      {
+        "text": "自身覺醒值提升5%",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      }
+    ],
+    "has_pilot_cond": false,
+    "wpn_fx": {
+      "def_dn": 5
+    },
+    "tag_fx": {
+      "acc": 0,
+      "crit": 0
+    }
+  },
+  {
+    "lang": "TW",
+    "char": "1400002000",
+    "unit": "1400000550",
+    "abilities": [
+      {
+        "text": "「支援攻擊／反擊」+1次",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      },
+      {
+        "text": "搭乘單位含有上述「類型」時，\n自身進行支援攻擊、支援反擊時，自身攻擊力提升25%",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": [
+          {
+            "id": "role_3",
+            "name": "支援型",
+            "type": "unit_role",
+            "source": "types"
+          }
+        ]
+      },
+      {
+        "text": "自身射擊值及格鬥值提升25%",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      },
+      {
+        "text": "「支援攻擊／反擊」+1次",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      },
+      {
+        "text": "搭乘單位含有上述「標籤」時，\n自身MP提升5",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": [
+          {
+            "id": "1047",
+            "name": "地球聯邦軍（AGE）",
+            "type": "unit",
+            "source": "unit_tags"
+          }
+        ]
+      },
+      {
+        "text": "搭乘單位為「鋼彈AGE-2 基本型 (EX)」且自身戰意為「超一擊」以上時，\n「支援攻擊／反擊」+1次\n遭光束武裝攻擊時所受損傷提升的武裝效果值增加5%",
+        "targets": true,
+        "wfx": false,
+        "tag": false,
+        "conds": [
+          {
+            "id": "1400000550",
+            "name": "鋼彈AGE-2 基本型 (EX)",
+            "type": "unit",
+            "source": "unit_ids"
+          }
+        ]
+      },
+      {
+        "text": "自身射擊值提升5%",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      }
+    ],
+    "has_pilot_cond": false,
+    "wpn_fx": {
+      "dmg_beam": 5
+    },
+    "tag_fx": {
+      "acc": 0,
+      "crit": 0
+    }
+  },
+  {
+    "lang": "HK",
+    "char": "1125000102",
+    "unit": "1125001450",
+    "abilities": [
+      {
+        "text": "「支援攻擊／反擊」+1次",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      },
+      {
+        "text": "搭乘單位含有上述「類型」，\n自身進行支援攻擊、支援反擊時，自身武裝消耗EN減輕25%",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": [
+          {
+            "id": "role_3",
+            "name": "支援型",
+            "type": "unit_role",
+            "source": "types"
+          }
+        ]
+      },
+      {
+        "text": "搭乘單位含有上述「標籤」時，\n自身命中率及閃避率提升12%",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": [
+          {
+            "id": "1061",
+            "name": "NT-D",
+            "type": "unit",
+            "source": "unit_tags"
+          }
+        ]
+      },
+      {
+        "text": "「支援攻擊／反擊」+1次",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      },
+      {
+        "text": "搭乘單位為「獨角獸高達 (破壞模式 / 覺醒) (EX)」且自身戰意為「超一擊」以上時，\n「支援攻擊／反擊」+1次",
+        "targets": true,
+        "wfx": false,
+        "tag": false,
+        "conds": [
+          {
+            "id": "1125001450",
+            "name": "獨角獸高達 (破壞模式 / 覺醒) (EX)",
+            "type": "unit",
+            "source": "unit_ids"
+          }
+        ]
+      },
+      {
+        "text": "搭乘「獨角獸高達 (破壞模式 / 覺醒) (EX)」時，\n防禦力減少的武裝效果值增加5%",
+        "targets": true,
+        "wfx": false,
+        "tag": false,
+        "conds": [
+          {
+            "id": "1125001450",
+            "name": "獨角獸高達 (破壞模式 / 覺醒) (EX)",
+            "type": "unit",
+            "source": "unit_ids"
+          }
+        ]
+      },
+      {
+        "text": "自身覺醒值提升5%",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      }
+    ],
+    "has_pilot_cond": false,
+    "wpn_fx": {
+      "def_dn": 5
+    },
+    "tag_fx": {
+      "acc": 0,
+      "crit": 0
+    }
+  },
+  {
+    "lang": "HK",
+    "char": "1400002000",
+    "unit": "1400000550",
+    "abilities": [
+      {
+        "text": "「支援攻擊／反擊」+1次",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      },
+      {
+        "text": "搭乘單位含有上述「類型」時，\n自身進行支援攻擊、支援反擊時，自身攻擊力提升25%",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": [
+          {
+            "id": "role_3",
+            "name": "支援型",
+            "type": "unit_role",
+            "source": "types"
+          }
+        ]
+      },
+      {
+        "text": "自身射擊值及格鬥值提升25%",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      },
+      {
+        "text": "「支援攻擊／反擊」+1次",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      },
+      {
+        "text": "搭乘單位含有上述「標籤」時，\n自身MP提升5",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": [
+          {
+            "id": "1047",
+            "name": "地球聯邦軍（AGE）",
+            "type": "unit",
+            "source": "unit_tags"
+          }
+        ]
+      },
+      {
+        "text": "搭乘單位為「高達AGE-2 基本型 (EX)」且自身戰意為「超一擊」以上時，\n「支援攻擊／反擊」+1次\n遭鐳射武裝攻擊時所受損傷提升的武裝效果值增加5%",
+        "targets": true,
+        "wfx": false,
+        "tag": false,
+        "conds": [
+          {
+            "id": "1400000550",
+            "name": "高達AGE-2 基本型 (EX)",
+            "type": "unit",
+            "source": "unit_ids"
+          }
+        ]
+      },
+      {
+        "text": "自身射擊值提升5%",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      }
+    ],
+    "has_pilot_cond": false,
+    "wpn_fx": {},
+    "tag_fx": {
+      "acc": 0,
+      "crit": 0
+    }
+  },
+  {
+    "lang": "JA",
+    "char": "1125000102",
+    "unit": "1125001450",
+    "abilities": [
+      {
+        "text": "「支援攻撃/反撃」+1回",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      },
+      {
+        "text": "搭乗ユニットが上記の「タイプ」を含む、自身が支援攻撃、支援反撃時\n自身の武装の消費ENが25%軽減",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": [
+          {
+            "id": "role_3",
+            "name": "支援型",
+            "type": "unit_role",
+            "source": "types"
+          }
+        ]
+      },
+      {
+        "text": "搭乗ユニットが上記の「タグ」を含む時\n自身の命中率と回避率が12%上昇",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": [
+          {
+            "id": "1061",
+            "name": "NT-D",
+            "type": "unit",
+            "source": "unit_tags"
+          }
+        ]
+      },
+      {
+        "text": "「支援攻撃/反撃」+1回",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      },
+      {
+        "text": "搭乗ユニットが「ユニコーンガンダム(デストロイモード/覚醒)(EX)」かつ、自身のテンションが「超一撃」以上の時\n「支援攻撃/反撃」+1回",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": [
+          {
+            "id": "1125001450",
+            "name": "ユニコーンガンダム(デストロイモード/覚醒)(EX)",
+            "type": "unit",
+            "source": "unit_ids"
+          }
+        ]
+      },
+      {
+        "text": "「ユニコーンガンダム(デストロイモード/覚醒)(EX)」搭乗時\n防御力減少の武装効果値が5%加算",
+        "targets": false,
+        "wfx": true,
+        "tag": false,
+        "conds": [
+          {
+            "id": "1125001450",
+            "name": "ユニコーンガンダム(デストロイモード/覚醒)(EX)",
+            "type": "unit",
+            "source": "unit_ids"
+          }
+        ]
+      },
+      {
+        "text": "自身の覚醒値が5%上昇",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      }
+    ],
+    "has_pilot_cond": false,
+    "wpn_fx": {},
+    "tag_fx": {
+      "acc": 0,
+      "crit": 0
+    }
+  },
+  {
+    "lang": "JA",
+    "char": "1400002000",
+    "unit": "1400000550",
+    "abilities": [
+      {
+        "text": "「支援攻撃/反撃」+1回",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      },
+      {
+        "text": "搭乗ユニットが上記の「タイプ」を含む、自身が支援攻撃、支援反撃時\n自身の攻撃力が25%上昇",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": [
+          {
+            "id": "role_3",
+            "name": "支援型",
+            "type": "unit_role",
+            "source": "types"
+          }
+        ]
+      },
+      {
+        "text": "自身の射撃値と格闘値が25%上昇",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      },
+      {
+        "text": "「支援攻撃/反撃」+1回",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      },
+      {
+        "text": "搭乗ユニットが上記の「タグ」を含む時\n自身のMPが5上昇",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": [
+          {
+            "id": "1047",
+            "name": "地球連邦軍(AGE)",
+            "type": "unit",
+            "source": "unit_tags"
+          }
+        ]
+      },
+      {
+        "text": "搭乗ユニットが「ガンダムAGE-2 ノーマル(EX)」かつ、自身のテンションが「超一撃」以上の時\n「支援攻撃/反撃」+1回\nビーム武装被ダメージ上昇の武装効果値が5%加算",
+        "targets": false,
+        "wfx": true,
+        "tag": false,
+        "conds": [
+          {
+            "id": "1400000550",
+            "name": "ガンダムAGE-2 ノーマル(EX)",
+            "type": "unit",
+            "source": "unit_ids"
+          }
+        ]
+      },
+      {
+        "text": "自身の射撃値が5%上昇",
+        "targets": false,
+        "wfx": false,
+        "tag": false,
+        "conds": []
+      }
+    ],
+    "has_pilot_cond": false,
+    "wpn_fx": {},
+    "tag_fx": {
+      "acc": 0,
+      "crit": 0
+    }
+  }
+]

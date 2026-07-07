@@ -1,0 +1,43 @@
+{
+  "uid": "1114000150",
+  "EN": {
+    "has": true,
+    "wfx": {},
+    "tag": {
+      "acc": 0,
+      "crit": 0
+    },
+    "pilot": "1110000102",
+    "abs": []
+  },
+  "TW": {
+    "has": true,
+    "wfx": {},
+    "tag": {
+      "acc": 0,
+      "crit": 0
+    },
+    "pilot": "1110000102",
+    "abs": []
+  },
+  "HK": {
+    "has": true,
+    "wfx": {},
+    "tag": {
+      "acc": 0,
+      "crit": 0
+    },
+    "pilot": "1110000102",
+    "abs": []
+  },
+  "JA": {
+    "has": false,
+    "wfx": {},
+    "tag": {
+      "acc": 0,
+      "crit": 0
+    },
+    "pilot": "1110000102",
+    "abs": []
+  }
+}

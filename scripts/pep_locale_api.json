@@ -1,0 +1,90 @@
+{
+  "EN_unicorn": {
+    "has_pilot": true,
+    "wpn_fx": {
+      "def_dn": 5
+    },
+    "tag": {
+      "acc": 12,
+      "crit": 0
+    },
+    "traits": [
+      "Absolute Hit\nIgnore weapon attribute damage reduction.",
+      "Inflict \"DEF Down 35%\" on the enemy [1 turn]."
+    ]
+  },
+  "EN_age": {
+    "has_pilot": true,
+    "wpn_fx": {
+      "dmg_beam": 5
+    },
+    "traits": [
+      "Absolute Hit\nIgnore weapon attribute damage reduction.",
+      "Inflict \"Damage Taken from Beam Weapons Up 35%\" on the enemy [1 turn]."
+    ],
+    "weapon": "AGE System EX"
+  },
+  "TW_unicorn": {
+    "has_pilot": false,
+    "wpn_fx": {},
+    "tag": {
+      "acc": 0,
+      "crit": 0
+    },
+    "traits": [
+      "絕對命中\n武裝屬性損傷減輕無效",
+      "賦予敵方「防禦力減少35%」（1回合）"
+    ]
+  },
+  "TW_age": {
+    "has_pilot": false,
+    "wpn_fx": {},
+    "traits": [
+      "絕對命中\n武裝屬性損傷減輕無效",
+      "賦予敵方「遭光束武裝攻擊時，受到的損傷提升35%」（1回合）"
+    ],
+    "weapon": "AGE系統 EX"
+  },
+  "HK_unicorn": {
+    "has_pilot": false,
+    "wpn_fx": {},
+    "tag": {
+      "acc": 0,
+      "crit": 0
+    },
+    "traits": [
+      "絕對命中\n武裝屬性損傷減輕無效",
+      "賦予敵方「防禦力減少35%」（1回合）"
+    ]
+  },
+  "HK_age": {
+    "has_pilot": false,
+    "wpn_fx": {},
+    "traits": [
+      "絕對命中\n武裝屬性損傷減輕無效",
+      "賦予敵方「遭鐳射武裝攻擊時，受到的損傷提升35%」（1回合）"
+    ],
+    "weapon": "AGE系統 EX"
+  },
+  "JA_unicorn": {
+    "has_pilot": false,
+    "wpn_fx": {},
+    "tag": {
+      "acc": 0,
+      "crit": 0
+    },
+    "traits": [
+      "絶対命中\n武装属性ダメージ軽減無効",
+      "敵に「防御力35%減少」を付与（1ターン）"
+    ]
+  },
+  "JA_age": {
+    "has_pilot": false,
+    "wpn_fx": {},
+    "traits": [
+      "絶対命中\n武装属性ダメージ軽減無効",
+      "敵に「ビーム武装による被ダメージ35%上昇」を付与（1ターン）"
+    ],
+    "weapon": "AGEシステム EX"
+  }
+}

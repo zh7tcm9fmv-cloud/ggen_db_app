@@ -1,0 +1,17 @@
+{
+  "TW": {
+    "unit": "畢格‧朗格 (EX)",
+    "targets": true,
+    "squad": false
+  },
+  "HK": {
+    "unit": "比格‧朗格 (EX)",
+    "targets": false,
+    "squad": false
+  },
+  "EN": {
+    "unit": "Big-Rang (EX)",
+    "targets": false,
+    "squad": false
+  }
+}
