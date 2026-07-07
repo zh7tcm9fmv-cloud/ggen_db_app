@@ -781,6 +781,13 @@
   font-variant-numeric: tabular-nums;
 }
 
+.msy-pilot-loading {
+  font-size: 11px;
+  color: var(--text-muted);
+  padding: 10px 12px 14px;
+  font-style: italic;
+}
+
 .msy-unit-peak {
   flex-shrink: 0;
   text-align: right;

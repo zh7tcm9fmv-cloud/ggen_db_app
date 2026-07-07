@@ -273,6 +273,7 @@
       'per_page=' + encodeURIComponent(String(state.perPage)),
       'include_skills=0'
     ];
+    if (opts.summary) q.push('summary=1');
     if (fq) q.push(fq);
     return '/api/meta_synergy_rankings?' + q.join('&');
   }
@@ -722,6 +723,8 @@
       html += '</header>';
       if (row.pilots && row.pilots.length) {
         html += renderPilotGrid(row.pilots, u.id, mode);
+      } else if (g.pending) {
+        html += '<div class="msy-pilot-loading">' + esc(t('msy_pilot_loading') || 'Loading pilots…') + '</div>';
       } else if (state.excludeUrGlobal || state.excludeShinnGlobal) {
         html += '<div class="msy-pilot-empty">' + esc(t('msy_no_eligible_pilots') || 'No eligible pilots for this filter.') + '</div>';
       }
@@ -810,7 +813,7 @@
     if (el) state.unitQ = expandedUnitSearchQuery(el.value.trim());
   }
 
-  var MAX_LOAD_POLLS = 2;
+  var MAX_LOAD_POLLS = 5;
 
   async function loadRankings(force) {
     syncSearchFromDom();
@@ -834,12 +837,31 @@
     showWarmingBanner(false);
     var poll = 0;
     var skillsFetched = false;
+    var browseFiltered = !!buildFilterQuery() || !!(state.unitQ || '').trim();
     try {
+      if (browseFiltered && poll === 0 && !force) {
+        var summaryOpts = { credentials: 'same-origin' };
+        if (state._fetchCtrl) summaryOpts.signal = state._fetchCtrl.signal;
+        try {
+          var sumRes = await fetch(buildApiUrl({ summary: true }), summaryOpts);
+          if (sumRes.ok && loadGen === state._loadGen) {
+            var sumData = await sumRes.json();
+            if (sumData && sumData.groups && sumData.groups.length) {
+              applyPayload(sumData, state.defTier);
+              setLoading(true, false);
+              showWarmingBanner(true, t('msy_pilot_loading') || t('msy_warming_partial') || 'Loading pilots…');
+            }
+          }
+        } catch (sumErr) {
+          if (!(sumErr && sumErr.name === 'AbortError')) { /* continue to full fetch */ }
+          else return;
+        }
+      }
       while (poll <= MAX_LOAD_POLLS) {
         if (loadGen !== state._loadGen) return;
         var fetchOpts = { credentials: 'same-origin' };
         if (state._fetchCtrl) fetchOpts.signal = state._fetchCtrl.signal;
-        var timeoutMs = poll === 0 ? 55000 : 35000;
+        var timeoutMs = poll === 0 ? (browseFiltered ? 22000 : 55000) : (browseFiltered ? 16000 : 35000);
         var timeoutId = setTimeout(function () {
           if (state._fetchCtrl) {
             try { state._fetchCtrl.abort(); } catch (_) {}
@@ -879,7 +901,7 @@
         if (d && d.cache_incomplete && state.groups.length < state.perPage && poll < MAX_LOAD_POLLS) {
           showWarmingBanner(true, t('msy_warming_partial') || t('msy_warming') || 'Updating rankings…');
           poll++;
-          await sleep(2200);
+          await sleep(browseFiltered ? 1400 : 2200);
           continue;
         }
         break;
@@ -908,8 +930,10 @@
       state.page = 1;
       state.cacheKey = null;
       clearPageCache();
+      setLoading(true, false);
+      renderContent();
       loadRankings(true);
-    }, 400);
+    }, 300);
   }
 
   function scheduleReload() {
@@ -918,8 +942,10 @@
       state.page = 1;
       state.cacheKey = null;
       clearPageCache();
+      setLoading(true, false);
+      renderContent();
       loadRankings(true);
-    }, 400);
+    }, 250);
   }
 
   function setRankMode(modeId) {

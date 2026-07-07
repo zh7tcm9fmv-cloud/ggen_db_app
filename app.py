@@ -13813,6 +13813,7 @@ def api_meta_synergy_rankings():
     rank_mode = request.args.get('rank_mode', 'super_crit').strip() or 'super_crit'
     unit_q = request.args.get('unit_q', '')
     include_skills = request.args.get('include_skills', '0') not in ('0', 'false', 'no', '')
+    summary = request.args.get('summary', '0') in ('1', 'true', 'yes')
     full = request.args.get('full', '0') in ('1', 'true', 'yes')
     exclude_pairs = []
     for part in (request.args.get('exclude') or '').split(';'):
@@ -13850,6 +13851,7 @@ def api_meta_synergy_rankings():
             unit_q=unit_q,
             exclude_pairs=exclude_pairs or None,
             include_skills=include_skills,
+            summary=summary,
         )
     except Exception as e:
         print(f'api_meta_synergy_rankings failed: {e}')
