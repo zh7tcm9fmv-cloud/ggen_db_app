@@ -4428,9 +4428,89 @@ def _index_shell_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, *, role_fil
     }
 
 
+def _build_browse_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, *, role_filter=None, browse_fast=True):
+    """On-demand real damage sim for one browse row (no cheap preview)."""
+    if not _msy_page_build_allowed():
+        return None
+    A = _app()
+    uid = A.normalize_id(uid)
+    exclude = _exclude_set_from_kwargs(kwargs)
+    top_p = int(kwargs.get('top_pilots', 10) or 10)
+    dt = max(1, min(4, int(kwargs.get('def_tier', def_tier) or def_tier)))
+    pilot_ids = list(_pilot_pool_ids())
+    lb = int(kwargs.get('lb_tier', 3) or 3)
+    du = kwargs.get('def_unit_override')
+    dc = kwargs.get('def_char_override')
+    same_role_only = _same_role_only_from_kwargs(kwargs)
+    try:
+        g = _build_single_unit_group(
+            uid, pilot_ids, lc, lb, 'super', dt, exclude, top_p, 'super_crit',
+            def_unit_override=du, def_char_override=dc,
+            def_tiers=None if browse_fast else _MSY_STD_DEF_TIERS,
+            lite=True, rank_mode=rank_mode, same_role_only=same_role_only, browse_fast=browse_fast,
+        )
+    except Exception as e:
+        print(f'MSY browse build error ({uid}): {e}')
+        return None
+    if g and role_filter:
+        u = g.get('unit') or {}
+        g = dict(g)
+        g['unit'] = _entity_brief_unit(u.get('id'), lc, role_filter=role_filter)
+    return g
+
+
+def _resolve_browse_page_groups(page_ids, working_groups, lc, kwargs, rank_mode, def_tier, *,
+                                unit_q='', cache_key=None, role_filter=None):
+    """Page units: master cache first, then bounded on-demand real sim (never cheap preview)."""
+    dt = max(1, min(4, int(def_tier or 3)))
+    kwargs_resolve = dict(kwargs)
+    kwargs_resolve['def_tier'] = dt
+    master_by_uid = {}
+    for g in working_groups or []:
+        uid = _app().normalize_id((g.get('unit') or {}).get('id'))
+        if uid:
+            master_by_uid[uid] = g
+    page_build_cap = min(_MSY_PAGE_BUILD_LIMIT, len(page_ids or [])) if _msy_page_build_allowed() else 0
+    build_budget = _MSY_PAGE_BUILD_BUDGET_SEC
+    if page_ids and all(
+        _is_ready_cached_group(master_by_uid.get(_app().normalize_id(uid)))
+        for uid in page_ids
+    ):
+        page_build_cap = 0
+    page_groups_raw = _resolve_groups_for_unit_ids(
+        page_ids, working_groups, lc, kwargs_resolve, browse_fast=True, def_tier=dt,
+        max_build=page_build_cap,
+        page_build_lite=True,
+        build_budget_sec=build_budget,
+        rank_mode=rank_mode,
+        unit_q=unit_q,
+    )
+    if cache_key:
+        _merge_groups_into_cache(cache_key, page_groups_raw)
+    built_by_uid = {}
+    for g in page_groups_raw:
+        uid = _app().normalize_id((g.get('unit') or {}).get('id'))
+        if uid:
+            built_by_uid[uid] = g
+    filled_raw = []
+    for uid in page_ids or []:
+        uid = _app().normalize_id(uid)
+        if uid in built_by_uid:
+            filled_raw.append(built_by_uid[uid])
+            continue
+        cached = built_by_uid.get(uid) or master_by_uid.get(uid)
+        if _is_ready_cached_group(cached):
+            filled_raw.append(cached)
+        else:
+            filled_raw.append(_stub_group_for_uid(
+                uid, lc, kwargs, rank_mode, dt, role_filter=role_filter,
+            ))
+    return filled_raw
+
+
 def _filtered_browse_row_for_uid(uid, by_uid, lc, kwargs, rank_mode, def_tier, role_filter, sort_index,
                                   *, include_skills=True):
-    """Cached sim when available; otherwise fast preview pilots for this page row only."""
+    """Cached sim when available; otherwise on-demand real sim for this page row."""
     del sort_index
     A = _app()
     uid = A.normalize_id(uid)
@@ -4449,15 +4529,21 @@ def _filtered_browse_row_for_uid(uid, by_uid, lc, kwargs, rank_mode, def_tier, r
                     norm = dict(norm)
                     norm['unit'] = _entity_brief_unit(u.get('id'), lc, role_filter=role_filter)
                 return norm
-    preview = _preview_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, role_filter=role_filter)
-    preview = _backfill_pilot_formula_stats(preview, lc, rank_mode, kwargs)
-    norm = _normalize_group_for_mode(preview, rank_mode)
-    return norm or preview
+    built = _build_browse_group_for_uid(
+        uid, lc, kwargs, rank_mode, def_tier, role_filter=role_filter,
+    )
+    if not built:
+        built = _stub_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, role_filter=role_filter)
+    built = _backfill_pilot_formula_stats(built, lc, rank_mode, kwargs)
+    if include_skills:
+        _ensure_group_enriched(built, lc, rank_mode, include_skills=True)
+    norm = _normalize_group_for_mode(built, rank_mode)
+    return norm or built
 
 
 def _cached_summary_from_groups(groups, *, total_pilot_candidates, rank_mode, page, per_page, vigor,
                                  def_tier, kwargs, unit_q='', include_skills=True):
-    """Instant filtered browse shell — no on-demand unit builds."""
+    """Filtered browse page rows with cached or on-demand real damage sim."""
     dt = max(1, min(4, int(def_tier or 3)))
     lc = kwargs.get('lc', 'EN')
     browse = _parse_browse_filters(kwargs, lc)
@@ -4479,40 +4565,55 @@ def _cached_summary_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
         uid = _app().normalize_id((g.get('unit') or {}).get('id'))
         if uid:
             by_uid[uid] = g
-    sort_index = _ensure_msy_sort_damage_index(lc, working_groups) if browse_active else None
 
-    def _summary_row_for_uid(uid):
-        if browse_active:
-            return _filtered_browse_row_for_uid(
-                uid, by_uid, lc, kwargs, rank_mode, dt, role_filter, sort_index,
-                include_skills=include_skills,
-            )
-        uid = _app().normalize_id(uid)
-        g = by_uid.get(uid)
-        if _is_ready_cached_group(g):
+    if browse_active:
+        page_groups_raw = _resolve_browse_page_groups(
+            page_ids, working_groups, lc, kwargs, rank_mode, dt,
+            unit_q=unit_q, role_filter=role_filter,
+        )
+        expanded = []
+        for g in page_groups_raw:
+            g = _ensure_passive_variant_for_request(g, lc, rank_mode, dt, kwargs)
+            g = _backfill_pilot_formula_stats(g, lc, rank_mode, kwargs)
+            if include_skills:
+                _ensure_group_enriched(g, lc, rank_mode, include_skills=True)
             row = _group_for_def_tier(g, dt) if g.get('rankings_by_tier') else g
             if row:
-                row = _ensure_passive_variant_for_request(row, lc, rank_mode, dt, kwargs)
-                row = _backfill_pilot_formula_stats(row, lc, rank_mode, kwargs)
-                if include_skills:
-                    _ensure_group_enriched(row, lc, rank_mode, include_skills=True)
                 norm = _normalize_group_for_mode(row, rank_mode)
                 if norm:
                     if role_filter:
                         u = norm.get('unit') or {}
                         norm = dict(norm)
                         norm['unit'] = _entity_brief_unit(u.get('id'), lc, role_filter=role_filter)
-                    return norm
-        preview = _preview_group_for_uid(uid, lc, kwargs, rank_mode, dt, role_filter=role_filter)
-        norm = _normalize_group_for_mode(preview, rank_mode)
-        return norm or preview
-
-    if browse_active and len(page_ids) > 1:
-        workers = min(6, len(page_ids))
-        with ThreadPoolExecutor(max_workers=workers) as ex:
-            expanded = list(ex.map(_summary_row_for_uid, page_ids))
+                    expanded.append(norm)
     else:
-        expanded = [_summary_row_for_uid(uid) for uid in page_ids]
+        def _summary_row_for_uid(uid):
+            uid = _app().normalize_id(uid)
+            g = by_uid.get(uid)
+            if _is_ready_cached_group(g):
+                row = _group_for_def_tier(g, dt) if g.get('rankings_by_tier') else g
+                if row:
+                    row = _ensure_passive_variant_for_request(row, lc, rank_mode, dt, kwargs)
+                    row = _backfill_pilot_formula_stats(row, lc, rank_mode, kwargs)
+                    if include_skills:
+                        _ensure_group_enriched(row, lc, rank_mode, include_skills=True)
+                    norm = _normalize_group_for_mode(row, rank_mode)
+                    if norm:
+                        if role_filter:
+                            u = norm.get('unit') or {}
+                            norm = dict(norm)
+                            norm['unit'] = _entity_brief_unit(u.get('id'), lc, role_filter=role_filter)
+                        return norm
+            preview = _preview_group_for_uid(uid, lc, kwargs, rank_mode, dt, role_filter=role_filter)
+            norm = _normalize_group_for_mode(preview, rank_mode)
+            return norm or preview
+
+        if len(page_ids) > 1:
+            workers = min(6, len(page_ids))
+            with ThreadPoolExecutor(max_workers=workers) as ex:
+                expanded = list(ex.map(_summary_row_for_uid, page_ids))
+        else:
+            expanded = [_summary_row_for_uid(uid) for uid in page_ids]
     expanded.sort(key=lambda g: (
         -_unit_browse_sort_damage(g, rank_mode, dt),
         _app().normalize_id((g.get('unit') or {}).get('id')),
@@ -4573,65 +4674,11 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
     total = len(ordered_ids)
     start = (page - 1) * per_page
     page_ids = ordered_ids[start:start + per_page]
-    kwargs_resolve = dict(kwargs)
-    kwargs_resolve['def_tier'] = dt
-    filtered_browse = browse_active
-    master_by_uid = {}
-    for g in working_groups:
-        uid = _app().normalize_id((g.get('unit') or {}).get('id'))
-        if uid:
-            master_by_uid[uid] = g
     role_filter = browse.get('role_filter')
-
-    if filtered_browse:
-        page_groups_raw = []
-        for uid in page_ids:
-            uid = _app().normalize_id(uid)
-            cached = master_by_uid.get(uid)
-            if _is_ready_cached_group(cached):
-                page_groups_raw.append(cached)
-            else:
-                page_groups_raw.append(_preview_group_for_uid(
-                    uid, lc, kwargs, rank_mode, dt, role_filter=role_filter,
-                ))
-    else:
-        page_build_cap = min(_MSY_PAGE_BUILD_LIMIT, per_page) if _msy_page_build_allowed() else 0
-        build_budget = _MSY_PAGE_BUILD_BUDGET_SEC
-        if page_ids and all(
-            _is_ready_cached_group(master_by_uid.get(_app().normalize_id(uid)))
-            for uid in page_ids
-        ):
-            page_build_cap = 0
-        page_groups_raw = _resolve_groups_for_unit_ids(
-            page_ids, working_groups, lc, kwargs_resolve, browse_fast=True, def_tier=dt,
-            max_build=page_build_cap,
-            page_build_lite=True,
-            build_budget_sec=build_budget,
-            rank_mode=rank_mode,
-            unit_q=unit_q,
-        )
-        if cache_key:
-            _merge_groups_into_cache(cache_key, page_groups_raw)
-        built_by_uid = {}
-        for g in page_groups_raw:
-            uid = _app().normalize_id((g.get('unit') or {}).get('id'))
-            if uid:
-                built_by_uid[uid] = g
-        filled_raw = []
-        for uid in page_ids:
-            uid = _app().normalize_id(uid)
-            if uid in built_by_uid:
-                filled_raw.append(built_by_uid[uid])
-                continue
-            cached = built_by_uid.get(uid) or next(
-                (x for x in working_groups if _app().normalize_id((x.get('unit') or {}).get('id')) == uid),
-                None,
-            )
-            if _is_ready_cached_group(cached):
-                filled_raw.append(cached)
-            else:
-                filled_raw.append(_preview_group_for_uid(uid, lc, kwargs, rank_mode, dt, role_filter=role_filter))
-        page_groups_raw = filled_raw
+    page_groups_raw = _resolve_browse_page_groups(
+        page_ids, working_groups, lc, kwargs, rank_mode, dt,
+        unit_q=unit_q, cache_key=cache_key, role_filter=role_filter,
+    )
     expanded = []
     for g in page_groups_raw:
         g = _ensure_passive_variant_for_request(g, lc, rank_mode, dt, kwargs)
@@ -4673,7 +4720,7 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
         'def_tier': dt,
         'defender_tiers': defender_tiers_public(),
         'cache_incomplete': page_incomplete,
-        'index_browse': filtered_browse,
+        'index_browse': browse_active,
         'filtered_browse': browse_active,
         'settings': {
             'unit_rarity': kwargs.get('rarity') or kwargs.get('unit_rarity', 'ALL'),
