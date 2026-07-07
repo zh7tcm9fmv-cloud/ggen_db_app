@@ -189,17 +189,24 @@
 }
 
 .msy-same-role-btn {
-  min-width: 44px;
-  min-height: 36px;
-  padding: 6px 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  min-height: 34px;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 .msy-same-role-glyph {
-  display: inline-block;
-  font-size: 24px;
+  display: block;
+  font-size: 22px;
   font-weight: 900;
   letter-spacing: 0;
   line-height: 1;
+  margin: 0;
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   transition: color 0.15s ease, transform 0.15s ease, text-shadow 0.15s ease;
 }
@@ -982,6 +989,25 @@
   font-weight: 800;
   color: var(--accent-cyan);
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.msy-pilot-dmg-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  gap: 1px;
+  min-width: 0;
+}
+
+.msy-pilot-dmg-col .msy-pilot-formula-stat {
+  margin-top: 0;
+  font-size: 9px;
+  line-height: 1.2;
+  max-width: 72px;
+  overflow: hidden;
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
