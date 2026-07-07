@@ -8069,6 +8069,88 @@ def _augment_bare_vigor_lines_next_to_supercharged(details, lang_code):
             d1['text'] = f'自身のテンションが「超一撃」未満の時\n自身の{stat_ja}が{pct}%上昇'
 
 
+def _ability_condition_groups_signature(groups):
+    """Stable signature for condition_groups equality (same tag/lineage set)."""
+    if not groups:
+        return None
+    parts = []
+    for g in groups:
+        label = str(g.get('label') or '').strip()
+        conds = g.get('conditions') or []
+        cond_sigs = tuple(sorted(
+            (str(c.get('id') or ''), str(c.get('name') or ''), str(c.get('type') or ''))
+            for c in conds
+        ))
+        parts.append((label, cond_sigs))
+    return tuple(sorted(parts))
+
+
+def _ability_conditions_signature(conditions):
+    if not conditions:
+        return None
+    return tuple(sorted(
+        (str(c.get('id') or ''), str(c.get('name') or ''), str(c.get('type') or ''))
+        for c in conditions
+    ))
+
+
+def _ability_detail_tag_signature(detail):
+    sig = _ability_condition_groups_signature(detail.get('condition_groups'))
+    if sig:
+        return sig
+    return _ability_conditions_signature(detail.get('conditions'))
+
+
+def _ability_detail_starts_new_block(text):
+    t = (text or '').strip()
+    if not t:
+        return False
+    return bool(re.match(r'^When\s', t, re.IGNORECASE))
+
+
+def _merge_same_tag_ability_details(details):
+    """Merge consecutive trait lines that share the same tag/lineage into one detail block."""
+    if not details or len(details) < 2:
+        return details
+    out = []
+    for d in details:
+        cur = {
+            'text': d.get('text') or '',
+            'conditions': list(d.get('conditions') or []),
+        }
+        if d.get('condition_groups'):
+            cur['condition_groups'] = [
+                {'label': g.get('label'), 'conditions': list(g.get('conditions') or [])}
+                for g in d['condition_groups']
+            ]
+        cur_sig = _ability_detail_tag_signature(cur)
+        if (
+            out
+            and cur_sig
+            and cur_sig == _ability_detail_tag_signature(out[-1])
+            and not _ability_detail_starts_new_block(cur.get('text'))
+        ):
+            prev = out[-1]
+            prev_t = (prev.get('text') or '').strip()
+            cur_t = (cur.get('text') or '').strip()
+            if prev_t and cur_t:
+                sep = (
+                    ' '
+                    if prev_t.endswith((',', ';', '，', '；'))
+                    or cur_t.startswith(('and ', 'And ', 'AND '))
+                    else '\n'
+                )
+                prev['text'] = f'{prev_t}{sep}{cur_t}'
+            elif cur_t:
+                prev['text'] = cur_t
+            for c in cur.get('conditions') or []:
+                if c not in prev['conditions']:
+                    prev['conditions'].append(c)
+            continue
+        out.append(cur)
+    return out
+
+
 def trait_text_implies_show_target_condition_tags(en_text, display_text):
     """True when trait copy points at TargetConditionSetId scope (tags or series).
 
@@ -8332,6 +8414,7 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
             if t_val == ab_name.strip(): continue
             details.append({'text': t_val, 'conditions': []})
     _augment_bare_vigor_lines_next_to_supercharged(details, lang_code)
+    details = _merge_same_tag_ability_details(details)
     res_id = coalesce_ability_resource_id(ab_id, trait_set_id)
     icon_file = find_trait_icon(res_id) if res_id else None
     has_icon = bool(icon_file)
