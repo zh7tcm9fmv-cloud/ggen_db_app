@@ -1117,11 +1117,12 @@ SHINN_EX_CHAR_ID = '1330000103'
 _MSY_BUILD_WORKERS = max(1, min(6, int(os.environ.get('MSY_BUILD_WORKERS', '4') or '4')))
 _MSY_PAGE_BUILD_LIMIT = max(0, min(40, int(os.environ.get('MSY_PAGE_BUILD_LIMIT', '40') or '40')))
 _MSY_PAGE_BUILD_BUDGET_SEC = max(5.0, min(60.0, float(os.environ.get('MSY_PAGE_BUILD_BUDGET_SEC', '18') or '18')))
-_MSY_BROWSE_BUILD_BUDGET_SEC = max(0.8, min(45.0, float(os.environ.get('MSY_BROWSE_BUILD_BUDGET_SEC', '1.15') or '1.15')))
-_MSY_BROWSE_PAGE_BUILD_LIMIT = max(0, min(10, int(os.environ.get('MSY_BROWSE_PAGE_BUILD_LIMIT', '2') or '2')))
-_MSY_LITE_PILOT_NEED = max(8, min(16, int(os.environ.get('MSY_LITE_PILOT_NEED', '10') or '10')))
-_MSY_LITE_PILOT_CAP = max(8, min(20, int(os.environ.get('MSY_LITE_PILOT_CAP', '10') or '10')))
+_MSY_BROWSE_BUILD_BUDGET_SEC = max(1.0, min(45.0, float(os.environ.get('MSY_BROWSE_BUILD_BUDGET_SEC', '10') or '10')))
+_MSY_BROWSE_PAGE_BUILD_LIMIT = max(0, min(20, int(os.environ.get('MSY_BROWSE_PAGE_BUILD_LIMIT', '10') or '10')))
+_MSY_LITE_PILOT_NEED = max(6, min(16, int(os.environ.get('MSY_LITE_PILOT_NEED', '8') or '8')))
+_MSY_LITE_PILOT_CAP = max(6, min(20, int(os.environ.get('MSY_LITE_PILOT_CAP', '8') or '8')))
 _MSY_LITE_NON_UR_RESERVE = max(2, min(6, int(os.environ.get('MSY_LITE_NON_UR_RESERVE', '4') or '4')))
+_MSY_PREVIEW_PILOT_SCAN = max(16, min(80, int(os.environ.get('MSY_PREVIEW_PILOT_SCAN', '32') or '32')))
 # Older published caches to load when the current v14 master file is missing (Railway deploy).
 _MSY_LEGACY_MASTER_CACHE_KEYS = (
     ('_v13_dc_master', 'EN', 3, 20, None, None),
@@ -1910,11 +1911,7 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
                 need, info, stat_mode, def_unit_override=def_unit_override,
                 def_char_override=def_char_override, rank_mode=rank_mode,
             )
-            rankings_no_shinn = _rankings_variant_for_tier_lite(
-                _filter_non_shinn, active_pilots, all_pairs, top_pilots, uid, lc, lb_tier, dt, unit_wpn,
-                need, info, stat_mode, def_unit_override=def_unit_override,
-                def_char_override=def_char_override, rank_mode=rank_mode, browse_fast=True,
-            )
+            rankings_no_shinn = None
         elif lite:
             rankings_no_gc = rankings
             rankings_no_cp = _rankings_no_cp_for_tier_lite(
@@ -2812,9 +2809,7 @@ def _resolve_groups_for_unit_ids(unit_ids, master_groups, lc, kwargs, *, browse_
     for uid in unit_ids:
         uid = A.normalize_id(uid)
         cached = by_uid.get(uid)
-        if cached and not cached.get('pending') and (
-            same_role_only or not browse_active or cached.get('cross_role_built')
-        ):
+        if _is_ready_cached_group(cached):
             out.append(cached)
         else:
             to_build.append(uid)
@@ -2838,7 +2833,7 @@ def _resolve_groups_for_unit_ids(unit_ids, master_groups, lc, kwargs, *, browse_
             dc = kwargs.get('def_char_override')
             tiers = None if browse_fast else _MSY_STD_DEF_TIERS
             built = []
-            workers = 1 if browse_fast else min(_MSY_BUILD_WORKERS, max(1, len(to_build)))
+            workers = min(_MSY_BUILD_WORKERS, max(1, len(to_build)))
 
             def _build_one(uid):
                 return _build_single_unit_group(
@@ -2874,8 +2869,24 @@ def _resolve_groups_for_unit_ids(unit_ids, master_groups, lc, kwargs, *, browse_
                 finally:
                     ex.shutdown(wait=False, cancel_futures=True)
             out.extend(built)
-    # Preserve caller page order.
-    out_by_uid = {A.normalize_id((g.get('unit') or {}).get('id')): g for g in out}
+    # Preserve caller page order; prefer freshly simmed rows over cache/preview.
+    def _group_rank(g):
+        if g.get('cross_role_built'):
+            return 3
+        if not g.get('pilot_preview') and not g.get('pending'):
+            return 2
+        if g.get('pilot_preview'):
+            return 1
+        return 0
+
+    out_by_uid = {}
+    for g in out:
+        uid = A.normalize_id((g.get('unit') or {}).get('id'))
+        if not uid:
+            continue
+        prev = out_by_uid.get(uid)
+        if not prev or _group_rank(g) > _group_rank(prev):
+            out_by_uid[uid] = g
     return [out_by_uid[uid] for uid in unit_ids if uid in out_by_uid]
 
 
@@ -3171,6 +3182,7 @@ def _normalize_group_for_mode(g, rank_mode):
             'bundled_pilot_id': g.get('bundled_pilot_id'),
             'pending': g.get('pending'),
             'cross_role_built': g.get('cross_role_built'),
+            'pilot_preview': g.get('pilot_preview'),
         }
     if rank_mode == 'super_crit' and g.get('pilots'):
         return g
@@ -3296,6 +3308,150 @@ def _warming_payload(rank_mode, vigor, def_tier, kwargs):
     }
 
 
+def _is_ready_cached_group(g):
+    return bool(g) and not g.get('pending') and not g.get('pilot_preview')
+
+
+def _preview_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc):
+    """Lightweight pilot ranking for instant preview cards (no pair-total sim)."""
+    grown, _ = _char_grown(cid)
+    attr = str(unit_wpn.get('attr', '1'))
+    stat_key = {'1': 'ranged', '2': 'melee', '3': 'awaken'}.get(attr, 'melee')
+    char_atk = float(grown.get(stat_key, 0) or 0)
+    unit_atk = _unit_atk_max(uid, info, stat_mode, lc, cid, False)
+    wp = float(unit_wpn.get('power') or 0)
+    return (unit_atk + 2.0 * char_atk) * wp
+
+
+def _preview_pilot_id_sample():
+    """Small stable pilot id sample for instant MSY preview cards."""
+    ids = list(_pilot_pool_ids())
+    cap = min(len(ids), _MSY_PREVIEW_PILOT_SCAN * 4)
+    if len(ids) <= cap:
+        return ids
+    step = max(1, len(ids) // cap)
+    return [ids[i] for i in range(0, len(ids), step)][:cap]
+
+
+def _cheap_pilot_top_for_unit(uid, lc, kwargs, need, info, unit_wpn, stat_mode, *, non_ur_only=False):
+    """Score a bounded pilot sample for one unit (preview / fast browse)."""
+    import heapq
+    A = _app()
+    uid = A.normalize_id(uid)
+    exclude = _exclude_set_from_kwargs(kwargs)
+    same_role_only = _same_role_only_from_kwargs(kwargs)
+    linked = _linked_character_ids()
+    need = max(1, int(need or 10))
+    if _is_sd_unit(uid, info):
+        bp = _bundled_pilot_id(uid)
+        if bp and (uid, bp) not in exclude:
+            sc = _preview_pilot_score(uid, bp, info, unit_wpn, stat_mode, lc)
+            return [(sc, bp)]
+        return []
+    heap = []
+    for cid in _preview_pilot_id_sample():
+        cid_n = A.normalize_id(cid)
+        if cid_n in linked:
+            continue
+        if (uid, cid_n) in exclude:
+            continue
+        if same_role_only and not _pilot_role_matches_unit(uid, cid_n):
+            continue
+        if non_ur_only:
+            ri = str((A.char_info_map.get(cid_n) or {}).get('rarity', '1'))
+            if A.RARITY_MAP.get(ri, 'N') == 'UR':
+                continue
+        sc = _preview_pilot_score(uid, cid_n, info, unit_wpn, stat_mode, lc)
+        if len(heap) < need:
+            heapq.heappush(heap, (sc, cid_n))
+        elif sc > heap[0][0]:
+            heapq.heapreplace(heap, (sc, cid_n))
+    heap.sort(key=lambda x: (-x[0], x[1]))
+    return heap
+
+
+def _cheap_pilot_top_candidates(uid, active_pilots, need, info, unit_wpn, stat_mode, lc, *,
+                                  non_ur_only=False):
+    """Top pilot ids by cheap score without scanning the full pool."""
+    del active_pilots
+    return _cheap_pilot_top_for_unit(
+        uid, lc, {}, need, info, unit_wpn, stat_mode, non_ur_only=non_ur_only,
+    )
+
+
+def _cheap_preview_pilot_rows(uid, active_pilots, top_pilots, info, unit_wpn, stat_mode, lc, *,
+                              non_ur_only=False, kwargs=None):
+    """Instant pilot cards from cheap affinity/stat scores (no damage sim)."""
+    scored = _cheap_pilot_top_for_unit(
+        uid, lc, kwargs or {}, top_pilots, info, unit_wpn, stat_mode, non_ur_only=non_ur_only,
+    )
+    rows = []
+    attr = str(unit_wpn.get('attr', '1'))
+    stat_key = {'1': 'ranged', '2': 'melee', '3': 'awaken'}.get(attr, 'melee')
+    for i, (score, cid) in enumerate(scored):
+        dmg = max(1, int(score / _CHEAP_SCORE_TO_DAMAGE))
+        grown, _ = _char_grown(cid)
+        rows.append({
+            'rank': i + 1,
+            'char': _entity_brief_char(cid, lc),
+            'normal_dmg': dmg,
+            'crit_dmg': dmg,
+            'super_crit_dmg': dmg,
+            'expected_dmg': dmg,
+            'peak_dmg': dmg,
+            'guaranteed_crit': False,
+            'crit_rate': 0,
+            'pair_ok': False,
+            'char_atk': int(grown.get(stat_key, 0) or 0),
+            'formula_stat': '',
+            'score': dmg,
+        })
+    return rows
+
+
+def _preview_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, *, role_filter=None):
+    """Fast pilot preview for browse/search rows (upgraded to full sim in background)."""
+    A = _app()
+    uid = A.normalize_id(uid)
+    info = A.unit_info_map.get(uid) or {}
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    unit_wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
+    if not unit_wpn:
+        return _stub_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, role_filter=role_filter)
+    top_p = int(kwargs.get('top_pilots', 10) or 10)
+    pilots = _cheap_preview_pilot_rows(
+        uid, [], top_p, info, unit_wpn, stat_mode, lc, non_ur_only=False, kwargs=kwargs,
+    )
+    if not pilots:
+        return _stub_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, role_filter=role_filter)
+    nu_pilots = [p for p in pilots if str((p.get('char') or {}).get('rarity') or '').upper() != 'UR']
+    max_damage = pilots[0]['score']
+    block = {'max_damage': max_damage, 'pilots': pilots, 'vigor': _VIGOR_FOR_RANK_MODE.get(rank_mode, 'super')}
+    nu_block = None
+    if nu_pilots:
+        nu_block = {
+            'max_damage': nu_pilots[0]['score'],
+            'pilots': nu_pilots[:top_p],
+            'vigor': block['vigor'],
+        }
+    wi = _weapon_info_for_msy(uid, lc)
+    is_sd = _is_sd_unit(uid, info)
+    out = {
+        'unit': _entity_brief_unit(uid, lc, role_filter=role_filter),
+        'weapon_elems': _weapon_elem_label(uid, lc),
+        'weapon_info': wi,
+        'max_damage': max_damage,
+        'pilot_preview': True,
+        'rankings': {rank_mode: block},
+        'pilots': pilots,
+        'is_sd': is_sd,
+        'bundled_pilot_id': _bundled_pilot_id(uid) if is_sd else None,
+    }
+    if nu_block:
+        out['rankings_no_ur'] = {rank_mode: nu_block}
+    return out
+
+
 def _stub_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, *, role_filter=None):
     """Fast placeholder row for filtered browse (unit shell + estimated peak damage)."""
     A = _app()
@@ -3342,13 +3498,12 @@ def _cached_summary_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
         uid = _app().normalize_id((g.get('unit') or {}).get('id'))
         if uid:
             by_uid[uid] = g
-    expanded = []
-    for uid in page_ids:
+    def _summary_row_for_uid(uid):
         uid = _app().normalize_id(uid)
         g = by_uid.get(uid)
-        if g and not browse_active:
+        if _is_ready_cached_group(g):
             row = _group_for_def_tier(g, dt) if g.get('rankings_by_tier') else g
-            if row and not row.get('pending'):
+            if row:
                 if include_skills:
                     _ensure_group_enriched(row, lc, rank_mode, include_skills=True)
                 norm = _normalize_group_for_mode(row, rank_mode)
@@ -3357,9 +3512,17 @@ def _cached_summary_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
                         u = norm.get('unit') or {}
                         norm = dict(norm)
                         norm['unit'] = _entity_brief_unit(u.get('id'), lc, role_filter=role_filter)
-                    expanded.append(norm)
-                    continue
-        expanded.append(_stub_group_for_uid(uid, lc, kwargs, rank_mode, dt, role_filter=role_filter))
+                    return norm
+        preview = _preview_group_for_uid(uid, lc, kwargs, rank_mode, dt, role_filter=role_filter)
+        norm = _normalize_group_for_mode(preview, rank_mode)
+        return norm or preview
+
+    if browse_active and len(page_ids) > 1:
+        workers = min(6, len(page_ids))
+        with ThreadPoolExecutor(max_workers=workers) as ex:
+            expanded = list(ex.map(_summary_row_for_uid, page_ids))
+    else:
+        expanded = [_summary_row_for_uid(uid) for uid in page_ids]
     expanded.sort(key=lambda g: (
         -_unit_browse_sort_damage(g, rank_mode, dt),
         _app().normalize_id((g.get('unit') or {}).get('id')),
@@ -3381,7 +3544,7 @@ def _cached_summary_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
         'def_tier': dt,
         'defender_tiers': defender_tiers_public(),
         'summary': True,
-        'cache_incomplete': True,
+        'cache_incomplete': any(g.get('pilot_preview') or g.get('pending') for g in expanded),
         'filtered_browse': browse_active,
         'settings': {
             'unit_rarity': kwargs.get('rarity') or kwargs.get('unit_rarity', 'ALL'),
@@ -3449,14 +3612,15 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
         uid = _app().normalize_id(uid)
         if uid in built_by_uid:
             filled_raw.append(built_by_uid[uid])
-        elif browse_active:
-            filled_raw.append(_stub_group_for_uid(uid, lc, kwargs, rank_mode, dt, role_filter=role_filter))
+            continue
+        cached = built_by_uid.get(uid) or next(
+            (x for x in working_groups if _app().normalize_id((x.get('unit') or {}).get('id')) == uid),
+            None,
+        )
+        if _is_ready_cached_group(cached):
+            filled_raw.append(cached)
         else:
-            g = next((x for x in working_groups if _app().normalize_id((x.get('unit') or {}).get('id')) == uid), None)
-            if g:
-                filled_raw.append(g)
-            else:
-                filled_raw.append(_stub_group_for_uid(uid, lc, kwargs, rank_mode, dt, role_filter=role_filter))
+            filled_raw.append(_preview_group_for_uid(uid, lc, kwargs, rank_mode, dt, role_filter=role_filter))
     page_groups_raw = filled_raw
     expanded = []
     for g in page_groups_raw:
@@ -3475,7 +3639,7 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
         _app().normalize_id((g.get('unit') or {}).get('id')),
     ))
     total_pages = max(1, (total + per_page - 1) // per_page)
-    page_incomplete = len(expanded) < len(page_ids)
+    page_incomplete = any(g.get('pending') or g.get('pilot_preview') for g in expanded) or len(expanded) < len(page_ids)
     role_raw = kwargs.get('role') or kwargs.get('unit_role')
     if role_raw is None or str(role_raw).upper() in ('ALL', ''):
         role_filter = None

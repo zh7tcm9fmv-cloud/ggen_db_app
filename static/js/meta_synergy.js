@@ -380,8 +380,9 @@
       var id = String(g.unit.id);
       var n = nextBy[id];
       if (!n) return;
-      if (g.pending && !n.pending) merged.push(n);
-      else if (!g.pending && n.pending) merged.push(g);
+      if (g.pending && !n.pending && !n.pilot_preview) merged.push(n);
+      else if (g.pilot_preview && !n.pilot_preview && !n.pending) merged.push(n);
+      else if (!g.pending && !g.pilot_preview && (n.pending || n.pilot_preview)) merged.push(g);
       else merged.push(n);
     });
     return merged.length ? merged : next;
@@ -930,13 +931,17 @@
     if (el) state.unitQ = expandedUnitSearchQuery(el.value.trim());
   }
 
+  function groupNeedsPilotBuild(g) {
+    return !!(g && (g.pending || g.pilot_preview));
+  }
+
   function hasPendingPilotGroups() {
-    return (state.groups || []).some(function (g) { return g && g.pending; });
+    return (state.groups || []).some(groupNeedsPilotBuild);
   }
 
   async function loadRankingsPilotsBackground(loadGen) {
     var poll = 0;
-    var maxPilotPolls = 12;
+    var maxPilotPolls = 24;
     while (poll < maxPilotPolls) {
       if (loadGen !== state._loadGen) return;
       if (!hasPendingPilotGroups()) {
@@ -959,7 +964,7 @@
           return;
         }
         poll++;
-        await sleep(350);
+        await sleep(150);
       } catch (_) {
         return;
       }
@@ -1105,6 +1110,8 @@
     state._reloadTimer = setTimeout(function () {
       state.page = 1;
       state.cacheKey = null;
+      state.groups = [];
+      state.total = 0;
       clearPageCache();
       setLoading(true, false);
       renderContent();
