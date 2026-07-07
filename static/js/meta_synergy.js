@@ -30,6 +30,7 @@
     excludeUrGlobal: false,
     excludeShinnGlobal: false,
     cacheIncomplete: false,
+    pageCache: {},
     _fetchCtrl: null,
     _loadGen: 0,
   };
@@ -270,6 +271,19 @@
       /\|rm:[^|]+/,
       '|rm:' + (rankMode || state.rankMode)
     ).replace(/\|dt:\d+/, '|dt:' + (defTier != null ? defTier : state.defTier));
+  }
+
+  function clearPageCache() {
+    state.pageCache = {};
+  }
+
+  function rememberPagePayload(key, payload) {
+    if (!key || !payload) return;
+    state.pageCache[key] = payload;
+    var keys = Object.keys(state.pageCache);
+    while (keys.length > 20) {
+      delete state.pageCache[keys.shift()];
+    }
   }
 
   function applyPayload(d, defTier) {
@@ -690,15 +704,34 @@
   function renderPagination() {
     var host = document.getElementById('msyPagination');
     if (!host) return;
-    if (state.totalPages <= 1) {
+    var page = Math.max(1, state.page | 0);
+    var totalPages = Math.max(1, state.totalPages | 0);
+    if (totalPages <= 1) {
       host.innerHTML = '';
       return;
     }
-    if (typeof global.renderPagination === 'function') {
-      host.innerHTML = global.renderPagination(state.page, state.totalPages, 'GgenMetaSynergy.goPage');
-      return;
+    var h = '';
+    h += '<button type="button" class="page-btn' + (page <= 1 ? ' disabled' : '') + '"' +
+      (page > 1 ? ' onclick="GgenMetaSynergy.goPage(' + (page - 1) + ')"' : '') + '>◀</button>';
+    var mx = 7;
+    var sp = Math.max(1, page - Math.floor(mx / 2));
+    var ep = Math.min(totalPages, sp + mx - 1);
+    if (ep - sp < mx - 1) sp = Math.max(1, ep - mx + 1);
+    if (sp > 1) {
+      h += '<button type="button" class="page-btn" onclick="GgenMetaSynergy.goPage(1)">1</button>';
+      if (sp > 2) h += '<span class="page-info">…</span>';
     }
-    host.innerHTML = '<span>' + state.page + ' / ' + state.totalPages + '</span>';
+    for (var i = sp; i <= ep; i++) {
+      h += '<button type="button" class="page-btn' + (i === page ? ' active' : '') +
+        '" onclick="GgenMetaSynergy.goPage(' + i + ')">' + i + '</button>';
+    }
+    if (ep < totalPages) {
+      if (ep < totalPages - 1) h += '<span class="page-info">…</span>';
+      h += '<button type="button" class="page-btn" onclick="GgenMetaSynergy.goPage(' + totalPages + ')">' + totalPages + '</button>';
+    }
+    h += '<button type="button" class="page-btn' + (page >= totalPages ? ' disabled' : '') + '"' +
+      (page < totalPages ? ' onclick="GgenMetaSynergy.goPage(' + (page + 1) + ')"' : '') + '>▶</button>';
+    host.innerHTML = h;
   }
 
   function renderContent() {
@@ -752,6 +785,12 @@
   async function loadRankings(force) {
     syncSearchFromDom();
     var key = cacheKeyForState();
+    var cachedPayload = !force && state.pageCache[key];
+    if (cachedPayload) {
+      applyPayload(cachedPayload, state.defTier);
+      void fetchPilotSkillsBatch(state.groups);
+      return;
+    }
     if (!force && state.cacheKey === key && state.groups.length && !state.cacheIncomplete) {
       renderContent();
       return;
@@ -791,7 +830,10 @@
         if (!r.ok && !d) throw new Error('HTTP ' + r.status);
 
         var hasGroups = d && d.groups && d.groups.length;
-        if (d) applyPayload(d, state.defTier);
+        if (d) {
+          applyPayload(d, state.defTier);
+          rememberPagePayload(cacheKeyForState(), d);
+        }
         if (hasGroups) setLoading(false, false);
 
         if (d && d.warming) {
@@ -835,6 +877,7 @@
     state._searchTimer = setTimeout(function () {
       state.page = 1;
       state.cacheKey = null;
+      clearPageCache();
       loadRankings(true);
     }, 400);
   }
@@ -844,6 +887,7 @@
     state._reloadTimer = setTimeout(function () {
       state.page = 1;
       state.cacheKey = null;
+      clearPageCache();
       loadRankings(true);
     }, 400);
   }
@@ -857,7 +901,9 @@
     }
     state.rankMode = modeId;
     renderRankModes();
+    state.page = 1;
     state.cacheKey = null;
+    clearPageCache();
     loadRankings(false);
   }
 
@@ -922,8 +968,14 @@
   }
 
   function goPage(p) {
-    state.page = Math.max(1, p | 0);
+    var totalPages = Math.max(1, state.totalPages | 0);
+    var next = Math.max(1, Math.min(totalPages, p | 0));
+    if (next === state.page && state.groups.length && !state.loading) return;
+    state.page = next;
     state.cacheKey = null;
+    state.groups = [];
+    renderContent();
+    setLoading(true, false);
     loadRankings(false);
     try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (_) { window.scrollTo(0, 0); }
   }
@@ -953,6 +1005,7 @@
         state.defTier = nextTier;
         state.page = 1;
         state.cacheKey = null;
+        clearPageCache();
         updateDefTierStats();
         loadRankings(true);
       });
