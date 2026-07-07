@@ -302,9 +302,10 @@ def _resolve_char_name(cid, lc):
 
 def _grown_totals_for_formula(cid):
     """Base grown stats dict for formula-stat display (preview cards)."""
-    grown, _ = _char_grown(cid)
+    grown, grown_sp, _, _ = _char_grown_bases(cid)
     A = _app()
-    return {s: float(grown.get(s, 0) or 0) for s in A.CHAR_STAT_ORDER}
+    src = grown_sp if _msy_char_stat_mode(cid) == 'sp' else grown
+    return {s: float(src.get(s, 0) or 0) for s in A.CHAR_STAT_ORDER}
 
 
 def _pilot_formula_stat(totals, attack_attr, skill_atk_pct=0):
@@ -441,26 +442,127 @@ def _parse_skill_desc_atk_pct(blob, sid='', name=''):
 
 
 @lru_cache(maxsize=8192)
-def _active_skill_stat_pct(cid, lc):
-    """Sum Ranged/Melee/Awaken % from auto-enabled active skills only."""
+def _msy_char_stat_mode(cid):
+    """Max-damage MSY uses SP stats/skills for SP-capable pilots (rarity ≤ SSR)."""
+    info = _app().char_info_map.get(_app().normalize_id(cid)) or {}
+    return 'sp' if int(str(info.get('rarity', '1'))) <= 4 else 'normal'
+
+
+def _msy_skill_blob(resolved):
+    return '\n'.join(
+        str(x.get('text') if isinstance(x, dict) else x or '')
+        for x in (resolved.get('details') or [])
+    ) + '\n' + str(resolved.get('desc') or '')
+
+
+@lru_cache(maxsize=8192)
+def _msy_char_skill_rows(cid, lc):
+    """Character skill rows — same shape as /api/character skills (incl. SP replacements)."""
     A = _app()
     ld = _ldc(lc)
     cid = A.normalize_id(cid)
-    active_ids = _msy_auto_active_skill_ids(cid, lc)
-    out = {'Ranged': 0, 'Melee': 0, 'Awaken': 0}
+    rows = []
+    seen_ids = set()
+    ms = 0
+    spa = []
     fs = [x for x in A.extract_data_list(A.char_skill) if A.normalize_id(x.get('CharacterId', '')) == cid]
-    seen = set()
     for sk in sorted(fs, key=lambda x: int(x.get('SortOrder', 0))):
         sid = A.normalize_id(sk.get('CharacterSkillId') or sk.get('SkillId') or '')
-        if not sid or sid in seen or sid == '0' or sid not in active_ids:
+        spsi = A.normalize_id(sk.get('SpCharacterSkillId') or sk.get('spCharacterSkillId'))
+        sv = int(sk.get('SortOrder', 0))
+        ms = max(ms, sv)
+        if sid and sid != '0':
+            resolved = A.resolve_char_skill(sid, ld, sv, False)
+            if spsi and spsi not in ('0', 'None', sid):
+                resolved['replaced_by_sp_id'] = spsi
+            rows.append({'id': sid, 'resolved': resolved, 'sort': sv})
+            seen_ids.add(sid)
+        if spsi and spsi not in ('0', 'None', sid):
+            spa.append(spsi)
+    for spsi in spa:
+        if spsi in seen_ids:
             continue
-        seen.add(sid)
-        resolved = A.resolve_char_skill(sid, ld, int(sk.get('SortOrder', 0)), False)
-        name = str(resolved.get('name') or '')
-        blob = '\n'.join(
-            str(x.get('text') if isinstance(x, dict) else x or '')
-            for x in (resolved.get('details') or [])
-        ) + '\n' + str(resolved.get('desc') or '')
+        ms += 1
+        rows.append({
+            'id': spsi,
+            'resolved': A.resolve_char_skill(spsi, ld, ms, True),
+            'sort': ms,
+            'is_sp_only': True,
+        })
+        seen_ids.add(spsi)
+    sp_names = {
+        str(r['resolved'].get('name') or '').strip().lower()
+        for r in rows if r['resolved'].get('is_sp')
+    }
+    for r in rows:
+        res = r['resolved']
+        if res.get('is_sp'):
+            continue
+        if res.get('replaced_by_sp_id'):
+            res['replaced_by_sp'] = True
+        elif str(res.get('name') or '').strip().lower() in sp_names:
+            res['replaced_by_sp'] = True
+    return tuple(rows)
+
+
+def _msy_pilot_skills_visible(stat_mode, rows):
+    """Mirror app.js _dcPilotSkillsVisibleForDc."""
+    sp_on = stat_mode == 'sp'
+    replaced = {
+        str(r['resolved'].get('replaced_by_sp_id'))
+        for r in rows
+        if r['resolved'].get('replaced_by_sp_id')
+    }
+    out = []
+    for r in rows:
+        res = r['resolved']
+        if res.get('is_sp'):
+            if not sp_on:
+                continue
+            if str(r['id']) in replaced:
+                continue
+        out.append(r)
+    return out
+
+
+def _msy_resolve_skill_for_mode(row, rows, stat_mode):
+    """Mirror app.js _dcResolveSkillForDcMode."""
+    res = row['resolved']
+    if stat_mode != 'sp':
+        return res
+    rid = res.get('replaced_by_sp_id')
+    if not rid:
+        return res
+    rid = str(rid)
+    for r in rows:
+        if str(r['id']) == rid:
+            return r['resolved']
+    return res
+
+
+def _msy_skill_base_name(name):
+    return re.sub(r'\s*LV\s*\d+\s*$', '', str(name or ''), flags=re.I).strip().lower()
+
+
+def _msy_skill_lv_from_name(name):
+    lv_m = re.search(r'\bLV\s*(\d+)\b', str(name or ''), re.I)
+    return int(lv_m.group(1)) if lv_m else 0
+
+
+@lru_cache(maxsize=8192)
+def _active_skill_stat_pct(cid, lc):
+    """Sum Ranged/Melee/Awaken % from auto-enabled active skills only."""
+    stat_mode = _msy_char_stat_mode(cid)
+    rows = _msy_char_skill_rows(cid, lc)
+    active_ids = _msy_auto_active_skill_ids(cid, lc)
+    out = {'Ranged': 0, 'Melee': 0, 'Awaken': 0}
+    for row in _msy_pilot_skills_visible(stat_mode, rows):
+        sid = row['id']
+        if sid not in active_ids:
+            continue
+        rsk = _msy_resolve_skill_for_mode(row, rows, stat_mode)
+        name = str(rsk.get('name') or '')
+        blob = _msy_skill_blob(rsk)
         add = _parse_skill_desc_atk_pct(blob, sid, name)
         for k in out:
             out[k] += add[k]
@@ -500,7 +602,8 @@ def _pilot_awaken_adjusted(grown, totals, uid, lc, stat_mode, pct):
 def _char_atk_with_skills_for_pair(cid, uid, lc, attack_attr, *, cp_on=True):
     """Char ATK for damage formula — pair CP totals + active skill % + unit awaken floor."""
     totals, _ = _cached_char_pair_totals(cid, uid, lc, cp_on=cp_on)
-    grown, _ = _char_grown(cid)
+    grown, grown_sp, _, _ = _char_grown_bases(cid)
+    base_grown = grown_sp if _msy_char_stat_mode(cid) == 'sp' else grown
     sk = _active_skill_stat_pct(cid, lc)
     info = _app().unit_info_map.get(_app().normalize_id(uid)) or {}
     stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
@@ -509,9 +612,9 @@ def _char_atk_with_skills_for_pair(cid, uid, lc, attack_attr, *, cp_on=True):
     best_key = keys[0] if keys else 'Ranged'
     for k in keys:
         if k == 'Awaken':
-            v = _pilot_awaken_adjusted(grown, totals, uid, lc, stat_mode, sk.get('Awaken', 0))
+            v = _pilot_awaken_adjusted(base_grown, totals, uid, lc, stat_mode, sk.get('Awaken', 0))
         else:
-            v = _pilot_skill_adjusted_stat(grown, totals, k, sk.get(k, 0))
+            v = _pilot_skill_adjusted_stat(base_grown, totals, k, sk.get(k, 0))
         if v > best_val:
             best_val = v
             best_key = k
@@ -566,50 +669,74 @@ def _pair_ok_for_unit(uid, cid, trait_pair_unit_ids):
 
 
 def _char_grown(cid):
+    grown, _, ri, _ = _char_grown_bases(cid)
+    return grown, ri
+
+
+def _char_grown_bases(cid):
+    """Normal growth, SP growth column, rarity, and whether pilot has SP stats."""
     A = _app()
     cid = A.normalize_id(cid)
     info = A.char_info_map.get(cid) or {}
     ri = str(info.get('rarity', '1'))
     raw = A.char_stat_map.get(cid, {})
     grown = {}
+    grown_sp = {}
     for s in A.CHAR_STAT_ORDER:
         st = raw.get(s, (0, 0, 0))
         if isinstance(st, (list, tuple)) and len(st) >= 2:
             grown[s] = A.calc_growth_char(st[0], st[1], ri)
+            if len(st) >= 3:
+                grown_sp[s] = st[2]
+            else:
+                grown_sp[s] = st[1]
         else:
             grown[s] = 0
-    return grown, ri
+            grown_sp[s] = 0
+    has_sp = int(ri) <= 4
+    return grown, grown_sp, ri, has_sp
 
 
 def _char_totals_for_pair_max(cid, uid, lc):
-    """CP on: conditional + max Supercharged EX tier + pair-gated traits when unit matches."""
+    """CP on: conditional + max trait % + pair-gated traits when unit matches."""
     A = _app()
     ldc = _calc_lang_data()
     cid = A.normalize_id(cid)
     uid = A.normalize_id(uid)
-    grown, _ = _char_grown(cid)
+    char_mode = _msy_char_stat_mode(cid)
+    grown, grown_sp, _, _ = _char_grown_bases(cid)
+    base = grown_sp if char_mode == 'sp' else grown
     ac = _build_char_ac_calc(cid, lc)
     buckets = A._accumulate_character_trait_percent_buckets(ac, cid, ldc)
     spbn_u, spbn_c, spbn_pair, spen, spen_pair = buckets[0], buckets[1], buckets[2], buckets[3], buckets[4]
+    spbs_u, spbs_c, spbs_pair, spes, spes_pair = buckets[5], buckets[6], buckets[7], buckets[8], buckets[9]
     trait_pair_unit_ids = buckets[10]
     pair_ok = _pair_ok_for_unit(uid, cid, trait_pair_unit_ids)
-    ex_tiers = A.collect_supercharged_ex_stat_tiers(ac, cid)
     totals = {}
-    if ex_tiers:
-        tier = ex_tiers[-1]
+    if char_mode == 'sp':
         for s in A.CHAR_STAT_ORDER:
-            bv = grown.get(s, 0)
-            pct = spbn_u[s] + spbn_c[s] + tier['ex_pct'][s]
+            bv = base.get(s, 0)
+            pct = spbs_u[s] + spbs_c[s] + spes[s]
             if pair_ok:
-                pct += spbn_pair[s] + spen_pair[s]
+                pct += spbs_pair[s] + spes_pair[s]
             totals[s] = bv + math.floor(bv * pct / 100) if bv > 0 else 0
     else:
-        for s in A.CHAR_STAT_ORDER:
-            bv = grown.get(s, 0)
-            pct = spbn_u[s] + spbn_c[s] + spen[s]
-            if pair_ok:
-                pct += spbn_pair[s] + spen_pair[s]
-            totals[s] = bv + math.floor(bv * pct / 100) if bv > 0 else 0
+        ex_tiers = A.collect_supercharged_ex_stat_tiers(ac, cid)
+        if ex_tiers:
+            tier = ex_tiers[-1]
+            for s in A.CHAR_STAT_ORDER:
+                bv = base.get(s, 0)
+                pct = spbn_u[s] + spbn_c[s] + tier['ex_pct'][s]
+                if pair_ok:
+                    pct += spbn_pair[s] + spen_pair[s]
+                totals[s] = bv + math.floor(bv * pct / 100) if bv > 0 else 0
+        else:
+            for s in A.CHAR_STAT_ORDER:
+                bv = base.get(s, 0)
+                pct = spbn_u[s] + spbn_c[s] + spen[s]
+                if pair_ok:
+                    pct += spbn_pair[s] + spen_pair[s]
+                totals[s] = bv + math.floor(bv * pct / 100) if bv > 0 else 0
     return totals, pair_ok
 
 
@@ -619,17 +746,26 @@ def _char_totals_for_pair_no_cp(cid, uid, lc):
     ldc = _calc_lang_data()
     cid = A.normalize_id(cid)
     uid = A.normalize_id(uid)
-    grown, _ = _char_grown(cid)
+    char_mode = _msy_char_stat_mode(cid)
+    grown, grown_sp, _, _ = _char_grown_bases(cid)
+    base = grown_sp if char_mode == 'sp' else grown
     ac = _build_char_ac_calc(cid, lc)
     buckets = A._accumulate_character_trait_percent_buckets(ac, cid, ldc)
-    spbn_u = buckets[0]
     trait_pair_unit_ids = buckets[10]
     pair_ok = _pair_ok_for_unit(uid, cid, trait_pair_unit_ids)
     totals = {}
-    for s in A.CHAR_STAT_ORDER:
-        bv = grown.get(s, 0)
-        pct = spbn_u[s]
-        totals[s] = bv + math.floor(bv * pct / 100) if bv > 0 else 0
+    if char_mode == 'sp':
+        spbs_u = buckets[5]
+        for s in A.CHAR_STAT_ORDER:
+            bv = base.get(s, 0)
+            pct = spbs_u[s]
+            totals[s] = bv + math.floor(bv * pct / 100) if bv > 0 else 0
+    else:
+        spbn_u = buckets[0]
+        for s in A.CHAR_STAT_ORDER:
+            bv = base.get(s, 0)
+            pct = spbn_u[s]
+            totals[s] = bv + math.floor(bv * pct / 100) if bv > 0 else 0
     return totals, pair_ok
 
 
@@ -914,25 +1050,18 @@ def _char_skill_bonuses(cid, lc):
 
 def _char_active_skill_dmg_bonuses(cid, lc):
     """Damage-dealt % from auto-enabled active skills only (matches _dcGetActiveSkillBonuses)."""
-    A = _app()
-    ld = _ldc(lc)
-    cid = A.normalize_id(cid)
+    stat_mode = _msy_char_stat_mode(cid)
+    rows = _msy_char_skill_rows(cid, lc)
     active_ids = _msy_auto_active_skill_ids(cid, lc)
     dmg_by_base = {}
-    fs = [x for x in A.extract_data_list(A.char_skill) if A.normalize_id(x.get('CharacterId', '')) == cid]
-    seen = set()
-    for sk in sorted(fs, key=lambda x: int(x.get('SortOrder', 0))):
-        sid = A.normalize_id(sk.get('CharacterSkillId') or sk.get('SkillId') or '')
-        if not sid or sid in seen or sid == '0' or sid not in active_ids:
+    for row in _msy_pilot_skills_visible(stat_mode, rows):
+        sid = row['id']
+        if sid not in active_ids:
             continue
-        seen.add(sid)
-        resolved = A.resolve_char_skill(sid, ld, int(sk.get('SortOrder', 0)), False)
-        name = str(resolved.get('name') or '')
-        base = re.sub(r'\s*LV\s*\d+\s*$', '', name, flags=re.I).strip().lower()
-        blob = '\n'.join(
-            str(x.get('text') if isinstance(x, dict) else x or '')
-            for x in (resolved.get('details') or [])
-        ) + '\n' + str(resolved.get('desc') or '')
+        rsk = _msy_resolve_skill_for_mode(row, rows, stat_mode)
+        name = str(rsk.get('name') or '')
+        base = _msy_skill_base_name(name)
+        blob = _msy_skill_blob(rsk)
         sk_dmg = 0
         for m in _SKILL_DMG_RE.finditer(blob):
             g = m.group(m.lastindex)
@@ -1316,22 +1445,16 @@ def _pilot_affinity_weapon_crit(cid, uid, lc):
 
 
 def _char_skill_crit_rate(cid, lc):
-    A = _app()
-    cid = A.normalize_id(cid)
+    stat_mode = _msy_char_stat_mode(cid)
+    rows = _msy_char_skill_rows(cid, lc)
     active_ids = _msy_auto_active_skill_ids(cid, lc)
     crit = 0
-    fs = [x for x in A.extract_data_list(A.char_skill) if A.normalize_id(x.get('CharacterId', '')) == cid]
-    seen = set()
-    for sk in sorted(fs, key=lambda x: int(x.get('SortOrder', 0))):
-        sid = A.normalize_id(sk.get('CharacterSkillId') or sk.get('SkillId') or '')
-        if not sid or sid in seen or sid == '0' or sid not in active_ids:
+    for row in _msy_pilot_skills_visible(stat_mode, rows):
+        sid = row['id']
+        if sid not in active_ids:
             continue
-        seen.add(sid)
-        resolved = A.resolve_char_skill(sid, _ldc(lc), int(sk.get('SortOrder', 0)), False)
-        blob = '\n'.join(
-            str(x.get('text') if isinstance(x, dict) else x or '')
-            for x in (resolved.get('details') or [])
-        ) + '\n' + str(resolved.get('desc') or '')
+        rsk = _msy_resolve_skill_for_mode(row, rows, stat_mode)
+        blob = _msy_skill_blob(rsk)
         for m in _SKILL_CRIT_RE.finditer(blob):
             for g in m.groups():
                 if g and str(g).isdigit():
@@ -2934,79 +3057,60 @@ def _weapon_info_for_msy(uid, lc):
 
 @lru_cache(maxsize=8192)
 def _msy_auto_active_skill_ids(cid, lc):
-    A = _app()
-    ld = _ldc(lc)
-    cid = A.normalize_id(cid)
-    dmg_by_base = {}
-    fs = [x for x in A.extract_data_list(A.char_skill) if A.normalize_id(x.get('CharacterId', '')) == cid]
-    seen = set()
-    for sk in sorted(fs, key=lambda x: int(x.get('SortOrder', 0))):
-        sid = A.normalize_id(sk.get('CharacterSkillId') or sk.get('SkillId') or '')
-        if not sid or sid in seen or sid == '0':
-            continue
-        seen.add(sid)
-        resolved = A.resolve_char_skill(sid, ld, int(sk.get('SortOrder', 0)), False)
-        name = str(resolved.get('name') or '')
-        base = re.sub(r'\s*LV\s*\d+\s*$', '', name, flags=re.I).strip().lower()
-        blob = '\n'.join(
-            str(x.get('text') if isinstance(x, dict) else x or '')
-            for x in (resolved.get('details') or [])
-        ) + '\n' + str(resolved.get('desc') or '')
+    """Auto-enable max-LV sim-relevant skills (resolved text — SP mode uses SP skill copy)."""
+    stat_mode = _msy_char_stat_mode(cid)
+    rows = _msy_char_skill_rows(cid, lc)
+    by_base = {}
+    for row in _msy_pilot_skills_visible(stat_mode, rows):
+        sid = row['id']
+        rsk = _msy_resolve_skill_for_mode(row, rows, stat_mode)
+        name = str(rsk.get('name') or '')
+        base = _msy_skill_base_name(name)
+        blob = _msy_skill_blob(rsk)
         if not _msy_skill_relevant_for_sim(blob, sid, name):
             continue
-        lv_m = re.search(r'\bLV\s*(\d+)\b', name, re.I)
-        lv = int(lv_m.group(1)) if lv_m else 0
-        prev = dmg_by_base.get(base)
+        lv = _msy_skill_lv_from_name(name)
+        prev = by_base.get(base)
         if not prev or lv > prev[0]:
-            dmg_by_base[base] = (lv, sid)
-    return {sid for _, sid in dmg_by_base.values()}
+            by_base[base] = (lv, sid)
+    return {sid for _, sid in by_base.values()}
 
 
 @lru_cache(maxsize=8192)
 def _msy_pilot_active_skills(cid, lc):
-    A = _app()
-    ld = _ldc(lc)
-    cid = A.normalize_id(cid)
+    stat_mode = _msy_char_stat_mode(cid)
+    rows = _msy_char_skill_rows(cid, lc)
     active_ids = _msy_auto_active_skill_ids(cid, lc)
     out = []
     seen_base = set()
-    fs = [x for x in A.extract_data_list(A.char_skill) if A.normalize_id(x.get('CharacterId', '')) == cid]
-    seen = set()
-    for sk in sorted(fs, key=lambda x: int(x.get('SortOrder', 0))):
-        sid = A.normalize_id(sk.get('CharacterSkillId') or sk.get('SkillId') or '')
-        if not sid or sid in seen or sid == '0':
-            continue
-        seen.add(sid)
-        resolved = A.resolve_char_skill(sid, ld, int(sk.get('SortOrder', 0)), False)
-        name = str(resolved.get('name') or '')
-        base = re.sub(r'\s*LV\s*\d+\s*$', '', name, flags=re.I).strip().lower()
-        blob = '\n'.join(
-            str(x.get('text') if isinstance(x, dict) else x or '')
-            for x in (resolved.get('details') or [])
-        ) + '\n' + str(resolved.get('desc') or '')
+    for row in _msy_pilot_skills_visible(stat_mode, rows):
+        sid = row['id']
+        rsk = _msy_resolve_skill_for_mode(row, rows, stat_mode)
+        name = str(rsk.get('name') or '')
+        base = _msy_skill_base_name(name)
+        blob = _msy_skill_blob(rsk)
         if not _msy_skill_relevant_for_sim(blob, sid, name):
             continue
         if base in seen_base:
             continue
         seen_base.add(base)
         details = []
-        for x in (resolved.get('details') or []):
+        for x in (rsk.get('details') or []):
             if isinstance(x, dict):
                 t = str(x.get('text') or '').strip()
             else:
                 t = str(x or '').strip()
             if t:
                 details.append(t)
-        desc = str(resolved.get('desc') or '').strip()
+        desc = str(rsk.get('desc') or '').strip()
         if desc and desc not in details:
             details.insert(0, desc)
-        level_m = re.search(r'LV\s*(\d+)', name, re.I)
         out.append({
             'id': sid,
             'name': name,
-            'icon': resolved.get('icon') or '',
+            'icon': rsk.get('icon') or '',
             'active': sid in active_ids,
-            'level': int(level_m.group(1)) if level_m else None,
+            'level': _msy_skill_lv_from_name(name) or None,
             'desc': desc or (details[0] if details else ''),
             'details': details,
         })
