@@ -196,27 +196,22 @@
 }
 
 .msy-same-role-btn {
-  min-width: 52px;
-  padding: 4px 6px;
+  min-width: 34px;
+  padding: 4px 8px;
 }
 
-.msy-same-role-icons {
-  display: inline-flex;
-  align-items: center;
-  gap: 2px;
+.msy-same-role-glyph {
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color: inherit;
 }
 
-.msy-same-role-chip {
-  width: 14px;
-  height: 14px;
-  object-fit: contain;
-  display: block;
-}
-
-.msy-same-role-btn.active {
-  border-color: rgba(96, 165, 250, 0.75);
-  color: #bfdbfe;
-  background: rgba(59, 130, 246, 0.16);
+.msy-same-role-btn.active .msy-same-role-glyph {
+  color: #fca5a5;
 }
 
 .msy-unit-card--sd .msy-unit-head {

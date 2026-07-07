@@ -1117,9 +1117,11 @@ SHINN_EX_CHAR_ID = '1330000103'
 _MSY_BUILD_WORKERS = max(1, min(6, int(os.environ.get('MSY_BUILD_WORKERS', '4') or '4')))
 _MSY_PAGE_BUILD_LIMIT = max(0, min(40, int(os.environ.get('MSY_PAGE_BUILD_LIMIT', '40') or '40')))
 _MSY_PAGE_BUILD_BUDGET_SEC = max(5.0, min(60.0, float(os.environ.get('MSY_PAGE_BUILD_BUDGET_SEC', '18') or '18')))
-_MSY_BROWSE_BUILD_BUDGET_SEC = max(6.0, min(45.0, float(os.environ.get('MSY_BROWSE_BUILD_BUDGET_SEC', '16') or '16')))
-_MSY_LITE_PILOT_NEED = max(10, min(20, int(os.environ.get('MSY_LITE_PILOT_NEED', '12') or '12')))
-_MSY_LITE_PILOT_CAP = max(12, min(28, int(os.environ.get('MSY_LITE_PILOT_CAP', '14') or '14')))
+_MSY_BROWSE_BUILD_BUDGET_SEC = max(0.8, min(45.0, float(os.environ.get('MSY_BROWSE_BUILD_BUDGET_SEC', '1.15') or '1.15')))
+_MSY_BROWSE_PAGE_BUILD_LIMIT = max(0, min(10, int(os.environ.get('MSY_BROWSE_PAGE_BUILD_LIMIT', '2') or '2')))
+_MSY_LITE_PILOT_NEED = max(8, min(16, int(os.environ.get('MSY_LITE_PILOT_NEED', '10') or '10')))
+_MSY_LITE_PILOT_CAP = max(8, min(20, int(os.environ.get('MSY_LITE_PILOT_CAP', '10') or '10')))
+_MSY_LITE_NON_UR_RESERVE = max(2, min(6, int(os.environ.get('MSY_LITE_NON_UR_RESERVE', '4') or '4')))
 # Older published caches to load when the current v14 master file is missing (Railway deploy).
 _MSY_LEGACY_MASTER_CACHE_KEYS = (
     ('_v13_dc_master', 'EN', 3, 20, None, None),
@@ -1670,9 +1672,69 @@ def _cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc):
     return score
 
 
+def _lite_candidates_for_unit(uid, active_pilots, need, info, unit_wpn, stat_mode, lc):
+    """Bounded pilot pool for page builds — always reserve slots for non-UR pilots."""
+    pilot_cap = _MSY_LITE_PILOT_CAP
+    if len(active_pilots) <= pilot_cap:
+        return list(active_pilots)
+    cheap_scored = [
+        (_cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc), cid)
+        for cid in active_pilots
+    ]
+    cheap_scored.sort(key=lambda x: (-x[0], x[1]))
+    top = [cid for _, cid in cheap_scored[:need]]
+    merged = []
+    non_ur = _filter_non_ur(active_pilots)
+    if non_ur:
+        nu_scored = [
+            (_cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc), cid)
+            for cid in non_ur
+        ]
+        nu_scored.sort(key=lambda x: (-x[0], x[1]))
+        reserve = min(_MSY_LITE_NON_UR_RESERVE, len(nu_scored))
+        for _, cid in nu_scored[:reserve]:
+            if cid not in merged:
+                merged.append(cid)
+    for cid in top:
+        if cid not in merged:
+            merged.append(cid)
+        if len(merged) >= pilot_cap:
+            break
+    return merged[:pilot_cap]
+
+
+def _rankings_variant_for_tier_lite(filter_fn, active_pilots, all_pairs, top_pilots, uid, lc, lb_tier,
+                                    def_tier, unit_wpn, need, info, stat_mode, *, def_unit_override=None,
+                                    def_char_override=None, rank_mode='super_crit', browse_fast=False):
+    """Lite variant rankings (no-UR / no-Shinn) without a full pilot-pool rescan."""
+    filtered = filter_fn(active_pilots)
+    if not filtered:
+        return {}
+    if len(filtered) >= len(active_pilots):
+        return _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc)
+    allowed = set(filtered)
+    variant_pairs = [(cid, bv) for cid, bv in all_pairs if cid in allowed]
+    simmed = {cid for cid, _ in variant_pairs}
+    missing = [cid for cid in filtered if cid not in simmed]
+    if missing and not browse_fast:
+        scored = [
+            (_cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc), cid)
+            for cid in missing
+        ]
+        scored.sort(key=lambda x: (-x[0], x[1]))
+        extra_cids = [cid for _, cid in scored[:need]]
+        extra_pairs = _multi_vigor_pairs_for_candidates(
+            uid, extra_cids, lc, lb_tier, def_tier, unit_wpn,
+            def_unit_override=def_unit_override, def_char_override=def_char_override,
+            cp_on=True, lite=True, rank_mode=rank_mode,
+        )
+        variant_pairs.extend(extra_pairs)
+    return _rankings_from_multi_vigor_pairs(variant_pairs, top_pilots, lc) if variant_pairs else {}
+
+
 def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclude, top_pilots, metric, *,
                              def_unit_override=None, def_char_override=None, def_tiers=None, lite=False,
-                             rank_mode='super_crit', same_role_only=False):
+                             rank_mode='super_crit', same_role_only=False, browse_fast=False):
     A = _app()
     info = A.unit_info_map.get(uid) or {}
     stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
@@ -1688,7 +1750,11 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
     if lite:
         need = max(int(top_pilots or 10) + 4, _MSY_LITE_PILOT_NEED)
     pilot_cap = _MSY_LITE_PILOT_CAP if lite else _FULL_SIM_PILOT_CAP
-    if len(active_pilots) <= pilot_cap:
+    if lite:
+        candidates = _lite_candidates_for_unit(
+            uid, active_pilots, need, info, unit_wpn, stat_mode, lc,
+        )
+    elif len(active_pilots) <= pilot_cap:
         candidates = list(active_pilots)
     else:
         cheap_scored = []
@@ -1814,7 +1880,20 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
         rankings = _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc)
         if not rankings:
             return None
-        if lite:
+        if lite and browse_fast:
+            rankings_no_gc = rankings
+            rankings_no_cp = None
+            rankings_no_ur = _rankings_variant_for_tier_lite(
+                _filter_non_ur, active_pilots, all_pairs, top_pilots, uid, lc, lb_tier, dt, unit_wpn,
+                need, info, stat_mode, def_unit_override=def_unit_override,
+                def_char_override=def_char_override, rank_mode=rank_mode, browse_fast=True,
+            )
+            rankings_no_shinn = _rankings_variant_for_tier_lite(
+                _filter_non_shinn, active_pilots, all_pairs, top_pilots, uid, lc, lb_tier, dt, unit_wpn,
+                need, info, stat_mode, def_unit_override=def_unit_override,
+                def_char_override=def_char_override, rank_mode=rank_mode, browse_fast=True,
+            )
+        elif lite:
             rankings_no_gc = rankings
             rankings_no_cp = _rankings_no_cp_for_tier_lite(
                 dt, all_pairs, top_pilots, uid, lc, lb_tier, unit_wpn,
@@ -1861,6 +1940,8 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
         out['rankings_no_shinn_by_tier'] = rankings_no_shinn_by_tier
         out['rankings_no_gc_by_tier'] = rankings_no_gc_by_tier
         out['rankings_no_cp_by_tier'] = rankings_no_cp_by_tier
+    if not same_role_only:
+        out['cross_role_built'] = True
     return out
 
 
@@ -2669,7 +2750,7 @@ def _ordered_unit_ids_for_browse(unit_ids, master_groups, lc, kwargs, rank_mode,
     scored = []
     for uid in unit_ids:
         uid = A.normalize_id(uid)
-        g = by_uid.get(uid) if same_role_only else None
+        g = by_uid.get(uid)
         if g:
             sc = _unit_browse_sort_damage(g, rank_mode, def_tier)
         else:
@@ -2690,9 +2771,11 @@ def _browse_filters_active(browse, unit_q=''):
 
 def _resolve_groups_for_unit_ids(unit_ids, master_groups, lc, kwargs, *, browse_fast=False, def_tier=3,
                                    max_build=None, page_build_lite=False, build_budget_sec=None,
-                                   rank_mode='super_crit'):
+                                   rank_mode='super_crit', unit_q=''):
     A = _app()
     same_role_only = _same_role_only_from_kwargs(kwargs)
+    browse = _parse_browse_filters(kwargs, lc)
+    browse_active = _browse_filters_active(browse, unit_q)
     by_uid = {}
     for g in master_groups or []:
         uid = A.normalize_id((g.get('unit') or {}).get('id'))
@@ -2702,8 +2785,11 @@ def _resolve_groups_for_unit_ids(unit_ids, master_groups, lc, kwargs, *, browse_
     to_build = []
     for uid in unit_ids:
         uid = A.normalize_id(uid)
-        if same_role_only and uid in by_uid:
-            out.append(by_uid[uid])
+        cached = by_uid.get(uid)
+        if cached and not cached.get('pending') and (
+            same_role_only or not browse_active or cached.get('cross_role_built')
+        ):
+            out.append(cached)
         else:
             to_build.append(uid)
     if to_build:
@@ -2726,13 +2812,13 @@ def _resolve_groups_for_unit_ids(unit_ids, master_groups, lc, kwargs, *, browse_
             dc = kwargs.get('def_char_override')
             tiers = None if browse_fast else _MSY_STD_DEF_TIERS
             built = []
-            workers = min(_MSY_BUILD_WORKERS, max(1, len(to_build)))
+            workers = 1 if browse_fast else min(_MSY_BUILD_WORKERS, max(1, len(to_build)))
 
             def _build_one(uid):
                 return _build_single_unit_group(
                     uid, pilot_ids, lc, lb, 'super', dt, exclude, top_p, 'super_crit',
                     def_unit_override=du, def_char_override=dc, def_tiers=tiers, lite=page_build_lite,
-                    rank_mode=rank_mode, same_role_only=same_role_only,
+                    rank_mode=rank_mode, same_role_only=same_role_only, browse_fast=browse_fast,
                 )
 
             if workers <= 1:
@@ -2746,18 +2832,21 @@ def _resolve_groups_for_unit_ids(unit_ids, master_groups, lc, kwargs, *, browse_
                     except Exception as e:
                         print(f'MSY page build error ({uid}): {e}')
             else:
-                with ThreadPoolExecutor(max_workers=workers) as ex:
+                ex = ThreadPoolExecutor(max_workers=workers)
+                try:
                     futs = {ex.submit(_build_one, uid): uid for uid in to_build}
                     for fut in as_completed(futs):
                         if time.monotonic() >= deadline:
                             break
                         uid = futs[fut]
                         try:
-                            g = fut.result()
+                            g = fut.result(timeout=max(0.05, deadline - time.monotonic()))
                             if g:
                                 built.append(g)
                         except Exception as e:
                             print(f'MSY page build error ({uid}): {e}')
+                finally:
+                    ex.shutdown(wait=False, cancel_futures=True)
             out.extend(built)
     # Preserve caller page order.
     out_by_uid = {A.normalize_id((g.get('unit') or {}).get('id')): g for g in out}
@@ -3054,6 +3143,8 @@ def _normalize_group_for_mode(g, rank_mode):
             'weapon_info': g.get('weapon_info'),
             'is_sd': g.get('is_sd', False),
             'bundled_pilot_id': g.get('bundled_pilot_id'),
+            'pending': g.get('pending'),
+            'cross_role_built': g.get('cross_role_built'),
         }
     if rank_mode == 'super_crit' and g.get('pilots'):
         return g
@@ -3305,19 +3396,43 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
     kwargs_resolve = dict(kwargs)
     kwargs_resolve['def_tier'] = dt
     filtered_browse = browse_active
-    page_build_cap = min(_MSY_PAGE_BUILD_LIMIT, per_page) if _msy_page_build_allowed() else 0
-    build_budget = _MSY_BROWSE_BUILD_BUDGET_SEC if filtered_browse else _MSY_PAGE_BUILD_BUDGET_SEC
+    if filtered_browse:
+        page_build_cap = min(_MSY_BROWSE_PAGE_BUILD_LIMIT, per_page) if _msy_page_build_allowed() else 0
+        build_budget = _MSY_BROWSE_BUILD_BUDGET_SEC
+    else:
+        page_build_cap = min(_MSY_PAGE_BUILD_LIMIT, per_page) if _msy_page_build_allowed() else 0
+        build_budget = _MSY_PAGE_BUILD_BUDGET_SEC
     page_groups_raw = _resolve_groups_for_unit_ids(
         page_ids, working_groups, lc, kwargs_resolve, browse_fast=True, def_tier=dt,
         max_build=page_build_cap,
         page_build_lite=True,
         build_budget_sec=build_budget,
         rank_mode=rank_mode,
+        unit_q=unit_q,
     )
     if cache_key:
         _merge_groups_into_cache(cache_key, page_groups_raw)
-    expanded = []
+    built_by_uid = {}
+    for g in page_groups_raw:
+        uid = _app().normalize_id((g.get('unit') or {}).get('id'))
+        if uid:
+            built_by_uid[uid] = g
     role_filter = browse.get('role_filter')
+    filled_raw = []
+    for uid in page_ids:
+        uid = _app().normalize_id(uid)
+        if uid in built_by_uid:
+            filled_raw.append(built_by_uid[uid])
+        elif browse_active:
+            filled_raw.append(_stub_group_for_uid(uid, lc, kwargs, rank_mode, dt, role_filter=role_filter))
+        else:
+            g = next((x for x in working_groups if _app().normalize_id((x.get('unit') or {}).get('id')) == uid), None)
+            if g:
+                filled_raw.append(g)
+            else:
+                filled_raw.append(_stub_group_for_uid(uid, lc, kwargs, rank_mode, dt, role_filter=role_filter))
+    page_groups_raw = filled_raw
+    expanded = []
     for g in page_groups_raw:
         _ensure_group_enriched(g, lc, rank_mode, include_skills=include_skills)
         row = _group_for_def_tier(g, dt) if g.get('rankings_by_tier') else g
