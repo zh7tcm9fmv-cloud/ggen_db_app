@@ -30,6 +30,7 @@
     cacheKey: null,
     tierCache: {},
     charCondPassiveOn: true,
+    pilotCondPassiveOn: true,
     excludeUrGlobal: false,
     excludeShinnGlobal: false,
     sameRoleOnly: false,
@@ -127,12 +128,21 @@
 
   function fullGroupBlock(g, modeId) {
     if (!g) return null;
-    if (!state.charCondPassiveOn && g.rankings_no_cp) {
+    var block = null;
+    if (!state.charCondPassiveOn && !state.pilotCondPassiveOn && g.rankings_no_cp_pep) {
+      var offBlock = (g.rankings_no_cp_pep || {})[modeId];
+      if (offBlock) block = offBlock;
+    } else if (!state.charCondPassiveOn && g.rankings_no_cp) {
       var cpBlock = (g.rankings_no_cp || {})[modeId];
-      if (cpBlock) return cpBlock;
+      if (cpBlock) block = cpBlock;
+    } else if (!state.pilotCondPassiveOn && g.rankings_no_pep) {
+      var pepBlock = (g.rankings_no_pep || {})[modeId];
+      if (pepBlock) block = pepBlock;
     }
-    var block = (g.rankings || {})[modeId];
-    if (!block && state.charCondPassiveOn && modeId === 'super_crit' && g.pilots) {
+    if (!block) {
+      block = (g.rankings || {})[modeId];
+    }
+    if (!block && state.charCondPassiveOn && state.pilotCondPassiveOn && modeId === 'super_crit' && g.pilots) {
       block = { max_damage: g.max_damage, pilots: g.pilots };
     }
     return block || null;
@@ -180,7 +190,9 @@
       rankings: g.rankings,
       rankings_no_ur: g.rankings_no_ur,
       rankings_no_shinn: g.rankings_no_shinn,
-      rankings_no_cp: g.rankings_no_cp
+      rankings_no_cp: g.rankings_no_cp,
+      rankings_no_pep: g.rankings_no_pep,
+      rankings_no_cp_pep: g.rankings_no_cp_pep
     };
   }
 
@@ -309,6 +321,7 @@
       (global.S && global.S.lang) || 'EN',
       state.topPilots,
       state.charCondPassiveOn ? 'cp1' : 'cp0',
+      state.pilotCondPassiveOn ? 'pep1' : 'pep0',
       state.sameRoleOnly ? 'sr1' : 'sr0',
       'pp:' + state.perPage,
       buildFilterQuery()
@@ -541,7 +554,7 @@
       var unitId = g.unit && g.unit.id;
       if (!unitId) return;
       (g.pilots || []).forEach(function (p) { addPilot(unitId, p); });
-      ['rankings', 'rankings_no_cp', 'rankings_no_ur', 'rankings_no_shinn'].forEach(function (key) {
+      ['rankings', 'rankings_no_cp', 'rankings_no_pep', 'rankings_no_cp_pep', 'rankings_no_ur', 'rankings_no_shinn'].forEach(function (key) {
         var block = g[key];
         if (!block || typeof block !== 'object') return;
         Object.keys(block).forEach(function (modeKey) {
@@ -569,7 +582,7 @@
         }
       }
       (g.pilots || []).forEach(patchPilot);
-      ['rankings', 'rankings_no_cp', 'rankings_no_ur', 'rankings_no_shinn'].forEach(function (key) {
+      ['rankings', 'rankings_no_cp', 'rankings_no_pep', 'rankings_no_cp_pep', 'rankings_no_ur', 'rankings_no_shinn'].forEach(function (key) {
         var block = g[key];
         if (!block || typeof block !== 'object') return;
         Object.keys(block).forEach(function (modeKey) {
@@ -638,6 +651,12 @@
       cpBtn.title = state.charCondPassiveOn ? t('msy_cp_on') : t('msy_cp_off');
       cpBtn.setAttribute('aria-pressed', state.charCondPassiveOn ? 'true' : 'false');
       cpBtn.classList.toggle('active', state.charCondPassiveOn);
+    }
+    var pepBtn = document.getElementById('msyPepToggleBtn');
+    if (pepBtn) {
+      pepBtn.title = state.pilotCondPassiveOn ? t('msy_pep_on') : t('msy_pep_off');
+      pepBtn.setAttribute('aria-pressed', state.pilotCondPassiveOn ? 'true' : 'false');
+      pepBtn.classList.toggle('active', state.pilotCondPassiveOn);
     }
     var urBtn = document.getElementById('msyExcludeUrBtn');
     if (urBtn) {
@@ -1297,17 +1316,44 @@
     renderContent(true);
   }
 
+  function passiveToggleNeedsRefetch() {
+    return (state.groups || []).some(function (g) {
+      if (!g || g.pending || g.pilot_preview) return true;
+      if (!state.charCondPassiveOn) {
+        if (!g.rankings_no_cp) return true;
+        var cpBlk = g.rankings_no_cp[state.rankMode];
+        if (!(cpBlk && cpBlk.pilots && cpBlk.pilots.length)) return true;
+        if (!state.pilotCondPassiveOn) {
+          if (!g.rankings_no_cp_pep) return true;
+          var offBlk = g.rankings_no_cp_pep[state.rankMode];
+          if (!(offBlk && offBlk.pilots && offBlk.pilots.length)) return true;
+        }
+      } else if (!state.pilotCondPassiveOn) {
+        if (!g.rankings_no_pep) return true;
+        var pepBlk = g.rankings_no_pep[state.rankMode];
+        if (!(pepBlk && pepBlk.pilots && pepBlk.pilots.length)) return true;
+      }
+      return false;
+    });
+  }
+
   function toggleCharCondPassive() {
     state.charCondPassiveOn = !state.charCondPassiveOn;
     syncGlobalFilterButtons();
     invalidateRenderSignature();
-    var missingNoCp = (state.groups || []).some(function (g) {
-      if (!g || g.pending || g.pilot_preview) return true;
-      if (!g.rankings_no_cp) return true;
-      var blk = g.rankings_no_cp[state.rankMode];
-      return !(blk && blk.pilots && blk.pilots.length);
-    });
-    if (missingNoCp) {
+    if (passiveToggleNeedsRefetch()) {
+      clearPageCache();
+      loadRankings(false);
+      return;
+    }
+    renderContent(true);
+  }
+
+  function togglePilotCondPassive() {
+    state.pilotCondPassiveOn = !state.pilotCondPassiveOn;
+    syncGlobalFilterButtons();
+    invalidateRenderSignature();
+    if (passiveToggleNeedsRefetch()) {
       clearPageCache();
       loadRankings(false);
       return;
@@ -1444,7 +1490,8 @@
     toggleExcludeUr: toggleExcludeUr,
     toggleExcludeShinn: toggleExcludeShinn,
     toggleSameRoleOnly: toggleSameRoleOnly,
-    toggleCharCondPassive: toggleCharCondPassive
+    toggleCharCondPassive: toggleCharCondPassive,
+    togglePilotCondPassive: togglePilotCondPassive
   };
 
   if (document.readyState === 'loading') {

@@ -932,6 +932,92 @@ def _collect_pilot_pep_bonuses(cid, uid, lc):
     return merged
 
 
+def _parse_pep_squad_line_stats(txt):
+    """Parse squad-style ATK bonus lines for pilot-exclusive passives (mirrors app.js _scParseSquadLineStats)."""
+    raw = str(txt or '').replace('\r', '')
+    t = re.sub(r'\s+', ' ', raw)
+    m = re.search(
+        r'increase own ATK by (\d+)%[\s\S]*?\(up to (\d+)%\)', t, re.I,
+    )
+    if m:
+        return {'kind': 'dual_stack_atk', 'max': int(m.group(2) or 0)}
+    if re.search(r'(?:\[condition\s*1\]|【條件1】|【条件1】)', raw, re.I):
+        m = re.search(r'自身の攻撃力が(\d+)%上昇（最大(\d+)%）', raw)
+        if m:
+            return {'kind': 'dual_stack_atk', 'max': int(m.group(2) or 0)}
+        m = re.search(r'自身攻擊力提升(\d+)%（最高(\d+)%）', raw)
+        if m:
+            return {'kind': 'dual_stack_atk', 'max': int(m.group(2) or 0)}
+    m = re.search(r'Increase ATK by (\d+)% \(up to (\d+)%\)', t, re.I)
+    if m:
+        return {'kind': 'stack_atk', 'max': int(m.group(2) or 0)}
+    m = re.search(r'攻撃力が(\d+)%上昇（最大(\d+)%）', raw)
+    if m:
+        return {'kind': 'stack_atk', 'max': int(m.group(2) or 0)}
+    m = re.search(r'自身攻擊力提升(\d+)%（最高(\d+)%）', raw)
+    if m:
+        return {'kind': 'stack_atk', 'max': int(m.group(2) or 0)}
+    m = re.search(r'increases ATK and DEF by (\d+)%', t, re.I)
+    if m:
+        return {'kind': 'flat_ad', 'flat': int(m.group(1) or 0)}
+    m = re.search(r'(?:also\s+)?(?:grant|grants)\s+\+(\d+)%\s+ATK\s+and\s+DEF', t, re.I)
+    if m:
+        return {'kind': 'flat_ad', 'flat': int(m.group(1) or 0)}
+    m = re.search(r'increase ATK by (\d+)%', t, re.I)
+    if m and not re.search(r'\(up to \d+%\)', t, re.I):
+        return {'kind': 'flat_atk', 'flat': int(m.group(1) or 0)}
+    m = re.search(r'攻撃力.*?(\d+)%', raw)
+    if m and re.search(r'上昇|提升|アップ', raw) and not re.search(r'最大|最高|up to', raw, re.I):
+        return {'kind': 'flat_atk', 'flat': int(m.group(1) or 0)}
+    return None
+
+
+def _pilot_pep_unit_stat_bonus_pct(cid, uid, lc, *, cp_on=True, pair_ok=False):
+    """Pilot-exclusive MS ATK % for this unit×pilot (max-damage: stack caps at max)."""
+    A = _app()
+    uid = A.normalize_id(uid)
+    cid = A.normalize_id(cid)
+    ld = _ldc(lc)
+    atk_pct = 0
+
+    if not (cp_on and pair_ok):
+        row = (A.CHAR_PAIR_UNIT_STAT_MOD_PCT.get(cid) or {}).get(uid)
+        if row:
+            atk_pct += int(row.get('atk_pct') or 0) if isinstance(row, dict) else 0
+
+    for bab in _build_char_ac_calc(cid, lc):
+        for src in (bab, bab.get('sp_replacement')):
+            if not src:
+                continue
+            for d2 in src.get('details') or []:
+                if isinstance(d2, dict):
+                    txt = str(d2.get('text') or '')
+                    detail = d2
+                else:
+                    txt = str(d2 or '')
+                    detail = None
+                if not txt:
+                    continue
+                if not re.search(r'when piloting|搭乘|搭乗', txt, re.I):
+                    continue
+                if not _pilot_bonus_text_applies(uid, cid, ld, lc, txt, detail):
+                    continue
+                parsed = _parse_pep_squad_line_stats(txt)
+                if parsed:
+                    kind = parsed.get('kind')
+                    if kind in ('stack_atk', 'dual_stack_atk'):
+                        atk_pct += int(parsed.get('max') or 0)
+                    elif kind in ('flat_atk', 'flat_ad'):
+                        atk_pct += int(parsed.get('flat') or 0)
+                    continue
+                for m in re.finditer(
+                    r'(?:increase|increases|提升|上昇).*?(?:own )?(?:MS )?ATK(?:ack)?(?: and DEF)? by (\d+)\s*%',
+                    txt, re.I,
+                ):
+                    atk_pct += int(m.group(1) or 0)
+    return max(0, atk_pct)
+
+
 def _msy_pilot_unit_affinities(cid, uid, lc):
     """Tag-affinity ability lines that match this unit×pilot pair (for MSY UI)."""
     A = _app()
@@ -1098,16 +1184,16 @@ def _best_ex_weapon(uid, stat_mode, lc):
     return _best_ranking_weapon(uid, stat_mode, lc)
 
 
-def _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok):
+def _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok, *, cp_on=True):
     A = _app()
     ldc = _ldc(lc)
     block = A._unit_max_lb_stat_block(uid, info, A.unit_stat_map.get(uid, {}), ldc)
     if not block:
         return 0
-    fs = A._unit_lb_row_to_api(block, stat_mode, True)
+    fs = A._unit_lb_row_to_api(block, stat_mode, bool(cp_on))
     unit_atk = float(fs.get('ATK', 0) or 0)
     row = (A.CHAR_PAIR_UNIT_STAT_MOD_PCT.get(A.normalize_id(cid)) or {}).get(A.normalize_id(uid))
-    if pair_ok and row:
+    if cp_on and pair_ok and row:
         atk_pct = int(row.get('atk_pct') or 0) if isinstance(row, dict) else (int(row) if isinstance(row, int) else 0)
         if atk_pct:
             unit_atk = math.floor(unit_atk * (100 + atk_pct) / 100)
@@ -1212,11 +1298,11 @@ def _trim_group_pilots(g, top_n):
             return rk
         return {k: _trim_block(v) for k, v in rk.items()}
 
-    for key in ('rankings', 'rankings_no_ur', 'rankings_no_shinn', 'rankings_no_gc', 'rankings_no_cp'):
+    for key in ('rankings', 'rankings_no_ur', 'rankings_no_shinn', 'rankings_no_gc', 'rankings_no_cp', 'rankings_no_pep'):
         if g.get(key):
             g[key] = _trim_rankings(g[key])
     for key in ('rankings_by_tier', 'rankings_no_ur_by_tier', 'rankings_no_shinn_by_tier',
-                'rankings_no_gc_by_tier', 'rankings_no_cp_by_tier'):
+                'rankings_no_gc_by_tier', 'rankings_no_cp_by_tier', 'rankings_no_pep_by_tier'):
         blob = g.get(key)
         if not blob:
             continue
@@ -1329,7 +1415,8 @@ def _cached_char_pair_totals(cid, uid, lc, *, cp_on=True):
 
 
 def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier=1,
-                        def_unit_override=None, def_char_override=None, wpn=None, cp_on=True):
+                        def_unit_override=None, def_char_override=None, wpn=None,
+                        cp_on=True, pep_on=True):
     A = _app()
     uid = A.normalize_id(uid)
     cid = A.normalize_id(cid)
@@ -1354,19 +1441,28 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
     totals, pair_ok = _cached_char_pair_totals(cid, uid, lc, cp_on=cp_on)
     skill_dmg, skill_atk_pct = _char_skill_bonuses(cid, lc)
     char_atk, formula_stat = _pilot_formula_stat(totals, wpn.get('attr'), skill_atk_pct)
-    unit_atk = _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok and cp_on)
+    unit_atk = _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok, cp_on=cp_on)
+    if pep_on:
+        pep_atk_pct = _pilot_pep_unit_stat_bonus_pct(
+            cid, uid, lc, cp_on=cp_on, pair_ok=pair_ok,
+        )
+        if pep_atk_pct:
+            unit_atk = math.floor(unit_atk * (100 + pep_atk_pct) / 100)
 
     dmg_dealt, crit_up = _char_pilot_dmg_bonuses(cid, uid, lc, cp_on=cp_on)
     dmg_dealt += skill_dmg
 
-    pep = _collect_pilot_pep_bonuses(cid, uid, lc)
-    pep_def_dn = int(pep.get('def_dn') or 0)
+    pep_def_dn = 0
+    if pep_on:
+        pep = _collect_pilot_pep_bonuses(cid, uid, lc)
+        pep_def_dn = int(pep.get('def_dn') or 0)
     def_debuff = _effective_def_debuff_pct(
         wpn['ws'], wpn['wm'], uid, ldc, lc, stat_mode, vigor, pep_def_dn,
     )
 
     crit_rate = int(wpn.get('base_crit') or 0)
-    crit_rate += _pilot_affinity_weapon_crit(cid, uid, lc)
+    if pep_on:
+        crit_rate += _pilot_affinity_weapon_crit(cid, uid, lc)
     crit_rate += _char_skill_crit_rate(cid, lc)
     crit_rate = min(100, max(0, crit_rate))
 
@@ -1574,7 +1670,7 @@ def _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc):
 
 def _multi_vigor_pairs_for_candidates(uid, candidates, lc, lb_tier, def_tier, unit_wpn, *,
                                       def_unit_override=None, def_char_override=None, cp_on=True,
-                                      lite=False, rank_mode=None):
+                                      pep_on=True, lite=False, rank_mode=None):
     vigors = _MSY_VIGOR_LEVELS
     if lite:
         vigors = (_VIGOR_FOR_RANK_MODE.get(rank_mode or 'super_crit', 'super'),)
@@ -1585,7 +1681,8 @@ def _multi_vigor_pairs_for_candidates(uid, candidates, lc, lb_tier, def_tier, un
             dmg = compute_pair_damage(
                 uid, cid, lc, lb_tier=lb_tier, vigor=v,
                 def_tier=def_tier, def_unit_override=def_unit_override,
-                def_char_override=def_char_override, wpn=unit_wpn, cp_on=cp_on,
+                def_char_override=def_char_override, wpn=unit_wpn,
+                cp_on=cp_on, pep_on=pep_on,
             )
             if dmg:
                 by_vigor[v] = dmg
@@ -1612,6 +1709,46 @@ def _rankings_no_cp_for_tier_lite(dt, all_pairs, top_pilots, uid, lc, lb_tier, u
         cp_on=False, lite=True, rank_mode=rank_mode,
     )
     return _rankings_from_multi_vigor_pairs(pairs_ncp, top_pilots, lc) if pairs_ncp else {}
+
+
+def _rankings_no_pep_for_tier_lite(dt, all_pairs, top_pilots, uid, lc, lb_tier, unit_wpn, *,
+                                    def_unit_override=None, def_char_override=None, rank_mode='super_crit'):
+    """PEP-off rankings for lite page builds — re-sim only pilots in the PEP-on top list."""
+    rk_on = _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc)
+    top_cids = []
+    for block in (rk_on or {}).values():
+        for pilot in block.get('pilots') or []:
+            cid = _app().normalize_id((pilot.get('char') or {}).get('id'))
+            if cid and cid not in top_cids:
+                top_cids.append(cid)
+    if not top_cids:
+        return rk_on
+    pairs_npep = _multi_vigor_pairs_for_candidates(
+        uid, top_cids, lc, lb_tier, dt, unit_wpn,
+        def_unit_override=def_unit_override, def_char_override=def_char_override,
+        cp_on=True, pep_on=False, lite=True, rank_mode=rank_mode,
+    )
+    return _rankings_from_multi_vigor_pairs(pairs_npep, top_pilots, lc) if pairs_npep else {}
+
+
+def _rankings_no_cp_pep_for_tier_lite(dt, all_pairs, top_pilots, uid, lc, lb_tier, unit_wpn, *,
+                                      def_unit_override=None, def_char_override=None, rank_mode='super_crit'):
+    """CP+PEP off rankings for lite builds — re-sim top pilots with both passives disabled."""
+    rk_on = _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc)
+    top_cids = []
+    for block in (rk_on or {}).values():
+        for pilot in block.get('pilots') or []:
+            cid = _app().normalize_id((pilot.get('char') or {}).get('id'))
+            if cid and cid not in top_cids:
+                top_cids.append(cid)
+    if not top_cids:
+        return rk_on
+    pairs_off = _multi_vigor_pairs_for_candidates(
+        uid, top_cids, lc, lb_tier, dt, unit_wpn,
+        def_unit_override=def_unit_override, def_char_override=def_char_override,
+        cp_on=False, pep_on=False, lite=True, rank_mode=rank_mode,
+    )
+    return _rankings_from_multi_vigor_pairs(pairs_off, top_pilots, lc) if pairs_off else {}
 
 
 def _ensure_rankings_no_cp(g, lc, rank_mode, def_tier, kwargs):
@@ -1659,6 +1796,102 @@ def _ensure_rankings_no_cp(g, lc, rank_mode, def_tier, kwargs):
         return g
     out = dict(g)
     out['rankings_no_cp'] = built
+    return out
+
+
+def _ensure_rankings_no_pep(g, lc, rank_mode, def_tier, kwargs):
+    """Backfill PEP-off rankings when missing (legacy cache / fast browse builds)."""
+    if not g or g.get('pending') or g.get('pilot_preview'):
+        return g
+    A = _app()
+    rank_mode = rank_mode or 'super_crit'
+    rnpep = g.get('rankings_no_pep') or {}
+    pep_block = (rnpep.get(rank_mode) if isinstance(rnpep, dict) else None) or {}
+    if pep_block.get('pilots'):
+        return g
+    block = (g.get('rankings') or {}).get(rank_mode)
+    if not block or not block.get('pilots'):
+        return g
+    uid = A.normalize_id((g.get('unit') or {}).get('id'))
+    if not uid:
+        return g
+    info = A.unit_info_map.get(uid) or {}
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    unit_wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
+    if not unit_wpn:
+        return g
+    top_p = int((kwargs or {}).get('top_pilots', 10) or 10)
+    lb = int((kwargs or {}).get('lb_tier', 3) or 3)
+    dt = max(1, min(4, int(def_tier or 3)))
+    top_cids = []
+    for pilot in block.get('pilots') or []:
+        cid = A.normalize_id((pilot.get('char') or {}).get('id'))
+        if cid and cid not in top_cids:
+            top_cids.append(cid)
+    if not top_cids:
+        return g
+    pairs_on = _multi_vigor_pairs_for_candidates(
+        uid, top_cids, lc, lb, dt, unit_wpn,
+        cp_on=True, pep_on=True, lite=True, rank_mode=rank_mode,
+    )
+    if not pairs_on:
+        return g
+    built = _rankings_no_pep_for_tier_lite(
+        dt, pairs_on, top_p, uid, lc, lb, unit_wpn,
+        rank_mode=rank_mode,
+    )
+    if not built:
+        return g
+    out = dict(g)
+    out['rankings_no_pep'] = built
+    return out
+
+
+def _ensure_rankings_no_cp_pep(g, lc, rank_mode, def_tier, kwargs):
+    """Backfill CP+PEP-off rankings when missing."""
+    if not g or g.get('pending') or g.get('pilot_preview'):
+        return g
+    A = _app()
+    rank_mode = rank_mode or 'super_crit'
+    rnb = g.get('rankings_no_cp_pep') or {}
+    off_block = (rnb.get(rank_mode) if isinstance(rnb, dict) else None) or {}
+    if off_block.get('pilots'):
+        return g
+    block = (g.get('rankings') or {}).get(rank_mode)
+    if not block or not block.get('pilots'):
+        return g
+    uid = A.normalize_id((g.get('unit') or {}).get('id'))
+    if not uid:
+        return g
+    info = A.unit_info_map.get(uid) or {}
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    unit_wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
+    if not unit_wpn:
+        return g
+    top_p = int((kwargs or {}).get('top_pilots', 10) or 10)
+    lb = int((kwargs or {}).get('lb_tier', 3) or 3)
+    dt = max(1, min(4, int(def_tier or 3)))
+    top_cids = []
+    for pilot in block.get('pilots') or []:
+        cid = A.normalize_id((pilot.get('char') or {}).get('id'))
+        if cid and cid not in top_cids:
+            top_cids.append(cid)
+    if not top_cids:
+        return g
+    pairs_on = _multi_vigor_pairs_for_candidates(
+        uid, top_cids, lc, lb, dt, unit_wpn,
+        cp_on=True, pep_on=True, lite=True, rank_mode=rank_mode,
+    )
+    if not pairs_on:
+        return g
+    built = _rankings_no_cp_pep_for_tier_lite(
+        dt, pairs_on, top_p, uid, lc, lb, unit_wpn,
+        rank_mode=rank_mode,
+    )
+    if not built:
+        return g
+    out = dict(g)
+    out['rankings_no_cp_pep'] = built
     return out
 
 
@@ -1853,16 +2086,24 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
         and not def_char_override
     )
 
-    def _pairs_for_tier(dt, *, cp_on=True):
+    def _pairs_for_tier(dt, *, cp_on=True, pep_on=True):
         return _multi_vigor_pairs_for_candidates(
             uid, candidates, lc, lb_tier, dt, unit_wpn,
             def_unit_override=def_unit_override, def_char_override=def_char_override,
-            cp_on=cp_on, lite=lite, rank_mode=rank_mode,
+            cp_on=cp_on, pep_on=pep_on, lite=lite, rank_mode=rank_mode,
         )
 
     def _rankings_no_cp_for_tier(dt, _all_pairs):
         pairs_ncp = _pairs_for_tier(dt, cp_on=False)
         return _rankings_from_multi_vigor_pairs(pairs_ncp, top_pilots, lc) if pairs_ncp else {}
+
+    def _rankings_no_pep_for_tier(dt, _all_pairs):
+        pairs_npep = _pairs_for_tier(dt, pep_on=False)
+        return _rankings_from_multi_vigor_pairs(pairs_npep, top_pilots, lc) if pairs_npep else {}
+
+    def _rankings_no_cp_pep_for_tier(dt, _all_pairs):
+        pairs_off = _pairs_for_tier(dt, cp_on=False, pep_on=False)
+        return _rankings_from_multi_vigor_pairs(pairs_off, top_pilots, lc) if pairs_off else {}
 
     def _rankings_no_ur_for_tier(dt, all_pairs):
         non_ur = _filter_non_ur(active_pilots)
@@ -1933,8 +2174,9 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
         rankings_no_shinn_by_tier = {}
         rankings_no_gc_by_tier = {}
         rankings_no_cp_by_tier = {}
+        rankings_no_pep_by_tier = {}
         for dt in tiers:
-            pairs = _pairs_for_tier(dt, cp_on=True)
+            pairs = _pairs_for_tier(dt, cp_on=True, pep_on=True)
             if not pairs:
                 continue
             rk = _rankings_from_multi_vigor_pairs(pairs, top_pilots, lc)
@@ -1944,6 +2186,7 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
                 rankings_no_shinn_by_tier[int(dt)] = _rankings_no_shinn_for_tier(dt, pairs)
                 rankings_no_gc_by_tier[int(dt)] = _rankings_no_gc_for_tier(dt, pairs)
                 rankings_no_cp_by_tier[int(dt)] = _rankings_no_cp_for_tier(dt, pairs)
+                rankings_no_pep_by_tier[int(dt)] = _rankings_no_pep_for_tier(dt, pairs)
         if not rankings_by_tier:
             return None
         dt_primary = int(def_tier) if int(def_tier) in rankings_by_tier else next(iter(rankings_by_tier))
@@ -1952,9 +2195,11 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
         rankings_no_shinn = rankings_no_shinn_by_tier.get(dt_primary) or rankings
         rankings_no_gc = rankings_no_gc_by_tier.get(dt_primary) or rankings
         rankings_no_cp = rankings_no_cp_by_tier.get(dt_primary) or rankings
+        rankings_no_pep = rankings_no_pep_by_tier.get(dt_primary) or rankings
+        rankings_no_cp_pep = None
     else:
         dt = int(tiers[0])
-        all_pairs = _pairs_for_tier(dt, cp_on=True)
+        all_pairs = _pairs_for_tier(dt, cp_on=True, pep_on=True)
         if not all_pairs:
             return None
         rankings = _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc)
@@ -1963,6 +2208,16 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
         if lite and browse_fast:
             rankings_no_gc = rankings
             rankings_no_cp = _rankings_no_cp_for_tier_lite(
+                dt, all_pairs, top_pilots, uid, lc, lb_tier, unit_wpn,
+                def_unit_override=def_unit_override, def_char_override=def_char_override,
+                rank_mode=rank_mode,
+            )
+            rankings_no_pep = _rankings_no_pep_for_tier_lite(
+                dt, all_pairs, top_pilots, uid, lc, lb_tier, unit_wpn,
+                def_unit_override=def_unit_override, def_char_override=def_char_override,
+                rank_mode=rank_mode,
+            )
+            rankings_no_cp_pep = _rankings_no_cp_pep_for_tier_lite(
                 dt, all_pairs, top_pilots, uid, lc, lb_tier, unit_wpn,
                 def_unit_override=def_unit_override, def_char_override=def_char_override,
                 rank_mode=rank_mode,
@@ -1980,6 +2235,16 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
                 def_unit_override=def_unit_override, def_char_override=def_char_override,
                 rank_mode=rank_mode,
             )
+            rankings_no_pep = _rankings_no_pep_for_tier_lite(
+                dt, all_pairs, top_pilots, uid, lc, lb_tier, unit_wpn,
+                def_unit_override=def_unit_override, def_char_override=def_char_override,
+                rank_mode=rank_mode,
+            )
+            rankings_no_cp_pep = _rankings_no_cp_pep_for_tier_lite(
+                dt, all_pairs, top_pilots, uid, lc, lb_tier, unit_wpn,
+                def_unit_override=def_unit_override, def_char_override=def_char_override,
+                rank_mode=rank_mode,
+            )
             rankings_no_ur = _rankings_no_ur_pool_lite(
                 uid, active_pilots, top_pilots, lc, lb_tier, dt, unit_wpn,
                 need, info, stat_mode, def_unit_override=def_unit_override,
@@ -1991,11 +2256,14 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
             rankings_no_shinn = _rankings_no_shinn_for_tier(dt, all_pairs)
             rankings_no_gc = _rankings_no_gc_for_tier(dt, all_pairs)
             rankings_no_cp = _rankings_no_cp_for_tier(dt, all_pairs)
+            rankings_no_pep = _rankings_no_pep_for_tier(dt, all_pairs)
+            rankings_no_cp_pep = _rankings_no_cp_pep_for_tier(dt, all_pairs)
         rankings_by_tier = None
         rankings_no_ur_by_tier = None
         rankings_no_shinn_by_tier = None
         rankings_no_gc_by_tier = None
         rankings_no_cp_by_tier = None
+        rankings_no_pep_by_tier = None
 
     primary = rankings.get('super_crit') or rankings.get('crit') or rankings.get('normal')
     is_sd = _is_sd_unit(uid, info)
@@ -2018,12 +2286,17 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
         out['rankings_no_gc'] = rankings_no_gc
     if rankings_no_cp is not None:
         out['rankings_no_cp'] = rankings_no_cp
+    if rankings_no_pep is not None:
+        out['rankings_no_pep'] = rankings_no_pep
+    if rankings_no_cp_pep is not None:
+        out['rankings_no_cp_pep'] = rankings_no_cp_pep
     if rankings_by_tier:
         out['rankings_by_tier'] = rankings_by_tier
         out['rankings_no_ur_by_tier'] = rankings_no_ur_by_tier
         out['rankings_no_shinn_by_tier'] = rankings_no_shinn_by_tier
         out['rankings_no_gc_by_tier'] = rankings_no_gc_by_tier
         out['rankings_no_cp_by_tier'] = rankings_no_cp_by_tier
+        out['rankings_no_pep_by_tier'] = rankings_no_pep_by_tier
     if not same_role_only:
         out['cross_role_built'] = True
     return out
@@ -2634,6 +2907,7 @@ def _group_for_def_tier(g, def_tier):
     rnsh = (g.get('rankings_no_shinn_by_tier') or {}).get(dt) or (g.get('rankings_no_shinn_by_tier') or {}).get(str(dt))
     rngc = (g.get('rankings_no_gc_by_tier') or {}).get(dt) or (g.get('rankings_no_gc_by_tier') or {}).get(str(dt))
     rncp = (g.get('rankings_no_cp_by_tier') or {}).get(dt) or (g.get('rankings_no_cp_by_tier') or {}).get(str(dt))
+    rnpep = (g.get('rankings_no_pep_by_tier') or {}).get(dt) or (g.get('rankings_no_pep_by_tier') or {}).get(str(dt))
     primary = rankings.get('super_crit') or rankings.get('crit') or rankings.get('normal')
     if not primary:
         return None
@@ -2646,6 +2920,7 @@ def _group_for_def_tier(g, def_tier):
         'rankings_no_shinn': rnsh or g.get('rankings_no_shinn') or rankings,
         'rankings_no_gc': rngc or g.get('rankings_no_gc') or rankings,
         'rankings_no_cp': rncp or g.get('rankings_no_cp') or rankings,
+        'rankings_no_pep': rnpep or g.get('rankings_no_pep') or rankings,
         'max_damage': primary.get('max_damage', 0),
         'metric': g.get('metric'),
         'pilots': primary.get('pilots') or [],
@@ -3274,6 +3549,9 @@ def _normalize_group_for_mode(g, rank_mode):
         rankings_no_cp = g.get('rankings_no_cp')
         if rankings_no_cp:
             rankings_no_cp = _slim_rankings_for_mode(rankings_no_cp, rank_mode)
+        rankings_no_pep = g.get('rankings_no_pep')
+        if rankings_no_pep:
+            rankings_no_pep = _slim_rankings_for_mode(rankings_no_pep, rank_mode)
         rankings_no_ur = g.get('rankings_no_ur')
         if rankings_no_ur:
             rankings_no_ur = _slim_rankings_for_mode(rankings_no_ur, rank_mode)
@@ -3287,6 +3565,7 @@ def _normalize_group_for_mode(g, rank_mode):
             'pilots': block.get('pilots') or [],
             'rankings': rankings,
             'rankings_no_cp': rankings_no_cp,
+            'rankings_no_pep': rankings_no_pep,
             'rankings_no_ur': rankings_no_ur,
             'rankings_no_shinn': rankings_no_shinn,
             'weapon_info': g.get('weapon_info'),
@@ -3617,6 +3896,8 @@ def _cached_summary_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
             row = _group_for_def_tier(g, dt) if g.get('rankings_by_tier') else g
             if row:
                 row = _ensure_rankings_no_cp(row, lc, rank_mode, dt, kwargs)
+                row = _ensure_rankings_no_pep(row, lc, rank_mode, dt, kwargs)
+                row = _ensure_rankings_no_cp_pep(row, lc, rank_mode, dt, kwargs)
                 if include_skills:
                     _ensure_group_enriched(row, lc, rank_mode, include_skills=True)
                 norm = _normalize_group_for_mode(row, rank_mode)
@@ -3738,6 +4019,8 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
     expanded = []
     for g in page_groups_raw:
         g = _ensure_rankings_no_cp(g, lc, rank_mode, dt, kwargs)
+        g = _ensure_rankings_no_pep(g, lc, rank_mode, dt, kwargs)
+        g = _ensure_rankings_no_cp_pep(g, lc, rank_mode, dt, kwargs)
         _ensure_group_enriched(g, lc, rank_mode, include_skills=include_skills)
         row = _group_for_def_tier(g, dt) if g.get('rankings_by_tier') else g
         if row:

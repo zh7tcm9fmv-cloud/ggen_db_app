@@ -1085,6 +1085,14 @@
     min-width: 0;
   }
 
+  .msy-global-toggles .list-pilot-ep-btn {
+    flex-shrink: 0;
+  }
+  .msy-global-toggles .msy-pep-toggle.active {
+    border-color: rgba(168, 85, 247, 0.55);
+    box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.25);
+  }
+
   .msy-global-toggles .list-cond-toggle,
   .msy-global-toggles .msy-global-filter-btn {
     flex: 0 0 auto;
