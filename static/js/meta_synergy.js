@@ -738,17 +738,19 @@
   }
 
   function updateDefTierStats() {
-    var el = document.getElementById('msyDefTierStats');
-    if (!el) return;
+    var sel = document.getElementById('msyDefTierSelect');
+    var lbl = document.querySelector('.msy-def-tier-lbl');
     var tiers = state.defenderTiers || {};
     var dt = String(state.defTier || '1');
     var row = tiers[dt] || tiers[String(dt)];
     if (!row) {
-      el.textContent = '';
+      if (sel) sel.removeAttribute('title');
+      if (lbl) lbl.title = t('msy_def_difficulty') || 'Defender difficulty';
       return;
     }
-    el.textContent = 'MS DEF ' + fmtN(row.unit_def) + ' · Pilot DEF ' + fmtN(row.char_def);
-    el.title = row.label || '';
+    var tip = (row.label || '') + ' — MS DEF ' + fmtN(row.unit_def) + ' · Pilot DEF ' + fmtN(row.char_def);
+    if (sel) sel.title = tip;
+    if (lbl) lbl.title = tip;
   }
 
   function renderStatus() {
@@ -859,13 +861,19 @@
   }
 
   function pilotFormulaStatHtml(pilot) {
-    if (!pilot || !pilot.formula_stat || pilot.char_atk == null) return '';
+    if (!pilot || pilot.char_atk == null) return '';
     var statKey = {
       Ranged: 'stat_ranged',
       Melee: 'stat_melee',
       Awaken: 'stat_awaken'
-    }[pilot.formula_stat] || '';
-    var label = statKey ? (t(statKey) || pilot.formula_stat) : pilot.formula_stat;
+    };
+    var label = '';
+    if (pilot.formula_stat) {
+      var fk = statKey[pilot.formula_stat] || '';
+      label = fk ? (t(fk) || pilot.formula_stat) : pilot.formula_stat;
+    } else {
+      label = t('stat_atk') || 'ATK';
+    }
     var line = t('msy_formula_stat')
       ? t('msy_formula_stat').replace('{stat}', label).replace('{val}', fmtN(pilot.char_atk))
       : (label + ': ' + fmtN(pilot.char_atk));

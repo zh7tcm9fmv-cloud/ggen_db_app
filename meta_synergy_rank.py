@@ -300,6 +300,13 @@ def _resolve_char_name(cid, lc):
     return name or f'Unknown ({cid})'
 
 
+def _grown_totals_for_formula(cid):
+    """Base grown stats dict for formula-stat display (preview cards)."""
+    grown, _ = _char_grown(cid)
+    A = _app()
+    return {s: float(grown.get(s, 0) or 0) for s in A.CHAR_STAT_ORDER}
+
+
 def _pilot_formula_stat(totals, attack_attr, skill_atk_pct=0):
     """Return (char_atk, stat_label) used in the damage formula for this weapon attr."""
     keys = _ATTACK_ATTR_TO_KEYS.get(str(attack_attr or '1'), ('Ranged',))
@@ -1110,15 +1117,17 @@ def _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok):
 _unit_weapon_cache = {}
 _char_pair_cache = {}
 _rankings_result_cache = {}
+_rankings_browse_payload_cache = {}
+_MSY_BROWSE_PAYLOAD_CACHE_TTL = max(15, min(300, int(os.environ.get('MSY_BROWSE_CACHE_TTL', '60') or '60')))
 _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
 SHINN_EX_CHAR_ID = '1330000103'
-_MSY_BUILD_WORKERS = max(1, min(6, int(os.environ.get('MSY_BUILD_WORKERS', '4') or '4')))
+_MSY_BUILD_WORKERS = max(1, min(8, int(os.environ.get('MSY_BUILD_WORKERS', '6') or '6')))
 _MSY_PAGE_BUILD_LIMIT = max(0, min(40, int(os.environ.get('MSY_PAGE_BUILD_LIMIT', '40') or '40')))
 _MSY_PAGE_BUILD_BUDGET_SEC = max(5.0, min(60.0, float(os.environ.get('MSY_PAGE_BUILD_BUDGET_SEC', '18') or '18')))
-_MSY_BROWSE_BUILD_BUDGET_SEC = max(1.0, min(45.0, float(os.environ.get('MSY_BROWSE_BUILD_BUDGET_SEC', '10') or '10')))
-_MSY_BROWSE_PAGE_BUILD_LIMIT = max(0, min(20, int(os.environ.get('MSY_BROWSE_PAGE_BUILD_LIMIT', '10') or '10')))
+_MSY_BROWSE_BUILD_BUDGET_SEC = max(1.0, min(45.0, float(os.environ.get('MSY_BROWSE_BUILD_BUDGET_SEC', '14') or '14')))
+_MSY_BROWSE_PAGE_BUILD_LIMIT = max(0, min(20, int(os.environ.get('MSY_BROWSE_PAGE_BUILD_LIMIT', '12') or '12')))
 _MSY_LITE_PILOT_NEED = max(6, min(16, int(os.environ.get('MSY_LITE_PILOT_NEED', '8') or '8')))
 _MSY_LITE_PILOT_CAP = max(6, min(20, int(os.environ.get('MSY_LITE_PILOT_CAP', '8') or '8')))
 _MSY_LITE_NON_UR_RESERVE = max(2, min(6, int(os.environ.get('MSY_LITE_NON_UR_RESERVE', '4') or '4')))
@@ -2991,6 +3000,57 @@ def _master_cache_key(lc, kwargs):
     )
 
 
+def _browse_payload_cache_key(lc, rank_mode, page, per_page, unit_q, def_tier, kwargs, summary_only):
+    browse = _parse_browse_filters(kwargs, lc or 'EN')
+    if not _browse_filters_active(browse, unit_q) and not summary_only:
+        return None
+    return (
+        lc or 'EN',
+        rank_mode or 'super_crit',
+        int(page or 1),
+        int(per_page or 10),
+        (unit_q or '').strip().lower(),
+        int(def_tier or 3),
+        bool(summary_only),
+        kwargs.get('rarity') or kwargs.get('unit_rarity') or '',
+        kwargs.get('role') or kwargs.get('unit_role') or '',
+        kwargs.get('series_id') or '',
+        kwargs.get('series_op') or '',
+        kwargs.get('source') or '',
+        kwargs.get('lineage_id') or '',
+        kwargs.get('lineage_op') or '',
+        int(kwargs.get('lb_tier', 3) or 3),
+        int(kwargs.get('top_pilots', 10) or 10),
+        bool(_same_role_only_from_kwargs(kwargs)),
+    )
+
+
+def _get_browse_payload_cache(key):
+    if not key:
+        return None
+    entry = _rankings_browse_payload_cache.get(key)
+    if not entry:
+        return None
+    if time.monotonic() - entry['ts'] > _MSY_BROWSE_PAYLOAD_CACHE_TTL:
+        _rankings_browse_payload_cache.pop(key, None)
+        return None
+    return entry['payload']
+
+
+def _set_browse_payload_cache(key, payload):
+    if not key or not payload:
+        return
+    if payload.get('cache_incomplete') or payload.get('warming') or payload.get('partial'):
+        return
+    _rankings_browse_payload_cache[key] = {'ts': time.monotonic(), 'payload': payload}
+    if len(_rankings_browse_payload_cache) > 48:
+        oldest = min(
+            _rankings_browse_payload_cache,
+            key=lambda k: _rankings_browse_payload_cache[k]['ts'],
+        )
+        _rankings_browse_payload_cache.pop(oldest, None)
+
+
 def build_meta_synergy_master(lc='EN', *, lb_tier=3, top_pilots=20, exclude_pairs=None,
                             def_unit_override=None, def_char_override=None, on_progress=None):
     """One-time full rankings build (all units, all roles). Filters applied afterward."""
@@ -3387,10 +3447,10 @@ def _cheap_preview_pilot_rows(uid, active_pilots, top_pilots, info, unit_wpn, st
     )
     rows = []
     attr = str(unit_wpn.get('attr', '1'))
-    stat_key = {'1': 'ranged', '2': 'melee', '3': 'awaken'}.get(attr, 'melee')
     for i, (score, cid) in enumerate(scored):
         dmg = max(1, int(score / _CHEAP_SCORE_TO_DAMAGE))
-        grown, _ = _char_grown(cid)
+        totals = _grown_totals_for_formula(cid)
+        char_atk, formula_stat = _pilot_formula_stat(totals, attr, 0)
         rows.append({
             'rank': i + 1,
             'char': _entity_brief_char(cid, lc),
@@ -3402,8 +3462,8 @@ def _cheap_preview_pilot_rows(uid, active_pilots, top_pilots, info, unit_wpn, st
             'guaranteed_crit': False,
             'crit_rate': 0,
             'pair_ok': False,
-            'char_atk': int(grown.get(stat_key, 0) or 0),
-            'formula_stat': '',
+            'char_atk': char_atk,
+            'formula_stat': formula_stat,
             'score': dmg,
         })
     return rows
@@ -3764,6 +3824,12 @@ def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
     vigor = _VIGOR_FOR_RANK_MODE.get(rank_mode, kwargs.pop('vigor', 'super') or 'super')
     kwargs.pop('vigor', None)
     cache_key = _master_cache_key(lc, kwargs)
+    browse_cache_key = _browse_payload_cache_key(
+        lc, rank_mode, page, per_page, unit_q, def_tier, kwargs, summary_only,
+    )
+    cached_browse = _get_browse_payload_cache(browse_cache_key)
+    if cached_browse is not None:
+        return cached_browse
 
     def _do_build(on_progress=None):
         if not _msy_python_build_allowed():
@@ -3807,7 +3873,7 @@ def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
     all_groups = cached.get('groups') or []
     kwargs['lc'] = lc
     if summary_only:
-        return _cached_summary_from_groups(
+        payload = _cached_summary_from_groups(
             all_groups,
             total_pilot_candidates=cached.get('total_pilot_candidates', 0),
             rank_mode=rank_mode,
@@ -3819,6 +3885,8 @@ def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
             unit_q=unit_q,
             include_skills=include_skills,
         )
+        _set_browse_payload_cache(browse_cache_key, payload)
+        return payload
     payload = _cached_payload_from_groups(
         all_groups,
         total_pilot_candidates=cached.get('total_pilot_candidates', 0),
@@ -3834,6 +3902,7 @@ def build_meta_synergy_rankings_cached(lc='EN', **kwargs):
     )
     if cached.get('legacy'):
         payload['cache_incomplete'] = True
+    _set_browse_payload_cache(browse_cache_key, payload)
     return payload
 
 

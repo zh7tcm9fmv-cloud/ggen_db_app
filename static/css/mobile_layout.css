@@ -203,6 +203,13 @@
     overflow: visible;
   }
 
+  #panel-meta_synergy .list-toolbar-left--browse > .msy-global-toggles {
+    grid-column: 1 / -1;
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;
+  }
+
   #panel-meta_synergy .list-toolbar.msy-toolbar,
   #panel-meta_synergy .msy-toolbar .list-toolbar-left--browse {
     overflow: visible;
