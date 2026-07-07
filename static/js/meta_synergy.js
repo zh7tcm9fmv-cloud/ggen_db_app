@@ -23,7 +23,7 @@
     topPilots: 10,
     unitQ: '',
     page: 1,
-    perPage: 20,
+    perPage: 10,
     cacheKey: null,
     tierCache: {},
     charCondPassiveOn: true,
@@ -118,46 +118,57 @@
     return { max_damage: scored[0].score, pilots: pilots, vigor: block.vigor };
   }
 
-  function groupBlock(g, modeId, noUr, noShinn) {
-    if (noUr) noShinn = true;
+  function fullGroupBlock(g, modeId) {
     if (!g) return null;
     if (!state.charCondPassiveOn && g.rankings_no_cp) {
       var cpBlock = (g.rankings_no_cp || {})[modeId];
       if (cpBlock) return cpBlock;
     }
-    if (noUr && noShinn) {
-      return rerankPilotBlock((g.rankings || {})[modeId], modeId, true, true);
+    var block = (g.rankings || {})[modeId];
+    if (!block && state.charCondPassiveOn && modeId === 'super_crit' && g.pilots) {
+      block = { max_damage: g.max_damage, pilots: g.pilots };
     }
+    return block || null;
+  }
+
+  function pilotGroupBlock(g, modeId, noUr, noShinn) {
+    if (!g) return null;
+    if (noUr) noShinn = true;
+    if (!noUr && !noShinn) return fullGroupBlock(g, modeId);
     if (noUr && g.rankings_no_ur) {
       var urBlock = (g.rankings_no_ur || {})[modeId];
-      if (urBlock) return urBlock;
+      if (urBlock) {
+        if (noShinn) return rerankPilotBlock(urBlock, modeId, false, true) || urBlock;
+        return urBlock;
+      }
     }
     if (noShinn && g.rankings_no_shinn) {
       var shBlock = (g.rankings_no_shinn || {})[modeId];
       if (shBlock) return shBlock;
     }
-    var block = (g.rankings || {})[modeId];
-    if (!block && !noUr && !noShinn && state.charCondPassiveOn && modeId === 'super_crit' && g.pilots) {
-      block = { max_damage: g.max_damage, pilots: g.pilots };
-    }
-    if (!block) return null;
-    if (noUr || noShinn) {
-      return rerankPilotBlock(block, modeId, noUr, noShinn);
-    }
-    return block;
+    var base = fullGroupBlock(g, modeId);
+    if (!base) return null;
+    return rerankPilotBlock(base, modeId, noUr, noShinn);
+  }
+
+  function groupBlock(g, modeId, noUr, noShinn) {
+    return pilotGroupBlock(g, modeId, noUr, noShinn);
   }
 
   function viewGroup(g, modeId) {
+    if (!g || !g.unit) return null;
     var noUr = state.excludeUrGlobal;
     var noShinn = state.excludeShinnGlobal;
-    var block = groupBlock(g, modeId, noUr, noShinn);
-    if (!block) return null;
+    var fullBlock = fullGroupBlock(g, modeId);
+    var pilotBlock = pilotGroupBlock(g, modeId, noUr, noShinn);
     return {
       unit: g.unit,
       weapon_elems: g.weapon_elems,
       weapon_info: g.weapon_info,
-      max_damage: block.max_damage || 0,
-      pilots: block.pilots || [],
+      max_damage: (noUr || noShinn)
+        ? ((pilotBlock && pilotBlock.max_damage) || 0)
+        : ((fullBlock && fullBlock.max_damage) || g.max_damage || 0),
+      pilots: (pilotBlock && pilotBlock.pilots) || [],
       is_sd: g.is_sd,
       rankings: g.rankings,
       rankings_no_ur: g.rankings_no_ur,
@@ -674,8 +685,9 @@
   function renderGroups(groups, startRank, mode) {
     var html = '<div class="msy-groups">';
     groups.forEach(function (g, gi) {
+      if (!g || !g.unit) return;
       var row = viewGroup(g, mode.id);
-      if (!row || !row.unit) return;
+      if (!row) return;
       var rank = (startRank || 0) + gi + 1;
       var u = row.unit;
       html += '<article class="msy-unit-card' + (row.is_sd ? ' msy-unit-card--sd' : '') + '">';
@@ -694,7 +706,11 @@
       html += '<div class="msy-unit-peak-lbl">' + esc(t(mode.metricKey)) + '</div>';
       html += '</div>';
       html += '</header>';
-      html += renderPilotGrid(row.pilots, u.id, mode);
+      if (row.pilots && row.pilots.length) {
+        html += renderPilotGrid(row.pilots, u.id, mode);
+      } else if (state.excludeUrGlobal || state.excludeShinnGlobal) {
+        html += '<div class="msy-pilot-empty">' + esc(t('msy_no_eligible_pilots') || 'No eligible pilots for this filter.') + '</div>';
+      }
       html += '</article>';
     });
     html += '</div>';

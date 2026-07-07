@@ -3132,7 +3132,7 @@ def _cached_payload_from_groups(groups, *, total_pilot_candidates, rank_mode, pa
     kwargs_resolve['def_tier'] = dt
     filtered_browse = _browse_filters_active(browse, unit_q)
     page_build_cap = min(_MSY_PAGE_BUILD_LIMIT, per_page) if _msy_page_build_allowed() else 0
-    if filtered_browse and total <= 40:
+    if filtered_browse and total <= 30:
         page_build_cap = min(per_page, max(page_build_cap, len(page_ids)))
     build_budget = _MSY_PAGE_BUILD_BUDGET_SEC
     if filtered_browse and total <= 30:

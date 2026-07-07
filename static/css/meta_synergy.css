@@ -1058,3 +1058,10 @@
   color: var(--text-muted);
   margin-top: 2px;
 }
+
+.msy-pilot-empty {
+  padding: 8px 12px 10px;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-style: italic;
+}
