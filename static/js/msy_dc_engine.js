@@ -87,6 +87,9 @@
     var peak = gc ? critDmgVal : Math.max(critDmgVal, expected);
     var pairOk = typeof global._dcUnitCharPairMatch === 'function'
       ? global._dcUnitCharPairMatch(cd, ud) : false;
+    var wpn = ud.weapons && ud.weapons[slot.wpnIdx];
+    var attr = wpn ? String(wpn.attr || wpn.weapon_attr || '1') : '1';
+    var statMap = { '1': 'Ranged', '2': 'Melee', '3': 'Awaken' };
     var row = {
       expected_dmg: expected,
       peak_dmg: peak,
@@ -98,7 +101,11 @@
       vigor: vigor,
       normal_dmg: normalDmg,
       crit_dmg: critDmgVal,
-      super_crit_dmg: critDmgVal
+      super_crit_dmg: critDmgVal,
+      char_atk: r.charAtk | 0,
+      formula_stat: statMap[attr] || 'Ranged',
+      dmg_dealt_pct: r.userDmgIncreasePct | 0,
+      vigor_dmg_pct: r.vigorDmgBonusPct | 0
     };
     if (vigor === 'high') row.normal_dmg = normalDmg;
     else if (vigor === 'max') row.crit_dmg = critDmgVal;

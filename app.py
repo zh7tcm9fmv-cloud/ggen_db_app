@@ -14011,6 +14011,27 @@ def api_meta_synergy_dc_candidates():
         return jsonify({'error': 'meta_synergy_dc_candidates_failed', 'detail': str(e)}), 500
 
 
+@app.route('/api/meta_synergy_dc/candidates_batch', methods=['POST'])
+def api_meta_synergy_dc_candidates_batch():
+    """Pilot candidates for multiple units in one request."""
+    import meta_synergy_rank as msr
+    body = request.get_json(silent=True) or {}
+    kwargs = msr._msy_dc_kwargs_from_request(request.args)
+    raw_ids = body.get('unit_ids') or body.get('unitIds') or []
+    unit_ids = [str(x).strip() for x in raw_ids if str(x).strip()][:30]
+    if not unit_ids:
+        return jsonify({'error': 'missing_unit_ids'}), 400
+    try:
+        payload = msr.dc_candidates_batch_payload(unit_ids, kwargs)
+        ck = f'msy_dc_cbatch_{kwargs["lc"]}_{hash(tuple(unit_ids)) & 0xffff:x}'
+        return jsonify_cacheable(payload, ck, public=True, max_age=3600, convert_images=True)
+    except Exception as e:
+        print(f'api_meta_synergy_dc/candidates_batch failed: {e}')
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': 'meta_synergy_dc_candidates_batch_failed', 'detail': str(e)}), 500
+
+
 @app.route('/api/meta_synergy_dc/assemble', methods=['POST'])
 def api_meta_synergy_dc_assemble():
     """Assemble one MSY unit group from client DC pair results."""

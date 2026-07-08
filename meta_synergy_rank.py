@@ -2035,6 +2035,8 @@ def _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc):
                     'pair_ok': d['pair_ok'],
                     'char_atk': d.get('char_atk', 0),
                     'formula_stat': d.get('formula_stat', ''),
+                    'dmg_dealt_pct': d.get('dmg_dealt_pct', 0),
+                    'vigor_dmg_pct': d.get('vigor_dmg_pct', 0),
                     'vigor': vigor_key,
                     'active_skills': _msy_pilot_active_skills(cid, lc),
                     'score': sc,
@@ -2165,8 +2167,10 @@ def _backfill_pilot_formula_stats(g, lc, rank_mode='super_crit', kwargs=None):
             return
         cp_on = _passive_cp_on_from_kwargs(kwargs or {})
         char_atk, formula_stat = _formula_char_atk_for_pair(cid, uid, lc, attr, cp_on=cp_on)
-        pilot['char_atk'] = char_atk
-        pilot['formula_stat'] = formula_stat
+        if pilot.get('char_atk') in (None, 0):
+            pilot['char_atk'] = char_atk
+        if not pilot.get('formula_stat'):
+            pilot['formula_stat'] = formula_stat
 
     def _patch_block(block):
         if not block:
@@ -3064,6 +3068,12 @@ def dc_bootstrap_payload(kwargs):
     browse_active = _browse_filters_active(browse, unit_q)
     dt = max(1, min(4, int(kwargs.get('def_tier') or 3)))
     role_raw = kwargs.get('role') if kwargs.get('role') is not None else kwargs.get('unit_role')
+    unit_ids.sort(
+        key=lambda uid: (
+            -_cheap_unit_peak_score(uid, lc, kwargs),
+            _app().normalize_id(uid),
+        ),
+    )
     return {
         'engine': 'dc',
         'unit_ids': unit_ids,
@@ -3101,6 +3111,18 @@ def dc_candidates_payload(unit_id, kwargs):
     uid = _app().normalize_id(unit_id)
     candidates = dc_candidate_pilots_for_unit(uid, pilot_ids, exclude, lc)
     return {'unit_id': uid, 'pilot_ids': candidates}
+
+
+def dc_candidates_batch_payload(unit_ids, kwargs):
+    """Pilot candidates for multiple units (one round-trip)."""
+    out = {}
+    for raw_uid in unit_ids or []:
+        uid = _app().normalize_id(raw_uid)
+        if not uid:
+            continue
+        row = dc_candidates_payload(uid, kwargs)
+        out[uid] = row.get('pilot_ids') or []
+    return {'candidates': out}
 
 
 def dc_assemble_payload(unit_id, pairs_by_tier, kwargs, *, pairs_by_tier_no_cp=None):

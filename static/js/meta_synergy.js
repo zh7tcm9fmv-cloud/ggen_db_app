@@ -38,6 +38,10 @@
     pageCache: {},
     dcAllGroups: null,
     dcBootstrap: null,
+    dcEvalCache: {},
+    dcCandidatesCache: {},
+    _dcEvalContextKey: '',
+    _dcBrowseKey: '',
     _fetchCtrl: null,
     _loadGen: 0,
     _lastRenderSig: '',
@@ -423,7 +427,17 @@
   }
 
   function applyDcPage(allGroups, bootstrap) {
-    var sorted = sortDcGroups(allGroups);
+    var allowed = null;
+    if (bootstrap && bootstrap.unit_ids && bootstrap.unit_ids.length) {
+      allowed = {};
+      bootstrap.unit_ids.forEach(function (id) { allowed[String(id)] = true; });
+    }
+    var filtered = allowed
+      ? (allGroups || []).filter(function (g) {
+        return g && g.unit && allowed[String(g.unit.id)];
+      })
+      : (allGroups || []);
+    var sorted = sortDcGroups(filtered);
     state.dcAllGroups = sorted;
     state.dcBootstrap = bootstrap || state.dcBootstrap;
     state.total = sorted.length;
@@ -442,26 +456,60 @@
     scheduleContentRender(true);
   }
 
-  async function evalUnitViaDc(unitId, bootstrap) {
-    var engine = global.MsyDcEngine;
-    if (!engine || typeof engine.evalUnit !== 'function') {
-      throw new Error('MsyDcEngine not loaded');
+  function idleYield() {
+    return new Promise(function (resolve) {
+      if (typeof requestIdleCallback === 'function') {
+        requestIdleCallback(function () { resolve(); }, { timeout: 40 });
+      } else {
+        setTimeout(resolve, 0);
+      }
+    });
+  }
+
+  function dcEvalContextKey() {
+    return [
+      (global.S && global.S.lang) || 'EN',
+      state.charCondPassiveOn ? 'cp1' : 'cp0',
+      state.pilotCondPassiveOn ? 'pep1' : 'pep0',
+      state.sameRoleOnly ? 'sr1' : 'sr0'
+    ].join('|');
+  }
+
+  function dcEvalCacheKey(unitId) {
+    return dcEvalContextKey() + '|u:' + String(unitId);
+  }
+
+  function dcBrowseKey() {
+    return [
+      (global.S && global.S.lang) || 'EN',
+      state.topPilots,
+      state.sameRoleOnly ? 'sr1' : 'sr0',
+      buildFilterQuery(),
+      state.unitQ || ''
+    ].join('|');
+  }
+
+  function upsertDcGroup(allGroups, group) {
+    if (!group || !group.unit || group.unit.id == null) return allGroups;
+    var uid = String(group.unit.id);
+    var out = allGroups || [];
+    var idx = -1;
+    for (var i = 0; i < out.length; i++) {
+      if (out[i] && out[i].unit && String(out[i].unit.id) === uid) {
+        idx = i;
+        break;
+      }
     }
+    if (idx >= 0) out[idx] = group;
+    else out.push(group);
+    return out;
+  }
+
+  async function assembleFromRaw(unitId, raw, rawNoCp) {
+    if (!raw || !raw.byTier) return null;
     var lang = (global.S && global.S.lang) || 'EN';
-    var defTiers = (bootstrap && bootstrap.defender_tiers) || state.defenderTiers || {};
-    var candRes = await fetch(buildDcCandidatesUrl(unitId), { credentials: 'same-origin' });
-    if (!candRes.ok) return null;
-    var candData = await candRes.json();
-    var pilotIds = candData.pilot_ids || [];
-    if (!pilotIds.length) return null;
-    var pepOn = state.pilotCondPassiveOn;
     var cpOn = state.charCondPassiveOn;
-    var raw = await engine.evalUnit(unitId, pilotIds, defTiers, { lang: lang, cpOn: cpOn, pepOn: pepOn });
-    if (!raw || raw.error || !raw.byTier) return null;
-    var rawNoCp = null;
-    if (cpOn) {
-      rawNoCp = await engine.evalUnit(unitId, pilotIds, defTiers, { lang: lang, cpOn: false, pepOn: pepOn });
-    }
+    var pepOn = state.pilotCondPassiveOn;
     var asmBody = {
       unit_id: unitId,
       pairs_by_tier: raw.byTier,
@@ -485,31 +533,152 @@
     return asmData && asmData.group ? asmData.group : null;
   }
 
+  async function fetchCandidatesBatch(unitIds) {
+    var missing = [];
+    (unitIds || []).forEach(function (uid) {
+      var key = dcBrowseKey() + '|' + String(uid);
+      if (!state.dcCandidatesCache[key]) missing.push(String(uid));
+    });
+    if (!missing.length) return;
+    var res = await fetch('/api/meta_synergy_dc/candidates_batch?' + buildDcApiQuery(), {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ unit_ids: missing })
+    });
+    if (!res.ok) return;
+    var data = await res.json();
+    var map = (data && data.candidates) || {};
+    Object.keys(map).forEach(function (uid) {
+      state.dcCandidatesCache[dcBrowseKey() + '|' + uid] = map[uid] || [];
+    });
+  }
+
+  function getCachedCandidates(unitId) {
+    return state.dcCandidatesCache[dcBrowseKey() + '|' + String(unitId)] || null;
+  }
+
+  async function reassembleAllFromCache() {
+    var keys = Object.keys(state.dcEvalCache || {});
+    var groups = [];
+    for (var i = 0; i < keys.length; i++) {
+      var cached = state.dcEvalCache[keys[i]];
+      if (!cached || !cached.raw) continue;
+      var group = await assembleFromRaw(cached.unitId, cached.raw, cached.rawNoCp);
+      if (group) {
+        cached.group = group;
+        groups = upsertDcGroup(groups, group);
+      }
+      if (i % 4 === 3) await idleYield();
+    }
+    return groups;
+  }
+
+  async function evalUnitViaDc(unitId, bootstrap, pilotIds) {
+    var engine = global.MsyDcEngine;
+    if (!engine || typeof engine.evalUnit !== 'function') {
+      throw new Error('MsyDcEngine not loaded');
+    }
+    var lang = (global.S && global.S.lang) || 'EN';
+    var defTiers = (bootstrap && bootstrap.defender_tiers) || state.defenderTiers || {};
+    if (!pilotIds) {
+      var cached = getCachedCandidates(unitId);
+      if (cached) pilotIds = cached;
+      else {
+        var candRes = await fetch(buildDcCandidatesUrl(unitId), { credentials: 'same-origin' });
+        if (!candRes.ok) return null;
+        var candData = await candRes.json();
+        pilotIds = candData.pilot_ids || [];
+        state.dcCandidatesCache[dcBrowseKey() + '|' + String(unitId)] = pilotIds;
+      }
+    }
+    if (!pilotIds.length) return null;
+    var pepOn = state.pilotCondPassiveOn;
+    var cpOn = state.charCondPassiveOn;
+    var raw = await engine.evalUnit(unitId, pilotIds, defTiers, { lang: lang, cpOn: cpOn, pepOn: pepOn });
+    if (!raw || raw.error || !raw.byTier) return null;
+    var rawNoCp = null;
+    if (cpOn) {
+      rawNoCp = await engine.evalUnit(unitId, pilotIds, defTiers, { lang: lang, cpOn: false, pepOn: pepOn });
+    }
+    var group = await assembleFromRaw(unitId, raw, rawNoCp);
+    if (!group) return null;
+    return { unitId: String(unitId), group: group, raw: raw, rawNoCp: rawNoCp };
+  }
+
   async function runDcRankings(loadGen) {
     await global.MsyDcEngine.ensureReady();
-    if (typeof global.MsyDcEngine.clearCaches === 'function') global.MsyDcEngine.clearCaches();
+    var browseKey = dcBrowseKey();
+    var evalKey = dcEvalContextKey();
+    if (state._dcEvalContextKey !== evalKey) {
+      state.dcEvalCache = {};
+      state._dcEvalContextKey = evalKey;
+      if (typeof global.MsyDcEngine.clearCaches === 'function') global.MsyDcEngine.clearCaches();
+    }
+    if (state._dcBrowseKey !== browseKey) {
+      state._dcCandidatesCache = {};
+      state._dcBrowseKey = browseKey;
+    }
     var bootstrapRes = await fetch(buildDcBootstrapUrl(), { credentials: 'same-origin' });
     if (!bootstrapRes.ok) throw new Error('HTTP ' + bootstrapRes.status);
     var bootstrap = await bootstrapRes.json();
     if (loadGen !== state._loadGen) return;
     if (bootstrap.error) throw new Error(bootstrap.detail || bootstrap.error);
+    state.dcBootstrap = bootstrap;
     var unitIds = bootstrap.unit_ids || [];
+    var allowedSet = {};
+    unitIds.forEach(function (id) { allowedSet[String(id)] = true; });
     var allGroups = [];
+    unitIds.forEach(function (uid) {
+      var ck = dcEvalCacheKey(uid);
+      var cached = state.dcEvalCache[ck];
+      if (cached && cached.group) allGroups = upsertDcGroup(allGroups, cached.group);
+    });
+    if (allGroups.length) applyDcPage(allGroups, bootstrap);
+    var priorityN = Math.min(unitIds.length, Math.max(state.perPage * 2, 20));
+    var orderedIds = unitIds.slice(0, priorityN).concat(unitIds.slice(priorityN));
+    var todoIds = orderedIds.filter(function (uid) {
+      var ck = dcEvalCacheKey(uid);
+      return !(state.dcEvalCache[ck] && state.dcEvalCache[ck].raw);
+    });
+    var done = unitIds.length - todoIds.length;
     var total = unitIds.length;
-    for (var i = 0; i < unitIds.length; i++) {
+    var firstPageReady = allGroups.length >= Math.min(priorityN, state.perPage);
+    if (firstPageReady) {
+      setLoading(false, true);
+      void fetchPilotSkillsBatch(state.groups);
+    }
+    await fetchCandidatesBatch(orderedIds.slice(0, Math.min(orderedIds.length, 30)));
+    for (var i = 0; i < todoIds.length; i++) {
       if (loadGen !== state._loadGen) return;
-      showWarmingBanner(true, (t('msy_warming') || 'Computing rankings…') + ' ' + (i + 1) + '/' + total);
-      var group = await evalUnitViaDc(unitIds[i], bootstrap);
-      if (group) allGroups.push(group);
-      if (i % 3 === 0 || i === unitIds.length - 1) {
+      var uid = todoIds[i];
+      if (!allowedSet[String(uid)]) continue;
+      var cacheKey = dcEvalCacheKey(uid);
+      var result = await evalUnitViaDc(uid, bootstrap, getCachedCandidates(uid));
+      if (result) {
+        state.dcEvalCache[cacheKey] = result;
+        if (result.group) allGroups = upsertDcGroup(allGroups, result.group);
+      }
+      done++;
+      if (done % 2 === 0 || i === todoIds.length - 1) {
         applyDcPage(allGroups, bootstrap);
       }
-      await sleep(0);
+      if (!firstPageReady && done >= priorityN) {
+        firstPageReady = true;
+        setLoading(false, true);
+        void fetchPilotSkillsBatch(state.groups);
+      }
+      if (todoIds.length) {
+        showWarmingBanner(true, (t('msy_warming') || 'Computing rankings…') + ' ' + done + '/' + total);
+      }
+      if (i + 5 < todoIds.length) void fetchCandidatesBatch(todoIds.slice(i + 1, i + 6));
+      await idleYield();
     }
     applyDcPage(allGroups, bootstrap);
     state.pageCache[cacheKeyBase()] = {
       dcAllGroups: state.dcAllGroups,
-      bootstrap: bootstrap
+      bootstrap: bootstrap,
+      dcEvalCache: state.dcEvalCache
     };
     void fetchPilotSkillsBatch(state.groups);
     showWarmingBanner(false);
@@ -1043,23 +1212,38 @@
   }
 
   function pilotFormulaStatHtml(pilot) {
-    if (!pilot || pilot.char_atk == null) return '';
-    var statKey = {
-      Ranged: 'stat_ranged',
-      Melee: 'stat_melee',
-      Awaken: 'stat_awaken'
-    };
-    var label = '';
-    if (pilot.formula_stat) {
-      var fk = statKey[pilot.formula_stat] || '';
-      label = fk ? (t(fk) || pilot.formula_stat) : pilot.formula_stat;
-    } else {
-      label = t('stat_atk') || 'ATK';
+    if (!pilot) return '';
+    var parts = [];
+    if (pilot.char_atk != null) {
+      var statKey = {
+        Ranged: 'stat_ranged',
+        Melee: 'stat_melee',
+        Awaken: 'stat_awaken'
+      };
+      var label = '';
+      if (pilot.formula_stat) {
+        var fk = statKey[pilot.formula_stat] || '';
+        label = fk ? (t(fk) || pilot.formula_stat) : pilot.formula_stat;
+      } else {
+        label = t('stat_atk') || 'ATK';
+      }
+      var line = t('msy_formula_stat')
+        ? t('msy_formula_stat').replace('{stat}', label).replace('{val}', fmtN(pilot.char_atk))
+        : (label + ': ' + fmtN(pilot.char_atk));
+      parts.push('<div class="msy-pilot-formula-stat">' + esc(line) + '</div>');
     }
-    var line = t('msy_formula_stat')
-      ? t('msy_formula_stat').replace('{stat}', label).replace('{val}', fmtN(pilot.char_atk))
-      : (label + ': ' + fmtN(pilot.char_atk));
-    return '<div class="msy-pilot-formula-stat">' + esc(line) + '</div>';
+    if (pilot.dmg_dealt_pct != null && pilot.dmg_dealt_pct !== '') {
+      var vigor = pilot.vigor_dmg_pct | 0;
+      var passive = pilot.dmg_dealt_pct | 0;
+      var dmgLine = t('msy_dmg_dealt_pct')
+        ? t('msy_dmg_dealt_pct').replace('{pct}', String(passive))
+        : ('Dmg Dealt: +' + passive + '%');
+      if (vigor > 0) {
+        dmgLine += ' (+' + vigor + '% vigor)';
+      }
+      parts.push('<div class="msy-pilot-dmg-dealt-pct" title="Damage Dealt Up % from DC formula (⑨ passive pool)">' + esc(dmgLine) + '</div>');
+    }
+    return parts.join('');
   }
 
   function renderPilotCard(unitId, pilot, mode) {
@@ -1340,6 +1524,7 @@
     if (dcCached) {
       state.dcAllGroups = state.pageCache[dcKey].dcAllGroups;
       state.dcBootstrap = state.pageCache[dcKey].bootstrap;
+      if (state.pageCache[dcKey].dcEvalCache) state.dcEvalCache = state.pageCache[dcKey].dcEvalCache;
       applyDcPage(state.dcAllGroups, state.dcBootstrap);
       void fetchPilotSkillsBatch(state.groups);
       return;
@@ -1380,13 +1565,11 @@
     state._searchTimer = setTimeout(function () {
       state.page = 1;
       state.cacheKey = null;
-      state.groups = [];
-      state.total = 0;
       clearPageCache();
       invalidateRenderSignature();
       setLoading(true, false);
       renderContent(true);
-      loadRankings(true);
+      loadRankings(false);
     }, 300);
   }
 
@@ -1395,13 +1578,11 @@
     state._reloadTimer = setTimeout(function () {
       state.page = 1;
       state.cacheKey = null;
-      state.groups = [];
-      state.total = 0;
       clearPageCache();
       invalidateRenderSignature();
       setLoading(true, false);
       renderContent(true);
-      loadRankings(true);
+      loadRankings(false);
     }, 250);
   }
 
@@ -1471,18 +1652,20 @@
     state.charCondPassiveOn = !state.charCondPassiveOn;
     syncGlobalFilterButtons();
     invalidateRenderSignature();
+    state.dcEvalCache = {};
     clearPageCache();
     state.cacheKey = null;
-    loadRankings(false);
+    loadRankings(true);
   }
 
   function togglePilotCondPassive() {
     state.pilotCondPassiveOn = !state.pilotCondPassiveOn;
     syncGlobalFilterButtons();
     invalidateRenderSignature();
+    state.dcEvalCache = {};
     clearPageCache();
     state.cacheKey = null;
-    loadRankings(false);
+    loadRankings(true);
   }
 
   function findGroup(unitId) {
@@ -1593,9 +1776,20 @@
         var nextTier = Math.max(1, Math.min(3, parseInt(defSel.value, 10) || 1));
         state.defTier = nextTier;
         state.page = 1;
+        updateDefTierStats();
+        if (state.dcEvalCache && Object.keys(state.dcEvalCache).length) {
+          setLoading(true, true);
+          showWarmingBanner(true, t('msy_warming') || 'Updating defender tier…');
+          void reassembleAllFromCache().then(function (groups) {
+            applyDcPage(groups, state.dcBootstrap);
+            void fetchPilotSkillsBatch(state.groups);
+            setLoading(false, false);
+            showWarmingBanner(false);
+          });
+          return;
+        }
         state.cacheKey = null;
         clearPageCache();
-        updateDefTierStats();
         loadRankings(true);
       });
     }
