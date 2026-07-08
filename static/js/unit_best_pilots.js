@@ -108,16 +108,34 @@
       + '</div>';
   }
 
+  var ABILITY_EX_FRAME_BASE = '/static/images/UI/UI_CharaAbilities_Tmb_Square_Normal_Base.webp';
+  var ABILITY_EX_FRAME_OVERLAY = '/static/images/UI/UI_CharaAbilities_Tmb_Square_Normal_Frame.webp';
+
+  function pilotPortraitSrc(raw) {
+    if (!raw) return '';
+    if (typeof global.imgUrlPreferCdn === 'function' && typeof global.imgUrlWebp === 'function') {
+      return global.imgUrlWebp(global.imgUrlPreferCdn(String(raw)));
+    }
+    return imgUrl(raw);
+  }
+
   function pilotThumb(c) {
     if (!c) return '';
-    var row = {
-      rarity: c.rarity || 'N',
-      thum: c.thum || c.portrait || '',
-      role_icon: c.role_icon || '',
-      acquisition_icon: ''
-    };
-    return typeof global.renderListThumb === 'function'
-      ? global.renderListThumb(row, 'char', 44, { pickerThumb: true }) : '';
+    var raw = c.thum || c.portrait || '';
+    if (!raw) {
+      return '<div class="ability-icon-wrap ubp-pilot-icon-wrap"><div class="ability-icon-stack ubp-pilot-icon-stack"><div class="ability-icon-placeholder">★</div></div></div>';
+    }
+    var portraitSrc = pilotPortraitSrc(raw);
+    var fbSrc = pilotPortraitSrc(ABILITY_EX_FRAME_BASE);
+    var foSrc = pilotPortraitSrc(ABILITY_EX_FRAME_OVERLAY);
+    return '<div class="ability-icon-wrap ubp-pilot-icon-wrap">'
+      + '<div class="ability-icon-stack ability-icon-stack--ex ubp-pilot-icon-stack">'
+      + '<div class="ability-icon-inner">'
+      + '<img class="ability-icon-base" src="' + escAttr(fbSrc) + '" alt="" loading="lazy" decoding="async" onerror="typeof gameImageUrlFallback===\'function\'&&gameImageUrlFallback(this)">'
+      + '<img class="ability-icon" src="' + escAttr(portraitSrc) + '" alt="" loading="lazy" decoding="async" onerror="typeof abilityIconImgOnError===\'function\'?abilityIconImgOnError(this):this.style.display=\'none\';return false;">'
+      + '</div>'
+      + '<img class="ability-frame-overlay" src="' + escAttr(foSrc) + '" alt="" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">'
+      + '</div></div>';
   }
 
   function roleIconHtml(c) {

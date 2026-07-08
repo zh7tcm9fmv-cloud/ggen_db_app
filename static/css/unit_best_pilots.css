@@ -1,30 +1,27 @@
 /* Best Synergy Pilot — unit detail panel + trigger icon */
 
-.detail-rec-pilot-thumb-anchor {
+.detail-rec-link-card--has-bsp {
   position: relative;
-  display: inline-block;
-  line-height: 0;
-  overflow: visible;
 }
 
-.detail-rec-pilot-thumb-anchor .unit-best-pilot-btn-slot--rec {
+.detail-rec-link-card--has-bsp .unit-best-pilot-btn-slot--rec {
   position: absolute;
-  right: 4px;
-  bottom: 4px;
-  z-index: 6;
+  right: 6px;
+  bottom: 6px;
+  z-index: 8;
   line-height: 0;
-  padding: 4px;
+  padding: 0;
   pointer-events: none;
 }
 
-.detail-rec-pilot-thumb-anchor .unit-best-pilot-btn {
+.detail-rec-link-card--has-bsp .unit-best-pilot-btn {
   width: 40px;
   height: 40px;
   border-radius: 12px;
-  z-index: 7;
+  z-index: 9;
 }
 
-.detail-rec-pilot-thumb-anchor .unit-best-pilot-btn-icon {
+.detail-rec-link-card--has-bsp .unit-best-pilot-btn-icon {
   width: 26px;
   height: 26px;
 }
@@ -184,9 +181,15 @@
   color: var(--accent-cyan);
 }
 
-.unit-best-pilot-panel .msy-pilot-thumb .list-thumb-composite {
-  width: 44px;
-  height: 44px;
+.unit-best-pilot-panel .msy-pilot-thumb .ubp-pilot-icon-wrap {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+}
+
+.unit-best-pilot-panel .msy-pilot-thumb .ubp-pilot-icon-stack {
+  width: 56px;
+  height: 56px;
 }
 
 .unit-best-pilot-panel .msy-pilot-name-row {
@@ -326,8 +329,8 @@
 }
 
 .unit-best-pilot-panel .msy-pilot-skel-thumb {
-  width: 44px;
-  height: 44px;
+  width: 56px;
+  height: 56px;
   border-radius: 6px;
   background: rgba(90, 104, 132, 0.28);
   flex-shrink: 0;
@@ -377,19 +380,18 @@
 }
 
 @media (max-width: 768px) {
-  .detail-rec-shortcut--mobile .detail-rec-pilot-thumb-anchor .unit-best-pilot-btn-slot--rec {
-    right: 2px;
-    bottom: 2px;
-    padding: 2px;
+  .detail-rec-link-card--has-bsp .unit-best-pilot-btn-slot--rec {
+    right: 4px;
+    bottom: 4px;
   }
 
-  .detail-rec-shortcut--mobile .detail-rec-pilot-thumb-anchor .unit-best-pilot-btn {
+  .detail-rec-link-card--has-bsp .unit-best-pilot-btn {
     width: 34px;
     height: 34px;
     border-radius: 10px;
   }
 
-  .detail-rec-shortcut--mobile .detail-rec-pilot-thumb-anchor .unit-best-pilot-btn-icon {
+  .detail-rec-link-card--has-bsp .unit-best-pilot-btn-icon {
     width: 22px;
     height: 22px;
   }
