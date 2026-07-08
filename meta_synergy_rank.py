@@ -2433,7 +2433,38 @@ def _cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc, *, cp_on=True, p
     if pair_ok:
         score *= 1.12
     score += float(skill_dmg) * 500.0
+    if cp_on and _char_guaranteed_crit(cid, lc, vigor='super', cp_on=True):
+        score *= 2.25
     return score
+
+
+def _msy_guaranteed_crit_priority_pilots(active_pilots, lc, *, cp_on=True):
+    """Pilots that must stay in bounded sim pools (e.g. Shinn Supercharged EX 2 GC)."""
+    if not cp_on:
+        return []
+    A = _app()
+    out = []
+    for cid in active_pilots:
+        cid_n = A.normalize_id(cid)
+        if _char_guaranteed_crit(cid_n, lc, vigor='super', cp_on=cp_on):
+            out.append(cid_n)
+    return out
+
+
+def _cap_pilot_candidates(scored_ids, active_pilots, lc, cap, *, cp_on=True):
+    """Trim to cap while always retaining guaranteed-crit pilots."""
+    priority = _msy_guaranteed_crit_priority_pilots(active_pilots, lc, cp_on=cp_on)
+    out = []
+    for cid in priority:
+        if cid not in out:
+            out.append(cid)
+    for cid in scored_ids:
+        if cid in out:
+            continue
+        out.append(cid)
+        if len(out) >= cap:
+            break
+    return out[:cap]
 
 
 def _lite_candidates_for_unit(uid, active_pilots, need, info, unit_wpn, stat_mode, lc):
@@ -2464,6 +2495,9 @@ def _lite_candidates_for_unit(uid, active_pilots, need, info, unit_wpn, stat_mod
             merged.append(cid)
         if len(merged) >= pilot_cap:
             break
+    for cid in _msy_guaranteed_crit_priority_pilots(active_pilots, lc):
+        if cid not in merged:
+            merged.insert(0, cid)
     return merged[:pilot_cap]
 
 
@@ -2577,7 +2611,9 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
                 cid,
             ))
         cheap_scored.sort(key=lambda x: (-x[0], x[1]))
-        candidates = [cid for _, cid in cheap_scored[:need]]
+        candidates = _cap_pilot_candidates(
+            [cid for _, cid in cheap_scored], active_pilots, lc, need,
+        )
 
     tiers = tuple(def_tiers) if def_tiers else (def_tier,)
     use_multi_tier = (
@@ -2967,7 +3003,9 @@ def dc_candidate_pilots_for_unit(uid, pilot_ids, exclude, lc):
         for cid in active
     ]
     cheap_scored.sort(key=lambda x: (-x[0], x[1]))
-    return [cid for _, cid in cheap_scored[:need]]
+    return _cap_pilot_candidates(
+        [cid for _, cid in cheap_scored], active, lc, need,
+    )
 
 
 def _msy_pilot_ids_from_kwargs(kwargs):

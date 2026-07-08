@@ -44,11 +44,6 @@
     return !!(rc && rc.id);
   }
 
-  function apiQuery() {
-    var lang = (global.S && global.S.lang) || 'EN';
-    return 'lang=' + encodeURIComponent(lang)
-      + '&lb_tier=3&def_tier=3&rank_mode=super_crit&top_pilots=10';
-  }
 
   function renderTriggerBtn() {
     var icon = imgUrl('/static/images/UI/UI_Common_Tmb_PriorPilot_Icon.webp');
@@ -215,45 +210,20 @@
       + renderSkeletonGrid());
   }
 
-  function scriptVersion() {
-    var el = global.document.querySelector('script[src*="unit_best_pilots.js"]');
-    if (!el || !el.src) return '';
-    var m = el.src.match(/[?&]v=([^&]+)/);
-    return m ? decodeURIComponent(m[1]) : '';
-  }
-
-  function loadScriptOnce(src) {
-    return new Promise(function (resolve, reject) {
-      var base = src.split('?')[0];
-      var existing = global.document.querySelector('script[src="' + src + '"]')
-        || global.document.querySelector('script[src^="' + base + '"]');
-      if (existing) {
-        resolve();
-        return;
-      }
-      var s = global.document.createElement('script');
-      s.src = src;
-      s.defer = true;
-      s.onload = function () { resolve(); };
-      s.onerror = function () { reject(new Error('script load failed: ' + src)); };
-      global.document.head.appendChild(s);
+  async function fetchBestSynergyPilots(unitId, lang, retriesLeft) {
+    var q = 'lang=' + encodeURIComponent(lang)
+      + '&lb_tier=3&def_tier=3&rank_mode=super_crit&top_pilots=10';
+    var res = await fetch('/api/unit/' + encodeURIComponent(unitId) + '/best_synergy_pilots?' + q, {
+      credentials: 'same-origin'
     });
-  }
-
-  var dcEnginePromise = null;
-  function ensureDcEngine() {
-    if (global.MsyDcEngine) {
-      return global.MsyDcEngine.ensureReady().then(function () { return global.MsyDcEngine; });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    var payload = await res.json();
+    if (payload.error) throw new Error(payload.detail || payload.error);
+    if (payload.pending && retriesLeft > 0) {
+      await new Promise(function (resolve) { setTimeout(resolve, 350); });
+      return fetchBestSynergyPilots(unitId, lang, retriesLeft - 1);
     }
-    if (!dcEnginePromise) {
-      var ver = scriptVersion();
-      var src = '/static/js/msy_dc_engine.js' + (ver ? '?v=' + encodeURIComponent(ver) : '');
-      dcEnginePromise = loadScriptOnce(src).then(function () {
-        if (!global.MsyDcEngine) throw new Error('MsyDcEngine not loaded');
-        return global.MsyDcEngine.ensureReady().then(function () { return global.MsyDcEngine; });
-      });
-    }
-    return dcEnginePromise;
+    return payload;
   }
 
   async function loadRankings(unitId) {
@@ -261,62 +231,14 @@
     state.loading = true;
     showLoading();
     try {
-      var engine = await ensureDcEngine();
-      if (gen !== state.loadGen) return;
       var lang = (global.S && global.S.lang) || 'EN';
-      var bootRes = await fetch('/api/meta_synergy_dc/bootstrap?' + apiQuery(), {
-        credentials: 'same-origin'
-      });
+      var payload = await fetchBestSynergyPilots(unitId, lang, 2);
       if (gen !== state.loadGen) return;
-      if (!bootRes.ok) throw new Error('HTTP ' + bootRes.status);
-      var bootstrap = await bootRes.json();
-      if (bootstrap.error) throw new Error(bootstrap.detail || bootstrap.error);
-      var defTiers = bootstrap.defender_tiers || {};
-      var candRes = await fetch('/api/meta_synergy_dc/candidates?unit_id=' + encodeURIComponent(unitId) + '&' + apiQuery(), {
-        credentials: 'same-origin'
-      });
-      if (gen !== state.loadGen) return;
-      if (!candRes.ok) throw new Error('HTTP ' + candRes.status);
-      var candData = await candRes.json();
-      var pilotIds = candData.pilot_ids || [];
-      if (!pilotIds.length) {
-        state.loaded = true;
-        setPanelHtml('<div class="unit-best-pilot-empty">' + esc(t('unit_best_pilot_empty') || 'No eligible pilots found.') + '</div>');
+      if (payload.pending) {
+        setPanelHtml('<div class="unit-best-pilot-empty">' + esc(t('unit_best_pilot_loading') || 'Computing best synergy pilots…') + '</div>');
         return;
       }
-      if (bootstrap.cache_version && engine.ensureCacheVersion) {
-        await engine.ensureCacheVersion(bootstrap.cache_version);
-      }
-      if (gen !== state.loadGen) return;
-      var raw = await engine.evalUnit(unitId, pilotIds, defTiers, {
-        lang: lang,
-        cpOn: true,
-        pepOn: true,
-        appJsVersion: bootstrap.cache_version || scriptVersion()
-      });
-      if (gen !== state.loadGen) return;
-      if (!raw || raw.error || !raw.byTier) throw new Error('eval failed');
-      var asmRes = await fetch('/api/meta_synergy_dc/assemble?' + apiQuery(), {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          unit_id: unitId,
-          pairs_by_tier: raw.byTier,
-          lang: lang,
-          top_pilots: 10,
-          rank_mode: 'super_crit',
-          def_tier: 3,
-          cp_on: true,
-          pep_on: true
-        })
-      });
-      if (gen !== state.loadGen) return;
-      if (!asmRes.ok) throw new Error('HTTP ' + asmRes.status);
-      var payload = await asmRes.json();
-      if (gen !== state.loadGen) return;
-      if (payload.error) throw new Error(payload.detail || payload.error);
-      var pilots = (payload.group && payload.group.pilots) || [];
+      var pilots = payload.pilots || [];
       state.cache[String(unitId)] = pilots;
       state.loaded = true;
       setPanelHtml(renderPilotGrid(pilots, unitId));
