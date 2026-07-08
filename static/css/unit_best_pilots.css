@@ -1,0 +1,369 @@
+/* Best Synergy Pilot — unit detail panel + trigger icon */
+
+.detail-rec-anchor-wrap {
+  position: relative;
+  display: inline-block;
+  max-width: 100%;
+}
+
+.unit-best-pilot-btn-slot {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  z-index: 5;
+  line-height: 0;
+  pointer-events: none;
+}
+
+.unit-portrait-wrap .unit-best-pilot-btn-slot {
+  right: 10px;
+  bottom: 28px;
+}
+
+.unit-portrait-wrap:has(#unitLbVideoBtnSlot .unit-lb-video-btn) .unit-best-pilot-btn-slot,
+.unit-portrait-wrap:has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn) .unit-best-pilot-btn-slot {
+  bottom: 4px;
+  right: 8px;
+}
+
+.unit-best-pilot-btn {
+  pointer-events: auto;
+  width: 36px;
+  height: 36px;
+  padding: 2px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(8, 19, 36, 0.72);
+  box-shadow: 0 0 0 1px rgba(0, 212, 255, 0.35), 0 2px 8px rgba(0, 0, 0, 0.45);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.unit-best-pilot-btn:hover,
+.unit-best-pilot-btn.is-active {
+  transform: scale(1.06);
+  box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.55), 0 0 14px rgba(0, 212, 255, 0.25);
+  background: rgba(0, 40, 60, 0.88);
+}
+
+.unit-best-pilot-btn-icon {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  border-radius: 50%;
+}
+
+.unit-best-pilot-panel-wrap {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, margin 0.35s ease;
+  margin: 0 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  background: rgba(8, 19, 36, 0.55);
+}
+
+.unit-best-pilot-panel-wrap.is-open {
+  max-height: 720px;
+  opacity: 1;
+  margin: 0 20px 12px;
+  border-color: rgba(0, 212, 255, 0.28);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+}
+
+.unit-best-pilot-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 14px 6px;
+  border-bottom: 1px solid rgba(90, 104, 132, 0.25);
+}
+
+.unit-best-pilot-panel-title {
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent-cyan);
+}
+
+.unit-best-pilot-panel-note {
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.3;
+  text-align: right;
+}
+
+.unit-best-pilot-panel {
+  padding: 4px 6px 10px;
+  min-height: 0;
+}
+
+.unit-best-pilot-loading {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.unit-best-pilot-empty {
+  padding: 14px 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* Reuse MSY pilot card layout (scoped to unit detail) */
+.unit-best-pilot-panel .msy-pilot-open {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+}
+
+.unit-best-pilot-panel .msy-pilot-open:hover .msy-pilot-name {
+  color: var(--accent-cyan);
+}
+
+.unit-best-pilot-panel .msy-pilot-thumb .list-thumb-composite {
+  width: 44px;
+  height: 44px;
+}
+
+.unit-best-pilot-panel .msy-pilot-name-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.unit-best-pilot-panel .msy-pilot-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.unit-best-pilot-panel .msy-pilot-sub,
+.unit-best-pilot-panel .msy-pilot-formula-stat {
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.unit-best-pilot-panel .msy-pilot-formula-stat {
+  color: var(--accent-cyan);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.unit-best-pilot-panel .msy-pilot-dmg-dealt-pct {
+  font-size: 10px;
+  color: #7dd3a8;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  margin-top: 2px;
+}
+
+.unit-best-pilot-panel .msy-pilot-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  padding: 6px 8px 8px;
+}
+
+.unit-best-pilot-panel .msy-pilot-col {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.unit-best-pilot-panel .msy-pilot-col + .msy-pilot-col {
+  border-left: 1px solid rgba(90, 104, 132, 0.2);
+  padding-left: 8px;
+}
+
+.unit-best-pilot-panel .msy-pilot-card {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 6px;
+  padding: 4px 6px;
+  border-radius: var(--radius-sm);
+  transition: background 0.15s;
+}
+
+.unit-best-pilot-panel .msy-pilot-card:hover {
+  background: rgba(0, 212, 255, 0.05);
+}
+
+.unit-best-pilot-panel .msy-pilot-rank {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.unit-best-pilot-panel .msy-pilot-body {
+  min-width: 0;
+}
+
+.unit-best-pilot-panel .msy-pilot-dmg {
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--accent-cyan);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.unit-best-pilot-panel .msy-pilot-dmg-col {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  gap: 1px;
+  min-width: 0;
+}
+
+.unit-best-pilot-panel .msy-pilot-dmg-col .msy-pilot-formula-stat {
+  margin-top: 0;
+  font-size: 9px;
+  line-height: 1.2;
+  max-width: 96px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.unit-best-pilot-panel .msy-pilot-dmg-col .msy-pilot-dmg-dealt-pct {
+  margin-top: 0;
+  font-size: 9px;
+  line-height: 1.2;
+  max-width: 110px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.unit-best-pilot-panel .msy-pilot-sub--gc {
+  color: var(--accent-cyan);
+  font-weight: 700;
+}
+
+.unit-best-pilot-panel .msy-pilot-card--skeleton {
+  pointer-events: none;
+  opacity: 0.72;
+  animation: ubp-pilot-skel-shimmer 1.6s ease-in-out infinite;
+}
+
+.unit-best-pilot-panel .msy-pilot-skel-body {
+  display: flex;
+  gap: 6px;
+  align-items: flex-start;
+  min-width: 0;
+}
+
+.unit-best-pilot-panel .msy-pilot-skel-thumb {
+  width: 44px;
+  height: 44px;
+  border-radius: 6px;
+  background: rgba(90, 104, 132, 0.28);
+  flex-shrink: 0;
+}
+
+.unit-best-pilot-panel .msy-pilot-skel-lines {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding-top: 4px;
+}
+
+.unit-best-pilot-panel .msy-skel-line {
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(90, 104, 132, 0.32);
+}
+
+.unit-best-pilot-panel .msy-skel-line--short {
+  width: 62%;
+}
+
+.unit-best-pilot-panel .msy-skel-bar,
+.unit-best-pilot-panel .msy-skel-dmg {
+  border-radius: 4px;
+  background: rgba(90, 104, 132, 0.28);
+}
+
+.unit-best-pilot-panel .msy-skel-bar {
+  width: 12px;
+  height: 10px;
+  margin-top: 6px;
+}
+
+.unit-best-pilot-panel .msy-skel-dmg {
+  width: 42px;
+  height: 12px;
+  margin-top: 6px;
+}
+
+@keyframes ubp-pilot-skel-shimmer {
+  0% { opacity: 0.55; }
+  50% { opacity: 0.85; }
+  100% { opacity: 0.55; }
+}
+
+@media (max-width: 768px) {
+  .unit-best-pilot-panel-wrap {
+    margin-left: 12px;
+    margin-right: 12px;
+  }
+
+  .unit-best-pilot-panel-wrap.is-open {
+    margin-left: 12px;
+    margin-right: 12px;
+  }
+
+  .unit-best-pilot-panel .msy-pilot-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .unit-best-pilot-panel .msy-pilot-col + .msy-pilot-col {
+    border-left: 0;
+    padding-left: 0;
+    border-top: 1px solid rgba(90, 104, 132, 0.2);
+    padding-top: 6px;
+    margin-top: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unit-best-pilot-panel-wrap {
+    transition: none;
+  }
+
+  .unit-best-pilot-btn:hover,
+  .unit-best-pilot-btn.is-active {
+    transform: none;
+  }
+
+  .unit-best-pilot-panel .msy-pilot-card--skeleton {
+    animation: none;
+  }
+}

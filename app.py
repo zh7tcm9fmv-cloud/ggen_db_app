@@ -52,9 +52,7 @@ def _app_js_bundle_version_tag():
     assets = (
         ('js', 'app.js'),
         ('js', 'msy_dc_engine.js'),
-        ('js', 'msy_dc_worker.js'),
-        ('js', 'msy_idb_cache.js'),
-        ('js', 'meta_synergy.js'),
+        ('js', 'unit_best_pilots.js'),
         ('js', 'kofi_donate_promo.js'),
         ('css', 'kofi_donate_promo.css'),
     )
@@ -96,7 +94,7 @@ def _apply_static_cache_headers(response):
     if not path.startswith('/static/'):
         return response
     ext = os.path.splitext(path)[1].lower()
-    if path.endswith('/js/app.js') or path.endswith('/js/meta_synergy.js') or path.endswith('/js/msy_dc_engine.js') or path.endswith('/js/msy_dc_worker.js') or path.endswith('/js/msy_idb_cache.js'):
+    if path.endswith('/js/app.js') or path.endswith('/js/msy_dc_engine.js') or path.endswith('/js/unit_best_pilots.js'):
         response.headers['Cache-Control'] = 'no-cache, must-revalidate'
         return response
     if ext not in _STATIC_CACHEABLE_EXT:
@@ -13976,6 +13974,30 @@ def api_meta_synergy_rankings():
         import traceback
         traceback.print_exc()
         return jsonify({'error': 'meta_synergy_rankings_failed', 'detail': str(e)}), 500
+
+
+@app.route('/msy')
+@app.route('/msy/')
+def msy_tab_redirect():
+    """Legacy MSY tab URL — rankings moved to per-unit detail."""
+    from flask import redirect
+    return redirect('/u', code=302)
+
+
+@app.route('/api/unit/<unit_id>/best_synergy_pilots/bootstrap')
+def api_unit_best_synergy_pilots_bootstrap(unit_id):
+    """Bootstrap DC eval for one unit's Best Synergy Pilot panel."""
+    import meta_synergy_rank as msr
+    kwargs = msr._msy_dc_kwargs_from_request(request.args)
+    try:
+        payload = msr.unit_best_synergy_pilots_bootstrap_payload(unit_id, kwargs)
+        ck = f'ubp_boot_{unit_id}_{kwargs["lc"]}'
+        return jsonify_cacheable(payload, ck, public=True, max_age=300, convert_images=False)
+    except Exception as e:
+        print(f'api/unit/{unit_id}/best_synergy_pilots/bootstrap failed: {e}')
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': 'best_synergy_pilots_bootstrap_failed', 'detail': str(e)}), 500
 
 
 @app.route('/api/meta_synergy_dc/bootstrap')

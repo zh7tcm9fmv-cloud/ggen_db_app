@@ -3136,6 +3136,37 @@ def dc_bootstrap_payload(kwargs):
     }
 
 
+def unit_is_rankable(uid, lc='EN'):
+    """Whether a single unit has a sim-eligible best weapon."""
+    A = _app()
+    lc = lc or A.DEFAULT_LANG
+    uid = A.normalize_id(uid)
+    if uid not in A.unit_list_playable_ids:
+        return False
+    info = A.unit_info_map.get(uid)
+    if not info:
+        return False
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    return bool(_cached_best_ex_weapon(uid, stat_mode, lc))
+
+
+def unit_best_synergy_pilots_bootstrap_payload(unit_id, kwargs):
+    """Bootstrap for per-unit Best Synergy Pilot panel (one unit × filtered pilots)."""
+    lc = kwargs.get('lc', 'EN')
+    uid = _app().normalize_id(unit_id)
+    if not unit_is_rankable(uid, lc):
+        return {'eligible': False, 'unit_id': uid}
+    pilot_ids = _msy_pilot_ids_from_kwargs(kwargs)
+    candidates = dc_candidate_pilots_for_unit(uid, pilot_ids, set(), lc)
+    return {
+        'eligible': True,
+        'unit_id': uid,
+        'defender_tiers': defender_tiers_public(),
+        'pilot_ids': candidates,
+        'def_tier': max(1, min(4, int(kwargs.get('def_tier') or 3))),
+    }
+
+
 def dc_candidates_payload(unit_id, kwargs):
     """Pilot candidate IDs for one unit (DC prefilter)."""
     lc = kwargs.get('lc', 'EN')
