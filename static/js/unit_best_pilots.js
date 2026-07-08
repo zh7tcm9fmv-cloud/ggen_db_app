@@ -54,10 +54,23 @@
     var icon = imgUrl('/static/images/UI/UI_Common_Tmb_PriorPilot_Icon.webp');
     var title = t('unit_best_pilot_btn') || 'Best Synergy Pilots';
     return '<button type="button" class="unit-best-pilot-btn' + (state.open ? ' is-active' : '')
-      + '" onclick="event.stopPropagation();GgenUnitBestPilots.toggle()" title="' + escAttr(title)
+      + '" data-unit-best-pilot-toggle title="' + escAttr(title)
       + '" aria-label="' + escAttr(title) + '" aria-expanded="' + (state.open ? 'true' : 'false') + '">'
       + '<img class="unit-best-pilot-btn-icon" src="' + icon + '" alt="" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">'
       + '</button>';
+  }
+
+  function bindClickDelegation() {
+    if (global.document._unitBestPilotBound) return;
+    global.document._unitBestPilotBound = 1;
+    global.document.addEventListener('click', function (ev) {
+      var btn = ev.target.closest('[data-unit-best-pilot-toggle], .unit-best-pilot-btn');
+      if (!btn) return;
+      ev.preventDefault();
+      ev.stopPropagation();
+      ev.stopImmediatePropagation();
+      toggle();
+    }, true);
   }
 
   function hideTriggers() {
@@ -308,7 +321,7 @@
     global.document.querySelectorAll('#unitBestPilotBtnSlotPortrait').forEach(function (slot) {
       slot.innerHTML = onRec ? '' : renderTriggerBtn();
     });
-    global.document.querySelectorAll('#unitBestPilotBtnSlotRec').forEach(function (slot) {
+    global.document.querySelectorAll('[data-unit-best-pilot-rec]').forEach(function (slot) {
       slot.innerHTML = onRec ? renderTriggerBtn() : '';
     });
   }
@@ -370,6 +383,8 @@
     state.loading = false;
     state.loadGen++;
   }
+
+  bindClickDelegation();
 
   global.GgenUnitBestPilots = {
     syncUi: syncUi,
