@@ -124,14 +124,14 @@ def _calc_lang_data():
 
 
 def _unit_stat_mode(ri, *, wid=None, wm=None):
-    """Unit stat column: SSP when ranked weapon is SSP; else ssp/sp/normal by rarity."""
+    """Unit stat column: SSP when ranked weapon is SSP; SSR and lower use SP stats."""
     ri = str(ri or '1')
     if wid and _weapon_is_ssp_weapon(wid, wm):
         return 'ssp'
+    if int(ri) <= 4:
+        return 'sp'
     if ri == '5':
         return 'ssp'
-    if ri == '4':
-        return 'sp'
     return 'normal'
 
 
@@ -1861,13 +1861,16 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
         crit_dmg_up_pct=crit_up,
         vigor=vigor,
     )
+    can_crit = guaranteed_crit or crit_rate > 0
+    rank_super_crit = super_crit if can_crit else normal
+    rank_crit = plain_crit if can_crit else normal
     expected = int(normal * (100 - crit_rate) / 100 + super_crit * crit_rate / 100)
     peak = super_crit if guaranteed_crit else max(super_crit, expected)
 
     return {
         'normal_dmg': normal,
-        'crit_dmg': plain_crit,
-        'super_crit_dmg': super_crit,
+        'crit_dmg': rank_crit,
+        'super_crit_dmg': rank_super_crit,
         'expected_dmg': expected,
         'peak_dmg': peak,
         'guaranteed_crit': guaranteed_crit,
@@ -3492,7 +3495,7 @@ _AWAKEN_BOOST_SKILL_ID_RE = re.compile(r'^200170[1-5]01$')
 def _msy_skill_relevant_for_sim(blob, sid='', name=''):
     """Skills that MSY damage sim auto-applies at max level (display + active flags)."""
     text = str(blob or '')
-    if _SKILL_DMG_RE.search(text) or _SKILL_ATK_RE.search(text):
+    if _SKILL_DMG_RE.search(text) or _SKILL_ATK_RE.search(text) or _SKILL_CRIT_RE.search(text):
         return True
     sid = str(sid or '').strip()
     if sid and _AWAKEN_BOOST_SKILL_ID_RE.match(sid):

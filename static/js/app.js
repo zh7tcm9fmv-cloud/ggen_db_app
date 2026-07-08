@@ -5484,6 +5484,89 @@ if(!prev||lv>prev.lv)byBase.set(base,{id:String(sk.id),lv});
 });
 byBase.forEach(({id})=>{S.dc._activeSkills[id]=true});
 }
+function _dcMsyUnitStatMode(ud){
+if(!ud)return'normal';
+const ri=parseInt(String(ud.rarity_id||'5'),10);
+if(!Number.isNaN(ri)&&ri<=4)return'sp';
+const wpns=_dcNonMapWeapons(ud);
+if(wpns&&wpns.length){
+const bw=_dcPickBestWeaponIndices(ud);
+const w=wpns[bw.wpnIdx];
+if(w&&w.is_ssp_weapon)return'ssp';
+}
+if(!Number.isNaN(ri)&&ri>=5)return'normal';
+return'normal';
+}
+function _dcMsySkillRelevantForSim(desc,skId,skName,wpnBaseCrit){
+const text=String(desc||'');
+if(/(?:damage\s+dealt|造成的損傷|傷害|ダメージ)/i.test(text))return true;
+const add=_dcParseSkillDescAtkPct(text,{id:skId,name:skName||''});
+if(add.Ranged||add.Melee||add.Awaken)return true;
+if(/^200170[1-5]01$/.test(String(skId||'')))return true;
+if(/awaken\s+boost|覺醒值增幅|覚醒ブースト/i.test(String(skName||'')))return true;
+if((wpnBaseCrit|0)<=0&&/critical rate|暴擊率|暴击率|爆擊率|クリティカル率/i.test(text))return true;
+return false;
+}
+function _dcMsyAutoEnableSkills(ud,cd){
+if(!cd||cd._manual)return;
+const skills=_dcPilotSkillsVisibleForDc(cd)||[];
+if(!skills.length)return;
+S.dc._activeSkills=S.dc._activeSkills||{};
+const wpns=ud?_dcNonMapWeapons(ud):[];
+const wpn=wpns&&wpns[S.dc.wpnIdx|0];
+const lvRow=wpn?_dcWeaponLevelRow(wpn,S.dc.wpnLv|0):{critical:0};
+const wpnCrit=lvRow.critical|0;
+const byBase=new Map();
+skills.forEach(sk=>{
+const rsk=_dcResolveSkillForDcMode(sk);
+const fullNm=(rsk.name||sk.name||'').trim();
+const base=fullNm.replace(/\s*LV\s*\d+\s*$/i,'').trim().toLowerCase();
+const lvM=fullNm.match(/\bLV\s*(\d+)\b/i);
+const lv=lvM?parseInt(lvM[1],10):0;
+const desc=[...(rsk.details||[]).map(d=>typeof d==='string'?d:(d&&d.text)||''),rsk.desc||'',rsk.sp_desc||''].join(' ');
+if(!_dcMsySkillRelevantForSim(desc,sk.id,fullNm,wpnCrit))return;
+const prev=byBase.get(base);
+if(!prev||lv>prev.lv)byBase.set(base,{id:String(sk.id),lv});
+});
+byBase.forEach(({id})=>{S.dc._activeSkills[id]=true});
+}
+function _dcMsySkillCritRate(slot,cd){
+let crit=0;
+if(!cd||!slot._activeSkills)return 0;
+const skills=_dcPilotSkillsVisibleForDc(cd)||[];
+const saveMode=S.dc.charStatMode,saveAS=S.dc._activeSkills;
+try{
+S.dc.charStatMode=slot.charStatMode||'normal';
+S.dc._activeSkills={...slot._activeSkills};
+skills.forEach(sk=>{
+if(!slot._activeSkills[sk.id])return;
+const rsk=_dcResolveSkillForDcMode(sk);
+const desc=[...(rsk.details||[]).map(d=>typeof d==='string'?d:(d&&d.text)||''),rsk.desc||'',rsk.sp_desc||''].join(' ');
+let m=desc.match(/Increases?\s+own\s+critical rate by\s+(\d+)\s*%/i);
+if(m)crit=Math.max(crit,parseInt(m[1],10)||0);
+m=desc.match(/自身(?:的)?(?:暴擊|暴击|爆擊)率提升(\d+)%/);
+if(m)crit=Math.max(crit,parseInt(m[1],10)||0);
+m=desc.match(/自身のクリティカル率が(\d+)%上昇/);
+if(m)crit=Math.max(crit,parseInt(m[1],10)||0);
+});
+}finally{S.dc.charStatMode=saveMode;S.dc._activeSkills=saveAS}
+return crit;
+}
+function _dcMsyAffinityWeaponCrit(ud,cd){
+if(!S.pilotConditionalPassiveActive||!ud||!cd)return 0;
+let out=0;
+(cd.abilities||[]).forEach(ab=>{
+(ab.details||[]).forEach(d2=>{
+if(typeof d2!=='object')return;
+const tx=String(d2.text||'');
+if(!_textImpliesPilotingTagAffinity(tx))return;
+if(!_unitTagsMatchAbilityDetail(d2,ud.tags))return;
+const row=_extractPilotWeaponStatPctFromText(tx);
+out=Math.max(out,row.crit|0);
+});
+});
+return out;
+}
 const DC_GUARANTEED_CRIT_RE=/guaranteed\s+critical|grant\s+guaranteed\s+critical|activate\s+guaranteed\s+critical|確定クリティカル|確定.*クリティカル/i;
 const DC_WPN_ELEM={'1':'beam','2':'physical','3':'special','4':'beam','5':'beam','6':'physical','7':'beam'};
 const DC_WPN_ELEM_LABEL={beam:'Beam',physical:'Physical',special:'Special'};

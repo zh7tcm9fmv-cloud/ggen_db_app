@@ -104,7 +104,7 @@
       acquisition_icon: ''
     };
     return typeof global.renderListThumb === 'function'
-      ? global.renderListThumb(row, 'char', 44) : '';
+      ? global.renderListThumb(row, 'char', 44, { pickerThumb: true }) : '';
   }
 
   function roleIconHtml(c) {

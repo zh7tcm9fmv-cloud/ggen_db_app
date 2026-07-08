@@ -33,6 +33,35 @@
     });
   }
 
+  function msyUnitStatMode(ud) {
+    if (typeof global._dcMsyUnitStatMode === 'function') return global._dcMsyUnitStatMode(ud);
+    if (!ud) return 'normal';
+    var ri = parseInt(String(ud.rarity_id || '5'), 10);
+    if (!isNaN(ri) && ri <= 4) return 'sp';
+    return 'normal';
+  }
+
+  function msyAutoEnableSkills(ud, cd) {
+    if (typeof global._dcMsyAutoEnableSkills === 'function') {
+      global._dcMsyAutoEnableSkills(ud, cd);
+      return;
+    }
+    if (typeof global._dcAutoEnableMaxDamageSkills === 'function') {
+      global._dcAutoEnableMaxDamageSkills();
+    }
+  }
+
+  function msyCritRate(ud, cd, slot, weaponCrit) {
+    var crit = Math.max(0, weaponCrit | 0);
+    if (typeof global._dcMsySkillCritRate === 'function') {
+      crit += global._dcMsySkillCritRate(slot, cd) | 0;
+    }
+    if (typeof global._dcMsyAffinityWeaponCrit === 'function') {
+      crit += global._dcMsyAffinityWeaponCrit(ud, cd) | 0;
+    }
+    return Math.min(100, Math.max(0, crit));
+  }
+
   function buildMsySlot(ud, cd, vigor, cpEnabled) {
     var slot = global._dcCreateEmptyAttackerSlot();
     var charMode = msyCharStatMode(cd);
@@ -44,7 +73,7 @@
     slot.wpnIdx = bw.wpnIdx;
     slot.wpnLv = bw.wpnLv;
     slot.lbTier = 3;
-    slot.unitStatMode = 'normal';
+    slot.unitStatMode = msyUnitStatMode(ud);
     slot.unitCondPassive = cpEnabled;
     slot.charStatMode = charMode;
     slot.mpLevel = global._dcNormMpLevel(vigor);
@@ -67,9 +96,7 @@
     S.dc.atkUnitData = ud;
     S.dc.charStatMode = charMode;
     S.dc._activeSkills = {};
-    if (typeof global._dcAutoEnableMaxDamageSkills === 'function') {
-      global._dcAutoEnableMaxDamageSkills();
-    }
+    msyAutoEnableSkills(ud, cd);
     slot._activeSkills = Object.assign({}, S.dc._activeSkills || {});
     return slot;
   }
@@ -116,11 +143,15 @@
     var r = null;
     try { r = global._dcCalculateDamageWithSlot(0); } catch (_) { r = null; }
     if (!r) return null;
-    var critRate = Math.min(100, Math.max(0, r.critical | 0));
+    var weaponCrit = r.critical | 0;
+    var critRate = msyCritRate(ud, cd, slot, weaponCrit);
     var gc = typeof global._dcCharGuaranteedCritActive === 'function'
       ? global._dcCharGuaranteedCritActive() : false;
     var normalDmg = r.normalDmg | 0;
     var critDmgVal = r.critDmg | 0;
+    var canCrit = gc || critRate > 0;
+    var rankSuperCrit = canCrit ? critDmgVal : normalDmg;
+    var rankCrit = canCrit ? critDmgVal : normalDmg;
     var expected = Math.floor(normalDmg * (100 - critRate) / 100 + critDmgVal * critRate / 100);
     var peak = gc ? critDmgVal : Math.max(critDmgVal, expected);
     var pairOk = typeof global._dcUnitCharPairMatch === 'function'
@@ -136,16 +167,16 @@
       pair_ok: pairOk,
       vigor: vigor,
       normal_dmg: normalDmg,
-      crit_dmg: critDmgVal,
-      super_crit_dmg: critDmgVal,
+      crit_dmg: rankCrit,
+      super_crit_dmg: rankSuperCrit,
       char_atk: r.charAtk | 0,
       formula_stat: formulaStatKeyForPair(wpn),
       dmg_dealt_pct: r.userDmgIncreasePct | 0,
       vigor_dmg_pct: r.vigorDmgBonusPct | 0
     };
     if (vigor === 'high') row.normal_dmg = normalDmg;
-    else if (vigor === 'max') row.crit_dmg = critDmgVal;
-    else row.super_crit_dmg = critDmgVal;
+    else if (vigor === 'max') row.crit_dmg = rankCrit;
+    else row.super_crit_dmg = rankSuperCrit;
     return row;
   }
 

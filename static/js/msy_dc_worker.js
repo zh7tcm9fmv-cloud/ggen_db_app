@@ -1,5 +1,6 @@
 /* global S, _dcCreateEmptyAttackerSlot, _dcPickBestWeaponIndices, _dcNormMpLevel,
-          _dcShouldAutoCharCondPassive, _dcAutoEnableMaxDamageSkills, _dcCalculateDamageWithSlot,
+          _dcShouldAutoCharCondPassive, _dcMsyAutoEnableSkills, _dcMsyUnitStatMode,
+          _dcMsySkillCritRate, _dcMsyAffinityWeaponCrit, _dcCalculateDamageWithSlot,
           _dcCharGuaranteedCritActive, _dcUnitCharPairMatch, _dcManualDefNpcFromDefC */
 (function () {
   'use strict';
@@ -101,7 +102,7 @@
     slot.wpnIdx = bw.wpnIdx;
     slot.wpnLv = bw.wpnLv;
     slot.lbTier = 3;
-    slot.unitStatMode = 'normal';
+    slot.unitStatMode = typeof _dcMsyUnitStatMode === 'function' ? _dcMsyUnitStatMode(ud) : 'normal';
     slot.unitCondPassive = cpEnabled;
     slot.charStatMode = charMode;
     slot.mpLevel = _dcNormMpLevel(vigor);
@@ -123,7 +124,9 @@
     S.dc.atkUnitData = ud;
     S.dc.charStatMode = charMode;
     S.dc._activeSkills = {};
-    if (typeof _dcAutoEnableMaxDamageSkills === 'function') {
+    if (typeof _dcMsyAutoEnableSkills === 'function') {
+      _dcMsyAutoEnableSkills(ud, cd);
+    } else if (typeof _dcAutoEnableMaxDamageSkills === 'function') {
       _dcAutoEnableMaxDamageSkills();
     }
     slot._activeSkills = Object.assign({}, S.dc._activeSkills || {});
@@ -171,11 +174,22 @@
     var r = null;
     try { r = _dcCalculateDamageWithSlot(0); } catch (_) { r = null; }
     if (!r) return null;
-    var critRate = Math.min(100, Math.max(0, r.critical | 0));
+    var weaponCrit = r.critical | 0;
+    var critRate = weaponCrit;
+    if (typeof _dcMsySkillCritRate === 'function') {
+      critRate += _dcMsySkillCritRate(slot, cd) | 0;
+    }
+    if (typeof _dcMsyAffinityWeaponCrit === 'function') {
+      critRate += _dcMsyAffinityWeaponCrit(ud, cd) | 0;
+    }
+    critRate = Math.min(100, Math.max(0, critRate));
     var gc = typeof _dcCharGuaranteedCritActive === 'function'
       ? _dcCharGuaranteedCritActive() : false;
     var normalDmg = r.normalDmg | 0;
     var critDmgVal = r.critDmg | 0;
+    var canCrit = gc || critRate > 0;
+    var rankSuperCrit = canCrit ? critDmgVal : normalDmg;
+    var rankCrit = canCrit ? critDmgVal : normalDmg;
     var expected = Math.floor(normalDmg * (100 - critRate) / 100 + critDmgVal * critRate / 100);
     var peak = gc ? critDmgVal : Math.max(critDmgVal, expected);
     var pairOk = typeof _dcUnitCharPairMatch === 'function'
@@ -191,16 +205,16 @@
       pair_ok: pairOk,
       vigor: vigor,
       normal_dmg: normalDmg,
-      crit_dmg: critDmgVal,
-      super_crit_dmg: critDmgVal,
+      crit_dmg: rankCrit,
+      super_crit_dmg: rankSuperCrit,
       char_atk: r.charAtk | 0,
       formula_stat: formulaStatKeyForPair(wpn),
       dmg_dealt_pct: r.userDmgIncreasePct | 0,
       vigor_dmg_pct: r.vigorDmgBonusPct | 0
     };
     if (vigor === 'high') row.normal_dmg = normalDmg;
-    else if (vigor === 'max') row.crit_dmg = critDmgVal;
-    else row.super_crit_dmg = critDmgVal;
+    else if (vigor === 'max') row.crit_dmg = rankCrit;
+    else row.super_crit_dmg = rankSuperCrit;
     return row;
   }
 
