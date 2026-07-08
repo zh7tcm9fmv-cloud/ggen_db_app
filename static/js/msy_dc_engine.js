@@ -4,6 +4,13 @@
   var VIGORS = ['super', 'max', 'high'];
   var charCache = {};
   var unitCache = {};
+  var cacheVersion = null;
+  var workerPool = null;
+  var workerFallback = false;
+
+  function idb() {
+    return global.MsyIdbCache || null;
+  }
 
   function msyCharStatMode(cd) {
     if (!cd) return 'normal';
@@ -113,22 +120,91 @@
     return row;
   }
 
+  async function ensureCacheVersion(version) {
+    if (!version) return;
+    cacheVersion = version;
+    var store = idb();
+    if (store && store.isSupported()) {
+      try { await store.ensureVersion(version); } catch (_) {}
+    }
+  }
+
   async function loadUnit(unitId, lang) {
     var key = String(unitId) + ':' + lang;
     if (unitCache[key]) return unitCache[key];
+    var store = idb();
+    if (store && store.isSupported()) {
+      try {
+        var cached = await store.get(store.unitKey(unitId, lang));
+        if (cached && cached.data) {
+          unitCache[key] = cached.data;
+          return cached.data;
+        }
+      } catch (_) {}
+    }
     var ud = await fetch('/api/unit/' + encodeURIComponent(unitId) + '?lang=' + encodeURIComponent(lang) + '&lb_tier=3')
       .then(function (r) { return r.json(); });
     unitCache[key] = ud;
+    if (store && store.isSupported() && ud && !ud.error) {
+      try {
+        await store.put(store.unitKey(unitId, lang), { data: ud, at: Date.now() });
+      } catch (_) {}
+    }
     return ud;
   }
 
   async function loadChar(charId, lang) {
     var key = String(charId) + ':' + lang;
     if (charCache[key]) return charCache[key];
+    var store = idb();
+    if (store && store.isSupported()) {
+      try {
+        var cached = await store.get(store.charKey(charId, lang));
+        if (cached && cached.data) {
+          charCache[key] = cached.data;
+          return cached.data;
+        }
+      } catch (_) {}
+    }
     var cd = await fetch('/api/character/' + encodeURIComponent(charId) + '?lang=' + encodeURIComponent(lang))
       .then(function (r) { return r.json(); });
     charCache[key] = cd;
+    if (store && store.isSupported() && cd && !cd.error) {
+      try {
+        await store.put(store.charKey(charId, lang), { data: cd, at: Date.now() });
+      } catch (_) {}
+    }
     return cd;
+  }
+
+  async function capturePepState(ud, pepOn) {
+    if (!pepOn || !ud) return null;
+    var S = global.S;
+    var snap = {
+      pep: S.pilotConditionalPassiveActive,
+      condData: S.pilotCondCharData,
+      detail: S.currentDetailData,
+      stack: S.pilotCondStackCount
+    };
+    S.pilotConditionalPassiveActive = true;
+    if (ud.has_pilot_cond_passive && ud.recommend_character && ud.recommend_character.id) {
+      if (typeof global.ensurePilotCondCharData === 'function') {
+        await global.ensurePilotCondCharData(ud, true);
+      }
+      S.currentDetailData = ud;
+      if (typeof global._detailInitPilotCondStackCount === 'function') {
+        global._detailInitPilotCondStackCount(ud);
+      }
+    }
+    var pepState = {
+      pilotCondCharData: S.pilotCondCharData,
+      pilotCondStackCount: S.pilotCondStackCount | 0
+    };
+    S.pilotConditionalPassiveActive = snap.pep;
+    S.pilotCondCharData = snap.condData;
+    S.currentDetailData = snap.detail;
+    S.pilotCondStackCount = snap.stack;
+    return pepState;
   }
 
   async function setupPep(ud, pepOn) {
@@ -170,8 +246,159 @@
     });
   }
 
-  async function evalUnit(unitId, pilotIds, defTiers, opts) {
+  function evalContextKey(opts) {
     opts = opts || {};
+    return [
+      opts.lang || (global.S && global.S.lang) || 'EN',
+      opts.cpOn !== false ? 'cp1' : 'cp0',
+      opts.pepOn !== false ? 'pep1' : 'pep0'
+    ].join('|');
+  }
+
+  async function loadEvalFromIdb(unitId, contextKey) {
+    var store = idb();
+    if (!store || !store.isSupported()) return null;
+    try {
+      var row = await store.get(store.evalKey(contextKey, unitId));
+      return row && row.data ? row.data : null;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  async function saveEvalToIdb(unitId, contextKey, data) {
+    var store = idb();
+    if (!store || !store.isSupported() || !data) return;
+    try {
+      await store.put(store.evalKey(contextKey, unitId), { data: data, at: Date.now() });
+    } catch (_) {}
+  }
+
+  function createWorkerPool(size, appVer) {
+    if (typeof Worker === 'undefined' || workerFallback) return null;
+    var workers = [];
+    var queue = [];
+    var jobSeq = 0;
+
+    function workerUrl() {
+      return '/static/js/msy_dc_worker.js?v=' + encodeURIComponent(appVer || '');
+    }
+
+    function attachWorker(w) {
+      w.onmessage = function (ev) {
+        var msg = ev.data || {};
+        if (msg.type === 'pong') {
+          if (w._current) {
+            var pingCb = w._current;
+            w._busy = false;
+            w._current = null;
+            if (msg.ready) pingCb.resolve(true);
+            else pingCb.reject(new Error(msg.error || 'worker boot failed'));
+          }
+          drain();
+          return;
+        }
+        w._busy = false;
+        if (w._current && w._current.jobId === msg.jobId) {
+          var cb = w._current;
+          w._current = null;
+          if (msg.error) cb.reject(new Error(msg.error));
+          else cb.resolve(msg.result);
+        }
+        drain();
+      };
+      w.onerror = function () {
+        w._busy = false;
+        if (w._current) {
+          w._current.reject(new Error('worker error'));
+          w._current = null;
+        }
+        drain();
+      };
+    }
+
+    function spawn() {
+      try {
+        var w = new Worker(workerUrl());
+        w._busy = false;
+        w._current = null;
+        attachWorker(w);
+        return w;
+      } catch (_) {
+        return null;
+      }
+    }
+
+    function drain() {
+      for (var i = 0; i < workers.length; i++) {
+        var w = workers[i];
+        if (w._busy || !queue.length) continue;
+        var job = queue.shift();
+        w._busy = true;
+        w._current = job;
+        w.postMessage(job.payload);
+      }
+    }
+
+    for (var i = 0; i < size; i++) {
+      var w = spawn();
+      if (w) workers.push(w);
+    }
+    if (!workers.length) return null;
+
+    return {
+      ready: Promise.all(workers.map(function (w) {
+        return new Promise(function (resolve) {
+          var jobId = 'ping-' + (++jobSeq);
+          var timer = setTimeout(function () { resolve(false); }, 8000);
+          w._busy = true;
+          w._current = {
+            jobId: jobId,
+            resolve: function () { clearTimeout(timer); w._busy = false; w._current = null; resolve(true); },
+            reject: function () { clearTimeout(timer); w._busy = false; w._current = null; resolve(false); }
+          };
+          w.postMessage({ type: 'ping', jobId: jobId });
+        });
+      })).then(function (flags) { return flags.some(Boolean); }),
+      evalUnit: function (payload) {
+        return new Promise(function (resolve, reject) {
+          var jobId = 'job-' + (++jobSeq);
+          queue.push({
+            jobId: jobId,
+            resolve: resolve,
+            reject: reject,
+            payload: Object.assign({ type: 'eval_unit', jobId: jobId }, payload)
+          });
+          drain();
+        });
+      },
+      destroy: function () {
+        workers.forEach(function (w) { try { w.terminate(); } catch (_) {} });
+        workers = [];
+        queue = [];
+      }
+    };
+  }
+
+  async function ensureWorkerPool(appVer) {
+    if (workerPool) return workerPool;
+    if (workerFallback || typeof Worker === 'undefined') return null;
+    workerPool = createWorkerPool(2, appVer);
+    if (!workerPool) {
+      workerFallback = true;
+      return null;
+    }
+    var ok = await workerPool.ready;
+    if (!ok) {
+      workerPool.destroy();
+      workerPool = null;
+      workerFallback = true;
+      return null;
+    }
+    return workerPool;
+  }
+
+  async function evalUnitMainThread(unitId, pilotIds, defTiers, opts) {
     var lang = opts.lang || (global.S && global.S.lang) || 'EN';
     var cpOn = opts.cpOn !== false;
     var pepOn = opts.pepOn !== false;
@@ -205,6 +432,57 @@
     }
   }
 
+  async function evalUnitWorker(pool, unitId, pilotIds, defTiers, opts) {
+    var lang = opts.lang || (global.S && global.S.lang) || 'EN';
+    var cpOn = opts.cpOn !== false;
+    var pepOn = opts.pepOn !== false;
+    var ud = await loadUnit(unitId, lang);
+    if (!ud || ud.error) return { error: ud && ud.error, unitId: unitId };
+    var pilots = {};
+    for (var i = 0; i < (pilotIds || []).length; i++) {
+      var cid = String(pilotIds[i]);
+      var cd = await loadChar(cid, lang);
+      if (cd && !cd.error) pilots[cid] = cd;
+    }
+    var pepState = pepOn ? await capturePepState(ud, true) : null;
+    var raw = await pool.evalUnit({
+      unitId: String(unitId),
+      unitData: ud,
+      pilotIds: (pilotIds || []).map(String),
+      pilots: pilots,
+      defTiers: defTiers,
+      cpOn: cpOn,
+      pepOn: pepOn,
+      pepState: pepState
+    });
+    return raw;
+  }
+
+  async function evalUnit(unitId, pilotIds, defTiers, opts) {
+    opts = opts || {};
+    var ctxKey = evalContextKey(opts);
+    var cached = await loadEvalFromIdb(unitId, ctxKey);
+    if (cached && cached.byTier) return cached;
+
+    var appVer = opts.appJsVersion || cacheVersion || '';
+    var pool = await ensureWorkerPool(appVer);
+    var raw = null;
+    if (pool) {
+      try {
+        raw = await evalUnitWorker(pool, unitId, pilotIds, defTiers, opts);
+      } catch (_) {
+        raw = null;
+      }
+    }
+    if (!raw || raw.error || !raw.byTier) {
+      raw = await evalUnitMainThread(unitId, pilotIds, defTiers, opts);
+    }
+    if (raw && raw.byTier) {
+      await saveEvalToIdb(unitId, ctxKey, raw);
+    }
+    return raw;
+  }
+
   function ensureReady() {
     if (typeof global.initDmgCalc === 'function') {
       if (!global.S || !global.S.dc || !global.S.dc.atkSlots) global.initDmgCalc();
@@ -219,12 +497,74 @@
   function clearCaches() {
     charCache = {};
     unitCache = {};
+    if (workerPool) {
+      workerPool.destroy();
+      workerPool = null;
+    }
+    workerFallback = false;
+  }
+
+  async function warmPilots(pilotIds, lang, concurrency) {
+    concurrency = concurrency || 12;
+    var ids = (pilotIds || []).filter(Boolean);
+    var missing = [];
+    var store = idb();
+    if (store && store.isSupported()) {
+      var keys = ids.map(function (id) { return store.charKey(id, lang); });
+      try {
+        var cachedMap = await store.getMany(keys);
+        var toPut = [];
+        ids.forEach(function (id) {
+          var memKey = String(id) + ':' + lang;
+          var row = cachedMap[store.charKey(id, lang)];
+          if (row && row.data) {
+            charCache[memKey] = row.data;
+          } else if (!charCache[memKey]) {
+            missing.push(String(id));
+          }
+        });
+        if (toPut.length) await store.putMany(toPut);
+      } catch (_) {
+        missing = ids.filter(function (id) {
+          return !charCache[String(id) + ':' + lang];
+        }).map(String);
+      }
+    } else {
+      missing = ids.filter(function (id) {
+        return !charCache[String(id) + ':' + lang];
+      }).map(String);
+    }
+    if (!missing.length) return;
+    var idx = 0;
+    var fetched = [];
+    async function worker() {
+      while (idx < missing.length) {
+        var my = idx++;
+        var cd = await loadChar(missing[my], lang);
+        if (cd && !cd.error) fetched.push(missing[my]);
+      }
+    }
+    var workers = [];
+    var n = Math.min(concurrency, missing.length);
+    for (var w = 0; w < n; w++) workers.push(worker());
+    await Promise.all(workers);
+    if (store && store.isSupported() && cacheVersion) {
+      try {
+        await store.put(store.pilotsWarmKey(lang, cacheVersion), {
+          pilotIds: ids.map(String),
+          at: Date.now()
+        });
+      } catch (_) {}
+    }
   }
 
   global.MsyDcEngine = {
     ensureReady: ensureReady,
+    ensureCacheVersion: ensureCacheVersion,
     evalUnit: evalUnit,
     clearCaches: clearCaches,
-    msyCharStatMode: msyCharStatMode
+    warmPilots: warmPilots,
+    msyCharStatMode: msyCharStatMode,
+    evalContextKey: evalContextKey
   };
 })(typeof window !== 'undefined' ? window : globalThis);

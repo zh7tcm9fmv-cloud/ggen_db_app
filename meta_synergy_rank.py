@@ -6,6 +6,7 @@ active skills, super vigor, NPC DEF tiers.
 from __future__ import annotations
 
 import gzip
+import hashlib
 import json
 import math
 import os
@@ -3058,6 +3059,36 @@ def _dc_pairs_from_json(raw):
     return out
 
 
+def _msy_dc_cache_version(lc):
+    """Version stamp for browser IndexedDB MSY cache invalidation."""
+    A = _app()
+    root = _msy_app_root()
+    parts = [
+        str(lc or 'EN'),
+        str(len(getattr(A, 'char_info_map', {}) or {})),
+        str(len(getattr(A, 'unit_info_map', {}) or {})),
+    ]
+    for rel in (
+        'static/js/app.js',
+        'static/js/msy_dc_engine.js',
+        'static/js/msy_dc_worker.js',
+        'static/js/msy_idb_cache.js',
+    ):
+        p = os.path.join(root, rel)
+        try:
+            st = os.stat(p)
+            parts.append(f'{rel}:{st.st_mtime_ns}:{st.st_size}')
+        except OSError:
+            parts.append(f'{rel}:0')
+    si = _msy_sort_index_path(lc)
+    try:
+        if os.path.isfile(si):
+            parts.append(str(os.stat(si).st_mtime_ns))
+    except OSError:
+        pass
+    return hashlib.sha256('|'.join(parts).encode('utf-8')).hexdigest()[:16]
+
+
 def dc_bootstrap_payload(kwargs):
     """Bootstrap data for in-browser MSY DC rankings."""
     lc = kwargs.get('lc', 'EN')
@@ -3078,7 +3109,9 @@ def dc_bootstrap_payload(kwargs):
         'engine': 'dc',
         'unit_ids': unit_ids,
         'total': len(unit_ids),
+        'pilot_ids': [str(x) for x in pilot_ids],
         'total_pilot_candidates': len(pilot_ids),
+        'cache_version': _msy_dc_cache_version(lc),
         'defender_tiers': defender_tiers_public(),
         'filtered_browse': browse_active,
         'def_tier': dt,
@@ -3123,6 +3156,26 @@ def dc_candidates_batch_payload(unit_ids, kwargs):
         row = dc_candidates_payload(uid, kwargs)
         out[uid] = row.get('pilot_ids') or []
     return {'candidates': out}
+
+
+def dc_page_shells_payload(unit_ids, kwargs):
+    """Instant index-only rows for a page of units (Soshage-style lazy fill)."""
+    lc = kwargs.get('lc', 'EN')
+    rank_mode = kwargs.get('rank_mode', 'super_crit') or 'super_crit'
+    def_tier = max(1, min(4, int(kwargs.get('def_tier') or 3)))
+    sort_index = _ensure_msy_sort_damage_index(lc)
+    groups = []
+    for raw_uid in unit_ids or []:
+        uid = _app().normalize_id(raw_uid)
+        if not uid:
+            continue
+        shell = _index_shell_group_for_uid(
+            uid, lc, kwargs, rank_mode, def_tier, sort_index=sort_index,
+        )
+        shell = dict(shell)
+        shell['pending'] = True
+        groups.append(shell)
+    return {'groups': groups}
 
 
 def dc_assemble_payload(unit_id, pairs_by_tier, kwargs, *, pairs_by_tier_no_cp=None):

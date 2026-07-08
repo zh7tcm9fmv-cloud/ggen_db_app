@@ -52,6 +52,8 @@ def _app_js_bundle_version_tag():
     assets = (
         ('js', 'app.js'),
         ('js', 'msy_dc_engine.js'),
+        ('js', 'msy_dc_worker.js'),
+        ('js', 'msy_idb_cache.js'),
         ('js', 'meta_synergy.js'),
         ('js', 'kofi_donate_promo.js'),
         ('css', 'kofi_donate_promo.css'),
@@ -94,7 +96,7 @@ def _apply_static_cache_headers(response):
     if not path.startswith('/static/'):
         return response
     ext = os.path.splitext(path)[1].lower()
-    if path.endswith('/js/app.js') or path.endswith('/js/meta_synergy.js') or path.endswith('/js/msy_dc_engine.js'):
+    if path.endswith('/js/app.js') or path.endswith('/js/meta_synergy.js') or path.endswith('/js/msy_dc_engine.js') or path.endswith('/js/msy_dc_worker.js') or path.endswith('/js/msy_idb_cache.js'):
         response.headers['Cache-Control'] = 'no-cache, must-revalidate'
         return response
     if ext not in _STATIC_CACHEABLE_EXT:
@@ -14030,6 +14032,27 @@ def api_meta_synergy_dc_candidates_batch():
         import traceback
         traceback.print_exc()
         return jsonify({'error': 'meta_synergy_dc_candidates_batch_failed', 'detail': str(e)}), 500
+
+
+@app.route('/api/meta_synergy_dc/page_shells', methods=['POST'])
+def api_meta_synergy_dc_page_shells():
+    """Index-only unit rows for a page (instant paint before DC eval)."""
+    import meta_synergy_rank as msr
+    body = request.get_json(silent=True) or {}
+    kwargs = msr._msy_dc_kwargs_from_request(request.args)
+    raw_ids = body.get('unit_ids') or body.get('unitIds') or []
+    unit_ids = [str(x).strip() for x in raw_ids if str(x).strip()][:50]
+    if not unit_ids:
+        return jsonify({'error': 'missing_unit_ids'}), 400
+    try:
+        payload = msr.dc_page_shells_payload(unit_ids, kwargs)
+        ck = f'msy_dc_shells_{kwargs["lc"]}_{hash(tuple(unit_ids)) & 0xffff:x}'
+        return jsonify_cacheable(payload, ck, public=True, max_age=600, convert_images=True)
+    except Exception as e:
+        print(f'api/meta_synergy_dc/page_shells failed: {e}')
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': 'meta_synergy_dc_page_shells_failed', 'detail': str(e)}), 500
 
 
 @app.route('/api/meta_synergy_dc/assemble', methods=['POST'])

@@ -36,9 +36,9 @@
     sameRoleOnly: false,
     cacheIncomplete: false,
     pageCache: {},
-    dcAllGroups: null,
     dcBootstrap: null,
     dcEvalCache: {},
+    dcShellCache: {},
     dcCandidatesCache: {},
     _dcEvalContextKey: '',
     _dcBrowseKey: '',
@@ -426,25 +426,30 @@
     });
   }
 
-  function applyDcPage(allGroups, bootstrap) {
-    var allowed = null;
-    if (bootstrap && bootstrap.unit_ids && bootstrap.unit_ids.length) {
-      allowed = {};
-      bootstrap.unit_ids.forEach(function (id) { allowed[String(id)] = true; });
-    }
-    var filtered = allowed
-      ? (allGroups || []).filter(function (g) {
-        return g && g.unit && allowed[String(g.unit.id)];
-      })
-      : (allGroups || []);
-    var sorted = sortDcGroups(filtered);
-    state.dcAllGroups = sorted;
-    state.dcBootstrap = bootstrap || state.dcBootstrap;
-    state.total = sorted.length;
-    state.totalPages = Math.max(1, Math.ceil(sorted.length / state.perPage));
+  function dcPageUnitIds(bootstrap, page) {
+    var unitIds = (bootstrap && bootstrap.unit_ids) || [];
+    var p = Math.max(1, page | 0);
+    var start = (p - 1) * state.perPage;
+    return unitIds.slice(start, start + state.perPage);
+  }
+
+  function applyDcPage(bootstrap) {
+    bootstrap = bootstrap || state.dcBootstrap;
+    if (!bootstrap || !bootstrap.unit_ids || !bootstrap.unit_ids.length) return;
+    var unitIds = bootstrap.unit_ids;
+    state.dcBootstrap = bootstrap;
+    state.total = unitIds.length;
+    state.totalPages = Math.max(1, Math.ceil(unitIds.length / state.perPage));
     state.page = Math.max(1, Math.min(state.page, state.totalPages));
-    var start = (state.page - 1) * state.perPage;
-    state.groups = sorted.slice(start, start + state.perPage);
+    var pageIds = dcPageUnitIds(bootstrap, state.page);
+    state.groups = pageIds.map(function (uid) {
+      var id = String(uid);
+      var ck = dcEvalCacheKey(id);
+      var cached = state.dcEvalCache[ck];
+      if (cached && cached.group) return cached.group;
+      if (state.dcShellCache[id]) return state.dcShellCache[id];
+      return { unit: { id: id }, index_only: true, pending: true, max_damage: 0 };
+    });
     state.filteredBrowse = !!(bootstrap && bootstrap.filtered_browse);
     state.settings = (bootstrap && bootstrap.settings) || state.settings;
     if (bootstrap && bootstrap.defender_tiers) {
@@ -454,6 +459,70 @@
     state.cacheKey = cacheKeyForState();
     state.cacheIncomplete = false;
     scheduleContentRender(true);
+  }
+
+  async function fetchPageShells(unitIds) {
+    var missing = (unitIds || []).filter(function (uid) {
+      var id = String(uid);
+      var ck = dcEvalCacheKey(id);
+      if (state.dcEvalCache[ck] && state.dcEvalCache[ck].group) return false;
+      return !state.dcShellCache[id];
+    });
+    if (!missing.length) return;
+    var res = await fetch('/api/meta_synergy_dc/page_shells?' + buildDcApiQuery(), {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ unit_ids: missing })
+    });
+    if (!res.ok) return;
+    var data = await res.json();
+    (data.groups || []).forEach(function (g) {
+      if (g && g.unit && g.unit.id != null) state.dcShellCache[String(g.unit.id)] = g;
+    });
+  }
+
+  async function reassemblePageFromCache(bootstrap) {
+    var pageIds = dcPageUnitIds(bootstrap || state.dcBootstrap, state.page);
+    for (var i = 0; i < pageIds.length; i++) {
+      var uid = String(pageIds[i]);
+      var cached = state.dcEvalCache[dcEvalCacheKey(uid)];
+      if (!cached || !cached.raw) continue;
+      var group = await assembleFromRaw(cached.unitId || uid, cached.raw, cached.rawNoCp);
+      if (group) cached.group = group;
+      if (i % 2 === 1) await idleYield();
+    }
+  }
+
+  async function evalPageUnits(unitIds, bootstrap, loadGen) {
+    if (!unitIds || !unitIds.length) return;
+    var todo = unitIds.filter(function (uid) {
+      var ck = dcEvalCacheKey(uid);
+      return !(state.dcEvalCache[ck] && state.dcEvalCache[ck].raw);
+    });
+    if (!todo.length) {
+      applyDcPage(bootstrap);
+      void fetchPilotSkillsBatch(state.groups);
+      return;
+    }
+    showWarmingBanner(true, t('msy_warming') || 'Computing rankings…');
+    await fetchCandidatesBatch(todo);
+    var done = 0;
+    for (var i = 0; i < todo.length; i++) {
+      if (loadGen !== state._loadGen) return;
+      var uid = todo[i];
+      var cacheKey = dcEvalCacheKey(uid);
+      var result = await evalUnitViaDc(uid, bootstrap, getCachedCandidates(uid));
+      if (result) state.dcEvalCache[cacheKey] = result;
+      done++;
+      applyDcPage(bootstrap);
+      showWarmingBanner(true, (t('msy_warming') || 'Computing rankings…') + ' ' + done + '/' + todo.length);
+      if (i + 5 < todo.length) void fetchCandidatesBatch(todo.slice(i + 1, i + 6));
+      await idleYield();
+    }
+    applyDcPage(bootstrap);
+    void fetchPilotSkillsBatch(state.groups);
+    showWarmingBanner(false);
   }
 
   function idleYield() {
@@ -595,11 +664,22 @@
     if (!pilotIds.length) return null;
     var pepOn = state.pilotCondPassiveOn;
     var cpOn = state.charCondPassiveOn;
-    var raw = await engine.evalUnit(unitId, pilotIds, defTiers, { lang: lang, cpOn: cpOn, pepOn: pepOn });
+    var evalOpts = {
+      lang: lang,
+      cpOn: cpOn,
+      pepOn: pepOn,
+      appJsVersion: (bootstrap && bootstrap.cache_version) || ''
+    };
+    var raw = await engine.evalUnit(unitId, pilotIds, defTiers, evalOpts);
     if (!raw || raw.error || !raw.byTier) return null;
     var rawNoCp = null;
     if (cpOn) {
-      rawNoCp = await engine.evalUnit(unitId, pilotIds, defTiers, { lang: lang, cpOn: false, pepOn: pepOn });
+      rawNoCp = await engine.evalUnit(unitId, pilotIds, defTiers, {
+        lang: lang,
+        cpOn: false,
+        pepOn: pepOn,
+        appJsVersion: evalOpts.appJsVersion
+      });
     }
     var group = await assembleFromRaw(unitId, raw, rawNoCp);
     if (!group) return null;
@@ -612,11 +692,13 @@
     var evalKey = dcEvalContextKey();
     if (state._dcEvalContextKey !== evalKey) {
       state.dcEvalCache = {};
+      state.dcShellCache = {};
       state._dcEvalContextKey = evalKey;
       if (typeof global.MsyDcEngine.clearCaches === 'function') global.MsyDcEngine.clearCaches();
     }
     if (state._dcBrowseKey !== browseKey) {
-      state._dcCandidatesCache = {};
+      state.dcCandidatesCache = {};
+      state.dcShellCache = {};
       state._dcBrowseKey = browseKey;
     }
     var bootstrapRes = await fetch(buildDcBootstrapUrl(), { credentials: 'same-origin' });
@@ -625,63 +707,26 @@
     if (loadGen !== state._loadGen) return;
     if (bootstrap.error) throw new Error(bootstrap.detail || bootstrap.error);
     state.dcBootstrap = bootstrap;
-    var unitIds = bootstrap.unit_ids || [];
-    var allowedSet = {};
-    unitIds.forEach(function (id) { allowedSet[String(id)] = true; });
-    var allGroups = [];
-    unitIds.forEach(function (uid) {
-      var ck = dcEvalCacheKey(uid);
-      var cached = state.dcEvalCache[ck];
-      if (cached && cached.group) allGroups = upsertDcGroup(allGroups, cached.group);
-    });
-    if (allGroups.length) applyDcPage(allGroups, bootstrap);
-    var priorityN = Math.min(unitIds.length, Math.max(state.perPage * 2, 20));
-    var orderedIds = unitIds.slice(0, priorityN).concat(unitIds.slice(priorityN));
-    var todoIds = orderedIds.filter(function (uid) {
-      var ck = dcEvalCacheKey(uid);
-      return !(state.dcEvalCache[ck] && state.dcEvalCache[ck].raw);
-    });
-    var done = unitIds.length - todoIds.length;
-    var total = unitIds.length;
-    var firstPageReady = allGroups.length >= Math.min(priorityN, state.perPage);
-    if (firstPageReady) {
-      setLoading(false, true);
-      void fetchPilotSkillsBatch(state.groups);
+    var lang = (global.S && global.S.lang) || 'EN';
+    if (bootstrap.cache_version && global.MsyDcEngine.ensureCacheVersion) {
+      await global.MsyDcEngine.ensureCacheVersion(bootstrap.cache_version);
     }
-    await fetchCandidatesBatch(orderedIds.slice(0, Math.min(orderedIds.length, 30)));
-    for (var i = 0; i < todoIds.length; i++) {
-      if (loadGen !== state._loadGen) return;
-      var uid = todoIds[i];
-      if (!allowedSet[String(uid)]) continue;
-      var cacheKey = dcEvalCacheKey(uid);
-      var result = await evalUnitViaDc(uid, bootstrap, getCachedCandidates(uid));
-      if (result) {
-        state.dcEvalCache[cacheKey] = result;
-        if (result.group) allGroups = upsertDcGroup(allGroups, result.group);
-      }
-      done++;
-      if (done % 2 === 0 || i === todoIds.length - 1) {
-        applyDcPage(allGroups, bootstrap);
-      }
-      if (!firstPageReady && done >= priorityN) {
-        firstPageReady = true;
-        setLoading(false, true);
-        void fetchPilotSkillsBatch(state.groups);
-      }
-      if (todoIds.length) {
-        showWarmingBanner(true, (t('msy_warming') || 'Computing rankings…') + ' ' + done + '/' + total);
-      }
-      if (i + 5 < todoIds.length) void fetchCandidatesBatch(todoIds.slice(i + 1, i + 6));
-      await idleYield();
-    }
-    applyDcPage(allGroups, bootstrap);
+    var pageIds = dcPageUnitIds(bootstrap, state.page);
+    await fetchPageShells(pageIds);
+    if (loadGen !== state._loadGen) return;
+    applyDcPage(bootstrap);
+    setLoading(false, true);
+    var warmPilots = (global.MsyDcEngine.warmPilots && bootstrap.pilot_ids)
+      ? global.MsyDcEngine.warmPilots(bootstrap.pilot_ids, lang)
+      : Promise.resolve();
+    await warmPilots;
+    if (loadGen !== state._loadGen) return;
+    await evalPageUnits(pageIds, bootstrap, loadGen);
     state.pageCache[cacheKeyBase()] = {
-      dcAllGroups: state.dcAllGroups,
       bootstrap: bootstrap,
-      dcEvalCache: state.dcEvalCache
+      dcEvalCache: state.dcEvalCache,
+      dcShellCache: state.dcShellCache
     };
-    void fetchPilotSkillsBatch(state.groups);
-    showWarmingBanner(false);
   }
 
   function tierCacheKey(defTier, rankMode) {
@@ -1520,13 +1565,17 @@
   async function loadRankings(force) {
     syncSearchFromDom();
     var dcKey = cacheKeyBase();
-    var dcCached = !force && state.pageCache[dcKey] && state.pageCache[dcKey].dcAllGroups;
+    var dcCached = !force && state.pageCache[dcKey] && state.pageCache[dcKey].bootstrap;
     if (dcCached) {
-      state.dcAllGroups = state.pageCache[dcKey].dcAllGroups;
       state.dcBootstrap = state.pageCache[dcKey].bootstrap;
       if (state.pageCache[dcKey].dcEvalCache) state.dcEvalCache = state.pageCache[dcKey].dcEvalCache;
-      applyDcPage(state.dcAllGroups, state.dcBootstrap);
-      void fetchPilotSkillsBatch(state.groups);
+      if (state.pageCache[dcKey].dcShellCache) state.dcShellCache = state.pageCache[dcKey].dcShellCache;
+      var pageIds = dcPageUnitIds(state.dcBootstrap, state.page);
+      void fetchPageShells(pageIds).then(function () {
+        applyDcPage(state.dcBootstrap);
+        void fetchPilotSkillsBatch(state.groups);
+        void evalPageUnits(pageIds, state.dcBootstrap, state._loadGen);
+      });
       return;
     }
     if (state._fetchCtrl) {
@@ -1538,7 +1587,8 @@
     clearTimeout(state._skillsRenderTimer);
     state._contentRenderTimer = null;
     state._skillsRenderTimer = null;
-    state.dcAllGroups = null;
+    state.dcBootstrap = null;
+    state.dcShellCache = {};
     state.groups = [];
     state.total = 0;
     state.totalPages = 1;
@@ -1550,7 +1600,8 @@
     } catch (e) {
       if (e && e.name === 'AbortError') return;
       state.groups = [];
-      state.dcAllGroups = null;
+      state.dcBootstrap = null;
+    state.dcShellCache = {};
       var host = document.getElementById('msyContent');
       if (host) {
         host.innerHTML = '<div class="msy-error">' + esc(String(e)) + '</div>';
@@ -1596,8 +1647,14 @@
     state.rankMode = modeId;
     renderRankModes();
     state.page = 1;
-    if (state.dcAllGroups && state.dcAllGroups.length) {
-      applyDcPage(state.dcAllGroups, state.dcBootstrap);
+    if (state.dcBootstrap) {
+      var pageIds = dcPageUnitIds(state.dcBootstrap, state.page);
+      pageIds.forEach(function (uid) { delete state.dcShellCache[String(uid)]; });
+      void reassemblePageFromCache(state.dcBootstrap).then(function () {
+        return fetchPageShells(pageIds);
+      }).then(function () {
+        applyDcPage(state.dcBootstrap);
+      });
       return;
     }
     state.cacheKey = null;
@@ -1717,8 +1774,12 @@
     var next = Math.max(1, Math.min(totalPages, p | 0));
     if (next === state.page && state.groups.length && !state.loading) return;
     state.page = next;
-    if (state.dcAllGroups && state.dcAllGroups.length) {
-      applyDcPage(state.dcAllGroups, state.dcBootstrap);
+    if (state.dcBootstrap) {
+      var pageIds = dcPageUnitIds(state.dcBootstrap, next);
+      void fetchPageShells(pageIds).then(function () {
+        applyDcPage(state.dcBootstrap);
+        void evalPageUnits(pageIds, state.dcBootstrap, state._loadGen);
+      });
       try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (_) { window.scrollTo(0, 0); }
       return;
     }
@@ -1739,8 +1800,12 @@
     syncPerPageToDom();
     try { localStorage.setItem(MSY_PER_PAGE_STORAGE_KEY, String(n)); } catch (_) {}
     state.page = 1;
-    if (state.dcAllGroups && state.dcAllGroups.length) {
-      applyDcPage(state.dcAllGroups, state.dcBootstrap);
+    if (state.dcBootstrap) {
+      var perPageIds = dcPageUnitIds(state.dcBootstrap, 1);
+      void fetchPageShells(perPageIds).then(function () {
+        applyDcPage(state.dcBootstrap);
+        void evalPageUnits(perPageIds, state.dcBootstrap, state._loadGen);
+      });
       return;
     }
     state.cacheKey = null;
@@ -1780,8 +1845,12 @@
         if (state.dcEvalCache && Object.keys(state.dcEvalCache).length) {
           setLoading(true, true);
           showWarmingBanner(true, t('msy_warming') || 'Updating defender tier…');
-          void reassembleAllFromCache().then(function (groups) {
-            applyDcPage(groups, state.dcBootstrap);
+          var tierPageIds = dcPageUnitIds(state.dcBootstrap, state.page);
+          tierPageIds.forEach(function (uid) { delete state.dcShellCache[String(uid)]; });
+          void reassemblePageFromCache(state.dcBootstrap).then(function () {
+            return fetchPageShells(tierPageIds);
+          }).then(function () {
+            applyDcPage(state.dcBootstrap);
             void fetchPilotSkillsBatch(state.groups);
             setLoading(false, false);
             showWarmingBanner(false);
