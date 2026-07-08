@@ -518,5 +518,77 @@
     "TraitSetId": 510023001,
     "BuffTypeIndex": 4,
     "TargetTypes": ""
+  },
+  {
+    "Id": 99000113001,
+    "RangeMin": 1,
+    "RangeMax": 78,
+    "TraitSetId": 612090101,
+    "BuffTypeIndex": 0,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 99000113002,
+    "RangeMin": 1,
+    "RangeMax": 78,
+    "TraitSetId": 612090102,
+    "BuffTypeIndex": 0,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 99000113003,
+    "RangeMin": 1,
+    "RangeMax": 78,
+    "TraitSetId": 612090103,
+    "BuffTypeIndex": 0,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 99000113004,
+    "RangeMin": 1,
+    "RangeMax": 78,
+    "TraitSetId": 612090104,
+    "BuffTypeIndex": 0,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 99000113005,
+    "RangeMin": 1,
+    "RangeMax": 78,
+    "TraitSetId": 612090105,
+    "BuffTypeIndex": 0,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 99000113006,
+    "RangeMin": 1,
+    "RangeMax": 78,
+    "TraitSetId": 612090106,
+    "BuffTypeIndex": 0,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 99000113007,
+    "RangeMin": 1,
+    "RangeMax": 78,
+    "TraitSetId": 612090107,
+    "BuffTypeIndex": 0,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 99000113008,
+    "RangeMin": 1,
+    "RangeMax": 78,
+    "TraitSetId": 612090108,
+    "BuffTypeIndex": 0,
+    "TargetTypes": ""
+  },
+  {
+    "Id": 99000113009,
+    "RangeMin": 1,
+    "RangeMax": 78,
+    "TraitSetId": 612090109,
+    "BuffTypeIndex": 0,
+    "TargetTypes": ""
   }
 ]

@@ -13536,6 +13536,30 @@
     "value": "You're no Newtype!"
   },
   {
+    "id": 140100000612010101,
+    "value": "(Character conditions) Increased ATK"
+  },
+  {
+    "id": 140100000612020100,
+    "value": "(Character conditions) Increased ATK & DEF"
+  },
+  {
+    "id": 140100000612020101,
+    "value": "(Character conditions) Increased ATK & DEF"
+  },
+  {
+    "id": 140100000612020110,
+    "value": ""
+  },
+  {
+    "id": 140100000612030101,
+    "value": "(Character conditions) Increased DEF"
+  },
+  {
+    "id": 140100000612040101,
+    "value": "(Character conditions) Increased ATK & DEF"
+  },
+  {
     "id": 140100000612050101,
     "value": "How dare you deny that I am a true Newtype!"
   },
@@ -13550,6 +13574,46 @@
   {
     "id": 140100000612080101,
     "value": "You're just the warrior I knew you were!"
+  },
+  {
+    "id": 140100000612090101,
+    "value": "RX-78-3"
+  },
+  {
+    "id": 140100000612090102,
+    "value": "RX-78/C.A."
+  },
+  {
+    "id": 140100000612090103,
+    "value": "RX-78GP03S"
+  },
+  {
+    "id": 140100000612090104,
+    "value": "RX-78-1"
+  },
+  {
+    "id": 140100000612090105,
+    "value": "RX-78AL"
+  },
+  {
+    "id": 140100000612090106,
+    "value": "RX-78NT-1"
+  },
+  {
+    "id": 140100000612090107,
+    "value": "RX-78GP01Fb"
+  },
+  {
+    "id": 140100000612090108,
+    "value": "RX-78GP02A"
+  },
+  {
+    "id": 140100000612090109,
+    "value": "RX-78GP00"
+  },
+  {
+    "id": 140100000612090110,
+    "value": "Newtype LV 2"
   },
   {
     "id": 140100000612100101,

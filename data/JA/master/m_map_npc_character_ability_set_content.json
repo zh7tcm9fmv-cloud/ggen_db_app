@@ -2205,6 +2205,11 @@
     "AbilityId": 2000101
   },
   {
+    "MapNpcCharacterAbilitySetId": 19900131001001801,
+    "SortOrder": 1,
+    "AbilityId": 6120211
+  },
+  {
     "MapNpcCharacterAbilitySetId": 19999011501000101,
     "SortOrder": 1,
     "AbilityId": 2000204
@@ -15823,6 +15828,11 @@
     "MapNpcCharacterAbilitySetId": 29900012999000101,
     "SortOrder": 1,
     "AbilityId": 5105601
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29900131001001701,
+    "SortOrder": 1,
+    "AbilityId": 6120201
   },
   {
     "MapNpcCharacterAbilitySetId": 90110101108000011,

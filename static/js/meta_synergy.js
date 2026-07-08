@@ -369,7 +369,11 @@
     if (!state.charCondPassiveOn) q.push('cp_on=0');
     if (!state.pilotCondPassiveOn) q.push('pep_on=0');
     if (opts.summary) q.push('summary=1');
-    if (opts.pilotBuild != null) q.push('pilot_build=' + encodeURIComponent(String(opts.pilotBuild)));
+    if (opts.pilotBuild != null) {
+      q.push('pilot_build=' + encodeURIComponent(String(opts.pilotBuild)));
+      var ru = readyUnitsParam();
+      if (ru) q.push('ready_units=' + encodeURIComponent(ru));
+    }
     if (fq) q.push(fq);
     return '/api/meta_synergy_rankings?' + q.join('&');
   }
@@ -1130,8 +1134,14 @@
   var MAX_LOAD_POLLS = 4;
   var MSY_SUMMARY_FETCH_MS = 8000;
   var MSY_PILOT_FETCH_MS = 45000;
-  var MSY_PILOT_BUILD_PER_POLL = 2;
-  var MSY_MAX_PILOT_POLLS = 12;
+  var MSY_PILOT_BUILD_PER_POLL = 1;
+  var MSY_MAX_PILOT_POLLS = 24;
+
+  function readyUnitsParam() {
+    return (state.groups || []).filter(function (g) {
+      return g && g.unit && g.unit.id != null && !groupNeedsPilotBuild(g);
+    }).map(function (g) { return String(g.unit.id); }).join(',');
+  }
 
   function hasPreviewPilotGroups() {
     return (state.groups || []).some(function (g) {
@@ -1236,7 +1246,9 @@
         }
       } catch (sumErr) {
         clearTimeout(sumTimeoutId);
-        if (sumErr && sumErr.name === 'AbortError') return;
+        if (sumErr && sumErr.name === 'AbortError') {
+          if (loadGen !== state._loadGen) return;
+        }
       }
 
       if (browseFiltered) {

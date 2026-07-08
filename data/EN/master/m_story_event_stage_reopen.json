@@ -1,5 +1,117 @@
 [
   {
+    "StageId": 1700101,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 1700102,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 1700103,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 1700104,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 1700201,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 1700202,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 1700203,
+    "ReleaseConditionReopenStageId": 1700103
+  },
+  {
+    "StageId": 1700204,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 1700301,
+    "ReleaseConditionReopenStageId": 1700203
+  },
+  {
+    "StageId": 1700401,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 1700402,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 1700403,
+    "ReleaseConditionReopenStageId": 1700301
+  },
+  {
+    "StageId": 1700404,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 1700501,
+    "ReleaseConditionReopenStageId": 1700403
+  },
+  {
+    "StageId": 1700601,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 1700602,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 1700603,
+    "ReleaseConditionReopenStageId": 1700501
+  },
+  {
+    "StageId": 1700604,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 1700605,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 1700701,
+    "ReleaseConditionReopenStageId": 1700603
+  },
+  {
+    "StageId": 1700801,
+    "ReleaseConditionReopenStageId": 1700701
+  },
+  {
+    "StageId": 1700901,
+    "ReleaseConditionReopenStageId": 1700801
+  },
+  {
+    "StageId": 1705001,
+    "ReleaseConditionReopenStageId": 1700603
+  },
+  {
+    "StageId": 1705002,
+    "ReleaseConditionReopenStageId": 1706001
+  },
+  {
+    "StageId": 1705003,
+    "ReleaseConditionReopenStageId": 1706002
+  },
+  {
+    "StageId": 1706001,
+    "ReleaseConditionReopenStageId": 1705001
+  },
+  {
+    "StageId": 1706002,
+    "ReleaseConditionReopenStageId": 1705002
+  },
+  {
+    "StageId": 1706003,
+    "ReleaseConditionReopenStageId": 1705003
+  },
+  {
     "StageId": 2200101,
     "ReleaseConditionReopenStageId": 0
   },
@@ -562,6 +674,154 @@
   {
     "StageId": 30506003,
     "ReleaseConditionReopenStageId": 30505003
+  },
+  {
+    "StageId": 30800101,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 30800102,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 30800103,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 30800201,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 30800202,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 30800203,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 30800204,
+    "ReleaseConditionReopenStageId": 30800103
+  },
+  {
+    "StageId": 30800301,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 30800302,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 30800303,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 30800304,
+    "ReleaseConditionReopenStageId": 30800204
+  },
+  {
+    "StageId": 30800401,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 30800402,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 30800403,
+    "ReleaseConditionReopenStageId": 30800304
+  },
+  {
+    "StageId": 30800501,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 30800502,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 30800503,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 30800504,
+    "ReleaseConditionReopenStageId": 30800403
+  },
+  {
+    "StageId": 30800505,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 30800601,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 30800602,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 30800603,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 30800604,
+    "ReleaseConditionReopenStageId": 30800504
+  },
+  {
+    "StageId": 30800701,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 30800702,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 30800703,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 30800704,
+    "ReleaseConditionReopenStageId": 30800604
+  },
+  {
+    "StageId": 30800705,
+    "ReleaseConditionReopenStageId": 0
+  },
+  {
+    "StageId": 30800801,
+    "ReleaseConditionReopenStageId": 30800704
+  },
+  {
+    "StageId": 30800901,
+    "ReleaseConditionReopenStageId": 30800801
+  },
+  {
+    "StageId": 30801001,
+    "ReleaseConditionReopenStageId": 30800901
+  },
+  {
+    "StageId": 30805001,
+    "ReleaseConditionReopenStageId": 30800704
+  },
+  {
+    "StageId": 30805002,
+    "ReleaseConditionReopenStageId": 30806001
+  },
+  {
+    "StageId": 30805003,
+    "ReleaseConditionReopenStageId": 30806002
+  },
+  {
+    "StageId": 30806001,
+    "ReleaseConditionReopenStageId": 30805001
+  },
+  {
+    "StageId": 30806002,
+    "ReleaseConditionReopenStageId": 30805002
+  },
+  {
+    "StageId": 30806003,
+    "ReleaseConditionReopenStageId": 30805003
   },
   {
     "StageId": 43100101,

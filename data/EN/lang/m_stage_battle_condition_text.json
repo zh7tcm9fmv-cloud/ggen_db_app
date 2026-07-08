@@ -9510,5 +9510,13 @@
   {
     "id": 131000000000000102,
     "value": "Defeat all enemy units."
+  },
+  {
+    "id": 1303000009900011301,
+    "value": "Defeat Amuro Ray."
+  },
+  {
+    "id": 1303000009900011304,
+    "value": "All of your units defeated. / Limit: 5 turns.\nGuest force Char Aznable defeated."
   }
 ]

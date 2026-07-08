@@ -49,6 +49,13 @@
     "PromotionTextLanguageId": 310100000000220001
   },
   {
+    "EventId": 220009,
+    "GroupId": 220009,
+    "ResourceId": "sp_stage_event_top_220001",
+    "BackgroundResourceId": "sp_stage_event_bg_220001",
+    "PromotionTextLanguageId": 310100000000220001
+  },
+  {
     "EventId": 220010,
     "GroupId": 220010,
     "ResourceId": "sp_stage_event_top_220010",

@@ -12000,6 +12000,18 @@
     "AbilityFrameTypeIndex": 1
   },
   {
+    "Id": 6120201,
+    "ResourceId": "trait_11860100",
+    "TraitSetId": 612020100,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6120211,
+    "ResourceId": "trait_10110102",
+    "TraitSetId": 612090110,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
     "Id": 6120501,
     "ResourceId": "trait_11810100",
     "TraitSetId": 612050101,

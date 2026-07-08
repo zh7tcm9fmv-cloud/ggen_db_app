@@ -430,7 +430,7 @@ if IS_LOCAL:
         'HK': {
             'root': r"C:\Users\Mikew0911\Desktop\GGen_HK",
             'master_prefix': "MasterData_",
-            'lang_prefix': "Lang_MasterData_HK_"
+            'lang_prefix': "Lang_MasterData_"
         },
         'JA': {
             'root': r"C:\Users\Mikew0911\Desktop\GGen_JA",
@@ -656,7 +656,7 @@ if 'HK' in LANG_PATHS and 'TW' in LANG_PATHS:
         base_ok = hk_base and os.path.isdir(hk_base)
         if not lang_ok or not base_ok:
             LANG_PATHS['HK'] = {'base': twp.get('base'), 'lang': twp.get('lang')}
-            print("  HK: GGen_HK or Lang_MasterData_HK_* missing; using TW client data.")
+            print("  HK: GGen_HK or Lang_MasterData_* missing; using TW client data.")
 
 BASE_DIR = LANG_PATHS['EN']['base']
 if BASE_DIR is None:
@@ -13899,6 +13899,7 @@ def api_meta_synergy_rankings():
     summary = request.args.get('summary', '0') in ('1', 'true', 'yes')
     pilot_build_raw = request.args.get('pilot_build', '').strip()
     pilot_build = int(pilot_build_raw) if pilot_build_raw.isdigit() else None
+    ready_units = request.args.get('ready_units', '').strip() or None
     full = request.args.get('full', '0') in ('1', 'true', 'yes')
     same_role_only = request.args.get('same_role_only', '0') in ('1', 'true', 'yes')
     cp_on = request.args.get('cp_on', '1') not in ('0', 'false', 'no', '')
@@ -13941,6 +13942,7 @@ def api_meta_synergy_rankings():
             include_skills=include_skills,
             summary=summary,
             pilot_build=pilot_build,
+            ready_units=ready_units,
             same_role_only=same_role_only,
             cp_on=cp_on,
             pep_on=pep_on,

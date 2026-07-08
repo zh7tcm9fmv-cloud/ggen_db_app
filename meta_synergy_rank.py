@@ -12,7 +12,7 @@ import os
 import re
 import threading
 import time
-from concurrent.futures import ThreadPoolExecutor, as_completed
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from functools import lru_cache
 
 _VIGOR = {
@@ -25,6 +25,8 @@ _VIGOR = {
 _CRIT125_TRIM_MIN = 356500
 _CRIT125_TRIM_DIV = 1181
 _DEF_DEBUFF_CAP = 40
+# Match Damage Simulator: DC_QUB_PLUS_ONE=false in static/js/app.js (disabled pending re-audit).
+_MSY_QUB_PLUS_ONE = os.environ.get('MSY_QUB_PLUS_ONE', '').strip().lower() in ('1', 'true', 'yes')
 
 _DMG_DEALT_RE = re.compile(
     r'[Ii]ncrease\s+(?:own\s+)?damage\s+dealt(?:\s+to\s+(?:the\s+)?enem(?:y|ies))?\s+(?:with\s+.+?\s+)?by\s+(\d+)%|'
@@ -120,13 +122,23 @@ def _calc_lang_data():
     return _app().get_calc_lang_data()
 
 
-def _unit_stat_mode(ri):
+def _unit_stat_mode(ri, *, wid=None, wm=None):
+    """Unit stat column: SSP when ranked weapon is SSP; else ssp/sp/normal by rarity."""
     ri = str(ri or '1')
+    if wid and _weapon_is_ssp_weapon(wid, wm):
+        return 'ssp'
     if ri == '5':
         return 'ssp'
     if ri == '4':
         return 'sp'
     return 'normal'
+
+
+def _weapon_is_ssp_weapon(wid, wm=None):
+    """Custom Core SSP weapons (ids ending in 80/90) — matches API is_ssp_weapon."""
+    del wm
+    wid = _app().normalize_id(wid)
+    return wid.endswith('90') or wid.endswith('80')
 
 
 def _sim_def_after_debuff(total_def, bonus_def, pct):
@@ -143,7 +155,7 @@ def _sim_def_after_debuff(total_def, bonus_def, pct):
 def _sim_combat_weapon_power(nominal, def_debuff_pct):
     n = int(nominal) or 0
     p = int(def_debuff_pct) or 0
-    if p <= 35:
+    if not _MSY_QUB_PLUS_ONE or p <= 35:
         return n
     return n + 1
 
@@ -1492,9 +1504,12 @@ def _weapon_entry_power(ws):
 
 def _best_ranking_weapon(uid, stat_mode, lc):
     """Highest computed-power non-map weapon (active + normal), matching Damage Simulator."""
+    del stat_mode  # per-weapon stat mode (SSP when weapon is SSP)
     A = _app()
     ldc = _ldc(lc)
     uid = A.normalize_id(uid)
+    info = A.unit_info_map.get(uid) or {}
+    ri = str(info.get('rarity', '1'))
     wtm = ldc.get('weapon_trait_map', {}) or {}
     wcm = ldc.get('weapon_capability_map', {}) or {}
     wtdm = ldc.get('weapon_trait_detail_map', {}) or {}
@@ -1506,6 +1521,7 @@ def _best_ranking_weapon(uid, stat_mode, lc):
         wt = str(wm.get('weapon_type', '1') or '1')
         if wt == '3':
             continue
+        sm = _unit_stat_mode(ri, wid=wid, wm=wm)
         try:
             ws = A.resolve_weapon_stats(
                 wm, A.weapon_status_map, A.weapon_correction_map,
@@ -1514,8 +1530,8 @@ def _best_ranking_weapon(uid, stat_mode, lc):
             )
         except Exception:
             continue
-        lv_idx = _best_weapon_level_index(ws, wm, uid, ldc, lc, stat_mode)
-        power = _computed_weapon_power_at_level(ws, wm, uid, ldc, lc, stat_mode, lv_idx)
+        lv_idx = _best_weapon_level_index(ws, wm, uid, ldc, lc, sm)
+        power = _computed_weapon_power_at_level(ws, wm, uid, ldc, lc, sm, lv_idx)
         if power <= 0:
             continue
         lv_row = _weapon_level_row(ws, lv_idx)
@@ -1526,6 +1542,7 @@ def _best_ranking_weapon(uid, stat_mode, lc):
                 'wpn_lv': lv_idx,
                 'base_crit': int(lv_row.get('critical', 0) or 0),
                 'attr': wm.get('attack_attribute', '1'), 'weapon_type': wt,
+                'stat_mode': sm,
             }
     return best
 
@@ -1561,11 +1578,14 @@ _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
 SHINN_EX_CHAR_ID = '1330000103'
 _MSY_BUILD_WORKERS = max(1, min(8, int(os.environ.get('MSY_BUILD_WORKERS', '6') or '6')))
-_MSY_PAGE_BUILD_LIMIT = max(0, min(40, int(os.environ.get('MSY_PAGE_BUILD_LIMIT', '40') or '40')))
+_MSY_USE_PROCESS_BUILD = os.environ.get('MSY_USE_PROCESS_BUILD', '').strip().lower() in ('1', 'true', 'yes')
+_MSY_PUBLISH_PILOT_CAP = max(32, min(128, int(os.environ.get('MSY_PUBLISH_PILOT_CAP', '64') or '64')))
+_BUILD_POOL_CTX = {}
+_MSY_PAGE_BUILD_LIMIT = max(0, min(40, int(os.environ.get('MSY_PAGE_BUILD_LIMIT', '0') or '0')))
 _MSY_PAGE_BUILD_BUDGET_SEC = max(5.0, min(60.0, float(os.environ.get('MSY_PAGE_BUILD_BUDGET_SEC', '18') or '18')))
 _MSY_BROWSE_BUILD_BUDGET_SEC = max(1.0, min(45.0, float(os.environ.get('MSY_BROWSE_BUILD_BUDGET_SEC', '14') or '14')))
 _MSY_BROWSE_PAGE_BUILD_LIMIT = max(0, min(20, int(os.environ.get('MSY_BROWSE_PAGE_BUILD_LIMIT', '12') or '12')))
-_MSY_PILOT_BUILD_PER_REQUEST = max(1, min(4, int(os.environ.get('MSY_PILOT_BUILD_PER_REQUEST', '2') or '2')))
+_MSY_PILOT_BUILD_PER_REQUEST = max(1, min(4, int(os.environ.get('MSY_PILOT_BUILD_PER_REQUEST', '1') or '1')))
 _MSY_LITE_PILOT_NEED = max(6, min(16, int(os.environ.get('MSY_LITE_PILOT_NEED', '8') or '8')))
 _MSY_LITE_PILOT_CAP = max(6, min(20, int(os.environ.get('MSY_LITE_PILOT_CAP', '8') or '8')))
 _MSY_LITE_NON_UR_RESERVE = max(2, min(6, int(os.environ.get('MSY_LITE_NON_UR_RESERVE', '4') or '4')))
@@ -1752,9 +1772,10 @@ def _save_master_to_disk(cache_key, result):
 
 
 def _cached_best_ex_weapon(uid, stat_mode, lc):
-    key = (str(uid), str(stat_mode), str(lc))
+    del stat_mode  # weapon pick derives per-weapon stat mode internally
+    key = (str(uid), str(lc))
     if key not in _unit_weapon_cache:
-        _unit_weapon_cache[key] = _best_ex_weapon(uid, stat_mode, lc)
+        _unit_weapon_cache[key] = _best_ex_weapon(uid, None, lc)
     return _unit_weapon_cache[key]
 
 
@@ -1780,12 +1801,14 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
     if not info:
         return None
     ri = str(info.get('rarity', '1'))
-    stat_mode = _unit_stat_mode(ri)
     ldc = _ldc(lc)
     if wpn is None:
-        wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
+        wpn = _cached_best_ex_weapon(uid, None, lc)
     if not wpn or wpn['power'] <= 0:
         return None
+    stat_mode = wpn.get('stat_mode') or _unit_stat_mode(
+        ri, wid=wpn.get('wid'), wm=wpn.get('wm'),
+    )
 
     def_total, defender_char_def, def_label = _resolve_defender_stats(
         def_tier, def_unit_override=def_unit_override, def_char_override=def_char_override,
@@ -2512,13 +2535,14 @@ def _rankings_variant_for_tier_lite(filter_fn, active_pilots, all_pairs, top_pil
 
 def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclude, top_pilots, metric, *,
                              def_unit_override=None, def_char_override=None, def_tiers=None, lite=False,
-                             rank_mode='super_crit', same_role_only=False, browse_fast=False):
+                             rank_mode='super_crit', same_role_only=False, browse_fast=False,
+                             publish_build=False):
     A = _app()
     info = A.unit_info_map.get(uid) or {}
-    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
-    unit_wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
+    unit_wpn = _cached_best_ex_weapon(uid, None, lc)
     if not unit_wpn:
         return None
+    stat_mode = unit_wpn.get('stat_mode') or _unit_stat_mode(str(info.get('rarity', '1')))
 
     active_pilots = _eligible_pilots_for_unit(uid, pilot_ids, exclude, same_role_only=same_role_only)
     if not active_pilots:
@@ -2527,7 +2551,12 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
     need = max(_TOP_PILOTS_PREFILTER, int(top_pilots or 10) + 8)
     if lite:
         need = max(int(top_pilots or 10) + 4, _MSY_LITE_PILOT_NEED)
-    pilot_cap = _MSY_LITE_PILOT_CAP if lite else _FULL_SIM_PILOT_CAP
+    if publish_build:
+        pilot_cap = _MSY_PUBLISH_PILOT_CAP
+    elif lite:
+        pilot_cap = _MSY_LITE_PILOT_CAP
+    else:
+        pilot_cap = _FULL_SIM_PILOT_CAP
     if lite:
         candidates = _lite_candidates_for_unit(
             uid, active_pilots, need, info, unit_wpn, stat_mode, lc,
@@ -2629,11 +2658,28 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
             rk = _rankings_from_multi_vigor_pairs(pairs, top_pilots, lc)
             if rk:
                 rankings_by_tier[int(dt)] = rk
-                rankings_no_ur_by_tier[int(dt)] = _rankings_no_ur_for_tier(dt, pairs)
-                rankings_no_shinn_by_tier[int(dt)] = _rankings_no_shinn_for_tier(dt, pairs)
-                rankings_no_gc_by_tier[int(dt)] = _rankings_no_gc_for_tier(dt, pairs)
-                rankings_no_cp_by_tier[int(dt)] = _rankings_no_cp_for_tier(dt, pairs)
-                rankings_no_pep_by_tier[int(dt)] = _rankings_no_pep_for_tier(dt, pairs)
+                if publish_build:
+                    rankings_no_ur_by_tier[int(dt)] = _rankings_no_ur_pool_lite(
+                        uid, active_pilots, top_pilots, lc, lb_tier, dt, unit_wpn,
+                        need, info, stat_mode, def_unit_override=def_unit_override,
+                        def_char_override=def_char_override, rank_mode=rank_mode,
+                    )
+                    rankings_no_cp_by_tier[int(dt)] = _rankings_no_cp_for_tier_lite(
+                        dt, pairs, top_pilots, uid, lc, lb_tier, unit_wpn,
+                        def_unit_override=def_unit_override, def_char_override=def_char_override,
+                        rank_mode=rank_mode,
+                    )
+                    rankings_no_pep_by_tier[int(dt)] = _rankings_no_pep_for_tier_lite(
+                        dt, pairs, top_pilots, uid, lc, lb_tier, unit_wpn,
+                        def_unit_override=def_unit_override, def_char_override=def_char_override,
+                        rank_mode=rank_mode,
+                    )
+                else:
+                    rankings_no_ur_by_tier[int(dt)] = _rankings_no_ur_for_tier(dt, pairs)
+                    rankings_no_shinn_by_tier[int(dt)] = _rankings_no_shinn_for_tier(dt, pairs)
+                    rankings_no_gc_by_tier[int(dt)] = _rankings_no_gc_for_tier(dt, pairs)
+                    rankings_no_cp_by_tier[int(dt)] = _rankings_no_cp_for_tier(dt, pairs)
+                    rankings_no_pep_by_tier[int(dt)] = _rankings_no_pep_for_tier(dt, pairs)
         if not rankings_by_tier:
             return None
         dt_primary = int(def_tier) if int(def_tier) in rankings_by_tier else next(iter(rankings_by_tier))
@@ -2918,25 +2964,84 @@ def dc_candidate_pilots_for_unit(uid, pilot_ids, exclude, lc):
     return [cid for _, cid in cheap_scored[:need]]
 
 
+def _msy_build_worker_init(ctx):
+    """Load app once per process worker (Windows spawn-safe)."""
+    os.environ.setdefault('MSY_ALLOW_PYTHON_BUILD', '1')
+    import app  # noqa: F401
+    global _BUILD_POOL_CTX
+    _BUILD_POOL_CTX = ctx
+
+
+def _msy_build_worker_unit(uid):
+    ctx = _BUILD_POOL_CTX
+    return _build_single_unit_group(
+        uid, ctx['pilot_ids'], ctx['lc'], ctx['lb_tier'], 'super', 1,
+        ctx['exclude'], ctx['top_pilots'], 'super_crit',
+        def_unit_override=ctx.get('def_unit_override'),
+        def_char_override=ctx.get('def_char_override'),
+        def_tiers=ctx.get('def_tiers'),
+        publish_build=bool(ctx.get('publish_build')),
+    )
+
+
 def _build_all_unit_groups(unit_ids, pilot_ids, lc, lb_tier, vigor, def_tier, exclude, top_pilots, metric, *,
                              def_unit_override=None, def_char_override=None, def_tiers=None,
-                             on_progress=None):
+                             on_progress=None, publish_build=False, use_processes=None):
     if not unit_ids:
         return []
     groups = []
+    use_proc = _MSY_USE_PROCESS_BUILD if use_processes is None else bool(use_processes)
     workers = min(_MSY_BUILD_WORKERS, max(1, len(unit_ids)))
+    build_kw = dict(
+        pilot_ids=pilot_ids, lc=lc, lb_tier=lb_tier, exclude=exclude, top_pilots=top_pilots,
+        def_unit_override=def_unit_override, def_char_override=def_char_override,
+        def_tiers=def_tiers, publish_build=publish_build,
+    )
+
+    def _maybe_progress():
+        if on_progress and groups:
+            on_progress(list(groups))
+
+    if use_proc and workers > 1:
+        ctx = {
+            'pilot_ids': list(pilot_ids),
+            'lc': lc,
+            'lb_tier': lb_tier,
+            'exclude': set(exclude or ()),
+            'top_pilots': top_pilots,
+            'def_unit_override': def_unit_override,
+            'def_char_override': def_char_override,
+            'def_tiers': def_tiers,
+            'publish_build': publish_build,
+        }
+        with ProcessPoolExecutor(
+            max_workers=workers,
+            initializer=_msy_build_worker_init,
+            initargs=(ctx,),
+        ) as ex:
+            futs = {ex.submit(_msy_build_worker_unit, uid): uid for uid in unit_ids}
+            for fut in as_completed(futs):
+                try:
+                    g = fut.result()
+                    if g:
+                        groups.append(g)
+                        _maybe_progress()
+                except Exception as e:
+                    print(f'MSY unit build error ({futs.get(fut)}): {e}')
+        _maybe_progress()
+        return groups
+
     if workers <= 1:
         for uid in unit_ids:
             try:
                 g = _build_single_unit_group(
                     uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclude, top_pilots, metric,
                     def_unit_override=def_unit_override, def_char_override=def_char_override,
-                    def_tiers=def_tiers,
+                    def_tiers=def_tiers, publish_build=publish_build,
                 )
                 if g:
                     groups.append(g)
-                    if on_progress:
-                        on_progress(list(groups))
+                    _maybe_progress()
             except Exception as e:
                 print(f'MSY unit build error: {e}')
         return groups
@@ -2946,7 +3051,7 @@ def _build_all_unit_groups(unit_ids, pilot_ids, lc, lb_tier, vigor, def_tier, ex
                 _build_single_unit_group, uid, pilot_ids, lc, lb_tier, vigor,
                 def_tier, exclude, top_pilots, metric,
                 def_unit_override=def_unit_override, def_char_override=def_char_override,
-                def_tiers=def_tiers,
+                def_tiers=def_tiers, publish_build=publish_build,
             )
             for uid in unit_ids
         ]
@@ -2955,12 +3060,10 @@ def _build_all_unit_groups(unit_ids, pilot_ids, lc, lb_tier, vigor, def_tier, ex
                 g = fut.result()
                 if g:
                     groups.append(g)
-                    if on_progress and len(groups) % 5 == 0:
-                        on_progress(list(groups))
+                    _maybe_progress()
             except Exception as e:
                 print(f'MSY unit build error: {e}')
-    if on_progress and groups:
-        on_progress(list(groups))
+    _maybe_progress()
     return groups
 
 
@@ -3917,7 +4020,8 @@ def _set_browse_payload_cache(key, payload):
 
 
 def build_meta_synergy_master(lc='EN', *, lb_tier=3, top_pilots=20, exclude_pairs=None,
-                            def_unit_override=None, def_char_override=None, on_progress=None):
+                            def_unit_override=None, def_char_override=None, on_progress=None,
+                            unit_ids=None, publish_build=False, use_processes=None):
     """One-time full rankings build (all units, all roles). Filters applied afterward."""
     A = _app()
     lc = lc or A.DEFAULT_LANG
@@ -3927,15 +4031,16 @@ def build_meta_synergy_master(lc='EN', *, lb_tier=3, top_pilots=20, exclude_pair
             exclude.add((A.normalize_id(p[0]), A.normalize_id(p[1])))
 
     pilot_ids = list(_pilot_pool_ids())
-    unit_ids = _msy_rankable_unit_ids(lc)
+    if unit_ids is None:
+        unit_ids = _msy_rankable_unit_ids(lc)
 
     use_multi_tier = not def_unit_override and not def_char_override
     def_tiers = _MSY_STD_DEF_TIERS if use_multi_tier else None
     groups = _build_all_unit_groups(
         unit_ids, pilot_ids, lc, lb_tier, 'super', 1, exclude, top_pilots, 'super_crit',
         def_unit_override=def_unit_override, def_char_override=def_char_override,
-        def_tiers=def_tiers,
-        on_progress=on_progress,
+        def_tiers=def_tiers, on_progress=on_progress,
+        publish_build=publish_build, use_processes=use_processes,
     )
     return {
         'groups': groups,
@@ -4497,6 +4602,17 @@ def _build_browse_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, *, role_fi
     return g
 
 
+def _ready_units_set_from_kwargs(kwargs):
+    """Unit ids the client already has pilot rankings for (stateless progressive builds)."""
+    A = _app()
+    out = set()
+    for part in (kwargs.get('ready_units') or '').split(','):
+        part = part.strip()
+        if part:
+            out.add(A.normalize_id(part))
+    return out
+
+
 def _resolve_browse_page_groups(page_ids, working_groups, lc, kwargs, rank_mode, def_tier, *,
                                 unit_q='', cache_key=None, role_filter=None, pilot_build_limit=None):
     """Page units: cache first; bounded real-sim builds; instant index shells for the rest."""
@@ -4504,6 +4620,7 @@ def _resolve_browse_page_groups(page_ids, working_groups, lc, kwargs, rank_mode,
     dt = max(1, min(4, int(def_tier or 3)))
     kwargs_resolve = dict(kwargs)
     kwargs_resolve['def_tier'] = dt
+    ready_uids = _ready_units_set_from_kwargs(kwargs_resolve)
     master_by_uid = {}
     for g in working_groups or []:
         uid = _app().normalize_id((g.get('unit') or {}).get('id'))
@@ -4542,6 +4659,8 @@ def _resolve_browse_page_groups(page_ids, working_groups, lc, kwargs, rank_mode,
         uid = _app().normalize_id(uid)
         cached = master_by_uid.get(uid)
         if cached and _group_has_ranked_pilots(cached, rank_mode):
+            continue
+        if uid in ready_uids:
             continue
         if built_count >= pilot_build_limit or not _msy_page_build_allowed():
             continue

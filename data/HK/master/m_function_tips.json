@@ -323,5 +323,15 @@
     "Id": 9701,
     "FunctionTypeIndex": 40,
     "FunctionTipsDetailSetId": 9701
+  },
+  {
+    "Id": 9803,
+    "FunctionTypeIndex": 46,
+    "FunctionTipsDetailSetId": 9701
+  },
+  {
+    "Id": 9804,
+    "FunctionTypeIndex": 50,
+    "FunctionTipsDetailSetId": 9701
   }
 ]

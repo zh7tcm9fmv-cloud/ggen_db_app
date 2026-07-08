@@ -4000,6 +4000,14 @@
     "value": ""
   },
   {
+    "id": 141200000200430104,
+    "value": "When engaging an enemy with a specified tag, \nincrease damage dealt to enemies by 10%\nand reduce damage taken by 10%."
+  },
+  {
+    "id": 141200000200430105,
+    "value": ""
+  },
+  {
     "id": 141200000200440101,
     "value": "Support Defense +1 time(s)."
   },
@@ -17988,6 +17996,22 @@
     "value": ""
   },
   {
+    "id": 141200000612010101,
+    "value": "Increase ATK by 78%."
+  },
+  {
+    "id": 141200000612020101,
+    "value": "Increase ATK and DEF by 78%\nfor squad units piloted by Amuro Ray"
+  },
+  {
+    "id": 141200000612030101,
+    "value": "Increase DEF by 78%."
+  },
+  {
+    "id": 141200000612040101,
+    "value": ""
+  },
+  {
     "id": 141200000612050101,
     "value": "Increase all Stats by 25%."
   },
@@ -18065,6 +18089,54 @@
   },
   {
     "id": 141200000612080105,
+    "value": ""
+  },
+  {
+    "id": 141200000612090101,
+    "value": "Force activate Chance Step, and get 1 Guaranteed Chance Step (Cannot duplicate)"
+  },
+  {
+    "id": 141200000612090102,
+    "value": "Increased MaxEN 78% (up to 780%)"
+  },
+  {
+    "id": 141200000612090103,
+    "value": "Force activate Chance Step, and get 1 Guaranteed Chance Step (Cannot duplicate)"
+  },
+  {
+    "id": 141200000612090104,
+    "value": "Force activate Chance Step, and get 1 Guaranteed Chance Step (Cannot duplicate)"
+  },
+  {
+    "id": 141200000612090105,
+    "value": "Force activate Chance Step, and get 1 Guaranteed Chance Step (Cannot duplicate)"
+  },
+  {
+    "id": 141200000612090106,
+    "value": "Force activate Chance Step, and get 1 Guaranteed Chance Step (Cannot duplicate)"
+  },
+  {
+    "id": 141200000612090107,
+    "value": "Force activate Chance Step, and get 1 Guaranteed Chance Step (Cannot duplicate)"
+  },
+  {
+    "id": 141200000612090108,
+    "value": "Force activate Chance Step, and get 1 Guaranteed Chance Step (Cannot duplicate)"
+  },
+  {
+    "id": 141200000612090109,
+    "value": "Force activate Chance Step, and get 1 Guaranteed Chance Step (Cannot duplicate)"
+  },
+  {
+    "id": 141200000612090110,
+    "value": ""
+  },
+  {
+    "id": 141200000612090111,
+    "value": ""
+  },
+  {
+    "id": 141200000612090112,
     "value": ""
   },
   {

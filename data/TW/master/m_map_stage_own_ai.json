@@ -15165,6 +15165,21 @@
     "AiAttackDecisionTypeIndex": 0
   },
   {
+    "MapStageId": 990000101302000000,
+    "MapNpcAiTypeIndex": 1,
+    "MapNpcAiPresetId": 100,
+    "AiAttackConditionTypeIndex": 0,
+    "AiAttackConditionParameterValue": "",
+    "AiAttackRuleTypeIndex": 8,
+    "AiAttackRuleParameterTypeIndex": 3,
+    "AiAttackRuleParameterValue": "haro",
+    "AiCounterRuleTypeIndex": 1,
+    "AiSupportActionRuleTypeIndex": 0,
+    "AiSupportActionRuleParameterValue": "",
+    "AiUseSkillTypeIndex": 1,
+    "AiAttackDecisionTypeIndex": 0
+  },
+  {
     "MapStageId": 990000101402000000,
     "MapNpcAiTypeIndex": 1,
     "MapNpcAiPresetId": 100,
