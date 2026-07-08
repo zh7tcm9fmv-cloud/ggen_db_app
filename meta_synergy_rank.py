@@ -2014,7 +2014,7 @@ def _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc):
             d = (by_vigor or {}).get(vigor_key)
             if not d:
                 continue
-            sc = d.get(dmg_key, 0) or 0
+            sc = d.get('peak_dmg', 0) or d.get(dmg_key, 0) or 0
             if sc <= 0:
                 continue
             scored.append((sc, cid, d))
@@ -3244,37 +3244,20 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
         return cached
 
     g = _lookup_unit_group_from_master_cache(uid, lc, kwargs)
-    if not g:
-        pilot_ids = _msy_pilot_ids_from_kwargs(kwargs)
-        exclude = _exclude_set_from_kwargs(kwargs)
-        try:
-            g = _build_single_unit_group(
-                uid, pilot_ids, lc,
-                lb_tier=int(kwargs.get('lb_tier') or 3),
-                vigor='super',
-                def_tier=def_tier,
-                exclude=exclude,
-                top_pilots=top_pilots,
-                metric='super_crit',
-                lite=True,
-                browse_fast=True,
-                rank_mode=rank_mode,
-                same_role_only=bool(kwargs.get('same_role_only')),
-            )
-        except Exception as e:
-            print(f'unit_best_synergy_pilots build failed ({uid}): {e}')
-            g = None
-
+    source = 'client_dc'
     if not g:
         out = {
             'eligible': True,
             'unit_id': uid,
             'pilots': [],
             'pending': True,
+            'source': 'client_dc',
             'def_tier': def_tier,
             'defender_note': _settings_note(def_tier),
         }
         return out
+    else:
+        source = 'master_cache'
 
     row = _group_for_def_tier(g, def_tier) if g.get('rankings_by_tier') else g
     if not row:
@@ -3283,11 +3266,15 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
     row = _ensure_passive_variant_for_request(row, lc, rank_mode, def_tier, kwargs)
     row = _backfill_pilot_formula_stats(row, lc, rank_mode, kwargs)
     pilots = list(row.get('pilots') or [])
+    pilots.sort(key=lambda p: (-(p.get('peak_dmg') or p.get('super_crit_dmg') or p.get('score') or 0), str((p.get('char') or {}).get('id') or '')))
+    for i, pilot in enumerate(pilots):
+        pilot['rank'] = i + 1
 
     out = {
         'eligible': True,
         'unit_id': uid,
         'pilots': pilots,
+        'source': source,
         'def_tier': def_tier,
         'defender_note': _settings_note(def_tier),
         'max_damage': row.get('max_damage'),

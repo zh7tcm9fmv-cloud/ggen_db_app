@@ -103,34 +103,22 @@
       + '</div>';
   }
 
-  var ABILITY_EX_FRAME_BASE = '/static/images/UI/UI_CharaAbilities_Tmb_Square_Normal_Base.webp';
-  var ABILITY_EX_FRAME_OVERLAY = '/static/images/UI/UI_CharaAbilities_Tmb_Square_Normal_Frame.webp';
-
-  function pilotPortraitSrc(raw) {
-    if (!raw) return '';
-    if (typeof global.imgUrlPreferCdn === 'function' && typeof global.imgUrlWebp === 'function') {
-      return global.imgUrlWebp(global.imgUrlPreferCdn(String(raw)));
-    }
-    return imgUrl(raw);
+  function apiQuery() {
+    var lang = (global.S && global.S.lang) || 'EN';
+    return 'lang=' + encodeURIComponent(lang)
+      + '&lb_tier=3&def_tier=3&rank_mode=super_crit&top_pilots=10';
   }
 
   function pilotThumb(c) {
     if (!c) return '';
-    var raw = c.thum || c.portrait || '';
-    if (!raw) {
-      return '<div class="ability-icon-wrap ubp-pilot-icon-wrap"><div class="ability-icon-stack ubp-pilot-icon-stack"><div class="ability-icon-placeholder">★</div></div></div>';
-    }
-    var portraitSrc = pilotPortraitSrc(raw);
-    var fbSrc = pilotPortraitSrc(ABILITY_EX_FRAME_BASE);
-    var foSrc = pilotPortraitSrc(ABILITY_EX_FRAME_OVERLAY);
-    return '<div class="ability-icon-wrap ubp-pilot-icon-wrap">'
-      + '<div class="ability-icon-stack ability-icon-stack--ex ubp-pilot-icon-stack">'
-      + '<div class="ability-icon-inner">'
-      + '<img class="ability-icon-base" src="' + escAttr(fbSrc) + '" alt="" loading="lazy" decoding="async" onerror="typeof gameImageUrlFallback===\'function\'&&gameImageUrlFallback(this)">'
-      + '<img class="ability-icon" src="' + escAttr(portraitSrc) + '" alt="" loading="lazy" decoding="async" onerror="typeof abilityIconImgOnError===\'function\'?abilityIconImgOnError(this):this.style.display=\'none\';return false;">'
-      + '</div>'
-      + '<img class="ability-frame-overlay" src="' + escAttr(foSrc) + '" alt="" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">'
-      + '</div></div>';
+    var row = {
+      rarity: c.rarity || 'N',
+      thum: c.thum || c.portrait || '',
+      role_icon: '',
+      acquisition_icon: ''
+    };
+    return typeof global.renderListThumb === 'function'
+      ? global.renderListThumb(row, 'char', 48, { pickerThumb: true }) : '';
   }
 
   function roleIconHtml(c) {
@@ -161,7 +149,18 @@
 
   function pilotDamage(pilot) {
     if (!pilot) return 0;
-    return pilot.super_crit_dmg || pilot.score || pilot.peak_dmg || pilot.max_damage || 0;
+    return pilot.peak_dmg || pilot.super_crit_dmg || pilot.score || pilot.max_damage || 0;
+  }
+
+  function sortPilotsByCalcDamage(pilots) {
+    if (!pilots || !pilots.length) return pilots || [];
+    return pilots.slice().sort(function (a, b) {
+      return pilotDamage(b) - pilotDamage(a);
+    }).map(function (p, i) {
+      var row = Object.assign({}, p);
+      row.rank = i + 1;
+      return row;
+    });
   }
 
   function renderPilotCard(unitId, pilot) {
@@ -210,7 +209,48 @@
       + renderSkeletonGrid());
   }
 
-  async function fetchBestSynergyPilots(unitId, lang, retriesLeft) {
+  function scriptVersion() {
+    var el = global.document.querySelector('script[src*="unit_best_pilots.js"]');
+    if (!el || !el.src) return '';
+    var m = el.src.match(/[?&]v=([^&]+)/);
+    return m ? decodeURIComponent(m[1]) : '';
+  }
+
+  function loadScriptOnce(src) {
+    return new Promise(function (resolve, reject) {
+      var base = src.split('?')[0];
+      var existing = global.document.querySelector('script[src="' + src + '"]')
+        || global.document.querySelector('script[src^="' + base + '"]');
+      if (existing) {
+        resolve();
+        return;
+      }
+      var s = global.document.createElement('script');
+      s.src = src;
+      s.defer = true;
+      s.onload = function () { resolve(); };
+      s.onerror = function () { reject(new Error('script load failed: ' + src)); };
+      global.document.head.appendChild(s);
+    });
+  }
+
+  var dcEnginePromise = null;
+  function ensureDcEngine() {
+    if (global.MsyDcEngine) {
+      return global.MsyDcEngine.ensureReady().then(function () { return global.MsyDcEngine; });
+    }
+    if (!dcEnginePromise) {
+      var ver = scriptVersion();
+      var src = '/static/js/msy_dc_engine.js' + (ver ? '?v=' + encodeURIComponent(ver) : '');
+      dcEnginePromise = loadScriptOnce(src).then(function () {
+        if (!global.MsyDcEngine) throw new Error('MsyDcEngine not loaded');
+        return global.MsyDcEngine.ensureReady().then(function () { return global.MsyDcEngine; });
+      });
+    }
+    return dcEnginePromise;
+  }
+
+  async function fetchMasterCachePilots(unitId, lang) {
     var q = 'lang=' + encodeURIComponent(lang)
       + '&lb_tier=3&def_tier=3&rank_mode=super_crit&top_pilots=10';
     var res = await fetch('/api/unit/' + encodeURIComponent(unitId) + '/best_synergy_pilots?' + q, {
@@ -219,11 +259,58 @@
     if (!res.ok) throw new Error('HTTP ' + res.status);
     var payload = await res.json();
     if (payload.error) throw new Error(payload.detail || payload.error);
-    if (payload.pending && retriesLeft > 0) {
-      await new Promise(function (resolve) { setTimeout(resolve, 350); });
-      return fetchBestSynergyPilots(unitId, lang, retriesLeft - 1);
+    if (payload.source === 'master_cache' && payload.pilots && payload.pilots.length) {
+      return sortPilotsByCalcDamage(payload.pilots);
     }
-    return payload;
+    return null;
+  }
+
+  async function loadRankingsViaDc(unitId, lang) {
+    var engine = await ensureDcEngine();
+    var bootRes = await fetch('/api/meta_synergy_dc/bootstrap?' + apiQuery(), {
+      credentials: 'same-origin'
+    });
+    if (!bootRes.ok) throw new Error('HTTP ' + bootRes.status);
+    var bootstrap = await bootRes.json();
+    if (bootstrap.error) throw new Error(bootstrap.detail || bootstrap.error);
+    var defTiers = bootstrap.defender_tiers || {};
+    var candRes = await fetch('/api/meta_synergy_dc/candidates?unit_id=' + encodeURIComponent(unitId) + '&' + apiQuery(), {
+      credentials: 'same-origin'
+    });
+    if (!candRes.ok) throw new Error('HTTP ' + candRes.status);
+    var candData = await candRes.json();
+    var pilotIds = candData.pilot_ids || [];
+    if (!pilotIds.length) return [];
+    if (bootstrap.cache_version && engine.ensureCacheVersion) {
+      await engine.ensureCacheVersion(bootstrap.cache_version);
+    }
+    var raw = await engine.evalUnit(unitId, pilotIds, defTiers, {
+      lang: lang,
+      cpOn: true,
+      pepOn: true,
+      appJsVersion: bootstrap.cache_version || scriptVersion()
+    });
+    if (!raw || raw.error || !raw.byTier) throw new Error('eval failed');
+    var asmRes = await fetch('/api/meta_synergy_dc/assemble?' + apiQuery(), {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        unit_id: unitId,
+        pairs_by_tier: raw.byTier,
+        lang: lang,
+        top_pilots: 10,
+        rank_mode: 'super_crit',
+        def_tier: 3,
+        cp_on: true,
+        pep_on: true
+      })
+    });
+    if (!asmRes.ok) throw new Error('HTTP ' + asmRes.status);
+    var payload = await asmRes.json();
+    if (payload.error) throw new Error(payload.detail || payload.error);
+    var pilots = (payload.group && payload.group.pilots) || [];
+    return sortPilotsByCalcDamage(pilots);
   }
 
   async function loadRankings(unitId) {
@@ -232,13 +319,17 @@
     showLoading();
     try {
       var lang = (global.S && global.S.lang) || 'EN';
-      var payload = await fetchBestSynergyPilots(unitId, lang, 2);
+      var pilots = await fetchMasterCachePilots(unitId, lang);
       if (gen !== state.loadGen) return;
-      if (payload.pending) {
-        setPanelHtml('<div class="unit-best-pilot-empty">' + esc(t('unit_best_pilot_loading') || 'Computing best synergy pilots…') + '</div>');
+      if (!pilots) {
+        pilots = await loadRankingsViaDc(unitId, lang);
+      }
+      if (gen !== state.loadGen) return;
+      if (!pilots || !pilots.length) {
+        state.loaded = true;
+        setPanelHtml('<div class="unit-best-pilot-empty">' + esc(t('unit_best_pilot_empty') || 'No eligible pilots found.') + '</div>');
         return;
       }
-      var pilots = payload.pilots || [];
       state.cache[String(unitId)] = pilots;
       state.loaded = true;
       setPanelHtml(renderPilotGrid(pilots, unitId));

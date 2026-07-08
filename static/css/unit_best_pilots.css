@@ -10,7 +10,7 @@
   top: auto;
   left: auto;
   right: 8px;
-  bottom: -10px;
+  bottom: -18px;
   z-index: 10;
   line-height: 0;
   padding: 0;
@@ -31,7 +31,7 @@
 
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-card--has-bsp,
 .modal-content.char-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-card--has-bsp {
-  padding-bottom: 18px !important;
+  padding-bottom: 24px !important;
 }
 
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--desktop .detail-rec-link-card--has-bsp,
@@ -194,15 +194,10 @@
   color: var(--accent-cyan);
 }
 
-.unit-best-pilot-panel .msy-pilot-thumb .ubp-pilot-icon-wrap {
-  width: 56px;
-  height: 56px;
+.unit-best-pilot-panel .msy-pilot-thumb .list-thumb-composite {
+  width: 48px;
+  height: 48px;
   flex-shrink: 0;
-}
-
-.unit-best-pilot-panel .msy-pilot-thumb .ubp-pilot-icon-stack {
-  width: 56px;
-  height: 56px;
 }
 
 .unit-best-pilot-panel .msy-pilot-name-row {
@@ -342,8 +337,8 @@
 }
 
 .unit-best-pilot-panel .msy-pilot-skel-thumb {
-  width: 56px;
-  height: 56px;
+  width: 48px;
+  height: 48px;
   border-radius: 6px;
   background: rgba(90, 104, 132, 0.28);
   flex-shrink: 0;
@@ -395,7 +390,7 @@
 @media (max-width: 768px) {
   .detail-rec-link-card--has-bsp .unit-best-pilot-btn-slot--rec {
     right: 6px;
-    bottom: -12px;
+    bottom: -22px;
   }
 
   .detail-rec-link-card--has-bsp .unit-best-pilot-btn {
