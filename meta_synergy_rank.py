@@ -1590,6 +1590,8 @@ _MSY_PILOT_BUILD_PER_REQUEST = max(1, min(4, int(os.environ.get('MSY_PILOT_BUILD
 _MSY_LITE_PILOT_NEED = max(6, min(16, int(os.environ.get('MSY_LITE_PILOT_NEED', '8') or '8')))
 _MSY_LITE_PILOT_CAP = max(6, min(20, int(os.environ.get('MSY_LITE_PILOT_CAP', '8') or '8')))
 _MSY_LITE_NON_UR_RESERVE = max(2, min(6, int(os.environ.get('MSY_LITE_NON_UR_RESERVE', '4') or '4')))
+_BSP_PILOT_CAP = max(48, min(128, int(os.environ.get('BSP_PILOT_CAP', '88') or '88')))
+_BSP_NON_UR_RESERVE = max(8, min(32, int(os.environ.get('BSP_NON_UR_RESERVE', '16') or '16')))
 _MSY_PREVIEW_PILOT_SCAN = max(16, min(80, int(os.environ.get('MSY_PREVIEW_PILOT_SCAN', '32') or '32')))
 # Older published caches to load when the current v14 master file is missing (Railway deploy).
 _MSY_LEGACY_MASTER_CACHE_KEYS = (
@@ -2984,7 +2986,50 @@ def save_published_master_cache(cache_key, result):
     return path
 
 
-def dc_candidate_pilots_for_unit(uid, pilot_ids, exclude, lc, *, full_pool=False):
+def _bsp_candidate_pilots_for_unit(uid, active, info, unit_wpn, stat_mode, lc, *, cap=None):
+    """Bounded BSP pool: every UR + top non-UR prospects, then rank via live /cal."""
+    cap = cap or _BSP_PILOT_CAP
+    if len(active) <= cap:
+        return list(active)
+    A = _app()
+    out = []
+    for cid in _msy_guaranteed_crit_priority_pilots(active, lc):
+        if cid not in out:
+            out.append(cid)
+    for cid in active:
+        if len(out) >= cap:
+            break
+        ri = str((A.char_info_map.get(cid) or {}).get('rarity', '1'))
+        if A.RARITY_MAP.get(ri, 'N') == 'UR' and cid not in out:
+            out.append(cid)
+    reserve = min(_BSP_NON_UR_RESERVE, max(0, cap - len(out)))
+    if reserve > 0:
+        cheap = []
+        for cid in active:
+            if cid in out:
+                continue
+            ri = str((A.char_info_map.get(cid) or {}).get('rarity', '1'))
+            if A.RARITY_MAP.get(ri, 'N') == 'UR':
+                continue
+            cheap.append((_cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc), cid))
+        cheap.sort(key=lambda x: (-x[0], x[1]))
+        for _, cid in cheap[:reserve]:
+            if cid not in out:
+                out.append(cid)
+    if len(out) < cap:
+        cheap_all = [
+            (_cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc), cid)
+            for cid in active if cid not in out
+        ]
+        cheap_all.sort(key=lambda x: (-x[0], x[1]))
+        for _, cid in cheap_all:
+            out.append(cid)
+            if len(out) >= cap:
+                break
+    return out[:cap]
+
+
+def dc_candidate_pilots_for_unit(uid, pilot_ids, exclude, lc, *, bsp=False):
     """Pilot IDs to evaluate in the Damage Calculator."""
     uid = _app().normalize_id(uid)
     info = _app().unit_info_map.get(uid) or {}
@@ -2995,9 +3040,8 @@ def dc_candidate_pilots_for_unit(uid, pilot_ids, exclude, lc, *, full_pool=False
     active = _eligible_pilots_for_unit(uid, pilot_ids, exclude)
     if not active:
         return []
-    # BSP: sim every eligible pilot via live /cal — no cheap-score prefilter.
-    if full_pool:
-        return list(active)
+    if bsp:
+        return _bsp_candidate_pilots_for_unit(uid, active, info, unit_wpn, stat_mode, lc)
     need = max(_TOP_PILOTS_PREFILTER, 128)
     if len(active) <= _FULL_SIM_PILOT_CAP:
         return list(active)
@@ -3080,7 +3124,7 @@ def _msy_dc_kwargs_from_request(args):
         'same_role_only': args.get('same_role_only', '0') in ('1', 'true', 'yes'),
         'cp_on': args.get('cp_on', '1') not in ('0', 'false', 'no', ''),
         'pep_on': args.get('pep_on', '1') not in ('0', 'false', 'no', ''),
-        'full_pool': args.get('bsp', '0') in ('1', 'true', 'yes'),
+        'bsp': args.get('bsp', '0') in ('1', 'true', 'yes'),
     }
 
 
@@ -3270,7 +3314,7 @@ def dc_candidates_payload(unit_id, kwargs):
     exclude = _exclude_set_from_kwargs(kwargs)
     uid = _app().normalize_id(unit_id)
     candidates = dc_candidate_pilots_for_unit(
-        uid, pilot_ids, exclude, lc, full_pool=bool(kwargs.get('full_pool')),
+        uid, pilot_ids, exclude, lc, bsp=bool(kwargs.get('bsp')),
     )
     return {'unit_id': uid, 'pilot_ids': candidates}
 
