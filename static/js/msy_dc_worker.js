@@ -130,6 +130,37 @@
     return slot;
   }
 
+  function formulaStatKeyForPair(wpn) {
+    if (!wpn || typeof _dcWeaponAtkStatKeys !== 'function') return 'Ranged';
+    var charStats = typeof _dcGetCharStats === 'function' ? _dcGetCharStats() : null;
+    if (!charStats) return 'Ranged';
+    var sk = typeof _dcGetActiveSkillStatPct === 'function' ? _dcGetActiveSkillStatPct() : {};
+    var atkTypes = _dcWeaponAtkStatKeys(wpn);
+    var unique = [];
+    atkTypes.forEach(function (k) {
+      if (unique.indexOf(k) < 0) unique.push(k);
+    });
+    if (!unique.length) return 'Ranged';
+    var val = function (k) {
+      if (k === 'Awaken') {
+        return typeof _dcPilotAwakenAdjustedForDc === 'function'
+          ? _dcPilotAwakenAdjustedForDc(charStats, sk[k] || 0) : 0;
+      }
+      return typeof _dcPilotSkillAdjustedStat === 'function'
+        ? _dcPilotSkillAdjustedStat(charStats, k, sk[k] || 0) : 0;
+    };
+    var bestKey = unique[0];
+    var bestVal = val(bestKey);
+    for (var i = 1; i < unique.length; i++) {
+      var v = val(unique[i]);
+      if (v > bestVal) {
+        bestVal = v;
+        bestKey = unique[i];
+      }
+    }
+    return bestKey;
+  }
+
   function evalPair(ud, cd, uDef, cDef, vigor, cpEnabled) {
     S.dc.defTargetMode = 'custom';
     S.dc.defNpc = defNpc(uDef, cDef);
@@ -150,8 +181,6 @@
     var pairOk = typeof _dcUnitCharPairMatch === 'function'
       ? _dcUnitCharPairMatch(cd, ud) : false;
     var wpn = ud.weapons && ud.weapons[slot.wpnIdx];
-    var attr = wpn ? String(wpn.attr || wpn.weapon_attr || '1') : '1';
-    var statMap = { '1': 'Ranged', '2': 'Melee', '3': 'Awaken' };
     var row = {
       expected_dmg: expected,
       peak_dmg: peak,
@@ -165,7 +194,7 @@
       crit_dmg: critDmgVal,
       super_crit_dmg: critDmgVal,
       char_atk: r.charAtk | 0,
-      formula_stat: statMap[attr] || 'Ranged',
+      formula_stat: formulaStatKeyForPair(wpn),
       dmg_dealt_pct: r.userDmgIncreasePct | 0,
       vigor_dmg_pct: r.vigorDmgBonusPct | 0
     };

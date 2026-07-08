@@ -74,6 +74,37 @@
     return slot;
   }
 
+  function formulaStatKeyForPair(wpn) {
+    if (!wpn || typeof global._dcWeaponAtkStatKeys !== 'function') return 'Ranged';
+    var charStats = typeof global._dcGetCharStats === 'function' ? global._dcGetCharStats() : null;
+    if (!charStats) return 'Ranged';
+    var sk = typeof global._dcGetActiveSkillStatPct === 'function' ? global._dcGetActiveSkillStatPct() : {};
+    var atkTypes = global._dcWeaponAtkStatKeys(wpn);
+    var unique = [];
+    atkTypes.forEach(function (k) {
+      if (unique.indexOf(k) < 0) unique.push(k);
+    });
+    if (!unique.length) return 'Ranged';
+    var val = function (k) {
+      if (k === 'Awaken') {
+        return typeof global._dcPilotAwakenAdjustedForDc === 'function'
+          ? global._dcPilotAwakenAdjustedForDc(charStats, sk[k] || 0) : 0;
+      }
+      return typeof global._dcPilotSkillAdjustedStat === 'function'
+        ? global._dcPilotSkillAdjustedStat(charStats, k, sk[k] || 0) : 0;
+    };
+    var bestKey = unique[0];
+    var bestVal = val(bestKey);
+    for (var i = 1; i < unique.length; i++) {
+      var v = val(unique[i]);
+      if (v > bestVal) {
+        bestVal = v;
+        bestKey = unique[i];
+      }
+    }
+    return bestKey;
+  }
+
   function evalPair(ud, cd, uDef, cDef, vigor, cpEnabled) {
     var S = global.S;
     S.dc.defTargetMode = 'custom';
@@ -95,8 +126,6 @@
     var pairOk = typeof global._dcUnitCharPairMatch === 'function'
       ? global._dcUnitCharPairMatch(cd, ud) : false;
     var wpn = ud.weapons && ud.weapons[slot.wpnIdx];
-    var attr = wpn ? String(wpn.attr || wpn.weapon_attr || '1') : '1';
-    var statMap = { '1': 'Ranged', '2': 'Melee', '3': 'Awaken' };
     var row = {
       expected_dmg: expected,
       peak_dmg: peak,
@@ -110,7 +139,7 @@
       crit_dmg: critDmgVal,
       super_crit_dmg: critDmgVal,
       char_atk: r.charAtk | 0,
-      formula_stat: statMap[attr] || 'Ranged',
+      formula_stat: formulaStatKeyForPair(wpn),
       dmg_dealt_pct: r.userDmgIncreasePct | 0,
       vigor_dmg_pct: r.vigorDmgBonusPct | 0
     };

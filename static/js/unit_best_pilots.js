@@ -7,7 +7,6 @@
     loading: false,
     loaded: false,
     loadGen: 0,
-    eligible: null,
     cache: {}
   };
 
@@ -35,13 +34,17 @@
     return typeof global.imgUrl === 'function' ? global.imgUrl(path) : path;
   }
 
+  function isEligible(d) {
+    return !!(d && d.best_synergy_pilot_eligible && !d.detail_npc_context);
+  }
+
   function hasRecPilot(d) {
     if (!d || d.detail_npc_context) return false;
     var rc = d.recommend_character;
     return !!(rc && rc.id);
   }
 
-  function dcQuery() {
+  function apiQuery() {
     var lang = (global.S && global.S.lang) || 'EN';
     return 'lang=' + encodeURIComponent(lang)
       + '&lb_tier=3&def_tier=3&rank_mode=super_crit&top_pilots=10';
@@ -124,18 +127,15 @@
       : (label + ': ' + fmtN(pilot.char_atk));
     var parts = '<div class="msy-pilot-formula-stat">' + esc(line) + '</div>';
     if (pilot.dmg_dealt_pct != null && pilot.dmg_dealt_pct !== '') {
-      var vigor = pilot.vigor_dmg_pct | 0;
-      var passive = pilot.dmg_dealt_pct | 0;
-      var dmgLine = 'Damage Dealt: ' + passive + '%';
-      if (vigor > 0) dmgLine += ' (+' + vigor + '% vigor)';
-      parts += '<div class="msy-pilot-dmg-dealt-pct" title="Damage Dealt Up % from DC formula">' + esc(dmgLine) + '</div>';
+      parts += '<div class="msy-pilot-dmg-dealt-pct" title="Damage Dealt Up %">'
+        + esc('Damage Dealt: ' + (pilot.dmg_dealt_pct | 0) + '%') + '</div>';
     }
     return parts;
   }
 
   function pilotDamage(pilot) {
     if (!pilot) return 0;
-    return pilot.super_crit_dmg || pilot.score || pilot.peak_dmg || 0;
+    return pilot.super_crit_dmg || pilot.score || pilot.peak_dmg || pilot.max_damage || 0;
   }
 
   function renderPilotCard(unitId, pilot) {
@@ -184,16 +184,45 @@
       + renderSkeletonGrid());
   }
 
-  async function ensureEligible(unitId) {
-    if (state.eligible && state.eligible.unitId === String(unitId)) {
-      return state.eligible.data;
+  function scriptVersion() {
+    var el = global.document.querySelector('script[src*="unit_best_pilots.js"]');
+    if (!el || !el.src) return '';
+    var m = el.src.match(/[?&]v=([^&]+)/);
+    return m ? decodeURIComponent(m[1]) : '';
+  }
+
+  function loadScriptOnce(src) {
+    return new Promise(function (resolve, reject) {
+      var base = src.split('?')[0];
+      var existing = global.document.querySelector('script[src="' + src + '"]')
+        || global.document.querySelector('script[src^="' + base + '"]');
+      if (existing) {
+        resolve();
+        return;
+      }
+      var s = global.document.createElement('script');
+      s.src = src;
+      s.defer = true;
+      s.onload = function () { resolve(); };
+      s.onerror = function () { reject(new Error('script load failed: ' + src)); };
+      global.document.head.appendChild(s);
+    });
+  }
+
+  var dcEnginePromise = null;
+  function ensureDcEngine() {
+    if (global.MsyDcEngine) {
+      return global.MsyDcEngine.ensureReady().then(function () { return global.MsyDcEngine; });
     }
-    var lang = (global.S && global.S.lang) || 'EN';
-    var res = await fetch('/api/unit/' + encodeURIComponent(unitId) + '/best_synergy_pilots/bootstrap?lang=' + encodeURIComponent(lang), { credentials: 'same-origin' });
-    if (!res.ok) return { eligible: false };
-    var data = await res.json();
-    state.eligible = { unitId: String(unitId), data: data };
-    return data;
+    if (!dcEnginePromise) {
+      var ver = scriptVersion();
+      var src = '/static/js/msy_dc_engine.js' + (ver ? '?v=' + encodeURIComponent(ver) : '');
+      dcEnginePromise = loadScriptOnce(src).then(function () {
+        if (!global.MsyDcEngine) throw new Error('MsyDcEngine not loaded');
+        return global.MsyDcEngine.ensureReady().then(function () { return global.MsyDcEngine; });
+      });
+    }
+    return dcEnginePromise;
   }
 
   async function loadRankings(unitId) {
@@ -201,42 +230,62 @@
     state.loading = true;
     showLoading();
     try {
-      var boot = await ensureEligible(unitId);
+      var engine = await ensureDcEngine();
       if (gen !== state.loadGen) return;
-      if (!boot || !boot.eligible) {
-        hideTriggers();
-        closePanel();
-        return;
-      }
-      if (!global.MsyDcEngine || typeof global.MsyDcEngine.ensureReady !== 'function') {
-        throw new Error('DC engine unavailable');
-      }
-      await global.MsyDcEngine.ensureReady();
-      if (gen !== state.loadGen) return;
-      var pilotIds = boot.pilot_ids || [];
-      var defTiers = boot.defender_tiers || {};
-      var raw = await global.MsyDcEngine.evalUnit(unitId, pilotIds, defTiers, {
-        lang: (global.S && global.S.lang) || 'EN',
-        cpOn: true,
-        pepOn: true
+      var lang = (global.S && global.S.lang) || 'EN';
+      var bootRes = await fetch('/api/meta_synergy_dc/bootstrap?' + apiQuery(), {
+        credentials: 'same-origin'
       });
       if (gen !== state.loadGen) return;
-      if (!raw || !raw.byTier) throw new Error('eval failed');
-      var asmRes = await fetch('/api/meta_synergy_dc/assemble?' + dcQuery(), {
+      if (!bootRes.ok) throw new Error('HTTP ' + bootRes.status);
+      var bootstrap = await bootRes.json();
+      if (bootstrap.error) throw new Error(bootstrap.detail || bootstrap.error);
+      var defTiers = bootstrap.defender_tiers || {};
+      var candRes = await fetch('/api/meta_synergy_dc/candidates?unit_id=' + encodeURIComponent(unitId) + '&' + apiQuery(), {
+        credentials: 'same-origin'
+      });
+      if (gen !== state.loadGen) return;
+      if (!candRes.ok) throw new Error('HTTP ' + candRes.status);
+      var candData = await candRes.json();
+      var pilotIds = candData.pilot_ids || [];
+      if (!pilotIds.length) {
+        state.loaded = true;
+        setPanelHtml('<div class="unit-best-pilot-empty">' + esc(t('unit_best_pilot_empty') || 'No eligible pilots found.') + '</div>');
+        return;
+      }
+      if (bootstrap.cache_version && engine.ensureCacheVersion) {
+        await engine.ensureCacheVersion(bootstrap.cache_version);
+      }
+      if (gen !== state.loadGen) return;
+      var raw = await engine.evalUnit(unitId, pilotIds, defTiers, {
+        lang: lang,
+        cpOn: true,
+        pepOn: true,
+        appJsVersion: bootstrap.cache_version || scriptVersion()
+      });
+      if (gen !== state.loadGen) return;
+      if (!raw || raw.error || !raw.byTier) throw new Error('eval failed');
+      var asmRes = await fetch('/api/meta_synergy_dc/assemble?' + apiQuery(), {
         method: 'POST',
         credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           unit_id: unitId,
-          pairs_by_tier: raw.byTier
+          pairs_by_tier: raw.byTier,
+          lang: lang,
+          top_pilots: 10,
+          rank_mode: 'super_crit',
+          def_tier: 3,
+          cp_on: true,
+          pep_on: true
         })
       });
+      if (gen !== state.loadGen) return;
       if (!asmRes.ok) throw new Error('HTTP ' + asmRes.status);
       var payload = await asmRes.json();
       if (gen !== state.loadGen) return;
       if (payload.error) throw new Error(payload.detail || payload.error);
-      var group = payload.group || {};
-      var pilots = group.pilots || [];
+      var pilots = (payload.group && payload.group.pilots) || [];
       state.cache[String(unitId)] = pilots;
       state.loaded = true;
       setPanelHtml(renderPilotGrid(pilots, unitId));
@@ -250,7 +299,7 @@
   }
 
   function syncUi(d) {
-    if (!d || d.detail_npc_context) {
+    if (!isEligible(d)) {
       hideTriggers();
       return;
     }
@@ -262,9 +311,6 @@
     global.document.querySelectorAll('#unitBestPilotBtnSlotRec').forEach(function (slot) {
       slot.innerHTML = onRec ? renderTriggerBtn() : '';
     });
-    void ensureEligible(d.id).then(function (boot) {
-      if (!boot || !boot.eligible) hideTriggers();
-    }).catch(function () { hideTriggers(); });
   }
 
   function openPanel() {
@@ -280,7 +326,6 @@
     if (state.unitId !== String(d.id)) {
       state.unitId = String(d.id);
       state.loaded = false;
-      state.eligible = null;
     }
     if (state.cache[state.unitId] && state.loaded) {
       setPanelHtml(renderPilotGrid(state.cache[state.unitId], state.unitId));
@@ -309,7 +354,6 @@
     state.unitId = d ? String(d.id) : null;
     state.loaded = false;
     state.loading = false;
-    state.eligible = null;
     state.loadGen++;
     var wrap = global.document.getElementById('unitBestPilotPanelWrap');
     if (wrap) {
@@ -324,7 +368,6 @@
     state.unitId = null;
     state.loaded = false;
     state.loading = false;
-    state.eligible = null;
     state.loadGen++;
   }
 

@@ -2168,10 +2168,8 @@ def _backfill_pilot_formula_stats(g, lc, rank_mode='super_crit', kwargs=None):
             return
         cp_on = _passive_cp_on_from_kwargs(kwargs or {})
         char_atk, formula_stat = _formula_char_atk_for_pair(cid, uid, lc, attr, cp_on=cp_on)
-        if pilot.get('char_atk') in (None, 0):
-            pilot['char_atk'] = char_atk
-        if not pilot.get('formula_stat'):
-            pilot['formula_stat'] = formula_stat
+        pilot['char_atk'] = char_atk
+        pilot['formula_stat'] = formula_stat
 
     def _patch_block(block):
         if not block:
@@ -3151,20 +3149,112 @@ def unit_is_rankable(uid, lc='EN'):
 
 
 def unit_best_synergy_pilots_bootstrap_payload(unit_id, kwargs):
-    """Bootstrap for per-unit Best Synergy Pilot panel (one unit × filtered pilots)."""
+    """Lightweight eligibility probe (no pilot sim)."""
+    lc = kwargs.get('lc', 'EN')
+    uid = _app().normalize_id(unit_id)
+    eligible = unit_is_rankable(uid, lc)
+    return {'eligible': eligible, 'unit_id': uid}
+
+
+_unit_best_pilot_api_cache = {}
+_UNIT_BEST_PILOT_API_CACHE_MAX = 256
+
+
+def _unit_best_pilot_api_cache_key(uid, lc, kwargs):
+    return (
+        uid,
+        lc or 'EN',
+        int(kwargs.get('lb_tier') or 3),
+        max(1, min(4, int(kwargs.get('def_tier') or 3))),
+        kwargs.get('rank_mode', 'super_crit') or 'super_crit',
+    )
+
+
+def _lookup_unit_group_from_master_cache(uid, lc, kwargs):
+    """Instant pilots from published MSY master cache when available."""
+    cache_key = _master_cache_key(lc, kwargs)
+    disk = _load_master_from_disk(cache_key, allow_legacy=True)
+    if not disk:
+        with _rankings_build_lock:
+            disk = _rankings_result_cache.get(cache_key)
+    if not disk:
+        return None
+    for g in disk.get('groups') or []:
+        if _app().normalize_id((g.get('unit') or {}).get('id')) == uid:
+            if g.get('pilots') or (g.get('rankings') or {}).get('super_crit', {}).get('pilots'):
+                return g
+    return None
+
+
+def unit_best_synergy_pilots_payload(unit_id, kwargs):
+    """Soshage-style: one unit, server-built pilot ranking (lazy, cached)."""
     lc = kwargs.get('lc', 'EN')
     uid = _app().normalize_id(unit_id)
     if not unit_is_rankable(uid, lc):
-        return {'eligible': False, 'unit_id': uid}
-    pilot_ids = _msy_pilot_ids_from_kwargs(kwargs)
-    candidates = dc_candidate_pilots_for_unit(uid, pilot_ids, set(), lc)
-    return {
+        return {'eligible': False, 'unit_id': uid, 'pilots': []}
+
+    rank_mode = kwargs.get('rank_mode', 'super_crit') or 'super_crit'
+    def_tier = max(1, min(4, int(kwargs.get('def_tier') or 3)))
+    top_pilots = max(1, min(20, int(kwargs.get('top_pilots') or 10)))
+
+    ck = _unit_best_pilot_api_cache_key(uid, lc, kwargs)
+    cached = _unit_best_pilot_api_cache.get(ck)
+    if cached is not None:
+        return cached
+
+    g = _lookup_unit_group_from_master_cache(uid, lc, kwargs)
+    if not g:
+        pilot_ids = _msy_pilot_ids_from_kwargs(kwargs)
+        exclude = _exclude_set_from_kwargs(kwargs)
+        try:
+            g = _build_single_unit_group(
+                uid, pilot_ids, lc,
+                lb_tier=int(kwargs.get('lb_tier') or 3),
+                vigor='super',
+                def_tier=def_tier,
+                exclude=exclude,
+                top_pilots=top_pilots,
+                metric='super_crit',
+                lite=True,
+                browse_fast=True,
+                rank_mode=rank_mode,
+                same_role_only=bool(kwargs.get('same_role_only')),
+            )
+        except Exception as e:
+            print(f'unit_best_synergy_pilots build failed ({uid}): {e}')
+            g = None
+
+    if not g:
+        out = {
+            'eligible': True,
+            'unit_id': uid,
+            'pilots': [],
+            'pending': True,
+            'def_tier': def_tier,
+            'defender_note': _settings_note(def_tier),
+        }
+        return out
+
+    row = _group_for_def_tier(g, def_tier) if g.get('rankings_by_tier') else g
+    if not row:
+        row = g
+    row = _normalize_group_for_mode(row, rank_mode) or row
+    row = _ensure_passive_variant_for_request(row, lc, rank_mode, def_tier, kwargs)
+    row = _backfill_pilot_formula_stats(row, lc, rank_mode, kwargs)
+    pilots = list(row.get('pilots') or [])
+
+    out = {
         'eligible': True,
         'unit_id': uid,
-        'defender_tiers': defender_tiers_public(),
-        'pilot_ids': candidates,
-        'def_tier': max(1, min(4, int(kwargs.get('def_tier') or 3))),
+        'pilots': pilots,
+        'def_tier': def_tier,
+        'defender_note': _settings_note(def_tier),
+        'max_damage': row.get('max_damage'),
     }
+    if len(_unit_best_pilot_api_cache) >= _UNIT_BEST_PILOT_API_CACHE_MAX:
+        _unit_best_pilot_api_cache.pop(next(iter(_unit_best_pilot_api_cache)))
+    _unit_best_pilot_api_cache[ck] = out
+    return out
 
 
 def dc_candidates_payload(unit_id, kwargs):

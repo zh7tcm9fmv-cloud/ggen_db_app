@@ -13986,18 +13986,34 @@ def msy_tab_redirect():
 
 @app.route('/api/unit/<unit_id>/best_synergy_pilots/bootstrap')
 def api_unit_best_synergy_pilots_bootstrap(unit_id):
-    """Bootstrap DC eval for one unit's Best Synergy Pilot panel."""
+    """Lightweight eligibility check for Best Synergy Pilot icon."""
     import meta_synergy_rank as msr
     kwargs = msr._msy_dc_kwargs_from_request(request.args)
     try:
         payload = msr.unit_best_synergy_pilots_bootstrap_payload(unit_id, kwargs)
-        ck = f'ubp_boot_{unit_id}_{kwargs["lc"]}'
-        return jsonify_cacheable(payload, ck, public=True, max_age=300, convert_images=False)
+        ck = f'ubp_elig_{unit_id}_{kwargs["lc"]}'
+        return jsonify_cacheable(payload, ck, public=True, max_age=3600, convert_images=False)
     except Exception as e:
         print(f'api/unit/{unit_id}/best_synergy_pilots/bootstrap failed: {e}')
         import traceback
         traceback.print_exc()
         return jsonify({'error': 'best_synergy_pilots_bootstrap_failed', 'detail': str(e)}), 500
+
+
+@app.route('/api/unit/<unit_id>/best_synergy_pilots')
+def api_unit_best_synergy_pilots(unit_id):
+    """Soshage-style ranked pilots for one unit (server-built, cached)."""
+    import meta_synergy_rank as msr
+    kwargs = msr._msy_dc_kwargs_from_request(request.args)
+    try:
+        payload = msr.unit_best_synergy_pilots_payload(unit_id, kwargs)
+        ck = f'ubp_{unit_id}_{kwargs["lc"]}_{kwargs.get("lb_tier", 3)}_{kwargs.get("def_tier", 3)}'
+        return jsonify_cacheable(payload, ck, public=True, max_age=300, convert_images=True)
+    except Exception as e:
+        print(f'api/unit/{unit_id}/best_synergy_pilots failed: {e}')
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': 'best_synergy_pilots_failed', 'detail': str(e)}), 500
 
 
 @app.route('/api/meta_synergy_dc/bootstrap')
@@ -21603,7 +21619,7 @@ def get_unit(unit_id):
         if stat_mode_arg not in ('normal', 'sp', 'ssp'):
             stat_mode_arg = 'normal'
         cond_for_ranking = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-        ck = f"u_{unit_id}_{lc}_ssp15_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"u_{unit_id}_{lc}_ssp15_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp1_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -22000,6 +22016,11 @@ def get_unit(unit_id):
             result['weapon_passive_pct'] = {k: {'Accuracy': 0, 'Critical': 0, 'Power': 0} for k in ('sp', 'ssp', 'sp_cond', 'ssp_cond')}
             result['ability_passive_crit_dmg_pct'] = {'no_cond': 0, 'cond_only': 0, 'ssp_no_cond': 0, 'ssp_cond_only': 0}
             result['view_ranking'] = True
+        try:
+            import meta_synergy_rank as _msr
+            result['best_synergy_pilot_eligible'] = _msr.unit_is_rankable(unit_id, lc)
+        except Exception:
+            result['best_synergy_pilot_eligible'] = False
         set_cached_response(ck, result)
         return jsonify_cacheable(result, ck, private=True, max_age=3600, convert_images=True)
     except Exception as e:
