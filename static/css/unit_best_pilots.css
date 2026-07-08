@@ -10,7 +10,7 @@
   top: auto;
   left: auto;
   right: 8px;
-  bottom: -18px;
+  bottom: -28px;
   z-index: 10;
   line-height: 0;
   padding: 0;
@@ -31,12 +31,12 @@
 
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-card--has-bsp,
 .modal-content.char-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-card--has-bsp {
-  padding-bottom: 24px !important;
+  padding-bottom: 30px !important;
 }
 
 .modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--desktop .detail-rec-link-card--has-bsp,
 .modal-content.char-detail:not(.detail-ranking-view) .detail-rec-shortcut--desktop .detail-rec-link-card--has-bsp {
-  padding-bottom: 22px !important;
+  padding-bottom: 28px !important;
 }
 
 .unit-best-pilot-btn-slot {
@@ -395,7 +395,7 @@
 @media (max-width: 768px) {
   .detail-rec-link-card--has-bsp .unit-best-pilot-btn-slot--rec {
     right: 6px;
-    bottom: -22px;
+    bottom: -32px;
   }
 
   .detail-rec-link-card--has-bsp .unit-best-pilot-btn {

@@ -1579,6 +1579,9 @@ _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
 _BSP_DC_BUILD_ENGINE = 'calculateDamage'
 _BSP_PUBLISHED_CACHE_TAG = '_v15_bsp_dc'
+_BSP_PUBLISHED_MEMORY = None
+_BSP_PUBLISHED_MEMORY_KEY = None
+_BSP_PUBLISHED_MEMORY_LOCK = threading.Lock()
 SHINN_EX_CHAR_ID = '1330000103'
 _MSY_BUILD_WORKERS = max(1, min(8, int(os.environ.get('MSY_BUILD_WORKERS', '6') or '6')))
 _MSY_USE_PROCESS_BUILD = os.environ.get('MSY_USE_PROCESS_BUILD', '').strip().lower() in ('1', 'true', 'yes')
@@ -3285,8 +3288,13 @@ def _bsp_unit_warm_cache_path(uid, lc, kwargs):
     return os.path.join(d, f'{lc or "EN"}_{uid}_lb{lb}_dt{dt}_{rm}.json.gz')
 
 
-def _load_bsp_published_cache(cache_key):
+def _load_bsp_published_cache(cache_key, *, use_memory=True):
     """Published BSP rankings built from live /cal (reject legacy python-lite caches)."""
+    global _BSP_PUBLISHED_MEMORY, _BSP_PUBLISHED_MEMORY_KEY
+    if use_memory:
+        with _BSP_PUBLISHED_MEMORY_LOCK:
+            if _BSP_PUBLISHED_MEMORY is not None and _BSP_PUBLISHED_MEMORY_KEY == cache_key:
+                return _BSP_PUBLISHED_MEMORY
     for label, path in (
         ('persistent', _msy_disk_path(cache_key)),
         ('published', _msy_published_path(cache_key)),
@@ -3304,10 +3312,15 @@ def _load_bsp_published_cache(cache_key):
             if not groups:
                 continue
             print(f'BSP {label} DC cache hit: {len(groups)} units ({path})')
-            return {
+            out = {
                 'groups': groups,
                 'total_pilot_candidates': int(data.get('total_pilot_candidates') or 0),
             }
+            if use_memory:
+                with _BSP_PUBLISHED_MEMORY_LOCK:
+                    _BSP_PUBLISHED_MEMORY = out
+                    _BSP_PUBLISHED_MEMORY_KEY = cache_key
+            return out
         except Exception as e:
             print(f'BSP published cache load failed ({path}): {e}')
     return None
@@ -5551,7 +5564,7 @@ def msy_browse_filter_pools(lc='EN', query_args=None):
 
 
 def prewarm_default_rankings():
-    """Load published MSY rankings cache (built via scripts/build_msy_rankings_dc.py)."""
+    """Load published MSY + BSP v15 DC caches at startup."""
     A = _app()
     lc = A.DEFAULT_LANG
     kwargs = {
@@ -5560,6 +5573,13 @@ def prewarm_default_rankings():
         'def_unit_override': None,
         'def_char_override': None,
     }
+    bsp_key = _bsp_published_cache_key(lc, kwargs)
+    bsp_disk = _load_bsp_published_cache(bsp_key)
+    if bsp_disk:
+        print(f'BSP prewarm: loaded {len(bsp_disk.get("groups") or [])} units from v15 DC cache')
+    else:
+        print('BSP prewarm: no v15 DC cache — run scripts/build_msy_rankings_dc.py')
+
     cache_key = _rankings_cache_key(lc, 3, kwargs)
     disk = _load_master_from_disk(cache_key, allow_legacy=True)
     if disk:

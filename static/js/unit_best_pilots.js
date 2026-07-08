@@ -328,6 +328,18 @@
     return sortPilotsByCalcDamage(pilots);
   }
 
+  function withTimeout(promise, ms, label) {
+    return new Promise(function (resolve, reject) {
+      var timer = setTimeout(function () {
+        reject(new Error(label || 'timeout'));
+      }, ms);
+      promise.then(function (v) { clearTimeout(timer); resolve(v); }, function (e) {
+        clearTimeout(timer);
+        reject(e);
+      });
+    });
+  }
+
   async function loadRankings(unitId) {
     var gen = ++state.loadGen;
     state.loading = true;
@@ -337,7 +349,11 @@
       var pilots = await fetchPublishedPilots(unitId, lang);
       if (gen !== state.loadGen) return;
       if (!pilots) {
-        pilots = await loadRankingsViaDc(unitId, lang);
+        pilots = await withTimeout(
+          loadRankingsViaDc(unitId, lang),
+          120000,
+          'dc_timeout'
+        );
         if (gen !== state.loadGen) return;
         if (pilots && pilots.length) warmPublishedPilots(unitId, pilots, lang);
       }
@@ -351,7 +367,10 @@
       setPanelHtml(renderPilotGrid(pilots, unitId));
     } catch (err) {
       if (gen !== state.loadGen) return;
-      setPanelHtml('<div class="unit-best-pilot-empty">' + esc(t('unit_best_pilot_error') || 'Could not load rankings.') + '</div>');
+      var msg = (err && err.message === 'dc_timeout')
+        ? (t('unit_best_pilot_pending') || 'Rankings not cached yet — try again shortly.')
+        : (t('unit_best_pilot_error') || 'Could not load rankings.');
+      setPanelHtml('<div class="unit-best-pilot-empty">' + esc(msg) + '</div>');
       console.error('GgenUnitBestPilots', err);
     } finally {
       if (gen === state.loadGen) state.loading = false;
