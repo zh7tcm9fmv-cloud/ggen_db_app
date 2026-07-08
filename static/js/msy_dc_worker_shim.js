@@ -37,10 +37,8 @@
     querySelector: function () { return null; },
     querySelectorAll: function () { return []; },
     createElement: elStub,
-    addEventListener: function (type, fn) {
-      if (type === 'DOMContentLoaded' && typeof fn === 'function') {
-        setTimeout(fn, 0);
-      }
+    addEventListener: function () {
+      // Do not run app.js DOMContentLoaded handlers inside MSY worker.
     },
     removeEventListener: noop,
     body: { classList: { add: noop, remove: noop } }

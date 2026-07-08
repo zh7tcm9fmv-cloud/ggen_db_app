@@ -447,6 +447,11 @@
       var ck = dcEvalCacheKey(id);
       var cached = state.dcEvalCache[ck];
       if (cached && cached.group) return cached.group;
+      if (cached && cached.raw && state.dcShellCache[id]) {
+        var shell = Object.assign({}, state.dcShellCache[id]);
+        shell.pending = true;
+        return shell;
+      }
       if (state.dcShellCache[id]) return state.dcShellCache[id];
       return { unit: { id: id }, index_only: true, pending: true, max_damage: 0 };
     });
@@ -494,6 +499,10 @@
     }
   }
 
+  function msyTabActive() {
+    return !!(global.S && global.S.currentTab === 'meta_synergy');
+  }
+
   async function evalPageUnits(unitIds, bootstrap, loadGen) {
     if (!unitIds || !unitIds.length) return;
     var todo = unitIds.filter(function (uid) {
@@ -509,11 +518,17 @@
     await fetchCandidatesBatch(todo);
     var done = 0;
     for (var i = 0; i < todo.length; i++) {
-      if (loadGen !== state._loadGen) return;
+      if (loadGen !== state._loadGen || !msyTabActive()) {
+        showWarmingBanner(false);
+        return;
+      }
       var uid = todo[i];
       var cacheKey = dcEvalCacheKey(uid);
       var result = await evalUnitViaDc(uid, bootstrap, getCachedCandidates(uid));
-      if (result) state.dcEvalCache[cacheKey] = result;
+      if (result) {
+        state.dcEvalCache[cacheKey] = result;
+        delete state.dcShellCache[String(uid)];
+      }
       done++;
       applyDcPage(bootstrap);
       showWarmingBanner(true, (t('msy_warming') || 'Computing rankings…') + ' ' + done + '/' + todo.length);
@@ -716,10 +731,9 @@
     if (loadGen !== state._loadGen) return;
     applyDcPage(bootstrap);
     setLoading(false, true);
-    var warmPilots = (global.MsyDcEngine.warmPilots && bootstrap.pilot_ids)
-      ? global.MsyDcEngine.warmPilots(bootstrap.pilot_ids, lang)
-      : Promise.resolve();
-    await warmPilots;
+    if (bootstrap.pilot_ids && global.MsyDcEngine.warmPilots) {
+      void global.MsyDcEngine.warmPilots(bootstrap.pilot_ids, lang);
+    }
     if (loadGen !== state._loadGen) return;
     await evalPageUnits(pageIds, bootstrap, loadGen);
     state.pageCache[cacheKeyBase()] = {
@@ -1280,13 +1294,11 @@
     if (pilot.dmg_dealt_pct != null && pilot.dmg_dealt_pct !== '') {
       var vigor = pilot.vigor_dmg_pct | 0;
       var passive = pilot.dmg_dealt_pct | 0;
-      var dmgLine = t('msy_dmg_dealt_pct')
-        ? t('msy_dmg_dealt_pct').replace('{pct}', String(passive))
-        : ('Dmg Dealt: +' + passive + '%');
+      var dmgLine = 'Damage Dealt: ' + passive + '%';
       if (vigor > 0) {
         dmgLine += ' (+' + vigor + '% vigor)';
       }
-      parts.push('<div class="msy-pilot-dmg-dealt-pct" title="Damage Dealt Up % from DC formula (⑨ passive pool)">' + esc(dmgLine) + '</div>');
+      parts.push('<div class="msy-pilot-dmg-dealt-pct" title="Damage Dealt Up % from DC formula">' + esc(dmgLine) + '</div>');
     }
     return parts.join('');
   }
@@ -1769,6 +1781,16 @@
     loadRankings(false);
   }
 
+  function onTabHidden() {
+    state._loadGen++;
+    if (state._fetchCtrl) {
+      try { state._fetchCtrl.abort(); } catch (_) {}
+      state._fetchCtrl = null;
+    }
+    showWarmingBanner(false);
+    setLoading(false, false);
+  }
+
   function goPage(p) {
     var totalPages = Math.max(1, state.totalPages | 0);
     var next = Math.max(1, Math.min(totalPages, p | 0));
@@ -1875,6 +1897,7 @@
   global.GgenMetaSynergy = {
     init: init,
     onTabShown: onTabShown,
+    onTabHidden: onTabHidden,
     applyLangStatic: applyLangStatic,
     setRankMode: setRankMode,
     goPage: goPage,

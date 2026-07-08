@@ -6,7 +6,7 @@
   var unitCache = {};
   var cacheVersion = null;
   var workerPool = null;
-  var workerFallback = false;
+  var workerFallback = true;
 
   function idb() {
     return global.MsyIdbCache || null;
@@ -463,20 +463,7 @@
     var ctxKey = evalContextKey(opts);
     var cached = await loadEvalFromIdb(unitId, ctxKey);
     if (cached && cached.byTier) return cached;
-
-    var appVer = opts.appJsVersion || cacheVersion || '';
-    var pool = await ensureWorkerPool(appVer);
-    var raw = null;
-    if (pool) {
-      try {
-        raw = await evalUnitWorker(pool, unitId, pilotIds, defTiers, opts);
-      } catch (_) {
-        raw = null;
-      }
-    }
-    if (!raw || raw.error || !raw.byTier) {
-      raw = await evalUnitMainThread(unitId, pilotIds, defTiers, opts);
-    }
+    var raw = await evalUnitMainThread(unitId, pilotIds, defTiers, opts);
     if (raw && raw.byTier) {
       await saveEvalToIdb(unitId, ctxKey, raw);
     }
@@ -505,8 +492,8 @@
   }
 
   async function warmPilots(pilotIds, lang, concurrency) {
-    concurrency = concurrency || 12;
-    var ids = (pilotIds || []).filter(Boolean);
+    concurrency = concurrency || 4;
+    var ids = (pilotIds || []).filter(Boolean).slice(0, 160);
     var missing = [];
     var store = idb();
     if (store && store.isSupported()) {
