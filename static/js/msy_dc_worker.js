@@ -106,6 +106,9 @@
     slot.unitCondPassive = cpEnabled;
     slot.charStatMode = charMode;
     slot.mpLevel = _dcNormMpLevel(vigor);
+    S.dc.mpLevel = slot.mpLevel;
+    S.dc.atkCharData = cd;
+    S.dc.atkUnitData = ud;
     slot.terrainMode = 'normal';
     slot.terrain = 0;
     slot.optionParts = [];

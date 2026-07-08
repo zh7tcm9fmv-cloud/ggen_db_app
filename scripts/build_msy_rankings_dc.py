@@ -185,6 +185,7 @@ def main():
     ap.add_argument('--limit', type=int, default=0, help='Max units (0 = all)')
     ap.add_argument('--unit', action='append', default=[], help='Single unit id (repeatable)')
     ap.add_argument('--resume', action='store_true', help='Skip units already in v15 published cache')
+    ap.add_argument('--force', action='store_true', help='Rebuild all units (ignore existing v15 cache)')
     ap.add_argument('--checkpoint', type=int, default=25, help='Save partial cache every N units')
     ap.add_argument('--workers', type=int, default=3, help='Parallel browser tabs (1-6)')
     ap.add_argument('--out', default='', help='Optional JSON debug output path')
@@ -194,6 +195,8 @@ def main():
     exclude = set()
     pilot_ids = list(msy._pilot_pool_ids())
     cache_key, existing_groups = _load_existing_v15(lang, args.top_pilots)
+    if args.force:
+        existing_groups = []
     done = {
         msy._app().normalize_id((g.get('unit') or {}).get('id'))
         for g in existing_groups

@@ -1577,7 +1577,7 @@ _MSY_BROWSE_PAYLOAD_CACHE_TTL = max(15, min(300, int(os.environ.get('MSY_BROWSE_
 _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
-_BSP_DC_BUILD_ENGINE = 'calculateDamage'
+_BSP_DC_RULES_VERSION = 2
 _BSP_PUBLISHED_CACHE_TAG = '_v15_bsp_dc'
 _BSP_PUBLISHED_MEMORY = None
 _BSP_PUBLISHED_MEMORY_KEY = None
@@ -2987,6 +2987,8 @@ def save_published_master_cache(cache_key, result, *, build_engine=None):
     }
     if build_engine:
         payload['build_engine'] = build_engine
+    if build_engine == _BSP_DC_BUILD_ENGINE:
+        payload['bsp_rules_version'] = _BSP_DC_RULES_VERSION
     tmp = path + '.tmp'
     with gzip.open(tmp, 'wt', encoding='utf-8') as f:
         json.dump(payload, f, ensure_ascii=False, separators=(',', ':'))
@@ -3306,6 +3308,8 @@ def _load_bsp_published_cache(cache_key, *, use_memory=True):
                 data = json.load(f)
             if data.get('build_engine') != _BSP_DC_BUILD_ENGINE:
                 continue
+            if int(data.get('bsp_rules_version') or 1) < _BSP_DC_RULES_VERSION:
+                continue
             if tuple(data.get('cache_key') or ()) != tuple(cache_key):
                 continue
             groups = data.get('groups')
@@ -3334,6 +3338,8 @@ def _load_bsp_unit_warm_cache(uid, lc, kwargs):
         with gzip.open(path, 'rt', encoding='utf-8') as f:
             data = json.load(f)
         if data.get('build_engine') != _BSP_DC_BUILD_ENGINE:
+            return None
+        if int(data.get('bsp_rules_version') or 1) < _BSP_DC_RULES_VERSION:
             return None
         pilots = data.get('pilots') or []
         return pilots if pilots else None

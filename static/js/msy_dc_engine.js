@@ -77,13 +77,10 @@
     slot.unitCondPassive = cpEnabled;
     slot.charStatMode = charMode;
     slot.mpLevel = global._dcNormMpLevel(vigor);
-    slot.terrainMode = 'normal';
-    slot.terrain = 0;
-    slot.optionParts = [];
-    slot.supporters = [];
-    slot.supportCounterAtk = false;
-    slot.finalWpnPow = 0;
-    slot.applyAdvantageEnemyTag = true;
+    // _dcShouldAutoCharCondPassive reads S.dc.mpLevel — sync before pair CP (Supercharged EX2 GC on any unit).
+    S.dc.mpLevel = slot.mpLevel;
+    S.dc.atkCharData = cd;
+    S.dc.atkUnitData = ud;
     slot.charCondPassive = cpEnabled && (typeof global._dcShouldAutoCharCondPassive === 'function'
       ? global._dcShouldAutoCharCondPassive(cd, ud) : true);
     slot.dcSuperchargedExTier = 0;
