@@ -251,6 +251,35 @@
     return dcEnginePromise;
   }
 
+  async function fetchPublishedPilots(unitId, lang) {
+    var q = 'lang=' + encodeURIComponent(lang)
+      + '&lb_tier=3&def_tier=3&rank_mode=super_crit&top_pilots=10';
+    var res = await fetch('/api/unit/' + encodeURIComponent(unitId) + '/best_synergy_pilots?' + q, {
+      credentials: 'same-origin'
+    });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    var payload = await res.json();
+    if (payload.error) throw new Error(payload.detail || payload.error);
+    if (payload.pilots && payload.pilots.length && !payload.pending) {
+      return sortPilotsByCalcDamage(payload.pilots);
+    }
+    return null;
+  }
+
+  async function warmPublishedPilots(unitId, pilots, lang) {
+    if (!pilots || !pilots.length) return;
+    var q = 'lang=' + encodeURIComponent(lang)
+      + '&lb_tier=3&def_tier=3&rank_mode=super_crit&top_pilots=10';
+    try {
+      await fetch('/api/unit/' + encodeURIComponent(unitId) + '/best_synergy_pilots/warm?' + q, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pilots: pilots })
+      });
+    } catch (_) {}
+  }
+
   async function loadRankingsViaDc(unitId, lang) {
     var engine = await ensureDcEngine();
     var bootRes = await fetch('/api/meta_synergy_dc/bootstrap?' + apiQuery(), {
@@ -305,8 +334,13 @@
     showLoading();
     try {
       var lang = (global.S && global.S.lang) || 'EN';
-      var pilots = await loadRankingsViaDc(unitId, lang);
+      var pilots = await fetchPublishedPilots(unitId, lang);
       if (gen !== state.loadGen) return;
+      if (!pilots) {
+        pilots = await loadRankingsViaDc(unitId, lang);
+        if (gen !== state.loadGen) return;
+        if (pilots && pilots.length) warmPublishedPilots(unitId, pilots, lang);
+      }
       if (!pilots || !pilots.length) {
         state.loaded = true;
         setPanelHtml('<div class="unit-best-pilot-empty">' + esc(t('unit_best_pilot_empty') || 'No eligible pilots found.') + '</div>');
@@ -353,7 +387,8 @@
       state.unitId = String(d.id);
       state.loaded = false;
     }
-    if (state.cache[state.unitId] && state.loaded) {
+    if (state.cache[state.unitId]) {
+      state.loaded = true;
       setPanelHtml(renderPilotGrid(state.cache[state.unitId], state.unitId));
       return;
     }
@@ -375,6 +410,15 @@
     else openPanel();
   }
 
+  function prefetchRankings(unitId) {
+    var lang = (global.S && global.S.lang) || 'EN';
+    void fetchPublishedPilots(unitId, lang).then(function (pilots) {
+      if (!pilots || !pilots.length) return;
+      if (String(state.unitId) !== String(unitId)) return;
+      state.cache[String(unitId)] = pilots;
+    });
+  }
+
   function onDetailOpen(d) {
     state.open = false;
     state.unitId = d ? String(d.id) : null;
@@ -387,6 +431,7 @@
       wrap.setAttribute('aria-hidden', 'true');
     }
     setPanelHtml('');
+    if (d && isEligible(d)) prefetchRankings(d.id);
   }
 
   function onDetailClose() {

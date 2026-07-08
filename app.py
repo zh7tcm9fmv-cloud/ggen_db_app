@@ -14016,6 +14016,22 @@ def api_unit_best_synergy_pilots(unit_id):
         return jsonify({'error': 'best_synergy_pilots_failed', 'detail': str(e)}), 500
 
 
+@app.route('/api/unit/<unit_id>/best_synergy_pilots/warm', methods=['POST'])
+def api_unit_best_synergy_pilots_warm(unit_id):
+    """Persist client /cal BSP rankings for instant reload."""
+    import meta_synergy_rank as msr
+    kwargs = msr._msy_dc_kwargs_from_request(request.args)
+    body = request.get_json(silent=True) or {}
+    try:
+        payload = msr.unit_best_synergy_pilots_warm_payload(unit_id, body.get('pilots'), kwargs)
+        return jsonify(payload)
+    except Exception as e:
+        print(f'api/unit/{unit_id}/best_synergy_pilots/warm failed: {e}')
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': 'best_synergy_pilots_warm_failed', 'detail': str(e)}), 500
+
+
 @app.route('/api/meta_synergy_dc/bootstrap')
 def api_meta_synergy_dc_bootstrap():
     """Bootstrap in-browser MSY rankings (unit list + defender tiers)."""

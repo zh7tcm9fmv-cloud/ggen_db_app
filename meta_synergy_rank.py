@@ -1577,6 +1577,8 @@ _MSY_BROWSE_PAYLOAD_CACHE_TTL = max(15, min(300, int(os.environ.get('MSY_BROWSE_
 _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
+_BSP_DC_BUILD_ENGINE = 'calculateDamage'
+_BSP_PUBLISHED_CACHE_TAG = '_v15_bsp_dc'
 SHINN_EX_CHAR_ID = '1330000103'
 _MSY_BUILD_WORKERS = max(1, min(8, int(os.environ.get('MSY_BUILD_WORKERS', '6') or '6')))
 _MSY_USE_PROCESS_BUILD = os.environ.get('MSY_USE_PROCESS_BUILD', '').strip().lower() in ('1', 'true', 'yes')
@@ -1765,6 +1767,8 @@ def _save_master_to_disk(cache_key, result):
             'groups': result.get('groups') or [],
             'total_pilot_candidates': result.get('total_pilot_candidates', 0),
         }
+        if result.get('build_engine'):
+            payload['build_engine'] = result['build_engine']
         tmp = path + '.tmp'
         with gzip.open(tmp, 'wt', encoding='utf-8') as f:
             json.dump(payload, f, ensure_ascii=False, separators=(',', ':'))
@@ -2968,7 +2972,7 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
     return out
 
 
-def save_published_master_cache(cache_key, result):
+def save_published_master_cache(cache_key, result, *, build_engine=None):
     """Write MSY master cache to data/published/ (for Railway deploy)."""
     path = _msy_published_path(cache_key)
     os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -2978,6 +2982,8 @@ def save_published_master_cache(cache_key, result):
         'groups': result.get('groups') or [],
         'total_pilot_candidates': result.get('total_pilot_candidates', 0),
     }
+    if build_engine:
+        payload['build_engine'] = build_engine
     tmp = path + '.tmp'
     with gzip.open(tmp, 'wt', encoding='utf-8') as f:
         json.dump(payload, f, ensure_ascii=False, separators=(',', ':'))
@@ -3259,6 +3265,123 @@ def _unit_best_pilot_api_cache_key(uid, lc, kwargs):
     )
 
 
+def _bsp_published_cache_key(lc, kwargs):
+    return (
+        _BSP_PUBLISHED_CACHE_TAG,
+        lc or 'EN',
+        int(kwargs.get('lb_tier', 3) or 3),
+        int(kwargs.get('top_pilots', 10) or 10),
+        None,
+        None,
+    )
+
+
+def _bsp_unit_warm_cache_path(uid, lc, kwargs):
+    rm = kwargs.get('rank_mode', 'super_crit') or 'super_crit'
+    dt = max(1, min(4, int(kwargs.get('def_tier') or 3)))
+    lb = int(kwargs.get('lb_tier', 3) or 3)
+    d = os.path.join(_msy_persistent_dir(), 'bsp_units')
+    os.makedirs(d, exist_ok=True)
+    return os.path.join(d, f'{lc or "EN"}_{uid}_lb{lb}_dt{dt}_{rm}.json.gz')
+
+
+def _load_bsp_published_cache(cache_key):
+    """Published BSP rankings built from live /cal (reject legacy python-lite caches)."""
+    for label, path in (
+        ('persistent', _msy_disk_path(cache_key)),
+        ('published', _msy_published_path(cache_key)),
+    ):
+        if not os.path.isfile(path):
+            continue
+        try:
+            with gzip.open(path, 'rt', encoding='utf-8') as f:
+                data = json.load(f)
+            if data.get('build_engine') != _BSP_DC_BUILD_ENGINE:
+                continue
+            if tuple(data.get('cache_key') or ()) != tuple(cache_key):
+                continue
+            groups = data.get('groups')
+            if not groups:
+                continue
+            print(f'BSP {label} DC cache hit: {len(groups)} units ({path})')
+            return {
+                'groups': groups,
+                'total_pilot_candidates': int(data.get('total_pilot_candidates') or 0),
+            }
+        except Exception as e:
+            print(f'BSP published cache load failed ({path}): {e}')
+    return None
+
+
+def _load_bsp_unit_warm_cache(uid, lc, kwargs):
+    path = _bsp_unit_warm_cache_path(uid, lc, kwargs)
+    if not os.path.isfile(path):
+        return None
+    try:
+        with gzip.open(path, 'rt', encoding='utf-8') as f:
+            data = json.load(f)
+        if data.get('build_engine') != _BSP_DC_BUILD_ENGINE:
+            return None
+        pilots = data.get('pilots') or []
+        return pilots if pilots else None
+    except Exception as e:
+        print(f'BSP unit warm cache load failed ({path}): {e}')
+        return None
+
+
+def save_bsp_unit_warm_cache(uid, lc, kwargs, pilots):
+    """Persist one unit's DC-ranked pilots (instant on next open)."""
+    uid = _app().normalize_id(uid)
+    pilots = list(pilots or [])
+    if not pilots:
+        return None
+    path = _bsp_unit_warm_cache_path(uid, lc, kwargs)
+    payload = {
+        'version': _MSY_DISK_VERSION,
+        'build_engine': _BSP_DC_BUILD_ENGINE,
+        'unit_id': uid,
+        'pilots': pilots,
+    }
+    tmp = path + '.tmp'
+    with gzip.open(tmp, 'wt', encoding='utf-8') as f:
+        json.dump(payload, f, ensure_ascii=False, separators=(',', ':'))
+    os.replace(tmp, path)
+    return path
+
+
+def _lookup_bsp_published_group(uid, lc, kwargs):
+    cache_key = _bsp_published_cache_key(lc, kwargs)
+    disk = _load_bsp_published_cache(cache_key)
+    if not disk:
+        return None
+    for g in disk.get('groups') or []:
+        if _app().normalize_id((g.get('unit') or {}).get('id')) == uid:
+            if g.get('pilots') or (g.get('rankings') or {}).get('super_crit', {}).get('pilots'):
+                return g
+    return None
+
+
+def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs):
+    pilots = list(pilots or [])
+    pilots.sort(
+        key=lambda p: (
+            -(p.get('peak_dmg') or p.get('super_crit_dmg') or p.get('score') or 0),
+            str((p.get('char') or {}).get('id') or ''),
+        ),
+    )
+    for i, pilot in enumerate(pilots):
+        pilot['rank'] = i + 1
+    return {
+        'eligible': True,
+        'unit_id': uid,
+        'pilots': pilots,
+        'source': source,
+        'def_tier': def_tier,
+        'defender_note': _settings_note(def_tier),
+        'max_damage': pilots[0].get('peak_dmg') or pilots[0].get('super_crit_dmg') if pilots else 0,
+    }
+
+
 def _lookup_unit_group_from_master_cache(uid, lc, kwargs):
     """Instant pilots from published MSY master cache when available."""
     cache_key = _master_cache_key(lc, kwargs)
@@ -3291,20 +3414,52 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
     if cached is not None:
         return cached
 
-    # BSP must use live client DC — published master cache can be stale/lite (wrong UR order).
-    out = {
-        'eligible': True,
-        'unit_id': uid,
-        'pilots': [],
-        'pending': True,
-        'source': 'client_dc',
-        'def_tier': def_tier,
-        'defender_note': _settings_note(def_tier),
-    }
+    # Soshage-style: instant precomputed /cal rankings, then warm per-unit cache, then client DC.
+    warm = _load_bsp_unit_warm_cache(uid, lc, kwargs)
+    if warm:
+        out = _bsp_pilots_response(uid, warm, source='unit_warm_cache', def_tier=def_tier,
+                                   rank_mode=rank_mode, lc=lc, kwargs=kwargs)
+    else:
+        g = _lookup_bsp_published_group(uid, lc, kwargs)
+        if g:
+            row = _group_for_def_tier(g, def_tier) if g.get('rankings_by_tier') else g
+            if not row:
+                row = g
+            row = _normalize_group_for_mode(row, rank_mode) or row
+            row = _ensure_passive_variant_for_request(row, lc, rank_mode, def_tier, kwargs)
+            row = _backfill_pilot_formula_stats(row, lc, rank_mode, kwargs)
+            pilots = list(row.get('pilots') or [])
+            out = _bsp_pilots_response(uid, pilots, source='published_dc', def_tier=def_tier,
+                                       rank_mode=rank_mode, lc=lc, kwargs=kwargs)
+        else:
+            out = {
+                'eligible': True,
+                'unit_id': uid,
+                'pilots': [],
+                'pending': True,
+                'source': 'client_dc',
+                'def_tier': def_tier,
+                'defender_note': _settings_note(def_tier),
+            }
     if len(_unit_best_pilot_api_cache) >= _UNIT_BEST_PILOT_API_CACHE_MAX:
         _unit_best_pilot_api_cache.pop(next(iter(_unit_best_pilot_api_cache)))
     _unit_best_pilot_api_cache[ck] = out
     return out
+
+
+def unit_best_synergy_pilots_warm_payload(unit_id, pilots, kwargs):
+    """Store client /cal results so the next BSP open is instant."""
+    lc = kwargs.get('lc', 'EN')
+    uid = _app().normalize_id(unit_id)
+    if not unit_is_rankable(uid, lc):
+        return {'ok': False, 'error': 'not_rankable'}
+    pilots = list(pilots or [])
+    if not pilots:
+        return {'ok': False, 'error': 'empty_pilots'}
+    path = save_bsp_unit_warm_cache(uid, lc, kwargs, pilots)
+    ck = _unit_best_pilot_api_cache_key(uid, lc, kwargs)
+    _unit_best_pilot_api_cache.pop(ck, None)
+    return {'ok': True, 'unit_id': uid, 'path': path, 'pilot_count': len(pilots)}
 
 
 def dc_candidates_payload(unit_id, kwargs):

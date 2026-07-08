@@ -183,7 +183,7 @@ async def build_units(base: str, lang: str, unit_ids, pilot_ids, exclude, top_pi
         ids = unit_ids[:limit] if limit else unit_ids
         t0 = time.perf_counter()
         for i, uid in enumerate(ids):
-            candidates = msy.dc_candidate_pilots_for_unit(uid, pilot_ids, exclude, lang)
+            candidates = msy.dc_candidate_pilots_for_unit(uid, pilot_ids, exclude, lang, bsp=True)
             if not candidates:
                 continue
             raw = await eval_unit(uid, candidates, True)
@@ -244,15 +244,15 @@ def main():
             ch = p.get('char') or {}
             print(f"  #{p.get('rank')} {ch.get('name')} sc={p.get('super_crit_dmg')} pair={p.get('pair_ok')}")
 
-    cache_key = msy._master_cache_key(lang, {
+    cache_key = msy._bsp_published_cache_key(lang, {
         'lb_tier': 3,
         'top_pilots': args.top_pilots,
-        'def_unit_override': None,
-        'def_char_override': None,
     })
     result = {'groups': groups, 'total_pilot_candidates': len(pilot_ids)}
-    path = msy.save_published_master_cache(cache_key, result)
-    msy._save_master_to_disk(cache_key, result)
+    path = msy.save_published_master_cache(
+        cache_key, result, build_engine=msy._BSP_DC_BUILD_ENGINE,
+    )
+    msy._save_master_to_disk(cache_key, {**result, 'build_engine': msy._BSP_DC_BUILD_ENGINE})
     print(f"Saved: {path}")
     sort_path = msy.save_published_sort_index(lang, groups)
     print(f"Sort index: {sort_path} ({len(msy._MSY_SORT_DAMAGE_INDEX.get(lang) or {})} units)")
