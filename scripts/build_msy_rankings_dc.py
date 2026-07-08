@@ -59,7 +59,7 @@ def _save_v15(cache_key, groups, pilot_count):
 
 
 async def _setup_dc_page(page, base):
-    await page.goto(f'{base}/?tab=calculator', wait_until='networkidle', timeout=180_000)
+    await page.goto(f'{base}/?tab=calculator', wait_until='domcontentloaded', timeout=120_000)
     await page.wait_for_function(
         '() => typeof _dcCalculateDamageWithSlot === "function"'
         ' && typeof _dcCreateEmptyAttackerSlot === "function"',
@@ -123,8 +123,9 @@ async def build_units(base, lang, unit_ids, pilot_ids, exclude, top_pilots, def_
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
         pages = []
-        for _ in range(workers):
+        for wi in range(workers):
             pg = await browser.new_page()
+            print(f'  setup browser tab {wi + 1}/{workers}...', flush=True)
             await _setup_dc_page(pg, base)
             pages.append(pg)
 
