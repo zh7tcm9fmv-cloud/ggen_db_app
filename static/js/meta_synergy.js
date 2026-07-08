@@ -36,6 +36,8 @@
     sameRoleOnly: false,
     cacheIncomplete: false,
     pageCache: {},
+    dcAllGroups: null,
+    dcBootstrap: null,
     _fetchCtrl: null,
     _loadGen: 0,
     _lastRenderSig: '',
@@ -376,6 +378,141 @@
     }
     if (fq) q.push(fq);
     return '/api/meta_synergy_rankings?' + q.join('&');
+  }
+
+  function buildDcApiQuery() {
+    var lang = (global.S && global.S.lang) || 'EN';
+    var fq = buildFilterQuery();
+    var q = [
+      'lang=' + encodeURIComponent(lang),
+      'def_tier=' + encodeURIComponent(String(state.defTier)),
+      'lb_tier=3',
+      'top_pilots=' + encodeURIComponent(String(state.topPilots)),
+      'unit_q=' + encodeURIComponent(state.unitQ || ''),
+      'rank_mode=' + encodeURIComponent(state.rankMode)
+    ];
+    if (state.sameRoleOnly) q.push('same_role_only=1');
+    if (!state.charCondPassiveOn) q.push('cp_on=0');
+    if (!state.pilotCondPassiveOn) q.push('pep_on=0');
+    if (fq) q.push(fq);
+    return q.join('&');
+  }
+
+  function buildDcBootstrapUrl() {
+    return '/api/meta_synergy_dc/bootstrap?' + buildDcApiQuery();
+  }
+
+  function buildDcCandidatesUrl(unitId) {
+    return '/api/meta_synergy_dc/candidates?unit_id=' + encodeURIComponent(String(unitId)) + '&' + buildDcApiQuery();
+  }
+
+  function dcGroupSortDamage(g, modeId) {
+    if (!g) return 0;
+    var block = fullGroupBlock(g, modeId);
+    return (block && block.max_damage) || g.max_damage || 0;
+  }
+
+  function sortDcGroups(groups) {
+    var modeId = state.rankMode;
+    return (groups || []).slice().sort(function (a, b) {
+      var da = dcGroupSortDamage(a, modeId);
+      var db = dcGroupSortDamage(b, modeId);
+      return db - da
+        || String((a.unit && a.unit.id) || '').localeCompare(String((b.unit && b.unit.id) || ''));
+    });
+  }
+
+  function applyDcPage(allGroups, bootstrap) {
+    var sorted = sortDcGroups(allGroups);
+    state.dcAllGroups = sorted;
+    state.dcBootstrap = bootstrap || state.dcBootstrap;
+    state.total = sorted.length;
+    state.totalPages = Math.max(1, Math.ceil(sorted.length / state.perPage));
+    state.page = Math.max(1, Math.min(state.page, state.totalPages));
+    var start = (state.page - 1) * state.perPage;
+    state.groups = sorted.slice(start, start + state.perPage);
+    state.filteredBrowse = !!(bootstrap && bootstrap.filtered_browse);
+    state.settings = (bootstrap && bootstrap.settings) || state.settings;
+    if (bootstrap && bootstrap.defender_tiers) {
+      state.defenderTiers = bootstrap.defender_tiers;
+      populateDefTierSelect(bootstrap.defender_tiers);
+    }
+    state.cacheKey = cacheKeyForState();
+    state.cacheIncomplete = false;
+    scheduleContentRender(true);
+  }
+
+  async function evalUnitViaDc(unitId, bootstrap) {
+    var engine = global.MsyDcEngine;
+    if (!engine || typeof engine.evalUnit !== 'function') {
+      throw new Error('MsyDcEngine not loaded');
+    }
+    var lang = (global.S && global.S.lang) || 'EN';
+    var defTiers = (bootstrap && bootstrap.defender_tiers) || state.defenderTiers || {};
+    var candRes = await fetch(buildDcCandidatesUrl(unitId), { credentials: 'same-origin' });
+    if (!candRes.ok) return null;
+    var candData = await candRes.json();
+    var pilotIds = candData.pilot_ids || [];
+    if (!pilotIds.length) return null;
+    var pepOn = state.pilotCondPassiveOn;
+    var cpOn = state.charCondPassiveOn;
+    var raw = await engine.evalUnit(unitId, pilotIds, defTiers, { lang: lang, cpOn: cpOn, pepOn: pepOn });
+    if (!raw || raw.error || !raw.byTier) return null;
+    var rawNoCp = null;
+    if (cpOn) {
+      rawNoCp = await engine.evalUnit(unitId, pilotIds, defTiers, { lang: lang, cpOn: false, pepOn: pepOn });
+    }
+    var asmBody = {
+      unit_id: unitId,
+      pairs_by_tier: raw.byTier,
+      lang: lang,
+      top_pilots: state.topPilots,
+      rank_mode: state.rankMode,
+      def_tier: state.defTier,
+      same_role_only: state.sameRoleOnly,
+      cp_on: cpOn,
+      pep_on: pepOn
+    };
+    if (rawNoCp && rawNoCp.byTier) asmBody.pairs_by_tier_no_cp = rawNoCp.byTier;
+    var asmRes = await fetch('/api/meta_synergy_dc/assemble?' + buildDcApiQuery(), {
+      method: 'POST',
+      credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(asmBody)
+    });
+    if (!asmRes.ok) return null;
+    var asmData = await asmRes.json();
+    return asmData && asmData.group ? asmData.group : null;
+  }
+
+  async function runDcRankings(loadGen) {
+    await global.MsyDcEngine.ensureReady();
+    if (typeof global.MsyDcEngine.clearCaches === 'function') global.MsyDcEngine.clearCaches();
+    var bootstrapRes = await fetch(buildDcBootstrapUrl(), { credentials: 'same-origin' });
+    if (!bootstrapRes.ok) throw new Error('HTTP ' + bootstrapRes.status);
+    var bootstrap = await bootstrapRes.json();
+    if (loadGen !== state._loadGen) return;
+    if (bootstrap.error) throw new Error(bootstrap.detail || bootstrap.error);
+    var unitIds = bootstrap.unit_ids || [];
+    var allGroups = [];
+    var total = unitIds.length;
+    for (var i = 0; i < unitIds.length; i++) {
+      if (loadGen !== state._loadGen) return;
+      showWarmingBanner(true, (t('msy_warming') || 'Computing rankings…') + ' ' + (i + 1) + '/' + total);
+      var group = await evalUnitViaDc(unitIds[i], bootstrap);
+      if (group) allGroups.push(group);
+      if (i % 3 === 0 || i === unitIds.length - 1) {
+        applyDcPage(allGroups, bootstrap);
+      }
+      await sleep(0);
+    }
+    applyDcPage(allGroups, bootstrap);
+    state.pageCache[cacheKeyBase()] = {
+      dcAllGroups: state.dcAllGroups,
+      bootstrap: bootstrap
+    };
+    void fetchPilotSkillsBatch(state.groups);
+    showWarmingBanner(false);
   }
 
   function tierCacheKey(defTier, rankMode) {
@@ -1198,18 +1335,13 @@
 
   async function loadRankings(force) {
     syncSearchFromDom();
-    var key = cacheKeyForState();
-    var cachedPayload = !force && state.pageCache[key];
-    if (cachedPayload) {
-      applyPayload(cachedPayload, state.defTier);
+    var dcKey = cacheKeyBase();
+    var dcCached = !force && state.pageCache[dcKey] && state.pageCache[dcKey].dcAllGroups;
+    if (dcCached) {
+      state.dcAllGroups = state.pageCache[dcKey].dcAllGroups;
+      state.dcBootstrap = state.pageCache[dcKey].bootstrap;
+      applyDcPage(state.dcAllGroups, state.dcBootstrap);
       void fetchPilotSkillsBatch(state.groups);
-      if (hasPendingPilotGroups() || hasPreviewPilotGroups()) {
-        void loadRankingsPilotsBackground(state._loadGen);
-      }
-      return;
-    }
-    if (!force && state.cacheKey === key && state.groups.length && !state.cacheIncomplete) {
-      renderContent(false);
       return;
     }
     if (state._fetchCtrl) {
@@ -1221,124 +1353,25 @@
     clearTimeout(state._skillsRenderTimer);
     state._contentRenderTimer = null;
     state._skillsRenderTimer = null;
-    setLoading(true, false);
-    showWarmingBanner(false);
-    var poll = 0;
-    var skillsFetched = false;
-    var browseFiltered = hasActiveBrowseFilters();
+    state.dcAllGroups = null;
+    state.groups = [];
+    state.total = 0;
+    state.totalPages = 1;
+    setLoading(true, true);
+    showWarmingBanner(true, t('msy_warming') || 'Computing rankings with Damage Simulator…');
     try {
-      var summaryOpts = { credentials: 'same-origin' };
-      if (state._fetchCtrl) summaryOpts.signal = state._fetchCtrl.signal;
-      var sumTimeoutId = setTimeout(function () {
-        if (state._fetchCtrl) {
-          try { state._fetchCtrl.abort(); } catch (_) {}
-        }
-      }, MSY_SUMMARY_FETCH_MS);
-      try {
-        var sumRes = await fetch(buildApiUrl({ summary: true }), summaryOpts);
-        clearTimeout(sumTimeoutId);
-        if (sumRes.ok && loadGen === state._loadGen) {
-          var sumData = await sumRes.json();
-          if (sumData && sumData.groups && sumData.groups.length) {
-            applyPayload(sumData, state.defTier);
-            setLoading(false, false);
-          }
-        }
-      } catch (sumErr) {
-        clearTimeout(sumTimeoutId);
-        if (sumErr && sumErr.name === 'AbortError') {
-          if (loadGen !== state._loadGen) return;
-        }
-      }
-
-      if (browseFiltered) {
-        if (!skillsFetched && state.groups.length) {
-          skillsFetched = true;
-          void fetchPilotSkillsBatch(state.groups);
-        }
-        if (hasPendingPilotGroups() || hasPreviewPilotGroups()) {
-          void loadRankingsPilotsBackground(loadGen);
-        }
-        return;
-      }
-
-      while (poll <= MAX_LOAD_POLLS) {
-        if (loadGen !== state._loadGen) return;
-        if (!hasPendingPilotGroups() && !hasPreviewPilotGroups() && state.groups.length) {
-          break;
-        }
-        var fetchOpts = { credentials: 'same-origin' };
-        if (state._fetchCtrl) fetchOpts.signal = state._fetchCtrl.signal;
-        var timeoutId = setTimeout(function () {
-          if (state._fetchCtrl) {
-            try { state._fetchCtrl.abort(); } catch (_) {}
-          }
-        }, MSY_PILOT_FETCH_MS);
-        var r;
-        try {
-          r = await fetch(buildApiUrl({ pilotBuild: MSY_PILOT_BUILD_PER_POLL }), fetchOpts);
-        } finally {
-          clearTimeout(timeoutId);
-        }
-        var d = null;
-        if (r.status === 202 || r.ok) {
-          d = await r.json();
-        }
-        if (loadGen !== state._loadGen) return;
-        if (d && d.error) throw new Error(d.detail || d.error);
-        if (!r.ok && !d) throw new Error('HTTP ' + r.status);
-
-        var hasGroups = d && d.groups && d.groups.length;
-        if (d) {
-          applyPayload(d, state.defTier);
-          rememberPagePayload(cacheKeyForState(), d);
-        }
-        if (hasGroups) setLoading(false, false);
-
-        if (d && d.warming) {
-          showWarmingBanner(true, hasGroups
-            ? (t('msy_warming_partial') || t('msy_warming') || 'Updating rankings…')
-            : (t('msy_warming_slow') || 'Rankings are still building. Results may be incomplete — try refreshing in a minute.'));
-          poll++;
-          if (poll > MAX_LOAD_POLLS) break;
-          await sleep(Math.max(1200, (d.retry_after || 2) * 1000));
-          continue;
-        }
-
-        if (d && d.cache_incomplete && hasPendingPilotGroups() && poll < MAX_LOAD_POLLS) {
-          showWarmingBanner(true, t('msy_warming_partial') || t('msy_warming') || 'Updating rankings…');
-          poll++;
-          await sleep(800);
-          continue;
-        }
-        if (hasPendingPilotGroups() || hasPreviewPilotGroups()) {
-          break;
-        }
-        break;
-      }
-      if (!skillsFetched && state.groups.length) {
-        skillsFetched = true;
-        void fetchPilotSkillsBatch(state.groups);
-      }
+      if (!global.MsyDcEngine) throw new Error('MsyDcEngine not loaded — reload the page');
+      await runDcRankings(loadGen);
     } catch (e) {
-      if (e && e.name === 'AbortError') {
-        if (hasPendingPilotGroups() || hasPreviewPilotGroups()) {
-          void loadRankingsPilotsBackground(loadGen);
-        }
-        return;
-      }
+      if (e && e.name === 'AbortError') return;
       state.groups = [];
+      state.dcAllGroups = null;
       var host = document.getElementById('msyContent');
       if (host) {
         host.innerHTML = '<div class="msy-error">' + esc(String(e)) + '</div>';
       }
     } finally {
-      if (loadGen === state._loadGen) {
-        setLoading(false, false);
-        if (hasPendingPilotGroups() || hasPreviewPilotGroups()) {
-          void loadRankingsPilotsBackground(loadGen);
-        }
-      }
+      if (loadGen === state._loadGen) setLoading(false, false);
     }
   }
 
@@ -1382,6 +1415,10 @@
     state.rankMode = modeId;
     renderRankModes();
     state.page = 1;
+    if (state.dcAllGroups && state.dcAllGroups.length) {
+      applyDcPage(state.dcAllGroups, state.dcBootstrap);
+      return;
+    }
     state.cacheKey = null;
     clearPageCache();
     loadRankings(false);
@@ -1497,6 +1534,11 @@
     var next = Math.max(1, Math.min(totalPages, p | 0));
     if (next === state.page && state.groups.length && !state.loading) return;
     state.page = next;
+    if (state.dcAllGroups && state.dcAllGroups.length) {
+      applyDcPage(state.dcAllGroups, state.dcBootstrap);
+      try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (_) { window.scrollTo(0, 0); }
+      return;
+    }
     state.cacheKey = null;
     state.groups = [];
     invalidateRenderSignature();
@@ -1514,6 +1556,10 @@
     syncPerPageToDom();
     try { localStorage.setItem(MSY_PER_PAGE_STORAGE_KEY, String(n)); } catch (_) {}
     state.page = 1;
+    if (state.dcAllGroups && state.dcAllGroups.length) {
+      applyDcPage(state.dcAllGroups, state.dcBootstrap);
+      return;
+    }
     state.cacheKey = null;
     clearPageCache();
     state.groups = [];

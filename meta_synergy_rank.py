@@ -2964,6 +2964,174 @@ def dc_candidate_pilots_for_unit(uid, pilot_ids, exclude, lc):
     return [cid for _, cid in cheap_scored[:need]]
 
 
+def _msy_pilot_ids_from_kwargs(kwargs):
+    """Pilot pool for MSY (same filters as build_meta_synergy_rankings)."""
+    A = _app()
+    pilot_rarity = kwargs.get('pilot_rarity', 'ALL')
+    pilot_rarity_filter = (
+        None if not pilot_rarity or str(pilot_rarity).upper() == 'ALL'
+        else str(pilot_rarity).upper()
+    )
+    role_raw = kwargs.get('role') if kwargs.get('role') is not None else kwargs.get('unit_role')
+    if role_raw is None or str(role_raw).upper() in ('ALL', ''):
+        role_filter = None
+    else:
+        role_filter = A.parse_list_role_filter(str(role_raw))
+    pilot_roles = kwargs.get('pilot_roles')
+    if isinstance(pilot_roles, str):
+        pilot_roles = tuple(x.strip() for x in pilot_roles.split(',') if x.strip()) or None
+    pilot_role_set = _pilot_role_set_for_filters(role_filter, pilot_roles)
+    pilot_ids = []
+    for cid in _pilot_pool_ids():
+        info = A.char_info_map.get(cid) or {}
+        ri = str(info.get('rarity', '1'))
+        role = str(info.get('role', '0'))
+        if role not in pilot_role_set:
+            continue
+        if pilot_rarity_filter and A.RARITY_MAP.get(ri, 'N') != pilot_rarity_filter:
+            continue
+        pilot_ids.append(cid)
+    return pilot_ids
+
+
+def _msy_dc_kwargs_from_request(args):
+    """Normalize Flask request.args (or similar) into MSY kwargs dict."""
+    pilot_roles_raw = (args.get('pilot_roles') or '').strip()
+    pilot_roles = (
+        tuple(x.strip() for x in pilot_roles_raw.split(',') if x.strip())
+        if pilot_roles_raw else None
+    )
+    exclude_pairs = []
+    for part in (args.get('exclude') or '').split(';'):
+        part = part.strip()
+        if not part or ':' not in part:
+            continue
+        uid, cid = part.split(':', 1)
+        if uid.strip() and cid.strip():
+            exclude_pairs.append((uid.strip(), cid.strip()))
+    return {
+        'lc': args.get('lang', 'EN'),
+        'unit_rarity': args.get('unit_rarity', 'ALL'),
+        'unit_role': args.get('unit_role', 'ALL'),
+        'rarity': (args.get('rarity') or '').strip() or None,
+        'role': (args.get('role') or '').strip() or None,
+        'series_id': (args.get('series_id') or '').strip() or None,
+        'series_op': (args.get('series_op') or '').strip() or None,
+        'source': (args.get('source') or '').strip() or None,
+        'lineage_id': (args.get('lineage_id') or '').strip() or None,
+        'lineage_op': (args.get('lineage_op') or '').strip() or None,
+        'pilot_rarity': args.get('pilot_rarity', 'ALL'),
+        'pilot_roles': pilot_roles,
+        'metric': args.get('metric', 'super_crit'),
+        'vigor': args.get('vigor', 'super'),
+        'lb_tier': int(args.get('lb_tier', '3') or 3),
+        'def_tier': int(args.get('def_tier', '3') or 3),
+        'top_pilots': int(args.get('top_pilots', '10') or 10),
+        'rank_mode': (args.get('rank_mode') or 'super_crit').strip() or 'super_crit',
+        'unit_q': args.get('unit_q', '') or '',
+        'exclude_pairs': exclude_pairs or None,
+        'same_role_only': args.get('same_role_only', '0') in ('1', 'true', 'yes'),
+        'cp_on': args.get('cp_on', '1') not in ('0', 'false', 'no', ''),
+        'pep_on': args.get('pep_on', '1') not in ('0', 'false', 'no', ''),
+    }
+
+
+def _dc_pairs_from_json(raw):
+    """Convert client pairs_by_tier JSON to {int: [(cid, vigor_dict), ...]}."""
+    if not raw:
+        return {}
+    out = {}
+    for dt, pairs in raw.items():
+        py_pairs = []
+        for item in pairs or []:
+            if not isinstance(item, (list, tuple)) or len(item) < 2:
+                continue
+            cid, by_vigor = item[0], item[1]
+            if by_vigor:
+                py_pairs.append((str(cid), dict(by_vigor)))
+        if py_pairs:
+            out[int(dt)] = py_pairs
+    return out
+
+
+def dc_bootstrap_payload(kwargs):
+    """Bootstrap data for in-browser MSY DC rankings."""
+    lc = kwargs.get('lc', 'EN')
+    browse = _parse_browse_filters(kwargs, lc)
+    unit_q = kwargs.get('unit_q', '') or ''
+    unit_ids = _filtered_rankable_unit_ids(lc, browse, unit_q)
+    pilot_ids = _msy_pilot_ids_from_kwargs(kwargs)
+    browse_active = _browse_filters_active(browse, unit_q)
+    dt = max(1, min(4, int(kwargs.get('def_tier') or 3)))
+    role_raw = kwargs.get('role') if kwargs.get('role') is not None else kwargs.get('unit_role')
+    return {
+        'engine': 'dc',
+        'unit_ids': unit_ids,
+        'total': len(unit_ids),
+        'total_pilot_candidates': len(pilot_ids),
+        'defender_tiers': defender_tiers_public(),
+        'filtered_browse': browse_active,
+        'def_tier': dt,
+        'metric': kwargs.get('metric', 'super_crit'),
+        'settings': {
+            'unit_rarity': kwargs.get('rarity') or kwargs.get('unit_rarity') or 'ALL',
+            'unit_role': role_raw,
+            'series_id': kwargs.get('series_id') or '',
+            'source': kwargs.get('source') or '',
+            'lineage_id': kwargs.get('lineage_id') or '',
+            'lineage_op': kwargs.get('lineage_op') or '',
+            'pilot_rarity': kwargs.get('pilot_rarity', 'ALL'),
+            'pilot_roles': list(_pilot_role_set_for_filters(
+                browse.get('role_filter'),
+                kwargs.get('pilot_roles'),
+            )),
+            'same_role_only': bool(kwargs.get('same_role_only')),
+            'lb_tier': int(kwargs.get('lb_tier', 3) or 3),
+            'def_tier': dt,
+            'defender_note': _settings_note(dt),
+        },
+    }
+
+
+def dc_candidates_payload(unit_id, kwargs):
+    """Pilot candidate IDs for one unit (DC prefilter)."""
+    lc = kwargs.get('lc', 'EN')
+    pilot_ids = _msy_pilot_ids_from_kwargs(kwargs)
+    exclude = _exclude_set_from_kwargs(kwargs)
+    uid = _app().normalize_id(unit_id)
+    candidates = dc_candidate_pilots_for_unit(uid, pilot_ids, exclude, lc)
+    return {'unit_id': uid, 'pilot_ids': candidates}
+
+
+def dc_assemble_payload(unit_id, pairs_by_tier, kwargs, *, pairs_by_tier_no_cp=None):
+    """Assemble one MSY unit group from client DC pair results."""
+    lc = kwargs.get('lc', 'EN')
+    pilot_ids = _msy_pilot_ids_from_kwargs(kwargs)
+    exclude = _exclude_set_from_kwargs(kwargs)
+    top_pilots = int(kwargs.get('top_pilots') or 10)
+    rank_mode = kwargs.get('rank_mode', 'super_crit') or 'super_crit'
+    def_tier = max(1, min(4, int(kwargs.get('def_tier') or 3)))
+    same_role_only = bool(kwargs.get('same_role_only'))
+    uid = _app().normalize_id(unit_id)
+    by_tier = _dc_pairs_from_json(pairs_by_tier)
+    by_tier_no_cp = _dc_pairs_from_json(pairs_by_tier_no_cp) if pairs_by_tier_no_cp else None
+    if not by_tier:
+        return None
+    g = assemble_unit_group_from_dc(
+        uid, by_tier, pilot_ids, lc, top_pilots, exclude,
+        pairs_by_tier_no_cp=by_tier_no_cp,
+        same_role_only=same_role_only,
+    )
+    if not g:
+        return None
+    g = _ensure_passive_variant_for_request(g, lc, rank_mode, def_tier, kwargs)
+    g = _backfill_pilot_formula_stats(g, lc, rank_mode, kwargs)
+    row = _group_for_def_tier(g, def_tier) if g.get('rankings_by_tier') else g
+    if not row:
+        return None
+    return _normalize_group_for_mode(row, rank_mode) or row
+
+
 def _msy_build_worker_init(ctx):
     """Load app once per process worker (Windows spawn-safe)."""
     os.environ.setdefault('MSY_ALLOW_PYTHON_BUILD', '1')

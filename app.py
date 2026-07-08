@@ -51,6 +51,7 @@ def _app_js_bundle_version_tag():
     root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
     assets = (
         ('js', 'app.js'),
+        ('js', 'msy_dc_engine.js'),
         ('js', 'meta_synergy.js'),
         ('js', 'kofi_donate_promo.js'),
         ('css', 'kofi_donate_promo.css'),
@@ -93,7 +94,7 @@ def _apply_static_cache_headers(response):
     if not path.startswith('/static/'):
         return response
     ext = os.path.splitext(path)[1].lower()
-    if path.endswith('/js/app.js') or path.endswith('/js/meta_synergy.js'):
+    if path.endswith('/js/app.js') or path.endswith('/js/meta_synergy.js') or path.endswith('/js/msy_dc_engine.js'):
         response.headers['Cache-Control'] = 'no-cache, must-revalidate'
         return response
     if ext not in _STATIC_CACHEABLE_EXT:
@@ -13973,6 +13974,72 @@ def api_meta_synergy_rankings():
         import traceback
         traceback.print_exc()
         return jsonify({'error': 'meta_synergy_rankings_failed', 'detail': str(e)}), 500
+
+
+@app.route('/api/meta_synergy_dc/bootstrap')
+def api_meta_synergy_dc_bootstrap():
+    """Bootstrap in-browser MSY rankings (unit list + defender tiers)."""
+    import meta_synergy_rank as msr
+    kwargs = msr._msy_dc_kwargs_from_request(request.args)
+    try:
+        payload = msr.dc_bootstrap_payload(kwargs)
+        ck = f'msy_dc_boot_{kwargs["lc"]}_{hash(tuple(sorted(request.args.items()))) & 0xffff:x}'
+        return jsonify_cacheable(payload, ck, public=True, max_age=300, convert_images=True)
+    except Exception as e:
+        print(f'api_meta_synergy_dc/bootstrap failed: {e}')
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': 'meta_synergy_dc_bootstrap_failed', 'detail': str(e)}), 500
+
+
+@app.route('/api/meta_synergy_dc/candidates')
+def api_meta_synergy_dc_candidates():
+    """Pilot candidates for one unit (DC prefilter)."""
+    import meta_synergy_rank as msr
+    kwargs = msr._msy_dc_kwargs_from_request(request.args)
+    unit_id = request.args.get('unit_id', '').strip()
+    if not unit_id:
+        return jsonify({'error': 'missing_unit_id'}), 400
+    try:
+        payload = msr.dc_candidates_payload(unit_id, kwargs)
+        ck = f'msy_dc_cand_{unit_id}_{kwargs["lc"]}_{hash(tuple(sorted(request.args.items()))) & 0xffff:x}'
+        return jsonify_cacheable(payload, ck, public=True, max_age=3600, convert_images=True)
+    except Exception as e:
+        print(f'api_meta_synergy_dc/candidates failed: {e}')
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': 'meta_synergy_dc_candidates_failed', 'detail': str(e)}), 500
+
+
+@app.route('/api/meta_synergy_dc/assemble', methods=['POST'])
+def api_meta_synergy_dc_assemble():
+    """Assemble one MSY unit group from client DC pair results."""
+    import meta_synergy_rank as msr
+    body = request.get_json(silent=True) or {}
+    kwargs = msr._msy_dc_kwargs_from_request(request.args)
+    for key in ('lang', 'top_pilots', 'rank_mode', 'def_tier', 'same_role_only', 'cp_on', 'pep_on'):
+        if key in body and body[key] is not None:
+            kwargs[key] = body[key]
+    unit_id = body.get('unit_id') or body.get('unitId')
+    if not unit_id:
+        return jsonify({'error': 'missing_unit_id'}), 400
+    try:
+        group = msr.dc_assemble_payload(
+            unit_id,
+            body.get('pairs_by_tier') or body.get('byTier'),
+            kwargs,
+            pairs_by_tier_no_cp=body.get('pairs_by_tier_no_cp') or body.get('byTierNoCp'),
+        )
+        if not group:
+            return jsonify({'error': 'assemble_failed'}), 422
+        payload = {'group': group}
+        ck = f'msy_dc_asm_{unit_id}_{kwargs["lc"]}_{hash(str(body.get("pairs_by_tier"))) & 0xffff:x}'
+        return jsonify_cacheable(payload, ck, public=True, max_age=0, convert_images=True)
+    except Exception as e:
+        print(f'api_meta_synergy_dc/assemble failed: {e}')
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': 'meta_synergy_dc_assemble_failed', 'detail': str(e)}), 500
 
 
 @app.route('/api/meta_synergy_pilot_skills')
