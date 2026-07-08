@@ -3243,41 +3243,15 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
     if cached is not None:
         return cached
 
-    g = _lookup_unit_group_from_master_cache(uid, lc, kwargs)
-    source = 'client_dc'
-    if not g:
-        out = {
-            'eligible': True,
-            'unit_id': uid,
-            'pilots': [],
-            'pending': True,
-            'source': 'client_dc',
-            'def_tier': def_tier,
-            'defender_note': _settings_note(def_tier),
-        }
-        return out
-    else:
-        source = 'master_cache'
-
-    row = _group_for_def_tier(g, def_tier) if g.get('rankings_by_tier') else g
-    if not row:
-        row = g
-    row = _normalize_group_for_mode(row, rank_mode) or row
-    row = _ensure_passive_variant_for_request(row, lc, rank_mode, def_tier, kwargs)
-    row = _backfill_pilot_formula_stats(row, lc, rank_mode, kwargs)
-    pilots = list(row.get('pilots') or [])
-    pilots.sort(key=lambda p: (-(p.get('peak_dmg') or p.get('super_crit_dmg') or p.get('score') or 0), str((p.get('char') or {}).get('id') or '')))
-    for i, pilot in enumerate(pilots):
-        pilot['rank'] = i + 1
-
+    # BSP must use live client DC — published master cache can be stale/lite (wrong UR order).
     out = {
         'eligible': True,
         'unit_id': uid,
-        'pilots': pilots,
-        'source': source,
+        'pilots': [],
+        'pending': True,
+        'source': 'client_dc',
         'def_tier': def_tier,
         'defender_note': _settings_note(def_tier),
-        'max_damage': row.get('max_damage'),
     }
     if len(_unit_best_pilot_api_cache) >= _UNIT_BEST_PILOT_API_CACHE_MAX:
         _unit_best_pilot_api_cache.pop(next(iter(_unit_best_pilot_api_cache)))

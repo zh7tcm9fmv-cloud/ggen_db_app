@@ -250,21 +250,6 @@
     return dcEnginePromise;
   }
 
-  async function fetchMasterCachePilots(unitId, lang) {
-    var q = 'lang=' + encodeURIComponent(lang)
-      + '&lb_tier=3&def_tier=3&rank_mode=super_crit&top_pilots=10';
-    var res = await fetch('/api/unit/' + encodeURIComponent(unitId) + '/best_synergy_pilots?' + q, {
-      credentials: 'same-origin'
-    });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    var payload = await res.json();
-    if (payload.error) throw new Error(payload.detail || payload.error);
-    if (payload.source === 'master_cache' && payload.pilots && payload.pilots.length) {
-      return sortPilotsByCalcDamage(payload.pilots);
-    }
-    return null;
-  }
-
   async function loadRankingsViaDc(unitId, lang) {
     var engine = await ensureDcEngine();
     var bootRes = await fetch('/api/meta_synergy_dc/bootstrap?' + apiQuery(), {
@@ -319,11 +304,7 @@
     showLoading();
     try {
       var lang = (global.S && global.S.lang) || 'EN';
-      var pilots = await fetchMasterCachePilots(unitId, lang);
-      if (gen !== state.loadGen) return;
-      if (!pilots) {
-        pilots = await loadRankingsViaDc(unitId, lang);
-      }
+      var pilots = await loadRankingsViaDc(unitId, lang);
       if (gen !== state.loadGen) return;
       if (!pilots || !pilots.length) {
         state.loaded = true;
