@@ -106,19 +106,20 @@
   function apiQuery() {
     var lang = (global.S && global.S.lang) || 'EN';
     return 'lang=' + encodeURIComponent(lang)
-      + '&lb_tier=3&def_tier=3&rank_mode=super_crit&top_pilots=10';
+      + '&lb_tier=3&def_tier=3&rank_mode=super_crit&top_pilots=10&bsp=1';
   }
 
   function pilotThumb(c) {
     if (!c) return '';
     var row = {
-      rarity: c.rarity || 'N',
       thum: c.thum || c.portrait || '',
-      role_icon: '',
-      acquisition_icon: ''
+      rarity: c.rarity || 'N'
     };
-    return typeof global.renderListThumb === 'function'
-      ? global.renderListThumb(row, 'char', 48, { pickerThumb: true }) : '';
+    var inner = typeof global.renderTagModalThumb === 'function'
+      ? global.renderTagModalThumb(row, 'char')
+      : (typeof global.renderListThumb === 'function'
+        ? global.renderListThumb(row, 'char', 64, { pickerThumb: true }) : '');
+    return '<div class="tag-unit-icon-wrapper">' + inner + '</div>';
   }
 
   function roleIconHtml(c) {

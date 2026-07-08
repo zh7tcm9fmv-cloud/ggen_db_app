@@ -2984,8 +2984,8 @@ def save_published_master_cache(cache_key, result):
     return path
 
 
-def dc_candidate_pilots_for_unit(uid, pilot_ids, exclude, lc):
-    """Prefilter pilots for DC evaluation (same cap as Python build)."""
+def dc_candidate_pilots_for_unit(uid, pilot_ids, exclude, lc, *, full_pool=False):
+    """Pilot IDs to evaluate in the Damage Calculator."""
     uid = _app().normalize_id(uid)
     info = _app().unit_info_map.get(uid) or {}
     stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
@@ -2995,6 +2995,9 @@ def dc_candidate_pilots_for_unit(uid, pilot_ids, exclude, lc):
     active = _eligible_pilots_for_unit(uid, pilot_ids, exclude)
     if not active:
         return []
+    # BSP: sim every eligible pilot via live /cal — no cheap-score prefilter.
+    if full_pool:
+        return list(active)
     need = max(_TOP_PILOTS_PREFILTER, 128)
     if len(active) <= _FULL_SIM_PILOT_CAP:
         return list(active)
@@ -3077,6 +3080,7 @@ def _msy_dc_kwargs_from_request(args):
         'same_role_only': args.get('same_role_only', '0') in ('1', 'true', 'yes'),
         'cp_on': args.get('cp_on', '1') not in ('0', 'false', 'no', ''),
         'pep_on': args.get('pep_on', '1') not in ('0', 'false', 'no', ''),
+        'full_pool': args.get('bsp', '0') in ('1', 'true', 'yes'),
     }
 
 
@@ -3265,7 +3269,9 @@ def dc_candidates_payload(unit_id, kwargs):
     pilot_ids = _msy_pilot_ids_from_kwargs(kwargs)
     exclude = _exclude_set_from_kwargs(kwargs)
     uid = _app().normalize_id(unit_id)
-    candidates = dc_candidate_pilots_for_unit(uid, pilot_ids, exclude, lc)
+    candidates = dc_candidate_pilots_for_unit(
+        uid, pilot_ids, exclude, lc, full_pool=bool(kwargs.get('full_pool')),
+    )
     return {'unit_id': uid, 'pilot_ids': candidates}
 
 

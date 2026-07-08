@@ -194,10 +194,15 @@
   color: var(--accent-cyan);
 }
 
-.unit-best-pilot-panel .msy-pilot-thumb .list-thumb-composite {
-  width: 48px;
-  height: 48px;
+.unit-best-pilot-panel .msy-pilot-thumb .tag-unit-icon-wrapper {
+  overflow: hidden;
   flex-shrink: 0;
+}
+
+.unit-best-pilot-panel .msy-pilot-thumb .tag-unit-icon-wrapper .list-thumb-composite {
+  width: 50px !important;
+  height: 47px !important;
+  margin: 0;
 }
 
 .unit-best-pilot-panel .msy-pilot-name-row {
