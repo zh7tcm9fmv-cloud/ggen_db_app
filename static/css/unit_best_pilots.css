@@ -393,11 +393,11 @@
 .unit-best-pilot-panel .msy-pilot-dmg-col .msy-pilot-dmg-dealt-pct {
   margin-top: 0;
   font-size: 9px;
-  line-height: 1.2;
+  line-height: 1.25;
   max-width: 110px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .unit-best-pilot-panel .msy-pilot-sub--gc {
