@@ -13,7 +13,7 @@
 .detail-rec-shortcut-wrap:has(.detail-rec-link-card--has-bsp),
 .detail-rec-shortcut--desktop:has(.detail-rec-link-card--has-bsp),
 .detail-rec-shortcut--mobile:has(.detail-rec-link-card--has-bsp) {
-  padding-bottom: 22px;
+  padding-bottom: 28px;
   box-sizing: border-box;
 }
 
@@ -32,7 +32,8 @@
   top: auto;
   left: auto;
   right: 8px;
-  bottom: 0;
+  /* Sit slightly lower than half-straddle so the frame clears the name line. */
+  bottom: -6px;
   z-index: 10;
   line-height: 0;
   padding: 0;
@@ -404,6 +405,57 @@
   font-weight: 700;
 }
 
+.unit-best-pilot-panel .msy-pilot-affinity {
+  margin-top: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.unit-best-pilot-panel .msy-pilot-affinity-row {
+  padding: 3px 5px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  background: rgba(0, 212, 255, 0.04);
+}
+
+.unit-best-pilot-panel .msy-pilot-affinity-ability {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--accent-cyan);
+}
+
+.unit-best-pilot-panel .msy-pilot-affinity-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 2px;
+}
+
+.unit-best-pilot-panel .msy-pilot-affinity-tag {
+  font-size: 9px;
+  font-weight: 600;
+  color: #fff;
+  padding: 1px 5px;
+  border-radius: 8px;
+  background: rgba(0, 212, 255, 0.22);
+  border: 1px solid rgba(0, 212, 255, 0.35);
+}
+
+.unit-best-pilot-panel .msy-pilot-affinity-detail {
+  font-size: 9px;
+  line-height: 1.35;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.unit-best-pilot-panel .msy-pilot-affinity-flag {
+  margin-top: 2px;
+  font-size: 9px;
+  font-weight: 700;
+  color: #67e8f9;
+}
+
 .unit-best-pilot-panel .msy-pilot-card--skeleton {
   pointer-events: none;
   opacity: 0.72;
@@ -472,12 +524,12 @@
   .detail-rec-shortcut-wrap:has(.detail-rec-link-card--has-bsp),
   .detail-rec-shortcut--desktop:has(.detail-rec-link-card--has-bsp),
   .detail-rec-shortcut--mobile:has(.detail-rec-link-card--has-bsp) {
-    padding-bottom: 18px;
+    padding-bottom: 24px;
   }
 
   .detail-rec-link-card--has-bsp .unit-best-pilot-btn-slot--rec {
     right: 6px;
-    bottom: 0;
+    bottom: -4px;
     padding: 0;
     transform: translateY(50%);
   }

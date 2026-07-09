@@ -147,6 +147,64 @@
     return sortPilotsByCalcDamage(rows).slice(0, 10);
   }
 
+  function applyAffinityToEntry(entry, affinityMap, unitId) {
+    if (!entry || !affinityMap) return;
+    var uid = String(unitId || state.unitId || '');
+    function enrich(list) {
+      (list || []).forEach(function (p) {
+        var cid = String(((p && p.char) || {}).id || '');
+        if (!cid) return;
+        var key = uid + ':' + cid;
+        if (Object.prototype.hasOwnProperty.call(affinityMap, key)) {
+          p.affinity_matches = affinityMap[key] || [];
+        }
+      });
+    }
+    enrich(entry.pilots);
+    enrich(entry.pilots_no_ur);
+    enrich(entry.pilots_no_shinn);
+  }
+
+  async function enrichAffinityMatches(entry, unitId, lang) {
+    if (!entry || !entry.pilots || !entry.pilots.length) return entry;
+    var seen = {};
+    var charIds = [];
+    var pairs = [];
+    function collect(list) {
+      (list || []).forEach(function (p) {
+        var cid = String(((p && p.char) || {}).id || '');
+        if (!cid || seen[cid]) return;
+        seen[cid] = 1;
+        charIds.push(cid);
+        pairs.push(String(unitId) + ':' + cid);
+      });
+    }
+    collect(entry.pilots);
+    collect(entry.pilots_no_ur);
+    collect(entry.pilots_no_shinn);
+    if (!charIds.length) return entry;
+    try {
+      var q = 'lang=' + encodeURIComponent(lang || 'EN')
+        + '&char_ids=' + encodeURIComponent(charIds.join(','))
+        + '&pairs=' + encodeURIComponent(pairs.join(','));
+      var res = await fetch('/api/meta_synergy_pilot_skills?' + q, { credentials: 'same-origin' });
+      if (!res.ok) return entry;
+      var data = await res.json();
+      applyAffinityToEntry(entry, data.affinity_by_pair || {}, unitId);
+      var skills = data.skills_by_char || {};
+      function attachSkills(list) {
+        (list || []).forEach(function (p) {
+          var cid = String(((p && p.char) || {}).id || '');
+          if (cid && skills[cid] && !p.active_skills) p.active_skills = skills[cid];
+        });
+      }
+      attachSkills(entry.pilots);
+      attachSkills(entry.pilots_no_ur);
+      attachSkills(entry.pilots_no_shinn);
+    } catch (_) {}
+    return entry;
+  }
+
   function renderActivePanel() {
     if (!state.open || !state.unitId) return;
     var entry = state.cache[String(state.unitId)];
@@ -220,23 +278,59 @@
     return '<img src="' + escAttr(imgUrl(c.role_icon)) + '" alt="" style="width:14px;height:14px;flex-shrink:0" loading="lazy" onerror="this.style.display=\'none\'">';
   }
 
+  function pilotAffinityHtml(pilot) {
+    var aff = pilot.affinity_matches || [];
+    if (!aff.length) return '';
+    var html = '<div class="msy-pilot-affinity">';
+    aff.forEach(function (row) {
+      html += '<div class="msy-pilot-affinity-row">';
+      if (row.ability) {
+        html += '<div class="msy-pilot-affinity-ability">' + esc(row.ability) + '</div>';
+      }
+      if (row.tags && row.tags.length) {
+        html += '<div class="msy-pilot-affinity-tags">' + row.tags.map(function (tag) {
+          return '<span class="msy-pilot-affinity-tag">' + esc(tag) + '</span>';
+        }).join('') + '</div>';
+      }
+      if (row.detail) {
+        html += '<div class="msy-pilot-affinity-detail">' + esc(row.detail) + '</div>';
+      }
+      html += '</div>';
+    });
+    html += '</div>';
+    return html;
+  }
+
   function pilotFormulaStatHtml(pilot) {
-    if (!pilot || pilot.char_atk == null) return '';
-    var statKey = { Ranged: 'stat_ranged', Melee: 'stat_melee', Awaken: 'stat_awaken' };
-    var label = '';
-    if (pilot.formula_stat) {
-      var fk = statKey[pilot.formula_stat] || '';
-      label = fk ? (t(fk) || pilot.formula_stat) : pilot.formula_stat;
-    } else {
-      label = t('stat_atk') || 'ATK';
+    if (!pilot) return '';
+    var parts = '';
+    if (pilot.char_atk != null) {
+      var statKey = { Ranged: 'stat_ranged', Melee: 'stat_melee', Awaken: 'stat_awaken' };
+      var label = '';
+      if (pilot.formula_stat) {
+        var fk = statKey[pilot.formula_stat] || '';
+        label = fk ? (t(fk) || pilot.formula_stat) : pilot.formula_stat;
+      } else {
+        label = t('stat_atk') || 'ATK';
+      }
+      var line = t('msy_formula_stat')
+        ? t('msy_formula_stat').replace('{stat}', label).replace('{val}', fmtN(pilot.char_atk))
+        : (label + ': ' + fmtN(pilot.char_atk));
+      parts += '<div class="msy-pilot-formula-stat">' + esc(line) + '</div>';
     }
-    var line = t('msy_formula_stat')
-      ? t('msy_formula_stat').replace('{stat}', label).replace('{val}', fmtN(pilot.char_atk))
-      : (label + ': ' + fmtN(pilot.char_atk));
-    var parts = '<div class="msy-pilot-formula-stat">' + esc(line) + '</div>';
     if (pilot.dmg_dealt_pct != null && pilot.dmg_dealt_pct !== '') {
-      parts += '<div class="msy-pilot-dmg-dealt-pct" title="Damage Dealt Up %">'
-        + esc('Damage Dealt: ' + (pilot.dmg_dealt_pct | 0) + '%') + '</div>';
+      var vigor = pilot.vigor_dmg_pct | 0;
+      var passive = pilot.dmg_dealt_pct | 0;
+      var dmgLine = 'Damage Dealt: ' + passive + '%';
+      if (vigor > 0) dmgLine += ' (+' + vigor + '% vigor)';
+      var title = 'Damage Dealt Up % from DC formula';
+      if (pilot.pair_ok) title += ' (includes affinity match)';
+      parts += '<div class="msy-pilot-dmg-dealt-pct" title="' + escAttr(title) + '">'
+        + esc(dmgLine) + '</div>';
+    }
+    if (pilot.pair_ok) {
+      parts += '<div class="msy-pilot-affinity-flag">'
+        + esc(t('msy_affinity_match') || 'Affinity match') + '</div>';
     }
     return parts;
   }
@@ -274,7 +368,9 @@
       + '<div class="msy-pilot-body">'
       + '<div class="msy-pilot-name-row">' + roleIconHtml(c)
       + '<span class="msy-pilot-name" title="' + escAttr(c.name || '') + '">' + esc(c.name || '') + '</span>'
-      + '</div>' + sub + '</div></button>'
+      + '</div>'
+      + pilotAffinityHtml(pilot)
+      + sub + '</div></button>'
       + '<div class="msy-pilot-dmg-col"><div class="msy-pilot-dmg">' + fmtN(dmg) + '</div>'
       + pilotFormulaStatHtml(pilot) + '</div></div>';
   }
@@ -470,6 +566,8 @@
         setPanelHtml('<div class="unit-best-pilot-empty">' + esc(t('unit_best_pilot_empty') || 'No eligible pilots found.') + '</div>');
         return;
       }
+      await enrichAffinityMatches(entry, unitId, lang);
+      if (gen !== state.loadGen) return;
       state.cache[String(unitId)] = entry;
       state.loaded = true;
       syncFilterButtons();
