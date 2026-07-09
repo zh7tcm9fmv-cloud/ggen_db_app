@@ -1791,7 +1791,7 @@ def _save_master_to_disk(cache_key, result):
         tmp = path + '.tmp'
         with gzip.open(tmp, 'wt', encoding='utf-8') as f:
             json.dump(payload, f, ensure_ascii=False, separators=(',', ':'))
-        os.replace(tmp, path)
+        _atomic_replace_with_retry(tmp, path)
         print(f'MSY disk cache saved: {len(payload["groups"])} units ({path})')
     except Exception as e:
         print(f'MSY disk cache save failed ({path}): {e}')
@@ -2999,6 +2999,26 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
     return out
 
 
+def _atomic_replace_with_retry(tmp, path, *, attempts=8, delay_sec=0.35):
+    """Windows-safe replace: antivirus / OneDrive / readers can briefly lock the target."""
+    last = None
+    for i in range(max(1, int(attempts))):
+        try:
+            os.replace(tmp, path)
+            return
+        except PermissionError as e:
+            last = e
+            time.sleep(delay_sec * (1.0 + 0.4 * i))
+        except OSError as e:
+            last = e
+            # WinError 5 / sharing violation
+            if getattr(e, 'winerror', None) not in (5, 32) and e.errno not in (13, 11):
+                raise
+            time.sleep(delay_sec * (1.0 + 0.4 * i))
+    if last:
+        raise last
+
+
 def save_published_master_cache(cache_key, result, *, build_engine=None):
     """Write MSY master cache to data/published/ (for Railway deploy)."""
     path = _msy_published_path(cache_key)
@@ -3016,7 +3036,7 @@ def save_published_master_cache(cache_key, result, *, build_engine=None):
     tmp = path + '.tmp'
     with gzip.open(tmp, 'wt', encoding='utf-8') as f:
         json.dump(payload, f, ensure_ascii=False, separators=(',', ':'))
-    os.replace(tmp, path)
+    _atomic_replace_with_retry(tmp, path)
     print(f'MSY published cache saved: {len(payload["groups"])} units ({path})')
     return path
 
@@ -3457,7 +3477,7 @@ def save_bsp_unit_warm_cache(uid, lc, kwargs, pilots):
     tmp = path + '.tmp'
     with gzip.open(tmp, 'wt', encoding='utf-8') as f:
         json.dump(payload, f, ensure_ascii=False, separators=(',', ':'))
-    os.replace(tmp, path)
+    _atomic_replace_with_retry(tmp, path)
     return path
 
 

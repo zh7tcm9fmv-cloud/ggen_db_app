@@ -634,12 +634,14 @@
   .detail-rec-shortcut-wrap:has(.detail-rec-link-card--has-bsp),
   .detail-rec-shortcut--desktop:has(.detail-rec-link-card--has-bsp),
   .detail-rec-shortcut--mobile:has(.detail-rec-link-card--has-bsp) {
-    padding-bottom: 24px;
+    /* Extra clearance so the hanging BSP icon never clips the pilot name. */
+    padding-bottom: 36px;
   }
 
   .detail-rec-link-card--has-bsp .unit-best-pilot-btn-slot--rec {
     right: 6px;
-    bottom: -4px;
+    /* Push further below the card edge on mobile. */
+    bottom: -14px;
     padding: 0;
     transform: translateY(50%);
   }

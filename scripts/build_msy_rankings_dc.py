@@ -347,8 +347,18 @@ def main():
             stamp = time.strftime('%Y-%m-%d %H:%M:%S')
             line = f'\n=== BSP build attempt {attempt} @ {stamp} ===\n'
             print(line, end='', flush=True)
-            with open(log_path, 'a', encoding='utf-8') as lf:
-                lf.write(line)
+            try:
+                with open(log_path, 'a', encoding='utf-8') as lf:
+                    lf.write(line)
+            except PermissionError:
+                # Log may be locked by an editor / previous Tee-Object — don't kill the loop.
+                alt = log_path + f'.attempt{attempt}.log'
+                try:
+                    with open(alt, 'a', encoding='utf-8') as lf:
+                        lf.write(line)
+                    print(f'(log locked; wrote {alt})', flush=True)
+                except Exception:
+                    pass
             child = [
                 sys.executable, '-u', __file__,
                 '--base', args.base,
