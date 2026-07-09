@@ -22057,6 +22057,7 @@ def get_unit(unit_id):
                         'def_tier': 3,
                         'rank_mode': 'super_crit',
                         'top_pilots': 10,
+                        'all_modes': '1',
                     })
                     if bsp and bsp.get('pilots') and not bsp.get('pending'):
                         result['best_synergy_pilots'] = bsp

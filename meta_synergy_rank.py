@@ -1890,7 +1890,8 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
     rank_super_crit = super_crit if can_crit else normal
     rank_crit = plain_crit if can_crit else normal
     expected = int(normal * (100 - crit_rate) / 100 + super_crit * crit_rate / 100)
-    peak = super_crit if guaranteed_crit else max(super_crit, expected)
+    # 0% crit cannot land a crit — never store theoretical crit as peak.
+    peak = normal if not can_crit else (super_crit if guaranteed_crit else max(super_crit, expected))
 
     return {
         'normal_dmg': normal,
@@ -2039,7 +2040,9 @@ def _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc):
             d = (by_vigor or {}).get(vigor_key)
             if not d:
                 continue
-            sc = d.get('peak_dmg', 0) or d.get(dmg_key, 0) or 0
+            # Rank by mode field (super_crit_dmg / crit_dmg / …), not peak_dmg.
+            # peak_dmg on older caches can inflate 0% crit pilots with theoretical crit.
+            sc = int(d.get(dmg_key, 0) or 0) or int(d.get('peak_dmg', 0) or 0)
             if sc <= 0:
                 continue
             scored.append((sc, cid, d))
@@ -2053,14 +2056,26 @@ def _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc):
                 cid, lc, vigor=vigor_key, cp_on=True,
             )
             crit_rate = 100 if gc else int(d.get('crit_rate') or 0)
+            can_crit = gc or crit_rate > 0
+            normal = int(d.get('normal_dmg') or 0)
+            super_crit = int(d.get('super_crit_dmg') or 0)
+            crit_dmg = int(d.get('crit_dmg') or 0)
+            peak = int(d.get('peak_dmg') or 0)
+            if not can_crit:
+                # Sanitize older DC rows that stored theoretical crit as peak.
+                super_crit = normal
+                crit_dmg = normal
+                peak = normal
+            elif gc:
+                peak = max(peak, super_crit, crit_dmg)
             pilots_out.append({
                 'rank': i + 1,
                 'char': _entity_brief_char(cid, lc),
-                'normal_dmg': d['normal_dmg'],
-                'crit_dmg': d['crit_dmg'],
-                'super_crit_dmg': d['super_crit_dmg'],
+                'normal_dmg': normal,
+                'crit_dmg': crit_dmg,
+                'super_crit_dmg': super_crit,
                 'expected_dmg': d['expected_dmg'],
-                'peak_dmg': d['peak_dmg'],
+                'peak_dmg': peak if can_crit else normal,
                 'guaranteed_crit': gc,
                 'crit_rate': crit_rate,
                 'pair_ok': d['pair_ok'],
@@ -3508,6 +3523,26 @@ def _lookup_bsp_published_group(uid, lc, kwargs):
     return best
 
 
+def _bsp_sanitize_zero_crit_damage(pilots):
+    """0% crit cannot land crit — clamp peak/super/crit fields to normal_dmg."""
+    for p in pilots or []:
+        if not isinstance(p, dict):
+            continue
+        cr = int(p.get('crit_rate') or 0)
+        gc = bool(p.get('guaranteed_crit')) or cr >= 100
+        if gc or cr > 0:
+            continue
+        normal = int(p.get('normal_dmg') or 0)
+        if normal <= 0:
+            continue
+        p['super_crit_dmg'] = normal
+        p['crit_dmg'] = normal
+        p['peak_dmg'] = normal
+        if int(p.get('score') or 0) > normal:
+            p['score'] = normal
+    return pilots
+
+
 def _bsp_patch_guaranteed_crit_flags(pilots, lc='EN'):
     """Patch GC + skill crit % (Boost Critical etc.) onto published/warm rows."""
     for p in pilots or []:
@@ -3528,6 +3563,7 @@ def _bsp_patch_guaranteed_crit_flags(pilots, lc='EN'):
         elif skill > 0:
             p['crit_rate'] = min(100, max(base, skill))
         p['guaranteed_crit'] = bool(p.get('guaranteed_crit')) or int(p.get('crit_rate') or 0) >= 100
+    _bsp_sanitize_zero_crit_damage(pilots)
     return pilots
 
 
@@ -3591,14 +3627,42 @@ def _bsp_dc_variant_pilots(block, rank_mode, *, fallback_pilots, no_ur=False, no
     return filtered[:_BSP_UI_TOP_PILOTS], True
 
 
+_BSP_MODE_DMG_FIELD = {
+    'super_crit': 'super_crit_dmg',
+    'crit': 'crit_dmg',
+    'normal': 'normal_dmg',
+    'expected': 'expected_dmg',
+}
+
+
+def _bsp_pilot_sort_damage(pilot, rank_mode='super_crit'):
+    """Damage used for Top 10 ordering for the selected metric."""
+    mode = rank_mode or 'super_crit'
+    field = _BSP_MODE_DMG_FIELD.get(mode, 'super_crit_dmg')
+    cr = int(pilot.get('crit_rate') or 0)
+    gc = bool(pilot.get('guaranteed_crit')) or cr >= 100
+    can_crit = gc or cr > 0
+    normal = int(pilot.get('normal_dmg') or 0)
+    if mode == 'super_crit' and not can_crit:
+        return normal
+    if mode == 'crit' and not can_crit:
+        return normal
+    val = int(pilot.get(field) or 0)
+    if val <= 0:
+        val = int(pilot.get('peak_dmg') or 0) or int(pilot.get('score') or 0) or normal
+    return val
+
+
 def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs,
                          pilots_no_ur=None, pilots_no_shinn=None, pilots_same_role=None,
                          no_ur_partial=False, no_shinn_partial=False, same_role_partial=False):
+    mode = rank_mode or 'super_crit'
+
     def _rank(rows):
         rows = list(rows or [])
         rows.sort(
             key=lambda p: (
-                -(p.get('peak_dmg') or p.get('super_crit_dmg') or p.get('score') or 0),
+                -_bsp_pilot_sort_damage(p, mode),
                 str((p.get('char') or {}).get('id') or ''),
             ),
         )
@@ -3622,6 +3686,12 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
     _bsp_patch_guaranteed_crit_flags(no_ur, lc)
     _bsp_patch_guaranteed_crit_flags(no_shinn, lc)
     _bsp_patch_guaranteed_crit_flags(same_role, lc)
+    # Re-rank after sanitize (0% crit peak clamp can change order).
+    pilots = _rank(pilots)
+    no_ur = _rank(no_ur)
+    no_shinn = _rank(no_shinn)
+    same_role = _rank(same_role)
+    top_dmg = _bsp_pilot_sort_damage(pilots[0], mode) if pilots else 0
     return {
         'eligible': True,
         'unit_id': uid,
@@ -3633,9 +3703,10 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
         'no_shinn_partial': bool(no_shinn_partial) or len(no_shinn) < _BSP_UI_TOP_PILOTS,
         'same_role_partial': bool(same_role_partial) or len(same_role) < _BSP_UI_TOP_PILOTS,
         'source': source,
+        'rank_mode': mode,
         'def_tier': def_tier,
         'defender_note': _settings_note(def_tier),
-        'max_damage': pilots[0].get('peak_dmg') or pilots[0].get('super_crit_dmg') if pilots else 0,
+        'max_damage': top_dmg,
     }
 
 
@@ -3663,42 +3734,40 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
         return {'eligible': False, 'unit_id': uid, 'pilots': []}
 
     rank_mode = kwargs.get('rank_mode', 'super_crit') or 'super_crit'
+    if rank_mode not in _BSP_MODE_DMG_FIELD:
+        rank_mode = 'super_crit'
     def_tier = max(1, min(4, int(kwargs.get('def_tier') or 3)))
     top_pilots = max(1, min(20, int(kwargs.get('top_pilots') or 10)))
+    # Return all three metric boards from the same published group (no rebuild).
+    include_all_modes = str(kwargs.get('all_modes') or '1').lower() not in ('0', 'false', 'no')
 
     ck = _unit_best_pilot_api_cache_key(uid, lc, kwargs)
+    if include_all_modes:
+        ck = ck + ('all_modes',)
     cached = _unit_best_pilot_api_cache.get(ck)
     if cached is not None:
         return cached
 
-    # Prefer published /cal BSP cache for the MAIN list (real calculator).
-    # v15 rankings_no_ur / rankings_no_shinn were polluted by python-lite — reject those.
-    g = _lookup_bsp_published_group(uid, lc, kwargs)
-    if g:
-        row = _group_for_def_tier(g, def_tier) if g.get('rankings_by_tier') else g
-        if not row:
-            row = g
-        row = _normalize_group_for_mode(row, rank_mode) or row
-        # Skip expensive passive re-sim / formula backfill on the hot published path —
-        # /cal rows already carry char_atk / dmg_dealt_pct / vigor_dmg_pct.
+    def _payload_for_mode(g_row, mode):
+        row = _normalize_group_for_mode(g_row, mode) or g_row
         pilots = list(row.get('pilots') or [])
         if not pilots:
-            pilots = _bsp_pilots_from_rankings_block(row.get('rankings'), rank_mode)
+            pilots = _bsp_pilots_from_rankings_block(row.get('rankings'), mode)
         pilots_no_ur, no_ur_partial = _bsp_dc_variant_pilots(
-            row.get('rankings_no_ur'), rank_mode,
+            row.get('rankings_no_ur'), mode,
             fallback_pilots=pilots, no_ur=True, no_shinn=True,
         )
         pilots_no_shinn, no_shinn_partial = _bsp_dc_variant_pilots(
-            row.get('rankings_no_shinn'), rank_mode,
+            row.get('rankings_no_shinn'), mode,
             fallback_pilots=pilots, no_shinn=True,
         )
         pilots_same_role, same_role_partial = _bsp_dc_variant_pilots(
-            row.get('rankings_same_role'), rank_mode,
+            row.get('rankings_same_role'), mode,
             fallback_pilots=pilots, same_role=True, unit_id=uid,
         )
-        out = _bsp_pilots_response(
+        return _bsp_pilots_response(
             uid, pilots, source='published_dc', def_tier=def_tier,
-            rank_mode=rank_mode, lc=lc, kwargs=kwargs,
+            rank_mode=mode, lc=lc, kwargs=kwargs,
             pilots_no_ur=pilots_no_ur,
             pilots_no_shinn=pilots_no_shinn,
             pilots_same_role=pilots_same_role,
@@ -3706,6 +3775,24 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
             no_shinn_partial=no_shinn_partial,
             same_role_partial=same_role_partial,
         )
+
+    # Prefer published /cal BSP cache for the MAIN list (real calculator).
+    # v15 rankings_no_ur / rankings_no_shinn were polluted by python-lite — reject those.
+    g = _lookup_bsp_published_group(uid, lc, kwargs)
+    if g:
+        row_base = _group_for_def_tier(g, def_tier) if g.get('rankings_by_tier') else g
+        if not row_base:
+            row_base = g
+        if include_all_modes and isinstance(row_base.get('rankings'), dict):
+            modes_out = {}
+            for mode in ('super_crit', 'crit', 'normal'):
+                if (row_base.get('rankings') or {}).get(mode):
+                    modes_out[mode] = _payload_for_mode(row_base, mode)
+            out = dict(modes_out.get(rank_mode) or _payload_for_mode(row_base, rank_mode))
+            out['modes'] = modes_out
+            out['rank_mode'] = rank_mode
+        else:
+            out = _payload_for_mode(row_base, rank_mode)
     else:
         warm = _load_bsp_unit_warm_cache(uid, lc, kwargs)
         if warm:
@@ -3723,6 +3810,7 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
                 'pilots_same_role': [],
                 'pending': True,
                 'source': 'client_dc',
+                'rank_mode': rank_mode,
                 'def_tier': def_tier,
                 'defender_note': _settings_note(def_tier),
             }
@@ -5113,6 +5201,7 @@ def _normalize_group_for_mode(g, rank_mode):
         rankings_no_cp_pep = _slim_variant_rankings_if_populated(g.get('rankings_no_cp_pep'), rank_mode)
         rankings_no_ur = _slim_variant_rankings_if_populated(g.get('rankings_no_ur'), rank_mode)
         rankings_no_shinn = _slim_variant_rankings_if_populated(g.get('rankings_no_shinn'), rank_mode)
+        rankings_same_role = _slim_variant_rankings_if_populated(g.get('rankings_same_role'), rank_mode)
         return {
             'unit': g.get('unit'),
             'weapon_elems': g.get('weapon_elems'),
@@ -5124,6 +5213,7 @@ def _normalize_group_for_mode(g, rank_mode):
             'rankings_no_cp_pep': rankings_no_cp_pep,
             'rankings_no_ur': rankings_no_ur,
             'rankings_no_shinn': rankings_no_shinn,
+            'rankings_same_role': rankings_same_role,
             'weapon_info': g.get('weapon_info'),
             'is_sd': g.get('is_sd', False),
             'bundled_pilot_id': g.get('bundled_pilot_id'),

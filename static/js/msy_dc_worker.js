@@ -202,7 +202,8 @@
     var rankSuperCrit = canCrit ? critDmgVal : normalDmg;
     var rankCrit = canCrit ? critDmgVal : normalDmg;
     var expected = Math.floor(normalDmg * (100 - critRate) / 100 + critDmgVal * critRate / 100);
-    var peak = gc ? critDmgVal : Math.max(critDmgVal, expected);
+    // 0% crit cannot land a crit — never rank them on theoretical critDmg (~1.3x).
+    var peak = !canCrit ? normalDmg : (gc ? critDmgVal : Math.max(critDmgVal, expected));
     var pairOk = typeof _dcUnitCharPairMatch === 'function'
       ? _dcUnitCharPairMatch(cd, ud) : false;
     var wpn = ud.weapons && ud.weapons[slot.wpnIdx];

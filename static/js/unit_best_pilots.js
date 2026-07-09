@@ -4,6 +4,13 @@
   var SHINN_EX_CHAR_ID = '1330000103';
   var shinnPortraitUrl = '';
 
+  var RANK_MODES = ['super_crit', 'crit', 'normal'];
+  var RANK_MODE_DMG = {
+    super_crit: 'super_crit_dmg',
+    crit: 'crit_dmg',
+    normal: 'normal_dmg'
+  };
+
   var state = {
     open: false,
     unitId: null,
@@ -13,7 +20,8 @@
     excludeUr: false,
     excludeShinn: false,
     sameRole: false,
-    // unitId -> { pilots, pilots_no_ur, pilots_no_shinn, pilots_same_role, ... }
+    rankMode: 'super_crit',
+    // unitId -> { modes: { super_crit, crit, normal }, ... }
     cache: {}
   };
 
@@ -66,6 +74,13 @@
     if (global.document._unitBestPilotBound) return;
     global.document._unitBestPilotBound = 1;
     global.document.addEventListener('click', function (ev) {
+      var metricBtn = ev.target.closest('[data-ubp-metric]');
+      if (metricBtn) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        setRankMode(metricBtn.getAttribute('data-ubp-metric'));
+        return;
+      }
       var filterBtn = ev.target.closest('[data-ubp-filter]');
       if (filterBtn) {
         ev.preventDefault();
@@ -150,6 +165,26 @@
         ? (t('msy_same_role_on') || 'Showing same-role pilots only')
         : (t('msy_same_role') || 'Same Role Characters Only');
     }
+    syncMetricButtons();
+  }
+
+  function syncMetricButtons() {
+    var mode = state.rankMode || 'super_crit';
+    global.document.querySelectorAll('[data-ubp-metric]').forEach(function (btn) {
+      var m = btn.getAttribute('data-ubp-metric');
+      var on = m === mode;
+      btn.classList.toggle('is-active', on);
+      btn.classList.toggle('active', on);
+      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+
+  function setRankMode(mode) {
+    if (RANK_MODES.indexOf(mode) < 0) return;
+    if (state.rankMode === mode) return;
+    state.rankMode = mode;
+    syncMetricButtons();
+    renderActivePanel();
   }
 
   function toggleFilter(kind) {
@@ -188,37 +223,56 @@
     });
   }
 
+  function modeEntry(entry) {
+    if (!entry) return null;
+    var mode = state.rankMode || 'super_crit';
+    if (entry.modes && entry.modes[mode]) return entry.modes[mode];
+    return entry;
+  }
+
   function pilotsForView(entry) {
-    if (!entry) return { pilots: [], partial: false };
+    var board = modeEntry(entry);
+    if (!board) return { pilots: [], partial: false };
     var noUr = !!state.excludeUr;
     var noShinn = !!state.excludeShinn || noUr;
     var sameRole = !!state.sameRole;
     var rows;
     var partial = false;
     if (sameRole && !noUr && !noShinn) {
-      rows = (entry.pilots_same_role && entry.pilots_same_role.length)
-        ? entry.pilots_same_role
-        : filterPilotsLocal(entry.pilots || [], false, false, true);
-      partial = !!entry.same_role_partial || rows.length < 10;
+      rows = (board.pilots_same_role && board.pilots_same_role.length)
+        ? board.pilots_same_role
+        : filterPilotsLocal(board.pilots || [], false, false, true);
+      partial = !!board.same_role_partial || rows.length < 10;
     } else if (noUr) {
-      rows = (entry.pilots_no_ur && entry.pilots_no_ur.length)
-        ? entry.pilots_no_ur
-        : filterPilotsLocal(entry.pilots || [], true, true, sameRole);
+      rows = (board.pilots_no_ur && board.pilots_no_ur.length)
+        ? board.pilots_no_ur
+        : filterPilotsLocal(board.pilots || [], true, true, sameRole);
       if (sameRole) rows = filterPilotsLocal(rows, false, false, true);
-      partial = !!entry.no_ur_partial || rows.length < 10;
+      partial = !!board.no_ur_partial || rows.length < 10;
     } else if (noShinn) {
-      rows = (entry.pilots_no_shinn && entry.pilots_no_shinn.length)
-        ? entry.pilots_no_shinn
-        : filterPilotsLocal(entry.pilots || [], false, true, sameRole);
+      rows = (board.pilots_no_shinn && board.pilots_no_shinn.length)
+        ? board.pilots_no_shinn
+        : filterPilotsLocal(board.pilots || [], false, true, sameRole);
       if (sameRole) rows = filterPilotsLocal(rows, false, false, true);
-      partial = !!entry.no_shinn_partial || rows.length < 10;
+      partial = !!board.no_shinn_partial || rows.length < 10;
     } else {
-      rows = entry.pilots || [];
+      rows = board.pilots || [];
     }
     return {
       pilots: sortPilotsByCalcDamage(rows).slice(0, 10),
       partial: partial
     };
+  }
+
+  function forEachBoard(entry, fn) {
+    if (!entry || typeof fn !== 'function') return;
+    fn(entry);
+    if (entry.modes) {
+      RANK_MODES.forEach(function (mode) {
+        var board = entry.modes[mode];
+        if (board && board !== entry) fn(board);
+      });
+    }
   }
 
   function applyAffinityToEntry(entry, affinityMap, unitId) {
@@ -234,14 +288,16 @@
         }
       });
     }
-    enrich(entry.pilots);
-    enrich(entry.pilots_no_ur);
-    enrich(entry.pilots_no_shinn);
-    enrich(entry.pilots_same_role);
+    forEachBoard(entry, function (board) {
+      enrich(board.pilots);
+      enrich(board.pilots_no_ur);
+      enrich(board.pilots_no_shinn);
+      enrich(board.pilots_same_role);
+    });
   }
 
   async function enrichAffinityMatches(entry, unitId, lang) {
-    if (!entry || !entry.pilots || !entry.pilots.length) return entry;
+    if (!entry) return entry;
     var seen = {};
     var charIds = [];
     var pairs = [];
@@ -254,10 +310,12 @@
         pairs.push(String(unitId) + ':' + cid);
       });
     }
-    collect(entry.pilots);
-    collect(entry.pilots_no_ur);
-    collect(entry.pilots_no_shinn);
-    collect(entry.pilots_same_role);
+    forEachBoard(entry, function (board) {
+      collect(board.pilots);
+      collect(board.pilots_no_ur);
+      collect(board.pilots_no_shinn);
+      collect(board.pilots_same_role);
+    });
     if (!charIds.length) return entry;
     try {
       var q = 'lang=' + encodeURIComponent(lang || 'EN')
@@ -274,10 +332,12 @@
           if (cid && skills[cid] && !p.active_skills) p.active_skills = skills[cid];
         });
       }
-      attachSkills(entry.pilots);
-      attachSkills(entry.pilots_no_ur);
-      attachSkills(entry.pilots_no_shinn);
-      attachSkills(entry.pilots_same_role);
+      forEachBoard(entry, function (board) {
+        attachSkills(board.pilots);
+        attachSkills(board.pilots_no_ur);
+        attachSkills(board.pilots_no_shinn);
+        attachSkills(board.pilots_same_role);
+      });
     } catch (_) {}
     return entry;
   }
@@ -342,7 +402,8 @@
   function apiQuery() {
     var lang = (global.S && global.S.lang) || 'EN';
     return 'lang=' + encodeURIComponent(lang)
-      + '&lb_tier=3&def_tier=3&rank_mode=super_crit&top_pilots=10&bsp=1';
+      + '&lb_tier=3&def_tier=3&rank_mode=' + encodeURIComponent(state.rankMode || 'super_crit')
+      + '&top_pilots=10&bsp=1&all_modes=1';
   }
 
   function pilotThumb(c) {
@@ -420,7 +481,15 @@
 
   function pilotDamage(pilot) {
     if (!pilot) return 0;
-    return pilot.peak_dmg || pilot.super_crit_dmg || pilot.score || pilot.max_damage || 0;
+    var mode = state.rankMode || 'super_crit';
+    var field = RANK_MODE_DMG[mode] || 'super_crit_dmg';
+    var cr = pilot.crit_rate | 0;
+    var gc = !!(pilot.guaranteed_crit || cr >= 100);
+    var canCrit = gc || cr > 0;
+    if ((mode === 'super_crit' || mode === 'crit') && !canCrit) {
+      return pilot.normal_dmg || pilot.score || 0;
+    }
+    return pilot[field] || pilot.peak_dmg || pilot.score || pilot.max_damage || 0;
   }
 
   function sortPilotsByCalcDamage(pilots) {
@@ -528,7 +597,7 @@
     return dcEnginePromise;
   }
 
-  function entryFromPayload(payload) {
+  function boardFromPayload(payload) {
     if (!payload || !payload.pilots || !payload.pilots.length || payload.pending) return null;
     return {
       pilots: sortPilotsByCalcDamage(payload.pilots),
@@ -538,7 +607,32 @@
       no_ur_partial: !!payload.no_ur_partial,
       no_shinn_partial: !!payload.no_shinn_partial,
       same_role_partial: !!payload.same_role_partial,
-      source: payload.source || 'published_dc'
+      source: payload.source || 'published_dc',
+      rank_mode: payload.rank_mode || null
+    };
+  }
+
+  function entryFromPayload(payload) {
+    var primary = boardFromPayload(payload);
+    if (!primary) return null;
+    var modes = {};
+    if (payload.modes && typeof payload.modes === 'object') {
+      RANK_MODES.forEach(function (mode) {
+        var board = boardFromPayload(payload.modes[mode]);
+        if (board) modes[mode] = board;
+      });
+    }
+    if (!modes.super_crit) modes.super_crit = primary;
+    return {
+      pilots: primary.pilots,
+      pilots_no_ur: primary.pilots_no_ur,
+      pilots_no_shinn: primary.pilots_no_shinn,
+      pilots_same_role: primary.pilots_same_role,
+      no_ur_partial: primary.no_ur_partial,
+      no_shinn_partial: primary.no_shinn_partial,
+      same_role_partial: primary.same_role_partial,
+      source: primary.source,
+      modes: modes
     };
   }
 
@@ -549,7 +643,8 @@
 
   async function fetchPublishedPilots(unitId, lang) {
     var q = 'lang=' + encodeURIComponent(lang)
-      + '&lb_tier=3&def_tier=3&rank_mode=super_crit&top_pilots=10';
+      + '&lb_tier=3&def_tier=3&rank_mode=' + encodeURIComponent(state.rankMode || 'super_crit')
+      + '&top_pilots=10&all_modes=1';
     var res = await fetch('/api/unit/' + encodeURIComponent(unitId) + '/best_synergy_pilots?' + q, {
       credentials: 'same-origin'
     });
@@ -618,16 +713,46 @@
     var payload = await asmRes.json();
     if (payload.error) throw new Error(payload.detail || payload.error);
     var group = payload.group || {};
-    var pilots = sortPilotsByCalcDamage(group.pilots || []);
-    var noUrBlock = (group.rankings_no_ur || {}).super_crit || {};
-    var noShinnBlock = (group.rankings_no_shinn || {}).super_crit || {};
+    function boardFromMode(mode) {
+      var block = ((group.rankings || {})[mode]) || {};
+      var pilots = sortPilotsByCalcDamage(block.pilots || (mode === 'super_crit' ? (group.pilots || []) : []));
+      if (!pilots.length && mode === 'super_crit') {
+        pilots = sortPilotsByCalcDamage(group.pilots || []);
+      }
+      if (!pilots.length) return null;
+      var noUrBlock = ((group.rankings_no_ur || {})[mode]) || {};
+      var noShinnBlock = ((group.rankings_no_shinn || {})[mode]) || {};
+      var sameRoleBlock = ((group.rankings_same_role || {})[mode]) || {};
+      return {
+        pilots: pilots,
+        pilots_no_ur: sortPilotsByCalcDamage(noUrBlock.pilots || filterPilotsLocal(pilots, true, true)),
+        pilots_no_shinn: sortPilotsByCalcDamage(noShinnBlock.pilots || filterPilotsLocal(pilots, false, true)),
+        pilots_same_role: sortPilotsByCalcDamage(sameRoleBlock.pilots || filterPilotsLocal(pilots, false, false, true)),
+        no_ur_partial: !(noUrBlock.pilots && noUrBlock.pilots.length >= 10),
+        no_shinn_partial: !(noShinnBlock.pilots && noShinnBlock.pilots.length >= 10),
+        same_role_partial: !(sameRoleBlock.pilots && sameRoleBlock.pilots.length >= 10),
+        source: 'client_dc',
+        rank_mode: mode
+      };
+    }
+    var modes = {};
+    RANK_MODES.forEach(function (mode) {
+      var board = boardFromMode(mode);
+      if (board) modes[mode] = board;
+    });
+    var primary = modes.super_crit || modes[state.rankMode] || null;
+    if (!primary) return null;
+    if (!modes.super_crit) modes.super_crit = primary;
     return {
-      pilots: pilots,
-      pilots_no_ur: sortPilotsByCalcDamage(noUrBlock.pilots || filterPilotsLocal(pilots, true, true)),
-      pilots_no_shinn: sortPilotsByCalcDamage(noShinnBlock.pilots || filterPilotsLocal(pilots, false, true)),
-      no_ur_partial: !(noUrBlock.pilots && noUrBlock.pilots.length >= 10),
-      no_shinn_partial: !(noShinnBlock.pilots && noShinnBlock.pilots.length >= 10),
-      source: 'client_dc'
+      pilots: primary.pilots,
+      pilots_no_ur: primary.pilots_no_ur,
+      pilots_no_shinn: primary.pilots_no_shinn,
+      pilots_same_role: primary.pilots_same_role,
+      no_ur_partial: primary.no_ur_partial,
+      no_shinn_partial: primary.no_shinn_partial,
+      same_role_partial: primary.same_role_partial,
+      source: 'client_dc',
+      modes: modes
     };
   }
 
