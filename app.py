@@ -21648,7 +21648,7 @@ def get_unit(unit_id):
         if stat_mode_arg not in ('normal', 'sp', 'ssp'):
             stat_mode_arg = 'normal'
         cond_for_ranking = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-        ck = f"u_{unit_id}_{lc}_ssp15_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp2_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"u_{unit_id}_{lc}_ssp15_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -22047,22 +22047,9 @@ def get_unit(unit_id):
             result['view_ranking'] = True
         try:
             import meta_synergy_rank as _msr
+            # Eligibility only — do NOT embed Top 10 here (blocks detail open).
+            # Client prefetches /api/unit/.../best_synergy_pilots after paint.
             result['best_synergy_pilot_eligible'] = _msr.unit_is_rankable(unit_id, lc)
-            # Soshage-style: embed top-10 in unit detail so the panel is instant (no second round-trip / live sim).
-            if result['best_synergy_pilot_eligible'] and not view_ranking:
-                try:
-                    bsp = _msr.unit_best_synergy_pilots_payload(unit_id, {
-                        'lc': lc,
-                        'lb_tier': 3,
-                        'def_tier': 3,
-                        'rank_mode': 'super_crit',
-                        'top_pilots': 10,
-                        'all_modes': '1',
-                    })
-                    if bsp and bsp.get('pilots') and not bsp.get('pending'):
-                        result['best_synergy_pilots'] = bsp
-                except Exception as _bsp_e:
-                    print(f'embed best_synergy_pilots failed for {unit_id}: {_bsp_e}')
         except Exception:
             result['best_synergy_pilot_eligible'] = False
         set_cached_response(ck, result)

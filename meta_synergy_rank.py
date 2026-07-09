@@ -3228,6 +3228,7 @@ def _msy_dc_kwargs_from_request(args):
         'cp_on': args.get('cp_on', '1') not in ('0', 'false', 'no', ''),
         'pep_on': args.get('pep_on', '1') not in ('0', 'false', 'no', ''),
         'bsp': args.get('bsp', '0') in ('1', 'true', 'yes'),
+        'all_modes': args.get('all_modes', '1'),
     }
 
 

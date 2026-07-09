@@ -22,7 +22,9 @@
     sameRole: false,
     rankMode: 'super_crit',
     // unitId -> { modes: { super_crit, crit, normal }, ... }
-    cache: {}
+    cache: {},
+    // unitId -> in-flight Promise<entry|null> (shared by prefetch + panel open)
+    inflight: {}
   };
 
   function t(key) {
@@ -259,7 +261,7 @@
       rows = board.pilots || [];
     }
     return {
-      pilots: sortPilotsByCalcDamage(rows).slice(0, 10),
+      pilots: sortPilotsByCalcDamage(rows, state.rankMode || 'super_crit').slice(0, 10),
       partial: partial
     };
   }
@@ -479,9 +481,9 @@
     return parts;
   }
 
-  function pilotDamage(pilot) {
+  function pilotDamage(pilot, modeOverride) {
     if (!pilot) return 0;
-    var mode = state.rankMode || 'super_crit';
+    var mode = modeOverride || state.rankMode || 'super_crit';
     var field = RANK_MODE_DMG[mode] || 'super_crit_dmg';
     var cr = pilot.crit_rate | 0;
     var gc = !!(pilot.guaranteed_crit || cr >= 100);
@@ -492,10 +494,11 @@
     return pilot[field] || pilot.peak_dmg || pilot.score || pilot.max_damage || 0;
   }
 
-  function sortPilotsByCalcDamage(pilots) {
+  function sortPilotsByCalcDamage(pilots, modeOverride) {
     if (!pilots || !pilots.length) return pilots || [];
+    var mode = modeOverride || state.rankMode || 'super_crit';
     return pilots.slice().sort(function (a, b) {
-      return pilotDamage(b) - pilotDamage(a);
+      return pilotDamage(b, mode) - pilotDamage(a, mode);
     }).map(function (p, i) {
       var row = Object.assign({}, p);
       row.rank = i + 1;
@@ -597,28 +600,29 @@
     return dcEnginePromise;
   }
 
-  function boardFromPayload(payload) {
+  function boardFromPayload(payload, modeHint) {
     if (!payload || !payload.pilots || !payload.pilots.length || payload.pending) return null;
+    var mode = modeHint || payload.rank_mode || 'super_crit';
     return {
-      pilots: sortPilotsByCalcDamage(payload.pilots),
-      pilots_no_ur: sortPilotsByCalcDamage(payload.pilots_no_ur || []),
-      pilots_no_shinn: sortPilotsByCalcDamage(payload.pilots_no_shinn || []),
-      pilots_same_role: sortPilotsByCalcDamage(payload.pilots_same_role || []),
+      pilots: sortPilotsByCalcDamage(payload.pilots, mode),
+      pilots_no_ur: sortPilotsByCalcDamage(payload.pilots_no_ur || [], mode),
+      pilots_no_shinn: sortPilotsByCalcDamage(payload.pilots_no_shinn || [], mode),
+      pilots_same_role: sortPilotsByCalcDamage(payload.pilots_same_role || [], mode),
       no_ur_partial: !!payload.no_ur_partial,
       no_shinn_partial: !!payload.no_shinn_partial,
       same_role_partial: !!payload.same_role_partial,
       source: payload.source || 'published_dc',
-      rank_mode: payload.rank_mode || null
+      rank_mode: mode
     };
   }
 
   function entryFromPayload(payload) {
-    var primary = boardFromPayload(payload);
+    var primary = boardFromPayload(payload, payload.rank_mode || 'super_crit');
     if (!primary) return null;
     var modes = {};
     if (payload.modes && typeof payload.modes === 'object') {
       RANK_MODES.forEach(function (mode) {
-        var board = boardFromPayload(payload.modes[mode]);
+        var board = boardFromPayload(payload.modes[mode], mode);
         if (board) modes[mode] = board;
       });
     }
@@ -715,9 +719,9 @@
     var group = payload.group || {};
     function boardFromMode(mode) {
       var block = ((group.rankings || {})[mode]) || {};
-      var pilots = sortPilotsByCalcDamage(block.pilots || (mode === 'super_crit' ? (group.pilots || []) : []));
+      var pilots = sortPilotsByCalcDamage(block.pilots || (mode === 'super_crit' ? (group.pilots || []) : []), mode);
       if (!pilots.length && mode === 'super_crit') {
-        pilots = sortPilotsByCalcDamage(group.pilots || []);
+        pilots = sortPilotsByCalcDamage(group.pilots || [], mode);
       }
       if (!pilots.length) return null;
       var noUrBlock = ((group.rankings_no_ur || {})[mode]) || {};
@@ -725,9 +729,9 @@
       var sameRoleBlock = ((group.rankings_same_role || {})[mode]) || {};
       return {
         pilots: pilots,
-        pilots_no_ur: sortPilotsByCalcDamage(noUrBlock.pilots || filterPilotsLocal(pilots, true, true)),
-        pilots_no_shinn: sortPilotsByCalcDamage(noShinnBlock.pilots || filterPilotsLocal(pilots, false, true)),
-        pilots_same_role: sortPilotsByCalcDamage(sameRoleBlock.pilots || filterPilotsLocal(pilots, false, false, true)),
+        pilots_no_ur: sortPilotsByCalcDamage(noUrBlock.pilots || filterPilotsLocal(pilots, true, true), mode),
+        pilots_no_shinn: sortPilotsByCalcDamage(noShinnBlock.pilots || filterPilotsLocal(pilots, false, true), mode),
+        pilots_same_role: sortPilotsByCalcDamage(sameRoleBlock.pilots || filterPilotsLocal(pilots, false, false, true), mode),
         no_ur_partial: !(noUrBlock.pilots && noUrBlock.pilots.length >= 10),
         no_shinn_partial: !(noShinnBlock.pilots && noShinnBlock.pilots.length >= 10),
         same_role_partial: !(sameRoleBlock.pilots && sameRoleBlock.pilots.length >= 10),
@@ -791,19 +795,21 @@
   async function loadRankings(unitId) {
     var gen = ++state.loadGen;
     state.loading = true;
-    // Instant path: unit detail already embedded the published top-10 (Soshage-style).
-    var detail = global.S && global.S.currentDetailData;
-    var embedded = (detail && String(detail.id) === String(unitId))
-      ? entryFromUnitDetail(detail)
-      : null;
-    if (embedded) {
-      commitEntry(unitId, embedded, gen);
+    var uid = String(unitId);
+    if (state.cache[uid] && state.cache[uid].pilots && state.cache[uid].pilots.length) {
+      commitEntry(unitId, state.cache[uid], gen);
       return;
     }
     showLoading();
     try {
       var lang = (global.S && global.S.lang) || 'EN';
-      var entry = await fetchPublishedPilots(unitId, lang);
+      var entry = null;
+      // Reuse background prefetch if already in flight.
+      if (state.inflight[uid]) {
+        entry = await state.inflight[uid];
+      } else {
+        entry = await fetchPublishedPilots(unitId, lang);
+      }
       if (gen !== state.loadGen) return;
       if (!entry) {
         // Only fall back to live /cal when published cache truly has no row.
@@ -894,22 +900,37 @@
     else openPanel();
   }
 
-  function prefetchRankings(unitId) {
-    if (state.cache[String(unitId)]) return;
-    var detail = global.S && global.S.currentDetailData;
-    var embedded = (detail && String(detail.id) === String(unitId))
-      ? entryFromUnitDetail(detail)
-      : null;
-    if (embedded) {
-      state.cache[String(unitId)] = embedded;
-      return;
+  function scheduleIdle(fn) {
+    // Prefer next frame so detail paint wins, then prefetch starts immediately.
+    if (typeof global.requestAnimationFrame === 'function') {
+      global.requestAnimationFrame(function () {
+        global.setTimeout(fn, 0);
+      });
+    } else {
+      global.setTimeout(fn, 0);
     }
+  }
+
+  function prefetchRankings(unitId) {
+    var uid = String(unitId);
+    if (state.cache[uid] && state.cache[uid].pilots && state.cache[uid].pilots.length) return;
+    if (state.inflight[uid]) return;
     var lang = (global.S && global.S.lang) || 'EN';
-    void fetchPublishedPilots(unitId, lang).then(function (entry) {
-      if (!entry || !entry.pilots || !entry.pilots.length) return;
-      if (String(state.unitId) !== String(unitId)) return;
-      state.cache[String(unitId)] = entry;
+    var promise = fetchPublishedPilots(unitId, lang).then(function (entry) {
+      delete state.inflight[uid];
+      if (!entry || !entry.pilots || !entry.pilots.length) return null;
+      // Keep result even if user navigated away — next open of same unit is instant.
+      state.cache[uid] = entry;
+      // Affinity is secondary; warm it in idle time without blocking panel paint.
+      scheduleIdle(function () {
+        void enrichAffinityMatches(entry, unitId, lang);
+      });
+      return entry;
+    }).catch(function () {
+      delete state.inflight[uid];
+      return null;
     });
+    state.inflight[uid] = promise;
   }
 
   function onDetailOpen(d) {
@@ -925,10 +946,11 @@
     }
     setPanelHtml('');
     if (d && isEligible(d)) {
-      // Prefer embedded top-10 from /api/unit — zero extra latency.
-      var embedded = entryFromUnitDetail(d);
-      if (embedded) state.cache[String(d.id)] = embedded;
-      else prefetchRankings(d.id);
+      // After detail paints: prefetch Top 10 from published cache (does not block /api/unit).
+      scheduleIdle(function () {
+        if (String(state.unitId) !== String(d.id)) return;
+        prefetchRankings(d.id);
+      });
     }
   }
 

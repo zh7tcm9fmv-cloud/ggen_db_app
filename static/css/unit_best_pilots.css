@@ -243,6 +243,12 @@
   object-fit: contain;
 }
 
+.unit-best-pilot-metric-btn[data-ubp-metric="crit"] .ubp-metric-icon {
+  width: 18px;
+  height: 14px;
+  object-fit: contain;
+}
+
 .unit-best-pilot-metric-btn .ubp-metric-label {
   font-size: 10px;
   font-weight: 800;
@@ -688,6 +694,22 @@
   .detail-rec-shortcut--mobile:has(.detail-rec-link-card--has-bsp) {
     /* Extra clearance so the hanging BSP icon never clips the pilot name. */
     padding-bottom: 36px;
+  }
+
+  .unit-best-pilot-metrics {
+    width: 100%;
+    order: 3;
+    margin: 2px 0 0;
+  }
+
+  .unit-best-pilot-metric-btn {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 4px 6px;
+  }
+
+  .unit-best-pilot-metric-btn .ubp-metric-label {
+    font-size: 9px;
   }
 
   .detail-rec-link-card--has-bsp .unit-best-pilot-btn-slot--rec {
