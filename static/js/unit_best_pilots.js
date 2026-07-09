@@ -37,7 +37,9 @@
     // unitId -> { modes: { super_crit, crit, normal }, ... }
     cache: {},
     // unitId -> in-flight Promise<entry|null> (shared by prefetch + panel open)
-    inflight: {}
+    inflight: {},
+    defenderTiers: null,
+    defenderTiersPromise: null
   };
 
   function t(key) {
@@ -215,10 +217,70 @@
   function metricLabel(mode) {
     var labelKey = RANK_MODE_LABEL[mode] || 'msy_metric_super_crit';
     return t(labelKey) || ({
-      super_crit: 'Super Crit',
-      crit: 'Crit',
+      super_crit: 'Super Critical',
+      crit: 'Critical',
       normal: 'Normal'
     })[mode] || mode;
+  }
+
+  function fmtDef(n) {
+    var v = Number(n);
+    if (!isFinite(v)) return '—';
+    try {
+      return Math.round(v).toLocaleString();
+    } catch (_) {
+      return String(Math.round(v));
+    }
+  }
+
+  function panelSubtitleHtml() {
+    var ms = 25072;
+    var pilot = 705;
+    var tiers = state.defenderTiers;
+    if (tiers && (tiers['3'] || tiers[3])) {
+      var row = tiers['3'] || tiers[3];
+      if (row.unit_def != null) ms = row.unit_def;
+      if (row.char_def != null) pilot = row.char_def;
+    }
+    var tpl = t('unit_best_pilot_note')
+      || 'Eternal Expert: MS DEF: {ms} Pilot DEF: {pilot}';
+    return esc(tpl.replace('{ms}', fmtDef(ms)).replace('{pilot}', fmtDef(pilot)));
+  }
+
+  function syncPanelSubtitle() {
+    var el = global.document.querySelector('#unitBestPilotPanelWrap .unit-best-pilot-panel-note');
+    if (el) el.innerHTML = panelSubtitleHtml();
+  }
+
+  async function ensureDefenderTiers() {
+    if (state.defenderTiers) {
+      syncPanelSubtitle();
+      return state.defenderTiers;
+    }
+    if (state.defenderTiersPromise) return state.defenderTiersPromise;
+    var lang = (global.S && global.S.lang) || 'EN';
+    state.defenderTiersPromise = (async function () {
+      try {
+        var res = await fetch('/api/meta_synergy_dc/bootstrap?lang=' + encodeURIComponent(lang)
+          + '&lb_tier=3&def_tier=3&rank_mode=super_crit&top_pilots=10&bsp=1', {
+          credentials: 'same-origin'
+        });
+        if (res.ok) {
+          var data = await res.json();
+          if (data && data.defender_tiers) {
+            state.defenderTiers = data.defender_tiers;
+            syncPanelSubtitle();
+            return state.defenderTiers;
+          }
+        }
+      } catch (_) {}
+      state.defenderTiers = {
+        '3': { unit_def: 25072, char_def: 705, label: 'Eternal Expert' }
+      };
+      syncPanelSubtitle();
+      return state.defenderTiers;
+    })();
+    return state.defenderTiersPromise;
   }
 
   function closeMetricDropdown() {
@@ -259,6 +321,11 @@
       var on = el.getAttribute('data-ubp-metric') === mode;
       el.classList.toggle('is-active', on);
       el.setAttribute('aria-selected', on ? 'true' : 'false');
+      var itemLab = el.querySelector('span');
+      if (itemLab) {
+        var m = el.getAttribute('data-ubp-metric');
+        if (m) itemLab.textContent = metricLabel(m);
+      }
     });
   }
 
@@ -931,12 +998,7 @@
     state.loading = false;
     syncFilterButtons();
     renderActivePanel();
-    if (state.open) {
-      global.requestAnimationFrame(function () {
-        global.setTimeout(scrollPanelIntoView, 40);
-        global.setTimeout(scrollPanelIntoView, 280);
-      });
-    }
+    if (state.open) scheduleScrollToPanel();
     // Affinity details are secondary — never block the top-10 paint.
     var lang = (global.S && global.S.lang) || 'EN';
     void enrichAffinityMatches(entry, unitId, lang).then(function () {
@@ -995,6 +1057,8 @@
       return;
     }
     if (String(d.id) !== state.unitId) onDetailOpen(d);
+    syncPanelSubtitle();
+    void ensureDefenderTiers();
     var onRec = hasRecPilot(d);
     global.document.querySelectorAll('#unitBestPilotBtnSlotPortrait').forEach(function (slot) {
       slot.innerHTML = onRec ? '' : renderTriggerBtn();
@@ -1004,31 +1068,111 @@
     });
   }
 
+  function canScrollY(node) {
+    if (!node || typeof node.scrollTop !== 'number') return false;
+    try {
+      var style = global.getComputedStyle(node);
+      var oy = style && style.overflowY;
+      if (!(oy === 'auto' || oy === 'scroll' || oy === 'overlay')) return false;
+      return node.scrollHeight > node.clientHeight + 1;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function findScrollParent(el) {
+    var node = el && el.parentElement;
+    while (node && node !== global.document.body && node !== global.document.documentElement) {
+      if (canScrollY(node)) return node;
+      node = node.parentElement;
+    }
+    // Unit detail: #modalContent and/or #detailModal may be the scroller.
+    var mc = global.document.getElementById('modalContent');
+    if (canScrollY(mc)) return mc;
+    var m = global.document.getElementById('detailModal');
+    if (canScrollY(m)) return m;
+    return mc || m || global.document.scrollingElement || global.document.documentElement;
+  }
+
+  function collectScrollTargets(wrap) {
+    var seen = [];
+    function add(node) {
+      if (!node || seen.indexOf(node) >= 0) return;
+      if (canScrollY(node) || node === global.document.getElementById('modalContent')
+        || node === global.document.getElementById('detailModal')) {
+        seen.push(node);
+      }
+    }
+    add(findScrollParent(wrap));
+    add(global.document.getElementById('modalContent'));
+    add(global.document.getElementById('detailModal'));
+    return seen;
+  }
+
+  function chromeOffsetPx(scroller) {
+    var chrome = global.document.getElementById('modalDetailChrome');
+    if (!chrome || !scroller || !scroller.contains(chrome)) return 12;
+    try {
+      return Math.max(12, Math.ceil(chrome.getBoundingClientRect().height) + 8);
+    } catch (_) {
+      return 56;
+    }
+  }
+
+  function scrollNodeToWrap(scroller, wrap) {
+    if (!scroller || !wrap) return false;
+    try {
+      var wrapRect = wrap.getBoundingClientRect();
+      var scrollerRect = scroller.getBoundingClientRect
+        ? scroller.getBoundingClientRect()
+        : { top: 0 };
+      var pad = chromeOffsetPx(scroller);
+      var nextTop = scroller.scrollTop + (wrapRect.top - scrollerRect.top) - pad;
+      nextTop = Math.max(0, nextTop);
+      // Instant only — smooth + instant fights on Safari/Firefox and can no-op.
+      scroller.scrollTop = nextTop;
+      if (typeof scroller.scrollTo === 'function') {
+        try { scroller.scrollTo(0, nextTop); } catch (_) {}
+      }
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
   function scrollPanelIntoView() {
     var wrap = global.document.getElementById('unitBestPilotPanelWrap');
     if (!wrap || !wrap.classList.contains('is-open')) return;
-    // Prefer scrolling the modal content scroller (desktop + mobile), not window.
-    var scroller = wrap.closest('.modal-content')
-      || global.document.getElementById('modalContent')
-      || global.document.getElementById('detailModal');
-    try {
-      if (scroller && typeof scroller.scrollTop === 'number') {
-        var wrapRect = wrap.getBoundingClientRect();
-        var scrollerRect = scroller.getBoundingClientRect();
-        var nextTop = scroller.scrollTop + (wrapRect.top - scrollerRect.top) - 12;
-        if (typeof scroller.scrollTo === 'function') {
-          scroller.scrollTo({ top: Math.max(0, nextTop), behavior: 'smooth' });
-        } else {
-          scroller.scrollTop = Math.max(0, nextTop);
-        }
-        return;
-      }
-    } catch (_) {}
-    try {
-      wrap.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
-    } catch (_) {
-      try { wrap.scrollIntoView(true); } catch (__) {}
+    // Force layout so max-height:none expansion is measurable before scroll.
+    try { void wrap.offsetHeight; } catch (_) {}
+    var targets = collectScrollTargets(wrap);
+    var ok = false;
+    for (var i = 0; i < targets.length; i++) {
+      if (scrollNodeToWrap(targets[i], wrap)) ok = true;
     }
+    if (ok) return;
+    try {
+      wrap.scrollIntoView(true);
+    } catch (_) {
+      try { wrap.scrollIntoView({ block: 'start', inline: 'nearest' }); } catch (__) {}
+    }
+  }
+
+  function scheduleScrollToPanel() {
+    // Multiple passes: open class, layout expand, font/image paint, slow browsers.
+    var run = function () {
+      if (typeof global.requestAnimationFrame === 'function') {
+        global.requestAnimationFrame(function () {
+          scrollPanelIntoView();
+        });
+      } else {
+        scrollPanelIntoView();
+      }
+    };
+    var delays = [0, 40, 120, 280, 480, 800];
+    delays.forEach(function (ms) {
+      global.setTimeout(run, ms);
+    });
   }
 
   function openPanel() {
@@ -1040,11 +1184,9 @@
     }
     syncTriggerActive();
     syncFilterButtons();
-    // Jump after layout expands (max-height transition / content paint).
-    global.requestAnimationFrame(function () {
-      global.setTimeout(scrollPanelIntoView, 40);
-      global.setTimeout(scrollPanelIntoView, 280);
-    });
+    syncPanelSubtitle();
+    void ensureDefenderTiers();
+    scheduleScrollToPanel();
     var d = global.S && global.S.currentDetailData;
     if (!d) return;
     if (state.unitId !== String(d.id)) {
@@ -1054,10 +1196,7 @@
     if (state.cache[state.unitId]) {
       state.loaded = true;
       renderActivePanel();
-      global.requestAnimationFrame(function () {
-        global.setTimeout(scrollPanelIntoView, 40);
-        global.setTimeout(scrollPanelIntoView, 280);
-      });
+      scheduleScrollToPanel();
       // Re-fetch affinity details if a prior load skipped them.
       var cached = state.cache[state.unitId];
       var needsAff = (cached.pilots || []).some(function (p) {
@@ -1125,6 +1264,7 @@
 
   function onDetailOpen(d) {
     state.open = false;
+    closeMetricDropdown();
     state.unitId = d ? String(d.id) : null;
     state.loaded = false;
     state.loading = false;
@@ -1135,6 +1275,8 @@
       wrap.setAttribute('aria-hidden', 'true');
     }
     setPanelHtml('');
+    syncPanelSubtitle();
+    void ensureDefenderTiers();
     if (d && isEligible(d)) {
       // After detail paints: prefetch Top 10 from published cache (does not block /api/unit).
       scheduleIdle(function () {

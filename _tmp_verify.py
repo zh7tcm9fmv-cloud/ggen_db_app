@@ -1,12 +1,9 @@
 from pathlib import Path
-p = Path('static/js/app.js')
-text = p.read_text(encoding='utf-8')
-idx = text.find('data-ubp-metric="crit"')
-print('crit idx', idx)
-print(text[idx:idx+320] if idx >= 0 else 'missing')
-print('has Label_Critical', 'UI_Battle_MapUI_Label_Critical.webp' in text)
-print('has embed removed', 'best_synergy_pilots' not in Path('app.py').read_text(encoding='utf-8')[Path('app.py').read_text(encoding='utf-8').find('best_synergy_pilot_eligible'):Path('app.py').read_text(encoding='utf-8').find('best_synergy_pilot_eligible')+400] or 'embed' )
-# simpler check
-ap = Path('app.py').read_text(encoding='utf-8')
-snip = ap[ap.find('best_synergy_pilot_eligible'):ap.find('best_synergy_pilot_eligible')+350]
-print('app snip:', snip)
+import re
+t = Path(r'c:\Users\Mikew0911\Desktop\ggen_db_app\static\js\app.js').read_text(encoding='utf-8')
+# Check for accidental Critical replacements
+for pat in [r"\|\|'Critical'", r"\|\|'Super Critical'", r"unit_best_pilot_note", r"ubp-metric-mark", r"25,072"]:
+    print(pat, 'count', len(re.findall(pat, t)))
+# Any weird Critical that shouldn't be
+for m in re.finditer(r".{0,40}\|\|'Critical'.{0,40}", t):
+    print('CRIT FALLBACK CTX:', m.group(0)[:120])
