@@ -234,6 +234,17 @@
   box-shadow: none;
 }
 
+.unit-best-pilot-filter-note {
+  margin: 0 8px 8px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(251, 191, 36, 0.35);
+  background: rgba(251, 191, 36, 0.08);
+  color: #fde68a;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
 .unit-best-pilot-filters .msy-exclude-ur-icon,
 .unit-best-pilot-filters .msy-exclude-shinn-icon {
   position: relative;
@@ -470,10 +481,24 @@
   margin-top: 0;
   font-size: 9px;
   line-height: 1.25;
-  max-width: 110px;
+  max-width: 140px;
   white-space: normal;
   overflow-wrap: anywhere;
   word-break: break-word;
+}
+
+.unit-best-pilot-panel .msy-pilot-dmg-col .msy-pilot-affinity {
+  align-items: flex-end;
+  text-align: right;
+  max-width: 140px;
+}
+
+.unit-best-pilot-panel .msy-pilot-dmg-col .msy-pilot-affinity-row {
+  text-align: left;
+}
+
+.unit-best-pilot-panel .msy-pilot-dmg-col .msy-pilot-affinity-flag {
+  text-align: right;
 }
 
 .unit-best-pilot-panel .msy-pilot-sub--gc {

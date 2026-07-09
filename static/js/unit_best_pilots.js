@@ -12,7 +12,7 @@
     loadGen: 0,
     excludeUr: false,
     excludeShinn: false,
-    // unitId -> { pilots, pilots_no_ur, pilots_no_shinn, source }
+    // unitId -> { pilots, pilots_no_ur, pilots_no_shinn, no_ur_partial, no_shinn_partial, source }
     cache: {}
   };
 
@@ -53,7 +53,7 @@
 
   function renderTriggerBtn() {
     var icon = imgUrl('/static/images/UI/UI_Common_Tmb_PriorPilot_Icon.webp');
-    var title = t('unit_best_pilot_btn') || 'Best Synergy Pilots';
+    var title = t('unit_best_pilot_btn') || 'Top 10 Damage Pilot';
     return '<button type="button" class="unit-best-pilot-btn' + (state.open ? ' is-active' : '')
       + '" data-unit-best-pilot-toggle title="' + escAttr(title)
       + '" aria-label="' + escAttr(title) + '" aria-expanded="' + (state.open ? 'true' : 'false') + '">'
@@ -171,18 +171,28 @@
   }
 
   function pilotsForView(entry) {
-    if (!entry) return [];
+    if (!entry) return { pilots: [], partial: false };
     var noUr = !!state.excludeUr;
     var noShinn = !!state.excludeShinn || noUr;
     var rows;
-    if (noUr && entry.pilots_no_ur && entry.pilots_no_ur.length) {
-      rows = entry.pilots_no_ur;
-    } else if (noShinn && !noUr && entry.pilots_no_shinn && entry.pilots_no_shinn.length) {
-      rows = entry.pilots_no_shinn;
+    var partial = false;
+    if (noUr) {
+      rows = (entry.pilots_no_ur && entry.pilots_no_ur.length)
+        ? entry.pilots_no_ur
+        : filterPilotsLocal(entry.pilots || [], true, true);
+      partial = !!entry.no_ur_partial || rows.length < 10;
+    } else if (noShinn) {
+      rows = (entry.pilots_no_shinn && entry.pilots_no_shinn.length)
+        ? entry.pilots_no_shinn
+        : filterPilotsLocal(entry.pilots || [], false, true);
+      partial = !!entry.no_shinn_partial || rows.length < 10;
     } else {
-      rows = filterPilotsLocal(entry.pilots || [], noUr, noShinn);
+      rows = entry.pilots || [];
     }
-    return sortPilotsByCalcDamage(rows).slice(0, 10);
+    return {
+      pilots: sortPilotsByCalcDamage(rows).slice(0, 10),
+      partial: partial
+    };
   }
 
   function applyAffinityToEntry(entry, affinityMap, unitId) {
@@ -247,14 +257,22 @@
     if (!state.open || !state.unitId) return;
     var entry = state.cache[String(state.unitId)];
     if (!entry) return;
-    var pilots = pilotsForView(entry);
+    var view = pilotsForView(entry);
+    var pilots = view.pilots || [];
     if (!pilots.length) {
       setPanelHtml('<div class="unit-best-pilot-empty">'
         + esc(t('msy_no_eligible_pilots') || 'No eligible pilots for this filter.')
         + '</div>');
       return;
     }
-    setPanelHtml(renderPilotGrid(pilots, state.unitId));
+    var note = '';
+    if (view.partial) {
+      note = '<div class="unit-best-pilot-filter-note">'
+        + esc(t('unit_best_pilot_filter_partial')
+          || 'Showing calculator pilots that match this filter from the main top 10. A full non-UR / No-Shinn top 10 needs a dedicated calculator rebuild.')
+        + '</div>';
+    }
+    setPanelHtml(note + renderPilotGrid(pilots, state.unitId));
   }
 
   function hideTriggers() {
@@ -357,10 +375,8 @@
       parts += '<div class="msy-pilot-formula-stat">' + esc(line) + '</div>';
     }
     if (pilot.dmg_dealt_pct != null && pilot.dmg_dealt_pct !== '') {
-      var vigor = pilot.vigor_dmg_pct | 0;
       var passive = pilot.dmg_dealt_pct | 0;
       var dmgLine = 'Damage Dealt: ' + passive + '%';
-      if (vigor > 0) dmgLine += ' (+' + vigor + '% vigor)';
       var title = 'Damage Dealt Up % from DC formula';
       if (pilot.pair_ok) title += ' (includes affinity match)';
       parts += '<div class="msy-pilot-dmg-dealt-pct" title="' + escAttr(title) + '">'
@@ -370,6 +386,7 @@
       parts += '<div class="msy-pilot-affinity-flag">'
         + esc(t('msy_affinity_match') || 'Affinity match') + '</div>';
     }
+    parts += pilotAffinityHtml(pilot);
     return parts;
   }
 
@@ -407,8 +424,8 @@
       + '<div class="msy-pilot-name-row">' + roleIconHtml(c)
       + '<span class="msy-pilot-name" title="' + escAttr(c.name || '') + '">' + esc(c.name || '') + '</span>'
       + '</div>'
-      + pilotAffinityHtml(pilot)
-      + sub + '</div></button>'
+      + sub
+      + '</div></button>'
       + '<div class="msy-pilot-dmg-col"><div class="msy-pilot-dmg">' + fmtN(dmg) + '</div>'
       + pilotFormulaStatHtml(pilot) + '</div></div>';
   }
@@ -433,7 +450,7 @@
 
   function showLoading() {
     setPanelHtml('<div class="unit-best-pilot-loading"><div class="spinner" style="width:18px;height:18px;border-width:2px"></div>'
-      + esc(t('unit_best_pilot_loading') || 'Computing best synergy pilots…') + '</div>'
+      + esc(t('unit_best_pilot_loading') || 'Loading top 10 damage pilots…') + '</div>'
       + renderSkeletonGrid());
   }
 
@@ -492,6 +509,8 @@
         pilots: sortPilotsByCalcDamage(payload.pilots),
         pilots_no_ur: sortPilotsByCalcDamage(payload.pilots_no_ur || []),
         pilots_no_shinn: sortPilotsByCalcDamage(payload.pilots_no_shinn || []),
+        no_ur_partial: !!payload.no_ur_partial,
+        no_shinn_partial: !!payload.no_shinn_partial,
         source: payload.source || 'published_dc'
       };
     }
@@ -564,6 +583,8 @@
       pilots: pilots,
       pilots_no_ur: sortPilotsByCalcDamage(noUrBlock.pilots || filterPilotsLocal(pilots, true, true)),
       pilots_no_shinn: sortPilotsByCalcDamage(noShinnBlock.pilots || filterPilotsLocal(pilots, false, true)),
+      no_ur_partial: !(noUrBlock.pilots && noUrBlock.pilots.length >= 10),
+      no_shinn_partial: !(noShinnBlock.pilots && noShinnBlock.pilots.length >= 10),
       source: 'client_dc'
     };
   }

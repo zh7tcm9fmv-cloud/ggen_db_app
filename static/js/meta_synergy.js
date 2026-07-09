@@ -1292,12 +1292,8 @@
       parts.push('<div class="msy-pilot-formula-stat">' + esc(line) + '</div>');
     }
     if (pilot.dmg_dealt_pct != null && pilot.dmg_dealt_pct !== '') {
-      var vigor = pilot.vigor_dmg_pct | 0;
       var passive = pilot.dmg_dealt_pct | 0;
       var dmgLine = 'Damage Dealt: ' + passive + '%';
-      if (vigor > 0) {
-        dmgLine += ' (+' + vigor + '% vigor)';
-      }
       parts.push('<div class="msy-pilot-dmg-dealt-pct" title="Damage Dealt Up % from DC formula">' + esc(dmgLine) + '</div>');
     }
     return parts.join('');

@@ -3398,12 +3398,36 @@ def _lookup_bsp_published_group(uid, lc, kwargs):
     return None
 
 
+def _bsp_pilots_look_like_dc(pilots):
+    """True when rows look like live /cal output (not python-lite / cheap preview).
+
+    Lite rows almost always have vigor_dmg_pct=0 and often peak_dmg >> super_crit_dmg.
+    Real /cal BSP rows use super vigor and set vigor_dmg_pct (typically 30).
+    """
+    rows = list(pilots or [])
+    if not rows:
+        return False
+    vigor_hits = sum(1 for p in rows if int(p.get('vigor_dmg_pct') or 0) > 0)
+    return vigor_hits >= max(1, (len(rows) + 1) // 2)
+
+
 def _bsp_pilots_from_rankings_block(block, rank_mode):
     if not block:
         return []
     mode = rank_mode or 'super_crit'
     row = block.get(mode) or block.get('super_crit') or block.get('crit') or block.get('normal') or {}
     return list(row.get('pilots') or [])
+
+
+def _bsp_dc_variant_pilots(block, rank_mode, *, fallback_pilots, no_ur=False, no_shinn=False):
+    """Prefer real /cal variant top-10s; never serve python-lite fakes."""
+    rows = _bsp_pilots_from_rankings_block(block, rank_mode)
+    if rows and _bsp_pilots_look_like_dc(rows):
+        return rows, False
+    filtered = _bsp_filter_pilots_client_side(
+        fallback_pilots, no_ur=no_ur, no_shinn=no_shinn or no_ur,
+    )
+    return filtered, True
 
 
 def _bsp_filter_pilots_client_side(pilots, *, no_ur=False, no_shinn=False):
@@ -3424,7 +3448,8 @@ def _bsp_filter_pilots_client_side(pilots, *, no_ur=False, no_shinn=False):
 
 
 def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs,
-                         pilots_no_ur=None, pilots_no_shinn=None):
+                         pilots_no_ur=None, pilots_no_shinn=None,
+                         no_ur_partial=False, no_shinn_partial=False):
     def _rank(rows):
         rows = list(rows or [])
         rows.sort(
@@ -3450,6 +3475,8 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
         'pilots': pilots,
         'pilots_no_ur': no_ur,
         'pilots_no_shinn': no_shinn,
+        'no_ur_partial': bool(no_ur_partial) or len(no_ur) < 10,
+        'no_shinn_partial': bool(no_shinn_partial) or len(no_shinn) < 10,
         'source': source,
         'def_tier': def_tier,
         'defender_note': _settings_note(def_tier),
@@ -3489,8 +3516,8 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
     if cached is not None:
         return cached
 
-    # Prefer published /cal BSP cache (includes full No UR / No Shinn top-10s).
-    # Warm cache is main-list only — use it only when published is missing.
+    # Prefer published /cal BSP cache for the MAIN list (real calculator).
+    # v15 rankings_no_ur / rankings_no_shinn were polluted by python-lite — reject those.
     g = _lookup_bsp_published_group(uid, lc, kwargs)
     if g:
         row = _group_for_def_tier(g, def_tier) if g.get('rankings_by_tier') else g
@@ -3502,18 +3529,21 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
         pilots = list(row.get('pilots') or [])
         if not pilots:
             pilots = _bsp_pilots_from_rankings_block(row.get('rankings'), rank_mode)
-        # v15+ DC build stores real /cal variant top-10s (not filtered main list).
-        pilots_no_ur = _bsp_pilots_from_rankings_block(row.get('rankings_no_ur'), rank_mode)
-        pilots_no_shinn = _bsp_pilots_from_rankings_block(row.get('rankings_no_shinn'), rank_mode)
-        if not pilots_no_ur:
-            pilots_no_ur = _bsp_filter_pilots_client_side(pilots, no_ur=True, no_shinn=True)
-        if not pilots_no_shinn:
-            pilots_no_shinn = _bsp_filter_pilots_client_side(pilots, no_shinn=True)
+        pilots_no_ur, no_ur_partial = _bsp_dc_variant_pilots(
+            row.get('rankings_no_ur'), rank_mode,
+            fallback_pilots=pilots, no_ur=True, no_shinn=True,
+        )
+        pilots_no_shinn, no_shinn_partial = _bsp_dc_variant_pilots(
+            row.get('rankings_no_shinn'), rank_mode,
+            fallback_pilots=pilots, no_shinn=True,
+        )
         out = _bsp_pilots_response(
             uid, pilots, source='published_dc', def_tier=def_tier,
             rank_mode=rank_mode, lc=lc, kwargs=kwargs,
             pilots_no_ur=pilots_no_ur,
             pilots_no_shinn=pilots_no_shinn,
+            no_ur_partial=no_ur_partial,
+            no_shinn_partial=no_shinn_partial,
         )
     else:
         warm = _load_bsp_unit_warm_cache(uid, lc, kwargs)
