@@ -2,6 +2,7 @@
   'use strict';
 
   var SHINN_EX_CHAR_ID = '1330000103';
+  var shinnPortraitUrl = '';
 
   var state = {
     open: false,
@@ -80,11 +81,46 @@
     }, true);
   }
 
+  function updateShinnFilterIcon() {
+    var shBtn = global.document.getElementById('ubpExcludeShinnBtn');
+    if (!shBtn || !shinnPortraitUrl) return;
+    var icon = shBtn.querySelector('.msy-exclude-shinn-icon');
+    if (!icon) return;
+    var imgHtml = typeof global.pictureRasterHtml === 'function'
+      ? global.pictureRasterHtml(shinnPortraitUrl, {
+          cls: 'msy-exclude-shinn-portrait',
+          loading: 'lazy',
+          alt: 'Shinn',
+          lazy: false
+        })
+      : '<img class="msy-exclude-shinn-portrait" src="' + escAttr(imgUrl(shinnPortraitUrl))
+        + '" alt="Shinn" width="18" height="18" loading="lazy" decoding="async">';
+    icon.innerHTML = imgHtml + '<span class="msy-exclude-shinn-x" aria-hidden="true"></span>';
+  }
+
+  function ensureShinnFilterIcon() {
+    if (shinnPortraitUrl) {
+      updateShinnFilterIcon();
+      return Promise.resolve(shinnPortraitUrl);
+    }
+    var lang = (global.S && global.S.lang) || 'EN';
+    return fetch('/api/character/' + encodeURIComponent(SHINN_EX_CHAR_ID)
+      + '?lang=' + encodeURIComponent(lang) + '&view=ranking', { credentials: 'same-origin' })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        shinnPortraitUrl = (d && (d.thum || d.portrait)) || '';
+        updateShinnFilterIcon();
+        return shinnPortraitUrl;
+      })
+      .catch(function () { return ''; });
+  }
+
   function syncFilterButtons() {
     var urBtn = global.document.getElementById('ubpExcludeUrBtn');
     var shBtn = global.document.getElementById('ubpExcludeShinnBtn');
     if (urBtn) {
       urBtn.classList.toggle('is-active', !!state.excludeUr);
+      urBtn.classList.toggle('active', !!state.excludeUr);
       urBtn.setAttribute('aria-pressed', state.excludeUr ? 'true' : 'false');
       urBtn.title = state.excludeUr
         ? (t('msy_exclude_ur_on') || 'Showing non-UR pilots only')
@@ -96,10 +132,12 @@
       shBtn.setAttribute('aria-hidden', hideShinn ? 'true' : 'false');
       if (!hideShinn) {
         shBtn.classList.toggle('is-active', !!state.excludeShinn);
+        shBtn.classList.toggle('active', !!state.excludeShinn);
         shBtn.setAttribute('aria-pressed', state.excludeShinn ? 'true' : 'false');
         shBtn.title = state.excludeShinn
           ? (t('msy_exclude_shinn_on') || 'Hiding Shinn Asuka (EX)')
           : (t('msy_exclude_shinn') || 'Exclude Shinn Asuka (EX)');
+        ensureShinnFilterIcon();
       }
     }
   }

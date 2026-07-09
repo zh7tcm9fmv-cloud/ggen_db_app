@@ -3489,30 +3489,38 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
     if cached is not None:
         return cached
 
-    # Soshage-style: instant precomputed /cal rankings, then warm per-unit cache, then client DC.
-    warm = _load_bsp_unit_warm_cache(uid, lc, kwargs)
-    if warm:
-        out = _bsp_pilots_response(uid, warm, source='unit_warm_cache', def_tier=def_tier,
-                                   rank_mode=rank_mode, lc=lc, kwargs=kwargs)
-    else:
-        g = _lookup_bsp_published_group(uid, lc, kwargs)
-        if g:
-            row = _group_for_def_tier(g, def_tier) if g.get('rankings_by_tier') else g
-            if not row:
-                row = g
-            row = _normalize_group_for_mode(row, rank_mode) or row
-            row = _ensure_passive_variant_for_request(row, lc, rank_mode, def_tier, kwargs)
-            row = _backfill_pilot_formula_stats(row, lc, rank_mode, kwargs)
-            pilots = list(row.get('pilots') or [])
-            # Always derive No UR / No Shinn from the live-/cal main list.
-            # Do not use cached rankings_no_* — older builds filled those via python-lite.
+    # Prefer published /cal BSP cache (includes full No UR / No Shinn top-10s).
+    # Warm cache is main-list only — use it only when published is missing.
+    g = _lookup_bsp_published_group(uid, lc, kwargs)
+    if g:
+        row = _group_for_def_tier(g, def_tier) if g.get('rankings_by_tier') else g
+        if not row:
+            row = g
+        row = _normalize_group_for_mode(row, rank_mode) or row
+        row = _ensure_passive_variant_for_request(row, lc, rank_mode, def_tier, kwargs)
+        row = _backfill_pilot_formula_stats(row, lc, rank_mode, kwargs)
+        pilots = list(row.get('pilots') or [])
+        if not pilots:
+            pilots = _bsp_pilots_from_rankings_block(row.get('rankings'), rank_mode)
+        # v15+ DC build stores real /cal variant top-10s (not filtered main list).
+        pilots_no_ur = _bsp_pilots_from_rankings_block(row.get('rankings_no_ur'), rank_mode)
+        pilots_no_shinn = _bsp_pilots_from_rankings_block(row.get('rankings_no_shinn'), rank_mode)
+        if not pilots_no_ur:
             pilots_no_ur = _bsp_filter_pilots_client_side(pilots, no_ur=True, no_shinn=True)
+        if not pilots_no_shinn:
             pilots_no_shinn = _bsp_filter_pilots_client_side(pilots, no_shinn=True)
+        out = _bsp_pilots_response(
+            uid, pilots, source='published_dc', def_tier=def_tier,
+            rank_mode=rank_mode, lc=lc, kwargs=kwargs,
+            pilots_no_ur=pilots_no_ur,
+            pilots_no_shinn=pilots_no_shinn,
+        )
+    else:
+        warm = _load_bsp_unit_warm_cache(uid, lc, kwargs)
+        if warm:
             out = _bsp_pilots_response(
-                uid, pilots, source='published_dc', def_tier=def_tier,
+                uid, warm, source='unit_warm_cache', def_tier=def_tier,
                 rank_mode=rank_mode, lc=lc, kwargs=kwargs,
-                pilots_no_ur=pilots_no_ur,
-                pilots_no_shinn=pilots_no_shinn,
             )
         else:
             out = {
