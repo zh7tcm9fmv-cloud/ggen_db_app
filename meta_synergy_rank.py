@@ -1577,7 +1577,7 @@ _MSY_BROWSE_PAYLOAD_CACHE_TTL = max(15, min(300, int(os.environ.get('MSY_BROWSE_
 _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
-_BSP_DC_RULES_VERSION = 3
+_BSP_DC_RULES_VERSION = 4  # Shinn Supercharged EX2 = guaranteed / 100% crit in DC engine
 _BSP_DC_BUILD_ENGINE = 'calculateDamage'
 # From v16 onward: formula/criteria rebuilds only refresh top-N + newly added units.
 # Full-catalog rebuilds are intentional opt-in only (users rarely open the long tail).
@@ -2043,31 +2043,35 @@ def _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc):
             continue
         scored.sort(key=lambda x: (-x[0], x[1]))
         top = scored[: max(1, int(top_pilots or 10))]
+        pilots_out = []
+        for i, (sc, cid, d) in enumerate(top):
+            gc = bool(d.get('guaranteed_crit')) or _char_guaranteed_crit(
+                cid, lc, vigor=vigor_key, cp_on=True,
+            )
+            crit_rate = 100 if gc else int(d.get('crit_rate') or 0)
+            pilots_out.append({
+                'rank': i + 1,
+                'char': _entity_brief_char(cid, lc),
+                'normal_dmg': d['normal_dmg'],
+                'crit_dmg': d['crit_dmg'],
+                'super_crit_dmg': d['super_crit_dmg'],
+                'expected_dmg': d['expected_dmg'],
+                'peak_dmg': d['peak_dmg'],
+                'guaranteed_crit': gc,
+                'crit_rate': crit_rate,
+                'pair_ok': d['pair_ok'],
+                'char_atk': d.get('char_atk', 0),
+                'formula_stat': d.get('formula_stat', ''),
+                'dmg_dealt_pct': d.get('dmg_dealt_pct', 0),
+                'vigor_dmg_pct': d.get('vigor_dmg_pct', 0),
+                'vigor': vigor_key,
+                'active_skills': _msy_pilot_active_skills(cid, lc),
+                'score': sc,
+            })
         rankings[mode] = {
             'max_damage': top[0][0],
             'vigor': vigor_key,
-            'pilots': [
-                {
-                    'rank': i + 1,
-                    'char': _entity_brief_char(cid, lc),
-                    'normal_dmg': d['normal_dmg'],
-                    'crit_dmg': d['crit_dmg'],
-                    'super_crit_dmg': d['super_crit_dmg'],
-                    'expected_dmg': d['expected_dmg'],
-                    'peak_dmg': d['peak_dmg'],
-                    'guaranteed_crit': d['guaranteed_crit'],
-                    'crit_rate': d['crit_rate'],
-                    'pair_ok': d['pair_ok'],
-                    'char_atk': d.get('char_atk', 0),
-                    'formula_stat': d.get('formula_stat', ''),
-                    'dmg_dealt_pct': d.get('dmg_dealt_pct', 0),
-                    'vigor_dmg_pct': d.get('vigor_dmg_pct', 0),
-                    'vigor': vigor_key,
-                    'active_skills': _msy_pilot_active_skills(cid, lc),
-                    'score': sc,
-                }
-                for i, (sc, cid, d) in enumerate(top)
-            ],
+            'pilots': pilots_out,
         }
     return rankings
 
@@ -3320,11 +3324,12 @@ def _unit_best_pilot_api_cache_key(uid, lc, kwargs):
 
 
 def _bsp_published_cache_key(lc, kwargs):
+    # Always key published BSP by store depth (top 20), not the UI top_pilots=10 query.
     return (
         _BSP_PUBLISHED_CACHE_TAG,
         lc or 'EN',
         int(kwargs.get('lb_tier', 3) or 3),
-        int(kwargs.get('top_pilots', 10) or 10),
+        int(_BSP_STORE_TOP_PILOTS),
         None,
         None,
     )
@@ -3430,6 +3435,20 @@ def _lookup_bsp_published_group(uid, lc, kwargs):
     return None
 
 
+def _bsp_patch_guaranteed_crit_flags(pilots, lc='EN'):
+    """Ensure Supercharged-EX2 GC pilots (e.g. Shinn) show as 100% crit even on older caches."""
+    for p in pilots or []:
+        if not isinstance(p, dict):
+            continue
+        cid = _app().normalize_id(((p.get('char') or {}).get('id')))
+        if not cid:
+            continue
+        if _char_guaranteed_crit(cid, lc, vigor='super', cp_on=True):
+            p['guaranteed_crit'] = True
+            p['crit_rate'] = 100
+    return pilots
+
+
 def _bsp_pilots_look_like_dc(pilots):
     """True when rows look like live /cal output (not python-lite / cheap preview).
 
@@ -3517,6 +3536,10 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
     same_role = _rank(pilots_same_role) if pilots_same_role is not None else _rank(
         _bsp_filter_pilots_client_side(store_pilots, same_role=True, unit_id=uid)
     )
+    _bsp_patch_guaranteed_crit_flags(pilots, lc)
+    _bsp_patch_guaranteed_crit_flags(no_ur, lc)
+    _bsp_patch_guaranteed_crit_flags(no_shinn, lc)
+    _bsp_patch_guaranteed_crit_flags(same_role, lc)
     return {
         'eligible': True,
         'unit_id': uid,

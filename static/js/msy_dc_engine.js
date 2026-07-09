@@ -137,13 +137,21 @@
     if (!S.dc.atkSlots || !Array.isArray(S.dc.atkSlots)) S.dc.atkSlots = [null, null, null];
     S.dc.atkSlotIndex = 0;
     S.dc.atkSlots[0] = slot;
+    // Guaranteed crit (e.g. Shinn Supercharged EX2) must be read from the
+    // active slot state — _dcCalculateDamageWithSlot restores the prior attacker.
+    S.dc.atkCharData = cd;
+    S.dc.atkUnitData = ud;
+    S.dc.charCondPassive = !!slot.charCondPassive;
+    S.dc.dcSuperchargedExTier = slot.dcSuperchargedExTier | 0;
+    S.dc.mpLevel = slot.mpLevel;
+    var gc = typeof global._dcCharGuaranteedCritActive === 'function'
+      ? global._dcCharGuaranteedCritActive() : false;
     var r = null;
     try { r = global._dcCalculateDamageWithSlot(0); } catch (_) { r = null; }
     if (!r) return null;
     var weaponCrit = r.critical | 0;
     var critRate = msyCritRate(ud, cd, slot, weaponCrit);
-    var gc = typeof global._dcCharGuaranteedCritActive === 'function'
-      ? global._dcCharGuaranteedCritActive() : false;
+    if (gc) critRate = 100;
     var normalDmg = r.normalDmg | 0;
     var critDmgVal = r.critDmg | 0;
     var canCrit = gc || critRate > 0;

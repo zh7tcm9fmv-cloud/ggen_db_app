@@ -157,11 +157,12 @@
 }
 
 .unit-best-pilot-panel-wrap.is-open {
-  max-height: 720px;
+  max-height: min(92vh, 1400px);
   opacity: 1;
   margin: 22px 20px 12px;
   border-color: rgba(0, 212, 255, 0.28);
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  overflow-y: auto;
 }
 
 .unit-best-pilot-panel-head {
@@ -500,18 +501,13 @@
   word-break: break-word;
 }
 
-.unit-best-pilot-panel .msy-pilot-dmg-col .msy-pilot-affinity {
-  align-items: flex-end;
-  text-align: right;
-  max-width: 140px;
-}
-
-.unit-best-pilot-panel .msy-pilot-dmg-col .msy-pilot-affinity-row {
-  text-align: left;
-}
-
 .unit-best-pilot-panel .msy-pilot-dmg-col .msy-pilot-affinity-flag {
   text-align: right;
+}
+
+.unit-best-pilot-panel .msy-pilot-body .msy-pilot-affinity {
+  margin-top: 4px;
+  max-width: 100%;
 }
 
 .unit-best-pilot-panel .msy-pilot-sub--gc {

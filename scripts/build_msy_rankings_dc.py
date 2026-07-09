@@ -338,7 +338,7 @@ def main():
     args = ap.parse_args()
 
     if args.loop:
-        log_path = os.path.join(ROOT, 'data', 'published', 'bsp_v15_build.log')
+        log_path = os.path.join(ROOT, 'data', 'published', 'bsp_v16_build.log')
         attempt = 0
         while True:
             attempt += 1
@@ -352,7 +352,7 @@ def main():
                 '--base', args.base,
                 '--lang', args.lang,
                 '--top-pilots', str(int(args.top_pilots) or msy._BSP_STORE_TOP_PILOTS),
-                '--checkpoint', str(args.checkpoint),
+                '--checkpoint', str(max(5, int(args.checkpoint) or 10)),
                 '--workers', str(args.workers),
             ]
             # Full-catalog crash recovery uses --resume. Incremental formula rebuilds

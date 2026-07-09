@@ -415,7 +415,6 @@
       parts += '<div class="msy-pilot-affinity-flag">'
         + esc(t('msy_affinity_match') || 'Affinity match') + '</div>';
     }
-    parts += pilotAffinityHtml(pilot);
     return parts;
   }
 
@@ -439,7 +438,7 @@
     var c = pilot.char || {};
     var dmg = pilotDamage(pilot);
     var sub = '';
-    if (pilot.guaranteed_crit) {
+    if (pilot.guaranteed_crit || (pilot.crit_rate | 0) >= 100) {
       sub += '<div class="msy-pilot-sub msy-pilot-sub--gc">' + esc(t('msy_guaranteed_crit') || 'Guaranteed Crit') + '</div>';
     } else if (pilot.crit_rate) {
       var cr = t('msy_crit_rate') || '{n}% crit';
@@ -454,6 +453,7 @@
       + '<span class="msy-pilot-name" title="' + escAttr(c.name || '') + '">' + esc(c.name || '') + '</span>'
       + '</div>'
       + sub
+      + pilotAffinityHtml(pilot)
       + '</div></button>'
       + '<div class="msy-pilot-dmg-col"><div class="msy-pilot-dmg">' + fmtN(dmg) + '</div>'
       + pilotFormulaStatHtml(pilot) + '</div></div>';
@@ -707,6 +707,17 @@
       state.loaded = true;
       syncFilterButtons();
       renderActivePanel();
+      // Re-fetch affinity details if a prior load skipped them.
+      var cached = state.cache[state.unitId];
+      var needsAff = (cached.pilots || []).some(function (p) {
+        return p && p.affinity_matches === undefined;
+      });
+      if (needsAff) {
+        var lang = (global.S && global.S.lang) || 'EN';
+        void enrichAffinityMatches(cached, state.unitId, lang).then(function () {
+          if (state.open && String(state.unitId) === String(d.id)) renderActivePanel();
+        });
+      }
       return;
     }
     if (!state.loading) void loadRankings(d.id);
