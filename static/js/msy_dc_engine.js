@@ -64,6 +64,7 @@
 
   function buildMsySlot(ud, cd, vigor, cpEnabled) {
     var slot = global._dcCreateEmptyAttackerSlot();
+    var S = global.S;
     var charMode = msyCharStatMode(cd);
     slot.atkUnit = String(ud.id);
     slot.atkChar = String(cd.id);
@@ -88,7 +89,6 @@
         && global._dcNormMpLevel(vigor) === 'super') {
       slot.dcSuperchargedExTier = cd.ex_supercharged_tiers.length - 1;
     }
-    var S = global.S;
     S.dc.atkCharData = cd;
     S.dc.atkUnitData = ud;
     S.dc.charStatMode = charMode;

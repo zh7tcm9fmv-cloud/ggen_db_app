@@ -1,9 +1,18 @@
 #!/usr/bin/env python3
-"""Build BSP v15 published cache from live /cal (MsyDcEngine — same path as the site)."""
+"""Build BSP published cache from live /cal (MsyDcEngine — same path as the site).
+
+v15: full-catalog DC rankings (rules v2).
+
+From v16 onward (formula / criteria changes): use ``--incremental`` so only the
+top 250 units (by sort damage) plus newly added / uncached units are rebuilt.
+Long-tail units keep their last cached ranking. Use ``--force`` without
+``--incremental`` only when an intentional full-catalog rebuild is needed.
+"""
 from __future__ import annotations
 
 import argparse
 import asyncio
+import gzip
 import json
 import os
 import sys
@@ -14,6 +23,12 @@ from playwright.async_api import async_playwright
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
+
+# Cursor sandbox sets PLAYWRIGHT_BROWSERS_PATH to a temp dir without browsers.
+if not os.environ.get('PLAYWRIGHT_BROWSERS_PATH') or 'cursor-sandbox-cache' in os.environ.get('PLAYWRIGHT_BROWSERS_PATH', ''):
+    os.environ['PLAYWRIGHT_BROWSERS_PATH'] = os.path.join(
+        os.environ.get('LOCALAPPDATA') or os.path.expanduser('~'), 'ms-playwright',
+    )
 
 import meta_synergy_rank as msy
 
@@ -26,6 +41,45 @@ async ({ unitId, pilotIds, defTiers, lang }) => {
   });
 }
 """
+
+PERMANENT_SKIP_PATH = os.path.join(ROOT, 'data', 'published', 'bsp_v15_permanent_skips.json')
+
+
+def _load_permanent_skips():
+    """Unit ids that cannot be ranked on the live DC host (e.g. 404 / not found)."""
+    if not os.path.isfile(PERMANENT_SKIP_PATH):
+        return {}
+    try:
+        with open(PERMANENT_SKIP_PATH, encoding='utf-8') as f:
+            data = json.load(f)
+    except Exception:
+        return {}
+    skips = data.get('skips') if isinstance(data, dict) else None
+    if not isinstance(skips, dict):
+        return {}
+    return {msy._app().normalize_id(k): str(v or '') for k, v in skips.items() if k}
+
+
+def _add_permanent_skip(uid, reason):
+    uid = msy._app().normalize_id(uid)
+    if not uid:
+        return
+    skips = _load_permanent_skips()
+    reason = str(reason or 'permanent skip')[:240]
+    if skips.get(uid) == reason:
+        return
+    skips[uid] = reason
+    os.makedirs(os.path.dirname(PERMANENT_SKIP_PATH), exist_ok=True)
+    tmp = PERMANENT_SKIP_PATH + '.tmp'
+    with open(tmp, 'w', encoding='utf-8') as f:
+        json.dump({'skips': skips}, f, ensure_ascii=False, indent=2)
+    os.replace(tmp, PERMANENT_SKIP_PATH)
+    print(f'  permanent skip recorded: {uid} ({reason})', flush=True)
+
+
+def _is_permanent_skip_error(err):
+    msg = str(err or '').lower()
+    return 'not found' in msg or '404' in msg
 
 
 def _merge_groups(existing, new_groups):
@@ -41,8 +95,50 @@ def _merge_groups(existing, new_groups):
     return list(by_uid.values())
 
 
-def _load_existing_v15(lang, top_pilots):
+def _load_bsp_build_progress(cache_key, *, min_rules=None):
+    """Load BSP DC build progress from disk.
+
+    ``min_rules`` defaults to current ``_BSP_DC_RULES_VERSION`` (same-rules resume).
+    Pass ``min_rules=0`` for incremental formula updates that keep long-tail rows
+    from an older rules version.
+    """
+    if min_rules is None:
+        min_rules = msy._BSP_DC_RULES_VERSION
+    paths = (msy._msy_disk_path(cache_key), msy._msy_published_path(cache_key))
+    best = None
+    best_rules = -1
+    for path in paths:
+        if not os.path.isfile(path):
+            continue
+        try:
+            with gzip.open(path, 'rt', encoding='utf-8') as f:
+                data = json.load(f)
+        except Exception as e:
+            print(f'  build progress read failed ({path}): {e}')
+            continue
+        if data.get('build_engine') != msy._BSP_DC_BUILD_ENGINE:
+            continue
+        rules = int(data.get('bsp_rules_version') or 0)
+        if rules < int(min_rules):
+            continue
+        groups = data.get('groups') or []
+        if not groups:
+            continue
+        if rules >= best_rules:
+            best = list(groups)
+            best_rules = rules
+    return best or []
+
+
+def _load_existing_v15(lang, top_pilots, *, for_build=False, allow_stale_rules=False):
     cache_key = msy._bsp_published_cache_key(lang, {'lb_tier': 3, 'top_pilots': top_pilots})
+    if for_build:
+        min_rules = 0 if allow_stale_rules else None
+        groups = _load_bsp_build_progress(cache_key, min_rules=min_rules)
+        if groups:
+            label = 'any rules' if allow_stale_rules else f'rules v{msy._BSP_DC_RULES_VERSION}'
+            print(f'Build resume: {len(groups)} units ({label})')
+        return cache_key, groups
     disk = msy._load_bsp_published_cache(cache_key)
     if disk and disk.get('groups'):
         return cache_key, list(disk['groups'])
@@ -54,7 +150,11 @@ def _save_v15(cache_key, groups, pilot_count):
     path = msy.save_published_master_cache(
         cache_key, result, build_engine=msy._BSP_DC_BUILD_ENGINE,
     )
-    msy._save_master_to_disk(cache_key, {**result, 'build_engine': msy._BSP_DC_BUILD_ENGINE})
+    msy._save_master_to_disk(cache_key, {
+        **result,
+        'build_engine': msy._BSP_DC_BUILD_ENGINE,
+        'bsp_rules_version': msy._BSP_DC_RULES_VERSION,
+    })
     return path
 
 
@@ -62,11 +162,15 @@ async def _setup_dc_page(page, base):
     await page.goto(f'{base}/?tab=calculator', wait_until='domcontentloaded', timeout=120_000)
     await page.wait_for_function(
         '() => typeof _dcCalculateDamageWithSlot === "function"'
-        ' && typeof _dcCreateEmptyAttackerSlot === "function"',
+        ' && typeof _dcCreateEmptyAttackerSlot === "function"'
+        ' && window.S && window.S.dc',
         timeout=180_000,
     )
     await page.evaluate('() => { if (typeof initDmgCalc === "function") initDmgCalc(); }')
-    await page.add_script_tag(url=f'{base.rstrip("/")}/static/js/msy_dc_engine.js')
+    engine_path = os.path.join(ROOT, 'static', 'js', 'msy_dc_engine.js')
+    with open(engine_path, encoding='utf-8') as f:
+        engine_js = f.read()
+    await page.add_script_tag(content=engine_js)
     await page.wait_for_function(
         '() => window.MsyDcEngine && typeof window.MsyDcEngine.ensureReady === "function"',
         timeout=120_000,
@@ -74,21 +178,40 @@ async def _setup_dc_page(page, base):
     await page.evaluate('() => MsyDcEngine.ensureReady()')
 
 
-async def _build_one_unit(page, uid, lang, pilot_ids, exclude, top_pilots, def_tiers, def_tier_payload):
+async def _build_one_unit(page, base, uid, lang, pilot_ids, exclude, top_pilots, def_tiers, def_tier_payload):
     candidates = msy.dc_candidate_pilots_for_unit(uid, pilot_ids, exclude, lang, bsp=True)
     if not candidates:
         return None
-    raw = await page.evaluate(
-        EVAL_VIA_MSY_DC_JS,
-        {
-            'unitId': uid,
-            'pilotIds': candidates,
-            'defTiers': def_tier_payload,
-            'lang': lang,
-        },
-    )
+    last_err = None
+    for attempt in range(3):
+        try:
+            raw = await page.evaluate(
+                EVAL_VIA_MSY_DC_JS,
+                {
+                    'unitId': uid,
+                    'pilotIds': candidates,
+                    'defTiers': def_tier_payload,
+                    'lang': lang,
+                },
+            )
+            break
+        except Exception as e:
+            last_err = e
+            print(f'  retry {uid} attempt {attempt + 1}/3: {e}', flush=True)
+            if attempt < 2:
+                try:
+                    await _setup_dc_page(page, base)
+                except Exception as setup_err:
+                    print(f'  tab re-setup failed: {setup_err}', flush=True)
+                await asyncio.sleep(2 * (attempt + 1))
+    else:
+        print(f'  skip {uid}: {last_err}')
+        return None
     if not raw or raw.get('error') or not raw.get('byTier'):
-        print(f'  skip {uid}: {raw and raw.get("error")}')
+        err = (raw and raw.get('error')) or 'empty result'
+        print(f'  skip {uid}: {err}')
+        if _is_permanent_skip_error(err):
+            _add_permanent_skip(uid, err)
         return None
     by_tier = {}
     for tier_key, pairs in (raw.get('byTier') or {}).items():
@@ -144,7 +267,7 @@ async def build_units(base, lang, unit_ids, pilot_ids, exclude, top_pilots, def_
         async def run_unit(i, uid, page):
             nonlocal done
             g = await _build_one_unit(
-                page, uid, lang, pilot_ids, exclude, top_pilots, def_tiers, def_tier_payload,
+                page, base, uid, lang, pilot_ids, exclude, top_pilots, def_tiers, def_tier_payload,
             )
             async with lock:
                 done += 1
@@ -178,44 +301,177 @@ async def build_units(base, lang, unit_ids, pilot_ids, exclude, top_pilots, def_
 
 
 def main():
-    ap = argparse.ArgumentParser(description='Build BSP v15 cache from live Damage Calculator')
+    ap = argparse.ArgumentParser(description='Build BSP cache from live Damage Calculator')
     ap.add_argument('--base', default=os.environ.get('MSY_DC_BASE', 'https://ggendb.up.railway.app'))
     ap.add_argument('--lang', default='EN')
     ap.add_argument('--top-pilots', type=int, default=10)
-    ap.add_argument('--limit', type=int, default=0, help='Max units (0 = all)')
+    ap.add_argument('--limit', type=int, default=0, help='Max units (0 = all selected)')
     ap.add_argument('--unit', action='append', default=[], help='Single unit id (repeatable)')
-    ap.add_argument('--resume', action='store_true', help='Skip units already in v15 published cache')
-    ap.add_argument('--force', action='store_true', help='Rebuild all units (ignore existing v15 cache)')
+    ap.add_argument('--resume', action='store_true', help='Skip units already in published cache')
+    ap.add_argument('--force', action='store_true', help='Ignore existing cache rows for selected units')
+    ap.add_argument(
+        '--incremental',
+        action='store_true',
+        help='v16+ formula updates: rebuild top-N + newly added/uncached only (keep long-tail cache)',
+    )
+    ap.add_argument(
+        '--top-n',
+        type=int,
+        default=0,
+        help='With --incremental, top-N by sort damage (default: BSP_INCREMENTAL_TOP_N / 250)',
+    )
     ap.add_argument('--checkpoint', type=int, default=25, help='Save partial cache every N units')
     ap.add_argument('--workers', type=int, default=3, help='Parallel browser tabs (1-6)')
     ap.add_argument('--out', default='', help='Optional JSON debug output path')
+    ap.add_argument('--loop', action='store_true', help='Auto-restart on crash until complete')
     args = ap.parse_args()
+
+    if args.loop:
+        log_path = os.path.join(ROOT, 'data', 'published', 'bsp_v15_build.log')
+        attempt = 0
+        while True:
+            attempt += 1
+            stamp = time.strftime('%Y-%m-%d %H:%M:%S')
+            line = f'\n=== BSP build attempt {attempt} @ {stamp} ===\n'
+            print(line, end='', flush=True)
+            with open(log_path, 'a', encoding='utf-8') as lf:
+                lf.write(line)
+            child = [
+                sys.executable, '-u', __file__,
+                '--base', args.base,
+                '--lang', args.lang,
+                '--top-pilots', str(args.top_pilots),
+                '--checkpoint', str(args.checkpoint),
+                '--workers', str(args.workers),
+            ]
+            # Full-catalog crash recovery uses --resume. Incremental formula rebuilds
+            # must re-sim top-N; only pass --resume when the user asked for it.
+            if args.resume or not args.incremental:
+                child.append('--resume')
+            if args.incremental:
+                child.append('--incremental')
+            if args.top_n:
+                child.extend(['--top-n', str(args.top_n)])
+            if args.limit:
+                child.extend(['--limit', str(args.limit)])
+            child.extend(sum([['--unit', u] for u in args.unit], []))
+            rc = os.spawnv(os.P_WAIT, sys.executable, child)
+            if rc == 0:
+                cache_key = msy._bsp_published_cache_key(
+                    args.lang, {'lb_tier': 3, 'top_pilots': args.top_pilots},
+                )
+                groups = _load_bsp_build_progress(cache_key)
+                done_n = len(groups)
+                skip_n = len(_load_permanent_skips())
+                if args.incremental:
+                    selected, meta = msy._bsp_incremental_rebuild_unit_ids(
+                        args.lang,
+                        existing_groups=groups,
+                        top_n=(args.top_n or None),
+                    )
+                    target = len(selected)
+                    covered = sum(
+                        1 for u in selected
+                        if msy._app().normalize_id(u) in {
+                            msy._app().normalize_id((g.get('unit') or {}).get('id'))
+                            for g in groups
+                        }
+                        or msy._app().normalize_id(u) in _load_permanent_skips()
+                    )
+                    if covered >= target:
+                        print(
+                            f'BSP incremental complete: {covered}/{target} selected '
+                            f'(cache {done_n} units, +{skip_n} permanent skips; '
+                            f'top={meta["top_count"]} new={meta["new_count"]})'
+                        )
+                        return
+                    print(
+                        f'Build exited 0 but only {covered}/{target} incremental units '
+                        f'(cache {done_n}, +{skip_n} skips) — restarting'
+                    )
+                else:
+                    total = len(msy._msy_rankable_unit_ids(args.lang))
+                    if done_n + skip_n >= total:
+                        print(f'BSP complete: {done_n}/{total} units (+{skip_n} permanent skips)')
+                        return
+                    print(
+                        f'Build exited 0 but only {done_n}/{total} units '
+                        f'(+{skip_n} permanent skips) — restarting'
+                    )
+            else:
+                print(f'Build crashed (exit {rc}), restarting in 5s...', flush=True)
+            time.sleep(5)
+        return
 
     lang = args.lang
     exclude = set()
     pilot_ids = list(msy._pilot_pool_ids())
-    cache_key, existing_groups = _load_existing_v15(lang, args.top_pilots)
-    if args.force:
+    cache_key, existing_groups = _load_existing_v15(
+        lang, args.top_pilots, for_build=True, allow_stale_rules=bool(args.incremental),
+    )
+    if args.force and not args.incremental:
+        # Full-catalog wipe. Incremental force still keeps long-tail rows.
         existing_groups = []
     done = {
         msy._app().normalize_id((g.get('unit') or {}).get('id'))
         for g in existing_groups
     }
+    permanent_skips = set(_load_permanent_skips())
 
     if args.unit:
         unit_ids = [msy._app().normalize_id(u) for u in args.unit]
+        scope_label = 'explicit'
+    elif args.incremental:
+        unit_ids, meta = msy._bsp_incremental_rebuild_unit_ids(
+            lang,
+            existing_groups=existing_groups,
+            top_n=(args.top_n or None),
+        )
+        scope_label = (
+            f'incremental top={meta["top_count"]} new={meta["new_count"]} '
+            f'(of {meta["rankable_count"]} rankable)'
+        )
+        print(
+            f'Incremental scope: rebuild {meta["selected_count"]} units '
+            f'(top {meta["top_n"]} + {meta["new_count"]} newly added/uncached); '
+            f'keep {meta["cached_count"]} cached long-tail rows'
+        )
     else:
         unit_ids = msy._msy_rankable_unit_ids(lang)
+        scope_label = 'full catalog'
 
     if args.resume:
-        unit_ids = [u for u in unit_ids if msy._app().normalize_id(u) not in done]
-        print(f'Resume: {len(done)} units cached, {len(unit_ids)} remaining')
+        # Formula incremental rebuilds re-sim top-N even when cached, unless --resume.
+        unit_ids = [
+            u for u in unit_ids
+            if msy._app().normalize_id(u) not in done
+            and msy._app().normalize_id(u) not in permanent_skips
+        ]
+        print(
+            f'Resume: {len(done)} units cached, {len(permanent_skips)} permanent skips, '
+            f'{len(unit_ids)} remaining'
+        )
+    elif args.incremental and not args.unit:
+        # Default incremental: re-rank selected units; drop them from merge base first
+        # so stale formula rows are replaced, then merge keeps untouched long-tail.
+        rebuild = {msy._app().normalize_id(u) for u in unit_ids}
+        existing_groups = [
+            g for g in existing_groups
+            if msy._app().normalize_id((g.get('unit') or {}).get('id')) not in rebuild
+        ]
+        unit_ids = [
+            u for u in unit_ids
+            if msy._app().normalize_id(u) not in permanent_skips
+        ]
 
     def_tiers = msy._defender_tiers()
     limit = args.limit or None
     checkpoint = max(1, int(args.checkpoint))
 
-    print(f'BSP v15 DC build: {len(unit_ids)} units, base={args.base}, pool=bsp (~88 pilots/unit)')
+    print(
+        f'BSP DC build ({scope_label}): {len(unit_ids)} units, '
+        f'base={args.base}, pool=bsp (~88 pilots/unit)'
+    )
 
     merged_holder = {'groups': list(existing_groups)}
 

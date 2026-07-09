@@ -1,20 +1,38 @@
 /* Best Synergy Pilot — unit detail panel + trigger icon */
 
-.detail-rec-link-card--has-bsp {
+/* Rec-card BSP: same bottom-right inset language as #unitLbVideoBtnSlot
+   (LB cinematic when shown: right:8px; bottom:4px). Stays inside the
+   recommend box across viewport widths instead of hanging below it. */
+.detail-rec-shortcut-wrap,
+.detail-rec-shortcut--desktop,
+.detail-rec-shortcut--mobile {
+  overflow: visible;
+}
+
+.detail-rec-link-card--has-bsp,
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--desktop .detail-rec-link-card--has-bsp,
+.modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-card--has-bsp,
+.modal-content.char-detail:not(.detail-ranking-view) .detail-rec-shortcut--desktop .detail-rec-link-card--has-bsp,
+.modal-content.char-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-card--has-bsp {
   position: relative !important;
   overflow: visible;
+  /* Clearance for bottom-right BSP (same idea as portrait LB padding-bottom). */
+  padding-bottom: 26px !important;
+  box-sizing: border-box;
 }
 
 .detail-rec-link-card--has-bsp .unit-best-pilot-btn-slot--rec {
   position: absolute;
   top: auto;
   left: auto;
+  /* Match #unitLbVideoBtnSlot when cinematic is shown: bottom-right inset. */
   right: 8px;
-  bottom: -28px;
+  bottom: 4px;
   z-index: 10;
   line-height: 0;
-  padding: 0;
+  padding: 4px;
   pointer-events: none;
+  transform: none;
 }
 
 .detail-rec-link-card--has-bsp .unit-best-pilot-btn {
@@ -29,16 +47,6 @@
   height: 26px;
 }
 
-.modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-card--has-bsp,
-.modal-content.char-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-card--has-bsp {
-  padding-bottom: 30px !important;
-}
-
-.modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--desktop .detail-rec-link-card--has-bsp,
-.modal-content.char-detail:not(.detail-ranking-view) .detail-rec-shortcut--desktop .detail-rec-link-card--has-bsp {
-  padding-bottom: 28px !important;
-}
-
 .unit-best-pilot-btn-slot {
   position: absolute;
   right: 4px;
@@ -48,9 +56,24 @@
   pointer-events: none;
 }
 
+/* Portrait BSP (no recommend char): straddle the portrait bottom edge halfway. */
 .unit-portrait-wrap .unit-best-pilot-btn-slot {
-  right: 10px;
-  bottom: 28px;
+  right: 8px;
+  /* Default wrap padding-bottom is 8px — align to portrait bottom, then half below. */
+  bottom: 8px;
+  padding: 4px;
+  transform: translateY(50%);
+}
+
+.modal-content.unit-detail .unit-portrait-wrap:has(#unitBestPilotBtnSlotPortrait .unit-best-pilot-btn) {
+  /* Clearance under the portrait for the hanging half of the icon. */
+  padding-bottom: 26px;
+  box-sizing: border-box;
+}
+
+.modal-content.unit-detail .unit-portrait-wrap:has(#unitBestPilotBtnSlotPortrait .unit-best-pilot-btn) .unit-best-pilot-btn-slot {
+  bottom: 26px;
+  transform: translateY(50%);
 }
 
 .unit-portrait-wrap .unit-best-pilot-btn {
@@ -64,10 +87,15 @@
   height: 32px;
 }
 
+/* When LB/gacha cinematic sits on the portrait too, share its inset language
+   and sit to the left of the movie button(s). */
 .unit-portrait-wrap:has(#unitLbVideoBtnSlot .unit-lb-video-btn) .unit-best-pilot-btn-slot,
-.unit-portrait-wrap:has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn) .unit-best-pilot-btn-slot {
+.unit-portrait-wrap:has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn) .unit-best-pilot-btn-slot,
+.modal-content.unit-detail .unit-portrait-wrap:has(#unitLbVideoBtnSlot .unit-lb-video-btn) .unit-best-pilot-btn-slot,
+.modal-content.unit-detail .unit-portrait-wrap:has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn) .unit-best-pilot-btn-slot {
+  right: calc(8px + 52px + 8px);
   bottom: 4px;
-  right: 8px;
+  transform: none;
 }
 
 .unit-best-pilot-btn {
@@ -393,9 +421,17 @@
 }
 
 @media (max-width: 768px) {
+  .detail-rec-link-card--has-bsp,
+  .modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-card--has-bsp,
+  .modal-content.char-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-card--has-bsp {
+    padding-bottom: 22px !important;
+  }
+
   .detail-rec-link-card--has-bsp .unit-best-pilot-btn-slot--rec {
     right: 6px;
-    bottom: -32px;
+    bottom: 4px;
+    padding: 2px;
+    transform: none;
   }
 
   .detail-rec-link-card--has-bsp .unit-best-pilot-btn {
@@ -407,6 +443,22 @@
   .detail-rec-link-card--has-bsp .unit-best-pilot-btn-icon {
     width: 22px;
     height: 22px;
+  }
+
+  .unit-portrait-wrap .unit-best-pilot-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+  }
+
+  .unit-portrait-wrap .unit-best-pilot-btn-icon {
+    width: 26px;
+    height: 26px;
+  }
+
+  .unit-portrait-wrap:has(#unitLbVideoBtnSlot .unit-lb-video-btn) .unit-best-pilot-btn-slot,
+  .unit-portrait-wrap:has(#unitLbVideoBtnSlot .unit-gacha-pull-video-btn) .unit-best-pilot-btn-slot {
+    right: calc(8px + 48px + 8px);
   }
 
   .unit-best-pilot-panel-wrap {

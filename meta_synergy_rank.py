@@ -1578,6 +1578,10 @@ _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
 _BSP_DC_RULES_VERSION = 2
+_BSP_DC_BUILD_ENGINE = 'calculateDamage'
+# From v16 onward: formula/criteria rebuilds only refresh top-N + newly added units.
+# Full-catalog rebuilds are intentional opt-in only (users rarely open the long tail).
+_BSP_INCREMENTAL_TOP_N = max(50, min(500, int(os.environ.get('BSP_INCREMENTAL_TOP_N', '250') or '250')))
 _BSP_PUBLISHED_CACHE_TAG = '_v15_bsp_dc'
 _BSP_PUBLISHED_MEMORY = None
 _BSP_PUBLISHED_MEMORY_KEY = None
@@ -1772,6 +1776,8 @@ def _save_master_to_disk(cache_key, result):
         }
         if result.get('build_engine'):
             payload['build_engine'] = result['build_engine']
+        if result.get('bsp_rules_version'):
+            payload['bsp_rules_version'] = result['bsp_rules_version']
         tmp = path + '.tmp'
         with gzip.open(tmp, 'wt', encoding='utf-8') as f:
             json.dump(payload, f, ensure_ascii=False, separators=(',', ':'))
@@ -3358,6 +3364,7 @@ def save_bsp_unit_warm_cache(uid, lc, kwargs, pilots):
     payload = {
         'version': _MSY_DISK_VERSION,
         'build_engine': _BSP_DC_BUILD_ENGINE,
+        'bsp_rules_version': _BSP_DC_RULES_VERSION,
         'unit_id': uid,
         'pilots': pilots,
     }
@@ -4133,6 +4140,56 @@ def _msy_rankable_unit_ids(lc='EN'):
         if _cached_best_ex_weapon(uid, stat_mode, lc):
             out.append(uid)
     return out
+
+
+def _bsp_cached_unit_ids_from_groups(groups):
+    A = _app()
+    out = set()
+    for g in groups or []:
+        uid = A.normalize_id((g.get('unit') or {}).get('id'))
+        if uid:
+            out.add(uid)
+    return out
+
+
+def _bsp_incremental_rebuild_unit_ids(lc='EN', *, existing_groups=None, top_n=None):
+    """Units to rebuild on formula/criteria updates (v16+).
+
+    Scope:
+      - top ``top_n`` (default 250) by published sort-damage / cache peak
+      - plus any rankable units not yet present in the published BSP cache
+        (newly added units going forward)
+
+    Long-tail units keep their last cached ranking until they enter top-N
+    or are rebuilt explicitly.
+    """
+    A = _app()
+    lc = lc or A.DEFAULT_LANG
+    top_n = int(top_n if top_n is not None else _BSP_INCREMENTAL_TOP_N)
+    top_n = max(1, top_n)
+    rankable = [_app().normalize_id(u) for u in _msy_rankable_unit_ids(lc)]
+    cached = _bsp_cached_unit_ids_from_groups(existing_groups)
+    sort_index = _ensure_msy_sort_damage_index(lc, existing_groups) or {}
+
+    scored = []
+    for uid in rankable:
+        uid = A.normalize_id(uid)
+        sc = 0
+        if isinstance(sort_index, dict):
+            sc = int(sort_index.get(uid) or 0)
+        scored.append((sc, uid))
+    scored.sort(key=lambda x: (-x[0], x[1]))
+    top_ids = {uid for _, uid in scored[:top_n]}
+    new_ids = {uid for uid in rankable if uid not in cached}
+    selected = [uid for uid in rankable if uid in top_ids or uid in new_ids]
+    return selected, {
+        'top_n': top_n,
+        'top_count': len(top_ids),
+        'new_count': len(new_ids - top_ids),
+        'selected_count': len(selected),
+        'rankable_count': len(rankable),
+        'cached_count': len(cached),
+    }
 
 
 def _msy_default_master_unit_ids(lc='EN'):
