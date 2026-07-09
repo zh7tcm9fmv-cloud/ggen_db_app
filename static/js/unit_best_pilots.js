@@ -1,12 +1,17 @@
 (function (global) {
   'use strict';
 
+  var SHINN_EX_CHAR_ID = '1330000103';
+
   var state = {
     open: false,
     unitId: null,
     loading: false,
     loaded: false,
     loadGen: 0,
+    excludeUr: false,
+    excludeShinn: false,
+    // unitId -> { pilots, pilots_no_ur, pilots_no_shinn, source }
     cache: {}
   };
 
@@ -59,6 +64,13 @@
     if (global.document._unitBestPilotBound) return;
     global.document._unitBestPilotBound = 1;
     global.document.addEventListener('click', function (ev) {
+      var filterBtn = ev.target.closest('[data-ubp-filter]');
+      if (filterBtn) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        toggleFilter(filterBtn.getAttribute('data-ubp-filter'));
+        return;
+      }
       var btn = ev.target.closest('[data-unit-best-pilot-toggle], .unit-best-pilot-btn');
       if (!btn) return;
       ev.preventDefault();
@@ -66,6 +78,87 @@
       ev.stopImmediatePropagation();
       toggle();
     }, true);
+  }
+
+  function syncFilterButtons() {
+    var urBtn = global.document.getElementById('ubpExcludeUrBtn');
+    var shBtn = global.document.getElementById('ubpExcludeShinnBtn');
+    if (urBtn) {
+      urBtn.classList.toggle('is-active', !!state.excludeUr);
+      urBtn.setAttribute('aria-pressed', state.excludeUr ? 'true' : 'false');
+      urBtn.title = state.excludeUr
+        ? (t('msy_exclude_ur_on') || 'Showing non-UR pilots only')
+        : (t('msy_exclude_ur') || 'Exclude UR pilots');
+    }
+    if (shBtn) {
+      var hideShinn = !!state.excludeUr;
+      shBtn.style.display = hideShinn ? 'none' : '';
+      shBtn.setAttribute('aria-hidden', hideShinn ? 'true' : 'false');
+      if (!hideShinn) {
+        shBtn.classList.toggle('is-active', !!state.excludeShinn);
+        shBtn.setAttribute('aria-pressed', state.excludeShinn ? 'true' : 'false');
+        shBtn.title = state.excludeShinn
+          ? (t('msy_exclude_shinn_on') || 'Hiding Shinn Asuka (EX)')
+          : (t('msy_exclude_shinn') || 'Exclude Shinn Asuka (EX)');
+      }
+    }
+  }
+
+  function toggleFilter(kind) {
+    if (kind === 'no_ur') {
+      state.excludeUr = !state.excludeUr;
+      if (state.excludeUr) state.excludeShinn = true;
+    } else if (kind === 'no_shinn') {
+      if (state.excludeUr) return;
+      state.excludeShinn = !state.excludeShinn;
+    } else {
+      return;
+    }
+    syncFilterButtons();
+    renderActivePanel();
+  }
+
+  function filterPilotsLocal(pilots, noUr, noShinn) {
+    if (!pilots || !pilots.length) return [];
+    if (noUr) noShinn = true;
+    if (!noUr && !noShinn) return pilots.slice();
+    return pilots.filter(function (p) {
+      var ch = (p && p.char) || {};
+      var rarity = String(ch.rarity || '');
+      var cid = String(ch.id || '');
+      if (noUr && rarity === 'UR') return false;
+      if (noShinn && cid === SHINN_EX_CHAR_ID) return false;
+      return true;
+    });
+  }
+
+  function pilotsForView(entry) {
+    if (!entry) return [];
+    var noUr = !!state.excludeUr;
+    var noShinn = !!state.excludeShinn || noUr;
+    var rows;
+    if (noUr && entry.pilots_no_ur && entry.pilots_no_ur.length) {
+      rows = entry.pilots_no_ur;
+    } else if (noShinn && !noUr && entry.pilots_no_shinn && entry.pilots_no_shinn.length) {
+      rows = entry.pilots_no_shinn;
+    } else {
+      rows = filterPilotsLocal(entry.pilots || [], noUr, noShinn);
+    }
+    return sortPilotsByCalcDamage(rows).slice(0, 10);
+  }
+
+  function renderActivePanel() {
+    if (!state.open || !state.unitId) return;
+    var entry = state.cache[String(state.unitId)];
+    if (!entry) return;
+    var pilots = pilotsForView(entry);
+    if (!pilots.length) {
+      setPanelHtml('<div class="unit-best-pilot-empty">'
+        + esc(t('msy_no_eligible_pilots') || 'No eligible pilots for this filter.')
+        + '</div>');
+      return;
+    }
+    setPanelHtml(renderPilotGrid(pilots, state.unitId));
   }
 
   function hideTriggers() {
@@ -261,7 +354,12 @@
     var payload = await res.json();
     if (payload.error) throw new Error(payload.detail || payload.error);
     if (payload.pilots && payload.pilots.length && !payload.pending) {
-      return sortPilotsByCalcDamage(payload.pilots);
+      return {
+        pilots: sortPilotsByCalcDamage(payload.pilots),
+        pilots_no_ur: sortPilotsByCalcDamage(payload.pilots_no_ur || []),
+        pilots_no_shinn: sortPilotsByCalcDamage(payload.pilots_no_shinn || []),
+        source: payload.source || 'published_dc'
+      };
     }
     return null;
   }
@@ -324,8 +422,16 @@
     if (!asmRes.ok) throw new Error('HTTP ' + asmRes.status);
     var payload = await asmRes.json();
     if (payload.error) throw new Error(payload.detail || payload.error);
-    var pilots = (payload.group && payload.group.pilots) || [];
-    return sortPilotsByCalcDamage(pilots);
+    var group = payload.group || {};
+    var pilots = sortPilotsByCalcDamage(group.pilots || []);
+    var noUrBlock = (group.rankings_no_ur || {}).super_crit || {};
+    var noShinnBlock = (group.rankings_no_shinn || {}).super_crit || {};
+    return {
+      pilots: pilots,
+      pilots_no_ur: sortPilotsByCalcDamage(noUrBlock.pilots || filterPilotsLocal(pilots, true, true)),
+      pilots_no_shinn: sortPilotsByCalcDamage(noShinnBlock.pilots || filterPilotsLocal(pilots, false, true)),
+      source: 'client_dc'
+    };
   }
 
   function withTimeout(promise, ms, label) {
@@ -346,25 +452,28 @@
     showLoading();
     try {
       var lang = (global.S && global.S.lang) || 'EN';
-      var pilots = await fetchPublishedPilots(unitId, lang);
+      var entry = await fetchPublishedPilots(unitId, lang);
       if (gen !== state.loadGen) return;
-      if (!pilots) {
-        pilots = await withTimeout(
+      if (!entry) {
+        entry = await withTimeout(
           loadRankingsViaDc(unitId, lang),
           120000,
           'dc_timeout'
         );
         if (gen !== state.loadGen) return;
-        if (pilots && pilots.length) warmPublishedPilots(unitId, pilots, lang);
+        if (entry && entry.pilots && entry.pilots.length) {
+          warmPublishedPilots(unitId, entry.pilots, lang);
+        }
       }
-      if (!pilots || !pilots.length) {
+      if (!entry || !entry.pilots || !entry.pilots.length) {
         state.loaded = true;
         setPanelHtml('<div class="unit-best-pilot-empty">' + esc(t('unit_best_pilot_empty') || 'No eligible pilots found.') + '</div>');
         return;
       }
-      state.cache[String(unitId)] = pilots;
+      state.cache[String(unitId)] = entry;
       state.loaded = true;
-      setPanelHtml(renderPilotGrid(pilots, unitId));
+      syncFilterButtons();
+      renderActivePanel();
     } catch (err) {
       if (gen !== state.loadGen) return;
       var msg = (err && err.message === 'dc_timeout')
@@ -408,7 +517,8 @@
     }
     if (state.cache[state.unitId]) {
       state.loaded = true;
-      setPanelHtml(renderPilotGrid(state.cache[state.unitId], state.unitId));
+      syncFilterButtons();
+      renderActivePanel();
       return;
     }
     if (!state.loading) void loadRankings(d.id);
@@ -431,10 +541,10 @@
 
   function prefetchRankings(unitId) {
     var lang = (global.S && global.S.lang) || 'EN';
-    void fetchPublishedPilots(unitId, lang).then(function (pilots) {
-      if (!pilots || !pilots.length) return;
+    void fetchPublishedPilots(unitId, lang).then(function (entry) {
+      if (!entry || !entry.pilots || !entry.pilots.length) return;
       if (String(state.unitId) !== String(unitId)) return;
-      state.cache[String(unitId)] = pilots;
+      state.cache[String(unitId)] = entry;
     });
   }
 

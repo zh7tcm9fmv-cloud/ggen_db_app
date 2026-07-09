@@ -1600,7 +1600,9 @@ _MSY_LITE_PILOT_NEED = max(6, min(16, int(os.environ.get('MSY_LITE_PILOT_NEED', 
 _MSY_LITE_PILOT_CAP = max(6, min(20, int(os.environ.get('MSY_LITE_PILOT_CAP', '8') or '8')))
 _MSY_LITE_NON_UR_RESERVE = max(2, min(6, int(os.environ.get('MSY_LITE_NON_UR_RESERVE', '4') or '4')))
 _BSP_PILOT_CAP = max(48, min(128, int(os.environ.get('BSP_PILOT_CAP', '88') or '88')))
-_BSP_NON_UR_RESERVE = max(8, min(32, int(os.environ.get('BSP_NON_UR_RESERVE', '16') or '16')))
+# Non-UR seats in the BSP /cal candidate pool — must be large enough that
+# rankings_no_ur can be filled from real DC results (not python-lite).
+_BSP_NON_UR_RESERVE = max(16, min(64, int(os.environ.get('BSP_NON_UR_RESERVE', '40') or '40')))
 _MSY_PREVIEW_PILOT_SCAN = max(16, min(80, int(os.environ.get('MSY_PREVIEW_PILOT_SCAN', '32') or '32')))
 # Older published caches to load when the current v14 master file is missing (Railway deploy).
 _MSY_LEGACY_MASTER_CACHE_KEYS = (
@@ -2867,40 +2869,29 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
     if not active_pilots:
         return None
     active_set = set(active_pilots)
-    need = max(_TOP_PILOTS_PREFILTER, int(top_pilots or 10) + 8)
 
     def _filter_pairs(all_pairs):
         return [(cid, bv) for cid, bv in all_pairs if cid in active_set and bv]
 
-    def _rankings_no_ur_for_tier(dt, all_pairs):
-        non_ur = _filter_non_ur(active_pilots)
-        if not non_ur:
+    def _rankings_filtered_from_dc_pairs(all_pairs, keep_cids):
+        """Rank only from live /cal pairs — never fall back to python-lite."""
+        allowed = {A.normalize_id(c) for c in (keep_cids or [])}
+        if not allowed:
             return {}
-        if len(non_ur) >= len(active_pilots):
-            return _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc)
-        return _rankings_no_ur_pool_lite(
-            uid, active_pilots, top_pilots, lc, 3, dt, unit_wpn,
-            need, info, stat_mode, rank_mode=metric,
-        )
-
-    def _rankings_no_shinn_for_tier(dt, all_pairs):
-        non_shinn = _filter_non_shinn(active_pilots)
-        if not non_shinn:
-            return {}
-        if len(non_shinn) >= len(active_pilots):
-            return _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc)
-        return _rankings_no_shinn_pool_lite(
-            uid, active_pilots, top_pilots, lc, 3, dt, unit_wpn,
-            need, info, stat_mode, rank_mode=metric,
-        )
-
-    def _rankings_no_gc_for_tier(dt, all_pairs):
-        non_gc = _filter_non_guaranteed_crit(uid, active_pilots, unit_wpn, lc, exclude)
-        if len(non_gc) >= len(active_pilots):
-            return _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc)
-        ng_cids = set(non_gc)
-        filtered = [(cid, bv) for cid, bv in all_pairs if cid in ng_cids]
+        filtered = [(cid, bv) for cid, bv in all_pairs if A.normalize_id(cid) in allowed]
         return _rankings_from_multi_vigor_pairs(filtered, top_pilots, lc) if filtered else {}
+
+    def _rankings_no_ur_for_tier(_dt, all_pairs):
+        return _rankings_filtered_from_dc_pairs(all_pairs, _filter_non_ur(active_pilots))
+
+    def _rankings_no_shinn_for_tier(_dt, all_pairs):
+        return _rankings_filtered_from_dc_pairs(all_pairs, _filter_non_shinn(active_pilots))
+
+    def _rankings_no_gc_for_tier(_dt, all_pairs):
+        return _rankings_filtered_from_dc_pairs(
+            all_pairs,
+            _filter_non_guaranteed_crit(uid, active_pilots, unit_wpn, lc, exclude),
+        )
 
     def _rankings_no_cp_for_tier(dt, _all_pairs):
         if not pairs_by_tier_no_cp:
@@ -2931,10 +2922,10 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
             return None
         dt_primary = next(iter(sorted(rankings_by_tier)))
         rankings = rankings_by_tier[dt_primary]
-        rankings_no_ur = rankings_no_ur_by_tier.get(dt_primary) or rankings
-        rankings_no_shinn = rankings_no_shinn_by_tier.get(dt_primary) or rankings
-        rankings_no_gc = rankings_no_gc_by_tier.get(dt_primary) or rankings
-        rankings_no_cp = rankings_no_cp_by_tier.get(dt_primary) or rankings
+        rankings_no_ur = rankings_no_ur_by_tier.get(dt_primary) or {}
+        rankings_no_shinn = rankings_no_shinn_by_tier.get(dt_primary) or {}
+        rankings_no_gc = rankings_no_gc_by_tier.get(dt_primary) or {}
+        rankings_no_cp = rankings_no_cp_by_tier.get(dt_primary) or {}
     else:
         dt = int(next(iter(pairs_by_tier)))
         pairs = _filter_pairs(pairs_by_tier[dt])
@@ -3004,44 +2995,64 @@ def save_published_master_cache(cache_key, result, *, build_engine=None):
 
 
 def _bsp_candidate_pilots_for_unit(uid, active, info, unit_wpn, stat_mode, lc, *, cap=None):
-    """Bounded BSP pool: every UR + top non-UR prospects, then rank via live /cal."""
+    """Bounded BSP pool for live /cal ranking.
+
+    Always reserve non-UR seats so rankings_no_ur can be filled from real DC
+    results (not python-lite). Remaining seats prefer URs / GC pilots.
+    """
     cap = cap or _BSP_PILOT_CAP
     if len(active) <= cap:
         return list(active)
     A = _app()
     out = []
+    seen = set()
+
+    def _add(cid):
+        cid = A.normalize_id(cid)
+        if not cid or cid in seen:
+            return False
+        if len(out) >= cap:
+            return False
+        seen.add(cid)
+        out.append(cid)
+        return True
+
+    # 1) Guaranteed-crit priority (small set)
     for cid in _msy_guaranteed_crit_priority_pilots(active, lc):
-        if cid not in out:
-            out.append(cid)
+        _add(cid)
+
+    # 2) Reserve non-UR seats first so No-UR lists are real /cal rankings
+    non_ur = []
+    for cid in active:
+        ri = str((A.char_info_map.get(cid) or {}).get('rarity', '1'))
+        if A.RARITY_MAP.get(ri, 'N') != 'UR':
+            non_ur.append(cid)
+    non_ur_scored = [
+        (_cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc), cid)
+        for cid in non_ur
+    ]
+    non_ur_scored.sort(key=lambda x: (-x[0], x[1]))
+    reserve = min(_BSP_NON_UR_RESERVE, max(0, cap - len(out)), len(non_ur_scored))
+    for _, cid in non_ur_scored[:reserve]:
+        _add(cid)
+
+    # 3) Fill remaining with URs
     for cid in active:
         if len(out) >= cap:
             break
         ri = str((A.char_info_map.get(cid) or {}).get('rarity', '1'))
-        if A.RARITY_MAP.get(ri, 'N') == 'UR' and cid not in out:
-            out.append(cid)
-    reserve = min(_BSP_NON_UR_RESERVE, max(0, cap - len(out)))
-    if reserve > 0:
-        cheap = []
-        for cid in active:
-            if cid in out:
-                continue
-            ri = str((A.char_info_map.get(cid) or {}).get('rarity', '1'))
-            if A.RARITY_MAP.get(ri, 'N') == 'UR':
-                continue
-            cheap.append((_cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc), cid))
-        cheap.sort(key=lambda x: (-x[0], x[1]))
-        for _, cid in cheap[:reserve]:
-            if cid not in out:
-                out.append(cid)
+        if A.RARITY_MAP.get(ri, 'N') == 'UR':
+            _add(cid)
+
+    # 4) Fill any leftover seats by cheap score
     if len(out) < cap:
         cheap_all = [
             (_cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc), cid)
-            for cid in active if cid not in out
+            for cid in active if A.normalize_id(cid) not in seen
         ]
         cheap_all.sort(key=lambda x: (-x[0], x[1]))
         for _, cid in cheap_all:
-            out.append(cid)
-            if len(out) >= cap:
+            if not _add(cid):
                 break
     return out[:cap]
 
@@ -3387,20 +3398,58 @@ def _lookup_bsp_published_group(uid, lc, kwargs):
     return None
 
 
-def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs):
-    pilots = list(pilots or [])
-    pilots.sort(
-        key=lambda p: (
-            -(p.get('peak_dmg') or p.get('super_crit_dmg') or p.get('score') or 0),
-            str((p.get('char') or {}).get('id') or ''),
-        ),
+def _bsp_pilots_from_rankings_block(block, rank_mode):
+    if not block:
+        return []
+    mode = rank_mode or 'super_crit'
+    row = block.get(mode) or block.get('super_crit') or block.get('crit') or block.get('normal') or {}
+    return list(row.get('pilots') or [])
+
+
+def _bsp_filter_pilots_client_side(pilots, *, no_ur=False, no_shinn=False):
+    """Fallback filter when variant rankings are missing (older warm caches)."""
+    A = _app()
+    sid = A.normalize_id(SHINN_EX_CHAR_ID)
+    out = []
+    for p in pilots or []:
+        ch = p.get('char') or {}
+        cid = A.normalize_id(ch.get('id'))
+        rarity = str(ch.get('rarity') or A.RARITY_MAP.get(str(ch.get('rarity_id') or '1'), 'N'))
+        if no_ur and rarity == 'UR':
+            continue
+        if no_shinn and cid == sid:
+            continue
+        out.append(p)
+    return out
+
+
+def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs,
+                         pilots_no_ur=None, pilots_no_shinn=None):
+    def _rank(rows):
+        rows = list(rows or [])
+        rows.sort(
+            key=lambda p: (
+                -(p.get('peak_dmg') or p.get('super_crit_dmg') or p.get('score') or 0),
+                str((p.get('char') or {}).get('id') or ''),
+            ),
+        )
+        for i, pilot in enumerate(rows):
+            pilot['rank'] = i + 1
+        return rows
+
+    pilots = _rank(pilots)
+    no_ur = _rank(pilots_no_ur) if pilots_no_ur is not None else _rank(
+        _bsp_filter_pilots_client_side(pilots, no_ur=True, no_shinn=True)
     )
-    for i, pilot in enumerate(pilots):
-        pilot['rank'] = i + 1
+    no_shinn = _rank(pilots_no_shinn) if pilots_no_shinn is not None else _rank(
+        _bsp_filter_pilots_client_side(pilots, no_shinn=True)
+    )
     return {
         'eligible': True,
         'unit_id': uid,
         'pilots': pilots,
+        'pilots_no_ur': no_ur,
+        'pilots_no_shinn': no_shinn,
         'source': source,
         'def_tier': def_tier,
         'defender_note': _settings_note(def_tier),
@@ -3455,13 +3504,23 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
             row = _ensure_passive_variant_for_request(row, lc, rank_mode, def_tier, kwargs)
             row = _backfill_pilot_formula_stats(row, lc, rank_mode, kwargs)
             pilots = list(row.get('pilots') or [])
-            out = _bsp_pilots_response(uid, pilots, source='published_dc', def_tier=def_tier,
-                                       rank_mode=rank_mode, lc=lc, kwargs=kwargs)
+            # Always derive No UR / No Shinn from the live-/cal main list.
+            # Do not use cached rankings_no_* — older builds filled those via python-lite.
+            pilots_no_ur = _bsp_filter_pilots_client_side(pilots, no_ur=True, no_shinn=True)
+            pilots_no_shinn = _bsp_filter_pilots_client_side(pilots, no_shinn=True)
+            out = _bsp_pilots_response(
+                uid, pilots, source='published_dc', def_tier=def_tier,
+                rank_mode=rank_mode, lc=lc, kwargs=kwargs,
+                pilots_no_ur=pilots_no_ur,
+                pilots_no_shinn=pilots_no_shinn,
+            )
         else:
             out = {
                 'eligible': True,
                 'unit_id': uid,
                 'pilots': [],
+                'pilots_no_ur': [],
+                'pilots_no_shinn': [],
                 'pending': True,
                 'source': 'client_dc',
                 'def_tier': def_tier,
