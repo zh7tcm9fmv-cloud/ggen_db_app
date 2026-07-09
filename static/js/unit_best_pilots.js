@@ -438,11 +438,15 @@
     var c = pilot.char || {};
     var dmg = pilotDamage(pilot);
     var sub = '';
-    if (pilot.guaranteed_crit || (pilot.crit_rate | 0) >= 100) {
+    var critPct = pilot.crit_rate | 0;
+    var isGc = !!(pilot.guaranteed_crit || critPct >= 100);
+    if (isGc) {
       sub += '<div class="msy-pilot-sub msy-pilot-sub--gc">' + esc(t('msy_guaranteed_crit') || 'Guaranteed Crit') + '</div>';
-    } else if (pilot.crit_rate) {
+      // Still show 100% crit so GC does not hide the numeric rate.
+      sub += '<div class="msy-pilot-sub">' + esc((t('msy_crit_rate') || '{n}% crit').replace('{n}', '100')) + '</div>';
+    } else if (critPct > 0) {
       var cr = t('msy_crit_rate') || '{n}% crit';
-      sub += '<div class="msy-pilot-sub">' + esc(cr.replace('{n}', String(pilot.crit_rate))) + '</div>';
+      sub += '<div class="msy-pilot-sub">' + esc(cr.replace('{n}', String(critPct))) + '</div>';
     }
     return '<div class="msy-pilot-card">'
       + '<span class="msy-pilot-rank">' + esc(String(pilot.rank || '')) + '</span>'
@@ -524,6 +528,25 @@
     return dcEnginePromise;
   }
 
+  function entryFromPayload(payload) {
+    if (!payload || !payload.pilots || !payload.pilots.length || payload.pending) return null;
+    return {
+      pilots: sortPilotsByCalcDamage(payload.pilots),
+      pilots_no_ur: sortPilotsByCalcDamage(payload.pilots_no_ur || []),
+      pilots_no_shinn: sortPilotsByCalcDamage(payload.pilots_no_shinn || []),
+      pilots_same_role: sortPilotsByCalcDamage(payload.pilots_same_role || []),
+      no_ur_partial: !!payload.no_ur_partial,
+      no_shinn_partial: !!payload.no_shinn_partial,
+      same_role_partial: !!payload.same_role_partial,
+      source: payload.source || 'published_dc'
+    };
+  }
+
+  function entryFromUnitDetail(d) {
+    if (!d || !d.best_synergy_pilots) return null;
+    return entryFromPayload(d.best_synergy_pilots);
+  }
+
   async function fetchPublishedPilots(unitId, lang) {
     var q = 'lang=' + encodeURIComponent(lang)
       + '&lb_tier=3&def_tier=3&rank_mode=super_crit&top_pilots=10';
@@ -533,19 +556,7 @@
     if (!res.ok) throw new Error('HTTP ' + res.status);
     var payload = await res.json();
     if (payload.error) throw new Error(payload.detail || payload.error);
-    if (payload.pilots && payload.pilots.length && !payload.pending) {
-      return {
-        pilots: sortPilotsByCalcDamage(payload.pilots),
-        pilots_no_ur: sortPilotsByCalcDamage(payload.pilots_no_ur || []),
-        pilots_no_shinn: sortPilotsByCalcDamage(payload.pilots_no_shinn || []),
-        pilots_same_role: sortPilotsByCalcDamage(payload.pilots_same_role || []),
-        no_ur_partial: !!payload.no_ur_partial,
-        no_shinn_partial: !!payload.no_shinn_partial,
-        same_role_partial: !!payload.same_role_partial,
-        source: payload.source || 'published_dc'
-      };
-    }
-    return null;
+    return entryFromPayload(payload);
   }
 
   async function warmPublishedPilots(unitId, pilots, lang) {
@@ -632,15 +643,45 @@
     });
   }
 
+  function commitEntry(unitId, entry, gen) {
+    if (gen !== state.loadGen) return;
+    if (!entry || !entry.pilots || !entry.pilots.length) {
+      state.loaded = true;
+      setPanelHtml('<div class="unit-best-pilot-empty">' + esc(t('unit_best_pilot_empty') || 'No eligible pilots found.') + '</div>');
+      return;
+    }
+    state.cache[String(unitId)] = entry;
+    state.loaded = true;
+    state.loading = false;
+    syncFilterButtons();
+    renderActivePanel();
+    // Affinity details are secondary — never block the top-10 paint.
+    var lang = (global.S && global.S.lang) || 'EN';
+    void enrichAffinityMatches(entry, unitId, lang).then(function () {
+      if (gen !== state.loadGen) return;
+      if (state.open && String(state.unitId) === String(unitId)) renderActivePanel();
+    });
+  }
+
   async function loadRankings(unitId) {
     var gen = ++state.loadGen;
     state.loading = true;
+    // Instant path: unit detail already embedded the published top-10 (Soshage-style).
+    var detail = global.S && global.S.currentDetailData;
+    var embedded = (detail && String(detail.id) === String(unitId))
+      ? entryFromUnitDetail(detail)
+      : null;
+    if (embedded) {
+      commitEntry(unitId, embedded, gen);
+      return;
+    }
     showLoading();
     try {
       var lang = (global.S && global.S.lang) || 'EN';
       var entry = await fetchPublishedPilots(unitId, lang);
       if (gen !== state.loadGen) return;
       if (!entry) {
+        // Only fall back to live /cal when published cache truly has no row.
         entry = await withTimeout(
           loadRankingsViaDc(unitId, lang),
           120000,
@@ -651,17 +692,7 @@
           warmPublishedPilots(unitId, entry.pilots, lang);
         }
       }
-      if (!entry || !entry.pilots || !entry.pilots.length) {
-        state.loaded = true;
-        setPanelHtml('<div class="unit-best-pilot-empty">' + esc(t('unit_best_pilot_empty') || 'No eligible pilots found.') + '</div>');
-        return;
-      }
-      await enrichAffinityMatches(entry, unitId, lang);
-      if (gen !== state.loadGen) return;
-      state.cache[String(unitId)] = entry;
-      state.loaded = true;
-      syncFilterButtons();
-      renderActivePanel();
+      commitEntry(unitId, entry, gen);
     } catch (err) {
       if (gen !== state.loadGen) return;
       var msg = (err && err.message === 'dc_timeout')
@@ -739,6 +770,15 @@
   }
 
   function prefetchRankings(unitId) {
+    if (state.cache[String(unitId)]) return;
+    var detail = global.S && global.S.currentDetailData;
+    var embedded = (detail && String(detail.id) === String(unitId))
+      ? entryFromUnitDetail(detail)
+      : null;
+    if (embedded) {
+      state.cache[String(unitId)] = embedded;
+      return;
+    }
     var lang = (global.S && global.S.lang) || 'EN';
     void fetchPublishedPilots(unitId, lang).then(function (entry) {
       if (!entry || !entry.pilots || !entry.pilots.length) return;
@@ -759,7 +799,12 @@
       wrap.setAttribute('aria-hidden', 'true');
     }
     setPanelHtml('');
-    if (d && isEligible(d)) prefetchRankings(d.id);
+    if (d && isEligible(d)) {
+      // Prefer embedded top-10 from /api/unit — zero extra latency.
+      var embedded = entryFromUnitDetail(d);
+      if (embedded) state.cache[String(d.id)] = embedded;
+      else prefetchRankings(d.id);
+    }
   }
 
   function onDetailClose() {

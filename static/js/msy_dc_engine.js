@@ -543,6 +543,54 @@
         || typeof global._dcCreateEmptyAttackerSlot !== 'function') {
       return Promise.reject(new Error('Damage Calculator not loaded'));
     }
+    // Override host /cal skill helpers so Boost Critical always applies
+    // (Railway may still serve an older app.js during long BSP builds).
+    global._dcMsySkillRelevantForSim = function (desc, skId, skName) {
+      var text = String(desc || '');
+      if (/(?:damage\s+dealt|造成的損傷|傷害|ダメージ)/i.test(text)) return true;
+      if (typeof global._dcParseSkillDescAtkPct === 'function') {
+        var add = global._dcParseSkillDescAtkPct(text, { id: skId, name: skName || '' });
+        if (add && (add.Ranged || add.Melee || add.Awaken)) return true;
+      }
+      if (/^200170[1-5]01$/.test(String(skId || ''))) return true;
+      if (/awaken\s+boost|覺醒值增幅|覚醒ブースト|boost\s+critical/i.test(String(skName || ''))) return true;
+      if (/critical\s*rate|暴擊率|暴击率|爆擊率|クリティカル率/i.test(text)) return true;
+      return false;
+    };
+    global._dcMsySkillCritRate = function (slot, cd) {
+      var crit = 0;
+      if (!cd || !slot || !slot._activeSkills) return 0;
+      var skills = typeof global._dcPilotSkillsVisibleForDc === 'function'
+        ? (global._dcPilotSkillsVisibleForDc(cd) || []) : [];
+      var S = global.S;
+      var saveMode = S.dc.charStatMode;
+      var saveAS = S.dc._activeSkills;
+      try {
+        S.dc.charStatMode = slot.charStatMode || 'normal';
+        S.dc._activeSkills = Object.assign({}, slot._activeSkills);
+        skills.forEach(function (sk) {
+          if (!slot._activeSkills[sk.id]) return;
+          var rsk = typeof global._dcResolveSkillForDcMode === 'function'
+            ? global._dcResolveSkillForDcMode(sk) : sk;
+          var desc = [].concat(
+            (rsk.details || []).map(function (d) {
+              return typeof d === 'string' ? d : ((d && d.text) || '');
+            }),
+            [rsk.desc || '', rsk.sp_desc || '']
+          ).join(' ');
+          var m = desc.match(/Increases?\s+(?:own\s+)?critical\s*rate\s+by\s+(\d+)\s*%/i)
+            || desc.match(/Increase\s+critical\s*rate\s+by\s+(\d+)\s*%/i)
+            || desc.match(/自身(?:的)?(?:暴擊|暴击|爆擊)率提升(\d+)%/)
+            || desc.match(/自身のクリティカル率が(\d+)%上昇/)
+            || desc.match(/クリティカル(?:発生)?率.{0,8}?(\d+)\s*[%％]/);
+          if (m) crit = Math.max(crit, parseInt(m[1], 10) || 0);
+        });
+      } finally {
+        S.dc.charStatMode = saveMode;
+        S.dc._activeSkills = saveAS;
+      }
+      return crit;
+    };
     return Promise.resolve(true);
   }
 

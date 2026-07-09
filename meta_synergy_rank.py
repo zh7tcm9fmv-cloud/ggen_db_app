@@ -60,7 +60,8 @@ _SKILL_ATK_RE = re.compile(
     re.I,
 )
 _SKILL_CRIT_RE = re.compile(
-    r'[Ii]ncreases?\s+(?:own\s+)?critical rate by\s*(\d+)\s*%|'
+    r'[Ii]ncreases?\s+(?:own\s+)?critical\s*rate\s+by\s*(\d+)\s*%|'
+    r'[Ii]ncrease\s+critical\s*rate\s+by\s*(\d+)\s*%|'
     r'自身(?:的)?(?:暴擊|暴击|爆擊)率提升(\d+)%|'
     r'クリティカル(?:発生)?率.{0,8}?(\d+)\s*[%％]',
     re.I,
@@ -1577,15 +1578,18 @@ _MSY_BROWSE_PAYLOAD_CACHE_TTL = max(15, min(300, int(os.environ.get('MSY_BROWSE_
 _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
-_BSP_DC_RULES_VERSION = 4  # Shinn Supercharged EX2 = guaranteed / 100% crit in DC engine
+_BSP_DC_RULES_VERSION = 5  # Boost Critical / skill crit always applied; Shinn EX2 = 100% GC
 _BSP_DC_BUILD_ENGINE = 'calculateDamage'
 # From v16 onward: formula/criteria rebuilds only refresh top-N + newly added units.
 # Full-catalog rebuilds are intentional opt-in only (users rarely open the long tail).
 _BSP_INCREMENTAL_TOP_N = max(50, min(500, int(os.environ.get('BSP_INCREMENTAL_TOP_N', '250') or '250')))
 _BSP_PUBLISHED_CACHE_TAG = '_v16_bsp_dc'
+# Serve older full-catalog DC caches while a newer rebuild is still incomplete.
+_BSP_PUBLISHED_FALLBACK_TAGS = ('_v15_bsp_dc',)
 _BSP_PUBLISHED_MEMORY = None
 _BSP_PUBLISHED_MEMORY_KEY = None
 _BSP_PUBLISHED_MEMORY_LOCK = threading.Lock()
+_BSP_PUBLISHED_INDEX = {}  # cache_key -> {uid: group}
 SHINN_EX_CHAR_ID = '1330000103'
 _MSY_BUILD_WORKERS = max(1, min(8, int(os.environ.get('MSY_BUILD_WORKERS', '6') or '6')))
 _MSY_USE_PROCESS_BUILD = os.environ.get('MSY_USE_PROCESS_BUILD', '').strip().lower() in ('1', 'true', 'yes')
@@ -3335,18 +3339,34 @@ def _bsp_published_cache_key(lc, kwargs):
     )
 
 
-def _bsp_unit_warm_cache_path(uid, lc, kwargs):
-    rm = kwargs.get('rank_mode', 'super_crit') or 'super_crit'
-    dt = max(1, min(4, int(kwargs.get('def_tier') or 3)))
+def _bsp_fallback_cache_keys(lc, kwargs):
+    """Older full-catalog DC caches (e.g. v15 tp10) used while v16 is still building."""
+    lc = lc or 'EN'
     lb = int(kwargs.get('lb_tier', 3) or 3)
-    d = os.path.join(_msy_persistent_dir(), 'bsp_units')
-    os.makedirs(d, exist_ok=True)
-    return os.path.join(d, f'{lc or "EN"}_{uid}_lb{lb}_dt{dt}_{rm}.json.gz')
+    keys = []
+    for tag in _BSP_PUBLISHED_FALLBACK_TAGS:
+        keys.append((tag, lc, lb, 10, None, None))
+        keys.append((tag, lc, lb, int(_BSP_STORE_TOP_PILOTS), None, None))
+    return keys
 
 
-def _load_bsp_published_cache(cache_key, *, use_memory=True):
+def _bsp_index_groups(cache_key, groups):
+    idx = {}
+    for g in groups or []:
+        uid = _app().normalize_id((g.get('unit') or {}).get('id'))
+        if uid:
+            idx[uid] = g
+    _BSP_PUBLISHED_INDEX[tuple(cache_key)] = idx
+    return idx
+
+
+def _load_bsp_published_cache(cache_key, *, use_memory=True, min_rules=None):
     """Published BSP rankings built from live /cal (reject legacy python-lite caches)."""
     global _BSP_PUBLISHED_MEMORY, _BSP_PUBLISHED_MEMORY_KEY
+    if min_rules is None:
+        # Serve any real /cal catalog (v15 rules=2+) while a newer rebuild is incomplete.
+        # Never serve python-lite (those lack build_engine=calculateDamage).
+        min_rules = 2
     if use_memory:
         with _BSP_PUBLISHED_MEMORY_LOCK:
             if _BSP_PUBLISHED_MEMORY is not None and _BSP_PUBLISHED_MEMORY_KEY == cache_key:
@@ -3362,10 +3382,15 @@ def _load_bsp_published_cache(cache_key, *, use_memory=True):
                 data = json.load(f)
             if data.get('build_engine') != _BSP_DC_BUILD_ENGINE:
                 continue
-            if int(data.get('bsp_rules_version') or 1) < _BSP_DC_RULES_VERSION:
+            if int(data.get('bsp_rules_version') or 1) < int(min_rules):
                 continue
-            if tuple(data.get('cache_key') or ()) != tuple(cache_key):
-                continue
+            # Accept files whose key matches, or older tag/top_pilots variants.
+            file_key = tuple(data.get('cache_key') or ())
+            if file_key and file_key != tuple(cache_key):
+                if len(file_key) < 2 or file_key[0] not in (
+                    cache_key[0], *_BSP_PUBLISHED_FALLBACK_TAGS
+                ):
+                    continue
             groups = data.get('groups')
             if not groups:
                 continue
@@ -3373,7 +3398,10 @@ def _load_bsp_published_cache(cache_key, *, use_memory=True):
             out = {
                 'groups': groups,
                 'total_pilot_candidates': int(data.get('total_pilot_candidates') or 0),
+                'bsp_rules_version': int(data.get('bsp_rules_version') or 1),
+                'cache_key': file_key or tuple(cache_key),
             }
+            _bsp_index_groups(out['cache_key'], groups)
             if use_memory:
                 with _BSP_PUBLISHED_MEMORY_LOCK:
                     _BSP_PUBLISHED_MEMORY = out
@@ -3393,13 +3421,23 @@ def _load_bsp_unit_warm_cache(uid, lc, kwargs):
             data = json.load(f)
         if data.get('build_engine') != _BSP_DC_BUILD_ENGINE:
             return None
-        if int(data.get('bsp_rules_version') or 1) < _BSP_DC_RULES_VERSION:
+        # Warm caches are per-unit client /cal results — accept recent rules.
+        if int(data.get('bsp_rules_version') or 1) < max(1, int(_BSP_DC_RULES_VERSION) - 2):
             return None
         pilots = data.get('pilots') or []
         return pilots if pilots else None
     except Exception as e:
         print(f'BSP unit warm cache load failed ({path}): {e}')
         return None
+
+
+def _bsp_unit_warm_cache_path(uid, lc, kwargs):
+    rm = kwargs.get('rank_mode', 'super_crit') or 'super_crit'
+    dt = max(1, min(4, int(kwargs.get('def_tier') or 3)))
+    lb = int(kwargs.get('lb_tier', 3) or 3)
+    d = os.path.join(_msy_persistent_dir(), 'bsp_units')
+    os.makedirs(d, exist_ok=True)
+    return os.path.join(d, f'{lc or "EN"}_{uid}_lb{lb}_dt{dt}_{rm}.json.gz')
 
 
 def save_bsp_unit_warm_cache(uid, lc, kwargs, pilots):
@@ -3424,19 +3462,34 @@ def save_bsp_unit_warm_cache(uid, lc, kwargs, pilots):
 
 
 def _lookup_bsp_published_group(uid, lc, kwargs):
-    cache_key = _bsp_published_cache_key(lc, kwargs)
-    disk = _load_bsp_published_cache(cache_key)
-    if not disk:
-        return None
-    for g in disk.get('groups') or []:
-        if _app().normalize_id((g.get('unit') or {}).get('id')) == uid:
-            if g.get('pilots') or (g.get('rankings') or {}).get('super_crit', {}).get('pilots'):
+    """O(1) unit lookup from published DC cache (prefer fullest catalog)."""
+    uid = _app().normalize_id(uid)
+    # Prefer complete v15 while v16 is still a partial rebuild, then v16 when full.
+    keys = list(_bsp_fallback_cache_keys(lc, kwargs)) + [_bsp_published_cache_key(lc, kwargs)]
+    best = None
+    best_n = -1
+    for cache_key in keys:
+        disk = _load_bsp_published_cache(cache_key, use_memory=True)
+        if not disk:
+            continue
+        ck = tuple(disk.get('cache_key') or cache_key)
+        idx = _BSP_PUBLISHED_INDEX.get(ck)
+        if idx is None:
+            idx = _bsp_index_groups(ck, disk.get('groups') or [])
+        g = idx.get(uid)
+        if not g:
+            continue
+        n = len(disk.get('groups') or [])
+        if n > best_n:
+            best = g
+            best_n = n
+            if n >= 1000:
                 return g
-    return None
+    return best
 
 
 def _bsp_patch_guaranteed_crit_flags(pilots, lc='EN'):
-    """Ensure Supercharged-EX2 GC pilots (e.g. Shinn) show as 100% crit even on older caches."""
+    """Patch GC + skill crit % (Boost Critical etc.) onto published/warm rows."""
     for p in pilots or []:
         if not isinstance(p, dict):
             continue
@@ -3446,6 +3499,15 @@ def _bsp_patch_guaranteed_crit_flags(pilots, lc='EN'):
         if _char_guaranteed_crit(cid, lc, vigor='super', cp_on=True):
             p['guaranteed_crit'] = True
             p['crit_rate'] = 100
+            continue
+        base = int(p.get('crit_rate') or 0)
+        skill = int(_char_skill_crit_rate(cid, lc) or 0)
+        if skill > 0 and base < skill:
+            # Weapon-only cache row + Boost Critical skill → sum (cap 100).
+            p['crit_rate'] = min(100, base + skill)
+        elif skill > 0:
+            p['crit_rate'] = min(100, max(base, skill))
+        p['guaranteed_crit'] = bool(p.get('guaranteed_crit')) or int(p.get('crit_rate') or 0) >= 100
     return pilots
 
 
@@ -3597,8 +3659,8 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
         if not row:
             row = g
         row = _normalize_group_for_mode(row, rank_mode) or row
-        row = _ensure_passive_variant_for_request(row, lc, rank_mode, def_tier, kwargs)
-        row = _backfill_pilot_formula_stats(row, lc, rank_mode, kwargs)
+        # Skip expensive passive re-sim / formula backfill on the hot published path —
+        # /cal rows already carry char_atk / dmg_dealt_pct / vigor_dmg_pct.
         pilots = list(row.get('pilots') or [])
         if not pilots:
             pilots = _bsp_pilots_from_rankings_block(row.get('rankings'), rank_mode)
@@ -3908,7 +3970,9 @@ def _msy_skill_relevant_for_sim(blob, sid='', name=''):
     if sid and _AWAKEN_BOOST_SKILL_ID_RE.match(sid):
         return True
     nm = str(name or '')
-    if re.search(r'awaken\s+boost|覺醒值增幅|覚醒ブースト', nm, re.I):
+    if re.search(r'awaken\s+boost|覺醒值增幅|覚醒ブースト|boost\s+critical', nm, re.I):
+        return True
+    if re.search(r'critical\s*rate|暴擊率|暴击率|爆擊率|クリティカル率', text, re.I):
         return True
     return False
 

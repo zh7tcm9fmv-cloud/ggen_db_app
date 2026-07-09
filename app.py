@@ -9747,6 +9747,19 @@ WEAPON_DEBUFF_KEYS_PRESENT_UNION = frozenset(
 print("Database ready!")
 print("=" * 60)
 
+# Preload published Top 10 Damage Pilot cache into memory (Soshage-style instant opens).
+try:
+    import meta_synergy_rank as _msr_boot
+    for _lc_boot in ('EN',):
+        _ck_boot = _msr_boot._bsp_published_cache_key(_lc_boot, {'lb_tier': 3, 'top_pilots': 10})
+        for _fk in [_ck_boot] + list(_msr_boot._bsp_fallback_cache_keys(_lc_boot, {'lb_tier': 3})):
+            _disk = _msr_boot._load_bsp_published_cache(_fk, use_memory=True)
+            if _disk and len(_disk.get('groups') or []) >= 1000:
+                print(f'BSP published cache preloaded: {len(_disk["groups"])} units ({_fk[0]})')
+                break
+except Exception as _bsp_boot_e:
+    print(f'BSP published cache preload skipped: {_bsp_boot_e}')
+
 CHAR_RECOMMEND_UNIT_MAP = {}
 for _uid in sorted(unit_info_map.keys()):
     _ui = unit_info_map[_uid]
@@ -21635,7 +21648,7 @@ def get_unit(unit_id):
         if stat_mode_arg not in ('normal', 'sp', 'ssp'):
             stat_mode_arg = 'normal'
         cond_for_ranking = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-        ck = f"u_{unit_id}_{lc}_ssp15_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp1_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"u_{unit_id}_{lc}_ssp15_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp2_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -22035,6 +22048,20 @@ def get_unit(unit_id):
         try:
             import meta_synergy_rank as _msr
             result['best_synergy_pilot_eligible'] = _msr.unit_is_rankable(unit_id, lc)
+            # Soshage-style: embed top-10 in unit detail so the panel is instant (no second round-trip / live sim).
+            if result['best_synergy_pilot_eligible'] and not view_ranking:
+                try:
+                    bsp = _msr.unit_best_synergy_pilots_payload(unit_id, {
+                        'lc': lc,
+                        'lb_tier': 3,
+                        'def_tier': 3,
+                        'rank_mode': 'super_crit',
+                        'top_pilots': 10,
+                    })
+                    if bsp and bsp.get('pilots') and not bsp.get('pending'):
+                        result['best_synergy_pilots'] = bsp
+                except Exception as _bsp_e:
+                    print(f'embed best_synergy_pilots failed for {unit_id}: {_bsp_e}')
         except Exception:
             result['best_synergy_pilot_eligible'] = False
         set_cached_response(ck, result)

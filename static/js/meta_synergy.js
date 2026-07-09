@@ -1303,10 +1303,13 @@
     var c = pilot.char || {};
     var dmg = pilotDamage(pilot, mode);
     var sub = '';
-    if (pilot.guaranteed_crit) {
+    var critPct = pilot.crit_rate | 0;
+    var isGc = !!(pilot.guaranteed_crit || critPct >= 100);
+    if (isGc) {
       sub += '<div class="msy-pilot-sub msy-pilot-sub--gc">' + esc(t('msy_guaranteed_crit')) + '</div>';
-    } else if (pilot.crit_rate) {
-      sub += '<div class="msy-pilot-sub">' + esc(t('msy_crit_rate')).replace('{n}', String(pilot.crit_rate)) + '</div>';
+      sub += '<div class="msy-pilot-sub">' + esc(t('msy_crit_rate')).replace('{n}', '100') + '</div>';
+    } else if (critPct > 0) {
+      sub += '<div class="msy-pilot-sub">' + esc(t('msy_crit_rate')).replace('{n}', String(critPct)) + '</div>';
     }
     return (
       '<div class="msy-pilot-card">' +

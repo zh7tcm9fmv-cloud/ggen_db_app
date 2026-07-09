@@ -139,10 +139,12 @@ def _load_bsp_build_progress(cache_key, *, min_rules=None):
 def _load_existing_v15(lang, top_pilots, *, for_build=False, allow_stale_rules=False):
     cache_key = msy._bsp_published_cache_key(lang, {'lb_tier': 3, 'top_pilots': top_pilots})
     if for_build:
-        min_rules = 0 if allow_stale_rules else None
+        # Mid-build checkpoints may lag the current rules version by 1–2 bumps
+        # (e.g. Boost Critical regex fix). Keep progress unless --force wiped it.
+        min_rules = 0 if allow_stale_rules else max(2, int(msy._BSP_DC_RULES_VERSION) - 2)
         groups = _load_bsp_build_progress(cache_key, min_rules=min_rules)
         if groups:
-            label = 'any rules' if allow_stale_rules else f'rules v{msy._BSP_DC_RULES_VERSION}'
+            label = 'any rules' if allow_stale_rules else f'rules>={min_rules}'
             print(f'Build resume: {len(groups)} units ({label})')
         return cache_key, groups
     disk = msy._load_bsp_published_cache(cache_key)
