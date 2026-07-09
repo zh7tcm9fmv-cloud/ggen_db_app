@@ -1,12 +1,20 @@
 /* Best Synergy Pilot — unit detail panel + trigger icon */
 
-/* Rec-card BSP: same bottom-right inset language as #unitLbVideoBtnSlot
-   (LB cinematic when shown: right:8px; bottom:4px). Stays inside the
-   recommend box across viewport widths instead of hanging below it. */
+/* Rec-card BSP: bottom-right of the recommend card, half-straddling the
+   bottom edge (same language as portrait BSP / LB corner anchors).
+   Keep a fixed right inset so narrow viewports don't shove it off-card.
+   Clearance for the hanging half lives on the wrap, not as fake card padding. */
 .detail-rec-shortcut-wrap,
 .detail-rec-shortcut--desktop,
 .detail-rec-shortcut--mobile {
   overflow: visible;
+}
+
+.detail-rec-shortcut-wrap:has(.detail-rec-link-card--has-bsp),
+.detail-rec-shortcut--desktop:has(.detail-rec-link-card--has-bsp),
+.detail-rec-shortcut--mobile:has(.detail-rec-link-card--has-bsp) {
+  padding-bottom: 22px;
+  box-sizing: border-box;
 }
 
 .detail-rec-link-card--has-bsp,
@@ -16,8 +24,6 @@
 .modal-content.char-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-card--has-bsp {
   position: relative !important;
   overflow: visible;
-  /* Clearance for bottom-right BSP (same idea as portrait LB padding-bottom). */
-  padding-bottom: 26px !important;
   box-sizing: border-box;
 }
 
@@ -25,14 +31,13 @@
   position: absolute;
   top: auto;
   left: auto;
-  /* Match #unitLbVideoBtnSlot when cinematic is shown: bottom-right inset. */
   right: 8px;
-  bottom: 4px;
+  bottom: 0;
   z-index: 10;
   line-height: 0;
-  padding: 4px;
+  padding: 0;
   pointer-events: none;
-  transform: none;
+  transform: translateY(50%);
 }
 
 .detail-rec-link-card--has-bsp .unit-best-pilot-btn {
@@ -421,17 +426,17 @@
 }
 
 @media (max-width: 768px) {
-  .detail-rec-link-card--has-bsp,
-  .modal-content.unit-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-card--has-bsp,
-  .modal-content.char-detail:not(.detail-ranking-view) .detail-rec-shortcut--mobile .detail-rec-link-card--has-bsp {
-    padding-bottom: 22px !important;
+  .detail-rec-shortcut-wrap:has(.detail-rec-link-card--has-bsp),
+  .detail-rec-shortcut--desktop:has(.detail-rec-link-card--has-bsp),
+  .detail-rec-shortcut--mobile:has(.detail-rec-link-card--has-bsp) {
+    padding-bottom: 18px;
   }
 
   .detail-rec-link-card--has-bsp .unit-best-pilot-btn-slot--rec {
     right: 6px;
-    bottom: 4px;
-    padding: 2px;
-    transform: none;
+    bottom: 0;
+    padding: 0;
+    transform: translateY(50%);
   }
 
   .detail-rec-link-card--has-bsp .unit-best-pilot-btn {
