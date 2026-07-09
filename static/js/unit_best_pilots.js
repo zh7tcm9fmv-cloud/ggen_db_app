@@ -20,6 +20,9 @@
     crit: '/static/images/UI/UI_Battle_MapUI_Label_Critical.webp',
     normal: '/static/images/UI/UI_Tention_Up_02.webp'
   };
+  // Always show Critical label icon on the metric dropdown toggle.
+  var METRIC_TOGGLE_ICON = '/static/images/UI/UI_Battle_MapUI_Label_Critical.webp';
+  var ATTACK_ROLE_ID = '1';
 
   var state = {
     open: false,
@@ -86,13 +89,22 @@
     if (global.document._unitBestPilotBound) return;
     global.document._unitBestPilotBound = 1;
     global.document.addEventListener('click', function (ev) {
-      var metricBtn = ev.target.closest('[data-ubp-metric], #ubpMetricCycleBtn');
-      if (metricBtn) {
+      var metricItem = ev.target.closest('#ubpMetricDdMenu [data-ubp-metric]');
+      if (metricItem) {
         ev.preventDefault();
         ev.stopPropagation();
-        cycleRankMode();
+        setRankMode(metricItem.getAttribute('data-ubp-metric'));
         return;
       }
+      var metricToggle = ev.target.closest('#ubpMetricDdToggle, #ubpMetricCycleBtn');
+      if (metricToggle) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        toggleMetricDropdown();
+        return;
+      }
+      // Click outside closes metric dropdown.
+      if (!ev.target.closest('#ubpMetricDropdown')) closeMetricDropdown();
       var filterBtn = ev.target.closest('[data-ubp-filter]');
       if (filterBtn) {
         ev.preventDefault();
@@ -143,6 +155,24 @@
       .catch(function () { return ''; });
   }
 
+  function unitRoleId() {
+    var d = global.S && global.S.currentDetailData;
+    if (!d) return null;
+    if (d.role_id != null && d.role_id !== '') return String(d.role_id);
+    return null;
+  }
+
+  function isAttackUnit() {
+    return unitRoleId() === ATTACK_ROLE_ID;
+  }
+
+  function shinnFilterRelevant() {
+    // Shinn is Attack-role; same-role on Defense/Support already excludes him.
+    if (state.excludeUr) return false;
+    if (state.sameRole && !isAttackUnit()) return false;
+    return true;
+  }
+
   function syncFilterButtons() {
     var urBtn = global.document.getElementById('ubpExcludeUrBtn');
     var shBtn = global.document.getElementById('ubpExcludeShinnBtn');
@@ -156,10 +186,12 @@
         : (t('msy_exclude_ur') || 'Exclude UR pilots');
     }
     if (shBtn) {
-      var hideShinn = !!state.excludeUr;
-      shBtn.style.display = hideShinn ? 'none' : '';
-      shBtn.setAttribute('aria-hidden', hideShinn ? 'true' : 'false');
-      if (!hideShinn) {
+      // Defense/Support + same-role already excludes Attack-role Shinn.
+      if (state.sameRole && !isAttackUnit()) state.excludeShinn = false;
+      var showShinn = shinnFilterRelevant();
+      shBtn.style.display = showShinn ? '' : 'none';
+      shBtn.setAttribute('aria-hidden', showShinn ? 'false' : 'true');
+      if (showShinn) {
         shBtn.classList.toggle('is-active', !!state.excludeShinn);
         shBtn.classList.toggle('active', !!state.excludeShinn);
         shBtn.setAttribute('aria-pressed', state.excludeShinn ? 'true' : 'false');
@@ -180,48 +212,59 @@
     syncMetricButtons();
   }
 
-  function syncMetricButtons() {
-    var mode = state.rankMode || 'super_crit';
-    var btn = global.document.getElementById('ubpMetricCycleBtn');
-    if (!btn) {
-      global.document.querySelectorAll('[data-ubp-metric]').forEach(function (el) {
-        var m = el.getAttribute('data-ubp-metric');
-        var on = m === mode;
-        el.classList.toggle('is-active', on);
-        el.classList.toggle('active', on);
-        el.setAttribute('aria-pressed', on ? 'true' : 'false');
-      });
-      return;
-    }
+  function metricLabel(mode) {
     var labelKey = RANK_MODE_LABEL[mode] || 'msy_metric_super_crit';
-    var label = t(labelKey) || ({
+    return t(labelKey) || ({
       super_crit: 'Super Crit',
       crit: 'Crit',
       normal: 'Normal'
     })[mode] || mode;
-    var icon = RANK_MODE_ICON[mode] || RANK_MODE_ICON.super_crit;
-    btn.setAttribute('data-ubp-metric', mode);
-    btn.setAttribute('aria-label', label);
-    btn.title = label + ' — ' + (t('unit_best_pilot_metric_cycle') || 'Click to cycle damage metric');
-    var img = btn.querySelector('.ubp-metric-icon');
-    if (img) {
-      var url = typeof global.imgUrl === 'function' ? global.imgUrl(icon) : icon;
-      if (img.getAttribute('src') !== url) img.setAttribute('src', url);
-    }
-    var lab = btn.querySelector('.ubp-metric-label');
-    if (lab) lab.textContent = label;
-    btn.classList.add('is-active');
-    btn.classList.add('active');
   }
 
-  function cycleRankMode() {
-    var idx = RANK_MODES.indexOf(state.rankMode || 'super_crit');
-    if (idx < 0) idx = 0;
-    setRankMode(RANK_MODES[(idx + 1) % RANK_MODES.length]);
+  function closeMetricDropdown() {
+    var dd = global.document.getElementById('ubpMetricDropdown');
+    if (dd) dd.classList.remove('is-open');
+    var btn = global.document.getElementById('ubpMetricDdToggle');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  }
+
+  function toggleMetricDropdown() {
+    var dd = global.document.getElementById('ubpMetricDropdown');
+    if (!dd) return;
+    var open = !dd.classList.contains('is-open');
+    dd.classList.toggle('is-open', open);
+    var btn = global.document.getElementById('ubpMetricDdToggle');
+    if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
+  function syncMetricButtons() {
+    var mode = state.rankMode || 'super_crit';
+    var label = metricLabel(mode);
+    var btn = global.document.getElementById('ubpMetricDdToggle');
+    if (btn) {
+      btn.setAttribute('data-ubp-metric', mode);
+      btn.setAttribute('aria-label', label);
+      btn.title = label;
+      var img = btn.querySelector('.ubp-metric-icon');
+      if (img) {
+        var url = typeof global.imgUrl === 'function' ? global.imgUrl(METRIC_TOGGLE_ICON) : METRIC_TOGGLE_ICON;
+        if (img.getAttribute('src') !== url) img.setAttribute('src', url);
+      }
+      var lab = btn.querySelector('.ubp-metric-label');
+      if (lab) lab.textContent = label;
+      btn.classList.add('is-active');
+      btn.classList.add('active');
+    }
+    global.document.querySelectorAll('#ubpMetricDdMenu [data-ubp-metric]').forEach(function (el) {
+      var on = el.getAttribute('data-ubp-metric') === mode;
+      el.classList.toggle('is-active', on);
+      el.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
   }
 
   function setRankMode(mode) {
     if (RANK_MODES.indexOf(mode) < 0) return;
+    closeMetricDropdown();
     if (state.rankMode === mode) return;
     state.rankMode = mode;
     syncMetricButtons();
@@ -233,10 +276,12 @@
       state.excludeUr = !state.excludeUr;
       if (state.excludeUr) state.excludeShinn = true;
     } else if (kind === 'no_shinn') {
-      if (state.excludeUr) return;
+      if (!shinnFilterRelevant()) return;
       state.excludeShinn = !state.excludeShinn;
     } else if (kind === 'same_role') {
       state.sameRole = !state.sameRole;
+      // Defense/Support same-role already excludes Attack-role Shinn.
+      if (state.sameRole && !isAttackUnit()) state.excludeShinn = false;
     } else {
       return;
     }
@@ -247,11 +292,7 @@
   function filterPilotsLocal(pilots, noUr, noShinn, sameRole) {
     if (!pilots || !pilots.length) return [];
     if (noUr) noShinn = true;
-    var unitRole = null;
-    if (sameRole) {
-      var d = global.S && global.S.currentDetailData;
-      unitRole = d && d.role_id != null ? String(d.role_id) : null;
-    }
+    var unitRole = sameRole ? unitRoleId() : null;
     if (!noUr && !noShinn && !sameRole) return pilots.slice();
     return pilots.filter(function (p) {
       var ch = (p && p.char) || {};
@@ -275,39 +316,60 @@
     var board = modeEntry(entry);
     if (!board) return { pilots: [], partial: false };
     var noUr = !!state.excludeUr;
-    var noShinn = !!state.excludeShinn || noUr;
+    // Same-role on non-Attack already excludes Shinn — don't apply No Shinn on top.
+    var noShinn = noUr || (!!state.excludeShinn && shinnFilterRelevant());
     var sameRole = !!state.sameRole;
     var rows = [];
     var partial = false;
     var mode = state.rankMode || 'super_crit';
 
-    // Prefer dedicated calculator boards (v16). Only fall back to filtering the
-    // main list when a dedicated board is missing — never invent damage.
-    if (sameRole && !noUr && !noShinn) {
+    function take(list, markPartial) {
+      rows = list || [];
+      partial = !!markPartial;
+    }
+
+    // Prefer dedicated calculator boards. Combined filters start from the richest
+    // matching board, then apply the remaining constraints (never invent damage).
+    if (sameRole && noUr) {
+      // Prefer same-role board (deeper store) then strip UR — fills Support/Defense lists.
       if (board.pilots_same_role && board.pilots_same_role.length) {
-        rows = board.pilots_same_role;
-        partial = !!board.same_role_partial && board.pilots_same_role.length < 10;
+        take(filterPilotsLocal(board.pilots_same_role, true, true, false), !!board.same_role_partial);
+      } else if (board.pilots_no_ur && board.pilots_no_ur.length) {
+        take(filterPilotsLocal(board.pilots_no_ur, false, false, true), !!board.no_ur_partial);
       } else {
-        rows = filterPilotsLocal(board.pilots || [], false, false, true);
-        partial = true;
+        take(filterPilotsLocal(board.pilots || [], true, true, true), true);
+      }
+      // If intersection is still thin, try the other dedicated board as a second pass.
+      if (rows.length < 10 && board.pilots_no_ur && board.pilots_no_ur.length) {
+        var alt = filterPilotsLocal(board.pilots_no_ur, false, false, true);
+        if (alt.length > rows.length) take(alt, !!board.no_ur_partial);
+      }
+    } else if (sameRole && noShinn) {
+      // Attack + same-role + No Shinn: filter Shinn out of the same-role board.
+      if (board.pilots_same_role && board.pilots_same_role.length) {
+        take(filterPilotsLocal(board.pilots_same_role, false, true, false), !!board.same_role_partial);
+      } else if (board.pilots_no_shinn && board.pilots_no_shinn.length) {
+        take(filterPilotsLocal(board.pilots_no_shinn, false, false, true), !!board.no_shinn_partial);
+      } else {
+        take(filterPilotsLocal(board.pilots || [], false, true, true), true);
+      }
+    } else if (sameRole) {
+      if (board.pilots_same_role && board.pilots_same_role.length) {
+        take(board.pilots_same_role, !!board.same_role_partial && board.pilots_same_role.length < 10);
+      } else {
+        take(filterPilotsLocal(board.pilots || [], false, false, true), true);
       }
     } else if (noUr) {
       if (board.pilots_no_ur && board.pilots_no_ur.length) {
-        rows = board.pilots_no_ur;
-        if (sameRole) rows = filterPilotsLocal(rows, false, false, true);
-        partial = (!!board.no_ur_partial && board.pilots_no_ur.length < 10) || rows.length < 10;
+        take(board.pilots_no_ur, !!board.no_ur_partial && board.pilots_no_ur.length < 10);
       } else {
-        rows = filterPilotsLocal(board.pilots || [], true, true, sameRole);
-        partial = true;
+        take(filterPilotsLocal(board.pilots || [], true, true, false), true);
       }
     } else if (noShinn) {
       if (board.pilots_no_shinn && board.pilots_no_shinn.length) {
-        rows = board.pilots_no_shinn;
-        if (sameRole) rows = filterPilotsLocal(rows, false, false, true);
-        partial = (!!board.no_shinn_partial && board.pilots_no_shinn.length < 10) || rows.length < 10;
+        take(board.pilots_no_shinn, !!board.no_shinn_partial && board.pilots_no_shinn.length < 10);
       } else {
-        rows = filterPilotsLocal(board.pilots || [], false, true, sameRole);
-        partial = true;
+        take(filterPilotsLocal(board.pilots || [], false, true, false), true);
       }
     } else {
       rows = board.pilots || [];
@@ -470,7 +532,38 @@
       ? global.renderTagModalThumb(row, 'char')
       : (typeof global.renderListThumb === 'function'
         ? global.renderListThumb(row, 'char', 64, { pickerThumb: true }) : '');
-    return '<div class="tag-unit-icon-wrapper">' + inner + '</div>';
+    var rarity = String(c.rarity || '');
+    var spBadge = '';
+    // Non-UR pilots are ranked on SP stats — badge so users know.
+    if (rarity && rarity !== 'UR') {
+      var spIcon = imgUrl('/static/images/UI/UI_Common_Icon_Sp.webp');
+      spBadge = '<span class="msy-pilot-sp-badge" title="'
+        + escAttr(t('unit_best_pilot_sp_stats') || 'Ranked with SP stats')
+        + '" aria-label="'
+        + escAttr(t('unit_best_pilot_sp_stats') || 'Ranked with SP stats')
+        + '"><img src="' + escAttr(spIcon) + '" alt="SP" loading="lazy" decoding="async" onerror="this.parentNode.style.display=\'none\'"></span>';
+    }
+    return '<div class="tag-unit-icon-wrapper msy-pilot-thumb-wrap">' + inner + spBadge + '</div>';
+  }
+
+  function pilotActiveSkillIconsHtml(pilot) {
+    var skills = (pilot && pilot.active_skills) || [];
+    var active = skills.filter(function (sk) { return sk && sk.active; });
+    if (!active.length) return '';
+    var html = '<div class="msy-pilot-skills msy-pilot-skills--dmg" title="'
+      + escAttr(t('unit_best_pilot_active_skills') || 'Active skills used in ranking')
+      + '">';
+    active.forEach(function (sk) {
+      html += '<span class="msy-pilot-skill msy-pilot-skill--active" title="' + escAttr(sk.name || '') + '">';
+      if (sk.icon) {
+        html += '<img class="msy-pilot-skill-ic" src="' + escAttr(imgUrl(sk.icon)) + '" alt="" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">';
+      } else {
+        html += '<span class="msy-pilot-skill-fallback">' + esc((sk.name || '?').charAt(0)) + '</span>';
+      }
+      html += '</span>';
+    });
+    html += '</div>';
+    return html;
   }
 
   function roleIconHtml(c) {
@@ -564,13 +657,13 @@
     var sub = '';
     var critPct = pilot.crit_rate | 0;
     var isGc = !!(pilot.guaranteed_crit || critPct >= 100);
+    var crTpl = t('msy_crit_rate') || '{n}% crit';
     if (isGc) {
       sub += '<div class="msy-pilot-sub msy-pilot-sub--gc">' + esc(t('msy_guaranteed_crit') || 'Guaranteed Crit') + '</div>';
-      // Still show 100% crit so GC does not hide the numeric rate.
-      sub += '<div class="msy-pilot-sub">' + esc((t('msy_crit_rate') || '{n}% crit').replace('{n}', '100')) + '</div>';
-    } else if (critPct > 0) {
-      var cr = t('msy_crit_rate') || '{n}% crit';
-      sub += '<div class="msy-pilot-sub">' + esc(cr.replace('{n}', String(critPct))) + '</div>';
+      sub += '<div class="msy-pilot-sub">' + esc(crTpl.replace('{n}', '100')) + '</div>';
+    } else {
+      // Always show crit % (including 0) so non-Shinn rates are visible.
+      sub += '<div class="msy-pilot-sub">' + esc(crTpl.replace('{n}', String(critPct))) + '</div>';
     }
     return '<div class="msy-pilot-card">'
       + '<span class="msy-pilot-rank">' + esc(String(pilot.rank || '')) + '</span>'
@@ -584,7 +677,9 @@
       + pilotAffinityHtml(pilot)
       + '</div></button>'
       + '<div class="msy-pilot-dmg-col"><div class="msy-pilot-dmg">' + fmtN(dmg) + '</div>'
-      + pilotFormulaStatHtml(pilot) + '</div></div>';
+      + pilotFormulaStatHtml(pilot)
+      + pilotActiveSkillIconsHtml(pilot)
+      + '</div></div>';
   }
 
   function renderPilotGrid(pilots, unitId) {
@@ -836,7 +931,12 @@
     state.loading = false;
     syncFilterButtons();
     renderActivePanel();
-    if (state.open) global.setTimeout(scrollPanelIntoView, 30);
+    if (state.open) {
+      global.requestAnimationFrame(function () {
+        global.setTimeout(scrollPanelIntoView, 40);
+        global.setTimeout(scrollPanelIntoView, 280);
+      });
+    }
     // Affinity details are secondary — never block the top-10 paint.
     var lang = (global.S && global.S.lang) || 'EN';
     void enrichAffinityMatches(entry, unitId, lang).then(function () {
@@ -906,9 +1006,26 @@
 
   function scrollPanelIntoView() {
     var wrap = global.document.getElementById('unitBestPilotPanelWrap');
-    if (!wrap) return;
+    if (!wrap || !wrap.classList.contains('is-open')) return;
+    // Prefer scrolling the modal content scroller (desktop + mobile), not window.
+    var scroller = wrap.closest('.modal-content')
+      || global.document.getElementById('modalContent')
+      || global.document.getElementById('detailModal');
     try {
-      wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+      if (scroller && typeof scroller.scrollTop === 'number') {
+        var wrapRect = wrap.getBoundingClientRect();
+        var scrollerRect = scroller.getBoundingClientRect();
+        var nextTop = scroller.scrollTop + (wrapRect.top - scrollerRect.top) - 12;
+        if (typeof scroller.scrollTo === 'function') {
+          scroller.scrollTo({ top: Math.max(0, nextTop), behavior: 'smooth' });
+        } else {
+          scroller.scrollTop = Math.max(0, nextTop);
+        }
+        return;
+      }
+    } catch (_) {}
+    try {
+      wrap.scrollIntoView({ behavior: 'smooth', block: 'start', inline: 'nearest' });
     } catch (_) {
       try { wrap.scrollIntoView(true); } catch (__) {}
     }
@@ -922,8 +1039,12 @@
       wrap.setAttribute('aria-hidden', 'false');
     }
     syncTriggerActive();
-    // Jump to the Top 10 section after opening.
-    global.setTimeout(scrollPanelIntoView, 0);
+    syncFilterButtons();
+    // Jump after layout expands (max-height transition / content paint).
+    global.requestAnimationFrame(function () {
+      global.setTimeout(scrollPanelIntoView, 40);
+      global.setTimeout(scrollPanelIntoView, 280);
+    });
     var d = global.S && global.S.currentDetailData;
     if (!d) return;
     if (state.unitId !== String(d.id)) {
@@ -932,9 +1053,11 @@
     }
     if (state.cache[state.unitId]) {
       state.loaded = true;
-      syncFilterButtons();
       renderActivePanel();
-      global.setTimeout(scrollPanelIntoView, 30);
+      global.requestAnimationFrame(function () {
+        global.setTimeout(scrollPanelIntoView, 40);
+        global.setTimeout(scrollPanelIntoView, 280);
+      });
       // Re-fetch affinity details if a prior load skipped them.
       var cached = state.cache[state.unitId];
       var needsAff = (cached.pilots || []).some(function (p) {
@@ -953,6 +1076,7 @@
 
   function closePanel() {
     state.open = false;
+    closeMetricDropdown();
     var wrap = global.document.getElementById('unitBestPilotPanelWrap');
     if (wrap) {
       wrap.classList.remove('is-open');

@@ -157,12 +157,13 @@
 }
 
 .unit-best-pilot-panel-wrap.is-open {
-  max-height: min(92vh, 1400px);
+  /* Expand in-flow with the unit detail — no nested scrollbar (modal scrolls). */
+  max-height: none;
   opacity: 1;
   margin: 22px 20px 12px;
   border-color: rgba(0, 212, 255, 0.28);
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
-  overflow-y: auto;
+  overflow: visible;
 }
 
 .unit-best-pilot-panel-head {
@@ -204,6 +205,7 @@
   gap: 4px;
   flex-shrink: 0;
   margin-right: 4px;
+  position: relative;
 }
 
 .unit-best-pilot-metric-btn {
@@ -243,19 +245,87 @@
   object-fit: contain;
 }
 
-.unit-best-pilot-metric-btn[data-ubp-metric="crit"] .ubp-metric-icon {
+.unit-best-pilot-metric-btn[data-ubp-metric="crit"] .ubp-metric-icon,
+.unit-best-pilot-metric-dd-toggle .ubp-metric-icon {
   width: 18px;
   height: 14px;
   object-fit: contain;
 }
 
-.unit-best-pilot-metric-cycle {
+.unit-best-pilot-metric-dd {
+  position: relative;
+  display: inline-flex;
+}
+
+.unit-best-pilot-metric-dd-toggle {
   min-width: 7.5rem;
 }
 
-.unit-best-pilot-metric-cycle .ubp-metric-label {
+.unit-best-pilot-metric-dd-toggle .ubp-metric-label {
   min-width: 4.5rem;
   text-align: left;
+}
+
+.unit-best-pilot-metric-dd-caret {
+  font-size: 9px;
+  opacity: 0.75;
+  margin-left: 2px;
+}
+
+.unit-best-pilot-metric-dd-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 40;
+  min-width: 100%;
+  padding: 4px;
+  border-radius: 8px;
+  border: 1px solid rgba(125, 211, 252, 0.35);
+  background: rgba(8, 19, 36, 0.98);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.unit-best-pilot-metric-dd.is-open .unit-best-pilot-metric-dd-menu {
+  display: block;
+}
+
+.unit-best-pilot-metric-dd-item {
+  appearance: none;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: 6px;
+  padding: 6px 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: 700;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.unit-best-pilot-metric-dd-item:hover {
+  background: rgba(14, 116, 144, 0.28);
+  color: var(--text-primary);
+}
+
+.unit-best-pilot-metric-dd-item.is-active {
+  color: #e0f2fe;
+  background: rgba(14, 116, 144, 0.35);
+}
+
+.unit-best-pilot-metric-dd-item .ubp-metric-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.unit-best-pilot-metric-dd-item[data-ubp-metric="crit"] .ubp-metric-icon {
+  width: 18px;
+  height: 14px;
 }
 
 .unit-best-pilot-metric-btn .ubp-metric-label {
@@ -440,14 +510,72 @@
 }
 
 .unit-best-pilot-panel .msy-pilot-thumb .tag-unit-icon-wrapper {
-  overflow: hidden;
+  overflow: visible;
   flex-shrink: 0;
+  position: relative;
 }
 
 .unit-best-pilot-panel .msy-pilot-thumb .tag-unit-icon-wrapper .list-thumb-composite {
   width: 50px !important;
   height: 47px !important;
   margin: 0;
+}
+
+.unit-best-pilot-panel .msy-pilot-sp-badge {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  z-index: 2;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  background: rgba(8, 19, 36, 0.9);
+  border: 1px solid rgba(125, 211, 252, 0.5);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.unit-best-pilot-panel .msy-pilot-sp-badge img {
+  width: 12px;
+  height: 12px;
+  object-fit: contain;
+  display: block;
+}
+
+.unit-best-pilot-panel .msy-pilot-skills--dmg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 4px;
+  justify-content: flex-end;
+}
+
+.unit-best-pilot-panel .msy-pilot-skills--dmg .msy-pilot-skill {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 212, 255, 0.75);
+  background: rgba(8, 12, 24, 0.65);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 1px rgba(0, 212, 255, 0.2);
+}
+
+.unit-best-pilot-panel .msy-pilot-skills--dmg .msy-pilot-skill-ic {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  display: block;
+}
+
+.unit-best-pilot-panel .msy-pilot-skills--dmg .msy-pilot-skill-fallback {
+  font-size: 9px;
+  font-weight: 800;
+  color: var(--accent-cyan);
 }
 
 .unit-best-pilot-panel .msy-pilot-name-row {

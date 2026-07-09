@@ -3360,7 +3360,7 @@ def _unit_best_pilot_api_cache_key(uid, lc, kwargs):
         max(1, min(4, int(kwargs.get('def_tier') or 3))),
         kwargs.get('rank_mode', 'super_crit') or 'super_crit',
         # Bump when published catalog preference / variant boards change.
-        'bsp_v16_variants',
+        'bsp_v16_variants2',
     )
 
 
@@ -3647,14 +3647,15 @@ def _bsp_filter_pilots_client_side(pilots, *, no_ur=False, no_shinn=False, same_
 
 def _bsp_dc_variant_pilots(block, rank_mode, *, fallback_pilots, no_ur=False, no_shinn=False,
                            same_role=False, unit_id=None):
-    """Prefer real /cal variant top-10s; never serve python-lite fakes.
+    """Prefer real /cal variant boards; never serve python-lite fakes.
 
-    When the dedicated variant board is missing, filter the deeper main store
-    (v16 keeps top 20) so No Shinn / No UR can still fill 10 seats.
+    Keep store depth (v16 top-20) so client combined filters (Same Role + No UR)
+    can still fill a full UI top-10 after intersecting constraints.
     """
+    store_n = int(_BSP_STORE_TOP_PILOTS)
     rows = _bsp_pilots_from_rankings_block(block, rank_mode)
     if rows and _bsp_pilots_look_like_dc(rows):
-        return rows[:_BSP_UI_TOP_PILOTS], False
+        return rows[:store_n], len(rows) < _BSP_UI_TOP_PILOTS
     filtered = _bsp_filter_pilots_client_side(
         fallback_pilots,
         no_ur=no_ur,
@@ -3664,7 +3665,7 @@ def _bsp_dc_variant_pilots(block, rank_mode, *, fallback_pilots, no_ur=False, no
     )
     # Partial only when we could not fill a full UI top-10 from store depth.
     partial = len(filtered) < _BSP_UI_TOP_PILOTS
-    return filtered[:_BSP_UI_TOP_PILOTS], partial
+    return filtered[:store_n], partial
 
 
 _BSP_MODE_DMG_FIELD = {
@@ -3697,8 +3698,9 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
                          pilots_no_ur=None, pilots_no_shinn=None, pilots_same_role=None,
                          no_ur_partial=False, no_shinn_partial=False, same_role_partial=False):
     mode = rank_mode or 'super_crit'
+    store_n = int(_BSP_STORE_TOP_PILOTS)
 
-    def _rank(rows):
+    def _rank(rows, limit=_BSP_UI_TOP_PILOTS):
         rows = list(rows or [])
         rows.sort(
             key=lambda p: (
@@ -3706,31 +3708,41 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
                 str((p.get('char') or {}).get('id') or ''),
             ),
         )
-        for i, pilot in enumerate(rows):
+        out = rows[: max(1, int(limit or _BSP_UI_TOP_PILOTS))]
+        for i, pilot in enumerate(out):
             pilot['rank'] = i + 1
-        return rows[:_BSP_UI_TOP_PILOTS]
+        return out
 
-    # Main UI list is top-10; keep deeper store only for variant derivation.
+    # Main UI list is top-10; variant boards keep store depth for combined filters.
     store_pilots = list(pilots or [])
-    pilots = _rank(store_pilots)
-    no_ur = _rank(pilots_no_ur) if pilots_no_ur is not None else _rank(
-        _bsp_filter_pilots_client_side(store_pilots, no_ur=True, no_shinn=True)
+    pilots = _rank(store_pilots, _BSP_UI_TOP_PILOTS)
+    no_ur = _rank(
+        pilots_no_ur if pilots_no_ur is not None else _bsp_filter_pilots_client_side(
+            store_pilots, no_ur=True, no_shinn=True
+        ),
+        store_n,
     )
-    no_shinn = _rank(pilots_no_shinn) if pilots_no_shinn is not None else _rank(
-        _bsp_filter_pilots_client_side(store_pilots, no_shinn=True)
+    no_shinn = _rank(
+        pilots_no_shinn if pilots_no_shinn is not None else _bsp_filter_pilots_client_side(
+            store_pilots, no_shinn=True
+        ),
+        store_n,
     )
-    same_role = _rank(pilots_same_role) if pilots_same_role is not None else _rank(
-        _bsp_filter_pilots_client_side(store_pilots, same_role=True, unit_id=uid)
+    same_role = _rank(
+        pilots_same_role if pilots_same_role is not None else _bsp_filter_pilots_client_side(
+            store_pilots, same_role=True, unit_id=uid
+        ),
+        store_n,
     )
     _bsp_patch_guaranteed_crit_flags(pilots, lc)
     _bsp_patch_guaranteed_crit_flags(no_ur, lc)
     _bsp_patch_guaranteed_crit_flags(no_shinn, lc)
     _bsp_patch_guaranteed_crit_flags(same_role, lc)
     # Re-rank after sanitize (0% crit peak clamp can change order).
-    pilots = _rank(pilots)
-    no_ur = _rank(no_ur)
-    no_shinn = _rank(no_shinn)
-    same_role = _rank(same_role)
+    pilots = _rank(pilots, _BSP_UI_TOP_PILOTS)
+    no_ur = _rank(no_ur, store_n)
+    no_shinn = _rank(no_shinn, store_n)
+    same_role = _rank(same_role, store_n)
     top_dmg = _bsp_pilot_sort_damage(pilots[0], mode) if pilots else 0
     return {
         'eligible': True,
