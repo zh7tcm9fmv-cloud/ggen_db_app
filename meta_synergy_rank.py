@@ -1586,8 +1586,7 @@ _BSP_INCREMENTAL_TOP_N = max(50, min(500, int(os.environ.get('BSP_INCREMENTAL_TO
 _BSP_PUBLISHED_CACHE_TAG = '_v16_bsp_dc'
 # Serve older full-catalog DC caches while a newer rebuild is still incomplete.
 _BSP_PUBLISHED_FALLBACK_TAGS = ('_v15_bsp_dc',)
-_BSP_PUBLISHED_MEMORY = None
-_BSP_PUBLISHED_MEMORY_KEY = None
+_BSP_PUBLISHED_MEMORY = {}  # cache_key -> payload (multi-key; do not clobber v16 with v15)
 _BSP_PUBLISHED_MEMORY_LOCK = threading.Lock()
 _BSP_PUBLISHED_INDEX = {}  # cache_key -> {uid: group}
 SHINN_EX_CHAR_ID = '1330000103'
@@ -3360,6 +3359,8 @@ def _unit_best_pilot_api_cache_key(uid, lc, kwargs):
         int(kwargs.get('lb_tier') or 3),
         max(1, min(4, int(kwargs.get('def_tier') or 3))),
         kwargs.get('rank_mode', 'super_crit') or 'super_crit',
+        # Bump when published catalog preference / variant boards change.
+        'bsp_v16_variants',
     )
 
 
@@ -3398,15 +3399,17 @@ def _bsp_index_groups(cache_key, groups):
 
 def _load_bsp_published_cache(cache_key, *, use_memory=True, min_rules=None):
     """Published BSP rankings built from live /cal (reject legacy python-lite caches)."""
-    global _BSP_PUBLISHED_MEMORY, _BSP_PUBLISHED_MEMORY_KEY
+    global _BSP_PUBLISHED_MEMORY
     if min_rules is None:
         # Serve any real /cal catalog (v15 rules=2+) while a newer rebuild is incomplete.
         # Never serve python-lite (those lack build_engine=calculateDamage).
         min_rules = 2
+    ck_t = tuple(cache_key)
     if use_memory:
         with _BSP_PUBLISHED_MEMORY_LOCK:
-            if _BSP_PUBLISHED_MEMORY is not None and _BSP_PUBLISHED_MEMORY_KEY == cache_key:
-                return _BSP_PUBLISHED_MEMORY
+            hit = _BSP_PUBLISHED_MEMORY.get(ck_t)
+            if hit is not None:
+                return hit
     for label, path in (
         ('persistent', _msy_disk_path(cache_key)),
         ('published', _msy_published_path(cache_key)),
@@ -3440,8 +3443,10 @@ def _load_bsp_published_cache(cache_key, *, use_memory=True, min_rules=None):
             _bsp_index_groups(out['cache_key'], groups)
             if use_memory:
                 with _BSP_PUBLISHED_MEMORY_LOCK:
-                    _BSP_PUBLISHED_MEMORY = out
-                    _BSP_PUBLISHED_MEMORY_KEY = cache_key
+                    _BSP_PUBLISHED_MEMORY[ck_t] = out
+                    # Also index under the file's own key so lookups stay consistent.
+                    if out['cache_key'] != ck_t:
+                        _BSP_PUBLISHED_MEMORY[out['cache_key']] = out
             return out
         except Exception as e:
             print(f'BSP published cache load failed ({path}): {e}')
@@ -3497,13 +3502,35 @@ def save_bsp_unit_warm_cache(uid, lc, kwargs, pilots):
     return path
 
 
+def _bsp_group_variant_quality(g):
+    """Higher = better for No UR / No Shinn / Same Role UI (prefer v16-style catalogs)."""
+    if not g:
+        return -1
+    score = 0
+    main = _bsp_pilots_from_rankings_block(g.get('rankings'), 'super_crit')
+    if not main and g.get('pilots'):
+        main = list(g.get('pilots') or [])
+    score += min(len(main), 40)
+    no_ur = _bsp_pilots_from_rankings_block(g.get('rankings_no_ur'), 'super_crit')
+    if no_ur and _bsp_pilots_look_like_dc(no_ur):
+        score += 100 + min(len(no_ur), 20)
+    no_shinn = _bsp_pilots_from_rankings_block(g.get('rankings_no_shinn'), 'super_crit')
+    if no_shinn and _bsp_pilots_look_like_dc(no_shinn):
+        score += 40 + min(len(no_shinn), 20)
+    same_role = _bsp_pilots_from_rankings_block(g.get('rankings_same_role'), 'super_crit')
+    if same_role and _bsp_pilots_look_like_dc(same_role):
+        score += 100 + min(len(same_role), 20)
+    return score
+
+
 def _lookup_bsp_published_group(uid, lc, kwargs):
-    """O(1) unit lookup from published DC cache (prefer fullest catalog)."""
+    """O(1) unit lookup — prefer v16 (variants + depth) over incomplete v15 fallbacks."""
     uid = _app().normalize_id(uid)
-    # Prefer complete v15 while v16 is still a partial rebuild, then v16 when full.
-    keys = list(_bsp_fallback_cache_keys(lc, kwargs)) + [_bsp_published_cache_key(lc, kwargs)]
+    primary = _bsp_published_cache_key(lc, kwargs)
+    # Current catalog first, then older full-catalog fallbacks.
+    keys = [primary] + list(_bsp_fallback_cache_keys(lc, kwargs))
     best = None
-    best_n = -1
+    best_score = -1
     for cache_key in keys:
         disk = _load_bsp_published_cache(cache_key, use_memory=True)
         if not disk:
@@ -3515,12 +3542,18 @@ def _lookup_bsp_published_group(uid, lc, kwargs):
         g = idx.get(uid)
         if not g:
             continue
-        n = len(disk.get('groups') or [])
-        if n > best_n:
+        # Prefer richer variant boards; break ties with catalog size + rules version.
+        score = (
+            _bsp_group_variant_quality(g) * 1000
+            + min(len(disk.get('groups') or []), 2000)
+            + int(disk.get('bsp_rules_version') or 0) * 10
+        )
+        # Strong bonus for the current published tag when it has the unit.
+        if tuple(cache_key) == tuple(primary) or (ck and ck[0] == primary[0]):
+            score += 500000
+        if score > best_score:
             best = g
-            best_n = n
-            if n >= 1000:
-                return g
+            best_score = score
     return best
 
 
@@ -3614,7 +3647,11 @@ def _bsp_filter_pilots_client_side(pilots, *, no_ur=False, no_shinn=False, same_
 
 def _bsp_dc_variant_pilots(block, rank_mode, *, fallback_pilots, no_ur=False, no_shinn=False,
                            same_role=False, unit_id=None):
-    """Prefer real /cal variant top-10s; never serve python-lite fakes."""
+    """Prefer real /cal variant top-10s; never serve python-lite fakes.
+
+    When the dedicated variant board is missing, filter the deeper main store
+    (v16 keeps top 20) so No Shinn / No UR can still fill 10 seats.
+    """
     rows = _bsp_pilots_from_rankings_block(block, rank_mode)
     if rows and _bsp_pilots_look_like_dc(rows):
         return rows[:_BSP_UI_TOP_PILOTS], False
@@ -3625,7 +3662,9 @@ def _bsp_dc_variant_pilots(block, rank_mode, *, fallback_pilots, no_ur=False, no
         same_role=same_role,
         unit_id=unit_id,
     )
-    return filtered[:_BSP_UI_TOP_PILOTS], True
+    # Partial only when we could not fill a full UI top-10 from store depth.
+    partial = len(filtered) < _BSP_UI_TOP_PILOTS
+    return filtered[:_BSP_UI_TOP_PILOTS], partial
 
 
 _BSP_MODE_DMG_FIELD = {
@@ -3750,21 +3789,23 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
         return cached
 
     def _payload_for_mode(g_row, mode):
+        # Keep full store depth (v16 top-20) for variant fallbacks / No Shinn promote.
+        store_pilots = _bsp_pilots_from_rankings_block(g_row.get('rankings'), mode)
+        if not store_pilots:
+            store_pilots = list(g_row.get('pilots') or [])
         row = _normalize_group_for_mode(g_row, mode) or g_row
-        pilots = list(row.get('pilots') or [])
-        if not pilots:
-            pilots = _bsp_pilots_from_rankings_block(row.get('rankings'), mode)
+        pilots = list(row.get('pilots') or []) or list(store_pilots)
         pilots_no_ur, no_ur_partial = _bsp_dc_variant_pilots(
-            row.get('rankings_no_ur'), mode,
-            fallback_pilots=pilots, no_ur=True, no_shinn=True,
+            g_row.get('rankings_no_ur') or row.get('rankings_no_ur'), mode,
+            fallback_pilots=store_pilots or pilots, no_ur=True, no_shinn=True,
         )
         pilots_no_shinn, no_shinn_partial = _bsp_dc_variant_pilots(
-            row.get('rankings_no_shinn'), mode,
-            fallback_pilots=pilots, no_shinn=True,
+            g_row.get('rankings_no_shinn') or row.get('rankings_no_shinn'), mode,
+            fallback_pilots=store_pilots or pilots, no_shinn=True,
         )
         pilots_same_role, same_role_partial = _bsp_dc_variant_pilots(
-            row.get('rankings_same_role'), mode,
-            fallback_pilots=pilots, same_role=True, unit_id=uid,
+            g_row.get('rankings_same_role') or row.get('rankings_same_role'), mode,
+            fallback_pilots=store_pilots or pilots, same_role=True, unit_id=uid,
         )
         return _bsp_pilots_response(
             uid, pilots, source='published_dc', def_tier=def_tier,

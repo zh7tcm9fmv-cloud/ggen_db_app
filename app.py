@@ -9752,11 +9752,14 @@ try:
     import meta_synergy_rank as _msr_boot
     for _lc_boot in ('EN',):
         _ck_boot = _msr_boot._bsp_published_cache_key(_lc_boot, {'lb_tier': 3, 'top_pilots': 10})
+        _loaded_tags = []
         for _fk in [_ck_boot] + list(_msr_boot._bsp_fallback_cache_keys(_lc_boot, {'lb_tier': 3})):
             _disk = _msr_boot._load_bsp_published_cache(_fk, use_memory=True)
             if _disk and len(_disk.get('groups') or []) >= 1000:
-                print(f'BSP published cache preloaded: {len(_disk["groups"])} units ({_fk[0]})')
-                break
+                _tag = (_fk[0] if _fk else '?')
+                if _tag not in _loaded_tags:
+                    _loaded_tags.append(_tag)
+                    print(f'BSP published cache preloaded: {len(_disk["groups"])} units ({_tag})')
 except Exception as _bsp_boot_e:
     print(f'BSP published cache preload skipped: {_bsp_boot_e}')
 

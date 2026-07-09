@@ -249,6 +249,15 @@
   object-fit: contain;
 }
 
+.unit-best-pilot-metric-cycle {
+  min-width: 7.5rem;
+}
+
+.unit-best-pilot-metric-cycle .ubp-metric-label {
+  min-width: 4.5rem;
+  text-align: left;
+}
+
 .unit-best-pilot-metric-btn .ubp-metric-label {
   font-size: 10px;
   font-weight: 800;
@@ -697,13 +706,13 @@
   }
 
   .unit-best-pilot-metrics {
-    width: 100%;
+    width: auto;
     order: 3;
     margin: 2px 0 0;
   }
 
   .unit-best-pilot-metric-btn {
-    flex: 1 1 auto;
+    flex: 0 0 auto;
     min-width: 0;
     padding: 4px 6px;
   }

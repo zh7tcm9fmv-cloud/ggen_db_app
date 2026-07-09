@@ -10,6 +10,16 @@
     crit: 'crit_dmg',
     normal: 'normal_dmg'
   };
+  var RANK_MODE_LABEL = {
+    super_crit: 'msy_metric_super_crit',
+    crit: 'msy_metric_crit',
+    normal: 'msy_metric_normal'
+  };
+  var RANK_MODE_ICON = {
+    super_crit: '/static/images/UI/UI_Tention_Up_03.webp',
+    crit: '/static/images/UI/UI_Battle_MapUI_Label_Critical.webp',
+    normal: '/static/images/UI/UI_Tention_Up_02.webp'
+  };
 
   var state = {
     open: false,
@@ -76,11 +86,11 @@
     if (global.document._unitBestPilotBound) return;
     global.document._unitBestPilotBound = 1;
     global.document.addEventListener('click', function (ev) {
-      var metricBtn = ev.target.closest('[data-ubp-metric]');
+      var metricBtn = ev.target.closest('[data-ubp-metric], #ubpMetricCycleBtn');
       if (metricBtn) {
         ev.preventDefault();
         ev.stopPropagation();
-        setRankMode(metricBtn.getAttribute('data-ubp-metric'));
+        cycleRankMode();
         return;
       }
       var filterBtn = ev.target.closest('[data-ubp-filter]');
@@ -172,13 +182,42 @@
 
   function syncMetricButtons() {
     var mode = state.rankMode || 'super_crit';
-    global.document.querySelectorAll('[data-ubp-metric]').forEach(function (btn) {
-      var m = btn.getAttribute('data-ubp-metric');
-      var on = m === mode;
-      btn.classList.toggle('is-active', on);
-      btn.classList.toggle('active', on);
-      btn.setAttribute('aria-pressed', on ? 'true' : 'false');
-    });
+    var btn = global.document.getElementById('ubpMetricCycleBtn');
+    if (!btn) {
+      global.document.querySelectorAll('[data-ubp-metric]').forEach(function (el) {
+        var m = el.getAttribute('data-ubp-metric');
+        var on = m === mode;
+        el.classList.toggle('is-active', on);
+        el.classList.toggle('active', on);
+        el.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      return;
+    }
+    var labelKey = RANK_MODE_LABEL[mode] || 'msy_metric_super_crit';
+    var label = t(labelKey) || ({
+      super_crit: 'Super Crit',
+      crit: 'Crit',
+      normal: 'Normal'
+    })[mode] || mode;
+    var icon = RANK_MODE_ICON[mode] || RANK_MODE_ICON.super_crit;
+    btn.setAttribute('data-ubp-metric', mode);
+    btn.setAttribute('aria-label', label);
+    btn.title = label + ' — ' + (t('unit_best_pilot_metric_cycle') || 'Click to cycle damage metric');
+    var img = btn.querySelector('.ubp-metric-icon');
+    if (img) {
+      var url = typeof global.imgUrl === 'function' ? global.imgUrl(icon) : icon;
+      if (img.getAttribute('src') !== url) img.setAttribute('src', url);
+    }
+    var lab = btn.querySelector('.ubp-metric-label');
+    if (lab) lab.textContent = label;
+    btn.classList.add('is-active');
+    btn.classList.add('active');
+  }
+
+  function cycleRankMode() {
+    var idx = RANK_MODES.indexOf(state.rankMode || 'super_crit');
+    if (idx < 0) idx = 0;
+    setRankMode(RANK_MODES[(idx + 1) % RANK_MODES.length]);
   }
 
   function setRankMode(mode) {
@@ -238,31 +277,44 @@
     var noUr = !!state.excludeUr;
     var noShinn = !!state.excludeShinn || noUr;
     var sameRole = !!state.sameRole;
-    var rows;
+    var rows = [];
     var partial = false;
+    var mode = state.rankMode || 'super_crit';
+
+    // Prefer dedicated calculator boards (v16). Only fall back to filtering the
+    // main list when a dedicated board is missing — never invent damage.
     if (sameRole && !noUr && !noShinn) {
-      rows = (board.pilots_same_role && board.pilots_same_role.length)
-        ? board.pilots_same_role
-        : filterPilotsLocal(board.pilots || [], false, false, true);
-      partial = !!board.same_role_partial || rows.length < 10;
+      if (board.pilots_same_role && board.pilots_same_role.length) {
+        rows = board.pilots_same_role;
+        partial = !!board.same_role_partial && board.pilots_same_role.length < 10;
+      } else {
+        rows = filterPilotsLocal(board.pilots || [], false, false, true);
+        partial = true;
+      }
     } else if (noUr) {
-      rows = (board.pilots_no_ur && board.pilots_no_ur.length)
-        ? board.pilots_no_ur
-        : filterPilotsLocal(board.pilots || [], true, true, sameRole);
-      if (sameRole) rows = filterPilotsLocal(rows, false, false, true);
-      partial = !!board.no_ur_partial || rows.length < 10;
+      if (board.pilots_no_ur && board.pilots_no_ur.length) {
+        rows = board.pilots_no_ur;
+        if (sameRole) rows = filterPilotsLocal(rows, false, false, true);
+        partial = (!!board.no_ur_partial && board.pilots_no_ur.length < 10) || rows.length < 10;
+      } else {
+        rows = filterPilotsLocal(board.pilots || [], true, true, sameRole);
+        partial = true;
+      }
     } else if (noShinn) {
-      rows = (board.pilots_no_shinn && board.pilots_no_shinn.length)
-        ? board.pilots_no_shinn
-        : filterPilotsLocal(board.pilots || [], false, true, sameRole);
-      if (sameRole) rows = filterPilotsLocal(rows, false, false, true);
-      partial = !!board.no_shinn_partial || rows.length < 10;
+      if (board.pilots_no_shinn && board.pilots_no_shinn.length) {
+        rows = board.pilots_no_shinn;
+        if (sameRole) rows = filterPilotsLocal(rows, false, false, true);
+        partial = (!!board.no_shinn_partial && board.pilots_no_shinn.length < 10) || rows.length < 10;
+      } else {
+        rows = filterPilotsLocal(board.pilots || [], false, true, sameRole);
+        partial = true;
+      }
     } else {
       rows = board.pilots || [];
     }
     return {
-      pilots: sortPilotsByCalcDamage(rows, state.rankMode || 'super_crit').slice(0, 10),
-      partial: partial
+      pilots: sortPilotsByCalcDamage(rows, mode).slice(0, 10),
+      partial: partial && rows.length < 10
     };
   }
 
@@ -784,6 +836,7 @@
     state.loading = false;
     syncFilterButtons();
     renderActivePanel();
+    if (state.open) global.setTimeout(scrollPanelIntoView, 30);
     // Affinity details are secondary — never block the top-10 paint.
     var lang = (global.S && global.S.lang) || 'EN';
     void enrichAffinityMatches(entry, unitId, lang).then(function () {
@@ -851,6 +904,16 @@
     });
   }
 
+  function scrollPanelIntoView() {
+    var wrap = global.document.getElementById('unitBestPilotPanelWrap');
+    if (!wrap) return;
+    try {
+      wrap.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+    } catch (_) {
+      try { wrap.scrollIntoView(true); } catch (__) {}
+    }
+  }
+
   function openPanel() {
     state.open = true;
     var wrap = global.document.getElementById('unitBestPilotPanelWrap');
@@ -859,6 +922,8 @@
       wrap.setAttribute('aria-hidden', 'false');
     }
     syncTriggerActive();
+    // Jump to the Top 10 section after opening.
+    global.setTimeout(scrollPanelIntoView, 0);
     var d = global.S && global.S.currentDetailData;
     if (!d) return;
     if (state.unitId !== String(d.id)) {
@@ -869,6 +934,7 @@
       state.loaded = true;
       syncFilterButtons();
       renderActivePanel();
+      global.setTimeout(scrollPanelIntoView, 30);
       // Re-fetch affinity details if a prior load skipped them.
       var cached = state.cache[state.unitId];
       var needsAff = (cached.pilots || []).some(function (p) {
