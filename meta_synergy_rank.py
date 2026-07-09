@@ -1577,12 +1577,12 @@ _MSY_BROWSE_PAYLOAD_CACHE_TTL = max(15, min(300, int(os.environ.get('MSY_BROWSE_
 _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
-_BSP_DC_RULES_VERSION = 2
+_BSP_DC_RULES_VERSION = 3
 _BSP_DC_BUILD_ENGINE = 'calculateDamage'
 # From v16 onward: formula/criteria rebuilds only refresh top-N + newly added units.
 # Full-catalog rebuilds are intentional opt-in only (users rarely open the long tail).
 _BSP_INCREMENTAL_TOP_N = max(50, min(500, int(os.environ.get('BSP_INCREMENTAL_TOP_N', '250') or '250')))
-_BSP_PUBLISHED_CACHE_TAG = '_v15_bsp_dc'
+_BSP_PUBLISHED_CACHE_TAG = '_v16_bsp_dc'
 _BSP_PUBLISHED_MEMORY = None
 _BSP_PUBLISHED_MEMORY_KEY = None
 _BSP_PUBLISHED_MEMORY_LOCK = threading.Lock()
@@ -1599,10 +1599,14 @@ _MSY_PILOT_BUILD_PER_REQUEST = max(1, min(4, int(os.environ.get('MSY_PILOT_BUILD
 _MSY_LITE_PILOT_NEED = max(6, min(16, int(os.environ.get('MSY_LITE_PILOT_NEED', '8') or '8')))
 _MSY_LITE_PILOT_CAP = max(6, min(20, int(os.environ.get('MSY_LITE_PILOT_CAP', '8') or '8')))
 _MSY_LITE_NON_UR_RESERVE = max(2, min(6, int(os.environ.get('MSY_LITE_NON_UR_RESERVE', '4') or '4')))
-_BSP_PILOT_CAP = max(48, min(128, int(os.environ.get('BSP_PILOT_CAP', '88') or '88')))
+# Larger pool so No UR / same-role top-10s are real /cal results, not lite.
+_BSP_PILOT_CAP = max(64, min(160, int(os.environ.get('BSP_PILOT_CAP', '120') or '120')))
 # Non-UR seats in the BSP /cal candidate pool — must be large enough that
 # rankings_no_ur can be filled from real DC results (not python-lite).
-_BSP_NON_UR_RESERVE = max(16, min(64, int(os.environ.get('BSP_NON_UR_RESERVE', '40') or '40')))
+_BSP_NON_UR_RESERVE = max(24, min(80, int(os.environ.get('BSP_NON_UR_RESERVE', '55') or '55')))
+# Keep deeper than the UI top-10 so No Shinn can promote #11+.
+_BSP_STORE_TOP_PILOTS = max(15, min(40, int(os.environ.get('BSP_STORE_TOP_PILOTS', '20') or '20')))
+_BSP_UI_TOP_PILOTS = 10
 _MSY_PREVIEW_PILOT_SCAN = max(16, min(80, int(os.environ.get('MSY_PREVIEW_PILOT_SCAN', '32') or '32')))
 # Older published caches to load when the current v14 master file is missing (Railway deploy).
 _MSY_LEGACY_MASTER_CACHE_KEYS = (
@@ -2869,6 +2873,8 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
     if not active_pilots:
         return None
     active_set = set(active_pilots)
+    # Store deeper than UI top-10 so No Shinn can promote #11+ from real /cal rows.
+    store_top = max(int(top_pilots or 10), _BSP_STORE_TOP_PILOTS)
 
     def _filter_pairs(all_pairs):
         return [(cid, bv) for cid, bv in all_pairs if cid in active_set and bv]
@@ -2879,13 +2885,19 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
         if not allowed:
             return {}
         filtered = [(cid, bv) for cid, bv in all_pairs if A.normalize_id(cid) in allowed]
-        return _rankings_from_multi_vigor_pairs(filtered, top_pilots, lc) if filtered else {}
+        return _rankings_from_multi_vigor_pairs(filtered, store_top, lc) if filtered else {}
+
+    def _filter_same_role(pilot_ids_in):
+        return [cid for cid in pilot_ids_in if _pilot_role_matches_unit(uid, cid)]
 
     def _rankings_no_ur_for_tier(_dt, all_pairs):
         return _rankings_filtered_from_dc_pairs(all_pairs, _filter_non_ur(active_pilots))
 
     def _rankings_no_shinn_for_tier(_dt, all_pairs):
         return _rankings_filtered_from_dc_pairs(all_pairs, _filter_non_shinn(active_pilots))
+
+    def _rankings_same_role_for_tier(_dt, all_pairs):
+        return _rankings_filtered_from_dc_pairs(all_pairs, _filter_same_role(active_pilots))
 
     def _rankings_no_gc_for_tier(_dt, all_pairs):
         return _rankings_filtered_from_dc_pairs(
@@ -2898,24 +2910,26 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
             return {}
         raw = pairs_by_tier_no_cp.get(dt) or pairs_by_tier_no_cp.get(str(dt)) or []
         filtered = _filter_pairs(raw)
-        return _rankings_from_multi_vigor_pairs(filtered, top_pilots, lc) if filtered else {}
+        return _rankings_from_multi_vigor_pairs(filtered, store_top, lc) if filtered else {}
 
     use_multi_tier = len(pairs_by_tier) > 1
     if use_multi_tier:
         rankings_by_tier = {}
         rankings_no_ur_by_tier = {}
         rankings_no_shinn_by_tier = {}
+        rankings_same_role_by_tier = {}
         rankings_no_gc_by_tier = {}
         rankings_no_cp_by_tier = {}
         for dt, raw_pairs in pairs_by_tier.items():
             pairs = _filter_pairs(raw_pairs)
             if not pairs:
                 continue
-            rk = _rankings_from_multi_vigor_pairs(pairs, top_pilots, lc)
+            rk = _rankings_from_multi_vigor_pairs(pairs, store_top, lc)
             if rk:
                 rankings_by_tier[int(dt)] = rk
                 rankings_no_ur_by_tier[int(dt)] = _rankings_no_ur_for_tier(dt, pairs)
                 rankings_no_shinn_by_tier[int(dt)] = _rankings_no_shinn_for_tier(dt, pairs)
+                rankings_same_role_by_tier[int(dt)] = _rankings_same_role_for_tier(dt, pairs)
                 rankings_no_gc_by_tier[int(dt)] = _rankings_no_gc_for_tier(dt, pairs)
                 rankings_no_cp_by_tier[int(dt)] = _rankings_no_cp_for_tier(dt, pairs)
         if not rankings_by_tier:
@@ -2924,6 +2938,7 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
         rankings = rankings_by_tier[dt_primary]
         rankings_no_ur = rankings_no_ur_by_tier.get(dt_primary) or {}
         rankings_no_shinn = rankings_no_shinn_by_tier.get(dt_primary) or {}
+        rankings_same_role = rankings_same_role_by_tier.get(dt_primary) or {}
         rankings_no_gc = rankings_no_gc_by_tier.get(dt_primary) or {}
         rankings_no_cp = rankings_no_cp_by_tier.get(dt_primary) or {}
     else:
@@ -2931,16 +2946,18 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
         pairs = _filter_pairs(pairs_by_tier[dt])
         if not pairs:
             return None
-        rankings = _rankings_from_multi_vigor_pairs(pairs, top_pilots, lc)
+        rankings = _rankings_from_multi_vigor_pairs(pairs, store_top, lc)
         if not rankings:
             return None
         rankings_no_ur = _rankings_no_ur_for_tier(dt, pairs)
         rankings_no_shinn = _rankings_no_shinn_for_tier(dt, pairs)
+        rankings_same_role = _rankings_same_role_for_tier(dt, pairs)
         rankings_no_gc = _rankings_no_gc_for_tier(dt, pairs)
         rankings_no_cp = _rankings_no_cp_for_tier(dt, pairs)
         rankings_by_tier = None
         rankings_no_ur_by_tier = None
         rankings_no_shinn_by_tier = None
+        rankings_same_role_by_tier = None
         rankings_no_gc_by_tier = None
         rankings_no_cp_by_tier = None
 
@@ -2955,6 +2972,7 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
         'rankings': rankings,
         'rankings_no_ur': rankings_no_ur,
         'rankings_no_shinn': rankings_no_shinn,
+        'rankings_same_role': rankings_same_role,
         'rankings_no_gc': rankings_no_gc,
         'rankings_no_cp': rankings_no_cp,
         'max_damage': primary['max_damage'],
@@ -2967,6 +2985,7 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
         out['rankings_by_tier'] = rankings_by_tier
         out['rankings_no_ur_by_tier'] = rankings_no_ur_by_tier
         out['rankings_no_shinn_by_tier'] = rankings_no_shinn_by_tier
+        out['rankings_same_role_by_tier'] = rankings_same_role_by_tier
         out['rankings_no_gc_by_tier'] = rankings_no_gc_by_tier
         out['rankings_no_cp_by_tier'] = rankings_no_cp_by_tier
     return out
@@ -3023,10 +3042,13 @@ def _bsp_candidate_pilots_for_unit(uid, active, info, unit_wpn, stat_mode, lc, *
 
     # 2) Reserve non-UR seats first so No-UR lists are real /cal rankings
     non_ur = []
+    same_role = []
     for cid in active:
         ri = str((A.char_info_map.get(cid) or {}).get('rarity', '1'))
         if A.RARITY_MAP.get(ri, 'N') != 'UR':
             non_ur.append(cid)
+        if _pilot_role_matches_unit(uid, cid):
+            same_role.append(cid)
     non_ur_scored = [
         (_cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc), cid)
         for cid in non_ur
@@ -3034,6 +3056,16 @@ def _bsp_candidate_pilots_for_unit(uid, active, info, unit_wpn, stat_mode, lc, *
     non_ur_scored.sort(key=lambda x: (-x[0], x[1]))
     reserve = min(_BSP_NON_UR_RESERVE, max(0, cap - len(out)), len(non_ur_scored))
     for _, cid in non_ur_scored[:reserve]:
+        _add(cid)
+
+    # 2b) Reserve same-role seats so Matching Role top-10 is real /cal
+    same_role_scored = [
+        (_cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc), cid)
+        for cid in same_role if A.normalize_id(cid) not in seen
+    ]
+    same_role_scored.sort(key=lambda x: (-x[0], x[1]))
+    role_reserve = min(24, max(0, cap - len(out)), len(same_role_scored))
+    for _, cid in same_role_scored[:role_reserve]:
         _add(cid)
 
     # 3) Fill remaining with URs
@@ -3419,21 +3451,12 @@ def _bsp_pilots_from_rankings_block(block, rank_mode):
     return list(row.get('pilots') or [])
 
 
-def _bsp_dc_variant_pilots(block, rank_mode, *, fallback_pilots, no_ur=False, no_shinn=False):
-    """Prefer real /cal variant top-10s; never serve python-lite fakes."""
-    rows = _bsp_pilots_from_rankings_block(block, rank_mode)
-    if rows and _bsp_pilots_look_like_dc(rows):
-        return rows, False
-    filtered = _bsp_filter_pilots_client_side(
-        fallback_pilots, no_ur=no_ur, no_shinn=no_shinn or no_ur,
-    )
-    return filtered, True
-
-
-def _bsp_filter_pilots_client_side(pilots, *, no_ur=False, no_shinn=False):
-    """Fallback filter when variant rankings are missing (older warm caches)."""
+def _bsp_filter_pilots_client_side(pilots, *, no_ur=False, no_shinn=False, same_role=False, unit_id=None):
+    """Fallback filter when variant rankings are missing (never invent lite damage)."""
     A = _app()
     sid = A.normalize_id(SHINN_EX_CHAR_ID)
+    uid = A.normalize_id(unit_id) if unit_id else None
+    unit_role = _unit_role(uid) if uid else None
     out = []
     for p in pilots or []:
         ch = p.get('char') or {}
@@ -3443,13 +3466,33 @@ def _bsp_filter_pilots_client_side(pilots, *, no_ur=False, no_shinn=False):
             continue
         if no_shinn and cid == sid:
             continue
+        if same_role and unit_role is not None:
+            role = str(ch.get('role_id') or '')
+            if role != unit_role:
+                continue
         out.append(p)
     return out
 
 
+def _bsp_dc_variant_pilots(block, rank_mode, *, fallback_pilots, no_ur=False, no_shinn=False,
+                           same_role=False, unit_id=None):
+    """Prefer real /cal variant top-10s; never serve python-lite fakes."""
+    rows = _bsp_pilots_from_rankings_block(block, rank_mode)
+    if rows and _bsp_pilots_look_like_dc(rows):
+        return rows[:_BSP_UI_TOP_PILOTS], False
+    filtered = _bsp_filter_pilots_client_side(
+        fallback_pilots,
+        no_ur=no_ur,
+        no_shinn=no_shinn or no_ur,
+        same_role=same_role,
+        unit_id=unit_id,
+    )
+    return filtered[:_BSP_UI_TOP_PILOTS], True
+
+
 def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs,
-                         pilots_no_ur=None, pilots_no_shinn=None,
-                         no_ur_partial=False, no_shinn_partial=False):
+                         pilots_no_ur=None, pilots_no_shinn=None, pilots_same_role=None,
+                         no_ur_partial=False, no_shinn_partial=False, same_role_partial=False):
     def _rank(rows):
         rows = list(rows or [])
         rows.sort(
@@ -3460,14 +3503,19 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
         )
         for i, pilot in enumerate(rows):
             pilot['rank'] = i + 1
-        return rows
+        return rows[:_BSP_UI_TOP_PILOTS]
 
-    pilots = _rank(pilots)
+    # Main UI list is top-10; keep deeper store only for variant derivation.
+    store_pilots = list(pilots or [])
+    pilots = _rank(store_pilots)
     no_ur = _rank(pilots_no_ur) if pilots_no_ur is not None else _rank(
-        _bsp_filter_pilots_client_side(pilots, no_ur=True, no_shinn=True)
+        _bsp_filter_pilots_client_side(store_pilots, no_ur=True, no_shinn=True)
     )
     no_shinn = _rank(pilots_no_shinn) if pilots_no_shinn is not None else _rank(
-        _bsp_filter_pilots_client_side(pilots, no_shinn=True)
+        _bsp_filter_pilots_client_side(store_pilots, no_shinn=True)
+    )
+    same_role = _rank(pilots_same_role) if pilots_same_role is not None else _rank(
+        _bsp_filter_pilots_client_side(store_pilots, same_role=True, unit_id=uid)
     )
     return {
         'eligible': True,
@@ -3475,8 +3523,10 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
         'pilots': pilots,
         'pilots_no_ur': no_ur,
         'pilots_no_shinn': no_shinn,
-        'no_ur_partial': bool(no_ur_partial) or len(no_ur) < 10,
-        'no_shinn_partial': bool(no_shinn_partial) or len(no_shinn) < 10,
+        'pilots_same_role': same_role,
+        'no_ur_partial': bool(no_ur_partial) or len(no_ur) < _BSP_UI_TOP_PILOTS,
+        'no_shinn_partial': bool(no_shinn_partial) or len(no_shinn) < _BSP_UI_TOP_PILOTS,
+        'same_role_partial': bool(same_role_partial) or len(same_role) < _BSP_UI_TOP_PILOTS,
         'source': source,
         'def_tier': def_tier,
         'defender_note': _settings_note(def_tier),
@@ -3537,13 +3587,19 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
             row.get('rankings_no_shinn'), rank_mode,
             fallback_pilots=pilots, no_shinn=True,
         )
+        pilots_same_role, same_role_partial = _bsp_dc_variant_pilots(
+            row.get('rankings_same_role'), rank_mode,
+            fallback_pilots=pilots, same_role=True, unit_id=uid,
+        )
         out = _bsp_pilots_response(
             uid, pilots, source='published_dc', def_tier=def_tier,
             rank_mode=rank_mode, lc=lc, kwargs=kwargs,
             pilots_no_ur=pilots_no_ur,
             pilots_no_shinn=pilots_no_shinn,
+            pilots_same_role=pilots_same_role,
             no_ur_partial=no_ur_partial,
             no_shinn_partial=no_shinn_partial,
+            same_role_partial=same_role_partial,
         )
     else:
         warm = _load_bsp_unit_warm_cache(uid, lc, kwargs)
@@ -3559,6 +3615,7 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
                 'pilots': [],
                 'pilots_no_ur': [],
                 'pilots_no_shinn': [],
+                'pilots_same_role': [],
                 'pending': True,
                 'source': 'client_dc',
                 'def_tier': def_tier,

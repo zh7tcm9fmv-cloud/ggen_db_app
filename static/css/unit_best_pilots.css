@@ -245,6 +245,19 @@
   line-height: 1.35;
 }
 
+.unit-best-pilot-filters .ubp-same-role-btn {
+  min-width: auto;
+  padding: 4px 8px;
+}
+
+.unit-best-pilot-filters .ubp-same-role-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: inherit;
+}
+
 .unit-best-pilot-filters .msy-exclude-ur-icon,
 .unit-best-pilot-filters .msy-exclude-shinn-icon {
   position: relative;

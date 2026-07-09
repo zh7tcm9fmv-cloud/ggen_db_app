@@ -12,7 +12,8 @@
     loadGen: 0,
     excludeUr: false,
     excludeShinn: false,
-    // unitId -> { pilots, pilots_no_ur, pilots_no_shinn, no_ur_partial, no_shinn_partial, source }
+    sameRole: false,
+    // unitId -> { pilots, pilots_no_ur, pilots_no_shinn, pilots_same_role, ... }
     cache: {}
   };
 
@@ -118,6 +119,7 @@
   function syncFilterButtons() {
     var urBtn = global.document.getElementById('ubpExcludeUrBtn');
     var shBtn = global.document.getElementById('ubpExcludeShinnBtn');
+    var roleBtn = global.document.getElementById('ubpSameRoleBtn');
     if (urBtn) {
       urBtn.classList.toggle('is-active', !!state.excludeUr);
       urBtn.classList.toggle('active', !!state.excludeUr);
@@ -140,6 +142,14 @@
         ensureShinnFilterIcon();
       }
     }
+    if (roleBtn) {
+      roleBtn.classList.toggle('is-active', !!state.sameRole);
+      roleBtn.classList.toggle('active', !!state.sameRole);
+      roleBtn.setAttribute('aria-pressed', state.sameRole ? 'true' : 'false');
+      roleBtn.title = state.sameRole
+        ? (t('msy_same_role_on') || 'Showing same-role pilots only')
+        : (t('msy_same_role') || 'Same Role Characters Only');
+    }
   }
 
   function toggleFilter(kind) {
@@ -149,6 +159,8 @@
     } else if (kind === 'no_shinn') {
       if (state.excludeUr) return;
       state.excludeShinn = !state.excludeShinn;
+    } else if (kind === 'same_role') {
+      state.sameRole = !state.sameRole;
     } else {
       return;
     }
@@ -156,16 +168,22 @@
     renderActivePanel();
   }
 
-  function filterPilotsLocal(pilots, noUr, noShinn) {
+  function filterPilotsLocal(pilots, noUr, noShinn, sameRole) {
     if (!pilots || !pilots.length) return [];
     if (noUr) noShinn = true;
-    if (!noUr && !noShinn) return pilots.slice();
+    var unitRole = null;
+    if (sameRole) {
+      var d = global.S && global.S.currentDetailData;
+      unitRole = d && d.role_id != null ? String(d.role_id) : null;
+    }
+    if (!noUr && !noShinn && !sameRole) return pilots.slice();
     return pilots.filter(function (p) {
       var ch = (p && p.char) || {};
       var rarity = String(ch.rarity || '');
       var cid = String(ch.id || '');
       if (noUr && rarity === 'UR') return false;
       if (noShinn && cid === SHINN_EX_CHAR_ID) return false;
+      if (sameRole && unitRole != null && String(ch.role_id || '') !== unitRole) return false;
       return true;
     });
   }
@@ -174,17 +192,25 @@
     if (!entry) return { pilots: [], partial: false };
     var noUr = !!state.excludeUr;
     var noShinn = !!state.excludeShinn || noUr;
+    var sameRole = !!state.sameRole;
     var rows;
     var partial = false;
-    if (noUr) {
+    if (sameRole && !noUr && !noShinn) {
+      rows = (entry.pilots_same_role && entry.pilots_same_role.length)
+        ? entry.pilots_same_role
+        : filterPilotsLocal(entry.pilots || [], false, false, true);
+      partial = !!entry.same_role_partial || rows.length < 10;
+    } else if (noUr) {
       rows = (entry.pilots_no_ur && entry.pilots_no_ur.length)
         ? entry.pilots_no_ur
-        : filterPilotsLocal(entry.pilots || [], true, true);
+        : filterPilotsLocal(entry.pilots || [], true, true, sameRole);
+      if (sameRole) rows = filterPilotsLocal(rows, false, false, true);
       partial = !!entry.no_ur_partial || rows.length < 10;
     } else if (noShinn) {
       rows = (entry.pilots_no_shinn && entry.pilots_no_shinn.length)
         ? entry.pilots_no_shinn
-        : filterPilotsLocal(entry.pilots || [], false, true);
+        : filterPilotsLocal(entry.pilots || [], false, true, sameRole);
+      if (sameRole) rows = filterPilotsLocal(rows, false, false, true);
       partial = !!entry.no_shinn_partial || rows.length < 10;
     } else {
       rows = entry.pilots || [];
@@ -211,6 +237,7 @@
     enrich(entry.pilots);
     enrich(entry.pilots_no_ur);
     enrich(entry.pilots_no_shinn);
+    enrich(entry.pilots_same_role);
   }
 
   async function enrichAffinityMatches(entry, unitId, lang) {
@@ -230,6 +257,7 @@
     collect(entry.pilots);
     collect(entry.pilots_no_ur);
     collect(entry.pilots_no_shinn);
+    collect(entry.pilots_same_role);
     if (!charIds.length) return entry;
     try {
       var q = 'lang=' + encodeURIComponent(lang || 'EN')
@@ -249,6 +277,7 @@
       attachSkills(entry.pilots);
       attachSkills(entry.pilots_no_ur);
       attachSkills(entry.pilots_no_shinn);
+      attachSkills(entry.pilots_same_role);
     } catch (_) {}
     return entry;
   }
@@ -509,8 +538,10 @@
         pilots: sortPilotsByCalcDamage(payload.pilots),
         pilots_no_ur: sortPilotsByCalcDamage(payload.pilots_no_ur || []),
         pilots_no_shinn: sortPilotsByCalcDamage(payload.pilots_no_shinn || []),
+        pilots_same_role: sortPilotsByCalcDamage(payload.pilots_same_role || []),
         no_ur_partial: !!payload.no_ur_partial,
         no_shinn_partial: !!payload.no_shinn_partial,
+        same_role_partial: !!payload.same_role_partial,
         source: payload.source || 'published_dc'
       };
     }

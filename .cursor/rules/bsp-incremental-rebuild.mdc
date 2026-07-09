@@ -5,12 +5,15 @@ alwaysApply: true
 
 # Best Synergy Pilots (BSP) rebuild scope
 
-From **v16 onward**, when changing BSP formula / criteria / DC rules:
+## Never use python-lite / old fake variant lists
+Published BSP No UR / No Shinn / same-role lists must come from live `/cal` (`calculateDamage`) only.
 
+## Routine formula tweaks (after a good full cache exists)
 - Rebuild only **top 250** units (by sort damage) **plus newly added / uncached** units.
-- Keep long-tail cached rankings from the previous version; users rarely open those units.
 - Use: `python scripts/build_msy_rankings_dc.py --incremental --workers 2 --checkpoint 50`
 - Optional: `--top-n N` or env `BSP_INCREMENTAL_TOP_N` (default 250).
-- Full-catalog rebuild is opt-in only (omit `--incremental`, or `--force` without incremental).
 
-Do not kick off a full ~1300-unit DC rebuild for routine formula tweaks.
+## Full-catalog rebuild (required for)
+- Candidate pool size changes, store-depth changes (top 20), or new variant lists (No UR / No Shinn / same-role).
+- Use: `python scripts/build_msy_rankings_dc.py --force --loop --workers 3 --checkpoint 25`
+- Do **not** pass `--incremental` for those.

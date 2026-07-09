@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """Build BSP published cache from live /cal (MsyDcEngine — same path as the site).
 
-v15: full-catalog DC rankings (rules v2).
+v16 (rules v3): full-catalog DC rankings with deeper store (top 20), real
+No UR / No Shinn / same-role variant lists from calculator pairs only.
+Never merge python-lite damage into published BSP caches.
 
-From v16 onward (formula / criteria changes): use ``--incremental`` so only the
-top 250 units (by sort damage) plus newly added / uncached units are rebuilt.
-Long-tail units keep their last cached ranking. Use ``--force`` without
-``--incremental`` only when an intentional full-catalog rebuild is needed.
+Routine formula tweaks after v16: use ``--incremental`` (top 250 + new units).
+Variant-list / pool-size changes need a full-catalog rebuild (omit ``--incremental``).
 """
 from __future__ import annotations
 
@@ -42,22 +42,28 @@ async ({ unitId, pilotIds, defTiers, lang }) => {
 }
 """
 
-PERMANENT_SKIP_PATH = os.path.join(ROOT, 'data', 'published', 'bsp_v15_permanent_skips.json')
+PERMANENT_SKIP_PATH = os.path.join(ROOT, 'data', 'published', 'bsp_v16_permanent_skips.json')
+# Carry forward known permanent skips from v15 if the v16 file is new.
+_LEGACY_SKIP_PATH = os.path.join(ROOT, 'data', 'published', 'bsp_v15_permanent_skips.json')
 
 
 def _load_permanent_skips():
     """Unit ids that cannot be ranked on the live DC host (e.g. 404 / not found)."""
-    if not os.path.isfile(PERMANENT_SKIP_PATH):
-        return {}
-    try:
-        with open(PERMANENT_SKIP_PATH, encoding='utf-8') as f:
-            data = json.load(f)
-    except Exception:
-        return {}
-    skips = data.get('skips') if isinstance(data, dict) else None
-    if not isinstance(skips, dict):
-        return {}
-    return {msy._app().normalize_id(k): str(v or '') for k, v in skips.items() if k}
+    paths = [PERMANENT_SKIP_PATH]
+    if not os.path.isfile(PERMANENT_SKIP_PATH) and os.path.isfile(_LEGACY_SKIP_PATH):
+        paths.append(_LEGACY_SKIP_PATH)
+    for path in paths:
+        if not os.path.isfile(path):
+            continue
+        try:
+            with open(path, encoding='utf-8') as f:
+                data = json.load(f)
+        except Exception:
+            continue
+        skips = data.get('skips') if isinstance(data, dict) else None
+        if isinstance(skips, dict) and skips:
+            return {msy._app().normalize_id(k): str(v or '') for k, v in skips.items() if k}
+    return {}
 
 
 def _add_permanent_skip(uid, reason):
@@ -304,7 +310,12 @@ def main():
     ap = argparse.ArgumentParser(description='Build BSP cache from live Damage Calculator')
     ap.add_argument('--base', default=os.environ.get('MSY_DC_BASE', 'https://ggendb.up.railway.app'))
     ap.add_argument('--lang', default='EN')
-    ap.add_argument('--top-pilots', type=int, default=10)
+    ap.add_argument(
+        '--top-pilots',
+        type=int,
+        default=0,
+        help='Pilots stored per unit (default: BSP_STORE_TOP_PILOTS / 20). UI still shows top 10.',
+    )
     ap.add_argument('--limit', type=int, default=0, help='Max units (0 = all selected)')
     ap.add_argument('--unit', action='append', default=[], help='Single unit id (repeatable)')
     ap.add_argument('--resume', action='store_true', help='Skip units already in published cache')
@@ -340,7 +351,7 @@ def main():
                 sys.executable, '-u', __file__,
                 '--base', args.base,
                 '--lang', args.lang,
-                '--top-pilots', str(args.top_pilots),
+                '--top-pilots', str(int(args.top_pilots) or msy._BSP_STORE_TOP_PILOTS),
                 '--checkpoint', str(args.checkpoint),
                 '--workers', str(args.workers),
             ]
@@ -358,7 +369,7 @@ def main():
             rc = os.spawnv(os.P_WAIT, sys.executable, child)
             if rc == 0:
                 cache_key = msy._bsp_published_cache_key(
-                    args.lang, {'lb_tier': 3, 'top_pilots': args.top_pilots},
+                    args.lang, {'lb_tier': 3, 'top_pilots': int(args.top_pilots) or msy._BSP_STORE_TOP_PILOTS},
                 )
                 groups = _load_bsp_build_progress(cache_key)
                 done_n = len(groups)
@@ -406,8 +417,9 @@ def main():
     lang = args.lang
     exclude = set()
     pilot_ids = list(msy._pilot_pool_ids())
+    top_pilots = int(args.top_pilots) or int(msy._BSP_STORE_TOP_PILOTS)
     cache_key, existing_groups = _load_existing_v15(
-        lang, args.top_pilots, for_build=True, allow_stale_rules=bool(args.incremental),
+        lang, top_pilots, for_build=True, allow_stale_rules=bool(args.incremental),
     )
     if args.force and not args.incremental:
         # Full-catalog wipe. Incremental force still keeps long-tail rows.
@@ -470,7 +482,8 @@ def main():
 
     print(
         f'BSP DC build ({scope_label}): {len(unit_ids)} units, '
-        f'base={args.base}, pool=bsp (~88 pilots/unit)'
+        f'base={args.base}, store_top={top_pilots}, '
+        f'pool=bsp (~{msy._BSP_PILOT_CAP} pilots/unit, nonUR reserve {msy._BSP_NON_UR_RESERVE})'
     )
 
     merged_holder = {'groups': list(existing_groups)}
@@ -483,7 +496,7 @@ def main():
 
     t0 = time.perf_counter()
     new_groups = asyncio.run(build_units(
-        args.base, lang, unit_ids, pilot_ids, exclude, args.top_pilots, def_tiers,
+        args.base, lang, unit_ids, pilot_ids, exclude, top_pilots, def_tiers,
         limit=limit, on_checkpoint=on_checkpoint if checkpoint else None,
         workers=args.workers,
     ))
