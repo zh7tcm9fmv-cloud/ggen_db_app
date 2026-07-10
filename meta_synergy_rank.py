@@ -3359,8 +3359,8 @@ def _unit_best_pilot_api_cache_key(uid, lc, kwargs):
         int(kwargs.get('lb_tier') or 3),
         max(1, min(4, int(kwargs.get('def_tier') or 3))),
         kwargs.get('rank_mode', 'super_crit') or 'super_crit',
-        # Bump when published catalog preference / variant boards change.
-        'bsp_v16_variants2',
+        # Bump when published catalog preference / variant boards / locale patch change.
+        'bsp_v16_locale1',
     )
 
 
@@ -3524,11 +3524,21 @@ def _bsp_group_variant_quality(g):
 
 
 def _lookup_bsp_published_group(uid, lc, kwargs):
-    """O(1) unit lookup — prefer v16 (variants + depth) over incomplete v15 fallbacks."""
+    """O(1) unit lookup — prefer v16 (variants + depth) over incomplete v15 fallbacks.
+
+    Published BSP files are currently EN-only; for other langs, fall back to the EN
+    catalog and re-localize pilot names in `_bsp_pilots_response`.
+    """
     uid = _app().normalize_id(uid)
     primary = _bsp_published_cache_key(lc, kwargs)
     # Current catalog first, then older full-catalog fallbacks.
     keys = [primary] + list(_bsp_fallback_cache_keys(lc, kwargs))
+    # EN published catalog is the shared damage board; names are relocalized per request.
+    if (lc or 'EN').upper() != 'EN':
+        en_kwargs = dict(kwargs or {})
+        en_kwargs['lc'] = 'EN'
+        keys.append(_bsp_published_cache_key('EN', en_kwargs))
+        keys.extend(_bsp_fallback_cache_keys('EN', en_kwargs))
     best = None
     best_score = -1
     for cache_key in keys:
@@ -3694,6 +3704,23 @@ def _bsp_pilot_sort_damage(pilot, rank_mode='super_crit'):
     return val
 
 
+def _bsp_relocalize_pilot_chars(pilots, lc):
+    """Re-resolve pilot display names/roles for the request language (published cache is EN)."""
+    for p in pilots or []:
+        if not isinstance(p, dict):
+            continue
+        ch = p.get('char') or {}
+        cid = _app().normalize_id(ch.get('id'))
+        if not cid:
+            continue
+        brief = _entity_brief_char(cid, lc)
+        # Keep any extra client fields; overwrite localized display fields.
+        merged = dict(ch)
+        merged.update(brief)
+        p['char'] = merged
+    return pilots
+
+
 def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs,
                          pilots_no_ur=None, pilots_no_shinn=None, pilots_same_role=None,
                          no_ur_partial=False, no_shinn_partial=False, same_role_partial=False):
@@ -3734,6 +3761,10 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
         ),
         store_n,
     )
+    _bsp_relocalize_pilot_chars(pilots, lc)
+    _bsp_relocalize_pilot_chars(no_ur, lc)
+    _bsp_relocalize_pilot_chars(no_shinn, lc)
+    _bsp_relocalize_pilot_chars(same_role, lc)
     _bsp_patch_guaranteed_crit_flags(pilots, lc)
     _bsp_patch_guaranteed_crit_flags(no_ur, lc)
     _bsp_patch_guaranteed_crit_flags(no_shinn, lc)

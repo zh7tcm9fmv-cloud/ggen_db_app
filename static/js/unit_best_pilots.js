@@ -684,16 +684,13 @@
     }
     if (pilot.dmg_dealt_pct != null && pilot.dmg_dealt_pct !== '') {
       var passive = pilot.dmg_dealt_pct | 0;
-      var dmgLine = 'Damage Dealt: ' + passive + '%';
-      var title = 'Damage Dealt Up % from DC formula';
-      if (pilot.pair_ok) title += ' (includes affinity match)';
+      var dmgTpl = t('msy_dmg_dealt') || 'Damage Dealt: {n}%';
+      var dmgLine = dmgTpl.replace('{n}', String(passive));
+      var title = t('msy_dmg_dealt') || 'Damage Dealt Up % from DC formula';
       parts += '<div class="msy-pilot-dmg-dealt-pct" title="' + escAttr(title) + '">'
         + esc(dmgLine) + '</div>';
     }
-    if (pilot.pair_ok) {
-      parts += '<div class="msy-pilot-affinity-flag">'
-        + esc(t('msy_affinity_match') || 'Affinity match') + '</div>';
-    }
+    // Affinity match wording is redundant — tag/detail icons already indicate the match.
     return parts;
   }
 
