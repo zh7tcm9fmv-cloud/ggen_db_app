@@ -846,7 +846,15 @@ def _unit_role(uid):
 
 
 def _char_is_attack_role(cid):
-    return _char_role(cid) == '1'
+    return _char_role(cid) == _ATTACK_ROLE_ID
+
+
+def _char_is_support_role(cid):
+    return _char_role(cid) == _SUPPORT_ROLE_ID
+
+
+def _unit_is_attack_role(uid):
+    return _unit_role(uid) == _ATTACK_ROLE_ID
 
 
 def _pilot_role_matches_unit(uid, cid):
@@ -1602,9 +1610,14 @@ _BSP_DC_BUILD_ENGINE = 'calculateDamage'
 # From v16 onward: formula/criteria rebuilds only refresh top-N + newly added units.
 # Full-catalog rebuilds are intentional opt-in only (users rarely open the long tail).
 _BSP_INCREMENTAL_TOP_N = max(50, min(500, int(os.environ.get('BSP_INCREMENTAL_TOP_N', '250') or '250')))
-_BSP_PUBLISHED_CACHE_TAG = '_v16_bsp_dc'
+_BSP_PUBLISHED_CACHE_TAG = '_v17_bsp_dc'
 # Serve older full-catalog DC caches while a newer rebuild is still incomplete.
-_BSP_PUBLISHED_FALLBACK_TAGS = ('_v15_bsp_dc',)
+_BSP_PUBLISHED_FALLBACK_TAGS = ('_v16_bsp_dc', '_v15_bsp_dc')
+# Support-role character id (Attack units: Supporters-only Top 10 board).
+_SUPPORT_ROLE_ID = '3'
+_ATTACK_ROLE_ID = '1'
+# Reserve Support-role seats in the Attack-unit BSP pool so Supporters-only is real /cal.
+_BSP_SUPPORT_ROLE_RESERVE = max(16, min(40, int(os.environ.get('BSP_SUPPORT_ROLE_RESERVE', '28') or '28')))
 _BSP_PUBLISHED_MEMORY = {}  # cache_key -> payload (multi-key; do not clobber v16 with v15)
 _BSP_PUBLISHED_MEMORY_LOCK = threading.Lock()
 _BSP_PUBLISHED_INDEX = {}  # cache_key -> {uid: group}
@@ -2021,6 +2034,13 @@ def _filter_non_shinn(pilot_ids):
     A = _app()
     sid = A.normalize_id(SHINN_EX_CHAR_ID)
     return [cid for cid in pilot_ids if A.normalize_id(cid) != sid]
+
+
+def _filter_pilots_by_role(pilot_ids, role_id):
+    want = str(role_id or '')
+    if not want:
+        return list(pilot_ids)
+    return [cid for cid in pilot_ids if _char_role(cid) == want]
 
 
 def _filter_non_guaranteed_crit(uid, pilot_ids, unit_wpn, lc, exclude):
@@ -2931,6 +2951,12 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
     def _filter_same_role(pilot_ids_in):
         return [cid for cid in pilot_ids_in if _pilot_role_matches_unit(uid, cid)]
 
+    def _filter_support_role_pilots(pilot_ids_in):
+        # Supporters-only board is only stored for Attack units.
+        if not _unit_is_attack_role(uid):
+            return []
+        return _filter_pilots_by_role(pilot_ids_in, _SUPPORT_ROLE_ID)
+
     def _rankings_no_ur_for_tier(_dt, all_pairs):
         return _rankings_filtered_from_dc_pairs(all_pairs, _filter_non_ur(active_pilots))
 
@@ -2939,6 +2965,9 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
 
     def _rankings_same_role_for_tier(_dt, all_pairs):
         return _rankings_filtered_from_dc_pairs(all_pairs, _filter_same_role(active_pilots))
+
+    def _rankings_support_role_for_tier(_dt, all_pairs):
+        return _rankings_filtered_from_dc_pairs(all_pairs, _filter_support_role_pilots(active_pilots))
 
     def _rankings_no_gc_for_tier(_dt, all_pairs):
         return _rankings_filtered_from_dc_pairs(
@@ -2959,6 +2988,7 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
         rankings_no_ur_by_tier = {}
         rankings_no_shinn_by_tier = {}
         rankings_same_role_by_tier = {}
+        rankings_support_role_by_tier = {}
         rankings_no_gc_by_tier = {}
         rankings_no_cp_by_tier = {}
         for dt, raw_pairs in pairs_by_tier.items():
@@ -2971,6 +3001,7 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
                 rankings_no_ur_by_tier[int(dt)] = _rankings_no_ur_for_tier(dt, pairs)
                 rankings_no_shinn_by_tier[int(dt)] = _rankings_no_shinn_for_tier(dt, pairs)
                 rankings_same_role_by_tier[int(dt)] = _rankings_same_role_for_tier(dt, pairs)
+                rankings_support_role_by_tier[int(dt)] = _rankings_support_role_for_tier(dt, pairs)
                 rankings_no_gc_by_tier[int(dt)] = _rankings_no_gc_for_tier(dt, pairs)
                 rankings_no_cp_by_tier[int(dt)] = _rankings_no_cp_for_tier(dt, pairs)
         if not rankings_by_tier:
@@ -2980,6 +3011,7 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
         rankings_no_ur = rankings_no_ur_by_tier.get(dt_primary) or {}
         rankings_no_shinn = rankings_no_shinn_by_tier.get(dt_primary) or {}
         rankings_same_role = rankings_same_role_by_tier.get(dt_primary) or {}
+        rankings_support_role = rankings_support_role_by_tier.get(dt_primary) or {}
         rankings_no_gc = rankings_no_gc_by_tier.get(dt_primary) or {}
         rankings_no_cp = rankings_no_cp_by_tier.get(dt_primary) or {}
     else:
@@ -2993,12 +3025,14 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
         rankings_no_ur = _rankings_no_ur_for_tier(dt, pairs)
         rankings_no_shinn = _rankings_no_shinn_for_tier(dt, pairs)
         rankings_same_role = _rankings_same_role_for_tier(dt, pairs)
+        rankings_support_role = _rankings_support_role_for_tier(dt, pairs)
         rankings_no_gc = _rankings_no_gc_for_tier(dt, pairs)
         rankings_no_cp = _rankings_no_cp_for_tier(dt, pairs)
         rankings_by_tier = None
         rankings_no_ur_by_tier = None
         rankings_no_shinn_by_tier = None
         rankings_same_role_by_tier = None
+        rankings_support_role_by_tier = None
         rankings_no_gc_by_tier = None
         rankings_no_cp_by_tier = None
 
@@ -3014,6 +3048,7 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
         'rankings_no_ur': rankings_no_ur,
         'rankings_no_shinn': rankings_no_shinn,
         'rankings_same_role': rankings_same_role,
+        'rankings_support_role': rankings_support_role,
         'rankings_no_gc': rankings_no_gc,
         'rankings_no_cp': rankings_no_cp,
         'max_damage': primary['max_damage'],
@@ -3027,6 +3062,7 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
         out['rankings_no_ur_by_tier'] = rankings_no_ur_by_tier
         out['rankings_no_shinn_by_tier'] = rankings_no_shinn_by_tier
         out['rankings_same_role_by_tier'] = rankings_same_role_by_tier
+        out['rankings_support_role_by_tier'] = rankings_support_role_by_tier
         out['rankings_no_gc_by_tier'] = rankings_no_gc_by_tier
         out['rankings_no_cp_by_tier'] = rankings_no_cp_by_tier
     return out
@@ -3128,6 +3164,20 @@ def _bsp_candidate_pilots_for_unit(uid, active, info, unit_wpn, stat_mode, lc, *
     role_reserve = min(24, max(0, cap - len(out)), len(same_role_scored))
     for _, cid in same_role_scored[:role_reserve]:
         _add(cid)
+
+    # 2c) Attack units: reserve Support-role seats for Supporters-only Top 10
+    if _unit_is_attack_role(uid):
+        support_role = [cid for cid in active if _char_is_support_role(cid)]
+        support_scored = [
+            (_cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc), cid)
+            for cid in support_role if A.normalize_id(cid) not in seen
+        ]
+        support_scored.sort(key=lambda x: (-x[0], x[1]))
+        support_reserve = min(
+            _BSP_SUPPORT_ROLE_RESERVE, max(0, cap - len(out)), len(support_scored),
+        )
+        for _, cid in support_scored[:support_reserve]:
+            _add(cid)
 
     # 3) Fill remaining with URs
     for cid in active:
@@ -3379,7 +3429,7 @@ def _unit_best_pilot_api_cache_key(uid, lc, kwargs):
         max(1, min(4, int(kwargs.get('def_tier') or 3))),
         kwargs.get('rank_mode', 'super_crit') or 'super_crit',
         # Bump when published catalog preference / variant boards / locale patch change.
-        'bsp_v16_locale1',
+        'bsp_v17_support1',
     )
 
 
@@ -3539,6 +3589,9 @@ def _bsp_group_variant_quality(g):
     same_role = _bsp_pilots_from_rankings_block(g.get('rankings_same_role'), 'super_crit')
     if same_role and _bsp_pilots_look_like_dc(same_role):
         score += 100 + min(len(same_role), 20)
+    support_role = _bsp_pilots_from_rankings_block(g.get('rankings_support_role'), 'super_crit')
+    if support_role and _bsp_pilots_look_like_dc(support_role):
+        score += 80 + min(len(support_role), 20)
     return score
 
 
@@ -3651,7 +3704,8 @@ def _bsp_pilots_from_rankings_block(block, rank_mode):
     return list(row.get('pilots') or [])
 
 
-def _bsp_filter_pilots_client_side(pilots, *, no_ur=False, no_shinn=False, same_role=False, unit_id=None):
+def _bsp_filter_pilots_client_side(pilots, *, no_ur=False, no_shinn=False, same_role=False,
+                                   support_role=False, unit_id=None):
     """Fallback filter when variant rankings are missing (never invent lite damage)."""
     A = _app()
     sid = A.normalize_id(SHINN_EX_CHAR_ID)
@@ -3666,8 +3720,10 @@ def _bsp_filter_pilots_client_side(pilots, *, no_ur=False, no_shinn=False, same_
             continue
         if no_shinn and cid == sid:
             continue
+        role = str(ch.get('role_id') or '')
+        if support_role and role != _SUPPORT_ROLE_ID:
+            continue
         if same_role and unit_role is not None:
-            role = str(ch.get('role_id') or '')
             if role != unit_role:
                 continue
         out.append(p)
@@ -3675,7 +3731,7 @@ def _bsp_filter_pilots_client_side(pilots, *, no_ur=False, no_shinn=False, same_
 
 
 def _bsp_dc_variant_pilots(block, rank_mode, *, fallback_pilots, no_ur=False, no_shinn=False,
-                           same_role=False, unit_id=None):
+                           same_role=False, support_role=False, unit_id=None):
     """Prefer real /cal variant boards; never serve python-lite fakes.
 
     Keep store depth (v16 top-20) so client combined filters (Same Role + No UR)
@@ -3690,6 +3746,7 @@ def _bsp_dc_variant_pilots(block, rank_mode, *, fallback_pilots, no_ur=False, no
         no_ur=no_ur,
         no_shinn=no_shinn or no_ur,
         same_role=same_role,
+        support_role=support_role,
         unit_id=unit_id,
     )
     # Partial only when we could not fill a full UI top-10 from store depth.
@@ -3742,7 +3799,9 @@ def _bsp_relocalize_pilot_chars(pilots, lc):
 
 def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs,
                          pilots_no_ur=None, pilots_no_shinn=None, pilots_same_role=None,
-                         no_ur_partial=False, no_shinn_partial=False, same_role_partial=False):
+                         pilots_support_role=None,
+                         no_ur_partial=False, no_shinn_partial=False, same_role_partial=False,
+                         support_role_partial=False):
     mode = rank_mode or 'super_crit'
     store_n = int(_BSP_STORE_TOP_PILOTS)
 
@@ -3780,19 +3839,29 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
         ),
         store_n,
     )
+    support_role = _rank(
+        pilots_support_role if pilots_support_role is not None else (
+            _bsp_filter_pilots_client_side(store_pilots, support_role=True, unit_id=uid)
+            if _unit_is_attack_role(uid) else []
+        ),
+        store_n,
+    )
     _bsp_relocalize_pilot_chars(pilots, lc)
     _bsp_relocalize_pilot_chars(no_ur, lc)
     _bsp_relocalize_pilot_chars(no_shinn, lc)
     _bsp_relocalize_pilot_chars(same_role, lc)
+    _bsp_relocalize_pilot_chars(support_role, lc)
     _bsp_patch_guaranteed_crit_flags(pilots, lc)
     _bsp_patch_guaranteed_crit_flags(no_ur, lc)
     _bsp_patch_guaranteed_crit_flags(no_shinn, lc)
     _bsp_patch_guaranteed_crit_flags(same_role, lc)
+    _bsp_patch_guaranteed_crit_flags(support_role, lc)
     # Re-rank after sanitize (0% crit peak clamp can change order).
     pilots = _rank(pilots, _BSP_UI_TOP_PILOTS)
     no_ur = _rank(no_ur, store_n)
     no_shinn = _rank(no_shinn, store_n)
     same_role = _rank(same_role, store_n)
+    support_role = _rank(support_role, store_n)
     top_dmg = _bsp_pilot_sort_damage(pilots[0], mode) if pilots else 0
     return {
         'eligible': True,
@@ -3801,9 +3870,13 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
         'pilots_no_ur': no_ur,
         'pilots_no_shinn': no_shinn,
         'pilots_same_role': same_role,
+        'pilots_support_role': support_role,
         'no_ur_partial': bool(no_ur_partial) or len(no_ur) < _BSP_UI_TOP_PILOTS,
         'no_shinn_partial': bool(no_shinn_partial) or len(no_shinn) < _BSP_UI_TOP_PILOTS,
         'same_role_partial': bool(same_role_partial) or len(same_role) < _BSP_UI_TOP_PILOTS,
+        'support_role_partial': bool(support_role_partial) or (
+            _unit_is_attack_role(uid) and len(support_role) < _BSP_UI_TOP_PILOTS
+        ),
         'source': source,
         'rank_mode': mode,
         'def_tier': def_tier,
@@ -3869,15 +3942,23 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
             g_row.get('rankings_same_role') or row.get('rankings_same_role'), mode,
             fallback_pilots=store_pilots or pilots, same_role=True, unit_id=uid,
         )
+        pilots_support_role, support_role_partial = _bsp_dc_variant_pilots(
+            g_row.get('rankings_support_role') or row.get('rankings_support_role'), mode,
+            fallback_pilots=store_pilots or pilots, support_role=True, unit_id=uid,
+        )
+        if not _unit_is_attack_role(uid):
+            pilots_support_role, support_role_partial = [], False
         return _bsp_pilots_response(
             uid, pilots, source='published_dc', def_tier=def_tier,
             rank_mode=mode, lc=lc, kwargs=kwargs,
             pilots_no_ur=pilots_no_ur,
             pilots_no_shinn=pilots_no_shinn,
             pilots_same_role=pilots_same_role,
+            pilots_support_role=pilots_support_role,
             no_ur_partial=no_ur_partial,
             no_shinn_partial=no_shinn_partial,
             same_role_partial=same_role_partial,
+            support_role_partial=support_role_partial,
         )
 
     # Prefer published /cal BSP cache for the MAIN list (real calculator).
@@ -3912,6 +3993,7 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
                 'pilots_no_ur': [],
                 'pilots_no_shinn': [],
                 'pilots_same_role': [],
+                'pilots_support_role': [],
                 'pending': True,
                 'source': 'client_dc',
                 'rank_mode': rank_mode,
@@ -5306,6 +5388,7 @@ def _normalize_group_for_mode(g, rank_mode):
         rankings_no_ur = _slim_variant_rankings_if_populated(g.get('rankings_no_ur'), rank_mode)
         rankings_no_shinn = _slim_variant_rankings_if_populated(g.get('rankings_no_shinn'), rank_mode)
         rankings_same_role = _slim_variant_rankings_if_populated(g.get('rankings_same_role'), rank_mode)
+        rankings_support_role = _slim_variant_rankings_if_populated(g.get('rankings_support_role'), rank_mode)
         return {
             'unit': g.get('unit'),
             'weapon_elems': g.get('weapon_elems'),
@@ -5318,6 +5401,7 @@ def _normalize_group_for_mode(g, rank_mode):
             'rankings_no_ur': rankings_no_ur,
             'rankings_no_shinn': rankings_no_shinn,
             'rankings_same_role': rankings_same_role,
+            'rankings_support_role': rankings_support_role,
             'weapon_info': g.get('weapon_info'),
             'is_sd': g.get('is_sd', False),
             'bundled_pilot_id': g.get('bundled_pilot_id'),

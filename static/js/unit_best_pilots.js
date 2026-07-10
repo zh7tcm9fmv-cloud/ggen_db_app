@@ -33,6 +33,13 @@
     super: 30
   };
   var ATTACK_ROLE_ID = '1';
+  var DEFENSE_ROLE_ID = '2';
+  var SUPPORT_ROLE_ID = '3';
+  var ROLE_FILTER_ICONS = {
+    '1': '/static/images/UI/UI_Common_TypeIcon_Attack_M.webp',
+    '2': '/static/images/UI/UI_Common_TypeIcon_Defense_M.webp',
+    '3': '/static/images/UI/UI_Common_TypeIcon_Support_M.webp'
+  };
 
   var state = {
     open: false,
@@ -42,7 +49,8 @@
     loadGen: 0,
     excludeUr: false,
     excludeShinn: false,
-    sameRole: false,
+    // all | same | support (support only offered on Attack units)
+    roleMode: 'all',
     rankMode: 'normal',
     // unitId -> { modes: { super_crit, crit, normal }, ... }
     cache: {},
@@ -178,10 +186,39 @@
     return unitRoleId() === ATTACK_ROLE_ID;
   }
 
+  function isSameRoleMode() {
+    return state.roleMode === 'same';
+  }
+
+  function isSupportRoleMode() {
+    return state.roleMode === 'support' && isAttackUnit();
+  }
+
+  function roleIconsHtml(ids) {
+    return (ids || []).map(function (id) {
+      var src = ROLE_FILTER_ICONS[String(id)];
+      if (!src) return '';
+      return '<img class="ubp-role-icon" src="' + imgUrl(src) + '" alt="" width="16" height="16"'
+        + ' loading="lazy" decoding="async" role="presentation">';
+    }).join('');
+  }
+
+  function roleModeIconsHtml() {
+    if (state.roleMode === 'support') return roleIconsHtml([SUPPORT_ROLE_ID]);
+    if (state.roleMode === 'same') {
+      var rid = unitRoleId();
+      if (rid && ROLE_FILTER_ICONS[rid]) return roleIconsHtml([rid]);
+      return roleIconsHtml([ATTACK_ROLE_ID]);
+    }
+    // Default: no role limit — all three role icons
+    return roleIconsHtml([ATTACK_ROLE_ID, DEFENSE_ROLE_ID, SUPPORT_ROLE_ID]);
+  }
+
   function shinnFilterRelevant() {
-    // Shinn is Attack-role; same-role on Defense/Support already excludes him.
+    // Shinn is Attack-role; same-role on Defense/Support and Supporters-only already exclude him.
     if (state.excludeUr) return false;
-    if (state.sameRole && !isAttackUnit()) return false;
+    if (isSupportRoleMode()) return false;
+    if (isSameRoleMode() && !isAttackUnit()) return false;
     return true;
   }
 
@@ -198,8 +235,7 @@
         : (t('msy_exclude_ur') || 'Exclude UR pilots');
     }
     if (shBtn) {
-      // Defense/Support + same-role already excludes Attack-role Shinn.
-      if (state.sameRole && !isAttackUnit()) state.excludeShinn = false;
+      if (!shinnFilterRelevant()) state.excludeShinn = false;
       var showShinn = shinnFilterRelevant();
       shBtn.style.display = showShinn ? '' : 'none';
       shBtn.setAttribute('aria-hidden', showShinn ? 'false' : 'true');
@@ -214,12 +250,30 @@
       }
     }
     if (roleBtn) {
-      roleBtn.classList.toggle('is-active', !!state.sameRole);
-      roleBtn.classList.toggle('active', !!state.sameRole);
-      roleBtn.setAttribute('aria-pressed', state.sameRole ? 'true' : 'false');
-      roleBtn.title = state.sameRole
-        ? (t('msy_same_role_on') || 'Showing same-role pilots only')
-        : (t('msy_same_role') || 'Same Role Characters Only');
+      // Non-Attack units cannot use Supporters-only — snap back if needed.
+      if (!isAttackUnit() && state.roleMode === 'support') state.roleMode = 'all';
+      var roleActive = state.roleMode !== 'all';
+      roleBtn.classList.toggle('is-active', roleActive);
+      roleBtn.classList.toggle('active', roleActive);
+      roleBtn.setAttribute('aria-pressed', roleActive ? 'true' : 'false');
+      var roleIcons = roleBtn.querySelector('.ubp-same-role-icons');
+      var titleText;
+      var ariaText;
+      if (state.roleMode === 'support') {
+        titleText = t('msy_support_role_on') || 'Showing Support-role pilots only';
+        ariaText = t('unit_best_pilot_support_role') || 'Supporters';
+      } else if (state.roleMode === 'same') {
+        titleText = t('msy_same_role_on') || 'Showing same-role pilots only';
+        ariaText = t('unit_best_pilot_same_role') || 'Same Role';
+      } else {
+        titleText = isAttackUnit()
+          ? (t('msy_role_filter_cycle') || 'Role filter: Same Role → Supporters only')
+          : (t('msy_same_role') || 'Same Role Characters Only');
+        ariaText = t('unit_best_pilot_same_role') || 'Role';
+      }
+      if (roleIcons) roleIcons.innerHTML = roleModeIconsHtml();
+      roleBtn.title = titleText;
+      roleBtn.setAttribute('aria-label', ariaText);
     }
     syncMetricButtons();
   }
@@ -362,9 +416,14 @@
       if (!shinnFilterRelevant()) return;
       state.excludeShinn = !state.excludeShinn;
     } else if (kind === 'same_role') {
-      state.sameRole = !state.sameRole;
-      // Defense/Support same-role already excludes Attack-role Shinn.
-      if (state.sameRole && !isAttackUnit()) state.excludeShinn = false;
+      if (isAttackUnit()) {
+        // Attack: All → Same Role → Supporters only → All
+        state.roleMode = state.roleMode === 'all' ? 'same'
+          : (state.roleMode === 'same' ? 'support' : 'all');
+      } else {
+        state.roleMode = state.roleMode === 'same' ? 'all' : 'same';
+      }
+      if (!shinnFilterRelevant()) state.excludeShinn = false;
     } else {
       return;
     }
@@ -372,18 +431,20 @@
     renderActivePanel();
   }
 
-  function filterPilotsLocal(pilots, noUr, noShinn, sameRole) {
+  function filterPilotsLocal(pilots, noUr, noShinn, sameRole, supportRole) {
     if (!pilots || !pilots.length) return [];
     if (noUr) noShinn = true;
     var unitRole = sameRole ? unitRoleId() : null;
-    if (!noUr && !noShinn && !sameRole) return pilots.slice();
+    if (!noUr && !noShinn && !sameRole && !supportRole) return pilots.slice();
     return pilots.filter(function (p) {
       var ch = (p && p.char) || {};
       var rarity = String(ch.rarity || '');
       var cid = String(ch.id || '');
+      var role = String(ch.role_id || '');
       if (noUr && rarity === 'UR') return false;
       if (noShinn && cid === SHINN_EX_CHAR_ID) return false;
-      if (sameRole && unitRole != null && String(ch.role_id || '') !== unitRole) return false;
+      if (supportRole && role !== SUPPORT_ROLE_ID) return false;
+      if (sameRole && unitRole != null && role !== unitRole) return false;
       return true;
     });
   }
@@ -399,9 +460,10 @@
     var board = modeEntry(entry);
     if (!board) return { pilots: [], partial: false };
     var noUr = !!state.excludeUr;
-    // Same-role on non-Attack already excludes Shinn — don't apply No Shinn on top.
+    // Same-role on non-Attack / Supporters-only already excludes Shinn — don't apply No Shinn on top.
     var noShinn = noUr || (!!state.excludeShinn && shinnFilterRelevant());
-    var sameRole = !!state.sameRole;
+    var sameRole = isSameRoleMode();
+    var supportRole = isSupportRoleMode();
     var rows = [];
     var partial = false;
     var mode = state.rankMode || 'super_crit';
@@ -413,46 +475,60 @@
 
     // Prefer dedicated calculator boards. Combined filters start from the richest
     // matching board, then apply the remaining constraints (never invent damage).
-    if (sameRole && noUr) {
+    if (supportRole && noUr) {
+      if (board.pilots_support_role && board.pilots_support_role.length) {
+        take(filterPilotsLocal(board.pilots_support_role, true, true, false, false), !!board.support_role_partial);
+      } else if (board.pilots_no_ur && board.pilots_no_ur.length) {
+        take(filterPilotsLocal(board.pilots_no_ur, false, false, false, true), !!board.no_ur_partial);
+      } else {
+        take(filterPilotsLocal(board.pilots || [], true, true, false, true), true);
+      }
+    } else if (supportRole) {
+      if (board.pilots_support_role && board.pilots_support_role.length) {
+        take(board.pilots_support_role, !!board.support_role_partial && board.pilots_support_role.length < 10);
+      } else {
+        take(filterPilotsLocal(board.pilots || [], false, false, false, true), true);
+      }
+    } else if (sameRole && noUr) {
       // Prefer same-role board (deeper store) then strip UR — fills Support/Defense lists.
       if (board.pilots_same_role && board.pilots_same_role.length) {
-        take(filterPilotsLocal(board.pilots_same_role, true, true, false), !!board.same_role_partial);
+        take(filterPilotsLocal(board.pilots_same_role, true, true, false, false), !!board.same_role_partial);
       } else if (board.pilots_no_ur && board.pilots_no_ur.length) {
-        take(filterPilotsLocal(board.pilots_no_ur, false, false, true), !!board.no_ur_partial);
+        take(filterPilotsLocal(board.pilots_no_ur, false, false, true, false), !!board.no_ur_partial);
       } else {
-        take(filterPilotsLocal(board.pilots || [], true, true, true), true);
+        take(filterPilotsLocal(board.pilots || [], true, true, true, false), true);
       }
       // If intersection is still thin, try the other dedicated board as a second pass.
       if (rows.length < 10 && board.pilots_no_ur && board.pilots_no_ur.length) {
-        var alt = filterPilotsLocal(board.pilots_no_ur, false, false, true);
+        var alt = filterPilotsLocal(board.pilots_no_ur, false, false, true, false);
         if (alt.length > rows.length) take(alt, !!board.no_ur_partial);
       }
     } else if (sameRole && noShinn) {
       // Attack + same-role + No Shinn: filter Shinn out of the same-role board.
       if (board.pilots_same_role && board.pilots_same_role.length) {
-        take(filterPilotsLocal(board.pilots_same_role, false, true, false), !!board.same_role_partial);
+        take(filterPilotsLocal(board.pilots_same_role, false, true, false, false), !!board.same_role_partial);
       } else if (board.pilots_no_shinn && board.pilots_no_shinn.length) {
-        take(filterPilotsLocal(board.pilots_no_shinn, false, false, true), !!board.no_shinn_partial);
+        take(filterPilotsLocal(board.pilots_no_shinn, false, false, true, false), !!board.no_shinn_partial);
       } else {
-        take(filterPilotsLocal(board.pilots || [], false, true, true), true);
+        take(filterPilotsLocal(board.pilots || [], false, true, true, false), true);
       }
     } else if (sameRole) {
       if (board.pilots_same_role && board.pilots_same_role.length) {
         take(board.pilots_same_role, !!board.same_role_partial && board.pilots_same_role.length < 10);
       } else {
-        take(filterPilotsLocal(board.pilots || [], false, false, true), true);
+        take(filterPilotsLocal(board.pilots || [], false, false, true, false), true);
       }
     } else if (noUr) {
       if (board.pilots_no_ur && board.pilots_no_ur.length) {
         take(board.pilots_no_ur, !!board.no_ur_partial && board.pilots_no_ur.length < 10);
       } else {
-        take(filterPilotsLocal(board.pilots || [], true, true, false), true);
+        take(filterPilotsLocal(board.pilots || [], true, true, false, false), true);
       }
     } else if (noShinn) {
       if (board.pilots_no_shinn && board.pilots_no_shinn.length) {
         take(board.pilots_no_shinn, !!board.no_shinn_partial && board.pilots_no_shinn.length < 10);
       } else {
-        take(filterPilotsLocal(board.pilots || [], false, true, false), true);
+        take(filterPilotsLocal(board.pilots || [], false, true, false, false), true);
       }
     } else {
       rows = board.pilots || [];
@@ -492,6 +568,7 @@
       enrich(board.pilots_no_ur);
       enrich(board.pilots_no_shinn);
       enrich(board.pilots_same_role);
+      enrich(board.pilots_support_role);
     });
   }
 
@@ -514,6 +591,7 @@
       collect(board.pilots_no_ur);
       collect(board.pilots_no_shinn);
       collect(board.pilots_same_role);
+      collect(board.pilots_support_role);
     });
     if (!charIds.length) return entry;
     try {
@@ -536,6 +614,7 @@
         attachSkills(board.pilots_no_ur);
         attachSkills(board.pilots_no_shinn);
         attachSkills(board.pilots_same_role);
+        attachSkills(board.pilots_support_role);
       });
     } catch (_) {}
     return entry;
@@ -849,9 +928,11 @@
       pilots_no_ur: sortPilotsByCalcDamage(payload.pilots_no_ur || [], mode),
       pilots_no_shinn: sortPilotsByCalcDamage(payload.pilots_no_shinn || [], mode),
       pilots_same_role: sortPilotsByCalcDamage(payload.pilots_same_role || [], mode),
+      pilots_support_role: sortPilotsByCalcDamage(payload.pilots_support_role || [], mode),
       no_ur_partial: !!payload.no_ur_partial,
       no_shinn_partial: !!payload.no_shinn_partial,
       same_role_partial: !!payload.same_role_partial,
+      support_role_partial: !!payload.support_role_partial,
       source: payload.source || 'published_dc',
       rank_mode: mode
     };
@@ -873,9 +954,11 @@
       pilots_no_ur: primary.pilots_no_ur,
       pilots_no_shinn: primary.pilots_no_shinn,
       pilots_same_role: primary.pilots_same_role,
+      pilots_support_role: primary.pilots_support_role,
       no_ur_partial: primary.no_ur_partial,
       no_shinn_partial: primary.no_shinn_partial,
       same_role_partial: primary.same_role_partial,
+      support_role_partial: primary.support_role_partial,
       source: primary.source,
       modes: modes
     };
@@ -968,14 +1051,19 @@
       var noUrBlock = ((group.rankings_no_ur || {})[mode]) || {};
       var noShinnBlock = ((group.rankings_no_shinn || {})[mode]) || {};
       var sameRoleBlock = ((group.rankings_same_role || {})[mode]) || {};
+      var supportRoleBlock = ((group.rankings_support_role || {})[mode]) || {};
       return {
         pilots: pilots,
         pilots_no_ur: sortPilotsByCalcDamage(noUrBlock.pilots || filterPilotsLocal(pilots, true, true), mode),
         pilots_no_shinn: sortPilotsByCalcDamage(noShinnBlock.pilots || filterPilotsLocal(pilots, false, true), mode),
         pilots_same_role: sortPilotsByCalcDamage(sameRoleBlock.pilots || filterPilotsLocal(pilots, false, false, true), mode),
+        pilots_support_role: sortPilotsByCalcDamage(
+          supportRoleBlock.pilots || filterPilotsLocal(pilots, false, false, false, true), mode
+        ),
         no_ur_partial: !(noUrBlock.pilots && noUrBlock.pilots.length >= 10),
         no_shinn_partial: !(noShinnBlock.pilots && noShinnBlock.pilots.length >= 10),
         same_role_partial: !(sameRoleBlock.pilots && sameRoleBlock.pilots.length >= 10),
+        support_role_partial: !(supportRoleBlock.pilots && supportRoleBlock.pilots.length >= 10),
         source: 'client_dc',
         rank_mode: mode
       };
@@ -993,9 +1081,11 @@
       pilots_no_ur: primary.pilots_no_ur,
       pilots_no_shinn: primary.pilots_no_shinn,
       pilots_same_role: primary.pilots_same_role,
+      pilots_support_role: primary.pilots_support_role,
       no_ur_partial: primary.no_ur_partial,
       no_shinn_partial: primary.no_shinn_partial,
       same_role_partial: primary.same_role_partial,
+      support_role_partial: primary.support_role_partial,
       source: 'client_dc',
       modes: modes
     };
@@ -1295,6 +1385,7 @@
     state.unitId = d ? String(d.id) : null;
     state.loaded = false;
     state.loading = false;
+    state.roleMode = 'all';
     state.loadGen++;
     var wrap = global.document.getElementById('unitBestPilotPanelWrap');
     if (wrap) {

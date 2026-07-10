@@ -416,15 +416,22 @@
 
 .unit-best-pilot-filters .ubp-same-role-btn {
   min-width: auto;
-  padding: 4px 8px;
+  padding: 4px 6px;
 }
 
-.unit-best-pilot-filters .ubp-same-role-label {
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: inherit;
+.unit-best-pilot-filters .ubp-same-role-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  line-height: 0;
+}
+
+.unit-best-pilot-filters .ubp-role-icon {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  display: block;
+  flex: 0 0 auto;
 }
 
 .unit-best-pilot-filters .msy-exclude-ur-icon,

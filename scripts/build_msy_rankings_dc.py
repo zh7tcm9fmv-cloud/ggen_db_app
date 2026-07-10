@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Build BSP published cache from live /cal (MsyDcEngine — same path as the site).
 
+v17 (Supporters-only): Attack units store rankings_support_role from calculator pairs.
+Rebuild Attack units with ``--unit-role 1`` (v16 remains fallback for other units).
+
 v16 (rules v3): full-catalog DC rankings with deeper store (top 20), real
 No UR / No Shinn / same-role variant lists from calculator pairs only.
 Never merge python-lite damage into published BSP caches.
@@ -320,6 +323,12 @@ def main():
     )
     ap.add_argument('--limit', type=int, default=0, help='Max units (0 = all selected)')
     ap.add_argument('--unit', action='append', default=[], help='Single unit id (repeatable)')
+    ap.add_argument(
+        '--unit-role',
+        default='',
+        help='Only rebuild units with this role id (1=Attack, 2=Defense, 3=Support). '
+             'Use 1 for v17 Supporters-only boards.',
+    )
     ap.add_argument('--resume', action='store_true', help='Skip units already in published cache')
     ap.add_argument('--force', action='store_true', help='Ignore existing cache rows for selected units')
     ap.add_argument(
@@ -340,7 +349,7 @@ def main():
     args = ap.parse_args()
 
     if args.loop:
-        log_path = os.path.join(ROOT, 'data', 'published', 'bsp_v16_build.log')
+        log_path = os.path.join(ROOT, 'data', 'published', 'bsp_v17_build.log')
         attempt = 0
         while True:
             attempt += 1
@@ -378,6 +387,8 @@ def main():
             if args.limit:
                 child.extend(['--limit', str(args.limit)])
             child.extend(sum([['--unit', u] for u in args.unit], []))
+            if args.unit_role:
+                child.extend(['--unit-role', str(args.unit_role)])
             rc = os.spawnv(os.P_WAIT, sys.executable, child)
             if rc == 0:
                 cache_key = msy._bsp_published_cache_key(
@@ -413,13 +424,40 @@ def main():
                         f'(cache {done_n}, +{skip_n} skips) — restarting'
                     )
                 else:
-                    total = len(msy._msy_rankable_unit_ids(args.lang))
-                    if done_n + skip_n >= total:
-                        print(f'BSP complete: {done_n}/{total} units (+{skip_n} permanent skips)')
+                    all_ids = msy._msy_rankable_unit_ids(args.lang)
+                    role_want = str(args.unit_role or '').strip()
+                    if role_want and role_want.upper() not in ('ALL', ''):
+                        target_ids = [
+                            u for u in all_ids
+                            if str(
+                                (msy._app().unit_info_map.get(msy._app().normalize_id(u)) or {})
+                                .get('role', '0')
+                            ) == role_want
+                        ]
+                    else:
+                        target_ids = list(all_ids)
+                    done_ids = {
+                        msy._app().normalize_id((g.get('unit') or {}).get('id'))
+                        for g in groups
+                    }
+                    skips = _load_permanent_skips()
+                    covered = sum(
+                        1 for u in target_ids
+                        if msy._app().normalize_id(u) in done_ids
+                        or msy._app().normalize_id(u) in skips
+                    )
+                    total = len(target_ids)
+                    if covered >= total:
+                        print(
+                            f'BSP complete: {covered}/{total} units'
+                            + (f' (role={role_want})' if role_want else '')
+                            + f' (+{skip_n} permanent skips; cache {done_n})'
+                        )
                         return
                     print(
-                        f'Build exited 0 but only {done_n}/{total} units '
-                        f'(+{skip_n} permanent skips) — restarting'
+                        f'Build exited 0 but only {covered}/{total} units'
+                        + (f' (role={role_want})' if role_want else '')
+                        + f' (+{skip_n} permanent skips) — restarting'
                     )
             else:
                 print(f'Build crashed (exit {rc}), restarting in 5s...', flush=True)
@@ -430,12 +468,24 @@ def main():
     exclude = set()
     pilot_ids = list(msy._pilot_pool_ids())
     top_pilots = int(args.top_pilots) or int(msy._BSP_STORE_TOP_PILOTS)
+    role_want = str(args.unit_role or '').strip()
     cache_key, existing_groups = _load_existing_v15(
         lang, top_pilots, for_build=True, allow_stale_rules=bool(args.incremental),
     )
     if args.force and not args.incremental:
-        # Full-catalog wipe. Incremental force still keeps long-tail rows.
-        existing_groups = []
+        if role_want and role_want.upper() not in ('ALL', ''):
+            # Role-scoped force: drop only matching role rows; keep other units in this tag.
+            existing_groups = [
+                g for g in existing_groups
+                if str(
+                    (msy._app().unit_info_map.get(
+                        msy._app().normalize_id((g.get('unit') or {}).get('id'))
+                    ) or {}).get('role', '0')
+                ) != role_want
+            ]
+        else:
+            # Full-catalog wipe. Incremental force still keeps long-tail rows.
+            existing_groups = []
     done = {
         msy._app().normalize_id((g.get('unit') or {}).get('id'))
         for g in existing_groups
@@ -463,6 +513,16 @@ def main():
     else:
         unit_ids = msy._msy_rankable_unit_ids(lang)
         scope_label = 'full catalog'
+
+    if role_want and role_want.upper() not in ('ALL', ''):
+        before = len(unit_ids)
+        unit_ids = [
+            u for u in unit_ids
+            if str((msy._app().unit_info_map.get(msy._app().normalize_id(u)) or {}).get('role', '0'))
+            == role_want
+        ]
+        scope_label = f'{scope_label} role={role_want}'
+        print(f'Unit-role filter {role_want}: {len(unit_ids)}/{before} units')
 
     if args.resume:
         # Formula incremental rebuilds re-sim top-N even when cached, unless --resume.
