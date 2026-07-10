@@ -120,11 +120,28 @@
       if (metricToggle) {
         ev.preventDefault();
         ev.stopPropagation();
+        closeRoleDropdown();
         toggleMetricDropdown();
         return;
       }
-      // Click outside closes metric dropdown.
+      var roleItem = ev.target.closest('#ubpRoleDdMenu [data-ubp-role-mode]');
+      if (roleItem) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        setRoleMode(roleItem.getAttribute('data-ubp-role-mode'));
+        return;
+      }
+      var roleToggle = ev.target.closest('#ubpRoleDdToggle');
+      if (roleToggle) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        closeMetricDropdown();
+        toggleRoleDropdown();
+        return;
+      }
+      // Click outside closes dropdowns.
       if (!ev.target.closest('#ubpMetricDropdown')) closeMetricDropdown();
+      if (!ev.target.closest('#ubpRoleDropdown')) closeRoleDropdown();
       var filterBtn = ev.target.closest('[data-ubp-filter]');
       if (filterBtn) {
         ev.preventDefault();
@@ -203,15 +220,30 @@
     }).join('');
   }
 
-  function roleModeIconsHtml() {
-    if (state.roleMode === 'support') return roleIconsHtml([SUPPORT_ROLE_ID]);
-    if (state.roleMode === 'same') {
-      var rid = unitRoleId();
-      if (rid && ROLE_FILTER_ICONS[rid]) return roleIconsHtml([rid]);
-      return roleIconsHtml([ATTACK_ROLE_ID]);
-    }
+  function sameRoleIconsHtml() {
+    var rid = unitRoleId();
+    if (rid && ROLE_FILTER_ICONS[rid]) return roleIconsHtml([rid]);
+    return roleIconsHtml([ATTACK_ROLE_ID]);
+  }
+
+  function roleModeIconsHtml(mode) {
+    var m = mode || state.roleMode;
+    if (m === 'support') return roleIconsHtml([SUPPORT_ROLE_ID]);
+    if (m === 'same') return sameRoleIconsHtml();
     // Default: no role limit — all three role icons
     return roleIconsHtml([ATTACK_ROLE_ID, DEFENSE_ROLE_ID, SUPPORT_ROLE_ID]);
+  }
+
+  function roleModeTitle(mode) {
+    if (mode === 'support') return t('msy_support_role_on') || 'Showing Support-role pilots only';
+    if (mode === 'same') return t('msy_same_role_on') || 'Showing same-role pilots only';
+    return t('msy_role_all') || 'All roles';
+  }
+
+  function roleModeAria(mode) {
+    if (mode === 'support') return t('msy_support_role') || 'Supporters only';
+    if (mode === 'same') return t('msy_same_role') || 'Same Role Characters Only';
+    return t('msy_role_all') || 'All roles';
   }
 
   function shinnFilterRelevant() {
@@ -225,7 +257,6 @@
   function syncFilterButtons() {
     var urBtn = global.document.getElementById('ubpExcludeUrBtn');
     var shBtn = global.document.getElementById('ubpExcludeShinnBtn');
-    var roleBtn = global.document.getElementById('ubpSameRoleBtn');
     if (urBtn) {
       urBtn.classList.toggle('is-active', !!state.excludeUr);
       urBtn.classList.toggle('active', !!state.excludeUr);
@@ -249,33 +280,42 @@
         ensureShinnFilterIcon();
       }
     }
+    syncRoleDropdown();
+    syncMetricButtons();
+  }
+
+  function syncRoleDropdown() {
+    // Non-Attack units cannot use Supporters-only — snap back if needed.
+    if (!isAttackUnit() && state.roleMode === 'support') state.roleMode = 'all';
+    var mode = state.roleMode || 'all';
+    var roleBtn = global.document.getElementById('ubpRoleDdToggle')
+      || global.document.getElementById('ubpSameRoleBtn');
     if (roleBtn) {
-      // Non-Attack units cannot use Supporters-only — snap back if needed.
-      if (!isAttackUnit() && state.roleMode === 'support') state.roleMode = 'all';
-      var roleActive = state.roleMode !== 'all';
+      var roleActive = mode !== 'all';
       roleBtn.classList.toggle('is-active', roleActive);
       roleBtn.classList.toggle('active', roleActive);
-      roleBtn.setAttribute('aria-pressed', roleActive ? 'true' : 'false');
       var roleIcons = roleBtn.querySelector('.ubp-same-role-icons');
-      var titleText;
-      var ariaText;
-      if (state.roleMode === 'support') {
-        titleText = t('msy_support_role_on') || 'Showing Support-role pilots only';
-        ariaText = t('unit_best_pilot_support_role') || 'Supporters';
-      } else if (state.roleMode === 'same') {
-        titleText = t('msy_same_role_on') || 'Showing same-role pilots only';
-        ariaText = t('unit_best_pilot_same_role') || 'Same Role';
-      } else {
-        titleText = isAttackUnit()
-          ? (t('msy_role_filter_cycle') || 'Role filter: Same Role → Supporters only')
-          : (t('msy_same_role') || 'Same Role Characters Only');
-        ariaText = t('unit_best_pilot_same_role') || 'Role';
-      }
-      if (roleIcons) roleIcons.innerHTML = roleModeIconsHtml();
-      roleBtn.title = titleText;
-      roleBtn.setAttribute('aria-label', ariaText);
+      if (roleIcons) roleIcons.innerHTML = roleModeIconsHtml(mode);
+      roleBtn.title = roleModeTitle(mode);
+      roleBtn.setAttribute('aria-label', roleModeAria(mode));
     }
-    syncMetricButtons();
+    var attack = isAttackUnit();
+    global.document.querySelectorAll('#ubpRoleDdMenu [data-ubp-role-mode]').forEach(function (el) {
+      var m = el.getAttribute('data-ubp-role-mode');
+      var on = m === mode;
+      el.classList.toggle('is-active', on);
+      el.setAttribute('aria-selected', on ? 'true' : 'false');
+      el.title = roleModeAria(m);
+      el.setAttribute('aria-label', roleModeAria(m));
+      if (m === 'support') {
+        el.hidden = !attack;
+        el.style.display = attack ? '' : 'none';
+      }
+      if (m === 'same') {
+        var sameIcons = el.querySelector('[data-ubp-role-same-icons]') || el.querySelector('.ubp-same-role-icons');
+        if (sameIcons) sameIcons.innerHTML = sameRoleIconsHtml();
+      }
+    });
   }
 
   function metricLabel(mode) {
@@ -363,6 +403,22 @@
     if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
 
+  function closeRoleDropdown() {
+    var dd = global.document.getElementById('ubpRoleDropdown');
+    if (dd) dd.classList.remove('is-open');
+    var btn = global.document.getElementById('ubpRoleDdToggle');
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  }
+
+  function toggleRoleDropdown() {
+    var dd = global.document.getElementById('ubpRoleDropdown');
+    if (!dd) return;
+    var open = !dd.classList.contains('is-open');
+    dd.classList.toggle('is-open', open);
+    var btn = global.document.getElementById('ubpRoleDdToggle');
+    if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
   function metricIconUrl(mode) {
     var path = RANK_MODE_ICON[mode] || RANK_MODE_ICON.normal;
     return typeof global.imgUrl === 'function' ? global.imgUrl(path) : path;
@@ -402,9 +458,23 @@
   function setRankMode(mode) {
     if (RANK_MODES.indexOf(mode) < 0) return;
     closeMetricDropdown();
+    closeRoleDropdown();
     if (state.rankMode === mode) return;
     state.rankMode = mode;
     syncMetricButtons();
+    renderActivePanel();
+  }
+
+  function setRoleMode(mode) {
+    var next = String(mode || 'all');
+    if (next !== 'all' && next !== 'same' && next !== 'support') return;
+    if (next === 'support' && !isAttackUnit()) next = 'all';
+    closeRoleDropdown();
+    closeMetricDropdown();
+    if (state.roleMode === next) return;
+    state.roleMode = next;
+    if (!shinnFilterRelevant()) state.excludeShinn = false;
+    syncFilterButtons();
     renderActivePanel();
   }
 
@@ -415,15 +485,6 @@
     } else if (kind === 'no_shinn') {
       if (!shinnFilterRelevant()) return;
       state.excludeShinn = !state.excludeShinn;
-    } else if (kind === 'same_role') {
-      if (isAttackUnit()) {
-        // Attack: All → Same Role → Supporters only → All
-        state.roleMode = state.roleMode === 'all' ? 'same'
-          : (state.roleMode === 'same' ? 'support' : 'all');
-      } else {
-        state.roleMode = state.roleMode === 'same' ? 'all' : 'same';
-      }
-      if (!shinnFilterRelevant()) state.excludeShinn = false;
     } else {
       return;
     }
@@ -1333,6 +1394,7 @@
   function closePanel() {
     state.open = false;
     closeMetricDropdown();
+    closeRoleDropdown();
     var wrap = global.document.getElementById('unitBestPilotPanelWrap');
     if (wrap) {
       wrap.classList.remove('is-open');
@@ -1382,6 +1444,7 @@
   function onDetailOpen(d) {
     state.open = false;
     closeMetricDropdown();
+    closeRoleDropdown();
     state.unitId = d ? String(d.id) : null;
     state.loaded = false;
     state.loading = false;

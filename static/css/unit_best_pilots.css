@@ -419,6 +419,15 @@
   padding: 4px 6px;
 }
 
+.unit-best-pilot-role-dd {
+  position: relative;
+  display: inline-flex;
+}
+
+.unit-best-pilot-role-dd-toggle {
+  gap: 3px;
+}
+
 .unit-best-pilot-filters .ubp-same-role-icons {
   display: inline-flex;
   align-items: center;
@@ -432,6 +441,57 @@
   object-fit: contain;
   display: block;
   flex: 0 0 auto;
+}
+
+.unit-best-pilot-role-dd-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 40;
+  min-width: 0;
+  width: max-content;
+  padding: 4px;
+  border-radius: 8px;
+  border: 1px solid rgba(125, 211, 252, 0.35);
+  background: rgba(8, 19, 36, 0.98);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.unit-best-pilot-role-dd.is-open .unit-best-pilot-role-dd-menu {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.unit-best-pilot-role-dd-item {
+  appearance: none;
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: var(--text-secondary);
+  border-radius: 6px;
+  padding: 5px 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  cursor: pointer;
+  min-height: 28px;
+}
+
+.unit-best-pilot-role-dd-item:hover {
+  background: rgba(14, 116, 144, 0.28);
+  color: var(--text-primary);
+}
+
+.unit-best-pilot-role-dd-item.is-active {
+  background: rgba(14, 116, 144, 0.35);
+  color: #e0f2fe;
+}
+
+.unit-best-pilot-role-dd-item[hidden] {
+  display: none !important;
 }
 
 .unit-best-pilot-filters .msy-exclude-ur-icon,
