@@ -16,12 +16,10 @@
     normal: 'msy_metric_normal'
   };
   var RANK_MODE_ICON = {
-    super_crit: '/static/images/UI/UI_Tention_Up_03.webp',
+    super_crit: '/static/images/UI/UI_Battle_MapUI_Label_SuperCritical.webp',
     crit: '/static/images/UI/UI_Battle_MapUI_Label_Critical.webp',
-    normal: '/static/images/UI/UI_Tention_Up_02.webp'
+    normal: '/static/images/UI/UI_Battle_MapUI_Label_Normal.webp'
   };
-  // Always show Critical label icon on the metric dropdown toggle.
-  var METRIC_TOGGLE_ICON = '/static/images/UI/UI_Battle_MapUI_Label_Critical.webp';
   var ATTACK_ROLE_ID = '1';
 
   var state = {
@@ -33,7 +31,7 @@
     excludeUr: false,
     excludeShinn: false,
     sameRole: false,
-    rankMode: 'super_crit',
+    rankMode: 'normal',
     // unitId -> { modes: { super_crit, crit, normal }, ... }
     cache: {},
     // unitId -> in-flight Promise<entry|null> (shared by prefetch + panel open)
@@ -299,8 +297,13 @@
     if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
 
+  function metricIconUrl(mode) {
+    var path = RANK_MODE_ICON[mode] || RANK_MODE_ICON.normal;
+    return typeof global.imgUrl === 'function' ? global.imgUrl(path) : path;
+  }
+
   function syncMetricButtons() {
-    var mode = state.rankMode || 'super_crit';
+    var mode = state.rankMode || 'normal';
     var label = metricLabel(mode);
     var btn = global.document.getElementById('ubpMetricDdToggle');
     if (btn) {
@@ -309,22 +312,23 @@
       btn.title = label;
       var img = btn.querySelector('.ubp-metric-icon');
       if (img) {
-        var url = typeof global.imgUrl === 'function' ? global.imgUrl(METRIC_TOGGLE_ICON) : METRIC_TOGGLE_ICON;
+        var url = metricIconUrl(mode);
         if (img.getAttribute('src') !== url) img.setAttribute('src', url);
       }
-      var lab = btn.querySelector('.ubp-metric-label');
-      if (lab) lab.textContent = label;
       btn.classList.add('is-active');
       btn.classList.add('active');
     }
     global.document.querySelectorAll('#ubpMetricDdMenu [data-ubp-metric]').forEach(function (el) {
-      var on = el.getAttribute('data-ubp-metric') === mode;
+      var m = el.getAttribute('data-ubp-metric');
+      var on = m === mode;
       el.classList.toggle('is-active', on);
       el.setAttribute('aria-selected', on ? 'true' : 'false');
-      var itemLab = el.querySelector('span');
-      if (itemLab) {
-        var m = el.getAttribute('data-ubp-metric');
-        if (m) itemLab.textContent = metricLabel(m);
+      el.title = metricLabel(m);
+      el.setAttribute('aria-label', metricLabel(m));
+      var img = el.querySelector('.ubp-metric-icon');
+      if (img && m) {
+        var url = metricIconUrl(m);
+        if (img.getAttribute('src') !== url) img.setAttribute('src', url);
       }
     });
   }

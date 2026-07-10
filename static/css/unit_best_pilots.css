@@ -250,7 +250,7 @@
   display: inline-flex;
 }
 
-/* Icon-first metric control: CRITICAL badge is the button identity. */
+/* Icon-only metric control: battle label icons represent each mode. */
 .unit-best-pilot-metric-dd-toggle {
   min-width: 0;
   max-width: none;
@@ -268,32 +268,28 @@
   height: 22px;
   padding: 0 1px;
   border-radius: 4px;
-  background: rgba(127, 29, 29, 0.35);
-  border: 1px solid rgba(248, 113, 113, 0.45);
+  background: transparent;
+  border: 0;
   box-sizing: border-box;
 }
 
 .unit-best-pilot-metric-dd-toggle .ubp-metric-icon,
 .unit-best-pilot-metric-dd-toggle .ubp-metric-icon--mark {
-  width: 40px;
-  height: 16px;
+  width: 44px;
+  height: 18px;
   object-fit: contain;
   flex-shrink: 0;
   display: block;
 }
 
+.unit-best-pilot-metric-dd-toggle[data-ubp-metric="super_crit"] .ubp-metric-icon,
+.unit-best-pilot-metric-dd-toggle[data-ubp-metric="super_crit"] .ubp-metric-icon--mark {
+  width: 36px;
+  height: 20px;
+}
+
 .unit-best-pilot-metric-dd-toggle .ubp-metric-label {
-  min-width: 0;
-  flex: 0 1 auto;
-  text-align: left;
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0;
-  line-height: 1.1;
-  white-space: nowrap;
-  max-width: 5.6rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  display: none;
 }
 
 .unit-best-pilot-metric-dd-caret {
@@ -310,8 +306,9 @@
   top: calc(100% + 4px);
   right: 0;
   z-index: 40;
-  min-width: max(100%, 8.5rem);
-  padding: 3px;
+  min-width: 0;
+  width: max-content;
+  padding: 4px;
   border-radius: 8px;
   border: 1px solid rgba(125, 211, 252, 0.35);
   background: rgba(8, 19, 36, 0.98);
@@ -319,7 +316,9 @@
 }
 
 .unit-best-pilot-metric-dd.is-open .unit-best-pilot-metric-dd-menu {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .unit-best-pilot-metric-dd-item {
@@ -329,15 +328,17 @@
   background: transparent;
   color: var(--text-secondary);
   border-radius: 6px;
-  padding: 4px 6px;
+  padding: 5px 7px;
   display: flex;
   align-items: center;
-  gap: 5px;
+  justify-content: center;
+  gap: 0;
   cursor: pointer;
   font-size: 10px;
   font-weight: 700;
-  text-align: left;
+  text-align: center;
   white-space: nowrap;
+  min-height: 28px;
 }
 
 .unit-best-pilot-metric-dd-item:hover {
@@ -350,17 +351,19 @@
   background: rgba(14, 116, 144, 0.35);
 }
 
-.unit-best-pilot-metric-dd-item .ubp-metric-icon {
-  width: 14px;
-  height: 14px;
+.unit-best-pilot-metric-dd-item .ubp-metric-icon,
+.unit-best-pilot-metric-dd-item .ubp-metric-icon--label {
+  width: 44px;
+  height: 16px;
   flex-shrink: 0;
+  object-fit: contain;
+  display: block;
 }
 
-.unit-best-pilot-metric-dd-item[data-ubp-metric="crit"] .ubp-metric-icon,
-.unit-best-pilot-metric-dd-item[data-ubp-metric="super_crit"] .ubp-metric-icon {
-  width: 28px;
-  height: 12px;
-  object-fit: contain;
+.unit-best-pilot-metric-dd-item[data-ubp-metric="super_crit"] .ubp-metric-icon,
+.unit-best-pilot-metric-dd-item[data-ubp-metric="super_crit"] .ubp-metric-icon--label {
+  width: 36px;
+  height: 20px;
 }
 
 .unit-best-pilot-filters {
@@ -871,10 +874,6 @@
     flex: 0 0 auto;
     min-width: 0;
     padding: 4px 6px;
-  }
-
-  .unit-best-pilot-metric-btn .ubp-metric-label {
-    font-size: 9px;
   }
 
   .detail-rec-link-card--has-bsp .unit-best-pilot-btn-slot--rec {
