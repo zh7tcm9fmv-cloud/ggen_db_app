@@ -3995,14 +3995,15 @@ def _trait_line_is_supercharged_ex_section(text):
     """True when text is part of a Supercharged EX 1/2 chain (not piloting-a-specific-MS gated)."""
     if not text or not isinstance(text, str):
         return False
-    return bool(re.search(r'(?:Supercharged\s+EX|超一擊EX)\s*[12]\b', text, re.IGNORECASE))
+    # EN + ZH 超一擊EX + JA 超一撃EX (撃 vs 擊)
+    return bool(re.search(r'(?:Supercharged\s+EX|超一[擊撃]EX)\s*[12]\b', text, re.IGNORECASE))
 
 
 def _slice_supercharged_ex_tier_sections(blob):
-    """Split EX trait text at Supercharged EX 1 / 2 (EN) or 超一擊EX1 / 2 (ZH) headers. Returns [(tier, label, chunk), ...]."""
+    """Split EX trait text at Supercharged EX 1 / 2 (EN) or 超一擊/撃EX1 / 2 (ZH/JA) headers. Returns [(tier, label, chunk), ...]."""
     if not blob or not isinstance(blob, str):
         return []
-    rx = re.compile(r'(?:Supercharged\s+EX|超一擊EX)\s*([12])\b', re.IGNORECASE)
+    rx = re.compile(r'(?:Supercharged\s+EX|超一[擊撃]EX)\s*([12])\b', re.IGNORECASE)
     matches = list(rx.finditer(blob))
     if len(matches) < 2:
         return []
@@ -7175,8 +7176,9 @@ def _extract_stat_percent_char_cjk(text):
     bonuses = {}
     if not text:
         return bonuses
-    ja_map = {'射撃値': 'Ranged', '格闘値': 'Melee', '覚醒値': 'Awaken', '回避値': 'Reaction', '防御力': 'Defense'}
-    ja_one = '(射撃値|格闘値|覚醒値|回避値|防御力)'
+    # 反応値 = Reaction (JA); 回避値 kept as legacy alias seen in some lines.
+    ja_map = {'射撃値': 'Ranged', '格闘値': 'Melee', '覚醒値': 'Awaken', '反応値': 'Reaction', '回避値': 'Reaction', '防御力': 'Defense'}
+    ja_one = '(射撃値|格闘値|覚醒値|反応値|回避値|防御力)'
     for m in re.finditer(r'自身の' + ja_one + r'と' + ja_one + r'が(\d+)%上昇', text):
         p = int(m.group(3))
         for gi in (1, 2):
@@ -7188,15 +7190,15 @@ def _extract_stat_percent_char_cjk(text):
         k = ja_map.get(m.group(1))
         if k:
             bonuses[k] = bonuses.get(k, 0) + p
-    zh_map = {'射擊值': 'Ranged', '格鬥值': 'Melee', '覺醒值': 'Awaken'}
-    mc = re.search(r'自身(射擊值|格鬥值|覺醒值)((?:及(?:射擊值|格鬥值|覺醒值))*)提升(\d+)%', text)
+    zh_map = {'射擊值': 'Ranged', '格鬥值': 'Melee', '覺醒值': 'Awaken', '反應值': 'Reaction'}
+    mc = re.search(r'自身(射擊值|格鬥值|覺醒值|反應值)((?:及(?:射擊值|格鬥值|覺醒值|反應值))*)提升(\d+)%', text)
     if mc:
         p = int(mc.group(3))
         k0 = zh_map.get(mc.group(1))
         if k0:
             bonuses[k0] = bonuses.get(k0, 0) + p
         rest = mc.group(2) or ''
-        for mm in re.finditer(r'及(射擊值|格鬥值|覺醒值)', rest):
+        for mm in re.finditer(r'及(射擊值|格鬥值|覺醒值|反應值)', rest):
             kk = zh_map.get(mm.group(1))
             if kk:
                 bonuses[kk] = bonuses.get(kk, 0) + p
@@ -7206,6 +7208,8 @@ def _extract_stat_percent_char_cjk(text):
         bonuses['Melee'] = bonuses.get('Melee', 0) + int(mm.group(1))
     for mm in re.finditer(r'自身覺醒值提升(\d+)%', text):
         bonuses['Awaken'] = bonuses.get('Awaken', 0) + int(mm.group(1))
+    for mm in re.finditer(r'自身反應值提升(\d+)%', text):
+        bonuses['Reaction'] = bonuses.get('Reaction', 0) + int(mm.group(1))
     return bonuses
 
 
@@ -21590,7 +21594,8 @@ def get_character(char_id):
                     tbb = math.floor(bv * pct / 100) if bv > 0 else 0
                     row.append({'name': s, 'base': bv, 'total': bv + tbb, 'bonus': tbb, 'trait_pct': pct})
                 ex_supercharged_tiers_payload.append({'tier': et['tier'], 'label': et['label'], 'stats': row})
-            swe = ex_supercharged_tiers_payload[0]['stats']
+            # Default CP-on sheet / DC fallback to max Supercharged EX (EX2), matching rankings.
+            swe = ex_supercharged_tiers_payload[-1]['stats']
         stats = sne; stats_with_ex = swe; sp_stats = ssne; sp_stats_with_ex = sswe
         # CP toggle when "on" state adds anything: conditional passives (e.g. Vigor) and/or EX-trait % (UR EX slot).
         has_ex_stats = bool(ex_supercharged_tiers)
