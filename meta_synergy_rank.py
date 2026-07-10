@@ -640,9 +640,14 @@ def _formula_char_atk_for_pair(cid, uid, lc, attack_attr, *, cp_on=True):
     return _char_atk_with_skills_for_pair(cid, uid, lc, attack_attr, cp_on=cp_on)
 
 
-def _build_char_ac_calc(cid, lc):
+def _build_char_ac_for_lang(cid, lc):
+    """Build character ability entries in the requested UI language (names/details/tags)."""
     A = _app()
-    ldc = _calc_lang_data()
+    lc = (lc or A.CALC_LANG or 'EN').upper()
+    if lc == 'JP':
+        lc = 'JA'
+    ldc = _ldc(lc) or _calc_lang_data()
+    en_ldc = _calc_lang_data()
     cid = A.normalize_id(cid)
     fa = [x for x in A.extract_data_list(A.char_abil) if A.normalize_id(x.get('CharacterId', '')) == cid]
 
@@ -651,20 +656,28 @@ def _build_char_ac_calc(cid, lc):
         spid = A.normalize_id(ab.get('SpAbilityId') or ab.get('spAbilityId'))
         bab = A.build_ability_entry(
             bid, ldc['abil_name_map'], A.abil_link_map, A.trait_set_traits_map, A.trait_data_map,
-            ldc['lang_text_map'], ldc['lang_text_map'], A.trait_condition_raw_map, ldc['lineage_lookup'],
+            ldc['lang_text_map'], en_ldc.get('lang_text_map') or ldc['lang_text_map'],
+            A.trait_condition_raw_map, ldc['lineage_lookup'],
             ldc['series_name_map'], A.ability_resource_map, ldc['abil_desc_map'],
-            sort_order=int(ab.get('SortOrder', 0)), lang_code=A.CALC_LANG,
+            sort_order=int(ab.get('SortOrder', 0)), lang_code=lc,
         )
         if spid and spid not in ('0', 'None', bid):
             bab['sp_replacement'] = A.build_ability_entry(
                 spid, ldc['abil_name_map'], A.abil_link_map, A.trait_set_traits_map, A.trait_data_map,
-                ldc['lang_text_map'], ldc['lang_text_map'], A.trait_condition_raw_map, ldc['lineage_lookup'],
+                ldc['lang_text_map'], en_ldc.get('lang_text_map') or ldc['lang_text_map'],
+                A.trait_condition_raw_map, ldc['lineage_lookup'],
                 ldc['series_name_map'], A.ability_resource_map, ldc['abil_desc_map'],
-                sort_order=int(ab.get('SortOrder', 0)), lang_code=A.CALC_LANG,
+                sort_order=int(ab.get('SortOrder', 0)), lang_code=lc,
             )
         return bab
 
     return [build_ab(ab) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder', 0)))]
+
+
+def _build_char_ac_calc(cid, lc):
+    """EN ability text for damage-formula parsing (CALC_LANG). `lc` kept for call-site compat."""
+    del lc
+    return _build_char_ac_for_lang(cid, _app().CALC_LANG)
 
 
 def _pair_ok_for_unit(uid, cid, trait_pair_unit_ids):
@@ -1389,10 +1402,16 @@ def _pilot_pep_unit_stat_bonus_pct(cid, uid, lc, *, cp_on=True, pair_ok=False):
 
 
 def _msy_pilot_unit_affinities(cid, uid, lc):
-    """Tag-affinity ability lines that match this unit×pilot pair (for MSY UI)."""
+    """Tag-affinity ability lines that match this unit×pilot pair (for MSY UI).
+
+    Uses UI-language ability text (not CALC_LANG/EN) so Top 10 / MSY cards localize.
+    """
     A = _app()
     uid = A.normalize_id(uid)
     cid = A.normalize_id(cid)
+    lc = (lc or 'EN').upper()
+    if lc == 'JP':
+        lc = 'JA'
     unit_tag_map = {}
     for t in A.resolve_tags(A.unit_lin_map, uid, lc, 'unit'):
         nm = (t.get('name') or '').strip()
@@ -1402,7 +1421,7 @@ def _msy_pilot_unit_affinities(cid, uid, lc):
         return []
     out = []
     seen = set()
-    for bab in _build_char_ac_calc(cid, lc):
+    for bab in _build_char_ac_for_lang(cid, lc):
         ab_name = str(bab.get('name') or '').strip()
         for src in (bab, bab.get('sp_replacement')):
             if not src:

@@ -43,20 +43,64 @@ app = Flask(__name__)
 # Trust Railway / CDN client IP headers (required for IP-based vote ballots).
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 
-# Bust cache when static/js/app.js changes (content-addressed tag from mtime+size).
+# Bust cache when static assets change OR when a new git commit is deployed.
 # IMPORTANT: compute at HTML render time, not only at process import — otherwise Flask
 # keeps serving the same ?v= after app.js edits until the server restarts, and browsers
 # keep an old cached bundle (users never see DC / weapon UI fixes).
+# Prefer git HEAD so every production deploy (new commit) forces clients to re-fetch
+# JS/CSS even if file mtimes are unchanged in the image.
+_APP_GIT_REV_CACHE = None
+
+
+def _app_git_revision():
+    """Short git HEAD for cache-busting; None if unavailable."""
+    global _APP_GIT_REV_CACHE
+    if _APP_GIT_REV_CACHE is not None:
+        return _APP_GIT_REV_CACHE or None
+    env_rev = (
+        (os.environ.get('GIT_COMMIT') or '').strip()
+        or (os.environ.get('RAILWAY_GIT_COMMIT_SHA') or '').strip()
+        or (os.environ.get('SOURCE_VERSION') or '').strip()  # Heroku
+        or (os.environ.get('COMMIT_SHA') or '').strip()
+    )
+    if env_rev:
+        _APP_GIT_REV_CACHE = env_rev[:16]
+        return _APP_GIT_REV_CACHE
+    try:
+        import subprocess
+        root = os.path.dirname(os.path.abspath(__file__))
+        out = subprocess.check_output(
+            ['git', 'rev-parse', '--short=12', 'HEAD'],
+            cwd=root,
+            stderr=subprocess.DEVNULL,
+            timeout=2,
+        )
+        rev = (out.decode('utf-8', errors='ignore') or '').strip()
+        _APP_GIT_REV_CACHE = rev[:16] if rev else ''
+    except Exception:
+        _APP_GIT_REV_CACHE = ''
+    return _APP_GIT_REV_CACHE or None
+
+
 def _app_js_bundle_version_tag():
     root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
     assets = (
         ('js', 'app.js'),
         ('js', 'msy_dc_engine.js'),
+        ('js', 'msy_dc_worker.js'),
         ('js', 'unit_best_pilots.js'),
+        ('js', 'meta_synergy.js'),
         ('js', 'kofi_donate_promo.js'),
+        ('css', 'unit_best_pilots.css'),
+        ('css', 'mobile_layout.css'),
+        ('css', 'craft_ui.css'),
+        ('css', 'master_league.css'),
         ('css', 'kofi_donate_promo.css'),
     )
     parts = []
+    git_rev = _app_git_revision()
+    if git_rev:
+        parts.append(f'git:{git_rev}')
     for subdir, name in assets:
         p = os.path.join(root, subdir, name)
         try:
@@ -13541,6 +13585,19 @@ def health_check():
     return jsonify(payload), (200 if ready else 503)
 
 
+@app.route('/api/client_version')
+def api_client_version():
+    """Lightweight version probe so open tabs can hard-reload after a new deploy/commit."""
+    payload = {
+        'v': _app_js_bundle_version_tag(),
+        'git': _app_git_revision() or '',
+    }
+    r = make_response(jsonify(payload))
+    r.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate'
+    r.headers['Pragma'] = 'no-cache'
+    return r
+
+
 @app.route('/')
 def index(): 
     return _serve_index()
@@ -15080,7 +15137,10 @@ _AFFINITY_FACTION_LV_RE = re.compile(
 )
 _AFFINITY_LINEAGE_CANONICAL = None
 _AFFINITY_PILOTING_TAG_RE = re.compile(
-    r'piloting units with specified tags',
+    r'piloting units with specified tags|'
+    r'指定.*?タグ|指定.*?標籤|指定.*?标签|'
+    r'含有上述「標籤」|搭乘單位含有上述「標籤」|'
+    r'上記の「タグ」|搭乗ユニットが上記の「タグ」',
     re.IGNORECASE,
 )
 _CHAR_AFFINITY_SCAN_CACHE = {}
