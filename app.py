@@ -2847,22 +2847,66 @@ def collect_unit_weapon_range_debuff_keys(
     return frozenset()
 
 
-def collect_unit_weapon_debuff_keys(uid, ld, lc, stat_mode='normal'):
+def collect_unit_weapon_debuff_keys(uid, ld, lc, stat_mode='normal', cond_active=False, pilot_cond_active=False):
     ld_f, lc_f = _lang_data_for_weapon_debuff_filter(ld, lc)
     acc = set(collect_unit_weapon_trait_only_debuff_keys(uid, ld_f, lc_f, stat_mode=stat_mode))
-    acc |= set(collect_unit_weapon_range_debuff_keys(uid, ld_f, lc_f, stat_mode))
+    acc |= set(collect_unit_weapon_range_debuff_keys(
+        uid, ld_f, lc_f, stat_mode, cond_active=cond_active, pilot_cond_active=pilot_cond_active))
     return frozenset(acc)
 
 
-def unit_matches_weapon_debuff_filter(uid, ld, lc, want_filter, _memo=None, stat_mode='normal', combine='and'):
+def _unit_form_weapon_debuff_keys(
+        fid, ld, lc, stat_mode='normal', _memo=None, cond_active=False, pilot_cond_active=False):
+    """Resolved weapon-debuff keys for one unit form (uses browse cache in normal mode)."""
+    if _memo is None:
+        _memo = {}
+    fid = normalize_id(fid)
+    if fid in _memo:
+        return _memo[fid]
+    sm = (stat_mode or 'normal').strip().lower()
+    if sm not in ('normal', 'sp', 'ssp'):
+        sm = 'normal'
+    ld_f, lc_f = _lang_data_for_weapon_debuff_filter(ld, lc)
+    if sm == 'normal':
+        wmap = UNIT_WEAPON_DEBUFF_KEYS_CACHE.get(lc) or UNIT_WEAPON_DEBUFF_KEYS_CACHE.get(lc_f)
+        if wmap is not None and fid in wmap:
+            trait_dk = wmap[fid]
+        else:
+            trait_dk = collect_unit_weapon_trait_only_debuff_keys(fid, ld_f, lc_f, stat_mode=sm)
+    else:
+        trait_dk = collect_unit_weapon_trait_only_debuff_keys(fid, ld_f, lc_f, stat_mode=sm)
+    range_dk = collect_unit_weapon_range_debuff_keys(
+        fid, ld_f, lc_f, sm, cond_active=cond_active, pilot_cond_active=pilot_cond_active)
+    keys = frozenset(set(trait_dk) | set(range_dk))
+    _memo[fid] = keys
+    return keys
+
+
+def _unit_form_matches_weapon_debuff_filter(
+        fid, ld, lc, want_filter, combine='and', stat_mode='normal', _memo=None,
+        cond_active=False, pilot_cond_active=False):
+    if not want_filter:
+        return True
+    have = _unit_form_weapon_debuff_keys(
+        fid, ld, lc, stat_mode, _memo, cond_active=cond_active, pilot_cond_active=pilot_cond_active)
+    return apply_browse_combine_match(want_filter, lambda k: k in have, combine)
+
+
+def unit_matches_weapon_debuff_filter(
+        uid, ld, lc, want_filter, _memo=None, stat_mode='normal', combine='and',
+        cond_active=False, pilot_cond_active=False):
+    """True when this unit or a transform alternate has the selected weapon effect keys."""
     if want_filter is None:
         return True
     if _memo is None:
         _memo = {}
-    if uid not in _memo:
-        _memo[uid] = collect_unit_weapon_debuff_keys(uid, ld, lc, stat_mode)
-    have = _memo[uid]
-    return apply_browse_combine_match(want_filter, lambda k: k in have, combine)
+    info = unit_info_map.get(normalize_id(uid)) or {}
+    for fid in _unit_ids_for_terrain_filter(uid, info):
+        if _unit_form_matches_weapon_debuff_filter(
+                fid, ld, lc, want_filter, combine, stat_mode, _memo,
+                cond_active=cond_active, pilot_cond_active=pilot_cond_active):
+            return True
+    return False
 
 
 def series_filter_cache_fragment(sid):
@@ -16479,6 +16523,37 @@ def unit_matches_shape_filters(uid, info, ld, lc, stat_mode, **kwargs):
     return False
 
 
+def unit_matches_browse_form_filters(
+        uid, info, ld, lc, stat_mode, *,
+        weapon_debuff_filter=None, weapon_debuff_combine='and', _debuff_memo=None,
+        cond_active=False, pilot_cond_active=False, **shape_kw):
+    """Pass when some transform form satisfies all active shape + weapon-debuff filters together."""
+    shape_kw = dict(shape_kw)
+    shape_kw.setdefault('cond_active', cond_active)
+    shape_kw.setdefault('pilot_cond_active', pilot_cond_active)
+    shape_active = _unit_shape_filters_active(
+        shape_kw.get('role_filter'), shape_kw.get('terrain_filter'),
+        shape_kw.get('weapon_range_filter'), shape_kw.get('weapon_range_non_map_filter'),
+        shape_kw.get('map_weapon_range_filter'))
+    debuff_active = bool(weapon_debuff_filter)
+    if not shape_active and not debuff_active:
+        return True
+    if _debuff_memo is None:
+        _debuff_memo = {}
+    for fid in _unit_ids_for_terrain_filter(uid, info):
+        finfo = unit_info_map.get(fid)
+        if not finfo:
+            continue
+        if shape_active and not _unit_form_matches_shape_filters(fid, finfo, ld, lc, stat_mode, **shape_kw):
+            continue
+        if debuff_active and not _unit_form_matches_weapon_debuff_filter(
+                fid, ld, lc, weapon_debuff_filter, weapon_debuff_combine, stat_mode, _debuff_memo,
+                cond_active=cond_active, pilot_cond_active=pilot_cond_active):
+            continue
+        return True
+    return False
+
+
 def _unit_shape_filter_display_id(uid, info, ld, lc, stat_mode, **kwargs):
     """Browse list row: show the family form that satisfies all active shape filters."""
     if not _unit_shape_filters_active(
@@ -16493,6 +16568,44 @@ def _unit_shape_filter_display_id(uid, info, ld, lc, stat_mode, **kwargs):
             continue
         finfo = unit_info_map.get(fid)
         if finfo and _unit_form_matches_shape_filters(fid, finfo, ld, lc, stat_mode, **kwargs):
+            return fid
+    return uid
+
+
+def _unit_browse_form_filter_display_id(
+        uid, info, ld, lc, stat_mode, *,
+        weapon_debuff_filter=None, weapon_debuff_combine='and', _debuff_memo=None,
+        cond_active=False, pilot_cond_active=False, **shape_kw):
+    """Browse list row: prefer the transform form that satisfies shape + weapon-debuff filters."""
+    shape_kw = dict(shape_kw)
+    shape_kw.setdefault('cond_active', cond_active)
+    shape_kw.setdefault('pilot_cond_active', pilot_cond_active)
+    shape_active = _unit_shape_filters_active(
+        shape_kw.get('role_filter'), shape_kw.get('terrain_filter'),
+        shape_kw.get('weapon_range_filter'), shape_kw.get('weapon_range_non_map_filter'),
+        shape_kw.get('map_weapon_range_filter'))
+    debuff_active = bool(weapon_debuff_filter)
+    if not shape_active and not debuff_active:
+        return uid
+    if _debuff_memo is None:
+        _debuff_memo = {}
+
+    def _form_ok(fid):
+        finfo = unit_info_map.get(fid)
+        if not finfo:
+            return False
+        if shape_active and not _unit_form_matches_shape_filters(fid, finfo, ld, lc, stat_mode, **shape_kw):
+            return False
+        if debuff_active and not _unit_form_matches_weapon_debuff_filter(
+                fid, ld, lc, weapon_debuff_filter, weapon_debuff_combine, stat_mode, _debuff_memo,
+                cond_active=cond_active, pilot_cond_active=pilot_cond_active):
+            return False
+        return True
+
+    if _form_ok(uid):
+        return uid
+    for fid in _unit_ids_for_terrain_filter(uid, info):
+        if fid != uid and _form_ok(fid):
             return fid
     return uid
 
@@ -16634,7 +16747,11 @@ def unit_passes_browse_pool_filters(
         cond_active=cond_active,
         pilot_cond_active=pilot_cond_active,
     )
-    if not id_seek and not unit_matches_shape_filters(uid, info, ld, lc, stat_mode, **_shape_kw):
+    _debuff = weapon_debuff_filter if apply_weapon_debuff else None
+    if not id_seek and not unit_matches_browse_form_filters(
+            uid, info, ld, lc, stat_mode,
+            weapon_debuff_filter=_debuff, weapon_debuff_combine=weapon_debuff_combine,
+            **_shape_kw):
         return False
     if rarity_filter is not None:
         if not rarity_filter:
@@ -16658,9 +16775,6 @@ def unit_passes_browse_pool_filters(
             return False
     if apply_ability and ability_filter is not None:
         if not id_seek and not entity_matches_unit_abilities_filter(uid, ability_filter, ability_combine):
-            return False
-    if apply_weapon_debuff and weapon_debuff_filter:
-        if not id_seek and not unit_matches_weapon_debuff_filter(uid, ld, lc, weapon_debuff_filter, _memo=None, stat_mode=stat_mode, combine=weapon_debuff_combine):
             return False
     lid = ld['unit_id_map'].get(uid, '')
     name = ld['unit_text_map'].get(lid, '') if lid else ''
@@ -17598,7 +17712,7 @@ def list_units():
     want_stat_bounds_u = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
     sbu_ck = 'sbd1' if want_stat_bounds_u else 'sbd0'
     rb_u_ck = 'rb1' if ranking_bulk_u else 'rb0'
-    ck = f"ul53_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul54_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached: return jsonify(cached)
     warming = _browse_list_warming_guard('unit')
@@ -17657,7 +17771,12 @@ def list_units():
             cond_active=cond_list,
             pilot_cond_active=pilot_cond_list,
         )
-        if not id_seek and not unit_matches_shape_filters(uid, info, ld, lc, stat_mode, **_shape_kw):
+        if not id_seek and not unit_matches_browse_form_filters(
+                uid, info, ld, lc, stat_mode,
+                weapon_debuff_filter=weapon_debuff_filter,
+                weapon_debuff_combine=_cbu['weapon_debuff_combine'],
+                _debuff_memo=_debuff_memo,
+                **_shape_kw):
             continue
         lid = ld['unit_id_map'].get(uid, ''); name = ld['unit_text_map'].get(lid, '') if lid else ''
         if not name:
@@ -17711,26 +17830,6 @@ def list_units():
             ss = (ss + (UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID.get(uid, ''))).strip().lower()
             if not search_row_matches_query(sq, ss, ser_names_lower, ser_list, entity_id=uid, primary=(q_scope in ('primary', 'name_id'))):
                 continue
-        _ld_f, _lc_f = _lang_data_for_weapon_debuff_filter(ld, lc)
-        if weapon_debuff_filter:
-            if uid not in _debuff_memo:
-                if stat_mode == 'normal':
-                    wmap = UNIT_WEAPON_DEBUFF_KEYS_CACHE.get(lc)
-                    if wmap is not None and uid in wmap:
-                        trait_dk = wmap[uid]
-                    else:
-                        trait_dk = frozenset()
-                else:
-                    trait_dk = collect_unit_weapon_trait_only_debuff_keys(
-                        uid, _ld_f, _lc_f, stat_mode=stat_mode,
-                    )
-                range_dk = collect_unit_weapon_range_debuff_keys(
-                    uid, _ld_f, _lc_f, stat_mode,
-                    cond_active=cond_list, pilot_cond_active=pilot_cond_list,
-                )
-                _debuff_memo[uid] = frozenset(set(trait_dk) | set(range_dk))
-            if not id_seek and not unit_matches_weapon_debuff_filter(uid, ld, lc, weapon_debuff_filter, _debuff_memo, stat_mode, combine=_cbu['weapon_debuff_combine']):
-                continue
         mechanism_union |= set(UNIT_MECHANISM_MIDS_CACHE.get(uid, ()))
         if mechanism_filter:
             if not id_seek and not unit_matches_mechanism_filter(info, mechanism_filter, uid, combine=mechanism_combine):
@@ -17751,7 +17850,12 @@ def list_units():
         urow = {'id': uid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'series': ser_list, 'is_ultimate': bool(info.get('is_ultimate', False)), 'is_limited_time': uid in LIMITED_TIME_UNIT_IDS, 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))}
         display_uid = uid
         if not id_seek:
-            display_uid = _unit_shape_filter_display_id(uid, info, ld, lc, stat_mode, **_shape_kw)
+            display_uid = _unit_browse_form_filter_display_id(
+                uid, info, ld, lc, stat_mode,
+                weapon_debuff_filter=weapon_debuff_filter,
+                weapon_debuff_combine=_cbu['weapon_debuff_combine'],
+                _debuff_memo=_debuff_memo,
+                **_shape_kw)
         if display_uid != uid:
             _unit_browse_list_row_apply_display_form(urow, display_uid, ld, lc, stat_mode, cond_list)
         _map_preview_active = (
