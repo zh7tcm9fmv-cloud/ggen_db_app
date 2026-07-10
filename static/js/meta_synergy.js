@@ -1293,8 +1293,26 @@
     }
     if (pilot.dmg_dealt_pct != null && pilot.dmg_dealt_pct !== '') {
       var passive = pilot.dmg_dealt_pct | 0;
-      var dmgLine = 'Damage Dealt: ' + passive + '%';
-      parts.push('<div class="msy-pilot-dmg-dealt-pct" title="Damage Dealt Up % from DC formula">' + esc(dmgLine) + '</div>');
+      var vigorPct = pilot.vigor_dmg_pct;
+      if (vigorPct == null || vigorPct === '') {
+        var vigorKey = String(pilot.vigor || '').toLowerCase();
+        var vigorMap = { medium: 0, high: 10, max: 20, super: 30 };
+        if (!Object.prototype.hasOwnProperty.call(vigorMap, vigorKey)) {
+          // Metric boards: super_crit→super(30), crit→max(20), normal→high(10).
+          var modeVigor = { super_crit: 'super', crit: 'max', normal: 'high' };
+          vigorKey = modeVigor[state.rankMode || 'super_crit'] || 'super';
+        }
+        vigorPct = vigorMap[vigorKey] | 0;
+      } else {
+        vigorPct = vigorPct | 0;
+      }
+      var total = passive + vigorPct;
+      var dmgTpl = t('msy_dmg_dealt') || 'Damage Dealt: {n}%';
+      var dmgLine = dmgTpl.replace('{n}', String(total));
+      var title = (t('msy_dmg_dealt_title') || 'Damage Dealt Up % (passive {p}% + vigor {v}%)')
+        .replace('{p}', String(passive))
+        .replace('{v}', String(vigorPct));
+      parts.push('<div class="msy-pilot-dmg-dealt-pct" title="' + escAttr(title) + '">' + esc(dmgLine) + '</div>');
     }
     return parts.join('');
   }

@@ -20,6 +20,18 @@
     crit: '/static/images/UI/UI_Battle_MapUI_Label_Critical.webp',
     normal: '/static/images/UI/UI_Battle_MapUI_Label_Normal.webp'
   };
+  // Match Damage Simulator / published BSP: each metric board is simmed at its required vigor.
+  var RANK_MODE_VIGOR = {
+    super_crit: 'super',
+    crit: 'max',
+    normal: 'high'
+  };
+  var VIGOR_DMG_PCT = {
+    medium: 0,
+    high: 10,
+    max: 20,
+    super: 30
+  };
   var ATTACK_ROLE_ID = '1';
 
   var state = {
@@ -684,9 +696,23 @@
     }
     if (pilot.dmg_dealt_pct != null && pilot.dmg_dealt_pct !== '') {
       var passive = pilot.dmg_dealt_pct | 0;
+      var vigorPct = pilot.vigor_dmg_pct;
+      if (vigorPct == null || vigorPct === '') {
+        var vigorKey = String(pilot.vigor || '').toLowerCase();
+        if (!VIGOR_DMG_PCT.hasOwnProperty(vigorKey)) {
+          vigorKey = RANK_MODE_VIGOR[state.rankMode || 'super_crit'] || 'super';
+        }
+        vigorPct = VIGOR_DMG_PCT[vigorKey] | 0;
+      } else {
+        vigorPct = vigorPct | 0;
+      }
+      // Same ⑨ pool as Damage Simulator: passive Damage Dealt Up % + vigor bonus.
+      var total = passive + vigorPct;
       var dmgTpl = t('msy_dmg_dealt') || 'Damage Dealt: {n}%';
-      var dmgLine = dmgTpl.replace('{n}', String(passive));
-      var title = t('msy_dmg_dealt') || 'Damage Dealt Up % from DC formula';
+      var dmgLine = dmgTpl.replace('{n}', String(total));
+      var title = (t('msy_dmg_dealt_title') || 'Damage Dealt Up % (passive {p}% + vigor {v}%)')
+        .replace('{p}', String(passive))
+        .replace('{v}', String(vigorPct));
       parts += '<div class="msy-pilot-dmg-dealt-pct" title="' + escAttr(title) + '">'
         + esc(dmgLine) + '</div>';
     }
