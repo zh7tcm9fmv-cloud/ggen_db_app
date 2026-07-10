@@ -9,7 +9,8 @@
     "NameLanguageId": 140500000001000601,
     "DescriptionLanguageId": 140600000001000601,
     "BuffLabelColorTypeIndex": 5,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 100060201,
@@ -21,7 +22,8 @@
     "NameLanguageId": 140500000001000602,
     "DescriptionLanguageId": 140600000001000602,
     "BuffLabelColorTypeIndex": 5,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 100060301,
@@ -33,7 +35,8 @@
     "NameLanguageId": 140500000001000603,
     "DescriptionLanguageId": 140600000001000603,
     "BuffLabelColorTypeIndex": 5,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 100060401,
@@ -45,7 +48,8 @@
     "NameLanguageId": 140500000001000604,
     "DescriptionLanguageId": 140600000001000604,
     "BuffLabelColorTypeIndex": 5,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 100060501,
@@ -57,7 +61,8 @@
     "NameLanguageId": 140500000001000605,
     "DescriptionLanguageId": 140600000001000605,
     "BuffLabelColorTypeIndex": 5,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 110070101,
@@ -69,7 +74,8 @@
     "NameLanguageId": 140500000001100701,
     "DescriptionLanguageId": 140600000001100701,
     "BuffLabelColorTypeIndex": 5,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 110070201,
@@ -81,7 +87,8 @@
     "NameLanguageId": 140500000001100702,
     "DescriptionLanguageId": 140600000001100702,
     "BuffLabelColorTypeIndex": 5,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 110070301,
@@ -93,7 +100,8 @@
     "NameLanguageId": 140500000001100703,
     "DescriptionLanguageId": 140600000001100703,
     "BuffLabelColorTypeIndex": 5,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 110070401,
@@ -105,7 +113,8 @@
     "NameLanguageId": 140500000001100704,
     "DescriptionLanguageId": 140600000001100704,
     "BuffLabelColorTypeIndex": 5,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 110070501,
@@ -117,7 +126,8 @@
     "NameLanguageId": 140500000001100705,
     "DescriptionLanguageId": 140600000001100705,
     "BuffLabelColorTypeIndex": 5,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 120090101,
@@ -129,7 +139,8 @@
     "NameLanguageId": 140500000001200901,
     "DescriptionLanguageId": 140600000001200901,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 120090201,
@@ -141,7 +152,8 @@
     "NameLanguageId": 140500000001200902,
     "DescriptionLanguageId": 140600000001200902,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 120090301,
@@ -153,7 +165,8 @@
     "NameLanguageId": 140500000001200903,
     "DescriptionLanguageId": 140600000001200903,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 120090401,
@@ -165,7 +178,8 @@
     "NameLanguageId": 140500000001200904,
     "DescriptionLanguageId": 140600000001200904,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 120090501,
@@ -177,7 +191,8 @@
     "NameLanguageId": 140500000001200905,
     "DescriptionLanguageId": 140600000001200905,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 130080101,
@@ -189,7 +204,8 @@
     "NameLanguageId": 140500000001300801,
     "DescriptionLanguageId": 140600000001300801,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 130080201,
@@ -201,7 +217,8 @@
     "NameLanguageId": 140500000001300802,
     "DescriptionLanguageId": 140600000001300802,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 130080301,
@@ -213,7 +230,8 @@
     "NameLanguageId": 140500000001300803,
     "DescriptionLanguageId": 140600000001300803,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 130080401,
@@ -225,7 +243,8 @@
     "NameLanguageId": 140500000001300804,
     "DescriptionLanguageId": 140600000001300804,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 130080501,
@@ -237,7 +256,8 @@
     "NameLanguageId": 140500000001300805,
     "DescriptionLanguageId": 140600000001300805,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 130140101,
@@ -249,7 +269,8 @@
     "NameLanguageId": 140500000130140101,
     "DescriptionLanguageId": 140600000130140101,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 130140201,
@@ -261,7 +282,8 @@
     "NameLanguageId": 140500000130140201,
     "DescriptionLanguageId": 140600000130140201,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 130140301,
@@ -273,7 +295,8 @@
     "NameLanguageId": 140500000130140301,
     "DescriptionLanguageId": 140600000130140301,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 130140401,
@@ -285,7 +308,8 @@
     "NameLanguageId": 140500000130140401,
     "DescriptionLanguageId": 140600000130140401,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 130140501,
@@ -297,7 +321,8 @@
     "NameLanguageId": 140500000130140501,
     "DescriptionLanguageId": 140600000130140501,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 160050101,
@@ -309,7 +334,8 @@
     "NameLanguageId": 140500000001600501,
     "DescriptionLanguageId": 140600000001600501,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 160050201,
@@ -321,7 +347,8 @@
     "NameLanguageId": 140500000001600502,
     "DescriptionLanguageId": 140600000001600502,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 160050301,
@@ -333,7 +360,8 @@
     "NameLanguageId": 140500000001600503,
     "DescriptionLanguageId": 140600000001600503,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 160050401,
@@ -345,7 +373,8 @@
     "NameLanguageId": 140500000001600504,
     "DescriptionLanguageId": 140600000001600504,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 160050501,
@@ -357,7 +386,8 @@
     "NameLanguageId": 140500000001600505,
     "DescriptionLanguageId": 140600000001600505,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 170010101,
@@ -369,7 +399,8 @@
     "NameLanguageId": 140500000001700101,
     "DescriptionLanguageId": 140600000001700101,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 170010201,
@@ -381,7 +412,8 @@
     "NameLanguageId": 140500000001700102,
     "DescriptionLanguageId": 140600000001700102,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 170010301,
@@ -393,7 +425,8 @@
     "NameLanguageId": 140500000001700103,
     "DescriptionLanguageId": 140600000001700103,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 170010401,
@@ -405,7 +438,8 @@
     "NameLanguageId": 140500000001700104,
     "DescriptionLanguageId": 140600000001700104,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 170010501,
@@ -417,7 +451,8 @@
     "NameLanguageId": 140500000001700105,
     "DescriptionLanguageId": 140600000001700105,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 180160101,
@@ -429,7 +464,8 @@
     "NameLanguageId": 140500000180160101,
     "DescriptionLanguageId": 140600000180160101,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 180160201,
@@ -441,7 +477,8 @@
     "NameLanguageId": 140500000180160201,
     "DescriptionLanguageId": 140600000180160201,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 180160301,
@@ -453,7 +490,8 @@
     "NameLanguageId": 140500000180160301,
     "DescriptionLanguageId": 140600000180160301,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 180160401,
@@ -465,7 +503,8 @@
     "NameLanguageId": 140500000180160401,
     "DescriptionLanguageId": 140600000180160401,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 180160501,
@@ -477,7 +516,8 @@
     "NameLanguageId": 140500000180160501,
     "DescriptionLanguageId": 140600000180160501,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 190150101,
@@ -489,7 +529,8 @@
     "NameLanguageId": 140500000190150101,
     "DescriptionLanguageId": 140600000190150101,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 190150201,
@@ -501,7 +542,8 @@
     "NameLanguageId": 140500000190150201,
     "DescriptionLanguageId": 140600000190150201,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 190150301,
@@ -513,7 +555,8 @@
     "NameLanguageId": 140500000190150301,
     "DescriptionLanguageId": 140600000190150301,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 190150401,
@@ -525,7 +568,8 @@
     "NameLanguageId": 140500000190150401,
     "DescriptionLanguageId": 140600000190150401,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 190150501,
@@ -537,7 +581,8 @@
     "NameLanguageId": 140500000190150501,
     "DescriptionLanguageId": 140600000190150501,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 200170101,
@@ -549,7 +594,8 @@
     "NameLanguageId": 140500000200170101,
     "DescriptionLanguageId": 140600000200170101,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 200170201,
@@ -561,7 +607,8 @@
     "NameLanguageId": 140500000200170201,
     "DescriptionLanguageId": 140600000200170201,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 200170301,
@@ -573,7 +620,8 @@
     "NameLanguageId": 140500000200170301,
     "DescriptionLanguageId": 140600000200170301,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 200170401,
@@ -585,7 +633,8 @@
     "NameLanguageId": 140500000200170401,
     "DescriptionLanguageId": 140600000200170401,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 200170501,
@@ -597,7 +646,8 @@
     "NameLanguageId": 140500000200170501,
     "DescriptionLanguageId": 140600000200170501,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 210100101,
@@ -609,7 +659,8 @@
     "NameLanguageId": 140500000002101001,
     "DescriptionLanguageId": 140600000002101001,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 210100201,
@@ -621,7 +672,8 @@
     "NameLanguageId": 140500000002101002,
     "DescriptionLanguageId": 140600000002101002,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 210100301,
@@ -633,7 +685,8 @@
     "NameLanguageId": 140500000002101003,
     "DescriptionLanguageId": 140600000002101003,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 210100401,
@@ -645,7 +698,8 @@
     "NameLanguageId": 140500000002101004,
     "DescriptionLanguageId": 140600000002101004,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 210100501,
@@ -657,7 +711,8 @@
     "NameLanguageId": 140500000002101005,
     "DescriptionLanguageId": 140600000002101005,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 220020101,
@@ -669,7 +724,8 @@
     "NameLanguageId": 140500000002200201,
     "DescriptionLanguageId": 140600000002200201,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 220020201,
@@ -681,7 +737,8 @@
     "NameLanguageId": 140500000002200202,
     "DescriptionLanguageId": 140600000002200202,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 220020301,
@@ -693,7 +750,8 @@
     "NameLanguageId": 140500000002200203,
     "DescriptionLanguageId": 140600000002200203,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 220020401,
@@ -705,7 +763,8 @@
     "NameLanguageId": 140500000002200204,
     "DescriptionLanguageId": 140600000002200204,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 220020501,
@@ -717,7 +776,8 @@
     "NameLanguageId": 140500000002200205,
     "DescriptionLanguageId": 140600000002200205,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 230030101,
@@ -729,7 +789,8 @@
     "NameLanguageId": 140500000002300301,
     "DescriptionLanguageId": 140600000002300301,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 230030201,
@@ -741,7 +802,8 @@
     "NameLanguageId": 140500000002300302,
     "DescriptionLanguageId": 140600000002300302,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 230030301,
@@ -753,7 +815,8 @@
     "NameLanguageId": 140500000002300303,
     "DescriptionLanguageId": 140600000002300303,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 230030401,
@@ -765,7 +828,8 @@
     "NameLanguageId": 140500000002300304,
     "DescriptionLanguageId": 140600000002300304,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 230030501,
@@ -777,7 +841,8 @@
     "NameLanguageId": 140500000002300305,
     "DescriptionLanguageId": 140600000002300305,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 240110101,
@@ -789,7 +854,8 @@
     "NameLanguageId": 140500000002401101,
     "DescriptionLanguageId": 140600000002401101,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 240110201,
@@ -801,7 +867,8 @@
     "NameLanguageId": 140500000002401102,
     "DescriptionLanguageId": 140600000002401102,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 240110301,
@@ -813,7 +880,8 @@
     "NameLanguageId": 140500000002401103,
     "DescriptionLanguageId": 140600000002401103,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 240110401,
@@ -825,7 +893,8 @@
     "NameLanguageId": 140500000002401104,
     "DescriptionLanguageId": 140600000002401104,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 240110501,
@@ -837,7 +906,8 @@
     "NameLanguageId": 140500000002401105,
     "DescriptionLanguageId": 140600000002401105,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 260040101,
@@ -849,7 +919,8 @@
     "NameLanguageId": 140500000002600401,
     "DescriptionLanguageId": 140600000002600401,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 260040201,
@@ -861,7 +932,8 @@
     "NameLanguageId": 140500000002600402,
     "DescriptionLanguageId": 140600000002600402,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 260040301,
@@ -873,7 +945,8 @@
     "NameLanguageId": 140500000002600403,
     "DescriptionLanguageId": 140600000002600403,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 260040401,
@@ -885,7 +958,8 @@
     "NameLanguageId": 140500000002600404,
     "DescriptionLanguageId": 140600000002600404,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 260040501,
@@ -897,7 +971,8 @@
     "NameLanguageId": 140500000002600405,
     "DescriptionLanguageId": 140600000002600405,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 270130101,
@@ -909,7 +984,8 @@
     "NameLanguageId": 141300000270130101,
     "DescriptionLanguageId": 141400000270130101,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 270130102,
@@ -921,7 +997,8 @@
     "NameLanguageId": 141300000270130102,
     "DescriptionLanguageId": 141400000270130102,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 270130201,
@@ -933,7 +1010,8 @@
     "NameLanguageId": 141300000270130201,
     "DescriptionLanguageId": 141400000270130201,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 270130202,
@@ -945,7 +1023,8 @@
     "NameLanguageId": 141300000270130202,
     "DescriptionLanguageId": 141400000270130202,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 270130301,
@@ -957,7 +1036,8 @@
     "NameLanguageId": 141300000270130301,
     "DescriptionLanguageId": 141400000270130301,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 270130302,
@@ -969,7 +1049,8 @@
     "NameLanguageId": 141300000270130302,
     "DescriptionLanguageId": 141400000270130302,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 270130401,
@@ -981,7 +1062,8 @@
     "NameLanguageId": 141300000270130401,
     "DescriptionLanguageId": 141400000270130401,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 270130402,
@@ -993,7 +1075,8 @@
     "NameLanguageId": 141300000270130402,
     "DescriptionLanguageId": 141400000270130402,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 270130501,
@@ -1005,7 +1088,8 @@
     "NameLanguageId": 141300000270130501,
     "DescriptionLanguageId": 141400000270130501,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 270130502,
@@ -1017,7 +1101,8 @@
     "NameLanguageId": 141300000270130502,
     "DescriptionLanguageId": 141400000270130502,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 280140101,
@@ -1029,7 +1114,8 @@
     "NameLanguageId": 140500000280140101,
     "DescriptionLanguageId": 140600000280140101,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 280140102,
@@ -1041,7 +1127,8 @@
     "NameLanguageId": 140500000280140102,
     "DescriptionLanguageId": 140600000280140102,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 280140201,
@@ -1053,7 +1140,8 @@
     "NameLanguageId": 140500000280140201,
     "DescriptionLanguageId": 140600000280140201,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 280140202,
@@ -1065,7 +1153,8 @@
     "NameLanguageId": 140500000280140202,
     "DescriptionLanguageId": 140600000280140202,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 280140301,
@@ -1077,7 +1166,8 @@
     "NameLanguageId": 140500000280140301,
     "DescriptionLanguageId": 140600000280140301,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 280140302,
@@ -1089,7 +1179,8 @@
     "NameLanguageId": 140500000280140302,
     "DescriptionLanguageId": 140600000280140302,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 280140401,
@@ -1101,7 +1192,8 @@
     "NameLanguageId": 140500000280140401,
     "DescriptionLanguageId": 140600000280140401,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 280140402,
@@ -1113,7 +1205,8 @@
     "NameLanguageId": 140500000280140402,
     "DescriptionLanguageId": 140600000280140402,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 280140501,
@@ -1125,7 +1218,8 @@
     "NameLanguageId": 140500000280140501,
     "DescriptionLanguageId": 140600000280140501,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 280140502,
@@ -1137,7 +1231,8 @@
     "NameLanguageId": 140500000280140502,
     "DescriptionLanguageId": 140600000280140502,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 290180101,
@@ -1149,7 +1244,8 @@
     "NameLanguageId": 140500000290180101,
     "DescriptionLanguageId": 140600000290180101,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 290180201,
@@ -1161,7 +1257,8 @@
     "NameLanguageId": 140500000290180201,
     "DescriptionLanguageId": 140600000290180201,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 290180301,
@@ -1173,7 +1270,8 @@
     "NameLanguageId": 140500000290180301,
     "DescriptionLanguageId": 140600000290180301,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 290180401,
@@ -1185,7 +1283,8 @@
     "NameLanguageId": 140500000290180401,
     "DescriptionLanguageId": 140600000290180401,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 290180501,
@@ -1197,7 +1296,8 @@
     "NameLanguageId": 140500000290180501,
     "DescriptionLanguageId": 140600000290180501,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 300190101,
@@ -1209,7 +1309,8 @@
     "NameLanguageId": 140500000300190101,
     "DescriptionLanguageId": 140600000300190101,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 300190201,
@@ -1221,7 +1322,8 @@
     "NameLanguageId": 140500000300190201,
     "DescriptionLanguageId": 140600000300190201,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 300190301,
@@ -1233,7 +1335,8 @@
     "NameLanguageId": 140500000300190301,
     "DescriptionLanguageId": 140600000300190301,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 300190401,
@@ -1245,7 +1348,8 @@
     "NameLanguageId": 140500000300190401,
     "DescriptionLanguageId": 140600000300190401,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 300190501,
@@ -1257,7 +1361,8 @@
     "NameLanguageId": 140500000300190501,
     "DescriptionLanguageId": 140600000300190501,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 310200101,
@@ -1269,7 +1374,8 @@
     "NameLanguageId": 140500000310200101,
     "DescriptionLanguageId": 140600000310200101,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 310200201,
@@ -1281,7 +1387,8 @@
     "NameLanguageId": 140500000310200201,
     "DescriptionLanguageId": 140600000310200201,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 310200301,
@@ -1293,7 +1400,8 @@
     "NameLanguageId": 140500000310200301,
     "DescriptionLanguageId": 140600000310200301,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 310200401,
@@ -1305,7 +1413,8 @@
     "NameLanguageId": 140500000310200401,
     "DescriptionLanguageId": 140600000310200401,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 310200501,
@@ -1317,7 +1426,8 @@
     "NameLanguageId": 140500000310200501,
     "DescriptionLanguageId": 140600000310200501,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 320210101,
@@ -1329,7 +1439,8 @@
     "NameLanguageId": 140500000320210101,
     "DescriptionLanguageId": 141400000320210101,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 320210201,
@@ -1341,7 +1452,8 @@
     "NameLanguageId": 140500000320210201,
     "DescriptionLanguageId": 141400000320210201,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 320210301,
@@ -1353,7 +1465,8 @@
     "NameLanguageId": 140500000320210301,
     "DescriptionLanguageId": 141400000320210301,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 320210401,
@@ -1365,7 +1478,8 @@
     "NameLanguageId": 140500000320210401,
     "DescriptionLanguageId": 141400000320210401,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 320210501,
@@ -1377,7 +1491,8 @@
     "NameLanguageId": 140500000320210501,
     "DescriptionLanguageId": 141400000320210501,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 330220101,
@@ -1389,7 +1504,8 @@
     "NameLanguageId": 141300000330220101,
     "DescriptionLanguageId": 141400000330220101,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 330220102,
@@ -1401,7 +1517,8 @@
     "NameLanguageId": 141300000330220102,
     "DescriptionLanguageId": 141400000330220102,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 330220201,
@@ -1413,7 +1530,8 @@
     "NameLanguageId": 141300000330220201,
     "DescriptionLanguageId": 141400000330220201,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 330220202,
@@ -1425,7 +1543,8 @@
     "NameLanguageId": 141300000330220202,
     "DescriptionLanguageId": 141400000330220202,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 330220301,
@@ -1437,7 +1556,8 @@
     "NameLanguageId": 141300000330220301,
     "DescriptionLanguageId": 141400000330220301,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 330220302,
@@ -1449,7 +1569,8 @@
     "NameLanguageId": 141300000330220302,
     "DescriptionLanguageId": 141400000330220302,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 340230201,
@@ -1461,7 +1582,8 @@
     "NameLanguageId": 140500000340230201,
     "DescriptionLanguageId": 140600000340230201,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 350240101,
@@ -1473,7 +1595,8 @@
     "NameLanguageId": 140500000350240101,
     "DescriptionLanguageId": 140600000350240101,
     "BuffLabelColorTypeIndex": 5,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 350240201,
@@ -1485,7 +1608,8 @@
     "NameLanguageId": 140500000350240201,
     "DescriptionLanguageId": 140600000350240201,
     "BuffLabelColorTypeIndex": 5,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 350240301,
@@ -1497,7 +1621,8 @@
     "NameLanguageId": 140500000350240301,
     "DescriptionLanguageId": 140600000350240301,
     "BuffLabelColorTypeIndex": 5,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 350240401,
@@ -1509,7 +1634,8 @@
     "NameLanguageId": 140500000350240401,
     "DescriptionLanguageId": 140600000350240401,
     "BuffLabelColorTypeIndex": 5,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 350240501,
@@ -1521,7 +1647,8 @@
     "NameLanguageId": 140500000350240501,
     "DescriptionLanguageId": 140600000350240501,
     "BuffLabelColorTypeIndex": 5,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 360250301,
@@ -1533,7 +1660,8 @@
     "NameLanguageId": 140500000360250301,
     "DescriptionLanguageId": 140600000360250301,
     "BuffLabelColorTypeIndex": 5,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 370260101,
@@ -1545,7 +1673,8 @@
     "NameLanguageId": 140500000370260101,
     "DescriptionLanguageId": 140600000370260101,
     "BuffLabelColorTypeIndex": 5,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 900000001,
@@ -1557,7 +1686,8 @@
     "NameLanguageId": 140500000009000100,
     "DescriptionLanguageId": 140600000009000100,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 900000002,
@@ -1569,7 +1699,8 @@
     "NameLanguageId": 140500000009000101,
     "DescriptionLanguageId": 140600000009000101,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 900000005,
@@ -1581,7 +1712,8 @@
     "NameLanguageId": 140500000009000105,
     "DescriptionLanguageId": 140600000009000105,
     "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 900000801,
@@ -1593,6 +1725,7 @@
     "NameLanguageId": 140500000900000801,
     "DescriptionLanguageId": 140600000009000801,
     "BuffLabelColorTypeIndex": 5,
-    "IsDisplayUpDown": false
+    "IsDisplayUpDown": false,
+    "Unknown_Col_10": 0
   }
 ]

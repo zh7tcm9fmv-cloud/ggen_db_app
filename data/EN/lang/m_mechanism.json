@@ -29,7 +29,7 @@
   },
   {
     "id": 140900000000000008,
-    "value": "Refit"
+    "value": "Rearm"
   },
   {
     "id": 141000000000000001,
@@ -61,6 +61,6 @@
   },
   {
     "id": 141000000000000008,
-    "value": "Unit acquires Refit capability.\nChanges weapons, type, and stats."
+    "value": "Unit acquires Rearm capability.\nChanges weapons, type, and stats."
   }
 ]

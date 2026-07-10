@@ -62118,24 +62118,6 @@
     "OverrideGrantStartEffectResourceId": ""
   },
   {
-    "TraitSetId": 612020110,
-    "ResourceId": "trait_10580100",
-    "DuplicationGroupId": "",
-    "NameLanguageId": 140100000612020110,
-    "SortNameLanguageId": 0,
-    "DescriptionLanguageId": 0,
-    "SearchWordGroupId": 0,
-    "RarityTypeIndex": 4,
-    "BuffDebuffTypeIndex": 1,
-    "IsStackable": false,
-    "StackLimit": 0,
-    "BuffLabelColorTypeIndex": 3,
-    "IsDisplayUpDown": false,
-    "IsEnabledWhileAllTraitsUsable": false,
-    "IsEnabledWithGrantOwnerActive": false,
-    "OverrideGrantStartEffectResourceId": ""
-  },
-  {
     "TraitSetId": 612030101,
     "ResourceId": "trait_10050100",
     "DuplicationGroupId": "",
