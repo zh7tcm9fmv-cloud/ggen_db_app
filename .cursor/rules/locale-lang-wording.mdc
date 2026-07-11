@@ -1,0 +1,18 @@
+---
+description: Locale UI wording must match official data/*/lang terminology
+alwaysApply: true
+---
+
+# Locale wording (LANG source of truth)
+
+When adding or changing user-facing strings for **EN / JA / TW / HK**:
+
+1. Treat `data/{LOCALE}/lang/` as the glossary source of truth (especially `m_help.json`, traits, skills, weapon text).
+2. Cross-check UI labels in `static/js/app.js` (`T.EN` / `T.TW` / `T.HK` / `JP_CORE_LABELS` / `Object.assign(T.*)` overlays) against that LANG wording before shipping.
+3. Do **not** invent alternate translations when LANG already defines the term.
+4. High-priority combat glossary (from official help):
+   - **Critical**: EN `Critical` · JA `クリティカル` (not `会心`) · TW/HK `爆擊` (not `暴擊`)
+   - **Accuracy**: EN `Accuracy` · JA/TW/HK `命中`
+   - **Vigor**: EN `Vigor` (`Normal` / `High` / `Max` / `Supercharged`) · JA `テンション` (`普通` / `強気` / `超強気` / `超一撃`) · TW/HK `戰意` (`一般` / `強勢` / `超強勢` / `超一擊`)
+   - Character stats / unit stats / roles: match the same LANG help section wording
+5. Prefer LANG help/trait/skill phrasing over older fan translations when they disagree.
