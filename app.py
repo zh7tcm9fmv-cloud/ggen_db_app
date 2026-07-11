@@ -524,7 +524,7 @@ UI_LABELS = {
         'stage_recommended_cp': 'Recommended CP: {}', 'stage_no_prefix': 'No. {}', 'sortie_group': 'Squad {}',
         'restriction_applies_unit': 'Applies to Units', 'restriction_applies_both': 'Applies to Units & Characters',
         'restriction_applies_characters': 'Applies to Characters',
-        'terrain_space': 'Space', 'terrain_atmospheric': 'Atmospheric', 'terrain_ground': 'Ground', 'terrain_amphibious': 'Amphibious', 'terrain_unknown': 'Unknown',
+        'terrain_space': 'Space', 'terrain_atmospheric': 'Atmospheric', 'terrain_ground': 'Land', 'terrain_amphibious': 'Underwater', 'terrain_unknown': 'Unknown',
         'victory_conditions': 'Victory Conditions', 'defeat_conditions': 'Defeat Conditions', 'none': 'None',
         'difficulty_normal': 'Normal', 'difficulty_hard': 'Hard', 'difficulty_expert': 'Expert',
         'difficulty_none': 'None', 'difficulty_hell': 'Hell', 'difficulty_inferno': 'Inferno',
@@ -535,7 +535,7 @@ UI_LABELS = {
     },
     'TW': {
         'restriction_before_moving': '僅限移動前使用。',
-        'restriction_tension_max': '鬥志Max以上時可使用。',
+        'restriction_tension_max': '戰意Max以上時可使用。',
         'restriction_mp': '消耗{}MP時可使用。',
         'restriction_hp': '消耗{}%HP時可使用。',
         'restriction_recover_hp': '使用時恢復{}%HP。',
@@ -545,7 +545,7 @@ UI_LABELS = {
         'stage_recommended_cp': '推薦戰力：{}', 'stage_no_prefix': 'No. {}', 'sortie_group': '小隊 {}',
         'restriction_applies_unit': '僅適用於單位', 'restriction_applies_both': '適用於單位與角色',
         'restriction_applies_characters': '適用於角色',
-        'terrain_space': '宇宙', 'terrain_atmospheric': '空中', 'terrain_ground': '地上', 'terrain_amphibious': '水陸', 'terrain_unknown': '未知',
+        'terrain_space': '宇宙', 'terrain_atmospheric': '空中', 'terrain_ground': '地面', 'terrain_amphibious': '水中', 'terrain_unknown': '未知',
         'victory_conditions': '勝利條件', 'defeat_conditions': '敗北條件', 'none': '無',
         'difficulty_normal': '普通', 'difficulty_hard': '困難', 'difficulty_expert': '專家',
         'difficulty_none': '無', 'difficulty_hell': '地獄', 'difficulty_inferno': '煉獄',
@@ -587,7 +587,7 @@ UI_LABELS = {
         'stage_recommended_cp': '推奨戦力: {}', 'stage_no_prefix': 'No. {}', 'sortie_group': '小隊 {}',
         'restriction_applies_unit': '機体に適用', 'restriction_applies_both': '機体とキャラに適用',
         'restriction_applies_characters': 'キャラクターに適用',
-        'terrain_space': '宇宙', 'terrain_atmospheric': '空中', 'terrain_ground': '地上', 'terrain_amphibious': '水陸', 'terrain_unknown': '不明',
+        'terrain_space': '宇宙', 'terrain_atmospheric': '空中', 'terrain_ground': '地上', 'terrain_amphibious': '水中', 'terrain_unknown': '不明',
         'victory_conditions': '勝利条件', 'defeat_conditions': '敗北条件', 'none': 'なし',
         'difficulty_normal': '通常', 'difficulty_hard': 'ハード', 'difficulty_expert': 'エキスパート',
         'difficulty_none': 'なし', 'difficulty_hell': 'ヘル', 'difficulty_inferno': 'インフェルノ',
@@ -618,13 +618,14 @@ def resolve_role_label(role_id, lang_code=None):
         lc = 'JA'
     m = ROLE_NAME_MAP_CHARS.get(lc) or ROLE_NAME_MAP_CHARS['EN']
     return m.get(en_label, en_label)
-# Indices align with StageTerrainTypeIndex in m_stage / m_help five terrain types (EN: Space, Atmospheric, Land, Sea, Underwater).
+# Indices align with StageTerrainTypeIndex in m_stage / m_help five terrain types.
+# Official m_help: EN Land/Underwater; TW+HK 地面/水面/水中; JA 地上/水上/水中.
 STAGE_TERRAIN_MAP = {
     '1': {'EN': 'Space', 'TW': '宇宙', 'HK': '宇宙', 'JA': '宇宙'},
     '2': {'EN': 'Atmospheric', 'TW': '空中', 'HK': '空中', 'JA': '空中'},
-    '3': {'EN': 'Ground', 'TW': '地上', 'HK': '地面', 'JA': '地上'},
+    '3': {'EN': 'Land', 'TW': '地面', 'HK': '地面', 'JA': '地上'},
     '4': {'EN': 'Sea', 'TW': '水面', 'HK': '水面', 'JA': '水上'},
-    '5': {'EN': 'Amphibious', 'TW': '水陸', 'HK': '水中', 'JA': '水陸'},
+    '5': {'EN': 'Underwater', 'TW': '水中', 'HK': '水中', 'JA': '水中'},
 }
 
 def get_ui_label(lang_code, key):
