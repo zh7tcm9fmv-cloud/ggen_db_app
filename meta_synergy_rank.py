@@ -125,13 +125,18 @@ def _calc_lang_data():
 
 
 def _unit_stat_mode(ri, *, wid=None, wm=None):
-    """Unit stat column: SSP when ranked weapon is SSP; SSR and lower use SP stats."""
+    """Unit stat column for BSP/MSY.
+
+    v18+: SSR and lower always use SSP stats (and SSP weapons when present).
+    UR also uses SSP. ``wid``/``wm`` kept for call-site compatibility.
+    """
+    del wid, wm
     ri = str(ri or '1')
-    if wid and _weapon_is_ssp_weapon(wid, wm):
-        return 'ssp'
-    if int(ri) <= 4:
-        return 'sp'
-    if ri == '5':
+    try:
+        rarity = int(ri)
+    except (TypeError, ValueError):
+        rarity = 1
+    if rarity <= 5:
         return 'ssp'
     return 'normal'
 
@@ -1605,14 +1610,14 @@ _MSY_BROWSE_PAYLOAD_CACHE_TTL = max(15, min(300, int(os.environ.get('MSY_BROWSE_
 _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
-_BSP_DC_RULES_VERSION = 6  # SSR Custom Core uses SSP best weapon (not SP-only); formula_stat from filtered wpnIdx
+_BSP_DC_RULES_VERSION = 7  # SSR and lower always use SSP unit stats for BSP
 _BSP_DC_BUILD_ENGINE = 'calculateDamage'
 # From v16 onward: formula/criteria rebuilds only refresh top-N + newly added units.
 # Full-catalog rebuilds are intentional opt-in only (users rarely open the long tail).
 _BSP_INCREMENTAL_TOP_N = max(50, min(500, int(os.environ.get('BSP_INCREMENTAL_TOP_N', '250') or '250')))
-_BSP_PUBLISHED_CACHE_TAG = os.environ.get('BSP_PUBLISHED_CACHE_TAG', '_v17_bsp_dc')
+_BSP_PUBLISHED_CACHE_TAG = os.environ.get('BSP_PUBLISHED_CACHE_TAG', '_v18_bsp_dc')
 # Serve older full-catalog DC caches while a newer rebuild is still incomplete.
-_BSP_PUBLISHED_FALLBACK_TAGS = ('_v16_bsp_dc', '_v15_bsp_dc')
+_BSP_PUBLISHED_FALLBACK_TAGS = ('_v17_bsp_dc', '_v16_bsp_dc', '_v15_bsp_dc')
 # Support-role character id (Attack units: Supporters-only Top 10 board).
 _SUPPORT_ROLE_ID = '3'
 _ATTACK_ROLE_ID = '1'

@@ -5500,28 +5500,9 @@ byBase.forEach(({id})=>{S.dc._activeSkills[id]=true});
 function _dcMsyUnitStatMode(ud){
 if(!ud)return'normal';
 const ri=parseInt(String(ud.rarity_id||'5'),10);
-// Match meta_synergy_rank._best_ranking_weapon / _unit_stat_mode:
-// if the highest-power non-map weapon is SSP, use SSP (incl. SSR Custom Core).
-// Do NOT early-return 'sp' for rarity<=4 before checking the SSP kit.
-const prev=S.dc.unitStatMode;
-S.dc.unitStatMode='ssp';
-let bestIsSsp=false;
-try{
-const hasSsp=(ud.weapons||[]).some(w=>w&&w.is_ssp_weapon&&String(w.weapon_type)!=='3');
-if(hasSsp){
-const wpns=_dcNonMapWeapons(ud);
-if(wpns&&wpns.length){
-const bw=_dcPickBestWeaponIndices(ud);
-const w=wpns[bw.wpnIdx];
-bestIsSsp=!!(w&&w.is_ssp_weapon);
-}
-}
-}finally{
-S.dc.unitStatMode=prev;
-}
-if(bestIsSsp)return'ssp';
-if(!Number.isNaN(ri)&&ri<=4)return'sp';
-if(!Number.isNaN(ri)&&ri>=5)return'ssp';
+// BSP v18: SSR and lower always use SSP unit stats (and SSP weapons when present).
+// Highest-power non-MAP weapon is still selected inside that mode.
+if(!Number.isNaN(ri)&&(ri<=4||ri>=5))return'ssp';
 return'normal';
 }
 function _dcMsySkillRelevantForSim(desc,skId,skName,wpnBaseCrit){

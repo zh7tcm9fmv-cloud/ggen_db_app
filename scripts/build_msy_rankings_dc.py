@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """Build BSP published cache from live /cal (MsyDcEngine — same path as the site).
 
+v18 (rules v7): full catalog — SSR and lower always use SSP unit stats; weapon =
+highest-power non-MAP under that mode. Includes Attack / Defense / Support.
+
 v17 (Supporters-only): Attack units store rankings_support_role from calculator pairs.
-Rebuild Attack units with ``--unit-role 1`` (v16 remains fallback for other units).
+Kept as fallback while v18 rebuilds.
 
 v16 (rules v3): full-catalog DC rankings with deeper store (top 20), real
 No UR / No Shinn / same-role variant lists from calculator pairs only.

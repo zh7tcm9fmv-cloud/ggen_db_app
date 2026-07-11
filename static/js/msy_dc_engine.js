@@ -37,7 +37,8 @@
     if (typeof global._dcMsyUnitStatMode === 'function') return global._dcMsyUnitStatMode(ud);
     if (!ud) return 'normal';
     var ri = parseInt(String(ud.rarity_id || '5'), 10);
-    if (!isNaN(ri) && ri <= 4) return 'sp';
+    // BSP v18: SSR and lower (and UR) use SSP unit stats.
+    if (!isNaN(ri) && (ri <= 4 || ri >= 5)) return 'ssp';
     return 'normal';
   }
 
