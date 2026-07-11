@@ -70,11 +70,14 @@
     slot.atkChar = String(cd.id);
     slot.atkUnitData = ud;
     slot.atkCharData = cd;
+    // unitStatMode must be set before weapon pick — _dcNonMapWeapons filters SSP by mode.
+    slot.unitStatMode = msyUnitStatMode(ud);
+    S.dc.unitStatMode = slot.unitStatMode;
+    S.dc.atkUnitData = ud;
     var bw = global._dcPickBestWeaponIndices(ud);
     slot.wpnIdx = bw.wpnIdx;
     slot.wpnLv = bw.wpnLv;
     slot.lbTier = 3;
-    slot.unitStatMode = msyUnitStatMode(ud);
     slot.unitCondPassive = cpEnabled;
     slot.charStatMode = charMode;
     slot.mpLevel = global._dcNormMpLevel(vigor);
@@ -162,7 +165,10 @@
     var peak = !canCrit ? normalDmg : (gc ? critDmgVal : Math.max(critDmgVal, expected));
     var pairOk = typeof global._dcUnitCharPairMatch === 'function'
       ? global._dcUnitCharPairMatch(cd, ud) : false;
-    var wpn = ud.weapons && ud.weapons[slot.wpnIdx];
+    // wpnIdx indexes _dcNonMapWeapons(ud), not the raw weapons array (MAP/SSP filtered).
+    var wpns = typeof global._dcNonMapWeapons === 'function'
+      ? global._dcNonMapWeapons(ud) : (ud.weapons || []);
+    var wpn = wpns && wpns[slot.wpnIdx];
     var row = {
       expected_dmg: expected,
       peak_dmg: peak,

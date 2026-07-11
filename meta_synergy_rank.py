@@ -1605,12 +1605,12 @@ _MSY_BROWSE_PAYLOAD_CACHE_TTL = max(15, min(300, int(os.environ.get('MSY_BROWSE_
 _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
-_BSP_DC_RULES_VERSION = 5  # Boost Critical / skill crit always applied; Shinn EX2 = 100% GC
+_BSP_DC_RULES_VERSION = 6  # SSR Custom Core uses SSP best weapon (not SP-only); formula_stat from filtered wpnIdx
 _BSP_DC_BUILD_ENGINE = 'calculateDamage'
 # From v16 onward: formula/criteria rebuilds only refresh top-N + newly added units.
 # Full-catalog rebuilds are intentional opt-in only (users rarely open the long tail).
 _BSP_INCREMENTAL_TOP_N = max(50, min(500, int(os.environ.get('BSP_INCREMENTAL_TOP_N', '250') or '250')))
-_BSP_PUBLISHED_CACHE_TAG = '_v17_bsp_dc'
+_BSP_PUBLISHED_CACHE_TAG = os.environ.get('BSP_PUBLISHED_CACHE_TAG', '_v17_bsp_dc')
 # Serve older full-catalog DC caches while a newer rebuild is still incomplete.
 _BSP_PUBLISHED_FALLBACK_TAGS = ('_v16_bsp_dc', '_v15_bsp_dc')
 # Support-role character id (Attack units: Supporters-only Top 10 board).
@@ -2266,6 +2266,7 @@ def _backfill_pilot_formula_stats(g, lc, rank_mode='super_crit', kwargs=None):
     for key in (
         'rankings', 'rankings_no_cp', 'rankings_no_pep', 'rankings_no_cp_pep',
         'rankings_no_ur', 'rankings_no_shinn',
+        'rankings_same_role', 'rankings_support_role', 'rankings_no_gc',
     ):
         rk = g.get(key)
         if isinstance(rk, dict):
@@ -2276,6 +2277,7 @@ def _backfill_pilot_formula_stats(g, lc, rank_mode='super_crit', kwargs=None):
     for tier_map in (
         g.get('rankings_no_cp_by_tier'), g.get('rankings_no_pep_by_tier'),
         g.get('rankings_no_cp_pep_by_tier'),
+        g.get('rankings_same_role_by_tier'), g.get('rankings_support_role_by_tier'),
     ):
         if isinstance(tier_map, dict):
             for tier_rk in tier_map.values():
@@ -3863,6 +3865,7 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
     same_role = _rank(same_role, store_n)
     support_role = _rank(support_role, store_n)
     top_dmg = _bsp_pilot_sort_damage(pilots[0], mode) if pilots else 0
+    wi = _weapon_info_for_msy(uid, lc)
     return {
         'eligible': True,
         'unit_id': uid,
@@ -3882,6 +3885,7 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
         'def_tier': def_tier,
         'defender_note': _settings_note(def_tier),
         'max_damage': top_dmg,
+        'weapon_info': wi,
     }
 
 

@@ -472,8 +472,15 @@ def main():
     cache_key, existing_groups = _load_existing_v15(
         lang, top_pilots, for_build=True, allow_stale_rules=bool(args.incremental),
     )
+    # Avoid wiping full catalog when --force is used with explicit --unit ids.
     if args.force and not args.incremental:
-        if role_want and role_want.upper() not in ('ALL', ''):
+        if args.unit:
+            drop = {msy._app().normalize_id(u) for u in args.unit}
+            existing_groups = [
+                g for g in existing_groups
+                if msy._app().normalize_id((g.get('unit') or {}).get('id')) not in drop
+            ]
+        elif role_want and role_want.upper() not in ('ALL', ''):
             # Role-scoped force: drop only matching role rows; keep other units in this tag.
             existing_groups = [
                 g for g in existing_groups

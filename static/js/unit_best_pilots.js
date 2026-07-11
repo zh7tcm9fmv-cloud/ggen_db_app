@@ -57,7 +57,9 @@
     // unitId -> in-flight Promise<entry|null> (shared by prefetch + panel open)
     inflight: {},
     defenderTiers: null,
-    defenderTiersPromise: null
+    defenderTiersPromise: null,
+    // { name, power, ... } from published BSP weapon_info
+    weaponInfo: null
   };
 
   function t(key) {
@@ -348,7 +350,16 @@
     }
     var tpl = t('unit_best_pilot_note')
       || 'Eternal Expert: MS DEF: {ms} Pilot DEF: {pilot}';
-    return esc(tpl.replace('{ms}', fmtDef(ms)).replace('{pilot}', fmtDef(pilot)));
+    var html = '<span class="unit-best-pilot-panel-note-def">'
+      + esc(tpl.replace('{ms}', fmtDef(ms)).replace('{pilot}', fmtDef(pilot)))
+      + '</span>';
+    var wi = state.weaponInfo;
+    if (wi && wi.name) {
+      var pow = wi.power != null ? fmtN(wi.power) : '';
+      var wline = pow ? (String(wi.name) + ': ' + pow) : String(wi.name);
+      html += '<span class="unit-best-pilot-panel-weapon">' + esc(wline) + '</span>';
+    }
+    return html;
   }
 
   function syncPanelSubtitle() {
@@ -995,7 +1006,8 @@
       same_role_partial: !!payload.same_role_partial,
       support_role_partial: !!payload.support_role_partial,
       source: payload.source || 'published_dc',
-      rank_mode: mode
+      rank_mode: mode,
+      weapon_info: payload.weapon_info || null
     };
   }
 
@@ -1010,6 +1022,8 @@
       });
     }
     if (!modes.super_crit) modes.super_crit = primary;
+    var wi = payload.weapon_info || primary.weapon_info || null;
+    if (!wi && modes.super_crit) wi = modes.super_crit.weapon_info || null;
     return {
       pilots: primary.pilots,
       pilots_no_ur: primary.pilots_no_ur,
@@ -1021,6 +1035,7 @@
       same_role_partial: primary.same_role_partial,
       support_role_partial: primary.support_role_partial,
       source: primary.source,
+      weapon_info: wi,
       modes: modes
     };
   }
@@ -1148,6 +1163,7 @@
       same_role_partial: primary.same_role_partial,
       support_role_partial: primary.support_role_partial,
       source: 'client_dc',
+      weapon_info: group.weapon_info || null,
       modes: modes
     };
   }
@@ -1168,13 +1184,17 @@
     if (gen !== state.loadGen) return;
     if (!entry || !entry.pilots || !entry.pilots.length) {
       state.loaded = true;
+      state.weaponInfo = null;
+      syncPanelSubtitle();
       setPanelHtml('<div class="unit-best-pilot-empty">' + esc(t('unit_best_pilot_empty') || 'No eligible pilots found.') + '</div>');
       return;
     }
     state.cache[String(unitId)] = entry;
+    state.weaponInfo = entry.weapon_info || null;
     state.loaded = true;
     state.loading = false;
     syncFilterButtons();
+    syncPanelSubtitle();
     renderActivePanel();
     if (state.open) scheduleScrollToPanel();
     // Affinity details are secondary — never block the top-10 paint.
@@ -1373,6 +1393,8 @@
     }
     if (state.cache[state.unitId]) {
       state.loaded = true;
+      state.weaponInfo = state.cache[state.unitId].weapon_info || null;
+      syncPanelSubtitle();
       renderActivePanel();
       scheduleScrollToPanel();
       // Re-fetch affinity details if a prior load skipped them.

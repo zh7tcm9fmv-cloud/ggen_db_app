@@ -5358,11 +5358,22 @@ renderCompareContent()
 }catch(e){}
 }
 
-const DC_ATK_TYPE_LABEL_MAP={'Ranged':'Ranged','Melee':'Melee','Awaken':'Awaken','Attack':'Melee'};
+const DC_ATK_TYPE_LABEL_MAP={
+Ranged:'Ranged',Melee:'Melee',Awaken:'Awaken',Attack:'Melee',
+ranged:'Ranged',melee:'Melee',awaken:'Awaken',attack:'Melee',
+'射擊':'Ranged','格鬥':'Melee','覺醒':'Awaken',
+'射撃':'Ranged','格闘':'Melee','覚醒':'Awaken'
+};
 /** Same keys as app.py ATTACK_ATTR_TYPES — used when attack_types is empty (manual weapons / edge API). */
 const DC_ATTACK_ATTR_TO_KEYS={'1':['Ranged'],'2':['Melee'],'3':['Awaken'],'4':['Ranged','Melee'],'5':['Ranged','Awaken'],'6':['Melee','Awaken'],'7':['Ranged','Melee','Awaken']};
 function _dcWeaponAtkStatKeys(wpn){
-let atkTypes=(wpn.attack_types||[]).map(at=>{const lbl=at.label||'';return DC_ATK_TYPE_LABEL_MAP[lbl]||null}).filter(Boolean);
+let atkTypes=(wpn.attack_types||[]).map(at=>{
+if(typeof at==='string')return DC_ATK_TYPE_LABEL_MAP[at.trim()]||null;
+const key=String(at&&at.key!=null?at.key:'').trim().toLowerCase();
+if(key==='ranged'||key==='melee'||key==='awaken')return key.charAt(0).toUpperCase()+key.slice(1);
+const lbl=(at&&(at.label||at.name))||'';
+return DC_ATK_TYPE_LABEL_MAP[lbl]||null;
+}).filter(Boolean);
 if(!atkTypes.length){
 const aa=String(wpn.attack_attribute||wpn.attackAttribute||'').trim();
 const keys=DC_ATTACK_ATTR_TO_KEYS[aa];
@@ -5489,14 +5500,28 @@ byBase.forEach(({id})=>{S.dc._activeSkills[id]=true});
 function _dcMsyUnitStatMode(ud){
 if(!ud)return'normal';
 const ri=parseInt(String(ud.rarity_id||'5'),10);
-if(!Number.isNaN(ri)&&ri<=4)return'sp';
+// Match meta_synergy_rank._best_ranking_weapon / _unit_stat_mode:
+// if the highest-power non-map weapon is SSP, use SSP (incl. SSR Custom Core).
+// Do NOT early-return 'sp' for rarity<=4 before checking the SSP kit.
+const prev=S.dc.unitStatMode;
+S.dc.unitStatMode='ssp';
+let bestIsSsp=false;
+try{
+const hasSsp=(ud.weapons||[]).some(w=>w&&w.is_ssp_weapon&&String(w.weapon_type)!=='3');
+if(hasSsp){
 const wpns=_dcNonMapWeapons(ud);
 if(wpns&&wpns.length){
 const bw=_dcPickBestWeaponIndices(ud);
 const w=wpns[bw.wpnIdx];
-if(w&&w.is_ssp_weapon)return'ssp';
+bestIsSsp=!!(w&&w.is_ssp_weapon);
 }
-if(!Number.isNaN(ri)&&ri>=5)return'normal';
+}
+}finally{
+S.dc.unitStatMode=prev;
+}
+if(bestIsSsp)return'ssp';
+if(!Number.isNaN(ri)&&ri<=4)return'sp';
+if(!Number.isNaN(ri)&&ri>=5)return'ssp';
 return'normal';
 }
 function _dcMsySkillRelevantForSim(desc,skId,skName,wpnBaseCrit){

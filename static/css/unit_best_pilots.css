@@ -197,6 +197,14 @@
   color: var(--text-muted);
   line-height: 1.3;
   text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.unit-best-pilot-panel-weapon {
+  color: #9ec9e8;
+  font-weight: 600;
 }
 
 .unit-best-pilot-metrics {
