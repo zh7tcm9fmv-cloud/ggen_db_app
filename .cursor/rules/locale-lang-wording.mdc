@@ -13,6 +13,14 @@ When adding or changing user-facing strings for **EN / JA / TW / HK**:
 4. High-priority combat glossary (from official help):
    - **Critical**: EN `Critical` · JA `クリティカル` (not `会心`) · TW/HK `爆擊` (not `暴擊`)
    - **Accuracy**: EN `Accuracy` · JA/TW/HK `命中`
+   - **Evasion**: EN `Evasion` · JA `回避` · TW/HK `閃避` (not `迴避`)
    - **Vigor**: EN `Vigor` (`Normal` / `High` / `Max` / `Supercharged`) · JA `テンション` (`普通` / `強気` / `超強気` / `超一撃`) · TW/HK `戰意` (`一般` / `強勢` / `超強勢` / `超一擊`)
-   - Character stats / unit stats / roles: match the same LANG help section wording
+   - **Mechanisms**: EN `Mechanisms` · JA `機構` (not `ギミック`) · TW/HK `裝置` (not `機制`)
+   - **Option parts**: EN `Modifications` · JA `オプションパーツ` · TW/HK `選擇性零件` (not `改造零件`)
+   - **Limit Break**: EN `Limit Break` · JA `限界突破` · TW/HK `突破界限` (not `極限突破`)
+   - **Beam attribute**: EN `Beam` · JA `ビーム` · TW `光束` · HK `鐳射` (TW/HK differ!)
+   - **Damage noun**: EN `damage` · JA `ダメージ` · TW/HK `損傷` (not casual `傷害` when matching help)
+   - **Roles**: EN `Attack` / `Support` / `Durability` (not Defense for the durability role) · JA/TW/HK `攻撃型|攻擊型` / `支援型` / `耐久型`
+   - Character stats / unit stats: match the same LANG help section wording
 5. Prefer LANG help/trait/skill phrasing over older fan translations when they disagree.
+6. Do not blindly replace every occurrence of a Chinese word when it is ordinary prose (e.g. 「支援攻擊機制」 meaning “system”, not the Mechanisms feature).
