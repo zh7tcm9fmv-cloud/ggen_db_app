@@ -95,9 +95,12 @@ _WEAPON_TRAIT_PATTERNS = (
     ('dist_lv_en', re.compile(r'Increased\s+(?:Close|Long)\s+Range\s+Weapon\s+Power\s*LV\s*(\d+)', re.I)),
     ('dist_lv_zh', re.compile(r'(?:近距離|遠距離)時武裝POWER提升\s*LV\s*(\d+)', re.I)),
     ('dist_lv_ja', re.compile(r'(?:近距離|遠距離)時武装POWER上昇\s*LV\s*(\d+)', re.I)),
-    ('core_en', re.compile(
-        r'Custom\s+Core\s+(?:Effect\s+)?(?:Maximum|Max(?:imum)?)\s+Up\s*(?:\(\s*(\d+)\s*%\s*\)|(\d+)\s*%)', re.I)),
-    ('core_ja', re.compile(r'Custom\s+Core(?:效果)?.*?最大(?:値)?上昇.*?(\d+)\s*[%％]')),
+    # Match JS _dcExtractCustomCoreMaxUpPct — "(& Maximum Up 3%)" / "Maximum Up 3%"
+    # anywhere on a Custom Core / Weapon Effect Value Up line (not only "Custom Core Maximum Up").
+    ('core_en', re.compile(r'(?:Maximum|Max(?:imum)?)\s+Up\s+(\d+)\s*%', re.I)),
+    ('core_paren', re.compile(r'\(\s*&\s*Maximum\s+Up\s+(\d+)\s*%\s*\)', re.I)),
+    ('core_ja', re.compile(r'さらに最大値(\d+)%上昇')),
+    ('core_zh', re.compile(r'且最大值提升(\d+)%')),
 )
 
 _ATTACK_ATTR_TO_KEYS = {
@@ -1120,15 +1123,35 @@ def _weapon_pow_lv_to_max_pct(lv):
     return _POW_LV_MAX_PCT[i] if 0 <= i < len(_POW_LV_MAX_PCT) else 0
 
 
-def _parse_weapon_scaling_traits(trait_lines, *, include_ssp=True):
-    """Mirror static/js/app.js _dcParseWeaponTraits power-scaling fields."""
+def _parse_weapon_scaling_traits(trait_lines, *, include_ssp=True, ssp_weapon=False):
+    """Mirror static/js/app.js _dcParseWeaponTraits power-scaling fields.
+
+    Custom Core "Maximum Up N%" is applied like ``_dcApplySspCorePowBonus``:
+    SSP-only weapons add to dist_core (sums with HP/MP/dist in final power);
+    otherwise stack onto the active HP/MP bucket when present.
+    """
+    del include_ssp  # traits list is already filtered by caller for SSP mode
     dist_power = hp_power = mp_power = dist_core = 0
+    ssp_core_bonus = 0
     for raw in trait_lines or []:
         txt = str(raw or '').replace('\n', ' ')
         if not txt:
             continue
+        # Collect Maximum Up even when other patterns also appear on the line.
+        for name, pat in _WEAPON_TRAIT_PATTERNS:
+            if not name.startswith('core'):
+                continue
+            m = pat.search(txt)
+            if not m:
+                continue
+            g = next((x for x in m.groups() if x is not None), None)
+            if g and str(g).isdigit():
+                ssp_core_bonus = max(ssp_core_bonus, int(g))
+            break
         matched = False
         for name, pat in _WEAPON_TRAIT_PATTERNS:
+            if name.startswith('core'):
+                continue
             m = pat.search(txt)
             if not m:
                 continue
@@ -1142,17 +1165,25 @@ def _parse_weapon_scaling_traits(trait_lines, *, include_ssp=True):
             else:
                 continue
             matched = True
-            if name.startswith('dist') and 'core' not in name:
+            if name.startswith('dist'):
                 dist_power = max(dist_power, p)
             elif name.startswith('hp'):
                 hp_power = max(hp_power, p)
             elif name.startswith('mp'):
                 mp_power = max(mp_power, p)
-            elif name.startswith('core'):
-                dist_core = max(dist_core, p)
             break
         if matched:
             continue
+    # Mirror JS _dcApplySspCorePowBonus
+    if ssp_core_bonus:
+        if ssp_weapon:
+            dist_core += ssp_core_bonus
+        elif mp_power > 0:
+            mp_power += ssp_core_bonus
+        elif hp_power > 0:
+            hp_power += ssp_core_bonus
+        else:
+            dist_core += ssp_core_bonus
     return {
         'dist_power_max': dist_power,
         'hp_power_max': hp_power,
@@ -1233,8 +1264,10 @@ def _computed_weapon_power_at_level(ws, wm, uid, ld, lc, stat_mode, level_idx):
     """ceil(basePower * (1 + traitPct/100)) + SSP flat — matches DC."""
     lv = _weapon_level_row(ws, level_idx)
     base = int(lv.get('power', 0) or 0)
+    wid = _app().normalize_id(wm.get('id'))
     traits = _parse_weapon_scaling_traits(
         _weapon_trait_lines(ws, wm, uid, ld, lc, stat_mode, level_idx=level_idx),
+        ssp_weapon=_weapon_is_ssp_weapon(wid, wm),
     )
     trait_dist = min(100, traits['dist_power_max'] + traits['dist_core_max'])
     trait_scale = traits['hp_power_max'] + traits['mp_power_max']
