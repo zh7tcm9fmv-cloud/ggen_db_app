@@ -846,24 +846,14 @@
       parts += '<div class="msy-pilot-formula-stat">' + esc(line) + '</div>';
     }
     if (pilot.dmg_dealt_pct != null && pilot.dmg_dealt_pct !== '') {
+      // Match Damage Simulator "Damage Dealt" input / Passive Bonuses (passive only).
+      // Vigor shares the same ⑨ pool in calculateDamage but is not part of this field.
       var passive = pilot.dmg_dealt_pct | 0;
-      var vigorPct = pilot.vigor_dmg_pct;
-      if (vigorPct == null || vigorPct === '') {
-        var vigorKey = String(pilot.vigor || '').toLowerCase();
-        if (!VIGOR_DMG_PCT.hasOwnProperty(vigorKey)) {
-          vigorKey = RANK_MODE_VIGOR[state.rankMode || 'super_crit'] || 'super';
-        }
-        vigorPct = VIGOR_DMG_PCT[vigorKey] | 0;
-      } else {
-        vigorPct = vigorPct | 0;
-      }
-      // Same ⑨ pool as Damage Simulator: passive Damage Dealt Up % + vigor bonus.
-      var total = passive + vigorPct;
       var dmgTpl = t('msy_dmg_dealt') || 'Damage Dealt: {n}%';
-      var dmgLine = dmgTpl.replace('{n}', String(total));
-      var title = (t('msy_dmg_dealt_title') || 'Damage Dealt Up % (passive {p}% + vigor {v}%)')
+      var dmgLine = dmgTpl.replace('{n}', String(passive));
+      var title = (t('msy_dmg_dealt_title') || 'Damage Dealt Up % (passive bonuses)')
         .replace('{p}', String(passive))
-        .replace('{v}', String(vigorPct));
+        .replace('{v}', '0');
       parts += '<div class="msy-pilot-dmg-dealt-pct" title="' + escAttr(title) + '">'
         + esc(dmgLine) + '</div>';
     }

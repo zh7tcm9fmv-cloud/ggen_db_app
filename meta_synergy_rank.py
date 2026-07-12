@@ -479,6 +479,73 @@ def _msy_char_stat_mode(cid):
     return 'sp' if int(str(info.get('rarity', '1'))) <= 4 else 'normal'
 
 
+def _iter_char_ability_active(bab, cid):
+    """Yield the active ability form for MSY max-damage mode.
+
+    SP replacements replace the base ability — never count both.
+    """
+    if not bab:
+        return
+    if _msy_char_stat_mode(cid) == 'sp' and bab.get('sp_replacement'):
+        yield bab['sp_replacement']
+    else:
+        yield bab
+
+
+_AFFINITY_PILOTING_SERIES_RE = re.compile(
+    r'piloting units from specified series|'
+    r'指定.*?シリーズ|指定.*?系列|'
+    r'上記の「シリーズ」|搭乗ユニットが上記の「シリーズ」|'
+    r'上述「系列」|搭乘單位屬上述「系列」',
+    re.IGNORECASE,
+)
+
+
+def _implies_piloting_series_affinity(text):
+    return bool(text and _AFFINITY_PILOTING_SERIES_RE.search(str(text)))
+
+
+def _collect_detail_series_names(detail):
+    if not isinstance(detail, dict):
+        return []
+    names, seen = [], set()
+
+    def _add(conds):
+        for c in conds or []:
+            if not isinstance(c, dict):
+                continue
+            if c.get('type') != 'series' and c.get('source') != 'series':
+                continue
+            n = (c.get('name') or '').strip()
+            if n and n not in seen:
+                seen.add(n)
+                names.append(n)
+
+    _add(detail.get('conditions'))
+    for g in detail.get('condition_groups') or []:
+        if isinstance(g, dict):
+            _add(g.get('conditions'))
+    return names
+
+
+def _unit_series_name_map(uid, lc):
+    """Lowercased series display name → display name for the unit."""
+    A = _app()
+    uid = A.normalize_id(uid)
+    out = {}
+    for s in A.resolve_series(A.unit_ser_map.get(uid, ''), lc) or []:
+        nm = (s.get('name') or '').strip()
+        if nm:
+            out[nm.lower()] = nm
+    # Also index EN names so localized ability series labels can still match.
+    if (lc or '').upper() not in ('EN', 'JP', 'JA', ''):
+        for s in A.resolve_series(A.unit_ser_map.get(uid, ''), 'EN') or []:
+            nm = (s.get('name') or '').strip()
+            if nm and nm.lower() not in out:
+                out[nm.lower()] = nm
+    return out
+
+
 def _msy_skill_blob(resolved):
     return '\n'.join(
         str(x.get('text') if isinstance(x, dict) else x or '')
@@ -1023,9 +1090,7 @@ def _char_pilot_dmg_bonuses(cid, uid, lc, *, cp_on=True):
     unit_is_attack = _unit_role(uid) == '1'
     dmg_dealt = crit_up = 0
     for bab in _build_char_ac_calc(cid, lc):
-        for src in (bab, bab.get('sp_replacement')):
-            if not src:
-                continue
+        for src in _iter_char_ability_active(bab, cid):
             for d2 in src.get('details') or []:
                 if isinstance(d2, dict):
                     txt = str(d2.get('text') or '')
@@ -1346,9 +1411,7 @@ def _collect_pilot_pep_bonuses(cid, uid, lc):
     cid = A.normalize_id(cid)
     merged = {}
     for bab in _build_char_ac_calc(cid, lc):
-        for src in (bab, bab.get('sp_replacement')):
-            if not src:
-                continue
+        for src in _iter_char_ability_active(bab, cid):
             for d2 in src.get('details') or []:
                 if isinstance(d2, dict):
                     txt = str(d2.get('text') or '')
@@ -1424,9 +1487,7 @@ def _pilot_pep_unit_stat_bonus_pct(cid, uid, lc, *, cp_on=True, pair_ok=False):
             atk_pct += int(row.get('atk_pct') or 0) if isinstance(row, dict) else 0
 
     for bab in _build_char_ac_calc(cid, lc):
-        for src in (bab, bab.get('sp_replacement')):
-            if not src:
-                continue
+        for src in _iter_char_ability_active(bab, cid):
             for d2 in src.get('details') or []:
                 if isinstance(d2, dict):
                     txt = str(d2.get('text') or '')
@@ -1457,9 +1518,10 @@ def _pilot_pep_unit_stat_bonus_pct(cid, uid, lc, *, cp_on=True, pair_ok=False):
 
 
 def _msy_pilot_unit_affinities(cid, uid, lc):
-    """Tag-affinity ability lines that match this unit×pilot pair (for MSY UI).
+    """Tag/series-affinity ability lines that match this unit×pilot pair (for MSY UI).
 
     Uses UI-language ability text (not CALC_LANG/EN) so Top 10 / MSY cards localize.
+    Only the active SP (or normal) form is shown — never both.
     """
     A = _app()
     uid = A.normalize_id(uid)
@@ -1472,27 +1534,33 @@ def _msy_pilot_unit_affinities(cid, uid, lc):
         nm = (t.get('name') or '').strip()
         if nm:
             unit_tag_map[nm.lower()] = nm
-    if not unit_tag_map:
+    unit_series_map = _unit_series_name_map(uid, lc)
+    if not unit_tag_map and not unit_series_map:
         return []
     out = []
     seen = set()
     for bab in _build_char_ac_for_lang(cid, lc):
-        ab_name = str(bab.get('name') or '').strip()
-        for src in (bab, bab.get('sp_replacement')):
-            if not src:
-                continue
+        for src in _iter_char_ability_active(bab, cid):
+            ab_name = str(src.get('name') or bab.get('name') or '').strip()
             for d2 in src.get('details') or []:
                 if not isinstance(d2, dict):
                     continue
                 txt = str(d2.get('text') or '').strip()
-                if not txt or not A._trait_detail_implies_piloting_tag_affinity(txt):
+                if not txt:
                     continue
-                req_names = A._collect_detail_lineage_tag_names(d2)
                 matched = []
-                for rn in req_names:
-                    disp = unit_tag_map.get(str(rn).strip().lower())
-                    if disp:
-                        matched.append(disp)
+                if A._trait_detail_implies_piloting_tag_affinity(txt):
+                    for rn in A._collect_detail_lineage_tag_names(d2):
+                        disp = unit_tag_map.get(str(rn).strip().lower())
+                        if disp:
+                            matched.append(disp)
+                elif _implies_piloting_series_affinity(txt):
+                    for rn in _collect_detail_series_names(d2):
+                        disp = unit_series_map.get(str(rn).strip().lower())
+                        if disp:
+                            matched.append(disp)
+                else:
+                    continue
                 if not matched:
                     continue
                 key = (ab_name, tuple(sorted(matched)), txt[:120])
@@ -1515,9 +1583,7 @@ def _pilot_affinity_weapon_crit(cid, uid, lc):
     cid = A.normalize_id(cid)
     out = 0
     for bab in _build_char_ac_calc(cid, lc):
-        for src in (bab, bab.get('sp_replacement')):
-            if not src:
-                continue
+        for src in _iter_char_ability_active(bab, cid):
             for d2 in src.get('details') or []:
                 if not isinstance(d2, dict):
                     continue
