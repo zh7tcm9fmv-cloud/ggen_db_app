@@ -5499,9 +5499,12 @@ byBase.forEach(({id})=>{S.dc._activeSkills[id]=true});
 }
 function _dcMsyUnitStatMode(ud){
 if(!ud)return'normal';
-const ri=parseInt(String(ud.rarity_id||'5'),10);
-// BSP v18: SSR and lower always use SSP unit stats (and SSP weapons when present).
-// Highest-power non-MAP weapon is still selected inside that mode.
+// Ultimate (ULT) kits have no SP/SSP path — always base stats.
+if(ud.is_ultimate)return'normal';
+if(ud.has_sp===false)return'normal';
+if(typeof _tbUnitAllowsSpSsp==='function'&&!_tbUnitAllowsSpSsp(ud))return'normal';
+const ri=parseInt(String(ud.rarity_id!=null?ud.rarity_id:(ud.rarity||'5')),10);
+// BSP: SSR and lower (and UR when SP exists) use SSP unit stats / SSP weapons.
 if(!Number.isNaN(ri)&&(ri<=4||ri>=5))return'ssp';
 return'normal';
 }
@@ -7637,6 +7640,8 @@ return{atk,def};
 }
 function _tbUnitAllowsSpSsp(ud){
 if(!ud||ud._manual)return false;
+// Ultimate (ULT) kits are SSR-tier but never have SP/SSP.
+if(ud.is_ultimate)return false;
 if(ud.has_sp!==undefined)return!!ud.has_sp;
 return parseInt(ud.rarity_id||'5',10)<=4;
 }

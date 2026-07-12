@@ -10433,7 +10433,7 @@ def compute_whats_new_delta(lang_code=None):
 
 def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
     """Compute unit stats for list view: base at max LB + non-conditional passive bonuses only."""
-    ri = info.get('rarity', '1'); has_sp = int(ri) <= 4
+    ri = info.get('rarity', '1'); has_sp = int(ri) <= 4 and not bool(info.get('is_ultimate', False))
     cm = 1.0 if info.get('is_ultimate', False) else 1.4
     lb_fs = {}
     if raw:
@@ -10528,7 +10528,7 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
     unit_id = normalize_id(unit_id)
     ri = info.get('rarity', '1')
     fs = {}
-    has_sp = int(ri) <= 4
+    has_sp = int(ri) <= 4 and not bool(info.get('is_ultimate', False))
     ssp_id = unit_ssp_config_map.get(unit_id); ssp_bonus = unit_ssp_stat_map.get(ssp_id, {})
     ssp_core = get_ssp_custom_core_bonuses_for_unit(unit_id) if has_sp else {'move': 0, 'terrain_upgrades': []}
     rm = unit_ssp_abil_replace_map.get(unit_id, {})
@@ -21835,7 +21835,8 @@ def get_unit(unit_id):
             return jsonify({'error': f'Unit {unit_id} not found'}), 404
         ri = info.get('rarity','1'); lid = ld['unit_id_map'].get(unit_id, ""); un = ld['unit_text_map'].get(lid, "Unknown") if lid else "Unknown"
         raw = unit_stat_map.get(unit_id, {}); fs = {}
-        has_sp = int(ri) <= 4
+        # Ultimate (ULT) kits are SSR-tier but have no SP/SSP conversion path.
+        has_sp = int(ri) <= 4 and not bool(info.get('is_ultimate', False))
         ssp_id = unit_ssp_config_map.get(unit_id); ssp_bonus = unit_ssp_stat_map.get(ssp_id, {})
         ssp_core = get_ssp_custom_core_bonuses_for_unit(unit_id) if has_sp else {'move': 0, 'terrain_upgrades': []}
         rm = unit_ssp_abil_replace_map.get(unit_id, {})

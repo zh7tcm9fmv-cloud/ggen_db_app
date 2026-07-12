@@ -127,13 +127,22 @@ def _calc_lang_data():
     return _app().get_calc_lang_data()
 
 
-def _unit_stat_mode(ri, *, wid=None, wm=None):
+def _unit_stat_mode(ri, *, wid=None, wm=None, uid=None, info=None, is_ultimate=None):
     """Unit stat column for BSP/MSY.
 
-    v18+: SSR and lower always use SSP stats (and SSP weapons when present).
-    UR also uses SSP. ``wid``/``wm`` kept for call-site compatibility.
+    SSR and lower use SSP stats (and SSP weapons when present) when the kit
+    supports SP/SSP. Ultimate (ULT) units never have SP/SSP — always ``normal``.
+    ``wid``/``wm`` kept for call-site compatibility.
     """
     del wid, wm
+    if info is None and uid is not None:
+        info = _app().unit_info_map.get(_app().normalize_id(str(uid))) or {}
+    if is_ultimate is None and info is not None:
+        is_ultimate = bool(info.get('is_ultimate'))
+    if is_ultimate:
+        return 'normal'
+    if info is not None and (ri is None or ri == ''):
+        ri = info.get('rarity', '1')
     ri = str(ri or '1')
     try:
         rarity = int(ri)
@@ -628,7 +637,7 @@ def _char_atk_with_skills_for_pair(cid, uid, lc, attack_attr, *, cp_on=True):
     base_grown = grown_sp if _msy_char_stat_mode(cid) == 'sp' else grown
     sk = _active_skill_stat_pct(cid, lc)
     info = _app().unit_info_map.get(_app().normalize_id(uid)) or {}
-    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')), info=info)
     keys = _ATTACK_ATTR_TO_KEYS.get(str(attack_attr or '1'), ('Ranged',))
     best_val = 0
     best_key = keys[0] if keys else 'Ranged'
@@ -1554,6 +1563,7 @@ def _pair_guaranteed_crit(uid, cid, lc, wpn, crit_rate, *, vigor='super'):
     if wpn and _weapon_grants_guaranteed_crit(
         wpn.get('ws'), wpn.get('wm'), uid, _ldc(lc), lc, _unit_stat_mode(
             str((_app().unit_info_map.get(_app().normalize_id(uid)) or {}).get('rarity', '1')),
+            uid=uid,
         ),
     ):
         return True
@@ -1588,7 +1598,7 @@ def _best_ranking_weapon(uid, stat_mode, lc):
         wt = str(wm.get('weapon_type', '1') or '1')
         if wt == '3':
             continue
-        sm = _unit_stat_mode(ri, wid=wid, wm=wm)
+        sm = _unit_stat_mode(ri, wid=wid, wm=wm, info=info, uid=uid)
         try:
             ws = A.resolve_weapon_stats(
                 wm, A.weapon_status_map, A.weapon_correction_map,
@@ -1643,14 +1653,14 @@ _MSY_BROWSE_PAYLOAD_CACHE_TTL = max(15, min(300, int(os.environ.get('MSY_BROWSE_
 _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
-_BSP_DC_RULES_VERSION = 7  # SSR and lower always use SSP unit stats for BSP
+_BSP_DC_RULES_VERSION = 8  # ULT units use normal (no SP/SSP); SSR- use SSP when available
 _BSP_DC_BUILD_ENGINE = 'calculateDamage'
 # From v16 onward: formula/criteria rebuilds only refresh top-N + newly added units.
 # Full-catalog rebuilds are intentional opt-in only (users rarely open the long tail).
 _BSP_INCREMENTAL_TOP_N = max(50, min(500, int(os.environ.get('BSP_INCREMENTAL_TOP_N', '250') or '250')))
-_BSP_PUBLISHED_CACHE_TAG = os.environ.get('BSP_PUBLISHED_CACHE_TAG', '_v18_bsp_dc')
+_BSP_PUBLISHED_CACHE_TAG = os.environ.get('BSP_PUBLISHED_CACHE_TAG', '_v19_bsp_dc')
 # Serve older full-catalog DC caches while a newer rebuild is still incomplete.
-_BSP_PUBLISHED_FALLBACK_TAGS = ('_v17_bsp_dc', '_v16_bsp_dc', '_v15_bsp_dc')
+_BSP_PUBLISHED_FALLBACK_TAGS = ('_v18_bsp_dc', '_v17_bsp_dc', '_v16_bsp_dc', '_v15_bsp_dc')
 # Support-role character id (Attack units: Supporters-only Top 10 board).
 _SUPPORT_ROLE_ID = '3'
 _ATTACK_ROLE_ID = '1'
@@ -1902,7 +1912,7 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
     if not wpn or wpn['power'] <= 0:
         return None
     stat_mode = wpn.get('stat_mode') or _unit_stat_mode(
-        ri, wid=wpn.get('wid'), wm=wpn.get('wm'),
+        ri, wid=wpn.get('wid'), wm=wpn.get('wm'), info=info, uid=uid,
     )
 
     def_total, defender_char_def, def_label = _resolve_defender_stats(
@@ -2086,7 +2096,7 @@ def _filter_non_guaranteed_crit(uid, pilot_ids, unit_wpn, lc, exclude):
     A = _app()
     uid = A.normalize_id(uid)
     info = A.unit_info_map.get(uid) or {}
-    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')), info=info)
     ldc = _ldc(lc)
     out = []
     for cid in pilot_ids:
@@ -2277,7 +2287,7 @@ def _backfill_pilot_formula_stats(g, lc, rank_mode='super_crit', kwargs=None):
     if not uid:
         return g
     info = A.unit_info_map.get(uid) or {}
-    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')), info=info)
     unit_wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
     if not unit_wpn:
         return g
@@ -2357,7 +2367,7 @@ def _ensure_rankings_no_cp(g, lc, rank_mode, def_tier, kwargs):
     if not uid:
         return g
     info = A.unit_info_map.get(uid) or {}
-    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')), info=info)
     unit_wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
     if not unit_wpn:
         return g
@@ -2405,7 +2415,7 @@ def _ensure_rankings_no_pep(g, lc, rank_mode, def_tier, kwargs):
     if not uid:
         return g
     info = A.unit_info_map.get(uid) or {}
-    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')), info=info)
     unit_wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
     if not unit_wpn:
         return g
@@ -2453,7 +2463,7 @@ def _ensure_rankings_no_cp_pep(g, lc, rank_mode, def_tier, kwargs):
     if not uid:
         return g
     info = A.unit_info_map.get(uid) or {}
-    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')), info=info)
     unit_wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
     if not unit_wpn:
         return g
@@ -2491,7 +2501,7 @@ def _best_pilot_by_stat(uid, pilot_ids, wpn, lc, exclude, same_role_only=False):
     if not eligible:
         return None
     info = _app().unit_info_map.get(_app().normalize_id(uid)) or {}
-    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')), info=info)
     best_cid = None
     best_score = -1.0
     for cid in eligible:
@@ -2508,7 +2518,7 @@ def _prefilter_unit_ids(unit_rows, pilot_ids, lc, lb_tier, vigor, def_tier, excl
     scored = []
     for uid in unit_rows:
         info = A.unit_info_map.get(uid) or {}
-        stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+        stat_mode = _unit_stat_mode(str(info.get('rarity', '1')), info=info)
         unit_wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
         if not unit_wpn:
             continue
@@ -2704,7 +2714,7 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
     unit_wpn = _cached_best_ex_weapon(uid, None, lc)
     if not unit_wpn:
         return None
-    stat_mode = unit_wpn.get('stat_mode') or _unit_stat_mode(str(info.get('rarity', '1')))
+    stat_mode = unit_wpn.get('stat_mode') or _unit_stat_mode(str(info.get('rarity', '1')), info=info)
 
     active_pilots = _eligible_pilots_for_unit(uid, pilot_ids, exclude, same_role_only=same_role_only)
     if not active_pilots:
@@ -2965,7 +2975,7 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
     A = _app()
     uid = A.normalize_id(uid)
     info = A.unit_info_map.get(uid) or {}
-    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')), info=info)
     unit_wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
     if not unit_wpn or not pairs_by_tier:
         return None
@@ -3244,7 +3254,7 @@ def dc_candidate_pilots_for_unit(uid, pilot_ids, exclude, lc, *, bsp=False):
     """Pilot IDs to evaluate in the Damage Calculator."""
     uid = _app().normalize_id(uid)
     info = _app().unit_info_map.get(uid) or {}
-    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')), info=info)
     unit_wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
     if not unit_wpn:
         return []
@@ -3445,7 +3455,7 @@ def unit_is_rankable(uid, lc='EN'):
     info = A.unit_info_map.get(uid)
     if not info:
         return False
-    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')), info=info)
     return bool(_cached_best_ex_weapon(uid, stat_mode, lc))
 
 
@@ -4284,7 +4294,10 @@ def _entity_brief_char(cid, lc):
 
 
 def _weapon_elem_label(uid, lc):
-    stat_mode = _unit_stat_mode((_app().unit_info_map.get(_app().normalize_id(uid)) or {}).get('rarity', '1'))
+    stat_mode = _unit_stat_mode(
+        (_app().unit_info_map.get(_app().normalize_id(uid)) or {}).get('rarity', '1'),
+        uid=uid,
+    )
     wpn = _best_ex_weapon(uid, stat_mode, lc)
     if not wpn:
         return ''
@@ -4318,7 +4331,7 @@ def _weapon_info_for_msy(uid, lc):
     A = _app()
     uid = A.normalize_id(uid)
     info = A.unit_info_map.get(uid) or {}
-    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')), info=info)
     wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
     if not wpn:
         return None
@@ -4517,7 +4530,7 @@ def build_meta_synergy_rankings(
         if lineage_filter is not None:
             if not A.entity_matches_lineage(A.unit_lin_map, uid, lineage_filter, lineage_combine):
                 continue
-        if not _cached_best_ex_weapon(uid, _unit_stat_mode(ri), lc):
+        if not _cached_best_ex_weapon(uid, _unit_stat_mode(ri, info=info, uid=uid), lc):
             continue
         unit_rows.append(uid)
 
@@ -4713,7 +4726,7 @@ def _msy_rankable_unit_ids(lc='EN'):
         info = A.unit_info_map.get(uid)
         if not info:
             continue
-        stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+        stat_mode = _unit_stat_mode(str(info.get('rarity', '1')), info=info)
         if _cached_best_ex_weapon(uid, stat_mode, lc):
             out.append(uid)
     return out
@@ -4776,7 +4789,7 @@ def _msy_default_master_unit_ids(lc='EN'):
     out = []
     for uid in _msy_rankable_unit_ids(lc):
         info = A.unit_info_map.get(uid) or {}
-        stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+        stat_mode = _unit_stat_mode(str(info.get('rarity', '1')), info=info)
         wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
         if wpn and str(wpn.get('weapon_type', '1') or '1') == '2':
             out.append(uid)
@@ -4810,7 +4823,7 @@ def _cheap_unit_peak_score(uid, lc, kwargs):
     A = _app()
     uid = A.normalize_id(uid)
     info = A.unit_info_map.get(uid) or {}
-    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')), info=info)
     wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
     if not wpn:
         return 0
@@ -5719,7 +5732,7 @@ def _preview_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, *, role_filter=
     A = _app()
     uid = A.normalize_id(uid)
     info = A.unit_info_map.get(uid) or {}
-    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')))
+    stat_mode = _unit_stat_mode(str(info.get('rarity', '1')), info=info)
     unit_wpn = _cached_best_ex_weapon(uid, stat_mode, lc)
     if not unit_wpn:
         return _stub_group_for_uid(uid, lc, kwargs, rank_mode, def_tier, role_filter=role_filter)
