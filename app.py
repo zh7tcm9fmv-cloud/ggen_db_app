@@ -14278,8 +14278,10 @@ def api_meta_synergy_pilot_skills():
             pairs.append((uid.strip(), cid.strip()))
     import meta_synergy_rank as msr
     payload = msr.build_msy_pilot_skills_batch(lc, char_ids, pairs=pairs or None)
-    cache_key = f'msy_skills_{lc}_{hash(tuple(char_ids)) & 0xffff:x}_{hash(tuple(pairs)) & 0xffff:x}'
-    return jsonify_cacheable(payload, cache_key, public=True, max_age=3600, convert_images=True)
+    # aff_sp2: SP replaces base affinity (never both); series affinities included.
+    # Short max_age so stale dual-affinity responses do not stick for an hour.
+    cache_key = f'msy_skills_affsp2_{lc}_{hash(tuple(char_ids)) & 0xffff:x}_{hash(tuple(pairs)) & 0xffff:x}'
+    return jsonify_cacheable(payload, cache_key, public=True, max_age=120, convert_images=True)
 
 
 @app.route('/api/msy_browse_filters')

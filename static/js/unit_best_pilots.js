@@ -20,18 +20,6 @@
     crit: '/static/images/UI/UI_Battle_MapUI_Label_Critical.webp',
     normal: '/static/images/UI/UI_Battle_MapUI_Label_Normal.webp'
   };
-  // Match Damage Simulator / published BSP: each metric board is simmed at its required vigor.
-  var RANK_MODE_VIGOR = {
-    super_crit: 'super',
-    crit: 'max',
-    normal: 'high'
-  };
-  var VIGOR_DMG_PCT = {
-    medium: 0,
-    high: 10,
-    max: 20,
-    super: 30
-  };
   var ATTACK_ROLE_ID = '1';
   var DEFENSE_ROLE_ID = '2';
   var SUPPORT_ROLE_ID = '3';
@@ -631,7 +619,7 @@
         if (!cid) return;
         var key = uid + ':' + cid;
         if (Object.prototype.hasOwnProperty.call(affinityMap, key)) {
-          p.affinity_matches = affinityMap[key] || [];
+          p.affinity_matches = normalizeAffinityMatches(affinityMap[key] || []);
         }
       });
     }
@@ -667,10 +655,12 @@
     });
     if (!charIds.length) return entry;
     try {
+      // aff_v=2 busts stale browser caches of dual normal+SP affinity payloads.
       var q = 'lang=' + encodeURIComponent(lang || 'EN')
         + '&char_ids=' + encodeURIComponent(charIds.join(','))
-        + '&pairs=' + encodeURIComponent(pairs.join(','));
-      var res = await fetch('/api/meta_synergy_pilot_skills?' + q, { credentials: 'same-origin' });
+        + '&pairs=' + encodeURIComponent(pairs.join(','))
+        + '&aff_v=2';
+      var res = await fetch('/api/meta_synergy_pilot_skills?' + q, { credentials: 'same-origin', cache: 'no-store' });
       if (!res.ok) return entry;
       var data = await res.json();
       applyAffinityToEntry(entry, data.affinity_by_pair || {}, unitId);
@@ -800,13 +790,37 @@
     return html;
   }
 
+  function normalizeAffinityMatches(aff) {
+    // Keep one row per affinity family (strip " LV N"); prefer the highest level
+    // so stale dual normal+SP payloads never paint both.
+    var rows = Array.isArray(aff) ? aff : [];
+    var best = {};
+    var order = [];
+    rows.forEach(function (row) {
+      if (!row || typeof row !== 'object') return;
+      var name = String(row.ability || '').trim();
+      var base = name.replace(/\s*LV\s*\d+\s*$/i, '').trim().toLowerCase() || name.toLowerCase();
+      var lv = 0;
+      var m = name.match(/\bLV\s*(\d+)\b/i);
+      if (m) lv = parseInt(m[1], 10) || 0;
+      var prev = best[base];
+      if (!prev) {
+        best[base] = { lv: lv, row: row };
+        order.push(base);
+        return;
+      }
+      if (lv > prev.lv) best[base] = { lv: lv, row: row };
+    });
+    return order.map(function (k) { return best[k].row; });
+  }
+
   function roleIconHtml(c) {
     if (!c || !c.role_icon) return '';
     return '<img src="' + escAttr(imgUrl(c.role_icon)) + '" alt="" style="width:14px;height:14px;flex-shrink:0" loading="lazy" onerror="this.style.display=\'none\'">';
   }
 
   function pilotAffinityHtml(pilot) {
-    var aff = pilot.affinity_matches || [];
+    var aff = normalizeAffinityMatches(pilot.affinity_matches || []);
     if (!aff.length) return '';
     var html = '<div class="msy-pilot-affinity">';
     aff.forEach(function (row) {
@@ -1387,17 +1401,12 @@
       syncPanelSubtitle();
       renderActivePanel();
       scheduleScrollToPanel();
-      // Re-fetch affinity details if a prior load skipped them.
+      // Always refresh affinities — empty/stale rows must not stick after SP/series fixes.
       var cached = state.cache[state.unitId];
-      var needsAff = (cached.pilots || []).some(function (p) {
-        return p && p.affinity_matches === undefined;
+      var lang = (global.S && global.S.lang) || 'EN';
+      void enrichAffinityMatches(cached, state.unitId, lang).then(function () {
+        if (state.open && String(state.unitId) === String(d.id)) renderActivePanel();
       });
-      if (needsAff) {
-        var lang = (global.S && global.S.lang) || 'EN';
-        void enrichAffinityMatches(cached, state.unitId, lang).then(function () {
-          if (state.open && String(state.unitId) === String(d.id)) renderActivePanel();
-        });
-      }
       return;
     }
     if (!state.loading) void loadRankings(d.id);

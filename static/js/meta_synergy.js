@@ -978,7 +978,7 @@
         if (affinityMap && unitId) {
           var pairKey = unitId + ':' + id;
           if (Object.prototype.hasOwnProperty.call(affinityMap, pairKey)) {
-            p.affinity_matches = affinityMap[pairKey];
+            p.affinity_matches = normalizeAffinityMatches(affinityMap[pairKey] || []);
           }
         }
       }
@@ -1017,7 +1017,7 @@
         if (gen !== state._loadGen) return;
         var charSlice = req.charIds.slice(ci, ci + 80);
         try {
-          var r0 = await fetch('/api/meta_synergy_pilot_skills?lang=' + encodeURIComponent(lang) + '&char_ids=' + encodeURIComponent(charSlice.join(',')), { credentials: 'same-origin' });
+          var r0 = await fetch('/api/meta_synergy_pilot_skills?lang=' + encodeURIComponent(lang) + '&char_ids=' + encodeURIComponent(charSlice.join(',')) + '&aff_v=2', { credentials: 'same-origin', cache: 'no-store' });
           if (!r0.ok) continue;
           var d0 = await r0.json();
           if (gen !== state._loadGen) return;
@@ -1035,8 +1035,9 @@
       q.push('pairs=' + encodeURIComponent(chunkPairs.map(function (x) {
         return x.unitId + ':' + x.charId;
       }).join(',')));
+      q.push('aff_v=2');
       try {
-        var r = await fetch('/api/meta_synergy_pilot_skills?' + q.join('&'), { credentials: 'same-origin' });
+        var r = await fetch('/api/meta_synergy_pilot_skills?' + q.join('&'), { credentials: 'same-origin', cache: 'no-store' });
         if (!r.ok) continue;
         var d = await r.json();
         if (gen !== state._loadGen) return;
@@ -1241,8 +1242,30 @@
     return html;
   }
 
+  function normalizeAffinityMatches(aff) {
+    var rows = Array.isArray(aff) ? aff : [];
+    var best = {};
+    var order = [];
+    rows.forEach(function (row) {
+      if (!row || typeof row !== 'object') return;
+      var name = String(row.ability || '').trim();
+      var base = name.replace(/\s*LV\s*\d+\s*$/i, '').trim().toLowerCase() || name.toLowerCase();
+      var lv = 0;
+      var m = name.match(/\bLV\s*(\d+)\b/i);
+      if (m) lv = parseInt(m[1], 10) || 0;
+      var prev = best[base];
+      if (!prev) {
+        best[base] = { lv: lv, row: row };
+        order.push(base);
+        return;
+      }
+      if (lv > prev.lv) best[base] = { lv: lv, row: row };
+    });
+    return order.map(function (k) { return best[k].row; });
+  }
+
   function pilotAffinityHtml(pilot) {
-    var aff = pilot.affinity_matches || [];
+    var aff = normalizeAffinityMatches(pilot.affinity_matches || []);
     if (!aff.length) return '';
     var html = '<div class="msy-pilot-affinity">';
     aff.forEach(function (row) {
