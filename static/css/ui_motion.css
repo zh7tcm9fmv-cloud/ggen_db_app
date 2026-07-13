@@ -53,11 +53,11 @@
 .has-ui-notice .ui-notice-flare::after,
 .has-ui-notice>.ui-notice-flare::before,
 .has-ui-notice>.ui-notice-flare::after{
-  animation:ui-notice-pulse-ring 1.8s ease-out infinite;
+  animation:ui-notice-pulse-ring 2.8s ease-out infinite;
 }
 .has-ui-notice .ui-notice-flare::after,
 .has-ui-notice>.ui-notice-flare::after{
-  animation-delay:.9s;
+  animation-delay:1.4s;
 }
 .ui-notice-flare-img{
   position:relative;
@@ -68,8 +68,8 @@
   animation:ui-notice-flare-pulse-soft 2.4s ease-in-out infinite;
 }
 @keyframes ui-notice-pulse-ring{
-  0%{transform:scale(1);opacity:.7}
-  100%{transform:scale(2.4);opacity:0}
+  0%{transform:scale(1);opacity:.55}
+  100%{transform:scale(2.2);opacity:0}
 }
 
 /* —— Rubber-band range sliders —— */
