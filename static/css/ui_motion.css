@@ -1,0 +1,117 @@
+/* Shared motion: spring switches, notice pulse rings, rubber-band sliders.
+   Keeps existing accent colors; animation/design only. */
+
+:root{
+  --ui-spring:cubic-bezier(0.34,1.56,0.64,1);
+  --ui-spring-dur:.4s;
+  --ui-spring-snap:.5s;
+  --ui-notice-ring:rgba(255,71,87,.72);
+  --ui-notice-ring-soft:rgba(255,149,0,.55);
+}
+
+/* —— Spring knobs (pill switches + ranking/DC compare switches) —— */
+.toggle-switch{
+  transition:background .3s ease,border-color .3s ease,box-shadow .3s ease;
+}
+.toggle-switch::after{
+  transition:
+    left var(--ui-spring-dur) var(--ui-spring),
+    background .3s ease,
+    box-shadow .3s ease;
+}
+.ranking-exp-switch-track{
+  transition:background .3s ease,box-shadow .3s ease;
+}
+.ranking-exp-switch-thumb{
+  transition:
+    left var(--ui-spring-dur) var(--ui-spring),
+    transform var(--ui-spring-dur) var(--ui-spring),
+    background .3s ease,
+    box-shadow .22s ease;
+}
+
+/* —— Notification red-dot pulse rings —— */
+.ui-notice-flare{
+  overflow:visible;
+}
+.ui-notice-flare::before,
+.ui-notice-flare::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  border-radius:50%;
+  border:2px solid var(--ui-notice-ring);
+  pointer-events:none;
+  opacity:0;
+  z-index:0;
+  box-sizing:border-box;
+}
+.ui-notice-flare::after{
+  border-color:var(--ui-notice-ring-soft);
+}
+.has-ui-notice .ui-notice-flare::before,
+.has-ui-notice .ui-notice-flare::after,
+.has-ui-notice>.ui-notice-flare::before,
+.has-ui-notice>.ui-notice-flare::after{
+  animation:ui-notice-pulse-ring 1.8s ease-out infinite;
+}
+.has-ui-notice .ui-notice-flare::after,
+.has-ui-notice>.ui-notice-flare::after{
+  animation-delay:.9s;
+}
+.ui-notice-flare-img{
+  position:relative;
+  z-index:1;
+}
+/* Soften the old scale pulse so rings carry the motion */
+.has-ui-notice .ui-notice-flare-img{
+  animation:ui-notice-flare-pulse-soft 2.4s ease-in-out infinite;
+}
+@keyframes ui-notice-pulse-ring{
+  0%{transform:scale(1);opacity:.7}
+  100%{transform:scale(2.4);opacity:0}
+}
+
+/* —— Rubber-band range sliders —— */
+input[type=range].ui-range{
+  --ui-range-ox:0px;
+  --ui-range-accent:var(--accent-cyan,#00d4ff);
+  accent-color:var(--ui-range-accent);
+}
+input[type=range].ui-range::-webkit-slider-thumb{
+  transform:translateX(var(--ui-range-ox));
+  transition:none;
+}
+input[type=range].ui-range::-moz-range-thumb{
+  transform:translateX(var(--ui-range-ox));
+  transition:none;
+}
+input[type=range].ui-range.ui-range-snap::-webkit-slider-thumb{
+  transition:transform var(--ui-spring-snap) var(--ui-spring);
+}
+input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
+  transition:transform var(--ui-spring-snap) var(--ui-spring);
+}
+
+@media (prefers-reduced-motion:reduce){
+  .toggle-switch,
+  .toggle-switch::after,
+  .ranking-exp-switch-track,
+  .ranking-exp-switch-thumb{
+    transition:background .15s ease,border-color .15s ease,left .15s ease,box-shadow .15s ease!important;
+  }
+  .has-ui-notice .ui-notice-flare::before,
+  .has-ui-notice .ui-notice-flare::after,
+  .has-ui-notice>.ui-notice-flare::before,
+  .has-ui-notice>.ui-notice-flare::after,
+  .has-ui-notice .ui-notice-flare-img{
+    animation:none!important;
+  }
+  input[type=range].ui-range::-webkit-slider-thumb,
+  input[type=range].ui-range::-moz-range-thumb,
+  input[type=range].ui-range.ui-range-snap::-webkit-slider-thumb,
+  input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
+    transform:none!important;
+    transition:none!important;
+  }
+}

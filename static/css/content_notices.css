@@ -1,14 +1,33 @@
 .ui-notice-anchor{position:relative;display:inline-flex;vertical-align:middle;overflow:visible}
-.ui-notice-flare{position:absolute;top:-4px;right:-4px;width:22px;height:22px;pointer-events:none;z-index:5;display:none;line-height:0}
+.ui-notice-flare{position:absolute;top:-4px;right:-4px;width:22px;height:22px;pointer-events:none;z-index:5;display:none;line-height:0;overflow:visible}
 .nav-tab .ui-notice-flare{top:4px;right:8px;width:24px;height:24px}
 .nav-tab.ui-notice-anchor{display:inline-flex}
 .has-ui-notice>.ui-notice-flare,.has-ui-notice .ui-notice-flare{display:block}
-.ui-notice-flare-img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 0 6px rgba(255,40,40,.85));transform-origin:center center}
-.has-ui-notice .ui-notice-flare-img{animation:ui-notice-flare-pulse 2s ease-in-out infinite}
+.ui-notice-flare::before,.ui-notice-flare::after{
+  content:'';
+  position:absolute;inset:0;border-radius:50%;
+  border:2px solid rgba(255,71,87,.72);
+  pointer-events:none;opacity:0;z-index:0;box-sizing:border-box;
+}
+.ui-notice-flare::after{border-color:rgba(255,149,0,.55)}
+.has-ui-notice .ui-notice-flare::before,
+.has-ui-notice .ui-notice-flare::after,
+.has-ui-notice>.ui-notice-flare::before,
+.has-ui-notice>.ui-notice-flare::after{animation:ui-notice-pulse-ring 1.8s ease-out infinite}
+.has-ui-notice .ui-notice-flare::after,
+.has-ui-notice>.ui-notice-flare::after{animation-delay:.9s}
+.ui-notice-flare-img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 0 6px rgba(255,40,40,.85));transform-origin:center center;position:relative;z-index:1}
+.has-ui-notice .ui-notice-flare-img{animation:ui-notice-flare-pulse-soft 2.4s ease-in-out infinite}
 .has-ui-notice--page-visit .ui-notice-flare-img{animation:ui-notice-flare-pulse-soft 2.4s ease-in-out infinite}
 @keyframes ui-notice-flare-pulse{0%,100%{transform:scale(1);filter:drop-shadow(0 0 5px rgba(255,40,40,.75))}50%{transform:scale(1.12);filter:drop-shadow(0 0 9px rgba(255,55,55,.95))}}
 @keyframes ui-notice-flare-pulse-soft{0%,100%{transform:scale(1);filter:drop-shadow(0 0 4px rgba(255,40,40,.7))}50%{transform:scale(1.06);filter:drop-shadow(0 0 7px rgba(255,55,55,.88))}}
-@media (prefers-reduced-motion:reduce){.has-ui-notice .ui-notice-flare-img,.has-ui-notice--page-visit .ui-notice-flare-img{animation:none}}
+@keyframes ui-notice-pulse-ring{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.4);opacity:0}}
+@media (prefers-reduced-motion:reduce){
+  .has-ui-notice .ui-notice-flare-img,
+  .has-ui-notice--page-visit .ui-notice-flare-img,
+  .has-ui-notice .ui-notice-flare::before,
+  .has-ui-notice .ui-notice-flare::after{animation:none}
+}
 .whats-new-btn.ui-notice-anchor,.site-footer-links a.ui-notice-anchor{position:relative}
 .whats-new-btn .ui-notice-flare{top:-5px;right:0;width:20px;height:20px}
 .site-footer-links a .ui-notice-flare{top:-2px;right:0;width:18px;height:18px}
