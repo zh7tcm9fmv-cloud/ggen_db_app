@@ -1,0 +1,90 @@
+/* E Simulator (Chronicle Event) — Stages tab */
+#eSimulatorWrap{display:none;width:100%;min-width:0;margin:0 0 12px;box-sizing:border-box}
+#panel-stages.esim-active #stageListViewArea,
+#panel-stages.esim-active #stagePagination,
+#panel-stages.esim-active #stagePerPage,
+#panel-stages.esim-active .pagination-bar-main .pagination-bar-spacer,
+#panel-stages.esim-active #stageDiffWrap,
+#panel-stages.esim-active #stageToolbarCount,
+#panel-stages.esim-active .list-view-toggle,
+#panel-stages.esim-active #stageFilter{display:none!important}
+#panel-stages.esim-active #eSimulatorWrap{display:block}
+#panel-stages.esim-active .pagination-bar-wrap{margin-top:8px}
+
+.esim-root{--esim-cyan:#5ee7ff;--esim-green:#5dff9a;--esim-red:#ff4d5e;--esim-ink:#e8f4ff;position:relative;border:1px solid rgba(94,231,255,.28);border-radius:10px;overflow:hidden;background:#020816;min-height:min(72vh,720px);box-shadow:inset 0 0 80px rgba(0,40,90,.35)}
+.esim-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;background:linear-gradient(180deg,rgba(8,28,58,.92),rgba(4,14,32,.75));border-bottom:1px solid rgba(94,231,255,.18);position:relative;z-index:3}
+.esim-title-row{display:flex;align-items:center;gap:10px;min-width:0}
+.esim-logo{height:28px;width:auto;max-width:min(42vw,220px);object-fit:contain;filter:drop-shadow(0 0 8px rgba(94,231,255,.45))}
+.esim-title{font:italic 800 22px/1.1 "Segoe UI",system-ui,sans-serif;color:#fff;letter-spacing:.02em;text-shadow:0 0 12px rgba(94,231,255,.55)}
+.esim-cp{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(232,244,255,.75);white-space:nowrap}
+.esim-cp b{color:#9dffc0}
+
+.esim-tabs{display:flex;flex-wrap:wrap;gap:8px;padding:10px 12px 0;position:relative;z-index:3}
+.esim-tab{appearance:none;border:1px solid rgba(120,170,220,.28);background:rgba(6,18,40,.82);color:rgba(220,235,255,.78);padding:8px 12px;border-radius:6px;font:600 12px/1.2 "Segoe UI",system-ui,sans-serif;cursor:pointer;display:flex;align-items:center;gap:8px;max-width:100%}
+.esim-tab img{width:36px;height:22px;object-fit:cover;border-radius:3px;opacity:.9}
+.esim-tab.active{background:linear-gradient(180deg,rgba(210,235,255,.95),rgba(150,200,240,.88));color:#0a1a30;border-color:#fff;box-shadow:0 0 0 1px rgba(94,231,255,.55),0 0 18px rgba(94,231,255,.25)}
+.esim-tab.active img{opacity:1}
+
+.esim-map-shell{position:relative;height:min(56vh,560px);margin:8px 0 0;overflow:auto;overscroll-behavior:contain;background:#020816}
+.esim-map-shell::-webkit-scrollbar{height:10px;width:10px}
+.esim-map-shell::-webkit-scrollbar-thumb{background:rgba(94,231,255,.35);border-radius:6px}
+.esim-map{position:relative;transform-origin:0 0}
+.esim-bg{position:absolute;inset:0;background-position:center;background-size:cover;background-repeat:no-repeat;opacity:.92;filter:saturate(1.05) contrast(1.05)}
+.esim-bg::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(180deg,transparent 0 3px,rgba(80,200,255,.035) 3px 4px),radial-gradient(ellipse at 50% 40%,transparent 30%,rgba(0,0,0,.45) 100%);pointer-events:none}
+.esim-edges,.esim-nodes{position:absolute;inset:0;pointer-events:none}
+.esim-edge{stroke:rgba(160,220,255,.55);stroke-width:2;fill:none;filter:drop-shadow(0 0 3px rgba(94,231,255,.35))}
+.esim-edge-branch{stroke:rgba(255,120,140,.65)}
+
+.esim-node{position:absolute;transform:translate(-50%,-50%);pointer-events:auto;cursor:pointer;z-index:2;min-width:72px}
+.esim-node--flavor_text,.esim-node--flavor_middle,.esim-node--flavor_end{min-width:0}
+.esim-card{position:relative;border:1px solid rgba(180,220,255,.45);border-radius:4px;background:rgba(4,16,36,.82);box-shadow:0 0 0 1px rgba(0,0,0,.35),0 6px 18px rgba(0,0,0,.35);overflow:hidden;width:148px}
+.esim-node--l .esim-card{width:188px}
+.esim-node--m .esim-card{width:168px}
+.esim-node--document .esim-card{width:112px}
+.esim-node--flavor_start .esim-card{width:160px;background:rgba(20,30,48,.88)}
+.esim-thumb{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#0a1428}
+.esim-node--document .esim-thumb{aspect-ratio:1/1;object-fit:contain;padding:6px;background:radial-gradient(circle at 50% 40%,rgba(80,160,255,.2),rgba(4,12,28,.95))}
+.esim-meta{padding:6px 8px 8px;display:flex;flex-direction:column;gap:2px}
+.esim-num{font:700 10px/1.2 "Segoe UI",system-ui,sans-serif;color:rgba(180,220,255,.85);letter-spacing:.03em}
+.esim-name{font:700 12px/1.25 "Segoe UI",system-ui,sans-serif;color:#fff}
+.esim-node--recommend .esim-card{border-color:rgba(255,90,100,.9);box-shadow:0 0 0 1px rgba(255,80,90,.55),0 0 28px rgba(255,60,80,.35)}
+.esim-node--recommend::before{content:"";position:absolute;left:50%;top:50%;width:220px;height:220px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,60,80,.28) 0%,rgba(255,60,80,.08) 42%,transparent 68%);animation:esim-pulse 2.4s ease-out infinite;z-index:0;pointer-events:none}
+.esim-node--recommend .esim-card{position:relative;z-index:1}
+@keyframes esim-pulse{0%{transform:translate(-50%,-50%) scale(.72);opacity:.85}100%{transform:translate(-50%,-50%) scale(1.15);opacity:0}}
+
+.esim-pill{padding:5px 10px;border-radius:999px;background:rgba(10,24,48,.86);border:1px solid rgba(160,210,255,.35);color:rgba(230,245,255,.9);font:600 11px/1.2 "Segoe UI",system-ui,sans-serif;white-space:nowrap;box-shadow:0 0 10px rgba(94,231,255,.15)}
+.esim-branch-mark{position:absolute;left:50%;top:calc(100% + 4px);transform:translateX(-50%);color:#ff6b7a;font:800 10px/1 "Segoe UI",system-ui,sans-serif;letter-spacing:.04em;text-shadow:0 0 8px rgba(255,80,100,.5);pointer-events:none;white-space:nowrap}
+
+.esim-footer{display:grid;grid-template-columns:minmax(160px,1.2fr) minmax(200px,1fr) minmax(160px,.9fr);gap:10px;align-items:end;padding:10px 12px 12px;background:linear-gradient(180deg,rgba(4,14,32,.55),rgba(2,10,24,.95));border-top:1px solid rgba(94,231,255,.16);position:relative;z-index:3}
+.esim-story{min-width:0}
+.esim-story-label{font:700 11px/1 "Segoe UI",system-ui,sans-serif;color:rgba(200,230,255,.8);margin-bottom:4px}
+.esim-story-bar{height:10px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden;box-shadow:inset 0 0 0 1px rgba(94,231,255,.2)}
+.esim-story-fill{height:100%;width:0;background:linear-gradient(90deg,#3cf,#7af,#fff);box-shadow:0 0 12px rgba(94,231,255,.65)}
+.esim-story-meta{margin-top:4px;font-size:11px;color:rgba(200,230,255,.7)}
+.esim-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.esim-btn{appearance:none;border:1px solid rgba(200,220,240,.45);background:linear-gradient(180deg,rgba(70,90,120,.9),rgba(30,42,64,.95));color:#fff;padding:10px 14px;min-width:88px;border-radius:4px;font:700 12px/1 "Segoe UI",system-ui,sans-serif;cursor:pointer}
+.esim-btn[disabled],.esim-btn.is-locked{opacity:.45;cursor:not-allowed;position:relative}
+.esim-btn .esim-lock{margin-right:4px}
+.esim-btn-note{display:block;font-size:10px;font-weight:600;color:rgba(180,220,255,.8);margin-bottom:2px;text-align:center}
+.esim-next{position:relative;border:1px solid rgba(255,255,255,.55);background:rgba(245,248,255,.94);color:#102038;border-radius:4px;padding:10px 12px 10px 10px;cursor:pointer;min-width:0}
+.esim-next-tag{position:absolute;top:-8px;right:-4px;background:linear-gradient(180deg,#ffb347,#ff7a18);color:#fff;font:800 10px/1 "Segoe UI",system-ui,sans-serif;padding:4px 7px;border-radius:3px;box-shadow:0 2px 6px rgba(0,0,0,.35)}
+.esim-next-num{font:700 10px/1.2 "Segoe UI",system-ui,sans-serif;opacity:.7}
+.esim-next-name{font:800 12px/1.25 "Segoe UI",system-ui,sans-serif}
+.esim-ticker{grid-column:1/-1;font-size:11px;color:rgba(210,230,255,.55);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.esim-report-panel{position:absolute;inset:auto 12px 70px auto;width:min(360px,92vw);max-height:50%;overflow:auto;background:rgba(6,16,36,.96);border:1px solid rgba(94,231,255,.35);border-radius:8px;padding:10px;z-index:5;box-shadow:0 12px 40px rgba(0,0,0,.45);display:none}
+.esim-report-panel.open{display:block}
+.esim-report-panel h3{margin:0 0 8px;font:800 13px/1.2 "Segoe UI",system-ui,sans-serif;color:#fff}
+.esim-report-item{display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-top:1px solid rgba(255,255,255,.08)}
+.esim-report-item img{width:48px;height:48px;object-fit:contain;background:rgba(0,0,0,.25);border-radius:4px}
+.esim-report-item b{display:block;color:#fff;font-size:12px}
+.esim-report-item span{display:block;color:rgba(200,230,255,.7);font-size:11px;margin-top:2px}
+
+@media(max-width:900px){
+  .esim-footer{grid-template-columns:1fr;gap:8px}
+  .esim-actions{justify-content:flex-start}
+  .esim-card{width:128px}
+  .esim-node--l .esim-card{width:150px}
+  .esim-map-shell{height:min(50vh,420px)}
+  .esim-title{font-size:18px}
+}

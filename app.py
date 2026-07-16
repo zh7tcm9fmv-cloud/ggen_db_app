@@ -21269,6 +21269,26 @@ def list_stages():
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'rows': [], 'total': 0, 'page': 1, 'per_page': 50, 'total_pages': 1}), 500
 
+
+@app.route('/api/e_simulator')
+def api_e_simulator():
+    """E Simulator (Chronicle Event) diagram payload for the Stages tab."""
+    try:
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+        ck = f'e_simulator_v1_{lc}'
+        cached = get_cached_response(ck)
+        if cached:
+            return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
+        import e_simulator_data as _esim
+        out = _esim.build_e_simulator_payload(__import__('sys').modules[__name__], lc)
+        set_cached_response(ck, out)
+        return jsonify_cacheable(out, ck, public=True, max_age=3600, convert_images=True)
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+
 @app.route('/api/stage/<stage_id>')
 def get_stage(stage_id):
     try:
