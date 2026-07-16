@@ -198,6 +198,9 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
     cp_cfg = _load_json(load_json, os.path.join(base, 'm_chronicle_event_challenge_point_config.json'))
     mission_tabs = _load_json(load_json, os.path.join(base, 'm_chronicle_event_mission_tab.json'))
     missions = _load_json(load_json, os.path.join(base, 'm_chronicle_event_mission.json'))
+    mission_complete_rewards = _load_json(
+        load_json, os.path.join(base, 'm_chronicle_event_mission_complete_reward.json')
+    )
     mission_master = {
         normalize_id(r.get('Id')): r
         for r in _load_json(load_json, os.path.join(base, 'm_mission.json'))
@@ -300,6 +303,16 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
             'id': tid,
             'name': tab_name,
             'missions': rows,
+        })
+
+    mission_complete_reward_rows = []
+    for rw in sorted(mission_complete_rewards, key=lambda x: float(x.get('CompleteRate') or 0)):
+        rsid = normalize_id(rw.get('RewardSetId'))
+        mission_complete_reward_rows.append({
+            'id': normalize_id(rw.get('Id')),
+            'complete_rate': float(rw.get('CompleteRate') or 0),
+            'reward_set_id': rsid,
+            'rewards': rewards_for(rsid),
         })
 
     # Shop (event exchange)
@@ -509,6 +522,9 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
         'document_total': len(document_rows),
         'mission_unlock_hint': mission_unlock_hint,
         'mission_tabs': mission_tab_rows,
+        'mission_total': sum(len(t.get('missions') or []) for t in mission_tab_rows),
+        'mission_complete_rewards': mission_complete_reward_rows,
+        'payload_version': 6,
         'shop': {
             'id': ESIM_SHOP_ID,
             'name': shop_lang.get(normalize_id(shop_row.get('NameLanguageId')), 'E Simulator Shop'),

@@ -2,6 +2,7 @@
 (function (global) {
   'use strict';
 
+  var PAYLOAD_VERSION = 6;
   var state = {
     data: null,
     lang: null,
@@ -106,20 +107,26 @@
 
   function mapFitScale(bounds) {
     var b = bounds || {};
-    var padX = 120, padY = 110;
-    var gw = Math.max(1, (b.width || 8000) + padX * 2);
-    var gh = Math.max(1, (b.height || 2500) + padY * 2);
     var panel = document.getElementById('panel-stages') || document.getElementById('eSimulatorWrap');
-    var availW = Math.max(280, ((panel && panel.clientWidth) || window.innerWidth || 900) - 24);
-    /* Fit route width; keep a taller Y scale so branch rows do not stack on each other. */
+    var panelW = Math.max(280, ((panel && panel.clientWidth) || window.innerWidth || 900) - 24);
+    /* Pixel insets so centered cards (esp. flavor_start) stay inside the shell. */
+    var edgePadX = Math.max(96, Math.min(140, Math.round(panelW * 0.14)));
+    var edgePadY = 56;
+    var availW = Math.max(220, panelW - edgePadX * 2);
+    var spanX = Math.max(1, b.width || 8000);
+    var spanY = Math.max(1, b.height || 2500);
+    var roughX = availW / spanX;
+    var padX = Math.max(400, Math.ceil(edgePadX / Math.max(0.04, roughX)));
+    var padY = Math.max(320, Math.ceil(edgePadY / 0.2));
+    var gw = spanX + padX * 2;
+    var gh = spanY + padY * 2;
     var scaleX = Math.max(0.05, Math.min(availW / gw, 0.18));
     var scaleY = Math.max(0.2, Math.min(0.3, scaleX * 2.8));
     var mapW = Math.min(availW, Math.ceil(gw * scaleX));
     var mapH = Math.ceil(gh * scaleY);
-    /* Shrink cards on narrow viewports to cut overlap without forcing page scroll. */
     var nodeScale = Math.max(0.4, Math.min(0.95, Math.min(scaleX / 0.1, scaleY / 0.22)));
-    if (availW < 560) nodeScale *= 0.78;
-    if (availW < 420) nodeScale *= 0.85;
+    if (panelW < 560) nodeScale *= 0.78;
+    if (panelW < 420) nodeScale *= 0.85;
     return {
       scaleX: mapW / gw,
       scaleY: scaleY,
@@ -129,6 +136,9 @@
       mapW: mapW,
       mapH: mapH,
       nodeScale: nodeScale,
+      edgePadX: edgePadX,
+      edgePadY: edgePadY,
+      shellH: mapH + edgePadY * 2,
     };
   }
 
@@ -140,7 +150,7 @@
       'onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">';
     if (!bgPath) return img;
     return (
-      '<div class="esim-thumb-stack">' +
+      '<div class="esim-thumb-stack esim-thumb-stack--large">' +
       '<img class="esim-thumb-bg" src="' + esc(imgUrl(bgPath)) + '" alt="" loading="lazy" decoding="async" ' +
       'onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">' +
       '<div class="esim-thumb-fg">' + img + '</div></div>'
@@ -186,6 +196,7 @@
       var cls = 'esim-node esim-node--' + size + ' esim-node--' + vt;
       if (n.is_flavor_text) cls += ' esim-node--flavor_text';
       if (n.is_recommend) cls += ' esim-node--recommend';
+      if (n.thumb_large || n.thumb_bg) cls += ' esim-node--art-l';
       var style = 'left:' + pos.x + 'px;top:' + pos.y + 'px';
       var body;
       if (n.is_flavor_text || vt === 'flavor_middle' || vt === 'flavor_end') {
@@ -197,7 +208,7 @@
           '<div class="esim-meta"><div class="esim-name">' + esc(n.title || '') + '</div></div></div>';
       } else {
         body =
-          '<div class="esim-card">' +
+          '<div class="esim-card' + (n.thumb_bg ? ' esim-card--art-l' : '') + '">' +
           thumbHtml(n.thumb, n.thumb_bg) +
           '<div class="esim-meta">' +
           (n.number ? '<div class="esim-num">' + esc(n.number) + '</div>' : '') +
@@ -216,7 +227,8 @@
     var bg = diagram.background ? imgUrl(diagram.background) : '';
     var ns = (Math.round(fit.nodeScale * 1000) / 1000).toFixed(3);
     return (
-      '<div class="esim-map-shell" id="esimMapShell" style="height:' + h + 'px;--esim-node-scale:' + ns + '">' +
+      '<div class="esim-map-shell" id="esimMapShell" style="height:' + fit.shellH + 'px;padding:' +
+      fit.edgePadY + 'px ' + fit.edgePadX + 'px;--esim-node-scale:' + ns + '">' +
       '<div class="esim-map" id="esimMap" style="width:' + w + 'px;height:' + h + 'px">' +
       '<div class="esim-bg" style="' + (bg ? 'background-image:url(\'' + esc(bg) + '\')' : '') + '"></div>' +
       '<svg class="esim-edges" width="' + w + '" height="' + h + '" aria-hidden="true">' + edges.join('') + '</svg>' +
@@ -259,12 +271,16 @@
   function renderMissions() {
     var tabs = (state.data && state.data.mission_tabs) || [];
     var openCls = state.missionsOpen ? ' open' : '';
+    var backdrop = state.missionsOpen
+      ? '<div class="esim-side-backdrop" id="esimMissionsBackdrop" data-close="missions"></div>'
+      : '';
     if (!tabs.length) {
       return (
-        '<div class="esim-side-panel esim-missions-panel' + openCls + '" id="esimMissionsPanel">' +
+        backdrop +
+        '<div class="esim-side-panel esim-missions-panel' + openCls + '" id="esimMissionsPanel" role="dialog" aria-label="Missions">' +
         '<div class="esim-side-head"><h3>Missions</h3>' +
         '<button type="button" class="esim-side-close" data-close="missions" aria-label="Close">×</button></div>' +
-        '<div class="esim-side-hint">No mission data found for this event.</div></div>'
+        '<div class="esim-side-hint">No mission data found (m_chronicle_event_mission*).</div></div>'
       );
     }
     var tabId = state.missionTabId != null ? String(state.missionTabId) : String(tabs[0].id);
@@ -274,9 +290,11 @@
     }
     if (!active) active = tabs[0];
     var tabBtns = tabs.map(function (tb) {
+      var n = (tb.missions || []).length;
       return (
         '<button type="button" class="esim-mini-tab' + (String(tb.id) === String(active.id) ? ' active' : '') +
-        '" data-mission-tab="' + esc(String(tb.id)) + '">' + esc(tb.name || tb.id) + '</button>'
+        '" data-mission-tab="' + esc(String(tb.id)) + '">' + esc(tb.name || tb.id) +
+        ' (' + esc(String(n)) + ')</button>'
       );
     }).join('');
     var missions = active.missions || [];
@@ -292,13 +310,25 @@
     var hint = state.data.mission_unlock_hint
       ? '<div class="esim-side-hint">In-game unlock: ' + esc(state.data.mission_unlock_hint) + '</div>'
       : '';
+    var complete = (state.data.mission_complete_rewards || []).map(function (rw) {
+      return (
+        '<div class="esim-mission-item esim-mission-complete">' +
+        '<div class="esim-mission-idx">' + esc(String(rw.complete_rate | 0)) + '%</div>' +
+        '<div class="esim-mission-body"><b>Mission progress ' + esc(String(rw.complete_rate)) + '%</b>' +
+        '<div class="esim-mission-rewards">' + rewardChips(rw.rewards) + '</div></div></div>'
+      );
+    }).join('');
+    var completeBlock = complete
+      ? '<div class="esim-side-subhead">Completion rewards</div>' + complete
+      : '';
     return (
-      '<div class="esim-side-panel esim-missions-panel' + openCls + '" id="esimMissionsPanel">' +
+      backdrop +
+      '<div class="esim-side-panel esim-missions-panel' + openCls + '" id="esimMissionsPanel" role="dialog" aria-label="Missions">' +
       '<div class="esim-side-head"><h3>Missions (' + esc(String(missions.length)) + ')</h3>' +
       '<button type="button" class="esim-side-close" data-close="missions" aria-label="Close">×</button></div>' +
       hint +
       '<div class="esim-mini-tabs">' + tabBtns + '</div>' +
-      rows + '</div>'
+      rows + completeBlock + '</div>'
     );
   }
 
@@ -323,6 +353,9 @@
     var logo = data.logo ? '<img class="esim-logo" src="' + esc(imgUrl(data.logo)) + '" alt="E Simulator">' : '';
     var docN = (data.documents || []).length;
     var docT = data.document_total || docN;
+    var missionN = data.mission_total != null
+      ? data.mission_total
+      : (data.mission_tabs || []).reduce(function (sum, tb) { return sum + ((tb.missions || []).length); }, 0);
 
     root.innerHTML =
       '<div class="esim-header">' +
@@ -334,7 +367,8 @@
       renderMissions() +
       '<div class="esim-footer">' +
       '<div class="esim-actions">' +
-      '<div><button type="button" class="esim-btn' + (state.missionsOpen ? ' active' : '') + '" id="esimMissionsBtn">Missions</button></div>' +
+      '<div><span class="esim-btn-note">' + esc(String(missionN)) + '</span>' +
+      '<button type="button" class="esim-btn' + (state.missionsOpen ? ' active' : '') + '" id="esimMissionsBtn">Missions</button></div>' +
       '<div><span class="esim-btn-note">' + esc(String(docN)) + '/' + esc(String(docT)) + '</span>' +
       '<button type="button" class="esim-btn' + (state.reportOpen ? ' active' : '') + '" id="esimReportBtn">Report</button></div>' +
       '</div>' +
@@ -389,7 +423,7 @@
         render();
       });
     }
-    document.querySelectorAll('.esim-side-close').forEach(function (btn) {
+    document.querySelectorAll('.esim-side-close, .esim-side-backdrop').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var which = btn.getAttribute('data-close');
         if (which === 'report') state.reportOpen = false;
@@ -411,7 +445,7 @@
     setActive(true);
     var root = document.getElementById('eSimulatorRoot');
     var lang = (global.S && global.S.lang) || 'EN';
-    if (state.data && state.lang === lang) {
+    if (state.data && state.lang === lang && Number(state.data.payload_version) === PAYLOAD_VERSION) {
       render();
       return;
     }
@@ -424,7 +458,7 @@
       state.data = data;
       state.lang = lang;
       if (!state.diagramId && data.diagrams && data.diagrams[0]) state.diagramId = data.diagrams[0].id;
-      if (!state.missionTabId && data.mission_tabs && data.mission_tabs[0]) {
+      if (data.mission_tabs && data.mission_tabs[0]) {
         state.missionTabId = String(data.mission_tabs[0].id);
       }
       render();
