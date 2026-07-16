@@ -2,7 +2,8 @@
 (function (global) {
   'use strict';
 
-  var PAYLOAD_VERSION = 9;
+  var PAYLOAD_VERSION = 10;
+  var REWARD_ICON_SIZE = 56;
   var state = {
     data: null,
     lang: null,
@@ -126,23 +127,24 @@
     var b = bounds || {};
     var panel = document.getElementById('eSimulatorWrap') || document.getElementById('panel-stages');
     var panelW = Math.max(320, ((panel && panel.clientWidth) || window.innerWidth || 960) - 8);
-    var edgePadX = 40;
-    var edgePadY = 36;
+    var edgePadX = 28;
+    var edgePadY = 24;
     var spanX = Math.max(1, b.width || 8000);
     var spanY = Math.max(1, b.height || 2500);
-    /* Tight pads keep the path close; uniform scale avoids BG skew. */
-    var padX = 140;
-    var padY = 120;
+    /* Compact pads + fit-to-viewport so BG is not a huge empty scroll field. */
+    var padX = 100;
+    var padY = 90;
     var gw = spanX + padX * 2;
     var gh = spanY + padY * 2;
     var availW = Math.max(280, panelW - edgePadX * 2);
-    var scale = availW / gw;
-    /* Floor keeps nodes readable; ceiling stops oversized empty map. Side-scroll if needed. */
-    if (scale < 0.36) scale = 0.36;
-    if (scale > 0.5) scale = 0.5;
+    var shellCap = Math.max(340, Math.min(Math.round((window.innerHeight || 800) * 0.55), 640));
+    var availH = Math.max(240, shellCap - edgePadY * 2);
+    var scale = Math.min(availW / gw, availH / gh);
+    /* Landscape cards (~200px) need ~0.55+ so closest nodes (~290u) do not stack. */
+    if (scale < 0.55) scale = 0.55;
+    if (scale > 0.72) scale = 0.72;
     var mapW = Math.ceil(gw * scale);
     var mapH = Math.ceil(gh * scale);
-    var shellCap = Math.max(360, Math.min(Math.round((window.innerHeight || 800) * 0.58), 720));
     return {
       scaleX: scale,
       scaleY: scale,
@@ -262,30 +264,52 @@
     );
   }
 
-  function rewardThumbHtml(r, sz) {
-    sz = sz || 28;
-    if (typeof global.renderSpConversionChipThumb === 'function') {
-      var chip = global.renderSpConversionChipThumb(r, sz);
-      if (chip) return chip;
-    }
-    var emedal = (state.data && state.data.e_medal_icon) || '/static/images/Item/event_exchange_item_0006.webp';
-    var name = r.name || r.label || '';
-    var icon = r.icon || r.image || '';
-    if (/e[\s-]?medal/i.test(name) || (!icon && /medal/i.test(name))) icon = emedal;
-    if (!icon) {
-      return '<span class="esim-reward-fallback" style="width:' + sz + 'px;height:' + sz + 'px"></span>';
-    }
-    return (
-      '<img class="esim-reward-img" src="' + esc(imgUrl(icon)) + '" alt="" width="' + sz +
-      '" height="' + sz + '" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">'
-    );
-  }
-
   function rewardQty(r) {
     if (!r) return '';
     if (r.count != null && r.count !== '') return String(r.count);
     if (r.quantity != null && r.quantity !== '') return String(r.quantity);
     return '';
+  }
+
+  /** Uniform reward thumb: SSP / series-upgrade logos shown full (contain), never clipped. */
+  function rewardThumbHtml(r, sz) {
+    sz = sz || REWARD_ICON_SIZE;
+    var base = r && r.sp_chip_base ? String(r.sp_chip_base) : '';
+    var unit = r && r.sp_chip_unit ? String(r.sp_chip_unit) : '';
+    var frame = r && r.sp_chip_frame ? String(r.sp_chip_frame) : '';
+    if (unit && (base || frame)) {
+      var layers = '';
+      if (base) {
+        layers +=
+          '<img class="esim-chip-layer esim-chip-base" src="' + esc(imgUrl(base)) +
+          '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">';
+      }
+      layers +=
+        '<img class="esim-chip-layer esim-chip-logo" src="' + esc(imgUrl(unit)) +
+        '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">';
+      if (frame) {
+        layers +=
+          '<img class="esim-chip-layer esim-chip-frame" src="' + esc(imgUrl(frame)) +
+          '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">';
+      }
+      return (
+        '<div class="esim-chip-thumb' + (frame ? ' esim-chip-thumb--ssp' : ' esim-chip-thumb--uexp') +
+        '" style="width:' + sz + 'px;height:' + sz + 'px">' + layers + '</div>'
+      );
+    }
+    var emedal = (state.data && state.data.e_medal_icon) || '/static/images/Item/event_exchange_item_0006.webp';
+    var name = (r && (r.name || r.label)) || '';
+    var icon = (r && (r.icon || r.image)) || '';
+    if (/e[\s-]?medal/i.test(name) || (!icon && /medal/i.test(name))) icon = emedal;
+    if (!icon) {
+      return '<span class="esim-reward-fallback" style="width:' + sz + 'px;height:' + sz + 'px"></span>';
+    }
+    return (
+      '<div class="esim-chip-thumb esim-chip-thumb--plain" style="width:' + sz + 'px;height:' + sz + 'px">' +
+      '<img class="esim-chip-layer esim-chip-plain" src="' + esc(imgUrl(icon)) +
+      '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">' +
+      '</div>'
+    );
   }
 
   function rewardChips(rewards) {
@@ -294,8 +318,8 @@
       var qty = rewardQty(r);
       return (
         '<span class="esim-reward">' +
-        rewardThumbHtml(r, 28) +
-        '<span>' + esc(name) + (qty ? ' ×' + esc(qty) : '') + '</span></span>'
+        rewardThumbHtml(r, REWARD_ICON_SIZE) +
+        '<span class="esim-reward-text">' + esc(name) + (qty ? ' ×' + esc(qty) : '') + '</span></span>'
       );
     }).join('');
   }
@@ -312,7 +336,7 @@
             var qty = rewardQty(r);
             return (
               '<div class="esim-progress-reward-row">' +
-              rewardThumbHtml(r, 48) +
+              rewardThumbHtml(r, REWARD_ICON_SIZE) +
               '<div class="esim-mission-body"><b>' + esc(r.name || r.label || 'Reward') + '</b>' +
               (qty ? '<span class="esim-mission-desc">×' + esc(qty) + '</span>' : '') +
               '</div></div>'
@@ -327,84 +351,75 @@
     }).join('');
   }
 
+  function modalShell(open, closeKey, title, aria, innerHtml) {
+    if (!open) return '';
+    return (
+      '<div class="modal-overlay active esim-modal-overlay" data-close="' + esc(closeKey) + '">' +
+      '<div class="modal-content esim-detail-modal" role="dialog" aria-label="' + esc(aria || title) + '" onclick="event.stopPropagation()">' +
+      '<div class="esim-side-head"><h3>' + esc(title) + '</h3>' +
+      '<button type="button" class="esim-side-close" data-close="' + esc(closeKey) + '" aria-label="Close">×</button></div>' +
+      '<div class="esim-detail-body">' + innerHtml + '</div></div></div>'
+    );
+  }
+
   function renderDocDetail() {
     var d = state.docDetail;
     if (!d) return '';
     var thumb = d.thumb ? imgUrl(d.thumb) : '';
     var title = (d.number ? (String(d.number) + ' ') : '') + (d.title || 'Report');
-    return (
-      '<div class="esim-side-backdrop" data-close="doc"></div>' +
-      '<div class="esim-side-panel esim-doc-panel open" id="esimDocPanel" role="dialog" aria-label="Report detail">' +
-      '<div class="esim-side-head"><h3>' + esc(title) + '</h3>' +
-      '<button type="button" class="esim-side-close" data-close="doc" aria-label="Close">×</button></div>' +
+    var inner =
       '<div class="esim-doc-art">' +
       (thumb
         ? '<img class="esim-doc-thumb" src="' + esc(thumb) + '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">'
         : '') +
       '</div>' +
       (d.description ? '<p class="esim-doc-desc">' + esc(d.description) + '</p>' : '') +
-      (d.hint ? '<p class="esim-doc-hint">' + esc(d.hint) + '</p>' : '') +
-      '</div>'
-    );
+      (d.hint ? '<p class="esim-doc-hint">' + esc(d.hint) + '</p>' : '');
+    return modalShell(true, 'doc', title, 'Report detail', inner);
   }
 
   function renderMissions() {
     var tabs = (state.data && state.data.mission_tabs) || [];
-    var openCls = state.missionsOpen ? ' open' : '';
-    var backdrop = state.missionsOpen
-      ? '<div class="esim-side-backdrop" data-close="missions"></div>'
-      : '';
+    if (!state.missionsOpen) return '';
+    var body;
     if (!tabs.length) {
-      return (
-        backdrop +
-        '<div class="esim-side-panel esim-modal-panel esim-missions-panel' + openCls + '" id="esimMissionsPanel" role="dialog" aria-label="Missions">' +
-        '<div class="esim-side-head"><h3>Missions</h3>' +
-        '<button type="button" class="esim-side-close" data-close="missions" aria-label="Close">×</button></div>' +
-        '<div class="esim-side-hint">No mission data found.</div></div>'
-      );
+      body = '<div class="esim-side-hint">No mission data found.</div>';
+    } else {
+      var tabId = state.missionTabId != null ? String(state.missionTabId) : String(tabs[0].id);
+      var active = null;
+      for (var i = 0; i < tabs.length; i++) {
+        if (String(tabs[i].id) === tabId) { active = tabs[i]; break; }
+      }
+      if (!active) active = tabs[0];
+      var tabBtns = tabs.map(function (tb) {
+        return (
+          '<button type="button" class="stage-source-toggle-btn' + (String(tb.id) === String(active.id) ? ' active' : '') +
+          '" data-mission-tab="' + esc(String(tb.id)) + '" aria-pressed="' +
+          (String(tb.id) === String(active.id) ? 'true' : 'false') + '">' + esc(tb.name || tb.id) + '</button>'
+        );
+      }).join('');
+      var missions = active.missions || [];
+      var rows = missions.map(function (m, idx) {
+        return (
+          '<div class="esim-mission-item">' +
+          '<div class="esim-mission-idx">' + esc(String(idx + 1)) + '</div>' +
+          '<div class="esim-mission-body"><b>' + esc(m.title || ('Mission ' + m.id)) + '</b>' +
+          (m.description ? '<span class="esim-mission-desc">' + esc(m.description) + '</span>' : '') +
+          '<div class="esim-mission-rewards">' + rewardChips(m.rewards) + '</div></div></div>'
+        );
+      }).join('') || '<div class="esim-side-hint">No missions in this tab.</div>';
+      var hint = state.data.mission_unlock_hint
+        ? '<div class="esim-side-hint">' + esc(state.data.mission_unlock_hint) + '</div>'
+        : '';
+      body = hint +
+        '<div class="stage-source-toggle-wrap esim-panel-tabs">' + tabBtns + '</div>' +
+        '<div class="esim-mission-list">' + rows + '</div>';
     }
-    var tabId = state.missionTabId != null ? String(state.missionTabId) : String(tabs[0].id);
-    var active = null;
-    for (var i = 0; i < tabs.length; i++) {
-      if (String(tabs[i].id) === tabId) { active = tabs[i]; break; }
-    }
-    if (!active) active = tabs[0];
-    var tabBtns = tabs.map(function (tb) {
-      return (
-        '<button type="button" class="stage-source-toggle-btn' + (String(tb.id) === String(active.id) ? ' active' : '') +
-        '" data-mission-tab="' + esc(String(tb.id)) + '" aria-pressed="' +
-        (String(tb.id) === String(active.id) ? 'true' : 'false') + '">' + esc(tb.name || tb.id) + '</button>'
-      );
-    }).join('');
-    var missions = active.missions || [];
-    var rows = missions.map(function (m, idx) {
-      return (
-        '<div class="esim-mission-item">' +
-        '<div class="esim-mission-idx">' + esc(String(idx + 1)) + '</div>' +
-        '<div class="esim-mission-body"><b>' + esc(m.title || ('Mission ' + m.id)) + '</b>' +
-        (m.description ? '<span class="esim-mission-desc">' + esc(m.description) + '</span>' : '') +
-        '<div class="esim-mission-rewards">' + rewardChips(m.rewards) + '</div></div></div>'
-      );
-    }).join('') || '<div class="esim-side-hint">No missions in this tab.</div>';
-    var hint = state.data.mission_unlock_hint
-      ? '<div class="esim-side-hint">' + esc(state.data.mission_unlock_hint) + '</div>'
-      : '';
-    return (
-      backdrop +
-      '<div class="esim-side-panel esim-modal-panel esim-missions-panel' + openCls + '" id="esimMissionsPanel" role="dialog" aria-label="Missions">' +
-      '<div class="esim-side-head"><h3>Missions</h3>' +
-      '<button type="button" class="esim-side-close" data-close="missions" aria-label="Close">×</button></div>' +
-      hint +
-      '<div class="stage-source-toggle-wrap esim-panel-tabs">' + tabBtns + '</div>' +
-      '<div class="esim-mission-list">' + rows + '</div></div>'
-    );
+    return modalShell(true, 'missions', 'Missions', 'Missions', body);
   }
 
   function renderStoryProgress() {
-    var openCls = state.storyProgressOpen ? ' open' : '';
-    var backdrop = state.storyProgressOpen
-      ? '<div class="esim-side-backdrop" data-close="storyProgress"></div>'
-      : '';
+    if (!state.storyProgressOpen) return '';
     var storyRows = (state.data && (state.data.story_progress_rewards || state.data.story_rewards)) || [];
     var diagrams = (state.data && state.data.diagrams) || [];
     var routeBlocks = diagrams.map(function (d) {
@@ -412,7 +427,6 @@
       return (
         '<div class="esim-reward-section">' +
         '<h4 class="esim-side-subhead">' + esc(d.name || d.id) + '</h4>' +
-        '<div class="esim-side-hint">Story progress rewards for this route</div>' +
         progressRewardRowsHtml(storyRows) +
         (complete.length
           ? '<div class="esim-side-subhead" style="margin-top:10px">Route completion</div>' +
@@ -421,22 +435,14 @@
         '</div>'
       );
     }).join('') || progressRewardRowsHtml(storyRows);
-    return (
-      backdrop +
-      '<div class="esim-side-panel esim-modal-panel esim-story-progress-panel' + openCls +
-      '" id="esimStoryProgressPanel" role="dialog" aria-label="Story Progress Rewards">' +
-      '<div class="esim-side-head"><h3>Story Progress Rewards</h3>' +
-      '<button type="button" class="esim-side-close" data-close="storyProgress" aria-label="Close">×</button></div>' +
-      '<div class="esim-side-hint">Mobile Suit Series Unit Upgrade Data SSR by story completion on each route, including Final Investigation.</div>' +
-      routeBlocks + '</div>'
-    );
+    var inner =
+      '<div class="esim-side-hint">Series Unit Upgrade Data SSR by story completion on each route, including Final Investigation.</div>' +
+      routeBlocks;
+    return modalShell(true, 'storyProgress', 'Story Progress Rewards', 'Story Progress Rewards', inner);
   }
 
   function renderEventProgress() {
-    var openCls = state.eventProgressOpen ? ' open' : '';
-    var backdrop = state.eventProgressOpen
-      ? '<div class="esim-side-backdrop" data-close="eventProgress"></div>'
-      : '';
+    if (!state.eventProgressOpen) return '';
     var tab = state.rewardsTab || 'event';
     var eventRows = (state.data && (state.data.event_wide_progress_rewards || state.data.total_rewards)) || [];
     var reportRows = (state.data && (state.data.report_progress_rewards || state.data.document_rewards)) || [];
@@ -456,19 +462,14 @@
     if (tab === 'report') body = progressRewardRowsHtml(reportRows);
     else if (tab === 'mission') body = progressRewardRowsHtml(missionRows);
     else body = progressRewardRowsHtml(eventRows);
-    return (
-      backdrop +
-      '<div class="esim-side-panel esim-modal-panel esim-event-progress-panel' + openCls +
-      '" id="esimEventProgressPanel" role="dialog" aria-label="Event-Wide Progress Rewards">' +
-      '<div class="esim-side-head"><h3>Event Progress Rewards</h3>' +
-      '<button type="button" class="esim-side-close" data-close="eventProgress" aria-label="Close">×</button></div>' +
+    var inner =
       '<div class="esim-side-hint">Event-Wide, report, and mission completion rewards.</div>' +
       '<div class="stage-source-toggle-wrap esim-panel-tabs">' + tabs + '</div>' +
-      body + '</div>'
-    );
+      body;
+    return modalShell(true, 'eventProgress', 'Event Progress Rewards', 'Event Progress Rewards', inner);
   }
 
-  function render() {
+  function render( {
     var root = document.getElementById('eSimulatorRoot');
     if (!root || !state.data) return;
     var data = state.data;
@@ -508,9 +509,6 @@
       '<button type="button" class="stage-source-toggle-btn' + (state.eventProgressOpen ? ' active' : '') +
       '" id="esimEventProgressBtn" aria-pressed="' + (state.eventProgressOpen ? 'true' : 'false') + '">Event Progress</button>' +
       '</div>' +
-      (data.promotion_text
-        ? '<div class="esim-ticker">' + formatPromoHtml(data.promotion_text) + '</div>'
-        : '') +
       '</div>';
 
     bind();
@@ -571,8 +569,9 @@
         render();
       });
     }
-    document.querySelectorAll('.esim-side-close, .esim-side-backdrop').forEach(function (btn) {
-      btn.addEventListener('click', function () {
+    document.querySelectorAll('.esim-side-close, .esim-side-backdrop, .esim-modal-overlay').forEach(function (btn) {
+      btn.addEventListener('click', function (ev) {
+        if (btn.classList.contains('esim-modal-overlay') && ev.target !== btn) return;
         var which = btn.getAttribute('data-close');
         if (which === 'doc') state.docDetail = null;
         if (which === 'missions') state.missionsOpen = false;

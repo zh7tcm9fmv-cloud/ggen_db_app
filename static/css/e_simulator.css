@@ -1,4 +1,4 @@
-/* E Simulator — Stages tab (matches site stage-source toggles / modals) */
+/* E Simulator — Stages tab (site toggles + detail-modal panels) */
 #eSimulatorWrap{display:none;width:100%;min-width:0;margin:0 0 12px;box-sizing:border-box}
 #panel-stages.esim-active #stageListViewArea,
 #panel-stages.esim-active #stagePagination,
@@ -23,38 +23,29 @@
 .stage-source-toggle-btn--esim-logo{padding:4px 10px;min-width:96px;display:inline-flex;align-items:center;justify-content:center}
 .stage-source-toggle-btn--esim-logo .stage-source-esim-logo{display:block;height:28px;width:auto;max-width:120px;object-fit:contain}
 
-/* Route tabs — same control language as Eternal Road / Challenge / E Sim toggle */
 .esim-toolbar{
   display:flex;align-items:center;justify-content:flex-start;gap:10px;flex-wrap:wrap;
-  padding:10px 12px;border-bottom:1px solid var(--border-color);
-  background:var(--bg-secondary);
+  padding:10px 12px;border-bottom:1px solid var(--border-color);background:var(--bg-secondary);
 }
 .esim-route-tabs{flex:1 1 auto;min-width:0}
-.esim-route-btn{
-  display:inline-flex;align-items:center;gap:8px;max-width:100%;
-}
-.esim-route-thumb{
-  width:40px;height:24px;object-fit:cover;border-radius:3px;flex:0 0 auto;opacity:.9;
-}
+.esim-route-btn{display:inline-flex;align-items:center;gap:8px;max-width:100%}
+.esim-route-thumb{width:40px;height:24px;object-fit:cover;border-radius:3px;flex:0 0 auto;opacity:.9}
 .esim-route-btn.active .esim-route-thumb{opacity:1}
-.esim-route-btn span{
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:min(280px,46vw);
-}
+.esim-route-btn span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:min(280px,46vw)}
 
-/* Map */
+/* Map — fit viewport, less empty scroll */
 .esim-map-shell{
-  position:relative;width:100%;min-height:280px;max-height:min(58vh,720px);
+  position:relative;width:100%;min-height:280px;max-height:min(55vh,640px);
   margin:0;overflow:auto;-webkit-overflow-scrolling:touch;
   background:var(--bg-primary);box-sizing:border-box;
 }
 .esim-map{position:relative;transform-origin:0 0;margin:0;overflow:visible}
-/* Cover = fill map without X/Y skew. Terrain + diagram frame share the same box. */
 .esim-bg,.esim-bg-frame{
   position:absolute;inset:0;background-position:center;background-repeat:no-repeat;
   background-size:cover;pointer-events:none;
 }
 .esim-bg{opacity:.95}
-.esim-bg-frame{opacity:.88;z-index:1;mix-blend-mode:normal}
+.esim-bg-frame{opacity:.88;z-index:1}
 .esim-bg::after{
   content:"";position:absolute;inset:0;pointer-events:none;
   background:radial-gradient(ellipse at 50% 42%,transparent 40%,rgba(0,0,0,.35) 100%);
@@ -63,7 +54,7 @@
 .esim-edge{stroke:rgba(0,212,255,.45);stroke-width:2;fill:none}
 .esim-edge-branch{stroke:rgba(255,71,87,.55)}
 
-/* Nodes — readable, compact, site-colored */
+/* Nodes — native landscape thumbs (~728x408), wider cards, readable titles */
 .esim-node{
   position:absolute;transform:translate(-50%,-50%) scale(var(--esim-node-scale,1));
   transform-origin:center center;pointer-events:auto;cursor:pointer;z-index:2;min-width:48px;
@@ -74,33 +65,43 @@
 }
 .esim-card{
   position:relative;border:1px solid var(--border-color);border-radius:var(--radius-sm);
-  background:rgba(13,19,33,.94);box-shadow:var(--shadow-surface);overflow:hidden;width:104px;
+  background:rgba(13,19,33,.94);box-shadow:var(--shadow-surface);overflow:hidden;width:200px;
 }
-.esim-node--l .esim-card{width:112px}
-.esim-node--m .esim-card{width:108px}
-.esim-node--document .esim-card{width:84px}
+.esim-node--l .esim-card{width:220px}
+.esim-node--m .esim-card{width:210px}
+.esim-node--document .esim-card{width:120px}
 .esim-card--art-l,.esim-node--art-l .esim-card{overflow:visible}
 .esim-node--flavor_start .esim-card,
 .esim-card--flavor{
   display:flex;flex-direction:row;align-items:center;gap:8px;width:auto;
-  min-width:160px;max-width:240px;padding:4px 10px 4px 4px;background:rgba(17,24,39,.96);
+  min-width:180px;max-width:280px;padding:4px 10px 4px 4px;background:rgba(17,24,39,.96);
 }
 .esim-node--flavor_start .esim-thumb,
 .esim-card--flavor .esim-thumb{
-  width:36px;height:36px;flex:0 0 36px;aspect-ratio:1/1;object-fit:contain;
+  width:48px;height:48px;flex:0 0 48px;aspect-ratio:1/1;object-fit:contain;
   border-radius:3px;background:rgba(0,0,0,.25);padding:0;
 }
 .esim-node--flavor_start .esim-meta,
 .esim-card--flavor .esim-meta{padding:0;min-width:0;flex:1}
 .esim-node--flavor_start .esim-name,
 .esim-card--flavor .esim-name{
-  font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;
+  font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;
+}
+/* Battle/story thumbs are landscape art — keep native aspect, no square letterbox. */
+.esim-node--battle .esim-thumb,
+.esim-node--story .esim-thumb{
+  display:block;width:100%;height:auto;aspect-ratio:728/408;object-fit:cover;
+  object-position:center;background:var(--bg-input);padding:0;box-sizing:border-box;
+}
+.esim-node--document .esim-thumb{
+  display:block;width:100%;aspect-ratio:1/1;object-fit:contain;object-position:center;
+  background:radial-gradient(circle at 50% 40%,rgba(80,160,255,.2),rgba(4,12,28,.95));padding:4px;box-sizing:border-box;
 }
 .esim-thumb{
-  display:block;width:100%;aspect-ratio:1/1;object-fit:contain;object-position:center;
-  background:var(--bg-input);padding:3px;box-sizing:border-box;
+  display:block;width:100%;height:auto;object-fit:cover;object-position:center;
+  background:var(--bg-input);padding:0;box-sizing:border-box;
 }
-.esim-thumb-stack{position:relative;width:100%;aspect-ratio:1/1;background:transparent;overflow:visible}
+.esim-thumb-stack{position:relative;width:100%;aspect-ratio:728/408;background:transparent;overflow:visible}
 .esim-thumb-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border-radius:2px}
 .esim-thumb-fg{
   position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
@@ -109,15 +110,14 @@
 .esim-thumb-fg .esim-thumb{
   width:100%;height:100%;padding:0;background:transparent;aspect-ratio:auto;object-fit:contain;
 }
-.esim-thumb-stack--large .esim-thumb-fg{inset:-16%}
-.esim-thumb-stack--large .esim-thumb-fg .esim-thumb{width:100%;height:100%;max-width:none}
-.esim-meta{padding:4px 6px 6px;display:flex;flex-direction:column;gap:2px}
+.esim-thumb-stack--large .esim-thumb-fg{inset:-10% -4%}
+.esim-meta{padding:6px 8px 8px;display:flex;flex-direction:column;gap:2px}
 .esim-num{
-  font:700 10px/1.2 "Segoe UI",system-ui,sans-serif;color:var(--text-secondary);
+  font:700 11px/1.2 "Segoe UI",system-ui,sans-serif;color:var(--text-secondary);
   letter-spacing:.02em;white-space:nowrap;
 }
 .esim-name{
-  font:700 11px/1.25 "Segoe UI",system-ui,sans-serif;color:var(--text-primary);
+  font:700 13px/1.25 "Segoe UI",system-ui,sans-serif;color:var(--text-primary);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;
 }
 .esim-node--recommend .esim-card{
@@ -125,7 +125,7 @@
   box-shadow:0 0 0 1px rgba(255,71,87,.45),0 0 20px rgba(255,71,87,.22);
 }
 .esim-node--recommend::before{
-  content:"";position:absolute;left:50%;top:50%;width:160px;height:160px;
+  content:"";position:absolute;left:50%;top:50%;width:180px;height:180px;
   transform:translate(-50%,-50%);border-radius:50%;
   background:radial-gradient(circle,rgba(255,71,87,.22) 0%,rgba(255,71,87,.06) 42%,transparent 68%);
   animation:esim-pulse 2.4s ease-out infinite;z-index:0;pointer-events:none;
@@ -135,7 +135,6 @@
   0%{transform:translate(-50%,-50%) scale(.72);opacity:.85}
   100%{transform:translate(-50%,-50%) scale(1.15);opacity:0}
 }
-
 .esim-pill{
   padding:6px 12px;border-radius:999px;background:var(--bg-input);
   border:1px solid var(--border-color);color:var(--text-primary);
@@ -146,47 +145,37 @@
   width:22px;height:22px;object-fit:contain;pointer-events:none;
 }
 
-/* Footer — same toggle buttons as Stages toolbar */
 .esim-footer{
   display:flex;flex-direction:column;gap:8px;align-items:stretch;
-  padding:10px 12px 12px;background:var(--bg-secondary);
-  border-top:1px solid var(--border-color);
+  padding:10px 12px 12px;background:var(--bg-secondary);border-top:1px solid var(--border-color);
 }
 .esim-actions{justify-content:flex-start}
-.esim-ticker{
-  font-size:12px;color:var(--text-secondary);white-space:nowrap;
-  overflow:hidden;text-overflow:ellipsis;
-}
-.esim-ticker span{font-weight:700;color:var(--text-primary)}
 
-/* Dialogs — site modal language */
-.esim-side-backdrop{
-  position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);
-  z-index:79;cursor:pointer;
+/* Detail-style modals (same language as unit/character detail) */
+.esim-modal-overlay.modal-overlay{
+  z-index:320;align-items:flex-start;justify-content:center;
+  padding:28px 16px 40px;
 }
-.esim-side-panel{
-  position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);
-  width:min(520px,94vw);max-height:min(80vh,640px);overflow:auto;
+.esim-detail-modal.modal-content{
+  max-width:min(920px,100%);width:100%;margin:0 auto;
+  max-height:none;display:flex;flex-direction:column;
   background:var(--bg-modal);border:1px solid var(--border-color);
-  border-radius:var(--radius-lg);padding:0;z-index:80;
-  box-shadow:var(--shadow-lg);display:none;
+  border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);overflow:hidden;
 }
-.esim-side-panel.open{display:flex;flex-direction:column}
-.esim-modal-panel.esim-missions-panel,
-.esim-modal-panel.esim-event-progress-panel,
-.esim-modal-panel.esim-story-progress-panel{
-  width:min(820px,96vw);max-height:min(86vh,820px);padding:0;
+.esim-detail-body{
+  padding:0 0 16px;overflow:auto;max-height:min(72vh,760px);
+  -webkit-overflow-scrolling:touch;
 }
 .esim-side-head{
   display:flex;align-items:center;justify-content:space-between;gap:8px;
-  padding:16px 18px 12px;margin:0;border-bottom:1px solid var(--border-color);
+  padding:16px 20px 12px;margin:0;border-bottom:1px solid var(--border-color);
   background:rgba(0,0,0,.28);flex:0 0 auto;
 }
 .esim-side-head h3{
   margin:0;font:700 18px/1.2 "Segoe UI",system-ui,sans-serif;color:var(--accent-cyan);
 }
 .esim-side-subhead{
-  margin:14px 18px 6px;font:700 11px/1.2 "Segoe UI",system-ui,sans-serif;
+  margin:14px 20px 6px;font:700 11px/1.2 "Segoe UI",system-ui,sans-serif;
   color:var(--text-secondary);letter-spacing:.04em;text-transform:uppercase;
 }
 .esim-side-close{
@@ -194,49 +183,57 @@
   font-size:22px;line-height:1;cursor:pointer;padding:0 4px;
 }
 .esim-side-close:hover{color:var(--accent-cyan)}
-.esim-side-hint{font-size:12px;color:var(--text-secondary);margin:10px 18px 8px;line-height:1.4}
-.esim-panel-tabs{margin:0 18px 10px}
-.esim-mission-list,.esim-reward-section{padding:0 18px 14px}
-.esim-doc-art{display:flex;justify-content:center;margin:8px 18px 12px}
+.esim-side-hint{font-size:12px;color:var(--text-secondary);margin:10px 20px 8px;line-height:1.4}
+.esim-panel-tabs{margin:0 20px 10px}
+.esim-mission-list,.esim-reward-section{padding:0 20px 8px}
+.esim-doc-art{display:flex;justify-content:center;margin:8px 20px 12px}
 .esim-doc-thumb{
-  width:min(220px,70vw);height:auto;aspect-ratio:1/1;object-fit:contain;
+  width:min(280px,70vw);height:auto;aspect-ratio:1/1;object-fit:contain;
   border-radius:var(--radius-sm);background:rgba(0,0,0,.25);border:1px solid var(--border-color);
 }
-.esim-doc-desc{margin:0 18px 8px;color:var(--text-primary);font:600 13px/1.4 "Segoe UI",system-ui,sans-serif;white-space:pre-wrap}
-.esim-doc-hint{margin:0 18px 14px;color:var(--text-secondary);font:500 12px/1.4 "Segoe UI",system-ui,sans-serif}
-.esim-mission-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid rgba(255,255,255,.06)}
+.esim-doc-desc{margin:0 20px 8px;color:var(--text-primary);font:600 13px/1.4 "Segoe UI",system-ui,sans-serif;white-space:pre-wrap}
+.esim-doc-hint{margin:0 20px 14px;color:var(--text-secondary);font:500 12px/1.4 "Segoe UI",system-ui,sans-serif}
+.esim-mission-item{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-top:1px solid rgba(255,255,255,.06)}
 .esim-mission-item b{display:block;color:var(--text-primary);font-size:13px}
 .esim-mission-desc{display:block;color:var(--text-secondary);font-size:12px;margin-top:2px;line-height:1.35}
 .esim-mission-idx{
-  width:24px;height:24px;border-radius:50%;background:rgba(0,212,255,.12);
-  color:var(--accent-cyan);font:700 11px/24px "Segoe UI",system-ui,sans-serif;
+  width:26px;height:26px;border-radius:50%;background:rgba(0,212,255,.12);
+  color:var(--accent-cyan);font:700 11px/26px "Segoe UI",system-ui,sans-serif;
   text-align:center;flex:0 0 auto;
 }
 .esim-mission-body{min-width:0;flex:1}
-.esim-mission-rewards{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.esim-mission-rewards{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
 .esim-reward-tier{
-  display:flex;gap:12px;align-items:flex-start;padding:12px 18px;
+  display:flex;gap:14px;align-items:flex-start;padding:14px 20px;
   border-top:1px solid rgba(255,255,255,.06);
 }
 .esim-reward-tier-rate{
-  flex:0 0 52px;height:28px;border-radius:var(--radius-sm);
+  flex:0 0 56px;height:32px;border-radius:var(--radius-sm);
   background:rgba(0,212,255,.12);color:var(--accent-cyan);
-  font:800 12px/28px "Segoe UI",system-ui,sans-serif;text-align:center;
+  font:800 13px/32px "Segoe UI",system-ui,sans-serif;text-align:center;
 }
-.esim-reward-tier-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
-.esim-progress-reward-row{display:flex;align-items:center;gap:12px}
+.esim-reward-tier-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:10px}
+.esim-progress-reward-row{display:flex;align-items:center;gap:14px;width:100%}
 .esim-reward{
-  display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--text-secondary);
+  display:inline-flex;align-items:center;gap:10px;font-size:13px;color:var(--text-primary);
   background:var(--bg-input);border:1px solid var(--border-color);
-  border-radius:var(--radius-sm);padding:4px 8px;
+  border-radius:var(--radius-sm);padding:6px 10px;max-width:100%;
 }
-.esim-reward img,.esim-reward .sp-chip-thumb,.esim-reward-img{
-  width:20px;height:20px;object-fit:contain;flex:0 0 auto;
+.esim-reward-text{min-width:0;line-height:1.3}
+
+/* Uniform reward icons — series logos full (contain), never hex-clipped */
+.esim-chip-thumb{
+  position:relative;flex:0 0 auto;width:56px;height:56px;overflow:hidden;
+  border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--border-color);
 }
-.esim-progress-reward-row .sp-chip-thumb,
-.esim-progress-reward-row .esim-reward-img{flex:0 0 auto}
+.esim-chip-layer{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+.esim-chip-base{object-fit:cover}
+.esim-chip-logo{object-fit:contain;padding:10%;box-sizing:border-box}
+.esim-chip-thumb--ssp .esim-chip-logo{padding:12%;object-fit:contain}
+.esim-chip-frame{object-fit:contain;pointer-events:none}
+.esim-chip-plain{object-fit:contain;padding:8%;box-sizing:border-box}
 .esim-reward-fallback{
-  display:inline-block;border-radius:var(--radius-sm);background:rgba(255,255,255,.06);
+  display:inline-block;border-radius:8px;background:rgba(255,255,255,.06);
   border:1px solid var(--border-color);flex:0 0 auto;
 }
 
@@ -267,8 +264,12 @@
 }
 
 @media(max-width:900px){
-  .esim-map-shell{max-height:min(52vh,560px)}
-  .esim-route-btn span{max-width:min(200px,42vw)}
-  .stage-source-toggle-btn--esim-logo .stage-source-esim-logo{height:24px}
+  .esim-map-shell{max-height:min(48vh,520px)}
+  .esim-card{width:168px}
+  .esim-node--l .esim-card{width:180px}
+  .esim-node--m .esim-card{width:174px}
+  .esim-name{font-size:12px}
+  .esim-detail-modal.modal-content{max-width:100%}
   .esim-side-head h3{font-size:16px}
+  .stage-source-toggle-btn--esim-logo .stage-source-esim-logo{height:24px}
 }

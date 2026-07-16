@@ -11057,23 +11057,93 @@ _SERIES_UNIT_UPGRADE_DATA_RE = re.compile(
     r'^\s*(.+?)\s+Series\s+Unit\s+Upgrade\s+Data\b',
     re.IGNORECASE,
 )
-_UEXP_ICON_BY_RARITY = {
-    '5': 'uexp_0001',  # UR uses highest tier art when present; fall back handled below
-    '4': 'uexp_0003',  # SSR
-    '3': 'uexp_0002',  # SR
-    '2': 'uexp_0001',  # R
-    '1': 'uexp_0001',
+# Event unit-exp plate under series logo (images/Item/UI_Event_UnitExp_Base_*.webp).
+_UEXP_EVENT_BASE_BY_RARITY = {
+    '5': 'UI_Event_UnitExp_Base_SSR',
+    '4': 'UI_Event_UnitExp_Base_SSR',
+    '3': 'UI_Event_UnitExp_Base_SR',
+    '2': 'UI_Event_UnitExp_Base_R',
+    '1': 'UI_Event_UnitExp_Base_R',
 }
+_SERIES_NAME_TO_LOGO_PAD_CACHE = None
 
 
-def _resolve_series_unit_upgrade_data_icon(item_id, item_name='', rarity_id='4'):
-    """Blank-ResourceId series unit upgrade data → uexp rarity icon (series from display name)."""
+def _series_name_to_logo_pad_map(lc='EN'):
+    """Localized series display name → logo pad (e.g. Mobile Suit Gundam → 0010)."""
+    global _SERIES_NAME_TO_LOGO_PAD_CACHE
+    code = validate_lang_code(lc)
+    if _SERIES_NAME_TO_LOGO_PAD_CACHE is None:
+        _SERIES_NAME_TO_LOGO_PAD_CACHE = {}
+    if code in _SERIES_NAME_TO_LOGO_PAD_CACHE:
+        return _SERIES_NAME_TO_LOGO_PAD_CACHE[code]
+    out = {}
+    lang_dir = (LANG_PATHS.get(code) or LANG_PATHS.get(DEFAULT_LANG) or {}).get('lang') or ''
+    lang_path = os.path.join(lang_dir, 'm_series.json') if lang_dir else ''
+    lang_map = {}
+    try:
+        if lang_path and os.path.isfile(lang_path):
+            for r in extract_data_list(load_json(lang_path)):
+                if isinstance(r, dict):
+                    lang_map[normalize_id(r.get('id') or r.get('Id'))] = str(r.get('value') or r.get('Value') or '')
+    except Exception:
+        lang_map = {}
+    rows = []
+    try:
+        rows = extract_data_list(series_master_data) if series_master_data else []
+    except NameError:
+        rows = []
+    for s in rows:
+        if not isinstance(s, dict):
+            continue
+        rid = str(s.get('ResourceId') or '')
+        m = re.search(r'(\d{3,4})$', rid.replace('series_', ''))
+        pad = f'{int(m.group(1)):04d}' if m else (M_SERIES_ID_TO_LOGO_PAD or {}).get(normalize_id(s.get('Id')), '')
+        if not pad:
+            continue
+        for key in ('NameLanguageId', 'FilterNameLanguageId'):
+            nm = str(lang_map.get(normalize_id(s.get(key)), '') or '').strip()
+            if nm:
+                out[_normalize_name_key(nm)] = pad
+    out.setdefault(_normalize_name_key('Mobile Suit Gundam'), '0010')
+    _SERIES_NAME_TO_LOGO_PAD_CACHE[code] = out
+    return out
+
+def _resolve_series_unit_upgrade_data_layers(item_name='', rarity_id='4', lc='EN'):
+    """Series Unit Upgrade Data → UnitExp base plate + series logo (name before 'Series')."""
     name = str(item_name or '').strip()
-    if not _SERIES_UNIT_UPGRADE_DATA_RE.match(name):
-        return ''
-    key = _UEXP_ICON_BY_RARITY.get(normalize_id(rarity_id) or '4', 'uexp_0003')
-    return _game_item_icon_url(key) or game_image_public_url(f'/static/images/Item/{key}.webp')
+    m = _SERIES_UNIT_UPGRADE_DATA_RE.match(name)
+    if not m:
+        return '', ''
+    series_name = str(m.group(1) or '').strip()
+    pad = _series_name_to_logo_pad_map(lc).get(_normalize_name_key(series_name), '')
+    if not pad and series_name:
+        # Fuzzy: longest name key contained in / equal to series_name.
+        keys = _series_name_to_logo_pad_map(lc)
+        sn = _normalize_name_key(series_name)
+        best = ''
+        best_len = 0
+        for k, p in keys.items():
+            if not k or k.startswith('series '):
+                continue
+            if sn == k or sn.startswith(k + ' ') or k.startswith(sn):
+                if len(k) > best_len:
+                    best, best_len = p, len(k)
+        pad = best
+    if not pad:
+        return '', ''
+    files = (IMAGE_INDEX or {}).get('images/Logo-Series', []) or []
+    logo = _series_icon_path_from_pad(pad, files)
+    if not logo:
+        logo = f'/static/images/Logo-Series/logo_l_series_{pad}.webp'
+    base_key = _UEXP_EVENT_BASE_BY_RARITY.get(normalize_id(rarity_id) or '4', 'UI_Event_UnitExp_Base_SSR')
+    base = game_image_public_url(f'/static/images/Item/{base_key}.webp')
+    return base, game_image_public_url(logo)
 
+
+def _resolve_series_unit_upgrade_data_icon(item_id, item_name='', rarity_id='4', lc='EN'):
+    """Fallback single icon when layered thumb is unavailable."""
+    base, logo = _resolve_series_unit_upgrade_data_layers(item_name, rarity_id, lc)
+    return base or logo or ''
 
 def _resolve_item_icon_resource_id(item_id, item_row=None):
     """Item icon ResourceId — some series/unit SP chips ship with blank ResourceId in master."""
@@ -11249,8 +11319,15 @@ def _decorate_reward_rows(rows, lc):
             rid_item = _resolve_item_icon_resource_id(tid, item)
             if rid_item:
                 reward_icon = _game_item_icon_url(rid_item)
+            uexp_base, uexp_logo = _resolve_series_unit_upgrade_data_layers(reward_name, iri, lc)
+            if uexp_base and uexp_logo:
+                sp_chip_base = uexp_base
+                sp_chip_unit = uexp_logo
+                sp_chip_frame = ''  # empty frame ⇒ full series logo (contain), not SSP hex clip
+                if not reward_icon:
+                    reward_icon = uexp_base
             if not reward_icon:
-                reward_icon = _resolve_series_unit_upgrade_data_icon(tid, reward_name, iri)
+                reward_icon = _resolve_series_unit_upgrade_data_icon(tid, reward_name, iri, lc)
             if _is_limit_break_material_item_name(reward_name):
                 lb_unit_name = _extract_limit_break_unit_name(reward_name)
                 if lb_unit_name:
@@ -11259,16 +11336,17 @@ def _decorate_reward_rows(rows, lc):
                     lb_thumb = _resolve_unit_thumb_for_limit_break_material_item(tid)
                 if lb_thumb:
                     lb_use_limit_overlay = True
-            ssp_base, ssp_logo, ssp_frame = _resolve_series_ssp_chip_layers(tid)
-            if ssp_base and ssp_logo and ssp_frame:
-                sp_chip_base = ssp_base
-                sp_chip_unit = ssp_logo
-                sp_chip_frame = ssp_frame
-            else:
-                sp_unit = _resolve_unit_thumb_for_specialize_material_item(tid)
-                if sp_unit:
-                    sp_chip_frame = _SP_CHIP_FRAME
-                    sp_chip_unit = sp_unit
+            if not (sp_chip_base and sp_chip_unit):
+                ssp_base, ssp_logo, ssp_frame = _resolve_series_ssp_chip_layers(tid)
+                if ssp_base and ssp_logo and ssp_frame:
+                    sp_chip_base = ssp_base
+                    sp_chip_unit = ssp_logo
+                    sp_chip_frame = ssp_frame
+                else:
+                    sp_unit = _resolve_unit_thumb_for_specialize_material_item(tid)
+                    if sp_unit:
+                        sp_chip_frame = _SP_CHIP_FRAME
+                        sp_chip_unit = sp_unit
             if lb_thumb:
                 if lb_use_limit_overlay:
                     lb_frames = {'base': '', 'bottom_frame': ''}
@@ -21325,7 +21403,7 @@ def api_e_simulator():
     """E Simulator (Chronicle Event) diagram payload for the Stages tab."""
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-        ck = f'e_simulator_v9_{lc}'
+        ck = f'e_simulator_v10_{lc}'
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)

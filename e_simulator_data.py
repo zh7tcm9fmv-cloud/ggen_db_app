@@ -591,7 +591,7 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
         'event_wide_progress_rewards': event_wide_progress_reward_rows,
         'story_progress_rewards': story_progress_reward_rows,
         'report_progress_rewards': report_progress_reward_rows,
-        'payload_version': 9,
+        'payload_version': 10,
         'branch_icon': pub(CHRONICLE_BRANCH_ICON),
         'diagram_frame': pub(CHRONICLE_DIAGRAM_FRAME),
         'e_medal_icon': pub(ESIM_EMEDAL_ICON),
