@@ -13,6 +13,9 @@ CONTENT_FLAVOR_END = 6
 
 SIZE_S, SIZE_M, SIZE_L = 1, 2, 3
 
+# In-game shop for E Simulator event currency (TargetCurrencyItemId 291000250001).
+ESIM_SHOP_ID = '17250001'
+
 
 def _nid(v):
     if v is None:
@@ -56,11 +59,10 @@ def _pick_node_thumb(resource_id, size_type, content_type):
     if content_type == CONTENT_FLAVOR_START:
         return _ce_img(f'chronicle_thumb_start_flavor_{rid}')
     if content_type == CONTENT_DOCUMENT:
-        return _ce_img(f'chronicle_thumb_document_{rid}_l_01')
+        return _ce_img(f'chronicle_thumb_document_{rid}_l_02')
     if content_type == CONTENT_STORY:
         return _ce_img(f'chronicle_thumb_story_{rid}_01')
     if size_type == SIZE_L:
-        # Prefer dedicated large art when present; client falls back via onerror if needed.
         return _ce_img(f'chronicle_thumb_node_{rid}_l')
     return _ce_img(f'chronicle_thumb_node_{rid}_01')
 
@@ -76,6 +78,59 @@ def _content_type_key(idx):
     }.get(int(idx or 0), 'unknown')
 
 
+def collect_chronicle_scenario_stage_ids(app_mod, lang_code='EN'):
+    """ScenarioStageIds used by chronicle battle/story contents."""
+    load_json = app_mod.load_json
+    base = app_mod.LANG_PATHS.get(lang_code, {}).get('base') or app_mod.BASE_DIR
+    normalize_id = app_mod.normalize_id
+    out = set()
+    for fn in (
+        'm_chronicle_event_node_content_battle.json',
+        'm_chronicle_event_node_content_story.json',
+    ):
+        for r in _load_json(load_json, os.path.join(base, fn)):
+            sid = normalize_id(r.get('ScenarioStageId'))
+            if sid and sid != '0':
+                out.add(sid)
+    return out
+
+
+def chronicle_stage_title_map(app_mod, lang_code='EN'):
+    """Map ScenarioStageId -> display title from chronicle node language."""
+    load_json = app_mod.load_json
+    base = app_mod.LANG_PATHS.get(lang_code, {}).get('base') or app_mod.BASE_DIR
+    lang_dir = app_mod.LANG_PATHS.get(lang_code, {}).get('lang') or ''
+    normalize_id = app_mod.normalize_id
+    nodes = _load_json(load_json, os.path.join(base, 'm_chronicle_event_node.json'))
+    contents = _load_json(load_json, os.path.join(base, 'm_chronicle_event_node_content.json'))
+    battles = _load_json(load_json, os.path.join(base, 'm_chronicle_event_node_content_battle.json'))
+    stories = _load_json(load_json, os.path.join(base, 'm_chronicle_event_node_content_story.json'))
+    node_lang = _lang_map(_load_json(load_json, os.path.join(lang_dir, 'm_chronicle_event_node.json')))
+    node_by_id = {normalize_id(n.get('Id')): n for n in nodes}
+    battle_by_id = {normalize_id(r.get('Id')): r for r in battles}
+    story_by_id = {normalize_id(r.get('Id')): r for r in stories}
+    out = {}
+    for c in contents:
+        ctype = int(c.get('ContentTypeIndex') or 0)
+        if ctype not in (CONTENT_BATTLE, CONTENT_STORY):
+            continue
+        cid = normalize_id(c.get('Id'))
+        target = normalize_id(c.get('TargetId') or cid)
+        row = (battle_by_id if ctype == CONTENT_BATTLE else story_by_id).get(cid) or (
+            battle_by_id if ctype == CONTENT_BATTLE else story_by_id
+        ).get(target) or {}
+        sid = normalize_id(row.get('ScenarioStageId'))
+        if not sid or sid == '0' or sid in out:
+            continue
+        n = node_by_id.get(normalize_id(c.get('ChronicleEventNodeId'))) or {}
+        title = node_lang.get(normalize_id(n.get('TitleLanguageId')), '')
+        number = node_lang.get(normalize_id(n.get('DiagramNumberLanguageId')), '')
+        label = ' '.join(x for x in (number, title) if x).strip()
+        if label:
+            out[sid] = label
+    return out
+
+
 def build_e_simulator_payload(app_mod, lang_code='EN'):
     """Build full E Simulator JSON for the Stages tab."""
     load_json = app_mod.load_json
@@ -84,6 +139,8 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
     game_image_public_url = app_mod.game_image_public_url
     normalize_id = app_mod.normalize_id
     resolve_scenario_stage_name = getattr(app_mod, 'resolve_scenario_stage_name', None)
+    decorate_rewards = getattr(app_mod, '_decorate_reward_rows', None)
+    resolve_reward_rows = getattr(app_mod, '_resolve_reward_rows_from_set_id', None)
     ld = app_mod.get_lang_data(lang_code)
 
     events = _load_json(load_json, os.path.join(base, 'm_chronicle_event.json'))
@@ -100,11 +157,22 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
     doc_rewards = _load_json(load_json, os.path.join(base, 'm_chronicle_event_document_progress_complete_reward.json'))
     total_rewards = _load_json(load_json, os.path.join(base, 'm_chronicle_event_total_progress_complete_reward.json'))
     cp_cfg = _load_json(load_json, os.path.join(base, 'm_chronicle_event_challenge_point_config.json'))
+    mission_tabs = _load_json(load_json, os.path.join(base, 'm_chronicle_event_mission_tab.json'))
+    missions = _load_json(load_json, os.path.join(base, 'm_chronicle_event_mission.json'))
+    mission_master = {
+        normalize_id(r.get('Id')): r
+        for r in _load_json(load_json, os.path.join(base, 'm_mission.json'))
+    }
+    shops = _load_json(load_json, os.path.join(base, 'm_shop.json'))
+    shop_items = _load_json(load_json, os.path.join(base, 'm_shop_item.json'))
 
     node_lang = _lang_map(_load_json(load_json, os.path.join(lang_dir, 'm_chronicle_event_node.json')))
     diagram_lang = _lang_map(_load_json(load_json, os.path.join(lang_dir, 'm_chronicle_event_diagram.json')))
     event_lang = _lang_map(_load_json(load_json, os.path.join(lang_dir, 'm_chronicle_event.json')))
     doc_lang = _lang_map(_load_json(load_json, os.path.join(lang_dir, 'm_chronicle_event_document.json')))
+    mission_lang = _lang_map(_load_json(load_json, os.path.join(lang_dir, 'm_mission.json')))
+    shop_lang = _lang_map(_load_json(load_json, os.path.join(lang_dir, 'm_shop.json')))
+    item_lang = _lang_map(_load_json(load_json, os.path.join(lang_dir, 'm_item.json')))
 
     battle_by_id = {normalize_id(r.get('Id')): r for r in battles}
     story_by_id = {normalize_id(r.get('Id')): r for r in stories}
@@ -120,6 +188,7 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
     event_id = normalize_id(event.get('Id') or event.get('EventId') or '250001')
     recommend_node_id = normalize_id(event.get('RecommendEventPointNodeId'))
     promo = event_lang.get(normalize_id(event.get('PromotionTextLanguageId')), '')
+    mission_unlock_hint = event_lang.get(normalize_id(event.get('MissionReleaseConditionLanguageId')), '')
 
     lang_logo_suffix = {
         'EN': 'en', 'JA': 'ja', 'TW': 'tw', 'HK': 'hk', 'JP': 'ja',
@@ -128,7 +197,16 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
     def pub(path):
         return game_image_public_url(path) if path else ''
 
-    # Documents list
+    def rewards_for(set_id):
+        sid = normalize_id(set_id)
+        if not sid or sid == '0' or not resolve_reward_rows or not decorate_rewards:
+            return []
+        try:
+            return decorate_rewards(resolve_reward_rows(sid), lang_code) or []
+        except Exception:
+            return []
+
+    # Documents list — use _02 art (obtained / color versions).
     document_rows = []
     for d in sorted(docs, key=lambda x: int(x.get('Number') or 0)):
         did = normalize_id(d.get('Id'))
@@ -138,12 +216,80 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
             'number': int(d.get('Number') or 0),
             'hint': doc_lang.get(normalize_id(d.get('AcquisitionHintLanguageId')), ''),
             'history_type': int(d.get('HistoryTypeIndex') or 0),
-            'thumb': pub(_ce_img(f'chronicle_thumb_document_{rid}_l_01')),
-            'thumb_small': pub(_ce_img(f'chronicle_thumb_document_{rid}_s_01')),
+            'thumb': pub(_ce_img(f'chronicle_thumb_document_{rid}_l_02')),
+            'thumb_small': pub(_ce_img(f'chronicle_thumb_document_{rid}_s_02')),
         })
 
-    # Routes indexed by endpoints for edges within a diagram
+    # Mission tabs + missions (full DB view — not gated by report unlock).
+    diagram_name_by_id = {
+        normalize_id(dg.get('Id')): diagram_lang.get(normalize_id(dg.get('NameLanguageId')), normalize_id(dg.get('Id')))
+        for dg in diagrams
+    }
+    mission_tab_rows = []
+    missions_by_tab = defaultdict(list)
+    for m in missions:
+        mid = normalize_id(m.get('MissionId') or m.get('Id'))
+        tab_id = normalize_id(m.get('ChronicleEventMissionTabId'))
+        mm = mission_master.get(mid) or {}
+        title_lid = normalize_id(mm.get('OverrideTitleLanguageId') or mm.get('TitleLanguageId'))
+        title = mission_lang.get(title_lid, '') or mission_lang.get(normalize_id(mm.get('TitleLanguageId')), '')
+        rsid = normalize_id(mm.get('RewardSetId'))
+        missions_by_tab[tab_id].append({
+            'id': mid,
+            'sort': int(m.get('SortOrder') or 0),
+            'title': title,
+            'target_progress': int(mm.get('TargetProgressCount') or 1),
+            'node_content_id': normalize_id(m.get('ChronicleEventNodeContentId')),
+            'rewards': rewards_for(rsid),
+        })
+    for tab in sorted(mission_tabs, key=lambda x: int(x.get('SortOrder') or 0)):
+        tid = normalize_id(tab.get('Id'))
+        rows = sorted(missions_by_tab.get(tid, []), key=lambda x: x['sort'])
+        mission_tab_rows.append({
+            'id': tid,
+            'name': diagram_name_by_id.get(tid) or diagram_lang.get(normalize_id(tab.get('TabNameLanguageId')), tid),
+            'missions': rows,
+        })
+
+    # Shop (event exchange)
+    shop_row = next((s for s in shops if normalize_id(s.get('Id')) == ESIM_SHOP_ID), None) or {}
+    currency_id = normalize_id(shop_row.get('TargetCurrencyItemId'))
+    currency_name = ''
+    currency_icon = ''
+    if currency_id and currency_id != '0':
+        item_info = (getattr(app_mod, 'item_info_map', None) or {}).get(currency_id, {}) or {}
+        nlid = normalize_id(item_info.get('name_lang_id'))
+        currency_name = str((ld.get('item_text_map') or {}).get(nlid) or item_lang.get(nlid) or '').strip()
+        if not currency_name:
+            currency_name = f'Item {currency_id}'
+        try:
+            rid_item = app_mod._resolve_item_icon_resource_id(currency_id, item_info)
+            if rid_item:
+                currency_icon = app_mod._game_item_icon_url(rid_item) or ''
+        except Exception:
+            currency_icon = ''
+
+    shop_item_rows = []
+    for it in sorted(
+        [x for x in shop_items if normalize_id(x.get('ShopId')) == ESIM_SHOP_ID],
+        key=lambda x: (-int(x.get('Priority') or 0), normalize_id(x.get('Id'))),
+    ):
+        rsid = normalize_id(it.get('RewardSetId'))
+        rewards = rewards_for(rsid)
+        name = shop_lang.get(normalize_id(it.get('NameLanguageId')), '')
+        if not name and rewards:
+            name = rewards[0].get('name') or rewards[0].get('label') or ''
+        shop_item_rows.append({
+            'id': normalize_id(it.get('Id')),
+            'name': name,
+            'cost': int(it.get('RequiredCurrencyCount') or 0),
+            'purchase_limit': int(it.get('PurchaseCountLimit') or 0),
+            'rewards': rewards,
+            'icon': (rewards[0].get('icon') or rewards[0].get('image') or '') if rewards else '',
+        })
+
     node_diagram = {normalize_id(n.get('Id')): normalize_id(n.get('ChronicleEventDiagramId')) for n in nodes}
+    stage_titles = chronicle_stage_title_map(app_mod, lang_code)
 
     diagram_payloads = []
     for dg in sorted(diagrams, key=lambda x: normalize_id(x.get('Id'))):
@@ -185,8 +331,8 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
                 if ctype == CONTENT_BATTLE:
                     b = battle_by_id.get(cid) or battle_by_id.get(target) or {}
                     sid = normalize_id(b.get('ScenarioStageId'))
-                    sname = ''
-                    if sid and sid != '0' and resolve_scenario_stage_name:
+                    sname = stage_titles.get(sid, '')
+                    if not sname and sid and sid != '0' and resolve_scenario_stage_name:
                         ssc = (getattr(app_mod, 'scenario_stage_map', {}) or {}).get(sid, {})
                         sname = resolve_scenario_stage_name(ld, ssc.get('title_name_lang_id', '0'), sid)
                     entry.update({
@@ -198,8 +344,8 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
                 elif ctype == CONTENT_STORY:
                     s = story_by_id.get(cid) or story_by_id.get(target) or {}
                     sid = normalize_id(s.get('ScenarioStageId'))
-                    sname = ''
-                    if sid and sid != '0' and resolve_scenario_stage_name:
+                    sname = stage_titles.get(sid, '')
+                    if not sname and sid and sid != '0' and resolve_scenario_stage_name:
                         ssc = (getattr(app_mod, 'scenario_stage_map', {}) or {}).get(sid, {})
                         sname = resolve_scenario_stage_name(ld, ssc.get('title_name_lang_id', '0'), sid)
                     entry.update({
@@ -217,7 +363,7 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
                         'document_number': int(doc.get('Number') or 0),
                     })
                     drid = str(doc.get('ResourceId') or doc_id)
-                    entry['thumb'] = pub(_ce_img(f'chronicle_thumb_document_{drid}_l_01'))
+                    entry['thumb'] = pub(_ce_img(f'chronicle_thumb_document_{drid}_l_02'))
                 elif ctype in (CONTENT_FLAVOR_START, CONTENT_FLAVOR_MIDDLE, CONTENT_FLAVOR_END):
                     fl = flavor_by_id.get(cid) or flavor_by_id.get(target) or {}
                     entry['line_direction'] = int(fl.get('LineDirectionTypeIndex') or 0)
@@ -300,6 +446,17 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
         },
         'documents': document_rows,
         'document_total': len(document_rows),
+        'mission_unlock_hint': mission_unlock_hint,
+        'mission_tabs': mission_tab_rows,
+        'shop': {
+            'id': ESIM_SHOP_ID,
+            'name': shop_lang.get(normalize_id(shop_row.get('NameLanguageId')), 'E Simulator Shop'),
+            'currency_id': currency_id,
+            'currency_name': currency_name or 'Event Currency',
+            'currency_icon': currency_icon,
+            'items': shop_item_rows,
+        },
+        'stage_titles': stage_titles,
         'story_rewards': [
             {'complete_rate': float(r.get('CompleteRate') or 0), 'reward_set_id': normalize_id(r.get('RewardSetId'))}
             for r in sorted(story_rewards, key=lambda x: float(x.get('CompleteRate') or 0))

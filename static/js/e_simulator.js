@@ -7,6 +7,9 @@
     lang: null,
     diagramId: null,
     reportOpen: false,
+    missionsOpen: false,
+    shopOpen: false,
+    missionTabId: null,
   };
 
   function t(k) {
@@ -20,6 +23,23 @@
     if (typeof global.imgUrlPreferCdn === 'function') return global.imgUrlPreferCdn(path);
     if (typeof global.imgUrl === 'function') return global.imgUrl(path);
     return path || '';
+  }
+
+  /** Unity-style &lt;color=#RRGGBB&gt;…&lt;/color&gt; → HTML spans (escaped text). */
+  function formatPromoHtml(raw) {
+    var s = String(raw || '').replace(/\r?\n/g, ' ').trim();
+    if (!s) return '';
+    var out = '';
+    var re = /<color\s*=\s*#([0-9A-Fa-f]{6})\s*>([\s\S]*?)<\/color>/g;
+    var last = 0;
+    var m;
+    while ((m = re.exec(s))) {
+      out += esc(s.slice(last, m.index));
+      out += '<span style="color:#' + m[1] + '">' + esc(m[2]) + '</span>';
+      last = m.index + m[0].length;
+    }
+    out += esc(s.slice(last));
+    return out;
   }
 
   function ensureDom() {
@@ -60,18 +80,10 @@
     return null;
   }
 
-  function nextFocusNode(diagram) {
-    if (!diagram) return null;
-    var rec = null;
-    var best = null;
-    for (var i = 0; i < (diagram.nodes || []).length; i++) {
-      var n = diagram.nodes[i];
-      if (n.is_recommend) rec = n;
-      if (!n.is_flavor_text && n.view_type !== 'flavor_middle' && n.view_type !== 'flavor_end') {
-        if (!best || (n.recommend_order | 0) < (best.recommend_order | 0)) best = n;
-      }
-    }
-    return rec || best;
+  function closeSidePanels(except) {
+    if (except !== 'report') state.reportOpen = false;
+    if (except !== 'missions') state.missionsOpen = false;
+    if (except !== 'shop') state.shopOpen = false;
   }
 
   function openNode(n) {
@@ -83,6 +95,7 @@
       return;
     }
     if (p.type === 'document') {
+      closeSidePanels('report');
       state.reportOpen = true;
       render();
       var el = document.getElementById('esimReportPanel');
@@ -96,17 +109,16 @@
   function renderMap(diagram) {
     if (!diagram) return '';
     var b = diagram.bounds || {};
-    var padX = 220, padY = 180;
-    var scale = 0.118;
-    var w = Math.max(900, Math.ceil(((b.width || 8000) + padX * 2) * scale));
-    var h = Math.max(420, Math.ceil(((b.height || 2500) + padY * 2) * scale));
-    var minX = b.min_x || 0, minY = b.min_y || 0;
+    var padX = 160, padY = 140;
+    /* Scale so min node spacing (~629x / 290y) clears card footprints. */
+    var scale = 0.42;
+    var w = Math.max(1100, Math.ceil(((b.width || 8000) + padX * 2) * scale));
+    var h = Math.max(520, Math.ceil(((b.height || 2500) + padY * 2) * scale));
+    var minX = b.min_x || 0;
+    var maxY = b.max_y || 0;
 
     function px(x) { return Math.round((x - minX + padX) * scale); }
-    function py(y) {
-      // Flip Y so game up is screen up.
-      return Math.round((b.max_y - y + padY) * scale);
-    }
+    function py(y) { return Math.round((maxY - y + padY) * scale); }
 
     var nodePos = {};
     (diagram.nodes || []).forEach(function (n) {
@@ -139,7 +151,10 @@
         body = '<div class="esim-pill">' + esc(n.title || n.number || '…') + '</div>';
       } else {
         var thumb = n.thumb ? imgUrl(n.thumb) : '';
-        var fallback = thumb.replace(/_l\.webp$/i, '_01.webp').replace(/_01\.webp$/i, '_02.webp');
+        var fallback = thumb
+          .replace(/_l_02\.webp$/i, '_l_01.webp')
+          .replace(/_02\.webp$/i, '_01.webp')
+          .replace(/_l\.webp$/i, '_01.webp');
         body =
           '<div class="esim-card">' +
           (thumb
@@ -150,7 +165,6 @@
           '<div class="esim-name">' + esc(n.title || '') + '</div>' +
           '</div></div>';
         if ((n.y | 0) !== 0 && (vt === 'document' || vt === 'battle')) {
-          // Branch cue for off-spine nodes
           body += '<div class="esim-branch-mark">&lt; Branch</div>';
         }
       }
@@ -171,19 +185,101 @@
     );
   }
 
+  function rewardChips(rewards) {
+    return (rewards || []).slice(0, 4).map(function (r) {
+      var icon = r.icon || r.image || '';
+      var name = r.name || r.label || '';
+      var qty = r.quantity != null ? r.quantity : (r.count != null ? r.count : '');
+      return (
+        '<span class="esim-reward">' +
+        (icon ? '<img src="' + esc(imgUrl(icon)) + '" alt="">' : '') +
+        '<span>' + esc(name) + (qty !== '' && qty != null ? ' ×' + esc(String(qty)) : '') + '</span></span>'
+      );
+    }).join('');
+  }
+
   function renderReports() {
     var docs = (state.data && state.data.documents) || [];
     var items = docs.map(function (d) {
+      var thumb = d.thumb || d.thumb_small || '';
       return (
         '<div class="esim-report-item" data-doc-id="' + esc(String(d.id)) + '">' +
-        (d.thumb ? '<img src="' + esc(imgUrl(d.thumb)) + '" alt="" loading="lazy">' : '<img alt="">') +
+        (thumb ? '<img src="' + esc(imgUrl(thumb)) + '" alt="" loading="lazy">' : '<img alt="">') +
         '<div><b>REPORT No.' + esc(String(d.number)) + '</b><span>' + esc(d.hint || '') + '</span></div></div>'
       );
     }).join('');
     return (
-      '<div class="esim-report-panel' + (state.reportOpen ? ' open' : '') + '" id="esimReportPanel">' +
-      '<h3>Report ' + esc(String(docs.length)) + '/' + esc(String(state.data.document_total || docs.length)) + '</h3>' +
+      '<div class="esim-side-panel esim-report-panel' + (state.reportOpen ? ' open' : '') + '" id="esimReportPanel">' +
+      '<div class="esim-side-head"><h3>Report ' + esc(String(docs.length)) + '/' + esc(String(state.data.document_total || docs.length)) + '</h3>' +
+      '<button type="button" class="esim-side-close" data-close="report" aria-label="Close">×</button></div>' +
       items + '</div>'
+    );
+  }
+
+  function renderMissions() {
+    var tabs = (state.data && state.data.mission_tabs) || [];
+    if (!tabs.length) {
+      return '<div class="esim-side-panel' + (state.missionsOpen ? ' open' : '') + '" id="esimMissionsPanel"></div>';
+    }
+    var tabId = state.missionTabId || String(tabs[0].id);
+    var active = null;
+    for (var i = 0; i < tabs.length; i++) {
+      if (String(tabs[i].id) === String(tabId)) { active = tabs[i]; break; }
+    }
+    if (!active) active = tabs[0];
+    var tabBtns = tabs.map(function (tb) {
+      return (
+        '<button type="button" class="esim-mini-tab' + (String(tb.id) === String(active.id) ? ' active' : '') +
+        '" data-mission-tab="' + esc(String(tb.id)) + '">' + esc(tb.name || tb.id) + '</button>'
+      );
+    }).join('');
+    var rows = (active.missions || []).map(function (m, idx) {
+      return (
+        '<div class="esim-mission-item">' +
+        '<div class="esim-mission-idx">' + esc(String(idx + 1)) + '</div>' +
+        '<div class="esim-mission-body"><b>' + esc(m.title || ('Mission ' + m.id)) + '</b>' +
+        '<div class="esim-mission-rewards">' + rewardChips(m.rewards) + '</div></div></div>'
+      );
+    }).join('');
+    var hint = state.data.mission_unlock_hint
+      ? '<div class="esim-side-hint">In-game: ' + esc(state.data.mission_unlock_hint) + '</div>'
+      : '';
+    return (
+      '<div class="esim-side-panel' + (state.missionsOpen ? ' open' : '') + '" id="esimMissionsPanel">' +
+      '<div class="esim-side-head"><h3>Missions</h3>' +
+      '<button type="button" class="esim-side-close" data-close="missions" aria-label="Close">×</button></div>' +
+      hint +
+      '<div class="esim-mini-tabs">' + tabBtns + '</div>' +
+      rows + '</div>'
+    );
+  }
+
+  function renderShop() {
+    var shop = (state.data && state.data.shop) || {};
+    var items = shop.items || [];
+    var curIcon = shop.currency_icon ? imgUrl(shop.currency_icon) : '';
+    var head =
+      '<div class="esim-side-head"><h3>' + esc(shop.name || 'Shop') + '</h3>' +
+      '<button type="button" class="esim-side-close" data-close="shop" aria-label="Close">×</button></div>' +
+      '<div class="esim-shop-currency">' +
+      (curIcon ? '<img src="' + esc(curIcon) + '" alt="">' : '') +
+      '<span>' + esc(shop.currency_name || 'Event Currency') + '</span>' +
+      '<small>Browse-only (purchases are in-game)</small></div>';
+    var rows = items.map(function (it) {
+      var icon = it.icon ? imgUrl(it.icon) : '';
+      return (
+        '<div class="esim-shop-item">' +
+        (icon ? '<img class="esim-shop-icon" src="' + esc(icon) + '" alt="">' : '<div class="esim-shop-icon"></div>') +
+        '<div class="esim-shop-body"><b>' + esc(it.name || ('Item ' + it.id)) + '</b>' +
+        '<div class="esim-mission-rewards">' + rewardChips(it.rewards) + '</div>' +
+        '<div class="esim-shop-cost">' + esc(String(it.cost || 0)) +
+        (it.purchase_limit ? ' · limit ' + esc(String(it.purchase_limit)) : '') +
+        '</div></div></div>'
+      );
+    }).join('') || '<div class="esim-side-hint">No shop items found.</div>';
+    return (
+      '<div class="esim-side-panel' + (state.shopOpen ? ' open' : '') + '" id="esimShopPanel">' +
+      head + rows + '</div>'
     );
   }
 
@@ -205,18 +301,10 @@
       );
     }).join('');
 
-    var focus = nextFocusNode(diagram);
-    var nextHtml = '';
-    if (focus) {
-      nextHtml =
-        '<button type="button" class="esim-next" id="esimNextBtn" data-node-id="' + esc(String(focus.id)) + '">' +
-        '<span class="esim-next-tag">NEXT</span>' +
-        (focus.number ? '<div class="esim-next-num">' + esc(focus.number) + '</div>' : '') +
-        '<div class="esim-next-name">' + esc(focus.title || '') + '</div></button>';
-    }
-
     var logo = data.logo ? '<img class="esim-logo" src="' + esc(imgUrl(data.logo)) + '" alt="">' : '';
     var cpMax = (data.challenge_point && data.challenge_point.display_max) || 30;
+    var docN = (data.documents || []).length;
+    var docT = data.document_total || docN;
 
     root.innerHTML =
       '<div class="esim-header">' +
@@ -226,19 +314,20 @@
       '<div class="esim-tabs" id="esimTabs">' + tabs + '</div>' +
       renderMap(diagram) +
       renderReports() +
+      renderMissions() +
+      renderShop() +
       '<div class="esim-footer">' +
       '<div class="esim-story"><div class="esim-story-label">Story</div>' +
       '<div class="esim-story-bar"><div class="esim-story-fill" style="width:0%"></div></div>' +
       '<div class="esim-story-meta">Progress is account-based in-game · ' +
-      esc(String((data.documents || []).length)) + ' Reports in master data</div></div>' +
+      esc(String(docN)) + ' Reports in master data</div></div>' +
       '<div class="esim-actions">' +
-      '<div><span class="esim-btn-note">locked</span><button type="button" class="esim-btn is-locked" disabled><span class="esim-lock">🔒</span>Missions</button></div>' +
-      '<div><span class="esim-btn-note">&nbsp;</span><button type="button" class="esim-btn" id="esimShopBtn">Shop</button></div>' +
-      '<div><span class="esim-btn-note">' + esc(String((data.documents || []).length)) + '/' + esc(String(data.document_total || 0)) + '</span>' +
-      '<button type="button" class="esim-btn" id="esimReportBtn">Report</button></div>' +
+      '<div><button type="button" class="esim-btn' + (state.missionsOpen ? ' active' : '') + '" id="esimMissionsBtn">Missions</button></div>' +
+      '<div><button type="button" class="esim-btn' + (state.shopOpen ? ' active' : '') + '" id="esimShopBtn">Shop</button></div>' +
+      '<div><span class="esim-btn-note">' + esc(String(docN)) + '/' + esc(String(docT)) + '</span>' +
+      '<button type="button" class="esim-btn' + (state.reportOpen ? ' active' : '') + '" id="esimReportBtn">Report</button></div>' +
       '</div>' +
-      nextHtml +
-      '<div class="esim-ticker">' + esc((data.promotion_text || '').replace(/\n/g, ' ')) + '</div>' +
+      '<div class="esim-ticker">' + formatPromoHtml(data.promotion_text || '') + '</div>' +
       '</div>';
 
     bind();
@@ -260,7 +349,7 @@
       tabs.querySelectorAll('.esim-tab').forEach(function (btn) {
         btn.addEventListener('click', function () {
           state.diagramId = btn.getAttribute('data-diagram-id');
-          state.reportOpen = false;
+          closeSidePanels();
           render();
         });
       });
@@ -277,27 +366,49 @@
         }
       });
     });
-    var next = document.getElementById('esimNextBtn');
-    if (next) {
-      next.addEventListener('click', function () {
-        var diagram = currentDiagram();
-        openNode(nodeById(diagram, next.getAttribute('data-node-id')));
-      });
-    }
     var rb = document.getElementById('esimReportBtn');
     if (rb) {
       rb.addEventListener('click', function () {
-        state.reportOpen = !state.reportOpen;
-        var panel = document.getElementById('esimReportPanel');
-        if (panel) panel.classList.toggle('open', state.reportOpen);
+        var next = !state.reportOpen;
+        closeSidePanels(next ? 'report' : null);
+        state.reportOpen = next;
+        render();
+      });
+    }
+    var mb = document.getElementById('esimMissionsBtn');
+    if (mb) {
+      mb.addEventListener('click', function () {
+        var next = !state.missionsOpen;
+        closeSidePanels(next ? 'missions' : null);
+        state.missionsOpen = next;
+        render();
       });
     }
     var shop = document.getElementById('esimShopBtn');
     if (shop) {
       shop.addEventListener('click', function () {
-        alert(t('esim_shop_hint') || 'E Simulator Shop is in-game only for now.');
+        var next = !state.shopOpen;
+        closeSidePanels(next ? 'shop' : null);
+        state.shopOpen = next;
+        render();
       });
     }
+    document.querySelectorAll('.esim-side-close').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var which = btn.getAttribute('data-close');
+        if (which === 'report') state.reportOpen = false;
+        if (which === 'missions') state.missionsOpen = false;
+        if (which === 'shop') state.shopOpen = false;
+        render();
+      });
+    });
+    document.querySelectorAll('[data-mission-tab]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        state.missionTabId = btn.getAttribute('data-mission-tab');
+        state.missionsOpen = true;
+        render();
+      });
+    });
   }
 
   async function load() {
@@ -318,6 +429,9 @@
       state.data = data;
       state.lang = lang;
       if (!state.diagramId && data.diagrams && data.diagrams[0]) state.diagramId = data.diagrams[0].id;
+      if (!state.missionTabId && data.mission_tabs && data.mission_tabs[0]) {
+        state.missionTabId = data.mission_tabs[0].id;
+      }
       render();
     } catch (e) {
       if (root) root.innerHTML = '<div style="padding:40px;color:#f88">E Simulator: ' + esc(String(e.message || e)) + '</div>';

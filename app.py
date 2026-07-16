@@ -21275,12 +21275,13 @@ def api_e_simulator():
     """E Simulator (Chronicle Event) diagram payload for the Stages tab."""
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-        ck = f'e_simulator_v1_{lc}'
+        ck = f'e_simulator_v2_{lc}'
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
         import e_simulator_data as _esim
-        out = _esim.build_e_simulator_payload(__import__('sys').modules[__name__], lc)
+        import sys as _sys
+        out = _esim.build_e_simulator_payload(_sys.modules[__name__], lc)
         set_cached_response(ck, out)
         return jsonify_cacheable(out, ck, public=True, max_age=3600, convert_images=True)
     except Exception as e:
@@ -21299,6 +21300,10 @@ def get_stage(stage_id):
         tes = tower_event_stage_map.get(stage_id) if tower_event_stage_map else None
         ch = main_scenario_stage_challenge_map.get(stage_id) if main_scenario_stage_challenge_map else None
         est_er = eternal_stage_map.get(stage_id)
+        ssc_map = (scenario_stage_map or {}).get(stage_id) if scenario_stage_map else None
+        sm_direct = (stage_map or {}).get(stage_id) if stage_map else None
+        # E Simulator / chronicle scenarios live in m_scenario_stage + m_stage (StageTypeIndex 18).
+        is_chronicle_stage = bool(ssc_map and sm_direct and not sas and not ses and not tes and not ch and not est_er)
         if sas:
             is_score_attack = True
             is_special_event_stage = False
@@ -21320,6 +21325,11 @@ def get_stage(stage_id):
             is_tower_event_stage = False
             is_challenge_stage = True
         elif est_er:
+            is_score_attack = False
+            is_special_event_stage = False
+            is_tower_event_stage = False
+            is_challenge_stage = False
+        elif is_chronicle_stage:
             is_score_attack = False
             is_special_event_stage = False
             is_tower_event_stage = False
@@ -21377,11 +21387,30 @@ def get_stage(stage_id):
                 'recommended_combat_power': safe_int(mc.get('recommended_combat_power'), 0),
             }
             vis = True
+        elif is_chronicle_stage:
+            mmeta = map_stage_meta_by_stage_id.get(stage_id, {}) if map_stage_meta_by_stage_id else {}
+            est = {
+                'stage_number': safe_int(ssc_map.get('stage_number'), 0),
+                'title_name_lang_id': ssc_map.get('title_name_lang_id', '0'),
+                'thumbnail_resource_id': ssc_map.get('thumbnail_resource_id', ''),
+                'stage_difficulty_type_index': safe_int(
+                    ssc_map.get('stage_difficulty_type_index'),
+                    safe_int(mmeta.get('stage_difficulty_type_index'), 1),
+                ),
+                'display_unit_id': '0',
+                'recommended_combat_power': safe_int(sm_direct.get('recommended_cp'), 0),
+            }
+            vis = True
         else:
             est = est_er
             vis = eternal_stage_content_visible(stage_id, est)
-        ck_cat = 'sa' if is_score_attack else ('ses' if is_special_event_stage else ('tes' if is_tower_event_stage else ('ch' if is_challenge_stage else 'er')))
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage9"
+        ck_cat = (
+            'sa' if is_score_attack else (
+                'ses' if is_special_event_stage else (
+                    'tes' if is_tower_event_stage else (
+                        'ch' if is_challenge_stage else (
+                            'ce' if is_chronicle_stage else 'er')))))
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage10"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -21423,11 +21452,19 @@ def get_stage(stage_id):
                 if len(_dup_ids) > 1 and safe_int(stage_id, 0) == max(_dup_ids):
                     if 'rerun' not in sname.lower():
                         sname = f"{sname} (Rerun)"
-        elif is_challenge_stage:
+        elif is_challenge_stage or is_chronicle_stage:
             sname = resolve_scenario_stage_name(ld, est.get('title_name_lang_id', '0'), stage_id)
+            if is_chronicle_stage and (not sname or sname.startswith('Unknown') or sname == stage_id):
+                try:
+                    import e_simulator_data as _esim_titles
+                    sname = (_esim_titles.chronicle_stage_title_map(sys.modules[__name__], lc) or {}).get(stage_id, '') or sname
+                except Exception:
+                    pass
+            if not sname:
+                sname = f"E Simulator ({stage_id})"
         else:
             sname = ld.get('stage_text_map', {}).get(est.get('stage_name_lang_id', ''), '') or f"Unknown ({stage_id})"
-        if is_score_attack or is_special_event_stage or is_tower_event_stage or is_challenge_stage:
+        if is_score_attack or is_special_event_stage or is_tower_event_stage or is_challenge_stage or is_chronicle_stage:
             diff = get_stage_difficulty_by_type_index(est.get('stage_difficulty_type_index'), lc)
         else:
             diff = get_stage_difficulty(stage_id, lc)
@@ -21664,11 +21701,16 @@ def get_stage(stage_id):
             md['reach_target_areas'] = rtp
             md['map_event_areas'] = list(map_stage_event_areas_by_map_stage.get(normalize_id(msid), []) or [])
             map_meta = {'map_id': mid, 'map_stage_id': msid}
-        stage_cat = ('score_attack' if is_score_attack else ('special_stage' if is_special_event_stage else ('tower_stage' if is_tower_event_stage else ('challenge_stage' if is_challenge_stage else 'eternal'))))
+        stage_cat = (
+            'score_attack' if is_score_attack else (
+                'special_stage' if is_special_event_stage else (
+                    'tower_stage' if is_tower_event_stage else (
+                        'challenge_stage' if is_challenge_stage else (
+                            'chronicle' if is_chronicle_stage else 'eternal')))))
         stage_rewards = resolve_stage_rewards(
             stage_id,
             lc,
-            category=stage_cat,
+            category=stage_cat if stage_cat != 'chronicle' else 'eternal',
             score_attack_reward_id=est.get('score_attack_reward_id', '0'),
         )
         tower_side = 'ALL'
@@ -21678,7 +21720,7 @@ def get_stage(stage_id):
             _ginfo = (tower_event_stage_group_map or {}).get(_gid, {})
             _grid = str(_ginfo.get('resource_id') or '').strip() if isinstance(_ginfo, dict) else ''
             tower_side = classify_tower_side(sname, _gname, _grid)
-        mc_cp = safe_int(est.get('recommended_combat_power'), 0) if is_challenge_stage else 0
+        mc_cp = safe_int(est.get('recommended_combat_power'), 0) if (is_challenge_stage or is_chronicle_stage) else 0
         rec_cp = mc_cp if mc_cp > 0 else sm.get('recommended_cp', 0)
         capturable_units = resolve_challenge_capturable_units(stage_id, lc) if is_challenge_stage else []
         challenge_series_name = resolve_challenge_series_name(ld, est.get('challenge_series_id', '0')) if is_challenge_stage else ''
@@ -21687,7 +21729,8 @@ def get_stage(stage_id):
         _ch_hard = _challenge_stage_is_hard(est.get('thumbnail_resource_id')) if is_challenge_stage else False
         _er_expert = (
             not is_score_attack and not is_special_event_stage and not is_tower_event_stage
-            and not is_challenge_stage and safe_int(est.get('stage_difficulty_type_index'), 1) == 3
+            and not is_challenge_stage and not is_chronicle_stage
+            and safe_int(est.get('stage_difficulty_type_index'), 1) == 3
         )
         _show_stage_missions = _ch_hard or _er_expert
         result = {
