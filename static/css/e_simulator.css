@@ -11,7 +11,7 @@
 #panel-stages.esim-active #eSimulatorWrap{display:block}
 #panel-stages.esim-active .pagination-bar-wrap{margin-top:8px}
 
-.esim-root{--esim-cyan:#5ee7ff;--esim-green:#5dff9a;--esim-red:#ff4d5e;--esim-ink:#e8f4ff;--esim-node-scale:1;--esim-icon:64px;position:relative;border:1px solid rgba(94,231,255,.28);border-radius:10px;overflow:visible;background:#020816;min-height:0;box-shadow:inset 0 0 80px rgba(0,40,90,.35)}
+.esim-root{--esim-cyan:#5ee7ff;--esim-green:#5dff9a;--esim-red:#ff4d5e;--esim-ink:#e8f4ff;--esim-node-scale:1;position:relative;border:1px solid rgba(94,231,255,.28);border-radius:10px;overflow:visible;background:#020816;min-height:0;box-shadow:inset 0 0 80px rgba(0,40,90,.35)}
 .esim-header{display:flex;align-items:center;justify-content:flex-start;gap:12px;padding:10px 14px;background:linear-gradient(180deg,rgba(8,28,58,.92),rgba(4,14,32,.75));border-bottom:1px solid rgba(94,231,255,.18);position:relative;z-index:3}
 .esim-title-row{display:flex;align-items:center;gap:10px;min-width:0}
 .esim-logo{height:36px;width:auto;max-width:min(48vw,260px);object-fit:contain;filter:drop-shadow(0 0 8px rgba(94,231,255,.45))}
@@ -24,57 +24,51 @@
 .esim-tab.active{background:linear-gradient(180deg,rgba(210,235,255,.95),rgba(150,200,240,.88));color:#0a1a30;border-color:#fff;box-shadow:0 0 0 1px rgba(94,231,255,.55),0 0 18px rgba(94,231,255,.25)}
 .esim-tab.active img{opacity:1}
 
-.esim-map-shell{position:relative;height:auto;min-height:280px;margin:8px 0 0;overflow:auto;-webkit-overflow-scrolling:touch;background:#020816;box-sizing:border-box}
-.esim-map{position:relative;transform-origin:0 0;margin:0 auto;overflow:visible}
+.esim-map-shell{position:relative;height:auto;min-height:280px;margin:8px 0 0;overflow:visible;background:#020816;box-sizing:border-box}
+.esim-map{position:relative;transform-origin:0 0;margin:0 auto;max-width:100%;overflow:visible}
 .esim-bg{position:absolute;inset:0;background-position:center;background-size:100% 100%;background-repeat:no-repeat;opacity:.92;filter:saturate(1.05) contrast(1.05)}
 .esim-bg::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(180deg,transparent 0 3px,rgba(80,200,255,.035) 3px 4px),radial-gradient(ellipse at 50% 40%,transparent 30%,rgba(0,0,0,.45) 100%);pointer-events:none}
 .esim-edges,.esim-nodes{position:absolute;inset:0;pointer-events:none}
 .esim-edge{stroke:rgba(160,220,255,.55);stroke-width:2;fill:none;filter:drop-shadow(0 0 3px rgba(94,231,255,.35))}
 .esim-edge-branch{stroke:rgba(255,120,140,.65)}
 
-.esim-node{position:absolute;transform:translate(-50%,-50%) scale(var(--esim-node-scale,1));transform-origin:center center;pointer-events:auto;cursor:pointer;z-index:2;min-width:0}
+.esim-node{position:absolute;transform:translate(-50%,-50%) scale(var(--esim-node-scale,1));transform-origin:center center;pointer-events:auto;cursor:pointer;z-index:2;min-width:48px}
 .esim-node--flavor_text,.esim-node--flavor_middle,.esim-node--flavor_end{min-width:0}
+/* Grow right from the route start so the first label is not clipped off the left edge. */
 .esim-node--flavor_start{transform:translate(0,-50%) scale(var(--esim-node-scale,1));transform-origin:left center}
-
-/* Uniform icon-sized nodes (battle / story / document). */
-.esim-card{position:relative;border:1px solid rgba(180,220,255,.4);border-radius:4px;background:rgba(4,16,36,.88);box-shadow:0 0 0 1px rgba(0,0,0,.35),0 3px 10px rgba(0,0,0,.35);overflow:hidden;width:var(--esim-icon);height:var(--esim-icon)}
-.esim-card--icon{padding:0;width:var(--esim-icon);height:var(--esim-icon)}
-.esim-node--s .esim-card,
-.esim-node--m .esim-card,
-.esim-node--l .esim-card,
-.esim-node--document .esim-card,
-.esim-node--battle .esim-card,
-.esim-node--story .esim-card{width:var(--esim-icon);height:var(--esim-icon)}
-.esim-card--art-l,.esim-node--art-l .esim-card{overflow:visible;background:transparent;border-color:transparent;box-shadow:none}
-
+.esim-card{position:relative;border:1px solid rgba(180,220,255,.45);border-radius:4px;background:rgba(4,16,36,.88);box-shadow:0 0 0 1px rgba(0,0,0,.35),0 4px 12px rgba(0,0,0,.35);overflow:hidden;width:72px}
+.esim-node--l .esim-card{width:82px}
+.esim-node--m .esim-card{width:76px}
+.esim-node--document .esim-card{width:56px}
+.esim-card--art-l,.esim-node--art-l .esim-card{overflow:visible}
 .esim-node--flavor_start .esim-card,
-.esim-card--flavor{display:flex;flex-direction:row;align-items:center;gap:6px;width:auto;height:auto;min-width:110px;max-width:160px;padding:3px 8px 3px 3px;background:rgba(16,28,48,.92);overflow:hidden}
+.esim-card--flavor{display:flex;flex-direction:row;align-items:center;gap:6px;width:auto;min-width:120px;max-width:170px;padding:4px 8px 4px 4px;background:rgba(16,28,48,.92)}
 .esim-node--flavor_start .esim-thumb,
-.esim-card--flavor .esim-thumb{width:28px;height:28px;flex:0 0 28px;aspect-ratio:1/1;object-fit:contain;border-radius:3px;background:rgba(0,0,0,.25);padding:0}
+.esim-card--flavor .esim-thumb{width:34px;height:34px;flex:0 0 34px;aspect-ratio:1/1;object-fit:contain;border-radius:3px;background:rgba(0,0,0,.25);padding:0}
 .esim-node--flavor_start .esim-meta,
 .esim-card--flavor .esim-meta{padding:0;min-width:0;flex:1}
 .esim-node--flavor_start .esim-name,
-.esim-card--flavor .esim-name{-webkit-line-clamp:2;font-size:9px;margin:0}
-
-.esim-thumb{display:block;width:100%;height:100%;aspect-ratio:1/1;object-fit:contain;object-position:center;background:#0a1428;padding:2px;box-sizing:border-box}
-.esim-card--icon .esim-thumb{padding:2px;background:transparent}
-.esim-thumb-stack{position:relative;width:100%;height:100%;aspect-ratio:1/1;background:transparent;overflow:visible}
-.esim-thumb-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border-radius:3px}
+.esim-card--flavor .esim-name{-webkit-line-clamp:2;font-size:9px}
+.esim-thumb{display:block;width:100%;aspect-ratio:1/1;object-fit:contain;object-position:center;background:#0a1428;padding:3px;box-sizing:border-box}
+.esim-thumb-stack{position:relative;width:100%;aspect-ratio:1/1;background:transparent;overflow:visible}
+.esim-thumb-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border-radius:2px}
 .esim-thumb-fg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:0;box-sizing:border-box;pointer-events:none}
 .esim-thumb-fg .esim-thumb{width:100%;height:100%;padding:0;background:transparent;aspect-ratio:auto;object-fit:contain}
 /* Size-L *_l art may extend past the report-complete frame. */
-.esim-thumb-stack--large .esim-thumb-fg{inset:-22%}
+.esim-thumb-stack--large .esim-thumb-fg{inset:-18%}
 .esim-thumb-stack--large .esim-thumb-fg .esim-thumb{width:100%;height:100%;max-width:none}
-.esim-node--document .esim-thumb{background:radial-gradient(circle at 50% 40%,rgba(80,160,255,.18),rgba(4,12,28,.9))}
-
-.esim-meta{display:none}
-.esim-pill{padding:4px 8px;border-radius:999px;background:rgba(10,24,48,.86);border:1px solid rgba(160,210,255,.35);color:rgba(230,245,255,.9);font:600 10px/1.2 "Segoe UI",system-ui,sans-serif;white-space:nowrap;box-shadow:0 0 10px rgba(94,231,255,.15)}
-.esim-branch-mark{position:absolute;left:50%;top:calc(100% + 2px);transform:translateX(-50%);width:22px;height:22px;object-fit:contain;pointer-events:none;filter:drop-shadow(0 0 4px rgba(255,80,140,.45))}
-
-.esim-node--recommend .esim-card{border-color:rgba(255,90,100,.9);box-shadow:0 0 0 1px rgba(255,80,90,.55),0 0 22px rgba(255,60,80,.35)}
-.esim-node--recommend::before{content:"";position:absolute;left:50%;top:50%;width:120px;height:120px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,60,80,.28) 0%,rgba(255,60,80,.08) 42%,transparent 68%);animation:esim-pulse 2.4s ease-out infinite;z-index:0;pointer-events:none}
+.esim-node--battle .esim-thumb,.esim-node--story .esim-thumb{aspect-ratio:1/1;object-fit:contain}
+.esim-node--document .esim-thumb{aspect-ratio:1/1;object-fit:contain;padding:3px;background:radial-gradient(circle at 50% 40%,rgba(80,160,255,.2),rgba(4,12,28,.95))}
+.esim-meta{padding:3px 5px 5px;display:flex;flex-direction:column;gap:1px}
+.esim-num{font:700 8px/1.2 "Segoe UI",system-ui,sans-serif;color:rgba(180,220,255,.85);letter-spacing:.03em}
+.esim-name{font:700 10px/1.2 "Segoe UI",system-ui,sans-serif;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.esim-node--recommend .esim-card{border-color:rgba(255,90,100,.9);box-shadow:0 0 0 1px rgba(255,80,90,.55),0 0 28px rgba(255,60,80,.35)}
+.esim-node--recommend::before{content:"";position:absolute;left:50%;top:50%;width:180px;height:180px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,60,80,.28) 0%,rgba(255,60,80,.08) 42%,transparent 68%);animation:esim-pulse 2.4s ease-out infinite;z-index:0;pointer-events:none}
 .esim-node--recommend .esim-card{position:relative;z-index:1}
 @keyframes esim-pulse{0%{transform:translate(-50%,-50%) scale(.72);opacity:.85}100%{transform:translate(-50%,-50%) scale(1.15);opacity:0}}
+
+.esim-pill{padding:5px 10px;border-radius:999px;background:rgba(10,24,48,.86);border:1px solid rgba(160,210,255,.35);color:rgba(230,245,255,.9);font:600 11px/1.2 "Segoe UI",system-ui,sans-serif;white-space:nowrap;box-shadow:0 0 10px rgba(94,231,255,.15)}
+.esim-branch-mark{position:absolute;left:50%;top:calc(100% + 2px);transform:translateX(-50%);width:22px;height:22px;object-fit:contain;pointer-events:none;filter:drop-shadow(0 0 4px rgba(255,80,140,.45))}
 
 .esim-footer{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:10px 12px 12px;background:linear-gradient(180deg,rgba(4,14,32,.55),rgba(2,10,24,.95));border-top:1px solid rgba(94,231,255,.16);position:relative;z-index:3}
 .esim-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-start}
@@ -92,17 +86,19 @@
 .esim-side-subhead{margin:12px 0 4px;font:700 11px/1.2 "Segoe UI",system-ui,sans-serif;color:rgba(180,220,255,.85);letter-spacing:.04em;text-transform:uppercase}
 .esim-side-close{appearance:none;border:0;background:transparent;color:rgba(220,235,255,.85);font-size:22px;line-height:1;cursor:pointer;padding:0 4px}
 .esim-side-hint{font-size:11px;color:rgba(200,230,255,.65);margin-bottom:8px;line-height:1.35}
+.esim-side-backdrop{position:fixed;inset:0;background:rgba(0,8,20,.55);z-index:79;cursor:pointer}
+.esim-side-subhead{margin:12px 0 4px;font:700 11px/1.2 "Segoe UI",system-ui,sans-serif;color:rgba(180,220,255,.85);letter-spacing:.04em;text-transform:uppercase}
 .esim-doc-art{display:flex;justify-content:center;margin:8px 0 12px}
 .esim-doc-thumb{width:min(220px,70vw);height:auto;aspect-ratio:1/1;object-fit:contain;border-radius:8px;background:rgba(0,0,0,.25);border:1px solid rgba(94,231,255,.25)}
 .esim-doc-desc{margin:0 0 8px;color:#fff;font:600 13px/1.4 "Segoe UI",system-ui,sans-serif;white-space:pre-wrap}
 .esim-doc-hint{margin:0;color:rgba(200,230,255,.72);font:500 12px/1.4 "Segoe UI",system-ui,sans-serif}
-
+.esim-mission-complete .esim-mission-idx{width:auto;min-width:36px;border-radius:4px;padding:0 4px;font-size:10px}
 .esim-report-item,.esim-mission-item,.esim-shop-item{display:flex;gap:8px;align-items:flex-start;padding:6px 0;border-top:1px solid rgba(255,255,255,.08)}
 .esim-report-item img,.esim-shop-icon{width:48px;height:48px;object-fit:contain;background:rgba(0,0,0,.25);border-radius:4px;flex:0 0 auto}
+.esim-shop-icon:empty{background:rgba(255,255,255,.06)}
 .esim-report-item b,.esim-mission-body b,.esim-shop-body b{display:block;color:#fff;font-size:12px}
 .esim-report-item span,.esim-mission-desc{display:block;color:rgba(200,230,255,.7);font-size:11px;margin-top:2px;line-height:1.35}
 .esim-mission-idx{width:22px;height:22px;border-radius:50%;background:rgba(94,231,255,.15);color:#9edfff;font:700 11px/22px "Segoe UI",system-ui,sans-serif;text-align:center;flex:0 0 auto}
-.esim-mission-complete .esim-mission-idx{width:auto;min-width:36px;border-radius:4px;padding:0 4px;font-size:10px}
 .esim-mission-body,.esim-shop-body{min-width:0;flex:1}
 .esim-mission-rewards{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
 .esim-reward{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:rgba(210,230,255,.85);background:rgba(255,255,255,.05);border-radius:3px;padding:2px 5px}
@@ -110,6 +106,10 @@
 .esim-mini-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
 .esim-mini-tab{appearance:none;border:1px solid rgba(120,170,220,.3);background:rgba(8,20,40,.9);color:rgba(220,235,255,.8);border-radius:4px;padding:5px 8px;font:600 10px/1.2 "Segoe UI",system-ui,sans-serif;cursor:pointer}
 .esim-mini-tab.active{background:rgba(180,210,240,.9);color:#0a1a30;border-color:#fff}
+.esim-shop-currency{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:12px;color:#fff}
+.esim-shop-currency img{width:28px;height:28px;object-fit:contain}
+.esim-shop-currency small{color:rgba(200,230,255,.55);margin-left:auto;font-size:10px}
+.esim-shop-cost{margin-top:4px;font-size:11px;color:#9dffc0;font-weight:700}
 
 /* Chronicle stage detail portrait — full art in a square frame (not cropped). */
 .modal-content.stage-detail .detail-portrait-wrap{width:260px!important;max-width:min(260px,42vw)}
@@ -140,7 +140,11 @@
 @media(max-width:900px){
   .esim-footer{gap:8px}
   .esim-actions{justify-content:flex-start}
-  .esim-tab{padding:6px 8px;font-size:11px}
-  .esim-tab img{width:28px;height:18px}
+  .esim-card{width:64px}
+  .esim-node--l .esim-card{width:72px}
+  .esim-node--m .esim-card{width:68px}
+  .esim-node--document .esim-card{width:50px}
+  .esim-name{font-size:9px}
+  .esim-pill{font-size:10px;padding:4px 8px}
   .stage-source-toggle-btn--esim-logo .stage-source-esim-logo{height:24px}
 }

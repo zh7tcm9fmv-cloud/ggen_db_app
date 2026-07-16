@@ -119,31 +119,35 @@
 
   function mapFitScale(bounds) {
     var b = bounds || {};
-    /* Always size the diagram at a desktop design width so mobile matches desktop and scrolls. */
-    var designW = 920;
-    var edgePadX = 100;
+    var panel = document.getElementById('panel-stages') || document.getElementById('eSimulatorWrap');
+    var panelW = Math.max(280, ((panel && panel.clientWidth) || window.innerWidth || 900) - 24);
+    /* Pixel insets so centered cards (esp. flavor_start) stay inside the shell. */
+    var edgePadX = Math.max(96, Math.min(140, Math.round(panelW * 0.14)));
     var edgePadY = 56;
-    var fitW = designW - edgePadX * 2;
+    var availW = Math.max(220, panelW - edgePadX * 2);
     var spanX = Math.max(1, b.width || 8000);
     var spanY = Math.max(1, b.height || 2500);
-    var roughX = fitW / spanX;
+    var roughX = availW / spanX;
     var padX = Math.max(400, Math.ceil(edgePadX / Math.max(0.04, roughX)));
     var padY = Math.max(320, Math.ceil(edgePadY / 0.2));
     var gw = spanX + padX * 2;
     var gh = spanY + padY * 2;
-    var scaleX = Math.max(0.08, Math.min(fitW / gw, 0.2));
-    var scaleY = Math.max(0.22, Math.min(0.32, scaleX * 2.8));
-    var mapW = Math.ceil(gw * scaleX);
+    var scaleX = Math.max(0.05, Math.min(availW / gw, 0.18));
+    var scaleY = Math.max(0.2, Math.min(0.3, scaleX * 2.8));
+    var mapW = Math.min(availW, Math.ceil(gw * scaleX));
     var mapH = Math.ceil(gh * scaleY);
+    var nodeScale = Math.max(0.4, Math.min(0.95, Math.min(scaleX / 0.1, scaleY / 0.22)));
+    if (panelW < 560) nodeScale *= 0.78;
+    if (panelW < 420) nodeScale *= 0.85;
     return {
       scaleX: mapW / gw,
       scaleY: scaleY,
       padX: padX,
       padY: padY,
-      availW: fitW,
+      availW: availW,
       mapW: mapW,
       mapH: mapH,
-      nodeScale: 1,
+      nodeScale: nodeScale,
       edgePadX: edgePadX,
       edgePadY: edgePadY,
       shellH: mapH + edgePadY * 2,
@@ -218,9 +222,12 @@
           '<div class="esim-meta"><div class="esim-name">' + esc(n.title || '') + '</div></div></div>';
       } else {
         body =
-          '<div class="esim-card esim-card--icon' + (n.thumb_bg ? ' esim-card--art-l' : '') + '">' +
+          '<div class="esim-card' + (n.thumb_bg ? ' esim-card--art-l' : '') + '">' +
           thumbHtml(n.thumb, n.thumb_bg) +
-          '</div>';
+          '<div class="esim-meta">' +
+          (n.number ? '<div class="esim-num">' + esc(n.number) + '</div>' : '') +
+          '<div class="esim-name">' + esc(n.title || '') + '</div>' +
+          '</div></div>';
         if ((n.y | 0) !== 0 && (vt === 'document' || vt === 'battle')) {
           body +=
             '<img class="esim-branch-mark" src="' + esc(imgUrl(branchIcon)) + '" alt="Branch" ' +
@@ -235,9 +242,10 @@
     });
 
     var bg = diagram.background ? imgUrl(diagram.background) : '';
+    var ns = (Math.round(fit.nodeScale * 1000) / 1000).toFixed(3);
     return (
       '<div class="esim-map-shell" id="esimMapShell" style="height:' + fit.shellH + 'px;padding:' +
-      fit.edgePadY + 'px ' + fit.edgePadX + 'px">' +
+      fit.edgePadY + 'px ' + fit.edgePadX + 'px;--esim-node-scale:' + ns + '">' +
       '<div class="esim-map" id="esimMap" style="width:' + w + 'px;height:' + h + 'px">' +
       '<div class="esim-bg" style="' + (bg ? 'background-image:url(\'' + esc(bg) + '\')' : '') + '"></div>' +
       '<svg class="esim-edges" width="' + w + '" height="' + h + '" aria-hidden="true">' + edges.join('') + '</svg>' +
