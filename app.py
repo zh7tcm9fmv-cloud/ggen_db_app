@@ -19524,6 +19524,9 @@ def _ml_stage_terrain_icons(stage_row):
         return icons
     primary = normalize_id(stage_row.get('StageTerrainTypeIndex') or stage_row.get('stageTerrainTypeIndex'))
     active = set()
+    # Prefer UI labels from flag order (Ground) — STAGE_TERRAIN_MAP EN uses "Land" for index 3,
+    # which does not match TERRAIN_TYPE_ICON_MAP / frontend mlTerrainLabel keys.
+    ti_to_ui_label = {str(ti): label for _flag, label, ti in ML_STAGE_TERRAIN_FLAG_ORDER}
     for flag, _label, ti in ML_STAGE_TERRAIN_FLAG_ORDER:
         if stage_row.get(flag):
             active.add(str(ti))
@@ -19540,12 +19543,14 @@ def _ml_stage_terrain_icons(stage_row):
             if tis in active and tis not in ordered:
                 ordered.append(tis)
     for ti in ordered:
-        terr = STAGE_TERRAIN_MAP.get(str(ti), {})
-        label = terr.get('EN', 'Unknown')
+        tis = str(ti)
+        label = ti_to_ui_label.get(tis) or STAGE_TERRAIN_MAP.get(tis, {}).get('EN', 'Unknown')
+        if label == 'Land':
+            label = 'Ground'
         icon = TERRAIN_TYPE_ICON_MAP.get(label, '')
         if icon:
             icons.append({
-                'type_index': str(ti),
+                'type_index': tis,
                 'label': label,
                 'icon': f'/static/images/Terrain/{icon}',
             })
@@ -19565,7 +19570,7 @@ def _ml_resolve_buff_target_name(target_type, target_id, lineage_lookup, series_
 def api_master_league():
     """Master League seasons: boosts, terrain, ranks, schedules, scoring config."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'master_league_v20_{lc}'
+    ck = f'master_league_v21_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
