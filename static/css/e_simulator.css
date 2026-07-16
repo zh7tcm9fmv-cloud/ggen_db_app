@@ -33,11 +33,11 @@
 .esim-route-btn.active .esim-route-thumb{opacity:1}
 .esim-route-btn span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:min(280px,46vw)}
 
-/* Map — fit viewport, less empty scroll */
+/* Map — fit viewport, no scroll when possible */
 .esim-map-shell{
-  position:relative;width:100%;min-height:280px;max-height:min(55vh,640px);
-  margin:0;overflow:auto;-webkit-overflow-scrolling:touch;
-  background:var(--bg-primary);box-sizing:border-box;
+  --esim-card-w:120px;--esim-card-w-l:140px;
+  position:relative;width:100%;min-height:260px;
+  margin:0;overflow:hidden;background:var(--bg-primary);box-sizing:border-box;
 }
 .esim-map{position:relative;transform-origin:0 0;margin:0;overflow:visible}
 .esim-bg,.esim-bg-frame{
@@ -65,20 +65,22 @@
 }
 .esim-card{
   position:relative;border:1px solid var(--border-color);border-radius:var(--radius-sm);
-  background:rgba(13,19,33,.94);box-shadow:var(--shadow-surface);overflow:hidden;width:200px;
+  background:rgba(13,19,33,.94);box-shadow:var(--shadow-surface);overflow:hidden;
+  width:var(--esim-card-w,120px);
 }
-.esim-node--l .esim-card{width:220px}
-.esim-node--m .esim-card{width:210px}
-.esim-node--document .esim-card{width:120px}
+.esim-node--l .esim-card{width:var(--esim-card-w-l,140px)}
+.esim-node--m .esim-card{width:var(--esim-card-w,120px)}
+.esim-node--document .esim-card{width:calc(var(--esim-card-w,120px) * 0.72)}
 .esim-card--art-l,.esim-node--art-l .esim-card{overflow:visible}
 .esim-node--flavor_start .esim-card,
 .esim-card--flavor{
   display:flex;flex-direction:row;align-items:center;gap:8px;width:auto;
-  min-width:180px;max-width:280px;padding:4px 10px 4px 4px;background:rgba(17,24,39,.96);
+  min-width:140px;max-width:220px;padding:4px 10px 4px 4px;background:rgba(17,24,39,.96);
 }
+/* Start-flavor art is 315×160 — keep native landscape, not a 48×48 square. */
 .esim-node--flavor_start .esim-thumb,
 .esim-card--flavor .esim-thumb{
-  width:48px;height:48px;flex:0 0 48px;aspect-ratio:1/1;object-fit:contain;
+  width:72px;height:auto;flex:0 0 72px;aspect-ratio:315/160;object-fit:cover;
   border-radius:3px;background:rgba(0,0,0,.25);padding:0;
 }
 .esim-node--flavor_start .esim-meta,
@@ -101,7 +103,10 @@
   display:block;width:100%;height:auto;object-fit:cover;object-position:center;
   background:var(--bg-input);padding:0;box-sizing:border-box;
 }
-.esim-thumb-stack{position:relative;width:100%;aspect-ratio:728/408;background:transparent;overflow:visible}
+/* Size-L *_l art is 1024×1024; report BG is 1024×576 — let art extrude past the frame. */
+.esim-thumb-stack{position:relative;width:100%;aspect-ratio:16/9;background:transparent;overflow:visible}
+.esim-node--art-l .esim-thumb-stack,
+.esim-thumb-stack--large{aspect-ratio:1/1}
 .esim-thumb-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border-radius:2px}
 .esim-thumb-fg{
   position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
@@ -110,14 +115,17 @@
 .esim-thumb-fg .esim-thumb{
   width:100%;height:100%;padding:0;background:transparent;aspect-ratio:auto;object-fit:contain;
 }
-.esim-thumb-stack--large .esim-thumb-fg{inset:-10% -4%}
-.esim-meta{padding:6px 8px 8px;display:flex;flex-direction:column;gap:2px}
+.esim-thumb-stack--large .esim-thumb-fg{inset:-28%;overflow:visible}
+.esim-thumb-stack--large .esim-thumb-fg .esim-thumb{
+  width:100%;height:100%;max-width:none;object-fit:contain;
+}
+.esim-meta{padding:5px 6px 6px;display:flex;flex-direction:column;gap:1px}
 .esim-num{
-  font:700 11px/1.2 "Segoe UI",system-ui,sans-serif;color:var(--text-secondary);
+  font:700 10px/1.2 "Segoe UI",system-ui,sans-serif;color:var(--text-secondary);
   letter-spacing:.02em;white-space:nowrap;
 }
 .esim-name{
-  font:700 13px/1.25 "Segoe UI",system-ui,sans-serif;color:var(--text-primary);
+  font:700 11px/1.2 "Segoe UI",system-ui,sans-serif;color:var(--text-primary);
   white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;
 }
 .esim-node--recommend .esim-card{
@@ -221,17 +229,28 @@
 }
 .esim-reward-text{min-width:0;line-height:1.3}
 
-/* Uniform reward icons — series logos full (contain), never hex-clipped */
+/* Uniform reward icons — series logos full (contain), SSP may extrude */
 .esim-chip-thumb{
   position:relative;flex:0 0 auto;width:56px;height:56px;overflow:hidden;
   border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--border-color);
+  z-index:1;
 }
+.esim-chip-thumb--ssp{
+  overflow:visible;border-color:transparent;background:transparent;
+  filter:drop-shadow(0 2px 6px rgba(0,0,0,.45));
+}
+.esim-chip-thumb--ssp .esim-chip-layer{transform:scale(1.18);transform-origin:center center}
+.esim-chip-thumb--uexp{overflow:hidden}
 .esim-chip-layer{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
-.esim-chip-base{object-fit:cover}
-.esim-chip-logo{object-fit:contain;padding:10%;box-sizing:border-box}
-.esim-chip-thumb--ssp .esim-chip-logo{padding:12%;object-fit:contain}
-.esim-chip-frame{object-fit:contain;pointer-events:none}
-.esim-chip-plain{object-fit:contain;padding:8%;box-sizing:border-box}
+.esim-chip-base{object-fit:cover;z-index:1}
+.esim-chip-logo{object-fit:contain;padding:12%;box-sizing:border-box;z-index:2}
+.esim-chip-thumb--uexp .esim-chip-logo{padding:14%;z-index:3}
+.esim-chip-frame{object-fit:contain;pointer-events:none;z-index:3}
+.esim-chip-plain{object-fit:contain;padding:6%;box-sizing:border-box}
+.esim-chip-thumb--profile{cursor:pointer}
+.esim-chip-thumb--profile:hover{border-color:var(--accent-cyan)}
+.esim-reward-row--clickable{cursor:pointer;border-radius:8px;transition:background .15s ease}
+.esim-reward-row--clickable:hover{background:rgba(0,212,255,.06)}
 .esim-reward-fallback{
   display:inline-block;border-radius:8px;background:rgba(255,255,255,.06);
   border:1px solid var(--border-color);flex:0 0 auto;
@@ -264,12 +283,10 @@
 }
 
 @media(max-width:900px){
-  .esim-map-shell{max-height:min(48vh,520px)}
-  .esim-card{width:168px}
-  .esim-node--l .esim-card{width:180px}
-  .esim-node--m .esim-card{width:174px}
-  .esim-name{font-size:12px}
+  .esim-name{font-size:10px}
   .esim-detail-modal.modal-content{max-width:100%}
   .esim-side-head h3{font-size:16px}
   .stage-source-toggle-btn--esim-logo .stage-source-esim-logo{height:24px}
+  .esim-node--flavor_start .esim-thumb,
+  .esim-card--flavor .esim-thumb{width:60px;flex-basis:60px}
 }

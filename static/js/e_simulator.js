@@ -2,8 +2,11 @@
 (function (global) {
   'use strict';
 
-  var PAYLOAD_VERSION = 10;
+  var PAYLOAD_VERSION = 11;
   var REWARD_ICON_SIZE = 56;
+  var SERIES_UPGRADE_LOGO_BY_NAME = {
+    'mobile suit gundam': '0010',
+  };
   var state = {
     data: null,
     lang: null,
@@ -127,24 +130,27 @@
     var b = bounds || {};
     var panel = document.getElementById('eSimulatorWrap') || document.getElementById('panel-stages');
     var panelW = Math.max(320, ((panel && panel.clientWidth) || window.innerWidth || 960) - 8);
-    var edgePadX = 28;
-    var edgePadY = 24;
+    var edgePadX = 16;
+    var edgePadY = 12;
     var spanX = Math.max(1, b.width || 8000);
     var spanY = Math.max(1, b.height || 2500);
-    /* Compact pads + fit-to-viewport so BG is not a huge empty scroll field. */
-    var padX = 100;
-    var padY = 90;
+    /* Tight world pads; true fit-to-viewport (no min-scale floor → no forced scroll). */
+    var padX = 70;
+    var padY = 60;
     var gw = spanX + padX * 2;
     var gh = spanY + padY * 2;
-    var availW = Math.max(280, panelW - edgePadX * 2);
-    var shellCap = Math.max(340, Math.min(Math.round((window.innerHeight || 800) * 0.55), 640));
-    var availH = Math.max(240, shellCap - edgePadY * 2);
+    var availW = Math.max(260, panelW - edgePadX * 2);
+    var shellCap = Math.max(300, Math.min(Math.round((window.innerHeight || 800) * 0.52), 560));
+    var availH = Math.max(220, shellCap - edgePadY * 2);
     var scale = Math.min(availW / gw, availH / gh);
-    /* Landscape cards (~200px) need ~0.55+ so closest nodes (~290u) do not stack. */
-    if (scale < 0.55) scale = 0.55;
-    if (scale > 0.72) scale = 0.72;
+    if (scale > 0.48) scale = 0.48;
+    if (scale < 0.12) scale = 0.12;
     var mapW = Math.ceil(gw * scale);
     var mapH = Math.ceil(gh * scale);
+    /* Card width tracks node spacing so labels stay readable without collisions. */
+    var nearest = 290 * scale;
+    var cardW = Math.max(96, Math.min(168, Math.floor(nearest * 0.72)));
+    var cardWL = Math.max(cardW + 12, Math.min(190, Math.floor(nearest * 0.82)));
     return {
       scaleX: scale,
       scaleY: scale,
@@ -156,7 +162,9 @@
       nodeScale: 1,
       edgePadX: edgePadX,
       edgePadY: edgePadY,
-      shellH: Math.min(mapH + edgePadY * 2, shellCap),
+      shellH: mapH + edgePadY * 2,
+      cardW: cardW,
+      cardWL: cardWL,
     };
   }
 
@@ -253,8 +261,10 @@
       : imgUrl((state.data && state.data.diagram_frame) || '/static/images/Chronicle/Bg_Chronicle_Diagram.webp');
     var ns = (Math.round(fit.nodeScale * 1000) / 1000).toFixed(3);
     return (
-      '<div class="esim-map-shell" id="esimMapShell" style="max-height:' + fit.shellH +
-      'px;padding:' + fit.edgePadY + 'px ' + fit.edgePadX + 'px;--esim-node-scale:' + ns + '">' +
+      '<div class="esim-map-shell" id="esimMapShell" style="height:' + fit.shellH +
+      'px;max-height:' + fit.shellH + 'px;padding:' + fit.edgePadY + 'px ' + fit.edgePadX +
+      'px;--esim-node-scale:' + ns + ';--esim-card-w:' + (fit.cardW || 120) +
+      'px;--esim-card-w-l:' + (fit.cardWL || 140) + 'px;overflow:hidden">' +
       '<div class="esim-map" id="esimMap" style="width:' + w + 'px;height:' + h + 'px">' +
       '<div class="esim-bg"' + (bg ? ' style="background-image:url(\'' + esc(bg) + '\')"' : '') + '></div>' +
       '<div class="esim-bg-frame"' + (frame ? ' style="background-image:url(\'' + esc(frame) + '\')"' : '') + '></div>' +
@@ -272,11 +282,43 @@
   }
 
   /** Uniform reward thumb: SSP / series-upgrade logos shown full (contain), never clipped. */
+  function seriesUpgradeLogoFromName(name) {
+    var m = String(name || '').match(/^\s*(.+?)\s+Series\s+Unit\s+Upgrade\s+Data\b/i);
+    if (!m) return '';
+    var key = String(m[1] || '').trim().toLowerCase().replace(/\s+/g, ' ');
+    var pad = SERIES_UPGRADE_LOGO_BY_NAME[key];
+    if (!pad && key.indexOf('mobile suit gundam') === 0 && key.indexOf('origin') < 0 && key.indexOf('msd') < 0) {
+      pad = '0010';
+    }
+    return pad ? ('/static/images/Logo-Series/logo_l_series_' + pad + '.webp') : '';
+  }
+
+  function rewardDetailMeta(r) {
+    if (typeof global.rewardRowDetailClickMeta === 'function') {
+      return global.rewardRowDetailClickMeta(r);
+    }
+    var rt = String((r && r.reward_type_index) || '');
+    var type = (r && r.detail_type) || (rt === '30' ? 'profile_title' : '');
+    var id = (r && (r.detail_id || r.target_id)) || '';
+    if (type && id && String(id) !== '0') return { type: type, id: String(id) };
+    return null;
+  }
+
   function rewardThumbHtml(r, sz) {
     sz = sz || REWARD_ICON_SIZE;
+    var name = (r && (r.name || r.label)) || '';
     var base = r && r.sp_chip_base ? String(r.sp_chip_base) : '';
     var unit = r && r.sp_chip_unit ? String(r.sp_chip_unit) : '';
     var frame = r && r.sp_chip_frame ? String(r.sp_chip_frame) : '';
+    if (!unit) {
+      var fallbackLogo = seriesUpgradeLogoFromName(name);
+      if (fallbackLogo) {
+        unit = fallbackLogo;
+        if (!base) {
+          base = (r && (r.icon || r.image)) || '/static/images/Item/UI_Event_UnitExp_Base_SSR.webp';
+        }
+      }
+    }
     if (unit && (base || frame)) {
       var layers = '';
       if (base) {
@@ -298,14 +340,16 @@
       );
     }
     var emedal = (state.data && state.data.e_medal_icon) || '/static/images/Item/event_exchange_item_0006.webp';
-    var name = (r && (r.name || r.label)) || '';
     var icon = (r && (r.icon || r.image)) || '';
     if (/e[\s-]?medal/i.test(name) || (!icon && /medal/i.test(name))) icon = emedal;
     if (!icon) {
       return '<span class="esim-reward-fallback" style="width:' + sz + 'px;height:' + sz + 'px"></span>';
     }
+    var rt = String((r && r.reward_type_index) || '');
+    var isProfile = rt === '30' || String((r && r.detail_type) || '') === 'profile_title';
     return (
-      '<div class="esim-chip-thumb esim-chip-thumb--plain" style="width:' + sz + 'px;height:' + sz + 'px">' +
+      '<div class="esim-chip-thumb esim-chip-thumb--plain' + (isProfile ? ' esim-chip-thumb--profile' : '') +
+      '" style="width:' + sz + 'px;height:' + sz + 'px">' +
       '<img class="esim-chip-layer esim-chip-plain" src="' + esc(imgUrl(icon)) +
       '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">' +
       '</div>'
@@ -334,8 +378,14 @@
       var body = rewards.length
         ? rewards.map(function (r) {
             var qty = rewardQty(r);
+            var meta = rewardDetailMeta(r);
+            var clickCls = meta ? ' esim-reward-row--clickable' : '';
+            var clickAttrs = meta
+              ? (' data-detail-type="' + esc(meta.type) + '" data-detail-id="' + esc(meta.id) +
+                 '" role="button" tabindex="0"')
+              : '';
             return (
-              '<div class="esim-progress-reward-row">' +
+              '<div class="esim-progress-reward-row' + clickCls + '"' + clickAttrs + '>' +
               rewardThumbHtml(r, REWARD_ICON_SIZE) +
               '<div class="esim-mission-body"><b>' + esc(r.name || r.label || 'Reward') + '</b>' +
               (qty ? '<span class="esim-mission-desc">×' + esc(qty) + '</span>' : '') +
@@ -585,6 +635,19 @@
         state.missionTabId = btn.getAttribute('data-mission-tab');
         state.missionsOpen = true;
         render();
+      });
+    });
+    document.querySelectorAll('.esim-reward-row--clickable').forEach(function (row) {
+      row.addEventListener('click', function () {
+        var type = row.getAttribute('data-detail-type');
+        var id = row.getAttribute('data-detail-id');
+        if (type && id && typeof global.openDetail === 'function') global.openDetail(type, id);
+      });
+      row.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Enter' || ev.key === ' ') {
+          ev.preventDefault();
+          row.click();
+        }
       });
     });
     document.querySelectorAll('[data-rewards-tab]').forEach(function (btn) {
