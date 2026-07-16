@@ -4731,14 +4731,15 @@ def is_ex_ability(name):
 # ═══════════════════════════════════════════════════════
 
 _api_cache = {}
-_CACHE_MAX_SIZE = 500
+# Keep modest — stage/unit detail dicts are large; uncapped growth balloons RSS.
+_CACHE_MAX_SIZE = int(os.environ.get('API_CACHE_MAX_SIZE', '200') or '200')
 
-def get_cached_response(cache_key): 
+def get_cached_response(cache_key):
     return _api_cache.get(cache_key)
 
 def set_cached_response(cache_key, data):
     if len(_api_cache) >= _CACHE_MAX_SIZE:
-        for k in list(_api_cache.keys())[:100]: 
+        for k in list(_api_cache.keys())[: max(20, _CACHE_MAX_SIZE // 5)]:
             del _api_cache[k]
     _api_cache[cache_key] = data
 
@@ -9840,19 +9841,16 @@ WEAPON_DEBUFF_KEYS_PRESENT_UNION = frozenset(
 print("Database ready!")
 print("=" * 60)
 
-# Preload published Top 10 Damage Pilot cache into memory (Soshage-style instant opens).
+# Preload only the latest published Top 10 Damage Pilot catalog (no older-tag RAM).
 try:
     import meta_synergy_rank as _msr_boot
-    for _lc_boot in ('EN',):
-        _ck_boot = _msr_boot._bsp_published_cache_key(_lc_boot, {'lb_tier': 3, 'top_pilots': 10})
-        _loaded_tags = []
-        for _fk in [_ck_boot] + list(_msr_boot._bsp_fallback_cache_keys(_lc_boot, {'lb_tier': 3})):
-            _disk = _msr_boot._load_bsp_published_cache(_fk, use_memory=True)
-            if _disk and len(_disk.get('groups') or []) >= 1000:
-                _tag = (_fk[0] if _fk else '?')
-                if _tag not in _loaded_tags:
-                    _loaded_tags.append(_tag)
-                    print(f'BSP published cache preloaded: {len(_disk["groups"])} units ({_tag})')
+    _ck_boot = _msr_boot._bsp_published_cache_key('EN', {'lb_tier': 3, 'top_pilots': 10})
+    _disk = _msr_boot._load_bsp_published_cache(_ck_boot, use_memory=True)
+    if _disk and len(_disk.get('groups') or []) >= 1000:
+        _tag = (_ck_boot[0] if _ck_boot else '?')
+        print(f'BSP published cache preloaded: {len(_disk["groups"])} units ({_tag})')
+    else:
+        print('BSP published cache preload: latest catalog missing or incomplete')
 except Exception as _bsp_boot_e:
     print(f'BSP published cache preload skipped: {_bsp_boot_e}')
 
@@ -13747,6 +13745,27 @@ def _serve_index():
 @app.route('/health')
 def health_check():
     ready = bool(CHAR_BROWSE_LIST_ROW_CACHE and UNIT_BROWSE_LIST_ROW_CACHE)
+    mem = {}
+    try:
+        import resource
+        ru = resource.getrusage(resource.RUSAGE_SELF)
+        # Linux: ru_maxrss is KB; macOS: bytes.
+        rss = int(getattr(ru, 'ru_maxrss', 0) or 0)
+        if sys.platform == 'darwin':
+            rss_mb = rss / (1024 * 1024)
+        else:
+            rss_mb = rss / 1024
+        mem['rss_mb'] = round(rss_mb, 1)
+    except Exception:
+        pass
+    try:
+        import meta_synergy_rank as _msr_h
+        mem['msy_char_pair_cache'] = len(getattr(_msr_h, '_char_pair_cache', {}) or {})
+        mem['msy_unit_weapon_cache'] = len(getattr(_msr_h, '_unit_weapon_cache', {}) or {})
+        mem['bsp_published_memory_keys'] = len(getattr(_msr_h, '_BSP_PUBLISHED_MEMORY', {}) or {})
+    except Exception:
+        pass
+    mem['api_cache_keys'] = len(_api_cache)
     payload = {
         'ok': ready,
         'browse_cache': {
@@ -13754,6 +13773,7 @@ def health_check():
             'units': len(UNIT_BROWSE_LIST_ROW_CACHE),
             'building': _BROWSE_LIST_CACHE_BUILDING,
         },
+        'memory': mem,
     }
     return jsonify(payload), (200 if ready else 503)
 
@@ -21398,26 +21418,6 @@ def list_stages():
         import traceback; traceback.print_exc(); return jsonify({'rows': [], 'total': 0, 'page': 1, 'per_page': 50, 'total_pages': 1}), 500
 
 
-@app.route('/api/e_simulator')
-def api_e_simulator():
-    """E Simulator (Chronicle Event) diagram payload for the Stages tab."""
-    try:
-        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-        ck = f'e_simulator_v11_{lc}'
-        cached = get_cached_response(ck)
-        if cached:
-            return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
-        import e_simulator_data as _esim
-        import sys as _sys
-        out = _esim.build_e_simulator_payload(_sys.modules[__name__], lc)
-        set_cached_response(ck, out)
-        return jsonify_cacheable(out, ck, public=True, max_age=3600, convert_images=True)
-    except Exception as e:
-        import traceback
-        traceback.print_exc()
-        return jsonify({'error': str(e)}), 500
-
-
 @app.route('/api/stage/<stage_id>')
 def get_stage(stage_id):
     try:
@@ -21430,7 +21430,7 @@ def get_stage(stage_id):
         est_er = eternal_stage_map.get(stage_id)
         ssc_map = (scenario_stage_map or {}).get(stage_id) if scenario_stage_map else None
         sm_direct = (stage_map or {}).get(stage_id) if stage_map else None
-        # E Simulator / chronicle scenarios live in m_scenario_stage + m_stage (StageTypeIndex 18).
+        # Chronicle / scenario stages live in m_scenario_stage + m_stage (StageTypeIndex 18).
         is_chronicle_stage = bool(ssc_map and sm_direct and not sas and not ses and not tes and not ch and not est_er)
         if sas:
             is_score_attack = True
@@ -21538,7 +21538,8 @@ def get_stage(stage_id):
                     'tes' if is_tower_event_stage else (
                         'ch' if is_challenge_stage else (
                             'ce' if is_chronicle_stage else 'er')))))
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage12"
+        # mstage13: fix sortie-loop shadowing of `ck` (was corrupting ETag/cache to 'group2_sortie_count').
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage13"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -21582,14 +21583,8 @@ def get_stage(stage_id):
                         sname = f"{sname} (Rerun)"
         elif is_challenge_stage or is_chronicle_stage:
             sname = resolve_scenario_stage_name(ld, est.get('title_name_lang_id', '0'), stage_id)
-            if is_chronicle_stage and (not sname or sname.startswith('Unknown') or sname == stage_id):
-                try:
-                    import e_simulator_data as _esim_titles
-                    sname = (_esim_titles.chronicle_stage_title_map(sys.modules[__name__], lc) or {}).get(stage_id, '') or sname
-                except Exception:
-                    pass
             if not sname:
-                sname = f"E Simulator ({stage_id})"
+                sname = f"Stage ({stage_id})"
         else:
             sname = ld.get('stage_text_map', {}).get(est.get('stage_name_lang_id', ''), '') or f"Unknown ({stage_id})"
         if is_score_attack or is_special_event_stage or is_tower_event_stage or is_challenge_stage or is_chronicle_stage:
@@ -21603,39 +21598,28 @@ def get_stage(stage_id):
             portrait = special_event_stage_thumb_url(ses.get('thumbnail_resource_id')) or portrait
         elif is_challenge_stage:
             portrait = challenge_stage_thumb_url(est.get('thumbnail_resource_id')) or portrait
-        chronicle_portrait_bg = ''
-        chronicle_portrait_large = False
         if is_chronicle_stage:
-            try:
-                import e_simulator_data as _esim_art
-                _art = (_esim_art.chronicle_stage_portrait_map(sys.modules[__name__], lc) or {}).get(stage_id) or {}
-                if isinstance(_art, str):
-                    _art = {'portrait': _art}
-                _pp = _art.get('portrait') or ''
-                if _pp:
-                    portrait = game_image_public_url(_pp) if not str(_pp).startswith('http') else _pp
-                _pbg = _art.get('portrait_bg') or ''
-                if _pbg:
-                    chronicle_portrait_bg = game_image_public_url(_pbg) if not str(_pbg).startswith('http') else _pbg
-                chronicle_portrait_large = bool(_art.get('portrait_large'))
-            except Exception:
-                pass
+            portrait = challenge_stage_thumb_url(est.get('thumbnail_resource_id')) or portrait
         sg = []
         allow_empty_sortie_set = is_score_attack or is_tower_event_stage
         if is_challenge_stage:
-            for gn, gk, ck in [
+            for gn, gk, count_key in [
                 (1, 'group1_sortie_restriction_set_id', 'group1_sortie_count'),
                 (2, 'group2_sortie_restriction_set_id', 'group2_sortie_count'),
             ]:
-                if safe_int(est.get(ck), 0) <= 0:
+                if safe_int(est.get(count_key), 0) <= 0:
                     continue
                 gid = est.get(gk, '0')
                 if gid == '0':
                     continue
                 sg.append({'group_no': gn, 'restrictions': resolve_sortie_restriction_set(gid, lc)})
         else:
-            for gn, gk, ck in [(1, 'group1_set_id', 'group1_sortie_count'), (2, 'group2_set_id', 'group2_sortie_count')]:
-                if safe_int(sm.get(ck), 0) <= 0:
+            # IMPORTANT: do not reuse name `ck` here — it shadows the stage response cache key.
+            for gn, gk, count_key in [
+                (1, 'group1_set_id', 'group1_sortie_count'),
+                (2, 'group2_set_id', 'group2_sortie_count'),
+            ]:
+                if safe_int(sm.get(count_key), 0) <= 0:
                     continue
                 gid = sm.get(gk, '0')
                 if gid == '0' and not allow_empty_sortie_set:
@@ -21881,8 +21865,6 @@ def get_stage(stage_id):
         result = {
             'content_locked': False, 'id': stage_id, 'stage_number': sn, 'name': sname,
             'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait,
-            'portrait_bg': chronicle_portrait_bg,
-            'portrait_large': chronicle_portrait_large,
             'recommended_cp': rec_cp,
             'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc),
             'victory_conditions': vc, 'defeat_conditions': dc, 'map_meta': map_meta,

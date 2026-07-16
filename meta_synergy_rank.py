@@ -1713,6 +1713,9 @@ def _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok, *, cp_on=True):
 
 _unit_weapon_cache = {}
 _char_pair_cache = {}
+# Hard caps — unbounded pair cache can grow toward tens of GB under Meta Synergy / BSP traffic.
+_UNIT_WEAPON_CACHE_MAX = max(256, min(8192, int(os.environ.get('MSY_UNIT_WEAPON_CACHE_MAX', '2048') or '2048')))
+_CHAR_PAIR_CACHE_MAX = max(1024, min(200000, int(os.environ.get('MSY_CHAR_PAIR_CACHE_MAX', '50000') or '50000')))
 _rankings_result_cache = {}
 _rankings_browse_payload_cache = {}
 _MSY_BROWSE_PAYLOAD_CACHE_TTL = max(15, min(300, int(os.environ.get('MSY_BROWSE_CACHE_TTL', '60') or '60')))
@@ -1726,7 +1729,6 @@ _BSP_DC_BUILD_ENGINE = 'calculateDamage'
 _BSP_INCREMENTAL_TOP_N = max(50, min(500, int(os.environ.get('BSP_INCREMENTAL_TOP_N', '250') or '250')))
 _BSP_PUBLISHED_CACHE_TAG = os.environ.get('BSP_PUBLISHED_CACHE_TAG', '_v19_bsp_dc')
 # Serve older full-catalog DC caches while a newer rebuild is still incomplete.
-_BSP_PUBLISHED_FALLBACK_TAGS = ('_v18_bsp_dc', '_v17_bsp_dc', '_v16_bsp_dc', '_v15_bsp_dc')
 # Support-role character id (Attack units: Supporters-only Top 10 board).
 _SUPPORT_ROLE_ID = '3'
 _ATTACK_ROLE_ID = '1'
@@ -1942,22 +1944,39 @@ def _save_master_to_disk(cache_key, result):
         print(f'MSY disk cache save failed ({path}): {e}')
 
 
+def _cache_put_bounded(cache, key, value, max_size):
+    """Insert with simple FIFO eviction (dict insertion order)."""
+    if key in cache:
+        cache[key] = value
+        return value
+    while len(cache) >= max_size:
+        cache.pop(next(iter(cache)))
+    cache[key] = value
+    return value
+
+
 def _cached_best_ex_weapon(uid, stat_mode, lc):
     del stat_mode  # weapon pick derives per-weapon stat mode internally
     key = (str(uid), str(lc))
-    if key not in _unit_weapon_cache:
-        _unit_weapon_cache[key] = _best_ex_weapon(uid, None, lc)
-    return _unit_weapon_cache[key]
+    hit = _unit_weapon_cache.get(key)
+    if hit is not None:
+        return hit
+    return _cache_put_bounded(
+        _unit_weapon_cache, key, _best_ex_weapon(uid, None, lc), _UNIT_WEAPON_CACHE_MAX
+    )
 
 
 def _cached_char_pair_totals(cid, uid, lc, *, cp_on=True):
     key = (str(cid), str(uid), str(lc), bool(cp_on))
-    if key not in _char_pair_cache:
-        if cp_on:
-            _char_pair_cache[key] = _char_totals_for_pair_max(cid, uid, lc)
-        else:
-            _char_pair_cache[key] = _char_totals_for_pair_no_cp(cid, uid, lc)
-    return _char_pair_cache[key]
+    hit = _char_pair_cache.get(key)
+    if hit is not None:
+        return hit
+    value = (
+        _char_totals_for_pair_max(cid, uid, lc)
+        if cp_on
+        else _char_totals_for_pair_no_cp(cid, uid, lc)
+    )
+    return _cache_put_bounded(_char_pair_cache, key, value, _CHAR_PAIR_CACHE_MAX)
 
 
 def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier=1,
@@ -3561,17 +3580,6 @@ def _bsp_published_cache_key(lc, kwargs):
     )
 
 
-def _bsp_fallback_cache_keys(lc, kwargs):
-    """Older full-catalog DC caches (e.g. v15 tp10) used while v16 is still building."""
-    lc = lc or 'EN'
-    lb = int(kwargs.get('lb_tier', 3) or 3)
-    keys = []
-    for tag in _BSP_PUBLISHED_FALLBACK_TAGS:
-        keys.append((tag, lc, lb, 10, None, None))
-        keys.append((tag, lc, lb, int(_BSP_STORE_TOP_PILOTS), None, None))
-    return keys
-
-
 def _bsp_index_groups(cache_key, groups):
     idx = {}
     for g in groups or []:
@@ -3608,13 +3616,10 @@ def _load_bsp_published_cache(cache_key, *, use_memory=True, min_rules=None):
                 continue
             if int(data.get('bsp_rules_version') or 1) < int(min_rules):
                 continue
-            # Accept files whose key matches, or older tag/top_pilots variants.
+            # Accept only the requested catalog key (latest tag).
             file_key = tuple(data.get('cache_key') or ())
             if file_key and file_key != tuple(cache_key):
-                if len(file_key) < 2 or file_key[0] not in (
-                    cache_key[0], *_BSP_PUBLISHED_FALLBACK_TAGS
-                ):
-                    continue
+                continue
             groups = data.get('groups')
             if not groups:
                 continue
@@ -3712,21 +3717,20 @@ def _bsp_group_variant_quality(g):
 
 
 def _lookup_bsp_published_group(uid, lc, kwargs):
-    """O(1) unit lookup — prefer v16 (variants + depth) over incomplete v15 fallbacks.
+    """O(1) unit lookup from the latest published BSP catalog only.
 
-    Published BSP files are currently EN-only; for other langs, fall back to the EN
-    catalog and re-localize pilot names in `_bsp_pilots_response`.
+    Older tag fallbacks are intentionally not loaded (memory). Published files are
+    EN-only; other langs use the EN catalog and re-localize names in
+    `_bsp_pilots_response`.
     """
     uid = _app().normalize_id(uid)
     primary = _bsp_published_cache_key(lc, kwargs)
-    # Current catalog first, then older full-catalog fallbacks.
-    keys = [primary] + list(_bsp_fallback_cache_keys(lc, kwargs))
+    keys = [primary]
     # EN published catalog is the shared damage board; names are relocalized per request.
     if (lc or 'EN').upper() != 'EN':
         en_kwargs = dict(kwargs or {})
         en_kwargs['lc'] = 'EN'
         keys.append(_bsp_published_cache_key('EN', en_kwargs))
-        keys.extend(_bsp_fallback_cache_keys('EN', en_kwargs))
     best = None
     best_score = -1
     for cache_key in keys:
