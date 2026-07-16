@@ -57,21 +57,22 @@ CHRONICLE_DETAIL_REPORT_BG = _ce_img('Bg_Chronicle_bg_detail_report_complete')
 
 
 def _pick_node_thumb(resource_id, size_type, content_type, *, detail=False):
-    """Map: _01 (or _l for Size-L battles). Detail: _02 (or _l for Size-L battles)."""
+    """E Simulator thumbs: always *_02, except Size-L battles which use *_l (no 01/02)."""
     rid = str(resource_id or '').strip()
     if not rid:
         return ''
-    suf = '02' if detail else '01'
+    # detail kept for call-site compat; E Simulator always prefers color (_02) art.
+    _ = detail
     if content_type == CONTENT_FLAVOR_START:
         return _ce_img(f'chronicle_thumb_start_flavor_{rid}')
     if content_type == CONTENT_DOCUMENT:
-        return _ce_img(f'chronicle_thumb_document_{rid}_l_{suf}')
+        return _ce_img(f'chronicle_thumb_document_{rid}_l_02')
     if content_type == CONTENT_STORY:
-        return _ce_img(f'chronicle_thumb_story_{rid}_{suf}')
-    # Size-L battles use dedicated *_l art (not 01/02).
+        return _ce_img(f'chronicle_thumb_story_{rid}_02')
+    # Size-L battles use dedicated *_l art (not 01/02) + report-complete BG.
     if content_type == CONTENT_BATTLE and int(size_type or 0) == SIZE_L:
         return _ce_img(f'chronicle_thumb_node_{rid}_l')
-    return _ce_img(f'chronicle_thumb_node_{rid}_{suf}')
+    return _ce_img(f'chronicle_thumb_node_{rid}_02')
 
 
 def _uses_large_node_art(size_type, content_type):
@@ -209,6 +210,7 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
     event_lang = _lang_map(_load_json(load_json, os.path.join(lang_dir, 'm_chronicle_event.json')))
     doc_lang = _lang_map(_load_json(load_json, os.path.join(lang_dir, 'm_chronicle_event_document.json')))
     mission_lang = _lang_map(_load_json(load_json, os.path.join(lang_dir, 'm_mission.json')))
+    mission_tab_lang = _lang_map(_load_json(load_json, os.path.join(lang_dir, 'm_chronicle_event_mission_tab.json')))
     shop_lang = _lang_map(_load_json(load_json, os.path.join(lang_dir, 'm_shop.json')))
     item_lang = _lang_map(_load_json(load_json, os.path.join(lang_dir, 'm_item.json')))
 
@@ -271,11 +273,16 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
         mm = mission_master.get(mid) or {}
         title_lid = normalize_id(mm.get('OverrideTitleLanguageId') or mm.get('TitleLanguageId'))
         title = mission_lang.get(title_lid, '') or mission_lang.get(normalize_id(mm.get('TitleLanguageId')), '')
+        if not title:
+            title = f'Mission {mid}'
+        desc_lid = normalize_id(mm.get('DescriptionLanguageId') or mm.get('OverrideDescriptionLanguageId'))
+        desc = mission_lang.get(desc_lid, '') if desc_lid and desc_lid != '0' else ''
         rsid = normalize_id(mm.get('RewardSetId'))
         missions_by_tab[tab_id].append({
             'id': mid,
             'sort': int(m.get('SortOrder') or 0),
             'title': title,
+            'description': desc,
             'target_progress': int(mm.get('TargetProgressCount') or 1),
             'node_content_id': normalize_id(m.get('ChronicleEventNodeContentId')),
             'rewards': rewards_for(rsid),
@@ -283,9 +290,15 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
     for tab in sorted(mission_tabs, key=lambda x: int(x.get('SortOrder') or 0)):
         tid = normalize_id(tab.get('Id'))
         rows = sorted(missions_by_tab.get(tid, []), key=lambda x: x['sort'])
+        tab_name = (
+            mission_tab_lang.get(normalize_id(tab.get('TabNameLanguageId')), '')
+            or diagram_name_by_id.get(tid)
+            or diagram_lang.get(normalize_id(tab.get('TabNameLanguageId')), '')
+            or tid
+        )
         mission_tab_rows.append({
             'id': tid,
-            'name': diagram_name_by_id.get(tid) or diagram_lang.get(normalize_id(tab.get('TabNameLanguageId')), tid),
+            'name': tab_name,
             'missions': rows,
         })
 
@@ -358,9 +371,7 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
                 ctype = int(c.get('ContentTypeIndex') or 0)
                 target = normalize_id(c.get('TargetId') or cid)
                 res = str(c.get('ResourceId') or target)
-                # Documents always use color (_02) on the map + report list; battles/stories use _01 on map
-                # (Size-L battles use *_l + report-complete frame BG).
-                map_detail = ctype == CONTENT_DOCUMENT
+                # All E Simulator node thumbs use _02 (Size-L battles: *_l + report-complete BG).
                 large_art = _uses_large_node_art(size_type, ctype)
                 entry = {
                     'id': cid,
@@ -368,7 +379,7 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
                     'type_index': ctype,
                     'resource_id': res,
                     'challenge_point': int(c.get('ConsumeChallengePointCount') or 0),
-                    'thumb': pub(_pick_node_thumb(res, size_type, ctype, detail=map_detail)),
+                    'thumb': pub(_pick_node_thumb(res, size_type, ctype, detail=True)),
                     'thumb_detail': pub(_pick_node_thumb(res, size_type, ctype, detail=True)),
                     'thumb_large': large_art,
                     'thumb_bg': pub(CHRONICLE_DETAIL_REPORT_BG) if large_art else '',

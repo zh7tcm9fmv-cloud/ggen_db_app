@@ -8,7 +8,6 @@
     diagramId: null,
     reportOpen: false,
     missionsOpen: false,
-    shopOpen: false,
     missionTabId: null,
   };
 
@@ -83,7 +82,6 @@
   function closeSidePanels(except) {
     if (except !== 'report') state.reportOpen = false;
     if (except !== 'missions') state.missionsOpen = false;
-    if (except !== 'shop') state.shopOpen = false;
   }
 
   function openNode(n) {
@@ -108,34 +106,38 @@
 
   function mapFitScale(bounds) {
     var b = bounds || {};
-    var padX = 90, padY = 70;
+    var padX = 120, padY = 110;
     var gw = Math.max(1, (b.width || 8000) + padX * 2);
     var gh = Math.max(1, (b.height || 2500) + padY * 2);
     var panel = document.getElementById('panel-stages') || document.getElementById('eSimulatorWrap');
-    var availW = Math.max(560, (panel && panel.clientWidth) || window.innerWidth || 900) - 28;
-    var availH = Math.max(300, Math.min(Math.floor(window.innerHeight * 0.48), 460));
-    var sx = availW / gw;
-    var sy = availH / gh;
-    /* Independent axes so the whole route fits without scrolling. */
+    var availW = Math.max(280, ((panel && panel.clientWidth) || window.innerWidth || 900) - 24);
+    /* Fit route width; keep a taller Y scale so branch rows do not stack on each other. */
+    var scaleX = Math.max(0.05, Math.min(availW / gw, 0.18));
+    var scaleY = Math.max(0.2, Math.min(0.3, scaleX * 2.8));
+    var mapW = Math.min(availW, Math.ceil(gw * scaleX));
+    var mapH = Math.ceil(gh * scaleY);
+    /* Shrink cards on narrow viewports to cut overlap without forcing page scroll. */
+    var nodeScale = Math.max(0.4, Math.min(0.95, Math.min(scaleX / 0.1, scaleY / 0.22)));
+    if (availW < 560) nodeScale *= 0.78;
+    if (availW < 420) nodeScale *= 0.85;
     return {
-      scaleX: Math.max(0.08, Math.min(sx, 0.28)),
-      scaleY: Math.max(0.08, Math.min(sy, 0.32)),
+      scaleX: mapW / gw,
+      scaleY: scaleY,
       padX: padX,
       padY: padY,
       availW: availW,
-      availH: availH,
+      mapW: mapW,
+      mapH: mapH,
+      nodeScale: nodeScale,
     };
   }
 
-  function thumbHtml(thumbPath, fallbackPath, bgPath) {
+  function thumbHtml(thumbPath, bgPath) {
     var thumb = thumbPath ? imgUrl(thumbPath) : '';
     if (!thumb) return '<div class="esim-thumb"></div>';
-    var fallback = fallbackPath ? imgUrl(fallbackPath) : thumb
-      .replace(/_l_02\.webp$/i, '_l_01.webp')
-      .replace(/_02\.webp$/i, '_01.webp');
     var img =
       '<img class="esim-thumb" src="' + esc(thumb) + '" alt="" loading="lazy" decoding="async" ' +
-      'onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src=\'' + esc(fallback) + '\'}else{this.style.opacity=.25}">';
+      'onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">';
     if (!bgPath) return img;
     return (
       '<div class="esim-thumb-stack">' +
@@ -151,17 +153,10 @@
     var fit = mapFitScale(b);
     var scaleX = fit.scaleX, scaleY = fit.scaleY;
     var padX = fit.padX, padY = fit.padY;
-    var w = Math.max(fit.availW, Math.ceil(((b.width || 8000) + padX * 2) * scaleX));
-    var h = Math.max(fit.availH, Math.ceil(((b.height || 2500) + padY * 2) * scaleY));
-    /* Prefer fitting inside the shell (no scroll) when possible. */
-    w = Math.min(w, fit.availW);
-    h = Math.min(h, fit.availH);
+    var w = fit.mapW;
+    var h = fit.mapH;
     var minX = b.min_x || 0;
     var maxY = b.max_y || 0;
-    var spanX = Math.max(1, (b.width || 8000) + padX * 2);
-    var spanY = Math.max(1, (b.height || 2500) + padY * 2);
-    scaleX = w / spanX;
-    scaleY = h / spanY;
 
     function px(x) { return Math.round((x - minX + padX) * scaleX); }
     function py(y) { return Math.round((maxY - y + padY) * scaleY); }
@@ -198,12 +193,12 @@
       } else if (vt === 'flavor_start') {
         body =
           '<div class="esim-card esim-card--flavor">' +
-          thumbHtml(n.thumb, null, n.thumb_bg) +
+          thumbHtml(n.thumb, n.thumb_bg) +
           '<div class="esim-meta"><div class="esim-name">' + esc(n.title || '') + '</div></div></div>';
       } else {
         body =
           '<div class="esim-card">' +
-          thumbHtml(n.thumb, null, n.thumb_bg) +
+          thumbHtml(n.thumb, n.thumb_bg) +
           '<div class="esim-meta">' +
           (n.number ? '<div class="esim-num">' + esc(n.number) + '</div>' : '') +
           '<div class="esim-name">' + esc(n.title || '') + '</div>' +
@@ -219,8 +214,9 @@
     });
 
     var bg = diagram.background ? imgUrl(diagram.background) : '';
+    var ns = (Math.round(fit.nodeScale * 1000) / 1000).toFixed(3);
     return (
-      '<div class="esim-map-shell" id="esimMapShell">' +
+      '<div class="esim-map-shell" id="esimMapShell" style="height:' + h + 'px;--esim-node-scale:' + ns + '">' +
       '<div class="esim-map" id="esimMap" style="width:' + w + 'px;height:' + h + 'px">' +
       '<div class="esim-bg" style="' + (bg ? 'background-image:url(\'' + esc(bg) + '\')' : '') + '"></div>' +
       '<svg class="esim-edges" width="' + w + '" height="' + h + '" aria-hidden="true">' + edges.join('') + '</svg>' +
@@ -262,13 +258,19 @@
 
   function renderMissions() {
     var tabs = (state.data && state.data.mission_tabs) || [];
+    var openCls = state.missionsOpen ? ' open' : '';
     if (!tabs.length) {
-      return '<div class="esim-side-panel' + (state.missionsOpen ? ' open' : '') + '" id="esimMissionsPanel"></div>';
+      return (
+        '<div class="esim-side-panel esim-missions-panel' + openCls + '" id="esimMissionsPanel">' +
+        '<div class="esim-side-head"><h3>Missions</h3>' +
+        '<button type="button" class="esim-side-close" data-close="missions" aria-label="Close">×</button></div>' +
+        '<div class="esim-side-hint">No mission data found for this event.</div></div>'
+      );
     }
-    var tabId = state.missionTabId || String(tabs[0].id);
+    var tabId = state.missionTabId != null ? String(state.missionTabId) : String(tabs[0].id);
     var active = null;
     for (var i = 0; i < tabs.length; i++) {
-      if (String(tabs[i].id) === String(tabId)) { active = tabs[i]; break; }
+      if (String(tabs[i].id) === tabId) { active = tabs[i]; break; }
     }
     if (!active) active = tabs[0];
     var tabBtns = tabs.map(function (tb) {
@@ -277,53 +279,26 @@
         '" data-mission-tab="' + esc(String(tb.id)) + '">' + esc(tb.name || tb.id) + '</button>'
       );
     }).join('');
-    var rows = (active.missions || []).map(function (m, idx) {
+    var missions = active.missions || [];
+    var rows = missions.map(function (m, idx) {
       return (
         '<div class="esim-mission-item">' +
         '<div class="esim-mission-idx">' + esc(String(idx + 1)) + '</div>' +
         '<div class="esim-mission-body"><b>' + esc(m.title || ('Mission ' + m.id)) + '</b>' +
+        (m.description ? '<span class="esim-mission-desc">' + esc(m.description) + '</span>' : '') +
         '<div class="esim-mission-rewards">' + rewardChips(m.rewards) + '</div></div></div>'
       );
-    }).join('');
+    }).join('') || '<div class="esim-side-hint">No missions in this tab.</div>';
     var hint = state.data.mission_unlock_hint
-      ? '<div class="esim-side-hint">In-game: ' + esc(state.data.mission_unlock_hint) + '</div>'
+      ? '<div class="esim-side-hint">In-game unlock: ' + esc(state.data.mission_unlock_hint) + '</div>'
       : '';
     return (
-      '<div class="esim-side-panel' + (state.missionsOpen ? ' open' : '') + '" id="esimMissionsPanel">' +
-      '<div class="esim-side-head"><h3>Missions</h3>' +
+      '<div class="esim-side-panel esim-missions-panel' + openCls + '" id="esimMissionsPanel">' +
+      '<div class="esim-side-head"><h3>Missions (' + esc(String(missions.length)) + ')</h3>' +
       '<button type="button" class="esim-side-close" data-close="missions" aria-label="Close">×</button></div>' +
       hint +
       '<div class="esim-mini-tabs">' + tabBtns + '</div>' +
       rows + '</div>'
-    );
-  }
-
-  function renderShop() {
-    var shop = (state.data && state.data.shop) || {};
-    var items = shop.items || [];
-    var curIcon = shop.currency_icon ? imgUrl(shop.currency_icon) : '';
-    var head =
-      '<div class="esim-side-head"><h3>' + esc(shop.name || 'Shop') + '</h3>' +
-      '<button type="button" class="esim-side-close" data-close="shop" aria-label="Close">×</button></div>' +
-      '<div class="esim-shop-currency">' +
-      (curIcon ? '<img src="' + esc(curIcon) + '" alt="">' : '') +
-      '<span>' + esc(shop.currency_name || 'Event Currency') + '</span>' +
-      '<small>Browse-only (purchases are in-game)</small></div>';
-    var rows = items.map(function (it) {
-      var icon = it.icon ? imgUrl(it.icon) : '';
-      return (
-        '<div class="esim-shop-item">' +
-        (icon ? '<img class="esim-shop-icon" src="' + esc(icon) + '" alt="">' : '<div class="esim-shop-icon"></div>') +
-        '<div class="esim-shop-body"><b>' + esc(it.name || ('Item ' + it.id)) + '</b>' +
-        '<div class="esim-mission-rewards">' + rewardChips(it.rewards) + '</div>' +
-        '<div class="esim-shop-cost">' + esc(String(it.cost || 0)) +
-        (it.purchase_limit ? ' · limit ' + esc(String(it.purchase_limit)) : '') +
-        '</div></div></div>'
-      );
-    }).join('') || '<div class="esim-side-hint">No shop items found.</div>';
-    return (
-      '<div class="esim-side-panel' + (state.shopOpen ? ' open' : '') + '" id="esimShopPanel">' +
-      head + rows + '</div>'
     );
   }
 
@@ -346,28 +321,20 @@
     }).join('');
 
     var logo = data.logo ? '<img class="esim-logo" src="' + esc(imgUrl(data.logo)) + '" alt="E Simulator">' : '';
-    var cpMax = (data.challenge_point && data.challenge_point.display_max) || 30;
     var docN = (data.documents || []).length;
     var docT = data.document_total || docN;
 
     root.innerHTML =
       '<div class="esim-header">' +
       '<div class="esim-title-row">' + logo + '</div>' +
-      '<div class="esim-cp"><span>Challenge Point</span><b>—/' + esc(String(cpMax)) + '</b></div>' +
       '</div>' +
       '<div class="esim-tabs" id="esimTabs">' + tabs + '</div>' +
       renderMap(diagram) +
       renderReports() +
       renderMissions() +
-      renderShop() +
       '<div class="esim-footer">' +
-      '<div class="esim-story"><div class="esim-story-label">Story</div>' +
-      '<div class="esim-story-bar"><div class="esim-story-fill" style="width:0%"></div></div>' +
-      '<div class="esim-story-meta">Progress is account-based in-game · ' +
-      esc(String(docN)) + ' Reports in master data</div></div>' +
       '<div class="esim-actions">' +
       '<div><button type="button" class="esim-btn' + (state.missionsOpen ? ' active' : '') + '" id="esimMissionsBtn">Missions</button></div>' +
-      '<div><button type="button" class="esim-btn' + (state.shopOpen ? ' active' : '') + '" id="esimShopBtn">Shop</button></div>' +
       '<div><span class="esim-btn-note">' + esc(String(docN)) + '/' + esc(String(docT)) + '</span>' +
       '<button type="button" class="esim-btn' + (state.reportOpen ? ' active' : '') + '" id="esimReportBtn">Report</button></div>' +
       '</div>' +
@@ -416,15 +383,9 @@
         var next = !state.missionsOpen;
         closeSidePanels(next ? 'missions' : null);
         state.missionsOpen = next;
-        render();
-      });
-    }
-    var shop = document.getElementById('esimShopBtn');
-    if (shop) {
-      shop.addEventListener('click', function () {
-        var next = !state.shopOpen;
-        closeSidePanels(next ? 'shop' : null);
-        state.shopOpen = next;
+        if (next && !state.missionTabId && state.data && state.data.mission_tabs && state.data.mission_tabs[0]) {
+          state.missionTabId = String(state.data.mission_tabs[0].id);
+        }
         render();
       });
     }
@@ -433,7 +394,6 @@
         var which = btn.getAttribute('data-close');
         if (which === 'report') state.reportOpen = false;
         if (which === 'missions') state.missionsOpen = false;
-        if (which === 'shop') state.shopOpen = false;
         render();
       });
     });
@@ -465,7 +425,7 @@
       state.lang = lang;
       if (!state.diagramId && data.diagrams && data.diagrams[0]) state.diagramId = data.diagrams[0].id;
       if (!state.missionTabId && data.mission_tabs && data.mission_tabs[0]) {
-        state.missionTabId = data.mission_tabs[0].id;
+        state.missionTabId = String(data.mission_tabs[0].id);
       }
       render();
     } catch (e) {
