@@ -21275,7 +21275,7 @@ def api_e_simulator():
     """E Simulator (Chronicle Event) diagram payload for the Stages tab."""
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-        ck = f'e_simulator_v3_{lc}'
+        ck = f'e_simulator_v4_{lc}'
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
@@ -21410,7 +21410,7 @@ def get_stage(stage_id):
                     'tes' if is_tower_event_stage else (
                         'ch' if is_challenge_stage else (
                             'ce' if is_chronicle_stage else 'er')))))
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage11"
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage12"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -21475,12 +21475,21 @@ def get_stage(stage_id):
             portrait = special_event_stage_thumb_url(ses.get('thumbnail_resource_id')) or portrait
         elif is_challenge_stage:
             portrait = challenge_stage_thumb_url(est.get('thumbnail_resource_id')) or portrait
-        elif is_chronicle_stage:
+        chronicle_portrait_bg = ''
+        chronicle_portrait_large = False
+        if is_chronicle_stage:
             try:
                 import e_simulator_data as _esim_art
-                _art = (_esim_art.chronicle_stage_portrait_map(sys.modules[__name__], lc) or {}).get(stage_id, '')
-                if _art:
-                    portrait = game_image_public_url(_art) if not str(_art).startswith('http') else _art
+                _art = (_esim_art.chronicle_stage_portrait_map(sys.modules[__name__], lc) or {}).get(stage_id) or {}
+                if isinstance(_art, str):
+                    _art = {'portrait': _art}
+                _pp = _art.get('portrait') or ''
+                if _pp:
+                    portrait = game_image_public_url(_pp) if not str(_pp).startswith('http') else _pp
+                _pbg = _art.get('portrait_bg') or ''
+                if _pbg:
+                    chronicle_portrait_bg = game_image_public_url(_pbg) if not str(_pbg).startswith('http') else _pbg
+                chronicle_portrait_large = bool(_art.get('portrait_large'))
             except Exception:
                 pass
         sg = []
@@ -21744,6 +21753,8 @@ def get_stage(stage_id):
         result = {
             'content_locked': False, 'id': stage_id, 'stage_number': sn, 'name': sname,
             'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait,
+            'portrait_bg': chronicle_portrait_bg,
+            'portrait_large': chronicle_portrait_large,
             'recommended_cp': rec_cp,
             'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc),
             'victory_conditions': vc, 'defeat_conditions': dc, 'map_meta': map_meta,

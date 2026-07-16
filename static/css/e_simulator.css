@@ -49,6 +49,10 @@
 .esim-node--flavor_start .esim-name,
 .esim-card--flavor .esim-name{-webkit-line-clamp:2;font-size:10px}
 .esim-thumb{display:block;width:100%;aspect-ratio:1/1;object-fit:contain;object-position:center;background:#0a1428;padding:3px;box-sizing:border-box}
+.esim-thumb-stack{position:relative;width:100%;aspect-ratio:1/1;background:#0a1428;overflow:hidden}
+.esim-thumb-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.esim-thumb-fg{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:7%;box-sizing:border-box}
+.esim-thumb-fg .esim-thumb{width:100%;height:100%;padding:0;background:transparent;aspect-ratio:auto;object-fit:contain}
 .esim-node--battle .esim-thumb,.esim-node--story .esim-thumb{aspect-ratio:1/1;object-fit:contain}
 .esim-node--document .esim-thumb{aspect-ratio:1/1;object-fit:contain;padding:3px;background:radial-gradient(circle at 50% 40%,rgba(80,160,255,.2),rgba(4,12,28,.95))}
 .esim-meta{padding:3px 5px 5px;display:flex;flex-direction:column;gap:1px}
@@ -106,6 +110,23 @@
   width:100%!important;height:auto!important;aspect-ratio:1/1;max-width:100%;
   object-fit:contain;object-position:center;background:rgba(8,16,32,.9);
   border-radius:8px;border:2px solid rgba(94,231,255,.28);
+}
+.modal-content.stage-detail .stage-portrait-stack{
+  position:relative;width:100%;aspect-ratio:1/1;border-radius:8px;overflow:hidden;
+  border:2px solid rgba(94,231,255,.28);background:rgba(8,16,32,.9);
+}
+.modal-content.stage-detail .stage-portrait-bg{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;
+}
+.modal-content.stage-detail .stage-portrait-fg{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  padding:8%;box-sizing:border-box;
+}
+.modal-content.stage-detail .stage-portrait-fg .stage-portrait,
+.modal-content.stage-detail .stage-portrait-fg .stage-portrait--overlay{
+  width:100%!important;height:100%!important;aspect-ratio:auto!important;
+  object-fit:contain;object-position:center;background:transparent!important;
+  border:0!important;border-radius:0!important;
 }
 
 @media(max-width:900px){

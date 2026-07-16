@@ -52,8 +52,12 @@ def _ce_img(name):
     return f'/static/images/Chronicle/{name}.webp'
 
 
+# Frame behind Size-L stage thumbs (map + detail).
+CHRONICLE_DETAIL_REPORT_BG = _ce_img('Bg_Chronicle_bg_detail_report_complete')
+
+
 def _pick_node_thumb(resource_id, size_type, content_type, *, detail=False):
-    """Map nodes use _01; stage detail / report color art uses _02."""
+    """Map: _01 (or _l for Size-L battles). Detail: _02 (or _l for Size-L battles)."""
     rid = str(resource_id or '').strip()
     if not rid:
         return ''
@@ -64,8 +68,14 @@ def _pick_node_thumb(resource_id, size_type, content_type, *, detail=False):
         return _ce_img(f'chronicle_thumb_document_{rid}_l_{suf}')
     if content_type == CONTENT_STORY:
         return _ce_img(f'chronicle_thumb_story_{rid}_{suf}')
-    # Battle / large nodes: chronicle_thumb_node_{resource}_{01|02}
+    # Size-L battles use dedicated *_l art (not 01/02).
+    if content_type == CONTENT_BATTLE and int(size_type or 0) == SIZE_L:
+        return _ce_img(f'chronicle_thumb_node_{rid}_l')
     return _ce_img(f'chronicle_thumb_node_{rid}_{suf}')
+
+
+def _uses_large_node_art(size_type, content_type):
+    return content_type == CONTENT_BATTLE and int(size_type or 0) == SIZE_L
 
 
 def _content_type_key(idx):
@@ -144,12 +154,18 @@ def chronicle_stage_title_map(app_mod, lang_code='EN'):
 
 
 def chronicle_stage_portrait_map(app_mod, lang_code='EN'):
-    """Map ScenarioStageId -> detail portrait path (_02 node/story art)."""
+    """Map ScenarioStageId -> {portrait, portrait_bg, portrait_large} for detail UI."""
     out = {}
-    for sid, ctype, res, _n, _c in _chronicle_stage_content_rows(app_mod, lang_code):
+    for sid, ctype, res, n, _c in _chronicle_stage_content_rows(app_mod, lang_code):
         if sid in out or not res:
             continue
-        out[sid] = _pick_node_thumb(res, SIZE_S, ctype, detail=True)
+        size_type = int(n.get('SizeTypeIndex') or 1)
+        large = _uses_large_node_art(size_type, ctype)
+        out[sid] = {
+            'portrait': _pick_node_thumb(res, size_type, ctype, detail=True),
+            'portrait_bg': CHRONICLE_DETAIL_REPORT_BG if large else '',
+            'portrait_large': large,
+        }
     return out
 
 
@@ -342,8 +358,10 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
                 ctype = int(c.get('ContentTypeIndex') or 0)
                 target = normalize_id(c.get('TargetId') or cid)
                 res = str(c.get('ResourceId') or target)
-                # Documents always use color (_02) on the map + report list; battles/stories use _01 on map.
+                # Documents always use color (_02) on the map + report list; battles/stories use _01 on map
+                # (Size-L battles use *_l + report-complete frame BG).
                 map_detail = ctype == CONTENT_DOCUMENT
+                large_art = _uses_large_node_art(size_type, ctype)
                 entry = {
                     'id': cid,
                     'type': _content_type_key(ctype),
@@ -352,6 +370,8 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
                     'challenge_point': int(c.get('ConsumeChallengePointCount') or 0),
                     'thumb': pub(_pick_node_thumb(res, size_type, ctype, detail=map_detail)),
                     'thumb_detail': pub(_pick_node_thumb(res, size_type, ctype, detail=True)),
+                    'thumb_large': large_art,
+                    'thumb_bg': pub(CHRONICLE_DETAIL_REPORT_BG) if large_art else '',
                 }
                 if ctype == CONTENT_BATTLE:
                     b = battle_by_id.get(cid) or battle_by_id.get(target) or {}
@@ -401,6 +421,8 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
             view_type = (primary or {}).get('type') or 'unknown'
             thumb = (primary or {}).get('thumb') or ''
             thumb_detail = (primary or {}).get('thumb_detail') or thumb
+            thumb_large = bool((primary or {}).get('thumb_large'))
+            thumb_bg = (primary or {}).get('thumb_bg') or ''
             is_flavor_text = view_type in ('flavor_middle', 'flavor_end')
             node_rows.append({
                 'id': nid,
@@ -418,6 +440,8 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
                 'is_flavor_text': is_flavor_text,
                 'thumb': thumb,
                 'thumb_detail': thumb_detail,
+                'thumb_large': thumb_large,
+                'thumb_bg': thumb_bg,
                 'contents': content_rows,
                 'primary': primary,
             })

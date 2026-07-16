@@ -127,15 +127,21 @@
     };
   }
 
-  function thumbHtml(thumbPath, fallbackPath) {
+  function thumbHtml(thumbPath, fallbackPath, bgPath) {
     var thumb = thumbPath ? imgUrl(thumbPath) : '';
     if (!thumb) return '<div class="esim-thumb"></div>';
     var fallback = fallbackPath ? imgUrl(fallbackPath) : thumb
       .replace(/_l_02\.webp$/i, '_l_01.webp')
       .replace(/_02\.webp$/i, '_01.webp');
-    return (
+    var img =
       '<img class="esim-thumb" src="' + esc(thumb) + '" alt="" loading="lazy" decoding="async" ' +
-      'onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src=\'' + esc(fallback) + '\'}else{this.style.opacity=.25}">'
+      'onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src=\'' + esc(fallback) + '\'}else{this.style.opacity=.25}">';
+    if (!bgPath) return img;
+    return (
+      '<div class="esim-thumb-stack">' +
+      '<img class="esim-thumb-bg" src="' + esc(imgUrl(bgPath)) + '" alt="" loading="lazy" decoding="async" ' +
+      'onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">' +
+      '<div class="esim-thumb-fg">' + img + '</div></div>'
     );
   }
 
@@ -192,12 +198,12 @@
       } else if (vt === 'flavor_start') {
         body =
           '<div class="esim-card esim-card--flavor">' +
-          thumbHtml(n.thumb) +
+          thumbHtml(n.thumb, null, n.thumb_bg) +
           '<div class="esim-meta"><div class="esim-name">' + esc(n.title || '') + '</div></div></div>';
       } else {
         body =
           '<div class="esim-card">' +
-          thumbHtml(n.thumb) +
+          thumbHtml(n.thumb, null, n.thumb_bg) +
           '<div class="esim-meta">' +
           (n.number ? '<div class="esim-num">' + esc(n.number) + '</div>' : '') +
           '<div class="esim-name">' + esc(n.title || '') + '</div>' +
