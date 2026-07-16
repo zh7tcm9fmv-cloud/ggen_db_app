@@ -11053,6 +11053,28 @@ def _resolve_series_ssp_chip_layers(item_id):
     )
 
 
+_SERIES_UNIT_UPGRADE_DATA_RE = re.compile(
+    r'^\s*(.+?)\s+Series\s+Unit\s+Upgrade\s+Data\b',
+    re.IGNORECASE,
+)
+_UEXP_ICON_BY_RARITY = {
+    '5': 'uexp_0001',  # UR uses highest tier art when present; fall back handled below
+    '4': 'uexp_0003',  # SSR
+    '3': 'uexp_0002',  # SR
+    '2': 'uexp_0001',  # R
+    '1': 'uexp_0001',
+}
+
+
+def _resolve_series_unit_upgrade_data_icon(item_id, item_name='', rarity_id='4'):
+    """Blank-ResourceId series unit upgrade data → uexp rarity icon (series from display name)."""
+    name = str(item_name or '').strip()
+    if not _SERIES_UNIT_UPGRADE_DATA_RE.match(name):
+        return ''
+    key = _UEXP_ICON_BY_RARITY.get(normalize_id(rarity_id) or '4', 'uexp_0003')
+    return _game_item_icon_url(key) or game_image_public_url(f'/static/images/Item/{key}.webp')
+
+
 def _resolve_item_icon_resource_id(item_id, item_row=None):
     """Item icon ResourceId — some series/unit SP chips ship with blank ResourceId in master."""
     row = item_row if isinstance(item_row, dict) else (item_info_map or {}).get(normalize_id(item_id), {})
@@ -11227,6 +11249,8 @@ def _decorate_reward_rows(rows, lc):
             rid_item = _resolve_item_icon_resource_id(tid, item)
             if rid_item:
                 reward_icon = _game_item_icon_url(rid_item)
+            if not reward_icon:
+                reward_icon = _resolve_series_unit_upgrade_data_icon(tid, reward_name, iri)
             if _is_limit_break_material_item_name(reward_name):
                 lb_unit_name = _extract_limit_break_unit_name(reward_name)
                 if lb_unit_name:
@@ -21301,7 +21325,7 @@ def api_e_simulator():
     """E Simulator (Chronicle Event) diagram payload for the Stages tab."""
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-        ck = f'e_simulator_v8_{lc}'
+        ck = f'e_simulator_v9_{lc}'
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)

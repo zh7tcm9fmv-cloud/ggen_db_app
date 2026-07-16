@@ -55,6 +55,8 @@ def _ce_img(name):
 # Frame behind Size-L stage thumbs (map + detail).
 CHRONICLE_DETAIL_REPORT_BG = _ce_img('Bg_Chronicle_bg_detail_report_complete')
 CHRONICLE_BRANCH_ICON = _ce_img('UI_Chronicle_Icon_Branch_RedPurple')
+# In-game diagram frame overlayed on route terrain backgrounds.
+CHRONICLE_DIAGRAM_FRAME = _ce_img('Bg_Chronicle_Diagram')
 # E Simulator event medal (mission / exchange rewards).
 ESIM_EMEDAL_ICON = '/static/images/Item/event_exchange_item_0006.webp'
 
@@ -343,6 +345,28 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
             'rewards': rewards_for(rsid),
         })
 
+    # Story Progress Rewards (m_chronicle_event_node_progress_complete_reward).
+    story_progress_reward_rows = []
+    for rw in sorted(story_rewards, key=lambda x: float(x.get('CompleteRate') or 0)):
+        rsid = normalize_id(rw.get('RewardSetId'))
+        story_progress_reward_rows.append({
+            'id': normalize_id(rw.get('Id')),
+            'complete_rate': float(rw.get('CompleteRate') or 0),
+            'reward_set_id': rsid,
+            'rewards': rewards_for(rsid),
+        })
+
+    # Report Progress Rewards (m_chronicle_event_document_progress_complete_reward).
+    report_progress_reward_rows = []
+    for rw in sorted(doc_rewards, key=lambda x: float(x.get('CompleteRate') or 0)):
+        rsid = normalize_id(rw.get('RewardSetId'))
+        report_progress_reward_rows.append({
+            'id': normalize_id(rw.get('Id')),
+            'complete_rate': float(rw.get('CompleteRate') or 0),
+            'reward_set_id': rsid,
+            'rewards': rewards_for(rsid),
+        })
+
     # Shop (event exchange)
     shop_row = next((s for s in shops if normalize_id(s.get('Id')) == ESIM_SHOP_ID), None) or {}
     currency_id = normalize_id(shop_row.get('TargetCurrencyItemId'))
@@ -519,12 +543,16 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
                 'release_condition_id': normalize_id(r.get('ReleaseConditionId')),
             })
 
+        route_complete_rsid = normalize_id(dg.get('CompleteRewardSetId'))
         diagram_payloads.append({
             'id': did,
             'name': diagram_lang.get(normalize_id(dg.get('NameLanguageId')), did),
             'resource_id': tab_rid,
             'background': pub(_ce_img(f'chronicle_bg_diagram_{bg_rid}')),
+            'background_frame': pub(CHRONICLE_DIAGRAM_FRAME),
             'tab_thumb': pub(_ce_img(f'chronicle_thumb_diagram_{tab_rid}')),
+            'complete_reward_set_id': route_complete_rsid,
+            'complete_rewards': rewards_for(route_complete_rsid),
             'bounds': {
                 'min_x': min_x, 'max_x': max_x, 'min_y': min_y, 'max_y': max_y,
                 'width': max(1, max_x - min_x), 'height': max(1, max_y - min_y),
@@ -561,8 +589,11 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
         'mission_total': sum(len(t.get('missions') or []) for t in mission_tab_rows),
         'mission_complete_rewards': mission_complete_reward_rows,
         'event_wide_progress_rewards': event_wide_progress_reward_rows,
-        'payload_version': 8,
+        'story_progress_rewards': story_progress_reward_rows,
+        'report_progress_rewards': report_progress_reward_rows,
+        'payload_version': 9,
         'branch_icon': pub(CHRONICLE_BRANCH_ICON),
+        'diagram_frame': pub(CHRONICLE_DIAGRAM_FRAME),
         'e_medal_icon': pub(ESIM_EMEDAL_ICON),
         'shop': {
             'id': ESIM_SHOP_ID,
@@ -573,18 +604,10 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
             'items': shop_item_rows,
         },
         'stage_titles': stage_titles,
-        'story_rewards': [
-            {'complete_rate': float(r.get('CompleteRate') or 0), 'reward_set_id': normalize_id(r.get('RewardSetId'))}
-            for r in sorted(story_rewards, key=lambda x: float(x.get('CompleteRate') or 0))
-        ],
-        'document_rewards': [
-            {'complete_rate': float(r.get('CompleteRate') or 0), 'reward_set_id': normalize_id(r.get('RewardSetId'))}
-            for r in sorted(doc_rewards, key=lambda x: float(x.get('CompleteRate') or 0))
-        ],
-        'total_rewards': [
-            {'complete_rate': float(r.get('CompleteRate') or 0), 'reward_set_id': normalize_id(r.get('RewardSetId'))}
-            for r in sorted(total_rewards, key=lambda x: float(x.get('CompleteRate') or 0))
-        ],
+        # Keep compact aliases for older clients; prefer *_progress_rewards above.
+        'story_rewards': story_progress_reward_rows,
+        'document_rewards': report_progress_reward_rows,
+        'total_rewards': event_wide_progress_reward_rows,
         'next_story_reward': next_story,
         'diagrams': diagram_payloads,
     }

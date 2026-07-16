@@ -2,7 +2,7 @@
 (function (global) {
   'use strict';
 
-  var PAYLOAD_VERSION = 8;
+  var PAYLOAD_VERSION = 9;
   var state = {
     data: null,
     lang: null,
@@ -10,6 +10,8 @@
     docDetail: null,
     missionsOpen: false,
     eventProgressOpen: false,
+    storyProgressOpen: false,
+    rewardsTab: 'event',
     missionTabId: null,
   };
 
@@ -85,6 +87,7 @@
     if (except !== 'doc') state.docDetail = null;
     if (except !== 'missions') state.missionsOpen = false;
     if (except !== 'eventProgress') state.eventProgressOpen = false;
+    if (except !== 'storyProgress') state.storyProgressOpen = false;
   }
 
   function findDocument(docId) {
@@ -121,17 +124,17 @@
 
   function mapFitScale(bounds) {
     var b = bounds || {};
-    /* Desktop-first uniform scale (no X/Y skew). Narrow screens scroll sideways. */
-    var edgePadX = 90;
-    var edgePadY = 80;
+    /* Desktop-first uniform scale (no X/Y skew). Narrow screens side-scroll. */
+    var edgePadX = 48;
+    var edgePadY = 40;
     var spanX = Math.max(1, b.width || 8000);
     var spanY = Math.max(1, b.height || 2500);
-    var padX = 520;
-    var padY = 420;
+    var padX = 220;
+    var padY = 180;
     var gw = spanX + padX * 2;
     var gh = spanY + padY * 2;
-    /* ~0.26 keeps closest branch nodes (~290u) ~75px apart so cards do not stack. */
-    var scale = 0.26;
+    /* Wider cards (~140px) need ~0.48 so closest nodes (~290u) stay clear. */
+    var scale = 0.48;
     var mapW = Math.ceil(gw * scale);
     var mapH = Math.ceil(gh * scale);
     return {
@@ -142,7 +145,7 @@
       availW: mapW,
       mapW: mapW,
       mapH: mapH,
-      nodeScale: 1,
+      nodeScale: 1.15,
       edgePadX: edgePadX,
       edgePadY: edgePadY,
       shellH: mapH + edgePadY * 2,
@@ -237,12 +240,16 @@
     });
 
     var bg = diagram.background ? imgUrl(diagram.background) : '';
+    var frame = diagram.background_frame
+      ? imgUrl(diagram.background_frame)
+      : imgUrl((state.data && state.data.diagram_frame) || '/static/images/Chronicle/Bg_Chronicle_Diagram.webp');
     var ns = (Math.round(fit.nodeScale * 1000) / 1000).toFixed(3);
     return (
       '<div class="esim-map-shell" id="esimMapShell" style="height:' + fit.shellH + 'px;padding:' +
       fit.edgePadY + 'px ' + fit.edgePadX + 'px;--esim-node-scale:' + ns + '">' +
       '<div class="esim-map" id="esimMap" style="width:' + w + 'px;height:' + h + 'px">' +
-      '<div class="esim-bg" style="' + (bg ? 'background-image:url(\'' + esc(bg) + '\')' : '') + '"></div>' +
+      '<div class="esim-bg"' + (bg ? ' style="background-image:url(\'' + esc(bg) + '\')"' : '') + '></div>' +
+      '<div class="esim-bg-frame"' + (frame ? ' style="background-image:url(\'' + esc(frame) + '\')"' : '') + '></div>' +
       '<svg class="esim-edges" width="' + w + '" height="' + h + '" aria-hidden="true">' + edges.join('') + '</svg>' +
       '<div class="esim-nodes">' + nodesHtml.join('') + '</div>' +
       '</div></div>'
@@ -259,18 +266,57 @@
     var name = r.name || r.label || '';
     var icon = r.icon || r.image || '';
     if (/e[\s-]?medal/i.test(name) || (!icon && /medal/i.test(name))) icon = emedal;
-    if (!icon) return '';
-    return '<img src="' + esc(imgUrl(icon)) + '" alt="" width="' + sz + '" height="' + sz + '" loading="lazy">';
+    if (!icon) {
+      return '<span class="esim-reward-fallback" style="width:' + sz + 'px;height:' + sz + 'px"></span>';
+    }
+    return (
+      '<img class="esim-reward-img" src="' + esc(imgUrl(icon)) + '" alt="" width="' + sz +
+      '" height="' + sz + '" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">'
+    );
+  }
+
+  function rewardQty(r) {
+    if (!r) return '';
+    if (r.count != null && r.count !== '') return String(r.count);
+    if (r.quantity != null && r.quantity !== '') return String(r.quantity);
+    return '';
   }
 
   function rewardChips(rewards) {
-    return (rewards || []).slice(0, 6).map(function (r) {
-      var name = r.name || r.label || '';
-      var qty = r.quantity != null ? r.quantity : (r.count != null ? r.count : '');
+    return (rewards || []).slice(0, 8).map(function (r) {
+      var name = r.name || r.label || 'Reward';
+      var qty = rewardQty(r);
       return (
         '<span class="esim-reward">' +
         rewardThumbHtml(r, 28) +
-        '<span>' + esc(name) + (qty !== '' && qty != null ? ' ×' + esc(String(qty)) : '') + '</span></span>'
+        '<span>' + esc(name) + (qty ? ' ×' + esc(qty) : '') + '</span></span>'
+      );
+    }).join('');
+  }
+
+  function progressRewardRowsHtml(rows) {
+    if (!(rows || []).length) {
+      return '<div class="esim-side-hint">No rewards found for this category.</div>';
+    }
+    return rows.map(function (rw) {
+      var rate = Math.round(Number(rw.complete_rate) || 0);
+      var rewards = rw.rewards || [];
+      var body = rewards.length
+        ? rewards.map(function (r) {
+            var qty = rewardQty(r);
+            return (
+              '<div class="esim-progress-reward-row">' +
+              rewardThumbHtml(r, 48) +
+              '<div class="esim-mission-body"><b>' + esc(r.name || r.label || 'Reward') + '</b>' +
+              (qty ? '<span class="esim-mission-desc">×' + esc(qty) + '</span>' : '') +
+              '</div></div>'
+            );
+          }).join('')
+        : '<div class="esim-side-hint">Reward set ' + esc(String(rw.reward_set_id || '')) + ' (unresolved).</div>';
+      return (
+        '<div class="esim-reward-tier">' +
+        '<div class="esim-reward-tier-rate">' + esc(String(rate)) + '%</div>' +
+        '<div class="esim-reward-tier-body">' + body + '</div></div>'
       );
     }).join('');
   }
@@ -300,15 +346,15 @@
     var tabs = (state.data && state.data.mission_tabs) || [];
     var openCls = state.missionsOpen ? ' open' : '';
     var backdrop = state.missionsOpen
-      ? '<div class="esim-side-backdrop" id="esimMissionsBackdrop" data-close="missions"></div>'
+      ? '<div class="esim-side-backdrop" data-close="missions"></div>'
       : '';
     if (!tabs.length) {
       return (
         backdrop +
-        '<div class="esim-side-panel esim-missions-panel' + openCls + '" id="esimMissionsPanel" role="dialog" aria-label="Missions">' +
+        '<div class="esim-side-panel esim-modal-panel esim-missions-panel' + openCls + '" id="esimMissionsPanel" role="dialog" aria-label="Missions">' +
         '<div class="esim-side-head"><h3>Missions</h3>' +
         '<button type="button" class="esim-side-close" data-close="missions" aria-label="Close">×</button></div>' +
-        '<div class="esim-side-hint">No mission data found (m_chronicle_event_mission*).</div></div>'
+        '<div class="esim-side-hint">No mission data found.</div></div>'
       );
     }
     var tabId = state.missionTabId != null ? String(state.missionTabId) : String(tabs[0].id);
@@ -318,11 +364,9 @@
     }
     if (!active) active = tabs[0];
     var tabBtns = tabs.map(function (tb) {
-      var n = (tb.missions || []).length;
       return (
         '<button type="button" class="esim-mini-tab' + (String(tb.id) === String(active.id) ? ' active' : '') +
-        '" data-mission-tab="' + esc(String(tb.id)) + '">' + esc(tb.name || tb.id) +
-        ' (' + esc(String(n)) + ')</button>'
+        '" data-mission-tab="' + esc(String(tb.id)) + '">' + esc(tb.name || tb.id) + '</button>'
       );
     }).join('');
     var missions = active.missions || [];
@@ -336,60 +380,83 @@
       );
     }).join('') || '<div class="esim-side-hint">No missions in this tab.</div>';
     var hint = state.data.mission_unlock_hint
-      ? '<div class="esim-side-hint">In-game unlock: ' + esc(state.data.mission_unlock_hint) + '</div>'
+      ? '<div class="esim-side-hint">' + esc(state.data.mission_unlock_hint) + '</div>'
       : '';
     return (
       backdrop +
-      '<div class="esim-side-panel esim-missions-panel' + openCls + '" id="esimMissionsPanel" role="dialog" aria-label="Missions">' +
-      '<div class="esim-side-head"><h3>Missions (' + esc(String(missions.length)) + ')</h3>' +
+      '<div class="esim-side-panel esim-modal-panel esim-missions-panel' + openCls + '" id="esimMissionsPanel" role="dialog" aria-label="Missions">' +
+      '<div class="esim-side-head"><h3>Missions</h3>' +
       '<button type="button" class="esim-side-close" data-close="missions" aria-label="Close">×</button></div>' +
       hint +
       '<div class="esim-mini-tabs">' + tabBtns + '</div>' +
-      rows + '</div>'
+      '<div class="esim-mission-list">' + rows + '</div></div>'
+    );
+  }
+
+  function renderStoryProgress() {
+    var openCls = state.storyProgressOpen ? ' open' : '';
+    var backdrop = state.storyProgressOpen
+      ? '<div class="esim-side-backdrop" data-close="storyProgress"></div>'
+      : '';
+    var storyRows = (state.data && (state.data.story_progress_rewards || state.data.story_rewards)) || [];
+    var diagrams = (state.data && state.data.diagrams) || [];
+    var routeBlocks = diagrams.map(function (d) {
+      var complete = d.complete_rewards || [];
+      return (
+        '<div class="esim-reward-section">' +
+        '<h4 class="esim-side-subhead">' + esc(d.name || d.id) + '</h4>' +
+        '<div class="esim-side-hint">Story progress rewards for this route</div>' +
+        progressRewardRowsHtml(storyRows) +
+        (complete.length
+          ? '<div class="esim-side-subhead" style="margin-top:10px">Route completion</div>' +
+            '<div class="esim-progress-reward-row">' + rewardChips(complete) + '</div>'
+          : '') +
+        '</div>'
+      );
+    }).join('') || progressRewardRowsHtml(storyRows);
+    return (
+      backdrop +
+      '<div class="esim-side-panel esim-modal-panel esim-story-progress-panel' + openCls +
+      '" id="esimStoryProgressPanel" role="dialog" aria-label="Story Progress Rewards">' +
+      '<div class="esim-side-head"><h3>Story Progress Rewards</h3>' +
+      '<button type="button" class="esim-side-close" data-close="storyProgress" aria-label="Close">×</button></div>' +
+      '<div class="esim-side-hint">Mobile Suit Series Unit Upgrade Data SSR by story completion on each route, including Final Investigation.</div>' +
+      routeBlocks + '</div>'
     );
   }
 
   function renderEventProgress() {
-    var rows = (state.data && state.data.event_wide_progress_rewards) || [];
     var openCls = state.eventProgressOpen ? ' open' : '';
     var backdrop = state.eventProgressOpen
       ? '<div class="esim-side-backdrop" data-close="eventProgress"></div>'
       : '';
-    if (!rows.length) {
+    var tab = state.rewardsTab || 'event';
+    var eventRows = (state.data && (state.data.event_wide_progress_rewards || state.data.total_rewards)) || [];
+    var reportRows = (state.data && (state.data.report_progress_rewards || state.data.document_rewards)) || [];
+    var missionRows = (state.data && state.data.mission_complete_rewards) || [];
+    var tabs = [
+      { id: 'event', label: 'Event-Wide' },
+      { id: 'report', label: 'Reports' },
+      { id: 'mission', label: 'Missions' },
+    ].map(function (tb) {
       return (
-        backdrop +
-        '<div class="esim-side-panel esim-event-progress-panel' + openCls + '" id="esimEventProgressPanel">' +
-        '<div class="esim-side-head"><h3>Event-Wide Progress Rewards</h3>' +
-        '<button type="button" class="esim-side-close" data-close="eventProgress" aria-label="Close">×</button></div>' +
-        '<div class="esim-side-hint">No event-wide progress rewards found.</div></div>'
-      );
-    }
-    var items = rows.map(function (rw) {
-      var rewards = rw.rewards || [];
-      var body = rewards.map(function (r) {
-        var qty = r.count != null ? r.count : (r.quantity != null ? r.quantity : '');
-        return (
-          '<div class="esim-progress-reward-row">' +
-          rewardThumbHtml(r, 48) +
-          '<div class="esim-mission-body"><b>' + esc(r.name || 'Reward') + '</b>' +
-          (qty !== '' && qty != null ? '<span class="esim-mission-desc">×' + esc(String(qty)) + '</span>' : '') +
-          '</div></div>'
-        );
-      }).join('') || '<div class="esim-side-hint">No rewards.</div>';
-      return (
-        '<div class="esim-mission-item esim-mission-complete">' +
-        '<div class="esim-mission-idx">' + esc(String(rw.complete_rate | 0)) + '%</div>' +
-        '<div class="esim-mission-body"><b>' + esc(String(rw.complete_rate)) + '% complete</b>' +
-        '<div class="esim-mission-rewards esim-progress-rewards">' + body + '</div></div></div>'
+        '<button type="button" class="esim-mini-tab' + (tab === tb.id ? ' active' : '') +
+        '" data-rewards-tab="' + tb.id + '">' + esc(tb.label) + '</button>'
       );
     }).join('');
+    var body;
+    if (tab === 'report') body = progressRewardRowsHtml(reportRows);
+    else if (tab === 'mission') body = progressRewardRowsHtml(missionRows);
+    else body = progressRewardRowsHtml(eventRows);
     return (
       backdrop +
-      '<div class="esim-side-panel esim-event-progress-panel' + openCls + '" id="esimEventProgressPanel" role="dialog" aria-label="Event-Wide Progress Rewards">' +
-      '<div class="esim-side-head"><h3>Event-Wide Progress Rewards</h3>' +
+      '<div class="esim-side-panel esim-modal-panel esim-event-progress-panel' + openCls +
+      '" id="esimEventProgressPanel" role="dialog" aria-label="Event-Wide Progress Rewards">' +
+      '<div class="esim-side-head"><h3>Event Progress Rewards</h3>' +
       '<button type="button" class="esim-side-close" data-close="eventProgress" aria-label="Close">×</button></div>' +
-      '<div class="esim-side-hint">Account progress across the whole E Simulator event.</div>' +
-      items + '</div>'
+      '<div class="esim-side-hint">Event-Wide, report, and mission completion rewards.</div>' +
+      '<div class="esim-mini-tabs">' + tabs + '</div>' +
+      body + '</div>'
     );
   }
 
@@ -412,9 +479,6 @@
     }).join('');
 
     var logo = data.logo ? '<img class="esim-logo" src="' + esc(imgUrl(data.logo)) + '" alt="E Simulator">' : '';
-    var missionN = data.mission_total != null
-      ? data.mission_total
-      : (data.mission_tabs || []).reduce(function (sum, tb) { return sum + ((tb.missions || []).length); }, 0);
 
     root.innerHTML =
       '<div class="esim-header">' +
@@ -424,12 +488,13 @@
       renderMap(diagram) +
       renderDocDetail() +
       renderMissions() +
+      renderStoryProgress() +
       renderEventProgress() +
       '<div class="esim-footer">' +
       '<div class="esim-actions">' +
-      '<div><span class="esim-btn-note">' + esc(String(missionN)) + '</span>' +
-      '<button type="button" class="esim-btn' + (state.missionsOpen ? ' active' : '') + '" id="esimMissionsBtn">Missions</button></div>' +
-      '<div><button type="button" class="esim-btn' + (state.eventProgressOpen ? ' active' : '') + '" id="esimEventProgressBtn">Event Progress</button></div>' +
+      '<button type="button" class="esim-btn' + (state.missionsOpen ? ' active' : '') + '" id="esimMissionsBtn">Missions</button>' +
+      '<button type="button" class="esim-btn' + (state.storyProgressOpen ? ' active' : '') + '" id="esimStoryProgressBtn">Story Progress</button>' +
+      '<button type="button" class="esim-btn' + (state.eventProgressOpen ? ' active' : '') + '" id="esimEventProgressBtn">Event Progress</button>' +
       '</div>' +
       '<div class="esim-ticker">' + formatPromoHtml(data.promotion_text || '') + '</div>' +
       '</div>';
@@ -473,12 +538,22 @@
         render();
       });
     }
+    var sp = document.getElementById('esimStoryProgressBtn');
+    if (sp) {
+      sp.addEventListener('click', function () {
+        var next = !state.storyProgressOpen;
+        closeSidePanels(next ? 'storyProgress' : null);
+        state.storyProgressOpen = next;
+        render();
+      });
+    }
     var ep = document.getElementById('esimEventProgressBtn');
     if (ep) {
       ep.addEventListener('click', function () {
         var next = !state.eventProgressOpen;
         closeSidePanels(next ? 'eventProgress' : null);
         state.eventProgressOpen = next;
+        if (next) state.rewardsTab = state.rewardsTab || 'event';
         render();
       });
     }
@@ -488,6 +563,7 @@
         if (which === 'doc') state.docDetail = null;
         if (which === 'missions') state.missionsOpen = false;
         if (which === 'eventProgress') state.eventProgressOpen = false;
+        if (which === 'storyProgress') state.storyProgressOpen = false;
         render();
       });
     });
@@ -495,6 +571,13 @@
       btn.addEventListener('click', function () {
         state.missionTabId = btn.getAttribute('data-mission-tab');
         state.missionsOpen = true;
+        render();
+      });
+    });
+    document.querySelectorAll('[data-rewards-tab]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        state.rewardsTab = btn.getAttribute('data-rewards-tab') || 'event';
+        state.eventProgressOpen = true;
         render();
       });
     });
