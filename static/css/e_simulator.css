@@ -11,7 +11,7 @@
 #panel-stages.esim-active #eSimulatorWrap{display:block}
 #panel-stages.esim-active .pagination-bar-wrap{margin-top:8px}
 
-.esim-root{--esim-cyan:#5ee7ff;--esim-green:#5dff9a;--esim-red:#ff4d5e;--esim-ink:#e8f4ff;--esim-node-scale:1;--esim-icon:48px;position:relative;border:1px solid rgba(94,231,255,.28);border-radius:10px;overflow:visible;background:#020816;min-height:0;box-shadow:inset 0 0 80px rgba(0,40,90,.35)}
+.esim-root{--esim-cyan:#5ee7ff;--esim-green:#5dff9a;--esim-red:#ff4d5e;--esim-ink:#e8f4ff;--esim-node-scale:1;--esim-icon:64px;position:relative;border:1px solid rgba(94,231,255,.28);border-radius:10px;overflow:visible;background:#020816;min-height:0;box-shadow:inset 0 0 80px rgba(0,40,90,.35)}
 .esim-header{display:flex;align-items:center;justify-content:flex-start;gap:12px;padding:10px 14px;background:linear-gradient(180deg,rgba(8,28,58,.92),rgba(4,14,32,.75));border-bottom:1px solid rgba(94,231,255,.18);position:relative;z-index:3}
 .esim-title-row{display:flex;align-items:center;gap:10px;min-width:0}
 .esim-logo{height:36px;width:auto;max-width:min(48vw,260px);object-fit:contain;filter:drop-shadow(0 0 8px rgba(94,231,255,.45))}
@@ -24,9 +24,8 @@
 .esim-tab.active{background:linear-gradient(180deg,rgba(210,235,255,.95),rgba(150,200,240,.88));color:#0a1a30;border-color:#fff;box-shadow:0 0 0 1px rgba(94,231,255,.55),0 0 18px rgba(94,231,255,.25)}
 .esim-tab.active img{opacity:1}
 
-.esim-map-shell{position:relative;height:auto;min-height:240px;margin:8px 0 0;overflow:visible;background:#020816;box-sizing:border-box}
-.esim-map-shell--narrow{overflow-x:auto;overflow-y:visible;-webkit-overflow-scrolling:touch}
-.esim-map{position:relative;transform-origin:0 0;margin:0 auto;max-width:100%;overflow:visible}
+.esim-map-shell{position:relative;height:auto;min-height:280px;margin:8px 0 0;overflow:auto;-webkit-overflow-scrolling:touch;background:#020816;box-sizing:border-box}
+.esim-map{position:relative;transform-origin:0 0;margin:0 auto;overflow:visible}
 .esim-bg{position:absolute;inset:0;background-position:center;background-size:100% 100%;background-repeat:no-repeat;opacity:.92;filter:saturate(1.05) contrast(1.05)}
 .esim-bg::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(180deg,transparent 0 3px,rgba(80,200,255,.035) 3px 4px),radial-gradient(ellipse at 50% 40%,transparent 30%,rgba(0,0,0,.45) 100%);pointer-events:none}
 .esim-edges,.esim-nodes{position:absolute;inset:0;pointer-events:none}
@@ -139,17 +138,9 @@
 }
 
 @media(max-width:900px){
-  .esim-root{--esim-icon:40px}
   .esim-footer{gap:8px}
   .esim-actions{justify-content:flex-start}
-  .esim-pill{font-size:9px;padding:3px 7px}
-  .esim-branch-mark{width:18px;height:18px}
   .esim-tab{padding:6px 8px;font-size:11px}
   .esim-tab img{width:28px;height:18px}
-  .esim-card--flavor{min-width:96px;max-width:140px}
   .stage-source-toggle-btn--esim-logo .stage-source-esim-logo{height:24px}
-}
-@media(max-width:480px){
-  .esim-root{--esim-icon:36px}
-  .esim-map-shell--narrow{margin-left:-4px;margin-right:-4px}
 }

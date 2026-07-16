@@ -119,39 +119,34 @@
 
   function mapFitScale(bounds) {
     var b = bounds || {};
-    var panel = document.getElementById('panel-stages') || document.getElementById('eSimulatorWrap');
-    var panelW = Math.max(280, ((panel && panel.clientWidth) || window.innerWidth || 900) - 24);
-    var narrow = panelW < 640;
-    /* Pixel insets so centered cards stay inside the shell. */
-    var edgePadX = narrow ? 48 : Math.max(72, Math.min(120, Math.round(panelW * 0.1)));
-    var edgePadY = narrow ? 40 : 52;
-    var availW = Math.max(200, panelW - edgePadX * 2);
+    /* Always size the diagram at a desktop design width so mobile matches desktop and scrolls. */
+    var designW = 920;
+    var edgePadX = 100;
+    var edgePadY = 56;
+    var fitW = designW - edgePadX * 2;
     var spanX = Math.max(1, b.width || 8000);
     var spanY = Math.max(1, b.height || 2500);
-    var roughX = availW / spanX;
-    var padX = Math.max(280, Math.ceil(edgePadX / Math.max(0.04, roughX)));
-    var padY = Math.max(260, Math.ceil(edgePadY / 0.18));
+    var roughX = fitW / spanX;
+    var padX = Math.max(400, Math.ceil(edgePadX / Math.max(0.04, roughX)));
+    var padY = Math.max(320, Math.ceil(edgePadY / 0.2));
     var gw = spanX + padX * 2;
     var gh = spanY + padY * 2;
-    /* Icon-only nodes are small — prefer fitting width; keep Y readable. */
-    var scaleX = Math.max(0.045, Math.min(availW / gw, narrow ? 0.14 : 0.17));
-    var scaleY = Math.max(narrow ? 0.16 : 0.18, Math.min(0.28, scaleX * (narrow ? 2.4 : 2.6)));
-    var mapW = Math.min(availW, Math.ceil(gw * scaleX));
+    var scaleX = Math.max(0.08, Math.min(fitW / gw, 0.2));
+    var scaleY = Math.max(0.22, Math.min(0.32, scaleX * 2.8));
+    var mapW = Math.ceil(gw * scaleX);
     var mapH = Math.ceil(gh * scaleY);
-    var nodeScale = 1;
     return {
       scaleX: mapW / gw,
       scaleY: scaleY,
       padX: padX,
       padY: padY,
-      availW: availW,
+      availW: fitW,
       mapW: mapW,
       mapH: mapH,
-      nodeScale: nodeScale,
+      nodeScale: 1,
       edgePadX: edgePadX,
       edgePadY: edgePadY,
       shellH: mapH + edgePadY * 2,
-      narrow: narrow,
     };
   }
 
@@ -240,11 +235,9 @@
     });
 
     var bg = diagram.background ? imgUrl(diagram.background) : '';
-    var ns = (Math.round(fit.nodeScale * 1000) / 1000).toFixed(3);
     return (
-      '<div class="esim-map-shell' + (fit.narrow ? ' esim-map-shell--narrow' : '') +
-      '" id="esimMapShell" style="height:' + fit.shellH + 'px;padding:' +
-      fit.edgePadY + 'px ' + fit.edgePadX + 'px;--esim-node-scale:' + ns + '">' +
+      '<div class="esim-map-shell" id="esimMapShell" style="height:' + fit.shellH + 'px;padding:' +
+      fit.edgePadY + 'px ' + fit.edgePadX + 'px">' +
       '<div class="esim-map" id="esimMap" style="width:' + w + 'px;height:' + h + 'px">' +
       '<div class="esim-bg" style="' + (bg ? 'background-image:url(\'' + esc(bg) + '\')' : '') + '"></div>' +
       '<svg class="esim-edges" width="' + w + '" height="' + h + '" aria-hidden="true">' + edges.join('') + '</svg>' +
