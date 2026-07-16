@@ -469,7 +469,7 @@
     return modalShell(true, 'eventProgress', 'Event Progress Rewards', 'Event Progress Rewards', inner);
   }
 
-  function render( {
+  function render() {
     var root = document.getElementById('eSimulatorRoot');
     if (!root || !state.data) return;
     var data = state.data;
