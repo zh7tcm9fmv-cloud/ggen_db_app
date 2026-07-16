@@ -1960,5 +1960,14 @@
     "BattleSideAnotherEnemyBgmId": 116200004,
     "BattleSideSecretEnemyBgmId": 116200004,
     "BattleSideSecretAnotherEnemyBgmId": 116200004
+  },
+  {
+    "Id": 10219,
+    "BattleSideOwnBgmId": 100000148,
+    "BattleSideFriendBgmId": 100000148,
+    "BattleSideEnemyBgmId": 100000149,
+    "BattleSideAnotherEnemyBgmId": 100000149,
+    "BattleSideSecretEnemyBgmId": 100000149,
+    "BattleSideSecretAnotherEnemyBgmId": 100000149
   }
 ]

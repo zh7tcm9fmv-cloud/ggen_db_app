@@ -1661,7 +1661,7 @@
   },
   {
     "id": 140100000101080200,
-    "value": "(HP conditions) Increased ATK LV 2"
+    "value": "(Cnd: HP) Increased ATK LV 2"
   },
   {
     "id": 140100000101090100,
@@ -2130,6 +2130,14 @@
   {
     "id": 140100000101650105,
     "value": "(Cnd: Vigor) Special Weapon Max Range Up LV 5"
+  },
+  {
+    "id": 140100000101660101,
+    "value": "(Cnd: HP) Apply Sway (Unit Ability) LV 1"
+  },
+  {
+    "id": 140100000101660102,
+    "value": "Sway (Unit Ability) LV 1"
   },
   {
     "id": 140100000200010101,
@@ -4777,7 +4785,7 @@
   },
   {
     "id": 140100000202100101,
-    "value": "(Tag conditions) Support Attack / Counter Support LV 1"
+    "value": "(Cnd: Tag) Support Attack / Counter Support LV 1"
   },
   {
     "id": 140100000202110101,
@@ -5154,6 +5162,18 @@
   {
     "id": 140100000202730200,
     "value": "Affinity: Mobile Suit Gundam F91 LV 2"
+  },
+  {
+    "id": 140100000202750100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000202760100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000202770101,
+    "value": "(Cnd: Tag) Chance Step Increase LV 1"
   },
   {
     "id": 140100000202780100,
@@ -6038,6 +6058,126 @@
   {
     "id": 140100000300370101,
     "value": "MOV Down LV 1"
+  },
+  {
+    "id": 140100000300390101,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 1"
+  },
+  {
+    "id": 140100000300390201,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 2"
+  },
+  {
+    "id": 140100000300390301,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 3"
+  },
+  {
+    "id": 140100000300390401,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 4"
+  },
+  {
+    "id": 140100000300390501,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 5"
+  },
+  {
+    "id": 140100000300390601,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 6"
+  },
+  {
+    "id": 140100000300390701,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 7"
+  },
+  {
+    "id": 140100000300390801,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 8"
+  },
+  {
+    "id": 140100000300390901,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 9"
+  },
+  {
+    "id": 140100000300410101,
+    "value": "Increased Weapon Power Maximum Value Boost"
+  },
+  {
+    "id": 140100000300410201,
+    "value": "Increased Weapon Power Maximum Value Boost"
+  },
+  {
+    "id": 140100000300410301,
+    "value": "Increased Weapon Power Maximum Value Boost"
+  },
+  {
+    "id": 140100000300420101,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140100000300420201,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140100000300420301,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140100000300430101,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140100000300430201,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140100000300430301,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140100000300440101,
+    "value": "Increased Physical Damage Effect Value Boost"
+  },
+  {
+    "id": 140100000300440201,
+    "value": "Increased Physical Damage Effect Value Boost"
+  },
+  {
+    "id": 140100000300440301,
+    "value": "Increased Physical Damage Effect Value Boost"
+  },
+  {
+    "id": 140100000300480101,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 1"
+  },
+  {
+    "id": 140100000300480201,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 2"
+  },
+  {
+    "id": 140100000300480301,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 3"
+  },
+  {
+    "id": 140100000300480401,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 4"
+  },
+  {
+    "id": 140100000300480501,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 5"
+  },
+  {
+    "id": 140100000300480601,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 6"
+  },
+  {
+    "id": 140100000300480701,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 7"
+  },
+  {
+    "id": 140100000300480801,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 8"
+  },
+  {
+    "id": 140100000300480901,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 9"
   },
   {
     "id": 140100000310010101,
@@ -7072,6 +7212,150 @@
     "value": "MOV Down LV 5"
   },
   {
+    "id": 140100000310500101,
+    "value": ""
+  },
+  {
+    "id": 140100000310500102,
+    "value": ""
+  },
+  {
+    "id": 140100000310500201,
+    "value": ""
+  },
+  {
+    "id": 140100000310500202,
+    "value": ""
+  },
+  {
+    "id": 140100000310500301,
+    "value": ""
+  },
+  {
+    "id": 140100000310500302,
+    "value": ""
+  },
+  {
+    "id": 140100000310500401,
+    "value": ""
+  },
+  {
+    "id": 140100000310500402,
+    "value": ""
+  },
+  {
+    "id": 140100000310500501,
+    "value": ""
+  },
+  {
+    "id": 140100000310500502,
+    "value": ""
+  },
+  {
+    "id": 140100000310500601,
+    "value": ""
+  },
+  {
+    "id": 140100000310500602,
+    "value": ""
+  },
+  {
+    "id": 140100000310500701,
+    "value": ""
+  },
+  {
+    "id": 140100000310500702,
+    "value": ""
+  },
+  {
+    "id": 140100000310500801,
+    "value": ""
+  },
+  {
+    "id": 140100000310500802,
+    "value": ""
+  },
+  {
+    "id": 140100000310500901,
+    "value": ""
+  },
+  {
+    "id": 140100000310500902,
+    "value": ""
+  },
+  {
+    "id": 140100000310510101,
+    "value": "Increased Physical Damage [1 turn] LV 1"
+  },
+  {
+    "id": 140100000310510102,
+    "value": "Increased Physical Damage [1 turn] LV 1"
+  },
+  {
+    "id": 140100000310510201,
+    "value": "Increased Physical Damage [1 turn] LV 2"
+  },
+  {
+    "id": 140100000310510202,
+    "value": "Increased Physical Damage [1 turn] LV 2"
+  },
+  {
+    "id": 140100000310510301,
+    "value": "Increased Physical Damage [1 turn] LV 3"
+  },
+  {
+    "id": 140100000310510302,
+    "value": "Increased Physical Damage [1 turn] LV 3"
+  },
+  {
+    "id": 140100000310510401,
+    "value": "Increased Physical Damage [1 turn] LV 4"
+  },
+  {
+    "id": 140100000310510402,
+    "value": "Increased Physical Damage [1 turn] LV 4"
+  },
+  {
+    "id": 140100000310510501,
+    "value": "Increased Physical Damage [1 turn] LV 5"
+  },
+  {
+    "id": 140100000310510502,
+    "value": "Increased Physical Damage [1 turn] LV 5"
+  },
+  {
+    "id": 140100000310510601,
+    "value": "Increased Physical Damage [1 turn] LV 6"
+  },
+  {
+    "id": 140100000310510602,
+    "value": "Increased Physical Damage [1 turn] LV 6"
+  },
+  {
+    "id": 140100000310510701,
+    "value": "Increased Physical Damage [1 turn] LV 7"
+  },
+  {
+    "id": 140100000310510702,
+    "value": "Increased Physical Damage [1 turn] LV 7"
+  },
+  {
+    "id": 140100000310510801,
+    "value": "Increased Physical Damage [1 turn] LV 8"
+  },
+  {
+    "id": 140100000310510802,
+    "value": "Increased Physical Damage [1 turn] LV 8"
+  },
+  {
+    "id": 140100000310510901,
+    "value": "Increased Physical Damage [1 turn] LV 9"
+  },
+  {
+    "id": 140100000310510902,
+    "value": "Increased Physical Damage [1 turn] LV 9"
+  },
+  {
     "id": 140100000320030101,
     "value": "Decreased ATK [1 turn] LV 1"
   },
@@ -7682,6 +7966,30 @@
   {
     "id": 140100000320390901,
     "value": "Scaling Weapon Power (High MP) LV 9"
+  },
+  {
+    "id": 140100000320400101,
+    "value": "Immobilized [1 turn(s)] LV 1."
+  },
+  {
+    "id": 140100000320410101,
+    "value": "MOV Down [1 turn(s)] LV 1."
+  },
+  {
+    "id": 140100000320410201,
+    "value": "MOV Down [1 turn(s)] LV 1."
+  },
+  {
+    "id": 140100000320410301,
+    "value": "MOV Down [1 turn(s)] LV 1."
+  },
+  {
+    "id": 140100000320410401,
+    "value": "MOV Down [1 turn(s)] LV 1."
+  },
+  {
+    "id": 140100000320410501,
+    "value": "MOV Down [1 turn(s)] LV 1."
   },
   {
     "id": 140100000350100101,

@@ -588,5 +588,15 @@
     "Id": 20001410,
     "EventBonusTargetTypeIndex": 2,
     "TargetId": 20001410
+  },
+  {
+    "Id": 25000101,
+    "EventBonusTargetTypeIndex": 4,
+    "TargetId": 25000101
+  },
+  {
+    "Id": 25000102,
+    "EventBonusTargetTypeIndex": 4,
+    "TargetId": 25000102
   }
 ]

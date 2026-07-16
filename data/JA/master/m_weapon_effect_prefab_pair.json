@@ -1986,6 +1986,18 @@
     "DamagedEffectId": "ef_mpd_0023_000_vsbr_f91"
   },
   {
+    "Id": 290166,
+    "WeaponEffectPrefabPairSetId": 290166,
+    "WeaponEffectId": "ef_mpa_0023_000_javelinbracer",
+    "DamagedEffectId": "ef_mpd_0000_000_cmnhit"
+  },
+  {
+    "Id": 290167,
+    "WeaponEffectPrefabPairSetId": 290167,
+    "WeaponEffectId": "ef_mpa_0023_007_vulcan_mikailis",
+    "DamagedEffectId": "ef_mpd_0023_007_vulcan_mikailis"
+  },
+  {
     "Id": 310001,
     "WeaponEffectPrefabPairSetId": 310001,
     "WeaponEffectId": "ef_mpa_0029_001_funnelbeam",
@@ -4251,6 +4263,18 @@
     "Id": 900196,
     "WeaponEffectPrefabPairSetId": 900196,
     "WeaponEffectId": "ef_mpw_086_01_twinvesper",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900197,
+    "WeaponEffectPrefabPairSetId": 900197,
+    "WeaponEffectId": "ef_mpw_066_02_antidote",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900198,
+    "WeaponEffectPrefabPairSetId": 900198,
+    "WeaponEffectId": "ef_mpw_080_13_funnel_darilbalde",
     "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
   },
   {
@@ -8452,6 +8476,150 @@
     "WeaponEffectPrefabPairSetId": 80074,
     "WeaponEffectId": "ef_mpa_1000_000_particle_f91twin",
     "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8007501,
+    "WeaponEffectPrefabPairSetId": 80075,
+    "WeaponEffectId": "ef_mpa_1000_000_claw_mikailis_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_claw_mikailis_ex1"
+  },
+  {
+    "Id": 8007502,
+    "WeaponEffectPrefabPairSetId": 80075,
+    "WeaponEffectId": "ef_mpa_1000_000_claw_mikailis_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_claw_mikailis_ex2"
+  },
+  {
+    "Id": 8007503,
+    "WeaponEffectPrefabPairSetId": 80075,
+    "WeaponEffectId": "ef_mpa_1000_000_spark_mikailis",
+    "DamagedEffectId": "ef_mpd_1000_000_spark_mikailis"
+  },
+  {
+    "Id": 8007504,
+    "WeaponEffectPrefabPairSetId": 80075,
+    "WeaponEffectId": "ef_mpa_1000_000_beamcanon_mikailis",
+    "DamagedEffectId": "ef_mpd_1000_000_beamcanon_mikailis"
+  },
+  {
+    "Id": 8007505,
+    "WeaponEffectPrefabPairSetId": 80075,
+    "WeaponEffectId": "ef_mpa_1000_000_javelinbracer_mikailis_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_javelinbracer_mikailis_ex1"
+  },
+  {
+    "Id": 8007506,
+    "WeaponEffectPrefabPairSetId": 80075,
+    "WeaponEffectId": "ef_mpa_1000_000_javelinbracer_mikailis_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_javelinbracer_mikailis_ex2"
+  },
+  {
+    "Id": 8007507,
+    "WeaponEffectPrefabPairSetId": 80075,
+    "WeaponEffectId": "ef_mpa_1000_000_vulcanhit_mikailis",
+    "DamagedEffectId": "ef_mpd_1000_000_vulcanhit_mikailis"
+  },
+  {
+    "Id": 8007508,
+    "WeaponEffectPrefabPairSetId": 80075,
+    "WeaponEffectId": "ef_mpa_1000_000_rollingbeamcanon_mikailis",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8007509,
+    "WeaponEffectPrefabPairSetId": 80075,
+    "WeaponEffectId": "ef_mpa_1000_000_stab_mikailis",
+    "DamagedEffectId": "ef_mpd_1000_000_stab_mikailis"
+  },
+  {
+    "Id": 8007510,
+    "WeaponEffectPrefabPairSetId": 80075,
+    "WeaponEffectId": "ef_mpa_1000_000_tackle_mikailis",
+    "DamagedEffectId": "ef_mpd_1000_000_tackle_mikailis"
+  },
+  {
+    "Id": 8007511,
+    "WeaponEffectPrefabPairSetId": 80075,
+    "WeaponEffectId": "ef_mpa_1000_000_vulcan_mikailis",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8007512,
+    "WeaponEffectPrefabPairSetId": 80075,
+    "WeaponEffectId": "ef_mpa_1000_000_null",
+    "DamagedEffectId": "ef_mpd_1000_000_null"
+  },
+  {
+    "Id": 8007601,
+    "WeaponEffectPrefabPairSetId": 80076,
+    "WeaponEffectId": "ef_mpa_1000_007_beamsaber_darilbalde_ex1",
+    "DamagedEffectId": "ef_mpd_1000_007_beamsaber_darilbalde"
+  },
+  {
+    "Id": 8007602,
+    "WeaponEffectPrefabPairSetId": 80076,
+    "WeaponEffectId": "ef_mpa_1000_007_beamsaber_darilbalde_ex2",
+    "DamagedEffectId": "ef_mpd_1000_007_beamsaber_darilbalde"
+  },
+  {
+    "Id": 8007603,
+    "WeaponEffectPrefabPairSetId": 80076,
+    "WeaponEffectId": "ef_mpa_1000_007_beamsaber_darilbalde_ex3",
+    "DamagedEffectId": "ef_mpd_1000_007_beamsaber_darilbalde"
+  },
+  {
+    "Id": 8007604,
+    "WeaponEffectPrefabPairSetId": 80076,
+    "WeaponEffectId": "ef_mpa_1000_007_shotgun_darilbalde_ex1",
+    "DamagedEffectId": "ef_mpd_1000_007_shotgun_darilbalde_ex1"
+  },
+  {
+    "Id": 8007605,
+    "WeaponEffectPrefabPairSetId": 80076,
+    "WeaponEffectId": "ef_mpa_1000_007_shotgun_darilbalde_ex2",
+    "DamagedEffectId": "ef_mpd_1000_007_shotgun_darilbalde_ex2"
+  },
+  {
+    "Id": 8007606,
+    "WeaponEffectPrefabPairSetId": 80076,
+    "WeaponEffectId": "ef_mpa_1000_007_upper_darilbalde",
+    "DamagedEffectId": "ef_mpd_1000_007_upper_darilbalde"
+  },
+  {
+    "Id": 8007607,
+    "WeaponEffectPrefabPairSetId": 80076,
+    "WeaponEffectId": "ef_mpa_1000_000_shield_darilbalde",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8007608,
+    "WeaponEffectPrefabPairSetId": 80076,
+    "WeaponEffectId": "ef_mpa_1000_000_injection_darilbalde",
+    "DamagedEffectId": "ef_mpd_1000_000_injection_darilbalde"
+  },
+  {
+    "Id": 8007609,
+    "WeaponEffectPrefabPairSetId": 80076,
+    "WeaponEffectId": "ef_mpa_1000_000_funnel_arm_darilbalde",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8007610,
+    "WeaponEffectPrefabPairSetId": 80076,
+    "WeaponEffectId": "ef_mpa_1000_007_funnelbeam_darilbalde",
+    "DamagedEffectId": "ef_mpd_0001_001_beamrifle"
+  },
+  {
+    "Id": 8007611,
+    "WeaponEffectPrefabPairSetId": 80076,
+    "WeaponEffectId": "ef_mpa_1000_000_funnel_darilbalde",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8007612,
+    "WeaponEffectPrefabPairSetId": 80076,
+    "WeaponEffectId": "ef_mpa_1000_000_null",
+    "DamagedEffectId": "ef_mpd_1000_000_null"
   },
   {
     "Id": 99999990,

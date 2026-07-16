@@ -20,6 +20,10 @@
     "value": "Returning Supporters!"
   },
   {
+    "id": 220700000000000005,
+    "value": "Supporter Introduction"
+  },
+  {
     "id": 220800021001000150,
     "value": "All stats increased by 25% for Mobile Suit Gundam series units! (except EN)"
   },
@@ -49,7 +53,7 @@
   },
   {
     "id": 220800021060000250,
-    "value": "All stats receive a 25% boost under the \"Prototype\" tag or \"Mobile Suit Gundam 0083: Stardust Memory\" series! (EN excluded.)"
+    "value": "All stats receive a 25% boost under the \"Test Type\" tag or \"Mobile Suit Gundam 0083: Stardust Memory\" series! (EN excluded.)"
   },
   {
     "id": 220800021080000100,
@@ -178,6 +182,10 @@
   {
     "id": 220800021501000450,
     "value": "All stats increase by 25% for units with the \"Tenacious\" tag! (EN excluded.)"
+  },
+  {
+    "id": 220800021501000550,
+    "value": "All stats receive a 25% boost under the \"Shippujinrai\" tag! (EN excluded.)"
   },
   {
     "id": 220800021705000150,

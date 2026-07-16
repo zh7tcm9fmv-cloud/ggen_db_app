@@ -275,6 +275,16 @@
     "UnitId": 1007000710
   },
   {
+    "UnitCollectionBookId": 700008,
+    "DisplayPriority": 1007001160,
+    "UnitId": 1007001160
+  },
+  {
+    "UnitCollectionBookId": 700009,
+    "DisplayPriority": 1007000960,
+    "UnitId": 1007000960
+  },
+  {
     "UnitCollectionBookId": 800001,
     "DisplayPriority": 1,
     "UnitId": 1008000100
@@ -5640,6 +5650,11 @@
     "UnitId": 1501002500
   },
   {
+    "UnitCollectionBookId": 50100023,
+    "DisplayPriority": 1501002550,
+    "UnitId": 1501002550
+  },
+  {
     "UnitCollectionBookId": 50100024,
     "DisplayPriority": 1501003010,
     "UnitId": 1501003010
@@ -5653,6 +5668,11 @@
     "UnitCollectionBookId": 50100026,
     "DisplayPriority": 1501003400,
     "UnitId": 1501003400
+  },
+  {
+    "UnitCollectionBookId": 50100026,
+    "DisplayPriority": 1501003450,
+    "UnitId": 1501003450
   },
   {
     "UnitCollectionBookId": 50100027,

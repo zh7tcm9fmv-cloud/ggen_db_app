@@ -3900,6 +3900,42 @@
     "AttentionResourceId": "strategy_hint_0000"
   },
   {
+    "MapNpcId": 920103000102000001,
+    "StrategyHintTypeIndex": 3,
+    "StrategyHintTargetValue": 5107801,
+    "AttentionResourceId": "strategy_hint_0006"
+  },
+  {
+    "MapNpcId": 920103000102000002,
+    "StrategyHintTypeIndex": 2,
+    "StrategyHintTargetValue": 990000008,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 920103000102000003,
+    "StrategyHintTypeIndex": 1,
+    "StrategyHintTargetValue": 100100280002,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 920103000302000001,
+    "StrategyHintTypeIndex": 9,
+    "StrategyHintTargetValue": 0,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 920103000302000002,
+    "StrategyHintTypeIndex": 9,
+    "StrategyHintTargetValue": 0,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
+    "MapNpcId": 920103000302000018,
+    "StrategyHintTypeIndex": 2,
+    "StrategyHintTargetValue": 990000009,
+    "AttentionResourceId": "strategy_hint_0000"
+  },
+  {
     "MapNpcId": 990000101402000001,
     "StrategyHintTypeIndex": 4,
     "StrategyHintTargetValue": 6120001,

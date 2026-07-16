@@ -2035,6 +2035,39 @@
     "MapWeaponKomaMotionNumber": 0
   },
   {
+    "UnitId": 1007000700,
+    "WeaponId": 100700070001,
+    "SortOrder": 11,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "g0070u00700",
+    "WeaponBattleMovieId": "1",
+    "ExWeaponBattleMovieBackgroundResourceId": "",
+    "ExKomaMotionNumber": 0,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
+    "UnitId": 1007000700,
+    "WeaponId": 100700070002,
+    "SortOrder": 12,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "g0070u00700",
+    "WeaponBattleMovieId": "2",
+    "ExWeaponBattleMovieBackgroundResourceId": "",
+    "ExKomaMotionNumber": 0,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
+    "UnitId": 1007000700,
+    "WeaponId": 100700070003,
+    "SortOrder": 13,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "g0070u00700",
+    "WeaponBattleMovieId": "3",
+    "ExWeaponBattleMovieBackgroundResourceId": "",
+    "ExKomaMotionNumber": 0,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
     "UnitId": 1007000710,
     "WeaponId": 100700071001,
     "SortOrder": 1,
@@ -2096,6 +2129,116 @@
     "BattleMovieId": "",
     "UnitBattleMovieId": "",
     "WeaponBattleMovieId": "",
+    "ExWeaponBattleMovieBackgroundResourceId": "",
+    "ExKomaMotionNumber": 0,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
+    "UnitId": 1007000960,
+    "WeaponId": 100700096001,
+    "SortOrder": 12,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "g0070u00900",
+    "WeaponBattleMovieId": "1",
+    "ExWeaponBattleMovieBackgroundResourceId": "",
+    "ExKomaMotionNumber": 0,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
+    "UnitId": 1007000960,
+    "WeaponId": 100700096002,
+    "SortOrder": 11,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "g0070u00900",
+    "WeaponBattleMovieId": "2",
+    "ExWeaponBattleMovieBackgroundResourceId": "",
+    "ExKomaMotionNumber": 0,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
+    "UnitId": 1007000960,
+    "WeaponId": 100700096003,
+    "SortOrder": 13,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "g0070u00900",
+    "WeaponBattleMovieId": "3",
+    "ExWeaponBattleMovieBackgroundResourceId": "",
+    "ExKomaMotionNumber": 0,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
+    "UnitId": 1007000960,
+    "WeaponId": 100700096004,
+    "SortOrder": 14,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "g0070u00900",
+    "WeaponBattleMovieId": "4",
+    "ExWeaponBattleMovieBackgroundResourceId": "",
+    "ExKomaMotionNumber": 0,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
+    "UnitId": 1007000960,
+    "WeaponId": 100700096090,
+    "SortOrder": 15,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "g0070u00900",
+    "WeaponBattleMovieId": "4",
+    "ExWeaponBattleMovieBackgroundResourceId": "",
+    "ExKomaMotionNumber": 0,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
+    "UnitId": 1007001160,
+    "WeaponId": 100700116001,
+    "SortOrder": 12,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "g0070u01100",
+    "WeaponBattleMovieId": "1",
+    "ExWeaponBattleMovieBackgroundResourceId": "",
+    "ExKomaMotionNumber": 0,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
+    "UnitId": 1007001160,
+    "WeaponId": 100700116003,
+    "SortOrder": 13,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "g0070u01100",
+    "WeaponBattleMovieId": "3",
+    "ExWeaponBattleMovieBackgroundResourceId": "",
+    "ExKomaMotionNumber": 0,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
+    "UnitId": 1007001160,
+    "WeaponId": 100700116004,
+    "SortOrder": 14,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "g0070u01100",
+    "WeaponBattleMovieId": "5",
+    "ExWeaponBattleMovieBackgroundResourceId": "",
+    "ExKomaMotionNumber": 0,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
+    "UnitId": 1007001160,
+    "WeaponId": 100700116005,
+    "SortOrder": 1,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "",
+    "WeaponBattleMovieId": "",
+    "ExWeaponBattleMovieBackgroundResourceId": "",
+    "ExKomaMotionNumber": 0,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
+    "UnitId": 1007001160,
+    "WeaponId": 100700116090,
+    "SortOrder": 15,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "g0070u01100",
+    "WeaponBattleMovieId": "5",
     "ExWeaponBattleMovieBackgroundResourceId": "",
     "ExKomaMotionNumber": 0,
     "MapWeaponKomaMotionNumber": 0
@@ -51909,6 +52052,61 @@
     "MapWeaponKomaMotionNumber": 0
   },
   {
+    "UnitId": 1501002550,
+    "WeaponId": 150100255001,
+    "SortOrder": 11,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "g5010u02500",
+    "WeaponBattleMovieId": "1",
+    "ExWeaponBattleMovieBackgroundResourceId": "",
+    "ExKomaMotionNumber": 1,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
+    "UnitId": 1501002550,
+    "WeaponId": 150100255002,
+    "SortOrder": 14,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "g5010u02500",
+    "WeaponBattleMovieId": "2",
+    "ExWeaponBattleMovieBackgroundResourceId": "",
+    "ExKomaMotionNumber": 2,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
+    "UnitId": 1501002550,
+    "WeaponId": 150100255003,
+    "SortOrder": 12,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "g5010u02500",
+    "WeaponBattleMovieId": "3",
+    "ExWeaponBattleMovieBackgroundResourceId": "",
+    "ExKomaMotionNumber": 3,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
+    "UnitId": 1501002550,
+    "WeaponId": 150100255004,
+    "SortOrder": 13,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "g5010u02550",
+    "WeaponBattleMovieId": "50",
+    "ExWeaponBattleMovieBackgroundResourceId": "ET_002",
+    "ExKomaMotionNumber": 1,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
+    "UnitId": 1501002550,
+    "WeaponId": 150100255005,
+    "SortOrder": 1,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "",
+    "WeaponBattleMovieId": "",
+    "ExWeaponBattleMovieBackgroundResourceId": "",
+    "ExKomaMotionNumber": 0,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
     "UnitId": 1501002900,
     "WeaponId": 150100290001,
     "SortOrder": 1,
@@ -52102,6 +52300,61 @@
     "BattleMovieId": "",
     "UnitBattleMovieId": "g5010u03400",
     "WeaponBattleMovieId": "3",
+    "ExWeaponBattleMovieBackgroundResourceId": "",
+    "ExKomaMotionNumber": 0,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
+    "UnitId": 1501003450,
+    "WeaponId": 150100345001,
+    "SortOrder": 11,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "g5010u03400",
+    "WeaponBattleMovieId": "1",
+    "ExWeaponBattleMovieBackgroundResourceId": "",
+    "ExKomaMotionNumber": 1,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
+    "UnitId": 1501003450,
+    "WeaponId": 150100345002,
+    "SortOrder": 12,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "g5010u03400",
+    "WeaponBattleMovieId": "2",
+    "ExWeaponBattleMovieBackgroundResourceId": "",
+    "ExKomaMotionNumber": 2,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
+    "UnitId": 1501003450,
+    "WeaponId": 150100345003,
+    "SortOrder": 14,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "g5010u03400",
+    "WeaponBattleMovieId": "3",
+    "ExWeaponBattleMovieBackgroundResourceId": "",
+    "ExKomaMotionNumber": 3,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
+    "UnitId": 1501003450,
+    "WeaponId": 150100345004,
+    "SortOrder": 13,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "g5010u03450",
+    "WeaponBattleMovieId": "50",
+    "ExWeaponBattleMovieBackgroundResourceId": "ET_002",
+    "ExKomaMotionNumber": 3,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
+    "UnitId": 1501003450,
+    "WeaponId": 150100345005,
+    "SortOrder": 1,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "",
+    "WeaponBattleMovieId": "",
     "ExWeaponBattleMovieBackgroundResourceId": "",
     "ExKomaMotionNumber": 0,
     "MapWeaponKomaMotionNumber": 0
@@ -54016,6 +54269,39 @@
     "BattleMovieId": "",
     "UnitBattleMovieId": "g7640u00200",
     "WeaponBattleMovieId": "4",
+    "ExWeaponBattleMovieBackgroundResourceId": "",
+    "ExKomaMotionNumber": 0,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
+    "UnitId": 1764000300,
+    "WeaponId": 176400030001,
+    "SortOrder": 11,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "g7640u00300",
+    "WeaponBattleMovieId": "1",
+    "ExWeaponBattleMovieBackgroundResourceId": "",
+    "ExKomaMotionNumber": 0,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
+    "UnitId": 1764000300,
+    "WeaponId": 176400030002,
+    "SortOrder": 12,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "g7640u00300",
+    "WeaponBattleMovieId": "2",
+    "ExWeaponBattleMovieBackgroundResourceId": "",
+    "ExKomaMotionNumber": 0,
+    "MapWeaponKomaMotionNumber": 0
+  },
+  {
+    "UnitId": 1764000300,
+    "WeaponId": 176400030003,
+    "SortOrder": 13,
+    "BattleMovieId": "",
+    "UnitBattleMovieId": "g7640u00300",
+    "WeaponBattleMovieId": "3",
     "ExWeaponBattleMovieBackgroundResourceId": "",
     "ExKomaMotionNumber": 0,
     "MapWeaponKomaMotionNumber": 0

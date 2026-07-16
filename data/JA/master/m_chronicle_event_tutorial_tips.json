@@ -1,0 +1,30 @@
+[
+  {
+    "Id": 25000101,
+    "ChronicleEventId": 250001,
+    "ChronicleEventNaviTypeIndex": 1,
+    "No": 1,
+    "ResourceId": "chronicle_event_tutorial_tips_25000101"
+  },
+  {
+    "Id": 25000102,
+    "ChronicleEventId": 250001,
+    "ChronicleEventNaviTypeIndex": 1,
+    "No": 2,
+    "ResourceId": "chronicle_event_tutorial_tips_25000102"
+  },
+  {
+    "Id": 25000103,
+    "ChronicleEventId": 250001,
+    "ChronicleEventNaviTypeIndex": 11,
+    "No": 1,
+    "ResourceId": "chronicle_event_tutorial_tips_25000104"
+  },
+  {
+    "Id": 25000104,
+    "ChronicleEventId": 250001,
+    "ChronicleEventNaviTypeIndex": 11,
+    "No": 2,
+    "ResourceId": "chronicle_event_tutorial_tips_25000103"
+  }
+]

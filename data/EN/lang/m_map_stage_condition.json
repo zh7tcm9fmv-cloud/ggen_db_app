@@ -12,6 +12,78 @@
     "value": "All enemy units and third force defeated."
   },
   {
+    "id": 130300009201100406,
+    "value": "Survive 1 turn."
+  },
+  {
+    "id": 130300009201100407,
+    "value": "Defeat 5 enemies."
+  },
+  {
+    "id": 130300009201100606,
+    "value": "Reach the target area with specified unit(s)."
+  },
+  {
+    "id": 130300009201101106,
+    "value": "Defeat specified units."
+  },
+  {
+    "id": 130300009201101107,
+    "value": "Defeat specified units."
+  },
+  {
+    "id": 130300009201101206,
+    "value": "Defeat all enemy units. / (with Branch Victory Conditions)"
+  },
+  {
+    "id": 130300009201101207,
+    "value": "Defeat specified units."
+  },
+  {
+    "id": 130300009201102003,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300009201102006,
+    "value": "Reach the target area with specified unit(s). / (with Branch Victory Conditions)"
+  },
+  {
+    "id": 130300009201102007,
+    "value": "Defeat 10 enemies."
+  },
+  {
+    "id": 130300009201102206,
+    "value": "Defeat all enemy units. / (with Branch Victory Conditions)"
+  },
+  {
+    "id": 130300009201102207,
+    "value": "Survive 1 turn."
+  },
+  {
+    "id": 130300009201102208,
+    "value": "Defeat 10 enemies."
+  },
+  {
+    "id": 130300009201102407,
+    "value": "Reach the target area with specified unit(s)."
+  },
+  {
+    "id": 130300009201102408,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300009201201206,
+    "value": "Defeat specified units. / (with Branch Victory Conditions)"
+  },
+  {
+    "id": 130300009201202006,
+    "value": "A specified unit reaches the target area / (with Branch Victory Conditions)"
+  },
+  {
+    "id": 130300009201202606,
+    "value": "Defeat all enemy units / (with Branch Victory Conditions)"
+  },
+  {
     "id": 131000000000000101,
     "value": "Guest forces are defeated."
   },
@@ -114,5 +186,25 @@
   {
     "id": 131000000000000601,
     "value": "Engage specified units in battle."
+  },
+  {
+    "id": 131000090000000063,
+    "value": "Activate Transmission with guest forces' Amuro Ray, defeat all enemy units"
+  },
+  {
+    "id": 131000090000000064,
+    "value": "Activate Transmission with guest forces' Char Aznable, defeat enemy forces' [Amuro Ray]."
+  },
+  {
+    "id": 131000090000000065,
+    "value": "Within 2 turn(s), defeat 3 of the enemy forces' Salamis,\nguest forces' Char Aznable reaches the target area."
+  },
+  {
+    "id": 131000090000000067,
+    "value": "Clear while ensuring guest forces' Sleggar Law survives."
+  },
+  {
+    "id": 131000090000000068,
+    "value": "Clear while ensuring guest forces' Lalah Sune and Challia Bull survive."
   }
 ]

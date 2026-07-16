@@ -1,0 +1,331 @@
+[
+  {
+    "Id": 25000100101,
+    "ReleaseConditionTargetSetId": 250001001,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010020,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000100201,
+    "ReleaseConditionTargetSetId": 250001002,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010030,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000100301,
+    "ReleaseConditionTargetSetId": 250001003,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010040,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000100401,
+    "ReleaseConditionTargetSetId": 250001004,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010050,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000100501,
+    "ReleaseConditionTargetSetId": 250001005,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010060,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000100601,
+    "ReleaseConditionTargetSetId": 250001006,
+    "ReleaseConditionTargetTypeIndex": 2,
+    "TargetId": 92011011,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000100701,
+    "ReleaseConditionTargetSetId": 250001007,
+    "ReleaseConditionTargetTypeIndex": 3,
+    "TargetId": 92011012,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000100801,
+    "ReleaseConditionTargetSetId": 250001008,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010130,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000100901,
+    "ReleaseConditionTargetSetId": 250001009,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010140,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000101001,
+    "ReleaseConditionTargetSetId": 250001010,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010150,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000101101,
+    "ReleaseConditionTargetSetId": 250001011,
+    "ReleaseConditionTargetTypeIndex": 2,
+    "TargetId": 92011019,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000101201,
+    "ReleaseConditionTargetSetId": 250001012,
+    "ReleaseConditionTargetTypeIndex": 3,
+    "TargetId": 92011020,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000101301,
+    "ReleaseConditionTargetSetId": 250001013,
+    "ReleaseConditionTargetTypeIndex": 2,
+    "TargetId": 92011022,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000101401,
+    "ReleaseConditionTargetSetId": 250001014,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010230,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000101501,
+    "ReleaseConditionTargetSetId": 250001015,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010240,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000101601,
+    "ReleaseConditionTargetSetId": 250001016,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010250,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000101701,
+    "ReleaseConditionTargetSetId": 250001017,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010290,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000101801,
+    "ReleaseConditionTargetSetId": 250001018,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010300,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000101901,
+    "ReleaseConditionTargetSetId": 250001019,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010310,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000102001,
+    "ReleaseConditionTargetSetId": 250001020,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010320,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000102101,
+    "ReleaseConditionTargetSetId": 250001021,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010330,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000102201,
+    "ReleaseConditionTargetSetId": 250001022,
+    "ReleaseConditionTargetTypeIndex": 2,
+    "TargetId": 92012011,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000102301,
+    "ReleaseConditionTargetSetId": 250001023,
+    "ReleaseConditionTargetTypeIndex": 3,
+    "TargetId": 92012012,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000102401,
+    "ReleaseConditionTargetSetId": 250001024,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010400,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000102501,
+    "ReleaseConditionTargetSetId": 250001025,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010410,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000102601,
+    "ReleaseConditionTargetSetId": 250001026,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010420,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000102701,
+    "ReleaseConditionTargetSetId": 250001027,
+    "ReleaseConditionTargetTypeIndex": 2,
+    "TargetId": 92012019,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000102801,
+    "ReleaseConditionTargetSetId": 250001028,
+    "ReleaseConditionTargetTypeIndex": 3,
+    "TargetId": 92012020,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000102901,
+    "ReleaseConditionTargetSetId": 250001029,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010490,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000103001,
+    "ReleaseConditionTargetSetId": 250001030,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010500,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000103101,
+    "ReleaseConditionTargetSetId": 250001031,
+    "ReleaseConditionTargetTypeIndex": 2,
+    "TargetId": 92012026,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000103201,
+    "ReleaseConditionTargetSetId": 250001032,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010520,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000103301,
+    "ReleaseConditionTargetSetId": 250001033,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010560,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000103401,
+    "ReleaseConditionTargetSetId": 250001034,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010590,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000103501,
+    "ReleaseConditionTargetSetId": 250001035,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010570,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000103601,
+    "ReleaseConditionTargetSetId": 250001036,
+    "ReleaseConditionTargetTypeIndex": 3,
+    "TargetId": 92011022,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000103701,
+    "ReleaseConditionTargetSetId": 250001037,
+    "ReleaseConditionTargetTypeIndex": 3,
+    "TargetId": 92011022,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000103801,
+    "ReleaseConditionTargetSetId": 250001038,
+    "ReleaseConditionTargetTypeIndex": 3,
+    "TargetId": 92012026,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000103901,
+    "ReleaseConditionTargetSetId": 250001039,
+    "ReleaseConditionTargetTypeIndex": 3,
+    "TargetId": 92012026,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000104001,
+    "ReleaseConditionTargetSetId": 250001040,
+    "ReleaseConditionTargetTypeIndex": 5,
+    "TargetId": 25000101,
+    "TargetValue": 100
+  },
+  {
+    "Id": 25000104101,
+    "ReleaseConditionTargetSetId": 250001041,
+    "ReleaseConditionTargetTypeIndex": 5,
+    "TargetId": 25000102,
+    "TargetValue": 100
+  },
+  {
+    "Id": 25000104201,
+    "ReleaseConditionTargetSetId": 250001042,
+    "ReleaseConditionTargetTypeIndex": 5,
+    "TargetId": 25000103,
+    "TargetValue": 100
+  },
+  {
+    "Id": 25000104301,
+    "ReleaseConditionTargetSetId": 250001043,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010600,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000104401,
+    "ReleaseConditionTargetSetId": 250001044,
+    "ReleaseConditionTargetTypeIndex": 4,
+    "TargetId": 0,
+    "TargetValue": 100
+  },
+  {
+    "Id": 25000104501,
+    "ReleaseConditionTargetSetId": 250001045,
+    "ReleaseConditionTargetTypeIndex": 1,
+    "TargetId": 2500010620,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000104601,
+    "ReleaseConditionTargetSetId": 250001046,
+    "ReleaseConditionTargetTypeIndex": 2,
+    "TargetId": 92011022,
+    "TargetValue": 0
+  },
+  {
+    "Id": 25000104701,
+    "ReleaseConditionTargetSetId": 250001047,
+    "ReleaseConditionTargetTypeIndex": 2,
+    "TargetId": 92012026,
+    "TargetValue": 0
+  }
+]

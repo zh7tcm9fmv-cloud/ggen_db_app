@@ -9316,6 +9316,102 @@
     "value": "Get all Development Diagrams from series \"Mobile Suit Gundam F91\" to one hundred percent."
   },
   {
+    "id": 180100260730120101,
+    "value": "Clear with 5 or more units with the Test Type tag."
+  },
+  {
+    "id": 180100260730120102,
+    "value": "Clear with 5 or more units with the White tag."
+  },
+  {
+    "id": 180100260730120103,
+    "value": "Clear with 5 or more units with the Black tag."
+  },
+  {
+    "id": 180100260730120104,
+    "value": "Clear with 5 or more units with the GM tag."
+  },
+  {
+    "id": 180100260730120105,
+    "value": "Clear by defeating 2 or more enemy units using your forces' \"Aerial Use\"-tagged unit piloted by a \"Rookie\"-tagged character."
+  },
+  {
+    "id": 180100260730120106,
+    "value": "Clear with 5 or more units with the Mass-Produced tag."
+  },
+  {
+    "id": 180100260730120107,
+    "value": "Clear while ensuring guest forces' Core Booster piloted by Sleggar Law remains at 50% HP or higher."
+  },
+  {
+    "id": 180100260730120108,
+    "value": "Clear with 5 or more units with the Protagonist tag."
+  },
+  {
+    "id": 180100260730120109,
+    "value": "Clear while defeating Gromlin enemy unit using your forces' \"Ace Unit\"-tagged unit piloted by a \"Leader\"-tagged character."
+  },
+  {
+    "id": 180100260730120201,
+    "value": "Clear after defeating at least 2 enemy units with your forces' Adzam (R, Support, Mobile Suit Gundam)."
+  },
+  {
+    "id": 180100260730120202,
+    "value": "Clear with 5 or more units with the Land tag."
+  },
+  {
+    "id": 180100260730120203,
+    "value": "Clear with 5 or more units with the Red tag."
+  },
+  {
+    "id": 180100260730120204,
+    "value": "Clear by defeating 5 or more enemy units using your forces' \"Mobile Armor\"-tagged unit piloted by a \"Mobile Armor Pilot\"-tagged character."
+  },
+  {
+    "id": 180100260730120205,
+    "value": "Clear while defeating 2 or more GM enemy units using your forces' \"Underwater Use\"-tagged unit piloted by a \"Leader\"-tagged character."
+  },
+  {
+    "id": 180100260730120206,
+    "value": "Clear while ensuring guest forces' Acguy piloted by Akahana remains at 50% HP or higher."
+  },
+  {
+    "id": 180100260730120207,
+    "value": "Clear with 5 or more units with the Zaku tag."
+  },
+  {
+    "id": 180100260730120208,
+    "value": "Clear by defeating 3 or more enemy units using your forces' \"Psycommu\"-tagged unit piloted by a \"Newtype\"-tagged character."
+  },
+  {
+    "id": 180100260730120209,
+    "value": "Clear while defeating Amuro Ray enemy unit using your forces' \"Specialized Unit\"-tagged unit piloted by a \"Rival\"-tagged character."
+  },
+  {
+    "id": 180100260730120301,
+    "value": "Clear using only \"EFSF (U.C.)\"-tagged units from the \"Mobile Suit Gundam\" series."
+  },
+  {
+    "id": 180100260730120302,
+    "value": "Clear after defeating the enemy Char Aznable with your forces' Gundam Full Armor (SSR, Attack, MSV)."
+  },
+  {
+    "id": 180100260730120303,
+    "value": "Clear using only SSR or lower-⁠rarity units."
+  },
+  {
+    "id": 180100260730120304,
+    "value": "Clear using only \"Zeon\"-tagged units from the \"Mobile Suit Gundam\" series."
+  },
+  {
+    "id": 180100260730120305,
+    "value": "Clear after defeating the enemy Amuro Ray with your forces' Perfect Zeong (SSR, Support, MSV)."
+  },
+  {
+    "id": 180100260730120306,
+    "value": "Clear using only SSR or lower-⁠rarity units."
+  },
+  {
     "id": 180100300010200101,
     "value": "Clear Challenge Main Stage Mobile Suit Gundam HARD STAGE 1 with only units with the EFSF (U.C.) tag. (incl. Secret Battle)"
   },

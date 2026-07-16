@@ -10,7 +10,7 @@
     "DescriptionLanguageId": 140600000001000601,
     "BuffLabelColorTypeIndex": 5,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 100060201,
@@ -23,7 +23,7 @@
     "DescriptionLanguageId": 140600000001000602,
     "BuffLabelColorTypeIndex": 5,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 100060301,
@@ -36,7 +36,7 @@
     "DescriptionLanguageId": 140600000001000603,
     "BuffLabelColorTypeIndex": 5,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 100060401,
@@ -49,7 +49,7 @@
     "DescriptionLanguageId": 140600000001000604,
     "BuffLabelColorTypeIndex": 5,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 100060501,
@@ -62,7 +62,7 @@
     "DescriptionLanguageId": 140600000001000605,
     "BuffLabelColorTypeIndex": 5,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 110070101,
@@ -75,7 +75,7 @@
     "DescriptionLanguageId": 140600000001100701,
     "BuffLabelColorTypeIndex": 5,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 110070201,
@@ -88,7 +88,7 @@
     "DescriptionLanguageId": 140600000001100702,
     "BuffLabelColorTypeIndex": 5,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 110070301,
@@ -101,7 +101,7 @@
     "DescriptionLanguageId": 140600000001100703,
     "BuffLabelColorTypeIndex": 5,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 110070401,
@@ -114,7 +114,7 @@
     "DescriptionLanguageId": 140600000001100704,
     "BuffLabelColorTypeIndex": 5,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 110070501,
@@ -127,7 +127,7 @@
     "DescriptionLanguageId": 140600000001100705,
     "BuffLabelColorTypeIndex": 5,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 120090101,
@@ -140,7 +140,7 @@
     "DescriptionLanguageId": 140600000001200901,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 120090201,
@@ -153,7 +153,7 @@
     "DescriptionLanguageId": 140600000001200902,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 120090301,
@@ -166,7 +166,7 @@
     "DescriptionLanguageId": 140600000001200903,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 120090401,
@@ -179,7 +179,7 @@
     "DescriptionLanguageId": 140600000001200904,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 120090501,
@@ -192,7 +192,7 @@
     "DescriptionLanguageId": 140600000001200905,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 130080101,
@@ -205,7 +205,7 @@
     "DescriptionLanguageId": 140600000001300801,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 130080201,
@@ -218,7 +218,7 @@
     "DescriptionLanguageId": 140600000001300802,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 130080301,
@@ -231,7 +231,7 @@
     "DescriptionLanguageId": 140600000001300803,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 130080401,
@@ -244,7 +244,7 @@
     "DescriptionLanguageId": 140600000001300804,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 130080501,
@@ -257,7 +257,7 @@
     "DescriptionLanguageId": 140600000001300805,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 130140101,
@@ -270,7 +270,7 @@
     "DescriptionLanguageId": 140600000130140101,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 130140201,
@@ -283,7 +283,7 @@
     "DescriptionLanguageId": 140600000130140201,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 130140301,
@@ -296,7 +296,7 @@
     "DescriptionLanguageId": 140600000130140301,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 130140401,
@@ -309,7 +309,7 @@
     "DescriptionLanguageId": 140600000130140401,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 130140501,
@@ -322,7 +322,7 @@
     "DescriptionLanguageId": 140600000130140501,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 160050101,
@@ -335,7 +335,7 @@
     "DescriptionLanguageId": 140600000001600501,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 160050201,
@@ -348,7 +348,7 @@
     "DescriptionLanguageId": 140600000001600502,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 160050301,
@@ -361,7 +361,7 @@
     "DescriptionLanguageId": 140600000001600503,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 160050401,
@@ -374,7 +374,7 @@
     "DescriptionLanguageId": 140600000001600504,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 160050501,
@@ -387,7 +387,7 @@
     "DescriptionLanguageId": 140600000001600505,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 170010101,
@@ -400,7 +400,7 @@
     "DescriptionLanguageId": 140600000001700101,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 170010201,
@@ -413,7 +413,7 @@
     "DescriptionLanguageId": 140600000001700102,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 170010301,
@@ -426,7 +426,7 @@
     "DescriptionLanguageId": 140600000001700103,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 170010401,
@@ -439,7 +439,7 @@
     "DescriptionLanguageId": 140600000001700104,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 170010501,
@@ -452,7 +452,7 @@
     "DescriptionLanguageId": 140600000001700105,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 180160101,
@@ -465,7 +465,7 @@
     "DescriptionLanguageId": 140600000180160101,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 180160201,
@@ -478,7 +478,7 @@
     "DescriptionLanguageId": 140600000180160201,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 180160301,
@@ -491,7 +491,7 @@
     "DescriptionLanguageId": 140600000180160301,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 180160401,
@@ -504,7 +504,7 @@
     "DescriptionLanguageId": 140600000180160401,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 180160501,
@@ -517,7 +517,7 @@
     "DescriptionLanguageId": 140600000180160501,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 190150101,
@@ -530,7 +530,7 @@
     "DescriptionLanguageId": 140600000190150101,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 190150201,
@@ -543,7 +543,7 @@
     "DescriptionLanguageId": 140600000190150201,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 190150301,
@@ -556,7 +556,7 @@
     "DescriptionLanguageId": 140600000190150301,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 190150401,
@@ -569,7 +569,7 @@
     "DescriptionLanguageId": 140600000190150401,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 190150501,
@@ -582,7 +582,7 @@
     "DescriptionLanguageId": 140600000190150501,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 200170101,
@@ -595,7 +595,7 @@
     "DescriptionLanguageId": 140600000200170101,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 200170201,
@@ -608,7 +608,7 @@
     "DescriptionLanguageId": 140600000200170201,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 200170301,
@@ -621,7 +621,7 @@
     "DescriptionLanguageId": 140600000200170301,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 200170401,
@@ -634,7 +634,7 @@
     "DescriptionLanguageId": 140600000200170401,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 200170501,
@@ -647,7 +647,7 @@
     "DescriptionLanguageId": 140600000200170501,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 210100101,
@@ -660,7 +660,7 @@
     "DescriptionLanguageId": 140600000002101001,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 210100201,
@@ -673,7 +673,7 @@
     "DescriptionLanguageId": 140600000002101002,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 210100301,
@@ -686,7 +686,7 @@
     "DescriptionLanguageId": 140600000002101003,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 210100401,
@@ -699,7 +699,7 @@
     "DescriptionLanguageId": 140600000002101004,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 210100501,
@@ -712,7 +712,7 @@
     "DescriptionLanguageId": 140600000002101005,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 220020101,
@@ -725,7 +725,7 @@
     "DescriptionLanguageId": 140600000002200201,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 220020201,
@@ -738,7 +738,7 @@
     "DescriptionLanguageId": 140600000002200202,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 220020301,
@@ -751,7 +751,7 @@
     "DescriptionLanguageId": 140600000002200203,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 220020401,
@@ -764,7 +764,7 @@
     "DescriptionLanguageId": 140600000002200204,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 220020501,
@@ -777,7 +777,7 @@
     "DescriptionLanguageId": 140600000002200205,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 230030101,
@@ -790,7 +790,7 @@
     "DescriptionLanguageId": 140600000002300301,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 230030201,
@@ -803,7 +803,7 @@
     "DescriptionLanguageId": 140600000002300302,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 230030301,
@@ -816,7 +816,7 @@
     "DescriptionLanguageId": 140600000002300303,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 230030401,
@@ -829,7 +829,7 @@
     "DescriptionLanguageId": 140600000002300304,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 230030501,
@@ -842,7 +842,7 @@
     "DescriptionLanguageId": 140600000002300305,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 240110101,
@@ -855,7 +855,7 @@
     "DescriptionLanguageId": 140600000002401101,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 240110201,
@@ -868,7 +868,7 @@
     "DescriptionLanguageId": 140600000002401102,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 240110301,
@@ -881,7 +881,7 @@
     "DescriptionLanguageId": 140600000002401103,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 240110401,
@@ -894,7 +894,7 @@
     "DescriptionLanguageId": 140600000002401104,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 240110501,
@@ -907,7 +907,7 @@
     "DescriptionLanguageId": 140600000002401105,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 260040101,
@@ -920,7 +920,7 @@
     "DescriptionLanguageId": 140600000002600401,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 260040201,
@@ -933,7 +933,7 @@
     "DescriptionLanguageId": 140600000002600402,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 260040301,
@@ -946,7 +946,7 @@
     "DescriptionLanguageId": 140600000002600403,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 260040401,
@@ -959,7 +959,7 @@
     "DescriptionLanguageId": 140600000002600404,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 260040501,
@@ -972,7 +972,7 @@
     "DescriptionLanguageId": 140600000002600405,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 270130101,
@@ -985,7 +985,7 @@
     "DescriptionLanguageId": 141400000270130101,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 270130102,
@@ -998,7 +998,7 @@
     "DescriptionLanguageId": 141400000270130102,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 270130201,
@@ -1011,7 +1011,7 @@
     "DescriptionLanguageId": 141400000270130201,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 270130202,
@@ -1024,7 +1024,7 @@
     "DescriptionLanguageId": 141400000270130202,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 270130301,
@@ -1037,7 +1037,7 @@
     "DescriptionLanguageId": 141400000270130301,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 270130302,
@@ -1050,7 +1050,7 @@
     "DescriptionLanguageId": 141400000270130302,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 270130401,
@@ -1063,7 +1063,7 @@
     "DescriptionLanguageId": 141400000270130401,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 270130402,
@@ -1076,7 +1076,7 @@
     "DescriptionLanguageId": 141400000270130402,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 270130501,
@@ -1089,7 +1089,7 @@
     "DescriptionLanguageId": 141400000270130501,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 270130502,
@@ -1102,7 +1102,7 @@
     "DescriptionLanguageId": 141400000270130502,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 280140101,
@@ -1115,7 +1115,7 @@
     "DescriptionLanguageId": 140600000280140101,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 280140102,
@@ -1128,7 +1128,7 @@
     "DescriptionLanguageId": 140600000280140102,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 280140201,
@@ -1141,7 +1141,7 @@
     "DescriptionLanguageId": 140600000280140201,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 280140202,
@@ -1154,7 +1154,7 @@
     "DescriptionLanguageId": 140600000280140202,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 280140301,
@@ -1167,7 +1167,7 @@
     "DescriptionLanguageId": 140600000280140301,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 280140302,
@@ -1180,7 +1180,7 @@
     "DescriptionLanguageId": 140600000280140302,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 280140401,
@@ -1193,7 +1193,7 @@
     "DescriptionLanguageId": 140600000280140401,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 280140402,
@@ -1206,7 +1206,7 @@
     "DescriptionLanguageId": 140600000280140402,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 280140501,
@@ -1219,7 +1219,7 @@
     "DescriptionLanguageId": 140600000280140501,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 280140502,
@@ -1232,7 +1232,7 @@
     "DescriptionLanguageId": 140600000280140502,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 290180101,
@@ -1245,7 +1245,7 @@
     "DescriptionLanguageId": 140600000290180101,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 290180201,
@@ -1258,7 +1258,7 @@
     "DescriptionLanguageId": 140600000290180201,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 290180301,
@@ -1271,7 +1271,7 @@
     "DescriptionLanguageId": 140600000290180301,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 290180401,
@@ -1284,7 +1284,7 @@
     "DescriptionLanguageId": 140600000290180401,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 290180501,
@@ -1297,7 +1297,7 @@
     "DescriptionLanguageId": 140600000290180501,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 300190101,
@@ -1310,7 +1310,7 @@
     "DescriptionLanguageId": 140600000300190101,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 300190201,
@@ -1323,7 +1323,7 @@
     "DescriptionLanguageId": 140600000300190201,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 300190301,
@@ -1336,7 +1336,7 @@
     "DescriptionLanguageId": 140600000300190301,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 300190401,
@@ -1349,7 +1349,7 @@
     "DescriptionLanguageId": 140600000300190401,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 300190501,
@@ -1362,7 +1362,7 @@
     "DescriptionLanguageId": 140600000300190501,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 310200101,
@@ -1375,7 +1375,7 @@
     "DescriptionLanguageId": 140600000310200101,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 310200201,
@@ -1388,7 +1388,7 @@
     "DescriptionLanguageId": 140600000310200201,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 310200301,
@@ -1401,7 +1401,7 @@
     "DescriptionLanguageId": 140600000310200301,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 310200401,
@@ -1414,7 +1414,7 @@
     "DescriptionLanguageId": 140600000310200401,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 310200501,
@@ -1427,7 +1427,7 @@
     "DescriptionLanguageId": 140600000310200501,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 320210101,
@@ -1440,7 +1440,7 @@
     "DescriptionLanguageId": 141400000320210101,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 320210201,
@@ -1453,7 +1453,7 @@
     "DescriptionLanguageId": 141400000320210201,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 320210301,
@@ -1466,7 +1466,7 @@
     "DescriptionLanguageId": 141400000320210301,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 320210401,
@@ -1479,7 +1479,7 @@
     "DescriptionLanguageId": 141400000320210401,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 320210501,
@@ -1492,7 +1492,7 @@
     "DescriptionLanguageId": 141400000320210501,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 330220101,
@@ -1505,7 +1505,7 @@
     "DescriptionLanguageId": 141400000330220101,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 330220102,
@@ -1518,7 +1518,7 @@
     "DescriptionLanguageId": 141400000330220102,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 330220201,
@@ -1531,7 +1531,7 @@
     "DescriptionLanguageId": 141400000330220201,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 330220202,
@@ -1544,7 +1544,7 @@
     "DescriptionLanguageId": 141400000330220202,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 330220301,
@@ -1557,7 +1557,7 @@
     "DescriptionLanguageId": 141400000330220301,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 330220302,
@@ -1570,7 +1570,7 @@
     "DescriptionLanguageId": 141400000330220302,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 340230201,
@@ -1583,7 +1583,7 @@
     "DescriptionLanguageId": 140600000340230201,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 350240101,
@@ -1596,7 +1596,7 @@
     "DescriptionLanguageId": 140600000350240101,
     "BuffLabelColorTypeIndex": 5,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 350240201,
@@ -1609,7 +1609,7 @@
     "DescriptionLanguageId": 140600000350240201,
     "BuffLabelColorTypeIndex": 5,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 350240301,
@@ -1622,7 +1622,7 @@
     "DescriptionLanguageId": 140600000350240301,
     "BuffLabelColorTypeIndex": 5,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 350240401,
@@ -1635,7 +1635,7 @@
     "DescriptionLanguageId": 140600000350240401,
     "BuffLabelColorTypeIndex": 5,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 350240501,
@@ -1648,7 +1648,33 @@
     "DescriptionLanguageId": 140600000350240501,
     "BuffLabelColorTypeIndex": 5,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
+  },
+  {
+    "Id": 360250101,
+    "TargetLineageId": 0,
+    "TargetUnitRoleTypeIndex": 0,
+    "TraitTypeIndex": 1,
+    "TraitValue": 5,
+    "ResourceId": "trait_10010401",
+    "NameLanguageId": 140500000360250101,
+    "DescriptionLanguageId": 140600000360250101,
+    "BuffLabelColorTypeIndex": 5,
+    "IsDisplayUpDown": false,
+    "TargetCharacterRoleTypeIndex": 0
+  },
+  {
+    "Id": 360250201,
+    "TargetLineageId": 0,
+    "TargetUnitRoleTypeIndex": 0,
+    "TraitTypeIndex": 1,
+    "TraitValue": 10,
+    "ResourceId": "trait_10010401",
+    "NameLanguageId": 140500000360250201,
+    "DescriptionLanguageId": 140600000360250201,
+    "BuffLabelColorTypeIndex": 5,
+    "IsDisplayUpDown": false,
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 360250301,
@@ -1661,7 +1687,33 @@
     "DescriptionLanguageId": 140600000360250301,
     "BuffLabelColorTypeIndex": 5,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
+  },
+  {
+    "Id": 360250401,
+    "TargetLineageId": 0,
+    "TargetUnitRoleTypeIndex": 0,
+    "TraitTypeIndex": 1,
+    "TraitValue": 20,
+    "ResourceId": "trait_10010401",
+    "NameLanguageId": 140500000360250401,
+    "DescriptionLanguageId": 140600000360250401,
+    "BuffLabelColorTypeIndex": 5,
+    "IsDisplayUpDown": false,
+    "TargetCharacterRoleTypeIndex": 0
+  },
+  {
+    "Id": 360250501,
+    "TargetLineageId": 0,
+    "TargetUnitRoleTypeIndex": 0,
+    "TraitTypeIndex": 1,
+    "TraitValue": 25,
+    "ResourceId": "trait_10010401",
+    "NameLanguageId": 140500000360250501,
+    "DescriptionLanguageId": 140600000360250501,
+    "BuffLabelColorTypeIndex": 5,
+    "IsDisplayUpDown": false,
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 370260101,
@@ -1674,7 +1726,7 @@
     "DescriptionLanguageId": 140600000370260101,
     "BuffLabelColorTypeIndex": 5,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 900000001,
@@ -1687,7 +1739,7 @@
     "DescriptionLanguageId": 140600000009000100,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 900000002,
@@ -1700,7 +1752,7 @@
     "DescriptionLanguageId": 140600000009000101,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 900000005,
@@ -1713,7 +1765,7 @@
     "DescriptionLanguageId": 140600000009000105,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
   },
   {
     "Id": 900000801,
@@ -1726,6 +1778,123 @@
     "DescriptionLanguageId": 140600000009000801,
     "BuffLabelColorTypeIndex": 5,
     "IsDisplayUpDown": false,
-    "Unknown_Col_10": 0
+    "TargetCharacterRoleTypeIndex": 0
+  },
+  {
+    "Id": 990000061,
+    "TargetLineageId": 0,
+    "TargetUnitRoleTypeIndex": 0,
+    "TraitTypeIndex": 9,
+    "TraitValue": 200,
+    "ResourceId": "trait_10090101",
+    "NameLanguageId": 140500000990000061,
+    "DescriptionLanguageId": 140600000990000061,
+    "BuffLabelColorTypeIndex": 3,
+    "IsDisplayUpDown": false,
+    "TargetCharacterRoleTypeIndex": 0
+  },
+  {
+    "Id": 990000062,
+    "TargetLineageId": 0,
+    "TargetUnitRoleTypeIndex": 0,
+    "TraitTypeIndex": 10,
+    "TraitValue": 200,
+    "ResourceId": "trait_10100101",
+    "NameLanguageId": 140500000990000062,
+    "DescriptionLanguageId": 140600000990000062,
+    "BuffLabelColorTypeIndex": 3,
+    "IsDisplayUpDown": false,
+    "TargetCharacterRoleTypeIndex": 0
+  },
+  {
+    "Id": 990000063,
+    "TargetLineageId": 0,
+    "TargetUnitRoleTypeIndex": 0,
+    "TraitTypeIndex": 11,
+    "TraitValue": 200,
+    "ResourceId": "trait_10110101",
+    "NameLanguageId": 140500000990000063,
+    "DescriptionLanguageId": 140600000990000063,
+    "BuffLabelColorTypeIndex": 3,
+    "IsDisplayUpDown": false,
+    "TargetCharacterRoleTypeIndex": 0
+  },
+  {
+    "Id": 990000065,
+    "TargetLineageId": 0,
+    "TargetUnitRoleTypeIndex": 0,
+    "TraitTypeIndex": 27,
+    "TraitValue": 5,
+    "ResourceId": "trait_10210103",
+    "NameLanguageId": 140500000990000065,
+    "DescriptionLanguageId": 140600000990000065,
+    "BuffLabelColorTypeIndex": 3,
+    "IsDisplayUpDown": false,
+    "TargetCharacterRoleTypeIndex": 2
+  },
+  {
+    "Id": 990000066,
+    "TargetLineageId": 0,
+    "TargetUnitRoleTypeIndex": 0,
+    "TraitTypeIndex": 14,
+    "TraitValue": 10,
+    "ResourceId": "trait_10060101",
+    "NameLanguageId": 140500000990000066,
+    "DescriptionLanguageId": 140600000990000066,
+    "BuffLabelColorTypeIndex": 3,
+    "IsDisplayUpDown": false,
+    "TargetCharacterRoleTypeIndex": 0
+  },
+  {
+    "Id": 990000801,
+    "TargetLineageId": 0,
+    "TargetUnitRoleTypeIndex": 0,
+    "TraitTypeIndex": 13,
+    "TraitValue": 10,
+    "ResourceId": "trait_10150101",
+    "NameLanguageId": 140500000990000801,
+    "DescriptionLanguageId": 140600000990000801,
+    "BuffLabelColorTypeIndex": 3,
+    "IsDisplayUpDown": false,
+    "TargetCharacterRoleTypeIndex": 0
+  },
+  {
+    "Id": 990000802,
+    "TargetLineageId": 0,
+    "TargetUnitRoleTypeIndex": 0,
+    "TraitTypeIndex": 26,
+    "TraitValue": 3,
+    "ResourceId": "trait_10180103",
+    "NameLanguageId": 140500000990000802,
+    "DescriptionLanguageId": 140600000990000802,
+    "BuffLabelColorTypeIndex": 3,
+    "IsDisplayUpDown": false,
+    "TargetCharacterRoleTypeIndex": 3
+  },
+  {
+    "Id": 990000901,
+    "TargetLineageId": 0,
+    "TargetUnitRoleTypeIndex": 0,
+    "TraitTypeIndex": 13,
+    "TraitValue": 10,
+    "ResourceId": "trait_10150101",
+    "NameLanguageId": 140500000990000901,
+    "DescriptionLanguageId": 140600000990000901,
+    "BuffLabelColorTypeIndex": 3,
+    "IsDisplayUpDown": false,
+    "TargetCharacterRoleTypeIndex": 0
+  },
+  {
+    "Id": 990000902,
+    "TargetLineageId": 0,
+    "TargetUnitRoleTypeIndex": 0,
+    "TraitTypeIndex": 26,
+    "TraitValue": 3,
+    "ResourceId": "trait_10180103",
+    "NameLanguageId": 140500000990000902,
+    "DescriptionLanguageId": 140600000990000902,
+    "BuffLabelColorTypeIndex": 3,
+    "IsDisplayUpDown": false,
+    "TargetCharacterRoleTypeIndex": 3
   }
 ]

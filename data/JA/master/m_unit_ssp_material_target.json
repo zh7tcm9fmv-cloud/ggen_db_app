@@ -4,5 +4,11 @@
     "TargetIndex": 1,
     "TargetTypeIndex": 4,
     "TargetId": 0
+  },
+  {
+    "ItemId": 300000010070,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 2,
+    "TargetId": 70
   }
 ]

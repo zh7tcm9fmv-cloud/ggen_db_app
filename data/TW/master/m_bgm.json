@@ -200,6 +200,26 @@
     "SortOrder": 0
   },
   {
+    "Id": 100000148,
+    "NameLanguageId": 0,
+    "ResourceId": "bgm_0000_0148",
+    "IsPaid": false,
+    "ScheduleId": 0,
+    "SeriesId": 0,
+    "HasLyrics": false,
+    "SortOrder": 0
+  },
+  {
+    "Id": 100000149,
+    "NameLanguageId": 0,
+    "ResourceId": "bgm_0000_0149",
+    "IsPaid": false,
+    "ScheduleId": 0,
+    "SeriesId": 0,
+    "HasLyrics": false,
+    "SortOrder": 0
+  },
+  {
     "Id": 100109001,
     "NameLanguageId": 300100000100109001,
     "ResourceId": "bgm_0010_9001",

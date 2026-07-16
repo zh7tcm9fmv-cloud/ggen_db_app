@@ -1,0 +1,114 @@
+[
+  {
+    "Id": 25000101,
+    "ChronicleEventId": 250001,
+    "ChronicleEventNaviTypeIndex": 1,
+    "Priority": 1,
+    "TutorialTriggerConditionSetId": 25000101,
+    "IsPlayOnEventTopIfUnread": false
+  },
+  {
+    "Id": 25000102,
+    "ChronicleEventId": 250001,
+    "ChronicleEventNaviTypeIndex": 2,
+    "Priority": 2,
+    "TutorialTriggerConditionSetId": 25000102,
+    "IsPlayOnEventTopIfUnread": false
+  },
+  {
+    "Id": 25000103,
+    "ChronicleEventId": 250001,
+    "ChronicleEventNaviTypeIndex": 3,
+    "Priority": 3,
+    "TutorialTriggerConditionSetId": 25000103,
+    "IsPlayOnEventTopIfUnread": false
+  },
+  {
+    "Id": 25000104,
+    "ChronicleEventId": 250001,
+    "ChronicleEventNaviTypeIndex": 4,
+    "Priority": 4,
+    "TutorialTriggerConditionSetId": 25000104,
+    "IsPlayOnEventTopIfUnread": false
+  },
+  {
+    "Id": 25000105,
+    "ChronicleEventId": 250001,
+    "ChronicleEventNaviTypeIndex": 5,
+    "Priority": 5,
+    "TutorialTriggerConditionSetId": 25000105,
+    "IsPlayOnEventTopIfUnread": false
+  },
+  {
+    "Id": 25000106,
+    "ChronicleEventId": 250001,
+    "ChronicleEventNaviTypeIndex": 6,
+    "Priority": 6,
+    "TutorialTriggerConditionSetId": 25000106,
+    "IsPlayOnEventTopIfUnread": false
+  },
+  {
+    "Id": 25000107,
+    "ChronicleEventId": 250001,
+    "ChronicleEventNaviTypeIndex": 7,
+    "Priority": 7,
+    "TutorialTriggerConditionSetId": 25000107,
+    "IsPlayOnEventTopIfUnread": false
+  },
+  {
+    "Id": 25000108,
+    "ChronicleEventId": 250001,
+    "ChronicleEventNaviTypeIndex": 8,
+    "Priority": 8,
+    "TutorialTriggerConditionSetId": 25000108,
+    "IsPlayOnEventTopIfUnread": true
+  },
+  {
+    "Id": 25000109,
+    "ChronicleEventId": 250001,
+    "ChronicleEventNaviTypeIndex": 9,
+    "Priority": 9,
+    "TutorialTriggerConditionSetId": 25000109,
+    "IsPlayOnEventTopIfUnread": true
+  },
+  {
+    "Id": 25000110,
+    "ChronicleEventId": 250001,
+    "ChronicleEventNaviTypeIndex": 10,
+    "Priority": 10,
+    "TutorialTriggerConditionSetId": 25000110,
+    "IsPlayOnEventTopIfUnread": false
+  },
+  {
+    "Id": 25000111,
+    "ChronicleEventId": 250001,
+    "ChronicleEventNaviTypeIndex": 10,
+    "Priority": 11,
+    "TutorialTriggerConditionSetId": 25000111,
+    "IsPlayOnEventTopIfUnread": false
+  },
+  {
+    "Id": 25000112,
+    "ChronicleEventId": 250001,
+    "ChronicleEventNaviTypeIndex": 10,
+    "Priority": 12,
+    "TutorialTriggerConditionSetId": 25000112,
+    "IsPlayOnEventTopIfUnread": false
+  },
+  {
+    "Id": 25000113,
+    "ChronicleEventId": 250001,
+    "ChronicleEventNaviTypeIndex": 10,
+    "Priority": 13,
+    "TutorialTriggerConditionSetId": 25000113,
+    "IsPlayOnEventTopIfUnread": false
+  },
+  {
+    "Id": 25000114,
+    "ChronicleEventId": 250001,
+    "ChronicleEventNaviTypeIndex": 11,
+    "Priority": 14,
+    "TutorialTriggerConditionSetId": 25000114,
+    "IsPlayOnEventTopIfUnread": false
+  }
+]

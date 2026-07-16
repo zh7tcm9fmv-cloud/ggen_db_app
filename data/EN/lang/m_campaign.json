@@ -652,6 +652,22 @@
     "value": "Ten times the EXP for <color=#4C81F8>units</color> with the Tenacious tag in select story event stages."
   },
   {
+    "id": 250200000126073001,
+    "value": "Upgrade Stages (Capital) Challenge Limit 1Up"
+  },
+  {
+    "id": 250200000126073002,
+    "value": "Upgrade Stages (Units) Challenge Limit 1Up"
+  },
+  {
+    "id": 250200000126073003,
+    "value": "Upgrade Stages (Characters) Challenge Limit 1Up"
+  },
+  {
+    "id": 250200000126073004,
+    "value": "Upgrade Stages (Supporters) Challenge Limit 1Up"
+  },
+  {
     "id": 250200000425105001,
     "value": "Upgrade Stages (Capital) Challenge Limit 1Up"
   },

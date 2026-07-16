@@ -4170,6 +4170,18 @@
     "IsDefender": true
   },
   {
+    "TraitId": 202760101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 202760102,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
     "TraitId": 300110101,
     "IsHitOnly": true,
     "IsAttacker": true,
@@ -4440,6 +4452,114 @@
     "IsDefender": true
   },
   {
+    "TraitId": 300390101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 300390201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 300390301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 300390401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 300390501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 300390601,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 300390701,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 300390801,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 300390901,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 300420101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300420201,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300420301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 300430101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 300430201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 300430301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 300440101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 300440201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 300440301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
     "TraitId": 310160101,
     "IsHitOnly": true,
     "IsAttacker": true,
@@ -4494,6 +4614,114 @@
     "IsDefender": false
   },
   {
+    "TraitId": 310510101,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 310510102,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 310510201,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 310510202,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 310510301,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 310510302,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 310510401,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 310510402,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 310510501,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 310510502,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 310510601,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 310510602,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 310510701,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 310510702,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 310510801,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 310510802,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 310510901,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 310510902,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
     "TraitId": 511280101,
     "IsHitOnly": true,
     "IsAttacker": false,
@@ -4501,6 +4729,12 @@
   },
   {
     "TraitId": 511300101,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 610860502,
     "IsHitOnly": true,
     "IsAttacker": false,
     "IsDefender": true

@@ -180,6 +180,11 @@
     "FunctionTipsDetailId": 510007
   },
   {
+    "Id": 510008,
+    "IngameLoseTipsTypeIndex": 1,
+    "FunctionTipsDetailId": 510008
+  },
+  {
     "Id": 520701,
     "IngameLoseTipsTypeIndex": 1,
     "FunctionTipsDetailId": 520701

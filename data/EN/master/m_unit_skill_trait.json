@@ -10,7 +10,7 @@
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
     "ActiveTraitConditionSetId": 0,
-    "Unknown_Col_10": 0
+    "OverrideTraitActionTimingTypeIndex": 0
   },
   {
     "Id": 114400055011,
@@ -23,7 +23,7 @@
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
     "ActiveTraitConditionSetId": 0,
-    "Unknown_Col_10": 0
+    "OverrideTraitActionTimingTypeIndex": 0
   },
   {
     "Id": 114400055012,
@@ -36,7 +36,7 @@
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
     "ActiveTraitConditionSetId": 0,
-    "Unknown_Col_10": 0
+    "OverrideTraitActionTimingTypeIndex": 0
   },
   {
     "Id": 116300015011,
@@ -49,7 +49,7 @@
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
     "ActiveTraitConditionSetId": 0,
-    "Unknown_Col_10": 0
+    "OverrideTraitActionTimingTypeIndex": 0
   },
   {
     "Id": 116300015012,
@@ -62,7 +62,7 @@
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
     "ActiveTraitConditionSetId": 0,
-    "Unknown_Col_10": 11
+    "OverrideTraitActionTimingTypeIndex": 11
   },
   {
     "Id": 137000595011,
@@ -75,7 +75,7 @@
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
     "ActiveTraitConditionSetId": 0,
-    "Unknown_Col_10": 0
+    "OverrideTraitActionTimingTypeIndex": 0
   },
   {
     "Id": 137000595012,
@@ -88,6 +88,6 @@
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
     "ActiveTraitConditionSetId": 0,
-    "Unknown_Col_10": 0
+    "OverrideTraitActionTimingTypeIndex": 0
   }
 ]

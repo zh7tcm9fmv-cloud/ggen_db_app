@@ -312,6 +312,10 @@
     "value": "EN Restoration"
   },
   {
+    "id": 160400001501000550,
+    "value": "EN Restoration"
+  },
+  {
     "id": 160400001705000150,
     "value": "EN Restoration"
   },
@@ -645,6 +649,10 @@
   },
   {
     "id": 160500001501000450,
+    "value": "Allies in range:\nRestore EN by 50%"
+  },
+  {
+    "id": 160500001501000550,
     "value": "Allies in range:\nRestore EN by 50%"
   },
   {

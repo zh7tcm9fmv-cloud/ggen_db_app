@@ -934,5 +934,41 @@
     "AdditionalParameterValue": "2",
     "IngameEventConditionParameterTypeIndex": 0,
     "ParameterValue": ""
+  },
+  {
+    "Id": 920101002202000010,
+    "MapStageConditionId": 920101002202000010,
+    "IngameEventAdditionalConditionTypeIndex": 6,
+    "IngameEventAdditionalConditionParameterTypeIndex": 6,
+    "AdditionalParameterValue": "1",
+    "IngameEventConditionParameterTypeIndex": 6,
+    "ParameterValue": "core_s"
+  },
+  {
+    "Id": 920102002002000006,
+    "MapStageConditionId": 920102002002000006,
+    "IngameEventAdditionalConditionTypeIndex": 1,
+    "IngameEventAdditionalConditionParameterTypeIndex": 1,
+    "AdditionalParameterValue": "2",
+    "IngameEventConditionParameterTypeIndex": 0,
+    "ParameterValue": ""
+  },
+  {
+    "Id": 920102002602000007,
+    "MapStageConditionId": 920102002602000007,
+    "IngameEventAdditionalConditionTypeIndex": 6,
+    "IngameEventAdditionalConditionParameterTypeIndex": 6,
+    "AdditionalParameterValue": "1",
+    "IngameEventConditionParameterTypeIndex": 6,
+    "ParameterValue": "helmes"
+  },
+  {
+    "Id": 920102002602000008,
+    "MapStageConditionId": 920102002602000008,
+    "IngameEventAdditionalConditionTypeIndex": 6,
+    "IngameEventAdditionalConditionParameterTypeIndex": 6,
+    "AdditionalParameterValue": "1",
+    "IngameEventConditionParameterTypeIndex": 6,
+    "ParameterValue": "braubro"
   }
 ]

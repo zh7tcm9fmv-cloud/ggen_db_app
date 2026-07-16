@@ -392,6 +392,10 @@
     "value": "Source"
   },
   {
+    "id": 170200000001151061,
+    "value": "Link Data"
+  },
+  {
     "id": 170300000001001011,
     "value": "Access Notices, Gifts, Missions, and navigate to various stages and shops from the Home screen."
   },
@@ -765,7 +769,7 @@
   },
   {
     "id": 170300000001151011,
-    "value": "Access various features, such as Diamond Shop and Gallery, from the Menu screen.\n\nNavigate to Menu from the far-right bottom of the screen.\nAvailable features from the Menu:\n\n- Diamond Shop\nYou can purchase diamonds, check your balance, and more.\n\n- Profile\nCheck your Player Rank EXP progress, choose your player name, and review your overall progress in G Generation Eternal.\n\n- Inventory\nYou can view a list of your acquired items, upgrade materials, development materials, modifications, and Limit Break materials.\n\n- Gallery\nView completed stories, unit database, character database, series database, and more.\n\n- Friend Invitations\nYou can view your invitation code and enter codes received from other players.\n\n- Configuration\nYou can adjust the volume and in-game frame rate.\n\n- Link Data\nYou can link your current game data with your Bandai Namco ID.\nBy linking your data, you can continue playing with the same data on a different device.\n\n- Help\nYou can access in-game help for guidance and information.\n\n- Inquiries\nYou can reach out to the SD Gundam G Generation ETERNAL Team.\n\n- Other\nYou can view the terms of use, copyright information, as well as delete your account.\n\n- Batch Download\nYou can download certain images and battle animations in advance.\n*Wi-Fi connection is recommended for the download.\n\n- To the Official Website\nYou can visit the official SD Gundam G Generation ETERNAL website.\n\n- Return to Title\nYou can go back to the game's title screen."
+    "value": "Access various features, such as Diamond Shop and Gallery, from the Menu screen.\n\nNavigate to Menu from the far-right bottom of the screen.\nAvailable features from the Menu:\n\n- Diamond Shop\nYou can purchase diamonds, check your balance, and more.\n\n- Profile\nCheck your Player Rank EXP progress, choose your player name, and review your overall progress in G Generation Eternal.\n\n- Inventory\nYou can view a list of your acquired items, upgrade materials, development materials, modifications, and Limit Break materials.\n\n- Gallery\nView completed stories, unit database, character database, series database, and more.\n\n- Friend Invitations\nYou can view your invitation code and enter codes received from other players.\n\n- Configuration\nYou can adjust the volume and in-game frame rate.\n\n- Help\nYou can access in-game help for guidance and information.\n\n- Inquiries\nYou can reach out to the SD Gundam G Generation ETERNAL Team.\n\n- Other\nYou can view the terms of use, copyright information, as well as delete your account.\n\n- Batch Download\nYou can download certain images and battle animations in advance.\n*Wi-Fi connection is recommended for the download.\n\n- To the Official Website\nYou can visit the official SD Gundam G Generation ETERNAL website.\n\n- Return to Title\nYou can go back to the game's title screen."
   },
   {
     "id": 170300000001151021,
@@ -782,5 +786,9 @@
   {
     "id": 170300000001151051,
     "value": "For items obtained through Development, Unit Assembly, or stages, the location for acquiring them will be displayed.\n\nIt will not be shown if the item has no specific location where it can be acquired."
+  },
+  {
+    "id": 170300000001151061,
+    "value": "This feature allows you to link your game account with your Bandai Namco ID. By linking your data, you can sync your progress from another device and play across multiple devices. In the event that you switch to a new device or lose your current one, syncing your progress also ensures that you can resume playing from where you left off.\n\n*Diamonds can be linked to a different OS.\n*While benefits from passes such as the Daily Diamond Pass and Eternal Pass can be synced across different platforms, some service offerings may not be available depending on the OS or platform.\n*Some details within the save data, such as progress within a stage, do not transfer between devices."
   }
 ]

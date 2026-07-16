@@ -244,12 +244,24 @@
     "value": "Agg Guy"
   },
   {
+    "id": 110100001007000700,
+    "value": "Johnny Ridden's Gelgoog High Mobility Type"
+  },
+  {
     "id": 110100001007000710,
     "value": "Johnny Ridden's Gelgoog High Mobility Type"
   },
   {
     "id": 110100001007000800,
     "value": "Saberfish"
+  },
+  {
+    "id": 110100001007000960,
+    "value": "Perfect Zeong"
+  },
+  {
+    "id": 110100001007001160,
+    "value": "Gundam Full Armor"
   },
   {
     "id": 110100001008000100,
@@ -5608,6 +5620,10 @@
     "value": "Michaelis (Season 2)"
   },
   {
+    "id": 110100001501002550,
+    "value": "Michaelis (Season 2) (EX)"
+  },
+  {
     "id": 110100001501002600,
     "value": "Demi Barding"
   },
@@ -5634,6 +5650,10 @@
   {
     "id": 110100001501003400,
     "value": "Darilbalde (Season 2)"
+  },
+  {
+    "id": 110100001501003450,
+    "value": "Darilbalde (Season 2) (EX)"
   },
   {
     "id": 110100001501003500,
@@ -5874,6 +5894,10 @@
   {
     "id": 110100001764000202,
     "value": "Casval's Gundam"
+  },
+  {
+    "id": 110100001764000300,
+    "value": "Gyan K"
   },
   {
     "id": 110100001764000310,
@@ -6798,6 +6822,14 @@
   {
     "id": 110200001007000800,
     "value": "-"
+  },
+  {
+    "id": 110200001007000960,
+    "value": "The completed form of the Zeong, a psycommu mobile suit developed at the end of the One Year War. If fitted with the leg units planned at the outset of development, the Zeong would stand an awe-inspiring 38 meters tall.\nIts performance would have been equally impressive, with the ability to fight both in space and on Earth. This was meant to be the ultimate MS, capable of separating into seven units (head, arms, chest, waist, and legs) to perform all-range attacks.\nBut changes in the war situation, coupled with the rapid advance of Newtype technology, led to drastic changes in design direction. Ultimately, the Zeong was repurposed for space combat only, and fitted with wire-guided psycommu weapons. As for the leg units, it appears they were never actually installed on a test machine."
+  },
+  {
+    "id": 110200001007001160,
+    "value": "A prototype mobile suit developed under a Federation Forces extra armament plan known as the FSWS Project. Its body is covered with armor units that include thrusters and powerful fixed weapons such as multiple missile bays and a back-mounted 360mm cannon, giving it a combination of high firepower and excellent mobility.\nThe machine's high specs, however, complicated the production process. Few records of this machine have been confirmed, and many of the details are obscure or lost. The concept of fitting a completed mobile suit with extra armor for performance enhancement, however, became the basis for many subsequent full armor plans."
   },
   {
     "id": 110200001008000100,
@@ -11496,6 +11528,10 @@
     "value": "Equipped with additional weaponry: the Javelin Bracer, a large lance integrated with a retractable dagger, on its left arm; the Drill Javelin, a wired projectile; and the Strike Brace, which has a built-in beam machine gun.\nIt fought against Guel in Episode 20."
   },
   {
+    "id": 110200001501002550,
+    "value": "Equipped with additional weaponry: the Javelin Bracer, a large lance integrated with a retractable dagger, on its left arm; the Drill Javelin, a wired projectile; and the Strike Brace, which has a built-in beam machine gun.\nIt fought against Guel in Episode 20."
+  },
+  {
     "id": 110200001501002600,
     "value": "A new concept model in the Demi series which is being planned and developed by the Burion company.\nWhile its specs disregard profitability, it retains the distinctive design and superb maintainability of the series.\nIt can be equipped with a backpack that functions as a flight unit.\n"
   },
@@ -11521,6 +11557,10 @@
   },
   {
     "id": 110200001501003400,
+    "value": "The damaged parts and weapons were upgraded after the second duel with Suletta, with the Isvara changed to the quadruple Gussa Isvara and the Ambikā replaced with the larger Daya Ambikā.\nA new type of portable weapon called Composite Arms, which is comprised of a beam shot rifle and a folding beam katana, was also installed."
+  },
+  {
+    "id": 110200001501003450,
     "value": "The damaged parts and weapons were upgraded after the second duel with Suletta, with the Isvara changed to the quadruple Gussa Isvara and the Ambikā replaced with the larger Daya Ambikā.\nA new type of portable weapon called Composite Arms, which is comprised of a beam shot rifle and a folding beam katana, was also installed."
   },
   {
@@ -11593,7 +11633,7 @@
   },
   {
     "id": 110200001705000200,
-    "value": "The Knight Gundam armed with three legendary relics: the Armor of Mist, Flame Sword, and Shield of Strength.\nWhen three stars came into alignment, the power of the relics increased tenfold, and the Knight Gundam became more powerful than even the Black Dragon.\nUnfortunately, this power exacted a heavy toll on his body."
+    "value": "The Knight Gundam, clad in the three legendary relics: the Armor of Mist, Flame Sword, and Shield of Strength.\nWhen three stars came into alignment, the power of the relics increased tenfold, granting the Knight Gundam strength that surpassed even the Black Dragon.\nUnfortunately, this immense power exacted a heavy toll on its body."
   },
   {
     "id": 110200001705000400,
@@ -12708,12 +12748,24 @@
     "value": "Agg Guy"
   },
   {
+    "id": 110300001007000700,
+    "value": "Johnny Ridden's Gelgoog High Mobility Type"
+  },
+  {
     "id": 110300001007000710,
     "value": "Johnny Ridden's Gelgoog High Mobility Type"
   },
   {
     "id": 110300001007000800,
     "value": "Saberfish"
+  },
+  {
+    "id": 110300001007000960,
+    "value": "Perfect Zeong"
+  },
+  {
+    "id": 110300001007001160,
+    "value": "Gundam Full Armor"
   },
   {
     "id": 110300001008000100,
@@ -18072,6 +18124,10 @@
     "value": "Michaelis (Season 2)"
   },
   {
+    "id": 110300001501002550,
+    "value": "Michaelis (Season 2) (EX)"
+  },
+  {
     "id": 110300001501002600,
     "value": "Demi Barding"
   },
@@ -18098,6 +18154,10 @@
   {
     "id": 110300001501003400,
     "value": "Darilbalde (Season 2)"
+  },
+  {
+    "id": 110300001501003450,
+    "value": "Darilbalde (Season 2) (EX)"
   },
   {
     "id": 110300001501003500,
@@ -18338,6 +18398,10 @@
   {
     "id": 110300001764000202,
     "value": "Casval's Gundam"
+  },
+  {
+    "id": 110300001764000300,
+    "value": "Gyan K"
   },
   {
     "id": 110300001764000310,
@@ -19300,12 +19364,24 @@
     "value": "Agg Guy"
   },
   {
+    "id": 110400001007000700,
+    "value": "Johnny Ridden's Gelgoog High Mobility Type"
+  },
+  {
     "id": 110400001007000710,
     "value": "Johnny Ridden's Gelgoog High Mobility Type"
   },
   {
     "id": 110400001007000800,
     "value": "Saberfish"
+  },
+  {
+    "id": 110400001007000960,
+    "value": "Perfect Zeong"
+  },
+  {
+    "id": 110400001007001160,
+    "value": "Gundam Full Armor"
   },
   {
     "id": 110400001008000100,
@@ -24664,6 +24740,10 @@
     "value": "Michaelis (Season 2)"
   },
   {
+    "id": 110400001501002550,
+    "value": "Michaelis (Season 2) (EX)"
+  },
+  {
     "id": 110400001501002600,
     "value": "Demi Barding"
   },
@@ -24690,6 +24770,10 @@
   {
     "id": 110400001501003400,
     "value": "Darilbalde (Season 2)"
+  },
+  {
+    "id": 110400001501003450,
+    "value": "Darilbalde (Season 2) (EX)"
   },
   {
     "id": 110400001501003500,
@@ -24930,6 +25014,10 @@
   {
     "id": 110400001764000202,
     "value": "Casval's Gundam"
+  },
+  {
+    "id": 110400001764000300,
+    "value": "Gyan K"
   },
   {
     "id": 110400001764000310,

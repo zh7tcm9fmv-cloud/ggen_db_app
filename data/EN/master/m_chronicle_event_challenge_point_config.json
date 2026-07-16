@@ -1,0 +1,10 @@
+[
+  {
+    "Id": 250001,
+    "BaseMaxCount": 30,
+    "DisplayMaxCount": 999,
+    "InitialProvideCount": 8,
+    "AutoRecoverIntervalHour": 2,
+    "AutoRecoverCount": 1
+  }
+]

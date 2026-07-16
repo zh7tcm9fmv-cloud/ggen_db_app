@@ -1060,6 +1060,66 @@
     "WeaponQuoteCategory": "D：汎用サイコミュ"
   },
   {
+    "Id": 1001003100001,
+    "CharacterCutInSetId": 1001003100,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0010c03100_0001",
+    "QuoteLanguageId": 100701001003100001,
+    "OverrideCutInMilliseconds": 0,
+    "WeaponQuoteCategory": ""
+  },
+  {
+    "Id": 1001003100002,
+    "CharacterCutInSetId": 1001003100,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0010c03100_0001",
+    "QuoteLanguageId": 100701001003100002,
+    "OverrideCutInMilliseconds": 0,
+    "WeaponQuoteCategory": ""
+  },
+  {
+    "Id": 1001003100003,
+    "CharacterCutInSetId": 1001003100,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0010c03100_0002",
+    "QuoteLanguageId": 100701001003100003,
+    "OverrideCutInMilliseconds": 0,
+    "WeaponQuoteCategory": ""
+  },
+  {
+    "Id": 1001003100004,
+    "CharacterCutInSetId": 1001003100,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0010c03100_0002",
+    "QuoteLanguageId": 100701001003100004,
+    "OverrideCutInMilliseconds": 0,
+    "WeaponQuoteCategory": ""
+  },
+  {
+    "Id": 1001003100005,
+    "CharacterCutInSetId": 1001003100,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0010c03100_0003",
+    "QuoteLanguageId": 100701001003100005,
+    "OverrideCutInMilliseconds": 0,
+    "WeaponQuoteCategory": ""
+  },
+  {
+    "Id": 1001003100006,
+    "CharacterCutInSetId": 1001003100,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "vc_btl_g0010c03100_0003",
+    "QuoteLanguageId": 100701001003100006,
+    "OverrideCutInMilliseconds": 0,
+    "WeaponQuoteCategory": ""
+  },
+  {
     "Id": 1001003300001,
     "CharacterCutInSetId": 1001003300,
     "PlayTimingTypeIndex": 1,

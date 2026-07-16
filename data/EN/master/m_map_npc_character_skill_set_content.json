@@ -58,5 +58,25 @@
     "MapNpcCharacterSkillSetId": 9000008,
     "SortOrder": 1,
     "CharacterSkillId": 900000801
+  },
+  {
+    "MapNpcCharacterSkillSetId": 9900006,
+    "SortOrder": 1,
+    "CharacterSkillId": 990000006
+  },
+  {
+    "MapNpcCharacterSkillSetId": 9900007,
+    "SortOrder": 1,
+    "CharacterSkillId": 990000007
+  },
+  {
+    "MapNpcCharacterSkillSetId": 9900008,
+    "SortOrder": 1,
+    "CharacterSkillId": 990000008
+  },
+  {
+    "MapNpcCharacterSkillSetId": 9900009,
+    "SortOrder": 1,
+    "CharacterSkillId": 990000009
   }
 ]

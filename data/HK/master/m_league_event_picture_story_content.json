@@ -568,5 +568,95 @@
     "SortOrder": 9,
     "IsShowTag": false,
     "TagPositionAdjustValueY": 0
+  },
+  {
+    "Id": 3000160101,
+    "LeagueEventPictureStoryGroupId": 30001601,
+    "SceneShotResourceId": "ml_picture_story_300010_01",
+    "VoiceResourceId": "vc_masterleague_0001_adv_0010",
+    "SubtitleLanguageId": 250500003000100101,
+    "SortOrder": 1,
+    "IsShowTag": false,
+    "TagPositionAdjustValueY": 0
+  },
+  {
+    "Id": 3000160102,
+    "LeagueEventPictureStoryGroupId": 30001601,
+    "SceneShotResourceId": "ml_picture_story_300010_01",
+    "VoiceResourceId": "vc_masterleague_0001_adv_0020",
+    "SubtitleLanguageId": 250500003000100102,
+    "SortOrder": 2,
+    "IsShowTag": false,
+    "TagPositionAdjustValueY": 0
+  },
+  {
+    "Id": 3000160103,
+    "LeagueEventPictureStoryGroupId": 30001601,
+    "SceneShotResourceId": "ml_picture_story_300010_01",
+    "VoiceResourceId": "vc_masterleague_0001_adv_0030",
+    "SubtitleLanguageId": 250500003000100103,
+    "SortOrder": 3,
+    "IsShowTag": false,
+    "TagPositionAdjustValueY": 0
+  },
+  {
+    "Id": 3000160104,
+    "LeagueEventPictureStoryGroupId": 30001601,
+    "SceneShotResourceId": "ml_picture_story_300010_03",
+    "VoiceResourceId": "vc_masterleague_0001_adv_0040",
+    "SubtitleLanguageId": 250500003000100104,
+    "SortOrder": 4,
+    "IsShowTag": false,
+    "TagPositionAdjustValueY": 0
+  },
+  {
+    "Id": 3000160105,
+    "LeagueEventPictureStoryGroupId": 30001601,
+    "SceneShotResourceId": "ml_picture_story_300010_03",
+    "VoiceResourceId": "vc_masterleague_0001_adv_0050",
+    "SubtitleLanguageId": 250500003000100105,
+    "SortOrder": 5,
+    "IsShowTag": false,
+    "TagPositionAdjustValueY": 0
+  },
+  {
+    "Id": 3000160106,
+    "LeagueEventPictureStoryGroupId": 30001601,
+    "SceneShotResourceId": "ml_picture_story_300010_02",
+    "VoiceResourceId": "vc_masterleague_0001_adv_0060",
+    "SubtitleLanguageId": 250500003000100106,
+    "SortOrder": 6,
+    "IsShowTag": false,
+    "TagPositionAdjustValueY": 0
+  },
+  {
+    "Id": 3000160107,
+    "LeagueEventPictureStoryGroupId": 30001601,
+    "SceneShotResourceId": "ml_picture_story_opening_300016",
+    "VoiceResourceId": "vc_masterleague_0001_adv_0070",
+    "SubtitleLanguageId": 250500003000100107,
+    "SortOrder": 7,
+    "IsShowTag": true,
+    "TagPositionAdjustValueY": 236
+  },
+  {
+    "Id": 3000160108,
+    "LeagueEventPictureStoryGroupId": 30001601,
+    "SceneShotResourceId": "ml_picture_story_opening_300016",
+    "VoiceResourceId": "vc_masterleague_0001_adv_0080",
+    "SubtitleLanguageId": 250500003000100108,
+    "SortOrder": 8,
+    "IsShowTag": true,
+    "TagPositionAdjustValueY": 236
+  },
+  {
+    "Id": 3000160109,
+    "LeagueEventPictureStoryGroupId": 30001601,
+    "SceneShotResourceId": "ml_picture_story_300010_04",
+    "VoiceResourceId": "vc_masterleague_0001_adv_0090",
+    "SubtitleLanguageId": 250500003000100109,
+    "SortOrder": 9,
+    "IsShowTag": false,
+    "TagPositionAdjustValueY": 0
   }
 ]

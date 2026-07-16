@@ -120,6 +120,10 @@
     "value": "Grand Offensive Vol. 2"
   },
   {
+    "id": 250100000000250001,
+    "value": "E Simulator: U.C.0079"
+  },
+  {
     "id": 250100000000300001,
     "value": "SEASON 0"
   },
@@ -182,5 +186,9 @@
   {
     "id": 250100000000300016,
     "value": "SEASON 14"
+  },
+  {
+    "id": 250100000000300017,
+    "value": "SEASON 15"
   }
 ]

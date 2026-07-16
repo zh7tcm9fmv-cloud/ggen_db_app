@@ -1,0 +1,42 @@
+[
+  {
+    "Id": 180012251050020301,
+    "ConditionMultiTargetValueGroupId": 1800122510500203,
+    "TargetValue": 1
+  },
+  {
+    "Id": 180012251050020302,
+    "ConditionMultiTargetValueGroupId": 1800122510500203,
+    "TargetValue": 2
+  },
+  {
+    "Id": 180012251050020303,
+    "ConditionMultiTargetValueGroupId": 1800122510500203,
+    "TargetValue": 3
+  },
+  {
+    "Id": 180012260645010201,
+    "ConditionMultiTargetValueGroupId": 1800122606450102,
+    "TargetValue": 1
+  },
+  {
+    "Id": 180012260645010202,
+    "ConditionMultiTargetValueGroupId": 1800122606450102,
+    "TargetValue": 2
+  },
+  {
+    "Id": 180012260645010203,
+    "ConditionMultiTargetValueGroupId": 1800122606450102,
+    "TargetValue": 3
+  },
+  {
+    "Id": 991326064007010101,
+    "ConditionMultiTargetValueGroupId": 9913260640070101,
+    "TargetValue": 1
+  },
+  {
+    "Id": 991326064007010102,
+    "ConditionMultiTargetValueGroupId": 9913260640070101,
+    "TargetValue": 2
+  }
+]

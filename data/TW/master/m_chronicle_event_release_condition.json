@@ -1,0 +1,237 @@
+[
+  {
+    "Id": 25000100101,
+    "ReleaseConditionTargetSetId": 250001001,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000100201,
+    "ReleaseConditionTargetSetId": 250001002,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000100301,
+    "ReleaseConditionTargetSetId": 250001003,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000100401,
+    "ReleaseConditionTargetSetId": 250001004,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000100501,
+    "ReleaseConditionTargetSetId": 250001005,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000100601,
+    "ReleaseConditionTargetSetId": 250001006,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000100701,
+    "ReleaseConditionTargetSetId": 250001007,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000100801,
+    "ReleaseConditionTargetSetId": 250001008,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000100901,
+    "ReleaseConditionTargetSetId": 250001009,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000101001,
+    "ReleaseConditionTargetSetId": 250001010,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000101101,
+    "ReleaseConditionTargetSetId": 250001011,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000101201,
+    "ReleaseConditionTargetSetId": 250001012,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000101301,
+    "ReleaseConditionTargetSetId": 250001013,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000101401,
+    "ReleaseConditionTargetSetId": 250001014,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000101501,
+    "ReleaseConditionTargetSetId": 250001015,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000101601,
+    "ReleaseConditionTargetSetId": 250001016,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000101701,
+    "ReleaseConditionTargetSetId": 250001017,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000101801,
+    "ReleaseConditionTargetSetId": 250001018,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000101901,
+    "ReleaseConditionTargetSetId": 250001019,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000102001,
+    "ReleaseConditionTargetSetId": 250001020,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000102101,
+    "ReleaseConditionTargetSetId": 250001021,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000102201,
+    "ReleaseConditionTargetSetId": 250001022,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000102301,
+    "ReleaseConditionTargetSetId": 250001023,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000102401,
+    "ReleaseConditionTargetSetId": 250001024,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000102501,
+    "ReleaseConditionTargetSetId": 250001025,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000102601,
+    "ReleaseConditionTargetSetId": 250001026,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000102701,
+    "ReleaseConditionTargetSetId": 250001027,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000102801,
+    "ReleaseConditionTargetSetId": 250001028,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000102901,
+    "ReleaseConditionTargetSetId": 250001029,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000103001,
+    "ReleaseConditionTargetSetId": 250001030,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000103101,
+    "ReleaseConditionTargetSetId": 250001031,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000103201,
+    "ReleaseConditionTargetSetId": 250001032,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000103301,
+    "ReleaseConditionTargetSetId": 250001033,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000103401,
+    "ReleaseConditionTargetSetId": 250001034,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000103501,
+    "ReleaseConditionTargetSetId": 250001035,
+    "ReleaseConditionOperatorTypeIndex": 2
+  },
+  {
+    "Id": 25000103601,
+    "ReleaseConditionTargetSetId": 250001036,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000103701,
+    "ReleaseConditionTargetSetId": 250001037,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000103801,
+    "ReleaseConditionTargetSetId": 250001038,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000103901,
+    "ReleaseConditionTargetSetId": 250001039,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000104001,
+    "ReleaseConditionTargetSetId": 250001040,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000104101,
+    "ReleaseConditionTargetSetId": 250001041,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000104201,
+    "ReleaseConditionTargetSetId": 250001042,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000104301,
+    "ReleaseConditionTargetSetId": 250001043,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000104401,
+    "ReleaseConditionTargetSetId": 250001044,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000104501,
+    "ReleaseConditionTargetSetId": 250001045,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000104601,
+    "ReleaseConditionTargetSetId": 250001046,
+    "ReleaseConditionOperatorTypeIndex": 1
+  },
+  {
+    "Id": 25000104701,
+    "ReleaseConditionTargetSetId": 250001047,
+    "ReleaseConditionOperatorTypeIndex": 1
+  }
+]

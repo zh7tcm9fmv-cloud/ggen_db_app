@@ -1,0 +1,26 @@
+[
+  {
+    "Id": 25000101,
+    "ChronicleEventId": 250001,
+    "CompleteRate": 25,
+    "RewardSetId": 45250001040001
+  },
+  {
+    "Id": 25000102,
+    "ChronicleEventId": 250001,
+    "CompleteRate": 50,
+    "RewardSetId": 45250001040002
+  },
+  {
+    "Id": 25000103,
+    "ChronicleEventId": 250001,
+    "CompleteRate": 75,
+    "RewardSetId": 45250001040003
+  },
+  {
+    "Id": 25000104,
+    "ChronicleEventId": 250001,
+    "CompleteRate": 100,
+    "RewardSetId": 45250001040004
+  }
+]

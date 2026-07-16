@@ -18,5 +18,15 @@
     "EventBonusTagSetId": 20001410,
     "LineageId": 1089,
     "SortOrder": 1
+  },
+  {
+    "EventBonusTagSetId": 25000101,
+    "LineageId": 1014,
+    "SortOrder": 1
+  },
+  {
+    "EventBonusTagSetId": 25000102,
+    "LineageId": 1015,
+    "SortOrder": 2
   }
 ]

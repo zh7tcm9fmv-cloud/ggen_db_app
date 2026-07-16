@@ -84,10 +84,20 @@
     "NameLanguageId": 190300000015000001,
     "ResourceId": "shop_06",
     "ShopTypeIndex": 6,
-    "SortOrder": 6,
+    "SortOrder": 7,
     "ScheduleId": 0,
     "LineupManualUpdateCurrencyTypeIndex": 7,
     "TargetCurrencyItemId": 0
+  },
+  {
+    "Id": 17250001,
+    "NameLanguageId": 190300000017000001,
+    "ResourceId": "shop_08",
+    "ShopTypeIndex": 11,
+    "SortOrder": 6,
+    "ScheduleId": 2607303402,
+    "LineupManualUpdateCurrencyTypeIndex": 1,
+    "TargetCurrencyItemId": 291000250001
   },
   {
     "Id": 90000001,

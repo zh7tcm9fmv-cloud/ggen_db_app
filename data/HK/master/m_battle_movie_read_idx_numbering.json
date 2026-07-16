@@ -525,6 +525,41 @@
     "BattleMovieReadIdx": 96
   },
   {
+    "UnitBattleMovieId": "g0070u00900",
+    "WeaponBattleMovieId": "1",
+    "BattleMovieReadIdx": 2811
+  },
+  {
+    "UnitBattleMovieId": "g0070u00900",
+    "WeaponBattleMovieId": "2",
+    "BattleMovieReadIdx": 2812
+  },
+  {
+    "UnitBattleMovieId": "g0070u00900",
+    "WeaponBattleMovieId": "3",
+    "BattleMovieReadIdx": 2813
+  },
+  {
+    "UnitBattleMovieId": "g0070u00900",
+    "WeaponBattleMovieId": "4",
+    "BattleMovieReadIdx": 2814
+  },
+  {
+    "UnitBattleMovieId": "g0070u01100",
+    "WeaponBattleMovieId": "1",
+    "BattleMovieReadIdx": 2815
+  },
+  {
+    "UnitBattleMovieId": "g0070u01100",
+    "WeaponBattleMovieId": "3",
+    "BattleMovieReadIdx": 2816
+  },
+  {
+    "UnitBattleMovieId": "g0070u01100",
+    "WeaponBattleMovieId": "5",
+    "BattleMovieReadIdx": 2817
+  },
+  {
     "UnitBattleMovieId": "g0080u00100",
     "WeaponBattleMovieId": "1",
     "BattleMovieReadIdx": 97
@@ -13090,6 +13125,11 @@
     "BattleMovieReadIdx": 2092
   },
   {
+    "UnitBattleMovieId": "g5010u02550",
+    "WeaponBattleMovieId": "50",
+    "BattleMovieReadIdx": 2818
+  },
+  {
     "UnitBattleMovieId": "g5010u03000",
     "WeaponBattleMovieId": "1",
     "BattleMovieReadIdx": 2093
@@ -13133,6 +13173,11 @@
     "UnitBattleMovieId": "g5010u03400",
     "WeaponBattleMovieId": "3",
     "BattleMovieReadIdx": 2101
+  },
+  {
+    "UnitBattleMovieId": "g5010u03450",
+    "WeaponBattleMovieId": "50",
+    "BattleMovieReadIdx": 2819
   },
   {
     "UnitBattleMovieId": "g5010u03900",

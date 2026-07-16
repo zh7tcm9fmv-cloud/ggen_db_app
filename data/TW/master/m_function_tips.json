@@ -320,6 +320,26 @@
     "FunctionTipsDetailSetId": 9501
   },
   {
+    "Id": 9601,
+    "FunctionTypeIndex": 61,
+    "FunctionTipsDetailSetId": 9601
+  },
+  {
+    "Id": 9602,
+    "FunctionTypeIndex": 62,
+    "FunctionTipsDetailSetId": 9602
+  },
+  {
+    "Id": 9603,
+    "FunctionTypeIndex": 63,
+    "FunctionTipsDetailSetId": 9603
+  },
+  {
+    "Id": 9604,
+    "FunctionTypeIndex": 64,
+    "FunctionTipsDetailSetId": 9604
+  },
+  {
     "Id": 9701,
     "FunctionTypeIndex": 40,
     "FunctionTipsDetailSetId": 9701

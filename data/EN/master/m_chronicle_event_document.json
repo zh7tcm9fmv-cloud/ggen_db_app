@@ -1,0 +1,122 @@
+[
+  {
+    "Id": 25000101,
+    "ChronicleEventId": 250001,
+    "Number": 1,
+    "ResourceId": "25000101",
+    "HistoryTypeIndex": 1,
+    "AcquisitionHintLanguageId": 380100250001010001
+  },
+  {
+    "Id": 25000102,
+    "ChronicleEventId": 250001,
+    "Number": 2,
+    "ResourceId": "25000102",
+    "HistoryTypeIndex": 1,
+    "AcquisitionHintLanguageId": 380100250001010002
+  },
+  {
+    "Id": 25000103,
+    "ChronicleEventId": 250001,
+    "Number": 3,
+    "ResourceId": "25000103",
+    "HistoryTypeIndex": 2,
+    "AcquisitionHintLanguageId": 380100250001010003
+  },
+  {
+    "Id": 25000104,
+    "ChronicleEventId": 250001,
+    "Number": 4,
+    "ResourceId": "25000104",
+    "HistoryTypeIndex": 1,
+    "AcquisitionHintLanguageId": 380100250001010002
+  },
+  {
+    "Id": 25000105,
+    "ChronicleEventId": 250001,
+    "Number": 5,
+    "ResourceId": "25000105",
+    "HistoryTypeIndex": 2,
+    "AcquisitionHintLanguageId": 380100250001010003
+  },
+  {
+    "Id": 25000106,
+    "ChronicleEventId": 250001,
+    "Number": 6,
+    "ResourceId": "25000106",
+    "HistoryTypeIndex": 1,
+    "AcquisitionHintLanguageId": 380100250001010004
+  },
+  {
+    "Id": 25000107,
+    "ChronicleEventId": 250001,
+    "Number": 7,
+    "ResourceId": "25000107",
+    "HistoryTypeIndex": 1,
+    "AcquisitionHintLanguageId": 380100250001010005
+  },
+  {
+    "Id": 25000108,
+    "ChronicleEventId": 250001,
+    "Number": 8,
+    "ResourceId": "25000108",
+    "HistoryTypeIndex": 2,
+    "AcquisitionHintLanguageId": 380100250001010006
+  },
+  {
+    "Id": 25000109,
+    "ChronicleEventId": 250001,
+    "Number": 9,
+    "ResourceId": "25000109",
+    "HistoryTypeIndex": 1,
+    "AcquisitionHintLanguageId": 380100250001010005
+  },
+  {
+    "Id": 25000110,
+    "ChronicleEventId": 250001,
+    "Number": 10,
+    "ResourceId": "25000110",
+    "HistoryTypeIndex": 2,
+    "AcquisitionHintLanguageId": 380100250001010006
+  },
+  {
+    "Id": 25000111,
+    "ChronicleEventId": 250001,
+    "Number": 11,
+    "ResourceId": "25000111",
+    "HistoryTypeIndex": 2,
+    "AcquisitionHintLanguageId": 380100250001010007
+  },
+  {
+    "Id": 25000112,
+    "ChronicleEventId": 250001,
+    "Number": 12,
+    "ResourceId": "25000112",
+    "HistoryTypeIndex": 2,
+    "AcquisitionHintLanguageId": 380100250001010007
+  },
+  {
+    "Id": 25000113,
+    "ChronicleEventId": 250001,
+    "Number": 13,
+    "ResourceId": "25000113",
+    "HistoryTypeIndex": 2,
+    "AcquisitionHintLanguageId": 380100250001010007
+  },
+  {
+    "Id": 25000114,
+    "ChronicleEventId": 250001,
+    "Number": 14,
+    "ResourceId": "25000114",
+    "HistoryTypeIndex": 2,
+    "AcquisitionHintLanguageId": 380100250001010003
+  },
+  {
+    "Id": 25000115,
+    "ChronicleEventId": 250001,
+    "Number": 15,
+    "ResourceId": "25000115",
+    "HistoryTypeIndex": 2,
+    "AcquisitionHintLanguageId": 380100250001010006
+  }
+]

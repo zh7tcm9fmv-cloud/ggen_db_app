@@ -31536,6 +31536,2976 @@
     "WeaponTraitId": 300860102
   },
   {
+    "WeaponTraitChangePatternSetId": 3008801,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008801,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008801,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880103
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008801,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008801,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008801,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880103
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008801,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008801,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008801,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880103
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008801,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008801,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008801,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880103
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008801,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008801,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008801,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880103
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008802,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008802,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008802,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880203
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008802,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008802,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008802,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880203
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008802,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008802,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008802,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880203
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008802,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008802,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008802,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880203
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008802,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008802,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008802,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880203
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008803,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008803,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008803,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880303
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008803,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008803,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008803,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880303
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008803,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008803,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008803,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880303
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008803,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008803,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008803,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880303
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008803,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008803,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008803,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880303
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008804,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008804,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008804,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880403
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008804,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008804,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008804,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880403
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008804,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008804,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008804,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880403
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008804,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008804,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008804,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880403
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008804,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008804,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008804,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880403
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008805,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008805,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008805,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880503
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008805,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008805,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008805,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880503
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008805,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008805,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008805,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880503
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008805,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008805,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008805,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880503
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008805,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008805,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008805,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880503
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008806,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008806,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008806,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880603
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008806,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008806,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008806,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880603
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008806,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008806,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008806,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880603
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008806,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008806,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008806,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880603
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008806,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008806,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008806,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880603
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008807,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008807,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008807,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880703
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008807,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008807,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008807,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880703
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008807,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008807,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008807,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880703
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008807,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008807,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008807,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880703
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008807,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008807,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008807,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880703
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008808,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008808,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008808,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880803
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008808,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008808,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008808,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880803
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008808,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008808,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008808,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880803
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008808,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008808,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008808,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880803
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008808,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008808,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008808,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880803
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008809,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008809,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008809,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880903
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008809,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008809,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008809,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880903
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008809,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008809,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008809,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880903
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008809,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008809,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008809,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880903
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008809,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300880901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008809,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300880902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3008809,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 3,
+    "WeaponTraitId": 300880903
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009101,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009101,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009101,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009101,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009101,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009101,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009101,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009101,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009101,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009101,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009102,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009102,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009102,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009102,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009102,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009102,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009102,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009102,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009102,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009102,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009103,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009103,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009103,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009103,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009103,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009103,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009103,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009103,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009103,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009103,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009104,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009104,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009104,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009104,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009104,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009104,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009104,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009104,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009104,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009104,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009105,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009105,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009105,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009105,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009105,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009105,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009105,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009105,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009105,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009105,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009106,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009106,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009106,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009106,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009106,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009106,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009106,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009106,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009106,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009106,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009107,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009107,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009107,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009107,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009107,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009107,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009107,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009107,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009107,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009107,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009108,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009108,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009108,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009108,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009108,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009108,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009108,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009108,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009108,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009108,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009109,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009109,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009109,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009109,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009109,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009109,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009109,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009109,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009109,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300910901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009109,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300910902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009201,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009201,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009201,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009201,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009201,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009201,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009201,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009201,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009201,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009201,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009202,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009202,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009202,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009202,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009202,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009202,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009202,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009202,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009202,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009202,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009203,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009203,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009203,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009203,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009203,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009203,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009203,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009203,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009203,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009203,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009204,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009204,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009204,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009204,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009204,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009204,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009204,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009204,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009204,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009204,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009205,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009205,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009205,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009205,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009205,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009205,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009205,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009205,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009205,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009205,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009206,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009206,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009206,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009206,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009206,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009206,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009206,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009206,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009206,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009206,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009207,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009207,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009207,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009207,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009207,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009207,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009207,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009207,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009207,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009207,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009208,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009208,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009208,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009208,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009208,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009208,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009208,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009208,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009208,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009208,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009209,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009209,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009209,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009209,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009209,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009209,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009209,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009209,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009209,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300920901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009209,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300920902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009301,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009301,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009301,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009301,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009301,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009301,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009301,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009301,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009301,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009301,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009302,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009302,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009302,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009302,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009302,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009302,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009302,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009302,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009302,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009302,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009303,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009303,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009303,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009303,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009303,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009303,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009303,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009303,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009303,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009303,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009304,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009304,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009304,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009304,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009304,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009304,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009304,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009304,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009304,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009304,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009305,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009305,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009305,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009305,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009305,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009305,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009305,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009305,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009305,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009305,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009306,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009306,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009306,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009306,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009306,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009306,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009306,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009306,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009306,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009306,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009307,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009307,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009307,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009307,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009307,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009307,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009307,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009307,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009307,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009307,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009308,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009308,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009308,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009308,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009308,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009308,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009308,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009308,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009308,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009308,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009309,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009309,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009309,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009309,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009309,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009309,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009309,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009309,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009309,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300930901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009309,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300930902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009401,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009401,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009401,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009401,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009401,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009401,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009401,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009401,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009401,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009401,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009402,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009402,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009402,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009402,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009402,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009402,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009402,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009402,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009402,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009402,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009403,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009403,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009403,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009403,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009403,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009403,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009403,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009403,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009403,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009403,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009404,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009404,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009404,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009404,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009404,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009404,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009404,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009404,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009404,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009404,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009405,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009405,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009405,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009405,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009405,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009405,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009405,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009405,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009405,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009405,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009406,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009406,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009406,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009406,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009406,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009406,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009406,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009406,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009406,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009406,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009407,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009407,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009407,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009407,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009407,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009407,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009407,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009407,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009407,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009407,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009408,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009408,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009408,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009408,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009408,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009408,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009408,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009408,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009408,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009408,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009409,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009409,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009409,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009409,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009409,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009409,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009409,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009409,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009409,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 300940901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3009409,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 300940902
+  },
+  {
     "WeaponTraitChangePatternSetId": 3100101,
     "CurrentWeaponLevel": 1,
     "SlotNumber": 1,
@@ -48228,6 +51198,1950 @@
     "WeaponTraitId": 300860102
   },
   {
+    "WeaponTraitChangePatternSetId": 3105001,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105001,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105001,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105001,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105001,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105001,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105001,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105001,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105001,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105001,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105001,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105001,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105001,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105001,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105001,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105001,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105001,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105001,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105002,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105002,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105002,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105002,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105002,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105002,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105002,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105002,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105002,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105002,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105002,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105002,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105002,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105002,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105002,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105002,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105002,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105002,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105003,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105003,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105003,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105003,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105003,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105003,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105003,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105003,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105003,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105003,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105003,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105003,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105003,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105003,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105003,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105003,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105003,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105003,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105004,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105004,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105004,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105004,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105004,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105004,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105004,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105004,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105004,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105004,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105004,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105004,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105004,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105004,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105004,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105004,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105004,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105004,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105005,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105005,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105005,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105005,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105005,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105005,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105005,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105005,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105005,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105005,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105005,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105005,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105005,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105005,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105005,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105005,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105005,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105005,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105006,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105006,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105006,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105006,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105006,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105006,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105006,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105006,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105006,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105006,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105006,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105006,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105006,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105006,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105006,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105006,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105006,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105006,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105007,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105007,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105007,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105007,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105007,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105007,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105007,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105007,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105007,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105007,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105007,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105007,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105007,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105007,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105007,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105007,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105007,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105007,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105008,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105008,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105008,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105008,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105008,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105008,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105008,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105008,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105008,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105008,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105008,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105008,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105008,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105008,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105008,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105008,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105008,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105008,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105009,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105009,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105009,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105009,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105009,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105009,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105009,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105009,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105009,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105009,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105009,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105009,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105009,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105009,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105009,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105009,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105009,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310500901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105009,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310500902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105101,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105101,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105101,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105101,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105101,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105101,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105101,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105101,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105101,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105101,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105101,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105101,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105101,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105101,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105101,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105101,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105101,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105101,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105102,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105102,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105102,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105102,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105102,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105102,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105102,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105102,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105102,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105102,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105102,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105102,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105102,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105102,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105102,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105102,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105102,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105102,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105103,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105103,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105103,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105103,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105103,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105103,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105103,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105103,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105103,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105103,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105103,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105103,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105103,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105103,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105103,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105103,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105103,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105103,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105104,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105104,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105104,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105104,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105104,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105104,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105104,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105104,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105104,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105104,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105104,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105104,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105104,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105104,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105104,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105104,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105104,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105104,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105105,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105105,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105105,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105105,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105105,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105105,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105105,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105105,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105105,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105105,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105105,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105105,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105105,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105105,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105105,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105105,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105105,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105105,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510502
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105106,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105106,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105106,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105106,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105106,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105106,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105106,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105106,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105106,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105106,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105106,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105106,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105106,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105106,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105106,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105106,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105106,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510601
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105106,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510602
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105107,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105107,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105107,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105107,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105107,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105107,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105107,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105107,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105107,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105107,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105107,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105107,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105107,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105107,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105107,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105107,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105107,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510701
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105107,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510702
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105108,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105108,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105108,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105108,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105108,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105108,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105108,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105108,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105108,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105108,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105108,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105108,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105108,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105108,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105108,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105108,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105108,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510801
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105108,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510802
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105109,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105109,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105109,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105109,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105109,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105109,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105109,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105109,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105109,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105109,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105109,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105109,
+    "CurrentWeaponLevel": 6,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105109,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105109,
+    "CurrentWeaponLevel": 7,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105109,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105109,
+    "CurrentWeaponLevel": 8,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510902
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105109,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 1,
+    "WeaponTraitId": 310510901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3105109,
+    "CurrentWeaponLevel": 9,
+    "SlotNumber": 2,
+    "WeaponTraitId": 310510902
+  },
+  {
     "WeaponTraitChangePatternSetId": 3200301,
     "CurrentWeaponLevel": 1,
     "SlotNumber": 1,
@@ -56488,6 +61402,66 @@
     "CurrentWeaponLevel": 9,
     "SlotNumber": 1,
     "WeaponTraitId": 320390901
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3204901,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 1,
+    "WeaponTraitId": 320490101
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3204901,
+    "CurrentWeaponLevel": 1,
+    "SlotNumber": 2,
+    "WeaponTraitId": 320490102
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3204902,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 1,
+    "WeaponTraitId": 320490201
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3204902,
+    "CurrentWeaponLevel": 2,
+    "SlotNumber": 2,
+    "WeaponTraitId": 320490202
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3204903,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 1,
+    "WeaponTraitId": 320490301
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3204903,
+    "CurrentWeaponLevel": 3,
+    "SlotNumber": 2,
+    "WeaponTraitId": 320490302
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3204904,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 1,
+    "WeaponTraitId": 320490401
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3204904,
+    "CurrentWeaponLevel": 4,
+    "SlotNumber": 2,
+    "WeaponTraitId": 320490402
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3204905,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 1,
+    "WeaponTraitId": 320490501
+  },
+  {
+    "WeaponTraitChangePatternSetId": 3204905,
+    "CurrentWeaponLevel": 5,
+    "SlotNumber": 2,
+    "WeaponTraitId": 320490502
   },
   {
     "WeaponTraitChangePatternSetId": 3501001,

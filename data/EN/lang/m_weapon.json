@@ -852,6 +852,18 @@
     "value": "Heat Rod SSP"
   },
   {
+    "id": 120100100700070001,
+    "value": "Beam Naginata"
+  },
+  {
+    "id": 120100100700070002,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100100700070003,
+    "value": "Rocket Launcher"
+  },
+  {
     "id": 120100100700071001,
     "value": "Beam Naginata"
   },
@@ -874,6 +886,50 @@
   {
     "id": 120100100700080002,
     "value": "Missile Launcher"
+  },
+  {
+    "id": 120100100700096001,
+    "value": "Kick"
+  },
+  {
+    "id": 120100100700096002,
+    "value": "Head Mega Particle Cannon"
+  },
+  {
+    "id": 120100100700096003,
+    "value": "5-Barrel Arm Mega Particle Cannon"
+  },
+  {
+    "id": 120100100700096004,
+    "value": "All-Range Attack"
+  },
+  {
+    "id": 120100100700096090,
+    "value": "All-Range Attack SSP"
+  },
+  {
+    "id": 120100100700116001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100100700116002,
+    "value": "60mm Vulcan Gun"
+  },
+  {
+    "id": 120100100700116003,
+    "value": "Twin Beam Rifle"
+  },
+  {
+    "id": 120100100700116004,
+    "value": "360mm Cannon"
+  },
+  {
+    "id": 120100100700116005,
+    "value": "Missile Bay"
+  },
+  {
+    "id": 120100100700116090,
+    "value": "360mm Cannon SSP"
   },
   {
     "id": 120100100800010001,
@@ -20848,6 +20904,26 @@
     "value": "Javelin Bracer SSP"
   },
   {
+    "id": 120100150100255001,
+    "value": "Javelin Bracer"
+  },
+  {
+    "id": 120100150100255002,
+    "value": "Beam Bracer (Beam Cannon)"
+  },
+  {
+    "id": 120100150100255003,
+    "value": "Beam Bracer (Beam Machine Gun)"
+  },
+  {
+    "id": 120100150100255004,
+    "value": "Javelin Bracer & Beam Bracer EX"
+  },
+  {
+    "id": 120100150100255005,
+    "value": "Antidote"
+  },
+  {
     "id": 120100150100260001,
     "value": "Beam Saber"
   },
@@ -20926,6 +21002,26 @@
   {
     "id": 120100150100340090,
     "value": "Gussa Isvara SSP"
+  },
+  {
+    "id": 120100150100345001,
+    "value": "Composite Arms (Gunblade)"
+  },
+  {
+    "id": 120100150100345002,
+    "value": "Composite Arms (Beam Shot Rifle)"
+  },
+  {
+    "id": 120100150100345003,
+    "value": "Gussa Isvara"
+  },
+  {
+    "id": 120100150100345004,
+    "value": "Gussa Isvara EX"
+  },
+  {
+    "id": 120100150100345005,
+    "value": "Gussa Isvara"
   },
   {
     "id": 120100150100390001,
@@ -21662,6 +21758,18 @@
   {
     "id": 120100176400020204,
     "value": "Hyper Bazooka"
+  },
+  {
+    "id": 120100176400030001,
+    "value": "Beam Lance"
+  },
+  {
+    "id": 120100176400030002,
+    "value": "Launcher Shield"
+  },
+  {
+    "id": 120100176400030003,
+    "value": "Missile Launcher"
   },
   {
     "id": 120100176400031001,

@@ -2141,7 +2141,7 @@
   },
   {
     "id": 141200000101030201,
-    "value": "When Vigor is Max, \nincrease own ATK by 7%\nbut decrease own DEF by 5%."
+    "value": "When Vigor is Max,\nincrease ATK by 7%\nbut decrease DEF by 5%."
   },
   {
     "id": 141200000101030202,
@@ -2149,7 +2149,7 @@
   },
   {
     "id": 141200000101030203,
-    "value": "When Vigor is Supercharged,\nincrease own ATK by 15%\nbut decrease own DEF by 10%."
+    "value": "When Vigor is Supercharged,\nfurther increase ATK by 15%\nbut futher decrease DEF by 10%."
   },
   {
     "id": 141200000101030204,
@@ -2197,7 +2197,7 @@
   },
   {
     "id": 141200000101080202,
-    "value": "When HP is 25% or below,\nincrease ATK by 20%."
+    "value": "When HP is 25% or below,\nfurther increase ATK by 10%."
   },
   {
     "id": 141200000101090101,
@@ -2337,11 +2337,11 @@
   },
   {
     "id": 141200000101140101,
-    "value": "When HP is 75% or above,\nincrease own ATK by 10%.\nWhen HP is 50% or above,\nincrease own ATK by 5%."
+    "value": "When HP is 50% or higher,\nincrease ATK by 5%."
   },
   {
     "id": 141200000101140102,
-    "value": ""
+    "value": "When HP is 75% or higher,\nfurther increase ATK by 10%."
   },
   {
     "id": 141200000101150101,
@@ -3038,6 +3038,14 @@
   {
     "id": 141200000101650105,
     "value": "When own Vigor is Max or higher,\nincrease max range of special weapons by 5."
+  },
+  {
+    "id": 141200000101660101,
+    "value": "When HP is 25% or below,\napply Sway (Unit Ability) to self (once per battle)."
+  },
+  {
+    "id": 141200000101660102,
+    "value": "During the next fight after activating the effect increase Evasion by 100%."
   },
   {
     "id": 141200000200010101,
@@ -8524,6 +8532,38 @@
     "value": ""
   },
   {
+    "id": 141200000202750101,
+    "value": "When piloting Darilbalde (Season 2) (EX) and HP falls to 0% or below,\nrestores own HP by 5% (once only)."
+  },
+  {
+    "id": 141200000202750102,
+    "value": ""
+  },
+  {
+    "id": 141200000202750103,
+    "value": "When piloting units from specified series,\nincrease damage dealt to the enemy by 15%,\nand reduce damage taken by 15%."
+  },
+  {
+    "id": 141200000202750104,
+    "value": ""
+  },
+  {
+    "id": 141200000202760101,
+    "value": "Support Defense +1 time(s)"
+  },
+  {
+    "id": 141200000202760102,
+    "value": "When piloting units from specified series,\nincrease damage dealt to the enemy by 15%,\nand reduce damage taken by 15%."
+  },
+  {
+    "id": 141200000202760103,
+    "value": ""
+  },
+  {
+    "id": 141200000202770101,
+    "value": "When piloting units with specified tags,\nChance Step +1 time(s)."
+  },
+  {
     "id": 141200000202780101,
     "value": "Increase own Defense and Reaction by 5%."
   },
@@ -9037,39 +9077,39 @@
   },
   {
     "id": 141200000300150101,
-    "value": "Damage Taken from Physical Weapons Up 10%"
+    "value": "Damage Taken from Physical Weapons Up {0}%"
   },
   {
     "id": 141200000300150201,
-    "value": "Damage Taken from Physical Weapons Up 15%"
+    "value": "Damage Taken from Physical Weapons Up {0}%"
   },
   {
     "id": 141200000300150301,
-    "value": "Damage Taken from Physical Weapons Up 20%"
+    "value": "Damage Taken from Physical Weapons Up {0}%"
   },
   {
     "id": 141200000300150401,
-    "value": "Damage Taken from Physical Weapons Up 25%"
+    "value": "Damage Taken from Physical Weapons Up {0}%"
   },
   {
     "id": 141200000300150501,
-    "value": "Damage Taken from Physical Weapons Up 30%"
+    "value": "Damage Taken from Physical Weapons Up {0}%"
   },
   {
     "id": 141200000300150601,
-    "value": "Damage Taken from Physical Weapons Up 35%"
+    "value": "Damage Taken from Physical Weapons Up {0}%"
   },
   {
     "id": 141200000300150701,
-    "value": "Damage Taken from Physical Weapons Up 40%"
+    "value": "Damage Taken from Physical Weapons Up {0}%"
   },
   {
     "id": 141200000300150801,
-    "value": "Damage Taken from Physical Weapons Up 45%"
+    "value": "Damage Taken from Physical Weapons Up {0}%"
   },
   {
     "id": 141200000300150901,
-    "value": "Damage Taken from Physical Weapons Up 50%"
+    "value": "Damage Taken from Physical Weapons Up {0}%"
   },
   {
     "id": 141200000300160101,
@@ -9410,6 +9450,126 @@
   {
     "id": 141200000300370101,
     "value": "MOV Down by 1 (1 turn)."
+  },
+  {
+    "id": 141200000300390101,
+    "value": "The max range of Awaken Weapon is decrease by {0}."
+  },
+  {
+    "id": 141200000300390201,
+    "value": "The max range of Awaken Weapon is decrease by {0}."
+  },
+  {
+    "id": 141200000300390301,
+    "value": "The max range of Awaken Weapon is decrease by {0}."
+  },
+  {
+    "id": 141200000300390401,
+    "value": "The max range of Awaken Weapon is decrease by {0}."
+  },
+  {
+    "id": 141200000300390501,
+    "value": "The max range of Awaken Weapon is decrease by {0}."
+  },
+  {
+    "id": 141200000300390601,
+    "value": "The max range of Awaken Weapon is decrease by {0}."
+  },
+  {
+    "id": 141200000300390701,
+    "value": "The max range of Awaken Weapon is decrease by {0}."
+  },
+  {
+    "id": 141200000300390801,
+    "value": "The max range of Awaken Weapon is decrease by {0}."
+  },
+  {
+    "id": 141200000300390901,
+    "value": "The max range of Awaken Weapon is decrease by {0}."
+  },
+  {
+    "id": 141200000300410101,
+    "value": "Increase weapon Power by {0}%."
+  },
+  {
+    "id": 141200000300410201,
+    "value": "Increase weapon Power by {0}%."
+  },
+  {
+    "id": 141200000300410301,
+    "value": "Increase weapon Power by {0}%."
+  },
+  {
+    "id": 141200000300420101,
+    "value": "DEF Down {0}%"
+  },
+  {
+    "id": 141200000300420201,
+    "value": "DEF Down {0}%"
+  },
+  {
+    "id": 141200000300420301,
+    "value": "DEF Down {0}%"
+  },
+  {
+    "id": 141200000300430101,
+    "value": "DEF Down {0}%"
+  },
+  {
+    "id": 141200000300430201,
+    "value": "DEF Down {0}%"
+  },
+  {
+    "id": 141200000300430301,
+    "value": "DEF Down {0}%"
+  },
+  {
+    "id": 141200000300440101,
+    "value": "Damage Taken from Physical Weapons Up {0}%"
+  },
+  {
+    "id": 141200000300440201,
+    "value": "Damage Taken from Physical Weapons Up {0}%"
+  },
+  {
+    "id": 141200000300440301,
+    "value": "Damage Taken from Physical Weapons Up {0}%"
+  },
+  {
+    "id": 141200000300480101,
+    "value": "The max range of Awaken Weapon is decrease by {0}."
+  },
+  {
+    "id": 141200000300480201,
+    "value": "The max range of Awaken Weapon is decrease by {0}."
+  },
+  {
+    "id": 141200000300480301,
+    "value": "The max range of Awaken Weapon is decrease by {0}."
+  },
+  {
+    "id": 141200000300480401,
+    "value": "The max range of Awaken Weapon is decrease by {0}."
+  },
+  {
+    "id": 141200000300480501,
+    "value": "The max range of Awaken Weapon is decrease by {0}."
+  },
+  {
+    "id": 141200000300480601,
+    "value": "The max range of Awaken Weapon is decrease by {0}."
+  },
+  {
+    "id": 141200000300480701,
+    "value": "The max range of Awaken Weapon is decrease by {0}."
+  },
+  {
+    "id": 141200000300480801,
+    "value": "The max range of Awaken Weapon is decrease by {0}."
+  },
+  {
+    "id": 141200000300480901,
+    "value": "The max range of Awaken Weapon is decrease by {0}."
   },
   {
     "id": 141200000310010101,
@@ -10442,6 +10602,150 @@
   {
     "id": 141200000310490501,
     "value": "MOV Down {0}%."
+  },
+  {
+    "id": 141200000310500101,
+    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 5%)."
+  },
+  {
+    "id": 141200000310500102,
+    "value": ""
+  },
+  {
+    "id": 141200000310500201,
+    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 7%)."
+  },
+  {
+    "id": 141200000310500202,
+    "value": ""
+  },
+  {
+    "id": 141200000310500301,
+    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 10%)."
+  },
+  {
+    "id": 141200000310500302,
+    "value": ""
+  },
+  {
+    "id": 141200000310500401,
+    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 12%)."
+  },
+  {
+    "id": 141200000310500402,
+    "value": ""
+  },
+  {
+    "id": 141200000310500501,
+    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 15%)."
+  },
+  {
+    "id": 141200000310500502,
+    "value": ""
+  },
+  {
+    "id": 141200000310500601,
+    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 17%)."
+  },
+  {
+    "id": 141200000310500602,
+    "value": ""
+  },
+  {
+    "id": 141200000310500701,
+    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 20%)."
+  },
+  {
+    "id": 141200000310500702,
+    "value": ""
+  },
+  {
+    "id": 141200000310500801,
+    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 22%)."
+  },
+  {
+    "id": 141200000310500802,
+    "value": ""
+  },
+  {
+    "id": 141200000310500901,
+    "value": "The higher your remaining HP is, the greater Weapon Power increases (up to 25%)."
+  },
+  {
+    "id": 141200000310500902,
+    "value": ""
+  },
+  {
+    "id": 141200000310510101,
+    "value": "Damage Taken from Physical Weapons Up {0}%"
+  },
+  {
+    "id": 141200000310510102,
+    "value": ""
+  },
+  {
+    "id": 141200000310510201,
+    "value": "Damage Taken from Physical Weapons Up {0}%"
+  },
+  {
+    "id": 141200000310510202,
+    "value": ""
+  },
+  {
+    "id": 141200000310510301,
+    "value": "Damage Taken from Physical Weapons Up {0}%"
+  },
+  {
+    "id": 141200000310510302,
+    "value": ""
+  },
+  {
+    "id": 141200000310510401,
+    "value": "Damage Taken from Physical Weapons Up {0}%"
+  },
+  {
+    "id": 141200000310510402,
+    "value": ""
+  },
+  {
+    "id": 141200000310510501,
+    "value": "Damage Taken from Physical Weapons Up {0}%"
+  },
+  {
+    "id": 141200000310510502,
+    "value": ""
+  },
+  {
+    "id": 141200000310510601,
+    "value": "Damage Taken from Physical Weapons Up {0}%"
+  },
+  {
+    "id": 141200000310510602,
+    "value": ""
+  },
+  {
+    "id": 141200000310510701,
+    "value": "Damage Taken from Physical Weapons Up {0}%"
+  },
+  {
+    "id": 141200000310510702,
+    "value": ""
+  },
+  {
+    "id": 141200000310510801,
+    "value": "Damage Taken from Physical Weapons Up {0}%"
+  },
+  {
+    "id": 141200000310510802,
+    "value": ""
+  },
+  {
+    "id": 141200000310510901,
+    "value": "Damage Taken from Physical Weapons Up {0}%"
+  },
+  {
+    "id": 141200000310510902,
+    "value": ""
   },
   {
     "id": 141200000320030101,

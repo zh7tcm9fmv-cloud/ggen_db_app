@@ -978,5 +978,15 @@
     "ContentLanguageId": 170300000001151051,
     "ImageResourceId": "",
     "ScheduleId": 0
+  },
+  {
+    "Id": 1151061,
+    "TitleLanguageId": 170200000001151061,
+    "CategoryTypeIndex": 1,
+    "HelpCategoryId": 1151,
+    "SortOrder": 1151061,
+    "ContentLanguageId": 170300000001151061,
+    "ImageResourceId": "",
+    "ScheduleId": 0
   }
 ]

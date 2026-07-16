@@ -260,6 +260,11 @@
     "IsForceDisplayDaily": false
   },
   {
+    "IngameLoseTipsSetId": 2301,
+    "IngameLoseTipsId": 510008,
+    "IsForceDisplayDaily": false
+  },
+  {
     "IngameLoseTipsSetId": 3001,
     "IngameLoseTipsId": 510006,
     "IsForceDisplayDaily": false

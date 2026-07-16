@@ -6730,5 +6730,155 @@
     "Number": 0,
     "TerrainTypeIndex": 6,
     "TerrainCapabilityTypeIndex": 1
+  },
+  {
+    "MapNpcId": 920101000202000004,
+    "Number": 0,
+    "TerrainTypeIndex": 2,
+    "TerrainCapabilityTypeIndex": 3
+  },
+  {
+    "MapNpcId": 920101000202000004,
+    "Number": 0,
+    "TerrainTypeIndex": 3,
+    "TerrainCapabilityTypeIndex": 1
+  },
+  {
+    "MapNpcId": 920101000202000004,
+    "Number": 0,
+    "TerrainTypeIndex": 4,
+    "TerrainCapabilityTypeIndex": 2
+  },
+  {
+    "MapNpcId": 920101000202000004,
+    "Number": 0,
+    "TerrainTypeIndex": 5,
+    "TerrainCapabilityTypeIndex": 1
+  },
+  {
+    "MapNpcId": 920101000202000004,
+    "Number": 0,
+    "TerrainTypeIndex": 6,
+    "TerrainCapabilityTypeIndex": 1
+  },
+  {
+    "MapNpcId": 920102000202000004,
+    "Number": 0,
+    "TerrainTypeIndex": 2,
+    "TerrainCapabilityTypeIndex": 3
+  },
+  {
+    "MapNpcId": 920102000202000004,
+    "Number": 0,
+    "TerrainTypeIndex": 3,
+    "TerrainCapabilityTypeIndex": 1
+  },
+  {
+    "MapNpcId": 920102000202000004,
+    "Number": 0,
+    "TerrainTypeIndex": 4,
+    "TerrainCapabilityTypeIndex": 2
+  },
+  {
+    "MapNpcId": 920102000202000004,
+    "Number": 0,
+    "TerrainTypeIndex": 5,
+    "TerrainCapabilityTypeIndex": 1
+  },
+  {
+    "MapNpcId": 920102000202000004,
+    "Number": 0,
+    "TerrainTypeIndex": 6,
+    "TerrainCapabilityTypeIndex": 1
+  },
+  {
+    "MapNpcId": 920102002002000011,
+    "Number": 0,
+    "TerrainTypeIndex": 2,
+    "TerrainCapabilityTypeIndex": 3
+  },
+  {
+    "MapNpcId": 920102002002000011,
+    "Number": 0,
+    "TerrainTypeIndex": 3,
+    "TerrainCapabilityTypeIndex": 1
+  },
+  {
+    "MapNpcId": 920102002002000011,
+    "Number": 0,
+    "TerrainTypeIndex": 4,
+    "TerrainCapabilityTypeIndex": 2
+  },
+  {
+    "MapNpcId": 920102002002000011,
+    "Number": 0,
+    "TerrainTypeIndex": 5,
+    "TerrainCapabilityTypeIndex": 1
+  },
+  {
+    "MapNpcId": 920102002002000011,
+    "Number": 0,
+    "TerrainTypeIndex": 6,
+    "TerrainCapabilityTypeIndex": 1
+  },
+  {
+    "MapNpcId": 920102002002000012,
+    "Number": 0,
+    "TerrainTypeIndex": 2,
+    "TerrainCapabilityTypeIndex": 3
+  },
+  {
+    "MapNpcId": 920102002002000012,
+    "Number": 0,
+    "TerrainTypeIndex": 3,
+    "TerrainCapabilityTypeIndex": 1
+  },
+  {
+    "MapNpcId": 920102002002000012,
+    "Number": 0,
+    "TerrainTypeIndex": 4,
+    "TerrainCapabilityTypeIndex": 2
+  },
+  {
+    "MapNpcId": 920102002002000012,
+    "Number": 0,
+    "TerrainTypeIndex": 5,
+    "TerrainCapabilityTypeIndex": 1
+  },
+  {
+    "MapNpcId": 920102002002000012,
+    "Number": 0,
+    "TerrainTypeIndex": 6,
+    "TerrainCapabilityTypeIndex": 1
+  },
+  {
+    "MapNpcId": 920102002002000013,
+    "Number": 0,
+    "TerrainTypeIndex": 2,
+    "TerrainCapabilityTypeIndex": 3
+  },
+  {
+    "MapNpcId": 920102002002000013,
+    "Number": 0,
+    "TerrainTypeIndex": 3,
+    "TerrainCapabilityTypeIndex": 1
+  },
+  {
+    "MapNpcId": 920102002002000013,
+    "Number": 0,
+    "TerrainTypeIndex": 4,
+    "TerrainCapabilityTypeIndex": 2
+  },
+  {
+    "MapNpcId": 920102002002000013,
+    "Number": 0,
+    "TerrainTypeIndex": 5,
+    "TerrainCapabilityTypeIndex": 1
+  },
+  {
+    "MapNpcId": 920102002002000013,
+    "Number": 0,
+    "TerrainTypeIndex": 6,
+    "TerrainCapabilityTypeIndex": 1
   }
 ]

@@ -336,6 +336,10 @@
     "value": "Units eligible for event bonuses deal more damage in event stages.\nBe sure to include them in your formation."
   },
   {
+    "id": 170800000000510008,
+    "value": "Using the character skill Transmission gives you an advantage in battle."
+  },
+  {
     "id": 170800000000520101,
     "value": "Some weapons can inflict harmful effects on the enemy. Start by assessing \nthe enemy MAP Weapon's range, then move the Units who can inflict effects on the enemy out of its way!"
   },
@@ -654,6 +658,74 @@
   {
     "id": 170800000000950007,
     "value": "By clearing the checkpoint stage in a previously held Tower Event of the same name,\nyou may use stage skipping in the next Tower Event, letting you jump ahead to later levels."
+  },
+  {
+    "id": 170800000000960101,
+    "value": "This is a special story event that lets you investigate history through a simulator.\nExplore alternative timelines as you progress through the stages."
+  },
+  {
+    "id": 170800000000960102,
+    "value": "This time, you will examine the events of U.C. 0079 from each side:\nthe Earth Federation Forces and the Principality of Zeon."
+  },
+  {
+    "id": 170800000000960103,
+    "value": "Clear both the Earth Federation Forces and the Principality of Zeon routes to take on the Final Investigation.\nWhat if both forces met at their full potential? Now you can put the theory to practice."
+  },
+  {
+    "id": 170800000000960104,
+    "value": "As you play through the story, you can acquire units and other special rewards.\nAlso, by completing the stages in each route, you can earn completion rewards."
+  },
+  {
+    "id": 170800000000960105,
+    "value": "Obtain reports while progressing through the stages, and after collecting enough of them,\nunlock stages that serve as historical branching points."
+  },
+  {
+    "id": 170800000000960106,
+    "value": "Obtaining the report at the end of the Final Investigation will unlock missions."
+  },
+  {
+    "id": 170800000000960107,
+    "value": "You can exchange E-Medals in the shop for various items.\nIn addition to mission rewards and stage first-clear rewards, E-Medals are also available as a stage clear reward for the Final Investigation."
+  },
+  {
+    "id": 170800000000960108,
+    "value": "You can earn event-wide progress rewards from your total story, report, and mission progress.\nYou can also earn a special title by reaching 100% completion."
+  },
+  {
+    "id": 170800000000960201,
+    "value": "There are three types of stages: Battle, Story, and Report.\nClearing one stage allows you to progress to the next."
+  },
+  {
+    "id": 170800000000960202,
+    "value": "Stages will remain locked without the required reports, triggering the \"insufficient reports\" status.\nTrack down the missing reports by number."
+  },
+  {
+    "id": 170800000000960203,
+    "value": "Historical branching points will generate Turning Point stages alongside normal stages.\nBy fulfilling the Branch Victory Conditions, you will be able to progress through What If stages."
+  },
+  {
+    "id": 170800000000960204,
+    "value": "Continuing investigations through the E Simulator requires special points called EP.\nEP recover over time, but can also be restored with EP packs from the Capital Shop."
+  },
+  {
+    "id": 170800000000960205,
+    "value": "Units eligible for event bonuses deal extra damage in event stages.\nBe sure to include them in your formation."
+  },
+  {
+    "id": 170800000000960301,
+    "value": "The Mission screen lets you check mission conditions and target units for each stage.\nClaim rewards upon meeting the conditions."
+  },
+  {
+    "id": 170800000000960302,
+    "value": "On Sortie Preparations, Swap and Batch Formation let you use Mission Filter\nto narrow down target units and characters for each mission."
+  },
+  {
+    "id": 170800000000960303,
+    "value": "You can also use Auto-Form based on the Mission Filter results."
+  },
+  {
+    "id": 170800000000960401,
+    "value": "On the Reports screen, you can check the list of the Reports you have acquired.\nUse it to review the results of your previous investigations."
   },
   {
     "id": 170800000000970001,

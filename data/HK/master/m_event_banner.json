@@ -280,5 +280,11 @@
     "EventId": 240002,
     "Priority": 26043001,
     "TransitionId": 12000000240002
+  },
+  {
+    "Id": 250001,
+    "EventId": 250001,
+    "Priority": 26073001,
+    "TransitionId": 12000000250001
   }
 ]

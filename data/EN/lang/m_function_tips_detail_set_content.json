@@ -348,6 +348,10 @@
     "value": "Event Bonus"
   },
   {
+    "id": 170700000000510008,
+    "value": ""
+  },
+  {
     "id": 170700000000900001,
     "value": "Story Events"
   },
@@ -578,6 +582,74 @@
   {
     "id": 170700000000950007,
     "value": "Checkpoint"
+  },
+  {
+    "id": 170700000000960101,
+    "value": "The E Simulator"
+  },
+  {
+    "id": 170700000000960102,
+    "value": "Story"
+  },
+  {
+    "id": 170700000000960103,
+    "value": "Final Investigation"
+  },
+  {
+    "id": 170700000000960104,
+    "value": "Story Rewards"
+  },
+  {
+    "id": 170700000000960105,
+    "value": "Reports"
+  },
+  {
+    "id": 170700000000960106,
+    "value": "Missions"
+  },
+  {
+    "id": 170700000000960107,
+    "value": "E-Medal"
+  },
+  {
+    "id": 170700000000960108,
+    "value": "Event-Wide Progress Rewards"
+  },
+  {
+    "id": 170700000000960201,
+    "value": "Stage Types"
+  },
+  {
+    "id": 170700000000960202,
+    "value": "Insufficient Reports"
+  },
+  {
+    "id": 170700000000960203,
+    "value": "Turning Point"
+  },
+  {
+    "id": 170700000000960204,
+    "value": "EP"
+  },
+  {
+    "id": 170700000000960205,
+    "value": "Event Bonuses"
+  },
+  {
+    "id": 170700000000960301,
+    "value": "Missions"
+  },
+  {
+    "id": 170700000000960302,
+    "value": "Mission Filter"
+  },
+  {
+    "id": 170700000000960303,
+    "value": "Auto-Form"
+  },
+  {
+    "id": 170700000000960401,
+    "value": "Reports"
   },
   {
     "id": 170700000000970001,

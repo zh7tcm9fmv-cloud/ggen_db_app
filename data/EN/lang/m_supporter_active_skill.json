@@ -312,6 +312,10 @@
     "value": "EN Restoration"
   },
   {
+    "id": 160400001501000550,
+    "value": "EN Restoration"
+  },
+  {
     "id": 160400001705000150,
     "value": "EN Restoration"
   },
@@ -644,6 +648,10 @@
     "value": "Allies in range:\nRestore EN by 50%"
   },
   {
+    "id": 160500001501000550,
+    "value": "Allies in range:\nRestore EN by 50%"
+  },
+  {
     "id": 160500001705000150,
     "value": "Allies in range:\nRestore EN by 50%"
   },
@@ -950,6 +958,10 @@
   {
     "id": 160900001501000450,
     "value": "Let's get started, Eri."
+  },
+  {
+    "id": 160900001501000550,
+    "value": "Now, fix, release!"
   },
   {
     "id": 160900001705000150,

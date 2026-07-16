@@ -1,0 +1,128 @@
+[
+  {
+    "Id": 2500010010,
+    "BromideUnitId": 0,
+    "LineDirectionTypeIndex": 0,
+    "IsLineVisible": false
+  },
+  {
+    "Id": 2500010070,
+    "BromideUnitId": 0,
+    "LineDirectionTypeIndex": 1,
+    "IsLineVisible": true
+  },
+  {
+    "Id": 2500010100,
+    "BromideUnitId": 0,
+    "LineDirectionTypeIndex": 2,
+    "IsLineVisible": true
+  },
+  {
+    "Id": 2500010120,
+    "BromideUnitId": 0,
+    "LineDirectionTypeIndex": 0,
+    "IsLineVisible": false
+  },
+  {
+    "Id": 2500010160,
+    "BromideUnitId": 0,
+    "LineDirectionTypeIndex": 1,
+    "IsLineVisible": true
+  },
+  {
+    "Id": 2500010190,
+    "BromideUnitId": 0,
+    "LineDirectionTypeIndex": 3,
+    "IsLineVisible": true
+  },
+  {
+    "Id": 2500010210,
+    "BromideUnitId": 0,
+    "LineDirectionTypeIndex": 0,
+    "IsLineVisible": false
+  },
+  {
+    "Id": 2500010260,
+    "BromideUnitId": 0,
+    "LineDirectionTypeIndex": 1,
+    "IsLineVisible": true
+  },
+  {
+    "Id": 2500010280,
+    "BromideUnitId": 0,
+    "LineDirectionTypeIndex": 0,
+    "IsLineVisible": false
+  },
+  {
+    "Id": 2500010340,
+    "BromideUnitId": 0,
+    "LineDirectionTypeIndex": 1,
+    "IsLineVisible": true
+  },
+  {
+    "Id": 2500010370,
+    "BromideUnitId": 0,
+    "LineDirectionTypeIndex": 2,
+    "IsLineVisible": true
+  },
+  {
+    "Id": 2500010390,
+    "BromideUnitId": 0,
+    "LineDirectionTypeIndex": 0,
+    "IsLineVisible": false
+  },
+  {
+    "Id": 2500010430,
+    "BromideUnitId": 0,
+    "LineDirectionTypeIndex": 1,
+    "IsLineVisible": true
+  },
+  {
+    "Id": 2500010460,
+    "BromideUnitId": 0,
+    "LineDirectionTypeIndex": 3,
+    "IsLineVisible": true
+  },
+  {
+    "Id": 2500010480,
+    "BromideUnitId": 0,
+    "LineDirectionTypeIndex": 0,
+    "IsLineVisible": false
+  },
+  {
+    "Id": 2500010530,
+    "BromideUnitId": 0,
+    "LineDirectionTypeIndex": 1,
+    "IsLineVisible": true
+  },
+  {
+    "Id": 2500010550,
+    "BromideUnitId": 0,
+    "LineDirectionTypeIndex": 0,
+    "IsLineVisible": false
+  },
+  {
+    "Id": 2500010580,
+    "BromideUnitId": 0,
+    "LineDirectionTypeIndex": 0,
+    "IsLineVisible": false
+  },
+  {
+    "Id": 2500010610,
+    "BromideUnitId": 0,
+    "LineDirectionTypeIndex": 1,
+    "IsLineVisible": true
+  },
+  {
+    "Id": 2500010630,
+    "BromideUnitId": 0,
+    "LineDirectionTypeIndex": 0,
+    "IsLineVisible": false
+  },
+  {
+    "Id": 2500010650,
+    "BromideUnitId": 0,
+    "LineDirectionTypeIndex": 0,
+    "IsLineVisible": false
+  }
+]

@@ -4316,6 +4316,402 @@
     "value": "Self-Destruct"
   },
   {
+    "id": 140700000300880101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300880102,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 1"
+  },
+  {
+    "id": 140700000300880103,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 1"
+  },
+  {
+    "id": 140700000300880201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300880202,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 2"
+  },
+  {
+    "id": 140700000300880203,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 2"
+  },
+  {
+    "id": 140700000300880301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300880302,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 3"
+  },
+  {
+    "id": 140700000300880303,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 3"
+  },
+  {
+    "id": 140700000300880401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300880402,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 4"
+  },
+  {
+    "id": 140700000300880403,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 4"
+  },
+  {
+    "id": 140700000300880501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300880502,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 5"
+  },
+  {
+    "id": 140700000300880503,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 5"
+  },
+  {
+    "id": 140700000300880601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300880602,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 6"
+  },
+  {
+    "id": 140700000300880603,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 6"
+  },
+  {
+    "id": 140700000300880701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300880702,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 7"
+  },
+  {
+    "id": 140700000300880703,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 7"
+  },
+  {
+    "id": 140700000300880801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300880802,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 8"
+  },
+  {
+    "id": 140700000300880803,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 8"
+  },
+  {
+    "id": 140700000300880901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300880902,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 9"
+  },
+  {
+    "id": 140700000300880903,
+    "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 9"
+  },
+  {
+    "id": 140700000300910101,
+    "value": "With More Remaining HP, Higher Weapon Power LV 1"
+  },
+  {
+    "id": 140700000300910102,
+    "value": "Increased Weapon Power Maximum Value Boost"
+  },
+  {
+    "id": 140700000300910201,
+    "value": "With More Remaining HP, Higher Weapon Power LV 2"
+  },
+  {
+    "id": 140700000300910202,
+    "value": "Increased Weapon Power Maximum Value Boost"
+  },
+  {
+    "id": 140700000300910301,
+    "value": "With More Remaining HP, Higher Weapon Power LV 3"
+  },
+  {
+    "id": 140700000300910302,
+    "value": "Increased Weapon Power Maximum Value Boost"
+  },
+  {
+    "id": 140700000300910401,
+    "value": "With More Remaining HP, Higher Weapon Power LV 4"
+  },
+  {
+    "id": 140700000300910402,
+    "value": "Increased Weapon Power Maximum Value Boost"
+  },
+  {
+    "id": 140700000300910501,
+    "value": "With More Remaining HP, Higher Weapon Power LV 5"
+  },
+  {
+    "id": 140700000300910502,
+    "value": "Increased Weapon Power Maximum Value Boost"
+  },
+  {
+    "id": 140700000300910601,
+    "value": "With More Remaining HP, Higher Weapon Power LV 6"
+  },
+  {
+    "id": 140700000300910602,
+    "value": "Increased Weapon Power Maximum Value Boost"
+  },
+  {
+    "id": 140700000300910701,
+    "value": "With More Remaining HP, Higher Weapon Power LV 7"
+  },
+  {
+    "id": 140700000300910702,
+    "value": "Increased Weapon Power Maximum Value Boost"
+  },
+  {
+    "id": 140700000300910801,
+    "value": "With More Remaining HP, Higher Weapon Power LV 8"
+  },
+  {
+    "id": 140700000300910802,
+    "value": "Increased Weapon Power Maximum Value Boost"
+  },
+  {
+    "id": 140700000300910901,
+    "value": "With More Remaining HP, Higher Weapon Power LV 9"
+  },
+  {
+    "id": 140700000300910902,
+    "value": "Increased Weapon Power Maximum Value Boost"
+  },
+  {
+    "id": 140700000300920101,
+    "value": "Piercing LV 1"
+  },
+  {
+    "id": 140700000300920102,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300920201,
+    "value": "Piercing LV 2"
+  },
+  {
+    "id": 140700000300920202,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300920301,
+    "value": "Piercing LV 3"
+  },
+  {
+    "id": 140700000300920302,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300920401,
+    "value": "Piercing LV 4"
+  },
+  {
+    "id": 140700000300920402,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300920501,
+    "value": "Piercing LV 5"
+  },
+  {
+    "id": 140700000300920502,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300920601,
+    "value": "Piercing LV 6"
+  },
+  {
+    "id": 140700000300920602,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300920701,
+    "value": "Piercing LV 7"
+  },
+  {
+    "id": 140700000300920702,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300920801,
+    "value": "Piercing LV 8"
+  },
+  {
+    "id": 140700000300920802,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300920901,
+    "value": "Piercing LV 9"
+  },
+  {
+    "id": 140700000300920902,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300930101,
+    "value": "Decreased DEF [1 turn] LV 1"
+  },
+  {
+    "id": 140700000300930102,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300930201,
+    "value": "Decreased DEF [1 turn] LV 2"
+  },
+  {
+    "id": 140700000300930202,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300930301,
+    "value": "Decreased DEF [1 turn] LV 3"
+  },
+  {
+    "id": 140700000300930302,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300930401,
+    "value": "Decreased DEF [1 turn] LV 4"
+  },
+  {
+    "id": 140700000300930402,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300930501,
+    "value": "Decreased DEF [1 turn] LV 5"
+  },
+  {
+    "id": 140700000300930502,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300930601,
+    "value": "Decreased DEF [1 turn] LV 6"
+  },
+  {
+    "id": 140700000300930602,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300930701,
+    "value": "Decreased DEF [1 turn] LV 7"
+  },
+  {
+    "id": 140700000300930702,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300930801,
+    "value": "Decreased DEF [1 turn] LV 8"
+  },
+  {
+    "id": 140700000300930802,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300930901,
+    "value": "Decreased DEF [1 turn] LV 9"
+  },
+  {
+    "id": 140700000300930902,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300940101,
+    "value": "Increased Physical Damage [1 turn] LV 1"
+  },
+  {
+    "id": 140700000300940102,
+    "value": "Increased Physical Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000300940201,
+    "value": "Increased Physical Damage [1 turn] LV 2"
+  },
+  {
+    "id": 140700000300940202,
+    "value": "Increased Physical Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000300940301,
+    "value": "Increased Physical Damage [1 turn] LV 3"
+  },
+  {
+    "id": 140700000300940302,
+    "value": "Increased Physical Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000300940401,
+    "value": "Increased Physical Damage [1 turn] LV 4"
+  },
+  {
+    "id": 140700000300940402,
+    "value": "Increased Physical Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000300940501,
+    "value": "Increased Physical Damage [1 turn] LV 5"
+  },
+  {
+    "id": 140700000300940502,
+    "value": "Increased Physical Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000300940601,
+    "value": "Increased Physical Damage [1 turn] LV 6"
+  },
+  {
+    "id": 140700000300940602,
+    "value": "Increased Physical Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000300940701,
+    "value": "Increased Physical Damage [1 turn] LV 7"
+  },
+  {
+    "id": 140700000300940702,
+    "value": "Increased Physical Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000300940801,
+    "value": "Increased Physical Damage [1 turn] LV 8"
+  },
+  {
+    "id": 140700000300940802,
+    "value": "Increased Physical Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000300940901,
+    "value": "Increased Physical Damage [1 turn] LV 9"
+  },
+  {
+    "id": 140700000300940902,
+    "value": "Increased Physical Damage Effect Value Boost"
+  },
+  {
     "id": 140700000310010101,
     "value": "Decreased ATK [1 turn] LV 1"
   },
@@ -5576,6 +5972,150 @@
     "value": "MOV Down LV 5"
   },
   {
+    "id": 140700000310500101,
+    "value": "With More Remaining HP, Higher Weapon Power LV 1"
+  },
+  {
+    "id": 140700000310500102,
+    "value": "Increased Weapon Power Maximum Value Boost"
+  },
+  {
+    "id": 140700000310500201,
+    "value": "With More Remaining HP, Higher Weapon Power LV 2"
+  },
+  {
+    "id": 140700000310500202,
+    "value": "Increased Weapon Power Maximum Value Boost"
+  },
+  {
+    "id": 140700000310500301,
+    "value": "With More Remaining HP, Higher Weapon Power LV 3"
+  },
+  {
+    "id": 140700000310500302,
+    "value": "Increased Weapon Power Maximum Value Boost"
+  },
+  {
+    "id": 140700000310500401,
+    "value": "With More Remaining HP, Higher Weapon Power LV 4"
+  },
+  {
+    "id": 140700000310500402,
+    "value": "Increased Weapon Power Maximum Value Boost"
+  },
+  {
+    "id": 140700000310500501,
+    "value": "With More Remaining HP, Higher Weapon Power LV 5"
+  },
+  {
+    "id": 140700000310500502,
+    "value": "Increased Weapon Power Maximum Value Boost"
+  },
+  {
+    "id": 140700000310500601,
+    "value": "With More Remaining HP, Higher Weapon Power LV 6"
+  },
+  {
+    "id": 140700000310500602,
+    "value": "Increased Weapon Power Maximum Value Boost"
+  },
+  {
+    "id": 140700000310500701,
+    "value": "With More Remaining HP, Higher Weapon Power LV 7"
+  },
+  {
+    "id": 140700000310500702,
+    "value": "Increased Weapon Power Maximum Value Boost"
+  },
+  {
+    "id": 140700000310500801,
+    "value": "With More Remaining HP, Higher Weapon Power LV 8"
+  },
+  {
+    "id": 140700000310500802,
+    "value": "Increased Weapon Power Maximum Value Boost"
+  },
+  {
+    "id": 140700000310500901,
+    "value": "With More Remaining HP, Higher Weapon Power LV 9"
+  },
+  {
+    "id": 140700000310500902,
+    "value": "Increased Weapon Power Maximum Value Boost"
+  },
+  {
+    "id": 140700000310510101,
+    "value": "Increased Physical Damage [1 turn] LV 1"
+  },
+  {
+    "id": 140700000310510102,
+    "value": "Increased Physical Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000310510201,
+    "value": "Increased Physical Damage [1 turn] LV 2"
+  },
+  {
+    "id": 140700000310510202,
+    "value": "Increased Physical Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000310510301,
+    "value": "Increased Physical Damage [1 turn] LV 3"
+  },
+  {
+    "id": 140700000310510302,
+    "value": "Increased Physical Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000310510401,
+    "value": "Increased Physical Damage [1 turn] LV 4"
+  },
+  {
+    "id": 140700000310510402,
+    "value": "Increased Physical Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000310510501,
+    "value": "Increased Physical Damage [1 turn] LV 5"
+  },
+  {
+    "id": 140700000310510502,
+    "value": "Increased Physical Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000310510601,
+    "value": "Increased Physical Damage [1 turn] LV 6"
+  },
+  {
+    "id": 140700000310510602,
+    "value": "Increased Physical Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000310510701,
+    "value": "Increased Physical Damage [1 turn] LV 7"
+  },
+  {
+    "id": 140700000310510702,
+    "value": "Increased Physical Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000310510801,
+    "value": "Increased Physical Damage [1 turn] LV 8"
+  },
+  {
+    "id": 140700000310510802,
+    "value": "Increased Physical Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000310510901,
+    "value": "Increased Physical Damage [1 turn] LV 9"
+  },
+  {
+    "id": 140700000310510902,
+    "value": "Increased Physical Damage Effect Value Boost"
+  },
+  {
     "id": 140700000320030101,
     "value": "Decreased ATK [1 turn] LV 1"
   },
@@ -6192,20 +6732,40 @@
     "value": "MOV Down LV 1"
   },
   {
+    "id": 140700000320490102,
+    "value": "MOV Down [1 turn(s)] LV 1."
+  },
+  {
     "id": 140700000320490201,
     "value": "MOV Down LV 2"
+  },
+  {
+    "id": 140700000320490202,
+    "value": "MOV Down [1 turn(s)] LV 1."
   },
   {
     "id": 140700000320490301,
     "value": "MOV Down LV 3"
   },
   {
+    "id": 140700000320490302,
+    "value": "MOV Down [1 turn(s)] LV 1."
+  },
+  {
     "id": 140700000320490401,
     "value": "MOV Down LV 4"
   },
   {
+    "id": 140700000320490402,
+    "value": "MOV Down [1 turn(s)] LV 1."
+  },
+  {
     "id": 140700000320490501,
     "value": "MOV Down LV 5"
+  },
+  {
+    "id": 140700000320490502,
+    "value": "MOV Down [1 turn(s)] LV 1."
   },
   {
     "id": 140700000350100001,
@@ -12052,6 +12612,402 @@
     "value": "This unit becomes unable to fight."
   },
   {
+    "id": 140800000300880101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300880102,
+    "value": "Inflict \"Awakened Weapon Max Range Down 1\" on the enemy (1 turn)."
+  },
+  {
+    "id": 140800000300880103,
+    "value": "When engaging enemies with the \"GUND-ARM\" tag,\nincrease awaken weapon max range down effect by 1."
+  },
+  {
+    "id": 140800000300880201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300880202,
+    "value": "Inflict \"Awakened Weapon Max Range Down 2\" on the enemy (1 turn)."
+  },
+  {
+    "id": 140800000300880203,
+    "value": "When engaging enemies with the \"GUND-ARM\" tag,\nincrease awaken weapon max range down effect by 2."
+  },
+  {
+    "id": 140800000300880301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300880302,
+    "value": "Inflict \"Awakened Weapon Max Range Down 3\" on the enemy (1 turn)."
+  },
+  {
+    "id": 140800000300880303,
+    "value": "When engaging enemies with the \"GUND-ARM\" tag,\nincrease awaken weapon max range down effect by 3."
+  },
+  {
+    "id": 140800000300880401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300880402,
+    "value": "Inflict \"Awakened Weapon Max Range Down 4\" on the enemy (1 turn)."
+  },
+  {
+    "id": 140800000300880403,
+    "value": "When engaging enemies with the \"GUND-ARM\" tag,\nincrease awaken weapon max range down effect by 4."
+  },
+  {
+    "id": 140800000300880501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300880502,
+    "value": "Inflict \"Awakened Weapon Max Range Down 5\" on the enemy (1 turn)."
+  },
+  {
+    "id": 140800000300880503,
+    "value": "When engaging enemies with the \"GUND-ARM\" tag,\nincrease awaken weapon max range down effect by 5."
+  },
+  {
+    "id": 140800000300880601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300880602,
+    "value": "Inflict \"Awakened Weapon Max Range Down 6\" on the enemy (1 turn)."
+  },
+  {
+    "id": 140800000300880603,
+    "value": "When engaging enemies with the \"GUND-ARM\" tag,\nincrease awaken weapon max range down effect by 6."
+  },
+  {
+    "id": 140800000300880701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300880702,
+    "value": "Inflict \"Awakened Weapon Max Range Down 7\" on the enemy (1 turn)."
+  },
+  {
+    "id": 140800000300880703,
+    "value": "When engaging enemies with the \"GUND-ARM\" tag,\nincrease awaken weapon max range down effect by 7."
+  },
+  {
+    "id": 140800000300880801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300880802,
+    "value": "Inflict \"Awakened Weapon Max Range Down 8\" on the enemy (1 turn)."
+  },
+  {
+    "id": 140800000300880803,
+    "value": "When engaging enemies with the \"GUND-ARM\" tag,\nincrease awaken weapon max range down effect by 8."
+  },
+  {
+    "id": 140800000300880901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300880902,
+    "value": "Inflict \"Awakened Weapon Max Range Down 9\" on the enemy (1 turn)."
+  },
+  {
+    "id": 140800000300880903,
+    "value": "When engaging enemies with the \"GUND-ARM\" tag,\nincrease awaken weapon max range down effect by 9."
+  },
+  {
+    "id": 140800000300910101,
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 5%)."
+  },
+  {
+    "id": 140800000300910102,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the maximum value for Increased Weapon Power."
+  },
+  {
+    "id": 140800000300910201,
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 7%)."
+  },
+  {
+    "id": 140800000300910202,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the maximum value for Increased Weapon Power."
+  },
+  {
+    "id": 140800000300910301,
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 10%)."
+  },
+  {
+    "id": 140800000300910302,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the maximum value for Increased Weapon Power."
+  },
+  {
+    "id": 140800000300910401,
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 12%)."
+  },
+  {
+    "id": 140800000300910402,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the maximum value for Increased Weapon Power."
+  },
+  {
+    "id": 140800000300910501,
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 15%)."
+  },
+  {
+    "id": 140800000300910502,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the maximum value for Increased Weapon Power."
+  },
+  {
+    "id": 140800000300910601,
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 17%)."
+  },
+  {
+    "id": 140800000300910602,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the maximum value for Increased Weapon Power."
+  },
+  {
+    "id": 140800000300910701,
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 20%)."
+  },
+  {
+    "id": 140800000300910702,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the maximum value for Increased Weapon Power."
+  },
+  {
+    "id": 140800000300910801,
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 22%)."
+  },
+  {
+    "id": 140800000300910802,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the maximum value for Increased Weapon Power."
+  },
+  {
+    "id": 140800000300910901,
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 25%)."
+  },
+  {
+    "id": 140800000300910902,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the maximum value for Increased Weapon Power."
+  },
+  {
+    "id": 140800000300920101,
+    "value": "When this unit attacks, reduce enemy's DEF by 2% for this attack."
+  },
+  {
+    "id": 140800000300920102,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300920201,
+    "value": "When this unit attacks, reduce enemy's DEF by 5% for this attack."
+  },
+  {
+    "id": 140800000300920202,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300920301,
+    "value": "When this unit attacks, reduce enemy's DEF by 10% for this attack."
+  },
+  {
+    "id": 140800000300920302,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300920401,
+    "value": "When this unit attacks, reduce enemy's DEF by 15% for this attack."
+  },
+  {
+    "id": 140800000300920402,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300920501,
+    "value": "When this unit attacks, reduce enemy's DEF by 20% for this attack."
+  },
+  {
+    "id": 140800000300920502,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300920601,
+    "value": "When this unit attacks, reduce enemy's DEF by 25% for this attack."
+  },
+  {
+    "id": 140800000300920602,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300920701,
+    "value": "When this unit attacks, reduce enemy's DEF by 30% for this attack."
+  },
+  {
+    "id": 140800000300920702,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300920801,
+    "value": "When this unit attacks, reduce enemy's DEF by 35% for this attack."
+  },
+  {
+    "id": 140800000300920802,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300920901,
+    "value": "When this unit attacks, reduce enemy's DEF by 40% for this attack."
+  },
+  {
+    "id": 140800000300920902,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300930101,
+    "value": "Inflict \"DEF Down 10%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300930102,
+    "value": "When engaging enemies that include EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300930201,
+    "value": "Inflict \"DEF Down 15%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300930202,
+    "value": "When engaging enemies that include EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300930301,
+    "value": "Inflict \"DEF Down 20%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300930302,
+    "value": "When engaging enemies that include EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300930401,
+    "value": "Inflict \"DEF Down 25%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300930402,
+    "value": "When engaging enemies that include EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300930501,
+    "value": "Inflict \"DEF Down 30%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300930502,
+    "value": "When engaging enemies that include EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300930601,
+    "value": "Inflict \"DEF Down 35%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300930602,
+    "value": "When engaging enemies that include EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300930701,
+    "value": "Inflict \"DEF Down 40%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300930702,
+    "value": "When engaging enemies that include EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300930801,
+    "value": "Inflict \"DEF Down 45%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300930802,
+    "value": "When engaging enemies that include EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300930901,
+    "value": "Inflict \"DEF Down 50%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300930902,
+    "value": "When engaging enemies that include EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300940101,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 10%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300940102,
+    "value": "When engaging enemies that include  EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Increased Physical Damage."
+  },
+  {
+    "id": 140800000300940201,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 15%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300940202,
+    "value": "When engaging enemies that include  EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Increased Physical Damage."
+  },
+  {
+    "id": 140800000300940301,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 20%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300940302,
+    "value": "When engaging enemies that include  EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Increased Physical Damage."
+  },
+  {
+    "id": 140800000300940401,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 25%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300940402,
+    "value": "When engaging enemies that include  EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Increased Physical Damage."
+  },
+  {
+    "id": 140800000300940501,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 30%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300940502,
+    "value": "When engaging enemies that include  EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Increased Physical Damage."
+  },
+  {
+    "id": 140800000300940601,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 35%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300940602,
+    "value": "When engaging enemies that include  EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Increased Physical Damage."
+  },
+  {
+    "id": 140800000300940701,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 40%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300940702,
+    "value": "When engaging enemies that include  EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Increased Physical Damage."
+  },
+  {
+    "id": 140800000300940801,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 45%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300940802,
+    "value": "When engaging enemies that include  EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Increased Physical Damage."
+  },
+  {
+    "id": 140800000300940901,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 50%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300940902,
+    "value": "When engaging enemies that include  EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Increased Physical Damage."
+  },
+  {
     "id": 140800000310010101,
     "value": "Inflict \"ATK Down 10%\" on the enemy [1 turn]."
   },
@@ -13312,6 +14268,150 @@
     "value": ""
   },
   {
+    "id": 140800000310500101,
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 5%)."
+  },
+  {
+    "id": 140800000310500102,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the maximum value for Increased Weapon Power."
+  },
+  {
+    "id": 140800000310500201,
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 7%)."
+  },
+  {
+    "id": 140800000310500202,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the maximum value for Increased Weapon Power."
+  },
+  {
+    "id": 140800000310500301,
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 10%)."
+  },
+  {
+    "id": 140800000310500302,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the maximum value for Increased Weapon Power."
+  },
+  {
+    "id": 140800000310500401,
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 12%)."
+  },
+  {
+    "id": 140800000310500402,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the maximum value for Increased Weapon Power."
+  },
+  {
+    "id": 140800000310500501,
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 15%)."
+  },
+  {
+    "id": 140800000310500502,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the maximum value for Increased Weapon Power."
+  },
+  {
+    "id": 140800000310500601,
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 17%)."
+  },
+  {
+    "id": 140800000310500602,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the maximum value for Increased Weapon Power."
+  },
+  {
+    "id": 140800000310500701,
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 20%)."
+  },
+  {
+    "id": 140800000310500702,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the maximum value for Increased Weapon Power."
+  },
+  {
+    "id": 140800000310500801,
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 22%)."
+  },
+  {
+    "id": 140800000310500802,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the maximum value for Increased Weapon Power."
+  },
+  {
+    "id": 140800000310500901,
+    "value": "The higher this unit's remaining HP, the more Weapon Power increases (up to 25%)."
+  },
+  {
+    "id": 140800000310500902,
+    "value": "When engaging enemies that include Zeon tag,\nadds 3% to the maximum value for Increased Weapon Power."
+  },
+  {
+    "id": 140800000310510101,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 10%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000310510102,
+    "value": "When engaging enemies that include  EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Increased Physical Damage."
+  },
+  {
+    "id": 140800000310510201,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 15%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000310510202,
+    "value": "When engaging enemies that include  EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Increased Physical Damage."
+  },
+  {
+    "id": 140800000310510301,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 20%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000310510302,
+    "value": "When engaging enemies that include  EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Increased Physical Damage."
+  },
+  {
+    "id": 140800000310510401,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 25%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000310510402,
+    "value": "When engaging enemies that include  EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Increased Physical Damage."
+  },
+  {
+    "id": 140800000310510501,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 30%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000310510502,
+    "value": "When engaging enemies that include  EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Increased Physical Damage."
+  },
+  {
+    "id": 140800000310510601,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 35%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000310510602,
+    "value": "When engaging enemies that include  EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Increased Physical Damage."
+  },
+  {
+    "id": 140800000310510701,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 40%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000310510702,
+    "value": "When engaging enemies that include  EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Increased Physical Damage."
+  },
+  {
+    "id": 140800000310510801,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 45%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000310510802,
+    "value": "When engaging enemies that include  EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Increased Physical Damage."
+  },
+  {
+    "id": 140800000310510901,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 50%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000310510902,
+    "value": "When engaging enemies that include  EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Increased Physical Damage."
+  },
+  {
     "id": 140800000320030101,
     "value": "Weapon Effect Value Up (& ATK Down 1%)"
   },
@@ -13928,20 +15028,40 @@
     "value": ""
   },
   {
+    "id": 140800000320490102,
+    "value": "Decrease own MOV by1."
+  },
+  {
     "id": 140800000320490201,
     "value": ""
+  },
+  {
+    "id": 140800000320490202,
+    "value": "Decrease own MOV by2."
   },
   {
     "id": 140800000320490301,
     "value": ""
   },
   {
+    "id": 140800000320490302,
+    "value": "Decrease own MOV by3."
+  },
+  {
     "id": 140800000320490401,
     "value": ""
   },
   {
+    "id": 140800000320490402,
+    "value": "Decrease own MOV by4."
+  },
+  {
     "id": 140800000320490501,
     "value": ""
+  },
+  {
+    "id": 140800000320490502,
+    "value": "Decrease own MOV by5."
   },
   {
     "id": 140800000350100001,

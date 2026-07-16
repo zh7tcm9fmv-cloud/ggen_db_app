@@ -246,6 +246,12 @@
     "GroupFormationNumber": 1
   },
   {
+    "Id": 1713003891,
+    "GroupFormationTypeIndex": 19,
+    "ContentTargetId": 180002,
+    "GroupFormationNumber": 1
+  },
+  {
     "Id": 1714459297,
     "GroupFormationTypeIndex": 2,
     "ContentTargetId": 90510004,
@@ -612,6 +618,12 @@
     "GroupFormationNumber": 1
   },
   {
+    "Id": 3002339118,
+    "GroupFormationTypeIndex": 19,
+    "ContentTargetId": 180001,
+    "GroupFormationNumber": 1
+  },
+  {
     "Id": 3052485068,
     "GroupFormationTypeIndex": 2,
     "ContentTargetId": 90520017,
@@ -663,6 +675,12 @@
     "Id": 3268379273,
     "GroupFormationTypeIndex": 15,
     "ContentTargetId": 900008,
+    "GroupFormationNumber": 1
+  },
+  {
+    "Id": 3275037844,
+    "GroupFormationTypeIndex": 19,
+    "ContentTargetId": 0,
     "GroupFormationNumber": 1
   },
   {
