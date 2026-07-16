@@ -52,19 +52,20 @@ def _ce_img(name):
     return f'/static/images/Chronicle/{name}.webp'
 
 
-def _pick_node_thumb(resource_id, size_type, content_type):
+def _pick_node_thumb(resource_id, size_type, content_type, *, detail=False):
+    """Map nodes use _01; stage detail / report color art uses _02."""
     rid = str(resource_id or '').strip()
     if not rid:
         return ''
+    suf = '02' if detail else '01'
     if content_type == CONTENT_FLAVOR_START:
         return _ce_img(f'chronicle_thumb_start_flavor_{rid}')
     if content_type == CONTENT_DOCUMENT:
-        return _ce_img(f'chronicle_thumb_document_{rid}_l_02')
+        return _ce_img(f'chronicle_thumb_document_{rid}_l_{suf}')
     if content_type == CONTENT_STORY:
-        return _ce_img(f'chronicle_thumb_story_{rid}_01')
-    if size_type == SIZE_L:
-        return _ce_img(f'chronicle_thumb_node_{rid}_l')
-    return _ce_img(f'chronicle_thumb_node_{rid}_01')
+        return _ce_img(f'chronicle_thumb_story_{rid}_{suf}')
+    # Battle / large nodes: chronicle_thumb_node_{resource}_{01|02}
+    return _ce_img(f'chronicle_thumb_node_{rid}_{suf}')
 
 
 def _content_type_key(idx):
@@ -95,21 +96,18 @@ def collect_chronicle_scenario_stage_ids(app_mod, lang_code='EN'):
     return out
 
 
-def chronicle_stage_title_map(app_mod, lang_code='EN'):
-    """Map ScenarioStageId -> display title from chronicle node language."""
+def _chronicle_stage_content_rows(app_mod, lang_code='EN'):
+    """Yield (scenario_stage_id, content_type, resource_id, node, content) for battle/story."""
     load_json = app_mod.load_json
     base = app_mod.LANG_PATHS.get(lang_code, {}).get('base') or app_mod.BASE_DIR
-    lang_dir = app_mod.LANG_PATHS.get(lang_code, {}).get('lang') or ''
     normalize_id = app_mod.normalize_id
     nodes = _load_json(load_json, os.path.join(base, 'm_chronicle_event_node.json'))
     contents = _load_json(load_json, os.path.join(base, 'm_chronicle_event_node_content.json'))
     battles = _load_json(load_json, os.path.join(base, 'm_chronicle_event_node_content_battle.json'))
     stories = _load_json(load_json, os.path.join(base, 'm_chronicle_event_node_content_story.json'))
-    node_lang = _lang_map(_load_json(load_json, os.path.join(lang_dir, 'm_chronicle_event_node.json')))
     node_by_id = {normalize_id(n.get('Id')): n for n in nodes}
     battle_by_id = {normalize_id(r.get('Id')): r for r in battles}
     story_by_id = {normalize_id(r.get('Id')): r for r in stories}
-    out = {}
     for c in contents:
         ctype = int(c.get('ContentTypeIndex') or 0)
         if ctype not in (CONTENT_BATTLE, CONTENT_STORY):
@@ -120,14 +118,38 @@ def chronicle_stage_title_map(app_mod, lang_code='EN'):
             battle_by_id if ctype == CONTENT_BATTLE else story_by_id
         ).get(target) or {}
         sid = normalize_id(row.get('ScenarioStageId'))
-        if not sid or sid == '0' or sid in out:
+        if not sid or sid == '0':
             continue
+        res = str(c.get('ResourceId') or target or '').strip()
         n = node_by_id.get(normalize_id(c.get('ChronicleEventNodeId'))) or {}
+        yield sid, ctype, res, n, c
+
+
+def chronicle_stage_title_map(app_mod, lang_code='EN'):
+    """Map ScenarioStageId -> display title from chronicle node language."""
+    load_json = app_mod.load_json
+    lang_dir = app_mod.LANG_PATHS.get(lang_code, {}).get('lang') or ''
+    normalize_id = app_mod.normalize_id
+    node_lang = _lang_map(_load_json(load_json, os.path.join(lang_dir, 'm_chronicle_event_node.json')))
+    out = {}
+    for sid, _ctype, _res, n, _c in _chronicle_stage_content_rows(app_mod, lang_code):
+        if sid in out:
+            continue
         title = node_lang.get(normalize_id(n.get('TitleLanguageId')), '')
         number = node_lang.get(normalize_id(n.get('DiagramNumberLanguageId')), '')
         label = ' '.join(x for x in (number, title) if x).strip()
         if label:
             out[sid] = label
+    return out
+
+
+def chronicle_stage_portrait_map(app_mod, lang_code='EN'):
+    """Map ScenarioStageId -> detail portrait path (_02 node/story art)."""
+    out = {}
+    for sid, ctype, res, _n, _c in _chronicle_stage_content_rows(app_mod, lang_code):
+        if sid in out or not res:
+            continue
+        out[sid] = _pick_node_thumb(res, SIZE_S, ctype, detail=True)
     return out
 
 
@@ -320,13 +342,16 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
                 ctype = int(c.get('ContentTypeIndex') or 0)
                 target = normalize_id(c.get('TargetId') or cid)
                 res = str(c.get('ResourceId') or target)
+                # Documents always use color (_02) on the map + report list; battles/stories use _01 on map.
+                map_detail = ctype == CONTENT_DOCUMENT
                 entry = {
                     'id': cid,
                     'type': _content_type_key(ctype),
                     'type_index': ctype,
                     'resource_id': res,
                     'challenge_point': int(c.get('ConsumeChallengePointCount') or 0),
-                    'thumb': pub(_pick_node_thumb(res, size_type, ctype)),
+                    'thumb': pub(_pick_node_thumb(res, size_type, ctype, detail=map_detail)),
+                    'thumb_detail': pub(_pick_node_thumb(res, size_type, ctype, detail=True)),
                 }
                 if ctype == CONTENT_BATTLE:
                     b = battle_by_id.get(cid) or battle_by_id.get(target) or {}
@@ -352,8 +377,6 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
                         'scenario_stage_id': sid if sid != '0' else '',
                         'scenario_stage_name': sname,
                     })
-                    if not entry['thumb']:
-                        entry['thumb'] = pub(_ce_img(f'chronicle_thumb_story_{res}_01'))
                 elif ctype == CONTENT_DOCUMENT:
                     dc = document_c_by_id.get(cid) or document_c_by_id.get(target) or {}
                     doc_id = normalize_id(dc.get('ChronicleEventDocumentId') or target)
@@ -364,6 +387,7 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
                     })
                     drid = str(doc.get('ResourceId') or doc_id)
                     entry['thumb'] = pub(_ce_img(f'chronicle_thumb_document_{drid}_l_02'))
+                    entry['thumb_detail'] = entry['thumb']
                 elif ctype in (CONTENT_FLAVOR_START, CONTENT_FLAVOR_MIDDLE, CONTENT_FLAVOR_END):
                     fl = flavor_by_id.get(cid) or flavor_by_id.get(target) or {}
                     entry['line_direction'] = int(fl.get('LineDirectionTypeIndex') or 0)
@@ -376,6 +400,7 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
 
             view_type = (primary or {}).get('type') or 'unknown'
             thumb = (primary or {}).get('thumb') or ''
+            thumb_detail = (primary or {}).get('thumb_detail') or thumb
             is_flavor_text = view_type in ('flavor_middle', 'flavor_end')
             node_rows.append({
                 'id': nid,
@@ -392,6 +417,7 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
                 'view_type': view_type,
                 'is_flavor_text': is_flavor_text,
                 'thumb': thumb,
+                'thumb_detail': thumb_detail,
                 'contents': content_rows,
                 'primary': primary,
             })

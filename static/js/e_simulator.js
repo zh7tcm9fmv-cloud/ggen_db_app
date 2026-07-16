@@ -106,19 +106,59 @@
     }
   }
 
+  function mapFitScale(bounds) {
+    var b = bounds || {};
+    var padX = 90, padY = 70;
+    var gw = Math.max(1, (b.width || 8000) + padX * 2);
+    var gh = Math.max(1, (b.height || 2500) + padY * 2);
+    var panel = document.getElementById('panel-stages') || document.getElementById('eSimulatorWrap');
+    var availW = Math.max(560, (panel && panel.clientWidth) || window.innerWidth || 900) - 28;
+    var availH = Math.max(300, Math.min(Math.floor(window.innerHeight * 0.48), 460));
+    var sx = availW / gw;
+    var sy = availH / gh;
+    /* Independent axes so the whole route fits without scrolling. */
+    return {
+      scaleX: Math.max(0.08, Math.min(sx, 0.28)),
+      scaleY: Math.max(0.08, Math.min(sy, 0.32)),
+      padX: padX,
+      padY: padY,
+      availW: availW,
+      availH: availH,
+    };
+  }
+
+  function thumbHtml(thumbPath, fallbackPath) {
+    var thumb = thumbPath ? imgUrl(thumbPath) : '';
+    if (!thumb) return '<div class="esim-thumb"></div>';
+    var fallback = fallbackPath ? imgUrl(fallbackPath) : thumb
+      .replace(/_l_02\.webp$/i, '_l_01.webp')
+      .replace(/_02\.webp$/i, '_01.webp');
+    return (
+      '<img class="esim-thumb" src="' + esc(thumb) + '" alt="" loading="lazy" decoding="async" ' +
+      'onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src=\'' + esc(fallback) + '\'}else{this.style.opacity=.25}">'
+    );
+  }
+
   function renderMap(diagram) {
     if (!diagram) return '';
     var b = diagram.bounds || {};
-    var padX = 160, padY = 140;
-    /* Scale so min node spacing (~629x / 290y) clears card footprints. */
-    var scale = 0.42;
-    var w = Math.max(1100, Math.ceil(((b.width || 8000) + padX * 2) * scale));
-    var h = Math.max(520, Math.ceil(((b.height || 2500) + padY * 2) * scale));
+    var fit = mapFitScale(b);
+    var scaleX = fit.scaleX, scaleY = fit.scaleY;
+    var padX = fit.padX, padY = fit.padY;
+    var w = Math.max(fit.availW, Math.ceil(((b.width || 8000) + padX * 2) * scaleX));
+    var h = Math.max(fit.availH, Math.ceil(((b.height || 2500) + padY * 2) * scaleY));
+    /* Prefer fitting inside the shell (no scroll) when possible. */
+    w = Math.min(w, fit.availW);
+    h = Math.min(h, fit.availH);
     var minX = b.min_x || 0;
     var maxY = b.max_y || 0;
+    var spanX = Math.max(1, (b.width || 8000) + padX * 2);
+    var spanY = Math.max(1, (b.height || 2500) + padY * 2);
+    scaleX = w / spanX;
+    scaleY = h / spanY;
 
-    function px(x) { return Math.round((x - minX + padX) * scale); }
-    function py(y) { return Math.round((maxY - y + padY) * scale); }
+    function px(x) { return Math.round((x - minX + padX) * scaleX); }
+    function py(y) { return Math.round((maxY - y + padY) * scaleY); }
 
     var nodePos = {};
     (diagram.nodes || []).forEach(function (n) {
@@ -149,17 +189,15 @@
       var body;
       if (n.is_flavor_text || vt === 'flavor_middle' || vt === 'flavor_end') {
         body = '<div class="esim-pill">' + esc(n.title || n.number || '…') + '</div>';
+      } else if (vt === 'flavor_start') {
+        body =
+          '<div class="esim-card esim-card--flavor">' +
+          thumbHtml(n.thumb) +
+          '<div class="esim-meta"><div class="esim-name">' + esc(n.title || '') + '</div></div></div>';
       } else {
-        var thumb = n.thumb ? imgUrl(n.thumb) : '';
-        var fallback = thumb
-          .replace(/_l_02\.webp$/i, '_l_01.webp')
-          .replace(/_02\.webp$/i, '_01.webp')
-          .replace(/_l\.webp$/i, '_01.webp');
         body =
           '<div class="esim-card">' +
-          (thumb
-            ? '<img class="esim-thumb" src="' + esc(thumb) + '" alt="" loading="lazy" decoding="async" onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src=\'' + esc(fallback) + '\'}else{this.style.opacity=.2}">'
-            : '<div class="esim-thumb"></div>') +
+          thumbHtml(n.thumb) +
           '<div class="esim-meta">' +
           (n.number ? '<div class="esim-num">' + esc(n.number) + '</div>' : '') +
           '<div class="esim-name">' + esc(n.title || '') + '</div>' +
@@ -301,14 +339,14 @@
       );
     }).join('');
 
-    var logo = data.logo ? '<img class="esim-logo" src="' + esc(imgUrl(data.logo)) + '" alt="">' : '';
+    var logo = data.logo ? '<img class="esim-logo" src="' + esc(imgUrl(data.logo)) + '" alt="E Simulator">' : '';
     var cpMax = (data.challenge_point && data.challenge_point.display_max) || 30;
     var docN = (data.documents || []).length;
     var docT = data.document_total || docN;
 
     root.innerHTML =
       '<div class="esim-header">' +
-      '<div class="esim-title-row">' + logo + '<div class="esim-title">' + esc(data.title || 'E Simulator') + '</div></div>' +
+      '<div class="esim-title-row">' + logo + '</div>' +
       '<div class="esim-cp"><span>Challenge Point</span><b>—/' + esc(String(cpMax)) + '</b></div>' +
       '</div>' +
       '<div class="esim-tabs" id="esimTabs">' + tabs + '</div>' +
@@ -331,16 +369,7 @@
       '</div>';
 
     bind();
-    focusRecommend();
-  }
-
-  function focusRecommend() {
-    var shell = document.getElementById('esimMapShell');
-    var rec = document.querySelector('#esimMap .esim-node--recommend') || document.querySelector('#esimMap .esim-node');
-    if (!shell || !rec) return;
-    var left = Math.max(0, rec.offsetLeft - shell.clientWidth * 0.35);
-    var top = Math.max(0, rec.offsetTop - shell.clientHeight * 0.4);
-    shell.scrollTo({ left: left, top: top, behavior: 'smooth' });
+    if (typeof global.syncStageEsimSourceButton === 'function') global.syncStageEsimSourceButton();
   }
 
   function bind() {
@@ -446,6 +475,7 @@
     load: load,
     hide: hide,
     setActive: setActive,
+    getLogoUrl: function () { return (state.data && state.data.logo) || ''; },
     invalidate: function () { state.data = null; state.lang = null; },
   };
 })(typeof window !== 'undefined' ? window : globalThis);

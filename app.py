@@ -21275,7 +21275,7 @@ def api_e_simulator():
     """E Simulator (Chronicle Event) diagram payload for the Stages tab."""
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-        ck = f'e_simulator_v2_{lc}'
+        ck = f'e_simulator_v3_{lc}'
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
@@ -21410,7 +21410,7 @@ def get_stage(stage_id):
                     'tes' if is_tower_event_stage else (
                         'ch' if is_challenge_stage else (
                             'ce' if is_chronicle_stage else 'er')))))
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage10"
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage11"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -21475,6 +21475,14 @@ def get_stage(stage_id):
             portrait = special_event_stage_thumb_url(ses.get('thumbnail_resource_id')) or portrait
         elif is_challenge_stage:
             portrait = challenge_stage_thumb_url(est.get('thumbnail_resource_id')) or portrait
+        elif is_chronicle_stage:
+            try:
+                import e_simulator_data as _esim_art
+                _art = (_esim_art.chronicle_stage_portrait_map(sys.modules[__name__], lc) or {}).get(stage_id, '')
+                if _art:
+                    portrait = game_image_public_url(_art) if not str(_art).startswith('http') else _art
+            except Exception:
+                pass
         sg = []
         allow_empty_sortie_set = is_score_attack or is_tower_event_stage
         if is_challenge_stage:

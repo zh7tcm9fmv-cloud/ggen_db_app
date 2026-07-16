@@ -14,10 +14,11 @@
 .esim-root{--esim-cyan:#5ee7ff;--esim-green:#5dff9a;--esim-red:#ff4d5e;--esim-ink:#e8f4ff;position:relative;border:1px solid rgba(94,231,255,.28);border-radius:10px;overflow:hidden;background:#020816;min-height:min(72vh,720px);box-shadow:inset 0 0 80px rgba(0,40,90,.35)}
 .esim-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;background:linear-gradient(180deg,rgba(8,28,58,.92),rgba(4,14,32,.75));border-bottom:1px solid rgba(94,231,255,.18);position:relative;z-index:3}
 .esim-title-row{display:flex;align-items:center;gap:10px;min-width:0}
-.esim-logo{height:28px;width:auto;max-width:min(42vw,220px);object-fit:contain;filter:drop-shadow(0 0 8px rgba(94,231,255,.45))}
-.esim-title{font:italic 800 22px/1.1 "Segoe UI",system-ui,sans-serif;color:#fff;letter-spacing:.02em;text-shadow:0 0 12px rgba(94,231,255,.55)}
+.esim-logo{height:36px;width:auto;max-width:min(48vw,260px);object-fit:contain;filter:drop-shadow(0 0 8px rgba(94,231,255,.45))}
 .esim-cp{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(232,244,255,.75);white-space:nowrap}
 .esim-cp b{color:#9dffc0}
+.stage-source-toggle-btn--esim-logo{padding:4px 10px;min-width:96px;display:inline-flex;align-items:center;justify-content:center}
+.stage-source-toggle-btn--esim-logo .stage-source-esim-logo{display:block;height:28px;width:auto;max-width:120px;object-fit:contain}
 
 .esim-tabs{display:flex;flex-wrap:wrap;gap:8px;padding:10px 12px 0;position:relative;z-index:3}
 .esim-tab{appearance:none;border:1px solid rgba(120,170,220,.28);background:rgba(6,18,40,.82);color:rgba(220,235,255,.78);padding:8px 12px;border-radius:6px;font:600 12px/1.2 "Segoe UI",system-ui,sans-serif;cursor:pointer;display:flex;align-items:center;gap:8px;max-width:100%}
@@ -25,28 +26,34 @@
 .esim-tab.active{background:linear-gradient(180deg,rgba(210,235,255,.95),rgba(150,200,240,.88));color:#0a1a30;border-color:#fff;box-shadow:0 0 0 1px rgba(94,231,255,.55),0 0 18px rgba(94,231,255,.25)}
 .esim-tab.active img{opacity:1}
 
-.esim-map-shell{position:relative;height:min(58vh,620px);margin:8px 0 0;overflow:auto;overscroll-behavior:contain;background:#020816}
-.esim-map-shell::-webkit-scrollbar{height:10px;width:10px}
-.esim-map-shell::-webkit-scrollbar-thumb{background:rgba(94,231,255,.35);border-radius:6px}
-.esim-map{position:relative;transform-origin:0 0}
-.esim-bg{position:absolute;inset:0;background-position:center;background-size:cover;background-repeat:no-repeat;opacity:.92;filter:saturate(1.05) contrast(1.05)}
+.esim-map-shell{position:relative;height:min(48vh,460px);margin:8px 0 0;overflow:hidden;overscroll-behavior:contain;background:#020816}
+.esim-map{position:relative;transform-origin:0 0;margin:0 auto}
+.esim-bg{position:absolute;inset:0;background-position:center;background-size:100% 100%;background-repeat:no-repeat;opacity:.92;filter:saturate(1.05) contrast(1.05)}
 .esim-bg::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(180deg,transparent 0 3px,rgba(80,200,255,.035) 3px 4px),radial-gradient(ellipse at 50% 40%,transparent 30%,rgba(0,0,0,.45) 100%);pointer-events:none}
 .esim-edges,.esim-nodes{position:absolute;inset:0;pointer-events:none}
 .esim-edge{stroke:rgba(160,220,255,.55);stroke-width:2;fill:none;filter:drop-shadow(0 0 3px rgba(94,231,255,.35))}
 .esim-edge-branch{stroke:rgba(255,120,140,.65)}
 
-.esim-node{position:absolute;transform:translate(-50%,-50%);pointer-events:auto;cursor:pointer;z-index:2;min-width:56px}
+.esim-node{position:absolute;transform:translate(-50%,-50%);pointer-events:auto;cursor:pointer;z-index:2;min-width:48px}
 .esim-node--flavor_text,.esim-node--flavor_middle,.esim-node--flavor_end{min-width:0}
-.esim-card{position:relative;border:1px solid rgba(180,220,255,.45);border-radius:4px;background:rgba(4,16,36,.82);box-shadow:0 0 0 1px rgba(0,0,0,.35),0 6px 18px rgba(0,0,0,.35);overflow:hidden;width:108px}
-.esim-node--l .esim-card{width:128px}
-.esim-node--m .esim-card{width:118px}
-.esim-node--document .esim-card{width:78px}
-.esim-node--flavor_start .esim-card{width:120px;background:rgba(20,30,48,.88)}
-.esim-thumb{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;background:#0a1428}
-.esim-node--document .esim-thumb{aspect-ratio:1/1;object-fit:contain;padding:4px;background:radial-gradient(circle at 50% 40%,rgba(80,160,255,.2),rgba(4,12,28,.95))}
-.esim-meta{padding:4px 6px 6px;display:flex;flex-direction:column;gap:1px}
-.esim-num{font:700 9px/1.2 "Segoe UI",system-ui,sans-serif;color:rgba(180,220,255,.85);letter-spacing:.03em}
-.esim-name{font:700 11px/1.2 "Segoe UI",system-ui,sans-serif;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.esim-card{position:relative;border:1px solid rgba(180,220,255,.45);border-radius:4px;background:rgba(4,16,36,.88);box-shadow:0 0 0 1px rgba(0,0,0,.35),0 4px 12px rgba(0,0,0,.35);overflow:hidden;width:86px}
+.esim-node--l .esim-card{width:98px}
+.esim-node--m .esim-card{width:92px}
+.esim-node--document .esim-card{width:64px}
+.esim-node--flavor_start .esim-card,
+.esim-card--flavor{display:flex;flex-direction:row;align-items:center;gap:6px;width:auto;min-width:148px;max-width:210px;padding:4px 8px 4px 4px;background:rgba(16,28,48,.92)}
+.esim-node--flavor_start .esim-thumb,
+.esim-card--flavor .esim-thumb{width:40px;height:40px;flex:0 0 40px;aspect-ratio:1/1;object-fit:contain;border-radius:3px;background:rgba(0,0,0,.25);padding:0}
+.esim-node--flavor_start .esim-meta,
+.esim-card--flavor .esim-meta{padding:0;min-width:0;flex:1}
+.esim-node--flavor_start .esim-name,
+.esim-card--flavor .esim-name{-webkit-line-clamp:2;font-size:10px}
+.esim-thumb{display:block;width:100%;aspect-ratio:1/1;object-fit:contain;object-position:center;background:#0a1428;padding:3px;box-sizing:border-box}
+.esim-node--battle .esim-thumb,.esim-node--story .esim-thumb{aspect-ratio:1/1;object-fit:contain}
+.esim-node--document .esim-thumb{aspect-ratio:1/1;object-fit:contain;padding:3px;background:radial-gradient(circle at 50% 40%,rgba(80,160,255,.2),rgba(4,12,28,.95))}
+.esim-meta{padding:3px 5px 5px;display:flex;flex-direction:column;gap:1px}
+.esim-num{font:700 8px/1.2 "Segoe UI",system-ui,sans-serif;color:rgba(180,220,255,.85);letter-spacing:.03em}
+.esim-name{font:700 10px/1.2 "Segoe UI",system-ui,sans-serif;color:#fff;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .esim-node--recommend .esim-card{border-color:rgba(255,90,100,.9);box-shadow:0 0 0 1px rgba(255,80,90,.55),0 0 28px rgba(255,60,80,.35)}
 .esim-node--recommend::before{content:"";position:absolute;left:50%;top:50%;width:180px;height:180px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,rgba(255,60,80,.28) 0%,rgba(255,60,80,.08) 42%,transparent 68%);animation:esim-pulse 2.4s ease-out infinite;z-index:0;pointer-events:none}
 .esim-node--recommend .esim-card{position:relative;z-index:1}
@@ -92,12 +99,21 @@
 .esim-shop-currency small{color:rgba(200,230,255,.55);margin-left:auto;font-size:10px}
 .esim-shop-cost{margin-top:4px;font-size:11px;color:#9dffc0;font-weight:700}
 
+/* Chronicle stage detail portrait — full art in a square frame (not cropped). */
+.modal-content.stage-detail .detail-portrait-wrap{width:260px!important;max-width:min(260px,42vw)}
+.modal-content.stage-detail .stage-portrait,
+.modal-content.stage-detail .detail-portrait-placeholder{
+  width:100%!important;height:auto!important;aspect-ratio:1/1;max-width:100%;
+  object-fit:contain;object-position:center;background:rgba(8,16,32,.9);
+  border-radius:8px;border:2px solid rgba(94,231,255,.28);
+}
+
 @media(max-width:900px){
   .esim-footer{grid-template-columns:1fr;gap:8px}
   .esim-actions{justify-content:flex-start}
-  .esim-card{width:96px}
-  .esim-node--l .esim-card{width:112px}
-  .esim-node--document .esim-card{width:72px}
-  .esim-map-shell{height:min(50vh,440px)}
-  .esim-title{font-size:18px}
+  .esim-card{width:76px}
+  .esim-node--l .esim-card{width:86px}
+  .esim-node--document .esim-card{width:58px}
+  .esim-map-shell{height:min(42vh,380px)}
+  .stage-source-toggle-btn--esim-logo .stage-source-esim-logo{height:24px}
 }
