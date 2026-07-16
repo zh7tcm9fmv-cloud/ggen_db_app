@@ -24,8 +24,8 @@
 .esim-tab.active{background:linear-gradient(180deg,rgba(210,235,255,.95),rgba(150,200,240,.88));color:#0a1a30;border-color:#fff;box-shadow:0 0 0 1px rgba(94,231,255,.55),0 0 18px rgba(94,231,255,.25)}
 .esim-tab.active img{opacity:1}
 
-.esim-map-shell{position:relative;height:auto;min-height:280px;margin:8px 0 0;overflow:visible;background:#020816;box-sizing:border-box}
-.esim-map{position:relative;transform-origin:0 0;margin:0 auto;max-width:100%;overflow:visible}
+.esim-map-shell{position:relative;height:auto;min-height:280px;max-height:min(78vh,860px);margin:8px 0 0;overflow:auto;-webkit-overflow-scrolling:touch;background:#020816;box-sizing:border-box}
+.esim-map{position:relative;transform-origin:0 0;margin:0;overflow:visible}
 .esim-bg{position:absolute;inset:0;background-position:center;background-size:100% 100%;background-repeat:no-repeat;opacity:.92;filter:saturate(1.05) contrast(1.05)}
 .esim-bg::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(180deg,transparent 0 3px,rgba(80,200,255,.035) 3px 4px),radial-gradient(ellipse at 50% 40%,transparent 30%,rgba(0,0,0,.45) 100%);pointer-events:none}
 .esim-edges,.esim-nodes{position:absolute;inset:0;pointer-events:none}
@@ -79,15 +79,14 @@
 .esim-ticker span{font-weight:700}
 
 .esim-side-backdrop{position:fixed;inset:0;background:rgba(0,8,20,.55);z-index:79;cursor:pointer}
-.esim-side-panel{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(440px,94vw);max-height:min(72vh,560px);overflow:auto;background:rgba(6,16,36,.98);border:1px solid rgba(94,231,255,.35);border-radius:8px;padding:12px;z-index:80;box-shadow:0 16px 48px rgba(0,0,0,.55);display:none}
+.esim-side-panel{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(520px,94vw);max-height:min(80vh,640px);overflow:auto;background:rgba(6,16,36,.98);border:1px solid rgba(94,231,255,.35);border-radius:8px;padding:12px;z-index:80;box-shadow:0 16px 48px rgba(0,0,0,.55);display:none}
 .esim-side-panel.open{display:block}
+.esim-missions-panel,.esim-event-progress-panel{width:min(760px,96vw);max-height:min(86vh,780px);padding:14px 16px}
 .esim-side-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px}
 .esim-side-head h3{margin:0;font:800 13px/1.2 "Segoe UI",system-ui,sans-serif;color:#fff}
 .esim-side-subhead{margin:12px 0 4px;font:700 11px/1.2 "Segoe UI",system-ui,sans-serif;color:rgba(180,220,255,.85);letter-spacing:.04em;text-transform:uppercase}
 .esim-side-close{appearance:none;border:0;background:transparent;color:rgba(220,235,255,.85);font-size:22px;line-height:1;cursor:pointer;padding:0 4px}
 .esim-side-hint{font-size:11px;color:rgba(200,230,255,.65);margin-bottom:8px;line-height:1.35}
-.esim-side-backdrop{position:fixed;inset:0;background:rgba(0,8,20,.55);z-index:79;cursor:pointer}
-.esim-side-subhead{margin:12px 0 4px;font:700 11px/1.2 "Segoe UI",system-ui,sans-serif;color:rgba(180,220,255,.85);letter-spacing:.04em;text-transform:uppercase}
 .esim-doc-art{display:flex;justify-content:center;margin:8px 0 12px}
 .esim-doc-thumb{width:min(220px,70vw);height:auto;aspect-ratio:1/1;object-fit:contain;border-radius:8px;background:rgba(0,0,0,.25);border:1px solid rgba(94,231,255,.25)}
 .esim-doc-desc{margin:0 0 8px;color:#fff;font:600 13px/1.4 "Segoe UI",system-ui,sans-serif;white-space:pre-wrap}
@@ -101,8 +100,11 @@
 .esim-mission-idx{width:22px;height:22px;border-radius:50%;background:rgba(94,231,255,.15);color:#9edfff;font:700 11px/22px "Segoe UI",system-ui,sans-serif;text-align:center;flex:0 0 auto}
 .esim-mission-body,.esim-shop-body{min-width:0;flex:1}
 .esim-mission-rewards{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.esim-progress-rewards{display:flex;flex-direction:column;gap:6px;margin-top:6px;width:100%}
+.esim-progress-reward-row{display:flex;align-items:center;gap:10px}
 .esim-reward{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:rgba(210,230,255,.85);background:rgba(255,255,255,.05);border-radius:3px;padding:2px 5px}
-.esim-reward img{width:16px;height:16px;object-fit:contain}
+.esim-reward img,.esim-reward .sp-chip-thumb{width:16px;height:16px;object-fit:contain;flex:0 0 auto}
+.esim-progress-reward-row .sp-chip-thumb{flex:0 0 auto}
 .esim-mini-tabs{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:8px}
 .esim-mini-tab{appearance:none;border:1px solid rgba(120,170,220,.3);background:rgba(8,20,40,.9);color:rgba(220,235,255,.8);border-radius:4px;padding:5px 8px;font:600 10px/1.2 "Segoe UI",system-ui,sans-serif;cursor:pointer}
 .esim-mini-tab.active{background:rgba(180,210,240,.9);color:#0a1a30;border-color:#fff}
@@ -139,12 +141,7 @@
 
 @media(max-width:900px){
   .esim-footer{gap:8px}
-  .esim-actions{justify-content:flex-start}
-  .esim-card{width:64px}
-  .esim-node--l .esim-card{width:72px}
-  .esim-node--m .esim-card{width:68px}
-  .esim-node--document .esim-card{width:50px}
-  .esim-name{font-size:9px}
-  .esim-pill{font-size:10px;padding:4px 8px}
+  .esim-actions{justify-content:flex-start;flex-wrap:wrap}
+  .esim-map-shell{max-height:min(70vh,720px)}
   .stage-source-toggle-btn--esim-logo .stage-source-esim-logo{height:24px}
 }

@@ -2,13 +2,14 @@
 (function (global) {
   'use strict';
 
-  var PAYLOAD_VERSION = 7;
+  var PAYLOAD_VERSION = 8;
   var state = {
     data: null,
     lang: null,
     diagramId: null,
     docDetail: null,
     missionsOpen: false,
+    eventProgressOpen: false,
     missionTabId: null,
   };
 
@@ -83,6 +84,7 @@
   function closeSidePanels(except) {
     if (except !== 'doc') state.docDetail = null;
     if (except !== 'missions') state.missionsOpen = false;
+    if (except !== 'eventProgress') state.eventProgressOpen = false;
   }
 
   function findDocument(docId) {
@@ -119,35 +121,28 @@
 
   function mapFitScale(bounds) {
     var b = bounds || {};
-    var panel = document.getElementById('panel-stages') || document.getElementById('eSimulatorWrap');
-    var panelW = Math.max(280, ((panel && panel.clientWidth) || window.innerWidth || 900) - 24);
-    /* Pixel insets so centered cards (esp. flavor_start) stay inside the shell. */
-    var edgePadX = Math.max(96, Math.min(140, Math.round(panelW * 0.14)));
-    var edgePadY = 56;
-    var availW = Math.max(220, panelW - edgePadX * 2);
+    /* Desktop-first uniform scale (no X/Y skew). Narrow screens scroll sideways. */
+    var edgePadX = 90;
+    var edgePadY = 80;
     var spanX = Math.max(1, b.width || 8000);
     var spanY = Math.max(1, b.height || 2500);
-    var roughX = availW / spanX;
-    var padX = Math.max(400, Math.ceil(edgePadX / Math.max(0.04, roughX)));
-    var padY = Math.max(320, Math.ceil(edgePadY / 0.2));
+    var padX = 520;
+    var padY = 420;
     var gw = spanX + padX * 2;
     var gh = spanY + padY * 2;
-    var scaleX = Math.max(0.05, Math.min(availW / gw, 0.18));
-    var scaleY = Math.max(0.2, Math.min(0.3, scaleX * 2.8));
-    var mapW = Math.min(availW, Math.ceil(gw * scaleX));
-    var mapH = Math.ceil(gh * scaleY);
-    var nodeScale = Math.max(0.4, Math.min(0.95, Math.min(scaleX / 0.1, scaleY / 0.22)));
-    if (panelW < 560) nodeScale *= 0.78;
-    if (panelW < 420) nodeScale *= 0.85;
+    /* ~0.26 keeps closest branch nodes (~290u) ~75px apart so cards do not stack. */
+    var scale = 0.26;
+    var mapW = Math.ceil(gw * scale);
+    var mapH = Math.ceil(gh * scale);
     return {
-      scaleX: mapW / gw,
-      scaleY: scaleY,
+      scaleX: scale,
+      scaleY: scale,
       padX: padX,
       padY: padY,
-      availW: availW,
+      availW: mapW,
       mapW: mapW,
       mapH: mapH,
-      nodeScale: nodeScale,
+      nodeScale: 1,
       edgePadX: edgePadX,
       edgePadY: edgePadY,
       shellH: mapH + edgePadY * 2,
@@ -254,16 +249,27 @@
     );
   }
 
-  function rewardChips(rewards) {
+  function rewardThumbHtml(r, sz) {
+    sz = sz || 28;
+    if (typeof global.renderSpConversionChipThumb === 'function') {
+      var chip = global.renderSpConversionChipThumb(r, sz);
+      if (chip) return chip;
+    }
     var emedal = (state.data && state.data.e_medal_icon) || '/static/images/Item/event_exchange_item_0006.webp';
-    return (rewards || []).slice(0, 4).map(function (r) {
+    var name = r.name || r.label || '';
+    var icon = r.icon || r.image || '';
+    if (/e[\s-]?medal/i.test(name) || (!icon && /medal/i.test(name))) icon = emedal;
+    if (!icon) return '';
+    return '<img src="' + esc(imgUrl(icon)) + '" alt="" width="' + sz + '" height="' + sz + '" loading="lazy">';
+  }
+
+  function rewardChips(rewards) {
+    return (rewards || []).slice(0, 6).map(function (r) {
       var name = r.name || r.label || '';
-      var icon = r.icon || r.image || '';
-      if (/e[\s-]?medal/i.test(name) || (!icon && /medal/i.test(name))) icon = emedal;
       var qty = r.quantity != null ? r.quantity : (r.count != null ? r.count : '');
       return (
         '<span class="esim-reward">' +
-        (icon ? '<img src="' + esc(imgUrl(icon)) + '" alt="">' : '') +
+        rewardThumbHtml(r, 28) +
         '<span>' + esc(name) + (qty !== '' && qty != null ? ' ×' + esc(String(qty)) : '') + '</span></span>'
       );
     }).join('');
@@ -332,17 +338,6 @@
     var hint = state.data.mission_unlock_hint
       ? '<div class="esim-side-hint">In-game unlock: ' + esc(state.data.mission_unlock_hint) + '</div>'
       : '';
-    var complete = (state.data.mission_complete_rewards || []).map(function (rw) {
-      return (
-        '<div class="esim-mission-item esim-mission-complete">' +
-        '<div class="esim-mission-idx">' + esc(String(rw.complete_rate | 0)) + '%</div>' +
-        '<div class="esim-mission-body"><b>Mission progress ' + esc(String(rw.complete_rate)) + '%</b>' +
-        '<div class="esim-mission-rewards">' + rewardChips(rw.rewards) + '</div></div></div>'
-      );
-    }).join('');
-    var completeBlock = complete
-      ? '<div class="esim-side-subhead">Completion rewards</div>' + complete
-      : '';
     return (
       backdrop +
       '<div class="esim-side-panel esim-missions-panel' + openCls + '" id="esimMissionsPanel" role="dialog" aria-label="Missions">' +
@@ -350,7 +345,51 @@
       '<button type="button" class="esim-side-close" data-close="missions" aria-label="Close">×</button></div>' +
       hint +
       '<div class="esim-mini-tabs">' + tabBtns + '</div>' +
-      rows + completeBlock + '</div>'
+      rows + '</div>'
+    );
+  }
+
+  function renderEventProgress() {
+    var rows = (state.data && state.data.event_wide_progress_rewards) || [];
+    var openCls = state.eventProgressOpen ? ' open' : '';
+    var backdrop = state.eventProgressOpen
+      ? '<div class="esim-side-backdrop" data-close="eventProgress"></div>'
+      : '';
+    if (!rows.length) {
+      return (
+        backdrop +
+        '<div class="esim-side-panel esim-event-progress-panel' + openCls + '" id="esimEventProgressPanel">' +
+        '<div class="esim-side-head"><h3>Event-Wide Progress Rewards</h3>' +
+        '<button type="button" class="esim-side-close" data-close="eventProgress" aria-label="Close">×</button></div>' +
+        '<div class="esim-side-hint">No event-wide progress rewards found.</div></div>'
+      );
+    }
+    var items = rows.map(function (rw) {
+      var rewards = rw.rewards || [];
+      var body = rewards.map(function (r) {
+        var qty = r.count != null ? r.count : (r.quantity != null ? r.quantity : '');
+        return (
+          '<div class="esim-progress-reward-row">' +
+          rewardThumbHtml(r, 48) +
+          '<div class="esim-mission-body"><b>' + esc(r.name || 'Reward') + '</b>' +
+          (qty !== '' && qty != null ? '<span class="esim-mission-desc">×' + esc(String(qty)) + '</span>' : '') +
+          '</div></div>'
+        );
+      }).join('') || '<div class="esim-side-hint">No rewards.</div>';
+      return (
+        '<div class="esim-mission-item esim-mission-complete">' +
+        '<div class="esim-mission-idx">' + esc(String(rw.complete_rate | 0)) + '%</div>' +
+        '<div class="esim-mission-body"><b>' + esc(String(rw.complete_rate)) + '% complete</b>' +
+        '<div class="esim-mission-rewards esim-progress-rewards">' + body + '</div></div></div>'
+      );
+    }).join('');
+    return (
+      backdrop +
+      '<div class="esim-side-panel esim-event-progress-panel' + openCls + '" id="esimEventProgressPanel" role="dialog" aria-label="Event-Wide Progress Rewards">' +
+      '<div class="esim-side-head"><h3>Event-Wide Progress Rewards</h3>' +
+      '<button type="button" class="esim-side-close" data-close="eventProgress" aria-label="Close">×</button></div>' +
+      '<div class="esim-side-hint">Account progress across the whole E Simulator event.</div>' +
+      items + '</div>'
     );
   }
 
@@ -385,10 +424,12 @@
       renderMap(diagram) +
       renderDocDetail() +
       renderMissions() +
+      renderEventProgress() +
       '<div class="esim-footer">' +
       '<div class="esim-actions">' +
       '<div><span class="esim-btn-note">' + esc(String(missionN)) + '</span>' +
       '<button type="button" class="esim-btn' + (state.missionsOpen ? ' active' : '') + '" id="esimMissionsBtn">Missions</button></div>' +
+      '<div><button type="button" class="esim-btn' + (state.eventProgressOpen ? ' active' : '') + '" id="esimEventProgressBtn">Event Progress</button></div>' +
       '</div>' +
       '<div class="esim-ticker">' + formatPromoHtml(data.promotion_text || '') + '</div>' +
       '</div>';
@@ -432,11 +473,21 @@
         render();
       });
     }
+    var ep = document.getElementById('esimEventProgressBtn');
+    if (ep) {
+      ep.addEventListener('click', function () {
+        var next = !state.eventProgressOpen;
+        closeSidePanels(next ? 'eventProgress' : null);
+        state.eventProgressOpen = next;
+        render();
+      });
+    }
     document.querySelectorAll('.esim-side-close, .esim-side-backdrop').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var which = btn.getAttribute('data-close');
         if (which === 'doc') state.docDetail = null;
         if (which === 'missions') state.missionsOpen = false;
+        if (which === 'eventProgress') state.eventProgressOpen = false;
         render();
       });
     });

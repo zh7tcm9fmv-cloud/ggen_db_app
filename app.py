@@ -11031,6 +11031,26 @@ _UNIT_SPECIALIZE_MATERIAL_SPM = {
     '241080003860': 'spm_0026',  # Psycho Gundam SP Conversion Chip (baked fallback)
 }
 _SP_CHIP_FRAME = '/static/images/UI/UI_Common_Sp_Frame.webp'
+_SSP_CHIP_BG = '/static/images/UI/UI_Common_Ssp_Bg.webp'
+_SSP_CHIP_FRAME = '/static/images/UI/UI_Common_Ssp_Frame.webp'
+
+
+def _resolve_series_ssp_chip_layers(item_id):
+    """Series SSP conversion chips (30000001XXXX): Ssp_Bg + series logo + Ssp_Frame."""
+    iid = normalize_id(item_id)
+    m = re.match(r'^30000001(\d+)$', iid)
+    if not m:
+        return '', '', ''
+    pad = f'{int(m.group(1)):04d}'
+    files = (IMAGE_INDEX or {}).get('images/Logo-Series', []) or []
+    logo = _series_icon_path_from_pad(pad, files)
+    if not logo:
+        return '', '', ''
+    return (
+        game_image_public_url(_SSP_CHIP_BG),
+        game_image_public_url(logo),
+        game_image_public_url(_SSP_CHIP_FRAME),
+    )
 
 
 def _resolve_item_icon_resource_id(item_id, item_row=None):
@@ -11215,10 +11235,16 @@ def _decorate_reward_rows(rows, lc):
                     lb_thumb = _resolve_unit_thumb_for_limit_break_material_item(tid)
                 if lb_thumb:
                     lb_use_limit_overlay = True
-            sp_unit = _resolve_unit_thumb_for_specialize_material_item(tid)
-            if sp_unit:
-                sp_chip_frame = _SP_CHIP_FRAME
-                sp_chip_unit = sp_unit
+            ssp_base, ssp_logo, ssp_frame = _resolve_series_ssp_chip_layers(tid)
+            if ssp_base and ssp_logo and ssp_frame:
+                sp_chip_base = ssp_base
+                sp_chip_unit = ssp_logo
+                sp_chip_frame = ssp_frame
+            else:
+                sp_unit = _resolve_unit_thumb_for_specialize_material_item(tid)
+                if sp_unit:
+                    sp_chip_frame = _SP_CHIP_FRAME
+                    sp_chip_unit = sp_unit
             if lb_thumb:
                 if lb_use_limit_overlay:
                     lb_frames = {'base': '', 'bottom_frame': ''}
@@ -21275,7 +21301,7 @@ def api_e_simulator():
     """E Simulator (Chronicle Event) diagram payload for the Stages tab."""
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-        ck = f'e_simulator_v7_{lc}'
+        ck = f'e_simulator_v8_{lc}'
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)

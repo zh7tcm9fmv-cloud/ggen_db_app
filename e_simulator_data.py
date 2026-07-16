@@ -332,6 +332,17 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
             'rewards': rewards_for(rsid),
         })
 
+    # Event-Wide Progress Rewards (m_chronicle_event_total_progress_complete_reward).
+    event_wide_progress_reward_rows = []
+    for rw in sorted(total_rewards, key=lambda x: float(x.get('CompleteRate') or 0)):
+        rsid = normalize_id(rw.get('RewardSetId'))
+        event_wide_progress_reward_rows.append({
+            'id': normalize_id(rw.get('Id')),
+            'complete_rate': float(rw.get('CompleteRate') or 0),
+            'reward_set_id': rsid,
+            'rewards': rewards_for(rsid),
+        })
+
     # Shop (event exchange)
     shop_row = next((s for s in shops if normalize_id(s.get('Id')) == ESIM_SHOP_ID), None) or {}
     currency_id = normalize_id(shop_row.get('TargetCurrencyItemId'))
@@ -549,7 +560,8 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
         'mission_tabs': mission_tab_rows,
         'mission_total': sum(len(t.get('missions') or []) for t in mission_tab_rows),
         'mission_complete_rewards': mission_complete_reward_rows,
-        'payload_version': 7,
+        'event_wide_progress_rewards': event_wide_progress_reward_rows,
+        'payload_version': 8,
         'branch_icon': pub(CHRONICLE_BRANCH_ICON),
         'e_medal_icon': pub(ESIM_EMEDAL_ICON),
         'shop': {
