@@ -124,31 +124,37 @@
 
   function mapFitScale(bounds) {
     var b = bounds || {};
-    /* Desktop-first uniform scale (no X/Y skew). Narrow screens side-scroll. */
-    var edgePadX = 48;
-    var edgePadY = 40;
+    var panel = document.getElementById('eSimulatorWrap') || document.getElementById('panel-stages');
+    var panelW = Math.max(320, ((panel && panel.clientWidth) || window.innerWidth || 960) - 8);
+    var edgePadX = 40;
+    var edgePadY = 36;
     var spanX = Math.max(1, b.width || 8000);
     var spanY = Math.max(1, b.height || 2500);
-    var padX = 220;
-    var padY = 180;
+    /* Tight pads keep the path close; uniform scale avoids BG skew. */
+    var padX = 140;
+    var padY = 120;
     var gw = spanX + padX * 2;
     var gh = spanY + padY * 2;
-    /* Wider cards (~140px) need ~0.48 so closest nodes (~290u) stay clear. */
-    var scale = 0.48;
+    var availW = Math.max(280, panelW - edgePadX * 2);
+    var scale = availW / gw;
+    /* Floor keeps nodes readable; ceiling stops oversized empty map. Side-scroll if needed. */
+    if (scale < 0.36) scale = 0.36;
+    if (scale > 0.5) scale = 0.5;
     var mapW = Math.ceil(gw * scale);
     var mapH = Math.ceil(gh * scale);
+    var shellCap = Math.max(360, Math.min(Math.round((window.innerHeight || 800) * 0.58), 720));
     return {
       scaleX: scale,
       scaleY: scale,
       padX: padX,
       padY: padY,
-      availW: mapW,
+      availW: availW,
       mapW: mapW,
       mapH: mapH,
-      nodeScale: 1.15,
+      nodeScale: 1,
       edgePadX: edgePadX,
       edgePadY: edgePadY,
-      shellH: mapH + edgePadY * 2,
+      shellH: Math.min(mapH + edgePadY * 2, shellCap),
     };
   }
 
@@ -245,8 +251,8 @@
       : imgUrl((state.data && state.data.diagram_frame) || '/static/images/Chronicle/Bg_Chronicle_Diagram.webp');
     var ns = (Math.round(fit.nodeScale * 1000) / 1000).toFixed(3);
     return (
-      '<div class="esim-map-shell" id="esimMapShell" style="height:' + fit.shellH + 'px;padding:' +
-      fit.edgePadY + 'px ' + fit.edgePadX + 'px;--esim-node-scale:' + ns + '">' +
+      '<div class="esim-map-shell" id="esimMapShell" style="max-height:' + fit.shellH +
+      'px;padding:' + fit.edgePadY + 'px ' + fit.edgePadX + 'px;--esim-node-scale:' + ns + '">' +
       '<div class="esim-map" id="esimMap" style="width:' + w + 'px;height:' + h + 'px">' +
       '<div class="esim-bg"' + (bg ? ' style="background-image:url(\'' + esc(bg) + '\')"' : '') + '></div>' +
       '<div class="esim-bg-frame"' + (frame ? ' style="background-image:url(\'' + esc(frame) + '\')"' : '') + '></div>' +
@@ -365,8 +371,9 @@
     if (!active) active = tabs[0];
     var tabBtns = tabs.map(function (tb) {
       return (
-        '<button type="button" class="esim-mini-tab' + (String(tb.id) === String(active.id) ? ' active' : '') +
-        '" data-mission-tab="' + esc(String(tb.id)) + '">' + esc(tb.name || tb.id) + '</button>'
+        '<button type="button" class="stage-source-toggle-btn' + (String(tb.id) === String(active.id) ? ' active' : '') +
+        '" data-mission-tab="' + esc(String(tb.id)) + '" aria-pressed="' +
+        (String(tb.id) === String(active.id) ? 'true' : 'false') + '">' + esc(tb.name || tb.id) + '</button>'
       );
     }).join('');
     var missions = active.missions || [];
@@ -388,7 +395,7 @@
       '<div class="esim-side-head"><h3>Missions</h3>' +
       '<button type="button" class="esim-side-close" data-close="missions" aria-label="Close">×</button></div>' +
       hint +
-      '<div class="esim-mini-tabs">' + tabBtns + '</div>' +
+      '<div class="stage-source-toggle-wrap esim-panel-tabs">' + tabBtns + '</div>' +
       '<div class="esim-mission-list">' + rows + '</div></div>'
     );
   }
@@ -440,8 +447,9 @@
       { id: 'mission', label: 'Missions' },
     ].map(function (tb) {
       return (
-        '<button type="button" class="esim-mini-tab' + (tab === tb.id ? ' active' : '') +
-        '" data-rewards-tab="' + tb.id + '">' + esc(tb.label) + '</button>'
+        '<button type="button" class="stage-source-toggle-btn' + (tab === tb.id ? ' active' : '') +
+        '" data-rewards-tab="' + tb.id + '" aria-pressed="' + (tab === tb.id ? 'true' : 'false') + '">' +
+        esc(tb.label) + '</button>'
       );
     }).join('');
     var body;
@@ -455,7 +463,7 @@
       '<div class="esim-side-head"><h3>Event Progress Rewards</h3>' +
       '<button type="button" class="esim-side-close" data-close="eventProgress" aria-label="Close">×</button></div>' +
       '<div class="esim-side-hint">Event-Wide, report, and mission completion rewards.</div>' +
-      '<div class="esim-mini-tabs">' + tabs + '</div>' +
+      '<div class="stage-source-toggle-wrap esim-panel-tabs">' + tabs + '</div>' +
       body + '</div>'
     );
   }
@@ -472,31 +480,37 @@
     var tabs = (data.diagrams || []).map(function (d) {
       var active = String(d.id) === String(state.diagramId);
       return (
-        '<button type="button" class="esim-tab' + (active ? ' active' : '') + '" data-diagram-id="' + esc(String(d.id)) + '">' +
-        (d.tab_thumb ? '<img src="' + esc(imgUrl(d.tab_thumb)) + '" alt="">' : '') +
+        '<button type="button" class="stage-source-toggle-btn esim-route-btn' + (active ? ' active' : '') +
+        '" data-diagram-id="' + esc(String(d.id)) + '" aria-pressed="' + (active ? 'true' : 'false') + '">' +
+        (d.tab_thumb
+          ? '<img class="esim-route-thumb" src="' + esc(imgUrl(d.tab_thumb)) + '" alt="" loading="lazy">'
+          : '') +
         '<span>' + esc(d.name || d.id) + '</span></button>'
       );
     }).join('');
 
-    var logo = data.logo ? '<img class="esim-logo" src="' + esc(imgUrl(data.logo)) + '" alt="E Simulator">' : '';
-
     root.innerHTML =
-      '<div class="esim-header">' +
-      '<div class="esim-title-row">' + logo + '</div>' +
-      '</div>' +
-      '<div class="esim-tabs" id="esimTabs">' + tabs + '</div>' +
+      '<div class="esim-toolbar">' +
+      '<div class="stage-source-toggle-wrap esim-route-tabs" id="esimTabs" role="group" aria-label="Routes">' +
+      tabs +
+      '</div></div>' +
       renderMap(diagram) +
       renderDocDetail() +
       renderMissions() +
       renderStoryProgress() +
       renderEventProgress() +
       '<div class="esim-footer">' +
-      '<div class="esim-actions">' +
-      '<button type="button" class="esim-btn' + (state.missionsOpen ? ' active' : '') + '" id="esimMissionsBtn">Missions</button>' +
-      '<button type="button" class="esim-btn' + (state.storyProgressOpen ? ' active' : '') + '" id="esimStoryProgressBtn">Story Progress</button>' +
-      '<button type="button" class="esim-btn' + (state.eventProgressOpen ? ' active' : '') + '" id="esimEventProgressBtn">Event Progress</button>' +
+      '<div class="stage-source-toggle-wrap esim-actions" role="group" aria-label="E Simulator actions">' +
+      '<button type="button" class="stage-source-toggle-btn' + (state.missionsOpen ? ' active' : '') +
+      '" id="esimMissionsBtn" aria-pressed="' + (state.missionsOpen ? 'true' : 'false') + '">Missions</button>' +
+      '<button type="button" class="stage-source-toggle-btn' + (state.storyProgressOpen ? ' active' : '') +
+      '" id="esimStoryProgressBtn" aria-pressed="' + (state.storyProgressOpen ? 'true' : 'false') + '">Story Progress</button>' +
+      '<button type="button" class="stage-source-toggle-btn' + (state.eventProgressOpen ? ' active' : '') +
+      '" id="esimEventProgressBtn" aria-pressed="' + (state.eventProgressOpen ? 'true' : 'false') + '">Event Progress</button>' +
       '</div>' +
-      '<div class="esim-ticker">' + formatPromoHtml(data.promotion_text || '') + '</div>' +
+      (data.promotion_text
+        ? '<div class="esim-ticker">' + formatPromoHtml(data.promotion_text) + '</div>'
+        : '') +
       '</div>';
 
     bind();
@@ -506,7 +520,7 @@
   function bind() {
     var tabs = document.getElementById('esimTabs');
     if (tabs) {
-      tabs.querySelectorAll('.esim-tab').forEach(function (btn) {
+      tabs.querySelectorAll('.esim-route-btn, [data-diagram-id]').forEach(function (btn) {
         btn.addEventListener('click', function () {
           state.diagramId = btn.getAttribute('data-diagram-id');
           closeSidePanels();
