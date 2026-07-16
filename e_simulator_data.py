@@ -54,6 +54,9 @@ def _ce_img(name):
 
 # Frame behind Size-L stage thumbs (map + detail).
 CHRONICLE_DETAIL_REPORT_BG = _ce_img('Bg_Chronicle_bg_detail_report_complete')
+CHRONICLE_BRANCH_ICON = _ce_img('UI_Chronicle_Icon_Branch_RedPurple')
+# E Simulator event medal (mission / exchange rewards).
+ESIM_EMEDAL_ICON = '/static/images/Item/event_exchange_item_0006.webp'
 
 
 def _pick_node_thumb(resource_id, size_type, content_type, *, detail=False):
@@ -245,11 +248,23 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
         if not sid or sid == '0' or not resolve_reward_rows or not decorate_rewards:
             return []
         try:
-            return decorate_rewards(resolve_reward_rows(sid), lang_code) or []
+            rows = decorate_rewards(resolve_reward_rows(sid), lang_code) or []
         except Exception:
             return []
+        emedal = pub(ESIM_EMEDAL_ICON)
+        for r in rows:
+            if not isinstance(r, dict):
+                continue
+            name = str(r.get('name') or r.get('label') or '')
+            if 'e-medal' in name.lower() or 'e medal' in name.lower() or name.strip().lower() == 'e-medal':
+                r['icon'] = emedal
+                r['image'] = emedal
+            elif not (r.get('icon') or r.get('image')) and 'medal' in name.lower():
+                r['icon'] = emedal
+                r['image'] = emedal
+        return rows
 
-    # Documents list — use _02 art (obtained / color versions).
+    # Documents list — use _02 / _l art (obtained / color versions).
     document_rows = []
     for d in sorted(docs, key=lambda x: int(x.get('Number') or 0)):
         did = normalize_id(d.get('Id'))
@@ -261,6 +276,8 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
             'history_type': int(d.get('HistoryTypeIndex') or 0),
             'thumb': pub(_ce_img(f'chronicle_thumb_document_{rid}_l_02')),
             'thumb_small': pub(_ce_img(f'chronicle_thumb_document_{rid}_s_02')),
+            'title': '',
+            'description': '',
         })
 
     # Mission tabs + missions (full DB view — not gated by report unlock).
@@ -428,10 +445,18 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
                     entry.update({
                         'document_id': doc_id,
                         'document_number': int(doc.get('Number') or 0),
+                        'document_hint': doc_lang.get(normalize_id(doc.get('AcquisitionHintLanguageId')), ''),
                     })
                     drid = str(doc.get('ResourceId') or doc_id)
                     entry['thumb'] = pub(_ce_img(f'chronicle_thumb_document_{drid}_l_02'))
                     entry['thumb_detail'] = entry['thumb']
+                    for dr in document_rows:
+                        if dr.get('id') == doc_id:
+                            if title and not dr.get('title'):
+                                dr['title'] = title
+                            if desc and not dr.get('description'):
+                                dr['description'] = desc
+                            break
                 elif ctype in (CONTENT_FLAVOR_START, CONTENT_FLAVOR_MIDDLE, CONTENT_FLAVOR_END):
                     fl = flavor_by_id.get(cid) or flavor_by_id.get(target) or {}
                     entry['line_direction'] = int(fl.get('LineDirectionTypeIndex') or 0)
@@ -524,7 +549,9 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
         'mission_tabs': mission_tab_rows,
         'mission_total': sum(len(t.get('missions') or []) for t in mission_tab_rows),
         'mission_complete_rewards': mission_complete_reward_rows,
-        'payload_version': 6,
+        'payload_version': 7,
+        'branch_icon': pub(CHRONICLE_BRANCH_ICON),
+        'e_medal_icon': pub(ESIM_EMEDAL_ICON),
         'shop': {
             'id': ESIM_SHOP_ID,
             'name': shop_lang.get(normalize_id(shop_row.get('NameLanguageId')), 'E Simulator Shop'),

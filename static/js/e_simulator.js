@@ -2,12 +2,12 @@
 (function (global) {
   'use strict';
 
-  var PAYLOAD_VERSION = 6;
+  var PAYLOAD_VERSION = 7;
   var state = {
     data: null,
     lang: null,
     diagramId: null,
-    reportOpen: false,
+    docDetail: null,
     missionsOpen: false,
     missionTabId: null,
   };
@@ -81,8 +81,16 @@
   }
 
   function closeSidePanels(except) {
-    if (except !== 'report') state.reportOpen = false;
+    if (except !== 'doc') state.docDetail = null;
     if (except !== 'missions') state.missionsOpen = false;
+  }
+
+  function findDocument(docId) {
+    var docs = (state.data && state.data.documents) || [];
+    for (var i = 0; i < docs.length; i++) {
+      if (String(docs[i].id) === String(docId)) return docs[i];
+    }
+    return null;
   }
 
   function openNode(n) {
@@ -94,14 +102,18 @@
       return;
     }
     if (p.type === 'document') {
-      closeSidePanels('report');
-      state.reportOpen = true;
+      var doc = findDocument(p.document_id) || {};
+      state.docDetail = {
+        id: p.document_id || doc.id || '',
+        number: n.number || doc.number || p.document_number || '',
+        title: n.title || doc.title || '',
+        description: n.description || doc.description || '',
+        hint: p.document_hint || doc.hint || '',
+        thumb: n.thumb_detail || n.thumb || p.thumb_detail || p.thumb || doc.thumb || '',
+      };
+      closeSidePanels('doc');
+      state.missionsOpen = false;
       render();
-      var el = document.getElementById('esimReportPanel');
-      if (el) {
-        var hit = el.querySelector('[data-doc-id="' + String(p.document_id || '') + '"]');
-        if (hit) hit.scrollIntoView({ block: 'nearest' });
-      }
     }
   }
 
@@ -109,24 +121,24 @@
     var b = bounds || {};
     var panel = document.getElementById('panel-stages') || document.getElementById('eSimulatorWrap');
     var panelW = Math.max(280, ((panel && panel.clientWidth) || window.innerWidth || 900) - 24);
-    /* Pixel insets so centered cards (esp. flavor_start) stay inside the shell. */
-    var edgePadX = Math.max(96, Math.min(140, Math.round(panelW * 0.14)));
-    var edgePadY = 56;
-    var availW = Math.max(220, panelW - edgePadX * 2);
+    var narrow = panelW < 640;
+    /* Pixel insets so centered cards stay inside the shell. */
+    var edgePadX = narrow ? 48 : Math.max(72, Math.min(120, Math.round(panelW * 0.1)));
+    var edgePadY = narrow ? 40 : 52;
+    var availW = Math.max(200, panelW - edgePadX * 2);
     var spanX = Math.max(1, b.width || 8000);
     var spanY = Math.max(1, b.height || 2500);
     var roughX = availW / spanX;
-    var padX = Math.max(400, Math.ceil(edgePadX / Math.max(0.04, roughX)));
-    var padY = Math.max(320, Math.ceil(edgePadY / 0.2));
+    var padX = Math.max(280, Math.ceil(edgePadX / Math.max(0.04, roughX)));
+    var padY = Math.max(260, Math.ceil(edgePadY / 0.18));
     var gw = spanX + padX * 2;
     var gh = spanY + padY * 2;
-    var scaleX = Math.max(0.05, Math.min(availW / gw, 0.18));
-    var scaleY = Math.max(0.2, Math.min(0.3, scaleX * 2.8));
+    /* Icon-only nodes are small — prefer fitting width; keep Y readable. */
+    var scaleX = Math.max(0.045, Math.min(availW / gw, narrow ? 0.14 : 0.17));
+    var scaleY = Math.max(narrow ? 0.16 : 0.18, Math.min(0.28, scaleX * (narrow ? 2.4 : 2.6)));
     var mapW = Math.min(availW, Math.ceil(gw * scaleX));
     var mapH = Math.ceil(gh * scaleY);
-    var nodeScale = Math.max(0.4, Math.min(0.95, Math.min(scaleX / 0.1, scaleY / 0.22)));
-    if (panelW < 560) nodeScale *= 0.78;
-    if (panelW < 420) nodeScale *= 0.85;
+    var nodeScale = 1;
     return {
       scaleX: mapW / gw,
       scaleY: scaleY,
@@ -139,6 +151,7 @@
       edgePadX: edgePadX,
       edgePadY: edgePadY,
       shellH: mapH + edgePadY * 2,
+      narrow: narrow,
     };
   }
 
@@ -187,6 +200,7 @@
       );
     });
 
+    var branchIcon = (state.data && state.data.branch_icon) || '/static/images/Chronicle/UI_Chronicle_Icon_Branch_RedPurple.webp';
     var nodesHtml = [];
     (diagram.nodes || []).forEach(function (n) {
       var pos = nodePos[String(n.id)];
@@ -197,6 +211,7 @@
       if (n.is_flavor_text) cls += ' esim-node--flavor_text';
       if (n.is_recommend) cls += ' esim-node--recommend';
       if (n.thumb_large || n.thumb_bg) cls += ' esim-node--art-l';
+      var label = [n.number, n.title].filter(Boolean).join(' ').trim() || vt;
       var style = 'left:' + pos.x + 'px;top:' + pos.y + 'px';
       var body;
       if (n.is_flavor_text || vt === 'flavor_middle' || vt === 'flavor_end') {
@@ -208,18 +223,18 @@
           '<div class="esim-meta"><div class="esim-name">' + esc(n.title || '') + '</div></div></div>';
       } else {
         body =
-          '<div class="esim-card' + (n.thumb_bg ? ' esim-card--art-l' : '') + '">' +
+          '<div class="esim-card esim-card--icon' + (n.thumb_bg ? ' esim-card--art-l' : '') + '">' +
           thumbHtml(n.thumb, n.thumb_bg) +
-          '<div class="esim-meta">' +
-          (n.number ? '<div class="esim-num">' + esc(n.number) + '</div>' : '') +
-          '<div class="esim-name">' + esc(n.title || '') + '</div>' +
-          '</div></div>';
+          '</div>';
         if ((n.y | 0) !== 0 && (vt === 'document' || vt === 'battle')) {
-          body += '<div class="esim-branch-mark">&lt; Branch</div>';
+          body +=
+            '<img class="esim-branch-mark" src="' + esc(imgUrl(branchIcon)) + '" alt="Branch" ' +
+            'loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">';
         }
       }
       nodesHtml.push(
-        '<div class="' + cls + '" style="' + style + '" data-node-id="' + esc(String(n.id)) + '" role="button" tabindex="0">' +
+        '<div class="' + cls + '" style="' + style + '" data-node-id="' + esc(String(n.id)) +
+        '" role="button" tabindex="0" title="' + esc(label) + '" aria-label="' + esc(label) + '">' +
         body + '</div>'
       );
     });
@@ -227,7 +242,8 @@
     var bg = diagram.background ? imgUrl(diagram.background) : '';
     var ns = (Math.round(fit.nodeScale * 1000) / 1000).toFixed(3);
     return (
-      '<div class="esim-map-shell" id="esimMapShell" style="height:' + fit.shellH + 'px;padding:' +
+      '<div class="esim-map-shell' + (fit.narrow ? ' esim-map-shell--narrow' : '') +
+      '" id="esimMapShell" style="height:' + fit.shellH + 'px;padding:' +
       fit.edgePadY + 'px ' + fit.edgePadX + 'px;--esim-node-scale:' + ns + '">' +
       '<div class="esim-map" id="esimMap" style="width:' + w + 'px;height:' + h + 'px">' +
       '<div class="esim-bg" style="' + (bg ? 'background-image:url(\'' + esc(bg) + '\')' : '') + '"></div>' +
@@ -238,9 +254,11 @@
   }
 
   function rewardChips(rewards) {
+    var emedal = (state.data && state.data.e_medal_icon) || '/static/images/Item/event_exchange_item_0006.webp';
     return (rewards || []).slice(0, 4).map(function (r) {
-      var icon = r.icon || r.image || '';
       var name = r.name || r.label || '';
+      var icon = r.icon || r.image || '';
+      if (/e[\s-]?medal/i.test(name) || (!icon && /medal/i.test(name))) icon = emedal;
       var qty = r.quantity != null ? r.quantity : (r.count != null ? r.count : '');
       return (
         '<span class="esim-reward">' +
@@ -250,21 +268,24 @@
     }).join('');
   }
 
-  function renderReports() {
-    var docs = (state.data && state.data.documents) || [];
-    var items = docs.map(function (d) {
-      var thumb = d.thumb || d.thumb_small || '';
-      return (
-        '<div class="esim-report-item" data-doc-id="' + esc(String(d.id)) + '">' +
-        (thumb ? '<img src="' + esc(imgUrl(thumb)) + '" alt="" loading="lazy">' : '<img alt="">') +
-        '<div><b>REPORT No.' + esc(String(d.number)) + '</b><span>' + esc(d.hint || '') + '</span></div></div>'
-      );
-    }).join('');
+  function renderDocDetail() {
+    var d = state.docDetail;
+    if (!d) return '';
+    var thumb = d.thumb ? imgUrl(d.thumb) : '';
+    var title = (d.number ? (String(d.number) + ' ') : '') + (d.title || 'Report');
     return (
-      '<div class="esim-side-panel esim-report-panel' + (state.reportOpen ? ' open' : '') + '" id="esimReportPanel">' +
-      '<div class="esim-side-head"><h3>Report ' + esc(String(docs.length)) + '/' + esc(String(state.data.document_total || docs.length)) + '</h3>' +
-      '<button type="button" class="esim-side-close" data-close="report" aria-label="Close">×</button></div>' +
-      items + '</div>'
+      '<div class="esim-side-backdrop" data-close="doc"></div>' +
+      '<div class="esim-side-panel esim-doc-panel open" id="esimDocPanel" role="dialog" aria-label="Report detail">' +
+      '<div class="esim-side-head"><h3>' + esc(title) + '</h3>' +
+      '<button type="button" class="esim-side-close" data-close="doc" aria-label="Close">×</button></div>' +
+      '<div class="esim-doc-art">' +
+      (thumb
+        ? '<img class="esim-doc-thumb" src="' + esc(thumb) + '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">'
+        : '') +
+      '</div>' +
+      (d.description ? '<p class="esim-doc-desc">' + esc(d.description) + '</p>' : '') +
+      (d.hint ? '<p class="esim-doc-hint">' + esc(d.hint) + '</p>' : '') +
+      '</div>'
     );
   }
 
@@ -351,8 +372,6 @@
     }).join('');
 
     var logo = data.logo ? '<img class="esim-logo" src="' + esc(imgUrl(data.logo)) + '" alt="E Simulator">' : '';
-    var docN = (data.documents || []).length;
-    var docT = data.document_total || docN;
     var missionN = data.mission_total != null
       ? data.mission_total
       : (data.mission_tabs || []).reduce(function (sum, tb) { return sum + ((tb.missions || []).length); }, 0);
@@ -363,14 +382,12 @@
       '</div>' +
       '<div class="esim-tabs" id="esimTabs">' + tabs + '</div>' +
       renderMap(diagram) +
-      renderReports() +
+      renderDocDetail() +
       renderMissions() +
       '<div class="esim-footer">' +
       '<div class="esim-actions">' +
       '<div><span class="esim-btn-note">' + esc(String(missionN)) + '</span>' +
       '<button type="button" class="esim-btn' + (state.missionsOpen ? ' active' : '') + '" id="esimMissionsBtn">Missions</button></div>' +
-      '<div><span class="esim-btn-note">' + esc(String(docN)) + '/' + esc(String(docT)) + '</span>' +
-      '<button type="button" class="esim-btn' + (state.reportOpen ? ' active' : '') + '" id="esimReportBtn">Report</button></div>' +
       '</div>' +
       '<div class="esim-ticker">' + formatPromoHtml(data.promotion_text || '') + '</div>' +
       '</div>';
@@ -402,15 +419,6 @@
         }
       });
     });
-    var rb = document.getElementById('esimReportBtn');
-    if (rb) {
-      rb.addEventListener('click', function () {
-        var next = !state.reportOpen;
-        closeSidePanels(next ? 'report' : null);
-        state.reportOpen = next;
-        render();
-      });
-    }
     var mb = document.getElementById('esimMissionsBtn');
     if (mb) {
       mb.addEventListener('click', function () {
@@ -426,7 +434,7 @@
     document.querySelectorAll('.esim-side-close, .esim-side-backdrop').forEach(function (btn) {
       btn.addEventListener('click', function () {
         var which = btn.getAttribute('data-close');
-        if (which === 'report') state.reportOpen = false;
+        if (which === 'doc') state.docDetail = null;
         if (which === 'missions') state.missionsOpen = false;
         render();
       });
