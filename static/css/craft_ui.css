@@ -103,21 +103,27 @@
 
 .lr-card,
 .list-grid-card,
-.ranking-row {
+.ranking-row,
+.ability-item,
+.weapon-card {
   box-shadow: var(--shadow-craft-card);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .lr-card:hover,
   .list-grid-card:hover,
-  .ranking-row:hover {
+  .ranking-row:hover,
+  .ability-item:hover,
+  .weapon-card:hover {
     transform: var(--craft-card-lift);
     box-shadow: var(--shadow-craft-card-hover);
   }
 
   .lr-card:active,
   .list-grid-card:active,
-  .ranking-row:active {
+  .ranking-row:active,
+  .ability-item:active,
+  .weapon-card:active {
     transform: translateY(-1px) scale(1.008);
     transition-duration: 0.12s;
   }
@@ -186,8 +192,21 @@
 
 .detail-body .detail-section {
   box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.05),
+    0 2px 0 rgba(0, 0, 0, 0.22),
+    0 10px 28px rgba(0, 0, 0, 0.28);
+}
+
+.ability-item,
+.weapon-card {
+  transition: var(--transition-craft);
+}
+
+.ability-detail-block {
+  box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.04),
-    0 6px 20px rgba(0, 0, 0, 0.18);
+    0 1px 0 rgba(0, 0, 0, 0.2),
+    0 4px 14px rgba(0, 0, 0, 0.22);
 }
 
 .detail-body .detail-section > .section-title {
