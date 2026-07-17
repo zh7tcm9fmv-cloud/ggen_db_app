@@ -1,5 +1,6 @@
 /**
- * Ko-fi donate promo — Maria + speech bubble near #kofiHeaderLink.
+ * Ko-fi donate promo — speech bubble near #kofiHeaderLink with a random portrait.
+ * Portrait: 90% win_g8500n00100_02; 10% random from images/Popup + original Maria.
  * Shows 2 minutes after page load. Snoozed for 24h after close (X) or Ko-fi header click
  * on the same page visit — a full reload clears the snooze.
  */
@@ -16,6 +17,43 @@
     'ggen_kofi_promo_snooze_until',
   ];
   var MARIA_IMG = '/static/images/UI/UI_TacticalTraining_Logo_maria.webp';
+  var PROMO_FAVORED_IMG = '/static/images/Popup/win_g8500n00100_02.webp';
+  /** Keep in sync with image_index.json → "images/Popup". */
+  var PROMO_POPUP_FILES = [
+    'win_g0010c00403_01.webp',
+    'win_g0010c00403_02.webp',
+    'win_g0010c01700_01.webp',
+    'win_g0010c01700_03.webp',
+    'win_g0010c01901_03.webp',
+    'win_g0310c01500_01.webp',
+    'win_g0550c00400_01.webp',
+    'win_g0800c01800_02.webp',
+    'win_g0950c00700_02.webp',
+    'win_g0950c04000_02.webp',
+    'win_g1250c00301_03.webp',
+    'win_g1250n00011_02.webp',
+    'win_g1440c00500_03.webp',
+    'win_g1440n00400_01.webp',
+    'win_g1440n00400_02.webp',
+    'win_g1440n00400_03.webp',
+    'win_g2000c00100_03.webp',
+    'win_g2000c00700_01.webp',
+    'win_g2100n00400_01.webp',
+    'win_g3000c00802_01.webp',
+    'win_g3000c01901_05.webp',
+    'win_g3050c01400_01.webp',
+    'win_g3060c00100_01.webp',
+    'win_g3060c00100_03.webp',
+    'win_g3700c01001_03.webp',
+    'win_g3700c01200_01.webp',
+    'win_g3700c01200_02.webp',
+    'win_g3700c01300_02.webp',
+    'win_g3700n00015_01.webp',
+    'win_g5010c03000_03.webp',
+    'win_g7050c00900_01.webp',
+    'win_g8500c01501_01.webp',
+    'win_g8500n00100_02.webp',
+  ];
   var PROMO_TEXT_FALLBACK =
     'Thank you for visiting! \uD83D\uDC99\nIf you enjoy our site, please support us on Ko-fi to help keep it free. In return, you\u2019ll receive exclusive sneak peeks and bonus content.';
   var PROMO_NOTICE_LINE_FALLBACK =
@@ -52,6 +90,31 @@
       return cdn + p.replace(/^\/static\/images/, '/images').replace(/\.(png|jpe?g)$/i, '.webp');
     }
     return p;
+  }
+
+  function pickPromoPortraitPath() {
+    // 90% favored Popup art; 10% uniform from Popup pool + original Maria.
+    if (Math.random() < 0.9) return PROMO_FAVORED_IMG;
+    var pool = PROMO_POPUP_FILES.map(function (name) {
+      return '/static/images/Popup/' + name;
+    });
+    pool.push(MARIA_IMG);
+    return pool[Math.floor(Math.random() * pool.length)] || PROMO_FAVORED_IMG;
+  }
+
+  function applyPromoPortrait() {
+    var img = document.querySelector('#kofiDonatePromo .kofi-donate-promo-maria');
+    if (!img) return;
+    var path = pickPromoPortraitPath();
+    img.src = promoImgUrl(path);
+    img.onerror = function () {
+      if (typeof global.gameImageUrlFallback === 'function') {
+        global.gameImageUrlFallback(img);
+        return;
+      }
+      img.onerror = null;
+      img.src = promoImgUrl(MARIA_IMG);
+    };
   }
 
   function promoT(key, fallback) {
@@ -345,8 +408,7 @@
     var els = getEls();
     if (!els.root || !els.panel || !els.target) return;
 
-    var maria = els.root.querySelector('.kofi-donate-promo-maria');
-    if (maria && !maria.getAttribute('src')) maria.src = promoImgUrl(MARIA_IMG);
+    applyPromoPortrait();
 
     renderSlotText(false);
 
