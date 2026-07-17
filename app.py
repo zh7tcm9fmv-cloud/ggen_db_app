@@ -13828,6 +13828,11 @@ def master_league_page():
     return _serve_index()
 
 
+@app.route('/esim')
+def e_simulator_page():
+    return _serve_index()
+
+
 @app.route('/about')
 def about_page():
     r = make_response(render_template('about.html', image_cdn=IMAGE_CDN or '', game_images_use_cdn=GAME_IMAGES_USE_CDN))
