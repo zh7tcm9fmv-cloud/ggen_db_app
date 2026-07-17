@@ -21440,6 +21440,26 @@ def list_stages():
         import traceback; traceback.print_exc(); return jsonify({'rows': [], 'total': 0, 'page': 1, 'per_page': 50, 'total_pages': 1}), 500
 
 
+@app.route('/api/e_simulator')
+def api_e_simulator():
+    """E Simulator (Chronicle Event) route/stage list payload for the Stages tab."""
+    try:
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+        ck = f'e_simulator_v12_{lc}'
+        cached = get_cached_response(ck)
+        if cached:
+            return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
+        import e_simulator_data as _esim
+        import sys as _sys
+        out = _esim.build_e_simulator_payload(_sys.modules[__name__], lc)
+        set_cached_response(ck, out)
+        return jsonify_cacheable(out, ck, public=True, max_age=3600, convert_images=True)
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+
 @app.route('/api/stage/<stage_id>')
 def get_stage(stage_id):
     try:
@@ -21452,7 +21472,7 @@ def get_stage(stage_id):
         est_er = eternal_stage_map.get(stage_id)
         ssc_map = (scenario_stage_map or {}).get(stage_id) if scenario_stage_map else None
         sm_direct = (stage_map or {}).get(stage_id) if stage_map else None
-        # Chronicle / scenario stages live in m_scenario_stage + m_stage (StageTypeIndex 18).
+        # E Simulator / chronicle scenarios live in m_scenario_stage + m_stage (StageTypeIndex 18).
         is_chronicle_stage = bool(ssc_map and sm_direct and not sas and not ses and not tes and not ch and not est_er)
         if sas:
             is_score_attack = True
@@ -21560,8 +21580,8 @@ def get_stage(stage_id):
                     'tes' if is_tower_event_stage else (
                         'ch' if is_challenge_stage else (
                             'ce' if is_chronicle_stage else 'er')))))
-        # mstage13: fix sortie-loop shadowing of `ck` (was corrupting ETag/cache to 'group2_sortie_count').
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage13"
+        # mstage14: chronicle E Simulator titles/portraits (_02 / Size-L detail).
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage14"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -21605,8 +21625,14 @@ def get_stage(stage_id):
                         sname = f"{sname} (Rerun)"
         elif is_challenge_stage or is_chronicle_stage:
             sname = resolve_scenario_stage_name(ld, est.get('title_name_lang_id', '0'), stage_id)
+            if is_chronicle_stage and (not sname or sname.startswith('Unknown') or sname == stage_id):
+                try:
+                    import e_simulator_data as _esim_titles
+                    sname = (_esim_titles.chronicle_stage_title_map(sys.modules[__name__], lc) or {}).get(stage_id, '') or sname
+                except Exception:
+                    pass
             if not sname:
-                sname = f"Stage ({stage_id})"
+                sname = f"E Simulator ({stage_id})"
         else:
             sname = ld.get('stage_text_map', {}).get(est.get('stage_name_lang_id', ''), '') or f"Unknown ({stage_id})"
         if is_score_attack or is_special_event_stage or is_tower_event_stage or is_challenge_stage or is_chronicle_stage:
@@ -21614,6 +21640,8 @@ def get_stage(stage_id):
         else:
             diff = get_stage_difficulty(stage_id, lc)
         sm = stage_map.get(stage_master_id, {}); duid = est.get('display_unit_id', '0'); portrait = ''
+        chronicle_portrait_bg = ''
+        chronicle_portrait_large = False
         if duid != '0':
             uinfo = unit_info_map.get(duid, {}); portrait = find_portrait(uinfo.get('resource_ids', []), duid, 'images/unit_portraits') or ''
         if is_special_event_stage:
@@ -21621,7 +21649,20 @@ def get_stage(stage_id):
         elif is_challenge_stage:
             portrait = challenge_stage_thumb_url(est.get('thumbnail_resource_id')) or portrait
         if is_chronicle_stage:
-            portrait = challenge_stage_thumb_url(est.get('thumbnail_resource_id')) or portrait
+            try:
+                import e_simulator_data as _esim_art
+                _art = (_esim_art.chronicle_stage_portrait_map(sys.modules[__name__], lc) or {}).get(stage_id) or {}
+                if isinstance(_art, str):
+                    _art = {'portrait': _art}
+                _pp = _art.get('portrait') or ''
+                if _pp:
+                    portrait = game_image_public_url(_pp) if not str(_pp).startswith('http') else _pp
+                _pbg = _art.get('portrait_bg') or ''
+                if _pbg:
+                    chronicle_portrait_bg = game_image_public_url(_pbg) if not str(_pbg).startswith('http') else _pbg
+                chronicle_portrait_large = bool(_art.get('portrait_large'))
+            except Exception:
+                portrait = challenge_stage_thumb_url(est.get('thumbnail_resource_id')) or portrait
         sg = []
         allow_empty_sortie_set = is_score_attack or is_tower_event_stage
         if is_challenge_stage:
@@ -21887,6 +21928,8 @@ def get_stage(stage_id):
         result = {
             'content_locked': False, 'id': stage_id, 'stage_number': sn, 'name': sname,
             'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait,
+            'portrait_bg': chronicle_portrait_bg,
+            'portrait_large': chronicle_portrait_large,
             'recommended_cp': rec_cp,
             'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc),
             'victory_conditions': vc, 'defeat_conditions': dc, 'map_meta': map_meta,
