@@ -4439,11 +4439,14 @@ def _parse_hp_or_above_atk_tiers_from_trait_text(txt):
     return out
 
 
-def _unit_adjust_hp_condition_increased_atk_buckets(ad, spb, spc):
-    """(HP conditions) Increased ATK: ability_cond forces lines into spc, stacking 75%/10% and 50%/5%.
+def _unit_adjust_hp_condition_increased_atk_buckets(ad, spb, spc, added_b=0, added_c=0):
+    """(HP conditions) Increased ATK: only one HP-or-above tier applies in-game.
 
-    In-game only one tier applies at a time. At assumed full HP, stats_no_cond should use the highest
-    threshold (10%); stats_with_cond should reflect the weakest tier (5%) via spb + spc net."""
+    Parse tiers from this ability and rewrite *this ability's* ATK contribution (added_b/added_c).
+    Do not inspect global spc — sibling traits (e.g. Advantage: Zeon +15% ATK) used to be mistaken for
+    stacked HP tiers and double-counted into stats_no_cond (FA Gundam 1007001160: 30% instead of 20%).
+
+    At assumed full HP: spb gets the highest threshold %; multi-tier CP net uses weakest via spc."""
     name = (ad.get('name') or '').strip()
     if not name:
         return
@@ -4466,20 +4469,21 @@ def _unit_adjust_hp_condition_increased_atk_buckets(ad, spb, spc):
     for th, pct in tiers:
         by_th[th] = max(by_th.get(th, 0), pct)
     uniq = sorted(by_th.items(), key=lambda x: -x[0])
-    wrong = sum(p for _, p in uniq)
-    atk_key = 'Attack'
-    if spc.get(atk_key, 0) < wrong:
-        return
-    if len(uniq) == 1:
-        lone = uniq[0][1]
-        spc[atk_key] = spc.get(atk_key, 0) - lone
-        spb[atk_key] = spb.get(atk_key, 0) + lone
-        return
     hi_pct = uniq[0][1]
     lo_pct = uniq[-1][1]
-    spc[atk_key] = spc.get(atk_key, 0) - wrong
+    atk_key = 'Attack'
+    ab = int(added_b or 0)
+    ac = int(added_c or 0)
+    if ab == 0 and ac == 0:
+        return
+    # Strip this ability's ATK%, then apply the correct full-HP / CP split.
+    if ab:
+        spb[atk_key] = spb.get(atk_key, 0) - ab
+    if ac:
+        spc[atk_key] = spc.get(atk_key, 0) - ac
     spb[atk_key] = spb.get(atk_key, 0) + hi_pct
-    spc[atk_key] = spc.get(atk_key, 0) + (lo_pct - hi_pct)
+    if len(uniq) > 1:
+        spc[atk_key] = spc.get(atk_key, 0) + (lo_pct - hi_pct)
 
 
 def _vigor_gate_tier_rank(gate_text):
@@ -7461,8 +7465,22 @@ def create_unit_ability_map(d):
 
 def calc_growth_unit_base(base, mx, ri):
     gr = GROWTH_MAP.get(str(ri), 60); return math.floor(base + ((mx - base) * gr / 100))
+
+
+def _lb_scale_stat(value, mult):
+    """Apply LB / SP multiplier with integer tenths (avoids float floor off-by-one, e.g. 5685*1.4)."""
+    v = int(value or 0)
+    m = float(mult)
+    if m == 1.0:
+        return v
+    tenths = int(round(m * 10))
+    if tenths <= 0:
+        return 0
+    return (v * tenths) // 10
+
+
 def calc_growth_unit(base, mx, ri):
-    grown = calc_growth_unit_base(base, mx, ri); return math.floor(grown * 1.4)
+    grown = calc_growth_unit_base(base, mx, ri); return _lb_scale_stat(grown, 1.4)
 
 def extract_stat_bonus_unit(text, fs):
     bonuses = {}; tl = text.lower()
@@ -10440,7 +10458,7 @@ def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
         for s in ['HP', 'EN', 'Attack', 'Defense', 'Mobility']:
             st = raw.get(s, (0, 0, 0)); st = (st[0], st[1], st[2]) if len(st) >= 3 else (st[0], st[1], st[1])
             gs = calc_growth_unit_base(st[0], st[1], ri)
-            lb_fs[s] = math.floor(gs * cm)
+            lb_fs[s] = _lb_scale_stat(gs, cm)
         mov = raw.get('Move', (0, 0)); mov = (mov[0], mov[1]) if isinstance(mov, (list, tuple)) and len(mov) >= 2 else (mov if isinstance(mov, (int, float)) else 0, mov if isinstance(mov, (int, float)) else 0)
         lb_fs['Move'] = mov[0] if isinstance(mov, (list, tuple)) else mov
     else:
@@ -10458,6 +10476,7 @@ def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
         hc = any(cond for d2 in ad.get('details', []) for cond in d2.get('conditions', []))
         ie = ad.get('is_ex', False); ability_cond = ability_name_implies_unit_stat_conditional_bucket(ad)
         inx = unit_id == '1400000550' and any(kw in (ad.get('name', '') or '').lower() for kw in ['newtype', 'x-rounder', '新人類', 'x rounder'])
+        atk_b0 = bd.get('Attack', 0); atk_c0 = cd.get('Attack', 0)
         for di, d2 in enumerate(ad.get('details', [])):
             txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
             parts = [p.strip() for p in re.split(r'[.\n]+', txt) if p and p.strip()]
@@ -10507,7 +10526,8 @@ def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
                     if inx: nd[s] = max(nd.get(s, 0), pct)
                     elif line_cond: cd[s] = cd.get(s, 0) + pct
                     else: bd[s] = bd.get(s, 0) + pct
-        _unit_adjust_hp_condition_increased_atk_buckets(ad, bd, cd)
+        _unit_adjust_hp_condition_increased_atk_buckets(
+            ad, bd, cd, bd.get('Attack', 0) - atk_b0, cd.get('Attack', 0) - atk_c0)
         _unit_adjust_vigor_condition_stat_buckets(ad, bd, cd)
     for ab in ac:
         ep(ab, spb, spc, nxs, spb_move_flat, spc_move_flat, spb_crit, spc_crit)
@@ -10563,6 +10583,7 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
         ie = ad.get('is_ex', False)
         ability_cond = ability_name_implies_unit_stat_conditional_bucket(ad)
         inx = unit_id == '1400000550' and any(kw in (ad.get('name', '') or '').lower() for kw in ['newtype', 'x-rounder', '新人類', 'x rounder'])
+        atk_b0 = bd.get('Attack', 0); atk_c0 = cd.get('Attack', 0)
         for di, d2 in enumerate(ad.get('details', [])):
             txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
             parts = [p.strip() for p in re.split(r'[.\n]+', txt) if p and p.strip()]
@@ -10620,7 +10641,8 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
                         cd[s] = cd.get(s, 0) + pct
                     else:
                         bd[s] = bd.get(s, 0) + pct
-        _unit_adjust_hp_condition_increased_atk_buckets(ad, bd, cd)
+        _unit_adjust_hp_condition_increased_atk_buckets(
+            ad, bd, cd, bd.get('Attack', 0) - atk_b0, cd.get('Attack', 0) - atk_c0)
         _unit_adjust_vigor_condition_stat_buckets(ad, bd, cd)
 
     for ab in ac:
@@ -10646,14 +10668,14 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
                 st = raw.get(s, (0, 0, 0)); st = (st[0], st[1], st[2]) if len(st) >= 3 else (st[0], st[1], st[1])
                 gs = calc_growth_unit_base(st[0], st[1], ri); gsp = st[2]
                 sb2v, sm2v = ssp_bonus.get(s, (0, 0)); sb2v = sb2v if isinstance(sb2v, (int, float)) else 0; sm2v = sm2v if isinstance(sm2v, (int, float)) else sb2v
-                scb = math.floor(sb2v + (sm2v - sb2v) * 0.5) if has_sp and ssp_bonus else 0
-                lb_fs[s] = math.floor(gs * cm_base); lb_fsp[s] = math.floor(gsp * cm_sp); lb_fssp[s] = math.floor((gsp + scb) * cm_sp)
+                scb = (int(sb2v) + (int(sm2v) - int(sb2v)) // 2) if has_sp and ssp_bonus else 0
+                lb_fs[s] = _lb_scale_stat(gs, cm_base); lb_fsp[s] = _lb_scale_stat(gsp, cm_sp); lb_fssp[s] = _lb_scale_stat(gsp + scb, cm_sp)
             mov = raw.get('Move', (0, 0)); mov = (mov[0], mov[1]) if isinstance(mov, (list, tuple)) and len(mov) >= 2 else (mov if isinstance(mov, (int, float)) else 0, mov if isinstance(mov, (int, float)) else 0)
             lb_fs['Move'] = mov[0] if isinstance(mov, (list, tuple)) else mov
             lb_fsp['Move'] = mov[1] if isinstance(mov, (list, tuple)) else mov[0]
             lb_fssp['Move'] = lb_fsp['Move'] + (ssp_core.get('move', 0) if has_sp else 0)
         else:
-            lb_fs = {s: math.floor(fs.get(s, 0) * cm_base / 1.4) for s in UNIT_STAT_ORDER}
+            lb_fs = {s: (int(fs.get(s, 0) or 0) * int(round(float(cm_base) * 10))) // 14 for s in UNIT_STAT_ORDER}
             lb_fsp = dict(lb_fs)
             lb_fssp = dict(lb_fs)
         snc, swc, spnc, spwc, sspnc, sspwc = [], [], [], [], [], []
@@ -22087,6 +22109,7 @@ def get_unit(unit_id):
             ie = ad.get('is_ex', False)
             ability_cond = ability_name_implies_unit_stat_conditional_bucket(ad)
             inx = unit_id == '1400000550' and any(kw in (ad.get('name', '') or '').lower() for kw in ['newtype', 'x-rounder', '新人類', 'x rounder'])
+            atk_b0 = bd.get('Attack', 0); atk_c0 = cd.get('Attack', 0)
             for di, d2 in enumerate(ad.get('details', [])):
                 txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
                 parts = [p.strip() for p in re.split(r'[.\n]+', txt) if p and p.strip()]
@@ -22152,7 +22175,8 @@ def get_unit(unit_id):
                             wpn_cd[wk] = wpn_cd.get(wk, 0) + pct
                         else:
                             wpn_bd[wk] = wpn_bd.get(wk, 0) + pct
-            _unit_adjust_hp_condition_increased_atk_buckets(ad, bd, cd)
+            _unit_adjust_hp_condition_increased_atk_buckets(
+                ad, bd, cd, bd.get('Attack', 0) - atk_b0, cd.get('Attack', 0) - atk_c0)
             _unit_adjust_vigor_condition_stat_buckets(ad, bd, cd)
 
         for ab in ac:
@@ -22200,14 +22224,14 @@ def get_unit(unit_id):
                     st = raw.get(s, (0,0,0)); st = (st[0], st[1], st[2]) if len(st) >= 3 else (st[0], st[1], st[1])
                     gs = calc_growth_unit_base(st[0], st[1], ri); gsp = st[2]
                     sb2v, sm2v = ssp_bonus.get(s, (0,0)); sb2v = sb2v if isinstance(sb2v, (int, float)) else 0; sm2v = sm2v if isinstance(sm2v, (int, float)) else sb2v
-                    scb = math.floor(sb2v + (sm2v - sb2v) * 0.5) if has_sp and ssp_bonus else 0
-                    lb_fs[s] = math.floor(gs * cm_base); lb_fsp[s] = math.floor(gsp * cm_sp); lb_fssp[s] = math.floor((gsp + scb) * cm_sp)
+                    scb = (int(sb2v) + (int(sm2v) - int(sb2v)) // 2) if has_sp and ssp_bonus else 0
+                    lb_fs[s] = _lb_scale_stat(gs, cm_base); lb_fsp[s] = _lb_scale_stat(gsp, cm_sp); lb_fssp[s] = _lb_scale_stat(gsp + scb, cm_sp)
                 mov = raw.get('Move', (0,0)); mov = (mov[0], mov[1]) if isinstance(mov, (list, tuple)) and len(mov) >= 2 else (mov if isinstance(mov, (int, float)) else 0, mov if isinstance(mov, (int, float)) else 0)
                 lb_fs['Move'] = mov[0] if isinstance(mov, (list, tuple)) else mov
                 lb_fsp['Move'] = mov[1] if isinstance(mov, (list, tuple)) else mov[0]
                 lb_fssp['Move'] = lb_fsp['Move'] + (ssp_core.get('move', 0) if has_sp else 0)
             else:
-                lb_fs = {s: math.floor(fs.get(s,0) * cm_base / 1.4) for s in UNIT_STAT_ORDER}
+                lb_fs = {s: (int(fs.get(s, 0) or 0) * int(round(float(cm_base) * 10))) // 14 for s in UNIT_STAT_ORDER}
                 lb_fsp = dict(lb_fs)
                 lb_fssp = dict(lb_fs)
             snc, swc, spnc, spwc, sspnc, sspwc = [], [], [], [], [], []
