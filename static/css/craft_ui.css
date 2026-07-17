@@ -112,18 +112,19 @@
 @media (hover: hover) and (pointer: fine) {
   .lr-card:hover,
   .list-grid-card:hover,
-  .ranking-row:hover,
+  .ranking-row:hover {
+    transform: var(--craft-card-lift);
+    box-shadow: var(--shadow-craft-card-hover);
+  }
+
   .ability-item:hover,
   .weapon-card:hover {
-    transform: var(--craft-card-lift);
     box-shadow: var(--shadow-craft-card-hover);
   }
 
   .lr-card:active,
   .list-grid-card:active,
-  .ranking-row:active,
-  .ability-item:active,
-  .weapon-card:active {
+  .ranking-row:active {
     transform: translateY(-1px) scale(1.008);
     transition-duration: 0.12s;
   }
