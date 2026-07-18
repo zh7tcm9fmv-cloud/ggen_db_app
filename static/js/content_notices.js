@@ -5,8 +5,15 @@
   const LATEST_RELEASE_SEEN_KEY = 'ggen_latest_release_seen';
   const KOFI_NOTICE_SEEN_KEY = 'ggen_kofi_notice_seen';
   const PAGE_VISITS_KEY = 'ggen_page_visits';
-  /** Nav tabs that show a notice until the user opens the page once. Bump version to re-notify everyone. */
-  const PAGE_VISIT_NOTICES = [{ pageId: 'master_league', tabId: 'navMasterLeagueTab', version: '1' }];
+  /**
+   * Page-visit notices: flare until the user opens the page once.
+   * Bump `version` to re-notify everyone.
+   * `tabId` = primary nav target; `extraIds` = extra flare hosts (e.g. Stages source tabs).
+   */
+  const PAGE_VISIT_NOTICES = [
+    { pageId: 'master_league', tabId: 'navMasterLeagueTab', version: '1' },
+    { pageId: 'e_simulator', tabId: 'navStageTab', extraIds: ['stageSourceEsimBtn'], version: '1' },
+  ];
   const LANG_STORAGE_KEY = 'ggen_lang';
   const UI_NOTICE_FLARE_PATH = '/static/images/UI/UI_MapEventEffect_FlareCircleRed.webp';
   const BT_VOTE_DISABLED_GASHA_IDS = new Set(['2504100101', '2604300101']);
@@ -113,11 +120,25 @@
     return String(readPageVisits()[entry.pageId] || '') !== String(entry.version || '1');
   }
 
+  function pageVisitTargetIds(entry) {
+    if (!entry) return [];
+    const ids = [];
+    if (entry.tabId) ids.push(entry.tabId);
+    (entry.extraIds || []).forEach((id) => {
+      if (id && ids.indexOf(id) < 0) ids.push(id);
+    });
+    return ids;
+  }
+
   function bootstrapPageVisitNotices() {
     PAGE_VISIT_NOTICES.forEach((entry) => {
-      const tab = document.getElementById(entry.tabId);
-      if (!tab) return;
-      setPageVisitNotice(tab, pageNeedsVisitNotice(entry));
+      const show = pageNeedsVisitNotice(entry);
+      pageVisitTargetIds(entry).forEach((id) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.classList.add('ui-notice-anchor');
+        setPageVisitNotice(el, show);
+      });
     });
     syncOverflowHints();
   }
@@ -126,7 +147,9 @@
     const entry = pageVisitEntry(pageId);
     if (!entry) return;
     writePageVisit(entry.pageId, entry.version);
-    setPageVisitNotice(document.getElementById(entry.tabId), false);
+    pageVisitTargetIds(entry).forEach((id) => {
+      setPageVisitNotice(document.getElementById(id), false);
+    });
     syncOverflowHints();
     refreshHomeAggregate();
   }
