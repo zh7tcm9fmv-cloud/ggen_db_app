@@ -2,7 +2,7 @@
 (function (global) {
   'use strict';
 
-  var PAYLOAD_VERSION = 12;
+  var PAYLOAD_VERSION = 13;
   var REWARD_ICON_SIZE = 56;
   var state = {
     data: null,
@@ -208,17 +208,32 @@
     var p = n.primary || {};
     var vt = n.view_type || p.type || '';
     var thumb = n.thumb || p.thumb || '';
+    var thumbBg = n.thumb_bg || p.thumb_bg || '';
+    var thumbLarge = !!(n.thumb_large || p.thumb_large || thumbBg);
     var label = ((n.number ? String(n.number) + ' ' : '') + (n.title || '')).trim() || vt;
     var typeLbl = vt === 'document' ? (t('esim_type_report') || 'Report')
       : vt === 'story' ? (t('esim_type_story') || 'Story')
       : (t('esim_type_stage') || 'Stage');
+    var art;
+    if (thumb && thumbLarge) {
+      art =
+        '<div class="esim-stage-thumb-stack">' +
+        (thumbBg
+          ? '<img class="esim-stage-thumb-bg" src="' + esc(imgUrl(thumbBg)) + '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">'
+          : '') +
+        '<div class="esim-stage-thumb-fg">' +
+        '<img class="esim-stage-thumb esim-stage-thumb--l" src="' + esc(imgUrl(thumb)) + '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">' +
+        '</div></div>';
+    } else if (thumb) {
+      art = '<img class="esim-stage-thumb" src="' + esc(imgUrl(thumb)) + '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">';
+    } else {
+      art = '<div class="esim-stage-thumb esim-stage-thumb--empty"></div>';
+    }
     return (
-      '<button type="button" class="esim-stage-card" data-node-id="' + esc(String(n.id)) +
+      '<button type="button" class="esim-stage-card' + (thumbLarge ? ' esim-stage-card--art-l' : '') +
+      '" data-node-id="' + esc(String(n.id)) +
       '" title="' + esc(label) + '">' +
-      '<div class="esim-stage-thumb-wrap">' +
-      (thumb
-        ? '<img class="esim-stage-thumb" src="' + esc(imgUrl(thumb)) + '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">'
-        : '<div class="esim-stage-thumb esim-stage-thumb--empty"></div>') +
+      '<div class="esim-stage-thumb-wrap">' + art +
       '<span class="esim-stage-type">' + esc(typeLbl) + '</span></div>' +
       '<div class="esim-stage-meta">' +
       (n.number ? '<span class="esim-stage-num">' + esc(String(n.number)) + '</span>' : '') +

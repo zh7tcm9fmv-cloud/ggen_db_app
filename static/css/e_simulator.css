@@ -29,9 +29,19 @@
   overflow:hidden;transition:border-color .15s ease, box-shadow .15s ease;
 }
 .esim-stage-card:hover{border-color:rgba(0,212,255,.45);box-shadow:0 0 0 1px rgba(0,212,255,.12)}
-.esim-stage-thumb-wrap{position:relative;width:100%;aspect-ratio:16/9;background:rgba(0,0,0,.25)}
+.esim-stage-thumb-wrap{position:relative;width:100%;aspect-ratio:16/9;background:rgba(0,0,0,.25);overflow:hidden}
 .esim-stage-thumb{width:100%;height:100%;object-fit:cover;display:block}
 .esim-stage-thumb--empty{background:rgba(255,255,255,.04)}
+/* Size-L *_l over report BG — list keeps art inside the card; detail may extrude. */
+.esim-stage-card--art-l .esim-stage-thumb-wrap{aspect-ratio:16/9;background:transparent}
+.esim-stage-thumb-stack{position:relative;width:100%;height:100%;overflow:hidden}
+.esim-stage-thumb-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.esim-stage-thumb-fg{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+}
+.esim-stage-thumb-fg .esim-stage-thumb--l{
+  width:100%;height:100%;object-fit:contain;background:transparent;
+}
 .esim-stage-type{
   position:absolute;left:6px;top:6px;padding:2px 6px;border-radius:4px;
   background:rgba(0,0,0,.65);color:#fff;font:700 10px/1.2 "Segoe UI",system-ui,sans-serif;
@@ -110,6 +120,33 @@
 
 .stage-source-toggle-btn--esim-logo{padding:4px 8px;min-height:36px}
 .stage-source-esim-logo{height:28px;width:auto;display:block;object-fit:contain}
+
+/* Chronicle Size-L detail: same *_l icon as list, but art extrudes past report frame */
+.modal-content.stage-detail .detail-header{overflow:visible}
+.modal-content.stage-detail .detail-portrait-wrap{overflow:visible;width:260px!important;max-width:min(260px,42vw)}
+.modal-content.stage-detail .stage-portrait,
+.modal-content.stage-detail .detail-portrait-placeholder{
+  width:100%!important;height:auto!important;aspect-ratio:1/1;max-width:100%;
+  object-fit:contain;object-position:center;background:rgba(8,16,32,.9);
+  border-radius:8px;border:2px solid rgba(74,144,217,.28);
+}
+.modal-content.stage-detail .stage-portrait-stack{
+  position:relative;width:100%;aspect-ratio:1/1;border-radius:8px;overflow:visible;
+  border:2px solid rgba(74,144,217,.28);background:rgba(8,16,32,.9);
+}
+.modal-content.stage-detail .stage-portrait-bg{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;border-radius:6px;
+}
+.modal-content.stage-detail .stage-portrait-fg{
+  position:absolute;inset:-12%;display:flex;align-items:center;justify-content:center;
+  padding:0;box-sizing:border-box;overflow:visible;z-index:1;
+}
+.modal-content.stage-detail .stage-portrait-fg .stage-portrait,
+.modal-content.stage-detail .stage-portrait-fg .stage-portrait--overlay{
+  width:100%!important;height:100%!important;aspect-ratio:auto!important;
+  object-fit:contain;object-position:center;background:transparent!important;
+  border:0!important;border-radius:0!important;
+}
 
 @media(max-width:768px){
   .esim-stage-grid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
