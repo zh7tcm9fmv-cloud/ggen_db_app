@@ -11747,7 +11747,13 @@ def _lookup_condition_text(tid, *text_maps):
 
 
 def _resolve_map_branch_victory_texts(sid, lc):
-    """Fallback Branch Victory texts from m_map_stage_condition (types 3, then 8)."""
+    """Branch Victory Conditions from m_map_stage_condition type 8 only.
+
+    Battle CategoryTypeIndex 2 is a different objective set (not Branch Victory).
+    Map type 3 is the short form of those objectives. Real Branch Victory copy
+    lives in MapStageConditionTypeIndex == 8 (and victory lines may append
+    "/ (with Branch Victory Conditions)" when type 8 exists).
+    """
     mse = (map_stage_lookup or {}).get(normalize_id(sid)) or {}
     msid = normalize_id(mse.get('map_stage_id', '0'))
     if msid == '0':
@@ -11756,21 +11762,16 @@ def _resolve_map_branch_victory_texts(sid, lc):
     mtm = ld.get('map_stage_condition_text_map', {}) or {}
     ctm = ld.get('stage_condition_text_map', {}) or {}
     rows = (map_stage_conditions_by_map_stage or {}).get(msid, []) or []
-    by_type = {3: [], 8: []}
-    seen = set()
+    out, seen = [], set()
     for row in rows:
-        ct = safe_int(row.get('condition_type_index'), 0)
-        if ct not in by_type:
+        if safe_int(row.get('condition_type_index'), 0) != 8:
             continue
         txt = _lookup_condition_text(row.get('text_lang_id'), mtm, ctm)
         if not txt or txt == '0' or txt in seen:
             continue
-        # Skip generic victory lines that only mention branch conditions exist.
-        if '(with Branch Victory Conditions)' in txt or '分岐勝利' in txt or '分歧勝利' in txt:
-            continue
         seen.add(txt)
-        by_type[ct].append(txt)
-    return by_type[3] or by_type[8]
+        out.append(txt)
+    return out
 
 
 def resolve_stage_conditions(sid, lc):
@@ -11779,7 +11780,7 @@ def resolve_stage_conditions(sid, lc):
     sid = normalize_id(sid)
     sm = stage_map.get(sid, {})
     csid = normalize_id(sm.get('battle_condition_set_id') or sid)
-    victory, defeat, branch = [], [], []
+    victory, defeat = [], []
     for c in stage_condition_map.get(csid, []):
         txt = _lookup_condition_text(c.get('text_lang_id', ''), ctm)
         if not txt:
@@ -11787,12 +11788,10 @@ def resolve_stage_conditions(sid, lc):
         ct = str(c.get('category_type_index', '0'))
         if ct == '1':
             victory.append(txt)
-        elif ct == '2':
-            branch.append(txt)
         elif ct == '3':
             defeat.append(txt)
-    if not branch:
-        branch = _resolve_map_branch_victory_texts(sid, lc)
+    # Branch Victory is map type 8 only — never battle category 2.
+    branch = _resolve_map_branch_victory_texts(sid, lc)
     if branch:
         # When branch conditions are listed separately, drop the parenthetical marker from victory lines.
         cleaned = []
@@ -21650,8 +21649,8 @@ def get_stage(stage_id):
                     'tes' if is_tower_event_stage else (
                         'ch' if is_challenge_stage else (
                             'ce' if is_chronicle_stage else 'er')))))
-        # mstage16: Branch Victory Conditions for Turning Point stages.
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage16"
+        # mstage17: Branch Victory = map condition type 8 only (not battle cat 2).
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage17"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
