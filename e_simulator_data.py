@@ -62,20 +62,18 @@ ESIM_EMEDAL_ICON = '/static/images/Item/event_exchange_item_0006.webp'
 
 
 def _pick_node_thumb(resource_id, size_type, content_type, *, detail=False):
-    """E Simulator thumbs: *_02 by default; Size-L battles use *_l (+ report BG at call site)."""
+    """E Simulator thumbs: list/browse always *_02; Size-L detail uses *_l + report BG."""
     rid = str(resource_id or '').strip()
     if not rid:
         return ''
-    # detail kept for call-site compat; list and detail share the same art choice.
-    _ = detail
     if content_type == CONTENT_FLAVOR_START:
         return _ce_img(f'chronicle_thumb_start_flavor_{rid}')
     if content_type == CONTENT_DOCUMENT:
         return _ce_img(f'chronicle_thumb_document_{rid}_l_02')
     if content_type == CONTENT_STORY:
         return _ce_img(f'chronicle_thumb_story_{rid}_02')
-    # Size-L battles: square *_l hero (report-complete BG layered in UI).
-    if content_type == CONTENT_BATTLE and int(size_type or 0) == SIZE_L:
+    # Size-L detail keeps square *_l hero; list always uses colored *_02.
+    if detail and content_type == CONTENT_BATTLE and int(size_type or 0) == SIZE_L:
         return _ce_img(f'chronicle_thumb_node_{rid}_l')
     return _ce_img(f'chronicle_thumb_node_{rid}_02')
 
@@ -590,7 +588,7 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
         'event_wide_progress_rewards': event_wide_progress_reward_rows,
         'story_progress_rewards': story_progress_reward_rows,
         'report_progress_rewards': report_progress_reward_rows,
-        'payload_version': 13,
+        'payload_version': 14,
         'branch_icon': pub(CHRONICLE_BRANCH_ICON),
         'diagram_frame': pub(CHRONICLE_DIAGRAM_FRAME),
         'e_medal_icon': pub(ESIM_EMEDAL_ICON),
