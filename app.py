@@ -21585,8 +21585,8 @@ def get_stage(stage_id):
                     'tes' if is_tower_event_stage else (
                         'ch' if is_challenge_stage else (
                             'ce' if is_chronicle_stage else 'er')))))
-        # mstage14: chronicle E Simulator titles/portraits (_02 / Size-L detail).
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage14"
+        # mstage15: E-sim squads with SortieCount>0 and empty restriction set still listed.
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage15"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -21669,7 +21669,9 @@ def get_stage(stage_id):
             except Exception:
                 portrait = challenge_stage_thumb_url(est.get('thumbnail_resource_id')) or portrait
         sg = []
-        allow_empty_sortie_set = is_score_attack or is_tower_event_stage
+        # Empty restriction set id (0) still means a real squad when SortieCount > 0
+        # ("No Limit"). E-sim often has Group2SortieCount>0 with set id 0.
+        allow_empty_sortie_set = is_score_attack or is_tower_event_stage or is_chronicle_stage
         if is_challenge_stage:
             for gn, gk, count_key in [
                 (1, 'group1_sortie_restriction_set_id', 'group1_sortie_count'),
