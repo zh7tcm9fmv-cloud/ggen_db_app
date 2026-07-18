@@ -525,7 +525,8 @@ UI_LABELS = {
         'restriction_applies_unit': 'Applies to Units', 'restriction_applies_both': 'Applies to Units & Characters',
         'restriction_applies_characters': 'Applies to Characters',
         'terrain_space': 'Space', 'terrain_atmospheric': 'Atmospheric', 'terrain_ground': 'Land', 'terrain_amphibious': 'Underwater', 'terrain_unknown': 'Unknown',
-        'victory_conditions': 'Victory Conditions', 'defeat_conditions': 'Defeat Conditions', 'none': 'None',
+        'victory_conditions': 'Victory Conditions', 'defeat_conditions': 'Defeat Conditions',
+        'branch_victory_conditions': 'Branch Victory Conditions', 'none': 'None',
         'difficulty_normal': 'Normal', 'difficulty_hard': 'Hard', 'difficulty_expert': 'Expert',
         'difficulty_none': 'None', 'difficulty_hell': 'Hell', 'difficulty_inferno': 'Inferno',
         'difficulty_challenge': 'Challenge', 'difficulty_another': 'Another', 'difficulty_another2': 'Another2',
@@ -546,7 +547,8 @@ UI_LABELS = {
         'restriction_applies_unit': '僅適用於單位', 'restriction_applies_both': '適用於單位與角色',
         'restriction_applies_characters': '適用於角色',
         'terrain_space': '宇宙', 'terrain_atmospheric': '空中', 'terrain_ground': '地面', 'terrain_amphibious': '水中', 'terrain_unknown': '未知',
-        'victory_conditions': '勝利條件', 'defeat_conditions': '敗北條件', 'none': '無',
+        'victory_conditions': '勝利條件', 'defeat_conditions': '敗北條件',
+        'branch_victory_conditions': '分歧勝利條件', 'none': '無',
         'difficulty_normal': '普通', 'difficulty_hard': '困難', 'difficulty_expert': '專家',
         'difficulty_none': '無', 'difficulty_hell': '地獄', 'difficulty_inferno': '煉獄',
         'difficulty_challenge': '挑戰', 'difficulty_another': 'Another', 'difficulty_another2': 'Another2',
@@ -567,7 +569,8 @@ UI_LABELS = {
         'restriction_applies_unit': '僅適用於單位', 'restriction_applies_both': '適用於單位與角色',
         'restriction_applies_characters': '適用於角色',
         'terrain_space': '宇宙', 'terrain_atmospheric': '空中', 'terrain_ground': '地面', 'terrain_amphibious': '水中', 'terrain_unknown': '未知',
-        'victory_conditions': '勝利條件', 'defeat_conditions': '敗北條件', 'none': '無',
+        'victory_conditions': '勝利條件', 'defeat_conditions': '敗北條件',
+        'branch_victory_conditions': '分歧勝利條件', 'none': '無',
         'difficulty_normal': '普通', 'difficulty_hard': '困難', 'difficulty_expert': '專家',
         'difficulty_none': '無', 'difficulty_hell': '地獄', 'difficulty_inferno': '煉獄',
         'difficulty_challenge': '挑戰', 'difficulty_another': 'Another', 'difficulty_another2': 'Another2',
@@ -588,7 +591,8 @@ UI_LABELS = {
         'restriction_applies_unit': '機体に適用', 'restriction_applies_both': '機体とキャラに適用',
         'restriction_applies_characters': 'キャラクターに適用',
         'terrain_space': '宇宙', 'terrain_atmospheric': '空中', 'terrain_ground': '地上', 'terrain_amphibious': '水中', 'terrain_unknown': '不明',
-        'victory_conditions': '勝利条件', 'defeat_conditions': '敗北条件', 'none': 'なし',
+        'victory_conditions': '勝利条件', 'defeat_conditions': '敗北条件',
+        'branch_victory_conditions': '分岐勝利条件', 'none': 'なし',
         'difficulty_normal': '通常', 'difficulty_hard': 'ハード', 'difficulty_expert': 'エキスパート',
         'difficulty_none': 'なし', 'difficulty_hell': 'ヘル', 'difficulty_inferno': 'インフェルノ',
         'difficulty_challenge': 'チャレンジ', 'difficulty_another': 'Another', 'difficulty_another2': 'Another2',
@@ -11724,19 +11728,80 @@ def resolve_sortie_restriction_set(set_id, lc):
         rows.append({'target_type_index': tt, 'applies_to': at, 'restriction_names': rn, 'restriction_items': restriction_items})
     return rows
 
+def _lookup_condition_text(tid, *text_maps):
+    lid = normalize_id(tid)
+    if not lid or lid == '0':
+        return ''
+    for tm in text_maps:
+        if not tm:
+            continue
+        txt = str(tm.get(lid, '') or '').strip()
+        if txt:
+            return txt
+        for k, v in tm.items():
+            if k == lid or str(k).endswith(lid):
+                txt = str(v or '').strip()
+                if txt:
+                    return txt
+    return ''
+
+
+def _resolve_map_branch_victory_texts(sid, lc):
+    """Fallback Branch Victory texts from m_map_stage_condition (types 3, then 8)."""
+    mse = (map_stage_lookup or {}).get(normalize_id(sid)) or {}
+    msid = normalize_id(mse.get('map_stage_id', '0'))
+    if msid == '0':
+        return []
+    ld = get_lang_data(lc)
+    mtm = ld.get('map_stage_condition_text_map', {}) or {}
+    ctm = ld.get('stage_condition_text_map', {}) or {}
+    rows = (map_stage_conditions_by_map_stage or {}).get(msid, []) or []
+    by_type = {3: [], 8: []}
+    seen = set()
+    for row in rows:
+        ct = safe_int(row.get('condition_type_index'), 0)
+        if ct not in by_type:
+            continue
+        txt = _lookup_condition_text(row.get('text_lang_id'), mtm, ctm)
+        if not txt or txt == '0' or txt in seen:
+            continue
+        # Skip generic victory lines that only mention branch conditions exist.
+        if '(with Branch Victory Conditions)' in txt or '分岐勝利' in txt or '分歧勝利' in txt:
+            continue
+        seen.add(txt)
+        by_type[ct].append(txt)
+    return by_type[3] or by_type[8]
+
+
 def resolve_stage_conditions(sid, lc):
-    ld = get_lang_data(lc); ctm = ld.get('stage_condition_text_map', {}); sm = stage_map.get(sid, {}); csid = sm.get('battle_condition_set_id', sid)
-    victory, defeat = [], []
+    ld = get_lang_data(lc)
+    ctm = ld.get('stage_condition_text_map', {})
+    sid = normalize_id(sid)
+    sm = stage_map.get(sid, {})
+    csid = normalize_id(sm.get('battle_condition_set_id') or sid)
+    victory, defeat, branch = [], [], []
     for c in stage_condition_map.get(csid, []):
-        tid = c.get('text_lang_id', ''); txt = ctm.get(tid, '')
+        txt = _lookup_condition_text(c.get('text_lang_id', ''), ctm)
         if not txt:
-            for k, v in ctm.items():
-                if k == tid or k.endswith(tid): txt = v; break
-        if not txt: continue
+            continue
         ct = str(c.get('category_type_index', '0'))
-        if ct == '1': victory.append(txt)
-        elif ct == '3': defeat.append(txt)
-    return victory, defeat
+        if ct == '1':
+            victory.append(txt)
+        elif ct == '2':
+            branch.append(txt)
+        elif ct == '3':
+            defeat.append(txt)
+    if not branch:
+        branch = _resolve_map_branch_victory_texts(sid, lc)
+    if branch:
+        # When branch conditions are listed separately, drop the parenthetical marker from victory lines.
+        cleaned = []
+        for txt in victory:
+            nt = re.sub(r'\s*/\s*\(with Branch Victory Conditions\)\s*$', '', txt, flags=re.I).strip()
+            nt = re.sub(r'\s*/\s*[（(]?(?:分岐|分歧)勝利条件[）)]?\s*$', '', nt).strip()
+            cleaned.append(nt or txt)
+        victory = cleaned
+    return victory, defeat, branch
 
 def build_map_grid(w, h, u, buff_areas=None, playable_cells=None, playable_cell_count=0):
     md = {'width': w, 'height': h, 'units': u}
@@ -21585,8 +21650,8 @@ def get_stage(stage_id):
                     'tes' if is_tower_event_stage else (
                         'ch' if is_challenge_stage else (
                             'ce' if is_chronicle_stage else 'er')))))
-        # mstage15: E-sim squads with SortieCount>0 and empty restriction set still listed.
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage15"
+        # mstage16: Branch Victory Conditions for Turning Point stages.
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage16"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -21695,7 +21760,7 @@ def get_stage(stage_id):
                 if gid == '0' and not allow_empty_sortie_set:
                     continue
                 sg.append({'group_no': gn, 'restrictions': resolve_sortie_restriction_set(gid, lc)})
-        vc, dc = resolve_stage_conditions(stage_master_id, lc)
+        vc, dc, bvc = resolve_stage_conditions(stage_master_id, lc)
         md = {'width': 0, 'height': 0, 'units': [], 'reach_target_areas': []}; nd = []
         map_meta = None
         # NPC dossier/unit % merge: single code path for every stage category below — no stage-id branches here.
@@ -21939,7 +22004,8 @@ def get_stage(stage_id):
             'portrait_large': chronicle_portrait_large,
             'recommended_cp': rec_cp,
             'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc),
-            'victory_conditions': vc, 'defeat_conditions': dc, 'map_meta': map_meta,
+            'victory_conditions': vc, 'defeat_conditions': dc,
+            'branch_victory_conditions': bvc, 'map_meta': map_meta,
             'sortie_groups': sg, 'map_data': md, 'npc_details': nd, 'lang': lc,
             'stage_category': stage_cat, 'stage_master_id': stage_master_id,
             'stage_rewards': stage_rewards,
