@@ -9,7 +9,8 @@
 #eSimulatorWrap{display:none;width:100%;min-width:0;box-sizing:border-box}
 .esim-root{width:100%;min-width:0}
 .esim-toolbar{display:flex;flex-direction:column;gap:10px;margin:0 0 14px}
-.esim-route-tabs,.esim-panel-tabs{display:flex!important;flex-wrap:wrap;gap:6px}
+.esim-route-tabs,.esim-panel-tabs,.esim-progress-tabs{display:flex!important;flex-wrap:wrap;gap:6px}
+.esim-progress-tabs{margin:0 0 12px}
 .esim-route-btn{display:inline-flex;align-items:center;gap:8px;max-width:100%}
 .esim-route-btn .esim-route-thumb{width:36px;height:36px;object-fit:cover;border-radius:4px;opacity:.85}
 .esim-route-btn.active .esim-route-thumb{opacity:1}

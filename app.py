@@ -21450,7 +21450,7 @@ def api_e_simulator():
     """E Simulator (Chronicle Event) route/stage list payload for the Stages tab."""
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-        ck = f'e_simulator_v14_{lc}'
+        ck = f'e_simulator_v15_{lc}'
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)

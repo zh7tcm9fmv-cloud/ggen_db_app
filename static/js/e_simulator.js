@@ -2,7 +2,7 @@
 (function (global) {
   'use strict';
 
-  var PAYLOAD_VERSION = 14;
+  var PAYLOAD_VERSION = 15;
   var REWARD_ICON_SIZE = 56;
   var state = {
     data: null,
@@ -10,6 +10,7 @@
     diagramId: null,
     docDetail: null,
     panel: 'stages', // stages | missions | progress | complete | event
+    progressTab: 'story', // story | report | mission — Progress Rewards sub-tabs
   };
 
   function t(k) {
@@ -274,8 +275,27 @@
       }).join('') + '</div>';
     }
     if (panel === 'progress') {
+      var progressTab = state.progressTab || 'story';
       var storyRows = (state.data && (state.data.story_progress_rewards || state.data.story_rewards)) || [];
-      return progressRewardRowsHtml(storyRows);
+      var reportRows = (state.data && (state.data.report_progress_rewards || state.data.document_rewards)) || [];
+      var missionRows = (state.data && (state.data.mission_progress_rewards || state.data.mission_complete_rewards)) || [];
+      var subTabs = [
+        { id: 'story', label: t('esim_progress_story') || 'Story Progress Rewards' },
+        { id: 'report', label: t('esim_progress_report') || 'Report Progress Rewards' },
+        { id: 'mission', label: t('esim_progress_mission') || 'Mission Progress Rewards' },
+      ].map(function (tb) {
+        var active = progressTab === tb.id;
+        return (
+          '<button type="button" class="stage-source-toggle-btn' + (active ? ' active' : '') +
+          '" data-esim-progress-tab="' + tb.id + '" aria-pressed="' + (active ? 'true' : 'false') + '">' +
+          esc(tb.label) + '</button>'
+        );
+      }).join('');
+      var rows = progressTab === 'report' ? reportRows : (progressTab === 'mission' ? missionRows : storyRows);
+      return (
+        '<div class="stage-source-toggle-wrap esim-progress-tabs" role="group" aria-label="Progress reward categories">' +
+        subTabs + '</div>' + progressRewardRowsHtml(rows)
+      );
     }
     if (panel === 'complete') {
       var complete = (diagram && diagram.complete_rewards) || [];
@@ -355,6 +375,13 @@
     document.querySelectorAll('#esimPanels [data-esim-panel]').forEach(function (btn) {
       btn.addEventListener('click', function () {
         state.panel = btn.getAttribute('data-esim-panel') || 'stages';
+        state.docDetail = null;
+        render();
+      });
+    });
+    document.querySelectorAll('[data-esim-progress-tab]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        state.progressTab = btn.getAttribute('data-esim-progress-tab') || 'story';
         state.docDetail = null;
         render();
       });
