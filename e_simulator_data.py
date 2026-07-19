@@ -57,8 +57,10 @@ CHRONICLE_DETAIL_REPORT_BG = _ce_img('Bg_Chronicle_bg_detail_report_complete')
 CHRONICLE_BRANCH_ICON = _ce_img('UI_Chronicle_Icon_Branch_RedPurple')
 # In-game diagram frame overlayed on route terrain backgrounds.
 CHRONICLE_DIAGRAM_FRAME = _ce_img('Bg_Chronicle_Diagram')
-# E Simulator event medal (mission / exchange rewards).
-ESIM_EMEDAL_ICON = '/static/images/Item/event_exchange_item_0006.webp'
+# E Simulator event medal (mission / exchange rewards). Asset lives under Item/.
+ESIM_EMEDAL_ITEM_ID = '291000250001'
+ESIM_EMEDAL_RESOURCE_ID = 'event_exchange_item_0006'
+ESIM_EMEDAL_ICON = f'/static/images/Item/{ESIM_EMEDAL_RESOURCE_ID}.webp'
 
 
 def _pick_node_thumb(resource_id, size_type, content_type, *, detail=False):
@@ -243,6 +245,18 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
     def pub(path):
         return game_image_public_url(path) if path else ''
 
+    game_item_icon_url = getattr(app_mod, '_game_item_icon_url', None)
+
+    def emedal_icon_url():
+        if callable(game_item_icon_url):
+            try:
+                u = game_item_icon_url(ESIM_EMEDAL_RESOURCE_ID) or ''
+                if u:
+                    return u
+            except Exception:
+                pass
+        return pub(ESIM_EMEDAL_ICON)
+
     def rewards_for(set_id):
         sid = normalize_id(set_id)
         if not sid or sid == '0' or not resolve_reward_rows or not decorate_rewards:
@@ -251,15 +265,22 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
             rows = decorate_rewards(resolve_reward_rows(sid), lang_code) or []
         except Exception:
             return []
-        emedal = pub(ESIM_EMEDAL_ICON)
+        # Prefer index-aware URL (E-Medal is under Item/, not Master League/).
+        emedal = emedal_icon_url()
         for r in rows:
             if not isinstance(r, dict):
                 continue
+            tid = normalize_id(r.get('target_id') or r.get('detail_id'))
             name = str(r.get('name') or r.get('label') or '')
-            if 'e-medal' in name.lower() or 'e medal' in name.lower() or name.strip().lower() == 'e-medal':
-                r['icon'] = emedal
-                r['image'] = emedal
-            elif not (r.get('icon') or r.get('image')) and 'medal' in name.lower():
+            nl = name.lower()
+            is_emedal = (
+                tid == ESIM_EMEDAL_ITEM_ID
+                or 'e-medal' in nl
+                or 'e medal' in nl
+                or name.strip() in ('E獎章', 'E奖章', 'Eメダル')
+                or (name.startswith('E') and ('獎章' in name or '奖章' in name or 'メダル' in name))
+            )
+            if is_emedal:
                 r['icon'] = emedal
                 r['image'] = emedal
         return rows
@@ -589,10 +610,10 @@ def build_e_simulator_payload(app_mod, lang_code='EN'):
         'event_wide_progress_rewards': event_wide_progress_reward_rows,
         'story_progress_rewards': story_progress_reward_rows,
         'report_progress_rewards': report_progress_reward_rows,
-        'payload_version': 15,
+        'payload_version': 16,
         'branch_icon': pub(CHRONICLE_BRANCH_ICON),
         'diagram_frame': pub(CHRONICLE_DIAGRAM_FRAME),
-        'e_medal_icon': pub(ESIM_EMEDAL_ICON),
+        'e_medal_icon': emedal_icon_url(),
         'shop': {
             'id': ESIM_SHOP_ID,
             'name': shop_lang.get(normalize_id(shop_row.get('NameLanguageId')), 'E Simulator Shop'),

@@ -158,7 +158,14 @@
     }
     var emedal = (state.data && state.data.e_medal_icon) || '/static/images/Item/event_exchange_item_0006.webp';
     var icon = (r && (r.icon || r.image)) || '';
-    if (/e[\s-]?medal/i.test(name) || (!icon && /medal/i.test(name))) icon = emedal;
+    var tid = String((r && (r.target_id || r.detail_id)) || '');
+    var isEmedal = tid === '291000250001'
+      || /e[\s-]?medal/i.test(name)
+      || /^E\s*(獎章|奖章|メダル)/.test(name)
+      || name === 'E獎章' || name === 'E奖章' || name === 'Eメダル';
+    if (isEmedal) icon = emedal;
+    // Wrong Master League path for E-Medal (asset is under Item/).
+    if (icon && /Master(?:%20| )?League\/event_exchange_item_0006/i.test(icon)) icon = emedal;
     if (!icon) {
       return '<span class="esim-reward-fallback" style="width:' + sz + 'px;height:' + sz + 'px"></span>';
     }

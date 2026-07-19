@@ -11077,8 +11077,15 @@ def _resolve_series_ssp_chip_layers(item_id):
     )
 
 
+# EN: "Mobile Suit Gundam Series Unit Upgrade Data SSR"
+# TW/HK: "「機動戰士鋼彈」系列專用單位強化數據SSR"
+# JA: "「機動戦士ガンダム」シリーズ専用ユニット強化データSSR"
 _SERIES_UNIT_UPGRADE_DATA_RE = re.compile(
-    r'^\s*(.+?)\s+Series\s+Unit\s+Upgrade\s+Data\b',
+    r'^\s*(?:'
+    r'[「『](.+?)[」』]\s*(?:系列專用單位強化數據|シリーズ専用ユニット強化データ)'
+    r'|'
+    r'(.+?)\s+Series\s+Unit\s+Upgrade\s+Data\b'
+    r')',
     re.IGNORECASE,
 )
 # Event unit-exp plate under series logo (images/Item/UI_Event_UnitExp_Base_*.webp).
@@ -11133,12 +11140,12 @@ def _series_name_to_logo_pad_map(lc='EN'):
     return out
 
 def _resolve_series_unit_upgrade_data_layers(item_name='', rarity_id='4', lc='EN'):
-    """Series Unit Upgrade Data → UnitExp base plate + series logo (name before 'Series')."""
+    """Series Unit Upgrade Data → UnitExp base plate + series logo (localized name parse)."""
     name = str(item_name or '').strip()
     m = _SERIES_UNIT_UPGRADE_DATA_RE.match(name)
     if not m:
         return '', ''
-    series_name = str(m.group(1) or '').strip()
+    series_name = str(m.group(1) or m.group(2) or '').strip()
     pad = _series_name_to_logo_pad_map(lc).get(_normalize_name_key(series_name), '')
     if not pad and series_name:
         # Fuzzy: longest name key contained in / equal to series_name.
@@ -11211,12 +11218,23 @@ def _resolve_unit_thumb_for_limit_break_material_item(item_id):
 
 
 def _game_item_icon_url(resource_id):
-    """Item icon — exchange medals on Master League CDN; regular items on Item CDN."""
+    """Item icon — most event_exchange medals on Master League CDN; E-Medal (0006) on Item."""
     rid = str(resource_id or '').strip()
     if not rid:
         return ''
-    folder = 'Master%20League' if rid.startswith('event_exchange_item_') else 'Item'
-    return game_image_public_url(_game_images_webp_path(folder, rid))
+    if rid.startswith('event_exchange_item_'):
+        idx = IMAGE_INDEX or {}
+        ml_files = idx.get('images/Master League') or []
+        item_files = idx.get('images/Item') or []
+        stems = (f'{rid}.webp', f'{rid}.png')
+        if any(s in ml_files for s in stems):
+            folder = 'Master%20League'
+        elif any(s in item_files for s in stems):
+            folder = 'Item'
+        else:
+            folder = 'Master%20League'
+        return game_image_public_url(_game_images_webp_path(folder, rid))
+    return game_image_public_url(_game_images_webp_path('Item', rid))
 
 
 def _profile_title_icon_url(pid, pinfo=None):
@@ -21514,7 +21532,7 @@ def api_e_simulator():
     """E Simulator (Chronicle Event) route/stage list payload for the Stages tab."""
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-        ck = f'e_simulator_v15_{lc}'
+        ck = f'e_simulator_v16_{lc}'
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
