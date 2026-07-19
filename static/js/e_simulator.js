@@ -2,7 +2,7 @@
 (function (global) {
   'use strict';
 
-  var PAYLOAD_VERSION = 15;
+  var PAYLOAD_VERSION = 16;
   var REWARD_ICON_SIZE = 56;
   var state = {
     data: null,
@@ -64,33 +64,102 @@
     return null;
   }
 
+  function divergenceLabel(div) {
+    var d = Number(div) || 0;
+    if (d === 1) return t('esim_div_original') || 'Original';
+    if (d === 2) return t('esim_div_turning_point') || 'Turning Point';
+    if (d === 3) return t('esim_div_if') || 'What If';
+    return '';
+  }
+
+  /** Expand multi-battle nodes (Original + Turning Point) into separate stage cards. */
   function playableNodes(diagram) {
     var nodes = (diagram && diagram.nodes) || [];
-    return nodes.filter(function (n) {
+    var out = [];
+    nodes.forEach(function (n) {
       var vt = n.view_type || '';
-      return vt === 'battle' || vt === 'story' || vt === 'document';
-    }).sort(function (a, b) {
+      if (vt === 'story' || vt === 'document') {
+        out.push({
+          id: n.id,
+          content_id: (n.primary && n.primary.id) || '',
+          scenario_stage_id: (n.primary && n.primary.scenario_stage_id) || '',
+          divergence: Number((n.primary && n.primary.divergence) || 0),
+          number: n.number,
+          title: n.title,
+          description: n.description,
+          recommend_order: Number(n.recommend_order) || 0,
+          view_type: vt,
+          thumb: n.thumb,
+          thumb_detail: n.thumb_detail || n.thumb,
+          primary: n.primary,
+          source: n,
+        });
+        return;
+      }
+      if (vt !== 'battle') return;
+      var battles = (n.contents || []).filter(function (c) {
+        return c && c.type === 'battle' && c.scenario_stage_id;
+      });
+      if (!battles.length) {
+        var p0 = n.primary || null;
+        if (!p0) return;
+        battles = [p0];
+      }
+      battles.sort(function (a, b) {
+        var da = Number(a.divergence) || 0;
+        var db = Number(b.divergence) || 0;
+        if (da !== db) return da - db;
+        return String(a.id || '').localeCompare(String(b.id || ''));
+      });
+      var multiBattle = battles.length > 1;
+      battles.forEach(function (c, idx) {
+        var div = Number(c.divergence) || 0;
+        // Badge Original only when the node also has Turning Point / IF siblings;
+        // always badge Turning Point (2) and What If (3).
+        var showDiv = multiBattle || div === 2 || div === 3;
+        out.push({
+          id: n.id,
+          content_id: c.id || '',
+          scenario_stage_id: c.scenario_stage_id || '',
+          divergence: div,
+          show_divergence: showDiv,
+          number: n.number,
+          title: n.title,
+          description: n.description,
+          recommend_order: (Number(n.recommend_order) || 0) + idx * 0.01,
+          view_type: 'battle',
+          thumb: c.thumb || n.thumb,
+          thumb_detail: c.thumb_detail || c.thumb || n.thumb_detail || n.thumb,
+          primary: c,
+          source: n,
+        });
+      });
+    });
+    return out.sort(function (a, b) {
       return (Number(a.recommend_order) || 0) - (Number(b.recommend_order) || 0);
     });
   }
 
   function openNode(n) {
     if (!n) return;
-    var p = n.primary || (n.contents && n.contents[0]) || null;
-    if (!p) return;
-    if ((p.type === 'battle' || p.type === 'story') && p.scenario_stage_id && typeof global.openDetail === 'function') {
-      global.openDetail('stage', String(p.scenario_stage_id));
+    var p = n.primary || (n.source && n.source.primary) || null;
+    var sid = n.scenario_stage_id || (p && p.scenario_stage_id) || '';
+    var ptype = (p && p.type) || n.view_type || '';
+    if ((ptype === 'battle' || ptype === 'story' || n.view_type === 'battle' || n.view_type === 'story')
+        && sid && typeof global.openDetail === 'function') {
+      global.openDetail('stage', String(sid));
       return;
     }
-    if (p.type === 'document') {
-      var doc = findDocument(p.document_id) || {};
+    if (ptype === 'document' || n.view_type === 'document') {
+      var doc = findDocument((p && p.document_id) || '') || {};
+      var src = n.source || n;
       state.docDetail = {
-        id: p.document_id || doc.id || '',
-        number: n.number || doc.number || p.document_number || '',
+        id: (p && p.document_id) || doc.id || '',
+        number: n.number || doc.number || (p && p.document_number) || '',
         title: n.title || doc.title || '',
-        description: n.description || doc.description || '',
-        hint: p.document_hint || doc.hint || '',
-        thumb: n.thumb_detail || n.thumb || p.thumb_detail || p.thumb || doc.thumb || '',
+        description: n.description || src.description || doc.description || '',
+        hint: (p && p.document_hint) || doc.hint || '',
+        thumb: n.thumb_detail || n.thumb || (p && (p.thumb_detail || p.thumb)) || doc.thumb || '',
       };
       render();
     }
@@ -216,18 +285,35 @@
     var p = n.primary || {};
     var vt = n.view_type || p.type || '';
     var thumb = n.thumb || p.thumb || '';
+    var div = Number(n.divergence || p.divergence || 0);
+    var divLbl = (vt === 'battle' && n.show_divergence) ? divergenceLabel(div) : '';
     var label = ((n.number ? String(n.number) + ' ' : '') + (n.title || '')).trim() || vt;
+    if (divLbl) label = label + ' (' + divLbl + ')';
     var typeLbl = vt === 'document' ? (t('esim_type_report') || 'Report')
       : vt === 'story' ? (t('esim_type_story') || 'Story')
       : (t('esim_type_stage') || 'Stage');
+    var divCls = div === 1 ? ' esim-stage-div--original'
+      : div === 2 ? ' esim-stage-div--turning'
+      : div === 3 ? ' esim-stage-div--if' : '';
+    var branchIcon = (div === 2 && state.data && state.data.branch_icon) ? state.data.branch_icon : '';
     return (
       '<button type="button" class="esim-stage-card" data-node-id="' + esc(String(n.id)) +
+      '" data-content-id="' + esc(String(n.content_id || p.id || '')) +
+      '" data-stage-id="' + esc(String(n.scenario_stage_id || p.scenario_stage_id || '')) +
       '" title="' + esc(label) + '">' +
       '<div class="esim-stage-thumb-wrap">' +
       (thumb
         ? '<img class="esim-stage-thumb" src="' + esc(imgUrl(thumb)) + '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">'
         : '<div class="esim-stage-thumb esim-stage-thumb--empty"></div>') +
-      '<span class="esim-stage-type">' + esc(typeLbl) + '</span></div>' +
+      '<span class="esim-stage-type">' + esc(typeLbl) + '</span>' +
+      (divLbl
+        ? '<span class="esim-stage-div' + divCls + '">' +
+          (branchIcon
+            ? '<img class="esim-stage-div-icon" src="' + esc(imgUrl(branchIcon)) + '" alt="" loading="lazy" decoding="async">'
+            : '') +
+          esc(divLbl) + '</span>'
+        : '') +
+      '</div>' +
       '<div class="esim-stage-meta">' +
       (n.number ? '<span class="esim-stage-num">' + esc(String(n.number)) + '</span>' : '') +
       '<span class="esim-stage-title">' + esc(n.title || label) + '</span></div></button>'
@@ -395,12 +481,20 @@
     });
     document.querySelectorAll('.esim-stage-card').forEach(function (el) {
       el.addEventListener('click', function () {
+        var sid = el.getAttribute('data-stage-id');
+        if (sid && typeof global.openDetail === 'function') {
+          global.openDetail('stage', String(sid));
+          return;
+        }
         var diagram = currentDiagram();
         var nid = el.getAttribute('data-node-id');
-        var nodes = (diagram && diagram.nodes) || [];
-        for (var i = 0; i < nodes.length; i++) {
-          if (String(nodes[i].id) === String(nid)) {
-            openNode(nodes[i]);
+        var cid = el.getAttribute('data-content-id');
+        var entries = playableNodes(diagram);
+        for (var i = 0; i < entries.length; i++) {
+          var e = entries[i];
+          if (String(e.id) === String(nid)
+              && (!cid || String(e.content_id || '') === String(cid))) {
+            openNode(e);
             return;
           }
         }
