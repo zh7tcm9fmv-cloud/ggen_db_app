@@ -141,6 +141,26 @@ def _chronicle_stage_content_rows(app_mod, lang_code='EN'):
         yield sid, ctype, res, n, c
 
 
+_CHRONICLE_FC_REWARD_SET_CACHE = None
+
+
+def chronicle_stage_first_clear_reward_set_map(app_mod, lang_code='EN'):
+    """Map ScenarioStageId -> FirstClearRewardSetId from m_chronicle_event_node_content."""
+    global _CHRONICLE_FC_REWARD_SET_CACHE
+    if _CHRONICLE_FC_REWARD_SET_CACHE is not None:
+        return _CHRONICLE_FC_REWARD_SET_CACHE
+    normalize_id = app_mod.normalize_id
+    out = {}
+    for sid, _ctype, _res, _n, c in _chronicle_stage_content_rows(app_mod, lang_code):
+        if sid in out:
+            continue
+        fc = normalize_id(c.get('FirstClearRewardSetId') or c.get('firstClearRewardSetId'))
+        if fc and fc != '0':
+            out[sid] = fc
+    _CHRONICLE_FC_REWARD_SET_CACHE = out
+    return out
+
+
 def chronicle_stage_title_map(app_mod, lang_code='EN'):
     """Map ScenarioStageId -> display title from chronicle node language."""
     load_json = app_mod.load_json

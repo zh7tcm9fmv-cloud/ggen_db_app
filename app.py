@@ -6107,6 +6107,10 @@ def create_scenario_stage_map(d):
             'stage_difficulty_type_index': safe_int(item.get('StageDifficultyTypeIndex') or item.get('stageDifficultyTypeIndex'), 1),
             'title_name_lang_id': normalize_id(item.get('TitleNameLanguageId') or item.get('titleNameLanguageId')),
             'stage_number': safe_int(item.get('StageNumber') or item.get('stageNumber'), 0),
+            'scenario_only_first_clear_reward_set_id': normalize_id(
+                item.get('ScenarioOnlyStageFirstClearRewardSetId')
+                or item.get('scenarioOnlyStageFirstClearRewardSetId')
+            ),
         }
     return lookup
 
@@ -11588,6 +11592,20 @@ def resolve_stage_rewards(stage_id, lc, category='eternal', score_attack_reward_
             # Capital (type 5) rows are unused placeholders in challenge data — omit from display.
             return [r for r in rows if normalize_id(r.get('reward_type_index')) != '5']
         return []
+    if cat == 'chronicle':
+        # E Simulator / chronicle first-clear sets live on m_chronicle_event_node_content.
+        try:
+            import e_simulator_data as _esim
+            fc = normalize_id((_esim.chronicle_stage_first_clear_reward_set_map(
+                sys.modules[__name__], lc) or {}).get(sid, '0'))
+        except Exception:
+            fc = '0'
+        if fc == '0':
+            ssc = (scenario_stage_map or {}).get(sid, {})
+            fc = normalize_id(ssc.get('scenario_only_first_clear_reward_set_id', '0'))
+        if fc == '0':
+            return []
+        return _decorate_reward_rows(_resolve_reward_rows_from_set_id(fc), lc)
     sm = (stage_map or {}).get(sid, {})
     fc = normalize_id(sm.get('first_clear_reward_set_id', '0'))
     reward_set_id = fc if fc != '0' else normalize_id(f"20{sid}0000")
@@ -21667,8 +21685,8 @@ def get_stage(stage_id):
                     'tes' if is_tower_event_stage else (
                         'ch' if is_challenge_stage else (
                             'ce' if is_chronicle_stage else 'er')))))
-        # mstage17: Branch Victory = map condition type 8 only (not battle cat 2).
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage17"
+        # mstage18: chronicle/E-sim first-clear from node content FirstClearRewardSetId.
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage18"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -21991,7 +22009,7 @@ def get_stage(stage_id):
         stage_rewards = resolve_stage_rewards(
             stage_id,
             lc,
-            category=stage_cat if stage_cat != 'chronicle' else 'eternal',
+            category=stage_cat,
             score_attack_reward_id=est.get('score_attack_reward_id', '0'),
         )
         tower_side = 'ALL'
