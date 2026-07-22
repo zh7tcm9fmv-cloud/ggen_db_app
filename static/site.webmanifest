@@ -1,7 +1,7 @@
 {
-  "name": "GGen Database",
+  "name": "GGen Eternal Database",
   "short_name": "GGen DB",
-  "description": "SD Gundam G Generation database",
+  "description": "The most up-to-date SD Gundam G Generation ETERNAL database — units, pilots, supporters, stages, and all the essential information you need.",
   "start_url": "/",
   "display": "browser",
   "background_color": "#0a0e17",

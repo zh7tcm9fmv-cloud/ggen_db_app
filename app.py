@@ -22603,9 +22603,86 @@ def get_unit(unit_id):
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'error': str(e)}), 500
 
+# Client history short-paths (must stay in sync with parseBrowseShortPath in static/js/app.js).
+_SPA_TAB_PATHS = frozenset({
+    'c', 'u', 's', 'new', 'tl', 'banners', 'st', 'esim', 'ml', 'cal', 'tb', 'op', 'pt', 'rk', 'msy',
+})
+_SPA_DETAIL_PREFIXES = frozenset({'u', 'c', 's', 'op', 'pt', 'es'})
+
+
+def _is_spa_client_path(path):
+    """True only for real in-app browse/detail URLs — not arbitrary junk like /Failed."""
+    parts = [p for p in (path or '').replace('\\', '/').split('/') if p]
+    if not parts:
+        return True
+    if len(parts) == 1:
+        return parts[0].lower() in _SPA_TAB_PATHS
+    if len(parts) == 2 and parts[0].lower() in _SPA_DETAIL_PREFIXES and parts[1]:
+        return True
+    return False
+
+
+def _not_found_page():
+    """HTML 404 with noindex so bad paths (e.g. /Failed) stop becoming Google sitelinks."""
+    html = (
+        '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">'
+        '<meta name="robots" content="noindex,nofollow">'
+        '<meta name="viewport" content="width=device-width, initial-scale=1">'
+        '<title>Page not found — GGen Database</title>'
+        '<style>body{font-family:system-ui,sans-serif;background:#0a0e17;color:#f0f2f7;'
+        'display:flex;min-height:100vh;align-items:center;justify-content:center;margin:0}'
+        'a{color:#00d4ff}</style></head><body>'
+        '<div><h1>Page not found</h1>'
+        '<p><a href="/">Back to GGen Database</a></p></div></body></html>'
+    )
+    r = make_response(html, 404)
+    r.headers['Content-Type'] = 'text/html; charset=utf-8'
+    r.headers['Cache-Control'] = 'no-store'
+    return r
+
+
+@app.route('/robots.txt')
+def robots_txt():
+    base = (request.url_root or 'https://ggendb.up.railway.app/').rstrip('/')
+    body = (
+        'User-agent: *\n'
+        'Allow: /\n'
+        'Disallow: /api/\n'
+        'Disallow: /admin/\n'
+        f'Sitemap: {base}/sitemap.xml\n'
+    )
+    r = make_response(body)
+    r.headers['Content-Type'] = 'text/plain; charset=utf-8'
+    r.headers['Cache-Control'] = 'public, max-age=3600'
+    return r
+
+
+@app.route('/sitemap.xml')
+def sitemap_xml():
+    base = (request.url_root or 'https://ggendb.up.railway.app/').rstrip('/')
+    # Prefer real public pages with distinct titles over SPA short-paths alone.
+    paths = [
+        '/', '/game-news', '/about', '/contact', '/privacy-policy', '/tier-list',
+        '/c', '/u', '/s', '/st', '/cal', '/tb', '/tl', '/ml', '/rk', '/op', '/new', '/esim',
+    ]
+    urls = ''.join(
+        f'<url><loc>{base}{p}</loc><changefreq>daily</changefreq></url>'
+        for p in paths
+    )
+    body = (
+        '<?xml version="1.0" encoding="UTF-8"?>'
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+        f'{urls}</urlset>'
+    )
+    r = make_response(body)
+    r.headers['Content-Type'] = 'application/xml; charset=utf-8'
+    r.headers['Cache-Control'] = 'public, max-age=3600'
+    return r
+
+
 @app.route('/<path:path>')
 def serve_spa(path):
-    """Serve index.html for any non-API path (SPA-style routing)."""
+    """Serve index.html only for known SPA short-paths; 404 everything else."""
     if path.startswith('api/'):
         return jsonify({'error': 'Not found'}), 404
     # Do not return index.html for static files (belt-and-suspenders if routing order differs).
@@ -22617,6 +22694,8 @@ def serve_spa(path):
             return app.send_static_file(rel)
         except NotFound:
             return jsonify({'error': 'Not found'}), 404
+    if not _is_spa_client_path(path):
+        return _not_found_page()
     return _serve_index()
 
 # Build browse list caches before serving (Railway healthcheck waits until ready).
