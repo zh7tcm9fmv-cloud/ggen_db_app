@@ -27350,6 +27350,11 @@
     "RewardId": 1611001260014001
   },
   {
+    "RewardSetId": 16110012700101,
+    "SortOrder": 1,
+    "RewardId": 1611001270010101
+  },
+  {
     "RewardSetId": 16203000102001,
     "SortOrder": 1,
     "RewardId": 1620300010200101
@@ -103648,6 +103653,11 @@
     "RewardSetId": 99082607300001,
     "SortOrder": 1,
     "RewardId": 9908260730000101
+  },
+  {
+    "RewardSetId": 99082607370001,
+    "SortOrder": 1,
+    "RewardId": 9908260737000101
   },
   {
     "RewardSetId": 99090000000001,

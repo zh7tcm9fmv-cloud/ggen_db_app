@@ -288,6 +288,15 @@
     "TargetValue5": 0
   },
   {
+    "Id": 110012700101,
+    "GameEventConditionTypeIndex": 315,
+    "TargetValue1": 0,
+    "TargetValue2": 0,
+    "TargetValue3": 0,
+    "TargetValue4": 0,
+    "TargetValue5": 0
+  },
+  {
     "Id": 200010000101,
     "GameEventConditionTypeIndex": 228,
     "TargetValue1": 90520001,

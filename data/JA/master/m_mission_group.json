@@ -320,6 +320,16 @@
     "MissionGroupCategoryTypeIndex": 1
   },
   {
+    "Id": 1100127001,
+    "EventId": 0,
+    "MissionResetTypeIndex": 1,
+    "SortOrder": 24,
+    "AvailableScheduleId": 0,
+    "ReceivableScheduleId": 0,
+    "TransitionId": 0,
+    "MissionGroupCategoryTypeIndex": 0
+  },
+  {
     "Id": 2000100001,
     "EventId": 0,
     "MissionResetTypeIndex": 1,

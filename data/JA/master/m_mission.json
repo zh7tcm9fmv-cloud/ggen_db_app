@@ -7350,6 +7350,21 @@
     "GooglePlayGameServiceAchievementsId": 0
   },
   {
+    "Id": 110012700101,
+    "MissionGroupId": 1100127001,
+    "GameEventConditionId": 110012700101,
+    "TitleLanguageId": 180100110012700101,
+    "OverrideTitleLanguageId": 180100110012700101,
+    "OverrideConditionTemplateLanguageId": 0,
+    "MissionCategoryTypeIndex": 2,
+    "TargetProgressCount": 1,
+    "RewardSetId": 16110012700101,
+    "AvailableScheduleId": 0,
+    "ReceivableScheduleId": 0,
+    "IsHidden": true,
+    "GooglePlayGameServiceAchievementsId": 0
+  },
+  {
     "Id": 200010000101,
     "MissionGroupId": 2000100001,
     "GameEventConditionId": 200010000101,

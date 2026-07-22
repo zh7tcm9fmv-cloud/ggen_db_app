@@ -54790,6 +54790,16 @@
     "WeaponEnhancementStep": 0
   },
   {
+    "Id": 1611001270010101,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 3000,
+    "WeaponEnhancementStep": 0
+  },
+  {
     "Id": 1620300010200101,
     "RewardTypeIndex": 1,
     "TargetId": 110000000003,
@@ -207301,6 +207311,16 @@
   },
   {
     "Id": 9908260730000101,
+    "RewardTypeIndex": 10,
+    "TargetId": 0,
+    "LimitBreakStep": 0,
+    "Level": 0,
+    "UnitAbilitySetId": 0,
+    "Count": 100,
+    "WeaponEnhancementStep": 0
+  },
+  {
+    "Id": 9908260737000101,
     "RewardTypeIndex": 10,
     "TargetId": 0,
     "LimitBreakStep": 0,
