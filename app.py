@@ -3797,62 +3797,20 @@ MECH_MAP_TABLE = {
 }
 # '3' = m_mechanism SD (never present in m_mechanism_set; inferred — see _unit_has_sd_mechanism).
 ALL_MECHANISM_FILTER_IDS = frozenset(m for mids in MECH_MAP_TABLE.values() for m in mids) | frozenset({'2x2', '3'})
-# m_lineage Id for the "SD Gundam" tag (EN NameLanguageId …1055).
+# m_lineage Id for the "SD Gundam" tag — in-game SD mechanic matches this tag (not SD series alone).
 SD_GUNDAM_LINEAGE_ID = '1055'
-# Known SD franchise unit-id prefixes (series 7001/7050/7090/7250/7280/7600, …). New batches
-# should also get lineage 1055 and/or an SD-named series in SeriesSet — those paths do not need
-# a prefix update.
-_SD_UNIT_ID_PREFIXES = ('17000', '17050', '17090', '17250', '17280', '17600')
-# SeriesSetIds that include any m_series whose EN name starts with "SD " (filled after master load).
-SD_SERIES_SET_IDS = frozenset()
 
 
-def build_sd_series_set_ids(series_master, series_set, series_name_text_map):
-    """SeriesSetIds containing an SD franchise series (EN name starts with 'SD ')."""
-    sd_series_ids = set()
-    for item in extract_data_list(series_master):
-        if not isinstance(item, dict):
-            continue
-        sid = normalize_id(item.get('Id') or item.get('id'))
-        nlid = normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId'))
-        name = (series_name_text_map.get(nlid) or '').strip()
-        if name.upper().startswith('SD '):
-            sd_series_ids.add(sid)
-    out = set()
-    for item in extract_data_list(series_set):
-        if not isinstance(item, dict):
-            continue
-        sid = normalize_id(item.get('SeriesId') or item.get('seriesId'))
-        if sid not in sd_series_ids:
-            continue
-        ssid = normalize_id(item.get('SeriesSetId') or item.get('seriesSetId'))
-        if ssid != '0':
-            out.add(ssid)
-    return frozenset(out)
-
-
-def _unit_has_sd_mechanism(info, uid=None):
-    """SD (m_mechanism id 3) is not in m_mechanism_set; infer from master tags/series/id prefixes.
-
-    UnitBodyTypeIndex 3 is FixedObject (map props), not SD — do not use body type here.
-    """
-    if not info:
-        return False
+def _unit_has_sd_mechanism(info=None, uid=None):
+    """SD (m_mechanism id 3) is not in m_mechanism_set; true iff unit has lineage tag 1055 (SD Gundam)."""
     u = normalize_id(uid or '')
-    if u.startswith(_SD_UNIT_ID_PREFIXES):
-        return True
-    if any(str(lid).strip() == SD_GUNDAM_LINEAGE_ID for lid in (unit_lin_map.get(u) or [])):
-        return True
-    ss = normalize_id(info.get('series_set') or '0')
-    if ss == '0':
-        ss = normalize_id(unit_ser_map.get(u, '0'))
-    if ss != '0' and ss in SD_SERIES_SET_IDS:
-        return True
-    return False
+    if not u or u == '0':
+        return False
+    return any(str(lid).strip() == SD_GUNDAM_LINEAGE_ID for lid in (unit_lin_map.get(u) or []))
 
 
 def collect_unit_mechanism_mids(info, uid=None):
-    """Mechanism fragment ids for filtering. '2x2' iff OccupiedAreaId is 2; '3' (SD) inferred."""
+    """Mechanism fragment ids for filtering. '2x2' iff OccupiedAreaId is 2; '3' (SD) from lineage 1055."""
     if not info:
         return frozenset()
     msid = str(info.get('mechanism_set_id', '0'))
@@ -9120,13 +9078,6 @@ for item in extract_data_list(unit_master_data):
     if isinstance(item, dict):
         uid = normalize_id(item.get('id') or item.get('Id')); sid = normalize_id(item.get('SeriesSetId') or item.get('seriesSetId'))
         if uid != '0' and sid != '0': unit_ser_map[uid] = sid
-
-# Auto-label SD mechanism from master: EN series names starting with "SD " → SeriesSetIds.
-SD_SERIES_SET_IDS = build_sd_series_set_ids(
-    series_master_data,
-    series_set_data,
-    create_series_name_map(load_json(os.path.join(LANG_PATHS['EN']['lang'], 'm_series.json'))),
-)
 
 unit_ssp_config_map = {}
 if unit_ssp_config_data:
