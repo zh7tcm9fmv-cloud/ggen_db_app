@@ -22628,12 +22628,12 @@ def _not_found_page():
         '<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">'
         '<meta name="robots" content="noindex,nofollow">'
         '<meta name="viewport" content="width=device-width, initial-scale=1">'
-        '<title>Page not found — GGen Database</title>'
+        '<title>Page not found — GGen Eternal Database</title>'
         '<style>body{font-family:system-ui,sans-serif;background:#0a0e17;color:#f0f2f7;'
         'display:flex;min-height:100vh;align-items:center;justify-content:center;margin:0}'
         'a{color:#00d4ff}</style></head><body>'
         '<div><h1>Page not found</h1>'
-        '<p><a href="/">Back to GGen Database</a></p></div></body></html>'
+        '<p><a href="/">Back to GGen Eternal Database</a></p></div></body></html>'
     )
     r = make_response(html, 404)
     r.headers['Content-Type'] = 'text/html; charset=utf-8'

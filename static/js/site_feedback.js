@@ -29,10 +29,10 @@
   var EN_FALLBACK = (typeof global.GGEN_FEEDBACK_I18N !== 'undefined' && global.GGEN_FEEDBACK_I18N.EN)
     ? global.GGEN_FEEDBACK_I18N.EN
     : {
-    feedback_page_doc_title: 'Feedback — GGen Database',
+    feedback_page_doc_title: 'Feedback — GGen Eternal Database',
     feedback_esc_hint: 'Press Esc to return to the database.',
     feedback_title: 'How was your experience on our website?',
-    feedback_intro: 'Rate each area from 1 (lowest) to 5 (highest). Your answers help us improve GGen Database.',
+    feedback_intro: 'Rate each area from 1 (lowest) to 5 (highest). Your answers help us improve GGen Eternal Database.',
     feedback_q1_title: 'Overall Experience',
     feedback_q1_prompt: 'How would you rate your overall experience on our website?',
     feedback_q1_lo: 'Very Poor',

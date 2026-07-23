@@ -9,7 +9,7 @@ const S = { lang: 'EN', languages: [] };
 const UI = {
   EN: {
     page_title: 'Game News',
-    nav_home: '← GGen Database',
+    nav_home: '← GGen Eternal Database',
     iframe_title: 'SD Gundam G Generation ETERNAL — update information',
     close: 'Close',
   },
@@ -27,7 +27,7 @@ const UI = {
   },
   JP: {
     page_title: 'ゲームニュース',
-    nav_home: '← GGen Database',
+    nav_home: '← GGen Eternal Database',
     iframe_title: 'SDガンダム ジージェネ エターナル — 更新情報',
     close: '閉じる',
   },
@@ -172,7 +172,7 @@ function applyGameNewsUi() {
     if (lbl) lbl.textContent = u.page_title;
     else navCur.textContent = u.page_title;
   }
-  document.title = `${u.page_title} — GGen Database`;
+  document.title = `${u.page_title} — GGen Eternal Database`;
   const navEl = document.getElementById('gameNewsNavHome');
   if (navEl) {
     const lbl = navEl.querySelector('.nav-tab-label');
