@@ -2,7 +2,7 @@
 {% macro ui_close_icon() %}<span class="ui-close-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" focusable="false"><path d="M6.25 6.25l11.5 11.5M17.75 6.25L6.25 17.75" stroke="currentColor" stroke-width="2.25" stroke-linecap="round"/></svg></span>{% endmacro %}
 <html lang="en" data-ggen-content-notices="manual">
 <head>
-<!-- Google Tag Manager (deferred until idle/load) -->
+<!-- Google Tag Manager (deferred past first paint / lab window) -->
 <script>
 window.dataLayer=window.dataLayer||[];
 window.__ggenLoadGtm=function(){
@@ -16,8 +16,9 @@ window.__ggenLoadGtm=function(){
 };
 (function(){
   function go(){try{window.__ggenLoadGtm()}catch(_){}}
-  if(window.requestIdleCallback)requestIdleCallback(go,{timeout:4000});
-  else window.addEventListener('load',function(){setTimeout(go,1)});
+  function schedule(){setTimeout(go,3500)}
+  if(document.readyState==='complete')schedule();
+  else window.addEventListener('load',schedule);
 })();
 </script>
 <!-- End Google Tag Manager -->
@@ -43,15 +44,17 @@ window.__ggenLoadGtm=function(){
 {% if image_cdn %}
 <link rel="dns-prefetch" href="{{ image_cdn }}">
 <link rel="preconnect" href="{{ image_cdn }}" crossorigin>
+<link rel="preload" as="image" href="{{ image_cdn }}/images/UI/IMG_Common_Logo_ETERNALBASE.webp" fetchpriority="high">
 {% else %}
 <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
+<link rel="preload" as="image" href="/static/images/UI/IMG_Common_Logo_ETERNALBASE.webp" fetchpriority="high">
 {% endif %}
 <style>
 @font-face{font-family:'RobotoMediumNumbers';src:url('{% if image_cdn %}{{ image_cdn }}/font/roboto_medium_numbers.ttf{% else %}https://raw.githubusercontent.com/zh7tcm9fmv-cloud/ggen_db_images/main/font/roboto_medium_numbers.ttf{% endif %}') format('truetype');font-weight:normal;font-style:normal;font-display:swap}
 @font-face{font-family:'Noto Sans JP';src:url('{% if image_cdn %}{{ image_cdn }}/font/NotoSansJP.ttf{% else %}/static/font/NotoSansJP.ttf{% endif %}') format('truetype');font-weight:100 900;font-style:normal;font-display:swap}
 @font-face{font-family:'ShinGoPr6DeBold';src:url('{% if image_cdn %}{{ image_cdn }}/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf{% else %}/static/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf{% endif %}') format('opentype');font-weight:normal;font-style:normal;font-display:swap}
 @font-face{font-family:'UDShinGoStdTCMed';src:url('{% if image_cdn %}{{ image_cdn }}/font/ChineseTraditionalFont/UDShinGoStdTC-Med.otf{% else %}/static/font/UDShinGoStdTC-Med.otf{% endif %}') format('opentype');font-weight:500;font-style:normal;font-display:swap}
-@font-face{font-family:'FOTK Yoon Gothic 780 JP';src:url('{% if image_cdn %}{{ image_cdn }}/font/JapaneseTextFont/FOTK-YoonGothic780_JP.otf{% else %}/static/font/FOTK-YoonGothic780_JP.otf{% endif %}') format('opentype');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'FOTK Yoon Gothic 780 JP';src:url('{% if image_cdn %}{{ image_cdn }}/font/JapaneseTextFont/FOTK-YoonGothic780_JP.otf{% else %}/static/font/FOTK-YoonGothic780_JP.otf{% endif %}') format('opentype');font-weight:500;font-style:normal;font-display:optional}
 :root{--bg-primary:#0a0e17;--bg-secondary:#111827;--bg-card:#1a2236;--bg-card-hover:#1f2a42;--bg-input:#0d1321;--bg-modal:#141c2e;--border-color:#2a3654;--border-accent:#3b5998;--text-primary:#f0f2f7;--text-secondary:#b4bfd4;--text-muted:#8494ae;--accent-blue:#4a90d9;--accent-cyan:#00d4ff;--accent-gold:#ffd700;--accent-orange:#ff9500;--accent-red:#ff4757;--accent-green:#2ed573;--accent-purple:#a855f7;--shadow-surface-inset:inset 0 1px 0 rgba(255,255,255,.02);--shadow-surface-drop:0 1px 0 rgba(0,0,0,.25);--shadow-surface:var(--shadow-surface-inset),var(--shadow-surface-drop);--shadow-lg:var(--shadow-surface),0 8px 30px rgba(0,0,0,.6);--radius-sm:6px;--radius-md:10px;--radius-lg:14px;--transition:all 0.25s ease;--list-thead-sticky-top:124px;--dvh:100dvh;--app-vh:100dvh;--layout-vh:100vh;--visual-vv-offset-top:0px;--cmp-browser-inset-bottom:0px;--toggle-depth-inset:var(--shadow-surface-inset);--toggle-depth-rim:var(--shadow-surface-drop);--toggle-depth-active-inset:inset 0 1px 0 rgba(255,255,255,.06),inset 0 0 0 1px rgba(255,255,255,.04);--brand-title-optical-x:1px;--brand-emblem-optical-x:0.5px;--brand-logo-optical-x:1px;--brand-logo-optical-y:-1px;--icon-optical-y:-0.5px;--icon-close-optical-x:-0.35px;--icon-close-optical-y:-0.35px;--portrait-optical-y:-1px;--ability-ex-inner-mask:url('{% if image_cdn %}{{ image_cdn }}/images/UI/UI_CharaAbilities_Tmb_Square_Normal_Base.webp{% else %}/static/images/UI/UI_CharaAbilities_Tmb_Square_Normal_Base.webp{% endif %}');color-scheme:dark}
 html{--font-body:'Noto Sans JP','ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--font-tag-ui:'Noto Sans JP','ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
 html[data-ui-lang="TW"],html[data-ui-lang="HK"]{--font-body:'Noto Sans JP','UDShinGoStdTCMed','RobotoMediumNumbers','ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,'PingFang TC','Microsoft JhengHei UI','Microsoft JhengHei',sans-serif;--font-tag-ui:'Noto Sans JP','UDShinGoStdTCMed','RobotoMediumNumbers','ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,'PingFang TC','Microsoft JhengHei UI','Microsoft JhengHei',sans-serif}
@@ -64,13 +67,13 @@ button,input,select,textarea,optgroup{font-family:inherit}
 .bg-pattern{position:fixed;inset:0;z-index:-1;pointer-events:none;background-color:var(--bg-primary);background-image:radial-gradient(ellipse at 20% 20%,rgba(74,144,217,0.05) 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,rgba(168,85,247,0.04) 0%,transparent 50%)}
 .app-header{background-color:#111827;background-image:linear-gradient(180deg,#111827,#0a0e17);border-bottom:1px solid var(--border-color);position:sticky;top:0;z-index:100;isolation:isolate;box-shadow:var(--shadow-surface-drop)}
 .header-inner{max-width:1600px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-.header-brand{display:flex;align-items:center;gap:12px;cursor:pointer;flex:1 1 auto;min-width:0;max-width:100%}.header-brand:hover .brand-text{color:var(--accent-cyan)}.header-brand:hover .brand-title-row::before{opacity:.92}
+.header-brand{display:flex;align-items:center;gap:12px;cursor:pointer;flex-shrink:1;min-width:0;max-width:100%}.header-brand:hover .brand-text{color:var(--accent-cyan)}.header-brand:hover .brand-title-row::before{opacity:.92}
 .brand-logo{width:55px;height:55px;min-width:55px;min-height:55px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;aspect-ratio:1/1}.brand-logo img{width:100%;height:100%;object-fit:contain;object-position:calc(50% + var(--brand-logo-optical-x)) calc(50% + var(--brand-logo-optical-y))}
-.brand-copy{display:flex;flex-direction:column;align-items:stretch;gap:0;min-width:0;max-width:100%;flex:1 1 auto;line-height:1.1;overflow:visible}
-/* Brand title experiment: FOTK Yoon Gothic + fluid wrap — revert font-family to ShinGoPr6DeBold and restore white-space:nowrap / fixed sizes if disliked */
-.brand-title-row{position:relative;display:flex;align-items:center;justify-content:center;min-height:0;padding:2px 4px 4px;isolation:isolate;max-width:100%;width:100%;box-sizing:border-box;overflow:visible}
+.brand-copy{display:flex;flex-direction:column;align-items:stretch;gap:0;min-width:0;max-width:100%;width:max-content;line-height:1.1;overflow:visible}
+/* Brand title: FOTK Yoon Gothic + fluid wrap (sits beside logo at natural width) */
+.brand-title-row{position:relative;display:flex;align-items:center;justify-content:center;min-height:0;padding:2px 4px 4px;isolation:isolate;max-width:100%;width:max-content;box-sizing:border-box;overflow:visible}
 .brand-title-row::before{content:'';position:absolute;left:50%;top:50%;width:100px;height:54px;transform:translate(calc(-50% + var(--brand-emblem-optical-x)),-58%);background:url('{% if image_cdn %}{{ image_cdn }}/images/UI/brand-emblem-panel.webp{% else %}/static/images/UI/brand-emblem-panel.webp{% endif %}') center/contain no-repeat;opacity:.78;mix-blend-mode:lighten;pointer-events:none;z-index:0;transition:var(--transition)}
-.brand-text{position:relative;z-index:1;margin:0;font-size:clamp(11px,2.1vw + 7px,22px);font-weight:500;font-family:'FOTK Yoon Gothic 780 JP','ShinGoPr6DeBold',var(--font-body);letter-spacing:.03em;color:var(--text-primary);transition:var(--transition);display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;column-gap:.22em;row-gap:.05em;line-height:1.25;max-width:100%;width:100%;box-sizing:border-box;text-align:center;overflow:visible;text-shadow:0 1px 10px rgba(10,14,23,.95),0 0 2px rgba(10,14,23,.8);font-synthesis:none;-webkit-font-smoothing:antialiased;transform:translateX(var(--brand-title-optical-x))}
+.brand-text{position:relative;z-index:1;margin:0;font-size:clamp(11px,2.1vw + 7px,22px);font-weight:500;font-family:'FOTK Yoon Gothic 780 JP','ShinGoPr6DeBold',var(--font-body);letter-spacing:.03em;color:var(--text-muted);transition:var(--transition);display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;column-gap:.22em;row-gap:.05em;line-height:1.25;max-width:100%;box-sizing:border-box;text-align:center;overflow:visible;text-shadow:0 1px 10px rgba(10,14,23,.95),0 0 2px rgba(10,14,23,.8);font-synthesis:none;-webkit-font-smoothing:antialiased;transform:translateX(var(--brand-title-optical-x))}
 .brand-word{display:inline-block;white-space:nowrap;flex:0 1 auto;max-width:100%;overflow:visible}.brand-word-ggen{margin-right:0}.brand-word-db{letter-spacing:.04em}.brand-word-db.brand-frame-3{margin-left:0}
 @keyframes brand-title-nudge-l{0%,100%{transform:translateX(0)}50%{transform:translateX(-2px)}}
 @keyframes brand-title-nudge-r{0%,100%{transform:translateX(0)}50%{transform:translateX(2px)}}
@@ -3559,8 +3562,28 @@ window.__GGEN_APP_VERSION__ = {{ app_js_version | tojson }};
 <script src="{{ url_for('static', filename='js/app.js') }}?v={{ app_js_version }}" defer></script>
 <script src="{{ url_for('static', filename='js/e_simulator.js') }}?v={{ app_js_version }}" defer></script>
 <script src="{{ url_for('static', filename='js/unit_best_pilots.js') }}?v={{ app_js_version }}" defer></script>
-<script src="{{ url_for('static', filename='js/kofi_donate_promo.js') }}?v={{ app_js_version }}" defer></script>
-<script src="{{ url_for('static', filename='js/feedback_i18n.js') }}?v=5" defer></script>
-<script src="{{ url_for('static', filename='js/site_feedback.js') }}?v=5" defer></script>
+<script>
+(function(){
+  var extras=[
+    "{{ url_for('static', filename='js/kofi_donate_promo.js') }}?v={{ app_js_version }}",
+    "{{ url_for('static', filename='js/feedback_i18n.js') }}?v=5",
+    "{{ url_for('static', filename='js/site_feedback.js') }}?v=5"
+  ];
+  function inject(){
+    extras.forEach(function(src){
+      var s=document.createElement('script');
+      s.src=src;
+      s.async=true;
+      document.body.appendChild(s);
+    });
+  }
+  function schedule(){
+    if(window.requestIdleCallback)requestIdleCallback(inject,{timeout:8000});
+    else setTimeout(inject,2000);
+  }
+  if(document.readyState==='complete')schedule();
+  else window.addEventListener('load',schedule);
+})();
+</script>
 </body>
 </html>
