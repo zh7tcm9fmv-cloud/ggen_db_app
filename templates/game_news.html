@@ -1,25 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google Tag Manager (deferred past first paint / lab window) -->
-<script>
-window.dataLayer=window.dataLayer||[];
-window.__ggenLoadGtm=function(){
-  if(window.__ggenGtmStarted)return;
-  window.__ggenGtmStarted=1;
-  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-NJB85F92');
-};
-(function(){
-  function go(){try{window.__ggenLoadGtm()}catch(_){}}
-  function schedule(){setTimeout(go,3500)}
-  if(document.readyState==='complete')schedule();
-  else window.addEventListener('load',schedule);
-})();
-</script>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJB85F92');</script>
 <!-- End Google Tag Manager -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -32,14 +19,9 @@ window.__ggenLoadGtm=function(){
 <link rel="stylesheet" href="{{ url_for('static', filename='css/craft_ui.css') }}">
 <meta name="theme-color" content="#0a0e17">
 <meta name="apple-mobile-web-app-title" content="GGen Eternal Database">
-{% if image_cdn and game_images_use_cdn %}
-<link rel="preload" as="image" href="{{ image_cdn }}/images/UI/IMG_Common_Logo_ETERNALBASE.webp" fetchpriority="high">
-{% else %}
-<link rel="preload" as="image" href="/static/images/UI/IMG_Common_Logo_ETERNALBASE.webp" fetchpriority="high">
-{% endif %}
 <style>
 @font-face{font-family:'ShinGoPr6DeBold';src:url('{% if image_cdn %}{{ image_cdn }}/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf{% else %}/static/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf{% endif %}') format('opentype');font-weight:normal;font-style:normal;font-display:swap}
-@font-face{font-family:'FOTK Yoon Gothic 780 JP';src:url('{% if image_cdn %}{{ image_cdn }}/font/JapaneseTextFont/FOTK-YoonGothic780_JP.otf{% else %}/static/font/FOTK-YoonGothic780_JP.otf{% endif %}') format('opentype');font-weight:500;font-style:normal;font-display:optional}
+@font-face{font-family:'FOTK Yoon Gothic 780 JP';src:url('{% if image_cdn %}{{ image_cdn }}/font/JapaneseTextFont/FOTK-YoonGothic780_JP.otf{% else %}/static/font/FOTK-YoonGothic780_JP.otf{% endif %}') format('opentype');font-weight:500;font-style:normal;font-display:swap}
 :root{--bg-primary:#0a0e17;--bg-secondary:#111827;--bg-card:#1a2236;--bg-modal:#141c2e;--border-color:#2a3654;--text-primary:#f0f2f7;--text-secondary:#b4bfd4;--text-muted:#8494ae;--accent-blue:#4a90d9;--accent-cyan:#00d4ff;--accent-gold:#ffd700;--shadow-surface-inset:inset 0 1px 0 rgba(255,255,255,.02);--shadow-surface-drop:0 1px 0 rgba(0,0,0,.25);--shadow-surface:var(--shadow-surface-inset),var(--shadow-surface-drop);--shadow-lg:var(--shadow-surface),0 8px 30px rgba(0,0,0,.6);--radius-sm:6px;--radius-md:10px;--radius-lg:14px;--transition:all 0.25s ease;--brand-title-optical-x:1px;--brand-emblem-optical-x:0.5px;--brand-logo-optical-x:1px;--brand-logo-optical-y:-1px;color-scheme:dark}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 html{color-scheme:dark;scroll-behavior:smooth;-webkit-text-size-adjust:100%;height:100%}
@@ -50,22 +32,22 @@ body{font-family:'ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,'Segoe UI',s
 .app-header{background-color:#111827;background-image:linear-gradient(180deg,#111827,#0a0e17);border-bottom:1px solid var(--border-color);position:sticky;top:0;z-index:100;isolation:isolate;box-shadow:var(--shadow-surface-drop)}
 .header-inner{max-width:1600px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:20px}
 .header-brand{display:flex;align-items:center;gap:12px;cursor:pointer;flex-shrink:1;text-decoration:none;color:inherit;min-width:0;max-width:100%}
-.header-brand:hover .brand-title-row::before{opacity:.92}
+.header-brand:hover .brand-text{color:var(--accent-cyan)}.header-brand:hover .brand-title-row::before{opacity:.92}
 .brand-logo{width:55px;height:55px;min-width:55px;min-height:55px;border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;aspect-ratio:1/1}
 .brand-logo img{width:100%;height:100%;object-fit:contain;object-position:calc(50% + var(--brand-logo-optical-x)) calc(50% + var(--brand-logo-optical-y))}
 .brand-copy{display:flex;flex-direction:column;align-items:stretch;gap:0;min-width:0;max-width:100%;width:max-content;line-height:1.1;overflow:visible}
-/* Brand title: FOTK Yoon Gothic + steel gradient / depth */
+/* Brand title: site palette + soft depth (no gradient fill) */
 .brand-title-row{position:relative;display:flex;align-items:center;justify-content:center;min-height:0;padding:2px 4px 4px;isolation:isolate;max-width:100%;width:max-content;box-sizing:border-box;overflow:visible}
 .brand-title-row::before{content:'';position:absolute;left:50%;top:50%;width:100px;height:54px;transform:translate(calc(-50% + var(--brand-emblem-optical-x)),-58%);background:url('{% if image_cdn and game_images_use_cdn %}{{ image_cdn }}/images/UI/brand-emblem-panel.webp{% else %}/static/images/UI/brand-emblem-panel.webp{% endif %}') center/contain no-repeat;opacity:.78;mix-blend-mode:lighten;pointer-events:none;z-index:0;transition:var(--transition)}
-.brand-text{position:relative;z-index:1;margin:0;font-size:clamp(11px,2.1vw + 7px,22px);font-weight:500;font-family:'FOTK Yoon Gothic 780 JP','ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,sans-serif;letter-spacing:.03em;color:transparent;transition:filter .25s ease;display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;column-gap:.22em;row-gap:.05em;line-height:1.25;max-width:100%;box-sizing:border-box;text-align:center;overflow:visible;font-synthesis:none;-webkit-font-smoothing:antialiased;transform:translateX(var(--brand-title-optical-x));filter:drop-shadow(0 1px 0 rgba(255,255,255,.14)) drop-shadow(0 1px 1px rgba(0,0,0,.55)) drop-shadow(0 3px 6px rgba(0,0,0,.55)) drop-shadow(0 8px 18px rgba(8,16,32,.4))}
-.brand-word{display:inline-block;white-space:nowrap;flex:0 1 auto;max-width:100%;overflow:visible;background-image:linear-gradient(115deg,#f2f6fb 0%,#c5d0de 28%,#8ea3b8 52%,#6eb4cf 78%,#d7e0ea 100%);background-size:100% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}.brand-word-ggen{margin-right:0}.brand-word-db{letter-spacing:.04em}.brand-word-db.brand-frame-3{margin-left:0}
+.brand-text{position:relative;z-index:1;margin:0;font-size:clamp(11px,2.1vw + 7px,22px);font-weight:500;font-family:'FOTK Yoon Gothic 780 JP','ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,sans-serif;letter-spacing:.03em;color:var(--text-primary);transition:color .2s ease,text-shadow .2s ease;display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;column-gap:.22em;row-gap:.05em;line-height:1.25;max-width:100%;box-sizing:border-box;text-align:center;overflow:visible;text-shadow:0 1px 0 rgba(255,255,255,.1),0 1px 2px rgba(0,0,0,.85),0 3px 8px rgba(0,0,0,.55),0 0 18px rgba(74,144,217,.12);font-synthesis:none;-webkit-font-smoothing:antialiased;transform:translateX(var(--brand-title-optical-x))}
+.brand-word{display:inline-block;white-space:nowrap;flex:0 1 auto;max-width:100%;overflow:visible}.brand-word-ggen{margin-right:0}.brand-word-db{letter-spacing:.04em}.brand-word-db.brand-frame-3{margin-left:0}
 @keyframes brand-title-nudge-l{0%,100%{transform:translateX(0)}50%{transform:translateX(-2px)}}
 @keyframes brand-title-nudge-r{0%,100%{transform:translateX(0)}50%{transform:translateX(2px)}}
 @keyframes brand-title-nudge-r-far{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
-.brand-frame-1,.brand-frame-2,.brand-frame-3{transition:transform .2s ease-out,filter .25s ease,background-image .25s ease}
-@media(hover:hover){.header-brand:hover .brand-text{filter:drop-shadow(0 1px 0 rgba(200,240,255,.22)) drop-shadow(0 1px 1px rgba(0,0,0,.5)) drop-shadow(0 3px 8px rgba(0,40,60,.45)) drop-shadow(0 0 14px rgba(0,180,220,.22))}.header-brand:hover .brand-word{background-image:linear-gradient(115deg,#f7fbff 0%,#b8d8ea 30%,#6ec8e8 55%,#3ad4ff 82%,#dceef8 100%)}.header-brand:hover .brand-sub{background-image:linear-gradient(100deg,#b4c4d4 0%,#7aa8bc 48%,#5ec0d8 100%);filter:drop-shadow(0 1px 0 rgba(255,255,255,.1)) drop-shadow(0 2px 4px rgba(0,0,0,.55)) drop-shadow(0 0 10px rgba(0,160,200,.15))}.header-brand:hover .brand-frame-1{animation:brand-title-nudge-l .4s ease-in-out}.header-brand:hover .brand-frame-2{animation:brand-title-nudge-r .4s ease-in-out .1s}.header-brand:hover .brand-frame-3{animation:brand-title-nudge-r-far .4s ease-in-out .2s}}
+.brand-frame-1,.brand-frame-2,.brand-frame-3{transition:transform .2s ease-out}
+@media(hover:hover){.header-brand:hover .brand-text{text-shadow:0 1px 0 rgba(180,240,255,.18),0 1px 2px rgba(0,0,0,.8),0 3px 10px rgba(0,0,0,.5),0 0 16px rgba(0,212,255,.28)}.header-brand:hover .brand-frame-1{animation:brand-title-nudge-l .4s ease-in-out}.header-brand:hover .brand-frame-2{animation:brand-title-nudge-r .4s ease-in-out .1s}.header-brand:hover .brand-frame-3{animation:brand-title-nudge-r-far .4s ease-in-out .2s}}
 @media(prefers-reduced-motion:reduce){.header-brand:hover .brand-frame-1,.header-brand:hover .brand-frame-2,.header-brand:hover .brand-frame-3{animation:none}}
-.brand-sub{font-size:clamp(9px,1.5vw + 5px,14px);font-family:'FOTK Yoon Gothic 780 JP','ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,sans-serif;font-weight:500;letter-spacing:.06em;text-transform:uppercase;margin-top:0;padding:0;text-align:center;font-synthesis:none;transform:translateX(calc(var(--brand-title-optical-x)*.65));max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background-image:linear-gradient(100deg,#a8b6c8 0%,#8494ae 45%,#6a9bb0 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;filter:drop-shadow(0 1px 0 rgba(255,255,255,.1)) drop-shadow(0 1px 1px rgba(0,0,0,.5)) drop-shadow(0 3px 6px rgba(0,0,0,.4));transition:filter .25s ease,background-image .25s ease}
+.brand-sub{font-size:clamp(9px,1.5vw + 5px,14px);font-family:'FOTK Yoon Gothic 780 JP','ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,sans-serif;font-weight:500;color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase;margin-top:0;padding:0;text-align:center;font-synthesis:none;transform:translateX(calc(var(--brand-title-optical-x)*.65));max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 1px 0 rgba(255,255,255,.06),0 1px 2px rgba(0,0,0,.7),0 2px 6px rgba(0,0,0,.4)}
 .header-controls{display:flex;align-items:center;gap:10px;flex-shrink:0}
 .header-lang-col{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
 .header-lang-kofi-row{display:flex;flex-direction:row;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;max-width:min(calc(100% - 32px),520px)}
