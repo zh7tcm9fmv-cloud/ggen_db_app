@@ -139,7 +139,8 @@ def _apply_static_cache_headers(response):
         return response
     ext = os.path.splitext(path)[1].lower()
     if path.endswith('/js/app.js') or path.endswith('/js/msy_dc_engine.js') or path.endswith('/js/unit_best_pilots.js'):
-        response.headers['Cache-Control'] = 'no-cache, must-revalidate'
+        # Templates always bust with ?v={{ app_js_version }}; long-cache is safe and cuts repeat TBT.
+        response.headers['Cache-Control'] = f'public, max-age={_STATIC_CACHE_MAX_AGE}, immutable'
         return response
     if ext not in _STATIC_CACHEABLE_EXT:
         return response
