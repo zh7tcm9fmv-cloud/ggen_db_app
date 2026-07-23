@@ -4,6 +4,33 @@ __pycache__/
 venv/
 *.log
 .magicpath-work/
+node_modules/
+
+# One-off probe / scratch files (never ship these)
+_tmp_*
+_probe_*
+_t.py
+_out.txt
+_od.txt
+_hint.txt
+_snip*.txt
+_metric_snip.txt
+_applylang.txt
+_loadunits.txt
+_panel_ranking_snippet.txt
+_ranking_panel_fragments.html
+_enum_gap_audit.*
+_unused_enums_*
+webp_convert_log.txt
+scripts/_tmp_*
+scripts/_probe_*
+scripts/dc_probe_*
+scripts/msy_probe_*
+scripts/output/
+scripts/*.log
+data/published/*.tmp
+data/published/*.pid
+data/published/*.log
 
 # Live banner pool vote totals (written at runtime; survive deploys in data/persistent/)
 data/banner_pool_votes.json
