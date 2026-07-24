@@ -19957,7 +19957,7 @@
     "StackLimit": 0,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "IsEnabledWhileAllTraitsUsable": true,
+    "IsEnabledWhileAllTraitsUsable": false,
     "IsEnabledWithGrantOwnerActive": false,
     "OverrideGrantStartEffectResourceId": ""
   },
@@ -19975,7 +19975,7 @@
     "StackLimit": 0,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "IsEnabledWhileAllTraitsUsable": true,
+    "IsEnabledWhileAllTraitsUsable": false,
     "IsEnabledWithGrantOwnerActive": false,
     "OverrideGrantStartEffectResourceId": ""
   },
@@ -19993,7 +19993,7 @@
     "StackLimit": 0,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "IsEnabledWhileAllTraitsUsable": true,
+    "IsEnabledWhileAllTraitsUsable": false,
     "IsEnabledWithGrantOwnerActive": false,
     "OverrideGrantStartEffectResourceId": ""
   },
@@ -20011,7 +20011,7 @@
     "StackLimit": 0,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "IsEnabledWhileAllTraitsUsable": true,
+    "IsEnabledWhileAllTraitsUsable": false,
     "IsEnabledWithGrantOwnerActive": false,
     "OverrideGrantStartEffectResourceId": ""
   },
@@ -20029,7 +20029,7 @@
     "StackLimit": 0,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "IsEnabledWhileAllTraitsUsable": true,
+    "IsEnabledWhileAllTraitsUsable": false,
     "IsEnabledWithGrantOwnerActive": false,
     "OverrideGrantStartEffectResourceId": ""
   },
@@ -20047,7 +20047,7 @@
     "StackLimit": 0,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "IsEnabledWhileAllTraitsUsable": true,
+    "IsEnabledWhileAllTraitsUsable": false,
     "IsEnabledWithGrantOwnerActive": false,
     "OverrideGrantStartEffectResourceId": ""
   },
@@ -59701,7 +59701,7 @@
     "StackLimit": 0,
     "BuffLabelColorTypeIndex": 3,
     "IsDisplayUpDown": false,
-    "IsEnabledWhileAllTraitsUsable": true,
+    "IsEnabledWhileAllTraitsUsable": false,
     "IsEnabledWithGrantOwnerActive": false,
     "OverrideGrantStartEffectResourceId": ""
   },
