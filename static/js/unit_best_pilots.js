@@ -365,6 +365,12 @@
       title = state.skillsOn
         ? (t('unit_best_pilot_title') || 'Top 10 Damage Pilot')
         : (t('unit_best_pilot_title_skills_off') || 'Top 10 Damage (Skills Off)');
+      tip = t('unit_best_pilot_title_damage_tip') || (
+        'Ranks pilots by peak pair damage vs Eternal Expert DEF (same rules as the Damage Simulator).\n\n'
+        + 'Defaults: LB3, best EX weapon, Super vigor, Conditional Passive + Pilot Exclusive Passive on.\n'
+        + 'Metric buttons switch Super Crit / Crit / Normal. 0% crit pilots use Normal for Crit metrics.\n\n'
+        + 'Toggle Skills to include/exclude active skills (ATK buffs, damage dealt, crit rate, etc.).'
+      );
     }
     el.textContent = title;
     if (tip) {
