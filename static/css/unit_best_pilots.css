@@ -192,6 +192,11 @@
   color: var(--accent-cyan);
 }
 
+.unit-best-pilot-panel-title--tip {
+  cursor: help;
+  border-bottom: 1px dotted rgba(0, 212, 255, 0.45);
+}
+
 .unit-best-pilot-panel-note {
   font-size: 10px;
   color: var(--text-muted);

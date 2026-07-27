@@ -349,16 +349,31 @@
     var el = global.document.querySelector('#unitBestPilotPanelWrap .unit-best-pilot-panel-title');
     if (!el) return;
     var title;
+    var tip = '';
     if (isDefenderBoard()) {
       title = state.skillsOn
         ? (t('unit_best_pilot_title_defender') || 'Top 10 Defender Pilots')
         : (t('unit_best_pilot_title_defender_skills_off') || 'Top 10 Defender (Skills Off)');
+      tip = t('unit_best_pilot_title_defender_tip') || (
+        'Survivability ranking vs Destiny Gundam + Shinn (shield on, Super vigor).\n\n'
+        + 'Score = Survival (~72%) + Support Defense + EN sustain + light counter damage (~5%).\n'
+        + 'Survival uses hits-to-kill vs EX + next weapon (55%/45%), soft HTK, and damage-taken-down % '
+        + '(affinity + Force Guard when Skills On).\n\n'
+        + 'Toggle Skills to include/exclude active skills like Force Guard. Not a full PvP sim.'
+      );
     } else {
       title = state.skillsOn
         ? (t('unit_best_pilot_title') || 'Top 10 Damage Pilot')
         : (t('unit_best_pilot_title_skills_off') || 'Top 10 Damage (Skills Off)');
     }
     el.textContent = title;
+    if (tip) {
+      el.setAttribute('title', tip);
+      el.classList.add('unit-best-pilot-panel-title--tip');
+    } else {
+      el.removeAttribute('title');
+      el.classList.remove('unit-best-pilot-panel-title--tip');
+    }
   }
 
   function setBoardKind(kind) {
