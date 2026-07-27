@@ -22582,9 +22582,6 @@ def get_character(char_id):
         else:
             has_conditional_passive = has_ex_stats
         result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'acquisition_icon': acq_icon or '', 'stats': stats, 'stats_with_ex': stats_with_ex, 'ex_supercharged_tiers': ex_supercharged_tiers_payload, 'has_ex_stats': has_ex_stats, 'has_conditional_passive': has_conditional_passive, 'has_sp': has_sp, 'sp_stats': sp_stats, 'sp_stats_with_ex': sp_stats_with_ex, 'pair_unit_stat_mod': pair_mod, 'pair_unit_counter_atk_mod': counter_atk_mod, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'recommend_unit': recommend_unit, 'is_limited_time': char_id in LIMITED_TIME_CHARACTER_IDS}
-        if not view_ranking:
-            result['acquisition_method_label'] = _acquisition_section_label(lc)
-            result['acquisition_methods'] = _build_acquisition_methods('character', char_id, lc, ld)
         if view_ranking:
             result['abilities'] = []
             result['skills'] = []
@@ -22997,8 +22994,6 @@ def get_unit(unit_id):
             _has_pilot_cond = True
         result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'has_cond_weapon_range': _has_cond_weapon_range, 'has_pilot_cond_passive': _has_pilot_cond, 'cp_weapon_range_mods': _cp_wpn_range_mods, 'pilot_weapon_effect_bonuses': _pilot_wpn_fx, 'pilot_tag_weapon_stat_bonuses': _pilot_tag_wpn, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id, 'gacha_pull_movie_id': _gacha_pull_movie_id}
         if not view_ranking:
-            result['acquisition_method_label'] = _acquisition_section_label(lc)
-            result['acquisition_methods'] = _build_acquisition_methods('unit', unit_id, lc, ld)
             ssp_mats = _build_unit_ssp_materials(unit_id, lc)
             if ssp_mats:
                 result['ssp_materials'] = ssp_mats
