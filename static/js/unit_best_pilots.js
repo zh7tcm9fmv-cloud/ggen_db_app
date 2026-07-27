@@ -323,11 +323,10 @@
 
   function syncSkillsToggle() {
     var btn = global.document.getElementById('ubpSkillsBtn');
-    var show = !isDefenderBoard();
     if (!btn) return;
-    btn.style.display = show ? '' : 'none';
-    btn.setAttribute('aria-hidden', show ? 'false' : 'true');
-    if (!show) return;
+    // Skills on/off applies to both Damage and Defender boards.
+    btn.style.display = '';
+    btn.setAttribute('aria-hidden', 'false');
     // Active = skills OFF (same pattern as No Shinn / No UR slash buttons).
     var off = !state.skillsOn;
     btn.classList.toggle('is-active', off);
@@ -341,11 +340,16 @@
   function syncPanelTitle() {
     var el = global.document.querySelector('#unitBestPilotPanelWrap .unit-best-pilot-panel-title');
     if (!el) return;
-    var title = isDefenderBoard()
-      ? (t('unit_best_pilot_title_defender') || 'Top 10 Defender Pilots')
-      : (state.skillsOn
+    var title;
+    if (isDefenderBoard()) {
+      title = state.skillsOn
+        ? (t('unit_best_pilot_title_defender') || 'Top 10 Defender Pilots')
+        : (t('unit_best_pilot_title_defender_skills_off') || 'Top 10 Defender (Skills Off)');
+    } else {
+      title = state.skillsOn
         ? (t('unit_best_pilot_title') || 'Top 10 Damage Pilot')
-        : (t('unit_best_pilot_title_skills_off') || 'Top 10 Damage (Skills Off)'));
+        : (t('unit_best_pilot_title_skills_off') || 'Top 10 Damage (Skills Off)');
+    }
     el.textContent = title;
   }
 
@@ -570,7 +574,6 @@
       if (!shinnFilterRelevant()) return;
       state.excludeShinn = !state.excludeShinn;
     } else if (kind === 'no_skills') {
-      if (isDefenderBoard()) return;
       state.skillsOn = !state.skillsOn;
     } else {
       return;
@@ -623,11 +626,21 @@
     var mode = state.rankMode || 'super_crit';
 
     if (isDefenderBoard()) {
-      var defRows = board.pilots_defender || entry.pilots_defender || [];
+      var defRows = state.skillsOn
+        ? (board.pilots_defender || entry.pilots_defender || [])
+        : (board.pilots_defender_no_skills || entry.pilots_defender_no_skills || []);
+      // Fallback if skills-off board not yet built — show skills-on list empty-handed rather than crash.
+      if (!state.skillsOn && !defRows.length) {
+        defRows = board.pilots_defender || entry.pilots_defender || [];
+      }
+      var defPartial = state.skillsOn
+        ? !!(board.defender_partial || entry.defender_partial)
+        : !!(board.defender_no_skills_partial || entry.defender_no_skills_partial);
       return {
         pilots: sortPilotsByDefenderScore(defRows).slice(0, 10),
-        partial: !!(board.defender_partial || entry.defender_partial) && defRows.length < 10,
-        defender: true
+        partial: defPartial && defRows.length < 10,
+        defender: true,
+        skillsOff: !state.skillsOn
       };
     }
 
@@ -757,8 +770,10 @@
       enrich(board.pilots_support_role);
       enrich(board.pilots_no_active_skills);
       enrich(board.pilots_defender);
+      enrich(board.pilots_defender_no_skills);
     });
     enrich(entry.pilots_defender);
+    enrich(entry.pilots_defender_no_skills);
   }
 
   async function enrichAffinityMatches(entry, unitId, lang) {
@@ -783,8 +798,10 @@
       collect(board.pilots_support_role);
       collect(board.pilots_no_active_skills);
       collect(board.pilots_defender);
+      collect(board.pilots_defender_no_skills);
     });
     collect(entry.pilots_defender);
+    collect(entry.pilots_defender_no_skills);
     if (!charIds.length) return entry;
     try {
       // aff_v=2 busts stale browser caches of dual normal+SP affinity payloads.
@@ -800,7 +817,10 @@
       function attachSkills(list) {
         (list || []).forEach(function (p) {
           var cid = String(((p && p.char) || {}).id || '');
-          if (cid && skills[cid] && !p.active_skills) p.active_skills = skills[cid];
+          // Do not overwrite DEF survival skills (or empty skills-off lists) with ATK skills.
+          if (cid && skills[cid] && !p.active_skills && !p.survival_skills) {
+            p.active_skills = skills[cid];
+          }
         });
       }
       forEachBoard(entry, function (board) {
@@ -810,9 +830,8 @@
         attachSkills(board.pilots_same_role);
         attachSkills(board.pilots_support_role);
         attachSkills(board.pilots_no_active_skills);
-        attachSkills(board.pilots_defender);
+        // Defender boards ship survival skills from the server — do not attach ATK skills.
       });
-      attachSkills(entry.pilots_defender);
     } catch (_) {}
     return entry;
   }
@@ -1050,9 +1069,40 @@
         if (/^Series SD$/i.test(label)) cls += ' msy-pilot-defender-chip--series-sd';
         else if (/^DR\s+\d+%/i.test(label)) cls += ' msy-pilot-defender-chip--dr';
         else if (/^SDx2$/i.test(label)) cls += ' msy-pilot-defender-chip--sdx2';
+        else if (/\d+%\s*$/.test(label) && !/^EHTK|^Atk|^DR|^EN|^SD|^Revive/i.test(label)) {
+          cls += ' msy-pilot-defender-chip--skill';
+        }
         return '<span class="' + cls + '">' + esc(label) + '</span>';
       }).join('')
       + '</div>';
+  }
+
+  function defenderSurvivalSkills(pilot) {
+    if (!pilot) return [];
+    if (pilot.survival_skills && pilot.survival_skills.length) return pilot.survival_skills;
+    var skills = pilot.active_skills || [];
+    return skills.filter(function (sk) { return sk && sk.active; });
+  }
+
+  function pilotDefenderSkillIconsHtml(pilot) {
+    var active = defenderSurvivalSkills(pilot);
+    if (!active.length) return '';
+    var html = '<div class="msy-pilot-skills msy-pilot-skills--def" title="'
+      + escAttr(t('unit_best_pilot_survival_skills') || 'Active skills used for survivability')
+      + '">';
+    active.forEach(function (sk) {
+      var tip = sk.name || '';
+      if (sk.taken_down_pct) tip += ' (−' + sk.taken_down_pct + '% dmg taken)';
+      html += '<span class="msy-pilot-skill msy-pilot-skill--active" title="' + escAttr(tip) + '">';
+      if (sk.icon) {
+        html += '<img class="msy-pilot-skill-ic" src="' + escAttr(imgUrl(sk.icon)) + '" alt="" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">';
+      } else {
+        html += '<span class="msy-pilot-skill-fallback">' + esc((sk.name || '?').charAt(0)) + '</span>';
+      }
+      html += '</span>';
+    });
+    html += '</div>';
+    return html;
   }
 
   function defenderScoreHoverTitle(pilot) {
@@ -1082,9 +1132,31 @@
       lines.push((t('unit_best_pilot_score_series_sd') || 'Series Support Defense bonus: +{n}')
         .replace('{n}', String(parts.series_sd_bonus)));
     }
+    var passDr = parts.passive_taken_down_pct != null
+      ? parts.passive_taken_down_pct
+      : (pilot.passive_taken_down_pct != null ? pilot.passive_taken_down_pct : null);
+    var skillDr = parts.skill_taken_down_pct != null
+      ? parts.skill_taken_down_pct
+      : (pilot.skill_taken_down_pct != null ? pilot.skill_taken_down_pct : null);
     if (parts.taken_down_pct) {
-      lines.push((t('unit_best_pilot_score_dr') || 'Damage taken down (affinity): {n}%')
+      lines.push((t('unit_best_pilot_score_dr') || 'Damage taken down (total): {n}%')
         .replace('{n}', String(parts.taken_down_pct)));
+    }
+    if (passDr) {
+      lines.push((t('unit_best_pilot_score_dr_passive') || 'Damage taken down (affinity): {n}%')
+        .replace('{n}', String(passDr)));
+    }
+    if (skillDr) {
+      lines.push((t('unit_best_pilot_score_dr_skill') || 'Damage taken down (active skills): {n}%')
+        .replace('{n}', String(skillDr)));
+    }
+    var survSkills = defenderSurvivalSkills(pilot);
+    if (survSkills.length) {
+      lines.push(t('unit_best_pilot_survival_skills') || 'Active skills used for survivability');
+      survSkills.forEach(function (sk) {
+        var pct = sk.taken_down_pct ? (' (−' + sk.taken_down_pct + '%)') : '';
+        lines.push('• ' + (sk.name || '?') + pct);
+      });
     }
     lines.push((t('unit_best_pilot_score_en') || 'EN sustain: {n}')
       .replace('{n}', String(parts.en != null ? parts.en : 0)));
@@ -1117,6 +1189,7 @@
       }
       var cardCls = 'msy-pilot-card msy-pilot-card--defender';
       if (pilot.series_sd) cardCls += ' msy-pilot-card--series-sd';
+      var skillIcons = state.skillsOn ? pilotDefenderSkillIconsHtml(pilot) : '';
       return '<div class="' + cardCls + '">'
         + '<span class="msy-pilot-rank">' + esc(String(pilot.rank || '')) + '</span>'
         + '<button type="button" class="msy-pilot-open" title="' + escAttr(t('msy_open_char') || 'Open pilot') + '" onclick="openDetail(\'character\',\'' + escJs(String(c.id)) + '\')">'
@@ -1131,7 +1204,9 @@
         + '</div></button>'
         + '<div class="msy-pilot-dmg-col"><div class="msy-pilot-dmg" title="'
         + escAttr(defenderScoreHoverTitle(pilot)) + '">'
-        + fmtN(score) + '</div></div></div>';
+        + fmtN(score) + '</div>'
+        + skillIcons
+        + '</div></div>';
     }
     var dmg = pilotDamage(pilot);
     var subD = '';
@@ -1239,12 +1314,14 @@
       pilots_support_role: sortPilotsByCalcDamage(payload.pilots_support_role || [], mode),
       pilots_no_active_skills: sortPilotsByCalcDamage(payload.pilots_no_active_skills || [], mode),
       pilots_defender: sortPilotsByDefenderScore(payload.pilots_defender || []),
+      pilots_defender_no_skills: sortPilotsByDefenderScore(payload.pilots_defender_no_skills || []),
       no_ur_partial: !!payload.no_ur_partial,
       no_shinn_partial: !!payload.no_shinn_partial,
       same_role_partial: !!payload.same_role_partial,
       support_role_partial: !!payload.support_role_partial,
       no_active_skills_partial: !!payload.no_active_skills_partial,
       defender_partial: !!payload.defender_partial,
+      defender_no_skills_partial: !!payload.defender_no_skills_partial,
       is_defense_unit: !!payload.is_defense_unit,
       source: payload.source || 'published_dc',
       rank_mode: mode,
@@ -1269,6 +1346,10 @@
     if (!defenders.length && payload.pilots_defender) {
       defenders = sortPilotsByDefenderScore(payload.pilots_defender);
     }
+    var defendersOff = primary.pilots_defender_no_skills || [];
+    if (!defendersOff.length && payload.pilots_defender_no_skills) {
+      defendersOff = sortPilotsByDefenderScore(payload.pilots_defender_no_skills);
+    }
     return {
       pilots: primary.pilots,
       pilots_no_ur: primary.pilots_no_ur,
@@ -1277,12 +1358,14 @@
       pilots_support_role: primary.pilots_support_role,
       pilots_no_active_skills: primary.pilots_no_active_skills,
       pilots_defender: defenders,
+      pilots_defender_no_skills: defendersOff,
       no_ur_partial: primary.no_ur_partial,
       no_shinn_partial: primary.no_shinn_partial,
       same_role_partial: primary.same_role_partial,
       support_role_partial: primary.support_role_partial,
       no_active_skills_partial: primary.no_active_skills_partial,
       defender_partial: primary.defender_partial,
+      defender_no_skills_partial: primary.defender_no_skills_partial,
       is_defense_unit: !!(payload.is_defense_unit || primary.is_defense_unit),
       source: primary.source,
       weapon_info: wi,
@@ -1379,7 +1462,9 @@
       var sameRoleBlock = ((group.rankings_same_role || {})[mode]) || {};
       var supportRoleBlock = ((group.rankings_support_role || {})[mode]) || {};
       var noSkillsBlock = ((group.rankings_no_active_skills || {})[mode]) || {};
-      var defBlock = (group.rankings_defender || {}).defender || {};
+      var defRoot = group.rankings_defender || {};
+      var defBlock = defRoot.defender || {};
+      var defOffBlock = defRoot.defender_no_skills || {};
       return {
         pilots: pilots,
         pilots_no_ur: sortPilotsByCalcDamage(noUrBlock.pilots || filterPilotsLocal(pilots, true, true), mode),
@@ -1390,12 +1475,14 @@
         ),
         pilots_no_active_skills: sortPilotsByCalcDamage(noSkillsBlock.pilots || [], mode),
         pilots_defender: sortPilotsByDefenderScore(defBlock.pilots || []),
+        pilots_defender_no_skills: sortPilotsByDefenderScore(defOffBlock.pilots || []),
         no_ur_partial: !(noUrBlock.pilots && noUrBlock.pilots.length >= 10),
         no_shinn_partial: !(noShinnBlock.pilots && noShinnBlock.pilots.length >= 10),
         same_role_partial: !(sameRoleBlock.pilots && sameRoleBlock.pilots.length >= 10),
         support_role_partial: !(supportRoleBlock.pilots && supportRoleBlock.pilots.length >= 10),
         no_active_skills_partial: !(noSkillsBlock.pilots && noSkillsBlock.pilots.length >= 10),
         defender_partial: !(defBlock.pilots && defBlock.pilots.length >= 10),
+        defender_no_skills_partial: !(defOffBlock.pilots && defOffBlock.pilots.length >= 10),
         is_defense_unit: unitRoleId() === DEFENSE_ROLE_ID,
         source: 'client_dc',
         rank_mode: mode
@@ -1417,12 +1504,14 @@
       pilots_support_role: primary.pilots_support_role,
       pilots_no_active_skills: primary.pilots_no_active_skills,
       pilots_defender: primary.pilots_defender,
+      pilots_defender_no_skills: primary.pilots_defender_no_skills,
       no_ur_partial: primary.no_ur_partial,
       no_shinn_partial: primary.no_shinn_partial,
       same_role_partial: primary.same_role_partial,
       support_role_partial: primary.support_role_partial,
       no_active_skills_partial: primary.no_active_skills_partial,
       defender_partial: primary.defender_partial,
+      defender_no_skills_partial: primary.defender_no_skills_partial,
       is_defense_unit: !!primary.is_defense_unit,
       source: 'client_dc',
       weapon_info: group.weapon_info || null,

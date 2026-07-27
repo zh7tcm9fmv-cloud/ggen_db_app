@@ -320,6 +320,12 @@
   border-color: rgba(56, 189, 248, 0.4);
 }
 
+.msy-pilot-defender-chip--skill {
+  color: #ddd6fe;
+  background: rgba(91, 33, 182, 0.28);
+  border-color: rgba(167, 139, 250, 0.45);
+}
+
 .msy-pilot-defender-chip--sdx2 {
   color: #bbf7d0;
   background: rgba(22, 101, 52, 0.4);
@@ -775,7 +781,8 @@
   display: block;
 }
 
-.unit-best-pilot-panel .msy-pilot-skills--dmg {
+.unit-best-pilot-panel .msy-pilot-skills--dmg,
+.unit-best-pilot-panel .msy-pilot-skills--def {
   display: flex;
   flex-wrap: wrap;
   gap: 3px;
@@ -783,7 +790,8 @@
   justify-content: flex-end;
 }
 
-.unit-best-pilot-panel .msy-pilot-skills--dmg .msy-pilot-skill {
+.unit-best-pilot-panel .msy-pilot-skills--dmg .msy-pilot-skill,
+.unit-best-pilot-panel .msy-pilot-skills--def .msy-pilot-skill {
   width: 20px;
   height: 20px;
   border-radius: 4px;
@@ -795,17 +803,28 @@
   box-shadow: 0 0 0 1px rgba(0, 212, 255, 0.2);
 }
 
-.unit-best-pilot-panel .msy-pilot-skills--dmg .msy-pilot-skill-ic {
+.unit-best-pilot-panel .msy-pilot-skills--def .msy-pilot-skill {
+  border-color: rgba(167, 139, 250, 0.75);
+  box-shadow: 0 0 0 1px rgba(167, 139, 250, 0.25);
+}
+
+.unit-best-pilot-panel .msy-pilot-skills--dmg .msy-pilot-skill-ic,
+.unit-best-pilot-panel .msy-pilot-skills--def .msy-pilot-skill-ic {
   width: 16px;
   height: 16px;
   object-fit: contain;
   display: block;
 }
 
-.unit-best-pilot-panel .msy-pilot-skills--dmg .msy-pilot-skill-fallback {
+.unit-best-pilot-panel .msy-pilot-skills--dmg .msy-pilot-skill-fallback,
+.unit-best-pilot-panel .msy-pilot-skills--def .msy-pilot-skill-fallback {
   font-size: 9px;
   font-weight: 800;
   color: var(--accent-cyan);
+}
+
+.unit-best-pilot-panel .msy-pilot-skills--def .msy-pilot-skill-fallback {
+  color: #c4b5fd;
 }
 
 .unit-best-pilot-panel .msy-pilot-name-row {

@@ -1897,7 +1897,7 @@ _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
 _BSP_DC_RULES_VERSION = 11  # Supercharged EX stats/GC require unit tag/series/id conditions
-_DEFENDER_BOARD_VERSION = 5  # survivability-first weights; soft EHTK when HTK ties
+_DEFENDER_BOARD_VERSION = 6  # active-skill DR (Force Guard); skills on/off DEF boards
 _SKILLS_OFF_BOARD_VERSION = 2
 _BSP_DC_BUILD_ENGINE = 'calculateDamage'
 # From v16 onward: formula/criteria rebuilds only refresh top-N + newly added units.
@@ -2955,8 +2955,13 @@ def _defender_candidates_for_unit(uid, pilot_ids, exclude, lc):
     return out[: max(_BSP_PILOT_CAP, 140)]
 
 
-def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=10):
-    """HTK-based defender rankings for one Defense-role unit."""
+def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=10,
+                                       active_skills=True):
+    """HTK-based defender rankings for one Defense-role unit.
+
+    When ``active_skills`` is True, max-LV survivability skills (e.g. Force Guard)
+    reduce inbound damage and are listed on each pilot row.
+    """
     A = _app()
     uid = A.normalize_id(uid)
     if not _unit_is_defense_role(uid):
@@ -2976,10 +2981,18 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
     # Survivability-first board: tankiness dominates; counter damage is a light tiebreaker.
     _SURV_WEIGHT = 0.72
     _COUNTER_WEIGHT = 0.05
+    use_skills = bool(active_skills)
     for cid in candidates:
         st = _unit_final_stats(uid, cid, lc, cp_on=True, pep_on=True)
         hp = max(1, int(st['HP']))
-        taken = _pair_dmg_taken_down_pct(cid, uid, lc, cp_on=True)
+        passive_taken = _pair_dmg_taken_down_pct(cid, uid, lc, cp_on=True)
+        skill_surv = (
+            _char_active_skill_survivability(cid, lc)
+            if use_skills else {'taken_down_pct': 0, 'skills': ()}
+        )
+        skill_taken = int(skill_surv.get('taken_down_pct') or 0)
+        survival_skills = list(skill_surv.get('skills') or [])
+        taken = min(80, max(0, int(passive_taken) + skill_taken))
         htks = []
         htks_soft = []
         dmgs_in = []
@@ -2998,7 +3011,7 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
             ehtk = 0.55 * htks[0] + 0.45 * htks[1]
             ehtk_soft = 0.55 * htks_soft[0] + 0.45 * htks_soft[1]
         out_dmg = compute_pair_damage(
-            uid, cid, lc, vigor='super', def_tier=3, active_skills=True,
+            uid, cid, lc, vigor='super', def_tier=3, active_skills=use_skills,
         )
         peak = int((out_dmg or {}).get('peak_dmg') or 0)
         sd_parts = _support_def_score_parts(cid, uid, lc)
@@ -3019,6 +3032,9 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
             'dmg_ex': dmgs_in[0],
             'dmg_next': dmgs_in[1] if len(dmgs_in) > 1 else dmgs_in[0],
             'taken_down': taken,
+            'passive_taken_down': int(passive_taken),
+            'skill_taken_down': skill_taken,
+            'survival_skills': survival_skills,
             'hp': hp,
             'unit_def': st['DEF'],
             'char_def': st['char_def'],
@@ -3029,6 +3045,7 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
             'out_peak': peak,
             'revive': revive,
             'pair_ok': st['pair_ok'],
+            'active_skills_on': use_skills,
         })
         ehtk_vals.append(ehtk)
         ehtk_soft_vals.append(ehtk_soft)
@@ -3074,6 +3091,8 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
             'revive': revive_pts,
             'sd_plus_count': int(row.get('sd_plus_count') or 0),
             'taken_down_pct': int(row.get('taken_down') or 0),
+            'passive_taken_down_pct': int(row.get('passive_taken_down') or 0),
+            'skill_taken_down_pct': int(row.get('skill_taken_down') or 0),
         }
         scored.append(row)
     scored.sort(key=lambda r: (
@@ -3113,6 +3132,9 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
         })
     pilots = []
     for i, row in enumerate(top):
+        survival_skills = list(row.get('survival_skills') or [])
+        # Reuse active_skills for UI icons; DEF board only lists survivability skills.
+        active_skills = survival_skills if use_skills else []
         pilots.append({
             'rank': i + 1,
             'char': _entity_brief_char(row['cid'], lc),
@@ -3124,6 +3146,11 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
             'dmg_taken_ex': row['dmg_ex'],
             'dmg_taken_next': row['dmg_next'],
             'taken_down_pct': row['taken_down'],
+            'passive_taken_down_pct': int(row.get('passive_taken_down') or 0),
+            'skill_taken_down_pct': int(row.get('skill_taken_down') or 0),
+            'survival_skills': survival_skills,
+            'active_skills': active_skills,
+            'active_skills_on': use_skills,
             'hp': row['hp'],
             'support_def_score': row['sd_score'],
             'sd_plus_count': row.get('sd_plus_count', 0),
@@ -3139,17 +3166,31 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
             'expected_dmg': row['out_peak'],
             'reasons': _defender_reason_chips(row),
         })
+    board = {
+        'max_score': pilots[0]['score'] if pilots else 0,
+        'pilots': pilots,
+        'bully_unit_id': bully['unit_id'],
+        'bully_char_id': bully['char_id'],
+        'weapons': wpn_meta,
+        'ehtk_weights': {'ex': 0.55, 'next': 0.45},
+        'active_skills_on': use_skills,
+    }
     return {
         'board_version': _DEFENDER_BOARD_VERSION,
-        'defender': {
-            'max_score': pilots[0]['score'] if pilots else 0,
-            'pilots': pilots,
-            'bully_unit_id': bully['unit_id'],
-            'bully_char_id': bully['char_id'],
-            'weapons': wpn_meta,
-            'ehtk_weights': {'ex': 0.55, 'next': 0.45},
-        }
+        'defender': board,
     }
+
+
+def _defender_skill_chip_label(sk):
+    """Short skill name for DEF reason chips (strip LV suffix)."""
+    name = str((sk or {}).get('name') or '').strip()
+    if not name:
+        return ''
+    base = _msy_skill_base_name(name) or name
+    pct = int((sk or {}).get('taken_down_pct') or 0)
+    if pct > 0:
+        return f'{base} {pct}%'
+    return base
 
 
 def _defender_reason_chips(row):
@@ -3166,6 +3207,10 @@ def _defender_reason_chips(row):
     taken = int(row.get('taken_down') or 0)
     if taken > 0:
         chips.append(f'DR {taken}%')
+    for sk in (row.get('survival_skills') or []):
+        label = _defender_skill_chip_label(sk)
+        if label:
+            chips.append(label)
     if row['en_score'] >= 4:
         chips.append('EN')
     if row['revive']:
@@ -3181,24 +3226,31 @@ def enrich_group_defender_rankings(g, lc='EN', *, pilot_ids=None, exclude=None, 
         return g
     existing = g.get('rankings_defender') or {}
     ver_ok = int(existing.get('board_version') or 0) >= int(_DEFENDER_BOARD_VERSION)
-    if (
-        not force and ver_ok
-        and (existing.get('defender') or {}).get('pilots')
-    ):
+    has_on = bool((existing.get('defender') or {}).get('pilots'))
+    has_off = bool((existing.get('defender_no_skills') or {}).get('pilots'))
+    if not force and ver_ok and has_on and has_off:
         return g
     A = _app()
     uid = A.normalize_id((g.get('unit') or {}).get('id'))
     if not uid or not _unit_is_defense_role(uid):
         return g
-    built = compute_defender_scores_for_unit(
-        uid, pilot_ids or _pilot_pool_ids(),
-        exclude if exclude is not None else set(),
-        lc, top_n=top_n or _BSP_STORE_DEFENDER_TOP,
+    pool = pilot_ids or _pilot_pool_ids()
+    excl = exclude if exclude is not None else set()
+    n = top_n or _BSP_STORE_DEFENDER_TOP
+    built_on = compute_defender_scores_for_unit(
+        uid, pool, excl, lc, top_n=n, active_skills=True,
     )
-    if not built:
+    built_off = compute_defender_scores_for_unit(
+        uid, pool, excl, lc, top_n=n, active_skills=False,
+    )
+    if not built_on and not built_off:
         return g
     out = dict(g)
-    out['rankings_defender'] = built
+    out['rankings_defender'] = {
+        'board_version': _DEFENDER_BOARD_VERSION,
+        'defender': (built_on or {}).get('defender') or {},
+        'defender_no_skills': (built_off or {}).get('defender') or {},
+    }
     return out
 
 
@@ -4818,10 +4870,10 @@ def _bsp_relocalize_pilot_chars(pilots, lc):
 def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs,
                          pilots_no_ur=None, pilots_no_shinn=None, pilots_same_role=None,
                          pilots_support_role=None, pilots_no_active_skills=None,
-                         pilots_defender=None,
+                         pilots_defender=None, pilots_defender_no_skills=None,
                          no_ur_partial=False, no_shinn_partial=False, same_role_partial=False,
                          support_role_partial=False, no_active_skills_partial=False,
-                         defender_partial=False):
+                         defender_partial=False, defender_no_skills_partial=False):
     mode = rank_mode or 'super_crit'
     store_n = int(_BSP_STORE_TOP_PILOTS)
 
@@ -4878,6 +4930,9 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
     # Keep store depth so No Shinn / role filters can promote ranks 11–20 into Top 10.
     no_active = _rank(list(pilots_no_active_skills or []), store_n)
     defenders = _rank(list(pilots_defender or []), _BSP_UI_DEFENDER_TOP, by_score=True)
+    defenders_off = _rank(
+        list(pilots_defender_no_skills or []), _BSP_UI_DEFENDER_TOP, by_score=True,
+    )
     _bsp_relocalize_pilot_chars(pilots, lc)
     _bsp_relocalize_pilot_chars(no_ur, lc)
     _bsp_relocalize_pilot_chars(no_shinn, lc)
@@ -4885,6 +4940,7 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
     _bsp_relocalize_pilot_chars(support_role, lc)
     _bsp_relocalize_pilot_chars(no_active, lc)
     _bsp_relocalize_pilot_chars(defenders, lc)
+    _bsp_relocalize_pilot_chars(defenders_off, lc)
     _bsp_patch_guaranteed_crit_flags(pilots, lc, rank_mode=mode)
     _bsp_patch_guaranteed_crit_flags(no_ur, lc, rank_mode=mode)
     _bsp_patch_guaranteed_crit_flags(no_shinn, lc, rank_mode=mode)
@@ -4910,6 +4966,7 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
         'pilots_support_role': support_role,
         'pilots_no_active_skills': no_active,
         'pilots_defender': defenders,
+        'pilots_defender_no_skills': defenders_off,
         'no_ur_partial': bool(no_ur_partial) or len(no_ur) < _BSP_UI_TOP_PILOTS,
         'no_shinn_partial': bool(no_shinn_partial) or len(no_shinn) < _BSP_UI_TOP_PILOTS,
         'same_role_partial': bool(same_role_partial) or len(same_role) < _BSP_UI_TOP_PILOTS,
@@ -4921,6 +4978,11 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
         ),
         'defender_partial': bool(defender_partial) or (
             _unit_is_defense_role(uid) and len(defenders) < _BSP_UI_DEFENDER_TOP
+        ),
+        'defender_no_skills_partial': bool(defender_no_skills_partial) or (
+            _unit_is_defense_role(uid)
+            and bool(pilots_defender_no_skills is not None)
+            and len(defenders_off) < _BSP_UI_DEFENDER_TOP
         ),
         'is_defense_unit': _unit_is_defense_role(uid),
         'source': source,
@@ -5001,7 +5063,13 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
         )
         def_block = (g_row.get('rankings_defender') or row.get('rankings_defender') or {})
         pilots_defender = list((def_block.get('defender') or {}).get('pilots') or [])
+        pilots_defender_off = list(
+            (def_block.get('defender_no_skills') or {}).get('pilots') or []
+        )
         defender_partial = _unit_is_defense_role(uid) and len(pilots_defender) < _BSP_UI_DEFENDER_TOP
+        defender_off_partial = (
+            _unit_is_defense_role(uid) and len(pilots_defender_off) < _BSP_UI_DEFENDER_TOP
+        )
         return _bsp_pilots_response(
             uid, pilots, source='published_dc', def_tier=def_tier,
             rank_mode=mode, lc=lc, kwargs=kwargs,
@@ -5011,12 +5079,14 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
             pilots_support_role=pilots_support_role,
             pilots_no_active_skills=pilots_no_active,
             pilots_defender=pilots_defender,
+            pilots_defender_no_skills=pilots_defender_off,
             no_ur_partial=no_ur_partial,
             no_shinn_partial=no_shinn_partial,
             same_role_partial=same_role_partial,
             support_role_partial=support_role_partial,
             no_active_skills_partial=no_active_partial,
             defender_partial=defender_partial,
+            defender_no_skills_partial=defender_off_partial,
         )
 
     # Prefer published /cal BSP cache for the MAIN list (real calculator).
@@ -5036,6 +5106,7 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
         need_def = _unit_is_defense_role(uid) and (
             def_ver < int(_DEFENDER_BOARD_VERSION)
             or not ((row_base.get('rankings_defender') or {}).get('defender') or {}).get('pilots')
+            or not ((row_base.get('rankings_defender') or {}).get('defender_no_skills') or {}).get('pilots')
         )
         if need_off or need_def:
             try:
@@ -5360,6 +5431,107 @@ def _msy_skill_relevant_for_sim(blob, sid='', name=''):
     if re.search(r'critical\s*rate|暴擊率|暴击率|爆擊率|クリティカル率', text, re.I):
         return True
     return False
+
+
+def _parse_skill_dmg_taken_down_pct(blob):
+    """Sum Reduce damage taken / Damage Taken -N% from an active skill description."""
+    total = 0
+    for m in _DMG_TAKEN_DOWN_RE.finditer(str(blob or '')):
+        g = next((x for x in m.groups() if x), None)
+        if g and str(g).isdigit():
+            total += int(g)
+    return min(80, max(0, total))
+
+
+def _msy_skill_relevant_for_defense(blob, sid='', name=''):
+    """Active skills that improve inbound survivability (e.g. Force Guard)."""
+    text = str(blob or '')
+    nm = str(name or '')
+    if _parse_skill_dmg_taken_down_pct(text) > 0:
+        return True
+    if re.search(r'force\s*guard|フォースガード|力場防護|防護力場', nm, re.I):
+        return True
+    if re.search(
+        r'reduce\s+(?:own\s+)?damage\s+taken|damage\s+taken\s*[-\u2212]|'
+        r'自身受到的損傷減輕|被ダメージ(?:を)?(?:軽減|減少)',
+        text, re.I,
+    ):
+        return True
+    return False
+
+
+@lru_cache(maxsize=8192)
+def _msy_auto_defense_skill_ids(cid, lc):
+    """Max-LV active skills that grant damage-taken reduction for DEF boards."""
+    stat_mode = _msy_char_stat_mode(cid)
+    rows = _msy_char_skill_rows(cid, lc)
+    by_base = {}
+    for row in _msy_pilot_skills_visible(stat_mode, rows):
+        sid = row['id']
+        rsk = _msy_resolve_skill_for_mode(row, rows, stat_mode)
+        name = str(rsk.get('name') or '')
+        base = _msy_skill_base_name(name)
+        blob = _msy_skill_blob(rsk)
+        if not _msy_skill_relevant_for_defense(blob, sid, name):
+            continue
+        lv = _msy_skill_lv_from_name(name)
+        prev = by_base.get(base)
+        if not prev or lv > prev[0]:
+            by_base[base] = (lv, sid)
+    return {sid for _, sid in by_base.values()}
+
+
+@lru_cache(maxsize=8192)
+def _char_active_skill_survivability(cid, lc):
+    """Damage-taken-down % + skill rows used for DEF ranking (skills-on board)."""
+    A = _app()
+    cid = A.normalize_id(cid)
+    stat_mode = _msy_char_stat_mode(cid)
+    rows = _msy_char_skill_rows(cid, lc)
+    active_ids = _msy_auto_defense_skill_ids(cid, lc)
+    total = 0
+    skills = []
+    seen_base = set()
+    for row in _msy_pilot_skills_visible(stat_mode, rows):
+        sid = row['id']
+        if sid not in active_ids:
+            continue
+        rsk = _msy_resolve_skill_for_mode(row, rows, stat_mode)
+        name = str(rsk.get('name') or '')
+        base = _msy_skill_base_name(name)
+        if base in seen_base:
+            continue
+        blob = _msy_skill_blob(rsk)
+        pct = _parse_skill_dmg_taken_down_pct(blob)
+        if pct <= 0 and not _msy_skill_relevant_for_defense(blob, sid, name):
+            continue
+        seen_base.add(base)
+        total += pct
+        details = []
+        for x in (rsk.get('details') or []):
+            if isinstance(x, dict):
+                t = str(x.get('text') or '').strip()
+            else:
+                t = str(x or '').strip()
+            if t:
+                details.append(t)
+        desc = str(rsk.get('desc') or '').strip()
+        if desc and desc not in details:
+            details.insert(0, desc)
+        skills.append({
+            'id': sid,
+            'name': name,
+            'icon': rsk.get('icon') or '',
+            'taken_down_pct': pct,
+            'level': _msy_skill_lv_from_name(name) or None,
+            'desc': desc or (details[0] if details else ''),
+            'details': details,
+            'active': True,
+        })
+    return {
+        'taken_down_pct': min(80, max(0, total)),
+        'skills': tuple(skills),
+    }
 
 
 @lru_cache(maxsize=2048)
