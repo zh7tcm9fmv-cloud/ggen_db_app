@@ -112,15 +112,23 @@ def main() -> int:
     for i, uid in enumerate(work_uids):
         g = by_uid[uid]
         if args.skip_existing:
-            has_off = bool((g.get('rankings_no_active_skills') or {}).get('super_crit', {}).get('pilots'))
+            off_ver = int(g.get('skills_off_board_version') or 0)
+            def_ver = int((g.get('rankings_defender') or {}).get('board_version') or 0)
+            has_off = (
+                off_ver >= int(msy._SKILLS_OFF_BOARD_VERSION)
+                and bool((g.get('rankings_no_active_skills') or {}).get('super_crit', {}).get('pilots'))
+            )
             need_def = msy._unit_is_defense_role(uid)
-            has_def = bool(((g.get('rankings_defender') or {}).get('defender') or {}).get('pilots'))
+            has_def = (
+                def_ver >= int(msy._DEFENDER_BOARD_VERSION)
+                and bool(((g.get('rankings_defender') or {}).get('defender') or {}).get('pilots'))
+            )
             if has_off and (has_def or not need_def):
                 continue
         try:
             eg = msy.enrich_group_skills_off_and_defender(
                 g, args.lang, lite=False, rank_mode='super_crit', def_tier=3,
-                pilot_ids=pilot_ids, exclude=exclude,
+                pilot_ids=pilot_ids, exclude=exclude, force=True,
             )
         except Exception as e:
             print(f'  FAIL {uid}: {e}', flush=True)

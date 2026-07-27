@@ -697,9 +697,10 @@ def _pilot_awaken_adjusted(grown, totals, uid, lc, stat_mode, pct):
     return 900 + (_pilot_active_skill_pct_bonus(base, p) if p > 0 else 0)
 
 
-def _char_atk_with_skills_for_pair(cid, uid, lc, attack_attr, *, cp_on=True, active_skills=True):
+def _char_atk_with_skills_for_pair(cid, uid, lc, attack_attr, *, cp_on=True, active_skills=True,
+                                     vigor='super'):
     """Char ATK for damage formula — pair CP totals + active skill % + unit awaken floor."""
-    totals, _ = _cached_char_pair_totals(cid, uid, lc, cp_on=cp_on)
+    totals, _ = _cached_char_pair_totals(cid, uid, lc, cp_on=cp_on, vigor=vigor)
     grown, grown_sp, _, _ = _char_grown_bases(cid)
     base_grown = grown_sp if _msy_char_stat_mode(cid) == 'sp' else grown
     sk = _active_skill_stat_pct(cid, lc) if active_skills else {'Ranged': 0, 'Melee': 0, 'Awaken': 0}
@@ -719,10 +720,11 @@ def _char_atk_with_skills_for_pair(cid, uid, lc, attack_attr, *, cp_on=True, act
     return int(best_val), best_key
 
 
-def _formula_char_atk_for_pair(cid, uid, lc, attack_attr, *, cp_on=True, active_skills=True):
+def _formula_char_atk_for_pair(cid, uid, lc, attack_attr, *, cp_on=True, active_skills=True,
+                                 vigor='super'):
     """Char ATK used in the damage formula (pair CP totals — matches calculateDamage charAtk)."""
     return _char_atk_with_skills_for_pair(
-        cid, uid, lc, attack_attr, cp_on=cp_on, active_skills=active_skills,
+        cid, uid, lc, attack_attr, cp_on=cp_on, active_skills=active_skills, vigor=vigor,
     )
 
 
@@ -810,8 +812,11 @@ def _char_grown_bases(cid):
     return grown, grown_sp, ri, has_sp
 
 
-def _char_totals_for_pair_max(cid, uid, lc):
-    """CP on: conditional + max trait % + pair-gated traits when unit matches."""
+def _char_totals_for_pair_max(cid, uid, lc, *, vigor='super'):
+    """CP on: conditional + trait % + pair-gated traits when unit matches.
+
+    Supercharged EX tier bonuses apply only at super vigor (matches Damage Calculator).
+    """
     A = _app()
     ldc = _calc_lang_data()
     cid = A.normalize_id(cid)
@@ -825,6 +830,7 @@ def _char_totals_for_pair_max(cid, uid, lc):
     spbs_u, spbs_c, spbs_pair, spes, spes_pair = buckets[5], buckets[6], buckets[7], buckets[8], buckets[9]
     trait_pair_unit_ids = buckets[10]
     pair_ok = _pair_ok_for_unit(uid, cid, trait_pair_unit_ids)
+    use_supercharged = str(vigor or 'super') == 'super'
     totals = {}
     if char_mode == 'sp':
         for s in A.CHAR_STAT_ORDER:
@@ -835,7 +841,7 @@ def _char_totals_for_pair_max(cid, uid, lc):
             totals[s] = bv + math.floor(bv * pct / 100) if bv > 0 else 0
     else:
         ex_tiers = A.collect_supercharged_ex_stat_tiers(ac, cid)
-        if ex_tiers:
+        if ex_tiers and use_supercharged:
             tier = ex_tiers[-1]
             for s in A.CHAR_STAT_ORDER:
                 bv = base.get(s, 0)
@@ -1724,7 +1730,9 @@ _MSY_BROWSE_PAYLOAD_CACHE_TTL = max(15, min(300, int(os.environ.get('MSY_BROWSE_
 _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
-_BSP_DC_RULES_VERSION = 9  # + no-active-skills board + defender HTK rankings
+_BSP_DC_RULES_VERSION = 10  # vigor-aware Supercharged EX; true SDx2; skills-off store depth
+_DEFENDER_BOARD_VERSION = 2
+_SKILLS_OFF_BOARD_VERSION = 2
 _BSP_DC_BUILD_ENGINE = 'calculateDamage'
 # From v16 onward: formula/criteria rebuilds only refresh top-N + newly added units.
 # Full-catalog rebuilds are intentional opt-in only (users rarely open the long tail).
@@ -1982,13 +1990,15 @@ def _cached_best_ex_weapon(uid, stat_mode, lc):
     )
 
 
-def _cached_char_pair_totals(cid, uid, lc, *, cp_on=True):
-    key = (str(cid), str(uid), str(lc), bool(cp_on))
+def _cached_char_pair_totals(cid, uid, lc, *, cp_on=True, vigor='super'):
+    # Bin non-super vigors together — Supercharged EX tiers only apply at super.
+    vigor_bin = 'super' if str(vigor or 'super') == 'super' else 'nonsuper'
+    key = (str(cid), str(uid), str(lc), bool(cp_on), vigor_bin)
     hit = _char_pair_cache.get(key)
     if hit is not None:
         return hit
     value = (
-        _char_totals_for_pair_max(cid, uid, lc)
+        _char_totals_for_pair_max(cid, uid, lc, vigor=vigor_bin if vigor_bin == 'super' else 'high')
         if cp_on
         else _char_totals_for_pair_no_cp(cid, uid, lc)
     )
@@ -2021,10 +2031,10 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
     )
     tier_key = max(1, min(4, int(def_tier or 1)))
 
-    totals, pair_ok = _cached_char_pair_totals(cid, uid, lc, cp_on=cp_on)
+    totals, pair_ok = _cached_char_pair_totals(cid, uid, lc, cp_on=cp_on, vigor=vigor)
     skill_dmg = _char_active_skill_dmg_bonuses(cid, lc) if active_skills else 0
     char_atk, formula_stat = _formula_char_atk_for_pair(
-        cid, uid, lc, wpn.get('attr'), cp_on=cp_on, active_skills=active_skills,
+        cid, uid, lc, wpn.get('attr'), cp_on=cp_on, active_skills=active_skills, vigor=vigor,
     )
     unit_atk = _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok, cp_on=cp_on)
     if pep_on:
@@ -2484,18 +2494,34 @@ def _pair_en_sustain_score(cid, uid, lc):
     return min(10, score)
 
 
-def _support_def_score(cid):
-    A = _app()
-    cid = A.normalize_id(cid)
-    if cid in getattr(A, 'SUPPORT_DEF_X2_CHARACTER_IDS', set()):
-        return 18
-    for bab in _build_char_ac_for_lang(cid, 'EN') or []:
+_SUPPORT_DEF_PLUS_COUNT_RE = re.compile(
+    r'(?:support\s*defen[cs]e|支援防[禦御])[\s\S]{0,24}[+＋]\s*(\d+)(?!\d)',
+    re.IGNORECASE,
+)
+
+
+def _support_def_plus_count(cid, lc='EN'):
+    """Sum of Support Defense +N grants across abilities (EX stacks separately)."""
+    total = 0
+    for bab in _build_char_ac_for_lang(cid, lc) or []:
         blob = str(bab.get('name') or '')
         for d2 in bab.get('details') or []:
             blob += ' ' + (str(d2.get('text') or '') if isinstance(d2, dict) else str(d2 or ''))
-        low = blob.lower()
-        if 'support defense' in low or '支援防禦' in blob or '支援防御' in blob:
-            return 9
+        for m in _SUPPORT_DEF_PLUS_COUNT_RE.finditer(blob or ''):
+            total += max(0, int(m.group(1) or 0))
+    return total
+
+
+def _support_def_score(cid):
+    """SDx2 only when total Support Defense +N grants >= 2 (e.g. ability + EX).
+
+    A single Defense-role \"Support Defense +1\" line alone is SD (not SDx2).
+    """
+    n = _support_def_plus_count(cid, 'EN')
+    if n >= 2:
+        return 18
+    if n >= 1:
+        return 9
     return 0
 
 
@@ -2626,11 +2652,16 @@ def _rankings_no_active_skills_for_unit(uid, pilot_ids, exclude, lc, top_pilots,
 
 
 def enrich_group_no_active_skills(g, lc='EN', *, top_pilots=None, def_tier=3, lite=False,
-                                    rank_mode='super_crit', pilot_ids=None, exclude=None):
+                                    rank_mode='super_crit', pilot_ids=None, exclude=None,
+                                    force=False):
     if not g or g.get('pending'):
         return g
     existing = g.get('rankings_no_active_skills') or {}
-    if isinstance(existing, dict) and (existing.get(rank_mode) or {}).get('pilots'):
+    ver_ok = int(g.get('skills_off_board_version') or 0) >= int(_SKILLS_OFF_BOARD_VERSION)
+    if (
+        not force and ver_ok and isinstance(existing, dict)
+        and (existing.get(rank_mode) or {}).get('pilots')
+    ):
         return g
     A = _app()
     uid = A.normalize_id((g.get('unit') or {}).get('id'))
@@ -2646,6 +2677,7 @@ def enrich_group_no_active_skills(g, lc='EN', *, top_pilots=None, def_tier=3, li
         return g
     out = dict(g)
     out['rankings_no_active_skills'] = built
+    out['skills_off_board_version'] = _SKILLS_OFF_BOARD_VERSION
     return out
 
 
@@ -2725,7 +2757,8 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
             uid, cid, lc, vigor='super', def_tier=3, active_skills=True,
         )
         peak = int((out_dmg or {}).get('peak_dmg') or 0)
-        sd = _support_def_score(cid)
+        sd_plus = _support_def_plus_count(cid, lc)
+        sd = 18 if sd_plus >= 2 else (9 if sd_plus >= 1 else 0)
         en = _pair_en_sustain_score(cid, uid, lc)
         revive = (
             uid == A.normalize_id(_OO_RAISER_FBT_UNIT_ID)
@@ -2743,6 +2776,7 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
             'unit_def': st['DEF'],
             'char_def': st['char_def'],
             'sd_score': sd,
+            'sd_plus_count': sd_plus,
             'en_score': en,
             'out_peak': peak,
             'revive': revive,
@@ -2765,10 +2799,21 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
     for row in rows:
         surv = _pct_rank(row['ehtk'], ehtk_vals, higher_better=True) * 0.45
         punch = _pct_rank(row['out_peak'], out_dmgs, higher_better=True) * 0.15
-        total = surv + row['sd_score'] + row['en_score'] + punch
-        if row['revive']:
-            total += 12
+        sd = float(row['sd_score'] or 0)
+        en = float(row['en_score'] or 0)
+        revive_pts = 12.0 if row['revive'] else 0.0
+        total = surv + sd + en + punch + revive_pts
         row['score'] = round(total, 2)
+        row['score_parts'] = {
+            'survival': round(surv, 2),
+            'survival_weight': 0.45,
+            'sd': sd,
+            'en': en,
+            'counter': round(punch, 2),
+            'counter_weight': 0.15,
+            'revive': revive_pts,
+            'sd_plus_count': int(row.get('sd_plus_count') or 0),
+        }
         scored.append(row)
     scored.sort(key=lambda r: (-r['score'], -r['ehtk'], -r['out_peak'], r['cid']))
 
@@ -2780,12 +2825,35 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
                 break
 
     top = scored[: max(1, int(top_n or _BSP_STORE_DEFENDER_TOP))]
+    wpn_meta = []
+    for wi, w in enumerate(wpns[:2]):
+        wid = w.get('wid')
+        wname = ''
+        try:
+            wm = w.get('wm') or {}
+            ldc = _ldc(lc)
+            nm_map = ldc.get('weapon_name_map') or {}
+            wname = str(nm_map.get(wid) or nm_map.get(str(wid)) or wm.get('name') or '')
+        except Exception:
+            wname = ''
+        slot = 'A' if wi == 0 else 'B'
+        label = wname or f'Weapon {slot}'
+        if wi == 0 and w.get('is_ex') and 'EX' not in label.upper():
+            label = f'{label} (EX)'
+        wpn_meta.append({
+            'wid': wid,
+            'name': label,
+            'power': int(w.get('power') or 0),
+            'is_ex': bool(w.get('is_ex')),
+            'slot': 'ex' if wi == 0 else 'next',
+        })
     pilots = []
     for i, row in enumerate(top):
         pilots.append({
             'rank': i + 1,
             'char': _entity_brief_char(row['cid'], lc),
             'score': row['score'],
+            'score_parts': row.get('score_parts') or {},
             'ehtk': round(row['ehtk'], 2),
             'htk_ex': row['htk_ex'],
             'htk_next': row['htk_next'],
@@ -2794,6 +2862,7 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
             'taken_down_pct': row['taken_down'],
             'hp': row['hp'],
             'support_def_score': row['sd_score'],
+            'sd_plus_count': row.get('sd_plus_count', 0),
             'en_score': row['en_score'],
             'out_peak_dmg': row['out_peak'],
             'revive_floor': row['revive'],
@@ -2806,11 +2875,14 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
             'reasons': _defender_reason_chips(row),
         })
     return {
+        'board_version': _DEFENDER_BOARD_VERSION,
         'defender': {
             'max_score': pilots[0]['score'] if pilots else 0,
             'pilots': pilots,
             'bully_unit_id': bully['unit_id'],
             'bully_char_id': bully['char_id'],
+            'weapons': wpn_meta,
+            'ehtk_weights': {'ex': 0.55, 'next': 0.45},
         }
     }
 
@@ -2818,9 +2890,10 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
 def _defender_reason_chips(row):
     chips = []
     chips.append(f"EHTK {row['ehtk']:.1f}")
-    if row['sd_score'] >= 18:
+    sd_n = int(row.get('sd_plus_count') or 0)
+    if row['sd_score'] >= 18 or sd_n >= 2:
         chips.append('SDx2')
-    elif row['sd_score'] >= 9:
+    elif row['sd_score'] >= 9 or sd_n >= 1:
         chips.append('SD')
     if row['en_score'] >= 4:
         chips.append('EN')
@@ -2831,10 +2904,16 @@ def _defender_reason_chips(row):
     return chips
 
 
-def enrich_group_defender_rankings(g, lc='EN', *, pilot_ids=None, exclude=None, top_n=None):
+def enrich_group_defender_rankings(g, lc='EN', *, pilot_ids=None, exclude=None, top_n=None,
+                                     force=False):
     if not g or g.get('pending'):
         return g
-    if g.get('rankings_defender') and (g['rankings_defender'].get('defender') or {}).get('pilots'):
+    existing = g.get('rankings_defender') or {}
+    ver_ok = int(existing.get('board_version') or 0) >= int(_DEFENDER_BOARD_VERSION)
+    if (
+        not force and ver_ok
+        and (existing.get('defender') or {}).get('pilots')
+    ):
         return g
     A = _app()
     uid = A.normalize_id((g.get('unit') or {}).get('id'))
@@ -2853,13 +2932,15 @@ def enrich_group_defender_rankings(g, lc='EN', *, pilot_ids=None, exclude=None, 
 
 
 def enrich_group_skills_off_and_defender(g, lc='EN', *, lite=False, rank_mode='super_crit',
-                                           def_tier=3, pilot_ids=None, exclude=None):
+                                           def_tier=3, pilot_ids=None, exclude=None, force=False):
     """Attach skills-off + defender boards (used by API ensure + enrich script)."""
     g = enrich_group_no_active_skills(
         g, lc, def_tier=def_tier, lite=lite, rank_mode=rank_mode,
-        pilot_ids=pilot_ids, exclude=exclude,
+        pilot_ids=pilot_ids, exclude=exclude, force=force,
     )
-    g = enrich_group_defender_rankings(g, lc, pilot_ids=pilot_ids, exclude=exclude)
+    g = enrich_group_defender_rankings(
+        g, lc, pilot_ids=pilot_ids, exclude=exclude, force=force,
+    )
     return g
 
 
@@ -4313,22 +4394,34 @@ def _bsp_sanitize_zero_crit_damage(pilots):
     return pilots
 
 
-def _bsp_patch_guaranteed_crit_flags(pilots, lc='EN'):
-    """Patch GC + skill crit % (Boost Critical etc.) onto published/warm rows."""
+def _bsp_patch_guaranteed_crit_flags(pilots, lc='EN', *, rank_mode='super_crit',
+                                       allow_skill_crit=True):
+    """Patch GC + skill crit % onto published/warm rows (respect board vigor)."""
+    vigor = _VIGOR_FOR_RANK_MODE.get(rank_mode or 'super_crit', 'super')
     for p in pilots or []:
         if not isinstance(p, dict):
             continue
         cid = _app().normalize_id(((p.get('char') or {}).get('id')))
         if not cid:
             continue
-        if _char_guaranteed_crit(cid, lc, vigor='super', cp_on=True):
+        row_vigor = str(p.get('vigor') or vigor or 'super')
+        skills_on = p.get('active_skills_on')
+        if skills_on is None:
+            skills_on = allow_skill_crit
+        if _char_guaranteed_crit(cid, lc, vigor=row_vigor, cp_on=True):
             p['guaranteed_crit'] = True
             p['crit_rate'] = 100
             continue
+        # Do not invent GC from super-vigor when this row is high/max.
+        if p.get('guaranteed_crit') and row_vigor != 'super':
+            p['guaranteed_crit'] = False
         base = int(p.get('crit_rate') or 0)
-        skill = int(_char_skill_crit_rate(cid, lc) or 0)
+        if base >= 100 and row_vigor != 'super' and not p.get('guaranteed_crit'):
+            # Crit rate was forced to 100 by a prior super-vigor GC patch — reset.
+            base = 0
+            p['crit_rate'] = 0
+        skill = int(_char_skill_crit_rate(cid, lc) or 0) if skills_on else 0
         if skill > 0 and base < skill:
-            # Weapon-only cache row + Boost Critical skill → sum (cap 100).
             p['crit_rate'] = min(100, base + skill)
         elif skill > 0:
             p['crit_rate'] = min(100, max(base, skill))
@@ -4511,7 +4604,8 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
         ),
         store_n,
     )
-    no_active = _rank(list(pilots_no_active_skills or []), _BSP_UI_TOP_PILOTS)
+    # Keep store depth so No Shinn / role filters can promote ranks 11–20 into Top 10.
+    no_active = _rank(list(pilots_no_active_skills or []), store_n)
     defenders = _rank(list(pilots_defender or []), _BSP_UI_DEFENDER_TOP, by_score=True)
     _bsp_relocalize_pilot_chars(pilots, lc)
     _bsp_relocalize_pilot_chars(no_ur, lc)
@@ -4520,19 +4614,19 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
     _bsp_relocalize_pilot_chars(support_role, lc)
     _bsp_relocalize_pilot_chars(no_active, lc)
     _bsp_relocalize_pilot_chars(defenders, lc)
-    _bsp_patch_guaranteed_crit_flags(pilots, lc)
-    _bsp_patch_guaranteed_crit_flags(no_ur, lc)
-    _bsp_patch_guaranteed_crit_flags(no_shinn, lc)
-    _bsp_patch_guaranteed_crit_flags(same_role, lc)
-    _bsp_patch_guaranteed_crit_flags(support_role, lc)
-    _bsp_patch_guaranteed_crit_flags(no_active, lc)
+    _bsp_patch_guaranteed_crit_flags(pilots, lc, rank_mode=mode)
+    _bsp_patch_guaranteed_crit_flags(no_ur, lc, rank_mode=mode)
+    _bsp_patch_guaranteed_crit_flags(no_shinn, lc, rank_mode=mode)
+    _bsp_patch_guaranteed_crit_flags(same_role, lc, rank_mode=mode)
+    _bsp_patch_guaranteed_crit_flags(support_role, lc, rank_mode=mode)
+    _bsp_patch_guaranteed_crit_flags(no_active, lc, rank_mode=mode, allow_skill_crit=False)
     # Re-rank after sanitize (0% crit peak clamp can change order).
     pilots = _rank(pilots, _BSP_UI_TOP_PILOTS)
     no_ur = _rank(no_ur, store_n)
     no_shinn = _rank(no_shinn, store_n)
     same_role = _rank(same_role, store_n)
     support_role = _rank(support_role, store_n)
-    no_active = _rank(no_active, _BSP_UI_TOP_PILOTS)
+    no_active = _rank(no_active, store_n)
     top_dmg = _bsp_pilot_sort_damage(pilots[0], mode) if pilots else 0
     wi = _weapon_info_for_msy(uid, lc)
     return {
@@ -4661,16 +4755,34 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
         row_base = _group_for_def_tier(g, def_tier) if g.get('rankings_by_tier') else g
         if not row_base:
             row_base = g
-        # Lazily attach skills-off / defender boards when missing from older caches.
-        need_off = not ((row_base.get('rankings_no_active_skills') or {}).get(rank_mode) or {}).get('pilots')
-        need_def = _unit_is_defense_role(uid) and not (
-            (row_base.get('rankings_defender') or {}).get('defender') or {}
-        ).get('pilots')
+        # Lazily attach / refresh skills-off / defender boards when missing or stale.
+        off_ver = int(row_base.get('skills_off_board_version') or 0)
+        def_ver = int((row_base.get('rankings_defender') or {}).get('board_version') or 0)
+        need_off = (
+            off_ver < int(_SKILLS_OFF_BOARD_VERSION)
+            or not ((row_base.get('rankings_no_active_skills') or {}).get(rank_mode) or {}).get('pilots')
+        )
+        need_def = _unit_is_defense_role(uid) and (
+            def_ver < int(_DEFENDER_BOARD_VERSION)
+            or not ((row_base.get('rankings_defender') or {}).get('defender') or {}).get('pilots')
+        )
         if need_off or need_def:
             try:
-                row_base = enrich_group_skills_off_and_defender(
-                    row_base, lc, lite=True, rank_mode=rank_mode, def_tier=def_tier,
-                )
+                if need_off:
+                    row_base = enrich_group_no_active_skills(
+                        row_base, lc, lite=False, rank_mode=rank_mode, def_tier=def_tier,
+                        force=True,
+                    )
+                if need_def:
+                    row_base = enrich_group_defender_rankings(row_base, lc, force=True)
+                # Persist into the live published group so later opens reuse this work.
+                if isinstance(g, dict) and isinstance(row_base, dict):
+                    for k in (
+                        'rankings_no_active_skills', 'rankings_defender',
+                        'skills_off_board_version',
+                    ):
+                        if k in row_base:
+                            g[k] = row_base[k]
             except Exception as e:
                 print(f'best_synergy enrich failed ({uid}): {e}')
         if include_all_modes and isinstance(row_base.get('rankings'), dict):

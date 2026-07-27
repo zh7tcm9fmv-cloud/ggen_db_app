@@ -151,13 +151,6 @@
         setBoardKind(boardBtn.getAttribute('data-ubp-board'));
         return;
       }
-      var skillsBtn = ev.target.closest('[data-ubp-skills]');
-      if (skillsBtn) {
-        ev.preventDefault();
-        ev.stopPropagation();
-        setSkillsOn(skillsBtn.getAttribute('data-ubp-skills') !== 'off');
-        return;
-      }
       var btn = ev.target.closest('[data-unit-best-pilot-toggle], .unit-best-pilot-btn');
       if (!btn) return;
       ev.preventDefault();
@@ -329,18 +322,20 @@
   }
 
   function syncSkillsToggle() {
-    var wrap = global.document.getElementById('ubpSkillsToggle');
+    var btn = global.document.getElementById('ubpSkillsBtn');
     var show = !isDefenderBoard();
-    if (wrap) {
-      wrap.hidden = !show;
-      wrap.style.display = show ? '' : 'none';
-      wrap.setAttribute('aria-hidden', show ? 'false' : 'true');
-    }
-    global.document.querySelectorAll('[data-ubp-skills]').forEach(function (el) {
-      var on = (el.getAttribute('data-ubp-skills') !== 'off') === !!state.skillsOn;
-      el.classList.toggle('is-active', on);
-      el.setAttribute('aria-pressed', on ? 'true' : 'false');
-    });
+    if (!btn) return;
+    btn.style.display = show ? '' : 'none';
+    btn.setAttribute('aria-hidden', show ? 'false' : 'true');
+    if (!show) return;
+    // Active = skills OFF (same pattern as No Shinn / No UR slash buttons).
+    var off = !state.skillsOn;
+    btn.classList.toggle('is-active', off);
+    btn.classList.toggle('active', off);
+    btn.setAttribute('aria-pressed', off ? 'true' : 'false');
+    btn.title = off
+      ? (t('unit_best_pilot_skills_off_on') || 'Showing rankings without active skills')
+      : (t('unit_best_pilot_skills_off') || 'Rank without active skills');
   }
 
   function syncPanelTitle() {
@@ -361,15 +356,6 @@
     if (state.boardKind === next) return;
     state.boardKind = next;
     syncFilterButtons();
-    renderActivePanel();
-  }
-
-  function setSkillsOn(on) {
-    var next = !!on;
-    if (state.skillsOn === next) return;
-    state.skillsOn = next;
-    syncSkillsToggle();
-    syncPanelTitle();
     renderActivePanel();
   }
 
@@ -583,6 +569,9 @@
     } else if (kind === 'no_shinn') {
       if (!shinnFilterRelevant()) return;
       state.excludeShinn = !state.excludeShinn;
+    } else if (kind === 'no_skills') {
+      if (isDefenderBoard()) return;
+      state.skillsOn = !state.skillsOn;
     } else {
       return;
     }
@@ -642,7 +631,7 @@
       };
     }
 
-    // Skills-off: dedicated fair-pool board (not a re-filter of skills-on Top 10).
+    // Skills-off: dedicated fair-pool board (store depth ≥20 so No Shinn can fill Top 10).
     if (!state.skillsOn) {
       var off = board.pilots_no_active_skills || [];
       var noUrOff = !!state.excludeUr;
@@ -652,7 +641,7 @@
       var filteredOff = filterPilotsLocal(off, noUrOff, noShinnOff, sameOff, supportOff);
       return {
         pilots: sortPilotsByCalcDamage(filteredOff, mode).slice(0, 10),
-        partial: !!(board.no_active_skills_partial) && filteredOff.length < 10,
+        partial: filteredOff.length < 10,
         skillsOff: true
       };
     }
@@ -850,11 +839,6 @@
       note = '<div class="unit-best-pilot-filter-note">'
         + esc(t('unit_best_pilot_skills_off_note')
           || 'Ranked without active skills (stats, affinity, and best weapon only).')
-        + '</div>';
-    } else if (view.defender) {
-      note = '<div class="unit-best-pilot-filter-note">'
-        + esc(t('unit_best_pilot_defender_note')
-          || 'Defender score: survival (EHTK vs Destiny+Shinn) + SD×2 + EN sustain + counter damage.')
         + '</div>';
     }
     setPanelHtml(note + renderPilotGrid(pilots, state.unitId, view.defender));
@@ -1066,6 +1050,38 @@
       + '</div>';
   }
 
+  function defenderScoreHoverTitle(pilot) {
+    var parts = (pilot && pilot.score_parts) || {};
+    var lines = [];
+    lines.push(t('unit_best_pilot_defender_score') || 'Defender score');
+    lines.push('');
+    lines.push((t('unit_best_pilot_score_survival') || 'Survival (EHTK pct × 0.45): {n}')
+      .replace('{n}', String(parts.survival != null ? parts.survival : '—')));
+    lines.push((t('unit_best_pilot_score_htk_ex') || 'HTK vs Weapon A (EX): {n}')
+      .replace('{n}', String(pilot.htk_ex != null ? pilot.htk_ex : '—')));
+    lines.push((t('unit_best_pilot_score_htk_next') || 'HTK vs Weapon B: {n}')
+      .replace('{n}', String(pilot.htk_next != null ? pilot.htk_next : '—')));
+    lines.push((t('unit_best_pilot_score_ehtk') || 'Combined EHTK (0.55×A + 0.45×B): {n}')
+      .replace('{n}', String(pilot.ehtk != null ? pilot.ehtk : '—')));
+    lines.push((t('unit_best_pilot_score_sd') || 'Support Defense bonus: {n} (SD +{c})')
+      .replace('{n}', String(parts.sd != null ? parts.sd : 0))
+      .replace('{c}', String(pilot.sd_plus_count != null ? pilot.sd_plus_count : 0)));
+    lines.push((t('unit_best_pilot_score_en') || 'EN sustain: {n}')
+      .replace('{n}', String(parts.en != null ? parts.en : 0)));
+    lines.push((t('unit_best_pilot_score_counter') || 'Counter damage (pct × 0.15): {n}')
+      .replace('{n}', String(parts.counter != null ? parts.counter : 0)));
+    if (parts.revive) {
+      lines.push((t('unit_best_pilot_score_revive') || 'Revive floor: +{n}')
+        .replace('{n}', String(parts.revive)));
+    }
+    lines.push('');
+    lines.push((t('unit_best_pilot_score_total') || 'Total: {n}')
+      .replace('{n}', String(pilot.score != null ? pilot.score : 0)));
+    lines.push(t('unit_best_pilot_defender_bully')
+      || 'Inbound hits: Destiny Gundam EX + Shinn (Weapon A EX + Weapon B).');
+    return lines.join('\n');
+  }
+
   function renderPilotCard(unitId, pilot, defenderMode) {
     var c = pilot.char || {};
     if (defenderMode) {
@@ -1091,7 +1107,7 @@
         + pilotDefenderReasonsHtml(pilot)
         + '</div></button>'
         + '<div class="msy-pilot-dmg-col"><div class="msy-pilot-dmg" title="'
-        + escAttr(t('unit_best_pilot_defender_score') || 'Defender score') + '">'
+        + escAttr(defenderScoreHoverTitle(pilot)) + '">'
         + fmtN(score) + '</div></div></div>';
     }
     var dmg = pilotDamage(pilot);

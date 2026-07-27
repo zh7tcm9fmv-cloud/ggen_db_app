@@ -207,8 +207,7 @@
   font-weight: 600;
 }
 
-.unit-best-pilot-board-mode,
-.unit-best-pilot-skills-toggle {
+.unit-best-pilot-board-mode {
   display: inline-flex;
   align-items: center;
   gap: 4px;
@@ -216,13 +215,11 @@
   margin-right: 4px;
 }
 
-.unit-best-pilot-board-mode[hidden],
-.unit-best-pilot-skills-toggle[hidden] {
+.unit-best-pilot-board-mode[hidden] {
   display: none !important;
 }
 
-.unit-best-pilot-board-mode .unit-best-pilot-filter-btn,
-.unit-best-pilot-skills-toggle .unit-best-pilot-filter-btn {
+.unit-best-pilot-board-mode .unit-best-pilot-filter-btn {
   min-width: 44px;
   font-size: 10px;
   font-weight: 700;
@@ -230,8 +227,66 @@
   padding: 4px 8px;
 }
 
+.unit-best-pilot-board-mode .ubp-board-dmg.is-active,
+.unit-best-pilot-board-mode .ubp-board-dmg.active {
+  border-color: rgba(248, 113, 113, 0.85);
+  background: rgba(127, 29, 29, 0.45);
+  color: #fecaca;
+}
+
+.unit-best-pilot-board-mode .ubp-board-def.is-active,
+.unit-best-pilot-board-mode .ubp-board-def.active {
+  border-color: rgba(96, 165, 250, 0.9);
+  background: rgba(30, 64, 175, 0.45);
+  color: #bfdbfe;
+}
+
+.unit-best-pilot-filters .ubp-skills-btn .ubp-skills-icon {
+  position: relative;
+  min-width: 36px;
+  height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.unit-best-pilot-filters .ubp-skills-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+}
+
+.unit-best-pilot-filters .ubp-skills-x {
+  position: absolute;
+  inset: -1px;
+  pointer-events: none;
+}
+
+.unit-best-pilot-filters .ubp-skills-x::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 130%;
+  height: 2px;
+  background: #ef4444;
+  transform: translate(-50%, -50%) rotate(-45deg) scaleX(0.2);
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  transition: opacity 0.22s ease, transform 0.22s ease;
+}
+
+.unit-best-pilot-filters .ubp-skills-btn.is-active .ubp-skills-x::before,
+.unit-best-pilot-filters .ubp-skills-btn.active .ubp-skills-x::before {
+  opacity: 1;
+  transform: translate(-50%, -50%) rotate(-45deg) scaleX(1);
+}
+
 .msy-pilot-card--defender .msy-pilot-dmg {
-  color: #9fd4a8;
+  color: #93c5fd;
+  cursor: help;
 }
 
 .msy-pilot-defender-reasons {
