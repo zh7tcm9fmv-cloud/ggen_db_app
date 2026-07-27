@@ -13,6 +13,13 @@ Never merge python-lite damage into published BSP caches.
 
 Routine formula tweaks after v16: use ``--incremental`` (top 250 + new units).
 Variant-list / pool-size changes need a full-catalog rebuild (omit ``--incremental``).
+
+Safe build habit (does not change rankings — only stability):
+  - Keep the local Flask/ggen server running (Playwright needs it).
+  - Close extra Google Chrome windows during long builds to free RAM.
+  - Prefer ``--incremental --checkpoint 25 --loop``; after a crash, ``--loop``
+    auto-passes ``--resume`` so finished units are not re-simulated.
+  - Worker count is RAM-capped (<=16GB -> max 3; do not force higher on Vivobook).
 """
 from __future__ import annotations
 
@@ -29,6 +36,79 @@ from playwright.async_api import async_playwright
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
+
+
+def _system_ram_gb():
+    """Total physical RAM in GiB, or None if unknown."""
+    try:
+        if sys.platform == 'win32':
+            import ctypes
+
+            class MEMORYSTATUSEX(ctypes.Structure):
+                _fields_ = [
+                    ('dwLength', ctypes.c_ulong),
+                    ('dwMemoryLoad', ctypes.c_ulong),
+                    ('ullTotalPhys', ctypes.c_ulonglong),
+                    ('ullAvailPhys', ctypes.c_ulonglong),
+                    ('ullTotalPageFile', ctypes.c_ulonglong),
+                    ('ullAvailPageFile', ctypes.c_ulonglong),
+                    ('ullTotalVirtual', ctypes.c_ulonglong),
+                    ('ullAvailVirtual', ctypes.c_ulonglong),
+                    ('ullAvailExtendedVirtual', ctypes.c_ulonglong),
+                ]
+
+            stat = MEMORYSTATUSEX()
+            stat.dwLength = ctypes.sizeof(MEMORYSTATUSEX)
+            if not ctypes.windll.kernel32.GlobalMemoryStatusEx(ctypes.byref(stat)):
+                return None
+            return float(stat.ullTotalPhys) / (1024.0 ** 3)
+        # Linux / others
+        page = os.sysconf('SC_PAGE_SIZE')
+        pages = os.sysconf('SC_PHYS_PAGES')
+        if page > 0 and pages > 0:
+            return float(page * pages) / (1024.0 ** 3)
+    except Exception:
+        return None
+    return None
+
+
+def _hard_worker_cap(ram_gb):
+    """Playwright Chromium tabs: keep low on 16GB; allow up to 6 only at 32GB+."""
+    if ram_gb is None:
+        return 3
+    if ram_gb < 28:  # 16GB class (and similar)
+        return 3
+    return 6
+
+
+def _resolve_workers(requested):
+    """Clamp --workers by RAM. 0 / unset = auto (2 on <=16GB, 3 otherwise)."""
+    ram = _system_ram_gb()
+    hard = _hard_worker_cap(ram)
+    ram_label = f'{ram:.0f}GB' if ram is not None else 'unknown'
+    if not requested or int(requested) <= 0:
+        auto = 2 if (ram is not None and ram < 28) else min(3, hard)
+        print(f'Workers: auto={auto} (RAM~={ram_label}, hard cap {hard})', flush=True)
+        return auto
+    w = max(1, int(requested))
+    if w > hard:
+        print(
+            f'Workers: requested {w} clamped to {hard} '
+            f'(RAM~={ram_label}; do not raise past 3 on <=16GB machines)',
+            flush=True,
+        )
+        return hard
+    print(f'Workers: {w} (RAM~={ram_label}, hard cap {hard})', flush=True)
+    return w
+
+
+def _print_build_preflight(base, workers):
+    print('BSP build preflight (stability only - does not alter rankings):', flush=True)
+    print(f'  - Keep Flask/ggen server running at {base}', flush=True)
+    print('  - Close extra Google Chrome windows/tabs during the build (frees RAM)', flush=True)
+    print('  - Cursor/IDE optional to close; closing it does not change build output', flush=True)
+    print(f'  - Playwright workers={workers} (RAM-capped)', flush=True)
+    print('  - Checkpoints + --loop/--resume skip already-finished units after crashes', flush=True)
 
 # Cursor sandbox sets PLAYWRIGHT_BROWSERS_PATH to a temp dir without browsers.
 if not os.environ.get('PLAYWRIGHT_BROWSERS_PATH') or 'cursor-sandbox-cache' in os.environ.get('PLAYWRIGHT_BROWSERS_PATH', ''):
@@ -172,7 +252,104 @@ def _save_v15(cache_key, groups, pilot_count):
     return path
 
 
-async def _setup_dc_page(page, base):
+# Asset / tracker hosts that are never needed for MsyDcEngine.evalUnit.
+_BLOCK_URL_SUBSTR = (
+    'googletagmanager.com',
+    'google-analytics.com',
+    'googleads',
+    'doubleclick.net',
+    'facebook.net',
+    'facebook.com/tr',
+    'hotjar.com',
+    'ko-fi.com',
+    'fonts.googleapis.com',
+    'fonts.gstatic.com',
+)
+
+_CHROMIUM_BUILD_ARGS = (
+    '--disable-gpu',
+    '--disable-extensions',
+    '--disable-background-networking',
+    '--disable-background-timer-throttling',
+    '--disable-renderer-backgrounding',
+    '--disable-dev-shm-usage',
+    '--mute-audio',
+    '--no-first-run',
+)
+
+
+async def _install_build_routes(page):
+    """Abort images/fonts/media/trackers — same DC math, less RAM/CPU thrash."""
+
+    async def _handle(route):
+        req = route.request
+        rtype = req.resource_type
+        if rtype in ('image', 'media', 'font'):
+            await route.abort()
+            return
+        url = (req.url or '').lower()
+        if any(s in url for s in _BLOCK_URL_SUBSTR):
+            await route.abort()
+            return
+        # Stylesheets are unused by evalUnit; skipping them lightens SPA boot.
+        if rtype == 'stylesheet':
+            await route.abort()
+            return
+        await route.continue_()
+
+    await page.route('**/*', _handle)
+
+
+async def _warm_pilots_on_page(page, pilot_ids, lang):
+    ids = [str(x) for x in (pilot_ids or []) if x][:160]
+    if not ids:
+        return
+    n = await page.evaluate(
+        """async ({ pilotIds, lang }) => {
+          if (!window.MsyDcEngine || typeof MsyDcEngine.warmPilots !== 'function') return 0;
+          await MsyDcEngine.warmPilots(pilotIds, lang, 4);
+          return pilotIds.length;
+        }""",
+        {'pilotIds': ids, 'lang': lang},
+    )
+    print(f'  warmPilots: {n} ids', flush=True)
+
+
+async def _dc_page_healthy(page):
+    try:
+        return bool(await page.evaluate(
+            """() => !!(
+              window.S && window.S.dc
+              && typeof _dcCreateEmptyAttackerSlot === 'function'
+              && typeof _dcCalculateDamageWithSlot === 'function'
+              && window.MsyDcEngine
+              && typeof MsyDcEngine.evalUnit === 'function'
+            )"""
+        ))
+    except Exception:
+        return False
+
+
+async def _soft_recover_dc_page(page):
+    """Re-init DC in-page without a full SPA reload. Returns True if healthy."""
+    try:
+        await page.evaluate(
+            """() => {
+              if (typeof initDmgCalc === 'function') initDmgCalc();
+              if (window.MsyDcEngine && typeof MsyDcEngine.ensureReady === 'function') {
+                MsyDcEngine.ensureReady();
+              }
+            }"""
+        )
+    except Exception:
+        return False
+    return await _dc_page_healthy(page)
+
+
+async def _setup_dc_page(page, base, *, pilot_ids=None, lang='EN', install_routes=True):
+    if install_routes and not getattr(page, '_msy_build_routes', False):
+        await _install_build_routes(page)
+        page._msy_build_routes = True
     await page.goto(f'{base}/?tab=calculator', wait_until='domcontentloaded', timeout=120_000)
     await page.wait_for_function(
         '() => typeof _dcCalculateDamageWithSlot === "function"'
@@ -190,6 +367,21 @@ async def _setup_dc_page(page, base):
         timeout=120_000,
     )
     await page.evaluate('() => MsyDcEngine.ensureReady()')
+    if pilot_ids:
+        await _warm_pilots_on_page(page, pilot_ids, lang)
+
+
+async def _recover_dc_page(page, base, *, pilot_ids=None, lang='EN', soft_first=True):
+    """Prefer soft recover; fall back to full SPA setup + warm."""
+    if soft_first:
+        if await _soft_recover_dc_page(page):
+            print('  tab soft-recover ok', flush=True)
+            return
+        print('  tab soft-recover failed; full re-setup...', flush=True)
+    await _setup_dc_page(page, base, pilot_ids=pilot_ids, lang=lang, install_routes=False)
+    if not await _dc_page_healthy(page):
+        # Routes may have been lost after navigation edge cases — reinstall + setup once.
+        await _setup_dc_page(page, base, pilot_ids=pilot_ids, lang=lang, install_routes=True)
 
 
 async def _build_one_unit(page, base, uid, lang, pilot_ids, exclude, top_pilots, def_tiers, def_tier_payload):
@@ -214,7 +406,9 @@ async def _build_one_unit(page, base, uid, lang, pilot_ids, exclude, top_pilots,
             print(f'  retry {uid} attempt {attempt + 1}/3: {e}', flush=True)
             if attempt < 2:
                 try:
-                    await _setup_dc_page(page, base)
+                    await _recover_dc_page(
+                        page, base, pilot_ids=pilot_ids, lang=lang, soft_first=True,
+                    )
                 except Exception as setup_err:
                     print(f'  tab re-setup failed: {setup_err}', flush=True)
                 await asyncio.sleep(2 * (attempt + 1))
@@ -256,14 +450,14 @@ async def _build_one_unit(page, base, uid, lang, pilot_ids, exclude, top_pilots,
 
 async def build_units(base, lang, unit_ids, pilot_ids, exclude, top_pilots, def_tiers, *,
                       limit=None, on_checkpoint=None, workers=1):
-    workers = max(1, min(6, int(workers or 1)))
+    workers = max(1, int(workers or 1))
     async with async_playwright() as p:
-        browser = await p.chromium.launch(headless=True)
+        browser = await p.chromium.launch(headless=True, args=list(_CHROMIUM_BUILD_ARGS))
         pages = []
         for wi in range(workers):
             pg = await browser.new_page()
             print(f'  setup browser tab {wi + 1}/{workers}...', flush=True)
-            await _setup_dc_page(pg, base)
+            await _setup_dc_page(pg, base, pilot_ids=pilot_ids, lang=lang)
             pages.append(pg)
 
         dt = 3
@@ -346,10 +540,18 @@ def main():
         help='With --incremental, top-N by sort damage (default: BSP_INCREMENTAL_TOP_N / 250)',
     )
     ap.add_argument('--checkpoint', type=int, default=25, help='Save partial cache every N units')
-    ap.add_argument('--workers', type=int, default=3, help='Parallel browser tabs (1-6)')
+    ap.add_argument(
+        '--workers',
+        type=int,
+        default=0,
+        help='Parallel browser tabs (0=auto by RAM; capped: <=16GB->3, >=32GB->6)',
+    )
     ap.add_argument('--out', default='', help='Optional JSON debug output path')
     ap.add_argument('--loop', action='store_true', help='Auto-restart on crash until complete')
     args = ap.parse_args()
+
+    workers = _resolve_workers(args.workers)
+    _print_build_preflight(args.base, workers)
 
     if args.loop:
         log_path = os.path.join(ROOT, 'data', 'published', 'bsp_v17_build.log')
@@ -377,11 +579,12 @@ def main():
                 '--lang', args.lang,
                 '--top-pilots', str(int(args.top_pilots) or msy._BSP_STORE_TOP_PILOTS),
                 '--checkpoint', str(max(5, int(args.checkpoint) or 10)),
-                '--workers', str(args.workers),
+                '--workers', str(workers),
             ]
-            # Full-catalog crash recovery uses --resume. Incremental formula rebuilds
-            # must re-sim top-N; only pass --resume when the user asked for it.
-            if args.resume or not args.incremental:
+            # Full catalog: always --resume.
+            # Incremental: first attempt re-sims selected units; later attempts --resume
+            # so checkpointed units are not re-done after a crash.
+            if args.resume or not args.incremental or attempt > 1:
                 child.append('--resume')
             if args.incremental:
                 child.append('--incremental')
@@ -564,7 +767,7 @@ def main():
 
     print(
         f'BSP DC build ({scope_label}): {len(unit_ids)} units, '
-        f'base={args.base}, store_top={top_pilots}, '
+        f'base={args.base}, store_top={top_pilots}, workers={workers}, '
         f'pool=bsp (~{msy._BSP_PILOT_CAP} pilots/unit, nonUR reserve {msy._BSP_NON_UR_RESERVE})'
     )
 
@@ -580,7 +783,7 @@ def main():
     new_groups = asyncio.run(build_units(
         args.base, lang, unit_ids, pilot_ids, exclude, top_pilots, def_tiers,
         limit=limit, on_checkpoint=on_checkpoint if checkpoint else None,
-        workers=args.workers,
+        workers=workers,
     ))
     merged = _merge_groups(existing_groups, new_groups)
     print(f'Built {len(new_groups)} new groups ({len(merged)} total) in {time.perf_counter() - t0:.0f}s')

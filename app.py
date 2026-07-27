@@ -8668,6 +8668,17 @@ ssp_weap_effect_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_
 option_parts_data = load_json(os.path.join(BASE_DIR, "m_option_parts.json"))
 option_parts_lineage_data = load_json(os.path.join(BASE_DIR, "m_option_parts_lineage.json"))
 option_parts_acquisition_method_data = load_json(os.path.join(BASE_DIR, "m_option_parts_acquisition_method.json"))
+unit_acquisition_method_data = load_json(os.path.join(BASE_DIR, "m_unit_acquisition_method.json"))
+character_acquisition_method_data = load_json(os.path.join(BASE_DIR, "m_character_acquisition_method.json"))
+item_acquisition_method_data = load_json(os.path.join(BASE_DIR, "m_item_acquisition_method.json"))
+unit_development_diagram_data = load_json(os.path.join(BASE_DIR, "m_unit_development_diagram.json"))
+gasha_master_data = load_json(os.path.join(BASE_DIR, "m_gasha.json"))
+gasha_pity_system_data = load_json(os.path.join(BASE_DIR, "m_gasha_pity_system_setting.json"))
+gasha_point_exchange_data = load_json(os.path.join(BASE_DIR, "m_gasha_point_exchange.json"))
+gasha_point_exchange_item_data = load_json(os.path.join(BASE_DIR, "m_gasha_point_exchange_item.json"))
+gasha_content_detail_data = load_json(os.path.join(BASE_DIR, "m_gasha_content_detail.json"))
+unit_ssp_material_consume_set_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_material_consume_set.json"))
+unit_ssp_custom_core_material_set_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_material_set.json"))
 profile_title_data = load_json(os.path.join(BASE_DIR, "m_profile_title.json"))
 schedule_master_data = load_json(os.path.join(BASE_DIR, "m_schedule.json"))
 schedule_start_ms_by_id = {}
@@ -9081,12 +9092,121 @@ for item in extract_data_list(unit_master_data):
         if uid != '0' and sid != '0': unit_ser_map[uid] = sid
 
 unit_ssp_config_map = {}
+unit_ssp_config_full = {}
 if unit_ssp_config_data:
     for item in extract_data_list(unit_ssp_config_data):
         if not isinstance(item, dict): continue
         uid = normalize_id(item.get('UnitId') or item.get('unitId') or item.get('Id') or item.get('id'))
         sid = normalize_id(item.get('UnitSspAddStatusId') or item.get('unitSspAddStatusId') or item.get('SspAddStatusId') or item.get('sspAddStatusId') or item.get('AddStatusId') or item.get('addStatusId'))
         if uid != '0' and sid != '0': unit_ssp_config_map[uid] = sid
+        if uid != '0':
+            unit_ssp_config_full[uid] = item
+
+# Acquisition / pity / SSP material indexes (feature: obtain + banner exchange + SSP mats)
+def _index_acq_rows(data, id_keys):
+    out = {}
+    for row in extract_data_list(data or []):
+        if not isinstance(row, dict):
+            continue
+        eid = '0'
+        for k in id_keys:
+            eid = normalize_id(row.get(k))
+            if eid != '0':
+                break
+        if eid == '0':
+            continue
+        out.setdefault(eid, []).append(row)
+    return out
+
+unit_acquisition_by_id = _index_acq_rows(unit_acquisition_method_data, ('UnitId', 'unitId'))
+character_acquisition_by_id = _index_acq_rows(character_acquisition_method_data, ('CharacterId', 'characterId'))
+item_acquisition_by_id = _index_acq_rows(item_acquisition_method_data, ('ItemId', 'itemId'))
+
+unit_development_diagram_by_id = {}
+for _drow in extract_data_list(unit_development_diagram_data or []):
+    if not isinstance(_drow, dict):
+        continue
+    _did = normalize_id(_drow.get('Id') or _drow.get('id'))
+    if _did != '0':
+        unit_development_diagram_by_id[_did] = _drow
+
+gasha_master_by_id = {}
+for _grow in extract_data_list(gasha_master_data or []):
+    if not isinstance(_grow, dict):
+        continue
+    _gid = normalize_id(_grow.get('Id') or _grow.get('id'))
+    if _gid != '0':
+        gasha_master_by_id[_gid] = _grow
+
+gasha_pity_by_id = {}
+for _prow in extract_data_list(gasha_pity_system_data or []):
+    if not isinstance(_prow, dict):
+        continue
+    _gid = normalize_id(_prow.get('GashaId') or _prow.get('gashaId'))
+    if _gid == '0':
+        continue
+    gasha_pity_by_id[_gid] = {
+        'fix_count': safe_int(_prow.get('FixCount') or _prow.get('fixCount'), 0),
+        'content_set_id': normalize_id(_prow.get('GashaContentSetId') or _prow.get('gashaContentSetId')),
+    }
+
+gasha_point_exchange_by_id = {}
+for _erow in extract_data_list(gasha_point_exchange_data or []):
+    if not isinstance(_erow, dict):
+        continue
+    _eid = normalize_id(_erow.get('Id') or _erow.get('id'))
+    if _eid != '0':
+        gasha_point_exchange_by_id[_eid] = _erow
+
+gasha_point_exchange_items_by_exid = {}
+for _eirow in extract_data_list(gasha_point_exchange_item_data or []):
+    if not isinstance(_eirow, dict):
+        continue
+    _exid = normalize_id(_eirow.get('GashaPointExchangeId') or _eirow.get('gashaPointExchangeId'))
+    if _exid == '0':
+        continue
+    gasha_point_exchange_items_by_exid.setdefault(_exid, []).append(_eirow)
+
+gasha_content_detail_by_id = {}
+for _cdrow in extract_data_list(gasha_content_detail_data or []):
+    if not isinstance(_cdrow, dict):
+        continue
+    _cid = normalize_id(_cdrow.get('Id') or _cdrow.get('id'))
+    if _cid != '0':
+        gasha_content_detail_by_id[_cid] = _cdrow
+
+ssp_material_consume_by_set = {}
+for _srow in extract_data_list(unit_ssp_material_consume_set_data or []):
+    if not isinstance(_srow, dict):
+        continue
+    _sid = normalize_id(_srow.get('Id') or _srow.get('id'))
+    if _sid == '0':
+        continue
+    ssp_material_consume_by_set.setdefault(_sid, []).append({
+        'item_id': normalize_id(_srow.get('ItemId') or _srow.get('itemId')),
+        'use_count': max(0, safe_int(_srow.get('UseCount') or _srow.get('useCount'), 0)),
+    })
+
+ssp_custom_core_material_by_set = {}
+for _mrow in extract_data_list(unit_ssp_custom_core_material_set_data or []):
+    if not isinstance(_mrow, dict):
+        continue
+    _mid = normalize_id(_mrow.get('Id') or _mrow.get('id'))
+    if _mid == '0':
+        continue
+    ssp_custom_core_material_by_set[_mid] = {
+        'item_id': normalize_id(_mrow.get('ItemId') or _mrow.get('itemId')),
+        'effect_value': safe_int(_mrow.get('EffectValue') or _mrow.get('effectValue'), 0),
+    }
+
+ssp_custom_cores_by_group = {}
+for _crow in extract_data_list(ssp_custom_core_data or []):
+    if not isinstance(_crow, dict):
+        continue
+    _gid = normalize_id(_crow.get('UnitSspCustomCoreGroupId') or _crow.get('unitSspCustomCoreGroupId'))
+    if _gid == '0':
+        continue
+    ssp_custom_cores_by_group.setdefault(_gid, []).append(_crow)
 
 unit_ssp_stat_map = {}
 if unit_ssp_stat_data:
@@ -18380,6 +18500,280 @@ def list_option_parts():
         import traceback; traceback.print_exc(); return jsonify({'rows': [], 'total': 0, 'page': 1, 'per_page': 50, 'total_pages': 1}), 500
 
 
+# --- Acquisition methods (units / characters / items) + SSP mats + banner pity ---
+_ACQ_TYPE_LABELS_EN = {
+    '3': 'Eternal Road',
+    '4': 'Enhance Material Stage',
+    '6': 'Unit Development',
+    '7': 'Gacha',
+    '12': 'Scenario Stage Series Complete',
+    '13': 'Main Stage',
+    '14': 'Shop',
+    '15': 'Event Shop',
+    '16': 'Story Event',
+    '17': 'Invasion Event',
+    '18': 'Character Scout',
+    '19': 'Box Gacha',
+    '20': 'SD Story Event',
+    '21': 'Tower Event',
+    '22': 'Invasion Event Challenge',
+    '23': 'Panel Mission',
+    '24': 'Login Bonus',
+    '25': 'Map Event',
+    '26': 'Main Stage Challenge',
+    '27': 'Main Scenario Challenge Series Complete',
+    '28': 'Present',
+}
+
+
+def _acquisition_section_label(lc):
+    return _option_part_acquisition_label(lc)
+
+
+def _acq_type_label(typ, lc):
+    en = _ACQ_TYPE_LABELS_EN.get(str(typ), f'Type {typ}')
+    if lc in ('TW', 'HK'):
+        tw = {
+            '3': '永恆之路', '6': '機體開發', '7': '扭蛋', '13': '主線關卡', '14': '商店',
+            '16': '劇情活動', '17': '侵襲活動', '18': '角色招募', '19': '箱型扭蛋',
+            '21': '塔活動', '26': '主線挑戰',
+        }
+        return tw.get(str(typ), en)
+    if lc in ('JA', 'JP'):
+        ja = {
+            '3': 'エターナルロード', '6': '機体開発', '7': 'ガシャ', '13': 'メインステージ',
+            '14': 'ショップ', '16': 'ストーリーイベント', '17': '侵攻イベント',
+            '18': 'キャラクタースカウト', '19': 'ボックスガシャ', '21': 'タワーイベント',
+            '26': 'メインステージチャレンジ',
+        }
+        return ja.get(str(typ), en)
+    return en
+
+
+def _resolve_gasha_display_name(gasha_id, lc):
+    gid = normalize_id(gasha_id)
+    row = gasha_master_by_id.get(gid) or {}
+    if not row:
+        return ''
+    lid = normalize_id(row.get('NameLanguageId') or row.get('nameLanguageId'))
+    if lid == '0':
+        return ''
+    lp = LANG_PATHS.get(lc) or LANG_PATHS.get(DEFAULT_LANG) or {}
+    lang_dir = lp.get('lang')
+    path = os.path.join(lang_dir, 'm_gasha.json') if lang_dir else ''
+    if not path or not os.path.isfile(path):
+        path = os.path.join(app_dir, 'data', lc, 'lang', 'm_gasha.json')
+    gasha_lang = load_json(path) if path and os.path.isfile(path) else None
+    namemap = create_lang_text_map(gasha_lang) if gasha_lang else {}
+    return str(namemap.get(lid) or '').strip()
+
+
+def _resolve_development_diagram_name(diagram_id, lc):
+    did = normalize_id(diagram_id)
+    row = unit_development_diagram_by_id.get(did) or {}
+    if not row:
+        return ''
+    lid = normalize_id(row.get('NameLanguageId') or row.get('nameLanguageId'))
+    if lid == '0':
+        return ''
+    lp = LANG_PATHS.get(lc) or LANG_PATHS.get(DEFAULT_LANG) or {}
+    lang_dir = lp.get('lang')
+    path = os.path.join(lang_dir, 'm_unit_development_diagram.json') if lang_dir else ''
+    if not path or not os.path.isfile(path):
+        path = os.path.join(app_dir, 'data', lc, 'lang', 'm_unit_development_diagram.json')
+    dlang = load_json(path) if path and os.path.isfile(path) else None
+    namemap = create_lang_text_map(dlang) if dlang else {}
+    name = str(namemap.get(lid) or '').strip()
+    return name.replace('\n', ' ').strip()
+
+
+def _format_acquisition_line(typ, tid, lc, ld):
+    typ = str(typ or '0')
+    tid = normalize_id(tid)
+    label = _acq_type_label(typ, lc)
+    if typ == '3':
+        st = _find_eternal_stage_name(tid, ld)
+        return f'{label}: {st}' if st else label
+    if typ == '6':
+        dn = _resolve_development_diagram_name(tid, lc)
+        return f'{label}: {dn}' if dn else label
+    if typ == '7':
+        gn = _resolve_gasha_display_name(tid, lc)
+        return f'{label}: {gn}' if gn else label
+    if typ == '14':
+        return 'G-Shop' if lc == 'EN' else label
+    if typ == '21':
+        st = _find_tower_event_stage_name(tid, ld)
+        return f'{label}: {st}' if st else label
+    if typ in ('13', '26'):
+        st_map = (ld or {}).get('stage_text_map') or {}
+        # Main stage ids often resolve via stage / scenario maps when present.
+        st_name = ''
+        mc = (main_stage_challenge_map or {}).get(tid) if typ == '26' else {}
+        if mc:
+            sid = normalize_id(mc.get('StageId') or mc.get('stageId') or tid)
+            st_name = str(st_map.get(sid) or '').strip()
+        if not st_name:
+            st_name = str(st_map.get(tid) or '').strip()
+        return f'{label}: {st_name}' if st_name else label
+    if tid and tid != '0':
+        return f'{label} ({tid})'
+    return label
+
+
+def _build_acquisition_methods(kind, entity_id, lc, ld):
+    eid = normalize_id(entity_id)
+    if kind == 'unit':
+        rows = unit_acquisition_by_id.get(eid) or []
+    elif kind == 'character':
+        rows = character_acquisition_by_id.get(eid) or []
+    elif kind == 'item':
+        rows = item_acquisition_by_id.get(eid) or []
+    else:
+        rows = []
+    methods = []
+    for row in rows:
+        typ = normalize_id(row.get('AcquisitionMethodTypeIndex') or row.get('acquisitionMethodTypeIndex'))
+        tid = normalize_id(row.get('TargetId') or row.get('targetId'))
+        if typ == '0':
+            continue
+        line = _format_acquisition_line(typ, tid, lc, ld)
+        if line:
+            methods.append(line)
+    seen = set()
+    out = []
+    for m in methods:
+        if m not in seen:
+            seen.add(m)
+            out.append(m)
+    return out
+
+
+def _item_reward_brief(item_id, lc, count=None):
+    iid = normalize_id(item_id)
+    if iid == '0':
+        return None
+    ld = get_lang_data(lc)
+    item_text_map = ld.get('item_text_map') or {}
+    item = (item_info_map or {}).get(iid) or {}
+    nlid = normalize_id(item.get('name_lang_id') or item.get('NameLanguageId'))
+    name = str(item_text_map.get(nlid) or '').strip() if nlid != '0' else ''
+    if not name:
+        name = f'Item {iid}'
+    rid = _resolve_item_icon_resource_id(iid, item)
+    icon = _game_item_icon_url(rid) if rid else ''
+    out = {'id': iid, 'name': name, 'icon': icon}
+    if count is not None:
+        out['count'] = int(count)
+    return out
+
+
+def _build_unit_ssp_materials(unit_id, lc):
+    uid = normalize_id(unit_id)
+    cfg = unit_ssp_config_full.get(uid)
+    if not cfg:
+        return None
+    unlock = []
+    set_id = normalize_id(cfg.get('UnitSspMaterialConsumeSetId') or cfg.get('unitSspMaterialConsumeSetId'))
+    for row in ssp_material_consume_by_set.get(set_id) or []:
+        brief = _item_reward_brief(row.get('item_id'), lc, row.get('use_count'))
+        if brief:
+            unlock.append(brief)
+    cores = []
+    group = normalize_id(cfg.get('UnitSspCustomCoreGroupId') or cfg.get('unitSspCustomCoreGroupId'))
+    for core in ssp_custom_cores_by_group.get(group) or []:
+        mid = normalize_id(core.get('UnitSspCustomCoreMaterialSetId') or core.get('unitSspCustomCoreMaterialSetId'))
+        if mid == '0':
+            continue
+        mat = ssp_custom_core_material_by_set.get(mid) or {}
+        brief = _item_reward_brief(mat.get('item_id'), lc, mat.get('effect_value') or 1)
+        if not brief:
+            continue
+        cores.append({
+            'level': safe_int(core.get('Level') or core.get('level'), 0),
+            'release_point': safe_int(core.get('ReleasePoint') or core.get('releasePoint'), 0),
+            'material': brief,
+        })
+    cores.sort(key=lambda x: (x.get('level') or 0, x.get('release_point') or 0))
+    if not unlock and not cores:
+        return None
+    return {'unlock': unlock, 'custom_core': cores}
+
+
+def _banner_exchange_item_label(row, lc, ld):
+    typ = normalize_id(row.get('GashaPointExchangeItemTypeIndex') or row.get('gashaPointExchangeItemTypeIndex'))
+    tid = normalize_id(row.get('TargetId') or row.get('targetId'))
+    point = safe_int(row.get('Point') or row.get('point'), 0)
+    name = ''
+    thum = ''
+    ent_type = ''
+    ent_id = ''
+    if typ == '1':
+        cd = gasha_content_detail_by_id.get(tid) or {}
+        rt = normalize_id(cd.get('RewardTypeIndex') or cd.get('rewardTypeIndex'))
+        rid = normalize_id(cd.get('RewardTargetId') or cd.get('rewardTargetId'))
+        if rt == '3' and rid in unit_info_map:
+            ui = _banner_timeline_unit_item(rid, ld)
+            if ui:
+                name = ui.get('name') or ''
+                thum = ui.get('thum') or ''
+                ent_type, ent_id = 'unit', rid
+        elif rt == '2' and rid in char_info_map:
+            ci = _banner_timeline_char_item(rid, ld)
+            if ci:
+                name = ci.get('name') or ''
+                thum = ci.get('thum') or ''
+                ent_type, ent_id = 'character', rid
+        elif rt == '21' and rid in supporter_info_map:
+            si = _banner_timeline_supporter_item(rid, ld)
+            if si:
+                name = si.get('name') or ''
+                thum = si.get('thum') or ''
+                ent_type, ent_id = 'supporter', rid
+    elif typ == '2':
+        brief = _item_reward_brief(tid, lc)
+        if brief:
+            name = brief.get('name') or ''
+            thum = brief.get('icon') or ''
+            ent_type, ent_id = 'item', tid
+    if not name:
+        name = f'Exchange {tid}' if tid != '0' else 'Exchange item'
+    return {
+        'name': name,
+        'point': point,
+        'thum': thum,
+        'type': ent_type,
+        'id': ent_id,
+        'limit': safe_int(row.get('Limit') or row.get('limit'), 0),
+    }
+
+
+def _build_banner_pity_exchange(gasha_row, lc, ld):
+    gid = normalize_id(gasha_row.get('Id') or gasha_row.get('id'))
+    pity = gasha_pity_by_id.get(gid)
+    pity_out = None
+    if pity and pity.get('fix_count'):
+        pity_out = {'fix_count': int(pity['fix_count'])}
+    ex_id = normalize_id(gasha_row.get('GashaPointExchangeId') or gasha_row.get('gashaPointExchangeId'))
+    exchange_out = None
+    if ex_id != '0':
+        ex_meta = gasha_point_exchange_by_id.get(ex_id) or {}
+        items = []
+        for row in sorted(
+            gasha_point_exchange_items_by_exid.get(ex_id) or [],
+            key=lambda r: safe_int(r.get('SortOrder') or r.get('sortOrder'), 0),
+        ):
+            items.append(_banner_exchange_item_label(row, lc, ld))
+        if items:
+            exchange_out = {
+                'badge_display_point': safe_int(
+                    ex_meta.get('BadgeDisplayPoint') or ex_meta.get('badgeDisplayPoint'), 0),
+                'items': items[:12],
+                'item_count': len(items),
+            }
+    return pity_out, exchange_out
+
+
 def _find_option_part_master_item(op_id_raw):
     want = normalize_id(op_id_raw)
     for item in extract_data_list(option_parts_data or []):
@@ -19278,7 +19672,7 @@ def _banner_timeline_supporter_item(sid, ld):
 def api_banner_timeline():
     """Gacha banner list with schedules, appeal art, and featured units/characters from master chains."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'banner_tl_v9_{lc}'
+    ck = f'banner_tl_v10_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=1800, convert_images=True)
@@ -19494,6 +19888,8 @@ def api_banner_timeline():
         gms_id = safe_int(gx.get('GashaMovieSettingId') or gx.get('gashaMovieSettingId'), 0)
         gms_key = normalize_id(gms_id) if gms_id != 0 else '0'
 
+        pity_out, exchange_out = _build_banner_pity_exchange(gx, lc, ld)
+
         row = {
             'gasha_id': gasha_id,
             'name': name or f'Gasha {gasha_id}',
@@ -19511,6 +19907,8 @@ def api_banner_timeline():
             'featured_units': featured_units,
             'featured_chars': featured_chars,
             'featured_supporters': featured_supporters,
+            'pity': pity_out,
+            'point_exchange': exchange_out,
         }
         rows_out.append(row)
 
@@ -22073,7 +22471,7 @@ def get_character(char_id):
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         view_ranking = request.args.get('view', '').strip().lower() == 'ranking'
-        ck = f"c_{char_id}_{lc}_r12_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"c_{char_id}_{lc}_r13_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -22184,6 +22582,9 @@ def get_character(char_id):
         else:
             has_conditional_passive = has_ex_stats
         result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'acquisition_icon': acq_icon or '', 'stats': stats, 'stats_with_ex': stats_with_ex, 'ex_supercharged_tiers': ex_supercharged_tiers_payload, 'has_ex_stats': has_ex_stats, 'has_conditional_passive': has_conditional_passive, 'has_sp': has_sp, 'sp_stats': sp_stats, 'sp_stats_with_ex': sp_stats_with_ex, 'pair_unit_stat_mod': pair_mod, 'pair_unit_counter_atk_mod': counter_atk_mod, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'recommend_unit': recommend_unit, 'is_limited_time': char_id in LIMITED_TIME_CHARACTER_IDS}
+        if not view_ranking:
+            result['acquisition_method_label'] = _acquisition_section_label(lc)
+            result['acquisition_methods'] = _build_acquisition_methods('character', char_id, lc, ld)
         if view_ranking:
             result['abilities'] = []
             result['skills'] = []
@@ -22202,7 +22603,7 @@ def get_unit(unit_id):
         if stat_mode_arg not in ('normal', 'sp', 'ssp'):
             stat_mode_arg = 'normal'
         cond_for_ranking = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-        ck = f"u_{unit_id}_{lc}_ssp15_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"u_{unit_id}_{lc}_ssp16_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -22595,6 +22996,12 @@ def get_unit(unit_id):
                 or (_pilot_tag_wpn.get('crit') or 0)):
             _has_pilot_cond = True
         result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'has_cond_weapon_range': _has_cond_weapon_range, 'has_pilot_cond_passive': _has_pilot_cond, 'cp_weapon_range_mods': _cp_wpn_range_mods, 'pilot_weapon_effect_bonuses': _pilot_wpn_fx, 'pilot_tag_weapon_stat_bonuses': _pilot_tag_wpn, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id, 'gacha_pull_movie_id': _gacha_pull_movie_id}
+        if not view_ranking:
+            result['acquisition_method_label'] = _acquisition_section_label(lc)
+            result['acquisition_methods'] = _build_acquisition_methods('unit', unit_id, lc, ld)
+            ssp_mats = _build_unit_ssp_materials(unit_id, lc)
+            if ssp_mats:
+                result['ssp_materials'] = ssp_mats
         if _tpid:
             result['transform_partner_id'] = _tpid
         if view_ranking:

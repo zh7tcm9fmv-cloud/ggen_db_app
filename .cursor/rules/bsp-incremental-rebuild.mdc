@@ -1,5 +1,5 @@
 ---
-description: BSP formula/criteria rebuilds (v16+) only refresh top 250 + new units
+description: BSP formula/criteria rebuilds (v16+) — safe Playwright recipe + scope
 alwaysApply: true
 ---
 
@@ -8,12 +8,32 @@ alwaysApply: true
 ## Never use python-lite / old fake variant lists
 Published BSP No UR / No Shinn / same-role lists must come from live `/cal` (`calculateDamage`) only.
 
+## Safe build habit (stability only — does not change rankings)
+- **Keep** the local Flask/ggen server running (Playwright needs it). Closing the app stops the build.
+- **Close extra Google Chrome** windows/tabs during long builds to free RAM.
+- Closing Cursor/IDE is optional (frees more RAM); it does **not** alter build output.
+- Playwright builder already: blocks images/fonts/trackers, warms pilot JSON once per tab, soft-recovers tabs before full SPA reload.
+- Worker count is **RAM-capped** in `scripts/build_msy_rankings_dc.py`:
+  - <=16GB class → max **3** (auto defaults to **2**)
+  - >=32GB → max **6**
+  - Do **not** force higher workers on the Vivobook; that causes crashes.
+- Always use checkpoints; prefer `--loop` so crashes auto-restart.
+- Incremental `--loop`: attempt 1 re-sims selected units; attempt 2+ passes `--resume` so checkpointed units are skipped.
+
 ## Routine formula tweaks (after a good full cache exists)
 - Rebuild only **top 250** units (by sort damage) **plus newly added / uncached** units.
-- Use: `python scripts/build_msy_rankings_dc.py --incremental --workers 2 --checkpoint 50`
+- Use:
+  ```text
+  python scripts/build_msy_rankings_dc.py --incremental --checkpoint 25 --loop
+  ```
+  (`--workers 0` / omit = auto by RAM)
 - Optional: `--top-n N` or env `BSP_INCREMENTAL_TOP_N` (default 250).
+- Mid-crash resume without `--loop`: add `--resume` (skips units already in published cache).
 
 ## Full-catalog rebuild (required for)
 - Candidate pool size changes, store-depth changes (top 20), or new variant lists (No UR / No Shinn / same-role).
-- Use: `python scripts/build_msy_rankings_dc.py --force --loop --workers 3 --checkpoint 25`
+- Use:
+  ```text
+  python scripts/build_msy_rankings_dc.py --force --loop --checkpoint 25
+  ```
 - Do **not** pass `--incremental` for those.
