@@ -967,6 +967,7 @@ def _char_totals_for_pair_no_cp(cid, uid, lc):
     return totals, pair_ok
 
 
+@lru_cache(maxsize=8192)
 def _char_guaranteed_crit(cid, lc, *, vigor='super', cp_on=True, uid=None):
     """Guaranteed crit: passive ability, or Supercharged EX 2 at super vigor (e.g. Shinn).
 
@@ -1708,6 +1709,7 @@ def _pilot_affinity_weapon_crit(cid, uid, lc):
     return out
 
 
+@lru_cache(maxsize=8192)
 def _char_skill_crit_rate(cid, lc):
     stat_mode = _msy_char_stat_mode(cid)
     rows = _msy_char_skill_rows(cid, lc)
@@ -4480,6 +4482,8 @@ def unit_best_synergy_pilots_bootstrap_payload(unit_id, kwargs):
 
 _unit_best_pilot_api_cache = {}
 _UNIT_BEST_PILOT_API_CACHE_MAX = 256
+_bsp_board_refresh_inflight = set()
+_bsp_board_refresh_lock = threading.Lock()
 
 
 def _unit_best_pilot_api_cache_key(uid, lc, kwargs):
@@ -4492,6 +4496,53 @@ def _unit_best_pilot_api_cache_key(uid, lc, kwargs):
         # Bump when published catalog preference / variant boards / locale patch change.
         'bsp_v17_support1',
     )
+
+
+def _invalidate_unit_best_pilot_api_cache(uid):
+    uid = _app().normalize_id(uid)
+    if not uid:
+        return
+    dead = [k for k in _unit_best_pilot_api_cache if k and k[0] == uid]
+    for k in dead:
+        _unit_best_pilot_api_cache.pop(k, None)
+
+
+def _schedule_bsp_board_refresh(g, uid, lc, *, rank_mode='super_crit', def_tier=3,
+                                  refresh_off=False, refresh_def=False):
+    """Refresh stale skills-off / defender boards in the background — never block Top 10 paint."""
+    if not g or (not refresh_off and not refresh_def):
+        return
+    uid = _app().normalize_id(uid)
+    key = (uid, bool(refresh_off), bool(refresh_def), str(rank_mode), int(def_tier or 3))
+    with _bsp_board_refresh_lock:
+        if key in _bsp_board_refresh_inflight:
+            return
+        _bsp_board_refresh_inflight.add(key)
+
+    def _run():
+        try:
+            row = g
+            if refresh_off:
+                row = enrich_group_no_active_skills(
+                    row, lc, lite=False, rank_mode=rank_mode, def_tier=def_tier, force=True,
+                )
+            if refresh_def:
+                row = enrich_group_defender_rankings(row, lc, force=True)
+            if isinstance(g, dict) and isinstance(row, dict):
+                for k in (
+                    'rankings_no_active_skills', 'rankings_defender',
+                    'skills_off_board_version',
+                ):
+                    if k in row:
+                        g[k] = row[k]
+            _invalidate_unit_best_pilot_api_cache(uid)
+        except Exception as e:
+            print(f'BSP background board refresh failed ({uid}): {e}')
+        finally:
+            with _bsp_board_refresh_lock:
+                _bsp_board_refresh_inflight.discard(key)
+
+    threading.Thread(target=_run, daemon=True, name=f'bsp-board-{uid}').start()
 
 
 def _bsp_published_cache_key(lc, kwargs):
@@ -4657,40 +4708,45 @@ def _lookup_bsp_published_group(uid, lc, kwargs):
         en_kwargs = dict(kwargs or {})
         en_kwargs['lc'] = 'EN'
         keys.append(_bsp_published_cache_key('EN', en_kwargs))
-    # Older tags (v19…) until v20 enrich finishes.
+
+    def _group_from(cache_key):
+        disk = _load_bsp_published_cache(cache_key, use_memory=True)
+        if not disk:
+            return None, None
+        ck = tuple(disk.get('cache_key') or cache_key)
+        idx = _BSP_PUBLISHED_INDEX.get(ck)
+        if idx is None:
+            idx = _bsp_index_groups(ck, disk.get('groups') or [])
+        return idx.get(uid), disk
+
+    # Fast path: current published tag already has the unit — never scan legacy catalogs.
+    for cache_key in keys:
+        g, disk = _group_from(cache_key)
+        if g:
+            return g
+
+    # Fallback: older tags (v19…) only when the unit is missing from the current catalog.
+    best = None
+    best_score = -1
     for tag in _BSP_LEGACY_PUBLISHED_TAGS:
         if tag == _BSP_PUBLISHED_CACHE_TAG:
             continue
-        keys.append((
+        cache_key = (
             tag,
             'EN',
             int(kwargs.get('lb_tier', 3) or 3),
             int(_BSP_STORE_TOP_PILOTS),
             None,
             None,
-        ))
-    best = None
-    best_score = -1
-    for cache_key in keys:
-        disk = _load_bsp_published_cache(cache_key, use_memory=True)
-        if not disk:
+        )
+        g, disk = _group_from(cache_key)
+        if not g or not disk:
             continue
-        ck = tuple(disk.get('cache_key') or cache_key)
-        idx = _BSP_PUBLISHED_INDEX.get(ck)
-        if idx is None:
-            idx = _bsp_index_groups(ck, disk.get('groups') or [])
-        g = idx.get(uid)
-        if not g:
-            continue
-        # Prefer richer variant boards; break ties with catalog size + rules version.
         score = (
             _bsp_group_variant_quality(g) * 1000
             + min(len(disk.get('groups') or []), 2000)
             + int(disk.get('bsp_rules_version') or 0) * 10
         )
-        # Strong bonus for the current published tag when it has the unit.
-        if tuple(cache_key) == tuple(primary) or (ck and ck[0] == primary[0]):
-            score += 500000
         if score > best_score:
             best = g
             best_score = score
@@ -4933,14 +4989,15 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
     defenders_off = _rank(
         list(pilots_defender_no_skills or []), _BSP_UI_DEFENDER_TOP, by_score=True,
     )
-    _bsp_relocalize_pilot_chars(pilots, lc)
-    _bsp_relocalize_pilot_chars(no_ur, lc)
-    _bsp_relocalize_pilot_chars(no_shinn, lc)
-    _bsp_relocalize_pilot_chars(same_role, lc)
-    _bsp_relocalize_pilot_chars(support_role, lc)
-    _bsp_relocalize_pilot_chars(no_active, lc)
-    _bsp_relocalize_pilot_chars(defenders, lc)
-    _bsp_relocalize_pilot_chars(defenders_off, lc)
+    if (lc or 'EN').upper() != 'EN':
+        _bsp_relocalize_pilot_chars(pilots, lc)
+        _bsp_relocalize_pilot_chars(no_ur, lc)
+        _bsp_relocalize_pilot_chars(no_shinn, lc)
+        _bsp_relocalize_pilot_chars(same_role, lc)
+        _bsp_relocalize_pilot_chars(support_role, lc)
+        _bsp_relocalize_pilot_chars(no_active, lc)
+        _bsp_relocalize_pilot_chars(defenders, lc)
+        _bsp_relocalize_pilot_chars(defenders_off, lc)
     _bsp_patch_guaranteed_crit_flags(pilots, lc, rank_mode=mode)
     _bsp_patch_guaranteed_crit_flags(no_ur, lc, rank_mode=mode)
     _bsp_patch_guaranteed_crit_flags(no_shinn, lc, rank_mode=mode)
@@ -5096,28 +5153,37 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
         row_base = _group_for_def_tier(g, def_tier) if g.get('rankings_by_tier') else g
         if not row_base:
             row_base = g
-        # Lazily attach / refresh skills-off / defender boards when missing or stale.
+        # Instant path: serve published boards as-is.
+        # Only block on enrich when a board is truly empty. Version bumps refresh in background
+        # (sync rebuild was ~20s+ per unit and made Top 10 feel broken).
+        has_off = bool(
+            ((row_base.get('rankings_no_active_skills') or {}).get(rank_mode) or {}).get('pilots')
+        )
+        has_def_on = bool(
+            ((row_base.get('rankings_defender') or {}).get('defender') or {}).get('pilots')
+        )
+        has_def_off = bool(
+            ((row_base.get('rankings_defender') or {}).get('defender_no_skills') or {}).get('pilots')
+        )
         off_ver = int(row_base.get('skills_off_board_version') or 0)
         def_ver = int((row_base.get('rankings_defender') or {}).get('board_version') or 0)
-        need_off = (
-            off_ver < int(_SKILLS_OFF_BOARD_VERSION)
-            or not ((row_base.get('rankings_no_active_skills') or {}).get(rank_mode) or {}).get('pilots')
+        # Only block when the primary board for that mode is empty.
+        missing_off = not has_off
+        missing_def = _unit_is_defense_role(uid) and not has_def_on
+        # Skills-off defender board / version bumps: serve what we have, refresh async.
+        stale_off = has_off and off_ver < int(_SKILLS_OFF_BOARD_VERSION)
+        stale_def = _unit_is_defense_role(uid) and has_def_on and (
+            not has_def_off or def_ver < int(_DEFENDER_BOARD_VERSION)
         )
-        need_def = _unit_is_defense_role(uid) and (
-            def_ver < int(_DEFENDER_BOARD_VERSION)
-            or not ((row_base.get('rankings_defender') or {}).get('defender') or {}).get('pilots')
-            or not ((row_base.get('rankings_defender') or {}).get('defender_no_skills') or {}).get('pilots')
-        )
-        if need_off or need_def:
+        if missing_off or missing_def:
             try:
-                if need_off:
+                if missing_off:
                     row_base = enrich_group_no_active_skills(
                         row_base, lc, lite=False, rank_mode=rank_mode, def_tier=def_tier,
                         force=True,
                     )
-                if need_def:
+                if missing_def:
                     row_base = enrich_group_defender_rankings(row_base, lc, force=True)
-                # Persist into the live published group so later opens reuse this work.
                 if isinstance(g, dict) and isinstance(row_base, dict):
                     for k in (
                         'rankings_no_active_skills', 'rankings_defender',
@@ -5127,6 +5193,11 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
                             g[k] = row_base[k]
             except Exception as e:
                 print(f'best_synergy enrich failed ({uid}): {e}')
+        elif stale_off or stale_def:
+            _schedule_bsp_board_refresh(
+                g, uid, lc, rank_mode=rank_mode, def_tier=def_tier,
+                refresh_off=stale_off, refresh_def=stale_def,
+            )
         if include_all_modes and isinstance(row_base.get('rankings'), dict):
             modes_out = {}
             for mode in ('super_crit', 'crit', 'normal'):

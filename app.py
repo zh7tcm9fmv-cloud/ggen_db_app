@@ -14404,8 +14404,8 @@ def api_unit_best_synergy_pilots(unit_id):
     kwargs = msr._msy_dc_kwargs_from_request(request.args)
     try:
         payload = msr.unit_best_synergy_pilots_payload(unit_id, kwargs)
-        ck = f'ubp_{unit_id}_{kwargs["lc"]}_{kwargs.get("lb_tier", 3)}_{kwargs.get("def_tier", 3)}'
-        return jsonify_cacheable(payload, ck, public=True, max_age=300, convert_images=True)
+        ck = f'ubp_{unit_id}_{kwargs["lc"]}_{kwargs.get("lb_tier", 3)}_{kwargs.get("def_tier", 3)}_{payload.get("source") or "x"}_{int(bool(payload.get("modes")))}'
+        return jsonify_cacheable(payload, ck, public=True, max_age=3600, convert_images=True)
     except Exception as e:
         print(f'api/unit/{unit_id}/best_synergy_pilots failed: {e}')
         import traceback
@@ -17798,7 +17798,8 @@ def list_characters():
     rb_ck = 'rb1' if ranking_bulk else 'rb0'
     ck = f"cl32_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_lop{_cbc['lineage_combine']}_sop{_cbc['series_combine']}_skop{_cbc['skill_combine']}_abop{_cbc['trait_combine']}_gs{1 if grid_skills else 0}_{sb_ck}_{rb_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
-    if cached: return jsonify(cached)
+    if cached:
+        return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
     warming = _browse_list_warming_guard('char')
     if warming: return warming
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -17908,7 +17909,8 @@ def list_characters():
             _hsp = int(str(_ri)) <= 4
             row['grid_skills'] = collect_character_grid_skills(_cid, ld, use_sp=bool(sp_list and _hsp))
     result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'skill_filter': skill_arg, 'stat_bounds': stat_bounds}
-    set_cached_response(ck, result); return jsonify(convert_image_urls(result))
+    set_cached_response(ck, result)
+    return jsonify_cacheable(result, ck, public=True, max_age=3600, convert_images=True)
 
 
 def unit_list_recommend_character_brief(uid, info, ld, lc):
@@ -17992,7 +17994,8 @@ def list_units():
     rb_u_ck = 'rb1' if ranking_bulk_u else 'rb0'
     ck = f"ul54_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
-    if cached: return jsonify(cached)
+    if cached:
+        return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
     warming = _browse_list_warming_guard('unit')
     if warming: return warming
     ld = get_lang_data(lc); ldc = get_calc_lang_data(); rows = []
@@ -18181,7 +18184,8 @@ def list_units():
     _wbp = sorted(WEAPON_DEBUFF_KEYS_PRESENT_UNION)
     _mech_rows = mechanism_list_filter_rows_from_ids(mechanism_union, ld)
     result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg, 'weapon_range': weapon_range_arg, 'weapon_range_non_map': weapon_range_non_map_arg, 'map_weapon_range': map_weapon_range_arg, 'weapon_debuff_present_keys': _wbp, 'terrain_present_tokens': sorted(UNIT_TERRAIN_FILTER_TOKENS_PRESENT), 'weapon_range_ssp_ex_present': sorted(WEAPON_RANGE_SSP_EX_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_present': sorted(WEAPON_RANGE_SSP_EX_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_present': sorted(WEAPON_RANGE_NON_MAP_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_present': sorted(WEAPON_RANGE_NON_MAP_SSP_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_present': sorted(WEAPON_RANGE_ALL_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_cond_present': sorted(WEAPON_RANGE_NON_MAP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_cond_present': sorted(WEAPON_RANGE_ALL_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_cond_present': sorted(WEAPON_RANGE_SSP_EX_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_pilot_cond_present': sorted(WEAPON_RANGE_ALL_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_full_cond_present': sorted(WEAPON_RANGE_ALL_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_FULL_COND_VALUES_PRESENT, key=int), 'mechanism': mechanism_arg, 'mechanism_present': _mech_rows, 'stat_bounds': stat_bounds}
-    set_cached_response(ck, result); return jsonify(convert_image_urls(result))
+    set_cached_response(ck, result)
+    return jsonify_cacheable(result, ck, public=True, max_age=3600, convert_images=True)
 
 # Option part trait text → primary stat groups (matches front-end _dcParseOptionPartBonuses + TW phrasing).
 _OP_PART_STAT_INCREASE_RE = re.compile(
@@ -18310,7 +18314,7 @@ def list_option_parts():
         if cached:
             out = dict(cached)
             out['effect_filter_icons'] = get_option_part_effect_filter_icons(lc)
-            return jsonify(convert_image_urls(out))
+            return jsonify_cacheable(out, ck, public=True, max_age=3600, convert_images=True)
         if not option_parts_data:
             return jsonify(convert_image_urls({
                 'rows': [], 'total': 0, 'page': 1, 'per_page': pp, 'total_pages': 1,
@@ -18370,7 +18374,8 @@ def list_option_parts():
             'sort': sb, 'dir': sd, 'rarity_filter': rf, 'effect_filter': ef,
             'effect_filter_icons': get_option_part_effect_filter_icons(lc),
         }
-        set_cached_response(ck, result); return jsonify(convert_image_urls(result))
+        set_cached_response(ck, result)
+        return jsonify_cacheable(result, ck, public=True, max_age=3600, convert_images=True)
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'rows': [], 'total': 0, 'page': 1, 'per_page': 50, 'total_pages': 1}), 500
 
@@ -18715,7 +18720,8 @@ def list_supporters():
             cf = f"c{for_char}" if for_char else 'c0'
         ck = f"sl10_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lineage_ck}_lc{lineage_combine_supp}_{lr_schedule_cache_key_fragment()}_{uf}_{cf}"
         cached = get_cached_response(ck)
-        if cached: return jsonify(cached)
+        if cached:
+            return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
         ld = get_lang_data(lc); rows = []
         for sid, info in supporter_info_map.items():
             if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
@@ -18778,7 +18784,8 @@ def list_supporters():
         total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
         start = (page - 1) * pp; pr = rows[start:start + pp]
         result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'rarity_filter': rav}
-        set_cached_response(ck, result); return jsonify(convert_image_urls(result))
+        set_cached_response(ck, result)
+        return jsonify_cacheable(result, ck, public=True, max_age=3600, convert_images=True)
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'rows': [], 'total': 0, 'page': 1, 'per_page': 50, 'total_pages': 1}), 500
 
@@ -21353,7 +21360,8 @@ def list_stages():
             df = 'all'
         ck = f"stages14_{cat}_{tower_side}_{challenge_series}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
         cached = get_cached_response(ck)
-        if cached: return jsonify(cached)
+        if cached:
+            return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
         ld = get_lang_data(lc); rows = []
         if cat == 'challenge_stage':
             for sid, ch in (main_scenario_stage_challenge_map or {}).items():
@@ -21540,7 +21548,8 @@ def list_stages():
         result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp}
         if cat == 'challenge_stage':
             result['challenge_series_options'] = list_challenge_series_filter_options(lc)
-        set_cached_response(ck, result); return jsonify(convert_image_urls(result))
+        set_cached_response(ck, result)
+        return jsonify_cacheable(result, ck, private=True, max_age=3600, convert_images=True)
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'rows': [], 'total': 0, 'page': 1, 'per_page': 50, 'total_pages': 1}), 500
 
