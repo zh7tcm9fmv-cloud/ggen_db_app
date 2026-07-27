@@ -37,8 +37,9 @@ _DMG_DEALT_RE = re.compile(
     re.I,
 )
 _CRIT_DMG_RE = re.compile(
-    r'critical damage.{0,16}(\d+)\s*%|'
-    r'(\d+)\s*%\s*critical damage|'
+    # Require "by N%" after Critical Damage — greedy .{0,16}(\d+) mis-captured "0" from "by 20%".
+    r'critical\s+damage(?:\s+dealt)?\s+by\s+(\d+)\s*%|'
+    r'(\d+)\s*%\s*critical\s+damage|'
     r'クリティカルダメージ.{0,8}?(\d+)\s*[%％]|'
     r'暴擊傷害.{0,8}?(\d+)\s*[%％]|'
     r'[Ii]ncrease\s+(?:own\s+)?(?:MS\s+)?(?:ATK|Attack)\s+and\s+[Cc]ritical\s+[Dd]amage\s+by\s+(\d+)%',
@@ -204,14 +205,19 @@ def _calc_damage_core(unit_atk, char_atk, defender_char_def, unit_def_after, wea
 
 def _calc_crit_damage(battle_damage, combat_wp, *, extra_dmg_pct=0, crit_dmg_up_pct=0,
                       vigor='super', dmg_taken_up_pct=0, dmg_taken_down_pct=0):
+    """Mirror app.js calculateDamage crit path.
+
+    ``extra_dmg_pct`` matches JS totalNormalMultPct / the non-crit portion of totalCritMultPct
+    (damage dealt + vigor dmg % + DTU − taken-down). Crit Damage Up is added on top.
+    Scaled % is applied as ``battle + ceil(pct * battle / 100)`` — do not add a base 100 into pct.
+    """
     F, C, MX = math.floor, math.ceil, max
     vp = _VIGOR.get(vigor) or _VIGOR['super']
-    vigor_dmg = vp['dmg_bonus_pct']
     vigor_crit = vp['crit_mult_pct']
-    total_crit_mult = 100 + extra_dmg_pct + vigor_dmg + crit_dmg_up_pct + dmg_taken_up_pct - dmg_taken_down_pct
-    scaled_crit = C(total_crit_mult * battle_damage / 100)
+    total_crit_mult_pct = extra_dmg_pct + crit_dmg_up_pct + dmg_taken_up_pct - dmg_taken_down_pct
+    scaled_crit = C(total_crit_mult_pct * battle_damage / 100)
     crit125_trim = 0
-    if total_crit_mult == 125 and battle_damage >= _CRIT125_TRIM_MIN and combat_wp > 0:
+    if int(total_crit_mult_pct) == 125 and battle_damage >= _CRIT125_TRIM_MIN and combat_wp > 0:
         crit125_trim = F(MX(0, battle_damage - combat_wp) / _CRIT125_TRIM_DIV)
     combined_crit = MX(0, battle_damage + scaled_crit - crit125_trim)
     super_crit = MX(0, C(combined_crit * (vigor_crit + 100) / 100 - 1e-9))
@@ -1631,6 +1637,70 @@ def _weapon_grants_guaranteed_crit(ws, wm, uid, ld, lc, stat_mode):
     return False
 
 
+_WEAPON_CRIT_DMG_RE = re.compile(
+    r'Increase\s+(?:own\s+)?Critical\s+Damage(?:\s+dealt)?\s+by\s+(\d+)\s*%|'
+    r'自身爆擊損傷提升(\d+)%|'
+    r'自身のクリティカルダメージが(\d+)%上昇',
+    re.I,
+)
+
+
+def _weapon_crit_dmg_up(wpn, uid, lc, stat_mode):
+    """Weapon trait Critical Damage Up % (e.g. Infinite Justice EX blade +35%)."""
+    if not wpn:
+        return 0
+    out = 0
+    for line in _weapon_trait_lines(
+        wpn.get('ws'), wpn.get('wm'), uid, _ldc(lc), lc, stat_mode,
+    ):
+        for m in _WEAPON_CRIT_DMG_RE.finditer(str(line or '')):
+            for g in m.groups():
+                if g and str(g).isdigit():
+                    out = max(out, int(g))
+    return out
+
+
+def _unit_crit_dmg_up(uid, lc, *, cp_on=True, stat_mode='ssp'):
+    """Unit ability Critical Damage Up % (e.g. Destiny Critical Damage Boost +20%)."""
+    A = _app()
+    uid = A.normalize_id(uid)
+    ld = _ldc(lc)
+    sm = str(stat_mode or 'normal').strip().lower()
+    out = 0
+    try:
+        entries = A._unit_ability_entries_for_weapon_range(uid, ld, lc, sm) or []
+    except Exception:
+        entries = []
+    for bab in entries:
+        for d2 in bab.get('details') or []:
+            if isinstance(d2, dict):
+                txt = str(d2.get('text') or '')
+                cond_groups = d2.get('condition_groups') or []
+            else:
+                txt = str(d2 or '')
+                cond_groups = []
+            if not txt:
+                continue
+            if cond_groups:
+                if not cp_on:
+                    continue
+                if not _msy_ability_cond_meets(uid, None, lc, cond_groups):
+                    continue
+            for m in _CRIT_DMG_RE.finditer(txt):
+                for g in m.groups():
+                    if g and str(g).isdigit():
+                        out += int(g)
+                        break
+            for m in _WEAPON_CRIT_DMG_RE.finditer(txt):
+                for g in m.groups():
+                    if g and str(g).isdigit():
+                        # Avoid double-count when both REs hit the same EN line.
+                        if not _CRIT_DMG_RE.search(txt):
+                            out += int(g)
+                        break
+    return out
+
+
 def _pair_guaranteed_crit(uid, cid, lc, wpn, crit_rate, *, vigor='super'):
     if _char_guaranteed_crit(cid, lc, vigor=vigor, cp_on=True):
         return True
@@ -1731,7 +1801,7 @@ _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
 _BSP_DC_RULES_VERSION = 10  # vigor-aware Supercharged EX; true SDx2; skills-off store depth
-_DEFENDER_BOARD_VERSION = 2
+_DEFENDER_BOARD_VERSION = 3  # series-gated SD; reduce-dmg-taken parse; Series SD bonus
 _SKILLS_OFF_BOARD_VERSION = 2
 _BSP_DC_BUILD_ENGINE = 'calculateDamage'
 # From v16 onward: formula/criteria rebuilds only refresh top-N + newly added units.
@@ -2046,6 +2116,8 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
 
     dmg_dealt, crit_up = _char_pilot_dmg_bonuses(cid, uid, lc, cp_on=cp_on)
     dmg_dealt += skill_dmg
+    crit_up += _unit_crit_dmg_up(uid, lc, cp_on=cp_on, stat_mode=stat_mode)
+    crit_up += _weapon_crit_dmg_up(wpn, uid, lc, stat_mode)
 
     pep_def_dn = 0
     if pep_on:
@@ -2432,9 +2504,13 @@ def _unit_final_stats(uid, cid, lc, *, cp_on=True, pep_on=True):
 
 
 _DMG_TAKEN_DOWN_RE = re.compile(
+    # EN affinity lines: "reduce damage taken by 15%."
+    r'[Rr]educe\s+(?:own\s+)?damage\s+taken\s+by\s+(\d+)\s*%|'
     r'Damage\s+Taken\s*[-\u2212\uFF0D]\s*(\d+)\s*%|'
+    r'自身受到的損傷減輕(\d+)%|'
     r'受到傷害\s*[-\u2212\uFF0D]\s*(\d+)\s*%|'
-    r'被ダメージ\s*[-\u2212\uFF0D]\s*(\d+)\s*%',
+    r'被ダメージ(?:を)?(?:軽減|減少).*?(\d+)\s*[%％]|'
+    r'被ダメージ\s*[-\u2212\uFF0D]\s*(\d+)\s*[%％]',
     re.I,
 )
 _EN_SUSTAIN_RE = re.compile(
@@ -2499,30 +2575,93 @@ _SUPPORT_DEF_PLUS_COUNT_RE = re.compile(
     re.IGNORECASE,
 )
 
-
-def _support_def_plus_count(cid, lc='EN'):
-    """Sum of Support Defense +N grants across abilities (EX stacks separately)."""
-    total = 0
-    for bab in _build_char_ac_for_lang(cid, lc) or []:
-        blob = str(bab.get('name') or '')
-        for d2 in bab.get('details') or []:
-            blob += ' ' + (str(d2.get('text') or '') if isinstance(d2, dict) else str(d2 or ''))
-        for m in _SUPPORT_DEF_PLUS_COUNT_RE.finditer(blob or ''):
-            total += max(0, int(m.group(1) or 0))
-    return total
+# Flat bonus when a series-gated Support Defense +N grant is active for this unit.
+_SERIES_SD_BONUS_PTS = 6.0
 
 
-def _support_def_score(cid):
-    """SDx2 only when total Support Defense +N grants >= 2 (e.g. ability + EX).
+def _detail_has_series_condition(d2):
+    if not isinstance(d2, dict):
+        return False
+    for g in d2.get('condition_groups') or []:
+        for c in (g.get('conditions') or []):
+            if not isinstance(c, dict):
+                continue
+            if c.get('type') == 'series' or c.get('source') == 'series':
+                return True
+    return False
 
-    A single Defense-role \"Support Defense +1\" line alone is SD (not SDx2).
+
+def _support_def_grants(cid, uid=None, lc='EN'):
+    """Count Support Defense +N grants that apply for this unit×pilot.
+
+    Series-/tag-conditional SD lines (e.g. \"When piloting units from specified series,
+    Support Defense +1\") are only counted when the unit meets the condition.
+    Returns ``{count, series_sd_active}``.
     """
-    n = _support_def_plus_count(cid, 'EN')
-    if n >= 2:
-        return 18
-    if n >= 1:
-        return 9
-    return 0
+    A = _app()
+    cid = A.normalize_id(cid)
+    uid = A.normalize_id(uid) if uid else None
+    total = 0
+    series_sd_active = False
+    for bab in _build_char_ac_calc(cid, lc):
+        for src in _iter_char_ability_active(bab, cid):
+            for d2 in src.get('details') or []:
+                if isinstance(d2, dict):
+                    txt = str(d2.get('text') or '')
+                    cond_groups = d2.get('condition_groups') or []
+                else:
+                    txt = str(d2 or '')
+                    cond_groups = []
+                if not txt:
+                    continue
+                m = _SUPPORT_DEF_PLUS_COUNT_RE.search(txt)
+                if not m:
+                    continue
+                n = max(0, int(m.group(1) or 0))
+                if n <= 0:
+                    continue
+                is_series = _detail_has_series_condition(d2) if isinstance(d2, dict) else False
+                if cond_groups:
+                    if not uid or not _msy_ability_cond_meets(uid, cid, lc, cond_groups):
+                        continue
+                elif re.search(r'when\s+piloting|搭乘|搭乗', txt, re.I):
+                    # Text gate without structured groups — require unit match helpers.
+                    if not uid or not _pilot_bonus_text_applies(
+                        uid, cid, _ldc(lc), lc, txt, d2 if isinstance(d2, dict) else None,
+                    ):
+                        continue
+                total += n
+                if is_series:
+                    series_sd_active = True
+    return {'count': total, 'series_sd_active': series_sd_active}
+
+
+def _support_def_plus_count(cid, uid=None, lc='EN'):
+    """Sum of applicable Support Defense +N grants for unit×pilot (or all if uid omitted)."""
+    return int(_support_def_grants(cid, uid, lc).get('count') or 0)
+
+
+def _support_def_score_parts(cid, uid=None, lc='EN'):
+    """Return ``{base, series_bonus, total, count, series_sd_active}`` for defender scoring.
+
+    SDx2 only when applicable Support Defense +N grants >= 2 for this unit.
+    Series-conditional SD that applies adds ``_SERIES_SD_BONUS_PTS``.
+    """
+    g = _support_def_grants(cid, uid, lc)
+    n = int(g.get('count') or 0)
+    base = 18.0 if n >= 2 else (9.0 if n >= 1 else 0.0)
+    series_bonus = _SERIES_SD_BONUS_PTS if g.get('series_sd_active') else 0.0
+    return {
+        'base': base,
+        'series_bonus': series_bonus,
+        'total': base + series_bonus,
+        'count': n,
+        'series_sd_active': bool(g.get('series_sd_active')),
+    }
+
+
+def _support_def_score(cid, uid=None, lc='EN'):
+    return float(_support_def_score_parts(cid, uid, lc).get('total') or 0)
 
 
 def _top_two_attack_weapons(uid, lc):
@@ -2757,8 +2896,10 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
             uid, cid, lc, vigor='super', def_tier=3, active_skills=True,
         )
         peak = int((out_dmg or {}).get('peak_dmg') or 0)
-        sd_plus = _support_def_plus_count(cid, lc)
-        sd = 18 if sd_plus >= 2 else (9 if sd_plus >= 1 else 0)
+        sd_parts = _support_def_score_parts(cid, uid, lc)
+        sd_plus = int(sd_parts.get('count') or 0)
+        series_sd = bool(sd_parts.get('series_sd_active'))
+        sd = float(sd_parts.get('total') or 0)
         en = _pair_en_sustain_score(cid, uid, lc)
         revive = (
             uid == A.normalize_id(_OO_RAISER_FBT_UNIT_ID)
@@ -2777,6 +2918,7 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
             'char_def': st['char_def'],
             'sd_score': sd,
             'sd_plus_count': sd_plus,
+            'series_sd': series_sd,
             'en_score': en,
             'out_peak': peak,
             'revive': revive,
@@ -2804,15 +2946,18 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
         revive_pts = 12.0 if row['revive'] else 0.0
         total = surv + sd + en + punch + revive_pts
         row['score'] = round(total, 2)
+        series_bonus = _SERIES_SD_BONUS_PTS if row.get('series_sd') else 0.0
         row['score_parts'] = {
             'survival': round(surv, 2),
             'survival_weight': 0.45,
-            'sd': sd,
+            'sd': round(sd - series_bonus, 2),
+            'series_sd_bonus': series_bonus,
             'en': en,
             'counter': round(punch, 2),
             'counter_weight': 0.15,
             'revive': revive_pts,
             'sd_plus_count': int(row.get('sd_plus_count') or 0),
+            'taken_down_pct': int(row.get('taken_down') or 0),
         }
         scored.append(row)
     scored.sort(key=lambda r: (-r['score'], -r['ehtk'], -r['out_peak'], r['cid']))
@@ -2863,6 +3008,7 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
             'hp': row['hp'],
             'support_def_score': row['sd_score'],
             'sd_plus_count': row.get('sd_plus_count', 0),
+            'series_sd': bool(row.get('series_sd')),
             'en_score': row['en_score'],
             'out_peak_dmg': row['out_peak'],
             'revive_floor': row['revive'],
@@ -2891,10 +3037,16 @@ def _defender_reason_chips(row):
     chips = []
     chips.append(f"EHTK {row['ehtk']:.1f}")
     sd_n = int(row.get('sd_plus_count') or 0)
-    if row['sd_score'] >= 18 or sd_n >= 2:
+    # Base SD score includes optional series bonus — gate SDx2 on grant count only.
+    if sd_n >= 2:
         chips.append('SDx2')
-    elif row['sd_score'] >= 9 or sd_n >= 1:
+    elif sd_n >= 1:
         chips.append('SD')
+    if row.get('series_sd'):
+        chips.append('Series SD')
+    taken = int(row.get('taken_down') or 0)
+    if taken > 0:
+        chips.append(f'DR {taken}%')
     if row['en_score'] >= 4:
         chips.append('EN')
     if row['revive']:
@@ -5428,6 +5580,7 @@ def _expand_unit_search_query(q):
     s = re.sub(r'\bdevil\s+gundam\b', 'dark gundam', s, flags=re.I)
     s = re.sub(r'\bfatb\b', 'full armor gundam thunderbolt', s, flags=re.I)
     s = re.sub(r'\bsf\b', 'strike freedom', s, flags=re.I)
+    s = re.sub(r'\bij\b', 'infinite justice', s, flags=re.I)
     s = re.sub(r'\bgod\b', 'burning gundam', s, flags=re.I)
     return s.strip()
 

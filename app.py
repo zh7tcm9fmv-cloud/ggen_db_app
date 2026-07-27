@@ -13548,6 +13548,7 @@ def browse_q_scope_cache_letter(q_scope):
 SEARCH_QUERY_SHORTCUTS_EXACT = {
     'fatb': 'full armor gundam thunderbolt',
     'sf': 'strike freedom',
+    'ij': 'infinite justice',
     'god': 'burning gundam',
     'devil gundam': 'dark gundam',
     'devilgundam': 'dark gundam',

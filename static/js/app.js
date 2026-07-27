@@ -774,8 +774,8 @@ function clearUnitMechanismOnly(){const sk=unitMechanismStateKey();const rk=S.cu
 function getLineageQuerySuffix(which){const key=listLineageKey(which);let sel=S[key];if(sel==='ALL'||!sel)sel=[];if(!Array.isArray(sel))sel=[];if(!sel.length)return '';return '&lineage_id='+encodeURIComponent(sel.join(','))}
 function getSeriesQuerySuffix(which){let sel=S[listSeriesKey(which)];if(sel==='ALL'||!sel)sel=[];if(!Array.isArray(sel)){if(String(sel).trim())sel=[String(sel)];else sel=[]}if(!sel.length)return '';return '&series_id='+encodeURIComponent(sel.join(','))}
 function getSkillOrAbilityQuerySuffix(which){const isCharSide=which==='char'||which==='rankChar';const key=isCharSide?(which==='rankChar'?'listRankCharSkills':'listCharSkills'):(which==='rankUnit'?'listRankUnitAbilities':'listUnitAbilities');let sel=S[key];if(sel==='ALL'||!sel)sel=[];if(!Array.isArray(sel))sel=[];if(!sel.length)return '';const param=isCharSide?'skill_id':'ability_id';return '&'+param+'='+encodeURIComponent(sel.join(','))}
-function expandUnitSearchQuery(q){let s=String(q||'').trim();if(!s)return'';s=s.replace(/\bdevil\s+gundam\b/gi,'dark gundam');s=s.replace(/\bfatb\b/gi,'full armor gundam thunderbolt');s=s.replace(/\bsf\b/gi,'strike freedom');s=s.replace(/\bgod\b/gi,'burning gundam');return s.trim()}
-function expandTbPickerSearchQuery(q,type){if(type==='unit')return expandUnitSearchQuery(q);if(type==='character'){let s=String(q||'').trim();s=s.replace(/\bdevil\s+gundam\b/gi,'dark gundam');s=s.replace(/\bfatb\b/gi,'full armor gundam thunderbolt');s=s.replace(/\bsf\b/gi,'strike freedom');s=s.replace(/\bgod\b/gi,'burning gundam');return s.trim()}return String(q||'').trim()}
+function expandUnitSearchQuery(q){let s=String(q||'').trim();if(!s)return'';s=s.replace(/\bdevil\s+gundam\b/gi,'dark gundam');s=s.replace(/\bfatb\b/gi,'full armor gundam thunderbolt');s=s.replace(/\bsf\b/gi,'strike freedom');s=s.replace(/\bgod\b/gi,'burning gundam');s=s.replace(/\bij\b/gi,'infinite justice');return s.trim()}
+function expandTbPickerSearchQuery(q,type){if(type==='unit')return expandUnitSearchQuery(q);if(type==='character'){let s=String(q||'').trim();s=s.replace(/\bdevil\s+gundam\b/gi,'dark gundam');s=s.replace(/\bfatb\b/gi,'full armor gundam thunderbolt');s=s.replace(/\bsf\b/gi,'strike freedom');s=s.replace(/\bgod\b/gi,'burning gundam');s=s.replace(/\bij\b/gi,'infinite justice');return s.trim()}return String(q||'').trim()}
 function buildBrowsePoolQuery(which){if(which==='supp'){const qEl=document.getElementById('suppFilter');const q=(qEl&&qEl.value.trim())||'';const rq=getRarityQuerySuffix('supp');const linQ=getLineageQuerySuffix('supp');const linOp=getLineageOpSuffix('supp');return `q=${encodeURIComponent(q)}${rq}${linQ}${linOp}`}const qEl=document.getElementById(which==='char'?'charFilter':'unitFilter');const qRaw=(qEl&&qEl.value.trim())||'';const q=which==='unit'?expandUnitSearchQuery(qRaw):qRaw;const roleQ=getRoleQuerySuffix(which);const rq=getRarityQuerySuffix(which);const stQ=which==='unit'?getListStatQuery('unit'):'';const srcQ=getSourceQuerySuffix(which);const terrQ=which==='unit'?getUnitTerrainQuerySuffix():'';const terrOp=which==='unit'?getTerrainOpSuffix():'';const debQ=which==='unit'?getUnitWeaponDebuffQuerySuffix():'';const debOp=which==='unit'?getWeaponDebuffOpSuffix():'';const wrQ=which==='unit'?getUnitWeaponRangeQuerySuffix():'';const wrOp=which==='unit'?getWeaponRangeOpSuffix():'';const wrnmQ=which==='unit'?getUnitWeaponRangeNonMapQuerySuffix():'';const wrnmOp=which==='unit'?getWeaponRangeNonMapOpSuffix():'';const wrnmSex=which==='unit'&&S.listUnitWeaponRangeNonMapSspExOnly?'&weapon_range_non_map_ssp_ex=1':'';const mwrQ=which==='unit'?getUnitMapWeaponRangeQuerySuffix():'';const mwrOp=which==='unit'?getMapWeaponRangeOpSuffix():'';const mechQ=which==='unit'?getUnitMechanismQuerySuffix():'';const mechOp=which==='unit'?getMechanismOpSuffix():'';const linQ=getLineageQuerySuffix(which);const linOp=getLineageOpSuffix(which);const serQ=getSeriesQuerySuffix(which);const serOp=getSeriesOpSuffix(which);const skAb=getSkillOrAbilityQuerySuffix(which);const skOp=which==='char'?getCharSkillOpSuffix():getUnitBrowseAbilityOpSuffix();const abQ=which==='char'?getAbilityQuerySuffix(which):'';const traitOp=which==='char'?getCharTraitAbilityOpSuffix():'';return `q=${encodeURIComponent(q)}${roleQ}${rq}${stQ}${srcQ}${terrQ}${terrOp}${debQ}${debOp}${wrQ}${wrOp}${wrnmQ}${wrnmOp}${wrnmSex}${mwrQ}${mwrOp}${mechQ}${mechOp}${linQ}${linOp}${serQ}${serOp}${skAb}${skOp}${abQ}${traitOp}`}
 function buildBrowsePoolSig(which){if(which==='supp'){const qEl=document.getElementById('suppFilter');const q=(qEl&&qEl.value.trim().toLowerCase())||'';const rq=getRarityQuerySuffix('supp');const linQ=getLineageQuerySuffix('supp');const linOp=getLineageOpSuffix('supp');return [q,rq,linQ,linOp,S.browseCombSuppLineage].join('|')}const qEl=document.getElementById(which==='char'?'charFilter':'unitFilter');const q=(qEl&&qEl.value.trim().toLowerCase())||'';const roleQ=getRoleQuerySuffix(which);const rq=getRarityQuerySuffix(which);const stQ=which==='unit'?getListStatQuery('unit'):'';const srcQ=getSourceQuerySuffix(which);const terrQ=which==='unit'?getUnitTerrainQuerySuffix():'';const terrOp=which==='unit'?getTerrainOpSuffix():'';const debQ=which==='unit'?getUnitWeaponDebuffQuerySuffix():'';const debOp=which==='unit'?getWeaponDebuffOpSuffix():'';const wrQ=which==='unit'?getUnitWeaponRangeQuerySuffix():'';const wrOp=which==='unit'?getWeaponRangeOpSuffix():'';const wrnmQ=which==='unit'?getUnitWeaponRangeNonMapQuerySuffix():'';const wrnmOp=which==='unit'?getWeaponRangeNonMapOpSuffix():'';const wrnmSex=which==='unit'&&S.listUnitWeaponRangeNonMapSspExOnly?'&weapon_range_non_map_ssp_ex=1':'';const mechQ=which==='unit'?getUnitMechanismQuerySuffix():'';const mechOp=which==='unit'?getMechanismOpSuffix():'';const linQ=getLineageQuerySuffix(which);const linOp=getLineageOpSuffix(which);const serQ=getSeriesQuerySuffix(which);const serOp=getSeriesOpSuffix(which);const skAb=getSkillOrAbilityQuerySuffix(which);const skOp=which==='char'?getCharSkillOpSuffix():getUnitBrowseAbilityOpSuffix();const abQ=which==='char'?getAbilityQuerySuffix(which):'';const traitOp=which==='char'?getCharTraitAbilityOpSuffix():'';const opState=which==='char'?[S.browseCombCharLineage,S.browseCombCharSeries,S.browseCombCharSkill,S.browseCombCharTrait].join(','):[S.browseCombUnitLineage,S.browseCombUnitSeries,S.browseCombUnitAbil,S.browseCombTerrain,S.browseCombWb,S.browseCombWr,S.browseCombWrNm,S.browseCombMapWr,S.browseCombMech].join(',');return [q,roleQ,rq,stQ,srcQ,terrQ,terrOp,debQ,debOp,wrQ,wrOp,wrnmQ,wrnmOp,wrnmSex,(which==='unit'?getUnitMapWeaponRangeQuerySuffix():''),(which==='unit'?getMapWeaponRangeOpSuffix():''),mechQ,mechOp,linQ,linOp,serQ,serOp,skAb,skOp,abQ,traitOp,opState].join('|')}
 function buildMsyBrowsePoolQuery(){const roleQ=getRoleQuerySuffix('msyUnit');const rq=getRarityQuerySuffix('msyUnit');const srcQ=getSourceQuerySuffix('msyUnit');const serQ=getSeriesQuerySuffix('msyUnit');const serOp=getSeriesOpSuffix('msyUnit');const linQ=getLineageQuerySuffix('msyUnit');const linOp=getLineageOpSuffix('msyUnit');return `q=${encodeURIComponent('')}${roleQ}${rq}${srcQ}${serQ}${serOp}${linQ}${linOp}`}
@@ -5765,6 +5765,7 @@ unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassiv
 optionParts:[],supporters:[],
 _unitIsSD:false,
 _wpnTraitDistPow:0,_wpnTraitHpPow:0,_wpnTraits:{},
+_wpnCritDmgUp:0,_integratedWpnCritDmgUp:0,
 _vigorCondThreshold:null,
 _activeSkills:{},
 mpLevel:'medium',
@@ -5784,6 +5785,7 @@ optionParts:S.dc.optionParts||[],supporters:S.dc.supporters||[],
 _unitIsSD:!!S.dc._unitIsSD,
 _wpnTraitDistPow:S.dc._wpnTraitDistPow||0,_wpnTraitHpPow:S.dc._wpnTraitHpPow||0,
 _wpnTraits:S.dc._wpnTraits||{},
+_wpnCritDmgUp:S.dc._wpnCritDmgUp|0,_integratedWpnCritDmgUp:S.dc._integratedWpnCritDmgUp|0,
 _vigorCondThreshold:S.dc._vigorCondThreshold||null,
 _activeSkills:S.dc._activeSkills||{},
 mpLevel:S.dc.mpLevel||'medium',
@@ -5811,6 +5813,7 @@ S.dc.optionParts=Array.isArray(slot.optionParts)?slot.optionParts:[];S.dc.suppor
 S.dc._unitIsSD=!!slot._unitIsSD;
 S.dc._wpnTraitDistPow=slot._wpnTraitDistPow||0;S.dc._wpnTraitHpPow=slot._wpnTraitHpPow||0;
 S.dc._wpnTraits=slot._wpnTraits&&typeof slot._wpnTraits==='object'?{...slot._wpnTraits}:{};
+S.dc._wpnCritDmgUp=slot._wpnCritDmgUp|0;S.dc._integratedWpnCritDmgUp=slot._integratedWpnCritDmgUp|0;
 S.dc._vigorCondThreshold=slot._vigorCondThreshold;
 S.dc._activeSkills=slot._activeSkills&&typeof slot._activeSkills==='object'?{...slot._activeSkills}:{};
 S.dc.mpLevel=_dcNormMpLevel(slot.mpLevel);
@@ -5931,12 +5934,18 @@ const backup=_dcReadAttackerFromDc();
 _dcWriteAttackerToDc(slot,slotIdx);
 const wc=_dcCritDmgUpFromWeapon(S.dc.atkUnitData,S.dc.wpnIdx,S.dc.wpnLv);
 S.dc._wpnCritDmgUp=wc;
-if(!(slot.atkCharData&&slot.atkCharData._manual)&&!slot._pilotDmgCritExplicit){
+if(!(slot.atkCharData&&slot.atkCharData._manual)){
+if(!slot._pilotDmgCritExplicit){
 const d=_dcDerivePilotDmgCritForSlotContext(slot,wc);
 S.dc.dmgIncrease=d.dmgIncrease;
 S.dc.critDmgUp=d.critDmgUp;
+}else{
+/* Explicit totals (share links / prior snap) can omit weapon Crit Damage after pilot/EX swaps — re-apply live weapon trait. */
+const prevW=slot._integratedWpnCritDmgUp|0;
+S.dc.critDmgUp=Math.max(0,(S.dc.critDmgUp|0)-prevW+wc);
 }
-S.dc._integratedWpnCritDmgUp=S.dc._wpnCritDmgUp|0;
+}
+S.dc._integratedWpnCritDmgUp=wc;
 let r=null;
 try{r=calculateDamage()}catch(e){console.error('calculateDamage slot',slotIdx,e)}
 _dcWriteAttackerToDc(backup);
@@ -9664,7 +9673,8 @@ _dcRenderPilotBonuses(area,cd);
 _dcRenderPilotSkills(area,cd);
 const supCntPilotPct=!cd._manual?_dcParseMaxSupportCounterAtkPctFromChar(cd,S.dc.atkUnitData):0;
 if(supCntPilotPct>0){area.insertAdjacentHTML('beforeend',`<div class="dc-support-counter-pilot-note" id="dcAtkSupportCounterPilotNote">${t('dc_support_counter_pilot_note').replace('{pct}',String(supCntPilotPct))}</div>`)}
-_dcRecalcPilotBonuses(false);
+/* Full refresh so weapon Crit Damage traits are never dropped after vigor/EX re-renders. */
+_dcRecalcPilotBonuses(true);
 _dcUpdateExSquadAtkGroupVisibility();
 _dcUpdateSquadConditionGroupVisibility();
 _dcUpdateSupportCounterAtkUi();
@@ -9880,7 +9890,8 @@ m=txt.match(/[Ii]ncrease\s+(?:own\s+)?(?:MS\s+)?(?:ATK|Attack)\s+and\s+[Cc]ritic
 if(!m&&_dcIsZhCalcLang())m=txt.match(/自身攻擊力及爆擊損傷提升(\d+)%/);
 if(!m&&_dcIsJaCalcLang())m=txt.match(/自身の攻撃力とクリティカルダメージが(\d+)%上昇/);
 if(m){const v=parseInt(m[1],10);b.critDmg+=isUnmet?0:v;b.items.push({label:`Critical Damage +${v}% (MS ATK +${v}% on growth line)`,val:v,key:'critDmg',cond:isUnmet,autoMet:hasCond&&condMet,name:dispName,abilityHasCond:hasCond,spCharGate,src,alwaysActive:!hasCond&&!isUnmet&&!spCharGate})}
-m=txt.match(/[Ii]ncrease\s+(?:own\s+)?[Cc]ritical\s+(?:damage\s+)?(?:dealt\s+)?by\s+(\d+)%/i);
+/* Require "damage" — must not match Boost Critical / unit "Critical Rate by N%". */
+m=txt.match(/[Ii]ncrease\s+(?:own\s+)?[Cc]ritical\s+[Dd]amage(?:\s+dealt)?\s+by\s+(\d+)%/i);
 if(!m&&_dcIsZhCalcLang())m=txt.match(/自身爆擊損傷提升(\d+)%/);
 if(m){const v=parseInt(m[1],10);b.critDmg+=isUnmet?0:v;b.items.push({label:`Critical Damage +${v}%`,val:v,key:'critDmg',cond:isUnmet,autoMet:hasCond&&condMet,name:dispName,abilityHasCond:hasCond,spCharGate,src,alwaysActive:!hasCond&&!isUnmet&&!spCharGate})}
 m=txt.match(/[Rr]educe\s+(?:own\s+)?damage\s+taken\s+by\s+(\d+)%/i);
@@ -10387,7 +10398,7 @@ const txt=String(raw).replace(/\n/g,' ');
 if(/absolute\s+hit/i.test(txt)||txt.includes('絕對命中'))traits.absoluteHit=true;
 if(/weapon\s+attribute\s+damage\s+reduction\s+null/i.test(txt)||txt.includes('武裝屬性損傷減輕無效'))traits.dmgReductionNull=true;
 let m=txt.match(/Increase\s+Critical\s+Damage\s+by\s+(\d+)%/i);
-if(!m)m=txt.match(/[Ii]ncrease\s+(?:own\s+)?[Cc]ritical\s+(?:damage\s+)?(?:dealt\s+)?by\s+(\d+)%/i);
+if(!m)m=txt.match(/[Ii]ncrease\s+(?:own\s+)?[Cc]ritical\s+[Dd]amage(?:\s+dealt)?\s+by\s+(\d+)%/i);
 if(!m&&zh)m=txt.match(/自身爆擊損傷提升(\d+)%/);
 if(m){traits.critDmgUp=Math.max(traits.critDmgUp,parseInt(m[1],10));return}
 m=txt.match(/(?:the\s+)?(?:closer|farther|further)\s+(?:you\s+are(?:\s+(?:to|from)\s+the\s+enemy)?|the\s+enemy\s+is).*?(?:greater|more)\s+weapon\s+power\s+increases?\s*\(\s*up\s+to\s+(\d+)%(?:\s+increase)?\s*\)/i);

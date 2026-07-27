@@ -1045,7 +1045,12 @@
     if (!reasons.length) return '';
     return '<div class="msy-pilot-defender-reasons">'
       + reasons.map(function (r) {
-        return '<span class="msy-pilot-defender-chip">' + esc(String(r)) + '</span>';
+        var label = String(r);
+        var cls = 'msy-pilot-defender-chip';
+        if (/^Series SD$/i.test(label)) cls += ' msy-pilot-defender-chip--series-sd';
+        else if (/^DR\s+\d+%/i.test(label)) cls += ' msy-pilot-defender-chip--dr';
+        else if (/^SDx2$/i.test(label)) cls += ' msy-pilot-defender-chip--sdx2';
+        return '<span class="' + cls + '">' + esc(label) + '</span>';
       }).join('')
       + '</div>';
   }
@@ -1066,6 +1071,14 @@
     lines.push((t('unit_best_pilot_score_sd') || 'Support Defense bonus: {n} (SD +{c})')
       .replace('{n}', String(parts.sd != null ? parts.sd : 0))
       .replace('{c}', String(pilot.sd_plus_count != null ? pilot.sd_plus_count : 0)));
+    if (parts.series_sd_bonus) {
+      lines.push((t('unit_best_pilot_score_series_sd') || 'Series Support Defense bonus: +{n}')
+        .replace('{n}', String(parts.series_sd_bonus)));
+    }
+    if (parts.taken_down_pct) {
+      lines.push((t('unit_best_pilot_score_dr') || 'Damage taken down (affinity): {n}%')
+        .replace('{n}', String(parts.taken_down_pct)));
+    }
     lines.push((t('unit_best_pilot_score_en') || 'EN sustain: {n}')
       .replace('{n}', String(parts.en != null ? parts.en : 0)));
     lines.push((t('unit_best_pilot_score_counter') || 'Counter damage (pct × 0.15): {n}')
@@ -1094,7 +1107,9 @@
       if (pilot.out_peak_dmg) {
         sub += '<div class="msy-pilot-sub">' + esc((t('unit_best_pilot_counter_dmg') || 'Atk {n}').replace('{n}', fmtN(pilot.out_peak_dmg))) + '</div>';
       }
-      return '<div class="msy-pilot-card msy-pilot-card--defender">'
+      var cardCls = 'msy-pilot-card msy-pilot-card--defender';
+      if (pilot.series_sd) cardCls += ' msy-pilot-card--series-sd';
+      return '<div class="' + cardCls + '">'
         + '<span class="msy-pilot-rank">' + esc(String(pilot.rank || '')) + '</span>'
         + '<button type="button" class="msy-pilot-open" title="' + escAttr(t('msy_open_char') || 'Open pilot') + '" onclick="openDetail(\'character\',\'' + escJs(String(c.id)) + '\')">'
         + '<div class="msy-pilot-thumb">' + pilotThumb(c) + '</div>'
