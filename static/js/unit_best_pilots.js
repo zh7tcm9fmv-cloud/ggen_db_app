@@ -269,12 +269,20 @@
   function syncFilterButtons() {
     var urBtn = global.document.getElementById('ubpExcludeUrBtn');
     var shBtn = global.document.getElementById('ubpExcludeShinnBtn');
+    var roleDd = global.document.getElementById('ubpRoleDropdown');
     var filters = global.document.querySelector('.unit-best-pilot-filters');
     var metrics = global.document.querySelector('.unit-best-pilot-metrics');
     var defender = isDefenderBoard();
-    if (filters) filters.style.display = defender ? 'none' : '';
+    // DEF board: keep the filter strip so Skills on/off stays reachable; hide DMG-only controls.
+    if (filters) filters.style.display = '';
     if (metrics) metrics.style.display = defender ? 'none' : '';
+    if (roleDd) {
+      roleDd.style.display = defender ? 'none' : '';
+      roleDd.setAttribute('aria-hidden', defender ? 'true' : 'false');
+    }
     if (urBtn) {
+      urBtn.style.display = defender ? 'none' : '';
+      urBtn.setAttribute('aria-hidden', defender ? 'true' : 'false');
       urBtn.classList.toggle('is-active', !!state.excludeUr);
       urBtn.classList.toggle('active', !!state.excludeUr);
       urBtn.setAttribute('aria-pressed', state.excludeUr ? 'true' : 'false');
@@ -1061,20 +1069,47 @@
 
   function pilotDefenderReasonsHtml(pilot) {
     var reasons = (pilot && pilot.reasons) || [];
-    if (!reasons.length) return '';
+    // Prefer live survival-skill chips (Force Guard×15%) over stale reason text.
+    var skillChips = defenderSurvivalSkills(pilot).map(formatSurvivalSkillChip).filter(Boolean);
+    var skillBases = {};
+    skillChips.forEach(function (chip) {
+      var base = String(chip).replace(/[×x]\s*\d+\s*%\s*$/i, '').trim().toLowerCase();
+      if (base) skillBases[base] = 1;
+    });
+    var out = [];
+    reasons.forEach(function (r) {
+      var label = String(r);
+      // Normalize "Force Guard 15%" → "Force Guard×15%"
+      var m = label.match(/^(.+?)\s+(\d+)\s*%$/);
+      if (m && !/^(EHTK|DR|Atk|EN|SD|SDx2|Series SD|Revive)/i.test(m[1].trim())) {
+        label = m[1].trim() + '×' + m[2] + '%';
+      }
+      var base = label.replace(/[×x]\s*\d+\s*%\s*$/i, '').trim().toLowerCase();
+      if (skillBases[base]) return; // replaced by skillChips below
+      out.push(label);
+    });
+    skillChips.forEach(function (chip) { out.push(chip); });
+    if (!out.length) return '';
     return '<div class="msy-pilot-defender-reasons">'
-      + reasons.map(function (r) {
-        var label = String(r);
+      + out.map(function (label) {
         var cls = 'msy-pilot-defender-chip';
         if (/^Series SD$/i.test(label)) cls += ' msy-pilot-defender-chip--series-sd';
         else if (/^DR\s+\d+%/i.test(label)) cls += ' msy-pilot-defender-chip--dr';
         else if (/^SDx2$/i.test(label)) cls += ' msy-pilot-defender-chip--sdx2';
-        else if (/\d+%\s*$/.test(label) && !/^EHTK|^Atk|^DR|^EN|^SD|^Revive/i.test(label)) {
+        else if (/[×x]\s*\d+\s*%\s*$/i.test(label) || (/\d+%\s*$/.test(label) && !/^EHTK|^Atk|^DR|^EN|^SD|^Revive/i.test(label))) {
           cls += ' msy-pilot-defender-chip--skill';
         }
         return '<span class="' + cls + '">' + esc(label) + '</span>';
       }).join('')
       + '</div>';
+  }
+
+  function formatSurvivalSkillChip(sk) {
+    if (!sk) return '';
+    var name = String(sk.name || '').replace(/\s*LV\s*\d+\s*$/i, '').trim() || String(sk.name || '');
+    var pct = sk.taken_down_pct | 0;
+    if (pct > 0) return name + '×' + pct + '%';
+    return name;
   }
 
   function defenderSurvivalSkills(pilot) {
@@ -1091,8 +1126,7 @@
       + escAttr(t('unit_best_pilot_survival_skills') || 'Active skills used for survivability')
       + '">';
     active.forEach(function (sk) {
-      var tip = sk.name || '';
-      if (sk.taken_down_pct) tip += ' (−' + sk.taken_down_pct + '% dmg taken)';
+      var tip = formatSurvivalSkillChip(sk) || sk.name || '';
       html += '<span class="msy-pilot-skill msy-pilot-skill--active" title="' + escAttr(tip) + '">';
       if (sk.icon) {
         html += '<img class="msy-pilot-skill-ic" src="' + escAttr(imgUrl(sk.icon)) + '" alt="" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">';
@@ -1154,8 +1188,7 @@
     if (survSkills.length) {
       lines.push(t('unit_best_pilot_survival_skills') || 'Active skills used for survivability');
       survSkills.forEach(function (sk) {
-        var pct = sk.taken_down_pct ? (' (−' + sk.taken_down_pct + '%)') : '';
-        lines.push('• ' + (sk.name || '?') + pct);
+        lines.push('• ' + (formatSurvivalSkillChip(sk) || sk.name || '?'));
       });
     }
     lines.push((t('unit_best_pilot_score_en') || 'EN sustain: {n}')

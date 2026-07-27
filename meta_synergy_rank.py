@@ -1897,7 +1897,7 @@ _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
 _BSP_DC_RULES_VERSION = 11  # Supercharged EX stats/GC require unit tag/series/id conditions
-_DEFENDER_BOARD_VERSION = 6  # active-skill DR (Force Guard); skills on/off DEF boards
+_DEFENDER_BOARD_VERSION = 7  # Force Guard×N% chip label; skills toggle on DEF UI
 _SKILLS_OFF_BOARD_VERSION = 2
 _BSP_DC_BUILD_ENGINE = 'calculateDamage'
 # From v16 onward: formula/criteria rebuilds only refresh top-N + newly added units.
@@ -3182,14 +3182,14 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
 
 
 def _defender_skill_chip_label(sk):
-    """Short skill name for DEF reason chips (strip LV suffix)."""
+    """Short skill name for DEF reason chips (e.g. Force Guard×15%)."""
     name = str((sk or {}).get('name') or '').strip()
     if not name:
         return ''
     base = _msy_skill_base_name(name) or name
     pct = int((sk or {}).get('taken_down_pct') or 0)
     if pct > 0:
-        return f'{base} {pct}%'
+        return f'{base}×{pct}%'
     return base
 
 

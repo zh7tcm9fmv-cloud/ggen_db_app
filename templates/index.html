@@ -2,28 +2,12 @@
 {% macro ui_close_icon() %}<span class="ui-close-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" focusable="false"><path d="M6.25 6.25l11.5 11.5M17.75 6.25L6.25 17.75" stroke="currentColor" stroke-width="2.25" stroke-linecap="round"/></svg></span>{% endmacro %}
 <html lang="en" data-ggen-content-notices="manual">
 <head>
-<!-- Google Tag Manager (after first paint — keeps browse boot snappy) -->
-<script>
-window.dataLayer=window.dataLayer||[];
-window.__ggenLoadGtm=function(){
-  if(window.__ggenGtmStarted)return;
-  window.__ggenGtmStarted=1;
-  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-NJB85F92');
-};
-(function(){
-  function go(){try{window.__ggenLoadGtm()}catch(_){}}
-  function schedule(){
-    if(window.requestIdleCallback)requestIdleCallback(go,{timeout:2000});
-    else setTimeout(go,1);
-  }
-  if(document.readyState==='complete')schedule();
-  else window.addEventListener('load',schedule);
-})();
-</script>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NJB85F92');</script>
 <!-- End Google Tag Manager -->
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
@@ -53,8 +37,9 @@ window.__ggenLoadGtm=function(){
 <style>
 @font-face{font-family:'RobotoMediumNumbers';src:url('{% if image_cdn %}{{ image_cdn }}/font/roboto_medium_numbers.ttf{% else %}https://raw.githubusercontent.com/zh7tcm9fmv-cloud/ggen_db_images/main/font/roboto_medium_numbers.ttf{% endif %}') format('truetype');font-weight:normal;font-style:normal;font-display:swap}
 @font-face{font-family:'Noto Sans JP';src:url('{% if image_cdn %}{{ image_cdn }}/font/NotoSansJP.ttf{% else %}/static/font/NotoSansJP.ttf{% endif %}') format('truetype');font-weight:100 900;font-style:normal;font-display:swap}
-@font-face{font-family:'ShinGoPr6DeBold';src:url('{% if image_cdn %}{{ image_cdn }}/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf{% else %}/static/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf{% endif %}') format('opentype');font-weight:normal;font-style:normal;font-display:optional}
-@font-face{font-family:'UDShinGoStdTCMed';src:url('{% if image_cdn %}{{ image_cdn }}/font/ChineseTraditionalFont/UDShinGoStdTC-Med.otf{% else %}/static/font/UDShinGoStdTC-Med.otf{% endif %}') format('opentype');font-weight:500;font-style:normal;font-display:optional}
+@font-face{font-family:'ShinGoPr6DeBold';src:url('{% if image_cdn %}{{ image_cdn }}/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf{% else %}/static/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf{% endif %}') format('opentype');font-weight:normal;font-style:normal;font-display:swap}
+@font-face{font-family:'UDShinGoStdTCMed';src:url('{% if image_cdn %}{{ image_cdn }}/font/ChineseTraditionalFont/UDShinGoStdTC-Med.otf{% else %}/static/font/UDShinGoStdTC-Med.otf{% endif %}') format('opentype');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'FOTK Yoon Gothic 780 JP';src:url('{% if image_cdn %}{{ image_cdn }}/font/JapaneseTextFont/FOTK-YoonGothic780_JP.otf{% else %}/static/font/FOTK-YoonGothic780_JP.otf{% endif %}') format('opentype');font-weight:500;font-style:normal;font-display:swap}
 :root{--bg-primary:#0a0e17;--bg-secondary:#111827;--bg-card:#1a2236;--bg-card-hover:#1f2a42;--bg-input:#0d1321;--bg-modal:#141c2e;--border-color:#2a3654;--border-accent:#3b5998;--text-primary:#f0f2f7;--text-secondary:#b4bfd4;--text-muted:#8494ae;--accent-blue:#4a90d9;--accent-cyan:#00d4ff;--accent-gold:#ffd700;--accent-orange:#ff9500;--accent-red:#ff4757;--accent-green:#2ed573;--accent-purple:#a855f7;--shadow-surface-inset:inset 0 1px 0 rgba(255,255,255,.02);--shadow-surface-drop:0 1px 0 rgba(0,0,0,.25);--shadow-surface:var(--shadow-surface-inset),var(--shadow-surface-drop);--shadow-lg:var(--shadow-surface),0 8px 30px rgba(0,0,0,.6);--radius-sm:6px;--radius-md:10px;--radius-lg:14px;--transition:all 0.25s ease;--list-thead-sticky-top:124px;--dvh:100dvh;--app-vh:100dvh;--layout-vh:100vh;--visual-vv-offset-top:0px;--cmp-browser-inset-bottom:0px;--toggle-depth-inset:var(--shadow-surface-inset);--toggle-depth-rim:var(--shadow-surface-drop);--toggle-depth-active-inset:inset 0 1px 0 rgba(255,255,255,.06),inset 0 0 0 1px rgba(255,255,255,.04);--brand-title-optical-x:1px;--brand-emblem-optical-x:0.5px;--brand-logo-optical-x:1px;--brand-logo-optical-y:-1px;--icon-optical-y:-0.5px;--icon-close-optical-x:-0.35px;--icon-close-optical-y:-0.35px;--portrait-optical-y:-1px;--ability-ex-inner-mask:url('{% if image_cdn %}{{ image_cdn }}/images/UI/UI_CharaAbilities_Tmb_Square_Normal_Base.webp{% else %}/static/images/UI/UI_CharaAbilities_Tmb_Square_Normal_Base.webp{% endif %}');color-scheme:dark}
 html{--font-body:'Noto Sans JP','ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--font-tag-ui:'Noto Sans JP','ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
 html[data-ui-lang="TW"],html[data-ui-lang="HK"]{--font-body:'Noto Sans JP','UDShinGoStdTCMed','RobotoMediumNumbers','ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,'PingFang TC','Microsoft JhengHei UI','Microsoft JhengHei',sans-serif;--font-tag-ui:'Noto Sans JP','UDShinGoStdTCMed','RobotoMediumNumbers','ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,'PingFang TC','Microsoft JhengHei UI','Microsoft JhengHei',sans-serif}
@@ -73,7 +58,7 @@ button,input,select,textarea,optgroup{font-family:inherit}
 /* Brand title: smaller type + hard-step drop shadow for readable 3D */
 .brand-title-row{position:relative;display:flex;align-items:center;justify-content:center;min-height:0;padding:1px 2px 2px;isolation:isolate;max-width:100%;width:max-content;box-sizing:border-box;overflow:visible}
 .brand-title-row::before{content:'';position:absolute;left:50%;top:50%;width:78px;height:42px;transform:translate(calc(-50% + var(--brand-emblem-optical-x)),-58%);background:url('{% if image_cdn %}{{ image_cdn }}/images/UI/brand-emblem-panel.webp{% else %}/static/images/UI/brand-emblem-panel.webp{% endif %}') center/contain no-repeat;opacity:.72;mix-blend-mode:lighten;pointer-events:none;z-index:0;transition:var(--transition)}
-.brand-text{position:relative;z-index:1;margin:0;font-size:clamp(10px,1.5vw + 6px,16px);font-weight:500;font-family:var(--font-body);letter-spacing:.03em;color:var(--text-primary);transition:color .2s ease,text-shadow .2s ease;display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;column-gap:.2em;row-gap:.04em;line-height:1.2;max-width:100%;box-sizing:border-box;text-align:center;overflow:visible;font-synthesis:none;-webkit-font-smoothing:antialiased;transform:translateX(var(--brand-title-optical-x));text-shadow:0 1px 0 rgba(255,255,255,.28),0 -1px 0 rgba(0,0,0,.45),1px 1px 0 rgba(0,0,0,.7),2px 2px 0 rgba(0,0,0,.55),3px 3px 0 rgba(0,0,0,.4),4px 5px 10px rgba(0,0,0,.75)}
+.brand-text{position:relative;z-index:1;margin:0;font-size:clamp(10px,1.5vw + 6px,16px);font-weight:500;font-family:'FOTK Yoon Gothic 780 JP','ShinGoPr6DeBold',var(--font-body);letter-spacing:.03em;color:var(--text-primary);transition:color .2s ease,text-shadow .2s ease;display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;column-gap:.2em;row-gap:.04em;line-height:1.2;max-width:100%;box-sizing:border-box;text-align:center;overflow:visible;font-synthesis:none;-webkit-font-smoothing:antialiased;transform:translateX(var(--brand-title-optical-x));text-shadow:0 1px 0 rgba(255,255,255,.28),0 -1px 0 rgba(0,0,0,.45),1px 1px 0 rgba(0,0,0,.7),2px 2px 0 rgba(0,0,0,.55),3px 3px 0 rgba(0,0,0,.4),4px 5px 10px rgba(0,0,0,.75)}
 .brand-word{display:inline-block;white-space:nowrap;flex:0 1 auto;max-width:100%;overflow:visible;text-shadow:inherit}.brand-word-ggen{margin-right:0}.brand-word-db{letter-spacing:.04em}.brand-word-db.brand-frame-3{margin-left:0}
 @keyframes brand-title-nudge-l{0%,100%{transform:translateX(0)}50%{transform:translateX(-2px)}}
 @keyframes brand-title-nudge-r{0%,100%{transform:translateX(0)}50%{transform:translateX(2px)}}
@@ -81,7 +66,7 @@ button,input,select,textarea,optgroup{font-family:inherit}
 .brand-frame-1,.brand-frame-2,.brand-frame-3{transition:transform .2s ease-out}
 @media(hover:hover){.header-brand:hover .brand-text{text-shadow:0 1px 0 rgba(210,245,255,.4),0 -1px 0 rgba(0,0,0,.4),1px 1px 0 rgba(0,40,60,.65),2px 2px 0 rgba(0,30,50,.5),3px 3px 0 rgba(0,20,40,.35),4px 6px 12px rgba(0,0,0,.7),0 0 14px rgba(0,212,255,.35)}.header-brand:hover .brand-frame-1{animation:brand-title-nudge-l .4s ease-in-out}.header-brand:hover .brand-frame-2{animation:brand-title-nudge-r .4s ease-in-out .1s}.header-brand:hover .brand-frame-3{animation:brand-title-nudge-r-far .4s ease-in-out .2s}}
 @media(prefers-reduced-motion:reduce){.header-brand:hover .brand-frame-1,.header-brand:hover .brand-frame-2,.header-brand:hover .brand-frame-3{animation:none}}
-.brand-sub{font-size:clamp(8px,1.1vw + 4px,11px);font-family:var(--font-body);font-weight:500;color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase;margin-top:1px;padding:0;text-align:center;font-synthesis:none;transform:translateX(calc(var(--brand-title-optical-x)*.65));max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 1px 0 rgba(255,255,255,.14),1px 1px 0 rgba(0,0,0,.65),2px 2px 0 rgba(0,0,0,.4),3px 4px 8px rgba(0,0,0,.55)}
+.brand-sub{font-size:clamp(8px,1.1vw + 4px,11px);font-family:'FOTK Yoon Gothic 780 JP',var(--font-body);font-weight:500;color:var(--text-muted);letter-spacing:.06em;text-transform:uppercase;margin-top:1px;padding:0;text-align:center;font-synthesis:none;transform:translateX(calc(var(--brand-title-optical-x)*.65));max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 1px 0 rgba(255,255,255,.14),1px 1px 0 rgba(0,0,0,.65),2px 2px 0 rgba(0,0,0,.4),3px 4px 8px rgba(0,0,0,.55)}
 .header-controls{display:flex;align-items:center;gap:10px;flex-shrink:0}
 .header-lang-col{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
 .header-lang-kofi-row{display:flex;flex-direction:row;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;max-width:min(calc(100% - 32px),520px)}
@@ -3067,6 +3052,9 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile_layout.css') }}?v={{ app_js_version }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/craft_ui.css') }}?v={{ app_js_version }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/master_league.css') }}?v={{ app_js_version }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/e_simulator.css') }}?v={{ app_js_version }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/site_feedback.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/kofi_donate_promo.css') }}?v={{ app_js_version }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/ui_motion.css') }}?v={{ app_js_version }}">
 </head>
 <body>
@@ -3554,85 +3542,13 @@ window.__GGEN_APP_VERSION__ = {{ app_js_version | tojson }};
   setInterval(check, 120000);
 })();
 </script>
-<script>
-window.__GGEN_LAZY__=(function(){
-  var v={{ app_js_version | tojson }};
-  var css={{ {
-    'e_simulator': url_for('static', filename='css/e_simulator.css'),
-    'site_feedback': url_for('static', filename='css/site_feedback.css'),
-    'kofi_donate_promo': url_for('static', filename='css/kofi_donate_promo.css')
-  } | tojson }};
-  var js={{ {
-    'e_simulator': url_for('static', filename='js/e_simulator.js'),
-    'feedback_i18n': url_for('static', filename='js/feedback_i18n.js'),
-    'site_feedback': url_for('static', filename='js/site_feedback.js'),
-    'kofi_donate_promo': url_for('static', filename='js/kofi_donate_promo.js')
-  } | tojson }};
-  var cache={};
-  function withV(url, bump){
-    if(!url)return url;
-    return url+(url.indexOf('?')>=0?'&':'?')+'v='+encodeURIComponent(bump!=null?bump:v);
-  }
-  function loadCss(key){
-    var href=withV(css[key]);
-    if(!href||cache['c:'+key])return cache['c:'+key]||Promise.resolve();
-    cache['c:'+key]=new Promise(function(resolve){
-      var l=document.createElement('link');
-      l.rel='stylesheet';
-      l.href=href;
-      l.onload=l.onerror=function(){resolve()};
-      document.head.appendChild(l);
-    });
-    return cache['c:'+key];
-  }
-  function loadJs(key, bump){
-    var src=withV(js[key], bump);
-    if(!src||cache['j:'+key])return cache['j:'+key]||Promise.resolve();
-    cache['j:'+key]=new Promise(function(resolve,reject){
-      var s=document.createElement('script');
-      s.src=src;
-      s.async=true;
-      s.onload=function(){resolve()};
-      s.onerror=function(){reject(new Error('lazy '+key))};
-      document.body.appendChild(s);
-    });
-    return cache['j:'+key];
-  }
-  function ensureEsim(){
-    if(window.ESimulator)return Promise.resolve(window.ESimulator);
-    return Promise.all([loadCss('e_simulator'), loadJs('e_simulator')]).then(function(){return window.ESimulator});
-  }
-  function ensureExtras(){
-    if(cache._extras)return cache._extras;
-    cache._extras=Promise.all([
-      loadCss('site_feedback'),
-      loadCss('kofi_donate_promo'),
-      loadJs('feedback_i18n', 5),
-      loadJs('site_feedback', 5),
-      loadJs('kofi_donate_promo')
-    ]).catch(function(){});
-    return cache._extras;
-  }
-  function scheduleExtras(){
-    function go(){try{ensureExtras()}catch(_){}}
-    if(window.requestIdleCallback)requestIdleCallback(go,{timeout:2500});
-    else setTimeout(go,400);
-  }
-  if(document.readyState==='complete')scheduleExtras();
-  else window.addEventListener('load',scheduleExtras);
-  window.openSupportFeedback=function(){
-    ensureExtras().then(function(){
-      if(window.GgenSiteFeedback&&typeof window.GgenSiteFeedback.openModal==='function'){
-        window.GgenSiteFeedback.openModal();
-      }
-    });
-  };
-  return {ensureEsim:ensureEsim,ensureExtras:ensureExtras};
-})();
-</script>
 <script src="{{ url_for('static', filename='js/ui_motion.js') }}?v={{ app_js_version }}" defer></script>
 <script src="{{ url_for('static', filename='js/content_notices.js') }}" defer></script>
 <script src="{{ url_for('static', filename='js/app.js') }}?v={{ app_js_version }}" defer></script>
+<script src="{{ url_for('static', filename='js/e_simulator.js') }}?v={{ app_js_version }}" defer></script>
 <script src="{{ url_for('static', filename='js/unit_best_pilots.js') }}?v={{ app_js_version }}" defer></script>
+<script src="{{ url_for('static', filename='js/kofi_donate_promo.js') }}?v={{ app_js_version }}" defer></script>
+<script src="{{ url_for('static', filename='js/feedback_i18n.js') }}?v=5" defer></script>
+<script src="{{ url_for('static', filename='js/site_feedback.js') }}?v=5" defer></script>
 </body>
 </html>
