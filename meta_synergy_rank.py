@@ -4906,6 +4906,21 @@ def _bsp_pilot_sort_damage(pilot, rank_mode='super_crit'):
     return val
 
 
+def _bsp_copy_pilot_rows(rows):
+    """Shallow-copy pilot dicts so rank/locale patches never mutate published cache."""
+    out = []
+    for p in rows or []:
+        if isinstance(p, dict):
+            row = dict(p)
+            ch = row.get('char')
+            if isinstance(ch, dict):
+                row['char'] = dict(ch)
+            out.append(row)
+        else:
+            out.append(p)
+    return out
+
+
 def _bsp_relocalize_pilot_chars(pilots, lc):
     """Re-resolve pilot display names/roles for the request language (published cache is EN)."""
     for p in pilots or []:
@@ -4934,7 +4949,7 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
     store_n = int(_BSP_STORE_TOP_PILOTS)
 
     def _rank(rows, limit=_BSP_UI_TOP_PILOTS, *, by_score=False):
-        rows = list(rows or [])
+        rows = _bsp_copy_pilot_rows(rows)
         if by_score:
             rows.sort(
                 key=lambda p: (
@@ -4956,7 +4971,7 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
         return out
 
     # Main UI list is top-10; variant boards keep store depth for combined filters.
-    store_pilots = list(pilots or [])
+    store_pilots = _bsp_copy_pilot_rows(pilots)
     pilots = _rank(store_pilots, _BSP_UI_TOP_PILOTS)
     no_ur = _rank(
         pilots_no_ur if pilots_no_ur is not None else _bsp_filter_pilots_client_side(
@@ -4989,15 +5004,15 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
     defenders_off = _rank(
         list(pilots_defender_no_skills or []), _BSP_UI_DEFENDER_TOP, by_score=True,
     )
-    if (lc or 'EN').upper() != 'EN':
-        _bsp_relocalize_pilot_chars(pilots, lc)
-        _bsp_relocalize_pilot_chars(no_ur, lc)
-        _bsp_relocalize_pilot_chars(no_shinn, lc)
-        _bsp_relocalize_pilot_chars(same_role, lc)
-        _bsp_relocalize_pilot_chars(support_role, lc)
-        _bsp_relocalize_pilot_chars(no_active, lc)
-        _bsp_relocalize_pilot_chars(defenders, lc)
-        _bsp_relocalize_pilot_chars(defenders_off, lc)
+    # Always relocalize — published catalog is EN; never skip or we poison shared rows.
+    _bsp_relocalize_pilot_chars(pilots, lc)
+    _bsp_relocalize_pilot_chars(no_ur, lc)
+    _bsp_relocalize_pilot_chars(no_shinn, lc)
+    _bsp_relocalize_pilot_chars(same_role, lc)
+    _bsp_relocalize_pilot_chars(support_role, lc)
+    _bsp_relocalize_pilot_chars(no_active, lc)
+    _bsp_relocalize_pilot_chars(defenders, lc)
+    _bsp_relocalize_pilot_chars(defenders_off, lc)
     _bsp_patch_guaranteed_crit_flags(pilots, lc, rank_mode=mode)
     _bsp_patch_guaranteed_crit_flags(no_ur, lc, rank_mode=mode)
     _bsp_patch_guaranteed_crit_flags(no_shinn, lc, rank_mode=mode)

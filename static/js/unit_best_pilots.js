@@ -45,15 +45,39 @@
     // damage | defender (defender only on Defense-role units)
     boardKind: 'damage',
     isDefenseUnit: false,
-    // unitId -> { modes: { super_crit, crit, normal }, ... }
+    // lang:unitId -> { modes: { super_crit, crit, normal }, ... }
     cache: {},
-    // unitId -> in-flight Promise<entry|null> (shared by prefetch + panel open)
+    // lang:unitId -> in-flight Promise<entry|null> (shared by prefetch + panel open)
     inflight: {},
     defenderTiers: null,
     defenderTiersPromise: null,
     // { name, power, ... } from published BSP weapon_info
     weaponInfo: null
   };
+
+  function currentLang() {
+    return (global.S && global.S.lang) || 'EN';
+  }
+
+  function cacheKey(unitId) {
+    return currentLang() + ':' + String(unitId || '');
+  }
+
+  function getCachedEntry(unitId) {
+    return state.cache[cacheKey(unitId)] || null;
+  }
+
+  function setCachedEntry(unitId, entry) {
+    if (!unitId || !entry) return;
+    state.cache[cacheKey(unitId)] = entry;
+  }
+
+  function clearLocaleCaches() {
+    state.cache = {};
+    state.inflight = {};
+    state.defenderTiers = null;
+    state.defenderTiersPromise = null;
+  }
 
   function t(key) {
     return typeof global.t === 'function' ? global.t(key) : key;
@@ -867,7 +891,7 @@
 
   function renderActivePanel() {
     if (!state.open || !state.unitId) return;
-    var entry = state.cache[String(state.unitId)];
+    var entry = getCachedEntry(state.unitId);
     if (!entry) return;
     var view = pilotsForView(entry);
     var pilots = view.pilots || [];
@@ -1594,7 +1618,7 @@
       setPanelHtml('<div class="unit-best-pilot-empty">' + esc(t('unit_best_pilot_empty') || 'No eligible pilots found.') + '</div>');
       return;
     }
-    state.cache[String(unitId)] = entry;
+    setCachedEntry(unitId, entry);
     state.weaponInfo = entry.weapon_info || null;
     state.isDefenseUnit = !!entry.is_defense_unit || unitRoleId() === DEFENSE_ROLE_ID;
     state.loaded = true;
@@ -1615,17 +1639,19 @@
     var gen = ++state.loadGen;
     state.loading = true;
     var uid = String(unitId);
-    if (state.cache[uid] && state.cache[uid].pilots && state.cache[uid].pilots.length) {
-      commitEntry(unitId, state.cache[uid], gen);
+    var ck = cacheKey(uid);
+    var cached = getCachedEntry(uid);
+    if (cached && cached.pilots && cached.pilots.length) {
+      commitEntry(unitId, cached, gen);
       return;
     }
     showLoading();
     try {
-      var lang = (global.S && global.S.lang) || 'EN';
+      var lang = currentLang();
       var entry = null;
-      // Reuse background prefetch if already in flight.
-      if (state.inflight[uid]) {
-        entry = await state.inflight[uid];
+      // Reuse background prefetch if already in flight for this locale.
+      if (state.inflight[ck]) {
+        entry = await state.inflight[ck];
       } else {
         entry = await fetchPublishedPilots(unitId, lang);
       }
@@ -1797,9 +1823,9 @@
       state.unitId = String(d.id);
       state.loaded = false;
     }
-    if (state.cache[state.unitId]) {
+    var cachedOpen = getCachedEntry(state.unitId);
+    if (cachedOpen) {
       state.loaded = true;
-      var cachedOpen = state.cache[state.unitId];
       state.weaponInfo = cachedOpen.weapon_info || null;
       state.isDefenseUnit = !!cachedOpen.is_defense_unit || unitRoleId() === DEFENSE_ROLE_ID;
       syncFilterButtons();
@@ -1807,7 +1833,7 @@
       renderActivePanel();
       scheduleScrollToPanel();
       // Always refresh affinities — empty/stale rows must not stick after SP/series fixes.
-      var lang = (global.S && global.S.lang) || 'EN';
+      var lang = currentLang();
       void enrichAffinityMatches(cachedOpen, state.unitId, lang).then(function () {
         if (state.open && String(state.unitId) === String(d.id)) renderActivePanel();
       });
@@ -1846,24 +1872,37 @@
 
   function prefetchRankings(unitId) {
     var uid = String(unitId);
-    if (state.cache[uid] && state.cache[uid].pilots && state.cache[uid].pilots.length) return;
-    if (state.inflight[uid]) return;
-    var lang = (global.S && global.S.lang) || 'EN';
+    var ck = cacheKey(uid);
+    if (getCachedEntry(uid) && getCachedEntry(uid).pilots && getCachedEntry(uid).pilots.length) return;
+    if (state.inflight[ck]) return;
+    var lang = currentLang();
     var promise = fetchPublishedPilots(unitId, lang).then(function (entry) {
-      delete state.inflight[uid];
+      delete state.inflight[ck];
       if (!entry || !entry.pilots || !entry.pilots.length) return null;
       // Keep result even if user navigated away — next open of same unit is instant.
-      state.cache[uid] = entry;
+      setCachedEntry(uid, entry);
       // Affinity is secondary; warm it in idle time without blocking panel paint.
       scheduleIdle(function () {
         void enrichAffinityMatches(entry, unitId, lang);
       });
       return entry;
     }).catch(function () {
-      delete state.inflight[uid];
+      delete state.inflight[ck];
       return null;
     });
-    state.inflight[uid] = promise;
+    state.inflight[ck] = promise;
+  }
+
+  function onLangChange() {
+    clearLocaleCaches();
+    if (!state.unitId) return;
+    if (state.open) {
+      void loadRankings(state.unitId);
+    } else {
+      scheduleIdle(function () {
+        if (state.unitId) prefetchRankings(state.unitId);
+      });
+    }
   }
 
   function onDetailOpen(d) {
@@ -1911,6 +1950,7 @@
     openPanel: openPanel,
     closePanel: closePanel,
     onDetailOpen: onDetailOpen,
-    onDetailClose: onDetailClose
+    onDetailClose: onDetailClose,
+    onLangChange: onLangChange
   };
 })(window);
