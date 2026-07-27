@@ -1060,7 +1060,10 @@
     var lines = [];
     lines.push(t('unit_best_pilot_defender_score') || 'Defender score');
     lines.push('');
-    lines.push((t('unit_best_pilot_score_survival') || 'Survival (EHTK pct × 0.45): {n}')
+    var survW = parts.survival_weight != null ? parts.survival_weight : 0.72;
+    var ctrW = parts.counter_weight != null ? parts.counter_weight : 0.05;
+    lines.push((t('unit_best_pilot_score_survival') || 'Survival (tankiness × {w}): {n}')
+      .replace('{w}', String(survW))
       .replace('{n}', String(parts.survival != null ? parts.survival : '—')));
     lines.push((t('unit_best_pilot_score_htk_ex') || 'HTK vs Weapon A (EX): {n}')
       .replace('{n}', String(pilot.htk_ex != null ? pilot.htk_ex : '—')));
@@ -1068,6 +1071,10 @@
       .replace('{n}', String(pilot.htk_next != null ? pilot.htk_next : '—')));
     lines.push((t('unit_best_pilot_score_ehtk') || 'Combined EHTK (0.55×A + 0.45×B): {n}')
       .replace('{n}', String(pilot.ehtk != null ? pilot.ehtk : '—')));
+    if (parts.ehtk_soft != null) {
+      lines.push((t('unit_best_pilot_score_ehtk_soft') || 'Soft EHTK (HP ÷ dmg taken): {n}')
+        .replace('{n}', String(parts.ehtk_soft)));
+    }
     lines.push((t('unit_best_pilot_score_sd') || 'Support Defense bonus: {n} (SD +{c})')
       .replace('{n}', String(parts.sd != null ? parts.sd : 0))
       .replace('{c}', String(pilot.sd_plus_count != null ? pilot.sd_plus_count : 0)));
@@ -1081,7 +1088,8 @@
     }
     lines.push((t('unit_best_pilot_score_en') || 'EN sustain: {n}')
       .replace('{n}', String(parts.en != null ? parts.en : 0)));
-    lines.push((t('unit_best_pilot_score_counter') || 'Counter damage (pct × 0.15): {n}')
+    lines.push((t('unit_best_pilot_score_counter') || 'Counter damage (tiebreaker × {w}): {n}')
+      .replace('{w}', String(ctrW))
       .replace('{n}', String(parts.counter != null ? parts.counter : 0)));
     if (parts.revive) {
       lines.push((t('unit_best_pilot_score_revive') || 'Revive floor: +{n}')

@@ -1897,7 +1897,7 @@ _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
 _BSP_DC_RULES_VERSION = 11  # Supercharged EX stats/GC require unit tag/series/id conditions
-_DEFENDER_BOARD_VERSION = 4  # gate Supercharged EX stats/GC on ability conditions
+_DEFENDER_BOARD_VERSION = 5  # survivability-first weights; soft EHTK when HTK ties
 _SKILLS_OFF_BOARD_VERSION = 2
 _BSP_DC_BUILD_ENGINE = 'calculateDamage'
 # From v16 onward: formula/criteria rebuilds only refresh top-N + newly added units.
@@ -2970,12 +2970,18 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
     wpns = bully['weapons']
     rows = []
     ehtk_vals = []
+    ehtk_soft_vals = []
+    taken_vals = []
     out_dmgs = []
+    # Survivability-first board: tankiness dominates; counter damage is a light tiebreaker.
+    _SURV_WEIGHT = 0.72
+    _COUNTER_WEIGHT = 0.05
     for cid in candidates:
         st = _unit_final_stats(uid, cid, lc, cp_on=True, pep_on=True)
         hp = max(1, int(st['HP']))
         taken = _pair_dmg_taken_down_pct(cid, uid, lc, cp_on=True)
         htks = []
+        htks_soft = []
         dmgs_in = []
         for w in wpns[:2]:
             dmg_in, _, _ = _inbound_normal_damage(
@@ -2984,10 +2990,13 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
             )
             dmgs_in.append(dmg_in)
             htks.append(max(1, int(math.ceil(hp / max(dmg_in, 1)))))
+            htks_soft.append(hp / max(float(dmg_in), 1.0))
         if len(htks) == 1:
             ehtk = float(htks[0])
+            ehtk_soft = float(htks_soft[0])
         else:
             ehtk = 0.55 * htks[0] + 0.45 * htks[1]
+            ehtk_soft = 0.55 * htks_soft[0] + 0.45 * htks_soft[1]
         out_dmg = compute_pair_damage(
             uid, cid, lc, vigor='super', def_tier=3, active_skills=True,
         )
@@ -3004,6 +3013,7 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
         rows.append({
             'cid': cid,
             'ehtk': ehtk,
+            'ehtk_soft': ehtk_soft,
             'htk_ex': htks[0],
             'htk_next': htks[1] if len(htks) > 1 else htks[0],
             'dmg_ex': dmgs_in[0],
@@ -3021,6 +3031,8 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
             'pair_ok': st['pair_ok'],
         })
         ehtk_vals.append(ehtk)
+        ehtk_soft_vals.append(ehtk_soft)
+        taken_vals.append(taken)
         out_dmgs.append(peak)
 
     def _pct_rank(val, population, *, higher_better=True):
@@ -3035,8 +3047,14 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
 
     scored = []
     for row in rows:
-        surv = _pct_rank(row['ehtk'], ehtk_vals, higher_better=True) * 0.45
-        punch = _pct_rank(row['out_peak'], out_dmgs, higher_better=True) * 0.15
+        # When discrete HTK ties (common vs the bully), soft EHTK + DR still separate tanks.
+        surv_pct = (
+            0.50 * _pct_rank(row['ehtk'], ehtk_vals, higher_better=True)
+            + 0.35 * _pct_rank(row['ehtk_soft'], ehtk_soft_vals, higher_better=True)
+            + 0.15 * _pct_rank(row['taken_down'], taken_vals, higher_better=True)
+        )
+        surv = surv_pct * _SURV_WEIGHT
+        punch = _pct_rank(row['out_peak'], out_dmgs, higher_better=True) * _COUNTER_WEIGHT
         sd = float(row['sd_score'] or 0)
         en = float(row['en_score'] or 0)
         revive_pts = 12.0 if row['revive'] else 0.0
@@ -3045,18 +3063,23 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
         series_bonus = _SERIES_SD_BONUS_PTS if row.get('series_sd') else 0.0
         row['score_parts'] = {
             'survival': round(surv, 2),
-            'survival_weight': 0.45,
+            'survival_weight': _SURV_WEIGHT,
+            'survival_pct': round(surv_pct, 2),
+            'ehtk_soft': round(float(row.get('ehtk_soft') or 0), 3),
             'sd': round(sd - series_bonus, 2),
             'series_sd_bonus': series_bonus,
             'en': en,
             'counter': round(punch, 2),
-            'counter_weight': 0.15,
+            'counter_weight': _COUNTER_WEIGHT,
             'revive': revive_pts,
             'sd_plus_count': int(row.get('sd_plus_count') or 0),
             'taken_down_pct': int(row.get('taken_down') or 0),
         }
         scored.append(row)
-    scored.sort(key=lambda r: (-r['score'], -r['ehtk'], -r['out_peak'], r['cid']))
+    scored.sort(key=lambda r: (
+        -r['score'], -r['ehtk'], -float(r.get('ehtk_soft') or 0),
+        -int(r.get('taken_down') or 0), -r['out_peak'], r['cid'],
+    ))
 
     # Setsuna revive floor on 00 Raiser FBT: keep near top unless catastrophic
     if A.normalize_id(uid) == A.normalize_id(_OO_RAISER_FBT_UNIT_ID):
