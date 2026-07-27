@@ -207,6 +207,52 @@
   font-weight: 600;
 }
 
+.unit-best-pilot-board-mode,
+.unit-best-pilot-skills-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  margin-right: 4px;
+}
+
+.unit-best-pilot-board-mode[hidden],
+.unit-best-pilot-skills-toggle[hidden] {
+  display: none !important;
+}
+
+.unit-best-pilot-board-mode .unit-best-pilot-filter-btn,
+.unit-best-pilot-skills-toggle .unit-best-pilot-filter-btn {
+  min-width: 44px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  padding: 4px 8px;
+}
+
+.msy-pilot-card--defender .msy-pilot-dmg {
+  color: #9fd4a8;
+}
+
+.msy-pilot-defender-reasons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-top: 4px;
+}
+
+.msy-pilot-defender-chip {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1.2;
+  padding: 1px 5px;
+  border-radius: 4px;
+  color: #c8e6d0;
+  background: rgba(46, 120, 72, 0.28);
+  border: 1px solid rgba(110, 180, 130, 0.35);
+}
+
 .unit-best-pilot-metrics {
   display: inline-flex;
   align-items: center;

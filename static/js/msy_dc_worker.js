@@ -91,7 +91,7 @@
     }
   }
 
-  function buildMsySlot(ud, cd, vigor, cpEnabled) {
+  function buildMsySlot(ud, cd, vigor, cpEnabled, skillsOn) {
     var slot = _dcCreateEmptyAttackerSlot();
     var charMode = msyCharStatMode(cd);
     slot.atkUnit = String(ud.id);
@@ -130,10 +130,12 @@
     S.dc.atkUnitData = ud;
     S.dc.charStatMode = charMode;
     S.dc._activeSkills = {};
-    if (typeof _dcMsyAutoEnableSkills === 'function') {
-      _dcMsyAutoEnableSkills(ud, cd);
-    } else if (typeof _dcAutoEnableMaxDamageSkills === 'function') {
-      _dcAutoEnableMaxDamageSkills();
+    if (skillsOn !== false) {
+      if (typeof _dcMsyAutoEnableSkills === 'function') {
+        _dcMsyAutoEnableSkills(ud, cd);
+      } else if (typeof _dcAutoEnableMaxDamageSkills === 'function') {
+        _dcAutoEnableMaxDamageSkills();
+      }
     }
     slot._activeSkills = Object.assign({}, S.dc._activeSkills || {});
     return slot;
@@ -170,10 +172,10 @@
     return bestKey;
   }
 
-  function evalPair(ud, cd, uDef, cDef, vigor, cpEnabled) {
+  function evalPair(ud, cd, uDef, cDef, vigor, cpEnabled, skillsOn) {
     S.dc.defTargetMode = 'custom';
     S.dc.defNpc = defNpc(uDef, cDef);
-    var slot = buildMsySlot(ud, cd, vigor, cpEnabled);
+    var slot = buildMsySlot(ud, cd, vigor, cpEnabled, skillsOn);
     if (!S.dc.atkSlots || !Array.isArray(S.dc.atkSlots)) S.dc.atkSlots = [null, null, null];
     S.dc.atkSlotIndex = 0;
     S.dc.atkSlots[0] = slot;
@@ -252,6 +254,7 @@
     var defTiers = job.defTiers || {};
     var cpOn = job.cpOn !== false;
     var pepOn = job.pepOn !== false;
+    var skillsOn = job.skillsOn !== false;
     if (!ud || ud.error) return { error: ud && ud.error, unitId: job.unitId };
     applyPepState(ud, pepOn, job.pepState || {});
     try {
@@ -268,7 +271,7 @@
           var byVigor = {};
           for (var vi = 0; vi < VIGORS.length; vi++) {
             var v = VIGORS[vi];
-            var d = evalPair(ud, cd, stats.unit_def, stats.char_def, v, cpOn);
+            var d = evalPair(ud, cd, stats.unit_def, stats.char_def, v, cpOn, skillsOn);
             if (d) byVigor[v] = enrichPairRow(d, dt, stats);
           }
           if (Object.keys(byVigor).length) tierPairs.push([cid, byVigor]);

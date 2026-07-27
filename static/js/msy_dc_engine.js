@@ -65,7 +65,7 @@
     return Math.min(100, Math.max(0, crit));
   }
 
-  function buildMsySlot(ud, cd, vigor, cpEnabled) {
+  function buildMsySlot(ud, cd, vigor, cpEnabled, skillsOn) {
     var slot = global._dcCreateEmptyAttackerSlot();
     var S = global.S;
     var charMode = msyCharStatMode(cd);
@@ -99,7 +99,7 @@
     S.dc.atkUnitData = ud;
     S.dc.charStatMode = charMode;
     S.dc._activeSkills = {};
-    msyAutoEnableSkills(ud, cd);
+    if (skillsOn !== false) msyAutoEnableSkills(ud, cd);
     slot._activeSkills = Object.assign({}, S.dc._activeSkills || {});
     return slot;
   }
@@ -135,11 +135,11 @@
     return bestKey;
   }
 
-  function evalPair(ud, cd, uDef, cDef, vigor, cpEnabled) {
+  function evalPair(ud, cd, uDef, cDef, vigor, cpEnabled, skillsOn) {
     var S = global.S;
     S.dc.defTargetMode = 'custom';
     S.dc.defNpc = defNpc(uDef, cDef);
-    var slot = buildMsySlot(ud, cd, vigor, cpEnabled);
+    var slot = buildMsySlot(ud, cd, vigor, cpEnabled, skillsOn);
     if (!S.dc.atkSlots || !Array.isArray(S.dc.atkSlots)) S.dc.atkSlots = [null, null, null];
     S.dc.atkSlotIndex = 0;
     S.dc.atkSlots[0] = slot;
@@ -326,7 +326,8 @@
     return [
       opts.lang || (global.S && global.S.lang) || 'EN',
       opts.cpOn !== false ? 'cp1' : 'cp0',
-      opts.pepOn !== false ? 'pep1' : 'pep0'
+      opts.pepOn !== false ? 'pep1' : 'pep0',
+      opts.skillsOn !== false ? 'sk1' : 'sk0'
     ].join('|');
   }
 
@@ -477,6 +478,7 @@
     var lang = opts.lang || (global.S && global.S.lang) || 'EN';
     var cpOn = opts.cpOn !== false;
     var pepOn = opts.pepOn !== false;
+    var skillsOn = opts.skillsOn !== false;
     var ud = await loadUnit(unitId, lang);
     if (!ud || ud.error) return { error: ud && ud.error, unitId: unitId };
     var restorePep = await setupPep(ud, pepOn);
@@ -494,7 +496,7 @@
           var byVigor = {};
           for (var vi = 0; vi < VIGORS.length; vi++) {
             var v = VIGORS[vi];
-            var d = evalPair(ud, cd, stats.unit_def, stats.char_def, v, cpOn);
+            var d = evalPair(ud, cd, stats.unit_def, stats.char_def, v, cpOn, skillsOn);
             if (d) byVigor[v] = enrichPairRow(d, dt, stats);
           }
           if (Object.keys(byVigor).length) tierPairs.push([String(cid), byVigor]);
@@ -511,6 +513,7 @@
     var lang = opts.lang || (global.S && global.S.lang) || 'EN';
     var cpOn = opts.cpOn !== false;
     var pepOn = opts.pepOn !== false;
+    var skillsOn = opts.skillsOn !== false;
     var ud = await loadUnit(unitId, lang);
     if (!ud || ud.error) return { error: ud && ud.error, unitId: unitId };
     var pilots = {};
@@ -528,6 +531,7 @@
       defTiers: defTiers,
       cpOn: cpOn,
       pepOn: pepOn,
+      skillsOn: skillsOn,
       pepState: pepState
     });
     return raw;

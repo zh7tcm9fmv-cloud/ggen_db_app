@@ -697,12 +697,12 @@ def _pilot_awaken_adjusted(grown, totals, uid, lc, stat_mode, pct):
     return 900 + (_pilot_active_skill_pct_bonus(base, p) if p > 0 else 0)
 
 
-def _char_atk_with_skills_for_pair(cid, uid, lc, attack_attr, *, cp_on=True):
+def _char_atk_with_skills_for_pair(cid, uid, lc, attack_attr, *, cp_on=True, active_skills=True):
     """Char ATK for damage formula — pair CP totals + active skill % + unit awaken floor."""
     totals, _ = _cached_char_pair_totals(cid, uid, lc, cp_on=cp_on)
     grown, grown_sp, _, _ = _char_grown_bases(cid)
     base_grown = grown_sp if _msy_char_stat_mode(cid) == 'sp' else grown
-    sk = _active_skill_stat_pct(cid, lc)
+    sk = _active_skill_stat_pct(cid, lc) if active_skills else {'Ranged': 0, 'Melee': 0, 'Awaken': 0}
     info = _app().unit_info_map.get(_app().normalize_id(uid)) or {}
     stat_mode = _unit_stat_mode(str(info.get('rarity', '1')), info=info)
     keys = _ATTACK_ATTR_TO_KEYS.get(str(attack_attr or '1'), ('Ranged',))
@@ -719,9 +719,11 @@ def _char_atk_with_skills_for_pair(cid, uid, lc, attack_attr, *, cp_on=True):
     return int(best_val), best_key
 
 
-def _formula_char_atk_for_pair(cid, uid, lc, attack_attr, *, cp_on=True):
+def _formula_char_atk_for_pair(cid, uid, lc, attack_attr, *, cp_on=True, active_skills=True):
     """Char ATK used in the damage formula (pair CP totals — matches calculateDamage charAtk)."""
-    return _char_atk_with_skills_for_pair(cid, uid, lc, attack_attr, cp_on=cp_on)
+    return _char_atk_with_skills_for_pair(
+        cid, uid, lc, attack_attr, cp_on=cp_on, active_skills=active_skills,
+    )
 
 
 def _build_char_ac_for_lang(cid, lc):
@@ -1722,16 +1724,30 @@ _MSY_BROWSE_PAYLOAD_CACHE_TTL = max(15, min(300, int(os.environ.get('MSY_BROWSE_
 _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
-_BSP_DC_RULES_VERSION = 8  # ULT units use normal (no SP/SSP); SSR- use SSP when available
+_BSP_DC_RULES_VERSION = 9  # + no-active-skills board + defender HTK rankings
 _BSP_DC_BUILD_ENGINE = 'calculateDamage'
 # From v16 onward: formula/criteria rebuilds only refresh top-N + newly added units.
 # Full-catalog rebuilds are intentional opt-in only (users rarely open the long tail).
 _BSP_INCREMENTAL_TOP_N = max(50, min(500, int(os.environ.get('BSP_INCREMENTAL_TOP_N', '250') or '250')))
-_BSP_PUBLISHED_CACHE_TAG = os.environ.get('BSP_PUBLISHED_CACHE_TAG', '_v19_bsp_dc')
+_BSP_PUBLISHED_CACHE_TAG = os.environ.get('BSP_PUBLISHED_CACHE_TAG', '_v20_bsp_dc')
+# Fall back to prior full-catalog tags while v20 enrich/rebuild is incomplete.
+_BSP_LEGACY_PUBLISHED_TAGS = (
+    '_v19_bsp_dc',
+    '_v18_bsp_dc',
+    '_v17_bsp_dc',
+)
 # Serve older full-catalog DC caches while a newer rebuild is still incomplete.
 # Support-role character id (Attack units: Supporters-only Top 10 board).
 _SUPPORT_ROLE_ID = '3'
 _ATTACK_ROLE_ID = '1'
+_DEFENSE_ROLE_ID = '2'
+# Fixed bully for defender HTK (Destiny Gundam EX + Shinn EX).
+_DEFENDER_BULLY_UNIT_ID = '1330000750'
+_DEFENDER_BULLY_CHAR_ID = '1330000103'
+_SETSUNA_DEF_CHAR_ID = '1370003701'
+_OO_RAISER_FBT_UNIT_ID = '1370005950'
+_BSP_UI_DEFENDER_TOP = 10
+_BSP_STORE_DEFENDER_TOP = 10
 # Reserve Support-role seats in the Attack-unit BSP pool so Supporters-only is real /cal.
 _BSP_SUPPORT_ROLE_RESERVE = max(16, min(40, int(os.environ.get('BSP_SUPPORT_ROLE_RESERVE', '28') or '28')))
 _BSP_PUBLISHED_MEMORY = {}  # cache_key -> payload (multi-key; do not clobber v16 with v15)
@@ -1981,7 +1997,7 @@ def _cached_char_pair_totals(cid, uid, lc, *, cp_on=True):
 
 def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier=1,
                         def_unit_override=None, def_char_override=None, wpn=None,
-                        cp_on=True, pep_on=True):
+                        cp_on=True, pep_on=True, active_skills=True):
     A = _app()
     uid = A.normalize_id(uid)
     cid = A.normalize_id(cid)
@@ -2006,8 +2022,10 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
     tier_key = max(1, min(4, int(def_tier or 1)))
 
     totals, pair_ok = _cached_char_pair_totals(cid, uid, lc, cp_on=cp_on)
-    skill_dmg = _char_active_skill_dmg_bonuses(cid, lc)
-    char_atk, formula_stat = _formula_char_atk_for_pair(cid, uid, lc, wpn.get('attr'), cp_on=cp_on)
+    skill_dmg = _char_active_skill_dmg_bonuses(cid, lc) if active_skills else 0
+    char_atk, formula_stat = _formula_char_atk_for_pair(
+        cid, uid, lc, wpn.get('attr'), cp_on=cp_on, active_skills=active_skills,
+    )
     unit_atk = _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok, cp_on=cp_on)
     if pep_on:
         pep_atk_pct = _pilot_pep_unit_stat_bonus_pct(
@@ -2030,10 +2048,14 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
     crit_rate = int(wpn.get('base_crit') or 0)
     if pep_on:
         crit_rate += _pilot_affinity_weapon_crit(cid, uid, lc)
-    crit_rate += _char_skill_crit_rate(cid, lc)
+    if active_skills:
+        crit_rate += _char_skill_crit_rate(cid, lc)
     crit_rate = min(100, max(0, crit_rate))
 
-    guaranteed_crit = _pair_guaranteed_crit(uid, cid, lc, wpn, crit_rate, vigor=vigor) if cp_on else False
+    guaranteed_crit = (
+        _pair_guaranteed_crit(uid, cid, lc, wpn, crit_rate, vigor=vigor)
+        if cp_on else False
+    )
 
     vp = _VIGOR.get(vigor) or _VIGOR['super']
     unit_def_after = _sim_def_after_debuff(def_total, 0, def_debuff)
@@ -2074,6 +2096,9 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
         'pair_ok': pair_ok,
         'char_atk': char_atk,
         'formula_stat': formula_stat,
+        'dmg_dealt_pct': int(dmg_dealt),
+        'vigor_dmg_pct': int(vp['dmg_bonus_pct']),
+        'active_skills_on': bool(active_skills),
     }
 
 
@@ -2268,7 +2293,7 @@ def _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc):
 
 def _multi_vigor_pairs_for_candidates(uid, candidates, lc, lb_tier, def_tier, unit_wpn, *,
                                       def_unit_override=None, def_char_override=None, cp_on=True,
-                                      pep_on=True, lite=False, rank_mode=None):
+                                      pep_on=True, lite=False, rank_mode=None, active_skills=True):
     vigors = _MSY_VIGOR_LEVELS
     if lite:
         vigors = (_VIGOR_FOR_RANK_MODE.get(rank_mode or 'super_crit', 'super'),)
@@ -2280,7 +2305,7 @@ def _multi_vigor_pairs_for_candidates(uid, candidates, lc, lb_tier, def_tier, un
                 uid, cid, lc, lb_tier=lb_tier, vigor=v,
                 def_tier=def_tier, def_unit_override=def_unit_override,
                 def_char_override=def_char_override, wpn=unit_wpn,
-                cp_on=cp_on, pep_on=pep_on,
+                cp_on=cp_on, pep_on=pep_on, active_skills=active_skills,
             )
             if dmg:
                 by_vigor[v] = dmg
@@ -2347,6 +2372,495 @@ def _rankings_no_cp_pep_for_tier_lite(dt, all_pairs, top_pilots, uid, lc, lb_tie
         cp_on=False, pep_on=False, lite=True, rank_mode=rank_mode,
     )
     return _rankings_from_multi_vigor_pairs(pairs_off, top_pilots, lc) if pairs_off else {}
+
+
+def _unit_is_defense_role(uid):
+    info = _app().unit_info_map.get(_app().normalize_id(uid)) or {}
+    return str(info.get('role', '')) == _DEFENSE_ROLE_ID
+
+
+def _unit_final_stats(uid, cid, lc, *, cp_on=True, pep_on=True):
+    """LB3 unit HP/ATK/DEF (+ pair/PEP ATK%) for defender scoring."""
+    A = _app()
+    uid = A.normalize_id(uid)
+    cid = A.normalize_id(cid)
+    info = A.unit_info_map.get(uid) or {}
+    ri = str(info.get('rarity', '1'))
+    stat_mode = _unit_stat_mode(ri, info=info, uid=uid)
+    ldc = _ldc(lc)
+    block = A._unit_max_lb_stat_block(uid, info, A.unit_stat_map.get(uid, {}), ldc)
+    if not block:
+        return {'HP': 0, 'ATK': 0, 'DEF': 0, 'stat_mode': stat_mode, 'pair_ok': False}
+    fs = A._unit_lb_row_to_api(block, stat_mode, bool(cp_on))
+    totals, pair_ok = _cached_char_pair_totals(cid, uid, lc, cp_on=cp_on)
+    unit_atk = float(fs.get('ATK', 0) or 0)
+    unit_def = float(fs.get('DEF', 0) or 0)
+    unit_hp = float(fs.get('HP', 0) or 0)
+    row = (A.CHAR_PAIR_UNIT_STAT_MOD_PCT.get(cid) or {}).get(uid)
+    if cp_on and pair_ok and row:
+        atk_pct = int(row.get('atk_pct') or 0) if isinstance(row, dict) else 0
+        def_pct = int(row.get('def_pct') or 0) if isinstance(row, dict) else 0
+        if atk_pct:
+            unit_atk = math.floor(unit_atk * (100 + atk_pct) / 100)
+        if def_pct:
+            unit_def = math.floor(unit_def * (100 + def_pct) / 100)
+    if pep_on:
+        pep_atk_pct = _pilot_pep_unit_stat_bonus_pct(
+            cid, uid, lc, cp_on=cp_on, pair_ok=pair_ok,
+        )
+        if pep_atk_pct:
+            unit_atk = math.floor(unit_atk * (100 + pep_atk_pct) / 100)
+    char_def = int(round(float(totals.get('Defense', 0) or 0)))
+    return {
+        'HP': int(unit_hp),
+        'ATK': int(unit_atk),
+        'DEF': int(unit_def),
+        'char_def': char_def,
+        'stat_mode': stat_mode,
+        'pair_ok': pair_ok,
+    }
+
+
+_DMG_TAKEN_DOWN_RE = re.compile(
+    r'Damage\s+Taken\s*[-\u2212\uFF0D]\s*(\d+)\s*%|'
+    r'受到傷害\s*[-\u2212\uFF0D]\s*(\d+)\s*%|'
+    r'被ダメージ\s*[-\u2212\uFF0D]\s*(\d+)\s*%',
+    re.I,
+)
+_EN_SUSTAIN_RE = re.compile(
+    r'(?:recover|restore|regain)\s+(?:own\s+)?EN\b|'
+    r'EN\s+(?:cost|consumption)\s*[-\u2212\uFF0D]|'
+    r'回復.*?EN|EN.*?回復|EN消費\s*[-\u2212\uFF0D]',
+    re.I,
+)
+
+
+def _ability_detail_texts(cid, uid, lc, *, cp_on=True):
+    """Yield applicable ability detail texts for a unit×pilot pair."""
+    A = _app()
+    cid = A.normalize_id(cid)
+    uid = A.normalize_id(uid)
+    for bab in _build_char_ac_calc(cid, lc):
+        for src in _iter_char_ability_active(bab, cid):
+            for d2 in src.get('details') or []:
+                if isinstance(d2, dict):
+                    txt = str(d2.get('text') or '')
+                    cond_groups = d2.get('condition_groups') or []
+                else:
+                    txt = str(d2 or '')
+                    cond_groups = []
+                if not txt:
+                    continue
+                has_cond = bool(cond_groups) or bool(re.search(r'when\s+|if\s+|搭乗|時', txt, re.I))
+                if has_cond:
+                    if not cp_on:
+                        continue
+                    if cond_groups and not _msy_ability_cond_meets(uid, cid, lc, cond_groups):
+                        continue
+                    if not cond_groups and not _pilot_bonus_text_applies(
+                        uid, cid, _ldc(lc), lc, txt, d2 if isinstance(d2, dict) else None,
+                    ):
+                        continue
+                yield txt
+
+
+def _pair_dmg_taken_down_pct(cid, uid, lc, *, cp_on=True):
+    """Sum Damage Taken -N% from pilot abilities (CP-gated when unmet)."""
+    total = 0
+    for txt in _ability_detail_texts(cid, uid, lc, cp_on=cp_on):
+        for m in _DMG_TAKEN_DOWN_RE.finditer(txt):
+            g = next((x for x in m.groups() if x), None)
+            if g:
+                total += int(g)
+    return min(80, max(0, total))
+
+
+def _pair_en_sustain_score(cid, uid, lc):
+    """0–10 heuristic from EN recovery / EN cost reduction text."""
+    score = 0
+    for txt in _ability_detail_texts(cid, uid, lc, cp_on=True):
+        if _EN_SUSTAIN_RE.search(txt):
+            score += 4
+    return min(10, score)
+
+
+def _support_def_score(cid):
+    A = _app()
+    cid = A.normalize_id(cid)
+    if cid in getattr(A, 'SUPPORT_DEF_X2_CHARACTER_IDS', set()):
+        return 18
+    for bab in _build_char_ac_for_lang(cid, 'EN') or []:
+        blob = str(bab.get('name') or '')
+        for d2 in bab.get('details') or []:
+            blob += ' ' + (str(d2.get('text') or '') if isinstance(d2, dict) else str(d2 or ''))
+        low = blob.lower()
+        if 'support defense' in low or '支援防禦' in blob or '支援防御' in blob:
+            return 9
+    return 0
+
+
+def _top_two_attack_weapons(uid, lc):
+    """Best + next-best attack-power non-MAP weapons for bully baseline."""
+    A = _app()
+    ldc = _ldc(lc)
+    uid = A.normalize_id(uid)
+    info = A.unit_info_map.get(uid) or {}
+    ri = str(info.get('rarity', '1'))
+    wtm = ldc.get('weapon_trait_map', {}) or {}
+    wcm = ldc.get('weapon_capability_map', {}) or {}
+    wtdm = ldc.get('weapon_trait_detail_map', {}) or {}
+    ranked = []
+    for wp in A.unit_weapon_map.get(uid, []) or []:
+        wid = A.normalize_id(wp.get('id'))
+        wm = A.weapon_info_map.get(wid, {})
+        wt = str(wm.get('weapon_type', '1') or '1')
+        if wt == '3':
+            continue
+        sm = _unit_stat_mode(ri, wid=wid, wm=wm, info=info, uid=uid)
+        try:
+            ws = A.resolve_weapon_stats(
+                wm, A.weapon_status_map, A.weapon_correction_map,
+                wtm, wcm, A.growth_pattern_map, A.weapon_trait_change_map, wtdm,
+                wid=wid, lang_code=lc, unit_id=uid,
+            )
+        except Exception:
+            continue
+        lv_idx = _best_weapon_level_index(ws, wm, uid, ldc, lc, sm)
+        power = _computed_weapon_power_at_level(ws, wm, uid, ldc, lc, sm, lv_idx)
+        if power <= 0:
+            continue
+        lv_row = _weapon_level_row(ws, lv_idx)
+        is_ex = bool(wm.get('is_ex') or ws.get('is_ex') or str(wm.get('ex_type', '0')) not in ('0', '', 'None'))
+        ranked.append({
+            'wid': wid, 'wm': wm, 'ws': ws, 'power': power,
+            'wpn_lv': lv_idx,
+            'base_crit': int(lv_row.get('critical', 0) or 0),
+            'attr': wm.get('attack_attribute', '1'), 'weapon_type': wt,
+            'stat_mode': sm, 'is_ex': is_ex,
+        })
+    ranked.sort(key=lambda w: (-int(w.get('power') or 0), -int(bool(w.get('is_ex')))))
+    return ranked[:2]
+
+
+def _bully_attack_profile(lc='EN'):
+    """Fixed Destiny+Shinn attacker stats/weapons for defender HTK."""
+    A = _app()
+    uid = A.normalize_id(_DEFENDER_BULLY_UNIT_ID)
+    cid = A.normalize_id(_DEFENDER_BULLY_CHAR_ID)
+    info = A.unit_info_map.get(uid) or {}
+    wpns = _top_two_attack_weapons(uid, lc)
+    if not wpns:
+        return None
+    dmg = compute_pair_damage(uid, cid, lc, vigor='super', def_tier=3, wpn=wpns[0], active_skills=True)
+    if not dmg:
+        return None
+    # Reuse ATK from a dummy resolve — store unit/char atk via compute internals
+    totals, pair_ok = _cached_char_pair_totals(cid, uid, lc, cp_on=True)
+    unit_atk = _unit_atk_max(uid, info, wpns[0].get('stat_mode') or _unit_stat_mode(str(info.get('rarity', '1')), info=info), lc, cid, pair_ok, cp_on=True)
+    pep_atk = _pilot_pep_unit_stat_bonus_pct(cid, uid, lc, cp_on=True, pair_ok=pair_ok)
+    if pep_atk:
+        unit_atk = math.floor(unit_atk * (100 + pep_atk) / 100)
+    char_atk = int(dmg.get('char_atk') or 0)
+    dmg_dealt = int(dmg.get('dmg_dealt_pct') or 0)
+    return {
+        'unit_id': uid,
+        'char_id': cid,
+        'unit_atk': int(unit_atk),
+        'char_atk': char_atk,
+        'dmg_dealt': dmg_dealt,
+        'weapons': wpns,
+    }
+
+
+def _inbound_normal_damage(bully, defender_unit_atk_unused, defender_unit_def, defender_char_def,
+                           wpn, *, taken_down_pct=0, shield=True, vigor='super'):
+    """Damage received by defender from fixed bully weapon (normal hit, shield on)."""
+    del defender_unit_atk_unused
+    vp = _VIGOR.get(vigor) or _VIGOR['super']
+    # Attacker side: no DEF debuff assumed for fair HTK baseline
+    extra = int(bully.get('dmg_dealt') or 0) + int(vp['dmg_bonus_pct']) - int(taken_down_pct or 0)
+    normal, battle, cwp = _calc_damage_core(
+        int(bully['unit_atk']), int(bully['char_atk']),
+        int(defender_char_def), int(defender_unit_def),
+        int(wpn.get('power') or 0),
+        def_debuff_pct=0,
+        extra_dmg_pct=extra,
+    )
+    defend_mult = 0.6 if shield else 0.8
+    return max(0, int(math.ceil(normal * defend_mult))), int(battle), int(cwp)
+
+
+def _rankings_no_active_skills_for_unit(uid, pilot_ids, exclude, lc, top_pilots, *,
+                                         def_tier=3, lb_tier=3, lite=False, rank_mode='super_crit'):
+    """Fair skills-off Top N from full BSP candidate pool (not skills-on Top 10)."""
+    A = _app()
+    uid = A.normalize_id(uid)
+    info = A.unit_info_map.get(uid) or {}
+    unit_wpn = _cached_best_ex_weapon(uid, None, lc)
+    if not unit_wpn:
+        return {}
+    active = _eligible_pilots_for_unit(uid, pilot_ids, exclude)
+    if not active:
+        return {}
+    candidates = _bsp_candidate_pilots_for_unit(
+        uid, active, info, unit_wpn,
+        unit_wpn.get('stat_mode') or _unit_stat_mode(str(info.get('rarity', '1')), info=info),
+        lc,
+    )
+    if not candidates:
+        return {}
+    store_top = max(int(top_pilots or 10), _BSP_STORE_TOP_PILOTS)
+    pairs = _multi_vigor_pairs_for_candidates(
+        uid, candidates, lc, lb_tier, def_tier, unit_wpn,
+        cp_on=True, pep_on=True, lite=lite, rank_mode=rank_mode, active_skills=False,
+    )
+    if not pairs:
+        return {}
+    rk = _rankings_from_multi_vigor_pairs(pairs, store_top, lc)
+    # Mark skills off on rows (hide active skill icons in UI)
+    for block in (rk or {}).values():
+        for p in block.get('pilots') or []:
+            p['active_skills'] = []
+            p['active_skills_on'] = False
+    return rk
+
+
+def enrich_group_no_active_skills(g, lc='EN', *, top_pilots=None, def_tier=3, lite=False,
+                                    rank_mode='super_crit', pilot_ids=None, exclude=None):
+    if not g or g.get('pending'):
+        return g
+    existing = g.get('rankings_no_active_skills') or {}
+    if isinstance(existing, dict) and (existing.get(rank_mode) or {}).get('pilots'):
+        return g
+    A = _app()
+    uid = A.normalize_id((g.get('unit') or {}).get('id'))
+    if not uid:
+        return g
+    pilots = pilot_ids or _pilot_pool_ids()
+    excl = exclude if exclude is not None else set()
+    built = _rankings_no_active_skills_for_unit(
+        uid, pilots, excl, lc, top_pilots or _BSP_STORE_TOP_PILOTS,
+        def_tier=def_tier, lite=lite, rank_mode=rank_mode,
+    )
+    if not built:
+        return g
+    out = dict(g)
+    out['rankings_no_active_skills'] = built
+    return out
+
+
+def _defender_candidates_for_unit(uid, pilot_ids, exclude, lc):
+    """Defense-role heavy pool + SD×2 + bundled pilot."""
+    A = _app()
+    uid = A.normalize_id(uid)
+    info = A.unit_info_map.get(uid) or {}
+    unit_wpn = _cached_best_ex_weapon(uid, None, lc)
+    if not unit_wpn:
+        return []
+    active = _eligible_pilots_for_unit(uid, pilot_ids, exclude)
+    if not active:
+        return []
+    stat_mode = unit_wpn.get('stat_mode') or _unit_stat_mode(str(info.get('rarity', '1')), info=info)
+    # Start from BSP pool, then force-add Defense-role + SD×2
+    base = _bsp_candidate_pilots_for_unit(uid, active, info, unit_wpn, stat_mode, lc, cap=_BSP_PILOT_CAP)
+    seen = set(base)
+    out = list(base)
+    sd_x2 = getattr(A, 'SUPPORT_DEF_X2_CHARACTER_IDS', set()) or set()
+
+    def _add(cid):
+        cid = A.normalize_id(cid)
+        if not cid or cid in seen or cid not in active:
+            return
+        seen.add(cid)
+        out.append(cid)
+
+    for cid in active:
+        if _char_role(cid) == _DEFENSE_ROLE_ID:
+            _add(cid)
+        if cid in sd_x2:
+            _add(cid)
+    bp = _bundled_pilot_id(uid)
+    if bp:
+        _add(bp)
+    # Prefer Setsuna when unit is 00 Raiser FBT
+    if uid == A.normalize_id(_OO_RAISER_FBT_UNIT_ID):
+        _add(_SETSUNA_DEF_CHAR_ID)
+    return out[: max(_BSP_PILOT_CAP, 140)]
+
+
+def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=10):
+    """HTK-based defender rankings for one Defense-role unit."""
+    A = _app()
+    uid = A.normalize_id(uid)
+    if not _unit_is_defense_role(uid):
+        return None
+    bully = _bully_attack_profile(lc)
+    if not bully or not bully.get('weapons'):
+        return None
+    candidates = _defender_candidates_for_unit(uid, pilot_ids, exclude, lc)
+    if not candidates:
+        return None
+    wpns = bully['weapons']
+    rows = []
+    ehtk_vals = []
+    out_dmgs = []
+    for cid in candidates:
+        st = _unit_final_stats(uid, cid, lc, cp_on=True, pep_on=True)
+        hp = max(1, int(st['HP']))
+        taken = _pair_dmg_taken_down_pct(cid, uid, lc, cp_on=True)
+        htks = []
+        dmgs_in = []
+        for w in wpns[:2]:
+            dmg_in, _, _ = _inbound_normal_damage(
+                bully, st['ATK'], st['DEF'], st['char_def'], w,
+                taken_down_pct=taken, shield=True, vigor='super',
+            )
+            dmgs_in.append(dmg_in)
+            htks.append(max(1, int(math.ceil(hp / max(dmg_in, 1)))))
+        if len(htks) == 1:
+            ehtk = float(htks[0])
+        else:
+            ehtk = 0.55 * htks[0] + 0.45 * htks[1]
+        out_dmg = compute_pair_damage(
+            uid, cid, lc, vigor='super', def_tier=3, active_skills=True,
+        )
+        peak = int((out_dmg or {}).get('peak_dmg') or 0)
+        sd = _support_def_score(cid)
+        en = _pair_en_sustain_score(cid, uid, lc)
+        revive = (
+            uid == A.normalize_id(_OO_RAISER_FBT_UNIT_ID)
+            and cid == A.normalize_id(_SETSUNA_DEF_CHAR_ID)
+        )
+        rows.append({
+            'cid': cid,
+            'ehtk': ehtk,
+            'htk_ex': htks[0],
+            'htk_next': htks[1] if len(htks) > 1 else htks[0],
+            'dmg_ex': dmgs_in[0],
+            'dmg_next': dmgs_in[1] if len(dmgs_in) > 1 else dmgs_in[0],
+            'taken_down': taken,
+            'hp': hp,
+            'unit_def': st['DEF'],
+            'char_def': st['char_def'],
+            'sd_score': sd,
+            'en_score': en,
+            'out_peak': peak,
+            'revive': revive,
+            'pair_ok': st['pair_ok'],
+        })
+        ehtk_vals.append(ehtk)
+        out_dmgs.append(peak)
+
+    def _pct_rank(val, population, *, higher_better=True):
+        pop = [v for v in population if v is not None]
+        if not pop:
+            return 50.0
+        if higher_better:
+            better = sum(1 for v in pop if v < val)
+        else:
+            better = sum(1 for v in pop if v > val)
+        return 100.0 * better / max(1, len(pop) - 1) if len(pop) > 1 else 100.0
+
+    scored = []
+    for row in rows:
+        surv = _pct_rank(row['ehtk'], ehtk_vals, higher_better=True) * 0.45
+        punch = _pct_rank(row['out_peak'], out_dmgs, higher_better=True) * 0.15
+        total = surv + row['sd_score'] + row['en_score'] + punch
+        if row['revive']:
+            total += 12
+        row['score'] = round(total, 2)
+        scored.append(row)
+    scored.sort(key=lambda r: (-r['score'], -r['ehtk'], -r['out_peak'], r['cid']))
+
+    # Setsuna revive floor on 00 Raiser FBT: keep near top unless catastrophic
+    if A.normalize_id(uid) == A.normalize_id(_OO_RAISER_FBT_UNIT_ID):
+        for i, row in enumerate(scored):
+            if row['cid'] == A.normalize_id(_SETSUNA_DEF_CHAR_ID) and i > 1:
+                scored.insert(1, scored.pop(i))
+                break
+
+    top = scored[: max(1, int(top_n or _BSP_STORE_DEFENDER_TOP))]
+    pilots = []
+    for i, row in enumerate(top):
+        pilots.append({
+            'rank': i + 1,
+            'char': _entity_brief_char(row['cid'], lc),
+            'score': row['score'],
+            'ehtk': round(row['ehtk'], 2),
+            'htk_ex': row['htk_ex'],
+            'htk_next': row['htk_next'],
+            'dmg_taken_ex': row['dmg_ex'],
+            'dmg_taken_next': row['dmg_next'],
+            'taken_down_pct': row['taken_down'],
+            'hp': row['hp'],
+            'support_def_score': row['sd_score'],
+            'en_score': row['en_score'],
+            'out_peak_dmg': row['out_peak'],
+            'revive_floor': row['revive'],
+            'pair_ok': row['pair_ok'],
+            'normal_dmg': row['out_peak'],
+            'crit_dmg': row['out_peak'],
+            'super_crit_dmg': row['out_peak'],
+            'peak_dmg': row['out_peak'],
+            'expected_dmg': row['out_peak'],
+            'reasons': _defender_reason_chips(row),
+        })
+    return {
+        'defender': {
+            'max_score': pilots[0]['score'] if pilots else 0,
+            'pilots': pilots,
+            'bully_unit_id': bully['unit_id'],
+            'bully_char_id': bully['char_id'],
+        }
+    }
+
+
+def _defender_reason_chips(row):
+    chips = []
+    chips.append(f"EHTK {row['ehtk']:.1f}")
+    if row['sd_score'] >= 18:
+        chips.append('SDx2')
+    elif row['sd_score'] >= 9:
+        chips.append('SD')
+    if row['en_score'] >= 4:
+        chips.append('EN')
+    if row['revive']:
+        chips.append('Revive')
+    if row['out_peak'] > 0:
+        chips.append(f"Atk {row['out_peak']:,}")
+    return chips
+
+
+def enrich_group_defender_rankings(g, lc='EN', *, pilot_ids=None, exclude=None, top_n=None):
+    if not g or g.get('pending'):
+        return g
+    if g.get('rankings_defender') and (g['rankings_defender'].get('defender') or {}).get('pilots'):
+        return g
+    A = _app()
+    uid = A.normalize_id((g.get('unit') or {}).get('id'))
+    if not uid or not _unit_is_defense_role(uid):
+        return g
+    built = compute_defender_scores_for_unit(
+        uid, pilot_ids or _pilot_pool_ids(),
+        exclude if exclude is not None else set(),
+        lc, top_n=top_n or _BSP_STORE_DEFENDER_TOP,
+    )
+    if not built:
+        return g
+    out = dict(g)
+    out['rankings_defender'] = built
+    return out
+
+
+def enrich_group_skills_off_and_defender(g, lc='EN', *, lite=False, rank_mode='super_crit',
+                                           def_tier=3, pilot_ids=None, exclude=None):
+    """Attach skills-off + defender boards (used by API ensure + enrich script)."""
+    g = enrich_group_no_active_skills(
+        g, lc, def_tier=def_tier, lite=lite, rank_mode=rank_mode,
+        pilot_ids=pilot_ids, exclude=exclude,
+    )
+    g = enrich_group_defender_rankings(g, lc, pilot_ids=pilot_ids, exclude=exclude)
+    return g
 
 
 def _passive_cp_on_from_kwargs(kwargs):
@@ -3200,6 +3714,14 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
         out['rankings_support_role_by_tier'] = rankings_support_role_by_tier
         out['rankings_no_gc_by_tier'] = rankings_no_gc_by_tier
         out['rankings_no_cp_by_tier'] = rankings_no_cp_by_tier
+    # Skills-off + defender boards (python fair pool; matches DC when skills disabled).
+    try:
+        out = enrich_group_skills_off_and_defender(
+            out, lc, lite=False, def_tier=3,
+            pilot_ids=pilot_ids, exclude=exclude,
+        )
+    except Exception as e:
+        print(f'BSP enrich skills-off/defender failed ({uid}): {e}')
     return out
 
 
@@ -3731,6 +4253,18 @@ def _lookup_bsp_published_group(uid, lc, kwargs):
         en_kwargs = dict(kwargs or {})
         en_kwargs['lc'] = 'EN'
         keys.append(_bsp_published_cache_key('EN', en_kwargs))
+    # Older tags (v19…) until v20 enrich finishes.
+    for tag in _BSP_LEGACY_PUBLISHED_TAGS:
+        if tag == _BSP_PUBLISHED_CACHE_TAG:
+            continue
+        keys.append((
+            tag,
+            'EN',
+            int(kwargs.get('lb_tier', 3) or 3),
+            int(_BSP_STORE_TOP_PILOTS),
+            None,
+            None,
+        ))
     best = None
     best_score = -1
     for cache_key in keys:
@@ -3919,20 +4453,31 @@ def _bsp_relocalize_pilot_chars(pilots, lc):
 
 def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs,
                          pilots_no_ur=None, pilots_no_shinn=None, pilots_same_role=None,
-                         pilots_support_role=None,
+                         pilots_support_role=None, pilots_no_active_skills=None,
+                         pilots_defender=None,
                          no_ur_partial=False, no_shinn_partial=False, same_role_partial=False,
-                         support_role_partial=False):
+                         support_role_partial=False, no_active_skills_partial=False,
+                         defender_partial=False):
     mode = rank_mode or 'super_crit'
     store_n = int(_BSP_STORE_TOP_PILOTS)
 
-    def _rank(rows, limit=_BSP_UI_TOP_PILOTS):
+    def _rank(rows, limit=_BSP_UI_TOP_PILOTS, *, by_score=False):
         rows = list(rows or [])
-        rows.sort(
-            key=lambda p: (
-                -_bsp_pilot_sort_damage(p, mode),
-                str((p.get('char') or {}).get('id') or ''),
-            ),
-        )
+        if by_score:
+            rows.sort(
+                key=lambda p: (
+                    -float(p.get('score') or 0),
+                    -float(p.get('ehtk') or 0),
+                    str((p.get('char') or {}).get('id') or ''),
+                ),
+            )
+        else:
+            rows.sort(
+                key=lambda p: (
+                    -_bsp_pilot_sort_damage(p, mode),
+                    str((p.get('char') or {}).get('id') or ''),
+                ),
+            )
         out = rows[: max(1, int(limit or _BSP_UI_TOP_PILOTS))]
         for i, pilot in enumerate(out):
             pilot['rank'] = i + 1
@@ -3966,22 +4511,28 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
         ),
         store_n,
     )
+    no_active = _rank(list(pilots_no_active_skills or []), _BSP_UI_TOP_PILOTS)
+    defenders = _rank(list(pilots_defender or []), _BSP_UI_DEFENDER_TOP, by_score=True)
     _bsp_relocalize_pilot_chars(pilots, lc)
     _bsp_relocalize_pilot_chars(no_ur, lc)
     _bsp_relocalize_pilot_chars(no_shinn, lc)
     _bsp_relocalize_pilot_chars(same_role, lc)
     _bsp_relocalize_pilot_chars(support_role, lc)
+    _bsp_relocalize_pilot_chars(no_active, lc)
+    _bsp_relocalize_pilot_chars(defenders, lc)
     _bsp_patch_guaranteed_crit_flags(pilots, lc)
     _bsp_patch_guaranteed_crit_flags(no_ur, lc)
     _bsp_patch_guaranteed_crit_flags(no_shinn, lc)
     _bsp_patch_guaranteed_crit_flags(same_role, lc)
     _bsp_patch_guaranteed_crit_flags(support_role, lc)
+    _bsp_patch_guaranteed_crit_flags(no_active, lc)
     # Re-rank after sanitize (0% crit peak clamp can change order).
     pilots = _rank(pilots, _BSP_UI_TOP_PILOTS)
     no_ur = _rank(no_ur, store_n)
     no_shinn = _rank(no_shinn, store_n)
     same_role = _rank(same_role, store_n)
     support_role = _rank(support_role, store_n)
+    no_active = _rank(no_active, _BSP_UI_TOP_PILOTS)
     top_dmg = _bsp_pilot_sort_damage(pilots[0], mode) if pilots else 0
     wi = _weapon_info_for_msy(uid, lc)
     return {
@@ -3992,12 +4543,21 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
         'pilots_no_shinn': no_shinn,
         'pilots_same_role': same_role,
         'pilots_support_role': support_role,
+        'pilots_no_active_skills': no_active,
+        'pilots_defender': defenders,
         'no_ur_partial': bool(no_ur_partial) or len(no_ur) < _BSP_UI_TOP_PILOTS,
         'no_shinn_partial': bool(no_shinn_partial) or len(no_shinn) < _BSP_UI_TOP_PILOTS,
         'same_role_partial': bool(same_role_partial) or len(same_role) < _BSP_UI_TOP_PILOTS,
         'support_role_partial': bool(support_role_partial) or (
             _unit_is_attack_role(uid) and len(support_role) < _BSP_UI_TOP_PILOTS
         ),
+        'no_active_skills_partial': bool(no_active_skills_partial) or (
+            bool(pilots_no_active_skills is not None) and len(no_active) < _BSP_UI_TOP_PILOTS
+        ),
+        'defender_partial': bool(defender_partial) or (
+            _unit_is_defense_role(uid) and len(defenders) < _BSP_UI_DEFENDER_TOP
+        ),
+        'is_defense_unit': _unit_is_defense_role(uid),
         'source': source,
         'rank_mode': mode,
         'def_tier': def_tier,
@@ -4070,6 +4630,13 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
         )
         if not _unit_is_attack_role(uid):
             pilots_support_role, support_role_partial = [], False
+        pilots_no_active, no_active_partial = _bsp_dc_variant_pilots(
+            g_row.get('rankings_no_active_skills') or row.get('rankings_no_active_skills'),
+            mode, fallback_pilots=[],
+        )
+        def_block = (g_row.get('rankings_defender') or row.get('rankings_defender') or {})
+        pilots_defender = list((def_block.get('defender') or {}).get('pilots') or [])
+        defender_partial = _unit_is_defense_role(uid) and len(pilots_defender) < _BSP_UI_DEFENDER_TOP
         return _bsp_pilots_response(
             uid, pilots, source='published_dc', def_tier=def_tier,
             rank_mode=mode, lc=lc, kwargs=kwargs,
@@ -4077,10 +4644,14 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
             pilots_no_shinn=pilots_no_shinn,
             pilots_same_role=pilots_same_role,
             pilots_support_role=pilots_support_role,
+            pilots_no_active_skills=pilots_no_active,
+            pilots_defender=pilots_defender,
             no_ur_partial=no_ur_partial,
             no_shinn_partial=no_shinn_partial,
             same_role_partial=same_role_partial,
             support_role_partial=support_role_partial,
+            no_active_skills_partial=no_active_partial,
+            defender_partial=defender_partial,
         )
 
     # Prefer published /cal BSP cache for the MAIN list (real calculator).
@@ -4090,6 +4661,18 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
         row_base = _group_for_def_tier(g, def_tier) if g.get('rankings_by_tier') else g
         if not row_base:
             row_base = g
+        # Lazily attach skills-off / defender boards when missing from older caches.
+        need_off = not ((row_base.get('rankings_no_active_skills') or {}).get(rank_mode) or {}).get('pilots')
+        need_def = _unit_is_defense_role(uid) and not (
+            (row_base.get('rankings_defender') or {}).get('defender') or {}
+        ).get('pilots')
+        if need_off or need_def:
+            try:
+                row_base = enrich_group_skills_off_and_defender(
+                    row_base, lc, lite=True, rank_mode=rank_mode, def_tier=def_tier,
+                )
+            except Exception as e:
+                print(f'best_synergy enrich failed ({uid}): {e}')
         if include_all_modes and isinstance(row_base.get('rankings'), dict):
             modes_out = {}
             for mode in ('super_crit', 'crit', 'normal'):
@@ -5514,6 +6097,10 @@ def _normalize_group_for_mode(g, rank_mode):
         rankings_no_shinn = _slim_variant_rankings_if_populated(g.get('rankings_no_shinn'), rank_mode)
         rankings_same_role = _slim_variant_rankings_if_populated(g.get('rankings_same_role'), rank_mode)
         rankings_support_role = _slim_variant_rankings_if_populated(g.get('rankings_support_role'), rank_mode)
+        rankings_no_active_skills = _slim_variant_rankings_if_populated(
+            g.get('rankings_no_active_skills'), rank_mode,
+        )
+        rankings_defender = g.get('rankings_defender')
         return {
             'unit': g.get('unit'),
             'weapon_elems': g.get('weapon_elems'),
@@ -5527,6 +6114,8 @@ def _normalize_group_for_mode(g, rank_mode):
             'rankings_no_shinn': rankings_no_shinn,
             'rankings_same_role': rankings_same_role,
             'rankings_support_role': rankings_support_role,
+            'rankings_no_active_skills': rankings_no_active_skills,
+            'rankings_defender': rankings_defender,
             'weapon_info': g.get('weapon_info'),
             'is_sd': g.get('is_sd', False),
             'bundled_pilot_id': g.get('bundled_pilot_id'),

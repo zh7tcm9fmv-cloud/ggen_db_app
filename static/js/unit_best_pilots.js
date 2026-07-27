@@ -40,6 +40,11 @@
     // all | same | support (support only offered on Attack units)
     roleMode: 'all',
     rankMode: 'normal',
+    // Active skills in damage ranking (false = fair skills-off Top 10)
+    skillsOn: true,
+    // damage | defender (defender only on Defense-role units)
+    boardKind: 'damage',
+    isDefenseUnit: false,
     // unitId -> { modes: { super_crit, crit, normal }, ... }
     cache: {},
     // unitId -> in-flight Promise<entry|null> (shared by prefetch + panel open)
@@ -139,6 +144,20 @@
         toggleFilter(filterBtn.getAttribute('data-ubp-filter'));
         return;
       }
+      var boardBtn = ev.target.closest('[data-ubp-board]');
+      if (boardBtn) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        setBoardKind(boardBtn.getAttribute('data-ubp-board'));
+        return;
+      }
+      var skillsBtn = ev.target.closest('[data-ubp-skills]');
+      if (skillsBtn) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        setSkillsOn(skillsBtn.getAttribute('data-ubp-skills') !== 'off');
+        return;
+      }
       var btn = ev.target.closest('[data-unit-best-pilot-toggle], .unit-best-pilot-btn');
       if (!btn) return;
       ev.preventDefault();
@@ -186,11 +205,21 @@
     var d = global.S && global.S.currentDetailData;
     if (!d) return null;
     if (d.role_id != null && d.role_id !== '') return String(d.role_id);
+    if (d.role != null && d.role !== '' && !isNaN(parseInt(d.role, 10))) return String(d.role);
     return null;
   }
 
   function isAttackUnit() {
     return unitRoleId() === ATTACK_ROLE_ID;
+  }
+
+  function isDefenseUnit() {
+    if (state.isDefenseUnit) return true;
+    return unitRoleId() === DEFENSE_ROLE_ID;
+  }
+
+  function isDefenderBoard() {
+    return state.boardKind === 'defender' && isDefenseUnit();
   }
 
   function isSameRoleMode() {
@@ -247,6 +276,11 @@
   function syncFilterButtons() {
     var urBtn = global.document.getElementById('ubpExcludeUrBtn');
     var shBtn = global.document.getElementById('ubpExcludeShinnBtn');
+    var filters = global.document.querySelector('.unit-best-pilot-filters');
+    var metrics = global.document.querySelector('.unit-best-pilot-metrics');
+    var defender = isDefenderBoard();
+    if (filters) filters.style.display = defender ? 'none' : '';
+    if (metrics) metrics.style.display = defender ? 'none' : '';
     if (urBtn) {
       urBtn.classList.toggle('is-active', !!state.excludeUr);
       urBtn.classList.toggle('active', !!state.excludeUr);
@@ -257,7 +291,7 @@
     }
     if (shBtn) {
       if (!shinnFilterRelevant()) state.excludeShinn = false;
-      var showShinn = shinnFilterRelevant();
+      var showShinn = shinnFilterRelevant() && !defender;
       shBtn.style.display = showShinn ? '' : 'none';
       shBtn.setAttribute('aria-hidden', showShinn ? 'false' : 'true');
       if (showShinn) {
@@ -272,6 +306,71 @@
     }
     syncRoleDropdown();
     syncMetricButtons();
+    syncBoardModeButtons();
+    syncSkillsToggle();
+    syncPanelTitle();
+  }
+
+  function syncBoardModeButtons() {
+    var wrap = global.document.getElementById('ubpBoardMode');
+    var defense = isDefenseUnit();
+    if (wrap) {
+      wrap.hidden = !defense;
+      wrap.style.display = defense ? '' : 'none';
+      wrap.setAttribute('aria-hidden', defense ? 'false' : 'true');
+    }
+    if (!defense && state.boardKind === 'defender') state.boardKind = 'damage';
+    global.document.querySelectorAll('[data-ubp-board]').forEach(function (el) {
+      var kind = el.getAttribute('data-ubp-board');
+      var on = kind === state.boardKind;
+      el.classList.toggle('is-active', on);
+      el.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+
+  function syncSkillsToggle() {
+    var wrap = global.document.getElementById('ubpSkillsToggle');
+    var show = !isDefenderBoard();
+    if (wrap) {
+      wrap.hidden = !show;
+      wrap.style.display = show ? '' : 'none';
+      wrap.setAttribute('aria-hidden', show ? 'false' : 'true');
+    }
+    global.document.querySelectorAll('[data-ubp-skills]').forEach(function (el) {
+      var on = (el.getAttribute('data-ubp-skills') !== 'off') === !!state.skillsOn;
+      el.classList.toggle('is-active', on);
+      el.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+
+  function syncPanelTitle() {
+    var el = global.document.querySelector('#unitBestPilotPanelWrap .unit-best-pilot-panel-title');
+    if (!el) return;
+    var title = isDefenderBoard()
+      ? (t('unit_best_pilot_title_defender') || 'Top 10 Defender Pilots')
+      : (state.skillsOn
+        ? (t('unit_best_pilot_title') || 'Top 10 Damage Pilot')
+        : (t('unit_best_pilot_title_skills_off') || 'Top 10 Damage (Skills Off)'));
+    el.textContent = title;
+  }
+
+  function setBoardKind(kind) {
+    var next = String(kind || 'damage');
+    if (next !== 'damage' && next !== 'defender') return;
+    if (next === 'defender' && !isDefenseUnit()) next = 'damage';
+    if (state.boardKind === next) return;
+    state.boardKind = next;
+    syncFilterButtons();
+    renderActivePanel();
+  }
+
+  function setSkillsOn(on) {
+    var next = !!on;
+    if (state.skillsOn === next) return;
+    state.skillsOn = next;
+    syncSkillsToggle();
+    syncPanelTitle();
+    renderActivePanel();
   }
 
   function syncRoleDropdown() {
@@ -516,9 +615,48 @@
     return entry;
   }
 
+  function sortPilotsByDefenderScore(pilots) {
+    if (!pilots || !pilots.length) return pilots || [];
+    return pilots.slice().sort(function (a, b) {
+      var ds = (parseFloat(b.score) || 0) - (parseFloat(a.score) || 0);
+      if (ds) return ds;
+      return (parseFloat(b.ehtk) || 0) - (parseFloat(a.ehtk) || 0);
+    }).map(function (p, i) {
+      var row = Object.assign({}, p);
+      row.rank = i + 1;
+      return row;
+    });
+  }
+
   function pilotsForView(entry) {
     var board = modeEntry(entry);
     if (!board) return { pilots: [], partial: false };
+    var mode = state.rankMode || 'super_crit';
+
+    if (isDefenderBoard()) {
+      var defRows = board.pilots_defender || entry.pilots_defender || [];
+      return {
+        pilots: sortPilotsByDefenderScore(defRows).slice(0, 10),
+        partial: !!(board.defender_partial || entry.defender_partial) && defRows.length < 10,
+        defender: true
+      };
+    }
+
+    // Skills-off: dedicated fair-pool board (not a re-filter of skills-on Top 10).
+    if (!state.skillsOn) {
+      var off = board.pilots_no_active_skills || [];
+      var noUrOff = !!state.excludeUr;
+      var noShinnOff = noUrOff || (!!state.excludeShinn && shinnFilterRelevant());
+      var sameOff = isSameRoleMode();
+      var supportOff = isSupportRoleMode();
+      var filteredOff = filterPilotsLocal(off, noUrOff, noShinnOff, sameOff, supportOff);
+      return {
+        pilots: sortPilotsByCalcDamage(filteredOff, mode).slice(0, 10),
+        partial: !!(board.no_active_skills_partial) && filteredOff.length < 10,
+        skillsOff: true
+      };
+    }
+
     var noUr = !!state.excludeUr;
     // Same-role on non-Attack / Supporters-only already excludes Shinn — don't apply No Shinn on top.
     var noShinn = noUr || (!!state.excludeShinn && shinnFilterRelevant());
@@ -526,7 +664,6 @@
     var supportRole = isSupportRoleMode();
     var rows = [];
     var partial = false;
-    var mode = state.rankMode || 'super_crit';
 
     function take(list, markPartial) {
       rows = list || [];
@@ -629,7 +766,10 @@
       enrich(board.pilots_no_shinn);
       enrich(board.pilots_same_role);
       enrich(board.pilots_support_role);
+      enrich(board.pilots_no_active_skills);
+      enrich(board.pilots_defender);
     });
+    enrich(entry.pilots_defender);
   }
 
   async function enrichAffinityMatches(entry, unitId, lang) {
@@ -652,7 +792,10 @@
       collect(board.pilots_no_shinn);
       collect(board.pilots_same_role);
       collect(board.pilots_support_role);
+      collect(board.pilots_no_active_skills);
+      collect(board.pilots_defender);
     });
+    collect(entry.pilots_defender);
     if (!charIds.length) return entry;
     try {
       // aff_v=2 busts stale browser caches of dual normal+SP affinity payloads.
@@ -677,7 +820,10 @@
         attachSkills(board.pilots_no_shinn);
         attachSkills(board.pilots_same_role);
         attachSkills(board.pilots_support_role);
+        attachSkills(board.pilots_no_active_skills);
+        attachSkills(board.pilots_defender);
       });
+      attachSkills(entry.pilots_defender);
     } catch (_) {}
     return entry;
   }
@@ -700,8 +846,18 @@
         + esc(t('unit_best_pilot_filter_partial')
           || 'Showing calculator pilots that match this filter from the main top 10. A full non-UR / No-Shinn top 10 needs a dedicated calculator rebuild.')
         + '</div>';
+    } else if (view.skillsOff) {
+      note = '<div class="unit-best-pilot-filter-note">'
+        + esc(t('unit_best_pilot_skills_off_note')
+          || 'Ranked without active skills (stats, affinity, and best weapon only).')
+        + '</div>';
+    } else if (view.defender) {
+      note = '<div class="unit-best-pilot-filter-note">'
+        + esc(t('unit_best_pilot_defender_note')
+          || 'Defender score: survival (EHTK vs Destiny+Shinn) + SD×2 + EN sustain + counter damage.')
+        + '</div>';
     }
-    setPanelHtml(note + renderPilotGrid(pilots, state.unitId));
+    setPanelHtml(note + renderPilotGrid(pilots, state.unitId, view.defender));
   }
 
   function hideTriggers() {
@@ -900,20 +1056,57 @@
     });
   }
 
-  function renderPilotCard(unitId, pilot) {
+  function pilotDefenderReasonsHtml(pilot) {
+    var reasons = (pilot && pilot.reasons) || [];
+    if (!reasons.length) return '';
+    return '<div class="msy-pilot-defender-reasons">'
+      + reasons.map(function (r) {
+        return '<span class="msy-pilot-defender-chip">' + esc(String(r)) + '</span>';
+      }).join('')
+      + '</div>';
+  }
+
+  function renderPilotCard(unitId, pilot, defenderMode) {
     var c = pilot.char || {};
+    if (defenderMode) {
+      var score = pilot.score != null ? pilot.score : 0;
+      var ehtk = pilot.ehtk != null ? pilot.ehtk : '';
+      var sub = '';
+      if (ehtk !== '') {
+        sub += '<div class="msy-pilot-sub">' + esc((t('unit_best_pilot_ehtk') || 'EHTK {n}').replace('{n}', String(ehtk))) + '</div>';
+      }
+      if (pilot.out_peak_dmg) {
+        sub += '<div class="msy-pilot-sub">' + esc((t('unit_best_pilot_counter_dmg') || 'Atk {n}').replace('{n}', fmtN(pilot.out_peak_dmg))) + '</div>';
+      }
+      return '<div class="msy-pilot-card msy-pilot-card--defender">'
+        + '<span class="msy-pilot-rank">' + esc(String(pilot.rank || '')) + '</span>'
+        + '<button type="button" class="msy-pilot-open" title="' + escAttr(t('msy_open_char') || 'Open pilot') + '" onclick="openDetail(\'character\',\'' + escJs(String(c.id)) + '\')">'
+        + '<div class="msy-pilot-thumb">' + pilotThumb(c) + '</div>'
+        + '<div class="msy-pilot-body">'
+        + '<div class="msy-pilot-name-row">' + roleIconHtml(c)
+        + '<span class="msy-pilot-name" title="' + escAttr(c.name || '') + '">' + esc(c.name || '') + '</span>'
+        + '</div>'
+        + sub
+        + pilotAffinityHtml(pilot)
+        + pilotDefenderReasonsHtml(pilot)
+        + '</div></button>'
+        + '<div class="msy-pilot-dmg-col"><div class="msy-pilot-dmg" title="'
+        + escAttr(t('unit_best_pilot_defender_score') || 'Defender score') + '">'
+        + fmtN(score) + '</div></div></div>';
+    }
     var dmg = pilotDamage(pilot);
-    var sub = '';
+    var subD = '';
     var critPct = pilot.crit_rate | 0;
     var isGc = !!(pilot.guaranteed_crit || critPct >= 100);
     var crTpl = t('msy_crit_rate') || '{n}% crit';
     if (isGc) {
-      sub += '<div class="msy-pilot-sub msy-pilot-sub--gc">' + esc(t('msy_guaranteed_crit') || 'Guaranteed Crit') + '</div>';
-      sub += '<div class="msy-pilot-sub">' + esc(crTpl.replace('{n}', '100')) + '</div>';
+      subD += '<div class="msy-pilot-sub msy-pilot-sub--gc">' + esc(t('msy_guaranteed_crit') || 'Guaranteed Crit') + '</div>';
+      subD += '<div class="msy-pilot-sub">' + esc(crTpl.replace('{n}', '100')) + '</div>';
     } else {
       // Always show crit % (including 0) so non-Shinn rates are visible.
-      sub += '<div class="msy-pilot-sub">' + esc(crTpl.replace('{n}', String(critPct))) + '</div>';
+      subD += '<div class="msy-pilot-sub">' + esc(crTpl.replace('{n}', String(critPct))) + '</div>';
     }
+    var skillIcons = state.skillsOn ? pilotActiveSkillIconsHtml(pilot) : '';
     return '<div class="msy-pilot-card">'
       + '<span class="msy-pilot-rank">' + esc(String(pilot.rank || '')) + '</span>'
       + '<button type="button" class="msy-pilot-open" title="' + escAttr(t('msy_open_char') || 'Open pilot') + '" onclick="openDetail(\'character\',\'' + escJs(String(c.id)) + '\')">'
@@ -922,22 +1115,22 @@
       + '<div class="msy-pilot-name-row">' + roleIconHtml(c)
       + '<span class="msy-pilot-name" title="' + escAttr(c.name || '') + '">' + esc(c.name || '') + '</span>'
       + '</div>'
-      + sub
+      + subD
       + pilotAffinityHtml(pilot)
       + '</div></button>'
       + '<div class="msy-pilot-dmg-col"><div class="msy-pilot-dmg">' + fmtN(dmg) + '</div>'
       + pilotFormulaStatHtml(pilot)
-      + pilotActiveSkillIconsHtml(pilot)
+      + skillIcons
       + '</div></div>';
   }
 
-  function renderPilotGrid(pilots, unitId) {
+  function renderPilotGrid(pilots, unitId, defenderMode) {
     if (!pilots || !pilots.length) {
       return '<div class="unit-best-pilot-empty">' + esc(t('unit_best_pilot_empty') || 'No eligible pilots found.') + '</div>';
     }
     var mid = Math.ceil(pilots.length / 2);
-    var left = pilots.slice(0, mid).map(function (p) { return renderPilotCard(unitId, p); }).join('');
-    var right = pilots.slice(mid).map(function (p) { return renderPilotCard(unitId, p); }).join('');
+    var left = pilots.slice(0, mid).map(function (p) { return renderPilotCard(unitId, p, defenderMode); }).join('');
+    var right = pilots.slice(mid).map(function (p) { return renderPilotCard(unitId, p, defenderMode); }).join('');
     return '<div class="msy-pilot-grid">'
       + '<div class="msy-pilot-col">' + left + '</div>'
       + '<div class="msy-pilot-col">' + right + '</div>'
@@ -1005,10 +1198,15 @@
       pilots_no_shinn: sortPilotsByCalcDamage(payload.pilots_no_shinn || [], mode),
       pilots_same_role: sortPilotsByCalcDamage(payload.pilots_same_role || [], mode),
       pilots_support_role: sortPilotsByCalcDamage(payload.pilots_support_role || [], mode),
+      pilots_no_active_skills: sortPilotsByCalcDamage(payload.pilots_no_active_skills || [], mode),
+      pilots_defender: sortPilotsByDefenderScore(payload.pilots_defender || []),
       no_ur_partial: !!payload.no_ur_partial,
       no_shinn_partial: !!payload.no_shinn_partial,
       same_role_partial: !!payload.same_role_partial,
       support_role_partial: !!payload.support_role_partial,
+      no_active_skills_partial: !!payload.no_active_skills_partial,
+      defender_partial: !!payload.defender_partial,
+      is_defense_unit: !!payload.is_defense_unit,
       source: payload.source || 'published_dc',
       rank_mode: mode,
       weapon_info: payload.weapon_info || null
@@ -1028,16 +1226,25 @@
     if (!modes.super_crit) modes.super_crit = primary;
     var wi = payload.weapon_info || primary.weapon_info || null;
     if (!wi && modes.super_crit) wi = modes.super_crit.weapon_info || null;
+    var defenders = primary.pilots_defender || [];
+    if (!defenders.length && payload.pilots_defender) {
+      defenders = sortPilotsByDefenderScore(payload.pilots_defender);
+    }
     return {
       pilots: primary.pilots,
       pilots_no_ur: primary.pilots_no_ur,
       pilots_no_shinn: primary.pilots_no_shinn,
       pilots_same_role: primary.pilots_same_role,
       pilots_support_role: primary.pilots_support_role,
+      pilots_no_active_skills: primary.pilots_no_active_skills,
+      pilots_defender: defenders,
       no_ur_partial: primary.no_ur_partial,
       no_shinn_partial: primary.no_shinn_partial,
       same_role_partial: primary.same_role_partial,
       support_role_partial: primary.support_role_partial,
+      no_active_skills_partial: primary.no_active_skills_partial,
+      defender_partial: primary.defender_partial,
+      is_defense_unit: !!(payload.is_defense_unit || primary.is_defense_unit),
       source: primary.source,
       weapon_info: wi,
       modes: modes
@@ -1132,6 +1339,8 @@
       var noShinnBlock = ((group.rankings_no_shinn || {})[mode]) || {};
       var sameRoleBlock = ((group.rankings_same_role || {})[mode]) || {};
       var supportRoleBlock = ((group.rankings_support_role || {})[mode]) || {};
+      var noSkillsBlock = ((group.rankings_no_active_skills || {})[mode]) || {};
+      var defBlock = (group.rankings_defender || {}).defender || {};
       return {
         pilots: pilots,
         pilots_no_ur: sortPilotsByCalcDamage(noUrBlock.pilots || filterPilotsLocal(pilots, true, true), mode),
@@ -1140,10 +1349,15 @@
         pilots_support_role: sortPilotsByCalcDamage(
           supportRoleBlock.pilots || filterPilotsLocal(pilots, false, false, false, true), mode
         ),
+        pilots_no_active_skills: sortPilotsByCalcDamage(noSkillsBlock.pilots || [], mode),
+        pilots_defender: sortPilotsByDefenderScore(defBlock.pilots || []),
         no_ur_partial: !(noUrBlock.pilots && noUrBlock.pilots.length >= 10),
         no_shinn_partial: !(noShinnBlock.pilots && noShinnBlock.pilots.length >= 10),
         same_role_partial: !(sameRoleBlock.pilots && sameRoleBlock.pilots.length >= 10),
         support_role_partial: !(supportRoleBlock.pilots && supportRoleBlock.pilots.length >= 10),
+        no_active_skills_partial: !(noSkillsBlock.pilots && noSkillsBlock.pilots.length >= 10),
+        defender_partial: !(defBlock.pilots && defBlock.pilots.length >= 10),
+        is_defense_unit: unitRoleId() === DEFENSE_ROLE_ID,
         source: 'client_dc',
         rank_mode: mode
       };
@@ -1162,10 +1376,15 @@
       pilots_no_shinn: primary.pilots_no_shinn,
       pilots_same_role: primary.pilots_same_role,
       pilots_support_role: primary.pilots_support_role,
+      pilots_no_active_skills: primary.pilots_no_active_skills,
+      pilots_defender: primary.pilots_defender,
       no_ur_partial: primary.no_ur_partial,
       no_shinn_partial: primary.no_shinn_partial,
       same_role_partial: primary.same_role_partial,
       support_role_partial: primary.support_role_partial,
+      no_active_skills_partial: primary.no_active_skills_partial,
+      defender_partial: primary.defender_partial,
+      is_defense_unit: !!primary.is_defense_unit,
       source: 'client_dc',
       weapon_info: group.weapon_info || null,
       modes: modes
@@ -1195,6 +1414,7 @@
     }
     state.cache[String(unitId)] = entry;
     state.weaponInfo = entry.weapon_info || null;
+    state.isDefenseUnit = !!entry.is_defense_unit || unitRoleId() === DEFENSE_ROLE_ID;
     state.loaded = true;
     state.loading = false;
     syncFilterButtons();
@@ -1397,14 +1617,16 @@
     }
     if (state.cache[state.unitId]) {
       state.loaded = true;
-      state.weaponInfo = state.cache[state.unitId].weapon_info || null;
+      var cachedOpen = state.cache[state.unitId];
+      state.weaponInfo = cachedOpen.weapon_info || null;
+      state.isDefenseUnit = !!cachedOpen.is_defense_unit || unitRoleId() === DEFENSE_ROLE_ID;
+      syncFilterButtons();
       syncPanelSubtitle();
       renderActivePanel();
       scheduleScrollToPanel();
       // Always refresh affinities — empty/stale rows must not stick after SP/series fixes.
-      var cached = state.cache[state.unitId];
       var lang = (global.S && global.S.lang) || 'EN';
-      void enrichAffinityMatches(cached, state.unitId, lang).then(function () {
+      void enrichAffinityMatches(cachedOpen, state.unitId, lang).then(function () {
         if (state.open && String(state.unitId) === String(d.id)) renderActivePanel();
       });
       return;
@@ -1470,6 +1692,9 @@
     state.loaded = false;
     state.loading = false;
     state.roleMode = 'all';
+    state.skillsOn = true;
+    state.boardKind = 'damage';
+    state.isDefenseUnit = !!(d && String(d.role_id || '') === DEFENSE_ROLE_ID);
     state.loadGen++;
     var wrap = global.document.getElementById('unitBestPilotPanelWrap');
     if (wrap) {
