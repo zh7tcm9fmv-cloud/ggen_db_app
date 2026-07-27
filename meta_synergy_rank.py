@@ -818,10 +818,80 @@ def _char_grown_bases(cid):
     return grown, grown_sp, ri, has_sp
 
 
+def _ex_detail_applies_to_pair(uid, cid, lc, detail):
+    """Whether an EX ability detail's structured (or text) conditions hold for this unit."""
+    A = _app()
+    uid = A.normalize_id(uid) if uid else None
+    cid = A.normalize_id(cid)
+    if not isinstance(detail, dict):
+        txt = str(detail or '')
+        if not uid:
+            return True
+        return _pilot_bonus_text_applies(uid, cid, _ldc(lc), lc, txt, None)
+    txt = str(detail.get('text') or '')
+    cond_groups = detail.get('condition_groups') or []
+    if cond_groups:
+        if not uid:
+            return True
+        return _msy_ability_cond_meets(uid, cid, lc, cond_groups)
+    if not uid or not txt:
+        return True
+    # Ungated EX chunks still need piloting/tag text gates when present.
+    return _pilot_bonus_text_applies(uid, cid, _ldc(lc), lc, txt, detail)
+
+
+def _collect_supercharged_ex_stat_tiers_for_pair(cid, uid, lc):
+    """Supercharged EX 1/2 stat tiers that actually trigger for this unit×pilot.
+
+    Unlike ``collect_supercharged_ex_stat_tiers`` (character sheet / DC max), this skips
+    EX sections whose tag/series/unit conditions are not met on ``uid``.
+    """
+    A = _app()
+    cid = A.normalize_id(cid)
+    uid = A.normalize_id(uid) if uid else None
+    ac = _build_char_ac_calc(cid, lc)
+    merged = {}
+    for bab in ac:
+        if not bab.get('is_ex'):
+            continue
+        for d2 in bab.get('details') or []:
+            if isinstance(d2, dict):
+                txt = str(d2.get('text') or '').strip()
+            else:
+                txt = str(d2 or '').strip()
+                d2 = {'text': txt}
+            if not txt:
+                continue
+            slices = A._slice_supercharged_ex_tier_sections(txt)
+            if len(slices) < 2:
+                continue
+            if not _ex_detail_applies_to_pair(uid, cid, lc, d2):
+                continue
+            for tier, label, chunk in slices:
+                add_pct = A._extract_supercharged_ex_tier_chunk_stat_pct(chunk, cid, bab)
+                if tier not in merged:
+                    merged[tier] = {'label': label or '', 'ex_pct': {s: 0 for s in A.CHAR_STAT_ORDER}}
+                for s in A.CHAR_STAT_ORDER:
+                    merged[tier]['ex_pct'][s] += add_pct[s]
+                if label and len(label) > len(merged[tier]['label'] or ''):
+                    merged[tier]['label'] = label
+    if len(merged) < 2:
+        return []
+    return [
+        {
+            'tier': t,
+            'label': A._clean_supercharged_ex_tier_label(merged[t]['label']),
+            'ex_pct': dict(merged[t]['ex_pct']),
+        }
+        for t in sorted(merged.keys())
+    ]
+
+
 def _char_totals_for_pair_max(cid, uid, lc, *, vigor='super'):
     """CP on: conditional + trait % + pair-gated traits when unit matches.
 
-    Supercharged EX tier bonuses apply only at super vigor (matches Damage Calculator).
+    Supercharged EX tier bonuses apply only at super vigor, and only when the EX
+    ability's unit/tag/series conditions are met for this pair.
     """
     A = _app()
     ldc = _calc_lang_data()
@@ -846,7 +916,10 @@ def _char_totals_for_pair_max(cid, uid, lc, *, vigor='super'):
                 pct += spbs_pair[s] + spes_pair[s]
             totals[s] = bv + math.floor(bv * pct / 100) if bv > 0 else 0
     else:
-        ex_tiers = A.collect_supercharged_ex_stat_tiers(ac, cid)
+        ex_tiers = (
+            _collect_supercharged_ex_stat_tiers_for_pair(cid, uid, lc)
+            if use_supercharged else []
+        )
         if ex_tiers and use_supercharged:
             tier = ex_tiers[-1]
             for s in A.CHAR_STAT_ORDER:
@@ -894,11 +967,16 @@ def _char_totals_for_pair_no_cp(cid, uid, lc):
     return totals, pair_ok
 
 
-def _char_guaranteed_crit(cid, lc, *, vigor='super', cp_on=True):
-    """Guaranteed crit: passive ability, or Supercharged EX 2 at super vigor (e.g. Shinn)."""
+def _char_guaranteed_crit(cid, lc, *, vigor='super', cp_on=True, uid=None):
+    """Guaranteed crit: passive ability, or Supercharged EX 2 at super vigor (e.g. Shinn).
+
+    When ``uid`` is set, EX2 GC only counts if that EX detail's conditions match the unit.
+    """
     if not cp_on or str(vigor or 'super') != 'super':
         return False
     A = _app()
+    cid = A.normalize_id(cid)
+    uid = A.normalize_id(uid) if uid else None
     for bab in _build_char_ac_calc(cid, lc):
         if bab.get('is_ex'):
             continue
@@ -914,8 +992,14 @@ def _char_guaranteed_crit(cid, lc, *, vigor='super', cp_on=True):
         if not bab.get('is_ex'):
             continue
         for d2 in bab.get('details') or []:
-            txt = str((d2 or {}).get('text') or d2 or '') if isinstance(d2, dict) else str(d2 or '')
+            if isinstance(d2, dict):
+                txt = str(d2.get('text') or '')
+            else:
+                txt = str(d2 or '')
+                d2 = {'text': txt}
             if not txt:
+                continue
+            if uid and not _ex_detail_applies_to_pair(uid, cid, lc, d2):
                 continue
             for tier, _label, chunk in A._slice_supercharged_ex_tier_sections(txt):
                 if tier == 2 and _GUARANTEED_CRIT_RE.search(chunk):
@@ -1079,8 +1163,11 @@ def _pilot_bonus_text_applies(uid, cid, ld, lc, text, detail=None):
     txt = str(text or '')
     if not txt:
         return False
-    if A._trait_line_is_supercharged_ex_section(txt):
-        return True
+    # Prefer structured conditions on the detail (tag AND series, unit id, etc.).
+    if isinstance(detail, dict):
+        cond_groups = detail.get('condition_groups') or []
+        if cond_groups:
+            return _msy_ability_cond_meets(uid, cid, lc, cond_groups)
     if _pilot_tag_affinity_matches_unit(uid, lc, txt, detail):
         return True
     if re.search(r'when piloting character', txt, re.I):
@@ -1089,8 +1176,17 @@ def _pilot_bonus_text_applies(uid, cid, ld, lc, text, detail=None):
             txt, re.I,
         ):
             return True
+    # Supercharged EX / "when piloting … specified tag and series" without structured
+    # groups must not auto-pass — require a concrete unit/tag match when gated.
     if not re.search(r'when piloting|搭乘|搭乗', txt, re.I):
         return True
+    if A._trait_line_is_supercharged_ex_section(txt) or re.search(
+        r'specified\s+tag|指定(?:的)?標[籤签]|指定タグ|特定のタグ', txt, re.I,
+    ):
+        # Text-only gate: need lineage/tag affinity or a named unit match.
+        if _pilot_tag_affinity_matches_unit(uid, lc, txt, detail):
+            return True
+        return A._pilot_text_targets_unit(uid, ld, txt)
     return A._pilot_text_targets_unit(uid, ld, txt)
 
 
@@ -1702,7 +1798,7 @@ def _unit_crit_dmg_up(uid, lc, *, cp_on=True, stat_mode='ssp'):
 
 
 def _pair_guaranteed_crit(uid, cid, lc, wpn, crit_rate, *, vigor='super'):
-    if _char_guaranteed_crit(cid, lc, vigor=vigor, cp_on=True):
+    if _char_guaranteed_crit(cid, lc, vigor=vigor, cp_on=True, uid=uid):
         return True
     if wpn and _weapon_grants_guaranteed_crit(
         wpn.get('ws'), wpn.get('wm'), uid, _ldc(lc), lc, _unit_stat_mode(
@@ -1800,8 +1896,8 @@ _MSY_BROWSE_PAYLOAD_CACHE_TTL = max(15, min(300, int(os.environ.get('MSY_BROWSE_
 _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
-_BSP_DC_RULES_VERSION = 10  # vigor-aware Supercharged EX; true SDx2; skills-off store depth
-_DEFENDER_BOARD_VERSION = 3  # series-gated SD; reduce-dmg-taken parse; Series SD bonus
+_BSP_DC_RULES_VERSION = 11  # Supercharged EX stats/GC require unit tag/series/id conditions
+_DEFENDER_BOARD_VERSION = 4  # gate Supercharged EX stats/GC on ability conditions
 _SKILLS_OFF_BOARD_VERSION = 2
 _BSP_DC_BUILD_ENGINE = 'calculateDamage'
 # From v16 onward: formula/criteria rebuilds only refresh top-N + newly added units.
@@ -2294,7 +2390,7 @@ def _filter_non_guaranteed_crit(uid, pilot_ids, unit_wpn, lc, exclude):
     for cid in pilot_ids:
         if (uid, cid) in exclude:
             continue
-        if _char_guaranteed_crit(cid, lc, vigor='super', cp_on=True):
+        if _char_guaranteed_crit(cid, lc, vigor='super', cp_on=True, uid=uid):
             continue
         if unit_wpn and _weapon_grants_guaranteed_crit(
             unit_wpn.get('ws'), unit_wpn.get('wm'), uid, ldc, lc, stat_mode,
@@ -3397,7 +3493,7 @@ def _cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc, *, cp_on=True, p
     if pair_ok:
         score *= 1.12
     score += float(skill_dmg) * 500.0
-    if cp_on and _char_guaranteed_crit(cid, lc, vigor='super', cp_on=True):
+    if cp_on and _char_guaranteed_crit(cid, lc, vigor='super', cp_on=True, uid=uid):
         score *= 2.25
     return score
 
