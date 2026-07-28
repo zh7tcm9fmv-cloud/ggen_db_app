@@ -258,3 +258,88 @@ def category_summary(rates: dict | None) -> dict:
         if bucket:
             out[key] = bucket
     return out
+
+
+def build_pity_summary(rates: dict | None, featured_units=None, featured_chars=None, featured_supporters=None):
+    """Explain 100th pull: guaranteed UR, featured share split, other UR equal share."""
+    if not rates:
+        return None
+    by_name = rates.get('by_name') or {}
+    featured_rows = []
+    matched_keys = set()
+
+    def _add_featured(items, kind_hint=''):
+        for it in items or []:
+            if not isinstance(it, dict):
+                continue
+            name = str(it.get('name') or '').strip()
+            pct = it.get('drop_pct_pity100')
+            hit = _lookup_rate_by_name(by_name, name, kind_hint) if name else None
+            if pct is None and hit:
+                pct = hit.get('pity_100')
+            if pct is None:
+                continue
+            featured_rows.append({
+                'name': name or str(it.get('id') or ''),
+                'pct': float(pct),
+                'id': it.get('id'),
+                'type': it.get('type'),
+            })
+            if hit:
+                for k, v in by_name.items():
+                    if v is hit:
+                        matched_keys.add(k)
+                        break
+
+    _add_featured(featured_units, 'unit')
+    _add_featured(featured_chars)
+    _add_featured(featured_supporters, 'supporter')
+
+    other_rows = []
+    for name, slot in by_name.items():
+        if name in matched_keys:
+            continue
+        pct = slot.get('pity_100')
+        if pct is None:
+            continue
+        if slot.get('kind') == 'supporter':
+            continue
+        other_rows.append({'name': name, 'pct': float(pct)})
+
+    feat_sum = round(sum(r['pct'] for r in featured_rows), 6)
+    other_sum = round(sum(r['pct'] for r in other_rows), 6)
+    other_count = len(other_rows)
+    other_each = None
+    if other_count:
+        pcts = [r['pct'] for r in other_rows]
+        if max(pcts) - min(pcts) < 0.02:
+            other_each = round(sum(pcts) / other_count, 6)
+
+    ur_cat = ((rates.get('category') or {}).get('pity_100') or {}).get('UR') or {}
+    guaranteed = ur_cat.get('unit_pct')
+    if guaranteed is None:
+        total = feat_sum + other_sum
+        guaranteed = 100.0 if total >= 99.5 else (total if total > 0 else None)
+    if not featured_rows and not other_rows and guaranteed is None:
+        return None
+
+    if other_count == 0 and feat_sum > 0 and guaranteed is not None:
+        other_share = max(0.0, round(float(guaranteed) - feat_sum, 4))
+    else:
+        other_share = (
+            round(other_sum, 4) if other_count
+            else max(0.0, round(float(guaranteed or 100) - feat_sum, 4))
+        )
+    # Prefer clean complementary share when near 100%.
+    if guaranteed is not None and abs((feat_sum + other_share) - float(guaranteed)) < 0.05:
+        other_share = round(float(guaranteed) - feat_sum, 4)
+
+    return {
+        'guaranteed_ur': True,
+        'guaranteed_pct': float(guaranteed) if guaranteed is not None else 100.0,
+        'featured_share_pct': feat_sum,
+        'featured': featured_rows,
+        'other_share_pct': other_share,
+        'other_count': other_count,
+        'other_each_pct': other_each,
+    }

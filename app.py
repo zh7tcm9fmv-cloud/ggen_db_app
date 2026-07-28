@@ -40,6 +40,7 @@ except ImportError:
 import game_enums
 from gasha_official_rates import (
     attach_drop_rates_to_featured,
+    build_pity_summary,
     category_summary,
     drop_rates_for_gasha,
 )
@@ -19699,7 +19700,7 @@ def _banner_timeline_supporter_item(sid, ld):
 def api_banner_timeline():
     """Gacha banner list with schedules, appeal art, and featured units/characters from master chains."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'banner_tl_v11_{lc}'
+    ck = f'banner_tl_v12_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=1800, convert_images=True)
@@ -19924,6 +19925,8 @@ def api_banner_timeline():
             attach_drop_rates_to_featured(featured_chars, official_rates)
             attach_drop_rates_to_featured(featured_supporters, official_rates, kind_hint='supporter')
         drop_category = category_summary(official_rates)
+        drop_pity = build_pity_summary(
+            official_rates, featured_units, featured_chars, featured_supporters)
 
         row = {
             'gasha_id': gasha_id,
@@ -19945,6 +19948,7 @@ def api_banner_timeline():
             'pity': pity_out,
             'point_exchange': exchange_out,
             'drop_rates': drop_category or None,
+            'drop_pity': drop_pity,
         }
         rows_out.append(row)
 
