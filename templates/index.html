@@ -670,7 +670,72 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
 #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-shimmer{position:absolute!important;inset:-55%;z-index:0;pointer-events:none;background:linear-gradient(118deg,transparent 38%,rgba(255,255,255,.2) 49%,transparent 60%);mix-blend-mode:screen;opacity:.55;animation:btLimitedSweep 5.2s ease-in-out infinite}
 #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar,
 #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .lr-card-thumb,
-#panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .lr-card-name{position:relative;z-index:1}
+#panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .lr-card-name,
+#panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .bt-drop-tab,
+#panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .bt-exchange-tab{position:relative;z-index:1}
+#panel-banner_timeline .bt-strip .bt-drop-tab,
+#panel-banner_timeline .bt-strip .bt-exchange-tab{
+  display:block;
+  margin:6px 0 0;
+  padding:4px 5px 5px;
+  box-sizing:border-box;
+  width:100%;
+  border-radius:0 0 6px 6px;
+  font-size:10px;
+  font-weight:800;
+  letter-spacing:.02em;
+  line-height:1.2;
+  text-align:center;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+#panel-banner_timeline .bt-strip .bt-drop-tab{
+  background:linear-gradient(135deg,rgba(245,158,11,.18),rgba(217,119,6,.24));
+  border:1px solid rgba(251,191,36,.42);
+  border-top-color:rgba(251,191,36,.22);
+  color:#fde68a;
+}
+#panel-banner_timeline .bt-strip .bt-exchange-tab{
+  background:linear-gradient(135deg,rgba(0,212,255,.2),rgba(69,128,230,.26));
+  border:1px solid rgba(0,212,255,.38);
+  border-top-color:rgba(0,212,255,.22);
+  color:#b8f0ff;
+}
+#panel-banner_timeline .bt-table .bt-strip .bt-drop-tab,
+#panel-banner_timeline .bt-table .bt-strip .bt-exchange-tab{font-size:9px;padding:3px 3px 4px;margin-top:5px}
+#panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--has-meta,
+#panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--exchangeable{
+  padding-bottom:0!important;
+  overflow:hidden;
+}
+#panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--has-meta .lr-card-name,
+#panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--exchangeable .lr-card-name{margin-bottom:0}
+#panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--has-meta .bt-drop-tab,
+#panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--has-meta .bt-exchange-tab,
+#panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--exchangeable .bt-exchange-tab{
+  margin-left:-6px;
+  margin-right:-6px;
+  width:calc(100% + 12px);
+  border-left:none;
+  border-right:none;
+  border-bottom:none;
+  border-radius:0;
+}
+#panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--has-meta .bt-drop-tab{margin-top:5px}
+#panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--has-meta .bt-drop-tab + .bt-exchange-tab{margin-top:0}
+#panel-banner_timeline .bt-table .bt-strip .lr-card.bt-lr-tile--has-meta .bt-drop-tab,
+#panel-banner_timeline .bt-table .bt-strip .lr-card.bt-lr-tile--has-meta .bt-exchange-tab,
+#panel-banner_timeline .bt-table .bt-strip .lr-card.bt-lr-tile--exchangeable .bt-exchange-tab{
+  margin-left:-4px;
+  margin-right:-4px;
+  width:calc(100% + 8px);
+}
+#panel-banner_timeline .bt-banner-sched-row--drop .bt-banner-sched-v{
+  font-size:11px;
+  line-height:1.35;
+  white-space:normal;
+}
 #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited{padding-top:0!important;padding-left:6px!important;padding-right:6px!important;padding-bottom:8px!important;gap:6px!important;align-items:stretch!important}
 #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .bt-limited-topbar{z-index:2;width:calc(100% + 12px)!important;margin:0 -6px 6px -6px!important;padding:5px 5px 6px!important;box-sizing:border-box;text-align:center;border-radius:calc(var(--radius-md) - 2px) calc(var(--radius-md) - 2px) 0 0!important;box-shadow:0 2px 10px rgba(0,0,0,.4);flex-shrink:0}
 #panel-banner_timeline .bt-table .bt-strip .lr-card.bt-lr-tile--limited{padding-top:0!important;padding-left:6px!important;padding-right:6px!important;padding-bottom:8px!important;gap:6px!important;align-items:stretch!important}

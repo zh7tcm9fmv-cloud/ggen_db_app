@@ -38,6 +38,11 @@ except ImportError:
     ZoneInfo = None  # pragma: no cover
 
 import game_enums
+from gasha_official_rates import (
+    attach_drop_rates_to_featured,
+    category_summary,
+    drop_rates_for_gasha,
+)
 
 app = Flask(__name__)
 # Trust Railway / CDN client IP headers (required for IP-based vote ballots).
@@ -19694,7 +19699,7 @@ def _banner_timeline_supporter_item(sid, ld):
 def api_banner_timeline():
     """Gacha banner list with schedules, appeal art, and featured units/characters from master chains."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'banner_tl_v10_{lc}'
+    ck = f'banner_tl_v11_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=1800, convert_images=True)
@@ -19912,6 +19917,14 @@ def api_banner_timeline():
 
         pity_out, exchange_out = _build_banner_pity_exchange(gx, lc, ld)
 
+        # Official site drop tables (only banners still listed on gasha officialsite).
+        official_rates = drop_rates_for_gasha(gasha_id, lc)
+        if official_rates:
+            attach_drop_rates_to_featured(featured_units, official_rates, kind_hint='unit')
+            attach_drop_rates_to_featured(featured_chars, official_rates)
+            attach_drop_rates_to_featured(featured_supporters, official_rates, kind_hint='supporter')
+        drop_category = category_summary(official_rates)
+
         row = {
             'gasha_id': gasha_id,
             'name': name or f'Gasha {gasha_id}',
@@ -19931,6 +19944,7 @@ def api_banner_timeline():
             'featured_supporters': featured_supporters,
             'pity': pity_out,
             'point_exchange': exchange_out,
+            'drop_rates': drop_category or None,
         }
         rows_out.append(row)
 

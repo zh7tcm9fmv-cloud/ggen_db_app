@@ -473,52 +473,27 @@
     height:12px;
   }
 }
+/* Keep Maria | bubble side-by-side on phones (same as desktop); only tighten sizes */
 @media (max-width:480px){
   .kofi-donate-promo-panel{
-    display:flex;
-    flex-direction:column;
-    align-items:stretch;
     max-width:calc(100vw - 12px);
-    padding:10px 12px 12px;
-    gap:2px;
+    grid-template-columns:minmax(0,72px) minmax(0,1fr);
+    column-gap:6px;
+    padding:8px;
   }
   .kofi-donate-promo-maria-wrap{
-    width:auto;
-    align-self:flex-start;
+    width:72px;
   }
   .kofi-donate-promo-maria{
-    width:68px;
-    max-height:76px;
-  }
-  .kofi-donate-promo-copy{
-    width:100%;
+    max-height:88px;
   }
   .kofi-donate-promo-bubble{
-    padding:11px 36px 12px 12px;
-    border-radius:12px;
-  }
-  .kofi-donate-promo-bubble::before{
-    left:20px;
-    bottom:auto;
-    top:-7px;
-    border-top:none;
-    border-bottom:8px solid rgba(0,212,255,.16);
-    border-left:7px solid transparent;
-    border-right:7px solid transparent;
-  }
-  .kofi-donate-promo-bubble::after{
-    left:21px;
-    bottom:auto;
-    top:-5px;
-    border-top:none;
-    border-bottom:7px solid rgba(0,0,0,.32);
-    border-left:6px solid transparent;
-    border-right:6px solid transparent;
+    padding:9px 32px 10px 10px;
   }
   .kofi-donate-promo-text{
-    font-size:13px;
-    line-height:1.55;
-    gap:6px;
+    font-size:12px;
+    line-height:1.48;
+    gap:4px;
   }
 }
 
