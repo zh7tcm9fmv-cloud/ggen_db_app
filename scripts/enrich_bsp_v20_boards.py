@@ -73,6 +73,10 @@ def main() -> int:
     ap.add_argument('--checkpoint-every', type=int, default=25, help='Write catalog every N units')
     ap.add_argument('--skip-existing', action='store_true',
                     help='Skip units that already have skills-off (and defender if Defense)')
+    ap.add_argument('--defense-only', action='store_true',
+                    help='Only enrich Defense-role units (stale Top Def boards)')
+    ap.add_argument('--defender-only', action='store_true',
+                    help='Rebuild rankings_defender only (skip skills-off recompute)')
     ap.add_argument('--dry-run', action='store_true')
     args = ap.parse_args()
 
@@ -101,6 +105,9 @@ def main() -> int:
     if want:
         work_uids = [u for u in work_uids if u in want]
         print(f'Filtered to {len(work_uids)} requested units', flush=True)
+    if args.defense_only:
+        work_uids = [u for u in work_uids if msy._unit_is_defense_role(u)]
+        print(f'Defense-only filter: {len(work_uids)} units', flush=True)
     if args.limit and args.limit > 0:
         work_uids = work_uids[: args.limit]
         print(f'Limited to {len(work_uids)} units', flush=True)
@@ -126,10 +133,15 @@ def main() -> int:
             if has_off and (has_def or not need_def):
                 continue
         try:
-            eg = msy.enrich_group_skills_off_and_defender(
-                g, args.lang, lite=False, rank_mode='super_crit', def_tier=3,
-                pilot_ids=pilot_ids, exclude=exclude, force=True,
-            )
+            if args.defender_only:
+                eg = msy.enrich_group_defender_rankings(
+                    g, args.lang, pilot_ids=pilot_ids, exclude=exclude, force=True,
+                )
+            else:
+                eg = msy.enrich_group_skills_off_and_defender(
+                    g, args.lang, lite=False, rank_mode='super_crit', def_tier=3,
+                    pilot_ids=pilot_ids, exclude=exclude, force=True,
+                )
         except Exception as e:
             print(f'  FAIL {uid}: {e}', flush=True)
             eg = g

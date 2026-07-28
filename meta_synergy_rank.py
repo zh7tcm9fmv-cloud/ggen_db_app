@@ -1899,7 +1899,7 @@ _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
 _BSP_DC_RULES_VERSION = 11  # Supercharged EX stats/GC require unit tag/series/id conditions
-_DEFENDER_BOARD_VERSION = 8  # Repair false SDx2 chips (grant count, not baked score)
+_DEFENDER_BOARD_VERSION = 9  # Stale v0 boards (all SD=18 / no Force Guard) must rebuild
 _SKILLS_OFF_BOARD_VERSION = 2
 _BSP_DC_BUILD_ENGINE = 'calculateDamage'
 # From v16 onward: formula/criteria rebuilds only refresh top-N + newly added units.
@@ -3184,14 +3184,14 @@ def compute_defender_scores_for_unit(uid, pilot_ids, exclude, lc='EN', *, top_n=
 
 
 def _defender_skill_chip_label(sk):
-    """Short skill name for DEF reason chips (e.g. Force Guard×15%)."""
+    """Short skill name for DEF reason chips (e.g. Force Guard x15%)."""
     name = str((sk or {}).get('name') or '').strip()
     if not name:
         return ''
     base = _msy_skill_base_name(name) or name
     pct = int((sk or {}).get('taken_down_pct') or 0)
     if pct > 0:
-        return f'{base}×{pct}%'
+        return f'{base} x{pct}%'
     return base
 
 
@@ -4539,7 +4539,7 @@ def _unit_best_pilot_api_cache_key(uid, lc, kwargs):
         max(1, min(4, int(kwargs.get('def_tier') or 3))),
         kwargs.get('rank_mode', 'super_crit') or 'super_crit',
         # Bump when published catalog preference / variant boards / locale patch change.
-        'bsp_v17_sd_chip_fix',
+        'bsp_v17_def_sync9',
     )
 
 
@@ -4581,6 +4581,8 @@ def _schedule_bsp_board_refresh(g, uid, lc, *, rank_mode='super_crit', def_tier=
                     if k in row:
                         g[k] = row[k]
             _invalidate_unit_best_pilot_api_cache(uid)
+            if refresh_def:
+                _persist_bsp_published_group(uid, g)
         except Exception as e:
             print(f'BSP background board refresh failed ({uid}): {e}')
         finally:
@@ -4588,6 +4590,82 @@ def _schedule_bsp_board_refresh(g, uid, lc, *, rank_mode='super_crit', def_tier=
                 _bsp_board_refresh_inflight.discard(key)
 
     threading.Thread(target=_run, daemon=True, name=f'bsp-board-{uid}').start()
+
+
+_bsp_persist_group_lock = threading.Lock()
+_bsp_persist_group_inflight = set()
+
+
+def _persist_bsp_published_group(uid, g):
+    """Write one updated group back into the in-memory + on-disk published BSP catalog."""
+    uid = _app().normalize_id(uid)
+    if not uid or not isinstance(g, dict):
+        return False
+    patched = False
+    with _BSP_PUBLISHED_MEMORY_LOCK:
+        items = list(_BSP_PUBLISHED_MEMORY.items())
+    for ck_t, disk in items:
+        if not isinstance(disk, dict):
+            continue
+        groups = disk.get('groups') or []
+        if not groups:
+            continue
+        changed = False
+        for i, row in enumerate(groups):
+            rid = _app().normalize_id((row.get('unit') or {}).get('id'))
+            if rid != uid:
+                continue
+            # Preserve identity; overlay rebuilt boards onto the published row.
+            merged = dict(row)
+            for k in (
+                'rankings_defender', 'rankings_no_active_skills', 'skills_off_board_version',
+            ):
+                if k in g:
+                    merged[k] = g[k]
+            groups[i] = merged
+            changed = True
+            break
+        if not changed:
+            continue
+        disk = dict(disk)
+        disk['groups'] = groups
+        with _BSP_PUBLISHED_MEMORY_LOCK:
+            _BSP_PUBLISHED_MEMORY[ck_t] = disk
+        _bsp_index_groups(ck_t, groups)
+        try:
+            _save_master_to_disk(ck_t, disk)
+        except Exception as e:
+            print(f'BSP persist disk failed ({uid}): {e}')
+        try:
+            save_published_master_cache(
+                ck_t, disk, build_engine=disk.get('build_engine') or _BSP_DC_BUILD_ENGINE,
+            )
+        except Exception as e:
+            print(f'BSP persist published failed ({uid}): {e}')
+        patched = True
+    return patched
+
+
+def _schedule_persist_bsp_group(uid, g):
+    """Persist a rebuilt group without blocking the API response."""
+    uid = _app().normalize_id(uid)
+    if not uid or not isinstance(g, dict):
+        return
+    with _bsp_persist_group_lock:
+        if uid in _bsp_persist_group_inflight:
+            return
+        _bsp_persist_group_inflight.add(uid)
+
+    def _run():
+        try:
+            _persist_bsp_published_group(uid, g)
+        except Exception as e:
+            print(f'BSP persist group failed ({uid}): {e}')
+        finally:
+            with _bsp_persist_group_lock:
+                _bsp_persist_group_inflight.discard(uid)
+
+    threading.Thread(target=_run, daemon=True, name=f'bsp-persist-{uid}').start()
 
 
 def _bsp_published_cache_key(lc, kwargs):
@@ -5216,9 +5294,9 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
         row_base = _group_for_def_tier(g, def_tier) if g.get('rankings_by_tier') else g
         if not row_base:
             row_base = g
-        # Instant path: serve published boards as-is.
-        # Only block on enrich when a board is truly empty. Version bumps refresh in background
-        # (sync rebuild was ~20s+ per unit and made Top 10 feel broken).
+        # Instant path for fresh boards. Stale DEF boards must NOT be served — older catalogs
+        # baked support_def_score=18 / SDx2 for nearly everyone and omitted Force Guard, so the
+        # Top Def list order is wrong (async refresh never fixed Railway / iOS).
         has_off = bool(
             ((row_base.get('rankings_no_active_skills') or {}).get(rank_mode) or {}).get('pilots')
         )
@@ -5230,22 +5308,22 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
         )
         off_ver = int(row_base.get('skills_off_board_version') or 0)
         def_ver = int((row_base.get('rankings_defender') or {}).get('board_version') or 0)
-        # Only block when the primary board for that mode is empty.
         missing_off = not has_off
-        missing_def = _unit_is_defense_role(uid) and not has_def_on
-        # Skills-off defender board / version bumps: serve what we have, refresh async.
         stale_off = has_off and off_ver < int(_SKILLS_OFF_BOARD_VERSION)
-        stale_def = _unit_is_defense_role(uid) and has_def_on and (
-            not has_def_off or def_ver < int(_DEFENDER_BOARD_VERSION)
+        # Treat missing OR outdated defender boards as blocking rebuild.
+        need_def = _unit_is_defense_role(uid) and (
+            not has_def_on
+            or not has_def_off
+            or def_ver < int(_DEFENDER_BOARD_VERSION)
         )
-        if missing_off or missing_def:
+        if missing_off or need_def:
             try:
                 if missing_off:
                     row_base = enrich_group_no_active_skills(
                         row_base, lc, lite=False, rank_mode=rank_mode, def_tier=def_tier,
                         force=True,
                     )
-                if missing_def:
+                if need_def:
                     row_base = enrich_group_defender_rankings(row_base, lc, force=True)
                 if isinstance(g, dict) and isinstance(row_base, dict):
                     for k in (
@@ -5254,12 +5332,15 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
                     ):
                         if k in row_base:
                             g[k] = row_base[k]
+                if need_def:
+                    _invalidate_unit_best_pilot_api_cache(uid)
+                    _schedule_persist_bsp_group(uid, g)
             except Exception as e:
                 print(f'best_synergy enrich failed ({uid}): {e}')
-        elif stale_off or stale_def:
+        elif stale_off:
             _schedule_bsp_board_refresh(
                 g, uid, lc, rank_mode=rank_mode, def_tier=def_tier,
-                refresh_off=stale_off, refresh_def=stale_def,
+                refresh_off=True, refresh_def=False,
             )
         if include_all_modes and isinstance(row_base.get('rankings'), dict):
             modes_out = {}
