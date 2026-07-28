@@ -59,8 +59,13 @@
     return (global.S && global.S.lang) || 'EN';
   }
 
+  function appVersion() {
+    return String(global.__GGEN_APP_VERSION__ || '');
+  }
+
   function cacheKey(unitId) {
-    return currentLang() + ':' + String(unitId || '');
+    // Include deploy version so in-memory Top 10 entries die after Railway commits.
+    return appVersion() + ':' + currentLang() + ':' + String(unitId || '');
   }
 
   function getCachedEntry(unitId) {
@@ -1459,9 +1464,11 @@
   async function fetchPublishedPilots(unitId, lang) {
     var q = 'lang=' + encodeURIComponent(lang)
       + '&lb_tier=3&def_tier=3&rank_mode=' + encodeURIComponent(state.rankMode || 'super_crit')
-      + '&top_pilots=10&all_modes=1';
+      + '&top_pilots=10&all_modes=1'
+      + '&_v=' + encodeURIComponent(appVersion() || '0');
     var res = await fetch('/api/unit/' + encodeURIComponent(unitId) + '/best_synergy_pilots?' + q, {
-      credentials: 'same-origin'
+      credentials: 'same-origin',
+      cache: 'no-store'
     });
     if (!res.ok) throw new Error('HTTP ' + res.status);
     var payload = await res.json();
@@ -1951,6 +1958,7 @@
     closePanel: closePanel,
     onDetailOpen: onDetailOpen,
     onDetailClose: onDetailClose,
-    onLangChange: onLangChange
+    onLangChange: onLangChange,
+    clearLocaleCaches: clearLocaleCaches
   };
 })(window);

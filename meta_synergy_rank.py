@@ -1899,7 +1899,7 @@ _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
 _BSP_DC_RULES_VERSION = 11  # Supercharged EX stats/GC require unit tag/series/id conditions
-_DEFENDER_BOARD_VERSION = 7  # Force Guard×N% chip label; skills toggle on DEF UI
+_DEFENDER_BOARD_VERSION = 8  # Repair false SDx2 chips (grant count, not baked score)
 _SKILLS_OFF_BOARD_VERSION = 2
 _BSP_DC_BUILD_ENGINE = 'calculateDamage'
 # From v16 onward: formula/criteria rebuilds only refresh top-N + newly added units.
@@ -3200,6 +3200,7 @@ def _defender_reason_chips(row):
     chips.append(f"EHTK {row['ehtk']:.1f}")
     sd_n = int(row.get('sd_plus_count') or 0)
     # Base SD score includes optional series bonus — gate SDx2 on grant count only.
+    # A single Defense-role "Support Defense +1" line is SD, not SDx2.
     if sd_n >= 2:
         chips.append('SDx2')
     elif sd_n >= 1:
@@ -3220,6 +3221,50 @@ def _defender_reason_chips(row):
     if row['out_peak'] > 0:
         chips.append(f"Atk {row['out_peak']:,}")
     return chips
+
+
+def _patch_defender_sd_chips(pilots, uid, lc='EN'):
+    """Rewrite SD/SDx2 chips from live grant counts (published boards may be stale).
+
+    Older defender boards baked ``support_def_score=18`` for almost every pilot and labeled
+    SDx2 via ``sd_score >= 18``. True SDx2 requires applicable Support Defense +N >= 2.
+    """
+    if not pilots:
+        return pilots
+    A = _app()
+    uid = A.normalize_id(uid) if uid else None
+    for p in pilots:
+        if not isinstance(p, dict):
+            continue
+        cid = A.normalize_id((p.get('char') or {}).get('id'))
+        if not cid:
+            continue
+        parts = _support_def_score_parts(cid, uid, lc)
+        n = int(parts.get('count') or 0)
+        series_sd = bool(parts.get('series_sd_active'))
+        p['sd_plus_count'] = n
+        p['support_def_score'] = float(parts.get('total') or 0)
+        p['series_sd'] = series_sd
+        reasons = [
+            r for r in (p.get('reasons') or [])
+            if r not in ('SD', 'SDx2', 'Series SD')
+        ]
+        insert_at = 0
+        for i, r in enumerate(reasons):
+            if str(r).startswith('EHTK'):
+                insert_at = i + 1
+                break
+        extras = []
+        if n >= 2:
+            extras.append('SDx2')
+        elif n >= 1:
+            extras.append('SD')
+        if series_sd:
+            extras.append('Series SD')
+        for j, chip in enumerate(extras):
+            reasons.insert(insert_at + j, chip)
+        p['reasons'] = reasons
+    return pilots
 
 
 def enrich_group_defender_rankings(g, lc='EN', *, pilot_ids=None, exclude=None, top_n=None,
@@ -4494,7 +4539,7 @@ def _unit_best_pilot_api_cache_key(uid, lc, kwargs):
         max(1, min(4, int(kwargs.get('def_tier') or 3))),
         kwargs.get('rank_mode', 'super_crit') or 'super_crit',
         # Bump when published catalog preference / variant boards / locale patch change.
-        'bsp_v17_support1',
+        'bsp_v17_sd_chip_fix',
     )
 
 
@@ -5004,6 +5049,9 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
     defenders_off = _rank(
         list(pilots_defender_no_skills or []), _BSP_UI_DEFENDER_TOP, by_score=True,
     )
+    # Published defender boards may still carry false SDx2 chips — fix on the way out.
+    _patch_defender_sd_chips(defenders, uid, lc)
+    _patch_defender_sd_chips(defenders_off, uid, lc)
     # Always relocalize — published catalog is EN; never skip or we poison shared rows.
     _bsp_relocalize_pilot_chars(pilots, lc)
     _bsp_relocalize_pilot_chars(no_ur, lc)

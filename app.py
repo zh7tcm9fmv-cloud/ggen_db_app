@@ -4781,29 +4781,44 @@ def _api_if_none_match_matches(if_none_match, etag):
     return False
 
 
-def _api_cache_control_header(*, public=True, max_age=3600, private=False):
+def _api_cache_control_header(*, public=True, max_age=3600, private=False, no_store=False):
+    if no_store:
+        return 'no-store, no-cache, must-revalidate'
+    age = int(max_age)
     if private or not public:
-        return f'private, max-age={int(max_age)}, must-revalidate'
-    return f'public, max-age={int(max_age)}, stale-while-revalidate=86400'
+        return f'private, max-age={age}, must-revalidate'
+    # max-age=0: always revalidate (needed so Railway deploys invalidate iOS Safari).
+    if age <= 0:
+        return 'public, max-age=0, must-revalidate'
+    return f'public, max-age={age}, stale-while-revalidate=86400'
 
 
-def jsonify_cacheable(data, cache_key, *, public=True, max_age=3600, private=False, convert_images=False):
+def jsonify_cacheable(data, cache_key, *, public=True, max_age=3600, private=False,
+                      no_store=False, convert_images=False):
     """JSON with ETag derived from cache_key. 304 skips serializing the body."""
     if convert_images:
         data = convert_image_urls(data)
     if not _API_ETAG_ENABLED or not cache_key:
-        return jsonify(data)
+        resp = jsonify(data)
+        if no_store or int(max_age) <= 0:
+            resp.headers['Cache-Control'] = _api_cache_control_header(
+                public=public, max_age=max_age, private=private, no_store=no_store,
+            )
+        return resp
     etag = _api_etag_from_cache_key(cache_key)
+    cc = _api_cache_control_header(
+        public=public, max_age=max_age, private=private, no_store=no_store,
+    )
     if _api_if_none_match_matches(request.headers.get('If-None-Match'), etag):
         resp = make_response('', 304)
         resp.headers['ETag'] = etag
-        resp.headers['Cache-Control'] = _api_cache_control_header(public=public, max_age=max_age, private=private)
+        resp.headers['Cache-Control'] = cc
         if private or not public:
             resp.headers['Vary'] = 'Cookie'
         return resp
     resp = jsonify(data)
     resp.headers['ETag'] = etag
-    resp.headers['Cache-Control'] = _api_cache_control_header(public=public, max_age=max_age, private=private)
+    resp.headers['Cache-Control'] = cc
     if private or not public:
         resp.headers['Vary'] = 'Cookie'
     return resp
@@ -14508,8 +14523,9 @@ def api_unit_best_synergy_pilots_bootstrap(unit_id):
     kwargs = msr._msy_dc_kwargs_from_request(request.args)
     try:
         payload = msr.unit_best_synergy_pilots_bootstrap_payload(unit_id, kwargs)
-        ck = f'ubp_elig_{unit_id}_{kwargs["lc"]}'
-        return jsonify_cacheable(payload, ck, public=True, max_age=3600, convert_images=False)
+        # Include deploy rev so ETags flip on every Railway commit (iOS Safari).
+        ck = f'ubp_elig_{unit_id}_{kwargs["lc"]}_{_app_js_bundle_version_tag()}'
+        return jsonify_cacheable(payload, ck, public=True, max_age=0, convert_images=False)
     except Exception as e:
         print(f'api/unit/{unit_id}/best_synergy_pilots/bootstrap failed: {e}')
         import traceback
@@ -14524,8 +14540,14 @@ def api_unit_best_synergy_pilots(unit_id):
     kwargs = msr._msy_dc_kwargs_from_request(request.args)
     try:
         payload = msr.unit_best_synergy_pilots_payload(unit_id, kwargs)
-        ck = f'ubp_{unit_id}_{kwargs["lc"]}_{kwargs.get("lb_tier", 3)}_{kwargs.get("def_tier", 3)}_{payload.get("source") or "x"}_{int(bool(payload.get("modes")))}'
-        return jsonify_cacheable(payload, ck, public=True, max_age=3600, convert_images=True)
+        # max-age=0 + deploy-tagged ETag: iOS Safari must revalidate after each Railway deploy
+        # (it has no hard-refresh; old max-age=3600 left Top Def chips stale for hours).
+        ck = (
+            f'ubp_{unit_id}_{kwargs["lc"]}_{kwargs.get("lb_tier", 3)}_{kwargs.get("def_tier", 3)}'
+            f'_{payload.get("source") or "x"}_{int(bool(payload.get("modes")))}'
+            f'_{_app_js_bundle_version_tag()}'
+        )
+        return jsonify_cacheable(payload, ck, public=True, max_age=0, convert_images=True)
     except Exception as e:
         print(f'api/unit/{unit_id}/best_synergy_pilots failed: {e}')
         import traceback
