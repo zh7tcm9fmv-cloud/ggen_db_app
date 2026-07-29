@@ -11091,7 +11091,7 @@ const inp=document.getElementById('dcPickerSearch');
 const body=document.getElementById('dcPickerBody');
 inp.value='';
 if(type==='option_parts'||type==='supporter'){
-inp.placeholder='Search by name or keyword…';
+inp.placeholder=type==='supporter'?(t('search_supporter')||'Search name, series, tags…'):'Search by name or keyword…';
 body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">Loading applicable items…</div>';
 const hasAtk=!!(S.dc.atkUnit||(S.dc.atkUnitData&&S.dc.atkUnitData._manual));
 if(type==='option_parts'&&!hasAtk){body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">Select an attacker unit first.</div>';setTimeout(()=>inp.focus(),50);return}
@@ -11156,16 +11156,23 @@ function _dcFilterDcPickerClientSide(){
 const qRaw=String(document.getElementById('dcPickerSearch').value||'').trim();
 const pool=S._dcPickerFullCache||[];
 const t=S._dcPickerType;
-if(t==='supporter'&&qRaw){
+_dcPickerSearchGen++;
+if(t==='supporter'){
+if(!qRaw){
+S._dcPickerCache=_tbSortPickerEntityRows(pool);
+renderDcPickerList();
+return;
+}
+const q=qRaw.toLowerCase();
+// Instant local match on name + leader tags (series_tag / skill_tag_data).
+S._dcPickerCache=_tbSortPickerEntityRows(pool.filter(r=>_tbPickerRowSearchHay(r).includes(q)));
+renderDcPickerList();
+// Also query API by name/tags (no unit filter) so tag search covers the full roster.
 void _dcSupporterPickerSearch(qRaw);
 return;
 }
-_dcPickerSearchGen++;
 const q=qRaw.toLowerCase();
-let rows=!q?pool:pool.filter(r=>{
-const hay=[r.name,r.details,r.boost,(r.tags||[]).map(tg=>tg.name||'').join(' ')].filter(Boolean).join(' ').toLowerCase();
-return hay.includes(q);
-});
+let rows=!q?pool:pool.filter(r=>_tbPickerRowSearchHay(r).includes(q));
 S._dcPickerCache=_tbSortPickerEntityRows(rows);
 renderDcPickerList();
 }
@@ -11175,7 +11182,8 @@ const body=document.getElementById('dcPickerBody');
 const haveVisible=!!(S._dcPickerCache&&S._dcPickerCache.length);
 if(body&&!haveVisible)body.innerHTML='<div style="padding:10px;text-align:center;color:var(--text-muted);font-size:12px">Searching...</div>';
 try{
-const rows=await _dcFetchAllListRows('/api/supporters','rarity=ALL'+_dcSupporterUnitCharQuery(),qRaw);
+// Omit unit_id so tag/name search is not limited to currently applicable leaders.
+const rows=await _dcFetchAllListRows('/api/supporters','rarity=ALL',qRaw);
 if(myGen!==_dcPickerSearchGen)return;
 S._dcPickerCache=_tbSortPickerEntityRows(rows);
 renderDcPickerList();
