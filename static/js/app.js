@@ -8555,21 +8555,10 @@ setTimeout(()=>inp.focus(),50);
 return;
 }
 if(type==='supporter'){
+inp.placeholder=t('search_supporter')||'Search name, series, tags…';
 body.innerHTML=`<div style="padding:12px;color:var(--text-muted)">…</div>`;
 try{
-let extra='&rarity=ALL';
-const ss=S._tbSupPickerSide===2?2:1;
-const squ=S.tb.squads[ss];
-const uIds=[],cIds=[];
-for(let i=0;i<5;i++){
-const sl=squ.slots[i];
-if(sl&&sl.unitData){uIds.push(sl.unitId);cIds.push(sl.charId||'')}
-}
-if(uIds.length){
-extra+='&unit_ids='+encodeURIComponent(uIds.join(','))+'&char_ids='+encodeURIComponent(cIds.join(','));
-}
-const d=await fetch(`/api/supporters?lang=${S.lang}&page=1&per_page=200&sort=rarity&dir=desc&q=${encodeURIComponent('')}${extra}`).then(r=>r.json());
-S.tb.picker.rows=d.rows||[];
+S.tb.picker.rows=await _tbFetchSupporterPickerRows('');
 filterTbPickerList();
 }catch(_){S.tb.picker.rows=[];body.innerHTML=`<div style="padding:16px">${esc(t('search_spotlight_empty'))}</div>`}
 setTimeout(()=>inp.focus(),50);
@@ -8583,7 +8572,7 @@ else body.innerHTML=`<div style="padding:12px;color:var(--text-muted)">…</div>
 setTimeout(()=>inp.focus(),50);
 await _tbDoPickerSearch();
 }
-function filterTbPicker(){clearTimeout(_tbPickerDebounce);_tbPickerDebounce=setTimeout(()=>{if(S.tb.picker.type==='unit'||S.tb.picker.type==='character')_tbDoPickerSearch();else filterTbPickerList()},55)}
+function filterTbPicker(){clearTimeout(_tbPickerDebounce);_tbPickerDebounce=setTimeout(()=>{const typ=S.tb.picker&&S.tb.picker.type;if(typ==='unit'||typ==='character')_tbDoPickerSearch();else if(typ==='supporter')_tbDoSupporterPickerSearch();else filterTbPickerList()},55)}
 function wireTbPickerBodyClicks(){
 const body=document.getElementById('tbPickerBody');
 if(!body||body.dataset.tbPickWired)return;
@@ -8704,17 +8693,49 @@ await Promise.all([charP,primeSide(1),primeSide(2)]);
 }catch(_){}
 finally{S._tbPickerPrimeBusy=false}
 }
+function _tbPickerRowSearchHay(r){
+const tagBits=[];
+(r.tags||[]).forEach(tg=>{if(tg!=null)tagBits.push(String(tg.name!=null?tg.name:tg))});
+(r.skill_tag_data||[]).forEach(sd=>{(sd&&sd.tags||[]).forEach(tg=>{if(tg&&tg.name)tagBits.push(String(tg.name))})});
+if(r.series_tag)tagBits.push(String(r.series_tag));
+return(String(r.name||'')+' '+String(r.details||r.boost||'')+' '+tagBits.join(' ')).toLowerCase();
+}
+async function _tbFetchSupporterPickerRows(qRaw){
+let extra='&rarity=ALL';
+const ss=S._tbSupPickerSide===2?2:1;
+const squ=S.tb.squads[ss];
+const uIds=[],cIds=[];
+for(let i=0;i<5;i++){
+const sl=squ&&squ.slots?squ.slots[i]:null;
+if(sl&&sl.unitData){uIds.push(sl.unitId);cIds.push(sl.charId||'')}
+}
+if(uIds.length){
+extra+='&unit_ids='+encodeURIComponent(uIds.join(','))+'&char_ids='+encodeURIComponent(cIds.join(','));
+}
+const q=String(qRaw||'').trim();
+const d=await fetch(`/api/supporters?lang=${S.lang}&page=1&per_page=100&sort=rarity&dir=desc&q=${encodeURIComponent(q)}${extra}`).then(r=>r.json());
+return d.rows||[];
+}
+async function _tbDoSupporterPickerSearch(){
+const body=document.getElementById('tbPickerBody');if(!body)return;
+const q=String(document.getElementById('tbPickerSearch').value||'').trim();
+const haveInstant=!!(S.tb.picker.rows&&S.tb.picker.rows.length);
+if(!haveInstant||q)body.innerHTML=`<div style="padding:12px;color:var(--text-muted)">…</div>`;
+try{
+S.tb.picker.rows=await _tbFetchSupporterPickerRows(q);
+filterTbPickerList();
+}catch(_){if(!haveInstant||q)body.innerHTML=`<div style="padding:16px">${esc(t('search_spotlight_empty'))}</div>`}
+}
 function filterTbPickerList(){
 const body=document.getElementById('tbPickerBody');if(!body)return;
 const pType=S.tb.picker.type;
 const q=String(document.getElementById('tbPickerSearch').value||'').trim().toLowerCase();
 let rows=S.tb.picker.rows||[];
-if(q&&pType!=='unit'&&pType!=='character'){
-rows=rows.filter(r=>{
-const tagHay=(r.tags||[]).map(tg=>String(tg.name||'')).join(' ').toLowerCase();
-const hay=(String(r.name||'')+' '+String(r.details||r.boost||'')+' '+tagHay).toLowerCase();
-return hay.includes(q);
-});
+if(q&&pType!=='unit'&&pType!=='character'&&pType!=='supporter'){
+rows=rows.filter(r=>_tbPickerRowSearchHay(r).includes(q));
+}else if(q&&pType==='supporter'){
+// API already matched name/tags; keep a local refine for series_tag / skill_tag_data shape.
+rows=rows.filter(r=>_tbPickerRowSearchHay(r).includes(q));
 }
 if(pType==='option'&&S.tb.picker.slotKey!=null){
 const usedSsr=_tbCollectUsedSsrOptionPartIds(S.tb.picker.slotKey);
@@ -10786,7 +10807,8 @@ sArea.innerHTML=h;
 
 function renderDcOptionParts(){
 const area=document.getElementById('dcAtkOptionArea');
-if(!S.dc.atkUnit){area.innerHTML='<div style="font-size:11px;color:var(--text-muted)">Select an attacker unit first.</div>';return}
+const hasAtk=!!(S.dc.atkUnit||(S.dc.atkUnitData&&S.dc.atkUnitData._manual));
+if(!hasAtk){area.innerHTML='<div style="font-size:11px;color:var(--text-muted)">Select an attacker unit first.</div>';return}
 if(!S.dc.optionParts.length){
 area.innerHTML=`<button type="button" class="dc-pick-btn" onclick="openDcPicker('option_parts')">Select option part</button>`;
 return;
@@ -10800,7 +10822,8 @@ area.innerHTML=`<div class="dc-option-item dc-option-item--layout"><div class="d
 }
 function renderDcSupporters(){
 const area=document.getElementById('dcAtkSupporterArea');
-if(!S.dc.atkUnit){area.innerHTML='<div style="font-size:11px;color:var(--text-muted)">Select an attacker unit first.</div>';return}
+const hasAtk=!!(S.dc.atkUnit||(S.dc.atkUnitData&&S.dc.atkUnitData._manual));
+if(!hasAtk){area.innerHTML='<div style="font-size:11px;color:var(--text-muted)">Select an attacker unit first.</div>';return}
 if(!S.dc.supporters.length){
 area.innerHTML=`<button type="button" class="dc-pick-btn" onclick="openDcPicker('supporter')">Select supporter</button>`;
 return;
@@ -10842,20 +10865,22 @@ page++;
 return rows;
 }
 function _dcOptionPartUnitQuery(){
-if(!S.dc.atkUnit)return'';
-return'&unit_id='+encodeURIComponent(S.dc.atkUnit);
+const uid=S.dc.atkUnit;
+if(!uid||uid==='__manual__'||(S.dc.atkUnitData&&S.dc.atkUnitData._manual))return'';
+return'&unit_id='+encodeURIComponent(uid);
 }
 function _dcSupporterUnitCharQuery(){
 let q=_dcOptionPartUnitQuery();
-if(S.dc.atkChar)q+='&character_id='+encodeURIComponent(S.dc.atkChar);
+const cid=S.dc.atkChar;
+if(cid&&cid!=='__manual__'&&!(S.dc.atkCharData&&S.dc.atkCharData._manual))q+='&character_id='+encodeURIComponent(cid);
 return q;
 }
 /** Context for supporter leader trait checks (SameGroup / lineage) — pass current DC attacker unit & pilot. */
 function _dcForSupporterContextQuery(){
 const ud=S.dc.atkUnitData,cd=S.dc.atkCharData;
 let q='';
-if(ud&&!ud._manual&&ud.id)q+='&for_unit_id='+encodeURIComponent(String(ud.id));
-if(cd&&!cd._manual&&cd.id)q+='&for_char_id='+encodeURIComponent(String(cd.id));
+if(ud&&!ud._manual&&ud.id&&String(ud.id)!=='__manual__')q+='&for_unit_id='+encodeURIComponent(String(ud.id));
+if(cd&&!cd._manual&&cd.id&&String(cd.id)!=='__manual__')q+='&for_char_id='+encodeURIComponent(String(cd.id));
 return q;
 }
 async function selectDcOptionPart(id){
@@ -11068,8 +11093,9 @@ inp.value='';
 if(type==='option_parts'||type==='supporter'){
 inp.placeholder='Search by name or keyword…';
 body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">Loading applicable items…</div>';
-if(type==='option_parts'&&!S.dc.atkUnit){body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">Select an attacker unit first.</div>';setTimeout(()=>inp.focus(),50);return}
-if(type==='supporter'&&!S.dc.atkUnit){body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">Select an attacker unit first.</div>';setTimeout(()=>inp.focus(),50);return}
+const hasAtk=!!(S.dc.atkUnit||(S.dc.atkUnitData&&S.dc.atkUnitData._manual));
+if(type==='option_parts'&&!hasAtk){body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">Select an attacker unit first.</div>';setTimeout(()=>inp.focus(),50);return}
+if(type==='supporter'&&!hasAtk){body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">Select an attacker unit first.</div>';setTimeout(()=>inp.focus(),50);return}
 try{
 if(type==='option_parts'){
 const _opAll=await _dcFetchAllListRows('/api/option_parts','rarity=ALL&effect=ALL'+_dcOptionPartUnitQuery());

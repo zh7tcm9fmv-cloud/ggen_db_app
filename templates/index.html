@@ -3310,7 +3310,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 <div id="dcAtkCustomWrap" style="display:none" class="dc-panel-section">
 <div class="dc-section-label" style="color:var(--accent-cyan);margin-bottom:4px">Custom attacker</div>
-<div style="font-size:10px;color:var(--text-muted);margin-bottom:8px;line-height:1.35">Enter unit and pilot stats and weapon values directly. Option parts are unavailable in this mode.</div>
+<div style="font-size:10px;color:var(--text-muted);margin-bottom:8px;line-height:1.35">Enter unit and pilot stats and weapon values directly. Option parts and supporters below apply on top of these base stats (same as Preset).</div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
 <div class="dc-ctrl-group"><span class="dc-ctrl-label">Unit label</span><input type="text" class="dc-input-sm" id="dcAtkManual_uName" value="Custom unit" autocomplete="off" oninput="syncDcManualAtkFromInputs()"></div>
 <div class="dc-ctrl-group"><span class="dc-ctrl-label">Pilot label</span><input type="text" class="dc-input-sm" id="dcAtkManual_cName" value="Custom pilot" autocomplete="off" oninput="syncDcManualAtkFromInputs()"></div>
@@ -3338,8 +3338,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 <div class="dc-panel-section"><div id="dcAtkStatsArea"></div></div>
 <div class="dc-panel-section dc-atk-preset-only" id="dcAtkWpnSection"><div id="dcAtkWpnArea"></div></div>
-<div class="dc-panel-section dc-atk-preset-only"><div class="dc-section-label">Option Part</div><div id="dcAtkOptionArea"></div></div>
-<div class="dc-panel-section dc-atk-preset-only"><div class="dc-section-label">Supporter</div><div id="dcAtkSupporterArea"></div></div>
+<div class="dc-panel-section" id="dcAtkOptionSection"><div class="dc-section-label">Option Part</div><div id="dcAtkOptionArea"></div></div>
+<div class="dc-panel-section" id="dcAtkSupporterSection"><div class="dc-section-label">Supporter</div><div id="dcAtkSupporterArea"></div></div>
 <div style="margin-top:16px;border-top:1px solid var(--border-color);padding-top:12px">
 <div class="dc-section-label" style="margin-bottom:8px;color:var(--accent-cyan)" id="dcAtkParamsSectionLbl">Attacker Parameters</div>
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
