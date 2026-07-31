@@ -644,10 +644,11 @@ def get_ui_label(lang_code, key):
     return labels.get(key, UI_LABELS[DEFAULT_LANG].get(key, key))
 
 def get_latest_folder(base_path, prefix):
-    """Pick newest MasterData_/Lang_ folder; within the same date, prefer the richest dump.
+    """Pick newest MasterData_/Lang_ folder by date.
 
-    Incomplete suffix dumps (e.g. MasterData_2026-07-31a missing ability rows) must not
-    beat a fuller same-day folder that sorts earlier alphabetically.
+    Hard rule: never use a same-date folder ending with ``a`` (e.g. ``MasterData_2026-07-31a``)
+    when the non-``a`` sibling exists (``MasterData_2026-07-31``). Those ``*a`` dumps are often
+    incomplete and sort after the real dump alphabetically.
     """
     if not os.path.exists(base_path):
         return None
@@ -658,27 +659,36 @@ def get_latest_folder(base_path, prefix):
     if not candidates:
         return None
 
-    def _folder_rank(name):
+    def _date_and_suffix(name):
         rest = name[len(prefix):] if name.startswith(prefix) else name
         m = re.match(r'(\d{4}-\d{2}-\d{2})(.*)$', rest)
-        date_key = m.group(1) if m else rest
-        total = 0
-        folder = os.path.join(base_path, name)
-        for fn in (
-            'm_character_ability_set.json',
-            'm_unit_ability_set.json',
-            'm_unit.json',
-            'm_character.json',
-        ):
-            fp = os.path.join(folder, fn)
-            try:
-                total += os.path.getsize(fp)
-            except OSError:
-                pass
-        return (date_key, total, name)
+        if not m:
+            return rest, ''
+        return m.group(1), m.group(2) or ''
 
-    candidates.sort(key=_folder_rank, reverse=True)
-    return os.path.join(base_path, candidates[0])
+    # Drop *a variants when the bare same-date folder exists.
+    by_date = {}
+    for name in candidates:
+        date_key, suffix = _date_and_suffix(name)
+        by_date.setdefault(date_key, []).append((name, suffix))
+    filtered = []
+    for date_key, rows in by_date.items():
+        has_bare = any(suf == '' for _, suf in rows)
+        for name, suf in rows:
+            if has_bare and suf.endswith('a'):
+                continue
+            filtered.append(name)
+    if not filtered:
+        filtered = candidates
+
+    def _folder_rank(name):
+        date_key, suffix = _date_and_suffix(name)
+        # Prefer bare date (no suffix), then lexicographically latest name as tie-break.
+        bare_first = 1 if suffix == '' else 0
+        return (date_key, bare_first, name)
+
+    filtered.sort(key=_folder_rank, reverse=True)
+    return os.path.join(base_path, filtered[0])
 
 def get_lang_paths(lang_code):
     config = LANG_CONFIG.get(lang_code, LANG_CONFIG[DEFAULT_LANG])
