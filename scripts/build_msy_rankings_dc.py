@@ -582,9 +582,14 @@ def main():
                 '--workers', str(workers),
             ]
             # Full catalog: always --resume.
-            # Incremental: first attempt re-sims selected units; later attempts --resume
-            # so checkpointed units are not re-done after a crash.
-            if args.resume or not args.incremental or attempt > 1:
+            # Incremental / --force+--unit: first attempt re-sims selected units;
+            # later attempts --resume so checkpointed units are not re-done after a crash.
+            force_selected = bool(args.force and args.unit)
+            if args.force:
+                child.append('--force')
+            if args.resume or attempt > 1 or (
+                not args.incremental and not force_selected
+            ):
                 child.append('--resume')
             if args.incremental:
                 child.append('--incremental')
