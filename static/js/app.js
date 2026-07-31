@@ -348,6 +348,11 @@ Object.assign(T.TW,{kofi_promo_kw_sneak:'獨家搶先看',kofi_promo_kw_bonus:'�
 Object.assign(T.HK,{kofi_promo_kw_sneak:'獨家搶先看',kofi_promo_kw_bonus:'額外內容',kofi_post_notice_aria:'Ko-fi 有新貼文',kofi_promo_notice_line:'我已新增紅色通知點，當有新的獨家內容時會顯示在 Ko-fi 按鈕上。'});
 Object.assign(T.JA,{kofi_promo_kw_sneak:'限定先行公開',kofi_promo_kw_bonus:'ボーナスコンテンツ',kofi_post_notice_aria:'Ko-fiに新しい投稿',kofi_promo_notice_line:'新しい限定コンテンツが公開されると、Ko-fiボタンに赤い通知が表示されます。'});
 Object.assign(T.JP,{kofi_promo_kw_sneak:'限定先行公開',kofi_promo_kw_bonus:'ボーナスコンテンツ',kofi_post_notice_aria:'Ko-fiに新しい投稿',kofi_promo_notice_line:'新しい限定コンテンツが公開されると、Ko-fiボタンに赤い通知が表示されます。'});
+Object.assign(T.EN,{dc_bigrang_zeon_squad_chk:'Big-Rang EX (1009000550) + pilot 1009000100: +5% ATK/DEF (Zeon)',dc_bigrang_zeon_squad_tip:'When Big-Rang (EX) is piloted by its EX pilot in your squad, Zeon-tagged units gain +5% ATK and DEF (permanent). Toggle on in Damage Calculator when that pair is in the squad.'});
+Object.assign(T.TW,{dc_bigrang_zeon_squad_chk:'Big-Rang EX (1009000550) + 駕駛 1009000100：吉翁小隊 +5% 攻擊/防禦',dc_bigrang_zeon_squad_tip:'小隊中有 Big-Rang（EX）並由其 EX 駕駛員駕駛時，帶有吉翁標籤的機體永久 +5% 攻擊與防禦。傷害計算中若該組合在小隊內請開啟。'});
+Object.assign(T.HK,{dc_bigrang_zeon_squad_chk:'Big-Rang EX (1009000550) + 駕駛 1009000100：吉翁小隊 +5% 攻擊/防禦',dc_bigrang_zeon_squad_tip:'小隊中有 Big-Rang（EX）並由其 EX 駕駛員駕駛時，帶有吉翁標籤的機體永久 +5% 攻擊與防禦。傷害計算中若該組合在小隊內請開啟。'});
+Object.assign(T.JA,{dc_bigrang_zeon_squad_chk:'ビッグランEX (1009000550) + パイロット1009000100：ジオン分隊 +5%攻撃/防御',dc_bigrang_zeon_squad_tip:'ビッグラン（EX）を専用パイロットが乗っているとき、ジオンタグの機体の攻撃力・防御力が永続+5%。その編成を想定する場合はON。'});
+Object.assign(T.JP,{dc_bigrang_zeon_squad_chk:T.JA.dc_bigrang_zeon_squad_chk,dc_bigrang_zeon_squad_tip:T.JA.dc_bigrang_zeon_squad_tip});
 Object.assign(T.EN,{supp_combat_power:'Combat Power',supp_gacha_quote:'Obtained Quote'});
 Object.assign(T.TW,{supp_combat_power:'戰力',supp_gacha_quote:'獲得台詞'});
 Object.assign(T.HK,{supp_combat_power:'戰力',supp_gacha_quote:'獲得台詞'});
@@ -419,7 +424,7 @@ function suppTableHeaderLabel(i18nKey){const full=t(i18nKey);let mob='';if(S.lan
 function tTerrain(name){const m=TERRAIN_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tRole(name){const m=ROLE_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tRoleFilter(roleId){const m=ROLE_LABELS[S.lang]||ROLE_LABELS.EN;return m[roleId]||m['']}
-const S={lang:'EN',languages:[],currentTab:'characters',listView:{characters:'grid',units:'grid',supporters:'grid',stages:'grid',modifications:'grid'},characters:{page:1,sort:'rarity',dir:'desc',q:''},units:{page:1,sort:'rarity',dir:'desc',q:''},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc',source:'eternal',challengeSeries:'ALL'},modifications:{page:1,sort:'name',dir:'asc',q:'',effectFilter:'ALL'},_modEffectFilterIcons:null,ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,pilotConditionalPassiveActive:false,pilotCondCharData:null,_pilotCondCharFetchId:null,_pilotCondCharInflight:null,pilotCondStackCount:0,charSuperchargedExTier:0,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_tagModalMode:'tags',_seriesModalSid:'',_seriesModalName:'',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,stageMapReinforcementOnly:false,stageMapSpawnOrderVisible:false,stageMapBuffAreasVisible:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,cmpLbByUnit:{},cmpMobilePickMode:false,listCharSp:false,listUnitSp:false,listUnitSsp:false,listCharCond:false,listUnitCond:false,listUnitPilotCond:false,listSelectedUnitId:null,listCharSource:'ALL',listUnitSource:'ALL',listMsyUnitSource:'ALL',listCharLineage:[],listCharSeries:[],listCharSkills:[],listCharAbilities:[],listUnitLineage:[],listUnitSeries:[],listUnitAbilities:[],listMsyUnitSeries:[],listMsyUnitLineage:[],listUnitTerrain:[],listUnitWeaponDebuff:[],listUnitWeaponRange:[],listUnitWeaponRangeNonMap:[],listUnitWeaponRangeNonMapSspExOnly:false,listUnitMapWeaponRange:[],listUnitMechanism:[],listSuppLineage:[],browseCombCharLineage:'and',browseCombUnitLineage:'and',browseCombSuppLineage:'and',browseCombCharSeries:'or',browseCombUnitSeries:'or',browseCombMsyUnitSeries:'or',browseCombMsyUnitLineage:'and',browseCombCharSkill:'and',browseCombUnitAbil:'and',browseCombCharTrait:'and',browseCombTerrain:'and',browseCombWb:'and',browseCombWr:'and',browseCombWrNm:'and',browseCombMapWr:'and',browseCombMech:'and',listGridVariant:{characters:2,units:2},weaponDebuffPresentKeys:null,terrainPresentTokens:null,weaponRangeSspExPresent:null,weaponRangeNonMapPresent:null,mechanismPresentRows:null,lrCacheKey:null,lrCacheData:null,btCacheKey:null,btCacheData:null,btBannerSortDir:'desc',_browsePrimed:{},dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,defUnitData:null,defCharData:null,defLbTier:3,npcList:[],wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[],unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,dcSuperchargedExTier:0,masterLeagueBuff:false,grandOffensiveBuff:false,squadCondPct:0,squadCondAtkPct:0,squadCondDefPct:0,_applicableOptionRows:null,_applicableSupporterRows:null},tb:null,_dcPickerType:null,_dcPickerCache:[],_searchRecallObs:null,_suspendRarityItemChange:false,ranking:{mode:'units',viewMode:'list',sortChar:'Ranged',sortUnit:'HP',dirChar:'desc',dirUnit:'desc',pageChar:1,pageUnit:1},listRankCharSource:'ALL',listRankUnitSource:'ALL',listRankCharLineage:[],listRankCharSeries:[],listRankCharSkills:[],listRankCharAbilities:[],listRankUnitLineage:[],listRankUnitSeries:[],listRankUnitAbilities:[],listRankUnitTerrain:[],listRankUnitWeaponDebuff:[],listRankUnitWeaponRange:[],listRankUnitWeaponRangeNonMap:[],listRankUnitWeaponRangeNonMapSspExOnly:false,listRankUnitMapWeaponRange:[],listRankUnitMechanism:[],listRankCharSp:false,listRankCharCond:false,listRankUnitSp:false,listRankUnitSsp:false,listRankUnitCond:false,listRankUnitPilotCond:false,browseCombRankCharLineage:'and',browseCombRankUnitLineage:'and',browseCombRankCharSeries:'or',browseCombRankUnitSeries:'or',browseCombRankCharSkill:'and',browseCombRankUnitAbil:'and',browseCombRankCharTrait:'and',browseCombRankTerrain:'and',browseCombRankWb:'and',browseCombRankWr:'and',browseCombRankWrNm:'and',browseCombRankMapWr:'and',browseCombRankMech:'and'};
+const S={lang:'EN',languages:[],currentTab:'characters',listView:{characters:'grid',units:'grid',supporters:'grid',stages:'grid',modifications:'grid'},characters:{page:1,sort:'rarity',dir:'desc',q:''},units:{page:1,sort:'rarity',dir:'desc',q:''},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc',source:'eternal',challengeSeries:'ALL'},modifications:{page:1,sort:'name',dir:'asc',q:'',effectFilter:'ALL'},_modEffectFilterIcons:null,ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,pilotConditionalPassiveActive:false,pilotCondCharData:null,_pilotCondCharFetchId:null,_pilotCondCharInflight:null,pilotCondStackCount:0,charSuperchargedExTier:0,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_tagModalMode:'tags',_seriesModalSid:'',_seriesModalName:'',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,stageMapReinforcementOnly:false,stageMapSpawnOrderVisible:false,stageMapBuffAreasVisible:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,cmpLbByUnit:{},cmpMobilePickMode:false,listCharSp:false,listUnitSp:false,listUnitSsp:false,listCharCond:false,listUnitCond:false,listUnitPilotCond:false,listSelectedUnitId:null,listCharSource:'ALL',listUnitSource:'ALL',listMsyUnitSource:'ALL',listCharLineage:[],listCharSeries:[],listCharSkills:[],listCharAbilities:[],listUnitLineage:[],listUnitSeries:[],listUnitAbilities:[],listMsyUnitSeries:[],listMsyUnitLineage:[],listUnitTerrain:[],listUnitWeaponDebuff:[],listUnitWeaponRange:[],listUnitWeaponRangeNonMap:[],listUnitWeaponRangeNonMapSspExOnly:false,listUnitMapWeaponRange:[],listUnitMechanism:[],listSuppLineage:[],browseCombCharLineage:'and',browseCombUnitLineage:'and',browseCombSuppLineage:'and',browseCombCharSeries:'or',browseCombUnitSeries:'or',browseCombMsyUnitSeries:'or',browseCombMsyUnitLineage:'and',browseCombCharSkill:'and',browseCombUnitAbil:'and',browseCombCharTrait:'and',browseCombTerrain:'and',browseCombWb:'and',browseCombWr:'and',browseCombWrNm:'and',browseCombMapWr:'and',browseCombMech:'and',listGridVariant:{characters:2,units:2},weaponDebuffPresentKeys:null,terrainPresentTokens:null,weaponRangeSspExPresent:null,weaponRangeNonMapPresent:null,mechanismPresentRows:null,lrCacheKey:null,lrCacheData:null,btCacheKey:null,btCacheData:null,btBannerSortDir:'desc',_browsePrimed:{},dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,defUnitData:null,defCharData:null,defLbTier:3,npcList:[],wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[],unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,dcSuperchargedExTier:0,masterLeagueBuff:false,grandOffensiveBuff:false,squadCondPct:0,squadCondAtkPct:0,squadCondDefPct:0,bigRangZeonSquadBuff:false,_applicableOptionRows:null,_applicableSupporterRows:null},tb:null,_dcPickerType:null,_dcPickerCache:[],_searchRecallObs:null,_suspendRarityItemChange:false,ranking:{mode:'units',viewMode:'list',sortChar:'Ranged',sortUnit:'HP',dirChar:'desc',dirUnit:'desc',pageChar:1,pageUnit:1},listRankCharSource:'ALL',listRankUnitSource:'ALL',listRankCharLineage:[],listRankCharSeries:[],listRankCharSkills:[],listRankCharAbilities:[],listRankUnitLineage:[],listRankUnitSeries:[],listRankUnitAbilities:[],listRankUnitTerrain:[],listRankUnitWeaponDebuff:[],listRankUnitWeaponRange:[],listRankUnitWeaponRangeNonMap:[],listRankUnitWeaponRangeNonMapSspExOnly:false,listRankUnitMapWeaponRange:[],listRankUnitMechanism:[],listRankCharSp:false,listRankCharCond:false,listRankUnitSp:false,listRankUnitSsp:false,listRankUnitCond:false,listRankUnitPilotCond:false,browseCombRankCharLineage:'and',browseCombRankUnitLineage:'and',browseCombRankCharSeries:'or',browseCombRankUnitSeries:'or',browseCombRankCharSkill:'and',browseCombRankUnitAbil:'and',browseCombRankCharTrait:'and',browseCombRankTerrain:'and',browseCombRankWb:'and',browseCombRankWr:'and',browseCombRankWrNm:'and',browseCombRankMapWr:'and',browseCombRankMech:'and'};
 window.S=S;
 function primeBrowseTabIfNeeded(tab){reloadBrowseTab(tab)}
 function reloadBrowseTab(tab){const browseTabs={characters:1,units:1,supporters:1,stages:1,modifications:1};if(!browseTabs[tab])return;if(tab==='characters')loadCharacters(S.characters.page||1);else if(tab==='units')loadUnits(S.units.page||1);else if(tab==='supporters')loadSupporters(S.supporters.page||1);else if(tab==='stages')loadStages(S.stages.page||1);else if(tab==='modifications')loadModifications(S.modifications.page||1)}
@@ -5876,7 +5881,7 @@ _activeSkills:{},
 mpLevel:'medium',
 terrainMode:'normal',terrain:0,
 finalWpnPow:0,dmgIncrease:0,critDmgUp:0,exSquadAtkPct:0,exSquadAtkPctExplicitZero:false,squadCondPct:0,atkCounterOwnAtk:false,supportCounterAtk:false,_supportCounterAtkPct:0,supportCntPairSnap:null,applyAdvantageEnemyTag:true,applyZeonEnemyTag:true,
-unitTurnBuffAtk:false,unitTurnBuffDef:false,masterLeagueBuff:false,grandOffensiveBuff:false
+unitTurnBuffAtk:false,unitTurnBuffDef:false,masterLeagueBuff:false,grandOffensiveBuff:false,bigRangZeonSquadBuff:false
 }));
 }
 function _dcReadAttackerFromDc(){
@@ -5899,6 +5904,7 @@ finalWpnPow:S.dc.finalWpnPow||0,dmgIncrease:S.dc.dmgIncrease||0,critDmgUp:S.dc.c
 unitTurnBuffAtk:!!S.dc.unitTurnBuffAtk,unitTurnBuffDef:!!S.dc.unitTurnBuffDef,
 masterLeagueBuff:!!S.dc.masterLeagueBuff,
 grandOffensiveBuff:!!S.dc.grandOffensiveBuff,
+bigRangZeonSquadBuff:!!S.dc.bigRangZeonSquadBuff,
 _pilotDmgCritExplicit:!!S.dc._pilotDmgCritExplicit,
 _squadCondFlatAdApply:(function(){const w=document.getElementById('dcSquadCondFlatAdWrap');const cb=document.getElementById('dcSquadCondFlatAdApply');if(!w||w.style.display==='none'||!cb)return undefined;return !!cb.checked})()
 }));
@@ -5928,6 +5934,7 @@ S.dc.applyZeonEnemyTag=slot.applyZeonEnemyTag!==false;
 S.dc.unitTurnBuffAtk=!!slot.unitTurnBuffAtk;S.dc.unitTurnBuffDef=!!slot.unitTurnBuffDef;
 S.dc.masterLeagueBuff=!!slot.masterLeagueBuff;
 S.dc.grandOffensiveBuff=!!slot.grandOffensiveBuff;
+S.dc.bigRangZeonSquadBuff=!!slot.bigRangZeonSquadBuff;
 S.dc._pilotDmgCritExplicit=!!slot._pilotDmgCritExplicit;
 _dcSyncSquadCondEffectiveFromState();
 if(S.dc.atkCharData)S.dc._pilotSkills=_dcPilotSkillsVisibleForDc(S.dc.atkCharData)||[];
@@ -6092,7 +6099,7 @@ if(_dcSlotNeedsAutoFit(S.dc.atkSlots[S.dc.atkSlotIndex|0]))_dcScheduleAutoFitOpt
 function initDmgCalc(){
 S._dcAtkPresetBackup=null;S._dcAtkManualPackBackup=null;S._dcDefPresetNpcBackup=null;S._dcDefDbBackup=null;S._dcDefCustomPackBackup=null;
 S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;S.dc.lbTier=3;
-S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.defNpcMapBonusesOn=false;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.applyZeonEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.dcSuperchargedExTier=0;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc.multiPctCompare=false;S.dc._dcAutoFitGen=0;S.dc._supportCntAtkPairSnapBySlot={};
+S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.bigRangZeonSquadBuff=false;S.dc.defNpcMapBonusesOn=false;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.applyZeonEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.dcSuperchargedExTier=0;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc.multiPctCompare=false;S.dc._dcAutoFitGen=0;S.dc._supportCntAtkPairSnapBySlot={};
 renderDcDefDbPicks();
 const _drp=document.getElementById('dcDefModePreset'),_drc=document.getElementById('dcDefModeCustom'),_ddb=document.getElementById('dcDefModeDatabase'),_dpw=document.getElementById('dcDefPresetWrap'),_dcw=document.getElementById('dcDefCustomWrap'),_ddbw=document.getElementById('dcDefDatabaseWrap');
 if(_drp)_drp.checked=true;if(_drc)_drc.checked=false;if(_ddb)_ddb.checked=false;if(_dpw)_dpw.style.display='';if(_dcw)_dcw.style.display='none';if(_ddbw)_ddbw.style.display='none';
@@ -6647,6 +6654,9 @@ sl._pilotDmgCritExplicit=true;
 if(i===prevIdx){
 const flatCb=document.getElementById('dcSquadCondFlatAdApply');
 if(flatCb)sl._squadCondFlatAdApply=!!flatCb.checked;
+const brCb=document.getElementById('dcBigRangZeonSquadApply');
+const brW=document.getElementById('dcBigRangZeonSquadWrap');
+if(brW&&brW.style.display!=='none'&&brCb)sl.bigRangZeonSquadBuff=!!brCb.checked;
 }
 S.dc.atkSlots[i]=sl;
 }
@@ -6696,6 +6706,7 @@ if(sl.unitTurnBuffAtk)o.uta=1;
 if(sl.unitTurnBuffDef)o.utd=1;
 if(sl.masterLeagueBuff)o.mlb=1;
 if(sl.grandOffensiveBuff)o.ogb=1;
+if(sl.bigRangZeonSquadBuff)o.brz=1;
 if(sl.applyAdvantageEnemyTag===false)o.ae=0;
 if(sl.applyZeonEnemyTag===false)o.az=0;
 const op=sl.optionParts&&sl.optionParts[0];
@@ -6817,6 +6828,7 @@ if(o.uta)slot.unitTurnBuffAtk=true;
 if(o.utd)slot.unitTurnBuffDef=true;
 if(o.mlb)slot.masterLeagueBuff=true;
 if(o.ogb)slot.grandOffensiveBuff=true;
+if(o.brz)slot.bigRangZeonSquadBuff=true;
 if(o.ae===0)slot.applyAdvantageEnemyTag=false;
 if(o.az===0)slot.applyZeonEnemyTag=false;
 const opId=o.op;
@@ -7473,6 +7485,11 @@ const PHENEX_STACK_UNIT_ID='1144000550';
 const PHENEX_SQUAD_FLAT_AD_PER_STACK_PCT=5;
 const PHENEX_SQUAD_FLAT_AD_MAX_STACKS=5;
 const PHENEX_SQUAD_FLAT_AD_MAX_TOTAL_PCT=PHENEX_SQUAD_FLAT_AD_PER_STACK_PCT*PHENEX_SQUAD_FLAT_AD_MAX_STACKS;
+/** Big-Rang (EX) 1009000550 + EX pilot 1009000100: +5% ATK/DEF (permanent) to Zeon-tagged squad units. */
+const BIG_RANG_ZEON_SQUAD_UNIT_ID='1009000550';
+const BIG_RANG_ZEON_SQUAD_PILOT_ID='1009000100';
+const ZEON_LINEAGE_TAG_ID='1015';
+const BIG_RANG_ZEON_SQUAD_FLAT_AD_PCT=5;
 /** All five slots; each MS with Neo Zeon counts once (4% each, cap 20%), including the piloted Qubeley when it bears that tag. */
 function _tbNeoZeonUnitCountInSquad(side){
 const squ=S.tb.squads[side|0];
@@ -9307,7 +9324,8 @@ function _dcDefaultSquadCondPctForCdUd(cd,ud){
 if(!_dcCharShouldShowSquadCondUi(cd,ud))return 0;
 const b=_scFindSquadConditionBinding(cd,ud);
 if(b&&b.kind==='stack_atk'&&b.countGroup){
-return Math.min(b.max|0,(b.perUnit|0)*_dcDcCountUnitsMatchingCountGroup(b.countGroup));
+/* DC single-attacker UI: honor the ability cap (e.g. Neue Ziel EX pilot 3%×N up to 15%). User can lower. */
+return b.max|0;
 }
 if(b&&b.kind==='flat_ad'){
 const rg=b.recvGroup;
@@ -9317,37 +9335,85 @@ const phen=_dcPhenexUniqueSquadFlatAdBinding(cd,ud);
 if(phen)return phen.flatPct|0;
 return _dcSquadCondInputCap(cd,ud);
 }
+function _dcUnitHasZeonLineageTag(ud){
+if(!ud||ud._manual)return false;
+const want=ZEON_LINEAGE_TAG_ID;
+const tags=ud.tags||[];
+for(let i=0;i<tags.length;i++){
+const tg=tags[i];
+if(!tg)continue;
+if(String(tg.id||'').trim()===want)return true;
+const nm=String(tg.name||'').toLowerCase();
+if(nm==='zeon'||nm.includes('ジオン公国')||nm.includes('吉翁公國')||nm.includes('吉翁公国'))return true;
+}
+return false;
+}
+function _dcIsBigRangZeonSquadCarrierPair(cd,ud){
+return!!(cd&&ud&&!cd._manual&&!ud._manual&&String(ud.id)===BIG_RANG_ZEON_SQUAD_UNIT_ID&&String(cd.id)===BIG_RANG_ZEON_SQUAD_PILOT_ID);
+}
+function _dcShouldShowBigRangZeonSquadBuffToggle(cd,ud){
+if(!ud||ud._manual||!_dcUnitHasZeonLineageTag(ud))return false;
+/* Carrier already applies the aura via normal squad-condition binding — avoid double-counting. */
+if(_dcIsBigRangZeonSquadCarrierPair(cd,ud))return false;
+return true;
+}
+function _dcBigRangZeonSquadBuffActive(){
+if(!_dcShouldShowBigRangZeonSquadBuffToggle(S.dc.atkCharData,S.dc.atkUnitData))return false;
+const wrap=document.getElementById('dcBigRangZeonSquadWrap');
+const cb=document.getElementById('dcBigRangZeonSquadApply');
+if(wrap&&wrap.style.display!=='none'&&cb)return!!cb.checked;
+return!!S.dc.bigRangZeonSquadBuff;
+}
+function setDcBigRangZeonSquadBuff(on){
+S.dc.bigRangZeonSquadBuff=!!on;
+const cb=document.getElementById('dcBigRangZeonSquadApply');
+if(cb)cb.checked=!!on;
+onDcParamChange();
+}
+function toggleDcBigRangZeonSquadBuff(){
+const cb=document.getElementById('dcBigRangZeonSquadApply');
+setDcBigRangZeonSquadBuff(cb?!cb.checked:!S.dc.bigRangZeonSquadBuff);
+}
 function _dcSyncSquadCondEffectiveFromState(){
 const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;
 S.dc.squadCondAtkPct=0;
 S.dc.squadCondDefPct=0;
-if(!ud||ud._manual||!cd||cd._manual||_scIsQubeleyExCombo(cd,ud))return;
+if(!ud||ud._manual||!cd||cd._manual||_scIsQubeleyExCombo(cd,ud)){
+if(_dcBigRangZeonSquadBuffActive()){S.dc.squadCondAtkPct=BIG_RANG_ZEON_SQUAD_FLAT_AD_PCT;S.dc.squadCondDefPct=BIG_RANG_ZEON_SQUAD_FLAT_AD_PCT}
+return;
+}
 const raw=Math.max(0,S.dc.squadCondPct|0);
 const b=_scFindSquadConditionBinding(cd,ud);
 if(b){
-if(b.pilotGroups&&b.pilotGroups.length&&!_dcAbilityCondContextMeetsGroups(ud,cd,b.pilotGroups))return;
+if(b.pilotGroups&&b.pilotGroups.length&&!_dcAbilityCondContextMeetsGroups(ud,cd,b.pilotGroups)){
+/* fall through — still allow Big-Rang Zeon aura */
+}else{
 if(b.kind==='flat_ad'){
 const rg=b.recvGroup;
-if(rg&&!_dcSquadRecvGroupMet(ud,cd,rg))return;
-}
-if(b.kind==='stack_atk'&&b.countGroup){
-const n=_dcDcCountUnitsMatchingCountGroup(b.countGroup);
-const auto=Math.min(b.max|0,(b.perUnit|0)*n);
-S.dc.squadCondAtkPct=auto;
-S.dc.squadCondDefPct=0;
-return;
-}
+if(rg&&!_dcSquadRecvGroupMet(ud,cd,rg)){/* skip local */}
+else{
 const cap=_dcSquadCondInputCap(cd,ud);
 const v=Math.min(Math.max(0,cap),raw);
-if(b.kind==='flat_ad'){
 if(b.flatPerUnit){const per=b.flatPct|0;const eff=per*v;S.dc.squadCondAtkPct=eff;S.dc.squadCondDefPct=eff}
 else{S.dc.squadCondAtkPct=v;S.dc.squadCondDefPct=v}
-}else{S.dc.squadCondAtkPct=v;S.dc.squadCondDefPct=0}
-return;
 }
+}else{
+/* stack_atk / dual_stack / flat_atk: use the Squad conditions input (0–cap), not live DC slot counts */
+const cap=_dcSquadCondInputCap(cd,ud);
+const v=Math.min(Math.max(0,cap),raw);
+S.dc.squadCondAtkPct=v;
+S.dc.squadCondDefPct=0;
+}
+}
+}else{
 const v=Math.min(100,raw);
 S.dc.squadCondAtkPct=v;
 S.dc.squadCondDefPct=0;
+}
+if(_dcBigRangZeonSquadBuffActive()){
+S.dc.squadCondAtkPct=(S.dc.squadCondAtkPct|0)+BIG_RANG_ZEON_SQUAD_FLAT_AD_PCT;
+S.dc.squadCondDefPct=(S.dc.squadCondDefPct|0)+BIG_RANG_ZEON_SQUAD_FLAT_AD_PCT;
+}
 }
 function _dcDefNpcMapBonusesEnabled(){return S.dc.defNpcMapBonusesOn!==false;}
 /** Map NPC unit: default stats match in-game map tiles (own + pilot + this NPC's squad lines only).
@@ -9421,6 +9487,21 @@ const bf=qual?_dcSquadFlatAdSingleBinding(cd,ud):null;
 flatW.style.display=bf?'':'none';
 if(bf){flatLb.textContent=t('dc_squad_cond_flat_ad_chk').replace('%n',String(bf.flatPct|0));flatLb.title=t('dc_squad_cond_flat_ad_tip');flatCb.checked=(S.dc.squadCondPct|0)>0}
 }else if(flatW)flatW.style.display='none';
+const brW=document.getElementById('dcBigRangZeonSquadWrap');
+const brLb=document.getElementById('dcBigRangZeonSquadLbl');
+const brCb=document.getElementById('dcBigRangZeonSquadApply');
+if(brW&&brLb&&brCb){
+const showBr=_dcShouldShowBigRangZeonSquadBuffToggle(cd,ud);
+brW.style.display=showBr?'':'none';
+if(showBr){
+brLb.textContent=t('dc_bigrang_zeon_squad_chk');
+brLb.title=t('dc_bigrang_zeon_squad_tip');
+brCb.checked=!!S.dc.bigRangZeonSquadBuff;
+}else if(S.dc.bigRangZeonSquadBuff){
+S.dc.bigRangZeonSquadBuff=false;
+brCb.checked=false;
+}
+}else if(brW)brW.style.display='none';
 _dcUpdateDefNpcMapBonusesToggleUi();
 }
 function _dcEffectiveExSquadAtkPct(){return _dcEffectiveExSquadAtkPctFromCtx(S.dc);}
@@ -11139,6 +11220,7 @@ if(rawStr!==''){const rx=parseInt(rawStr,10);if(Number.isFinite(rx))rawPct=Math.
 if(bfBind&&flatCb&&!flatCb.checked)rawPct=0;
 S.dc.squadCondPct=rawPct;
 }else S.dc.squadCondPct=0}
+{const wBr=document.getElementById('dcBigRangZeonSquadWrap');const cbBr=document.getElementById('dcBigRangZeonSquadApply');if(wBr&&wBr.style.display!=='none'&&cbBr)S.dc.bigRangZeonSquadBuff=!!cbBr.checked}
 _dcSyncSquadCondEffectiveFromState();
 {const c=document.getElementById('dcDefNpcMapBonusesOn');if(c)S.dc.defNpcMapBonusesOn=!!c.checked}
 const _sqPanelChg=_prevScEffAtk!==(S.dc.squadCondAtkPct|0)||_prevScEffDef!==(S.dc.squadCondDefPct|0);
@@ -12523,7 +12605,7 @@ lines.push(`${rr.isSuperVigor?t('dc_super_crit_dmg'):t('dc_crit_dmg')}: ${fmtN(r
 lines.push(`Hit Rate: ${rr.hitRate}%`);
 _dcCopyLinesWeaponTraitBonus(rr).forEach(x=>lines.push(x));
 if((rr.exSquadAtkPct|0)>0)lines.push(`EX squad ATK: +${rr.exSquadAtkPct}% (on growth after option-part ATK %; then supporter leader % on Attack)`);
-if((rr.squadCondAtkPct|0)>0||(rr.squadCondDefPct|0)>0)lines.push(`Squad conditions: +${rr.squadCondAtkPct|0}% MS ATK`+((rr.squadCondDefPct|0)>0?`, +${rr.squadCondDefPct|0}% MS DEF`:``)+` (same % bucket as other sheet ATK/DEF %)`);
+if((rr.squadCondAtkPct|0)>0||(rr.squadCondDefPct|0)>0)lines.push(`Squad conditions: +${rr.squadCondAtkPct|0}% MS ATK`+((rr.squadCondDefPct|0)>0?`, +${rr.squadCondDefPct|0}% MS DEF`:``)+` (same % bucket as other sheet ATK/DEF %)`+(S.dc.bigRangZeonSquadBuff?' · includes Big-Rang EX Zeon aura +5%':''));
 if((rr.counterOwnAtkPct|0)>0)lines.push(`Own ATK when countering: +${rr.counterOwnAtkPct}% (MS Attack; pilot EX ability toggle + checkbox)`);
 if((rr.supportCounterAtkPctApplied|0)>0)lines.push(`Support Attack/Counter: +${rr.supportCounterAtkPctApplied}% MS ATK (Support-role pilot passive; toggle in Attacker Parameters)`);
 if((rr.advantageTagAtkPct|0)>0)lines.push(`Advantage (enemy tag): +floor(${rr.advantageTagAtkPct}% × raw LB MS Attack base) when defender matches (flat add, not +% on total)`);
@@ -12549,7 +12631,7 @@ lines.push(`${r.isSuperVigor?t('dc_super_crit_dmg'):t('dc_crit_dmg')}: ${fmtN(r.
 lines.push(`Hit Rate: ${r.hitRate}%`);
 _dcCopyLinesWeaponTraitBonus(r).forEach(x=>lines.push(x));
 if((r.exSquadAtkPct|0)>0)lines.push(`EX squad ATK: +${r.exSquadAtkPct}% (on growth after option-part ATK %; then supporter leader % on Attack)`);
-if((r.squadCondAtkPct|0)>0||(r.squadCondDefPct|0)>0)lines.push(`Squad conditions: +${r.squadCondAtkPct|0}% MS ATK`+((r.squadCondDefPct|0)>0?`, +${r.squadCondDefPct|0}% MS DEF`:``)+` (same % bucket as other sheet ATK/DEF %)`);
+if((r.squadCondAtkPct|0)>0||(r.squadCondDefPct|0)>0)lines.push(`Squad conditions: +${r.squadCondAtkPct|0}% MS ATK`+((r.squadCondDefPct|0)>0?`, +${r.squadCondDefPct|0}% MS DEF`:``)+` (same % bucket as other sheet ATK/DEF %)`+(S.dc.bigRangZeonSquadBuff?' · includes Big-Rang EX Zeon aura +5%':''));
 if((r.counterOwnAtkPct|0)>0)lines.push(`Own ATK when countering: +${r.counterOwnAtkPct}% (MS Attack; pilot EX ability toggle + checkbox)`);
 if((r.supportCounterAtkPctApplied|0)>0)lines.push(`Support Attack/Counter: +${r.supportCounterAtkPctApplied}% MS ATK (Support-role pilot passive; toggle in Attacker Parameters)`);
 if((r.advantageTagAtkPct|0)>0)lines.push(`Advantage (enemy tag): +floor(${r.advantageTagAtkPct}% × raw LB MS Attack base) when defender matches (flat add, not +% on total)`);
