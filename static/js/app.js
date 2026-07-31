@@ -7563,9 +7563,16 @@ function _scParseSquadLineStats(txt){
 if(!txt)return null;
 const raw=String(txt).replace(/\r/g,'');
 const t=raw.replace(/\s+/g,' ');
+const hasCond1=/(?:\[condition\s*1\]|【條件\s*1】|【条件\s*1】)/i.test(raw);
+const hasCond2=/(?:\[condition\s*2\]|【條件\s*2】|【条件\s*2】)/i.test(raw);
 let m=t.match(/increase own ATK by (\d+)%[\s\S]*?\(up to (\d+)%\)/i);
 if(m)return{kind:'dual_stack_atk',per:+m[1],max:+m[2]};
-if(/(?:\[condition\s*1\]|【條件1】|【条件1】)/i.test(raw)){
+/* EN dual-stack (e.g. 1210002400 Wing Series): Condition 1 = piloting tag, Condition 2 = per-squad count tag. */
+if(hasCond1&&hasCond2){
+m=t.match(/Increase ATK by (\d+)% \(up to (\d+)%\)/i);
+if(m)return{kind:'dual_stack_atk',per:+m[1],max:+m[2]};
+}
+if(hasCond1){
 m=t.match(/自身の攻撃力が(\d+)%上昇（最大(\d+)%）/);
 if(m)return{kind:'dual_stack_atk',per:+m[1],max:+m[2]};
 m=t.match(/自身攻擊力提升(\d+)%（最高(\d+)%）/);
@@ -7769,7 +7776,9 @@ return{atk:eff,def:eff};
 return{atk:b.flatPct|0,def:b.flatPct|0};
 }
 if(b.kind==='stack_atk'||b.kind==='dual_stack_atk'){
-const n=_tbCountSquadUnitsMatchingGroup(side,b.countGroup);
+/* Include this slot when it matches Condition 2 (e.g. Wing Series alone → 2%, full Wing squad → 10%). */
+let n=_tbCountSquadUnitsMatchingGroup(side,b.countGroup)|0;
+if(ud&&!ud._manual&&b.countGroup&&_dcConditionGroupMatches(ud,null,b.countGroup)&&n<1)n=1;
 return{atk:Math.min(b.max|0,(b.perUnit|0)*n),def:0};
 }
 return z;
@@ -9320,12 +9329,21 @@ if(_dcConditionGroupMatches(u2,null,cg))n++;
 }
 return n;
 }
+/** Stack squad ATK (2%×N up to 10%, etc.): count matching DC attacker MS, always including the active unit when it matches. */
+function _dcStackSquadAtkDefaultPct(cd,ud,b){
+if(!b||!b.countGroup)return 0;
+let n=_dcDcCountUnitsMatchingCountGroup(b.countGroup)|0;
+if(ud&&!ud._manual&&_dcConditionGroupMatches(ud,null,b.countGroup)&&n<1)n=1;
+const per=b.perUnit|0,max=b.max|0;
+if(!(per>0)||!(max>0))return 0;
+return Math.min(max,per*Math.max(0,n));
+}
 function _dcDefaultSquadCondPctForCdUd(cd,ud){
 if(!_dcCharShouldShowSquadCondUi(cd,ud))return 0;
 const b=_scFindSquadConditionBinding(cd,ud);
-if(b&&b.kind==='stack_atk'&&b.countGroup){
-/* DC single-attacker UI: honor the ability cap (e.g. Neue Ziel EX pilot 3%×N up to 15%). User can lower. */
-return b.max|0;
+if(b&&(b.kind==='stack_atk'||b.kind==='dual_stack_atk')&&b.countGroup){
+/* e.g. 1210002400 Wing Series: alone on a Wing MS → 2%; five Wing MS → 10%. User can raise/lower the Squad conditions field. */
+return _dcStackSquadAtkDefaultPct(cd,ud,b);
 }
 if(b&&b.kind==='flat_ad'){
 const rg=b.recvGroup;
