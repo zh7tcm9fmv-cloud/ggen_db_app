@@ -109,7 +109,8 @@
   }
 
   function isEligible(d) {
-    return !!(d && d.best_synergy_pilot_eligible && !d.detail_npc_context);
+    // SD / Linked Character units cannot switch pilots — no Top 10 boards.
+    return !!(d && d.best_synergy_pilot_eligible && !d.is_sd && !d.detail_npc_context);
   }
 
   function hasRecPilot(d) {

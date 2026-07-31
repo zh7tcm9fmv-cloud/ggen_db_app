@@ -50,13 +50,29 @@
     return k === 'JA' ? 'JP' : k;
   }
 
+  function isBlockedMediaUrl(u) {
+    if (!u) return true;
+    const s = String(u).trim();
+    if (!s) return true;
+    const low = s.toLowerCase();
+    if (low.startsWith('file:') || low.startsWith('filesystem:') || low.startsWith('chrome-extension:') || low.startsWith('moz-extension:')) return true;
+    if (/^[a-zA-Z]:[\\/]/.test(s) || s.startsWith('\\\\')) return true;
+    return false;
+  }
+
   function imgUrlPreferCdn(path) {
+    if (!path || isBlockedMediaUrl(path)) return '';
+    if (typeof global.imgUrl === 'function') {
+      const viaApp = global.imgUrl(path);
+      return viaApp && !isBlockedMediaUrl(viaApp) ? viaApp : '';
+    }
     const cdn = global.__GGEN_IMAGE_CDN__;
     const useCdn = global.__GGEN_GAME_IMAGES_USE_CDN__;
-    if (cdn && useCdn !== false && path && path.indexOf('/static/') === 0) {
-      return String(cdn) + path.slice('/static'.length);
+    let out = path;
+    if (cdn && useCdn !== false && !isBlockedMediaUrl(cdn) && path.indexOf('/static/') === 0) {
+      out = String(cdn) + path.slice('/static'.length);
     }
-    return path;
+    return out && !isBlockedMediaUrl(out) ? out : '';
   }
 
   function escAttr(s) {
@@ -68,6 +84,7 @@
 
   function uiNoticeFlareHtml() {
     const src = imgUrlPreferCdn(UI_NOTICE_FLARE_PATH);
+    if (!src) return '<span class="ui-notice-flare" aria-hidden="true"></span>';
     return (
       '<span class="ui-notice-flare" aria-hidden="true"><img class="ui-notice-flare-img" src="' +
       escAttr(src) +

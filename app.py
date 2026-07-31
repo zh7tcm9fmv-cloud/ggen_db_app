@@ -356,11 +356,28 @@ else:
     GAME_IMAGES_USE_CDN = bool(IMAGE_CDN) and _env_flag(_gicdn_env, default=False)
 
 
+def _is_blocked_media_url(path):
+    """Reject file://, Windows drive paths, and UNC paths so they never reach the browser."""
+    if not path or not isinstance(path, str):
+        return True
+    s = path.strip()
+    if not s:
+        return True
+    low = s.lower()
+    if low.startswith(('file:', 'filesystem:', 'chrome-extension:', 'moz-extension:')):
+        return True
+    if re.match(r'^[a-zA-Z]:[\\/]', s) or s.startswith('\\\\'):
+        return True
+    return False
+
+
 def convert_image_urls(obj):
     """Recursively replace /static/images/ paths with CDN URLs when GAME_IMAGES_USE_CDN is enabled."""
     if not IMAGE_CDN or not GAME_IMAGES_USE_CDN:
         return obj
     if isinstance(obj, str):
+        if _is_blocked_media_url(obj):
+            return ''
         if obj.startswith('/static/images/'):
             return game_image_public_url(obj)
         return obj
@@ -380,12 +397,12 @@ def _prefer_webp_game_path(path):
 
 def game_image_public_url(path):
     """Resolve /static/images/* to an absolute CDN URL when IMAGE_CDN and GAME_IMAGES_USE_CDN are set."""
-    if not path or not isinstance(path, str):
-        return path
+    if not path or not isinstance(path, str) or _is_blocked_media_url(path):
+        return '' if path else path
     if not path.startswith('/static/images/'):
         return path
     path = _prefer_webp_game_path(path)
-    if IMAGE_CDN and GAME_IMAGES_USE_CDN:
+    if IMAGE_CDN and GAME_IMAGES_USE_CDN and not _is_blocked_media_url(IMAGE_CDN):
         return IMAGE_CDN.rstrip('/') + '/images/' + path[len('/static/images/'):]
     return path
 
@@ -10319,7 +10336,7 @@ def _char_pair_conditional_unit_ids(char_id):
     return out
 
 
-# Manual shortcut fallbacks for missing character <-> unit links.
+# Manual shortcut fallbacks for missing character <-> unit links (non-SD / legacy).
 MANUAL_SHORTCUT_PAIRS = [
     ('1725000100', '1725000150'),
     ('1700000100', '1700000100'),
@@ -10348,6 +10365,68 @@ for _cid_raw, _uid_raw in MANUAL_SHORTCUT_PAIRS:
         MANUAL_UNIT_RECOMMEND_CHARACTER_MAP[_uid] = _cid
         if _cid not in CHAR_RECOMMEND_UNIT_MAP:
             CHAR_RECOMMEND_UNIT_MAP[_cid] = _uid
+
+# SD Linked Character ↔ unit (m_linked_character_unit) — authoritative for all SD shortcuts.
+LINKED_UNIT_CHARACTER_MAP = {}
+LINKED_CHARACTER_UNIT_MAP = {}
+_linked_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'EN', 'master', 'm_linked_character_unit.json')
+try:
+    with open(_linked_path, encoding='utf-8') as _lf:
+        _linked_rows = json.load(_lf)
+except (OSError, json.JSONDecodeError, TypeError, ValueError):
+    _linked_rows = []
+for _row in _linked_rows or []:
+    _luid = normalize_id((_row or {}).get('UnitId'))
+    _lcid = normalize_id((_row or {}).get('CharacterId'))
+    if _luid == '0' or _lcid == '0':
+        continue
+    if _luid not in unit_info_map or _lcid not in char_info_map:
+        continue
+    LINKED_UNIT_CHARACTER_MAP[_luid] = _lcid
+    LINKED_CHARACTER_UNIT_MAP[_lcid] = _luid
+    MANUAL_UNIT_RECOMMEND_CHARACTER_MAP[_luid] = _lcid
+    MANUAL_CHAR_RECOMMEND_UNIT_MAP[_lcid] = _luid
+    CHAR_RECOMMEND_UNIT_MAP[_lcid] = _luid
+
+# Every SD unit must have a char↔unit shortcut (no exception).
+for _uid in list(unit_info_map.keys()):
+    _ui = unit_info_map[_uid]
+    if not _unit_has_sd_mechanism(_ui, _uid):
+        continue
+    if _uid in MANUAL_UNIT_RECOMMEND_CHARACTER_MAP:
+        continue
+    _cid = normalize_id(_ui.get('recommend_character_id') or '0')
+    if _cid == '0' and _uid in char_info_map:
+        _cid = _uid
+    if _cid != '0' and _cid in char_info_map:
+        MANUAL_UNIT_RECOMMEND_CHARACTER_MAP[_uid] = _cid
+        MANUAL_CHAR_RECOMMEND_UNIT_MAP.setdefault(_cid, _uid)
+        if _cid not in CHAR_RECOMMEND_UNIT_MAP:
+            CHAR_RECOMMEND_UNIT_MAP[_cid] = _uid
+print(f"SD linked shortcuts: {len(LINKED_UNIT_CHARACTER_MAP)} from master, {sum(1 for u,i in unit_info_map.items() if _unit_has_sd_mechanism(i,u))} SD units total")
+
+
+def resolve_unit_recommend_character_id(uid, info=None):
+    """Prefer SD linked character, then unit recommend_character_id, then manual map."""
+    uid = normalize_id(uid)
+    linked = LINKED_UNIT_CHARACTER_MAP.get(uid)
+    if linked:
+        return linked
+    info = info or unit_info_map.get(uid) or {}
+    rec = normalize_id(info.get('recommend_character_id') or '0')
+    if rec != '0':
+        return rec
+    return normalize_id(MANUAL_UNIT_RECOMMEND_CHARACTER_MAP.get(uid, '0'))
+
+
+def resolve_character_recommend_unit_id(cid):
+    """Prefer SD linked unit, then CHAR_RECOMMEND_UNIT_MAP / manual."""
+    cid = normalize_id(cid)
+    linked = LINKED_CHARACTER_UNIT_MAP.get(cid)
+    if linked:
+        return linked
+    return CHAR_RECOMMEND_UNIT_MAP.get(cid) or MANUAL_CHAR_RECOMMEND_UNIT_MAP.get(cid)
+
 
 # ═══════════════════════════════════════════════════════
 # HELPER FUNCTIONS
@@ -18369,9 +18448,7 @@ def list_characters():
 
 def unit_list_recommend_character_brief(uid, info, ld, lc):
     """Minimal recommended pilot for unit list rows (Team Builder uses before full /api/unit load)."""
-    rec_cid = normalize_id(info.get('recommend_character_id') or '0')
-    if rec_cid == '0':
-        rec_cid = normalize_id(MANUAL_UNIT_RECOMMEND_CHARACTER_MAP.get(uid, '0'))
+    rec_cid = resolve_unit_recommend_character_id(uid, info)
     if rec_cid == '0' or rec_cid not in char_info_map:
         return None
     cinfo = char_info_map[rec_cid]
@@ -22842,7 +22919,7 @@ def get_character(char_id):
             return bab
         abilities = [build_ab(ab) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder',0)))]
         ac = [build_ab(ab, CALC_LANG) for ab in sorted(fa, key=lambda x: int(x.get('SortOrder',0)))]
-        rec_uid_for_pair = CHAR_RECOMMEND_UNIT_MAP.get(char_id)
+        rec_uid_for_pair = resolve_character_recommend_unit_id(char_id)
         recommend_unit = None
         if rec_uid_for_pair and rec_uid_for_pair in unit_info_map:
             uinfo = unit_info_map[rec_uid_for_pair]
@@ -23281,9 +23358,7 @@ def get_unit(unit_id):
         if not view_ranking:
             if il:
                 mechs.append({'name': '2x2', 'description': 'Deployed onto the battlefield at size 2x2.' if lc == 'EN' else '以2x2的尺寸在戰場上出擊。', 'icon': '/static/images/mechanism/mechanism_0002.webp'})
-            rec_cid = normalize_id(info.get('recommend_character_id') or '0')
-            if rec_cid == '0':
-                rec_cid = MANUAL_UNIT_RECOMMEND_CHARACTER_MAP.get(unit_id, '0')
+            rec_cid = resolve_unit_recommend_character_id(unit_id, info)
             recommend_character = None
             if rec_cid != '0' and rec_cid in char_info_map:
                 cinfo = char_info_map[rec_cid]
@@ -23312,9 +23387,7 @@ def get_unit(unit_id):
                         })
                         break
         else:
-            rec_cid = normalize_id(info.get('recommend_character_id') or '0')
-            if rec_cid == '0':
-                rec_cid = MANUAL_UNIT_RECOMMEND_CHARACTER_MAP.get(unit_id, '0')
+            rec_cid = resolve_unit_recommend_character_id(unit_id, info)
             recommend_character = None
             if rec_cid != '0' and rec_cid in char_info_map:
                 cinfo = char_info_map[rec_cid]
@@ -23351,7 +23424,8 @@ def get_unit(unit_id):
                 or (_pilot_tag_wpn.get('crit') or 0)
                 or _pilot_en_red):
             _has_pilot_cond = True
-        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'has_cond_weapon_range': _has_cond_weapon_range, 'has_pilot_cond_passive': _has_pilot_cond, 'cp_weapon_range_mods': _cp_wpn_range_mods, 'pilot_weapon_effect_bonuses': _pilot_wpn_fx, 'pilot_tag_weapon_stat_bonuses': _pilot_tag_wpn, 'pilot_en_cost_reduction_pct': _pilot_en_red, 'weapon_en_cost_increase_pct': {'sp': en_cost_inc_b[0], 'ssp': en_cost_inc_sspb[0], 'sp_cond': en_cost_inc_c[0], 'ssp_cond': en_cost_inc_sspc[0]}, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id, 'gacha_pull_movie_id': _gacha_pull_movie_id}
+        _is_sd_unit = _unit_has_sd_mechanism(info, unit_id)
+        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'has_cond_weapon_range': _has_cond_weapon_range, 'has_pilot_cond_passive': _has_pilot_cond, 'cp_weapon_range_mods': _cp_wpn_range_mods, 'pilot_weapon_effect_bonuses': _pilot_wpn_fx, 'pilot_tag_weapon_stat_bonuses': _pilot_tag_wpn, 'pilot_en_cost_reduction_pct': _pilot_en_red, 'weapon_en_cost_increase_pct': {'sp': en_cost_inc_b[0], 'ssp': en_cost_inc_sspb[0], 'sp_cond': en_cost_inc_c[0], 'ssp_cond': en_cost_inc_sspc[0]}, 'is_large': il, 'is_sd': _is_sd_unit, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id, 'gacha_pull_movie_id': _gacha_pull_movie_id}
         if not view_ranking:
             ssp_mats = _build_unit_ssp_materials(unit_id, lc)
             if ssp_mats:
@@ -23367,7 +23441,8 @@ def get_unit(unit_id):
             import meta_synergy_rank as _msr
             # Eligibility only — do NOT embed Top 10 here (blocks detail open).
             # Client prefetches /api/unit/.../best_synergy_pilots after paint.
-            result['best_synergy_pilot_eligible'] = _msr.unit_is_rankable(unit_id, lc)
+            # SD units cannot switch pilots — no Top 10 damage/def pilot boards.
+            result['best_synergy_pilot_eligible'] = (not _is_sd_unit) and _msr.unit_is_rankable(unit_id, lc)
         except Exception:
             result['best_synergy_pilot_eligible'] = False
         set_cached_response(ck, result)

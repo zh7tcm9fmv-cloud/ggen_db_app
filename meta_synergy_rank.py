@@ -4504,7 +4504,11 @@ def dc_bootstrap_payload(kwargs):
 
 
 def unit_is_rankable(uid, lc='EN'):
-    """Whether a single unit has a sim-eligible best weapon."""
+    """Whether a single unit has a sim-eligible best weapon.
+
+    SD units lock to a Linked Character and cannot switch pilots — no Top 10
+    damage/def pilot boards for them.
+    """
     A = _app()
     lc = lc or A.DEFAULT_LANG
     uid = A.normalize_id(uid)
@@ -4512,6 +4516,8 @@ def unit_is_rankable(uid, lc='EN'):
         return False
     info = A.unit_info_map.get(uid)
     if not info:
+        return False
+    if _is_sd_unit(uid, info):
         return False
     stat_mode = _unit_stat_mode(str(info.get('rarity', '1')), info=info)
     return bool(_cached_best_ex_weapon(uid, stat_mode, lc))

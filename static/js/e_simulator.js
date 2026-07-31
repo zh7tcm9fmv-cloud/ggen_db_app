@@ -196,35 +196,26 @@
       var isSeriesSsp = /Ssp_Frame|Ssp_Bg/i.test(layerKey);
       var isSeriesLogo = /Logo-Series|logo_l_series/i.test(unit) || isSeriesSp || isSeriesSsp;
       var layers = '';
-      if (base) {
-        layers +=
-          '<img class="esim-chip-layer esim-chip-base" src="' + esc(imgUrl(base)) +
-          '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">';
+      function chipLayer(cls, path) {
+        var src = typeof imgUrl === 'function' ? imgUrl(path) : path;
+        if (!src) return '';
+        return (
+          '<img class="esim-chip-layer ' + cls + '" src="' + esc(src) +
+          '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">'
+        );
       }
+      if (base) layers += chipLayer('esim-chip-base', base);
       if (isSeriesLogo) {
-        if (frame) {
-          layers +=
-            '<img class="esim-chip-layer esim-chip-frame" src="' + esc(imgUrl(frame)) +
-            '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">';
-        }
-        layers +=
-          '<img class="esim-chip-layer esim-chip-logo' + (isSeriesSp ? ' esim-chip-logo--sp' : '') +
-          '" src="' + esc(imgUrl(unit)) +
-          '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">';
+        if (frame) layers += chipLayer('esim-chip-frame', frame);
+        layers += chipLayer('esim-chip-logo' + (isSeriesSp ? ' esim-chip-logo--sp' : ''), unit);
         return (
           '<div class="esim-chip-thumb ' + (isSeriesSp ? 'esim-chip-thumb--sp' : 'esim-chip-thumb--ssp') +
           '" style="width:' + sz + 'px;height:' + sz + 'px">' +
           layers + '</div>'
         );
       }
-      layers +=
-        '<img class="esim-chip-layer esim-chip-logo" src="' + esc(imgUrl(unit)) +
-        '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">';
-      if (frame) {
-        layers +=
-          '<img class="esim-chip-layer esim-chip-frame" src="' + esc(imgUrl(frame)) +
-          '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">';
-      }
+      layers += chipLayer('esim-chip-logo', unit);
+      if (frame) layers += chipLayer('esim-chip-frame', frame);
       return (
         '<div class="esim-chip-thumb esim-chip-thumb--uexp" style="width:' + sz + 'px;height:' + sz + 'px">' +
         layers + '</div>'

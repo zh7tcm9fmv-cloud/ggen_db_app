@@ -106,14 +106,17 @@
     var img = document.querySelector('#kofiDonatePromo .kofi-donate-promo-maria');
     if (!img) return;
     var path = pickPromoPortraitPath();
-    img.src = promoImgUrl(path);
+    var src = promoImgUrl(path);
+    if (!src) return;
+    img.src = src;
     img.onerror = function () {
       if (typeof global.gameImageUrlFallback === 'function') {
         global.gameImageUrlFallback(img);
         return;
       }
       img.onerror = null;
-      img.src = promoImgUrl(MARIA_IMG);
+      var fb = promoImgUrl(MARIA_IMG);
+      if (fb) img.src = fb;
     };
   }
 

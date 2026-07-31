@@ -12,9 +12,11 @@ This database is mostly static. Browse + Top 10 must feel instant. If performanc
 1. **Serve published/static data** — Characters/units lists and Top 10 BSP come from precomputed caches (`data/published` BSP catalogs, in-memory API caches). Never block the user response on live enrich/sim for board-version bumps.
 2. **HTTP ETag caching** — Stable JSON APIs use `jsonify_cacheable` (ETag + `Cache-Control`). Prefer 304 over re-serializing bodies. Applies to browse lists and `/api/unit/.../best_synergy_pilots`.
 3. **Top 10 instant path** — Return published pilots immediately. Sync-enrich only when a board is *empty*. Stale skills-off / defender boards refresh in the **background**.
-4. **Browse first** — Do not let GTM, optional brand fonts, e-sim/feedback/kofi, or aggressive prefetch compete with `/api/characters` first paint.
-   - Do **not** `await /api/languages` before characters — boot from `localStorage` lang, refresh language list in parallel.
-   - Do **not** call `ensureBrowseFiltersMeta` (3× `/api/browse_filters`) from cold `applyLang`; warm filters after first characters paint / idle only.
+4. **Browse first** — Do not let GTM, optional brand fonts, e-sim/feedback/kofi, or aggressive prefetch compete with the **routed** tab’s first paint.
+   - Do **not** `await /api/languages` before browse — boot from `localStorage` lang, refresh language list in parallel.
+   - Do **not** hard-prime `/api/characters` on every cold load — resolve short path / `?tab=` first (`/st` → stages only, etc.).
+   - Do **not** call `ensureBrowseFiltersMeta` (3× `/api/browse_filters`) from cold `applyLang`; warm filters after first browse paint / idle only.
+   - Defer full `initToolbarFilterIcons()` off cold `applyLang` (stage toolbar labels may stay sync); never emit empty/`file:` media `src`.
    - Keep megabyte CJK fonts (`Noto Sans JP`) out of the EN `--font-body` stack; use `font-display:optional` for brand OTFs and Noto.
 5. **Lang switch** — Reload only the visible browse tab; other tabs on demand. Client Top 10 cache must be keyed/invalidated by locale so pilot names re-localize.
 6. **Regression = bug** — If Top 10 or browse feels multi-second again, measure latency and return to the published-cache path above.
