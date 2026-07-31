@@ -85,14 +85,14 @@
   border-radius:8px;background:rgba(255,255,255,.04);border:1px solid var(--border-color);z-index:1;
 }
 .esim-chip-thumb--sp{
-  position:relative;overflow:visible;flex-shrink:0;border-radius:8px;background:transparent;border:none;
+  position:relative;overflow:visible;flex-shrink:0;z-index:2;border-radius:8px;background:transparent;border:none;
   filter:drop-shadow(0 2px 6px rgba(0,0,0,.45));
 }
 .esim-chip-thumb--sp .esim-chip-logo,
 .esim-chip-logo--sp{
-  left:8%;top:30%;width:84%;height:40%;padding:0;z-index:2;
+  left:8%;top:30%;width:84%;height:40%;padding:0;z-index:4;
 }
-.esim-chip-thumb--sp .esim-chip-frame{z-index:3}
+.esim-chip-thumb--sp .esim-chip-frame{z-index:2}
 .esim-chip-thumb--ssp{
   overflow:visible;border-color:transparent;background:transparent;
   filter:drop-shadow(0 2px 6px rgba(0,0,0,.45));

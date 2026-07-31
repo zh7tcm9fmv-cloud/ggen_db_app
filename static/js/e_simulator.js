@@ -183,7 +183,7 @@
     return null;
   }
 
-  /** Series SP/SSP: bg → logo → frame. Unit SP: hex portrait under frame. */
+  /** Series SP/SSP: bg → frame → logo (logo on top so it is not clipped). Unit SP: hex portrait under frame. */
   function rewardThumbHtml(r, sz) {
     sz = sz || REWARD_ICON_SIZE;
     var name = (r && (r.name || r.label)) || '';
@@ -202,25 +202,15 @@
           '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">';
       }
       if (isSeriesLogo) {
-        if (isSeriesSp) {
+        if (frame) {
           layers +=
-            '<img class="esim-chip-layer esim-chip-logo esim-chip-logo--sp" src="' + esc(imgUrl(unit)) +
-            '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">';
-          if (frame) {
-            layers +=
-              '<img class="esim-chip-layer esim-chip-frame" src="' + esc(imgUrl(frame)) +
-              '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">';
-          }
-        } else {
-          if (frame) {
-            layers +=
-              '<img class="esim-chip-layer esim-chip-frame" src="' + esc(imgUrl(frame)) +
-              '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">';
-          }
-          layers +=
-            '<img class="esim-chip-layer esim-chip-logo" src="' + esc(imgUrl(unit)) +
+            '<img class="esim-chip-layer esim-chip-frame" src="' + esc(imgUrl(frame)) +
             '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">';
         }
+        layers +=
+          '<img class="esim-chip-layer esim-chip-logo' + (isSeriesSp ? ' esim-chip-logo--sp' : '') +
+          '" src="' + esc(imgUrl(unit)) +
+          '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">';
         return (
           '<div class="esim-chip-thumb ' + (isSeriesSp ? 'esim-chip-thumb--sp' : 'esim-chip-thumb--ssp') +
           '" style="width:' + sz + 'px;height:' + sz + 'px">' +
