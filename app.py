@@ -644,10 +644,40 @@ def get_ui_label(lang_code, key):
     return labels.get(key, UI_LABELS[DEFAULT_LANG].get(key, key))
 
 def get_latest_folder(base_path, prefix):
-    if not os.path.exists(base_path): return None
-    candidates = [f for f in os.listdir(base_path) if f.startswith(prefix) and os.path.isdir(os.path.join(base_path, f))]
-    if not candidates: return None
-    candidates.sort(reverse=True)
+    """Pick newest MasterData_/Lang_ folder; within the same date, prefer the richest dump.
+
+    Incomplete suffix dumps (e.g. MasterData_2026-07-31a missing ability rows) must not
+    beat a fuller same-day folder that sorts earlier alphabetically.
+    """
+    if not os.path.exists(base_path):
+        return None
+    candidates = [
+        f for f in os.listdir(base_path)
+        if f.startswith(prefix) and os.path.isdir(os.path.join(base_path, f))
+    ]
+    if not candidates:
+        return None
+
+    def _folder_rank(name):
+        rest = name[len(prefix):] if name.startswith(prefix) else name
+        m = re.match(r'(\d{4}-\d{2}-\d{2})(.*)$', rest)
+        date_key = m.group(1) if m else rest
+        total = 0
+        folder = os.path.join(base_path, name)
+        for fn in (
+            'm_character_ability_set.json',
+            'm_unit_ability_set.json',
+            'm_unit.json',
+            'm_character.json',
+        ):
+            fp = os.path.join(folder, fn)
+            try:
+                total += os.path.getsize(fp)
+            except OSError:
+                pass
+        return (date_key, total, name)
+
+    candidates.sort(key=_folder_rank, reverse=True)
     return os.path.join(base_path, candidates[0])
 
 def get_lang_paths(lang_code):
@@ -1863,9 +1893,12 @@ def _extract_piloting_unit_phrase_from_text(text):
     if not text:
         return ''
     s = str(text)
-    m = re.search(r'when\s+piloting\s+([^\n,]+)', s, re.I)
+    m = re.search(r'when\s+piloting\s+(.+?)\s+and\s+vigor', s, re.I)
     if m:
         return m.group(1).strip()
+    m = re.search(r'when\s+piloting\s+([^\n,]+)', s, re.I)
+    if m:
+        return re.sub(r'\s+and\s+.*$', '', m.group(1).strip(), flags=re.I).strip()
     m = re.search(r'搭乘(?:單位為)?「([^」]+)」', s)
     if m:
         return m.group(1).strip()
@@ -1877,7 +1910,7 @@ def _extract_piloting_unit_phrase_from_text(text):
         return m.group(1).strip()
     m = re.search(r'when\s+piloting\s+(.+?)(?:\n|,|\.)', s, re.I | re.S)
     if m:
-        return m.group(1).strip()
+        return re.sub(r'\s+and\s+.*$', '', m.group(1).strip(), flags=re.I).strip()
     return ''
 
 
@@ -1979,6 +2012,9 @@ def _ability_text_implies_pilot_weapon_effect_additive(txt):
         return False
     if re.search(r'improve\s+.+?\s+weapon effects by\s+\d+\s*%\s+additively', txt, re.I):
         return True
+    # Wufei Altron: "additively increase increased Special Damage taken weapon effects by 5%"
+    if re.search(r'additively\s+increase\s+.+?\s+weapon effects by\s+\d+\s*%', txt, re.I):
+        return True
     if re.search(r'武装効果値が\d+%加算', txt):
         return True
     if re.search(r'武裝效果值增加\d+%|武裝效果.*?增加\d+%', txt):
@@ -2005,7 +2041,10 @@ def _ability_phrase_to_weapon_effect_keys(phrase):
         keys.add('dmg_beam')
     if re.search(r'physical.*damage taken|damage taken.*physical|物理武装被ダメージ', p + s, re.I):
         keys.add('dmg_phys')
-    if re.search(r'special.*damage taken|damage taken.*special|特殊武装被ダメージ', p + s, re.I):
+    if re.search(
+            r'special.*damage taken|damage taken.*special|特殊武装被ダメージ|特殊被ダメージ|'
+            r'特殊損傷|特殊损伤',
+            p + s, re.I):
         keys.add('dmg_spec')
     if re.search(r'def|防御力|防禦力', p + s) and re.search(r'decrease|down|減少', p + s, re.I):
         keys.add('def_dn')
@@ -2023,7 +2062,9 @@ def _ability_phrase_to_weapon_effect_keys(phrase):
         keys.add('dmg_beam')
     if re.search(r'物理武装被ダメージ上昇', s):
         keys.add('dmg_phys')
-    if re.search(r'特殊武装被ダメージ上昇', s):
+    if re.search(r'特殊武装被ダメージ上昇|特殊被ダメージ上昇', s):
+        keys.add('dmg_spec')
+    if re.search(r'受到的特殊損傷提升|特殊損傷提升', s):
         keys.add('dmg_spec')
     if re.search(r'防御力減少', s):
         keys.add('def_dn')
@@ -2036,20 +2077,31 @@ def _ability_phrase_to_weapon_effect_keys(phrase):
     return keys
 
 
-def _parse_pilot_weapon_effect_additive_from_text(text, uid, ld):
+def _parse_pilot_weapon_effect_additive_from_text(text, uid, ld, require_unit_gate=True):
     """Parse additive weapon-effect % from a pilot ability line for this unit."""
     bonuses = {}
     s = str(text or '')
     if not s:
         return bonuses
-    if not re.search(r'when\s+piloting|搭乘|搭乗', s, re.I):
-        return bonuses
-    if not _pilot_text_targets_unit(uid, ld, s):
-        return bonuses
+    has_pilot_gate = bool(re.search(r'when\s+piloting|搭乘|搭乗', s, re.I))
+    if require_unit_gate:
+        if not has_pilot_gate:
+            return bonuses
+        if not _pilot_text_targets_unit(uid, ld, s):
+            return bonuses
     re_en = re.compile(
-        r'improve\s+((?:(?:increase|decrease)\s+)?.+?)\s+weapon effects by\s+(\d+)\s*%\s+additively',
+        r'improve\s+((?:(?:increase|decrease|increased|decreased)\s+)?.+?)\s+weapon effects by\s+(\d+)\s*%\s+additively',
         re.I)
     for m in re_en.finditer(s):
+        pct = int(m.group(2) or 0)
+        if not pct:
+            continue
+        for k in _ability_phrase_to_weapon_effect_keys(m.group(1)):
+            bonuses[k] = max(bonuses.get(k, 0), pct)
+    re_en2 = re.compile(
+        r'additively\s+increase\s+((?:(?:increase|decrease|increased|decreased)\s+)?.+?)\s+weapon effects by\s+(\d+)\s*%',
+        re.I)
+    for m in re_en2.finditer(s):
         pct = int(m.group(2) or 0)
         if not pct:
             continue
@@ -2093,16 +2145,42 @@ def _collect_pilot_weapon_effect_additive_bonuses(uid, ld, lc, stat_mode='normal
     rc = _recommend_ur_pilot_id_for_unit(uid)
     if rc == '0':
         return merged
+    # Ability details may split the unit-gate line and the "…武装効果値がN%加算" continuation.
+    unit_gated_ability = False
+    pending_continuation = []
     for ad in _char_ability_entries_for_pilot_cond(rc, ld, lc, stat_mode):
-        for d2 in ad.get('details', []) or []:
+        details = ad.get('details', []) or []
+        ability_targets_unit = False
+        for d2 in details:
             txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
             if not txt:
                 continue
+            if re.search(r'when\s+piloting|搭乘|搭乗', txt, re.I) and _pilot_text_targets_unit(uid, ld, txt):
+                ability_targets_unit = True
+                unit_gated_ability = True
             if not re.search(
-                    r'when\s+piloting|搭乘|搭乗|weapon effects by|武装効果値が\d+%加算|武裝效果值增加\d+%|武裝效果.*?增加\d+%',
+                    r'when\s+piloting|搭乘|搭乗|weapon effects by|武装効果値が\d+%加算|武裝效果值增加\d+%|'
+                    r'武裝效果.*?增加\d+%|additively\s+increase',
                     txt, re.I):
                 continue
-            for k, v in _parse_pilot_weapon_effect_additive_from_text(txt, uid, ld).items():
+            row = _parse_pilot_weapon_effect_additive_from_text(txt, uid, ld, require_unit_gate=True)
+            if not row and ability_targets_unit and _ability_text_implies_pilot_weapon_effect_additive(txt):
+                row = _parse_pilot_weapon_effect_additive_from_text(
+                    txt, uid, ld, require_unit_gate=False)
+            for k, v in row.items():
+                merged[k] = max(merged.get(k, 0), v)
+            if not row and _ability_text_implies_pilot_weapon_effect_additive(txt):
+                pending_continuation.append(txt)
+        if ability_targets_unit:
+            for txt in pending_continuation:
+                for k, v in _parse_pilot_weapon_effect_additive_from_text(
+                        txt, uid, ld, require_unit_gate=False).items():
+                    merged[k] = max(merged.get(k, 0), v)
+        pending_continuation = []
+    if unit_gated_ability:
+        for txt in pending_continuation:
+            for k, v in _parse_pilot_weapon_effect_additive_from_text(
+                    txt, uid, ld, require_unit_gate=False).items():
                 merged[k] = max(merged.get(k, 0), v)
     return merged
 
@@ -2180,6 +2258,90 @@ def _ability_text_implies_pilot_tag_affinity_weapon_stat(txt):
         txt, re.I))
 
 
+def _ability_text_implies_pilot_tag_affinity_en_or_damage(txt):
+    """Tag-affinity PEP: damage dealt and/or weapon EN consumption (e.g. Trowa Wing)."""
+    if not txt or not isinstance(txt, str):
+        return False
+    if not re.search(
+            r'piloting units with specified tags|指定.*?タグ|指定.*?標籤|指定.*?标签|'
+            r'含有上述「標籤」|搭乘單位含有上述「標籤」|上記の「タグ」|搭乗ユニットが上記の「タグ」',
+            txt, re.I):
+        return False
+    return bool(re.search(
+        r'EN\s+consumption|consumption\s+EN|消費EN|消耗EN|EN消費|EN消耗|'
+        r'damage dealt|与ダメージ|造成的損傷|造成的损伤',
+        txt, re.I))
+
+
+def _ability_text_implies_pilot_gated_pilot_stat(txt):
+    """Pilot exclusive: Melee/Ranged/etc. % when piloting a named unit (e.g. Wufei Altron)."""
+    if not txt or not isinstance(txt, str):
+        return False
+    return bool(re.search(
+        r'increase\s+(?:own\s+)?(?:Melee|Ranged|Awaken|Defense|Reaction)\s+by\s+\d+\s*%|'
+        r'(?:Melee|Ranged|Awaken|Defense|Reaction)\s+by\s+\d+\s*%|'
+        r'(?:格闘|射撃|覚醒|防御|反応)値が\d+%上昇|'
+        r'(?:格鬥|射擊|覺醒|防禦|反應)值提升\d+%',
+        txt, re.I))
+
+
+def _ability_text_implies_pilot_en_consumption(txt):
+    """Pilot exclusive or tag line that reduces weapon EN consumption."""
+    if not txt or not isinstance(txt, str):
+        return False
+    return bool(re.search(
+        r'reduce\s+(?:own\s+)?(?:weapon\s+)?EN\s+consumption|'
+        r'weapon\s+EN\s+consumption\s+by|'
+        r'消費ENが\d+%軽減|武装の消費EN|'
+        r'消耗EN減輕|武裝消耗EN',
+        txt, re.I))
+
+
+def _extract_en_consumption_reduction_pct(txt):
+    s = str(txt or '')
+    out = 0
+    for pat in (
+        r'reduce\s+(?:own\s+)?(?:weapon\s+)?EN\s+consumption\s+by\s+(\d+)\s*%',
+        r'weapon\s+EN\s+consumption\s+by\s+(\d+)\s*%',
+        r'消費ENが(\d+)%軽減',
+        r'武装の消費ENが(\d+)%軽減',
+        r'消耗EN減輕(\d+)%',
+        r'武裝消耗EN減輕(\d+)%',
+    ):
+        m = re.search(pat, s, re.I)
+        if m:
+            out = max(out, int(m.group(1) or 0))
+    return out
+
+
+def _collect_pilot_en_cost_reduction_pct(uid, ld, lc, stat_mode='normal'):
+    """Recommend UR pilot: weapon EN cost reduction % for this unit (named or tag affinity)."""
+    pct = 0
+    rc = _recommend_ur_pilot_id_for_unit(uid)
+    if rc == '0':
+        return 0
+    for ad in _char_ability_entries_for_pilot_cond(rc, ld, lc, stat_mode):
+        for d2 in ad.get('details', []) or []:
+            if not isinstance(d2, dict):
+                txt = str(d2)
+                if not _ability_text_implies_pilot_en_consumption(txt):
+                    continue
+                if re.search(r'when\s+piloting|搭乘|搭乗', txt, re.I) and _pilot_text_targets_unit(uid, ld, txt):
+                    pct = max(pct, _extract_en_consumption_reduction_pct(txt))
+                continue
+            txt = d2.get('text', '') or ''
+            if not txt or not _ability_text_implies_pilot_en_consumption(txt):
+                continue
+            if re.search(r'when\s+piloting|搭乘|搭乗', txt, re.I) and _pilot_text_targets_unit(uid, ld, txt):
+                pct = max(pct, _extract_en_consumption_reduction_pct(txt))
+                continue
+            if _ability_text_implies_pilot_tag_affinity_en_or_damage(txt):
+                req_tags = _collect_detail_lineage_tag_names(d2)
+                if req_tags and _unit_has_any_lineage_tag(uid, lc, req_tags):
+                    pct = max(pct, _extract_en_consumption_reduction_pct(txt))
+    return pct
+
+
 def _unit_ability_text_implies_pilot_cond_passive(txt):
     """MS ability: pilot-character-gated squad stat buff (e.g. Phenex Narrative/Newtype → NT-D)."""
     if not txt or not isinstance(txt, str):
@@ -2221,7 +2383,7 @@ def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal'):
             txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
             if not txt:
                 continue
-            if _ability_text_implies_pilot_tag_affinity_weapon_stat(txt):
+            if _ability_text_implies_pilot_tag_affinity_weapon_stat(txt) or _ability_text_implies_pilot_tag_affinity_en_or_damage(txt):
                 req_tags = _collect_detail_lineage_tag_names(d2) if isinstance(d2, dict) else []
                 if req_tags and _unit_has_any_lineage_tag(uid, lc, req_tags):
                     _PILOT_COND_PASSIVE_CACHE[cache_key] = True
@@ -2233,6 +2395,12 @@ def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal'):
                     _PILOT_COND_PASSIVE_CACHE[cache_key] = True
                     return True
                 if _ability_text_implies_pilot_weapon_effect_additive(txt):
+                    _PILOT_COND_PASSIVE_CACHE[cache_key] = True
+                    return True
+                if _ability_text_implies_pilot_gated_pilot_stat(txt):
+                    _PILOT_COND_PASSIVE_CACHE[cache_key] = True
+                    return True
+                if _ability_text_implies_pilot_en_consumption(txt):
                     _PILOT_COND_PASSIVE_CACHE[cache_key] = True
                     return True
     for ad in _unit_ability_entries_for_weapon_range(uid, ld, lc, stat_mode):
@@ -23029,12 +23197,14 @@ def get_unit(unit_id):
         ]
         _pilot_wpn_fx = _collect_pilot_weapon_effect_additive_bonuses(unit_id, ld, lc, stat_mode_arg)
         _pilot_tag_wpn = _collect_pilot_tag_weapon_stat_bonuses(unit_id, ld, lc, stat_mode_arg)
+        _pilot_en_red = _collect_pilot_en_cost_reduction_pct(unit_id, ld, lc, stat_mode_arg)
         if not _has_pilot_cond and (
                 _pilot_wpn_fx
                 or (_pilot_tag_wpn.get('acc') or 0)
-                or (_pilot_tag_wpn.get('crit') or 0)):
+                or (_pilot_tag_wpn.get('crit') or 0)
+                or _pilot_en_red):
             _has_pilot_cond = True
-        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'has_cond_weapon_range': _has_cond_weapon_range, 'has_pilot_cond_passive': _has_pilot_cond, 'cp_weapon_range_mods': _cp_wpn_range_mods, 'pilot_weapon_effect_bonuses': _pilot_wpn_fx, 'pilot_tag_weapon_stat_bonuses': _pilot_tag_wpn, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id, 'gacha_pull_movie_id': _gacha_pull_movie_id}
+        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'has_cond_weapon_range': _has_cond_weapon_range, 'has_pilot_cond_passive': _has_pilot_cond, 'cp_weapon_range_mods': _cp_wpn_range_mods, 'pilot_weapon_effect_bonuses': _pilot_wpn_fx, 'pilot_tag_weapon_stat_bonuses': _pilot_tag_wpn, 'pilot_en_cost_reduction_pct': _pilot_en_red, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id, 'gacha_pull_movie_id': _gacha_pull_movie_id}
         if not view_ranking:
             ssp_mats = _build_unit_ssp_materials(unit_id, lc)
             if ssp_mats:

@@ -3162,7 +3162,7 @@ if(/^mob$/i.test(p))keys.add('mob_dn');
 if(/^acc$/i.test(p))keys.add('acc_dn');
 if(/beam.*damage taken|damage taken.*beam|ビーム武装被ダメージ/i.test(p+s))keys.add('dmg_beam');
 if(/physical.*damage taken|damage taken.*physical|物理武装被ダメージ/i.test(p+s))keys.add('dmg_phys');
-if(/special.*damage taken|damage taken.*special|特殊武装被ダメージ/i.test(p+s))keys.add('dmg_spec');
+if(/special.*damage taken|damage taken.*special|特殊武装被ダメージ|特殊被ダメージ|特殊損傷|特殊损伤/i.test(p+s))keys.add('dmg_spec');
 if(/def|防御力|防禦力/.test(p+s)&&/decrease|down|減少/.test(p+s))keys.add('def_dn');
 if(/atk|attack|攻撃力|攻擊力/.test(p+s)&&/decrease|down|減少/.test(p+s))keys.add('atk_dn');
 if(/mob|mobility|機動力/.test(p+s)&&/decrease|down|減少/.test(p+s))keys.add('mob_dn');
@@ -3171,7 +3171,8 @@ if(/ビーム武装被ダメージ上昇|ビーム.*被ダメージ.*上昇/.tes
 if(/遭光束武裝攻擊時.*損傷提升|遭光束武裝攻擊時所受損傷提升/.test(s))keys.add('dmg_beam');
 if(/遭鐳射武裝攻擊時.*損傷提升|遭鐳射武裝攻擊時所受損傷提升/.test(s))keys.add('dmg_beam');
 if(/物理武装被ダメージ上昇/.test(s))keys.add('dmg_phys');
-if(/特殊武装被ダメージ上昇/.test(s))keys.add('dmg_spec');
+if(/特殊武装被ダメージ上昇|特殊被ダメージ上昇/.test(s))keys.add('dmg_spec');
+if(/受到的特殊損傷提升|特殊損傷提升/.test(s))keys.add('dmg_spec');
 if(/防御力減少/.test(s))keys.add('def_dn');
 if(/防禦力減少/.test(s))keys.add('def_dn');
 if(/攻撃力減少/.test(s))keys.add('atk_dn');
@@ -3184,22 +3185,29 @@ const sl=s.toLowerCase();
 const keys=new Set();
 if(/damage taken from beam|damage taken from beam weapons up|ビーム武装(?:による)?被ダメージ|光束.*被|遭光束武裝攻擊時[，,]?受到的?損傷提升|遭鐳射武裝攻擊時[，,]?受到的?損傷提升/i.test(s))keys.add('dmg_beam');
 if(/damage taken from physical|damage taken from physical weapons up|物理武装(?:による)?被ダメージ|遭物理武裝攻擊時[，,]?受到的?損傷提升/i.test(s))keys.add('dmg_phys');
-if(/damage taken from special|damage taken from special weapons up|特殊武装(?:による)?被ダメージ|遭特殊武裝攻擊時[，,]?受到的?損傷提升/i.test(s))keys.add('dmg_spec');
+if(/damage taken from special|damage taken from special weapons up|特殊武装(?:による)?被ダメージ|特殊被ダメージ|遭特殊武裝攻擊時[，,]?受到的?損傷提升|受到的特殊損傷提升/i.test(s))keys.add('dmg_spec');
 if(/\bdef down\b/i.test(sl)||/防御力\s*\d+\s*%?\s*減少|防禦力\s*\d+\s*%?\s*減少|防御力減少|防禦力減少|防禦力減少\s*\d+\s*%|防御力減少\s*\d+\s*%/.test(s))keys.add('def_dn');
 if(/\batk down\b/i.test(sl)||/攻撃力\s*\d+\s*%?\s*減少|攻擊力\s*\d+\s*%?\s*減少|攻撃力減少|攻擊力減少/.test(s))keys.add('atk_dn');
 if(/\bmob down\b/i.test(sl)||/機動力\s*\d+\s*%?\s*減少|機動力減少/.test(s))keys.add('mob_dn');
 if(/\bacc down\b/i.test(sl)||/命中率\s*\d+\s*%?\s*減少|命中率減少/.test(s))keys.add('acc_dn');
 return keys;
 }
-function _parsePilotWeaponEffectAdditiveFromText(tx,ud){
+function _parsePilotWeaponEffectAdditiveFromText(tx,ud,opts){
 const bonuses=new Map();
 const s=String(tx||'');
 if(!s)return bonuses;
+opts=opts||{};
 const pilotPhrase=_pilotExclusiveAbilityPilotPhrase(s);
-if(pilotPhrase&&!_pilotTextTargetsUnit(ud,pilotPhrase))return bonuses;
+if(!opts.skipUnitGate&&pilotPhrase&&!_pilotTextTargetsUnit(ud,pilotPhrase))return bonuses;
 let m;
-const reEn=/improve\s+((?:(?:increase|decrease)\s+)?.+?)\s+weapon effects by\s+(\d+)\s*%\s+additively/gi;
+const reEn=/improve\s+((?:(?:increase|decrease|increased|decreased)\s+)?.+?)\s+weapon effects by\s+(\d+)\s*%\s+additively/gi;
 while((m=reEn.exec(s))!==null){
+const pct=parseInt(m[2],10)||0;
+if(!pct)continue;
+_abilityPhraseToWeaponEffectKeys(m[1]).forEach(k=>bonuses.set(k,Math.max(bonuses.get(k)||0,pct)));
+}
+const reEn2=/additively\s+increase\s+((?:(?:increase|decrease|increased|decreased)\s+)?.+?)\s+weapon effects by\s+(\d+)\s*%/gi;
+while((m=reEn2.exec(s))!==null){
 const pct=parseInt(m[2],10)||0;
 if(!pct)continue;
 _abilityPhraseToWeaponEffectKeys(m[1]).forEach(k=>bonuses.set(k,Math.max(bonuses.get(k)||0,pct)));
@@ -3229,17 +3237,61 @@ if(merged.size)return merged;
 if(!S.pilotCondCharData)return merged;
 const cd=S.pilotCondCharData;
 (cd.abilities||[]).forEach(ab=>{
+let abilityTargetsUnit=false;
+const pending=[];
 (ab.details||[]).forEach(d2=>{
 const tx=(typeof d2==='object'?d2.text:d2)||'';
 if(!tx)return;
-if(!/when piloting|搭乘|搭乗|weapon effects by|武装効果値が\d+%加算|武裝效果值增加\d+%|武裝效果.*?增加\d+%/i.test(tx))return;
-_parsePilotWeaponEffectAdditiveFromText(tx,ud).forEach((v,k)=>merged.set(k,Math.max(merged.get(k)||0,v)));
+const phrase=_pilotExclusiveAbilityPilotPhrase(tx);
+if(phrase&&_pilotTextTargetsUnit(ud,phrase))abilityTargetsUnit=true;
+if(!/when piloting|搭乘|搭乗|weapon effects by|武装効果値が\d+%加算|武裝效果值增加\d+%|武裝效果.*?增加\d+%|additively\s+increase/i.test(tx))return;
+let row=_parsePilotWeaponEffectAdditiveFromText(tx,ud);
+if(!row.size&&abilityTargetsUnit&&/weapon effects by|武装効果値が\d+%加算|武裝效果值增加\d+%|additively\s+increase/i.test(tx)){
+row=_parsePilotWeaponEffectAdditiveFromText(tx,ud,{skipUnitGate:true});
+}
+if(row.size)row.forEach((v,k)=>merged.set(k,Math.max(merged.get(k)||0,v)));
+else if(/weapon effects by|武装効果値が\d+%加算|武裝效果值增加\d+%|additively\s+increase/i.test(tx))pending.push(tx);
 });
+if(abilityTargetsUnit){
+pending.forEach(tx=>{
+_parsePilotWeaponEffectAdditiveFromText(tx,ud,{skipUnitGate:true}).forEach((v,k)=>merged.set(k,Math.max(merged.get(k)||0,v)));
+});
+}
 });
 return merged;
 }
 function _textImpliesPilotingTagAffinity(tx){
-return /piloting units with specified tags|指定.*?タグ|指定.*?標籤|指定.*?标签|含有上述「標籤」|搭乘單位含有上述「標籤」|上記の「タグ」|搭乗ユニットが上記の「タグ」|critical rate|暴擊率|暴击率|爆擊率/i.test(String(tx||''));
+return /piloting units with specified tags|指定.*?タグ|指定.*?標籤|指定.*?标签|含有上述「標籤」|搭乘單位含有上述「標籤」|上記の「タグ」|搭乗ユニットが上記の「タグ」|critical rate|暴擊率|暴击率|爆擊率|EN consumption|消費EN|消耗EN|damage dealt|与ダメージ|造成的損傷/i.test(String(tx||''));
+}
+function _extractEnConsumptionReductionPct(tx){
+const s=String(tx||'');
+let out=0;
+const pats=[/reduce\s+(?:own\s+)?(?:weapon\s+)?EN\s+consumption\s+by\s+(\d+)\s*%/i,/weapon\s+EN\s+consumption\s+by\s+(\d+)\s*%/i,/消費ENが(\d+)%軽減/,/武装の消費ENが(\d+)%軽減/,/消耗EN減輕(\d+)%/,/武裝消耗EN減輕(\d+)%/];
+pats.forEach(re=>{const m=s.match(re);if(m)out=Math.max(out,parseInt(m[1],10)||0)});
+return out;
+}
+function _detailPilotEnCostReductionPct(ud){
+if(!S.pilotConditionalPassiveActive||!ud)return 0;
+const embedded=parseInt(ud.pilot_en_cost_reduction_pct,10)||0;
+if(embedded)return embedded;
+if(!S.pilotCondCharData)return 0;
+let pct=0;
+const cd=S.pilotCondCharData;
+(cd.abilities||[]).forEach(ab=>{
+(ab.details||[]).forEach(d2=>{
+const tx=(typeof d2==='object'?d2.text:d2)||'';
+if(!tx||!/EN\s+consumption|消費EN|消耗EN|EN消費|EN消耗/i.test(tx))return;
+const phrase=_pilotExclusiveAbilityPilotPhrase(tx);
+if(phrase&&_pilotTextTargetsUnit(ud,phrase)){
+pct=Math.max(pct,_extractEnConsumptionReductionPct(tx));
+return;
+}
+if(typeof d2==='object'&&_textImpliesPilotingTagAffinity(tx)&&_unitTagsMatchAbilityDetail(d2,ud.tags)){
+pct=Math.max(pct,_extractEnConsumptionReductionPct(tx));
+}
+});
+});
+return pct;
 }
 function _collectLineageTagNamesFromAbilityDetail(detail){
 const names=new Set();
@@ -3354,10 +3406,10 @@ const types=String(wpnTypesStr||'').split(/\s+or\s+|,\s*|\s+and\s+|\s*\/\s*|\s*�
 return types.some(t=>{const key=_normalizePilotWeaponTypeToken(t);return key&&wpnKeySet.has(key)});
 }
 function _pilotExclusiveAbilityPilotPhrase(tx){
-let m=String(tx||'').match(/when\s+piloting\s+([^,\n]+(?:\(EX\))?)/i);
+let m=String(tx||'').match(/when\s+piloting\s+(.+?)\s+and\s+vigor/i);
 if(m)return m[1];
-m=String(tx||'').match(/when\s+piloting\s+(.+?)\s+and\s+vigor/i);
-if(m)return m[1];
+m=String(tx||'').match(/when\s+piloting\s+([^,\n]+?(?:\(EX\))?)/i);
+if(m)return m[1].replace(/\s+and\s+.*$/,'').trim();
 m=String(tx||'').match(/搭乘(?:單位為)?「([^」]+)」/);
 if(m)return m[1];
 m=String(tx||'').match(/「([^」]+)」\s*搭乗/);
@@ -3379,7 +3431,10 @@ if(!pilotPhrase||!_pilotTextTargetsUnit(ud,pilotPhrase))return false;
 if(/max range|最大射程|武[裝装]的最大射程|武装の最大射程/i.test(tx))return true;
 if(/increases ATK and DEF|increased ATK and DEF|gain increased ATK and DEF|increase ATK by|grant \+\d+% ATK and DEF|攻撃力と防御力|攻擊力與防禦力|攻擊力、防禦力提升|「攻擊力提升\d+%」、「防禦力提升\d+%」|賦予「攻擊力提升/i.test(tx))return true;
 if(/improve\s+.+?\s+weapon effects by\s+\d+\s*%\s+additively/i.test(tx))return true;
-if(/武装効果値が\d+%加算/.test(tx)||/武裝效果.*?加算/.test(tx))return true;
+if(/additively\s+increase\s+.+?\s+weapon effects by\s+\d+\s*%/i.test(tx))return true;
+if(/武装効果値が\d+%加算/.test(tx)||/武裝效果.*?加算/.test(tx)||/武裝效果值增加\d+%/.test(tx))return true;
+if(/increase\s+(?:own\s+)?(?:Melee|Ranged|Awaken|Defense|Reaction)\s+by\s+\d+\s*%|(?:格闘|射撃|覚醒|防御|反応)値が\d+%上昇|(?:格鬥|射擊|覺醒|防禦|反應)值提升\d+%/i.test(tx))return true;
+if(/reduce\s+(?:own\s+)?(?:weapon\s+)?EN\s+consumption|消費ENが\d+%軽減|消耗EN減輕\d+%/i.test(tx))return true;
 const cd=charData||S.pilotCondCharData||S.currentDetailData;
 const pm=cd&&cd.pair_unit_stat_mod;
 if(pm&&pm[String(ud.id||'')])return true;
@@ -4463,7 +4518,7 @@ if(moon)moon.style.display=on?'none':'block';
 if(sun)sun.style.display=on?'block':'none'}
 function weaponMapGridHighVisPreferred(){try{const v=localStorage.getItem('weaponMapHighVis');if(v==='1')return true;if(v==='0')return false;return localStorage.getItem('weaponMapEffectDark')==='1'}catch(_){return false}}
 function renderWeaponTraitItemHtml(tr,pepBonuses){const raw=String(tr??'');const lines=raw.split(/\r?\n/).map(l=>l.trim()).filter(l=>l.length);if(!lines.length)return'';const bonuses=pepBonuses&&pepBonuses.size?pepBonuses:null;return`<div class="weapon-trait-item">${lines.map(l=>{const r=bonuses?_applyPilotWeaponEffectAdditiveToTraitLine(l,bonuses):{html:esc(l),changed:false};return`<div class="weapon-trait-line${r.changed?' weapon-trait-line--pilot-boost':''}">${r.html}</div>`}).join('')}</div>`}
-function renderWeaponsDynamic(w,isSsp,unitData){if(!w||!w.length)return'';const stageNpcWeaponsUi=npcStageEmbedWeaponEligible(unitData);const npcPilotAcc=stageNpcWeaponsUi?getNpcPilotAccuracyPctBonusFromContext(unitData):0;const pepWpnFx=_collectPilotWeaponEffectAdditiveBonuses(unitData);const pilotAffWpn=_detailPilotAffinityWeaponStatBonuses(unitData);let h=`<div class="detail-section"><div class="section-title">${t('sec_weapons')}</div><div class="weapon-list">`;w.forEach(x=>{if(x.is_ssp_weapon&&!isSsp)return;const wpPct=unitData&&unitData.weapon_passive_pct;const baseM=isSsp&&wpPct&&wpPct.ssp?wpPct.ssp:(wpPct&&wpPct.sp)||{};const condM=isSsp&&wpPct&&wpPct.ssp_cond?wpPct.ssp_cond:(wpPct&&wpPct.sp_cond)||{};const accPct=(baseM.Accuracy||0)+(S.conditionalPassiveActive?(condM.Accuracy||0):0)+(pilotAffWpn.acc||0);const critPct=(baseM.Critical||0)+(S.conditionalPassiveActive?(condM.Critical||0):0)+(pilotAffWpn.crit||0);const powPct=(baseM.Power||0)+(S.conditionalPassiveActive?(condM.Power||0):0);let lv=stageNpcWeaponsUi?5:(S.currentWeaponLevels[x.id]||5);let ld;if(x.levels&&x.levels.length){ld=x.levels.find(l=>l.level===lv)||x.levels[4]||x.levels[0];}else{ld={power:x.power||0,en:x.en_cost||x.en||0,accuracy:x.accuracy||0,critical:x.critical||0,ammo:x.ammo||0,traits:x.traits||[]};}const accB=ld.accuracy||0,critB=ld.critical||0,powB=ld.power||0;const accD=Math.max(0,Math.round(accB+accPct+(stageNpcWeaponsUi?npcPilotAcc:0))),critD=Math.max(0,Math.round(critB+critPct));const isWpnMap=weaponRowLooksMapWeapon(x);let pp=Math.floor(powB*(1+powPct/100))+(isSsp?(x.ssp_power_bonus||0):0),pa=isWpnMap?(ld.ammo+(isSsp?(x.ssp_ammo_bonus||0):0)):0;const cpRangeBon=_detailUnitCpWeaponRangeBonus(x,unitData);const pilotRangeBon=_detailPilotRangeBonusForWeapon(x,unitData);let pr=x.max_range+(isSsp?(x.ssp_range_bonus||0):0)+cpRangeBon+pilotRangeBon;let pt=[...(ld.traits||[])];if(isSsp&&x.ssp_traits&&x.ssp_traits.length>0)pt=[...pt,...x.ssp_traits];let rc=isSsp?x.ssp_icon_color:x.icon_color;let he=isSsp&&!x.is_ssp_weapon&&((x.ssp_power_bonus>0)||(isWpnMap&&(x.ssp_ammo_bonus>0))||(x.ssp_range_bonus>0)||(isSsp&&x.ssp_traits&&x.ssp_traits.length>0));const powPsv=Math.floor(powB*(1+powPct/100))>powB;let pc=(isSsp&&x.ssp_power_bonus>0)?'ssp-highlight-val':(powPsv?'weapon-acc-boost':'highlight'),rac=!isWpnMap&&((isSsp&&x.ssp_range_bonus>0)||cpRangeBon>0||pilotRangeBon>0)?'ssp-highlight-val':'',ac2=(isWpnMap&&isSsp&&x.ssp_ammo_bonus>0)?'ssp-highlight-val':'';const accCls=accD>accB?'weapon-acc-boost':'',critCls=critD>critB?'weapon-acc-boost':'';let sp2=x.is_ssp_weapon&&!weaponRowLooksMapWeapon(x);let lb=stageNpcWeaponsUi?'':`<div class="weapon-level-selector">${[1,2,3,4,5].map(l=>`<button class="w-lv-btn ${lv===l?'active':''}" onclick="switchWeaponLevel('${x.id}',${l})">Lv ${l}</button>`).join('')}</div>`;const stratHintW=x.strategy_hint_icon?`<img class="strategy-hint-badge strategy-hint-badge--weapon" src="${imgUrlWebp(imgUrlPreferCdn(x.strategy_hint_icon))}" alt="" loading="lazy" onerror="gameImageUrlFallback(this)">`:'';const pepTraitBoost=_weaponTraitsHavePilotEffectBoost(pt,pepWpnFx);h+=`<div class="weapon-card"><div class="weapon-card-header${pepTraitBoost?' weapon-card-header--pilot-ep-boost':''}"><div class="weapon-header-left"><div class="weapon-icon-wrap${(x.is_ssp_weapon||rc==='map'||rc==='ex')?' weapon-icon-wrap-no-vivid':''}">${stratHintW}${sp2?`<img class="ssp-weapon-portrait" src="${imgUrl(x.ssp_icon)}" alt="" onerror="this.style.display='none'">`:`${(rc==='ex'||rc==='map'||!rc)?`<img class="weapon-icon-img" src="${imgUrl(x.icon)}" alt="" onerror="this.outerHTML='<div class=\\'weapon-icon-fallback\\'>MAP</div>'">`:`<div class="weapon-icon-mask color-${rc}" style="-webkit-mask-image:url('${imgUrl(x.icon)}');mask-image:url('${imgUrl(x.icon)}');"></div>`}${x.overlay?`<img class="weapon-overlay" src="${imgUrl(x.overlay)}" alt="" onerror="this.style.display='none'">`:''}`}${x.is_ssp_weapon?`<img class="ssp-weapon-badge" src="${imgUrl('/static/images/UI/UI_Common_Icon_Ssp.webp')}" alt="SSP" onerror="this.style.display='none'">`:(he?`<img class="ssp-enhance-badge" src="${imgUrl('/static/images/UI/UI_Common_Icon_Ssp.webp')}" alt="SSP" onerror="this.style.display='none'">`:'')}${x.is_preemptive?`<img class="preemptive-badge" src="${imgUrl('/static/images/UI/UI_Common_Icon_PreemptiveAttack.webp')}" alt="" onerror="this.style.display='none'">`:''}</div><div class="weapon-name-area"><div class="weapon-name-text">${esc(x.name)}</div><div class="weapon-attack-types">${(x.attack_types||[]).map(at=>at.is_supply?`<span style="font-size:12px;color:var(--accent-cyan);font-weight:600;display:flex;align-items:center;gap:4px;">${t('supply_type')} <img class="weapon-attack-type-icon" src="${imgUrlPreferCdn(at.icon)}" alt="${at.label}"> MP</span>`:`<img class="weapon-attack-type-icon" src="${imgUrlPreferCdn(at.icon)}" alt="${at.label}" title="${at.label}">`).join('')}</div></div></div><div class="weapon-header-trail">${weaponAttrDisplayLabel(x)?`<div class="weapon-attribute-set">${esc('<'+weaponAttrDisplayLabel(x)+'>')}</div>`:'<div class="weapon-attribute-set" aria-hidden="true"></div>'}${lb}</div></div><div class="weapon-card-stats"><div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_range')}</div><div class="weapon-stat-value ${rac}">${isWpnMap?'MAP':x.min_range+'-'+pr}</div></div><div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_power')}</div><div class="weapon-stat-value ${pc}">${fmtN(pp)}</div></div><div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_en')}</div><div class="weapon-stat-value">${ld.en}</div></div><div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_acc')}</div><div class="weapon-stat-value ${accCls}">${accD}%</div></div><div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_crit')}</div><div class="weapon-stat-value ${critCls}">${critD}%</div></div>${pa>0?`<div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_ammo')}</div><div class="weapon-stat-value ${ac2}">${pa}</div></div>`:''}</div>${(pt.length)||(x.usage_restrictions&&x.usage_restrictions.length)||x.is_map?`<div class="weapon-card-body">${pt.length?`<div>${renderWeaponTraitItemHtml(pt.filter(tr=>String(tr??'').trim()).join('\n'),pepWpnFx)}</div>`:''}${x.usage_restrictions&&x.usage_restrictions.length?`<div class="weapon-restrictions-list">${x.usage_restrictions.map(r=>`<div class="weapon-restriction-item">${esc(r)}</div>`).join('')}</div>`:''}${x.is_map?`<button class="toggle-map-btn" onclick="event.stopPropagation();toggleMapGrid('${x.id}')"><span>${t('view_effect_range')}</span></button><div id="map-${x.id}" class="map-grid-container">${renderMapGrid(x,unitData)}</div>`:''}</div>`:''}</div>`});h+=`</div></div>`;return h}
+function renderWeaponsDynamic(w,isSsp,unitData){if(!w||!w.length)return'';const stageNpcWeaponsUi=npcStageEmbedWeaponEligible(unitData);const npcPilotAcc=stageNpcWeaponsUi?getNpcPilotAccuracyPctBonusFromContext(unitData):0;const pepWpnFx=_collectPilotWeaponEffectAdditiveBonuses(unitData);const pilotAffWpn=_detailPilotAffinityWeaponStatBonuses(unitData);const pilotEnRedPct=_detailPilotEnCostReductionPct(unitData);let h=`<div class="detail-section"><div class="section-title">${t('sec_weapons')}</div><div class="weapon-list">`;w.forEach(x=>{if(x.is_ssp_weapon&&!isSsp)return;const wpPct=unitData&&unitData.weapon_passive_pct;const baseM=isSsp&&wpPct&&wpPct.ssp?wpPct.ssp:(wpPct&&wpPct.sp)||{};const condM=isSsp&&wpPct&&wpPct.ssp_cond?wpPct.ssp_cond:(wpPct&&wpPct.sp_cond)||{};const accPct=(baseM.Accuracy||0)+(S.conditionalPassiveActive?(condM.Accuracy||0):0)+(pilotAffWpn.acc||0);const critPct=(baseM.Critical||0)+(S.conditionalPassiveActive?(condM.Critical||0):0)+(pilotAffWpn.crit||0);const powPct=(baseM.Power||0)+(S.conditionalPassiveActive?(condM.Power||0):0);let lv=stageNpcWeaponsUi?5:(S.currentWeaponLevels[x.id]||5);let ld;if(x.levels&&x.levels.length){ld=x.levels.find(l=>l.level===lv)||x.levels[4]||x.levels[0];}else{ld={power:x.power||0,en:x.en_cost||x.en||0,accuracy:x.accuracy||0,critical:x.critical||0,ammo:x.ammo||0,traits:x.traits||[]};}const accB=ld.accuracy||0,critB=ld.critical||0,powB=ld.power||0;const accD=Math.max(0,Math.round(accB+accPct+(stageNpcWeaponsUi?npcPilotAcc:0))),critD=Math.max(0,Math.round(critB+critPct));const isWpnMap=weaponRowLooksMapWeapon(x);let pp=Math.floor(powB*(1+powPct/100))+(isSsp?(x.ssp_power_bonus||0):0),pa=isWpnMap?(ld.ammo+(isSsp?(x.ssp_ammo_bonus||0):0)):0;const cpRangeBon=_detailUnitCpWeaponRangeBonus(x,unitData);const pilotRangeBon=_detailPilotRangeBonusForWeapon(x,unitData);let pr=x.max_range+(isSsp?(x.ssp_range_bonus||0):0)+cpRangeBon+pilotRangeBon;let pt=[...(ld.traits||[])];if(isSsp&&x.ssp_traits&&x.ssp_traits.length>0)pt=[...pt,...x.ssp_traits];let rc=isSsp?x.ssp_icon_color:x.icon_color;let he=isSsp&&!x.is_ssp_weapon&&((x.ssp_power_bonus>0)||(isWpnMap&&(x.ssp_ammo_bonus>0))||(x.ssp_range_bonus>0)||(isSsp&&x.ssp_traits&&x.ssp_traits.length>0));const powPsv=Math.floor(powB*(1+powPct/100))>powB;let pc=(isSsp&&x.ssp_power_bonus>0)?'ssp-highlight-val':(powPsv?'weapon-acc-boost':'highlight'),rac=!isWpnMap&&((isSsp&&x.ssp_range_bonus>0)||cpRangeBon>0||pilotRangeBon>0)?'ssp-highlight-val':'',ac2=(isWpnMap&&isSsp&&x.ssp_ammo_bonus>0)?'ssp-highlight-val':'';const accCls=accD>accB?'weapon-acc-boost':'',critCls=critD>critB?'weapon-acc-boost':'';const enB=ld.en|0,enD=pilotEnRedPct>0?Math.max(0,Math.floor(enB*(100-pilotEnRedPct)/100)):enB,enCls=enD<enB?'weapon-en-reduced':'';let sp2=x.is_ssp_weapon&&!weaponRowLooksMapWeapon(x);let lb=stageNpcWeaponsUi?'':`<div class="weapon-level-selector">${[1,2,3,4,5].map(l=>`<button class="w-lv-btn ${lv===l?'active':''}" onclick="switchWeaponLevel('${x.id}',${l})">Lv ${l}</button>`).join('')}</div>`;const stratHintW=x.strategy_hint_icon?`<img class="strategy-hint-badge strategy-hint-badge--weapon" src="${imgUrlWebp(imgUrlPreferCdn(x.strategy_hint_icon))}" alt="" loading="lazy" onerror="gameImageUrlFallback(this)">`:'';const pepTraitBoost=_weaponTraitsHavePilotEffectBoost(pt,pepWpnFx);h+=`<div class="weapon-card"><div class="weapon-card-header${pepTraitBoost?' weapon-card-header--pilot-ep-boost':''}"><div class="weapon-header-left"><div class="weapon-icon-wrap${(x.is_ssp_weapon||rc==='map'||rc==='ex')?' weapon-icon-wrap-no-vivid':''}">${stratHintW}${sp2?`<img class="ssp-weapon-portrait" src="${imgUrl(x.ssp_icon)}" alt="" onerror="this.style.display='none'">`:`${(rc==='ex'||rc==='map'||!rc)?`<img class="weapon-icon-img" src="${imgUrl(x.icon)}" alt="" onerror="this.outerHTML='<div class=\\'weapon-icon-fallback\\'>MAP</div>'">`:`<div class="weapon-icon-mask color-${rc}" style="-webkit-mask-image:url('${imgUrl(x.icon)}');mask-image:url('${imgUrl(x.icon)}');"></div>`}${x.overlay?`<img class="weapon-overlay" src="${imgUrl(x.overlay)}" alt="" onerror="this.style.display='none'">`:''}`}${x.is_ssp_weapon?`<img class="ssp-weapon-badge" src="${imgUrl('/static/images/UI/UI_Common_Icon_Ssp.webp')}" alt="SSP" onerror="this.style.display='none'">`:(he?`<img class="ssp-enhance-badge" src="${imgUrl('/static/images/UI/UI_Common_Icon_Ssp.webp')}" alt="SSP" onerror="this.style.display='none'">`:'')}${x.is_preemptive?`<img class="preemptive-badge" src="${imgUrl('/static/images/UI/UI_Common_Icon_PreemptiveAttack.webp')}" alt="" onerror="this.style.display='none'">`:''}</div><div class="weapon-name-area"><div class="weapon-name-text">${esc(x.name)}</div><div class="weapon-attack-types">${(x.attack_types||[]).map(at=>at.is_supply?`<span style="font-size:12px;color:var(--accent-cyan);font-weight:600;display:flex;align-items:center;gap:4px;">${t('supply_type')} <img class="weapon-attack-type-icon" src="${imgUrlPreferCdn(at.icon)}" alt="${at.label}"> MP</span>`:`<img class="weapon-attack-type-icon" src="${imgUrlPreferCdn(at.icon)}" alt="${at.label}" title="${at.label}">`).join('')}</div></div></div><div class="weapon-header-trail">${weaponAttrDisplayLabel(x)?`<div class="weapon-attribute-set">${esc('<'+weaponAttrDisplayLabel(x)+'>')}</div>`:'<div class="weapon-attribute-set" aria-hidden="true"></div>'}${lb}</div></div><div class="weapon-card-stats"><div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_range')}</div><div class="weapon-stat-value ${rac}">${isWpnMap?'MAP':x.min_range+'-'+pr}</div></div><div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_power')}</div><div class="weapon-stat-value ${pc}">${fmtN(pp)}</div></div><div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_en')}</div><div class="weapon-stat-value ${enCls}">${enD}</div></div><div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_acc')}</div><div class="weapon-stat-value ${accCls}">${accD}%</div></div><div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_crit')}</div><div class="weapon-stat-value ${critCls}">${critD}%</div></div>${pa>0?`<div class="weapon-stat-item"><div class="weapon-stat-label">${t('wp_ammo')}</div><div class="weapon-stat-value ${ac2}">${pa}</div></div>`:''}</div>${(pt.length)||(x.usage_restrictions&&x.usage_restrictions.length)||x.is_map?`<div class="weapon-card-body">${pt.length?`<div>${renderWeaponTraitItemHtml(pt.filter(tr=>String(tr??'').trim()).join('\n'),pepWpnFx)}</div>`:''}${x.usage_restrictions&&x.usage_restrictions.length?`<div class="weapon-restrictions-list">${x.usage_restrictions.map(r=>`<div class="weapon-restriction-item">${esc(r)}</div>`).join('')}</div>`:''}${x.is_map?`<button class="toggle-map-btn" onclick="event.stopPropagation();toggleMapGrid('${x.id}')"><span>${t('view_effect_range')}</span></button><div id="map-${x.id}" class="map-grid-container">${renderMapGrid(x,unitData)}</div>`:''}</div>`:''}</div>`});h+=`</div></div>`;return h}
 function renderMapGrid(weapon,unitData,opts){
   opts=opts||{};
   const iconPreview=!!opts.iconPreview;
