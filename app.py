@@ -8942,6 +8942,8 @@ LIMITED_TIME_UNIT_IDS = frozenset({
     '1114000250',
     # F91 pickup: RecommendCharacterId 1162000102
     '1163000150',
+    # Altron Gundam (EW) (EX): RecommendCharacterId 1219000501 (Chang Wufei (EW))
+    '1219000650',
 })
 
 
