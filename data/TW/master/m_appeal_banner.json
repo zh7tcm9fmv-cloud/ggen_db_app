@@ -608,5 +608,15 @@
     "ResourceId": "ml_homeimg_info_300016",
     "ScheduleId": 2607301502,
     "BannerResourceTypeIndex": 2
+  },
+  {
+    "Id": 2607500101,
+    "TransitionId": 28002607500301,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2607500301,
+    "SortOrder": 1005,
+    "ResourceId": "gasha_2607500301",
+    "ScheduleId": 2607501701,
+    "BannerResourceTypeIndex": 0
   }
 ]

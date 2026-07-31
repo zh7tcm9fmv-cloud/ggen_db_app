@@ -1302,6 +1302,13 @@
     "Level": 1
   },
   {
+    "Id": 11211001210,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1211001210,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
     "Id": 11217000110,
     "RewardTypeIndex": 3,
     "RewardTargetId": 1217000110,
@@ -1340,6 +1347,20 @@
     "Id": 11219000350,
     "RewardTypeIndex": 3,
     "RewardTargetId": 1219000350,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11219000450,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1219000450,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 11219000650,
+    "RewardTypeIndex": 3,
+    "RewardTargetId": 1219000650,
     "LimitBreakStep": 0,
     "Level": 1
   },
@@ -2915,6 +2936,13 @@
     "Id": 21210000350,
     "RewardTypeIndex": 21,
     "RewardTargetId": 1210000350,
+    "LimitBreakStep": 0,
+    "Level": 1
+  },
+  {
+    "Id": 21210000550,
+    "RewardTypeIndex": 21,
+    "RewardTargetId": 1210000550,
     "LimitBreakStep": 0,
     "Level": 1
   },

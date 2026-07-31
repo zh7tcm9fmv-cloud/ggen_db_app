@@ -3040,5 +3040,57 @@
     "GashaAppealDescriptionTypeIndex": 3,
     "TitleLanguageId": 220700000000000003,
     "DescriptionLanguageId": 220800021060000250
+  },
+  {
+    "GashaId": 2607500301,
+    "SortOrder": 1,
+    "GashaAppealBackgroundTypeIndex": 2,
+    "ResourceId": "g2190u00650",
+    "ExWeaponBromideResourceId": "g2190u00650",
+    "LimitBreakStep": 0,
+    "UnitId": 0,
+    "GashaContentDetailId": 11219000650,
+    "GashaAppealDescriptionTypeIndex": 1,
+    "TitleLanguageId": 220700000000000001,
+    "DescriptionLanguageId": 0
+  },
+  {
+    "GashaId": 2607500301,
+    "SortOrder": 2,
+    "GashaAppealBackgroundTypeIndex": 2,
+    "ResourceId": "g2190u00450",
+    "ExWeaponBromideResourceId": "g2190u00450",
+    "LimitBreakStep": 0,
+    "UnitId": 0,
+    "GashaContentDetailId": 11219000450,
+    "GashaAppealDescriptionTypeIndex": 1,
+    "TitleLanguageId": 220700000000000001,
+    "DescriptionLanguageId": 0
+  },
+  {
+    "GashaId": 2607500301,
+    "SortOrder": 3,
+    "GashaAppealBackgroundTypeIndex": 2,
+    "ResourceId": "g2190u00250",
+    "ExWeaponBromideResourceId": "g2190u00250",
+    "LimitBreakStep": 0,
+    "UnitId": 0,
+    "GashaContentDetailId": 11219000250,
+    "GashaAppealDescriptionTypeIndex": 1,
+    "TitleLanguageId": 220700000000000001,
+    "DescriptionLanguageId": 0
+  },
+  {
+    "GashaId": 2607500301,
+    "SortOrder": 4,
+    "GashaAppealBackgroundTypeIndex": 2,
+    "ResourceId": "g2100s00500",
+    "ExWeaponBromideResourceId": "g2100s00500",
+    "LimitBreakStep": 0,
+    "UnitId": 0,
+    "GashaContentDetailId": 21210000550,
+    "GashaAppealDescriptionTypeIndex": 3,
+    "TitleLanguageId": 220700000000000002,
+    "DescriptionLanguageId": 220800021210000550
   }
 ]

@@ -640,6 +640,11 @@
     "TargetId": 200014
   },
   {
+    "OptionPartsId": 300235,
+    "AcquisitionMethodTypeIndex": 22,
+    "TargetId": 9023002104
+  },
+  {
     "OptionPartsId": 400001,
     "AcquisitionMethodTypeIndex": 3,
     "TargetId": 90520001
@@ -903,5 +908,15 @@
     "OptionPartsId": 400086,
     "AcquisitionMethodTypeIndex": 3,
     "TargetId": 90520030
+  },
+  {
+    "OptionPartsId": 400091,
+    "AcquisitionMethodTypeIndex": 22,
+    "TargetId": 9023002108
+  },
+  {
+    "OptionPartsId": 400092,
+    "AcquisitionMethodTypeIndex": 3,
+    "TargetId": 90520031
   }
 ]

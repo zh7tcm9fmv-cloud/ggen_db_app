@@ -9,7 +9,8 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 3,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000001305001
+    "StageNameLanguageId": 130100000001305001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 1305002,
@@ -21,7 +22,8 @@
     "ConsumeBossChallengePoint": 90,
     "TurnCountLimit": 3,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000001305002
+    "StageNameLanguageId": 130100000001305002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 1305003,
@@ -33,7 +35,8 @@
     "ConsumeBossChallengePoint": 120,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000001305003
+    "StageNameLanguageId": 130100000001305003,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 1306001,
@@ -45,7 +48,8 @@
     "ConsumeBossChallengePoint": 20,
     "TurnCountLimit": 3,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000001306001
+    "StageNameLanguageId": 130100000001306001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 1306002,
@@ -57,7 +61,8 @@
     "ConsumeBossChallengePoint": 40,
     "TurnCountLimit": 3,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000001306002
+    "StageNameLanguageId": 130100000001306002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 1306003,
@@ -69,7 +74,8 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000001306003
+    "StageNameLanguageId": 130100000001306003,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 1705001,
@@ -81,7 +87,8 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 3,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000001705001
+    "StageNameLanguageId": 130100000001705001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 1705002,
@@ -93,7 +100,8 @@
     "ConsumeBossChallengePoint": 90,
     "TurnCountLimit": 3,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000001705002
+    "StageNameLanguageId": 130100000001705002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 1705003,
@@ -105,7 +113,8 @@
     "ConsumeBossChallengePoint": 120,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000001705003
+    "StageNameLanguageId": 130100000001705003,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 1706001,
@@ -117,7 +126,8 @@
     "ConsumeBossChallengePoint": 20,
     "TurnCountLimit": 3,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000001706001
+    "StageNameLanguageId": 130100000001706001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 1706002,
@@ -129,7 +139,8 @@
     "ConsumeBossChallengePoint": 40,
     "TurnCountLimit": 3,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000001706002
+    "StageNameLanguageId": 130100000001706002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 1706003,
@@ -141,7 +152,8 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000001706003
+    "StageNameLanguageId": 130100000001706003,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 2105001,
@@ -153,7 +165,8 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 3,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000002105001
+    "StageNameLanguageId": 130100000002105001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 2105002,
@@ -165,7 +178,8 @@
     "ConsumeBossChallengePoint": 90,
     "TurnCountLimit": 3,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000002105002
+    "StageNameLanguageId": 130100000002105002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 2105003,
@@ -177,7 +191,8 @@
     "ConsumeBossChallengePoint": 120,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000002105003
+    "StageNameLanguageId": 130100000002105003,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 2106001,
@@ -189,7 +204,8 @@
     "ConsumeBossChallengePoint": 20,
     "TurnCountLimit": 3,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000002106001
+    "StageNameLanguageId": 130100000002106001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 2106002,
@@ -201,7 +217,8 @@
     "ConsumeBossChallengePoint": 40,
     "TurnCountLimit": 3,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000002106002
+    "StageNameLanguageId": 130100000002106002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 2106003,
@@ -213,7 +230,8 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000002106003
+    "StageNameLanguageId": 130100000002106003,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 2205001,
@@ -225,7 +243,8 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 3,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000002205001
+    "StageNameLanguageId": 130100000002205001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 2205002,
@@ -237,7 +256,8 @@
     "ConsumeBossChallengePoint": 90,
     "TurnCountLimit": 3,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000002205002
+    "StageNameLanguageId": 130100000002205002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 2205003,
@@ -249,7 +269,8 @@
     "ConsumeBossChallengePoint": 120,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000002205003
+    "StageNameLanguageId": 130100000002205003,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 2206001,
@@ -261,7 +282,8 @@
     "ConsumeBossChallengePoint": 20,
     "TurnCountLimit": 3,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000002206001
+    "StageNameLanguageId": 130100000002206001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 2206002,
@@ -273,7 +295,8 @@
     "ConsumeBossChallengePoint": 40,
     "TurnCountLimit": 3,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000002206002
+    "StageNameLanguageId": 130100000002206002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 2206003,
@@ -285,7 +308,8 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000002206003
+    "StageNameLanguageId": 130100000002206003,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 3205001,
@@ -297,7 +321,8 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 2,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000003205001
+    "StageNameLanguageId": 130100000003205001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 3205002,
@@ -309,7 +334,8 @@
     "ConsumeBossChallengePoint": 90,
     "TurnCountLimit": 2,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000003205002
+    "StageNameLanguageId": 130100000003205002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 3205003,
@@ -321,7 +347,8 @@
     "ConsumeBossChallengePoint": 120,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000003205003
+    "StageNameLanguageId": 130100000003205003,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 3206001,
@@ -333,7 +360,8 @@
     "ConsumeBossChallengePoint": 20,
     "TurnCountLimit": 2,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000003206001
+    "StageNameLanguageId": 130100000003206001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 3206002,
@@ -345,7 +373,8 @@
     "ConsumeBossChallengePoint": 40,
     "TurnCountLimit": 2,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000003206002
+    "StageNameLanguageId": 130100000003206002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 3206003,
@@ -357,7 +386,8 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000003206003
+    "StageNameLanguageId": 130100000003206003,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 3305001,
@@ -369,7 +399,8 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 3,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000003305001
+    "StageNameLanguageId": 130100000003305001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 3305002,
@@ -381,7 +412,8 @@
     "ConsumeBossChallengePoint": 90,
     "TurnCountLimit": 3,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000003305002
+    "StageNameLanguageId": 130100000003305002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 3305003,
@@ -393,7 +425,8 @@
     "ConsumeBossChallengePoint": 120,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000003305003
+    "StageNameLanguageId": 130100000003305003,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 3306001,
@@ -405,7 +438,8 @@
     "ConsumeBossChallengePoint": 20,
     "TurnCountLimit": 3,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000003306001
+    "StageNameLanguageId": 130100000003306001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 3306002,
@@ -417,7 +451,8 @@
     "ConsumeBossChallengePoint": 40,
     "TurnCountLimit": 3,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000003306002
+    "StageNameLanguageId": 130100000003306002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 3306003,
@@ -429,7 +464,8 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000003306003
+    "StageNameLanguageId": 130100000003306003,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 6005001,
@@ -441,7 +477,8 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 2,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000006005001
+    "StageNameLanguageId": 130100000006005001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 6005002,
@@ -453,7 +490,8 @@
     "ConsumeBossChallengePoint": 90,
     "TurnCountLimit": 2,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000006005002
+    "StageNameLanguageId": 130100000006005002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 6005003,
@@ -465,7 +503,8 @@
     "ConsumeBossChallengePoint": 120,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000006005003
+    "StageNameLanguageId": 130100000006005003,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 6006001,
@@ -477,7 +516,8 @@
     "ConsumeBossChallengePoint": 20,
     "TurnCountLimit": 2,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000006006001
+    "StageNameLanguageId": 130100000006006001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 6006002,
@@ -489,7 +529,8 @@
     "ConsumeBossChallengePoint": 40,
     "TurnCountLimit": 2,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000006006002
+    "StageNameLanguageId": 130100000006006002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 6006003,
@@ -501,7 +542,8 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000006006003
+    "StageNameLanguageId": 130100000006006003,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 6015001,
@@ -513,7 +555,8 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 3,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000006015001
+    "StageNameLanguageId": 130100000006015001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 6015002,
@@ -525,7 +568,8 @@
     "ConsumeBossChallengePoint": 90,
     "TurnCountLimit": 3,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000006015002
+    "StageNameLanguageId": 130100000006015002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 6015003,
@@ -537,7 +581,8 @@
     "ConsumeBossChallengePoint": 120,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000006015003
+    "StageNameLanguageId": 130100000006015003,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 6016001,
@@ -549,7 +594,8 @@
     "ConsumeBossChallengePoint": 20,
     "TurnCountLimit": 3,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000006016001
+    "StageNameLanguageId": 130100000006016001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 6016002,
@@ -561,7 +607,8 @@
     "ConsumeBossChallengePoint": 40,
     "TurnCountLimit": 3,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000006016002
+    "StageNameLanguageId": 130100000006016002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 6016003,
@@ -573,7 +620,8 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000006016003
+    "StageNameLanguageId": 130100000006016003,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 30505001,
@@ -585,7 +633,8 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 2,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000030505001
+    "StageNameLanguageId": 130100000030505001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 30505002,
@@ -597,7 +646,8 @@
     "ConsumeBossChallengePoint": 90,
     "TurnCountLimit": 2,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000030505002
+    "StageNameLanguageId": 130100000030505002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 30505003,
@@ -609,7 +659,8 @@
     "ConsumeBossChallengePoint": 120,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000030505003
+    "StageNameLanguageId": 130100000030505003,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 30506001,
@@ -621,7 +672,8 @@
     "ConsumeBossChallengePoint": 20,
     "TurnCountLimit": 2,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000030506001
+    "StageNameLanguageId": 130100000030506001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 30506002,
@@ -633,7 +685,8 @@
     "ConsumeBossChallengePoint": 40,
     "TurnCountLimit": 2,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000030506002
+    "StageNameLanguageId": 130100000030506002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 30506003,
@@ -645,7 +698,8 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000030506003
+    "StageNameLanguageId": 130100000030506003,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 30805001,
@@ -657,7 +711,8 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 3,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000030805001
+    "StageNameLanguageId": 130100000030805001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 30805002,
@@ -669,7 +724,8 @@
     "ConsumeBossChallengePoint": 90,
     "TurnCountLimit": 3,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000030805002
+    "StageNameLanguageId": 130100000030805002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 30805003,
@@ -681,7 +737,8 @@
     "ConsumeBossChallengePoint": 120,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000030805003
+    "StageNameLanguageId": 130100000030805003,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 30806001,
@@ -693,7 +750,8 @@
     "ConsumeBossChallengePoint": 20,
     "TurnCountLimit": 3,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000030806001
+    "StageNameLanguageId": 130100000030806001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 30806002,
@@ -705,7 +763,8 @@
     "ConsumeBossChallengePoint": 40,
     "TurnCountLimit": 3,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000030806002
+    "StageNameLanguageId": 130100000030806002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 30806003,
@@ -717,7 +776,8 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000030806003
+    "StageNameLanguageId": 130100000030806003,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 33605001,
@@ -729,7 +789,8 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 3,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000033605001
+    "StageNameLanguageId": 130100000033605001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 33605002,
@@ -741,7 +802,8 @@
     "ConsumeBossChallengePoint": 90,
     "TurnCountLimit": 3,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000033605002
+    "StageNameLanguageId": 130100000033605002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 33605003,
@@ -753,7 +815,8 @@
     "ConsumeBossChallengePoint": 120,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000033605003
+    "StageNameLanguageId": 130100000033605003,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 33606001,
@@ -765,7 +828,8 @@
     "ConsumeBossChallengePoint": 20,
     "TurnCountLimit": 3,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000033606001
+    "StageNameLanguageId": 130100000033606001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 33606002,
@@ -777,7 +841,8 @@
     "ConsumeBossChallengePoint": 40,
     "TurnCountLimit": 3,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000033606002
+    "StageNameLanguageId": 130100000033606002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 33606003,
@@ -789,7 +854,8 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000033606003
+    "StageNameLanguageId": 130100000033606003,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 43105001,
@@ -801,7 +867,8 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 3,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000043105001
+    "StageNameLanguageId": 130100000043105001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 43105002,
@@ -813,7 +880,8 @@
     "ConsumeBossChallengePoint": 90,
     "TurnCountLimit": 3,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000043105002
+    "StageNameLanguageId": 130100000043105002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 43105003,
@@ -825,7 +893,8 @@
     "ConsumeBossChallengePoint": 120,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000043105003
+    "StageNameLanguageId": 130100000043105003,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 43106001,
@@ -837,7 +906,8 @@
     "ConsumeBossChallengePoint": 20,
     "TurnCountLimit": 3,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000043106001
+    "StageNameLanguageId": 130100000043106001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 43106002,
@@ -849,7 +919,8 @@
     "ConsumeBossChallengePoint": 40,
     "TurnCountLimit": 3,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000043106002
+    "StageNameLanguageId": 130100000043106002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 43106003,
@@ -861,7 +932,8 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000043106003
+    "StageNameLanguageId": 130100000043106003,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 70505001,
@@ -873,7 +945,8 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 3,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000070505001
+    "StageNameLanguageId": 130100000070505001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 70505002,
@@ -885,7 +958,8 @@
     "ConsumeBossChallengePoint": 90,
     "TurnCountLimit": 3,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000070505002
+    "StageNameLanguageId": 130100000070505002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 70505003,
@@ -897,7 +971,8 @@
     "ConsumeBossChallengePoint": 120,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000070505003
+    "StageNameLanguageId": 130100000070505003,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 70506001,
@@ -909,7 +984,8 @@
     "ConsumeBossChallengePoint": 20,
     "TurnCountLimit": 3,
     "HpGaugeCount": 12,
-    "StageNameLanguageId": 130100000070506001
+    "StageNameLanguageId": 130100000070506001,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 70506002,
@@ -921,7 +997,8 @@
     "ConsumeBossChallengePoint": 40,
     "TurnCountLimit": 3,
     "HpGaugeCount": 24,
-    "StageNameLanguageId": 130100000070506002
+    "StageNameLanguageId": 130100000070506002,
+    "Unknown_Col_10": 0
   },
   {
     "Id": 70506003,
@@ -933,6 +1010,7 @@
     "ConsumeBossChallengePoint": 60,
     "TurnCountLimit": 3,
     "HpGaugeCount": 36,
-    "StageNameLanguageId": 130100000070506003
+    "StageNameLanguageId": 130100000070506003,
+    "Unknown_Col_10": 0
   }
 ]

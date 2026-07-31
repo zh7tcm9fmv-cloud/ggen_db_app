@@ -6468,6 +6468,14 @@
     "value": "All of your units are defeated.\nLimit: 5 turns."
   },
   {
+    "id": 130300009020002101,
+    "value": "Defeat Musha Ghost."
+  },
+  {
+    "id": 130300009020002104,
+    "value": "All of your units are destroyed.\nLimit: 5 turns."
+  },
+  {
     "id": 130300009021000101,
     "value": "Defeat Red Gundam(0085)."
   },
@@ -6614,6 +6622,14 @@
   {
     "id": 130300009021002004,
     "value": "All of your units are defeated.\nLimit: 5 turns."
+  },
+  {
+    "id": 130300009021002101,
+    "value": "Defeat Musha Ghost."
+  },
+  {
+    "id": 130300009021002104,
+    "value": "All of your units are destroyed.\nLimit: 5 turns."
   },
   {
     "id": 130300009022000101,
@@ -6770,6 +6786,14 @@
   {
     "id": 130300009022002004,
     "value": "All of your units are defeated.\nLimit: 5 turns."
+  },
+  {
+    "id": 130300009022002101,
+    "value": "Defeat Musha Ghost."
+  },
+  {
+    "id": 130300009022002104,
+    "value": "All of your units are destroyed.\nLimit: 5 turns."
   },
   {
     "id": 130300009023000101,
@@ -6938,6 +6962,14 @@
   {
     "id": 130300009023002004,
     "value": "All of your units are defeated.\nLimit: 5 turns."
+  },
+  {
+    "id": 130300009023002101,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300009023002104,
+    "value": "All of your units are destroyed.\nLimit: 5 turns."
   },
   {
     "id": 130300009030010101,
@@ -8084,6 +8116,14 @@
     "value": "All of your units are defeated.\nLimit: 3 turns."
   },
   {
+    "id": 130300009051003801,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300009051003804,
+    "value": "All of your units are defeated.\nLimit: 3 turns."
+  },
+  {
     "id": 130300009052000101,
     "value": "Defeat all enemy units."
   },
@@ -8337,6 +8377,14 @@
   },
   {
     "id": 130300009052003004,
+    "value": "All of your units are defeated.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300009052003101,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300009052003104,
     "value": "All of your units are defeated.\nLimit: 3 turns."
   },
   {

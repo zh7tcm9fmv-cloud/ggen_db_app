@@ -6664,6 +6664,230 @@
     "NpcGroupName": "<default>"
   },
   {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000001,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000002,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000003,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000004,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000005,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000006,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000007,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000008,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000009,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000010,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000011,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000012,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000013,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000014,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000015,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000016,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000017,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000018,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000019,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000020,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000021,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000022,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000023,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000024,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000025,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000026,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000027,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000028,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000029,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000030,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000031,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
+    "MapGroupId": 905100003802000001,
+    "MapNpcId": 905100003802000032,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko2"
+  },
+  {
     "MapGroupId": 905200000102000001,
     "MapNpcId": 905200000102000001,
     "GroupUnitTypeIndex": 3,
@@ -7551,6 +7775,230 @@
     "GroupUnitTypeIndex": 3,
     "SortOrder": 36,
     "NpcGroupName": "norun"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000001,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 1,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000002,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 2,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000003,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 3,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000004,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 4,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000005,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 5,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000006,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 6,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000007,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 7,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000008,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 8,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000009,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 9,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000010,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 10,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000011,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 11,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000012,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 12,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000013,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 13,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000014,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 14,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000015,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 15,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000016,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 16,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000017,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 17,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000018,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 18,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000019,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 19,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000020,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 20,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000021,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 21,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000022,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 22,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000023,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 23,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000024,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 24,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000025,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 25,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000026,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 26,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000027,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 27,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000028,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 28,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000029,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 29,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000030,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 30,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000031,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 31,
+    "NpcGroupName": "et_denko"
+  },
+  {
+    "MapGroupId": 905200003102000001,
+    "MapNpcId": 905200003102000032,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 32,
+    "NpcGroupName": "et_denko"
   },
   {
     "MapGroupId": 906000100102000001,

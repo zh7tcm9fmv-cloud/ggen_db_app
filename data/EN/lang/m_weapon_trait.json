@@ -4424,6 +4424,78 @@
     "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 9"
   },
   {
+    "id": 140700000300900101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300900102,
+    "value": "With More Remaining EN, Higher Weapon Power LV 1"
+  },
+  {
+    "id": 140700000300900201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300900202,
+    "value": "With More Remaining EN, Higher Weapon Power LV 2"
+  },
+  {
+    "id": 140700000300900301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300900302,
+    "value": "With More Remaining EN, Higher Weapon Power LV 3"
+  },
+  {
+    "id": 140700000300900401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300900402,
+    "value": "With More Remaining EN, Higher Weapon Power LV 4"
+  },
+  {
+    "id": 140700000300900501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300900502,
+    "value": "With More Remaining EN, Higher Weapon Power LV 5"
+  },
+  {
+    "id": 140700000300900601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300900602,
+    "value": "With More Remaining EN, Higher Weapon Power LV 6"
+  },
+  {
+    "id": 140700000300900701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300900702,
+    "value": "With More Remaining EN, Higher Weapon Power LV 7"
+  },
+  {
+    "id": 140700000300900801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300900802,
+    "value": "With More Remaining EN, Higher Weapon Power LV 8"
+  },
+  {
+    "id": 140700000300900901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300900902,
+    "value": "With More Remaining EN, Higher Weapon Power LV 9"
+  },
+  {
     "id": 140700000300910101,
     "value": "With More Remaining HP, Higher Weapon Power LV 1"
   },
@@ -12718,6 +12790,78 @@
   {
     "id": 140800000300880903,
     "value": "When engaging enemies with the \"GUND-ARM\" tag,\nincrease awaken weapon max range down effect by 9."
+  },
+  {
+    "id": 140800000300900101,
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
+  },
+  {
+    "id": 140800000300900102,
+    "value": "The higher your remaining EN is, the greater Weapon Power increases (up to 5%)."
+  },
+  {
+    "id": 140800000300900201,
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
+  },
+  {
+    "id": 140800000300900202,
+    "value": "The higher your remaining EN is, the greater Weapon Power increases (up to 7%)."
+  },
+  {
+    "id": 140800000300900301,
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
+  },
+  {
+    "id": 140800000300900302,
+    "value": "The higher your remaining EN is, the greater Weapon Power increases (up to 10%)."
+  },
+  {
+    "id": 140800000300900401,
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
+  },
+  {
+    "id": 140800000300900402,
+    "value": "The higher your remaining EN is, the greater Weapon Power increases (up to 12%)."
+  },
+  {
+    "id": 140800000300900501,
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
+  },
+  {
+    "id": 140800000300900502,
+    "value": "The higher your remaining EN is, the greater Weapon Power increases (up to 15%)."
+  },
+  {
+    "id": 140800000300900601,
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
+  },
+  {
+    "id": 140800000300900602,
+    "value": "The higher your remaining EN is, the greater Weapon Power increases (up to 17%)."
+  },
+  {
+    "id": 140800000300900701,
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
+  },
+  {
+    "id": 140800000300900702,
+    "value": "The higher your remaining EN is, the greater Weapon Power increases (up to 20%)."
+  },
+  {
+    "id": 140800000300900801,
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
+  },
+  {
+    "id": 140800000300900802,
+    "value": "The higher your remaining EN is, the greater Weapon Power increases (up to 22%)."
+  },
+  {
+    "id": 140800000300900901,
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction."
+  },
+  {
+    "id": 140800000300900902,
+    "value": "The higher your remaining EN is, the greater Weapon Power increases (up to 25%)."
   },
   {
     "id": 140800000300910101,

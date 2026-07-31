@@ -66,7 +66,7 @@
   },
   {
     "Id": 90200006,
-    "Priority": 60,
+    "Priority": 203,
     "UnitId": 1709000100,
     "ScheduleId": 2508201003,
     "BromideMovePositionX": -70,
@@ -79,7 +79,7 @@
   },
   {
     "Id": 90200007,
-    "Priority": 70,
+    "Priority": 206,
     "UnitId": 1700000100,
     "ScheduleId": 2508201003,
     "BromideMovePositionX": -150,
@@ -245,5 +245,18 @@
     "BromideInvasionTopMovePositionY": 0,
     "BromideInvasionTopScaleRatePercent": 0,
     "ExtendStageId": 90230020
+  },
+  {
+    "Id": 90200021,
+    "Priority": 210,
+    "UnitId": 1730000100,
+    "ScheduleId": 2607501003,
+    "BromideMovePositionX": 0,
+    "BromideMovePositionY": 0,
+    "BromideScaleRatePercent": 0,
+    "BromideInvasionTopMovePositionX": 0,
+    "BromideInvasionTopMovePositionY": 0,
+    "BromideInvasionTopScaleRatePercent": 0,
+    "ExtendStageId": 90230021
   }
 ]

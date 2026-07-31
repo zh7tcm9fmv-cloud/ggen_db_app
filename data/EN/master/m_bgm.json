@@ -5100,6 +5100,16 @@
     "SortOrder": 1725000010
   },
   {
+    "Id": 173000001,
+    "NameLanguageId": 0,
+    "ResourceId": "bgm_7300_0001",
+    "IsPaid": false,
+    "ScheduleId": 0,
+    "SeriesId": 0,
+    "HasLyrics": false,
+    "SortOrder": 0
+  },
+  {
     "Id": 176400001,
     "NameLanguageId": 300100000176400001,
     "ResourceId": "bgm_7640_0001",

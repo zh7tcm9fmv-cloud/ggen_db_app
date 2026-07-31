@@ -2586,6 +2586,12 @@
     "AbilityFrameTypeIndex": 1
   },
   {
+    "Id": 1011503,
+    "ResourceId": "trait_10030100",
+    "TraitSetId": 101150301,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
     "Id": 1011602,
     "ResourceId": "trait_10030100",
     "TraitSetId": 101160201,
@@ -3135,6 +3141,18 @@
     "Id": 1016601,
     "ResourceId": "trait_10060100",
     "TraitSetId": 101660101,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 1016801,
+    "ResourceId": "trait_10280100",
+    "TraitSetId": 101680101,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 1016902,
+    "ResourceId": "trait_10030102",
+    "TraitSetId": 101690200,
     "AbilityFrameTypeIndex": 1
   },
   {
@@ -7500,6 +7518,24 @@
     "AbilityFrameTypeIndex": 1
   },
   {
+    "Id": 2027901,
+    "ResourceId": "trait_10030100",
+    "TraitSetId": 202790101,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 2028001,
+    "ResourceId": "thum_g2190c00501",
+    "TraitSetId": 202800100,
+    "AbilityFrameTypeIndex": 2
+  },
+  {
+    "Id": 2028101,
+    "ResourceId": "thum_g2190c00301",
+    "TraitSetId": 202810100,
+    "AbilityFrameTypeIndex": 2
+  },
+  {
     "Id": 5100101,
     "ResourceId": "trait_10030100",
     "TraitSetId": 510010101,
@@ -7806,6 +7842,12 @@
     "AbilityFrameTypeIndex": 1
   },
   {
+    "Id": 5100720,
+    "ResourceId": "trait_10030100",
+    "TraitSetId": 510072001,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
     "Id": 5100801,
     "ResourceId": "trait_10050100",
     "TraitSetId": 510080101,
@@ -7863,6 +7905,12 @@
     "Id": 5100810,
     "ResourceId": "trait_10050100",
     "TraitSetId": 510081001,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 5100820,
+    "ResourceId": "trait_10050100",
+    "TraitSetId": 510082001,
     "AbilityFrameTypeIndex": 1
   },
   {
@@ -9507,6 +9555,12 @@
     "Id": 5113401,
     "ResourceId": "trait_10770100",
     "TraitSetId": 511340101,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 5113501,
+    "ResourceId": "trait_10030200",
+    "TraitSetId": 511350100,
     "AbilityFrameTypeIndex": 1
   },
   {
@@ -12105,6 +12159,18 @@
     "Id": 6121601,
     "ResourceId": "trait_11830100",
     "TraitSetId": 612160101,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6121701,
+    "ResourceId": "trait_11890100",
+    "TraitSetId": 612170100,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
+    "Id": 6121702,
+    "ResourceId": "trait_11900100",
+    "TraitSetId": 612170200,
     "AbilityFrameTypeIndex": 1
   },
   {

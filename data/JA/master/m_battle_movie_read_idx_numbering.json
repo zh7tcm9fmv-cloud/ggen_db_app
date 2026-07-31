@@ -6165,6 +6165,11 @@
     "BattleMovieReadIdx": 597
   },
   {
+    "UnitBattleMovieId": "g2100u01100",
+    "WeaponBattleMovieId": "5",
+    "BattleMovieReadIdx": 2856
+  },
+  {
     "UnitBattleMovieId": "g2100u01200",
     "WeaponBattleMovieId": "1",
     "BattleMovieReadIdx": 598
@@ -6565,6 +6570,26 @@
     "BattleMovieReadIdx": 2349
   },
   {
+    "UnitBattleMovieId": "g2110u01200",
+    "WeaponBattleMovieId": "2",
+    "BattleMovieReadIdx": 2350
+  },
+  {
+    "UnitBattleMovieId": "g2110u01200",
+    "WeaponBattleMovieId": "3",
+    "BattleMovieReadIdx": 2351
+  },
+  {
+    "UnitBattleMovieId": "g2110u01200",
+    "WeaponBattleMovieId": "4",
+    "BattleMovieReadIdx": 2352
+  },
+  {
+    "UnitBattleMovieId": "g2110u01300",
+    "WeaponBattleMovieId": "1",
+    "BattleMovieReadIdx": 2353
+  },
+  {
     "UnitBattleMovieId": "g2120u00100",
     "WeaponBattleMovieId": "1",
     "BattleMovieReadIdx": 2354
@@ -6710,6 +6735,11 @@
     "BattleMovieReadIdx": 2367
   },
   {
+    "UnitBattleMovieId": "g2190u00450",
+    "WeaponBattleMovieId": "50",
+    "BattleMovieReadIdx": 2820
+  },
+  {
     "UnitBattleMovieId": "g2190u00500",
     "WeaponBattleMovieId": "2",
     "BattleMovieReadIdx": 2368
@@ -6733,6 +6763,11 @@
     "UnitBattleMovieId": "g2190u00600",
     "WeaponBattleMovieId": "5",
     "BattleMovieReadIdx": 2372
+  },
+  {
+    "UnitBattleMovieId": "g2190u00650",
+    "WeaponBattleMovieId": "50",
+    "BattleMovieReadIdx": 2821
   },
   {
     "UnitBattleMovieId": "g2190u00700",
@@ -13503,6 +13538,21 @@
     "UnitBattleMovieId": "g7280u00100",
     "WeaponBattleMovieId": "3",
     "BattleMovieReadIdx": 1375
+  },
+  {
+    "UnitBattleMovieId": "g7300u00100",
+    "WeaponBattleMovieId": "1",
+    "BattleMovieReadIdx": 2822
+  },
+  {
+    "UnitBattleMovieId": "g7300u00100",
+    "WeaponBattleMovieId": "2",
+    "BattleMovieReadIdx": 2823
+  },
+  {
+    "UnitBattleMovieId": "g7300u00100",
+    "WeaponBattleMovieId": "3",
+    "BattleMovieReadIdx": 2824
   },
   {
     "UnitBattleMovieId": "g7500u00100",

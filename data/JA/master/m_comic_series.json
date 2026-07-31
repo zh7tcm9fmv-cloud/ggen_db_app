@@ -188,15 +188,5 @@
     "ComicSeriesTypeIndex": 1,
     "ComicReleaseConditionTypeIndex": 2,
     "TargetValue": 0
-  },
-  {
-    "Id": 22608,
-    "NameLanguageId": 350100000000022608,
-    "CoverThumbnailResourceId": "comic_cover_22608",
-    "Priority": 90260740,
-    "ScheduleId": 2607403101,
-    "ComicSeriesTypeIndex": 1,
-    "ComicReleaseConditionTypeIndex": 2,
-    "TargetValue": 0
   }
 ]

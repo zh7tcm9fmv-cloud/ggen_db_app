@@ -2732,6 +2732,10 @@
     "value": "Tallgeese"
   },
   {
+    "id": 110100001210001160,
+    "value": "Tallgeese"
+  },
+  {
     "id": 110100001210001200,
     "value": "Tallgeese II"
   },
@@ -2940,6 +2944,14 @@
     "value": "Tallgeese F"
   },
   {
+    "id": 110100001211001210,
+    "value": "Gundam Epyon (EW)"
+  },
+  {
+    "id": 110100001211001310,
+    "value": "Gundam Epyon (EW) [MA]"
+  },
+  {
     "id": 110100001212000100,
     "value": "Scorpio"
   },
@@ -2992,12 +3004,20 @@
     "value": "Gundam Heavyarms Custom (EW)"
   },
   {
+    "id": 110100001219000450,
+    "value": "Gundam Heavyarms Custom (EW) (EX)"
+  },
+  {
     "id": 110100001219000500,
     "value": "Gundam Sandrock Custom (EW)"
   },
   {
     "id": 110100001219000600,
     "value": "Altron Gundam (EW)"
+  },
+  {
+    "id": 110100001219000650,
+    "value": "Altron Gundam (EW) (EX)"
   },
   {
     "id": 110100001219000700,
@@ -5814,6 +5834,10 @@
   {
     "id": 110100001728000100,
     "value": "Saikoro Gundam"
+  },
+  {
+    "id": 110100001730000100,
+    "value": "Musha Ghost"
   },
   {
     "id": 110100001750000110,
@@ -9025,7 +9049,11 @@
   },
   {
     "id": 110200001210001100,
-    "value": "A combat-spec Mobile Suit developed by the Gundam Scientists, the first of its kind.\nIn addition to being the blueprint for the Leo, it serves as the common ancestor to all Mobile Suits including the Gundams.\nAt the upper limits of Mobile Suit performance,it has power and mobility beyond the reach of later mass-produced units, but its unwieldy nature in the hands of the average pilot meant only one prototype survived when its development plans were destroyed.\nZechs Merquise awakened it from its slumber at the Corsica base in AC 195, piloting it himself to face off against the powerful Gundams after their arrival on Earth.\nIts name is derived from the term \"theurgist,\" meaning \"wonder-worker.\""
+    "value": "A combat-spec mobile suit developed by five Gundam scientists, the first of its kind.\nIn addition to being the blueprint for the Leo, it serves as the common ancestor to all mobile suits including the Gundams.\nAt the upper limits of mobile suit performance, it has power and mobility beyond the reach of later mass-produced units, but its unwieldy nature in the hands of the average pilot meant only one prototype survived when its development plans were destroyed.\nZechs Merquise awakened it from its slumber at the Corsica base in A.C. 195, piloting it himself to face off against the powerful Gundams after their arrival on Earth.\nIts name is derived from the term \"theurgist,\" meaning \"divine worker.\""
+  },
+  {
+    "id": 110200001210001160,
+    "value": "A combat-spec mobile suit developed by five Gundam scientists, the first of its kind.\nIn addition to being the blueprint for the Leo, it serves as the common ancestor to all mobile suits including the Gundams.\nAt the upper limits of mobile suit performance, it has power and mobility beyond the reach of later mass-produced units, but its unwieldy nature in the hands of the average pilot meant only one prototype survived when its development plans were destroyed.\nZechs Merquise awakened it from its slumber at the Corsica base in A.C. 195, piloting it himself to face off against the powerful Gundams after their arrival on Earth.\nIts name is derived from the term \"theurgist,\" meaning \"divine worker.\""
   },
   {
     "id": 110200001210001200,
@@ -9200,6 +9228,14 @@
     "value": "A Tallgeese Space Type newly designed for the manga, Glory of the Losers.\nThis is the Tallgeese that Howard modified for Zechs Merquise after he came to space following his leave from OZ.\nThe four Wing Binders attached to its back as rear thruster units give it astounding levels of mobility.\nThe shape of the crest on its head has also been altered.\nIts Wing Binders are later transplanted onto the Wing Gundam Zero EW."
   },
   {
+    "id": 110200001211001200,
+    "value": "Gundam Epyon's design in the manga, Glory of the Losers.\nIts form and coloring are largely similar to what it was in the TV series, but its rear wing binders have a gimmick where they can fold out.\nThe form of the shield that carries the heat rod has also been altered.\nWhile its design differs from the version seen in the TV series, it is nevertheless established in the manga as being the very same unit."
+  },
+  {
+    "id": 110200001211001300,
+    "value": "-"
+  },
+  {
     "id": 110200001212000100,
     "value": "A giant Mobile Suit developed by OZ for base defense.\nIt is equipped with a transformation mechanism, and it transforms between a melee-centric Mobile Suit form and a high-mobility Mobile Armor form.\nIt is also loaded with the Mobile Doll System, enabling it to be fielded unmanned.\nIts primary weapon is a Beam Bayonet that doubles as both a Beam Saber and Beam Rifle, and it also wields the Heat Rod that serves as the tail for the Mobile Armor form.\nIt also comes with a large AS Planet Defenser shield that enables the use of Planet Defensers, giving it formidable defense.\nBeing 1.5 times the size of a regular Mobile Suit led to it being passed over for mass production, though.\nThe one prototype that did get built was dispatched to Vulkanus, an unmanned production plant.\nIts name comes from the constellation Scorpio."
   },
@@ -9249,7 +9285,11 @@
   },
   {
     "id": 110200001219000400,
-    "value": "Gundam Heavyarms Custom's OVA and movie version.\nIt now comes equipped with Double Gatling Gun on each arm and an increased number of Leg-Mounted Missile Pods for extra firepower.\nConversely, its Army Knife has been stripped, making it strictly a projectile user.\nIt sports a deep blue color scheme to distinguish it from the standard Heavyarms and TV version of the Custom, and is known to don a clown half-mask while on missions.\nWhile it was sent to the Sun for disposal after the battle with the Libra, it was recovered during the Barton Uprising to fight against the Mariemaia Army.\nDespite the difference in design from the TV version, it is meant to be the exact same suit."
+    "value": "Gundam Heavyarms Custom's OVA and movie version.\nIt comes equipped with a double gatling gun on each arm, as well as an increased number of leg-mounted missile pods for extra firepower.\nConversely, its army knife has been removed, making it a purely projectile-focused unit.\nIt sports a deep blue color scheme to distinguish it from the standard Heavyarms and the TV version of the Custom, and is also known to don a clown half-mask during missions.\nWhile it was sent to the Sun for disposal after the battle with the Libra, it was recovered during the Barton Uprising to fight against the Mariemaia Army.\nDespite the differences in design from the TV version, it is considered to be exactly the same unit."
+  },
+  {
+    "id": 110200001219000450,
+    "value": "Gundam Heavyarms Custom's OVA and movie version.\nIt comes equipped with a double gatling gun on each arm, as well as an increased number of leg-mounted missile pods for extra firepower.\nConversely, its army knife has been removed, making it a purely projectile-focused unit.\nIt sports a deep blue color scheme to distinguish it from the standard Heavyarms and the TV version of the Custom, and is also known to don a clown half-mask during missions.\nWhile it was sent to the Sun for disposal after the battle with the Libra, it was recovered during the Barton Uprising to fight against the Mariemaia Army.\nDespite the differences in design from the TV version, it is considered to be exactly the same unit."
   },
   {
     "id": 110200001219000500,
@@ -9257,7 +9297,11 @@
   },
   {
     "id": 110200001219000600,
-    "value": "The Altron Gundam's OVA and movie version.\nIts arms can now extend, giving extra range to its enlarged Dragon Fangs, and the loss of its back-mounted Wing Binders gives it a much more streamlined profile.\nStripped of its Flamethrower and Beam Cannons, it is now a close quarters-only Mobile Suit.\nHidden after the battle with Libra, it reappeared with the Mariemaia forces during the Barton Uprising to engage in a fierce fight with the Wing Gundam Zero.\nDespite the difference in design from the TV version, it is meant to be the exact same suit."
+    "value": "Altron Gundam's OVA and movie version.\nIts arms can extend, granting extra reach to its enlarged Dragon Fangs and significantly increasing its attack range.\nThe removal of its back-mounted wing binders gives it a much more streamlined profile.\nStripped of its flamethrower and beam cannons, it has become a fully melee-oriented mobile suit.\nHidden after the battle with Libra, it later reappeared with the Mariemaia Army during the Barton Uprising, where it engaged in a fierce fight with the Wing Gundam Zero.\nWhile its design differs from the version seen in the TV series, it is nevertheless established in the manga as being the very same unit."
+  },
+  {
+    "id": 110200001219000650,
+    "value": "Altron Gundam's OVA and movie version.\nIts arms can extend, granting extra reach to its enlarged Dragon Fangs and significantly increasing its attack range.\nThe removal of its back-mounted wing binders gives it a much more streamlined profile.\nStripped of its flamethrower and beam cannons, it has become a fully melee-oriented mobile suit.\nHidden after the battle with Libra, it later reappeared with the Mariemaia Army during the Barton Uprising, where it engaged in a fierce fight with the Wing Gundam Zero.\nWhile its design differs from the version seen in the TV series, it is nevertheless established in the manga as being the very same unit."
   },
   {
     "id": 110200001219000700,
@@ -11714,6 +11758,10 @@
   {
     "id": 110200001728000100,
     "value": "An odd-looking mobile suit with the head of a Psycho Gundam and a die-shaped body.\nPosing a sharp contrast to its comical exterior, the suit's fearsome efficiency in battle has earned it the moniker of \"Death Cube.\""
+  },
+  {
+    "id": 110200001730000100,
+    "value": "A Gundam that appeared in Musha Castle, a stronghold haunted by ghosts.\nRumored to be an ancestral spirit of the Gundam clan, what it truly is remains a mystery.\nIt wields a renowned blade called the Doudanuki, said to be the reward awaiting anyone who defeats it in a duel."
   },
   {
     "id": 110200001750000100,
@@ -15236,6 +15284,10 @@
     "value": "Tallgeese"
   },
   {
+    "id": 110300001210001160,
+    "value": "Tallgeese"
+  },
+  {
     "id": 110300001210001200,
     "value": "Tallgeese II"
   },
@@ -15444,6 +15496,14 @@
     "value": "Tallgeese F"
   },
   {
+    "id": 110300001211001210,
+    "value": "Gundam Epyon (EW)"
+  },
+  {
+    "id": 110300001211001310,
+    "value": "Gundam Epyon (EW) [MA]"
+  },
+  {
     "id": 110300001212000100,
     "value": "Scorpio"
   },
@@ -15496,12 +15556,20 @@
     "value": "Gundam Heavyarms Custom (EW)"
   },
   {
+    "id": 110300001219000450,
+    "value": "Gundam Heavyarms Custom (EW) (EX)"
+  },
+  {
     "id": 110300001219000500,
     "value": "Gundam Sandrock Custom (EW)"
   },
   {
     "id": 110300001219000600,
     "value": "Altron Gundam (EW)"
+  },
+  {
+    "id": 110300001219000650,
+    "value": "Altron Gundam (EW) (EX)"
   },
   {
     "id": 110300001219000700,
@@ -18318,6 +18386,10 @@
   {
     "id": 110300001728000100,
     "value": "Saikoro Gundam"
+  },
+  {
+    "id": 110300001730000100,
+    "value": "Musha Ghost"
   },
   {
     "id": 110300001750000110,
@@ -21852,6 +21924,10 @@
     "value": "Tallgeese"
   },
   {
+    "id": 110400001210001160,
+    "value": "Tallgeese"
+  },
+  {
     "id": 110400001210001200,
     "value": "Tallgeese II"
   },
@@ -22060,6 +22136,14 @@
     "value": "Tallgeese F"
   },
   {
+    "id": 110400001211001210,
+    "value": "Gundam Epyon (EW)"
+  },
+  {
+    "id": 110400001211001310,
+    "value": "Gundam Epyon (EW) [MA]"
+  },
+  {
     "id": 110400001212000100,
     "value": "Scorpio"
   },
@@ -22112,12 +22196,20 @@
     "value": "Gundam Heavyarms Custom (EW)"
   },
   {
+    "id": 110400001219000450,
+    "value": "Gundam Heavyarms Custom (EW) (EX)"
+  },
+  {
     "id": 110400001219000500,
     "value": "Gundam Sandrock Custom (EW)"
   },
   {
     "id": 110400001219000600,
     "value": "Altron Gundam (EW)"
+  },
+  {
+    "id": 110400001219000650,
+    "value": "Altron Gundam (EW) (EX)"
   },
   {
     "id": 110400001219000700,
@@ -24934,6 +25026,10 @@
   {
     "id": 110400001728000100,
     "value": "Saikoro Gundam"
+  },
+  {
+    "id": 110400001730000100,
+    "value": "Musha Ghost"
   },
   {
     "id": 110400001750000110,

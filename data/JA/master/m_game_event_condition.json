@@ -540,6 +540,15 @@
     "TargetValue5": 0
   },
   {
+    "Id": 200010002801,
+    "GameEventConditionTypeIndex": 228,
+    "TargetValue1": 90520031,
+    "TargetValue2": 0,
+    "TargetValue3": 0,
+    "TargetValue4": 0,
+    "TargetValue5": 0
+  },
+  {
     "Id": 200010100101,
     "GameEventConditionTypeIndex": 229,
     "TargetValue1": 90520001,
@@ -777,6 +786,15 @@
     "Id": 200010102701,
     "GameEventConditionTypeIndex": 229,
     "TargetValue1": 90520030,
+    "TargetValue2": 10,
+    "TargetValue3": 0,
+    "TargetValue4": 0,
+    "TargetValue5": 0
+  },
+  {
+    "Id": 200010102801,
+    "GameEventConditionTypeIndex": 229,
+    "TargetValue1": 90520031,
     "TargetValue2": 10,
     "TargetValue3": 0,
     "TargetValue4": 0,
@@ -9387,6 +9405,87 @@
     "TargetValue5": 0
   },
   {
+    "Id": 260750040101,
+    "GameEventConditionTypeIndex": 208,
+    "TargetValue1": 1730000100,
+    "TargetValue2": 1,
+    "TargetValue3": 0,
+    "TargetValue4": 0,
+    "TargetValue5": 0
+  },
+  {
+    "Id": 260750040102,
+    "GameEventConditionTypeIndex": 208,
+    "TargetValue1": 1730000100,
+    "TargetValue2": 2,
+    "TargetValue3": 0,
+    "TargetValue4": 0,
+    "TargetValue5": 0
+  },
+  {
+    "Id": 260750040103,
+    "GameEventConditionTypeIndex": 208,
+    "TargetValue1": 1730000100,
+    "TargetValue2": 3,
+    "TargetValue3": 0,
+    "TargetValue4": 0,
+    "TargetValue5": 0
+  },
+  {
+    "Id": 260750040201,
+    "GameEventConditionTypeIndex": 316,
+    "TargetValue1": 1700000100,
+    "TargetValue2": 1,
+    "TargetValue3": 0,
+    "TargetValue4": 0,
+    "TargetValue5": 0
+  },
+  {
+    "Id": 260750040202,
+    "GameEventConditionTypeIndex": 316,
+    "TargetValue1": 1700000100,
+    "TargetValue2": 2,
+    "TargetValue3": 0,
+    "TargetValue4": 0,
+    "TargetValue5": 0
+  },
+  {
+    "Id": 260750040203,
+    "GameEventConditionTypeIndex": 316,
+    "TargetValue1": 1700000100,
+    "TargetValue2": 3,
+    "TargetValue3": 0,
+    "TargetValue4": 0,
+    "TargetValue5": 0
+  },
+  {
+    "Id": 260750040301,
+    "GameEventConditionTypeIndex": 316,
+    "TargetValue1": 1709000100,
+    "TargetValue2": 1,
+    "TargetValue3": 0,
+    "TargetValue4": 0,
+    "TargetValue5": 0
+  },
+  {
+    "Id": 260750040302,
+    "GameEventConditionTypeIndex": 316,
+    "TargetValue1": 1709000100,
+    "TargetValue2": 2,
+    "TargetValue3": 0,
+    "TargetValue4": 0,
+    "TargetValue5": 0
+  },
+  {
+    "Id": 260750040303,
+    "GameEventConditionTypeIndex": 316,
+    "TargetValue1": 1709000100,
+    "TargetValue2": 3,
+    "TargetValue3": 0,
+    "TargetValue4": 0,
+    "TargetValue5": 0
+  },
+  {
     "Id": 300010200101,
     "GameEventConditionTypeIndex": 276,
     "TargetValue1": 101501,
@@ -9544,6 +9643,60 @@
     "GameEventConditionTypeIndex": 276,
     "TargetValue1": 8101801,
     "TargetValue2": 1119,
+    "TargetValue3": 1,
+    "TargetValue4": 0,
+    "TargetValue5": 0
+  },
+  {
+    "Id": 310021000101,
+    "GameEventConditionTypeIndex": 276,
+    "TargetValue1": 21001801,
+    "TargetValue2": 1119,
+    "TargetValue3": 1,
+    "TargetValue4": 0,
+    "TargetValue5": 0
+  },
+  {
+    "Id": 310021000201,
+    "GameEventConditionTypeIndex": 276,
+    "TargetValue1": 21001801,
+    "TargetValue2": 1010,
+    "TargetValue3": 1,
+    "TargetValue4": 0,
+    "TargetValue5": 0
+  },
+  {
+    "Id": 310021000301,
+    "GameEventConditionTypeIndex": 276,
+    "TargetValue1": 21001901,
+    "TargetValue2": 1057,
+    "TargetValue3": 1,
+    "TargetValue4": 0,
+    "TargetValue5": 0
+  },
+  {
+    "Id": 310021000401,
+    "GameEventConditionTypeIndex": 276,
+    "TargetValue1": 21001901,
+    "TargetValue2": 1027,
+    "TargetValue3": 1,
+    "TargetValue4": 0,
+    "TargetValue5": 0
+  },
+  {
+    "Id": 310021000501,
+    "GameEventConditionTypeIndex": 276,
+    "TargetValue1": 21002001,
+    "TargetValue2": 1026,
+    "TargetValue3": 1,
+    "TargetValue4": 0,
+    "TargetValue5": 0
+  },
+  {
+    "Id": 310021000601,
+    "GameEventConditionTypeIndex": 276,
+    "TargetValue1": 21002001,
+    "TargetValue2": 1006,
     "TargetValue3": 1,
     "TargetValue4": 0,
     "TargetValue5": 0

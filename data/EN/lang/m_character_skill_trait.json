@@ -480,6 +480,10 @@
     "value": "HP Repair (Range) LV 3"
   },
   {
+    "id": 140500000380270301,
+    "value": "EN Charge Lite LV 3"
+  },
+  {
     "id": 140500000900000801,
     "value": "HP Repair (Range)"
   },
@@ -982,6 +986,10 @@
   {
     "id": 140600000370260101,
     "value": "Restore HP to allies within range by 20%.\nFurther restore HP to allied units with the Wing Series tag\nwithin range by 5%."
+  },
+  {
+    "id": 140600000380270301,
+    "value": "Restore EN by 15%."
   },
   {
     "id": 140600000990000061,

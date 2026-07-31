@@ -5390,6 +5390,17 @@
     "KomaMovePositionY": 0
   },
   {
+    "Id": 21100010,
+    "DefaultUnitId": 1211001210,
+    "SortOrder": 21100010,
+    "SeriesId": 2110,
+    "DescriptionLanguageId": 110200001211001200,
+    "ScheduleId": 2607509901,
+    "OverrideKomaSize": 0,
+    "KomaMovePositionX": 0,
+    "KomaMovePositionY": 0
+  },
+  {
     "Id": 21200001,
     "DefaultUnitId": 1212000100,
     "SortOrder": 21200001,
@@ -10797,6 +10808,17 @@
     "SeriesId": 7280,
     "DescriptionLanguageId": 110200001728000100,
     "ScheduleId": 2505109901,
+    "OverrideKomaSize": 0,
+    "KomaMovePositionX": 0,
+    "KomaMovePositionY": 0
+  },
+  {
+    "Id": 73000001,
+    "DefaultUnitId": 1730000100,
+    "SortOrder": 73000001,
+    "SeriesId": 7300,
+    "DescriptionLanguageId": 110200001730000100,
+    "ScheduleId": 2607509901,
     "OverrideKomaSize": 0,
     "KomaMovePositionX": 0,
     "KomaMovePositionY": 0

@@ -1729,6 +1729,19 @@
     "TargetCharacterRoleTypeIndex": 0
   },
   {
+    "Id": 380270301,
+    "TargetLineageId": 0,
+    "TargetUnitRoleTypeIndex": 0,
+    "TraitTypeIndex": 2,
+    "TraitValue": 15,
+    "ResourceId": "trait_10020501",
+    "NameLanguageId": 140500000380270301,
+    "DescriptionLanguageId": 140600000380270301,
+    "BuffLabelColorTypeIndex": 5,
+    "IsDisplayUpDown": false,
+    "TargetCharacterRoleTypeIndex": 0
+  },
+  {
     "Id": 900000001,
     "TargetLineageId": 0,
     "TargetUnitRoleTypeIndex": 0,

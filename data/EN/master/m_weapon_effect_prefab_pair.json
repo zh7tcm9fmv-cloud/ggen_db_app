@@ -1998,6 +1998,18 @@
     "DamagedEffectId": "ef_mpd_0023_007_vulcan_mikailis"
   },
   {
+    "Id": 290174,
+    "WeaponEffectPrefabPairSetId": 290174,
+    "WeaponEffectId": "ef_mpa_0023_000_hatchfullopen",
+    "DamagedEffectId": "ef_mpd_0023_000_hatchfullopen"
+  },
+  {
+    "Id": 290175,
+    "WeaponEffectPrefabPairSetId": 290175,
+    "WeaponEffectId": "ef_mpa_0023_000_dragonhang",
+    "DamagedEffectId": "ef_mpd_0000_000_cmnhit"
+  },
+  {
     "Id": 310001,
     "WeaponEffectPrefabPairSetId": 310001,
     "WeaponEffectId": "ef_mpa_0029_001_funnelbeam",
@@ -4275,6 +4287,18 @@
     "Id": 900198,
     "WeaponEffectPrefabPairSetId": 900198,
     "WeaponEffectId": "ef_mpw_080_13_funnel_darilbalde",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900204,
+    "WeaponEffectPrefabPairSetId": 900204,
+    "WeaponEffectId": "ef_mpw_061_06_tackle",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900205,
+    "WeaponEffectPrefabPairSetId": 900205,
+    "WeaponEffectId": "ef_mpw_102_01_dragonhang",
     "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
   },
   {
@@ -8618,6 +8642,132 @@
   {
     "Id": 8007612,
     "WeaponEffectPrefabPairSetId": 80076,
+    "WeaponEffectId": "ef_mpa_1000_000_null",
+    "DamagedEffectId": "ef_mpd_1000_000_null"
+  },
+  {
+    "Id": 8007701,
+    "WeaponEffectPrefabPairSetId": 80077,
+    "WeaponEffectId": "ef_mpa_1000_000_slash_altron",
+    "DamagedEffectId": "ef_mpd_1000_005_beamsaber_ex"
+  },
+  {
+    "Id": 8007702,
+    "WeaponEffectPrefabPairSetId": 80077,
+    "WeaponEffectId": "ef_mpa_1000_000_stab_altron_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_stab_altron_ex1"
+  },
+  {
+    "Id": 8007703,
+    "WeaponEffectPrefabPairSetId": 80077,
+    "WeaponEffectId": "ef_mpa_1000_000_lance_altron",
+    "DamagedEffectId": "ef_mpd_1000_000_lance_altron"
+  },
+  {
+    "Id": 8007704,
+    "WeaponEffectPrefabPairSetId": 80077,
+    "WeaponEffectId": "ef_mpa_1000_000_blow_altron_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_blow_altron_ex1"
+  },
+  {
+    "Id": 8007705,
+    "WeaponEffectPrefabPairSetId": 80077,
+    "WeaponEffectId": "ef_mpa_1000_000_blow_altron_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_blow_altron_ex2"
+  },
+  {
+    "Id": 8007706,
+    "WeaponEffectPrefabPairSetId": 80077,
+    "WeaponEffectId": "ef_mpa_1000_000_stab_altron_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_stab_altron_ex2"
+  },
+  {
+    "Id": 8007707,
+    "WeaponEffectPrefabPairSetId": 80077,
+    "WeaponEffectId": "ef_mpa_1000_000_storm_altron",
+    "DamagedEffectId": "ef_mpd_1000_000_storm_altron"
+  },
+  {
+    "Id": 8007708,
+    "WeaponEffectPrefabPairSetId": 80077,
+    "WeaponEffectId": "ef_mpa_1000_000_crush_altron",
+    "DamagedEffectId": "ef_mpd_1000_000_crush_altron"
+  },
+  {
+    "Id": 8007709,
+    "WeaponEffectPrefabPairSetId": 80077,
+    "WeaponEffectId": "ef_mpa_1000_000_null",
+    "DamagedEffectId": "ef_mpd_1000_000_null"
+  },
+  {
+    "Id": 8007801,
+    "WeaponEffectPrefabPairSetId": 80078,
+    "WeaponEffectId": "ef_mpa_1000_000_firecircle_heavyarms",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8007802,
+    "WeaponEffectPrefabPairSetId": 80078,
+    "WeaponEffectId": "ef_mpa_1000_000_kick_heavyarms_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_kick_heavyarms_ex1"
+  },
+  {
+    "Id": 8007803,
+    "WeaponEffectPrefabPairSetId": 80078,
+    "WeaponEffectId": "ef_mpa_1000_000_kick_heavyarms_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_kick_heavyarms_ex2"
+  },
+  {
+    "Id": 8007804,
+    "WeaponEffectPrefabPairSetId": 80078,
+    "WeaponEffectId": "ef_mpa_1000_000_kick_heavyarms_ex3",
+    "DamagedEffectId": "ef_mpd_1000_000_kick_heavyarms_ex3"
+  },
+  {
+    "Id": 8007805,
+    "WeaponEffectPrefabPairSetId": 80078,
+    "WeaponEffectId": "ef_mpa_1000_000_dash_heavyarms",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8007806,
+    "WeaponEffectPrefabPairSetId": 80078,
+    "WeaponEffectId": "ef_mpa_1000_000_gatling_heavyarms",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8007807,
+    "WeaponEffectPrefabPairSetId": 80078,
+    "WeaponEffectId": "ef_mpa_1000_000_gatlinghit_heavyarms",
+    "DamagedEffectId": "ef_mpd_1000_000_gatlinghit_heavyarms"
+  },
+  {
+    "Id": 8007808,
+    "WeaponEffectPrefabPairSetId": 80078,
+    "WeaponEffectId": "ef_mpa_1000_000_multipleburst_heavyarms",
+    "DamagedEffectId": "ef_mpd_1000_000_multipleburst_heavyarms"
+  },
+  {
+    "Id": 8007809,
+    "WeaponEffectPrefabPairSetId": 80078,
+    "WeaponEffectId": "ef_mpa_1000_000_missile_heavyarms",
+    "DamagedEffectId": "ef_mpd_1000_000_missile_heavyarms"
+  },
+  {
+    "Id": 8007810,
+    "WeaponEffectPrefabPairSetId": 80078,
+    "WeaponEffectId": "ef_mpa_1000_000_shockwave_heavyarms",
+    "DamagedEffectId": "ef_mpd_1000_000_shockwave_heavyarms"
+  },
+  {
+    "Id": 8007811,
+    "WeaponEffectPrefabPairSetId": 80078,
+    "WeaponEffectId": "ef_mpa_1000_000_particlevernier_heavyarms",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8007812,
+    "WeaponEffectPrefabPairSetId": 80078,
     "WeaponEffectId": "ef_mpa_1000_000_null",
     "DamagedEffectId": "ef_mpd_1000_000_null"
   },

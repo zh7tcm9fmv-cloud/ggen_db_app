@@ -9990,6 +9990,21 @@
     "AiAttackDecisionTypeIndex": 0
   },
   {
+    "MapStageId": 902000002102000000,
+    "MapNpcAiTypeIndex": 1,
+    "MapNpcAiPresetId": 0,
+    "AiAttackConditionTypeIndex": 0,
+    "AiAttackConditionParameterValue": "",
+    "AiAttackRuleTypeIndex": 1,
+    "AiAttackRuleParameterTypeIndex": 0,
+    "AiAttackRuleParameterValue": "",
+    "AiCounterRuleTypeIndex": 1,
+    "AiSupportActionRuleTypeIndex": 0,
+    "AiSupportActionRuleParameterValue": "",
+    "AiUseSkillTypeIndex": 1,
+    "AiAttackDecisionTypeIndex": 0
+  },
+  {
     "MapStageId": 902100000202000000,
     "MapNpcAiTypeIndex": 1,
     "MapNpcAiPresetId": 0,
@@ -10260,6 +10275,21 @@
     "AiAttackDecisionTypeIndex": 0
   },
   {
+    "MapStageId": 902100002102000000,
+    "MapNpcAiTypeIndex": 1,
+    "MapNpcAiPresetId": 0,
+    "AiAttackConditionTypeIndex": 0,
+    "AiAttackConditionParameterValue": "",
+    "AiAttackRuleTypeIndex": 1,
+    "AiAttackRuleParameterTypeIndex": 0,
+    "AiAttackRuleParameterValue": "",
+    "AiCounterRuleTypeIndex": 1,
+    "AiSupportActionRuleTypeIndex": 0,
+    "AiSupportActionRuleParameterValue": "",
+    "AiUseSkillTypeIndex": 1,
+    "AiAttackDecisionTypeIndex": 0
+  },
+  {
     "MapStageId": 902200000202000000,
     "MapNpcAiTypeIndex": 1,
     "MapNpcAiPresetId": 0,
@@ -10516,6 +10546,21 @@
   },
   {
     "MapStageId": 902200002002000000,
+    "MapNpcAiTypeIndex": 1,
+    "MapNpcAiPresetId": 0,
+    "AiAttackConditionTypeIndex": 0,
+    "AiAttackConditionParameterValue": "",
+    "AiAttackRuleTypeIndex": 1,
+    "AiAttackRuleParameterTypeIndex": 0,
+    "AiAttackRuleParameterValue": "",
+    "AiCounterRuleTypeIndex": 1,
+    "AiSupportActionRuleTypeIndex": 0,
+    "AiSupportActionRuleParameterValue": "",
+    "AiUseSkillTypeIndex": 1,
+    "AiAttackDecisionTypeIndex": 0
+  },
+  {
+    "MapStageId": 902200002102000000,
     "MapNpcAiTypeIndex": 1,
     "MapNpcAiPresetId": 0,
     "AiAttackConditionTypeIndex": 0,
@@ -10801,6 +10846,21 @@
   },
   {
     "MapStageId": 902300002002000000,
+    "MapNpcAiTypeIndex": 1,
+    "MapNpcAiPresetId": 0,
+    "AiAttackConditionTypeIndex": 0,
+    "AiAttackConditionParameterValue": "",
+    "AiAttackRuleTypeIndex": 1,
+    "AiAttackRuleParameterTypeIndex": 0,
+    "AiAttackRuleParameterValue": "",
+    "AiCounterRuleTypeIndex": 1,
+    "AiSupportActionRuleTypeIndex": 0,
+    "AiSupportActionRuleParameterValue": "",
+    "AiUseSkillTypeIndex": 1,
+    "AiAttackDecisionTypeIndex": 0
+  },
+  {
+    "MapStageId": 902300002102000000,
     "MapNpcAiTypeIndex": 1,
     "MapNpcAiPresetId": 0,
     "AiAttackConditionTypeIndex": 0,
@@ -12765,6 +12825,21 @@
     "AiAttackDecisionTypeIndex": 0
   },
   {
+    "MapStageId": 905100003802000000,
+    "MapNpcAiTypeIndex": 1,
+    "MapNpcAiPresetId": 0,
+    "AiAttackConditionTypeIndex": 0,
+    "AiAttackConditionParameterValue": "0",
+    "AiAttackRuleTypeIndex": 1,
+    "AiAttackRuleParameterTypeIndex": 0,
+    "AiAttackRuleParameterValue": "",
+    "AiCounterRuleTypeIndex": 1,
+    "AiSupportActionRuleTypeIndex": 0,
+    "AiSupportActionRuleParameterValue": "",
+    "AiUseSkillTypeIndex": 1,
+    "AiAttackDecisionTypeIndex": 0
+  },
+  {
     "MapStageId": 905200000102000000,
     "MapNpcAiTypeIndex": 1,
     "MapNpcAiPresetId": 0,
@@ -13156,6 +13231,21 @@
   },
   {
     "MapStageId": 905200003002000000,
+    "MapNpcAiTypeIndex": 1,
+    "MapNpcAiPresetId": 0,
+    "AiAttackConditionTypeIndex": 0,
+    "AiAttackConditionParameterValue": "0",
+    "AiAttackRuleTypeIndex": 1,
+    "AiAttackRuleParameterTypeIndex": 0,
+    "AiAttackRuleParameterValue": "",
+    "AiCounterRuleTypeIndex": 1,
+    "AiSupportActionRuleTypeIndex": 0,
+    "AiSupportActionRuleParameterValue": "",
+    "AiUseSkillTypeIndex": 1,
+    "AiAttackDecisionTypeIndex": 0
+  },
+  {
+    "MapStageId": 905200003102000000,
     "MapNpcAiTypeIndex": 1,
     "MapNpcAiPresetId": 0,
     "AiAttackConditionTypeIndex": 0,

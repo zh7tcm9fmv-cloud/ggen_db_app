@@ -1580,6 +1580,10 @@
     "value": "Relena Darlian"
   },
   {
+    "id": 100100001210002400,
+    "value": "Dorothy Catalonia"
+  },
+  {
     "id": 100100001210002600,
     "value": "Trant Clark"
   },
@@ -3394,6 +3398,10 @@
   {
     "id": 100100001725000100,
     "value": "Liu Bei Unicorn Gundam"
+  },
+  {
+    "id": 100100001730000100,
+    "value": "Musha Ghost"
   },
   {
     "id": 100100001764000100,
@@ -5696,6 +5704,10 @@
     "value": "-"
   },
   {
+    "id": 100200001210002400,
+    "value": "The granddaughter of Duke Dermail Catalonia,representative of the Romefeller Foundation.\nAn eccentric girl with distinctive forked eyebrows,her behavior is aggressive, provocative, and far beyond the realm of sensibility.\nShe lost both parents to war at a young age, and has nursed some twisted feelings about war ever since.\nShe treats fights as beautiful things and professes to be eagerly awaiting a proper war, but that is only to impress upon others how foolish and miserable wars really are.\nShe showed up in many places during the era of turmoil and served as an element that stirs up chaos.\nThis includes the Sanc Kingdom with its advocation of total pacifism, and White Fang, with its push to regulate the entire Earth and all mankind."
+  },
+  {
     "id": 100200001210002600,
     "value": "A technical officer for OZ.\nA technician under Tubarov, he was a man of ambition.\nWhen OZ obtained the Wing Gundam Zero, he became intrigued by the Zero System it was equipped with and conducted research into it against Tubarov's orders.\n"
   },
@@ -7429,7 +7441,7 @@
   },
   {
     "id": 100200001705000100,
-    "value": "The Knight Gundam armed with three legendary relics: the Armor of Mist, Flame Sword, and Shield of Strength.\nWhen three stars came into alignment, the power of the relics increased tenfold, and the Knight Gundam became more powerful than even the Black Dragon.\nUnfortunately, this power exacted a heavy toll on his body."
+    "value": "The Knight Gundam, clad in the three legendary relics: the Armor of Mist, Flame Sword, and Shield of Strength.\nWhen three stars came into alignment, the power of the relics increased tenfold, granting the Knight Gundam strength that surpassed even the Black Dragon.\nUnfortunately, this immense power exacted a heavy toll on its body."
   },
   {
     "id": 100200001705000200,
@@ -7510,6 +7522,10 @@
   {
     "id": 100200001725000100,
     "value": "He is a member of \"Dragon's Watch,\" a vigilante group in the Shu Area, which is not targeted by Etiolation Trinity MS too often.\nAfter meeting Guan Yu Nu Gundam and Zhang Fei God Gundam, he makes an important decision: To save the world.\nHe eventually starts to gain comrades who are drawn to his strong passion."
+  },
+  {
+    "id": 100200001730000100,
+    "value": "A Gundam that appeared in Musha Castle, a stronghold haunted by ghosts.\nRumored to be an ancestral spirit of the Gundam clan, what it truly is remains a mystery.\nIt wields a renowned blade called the Doudanuki, said to be the reward awaiting anyone who defeats it in a duel."
   },
   {
     "id": 100200001764000100,
@@ -9812,6 +9828,10 @@
     "value": "Relena Darlian"
   },
   {
+    "id": 100300001210002400,
+    "value": "Dorothy Catalonia"
+  },
+  {
     "id": 100300001210002600,
     "value": "Trant Clark"
   },
@@ -11626,6 +11646,10 @@
   {
     "id": 100300001725000100,
     "value": "Liu Bei Unicorn Gundam"
+  },
+  {
+    "id": 100300001730000100,
+    "value": "Musha Ghost"
   },
   {
     "id": 100300001764000100,
@@ -13928,6 +13952,10 @@
     "value": "Relena Darlian"
   },
   {
+    "id": 100400001210002400,
+    "value": "Dorothy Catalonia"
+  },
+  {
     "id": 100400001210002600,
     "value": "Trant Clark"
   },
@@ -15742,6 +15770,10 @@
   {
     "id": 100400001725000100,
     "value": "Liu Bei Unicorn Gundam"
+  },
+  {
+    "id": 100400001730000100,
+    "value": "Musha Ghost"
   },
   {
     "id": 100400001764000100,
@@ -17584,6 +17616,10 @@
     "value": "Heh... The curtain has fallen a bit too soon..."
   },
   {
+    "id": 101100001210002400,
+    "value": "This is the harshness of a battlefield..."
+  },
+  {
     "id": 101100001217000200,
     "value": "This is it... You'd better do the rest, Odin!"
   },
@@ -17612,11 +17648,19 @@
     "value": "I made a mistake?!"
   },
   {
+    "id": 101100001219000301,
+    "value": "I made a mistake?!"
+  },
+  {
     "id": 101100001219000400,
     "value": "My machine... Isn't going to last much longer!"
   },
   {
     "id": 101100001219000500,
+    "value": "Nataku... I'm sorry!"
+  },
+  {
+    "id": 101100001219000501,
     "value": "Nataku... I'm sorry!"
   },
   {
@@ -18666,6 +18710,10 @@
   {
     "id": 101100001725000100,
     "value": "But it's up to me...to protect them!"
+  },
+  {
+    "id": 101100001730000100,
+    "value": "Ungh... This is it..."
   },
   {
     "id": 101100001764000100,
@@ -20382,6 +20430,10 @@
   {
     "id": 101400001210002303,
     "value": "-"
+  },
+  {
+    "id": 101400001210002400,
+    "value": "Naoko Matsui"
   },
   {
     "id": 101400001210002600,
@@ -22206,6 +22258,10 @@
   {
     "id": 101400001725000100,
     "value": "Gakuto Kajiwara"
+  },
+  {
+    "id": 101400001730000100,
+    "value": "Atsushi Abe"
   },
   {
     "id": 101400001764000100,

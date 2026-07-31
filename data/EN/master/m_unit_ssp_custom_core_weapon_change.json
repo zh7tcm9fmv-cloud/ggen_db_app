@@ -2830,6 +2830,11 @@
     "AfterWeaponId": 121000110090
   },
   {
+    "Id": 121000116001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121000116090
+  },
+  {
     "Id": 121000120001,
     "BeforeWeaponId": 0,
     "AfterWeaponId": 121000120090
@@ -3043,6 +3048,26 @@
     "Id": 121100110001,
     "BeforeWeaponId": 0,
     "AfterWeaponId": 121100110090
+  },
+  {
+    "Id": 121100121001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121100121090
+  },
+  {
+    "Id": 121100121002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121100121080
+  },
+  {
+    "Id": 121100131001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121100131090
+  },
+  {
+    "Id": 121100131002,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 121100131080
   },
   {
     "Id": 121200010001,
@@ -5928,6 +5953,11 @@
     "Id": 172800010001,
     "BeforeWeaponId": 0,
     "AfterWeaponId": 172800010090
+  },
+  {
+    "Id": 173000010001,
+    "BeforeWeaponId": 0,
+    "AfterWeaponId": 173000010090
   },
   {
     "Id": 175000011001,

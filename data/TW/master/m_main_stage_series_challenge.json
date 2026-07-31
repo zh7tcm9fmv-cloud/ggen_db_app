@@ -24,6 +24,18 @@
     "RecommendedCombatPower": 130000
   },
   {
+    "Id": 2100,
+    "MainStageSeriesId": 2100,
+    "ScheduleId": 2607503301,
+    "ReleaseConditionCompleteMainStageSeriesId": 2100,
+    "SeriesClearRewardSetId": 43000021000000,
+    "CompleteRewardSetId": 41210000000001,
+    "SeriesGroupFormationStageStatusBuffId": 0,
+    "FreeGroupFormationStageStatusBuffId": 0,
+    "BromideResourceId": "g2100u00900",
+    "RecommendedCombatPower": 130000
+  },
+  {
     "Id": 3000,
     "MainStageSeriesId": 3000,
     "ScheduleId": 2604301801,

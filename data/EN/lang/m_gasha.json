@@ -224,6 +224,10 @@
     "value": "Featured Unit Assembly (7/16/2026 JST)"
   },
   {
+    "id": 220100002607500301,
+    "value": "Featured Unit Assembly"
+  },
+  {
     "id": 220400002504100101,
     "value": "Guaranteed SSR or Higher on Last Pull"
   },
@@ -242,46 +246,6 @@
   {
     "id": 220400002603600601,
     "value": "Pull on any Unit Assembly once"
-  },
-  {
-    "id": 220500000000000001,
-    "value": "Units or supporters will appear in accordance with the drop rates listed below.\n*Each pull is determined using the indicated percentage.\n*Other than the 10th pull on a 10-time pull, the drop rates are as shown in the \"Use 1 time\" and \"Use 10 times (1st–9th)\" lists.\n*One SSR or higher unit or supporter is guaranteed to appear on a 10-time pull. The drop rates are as shown in the \"Use 10 times (10th)\" list.\n*The drop rates are rounded down to the nearest 100 million. The total number of the listed drop rates may not add up to 100%.\n*More than one of the same units or supporters may appear from this Unit Assembly."
-  },
-  {
-    "id": 220500000000000002,
-    "value": "Units will appear in accordance with the drop rates listed below.\n*Each pull is determined using the indicated percentage.\n*One UR unit is guaranteed to appear on a 10-time pull. The drop rates are as shown in the \"Use 10 times (10th)\" list.\n*Drop rates aside from the tenth draw in a pull of ten follow the list for draws from first to ninth in a pull of ten.\n*The drop rates are rounded down to the nearest 100 million. The total number of the listed drop rates may not add up to 100%.\n*More than one of the same units may appear from this Unit Assembly."
-  },
-  {
-    "id": 220500000000000003,
-    "value": "Units will appear in accordance with the drop rates listed below.\n*Each pull is determined using the indicated percentage.\n*The drop rates are rounded down to the nearest 100 million. The total number of the listed drop rates may not add up to 100%.\n*More than one of the same units may appear from this Unit Assembly."
-  },
-  {
-    "id": 220500000000000005,
-    "value": "Supporters will appear at the following drop rates.\n*Each pull is determined using the indicated percentage.\n*The drop rates are rounded down to the nearest 100 million. The total number of the listed drop rates may not add up to 100%.\n*Duplicate supporters may appear in this Unit Assembly."
-  },
-  {
-    "id": 220500000000000006,
-    "value": "Units or supporters will appear in accordance with the drop rates listed below.\n*Each pull is determined using the indicated percentage.\n*The drop rates are rounded down to the nearest 100 million. The total number of the listed drop rates may not add up to 100%.\n*More than one of the same units or supporters may appear from this Unit Assembly."
-  },
-  {
-    "id": 220500000000000007,
-    "value": "Units or supporters will appear in accordance with the drop rates listed below.\n*Each pull is determined using the indicated percentage.\n*Other than the 10th pull on a 10-time pull, the drop rates are as shown in the \"Use 10 times (1st–9th)\" lists.\n*One UR unit is guaranteed to appear on a 10-time pull. The drop rates are as shown in the \"Use 10 times (10th)\" list.\n*The drop rates are rounded down to the nearest 100 million. The total number of the listed drop rates may not add up to 100%.\n*More than one of the same units or supporters may appear from this Unit Assembly."
-  },
-  {
-    "id": 220500000000000008,
-    "value": "Units or supporters will appear in accordance with the drop rates listed below.\n*Each pull is determined using the indicated percentage.\n*Other than the 5th pull on a 5-time pull, the drop rates are as shown in the \"Use 5 times (1st–4th)\" lists.\n*One UR unit is guaranteed to appear on a 5-time pull. The drop rates are as shown in the \"Use 5 times (5th)\" list.\n*The drop rates are rounded down to the nearest 100 million. The total number of the listed drop rates may not add up to 100%.\n*More than one of the same units or supporters may appear from this Unit Assembly."
-  },
-  {
-    "id": 220500000000000009,
-    "value": "Units or supporters will appear in accordance with the drop rates listed below.\n*Each pull is determined using the indicated percentage.\n*Other than the 5th pull on a 5-time pull, the drop rates are as shown in the \"Use 5 times (1st–4th)\" lists.\n*One UR supporter is guaranteed to appear on a 5-time pull. The drop rates are as shown in the \"Use 5 times (5th)\" list.\n*The drop rates are rounded down to the nearest 100 million. The total number of the listed drop rates may not add up to 100%.\n*More than one of the same units or supporters may appear from this Unit Assembly."
-  },
-  {
-    "id": 220500000000000011,
-    "value": "Units or supporters will appear in accordance with the drop rates listed below.\n*Each pull is determined using the indicated percentage.\n*Other than the 10th pull on a 10-time pull, the drop rates are as shown in the \"Use 1 time\" and \"Use 10 times (1st–9th)\" lists.\n*One SSR or higher unit or supporter is guaranteed to appear on a 10-time pull. The drop rates are as shown in the \"Use 10 times (10th)\" list.\n*The 100th cumulative pull is guaranteed to be a UR unit. The drop rates are as shown in the \"Guaranteed UR Unit (100th Total)\" list.\n*When the 100th pull is also the 10th pull of a 10-time pull, the drop rates for the \"Guaranteed UR Unit (100th Total)\" will be applied instead of those for the 10-time pull (10th).\n*The drop rates are rounded down to the nearest 100 million. The total number of the listed drop rates may not add up to 100%.\n*More than one of the same units or supporters may appear from this Unit Assembly."
-  },
-  {
-    "id": 220500000000000012,
-    "value": "Units or supporters will appear in accordance with the drop rates listed below.\n*Each pull is determined using the indicated percentage.\n*Other than the 10th pull on a 10-time pull, the drop rates are as shown in the \"Use 1 time\" and \"Use 10 times (1st–9th)\" lists.\n*One SSR or higher unit or supporter is guaranteed to appear on a 10-time pull. The drop rates are as shown in the \"Use 10 times (10th)\" list.\n*The 50th cumulative pull is guaranteed to be a UR unit. The drop rates are as shown in the \"Guaranteed UR Unit (50th Total)\" list.\n*When the 50th pull is also the 10th pull of a 10-time pull, the drop rates for the \"Guaranteed UR Unit (50th Total)\" will be applied instead of those for the 10-time pull (10th).\n*The drop rates are rounded down to the nearest 100 million. The total number of the listed drop rates may not add up to 100%.\n*More than one of the same units or supporters may appear from this Unit Assembly."
   },
   {
     "id": 220900000000000001,

@@ -4592,6 +4592,22 @@
     "ScheduleId": 0
   },
   {
+    "CharacterId": 1210002400,
+    "SortOrder": 1,
+    "CharacterSkillId": 170010301,
+    "RequiredLevel": 1,
+    "SpCharacterSkillId": 170010301,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1210002400,
+    "SortOrder": 2,
+    "CharacterSkillId": 120090101,
+    "RequiredLevel": 30,
+    "SpCharacterSkillId": 120090101,
+    "ScheduleId": 0
+  },
+  {
     "CharacterId": 1217000200,
     "SortOrder": 1,
     "CharacterSkillId": 260040301,
@@ -4720,6 +4736,30 @@
     "ScheduleId": 0
   },
   {
+    "CharacterId": 1219000301,
+    "SortOrder": 1,
+    "CharacterSkillId": 170010401,
+    "RequiredLevel": 1,
+    "SpCharacterSkillId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1219000301,
+    "SortOrder": 2,
+    "CharacterSkillId": 180160401,
+    "RequiredLevel": 30,
+    "SpCharacterSkillId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1219000301,
+    "SortOrder": 3,
+    "CharacterSkillId": 380270301,
+    "RequiredLevel": 60,
+    "SpCharacterSkillId": 0,
+    "ScheduleId": 0
+  },
+  {
     "CharacterId": 1219000400,
     "SortOrder": 1,
     "CharacterSkillId": 210100201,
@@ -4749,6 +4789,30 @@
     "CharacterSkillId": 0,
     "RequiredLevel": 30,
     "SpCharacterSkillId": 130080301,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1219000501,
+    "SortOrder": 1,
+    "CharacterSkillId": 160050101,
+    "RequiredLevel": 1,
+    "SpCharacterSkillId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1219000501,
+    "SortOrder": 2,
+    "CharacterSkillId": 130080501,
+    "RequiredLevel": 30,
+    "SpCharacterSkillId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1219000501,
+    "SortOrder": 3,
+    "CharacterSkillId": 190150501,
+    "RequiredLevel": 60,
+    "SpCharacterSkillId": 0,
     "ScheduleId": 0
   },
   {
@@ -9117,6 +9181,22 @@
     "CharacterSkillId": 230030101,
     "RequiredLevel": 60,
     "SpCharacterSkillId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1730000100,
+    "SortOrder": 1,
+    "CharacterSkillId": 190150301,
+    "RequiredLevel": 1,
+    "SpCharacterSkillId": 190150301,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1730000100,
+    "SortOrder": 2,
+    "CharacterSkillId": 230030101,
+    "RequiredLevel": 30,
+    "SpCharacterSkillId": 230030101,
     "ScheduleId": 0
   },
   {

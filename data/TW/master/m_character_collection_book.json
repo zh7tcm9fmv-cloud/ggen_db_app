@@ -1800,6 +1800,15 @@
     "IsHideVoiceButton": false
   },
   {
+    "Id": 21000011,
+    "DefaultCharacterId": 1210002400,
+    "SortOrder": 21000011,
+    "SeriesId": 2100,
+    "DescriptionLanguageId": 100200001210002400,
+    "ScheduleId": 2607509901,
+    "IsHideVoiceButton": false
+  },
+  {
     "Id": 21700001,
     "DefaultCharacterId": 1217000200,
     "SortOrder": 21700001,
@@ -3759,6 +3768,15 @@
     "SeriesId": 7250,
     "DescriptionLanguageId": 100200001725000100,
     "ScheduleId": 2508109901,
+    "IsHideVoiceButton": false
+  },
+  {
+    "Id": 73000001,
+    "DefaultCharacterId": 1730000100,
+    "SortOrder": 73000001,
+    "SeriesId": 7300,
+    "DescriptionLanguageId": 100200001730000100,
+    "ScheduleId": 2607509901,
     "IsHideVoiceButton": false
   },
   {

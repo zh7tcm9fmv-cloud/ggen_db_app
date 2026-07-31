@@ -10073,11 +10073,11 @@
   },
   {
     "id": 120100121000090003,
-    "value": "Beam Sword (Max Power)"
+    "value": "Beam Sword (Max Output)"
   },
   {
     "id": 120100121000090090,
-    "value": "Beam Sword (Max Power) SSP"
+    "value": "Beam Sword (Max Output) SSP"
   },
   {
     "id": 120100121000100001,
@@ -10105,6 +10105,26 @@
   },
   {
     "id": 120100121000110090,
+    "value": "Dober Gun (Shot) SSP"
+  },
+  {
+    "id": 120100121000116001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100121000116002,
+    "value": "Dober Gun (Shot)"
+  },
+  {
+    "id": 120100121000116003,
+    "value": "Dober Gun (Beam)"
+  },
+  {
+    "id": 120100121000116004,
+    "value": "Missile Pod"
+  },
+  {
+    "id": 120100121000116090,
     "value": "Dober Gun (Shot) SSP"
   },
   {
@@ -10337,11 +10357,11 @@
   },
   {
     "id": 120100121000250002,
-    "value": "Beam Cannon (Max Power)"
+    "value": "Beam Cannon (Max Output)"
   },
   {
     "id": 120100121000250090,
-    "value": "Beam Cannon (Max Power) SSP"
+    "value": "Beam Cannon (Max Output) SSP"
   },
   {
     "id": 120100121000260001,
@@ -10784,6 +10804,42 @@
     "value": "Dober Gun SSP"
   },
   {
+    "id": 120100121100121001,
+    "value": "Beam Sword"
+  },
+  {
+    "id": 120100121100121002,
+    "value": "Beam Sword (Max Output)"
+  },
+  {
+    "id": 120100121100121003,
+    "value": "Heat Rod"
+  },
+  {
+    "id": 120100121100121004,
+    "value": "Beam Sword (Max Power)"
+  },
+  {
+    "id": 120100121100121080,
+    "value": "Beam Sword (Max Output)"
+  },
+  {
+    "id": 120100121100121090,
+    "value": "Beam Sword (Max Output) SSP"
+  },
+  {
+    "id": 120100121100131001,
+    "value": "Heat Rod"
+  },
+  {
+    "id": 120100121100131080,
+    "value": "Beam Sword (Max Output)"
+  },
+  {
+    "id": 120100121100131090,
+    "value": "Beam Sword (Max Output) SSP"
+  },
+  {
     "id": 120100121200010001,
     "value": "Beam Bayonet (Saber)"
   },
@@ -10989,7 +11045,7 @@
   },
   {
     "id": 120100121900040001,
-    "value": "Double Gatling Gun (Point Blank)"
+    "value": "Double Gatling Gun (Point-Blank)"
   },
   {
     "id": 120100121900040002,
@@ -11012,6 +11068,26 @@
     "value": "Double Gatling Gun SSP"
   },
   {
+    "id": 120100121900045001,
+    "value": "Double Gatling Gun (Point-Blank)"
+  },
+  {
+    "id": 120100121900045002,
+    "value": "Double Gatling Gun"
+  },
+  {
+    "id": 120100121900045003,
+    "value": "Hatch Full Open Mode"
+  },
+  {
+    "id": 120100121900045004,
+    "value": "Full Burst Attack EX"
+  },
+  {
+    "id": 120100121900045005,
+    "value": "Barrage"
+  },
+  {
     "id": 120100121900050001,
     "value": "Heat Shotel"
   },
@@ -11029,7 +11105,7 @@
   },
   {
     "id": 120100121900060001,
-    "value": "Twim Beam Trident"
+    "value": "Twin Beam Trident"
   },
   {
     "id": 120100121900060002,
@@ -11042,6 +11118,26 @@
   {
     "id": 120100121900060090,
     "value": "Twin Beam Trident SSP"
+  },
+  {
+    "id": 120100121900065001,
+    "value": "Twin Beam Trident"
+  },
+  {
+    "id": 120100121900065002,
+    "value": "Vulcan Cannon"
+  },
+  {
+    "id": 120100121900065003,
+    "value": "Dragon Fang"
+  },
+  {
+    "id": 120100121900065004,
+    "value": "Dragon Fang EX"
+  },
+  {
+    "id": 120100121900065005,
+    "value": "Dragon Fang"
   },
   {
     "id": 120100121900070001,
@@ -11105,11 +11201,11 @@
   },
   {
     "id": 120100123000020004,
-    "value": "Divider (Max Power)"
+    "value": "Divider (Max Output)"
   },
   {
     "id": 120100123000020090,
-    "value": "Divider (Max Power) SSP"
+    "value": "Divider (Max Output) SSP"
   },
   {
     "id": 120100123000030001,
@@ -11221,11 +11317,11 @@
   },
   {
     "id": 120100123000090004,
-    "value": "Megasonic Cannon (Full Power)"
+    "value": "Megasonic Cannon (Max Output)"
   },
   {
     "id": 120100123000090090,
-    "value": "Megasonic Cannon (Full Power) SSP"
+    "value": "Megasonic Cannon (Max Output) SSP"
   },
   {
     "id": 120100123000100001,
@@ -17441,7 +17537,7 @@
   },
   {
     "id": 120100137001130003,
-    "value": "GN Cannon (Max Power)"
+    "value": "GN Cannon (Max Output)"
   },
   {
     "id": 120100137001130004,
@@ -20729,7 +20825,7 @@
   },
   {
     "id": 120100150100160003,
-    "value": "GUND-BIT Rifle (Max Power)"
+    "value": "GUND-BIT Rifle (Max Output)"
   },
   {
     "id": 120100150100160004,
@@ -20737,7 +20833,7 @@
   },
   {
     "id": 120100150100160090,
-    "value": "GUND-BIT Rifle (Max Power) SSP"
+    "value": "GUND-BIT Rifle (Max Output) SSP"
   },
   {
     "id": 120100150100165001,
@@ -20749,7 +20845,7 @@
   },
   {
     "id": 120100150100165003,
-    "value": "GUND-BIT Rifle (Max Power)"
+    "value": "GUND-BIT Rifle (Max Output)"
   },
   {
     "id": 120100150100165004,
@@ -21193,7 +21289,7 @@
   },
   {
     "id": 120100170000010003,
-    "value": "Tanegashima Rifle"
+    "value": "Tanegashima Thunder Gun"
   },
   {
     "id": 120100170000010004,
@@ -21490,6 +21586,26 @@
   {
     "id": 120100172800010090,
     "value": "Psycommu Missile SSP"
+  },
+  {
+    "id": 120100173000010001,
+    "value": "Doudanuki"
+  },
+  {
+    "id": 120100173000010002,
+    "value": "Tanegashima Thunder Gun"
+  },
+  {
+    "id": 120100173000010003,
+    "value": "Hidden Large Cannon"
+  },
+  {
+    "id": 120100173000010004,
+    "value": "Doudanuki"
+  },
+  {
+    "id": 120100173000010090,
+    "value": "Doudanuki SSP"
   },
   {
     "id": 120100175000011001,

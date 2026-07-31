@@ -3525,6 +3525,21 @@
     "BattleAnimeBackgroundId": 200
   },
   {
+    "Id": 1999904,
+    "Width": 45,
+    "Height": 35,
+    "BackgroundAsset": "map_bg_0002_04",
+    "SubmergedEffectAsset": "",
+    "SplashEffectAsset": "",
+    "GroundTerrainTypeEffectAsset": "",
+    "AtmosphericTerrainTypeEffectAsset": "",
+    "SurfaceTerrainTypeEffectAsset": "",
+    "UnderwaterTerrainTypeEffectAsset": "",
+    "SpaceTerrainTypeEffectAsset": "",
+    "AllTerrainTypeEffectAsset": "",
+    "BattleAnimeBackgroundId": 200
+  },
+  {
     "Id": 1999905,
     "Width": 25,
     "Height": 25,

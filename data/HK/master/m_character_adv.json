@@ -6438,6 +6438,12 @@
     "AbbreviationLanguageId": 100400001725000100
   },
   {
+    "Id": 1730000100,
+    "MapToolId": "g7300c00100",
+    "ResourceId": "g7300c00100",
+    "AbbreviationLanguageId": 100400001730000100
+  },
+  {
     "Id": 1764000100,
     "MapToolId": "g7640c00100",
     "ResourceId": "g7640c00100",

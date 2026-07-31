@@ -78,6 +78,12 @@
     "TargetId": 1620
   },
   {
+    "ItemId": 240000012100,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 2,
+    "TargetId": 2100
+  },
+  {
     "ItemId": 240000012190,
     "TargetIndex": 1,
     "TargetTypeIndex": 2,
@@ -142,6 +148,12 @@
     "TargetIndex": 1,
     "TargetTypeIndex": 1,
     "TargetId": 1080003860
+  },
+  {
+    "ItemId": 241210001160,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 1,
+    "TargetId": 1210001160
   },
   {
     "ItemId": 241305000300,

@@ -65,11 +65,11 @@
   },
   {
     "ConfigTypeIndex": 25,
-    "Value": "1400"
+    "Value": "1450"
   },
   {
     "ConfigTypeIndex": 26,
-    "Value": "2400"
+    "Value": "2450"
   },
   {
     "ConfigTypeIndex": 27,
@@ -638,5 +638,9 @@
   {
     "ConfigTypeIndex": 424,
     "Value": "99"
+  },
+  {
+    "ConfigTypeIndex": 432,
+    "Value": "10"
   }
 ]
