@@ -13825,16 +13825,24 @@ def _prewarm_default_browse_list_api_caches():
         langs = list((LANG_DATA or {}).keys())[:1] or ['EN']
     warmed = 0
     for lc in langs:
-        for path in (
-            f'/api/characters?lang={lc}&page=1&per_page=50&sort=rarity&dir=desc',
-            f'/api/units?lang={lc}&page=1&per_page=50&sort=rarity&dir=desc',
+        for path, handler in (
+            (f'/api/characters?lang={lc}&page=1&per_page=50&sort=rarity&dir=desc', list_characters),
+            (f'/api/units?lang={lc}&page=1&per_page=50&sort=rarity&dir=desc', list_units),
+            # Stages tab: Eternal + Challenge are the heavy first paints (large CDN thumbs).
+            (
+                f'/api/stages?lang={lc}&page=1&per_page=50&q=&difficulty=&sort=stage_number'
+                f'&dir=asc&category=eternal&tower_side=ALL&challenge_series=ALL',
+                list_stages,
+            ),
+            (
+                f'/api/stages?lang={lc}&page=1&per_page=50&q=&difficulty=&sort=stage_number'
+                f'&dir=asc&category=challenge_stage&tower_side=ALL&challenge_series=ALL',
+                list_stages,
+            ),
         ):
             try:
                 with app.test_request_context(path):
-                    if path.startswith('/api/characters'):
-                        list_characters()
-                    else:
-                        list_units()
+                    handler()
                 warmed += 1
             except Exception as e:
                 print(f'Browse list prewarm skipped ({path}): {e}')
@@ -22208,9 +22216,6 @@ def list_stages():
                 mc_cp = safe_int(mc.get('recommended_combat_power'), 0)
                 rec_cp = mc_cp if mc_cp > 0 else sm.get('recommended_cp', 0)
                 sn_sort = safe_int(series_id, 0) * 100000 + (1000 if is_hard else 0) + sn
-                sc_row = (main_stage_series_challenge_map or {}).get(series_id, {})
-                main_series_id = normalize_id(sc_row.get('main_stage_series_id', '0'))
-                series_icon = find_series_icon(main_series_id) if main_series_id != '0' else ''
                 rows.append({
                     '_sn_sort': sn_sort,
                     'id': sid, 'stage_number': sn, 'name': sname,
@@ -22220,7 +22225,7 @@ def list_stages():
                     '_thumb_rid': thumb_rid,
                     'content_locked': False, 'stage_category': 'challenge_stage',
                     'challenge_series_id': series_id, 'challenge_series_name': series_name,
-                    'challenge_series_icon': series_icon,
+                    # Series icons live on challenge_series_options (filter UI) — not per row.
                     'challenge_is_hard': is_hard,
                     'has_capturable_units': len(capt) > 0,
                     'capturable_pickup_unit_ids': [x for x in pickup_ids if x != '0'],
