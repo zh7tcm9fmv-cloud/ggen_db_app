@@ -17,9 +17,10 @@ This database is mostly static. Browse + Top 10 must feel instant. If performanc
    - Do **not** hard-prime `/api/characters` on every cold load — resolve short path / `?tab=` first (`/st` → stages only, etc.).
    - Do **not** call `ensureBrowseFiltersMeta` (3× `/api/browse_filters`) from cold `applyLang`; warm filters after first browse paint / idle only.
    - Defer full `initToolbarFilterIcons()` off cold `applyLang` (stage toolbar labels may stay sync); never emit empty/`file:` media `src` (use `safeImgSrc` / `imgSrcAttr`).
-   - Keep megabyte CJK fonts (`Noto Sans JP`) out of the EN `--font-body` stack; use `font-display:optional` for brand OTFs and Noto.
+   - Do **not** ship unused `@font-face` (e.g. Noto). Put **system CJK fonts first** in `--font-body` / `--font-brand`; CDN OTFs last with `font-display:optional`. Brand must use `var(--font-brand)`, never hardcode FOTK/ShinGo on EN.
+   - Detail open must **not** `await` portrait CDN warm — paint shell from API JSON, warm images in background.
    - **Stages / Challenge**: prewarm default Eternal + Challenge `/api/stages` pages. Challenge `sca_*` thumbs are ~400KB each — eager-load only the first viewport (~12), lazy the rest; do not compute unused per-row series icons on the list path.
-5. **Lang switch** — Reload only the visible browse tab; other tabs on demand. Client Top 10 cache must be keyed/invalidated by locale so pilot names re-localize.
+5. **Lang switch** — Reload only the visible browse tab; other tabs on demand. Soft-reload (keep prior rows under spinner). Client Top 10 cache must be keyed/invalidated by locale so pilot names re-localize.
 6. **Regression = bug** — If Top 10 or browse feels multi-second again, measure latency and return to the published-cache path above.
 
 ## Anti-patterns
