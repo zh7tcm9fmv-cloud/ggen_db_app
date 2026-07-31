@@ -183,7 +183,7 @@
     return null;
   }
 
-  /** Series SSP: base → frame → series logo on top (extrudes). Unit SP: hex portrait under frame. */
+  /** Series SP/SSP: bg → logo → frame. Unit SP: hex portrait under frame. */
   function rewardThumbHtml(r, sz) {
     sz = sz || REWARD_ICON_SIZE;
     var name = (r && (r.name || r.label)) || '';
@@ -191,7 +191,10 @@
     var unit = r && r.sp_chip_unit ? String(r.sp_chip_unit) : '';
     var frame = r && r.sp_chip_frame ? String(r.sp_chip_frame) : '';
     if (unit && (base || frame)) {
-      var isSeriesLogo = /Logo-Series|logo_l_series/i.test(unit) || /Ssp_Frame|Ssp_Bg/i.test(frame + base);
+      var layerKey = frame + base;
+      var isSeriesSp = /UI_Common_Sp_Bg|UI_Common_Sp_Frame|UI_Common_Sp_Chara/i.test(layerKey);
+      var isSeriesSsp = /Ssp_Frame|Ssp_Bg/i.test(layerKey);
+      var isSeriesLogo = /Logo-Series|logo_l_series/i.test(unit) || isSeriesSp || isSeriesSsp;
       var layers = '';
       if (base) {
         layers +=
@@ -199,16 +202,28 @@
           '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">';
       }
       if (isSeriesLogo) {
-        if (frame) {
+        if (isSeriesSp) {
           layers +=
-            '<img class="esim-chip-layer esim-chip-frame" src="' + esc(imgUrl(frame)) +
+            '<img class="esim-chip-layer esim-chip-logo esim-chip-logo--sp" src="' + esc(imgUrl(unit)) +
+            '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">';
+          if (frame) {
+            layers +=
+              '<img class="esim-chip-layer esim-chip-frame" src="' + esc(imgUrl(frame)) +
+              '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">';
+          }
+        } else {
+          if (frame) {
+            layers +=
+              '<img class="esim-chip-layer esim-chip-frame" src="' + esc(imgUrl(frame)) +
+              '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">';
+          }
+          layers +=
+            '<img class="esim-chip-layer esim-chip-logo" src="' + esc(imgUrl(unit)) +
             '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">';
         }
-        layers +=
-          '<img class="esim-chip-layer esim-chip-logo" src="' + esc(imgUrl(unit)) +
-          '" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)">';
         return (
-          '<div class="esim-chip-thumb esim-chip-thumb--ssp" style="width:' + sz + 'px;height:' + sz + 'px">' +
+          '<div class="esim-chip-thumb ' + (isSeriesSp ? 'esim-chip-thumb--sp' : 'esim-chip-thumb--ssp') +
+          '" style="width:' + sz + 'px;height:' + sz + 'px">' +
           layers + '</div>'
         );
       }

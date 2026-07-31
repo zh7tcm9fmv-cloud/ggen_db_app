@@ -1,0 +1,31 @@
+---
+description: Composite missing challenge-series SP chip/badge icons from Sp frames + series logo
+alwaysApply: true
+---
+
+# Challenge series SP material icons
+
+When a challenge-series **SP Conversion Chips** or **SP Conversion Badge** item has no baked `ResourceId` / `spm_XXXX` art, do **not** leave the reward thumb as the gray `ITEM` placeholder. Composite it from UI layers + the series logo.
+
+## ID → composite recipe
+
+| Item id pattern | Role | Layers (bottom → top) | Baked reference |
+|---|---|---|---|
+| `24000001XXXX` | Series SP Conversion Chips | `UI_Common_Sp_Bg` → `logo_l_series_XXXX` → `UI_Common_Sp_Frame` | `spm_0022` |
+| `24000002XXXX` | Series SP Conversion Badge | `UI_Common_Sp_Chara_Bg` → `logo_l_series_XXXX` → `UI_Common_Sp_Chara_Frame` | `spm_0024` |
+
+- `XXXX` is the series logo pad (zero-padded), e.g. Gundam Wing → `2100` → `logo_l_series_2100.webp`.
+- Prefer CDN paths under `images/Item/` for Sp / Sp_Chara frames (Sp_Chara is Item-only). Logos live under `images/Logo-Series/`.
+- Placement / scale: match the baked reference (`spm_0022` / `spm_0024`) — logo ~84% wide, vertically centered slightly low (~30% top), **frame on top**.
+
+## Implementation hooks
+
+- Python: `_resolve_series_sp_material_layers()` in `app.py`, wired from `_decorate_reward_rows()` when `sp_chip_*` is still empty after SSP / unit-specialize resolution.
+- Client: `renderSpConversionChipThumb()` (`static/js/app.js`) and e-sim `rewardThumbHtml()` — series SP uses class `sp-chip-thumb--series-sp` / `esim-chip-thumb--sp`.
+
+## New challenge series checklist
+
+1. Confirm series logo exists (`logo_l_series_{pad}` in `image_index.json` / CDN).
+2. If master ships blank `ResourceId` for `24000001{pad}` / `24000002{pad}`, the composite path above applies automatically — no new baked `spm` required.
+3. If the game later publishes a baked `spm_XXXX`, prefer that `ResourceId` when present; keep the composite as the missing-art fallback.
+4. Related: series **SSP** chips use `30000001XXXX` → `Ssp_Bg` + logo + `Ssp_Frame` (`_resolve_series_ssp_chip_layers`).

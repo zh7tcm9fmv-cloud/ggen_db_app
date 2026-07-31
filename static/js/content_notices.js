@@ -482,23 +482,21 @@
     ensureNoticeFlare(document.getElementById('navBannerTimelineTab'));
     const lc = lang || currentLang();
     try {
-      const reqs = [fetch('/api/banner_timeline/votes', { credentials: 'same-origin', cache: 'no-store' })];
-      if (!state.btBanners) {
-        reqs.push(
-          fetch('/api/banner_timeline?lang=' + encodeURIComponent(lc), {
-            credentials: 'same-origin',
-            cache: 'no-store',
-          })
-        );
-      }
-      const rs = await Promise.all(reqs);
-      if (rs[0] && rs[0].ok) {
-        const d = await rs[0].json();
+      // Votes must be fresh; banner list is mostly static — allow HTTP cache so cold start stays snappy.
+      const vr = await fetch('/api/banner_timeline/votes', {
+        credentials: 'same-origin',
+        cache: 'no-store',
+      });
+      if (vr && vr.ok) {
+        const d = await vr.json();
         state.btVoteTotals = d.totals || {};
         state.btVoteMine = d.mine || {};
       }
-      if (!state.btBanners && rs[1] && rs[1].ok) {
-        state.btBanners = (await rs[1].json()).banners || [];
+      if (!state.btBanners) {
+        const br = await fetch('/api/banner_timeline?lang=' + encodeURIComponent(lc), {
+          credentials: 'same-origin',
+        });
+        if (br && br.ok) state.btBanners = (await br.json()).banners || [];
       }
       state.btVoteLoaded = true;
     } catch (_) {}
