@@ -15618,63 +15618,6 @@ def api_whats_new_status():
     return r
 
 
-RECENT_ADJUSTMENTS_PATH = os.path.join(
-    os.path.dirname(os.path.abspath(__file__)), 'data', 'published', 'recent_adjustments.json'
-)
-
-
-@lru_cache(maxsize=1)
-def _load_recent_adjustments_file():
-    path = RECENT_ADJUSTMENTS_PATH
-    if not os.path.isfile(path):
-        return None
-    try:
-        with open(path, 'r', encoding='utf-8') as f:
-            data = json.load(f)
-        return data if isinstance(data, dict) else None
-    except Exception:
-        return None
-
-
-def _recent_adjustments_active(data):
-    """True while today (JST calendar date) is on or before until."""
-    if not data:
-        return False
-    until = str(data.get('until') or '').strip()
-    if not until:
-        return False
-    try:
-        y, m, d = [int(x) for x in until.split('-')[:3]]
-        if ZoneInfo is not None:
-            today = datetime.now(ZoneInfo('Asia/Tokyo')).date()
-        else:
-            today = date.today()
-        return today <= date(y, m, d)
-    except Exception:
-        return False
-
-
-@app.route('/api/recent_adjustments')
-def api_recent_adjustments():
-    """Balance-patch highlight map (stats / abilities / tags) for detail pages. Expires after until date."""
-    data = _load_recent_adjustments_file()
-    if not data or not _recent_adjustments_active(data):
-        r = jsonify({'active': False, 'units': {}, 'characters': {}, 'until': (data or {}).get('until')})
-        r.headers['Cache-Control'] = 'public, max-age=300'
-        return r
-    out = {
-        'active': True,
-        'patch_date': data.get('patch_date'),
-        'until': data.get('until'),
-        'units': data.get('units') or {},
-        'characters': data.get('characters') or {},
-        'counts': data.get('counts') or {},
-    }
-    r = jsonify(out)
-    r.headers['Cache-Control'] = 'public, max-age=300'
-    return r
-
-
 def _latest_release_content_status_payload(last_seen_at=0, last_seen_fp=''):
     skip_sched = {'0', '9999990001'}
     ws = jst_three_month_window_start_ms()
