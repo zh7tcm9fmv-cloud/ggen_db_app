@@ -45,16 +45,6 @@
           "file": "gasha_proportion_2604300101_1.json"
         },
         {
-          "gasha_id": 2606200501,
-          "name": "ピックアップガシャ(2026/6/12)",
-          "file": "gasha_proportion_2606200501_1.json"
-        },
-        {
-          "gasha_id": 2606500301,
-          "name": "新ユニット追加！ピックアップガシャ",
-          "file": "gasha_proportion_2606500301_1.json"
-        },
-        {
           "gasha_id": 2606500501,
           "name": "[900万DL記念]URユニット1体確定5連ガシャ",
           "file": "gasha_proportion_2606500501_1.json"
@@ -65,19 +55,14 @@
           "file": "gasha_proportion_2606500502_1.json"
         },
         {
-          "gasha_id": 2607300302,
-          "name": "新ユニット追加！ピックアップガシャ",
-          "file": "gasha_proportion_2607300302_1.json"
-        },
-        {
-          "gasha_id": 2607300403,
-          "name": "900万DL記念 「機動戦士ガンダム」 シリーズピックアップガシャ",
-          "file": "gasha_proportion_2607300403_1.json"
-        },
-        {
           "gasha_id": 2607300501,
           "name": "ピックアップガシャ(2026/7/16)",
           "file": "gasha_proportion_2607300501_1.json"
+        },
+        {
+          "gasha_id": 2607500301,
+          "name": "ピックアップガシャ",
+          "file": "gasha_proportion_2607500301_1.json"
         }
       ]
     },
@@ -125,16 +110,6 @@
           "file": "gasha_proportion_2604300101_3.json"
         },
         {
-          "gasha_id": 2606200501,
-          "name": "精選機體補給（2026/6/12 JST）",
-          "file": "gasha_proportion_2606200501_3.json"
-        },
-        {
-          "gasha_id": 2606500301,
-          "name": "追加新單位！精選機體補給",
-          "file": "gasha_proportion_2606500301_3.json"
-        },
-        {
           "gasha_id": 2606500501,
           "name": "〔900萬次下載紀念〕保證獲得1架UR單位5連機體補給",
           "file": "gasha_proportion_2606500501_3.json"
@@ -145,19 +120,14 @@
           "file": "gasha_proportion_2606500502_3.json"
         },
         {
-          "gasha_id": 2607300302,
-          "name": "追加新單位！精選機體補給",
-          "file": "gasha_proportion_2607300302_3.json"
-        },
-        {
-          "gasha_id": 2607300403,
-          "name": "900萬次下載紀念《機動戰士鋼彈》系列精選機體補給",
-          "file": "gasha_proportion_2607300403_3.json"
-        },
-        {
           "gasha_id": 2607300501,
           "name": "精選機體補給（2026/7/16 JST）",
           "file": "gasha_proportion_2607300501_3.json"
+        },
+        {
+          "gasha_id": 2607500301,
+          "name": "精選機體補給",
+          "file": "gasha_proportion_2607500301_3.json"
         }
       ]
     },
@@ -205,16 +175,6 @@
           "file": "gasha_proportion_2604300101_4.json"
         },
         {
-          "gasha_id": 2606200501,
-          "name": "精選機體補給（12/6/2026 JST）",
-          "file": "gasha_proportion_2606200501_4.json"
-        },
-        {
-          "gasha_id": 2606500301,
-          "name": "追加新單位！精選機體補給",
-          "file": "gasha_proportion_2606500301_4.json"
-        },
-        {
           "gasha_id": 2606500501,
           "name": "〔900萬次下載紀念〕保證獲得1架UR單位5連機體補給",
           "file": "gasha_proportion_2606500501_4.json"
@@ -225,19 +185,14 @@
           "file": "gasha_proportion_2606500502_4.json"
         },
         {
-          "gasha_id": 2607300302,
-          "name": "追加新單位！精選機體補給",
-          "file": "gasha_proportion_2607300302_4.json"
-        },
-        {
-          "gasha_id": 2607300403,
-          "name": "900萬次下載紀念《機動戰士高達》系列精選機體補給",
-          "file": "gasha_proportion_2607300403_4.json"
-        },
-        {
           "gasha_id": 2607300501,
           "name": "精選機體補給（16/7/2026 JST）",
           "file": "gasha_proportion_2607300501_4.json"
+        },
+        {
+          "gasha_id": 2607500301,
+          "name": "精選機體補給",
+          "file": "gasha_proportion_2607500301_4.json"
         }
       ]
     }
