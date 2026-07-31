@@ -4558,8 +4558,12 @@ def _unit_en_threshold_active_at_assumed_full_en(part):
 
 
 def _unit_resource_threshold_assumed_active(part):
-    """True when a When HP/EN … or above/full gate is active under assumed full HP & EN."""
-    return _unit_hp_threshold_active_at_assumed_full_hp(part) or _unit_en_threshold_active_at_assumed_full_en(part)
+    """True when a high/full HP gate is active under assumed full HP (baked into base stats).
+
+    EN≥N% gates are *not* included here — they stay in the CP bucket so detail can default CP on
+    (assumed full EN) and let users toggle CP off to compare EN below the threshold.
+    """
+    return _unit_hp_threshold_active_at_assumed_full_hp(part)
 
 
 def _unit_vigor_normal_baseline_stat_line(part):
