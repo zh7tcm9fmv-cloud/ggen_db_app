@@ -646,9 +646,8 @@ def get_ui_label(lang_code, key):
 def get_latest_folder(base_path, prefix):
     """Pick newest MasterData_/Lang_ folder by date.
 
-    Hard rule: never use a same-date folder ending with ``a`` (e.g. ``MasterData_2026-07-31a``)
-    when the non-``a`` sibling exists (``MasterData_2026-07-31``). Those ``*a`` dumps are often
-    incomplete and sort after the real dump alphabetically.
+    Hard rule: when ``MasterData_YYYY-MM-DD`` (bare) exists, never use letter-suffixed siblings
+    like ``…-31a`` / ``…-31b`` — those are often incomplete and sort after the real dump.
     """
     if not os.path.exists(base_path):
         return None
@@ -666,7 +665,11 @@ def get_latest_folder(base_path, prefix):
             return rest, ''
         return m.group(1), m.group(2) or ''
 
-    # Drop *a variants when the bare same-date folder exists.
+    def _is_letter_suffix(suf):
+        # ``a``, ``b``, ``a2``, etc. — not empty and not a further date fragment.
+        return bool(suf) and bool(re.match(r'^[a-zA-Z]', suf))
+
+    # Drop letter-suffixed variants when the bare same-date folder exists.
     by_date = {}
     for name in candidates:
         date_key, suffix = _date_and_suffix(name)
@@ -675,7 +678,7 @@ def get_latest_folder(base_path, prefix):
     for date_key, rows in by_date.items():
         has_bare = any(suf == '' for _, suf in rows)
         for name, suf in rows:
-            if has_bare and suf.endswith('a'):
+            if has_bare and _is_letter_suffix(suf):
                 continue
             filtered.append(name)
     if not filtered:
@@ -4527,6 +4530,38 @@ def _unit_hp_threshold_active_at_assumed_full_hp(part):
     return False
 
 
+def _unit_en_threshold_active_at_assumed_full_en(part):
+    """
+    Unit detail/list assume full EN (like HP). High-EN gates (e.g. EN ≥ 75%) apply to base stats /
+    weapon Crit / weapon EN cost without requiring the CP toggle. Low-EN gates stay conditional.
+    """
+    t = (part or '').strip()
+    if not t:
+        return False
+    tl = t.lower()
+    # Avoid Max EN / EN Cost effect lines — only remaining-EN gates.
+    if re.search(r'\ben\s+cost\b', tl):
+        return False
+    if 'max en' in tl or '最大en' in t.lower().replace(' ', ''):
+        return False
+    if 'or below' in tl or re.search(r'\bwhen\s+en\s+is\s+below\b', tl):
+        return False
+    if re.search(r'\bwhen\s+en\s+is\s+\d+%\s+or\s+above\b', tl):
+        return True
+    if re.search(r'\bwhen\s+en\s+is\s+full\b', tl) or re.search(r'\ben\s+is\s+full\b', tl):
+        return True
+    if re.search(r'ENが\d+%以上', t) or re.search(r'EN(?:在|為|为)\d+%以上', t):
+        return True
+    if re.search(r'(?:殘餘|残余|剩餘|剩余)?EN.*\d+%以上', t) and '最大EN' not in t:
+        return True
+    return False
+
+
+def _unit_resource_threshold_assumed_active(part):
+    """True when a When HP/EN … or above/full gate is active under assumed full HP & EN."""
+    return _unit_hp_threshold_active_at_assumed_full_hp(part) or _unit_en_threshold_active_at_assumed_full_en(part)
+
+
 def _unit_vigor_normal_baseline_stat_line(part):
     """Paired vigor traits: synthetic copy like 'When Vigor is Normal, increase ATK by 10%.' (_augment_bare_vigor_lines_next_to_supercharged).
 
@@ -4593,8 +4628,9 @@ def _unit_line_ms_stats_conditional_bucket(part, hc, ie, is_cond, ability_cond, 
         return False
     if _unit_bare_unconditional_ms_stat_percent_line(part, is_cond, ability_cond):
         return False
+    # Assumed full HP/EN: following ATK/Crit/EN-cost lines belong in the base bucket (no CP toggle).
     if hp_assumed_active:
-        return bool(hc or ie)
+        return False
     return bool(hc or ie or is_cond or ability_cond)
 
 
@@ -4872,6 +4908,19 @@ def _extract_weapon_stat_percent_unit(text, skip_conditional=True):
     if skip_conditional and _is_conditional_stat_text(text):
         return bonuses
     tl = (text or '').strip()
+    # "Increase own Critical Rate by 10%" (Heavyarms EN Conditions, etc.)
+    m = re.search(r'Increases?\s+(?:own\s+)?Critical\s+Rate\s+by\s+(\d+)\s*%', tl, re.IGNORECASE)
+    if m:
+        bonuses['Critical'] = bonuses.get('Critical', 0) + int(m.group(1))
+        return bonuses
+    m = re.search(r'自身(?:的)?(?:暴擊|暴击|爆擊)率提升(\d+)%', tl)
+    if m:
+        bonuses['Critical'] = bonuses.get('Critical', 0) + int(m.group(1))
+        return bonuses
+    m = re.search(r'自身のクリティカル率が(\d+)%上昇', tl)
+    if m:
+        bonuses['Critical'] = bonuses.get('Critical', 0) + int(m.group(1))
+        return bonuses
     # "Increase own ACC and EVA by 5%" — ACC affects weapons; EVA does not
     m = re.search(r'Increases? own (ACC|Accuracy) and (EVA|EVADE|Evasion) by (\d+)%', tl, re.IGNORECASE)
     if m:
@@ -4897,18 +4946,45 @@ def _extract_weapon_stat_percent_unit(text, skip_conditional=True):
         return None
     # Generic "Increases Accuracy/Critical/Power by N%" applies to weapon sheet display when parsed from unit
     # passives (e.g. Increased ACC LV) — additive with base ACC/CRIT/Power % in UI; do not exclude bare wording.
-    sn = r"(?:ACC|Accuracy|Critical|CRIT|Crit\.?|Power)"
+    sn = r"(?:ACC|Accuracy|Critical(?:\s+Rate)?|CRIT|Crit\.?|Power)"
     m = re.search(fr'Increases? (?:own )?(?:squad )?({sn})(?: and ({sn}))? by (\d+)%', tl, re.IGNORECASE)
     if m:
         pct = int(m.group(3))
-        n1 = _normw(m.group(1))
+        n1 = _normw(re.sub(r'\s+Rate$', '', m.group(1) or '', flags=re.I))
         if n1:
             bonuses[n1] = bonuses.get(n1, 0) + pct
         if m.group(2):
-            n2 = _normw(m.group(2))
+            n2 = _normw(re.sub(r'\s+Rate$', '', m.group(2) or '', flags=re.I))
             if n2:
                 bonuses[n2] = bonuses.get(n2, 0) + pct
     return bonuses
+
+
+def _extract_weapon_en_cost_increase_pct(text, skip_conditional=True):
+    """Parse 'increase own EN Cost by N%' (weapon EN cost up; not Max EN)."""
+    if skip_conditional and _is_conditional_stat_text(text):
+        return 0
+    s = (text or '').strip()
+    if not s:
+        return 0
+    m = re.search(r'increase(?:s)?\s+(?:own\s+)?EN\s+Cost\s+by\s+(\d+)\s*%', s, re.I)
+    if m:
+        return int(m.group(1) or 0)
+    m = re.search(r'EN\s+Cost\s+(?:is\s+)?increased\s+by\s+(\d+)\s*%', s, re.I)
+    if m:
+        return int(m.group(1) or 0)
+    m = re.search(r'武装の消費ENが(\d+)%増加', s)
+    if m:
+        return int(m.group(1) or 0)
+    m = re.search(r'消費ENが(\d+)%増加', s)
+    if m:
+        return int(m.group(1) or 0)
+    m = re.search(r'武裝消耗EN增加(\d+)%|消耗EN增加(\d+)%|EN消耗提升(\d+)%', s)
+    if m:
+        for g in m.groups():
+            if g:
+                return int(g)
+    return 0
 
 def is_ex_ability(name):
     if not name: return False
@@ -10814,7 +10890,7 @@ def compute_unit_stats_no_cond(unit_id, info, raw, ldc):
             hp_high_gate_active = False
             for part in parts:
                 itc = _is_conditional_stat_text(part)
-                if itc and _unit_hp_threshold_active_at_assumed_full_hp(part):
+                if itc and _unit_resource_threshold_assumed_active(part):
                     itc = False
                     hp_high_gate_active = True
                 elif itc:
@@ -10921,7 +10997,7 @@ def _unit_max_lb_stat_block(unit_id, info, raw, ldc):
             hp_high_gate_active = False
             for part in parts:
                 itc = _is_conditional_stat_text(part)
-                if itc and _unit_hp_threshold_active_at_assumed_full_hp(part):
+                if itc and _unit_resource_threshold_assumed_active(part):
                     itc = False
                     hp_high_gate_active = True
                 elif itc:
@@ -22881,8 +22957,12 @@ def get_unit(unit_id):
         wpn_sspc = {k: 0 for k in _WPN_KEYS}
         wpn_nxs = {k: 0 for k in _WPN_KEYS}
         wpn_nxss = {k: 0 for k in _WPN_KEYS}
+        en_cost_inc_b = [0]
+        en_cost_inc_c = [0]
+        en_cost_inc_sspb = [0]
+        en_cost_inc_sspc = [0]
 
-        def ep(ad, bd, cd, nd, bd_move_flat, cd_move_flat, wpn_bd, wpn_cd, wpn_nd, bd_crit, cd_crit):
+        def ep(ad, bd, cd, nd, bd_move_flat, cd_move_flat, wpn_bd, wpn_cd, wpn_nd, bd_crit, cd_crit, en_bd=None, en_cd=None):
             hc = any(cond for d2 in ad.get('details', []) for cond in d2.get('conditions', []))
             ie = ad.get('is_ex', False)
             ability_cond = ability_name_implies_unit_stat_conditional_bucket(ad)
@@ -22897,7 +22977,7 @@ def get_unit(unit_id):
                 hp_high_gate_active = False
                 for part in parts:
                     itc = _is_conditional_stat_text(part)
-                    if itc and _unit_hp_threshold_active_at_assumed_full_hp(part):
+                    if itc and _unit_resource_threshold_assumed_active(part):
                         itc = False
                         hp_high_gate_active = True
                     elif itc:
@@ -22914,10 +22994,12 @@ def get_unit(unit_id):
                         prev_enemy_tag_clause = True
                     wpn_stats = _extract_weapon_stat_percent_unit(part, skip_conditional=False)
                     flat_move = _extract_stat_flat_move(part, skip_conditional=False)
-                    if itc and not part_stats and not flat_move and not wpn_stats:
+                    en_inc = _extract_weapon_en_cost_increase_pct(part, skip_conditional=False)
+                    if itc and not part_stats and not flat_move and not wpn_stats and not en_inc:
                         cond_prefix = True
                     is_cond = itc or cond_prefix
-                    hp_assumed_active = bool(hp_high_gate_active and not is_cond and (part_stats or flat_move or wpn_stats))
+                    hp_assumed_active = bool(
+                        hp_high_gate_active and not is_cond and (part_stats or flat_move or wpn_stats or en_inc))
                     line_cond = _unit_line_ms_stats_conditional_bucket(part, hc, ie, is_cond, ability_cond, ad, di, hp_assumed_active)
                     if enemy_adv_atk_def:
                         line_cond = True
@@ -22953,19 +23035,24 @@ def get_unit(unit_id):
                             wpn_cd[wk] = wpn_cd.get(wk, 0) + pct
                         else:
                             wpn_bd[wk] = wpn_bd.get(wk, 0) + pct
+                    if en_inc and en_bd is not None and en_cd is not None and not inx:
+                        if line_cond:
+                            en_cd[0] = max(en_cd[0], en_inc)
+                        else:
+                            en_bd[0] = max(en_bd[0], en_inc)
             _unit_adjust_hp_condition_increased_atk_buckets(
                 ad, bd, cd, bd.get('Attack', 0) - atk_b0, cd.get('Attack', 0) - atk_c0)
             _unit_adjust_vigor_condition_stat_buckets(ad, bd, cd)
 
         for ab in ac:
             if ab.get('ssp_only'):
-                ep(ab, sspb, sspc, nxss, sspb_move_flat, sspc_move_flat, wpn_sspb, wpn_sspc, wpn_nxss, sspb_crit, sspc_crit)
+                ep(ab, sspb, sspc, nxss, sspb_move_flat, sspc_move_flat, wpn_sspb, wpn_sspc, wpn_nxss, sspb_crit, sspc_crit, en_cost_inc_sspb, en_cost_inc_sspc)
                 continue
-            ep(ab, spb, spc, nxs, spb_move_flat, spc_move_flat, wpn_spb, wpn_spc, wpn_nxs, spb_crit, spc_crit)
+            ep(ab, spb, spc, nxs, spb_move_flat, spc_move_flat, wpn_spb, wpn_spc, wpn_nxs, spb_crit, spc_crit, en_cost_inc_b, en_cost_inc_c)
             if 'ssp_replacement' in ab:
-                ep(ab['ssp_replacement'], sspb, sspc, nxss, sspb_move_flat, sspc_move_flat, wpn_sspb, wpn_sspc, wpn_nxss, sspb_crit, sspc_crit)
+                ep(ab['ssp_replacement'], sspb, sspc, nxss, sspb_move_flat, sspc_move_flat, wpn_sspb, wpn_sspc, wpn_nxss, sspb_crit, sspc_crit, en_cost_inc_sspb, en_cost_inc_sspc)
             else:
-                ep(ab, sspb, sspc, nxss, sspb_move_flat, sspc_move_flat, wpn_sspb, wpn_sspc, wpn_nxss, sspb_crit, sspc_crit)
+                ep(ab, sspb, sspc, nxss, sspb_move_flat, sspc_move_flat, wpn_sspb, wpn_sspc, wpn_nxss, sspb_crit, sspc_crit, en_cost_inc_sspb, en_cost_inc_sspc)
         wpn_spc_pure = {k: wpn_spc.get(k, 0) for k in _WPN_KEYS}
         wpn_sspc_pure = {k: wpn_sspc.get(k, 0) for k in _WPN_KEYS}
         for k in _WPN_KEYS:
@@ -23214,7 +23301,7 @@ def get_unit(unit_id):
                 or (_pilot_tag_wpn.get('crit') or 0)
                 or _pilot_en_red):
             _has_pilot_cond = True
-        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'has_cond_weapon_range': _has_cond_weapon_range, 'has_pilot_cond_passive': _has_pilot_cond, 'cp_weapon_range_mods': _cp_wpn_range_mods, 'pilot_weapon_effect_bonuses': _pilot_wpn_fx, 'pilot_tag_weapon_stat_bonuses': _pilot_tag_wpn, 'pilot_en_cost_reduction_pct': _pilot_en_red, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id, 'gacha_pull_movie_id': _gacha_pull_movie_id}
+        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'has_cond_weapon_range': _has_cond_weapon_range, 'has_pilot_cond_passive': _has_pilot_cond, 'cp_weapon_range_mods': _cp_wpn_range_mods, 'pilot_weapon_effect_bonuses': _pilot_wpn_fx, 'pilot_tag_weapon_stat_bonuses': _pilot_tag_wpn, 'pilot_en_cost_reduction_pct': _pilot_en_red, 'weapon_en_cost_increase_pct': {'sp': en_cost_inc_b[0], 'ssp': en_cost_inc_sspb[0], 'sp_cond': en_cost_inc_c[0], 'ssp_cond': en_cost_inc_sspc[0]}, 'is_large': il, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id, 'gacha_pull_movie_id': _gacha_pull_movie_id}
         if not view_ranking:
             ssp_mats = _build_unit_ssp_materials(unit_id, lc)
             if ssp_mats:
