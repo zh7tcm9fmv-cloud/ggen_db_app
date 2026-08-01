@@ -243,16 +243,7 @@ if(!posterSrc)return '<div class="loading-overlay"><div class="spinner"></div></
 const unit=type==='unit';
 return `<div class="detail-hero-boot"><div class="detail-portrait-wrap${unit?' unit-portrait-wrap':''}"><img class="detail-portrait detail-hero-poster detail-hero-boot-img" src="${escAttr(posterSrc)}" alt="" decoding="async" fetchpriority="high" onerror="this.style.visibility='hidden'"></div><div class="detail-hero-boot-spinner" aria-hidden="true"><div class="spinner"></div></div></div>`;
 }
-function bindDetailHeroReveal(root){
-const el=root||document.getElementById('detailInner');
-if(!el)return;
-el.querySelectorAll('img.detail-hero-full').forEach(img=>{
-const mark=()=>{img.classList.add('is-ready')};
-if(img.complete&&img.naturalWidth){mark();return}
-img.addEventListener('load',mark,{once:true});
-img.addEventListener('error',mark,{once:true});
-});
-}
+function bindDetailHeroReveal(root){/* no-op: layered hero removed (transparent WebP + thumb underlay looked broken) */}
 function detailHeroPortraitFallback(el,kind){
 try{
 const ph=kind==='unit'?'\uD83E\uDD16':'\uD83D\uDC64';
@@ -269,22 +260,9 @@ function detailHeroPortraitHtml(path, opts) {
     const alt = o.alt || '';
     const ph = o.placeholder != null ? o.placeholder : '👤';
     const onerr = o.onerror || "detailHeroPortraitFallback(this,'char')";
+    /* Single img only — never stack browse thumb under full art (portraits have alpha; underlay shows through). */
     if (!path) return `<div class="detail-portrait-placeholder">${ph}</div>`;
-    const poster = o.poster || '';
-    const heroUrl = detailHeroResolvedUrl(path);
-    const posterUrl = poster ? detailHeroResolvedUrl(poster) : '';
-    const usePoster = !!(posterUrl && heroUrl && posterUrl !== heroUrl);
-    if (!usePoster) {
-        return detailHeroPortraitImgTag(path, { cls, alt, onerror: onerr, extra: o.extra || '' });
-    }
-    const full = detailHeroPortraitImgTag(path, {
-        cls: cls + ' detail-hero-full',
-        alt,
-        onerror: onerr,
-        fetchpriority: 'high',
-        onload: "this.classList.add('is-ready')"
-    });
-    return `<div class="detail-hero-layers"><img class="${cls} detail-hero-poster" src="${escAttr(posterUrl)}" alt="" aria-hidden="true" decoding="async" fetchpriority="high">${full}</div>`;
+    return detailHeroPortraitImgTag(path, { cls, alt, onerror: onerr, extra: o.extra || '' });
 }
 function _dcEternalStageDiffIconHtml(code){
 const c=code==='hard'?'hard':code==='expert'?'expert':code==='normal'?'normal':'unknown';
