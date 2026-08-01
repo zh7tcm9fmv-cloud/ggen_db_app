@@ -2309,19 +2309,42 @@ def _ability_text_implies_pilot_tag_affinity_weapon_stat(txt):
         txt, re.I))
 
 
-def _ability_text_implies_pilot_tag_affinity_en_or_damage(txt):
-    """Tag-affinity PEP: damage dealt and/or weapon EN consumption (e.g. Trowa Wing)."""
+def _ability_text_has_pilot_tag_affinity_prefix(txt):
+    """Shared prefix: ability applies when piloting units with specified tags."""
     if not txt or not isinstance(txt, str):
         return False
-    if not re.search(
-            r'piloting units with specified tags|指定.*?タグ|指定.*?標籤|指定.*?标签|'
-            r'含有上述「標籤」|搭乘單位含有上述「標籤」|上記の「タグ」|搭乗ユニットが上記の「タグ」',
-            txt, re.I):
+    return bool(re.search(
+        r'piloting units with specified tags|指定.*?タグ|指定.*?標籤|指定.*?标签|'
+        r'含有上述「標籤」|搭乘單位含有上述「標籤」|上記の「タグ」|搭乗ユニットが上記の「タグ」',
+        txt, re.I))
+
+
+def _ability_text_implies_pilot_tag_affinity_en_consumption(txt):
+    """Tag-affinity PEP that reduces weapon EN (visible on unit detail weapons)."""
+    if not _ability_text_has_pilot_tag_affinity_prefix(txt):
         return False
     return bool(re.search(
-        r'EN\s+consumption|consumption\s+EN|消費EN|消耗EN|EN消費|EN消耗|'
-        r'damage dealt|与ダメージ|造成的損傷|造成的损伤',
+        r'EN\s+consumption|consumption\s+EN|消費EN|消耗EN|EN消費|EN消耗',
         txt, re.I))
+
+
+def _ability_text_implies_pilot_tag_affinity_damage_only(txt):
+    """Tag-affinity damage dealt/taken — not shown on the unit detail card; must not gate PEP."""
+    if not _ability_text_has_pilot_tag_affinity_prefix(txt):
+        return False
+    if _ability_text_implies_pilot_tag_affinity_en_consumption(txt):
+        return False
+    if _ability_text_implies_pilot_tag_affinity_weapon_stat(txt):
+        return False
+    return bool(re.search(
+        r'damage dealt|damage taken|与ダメージ|被ダメージ|造成的損傷|造成的损伤|'
+        r'受到的損傷|受到的损伤|損傷提升|损伤提升|減輕所受|减轻所受',
+        txt, re.I))
+
+
+def _ability_text_implies_pilot_tag_affinity_en_or_damage(txt):
+    """Backward-compat alias: EN-consumption tag affinity only (damage-only no longer counts)."""
+    return _ability_text_implies_pilot_tag_affinity_en_consumption(txt)
 
 
 def _ability_text_implies_pilot_gated_pilot_stat(txt):
@@ -2403,7 +2426,12 @@ def _unit_ability_text_implies_pilot_cond_passive(txt):
 
 
 def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal'):
-    """UR recommend pilot grants pilot-gated stats or weapon range for this unit."""
+    """UR recommend pilot grants detail-card-visible PEP for this unit.
+
+    Eligible: ATK/DEF/squad stats, weapon ACC/Crit, weapon range, weapon-effect
+    additives, weapon EN cost. Not eligible: tag-affinity damage dealt/taken only
+    (those never appear on the unit detail card).
+    """
     uid = normalize_id(uid)
     cache_key = (uid, lc)
     hit = _PILOT_COND_PASSIVE_CACHE.get(cache_key)
@@ -2434,7 +2462,13 @@ def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal'):
             txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
             if not txt:
                 continue
-            if _ability_text_implies_pilot_tag_affinity_weapon_stat(txt) or _ability_text_implies_pilot_tag_affinity_en_or_damage(txt):
+            # Damage dealt/taken affinity alone must never show the PEP toggle.
+            if _ability_text_implies_pilot_tag_affinity_damage_only(txt):
+                continue
+            if (
+                _ability_text_implies_pilot_tag_affinity_weapon_stat(txt)
+                or _ability_text_implies_pilot_tag_affinity_en_consumption(txt)
+            ):
                 req_tags = _collect_detail_lineage_tag_names(d2) if isinstance(d2, dict) else []
                 if req_tags and _unit_has_any_lineage_tag(uid, lc, req_tags):
                     _PILOT_COND_PASSIVE_CACHE[cache_key] = True
