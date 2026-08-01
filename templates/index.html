@@ -62,28 +62,36 @@ window.__ggenLoadGtm=function(){
 {% endif %}
 <script>
 (function(){
-  /* Same-origin fonts + long Cache-Control (not GitHub Pages max-age=600). Preload Roboto + ONE brand OTF. */
+  /* Perf bar: do NOT preload multi‑MB brand OTFs (starves detail portraits). Only tiny Roboto; OTFs load via @font-face + swap. */
   var v={{ app_js_version|tojson }};
-  var l=(document.documentElement.getAttribute('data-ui-lang')||'EN').toUpperCase();
-  var files=['/static/font/roboto_medium_numbers.ttf'];
-  if(l==='TW'||l==='HK')files.push('/static/font/UDShinGoStdTC-Med.otf');
-  else if(l==='JA'||l==='JP')files.push('/static/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf');
-  else files.push('/static/font/FOTK-YoonGothic780_JP.otf');
-  files.forEach(function(href){
-    var link=document.createElement('link');
-    link.rel='preload';link.as='font';link.type=/\.otf$/i.test(href)?'font/otf':'font/ttf';
-    link.crossOrigin='anonymous';link.href=href+(href.indexOf('?')>=0?'&':'?')+'v='+encodeURIComponent(v);
-    document.head.appendChild(link);
-  });
+  var link=document.createElement('link');
+  link.rel='preload';link.as='font';link.type='font/ttf';link.crossOrigin='anonymous';
+  link.href='/static/font/roboto_medium_numbers.ttf?v='+encodeURIComponent(v);
+  document.head.appendChild(link);
 })();
 </script>
 <style>
-/* Weight range 100–900: single-file brand OTFs must cover bold UI (ML headings use 800/900) or browsers fall back to system fonts. */
-@font-face{font-family:'RobotoMediumNumbers';src:url('/static/font/roboto_medium_numbers.ttf?v={{ app_js_version }}') format('truetype');font-weight:100 900;font-style:normal;font-display:swap}
-/* Brand OTFs — same-origin, long-cache; preload only the active locale; never ship unused Noto. */
-@font-face{font-family:'ShinGoPr6DeBold';src:url('/static/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf?v={{ app_js_version }}') format('opentype');font-weight:100 900;font-style:normal;font-display:swap}
-@font-face{font-family:'UDShinGoStdTCMed';src:url('/static/font/UDShinGoStdTC-Med.otf?v={{ app_js_version }}') format('opentype');font-weight:100 900;font-style:normal;font-display:swap}
-@font-face{font-family:'FOTK Yoon Gothic 780 JP';src:url('/static/font/FOTK-YoonGothic780_JP.otf?v={{ app_js_version }}') format('opentype');font-weight:100 900;font-style:normal;font-display:swap}
+/* Discrete weights (same file) — avoid font-weight:100 900 (Firefox "name records" + preload mismatch). Bold ML stays on brand faces. */
+@font-face{font-family:'RobotoMediumNumbers';src:url('/static/font/roboto_medium_numbers.ttf?v={{ app_js_version }}') format('truetype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'RobotoMediumNumbers';src:url('/static/font/roboto_medium_numbers.ttf?v={{ app_js_version }}') format('truetype');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'RobotoMediumNumbers';src:url('/static/font/roboto_medium_numbers.ttf?v={{ app_js_version }}') format('truetype');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'RobotoMediumNumbers';src:url('/static/font/roboto_medium_numbers.ttf?v={{ app_js_version }}') format('truetype');font-weight:800;font-style:normal;font-display:swap}
+@font-face{font-family:'RobotoMediumNumbers';src:url('/static/font/roboto_medium_numbers.ttf?v={{ app_js_version }}') format('truetype');font-weight:900;font-style:normal;font-display:swap}
+@font-face{font-family:'ShinGoPr6DeBold';src:url('/static/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf?v={{ app_js_version }}') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'ShinGoPr6DeBold';src:url('/static/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf?v={{ app_js_version }}') format('opentype');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'ShinGoPr6DeBold';src:url('/static/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf?v={{ app_js_version }}') format('opentype');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'ShinGoPr6DeBold';src:url('/static/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf?v={{ app_js_version }}') format('opentype');font-weight:800;font-style:normal;font-display:swap}
+@font-face{font-family:'ShinGoPr6DeBold';src:url('/static/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf?v={{ app_js_version }}') format('opentype');font-weight:900;font-style:normal;font-display:swap}
+@font-face{font-family:'UDShinGoStdTCMed';src:url('/static/font/UDShinGoStdTC-Med.otf?v={{ app_js_version }}') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'UDShinGoStdTCMed';src:url('/static/font/UDShinGoStdTC-Med.otf?v={{ app_js_version }}') format('opentype');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'UDShinGoStdTCMed';src:url('/static/font/UDShinGoStdTC-Med.otf?v={{ app_js_version }}') format('opentype');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'UDShinGoStdTCMed';src:url('/static/font/UDShinGoStdTC-Med.otf?v={{ app_js_version }}') format('opentype');font-weight:800;font-style:normal;font-display:swap}
+@font-face{font-family:'UDShinGoStdTCMed';src:url('/static/font/UDShinGoStdTC-Med.otf?v={{ app_js_version }}') format('opentype');font-weight:900;font-style:normal;font-display:swap}
+@font-face{font-family:'FOTK Yoon Gothic 780 JP';src:url('/static/font/FOTK-YoonGothic780_JP.otf?v={{ app_js_version }}') format('opentype');font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:'FOTK Yoon Gothic 780 JP';src:url('/static/font/FOTK-YoonGothic780_JP.otf?v={{ app_js_version }}') format('opentype');font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:'FOTK Yoon Gothic 780 JP';src:url('/static/font/FOTK-YoonGothic780_JP.otf?v={{ app_js_version }}') format('opentype');font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:'FOTK Yoon Gothic 780 JP';src:url('/static/font/FOTK-YoonGothic780_JP.otf?v={{ app_js_version }}') format('opentype');font-weight:800;font-style:normal;font-display:swap}
+@font-face{font-family:'FOTK Yoon Gothic 780 JP';src:url('/static/font/FOTK-YoonGothic780_JP.otf?v={{ app_js_version }}') format('opentype');font-weight:900;font-style:normal;font-display:swap}
 :root{--bg-primary:#0a0e17;--bg-secondary:#111827;--bg-card:#1a2236;--bg-card-hover:#1f2a42;--bg-input:#0d1321;--bg-modal:#141c2e;--border-color:#2a3654;--border-accent:#3b5998;--text-primary:#f0f2f7;--text-secondary:#b4bfd4;--text-muted:#8494ae;--accent-blue:#4a90d9;--accent-cyan:#00d4ff;--accent-gold:#ffd700;--accent-orange:#ff9500;--accent-red:#ff4757;--accent-green:#2ed573;--accent-purple:#a855f7;--shadow-surface-inset:inset 0 1px 0 rgba(255,255,255,.02);--shadow-surface-drop:0 1px 0 rgba(0,0,0,.25);--shadow-surface:var(--shadow-surface-inset),var(--shadow-surface-drop);--shadow-lg:var(--shadow-surface),0 8px 30px rgba(0,0,0,.6);--radius-sm:6px;--radius-md:10px;--radius-lg:14px;--transition:all 0.25s ease;--list-thead-sticky-top:124px;--dvh:100dvh;--app-vh:100dvh;--layout-vh:100vh;--visual-vv-offset-top:0px;--cmp-browser-inset-bottom:0px;--toggle-depth-inset:var(--shadow-surface-inset);--toggle-depth-rim:var(--shadow-surface-drop);--toggle-depth-active-inset:inset 0 1px 0 rgba(255,255,255,.06),inset 0 0 0 1px rgba(255,255,255,.04);--brand-title-optical-x:1px;--brand-emblem-optical-x:0.5px;--brand-logo-optical-x:1px;--brand-logo-optical-y:-1px;--icon-optical-y:-0.5px;--icon-close-optical-x:-0.35px;--icon-close-optical-y:-0.35px;--portrait-optical-y:-1px;--ability-ex-inner-mask:url('{% if image_cdn %}{{ image_cdn }}/images/UI/UI_CharaAbilities_Tmb_Square_Normal_Base.webp{% else %}/static/images/UI/UI_CharaAbilities_Tmb_Square_Normal_Base.webp{% endif %}');color-scheme:dark}
 /* EN: Roboto + FOTK (one OTF). JA/TW: locale body OTF first; FOTK brand loads on demand via swap (not dual-preload). */
 html{--font-body:'RobotoMediumNumbers','FOTK Yoon Gothic 780 JP',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--font-tag-ui:'RobotoMediumNumbers','FOTK Yoon Gothic 780 JP',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--font-brand:'FOTK Yoon Gothic 780 JP',var(--font-body)}

@@ -2335,25 +2335,25 @@ if(im.complete)done();
 }
 function warmDetailImagesFromPayload(type,d){
 if(!d||d.error)return;
+/* Perf bar: warm portrait + chrome first; keep budget low so detail open isn't CDN-starved. */
 let n=0;
-const maxU=40;
+const maxU=12;
 const add=(p)=>{if(n>=maxU||!p)return;warmPathDetailImg(p);n++};
 add(d.portrait);
 add(d.rarity_icon);add(d.role_icon);add(d.acquisition_icon);
-(d.special_icons||[]).forEach(add);
-if(d.recommend_unit){add(d.recommend_unit.thum)}
-if(d.recommend_character){add(d.recommend_character.thum)}
-for(const sk of (d.skills||[])){if(n>=maxU)break;add(sk.icon);if(sk.frame_overlay)add(sk.frame_overlay)}
-for(const ab of (d.abilities||[])){if(n>=maxU)break;add(ab.icon);if(ab.frame_base)add(ab.frame_base);if(ab.frame_overlay)add(ab.frame_overlay)}
+(d.special_icons||[]).slice(0,4).forEach(add);
+if(d.recommend_unit)add(d.recommend_unit.thum);
+if(d.recommend_character)add(d.recommend_character.thum);
+for(const sk of (d.skills||[]).slice(0,4)){if(n>=maxU)break;add(sk.icon)}
+for(const ab of (d.abilities||[]).slice(0,4)){if(n>=maxU)break;add(ab.icon)}
 if(type==='unit'){
-for(const w of (d.weapons||[])){if(n>=maxU)break;add(w.icon)}
-for(const m of (d.mechanisms||[])){if(n>=maxU)break;add(m.icon)}
+for(const w of (d.weapons||[]).slice(0,4)){if(n>=maxU)break;add(w.icon)}
 }
 if(type==='stage'&&d.map_data&&Array.isArray(d.map_data.units)){
-for(const u of d.map_data.units.slice(0,18)){if(n>=maxU)break;add(u.portrait)}
+for(const u of d.map_data.units.slice(0,6)){if(n>=maxU)break;add(u.portrait)}
 }
 if(type==='supporter'&&(d.active_skills||[]).length){
-for(const sk of d.active_skills.slice(0,8)){if(n>=maxU)break;add(sk.icon)}
+for(const sk of d.active_skills.slice(0,4)){if(n>=maxU)break;add(sk.icon)}
 }
 if(type==='option_part')add(d.thum);
 }
