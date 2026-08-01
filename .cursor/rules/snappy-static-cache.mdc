@@ -19,7 +19,7 @@ This database is mostly static. Browse + Top 10 must feel instant. If performanc
    - Do **not** hard-prime `/api/characters` on every cold load — resolve short path / `?tab=` first (`/st` → stages only, etc.).
    - Do **not** call `ensureBrowseFiltersMeta` (3× `/api/browse_filters`) from cold `applyLang`; warm filters after first browse paint / idle only.
    - Defer full `initToolbarFilterIcons()` off cold `applyLang`; never emit empty/`file:` media `src` (use `safeImgSrc` / `imgSrcAttr`).
-   - **Brand fonts** — Prefer FOTK / ShinGo / UDShinGo for brand + locale body. Same-origin `/static/font/` + year-long `immutable` cache + `?v=`. Register **discrete** weights (400/500/700/800/900), never `font-weight:100 900` (Firefox warnings + broken preload). Preload **only** tiny Roboto (~3KB) — never preload multi‑MB OTFs (steals bandwidth from detail portraits). OTFs load via `font-display:swap`. No unused Noto. Keep `game_news.html` in sync.
+   - **Brand fonts** — Prefer FOTK / ShinGo / UDShinGo for brand + locale body. Same-origin `/static/font/` + year-long `immutable` cache + `?v=`. **One** `@font-face` per family with `font-weight:100 900` (bold ML stays on brand; never register the same OTF 5×). Preload **only** tiny Roboto (~3KB) — never preload multi‑MB OTFs. `font-display:swap`. No unused Noto. Keep `game_news.html` in sync. Never demote brand stacks to system-first.
    - Detail open must **not** `await` portrait CDN warm — paint shell from API JSON; warm ≤~12 images (thum then portrait), never 40+ concurrent. Mask hero pop-in with browse-thumb poster → fade full art (boot poster while JSON loads).
    - **Browse thumbs** — Eager-load only first-viewport portraits (~16) with `fetchpriority=high`; frame/base/icons and below-fold rows stay `loading=lazy` so the CDN isn’t flooded.
    - **Stages / Challenge**: prewarm Eternal + Challenge `/api/stages` **after** char/unit caches are ready — never on the critical path that blocks gunicorn bind or `/health`.
@@ -36,4 +36,6 @@ This database is mostly static. Browse + Top 10 must feel instant. If performanc
 - Blocking process startup / Railway health on non-critical prewarm (stages, drop tables, etc.)
 - Making every list thumb (portrait+frame+icons) `eager` for 50 rows (CDN thrash → “images slowly loading”)
 - Demoting brand OTFs behind system fonts “for performance” so the UI looks like generic system type
-- Preloading multi‑MB brand OTFs (or `font-weight:100 900` on non-variable faces) so fonts fight detail/browse image bandwidth
+- Preloading multi‑MB brand OTFs so fonts fight detail/browse image bandwidth
+- Registering the same brand OTF under 5 discrete `@font-face` weights (Firefox name-table spam)
+- Nested-quote `outerHTML='<div…'>` inside template-literal `onerror` on huge `app.js` lines (breaks parse → site dead)
