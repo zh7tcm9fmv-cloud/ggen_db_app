@@ -13779,42 +13779,38 @@ def _build_browse_list_performance_caches():
 
 
 def _schedule_browse_list_performance_caches():
-    """Build browse row caches in a background thread (local dev fallback only)."""
+    """Build browse row caches in a background thread — never block gunicorn bind / HTML."""
     def _run():
         global _BROWSE_LIST_CACHE_BUILDING
         _BROWSE_LIST_CACHE_BUILDING = True
         _BROWSE_LIST_CACHE_READY.clear()
         try:
             _build_browse_list_performance_caches()
-            _prewarm_default_browse_list_api_caches()
+            # Homepage first paint: characters + units only.
+            _prewarm_default_browse_list_api_caches(include_stages=False)
         except Exception as e:
             print(f'Browse list perf caches: build failed: {e}')
         finally:
             _BROWSE_LIST_CACHE_BUILDING = False
             _BROWSE_LIST_CACHE_READY.set()
+        # Stages after browse is ready — must not delay /health or char/unit paint.
+        try:
+            _prewarm_default_browse_list_api_caches(stages_only=True)
+        except Exception as e:
+            print(f'Browse list stage prewarm skipped: {e}')
 
     threading.Thread(target=_run, name='browse-list-cache', daemon=True).start()
 
 
 def _start_browse_cache_warmup():
-    """Build browse row caches before serving list APIs (avoids 503 warming loops)."""
-    global _BROWSE_LIST_CACHE_BUILDING
+    """Kick off browse caches without blocking the HTTP listener."""
     if CHAR_BROWSE_LIST_ROW_CACHE and UNIT_BROWSE_LIST_ROW_CACHE:
         _BROWSE_LIST_CACHE_READY.set()
         return
-    _BROWSE_LIST_CACHE_BUILDING = True
-    _BROWSE_LIST_CACHE_READY.clear()
-    try:
-        _build_browse_list_performance_caches()
-        _prewarm_default_browse_list_api_caches()
-    except Exception as e:
-        print(f'Browse list perf caches: build failed: {e}')
-    finally:
-        _BROWSE_LIST_CACHE_BUILDING = False
-        _BROWSE_LIST_CACHE_READY.set()
+    _schedule_browse_list_performance_caches()
 
 
-def _prewarm_default_browse_list_api_caches():
+def _prewarm_default_browse_list_api_caches(include_stages=False, stages_only=False):
     """Seed in-memory API cache for default first-page lists (common first paint after deploy)."""
     if not CHAR_BROWSE_LIST_ROW_CACHE or not UNIT_BROWSE_LIST_ROW_CACHE:
         return
@@ -13823,21 +13819,26 @@ def _prewarm_default_browse_list_api_caches():
         langs = list((LANG_DATA or {}).keys())[:1] or ['EN']
     warmed = 0
     for lc in langs:
-        for path, handler in (
-            (f'/api/characters?lang={lc}&page=1&per_page=50&sort=rarity&dir=desc', list_characters),
-            (f'/api/units?lang={lc}&page=1&per_page=50&sort=rarity&dir=desc', list_units),
-            # Stages tab: Eternal + Challenge are the heavy first paints (large CDN thumbs).
-            (
-                f'/api/stages?lang={lc}&page=1&per_page=50&q=&difficulty=&sort=stage_number'
-                f'&dir=asc&category=eternal&tower_side=ALL&challenge_series=ALL',
-                list_stages,
-            ),
-            (
-                f'/api/stages?lang={lc}&page=1&per_page=50&q=&difficulty=&sort=stage_number'
-                f'&dir=asc&category=challenge_stage&tower_side=ALL&challenge_series=ALL',
-                list_stages,
-            ),
-        ):
+        jobs = []
+        if not stages_only:
+            jobs.extend((
+                (f'/api/characters?lang={lc}&page=1&per_page=50&sort=rarity&dir=desc', list_characters),
+                (f'/api/units?lang={lc}&page=1&per_page=50&sort=rarity&dir=desc', list_units),
+            ))
+        if include_stages or stages_only:
+            jobs.extend((
+                (
+                    f'/api/stages?lang={lc}&page=1&per_page=50&q=&difficulty=&sort=stage_number'
+                    f'&dir=asc&category=eternal&tower_side=ALL&challenge_series=ALL',
+                    list_stages,
+                ),
+                (
+                    f'/api/stages?lang={lc}&page=1&per_page=50&q=&difficulty=&sort=stage_number'
+                    f'&dir=asc&category=challenge_stage&tower_side=ALL&challenge_series=ALL',
+                    list_stages,
+                ),
+            ))
+        for path, handler in jobs:
             try:
                 with app.test_request_context(path):
                     handler()
@@ -14398,7 +14399,12 @@ def _serve_index():
 
 @app.route('/health')
 def health_check():
-    ready = bool(CHAR_BROWSE_LIST_ROW_CACHE and UNIT_BROWSE_LIST_ROW_CACHE)
+    """Liveness for Railway: 200 once the process can serve HTML/static.
+
+    Browse row caches may still be building — list APIs return 503 warming_up
+    until ready (client retries). Do not block the whole site on that.
+    """
+    browse_ready = bool(CHAR_BROWSE_LIST_ROW_CACHE and UNIT_BROWSE_LIST_ROW_CACHE)
     mem = {}
     try:
         import resource
@@ -14421,7 +14427,8 @@ def health_check():
         pass
     mem['api_cache_keys'] = len(_api_cache)
     payload = {
-        'ok': ready,
+        'ok': True,
+        'browse_ready': browse_ready,
         'browse_cache': {
             'chars': len(CHAR_BROWSE_LIST_ROW_CACHE),
             'units': len(UNIT_BROWSE_LIST_ROW_CACHE),
@@ -14429,7 +14436,7 @@ def health_check():
         },
         'memory': mem,
     }
-    return jsonify(payload), (200 if ready else 503)
+    return jsonify(payload), 200
 
 
 @app.route('/api/client_version')
@@ -23548,7 +23555,7 @@ def serve_spa(path):
         return _not_found_page()
     return _serve_index()
 
-# Build browse list caches before serving (Railway healthcheck waits until ready).
+# Browse caches in a background thread — do not block gunicorn bind / HTML shell.
 _start_browse_cache_warmup()
 
 if __name__ == '__main__':
