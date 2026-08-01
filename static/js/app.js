@@ -213,44 +213,6 @@ function imgTag(path, opts) {
     const onerrAttr = onerr ? ` onerror="${onerr}"` : '';
     return `<img class="${cls}" src="${escAttr(src)}" alt="${escAttr(alt)}"${loadAttr}${decAttr}${fpAttr}${onerrAttr} ${extra}>`.trim();
 }
-function detailHeroPortraitImgTag(path, opts) {
-    const o = opts || {};
-    return imgTag(path, {
-        cls: o.cls || 'detail-portrait',
-        alt: o.alt || '',
-        onerror: o.onerror || '',
-        extra: o.extra || '',
-        webp: true,
-        lazy: false,
-        loading: 'eager',
-        decoding: 'async',
-        fetchpriority: o.fetchpriority || 'high',
-        onload: o.onload
-    });
-}
-function detailHeroResolvedUrl(path){
-if(!path)return '';
-const s=String(path);
-if(/^https?:\/\//i.test(s)||s.startsWith('data:')||s.startsWith('blob:'))return s;
-return isRasterWebpCandidate(path)?imgUrlWebp(path):imgUrl(path);
-}
-function findCachedBrowsePortraitSrc(type,id){
-try{
-const row=document.querySelector('[data-detail-type="'+CSS.escape(String(type))+'"][data-detail-id="'+CSS.escape(String(id))+'"]');
-if(!row)return '';
-const img=row.querySelector('img.list-thumb-portrait, .list-thumb-portrait-wrap img, img.tb-supp-portrait-only-img');
-if(!img)return '';
-const u=img.currentSrc||img.src||'';
-if(!u||u.indexOf('data:')===0)return '';
-if(typeof _isBlockedMediaUrl==='function'&&_isBlockedMediaUrl(u))return '';
-return u;
-}catch(_){return ''}
-}
-function renderDetailHeroBootHtml(type,posterSrc){
-if(!posterSrc)return '<div class="loading-overlay"><div class="spinner"></div></div>';
-const unit=type==='unit';
-return `<div class="detail-hero-boot"><div class="detail-portrait-wrap${unit?' unit-portrait-wrap':''}"><img class="detail-portrait detail-hero-boot-img" src="${escAttr(posterSrc)}" alt="" decoding="async" fetchpriority="high" onerror="this.style.visibility='hidden'"></div><div class="detail-hero-boot-spinner" aria-hidden="true"><div class="spinner"></div></div></div>`;
-}
 function detailHeroPortraitFallback(el,kind){
 try{
 const ph=kind==='unit'?'\uD83E\uDD16':'\uD83D\uDC64';
@@ -267,9 +229,18 @@ function detailHeroPortraitHtml(path, opts) {
     const alt = o.alt || '';
     const ph = o.placeholder != null ? o.placeholder : '👤';
     const onerr = o.onerror || "detailHeroPortraitFallback(this,'char')";
-    /* Single img only — never stack browse thumb under full art (portraits have alpha; underlay shows through). */
     if (!path) return `<div class="detail-portrait-placeholder">${ph}</div>`;
-    return detailHeroPortraitImgTag(path, { cls, alt, onerror: onerr, extra: o.extra || '' });
+    /* Full art only — no boot/poster/fade. Hover prefetch warms the real portrait. */
+    return imgTag(path, {
+        cls,
+        alt,
+        onerror: onerr,
+        webp: true,
+        lazy: false,
+        loading: 'eager',
+        decoding: 'sync',
+        fetchpriority: 'high'
+    });
 }
 function _dcEternalStageDiffIconHtml(code){
 const c=code==='hard'?'hard':code==='expert'?'expert':code==='normal'?'normal':'unknown';
@@ -2580,9 +2551,8 @@ return await p;
 }
 function scheduleDetailPrefetchFromIntent(type,id){
 if(type!=='character'&&type!=='unit'&&type!=='supporter'&&type!=='stage'&&type!=='option_part'&&type!=='profile_title')return;
-const cachedSrc=findCachedBrowsePortraitSrc(type,id);
-if(cachedSrc)warmResolvedDetailImg(cachedSrc);
 clearTimeout(_detailPrefetchHoverTimer);
+/* Prefetch detail JSON (warms full portrait URL) — no fake thumb substitute. */
 _detailPrefetchHoverTimer=setTimeout(()=>{fetchDetailPayload(type,id,{}).catch(()=>{})},40);
 }
 function onDetailPrefetchIntentEvent(ev){
@@ -2779,7 +2749,7 @@ S._detailModalLayoutObs.observe(mc);
 }else adjustDetailModalLayout();
 requestAnimationFrame(adjustDetailModalLayout);
 }
-async function openDetail(type,id,opts){opts=opts||{};const skipHistory=!!opts.skipHistory||S._historyApplyingPopstate;if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active'))closeSearchSpotlight();const m=document.getElementById('detailModal'),mc=document.getElementById('modalContent'),inn=document.getElementById('detailInner');const detailWasActive=m.classList.contains('active');if(opts.returnStageSnapshot&&S.currentDetailType==='stage'&&S.currentDetailData&&!S.currentDetailData.content_locked)S._stageDetailUiRestore=captureStageDetailUiState();mc.className='modal-content';if(type==='profile_title')mc.classList.add('profile-title-detail','stage-detail');else mc.classList.add(type==='character'?'char-detail':(type==='unit'?'unit-detail':(type==='supporter'?'supporter-detail':(type==='option_part'?'option-part-detail':'stage-detail'))));m.classList.add('active');document.body.classList.add('detail-modal-open');if(!detailWasActive)applyBackgroundScrollLock();updateScrollTopFabVisibility();S._detailHeroPoster=(type==='character'||type==='unit')?(opts.heroPoster||findCachedBrowsePortraitSrc(type,id)||''):'';inn.innerHTML=S._detailHeroPoster?renderDetailHeroBootHtml(type,S._detailHeroPoster):'<div class="loading-overlay"><div class="spinner"></div></div>';syncModalDetailChrome();syncDetailBrowseNavUi();try{const d=await fetchDetailPayload(type,id,opts);if(type==='option_part'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderOptionPartShell(d);syncModalDetailChrome();if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}if(type==='profile_title'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;if(opts.returnStageSnapshot&&S.currentDetailType==='stage'&&S.currentDetailData&&!S.currentDetailData.content_locked){const snap=_cloneDetailJson(S.currentDetailData);if(S._stageDetailUiRestore)snap._detailUi=_cloneDetailJson(S._stageDetailUiRestore);d.detail_return={type:'stage',id:String(snap.id),payload:snap}}S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderProfileTitleShell(d);syncModalDetailChrome();if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}const _pu=type==='unit'&&!!opts.preserveUnitSpSsp;const _pcp=!!opts.preserveConditionalPassive||!!opts.unitConditionCpTarget;const _vr=!!opts.viewRanking;d.ranking_context=!!_vr;if(_vr){d.view_ranking=false}if(type==='character'||type==='unit')d.ranking_available=true;if(!_pu&&!_pcp){S.conditionalPassiveActive=false;S.pilotConditionalPassiveActive=false;S.pilotCondCharData=null;S._pilotCondCharFetchId=null;S._pilotCondCharInflight=null;S._pilotCondPrefetchUnitId=null;S.pilotCondStackCount=0;S.spActive=false;S.sspActive=false}S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.detailRankingOverlay=false;if(type==='stage'){S.stageMapAutoFit=true;S.stageMapZoom=1}if(!_pu){if(type==='character'){S.spActive=!!S.listCharSp;if(!_pcp)S.conditionalPassiveActive=!!S.listCharCond}else if(type==='unit'){if(S.listUnitSsp){S.sspActive=true;S.spActive=false}else if(S.listUnitSp){S.spActive=true;S.sspActive=false}else{S.spActive=false;S.sspActive=false}if(!_pcp){if(opts.viewRanking){S.conditionalPassiveActive=!!opts.listUnitCondPerspective;S.pilotConditionalPassiveActive=!!opts.listUnitPilotCondPerspective}else{S.conditionalPassiveActive=!!(d&&d.has_cond_stats)||!!S.listUnitCond;S.pilotConditionalPassiveActive=!!S.listUnitPilotCond}}}}if(_pcp)S.conditionalPassiveActive=true;if(!_pcp&&!opts.viewRanking&&type==='unit'&&d&&d.has_cond_stats)S.conditionalPassiveActive=true;if(opts.unitConditionCpTarget&&d)d.unit_condition_cp_target=true;if(opts.affinityHighlightUnitId&&d)d.affinity_highlight_unit_id=String(opts.affinityHighlightUnitId);if(opts.pilotCondHighlightUnitId&&d)d.pilot_cond_highlight_unit_id=String(opts.pilotCondHighlightUnitId);S.currentDetailData=d;S.currentDetailType=type;if(type==='character'&&S.conditionalPassiveActive&&d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1)S.charSuperchargedExTier=d.ex_supercharged_tiers.length-1;if(type==='supporter'){S.currentSupporterLbTier=d.lb_tier??3;S.currentSupporterLevel=Math.max(1,Number(d.level)||Math.max(1,Number(d.max_level)||100))}if(type==='unit'){S.listSelectedUnitId=String(opts.listUnitFocusId!=null?opts.listUnitFocusId:id);syncUnitListDetailHighlight()}if((type==='character'||type==='unit')&&d.portrait)void warmPathDetailImg(d.portrait);if(type==='character')inn.innerHTML=renderCharShell(d);else if(type==='unit'){if(d.weapons)d.weapons.forEach(w=>S.currentWeaponLevels[w.id]=5);inn.innerHTML=renderUnitShell(d)}else if(type==='supporter')inn.innerHTML=renderSupporterShell(d);else inn.innerHTML=(d.content_locked?renderEternalStageLockedPanel(d):renderStageShell(d));S._detailHeroPoster='';syncModalDetailChrome();if(type==='stage'&&!d.content_locked)wireRewardDetailClicks(inn);if(d&&d.ranking_available&&(type==='character'||type==='unit'))ensureDetailRankingToggleDom(type);if(!(type==='stage'&&d.content_locked)){updateDetailDynamicSections(type);if(type==='unit')queuePilotCondCharPrefetch(d);if(d&&d.ranking_available&&(type==='character'||type==='unit')){void ensureDetailRankingStats(type,id).then(()=>{if(S.currentDetailType===type&&S.currentDetailData&&String(S.currentDetailData.id)===String(id)){updateDetailDynamicSections(type);adjustDetailModalLayout()}}).catch(()=>{})}}if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi()}catch(e){const msg=String((e&&e.message)||e||'');const soft=!!(e&&(e.name==='AbortError'||e.name==='TypeError'))||/networkerror|failed to fetch|load failed|the operation was aborted|^network$/i.test(msg);if(!soft)console.error(e);inn.innerHTML=`<div class="empty-state" style="padding:60px 20px"><div class="empty-state-icon">⚠️</div><div class="empty-state-text">${esc(soft?'Could not load details. Check your connection and try again.':('Failed: '+msg))}</div></div>`;syncModalDetailChrome();syncDetailBrowseNavUi()}}
+async function openDetail(type,id,opts){opts=opts||{};const skipHistory=!!opts.skipHistory||S._historyApplyingPopstate;if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active'))closeSearchSpotlight();const m=document.getElementById('detailModal'),mc=document.getElementById('modalContent'),inn=document.getElementById('detailInner');const detailWasActive=m.classList.contains('active');if(opts.returnStageSnapshot&&S.currentDetailType==='stage'&&S.currentDetailData&&!S.currentDetailData.content_locked)S._stageDetailUiRestore=captureStageDetailUiState();mc.className='modal-content';if(type==='profile_title')mc.classList.add('profile-title-detail','stage-detail');else mc.classList.add(type==='character'?'char-detail':(type==='unit'?'unit-detail':(type==='supporter'?'supporter-detail':(type==='option_part'?'option-part-detail':'stage-detail'))));m.classList.add('active');document.body.classList.add('detail-modal-open');if(!detailWasActive)applyBackgroundScrollLock();updateScrollTopFabVisibility();inn.innerHTML='<div class="loading-overlay"><div class="spinner"></div></div>';syncModalDetailChrome();syncDetailBrowseNavUi();try{const d=await fetchDetailPayload(type,id,opts);if(type==='option_part'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderOptionPartShell(d);syncModalDetailChrome();if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}if(type==='profile_title'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;if(opts.returnStageSnapshot&&S.currentDetailType==='stage'&&S.currentDetailData&&!S.currentDetailData.content_locked){const snap=_cloneDetailJson(S.currentDetailData);if(S._stageDetailUiRestore)snap._detailUi=_cloneDetailJson(S._stageDetailUiRestore);d.detail_return={type:'stage',id:String(snap.id),payload:snap}}S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderProfileTitleShell(d);syncModalDetailChrome();if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}const _pu=type==='unit'&&!!opts.preserveUnitSpSsp;const _pcp=!!opts.preserveConditionalPassive||!!opts.unitConditionCpTarget;const _vr=!!opts.viewRanking;d.ranking_context=!!_vr;if(_vr){d.view_ranking=false}if(type==='character'||type==='unit')d.ranking_available=true;if(!_pu&&!_pcp){S.conditionalPassiveActive=false;S.pilotConditionalPassiveActive=false;S.pilotCondCharData=null;S._pilotCondCharFetchId=null;S._pilotCondCharInflight=null;S._pilotCondPrefetchUnitId=null;S.pilotCondStackCount=0;S.spActive=false;S.sspActive=false}S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.detailRankingOverlay=false;if(type==='stage'){S.stageMapAutoFit=true;S.stageMapZoom=1}if(!_pu){if(type==='character'){S.spActive=!!S.listCharSp;if(!_pcp)S.conditionalPassiveActive=!!S.listCharCond}else if(type==='unit'){if(S.listUnitSsp){S.sspActive=true;S.spActive=false}else if(S.listUnitSp){S.spActive=true;S.sspActive=false}else{S.spActive=false;S.sspActive=false}if(!_pcp){if(opts.viewRanking){S.conditionalPassiveActive=!!opts.listUnitCondPerspective;S.pilotConditionalPassiveActive=!!opts.listUnitPilotCondPerspective}else{S.conditionalPassiveActive=!!(d&&d.has_cond_stats)||!!S.listUnitCond;S.pilotConditionalPassiveActive=!!S.listUnitPilotCond}}}}if(_pcp)S.conditionalPassiveActive=true;if(!_pcp&&!opts.viewRanking&&type==='unit'&&d&&d.has_cond_stats)S.conditionalPassiveActive=true;if(opts.unitConditionCpTarget&&d)d.unit_condition_cp_target=true;if(opts.affinityHighlightUnitId&&d)d.affinity_highlight_unit_id=String(opts.affinityHighlightUnitId);if(opts.pilotCondHighlightUnitId&&d)d.pilot_cond_highlight_unit_id=String(opts.pilotCondHighlightUnitId);S.currentDetailData=d;S.currentDetailType=type;if(type==='character'&&S.conditionalPassiveActive&&d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1)S.charSuperchargedExTier=d.ex_supercharged_tiers.length-1;if(type==='supporter'){S.currentSupporterLbTier=d.lb_tier??3;S.currentSupporterLevel=Math.max(1,Number(d.level)||Math.max(1,Number(d.max_level)||100))}if(type==='unit'){S.listSelectedUnitId=String(opts.listUnitFocusId!=null?opts.listUnitFocusId:id);syncUnitListDetailHighlight()}if((type==='character'||type==='unit')&&d.portrait)void warmPathDetailImg(d.portrait);if(type==='character')inn.innerHTML=renderCharShell(d);else if(type==='unit'){if(d.weapons)d.weapons.forEach(w=>S.currentWeaponLevels[w.id]=5);inn.innerHTML=renderUnitShell(d)}else if(type==='supporter')inn.innerHTML=renderSupporterShell(d);else inn.innerHTML=(d.content_locked?renderEternalStageLockedPanel(d):renderStageShell(d));syncModalDetailChrome();if(type==='stage'&&!d.content_locked)wireRewardDetailClicks(inn);if(d&&d.ranking_available&&(type==='character'||type==='unit'))ensureDetailRankingToggleDom(type);if(!(type==='stage'&&d.content_locked)){updateDetailDynamicSections(type);if(type==='unit')queuePilotCondCharPrefetch(d);if(d&&d.ranking_available&&(type==='character'||type==='unit')){void ensureDetailRankingStats(type,id).then(()=>{if(S.currentDetailType===type&&S.currentDetailData&&String(S.currentDetailData.id)===String(id)){updateDetailDynamicSections(type);adjustDetailModalLayout()}}).catch(()=>{})}}if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi()}catch(e){const msg=String((e&&e.message)||e||'');const soft=!!(e&&(e.name==='AbortError'||e.name==='TypeError'))||/networkerror|failed to fetch|load failed|the operation was aborted|^network$/i.test(msg);if(!soft)console.error(e);inn.innerHTML=`<div class="empty-state" style="padding:60px 20px"><div class="empty-state-icon">⚠️</div><div class="empty-state-text">${esc(soft?'Could not load details. Check your connection and try again.':('Failed: '+msg))}</div></div>`;syncModalDetailChrome();syncDetailBrowseNavUi()}}
 function closeModal(){
 const m=document.getElementById('detailModal');
 const wasOpen=!!(m&&m.classList.contains('active'));
