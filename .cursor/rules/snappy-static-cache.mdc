@@ -19,7 +19,7 @@ This database is mostly static. Browse + Top 10 must feel instant. If performanc
    - Do **not** hard-prime `/api/characters` on every cold load — resolve short path / `?tab=` first (`/st` → stages only, etc.).
    - Do **not** call `ensureBrowseFiltersMeta` (3× `/api/browse_filters`) from cold `applyLang`; warm filters after first browse paint / idle only.
    - Defer full `initToolbarFilterIcons()` off cold `applyLang`; never emit empty/`file:` media `src` (use `safeImgSrc` / `imgSrcAttr`).
-   - **Brand fonts** — Prefer FOTK / ShinGo / UDShinGo for brand + locale body (system fonts as fallback only). Do **not** ship unused Noto. Preload only the active locale’s OTFs; `font-display:swap`. Never put system CJK first if that makes brand faces never apply.
+   - **Brand fonts** — Prefer FOTK / ShinGo / UDShinGo for brand + locale body (system fonts as fallback only). Register `@font-face` with `font-weight:100 900` so bold UI (Master League 800/900) does not fall back to system fonts. Do **not** ship unused Noto. Preload only the active locale’s OTFs; `font-display:swap`. Keep `game_news.html` in sync with `index.html` stacks.
    - Detail open must **not** `await` portrait CDN warm — paint shell from API JSON, warm images in background.
    - **Browse thumbs** — Eager-load only first-viewport portraits (~16) with `fetchpriority=high`; frame/base/icons and below-fold rows stay `loading=lazy` so the CDN isn’t flooded.
    - **Stages / Challenge**: prewarm Eternal + Challenge `/api/stages` **after** char/unit caches are ready — never on the critical path that blocks gunicorn bind or `/health`.

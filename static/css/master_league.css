@@ -1,10 +1,23 @@
-/* Master League */
+/* Master League — inherit site brand stacks (bold headings need @font-face weight 100–900). */
+#panel-master_league,
+.ml-wrap {
+  font-family: var(--font-body);
+}
 .ml-wrap {
   max-width: 960px;
   margin: 0 auto;
   padding: 8px 0 40px;
   position: relative;
   z-index: 1;
+}
+.ml-boost-stage-label,
+.ml-boost-heading,
+.ml-boost-pct,
+.ml-section-title,
+.ml-status-pill,
+.ml-meta-k,
+.ml-season-select {
+  font-family: var(--font-body);
 }
 
 /* Season picker + motif logo — one compact row, vertically centered */
