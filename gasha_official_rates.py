@@ -36,14 +36,73 @@ def _table_rows(content: str):
 
 
 def _classify_section(title: str) -> str:
-    t = (title or '').lower()
-    if '100th' in t or 'guaranteed ur' in t:
+    """Map official EN/JA/TW/HK section titles → rate bucket keys."""
+    t = title or ''
+    low = t.lower()
+    # 100th guaranteed UR (JA 累計100回目 / TW·HK 累計第100次)
+    if (
+        re.search(r'100\s*(th|回目|次)', t, re.I)
+        or 'guaranteed ur' in low
+        or '保障獲得ur' in low
+        or ('ur' in low and '確定' in t)
+    ):
         return 'pity_100'
-    if '10th' in t and '1st' not in t:
+    # 1st–9th range must win over bare "10 times"
+    if re.search(r'1\s*[-~～〜至到]\s*9', t) or '1st' in low:
+        return 'single_or_1to9'
+    if re.search(r'(?<!\d)10\s*(th|回目|次)', t, re.I):
         return 'multi_10th'
-    if '1st' in t or 'use 1 time' in t or '1 time' in t:
+    if 'use 1 time' in low or re.search(r'(?<!\d)1\s*time', low) or '1回引く' in t or '補給1次' in t:
         return 'single_or_1to9'
     return 'other'
+
+
+def _header_norm(h: str) -> str:
+    return (h or '').strip().lower()
+
+
+def _header_is_rarity(h: str) -> bool:
+    n = _header_norm(h)
+    return n in ('rarity', 'レアリティ', '稀有度')
+
+
+def _header_is_drop_rate(h: str) -> bool:
+    n = _header_norm(h)
+    return n in ('drop rate', '提供割合', '出現機率', '出現確率', '掉落率') or 'drop rate' in n
+
+
+def _header_is_entity_name(h: str) -> bool:
+    """Name column in per-entity tables (not the category Unit/Supporters % columns)."""
+    n = _header_norm(h)
+    if n in (
+        'units', 'unit', 'supporters', 'supporter',
+        'ユニット', 'ユニット名', 'サポーター', 'サポーター名',
+        '單位', '單位名', '支援人員', '支援人員名',
+    ):
+        # Category tables use bare Unit/Supporters as % columns — those also match.
+        # Caller distinguishes via _header_is_drop_rate presence.
+        return True
+    # JA/TW name columns often end with 名
+    if n.endswith('名') and any(k in n for k in ('ユニット', 'サポーター', '單位', '支援')):
+        return True
+    return False
+
+
+def _entity_kind_from_title(title: str) -> str:
+    t = (title or '').strip()
+    low = t.lower()
+    if low in ('unit', 'units') or t in ('ユニット', '單位', '単位'):
+        return 'unit'
+    if low in ('supporters', 'supporter') or t in ('サポーター', '支援人員'):
+        return 'supporter'
+    return ''
+
+
+def _rates_parsed_ok(parsed: dict | None) -> bool:
+    if not parsed:
+        return False
+    cat = parsed.get('category') or {}
+    return bool(cat.get('single_or_1to9') or cat.get('multi_10th') or cat.get('pity_100'))
 
 
 def parse_gasha_proportion(payload: dict) -> dict:
@@ -69,18 +128,15 @@ def parse_gasha_proportion(payload: dict) -> dict:
             notes.append(content)
             continue
         if typ == 1:
-            # e.g. "Use 10 times (10th)Drop Rate"
+            # e.g. "Use 10 times (10th)Drop Rate" / 「10回引く(10回目)」提供割合
             section = _classify_section(content)
             entity_kind = ''
             continue
         if typ == 8:
             title = content.strip()
-            low = title.lower()
-            if low in ('unit', 'units'):
-                entity_kind = 'unit'
-                continue
-            if low in ('supporters', 'supporter'):
-                entity_kind = 'supporter'
+            kind = _entity_kind_from_title(title)
+            if kind:
+                entity_kind = kind
                 continue
             # Category subsection headings
             section = _classify_section(title)
@@ -91,9 +147,11 @@ def parse_gasha_proportion(payload: dict) -> dict:
         rows = _table_rows(content)
         if len(rows) < 2:
             continue
-        header = [_cell_text(c).lower() for c in (rows[0].get('cells') or [])]
-        # Category table: Rarity | Unit | Supporters
-        if 'rarity' in header and 'drop rate' not in header:
+        header = [_cell_text(c) for c in (rows[0].get('cells') or [])]
+        has_rarity = any(_header_is_rarity(h) for h in header)
+        has_drop = any(_header_is_drop_rate(h) for h in header)
+        # Category table: Rarity | Unit | Supporters (no per-row Drop Rate column)
+        if has_rarity and not has_drop:
             bucket = category.setdefault(section or 'other', {})
             for row in rows[1:]:
                 cells = [_cell_text(c) for c in (row.get('cells') or [])]
@@ -111,14 +169,14 @@ def parse_gasha_proportion(payload: dict) -> dict:
         name_idx = None
         rate_idx = None
         for i, h in enumerate(header):
-            if h in ('units', 'unit', 'supporters', 'supporter'):
+            if _header_is_entity_name(h):
                 name_idx = i
-            if h == 'drop rate':
+            if _header_is_drop_rate(h):
                 rate_idx = i
         if name_idx is None or rate_idx is None:
             # fallback: last col rate, third or second col name
-            rate_idx = len(header) - 1
-            name_idx = 2 if len(header) >= 4 else 1
+            rate_idx = len(header) - 1 if rate_idx is None else rate_idx
+            name_idx = (2 if len(header) >= 4 else 1) if name_idx is None else name_idx
         for row in rows[1:]:
             cells = [_cell_text(c) for c in (row.get('cells') or [])]
             if rate_idx >= len(cells) or name_idx >= len(cells):
@@ -126,6 +184,9 @@ def parse_gasha_proportion(payload: dict) -> dict:
             name = cells[name_idx]
             pct = _parse_pct(cells[rate_idx])
             if not name or pct is None:
+                continue
+            # Skip mis-parsed rows where the "name" is itself a percentage.
+            if _PCT_RE.fullmatch(name.strip()) or name.strip().endswith('%') and _parse_pct(name) is not None and len(name) < 16:
                 continue
             slot = _ensure_name(name)
             key = section or 'other'
@@ -179,13 +240,18 @@ def load_official_proportion(gasha_id, lang_num: int):
 
 
 def drop_rates_for_gasha(gasha_id, lc='EN') -> dict | None:
+    """Load official proportion for locale; fall back to EN if locale parse fails."""
     lang_num = lang_num_for_lc(lc)
     raw = load_official_proportion(gasha_id, lang_num)
-    if raw is None and lang_num != 2:
-        raw = load_official_proportion(gasha_id, 2)
-    if raw is None:
-        return None
-    return parse_gasha_proportion(raw)
+    parsed = parse_gasha_proportion(raw) if raw else None
+    if _rates_parsed_ok(parsed):
+        return parsed
+    if lang_num != 2:
+        raw_en = load_official_proportion(gasha_id, 2)
+        parsed_en = parse_gasha_proportion(raw_en) if raw_en else None
+        if _rates_parsed_ok(parsed_en):
+            return parsed_en
+    return parsed if parsed else None
 
 
 def _lookup_rate_by_name(by_name: dict, name: str, kind_hint: str = ''):
