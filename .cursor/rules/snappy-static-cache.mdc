@@ -21,8 +21,8 @@ This database is mostly static. Browse + Top 10 must feel instant. If performanc
    - Detail open must **not** `await` portrait CDN warm — paint shell from API JSON, warm images in background.
    - **Stages / Challenge**: prewarm Eternal + Challenge `/api/stages` **after** char/unit caches are ready — never on the critical path that blocks gunicorn bind or `/health`. Challenge `sca_*` thumbs are ~400KB each — eager-load only the first viewport (~12), lazy the rest.
 5. **Lang switch** — Reload only the visible browse tab; other tabs on demand. Soft-reload (keep prior rows under spinner). Client Top 10 cache must be keyed/invalidated by locale so pilot names re-localize.
-6. **Boot / deploy** — Never run browse-cache build **synchronously at import**. Background it; `/health` must return 200 once HTML can be served. List APIs may 503 `warming_up` briefly (client retries). A white screen for 30s+ is a regression.
-7. **Regression = bug** — If Top 10, browse, or cold homepage feels multi-second again, measure latency and return to the published-cache path above. After any feature fix, spot-check `/` + `/api/characters` latency.
+6. **Boot / deploy** — Production entry is `wsgi:application` (not `app:app`). Bind before DB import; show the boot shell while loading. Never run browse-cache build **synchronously at import**. `/health` must return 200 during boot (`booting:true`) and after (`booting:false`). List APIs may 503 `warming_up` briefly (client retries). A blank/white screen with no boot UI for 30s+ is a regression.
+7. **Regression = bug** — If Top 10, browse, or cold homepage feels multi-second again, measure latency and return to the published-cache path above. After any feature fix, spot-check `/` + `/health` + `/api/characters` latency (including a simulated cold boot via `wsgi`).
 
 ## Anti-patterns
 

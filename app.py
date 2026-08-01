@@ -14399,10 +14399,11 @@ def _serve_index():
 
 @app.route('/health')
 def health_check():
-    """Liveness for Railway: 200 once the process can serve HTML/static.
+    """Liveness for Railway: 200 once this Flask app is mounted.
 
-    Browse row caches may still be building — list APIs return 503 warming_up
-    until ready (client retries). Do not block the whole site on that.
+    Production entry is `wsgi:application`, which binds before `import app` finishes
+    and serves a boot shell until this health handler exists. Browse row caches may
+    still be building — list APIs return 503 warming_up (client retries).
     """
     browse_ready = bool(CHAR_BROWSE_LIST_ROW_CACHE and UNIT_BROWSE_LIST_ROW_CACHE)
     mem = {}
@@ -14428,6 +14429,8 @@ def health_check():
     mem['api_cache_keys'] = len(_api_cache)
     payload = {
         'ok': True,
+        'booting': False,
+        'phase': 'ready',
         'browse_ready': browse_ready,
         'browse_cache': {
             'chars': len(CHAR_BROWSE_LIST_ROW_CACHE),
