@@ -104,6 +104,13 @@ def _app_js_bundle_version_tag():
         ('css', 'master_league.css'),
         ('css', 'kofi_donate_promo.css'),
     )
+    # Include brand fonts so long-cache ?v= busts when an OTF/TTF is replaced.
+    font_assets = (
+        'font/roboto_medium_numbers.ttf',
+        'font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf',
+        'font/FOTK-YoonGothic780_JP.otf',
+        'font/UDShinGoStdTC-Med.otf',
+    )
     parts = []
     git_rev = _app_git_revision()
     if git_rev:
@@ -115,6 +122,13 @@ def _app_js_bundle_version_tag():
             parts.append(f'{subdir}/{name}:{st.st_mtime_ns}:{st.st_size}')
         except OSError:
             parts.append(f'{subdir}/{name}:0')
+    for rel in font_assets:
+        p = os.path.join(root, *rel.split('/'))
+        try:
+            st = os.stat(p)
+            parts.append(f'{rel}:{st.st_mtime_ns}:{st.st_size}')
+        except OSError:
+            parts.append(f'{rel}:0')
     return hashlib.sha256('|'.join(parts).encode()).hexdigest()[:16]
 
 # Optional: set INDEX_HTML_CACHE_CONTROL e.g. "public, max-age=120" in production so repeat visits skip re-downloading HTML shell.
@@ -129,9 +143,10 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 
 # Long-lived browser cache for game images (WebP, etc.). Set STATIC_CACHE_MAX_AGE=0 to disable during asset work.
 _STATIC_CACHEABLE_EXT = frozenset(
-    ('.webp', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.woff2', '.woff', '.ttf', '.eot', '.js')
+    ('.webp', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.woff2', '.woff', '.ttf', '.otf', '.eot', '.js')
 )
 _STATIC_CACHE_MAX_AGE = int(os.environ.get('STATIC_CACHE_MAX_AGE', '31536000') or '0')
+_STATIC_FONT_EXT = frozenset(('.woff2', '.woff', '.ttf', '.otf', '.eot'))
 
 
 @app.after_request
@@ -147,6 +162,11 @@ def _apply_static_cache_headers(response):
     ext = os.path.splitext(path)[1].lower()
     if path.endswith('/js/app.js') or path.endswith('/js/msy_dc_engine.js') or path.endswith('/js/unit_best_pilots.js'):
         # Templates always bust with ?v={{ app_js_version }}; long-cache is safe and cuts repeat TBT.
+        response.headers['Cache-Control'] = f'public, max-age={_STATIC_CACHE_MAX_AGE}, immutable'
+        return response
+    # Brand fonts: same-origin + long cache (GitHub Pages CDN only allows max-age=600 → re-download loop).
+    # Templates bust with ?v={{ app_js_version }} when a font file changes on deploy.
+    if path.startswith('/static/font/') and ext in _STATIC_FONT_EXT:
         response.headers['Cache-Control'] = f'public, max-age={_STATIC_CACHE_MAX_AGE}, immutable'
         return response
     if ext not in _STATIC_CACHEABLE_EXT:
@@ -15386,6 +15406,7 @@ def game_news_page():
         'game_news.html',
         image_cdn=IMAGE_CDN or '',
         game_images_use_cdn=GAME_IMAGES_USE_CDN,
+        app_js_version=_app_js_bundle_version_tag(),
     ))
     r.headers['Cache-Control'] = 'public, max-age=3600'
     return r
