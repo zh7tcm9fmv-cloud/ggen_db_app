@@ -1,9 +1,11 @@
 ---
-description: Snappy static DB / Top 10 performance standard — restore this bar if the site feels slow again
+description: Snappy static DB performance bar — anything worse than this is unacceptable
 alwaysApply: true
 ---
 
-# Snappy static cache (performance bar)
+# Snappy static cache (minimum performance bar)
+
+Owner standard (Aug 2026): the site must stay **usable immediately** — boot shell during DB load, HTML/API responsive after ready, browse lists interactive without a blank screen. **Anything worse than this bar is a regression and must be fixed before/with the feature change.**
 
 This database is mostly static. Browse + Top 10 must feel instant. If performance drops, restore this standard — do not reintroduce blocking live rebuilds.
 
@@ -12,17 +14,18 @@ This database is mostly static. Browse + Top 10 must feel instant. If performanc
 1. **Serve published/static data** — Characters/units lists and Top 10 BSP come from precomputed caches (`data/published` BSP catalogs, in-memory API caches). Never block the user response on live enrich/sim for board-version bumps.
 2. **HTTP ETag caching** — Stable JSON APIs use `jsonify_cacheable` (ETag + `Cache-Control`). Prefer 304 over re-serializing bodies. Applies to browse lists and `/api/unit/.../best_synergy_pilots`.
 3. **Top 10 instant path** — Return published pilots immediately. Sync-enrich only when a board is *empty*. Stale skills-off / defender boards refresh in the **background**.
-4. **Browse first** — Do not let GTM, optional brand fonts, e-sim/feedback/kofi, or aggressive prefetch compete with the **routed** tab’s first paint.
+4. **Browse first** — Do not let GTM, e-sim/feedback/kofi, or aggressive prefetch compete with the **routed** tab’s first paint.
    - Do **not** `await /api/languages` before browse — boot from `localStorage` lang, refresh language list in parallel.
    - Do **not** hard-prime `/api/characters` on every cold load — resolve short path / `?tab=` first (`/st` → stages only, etc.).
    - Do **not** call `ensureBrowseFiltersMeta` (3× `/api/browse_filters`) from cold `applyLang`; warm filters after first browse paint / idle only.
-   - Defer full `initToolbarFilterIcons()` off cold `applyLang` (stage toolbar labels may stay sync); never emit empty/`file:` media `src` (use `safeImgSrc` / `imgSrcAttr`).
-   - Do **not** ship unused `@font-face` (e.g. Noto). Put **system CJK fonts first** in `--font-body` / `--font-brand`; CDN OTFs last with `font-display:optional`. Brand must use `var(--font-brand)`, never hardcode FOTK/ShinGo on EN.
+   - Defer full `initToolbarFilterIcons()` off cold `applyLang`; never emit empty/`file:` media `src` (use `safeImgSrc` / `imgSrcAttr`).
+   - **Brand fonts** — Prefer FOTK / ShinGo / UDShinGo for brand + locale body (system fonts as fallback only). Do **not** ship unused Noto. Preload only the active locale’s OTFs; `font-display:swap`. Never put system CJK first if that makes brand faces never apply.
    - Detail open must **not** `await` portrait CDN warm — paint shell from API JSON, warm images in background.
-   - **Stages / Challenge**: prewarm Eternal + Challenge `/api/stages` **after** char/unit caches are ready — never on the critical path that blocks gunicorn bind or `/health`. Challenge `sca_*` thumbs are ~400KB each — eager-load only the first viewport (~12), lazy the rest.
+   - **Browse thumbs** — Eager-load only first-viewport portraits (~16) with `fetchpriority=high`; frame/base/icons and below-fold rows stay `loading=lazy` so the CDN isn’t flooded.
+   - **Stages / Challenge**: prewarm Eternal + Challenge `/api/stages` **after** char/unit caches are ready — never on the critical path that blocks gunicorn bind or `/health`.
 5. **Lang switch** — Reload only the visible browse tab; other tabs on demand. Soft-reload (keep prior rows under spinner). Client Top 10 cache must be keyed/invalidated by locale so pilot names re-localize.
-6. **Boot / deploy** — Production entry is `wsgi:application` (not `app:app`). Bind before DB import; show the boot shell while loading. Never run browse-cache build **synchronously at import**. `/health` must return 200 during boot (`booting:true`) and after (`booting:false`). List APIs may 503 `warming_up` briefly (client retries). A blank/white screen with no boot UI for 30s+ is a regression.
-7. **Regression = bug** — If Top 10, browse, or cold homepage feels multi-second again, measure latency and return to the published-cache path above. After any feature fix, spot-check `/` + `/health` + `/api/characters` latency (including a simulated cold boot via `wsgi`).
+6. **Boot / deploy** — Production entry is `wsgi:application` (not `app:app`). Bind before DB import; show the boot shell while loading. Never run browse-cache build **synchronously at import**. `/health` must return 200 during boot (`booting:true`) and after (`booting:false`). List APIs may 503 `warming_up` briefly (client retries). A blank/white screen with no boot UI for 30s+ is unacceptable.
+7. **Regression = bug** — After any feature fix, spot-check `/` + `/health` + `/api/characters` (and a cold `wsgi` boot). If Top 10, browse, fonts, or cold homepage feel worse than this bar, measure and restore.
 
 ## Anti-patterns
 
@@ -31,3 +34,5 @@ This database is mostly static. Browse + Top 10 must feel instant. If performanc
 - Returning browse lists with bare `jsonify()` (no ETag) after they were cacheable
 - Client Top 10 cache keyed only by unit id (ignores language)
 - Blocking process startup / Railway health on non-critical prewarm (stages, drop tables, etc.)
+- Making every list thumb (portrait+frame+icons) `eager` for 50 rows (CDN thrash → “images slowly loading”)
+- Demoting brand OTFs behind system fonts “for performance” so the UI looks like generic system type
