@@ -11542,10 +11542,9 @@ _SP_CHIP_FRAME = '/static/images/UI/UI_Common_Sp_Frame.webp'
 _SSP_CHIP_BG = '/static/images/UI/UI_Common_Ssp_Bg.webp'
 _SSP_CHIP_FRAME = '/static/images/UI/UI_Common_Ssp_Frame.webp'
 # Series SP materials live under images/Item (Sp_Chara_* is Item-only on CDN).
+# Custom thumbs: bg + series logo only (no Sp_Frame / Sp_Chara_Frame overlay).
 _SP_SERIES_CHIP_BG = '/static/images/Item/UI_Common_Sp_Bg.webp'
-_SP_SERIES_CHIP_FRAME = '/static/images/Item/UI_Common_Sp_Frame.webp'
 _SP_SERIES_BADGE_BG = '/static/images/Item/UI_Common_Sp_Chara_Bg.webp'
-_SP_SERIES_BADGE_FRAME = '/static/images/Item/UI_Common_Sp_Chara_Frame.webp'
 
 
 def _resolve_series_ssp_chip_layers(item_id):
@@ -11569,22 +11568,21 @@ def _resolve_series_ssp_chip_layers(item_id):
 def _resolve_series_sp_material_layers(item_id):
     """Series SP chips/badges with blank master ResourceId → layered thumbs.
 
-    - 24000001XXXX (ItemType 23 chips): Sp_Bg + logo_l_series_XXXX + Sp_Frame
-      (placement reference: baked spm_0022)
-    - 24000002XXXX (ItemType 31 badges): Sp_Chara_Bg + logo + Sp_Chara_Frame
-      (placement reference: baked spm_0024)
+    - 24000001XXXX (ItemType 23 chips): Sp_Bg + logo_l_series_XXXX
+    - 24000002XXXX (ItemType 31 badges): Sp_Chara_Bg + logo
 
-    XXXX is the series logo pad (e.g. 2100 → logo_l_series_2100).
+    Frame webps are omitted — bg + logo is enough. XXXX is the series logo pad
+    (e.g. 2100 → logo_l_series_2100).
     """
     iid = normalize_id(item_id)
     m_chip = re.match(r'^24000001(\d+)$', iid)
     m_badge = re.match(r'^24000002(\d+)$', iid)
     if m_chip:
         pad = f'{int(m_chip.group(1)):04d}'
-        bg, frame = _SP_SERIES_CHIP_BG, _SP_SERIES_CHIP_FRAME
+        bg = _SP_SERIES_CHIP_BG
     elif m_badge:
         pad = f'{int(m_badge.group(1)):04d}'
-        bg, frame = _SP_SERIES_BADGE_BG, _SP_SERIES_BADGE_FRAME
+        bg = _SP_SERIES_BADGE_BG
     else:
         return '', '', ''
     files = (IMAGE_INDEX or {}).get('images/Logo-Series', []) or []
@@ -11594,7 +11592,7 @@ def _resolve_series_sp_material_layers(item_id):
     return (
         game_image_public_url(bg),
         game_image_public_url(logo),
-        game_image_public_url(frame),
+        '',  # no frame layer
     )
 
 
@@ -11907,10 +11905,10 @@ def _decorate_reward_rows(rows, lc):
                     sp_chip_frame = ssp_frame
                 else:
                     sp_base, sp_logo, sp_frame = _resolve_series_sp_material_layers(tid)
-                    if sp_base and sp_logo and sp_frame:
+                    if sp_base and sp_logo:
                         sp_chip_base = sp_base
                         sp_chip_unit = sp_logo
-                        sp_chip_frame = sp_frame
+                        sp_chip_frame = sp_frame  # empty — series SP uses bg + logo only
                         if not reward_icon:
                             reward_icon = sp_base
                     else:

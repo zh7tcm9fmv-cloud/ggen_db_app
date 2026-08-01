@@ -183,7 +183,7 @@
     return null;
   }
 
-  /** Series SP/SSP: bg → frame → logo (logo on top so it is not clipped). Unit SP: hex portrait under frame. */
+  /** Series SP: bg + logo (no frame). Series SSP: bg → frame → logo. Unit SP: hex portrait under frame. */
   function rewardThumbHtml(r, sz) {
     sz = sz || REWARD_ICON_SIZE;
     var name = (r && (r.name || r.label)) || '';
