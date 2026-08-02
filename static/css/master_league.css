@@ -1,4 +1,4 @@
-/* Master League — inherit site brand stacks (bold headings need @font-face weight 100–900). */
+/* Master League — inherit site body stack (Noto / locale OTFs). */
 #panel-master_league,
 .ml-wrap {
   font-family: var(--font-body);
