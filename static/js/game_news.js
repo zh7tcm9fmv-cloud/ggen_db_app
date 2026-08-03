@@ -183,7 +183,20 @@ function applyGameNewsUi() {
   if (ifr) {
     ifr.title = u.iframe_title;
     const next = gameNewsUrlForLang(lang);
-    if (ifr.src !== next) ifr.src = next;
+    if (ifr.getAttribute('src') !== next) {
+      const loadEl = document.getElementById('gameNewsFrameLoading');
+      if (loadEl) loadEl.hidden = false;
+      ifr.addEventListener(
+        'load',
+        () => {
+          const el = document.getElementById('gameNewsFrameLoading');
+          if (el) el.hidden = true;
+          syncGameNewsMobileFrameHeight();
+        },
+        { once: true }
+      );
+      ifr.src = next;
+    }
   }
   const apL = document.getElementById('alipayhkHeaderLabel');
   if (apL) apL.textContent = h.alipay;
@@ -224,7 +237,11 @@ function renderLangDD() {
 
 function toggleLangDropdown() {
   const dd = document.getElementById('langDropdown');
-  if (dd) dd.classList.toggle('active');
+  const btn = document.getElementById('langBtn');
+  if (!dd) return;
+  const open = !dd.classList.contains('active');
+  dd.classList.toggle('active', open);
+  if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
 }
 
 async function gameNewsSelLang(l) {

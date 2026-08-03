@@ -653,3 +653,36 @@
     box-sizing: border-box;
   }
 }
+
+/* Header support buttons: icon-only on narrow screens */
+@media (max-width: 768px) {
+  .header-lang-col .header-support-btns #alipayhkHeaderLabel,
+  .header-lang-col .header-support-btns #kofiHeaderLabel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  .header-lang-col .header-support-btns .alipayhk-header-btn,
+  .header-lang-col .header-support-btns .kofi-header-link {
+    position: relative;
+    min-width: 36px;
+    min-height: 36px;
+    padding: 6px;
+    max-width: none;
+    justify-content: center;
+  }
+  .header-support-btns {
+    flex-direction: row;
+    max-width: none;
+    gap: 6px;
+  }
+  .nav-tab-group-label {
+    font-size: 9px;
+  }
+}

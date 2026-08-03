@@ -1,3 +1,5 @@
 [deploy]
 healthcheckPath = "/health"
 healthcheckTimeout = 300
+# Optional Railway env for faster repeat visits:
+# INDEX_HTML_CACHE_CONTROL=public, max-age=120, must-revalidate
