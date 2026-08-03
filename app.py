@@ -14099,14 +14099,16 @@ def get_npc_unit_display(uid, usr, lc):
     ld = get_lang_data(lc); info = unit_info_map.get(uid, {}); lid = ld.get('unit_id_map', {}).get(uid, '')
     un = ld.get('unit_text_map', {}).get(lid, f"Unknown ({uid})") if lid else f"Unknown ({uid})"
     p = find_portrait(info.get('resource_ids', []), uid, 'images/unit_portraits')
+    th = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
     oaid = safe_int(info.get('occupied_area_id'), 1)
-    return {'id': uid, 'name': un, 'portrait': p or '', 'rarity': RARITY_MAP.get(info.get('rarity', '1'), 'N'), 'rarity_icon': RARITY_ICON_MAP.get(info.get('rarity', '1'), ''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_icon': ROLE_ICON_MAP.get(info.get('role', '0'), ''), 'stats_raw': usr, 'occupied_area_id': oaid, 'tags': resolve_tags(unit_lin_map, uid, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(uid, ''), lc)}
+    return {'id': uid, 'name': un, 'portrait': p or '', 'thum': th or p or '', 'rarity': RARITY_MAP.get(info.get('rarity', '1'), 'N'), 'rarity_icon': RARITY_ICON_MAP.get(info.get('rarity', '1'), ''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_icon': ROLE_ICON_MAP.get(info.get('role', '0'), ''), 'stats_raw': usr, 'occupied_area_id': oaid, 'tags': resolve_tags(unit_lin_map, uid, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(uid, ''), lc)}
 
 def get_npc_character_display(cid, csr, lc):
     ld = get_lang_data(lc); info = char_info_map.get(cid, {}); lid = ld.get('char_id_map', {}).get(cid, '')
     cn = ld.get('char_text_map', {}).get(lid, f"Unknown ({cid})") if lid else f"Unknown ({cid})"
     p = find_portrait(info.get('resource_ids', []), cid, 'images/portraits')
-    return {'id': cid, 'name': cn, 'portrait': p or '', 'rarity': RARITY_MAP.get(info.get('rarity', '1'), 'N'), 'rarity_icon': RARITY_ICON_MAP.get(info.get('rarity', '1'), ''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_icon': ROLE_ICON_MAP.get(info.get('role', '0'), ''), 'stats_raw': csr, 'tags': resolve_tags(char_lin_map, cid, lc, 'character'), 'series': resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)}
+    th = find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits')
+    return {'id': cid, 'name': cn, 'portrait': p or '', 'thum': th or p or '', 'rarity': RARITY_MAP.get(info.get('rarity', '1'), 'N'), 'rarity_icon': RARITY_ICON_MAP.get(info.get('rarity', '1'), ''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_icon': ROLE_ICON_MAP.get(info.get('role', '0'), ''), 'stats_raw': csr, 'tags': resolve_tags(char_lin_map, cid, lc, 'character'), 'series': resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)}
 
 def validate_lang_code(lc):
     lc = (lc or DEFAULT_LANG).upper()
@@ -22798,7 +22800,7 @@ def get_stage(stage_id):
                     # Legacy keys: same as map-default (exclude other NPCs' squad-wide passives).
                     up['stats_raw_npc_squad_allies_off'] = fst_map
                     up['bonus_amounts_npc_squad_allies_off'] = tba_map
-                    dn = up['name']; dp = up['portrait']; il = is_large_map_npc(nid, npc)
+                    dn = up['name']; dp = up.get('thum') or up.get('portrait') or ''; il = is_large_map_npc(nid, npc)
                 if ce:
                     cp = get_npc_character_display(ce.get('character_id', '0'), {'Ranged': ce.get('ranged', 0), 'Melee': ce.get('melee', 0), 'Defense': ce.get('defense', 0), 'Reaction': ce.get('reaction', 0), 'Awaken': ce.get('awaken', 0)}, lc)
                     cp['level'] = safe_int(ce.get('level'), 0)
@@ -22832,7 +22834,7 @@ def get_stage(stage_id):
                 has_h = npc_map_pulse_strategy_hint(up, cp, strategy_hint_entries)
                 step_ord = safe_int(npc.get('step_order'), 0)
                 story_boss = bool(npc.get('is_story_event_boss'))
-                me = {'npc_id': nid, 'name': dn, 'portrait': guest_icon or friendly_icon or dp, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'direction': normalize_id(npc.get('direction', '1'), '1'), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'is_initially_placed': bool(npc.get('is_initially_placed', True)), 'has_strategy_hint': has_h, 'step_order': step_ord}
+                me = {'npc_id': nid, 'name': dn, 'portrait': guest_icon or friendly_icon or dp, 'thum': '' if (guest_icon or friendly_icon) else ((up or {}).get('thum') or ''), 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'direction': normalize_id(npc.get('direction', '1'), '1'), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'is_initially_placed': bool(npc.get('is_initially_placed', True)), 'has_strategy_hint': has_h, 'step_order': step_ord}
                 if story_boss:
                     me['is_story_event_boss'] = True
                 if ue:

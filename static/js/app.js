@@ -2064,12 +2064,12 @@ if(ctx&&stagePayload){
 const npcId=ctx.npc_id!=null?String(ctx.npc_id):'';
 if(t==='unit'&&ctx.unit&&String(ctx.unit.id||'')===did){
 closeSkillModalForce();
-openDetail('unit',did,{stageNpcEmbed:ctx.unit,stageNpcKey:npcId,stageNpcContext:ctx,returnStageSnapshot:_cloneDetailJson(stagePayload)});
+openDetail('unit',did,{stageNpcEmbed:ctx.unit,stageNpcKey:npcId,stageNpcContext:ctx,returnStageSnapshot:stagePayload});
 return
 }
 if(t==='character'&&ctx.character&&String(ctx.character.id||'')===did){
 closeSkillModalForce();
-openDetail('character',did,{stageNpcEmbed:ctx.character,stageNpcKey:npcId,stageNpcContext:ctx,returnStageSnapshot:_cloneDetailJson(stagePayload)});
+openDetail('character',did,{stageNpcEmbed:ctx.character,stageNpcKey:npcId,stageNpcContext:ctx,returnStageSnapshot:stagePayload});
 return
 }
 }
@@ -2382,7 +2382,7 @@ if(type==='unit'){
 for(const w of (d.weapons||[]).slice(0,4)){if(n>=maxU)break;add(w.icon)}
 }
 if(type==='stage'&&d.map_data&&Array.isArray(d.map_data.units)){
-for(const u of d.map_data.units.slice(0,6)){if(n>=maxU)break;add(u.portrait)}
+for(const u of d.map_data.units.slice(0,6)){if(n>=maxU)break;add(u.thum||u.portrait)}
 }
 if(type==='supporter'&&(d.active_skills||[]).length){
 for(const sk of d.active_skills.slice(0,4)){if(n>=maxU)break;add(sk.icon)}
@@ -2497,21 +2497,32 @@ const pending=_detailJsonPrefetchInflight.get(ck);
 if(pending)return await pending;
 const p=(async()=>{
 try{
+/* Stage NPC embeds already carry abilities/weapons/stats — do not block on catalog API
+   or structuredClone the full stage (multi-MB). Use cached catalog JSON only if present. */
 const baseOpts={...opts};
 delete baseOpts.stageNpcEmbed;
 delete baseOpts.stageNpcKey;
 delete baseOpts.stageNpcMergeKey;
 delete baseOpts.returnStageSnapshot;
-let net;
-try{net=await fetchDetailPayload(type,id,baseOpts)}catch(_e){net={id:String(id)}}
+delete baseOpts.stageNpcContext;
+delete baseOpts.preserveConditionalPassive;
+delete baseOpts.unitConditionCpTarget;
+delete baseOpts.preserveUnitSpSsp;
+const baseCk=detailPrefetchKey(type,id,baseOpts);
+let net=_detailJsonPrefetchCache.get(baseCk);
+if(!net){
+const url=detailApiUrl(type,id,baseOpts);
+const prev=_fetchJsonEtagCache.get(url);
+if(prev&&prev.data!=null)net=prev.data;
+}
+if(!net)net={id:String(id)};
 const merged=mergeStageNpcEntityDetail(net,opts.stageNpcEmbed,type);
 if(opts.stageNpcContext&&merged){
 merged.detail_npc_context=_cloneDetailJson(opts.stageNpcContext);
 }
 if(opts.returnStageSnapshot&&merged){
-const snap=_cloneDetailJson(opts.returnStageSnapshot);
-if(S._stageDetailUiRestore)snap._detailUi=_cloneDetailJson(S._stageDetailUiRestore);
-merged.detail_return={type:'stage',id:String(snap.id),payload:snap};
+/* Keep a live reference; UI restore lives on S._stageDetailUiRestore. */
+merged.detail_return={type:'stage',id:String(opts.returnStageSnapshot.id),payload:opts.returnStageSnapshot};
 }
 _detailJsonPrefetchCache.set(ck,merged);
 while(_detailJsonPrefetchCache.size>DETAIL_PREFETCH_CACHE_MAX){
@@ -2801,7 +2812,7 @@ function openStageNpcEntityDetail(kind,id,npcId){
 const hit=_resolveStageNpcRow(npcId);
 const emb=(hit&&(kind==='character'?hit.row.character:hit.row.unit))||null;
 if(hit&&emb){
-openDetail(kind,id,{stageNpcEmbed:emb,stageNpcKey:String(npcId),stageNpcContext:{npc_id:String(npcId),unit:_cloneDetailJson(hit.row.unit||null),character:_cloneDetailJson(hit.row.character||null)},returnStageSnapshot:_cloneDetailJson(hit.stage)});
+openDetail(kind,id,{stageNpcEmbed:emb,stageNpcKey:String(npcId),stageNpcContext:{npc_id:String(npcId),unit:_cloneDetailJson(hit.row.unit||null),character:_cloneDetailJson(hit.row.character||null)},returnStageSnapshot:hit.stage});
 return;
 }
 openDetail(kind,id);
@@ -2817,14 +2828,14 @@ if(targetType==='unit'){
 const u=ctx.unit||{};
 const uid=u.id!=null?String(u.id).trim():'';
 if(!uid||uid==='0')return;
-openDetail('unit',uid,{stageNpcEmbed:u,stageNpcKey:npcId,stageNpcContext:ctx,returnStageSnapshot:_cloneDetailJson(stagePayload)});
+openDetail('unit',uid,{stageNpcEmbed:u,stageNpcKey:npcId,stageNpcContext:ctx,returnStageSnapshot:stagePayload});
 return;
 }
 if(targetType==='character'){
 const ch=ctx.character||{};
 const cid=ch.id!=null?String(ch.id).trim():'';
 if(!cid||cid==='0')return;
-openDetail('character',cid,{stageNpcEmbed:ch,stageNpcKey:npcId,stageNpcContext:ctx,returnStageSnapshot:_cloneDetailJson(stagePayload)});
+openDetail('character',cid,{stageNpcEmbed:ch,stageNpcKey:npcId,stageNpcContext:ctx,returnStageSnapshot:stagePayload});
 }
 }
 function restoreStageDetailReturn(){
@@ -2948,7 +2959,7 @@ if(!uid||!nid)return;
 const hit=_resolveStageNpcRow(nid);
 const emb=hit&&hit.row&&hit.row.unit;
 if(!emb||String(emb.id)!==uid)return;
-openDetail('unit',uid,{stageNpcEmbed:emb,stageNpcKey:nid,stageNpcContext:{npc_id:nid,unit:_cloneDetailJson(hit.row.unit||null),character:_cloneDetailJson(hit.row.character||null)},returnStageSnapshot:_cloneDetailJson(hit.stage),preserveConditionalPassive:true,unitConditionCpTarget:true});
+openDetail('unit',uid,{stageNpcEmbed:emb,stageNpcKey:nid,stageNpcContext:{npc_id:nid,unit:_cloneDetailJson(hit.row.unit||null),character:_cloneDetailJson(hit.row.character||null)},returnStageSnapshot:hit.stage,preserveConditionalPassive:true,unitConditionCpTarget:true});
 }
 function renderNpcUnitConditionTargetsRow(d){
 if(!d||!S.conditionalPassiveActive)return'';
@@ -4332,7 +4343,8 @@ function renderStageMapGrid(md){
         const fpCls=multiFp?' map-unit-dot--footprint':'';
         const largeCls=u.is_large&&!multiFp?'large':'';
         const hintPulse=u.has_strategy_hint?' npc-strategy-hint-pulse':'';
-        html+=`<div class="map-unit-dot ${u.side||''} ${largeCls}${fpCls} ${isAllyLoc?'ally-loc':''} ${guestCls} ${friendlyCls} ${gimmickCls}${hintPulse}"${fpStyle}>${u.portrait?`<img class="map-unit-thumb" src="${imgUrl(u.portrait)}" alt="" loading="lazy"${rotStyle} onerror="this.parentElement.innerHTML='${esc(sl)}'">`:`${esc(sl)}`}</div>`
+        const mapArt=u.thum||u.portrait;
+        html+=`<div class="map-unit-dot ${u.side||''} ${largeCls}${fpCls} ${isAllyLoc?'ally-loc':''} ${guestCls} ${friendlyCls} ${gimmickCls}${hintPulse}"${fpStyle}>${mapArt?`<img class="map-unit-thumb" src="${imgUrl(mapArt)}" alt="" loading="lazy"${rotStyle} onerror="this.parentElement.innerHTML='${esc(sl)}'">`:`${esc(sl)}`}</div>`
         if(showStepOrder)html+=`<span class="map-cell-step-badge" aria-hidden="true">${fmtN(_stageNpcStepOrder(u))}</span>`
       }
       if(showBuffArea)html+=_stageMapBuffHoverPopoverHtml(buffArea);
@@ -4628,7 +4640,7 @@ function renderStageNpcCompactTile(n,idx){
   const uHint=firstNpcStrategyHintIconFromUnit(u);
   const cHint=firstNpcStrategyHintIconFromCharacter(ch);
   const capBadges=badges.length?`<div class="stage-npc-compact-badges">${badges.join('')}</div>`:'';
-  return`<div id="npc-detail-${idx}" class="stage-npc-compact-tile npc-card" data-npc-id="${escAttr(String(n.npc_id!=null?n.npc_id:''))}"><div class="stage-npc-compact-pair">${renderStageNpcCompactThumb(u&&u.portrait,lab,'unit',uid,npcKey,uHint)}${renderStageNpcCompactThumb(ch&&ch.portrait,lab,'character',chid,npcKey,cHint)}</div><div class="stage-npc-compact-caption" title="${esc(lab)}">${esc(lab)}</div>${capBadges}</div>`;
+  return`<div id="npc-detail-${idx}" class="stage-npc-compact-tile npc-card" data-npc-id="${escAttr(String(n.npc_id!=null?n.npc_id:''))}"><div class="stage-npc-compact-pair">${renderStageNpcCompactThumb((u&&(u.thum||u.portrait)),lab,'unit',uid,npcKey,uHint)}${renderStageNpcCompactThumb((ch&&(ch.thum||ch.portrait)),lab,'character',chid,npcKey,cHint)}</div><div class="stage-npc-compact-caption" title="${esc(lab)}">${esc(lab)}</div>${capBadges}</div>`;
 }
 function npcDetailsGroupSection(sid,gk,title,rows,open){if(!rows||!rows.length)return'';const tiles=rows.map(r=>renderStageNpcCompactTile(r.n,r.idx)).join('');return`<details class="stage-npc-group" ${open?'open':''}><summary class="stage-npc-group-summary"><span class="stage-npc-summary-title">${esc(title)}</span><span class="stage-npc-count">(${rows.length})</span></summary><div class="stage-npc-compact-grid" data-stage-npc-group="${escAttr(sid+'_'+gk)}">${tiles}</div></details>`}
 function renderNpcDetails(list,stageId,ui){if(!list||!list.length)return`<div class="detail-section"><div class="section-title">${t('sec_npc_details')}</div><div class="ability-item"><div class="ability-info"><div class="ability-detail">${t('none')}</div></div></div></div>`;const sid=String(stageId!=null?stageId:'').replace(/[^a-zA-Z0-9_-]/g,'_')||'stage';const indexed=(list||[]).map((n,i)=>({n,idx:i}));const guests=indexed.filter(o=>o.n.side==='guest');const friendly=indexed.filter(o=>o.n.side==='friendly');const enemies=indexed.filter(o=>o.n.side==='enemy');const guestOpen=stageNpcGroupOpenFromUi(ui,sid,'guest',true);const friendlyOpen=stageNpcGroupOpenFromUi(ui,sid,'friendly',!guests.length);const enemyOpen=stageNpcGroupOpenFromUi(ui,sid,'enemy',!guests.length&&!friendly.length);const body=npcDetailsGroupSection(sid,'guest',t('stage_npc_guest_tab'),guests,guestOpen)+npcDetailsGroupSection(sid,'friendly',t('stage_npc_friendly_forces_tab'),friendly,friendlyOpen)+npcDetailsGroupSection(sid,'enemy',t('stage_npc_enemy_tab'),enemies,enemyOpen);return`<div class="detail-section"><div class="section-title">${t('sec_npc_details')}</div>${body}</div>`}
