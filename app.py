@@ -89,15 +89,25 @@ def _app_git_revision():
     return _APP_GIT_REV_CACHE or None
 
 
+def _app_js_served_bundle_name():
+    """Prefer minified SPA bundle when present (templates load this file)."""
+    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'js')
+    if os.path.isfile(os.path.join(root, 'app.min.js')):
+        return 'app.min.js'
+    return 'app.js'
+
+
 def _app_js_bundle_version_tag():
     root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
     assets = (
+        ('js', _app_js_served_bundle_name()),
         ('js', 'app.js'),
         ('js', 'msy_dc_engine.js'),
         ('js', 'msy_dc_worker.js'),
         ('js', 'unit_best_pilots.js'),
         ('js', 'meta_synergy.js'),
         ('js', 'kofi_donate_promo.js'),
+        ('css', 'app_shell.css'),
         ('css', 'unit_best_pilots.css'),
         ('css', 'mobile_layout.css'),
         ('css', 'craft_ui.css'),
@@ -143,7 +153,7 @@ app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
 
 # Long-lived browser cache for game images (WebP, etc.). Set STATIC_CACHE_MAX_AGE=0 to disable during asset work.
 _STATIC_CACHEABLE_EXT = frozenset(
-    ('.webp', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.woff2', '.woff', '.ttf', '.otf', '.eot', '.js')
+    ('.webp', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.woff2', '.woff', '.ttf', '.otf', '.eot', '.js', '.css')
 )
 _STATIC_CACHE_MAX_AGE = int(os.environ.get('STATIC_CACHE_MAX_AGE', '31536000') or '0')
 _STATIC_FONT_EXT = frozenset(('.woff2', '.woff', '.ttf', '.otf', '.eot'))
@@ -160,7 +170,13 @@ def _apply_static_cache_headers(response):
     if not path.startswith('/static/'):
         return response
     ext = os.path.splitext(path)[1].lower()
-    if path.endswith('/js/app.js') or path.endswith('/js/msy_dc_engine.js') or path.endswith('/js/unit_best_pilots.js'):
+    if (
+        path.endswith('/js/app.js')
+        or path.endswith('/js/app.min.js')
+        or path.endswith('/js/msy_dc_engine.js')
+        or path.endswith('/js/unit_best_pilots.js')
+        or path.endswith('/css/app_shell.css')
+    ):
         # Templates always bust with ?v={{ app_js_version }}; long-cache is safe and cuts repeat TBT.
         response.headers['Cache-Control'] = f'public, max-age={_STATIC_CACHE_MAX_AGE}, immutable'
         return response
@@ -14442,6 +14458,7 @@ def _serve_index():
         video_unit_subdir=VIDEO_UNIT_SUBDIR,
         game_images_use_cdn=GAME_IMAGES_USE_CDN,
         app_js_version=_app_js_bundle_version_tag(),
+        app_js_bundle=_app_js_served_bundle_name(),
     ))
     if INDEX_HTML_CACHE_CONTROL:
         r.headers['Cache-Control'] = INDEX_HTML_CACHE_CONTROL
