@@ -106,7 +106,6 @@ def _app_js_bundle_version_tag():
         ('js', 'msy_dc_worker.js'),
         ('js', 'unit_best_pilots.js'),
         ('js', 'content_notices.js'),
-        ('js', 'team_builder.js'),
         ('js', 'meta_synergy.js'),
         ('js', 'kofi_donate_promo.js'),
         ('css', 'app_shell.css'),
@@ -188,8 +187,6 @@ def _apply_static_cache_headers(response):
         or path.endswith('/js/app.min.js')
         or path.endswith('/js/msy_dc_engine.js')
         or path.endswith('/js/unit_best_pilots.js')
-        or path.endswith('/js/team_builder.js')
-        or path.endswith('/js/content_notices.js')
         or path.endswith('/css/app_shell.css')
         or path.endswith('/css/app_shell_bundle.min.css')
     ):

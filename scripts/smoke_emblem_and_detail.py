@@ -70,15 +70,9 @@ assert "unit_best_pilots.js" not in html or "ensureUnitBestPilots" in html
 assert 'unit_best_pilots.css' not in html.split("__GGEN_LAZY__")[0], "UBP CSS must not be eager in <head>"
 assert "ensureUnitBestPilots" in html and "ensureMasterLeagueCss" in html and "ensureCraftUiCss" in html
 assert "ensureContentNotices" in html
-assert "ensureTeamBuilder" in html
 import re
 assert not re.search(r'<script[^>]+src="[^"]*content_notices\.js"', html), "content_notices.js must not be an eager <script src>"
-assert not re.search(r'<script[^>]+src="[^"]*team_builder\.js"', html), "team_builder.js must not be an eager <script src>"
 assert b"ensureContentNoticesLoaded" in js.data
-assert b"ensureTeamBuilderLoaded" in js.data
-assert b"bootTeamBuilderTab" in js.data
 assert b"ensureUnitBestPilotsLoaded" in js.data
-tb = c.get("/static/js/team_builder.js")
-assert tb.status_code == 200 and b"GgenTeamBuilder" in tb.data
 print("lazy asset wiring OK")
 print("ALL CHECKS PASSED")
