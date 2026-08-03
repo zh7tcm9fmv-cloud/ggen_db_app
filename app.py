@@ -141,8 +141,17 @@ def _app_js_bundle_version_tag():
             parts.append(f'{rel}:0')
     return hashlib.sha256('|'.join(parts).encode()).hexdigest()[:16]
 
-# Optional: set INDEX_HTML_CACHE_CONTROL e.g. "public, max-age=120" in production so repeat visits skip re-downloading HTML shell.
-INDEX_HTML_CACHE_CONTROL = (os.environ.get('INDEX_HTML_CACHE_CONTROL') or '').strip()
+# HTML shell cache. Override with INDEX_HTML_CACHE_CONTROL.
+# Set to 0 / off / no-store to disable. On Railway, default short cache for repeat visits.
+_INDEX_HTML_CC_RAW = (os.environ.get('INDEX_HTML_CACHE_CONTROL') or '').strip()
+if _INDEX_HTML_CC_RAW.lower() in ('0', 'off', 'false', 'no', 'no-store'):
+    INDEX_HTML_CACHE_CONTROL = ''
+elif _INDEX_HTML_CC_RAW:
+    INDEX_HTML_CACHE_CONTROL = _INDEX_HTML_CC_RAW
+elif (os.environ.get('RAILWAY_ENVIRONMENT') or os.environ.get('RAILWAY_PROJECT_ID') or '').strip():
+    INDEX_HTML_CACHE_CONTROL = 'public, max-age=120, must-revalidate'
+else:
+    INDEX_HTML_CACHE_CONTROL = ''
 
 # Sessions (Latest Release password gate). Set FLASK_SECRET_KEY in production.
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'ggen-dev-secret-change-in-production')
