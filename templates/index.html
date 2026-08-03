@@ -72,13 +72,18 @@ window.__ggenLoadGtm=function(){
 </script>
 <style>
 @font-face{font-family:'RobotoMediumNumbers';src:url('/static/font/roboto_medium_numbers.ttf?v={{ app_js_version }}') format('truetype');font-weight:normal;font-style:normal;font-display:swap}
-@font-face{font-family:'ShinGoPr6DeBold';src:url('/static/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.woff2?v={{ app_js_version }}') format('woff2'),url('/static/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf?v={{ app_js_version }}') format('opentype');font-weight:normal;font-style:normal;font-display:optional}
-@font-face{font-family:'UDShinGoStdTCMed';src:url('/static/font/UDShinGoStdTC-Med.woff2?v={{ app_js_version }}') format('woff2'),url('/static/font/UDShinGoStdTC-Med.otf?v={{ app_js_version }}') format('opentype');font-weight:500;font-style:normal;font-display:optional}
-@font-face{font-family:'FOTK Yoon Gothic 780 JP';src:url('/static/font/FOTK-YoonGothic780_JP.woff2?v={{ app_js_version }}') format('woff2'),url('/static/font/FOTK-YoonGothic780_JP.otf?v={{ app_js_version }}') format('opentype');font-weight:500;font-style:normal;font-display:optional}
+@font-face{font-family:'Noto Sans JP';src:url('/static/font/NotoSansJP.ttf?v={{ app_js_version }}') format('truetype');font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:'ShinGoPr6DeBold';src:url('/static/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf?v={{ app_js_version }}') format('opentype');font-weight:normal;font-style:normal;font-display:optional}
+@font-face{font-family:'UDShinGoStdTCMed';src:url('/static/font/UDShinGoStdTC-Med.otf?v={{ app_js_version }}') format('opentype');font-weight:500;font-style:normal;font-display:optional}
+@font-face{font-family:'FOTK Yoon Gothic 780 JP';src:url('/static/font/FOTK-YoonGothic780_JP.otf?v={{ app_js_version }}') format('opentype');font-weight:500;font-style:normal;font-display:optional}
 </style>
-<link rel="preload" href="{{ url_for('static', filename='css/app_critical.css') }}?v={{ app_js_version }}" as="style">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/app_critical.css') }}?v={{ app_js_version }}">
-<!-- master_league / craft / unit_best_pilots CSS loaded on demand via __GGEN_LAZY__ -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/app_shell.css') }}?v={{ app_js_version }}">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/unit_best_pilots.css') }}?v={{ app_js_version }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/mobile_layout.css') }}?v={{ app_js_version }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/craft_ui.css') }}?v={{ app_js_version }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/master_league.css') }}?v={{ app_js_version }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ui_motion.css') }}?v={{ app_js_version }}">
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -585,18 +590,13 @@ window.__GGEN_LAZY__=(function(){
   var css={{ {
     'e_simulator': url_for('static', filename='css/e_simulator.css'),
     'site_feedback': url_for('static', filename='css/site_feedback.css'),
-    'kofi_donate_promo': url_for('static', filename='css/kofi_donate_promo.css'),
-    'master_league': url_for('static', filename='css/master_league.css'),
-    'craft_ui': url_for('static', filename='css/craft_ui.css'),
-    'unit_best_pilots': url_for('static', filename='css/unit_best_pilots.css')
+    'kofi_donate_promo': url_for('static', filename='css/kofi_donate_promo.css')
   } | tojson }};
   var js={{ {
     'e_simulator': url_for('static', filename='js/e_simulator.js'),
     'feedback_i18n': url_for('static', filename='js/feedback_i18n.js'),
     'site_feedback': url_for('static', filename='js/site_feedback.js'),
-    'kofi_donate_promo': url_for('static', filename='js/kofi_donate_promo.js'),
-    'unit_best_pilots': url_for('static', filename='js/unit_best_pilots.js'),
-    'app_tools': url_for('static', filename='js/' + (app_tools_bundle or 'app_tools.js'))
+    'kofi_donate_promo': url_for('static', filename='js/kofi_donate_promo.js')
   } | tojson }};
   var cache={};
   function withV(url, bump){
@@ -632,16 +632,6 @@ window.__GGEN_LAZY__=(function(){
     if(window.ESimulator)return Promise.resolve(window.ESimulator);
     return Promise.all([loadCss('e_simulator'), loadJs('e_simulator')]).then(function(){return window.ESimulator});
   }
-  function ensureUnitBestPilots(){
-    if(window.GgenUnitBestPilots)return Promise.resolve(window.GgenUnitBestPilots);
-    return Promise.all([loadCss('unit_best_pilots'), loadJs('unit_best_pilots')]).then(function(){return window.GgenUnitBestPilots});
-  }
-  function ensureAppTools(){
-    if(window.__GGEN_APP_TOOLS__)return Promise.resolve();
-    return loadJs('app_tools').then(function(){window.__GGEN_APP_TOOLS__=1});
-  }
-  function ensureMasterLeagueCss(){return loadCss('master_league')}
-  function ensureCraftCss(){return loadCss('craft_ui')}
   function ensureExtras(){
     if(cache._extras)return cache._extras;
     cache._extras=Promise.all([
@@ -668,29 +658,12 @@ window.__GGEN_LAZY__=(function(){
       }
     });
   };
-  return {
-    ensureEsim:ensureEsim,
-    ensureExtras:ensureExtras,
-    ensureUnitBestPilots:ensureUnitBestPilots,
-    ensureAppTools:ensureAppTools,
-    ensureMasterLeagueCss:ensureMasterLeagueCss,
-    ensureCraftCss:ensureCraftCss,
-    loadCss:loadCss,
-    loadJs:loadJs
-  };
+  return {ensureEsim:ensureEsim,ensureExtras:ensureExtras};
 })();
 </script>
 <script src="{{ url_for('static', filename='js/ui_motion.js') }}?v={{ app_js_version }}" defer></script>
 <script src="{{ url_for('static', filename='js/content_notices.js') }}" defer></script>
 <script src="{{ url_for('static', filename='js/' + (app_js_bundle or 'app.js')) }}?v={{ app_js_version }}" defer></script>
-<script>
-(function(){
-  if(!('serviceWorker' in navigator))return;
-  var v={{ app_js_version | tojson }};
-  window.addEventListener('load',function(){
-    navigator.serviceWorker.register('/sw.js?v='+encodeURIComponent(v),{scope:'/'}).catch(function(){});
-  });
-})();
-</script>
+<script src="{{ url_for('static', filename='js/unit_best_pilots.js') }}?v={{ app_js_version }}" defer></script>
 </body>
 </html>
