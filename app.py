@@ -89,18 +89,9 @@ def _app_git_revision():
     return _APP_GIT_REV_CACHE or None
 
 
-def _app_js_served_bundle_name():
-    """Prefer minified SPA bundle when present (templates load this file)."""
-    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'js')
-    if os.path.isfile(os.path.join(root, 'app.min.js')):
-        return 'app.min.js'
-    return 'app.js'
-
-
 def _app_js_bundle_version_tag():
     root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
     assets = (
-        ('js', _app_js_served_bundle_name()),
         ('js', 'app.js'),
         ('js', 'msy_dc_engine.js'),
         ('js', 'msy_dc_worker.js'),
@@ -138,13 +129,6 @@ def _app_js_bundle_version_tag():
             parts.append(f'{rel}:{st.st_mtime_ns}:{st.st_size}')
         except OSError:
             parts.append(f'{rel}:0')
-    # Jinja-rendered shell CSS (CDN URLs + font ?v=) — include mtime in bust.
-    shell_css = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates', 'app_shell.css')
-    try:
-        st = os.stat(shell_css)
-        parts.append(f'templates/app_shell.css:{st.st_mtime_ns}:{st.st_size}')
-    except OSError:
-        parts.append('templates/app_shell.css:0')
     return hashlib.sha256('|'.join(parts).encode()).hexdigest()[:16]
 
 # Optional: set INDEX_HTML_CACHE_CONTROL e.g. "public, max-age=120" in production so repeat visits skip re-downloading HTML shell.
@@ -176,13 +160,7 @@ def _apply_static_cache_headers(response):
     if not path.startswith('/static/'):
         return response
     ext = os.path.splitext(path)[1].lower()
-    if (
-        path.endswith('/js/app.js')
-        or path.endswith('/js/app.min.js')
-        or path.endswith('/js/msy_dc_engine.js')
-        or path.endswith('/js/unit_best_pilots.js')
-        or path.endswith('/css/app_shell.css')
-    ):
+    if path.endswith('/js/app.js') or path.endswith('/js/msy_dc_engine.js') or path.endswith('/js/unit_best_pilots.js'):
         # Templates always bust with ?v={{ app_js_version }}; long-cache is safe and cuts repeat TBT.
         response.headers['Cache-Control'] = f'public, max-age={_STATIC_CACHE_MAX_AGE}, immutable'
         return response
@@ -14455,16 +14433,6 @@ def sort_rows(rows, sort_by, sort_dir, valid_sorts, default_sort='rarity'):
 # ═══════════════════════════════════════════════════════
 
 def _serve_index():
-    bundle = _app_js_served_bundle_name()
-    canon_path = request.path or '/'
-    if not canon_path.startswith('/'):
-        canon_path = '/' + canon_path
-    base = (request.url_root or 'https://ggendb.up.railway.app/').rstrip('/')
-    og_logo = (
-        f'{IMAGE_CDN}/images/UI/IMG_Common_Logo_ETERNALBASE.webp'
-        if IMAGE_CDN
-        else f'{base}/static/images/UI/IMG_Common_Logo_ETERNALBASE.webp'
-    )
     r = make_response(render_template(
         'index.html',
         image_cdn=IMAGE_CDN or '',
@@ -14474,10 +14442,6 @@ def _serve_index():
         video_unit_subdir=VIDEO_UNIT_SUBDIR,
         game_images_use_cdn=GAME_IMAGES_USE_CDN,
         app_js_version=_app_js_bundle_version_tag(),
-        app_js_bundle=bundle,
-        index_html_cache_enabled=bool(INDEX_HTML_CACHE_CONTROL),
-        canonical_url=f'{base}{canon_path}',
-        og_image_url=og_logo,
     ))
     if INDEX_HTML_CACHE_CONTROL:
         r.headers['Cache-Control'] = INDEX_HTML_CACHE_CONTROL
@@ -14486,24 +14450,6 @@ def _serve_index():
         r.headers['Pragma'] = 'no-cache'
         r.headers['Expires'] = '0'
     return r
-
-
-@app.route('/assets/app_shell.css')
-def app_shell_css():
-    """Jinja-rendered shell CSS (CDN image URLs + font cache-bust). Separate from HTML for caching."""
-    css = render_template(
-        'app_shell.css',
-        image_cdn=IMAGE_CDN or '',
-        app_js_version=_app_js_bundle_version_tag(),
-    )
-    r = make_response(css)
-    r.headers['Content-Type'] = 'text/css; charset=utf-8'
-    if _STATIC_CACHE_MAX_AGE > 0:
-        r.headers['Cache-Control'] = f'public, max-age={_STATIC_CACHE_MAX_AGE}, immutable'
-    else:
-        r.headers['Cache-Control'] = 'public, max-age=300, must-revalidate'
-    return r
-
 
 @app.route('/health')
 def health_check():
@@ -23634,10 +23580,8 @@ def sitemap_xml():
         '/', '/game-news', '/about', '/contact', '/privacy-policy', '/tier-list',
         '/c', '/u', '/s', '/st', '/cal', '/tb', '/tl', '/ml', '/rk', '/op', '/new', '/esim',
     ]
-    lastmod = datetime.now(timezone.utc).strftime('%Y-%m-%d')
     urls = ''.join(
-        f'<url><loc>{base}{p}</loc><lastmod>{lastmod}</lastmod>'
-        f'<changefreq>daily</changefreq></url>'
+        f'<url><loc>{base}{p}</loc><changefreq>daily</changefreq></url>'
         for p in paths
     )
     body = (
