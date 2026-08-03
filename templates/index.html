@@ -597,7 +597,8 @@ window.__GGEN_LAZY__=(function(){
     'site_feedback': url_for('static', filename='js/site_feedback.js'),
     'kofi_donate_promo': url_for('static', filename='js/kofi_donate_promo.js'),
     'unit_best_pilots': url_for('static', filename='js/unit_best_pilots.js'),
-    'content_notices': url_for('static', filename='js/content_notices.js')
+    'content_notices': url_for('static', filename='js/content_notices.js'),
+    'team_builder': url_for('static', filename='js/team_builder.js')
   } | tojson }};
   var cache={};
   function withV(url, bump){
@@ -643,6 +644,10 @@ window.__GGEN_LAZY__=(function(){
     if(window.GgenContentNotices)return Promise.resolve(window.GgenContentNotices);
     return loadJs('content_notices').then(function(){return window.GgenContentNotices||null});
   }
+  function ensureTeamBuilder(){
+    if(window.GgenTeamBuilder&&window.GgenTeamBuilder.loaded)return Promise.resolve(window.GgenTeamBuilder);
+    return loadJs('team_builder').then(function(){return window.GgenTeamBuilder||null});
+  }
   function ensureExtras(){
     if(cache._extras)return cache._extras;
     cache._extras=Promise.all([
@@ -675,7 +680,8 @@ window.__GGEN_LAZY__=(function(){
     ensureUnitBestPilots:ensureUnitBestPilots,
     ensureMasterLeagueCss:ensureMasterLeagueCss,
     ensureCraftUiCss:ensureCraftUiCss,
-    ensureContentNotices:ensureContentNotices
+    ensureContentNotices:ensureContentNotices,
+    ensureTeamBuilder:ensureTeamBuilder
   };
 })();
 </script>
