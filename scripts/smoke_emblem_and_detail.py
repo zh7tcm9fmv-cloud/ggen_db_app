@@ -8,17 +8,19 @@ from app import app
 c = app.test_client()
 r = c.get("/")
 html = r.data.decode("utf-8", "replace")
-assert "brand-emblem-url" in html, "missing CSS var"
-assert "ggen_db_images/images/UI/brand-emblem-panel.webp" in html, "missing CDN emblem in HTML"
-print("index CDN emblem var OK")
+assert "brand-emblem-panel.webp" in html
+assert "brand-emblem-url" not in html, "CSS var url() must not be used (Dark Reader crash)"
+assert "ggen_db_images/images/UI/brand-emblem-panel.webp" in html or "/static/images/UI/brand-emblem-panel.webp" in html
+print("index emblem override OK (no CSS var)")
 
 r2 = c.get("/static/images/UI/brand-emblem-panel.webp")
 assert r2.status_code == 200 and len(r2.data) > 1000, r2.status_code
 print("static webp", r2.status_code, len(r2.data))
 
 r3 = c.get("/static/css/app_shell.css")
-assert b"var(--brand-emblem-url" in r3.data
-print("css var OK")
+assert b"var(--brand-emblem-url" not in r3.data
+assert b"brand-emblem-panel.webp" in r3.data
+print("css plain url OK")
 
 # warm lists then detail
 url = "/api/characters?lang=EN&page=1&per_page=5&sort=rarity&dir=desc&q="

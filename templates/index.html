@@ -71,7 +71,8 @@ window.__ggenLoadGtm=function(){
 })();
 </script>
 <style>
-:root{--brand-emblem-url:url('{% if image_cdn %}{{ image_cdn }}/images/UI/brand-emblem-panel.webp{% else %}/static/images/UI/brand-emblem-panel.webp{% endif %}')}
+/* Prefer CDN emblem without putting url() in a CSS variable (breaks Dark Reader / similar). */
+.brand-title-row::before{background-image:url('{% if image_cdn %}{{ image_cdn }}/images/UI/brand-emblem-panel.webp{% else %}/static/images/UI/brand-emblem-panel.webp{% endif %}')}
 @font-face{font-family:'RobotoMediumNumbers';src:url('/static/font/roboto_medium_numbers.ttf?v={{ app_js_version }}') format('truetype');font-weight:normal;font-style:normal;font-display:swap}
 @font-face{font-family:'Noto Sans JP';src:url('/static/font/NotoSansJP.ttf?v={{ app_js_version }}') format('truetype');font-weight:100 900;font-style:normal;font-display:swap}
 @font-face{font-family:'ShinGoPr6DeBold';src:url('/static/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf?v={{ app_js_version }}') format('opentype');font-weight:normal;font-style:normal;font-display:optional}
