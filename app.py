@@ -10038,8 +10038,29 @@ _BROWSE_LIST_CACHE_BUILDING = False
 _BROWSE_LIST_CACHE_READY = threading.Event()
 
 
-def _browse_list_warming_guard(kind):
-    """Return 503 while browse row caches are empty (never run O(n) stat recompute on list APIs)."""
+def _browse_list_warming_guard(kind, wait_s=90.0):
+    """Block briefly for browse row caches; 503 only if still empty after wait.
+
+    Instant 503 + client retry was exhausting (~11s) during cold start / cache build,
+    leaving the main page empty. Prefer holding the request until caches are ready.
+    """
+    cache = CHAR_BROWSE_LIST_ROW_CACHE if kind == 'char' else UNIT_BROWSE_LIST_ROW_CACHE
+    if cache:
+        return None
+    # Kick warmup only if nothing is building and caches are still empty (single-flight).
+    if not _BROWSE_LIST_CACHE_BUILDING:
+        try:
+            _start_browse_cache_warmup()
+        except Exception:
+            pass
+    # Hold worker thread until ready (gthread) — avoids console 503 storms and empty UI.
+    try:
+        wait_s = float(os.environ.get('GGEN_BROWSE_WARM_WAIT_S', wait_s) or wait_s)
+    except (TypeError, ValueError):
+        wait_s = 90.0
+    wait_s = max(0.0, min(180.0, wait_s))
+    if wait_s > 0:
+        _BROWSE_LIST_CACHE_READY.wait(timeout=wait_s)
     cache = CHAR_BROWSE_LIST_ROW_CACHE if kind == 'char' else UNIT_BROWSE_LIST_ROW_CACHE
     if cache:
         return None
@@ -13866,12 +13887,22 @@ def _build_browse_list_performance_caches():
     print(f'Browse list perf caches: {len(char_cache)} chars, {len(unit_cache)} units ({time.perf_counter() - t0:.2f}s)')
 
 
+_BROWSE_LIST_CACHE_SCHEDULE_LOCK = threading.Lock()
+
+
 def _schedule_browse_list_performance_caches():
     """Build browse row caches in a background thread — never block gunicorn bind / HTML."""
-    def _run():
-        global _BROWSE_LIST_CACHE_BUILDING
+    global _BROWSE_LIST_CACHE_BUILDING
+    with _BROWSE_LIST_CACHE_SCHEDULE_LOCK:
+        if _BROWSE_LIST_CACHE_BUILDING or (CHAR_BROWSE_LIST_ROW_CACHE and UNIT_BROWSE_LIST_ROW_CACHE):
+            if CHAR_BROWSE_LIST_ROW_CACHE and UNIT_BROWSE_LIST_ROW_CACHE:
+                _BROWSE_LIST_CACHE_READY.set()
+            return
         _BROWSE_LIST_CACHE_BUILDING = True
         _BROWSE_LIST_CACHE_READY.clear()
+
+    def _run():
+        global _BROWSE_LIST_CACHE_BUILDING
         try:
             _build_browse_list_performance_caches()
             # Homepage first paint: characters + units only.
@@ -14494,7 +14525,7 @@ def health_check():
 
     Production entry is `wsgi:application`, which binds before `import app` finishes
     and serves a boot shell until this health handler exists. Browse row caches may
-    still be building — list APIs return 503 warming_up (client retries).
+    still be building — list APIs wait (then 503 warming_up if still empty).
     """
     browse_ready = bool(CHAR_BROWSE_LIST_ROW_CACHE and UNIT_BROWSE_LIST_ROW_CACHE)
     mem = {}

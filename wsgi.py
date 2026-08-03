@@ -70,16 +70,23 @@ _BOOT_HTML = """<!DOCTYPE html>
   setInterval(tickAge, 1000);
   function poll() {
     fetch('/health', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (d) {
-      if (d && d.booting === false && d.ok !== false) {
-        msg.textContent = 'Ready — opening…';
-        location.reload();
-        return;
-      }
       if (d && d.phase === 'error') {
         msg.textContent = 'Startup failed. Please try again in a moment.';
         err.hidden = false;
         err.textContent = d.error || 'Unknown error';
         return;
+      }
+      // Wait until browse list caches are ready when the field is present — avoids
+      // opening the SPA into a storm of /api/characters|/api/units 503 warming_up.
+      var appUp = d && d.booting === false && d.ok !== false;
+      var browseOk = !d || d.browse_ready === undefined || d.browse_ready === true;
+      if (appUp && browseOk) {
+        msg.textContent = 'Ready — opening…';
+        location.reload();
+        return;
+      }
+      if (appUp && !browseOk) {
+        msg.textContent = 'Almost ready — warming browse lists…';
       }
       setTimeout(poll, 1500);
     }).catch(function () { setTimeout(poll, 2000); });
