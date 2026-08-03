@@ -9,15 +9,15 @@ When a challenge-series **SP Conversion Chips** or **SP Conversion Badge** item 
 
 ## ID → composite recipe
 
-| Item id pattern | Role | Layers (bottom → top) | Baked reference |
+| Item id pattern | Role | Layers | Baked reference |
 |---|---|---|---|
-| `24000001XXXX` | Series SP Conversion Chips | `UI_Common_Sp_Frame` → `UI_Common_Sp_Bg` → `logo_l_series_XXXX` | `spm_0022` |
-| `24000002XXXX` | Series SP Conversion Badge | `UI_Common_Sp_Chara_Bg` → `UI_Common_Sp_Chara_Frame` → `logo_l_series_XXXX` | `spm_0024` |
+| `24000001XXXX` | Series SP Conversion Chips | `UI_Common_Sp_Bg` under; `logo_l_series_XXXX` + `UI_Common_Sp_Frame` share top layer | `spm_0022` |
+| `24000002XXXX` | Series SP Conversion Badge | `UI_Common_Sp_Chara_Bg` under; logo + `UI_Common_Sp_Chara_Frame` share top layer | `spm_0024` |
 
 - `XXXX` is the series logo pad (zero-padded), e.g. Gundam Wing → `2100` → `logo_l_series_2100.webp`.
 - Prefer CDN paths under `images/Item/` for Sp / Sp_Chara frames (Sp_Chara is Item-only). Logos live under `images/Logo-Series/`.
-- Placement / scale: match the baked reference (`spm_0022` / `spm_0024`) — logo ~84% wide, vertically centered slightly low (~30% top), **logo on top** (not clipped by the frame).
-- Sp chips use Frame under Bg because `Sp_Bg` is transparent at the top-right SP badge; Sp_Chara badges keep Frame above Bg (Chara_Bg is opaque there).
+- Placement / scale: match the baked reference (`spm_0022` / `spm_0024`) — logo ~84% wide, vertically centered slightly low (~30% top).
+- Paint order for series SP: Bg → logo → Frame (Frame last so the top-right SP badge stays visible; Frame center is transparent so the logo shows through).
 
 ## Implementation hooks
 

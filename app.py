@@ -11624,8 +11624,7 @@ _SP_CHIP_FRAME = '/static/images/UI/UI_Common_Sp_Frame.webp'
 _SSP_CHIP_BG = '/static/images/UI/UI_Common_Ssp_Bg.webp'
 _SSP_CHIP_FRAME = '/static/images/UI/UI_Common_Ssp_Frame.webp'
 # Series SP materials live under images/Item (Sp_Chara_* is Item-only on CDN).
-# Chips: Frame → Bg → logo (Bg is transparent at the SP badge corner).
-# Badges: Bg → Frame → logo (Chara_Bg is opaque at that corner).
+# Client stacks: Bg under; Frame + series logo share the top layer (SP badge not covered).
 _SP_SERIES_CHIP_BG = '/static/images/Item/UI_Common_Sp_Bg.webp'
 _SP_SERIES_CHIP_FRAME = '/static/images/Item/UI_Common_Sp_Frame.webp'
 _SP_SERIES_BADGE_BG = '/static/images/Item/UI_Common_Sp_Chara_Bg.webp'
@@ -11653,13 +11652,12 @@ def _resolve_series_ssp_chip_layers(item_id):
 def _resolve_series_sp_material_layers(item_id):
     """Series SP chips/badges with blank master ResourceId → layered thumbs.
 
-    - 24000001XXXX (ItemType 23 chips): Sp_Frame → Sp_Bg → logo_l_series_XXXX
-    - 24000002XXXX (ItemType 31 badges): Sp_Chara_Bg → Sp_Chara_Frame → logo
+    - 24000001XXXX (ItemType 23 chips): Sp_Bg + Sp_Frame + logo_l_series_XXXX
+    - 24000002XXXX (ItemType 31 badges): Sp_Chara_Bg + Sp_Chara_Frame + logo
 
     XXXX is the series logo pad (e.g. 2100 → logo_l_series_2100).
-    Sp_Frame carries the top-right SP badge; Sp_Bg is transparent there so
-    Frame-under-Bg stays seamless. Sp_Chara_Bg is opaque at that corner, so
-    the badge frame stays above the bg.
+    Client paints Bg under, then logo and Frame at the same top layer so the
+    Frame's SP badge is not covered by Bg or the series logo.
     """
     iid = normalize_id(item_id)
     m_chip = re.match(r'^24000001(\d+)$', iid)

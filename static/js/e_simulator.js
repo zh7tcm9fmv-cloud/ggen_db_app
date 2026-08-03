@@ -183,7 +183,7 @@
     return null;
   }
 
-  /** Series SP chips: Frame→Bg→logo. Sp_Chara badges / SSP: Bg→Frame→logo. Unit SP: hex portrait under frame. */
+  /** Series SP: Bg under; Frame + logo share top layer. SSP: Bg → Frame → logo. Unit SP: hex portrait under frame. */
   function rewardThumbHtml(r, sz) {
     sz = sz || REWARD_ICON_SIZE;
     var name = (r && (r.name || r.label)) || '';
@@ -195,7 +195,6 @@
       var isSeriesSp = /UI_Common_Sp_Bg|UI_Common_Sp_Frame|UI_Common_Sp_Chara/i.test(layerKey);
       var isSeriesSsp = /Ssp_Frame|Ssp_Bg/i.test(layerKey);
       var isSeriesLogo = /Logo-Series|logo_l_series/i.test(unit) || isSeriesSp || isSeriesSsp;
-      var isSpChara = /Sp_Chara/i.test(layerKey);
       var layers = '';
       function chipLayer(cls, path) {
         var src = typeof imgUrl === 'function' ? imgUrl(path) : path;
@@ -206,18 +205,15 @@
         );
       }
       if (isSeriesLogo) {
-        var frameUnderBg = isSeriesSp && !isSpChara;
-        var thumbCls = isSeriesSp
-          ? (frameUnderBg ? 'esim-chip-thumb--sp' : 'esim-chip-thumb--sp esim-chip-thumb--sp-chara')
-          : 'esim-chip-thumb--ssp';
-        if (frameUnderBg) {
+        var thumbCls = isSeriesSp ? 'esim-chip-thumb--sp' : 'esim-chip-thumb--ssp';
+        if (base) layers += chipLayer('esim-chip-base', base);
+        if (isSeriesSp) {
+          layers += chipLayer('esim-chip-logo esim-chip-logo--sp', unit);
           if (frame) layers += chipLayer('esim-chip-frame', frame);
-          if (base) layers += chipLayer('esim-chip-base', base);
         } else {
-          if (base) layers += chipLayer('esim-chip-base', base);
           if (frame) layers += chipLayer('esim-chip-frame', frame);
+          layers += chipLayer('esim-chip-logo', unit);
         }
-        layers += chipLayer('esim-chip-logo' + (isSeriesSp ? ' esim-chip-logo--sp' : ''), unit);
         return (
           '<div class="esim-chip-thumb ' + thumbCls +
           '" style="width:' + sz + 'px;height:' + sz + 'px">' +
