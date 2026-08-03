@@ -31,6 +31,7 @@ rb = c.get("/static/css/app_shell_bundle.min.css")
 assert rb.status_code == 200 and len(rb.data) > 10000
 assert b"var(--brand-emblem-url" not in rb.data
 assert b"brand-emblem-panel.webp" in rb.data
+assert b"ability-icon-stack--ex" in rb.data, "EX ability icon CSS must be in shell bundle (not lazy craft_ui)"
 print("shell CSS bundle OK", len(rb.data))
 
 # warm lists then detail
