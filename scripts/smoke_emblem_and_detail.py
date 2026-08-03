@@ -1,6 +1,11 @@
 #!/usr/bin/env python3
 import os
+import sys
 import time
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if ROOT not in sys.path:
+    sys.path.insert(0, ROOT)
 
 os.environ.setdefault("IMAGE_CDN", "https://zh7tcm9fmv-cloud.github.io/ggen_db_images")
 from app import app
@@ -64,6 +69,10 @@ html = c.get("/").data.decode("utf-8", "replace")
 assert "unit_best_pilots.js" not in html or "ensureUnitBestPilots" in html
 assert 'unit_best_pilots.css' not in html.split("__GGEN_LAZY__")[0], "UBP CSS must not be eager in <head>"
 assert "ensureUnitBestPilots" in html and "ensureMasterLeagueCss" in html and "ensureCraftUiCss" in html
+assert "ensureContentNotices" in html
+import re
+assert not re.search(r'<script[^>]+src="[^"]*content_notices\.js"', html), "content_notices.js must not be an eager <script src>"
+assert b"ensureContentNoticesLoaded" in js.data
 assert b"ensureUnitBestPilotsLoaded" in js.data
 print("lazy asset wiring OK")
 print("ALL CHECKS PASSED")

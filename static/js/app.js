@@ -485,6 +485,7 @@ function primeBrowseTabIfNeeded(tab){reloadBrowseTab(tab)}
 function reloadBrowseTab(tab){const browseTabs={characters:1,units:1,supporters:1,stages:1,modifications:1};if(!browseTabs[tab])return;if(tab==='characters')loadCharacters(S.characters.page||1);else if(tab==='units')loadUnits(S.units.page||1);else if(tab==='supporters')loadSupporters(S.supporters.page||1);else if(tab==='stages')loadStages(S.stages.page||1);else if(tab==='modifications')loadModifications(S.modifications.page||1)}
 function prefetchBrowseTabsAfterCharacters(){if(S._browsePrefetchDone)return;S._browsePrefetchDone=1;const go=()=>{if(S.currentTab!=='characters')return;const qEl=document.getElementById('charFilter');if(qEl&&String(qEl.value||'').trim())return;if(!S._browsePrimed)S._browsePrimed={};if(!S._browsePrimed.units){S._browsePrimed.units=1;void loadUnits(1)}};if(window.requestIdleCallback)requestIdleCallback(go,{timeout:15000});else setTimeout(go,8000)}
 /** Nav flares / votes / what's-new after browse first paint — do not race /api/characters. */
+function ensureContentNoticesLoaded(){if(window.GgenContentNotices)return Promise.resolve(window.GgenContentNotices);const lazy=window.__GGEN_LAZY__;if(lazy&&typeof lazy.ensureContentNotices==='function')return lazy.ensureContentNotices();return Promise.resolve(null)}
 function scheduleDeferredContentBootstraps(force){
   if(S._contentBootstrapDone&&!force)return;
   if(force){S._contentBootstrapDone=0;S._contentBootstrapScheduled=0}
@@ -493,15 +494,23 @@ function scheduleDeferredContentBootstraps(force){
   const go=()=>{
     S._contentBootstrapScheduled=0;
     S._contentBootstrapDone=1;
-    try{
-      if(window.GgenContentNotices){
-        bootstrapContentNoticesAll();
-      }else{
+    void ensureContentNoticesLoaded().then(()=>{
+      try{
+        if(window.GgenContentNotices){
+          bootstrapContentNoticesAll();
+        }else{
+          if(S.currentTab!=='banner_timeline')void bootstrapBtVoteNotices();
+          void bootstrapGameNewsNotices();
+        }
+        initGameNewsNoticeRefresh();
+      }catch(_){}
+    }).catch(()=>{
+      try{
         if(S.currentTab!=='banner_timeline')void bootstrapBtVoteNotices();
         void bootstrapGameNewsNotices();
-      }
-      initGameNewsNoticeRefresh();
-    }catch(_){}
+        initGameNewsNoticeRefresh();
+      }catch(_){}
+    });
   };
   if(window.requestIdleCallback)requestIdleCallback(go,{timeout:15000});
   else setTimeout(go,8000);

@@ -105,6 +105,7 @@ def _app_js_bundle_version_tag():
         ('js', 'msy_dc_engine.js'),
         ('js', 'msy_dc_worker.js'),
         ('js', 'unit_best_pilots.js'),
+        ('js', 'content_notices.js'),
         ('js', 'meta_synergy.js'),
         ('js', 'kofi_donate_promo.js'),
         ('css', 'app_shell.css'),

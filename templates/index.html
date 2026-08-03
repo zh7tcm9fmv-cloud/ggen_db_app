@@ -596,7 +596,8 @@ window.__GGEN_LAZY__=(function(){
     'feedback_i18n': url_for('static', filename='js/feedback_i18n.js'),
     'site_feedback': url_for('static', filename='js/site_feedback.js'),
     'kofi_donate_promo': url_for('static', filename='js/kofi_donate_promo.js'),
-    'unit_best_pilots': url_for('static', filename='js/unit_best_pilots.js')
+    'unit_best_pilots': url_for('static', filename='js/unit_best_pilots.js'),
+    'content_notices': url_for('static', filename='js/content_notices.js')
   } | tojson }};
   var cache={};
   function withV(url, bump){
@@ -638,6 +639,10 @@ window.__GGEN_LAZY__=(function(){
   }
   function ensureMasterLeagueCss(){return loadCss('master_league')}
   function ensureCraftUiCss(){return loadCss('craft_ui')}
+  function ensureContentNotices(){
+    if(window.GgenContentNotices)return Promise.resolve(window.GgenContentNotices);
+    return loadJs('content_notices').then(function(){return window.GgenContentNotices||null});
+  }
   function ensureExtras(){
     if(cache._extras)return cache._extras;
     cache._extras=Promise.all([
@@ -669,12 +674,12 @@ window.__GGEN_LAZY__=(function(){
     ensureExtras:ensureExtras,
     ensureUnitBestPilots:ensureUnitBestPilots,
     ensureMasterLeagueCss:ensureMasterLeagueCss,
-    ensureCraftUiCss:ensureCraftUiCss
+    ensureCraftUiCss:ensureCraftUiCss,
+    ensureContentNotices:ensureContentNotices
   };
 })();
 </script>
 <script src="{{ url_for('static', filename='js/ui_motion.js') }}?v={{ app_js_version }}" defer></script>
-<script src="{{ url_for('static', filename='js/content_notices.js') }}" defer></script>
 <script src="{{ url_for('static', filename='js/' + (app_js_bundle or 'app.js')) }}?v={{ app_js_version }}" defer></script>
 </body>
 </html>
