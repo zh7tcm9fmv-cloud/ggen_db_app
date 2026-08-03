@@ -183,7 +183,7 @@
     return null;
   }
 
-  /** Series SP: Bg under; Frame + logo share top layer. SSP: Bg → Frame → logo. Unit SP: hex portrait under frame. */
+  /** Series SP: Bg → Frame (same fill plate) → logo on top. SSP: Bg → Frame → logo. Unit SP: hex portrait under frame. */
   function rewardThumbHtml(r, sz) {
     sz = sz || REWARD_ICON_SIZE;
     var name = (r && (r.name || r.label)) || '';
@@ -207,13 +207,8 @@
       if (isSeriesLogo) {
         var thumbCls = isSeriesSp ? 'esim-chip-thumb--sp' : 'esim-chip-thumb--ssp';
         if (base) layers += chipLayer('esim-chip-base', base);
-        if (isSeriesSp) {
-          layers += chipLayer('esim-chip-logo esim-chip-logo--sp', unit);
-          if (frame) layers += chipLayer('esim-chip-frame', frame);
-        } else {
-          if (frame) layers += chipLayer('esim-chip-frame', frame);
-          layers += chipLayer('esim-chip-logo', unit);
-        }
+        if (frame) layers += chipLayer('esim-chip-frame', frame);
+        layers += chipLayer('esim-chip-logo' + (isSeriesSp ? ' esim-chip-logo--sp' : ''), unit);
         return (
           '<div class="esim-chip-thumb ' + thumbCls +
           '" style="width:' + sz + 'px;height:' + sz + 'px">' +

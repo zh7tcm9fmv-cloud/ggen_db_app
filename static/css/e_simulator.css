@@ -92,9 +92,13 @@
 .esim-chip-logo--sp{
   left:8%;top:30%;width:84%;height:40%;padding:0;z-index:3;
 }
-/* Frame (SP badge) shares the logo layer above Bg. */
+/* Same plate box for Bg+Frame (assets differ in px size); logo always on top. */
+.esim-chip-thumb--sp .esim-chip-base,
+.esim-chip-thumb--sp .esim-chip-frame{
+  object-fit:fill;object-position:center;
+}
 .esim-chip-thumb--sp .esim-chip-base{z-index:1}
-.esim-chip-thumb--sp .esim-chip-frame{z-index:3}
+.esim-chip-thumb--sp .esim-chip-frame{z-index:2}
 .esim-chip-thumb--ssp{
   overflow:visible;border-color:transparent;background:transparent;
   filter:drop-shadow(0 2px 6px rgba(0,0,0,.45));
