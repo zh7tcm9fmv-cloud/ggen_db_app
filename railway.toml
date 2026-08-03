@@ -1,3 +1,7 @@
 [deploy]
 healthcheckPath = "/health"
 healthcheckTimeout = 300
+
+# Repeat-visit HTML shell: short cache + revalidate (also auto-defaulted on Railway in app.py).
+# Override in Railway dashboard if needed; set to "0" to disable.
+# INDEX_HTML_CACHE_CONTROL = "public, max-age=120, must-revalidate"

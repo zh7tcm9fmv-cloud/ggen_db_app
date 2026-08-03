@@ -11,7 +11,7 @@ try:
 except ImportError:
     pass
 
-from flask import Flask, render_template, jsonify, request, make_response, session, redirect, Response, stream_with_context
+from flask import Flask, render_template, jsonify, request, make_response, session, redirect, Response, stream_with_context, send_file
 from werkzeug.exceptions import NotFound
 from werkzeug.middleware.proxy_fix import ProxyFix
 import json
@@ -97,6 +97,13 @@ def _app_js_served_bundle_name():
     return 'app.js'
 
 
+def _app_tools_served_bundle_name():
+    root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'js')
+    if os.path.isfile(os.path.join(root, 'app_tools.min.js')):
+        return 'app_tools.min.js'
+    return 'app_tools.js'
+
+
 def _app_js_bundle_version_tag():
     root = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static')
     assets = (
@@ -105,21 +112,28 @@ def _app_js_bundle_version_tag():
         ('js', 'msy_dc_engine.js'),
         ('js', 'msy_dc_worker.js'),
         ('js', 'unit_best_pilots.js'),
-        ('js', 'meta_synergy.js'),
+        ('js', 'app_tools.js'),
+        ('js', 'app_tools.min.js'),
         ('js', 'kofi_donate_promo.js'),
+        ('js', 'sw.js'),
+        ('css', 'app_critical.css'),
         ('css', 'app_shell.css'),
         ('css', 'unit_best_pilots.css'),
         ('css', 'mobile_layout.css'),
         ('css', 'craft_ui.css'),
         ('css', 'master_league.css'),
+        ('css', 'ui_motion.css'),
         ('css', 'kofi_donate_promo.css'),
     )
-    # Include brand fonts so long-cache ?v= busts when an OTF/TTF is replaced.
+    # Include brand fonts so long-cache ?v= busts when an OTF/WOFF2 is replaced.
     font_assets = (
         'font/roboto_medium_numbers.ttf',
         'font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf',
+        'font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.woff2',
         'font/FOTK-YoonGothic780_JP.otf',
+        'font/FOTK-YoonGothic780_JP.woff2',
         'font/UDShinGoStdTC-Med.otf',
+        'font/UDShinGoStdTC-Med.woff2',
     )
     parts = []
     git_rev = _app_git_revision()
@@ -141,8 +155,18 @@ def _app_js_bundle_version_tag():
             parts.append(f'{rel}:0')
     return hashlib.sha256('|'.join(parts).encode()).hexdigest()[:16]
 
-# Optional: set INDEX_HTML_CACHE_CONTROL e.g. "public, max-age=120" in production so repeat visits skip re-downloading HTML shell.
-INDEX_HTML_CACHE_CONTROL = (os.environ.get('INDEX_HTML_CACHE_CONTROL') or '').strip()
+# HTML shell cache: short max-age + must-revalidate. Override with INDEX_HTML_CACHE_CONTROL.
+# Set INDEX_HTML_CACHE_CONTROL=0 / off / no-store for local HTML iteration without caching.
+_INDEX_HTML_CC_RAW = (os.environ.get('INDEX_HTML_CACHE_CONTROL') or '').strip()
+if _INDEX_HTML_CC_RAW.lower() in ('0', 'off', 'false', 'no', 'no-store'):
+    INDEX_HTML_CACHE_CONTROL = ''
+elif _INDEX_HTML_CC_RAW:
+    INDEX_HTML_CACHE_CONTROL = _INDEX_HTML_CC_RAW
+elif (os.environ.get('RAILWAY_ENVIRONMENT') or os.environ.get('RAILWAY_PROJECT_ID') or '').strip():
+    # Production default — measurable repeat-visit HTML savings without code deploy.
+    INDEX_HTML_CACHE_CONTROL = 'public, max-age=120, must-revalidate'
+else:
+    INDEX_HTML_CACHE_CONTROL = ''
 
 # Sessions (Latest Release password gate). Set FLASK_SECRET_KEY in production.
 app.secret_key = os.environ.get('FLASK_SECRET_KEY', 'ggen-dev-secret-change-in-production')
@@ -173,9 +197,12 @@ def _apply_static_cache_headers(response):
     if (
         path.endswith('/js/app.js')
         or path.endswith('/js/app.min.js')
+        or path.endswith('/js/app_tools.js')
+        or path.endswith('/js/app_tools.min.js')
         or path.endswith('/js/msy_dc_engine.js')
         or path.endswith('/js/unit_best_pilots.js')
         or path.endswith('/css/app_shell.css')
+        or path.endswith('/css/app_critical.css')
     ):
         # Templates always bust with ?v={{ app_js_version }}; long-cache is safe and cuts repeat TBT.
         response.headers['Cache-Control'] = f'public, max-age={_STATIC_CACHE_MAX_AGE}, immutable'
@@ -14459,6 +14486,7 @@ def _serve_index():
         game_images_use_cdn=GAME_IMAGES_USE_CDN,
         app_js_version=_app_js_bundle_version_tag(),
         app_js_bundle=_app_js_served_bundle_name(),
+        app_tools_bundle=_app_tools_served_bundle_name(),
     ))
     if INDEX_HTML_CACHE_CONTROL:
         r.headers['Cache-Control'] = INDEX_HTML_CACHE_CONTROL
@@ -14467,6 +14495,16 @@ def _serve_index():
         r.headers['Pragma'] = 'no-cache'
         r.headers['Expires'] = '0'
     return r
+
+@app.route('/sw.js')
+def service_worker():
+    """Root-scoped SW so the shell can cache / and /static/* (requires Service-Worker-Allowed)."""
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'static', 'js', 'sw.js')
+    r = send_file(path, mimetype='application/javascript; charset=utf-8')
+    r.headers['Service-Worker-Allowed'] = '/'
+    r.headers['Cache-Control'] = 'no-cache, must-revalidate'
+    return r
+
 
 @app.route('/health')
 def health_check():

@@ -115,3 +115,14 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
     transition:none!important;
   }
 }
+
+/* Detail optimistic shell + View Transitions */
+.detail-optimistic{position:relative;min-height:180px;padding:16px 18px 28px}
+.detail-optimistic-row{display:flex;align-items:center;gap:14px}
+.detail-optimistic-name{font-size:18px;font-weight:700;line-height:1.25}
+.detail-optimistic-hint{font-size:12px;color:var(--text-muted);margin-top:4px}
+.detail-optimistic-spin{position:absolute;inset:auto 0 8px 0;height:48px;background:transparent}
+#detailModal.active .modal-content{view-transition-name:ggen-detail-modal}
+@media (prefers-reduced-motion:reduce){#detailModal.active .modal-content{view-transition-name:none}}
+::view-transition-old(ggen-detail-modal),
+::view-transition-new(ggen-detail-modal){animation-duration:.28s;animation-timing-function:cubic-bezier(.22,1,.36,1)}
