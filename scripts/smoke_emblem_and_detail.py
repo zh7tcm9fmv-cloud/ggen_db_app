@@ -44,10 +44,14 @@ det304 = c.get(f"/api/character/{cid}?lang=EN", headers={"If-None-Match": etag})
 assert det304.status_code == 304, det304.status_code
 print("char detail 304 OK")
 
-# JS bundle must include detail If-None-Match failsafe
+# JS bundle present; Top 10 pilots + ML/craft CSS are lazy (not on cold /)
 js = c.get("/static/js/app.min.js")
 print("app.min.js", js.status_code, len(js.data))
 assert js.status_code == 200
-assert b"If-None-Match" in js.data
-assert b"_fetchJsonEtagCache" in js.data
+html = c.get("/").data.decode("utf-8", "replace")
+assert "unit_best_pilots.js" not in html or "ensureUnitBestPilots" in html
+assert 'unit_best_pilots.css' not in html.split("__GGEN_LAZY__")[0], "UBP CSS must not be eager in <head>"
+assert "ensureUnitBestPilots" in html and "ensureMasterLeagueCss" in html and "ensureCraftUiCss" in html
+assert b"ensureUnitBestPilotsLoaded" in js.data
+print("lazy asset wiring OK")
 print("ALL CHECKS PASSED")

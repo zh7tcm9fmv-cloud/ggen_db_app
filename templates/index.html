@@ -80,11 +80,7 @@ window.__ggenLoadGtm=function(){
 @font-face{font-family:'FOTK Yoon Gothic 780 JP';src:url('/static/font/FOTK-YoonGothic780_JP.otf?v={{ app_js_version }}') format('opentype');font-weight:500;font-style:normal;font-display:optional}
 </style>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/app_shell.css') }}?v={{ app_js_version }}">
-
-<link rel="stylesheet" href="{{ url_for('static', filename='css/unit_best_pilots.css') }}?v={{ app_js_version }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile_layout.css') }}?v={{ app_js_version }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/craft_ui.css') }}?v={{ app_js_version }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='css/master_league.css') }}?v={{ app_js_version }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/ui_motion.css') }}?v={{ app_js_version }}">
 </head>
 <body>
@@ -592,13 +588,17 @@ window.__GGEN_LAZY__=(function(){
   var css={{ {
     'e_simulator': url_for('static', filename='css/e_simulator.css'),
     'site_feedback': url_for('static', filename='css/site_feedback.css'),
-    'kofi_donate_promo': url_for('static', filename='css/kofi_donate_promo.css')
+    'kofi_donate_promo': url_for('static', filename='css/kofi_donate_promo.css'),
+    'unit_best_pilots': url_for('static', filename='css/unit_best_pilots.css'),
+    'master_league': url_for('static', filename='css/master_league.css'),
+    'craft_ui': url_for('static', filename='css/craft_ui.css')
   } | tojson }};
   var js={{ {
     'e_simulator': url_for('static', filename='js/e_simulator.js'),
     'feedback_i18n': url_for('static', filename='js/feedback_i18n.js'),
     'site_feedback': url_for('static', filename='js/site_feedback.js'),
-    'kofi_donate_promo': url_for('static', filename='js/kofi_donate_promo.js')
+    'kofi_donate_promo': url_for('static', filename='js/kofi_donate_promo.js'),
+    'unit_best_pilots': url_for('static', filename='js/unit_best_pilots.js')
   } | tojson }};
   var cache={};
   function withV(url, bump){
@@ -634,6 +634,12 @@ window.__GGEN_LAZY__=(function(){
     if(window.ESimulator)return Promise.resolve(window.ESimulator);
     return Promise.all([loadCss('e_simulator'), loadJs('e_simulator')]).then(function(){return window.ESimulator});
   }
+  function ensureUnitBestPilots(){
+    if(window.GgenUnitBestPilots)return Promise.resolve(window.GgenUnitBestPilots);
+    return Promise.all([loadCss('unit_best_pilots'), loadJs('unit_best_pilots')]).then(function(){return window.GgenUnitBestPilots||null});
+  }
+  function ensureMasterLeagueCss(){return loadCss('master_league')}
+  function ensureCraftUiCss(){return loadCss('craft_ui')}
   function ensureExtras(){
     if(cache._extras)return cache._extras;
     cache._extras=Promise.all([
@@ -660,12 +666,17 @@ window.__GGEN_LAZY__=(function(){
       }
     });
   };
-  return {ensureEsim:ensureEsim,ensureExtras:ensureExtras};
+  return {
+    ensureEsim:ensureEsim,
+    ensureExtras:ensureExtras,
+    ensureUnitBestPilots:ensureUnitBestPilots,
+    ensureMasterLeagueCss:ensureMasterLeagueCss,
+    ensureCraftUiCss:ensureCraftUiCss
+  };
 })();
 </script>
 <script src="{{ url_for('static', filename='js/ui_motion.js') }}?v={{ app_js_version }}" defer></script>
 <script src="{{ url_for('static', filename='js/content_notices.js') }}" defer></script>
 <script src="{{ url_for('static', filename='js/' + (app_js_bundle or 'app.js')) }}?v={{ app_js_version }}" defer></script>
-<script src="{{ url_for('static', filename='js/unit_best_pilots.js') }}?v={{ app_js_version }}" defer></script>
 </body>
 </html>
