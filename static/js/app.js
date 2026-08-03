@@ -2535,10 +2535,20 @@ const url=detailApiUrl(type,id,opts||{});
 const p=(async()=>{
 try{
 let r;
-try{r=await fetch(url,{credentials:'same-origin'})}catch(err){const soft=!!(err&&(err.name==='AbortError'||err.name==='TypeError'));throw soft?new Error('network'):err;}
+const prev=_fetchJsonEtagCache.get(url);
+const headers={};
+if(prev&&prev.etag)headers['If-None-Match']=prev.etag;
+try{r=await fetch(url,{credentials:'same-origin',headers})}catch(err){const soft=!!(err&&(err.name==='AbortError'||err.name==='TypeError'));throw soft?new Error('network'):err;}
+let d;
+if(r.status===304&&prev&&prev.data!=null){
+d=prev.data;
+}else{
 if(!r.ok)throw new Error(`HTTP ${r.status}`);
-const d=await r.json();
+d=await r.json();
 if(d.error)throw new Error(d.error);
+const etag=r.headers.get('ETag');
+if(etag)_fetchJsonEtagCacheSet(url,etag,d);
+}
 _detailJsonPrefetchCache.set(ck,d);
 while(_detailJsonPrefetchCache.size>DETAIL_PREFETCH_CACHE_MAX){
 const k=_detailJsonPrefetchCache.keys().next().value;

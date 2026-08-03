@@ -36,10 +36,18 @@ cid = str(rows[0]["id"])
 det = c.get(f"/api/character/{cid}?lang=EN")
 data = det.get_json() or {}
 assert det.status_code == 200 and data.get("name"), (det.status_code, data)
-print("char detail OK", cid, data.get("name"))
+etag = det.headers.get("ETag")
+assert etag, "detail response missing ETag"
+print("char detail OK", cid, data.get("name"), "etag", etag)
 
-# JS bundle present
+det304 = c.get(f"/api/character/{cid}?lang=EN", headers={"If-None-Match": etag})
+assert det304.status_code == 304, det304.status_code
+print("char detail 304 OK")
+
+# JS bundle must include detail If-None-Match failsafe
 js = c.get("/static/js/app.min.js")
 print("app.min.js", js.status_code, len(js.data))
 assert js.status_code == 200
+assert b"If-None-Match" in js.data
+assert b"_fetchJsonEtagCache" in js.data
 print("ALL CHECKS PASSED")
