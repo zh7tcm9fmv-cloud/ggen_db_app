@@ -108,8 +108,10 @@ def _app_js_bundle_version_tag():
         ('js', 'meta_synergy.js'),
         ('js', 'kofi_donate_promo.js'),
         ('css', 'app_shell.css'),
+        ('css', 'app_shell_bundle.min.css'),
         ('css', 'unit_best_pilots.css'),
         ('css', 'mobile_layout.css'),
+        ('css', 'ui_motion.css'),
         ('css', 'craft_ui.css'),
         ('css', 'master_league.css'),
         ('css', 'kofi_donate_promo.css'),
@@ -185,6 +187,7 @@ def _apply_static_cache_headers(response):
         or path.endswith('/js/msy_dc_engine.js')
         or path.endswith('/js/unit_best_pilots.js')
         or path.endswith('/css/app_shell.css')
+        or path.endswith('/css/app_shell_bundle.min.css')
     ):
         # Templates always bust with ?v={{ app_js_version }}; long-cache is safe and cuts repeat TBT.
         response.headers['Cache-Control'] = f'public, max-age={_STATIC_CACHE_MAX_AGE}, immutable'

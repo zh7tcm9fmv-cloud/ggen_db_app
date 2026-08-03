@@ -4,6 +4,9 @@
  * Usage (from repo root):
  *   npx --yes esbuild static/js/app.js --minify --outfile=static/js/app.min.js
  *   node scripts/minify_app_js.mjs
+ *
+ * After CSS source edits, also rebuild the cold shell bundle:
+ *   node scripts/build_shell_css.mjs
  */
 import { spawnSync } from 'node:child_process';
 import path from 'node:path';

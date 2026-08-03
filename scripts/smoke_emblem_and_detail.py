@@ -22,6 +22,17 @@ assert b"var(--brand-emblem-url" not in r3.data
 assert b"brand-emblem-panel.webp" in r3.data
 print("css plain url OK")
 
+html = c.get("/").data.decode("utf-8", "replace")
+assert "app_shell_bundle.min.css" in html, "index must use shell CSS bundle"
+assert "css/app_shell.css" not in html
+assert "css/mobile_layout.css" not in html
+assert "css/ui_motion.css" not in html
+rb = c.get("/static/css/app_shell_bundle.min.css")
+assert rb.status_code == 200 and len(rb.data) > 10000
+assert b"var(--brand-emblem-url" not in rb.data
+assert b"brand-emblem-panel.webp" in rb.data
+print("shell CSS bundle OK", len(rb.data))
+
 # warm lists then detail
 url = "/api/characters?lang=EN&page=1&per_page=5&sort=rarity&dir=desc&q="
 chars = None
