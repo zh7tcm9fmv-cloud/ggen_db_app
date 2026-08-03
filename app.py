@@ -11624,7 +11624,7 @@ _SP_CHIP_FRAME = '/static/images/UI/UI_Common_Sp_Frame.webp'
 _SSP_CHIP_BG = '/static/images/UI/UI_Common_Ssp_Bg.webp'
 _SSP_CHIP_FRAME = '/static/images/UI/UI_Common_Ssp_Frame.webp'
 # Series SP materials live under images/Item (Sp_Chara_* is Item-only on CDN).
-# Client stacks: Bg → Frame (same fill plate) → series logo on top.
+# Sp_Bg is 124x142 and must be placed at (2,2) on Sp_Frame 135x146; logo on top.
 _SP_SERIES_CHIP_BG = '/static/images/Item/UI_Common_Sp_Bg.webp'
 _SP_SERIES_CHIP_FRAME = '/static/images/Item/UI_Common_Sp_Frame.webp'
 _SP_SERIES_BADGE_BG = '/static/images/Item/UI_Common_Sp_Chara_Bg.webp'
@@ -11656,8 +11656,8 @@ def _resolve_series_sp_material_layers(item_id):
     - 24000002XXXX (ItemType 31 badges): Sp_Chara_Bg + Sp_Chara_Frame + logo
 
     XXXX is the series logo pad (e.g. 2100 → logo_l_series_2100).
-    Client paints Bg → Frame in one shared fill plate (assets differ in px size),
-    then the series logo on top so the SP badge stays visible under the logo.
+    Client paints Sp_Bg at native offset (2,2) inside a 135x146 Sp_Frame plate,
+    then the series logo on top.
     """
     iid = normalize_id(item_id)
     m_chip = re.match(r'^24000001(\d+)$', iid)

@@ -92,10 +92,21 @@
 .esim-chip-logo--sp{
   left:8%;top:30%;width:84%;height:40%;padding:0;z-index:3;
 }
-/* Same plate box for Bg+Frame (assets differ in px size); logo always on top. */
-.esim-chip-thumb--sp .esim-chip-base,
+/* Sp_Bg 124x142 at (2,2) on Sp_Frame 135x146 — keep native plate geometry. */
+.esim-chip-thumb--sp .esim-chip-plate{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  height:100%;width:auto;max-width:100%;aspect-ratio:135/146;
+}
+.esim-chip-thumb--sp:not(.esim-chip-thumb--sp-chara) .esim-chip-base{
+  inset:auto;left:1.48148%;top:1.36986%;width:91.85185%;height:97.26027%;
+  object-fit:fill;z-index:1;
+}
 .esim-chip-thumb--sp .esim-chip-frame{
-  object-fit:fill;object-position:center;
+  inset:0;width:100%;height:100%;object-fit:fill;z-index:2;
+}
+.esim-chip-thumb--sp-chara .esim-chip-base,
+.esim-chip-thumb--sp-chara .esim-chip-frame{
+  inset:0;object-fit:fill;
 }
 .esim-chip-thumb--sp .esim-chip-base{z-index:1}
 .esim-chip-thumb--sp .esim-chip-frame{z-index:2}
