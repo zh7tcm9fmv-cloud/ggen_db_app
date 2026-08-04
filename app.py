@@ -15364,11 +15364,6 @@ def _sp_investment_json_path():
     return os.path.join(app_dir, 'scripts', 'output', 'sp_investment_v1.json')
 
 
-@app.route('/investment-guide')
-@app.route('/sp-list')
-@app.route('/sp-list-demo')
-@app.route('/en/sp-list')
-@app.route('/en/investment-guide')
 def _sp_investment_character_is_sd_linked(cid):
     """SD pilots are permanently paired with their linked MS — not interchangeable."""
     cid = normalize_id(cid)
@@ -15380,6 +15375,11 @@ def _sp_investment_character_is_sd_linked(cid):
     return False
 
 
+@app.route('/investment-guide')
+@app.route('/sp-list')
+@app.route('/sp-list-demo')
+@app.route('/en/sp-list')
+@app.route('/en/investment-guide')
 def sp_investment_page():
     """SP/SSP chip investment guide (precomputed suggestion buckets)."""
     r = make_response(render_template(
