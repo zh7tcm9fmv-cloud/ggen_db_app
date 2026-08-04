@@ -73,46 +73,12 @@ window.__ggenLoadGtm=function(){
 <style>
 /* Prefer CDN emblem without putting url() in a CSS variable (breaks Dark Reader / similar). */
 .brand-title-row::before{background-image:url('{% if image_cdn %}{{ image_cdn }}/images/UI/brand-emblem-panel.webp{% else %}/static/images/UI/brand-emblem-panel.webp{% endif %}')}
+@font-face{font-family:'RobotoMediumNumbers';src:url('/static/font/roboto_medium_numbers.ttf?v={{ app_js_version }}') format('truetype');font-weight:normal;font-style:normal;font-display:swap}
+@font-face{font-family:'Noto Sans JP';src:url('/static/font/NotoSansJP.ttf?v={{ app_js_version }}') format('truetype');font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:'ShinGoPr6DeBold';src:url('/static/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf?v={{ app_js_version }}') format('opentype');font-weight:normal;font-style:normal;font-display:optional}
+@font-face{font-family:'UDShinGoStdTCMed';src:url('/static/font/UDShinGoStdTC-Med.otf?v={{ app_js_version }}') format('opentype');font-weight:500;font-style:normal;font-display:optional}
+@font-face{font-family:'FOTK Yoon Gothic 780 JP';src:url('/static/font/FOTK-YoonGothic780_JP.otf?v={{ app_js_version }}') format('opentype');font-weight:500;font-style:normal;font-display:optional}
 </style>
-<script>
-(function(){
-  /* Locale-gated @font-face: EN cold load = Roboto + FOTK only (~3.6MB), not ~19MB of all CJK faces. */
-  var v={{ app_js_version|tojson }};
-  var FACE={
-    roboto:"@font-face{font-family:'RobotoMediumNumbers';src:url('/static/font/roboto_medium_numbers.ttf?v=V') format('truetype');font-weight:normal;font-style:normal;font-display:swap}",
-    fotk:"@font-face{font-family:'FOTK Yoon Gothic 780 JP';src:url('/static/font/FOTK-YoonGothic780_JP.otf?v=V') format('opentype');font-weight:500;font-style:normal;font-display:optional}",
-    noto:"@font-face{font-family:'Noto Sans JP';src:url('/static/font/NotoSansJP.ttf?v=V') format('truetype');font-weight:100 900;font-style:normal;font-display:swap}",
-    shingo:"@font-face{font-family:'ShinGoPr6DeBold';src:url('/static/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf?v=V') format('opentype');font-weight:normal;font-style:normal;font-display:optional}",
-    ud:"@font-face{font-family:'UDShinGoStdTCMed';src:url('/static/font/UDShinGoStdTC-Med.otf?v=V') format('opentype');font-weight:500;font-style:normal;font-display:optional}"
-  };
-  function normLang(x){
-    var L=String(x||'EN').trim().toUpperCase();
-    if(L==='JP')L='JA';
-    if(L!=='EN'&&L!=='TW'&&L!=='HK'&&L!=='JA')L='EN';
-    return L;
-  }
-  function keysFor(L){
-    var k=['roboto','fotk'];
-    if(L==='JA')k.push('noto','shingo');
-    else if(L==='TW'||L==='HK')k.push('noto','ud');
-    return k;
-  }
-  function faceCss(key){return FACE[key].replace(/\?v=V/g,'?v='+encodeURIComponent(v))}
-  var loaded={};
-  function applyFaces(L){
-    keysFor(L).forEach(function(k){loaded[k]=1});
-    var parts=[];
-    Object.keys(FACE).forEach(function(k){if(loaded[k])parts.push(faceCss(k))});
-    var el=document.getElementById('ggen-font-faces');
-    if(!el){el=document.createElement('style');el.id='ggen-font-faces';document.head.appendChild(el)}
-    el.setAttribute('data-ui-lang',L);
-    el.textContent=parts.join('');
-  }
-  var boot=normLang(document.documentElement.getAttribute('data-ui-lang')||'EN');
-  applyFaces(boot);
-  window.__GGEN_ENSURE_UI_FONTS__=function(nextLang){applyFaces(normLang(nextLang))};
-})();
-</script>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/app_shell_bundle.min.css') }}?v={{ app_js_version }}">
 </head>
 <body>
