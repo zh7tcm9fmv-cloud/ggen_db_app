@@ -5479,21 +5479,44 @@ def _find_trait_thum_list_asset(resource_ids, entity_id):
     return None
 
 
+def _static_images_path_on_disk(path):
+    """True when /static/images/... exists under STATIC_ROOT."""
+    if not path or not isinstance(path, str) or not path.startswith('/static/images/'):
+        return False
+    rel = path[len('/static/'):].replace('\\', '/').lstrip('/')
+    return os.path.isfile(os.path.join(STATIC_ROOT, *rel.split('/')))
+
+
+def _image_path_servable(path):
+    """CDN can serve index-only assets; without CDN require an on-disk file."""
+    if not path:
+        return False
+    if IMAGE_CDN and GAME_IMAGES_USE_CDN:
+        return True
+    return _static_images_path_on_disk(path)
+
+
 def find_list_thumb(resource_ids, entity_id, portrait_folder_key):
     """List/grid thumbnails: Trait/thum (thum_<ResourceId>) first, then full portrait folder (cb_/ub_/ms_)."""
     eid_ov = normalize_id(entity_id) if entity_id else ''
     if portrait_folder_key == 'images/portraits' and eid_ov in MANUAL_CHARACTER_PORTRAIT_OVERRIDE:
         return MANUAL_CHARACTER_PORTRAIT_OVERRIDE[eid_ov]
-    if portrait_folder_key == 'images/unit_portraits':
+    if portrait_folder_key in ('images/unit_portraits', 'images/portraits'):
         t = _find_trait_thum_list_asset(resource_ids, entity_id)
-        if t:
+        p = find_portrait(resource_ids, entity_id, portrait_folder_key)
+        # Prefer Trait/thum when servable; else full portrait; never return a known-dead local path
+        # when CDN is off (image_index often lists CDN-only Trait thumbs).
+        if t and _image_path_servable(t):
             return t
-        return find_portrait(resource_ids, entity_id, portrait_folder_key)
-    if portrait_folder_key == 'images/portraits':
-        t = _find_trait_thum_list_asset(resource_ids, entity_id)
-        if t:
+        if p and _image_path_servable(p):
+            return p
+        if t and _static_images_path_on_disk(t):
             return t
-        return find_portrait(resource_ids, entity_id, portrait_folder_key)
+        if p and _static_images_path_on_disk(p):
+            return p
+        if IMAGE_CDN and GAME_IMAGES_USE_CDN:
+            return t or p
+        return None
     return None
 
 def find_supporter_portrait(resource_id, supporter_id):
@@ -10515,27 +10538,60 @@ for _uid in list(unit_info_map.keys()):
             CHAR_RECOMMEND_UNIT_MAP[_cid] = _uid
 print(f"SD linked shortcuts: {len(LINKED_UNIT_CHARACTER_MAP)} from master, {sum(1 for u,i in unit_info_map.items() if _unit_has_sd_mechanism(i,u))} SD units total")
 
+# Master sometimes pairs units/pilots that were not given together in-game. Suppress those shortcuts.
+RECOMMEND_UNLINK_PAIRS = [
+    ('1210000300', '1210000401'),  # Wing Gundam Zero ↔ Quatre Raberba Winner
+]
+_RECOMMEND_UNLINK = set()
+for _uu, _cc in RECOMMEND_UNLINK_PAIRS:
+    _uu = normalize_id(_uu)
+    _cc = normalize_id(_cc)
+    if _uu != '0' and _cc != '0':
+        _RECOMMEND_UNLINK.add((_uu, _cc))
+        _RECOMMEND_UNLINK.add((_cc, _uu))
+        # Clear reverse map / master recommend so APIs and shortcuts stay consistent.
+        if CHAR_RECOMMEND_UNIT_MAP.get(_cc) == _uu:
+            CHAR_RECOMMEND_UNIT_MAP.pop(_cc, None)
+        if MANUAL_CHAR_RECOMMEND_UNIT_MAP.get(_cc) == _uu:
+            MANUAL_CHAR_RECOMMEND_UNIT_MAP.pop(_cc, None)
+        if MANUAL_UNIT_RECOMMEND_CHARACTER_MAP.get(_uu) == _cc:
+            MANUAL_UNIT_RECOMMEND_CHARACTER_MAP.pop(_uu, None)
+        _ui = unit_info_map.get(_uu)
+        if _ui and normalize_id(_ui.get('recommend_character_id') or '0') == _cc:
+            _ui['recommend_character_id'] = '0'
+
+
+def _recommend_pair_suppressed(a, b):
+    return (normalize_id(a), normalize_id(b)) in _RECOMMEND_UNLINK
+
 
 def resolve_unit_recommend_character_id(uid, info=None):
     """Prefer SD linked character, then unit recommend_character_id, then manual map."""
     uid = normalize_id(uid)
     linked = LINKED_UNIT_CHARACTER_MAP.get(uid)
-    if linked:
+    if linked and not _recommend_pair_suppressed(uid, linked):
         return linked
     info = info or unit_info_map.get(uid) or {}
     rec = normalize_id(info.get('recommend_character_id') or '0')
-    if rec != '0':
+    if rec != '0' and not _recommend_pair_suppressed(uid, rec):
         return rec
-    return normalize_id(MANUAL_UNIT_RECOMMEND_CHARACTER_MAP.get(uid, '0'))
+    manual = normalize_id(MANUAL_UNIT_RECOMMEND_CHARACTER_MAP.get(uid, '0'))
+    if manual != '0' and not _recommend_pair_suppressed(uid, manual):
+        return manual
+    return '0'
 
 
 def resolve_character_recommend_unit_id(cid):
     """Prefer SD linked unit, then CHAR_RECOMMEND_UNIT_MAP / manual."""
     cid = normalize_id(cid)
     linked = LINKED_CHARACTER_UNIT_MAP.get(cid)
-    if linked:
+    if linked and not _recommend_pair_suppressed(linked, cid):
         return linked
-    return CHAR_RECOMMEND_UNIT_MAP.get(cid) or MANUAL_CHAR_RECOMMEND_UNIT_MAP.get(cid)
+    for src in (CHAR_RECOMMEND_UNIT_MAP, MANUAL_CHAR_RECOMMEND_UNIT_MAP):
+        uid = src.get(cid)
+        if uid and not _recommend_pair_suppressed(uid, cid):
+            return uid
+    return None
 
 
 # ═══════════════════════════════════════════════════════
@@ -14776,28 +14832,39 @@ def _tier_mockup_walk_apply_limited(payload):
 def _tier_mockup_thumb(entity_id, kind):
     """List thumbnail for tier list cards (same resolution chain as browse APIs)."""
     eid = normalize_id(entity_id)
+
+    def _first_servable(*paths):
+        for p in paths:
+            if p and _image_path_servable(p):
+                return p
+        if IMAGE_CDN and GAME_IMAGES_USE_CDN:
+            for p in paths:
+                if p:
+                    return p
+        return None
+
     if kind == 'unit':
         info = unit_info_map.get(eid, {})
         rids = info.get('resource_ids', [])
-        return (
-            find_list_thumb(rids, eid, 'images/unit_portraits')
-            or find_portrait(rids, eid, 'images/unit_portraits')
+        return _first_servable(
+            find_list_thumb(rids, eid, 'images/unit_portraits'),
+            find_portrait(rids, eid, 'images/unit_portraits'),
         )
     if kind == 'character':
         info = char_info_map.get(eid, {})
         rids = info.get('resource_ids', [])
-        return (
-            find_list_thumb(rids, eid, 'images/portraits')
-            or find_portrait(rids, eid, 'images/portraits')
+        return _first_servable(
+            find_list_thumb(rids, eid, 'images/portraits'),
+            find_portrait(rids, eid, 'images/portraits'),
         )
     if kind == 'supporter':
         info = supporter_info_map.get(eid, {})
         rid = info.get('resource_id')
-        return (
-            find_supporter_portrait(rid, eid)
-            or find_supporter_full_portrait(rid)
-            or find_list_thumb([rid] if rid else [], eid, 'images/portraits')
-            or find_portrait([rid] if rid else [], eid, 'images/portraits')
+        return _first_servable(
+            find_supporter_portrait(rid, eid),
+            find_supporter_full_portrait(rid),
+            find_list_thumb([rid] if rid else [], eid, 'images/portraits'),
+            find_portrait([rid] if rid else [], eid, 'images/portraits'),
         )
     return None
 
@@ -14824,7 +14891,10 @@ def _tier_mockup_row_icons(row, kind):
 def _tier_mockup_attach_thumbs(rows, kind):
     for row in rows or []:
         if isinstance(row, dict) and row.get('id'):
-            row['thumb'] = _tier_mockup_thumb(row['id'], kind) or ''
+            thumb = _tier_mockup_thumb(row['id'], kind) or ''
+            # Browse/detail use `thum`; tier/SP list historically used `thumb` — set both.
+            row['thumb'] = thumb
+            row['thum'] = thumb
             row.update(_tier_mockup_row_icons(row, kind))
 
 

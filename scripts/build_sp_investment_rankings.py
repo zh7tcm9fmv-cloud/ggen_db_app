@@ -10,7 +10,6 @@ from __future__ import annotations
 import json
 import os
 import sys
-from collections import defaultdict
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -26,32 +25,12 @@ BUCKET_ORDER = ("no_regrets", "good", "better_options", "dont")
 
 
 def _calibrate_letters_by_role(rows: list[dict], rules: dict) -> None:
-    pct_letters = [
-        (0.92, "S+"),
-        (0.80, "S"),
-        (0.60, "A+"),
-        (0.40, "A"),
-        (0.20, "B+"),
-        (0.08, "B"),
-    ]
-    by_role: dict[str, list[dict]] = defaultdict(list)
-    for r in rows:
-        by_role[r.get("role") or "Attack"].append(r)
-    for role, group in by_role.items():
-        group.sort(key=lambda x: (-int(x.get("total") or 0), x.get("name") or "", x.get("id") or ""))
-        n = len(group) or 1
-        for i, row in enumerate(group):
-            pct_from_bottom = 1.0 - (i / n)
-            letter = SIR.letter_for_total(rules, int(row.get("total") or 0))
-            for gate, lit in pct_letters:
-                if pct_from_bottom >= gate:
-                    order = ["D", "C", "B", "B+", "A", "A+", "S", "S+"]
-                    if order.index(lit) > order.index(letter if letter in order else "D"):
-                        letter = lit
-                    break
-            row["letter"] = letter
-            row["bucket"] = SIR.bucket_for_letter(rules, letter)
-            row["calibration"] = "absolute_plus_role_percentile"
+    """Absolute sheet cutoffs only (no percentile soft uplift)."""
+    for row in rows:
+        letter = SIR.letter_for_total(rules, int(row.get("total") or 0))
+        row["letter"] = letter
+        row["bucket"] = SIR.bucket_for_letter(rules, letter)
+        row["calibration"] = "absolute_sheet"
 
 
 def _sort_rows(rows: list[dict]) -> list[dict]:
@@ -145,7 +124,7 @@ def main():
 
     unit_letter_by_id = {r["id"]: r.get("letter") or "" for r in sp_rows}
     # Prefer higher letter when SSP is better
-    order = ["D", "C", "B", "B+", "A", "A+", "S", "S+"]
+    order = ["E", "D", "C", "B", "B+", "A", "A+", "S", "S+"]
     for r in ssp_rows:
         cur = unit_letter_by_id.get(r["id"], "")
         lit = r.get("letter") or ""
@@ -161,14 +140,11 @@ def main():
     guide = SIR.scoring_guide_payload(rules)
     guide["gaps"] = list(guide.get("gaps") or [])
     guide["gaps"].append(
-        "Letters use absolute cutoffs, then within-role percentile soft uplift."
-    )
-    guide["gaps"].append(
         "Pilot recommend-MS points use this list's unit letters (SP/SSP best)."
     )
     guide["intro"] = (
-        "Point-sum heuristic inspired by eternalsp’s SP/SSP suggestion lists for Mobile Suits "
-        "and pilots. Not a damage calculator. Filter by tag or Eternal Road Expert stage to plan investments."
+        "Point-sum suggestion list for SP/SSP investment (creator criteria v2 + datamine upgrades). "
+        "Not a damage calculator. Filter by tag or Eternal Road Expert stage to spot clear shortlist winners."
     )
 
     tag_catalog = collect_tag_catalog([sp_rows, ssp_rows, pilot_rows])

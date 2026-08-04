@@ -287,6 +287,7 @@ body.spi-page {
   z-index: 1; overflow: hidden; box-sizing: border-box;
 }
 .list-thumb-portrait-wrap .list-thumb-portrait {
+  --portrait-optical-y: 0px;
   width: auto; height: auto; max-width: 94%; max-height: 94%;
   object-fit: contain; object-position: center calc(50% + var(--portrait-optical-y));
   display: block;

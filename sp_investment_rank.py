@@ -13,17 +13,21 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parent
-RULES_PATH = ROOT / "data" / "sp_investment" / "sp_investment_rules_v1.json"
+RULES_PATH = ROOT / "data" / "sp_investment" / "sp_investment_rules_v2.json"
 
 ROLE_BY_ID = {"1": "Attack", "2": "Defense", "3": "Support"}
 TERRAIN_KEYS = ("Space", "Atmospheric", "Ground", "Sea", "Underwater")
-HEURISTIC_KEYS = frozenset({"abilities", "linked_pilot", "extra_life", "rare_debuff"})
+HEURISTIC_KEYS = frozenset({"abilities", "linked_pilot", "extra_life", "rare_debuff", "tags_weight"})
 
 
 @lru_cache(maxsize=1)
 def load_rules() -> dict:
     with open(RULES_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
+
+
+def clear_rules_cache() -> None:
+    load_rules.cache_clear()
 
 
 def band_points(bands: list, value: float | int) -> int:
@@ -67,7 +71,57 @@ def letter_for_total(rules: dict, total: int) -> str:
     for row in rules.get("letter_cutoffs") or []:
         if total >= int(row["min"]):
             return str(row["letter"])
-    return "D"
+    return "E"
+
+
+def tag_weight_points(rules: dict, tag_names: list[str] | None) -> tuple[int, dict]:
+    """Curated high-value tag bonus on top of tag-count bands. Cap from rules."""
+    cfg = rules.get("tag_weight") or {}
+    allow = {str(x).strip().lower() for x in (cfg.get("high_value_names") or []) if str(x).strip()}
+    if not allow:
+        return 0, {"matches": [], "heuristic": True}
+    matches = []
+    seen = set()
+    for raw in tag_names or []:
+        name = str(raw or "").strip()
+        key = name.lower()
+        if key in allow and key not in seen:
+            seen.add(key)
+            matches.append(name)
+    per = int(cfg.get("bonus_per_match", 1) or 1)
+    cap = int(cfg.get("cap", 2) or 2)
+    pts = min(cap, per * len(matches))
+    return pts, {"matches": matches, "heuristic": True}
+
+
+def detect_weapon_bonus_type(rules: dict, trait_lines: list[str]) -> tuple[int, int]:
+    """
+    Return (bonus_type_id, points) for the highest-scoring typed bonus on the
+    given trait lines. Type 3 (Low HP) scores 0; other matches beat it.
+    """
+    cfg = rules.get("maxweapon_bonus") or {}
+    pts_map = cfg.get("points_by_type") or {}
+    detect = cfg.get("detect") or {}
+    best_type = 0
+    best_pts = -1
+    for type_id in sorted(detect.keys(), key=lambda x: int(x)):
+        tid = int(type_id)
+        compiled = [re.compile(p) for p in (detect.get(str(type_id)) or detect.get(type_id) or [])]
+        hit = False
+        for line in trait_lines or []:
+            text = str(line or "")
+            if any(p.search(text) for p in compiled):
+                hit = True
+                break
+        if not hit:
+            continue
+        pts = int(pts_map.get(str(tid), 0) or 0)
+        if pts > best_pts:
+            best_type = tid
+            best_pts = pts
+    if best_pts < 0:
+        return 0, 0
+    return best_type, best_pts
 
 
 def bucket_for_letter(rules: dict, letter: str) -> str:
@@ -83,9 +137,12 @@ def debuff_pct_to_level(rules: dict, pct: int) -> int | None:
 
 
 def score_abilities(rules: dict, role: str, ability_blobs: list[str]) -> tuple[int, dict]:
-    """Return (points, meta). Heuristic."""
+    """Return (points, meta). Heuristic — effect families first, then great_for_role regex."""
     abil_cfg = rules.get("ability") or {}
     excl = [str(x).lower() for x in (abil_cfg.get("exclude_name_substrings") or [])]
+    family_pats = [
+        re.compile(p) for p in ((abil_cfg.get("effect_families") or {}).get(role) or [])
+    ]
     great_pats = [
         re.compile(p) for p in ((abil_cfg.get("great_for_role") or {}).get(role) or [])
     ]
@@ -101,7 +158,7 @@ def score_abilities(rules: dict, role: str, ability_blobs: list[str]) -> tuple[i
         return 0, {"count": 0, "great": 0, "heuristic": True}
     great = 0
     for text in kept:
-        if any(p.search(text) for p in great_pats):
+        if any(p.search(text) for p in family_pats) or any(p.search(text) for p in great_pats):
             great += 1
     if great >= 2:
         pts = int(abil_cfg.get("two_great_for_role_points", 3))
@@ -130,7 +187,8 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     has_shield, HP, ATK, DEF, MOB, MOV, weapon_range, weapon_power,
     has_max_tension_higher_weapon, has_preemptive, has_rare_debuff,
     has_extra_life, max_debuff_pct, support_debuffs_range4_count,
-    ssp_weapon_conditional_count (SSP only, excluding low-HP).
+    weapon_bonus_type (typed maxweapon_bonus; SP and SSP).
+    Optional: tags (names) for high-value tag weight bonus.
     """
     rules = rules or load_rules()
     role = features.get("role") or "Attack"
@@ -139,9 +197,14 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     breakdown: dict[str, Any] = {}
     meta: dict[str, Any] = {"heuristic_keys": []}
 
-    # A1 tags
+    # A1 tags (count bands + curated weight bonus)
     tags_pts = tag_count_points(rules, int(features.get("tag_count") or 0))
     breakdown["tags"] = tags_pts
+    tw_pts, tw_meta = tag_weight_points(rules, features.get("tags") or [])
+    breakdown["tags_weight"] = tw_pts
+    if tw_pts:
+        meta["tags_weight"] = tw_meta
+        meta["heuristic_keys"].append("tags_weight")
 
     # A2 / A3 terrain
     terr_cfg = rules.get("terrain") or {}
@@ -166,13 +229,18 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     # A4 transform
     breakdown["transform"] = int(rules.get("transform_points", 1)) if features.get("has_transform") else 0
 
-    # A5 MAP
+    # A5 MAP ammo only (no flat mapweapon stack)
     map_ammo = int(features.get("map_ammo") or 0)
-    map_pts = 0
-    if map_ammo >= 2:
-        map_pts = int((rules.get("map_ammo_points") or {}).get("2_or_more", 2))
+    ammo_key = str(min(max(map_ammo, 0), 4))
+    map_tbl = rules.get("map_ammo_points") or {}
+    if ammo_key in map_tbl:
+        map_pts = int(map_tbl.get(ammo_key, 0))
+    elif map_ammo >= 2:
+        map_pts = int(map_tbl.get("2_or_more", 2))
     elif map_ammo == 1:
-        map_pts = int((rules.get("map_ammo_points") or {}).get("1", 1))
+        map_pts = int(map_tbl.get("1", 1))
+    else:
+        map_pts = 0
     breakdown["map"] = map_pts
 
     # A6 abilities
@@ -255,18 +323,28 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
         lvl = debuff_pct_to_level(rules, int(features.get("max_debuff_pct") or 0))
         tbl = (rules.get("max_debuff_level") or {}).get(role) or {}
         if lvl is None:
-            breakdown["max_debuff"] = int(tbl.get("none", 0))
+            breakdown["max_debuff"] = int(tbl.get("none", tbl.get("0", 0)))
         else:
             breakdown["max_debuff"] = int(tbl.get(str(lvl), 0))
     else:
         breakdown["max_debuff"] = 0
 
-    # C SSP conditional weapon bonuses
-    ssp_cond = 0
-    if mode == "ssp":
-        n = int(features.get("ssp_weapon_conditional_count") or 0)
-        ssp_cond = n * int(rules.get("ssp_weapon_conditional_bonus_points", 1))
-    breakdown["ssp_weapon_conditional"] = ssp_cond
+    # C typed weapon bonus (SP and SSP) — replaces coarse SSP-only conditional
+    bonus_type = int(features.get("weapon_bonus_type") or 0)
+    bonus_pts = int(features.get("weapon_bonus_points") or 0)
+    if not bonus_type and features.get("best_weapon_trait_lines"):
+        bonus_type, bonus_pts = detect_weapon_bonus_type(rules, features.get("best_weapon_trait_lines") or [])
+    elif bonus_type and not features.get("weapon_bonus_points"):
+        pts_map = ((rules.get("maxweapon_bonus") or {}).get("points_by_type") or {})
+        bonus_pts = int(pts_map.get(str(bonus_type), 0) or 0)
+    # Legacy fallback: ssp_weapon_conditional_count treated as High-HP-style +1 each (capped 1)
+    if not bonus_type and mode == "ssp" and int(features.get("ssp_weapon_conditional_count") or 0) > 0:
+        bonus_type = 2
+        bonus_pts = int(((rules.get("maxweapon_bonus") or {}).get("points_by_type") or {}).get("2", 1))
+    breakdown["weapon_bonus"] = bonus_pts
+    if bonus_type:
+        labels = ((rules.get("maxweapon_bonus") or {}).get("type_labels") or {})
+        meta["weapon_bonus"] = {"type": bonus_type, "label": labels.get(str(bonus_type), str(bonus_type))}
 
     total = int(sum(int(v) for v in breakdown.values()))
     letter = letter_for_total(rules, total)
@@ -377,10 +455,8 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
     has_rare = False
     max_debuff_pct = 0
     support_debuff_kinds: set[str] = set()
-    ssp_cond_count = 0
     rare_keys = set(rules.get("rare_debuff_keys") or [])
-    excl_re = re.compile(rules.get("ssp_weapon_conditional_exclude_regex") or r"$a")
-    incl_re = re.compile(rules.get("ssp_weapon_conditional_include_regex") or r"$a")
+    best_weapon_trait_lines: list[str] = []
 
     try:
         debuff_keys = A.collect_unit_weapon_debuff_keys(uid, ld, lc, stat_mode=mode) or set()
@@ -431,6 +507,26 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
                         power += int(enh.get("value", 0) or 0)
                 break
         tension_max = str(wm.get("tension_type", "0") or "0") == "4"
+        trait_lines: list[str] = []
+        for tr in ws.get("traits", []) or []:
+            if tr:
+                trait_lines.append(str(tr))
+        if isinstance(levels, dict):
+            for lv in levels.values():
+                if isinstance(lv, dict):
+                    for tr in lv.get("traits", []) or []:
+                        if tr:
+                            trait_lines.append(str(tr))
+        if mode == "ssp":
+            mwid = A.normalize_id(wm.get("main_weapon_id", "0") or "0")
+            for cid in (wid, mwid):
+                if cid and cid != "0" and cid in getattr(A, "unit_ssp_weapon_effect_map", {}):
+                    for tid in A.unit_ssp_weapon_effect_map.get(cid) or []:
+                        tt2 = (ld.get("weapon_trait_detail_map", {}) or {}).get(tid, "")
+                        if tt2:
+                            trait_lines.append(str(tt2))
+                    break
+
         if wt == "3":
             ammo = int(ws.get("ammo", 0) or wm.get("ammo", 0) or 0)
             if mode == "ssp":
@@ -441,13 +537,11 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
                             ammo += int(enh.get("value", 0) or 0)
                     break
             map_ammo = max(map_ammo, ammo)
-            if power > max_power and max_range <= 0:
-                # keep MAP as power fallback only if no non-MAP later
-                pass
-            map_power = power
         else:
             max_range = max(max_range, rx)
-            max_power = max(max_power, power)
+            if power > max_power:
+                max_power = power
+                best_weapon_trait_lines = list(trait_lines)
             if tension_max:
                 max_power_tension = max(max_power_tension, power)
             else:
@@ -457,10 +551,7 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
                     if key in debuff_keys:
                         support_debuff_kinds.add(key)
 
-        # trait texts for this weapon path (unit-level iter is fine once)
-        _ = wt
-
-    # MAP power fallback
+    # MAP ammo fallback from browse previews
     if max_power <= 0:
         try:
             for prev in A.build_unit_browse_map_weapon_previews(uid, stat_mode=mode, ld=ld, lc=lc) or []:
@@ -474,15 +565,9 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
             max_debuff_pct = max(max_debuff_pct, int(b or 0), int(v or 0))
         except Exception:
             pass
-        if mode == "ssp" and incl_re.search(str(line or "")) and not excl_re.search(str(line or "")):
-            ssp_cond_count += 1
 
     has_max_tension_higher = max_power_tension > max_power_unrestricted > 0
-
-    # If only MAP weapons contributed power, resolve map power from browse
-    if max_power <= 0 and map_ammo > 0:
-        # leave power 0 → weak band; acceptable
-        pass
+    bonus_type, bonus_pts = detect_weapon_bonus_type(rules, best_weapon_trait_lines)
 
     return {
         "weapon_range": max_range,
@@ -493,7 +578,9 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
         "has_max_tension_higher_weapon": has_max_tension_higher,
         "max_debuff_pct": max_debuff_pct,
         "support_debuffs_range4_count": len(support_debuff_kinds),
-        "ssp_weapon_conditional_count": ssp_cond_count,
+        "weapon_bonus_type": bonus_type,
+        "weapon_bonus_points": bonus_pts,
+        "best_weapon_trait_lines": best_weapon_trait_lines[:12],
     }
 
 
@@ -898,7 +985,7 @@ def extract_character_features(
             cand_uids.append(A.normalize_id(linked))
     except Exception:
         pass
-    letter_order = ["D", "C", "B", "B+", "A", "A+", "S", "S+"]
+    letter_order = ["E", "D", "C", "B", "B+", "A", "A+", "S", "S+"]
     allowed = letter_pts_allowed(rules)
     bplus_or_better = 0
     best = ""

@@ -19,6 +19,7 @@
 
   const BREAKDOWN_LABELS = {
     tags: 'Tags',
+    tags_weight: 'High-value tags',
     terrain_dual: 'Space + Land deploy',
     terrain_niche: 'Perfect niche terrain',
     transform: 'Transform',
@@ -41,8 +42,8 @@
     movement: 'Movement',
     weapon_range: 'Weapon range',
     weapon_power: 'Weapon power',
+    weapon_bonus: 'Weapon bonus',
     max_debuff: 'Max debuff level',
-    ssp_weapon_conditional: 'SSP weapon conditional',
     ranged: 'Ranged',
     melee: 'Melee',
     awaken: 'Awaken',
@@ -76,25 +77,54 @@
   function imgUrl(path) {
     if (!path) return '';
     const p = String(path);
+    if (/^https?:\/\//i.test(p)) return p;
     const cdn = String(window.__GGEN_IMAGE_CDN__ || '').replace(/\/+$/, '');
     const useCdn = window.__GGEN_GAME_IMAGES_USE_CDN__ !== false && !!cdn;
-    if (!useCdn) return p;
-    if (p.startsWith('/static/images/')) return cdn + '/images/' + p.slice('/static/images/'.length);
-    if (p.startsWith('/static/')) return cdn + p.slice('/static'.length);
-    return p;
+    const webp = p.replace(/\.(png|jpe?g)(?=($|[?#]))/i, '.webp');
+    if (!useCdn) return webp;
+    if (webp.startsWith('/static/images/')) return cdn + '/images/' + webp.slice('/static/images/'.length);
+    if (webp.startsWith('/static/')) return cdn + webp.slice('/static'.length);
+    return webp;
   }
+
+  function gameImageUrlFallback(el) {
+    if (!el || el.dataset.ggImgDead === '1') return;
+    const step = Number(el.dataset.ggImgStep || 0);
+    el.dataset.ggImgStep = String(step + 1);
+    const cur = String(el.currentSrc || el.src || '');
+    const cdn = String(window.__GGEN_IMAGE_CDN__ || '').replace(/\/+$/, '');
+    if (step === 0 && /\.webp(\?|#|$)/i.test(cur)) {
+      el.src = cur.replace(/\.webp/gi, '.png');
+      return;
+    }
+    if (step === 1 && cdn && cur.indexOf(cdn) === 0) {
+      try {
+        const u = new URL(cur);
+        const i = u.pathname.indexOf('/images/');
+        if (i >= 0) {
+          el.src = '/static/images/' + u.pathname.slice(i + '/images/'.length);
+          return;
+        }
+      } catch (_) {}
+    }
+    el.dataset.ggImgDead = '1';
+    el.style.display = 'none';
+    const w = el.closest('.list-thumb-portrait-wrap');
+    const ph = w && w.querySelector('.list-thumb-placeholder');
+    if (ph) ph.style.display = 'flex';
+  }
+  window.gameImageUrlFallback = gameImageUrlFallback;
 
   function renderFramedThumb(row, kind) {
     const r = row.rarity || 'N';
     const base = RARITY_BASE_MAP[r] || RARITY_BASE_MAP.N;
     const frame = RARITY_FRAME_MAP[r] || RARITY_FRAME_MAP.N;
     const ph = kind === 'character' ? '👤' : '🤖';
-    const thum = row.thum || '';
-    const thumErr =
-      "var w=this.closest('.list-thumb-portrait-wrap');var ph=w&&w.querySelector('.list-thumb-placeholder');if(ph){ph.style.display='flex'}this.style.display='none'";
+    // API sets both `thum` and `thumb` after attach.
+    const thum = row.thum || row.thumb || '';
     let portrait = '';
     if (thum) {
-      portrait = `<img class="list-thumb-portrait" src="${esc(imgUrl(thum))}" alt="" loading="lazy" decoding="async" onerror="${thumErr}">`;
+      portrait = `<img class="list-thumb-portrait" src="${esc(imgUrl(thum))}" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback(this)">`;
     }
     portrait += `<div class="list-thumb-placeholder" style="display:${thum ? 'none' : 'flex'}">${ph}</div>`;
     let icons = '';
