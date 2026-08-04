@@ -15285,6 +15285,62 @@ def api_tier_mockup():
     return jsonify_cacheable(payload, ck, public=True, max_age=300, convert_images=True)
 
 
+_PUBLISHED_SP_INVESTMENT_FILE = os.path.join(app_dir, 'data', 'published', 'sp_investment_v1.json')
+
+
+def _sp_investment_json_path():
+    if os.path.isfile(_PUBLISHED_SP_INVESTMENT_FILE):
+        return _PUBLISHED_SP_INVESTMENT_FILE
+    return os.path.join(app_dir, 'scripts', 'output', 'sp_investment_v1.json')
+
+
+@app.route('/sp-list')
+@app.route('/sp-list-demo')
+@app.route('/en/sp-list')
+def sp_investment_page():
+    """SP/SSP investment suggestion list preview (precomputed; tier-list twin)."""
+    r = make_response(render_template(
+        'sp_investment.html',
+        image_cdn=IMAGE_CDN or '',
+        game_images_use_cdn=GAME_IMAGES_USE_CDN,
+    ))
+    r.headers['Cache-Control'] = 'public, max-age=300'
+    return r
+
+
+@app.route('/api/sp_investment')
+def api_sp_investment():
+    """Serve offline SP/SSP investment rankings with portrait thumbnails."""
+    path = _sp_investment_json_path()
+    if not os.path.isfile(path):
+        return jsonify({'error': 'sp_investment_v1.json not found — run scripts/build_sp_investment_rankings.py'}), 404
+    with open(path, 'r', encoding='utf-8') as f:
+        payload = json.load(f)
+    payload.pop('sp_flat', None)
+    payload.pop('ssp_flat', None)
+    for board_key in ('sp', 'ssp'):
+        buckets = payload.get(board_key) or {}
+        if isinstance(buckets, dict):
+            for rows in buckets.values():
+                _tier_mockup_attach_thumbs(rows, 'unit')
+                for row in rows or []:
+                    if not isinstance(row, dict) or not row.get('id'):
+                        continue
+                    if not (row.get('name') or '').strip():
+                        try:
+                            row['name'] = _wn_unit_name(row['id'], get_lang_data('EN')) or ''
+                        except Exception:
+                            pass
+    if not payload.get('scoring_guide'):
+        try:
+            import sp_investment_rank as _sir
+            payload['scoring_guide'] = _sir.scoring_guide_payload()
+        except Exception:
+            payload['scoring_guide'] = {}
+    ck = f"sp_investment_v1_{int(os.path.getmtime(path))}"
+    return jsonify_cacheable(payload, ck, public=True, max_age=300, convert_images=True)
+
+
 @app.route('/privacy-policy')
 def privacy_policy_page():
     r = make_response(render_template('privacy.html', image_cdn=IMAGE_CDN or '', game_images_use_cdn=GAME_IMAGES_USE_CDN))

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SP Investment List — GGen Eternal Database</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/sp_investment.css') }}">
+</head>
+<body class="spi-page">
+<div class="spi-shell">
+  <a class="spi-back" href="/">← Back to GGen Eternal Database</a>
+
+  <header class="spi-hero">
+    <h1>SP / SSP Investment List</h1>
+    <p>Should you spend SP or SSP chips on this Mobile Suit? Heuristic suggestion buckets — not a damage calculator. Preview page (feel it out before Ranking integration).</p>
+    <span class="spi-badge">Preview · methodology inspired by eternalsp</span>
+  </header>
+
+  <section id="spiScoringPanel" class="spi-scoring-panel" aria-labelledby="spiScoringTitle">
+    <button type="button" class="spi-scoring-toggle" id="spiScoringToggle" aria-expanded="true">
+      <h2 id="spiScoringTitle" class="spi-scoring-title">How scoring works</h2>
+      <span class="spi-scoring-chevron" aria-hidden="true">▾</span>
+    </button>
+    <div id="spiScoringBody" class="spi-scoring-body">
+      <p id="spiScoringIntro" class="spi-scoring-intro">Loading…</p>
+      <ul id="spiScoringOverrides" class="spi-scoring-list"></ul>
+      <ul id="spiScoringGaps" class="spi-scoring-list spi-scoring-gaps"></ul>
+      <div id="spiLetterCutoffs" class="spi-letter-cutoffs"></div>
+    </div>
+  </section>
+
+  <div class="spi-controls">
+    <nav class="spi-tabs" aria-label="Board">
+      <button type="button" class="active" data-board="sp">SP</button>
+      <button type="button" data-board="ssp">SSP</button>
+    </nav>
+    <nav class="spi-role-tabs" aria-label="Role">
+      <button type="button" class="active" data-role="Attack">Attack</button>
+      <button type="button" data-role="Defense">Defense</button>
+      <button type="button" data-role="Support">Support</button>
+    </nav>
+    <label class="spi-check"><input type="checkbox" id="spiShowLowRarity"> Show N/R/SR</label>
+    <label class="spi-check"><input type="checkbox" id="spiMapOnly"> MAP only</label>
+    <label class="spi-check"><input type="checkbox" id="spiHasSpOnly" checked> SP-eligible only</label>
+    <select id="spiSourceFilter" aria-label="Source filter">
+      <option value="all" selected>All sources</option>
+      <option value="gacha">Gacha</option>
+      <option value="event">Event / other</option>
+      <option value="dev">Development</option>
+    </select>
+    <input id="spiSearch" type="search" placeholder="Search name or tag…" aria-label="Search">
+  </div>
+
+  <p id="spiStatus" class="spi-status" aria-live="polite"></p>
+  <div id="spiGrid" class="spi-grid" aria-busy="true"></div>
+
+  <div id="spiModal" class="spi-modal" hidden>
+    <div class="spi-modal-backdrop" data-close="1"></div>
+    <div class="spi-modal-card" role="dialog" aria-modal="true" aria-labelledby="spiModalTitle">
+      <button type="button" class="spi-modal-close" data-close="1" aria-label="Close">×</button>
+      <div id="spiModalBody"></div>
+    </div>
+  </div>
+
+  <footer class="spi-foot">
+    <p class="muted">Not affiliated with Bandai Namco. Scoring is a point-sum heuristic; letters may not match other lists.</p>
+  </footer>
+</div>
+<script src="{{ url_for('static', filename='js/sp_investment.js') }}" defer></script>
+</body>
+</html>
