@@ -15369,12 +15369,24 @@ def _sp_investment_json_path():
 @app.route('/sp-list-demo')
 @app.route('/en/sp-list')
 @app.route('/en/investment-guide')
+def _sp_investment_character_is_sd_linked(cid):
+    """SD pilots are permanently paired with their linked MS — not interchangeable."""
+    cid = normalize_id(cid)
+    if not cid or cid == '0':
+        return False
+    linked = LINKED_CHARACTER_UNIT_MAP.get(cid)
+    if linked and _unit_has_sd_mechanism(unit_info_map.get(linked), linked):
+        return True
+    return False
+
+
 def sp_investment_page():
     """SP/SSP chip investment guide (precomputed suggestion buckets)."""
     r = make_response(render_template(
         'sp_investment.html',
         image_cdn=IMAGE_CDN or '',
         game_images_use_cdn=GAME_IMAGES_USE_CDN,
+        app_js_version=_app_js_bundle_version_tag(),
     ))
     r.headers['Cache-Control'] = 'public, max-age=300'
     return r
@@ -15402,6 +15414,13 @@ def _sp_investment_attach_board(buckets, kind):
                 info = (unit_info_map if kind == 'unit' else char_info_map).get(normalize_id(row['id']), {}) or {}
                 acq = str(info.get('acquisition_route', '0') or '0')
                 row['acquisition_icon'] = ACQUISITION_ROUTE_ICONS.get(acq, '')
+            if kind == 'unit':
+                row['is_sd'] = bool(_unit_has_sd_mechanism(unit_info_map.get(normalize_id(row['id'])), row['id']))
+            if kind == 'character':
+                is_sd = bool(row.get('is_sd_linked')) or _sp_investment_character_is_sd_linked(row['id'])
+                row['is_sd_linked'] = is_sd
+                if is_sd:
+                    row['recommended_units'] = []
             # Nested recommended MS thumbs (pilot detail panel)
             recs = row.get('recommended_units')
             if kind == 'character' and isinstance(recs, list) and recs:

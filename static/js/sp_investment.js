@@ -235,11 +235,11 @@
     const boardTabs = $('#spiBoardTabs');
     const mapWrap = $('#spiMapOnlyWrap');
     if (entity === 'characters') {
-      boardTabs.style.display = 'none';
+      if (boardTabs) boardTabs.style.display = 'none';
       board = 'sp';
       if (mapWrap) mapWrap.style.display = 'none';
     } else {
-      boardTabs.style.display = '';
+      if (boardTabs) boardTabs.style.display = '';
       if (mapWrap) mapWrap.style.display = '';
     }
   }
@@ -304,13 +304,11 @@
   function renderDetailLines(row) {
     const lines = row.detail_lines || [];
     if (!lines.length) {
-      const estimated = new Set(((row.meta && row.meta.heuristic_keys) || []));
       const bd = row.breakdown || {};
       return `<div class="spi-score-rows">${Object.keys(BREAKDOWN_LABELS)
         .filter((k) => bd[k] != null)
         .map((k) => {
-          const est = estimated.has(k) ? ' spi-score-row-estimated' : '';
-          return `<div class="spi-score-row${est}"><span class="spi-score-label">${esc(BREAKDOWN_LABELS[k])}</span>${ptsBadge(bd[k])}</div>`;
+          return `<div class="spi-score-row"><span class="spi-score-label">${esc(BREAKDOWN_LABELS[k])}</span>${ptsBadge(bd[k])}</div>`;
         })
         .join('')}</div>`;
     }
@@ -339,9 +337,8 @@
         if (kind === 'recommend') {
           return ''; // rendered in dedicated section with thumbs
         }
-        const est = ln.estimated ? ' spi-score-row-estimated' : '';
         const kindLabel = kind === 'skill' ? 'Skill' : kind === 'ability' ? 'Ability' : '';
-        return `<div class="spi-score-row${est}">
+        return `<div class="spi-score-row">
           <div class="spi-score-main">
             ${kindLabel ? `<span class="spi-score-kind">${esc(kindLabel)}</span>` : ''}
             <span class="spi-score-label">${esc(ln.name || ln.label || '')}</span>
@@ -353,6 +350,12 @@
   }
 
   function renderRecommendedUnits(row) {
+    if (row.is_sd_linked) {
+      return `<section class="spi-dossier-section">
+        <h4 class="spi-dossier-h">Recommended Mobile Suits</h4>
+        <p class="spi-dossier-empty">SD characters are permanently linked to their Mobile Suit and are not interchangeable — no recommendation list.</p>
+      </section>`;
+    }
     const units = row.recommended_units || [];
     const recPts = (row.breakdown && row.breakdown.recommend_ms) || 0;
     if (!units.length && !recPts) {
@@ -381,6 +384,58 @@
       <p class="spi-dossier-note">Matched by ability tag/series gates and pilot specialty${row.specialty ? ` (${esc(row.specialty)})` : ''}. Defense units skip the specialty check.</p>
       <div class="spi-rec-grid">${cards || '<p class="spi-dossier-empty">None on the current board.</p>'}</div>
     </section>`;
+  }
+
+  function syncSearchClear() {
+    const input = $('#spiSearch');
+    const clearBtn = $('#spiSearchClear');
+    const wrap = input && input.closest('.filter-input-wrap');
+    const has = !!(input && String(input.value || '').trim());
+    if (wrap) wrap.classList.toggle('has-value', has);
+    if (clearBtn) clearBtn.hidden = !has;
+  }
+
+  function applyFilterDom() {
+    document.querySelectorAll('.role-filter-btn[data-entity]').forEach((b) => {
+      b.classList.toggle('active', b.dataset.entity === entity);
+    });
+    document.querySelectorAll('#spiBoardTabs .role-filter-btn').forEach((b) => {
+      b.classList.toggle('active', b.dataset.board === board);
+    });
+    document.querySelectorAll('.spi-role-seg .role-filter-btn').forEach((b) => {
+      b.classList.toggle('active', b.dataset.role === role);
+    });
+    const low = $('#spiShowLowRarity');
+    if (low) low.checked = showLowRarity;
+    const map = $('#spiMapOnly');
+    if (map) map.checked = mapOnly;
+    const sp = $('#spiHasSpOnly');
+    if (sp) sp.checked = hasSpOnly;
+    const src = $('#spiSourceFilter');
+    if (src) src.value = sourceFilter;
+    const tag = $('#spiTagFilter');
+    if (tag) tag.value = tagFilter;
+    const er = $('#spiErFilter');
+    if (er) er.value = erFilter;
+    const search = $('#spiSearch');
+    if (search) search.value = searchQuery;
+    syncSearchClear();
+    syncBoardTabsVisibility();
+  }
+
+  function resetFilters() {
+    board = 'sp';
+    role = 'Attack';
+    showLowRarity = false;
+    mapOnly = false;
+    hasSpOnly = true;
+    sourceFilter = 'all';
+    tagFilter = '';
+    erFilter = '';
+    searchQuery = '';
+    applyFilterDom();
+    fillFilterSelects();
+    render();
   }
 
   function openModal(row) {
@@ -436,25 +491,25 @@
   }
 
   function bindControls() {
-    document.querySelectorAll('.spi-tabs button[data-entity]').forEach((btn) => {
+    document.querySelectorAll('.role-filter-btn[data-entity]').forEach((btn) => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.spi-tabs button[data-entity]').forEach((b) => b.classList.toggle('active', b === btn));
         entity = btn.dataset.entity || 'units';
+        applyFilterDom();
         fillFilterSelects();
         render();
       });
     });
-    document.querySelectorAll('#spiBoardTabs button').forEach((btn) => {
+    document.querySelectorAll('#spiBoardTabs .role-filter-btn').forEach((btn) => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('#spiBoardTabs button').forEach((b) => b.classList.toggle('active', b === btn));
         board = btn.dataset.board || 'sp';
+        applyFilterDom();
         render();
       });
     });
-    document.querySelectorAll('.spi-role-tabs button').forEach((btn) => {
+    document.querySelectorAll('.spi-role-seg .role-filter-btn').forEach((btn) => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.spi-role-tabs button').forEach((b) => b.classList.toggle('active', b === btn));
         role = btn.dataset.role || 'Attack';
+        applyFilterDom();
         render();
       });
     });
@@ -484,12 +539,26 @@
     });
     let t = null;
     $('#spiSearch').addEventListener('input', (e) => {
+      syncSearchClear();
       clearTimeout(t);
       t = setTimeout(() => {
         searchQuery = e.target.value || '';
         render();
       }, 120);
     });
+    const clearBtn = $('#spiSearchClear');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        searchQuery = '';
+        const input = $('#spiSearch');
+        if (input) input.value = '';
+        syncSearchClear();
+        render();
+        if (input) input.focus();
+      });
+    }
+    const resetBtn = $('#spiResetFilters');
+    if (resetBtn) resetBtn.addEventListener('click', resetFilters);
     grid.addEventListener('click', (e) => {
       const card = e.target.closest('.spi-card');
       if (!card) return;

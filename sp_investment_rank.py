@@ -1493,8 +1493,17 @@ def extract_character_features(
         }
     )
 
+    is_sd_linked = False
+    try:
+        linked_uid = A.normalize_id((getattr(A, "LINKED_CHARACTER_UNIT_MAP", None) or {}).get(cid) or "0")
+        if linked_uid and linked_uid != "0" and hasattr(A, "_unit_has_sd_mechanism"):
+            is_sd_linked = bool(A._unit_has_sd_mechanism(A.unit_info_map.get(linked_uid), linked_uid))
+    except Exception:
+        is_sd_linked = False
+
     recommended_units: list[dict] = []
-    if unit_index:
+    # SD characters are permanently paired — do not list interchangeable MS recommendations.
+    if not is_sd_linked and unit_index:
         recommended_units = match_recommended_units(
             A,
             cid,
@@ -1509,7 +1518,7 @@ def extract_character_features(
 
     # Fallback / supplement letter discovery from linked ids when index missing
     unit_letter_by_id = unit_letter_by_id or {}
-    if not recommended_units:
+    if not is_sd_linked and not recommended_units:
         cand_uids = []
         try:
             rec_uid = (
@@ -1585,6 +1594,7 @@ def extract_character_features(
         "required_unit_tag_ids": req_tags,
         "required_series_ids": req_series,
         "specialty": specialty,
+        "is_sd_linked": is_sd_linked,
         "recommended_units": recommended_units,
         "best_rec_ms_letter": best,
         "rec_ms_bplus_or_better_count": bplus_or_better,
@@ -1639,6 +1649,7 @@ def score_character(
         "meta": scored.get("meta") or {},
         "mode": "sp",
         "specialty": scored.get("specialty") or feats.get("specialty") or "",
+        "is_sd_linked": bool(feats.get("is_sd_linked")),
         "detail_lines": scored.get("detail_lines") or [],
         "recommended_units": feats.get("recommended_units") or [],
         "stats": {

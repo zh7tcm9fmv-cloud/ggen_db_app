@@ -1,31 +1,64 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-ui-lang="EN">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Investment Guide — GGen Eternal Database</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='css/sp_investment.css') }}">
+<link rel="preload" href="{{ url_for('static', filename='font/roboto_medium_numbers.ttf') }}?v={{ app_js_version }}" as="font" type="font/ttf" crossorigin>
+<style>
+@font-face{font-family:'RobotoMediumNumbers';src:url('{{ url_for('static', filename='font/roboto_medium_numbers.ttf') }}?v={{ app_js_version }}') format('truetype');font-weight:normal;font-style:normal;font-display:swap}
+@font-face{font-family:'Noto Sans JP';src:url('{{ url_for('static', filename='font/NotoSansJP.ttf') }}?v={{ app_js_version }}') format('truetype');font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:'ShinGoPr6DeBold';src:url('{{ url_for('static', filename='font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf') }}?v={{ app_js_version }}') format('opentype');font-weight:normal;font-style:normal;font-display:optional}
+@font-face{font-family:'UDShinGoStdTCMed';src:url('{{ url_for('static', filename='font/UDShinGoStdTC-Med.otf') }}?v={{ app_js_version }}') format('opentype');font-weight:500;font-style:normal;font-display:optional}
+@font-face{font-family:'FOTK Yoon Gothic 780 JP';src:url('{{ url_for('static', filename='font/FOTK-YoonGothic780_JP.otf') }}?v={{ app_js_version }}') format('opentype');font-weight:500;font-style:normal;font-display:optional}
+</style>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/app_shell_bundle.min.css') }}?v={{ app_js_version }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/sp_investment.css') }}?v={{ app_js_version }}">
 <script>
 window.__GGEN_IMAGE_CDN__ = {{ (image_cdn or '')|tojson }};
 window.__GGEN_GAME_IMAGES_USE_CDN__ = {{ (game_images_use_cdn if game_images_use_cdn is defined else true)|tojson }};
+try {
+  var _lg = localStorage.getItem('ggen_lang');
+  if (_lg) document.documentElement.setAttribute('data-ui-lang', _lg);
+} catch (e) {}
 </script>
 </head>
 <body class="spi-page">
-<div class="spi-shell">
-  <a class="spi-back" href="/">← Back to GGen Eternal Database</a>
+<div class="bg-pattern" aria-hidden="true"></div>
 
+<header class="app-header spi-app-header">
+  <div class="header-inner">
+    <a class="header-brand" href="/" aria-label="Back to GGen Eternal Database">
+      <div class="brand-logo">
+        <img src="{% if image_cdn %}{{ image_cdn }}/images/UI/IMG_Common_Logo_ETERNALBASE.webp{% else %}/static/images/UI/IMG_Common_Logo_ETERNALBASE.webp{% endif %}" alt="GGen Eternal Database" width="42" height="42" onerror="this.parentElement.innerHTML='<div style=\'font-size:25px;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center;width:100%;height:100%\'>GG</div>'">
+      </div>
+      <div class="brand-copy">
+        <div class="brand-title-row">
+          <h1 class="brand-text">
+            <span class="brand-word brand-word-ggen brand-frame-1">GGen</span>
+            <span class="brand-word brand-word-db brand-frame-2">Eternal</span>
+            <span class="brand-word brand-word-db brand-frame-3">DB</span>
+          </h1>
+        </div>
+        <div class="brand-sub">Investment Guide</div>
+      </div>
+    </a>
+    <a class="spi-header-back" href="/">← Database</a>
+  </div>
+</header>
+
+<main class="spi-shell">
   <header class="spi-hero">
-    <h1>Investment Guide</h1>
-    <p>Should you spend SP or SSP chips on this Mobile Suit or pilot? Suggestion buckets for shortlists — not a damage calculator.</p>
-    <span class="spi-badge">SP · SSP · Units &amp; Pilots</span>
+    <h1 class="spi-hero-title">Investment Guide</h1>
+    <p class="spi-hero-lead">Should you spend SP or SSP chips on this Mobile Suit or pilot? Suggestion buckets for shortlists — not a damage calculator.</p>
   </header>
 
   <section id="spiScoringPanel" class="spi-scoring-panel" aria-labelledby="spiScoringTitle">
-    <button type="button" class="spi-scoring-toggle" id="spiScoringToggle" aria-expanded="true">
+    <button type="button" class="spi-scoring-toggle" id="spiScoringToggle" aria-expanded="false">
       <h2 id="spiScoringTitle" class="spi-scoring-title">How scoring works</h2>
       <span class="spi-scoring-chevron" aria-hidden="true">▾</span>
     </button>
-    <div id="spiScoringBody" class="spi-scoring-body">
+    <div id="spiScoringBody" class="spi-scoring-body is-collapsed">
       <p id="spiScoringIntro" class="spi-scoring-intro">Loading…</p>
       <ul id="spiScoringOverrides" class="spi-scoring-list"></ul>
       <ul id="spiScoringGaps" class="spi-scoring-list spi-scoring-gaps"></ul>
@@ -33,39 +66,62 @@ window.__GGEN_GAME_IMAGES_USE_CDN__ = {{ (game_images_use_cdn if game_images_use
     </div>
   </section>
 
-  <div class="spi-controls">
-    <nav class="spi-tabs" aria-label="Entity">
-      <button type="button" class="active" data-entity="units">Units</button>
-      <button type="button" data-entity="characters">Pilots</button>
-    </nav>
-    <nav class="spi-tabs" id="spiBoardTabs" aria-label="Board">
-      <button type="button" class="active" data-board="sp">SP</button>
-      <button type="button" data-board="ssp">SSP</button>
-    </nav>
-    <nav class="spi-role-tabs" aria-label="Role">
-      <button type="button" class="active" data-role="Attack">Attack</button>
-      <button type="button" data-role="Defense">Defense</button>
-      <button type="button" data-role="Support">Support</button>
-    </nav>
-    <label class="spi-check"><input type="checkbox" id="spiShowLowRarity"> Show N/R/SR</label>
-    <label class="spi-check" id="spiMapOnlyWrap"><input type="checkbox" id="spiMapOnly"> MAP only</label>
-    <label class="spi-check"><input type="checkbox" id="spiHasSpOnly" checked> SP-eligible only</label>
-    <select id="spiSourceFilter" aria-label="Source filter">
-      <option value="all" selected>All sources</option>
-      <option value="gacha">Gacha</option>
-      <option value="event">Event / other</option>
-      <option value="dev">Development</option>
-    </select>
-    <select id="spiTagFilter" aria-label="Filter by tag">
-      <option value="">No tag filter</option>
-    </select>
-    <select id="spiErFilter" aria-label="Eternal Road Expert stage">
-      <option value="">No ER Expert filter</option>
-    </select>
-    <input id="spiSearch" type="search" placeholder="Search name or tag…" aria-label="Search">
+  <div class="list-toolbar spi-toolbar">
+    <div class="list-toolbar-left list-toolbar-left--browse">
+      <div class="browse-toolbar-top-row">
+        <div class="browse-toolbar-leading">
+          <span class="filter-input-wrap filter-input-wrap--compact filter-input-wrap--organic">
+            <input type="text" class="filter-input filter-input--organic" id="spiSearch" placeholder="Search name or tag…" aria-label="Search" autocomplete="off">
+            <button type="button" class="filter-input-clear" id="spiSearchClear" aria-label="Clear search" hidden>×</button>
+            <span class="filter-input-sizer" aria-hidden="true"></span>
+          </span>
+          <button type="button" class="browse-filters-clear-btn" id="spiResetFilters">Clear</button>
+        </div>
+        <div class="list-toolbar-result-count" id="spiStatus" aria-live="polite">Loading…</div>
+      </div>
+
+      <div class="spi-filter-row">
+        <div class="spi-seg" role="group" aria-label="Entity">
+          <button type="button" class="role-filter-btn active" data-entity="units">Units</button>
+          <button type="button" class="role-filter-btn" data-entity="characters">Pilots</button>
+        </div>
+        <div class="spi-seg" id="spiBoardTabs" role="group" aria-label="Board">
+          <button type="button" class="role-filter-btn active" data-board="sp">SP</button>
+          <button type="button" class="role-filter-btn" data-board="ssp">SSP</button>
+        </div>
+        <div class="spi-seg spi-role-seg" role="group" aria-label="Role">
+          <button type="button" class="role-filter-btn active" data-role="Attack" title="Attack">
+            <img class="filter-inline-icon role-filter-chip" src="/static/images/UI/UI_Common_TypeIcon_Attack_M.webp" alt=""> Attack
+          </button>
+          <button type="button" class="role-filter-btn" data-role="Defense" title="Defense">
+            <img class="filter-inline-icon role-filter-chip" src="/static/images/UI/UI_Common_TypeIcon_Defense_M.webp" alt=""> Defense
+          </button>
+          <button type="button" class="role-filter-btn" data-role="Support" title="Support">
+            <img class="filter-inline-icon role-filter-chip" src="/static/images/UI/UI_Common_TypeIcon_Support_M.webp" alt=""> Support
+          </button>
+        </div>
+      </div>
+
+      <div class="spi-filter-row spi-filter-row--secondary">
+        <label class="spi-check"><input type="checkbox" id="spiShowLowRarity"> Show N/R/SR</label>
+        <label class="spi-check" id="spiMapOnlyWrap"><input type="checkbox" id="spiMapOnly"> MAP only</label>
+        <label class="spi-check"><input type="checkbox" id="spiHasSpOnly" checked> SP-eligible only</label>
+        <select id="spiSourceFilter" class="filter-select" aria-label="Source filter">
+          <option value="all" selected>All sources</option>
+          <option value="gacha">Gacha</option>
+          <option value="event">Event / other</option>
+          <option value="dev">Development</option>
+        </select>
+        <select id="spiTagFilter" class="filter-select" aria-label="Filter by tag">
+          <option value="">No tag filter</option>
+        </select>
+        <select id="spiErFilter" class="filter-select" aria-label="Eternal Road Expert stage">
+          <option value="">No ER Expert filter</option>
+        </select>
+      </div>
+    </div>
   </div>
 
-  <p id="spiStatus" class="spi-status" aria-live="polite"></p>
   <div id="spiGrid" class="spi-grid" aria-busy="true"></div>
 
   <div id="spiModal" class="spi-modal" hidden>
@@ -79,7 +135,7 @@ window.__GGEN_GAME_IMAGES_USE_CDN__ = {{ (game_images_use_cdn if game_images_use
   <footer class="spi-foot">
     <p class="muted">Not affiliated with Bandai Namco. Scoring is a point-sum guide; letters may not match other lists.</p>
   </footer>
-</div>
-<script src="{{ url_for('static', filename='js/sp_investment.js') }}" defer></script>
+</main>
+<script src="{{ url_for('static', filename='js/sp_investment.js') }}?v={{ app_js_version }}" defer></script>
 </body>
 </html>
