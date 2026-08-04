@@ -614,7 +614,7 @@ document.addEventListener('DOMContentLoaded',async()=>{removeLegacyBrowseTableSt
 const LANG_STORAGE_KEY='ggen_lang';
 function readPersistedLang(){try{const s=localStorage.getItem(LANG_STORAGE_KEY);return s&&String(s).trim()||''}catch(e){return''}}
 function persistLang(l){try{if(l)localStorage.setItem(LANG_STORAGE_KEY,String(l))}catch(e){}}
-function syncUiLangDocumentAttr(){try{document.documentElement.setAttribute('data-ui-lang',(S.lang&&String(S.lang).trim())||'EN')}catch(_){}}
+function syncUiLangDocumentAttr(){try{document.documentElement.setAttribute('data-ui-lang',(S.lang&&String(S.lang).trim())||'EN');if(typeof window.__GGEN_ENSURE_UI_FONTS__==='function')window.__GGEN_ENSURE_UI_FONTS__(S.lang)}catch(_){}}
 async function loadLangs(){try{const r=await fetch('/api/languages');const d=await r.json();S.languages=d.languages||['EN'];const def=d.default||'EN';const saved=readPersistedLang();S.lang=(saved&&S.languages.includes(saved))?saved:def}catch(e){S.languages=['EN'];const saved=readPersistedLang();S.lang=(saved&&S.languages.includes(saved))?saved:'EN'}finally{syncUiLangDocumentAttr();try{document.getElementById('langLabel').textContent=S.lang;renderLangDD()}catch(_){}}}
 function renderLangDD(){document.getElementById('langDropdown').innerHTML=S.languages.map(l=>`<div class="lang-option ${l===S.lang?'selected':''}" onclick="selLang('${l}')">${l}</div>`).join('')}
 function toggleLangDropdown(){document.getElementById('langDropdown').classList.toggle('active')}

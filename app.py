@@ -120,6 +120,7 @@ def _app_js_bundle_version_tag():
     # Include brand fonts so long-cache ?v= busts when an OTF/TTF is replaced.
     font_assets = (
         'font/roboto_medium_numbers.ttf',
+        'font/NotoSansJP.ttf',
         'font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf',
         'font/FOTK-YoonGothic780_JP.otf',
         'font/UDShinGoStdTC-Med.otf',

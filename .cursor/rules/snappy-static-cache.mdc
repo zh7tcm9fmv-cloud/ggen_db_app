@@ -1,41 +1,36 @@
 ---
-description: Snappy static DB performance bar — anything worse than this is unacceptable
+description: Performance baseline (Aug 2026) — every change must meet or beat this bar
 alwaysApply: true
 ---
 
-# Snappy static cache (minimum performance bar)
+# Performance baseline (owner standard)
 
-Owner standard (Aug 2026): the site must stay **usable immediately** — boot shell during DB load, HTML/API responsive after ready, browse lists interactive without a blank screen. **Anything worse than this bar is a regression and must be fixed before/with the feature change.**
+**Baseline date: 2026-08-04.** The live site’s current feel — smooth, responsive browse, snappy detail open, Team Builder that does not feel laggy — is the **minimum** bar. Every commit/update must **meet or beat** this standard. If a change makes anything feel worse, it is incomplete and needs more work (fix or revert) before shipping.
 
-This database is mostly static. Browse + Top 10 must feel instant. If performance drops, restore this standard — do not reintroduce blocking live rebuilds.
+## What “good” means (must not regress)
 
-## Hard rules
+1. **Cold / deploy** — Boot shell during DB load (`wsgi:application`). No long blank white page. After ready, browse lists paint without emptying out on `warming_up` (server may wait; client retries long enough).
+2. **Browse first paint** — Characters/units lists feel immediate once warm. Eager-load only first-viewport thumbs (~16); keep frames/icons/below-fold lazy.
+3. **Detail open** — Paint from API JSON quickly; do not await full portrait CDN warm. Warm ≤~12 images. No stuck/empty detail shells.
+4. **Team Builder** — Stay in the main bundle unless the owner explicitly asks for a lazy split *and* UX stays as snappy as this baseline. Prior lazy-split was reverted for latency.
+5. **Published/static data** — Lists + Top 10 BSP from precomputed caches. Never block user responses on live enrich/sim for board bumps.
+6. **HTTP caching** — Stable JSON via `jsonify_cacheable` (ETag / 304). Prefer 304 over re-serializing.
+7. **Images** — Game art via CDN + WebP (`IMAGE_CDN` / `imgUrl` / `convert_image_urls`). Do not pull portraits back onto Railway.
+8. **Fonts** — Brand keeps FOTK. Locale-gate `@font-face`: EN cold load = Roboto + FOTK only; inject Noto/ShinGo/UDShinGo only for JA/TW/HK (`__GGEN_ENSURE_UI_FONTS__`). Keep `game_news.html` in sync. Never demote brand title to system-first.
 
-1. **Serve published/static data** — Characters/units lists and Top 10 BSP come from precomputed caches (`data/published` BSP catalogs, in-memory API caches). Never block the user response on live enrich/sim for board-version bumps.
-2. **HTTP ETag caching** — Stable JSON APIs use `jsonify_cacheable` (ETag + `Cache-Control`). Prefer 304 over re-serializing bodies. Applies to browse lists and `/api/unit/.../best_synergy_pilots`.
-3. **Top 10 instant path** — Return published pilots immediately. Sync-enrich only when a board is *empty*. Stale skills-off / defender boards refresh in the **background**.
-4. **Browse first** — Do not let GTM, e-sim/feedback/kofi, or aggressive prefetch compete with the **routed** tab’s first paint.
-   - Do **not** `await /api/languages` before browse — boot from `localStorage` lang, refresh language list in parallel.
-   - Do **not** hard-prime `/api/characters` on every cold load — resolve short path / `?tab=` first (`/st` → stages only, etc.).
-   - Do **not** call `ensureBrowseFiltersMeta` (3× `/api/browse_filters`) from cold `applyLang`; warm filters after first browse paint / idle only.
-   - Defer full `initToolbarFilterIcons()` off cold `applyLang`; never emit empty/`file:` media `src` (use `safeImgSrc` / `imgSrcAttr`).
-   - **Brand fonts** — Prefer FOTK / ShinGo / UDShinGo for brand + locale body. Same-origin `/static/font/` + year-long `immutable` cache + `?v=`. **One** `@font-face` per family with `font-weight:100 900` (bold ML stays on brand; never register the same OTF 5×). Preload **only** tiny Roboto (~3KB) — never preload multi‑MB OTFs. `font-display:swap`. No unused Noto. Keep `game_news.html` in sync. Never demote brand stacks to system-first.
-   - Detail open must **not** `await` portrait CDN warm — paint shell from API JSON; warm ≤~12 images (thum then portrait), never 40+ concurrent. No boot-thumb / fade cover for detail heroes — spinner then full art; hover prefetch warms the real portrait.
-   - **Browse thumbs** — Eager-load only first-viewport portraits (~16) with `fetchpriority=high`; frame/base/icons and below-fold rows stay `loading=lazy` so the CDN isn’t flooded.
-   - **Stages / Challenge**: prewarm Eternal + Challenge `/api/stages` **after** char/unit caches are ready — never on the critical path that blocks gunicorn bind or `/health`.
-5. **Lang switch** — Reload only the visible browse tab; other tabs on demand. Soft-reload (keep prior rows under spinner). Client Top 10 cache must be keyed/invalidated by locale so pilot names re-localize.
-6. **Boot / deploy** — Production entry is `wsgi:application` (not `app:app`). Bind before DB import; show the boot shell while loading. Never run browse-cache build **synchronously at import**. `/health` must return 200 during boot (`booting:true`) and after (`booting:false`). List APIs may 503 `warming_up` briefly (client retries). A blank/white screen with no boot UI for 30s+ is unacceptable.
-7. **Regression = bug** — After any feature fix, spot-check `/` + `/health` + `/api/characters` (and a cold `wsgi` boot). If Top 10, browse, fonts, or cold homepage feel worse than this bar, measure and restore.
+## Change discipline
 
-## Anti-patterns
+- Prefer **one measured lever at a time**; smoke before ship.
+- After any server/UI change: spot-check `/`, `/health`, `/api/characters`, detail open, and (if touched) Team Builder.
+- **Do not** re-land optimistic detail / View Transitions / service worker / Calculator·DC or Ranking lazy splits without an explicit owner ask + verification.
+- `node --check static/js/app.js` before shipping large JS edits; rebuild `app.min.js` when `app.js` changes.
 
-- Forcing `enrich_group_*(..., force=True)` on every Top 10 open because `board_version` is stale
-- Scanning legacy BSP catalogs when the current published tag already has the unit
-- Returning browse lists with bare `jsonify()` (no ETag) after they were cacheable
-- Client Top 10 cache keyed only by unit id (ignores language)
-- Blocking process startup / Railway health on non-critical prewarm (stages, drop tables, etc.)
-- Making every list thumb (portrait+frame+icons) `eager` for 50 rows (CDN thrash → “images slowly loading”)
-- Demoting brand OTFs behind system fonts “for performance” so the UI looks like generic system type
-- Preloading multi‑MB brand OTFs so fonts fight detail/browse image bandwidth
-- Registering the same brand OTF under 5 discrete `@font-face` weights (Firefox name-table spam)
-- Nested-quote `outerHTML='<div…'>` inside template-literal `onerror` on huge `app.js` lines (breaks parse → site dead)
+## Anti-patterns (regressions)
+
+- Exhausting short warmup retries so browse stays empty after deploy
+- Flooding CDN with eager thumbs for every list row
+- Blocking gunicorn bind / `/health` on stage prewarm or heavy sync work
+- Lazy-loading Team Builder (or other hot tools) in a way that adds open lag
+- Nested-quote `outerHTML` inside template-literal `onerror` on huge `app.js` lines
+- Demoting brand fonts to system-first “for performance”
+- Registering all CJK `@font-face` on every cold EN load (~19MB)
