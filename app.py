@@ -15358,6 +15358,11 @@ def api_tier_mockup():
 _PUBLISHED_SP_INVESTMENT_FILE = os.path.join(app_dir, 'data', 'published', 'sp_investment_v1.json')
 
 
+def _sp_investment_public_enabled():
+    """Investment Guide is offline by default; set SP_INVESTMENT_PUBLIC=1 to publish."""
+    return str(os.environ.get('SP_INVESTMENT_PUBLIC', '') or '').strip() == '1'
+
+
 def _sp_investment_json_path():
     if os.path.isfile(_PUBLISHED_SP_INVESTMENT_FILE):
         return _PUBLISHED_SP_INVESTMENT_FILE
@@ -15382,11 +15387,21 @@ def _sp_investment_character_is_sd_linked(cid):
 @app.route('/en/investment-guide')
 def sp_investment_page():
     """SP/SSP chip investment guide (precomputed suggestion buckets)."""
+    ver = _app_js_bundle_version_tag()
+    if not _sp_investment_public_enabled():
+        r = make_response(render_template(
+            'sp_investment_offline.html',
+            image_cdn=IMAGE_CDN or '',
+            game_images_use_cdn=GAME_IMAGES_USE_CDN,
+            app_js_version=ver,
+        ))
+        r.headers['Cache-Control'] = 'no-store'
+        return r
     r = make_response(render_template(
         'sp_investment.html',
         image_cdn=IMAGE_CDN or '',
         game_images_use_cdn=GAME_IMAGES_USE_CDN,
-        app_js_version=_app_js_bundle_version_tag(),
+        app_js_version=ver,
     ))
     r.headers['Cache-Control'] = 'public, max-age=300'
     return r
@@ -15444,6 +15459,8 @@ def _sp_investment_attach_board(buckets, kind):
 @app.route('/api/sp_investment')
 def api_sp_investment():
     """Serve offline SP/SSP investment rankings with portrait thumbnails."""
+    if not _sp_investment_public_enabled():
+        return jsonify({'error': 'Investment Guide is under review'}), 404
     path = _sp_investment_json_path()
     if not os.path.isfile(path):
         return jsonify({'error': 'sp_investment_v1.json not found — run scripts/build_sp_investment_rankings.py'}), 404

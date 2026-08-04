@@ -165,7 +165,38 @@ def detect_weapon_bonus_type(rules: dict, trait_lines: list[str]) -> tuple[int, 
 
 
 def bucket_for_letter(rules: dict, letter: str) -> str:
-    return str((rules.get("bucket_by_letter") or {}).get(letter, "dont"))
+    return str((rules.get("bucket_by_letter") or {}).get(letter, "low"))
+
+
+def terrain_coverage_points(rules: dict, terrain: dict | None) -> tuple[int, dict]:
+    """
+    v4 terrain: 0 if Space+Land deployable; +1 per extra deployable terrain;
+    −2 if missing Land or Space.
+    """
+    terr_cfg = rules.get("terrain") or {}
+    deploy_min = int(terr_cfg.get("deploy_min_level", 2))
+    terrain = terrain or {}
+    space = int(terrain.get("Space", 1) or 1)
+    ground = int(terrain.get("Ground", 1) or 1)
+    has_space = space >= deploy_min
+    has_land = ground >= deploy_min
+    meta = {
+        "has_space": has_space,
+        "has_land": has_land,
+        "extra": [],
+    }
+    if not has_space or not has_land:
+        penalty = int(terr_cfg.get("missing_space_or_land_penalty", -2))
+        return penalty, meta
+    pts = 0
+    extra_keys = terr_cfg.get("extra_terrain_keys") or ["Atmospheric", "Underwater"]
+    per = int(terr_cfg.get("extra_terrain_points", 1))
+    for key in extra_keys:
+        lvl = int(terrain.get(key, 1) or 1)
+        if lvl >= deploy_min:
+            pts += per
+            meta["extra"].append(key)
+    return pts, meta
 
 
 def debuff_pct_to_level(rules: dict, pct: int) -> int | None:
@@ -202,6 +233,8 @@ def score_abilities(rules: dict, role: str, ability_blobs: list[str]) -> tuple[i
     abil_cfg = rules.get("ability") or {}
     excl = [str(x).lower() for x in (abil_cfg.get("exclude_name_substrings") or [])]
     ignore_stat = bool(abil_cfg.get("ignore_pure_stat_passives", False))
+    tension_re = re.compile(abil_cfg.get("tension_gate_regex") or r"$a")
+    tension_scale = float(abil_cfg.get("tension_gated_points_scale", 0) or 0)
     family_pats = [
         re.compile(p) for p in ((abil_cfg.get("effect_families") or {}).get(role) or [])
     ]
@@ -210,6 +243,7 @@ def score_abilities(rules: dict, role: str, ability_blobs: list[str]) -> tuple[i
     ]
     kept: list[str] = []
     skipped_stat = 0
+    skipped_tension = 0
     for blob in ability_blobs or []:
         text = str(blob or "")
         low = text.lower()
@@ -218,10 +252,19 @@ def score_abilities(rules: dict, role: str, ability_blobs: list[str]) -> tuple[i
         if ignore_stat and _is_pure_stat_passive(text):
             skipped_stat += 1
             continue
+        if tension_re.search(text) and tension_scale <= 0:
+            skipped_tension += 1
+            continue
         if text.strip():
             kept.append(text)
     if not kept:
-        return 0, {"count": 0, "great": 0, "skipped_stat": skipped_stat, "heuristic": True}
+        return 0, {
+            "count": 0,
+            "great": 0,
+            "skipped_stat": skipped_stat,
+            "skipped_tension": skipped_tension,
+            "heuristic": True,
+        }
     great = 0
     for text in kept:
         if any(p.search(text) for p in family_pats) or any(p.search(text) for p in great_pats):
@@ -232,7 +275,13 @@ def score_abilities(rules: dict, role: str, ability_blobs: list[str]) -> tuple[i
         pts = int(abil_cfg.get("one_great_for_role_points", 2))
     else:
         pts = int(abil_cfg.get("has_passive_points", 1))
-    return pts, {"count": len(kept), "great": great, "skipped_stat": skipped_stat, "heuristic": True}
+    return pts, {
+        "count": len(kept),
+        "great": great,
+        "skipped_stat": skipped_stat,
+        "skipped_tension": skipped_tension,
+        "heuristic": True,
+    }
 
 
 def score_linked_pilot(rules: dict, has_linked: bool, linked_very_good: bool) -> tuple[int, dict]:
@@ -263,7 +312,7 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     breakdown: dict[str, Any] = {}
     meta: dict[str, Any] = {"heuristic_keys": []}
 
-    # A1 tags (meaningful-count bands + curated weight bonus)
+    # A1 combat tags only (tag-count bands disabled in v4; curated weight bonus)
     scored_tags = features.get("scored_tags")
     if scored_tags is None:
         scored_tags = filter_scored_unit_tags(rules, features.get("tags") or [])
@@ -277,39 +326,10 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
         meta["heuristic_keys"].append("tags_weight")
     meta["scored_tag_count"] = tag_n
 
-    # A2 / A3 terrain + content coverage (limited ship / theater options proxy)
-    terr_cfg = rules.get("terrain") or {}
-    terrain = features.get("terrain") or {}
-    deploy_min = int(terr_cfg.get("deploy_min_level", 2))
-    perfect_min = int(terr_cfg.get("perfect_min_level", 3))
-    space = int(terrain.get("Space", 1) or 1)
-    ground = int(terrain.get("Ground", 1) or 1)
-    air = int(terrain.get("Atmospheric", 1) or 1)
-    water = int(terrain.get("Underwater", 1) or 1)
-    has_dual = space >= deploy_min and ground >= deploy_min
-    dual = role_points(terr_cfg.get("dual_space_ground_deploy_points", 2), role, 2) if has_dual else 0
-    breakdown["terrain_dual"] = dual
-    triple = 0
-    if space >= deploy_min and air >= deploy_min and ground >= deploy_min:
-        triple = role_points(terr_cfg.get("triple_space_air_ground_deploy_points", 0), role, 0)
-    breakdown["terrain_triple"] = triple
-    niche = 0
-    # Niche only when not already triple-covered (avoid stacking Space+Air perfect with triple)
-    if triple <= 0:
-        if space >= perfect_min and air >= perfect_min:
-            niche = role_points(terr_cfg.get("perfect_space_and_atmospheric_points", 1), role, 1)
-        elif water >= perfect_min:
-            niche = role_points(terr_cfg.get("else_perfect_underwater_points", 1), role, 1)
-    breakdown["terrain_niche"] = niche
-    gap = 0
-    if not has_dual:
-        min_mov = int(terr_cfg.get("high_mobility_min_mov", 5))
-        min_rng = int(terr_cfg.get("high_mobility_min_range", 5))
-        mov = int(features.get("MOV") or 0)
-        wr = int(features.get("weapon_range") or 0)
-        if mov >= min_mov or wr >= min_rng:
-            gap = role_points(terr_cfg.get("high_mobility_no_dual_penalty", 0), role, 0)
-    breakdown["terrain_gap"] = gap
+    # A2 terrain coverage (Space+Land base; extras; missing penalty)
+    terr_pts, terr_meta = terrain_coverage_points(rules, features.get("terrain") or {})
+    breakdown["terrain"] = terr_pts
+    meta["terrain"] = terr_meta
 
     # A4 transform
     breakdown["transform"] = int(rules.get("transform_points", 1)) if features.get("has_transform") else 0
@@ -426,6 +446,13 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     if not bonus_type and mode == "ssp" and int(features.get("ssp_weapon_conditional_count") or 0) > 0:
         bonus_type = 2
         bonus_pts = int(((rules.get("maxweapon_bonus") or {}).get("points_by_type") or {}).get("2", 1))
+    # Higher-range bonus is not a substitute for short actual max range
+    ignore_hi_rng = int(
+        ((rules.get("maxweapon_bonus") or {}).get("ignore_higher_range_when_max_range_lte", 0) or 0)
+    )
+    if bonus_type == 4 and wr <= ignore_hi_rng:
+        bonus_type = 0
+        bonus_pts = 0
     breakdown["weapon_bonus"] = bonus_pts
     if bonus_type:
         labels = ((rules.get("maxweapon_bonus") or {}).get("type_labels") or {})
@@ -917,6 +944,12 @@ def _score_one_pilot_kit_line(
     # Permanent stat % is already reflected in scored SP totals.
     if _PILOT_STAT_BOOST_NAME.search(name) or _PILOT_STAT_BOOST_NAME.search(blob.split("\n", 1)[0]):
         return 0
+    tension_re = re.compile(
+        rules.get("pilot_skill_tension_gate_regex")
+        or ((rules.get("ability") or {}).get("tension_gate_regex") or r"$a")
+    )
+    if tension_re.search(blob) or tension_re.search(name):
+        return 0
     cfg = rules.get("pilot_skill") or {}
     ignore = re.compile(cfg.get("defense_ignore_regex") or r"$a")
     if role == "Defense" and ignore.search(blob):
@@ -973,16 +1006,24 @@ def score_pilot_features(features: dict, rules: dict | None = None) -> dict:
     detail_lines: list[dict] = []
 
     tag_pts = pilot_tag_count_points(rules, int(features.get("tag_count") or 0))
-    breakdown["tags"] = tag_pts
+    tw_pts, tw_meta = tag_weight_points(
+        {"tag_weight": rules.get("pilot_tag_weight") or {}},
+        features.get("tags") or [],
+    )
+    tags_total = tag_pts + tw_pts
+    breakdown["tags"] = tags_total
     tag_names = [str(t) for t in (features.get("tags") or []) if t]
     detail_lines.append(
         {
             "kind": "tags",
-            "label": "Tags",
+            "label": "Combat tags",
             "detail": ", ".join(tag_names) if tag_names else "—",
-            "points": tag_pts,
+            "points": tags_total,
         }
     )
+    if tw_pts:
+        meta["tags_weight"] = tw_meta
+        meta["heuristic_keys"].append("tags_weight")
 
     for key in ("Ranged", "Melee", "Awaken", "Defense", "Reaction"):
         bands = ((rules.get("pilot_stat_bands") or {}).get(key) or {}).get(role) or []
@@ -1378,12 +1419,22 @@ def match_recommended_units(
 ) -> list[dict]:
     """
     MS recommendations: B+ and up, must satisfy pilot ability tag/series gates,
-    and use the pilot's Ranged/Melee/Awaken specialty (Defense units exempt).
+    use the pilot's Ranged/Melee/Awaken specialty (Defense units exempt),
+    and match v4 role gates (Attack→Attack, Support→Attack+Support, Defense→Defense).
+    Official/linked pairs always allowed.
     """
     rules = rules or load_rules()
     by_id = unit_index.get("by_id") or {}
     allowed = letter_pts_allowed(rules)
+    role_gate = (rules.get("pilot_recommend_role_gate") or {}).get(role) or None
     cand: dict[str, dict] = {}
+
+    def _role_ok(u_role: str, reason: str) -> bool:
+        if reason in ("official", "linked"):
+            return True
+        if not role_gate:
+            return True
+        return (u_role or "") in role_gate
 
     def _add(uid: str, reason: str):
         uid = A.normalize_id(uid)
@@ -1392,6 +1443,9 @@ def match_recommended_units(
             return
         lit = ent.get("letter") or ""
         if lit not in allowed or _LETTER_ORDER.index(lit) < _LETTER_ORDER.index("B+"):
+            return
+        u_role = ent.get("role") or ""
+        if not _role_ok(u_role, reason):
             return
         row = {
             "id": uid,
@@ -1457,6 +1511,41 @@ def match_recommended_units(
     return rows[:24]
 
 
+def character_is_investment_eligible(
+    A, cid: str, rules: dict | None = None, unit_index: dict | None = None
+) -> bool:
+    """Playable filter plus optional denylist / usable unit-link requirement."""
+    rules = rules or load_rules()
+    cid = A.normalize_id(cid) if hasattr(A, "normalize_id") else str(cid)
+    if not cid or cid == "0":
+        return False
+    denylist = {str(x) for x in (rules.get("exclude_character_ids") or []) if str(x)}
+    if cid in denylist:
+        return False
+    playable = getattr(A, "char_list_playable_ids", None)
+    if playable is not None and cid not in playable:
+        return False
+    if not rules.get("require_character_usable_unit_link", False):
+        return True
+    # Official recommend MS, linked MS, or reverse-linked from unit index.
+    try:
+        rec = ""
+        if hasattr(A, "resolve_character_recommend_unit_id"):
+            rec = A.normalize_id(A.resolve_character_recommend_unit_id(cid) or "")
+        if not rec or rec == "0":
+            rec = A.normalize_id((getattr(A, "CHAR_RECOMMEND_UNIT_MAP", None) or {}).get(cid) or "0")
+        if rec and rec != "0" and rec in (getattr(A, "unit_info_map", None) or {}):
+            return True
+        linked = A.normalize_id((getattr(A, "LINKED_CHARACTER_UNIT_MAP", None) or {}).get(cid) or "0")
+        if linked and linked != "0" and linked in (getattr(A, "unit_info_map", None) or {}):
+            return True
+    except Exception:
+        pass
+    if unit_index and cid in (unit_index.get("by_recommend_char") or {}):
+        return True
+    return False
+
+
 def extract_character_features(
     A,
     cid: str,
@@ -1466,6 +1555,9 @@ def extract_character_features(
     unit_index: dict | None = None,
 ) -> dict | None:
     rules = rules or load_rules()
+    cid = A.normalize_id(cid) if hasattr(A, "normalize_id") else str(cid)
+    if not character_is_investment_eligible(A, cid, rules, unit_index=unit_index):
+        return None
     info = A.char_info_map.get(cid) or {}
     if not info:
         return None

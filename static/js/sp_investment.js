@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const BUCKET_ORDER = ['no_regrets', 'good', 'better_options', 'dont'];
+  const BUCKET_ORDER = ['priority', 'strong', 'situational', 'low'];
   const RARITY_BASE_MAP = {
     UR: '/static/images/UI/UI_Common_Tmb_Square_UR_Base.webp',
     SSR: '/static/images/UI/UI_Common_Tmb_Square_SSR_Base.webp',
@@ -18,12 +18,13 @@
   };
 
   const BREAKDOWN_LABELS = {
-    tags: 'Meaningful tags',
-    tags_weight: 'High-value tags',
-    terrain_dual: 'Space + Land deploy',
-    terrain_triple: 'Space + Atmo + Land',
-    terrain_niche: 'Perfect niche terrain',
-    terrain_gap: 'High MOV/range, no Space+Land',
+    tags: 'Combat tags',
+    tags_weight: 'Combat tags',
+    terrain: 'Terrain',
+    terrain_dual: 'Terrain (legacy)',
+    terrain_triple: 'Terrain (legacy)',
+    terrain_niche: 'Terrain (legacy)',
+    terrain_gap: 'Terrain (legacy)',
     rarity: 'Rarity adjustment',
     transform: 'Transform',
     map: 'MAP ammo',
@@ -42,7 +43,7 @@
     def: 'DEF',
     mob: 'MOB',
     shield: 'Shield',
-    movement: 'Movement',
+    movement: 'Move',
     weapon_range: 'Weapon range',
     weapon_power: 'Weapon power',
     weapon_bonus: 'Weapon bonus',

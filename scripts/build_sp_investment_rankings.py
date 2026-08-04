@@ -21,7 +21,7 @@ import app as A  # noqa: E402
 import sp_investment_rank as SIR  # noqa: E402
 
 LC = "EN"
-BUCKET_ORDER = ("no_regrets", "good", "better_options", "dont")
+BUCKET_ORDER = ("priority", "strong", "situational", "low")
 
 
 def _calibrate_letters_by_role(rows: list[dict], rules: dict) -> None:
@@ -36,8 +36,8 @@ def _calibrate_letters_by_role(rows: list[dict], rules: dict) -> None:
 def _sort_rows(rows: list[dict]) -> list[dict]:
     rows.sort(
         key=lambda x: (
-            BUCKET_ORDER.index(x.get("bucket") or "dont")
-            if (x.get("bucket") or "dont") in BUCKET_ORDER
+            BUCKET_ORDER.index(x.get("bucket") or "low")
+            if (x.get("bucket") or "low") in BUCKET_ORDER
             else 99,
             -int(x.get("total") or 0),
             x.get("name") or "",
@@ -100,9 +100,9 @@ def build_pilot_board(
 def bucketize(rows: list[dict]) -> dict:
     out = {b: [] for b in BUCKET_ORDER}
     for r in rows:
-        b = r.get("bucket") or "dont"
+        b = r.get("bucket") or "low"
         if b not in out:
-            b = "dont"
+            b = "low"
         out[b].append(r)
     return out
 

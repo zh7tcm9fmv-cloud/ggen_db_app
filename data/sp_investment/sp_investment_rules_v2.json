@@ -1,19 +1,22 @@
 {
-  "version": 3,
-  "source": "eternalsp sheet + community feedback (meaningful tags, terrain/deployability, rarity bands, warships)",
+  "version": 4,
+  "source": "eternalsp sheet + community feedback v4 (combat tags, terrain formula, priority buckets, pilot role gates)",
   "notes": [
     "MS bands/ranks/weapon tiers synced to creator DB sheet (not the outdated public How it works page).",
     "MAP uses mapammo only (changelog Dec 24); flat mapweapon row is not double-counted.",
     "Support DEF tier typo 83000 → 8300.",
     "v3: series/flavor tags excluded from tag-count; high-value tags are combat/niche only.",
-    "v3: Space+Land deploy valued higher by class; Space+Atmo+Land triple bonus; high MOV/range without dual is penalized.",
-    "v3: N/R/SR rarity adjustment so lower rarities do not share SSR letters for free.",
-    "v3: warships excluded from MS investment boards (limited ship / different investment role).",
-    "v3: pure permanent ATK/DEF/HP/MOB passives do not also score ability points (already in stats).",
-    "Pilot tables unchanged from public pilot How it works.",
+    "v3: N/R/SR rarity adjustment; warships excluded; pure permanent ATK/DEF/HP/MOB passives skip ability points.",
+    "v4: drop unit tag-count bands; combat-tag bonus only (cap +2).",
+    "v4: terrain = 0 for Space+Land deploy, +1 per extra deployable terrain, −2 if missing Land or Space.",
+    "v4: bucket labels Priority / Strong / Situational / Low; higher letter cutoffs.",
+    "v4: Support max-debuff softened; Attack HP/range floors tighter; Higher-range weapon bonus ignored when max range ≤ 3.",
+    "v4: pilot tag-count zeroed; Hard ER combat-tag cap +1; recommended MS role-gated; tension-gated kit lines score 0.",
     "Suggestion-list philosophy: strictly-better extras matter; close letters need human judgment."
   ],
   "exclude_warships": true,
+  "exclude_character_ids": [],
+  "require_character_usable_unit_link": false,
   "rarity_adjustment": {
     "1": -5,
     "2": -4,
@@ -22,11 +25,7 @@
     "5": 0
   },
   "tag_points": [
-    {"min": 0, "max": 2, "points": 0},
-    {"min": 3, "max": 4, "points": 1},
-    {"min": 5, "max": 6, "points": 2},
-    {"min": 7, "max": 8, "points": 3},
-    {"min": 9, "max": 999, "points": 4}
+    {"min": 0, "max": 999, "points": 0}
   ],
   "tag_count_exclude_names": [
     "SSR and Below",
@@ -72,7 +71,7 @@
   ],
   "tag_weight": {
     "bonus_per_match": 1,
-    "cap": 3,
+    "cap": 2,
     "high_value_names": [
       "One-Shot Killer",
       "Tough as Nails",
@@ -93,13 +92,19 @@
     ]
   },
   "pilot_tag_points": [
-    {"min": 0, "max": 1, "points": 0},
-    {"min": 2, "max": 3, "points": 1},
-    {"min": 4, "max": 5, "points": 3},
-    {"min": 6, "max": 7, "points": 4},
-    {"min": 8, "max": 9, "points": 5},
-    {"min": 10, "max": 999, "points": 6}
+    {"min": 0, "max": 999, "points": 0}
   ],
+  "pilot_tag_weight": {
+    "bonus_per_match": 1,
+    "cap": 1,
+    "high_value_names": ["Hard ER"]
+  },
+  "pilot_recommend_role_gate": {
+    "Attack": ["Attack"],
+    "Support": ["Attack", "Support"],
+    "Defense": ["Defense"]
+  },
+  "pilot_skill_tension_gate_regex": "(?i)tension|テンション|when\\s+tension|at\\s+max\\s+tension",
   "series_affinity_points_each": 3,
   "recommend_ms_letter_points": {"S+": 5, "S": 5, "A+": 4, "A": 3, "B+": 2},
   "recommend_ms_multi_bplus_bonus": 1,
@@ -233,34 +238,9 @@
   },
   "terrain": {
     "deploy_min_level": 2,
-    "perfect_min_level": 3,
-    "dual_space_ground_deploy_points": {
-      "Attack": 3,
-      "Defense": 2,
-      "Support": 3
-    },
-    "triple_space_air_ground_deploy_points": {
-      "Attack": 2,
-      "Defense": 1,
-      "Support": 2
-    },
-    "perfect_space_and_atmospheric_points": {
-      "Attack": 1,
-      "Defense": 1,
-      "Support": 1
-    },
-    "else_perfect_underwater_points": {
-      "Attack": 1,
-      "Defense": 1,
-      "Support": 1
-    },
-    "high_mobility_no_dual_penalty": {
-      "Attack": -2,
-      "Defense": -1,
-      "Support": -2
-    },
-    "high_mobility_min_mov": 5,
-    "high_mobility_min_range": 5
+    "missing_space_or_land_penalty": -2,
+    "extra_terrain_points": 1,
+    "extra_terrain_keys": ["Atmospheric", "Underwater"]
   },
   "transform_points": 1,
   "map_ammo_points": {"0": 0, "1": 1, "2": 2, "3": 2, "4": 2},
@@ -292,7 +272,8 @@
         "(?i)攻撃力.{0,12}\\d+.{0,8}減",
         "(?i)(?:recover|restore|heal).{0,24}(?:hp|EN)|回復",
         "(?i)support attack|support defense|援護攻撃|援護防御",
-        "(?i)(?:increase|increases).{0,20}MP|MP.{0,12}增加"
+        "(?i)(?:increase|increases).{0,20}MP|MP.{0,12}增加",
+        "(?i)(?:increase|increases|raise).{0,40}?(?:attack|atk).{0,20}?\\d+"
       ]
     },
     "great_for_role": {
@@ -311,9 +292,12 @@
         "(?i)(?:reduce|decrease).{0,30}(?:enemy|hostile).{0,20}(?:def|defense|atk|attack|mob)",
         "(?i)防御力.{0,12}\\d+\\s*[%％].{0,8}減",
         "(?i)攻撃力.{0,12}\\d+\\s*[%％].{0,8}減",
-        "(?i)(?:recover|restore|heal).{0,24}(?:hp|EN)|回復"
+        "(?i)(?:recover|restore|heal).{0,24}(?:hp|EN)|回復",
+        "(?i)(?:increase|increases|raise).{0,40}?(?:attack|atk).{0,12}?by\\s+\\d+"
       ]
-    }
+    },
+    "tension_gate_regex": "(?i)tension|テンション|when\\s+tension|at\\s+max\\s+tension",
+    "tension_gated_points_scale": 0
   },
   "linked_pilot": {
     "none_points": 0,
@@ -341,10 +325,10 @@
   "stat_bands": {
     "HP": {
       "Attack": [
-        {"max_exclusive": 83000, "points": -1},
-        {"max_exclusive": 86000, "points": -1},
-        {"max_exclusive": 91000, "points": 0},
-        {"max_exclusive": 95000, "points": 1},
+        {"max_exclusive": 80000, "points": -3},
+        {"max_exclusive": 86000, "points": -2},
+        {"max_exclusive": 91000, "points": -1},
+        {"max_exclusive": 95000, "points": 0},
         {"max_exclusive": null, "points": 1}
       ],
       "Defense": [
@@ -378,10 +362,10 @@
         {"max_exclusive": null, "points": 1}
       ],
       "Support": [
-        {"max_exclusive": 8700, "points": -2},
-        {"max_exclusive": 9100, "points": -1},
-        {"max_exclusive": 9500, "points": 0},
-        {"max_exclusive": 10000, "points": 1},
+        {"max_exclusive": 9000, "points": -3},
+        {"max_exclusive": 9500, "points": -2},
+        {"max_exclusive": 10000, "points": -1},
+        {"max_exclusive": 10500, "points": 1},
         {"max_exclusive": null, "points": 2}
       ]
     },
@@ -443,7 +427,7 @@
     "Support": {"3": -1, "4": 0, "5": 1, "6": 2}
   },
   "weapon_range": {
-    "Attack": {"1": -2, "2": -2, "3": -1, "4": 0, "5": 1, "6": 3},
+    "Attack": {"1": -4, "2": -3, "3": -2, "4": 0, "5": 1, "6": 3},
     "Defense": {"1": -2, "2": -1, "3": 0, "4": 0, "5": 1, "6": 2},
     "Support": {"1": -4, "2": -3, "3": -2, "4": 0, "5": 1, "6": 3}
   },
@@ -472,7 +456,7 @@
   },
   "max_debuff_level": {
     "Defense": {"none": -1, "0": -1, "3": -1, "4": 0, "5": 1, "6": 2},
-    "Support": {"none": -4, "0": -4, "3": -2, "4": -1, "5": 0, "6": 2}
+    "Support": {"none": -2, "0": -2, "3": -1, "4": 0, "5": 1, "6": 2}
   },
   "debuff_pct_to_level": [
     {"min_pct": 0, "level": null},
@@ -492,6 +476,7 @@
       "6": 1,
       "7": 1
     },
+    "ignore_higher_range_when_max_range_lte": 3,
     "type_labels": {
       "1": "Critical",
       "2": "Higher HP",
@@ -512,48 +497,49 @@
     }
   },
   "letter_cutoffs": [
-    {"min": 19, "letter": "S+"},
-    {"min": 15, "letter": "S"},
-    {"min": 12, "letter": "A+"},
-    {"min": 11, "letter": "A"},
-    {"min": 9, "letter": "B+"},
-    {"min": 7, "letter": "B"},
+    {"min": 22, "letter": "S+"},
+    {"min": 18, "letter": "S"},
+    {"min": 14, "letter": "A+"},
+    {"min": 12, "letter": "A"},
+    {"min": 10, "letter": "B+"},
+    {"min": 8, "letter": "B"},
     {"min": 5, "letter": "C"},
     {"min": 3, "letter": "D"},
     {"min": -999, "letter": "E"}
   ],
   "bucket_by_letter": {
-    "S+": "no_regrets",
-    "S": "no_regrets",
-    "A+": "good",
-    "A": "good",
-    "B+": "better_options",
-    "B": "better_options",
-    "C": "dont",
-    "D": "dont",
-    "E": "dont"
+    "S+": "priority",
+    "S": "priority",
+    "A+": "strong",
+    "A": "strong",
+    "B+": "situational",
+    "B": "situational",
+    "C": "low",
+    "D": "low",
+    "E": "low"
   },
   "bucket_labels": {
-    "no_regrets": "No regrets",
-    "good": "Good options",
-    "better_options": "Surely there are better options",
-    "dont": "Don't"
+    "priority": "Priority",
+    "strong": "Strong",
+    "situational": "Situational",
+    "low": "Low"
   },
   "transform_stat_override_unit_ids": ["1370011100"],
   "scoring_guide": {
-    "version": 3,
+    "version": 4,
     "title": "How Investment Guide scoring works",
     "intro": "Point-sum suggestion guide for SP/SSP chip investment, separated by class (Attack / Defense / Support). Not a damage calculator. Close letters still need a human look — especially when terrain coverage or ship/theater options differ.",
     "overrides": [
-      "Attack / Defense / Support use separate bands for stats, MOV, weapon range/power, shield, and terrain.",
+      "Attack / Defense / Support use separate bands for stats, Move (MOV), weapon range/power, and shield.",
+      "Buckets: Priority (S+/S), Strong (A+/A), Situational (B+/B), Low (C–E).",
       "Rarity adjustment: N −5, R −4, SR −2, SSR/UR 0 — lower rarities do not share SSR letters for free.",
-      "Tag-count ignores series/flavor tags (Wing Series, Operation Meteor, Zero System, colors, factions, “SSR and Below”, etc.).",
-      "High-value combat/niche tags (One-Shot Killer, Land, Aerial Use, Tank, …) add up to +3.",
-      "Terrain / limited ship options: Space+Land deploy is required value (Attack/Support +3, Defense +2). Space+Atmo+Land triple adds more. High MOV/range without Space+Land is penalized.",
+      "Combat tags only (cap +2): One-Shot Killer, Land, Aerial Use, Tank, and other curated combat/niche tags. Flavor/series tags do not score.",
+      "Terrain: Space+Land deploy starts at 0; +1 per extra deployable terrain (Atmospheric / Underwater); −2 if missing Land or Space. Move is scored separately.",
       "Warships are excluded from the MS boards (different investment role; ship choice is limited separately).",
-      "Pure permanent ATK/DEF/HP/MOB passives do not also score ability points (already reflected in SP/SSP totals).",
-      "MAP ammo only (1 → +1; 2+ → +2). Weapon bonuses typed on SP and SSP.",
+      "Pure permanent ATK/DEF/HP/MOB passives do not also score ability points (already reflected in SP/SSP totals). Tension-gated abilities score 0.",
+      "MAP ammo only (1 → +1; 2+ → +2). Higher-range weapon bonus ignored when max weapon range ≤ 3.",
       "GN Field / Positron Reflector passives award no ability points.",
+      "Pilot recommended MS: Attack → Attack only; Support → Attack+Support; Defense → Defense only (official/linked pair always allowed).",
       "Reborns Gundam uses transformed-form stats when scoring."
     ],
     "gaps": [
