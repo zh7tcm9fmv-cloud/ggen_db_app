@@ -245,20 +245,67 @@ body.spi-page {
   border-color: rgba(56, 189, 248, 0.45);
   transform: translateY(-1px);
 }
-.spi-card-thumb {
-  width: 100%;
-  aspect-ratio: 1;
-  object-fit: cover;
-  border-radius: 8px;
-  background: #0f172a;
-}
-.spi-card-thumb.placeholder {
+.spi-card-thumb-wrap {
   display: flex;
-  align-items: center;
   justify-content: center;
-  color: var(--spi-muted);
-  font-size: 1.25rem;
+  width: 100%;
+  margin-bottom: 0.15rem;
 }
+/* Browse-matching framed portrait chrome */
+.spi-page {
+  --portrait-optical-y: 0px;
+  --radius-sm: 8px;
+  --bg-input: #0f172a;
+  --text-muted: #94a3b8;
+}
+.list-thumb-composite {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  flex-shrink: 0;
+  margin: 0 auto;
+  overflow: hidden;
+  border: none;
+  outline: none;
+  border-radius: var(--radius-sm);
+}
+.list-thumb-composite.list-thumb-has-frame { --thumb-frame-nudge-y: 1px; }
+.list-thumb-back { position: absolute; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.list-thumb-back .list-thumb-base,
+.list-thumb-composite.list-thumb-has-frame > .list-thumb-frame {
+  position: absolute; inset: 0; width: 100%; height: 100%; margin: 0;
+  object-fit: contain; object-position: center bottom; display: block; border: 0;
+}
+.list-thumb-composite.list-thumb-has-frame > .list-thumb-frame {
+  z-index: 2; pointer-events: none;
+  transform: translateY(var(--thumb-frame-nudge-y));
+  transform-origin: center bottom;
+}
+.list-thumb-portrait-wrap {
+  position: absolute; top: 8px; left: 8px; right: 8px; bottom: 10px;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1; overflow: hidden; box-sizing: border-box;
+}
+.list-thumb-portrait-wrap .list-thumb-portrait {
+  width: auto; height: auto; max-width: 94%; max-height: 94%;
+  object-fit: contain; object-position: center calc(50% + var(--portrait-optical-y));
+  display: block;
+}
+.list-thumb-portrait-wrap .list-thumb-placeholder {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); font-size: 28px; background: var(--bg-input);
+}
+.list-thumb-icons {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 3; display: flex; flex-direction: column;
+  align-items: flex-start; gap: 2px; padding: 2px;
+}
+.list-thumb-icon-wrap {
+  display: flex; align-items: center; justify-content: center;
+  width: 20px; height: 20px; flex-shrink: 0; overflow: hidden;
+}
+.list-thumb-icon-wrap img { width: 100% !important; height: 100% !important; object-fit: contain; display: block; }
+.spi-controls select { max-width: 14rem; }
 .spi-card-name {
   font-size: 0.78rem;
   font-weight: 600;

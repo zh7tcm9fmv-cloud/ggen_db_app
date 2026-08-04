@@ -7,8 +7,10 @@ from sp_investment_rank import (
     bucket_for_letter,
     letter_for_total,
     load_rules,
+    pilot_tag_count_points,
     score_abilities,
     score_features,
+    score_pilot_features,
     tag_count_points,
 )
 
@@ -98,6 +100,34 @@ class TestSpInvestmentBands(unittest.TestCase):
         self.assertEqual(score_features(feats, self.rules)["breakdown"]["support_r4_debuffs"], -1)
         feats2 = _minimal_features(role="Support", support_debuffs_range4_count=2)
         self.assertEqual(score_features(feats2, self.rules)["breakdown"]["support_r4_debuffs"], 1)
+
+    def test_pilot_tag_points(self):
+        self.assertEqual(pilot_tag_count_points(self.rules, 1), 0)
+        self.assertEqual(pilot_tag_count_points(self.rules, 2), 1)
+        self.assertEqual(pilot_tag_count_points(self.rules, 4), 3)
+        self.assertEqual(pilot_tag_count_points(self.rules, 10), 6)
+
+    def test_pilot_ranged_and_recommend(self):
+        feats = {
+            "role": "Attack",
+            "tag_count": 4,
+            "skill_blobs": ["Focus\nIncreases attack by 10%"],
+            "ability_blobs": [],
+            "series_affinity_count": 1,
+            "best_rec_ms_letter": "S",
+            "rec_ms_bplus_or_better_count": 2,
+            "Ranged": 800,
+            "Melee": 720,
+            "Awaken": 660,
+            "Defense": 530,
+            "Reaction": 620,
+        }
+        scored = score_pilot_features(feats, self.rules)
+        self.assertEqual(scored["breakdown"]["tags"], 3)
+        self.assertEqual(scored["breakdown"]["series_affinity"], 3)
+        self.assertEqual(scored["breakdown"]["recommend_ms"], 6)  # S=5 + multi bonus
+        self.assertEqual(scored["breakdown"]["ranged"], 6)
+        self.assertGreaterEqual(scored["total"], 20)
 
     def test_strong_attacker_golden_total(self):
         """Hand-built strong attacker — verify deterministic total."""

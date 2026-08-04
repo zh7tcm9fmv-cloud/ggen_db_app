@@ -673,4 +673,409 @@ def scoring_guide_payload(rules: dict | None = None) -> dict:
     guide["bucket_labels"] = rules.get("bucket_labels") or {}
     guide["letter_cutoffs"] = rules.get("letter_cutoffs") or []
     guide["version"] = rules.get("version", 1)
+    guide["covers"] = ["units_sp", "units_ssp", "pilots_sp"]
     return guide
+
+
+def pilot_tag_count_points(rules: dict, n: int) -> int:
+    n = int(n or 0)
+    for row in rules.get("pilot_tag_points") or []:
+        if int(row["min"]) <= n <= int(row["max"]):
+            return int(row["points"])
+    return 0
+
+
+def score_pilot_skills(rules: dict, role: str, skill_blobs: list[str]) -> tuple[int, dict]:
+    cfg = rules.get("pilot_skill") or {}
+    ignore = re.compile(cfg.get("defense_ignore_regex") or r"$a")
+    great_pats = [re.compile(p) for p in ((cfg.get("great_for_role") or {}).get(role) or [])]
+    kept = []
+    for blob in skill_blobs or []:
+        text = str(blob or "")
+        if role == "Defense" and ignore.search(text):
+            continue
+        if text.strip():
+            kept.append(text)
+    if not kept:
+        return 0, {"count": 0, "great": 0, "heuristic": True}
+    great = sum(1 for t in kept if any(p.search(t) for p in great_pats))
+    if great >= 2:
+        pts = int(cfg.get("two_great_points", 3))
+    elif great == 1:
+        pts = int(cfg.get("great_for_role_points", 2))
+    else:
+        pts = int(cfg.get("has_useful_points", 1))
+    return pts, {"count": len(kept), "great": great, "heuristic": True}
+
+
+def score_pilot_features(features: dict, rules: dict | None = None) -> dict:
+    """Score a pilot (character) for SP investment."""
+    rules = rules or load_rules()
+    role = features.get("role") or "Attack"
+    if role not in ("Attack", "Defense", "Support"):
+        role = "Attack"
+    breakdown: dict[str, Any] = {}
+    meta: dict[str, Any] = {"heuristic_keys": []}
+
+    breakdown["tags"] = pilot_tag_count_points(rules, int(features.get("tag_count") or 0))
+
+    skill_pts, skill_meta = score_pilot_skills(rules, role, features.get("skill_blobs") or [])
+    abil_pts, abil_meta = score_abilities(rules, role, features.get("ability_blobs") or [])
+    # Combine kit: take max of skill/ability quality, not double-count both full tables
+    kit_pts = max(skill_pts, abil_pts)
+    breakdown["skills_abilities"] = kit_pts
+    meta["skills"] = skill_meta
+    meta["abilities"] = abil_meta
+    meta["heuristic_keys"].extend(["skills_abilities"])
+
+    aff_n = int(features.get("series_affinity_count") or 0)
+    breakdown["series_affinity"] = aff_n * int(rules.get("series_affinity_points_each", 3))
+
+    letter_pts_map = rules.get("recommend_ms_letter_points") or {}
+    best_letter = features.get("best_rec_ms_letter") or ""
+    rec_pts = int(letter_pts_map.get(best_letter, 0) or 0)
+    if int(features.get("rec_ms_bplus_or_better_count") or 0) > 1:
+        rec_pts += int(rules.get("recommend_ms_multi_bplus_bonus", 1))
+    breakdown["recommend_ms"] = rec_pts
+
+    for key in ("Ranged", "Melee", "Awaken", "Defense", "Reaction"):
+        bands = ((rules.get("pilot_stat_bands") or {}).get(key) or {}).get(role) or []
+        breakdown[key.lower()] = band_points(bands, features.get(key) or 0)
+
+    total = int(sum(int(v) for v in breakdown.values()))
+    letter = letter_for_total(rules, total)
+    bucket = bucket_for_letter(rules, letter)
+    return {
+        "total": total,
+        "letter": letter,
+        "bucket": bucket,
+        "breakdown": breakdown,
+        "meta": meta,
+        "mode": "sp",
+        "role": role,
+    }
+
+
+def _char_sp_totals(A, cid: str, ri: str, ldc: dict) -> dict:
+    grown = {}
+    raw = A.char_stat_map.get(cid, {}) or {}
+    for s in A.CHAR_STAT_ORDER:
+        st = raw.get(s, (0, 0, 0))
+        if isinstance(st, (list, tuple)) and len(st) >= 2:
+            try:
+                grown[s] = A.calc_growth_char(st[0], st[1], ri)
+            except Exception:
+                grown[s] = int(st[1] or 0)
+        else:
+            grown[s] = 0
+    if int(ri) <= 4:
+        try:
+            return A.compute_char_stat_totals_sp_list(cid, ri, ldc, grown) or grown
+        except Exception:
+            return grown
+    try:
+        return A.compute_char_stat_totals_with_abilities(cid, ri, ldc, grown) or grown
+    except Exception:
+        return grown
+
+
+def _char_kit_blobs(A, cid: str, lc: str, ldc: dict) -> tuple[list[str], list[str], int]:
+    """Return ability_blobs, skill_blobs, series_affinity_count."""
+    ability_blobs: list[str] = []
+    skill_blobs: list[str] = []
+    aff = 0
+    # abilities
+    try:
+        fa = [x for x in A.extract_data_list(A.char_abil) if A.normalize_id(x.get("CharacterId", "")) == cid]
+    except Exception:
+        fa = []
+    for ab in fa:
+        bid = A.normalize_id(ab.get("AbilityId", ""))
+        spid = A.normalize_id(ab.get("SpAbilityId") or ab.get("spAbilityId") or "0")
+        use_id = spid if spid and spid not in ("0", "None", bid) else bid
+        try:
+            entry = A.build_ability_entry(
+                str(use_id),
+                ldc.get("abil_name_map", {}),
+                A.abil_link_map,
+                A.trait_set_traits_map,
+                A.trait_data_map,
+                ldc.get("lang_text_map", {}),
+                ldc.get("lang_text_map", {}),
+                A.trait_condition_raw_map,
+                ldc.get("lineage_lookup", {}),
+                ldc.get("series_name_map", {}),
+                A.ability_resource_map,
+                ldc.get("abil_desc_map", {}),
+                sort_order=int(ab.get("SortOrder", 0) or 0),
+                lang_code=lc,
+            )
+        except Exception:
+            continue
+        if not entry:
+            continue
+        name = str(entry.get("name") or "")
+        parts = [name]
+        for d in entry.get("details") or []:
+            if isinstance(d, dict) and d.get("text"):
+                parts.append(str(d["text"]))
+        blob = "\n".join(parts)
+        ability_blobs.append(blob)
+        try:
+            if A._name_indicates_affinity_ability(name):
+                aff += 1
+        except Exception:
+            if re.search(r"(?i)affinity|series|勢力|シリーズ", name):
+                aff += 1
+    # skills
+    try:
+        fs = [x for x in A.extract_data_list(A.char_skill) if A.normalize_id(x.get("CharacterId", "")) == cid]
+    except Exception:
+        fs = []
+    for sk in fs:
+        sid = A.normalize_id(sk.get("SkillId") or sk.get("CharacterSkillId") or sk.get("skillId") or "")
+        if not sid:
+            continue
+        try:
+            if hasattr(A, "resolve_char_skill"):
+                r = A.resolve_char_skill(str(sid), ldc, 0, False) or {}
+                sname = str(r.get("name") or "")
+                details = r.get("details") or []
+                texts = [sname]
+                for d in details:
+                    if isinstance(d, dict) and d.get("text"):
+                        texts.append(str(d["text"]))
+                    elif isinstance(d, str):
+                        texts.append(d)
+                blob = "\n".join(texts).strip()
+            else:
+                stm = ldc.get("skill_text_map") or {}
+                blob = str(stm.get(sid) or sid)
+            if blob:
+                skill_blobs.append(blob)
+        except Exception:
+            continue
+    return ability_blobs, skill_blobs, aff
+
+
+def extract_character_features(
+    A, cid: str, lc: str = "EN", rules: dict | None = None, unit_letter_by_id: dict | None = None
+) -> dict | None:
+    rules = rules or load_rules()
+    info = A.char_info_map.get(cid) or {}
+    if not info:
+        return None
+    ri = int(info.get("rarity", 1) or 1)
+    has_sp = ri <= 4
+    role_id = str(info.get("role", "0") or "0")
+    role = ROLE_BY_ID.get(role_id, "Attack")
+    ld = A.get_lang_data(lc) if hasattr(A, "get_lang_data") else A.LANG_DATA.get(lc, {})
+    ldc = A.LANG_DATA.get(lc) or ld
+    totals = _char_sp_totals(A, cid, str(ri), ldc)
+    tags = []
+    try:
+        tags = A.resolve_tags(A.char_lin_map, cid, lc, "character") or []
+    except Exception:
+        tags = A.char_lin_map.get(cid, []) or []
+    ability_blobs, skill_blobs, aff = _char_kit_blobs(A, cid, lc, ldc)
+
+    # Recommended MS letters from precomputed unit board
+    unit_letter_by_id = unit_letter_by_id or {}
+    cand_uids = []
+    try:
+        rec_uid = A.resolve_character_recommend_unit_id(cid) if hasattr(A, "resolve_character_recommend_unit_id") else ""
+    except Exception:
+        rec_uid = ""
+    if not rec_uid:
+        rec_uid = A.normalize_id((getattr(A, "CHAR_RECOMMEND_UNIT_MAP", None) or {}).get(cid) or "0")
+        if rec_uid == "0":
+            rec_uid = ""
+    if rec_uid:
+        cand_uids.append(rec_uid)
+    try:
+        linked = (getattr(A, "LINKED_CHARACTER_UNIT_MAP", None) or {}).get(cid)
+        if linked:
+            cand_uids.append(A.normalize_id(linked))
+    except Exception:
+        pass
+    letter_order = ["D", "C", "B", "B+", "A", "A+", "S", "S+"]
+    allowed = letter_pts_allowed(rules)
+    bplus_or_better = 0
+    best = ""
+    for uid in cand_uids:
+        lit = unit_letter_by_id.get(uid) or ""
+        if not lit:
+            continue
+        if lit in allowed and letter_order.index(lit) >= letter_order.index("B+"):
+            bplus_or_better += 1
+        if not best or letter_order.index(lit) > letter_order.index(best if best in letter_order else "D"):
+            best = lit
+
+    rarity_letter = A.RARITY_MAP.get(str(ri), "Unknown") if hasattr(A, "RARITY_MAP") else str(ri)
+    try:
+        name = A._wn_char_name(cid, ld) or ""
+        if name.startswith("Character "):
+            name = ""
+    except Exception:
+        name = ""
+
+    return {
+        "id": cid,
+        "name": name,
+        "role": role,
+        "role_id": role_id,
+        "rarity": rarity_letter,
+        "rarity_id": str(ri),
+        "has_sp": has_sp,
+        "source": _source_bucket(A, info),
+        "tag_count": len(tags),
+        "tags": [t.get("name") if isinstance(t, dict) else str(t) for t in tags][:40],
+        "ability_blobs": ability_blobs,
+        "skill_blobs": skill_blobs,
+        "series_affinity_count": aff,
+        "best_rec_ms_letter": best,
+        "rec_ms_bplus_or_better_count": bplus_or_better,
+        "Ranged": int(totals.get("Ranged") or 0),
+        "Melee": int(totals.get("Melee") or 0),
+        "Awaken": int(totals.get("Awaken") or 0),
+        "Defense": int(totals.get("Defense") or 0),
+        "Reaction": int(totals.get("Reaction") or 0),
+    }
+
+
+def letter_pts_allowed(rules: dict) -> set[str]:
+    return set((rules.get("recommend_ms_letter_points") or {}).keys())
+
+
+def score_character(
+    A, cid: str, lc: str = "EN", rules: dict | None = None, unit_letter_by_id: dict | None = None
+) -> dict | None:
+    rules = rules or load_rules()
+    feats = extract_character_features(A, cid, lc=lc, rules=rules, unit_letter_by_id=unit_letter_by_id)
+    if not feats:
+        return None
+    scored = score_pilot_features(feats, rules=rules)
+    return {
+        "id": feats["id"],
+        "name": feats.get("name") or "",
+        "entity": "character",
+        "role": feats["role"],
+        "role_id": feats.get("role_id"),
+        "rarity": feats.get("rarity"),
+        "rarity_id": feats.get("rarity_id"),
+        "has_sp": feats.get("has_sp"),
+        "source": feats.get("source"),
+        "has_map": False,
+        "tags": feats.get("tags") or [],
+        "total": scored["total"],
+        "letter": scored["letter"],
+        "bucket": scored["bucket"],
+        "breakdown": scored["breakdown"],
+        "meta": scored.get("meta") or {},
+        "mode": "sp",
+        "stats": {
+            "Ranged": feats.get("Ranged"),
+            "Melee": feats.get("Melee"),
+            "Awaken": feats.get("Awaken"),
+            "Defense": feats.get("Defense"),
+            "Reaction": feats.get("Reaction"),
+        },
+        "best_rec_ms_letter": feats.get("best_rec_ms_letter") or "",
+    }
+
+
+def entity_matches_group(A, eid: str, group_id: str, kind: str, lc: str = "EN") -> bool:
+    items = A.stage_sortie_group_content_map.get(group_id, []) or []
+    if not items:
+        return True
+    lin = A.unit_lin_map if kind == "unit" else A.char_lin_map
+    ser = A.unit_ser_map if kind == "unit" else (A.LANG_DATA.get(lc) or {}).get("char_ser_map") or {}
+    for gc in items:
+        rt = str(gc.get("restriction_type_index", "0"))
+        tid = A.normalize_id(gc.get("target_id", "0"))
+        if rt == "1":
+            if A.entity_matches_series(ser.get(eid, ""), tid, lc):
+                return True
+        elif rt == "2":
+            if A._entity_matches_one_lineage(lin, eid, tid):
+                return True
+    return False
+
+
+def entity_matches_sortie_set(A, eid: str, set_id: str, kind: str, lc: str = "EN") -> bool:
+    if not set_id or set_id == "0":
+        return True
+    rows = A.stage_sortie_set_content_map.get(set_id, []) or []
+    want = "1" if kind == "unit" else "2"
+    typed = [r for r in rows if str(r.get("target_type_index")) == want]
+    if not typed:
+        # If stage only restricts the other entity type, treat as unrestricted for this kind
+        return True
+    for r in typed:
+        if not entity_matches_group(A, eid, r.get("group_id", "0"), kind, lc):
+            return False
+    return True
+
+
+def entity_eligible_on_stage(A, eid: str, stage_id: str, kind: str = "unit", lc: str = "EN") -> bool:
+    sm = A.stage_map.get(stage_id, {}) or {}
+    sets = [sm.get("group1_set_id"), sm.get("group2_set_id")]
+    sets = [s for s in sets if s and s != "0"]
+    if not sets:
+        return True
+    return any(entity_matches_sortie_set(A, eid, s, kind, lc) for s in sets)
+
+
+def build_er_expert_filters(A, lc: str = "EN") -> list[dict]:
+    """Eternal Road Expert stages for filter dropdown (tag/series restrictions)."""
+    ld = A.LANG_DATA.get(lc) or {}
+    out = []
+    for sid, est in sorted(A.eternal_stage_map.items(), key=lambda x: int(x[1].get("stage_number") or x[1].get("number") or 0) or 0):
+        diff = int(est.get("stage_difficulty_type_index") or 1)
+        if diff != 3:
+            continue
+        sm = A.stage_map.get(sid, {}) or {}
+        num = int(est.get("stage_number") or est.get("number") or 0)
+        labels = []
+        for set_id in (sm.get("group1_set_id"), sm.get("group2_set_id")):
+            if not set_id or set_id == "0":
+                continue
+            for r in A.stage_sortie_set_content_map.get(set_id, []) or []:
+                for gc in A.stage_sortie_group_content_map.get(r.get("group_id", "0"), []) or []:
+                    rt = str(gc.get("restriction_type_index", "0"))
+                    tid = A.normalize_id(gc.get("target_id", "0"))
+                    if rt == "1":
+                        name = (ld.get("series_name_map") or {}).get(tid) or tid
+                        labels.append({"kind": "series", "id": tid, "name": name})
+                    elif rt == "2":
+                        entry = (ld.get("lineage_lookup") or {}).get(tid)
+                        name = entry.get("name") if isinstance(entry, dict) else (entry if isinstance(entry, str) else tid)
+                        labels.append({"kind": "tag", "id": tid, "name": name})
+        # dedupe
+        seen = set()
+        uniq = []
+        for L in labels:
+            key = (L["kind"], L["id"])
+            if key in seen:
+                continue
+            seen.add(key)
+            uniq.append(L)
+        short = ", ".join(x["name"] for x in uniq[:3]) or "restricted"
+        out.append({
+            "id": sid,
+            "number": num,
+            "label": f"Stage {num} ({short})" if num else f"{sid} ({short})",
+            "restrictions": uniq,
+        })
+    out.sort(key=lambda x: (x.get("number") or 999, x.get("id") or ""))
+    return out
+
+
+def attach_er_expert_ids(A, row: dict, kind: str, expert_ids: list[str], lc: str = "EN") -> None:
+    eid = row.get("id")
+    if not eid:
+        row["er_expert_ids"] = []
+        return
+    row["er_expert_ids"] = [
+        sid for sid in expert_ids if entity_eligible_on_stage(A, eid, sid, kind=kind, lc=lc)
+    ]

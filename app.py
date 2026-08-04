@@ -15308,6 +15308,30 @@ def sp_investment_page():
     return r
 
 
+def _sp_investment_attach_board(buckets, kind):
+    """Attach thumbs/icons/names for unit or character investment rows."""
+    if not isinstance(buckets, dict):
+        return
+    ld = get_lang_data('EN')
+    for rows in buckets.values():
+        _tier_mockup_attach_thumbs(rows, kind)
+        for row in rows or []:
+            if not isinstance(row, dict) or not row.get('id'):
+                continue
+            if not (row.get('name') or '').strip():
+                try:
+                    if kind == 'character':
+                        row['name'] = _wn_char_name(row['id'], ld) or ''
+                    else:
+                        row['name'] = _wn_unit_name(row['id'], ld) or ''
+                except Exception:
+                    pass
+            if not row.get('acquisition_icon'):
+                info = (unit_info_map if kind == 'unit' else char_info_map).get(normalize_id(row['id']), {}) or {}
+                acq = str(info.get('acquisition_route', '0') or '0')
+                row['acquisition_icon'] = ACQUISITION_ROUTE_ICONS.get(acq, '')
+
+
 @app.route('/api/sp_investment')
 def api_sp_investment():
     """Serve offline SP/SSP investment rankings with portrait thumbnails."""
@@ -15318,19 +15342,19 @@ def api_sp_investment():
         payload = json.load(f)
     payload.pop('sp_flat', None)
     payload.pop('ssp_flat', None)
-    for board_key in ('sp', 'ssp'):
-        buckets = payload.get(board_key) or {}
-        if isinstance(buckets, dict):
-            for rows in buckets.values():
-                _tier_mockup_attach_thumbs(rows, 'unit')
-                for row in rows or []:
-                    if not isinstance(row, dict) or not row.get('id'):
-                        continue
-                    if not (row.get('name') or '').strip():
-                        try:
-                            row['name'] = _wn_unit_name(row['id'], get_lang_data('EN')) or ''
-                        except Exception:
-                            pass
+    units = payload.get('units') or {}
+    if units:
+        _sp_investment_attach_board(units.get('sp'), 'unit')
+        _sp_investment_attach_board(units.get('ssp'), 'unit')
+        # keep legacy top-level aliases in sync
+        payload['sp'] = units.get('sp') or payload.get('sp') or {}
+        payload['ssp'] = units.get('ssp') or payload.get('ssp') or {}
+    else:
+        for board_key in ('sp', 'ssp'):
+            _sp_investment_attach_board(payload.get(board_key), 'unit')
+    chars = payload.get('characters') or {}
+    if chars:
+        _sp_investment_attach_board(chars.get('sp'), 'character')
     if not payload.get('scoring_guide'):
         try:
             import sp_investment_rank as _sir
