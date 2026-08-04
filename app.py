@@ -15364,11 +15364,13 @@ def _sp_investment_json_path():
     return os.path.join(app_dir, 'scripts', 'output', 'sp_investment_v1.json')
 
 
+@app.route('/investment-guide')
 @app.route('/sp-list')
 @app.route('/sp-list-demo')
 @app.route('/en/sp-list')
+@app.route('/en/investment-guide')
 def sp_investment_page():
-    """SP/SSP investment suggestion list preview (precomputed; tier-list twin)."""
+    """SP/SSP chip investment guide (precomputed suggestion buckets)."""
     r = make_response(render_template(
         'sp_investment.html',
         image_cdn=IMAGE_CDN or '',
@@ -15400,6 +15402,24 @@ def _sp_investment_attach_board(buckets, kind):
                 info = (unit_info_map if kind == 'unit' else char_info_map).get(normalize_id(row['id']), {}) or {}
                 acq = str(info.get('acquisition_route', '0') or '0')
                 row['acquisition_icon'] = ACQUISITION_ROUTE_ICONS.get(acq, '')
+            # Nested recommended MS thumbs (pilot detail panel)
+            recs = row.get('recommended_units')
+            if kind == 'character' and isinstance(recs, list) and recs:
+                _tier_mockup_attach_thumbs(recs, 'unit')
+                for ru in recs:
+                    if not isinstance(ru, dict) or not ru.get('id'):
+                        continue
+                    if not (ru.get('name') or '').strip():
+                        try:
+                            ru['name'] = _wn_unit_name(ru['id'], ld) or ''
+                        except Exception:
+                            pass
+                    if not ru.get('acquisition_icon'):
+                        uinfo = unit_info_map.get(normalize_id(ru['id']), {}) or {}
+                        acq = str(uinfo.get('acquisition_route', '0') or '0')
+                        ru['acquisition_icon'] = ACQUISITION_ROUTE_ICONS.get(acq, '')
+                    if not ru.get('role_icon'):
+                        ru.update(_tier_mockup_row_icons(ru, 'unit'))
 
 
 @app.route('/api/sp_investment')

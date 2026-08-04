@@ -71,11 +71,20 @@ def build_unit_board(mode: str, rules: dict, expert_ids: list[str]) -> list[dict
     return _sort_rows(rows)
 
 
-def build_pilot_board(rules: dict, unit_letter_by_id: dict, expert_ids: list[str]) -> list[dict]:
+def build_pilot_board(
+    rules: dict, unit_letter_by_id: dict, unit_index: dict, expert_ids: list[str]
+) -> list[dict]:
     rows = []
     for cid in A.char_list_playable_ids:
         try:
-            row = SIR.score_character(A, cid, lc=LC, rules=rules, unit_letter_by_id=unit_letter_by_id)
+            row = SIR.score_character(
+                A,
+                cid,
+                lc=LC,
+                rules=rules,
+                unit_letter_by_id=unit_letter_by_id,
+                unit_index=unit_index,
+            )
         except Exception as e:
             print(f"  skip char {cid}: {e}")
             continue
@@ -125,16 +134,23 @@ def main():
     unit_letter_by_id = {r["id"]: r.get("letter") or "" for r in sp_rows}
     # Prefer higher letter when SSP is better
     order = ["E", "D", "C", "B", "B+", "A", "A+", "S", "S+"]
+    best_unit_rows = {r["id"]: r for r in sp_rows}
     for r in ssp_rows:
         cur = unit_letter_by_id.get(r["id"], "")
         lit = r.get("letter") or ""
         if not cur:
             unit_letter_by_id[r["id"]] = lit
+            best_unit_rows[r["id"]] = r
         elif lit in order and cur in order and order.index(lit) > order.index(cur):
             unit_letter_by_id[r["id"]] = lit
+            best_unit_rows[r["id"]] = r
+
+    print("Indexing units for pilot MS recommendations…")
+    unit_index = SIR.build_unit_recommend_index(A, list(best_unit_rows.values()), LC)
+    print(f"  {len(unit_index.get('bplus_ids') or [])} B+ units")
 
     print("Building pilot SP board…")
-    pilot_rows = build_pilot_board(rules, unit_letter_by_id, expert_ids)
+    pilot_rows = build_pilot_board(rules, unit_letter_by_id, unit_index, expert_ids)
     print(f"  {len(pilot_rows)} characters")
 
     guide = SIR.scoring_guide_payload(rules)
@@ -142,10 +158,11 @@ def main():
     guide["gaps"].append(
         "Pilot recommend-MS points use this list's unit letters (SP/SSP best)."
     )
-    guide["intro"] = (
-        "Point-sum suggestion list for SP/SSP investment (creator criteria v2 + datamine upgrades). "
-        "Not a damage calculator. Filter by tag or Eternal Road Expert stage to spot clear shortlist winners."
-    )
+    if not guide.get("intro"):
+        guide["intro"] = (
+            "Point-sum suggestion guide for SP/SSP chip investment, separated by class. "
+            "Not a damage calculator. Filter by tag or Eternal Road Expert stage to spot clear shortlist winners."
+        )
 
     tag_catalog = collect_tag_catalog([sp_rows, ssp_rows, pilot_rows])
 

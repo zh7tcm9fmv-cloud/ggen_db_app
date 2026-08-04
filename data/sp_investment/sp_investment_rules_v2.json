@@ -1,37 +1,95 @@
 {
-  "version": 2,
-  "source": "eternalsp creator MS criteria sheet + datamine improvements (typed weapon bonuses, weighted tags, stronger ability classify)",
+  "version": 3,
+  "source": "eternalsp sheet + community feedback (meaningful tags, terrain/deployability, rarity bands, warships)",
   "notes": [
     "MS bands/ranks/weapon tiers synced to creator DB sheet (not the outdated public How it works page).",
     "MAP uses mapammo only (changelog Dec 24); flat mapweapon row is not double-counted.",
     "Support DEF tier typo 83000 → 8300.",
-    "Dual terrain: Space + Ground deploy ≥2 → +2.",
+    "v3: series/flavor tags excluded from tag-count; high-value tags are combat/niche only.",
+    "v3: Space+Land deploy valued higher by class; Space+Atmo+Land triple bonus; high MOV/range without dual is penalized.",
+    "v3: N/R/SR rarity adjustment so lower rarities do not share SSR letters for free.",
+    "v3: warships excluded from MS investment boards (limited ship / different investment role).",
+    "v3: pure permanent ATK/DEF/HP/MOB passives do not also score ability points (already in stats).",
     "Pilot tables unchanged from public pilot How it works.",
     "Suggestion-list philosophy: strictly-better extras matter; close letters need human judgment."
   ],
+  "exclude_warships": true,
+  "rarity_adjustment": {
+    "1": -5,
+    "2": -4,
+    "3": -2,
+    "4": 0,
+    "5": 0
+  },
   "tag_points": [
-    {"min": 0, "max": 3, "points": 0},
-    {"min": 4, "max": 5, "points": 1},
-    {"min": 6, "max": 7, "points": 2},
-    {"min": 8, "max": 9, "points": 3},
-    {"min": 10, "max": 999, "points": 4}
+    {"min": 0, "max": 2, "points": 0},
+    {"min": 3, "max": 4, "points": 1},
+    {"min": 5, "max": 6, "points": 2},
+    {"min": 7, "max": 8, "points": 3},
+    {"min": 9, "max": 999, "points": 4}
+  ],
+  "tag_count_exclude_names": [
+    "SSR and Below",
+    "Mass-Produced",
+    "Test Type",
+    "Operation Meteor",
+    "Zero System",
+    "Flash System",
+    "Freeden",
+    "Alternative Series",
+    "U.C. Series",
+    "SEED Series",
+    "Wing Series",
+    "AGE Series",
+    "IBO Series",
+    "Witch from Mercury Series",
+    "Gundam",
+    "GM",
+    "Zaku",
+    "Mono-Eye",
+    "Transforming Unit",
+    "Protagonist",
+    "Rival",
+    "White",
+    "Red",
+    "Black",
+    "Blue",
+    "Gold",
+    "Pink",
+    "Zeon",
+    "Neo Zeon",
+    "EFSF (U.C.)",
+    "ZAFT",
+    "O.M.N.I.",
+    "AEUG",
+    "Celestial Being",
+    "OZ",
+    "Ultimate"
+  ],
+  "tag_count_exclude_suffixes": [
+    " Series",
+    " Fleet"
   ],
   "tag_weight": {
     "bonus_per_match": 1,
-    "cap": 2,
+    "cap": 3,
     "high_value_names": [
       "One-Shot Killer",
       "Tough as Nails",
       "Unstoppable",
       "Specialized Unit",
       "Underwater Use",
+      "Aerial Use",
       "Land",
       "Tank",
       "Tenacious",
       "Fierce Enemy Assault",
-      "Protagonist",
-      "Rival",
-      "Gundam"
+      "Lightning-Fast",
+      "Shippujinrai",
+      "Ace Unit",
+      "Newtype Machine",
+      "Rearm",
+      "Psycommu"
     ]
   },
   "pilot_tag_points": [
@@ -174,11 +232,35 @@
     }
   },
   "terrain": {
-    "dual_space_ground_deploy_points": 2,
-    "perfect_space_and_atmospheric_points": 1,
-    "else_perfect_underwater_points": 1,
     "deploy_min_level": 2,
-    "perfect_min_level": 3
+    "perfect_min_level": 3,
+    "dual_space_ground_deploy_points": {
+      "Attack": 3,
+      "Defense": 2,
+      "Support": 3
+    },
+    "triple_space_air_ground_deploy_points": {
+      "Attack": 2,
+      "Defense": 1,
+      "Support": 2
+    },
+    "perfect_space_and_atmospheric_points": {
+      "Attack": 1,
+      "Defense": 1,
+      "Support": 1
+    },
+    "else_perfect_underwater_points": {
+      "Attack": 1,
+      "Defense": 1,
+      "Support": 1
+    },
+    "high_mobility_no_dual_penalty": {
+      "Attack": -2,
+      "Defense": -1,
+      "Support": -2
+    },
+    "high_mobility_min_mov": 5,
+    "high_mobility_min_range": 5
   },
   "transform_points": 1,
   "map_ammo_points": {"0": 0, "1": 1, "2": 2, "3": 2, "4": 2},
@@ -186,6 +268,7 @@
     "has_passive_points": 1,
     "one_great_for_role_points": 2,
     "two_great_for_role_points": 3,
+    "ignore_pure_stat_passives": true,
     "exclude_name_substrings": ["GN Field", "Positron Reflector", "ポジトロンリフレクター", "GNフィールド"],
     "effect_families": {
       "Attack": [
@@ -458,21 +541,24 @@
   },
   "transform_stat_override_unit_ids": ["1370011100"],
   "scoring_guide": {
-    "version": 2,
-    "title": "How SP investment scoring works",
-    "intro": "Point-sum suggestion list for SP/SSP investment (eternalsp creator criteria v2 + datamine upgrades). Not a damage calculator. Use it to spot when one restriction-legal unit clearly beats another; close letters still need a human look.",
+    "version": 3,
+    "title": "How Investment Guide scoring works",
+    "intro": "Point-sum suggestion guide for SP/SSP chip investment, separated by class (Attack / Defense / Support). Not a damage calculator. Close letters still need a human look — especially when terrain coverage or ship/theater options differ.",
     "overrides": [
-      "MS bands, weapon tiers, MOV/range 6, and letter cutoffs synced to the creator’s criteria sheet.",
-      "MAP ammo only (1 → +1; 2+ → +2); flat mapweapon is not stacked.",
-      "Best non-MAP weapon bonus typed: Crit / High HP / High·Low range / High MP / Reduce Def (+1); Low HP = 0. Applies on SP and SSP.",
-      "High-value tags (limited niche / supporter-relevant) can add up to +2 beyond tag-count bands.",
-      "Dual terrain: Space + Land (Ground) deploy, +2.",
+      "Attack / Defense / Support use separate bands for stats, MOV, weapon range/power, shield, and terrain.",
+      "Rarity adjustment: N −5, R −4, SR −2, SSR/UR 0 — lower rarities do not share SSR letters for free.",
+      "Tag-count ignores series/flavor tags (Wing Series, Operation Meteor, Zero System, colors, factions, “SSR and Below”, etc.).",
+      "High-value combat/niche tags (One-Shot Killer, Land, Aerial Use, Tank, …) add up to +3.",
+      "Terrain / limited ship options: Space+Land deploy is required value (Attack/Support +3, Defense +2). Space+Atmo+Land triple adds more. High MOV/range without Space+Land is penalized.",
+      "Warships are excluded from the MS boards (different investment role; ship choice is limited separately).",
+      "Pure permanent ATK/DEF/HP/MOB passives do not also score ability points (already reflected in SP/SSP totals).",
+      "MAP ammo only (1 → +1; 2+ → +2). Weapon bonuses typed on SP and SSP.",
       "GN Field / Positron Reflector passives award no ability points.",
       "Reborns Gundam uses transformed-form stats when scoring."
     ],
     "gaps": [
-      "Ability / linked-pilot quality remain heuristic (improved regex + effect families).",
-      "Tag weights are a curated allowlist, not full supporter-rarity analysis.",
+      "Ability / linked-pilot quality are estimated from text patterns (not a full effect parser).",
+      "MS↔warship boarding restrictions are not in master data; deployability is the proxy for limited ship/theater options.",
       "Debuff “level” 3–6 is mapped from DEF-debuff % bands.",
       "Pilot scoring still uses public How it works tables (no creator pilot sheet)."
     ]

@@ -1,5 +1,5 @@
 """
-SP/SSP investment point scorer (eternalsp-inspired heuristic).
+SP/SSP investment point scorer (eternalsp-inspired suggestion guide).
 
 Pure scoring lives in score_features(); feature extraction uses app helpers.
 """
@@ -46,6 +46,46 @@ def tag_count_points(rules: dict, n: int) -> int:
         if int(row["min"]) <= n <= int(row["max"]):
             return int(row["points"])
     return 0
+
+
+def role_points(value, role: str, default: int = 0) -> int:
+    """Resolve a flat int or per-role dict to points."""
+    if isinstance(value, dict):
+        if role in value:
+            return int(value[role])
+        if "default" in value:
+            return int(value["default"])
+        return int(default)
+    if value is None:
+        return int(default)
+    return int(value)
+
+
+def filter_scored_unit_tags(rules: dict, tag_names: list[str] | None) -> list[str]:
+    """Drop series/flavor/color tags that inflate raw tag-count bands."""
+    excl = {str(x).strip().lower() for x in (rules.get("tag_count_exclude_names") or []) if str(x).strip()}
+    suffixes = [str(x) for x in (rules.get("tag_count_exclude_suffixes") or []) if str(x)]
+    out: list[str] = []
+    seen = set()
+    for raw in tag_names or []:
+        name = str(raw or "").strip()
+        if not name:
+            continue
+        key = name.lower()
+        if key in excl:
+            continue
+        if any(name.endswith(sfx) or key.endswith(sfx.lower()) for sfx in suffixes):
+            continue
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append(name)
+    return out
+
+
+def rarity_adjustment_points(rules: dict, rarity_id: str | int | None) -> int:
+    tbl = rules.get("rarity_adjustment") or {}
+    return int(tbl.get(str(rarity_id if rarity_id is not None else ""), 0) or 0)
 
 
 def lookup_role_table(table: dict, role: str, key: str, default: int = 0) -> int:
@@ -136,10 +176,32 @@ def debuff_pct_to_level(rules: dict, pct: int) -> int | None:
     return None if level is None else int(level)
 
 
+_PURE_STAT_PASSIVE_NAME = re.compile(
+    r"(?i)^\s*(?:\([^)]*\)\s*)?(?:increased?|increase)\s+"
+    r"(?:attack|atk|defense|def|hp|en|mobility|mob)\b"
+)
+_COMBAT_ABILITY_HINT = re.compile(
+    r"(?i)\b(?:affinity|chance\s*step|damage|debuff|critical|evasion|shield|map|"
+    r"support\s+attack|support\s+defense|reduce|reduces|heal|recover|mp\b|en\s+cost)\b"
+)
+
+
+def _is_pure_stat_passive(blob: str) -> bool:
+    """Permanent ATK/DEF/HP/MOB % passives already inflate SP/SSP totals — don't double-count."""
+    text = str(blob or "").strip()
+    if not text:
+        return False
+    if _COMBAT_ABILITY_HINT.search(text):
+        return False
+    name = text.split("\n", 1)[0].strip()
+    return bool(_PURE_STAT_PASSIVE_NAME.search(name))
+
+
 def score_abilities(rules: dict, role: str, ability_blobs: list[str]) -> tuple[int, dict]:
     """Return (points, meta). Heuristic — effect families first, then great_for_role regex."""
     abil_cfg = rules.get("ability") or {}
     excl = [str(x).lower() for x in (abil_cfg.get("exclude_name_substrings") or [])]
+    ignore_stat = bool(abil_cfg.get("ignore_pure_stat_passives", False))
     family_pats = [
         re.compile(p) for p in ((abil_cfg.get("effect_families") or {}).get(role) or [])
     ]
@@ -147,15 +209,19 @@ def score_abilities(rules: dict, role: str, ability_blobs: list[str]) -> tuple[i
         re.compile(p) for p in ((abil_cfg.get("great_for_role") or {}).get(role) or [])
     ]
     kept: list[str] = []
+    skipped_stat = 0
     for blob in ability_blobs or []:
         text = str(blob or "")
         low = text.lower()
         if any(x and x in low for x in excl):
             continue
+        if ignore_stat and _is_pure_stat_passive(text):
+            skipped_stat += 1
+            continue
         if text.strip():
             kept.append(text)
     if not kept:
-        return 0, {"count": 0, "great": 0, "heuristic": True}
+        return 0, {"count": 0, "great": 0, "skipped_stat": skipped_stat, "heuristic": True}
     great = 0
     for text in kept:
         if any(p.search(text) for p in family_pats) or any(p.search(text) for p in great_pats):
@@ -166,7 +232,7 @@ def score_abilities(rules: dict, role: str, ability_blobs: list[str]) -> tuple[i
         pts = int(abil_cfg.get("one_great_for_role_points", 2))
     else:
         pts = int(abil_cfg.get("has_passive_points", 1))
-    return pts, {"count": len(kept), "great": great, "heuristic": True}
+    return pts, {"count": len(kept), "great": great, "skipped_stat": skipped_stat, "heuristic": True}
 
 
 def score_linked_pilot(rules: dict, has_linked: bool, linked_very_good: bool) -> tuple[int, dict]:
@@ -197,16 +263,21 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     breakdown: dict[str, Any] = {}
     meta: dict[str, Any] = {"heuristic_keys": []}
 
-    # A1 tags (count bands + curated weight bonus)
-    tags_pts = tag_count_points(rules, int(features.get("tag_count") or 0))
+    # A1 tags (meaningful-count bands + curated weight bonus)
+    scored_tags = features.get("scored_tags")
+    if scored_tags is None:
+        scored_tags = filter_scored_unit_tags(rules, features.get("tags") or [])
+    tag_n = int(features.get("tag_count_scored") if features.get("tag_count_scored") is not None else len(scored_tags))
+    tags_pts = tag_count_points(rules, tag_n)
     breakdown["tags"] = tags_pts
     tw_pts, tw_meta = tag_weight_points(rules, features.get("tags") or [])
     breakdown["tags_weight"] = tw_pts
     if tw_pts:
         meta["tags_weight"] = tw_meta
         meta["heuristic_keys"].append("tags_weight")
+    meta["scored_tag_count"] = tag_n
 
-    # A2 / A3 terrain
+    # A2 / A3 terrain + content coverage (limited ship / theater options proxy)
     terr_cfg = rules.get("terrain") or {}
     terrain = features.get("terrain") or {}
     deploy_min = int(terr_cfg.get("deploy_min_level", 2))
@@ -215,16 +286,30 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     ground = int(terrain.get("Ground", 1) or 1)
     air = int(terrain.get("Atmospheric", 1) or 1)
     water = int(terrain.get("Underwater", 1) or 1)
-    dual = 0
-    if space >= deploy_min and ground >= deploy_min:
-        dual = int(terr_cfg.get("dual_space_ground_deploy_points", 2))
+    has_dual = space >= deploy_min and ground >= deploy_min
+    dual = role_points(terr_cfg.get("dual_space_ground_deploy_points", 2), role, 2) if has_dual else 0
     breakdown["terrain_dual"] = dual
+    triple = 0
+    if space >= deploy_min and air >= deploy_min and ground >= deploy_min:
+        triple = role_points(terr_cfg.get("triple_space_air_ground_deploy_points", 0), role, 0)
+    breakdown["terrain_triple"] = triple
     niche = 0
-    if space >= perfect_min and air >= perfect_min:
-        niche = int(terr_cfg.get("perfect_space_and_atmospheric_points", 1))
-    elif water >= perfect_min:
-        niche = int(terr_cfg.get("else_perfect_underwater_points", 1))
+    # Niche only when not already triple-covered (avoid stacking Space+Air perfect with triple)
+    if triple <= 0:
+        if space >= perfect_min and air >= perfect_min:
+            niche = role_points(terr_cfg.get("perfect_space_and_atmospheric_points", 1), role, 1)
+        elif water >= perfect_min:
+            niche = role_points(terr_cfg.get("else_perfect_underwater_points", 1), role, 1)
     breakdown["terrain_niche"] = niche
+    gap = 0
+    if not has_dual:
+        min_mov = int(terr_cfg.get("high_mobility_min_mov", 5))
+        min_rng = int(terr_cfg.get("high_mobility_min_range", 5))
+        mov = int(features.get("MOV") or 0)
+        wr = int(features.get("weapon_range") or 0)
+        if mov >= min_mov or wr >= min_rng:
+            gap = role_points(terr_cfg.get("high_mobility_no_dual_penalty", 0), role, 0)
+    breakdown["terrain_gap"] = gap
 
     # A4 transform
     breakdown["transform"] = int(rules.get("transform_points", 1)) if features.get("has_transform") else 0
@@ -345,6 +430,12 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     if bonus_type:
         labels = ((rules.get("maxweapon_bonus") or {}).get("type_labels") or {})
         meta["weapon_bonus"] = {"type": bonus_type, "label": labels.get(str(bonus_type), str(bonus_type))}
+
+    # Rarity: N/R/SR must earn more raw points to match SSR letters
+    rarity_pts = rarity_adjustment_points(rules, features.get("rarity_id"))
+    breakdown["rarity"] = rarity_pts
+    if rarity_pts:
+        meta["heuristic_keys"].append("rarity")
 
     total = int(sum(int(v) for v in breakdown.values()))
     letter = letter_for_total(rules, total)
@@ -627,6 +718,7 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
     ri = int(info.get("rarity", 1) or 1)
     is_ult = bool(info.get("is_ultimate", False))
     has_sp = ri <= 4 and not is_ult
+    is_warship = str(info.get("body_type") or "1") == "2"
     # Score UR/ULT for comparison boards too, using ssp/sp best-effort
     role_id = str(info.get("role", "0") or "0")
     role = ROLE_BY_ID.get(role_id, "Attack")
@@ -666,6 +758,8 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
         tags = A.resolve_tags(A.unit_lin_map, uid, lc, "unit") or []
     except Exception:
         tags = A.unit_lin_map.get(uid, []) or []
+    tag_names = [t.get("name") if isinstance(t, dict) else str(t) for t in tags][:40]
+    scored_tags = filter_scored_unit_tags(rules, tag_names)
 
     terrain = _effective_terrain(A, uid, info, use_mode if use_mode == "ssp" else "sp")
     ability_blobs = _ability_blobs_for_unit(A, uid, lc, ld, use_mode)
@@ -698,10 +792,13 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
         "rarity": rarity_letter,
         "rarity_id": str(ri),
         "is_ultimate": is_ult,
+        "is_warship": is_warship,
         "has_sp": has_sp,
         "source": _source_bucket(A, info),
-        "tag_count": len(tags),
-        "tags": [t.get("name") if isinstance(t, dict) else str(t) for t in tags][:40],
+        "tag_count": len(tag_names),
+        "tag_count_scored": len(scored_tags),
+        "scored_tags": scored_tags,
+        "tags": tag_names,
         "terrain": terrain,
         "has_transform": has_transform,
         "ability_blobs": ability_blobs,
@@ -723,6 +820,8 @@ def score_unit(A, uid: str, mode: str = "sp", lc: str = "EN", rules: dict | None
     rules = rules or load_rules()
     feats = extract_unit_features(A, uid, mode=mode, lc=lc, rules=rules)
     if not feats:
+        return None
+    if feats.get("is_warship") and rules.get("exclude_warships", True):
         return None
     scored = score_features(feats, rules=rules, mode=mode)
     row = {
@@ -772,27 +871,94 @@ def pilot_tag_count_points(rules: dict, n: int) -> int:
     return 0
 
 
+_PILOT_STAT_BOOST_NAME = re.compile(
+    r"(?i)^\s*(?:increased|increase)\s+(?:ranged|melee|awaken|defense|reaction)\b"
+)
+_PILOT_GREAT_UTILITY = re.compile(
+    r"(?i)chance\s*step|\bsway\b|evasion\s+by\s+100|support\s+attack|support\s+defense|"
+    r"援護攻撃|援護防御|ステップ|スウェイ"
+)
+_LETTER_ORDER = ("E", "D", "C", "B", "B+", "A", "A+", "S", "S+")
+
+
+def pilot_specialty(features: dict) -> str:
+    """Highest of Ranged / Melee / Awaken (ties prefer Ranged → Melee → Awaken)."""
+    best = "Ranged"
+    best_v = -1
+    for key in ("Ranged", "Melee", "Awaken"):
+        v = int(features.get(key) or 0)
+        if v > best_v:
+            best_v = v
+            best = key
+    return best
+
+
 def score_pilot_skills(rules: dict, role: str, skill_blobs: list[str]) -> tuple[int, dict]:
+    """Legacy aggregate skill score (kept for tests / fallbacks)."""
+    lines = []
+    for blob in skill_blobs or []:
+        text = str(blob or "").strip()
+        if not text:
+            continue
+        name = text.split("\n", 1)[0].strip() or text[:48]
+        lines.append({"kind": "skill", "name": name, "blob": text, "is_affinity": False})
+    pts, meta = _score_pilot_kit_lines(rules, role, "Ranged", lines)
+    return pts, meta
+
+
+def _score_one_pilot_kit_line(
+    rules: dict, role: str, specialty: str, item: dict
+) -> int:
+    """Per-skill / per-ability points (eternalsp-style additive lines)."""
+    name = str(item.get("name") or "")
+    blob = str(item.get("blob") or name)
+    if item.get("is_affinity"):
+        return int(rules.get("series_affinity_points_each", 3))
+    # Permanent stat % is already reflected in scored SP totals.
+    if _PILOT_STAT_BOOST_NAME.search(name) or _PILOT_STAT_BOOST_NAME.search(blob.split("\n", 1)[0]):
+        return 0
     cfg = rules.get("pilot_skill") or {}
     ignore = re.compile(cfg.get("defense_ignore_regex") or r"$a")
-    great_pats = [re.compile(p) for p in ((cfg.get("great_for_role") or {}).get(role) or [])]
-    kept = []
-    for blob in skill_blobs or []:
-        text = str(blob or "")
-        if role == "Defense" and ignore.search(text):
-            continue
-        if text.strip():
-            kept.append(text)
-    if not kept:
-        return 0, {"count": 0, "great": 0, "heuristic": True}
-    great = sum(1 for t in kept if any(p.search(t) for p in great_pats))
-    if great >= 2:
-        pts = int(cfg.get("two_great_points", 3))
-    elif great == 1:
-        pts = int(cfg.get("great_for_role_points", 2))
-    else:
-        pts = int(cfg.get("has_useful_points", 1))
-    return pts, {"count": len(kept), "great": great, "heuristic": True}
+    if role == "Defense" and ignore.search(blob):
+        return 0
+    abil_cfg = rules.get("ability") or {}
+    excl = [str(x).lower() for x in (abil_cfg.get("exclude_name_substrings") or [])]
+    low = blob.lower()
+    if any(x and x in low for x in excl):
+        return 0
+    if _PILOT_GREAT_UTILITY.search(blob) or _PILOT_GREAT_UTILITY.search(name):
+        return 5
+    spec = (specialty or "Ranged").lower()
+    if re.search(rf"(?i)(?:boost|increase|increased)\s+{re.escape(spec)}\b", name) or re.search(
+        rf"(?i){re.escape(spec)}\s+boost", name
+    ):
+        return 3
+    if item.get("kind") == "skill":
+        great_pats = [re.compile(p) for p in ((cfg.get("great_for_role") or {}).get(role) or [])]
+        if any(p.search(blob) for p in great_pats):
+            return int(cfg.get("great_for_role_points", 2))
+        return int(cfg.get("has_useful_points", 1))
+    family_pats = [re.compile(p) for p in ((abil_cfg.get("effect_families") or {}).get(role) or [])]
+    great_pats = [re.compile(p) for p in ((abil_cfg.get("great_for_role") or {}).get(role) or [])]
+    if any(p.search(blob) for p in family_pats) or any(p.search(blob) for p in great_pats):
+        return int(abil_cfg.get("one_great_for_role_points", 2))
+    return int(abil_cfg.get("has_passive_points", 1))
+
+
+def _score_pilot_kit_lines(
+    rules: dict, role: str, specialty: str, items: list[dict]
+) -> tuple[int, dict]:
+    scored = []
+    total = 0
+    for item in items or []:
+        pts = _score_one_pilot_kit_line(rules, role, specialty, item)
+        row = dict(item)
+        row["points"] = int(pts)
+        scored.append(row)
+        # Affinity points live under series_affinity breakdown, not skills_abilities.
+        if not item.get("is_affinity"):
+            total += int(pts)
+    return total, {"lines": scored, "heuristic": True, "count": len(scored)}
 
 
 def score_pilot_features(features: dict, rules: dict | None = None) -> dict:
@@ -801,22 +967,87 @@ def score_pilot_features(features: dict, rules: dict | None = None) -> dict:
     role = features.get("role") or "Attack"
     if role not in ("Attack", "Defense", "Support"):
         role = "Attack"
+    specialty = features.get("specialty") or pilot_specialty(features)
     breakdown: dict[str, Any] = {}
     meta: dict[str, Any] = {"heuristic_keys": []}
+    detail_lines: list[dict] = []
 
-    breakdown["tags"] = pilot_tag_count_points(rules, int(features.get("tag_count") or 0))
+    tag_pts = pilot_tag_count_points(rules, int(features.get("tag_count") or 0))
+    breakdown["tags"] = tag_pts
+    tag_names = [str(t) for t in (features.get("tags") or []) if t]
+    detail_lines.append(
+        {
+            "kind": "tags",
+            "label": "Tags",
+            "detail": ", ".join(tag_names) if tag_names else "—",
+            "points": tag_pts,
+        }
+    )
 
-    skill_pts, skill_meta = score_pilot_skills(rules, role, features.get("skill_blobs") or [])
-    abil_pts, abil_meta = score_abilities(rules, role, features.get("ability_blobs") or [])
-    # Combine kit: take max of skill/ability quality, not double-count both full tables
-    kit_pts = max(skill_pts, abil_pts)
+    for key in ("Ranged", "Melee", "Awaken", "Defense", "Reaction"):
+        bands = ((rules.get("pilot_stat_bands") or {}).get(key) or {}).get(role) or []
+        val = int(features.get(key) or 0)
+        pts = band_points(bands, val)
+        breakdown[key.lower()] = pts
+        detail_lines.append(
+            {
+                "kind": "stat",
+                "key": key,
+                "label": key,
+                "value": val,
+                "points": pts,
+                "highlight": key == specialty,
+            }
+        )
+
+    kit_items = list(features.get("kit_items") or [])
+    if not kit_items:
+        for blob in features.get("skill_blobs") or []:
+            text = str(blob or "").strip()
+            if text:
+                kit_items.append(
+                    {
+                        "kind": "skill",
+                        "name": text.split("\n", 1)[0].strip(),
+                        "blob": text,
+                        "is_affinity": False,
+                    }
+                )
+        for blob in features.get("ability_blobs") or []:
+            text = str(blob or "").strip()
+            if not text:
+                continue
+            name = text.split("\n", 1)[0].strip()
+            is_aff = bool(re.search(r"(?i)affinity|勢力|シリーズ", name))
+            kit_items.append(
+                {"kind": "ability", "name": name, "blob": text, "is_affinity": is_aff}
+            )
+
+    kit_pts, kit_meta = _score_pilot_kit_lines(rules, role, specialty, kit_items)
     breakdown["skills_abilities"] = kit_pts
-    meta["skills"] = skill_meta
-    meta["abilities"] = abil_meta
-    meta["heuristic_keys"].extend(["skills_abilities"])
+    meta["kit"] = kit_meta
+    meta["heuristic_keys"].append("skills_abilities")
+    for line in kit_meta.get("lines") or []:
+        detail_lines.append(
+            {
+                "kind": line.get("kind") or "ability",
+                "label": line.get("name") or "",
+                "name": line.get("name") or "",
+                "points": int(line.get("points") or 0),
+                "is_affinity": bool(line.get("is_affinity")),
+                "estimated": True,
+            }
+        )
 
     aff_n = int(features.get("series_affinity_count") or 0)
-    breakdown["series_affinity"] = aff_n * int(rules.get("series_affinity_points_each", 3))
+    aff_each = int(rules.get("series_affinity_points_each", 3))
+    # Prefer counting from scored affinity kit lines when present.
+    aff_from_lines = sum(
+        int(x.get("points") or 0)
+        for x in (kit_meta.get("lines") or [])
+        if x.get("is_affinity")
+    )
+    breakdown["series_affinity"] = aff_from_lines if aff_from_lines else aff_n * aff_each
 
     letter_pts_map = rules.get("recommend_ms_letter_points") or {}
     best_letter = features.get("best_rec_ms_letter") or ""
@@ -824,10 +1055,14 @@ def score_pilot_features(features: dict, rules: dict | None = None) -> dict:
     if int(features.get("rec_ms_bplus_or_better_count") or 0) > 1:
         rec_pts += int(rules.get("recommend_ms_multi_bplus_bonus", 1))
     breakdown["recommend_ms"] = rec_pts
-
-    for key in ("Ranged", "Melee", "Awaken", "Defense", "Reaction"):
-        bands = ((rules.get("pilot_stat_bands") or {}).get(key) or {}).get(role) or []
-        breakdown[key.lower()] = band_points(bands, features.get(key) or 0)
+    detail_lines.append(
+        {
+            "kind": "recommend",
+            "label": "Recommended MS (B+ and up)",
+            "detail": best_letter or "—",
+            "points": rec_pts,
+        }
+    )
 
     total = int(sum(int(v) for v in breakdown.values()))
     letter = letter_for_total(rules, total)
@@ -840,43 +1075,90 @@ def score_pilot_features(features: dict, rules: dict | None = None) -> dict:
         "meta": meta,
         "mode": "sp",
         "role": role,
+        "specialty": specialty,
+        "detail_lines": detail_lines,
     }
 
 
 def _char_sp_totals(A, cid: str, ri: str, ldc: dict) -> dict:
-    grown = {}
+    """SP-list max column (index 2) + unconditional SP ability % — matches eternalsp pilot popup stats."""
+    grown_sp = {}
     raw = A.char_stat_map.get(cid, {}) or {}
     for s in A.CHAR_STAT_ORDER:
         st = raw.get(s, (0, 0, 0))
-        if isinstance(st, (list, tuple)) and len(st) >= 2:
-            try:
-                grown[s] = A.calc_growth_char(st[0], st[1], ri)
-            except Exception:
-                grown[s] = int(st[1] or 0)
+        if isinstance(st, (list, tuple)) and len(st) >= 3:
+            grown_sp[s] = int(st[2] or st[1] or 0)
+        elif isinstance(st, (list, tuple)) and len(st) >= 2:
+            grown_sp[s] = int(st[1] or 0)
         else:
-            grown[s] = 0
+            grown_sp[s] = 0
     if int(ri) <= 4:
         try:
-            return A.compute_char_stat_totals_sp_list(cid, ri, ldc, grown) or grown
+            return A.compute_char_stat_totals_sp_list(cid, ri, ldc, grown_sp) or grown_sp
         except Exception:
-            return grown
+            return grown_sp
     try:
-        return A.compute_char_stat_totals_with_abilities(cid, ri, ldc, grown) or grown
+        if hasattr(A, "compute_char_stat_totals_detail_style"):
+            grown = {}
+            for s in A.CHAR_STAT_ORDER:
+                st = raw.get(s, (0, 0, 0))
+                if isinstance(st, (list, tuple)) and len(st) >= 2:
+                    try:
+                        grown[s] = A.calc_growth_char(st[0], st[1], ri)
+                    except Exception:
+                        grown[s] = int(st[1] or 0)
+                else:
+                    grown[s] = 0
+            return A.compute_char_stat_totals_detail_style(cid, ri, ldc, grown) or grown
+        return A.compute_char_stat_totals_with_abilities(cid, ri, ldc, grown_sp) or grown_sp
     except Exception:
-        return grown
+        return grown_sp
+
+
+def _collect_ability_conditions(entry: dict) -> tuple[list[str], list[str]]:
+    """Return (unit_tag_ids, series_ids) required by ability detail conditions."""
+    tag_ids: list[str] = []
+    series_ids: list[str] = []
+    for d in entry.get("details") or []:
+        if not isinstance(d, dict):
+            continue
+        conds = list(d.get("conditions") or [])
+        for g in d.get("condition_groups") or []:
+            if isinstance(g, dict):
+                conds.extend(g.get("conditions") or [])
+        for c in conds:
+            if not isinstance(c, dict):
+                continue
+            cid = str(c.get("id") or "")
+            if not cid or cid == "0":
+                continue
+            ctype = str(c.get("type") or c.get("source") or "").lower()
+            if ctype in ("unit", "unit_tags", "tag", "lineage") or c.get("source") == "unit_tags":
+                tag_ids.append(cid)
+            elif ctype in ("series",) or c.get("source") == "series":
+                series_ids.append(cid)
+    return tag_ids, series_ids
 
 
 def _char_kit_blobs(A, cid: str, lc: str, ldc: dict) -> tuple[list[str], list[str], int]:
-    """Return ability_blobs, skill_blobs, series_affinity_count."""
-    ability_blobs: list[str] = []
-    skill_blobs: list[str] = []
+    """Return ability_blobs, skill_blobs, series_affinity_count (compat wrapper)."""
+    items, aff, _tags, _series = _char_kit_items(A, cid, lc, ldc)
+    ability_blobs = [x["blob"] for x in items if x.get("kind") == "ability"]
+    skill_blobs = [x["blob"] for x in items if x.get("kind") == "skill"]
+    return ability_blobs, skill_blobs, aff
+
+
+def _char_kit_items(A, cid: str, lc: str, ldc: dict) -> tuple[list[dict], int, list[str], list[str]]:
+    """Structured kit lines + affinity count + required unit-tag / series ids for MS match."""
+    items: list[dict] = []
     aff = 0
-    # abilities
+    req_tags: list[str] = []
+    req_series: list[str] = []
     try:
         fa = [x for x in A.extract_data_list(A.char_abil) if A.normalize_id(x.get("CharacterId", "")) == cid]
     except Exception:
         fa = []
-    for ab in fa:
+    for ab in sorted(fa, key=lambda x: int(x.get("SortOrder", 0) or 0)):
         bid = A.normalize_id(ab.get("AbilityId", ""))
         spid = A.normalize_id(ab.get("SpAbilityId") or ab.get("spAbilityId") or "0")
         use_id = spid if spid and spid not in ("0", "None", bid) else bid
@@ -907,23 +1189,37 @@ def _char_kit_blobs(A, cid: str, lc: str, ldc: dict) -> tuple[list[str], list[st
             if isinstance(d, dict) and d.get("text"):
                 parts.append(str(d["text"]))
         blob = "\n".join(parts)
-        ability_blobs.append(blob)
+        is_aff = False
         try:
-            if A._name_indicates_affinity_ability(name):
-                aff += 1
+            is_aff = bool(A._name_indicates_affinity_ability(name))
         except Exception:
-            if re.search(r"(?i)affinity|series|勢力|シリーズ", name):
-                aff += 1
-    # skills
+            is_aff = bool(re.search(r"(?i)affinity|勢力|シリーズ", name))
+        if is_aff:
+            aff += 1
+        t_ids, s_ids = _collect_ability_conditions(entry)
+        req_tags.extend(t_ids)
+        req_series.extend(s_ids)
+        items.append(
+            {
+                "kind": "ability",
+                "name": name,
+                "blob": blob,
+                "is_affinity": is_aff,
+                "required_tag_ids": t_ids,
+                "required_series_ids": s_ids,
+            }
+        )
     try:
         fs = [x for x in A.extract_data_list(A.char_skill) if A.normalize_id(x.get("CharacterId", "")) == cid]
     except Exception:
         fs = []
-    for sk in fs:
+    for sk in sorted(fs, key=lambda x: int(x.get("SortOrder", 0) or 0)):
         sid = A.normalize_id(sk.get("SkillId") or sk.get("CharacterSkillId") or sk.get("skillId") or "")
         if not sid:
             continue
         try:
+            sname = ""
+            blob = ""
             if hasattr(A, "resolve_char_skill"):
                 r = A.resolve_char_skill(str(sid), ldc, 0, False) or {}
                 sname = str(r.get("name") or "")
@@ -938,15 +1234,236 @@ def _char_kit_blobs(A, cid: str, lc: str, ldc: dict) -> tuple[list[str], list[st
             else:
                 stm = ldc.get("skill_text_map") or {}
                 blob = str(stm.get(sid) or sid)
+                sname = blob.split("\n", 1)[0].strip()
             if blob:
-                skill_blobs.append(blob)
+                items.append(
+                    {
+                        "kind": "skill",
+                        "name": sname or blob.split("\n", 1)[0].strip(),
+                        "blob": blob,
+                        "is_affinity": False,
+                    }
+                )
         except Exception:
             continue
-    return ability_blobs, skill_blobs, aff
+    # Deduplicate required ids preserving order
+    def _uniq(xs: list[str]) -> list[str]:
+        seen = set()
+        out = []
+        for x in xs:
+            if x not in seen:
+                seen.add(x)
+                out.append(x)
+        return out
+
+    return items, aff, _uniq(req_tags), _uniq(req_series)
+
+
+def unit_primary_specialty(A, uid: str, lc: str = "EN") -> str:
+    """Specialty of the unit's strongest non-MAP weapon (Ranged/Melee/Awaken)."""
+    ld = A.get_lang_data(lc) if hasattr(A, "get_lang_data") else A.LANG_DATA.get(lc, {})
+    best_power = -1
+    best_keys: list[str] = []
+    for wp in A.unit_weapon_map.get(uid, []) or []:
+        wid = A.normalize_id(wp.get("id"))
+        wm = A.weapon_info_map.get(wid, {}) or {}
+        if str(wm.get("weapon_type", "1") or "1") == "3":
+            continue
+        try:
+            ws = A.resolve_weapon_stats(
+                wm,
+                A.weapon_status_map,
+                A.weapon_correction_map,
+                ld.get("weapon_trait_map", {}),
+                ld.get("weapon_capability_map", {}),
+                A.growth_pattern_map,
+                A.weapon_trait_change_map,
+                ld.get("weapon_trait_detail_map", {}),
+                wid=wid,
+                lang_code=lc,
+                unit_id=uid,
+            )
+        except Exception:
+            continue
+        power = int(ws.get("power", 0) or 0)
+        levels = ws.get("levels", {})
+        if isinstance(levels, dict):
+            power = max(power, int((levels.get(5, {}) or {}).get("power", 0) or 0))
+        keys = list((getattr(A, "ATTACK_ATTR_SET_TYPE_KEYS", {}) or {}).get(str(wm.get("attack_attribute") or "0"), []) or [])
+        if not keys:
+            continue
+        if power > best_power:
+            best_power = power
+            best_keys = keys
+    canon = {"ranged": "Ranged", "melee": "Melee", "awaken": "Awaken"}
+    for k in best_keys:
+        if k in canon:
+            return canon[k]
+    return "Ranged"
+
+
+def build_unit_recommend_index(A, unit_rows: list[dict], lc: str = "EN") -> dict:
+    """Index SP/SSP-scored units for pilot→MS recommendation matching."""
+    allowed = letter_pts_allowed(load_rules())
+    index = {
+        "by_id": {},
+        "by_recommend_char": {},
+        "bplus_ids": [],
+    }
+    for row in unit_rows or []:
+        uid = A.normalize_id(row.get("id") or "")
+        if not uid:
+            continue
+        lit = str(row.get("letter") or "")
+        info = A.unit_info_map.get(uid, {}) or {}
+        main_uid = A.normalize_id(info.get("main_unit_id") or uid)
+        # Skip transform / alt forms that point at another main unit
+        if main_uid and main_uid not in ("0", uid):
+            continue
+        tag_rows = []
+        try:
+            tag_rows = A.resolve_tags(A.unit_lin_map, uid, lc, "unit") or []
+        except Exception:
+            tag_rows = []
+        tag_ids = []
+        tag_names = []
+        for t in tag_rows:
+            if isinstance(t, dict):
+                if t.get("id"):
+                    tag_ids.append(str(t["id"]))
+                if t.get("name"):
+                    tag_names.append(str(t["name"]))
+            else:
+                tag_names.append(str(t))
+        entry = {
+            "id": uid,
+            "name": row.get("name") or "",
+            "letter": lit,
+            "role": row.get("role") or ROLE_BY_ID.get(str(info.get("role", "0")), "Attack"),
+            "role_id": str(info.get("role", "0") or "0"),
+            "rarity": row.get("rarity") or "",
+            "rarity_id": str(info.get("rarity", "1") or "1"),
+            "is_ultimate": bool(row.get("is_ultimate")),
+            "source": row.get("source") or "",
+            "acquisition_icon": row.get("acquisition_icon") or "",
+            "tag_ids": tag_ids,
+            "tags": tag_names,
+            "specialty": unit_primary_specialty(A, uid, lc),
+            "series_set": str(info.get("series_set") or A.unit_ser_map.get(uid, "") or ""),
+        }
+        index["by_id"][uid] = entry
+        if lit in allowed and _LETTER_ORDER.index(lit) >= _LETTER_ORDER.index("B+"):
+            index["bplus_ids"].append(uid)
+        try:
+            rc = A.resolve_unit_recommend_character_id(uid, info) if hasattr(A, "resolve_unit_recommend_character_id") else ""
+        except Exception:
+            rc = A.normalize_id(info.get("recommend_character_id") or "0")
+            if rc == "0":
+                rc = ""
+        if rc:
+            index["by_recommend_char"].setdefault(rc, []).append(uid)
+    return index
+
+
+def match_recommended_units(
+    A,
+    cid: str,
+    specialty: str,
+    role: str,
+    req_tag_ids: list[str],
+    req_series_ids: list[str],
+    unit_index: dict,
+    rules: dict | None = None,
+    lc: str = "EN",
+) -> list[dict]:
+    """
+    MS recommendations: B+ and up, must satisfy pilot ability tag/series gates,
+    and use the pilot's Ranged/Melee/Awaken specialty (Defense units exempt).
+    """
+    rules = rules or load_rules()
+    by_id = unit_index.get("by_id") or {}
+    allowed = letter_pts_allowed(rules)
+    cand: dict[str, dict] = {}
+
+    def _add(uid: str, reason: str):
+        uid = A.normalize_id(uid)
+        ent = by_id.get(uid)
+        if not ent:
+            return
+        lit = ent.get("letter") or ""
+        if lit not in allowed or _LETTER_ORDER.index(lit) < _LETTER_ORDER.index("B+"):
+            return
+        row = {
+            "id": uid,
+            "name": ent.get("name") or "",
+            "letter": lit,
+            "role": ent.get("role"),
+            "rarity": ent.get("rarity"),
+            "is_ultimate": ent.get("is_ultimate"),
+            "acquisition_icon": ent.get("acquisition_icon") or "",
+            "specialty": ent.get("specialty"),
+            "reason": reason,
+        }
+        prev = cand.get(uid)
+        if not prev or _LETTER_ORDER.index(lit) > _LETTER_ORDER.index(prev.get("letter") or "E"):
+            cand[uid] = row
+
+    # Official / reverse-linked pairs always considered
+    try:
+        rec_uid = A.resolve_character_recommend_unit_id(cid) if hasattr(A, "resolve_character_recommend_unit_id") else ""
+    except Exception:
+        rec_uid = ""
+    if rec_uid:
+        _add(rec_uid, "official")
+    for uid in (unit_index.get("by_recommend_char") or {}).get(cid, []) or []:
+        _add(uid, "linked")
+
+    req_tags = [str(x) for x in (req_tag_ids or []) if x]
+    req_series = [str(x) for x in (req_series_ids or []) if x]
+    # If the pilot has no gated kit conditions, keep official/linked only.
+    if req_tags or req_series:
+        for uid in unit_index.get("bplus_ids") or []:
+            ent = by_id.get(uid) or {}
+            u_tags = set(ent.get("tag_ids") or [])
+            if req_tags and not all(t in u_tags for t in req_tags):
+                continue
+            if req_series:
+                sset = ent.get("series_set") or ""
+                ok = False
+                for sid in req_series:
+                    try:
+                        if A.entity_matches_series(sset, sid, lc):
+                            ok = True
+                            break
+                    except Exception:
+                        continue
+                if not ok:
+                    continue
+            # Specialty: Defense MS exempt; else strongest weapon type must match
+            u_role = ent.get("role") or ""
+            if u_role != "Defense":
+                if (ent.get("specialty") or "") != specialty:
+                    continue
+            _add(uid, "tags_specialty")
+
+    rows = list(cand.values())
+    rows.sort(
+        key=lambda r: (
+            -_LETTER_ORDER.index(r.get("letter") or "E") if (r.get("letter") or "E") in _LETTER_ORDER else 0,
+            r.get("name") or "",
+            r.get("id") or "",
+        )
+    )
+    return rows[:24]
 
 
 def extract_character_features(
-    A, cid: str, lc: str = "EN", rules: dict | None = None, unit_letter_by_id: dict | None = None
+    A,
+    cid: str,
+    lc: str = "EN",
+    rules: dict | None = None,
+    unit_letter_by_id: dict | None = None,
+    unit_index: dict | None = None,
 ) -> dict | None:
     rules = rules or load_rules()
     info = A.char_info_map.get(cid) or {}
@@ -964,38 +1481,82 @@ def extract_character_features(
         tags = A.resolve_tags(A.char_lin_map, cid, lc, "character") or []
     except Exception:
         tags = A.char_lin_map.get(cid, []) or []
-    ability_blobs, skill_blobs, aff = _char_kit_blobs(A, cid, lc, ldc)
+    kit_items, aff, req_tags, req_series = _char_kit_items(A, cid, lc, ldc)
+    ability_blobs = [x["blob"] for x in kit_items if x.get("kind") == "ability"]
+    skill_blobs = [x["blob"] for x in kit_items if x.get("kind") == "skill"]
 
-    # Recommended MS letters from precomputed unit board
+    specialty = pilot_specialty(
+        {
+            "Ranged": int(totals.get("Ranged") or 0),
+            "Melee": int(totals.get("Melee") or 0),
+            "Awaken": int(totals.get("Awaken") or 0),
+        }
+    )
+
+    recommended_units: list[dict] = []
+    if unit_index:
+        recommended_units = match_recommended_units(
+            A,
+            cid,
+            specialty,
+            role,
+            req_tags,
+            req_series,
+            unit_index,
+            rules=rules,
+            lc=lc,
+        )
+
+    # Fallback / supplement letter discovery from linked ids when index missing
     unit_letter_by_id = unit_letter_by_id or {}
-    cand_uids = []
-    try:
-        rec_uid = A.resolve_character_recommend_unit_id(cid) if hasattr(A, "resolve_character_recommend_unit_id") else ""
-    except Exception:
-        rec_uid = ""
-    if not rec_uid:
-        rec_uid = A.normalize_id((getattr(A, "CHAR_RECOMMEND_UNIT_MAP", None) or {}).get(cid) or "0")
-        if rec_uid == "0":
+    if not recommended_units:
+        cand_uids = []
+        try:
+            rec_uid = (
+                A.resolve_character_recommend_unit_id(cid)
+                if hasattr(A, "resolve_character_recommend_unit_id")
+                else ""
+            )
+        except Exception:
             rec_uid = ""
-    if rec_uid:
-        cand_uids.append(rec_uid)
-    try:
-        linked = (getattr(A, "LINKED_CHARACTER_UNIT_MAP", None) or {}).get(cid)
-        if linked:
-            cand_uids.append(A.normalize_id(linked))
-    except Exception:
-        pass
-    letter_order = ["E", "D", "C", "B", "B+", "A", "A+", "S", "S+"]
+        if not rec_uid:
+            rec_uid = A.normalize_id((getattr(A, "CHAR_RECOMMEND_UNIT_MAP", None) or {}).get(cid) or "0")
+            if rec_uid == "0":
+                rec_uid = ""
+        if rec_uid:
+            cand_uids.append(rec_uid)
+        try:
+            linked = (getattr(A, "LINKED_CHARACTER_UNIT_MAP", None) or {}).get(cid)
+            if linked:
+                cand_uids.append(A.normalize_id(linked))
+        except Exception:
+            pass
+        allowed = letter_pts_allowed(rules)
+        for uid in cand_uids:
+            lit = unit_letter_by_id.get(uid) or ""
+            if lit in allowed and _LETTER_ORDER.index(lit) >= _LETTER_ORDER.index("B+"):
+                recommended_units.append(
+                    {
+                        "id": uid,
+                        "name": "",
+                        "letter": lit,
+                        "role": "",
+                        "rarity": "",
+                        "reason": "official",
+                    }
+                )
+
     allowed = letter_pts_allowed(rules)
     bplus_or_better = 0
     best = ""
-    for uid in cand_uids:
-        lit = unit_letter_by_id.get(uid) or ""
-        if not lit:
-            continue
-        if lit in allowed and letter_order.index(lit) >= letter_order.index("B+"):
+    for u in recommended_units:
+        lit = u.get("letter") or unit_letter_by_id.get(u.get("id") or "") or ""
+        u["letter"] = lit
+        if lit in allowed and _LETTER_ORDER.index(lit) >= _LETTER_ORDER.index("B+"):
             bplus_or_better += 1
-        if not best or letter_order.index(lit) > letter_order.index(best if best in letter_order else "D"):
+        if lit in _LETTER_ORDER and (
+            not best or _LETTER_ORDER.index(lit) > _LETTER_ORDER.index(best if best in _LETTER_ORDER else "E")
+        ):
             best = lit
 
     rarity_letter = A.RARITY_MAP.get(str(ri), "Unknown") if hasattr(A, "RARITY_MAP") else str(ri)
@@ -1019,7 +1580,12 @@ def extract_character_features(
         "tags": [t.get("name") if isinstance(t, dict) else str(t) for t in tags][:40],
         "ability_blobs": ability_blobs,
         "skill_blobs": skill_blobs,
+        "kit_items": kit_items,
         "series_affinity_count": aff,
+        "required_unit_tag_ids": req_tags,
+        "required_series_ids": req_series,
+        "specialty": specialty,
+        "recommended_units": recommended_units,
         "best_rec_ms_letter": best,
         "rec_ms_bplus_or_better_count": bplus_or_better,
         "Ranged": int(totals.get("Ranged") or 0),
@@ -1035,10 +1601,22 @@ def letter_pts_allowed(rules: dict) -> set[str]:
 
 
 def score_character(
-    A, cid: str, lc: str = "EN", rules: dict | None = None, unit_letter_by_id: dict | None = None
+    A,
+    cid: str,
+    lc: str = "EN",
+    rules: dict | None = None,
+    unit_letter_by_id: dict | None = None,
+    unit_index: dict | None = None,
 ) -> dict | None:
     rules = rules or load_rules()
-    feats = extract_character_features(A, cid, lc=lc, rules=rules, unit_letter_by_id=unit_letter_by_id)
+    feats = extract_character_features(
+        A,
+        cid,
+        lc=lc,
+        rules=rules,
+        unit_letter_by_id=unit_letter_by_id,
+        unit_index=unit_index,
+    )
     if not feats:
         return None
     scored = score_pilot_features(feats, rules=rules)
@@ -1060,6 +1638,9 @@ def score_character(
         "breakdown": scored["breakdown"],
         "meta": scored.get("meta") or {},
         "mode": "sp",
+        "specialty": scored.get("specialty") or feats.get("specialty") or "",
+        "detail_lines": scored.get("detail_lines") or [],
+        "recommended_units": feats.get("recommended_units") or [],
         "stats": {
             "Ranged": feats.get("Ranged"),
             "Melee": feats.get("Melee"),
@@ -1113,46 +1694,92 @@ def entity_eligible_on_stage(A, eid: str, stage_id: str, kind: str = "unit", lc:
     return any(entity_matches_sortie_set(A, eid, s, kind, lc) for s in sets)
 
 
-def build_er_expert_filters(A, lc: str = "EN") -> list[dict]:
-    """Eternal Road Expert stages for filter dropdown (tag/series restrictions)."""
+def _restriction_label(A, rt: str, tid: str, lc: str = "EN") -> dict | None:
     ld = A.LANG_DATA.get(lc) or {}
+    tid = A.normalize_id(tid)
+    if not tid or tid == "0":
+        return None
+    if rt == "1":
+        name = (ld.get("series_name_map") or {}).get(tid) or tid
+        return {"kind": "series", "id": tid, "name": str(name)}
+    if rt == "2":
+        entry = (ld.get("lineage_lookup") or {}).get(tid)
+        if isinstance(entry, dict):
+            name = entry.get("name") or tid
+        elif isinstance(entry, str) and entry.strip():
+            name = entry
+        else:
+            name = tid
+        return {"kind": "tag", "id": tid, "name": str(name)}
+    return None
+
+
+def _dedupe_restrictions(labels: list[dict]) -> list[dict]:
+    seen = set()
+    uniq = []
+    for L in labels:
+        key = (L.get("kind"), L.get("id"))
+        if key in seen:
+            continue
+        seen.add(key)
+        uniq.append(L)
+    return uniq
+
+
+def build_er_expert_filters(A, lc: str = "EN") -> list[dict]:
+    """Eternal Road Expert stages for filter dropdown.
+
+    Unit labels use unit sortie restrictions. Character labels use character
+    sortie restrictions only; stages with none are marked free-for-all.
+    """
     out = []
-    for sid, est in sorted(A.eternal_stage_map.items(), key=lambda x: int(x[1].get("stage_number") or x[1].get("number") or 0) or 0):
+    for sid, est in sorted(
+        A.eternal_stage_map.items(),
+        key=lambda x: int(x[1].get("stage_number") or x[1].get("number") or 0) or 0,
+    ):
         diff = int(est.get("stage_difficulty_type_index") or 1)
         if diff != 3:
             continue
         sm = A.stage_map.get(sid, {}) or {}
         num = int(est.get("stage_number") or est.get("number") or 0)
-        labels = []
+        unit_labels: list[dict] = []
+        char_labels: list[dict] = []
         for set_id in (sm.get("group1_set_id"), sm.get("group2_set_id")):
             if not set_id or set_id == "0":
                 continue
             for r in A.stage_sortie_set_content_map.get(set_id, []) or []:
+                tt = str(r.get("target_type_index") or "0")
+                bucket = unit_labels if tt == "1" else (char_labels if tt == "2" else None)
+                if bucket is None:
+                    continue
                 for gc in A.stage_sortie_group_content_map.get(r.get("group_id", "0"), []) or []:
-                    rt = str(gc.get("restriction_type_index", "0"))
-                    tid = A.normalize_id(gc.get("target_id", "0"))
-                    if rt == "1":
-                        name = (ld.get("series_name_map") or {}).get(tid) or tid
-                        labels.append({"kind": "series", "id": tid, "name": name})
-                    elif rt == "2":
-                        entry = (ld.get("lineage_lookup") or {}).get(tid)
-                        name = entry.get("name") if isinstance(entry, dict) else (entry if isinstance(entry, str) else tid)
-                        labels.append({"kind": "tag", "id": tid, "name": name})
-        # dedupe
-        seen = set()
-        uniq = []
-        for L in labels:
-            key = (L["kind"], L["id"])
-            if key in seen:
-                continue
-            seen.add(key)
-            uniq.append(L)
-        short = ", ".join(x["name"] for x in uniq[:3]) or "restricted"
+                    lab = _restriction_label(
+                        A,
+                        str(gc.get("restriction_type_index", "0")),
+                        gc.get("target_id", "0"),
+                        lc,
+                    )
+                    if lab:
+                        bucket.append(lab)
+        unit_uniq = _dedupe_restrictions(unit_labels)
+        char_uniq = _dedupe_restrictions(char_labels)
+        char_free = len(char_uniq) == 0
+        unit_short = ", ".join(x["name"] for x in unit_uniq[:3]) or "restricted"
+        if char_free:
+            char_short = "Free for all"
+        else:
+            char_short = ", ".join(x["name"] for x in char_uniq[:3]) or "restricted"
+        stage_prefix = f"Stage {num}" if num else str(sid)
         out.append({
             "id": sid,
             "number": num,
-            "label": f"Stage {num} ({short})" if num else f"{sid} ({short})",
-            "restrictions": uniq,
+            "label": f"{stage_prefix} ({unit_short})",
+            "unit_label": f"{stage_prefix} ({unit_short})",
+            "character_label": f"{stage_prefix} ({char_short})",
+            "restrictions": unit_uniq,
+            "unit_restrictions": unit_uniq,
+            "character_restrictions": char_uniq,
+            "character_free_for_all": char_free,
         })
     out.sort(key=lambda x: (x.get("number") or 999, x.get("id") or ""))
     return out

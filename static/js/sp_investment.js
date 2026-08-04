@@ -18,10 +18,13 @@
   };
 
   const BREAKDOWN_LABELS = {
-    tags: 'Tags',
+    tags: 'Meaningful tags',
     tags_weight: 'High-value tags',
     terrain_dual: 'Space + Land deploy',
+    terrain_triple: 'Space + Atmo + Land',
     terrain_niche: 'Perfect niche terrain',
+    terrain_gap: 'High MOV/range, no Space+Land',
+    rarity: 'Rarity adjustment',
     transform: 'Transform',
     map: 'MAP ammo',
     abilities: 'Abilities',
@@ -199,14 +202,20 @@
     erSel.innerHTML =
       '<option value="">No ER Expert filter</option>' +
       ers
-        .map((e) => `<option value="${esc(e.id)}">${esc(e.label || e.id)}</option>`)
+        .map((e) => {
+          const label =
+            entity === 'characters'
+              ? e.character_label || e.label || e.id
+              : e.unit_label || e.label || e.id;
+          return `<option value="${esc(e.id)}">${esc(label)}</option>`;
+        })
         .join('');
     if (curEr) erSel.value = curEr;
   }
 
   function renderScoringGuide() {
     const g = (payload && payload.scoring_guide) || {};
-    $('#spiScoringIntro').textContent = g.intro || 'Point-sum investment heuristic.';
+    $('#spiScoringIntro').textContent = g.intro || 'Point-sum investment guide for SP/SSP chips.';
     const ov = $('#spiScoringOverrides');
     ov.innerHTML = (g.overrides || []).map((t) => `<li>${esc(t)}</li>`).join('');
     const gaps = $('#spiScoringGaps');
@@ -283,36 +292,139 @@
     statusEl.textContent = `Showing ${shown} of ${totalBoard} · ${label} · ${role}`;
   }
 
-  function openModal(row) {
-    if (!row) return;
-    const heuristic = new Set(((row.meta && row.meta.heuristic_keys) || []));
-    const bd = row.breakdown || {};
-    const rows = Object.keys(BREAKDOWN_LABELS)
-      .filter((k) => bd[k] != null)
-      .map((k) => {
-        const cls = heuristic.has(k) ? ' class="heuristic"' : '';
-        const v = bd[k];
-        const sign = Number(v) > 0 ? `+${v}` : String(v);
-        return `<tr${cls}><td>${esc(BREAKDOWN_LABELS[k])}</td><td>${esc(sign)}</td></tr>`;
+  function ptsBadge(pts) {
+    const n = Number(pts) || 0;
+    const sign = n > 0 ? `+${n}` : String(n);
+    let tone = 'zero';
+    if (n > 0) tone = 'pos';
+    else if (n < 0) tone = 'neg';
+    return `<span class="spi-pts spi-pts-${tone}">${esc(sign)}</span>`;
+  }
+
+  function renderDetailLines(row) {
+    const lines = row.detail_lines || [];
+    if (!lines.length) {
+      const estimated = new Set(((row.meta && row.meta.heuristic_keys) || []));
+      const bd = row.breakdown || {};
+      return `<div class="spi-score-rows">${Object.keys(BREAKDOWN_LABELS)
+        .filter((k) => bd[k] != null)
+        .map((k) => {
+          const est = estimated.has(k) ? ' spi-score-row-estimated' : '';
+          return `<div class="spi-score-row${est}"><span class="spi-score-label">${esc(BREAKDOWN_LABELS[k])}</span>${ptsBadge(bd[k])}</div>`;
+        })
+        .join('')}</div>`;
+    }
+    return `<div class="spi-score-rows">${lines
+      .map((ln) => {
+        const kind = ln.kind || '';
+        if (kind === 'tags') {
+          return `<div class="spi-score-row">
+            <div class="spi-score-main">
+              <span class="spi-score-label">Tags</span>
+              <span class="spi-score-detail">${esc(ln.detail || '—')}</span>
+            </div>
+            ${ptsBadge(ln.points)}
+          </div>`;
+        }
+        if (kind === 'stat') {
+          const hi = ln.highlight ? ' spi-score-row-specialty' : '';
+          return `<div class="spi-score-row${hi}">
+            <div class="spi-score-main">
+              <span class="spi-score-label">${esc(ln.label || ln.key || '')}</span>
+              <span class="spi-score-value">${esc(ln.value)}</span>
+            </div>
+            ${ptsBadge(ln.points)}
+          </div>`;
+        }
+        if (kind === 'recommend') {
+          return ''; // rendered in dedicated section with thumbs
+        }
+        const est = ln.estimated ? ' spi-score-row-estimated' : '';
+        const kindLabel = kind === 'skill' ? 'Skill' : kind === 'ability' ? 'Ability' : '';
+        return `<div class="spi-score-row${est}">
+          <div class="spi-score-main">
+            ${kindLabel ? `<span class="spi-score-kind">${esc(kindLabel)}</span>` : ''}
+            <span class="spi-score-label">${esc(ln.name || ln.label || '')}</span>
+          </div>
+          ${ptsBadge(ln.points)}
+        </div>`;
+      })
+      .join('')}</div>`;
+  }
+
+  function renderRecommendedUnits(row) {
+    const units = row.recommended_units || [];
+    const recPts = (row.breakdown && row.breakdown.recommend_ms) || 0;
+    if (!units.length && !recPts) {
+      return `<section class="spi-dossier-section">
+        <h4 class="spi-dossier-h">Recommended Mobile Suits</h4>
+        <p class="spi-dossier-empty">No B+ or higher matches from this pilot’s tag / series gates and specialty.</p>
+      </section>`;
+    }
+    const cards = units
+      .map((u) => {
+        const thumb = renderFramedThumb(u, 'unit');
+        return `<a class="spi-rec-card" href="/u/${encodeURIComponent(u.id)}" target="_blank" rel="noopener">
+          ${thumb}
+          <div class="spi-rec-meta">
+            <span class="spi-rec-name">${esc(u.name || u.id)}</span>
+            <span class="spi-chip letter">${esc(u.letter || '?')}</span>
+          </div>
+        </a>`;
       })
       .join('');
-    const stats = row.stats || {};
-    let statLine = '';
-    if (entity === 'characters') {
-      statLine = `Ranged ${esc(stats.Ranged)} · Melee ${esc(stats.Melee)} · Awaken ${esc(stats.Awaken)} · Def ${esc(stats.Defense)} · Rea ${esc(stats.Reaction)}`;
-    } else {
-      statLine = `HP ${esc(stats.HP)} · ATK ${esc(stats.ATK)} · DEF ${esc(stats.DEF)} · MOB ${esc(stats.MOB)} · MOV ${esc(stats.MOV)}`;
-    }
-    const detailPath = entity === 'characters' ? '/c/' : '/u/';
-    const rec = row.best_rec_ms_letter
-      ? `<p class="spi-modal-sub">Best recommended MS letter: ${esc(row.best_rec_ms_letter)}</p>`
-      : '';
+    return `<section class="spi-dossier-section">
+      <div class="spi-dossier-section-head">
+        <h4 class="spi-dossier-h">Recommended Mobile Suits <span class="spi-dossier-h-sub">B+ and up</span></h4>
+        ${ptsBadge(recPts)}
+      </div>
+      <p class="spi-dossier-note">Matched by ability tag/series gates and pilot specialty${row.specialty ? ` (${esc(row.specialty)})` : ''}. Defense units skip the specialty check.</p>
+      <div class="spi-rec-grid">${cards || '<p class="spi-dossier-empty">None on the current board.</p>'}</div>
+    </section>`;
+  }
+
+  function openModal(row) {
+    if (!row) return;
+    const isPilot = entity === 'characters';
+    const detailPath = isPilot ? '/c/' : '/u/';
+    const kind = isPilot ? 'character' : 'unit';
+    const card = $('#spiModal').querySelector('.spi-modal-card');
+    if (card) card.classList.toggle('spi-modal-card--wide', isPilot);
+
+    const header = `<div class="spi-dossier-head">
+      <div class="spi-dossier-thumb">${renderFramedThumb(row, kind)}</div>
+      <div class="spi-dossier-head-text">
+        <h3 class="spi-modal-title" id="spiModalTitle">${esc(row.name || row.id)}</h3>
+        <p class="spi-modal-sub">${esc(row.role)} · ${esc(row.rarity)} · ${esc((row.mode || board) || '').toUpperCase()}</p>
+        <div class="spi-dossier-badges">
+          <span class="spi-chip letter">${esc(row.letter || '?')}</span>
+          <span class="spi-chip score">Total ${esc(row.total)}</span>
+          ${isPilot && row.specialty ? `<span class="spi-chip specialty">Specialty ${esc(row.specialty)}</span>` : ''}
+        </div>
+      </div>
+    </div>`;
+
+    const specialtyBlock =
+      isPilot && row.specialty
+        ? `<section class="spi-dossier-section spi-specialty-block">
+            <h4 class="spi-dossier-h">Pilot specialty</h4>
+            <p class="spi-specialty-value">${esc(row.specialty)}</p>
+            <p class="spi-dossier-note">Highest of Ranged / Melee / Awaken after SP growth and ability bonuses. Used when matching recommended MS weapons.</p>
+          </section>`
+        : '';
+
+    const scoreBlock = `<section class="spi-dossier-section">
+      <h4 class="spi-dossier-h">Score breakdown</h4>
+      ${renderDetailLines(row)}
+    </section>`;
+
+    const recBlock = isPilot ? renderRecommendedUnits(row) : '';
+
     $('#spiModalBody').innerHTML = `
-      <h3 class="spi-modal-title" id="spiModalTitle">${esc(row.name || row.id)}</h3>
-      <p class="spi-modal-sub">${esc(row.role)} · ${esc(row.rarity)} · ${esc(row.letter)} · total ${esc(row.total)} · ${esc(row.mode || board).toUpperCase()}</p>
-      <p class="spi-modal-sub">${statLine}</p>
-      ${rec}
-      <table class="spi-breakdown"><tbody>${rows}</tbody></table>
+      ${header}
+      ${specialtyBlock}
+      ${scoreBlock}
+      ${recBlock}
       <div class="spi-modal-actions">
         <a href="${detailPath}${encodeURIComponent(row.id)}" target="_blank" rel="noopener">Open in database</a>
       </div>`;
@@ -328,6 +440,7 @@
       btn.addEventListener('click', () => {
         document.querySelectorAll('.spi-tabs button[data-entity]').forEach((b) => b.classList.toggle('active', b === btn));
         entity = btn.dataset.entity || 'units';
+        fillFilterSelects();
         render();
       });
     });

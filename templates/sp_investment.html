@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SP Investment List — GGen Eternal Database</title>
+<title>Investment Guide — GGen Eternal Database</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/sp_investment.css') }}">
 <script>
 window.__GGEN_IMAGE_CDN__ = {{ (image_cdn or '')|tojson }};
@@ -15,9 +15,9 @@ window.__GGEN_GAME_IMAGES_USE_CDN__ = {{ (game_images_use_cdn if game_images_use
   <a class="spi-back" href="/">← Back to GGen Eternal Database</a>
 
   <header class="spi-hero">
-    <h1>SP / SSP Investment List</h1>
-    <p>Should you spend SP chips on this Mobile Suit or pilot? Heuristic suggestion buckets — not a damage calculator. Preview page before Ranking integration.</p>
-    <span class="spi-badge">Preview · methodology inspired by eternalsp (units + pilots)</span>
+    <h1>Investment Guide</h1>
+    <p>Should you spend SP or SSP chips on this Mobile Suit or pilot? Suggestion buckets for shortlists — not a damage calculator.</p>
+    <span class="spi-badge">SP · SSP · Units &amp; Pilots</span>
   </header>
 
   <section id="spiScoringPanel" class="spi-scoring-panel" aria-labelledby="spiScoringTitle">
@@ -77,7 +77,7 @@ window.__GGEN_GAME_IMAGES_USE_CDN__ = {{ (game_images_use_cdn if game_images_use
   </div>
 
   <footer class="spi-foot">
-    <p class="muted">Not affiliated with Bandai Namco. Scoring is a point-sum heuristic; letters may not match other lists.</p>
+    <p class="muted">Not affiliated with Bandai Namco. Scoring is a point-sum guide; letters may not match other lists.</p>
   </footer>
 </div>
 <script src="{{ url_for('static', filename='js/sp_investment.js') }}" defer></script>
