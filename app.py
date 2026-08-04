@@ -10389,18 +10389,24 @@ WEAPON_DEBUFF_KEYS_PRESENT_UNION = frozenset(
 print("Database ready!")
 print("=" * 60)
 
-# Preload only the latest published Top 10 Damage Pilot catalog (no older-tag RAM).
-try:
-    import meta_synergy_rank as _msr_boot
-    _ck_boot = _msr_boot._bsp_published_cache_key('EN', {'lb_tier': 3, 'top_pilots': 10})
-    _disk = _msr_boot._load_bsp_published_cache(_ck_boot, use_memory=True)
-    if _disk and len(_disk.get('groups') or []) >= 1000:
-        _tag = (_ck_boot[0] if _ck_boot else '?')
-        print(f'BSP published cache preloaded: {len(_disk["groups"])} units ({_tag})')
-    else:
-        print('BSP published cache preload: latest catalog missing or incomplete')
-except Exception as _bsp_boot_e:
-    print(f'BSP published cache preload skipped: {_bsp_boot_e}')
+def _preload_bsp_published_cache_bg():
+    """Load latest Top 10 Damage Pilot catalog off the import-critical path.
+
+    Same data/API as before — only timing changes: does not block `import app` /
+    boot shell → ready. First Top 10 open may pay one cold gzip if preload lags.
+    """
+    try:
+        import meta_synergy_rank as _msr_boot
+        _ck_boot = _msr_boot._bsp_published_cache_key('EN', {'lb_tier': 3, 'top_pilots': 10})
+        _disk = _msr_boot._load_bsp_published_cache(_ck_boot, use_memory=True)
+        if _disk and len(_disk.get('groups') or []) >= 1000:
+            _tag = (_ck_boot[0] if _ck_boot else '?')
+            print(f'BSP published cache preloaded: {len(_disk["groups"])} units ({_tag})')
+        else:
+            print('BSP published cache preload: latest catalog missing or incomplete')
+    except Exception as _bsp_boot_e:
+        print(f'BSP published cache preload skipped: {_bsp_boot_e}')
+
 
 CHAR_RECOMMEND_UNIT_MAP = {}
 for _uid in sorted(unit_info_map.keys()):
@@ -23681,8 +23687,13 @@ def serve_spa(path):
         return _not_found_page()
     return _serve_index()
 
-# Browse caches in a background thread — do not block gunicorn bind / HTML shell.
+# Browse caches + BSP catalog in background threads — do not block import / boot ready.
 _start_browse_cache_warmup()
+threading.Thread(
+    target=_preload_bsp_published_cache_bg,
+    name='bsp-published-preload',
+    daemon=True,
+).start()
 
 if __name__ == '__main__':
     for d in ["static/images/portraits","static/images/unit_portraits","static/images/Trait","static/images/Trait/thum","static/images/Terrain","static/images/WeaponIcon","static/images/UI","static/images/Logo-Series","static/images/Background","static/images/Rarity"]:

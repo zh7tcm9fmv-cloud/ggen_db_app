@@ -26,6 +26,7 @@ This database is mostly static. Browse + Top 10 must feel instant. If performanc
 5. **Lang switch** — Reload only the visible browse tab; other tabs on demand. Soft-reload (keep prior rows under spinner). Client Top 10 cache must be keyed/invalidated by locale so pilot names re-localize.
 6. **Boot / deploy** — Production entry is `wsgi:application` (not `app:app`). Bind before DB import; show the boot shell while loading. Never run browse-cache build **synchronously at import**. `/health` must return 200 during boot (`booting:true`) and after (`booting:false`). List APIs may 503 `warming_up` briefly (client retries). A blank/white screen with no boot UI for 30s+ is unacceptable.
 7. **Regression = bug** — After any feature fix, spot-check `/` + `/health` + `/api/characters` (and a cold `wsgi` boot). If Top 10, browse, fonts, or cold homepage feel worse than this bar, measure and restore.
+8. **Performance-only = no look/UX change** — Do not change fonts, CSS stacks, layout, or copy for speed. Before coding, list exact file/behavior changes. If a lever needs different fonts to win, skip it and say so.
 
 ## Anti-patterns
 
