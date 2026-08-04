@@ -49,10 +49,33 @@ for _ in range(60):
     time.sleep(0.5)
 assert chars is not None and chars.status_code == 200, getattr(chars, "status_code", None)
 rows = (chars.get_json() or {}).get("rows") or []
-cid = str(rows[0]["id"])
+assert rows, "characters list empty"
+row0 = rows[0]
+for dead in ("series", "rarity_icon", "is_limited_time"):
+    assert dead not in row0, f"list row must omit unused field {dead}"
+for need in ("id", "name", "thum", "rarity", "role_icon", "Ranged"):
+    assert need in row0, f"list row missing {need}"
+cid = str(row0["id"])
+units = None
+uurl = "/api/units?lang=EN&page=1&per_page=5&sort=rarity&dir=desc&q="
+for _ in range(60):
+    units = c.get(uurl)
+    if units.status_code == 200:
+        break
+    time.sleep(0.5)
+assert units is not None and units.status_code == 200, getattr(units, "status_code", None)
+urows = (units.get_json() or {}).get("rows") or []
+assert urows, "units list empty"
+urow0 = urows[0]
+for dead in ("series", "rarity_icon", "is_limited_time", "recommend_character"):
+    assert dead not in urow0, f"unit list row must omit unused field {dead}"
+for need in ("id", "name", "thum", "rarity", "role_icon", "HP", "special_icons"):
+    assert need in urow0, f"unit list row missing {need}"
+print("list payload slim OK", "char", cid, "unit", urow0.get("id"))
 det = c.get(f"/api/character/{cid}?lang=EN")
 data = det.get_json() or {}
 assert det.status_code == 200 and data.get("name"), (det.status_code, data)
+assert "series" in data or data.get("rarity_icon") is not None or data.get("name"), "detail still returns rich payload"
 etag = det.headers.get("ETag")
 assert etag, "detail response missing ETag"
 print("char detail OK", cid, data.get("name"), "etag", etag)
