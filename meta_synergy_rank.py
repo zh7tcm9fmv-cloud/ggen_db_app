@@ -1898,7 +1898,7 @@ _MSY_BROWSE_PAYLOAD_CACHE_TTL = max(15, min(300, int(os.environ.get('MSY_BROWSE_
 _rankings_build_lock = threading.Lock()
 _rankings_inflight = set()
 _MSY_DISK_VERSION = 'v14'
-_BSP_DC_RULES_VERSION = 11  # Supercharged EX stats/GC require unit tag/series/id conditions
+_BSP_DC_RULES_VERSION = 12  # All-role BSP candidates: cheap-score fill; Support reserve on every unit role
 _DEFENDER_BOARD_VERSION = 9  # Stale v0 boards (all SD=18 / no Force Guard) must rebuild
 _SKILLS_OFF_BOARD_VERSION = 2
 _BSP_DC_BUILD_ENGINE = 'calculateDamage'
@@ -1924,7 +1924,7 @@ _SETSUNA_DEF_CHAR_ID = '1370003701'
 _OO_RAISER_FBT_UNIT_ID = '1370005950'
 _BSP_UI_DEFENDER_TOP = 10
 _BSP_STORE_DEFENDER_TOP = 10
-# Reserve Support-role seats in the Attack-unit BSP pool so Supporters-only is real /cal.
+# Reserve Support-role seats so Supporters-only boards (and damage Supports on any MS) get real /cal.
 _BSP_SUPPORT_ROLE_RESERVE = max(16, min(40, int(os.environ.get('BSP_SUPPORT_ROLE_RESERVE', '28') or '28')))
 _BSP_PUBLISHED_MEMORY = {}  # cache_key -> payload (multi-key; do not clobber v16 with v15)
 _BSP_PUBLISHED_MEMORY_LOCK = threading.Lock()
@@ -1942,8 +1942,8 @@ _MSY_PILOT_BUILD_PER_REQUEST = max(1, min(4, int(os.environ.get('MSY_PILOT_BUILD
 _MSY_LITE_PILOT_NEED = max(6, min(16, int(os.environ.get('MSY_LITE_PILOT_NEED', '8') or '8')))
 _MSY_LITE_PILOT_CAP = max(6, min(20, int(os.environ.get('MSY_LITE_PILOT_CAP', '8') or '8')))
 _MSY_LITE_NON_UR_RESERVE = max(2, min(6, int(os.environ.get('MSY_LITE_NON_UR_RESERVE', '4') or '4')))
-# Larger pool so No UR / same-role top-10s are real /cal results, not lite.
-_BSP_PILOT_CAP = max(64, min(160, int(os.environ.get('BSP_PILOT_CAP', '120') or '120')))
+# Larger pool so all-role top-10 + No UR / same-role / Supporters boards are real /cal results.
+_BSP_PILOT_CAP = max(64, min(200, int(os.environ.get('BSP_PILOT_CAP', '140') or '140')))
 # Non-UR seats in the BSP /cal candidate pool — must be large enough that
 # rankings_no_ur can be filled from real DC results (not python-lite).
 _BSP_NON_UR_RESERVE = max(24, min(80, int(os.environ.get('BSP_NON_UR_RESERVE', '55') or '55')))
@@ -4221,8 +4221,12 @@ def save_published_master_cache(cache_key, result, *, build_engine=None):
 def _bsp_candidate_pilots_for_unit(uid, active, info, unit_wpn, stat_mode, lc, *, cap=None):
     """Bounded BSP pool for live /cal ranking.
 
-    Always reserve non-UR seats so rankings_no_ur can be filled from real DC
-    results (not python-lite). Remaining seats prefer URs / GC pilots.
+    Main board is all-role top damage. Candidates are selected by a cheap damage
+    proxy (any role). Reserved seats keep No-UR / Matching Role / Supporters
+    variant boards on real /cal results.
+
+    Support-role seats are reserved for every unit role (not only Attack MS) so
+    damage-capable Supports are not dropped before the Damage Calculator runs.
     """
     cap = cap or _BSP_PILOT_CAP
     if len(active) <= cap:
@@ -4230,6 +4234,13 @@ def _bsp_candidate_pilots_for_unit(uid, active, info, unit_wpn, stat_mode, lc, *
     A = _app()
     out = []
     seen = set()
+    cheap_cache = {}
+
+    def _score(cid):
+        cid = A.normalize_id(cid)
+        if cid not in cheap_cache:
+            cheap_cache[cid] = _cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc)
+        return cheap_cache[cid]
 
     def _add(cid):
         cid = A.normalize_id(cid)
@@ -4241,70 +4252,43 @@ def _bsp_candidate_pilots_for_unit(uid, active, info, unit_wpn, stat_mode, lc, *
         out.append(cid)
         return True
 
+    def _add_scored(cids, limit):
+        scored = [(_score(cid), A.normalize_id(cid)) for cid in cids if A.normalize_id(cid) not in seen]
+        scored.sort(key=lambda x: (-x[0], x[1]))
+        n = 0
+        for _, cid in scored:
+            if n >= limit:
+                break
+            if _add(cid):
+                n += 1
+
     # 1) Guaranteed-crit priority (small set)
     for cid in _msy_guaranteed_crit_priority_pilots(active, lc):
         _add(cid)
 
-    # 2) Reserve non-UR seats first so No-UR lists are real /cal rankings
+    # 2) Reserve non-UR seats so No-UR lists are real /cal rankings
     non_ur = []
     same_role = []
+    support_role = []
     for cid in active:
-        ri = str((A.char_info_map.get(cid) or {}).get('rarity', '1'))
+        cid_n = A.normalize_id(cid)
+        ri = str((A.char_info_map.get(cid_n) or {}).get('rarity', '1'))
         if A.RARITY_MAP.get(ri, 'N') != 'UR':
-            non_ur.append(cid)
-        if _pilot_role_matches_unit(uid, cid):
-            same_role.append(cid)
-    non_ur_scored = [
-        (_cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc), cid)
-        for cid in non_ur
-    ]
-    non_ur_scored.sort(key=lambda x: (-x[0], x[1]))
-    reserve = min(_BSP_NON_UR_RESERVE, max(0, cap - len(out)), len(non_ur_scored))
-    for _, cid in non_ur_scored[:reserve]:
-        _add(cid)
+            non_ur.append(cid_n)
+        if _pilot_role_matches_unit(uid, cid_n):
+            same_role.append(cid_n)
+        if _char_is_support_role(cid_n):
+            support_role.append(cid_n)
+    _add_scored(non_ur, min(_BSP_NON_UR_RESERVE, max(0, cap - len(out))))
 
-    # 2b) Reserve same-role seats so Matching Role top-10 is real /cal
-    same_role_scored = [
-        (_cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc), cid)
-        for cid in same_role if A.normalize_id(cid) not in seen
-    ]
-    same_role_scored.sort(key=lambda x: (-x[0], x[1]))
-    role_reserve = min(24, max(0, cap - len(out)), len(same_role_scored))
-    for _, cid in same_role_scored[:role_reserve]:
-        _add(cid)
+    # 3) Same-role seats for Matching Role top-10
+    _add_scored(same_role, min(24, max(0, cap - len(out))))
 
-    # 2c) Attack units: reserve Support-role seats for Supporters-only Top 10
-    if _unit_is_attack_role(uid):
-        support_role = [cid for cid in active if _char_is_support_role(cid)]
-        support_scored = [
-            (_cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc), cid)
-            for cid in support_role if A.normalize_id(cid) not in seen
-        ]
-        support_scored.sort(key=lambda x: (-x[0], x[1]))
-        support_reserve = min(
-            _BSP_SUPPORT_ROLE_RESERVE, max(0, cap - len(out)), len(support_scored),
-        )
-        for _, cid in support_scored[:support_reserve]:
-            _add(cid)
+    # 4) Support-role seats on every unit (damage Supports + Supporters-only board)
+    _add_scored(support_role, min(_BSP_SUPPORT_ROLE_RESERVE, max(0, cap - len(out))))
 
-    # 3) Fill remaining with URs
-    for cid in active:
-        if len(out) >= cap:
-            break
-        ri = str((A.char_info_map.get(cid) or {}).get('rarity', '1'))
-        if A.RARITY_MAP.get(ri, 'N') == 'UR':
-            _add(cid)
-
-    # 4) Fill any leftover seats by cheap score
-    if len(out) < cap:
-        cheap_all = [
-            (_cheap_pilot_score(uid, cid, info, unit_wpn, stat_mode, lc), cid)
-            for cid in active if A.normalize_id(cid) not in seen
-        ]
-        cheap_all.sort(key=lambda x: (-x[0], x[1]))
-        for _, cid in cheap_all:
-            if not _add(cid):
-                break
+    # 5) Fill remaining by cheap damage proxy across ALL roles (never by UR id order)
+    _add_scored(active, max(0, cap - len(out)))
     return out[:cap]
 
 
