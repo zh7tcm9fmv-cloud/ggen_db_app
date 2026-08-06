@@ -580,5 +580,53 @@
     "LoginCount": 6,
     "IsHighlight": true,
     "RewardSetId": 14426064001006
+  },
+  {
+    "LoginBonusId": 426081001,
+    "LoginCount": 1,
+    "IsHighlight": false,
+    "RewardSetId": 14426081001001
+  },
+  {
+    "LoginBonusId": 426081001,
+    "LoginCount": 2,
+    "IsHighlight": false,
+    "RewardSetId": 14426081001002
+  },
+  {
+    "LoginBonusId": 426081001,
+    "LoginCount": 3,
+    "IsHighlight": false,
+    "RewardSetId": 14426081001003
+  },
+  {
+    "LoginBonusId": 426081001,
+    "LoginCount": 4,
+    "IsHighlight": false,
+    "RewardSetId": 14426081001004
+  },
+  {
+    "LoginBonusId": 426081001,
+    "LoginCount": 5,
+    "IsHighlight": false,
+    "RewardSetId": 14426081001005
+  },
+  {
+    "LoginBonusId": 426081001,
+    "LoginCount": 6,
+    "IsHighlight": false,
+    "RewardSetId": 14426081001006
+  },
+  {
+    "LoginBonusId": 426081001,
+    "LoginCount": 7,
+    "IsHighlight": false,
+    "RewardSetId": 14426081001007
+  },
+  {
+    "LoginBonusId": 426081001,
+    "LoginCount": 8,
+    "IsHighlight": true,
+    "RewardSetId": 14426081001008
   }
 ]

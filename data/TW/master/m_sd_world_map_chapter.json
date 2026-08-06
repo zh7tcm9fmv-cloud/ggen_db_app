@@ -1,0 +1,53 @@
+[
+  {
+    "StoryEventId": 200004,
+    "SdWorldMapId": 705001,
+    "ChapterNumber": 1,
+    "IsLastChapter": false,
+    "AreaLeftTopX": -873,
+    "AreaLeftTopY": 1295,
+    "AreaRightBottomX": 2720,
+    "AreaRightBottomY": -166,
+    "MistResourceId": "",
+    "PositionX": -776,
+    "PositionY": 748,
+    "ChapterNameLanguageId": 251000000070500101,
+    "FallbackStoryEventLogoResourceId": "",
+    "FallbackStoryEventLogoWhiteResourceId": "",
+    "FallbackChallengeScheduleId": 0
+  },
+  {
+    "StoryEventId": 200015,
+    "SdWorldMapId": 705001,
+    "ChapterNumber": 2,
+    "IsLastChapter": false,
+    "AreaLeftTopX": -1519,
+    "AreaLeftTopY": -560,
+    "AreaRightBottomX": 277,
+    "AreaRightBottomY": -1667,
+    "MistResourceId": "sd_world_map_mist_200015",
+    "PositionX": -978,
+    "PositionY": -1082,
+    "ChapterNameLanguageId": 251000000070500102,
+    "FallbackStoryEventLogoResourceId": "sd_story_event_logo_200015",
+    "FallbackStoryEventLogoWhiteResourceId": "sd_story_event_logo_anime_white_200015",
+    "FallbackChallengeScheduleId": 2608101304
+  },
+  {
+    "StoryEventId": 200016,
+    "SdWorldMapId": 705001,
+    "ChapterNumber": 3,
+    "IsLastChapter": true,
+    "AreaLeftTopX": -2720,
+    "AreaLeftTopY": 1290,
+    "AreaRightBottomX": -1547,
+    "AreaRightBottomY": -167,
+    "MistResourceId": "sd_world_map_mist_200016",
+    "PositionX": -1581,
+    "PositionY": 534,
+    "ChapterNameLanguageId": 251000000070500103,
+    "FallbackStoryEventLogoResourceId": "sd_story_event_logo_200016",
+    "FallbackStoryEventLogoWhiteResourceId": "sd_story_event_logo_anime_white_200016",
+    "FallbackChallengeScheduleId": 2608101305
+  }
+]

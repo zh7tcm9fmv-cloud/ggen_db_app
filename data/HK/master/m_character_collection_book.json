@@ -3753,6 +3753,15 @@
     "IsHideVoiceButton": false
   },
   {
+    "Id": 70500034,
+    "DefaultCharacterId": 1705003100,
+    "SortOrder": 70500034,
+    "SeriesId": 7050,
+    "DescriptionLanguageId": 100200001705003100,
+    "ScheduleId": 2608109901,
+    "IsHideVoiceButton": false
+  },
+  {
     "Id": 70900001,
     "DefaultCharacterId": 1709000100,
     "SortOrder": 70900001,

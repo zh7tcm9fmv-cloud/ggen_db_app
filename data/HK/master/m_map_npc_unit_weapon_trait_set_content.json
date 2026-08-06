@@ -12900,6 +12900,26 @@
     "WeaponTraitId": 700500502
   },
   {
+    "MapNpcWeaponTraitSetId": 700511501,
+    "SortOrder": 1,
+    "WeaponTraitId": 700511501
+  },
+  {
+    "MapNpcWeaponTraitSetId": 700511501,
+    "SortOrder": 2,
+    "WeaponTraitId": 700511502
+  },
+  {
+    "MapNpcWeaponTraitSetId": 700521501,
+    "SortOrder": 1,
+    "WeaponTraitId": 700521501
+  },
+  {
+    "MapNpcWeaponTraitSetId": 700521501,
+    "SortOrder": 2,
+    "WeaponTraitId": 700521502
+  },
+  {
     "MapNpcWeaponTraitSetId": 990000101,
     "SortOrder": 1,
     "WeaponTraitId": 300340401

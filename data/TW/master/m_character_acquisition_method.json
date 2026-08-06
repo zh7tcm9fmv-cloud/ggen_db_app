@@ -28790,6 +28790,21 @@
     "TargetId": 2607500301
   },
   {
+    "CharacterId": 1705003100,
+    "AcquisitionMethodTypeIndex": 17,
+    "TargetId": 90200022
+  },
+  {
+    "CharacterId": 1705003100,
+    "AcquisitionMethodTypeIndex": 17,
+    "TargetId": 90210022
+  },
+  {
+    "CharacterId": 1705003100,
+    "AcquisitionMethodTypeIndex": 17,
+    "TargetId": 90220022
+  },
+  {
     "CharacterId": 1709000100,
     "AcquisitionMethodTypeIndex": 17,
     "TargetId": 90200006

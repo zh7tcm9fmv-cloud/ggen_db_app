@@ -9740,6 +9740,11 @@
     "WeaponStatusChangePatternSetId": 51000401
   },
   {
+    "Id": 33007501,
+    "WeaponTraitChangePatternSetId": 0,
+    "WeaponStatusChangePatternSetId": 53000201
+  },
+  {
     "Id": 33007801,
     "WeaponTraitChangePatternSetId": 3007801,
     "WeaponStatusChangePatternSetId": 30000000

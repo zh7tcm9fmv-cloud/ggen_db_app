@@ -798,5 +798,45 @@
     "InvasionTopMovePositionX": 0,
     "InvasionTopMovePositionY": -50,
     "InvasionTopScaleRatePercent": 70
+  },
+  {
+    "InvasionEventStageGroupId": 90200022,
+    "SlotIndex": 0,
+    "EventTopMovePositionX": -60,
+    "EventTopMovePositionY": 20,
+    "EventTopScaleRatePercent": 120,
+    "InvasionTopMovePositionX": 30,
+    "InvasionTopMovePositionY": 70,
+    "InvasionTopScaleRatePercent": 73
+  },
+  {
+    "InvasionEventStageGroupId": 90200022,
+    "SlotIndex": 1,
+    "EventTopMovePositionX": -20,
+    "EventTopMovePositionY": 70,
+    "EventTopScaleRatePercent": 110,
+    "InvasionTopMovePositionX": 30,
+    "InvasionTopMovePositionY": 70,
+    "InvasionTopScaleRatePercent": 73
+  },
+  {
+    "InvasionEventStageGroupId": 90200022,
+    "SlotIndex": 2,
+    "EventTopMovePositionX": -120,
+    "EventTopMovePositionY": 50,
+    "EventTopScaleRatePercent": 120,
+    "InvasionTopMovePositionX": 30,
+    "InvasionTopMovePositionY": 70,
+    "InvasionTopScaleRatePercent": 73
+  },
+  {
+    "InvasionEventStageGroupId": 90200022,
+    "SlotIndex": 3,
+    "EventTopMovePositionX": -80,
+    "EventTopMovePositionY": 30,
+    "EventTopScaleRatePercent": 115,
+    "InvasionTopMovePositionX": 30,
+    "InvasionTopMovePositionY": 70,
+    "InvasionTopScaleRatePercent": 73
   }
 ]

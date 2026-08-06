@@ -9174,6 +9174,18 @@
     "LotteryCount": 1
   },
   {
+    "Id": 309020002201,
+    "StageDropSetId": 3090200022,
+    "StageDropContentSetId": 309020002201,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 309020002202,
+    "StageDropSetId": 3090200022,
+    "StageDropContentSetId": 309020002202,
+    "LotteryCount": 1
+  },
+  {
     "Id": 309021000101,
     "StageDropSetId": 3090210001,
     "StageDropContentSetId": 309021000101,
@@ -9534,6 +9546,24 @@
     "LotteryCount": 1
   },
   {
+    "Id": 309021002201,
+    "StageDropSetId": 3090210022,
+    "StageDropContentSetId": 309021002201,
+    "LotteryCount": 3
+  },
+  {
+    "Id": 309021002202,
+    "StageDropSetId": 3090210022,
+    "StageDropContentSetId": 309021002202,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 309021002203,
+    "StageDropSetId": 3090210022,
+    "StageDropContentSetId": 309021002203,
+    "LotteryCount": 1
+  },
+  {
     "Id": 309022000101,
     "StageDropSetId": 3090220001,
     "StageDropContentSetId": 309022000101,
@@ -9891,6 +9921,24 @@
     "Id": 309022002103,
     "StageDropSetId": 3090220021,
     "StageDropContentSetId": 309022002103,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 309022002201,
+    "StageDropSetId": 3090220022,
+    "StageDropContentSetId": 309022002201,
+    "LotteryCount": 5
+  },
+  {
+    "Id": 309022002202,
+    "StageDropSetId": 3090220022,
+    "StageDropContentSetId": 309022002202,
+    "LotteryCount": 1
+  },
+  {
+    "Id": 309022002203,
+    "StageDropSetId": 3090220022,
+    "StageDropContentSetId": 309022002203,
     "LotteryCount": 1
   },
   {

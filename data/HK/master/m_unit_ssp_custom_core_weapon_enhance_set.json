@@ -5523,6 +5523,20 @@
     "EffectValue": 200
   },
   {
+    "Id": 113900010001,
+    "TargetWeaponId": 113900010003,
+    "SortOrder": 1,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 200
+  },
+  {
+    "Id": 113900010003,
+    "TargetWeaponId": 113900010003,
+    "SortOrder": 1,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 200
+  },
+  {
     "Id": 114400010003,
     "TargetWeaponId": 114400010004,
     "SortOrder": 1,
@@ -15377,6 +15391,13 @@
     "SortOrder": 1,
     "WeaponEnhanceTypeIndex": 1,
     "EffectValue": 350
+  },
+  {
+    "Id": 170500550003,
+    "TargetWeaponId": 170500550001,
+    "SortOrder": 1,
+    "WeaponEnhanceTypeIndex": 1,
+    "EffectValue": 400
   },
   {
     "Id": 170900010001,

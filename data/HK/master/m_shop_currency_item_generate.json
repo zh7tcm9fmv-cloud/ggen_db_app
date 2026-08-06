@@ -60,6 +60,11 @@
     "CurrencyTypeIndex": 1
   },
   {
+    "ShopId": 18200004,
+    "ItemId": 222000040013,
+    "CurrencyTypeIndex": 1
+  },
+  {
     "ShopId": 90000001,
     "ItemId": 0,
     "CurrencyTypeIndex": 4

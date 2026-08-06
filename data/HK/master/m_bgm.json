@@ -5030,6 +5030,16 @@
     "SortOrder": 1604000010
   },
   {
+    "Id": 170500003,
+    "NameLanguageId": 0,
+    "ResourceId": "bgm_7050_0003",
+    "IsPaid": false,
+    "ScheduleId": 0,
+    "SeriesId": 0,
+    "HasLyrics": false,
+    "SortOrder": 0
+  },
+  {
     "Id": 170500005,
     "NameLanguageId": 300100000170500001,
     "ResourceId": "bgm_7050_0005",
@@ -5038,6 +5048,16 @@
     "SeriesId": 7050,
     "HasLyrics": false,
     "SortOrder": 1705000010
+  },
+  {
+    "Id": 170500006,
+    "NameLanguageId": 0,
+    "ResourceId": "bgm_7050_0006",
+    "IsPaid": false,
+    "ScheduleId": 0,
+    "SeriesId": 0,
+    "HasLyrics": false,
+    "SortOrder": 0
   },
   {
     "Id": 170500007,
@@ -5078,6 +5098,16 @@
     "SeriesId": 7050,
     "HasLyrics": false,
     "SortOrder": 1705000050
+  },
+  {
+    "Id": 170500011,
+    "NameLanguageId": 0,
+    "ResourceId": "bgm_7050_0011",
+    "IsPaid": false,
+    "ScheduleId": 0,
+    "SeriesId": 0,
+    "HasLyrics": false,
+    "SortOrder": 0
   },
   {
     "Id": 170509001,

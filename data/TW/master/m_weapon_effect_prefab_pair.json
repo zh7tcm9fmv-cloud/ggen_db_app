@@ -516,6 +516,12 @@
     "DamagedEffectId": "ef_mpd_0010_002_bulcan"
   },
   {
+    "Id": 190004,
+    "WeaponEffectPrefabPairSetId": 190004,
+    "WeaponEffectId": "ef_mpa_0010_004_bulcan",
+    "DamagedEffectId": "ef_mpd_0010_004_bulcan"
+  },
+  {
     "Id": 190005,
     "WeaponEffectPrefabPairSetId": 190005,
     "WeaponEffectId": "ef_mpa_0010_005_bulcan",
@@ -4300,6 +4306,24 @@
     "WeaponEffectPrefabPairSetId": 900205,
     "WeaponEffectId": "ef_mpw_102_01_dragonhang",
     "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900208,
+    "WeaponEffectPrefabPairSetId": 900208,
+    "WeaponEffectId": "ef_mpw_105_01_throwspear",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900209,
+    "WeaponEffectPrefabPairSetId": 900208,
+    "WeaponEffectId": "ef_mpa_105_01_throwspear",
+    "DamagedEffectId": "ef_mpd_105_01_throwspear"
+  },
+  {
+    "Id": 900210,
+    "WeaponEffectPrefabPairSetId": 900210,
+    "WeaponEffectId": "ef_mpw_106_01_psychofield_special",
+    "DamagedEffectId": "ef_mpd_0026_03_mapweapon_recover"
   },
   {
     "Id": 8000009,

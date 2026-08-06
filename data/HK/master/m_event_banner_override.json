@@ -1,0 +1,16 @@
+[
+  {
+    "EventBannerId": 100016,
+    "Priority": 26081001,
+    "ScheduleId": 2608101001,
+    "ResourceId": "ie_banner_100017",
+    "OverrideTypeIndex": 0
+  },
+  {
+    "EventBannerId": 200004,
+    "Priority": 26081002,
+    "ScheduleId": 2608101302,
+    "ResourceId": "se_banner_200004_2",
+    "OverrideTypeIndex": 1
+  }
+]
