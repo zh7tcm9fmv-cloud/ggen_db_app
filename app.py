@@ -594,6 +594,7 @@ UI_LABELS = {
         'restriction_recover_hp': 'Recovers {}% HP when used.',
         'restriction_recover_en': 'Recovers {}% EN when used.',
         'restriction_recover_mp': 'Recovers {} MP when used.',
+        'restriction_map_supply_mp': 'Increase MP by {} for characters piloting squad units within range.',
         'map_weapon_designate_spots': 'Can designate up to {} spots.',
         'stage_recommended_cp': 'Recommended CP: {}', 'stage_no_prefix': 'No. {}', 'sortie_group': 'Squad {}',
         'restriction_applies_unit': 'Applies to Units', 'restriction_applies_both': 'Applies to Units & Characters',
@@ -616,6 +617,7 @@ UI_LABELS = {
         'restriction_recover_hp': '使用時恢復{}%HP。',
         'restriction_recover_en': '使用時恢復{}%EN。',
         'restriction_recover_mp': '使用時恢復{}MP。',
+        'restriction_map_supply_mp': '使範圍內搭乘部隊單位的角色提升MP{}。',
         'map_weapon_designate_spots': '最多可指定{}個位置。',
         'stage_recommended_cp': '推薦戰力：{}', 'stage_no_prefix': 'No. {}', 'sortie_group': '小隊 {}',
         'restriction_applies_unit': '僅適用於單位', 'restriction_applies_both': '適用於單位與角色',
@@ -638,6 +640,7 @@ UI_LABELS = {
         'restriction_recover_hp': '使用時恢復{}%HP。',
         'restriction_recover_en': '使用時恢復{}%EN。',
         'restriction_recover_mp': '使用時恢復{}MP。',
+        'restriction_map_supply_mp': '使範圍內搭乘部隊單位的角色提升MP{}。',
         'map_weapon_designate_spots': '最多可指定{}個位置。',
         'stage_recommended_cp': '推薦戰力：{}', 'stage_no_prefix': 'No. {}', 'sortie_group': '小隊 {}',
         'restriction_applies_unit': '僅適用於單位', 'restriction_applies_both': '適用於單位與角色',
@@ -660,6 +663,7 @@ UI_LABELS = {
         'restriction_recover_hp': '使用時、HPを{}%回復する。',
         'restriction_recover_en': '使用時、ENを{}%回復する。',
         'restriction_recover_mp': '使用時、{}MP回復する。',
+        'restriction_map_supply_mp': '範囲内の小隊ユニットに搭乗しているキャラクターのMPを{}上昇する。',
         'map_weapon_designate_spots': '最大{}箇所まで指定できる。',
         'stage_recommended_cp': '推奨戦力: {}', 'stage_no_prefix': 'No. {}', 'sortie_group': '小隊 {}',
         'restriction_applies_unit': '機体に適用', 'restriction_applies_both': '機体とキャラに適用',
@@ -3818,30 +3822,56 @@ MAP_WEAPON_AFTER_MOVE_PAIRS = frozenset({
     ('1219000151', '121900015105'),
 })
 MAP_WEAPON_AFTER_MOVE_ICON = '/static/images/UI/UI_Common_WeaponIcon_map_after_move.webp'
-# Recovery/supply MAP (e.g. Lacus): standard blue MAP icon + "Supply Type: MP" in the header (not the attack-attribute row).
-MAP_WEAPON_RECOVERY_SUPPLY_MP_PAIRS = frozenset({('1330005900', '133000590003')})
+# Recovery/supply MAP (MpRecoveryValue > 0): blue battle-UI MAP icon + "Supply Type: MP" header.
+# Legacy pair kept as an explicit fallback if growth/correction maps are unavailable during early load.
+MAP_WEAPON_RECOVERY_SUPPLY_MP_PAIRS = frozenset({
+    ('1330005900', '133000590003'),
+    ('1139000100', '113900010004'),
+})
 MAP_WEAPON_SUPPLY_TYPE_MP_ICON = '/static/images/UI/Sprite/UI_Common_Icon_MapWeapon_Mp.webp'
-# Lacus (1330005900) MAP: in-game battle UI blue MAP art (CDN /static/images mirror — use game_image_public_url).
 MAP_WEAPON_BLUE_BATTLE_UI_ICON = '/static/images/UI/UI_Battle_MapUI_MapWeapon_Icon_Blue.webp'
-MAP_WEAPON_BLUE_BATTLE_UI_PAIRS = frozenset({('1330005900', '133000590003')})
 
 
-def is_map_weapon_blue_battle_ui(unit_id, wid, wt):
-    wts = str(wt) if wt is not None else ''
-    if wts != '3':
-        return False
-    u = normalize_id(unit_id) if unit_id else ''
-    w = normalize_id(wid) if wid else ''
-    return bool(u and w and (u, w) in MAP_WEAPON_BLUE_BATTLE_UI_PAIRS)
+def _weapon_status_mp_recovery_at_lv5(wid):
+    """MpRecoveryValue at weapon level 5 from status growth/override correction, or 0."""
+    w = normalize_id(wid) if wid else '0'
+    if w == '0':
+        return 0
+    wm = (globals().get('weapon_info_map') or {}).get(w) or {}
+    wsid = normalize_id(wm.get('weapon_status_id') or w)
+    wsm = globals().get('weapon_status_map') or {}
+    ws = wsm.get(wsid) or wsm.get(w)
+    if not ws:
+        return 0
+    spi = normalize_id(ws.get('override_correction_id') or '0')
+    if spi == '0':
+        gi = normalize_id(ws.get('growth_pattern_id') or '0')
+        if gi != '0':
+            gd = (globals().get('growth_pattern_map') or {}).get(gi) or {}
+            spi = normalize_id(gd.get('status_change_set_id') or '0')
+    if spi == '0':
+        return 0
+    pc = (globals().get('weapon_correction_map') or {}).get(spi) or {}
+    lv_corr = pc.get(5) if isinstance(pc, dict) else None
+    if not isinstance(lv_corr, dict):
+        return 0
+    return int(lv_corr.get('mp_recovery') or 0)
 
 
 def is_map_weapon_recovery_supply_mp(unit_id, wid, wt):
+    """True for MAP weapons that recover/supply MP (Supply Type: MP + blue MAP icon)."""
     wts = str(wt) if wt is not None else ''
     if wts != '3':
         return False
+    if _weapon_status_mp_recovery_at_lv5(wid) > 0:
+        return True
     u = normalize_id(unit_id) if unit_id else ''
     w = normalize_id(wid) if wid else ''
     return bool(u and w and (u, w) in MAP_WEAPON_RECOVERY_SUPPLY_MP_PAIRS)
+
+
+def is_map_weapon_blue_battle_ui(unit_id, wid, wt):
+    return is_map_weapon_recovery_supply_mp(unit_id, wid, wt)
 
 
 def _weapon_status_map_can_use_after_move(wid):
@@ -8383,7 +8413,10 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_
         rest.append(get_ui_label(lang_code, 'restriction_recover_en').format(re_en))
     rmp = int(usage_corr.get('mp_recovery', 0) or 0)
     if rmp > 0:
-        rest.append(get_ui_label(lang_code, 'restriction_recover_mp').format(rmp))
+        if wts == '3':
+            rest.append(get_ui_label(lang_code, 'restriction_map_supply_mp').format(rmp))
+        else:
+            rest.append(get_ui_label(lang_code, 'restriction_recover_mp').format(rmp))
     if csid != '0':
         ct = wcam.get(csid, "None")
         if ct and ct != "None": rest.append(ct)
