@@ -177,7 +177,7 @@
   },
   {
     "id": 110200001007000700,
-    "value": "One of 25 pre-production units of the Gelgoog, a Principality of Zeon general-purpose mass-produced mobile suit.\nBelonging to \"Crimson Lightning\" Johnny Ridden, this machine sports a striking red coat of paint, and is equipped with a high-mobility backpack that lets it execute hit-and-run tactics with lethal efficiency."
+    "value": "One of 25 pre-production units of the Gelgoog, a Principality of Zeon general-purpose mass-produced mobile suit.\nBelonging to \"Crimson Lightning\" Johnny Ridden, this machine sported a striking red coat of paint. It was equipped with a high-mobility backpack that lets it execute hit-and-run tactics with lethal efficiency."
   },
   {
     "id": 110200001007000960,
@@ -1380,6 +1380,10 @@
     "value": "A prototype mobile suit developed by the Neo Zeon remnant faction known as the Sleeves.\nIts design concept was to recreate the high mobility psycommu system testbed developed by the Principality of Zeon during the One Year War, but with U.C.0096 technological advancements.\nUsing Angelo Sauper's Geara Zulu as a base, drastic alterations have been made.\nAttached to its shoulders are massive arms with built-in mega particle cannons, which can be used as wire-guided remote weapons.\nThe legs have also been switched out for hefty thruster units, and propellant boosters for long-range cruising, bigger than the machine itself, can be mounted on its back."
   },
   {
+    "id": 110200001139000100,
+    "value": "The mobile suit, known for the pure-white body color of its Unicorn Mode and the glowing-red inner frame of its Destroy Mode transformation, has been adorned with decorations befitting its closing days."
+  },
+  {
     "id": 110200001144000150,
     "value": "The Narrative Gundam, fitted with equipment allowing for high mobility.\nDuring its development, an emphasis was placed on upgrading its legs, and it can achieve an explosive acceleration by aiming all of its large boosters backward.\nIn addition, it operated on the front lines of the Phoenix Hunt mission and comes equipped with the Psycho Capture, a composite special weapon designed to capture the Phenex."
   },
@@ -2041,7 +2045,7 @@
   },
   {
     "id": 110200001230001100,
-    "value": "G-bits were unmanned units that Newtypes could control via the Flash System.\nNewtypes were able to manipulate G-bits that had the same specifications and weapons as the mother unit.\nBefore the great war, Gundam squads consisted of one mother Gundam unit and around 12 bit mobile suits.\nThe GX-bits were the G-bits over which the Gundam X had control."
+    "value": "G-Bits were unmanned units that Newtypes could control via the Flash System.\nNewtypes were able to manipulate G-bits that had the same specifications and weapons as the mother unit.\nBefore the great war, Gundam squads consisted of one mother Gundam unit and around 12 bit mobile suits.\nThe GX-bits were the G-bits over which the Gundam X had control."
   },
   {
     "id": 110200001230001200,
@@ -2293,7 +2297,7 @@
   },
   {
     "id": 110200001300001900,
-    "value": "Developed to be the premium command version of the ZAFT's BuCuE ground-based Mobile Suit.\nThough slightly larger than the BuCuE, it retains the quadrupedal setup and treads of the former with the addition of greatly improved maneuverability.\nThe back-mounted turret now comes equipped with a 2-Barrel Beam Cannon.\nLegs featuring claws for close-quarters combat and the enhanced output of its head-mounted Beam Saber makes it an effective anti-Mobile Suit fighter.\nIts two-seater setup allows the pilot to control the suit while the copilot acts as a gunner, increasing its potential as an incredibly agile threat.\nWhile on the African front, Andrew Waldfeld, \"Desert Tiger\" and his partner Aisha used this to back Kira Yamato's Strike Gundam into a corner."
+    "value": "Developed to be the premium command version of the ZAFT's BuCUE ground-based Mobile Suit.\nThough slightly larger than the BuCUE, it retains the quadrupedal setup and treads of the former with the addition of greatly improved maneuverability.\nThe back-mounted turret now comes equipped with a 2-Barrel Beam Cannon.\nLegs featuring claws for close-quarters combat and the enhanced output of its head-mounted Beam Saber makes it an effective anti-Mobile Suit fighter.\nIts two-seater setup allows the pilot to control the suit while the copilot acts as a gunner, increasing its potential as an incredibly agile threat.\nWhile on the African front, Andrew Waldfeld, \"Desert Tiger\" and his partner Aisha used this to back Kira Yamato's Strike Gundam into a corner."
   },
   {
     "id": 110200001300002000,
@@ -2553,11 +2557,11 @@
   },
   {
     "id": 110200001310000300,
-    "value": "A mobile suit rebuilt from the GAT-X105 Strike that survived the last great war using spare parts that belonged to the Rogue that were provided by Cagalli.\nWhen Phase Shift is activated, the color of its armor conforms to the Alliance's Strike.\nOn the other hand, its Twin Eye is green because it incorporates spare parts from the Rouge.\nIt is designed to perform like the first-generation GAT-X105 Strike, and some of its components cannot keep up with Kira's abilities as an ace pilot.\nNevertheless, by replacing worn and deteriorated parts with new ones, it maintains a high level of performance at the limit of its design in terms of responsiveness and durability.\nThe DRAGOON Striker was completed at Orb and the Factory using design data from a prototype Striker Pack for DRAGOON operation planned by the Alliance.\nKira, having learned of the DRAGOON System's existence when he engaged the Providence, wanted to incorporate it on a trial basis.\nThe Dragoon Striker evolved from the AQM/E-X04 Gun Barrel Striker, which operated four Wired Gunbarrels, and comes equipped with three completely separate DRAGOONs.\nDuring the design stage, it became clear that the Strike's generator did not produce sufficient power output.\nHowever, by connecting multiple battery packs—the same used in the Perfect Strike—a bespoke solution was finally arrived at.\nWhile the DRAGOON Striker had issues with the energy efficiency of its generator, its firepower was ideal.\nAfter Kira lost the Freedom, he used the DRAGOON Striker to respond to emergencies, which proved useful in providing him with combat experience in a mobile suit equipped with the DRAGOON System.\nIt is possible that Kira's experience with the DRAGOON Striker was one reason he was able to adapt so quickly to the DRAGOON System in the Strike Freedom.\n"
+    "value": "A mobile suit rebuilt from the GAT-X105 Strike that survived the last great war using spare parts that belonged to the Rogue that were provided by Cagalli.\nWhen Phase Shift is activated, the color of its armor conforms to the Alliance's Strike.\nOn the other hand, its Twin Eye is green because it incorporates spare parts from the Rouge.\nIt is designed to perform like the first-generation GAT-X105 Strike, and some of its components cannot keep up with Kira's abilities as an ace pilot.\nNevertheless, by replacing worn and deteriorated parts with new ones, it maintains a high level of performance at the limit of its design in terms of responsiveness and durability.\nThe DRAGOON Striker was completed at Orb and the Factory using design data from a prototype Striker Pack for DRAGOON operation planned by the Alliance.\nKira, having learned of the DRAGOON System's existence when he engaged the Providence, wanted to incorporate it on a trial basis.\nThe Dragoon Striker evolved from the AQM/E-X04 Gun Barrel Striker, which operated four Wired Gunbarrels, and comes equipped with three completely separate DRAGOONs.\nDuring the design stage, it became clear that the Strike's generator did not produce sufficient power output.\nHowever, by connecting multiple battery packs—the same used in the Perfect Strike—a bespoke solution was finally arrived at.\nWhile the DRAGOON Striker had issues with the energy efficiency of its generator, its firepower was ideal.\nAfter Kira lost the Freedom, he used the DRAGOON Striker to respond to emergencies, which proved useful in providing him with combat experience in a mobile suit equipped with the DRAGOON System.\nIt is possible that Kira's experience with the DRAGOON Striker was one reason he was able to adapt so quickly to the DRAGOON System in the Strike Freedom."
   },
   {
     "id": 110200001310000400,
-    "value": "The original doctrine of the Orb Forces was to maintain a nonaggressive defense, but after suffering defeat at the hands of the Earth Alliance Forces when they invaded, reconsidering that doctrine became an imperative, and the Orb Forces began to adopt a proactive defense, preemptively striking the enemy before they approach the homeland.\nAs a result, aerial carriers capable of conducting foreign campaigns became a necessity, and the Orb Forces began to explore developing carrier-based machines as its primary mobile armor.\nIn the process, several designs were considered and prototyped in parallel, and this machine was one of the test models of the Murasame developed with mass production in mind, as well as one of the few machines actually built for testing from among the many considered.\nAs a prototype, some of its parts, such as its wings, are replaceable, enabling a variety of tests to be conducted with a single machine.\nThe version lent to Athrun, whom Lacus entrusted to handle the remnants of the Zala faction who descended to Earth, was selected after taking the nature of the mission into account based on the suitability of its parts for long operational time and long-distance flight.\nAdditionally, while its performance is extremely high, it is nevertheless too peaky, and only an ace pilot can draw out its true potential.\nConsequently, these tests parts were not adopted in the mass production version of the Murasame.\nStill, they succeeded in collecting valuable operational data in combat, which in turn was used to complete the mass production version.\n"
+    "value": "The original doctrine of the Orb Forces was to maintain a nonaggressive defense, but after suffering defeat at the hands of the Earth Alliance Forces when they invaded, reconsidering that doctrine became an imperative, and the Orb Forces began to adopt a proactive defense, preemptively striking the enemy before they approach the homeland.\nAs a result, aerial carriers capable of conducting foreign campaigns became a necessity, and the Orb Forces began to explore developing carrier-based machines as its primary mobile armor.\nIn the process, several designs were considered and prototyped in parallel, and this machine was one of the test models of the Murasame developed with mass production in mind, as well as one of the few machines actually built for testing from among the many considered.\nAs a prototype, some of its parts, such as its wings, are replaceable, enabling a variety of tests to be conducted with a single machine.\nThe version lent to Athrun, whom Lacus entrusted to handle the remnants of the Zala faction who descended to Earth, was selected after taking the nature of the mission into account based on the suitability of its parts for long operational time and long-distance flight.\nAdditionally, while its performance is extremely high, it is nevertheless too peaky, and only an ace pilot can draw out its true potential.\nConsequently, these tests parts were not adopted in the mass production version of the Murasame.\nStill, they succeeded in collecting valuable operational data in combat, which in turn was used to complete the mass production version."
   },
   {
     "id": 110200001330000150,
@@ -2817,7 +2821,7 @@
   },
   {
     "id": 110200001370000100,
-    "value": "A Celestial Being 3rd-generation Gundam, developed for actual combat based on the 2nd-gen Gundams' test data.\nWith a solar-powered GN Drive to provide virtually limitless amounts of energy and heretofore unseen handheld Beam Weapons, its performance far exceeds any current Mobile Suit.\nIt is also equipped with a Trans-Am System, which releases stored, highly-compressed particles from every surface to boost its output to nearly three times its specifications for a short time.\nThe GN Particles generated by the Drive make the Exia an astoundingly agile close-combat machine even among other Gundams of its generation.\nSpecialized for close fights, its weaponry includes four Beam Sabers and three swords, a combination which gave it the development code \"Seven Swords.\"\nThe swords' ability to cut through a defensive GN Shield makes it evident that this model was made to fight Gundams.\n"
+    "value": "A Celestial Being 3rd-generation Gundam, developed for actual combat based on the 2nd-gen Gundams' test data.\nWith a solar-powered GN Drive to provide virtually limitless amounts of energy and heretofore unseen handheld Beam Weapons, its performance far exceeds any current Mobile Suit.\nIt is also equipped with a Trans-Am System, which releases stored, highly-compressed particles from every surface to boost its output to nearly three times its specifications for a short time.\nThe GN Particles generated by the Drive make the Exia an astoundingly agile close-combat machine even among other Gundams of its generation.\nSpecialized for close fights, its weaponry includes four Beam Sabers and three swords, a combination which gave it the development code \"Seven Swords.\"\nThe swords' ability to cut through a defensive GN Shield makes it evident that this model was made to fight Gundams."
   },
   {
     "id": 110200001370000160,
@@ -3920,6 +3924,10 @@
     "value": "A red knight who serves as a retainer to Satan Gundam.\nExcelling in both swordsmanship and magic, he is the most powerful knight under the Demon King, and he stood in the way of the Knight Gundam and his party when they arrived to vanquish Satan Gundam."
   },
   {
+    "id": 110200001705005500,
+    "value": "Knight Gundam with his backpack activated, providing him four legs for enhanced mobility.\nThis form is highly effective against swift enemies.\nIt is evocative of his earlier self, Musha Gundam Mk-III."
+  },
+  {
     "id": 110200001709000100,
     "value": "A mysterious Gundam that suddenly appeared before a shiftless Gundam team on the Magellan continent following their defeat at the hands of the Zatarion regular army's Bloody Zaku.\nHe proceeded to whip the Gundam team into shape, forming an elite team called G-ARMS."
   },
@@ -3997,7 +4005,7 @@
   },
   {
     "id": 110200001850000600,
-    "value": "An unknown airframe that has a design resembling the Phoenix Gundam.\nIt has abilities that greatly exceed those shown by normal MS, and it is equipped with the power to fly in the atmosphere.\nIt also has the ability to battle in the sky.\nThe battling side of the model evokes the Phoenix Gundam as well, and it is equipped with a beam saber and feather funnels just like the other Gundam.\nHowever, the power of its Cross Mega Beam Cannon and Burning Flare are specially equipped to conceal its clearly overwhelming power compared to the Phoenix Gundam.\nThis has led some to believe it is the bases for the design of the Phoenix Gundam, but their relation remains unclear.\nMoreover, the “Halphas” it is named after was thought to be one of the 72 demons in the Ars Goetia, an earl of Hell in Roman demonology who was referred to as “The Black Phoenix Devil that Brings War.”"
+    "value": "An unknown airframe that has a design resembling the Phoenix Gundam.\nIt has abilities that greatly exceed those shown by normal MS, and it is equipped with the power to fly in the atmosphere.\nIt also has the ability to battle in the sky.\nThe battling side of the model evokes the Phoenix Gundam as well, and it is equipped with a beam saber and feather funnels just like the other Gundam.\nHowever, the power of its Cross Mega Beam Cannon and Burning Flare are specially equipped to conceal its clearly overwhelming power compared to the Phoenix Gundam.\nThis has led some to believe it is the basis for the design of the Phoenix Gundam, but their relation remains unclear.\nMoreover, the \"Halphas\" it is named after was one of the 72 demons in the Ars Goetia, an earl of Hell in Roman demonology, leading this mobile suit to be referred to as \"The Black Phoenix Devil that Brings War.\""
   },
   {
     "id": 110200001850001200,
@@ -4005,7 +4013,7 @@
   },
   {
     "id": 110200001850001350,
-    "value": "A gigantic weapon of destruction shrouded in complete mystery, just like the Haro.\n Since it is even more powerful than the Haro, already dreaded as the Round Devil, it has reached a level of strength that no one can ever hope to achieve, making it the ultimate machine and deserving of the title of \"ultimate Weapon of Destruction.\"\n But still, nobody knows what it really is..."
+    "value": "A gigantic weapon of destruction shrouded in complete mystery, just like the Haro.\nSince it is even more powerful than the Haro, already dreaded as the Round Devil, it has reached a level of strength that no one can ever hope to achieve, making it the ultimate machine and deserving of the title of \"Ultimate Weapon of Destruction.\"\nBut still, nobody knows what it really is..."
   },
   {
     "id": 110200001850001500,

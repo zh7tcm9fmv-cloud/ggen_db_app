@@ -3392,6 +3392,10 @@
     "value": "Gundam"
   },
   {
+    "id": 100100001705003100,
+    "value": "Knight Gundam (Centaur Form)"
+  },
+  {
     "id": 100100001709000100,
     "value": "Command Gundam"
   },
@@ -4189,7 +4193,7 @@
   },
   {
     "id": 100200001001001800,
-    "value": "A Zeon ace pilot feared by the Federation Forces as the \"The Red Comet.\" He is the son of Zeon Zum Deikun, founder of the Republic of Zeon, and his real name is Casval Rem Deikun.\nCertain that his father was assassinated by the Zabi family, he vows revenge, disguising hiMSelf behind a mask and joining the Zeon military.\nHe is an accomplished mobile suit pilot with many victories under his belt, and a capable and inspiring commander.\nInitially, he had planned to use his military career to get revenge against the Zabi family, but his interests gradually shift towards the Newtype reformation of humanity."
+    "value": "A Zeon ace pilot feared by the Federation Forces as the \"The Red Comet.\" He is the son of Zeon Zum Deikun, founder of the Republic of Zeon, and his real name is Casval Rem Deikun.\nCertain that his father was assassinated by the Zabi family, he vows revenge, disguising himself behind a mask and joining the Zeon military.\nHe is an accomplished mobile suit pilot with many victories under his belt, and a capable and inspiring commander.\nInitially, he had planned to use his military career to get revenge against the Zabi family, but his interests gradually shift towards the Newtype reformation of humanity."
   },
   {
     "id": 100200001001001801,
@@ -4497,7 +4501,7 @@
   },
   {
     "id": 100200001022000600,
-    "value": "A proud, ruthless, and belligerent MS pilot of the Zeon forces, he often looks down on others and belittles the Federation's soldiers.\nHe may have a volatile personality, but his skills are superb and he's dubbed himself the \"Knight of Zeon\", earning himself many fans among his fellow soldiers.\nHe was the test pilot for the EXAM system test machine Efreet Custom until Chlust took the research material and defected to the Federation. He then vowed to destroy the traitor Chlust and take back the EXAM system by any means necessary."
+    "value": "A proud, ruthless, and belligerent MS pilot of the Zeon forces, he often looks down on others and belittles the Federation's soldiers.\nHe may have a volatile personality, but his skills are superb and he's dubbed himself the \"Knight of Zeon\", earning himself many fans among his fellow soldiers.\nHe was the test pilot for the EXAM system test machine Efreet Custom until Chlust Morses took the research material and defected to the Federation. He then vowed to destroy the traitor Chlust and take back the EXAM system by any means necessary."
   },
   {
     "id": 100200001022000700,
@@ -5105,7 +5109,7 @@
   },
   {
     "id": 100200001110000300,
-    "value": "Commander of the Federation Forces' Londo Bell task force.\nHe is also a veteran soldier and captain of its flagship Ra\nCailum.\nHe has captained many ships including the White Base, and\neven after being made commander of Londo Bell, he leads with\na resolute attitude. He is a reliable and experienced\nleader, and is popular with his comrades.\nHe has full trust in his comrades and the mobile suit pilot\nAmuro Ray, and always asks his opinion when coming up with\nformations and operation plans for his forces."
+    "value": "Commander of the Federation Forces' Londo Bell task force.\nHe is also a veteran soldier and captain of its flagship Ra Cailum.\nHe has captained many ships including the White Base, and even after being made commander of Londo Bell, he leads with a resolute attitude. He is a reliable and experienced leader, and is popular with his comrades.\nHe has full trust in his comrades and the mobile suit pilot Amuro Ray, and always asks his opinion when coming up with formations and operation plans for his forces."
   },
   {
     "id": 100200001110000400,
@@ -5617,7 +5621,7 @@
   },
   {
     "id": 100200001210000103,
-    "value": "A young agent working for the Colony Liberation Organization.\nHe was raised in the L1 Colony Cluster, where Doctor J gave him special training from a young age. \nHe is extremely skilled as a special agent, a formidable Mobile Suit pilot and also possessing superhuman physical attributes.\nTaciturn and blunt, he prioritizes the mission above all else, and would die for the mission without a second thought.\nOnce Operation Meteor was underway in the year AC 195, he made planetfall in the Wing Gundam and began acting against OZ as an undermining force.\nThe name \"\"Heero Yuy\"\" is a code name borrowed from a hero of the independence movement. His real name is unknown."
+    "value": "A young agent working for the Colony Liberation Organization.\nHe was raised in the L1 Colony Cluster, where Doctor J gave him special training from a young age. \nHe is extremely skilled as a special agent, a formidable Mobile Suit pilot and also possessing superhuman physical attributes.\nTaciturn and blunt, he prioritizes the mission above all else, and would die for the mission without a second thought.\nOnce Operation Meteor was underway in the year AC 195, he made planetfall in the Wing Gundam and began acting against OZ as an undermining force.\nThe name \"Heero Yuy\" is a code name borrowed from a hero of the independence movement. His real name is unknown."
   },
   {
     "id": 100200001210000104,
@@ -5725,7 +5729,7 @@
   },
   {
     "id": 100200001219000101,
-    "value": "Former agent of the Colony Liberation Organization. \nHe is still the silent, surly type even a year after the cessation of hostilities between Earth's nations and the White Fang.\nLittle by little, his friends helped him regain his humanity and come to grips with the guilt of having taken lives on a mission thus far. \nIn the midst of his renewal, he began working with Duo Maxwell after deducing the truth behind Relena Darlian's kidnapping at the hands of Mariemaia Kushrenada's rebel army.\nHoping to put an end to the tragedy of endless war, he piloted the Wing Gundam Zero to continue the fight against the Mariemaia Army."
+    "value": "Former agent of the Colony Liberation Organization. \nHe is still the silent, surly type even a year after the cessation of hostilities between Earth's nations and the White Fang.\nLittle by little, his friends helped him regain his humanity and come to grips with the guilt of having taken lives on a mission thus far. \nIn the midst of his renewal, he began working with Duo Maxwell after deducing the truth behind Relena Darlian's kidnapping at the hands of Mariemaia Khushrenada's rebel army.\nHoping to put an end to the tragedy of endless war, he piloted the Wing Gundam Zero to continue the fight against the Mariemaia Army."
   },
   {
     "id": 100200001219000200,
@@ -6217,7 +6221,7 @@
   },
   {
     "id": 100200001330000300,
-    "value": "Captain of the Archangel.\n\nAfter the last war, she worked for Orb's Morgenroete,\nInc. under the name Maria Bernes.\n\nAfter the attempted assassination of Lacus Clyne and\nthe alliance between Orb and the Atlantic Federation,\nshe left Orb behind to helm the ship again and rescue\nCagalli Yula Athha from a politically-motivated wedding.\nWorking with Cagalli, who had steeled herself to save\nOrb once again, she joined Orb forces in the fight against\nGilbert Durandal as he tried to push through his\n\"Destiny Plan.\"\n\nShowing a maturity in the battle far beyond what she had\nin the last war, her cool, clearheaded command was enough\nto give the Minerva a run for its money."
+    "value": "Captain of the Archangel.\nAfter the last war, she worked for Orb's Morgenroete, Inc. under the name Maria Bernes.\nAfter the attempted assassination of Lacus Clyne and the alliance between Orb and the Atlantic Federation,she left Orb behind to helm the ship again and rescue Cagalli Yula Athha from a politically-motivated wedding.\nWorking with Cagalli, who had steeled herself to save Orb once again, she joined Orb forces in the fight against Gilbert Dullindal as he tried to push through his \"Destiny Plan.\"\nShowing a maturity in the battle far beyond what she had in the last war, her cool, clearheaded command was enough to give the Minerva a run for its money."
   },
   {
     "id": 100200001330000400,
@@ -7514,6 +7518,10 @@
   {
     "id": 100200001705001901,
     "value": "The good half of the Musha Gundam Mk-III, he was split in two by Sieg Zeon.\nAlthough he lost all memory apart from the name Gundam, he decided to follow his sense of justice and fight the Zeon family.\nSince he was also able to pull out the Electrospear said to have been wielded by the hero, he set out against the Demon King as the Lacroan Hero."
+  },
+  {
+    "id": 100200001705003100,
+    "value": "Knight Gundam with his backpack activated, providing him four legs for enhanced mobility.\nThis form is highly effective against swift enemies.\nIt is evocative of his earlier self, Musha Gundam Mk-III."
   },
   {
     "id": 100200001709000100,
@@ -11640,6 +11648,10 @@
     "value": "Gundam"
   },
   {
+    "id": 100300001705003100,
+    "value": "Knight Gundam (Centaur Form)"
+  },
+  {
     "id": 100300001709000100,
     "value": "Command Gundam"
   },
@@ -15764,6 +15776,10 @@
     "value": "Gundam"
   },
   {
+    "id": 100400001705003100,
+    "value": "Knight Gundam"
+  },
+  {
     "id": 100400001709000100,
     "value": "Command Gundam"
   },
@@ -18701,6 +18717,10 @@
   },
   {
     "id": 101100001705001900,
+    "value": "My just heart will not waver!"
+  },
+  {
+    "id": 101100001705003100,
     "value": "My just heart will not waver!"
   },
   {
@@ -22250,6 +22270,10 @@
   {
     "id": 101400001705001901,
     "value": ""
+  },
+  {
+    "id": 101400001705003100,
+    "value": "Yasunori Matsumoto"
   },
   {
     "id": 101400001709000100,

@@ -6476,6 +6476,14 @@
     "value": "All of your units are destroyed.\nLimit: 5 turns."
   },
   {
+    "id": 130300009020002201,
+    "value": "Defeat Knight Gundam (Centaur Form)."
+  },
+  {
+    "id": 130300009020002204,
+    "value": "All of your units are defeated.\nLimit: 5 turns."
+  },
+  {
     "id": 130300009021000101,
     "value": "Defeat Red Gundam(0085)."
   },
@@ -6630,6 +6638,14 @@
   {
     "id": 130300009021002104,
     "value": "All of your units are destroyed.\nLimit: 5 turns."
+  },
+  {
+    "id": 130300009021002201,
+    "value": "Defeat Knight Gundam (Centaur Form)."
+  },
+  {
+    "id": 130300009021002204,
+    "value": "All of your units are defeated.\nLimit: 5 turns."
   },
   {
     "id": 130300009022000101,
@@ -6794,6 +6810,14 @@
   {
     "id": 130300009022002104,
     "value": "All of your units are destroyed.\nLimit: 5 turns."
+  },
+  {
+    "id": 130300009022002201,
+    "value": "Defeat Knight Gundam (Centaur Form)."
+  },
+  {
+    "id": 130300009022002204,
+    "value": "All of your units are defeated.\nLimit: 5 turns."
   },
   {
     "id": 130300009023000101,
@@ -6970,6 +6994,14 @@
   {
     "id": 130300009023002104,
     "value": "All of your units are destroyed.\nLimit: 5 turns."
+  },
+  {
+    "id": 130300009023002201,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300009023002204,
+    "value": "All of your units are defeated.\nLimit: 5 turns."
   },
   {
     "id": 130300009030010101,

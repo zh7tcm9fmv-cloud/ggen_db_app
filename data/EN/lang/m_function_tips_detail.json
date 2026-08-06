@@ -433,7 +433,7 @@
   },
   {
     "id": 170800000000900007,
-    "value": "An event where you can relive the stories from the TV anime, OVAs, and comics. Battle\nyour way through the stages, developing exclusive units to take on the boss stage."
+    "value": "This event offers players the chance to experience various stories from the anime series, OVAs, comics, and video games.\nProgress through stages, acquire units, and battle your way to victory in boss stages."
   },
   {
     "id": 170800000000900008,
@@ -502,6 +502,10 @@
   {
     "id": 170800000000900706,
     "value": "Units eligible for event bonuses deal more damage in event stages and boss battles. They\nalso earn more Boss Challenge Tickets upon clearing stages."
+  },
+  {
+    "id": 170800000000900801,
+    "value": "Gold can primarily be obtained in missions where you can obtain Carddass cards.\nMissions where you can acquire Gold will become available by\nprogressing through missions with Carddass cards as rewards."
   },
   {
     "id": 170800000000910001,

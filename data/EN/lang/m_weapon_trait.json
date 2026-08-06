@@ -8404,6 +8404,22 @@
     "value": "(Vigor conditions)Piercing LV 5"
   },
   {
+    "id": 140700000700511501,
+    "value": "Preemptive Strike"
+  },
+  {
+    "id": 140700000700511502,
+    "value": "Beam Weapon Power Down [1 turn] LV 15"
+  },
+  {
+    "id": 140700000700521501,
+    "value": "Preemptive Strike"
+  },
+  {
+    "id": 140700000700521502,
+    "value": "Physical Weapon Power Down [1 turn] LV 15"
+  },
+  {
     "id": 140800000300010101,
     "value": "Inflict \"ATK Down 10%\" on the enemy [1 turn]."
   },
@@ -16770,5 +16786,21 @@
   {
     "id": 140800000700500502,
     "value": "When Vigor is Supercharged or higher,\nWhen this unit attacks, reduce enemy's DEF by 50% for this attack."
+  },
+  {
+    "id": 140800000700511501,
+    "value": "Preemptive Strike"
+  },
+  {
+    "id": 140800000700511502,
+    "value": "Inflict \"Decrease beam weapon Power by 80%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700521501,
+    "value": "Preemptive Strike"
+  },
+  {
+    "id": 140800000700521502,
+    "value": "Inflict \"Decrease physical weapon Power by 80%\" on the enemy [1 turn]."
   }
 ]

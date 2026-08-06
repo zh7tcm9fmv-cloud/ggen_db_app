@@ -3052,6 +3052,14 @@
     "value": "During the next fight after activating the effect increase Evasion by 100%."
   },
   {
+    "id": 141200000101670101,
+    "value": "When engaging an enemy with a specified tag, increase own ATK and DEF by 15%."
+  },
+  {
+    "id": 141200000101670102,
+    "value": ""
+  },
+  {
     "id": 141200000101680101,
     "value": "When executing a Support Attack or Counter,\nthe max range of Physical Weapon is increased by 1."
   },
@@ -14840,6 +14848,22 @@
     "value": "Increase ATK by 8%."
   },
   {
+    "id": 141200000406900101,
+    "value": "Increase DEF by 5%."
+  },
+  {
+    "id": 141200000406900102,
+    "value": "Increase DEF by 2%.\nwhen equipped to Knight Gundam (Centaur Form)."
+  },
+  {
+    "id": 141200000406910101,
+    "value": "Increase Max HP by 8%."
+  },
+  {
+    "id": 141200000406910102,
+    "value": "Increase Max HP by 2%.\nwhen equipped to Knight Gundam (Centaur Form)."
+  },
+  {
     "id": 141200000406920101,
     "value": "Increase Max HP by 5%."
   },
@@ -19614,5 +19638,13 @@
   {
     "id": 141200000700500501,
     "value": ""
+  },
+  {
+    "id": 141200000700511502,
+    "value": "Decrease beam weapon Power by 80%."
+  },
+  {
+    "id": 141200000700521502,
+    "value": "Decrease physical weapon Power by 80%."
   }
 ]

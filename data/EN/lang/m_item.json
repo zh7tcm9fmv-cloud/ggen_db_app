@@ -1956,6 +1956,10 @@
     "value": "SR Krake Zulu Limit Break Material"
   },
   {
+    "id": 150100171139000100,
+    "value": "SSR Unicorn Gundam Ver. TWC Final Limit Break Material"
+  },
+  {
     "id": 150100171144000100,
     "value": "SSR Narrative Gundam A-Packs Limit Break Material"
   },
@@ -4844,6 +4848,10 @@
     "value": "SSR Knight Sazabi Limit Break Material"
   },
   {
+    "id": 150100171705005500,
+    "value": "SSR Knight Gundam (Centaur Form) Limit Break Material"
+  },
+  {
     "id": 150100171709000100,
     "value": "SSR Command Gundam Limit Break Material"
   },
@@ -5869,11 +5877,15 @@
   },
   {
     "id": 150100222000040001,
-    "value": "Boss Challenge Ticket"
+    "value": "Boss Challenge Ticket(Lacroan Hero)"
   },
   {
     "id": 150100222000040002,
-    "value": "Carddass coins"
+    "value": "Carddass coins(Lacroan Hero)"
+  },
+  {
+    "id": 150100222000040013,
+    "value": "Gold"
   },
   {
     "id": 150100222000050001,
@@ -6048,6 +6060,10 @@
     "value": "Tank-Tag SP Conversion Chips"
   },
   {
+    "id": 150100240000011250,
+    "value": "Mobile Suit Gundam Unicorn Series SP Conversion Chips"
+  },
+  {
     "id": 150100240000011500,
     "value": "Mobile Suit Gundam HATHAWAY Series SP Conversion Chips"
   },
@@ -6100,6 +6116,10 @@
     "value": "Gundam-Tag SP Conversion Chips"
   },
   {
+    "id": 150100240000021004,
+    "value": "SD Gundam-Tag SP Conversion Chips"
+  },
+  {
     "id": 150100240000021021,
     "value": "ZAFT-Tag SP Conversion Chips"
   },
@@ -6134,6 +6154,10 @@
   {
     "id": 150100250000021002,
     "value": "Alternative Series-Tag SP Conversion Badge"
+  },
+  {
+    "id": 150100250000021003,
+    "value": "SD Gundam-Tag SP Conversion Badge"
   },
   {
     "id": 150100251001003000,
@@ -8190,6 +8214,10 @@
   {
     "id": 150200171133001500,
     "value": "An item used to perform Limit Break on SR Krake Zulu"
+  },
+  {
+    "id": 150200171139000100,
+    "value": "An item used to perform Limit Break on SSR Unicorn Gundam Ver. TWC Final"
   },
   {
     "id": 150200171144000100,
@@ -11080,6 +11108,10 @@
     "value": "An item used to perform Limit Break on SSR Knight Sazabi"
   },
   {
+    "id": 150200171705005500,
+    "value": "An item used to perform Limit Break on SSR Knight Gundam (Centaur Form)"
+  },
+  {
     "id": 150200171709000100,
     "value": "An item used to perform Limit Break on SSR Command Gundam"
   },
@@ -12105,11 +12137,15 @@
   },
   {
     "id": 150200222000040001,
-    "value": "A ticket needed to challenge the boss in story event \"SD Gundam Side Story: Sieg Zeon Chronicle Lacroan Hero\"."
+    "value": "A ticket needed to challenge the boss in story event \"SD Gundam Side Story I: Lacroan Hero\"."
   },
   {
     "id": 150200222000040002,
-    "value": "A coin that can be obtained in the story event \"SD Gundam Side Story: Sieg Zeon Chronicle Lacroan Hero\".\nCan be used in the Carddass."
+    "value": "A coin that can be obtained in the story event \"SD Gundam Side Story I: Lacroan Hero\".\nCan be used in the Carddass for SD Gundam Side Story I: Lacroan Hero."
+  },
+  {
+    "id": 150200222000040013,
+    "value": "An item that can be obtained through the SD Gundam Side Story: Sieg Zeon Chronicles story event.\nCan be used in the Item Shop."
   },
   {
     "id": 150200222000050001,
@@ -12284,6 +12320,10 @@
     "value": "Usable on non-UR units bearing the above tag.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {
+    "id": 150200240000011250,
+    "value": "Usable on non-UR units from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
     "id": 150200240000011500,
     "value": "Usable on non-UR units from the specified series.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
@@ -12336,6 +12376,10 @@
     "value": "Usable on non-UR units bearing the above tag.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {
+    "id": 150200240000021004,
+    "value": "Usable on non-UR units bearing the above tag.\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
     "id": 150200240000021021,
     "value": "Usable on non-UR units bearing the above tag.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
@@ -12369,6 +12413,10 @@
   },
   {
     "id": 150200250000021002,
+    "value": "Usable on non-UR characters bearing the above tag.\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
+    "id": 150200250000021003,
     "value": "Usable on non-UR characters bearing the above tag.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {

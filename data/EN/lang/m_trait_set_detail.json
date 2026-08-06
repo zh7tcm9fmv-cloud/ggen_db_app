@@ -2144,6 +2144,10 @@
     "value": "Sway (Unit Ability) LV 1"
   },
   {
+    "id": 140100000101670100,
+    "value": "Advantage: SD Gundam LV 1"
+  },
+  {
     "id": 140100000101680101,
     "value": "(When Supporting) Physical Weapon Increased Max Range LV 1"
   },
@@ -9917,7 +9921,7 @@
   },
   {
     "id": 140100000404520100,
-    "value": "Black Dragon Staff SSR (SD Gundam Side Story: Sieg Zeon Chronicle)"
+    "value": "Black Dragon Staff SSR (SD Gundam Side Story: Sieg Zeon Chronicles)"
   },
   {
     "id": 140100000404530101,
@@ -10834,6 +10838,14 @@
   {
     "id": 140100000406810101,
     "value": "Limiter OFF SR (Mobile Suit Gundam SEED C.E. 73 -Stargazer-)"
+  },
+  {
+    "id": 140100000406900100,
+    "value": "Reinforced Armor SR (Fierce Enemy Assault)"
+  },
+  {
+    "id": 140100000406910100,
+    "value": "Add-On Armor SSR (Fierce Enemy Assault)"
   },
   {
     "id": 140100000406920100,
@@ -15042,5 +15054,13 @@
   {
     "id": 140100000700402000,
     "value": "Decreased DEF LV 20"
+  },
+  {
+    "id": 140100000700511500,
+    "value": "Beam Weapon Power Down [1 turn] LV 15"
+  },
+  {
+    "id": 140100000700521500,
+    "value": "Physical Weapon Power Down [1 turn] LV 15"
   }
 ]

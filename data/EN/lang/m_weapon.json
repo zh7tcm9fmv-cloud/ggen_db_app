@@ -7584,6 +7584,26 @@
     "value": "Wired Shield Unit SSP"
   },
   {
+    "id": 120100113900010001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100113900010002,
+    "value": "60mm Vulcan Gun"
+  },
+  {
+    "id": 120100113900010003,
+    "value": "Shield Funnel"
+  },
+  {
+    "id": 120100113900010004,
+    "value": "Psycho-Field TWC"
+  },
+  {
+    "id": 120100113900010090,
+    "value": "Shield Funnel SSP"
+  },
+  {
     "id": 120100114400010001,
     "value": "Large Beam Saber"
   },
@@ -21534,6 +21554,22 @@
   {
     "id": 120100170500190001,
     "value": "-"
+  },
+  {
+    "id": 120100170500550001,
+    "value": "Electrospear"
+  },
+  {
+    "id": 120100170500550002,
+    "value": "EM Spark"
+  },
+  {
+    "id": 120100170500550003,
+    "value": "Electrospear"
+  },
+  {
+    "id": 120100170500550090,
+    "value": "Electrospear SSP"
   },
   {
     "id": 120100170900010001,
