@@ -10755,6 +10755,21 @@
     "AbilityId": 6103901
   },
   {
+    "MapNpcCharacterAbilitySetId": 29022221705003101,
+    "SortOrder": 1,
+    "AbilityId": 6101702
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29022222999000101,
+    "SortOrder": 1,
+    "AbilityId": 6102103
+  },
+  {
+    "MapNpcCharacterAbilitySetId": 29022222999000102,
+    "SortOrder": 1,
+    "AbilityId": 6101803
+  },
+  {
     "MapNpcCharacterAbilitySetId": 29023001230000101,
     "SortOrder": 1,
     "AbilityId": 6101701

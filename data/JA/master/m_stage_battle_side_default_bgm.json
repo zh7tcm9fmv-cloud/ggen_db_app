@@ -1971,6 +1971,15 @@
     "BattleSideSecretAnotherEnemyBgmId": 100000149
   },
   {
+    "Id": 10220,
+    "BattleSideOwnBgmId": 170500005,
+    "BattleSideFriendBgmId": 170500005,
+    "BattleSideEnemyBgmId": 170500005,
+    "BattleSideAnotherEnemyBgmId": 100000083,
+    "BattleSideSecretEnemyBgmId": 100000083,
+    "BattleSideSecretAnotherEnemyBgmId": 100000083
+  },
+  {
     "Id": 10221,
     "BattleSideOwnBgmId": 173000001,
     "BattleSideFriendBgmId": 173000001,

@@ -3144,6 +3144,12 @@
     "AbilityFrameTypeIndex": 1
   },
   {
+    "Id": 1016701,
+    "ResourceId": "trait_10030102",
+    "TraitSetId": 101670100,
+    "AbilityFrameTypeIndex": 1
+  },
+  {
     "Id": 1016801,
     "ResourceId": "trait_10280100",
     "TraitSetId": 101680101,

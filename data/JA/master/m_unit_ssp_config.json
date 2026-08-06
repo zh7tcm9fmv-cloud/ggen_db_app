@@ -3408,6 +3408,14 @@
     "ScheduleId": 2511209901
   },
   {
+    "UnitId": 1139000100,
+    "UnitSspInitialReleaseSetId": 0,
+    "UnitSspCustomCoreGroupId": 1139000100,
+    "UnitSspAddStatusId": 100012,
+    "UnitSspMaterialConsumeSetId": 1,
+    "ScheduleId": 2511209901
+  },
+  {
     "UnitId": 1144000100,
     "UnitSspInitialReleaseSetId": 0,
     "UnitSspCustomCoreGroupId": 1144000100,
@@ -9236,6 +9244,14 @@
     "UnitSspInitialReleaseSetId": 0,
     "UnitSspCustomCoreGroupId": 1705001510,
     "UnitSspAddStatusId": 100006,
+    "UnitSspMaterialConsumeSetId": 1,
+    "ScheduleId": 2511209901
+  },
+  {
+    "UnitId": 1705005500,
+    "UnitSspInitialReleaseSetId": 0,
+    "UnitSspCustomCoreGroupId": 1705005500,
+    "UnitSspAddStatusId": 100018,
     "UnitSspMaterialConsumeSetId": 1,
     "ScheduleId": 2511209901
   },

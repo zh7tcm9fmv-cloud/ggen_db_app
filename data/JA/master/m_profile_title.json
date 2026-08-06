@@ -280,6 +280,20 @@
     "IsSimpleThumbnail": false
   },
   {
+    "Id": 10100004000022,
+    "ProfileTitleTypeIndex": 2,
+    "ProfileTitleRarityTypeIndex": 5,
+    "BackgroundResourceId": "profile_title_10100004000022",
+    "TitleImageDisplayLanguageId": 0,
+    "TitleNameLanguageId": 240210100004000022,
+    "AcquisitionRouteLanguageId": 240310100004000022,
+    "SortOrder": 26081001,
+    "ScheduleId": 0,
+    "BaseBackgroundResourceId": "profile_title_localization_invasion",
+    "RarityTypeIndex": 4,
+    "IsSimpleThumbnail": false
+  },
+  {
     "Id": 10110001000001,
     "ProfileTitleTypeIndex": 2,
     "ProfileTitleRarityTypeIndex": 5,

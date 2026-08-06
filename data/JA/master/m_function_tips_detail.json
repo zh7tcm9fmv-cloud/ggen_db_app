@@ -567,7 +567,7 @@
   {
     "Id": 900010,
     "ContentLanguageId": 170800000000900010,
-    "ImageResourceId": "tips_900010"
+    "ImageResourceId": "tips_900010_2"
   },
   {
     "Id": 900011,
@@ -643,6 +643,11 @@
     "Id": 900706,
     "ContentLanguageId": 170800000000900706,
     "ImageResourceId": "tips_900006"
+  },
+  {
+    "Id": 900801,
+    "ContentLanguageId": 170800000000900801,
+    "ImageResourceId": "tips_900801"
   },
   {
     "Id": 910001,

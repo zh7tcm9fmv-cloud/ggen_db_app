@@ -363,6 +363,17 @@
     "SwitchScheduleId": 0
   },
   {
+    "Id": 7040,
+    "AnimeStreamingSeriesGroupId": 7040,
+    "NameLanguageId": 320100000000007040,
+    "BannerResourceId": "",
+    "TitleButtonResourceId": "thum_anime_top_7040_01",
+    "SortOrder": 8307040,
+    "ScheduleId": 2608102801,
+    "ThumbnailResourceId": "thum_anime_top_7040_01",
+    "SwitchScheduleId": 0
+  },
+  {
     "Id": 10011,
     "AnimeStreamingSeriesGroupId": 11,
     "NameLanguageId": 320100000000000011,

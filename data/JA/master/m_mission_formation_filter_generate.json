@@ -5904,6 +5904,12 @@
     "Value": 1009001000
   },
   {
+    "Id": 1243538818,
+    "MissionId": 260730120205,
+    "MissionFormationFilterTypeIndex": 2,
+    "Value": 1705003100
+  },
+  {
     "Id": 1244337807,
     "MissionId": 260730120205,
     "MissionFormationFilterTypeIndex": 1,
@@ -6960,6 +6966,12 @@
     "Value": 1001001900
   },
   {
+    "Id": 1466098225,
+    "MissionId": 260730120109,
+    "MissionFormationFilterTypeIndex": 2,
+    "Value": 1705003100
+  },
+  {
     "Id": 1467893314,
     "MissionId": 260730120105,
     "MissionFormationFilterTypeIndex": 2,
@@ -7462,6 +7474,12 @@
     "MissionId": 260730120106,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1125000700
+  },
+  {
+    "Id": 1558325122,
+    "MissionId": 260730120208,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1139000100
   },
   {
     "Id": 1561601353,
@@ -10140,6 +10158,12 @@
     "Value": 1370005800
   },
   {
+    "Id": 2149569929,
+    "MissionId": 260730120203,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1139000100
+  },
+  {
     "Id": 2152488427,
     "MissionId": 260730120304,
     "MissionFormationFilterTypeIndex": 1,
@@ -10432,6 +10456,12 @@
     "MissionId": 260730120103,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1200001100
+  },
+  {
+    "Id": 2201795809,
+    "MissionId": 260730120108,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1705005500
   },
   {
     "Id": 2207932217,
@@ -12882,6 +12912,12 @@
     "Value": 1300002110
   },
   {
+    "Id": 2735457447,
+    "MissionId": 260730120209,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1705005500
+  },
+  {
     "Id": 2735982727,
     "MissionId": 260730120102,
     "MissionFormationFilterTypeIndex": 1,
@@ -14626,6 +14662,12 @@
     "MissionId": 260730120102,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1370000900
+  },
+  {
+    "Id": 3145125257,
+    "MissionId": 260730120108,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1139000100
   },
   {
     "Id": 3147983423,
@@ -17188,6 +17230,12 @@
     "MissionId": 260730120203,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1370008100
+  },
+  {
+    "Id": 3731012775,
+    "MissionId": 260730120102,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1705005500
   },
   {
     "Id": 3731309606,
