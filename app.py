@@ -16036,7 +16036,7 @@ def api_kofi_supporter_wall():
         mtime = int(os.path.getmtime(_kofi_supporter_wall_path()))
     except OSError:
         mtime = 0
-    return jsonify_cacheable(payload, f'kofi_supporter_wall:{mtime}', public=True, max_age=3600)
+    return jsonify_cacheable(payload, f'kofi_supporter_wall:{mtime}', public=True, max_age=120)
 
 
 @app.route('/admin/kofi-notice')
