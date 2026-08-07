@@ -34,7 +34,7 @@
     },
     er_access: {
       label: 'Eternal Road Expert access',
-      tip: 'How many Eternal Road Expert stages this unit or pilot can enter. Very few stages is a penalty; wide access is a bonus.',
+      tip: 'How many Eternal Road Expert stages this unit or pilot can enter. Under 2 is −1; 2–4 is +1; 5 or more is +2.',
     },
     large_footprint: {
       label: 'Large footprint',
@@ -42,7 +42,7 @@
     },
     terrain: {
       label: 'Terrain coverage',
-      tip: 'Can they fight on Space and Land? Extra terrains (Atmospheric, Underwater, Sea) add points. Missing Space or Land is a penalty. Defense also loses points without Atmospheric — they cannot protect airborne allies.',
+      tip: 'Need Space plus Land or Atmospheric for a neutral score (Space+Atmos with no Land is OK). Extra terrains add points. Missing Space, or both Land and Atmospheric, is a penalty.',
     },
     rarity: {
       label: 'Rarity',

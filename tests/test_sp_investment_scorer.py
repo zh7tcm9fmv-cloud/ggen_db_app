@@ -70,10 +70,13 @@ class TestSpInvestmentBands(unittest.TestCase):
         self.assertGreaterEqual(meta["weight"], 15)
 
     def test_er_access_bands(self):
+        self.assertEqual(er_access_points(self.rules, 0), -1)
         self.assertEqual(er_access_points(self.rules, 1), -1)
-        self.assertEqual(er_access_points(self.rules, 10), 0)
+        self.assertEqual(er_access_points(self.rules, 2), 1)
+        self.assertEqual(er_access_points(self.rules, 4), 1)
+        self.assertEqual(er_access_points(self.rules, 5), 2)
+        self.assertEqual(er_access_points(self.rules, 7), 2)
         self.assertEqual(er_access_points(self.rules, 20), 2)
-        self.assertEqual(er_access_points(self.rules, 28), 3)
 
     def test_atk_attacker_bands_sheet(self):
         bands = self.rules["stat_bands"]["ATK"]["Attack"]
@@ -124,17 +127,28 @@ class TestSpInvestmentBands(unittest.TestCase):
         # Atmo+UW extras = 2; deployable Space/Land/Atmo/UW = 4 → perfect +1 → 3
         self.assertEqual(scored["breakdown"]["terrain"], 3)
 
-    def test_terrain_missing_land_penalty(self):
+    def test_terrain_missing_land_ok_with_atmosphere(self):
+        # Space + Atmospheric (no Land) — e.g. Byarlant — is a valid floor, not −3
         feats = _minimal_features(
             MOV=5,
             weapon_range=5,
             terrain={"Space": 3, "Atmospheric": 3, "Ground": 1, "Sea": 1, "Underwater": 1},
         )
         scored = score_features(feats, self.rules, mode="sp")
-        self.assertEqual(scored["breakdown"]["terrain"], -3)
+        self.assertEqual(scored["breakdown"]["terrain"], 0)
         pts, meta = terrain_coverage_points(self.rules, feats["terrain"])
-        self.assertEqual(pts, -3)
+        self.assertEqual(pts, 0)
+        self.assertTrue(meta["has_space"])
         self.assertFalse(meta["has_land"])
+        self.assertTrue(meta["has_atmospheric"])
+        self.assertTrue(meta.get("atmos_substitutes_land"))
+
+    def test_terrain_missing_space_still_penalty(self):
+        feats = _minimal_features(
+            terrain={"Space": 1, "Atmospheric": 3, "Ground": 3, "Sea": 1, "Underwater": 1},
+        )
+        scored = score_features(feats, self.rules, mode="sp")
+        self.assertEqual(scored["breakdown"]["terrain"], -3)
 
     def test_rarity_adjustment_n_vs_ssr(self):
         n = score_features(_minimal_features(rarity_id="1"), self.rules)
@@ -502,7 +516,7 @@ class TestSpInvestmentBands(unittest.TestCase):
         self.assertNotIn("not_scored", ids)
         er = next(c for c in crit if c["id"] == "er_access")
         self.assertTrue(er["objective"])
-        self.assertGreaterEqual(len(er["rows"]), 4)
+        self.assertGreaterEqual(len(er["rows"]), 3)
         self.assertEqual(er.get("roles"), ["Attack", "Defense", "Support"])
         atk_focus = next(c for c in crit if c["id"] == "role_focus_attack")
         self.assertEqual(atk_focus.get("roles"), ["Attack"])
@@ -528,7 +542,7 @@ class TestSpInvestmentBands(unittest.TestCase):
             r5["breakdown"]["weapon_range"] - r4["breakdown"]["weapon_range"], 1
         )
 
-    def test_defense_missing_atmospheric_tax(self):
+    def test_defense_no_atmospheric_tax(self):
         terrain = {
             "Space": 2,
             "Atmospheric": 1,
@@ -547,10 +561,7 @@ class TestSpInvestmentBands(unittest.TestCase):
         )
         self.assertEqual(atk["breakdown"]["terrain"], 0)
         self.assertEqual(support["breakdown"]["terrain"], 0)
-        self.assertEqual(defense["breakdown"]["terrain"], -2)
-        pts, meta = terrain_coverage_points(self.rules, terrain, role="Defense")
-        self.assertEqual(pts, -2)
-        self.assertTrue(meta.get("defense_missing_atmospheric"))
+        self.assertEqual(defense["breakdown"]["terrain"], 0)
 
     def test_support_debuff_kinds_require_range5(self):
         # R4-only kinds help Defense, not Support

@@ -27,7 +27,8 @@
     "v5.7: large footprint (2×2) is a mild upside (+1 all roles) — wider MAP/buff coverage often outweighs placement inconvenience",
     "v5.8: support R4+ debuff kinds + max debuff strength only score Defense/Support (Attack omitted — attackers lack those kits)",
     "v5.9: role-specific priorities — Attack HP/damage/MOV/MAP; Support range-5 floor + R5+ debuff kinds; Defense shield/HP/DEF/MOV + Atmospheric tax + lighter debuff kinds",
-    "v5.10: debuff strength counts lasting DEF-down magnitude (not only instant pierce); Support/Defense MAP axis cap 2; damage-taken downs count as a debuff kind"
+    "v5.10: debuff strength counts lasting DEF-down magnitude (not only instant pierce); Support/Defense MAP axis cap 2; damage-taken downs count as a debuff kind",
+    "v5.11: softer ER bands (<2 −1, 2–4 +1, 5+ +2); terrain floor is Space+(Land|Atmosphere); no Defense-only Atmospheric tax"
   ],
   "exclude_warships": true,
   "exclude_character_ids": [],
@@ -494,7 +495,7 @@
   "terrain": {
     "deploy_min_level": 2,
     "missing_space_or_land_penalty": -3,
-    "defense_missing_atmospheric_penalty": -2,
+    "defense_missing_atmospheric_penalty": 0,
     "extra_terrain_points": 1,
     "extra_terrain_keys": [
       "Atmospheric",
@@ -1533,33 +1534,18 @@
   "er_access_points": [
     {
       "min": 0,
-      "max": 2,
+      "max": 1,
       "points": -1
     },
     {
-      "min": 3,
-      "max": 6,
-      "points": -1
-    },
-    {
-      "min": 7,
-      "max": 12,
-      "points": 0
-    },
-    {
-      "min": 13,
-      "max": 18,
+      "min": 2,
+      "max": 4,
       "points": 1
     },
     {
-      "min": 19,
-      "max": 24,
-      "points": 2
-    },
-    {
-      "min": 25,
+      "min": 5,
       "max": 999,
-      "points": 3
+      "points": 2
     }
   ],
   "tag_strategic": {
@@ -1655,33 +1641,18 @@
   "pilot_er_access_points": [
     {
       "min": 0,
-      "max": 2,
+      "max": 1,
       "points": -1
     },
     {
-      "min": 3,
-      "max": 6,
-      "points": -1
-    },
-    {
-      "min": 7,
-      "max": 12,
-      "points": 0
-    },
-    {
-      "min": 13,
-      "max": 18,
+      "min": 2,
+      "max": 4,
       "points": 1
     },
     {
-      "min": 19,
-      "max": 24,
-      "points": 2
-    },
-    {
-      "min": 25,
+      "min": 5,
       "max": 999,
-      "points": 3
+      "points": 2
     }
   ],
   "large_footprint": {

@@ -644,9 +644,10 @@ def terrain_coverage_points(
     rules: dict, terrain: dict | None, role: str | None = None
 ) -> tuple[int, dict]:
     """
-    v5 terrain: 0 if Space+Land deployable; +1 per extra (Atmo/UW/Sea);
-    −3 if missing Land or Space; +1 if 4+ deployable terrains.
-    v5.9: Defense also pays for missing Atmospheric (cannot protect airborne allies).
+    Terrain floor: Space + (Land or Atmospheric) → 0.
+    Extra +1 each for Atmospheric / Underwater / Sea when truly extra
+    (Atmospheric does not double-dip when it is substituting for Land).
+    Perfect coverage bonus when 4+ deployable terrains.
     """
     terr_cfg = rules.get("terrain") or {}
     deploy_min = int(terr_cfg.get("deploy_min_level", 2))
@@ -657,39 +658,42 @@ def terrain_coverage_points(
     has_land = ground >= deploy_min
     atmos = int(terrain.get("Atmospheric", 1) or 1)
     has_atmos = atmos >= deploy_min
+    has_ground_cover = has_land or has_atmos
+    atmos_substitutes_land = has_atmos and not has_land
     meta = {
         "has_space": has_space,
         "has_land": has_land,
         "has_atmospheric": has_atmos,
+        "has_ground_cover": has_ground_cover,
+        "atmos_substitutes_land": atmos_substitutes_land,
         "extra": [],
         "deployable_count": 0,
     }
-    if not has_space or not has_land:
+    if not has_space or not has_ground_cover:
         pts = int(terr_cfg.get("missing_space_or_land_penalty", -3))
-    else:
-        pts = 0
-        deployable = 0
-        for key in TERRAIN_KEYS:
-            if int(terrain.get(key, 1) or 1) >= deploy_min:
-                deployable += 1
-        meta["deployable_count"] = deployable
-        extra_keys = terr_cfg.get("extra_terrain_keys") or ["Atmospheric", "Underwater", "Sea"]
-        per = int(terr_cfg.get("extra_terrain_points", 1))
-        for key in extra_keys:
-            lvl = int(terrain.get(key, 1) or 1)
-            if lvl >= deploy_min:
-                pts += per
-                meta["extra"].append(key)
-        perfect_min = int(terr_cfg.get("perfect_min_deployable", 4) or 4)
-        if deployable >= perfect_min:
-            pts += int(terr_cfg.get("perfect_bonus", 1) or 0)
-            meta["perfect"] = True
+        return pts, meta
 
-    if role == "Defense" and not has_atmos:
-        tax = int(terr_cfg.get("defense_missing_atmospheric_penalty", -2) or 0)
-        pts += tax
-        meta["defense_missing_atmospheric"] = True
-        meta["defense_atmospheric_penalty"] = tax
+    pts = 0
+    deployable = 0
+    for key in TERRAIN_KEYS:
+        if int(terrain.get(key, 1) or 1) >= deploy_min:
+            deployable += 1
+    meta["deployable_count"] = deployable
+    extra_keys = terr_cfg.get("extra_terrain_keys") or ["Atmospheric", "Underwater", "Sea"]
+    per = int(terr_cfg.get("extra_terrain_points", 1))
+    for key in extra_keys:
+        lvl = int(terrain.get(key, 1) or 1)
+        if lvl < deploy_min:
+            continue
+        # Atmos already satisfied the Land/Atmos floor — do not also award +1 extra
+        if key == "Atmospheric" and atmos_substitutes_land:
+            continue
+        pts += per
+        meta["extra"].append(key)
+    perfect_min = int(terr_cfg.get("perfect_min_deployable", 4) or 4)
+    if deployable >= perfect_min:
+        pts += int(terr_cfg.get("perfect_bonus", 1) or 0)
+        meta["perfect"] = True
     return pts, meta
 
 
@@ -2554,9 +2558,9 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "title": "Defense priorities",
             "applies": ["units"],
             "objective": True,
-            "summary": "High HP or DEF, a shield (~20% damage neglect), high MOV for support-defense coverage, Atmospheric terrain so you can protect airborne allies, plus a few good debuffs.",
+            "summary": "High HP or DEF, a shield (~20% damage neglect), high MOV for support-defense coverage, solid terrain (Space + Land or Atmos), plus a few good debuffs.",
             "rows": [
-                {"when": "Primary", "result": "HP · DEF · shield · MOV · terrain (Atmospheric)"},
+                {"when": "Primary", "result": "HP · DEF · shield · MOV · terrain"},
                 {"when": "Secondary", "result": "A few good pierce / DEF-down debuffs (R4+ kinds)"},
             ],
         }
@@ -2631,25 +2635,25 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "objective": True,
             "summary": (
                 "Deploy tier ≥2 counts as usable. SSP board uses SSP-upgraded terrain. "
-                "Defense also needs Atmospheric to protect units in the air."
+                "Floor is Space plus Land or Atmospheric (Byarlant-style Space+Atmos is fine)."
             ),
             "rows": [
                 {
-                    "when": "Missing Space or Land",
+                    "when": "Missing Space, or missing both Land and Atmospheric",
                     "result": _fmt_points(terr.get("missing_space_or_land_penalty", -3)),
                 },
-                {"when": "Space + Land only", "result": "0"},
+                {"when": "Space + Land (or Space + Atmospheric)", "result": "0"},
                 {
                     "when": "+ Atmospheric / Underwater / Sea (each)",
                     "result": _fmt_points(terr.get("extra_terrain_points", 1)),
                 },
                 {
-                    "when": f"Perfect ({terr.get('perfect_min_deployable', 4)}+ of Space/Land/Atmo/UW/Sea)",
-                    "result": _fmt_points(terr.get("perfect_bonus", 1)) + " extra",
+                    "when": "Atmospheric used as Land substitute (no Land)",
+                    "result": "0 extra for Atmospheric",
                 },
                 {
-                    "when": "Defense missing Atmospheric",
-                    "result": _fmt_points(terr.get("defense_missing_atmospheric_penalty", -2)),
+                    "when": f"Perfect ({terr.get('perfect_min_deployable', 4)}+ of Space/Land/Atmo/UW/Sea)",
+                    "result": _fmt_points(terr.get("perfect_bonus", 1)) + " extra",
                 },
             ],
         }
