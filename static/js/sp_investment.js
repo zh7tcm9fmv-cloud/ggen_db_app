@@ -558,7 +558,24 @@
   function rarityOk(row) {
     const r = String(row.rarity || '').toUpperCase();
     if (showLowRarity) return true;
-    return r === 'SSR' || r === 'UR' || !!row.is_ultimate;
+    if (r === 'SSR' || r === 'UR' || !!row.is_ultimate) return true;
+    // Pilots: many SRs compete with SSRs — show SR by default; N/R still opt-in.
+    if (entity === 'characters' && r === 'SR') return true;
+    return false;
+  }
+
+  function syncLowRarityLabel() {
+    const low = $('#spiShowLowRarity');
+    if (!low) return;
+    const wrap = low.closest('label');
+    if (!wrap) return;
+    const text = entity === 'characters' ? ' Show N/R' : ' Show N/R/SR';
+    // Keep the checkbox as first child; replace trailing label text nodes.
+    const nodes = Array.from(wrap.childNodes);
+    nodes.forEach((n) => {
+      if (n.nodeType === 3) wrap.removeChild(n);
+    });
+    wrap.appendChild(document.createTextNode(text));
   }
 
   function currentBuckets() {
@@ -1047,6 +1064,7 @@
     });
     const low = $('#spiShowLowRarity');
     if (low) low.checked = showLowRarity;
+    syncLowRarityLabel();
     const map = $('#spiMapOnly');
     if (map) map.checked = mapOnly;
     const sp = $('#spiHasSpOnly');
