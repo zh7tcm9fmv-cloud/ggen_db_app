@@ -15400,9 +15400,10 @@ def _sp_investment_public_enabled():
 
 
 def _sp_investment_is_preview_request():
-    """Unlisted preview URL (/sp-list-preview) or explicit ?preview=1 API unlock."""
+    """Unlisted soft-launch URLs (/IG, /sp-list-preview) or explicit ?preview=1 API unlock."""
     path = (request.path or '').rstrip('/')
-    if path.endswith('/sp-list-preview') or path.endswith('/sp-list-demo'):
+    low = path.lower()
+    if low.endswith('/ig') or low.endswith('/sp-list-preview') or low.endswith('/sp-list-demo'):
         return True
     if str(request.args.get('preview') or '').strip() == '1':
         return True
@@ -15410,7 +15411,7 @@ def _sp_investment_is_preview_request():
 
 
 def _sp_investment_serve_live():
-    """Full guide page/API: public launch, or unlisted preview."""
+    """Full guide page/API: public launch, or unlisted soft-launch/preview."""
     return _sp_investment_public_enabled() or _sp_investment_is_preview_request()
 
 
@@ -15431,21 +15432,34 @@ def _sp_investment_character_is_sd_linked(cid):
     return False
 
 
-@app.route('/sp-list-preview')
-@app.route('/sp-list-demo')
-def sp_investment_preview_page():
-    """Unlisted preview — not linked from nav. Works while SP_INVESTMENT_PUBLIC is off."""
+def _render_sp_investment_soft_launch(spi_preview=True):
+    """Shared soft-launch page (no nav link, noindex)."""
     ver = _app_js_bundle_version_tag()
     r = make_response(render_template(
         'sp_investment.html',
         image_cdn=IMAGE_CDN or '',
         game_images_use_cdn=GAME_IMAGES_USE_CDN,
         app_js_version=ver,
-        spi_preview=True,
+        spi_preview=spi_preview,
+        spi_soft_launch=True,
     ))
     r.headers['Cache-Control'] = 'no-store'
     r.headers['X-Robots-Tag'] = 'noindex, nofollow'
     return r
+
+
+@app.route('/IG')
+@app.route('/ig')
+def sp_investment_ig_page():
+    """Friends soft-launch of Investment Guide — not in nav yet."""
+    return _render_sp_investment_soft_launch(spi_preview=True)
+
+
+@app.route('/sp-list-preview')
+@app.route('/sp-list-demo')
+def sp_investment_preview_page():
+    """Unlisted preview — not linked from nav. Works while SP_INVESTMENT_PUBLIC is off."""
+    return _render_sp_investment_soft_launch(spi_preview=True)
 
 
 @app.route('/investment-guide')

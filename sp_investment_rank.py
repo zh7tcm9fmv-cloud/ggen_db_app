@@ -20,6 +20,31 @@ TERRAIN_KEYS = ("Space", "Atmospheric", "Ground", "Sea", "Underwater")
 HEURISTIC_KEYS = frozenset(
     {"abilities", "extra_life", "rare_debuff", "tags_strategic", "movement_followup"}
 )
+# Distinct debuff-kind axes for Defense/Support variety scoring
+_SUPPORT_DEBUFF_KIND_KEYS = (
+    "def_dn",
+    "atk_dn",
+    "mob_dn",
+    "acc_dn",
+    "range_beam",
+    "range_phys",
+)
+_SUPPORT_DEBUFF_KIND_GROUPS = (
+    ("dmg_dn", frozenset({"dmg_phys", "dmg_beam", "dmg_spec"})),
+    ("wp_dn", frozenset({"wp_phys", "wp_beam", "wp_spec"})),
+)
+
+
+def _support_debuff_kind_set(debuff_keys: set[str]) -> set[str]:
+    """Collapse damage-taken / weapon-power downs into single kinds for variety scoring."""
+    out: set[str] = set()
+    for key in _SUPPORT_DEBUFF_KIND_KEYS:
+        if key in debuff_keys:
+            out.add(key)
+    for label, group in _SUPPORT_DEBUFF_KIND_GROUPS:
+        if debuff_keys & group:
+            out.add(label)
+    return out
 
 
 @lru_cache(maxsize=1)
@@ -32,6 +57,7 @@ def clear_rules_cache() -> None:
     load_rules.cache_clear()
     clear_tag_strategic_cache()
     clear_structured_effect_caches()
+    clear_affinity_pilot_pool_cache()
 
 
 def band_points(bands: list, value: float | int) -> int:
@@ -464,10 +490,163 @@ def map_coverage_points(rules: dict, cell_count: int) -> int:
     return band_points(rules.get("map_coverage_points") or [], int(cell_count or 0))
 
 
-def terrain_coverage_points(rules: dict, terrain: dict | None) -> tuple[int, dict]:
+def score_transform(rules: dict, features: dict) -> tuple[int, dict]:
+    """
+    Transform is not free points. Score only when the alt form gains strategic tools
+    vs the base form (terrain unlock, MOV, range, power, or MAP).
+    """
+    cfg = rules.get("transform") or {}
+    gains = list(features.get("transform_gains") or [])
+    # Explicit advantage flag (tests / overrides)
+    if features.get("has_transform_advantage") is True and not gains:
+        gains = ["advantage"]
+    if features.get("has_transform_advantage") is False:
+        meta = {"gains": [], "has_transform": bool(features.get("has_transform"))}
+        if features.get("transform_meta"):
+            meta.update(features.get("transform_meta") or {})
+        return 0, meta
+    if not gains:
+        if features.get("has_transform") and not cfg:
+            # Legacy flat points when no transform config
+            return int(rules.get("transform_points", 1) or 0), {
+                "gains": [],
+                "legacy_flat": True,
+            }
+        meta = {"gains": [], "has_transform": bool(features.get("has_transform"))}
+        if features.get("transform_meta"):
+            meta.update(features.get("transform_meta") or {})
+        return 0, meta
+
+    base_pts = int(cfg.get("points_if_advantage", rules.get("transform_points", 1)) or 0)
+    extra = int(cfg.get("extra_gain_type_points", 0) or 0)
+    # Distinct gain kinds beyond the first
+    kinds = {g for g in gains if g and g != "advantage"}
+    n_kinds = len(kinds) if kinds else (1 if gains else 0)
+    pts = base_pts
+    if extra and n_kinds > 1:
+        pts += extra * (n_kinds - 1)
+    cap = int(cfg.get("max_points", pts) or pts)
+    if pts > cap:
+        pts = cap
+    meta = {"gains": sorted(kinds) if kinds else list(gains), "gain_types": n_kinds}
+    if features.get("transform_meta"):
+        meta.update({k: v for k, v in (features.get("transform_meta") or {}).items() if k not in meta})
+    return pts, meta
+
+
+def analyze_transform_gains(
+    A,
+    uid: str,
+    info: dict,
+    partner_id: str | None,
+    mode: str,
+    lc: str,
+    ld: dict,
+    rules: dict,
+    base_stats: dict | None = None,
+) -> tuple[bool, list[str], dict]:
+    """
+    Compare base MS ↔ transform alt. Returns (has_partner, gain_keys, meta).
+    Gain keys: terrain, movement, weapon_range, weapon_power, map.
+    """
+    if not partner_id:
+        return False, [], {}
+    uid = A.normalize_id(uid)
+    partner_id = A.normalize_id(partner_id)
+    mid = A.normalize_id(info.get("main_unit_id") or uid)
+    if mid in ("0", ""):
+        mid = uid
+    # Always evaluate alt advantages over the main/base form
+    if uid == mid:
+        base_id, alt_id = uid, partner_id
+    else:
+        base_id, alt_id = mid, uid
+        if partner_id == mid:
+            alt_id = uid
+
+    cfg = rules.get("transform") or {}
+    terr_cfg = rules.get("terrain") or {}
+    deploy_min = int(terr_cfg.get("deploy_min_level", 2))
+    mov_need = int(cfg.get("mov_min_increase", 1) or 1)
+    range_need = int(cfg.get("range_min_increase", 1) or 1)
+    power_need = int(cfg.get("power_min_increase", 1) or 1)
+
+    use_mode = mode if mode in ("sp", "ssp") else "sp"
+    base_info = A.unit_info_map.get(base_id, {}) or info
+    alt_info = A.unit_info_map.get(alt_id, {}) or {}
+    if not alt_info:
+        return True, [], {"base_id": base_id, "alt_id": alt_id, "missing_alt": True}
+
+    base_terr = _effective_terrain(A, base_id, base_info, use_mode)
+    alt_terr = _effective_terrain(A, alt_id, alt_info, use_mode)
+
+    def _deployable(terr: dict) -> set[str]:
+        return {k for k in TERRAIN_KEYS if int(terr.get(k, 1) or 1) >= deploy_min}
+
+    base_dep = _deployable(base_terr)
+    alt_dep = _deployable(alt_terr)
+    terrain_unlock = sorted(alt_dep - base_dep)
+
+    # Movement
+    base_mov = int((base_stats or {}).get("MOV") or (base_stats or {}).get("Move") or 0)
+    alt_mov = 0
+    try:
+        ldc = A.LANG_DATA.get(lc) or ld
+        pblock = A._unit_max_lb_stat_block(
+            alt_id, alt_info, A.unit_stat_map.get(alt_id, {}), ldc
+        )
+        pstats = A._unit_lb_row_to_api(pblock, use_mode, False) or {}
+        alt_mov = int(pstats.get("MOV") or pstats.get("Move") or 0)
+        if not base_mov:
+            bblock = A._unit_max_lb_stat_block(
+                base_id, base_info, A.unit_stat_map.get(base_id, {}), ldc
+            )
+            bstats = A._unit_lb_row_to_api(bblock, use_mode, False) or {}
+            base_mov = int(bstats.get("MOV") or bstats.get("Move") or 0)
+    except Exception:
+        pass
+
+    base_w = _weapon_features(A, base_id, ld, lc, use_mode, rules)
+    alt_w = _weapon_features(A, alt_id, ld, lc, use_mode, rules)
+    base_range = int(base_w.get("weapon_range") or 0)
+    alt_range = int(alt_w.get("weapon_range") or 0)
+    base_power = int(base_w.get("weapon_power") or 0)
+    alt_power = int(alt_w.get("weapon_power") or 0)
+    base_map = bool(base_w.get("has_map_weapon")) or int(base_w.get("map_ammo") or 0) > 0
+    alt_map = bool(alt_w.get("has_map_weapon")) or int(alt_w.get("map_ammo") or 0) > 0
+
+    gains: list[str] = []
+    if terrain_unlock:
+        gains.append("terrain")
+    if alt_mov >= base_mov + mov_need:
+        gains.append("movement")
+    if alt_range >= base_range + range_need:
+        gains.append("weapon_range")
+    if alt_power >= base_power + power_need:
+        gains.append("weapon_power")
+    if alt_map and not base_map:
+        gains.append("map")
+
+    meta = {
+        "base_id": base_id,
+        "alt_id": alt_id,
+        "terrain_unlock": terrain_unlock,
+        "mov": {"base": base_mov, "alt": alt_mov},
+        "weapon_range": {"base": base_range, "alt": alt_range},
+        "weapon_power": {"base": base_power, "alt": alt_power},
+        "map": {"base": base_map, "alt": alt_map},
+        "gains": list(gains),
+    }
+    return True, gains, meta
+
+
+def terrain_coverage_points(
+    rules: dict, terrain: dict | None, role: str | None = None
+) -> tuple[int, dict]:
     """
     v5 terrain: 0 if Space+Land deployable; +1 per extra (Atmo/UW/Sea);
     −3 if missing Land or Space; +1 if 4+ deployable terrains.
+    v5.9: Defense also pays for missing Atmospheric (cannot protect airborne allies).
     """
     terr_cfg = rules.get("terrain") or {}
     deploy_min = int(terr_cfg.get("deploy_min_level", 2))
@@ -476,33 +655,75 @@ def terrain_coverage_points(rules: dict, terrain: dict | None) -> tuple[int, dic
     ground = int(terrain.get("Ground", 1) or 1)
     has_space = space >= deploy_min
     has_land = ground >= deploy_min
+    atmos = int(terrain.get("Atmospheric", 1) or 1)
+    has_atmos = atmos >= deploy_min
     meta = {
         "has_space": has_space,
         "has_land": has_land,
+        "has_atmospheric": has_atmos,
         "extra": [],
         "deployable_count": 0,
     }
     if not has_space or not has_land:
-        penalty = int(terr_cfg.get("missing_space_or_land_penalty", -3))
-        return penalty, meta
-    pts = 0
-    deployable = 0
-    for key in TERRAIN_KEYS:
-        if int(terrain.get(key, 1) or 1) >= deploy_min:
-            deployable += 1
-    meta["deployable_count"] = deployable
-    extra_keys = terr_cfg.get("extra_terrain_keys") or ["Atmospheric", "Underwater", "Sea"]
-    per = int(terr_cfg.get("extra_terrain_points", 1))
-    for key in extra_keys:
-        lvl = int(terrain.get(key, 1) or 1)
-        if lvl >= deploy_min:
-            pts += per
-            meta["extra"].append(key)
-    perfect_min = int(terr_cfg.get("perfect_min_deployable", 4) or 4)
-    if deployable >= perfect_min:
-        pts += int(terr_cfg.get("perfect_bonus", 1) or 0)
-        meta["perfect"] = True
+        pts = int(terr_cfg.get("missing_space_or_land_penalty", -3))
+    else:
+        pts = 0
+        deployable = 0
+        for key in TERRAIN_KEYS:
+            if int(terrain.get(key, 1) or 1) >= deploy_min:
+                deployable += 1
+        meta["deployable_count"] = deployable
+        extra_keys = terr_cfg.get("extra_terrain_keys") or ["Atmospheric", "Underwater", "Sea"]
+        per = int(terr_cfg.get("extra_terrain_points", 1))
+        for key in extra_keys:
+            lvl = int(terrain.get(key, 1) or 1)
+            if lvl >= deploy_min:
+                pts += per
+                meta["extra"].append(key)
+        perfect_min = int(terr_cfg.get("perfect_min_deployable", 4) or 4)
+        if deployable >= perfect_min:
+            pts += int(terr_cfg.get("perfect_bonus", 1) or 0)
+            meta["perfect"] = True
+
+    if role == "Defense" and not has_atmos:
+        tax = int(terr_cfg.get("defense_missing_atmospheric_penalty", -2) or 0)
+        pts += tax
+        meta["defense_missing_atmospheric"] = True
+        meta["defense_atmospheric_penalty"] = tax
     return pts, meta
+
+
+def support_debuff_kinds_points(rules: dict, role: str, features: dict) -> int | None:
+    """Defense/Support only. Returns points, or None if role does not score this axis."""
+    if role not in ("Defense", "Support"):
+        return None
+    kinds_cfg = (rules.get("support_debuffs_kinds") or {}).get(role)
+    if isinstance(kinds_cfg, dict) and ("0" in kinds_cfg or "2_or_more" in kinds_cfg):
+        min_range = int(kinds_cfg.get("min_range", 4 if role == "Defense" else 5) or 4)
+        tbl = kinds_cfg
+    else:
+        # Legacy flat table
+        min_range = 5 if role == "Support" else 4
+        legacy = rules.get("support_debuffs_at_range_4") or {}
+        if role == "Defense":
+            tbl = {
+                "0": 0,
+                "1": int(legacy.get("1", 0)),
+                "2_or_more": int(legacy.get("2_or_more", 1)),
+            }
+        else:
+            tbl = legacy
+    feat_key = f"support_debuffs_range{min_range}_count"
+    if feat_key in features:
+        n = int(features.get(feat_key) or 0)
+    elif min_range == 5 and "support_debuffs_range4_count" in features:
+        # Older feature payloads lacked the R5 counter — treat as no R5 kinds
+        n = 0
+    else:
+        n = int(features.get("support_debuffs_range4_count") or 0)
+    if n >= 2:
+        return int(tbl.get("2_or_more", 1))
+    return int(tbl.get(str(n), 0 if n == 1 else (-1 if role == "Support" else 0)))
 
 
 def debuff_pct_to_level(rules: dict, pct: int) -> int | None:
@@ -1255,10 +1476,12 @@ def collect_unit_structured_debuff_keys(A, uid: str) -> tuple[set[str], dict]:
         if not meta:
             continue
         types.add(int(meta.get("type_index") or 0))
-        keys |= classify_debuff_keys_from_meta(meta)
-        if "enemy_def_atk" in classify_debuff_keys_from_meta(meta):
-            max_pierce = max(max_pierce, int(meta.get("magnitude") or 0))
-        # Also catch pierce magnitude without re-calling
+        classified = classify_debuff_keys_from_meta(meta)
+        keys |= classified
+        mag = abs(int(meta.get("magnitude") or 0))
+        # Instant pierce (WeaponTraitType 3) and lasting DEF-down both feed debuff strength
+        if "enemy_def_atk" in classified or "def_dn" in classified:
+            max_pierce = max(max_pierce, mag)
         wtti = int(meta.get("type_index") or 0)
         if (
             wtti == 3
@@ -1267,7 +1490,7 @@ def collect_unit_structured_debuff_keys(A, uid: str) -> tuple[set[str], dict]:
             and int(meta.get("timing") or 0) == 0
             and int(meta.get("limit") or 0) == 0
         ):
-            max_pierce = max(max_pierce, int(meta.get("magnitude") or 0))
+            max_pierce = max(max_pierce, mag)
     return keys, {
         "structured": True,
         "type_indices": sorted(types),
@@ -1288,14 +1511,138 @@ def collect_unit_weapon_trait_type_indices(A, uid: str) -> set[int]:
 
 
 def score_linked_pilot(rules: dict, has_linked: bool, linked_very_good: bool) -> tuple[int, dict]:
+    """Deprecated: kept for older fixtures. Prefer score_affinity_pilots."""
     cfg = rules.get("linked_pilot") or {}
-    # Objective: recommend-character link + rarity/role match from master data.
     heuristic = bool(cfg.get("heuristic", False))
     if not has_linked:
         return int(cfg.get("none_points", 0)), {"heuristic": heuristic, "status": "none"}
     if linked_very_good:
         return int(cfg.get("very_good_points", 1)), {"heuristic": heuristic, "status": "very_good"}
     return int(cfg.get("any_points", -1)), {"heuristic": heuristic, "status": "any"}
+
+
+_AFFINITY_PILOT_POOL_CACHE: dict[str, list[dict]] = {}
+
+
+def clear_affinity_pilot_pool_cache() -> None:
+    _AFFINITY_PILOT_POOL_CACHE.clear()
+
+
+def build_affinity_pilot_pool(A, rules: dict | None = None, lc: str = "EN") -> list[dict]:
+    """
+    Playable SSR+ pilots with piloting-tag affinity factions and/or EX unit pairs.
+    Used to score how many high-quality affinity options a unit has.
+    """
+    rules = rules or load_rules()
+    cfg = rules.get("affinity_pilots") or {}
+    min_ri = int(cfg.get("min_rarity_index", 4) or 4)
+    cache_key = f"{lc}:{min_ri}"
+    cached = _AFFINITY_PILOT_POOL_CACHE.get(cache_key)
+    if cached is not None:
+        return cached
+
+    playable = getattr(A, "char_list_playable_ids", None) or set()
+    rows: list[dict] = []
+    for cid, info in (getattr(A, "char_info_map", None) or {}).items():
+        cid = A.normalize_id(cid)
+        if not cid or cid == "0":
+            continue
+        if playable and cid not in playable:
+            continue
+        try:
+            if hasattr(A, "entity_hidden_by_lr_schedule_lock") and A.entity_hidden_by_lr_schedule_lock(
+                info.get("schedule_id", "0")
+            ):
+                continue
+        except Exception:
+            pass
+        role_id = str(info.get("role", "0") or "0")
+        if role_id not in ("1", "2", "3"):
+            continue
+        ri = int(info.get("rarity", 1) or 1)
+        if ri < min_ri:
+            continue
+        factions: set = set()
+        pair_uids: list[str] = []
+        try:
+            if hasattr(A, "_character_affinity_faction_set"):
+                factions = set(A._character_affinity_faction_set(cid) or set())
+            meta = A._scan_character_affinity_meta(cid) if hasattr(A, "_scan_character_affinity_meta") else {}
+            if meta:
+                factions.update(meta.get("tag_factions") or set())
+                pair_uids = [A.normalize_id(u) for u in (meta.get("pair_unit_ids") or []) if u]
+        except Exception:
+            factions = set()
+            pair_uids = []
+        if not factions and not pair_uids:
+            continue
+        rows.append(
+            {
+                "id": cid,
+                "role_id": role_id,
+                "rarity_id": str(ri),
+                "factions": frozenset(factions),
+                "pair_unit_ids": frozenset(u for u in pair_uids if u and u != "0"),
+            }
+        )
+    _AFFINITY_PILOT_POOL_CACHE[cache_key] = rows
+    return rows
+
+
+def count_affinity_pilots_for_unit(
+    A,
+    uid: str,
+    unit_role_id: str,
+    rules: dict | None = None,
+    lc: str = "EN",
+    pool: list[dict] | None = None,
+) -> tuple[int, dict]:
+    """How many quality affinity-matched pilots can unlock kit on this MS."""
+    rules = rules or load_rules()
+    cfg = rules.get("affinity_pilots") or {}
+    require_same_role = bool(cfg.get("require_same_role", True))
+    include_pairs = bool(cfg.get("include_ex_unit_pairs", True))
+    uid = A.normalize_id(uid)
+    pool = pool if pool is not None else build_affinity_pilot_pool(A, rules, lc)
+
+    unit_factions: set = set()
+    try:
+        if hasattr(A, "_factions_for_playable_unit_ids"):
+            unit_factions = set(A._factions_for_playable_unit_ids([uid], lc) or set())
+    except Exception:
+        unit_factions = set()
+
+    matched: list[str] = []
+    for p in pool:
+        if require_same_role and str(p.get("role_id") or "") != str(unit_role_id or ""):
+            continue
+        hit = False
+        if include_pairs and uid in (p.get("pair_unit_ids") or ()):
+            hit = True
+        elif unit_factions and (p.get("factions") or frozenset()) & unit_factions:
+            hit = True
+        if hit:
+            matched.append(str(p.get("id") or ""))
+
+    return len(matched), {
+        "count": len(matched),
+        "unit_factions": sorted(unit_factions)[:16],
+        "sample_pilot_ids": matched[:12],
+        "require_same_role": require_same_role,
+    }
+
+
+def score_affinity_pilots(rules: dict, count: int, meta_extra: dict | None = None) -> tuple[int, dict]:
+    cfg = rules.get("affinity_pilots") or {}
+    bands = cfg.get("count_bands")
+    if not bands:
+        # Legacy fallback
+        return 0, {"count": int(count or 0), "legacy": True}
+    pts = band_points(bands, int(count or 0))
+    meta = {"count": int(count or 0), "points": pts}
+    if meta_extra:
+        meta.update(meta_extra)
+    return pts, meta
 
 
 def score_features(features: dict, rules: dict | None = None, mode: str = "sp") -> dict:
@@ -1351,12 +1698,18 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     meta["er_expert_eligible_count"] = er_n
 
     # Terrain coverage
-    terr_pts, terr_meta = terrain_coverage_points(rules, features.get("terrain") or {})
+    terr_pts, terr_meta = terrain_coverage_points(
+        rules, features.get("terrain") or {}, role=role
+    )
     breakdown["terrain"] = terr_pts
     meta["terrain"] = terr_meta
 
     # Transform
-    breakdown["transform"] = int(rules.get("transform_points", 1)) if features.get("has_transform") else 0
+    # Transform — only when alt form gains strategic tools vs base
+    tr_pts, tr_meta = score_transform(rules, features)
+    breakdown["transform"] = tr_pts
+    if tr_meta:
+        meta["transform"] = tr_meta
 
     # MAP presence + dash + multi-ammo + coverage (capped)
     has_map = bool(features.get("has_map_weapon")) or int(features.get("map_ammo") or 0) > 0
@@ -1377,7 +1730,11 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
         ammo_pts = 0
     cov_pts = map_coverage_points(rules, int(features.get("map_coverage_cells") or 0))
     map_pts = presence_pts + dash_pts + ammo_pts + cov_pts
-    cap = int(rules.get("map_axis_cap", 4) or 4)
+    cap_by_role = rules.get("map_axis_cap_by_role") or {}
+    if role in cap_by_role:
+        cap = int(cap_by_role.get(role, rules.get("map_axis_cap", 4)) or 4)
+    else:
+        cap = int(rules.get("map_axis_cap", 4) or 4)
     if map_pts > cap:
         map_pts = cap
     breakdown["map"] = map_pts
@@ -1405,16 +1762,30 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
         meta["abilities"] = abil_meta
         meta["heuristic_keys"].append("abilities")
 
-    # Linked pilot — recommend character rarity/role from master (not prose)
-    lp_pts, lp_meta = score_linked_pilot(
-        rules,
-        bool(features.get("has_linked_pilot")),
-        bool(features.get("linked_pilot_very_good")),
-    )
-    breakdown["linked_pilot"] = lp_pts
-    meta["linked_pilot"] = lp_meta
-    if lp_meta.get("heuristic"):
-        meta["heuristic_keys"].append("linked_pilot")
+    # Affinity pilot pool — SSR+ same-role pilots whose affinity matches this MS
+    if "affinity_pilot_count" in features:
+        aff_n = int(features.get("affinity_pilot_count") or 0)
+        lp_pts, lp_meta = score_affinity_pilots(
+            rules, aff_n, features.get("affinity_pilot_meta")
+        )
+        breakdown["linked_pilot"] = lp_pts  # keep key for UI compatibility
+        meta["linked_pilot"] = lp_meta
+        meta["affinity_pilots"] = lp_meta
+    elif (rules.get("affinity_pilots") or {}).get("count_bands"):
+        lp_pts, lp_meta = score_affinity_pilots(rules, 0, None)
+        breakdown["linked_pilot"] = lp_pts
+        meta["linked_pilot"] = lp_meta
+        meta["affinity_pilots"] = lp_meta
+    else:
+        lp_pts, lp_meta = score_linked_pilot(
+            rules,
+            bool(features.get("has_linked_pilot")),
+            bool(features.get("linked_pilot_very_good")),
+        )
+        breakdown["linked_pilot"] = lp_pts
+        meta["linked_pilot"] = lp_meta
+        if lp_meta.get("heuristic"):
+            meta["heuristic_keys"].append("linked_pilot")
 
     breakdown["max_tension_weapon"] = (
         int(rules.get("max_tension_higher_tier_weapon_points", 1))
@@ -1441,15 +1812,9 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
             meta["extra_life"] = {"structured": True, "source": features.get("extra_life_source")}
     breakdown["extra_life"] = el_pts
 
-    if role == "Support":
-        n = int(features.get("support_debuffs_range4_count") or 0)
-        tbl = rules.get("support_debuffs_at_range_4") or {}
-        if n >= 2:
-            breakdown["support_r4_debuffs"] = int(tbl.get("2_or_more", 1))
-        else:
-            breakdown["support_r4_debuffs"] = int(tbl.get(str(n), 0 if n == 1 else -1))
-    else:
-        breakdown["support_r4_debuffs"] = 0
+    r4_pts = support_debuff_kinds_points(rules, role, features)
+    if r4_pts is not None:
+        breakdown["support_r4_debuffs"] = int(r4_pts)
 
     for key, feat_key in (("HP", "HP"), ("ATK", "ATK"), ("DEF", "DEF"), ("MOB", "MOB")):
         bands = ((rules.get("stat_bands") or {}).get(key) or {}).get(role) or []
@@ -1483,8 +1848,6 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
             breakdown["max_debuff"] = int(tbl.get("none", tbl.get("0", 0)))
         else:
             breakdown["max_debuff"] = int(tbl.get(str(lvl), 0))
-    else:
-        breakdown["max_debuff"] = 0
 
     bonus_type = int(features.get("weapon_bonus_type") or 0)
     bonus_pts = int(features.get("weapon_bonus_points") or 0)
@@ -1516,7 +1879,7 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     rarity_pts = rarity_adjustment_points(rules, features.get("rarity_id"))
     breakdown["rarity"] = rarity_pts
 
-    # Large footprint (OccupiedAreaId 2) — positioning tax; not scored for Defense
+    # Large footprint (OccupiedAreaId 2) — mild upside (wider MAP/buff coverage)
     fp_tbl = rules.get("large_footprint") or {}
     if features.get("is_large_footprint"):
         breakdown["large_footprint"] = int(fp_tbl.get(role, 0) or 0)
@@ -1649,7 +2012,8 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
     has_preemptive = False
     has_rare = False
     max_debuff_pct = 0
-    support_debuff_kinds: set[str] = set()
+    support_debuff_kinds_r4: set[str] = set()
+    support_debuff_kinds_r5: set[str] = set()
     rare_keys = set(rules.get("rare_debuff_keys") or [])
     best_weapon_trait_lines: list[str] = []
     structured_keys: set[str] = set()
@@ -1796,9 +2160,10 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
             else:
                 max_power_unrestricted = max(max_power_unrestricted, power)
             if rx >= 4:
-                for key in ("def_dn", "atk_dn", "mob_dn", "acc_dn", "range_beam", "range_phys"):
-                    if key in debuff_keys:
-                        support_debuff_kinds.add(key)
+                for key in _support_debuff_kind_set(debuff_keys):
+                    support_debuff_kinds_r4.add(key)
+                    if rx >= 5:
+                        support_debuff_kinds_r5.add(key)
 
     if max_power <= 0 or not has_map_weapon:
         try:
@@ -1842,7 +2207,8 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
         "has_rare_debuff": has_rare,
         "has_max_tension_higher_weapon": has_max_tension_higher,
         "max_debuff_pct": max_debuff_pct,
-        "support_debuffs_range4_count": len(support_debuff_kinds),
+        "support_debuffs_range4_count": len(support_debuff_kinds_r4),
+        "support_debuffs_range5_count": len(support_debuff_kinds_r5),
         "weapon_bonus_type": bonus_type,
         "weapon_bonus_points": bonus_pts,
         "weapon_bonus_structured": weapon_bonus_structured,
@@ -1941,6 +2307,21 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
     except Exception:
         partner = None
     has_transform = bool(partner) or bool(info.get("main_unit_id") and str(info.get("main_unit_id")) != str(uid))
+    transform_gains: list[str] = []
+    transform_meta: dict = {}
+    if partner:
+        _has_p, transform_gains, transform_meta = analyze_transform_gains(
+            A,
+            uid,
+            info,
+            partner,
+            use_mode if use_mode in ("sp", "ssp") else "sp",
+            lc,
+            ld,
+            rules,
+            base_stats=stats,
+        )
+        has_transform = bool(_has_p) or has_transform
     if uid in override_ids and partner:
         try:
             pinfo = A.unit_info_map.get(partner, {})
@@ -1965,6 +2346,9 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
         A, uid, mode=use_mode if use_mode in ("sp", "ssp") else "sp", lc=lc, rules=rules
     )
     has_linked, linked_vg = _linked_pilot_flags(A, uid, info, rules)
+    aff_n, aff_meta = count_affinity_pilots_for_unit(
+        A, uid, role_id, rules=rules, lc=lc
+    )
     has_shield = False
     try:
         has_shield = "1" in (A.collect_unit_mechanism_mids(info, uid) or set())
@@ -2007,10 +2391,15 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
         "tags": tag_names,
         "terrain": terrain,
         "has_transform": has_transform,
+        "has_transform_advantage": bool(transform_gains),
+        "transform_gains": transform_gains,
+        "transform_meta": transform_meta,
         "ability_blobs": ability_blobs,
         "ability_effects": ability_effects,
         "has_linked_pilot": has_linked,
         "linked_pilot_very_good": linked_vg,
+        "affinity_pilot_count": aff_n,
+        "affinity_pilot_meta": aff_meta,
         "has_shield": has_shield,
         "is_large_footprint": is_large_footprint,
         "HP": int(stats.get("HP") or 0),
@@ -2123,9 +2512,11 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
     """
     User-facing objective criteria blocks derived from the live rules sheet.
     Keep this in sync with score_features / score_pilot_features axes.
+    Each block includes ``roles`` (Attack/Defense/Support) for UI filtering.
     """
     rules = rules or load_rules()
     criteria: list[dict] = []
+    ROLE_ALL = ["Attack", "Defense", "Support"]
 
     criteria.append(
         {
@@ -2139,6 +2530,47 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
                 {"when": "A+ or A", "result": "Solid"},
                 {"when": "B+ or B", "result": "Situational"},
                 {"when": "C, D, or E", "result": "Niche"},
+            ],
+        }
+    )
+
+    criteria.append(
+        {
+            "id": "role_focus_attack",
+            "title": "Attack priorities",
+            "applies": ["units"],
+            "objective": True,
+            "summary": "Survivability (HP), damage (ATK + weapon power), and MOV first. MAP and other utilities are strong extras.",
+            "rows": [
+                {"when": "Primary", "result": "HP · ATK · weapon power · MOV"},
+                {"when": "Great extras", "result": "MAP presence / dash / coverage"},
+                {"when": "Not scored", "result": "Debuff kinds · Debuff strength"},
+            ],
+        }
+    )
+    criteria.append(
+        {
+            "id": "role_focus_defense",
+            "title": "Defense priorities",
+            "applies": ["units"],
+            "objective": True,
+            "summary": "High HP or DEF, a shield (~20% damage neglect), high MOV for support-defense coverage, Atmospheric terrain so you can protect airborne allies, plus a few good debuffs.",
+            "rows": [
+                {"when": "Primary", "result": "HP · DEF · shield · MOV · terrain (Atmospheric)"},
+                {"when": "Secondary", "result": "A few good pierce / DEF-down debuffs (R4+ kinds)"},
+            ],
+        }
+    )
+    criteria.append(
+        {
+            "id": "role_focus_support",
+            "title": "Support priorities",
+            "applies": ["units"],
+            "objective": True,
+            "summary": "Debuff weapon range should be at least 5 (lower is weaker), then variety and strength of debuffs, then high MOV. Damage is secondary.",
+            "rows": [
+                {"when": "Primary", "result": "Weapon range ≥5 · R5+ debuff kinds · debuff strength · MOV"},
+                {"when": "Secondary", "result": "ATK / weapon power (mild)"},
             ],
         }
     )
@@ -2197,7 +2629,10 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "title": "Terrain coverage (units)",
             "applies": ["units"],
             "objective": True,
-            "summary": "Deploy tier ≥2 counts as usable. SSP board uses SSP-upgraded terrain.",
+            "summary": (
+                "Deploy tier ≥2 counts as usable. SSP board uses SSP-upgraded terrain. "
+                "Defense also needs Atmospheric to protect units in the air."
+            ),
             "rows": [
                 {
                     "when": "Missing Space or Land",
@@ -2212,31 +2647,38 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
                     "when": f"Perfect ({terr.get('perfect_min_deployable', 4)}+ of Space/Land/Atmo/UW/Sea)",
                     "result": _fmt_points(terr.get("perfect_bonus", 1)) + " extra",
                 },
+                {
+                    "when": "Defense missing Atmospheric",
+                    "result": _fmt_points(terr.get("defense_missing_atmospheric_penalty", -2)),
+                },
             ],
         }
     )
 
     mov = rules.get("movement") or {}
-    mov_rows = []
-    for key in ("3", "4", "5", "6"):
-        bits = []
-        for role in ("Attack", "Defense", "Support"):
-            bits.append(f"{role[0]} {_fmt_points((mov.get(role) or {}).get(key, 0))}")
-        label = "MOV ≤3" if key == "3" else ("MOV ≥6" if key == "6" else f"MOV {key}")
-        mov_rows.append({"when": label, "result": " / ".join(bits)})
-    criteria.append(
-        {
-            "id": "movement",
-            "title": "MOV (units)",
-            "applies": ["units"],
-            "objective": True,
-            "summary": "Primary movement axis by role. Follow-up (stacks, cap +2): after-move MAP and/or Chance Step / PostAttackMove.",
-            "rows": mov_rows,
-        }
-    )
-
-    sp_atk = ((rules.get("weapon_power") or {}).get("sp") or {}).get("Attack") or []
-    ssp_atk = ((rules.get("weapon_power") or {}).get("ssp") or {}).get("Attack") or []
+    for role_name in ROLE_ALL:
+        mov_rows = []
+        for key in ("3", "4", "5", "6"):
+            label = "MOV ≤3" if key == "3" else ("MOV ≥6" if key == "6" else f"MOV {key}")
+            mov_rows.append(
+                {
+                    "when": label,
+                    "result": _fmt_points((mov.get(role_name) or {}).get(key, 0)),
+                }
+            )
+        criteria.append(
+            {
+                "id": f"movement_{role_name.lower()}",
+                "title": f"MOV — {role_name}",
+                "applies": ["units"],
+                "objective": True,
+                "summary": (
+                    "Primary movement axis. Follow-up (stacks, cap +2): after-move MAP "
+                    "and/or Chance Step / PostAttackMove."
+                ),
+                "rows": mov_rows,
+            }
+        )
 
     def _power_rows(bands: list) -> list[dict]:
         out = []
@@ -2255,26 +2697,30 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
                 prev = int(mx)
         return out
 
-    criteria.append(
-        {
-            "id": "weapon_power_sp",
-            "title": "Weapon power — SP board (Attack shown; Defense capped lower)",
-            "applies": ["units"],
-            "objective": True,
-            "summary": "Max non-MAP Lv5 power for the board. SP mediocrity ~5000–5400.",
-            "rows": _power_rows(sp_atk),
-        }
-    )
-    criteria.append(
-        {
-            "id": "weapon_power_ssp",
-            "title": "Weapon power — SSP board (Attack shown; Defense capped lower)",
-            "applies": ["units"],
-            "objective": True,
-            "summary": "Includes SSP enhance. SSP mediocrity ~6000.",
-            "rows": _power_rows(ssp_atk),
-        }
-    )
+    for mode_key, title_mode in (("sp", "SP"), ("ssp", "SSP")):
+        for role_name in ROLE_ALL:
+            bands = ((rules.get("weapon_power") or {}).get(mode_key) or {}).get(role_name) or []
+            criteria.append(
+                {
+                    "id": f"weapon_power_{mode_key}_{role_name.lower()}",
+                    "title": f"Weapon power — {title_mode} — {role_name}",
+                    "applies": ["units"],
+                    "objective": True,
+                    "summary": (
+                        "Max non-MAP Lv5 power for the board. "
+                        + (
+                            "Attack damage priority."
+                            if role_name == "Attack"
+                            else (
+                                "Mild for Support — damage is secondary."
+                                if role_name == "Support"
+                                else "Defense capped softer than Attack."
+                            )
+                        )
+                    ),
+                    "rows": _power_rows(bands),
+                }
+            )
 
     mwb = rules.get("maxweapon_bonus") or {}
     mwb_rows = []
@@ -2305,22 +2751,28 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
     )
 
     wr_tbl = rules.get("weapon_range") or {}
-    wr_rows = []
-    for rng in ("1", "2", "3", "4", "5", "6"):
-        bits = []
-        for role in ("Attack", "Defense", "Support"):
-            bits.append(f"{role[0]} {_fmt_points((wr_tbl.get(role) or {}).get(rng, 0))}")
-        wr_rows.append({"when": f"Max range {rng}", "result": " / ".join(bits)})
-    criteria.append(
-        {
-            "id": "weapon_range",
-            "title": "Weapon range (units)",
-            "applies": ["units"],
-            "objective": True,
-            "summary": "Highest non-MAP weapon range on the board.",
-            "rows": wr_rows,
-        }
-    )
+    for role_name in ROLE_ALL:
+        wr_rows = []
+        for rng in ("1", "2", "3", "4", "5", "6"):
+            wr_rows.append(
+                {
+                    "when": f"Max range {rng}",
+                    "result": _fmt_points((wr_tbl.get(role_name) or {}).get(rng, 0)),
+                }
+            )
+        summary = "Highest non-MAP weapon range on the board."
+        if role_name == "Support":
+            summary = "Support baseline is range 5; anything lower is weaker."
+        criteria.append(
+            {
+                "id": f"weapon_range_{role_name.lower()}",
+                "title": f"Weapon range — {role_name}",
+                "applies": ["units"],
+                "objective": True,
+                "summary": summary,
+                "rows": wr_rows,
+            }
+        )
 
     el = rules.get("extra_life") or {}
     criteria.append(
@@ -2329,11 +2781,26 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "title": "Combat flags (units)",
             "applies": ["units"],
             "objective": True,
-            "summary": "Small combat bonuses read from unit abilities and mechanisms.",
+            "summary": "Combat bonuses only when they add practical tools (not a free transform checkbox).",
             "rows": [
                 {
-                    "when": "Transform / alternate form",
-                    "result": _fmt_points(rules.get("transform_points", 1)),
+                    "when": (
+                        "Transform alt unlocks deployable terrain, higher MOV, longer range, "
+                        "higher weapon power, and/or adds MAP vs base form"
+                    ),
+                    "result": (
+                        f"{_fmt_points((rules.get('transform') or {}).get('points_if_advantage', rules.get('transform_points', 1)))}"
+                        + (
+                            f" (cap {_fmt_points((rules.get('transform') or {}).get('max_points', 2))} "
+                            f"with +{_fmt_points((rules.get('transform') or {}).get('extra_gain_type_points', 1))} per extra gain type)"
+                            if (rules.get("transform") or {}).get("extra_gain_type_points")
+                            else ""
+                        )
+                    ),
+                },
+                {
+                    "when": "Transform with no strategic gain vs base",
+                    "result": "0",
                 },
                 {
                     "when": "Best weapon only usable at Max Vigor, and stronger than the unrestricted best",
@@ -2360,36 +2827,33 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
     )
 
     sh = rules.get("shield") or {}
-    criteria.append(
-        {
-            "id": "shield",
-            "title": "Shield mechanism (units)",
-            "applies": ["units"],
-            "objective": True,
-            "summary": "Whether the unit has a shield (from unit mechanisms).",
-            "rows": [
-                {
-                    "when": "Has shield — Attack",
-                    "result": _fmt_points((sh.get("Attack") or {}).get("has", 1)),
-                },
-                {
-                    "when": "Missing shield — Defense",
-                    "result": _fmt_points((sh.get("Defense") or {}).get("missing", -2)),
-                },
-                {
-                    "when": "Has shield — Defense / Support",
-                    "result": (
-                        f"Def {_fmt_points((sh.get('Defense') or {}).get('has', 1))} / "
-                        f"Sup {_fmt_points((sh.get('Support') or {}).get('has', 1))}"
-                    ),
-                },
-            ],
-        }
-    )
+    for role_name in ROLE_ALL:
+        rows = [
+            {
+                "when": "Has shield",
+                "result": _fmt_points((sh.get(role_name) or {}).get("has", 0)),
+            },
+            {
+                "when": "Missing shield",
+                "result": _fmt_points((sh.get(role_name) or {}).get("missing", 0)),
+            },
+        ]
+        summary = "Whether the unit has a shield (from unit mechanisms)."
+        if role_name == "Defense":
+            summary = "Shield neglects ~20% damage — Defense is punished hard without one."
+        criteria.append(
+            {
+                "id": f"shield_{role_name.lower()}",
+                "title": f"Shield — {role_name}",
+                "applies": ["units"],
+                "objective": True,
+                "summary": summary,
+                "rows": rows,
+            }
+        )
 
-    # Unit SP-grown stats (HP/ATK/DEF/MOB) — Attack bands as the readable sample
-    def _stat_band_rows(stat_key: str) -> list[dict]:
-        bands = ((rules.get("stat_bands") or {}).get(stat_key) or {}).get("Attack") or []
+    def _stat_band_rows_for_role(stat_key: str, role_name: str) -> list[dict]:
+        bands = ((rules.get("stat_bands") or {}).get(stat_key) or {}).get(role_name) or []
         out = []
         prev = None
         for b in bands:
@@ -2401,40 +2865,46 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
                 when = f"{stat_key} ≥ {prev}"
             else:
                 when = f"{stat_key} {prev}–{int(mx) - 1}"
-            out.append({"when": when + " (Attack shown)", "result": pts})
+            out.append({"when": when, "result": pts})
             if mx is not None:
                 prev = int(mx)
         return out
 
-    criteria.append(
-        {
-            "id": "unit_stats",
-            "title": "Unit SP-grown stats (HP / ATK / DEF / MOB)",
-            "applies": ["units"],
-            "objective": True,
-            "summary": "Role-specific bands; Attack table shown as the sample. Defense/Support use their own sheets.",
-            "rows": (
-                _stat_band_rows("HP")[:4]
-                + _stat_band_rows("ATK")[:4]
-                + _stat_band_rows("DEF")[:3]
-                + _stat_band_rows("MOB")[:3]
-            ),
-        }
-    )
+    for role_name in ROLE_ALL:
+        criteria.append(
+            {
+                "id": f"unit_stats_{role_name.lower()}",
+                "title": f"Unit SP-grown stats — {role_name}",
+                "applies": ["units"],
+                "objective": True,
+                "summary": f"HP / ATK / DEF / MOB bands for {role_name}.",
+                "rows": (
+                    _stat_band_rows_for_role("HP", role_name)
+                    + _stat_band_rows_for_role("ATK", role_name)
+                    + _stat_band_rows_for_role("DEF", role_name)
+                    + _stat_band_rows_for_role("MOB", role_name)
+                ),
+            }
+        )
 
     md = rules.get("max_debuff_level") or {}
-    sr4 = rules.get("support_debuffs_at_range_4") or {}
+    kinds = rules.get("support_debuffs_kinds") or {}
     debuff_rows = [
-        {"when": "Attack role", "result": "0 (not scored)"},
-        {
-            "when": "Support: 0 / 1 / 2+ distinct R4+ debuff kinds",
-            "result": (
-                f"{_fmt_points(sr4.get('0', -1))} / "
-                f"{_fmt_points(sr4.get('1', 0))} / "
-                f"{_fmt_points(sr4.get('2_or_more', 1))}"
-            ),
-        },
+        {"when": "Attack role", "result": "Not scored (axes omitted)"},
     ]
+    for role_name in ("Defense", "Support"):
+        kcfg = kinds.get(role_name) or {}
+        min_r = int(kcfg.get("min_range", 4 if role_name == "Defense" else 5) or 4)
+        debuff_rows.append(
+            {
+                "when": f"{role_name}: 0 / 1 / 2+ distinct R{min_r}+ debuff kinds",
+                "result": (
+                    f"{_fmt_points(kcfg.get('0', 0 if role_name == 'Defense' else -1))} / "
+                    f"{_fmt_points(kcfg.get('1', 0))} / "
+                    f"{_fmt_points(kcfg.get('2_or_more', 1))}"
+                ),
+            }
+        )
     for role_name in ("Defense", "Support"):
         tbl = md.get(role_name) or {}
         bits = []
@@ -2450,32 +2920,75 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "title": "Debuffs (Defense / Support units)",
             "applies": ["units"],
             "objective": True,
-            "summary": "Pierce % maps to levels (≈10%→3 … 40%+→6). Support also scores distinct debuff kinds at range ≥4.",
+            "summary": (
+                "Attack units skip these axes. Debuff strength uses lasting DEF-down % "
+                "or instant pierce (≈10%→3 … 40%+→6). "
+                "Defense counts distinct debuff kinds at range ≥4 (light; damage-taken downs count as one kind). "
+                "Support counts kinds at range ≥5 and cares more about strength."
+            ),
             "rows": debuff_rows,
         }
     )
 
-    lp = rules.get("linked_pilot") or {}
-    criteria.append(
-        {
-            "id": "linked_pilot",
-            "title": "Linked / recommend pilot (units)",
-            "applies": ["units"],
-            "objective": True,
-            "summary": "From recommend-character link: rarity index + same role as the unit.",
-            "rows": [
-                {"when": "No linked pilot", "result": _fmt_points(lp.get("none_points", 0))},
-                {
-                    "when": (
-                        f"Linked, rarity index ≥{lp.get('very_good_min_rarity_index', 4)} "
-                        "and same role"
-                    ),
-                    "result": _fmt_points(lp.get("very_good_points", 1)),
-                },
-                {"when": "Linked otherwise", "result": _fmt_points(lp.get("any_points", -1))},
-            ],
-        }
-    )
+    lp = rules.get("affinity_pilots") or rules.get("linked_pilot") or {}
+    if rules.get("affinity_pilots"):
+        aff_rows = []
+        prev = 0
+        for band in lp.get("count_bands") or []:
+            mx = band.get("max_exclusive")
+            pts = band.get("points")
+            if mx is None:
+                aff_rows.append(
+                    {"when": f"≥ {prev} matching SSR+ pilots", "result": _fmt_points(pts)}
+                )
+            else:
+                hi = int(mx) - 1
+                if prev == hi:
+                    label = f"{prev} matching SSR+ pilot" + ("" if prev == 1 else "s")
+                    aff_rows.append({"when": label, "result": _fmt_points(pts)})
+                else:
+                    aff_rows.append(
+                        {
+                            "when": f"{prev}–{hi} matching SSR+ pilots",
+                            "result": _fmt_points(pts),
+                        }
+                    )
+                prev = int(mx)
+        role_note = "same role" if lp.get("require_same_role", True) else "any role"
+        criteria.append(
+            {
+                "id": "linked_pilot",
+                "title": "Affinity pilot pool (units)",
+                "applies": ["units"],
+                "objective": True,
+                "summary": (
+                    f"Count of SSR+ ({role_note}) pilots whose piloting-tag / EX-pair "
+                    "affinity matches this MS. A deeper pool beats one linked recommend."
+                ),
+                "rows": aff_rows,
+            }
+        )
+    else:
+        criteria.append(
+            {
+                "id": "linked_pilot",
+                "title": "Linked / recommend pilot (units)",
+                "applies": ["units"],
+                "objective": True,
+                "summary": "From recommend-character link: rarity index + same role as the unit.",
+                "rows": [
+                    {"when": "No linked pilot", "result": _fmt_points(lp.get("none_points", 0))},
+                    {
+                        "when": (
+                            f"Linked, rarity index ≥{lp.get('very_good_min_rarity_index', 4)} "
+                            "and same role"
+                        ),
+                        "result": _fmt_points(lp.get("very_good_points", 1)),
+                    },
+                    {"when": "Linked otherwise", "result": _fmt_points(lp.get("any_points", -1))},
+                ],
+            }
+        )
 
     map_cov = []
     prev = 0
@@ -2497,8 +3010,11 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "objective": True,
             "summary": (
                 "Practical MAP tools: presence for any MAP, extra for dash/MovingAttack, "
-                f"ammo 2+, and effect-range coverage. Combined cap "
-                f"{_fmt_points(rules.get('map_axis_cap', 4))}."
+                f"ammo 2+, and effect-range coverage. Attack cap "
+                f"{_fmt_points((rules.get('map_axis_cap_by_role') or {}).get('Attack', rules.get('map_axis_cap', 4)))}; "
+                f"Defense/Support cap "
+                f"{_fmt_points((rules.get('map_axis_cap_by_role') or {}).get('Support', 2))} "
+                "(MAP is secondary for those roles)."
             ),
             "rows": [
                 {
@@ -2591,11 +3107,11 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "title": "Large footprint (2×2)",
             "applies": ["units"],
             "objective": True,
-            "summary": "Units that occupy a 2×2 area pay a positioning tax (except Defense).",
+            "summary": "2×2 units get a mild bonus — wider MAP/buff coverage usually outweighs placement inconvenience.",
             "rows": [
-                {"when": "Attack", "result": _fmt_points(fp.get("Attack", -1))},
-                {"when": "Support", "result": _fmt_points(fp.get("Support", -1))},
-                {"when": "Defense", "result": _fmt_points(fp.get("Defense", 0))},
+                {"when": "Attack", "result": _fmt_points(fp.get("Attack", 1))},
+                {"when": "Support", "result": _fmt_points(fp.get("Support", 1))},
+                {"when": "Defense", "result": _fmt_points(fp.get("Defense", 1))},
             ],
         }
     )
@@ -2632,6 +3148,36 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             ],
         }
     )
+
+    role_map = {
+        "role_focus_attack": ["Attack"],
+        "role_focus_defense": ["Defense"],
+        "role_focus_support": ["Support"],
+        "debuffs": ["Defense", "Support"],
+        "ability_table_attack": ["Attack"],
+        "ability_table_defense": ["Defense"],
+        "ability_table_support": ["Support"],
+        "movement_attack": ["Attack"],
+        "movement_defense": ["Defense"],
+        "movement_support": ["Support"],
+        "weapon_range_attack": ["Attack"],
+        "weapon_range_defense": ["Defense"],
+        "weapon_range_support": ["Support"],
+        "weapon_power_sp_attack": ["Attack"],
+        "weapon_power_sp_defense": ["Defense"],
+        "weapon_power_sp_support": ["Support"],
+        "weapon_power_ssp_attack": ["Attack"],
+        "weapon_power_ssp_defense": ["Defense"],
+        "weapon_power_ssp_support": ["Support"],
+        "shield_attack": ["Attack"],
+        "shield_defense": ["Defense"],
+        "shield_support": ["Support"],
+        "unit_stats_attack": ["Attack"],
+        "unit_stats_defense": ["Defense"],
+        "unit_stats_support": ["Support"],
+    }
+    for c in criteria:
+        c["roles"] = list(role_map.get(c.get("id"), ROLE_ALL))
 
     return criteria
 

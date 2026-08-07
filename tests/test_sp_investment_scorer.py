@@ -1,5 +1,6 @@
 """Golden tests for SP investment pure scorer (no app import)."""
 
+import copy
 import unittest
 
 from sp_investment_rank import (
@@ -231,12 +232,43 @@ class TestSpInvestmentBands(unittest.TestCase):
         self.assertNotIn("extra_life", scored["meta"].get("heuristic_keys") or [])
         self.assertTrue((scored["meta"].get("extra_life") or {}).get("structured"))
 
-    def test_linked_pilot_not_heuristic(self):
+    def test_transform_requires_advantage(self):
+        cosmetic = _minimal_features(has_transform=True, transform_gains=[], has_transform_advantage=False)
+        useful = _minimal_features(
+            has_transform=True,
+            has_transform_advantage=True,
+            transform_gains=["terrain"],
+        )
+        multi = _minimal_features(
+            has_transform=True,
+            transform_gains=["terrain", "movement", "map"],
+        )
+        self.assertEqual(score_features(cosmetic, self.rules)["breakdown"]["transform"], 0)
+        self.assertEqual(score_features(useful, self.rules)["breakdown"]["transform"], 1)
+        # base +1 and +1 for two extra gain types, capped at 2
+        self.assertEqual(score_features(multi, self.rules)["breakdown"]["transform"], 2)
+
+    def test_affinity_pilot_pool_bands(self):
+        zero = _minimal_features(affinity_pilot_count=0)
+        few = _minimal_features(affinity_pilot_count=2)
+        mid = _minimal_features(affinity_pilot_count=4)
+        deep = _minimal_features(affinity_pilot_count=8)
+        self.assertEqual(score_features(zero, self.rules)["breakdown"]["linked_pilot"], -1)
+        self.assertEqual(score_features(few, self.rules)["breakdown"]["linked_pilot"], 0)
+        self.assertEqual(score_features(mid, self.rules)["breakdown"]["linked_pilot"], 1)
+        self.assertEqual(score_features(deep, self.rules)["breakdown"]["linked_pilot"], 2)
+        self.assertEqual(
+            (score_features(deep, self.rules)["meta"].get("linked_pilot") or {}).get("count"),
+            8,
+        )
+
+    def test_linked_pilot_legacy_when_no_affinity_cfg(self):
+        rules = copy.deepcopy(self.rules)
+        rules.pop("affinity_pilots", None)
         feats = _minimal_features(has_linked_pilot=True, linked_pilot_very_good=True)
-        scored = score_features(feats, self.rules)
+        feats.pop("affinity_pilot_count", None)
+        scored = score_features(feats, rules)
         self.assertEqual(scored["breakdown"]["linked_pilot"], 1)
-        self.assertNotIn("linked_pilot", scored["meta"].get("heuristic_keys") or [])
-        self.assertFalse((scored["meta"].get("linked_pilot") or {}).get("heuristic"))
 
     def test_weapon_bonus_structured_flag(self):
         feats = _minimal_features(
@@ -321,6 +353,8 @@ class TestSpInvestmentBands(unittest.TestCase):
             "er_expert_eligible_count": 20,
             "terrain": {"Space": 3, "Atmospheric": 3, "Ground": 2, "Sea": 1, "Underwater": 1},
             "has_transform": True,
+            "has_transform_advantage": True,
+            "transform_gains": ["terrain", "weapon_range"],
             "map_ammo": 2,
             "map_coverage_cells": 22,
             "has_map_weapon": True,
@@ -335,6 +369,7 @@ class TestSpInvestmentBands(unittest.TestCase):
             ],
             "has_linked_pilot": True,
             "linked_pilot_very_good": True,
+            "affinity_pilot_count": 4,
             "has_shield": True,
             "HP": 96000,
             "ATK": 12500,
@@ -461,18 +496,125 @@ class TestSpInvestmentBands(unittest.TestCase):
         crit = build_public_criteria(self.rules)
         ids = [c["id"] for c in crit]
         self.assertIn("er_access", ids)
-        self.assertIn("weapon_power_sp", ids)
+        self.assertIn("weapon_power_sp_attack", ids)
+        self.assertIn("role_focus_attack", ids)
         self.assertIn("map", ids)
         self.assertNotIn("not_scored", ids)
         er = next(c for c in crit if c["id"] == "er_access")
         self.assertTrue(er["objective"])
         self.assertGreaterEqual(len(er["rows"]), 4)
+        self.assertEqual(er.get("roles"), ["Attack", "Defense", "Support"])
+        atk_focus = next(c for c in crit if c["id"] == "role_focus_attack")
+        self.assertEqual(atk_focus.get("roles"), ["Attack"])
+        debuffs = next(c for c in crit if c["id"] == "debuffs")
+        self.assertEqual(debuffs.get("roles"), ["Defense", "Support"])
         guide = scoring_guide_payload(self.rules)
         self.assertEqual(len(guide.get("criteria") or []), len(crit))
         map_c = next(c for c in crit if c["id"] == "map")
         blob = " ".join(f"{r['when']} {r['result']}" for r in map_c["rows"])
         self.assertIn("Any MAP weapon", blob)
         self.assertIn("Dash", blob)
+
+    def test_support_weapon_range_floor_at_five(self):
+        r4 = score_features(
+            _minimal_features(role="Support", weapon_range=4), self.rules
+        )
+        r5 = score_features(
+            _minimal_features(role="Support", weapon_range=5), self.rules
+        )
+        self.assertEqual(r4["breakdown"]["weapon_range"], -1)
+        self.assertEqual(r5["breakdown"]["weapon_range"], 0)
+        self.assertEqual(
+            r5["breakdown"]["weapon_range"] - r4["breakdown"]["weapon_range"], 1
+        )
+
+    def test_defense_missing_atmospheric_tax(self):
+        terrain = {
+            "Space": 2,
+            "Atmospheric": 1,
+            "Ground": 2,
+            "Sea": 1,
+            "Underwater": 1,
+        }
+        atk = score_features(
+            _minimal_features(role="Attack", terrain=terrain), self.rules
+        )
+        defense = score_features(
+            _minimal_features(role="Defense", terrain=terrain), self.rules
+        )
+        support = score_features(
+            _minimal_features(role="Support", terrain=terrain), self.rules
+        )
+        self.assertEqual(atk["breakdown"]["terrain"], 0)
+        self.assertEqual(support["breakdown"]["terrain"], 0)
+        self.assertEqual(defense["breakdown"]["terrain"], -2)
+        pts, meta = terrain_coverage_points(self.rules, terrain, role="Defense")
+        self.assertEqual(pts, -2)
+        self.assertTrue(meta.get("defense_missing_atmospheric"))
+
+    def test_support_debuff_kinds_require_range5(self):
+        # R4-only kinds help Defense, not Support
+        defense = score_features(
+            _minimal_features(
+                role="Defense",
+                support_debuffs_range4_count=2,
+                support_debuffs_range5_count=0,
+            ),
+            self.rules,
+        )
+        support = score_features(
+            _minimal_features(
+                role="Support",
+                support_debuffs_range4_count=2,
+                support_debuffs_range5_count=0,
+            ),
+            self.rules,
+        )
+        self.assertEqual(defense["breakdown"]["support_r4_debuffs"], 1)
+        self.assertEqual(support["breakdown"]["support_r4_debuffs"], -1)
+
+    def test_map_cap_lower_for_support_defense(self):
+        feats = _minimal_features(
+            has_map_weapon=True,
+            has_dash_map=True,
+            map_ammo=2,
+            map_coverage_cells=40,
+        )
+        atk = score_features({**feats, "role": "Attack"}, self.rules)
+        defense = score_features({**feats, "role": "Defense"}, self.rules)
+        support = score_features({**feats, "role": "Support"}, self.rules)
+        self.assertEqual(atk["breakdown"]["map"], 4)
+        self.assertEqual(defense["breakdown"]["map"], 2)
+        self.assertEqual(support["breakdown"]["map"], 2)
+
+    def test_lasting_def_down_feeds_max_debuff(self):
+        from sp_investment_rank import classify_debuff_keys_from_meta
+
+        keys = classify_debuff_keys_from_meta(
+            {
+                "type_index": 12,
+                "status_type_index": 9,
+                "status_value": -25,
+                "magnitude": 25,
+                "timing": 1,
+                "limit": 1,
+                "weapon_attrs": [],
+            }
+        )
+        self.assertIn("def_dn", keys)
+        # score_features uses max_debuff_pct bands — 25% → level 4 → Defense 0 / Support -1
+        defense = score_features(
+            _minimal_features(role="Defense", max_debuff_pct=25), self.rules
+        )
+        support = score_features(
+            _minimal_features(role="Support", max_debuff_pct=25), self.rules
+        )
+        self.assertEqual(defense["breakdown"]["max_debuff"], 0)
+        self.assertEqual(support["breakdown"]["max_debuff"], -1)
+        support_strong = score_features(
+            _minimal_features(role="Support", max_debuff_pct=40), self.rules
+        )
+        self.assertEqual(support_strong["breakdown"]["max_debuff"], 2)
 
     def test_low_hp_attacker_penalty(self):
         scored = score_features(_minimal_features(HP=79000), self.rules)
@@ -489,13 +631,55 @@ class TestSpInvestmentBands(unittest.TestCase):
         )
         self.assertEqual(both["breakdown"]["movement_followup"], 2)
 
-    def test_large_footprint_tax(self):
+    def test_large_footprint_bonus(self):
         a = score_features(_minimal_features(is_large_footprint=True), self.rules)
-        self.assertEqual(a["breakdown"]["large_footprint"], -1)
+        self.assertEqual(a["breakdown"]["large_footprint"], 1)
         d = score_features(
             _minimal_features(role="Defense", is_large_footprint=True), self.rules
         )
-        self.assertEqual(d["breakdown"]["large_footprint"], 0)
+        self.assertEqual(d["breakdown"]["large_footprint"], 1)
+        s = score_features(
+            _minimal_features(role="Support", is_large_footprint=True), self.rules
+        )
+        self.assertEqual(s["breakdown"]["large_footprint"], 1)
+
+    def test_debuff_axes_defense_support_only(self):
+        atk = score_features(
+            _minimal_features(
+                role="Attack",
+                max_debuff_pct=0,
+                support_debuffs_range4_count=0,
+                support_debuffs_range5_count=0,
+            ),
+            self.rules,
+        )
+        self.assertNotIn("support_r4_debuffs", atk["breakdown"])
+        self.assertNotIn("max_debuff", atk["breakdown"])
+
+        defense_none = score_features(
+            _minimal_features(
+                role="Defense",
+                max_debuff_pct=0,
+                support_debuffs_range4_count=0,
+                support_debuffs_range5_count=0,
+            ),
+            self.rules,
+        )
+        # Defense: light debuff-kind axis (0 kinds → 0, not −1)
+        self.assertEqual(defense_none["breakdown"]["support_r4_debuffs"], 0)
+        self.assertEqual(defense_none["breakdown"]["max_debuff"], -2)
+
+        support_good = score_features(
+            _minimal_features(
+                role="Support",
+                max_debuff_pct=40,
+                support_debuffs_range4_count=2,
+                support_debuffs_range5_count=2,
+            ),
+            self.rules,
+        )
+        self.assertEqual(support_good["breakdown"]["support_r4_debuffs"], 1)
+        self.assertEqual(support_good["breakdown"]["max_debuff"], 2)
 
     def test_pilot_er_and_rarity(self):
         feats = {
@@ -540,6 +724,7 @@ def _minimal_features(**overrides):
         "ability_blobs": [],
         "has_linked_pilot": False,
         "linked_pilot_very_good": False,
+        "affinity_pilot_count": 4,
         "has_shield": True,
         "is_large_footprint": False,
         "HP": 88000,
@@ -559,6 +744,7 @@ def _minimal_features(**overrides):
         "has_extra_move_kit": False,
         "max_debuff_pct": 0,
         "support_debuffs_range4_count": 0,
+        "support_debuffs_range5_count": 0,
     }
     base.update(overrides)
     return base

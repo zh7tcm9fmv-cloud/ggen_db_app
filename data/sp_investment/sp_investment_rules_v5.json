@@ -21,7 +21,13 @@
     "v5.3: weapon Debuff TargetValue→m_trait kind/magnitude; rare range-down structured",
     "v5.3: ability/skill magnitude bands; public TraitType point tables in criteria",
     "v5.4: MAP presence (+1 any MAP) + dash/MovingAttack (+1); ammo 2+ extra; coverage from dash path; axis cap +4",
-    "v5.4: practical rebalance — softer ER floor penalty, strategic-tag cap 2, movement-followup stacks to +2"
+    "v5.4: practical rebalance — softer ER floor penalty, strategic-tag cap 2, movement-followup stacks to +2",
+    "v5.5: replace linked-pilot axis with affinity pilot pool (count of SSR+ pilots whose affinity matches the MS; role-agnostic)",
+    "v5.6: transform points only when alt form gains terrain / MOV / range / power / MAP vs base",
+    "v5.7: large footprint (2×2) is a mild upside (+1 all roles) — wider MAP/buff coverage often outweighs placement inconvenience",
+    "v5.8: support R4+ debuff kinds + max debuff strength only score Defense/Support (Attack omitted — attackers lack those kits)",
+    "v5.9: role-specific priorities — Attack HP/damage/MOV/MAP; Support range-5 floor + R5+ debuff kinds; Defense shield/HP/DEF/MOV + Atmospheric tax + lighter debuff kinds",
+    "v5.10: debuff strength counts lasting DEF-down magnitude (not only instant pierce); Support/Defense MAP axis cap 2; damage-taken downs count as a debuff kind"
   ],
   "exclude_warships": true,
   "exclude_character_ids": [],
@@ -488,6 +494,7 @@
   "terrain": {
     "deploy_min_level": 2,
     "missing_space_or_land_penalty": -3,
+    "defense_missing_atmospheric_penalty": -2,
     "extra_terrain_points": 1,
     "extra_terrain_keys": [
       "Atmospheric",
@@ -498,6 +505,15 @@
     "perfect_bonus": 1
   },
   "transform_points": 1,
+  "transform": {
+    "points_if_advantage": 1,
+    "max_points": 2,
+    "extra_gain_type_points": 1,
+    "mov_min_increase": 1,
+    "range_min_increase": 1,
+    "power_min_increase": 1,
+    "note": "Only score when alt form unlocks terrain, MOV, range, power, or MAP vs base form"
+  },
   "map_ammo_points": {
     "0": 0,
     "1": 0,
@@ -767,12 +783,37 @@
     "tension_gate_regex": "(?i)tension|テンション|when\\s+tension|at\\s+max\\s+tension",
     "tension_gated_points_scale": 0
   },
+  "affinity_pilots": {
+    "min_rarity_index": 4,
+    "require_same_role": false,
+    "include_ex_unit_pairs": true,
+    "count_bands": [
+      {
+        "max_exclusive": 1,
+        "points": -1
+      },
+      {
+        "max_exclusive": 3,
+        "points": 0
+      },
+      {
+        "max_exclusive": 6,
+        "points": 1
+      },
+      {
+        "max_exclusive": null,
+        "points": 2
+      }
+    ]
+  },
   "linked_pilot": {
     "none_points": 0,
     "any_points": -1,
     "very_good_points": 1,
     "very_good_min_rarity_index": 4,
-    "heuristic": false
+    "heuristic": false,
+    "deprecated": true,
+    "note": "Replaced by affinity_pilots in v5.5"
   },
   "max_tension_higher_tier_weapon_points": 1,
   "preemptive_strike_points": 1,
@@ -788,6 +829,20 @@
     "unit_id_allowlist": [],
     "structured_trait_types": [84],
     "ability_regex": "(?i)extra\\s*life|ejection|脱出|再出撃|復活|reviv|unbreakable"
+  },
+  "support_debuffs_kinds": {
+    "Defense": {
+      "min_range": 4,
+      "0": 0,
+      "1": 0,
+      "2_or_more": 1
+    },
+    "Support": {
+      "min_range": 5,
+      "0": -1,
+      "1": 0,
+      "2_or_more": 1
+    }
   },
   "support_debuffs_at_range_4": {
     "0": -1,
@@ -814,8 +869,12 @@
           "points": 0
         },
         {
-          "max_exclusive": null,
+          "max_exclusive": 100000,
           "points": 1
+        },
+        {
+          "max_exclusive": null,
+          "points": 2
         }
       ],
       "Defense": [
@@ -911,15 +970,15 @@
       "Support": [
         {
           "max_exclusive": 9000,
-          "points": -3
+          "points": -1
         },
         {
           "max_exclusive": 9500,
-          "points": -2
+          "points": 0
         },
         {
           "max_exclusive": 10000,
-          "points": -1
+          "points": 0
         },
         {
           "max_exclusive": 10500,
@@ -927,7 +986,7 @@
         },
         {
           "max_exclusive": null,
-          "points": 2
+          "points": 1
         }
       ]
     },
@@ -1123,9 +1182,9 @@
       "1": -4,
       "2": -3,
       "3": -2,
-      "4": 0,
-      "5": 1,
-      "6": 3
+      "4": -1,
+      "5": 0,
+      "6": 2
     }
   },
   "weapon_power": {
@@ -1163,15 +1222,15 @@
         },
         {
           "max_exclusive": 5700,
-          "points": 1
+          "points": 0
         },
         {
           "max_exclusive": 6000,
-          "points": 2
+          "points": 1
         },
         {
           "max_exclusive": null,
-          "points": 3
+          "points": 1
         }
       ],
       "Defense": [
@@ -1223,11 +1282,11 @@
       "Support": [
         {
           "max_exclusive": 5600,
-          "points": -2
+          "points": -1
         },
         {
           "max_exclusive": 6000,
-          "points": -1
+          "points": 0
         },
         {
           "max_exclusive": 6300,
@@ -1239,7 +1298,7 @@
         },
         {
           "max_exclusive": null,
-          "points": 2
+          "points": 1
         }
       ],
       "Defense": [
@@ -1276,8 +1335,8 @@
       "6": 2
     },
     "Support": {
-      "none": -3,
-      "0": -3,
+      "none": -2,
+      "0": -2,
       "3": -2,
       "4": -1,
       "5": 1,
@@ -1457,7 +1516,7 @@
   "scoring_guide": {
     "version": 5.5,
     "title": "How Investment Guide scoring works",
-    "intro": "Point-sum shortlist for SP/SSP chip investment on mobile suits and pilots (Attack / Defense / Support). Units have separate SP and SSP boards; pilots use SP only. Criteria favor practical sortie tools (MAP, mobility follow-ups, weapon power) over pure roster breadth. Close letters still need a human look.",
+    "intro": "Point-sum shortlist for SP/SSP chip investment on mobile suits and pilots (Attack / Defense / Support). Units have separate SP and SSP boards; pilots use SP only. Criteria favor practical sortie tools (MAP, mobility follow-ups, weapon power) and a deep affinity pilot pool over a single linked recommend. Close letters still need a human look.",
     "overrides": [
       "Each axis adds points; the total becomes a letter, then a bucket (Recommended / Solid / Situational / Niche).",
       "Filter by tag or Eternal Road Expert stage to compare units that actually fit the same restriction."
@@ -1466,6 +1525,8 @@
       "Letter cutoffs use separate scales for SP-eligible units/pilots vs UR/Ultimate, so UR kits do not lock out Recommended for chip investment targets.",
       "Pilot recommended-MS points use this list's unit letters (SP/SSP best).",
       "Strategic tag weights use how often tags appear on UR rosters (calibrated table).",
+      "Affinity pilot pool counts SSR+ pilots with piloting-tag / EX-pair affinity for the MS (not supporter amp %).",
+      "Transform scores only when the alternate form unlocks deployable terrain, higher MOV, longer range, higher weapon power, or adds MAP.",
       "Close letters still need a human look."
     ]
   },
@@ -1556,6 +1617,11 @@
     }
   ],
   "map_axis_cap": 4,
+  "map_axis_cap_by_role": {
+    "Attack": 4,
+    "Defense": 2,
+    "Support": 2
+  },
   "pilot_tag_strategic": {
     "limited_ur_weight": 1.5,
     "permanent_ur_weight": 1.0,
@@ -1619,8 +1685,8 @@
     }
   ],
   "large_footprint": {
-    "Attack": -1,
-    "Support": -1,
-    "Defense": 0
+    "Attack": 1,
+    "Support": 1,
+    "Defense": 1
   }
 }

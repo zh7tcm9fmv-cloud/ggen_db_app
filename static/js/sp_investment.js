@@ -38,23 +38,23 @@
     },
     large_footprint: {
       label: 'Large footprint',
-      tip: '2×2 units are harder to place. Attack and Support lose a point; Defense does not.',
+      tip: '2×2 units get +1 — wider MAP and buff coverage usually outweighs the placement inconvenience.',
     },
     terrain: {
       label: 'Terrain coverage',
-      tip: 'Can they fight on Space and Land? Extra terrains (Atmospheric, Underwater, Sea) add points. Missing Space or Land is a penalty.',
+      tip: 'Can they fight on Space and Land? Extra terrains (Atmospheric, Underwater, Sea) add points. Missing Space or Land is a penalty. Defense also loses points without Atmospheric — they cannot protect airborne allies.',
     },
     rarity: {
       label: 'Rarity',
       tip: 'N/R/SR get a penalty so they do not share top letters with SSR. SSR and UR start even before other axes.',
     },
     transform: {
-      label: 'Transform',
-      tip: 'Has an alternate form / transform option.',
+      label: 'Transform advantage',
+      tip: 'Only counts when the alternate form unlocks deployable terrain, higher MOV, longer range, higher weapon power, or adds a MAP vs the base form. Transforming alone is not a bonus.',
     },
     map: {
       label: 'MAP weapons',
-      tip: 'Any MAP +1. Dash/MovingAttack +1 more. Ammo 2+ and wider coverage add points (capped).',
+      tip: 'Any MAP +1. Dash/MovingAttack +1 more. Ammo 2+ and wider coverage add points. Attack can score up to +4; Defense/Support cap at +2 so MAP does not dominate those roles.',
     },
     abilities: {
       label: 'Abilities',
@@ -73,8 +73,8 @@
       tip: 'Bonus from this pilot’s best recommended MS letter on this guide (B+ and up), plus a small multi-match bonus.',
     },
     linked_pilot: {
-      label: 'Linked pilot',
-      tip: 'Recommend / linked pilot: same role and high rarity is a small bonus; a weak or mismatched link is a small penalty.',
+      label: 'Affinity pilot pool',
+      tip: 'How many SSR+ pilots have piloting-tag / EX-pair affinity for this MS. A deep pool is better than one official linked recommend.',
     },
     max_tension_weapon: {
       label: 'Max Vigor weapon',
@@ -93,8 +93,8 @@
       tip: 'Survives a lethal hit once (Unbreakable). Defense values this more.',
     },
     support_r4_debuffs: {
-      label: 'Support debuffs at range 4+',
-      tip: 'Support only: how many different useful debuff kinds they can apply from range 4+. None is a penalty; two or more is a bonus.',
+      label: 'Debuffs at range',
+      tip: 'Defense/Support only. Defense counts useful debuff kinds from range 4+ (light). Support needs range 5+ kinds — none is a penalty; two or more is a bonus. Not scored for Attack.',
     },
     hp: { label: 'HP', tip: 'SP-grown HP band for this role.' },
     atk: { label: 'ATK', tip: 'SP-grown ATK band for this role.' },
@@ -102,16 +102,16 @@
     mob: { label: 'MOB', tip: 'SP-grown Mobility band for this role.' },
     shield: {
       label: 'Shield',
-      tip: 'Has a shield mechanism. Defense units lose points if they lack one.',
+      tip: 'Has a shield mechanism (~20% damage neglect). Defense units lose points if they lack one.',
     },
-    movement: { label: 'Move', tip: 'Movement range. Higher Move helps Attack/Defense/Support differently.' },
+    movement: { label: 'Move', tip: 'Movement range. Higher Move helps Attack/Defense/Support differently — Defense cares most for support-defense coverage.' },
     movement_followup: {
       label: 'Movement follow-up',
       tip: 'After-move MAP and/or Chance Step-style follow-up movement (can stack, capped).',
     },
     weapon_range: {
       label: 'Weapon range',
-      tip: 'Longest non-MAP weapon range. Short range is a big Attack/Support penalty.',
+      tip: 'Longest non-MAP weapon range. Support baseline is range 5 (lower is weaker). Short range is a big Attack penalty.',
     },
     weapon_power: {
       label: 'Weapon power',
@@ -123,7 +123,7 @@
     },
     max_debuff: {
       label: 'Debuff strength',
-      tip: 'Defense/Support: how strong their pierce / DEF-down style effects are.',
+      tip: 'Defense/Support only: lasting DEF-down % or instant pierce on weapons (stronger = more points). Not scored for Attack.',
     },
     ranged: { label: 'Ranged', tip: 'Pilot Ranged after SP growth.' },
     melee: { label: 'Melee', tip: 'Pilot Melee after SP growth.' },
@@ -270,7 +270,7 @@
       .join('');
     const modeNote =
       kind === 'character'
-        ? `SP-grown totals · specialty for MS matching: <strong>${esc(specialty || '—')}</strong>`
+        ? `SP-grown totals · specialty for MS matching: <strong>${esc(specialty || '·')}</strong>`
         : `${String(row.mode || board || 'sp').toUpperCase()} board stats · same ranking pool as the database detail page`;
     return `<section class="spi-dossier-section spi-entity-stats-block" id="spiEntityStats">
       <div class="spi-dossier-section-head">
@@ -782,10 +782,16 @@
     const criteriaEl = $('#spiCriteria');
     if (criteriaEl) {
       const applyFilter = entity === 'characters' ? 'pilots' : 'units';
+      const roleFilter = entity === 'characters' ? null : role;
       const visible = (g.criteria || []).filter((c) => {
         if (String(c.id || '') === 'not_scored') return false;
         const apps = c.applies || [];
-        return !apps.length || apps.includes(applyFilter);
+        if (apps.length && !apps.includes(applyFilter)) return false;
+        if (roleFilter) {
+          const roles = c.roles || [];
+          if (roles.length && !roles.includes(roleFilter) && !roles.includes('all')) return false;
+        }
+        return true;
       });
       criteriaEl.innerHTML = visible
         .map((c) => {
@@ -795,6 +801,10 @@
             : `<span class="spi-criteria-badge spi-criteria-badge--soft">Estimate</span>`;
           const applies = (c.applies || [])
             .map((a) => `<span class="spi-criteria-badge spi-criteria-badge--soft">${esc(a)}</span>`)
+            .join('');
+          const roleBadges = (c.roles || [])
+            .filter((r) => r && r !== 'all')
+            .map((r) => `<span class="spi-criteria-badge spi-criteria-badge--soft">${esc(r)}</span>`)
             .join('');
           const rows = (c.rows || [])
             .map(
@@ -812,7 +822,7 @@
           return `<article class="spi-criteria-block" data-criteria="${esc(c.id || '')}">
             <div class="spi-criteria-head">
               <h3 class="spi-criteria-title">${esc(title)}</h3>
-              ${badge}${applies}
+              ${badge}${applies}${roleBadges}
             </div>
             ${summary ? `<p class="spi-criteria-summary">${esc(summary)}</p>` : ''}
             ${rows ? `<table class="spi-criteria-table"><tbody>${rows}</tbody></table>` : ''}
@@ -983,7 +993,7 @@
     if (row.is_sd_linked) {
       return `<section class="spi-dossier-section">
         <h4 class="spi-dossier-h">Recommended Mobile Suits</h4>
-        <p class="spi-dossier-empty">SD characters are permanently linked to their Mobile Suit and are not interchangeable — no recommendation list.</p>
+        <p class="spi-dossier-empty">SD characters are permanently linked to their Mobile Suit and are not interchangeable; no recommendation list.</p>
       </section>`;
     }
     const units = row.recommended_units || [];
@@ -1143,6 +1153,7 @@
       btn.addEventListener('click', () => {
         role = btn.dataset.role || 'Attack';
         applyFilterDom();
+        renderScoringGuide();
         render();
       });
     });

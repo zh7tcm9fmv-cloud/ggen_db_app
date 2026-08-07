@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Investment Guide — GGen Eternal Database</title>
+<title>Investment Guide - GGen Eternal Database</title>
 <link rel="preload" href="{{ url_for('static', filename='font/roboto_medium_numbers.ttf') }}?v={{ app_js_version }}" as="font" type="font/ttf" crossorigin>
 <style>
 @font-face{font-family:'RobotoMediumNumbers';src:url('{{ url_for('static', filename='font/roboto_medium_numbers.ttf') }}?v={{ app_js_version }}') format('truetype');font-weight:normal;font-style:normal;font-display:swap}
@@ -49,16 +49,24 @@ try {
 </header>
 
 <main class="spi-shell">
-  {% if spi_preview %}
+  {% if spi_preview or spi_soft_launch %}
   <div class="spi-preview-banner" role="status">
     <span class="spi-preview-banner-dot" aria-hidden="true"></span>
-    <span class="spi-preview-banner-text"><strong>Preview</strong> — not linked from the main site. Public URLs stay offline until relaunch.</span>
+    <span class="spi-preview-banner-text"><strong>Friends preview</strong> · live at <code>/IG</code>, not in the main nav yet. Tell us what looks wrong.</span>
   </div>
   {% endif %}
   <header class="spi-hero">
-    <p class="spi-hero-kicker">Hangar shortlist</p>
-    <h1 class="spi-hero-title">Investment Guide</h1>
-    <p class="spi-hero-lead">Should you spend SP or SSP chips on this Mobile Suit or pilot? Neutral shortlist buckets — Recommended, Solid, Situational, Niche — not a damage calculator. Unit SP and SSP boards use separate weapon baselines.</p>
+    <div class="spi-hero-copy">
+      <p class="spi-hero-kicker">SP &amp; SSP priorities</p>
+      <h1 class="spi-hero-title">Investment Guide</h1>
+      <p class="spi-hero-lead">Should you spend SP or SSP chips on this Mobile Suit or pilot? Neutral shortlist buckets: Recommended, Solid, Situational, Niche. Not a damage calculator. Unit SP and SSP boards use separate weapon baselines.</p>
+    </div>
+    <ul class="spi-hero-buckets" aria-label="Shortlist buckets">
+      <li class="spi-hero-bucket spi-hero-bucket--recommended"><span>Recommended</span></li>
+      <li class="spi-hero-bucket spi-hero-bucket--solid"><span>Solid</span></li>
+      <li class="spi-hero-bucket spi-hero-bucket--situational"><span>Situational</span></li>
+      <li class="spi-hero-bucket spi-hero-bucket--niche"><span>Niche</span></li>
+    </ul>
   </header>
 
   <section id="spiScoringPanel" class="spi-scoring-panel" aria-labelledby="spiScoringTitle">
@@ -93,22 +101,30 @@ try {
 
       <div class="spi-filter-row">
         <div class="spi-seg" role="group" aria-label="Entity">
-          <button type="button" class="role-filter-btn active" data-entity="units">Units</button>
-          <button type="button" class="role-filter-btn" data-entity="characters">Pilots</button>
+          <button type="button" class="role-filter-btn active" data-entity="units" title="Units">
+            <img class="filter-inline-icon role-filter-chip" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_Icon_Bromide_MS.webp{% else %}/static/images/UI/UI_Common_Icon_Bromide_MS.webp{% endif %}" alt="" width="18" height="18" loading="lazy" decoding="async"> Units
+          </button>
+          <button type="button" class="role-filter-btn" data-entity="characters" title="Pilots">
+            <img class="filter-inline-icon role-filter-chip" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_Tmb_PriorPilot_Icon.webp{% else %}/static/images/UI/UI_Common_Tmb_PriorPilot_Icon.webp{% endif %}" alt="" width="18" height="18" loading="lazy" decoding="async"> Pilots
+          </button>
         </div>
         <div class="spi-seg" id="spiBoardTabs" role="group" aria-label="Board">
-          <button type="button" class="role-filter-btn active" data-board="sp">SP</button>
-          <button type="button" class="role-filter-btn" data-board="ssp">SSP</button>
+          <button type="button" class="role-filter-btn active spi-board-btn" data-board="sp" title="SP" aria-label="SP">
+            <img class="filter-inline-icon role-filter-chip spi-board-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_Icon_Sp.webp{% else %}/static/images/UI/UI_Common_Icon_Sp.webp{% endif %}" alt="" width="28" height="18" loading="lazy" decoding="async">
+          </button>
+          <button type="button" class="role-filter-btn spi-board-btn" data-board="ssp" title="SSP" aria-label="SSP">
+            <img class="filter-inline-icon role-filter-chip spi-board-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_Icon_Ssp.webp{% else %}/static/images/UI/UI_Common_Icon_Ssp.webp{% endif %}" alt="" width="36" height="18" loading="lazy" decoding="async">
+          </button>
         </div>
         <div class="spi-seg spi-role-seg" role="group" aria-label="Role">
           <button type="button" class="role-filter-btn active" data-role="Attack" title="Attack">
-            <img class="filter-inline-icon role-filter-chip" src="/static/images/UI/UI_Common_TypeIcon_Attack_M.webp" alt=""> Attack
+            <img class="filter-inline-icon role-filter-chip" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_TypeIcon_Attack_M.webp{% else %}/static/images/UI/UI_Common_TypeIcon_Attack_M.webp{% endif %}" alt=""> Attack
           </button>
           <button type="button" class="role-filter-btn" data-role="Defense" title="Defense">
-            <img class="filter-inline-icon role-filter-chip" src="/static/images/UI/UI_Common_TypeIcon_Defense_M.webp" alt=""> Defense
+            <img class="filter-inline-icon role-filter-chip" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_TypeIcon_Defense_M.webp{% else %}/static/images/UI/UI_Common_TypeIcon_Defense_M.webp{% endif %}" alt=""> Defense
           </button>
           <button type="button" class="role-filter-btn" data-role="Support" title="Support">
-            <img class="filter-inline-icon role-filter-chip" src="/static/images/UI/UI_Common_TypeIcon_Support_M.webp" alt=""> Support
+            <img class="filter-inline-icon role-filter-chip" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_TypeIcon_Support_M.webp{% else %}/static/images/UI/UI_Common_TypeIcon_Support_M.webp{% endif %}" alt=""> Support
           </button>
         </div>
       </div>
@@ -156,7 +172,7 @@ try {
   </div>
 
   <footer class="spi-foot" role="contentinfo">
-    <p class="muted">This page is not affiliated with Bandai Namco Entertainment Inc. Scoring is a neutral point-sum guide — letters may not match other lists.</p>
+    <p class="muted">This page is not affiliated with Bandai Namco Entertainment Inc. Scoring is a neutral point-sum guide; letters may not match other lists.</p>
   </footer>
 </main>
 <script src="{{ url_for('static', filename='js/sp_investment.js') }}?v={{ app_js_version }}" defer></script>
