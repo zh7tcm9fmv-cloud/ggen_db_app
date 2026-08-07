@@ -7,6 +7,10 @@
 
   var WALL_TABS = { characters: 1, units: 1, supporters: 1 };
   var FALLBACK = '/static/images/UI/UI_Home_Menu_Icon_Shop.webp';
+  var TITLE_FB = 'Thank you to {n} Newtypes keeping this database alive.';
+  var JOIN_FB = 'Join the wall';
+  var TOP_FB = 'Top supporter';
+  var ARIA_FB = 'Supporters';
   var root = null;
   var loaded = false;
   var loading = null;
@@ -26,6 +30,16 @@
 
   function escAttr(s) {
     return esc(s).replace(/'/g, '&#39;');
+  }
+
+  function wallT(key, fallback) {
+    try {
+      if (typeof global.t === 'function') {
+        var v = global.t(key);
+        if (v && v !== key) return v;
+      }
+    } catch (_) {}
+    return fallback;
   }
 
   function thumbUrl(path) {
@@ -75,9 +89,11 @@
     if (!root) root = $('kofiSupporterWall');
     if (!root || !payload) return;
     var n = payload.count != null ? payload.count : (payload.supporters || []).length;
-    var titleTpl = payload.title || 'Thank you to {n} Newtypes keeping this database alive.';
+    var titleTpl = wallT('kofi_wall_title', TITLE_FB);
     var title = String(titleTpl).replace(/\{n\}/g, String(n));
-    var joinLabel = payload.join_label || 'Join the wall';
+    var joinLabel = wallT('kofi_wall_join', JOIN_FB);
+    var topLabel = wallT('kofi_wall_top', TOP_FB);
+    var ariaLabel = wallT('kofi_wall_aria', ARIA_FB);
     var joinHref = String(
       payload.join_url || global.__GGEN_KOFI_PAGE_URL__ || 'https://ko-fi.com/E1E21WL8RV'
     ).trim();
@@ -95,7 +111,11 @@
           '">' +
           '<div class="kofi-supporter-avatar-wrap">' +
           (crown
-            ? '<span class="kofi-supporter-crown" title="Top supporter" aria-label="Top supporter">&#x1F451;</span>'
+            ? '<span class="kofi-supporter-crown" title="' +
+              escAttr(topLabel) +
+              '" aria-label="' +
+              escAttr(topLabel) +
+              '">&#x1F451;</span>'
             : '') +
           '<img class="kofi-supporter-avatar' +
           (isFallback ? ' kofi-supporter-avatar--fallback' : '') +
@@ -127,7 +147,9 @@
       esc(joinLabel) +
       ' &rarr;</a>' +
       '</div>' +
-      '<ul class="kofi-supporter-wall-grid" aria-label="Supporters">' +
+      '<ul class="kofi-supporter-wall-grid" aria-label="' +
+      escAttr(ariaLabel) +
+      '">' +
       cards +
       '</ul>' +
       '</div>';
@@ -169,6 +191,10 @@
     return fetchWall();
   }
 
+  function onLangChange() {
+    if (loaded && data) render(data);
+  }
+
   function onNavClick(ev) {
     var t = ev.target;
     if (!t || !t.closest) return;
@@ -199,5 +225,9 @@
     init();
   }
 
-  global.GgenKofiSupporterWall = { ensure: ensure, syncVisibility: syncVisibility };
+  global.GgenKofiSupporterWall = {
+    ensure: ensure,
+    syncVisibility: syncVisibility,
+    onLangChange: onLangChange,
+  };
 })(typeof window !== 'undefined' ? window : this);
