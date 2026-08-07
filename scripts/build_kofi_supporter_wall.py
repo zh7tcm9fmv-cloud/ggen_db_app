@@ -151,7 +151,7 @@ def build(supporters_csv: Path, subscribers_csv: Path) -> dict:
 
     return {
         "version": 1,
-        "title": "Thank you to {n} folks keeping this open.",
+        "title": "Thank you to {n} Newtypes keeping this database alive.",
         "join_label": "Join the wall",
         "count": len(supporters),
         "supporters": supporters,

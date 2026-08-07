@@ -75,7 +75,7 @@
     if (!root) root = $('kofiSupporterWall');
     if (!root || !payload) return;
     var n = payload.count != null ? payload.count : (payload.supporters || []).length;
-    var titleTpl = payload.title || 'Thank you to {n} folks keeping this open.';
+    var titleTpl = payload.title || 'Thank you to {n} Newtypes keeping this database alive.';
     var title = String(titleTpl).replace(/\{n\}/g, String(n));
     var joinLabel = payload.join_label || 'Join the wall';
     var joinHref = String(

@@ -16018,7 +16018,7 @@ def _load_kofi_supporter_wall():
         pass
     return {
         'version': 1,
-        'title': 'Thank you to {n} folks keeping this open.',
+        'title': 'Thank you to {n} Newtypes keeping this database alive.',
         'join_label': 'Join the wall',
         'count': 0,
         'supporters': [],
