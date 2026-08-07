@@ -1,5 +1,6 @@
 /**
- * Ko-fi supporter wall — Character / Unit / Supporter tabs, above About footer.
+ * Ko-fi supporter wall — Character / Unit / Supporter tabs, above About in the footer.
+ * Does not patch switchTab (keeps browse/nav behavior untouched).
  */
 (function (global) {
   'use strict';
@@ -29,19 +30,22 @@
 
   function thumbUrl(path) {
     var p = path || FALLBACK;
-    if (typeof global.imgUrlPreferCdn === 'function' && /\/static\/images\/UI\//.test(p)) {
-      return global.imgUrlPreferCdn(p);
-    }
-    if (typeof global.imgUrl === 'function' && p.indexOf('/static/images/') === 0) {
-      // Custom KofiSupporters stay on site /static; UI fallback may use CDN helper above.
+    try {
       if (p.indexOf('/static/images/KofiSupporters/') === 0) return p;
-      return global.imgUrl(p);
-    }
+      if (typeof global.imgUrlPreferCdn === 'function' && /\/static\/images\/UI\//.test(p)) {
+        return global.imgUrlPreferCdn(p);
+      }
+      if (typeof global.imgUrl === 'function' && p.indexOf('/static/images/') === 0) {
+        return global.imgUrl(p);
+      }
+    } catch (_) {}
     return p;
   }
 
   function currentTab() {
-    if (global.S && S.currentTab) return S.currentTab;
+    try {
+      if (global.S && global.S.currentTab) return global.S.currentTab;
+    } catch (_) {}
     var active = document.querySelector('.nav-tab.active');
     return (active && active.dataset && active.dataset.tab) || 'characters';
   }
@@ -51,16 +55,20 @@
     if (!root) return;
     if (show) {
       root.hidden = false;
+      root.removeAttribute('hidden');
       root.setAttribute('aria-hidden', 'false');
     } else {
       root.hidden = true;
+      root.setAttribute('hidden', '');
       root.setAttribute('aria-hidden', 'true');
     }
   }
 
   function syncVisibility(tab) {
     var t = tab || currentTab();
-    setVisible(!!WALL_TABS[t]);
+    var show = !!WALL_TABS[t];
+    setVisible(show);
+    if (show) ensure();
   }
 
   function render(payload) {
@@ -70,10 +78,10 @@
     var titleTpl = payload.title || 'Thank you to {n} folks keeping this open.';
     var title = String(titleTpl).replace(/\{n\}/g, String(n));
     var joinLabel = payload.join_label || 'Join the wall';
-    var joinHref =
-      (payload.join_url ||
-        (global.__GGEN_KOFI_PAGE_URL__ || '') ||
-        'https://ko-fi.com/E1E21WL8RV').trim();
+    var joinHref = String(
+      payload.join_url || global.__GGEN_KOFI_PAGE_URL__ || 'https://ko-fi.com/E1E21WL8RV'
+    ).trim();
+    var fallbackSrc = escAttr(thumbUrl(FALLBACK));
 
     var cards = (payload.supporters || [])
       .map(function (s) {
@@ -87,14 +95,14 @@
           '">' +
           '<div class="kofi-supporter-avatar-wrap">' +
           (crown
-            ? '<span class="kofi-supporter-crown" title="Top supporter" aria-hidden="true">👑</span>'
+            ? '<span class="kofi-supporter-crown" title="Top supporter" aria-label="Top supporter">&#x1F451;</span>'
             : '') +
           '<img class="kofi-supporter-avatar' +
           (isFallback ? ' kofi-supporter-avatar--fallback' : '') +
           '" src="' +
           escAttr(src) +
           '" alt="" width="52" height="52" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=\'' +
-          escAttr(thumbUrl(FALLBACK)) +
+          fallbackSrc +
           '\';this.classList.add(\'kofi-supporter-avatar--fallback\')">' +
           '</div>' +
           '<div class="kofi-supporter-name" title="' +
@@ -117,7 +125,7 @@
       escAttr(joinHref) +
       '" target="_blank" rel="noopener noreferrer">' +
       esc(joinLabel) +
-      ' →</a>' +
+      ' &rarr;</a>' +
       '</div>' +
       '<ul class="kofi-supporter-wall-grid" aria-label="Supporters">' +
       cards +
@@ -152,27 +160,28 @@
     return fetchWall();
   }
 
-  function patchSwitchTab() {
-    var orig = global.switchTab;
-    if (typeof orig !== 'function' || orig.__kofiWallPatched) return;
-    function wrapped(tab, opts) {
-      var ret = orig.apply(this, arguments);
-      try {
-        if (WALL_TABS[tab]) ensure().then(function () { syncVisibility(tab); });
-        else syncVisibility(tab);
-      } catch (_) {}
-      return ret;
-    }
-    wrapped.__kofiWallPatched = true;
-    global.switchTab = wrapped;
+  function onNavClick(ev) {
+    var t = ev.target;
+    if (!t || !t.closest) return;
+    var tabEl = t.closest('.nav-tab');
+    if (!tabEl || !tabEl.dataset) return;
+    // switchTab runs on click; sync on next frame after S.currentTab updates
+    setTimeout(function () {
+      syncVisibility(tabEl.dataset.tab || currentTab());
+    }, 0);
   }
 
   function init() {
-    root = $('kofiSupporterWall');
-    if (!root) return;
-    patchSwitchTab();
-    if (WALL_TABS[currentTab()]) ensure();
-    else syncVisibility(currentTab());
+    try {
+      root = $('kofiSupporterWall');
+      if (!root) return;
+      document.addEventListener('click', onNavClick, true);
+      syncVisibility(currentTab());
+    } catch (_) {
+      try {
+        setVisible(false);
+      } catch (__) {}
+    }
   }
 
   if (document.readyState === 'loading') {

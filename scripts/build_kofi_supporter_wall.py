@@ -28,6 +28,10 @@ CROWN_NAME = "Phil"
 
 # Display name (casefold) -> filename under static/images/KofiSupporters/
 THUMB_FILES = {
+    "phil": "phil.png",
+    "fortexfiend": "fortexfiend.png",
+    "manafusion": "manafusion.png",
+    "2pmgaming": "2pmgaming.png",
     "fire red": "fire_red.png",
     "kamen rider decade": "kamen_rider_decade.png",
     "大漢erection": "dahan_erection.png",

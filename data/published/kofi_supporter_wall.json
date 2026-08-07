@@ -6,7 +6,7 @@
   "supporters": [
     {
       "name": "Phil",
-      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "thumb": "/static/images/KofiSupporters/phil.png",
       "crown": true
     },
     {
@@ -21,7 +21,7 @@
     },
     {
       "name": "manafusion",
-      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "thumb": "/static/images/KofiSupporters/manafusion.png",
       "crown": false
     },
     {
@@ -31,7 +31,7 @@
     },
     {
       "name": "Fortexfiend",
-      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "thumb": "/static/images/KofiSupporters/fortexfiend.png",
       "crown": false
     },
     {
@@ -46,7 +46,7 @@
     },
     {
       "name": "2PMgaming",
-      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "thumb": "/static/images/KofiSupporters/2pmgaming.png",
       "crown": false
     },
     {

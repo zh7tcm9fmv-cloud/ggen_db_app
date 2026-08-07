@@ -1,11 +1,11 @@
-/* Ko-fi supporter wall — above site footer on Character / Unit / Supporter tabs */
-.kofi-supporter-wall {
+/* Ko-fi supporter wall — inside site footer, above About */
+.site-footer-links .kofi-supporter-wall {
   width: 100%;
   max-width: 1600px;
-  margin: 0 auto;
-  padding: 1.35rem 1rem 0.35rem;
+  margin: 0 auto 0.85rem;
+  padding: 0.25rem 0 1rem;
   box-sizing: border-box;
-  flex-shrink: 0;
+  text-align: left;
 }
 .kofi-supporter-wall[hidden] {
   display: none !important;
@@ -108,8 +108,9 @@
 }
 
 @media (max-width: 640px) {
-  .kofi-supporter-wall {
-    padding: 1.1rem 0.85rem 0.25rem;
+  .site-footer-links .kofi-supporter-wall {
+    margin-bottom: 0.65rem;
+    padding-bottom: 0.85rem;
   }
   .kofi-supporter-wall-grid {
     grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
