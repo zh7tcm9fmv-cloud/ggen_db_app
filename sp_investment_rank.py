@@ -437,21 +437,26 @@ def detect_weapon_bonus_type(rules: dict, trait_lines: list[str]) -> tuple[int, 
     return best_type, best_pts
 
 
-def detect_weapon_bonus_structured(A, uid: str, rules: dict) -> tuple[int, int, dict]:
+def detect_weapon_bonus_structured(
+    A, uid: str, rules: dict, trait_ids: list[str] | None = None
+) -> tuple[int, int, dict]:
     """
     Map weapon PassiveTrait → status TraitTypeIndex to maxweapon bonus types.
     Returns (bonus_type_id, points, meta).
+    When trait_ids is provided (strongest weapon), only those traits are scored.
     """
     cfg = rules.get("maxweapon_bonus") or {}
     pts_map = cfg.get("points_by_type") or {}
     type_map = cfg.get("trait_type_to_bonus_type") or {}
+    crit_rate_min = int(cfg.get("crit_rate_min_value", 20) or 20)
     if not type_map:
         return 0, 0, {"structured": False, "reason": "no_trait_map"}
     meta_by_id = _weapon_trait_meta_by_id(A)
     best_type = 0
     best_pts = -1
     hit_types: list[int] = []
-    for tid in collect_unit_weapon_trait_ids(A, uid):
+    ids = trait_ids if trait_ids is not None else collect_unit_weapon_trait_ids(A, uid)
+    for tid in ids:
         meta = meta_by_id.get(tid) or {}
         # PassiveTrait (3) carries status TraitType; some bonuses are bare indices
         st_tti = int(meta.get("status_type_index") or 0)
@@ -465,6 +470,11 @@ def detect_weapon_bonus_structured(A, uid: str, rules: dict) -> tuple[int, int, 
                 continue
             btype = int(btype_s)
             pts = int(pts_map.get(str(btype), 0) or 0)
+            # Crit rate (type 9): only score at/above configured % (default 20)
+            if btype == 9:
+                mag = abs(int(meta.get("magnitude") or meta.get("status_value") or 0))
+                if mag < crit_rate_min:
+                    pts = 0
             hit_types.append(st)
             if pts > best_pts or (pts == best_pts and btype > best_type):
                 best_type = btype
@@ -472,6 +482,54 @@ def detect_weapon_bonus_structured(A, uid: str, rules: dict) -> tuple[int, int, 
     if best_pts < 0:
         return 0, 0, {"structured": True, "hits": hit_types}
     return best_type, best_pts, {"structured": True, "hits": hit_types, "type": best_type}
+
+
+def collect_weapon_trait_ids_for_weapon(A, wid: str, wm: dict | None = None) -> list[str]:
+    """Trait ids attached to one weapon (growth / change patterns + SSP grants)."""
+    ids: list[str] = []
+    seen: set[str] = set()
+    gpm = getattr(A, "growth_pattern_map", None) or {}
+    wm = wm or A.weapon_info_map.get(A.normalize_id(wid), {}) or {}
+    wid = A.normalize_id(wid)
+
+    def _add_from_pattern(tsi: str) -> None:
+        if not tsi or tsi == "0":
+            return
+        by_lv = (getattr(A, "weapon_trait_change_map", None) or {}).get(tsi) or {}
+        for _lv, tids in by_lv.items():
+            for tid in tids or []:
+                nid = A.normalize_id(tid)
+                if nid and nid not in seen:
+                    seen.add(nid)
+                    ids.append(nid)
+        if tsi not in seen and tsi in _weapon_trait_meta_by_id(A):
+            seen.add(tsi)
+            ids.append(tsi)
+
+    wsid = A.normalize_id(wm.get("weapon_status_id") or wid)
+    ws = A.weapon_status_map.get(wsid) or A.weapon_status_map.get(wid) or {}
+    candidates = [
+        A.normalize_id(ws.get("trait_correction_id") or "0"),
+        wid,
+        wsid,
+        A.normalize_id(wm.get("main_weapon_id") or "0"),
+    ]
+    gi = A.normalize_id(ws.get("growth_pattern_id") or "0")
+    if gi and gi != "0":
+        gd = gpm.get(gi) or {}
+        candidates.append(A.normalize_id(gd.get("trait_change_set_id") or "0"))
+    for tsi in candidates:
+        _add_from_pattern(tsi)
+    mwid = A.normalize_id(wm.get("main_weapon_id", "0") or "0")
+    for cid in (wid, mwid):
+        if not cid or cid == "0":
+            continue
+        for tid in (getattr(A, "unit_ssp_weapon_effect_map", {}) or {}).get(cid) or []:
+            nid = A.normalize_id(tid)
+            if nid and nid not in seen:
+                seen.add(nid)
+                ids.append(nid)
+    return ids
 
 
 def bucket_for_letter(rules: dict, letter: str) -> str:
@@ -949,12 +1007,18 @@ def _ability_display_name(A, ab_id: str, lc: str) -> str:
 def collect_unit_ability_effects(
     A, uid: str, mode: str = "sp", lc: str = "EN", rules: dict | None = None
 ) -> list[dict]:
-    """Unique TraitType effects for a unit's abilities (SSP gains included in ssp mode)."""
+    """Unique TraitType effects for a unit's abilities (SSP replaces + gains in ssp mode)."""
     rules = rules or load_rules()
     merged: dict[int, dict] = {}
     ability_ids: list[str] = []
+    replace_map = {}
+    if mode == "ssp":
+        replace_map = A.unit_ssp_abil_replace_map.get(uid, {}) or {}
     for ab in A.unit_abil_map.get(uid, []) or []:
-        ability_ids.append(A.normalize_id(ab.get("id")))
+        ab_id = A.normalize_id(ab.get("id"))
+        if mode == "ssp" and ab_id in replace_map:
+            ab_id = A.normalize_id(replace_map.get(ab_id))
+        ability_ids.append(ab_id)
     if mode == "ssp":
         for abid in A.unit_ssp_abil_gain_list.get(uid, []) or []:
             ability_ids.append(A.normalize_id(abid))
@@ -1792,7 +1856,7 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
             meta["heuristic_keys"].append("linked_pilot")
 
     breakdown["max_tension_weapon"] = (
-        int(rules.get("max_tension_higher_tier_weapon_points", 1))
+        int(rules.get("max_tension_higher_tier_weapon_points", -1))
         if features.get("has_max_tension_higher_weapon")
         else 0
     )
@@ -1883,6 +1947,27 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     rarity_pts = rarity_adjustment_points(rules, features.get("rarity_id"))
     breakdown["rarity"] = rarity_pts
 
+    # Acquisition: free/dev/event mild upside; gacha/assembly stays 0
+    src = str(features.get("source") or "")
+    src_pts = rules.get("source_bucket_points") or {}
+    breakdown["source"] = int(src_pts.get(src, 0) or 0)
+
+    # Strongest weapon uses 2+ of Ranged/Melee/Awaken (e.g. Enhanced ZZ)
+    da = rules.get("dual_attack_attr") or {}
+    min_attrs = int(da.get("min_types", 2) or 2)
+    if int(features.get("best_attack_attr_count") or 0) >= min_attrs:
+        breakdown["dual_attack_attr"] = int(da.get("points", 1) or 0)
+    else:
+        breakdown["dual_attack_attr"] = 0
+
+    # Signature kits (Barbatos Lupus / Rex family)
+    sig = rules.get("signature_weapon_units") or {}
+    sig_ids = {str(x) for x in (sig.get("unit_ids") or [])}
+    if str(features.get("id") or "") in sig_ids:
+        breakdown["signature_weapon"] = int(sig.get("points", 0) or 0)
+    else:
+        breakdown["signature_weapon"] = 0
+
     # Large footprint (OccupiedAreaId 2) — mild upside (wider MAP/buff coverage)
     fp_tbl = rules.get("large_footprint") or {}
     if features.get("is_large_footprint"):
@@ -1921,10 +2006,13 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
 def _ability_blobs_for_unit(A, uid: str, lc: str, ld: dict, mode: str) -> list[str]:
     blobs: list[str] = []
     ldc = A.LANG_DATA.get(lc) or ld
+    replace_map = (A.unit_ssp_abil_replace_map.get(uid, {}) or {}) if mode == "ssp" else {}
     for ab in A.unit_abil_map.get(uid, []) or []:
+        base_id = str(ab.get("id") or "")
+        use_id = str(replace_map.get(base_id) or replace_map.get(A.normalize_id(base_id)) or base_id)
         try:
             entry = A.build_ability_entry(
-                str(ab.get("id")),
+                use_id,
                 ldc.get("abil_name_map", {}),
                 A.abil_link_map,
                 A.trait_set_traits_map,
@@ -2020,8 +2108,13 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
     support_debuff_kinds_r5: set[str] = set()
     rare_keys = set(rules.get("rare_debuff_keys") or [])
     best_weapon_trait_lines: list[str] = []
+    best_weapon_id = ""
+    best_weapon_wm: dict = {}
+    best_attack_attr_count = 0
     structured_keys: set[str] = set()
     debuff_source = "text"
+    map_require_damage = bool(rules.get("map_require_damage", True))
+    map_min_power = int(rules.get("map_min_power", 1) or 1)
 
     try:
         structured_keys, s_meta = collect_unit_structured_debuff_keys(A, uid)
@@ -2119,6 +2212,9 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
                     break
 
         if wt == "3":
+            # Non-damage MAP (e.g. Live Concert Zaku buff MAP) — skip for MAP axis
+            if map_require_damage and power < map_min_power:
+                continue
             has_map_weapon = True
             ammo = int(ws.get("ammo", 0) or wm.get("ammo", 0) or 0)
             if mode == "ssp":
@@ -2156,9 +2252,15 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
                     has_after_move_map = True
         else:
             max_range = max(max_range, rx)
+            aa = str(wm.get("attack_attribute") or "0")
+            attr_keys = (getattr(A, "ATTACK_ATTR_SET_TYPE_KEYS", None) or {}).get(aa) or []
+            attr_n = len(attr_keys)
             if power > max_power:
                 max_power = power
                 best_weapon_trait_lines = list(trait_lines)
+                best_weapon_id = wid
+                best_weapon_wm = wm
+                best_attack_attr_count = attr_n
             if tension_max:
                 max_power_tension = max(max_power_tension, power)
             else:
@@ -2172,6 +2274,9 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
     if max_power <= 0 or not has_map_weapon:
         try:
             for prev in A.build_unit_browse_map_weapon_previews(uid, stat_mode=mode, ld=ld, lc=lc) or []:
+                prev_power = int(prev.get("power") or 0)
+                if map_require_damage and prev_power < map_min_power:
+                    continue
                 has_map_weapon = True
                 map_ammo = max(map_ammo, int(prev.get("ammo") or 0))
                 cells = len(prev.get("map_coords") or [])
@@ -2193,7 +2298,12 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
             pass
 
     has_max_tension_higher = max_power_tension > max_power_unrestricted > 0
-    bonus_type, bonus_pts, bonus_meta = detect_weapon_bonus_structured(A, uid, rules)
+    strongest_trait_ids: list[str] | None = None
+    if (rules.get("maxweapon_bonus") or {}).get("from_strongest_weapon_only", True) and best_weapon_id:
+        strongest_trait_ids = collect_weapon_trait_ids_for_weapon(A, best_weapon_id, best_weapon_wm)
+    bonus_type, bonus_pts, bonus_meta = detect_weapon_bonus_structured(
+        A, uid, rules, trait_ids=strongest_trait_ids
+    )
     weapon_bonus_structured = bool(bonus_meta.get("structured") and bonus_type)
     if not bonus_type:
         bonus_type, bonus_pts = detect_weapon_bonus_type(rules, best_weapon_trait_lines)
@@ -2217,6 +2327,7 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
         "weapon_bonus_points": bonus_pts,
         "weapon_bonus_structured": weapon_bonus_structured,
         "best_weapon_trait_lines": best_weapon_trait_lines[:12],
+        "best_attack_attr_count": best_attack_attr_count,
         "debuff_keys_source": debuff_source,
         "debuff_keys_structured": sorted(structured_keys),
     }
@@ -2544,9 +2655,10 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "title": "Attack priorities",
             "applies": ["units"],
             "objective": True,
-            "summary": "Survivability (HP), damage (ATK + weapon power), and MOV first. MAP and other utilities are strong extras.",
+            "summary": "Damage ceiling first (ATK + weapon power), then HP and MOV. MOB is a soft secondary — high ATK matters more than high MOB.",
             "rows": [
-                {"when": "Primary", "result": "HP · ATK · weapon power · MOV"},
+                {"when": "Primary", "result": "ATK · weapon power · HP · MOV"},
+                {"when": "Soft secondary", "result": "MOB (lower ceiling than ATK)"},
                 {"when": "Great extras", "result": "MAP presence / dash / coverage"},
                 {"when": "Not scored", "result": "Debuff kinds · Debuff strength"},
             ],
@@ -2558,10 +2670,11 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "title": "Defense priorities",
             "applies": ["units"],
             "objective": True,
-            "summary": "High HP or DEF, a shield (~20% damage neglect), high MOV for support-defense coverage, solid terrain (Space + Land or Atmos), plus a few good debuffs.",
+            "summary": "High HP or DEF, a shield (~20% damage neglect), high MOV for support-defense coverage, solid terrain (Space + Land or Atmos), survivability kits (damage reduction / HP restore), plus a few good debuffs. ATK is upside only (≥9000).",
             "rows": [
-                {"when": "Primary", "result": "HP · DEF · shield · MOV · terrain"},
+                {"when": "Primary", "result": "HP · DEF · shield · MOV · terrain · survivability abilities"},
                 {"when": "Secondary", "result": "A few good pierce / DEF-down debuffs (R4+ kinds)"},
+                {"when": "ATK upside", "result": "≥9000 mild bonus; below that, no penalty"},
             ],
         }
     )
@@ -2571,10 +2684,10 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "title": "Support priorities",
             "applies": ["units"],
             "objective": True,
-            "summary": "Debuff weapon range should be at least 5 (lower is weaker), then variety and strength of debuffs, then high MOV. Damage is secondary.",
+            "summary": "Debuff weapon range should be at least 5 (lower is weaker), then variety and strength of debuffs, then high MOB/MOV. ATK is mild upside only — no penalty for lower attack.",
             "rows": [
-                {"when": "Primary", "result": "Weapon range ≥5 · R5+ debuff kinds · debuff strength · MOV"},
-                {"when": "Secondary", "result": "ATK / weapon power (mild)"},
+                {"when": "Primary", "result": "Weapon range ≥5 · R5+ debuff kinds · debuff strength · MOB · MOV"},
+                {"when": "Secondary", "result": "ATK / weapon power (mild upside, no floor penalty)"},
             ],
         }
     )
@@ -2746,13 +2859,73 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "applies": ["units"],
             "objective": True,
             "summary": (
-                "Best matching conditional weapon power / crit / DEF-debuff boost on the kit "
-                "(from weapon effect data). "
+                "Conditional bonus on the strongest (highest sheet power) non-MAP attack only — "
+                "not other weapons on the kit. "
+                "Critical damage is mild (+1); critical rate needs ≥20% for +1; guaranteed crit is +2. "
+                "Tile/map-position prose bonus is retired (0). "
                 f"Higher-range bonus ignored when max range ≤{mwb.get('ignore_higher_range_when_max_range_lte', 3)}."
             ),
             "rows": mwb_rows,
         }
     )
+
+    da = rules.get("dual_attack_attr") or {}
+    criteria.append(
+        {
+            "id": "dual_attack_attr",
+            "title": "Multi-type attack attribute (units)",
+            "applies": ["units"],
+            "objective": True,
+            "summary": (
+                "Strongest attack uses 2+ of Ranged / Melee / Awaken "
+                "(e.g. Enhanced ZZ High Mega Cannon)."
+            ),
+            "rows": [
+                {
+                    "when": f"≥{int(da.get('min_types', 2))} attack types on strongest weapon",
+                    "result": _fmt_points(da.get("points", 1)),
+                }
+            ],
+        }
+    )
+
+    sig = rules.get("signature_weapon_units") or {}
+    if sig.get("unit_ids"):
+        criteria.append(
+            {
+                "id": "signature_weapon",
+                "title": "Signature weapon kits (units)",
+                "applies": ["units"],
+                "objective": True,
+                "summary": str(
+                    sig.get("note")
+                    or "Allowlisted units with uniquely strong EX-style weapon kits."
+                ),
+                "rows": [
+                    {
+                        "when": "Barbatos Lupus / Lupus Rex family",
+                        "result": _fmt_points(sig.get("points", 3)),
+                    }
+                ],
+            }
+        )
+
+    src_pts = rules.get("source_bucket_points") or {}
+    if src_pts:
+        criteria.append(
+            {
+                "id": "source_bucket",
+                "title": "Acquisition route (units)",
+                "applies": ["units"],
+                "objective": True,
+                "summary": "Dev / event / other free units get a mild upside; gacha/assembly stays flat.",
+                "rows": [
+                    {"when": "Gacha / assembly", "result": _fmt_points(src_pts.get("gacha", 0))},
+                    {"when": "Development", "result": _fmt_points(src_pts.get("dev", 1))},
+                    {"when": "Event / other", "result": _fmt_points(src_pts.get("event", 1))},
+                ],
+            }
+        )
 
     wr_tbl = rules.get("weapon_range") or {}
     for role_name in ROLE_ALL:
@@ -2807,8 +2980,11 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
                     "result": "0",
                 },
                 {
-                    "when": "Best weapon only usable at Max Vigor, and stronger than the unrestricted best",
-                    "result": _fmt_points(rules.get("max_tension_higher_tier_weapon_points", 1)),
+                    "when": (
+                        "Best weapon only usable at Max Vigor (stronger than unrestricted best) "
+                        "— MP/pilot-gated; weak for ML / one-turn kill"
+                    ),
+                    "result": _fmt_points(rules.get("max_tension_higher_tier_weapon_points", -1)),
                 },
                 {
                     "when": "Preemptive Strike",
@@ -2875,13 +3051,25 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
         return out
 
     for role_name in ROLE_ALL:
+        if role_name == "Attack":
+            stat_summary = (
+                "Attack favors ATK ceiling over MOB. HP/DEF still banded; MOB soft-capped."
+            )
+        elif role_name == "Defense":
+            stat_summary = (
+                "Defense focuses on HP + DEF. ATK is upside only (≥9000 → +1, ≥10000 → +2; no floor penalty)."
+            )
+        else:
+            stat_summary = (
+                "Support favors MOB ceiling; ATK is mild upside with no floor penalty."
+            )
         criteria.append(
             {
                 "id": f"unit_stats_{role_name.lower()}",
                 "title": f"Unit SP-grown stats — {role_name}",
                 "applies": ["units"],
                 "objective": True,
-                "summary": f"HP / ATK / DEF / MOB bands for {role_name}.",
+                "summary": stat_summary,
                 "rows": (
                     _stat_band_rows_for_role("HP", role_name)
                     + _stat_band_rows_for_role("ATK", role_name)
@@ -3013,12 +3201,12 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "applies": ["units"],
             "objective": True,
             "summary": (
-                "Practical MAP tools: presence for any MAP, extra for dash/MovingAttack, "
-                f"ammo 2+, and effect-range coverage. Attack cap "
+                "Damage MAP only (power ≥1) — non-damage MAPs like Live Concert Zaku are ignored. "
+                "Presence for any damage MAP, extra for dash/MovingAttack, ammo 2+, and coverage "
+                "(0–14 cells = 0, 15–24 = +1, 25+ = +2). Attack cap "
                 f"{_fmt_points((rules.get('map_axis_cap_by_role') or {}).get('Attack', rules.get('map_axis_cap', 4)))}; "
                 f"Defense/Support cap "
-                f"{_fmt_points((rules.get('map_axis_cap_by_role') or {}).get('Support', 2))} "
-                "(MAP is secondary for those roles)."
+                f"{_fmt_points((rules.get('map_axis_cap_by_role') or {}).get('Support', 2))}."
             ),
             "rows": [
                 {

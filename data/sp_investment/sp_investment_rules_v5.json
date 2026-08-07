@@ -28,7 +28,9 @@
     "v5.8: support R4+ debuff kinds + max debuff strength only score Defense/Support (Attack omitted — attackers lack those kits)",
     "v5.9: role-specific priorities — Attack HP/damage/MOV/MAP; Support range-5 floor + R5+ debuff kinds; Defense shield/HP/DEF/MOV + Atmospheric tax + lighter debuff kinds",
     "v5.10: debuff strength counts lasting DEF-down magnitude (not only instant pierce); Support/Defense MAP axis cap 2; damage-taken downs count as a debuff kind",
-    "v5.11: softer ER bands (<2 −1, 2–4 +1, 5+ +2); terrain floor is Space+(Land|Atmosphere); no Defense-only Atmospheric tax"
+    "v5.11: softer ER bands (<2 −1, 2–4 +1, 5+ +2); terrain floor is Space+(Land|Atmosphere); no Defense-only Atmospheric tax",
+    "v5.12: Max Vigor–only best weapon is a penalty (MP/pilot-gated); SSP ability replaces applied; Defense scores Regeneration/HP restore; role stat bands — Attack ATK>MOB, Support MOB>ATK (no ATK floor penalty), Defense ATK upside-only ≥9000",
+    "v5.13: free/dev/event +1 vs gacha 0; MOV 5 neutral; weapon bonus from strongest attack; split crit dmg/rate/guaranteed; drop tile bonus; softer range 1–3; dual Ranged/Melee/Awaken attr +1; Lupus/Rex signature +3; affinity same-role; MAP coverage 0–14/15–24/25+ and ignore non-damage MAP"
   ],
   "exclude_warships": true,
   "exclude_character_ids": [],
@@ -559,7 +561,8 @@
         "88": 1,
         "89": 1,
         "7": 2,
-        "8": 1
+        "8": 1,
+        "83": 1
       },
       "Defense": {
         "14": 3,
@@ -573,6 +576,7 @@
         "73": 3,
         "79": 3,
         "84": 3,
+        "83": 2,
         "9": 2,
         "10": 1,
         "51": 1,
@@ -631,6 +635,11 @@
         "16": [
           {"max_exclusive": 10, "points": 1},
           {"max_exclusive": 25, "points": 2},
+          {"max_exclusive": null, "points": 3}
+        ],
+        "83": [
+          {"max_exclusive": 25, "points": 1},
+          {"max_exclusive": 50, "points": 2},
           {"max_exclusive": null, "points": 3}
         ]
       },
@@ -786,7 +795,7 @@
   },
   "affinity_pilots": {
     "min_rarity_index": 4,
-    "require_same_role": false,
+    "require_same_role": true,
     "include_ex_unit_pairs": true,
     "count_bands": [
       {
@@ -816,7 +825,7 @@
     "deprecated": true,
     "note": "Replaced by affinity_pilots in v5.5"
   },
-  "max_tension_higher_tier_weapon_points": 1,
+  "max_tension_higher_tier_weapon_points": -1,
   "preemptive_strike_points": 1,
   "rare_debuff_points": 1,
   "rare_debuff_keys": [
@@ -930,10 +939,6 @@
           "points": -2
         },
         {
-          "max_exclusive": 11710,
-          "points": 0
-        },
-        {
           "max_exclusive": 12000,
           "points": 0
         },
@@ -942,47 +947,35 @@
           "points": 1
         },
         {
-          "max_exclusive": null,
+          "max_exclusive": 12800,
           "points": 2
+        },
+        {
+          "max_exclusive": null,
+          "points": 3
         }
       ],
       "Defense": [
         {
-          "max_exclusive": 7800,
-          "points": -1
-        },
-        {
-          "max_exclusive": 8100,
-          "points": 0
-        },
-        {
-          "max_exclusive": 8500,
-          "points": 0
-        },
-        {
           "max_exclusive": 9000,
-          "points": 1
-        },
-        {
-          "max_exclusive": null,
-          "points": 1
-        }
-      ],
-      "Support": [
-        {
-          "max_exclusive": 9000,
-          "points": -1
-        },
-        {
-          "max_exclusive": 9500,
           "points": 0
         },
         {
           "max_exclusive": 10000,
+          "points": 1
+        },
+        {
+          "max_exclusive": null,
+          "points": 2
+        }
+      ],
+      "Support": [
+        {
+          "max_exclusive": 10500,
           "points": 0
         },
         {
-          "max_exclusive": 10500,
+          "max_exclusive": 11500,
           "points": 1
         },
         {
@@ -1062,12 +1055,8 @@
     "MOB": {
       "Attack": [
         {
-          "max_exclusive": 9200,
+          "max_exclusive": 9000,
           "points": -1
-        },
-        {
-          "max_exclusive": 9400,
-          "points": 0
         },
         {
           "max_exclusive": 9600,
@@ -1075,11 +1064,11 @@
         },
         {
           "max_exclusive": 10000,
-          "points": 1
+          "points": 0
         },
         {
           "max_exclusive": null,
-          "points": 2
+          "points": 1
         }
       ],
       "Defense": [
@@ -1106,7 +1095,7 @@
       ],
       "Support": [
         {
-          "max_exclusive": 9200,
+          "max_exclusive": 9000,
           "points": -1
         },
         {
@@ -1123,7 +1112,7 @@
         },
         {
           "max_exclusive": null,
-          "points": 1
+          "points": 2
         }
       ]
     }
@@ -1145,28 +1134,28 @@
   "movement": {
     "Attack": {
       "3": -2,
-      "4": 0,
-      "5": 1,
+      "4": -1,
+      "5": 0,
       "6": 2
     },
     "Defense": {
       "3": -3,
-      "4": -1,
-      "5": 2,
-      "6": 3
+      "4": -2,
+      "5": 0,
+      "6": 2
     },
     "Support": {
-      "3": -1,
-      "4": 0,
-      "5": 1,
+      "3": -2,
+      "4": -1,
+      "5": 0,
       "6": 2
     }
   },
   "weapon_range": {
     "Attack": {
-      "1": -4,
-      "2": -3,
-      "3": -2,
+      "1": -3,
+      "2": -2,
+      "3": -1,
       "4": 0,
       "5": 1,
       "6": 3
@@ -1180,9 +1169,9 @@
       "6": 2
     },
     "Support": {
-      "1": -4,
-      "2": -3,
-      "3": -2,
+      "1": -3,
+      "2": -2,
+      "3": -1,
       "4": -1,
       "5": 0,
       "6": 2
@@ -1369,31 +1358,36 @@
   "maxweapon_bonus": {
     "points_by_type": {
       "0": 0,
-      "1": 2,
+      "1": 1,
       "2": 1,
       "3": 0,
       "4": 2,
       "5": 1,
       "6": 1,
       "7": 2,
-      "8": 2
+      "8": 0,
+      "9": 1,
+      "10": 2
     },
+    "crit_rate_min_value": 20,
+    "from_strongest_weapon_only": true,
     "ignore_higher_range_when_max_range_lte": 3,
     "type_labels": {
-      "1": "Critical",
+      "1": "Critical damage",
       "2": "Higher HP",
       "3": "Lower HP",
       "4": "Higher range",
       "5": "Lower range",
       "6": "Higher MP",
       "7": "Reduce Def",
-      "8": "Tile / map position"
+      "8": "Tile / map position (retired)",
+      "9": "Critical rate (≥20%)",
+      "10": "Guaranteed critical"
     },
     "trait_type_to_bonus_type": {
       "39": 1,
-      "40": 1,
-      "62": 1,
-      "94": 1,
+      "62": 9,
+      "94": 10,
       "82": 2,
       "81": 3,
       "45": 4,
@@ -1405,8 +1399,16 @@
     },
     "detect": {
       "1": [
-        "(?i)crit(?:ical)?(?:\\s+rate|\\s+chance|\\s+damage)?",
-        "(?i)クリティカル"
+        "(?i)critical\\s+damage",
+        "(?i)クリティカルダメージ|爆擊傷害|暴擊傷害"
+      ],
+      "9": [
+        "(?i)critical\\s+rate|crit(?:ical)?\\s+chance|increase(?:s)?\\s+critical(?!\\s+damage)",
+        "(?i)クリティカル率|爆擊率"
+      ],
+      "10": [
+        "(?i)guaranteed\\s+critical|always\\s+crit",
+        "(?i)必ずクリティカル|必定爆擊"
       ],
       "2": [
         "(?i)higher your remaining HP",
@@ -1443,12 +1445,28 @@
         "(?i)(?:reduce|reduces|decrease|decreases).{0,24}(?:enemy|hostile)?.{0,12}(?:def|defense)",
         "(?i)improve decrease DEF weapon",
         "(?i)防御力.{0,12}(?:減|低下)"
-      ],
-      "8": [
-        "(?i)\\b(?:tile|adjacent|on the map|map\\s*position|within\\s+\\d+\\s*(?:squares?|tiles?|spaces?))\\b",
-        "(?i)隣接|マス|タイル|マップ上"
       ]
     }
+  },
+  "source_bucket_points": {
+    "gacha": 0,
+    "dev": 1,
+    "event": 1
+  },
+  "dual_attack_attr": {
+    "min_types": 2,
+    "points": 1
+  },
+  "signature_weapon_units": {
+    "points": 3,
+    "note": "Barbatos Lupus / Lupus Rex family — EX-style multi-condition weapon kits",
+    "unit_ids": [
+      "1430003400",
+      "1430003450",
+      "1430003500",
+      "1430003600",
+      "1430003700"
+    ]
   },
   "letter_cutoffs": [
     { "min": 15, "letter": "S+" },
@@ -1586,22 +1604,20 @@
   },
   "map_coverage_points": [
     {
-      "max_exclusive": 6,
+      "max_exclusive": 15,
       "points": 0
     },
     {
-      "max_exclusive": 14,
+      "max_exclusive": 25,
       "points": 1
     },
     {
-      "max_exclusive": 30,
-      "points": 2
-    },
-    {
       "max_exclusive": null,
-      "points": 3
+      "points": 2
     }
   ],
+  "map_require_damage": true,
+  "map_min_power": 1,
   "map_axis_cap": 4,
   "map_axis_cap_by_role": {
     "Attack": 4,

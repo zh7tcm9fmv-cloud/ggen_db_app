@@ -84,6 +84,28 @@ class TestSpInvestmentBands(unittest.TestCase):
         self.assertEqual(band_points(bands, 11600), 0)
         self.assertEqual(band_points(bands, 12000), 1)
         self.assertEqual(band_points(bands, 12400), 2)
+        self.assertEqual(band_points(bands, 12800), 3)
+
+    def test_atk_defense_upside_only(self):
+        bands = self.rules["stat_bands"]["ATK"]["Defense"]
+        self.assertEqual(band_points(bands, 7500), 0)
+        self.assertEqual(band_points(bands, 8999), 0)
+        self.assertEqual(band_points(bands, 9000), 1)
+        self.assertEqual(band_points(bands, 10000), 2)
+
+    def test_atk_support_no_floor_penalty(self):
+        bands = self.rules["stat_bands"]["ATK"]["Support"]
+        self.assertEqual(band_points(bands, 8000), 0)
+        self.assertEqual(band_points(bands, 10500), 1)
+
+    def test_mob_attacker_soft_ceiling(self):
+        bands = self.rules["stat_bands"]["MOB"]["Attack"]
+        self.assertEqual(band_points(bands, 10100), 1)
+        self.assertEqual(band_points(bands, 9600), 0)
+
+    def test_mob_support_higher_ceiling(self):
+        bands = self.rules["stat_bands"]["MOB"]["Support"]
+        self.assertEqual(band_points(bands, 10500), 2)
 
     def test_weapon_power_sp_vs_ssp(self):
         sp = weapon_power_bands_for_mode(self.rules, "sp", "Attack")
@@ -98,11 +120,15 @@ class TestSpInvestmentBands(unittest.TestCase):
     def test_def_move_4_is_minus_one(self):
         base = _minimal_features(role="Defense", MOV=4)
         scored = score_features(base, self.rules, mode="sp")
-        self.assertEqual(scored["breakdown"]["movement"], -1)
+        self.assertEqual(scored["breakdown"]["movement"], -2)
 
     def test_mov6_attacker_plus_two(self):
         scored = score_features(_minimal_features(MOV=6), self.rules, mode="sp")
         self.assertEqual(scored["breakdown"]["movement"], 2)
+
+    def test_mov5_is_neutral(self):
+        scored = score_features(_minimal_features(MOV=5), self.rules, mode="sp")
+        self.assertEqual(scored["breakdown"]["movement"], 0)
 
     def test_range6_attacker_plus_three(self):
         scored = score_features(_minimal_features(weapon_range=6), self.rules, mode="sp")
@@ -110,6 +136,10 @@ class TestSpInvestmentBands(unittest.TestCase):
 
     def test_range2_attacker_harder_penalty(self):
         scored = score_features(_minimal_features(weapon_range=2), self.rules, mode="sp")
+        self.assertEqual(scored["breakdown"]["weapon_range"], -2)
+
+    def test_range1_attacker_soft_floor(self):
+        scored = score_features(_minimal_features(weapon_range=1), self.rules, mode="sp")
         self.assertEqual(scored["breakdown"]["weapon_range"], -3)
 
     def test_terrain_space_land_base_zero(self):
@@ -169,7 +199,9 @@ class TestSpInvestmentBands(unittest.TestCase):
             map_coverage_cells=50,
         )
         self.assertEqual(score_features(feats2, self.rules)["breakdown"]["map"], 4)
-        self.assertEqual(map_coverage_points(self.rules, 20), 2)
+        self.assertEqual(map_coverage_points(self.rules, 20), 1)
+        self.assertEqual(map_coverage_points(self.rules, 14), 0)
+        self.assertEqual(map_coverage_points(self.rules, 25), 2)
 
     def test_map_presence_and_dash(self):
         none = score_features(_minimal_features(has_map_weapon=False, map_ammo=0), self.rules)
@@ -222,10 +254,16 @@ class TestSpInvestmentBands(unittest.TestCase):
     def test_weapon_bonus_typed(self):
         tid, pts = detect_weapon_bonus_type(
             self.rules,
-            ["Increases critical rate when HP is high"],
+            ["Increase Critical Damage by 20%."],
         )
-        self.assertIn(tid, (1, 2))
-        self.assertGreaterEqual(pts, 1)
+        self.assertEqual(tid, 1)
+        self.assertEqual(pts, 1)
+        tid_rate, pts_rate = detect_weapon_bonus_type(
+            self.rules,
+            ["Increase Critical Rate by 20%."],
+        )
+        self.assertEqual(tid_rate, 9)
+        self.assertEqual(pts_rate, 1)
         tid_low, pts_low = detect_weapon_bonus_type(
             self.rules,
             ["Deals more damage when HP is low"],
@@ -238,6 +276,24 @@ class TestSpInvestmentBands(unittest.TestCase):
         )
         self.assertEqual(tid_hp, 2)
         self.assertEqual(pts_hp, 1)
+
+    def test_source_bucket_points(self):
+        gacha = score_features(_minimal_features(source="gacha"), self.rules)
+        free = score_features(_minimal_features(source="dev"), self.rules)
+        self.assertEqual(gacha["breakdown"]["source"], 0)
+        self.assertEqual(free["breakdown"]["source"], 1)
+
+    def test_dual_attack_attr_bonus(self):
+        none = score_features(_minimal_features(best_attack_attr_count=1), self.rules)
+        dual = score_features(_minimal_features(best_attack_attr_count=2), self.rules)
+        self.assertEqual(none["breakdown"]["dual_attack_attr"], 0)
+        self.assertEqual(dual["breakdown"]["dual_attack_attr"], 1)
+
+    def test_signature_weapon_lupus(self):
+        base = score_features(_minimal_features(id="999"), self.rules)
+        lupus = score_features(_minimal_features(id="1430003600"), self.rules)
+        self.assertEqual(base["breakdown"]["signature_weapon"], 0)
+        self.assertEqual(lupus["breakdown"]["signature_weapon"], 3)
 
     def test_extra_life_structured_not_heuristic(self):
         feats = _minimal_features(has_extra_life=True, extra_life_source="structured")
@@ -393,7 +449,7 @@ class TestSpInvestmentBands(unittest.TestCase):
             "weapon_range": 6,
             "weapon_power": 6100,
             "weapon_bonus_type": 1,
-            "weapon_bonus_points": 2,
+            "weapon_bonus_points": 1,
             "has_max_tension_higher_weapon": False,
             "has_preemptive": True,
             "has_rare_debuff": False,
@@ -409,9 +465,9 @@ class TestSpInvestmentBands(unittest.TestCase):
         self.assertEqual(scored["breakdown"]["tags_strategic"], 2)  # weight ~33.8 → capped +2
         self.assertEqual(scored["breakdown"]["er_access"], 2)
         self.assertEqual(scored["breakdown"]["terrain"], 1)  # Atmo only (2 deployable extras? Space Land Atmo = 3, not perfect)
-        self.assertEqual(scored["breakdown"]["map"], 4)  # presence + ammo2+ + cov2
+        self.assertEqual(scored["breakdown"]["map"], 3)  # presence + ammo2+ + cov1 (22 cells)
         self.assertEqual(scored["breakdown"]["weapon_power"], 3)
-        self.assertEqual(scored["breakdown"]["weapon_bonus"], 2)
+        self.assertEqual(scored["breakdown"]["weapon_bonus"], 1)
         self.assertEqual(scored["breakdown"]["abilities"], 2)  # dmg given 15% magnitude band
         self.assertFalse(scored["meta"].get("abilities", {}).get("heuristic"))
         self.assertNotIn("abilities", scored["meta"].get("heuristic_keys") or [])
@@ -463,6 +519,31 @@ class TestSpInvestmentBands(unittest.TestCase):
             ],
         )
         self.assertEqual(pts, 3)
+
+    def test_defense_regeneration_hp_restore(self):
+        pts, meta = score_ability_effects(
+            self.rules,
+            "Defense",
+            [
+                {
+                    "trait_type_index": 83,
+                    "trait_type_key": "Regeneration",
+                    "trait_value": 30,
+                    "has_active_cond": True,
+                }
+            ],
+        )
+        self.assertEqual(pts, 2)
+        self.assertEqual(meta["contributing"][0]["trait_type_index"], 83)
+
+    def test_max_tension_weapon_is_penalty(self):
+        self.assertEqual(int(self.rules.get("max_tension_higher_tier_weapon_points")), -1)
+        scored = score_features(
+            _minimal_features(has_max_tension_higher_weapon=True),
+            self.rules,
+            mode="sp",
+        )
+        self.assertEqual(scored["breakdown"]["max_tension_weapon"], -1)
 
     def test_classify_range_down_beam(self):
         from sp_investment_rank import classify_debuff_keys_from_meta
@@ -719,8 +800,10 @@ class TestSpInvestmentBands(unittest.TestCase):
 
 def _minimal_features(**overrides):
     base = {
+        "id": "0",
         "role": "Attack",
         "rarity_id": "4",
+        "source": "gacha",
         "tag_count": 0,
         "tag_count_scored": 0,
         "tags": [],
@@ -742,11 +825,12 @@ def _minimal_features(**overrides):
         "ATK": 11800,
         "DEF": 8200,
         "MOB": 9300,
-        "MOV": 4,
+        "MOV": 5,
         "weapon_range": 4,
         "weapon_power": 5200,
         "weapon_bonus_type": 0,
         "weapon_bonus_points": 0,
+        "best_attack_attr_count": 1,
         "has_max_tension_higher_weapon": False,
         "has_preemptive": False,
         "has_rare_debuff": False,

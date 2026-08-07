@@ -74,11 +74,11 @@
     },
     linked_pilot: {
       label: 'Affinity pilot pool',
-      tip: 'How many SSR+ pilots have piloting-tag / EX-pair affinity for this MS. A deep pool is better than one official linked recommend.',
+      tip: 'How many same-role SSR+ pilots have piloting-tag / EX-pair affinity for this MS. Defenders do not count for attacker MS.',
     },
     max_tension_weapon: {
       label: 'Max Vigor weapon',
-      tip: 'Their strongest weapon is Max Vigor only and beats the best unrestricted weapon.',
+      tip: 'Strongest weapon is Max Vigor only (beats unrestricted best) — MP/pilot-gated, so it is a mild penalty vs always-usable power.',
     },
     preemptive: {
       label: 'Preemptive Strike',
@@ -104,14 +104,14 @@
       label: 'Shield',
       tip: 'Has a shield mechanism (~20% damage neglect). Defense units lose points if they lack one.',
     },
-    movement: { label: 'Move', tip: 'Movement range. Higher Move helps Attack/Defense/Support differently — Defense cares most for support-defense coverage.' },
+    movement: { label: 'Move', tip: 'MOV 5 is the modern baseline; 4 is below average. Defense still values high Move for support-defense coverage.' },
     movement_followup: {
       label: 'Movement follow-up',
       tip: 'After-move MAP and/or Chance Step-style follow-up movement (can stack, capped).',
     },
     weapon_range: {
       label: 'Weapon range',
-      tip: 'Longest non-MAP weapon range. Support baseline is range 5 (lower is weaker). Short range is a big Attack penalty.',
+      tip: 'Longest non-MAP weapon range. Short max range is a soft penalty (−1 to −3). Support baseline is range 5.',
     },
     weapon_power: {
       label: 'Weapon power',
@@ -119,7 +119,19 @@
     },
     weapon_bonus: {
       label: 'Weapon bonus',
-      tip: 'Conditional weapon boosts such as crit, high HP power, range scaling, or stronger DEF-down.',
+      tip: 'Conditional boost on the strongest attack only. Crit damage is mild; crit rate needs ~20%+; guaranteed crit is stronger.',
+    },
+    dual_attack_attr: {
+      label: 'Multi-type weapon',
+      tip: 'Strongest attack uses 2+ of Ranged/Melee/Awaken (e.g. Enhanced ZZ).',
+    },
+    signature_weapon: {
+      label: 'Signature kit',
+      tip: 'Allowlisted Lupus / Lupus Rex family bonus for their uniquely strong weapon kits.',
+    },
+    source: {
+      label: 'Acquisition',
+      tip: 'Dev / event / other free units get +1; gacha/assembly stays 0.',
     },
     max_debuff: {
       label: 'Debuff strength',

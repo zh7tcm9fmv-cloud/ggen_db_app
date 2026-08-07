@@ -11,7 +11,7 @@ try:
 except ImportError:
     pass
 
-from flask import Flask, render_template, jsonify, request, make_response, session, redirect, Response, stream_with_context
+from flask import Flask, render_template, jsonify, request, make_response, session, redirect, Response, stream_with_context, abort
 from werkzeug.exceptions import NotFound
 from werkzeug.middleware.proxy_fix import ProxyFix
 import json
@@ -14706,10 +14706,8 @@ def about_page():
 @app.route('/tier-demo')
 @app.route('/en/tier-list')
 def tier_demo_page():
-    """Meta tier list (precomputed JSON; linked from site footer)."""
-    r = make_response(render_template('tier_demo.html', image_cdn=IMAGE_CDN or '', game_images_use_cdn=GAME_IMAGES_USE_CDN))
-    r.headers['Cache-Control'] = 'public, max-age=300'
-    return r
+    """Retired public page — keep routes so old links 404 cleanly instead of SPA fallback."""
+    abort(404)
 
 
 _PUBLISHED_TIER_MOCKUP_FILE = os.path.join(app_dir, 'data', 'published', 'tier_mockup_v2.json')
@@ -15360,35 +15358,8 @@ def api_msy_browse_filters():
 
 @app.route('/api/tier_mockup')
 def api_tier_mockup():
-    """Serve offline tier mockup JSON with portrait thumbnails."""
-    path = _tier_mockup_json_path()
-    if not os.path.isfile(path):
-        return jsonify({'error': 'tier_mockup_v2.json not found — run scripts/tier_rank_mockup.py'}), 404
-    with open(path, 'r', encoding='utf-8') as f:
-        payload = json.load(f)
-    _tier_mockup_walk_apply_limited(payload)
-    for key in ('units_meta',):
-        buckets = payload.get(key) or {}
-        for tier_rows in buckets.values():
-            _tier_mockup_attach_thumbs(tier_rows, 'unit')
-    for key in ('characters_meta',):
-        buckets = payload.get(key) or {}
-        for tier_rows in buckets.values():
-            _tier_mockup_attach_thumbs(tier_rows, 'character')
-    for key in ('supporters_meta',):
-        buckets = payload.get(key) or {}
-        for tier_rows in buckets.values():
-            _tier_mockup_attach_thumbs(tier_rows, 'supporter')
-    for key in ('units_top30', 'characters_top30', 'supporters_all'):
-        kind = 'unit' if key.startswith('units') else ('character' if key.startswith('characters') else 'supporter')
-        _tier_mockup_attach_thumbs(payload.get(key), kind)
-    ex = payload.get('example_wing_zero')
-    if isinstance(ex, dict) and ex.get('id'):
-        ex['thumb'] = _tier_mockup_thumb(ex['id'], 'unit') or ''
-        ex.update(_tier_mockup_row_icons(ex, 'unit'))
-    payload['scoring_guide'] = payload.get('scoring_guide') or _tier_scoring_guide()
-    ck = f"tier_mockup_v2_{int(os.path.getmtime(path))}"
-    return jsonify_cacheable(payload, ck, public=True, max_age=300, convert_images=True)
+    """Retired with /tier-list."""
+    abort(404)
 
 
 _PUBLISHED_SP_INVESTMENT_FILE = os.path.join(app_dir, 'data', 'published', 'sp_investment_v1.json')
@@ -23964,7 +23935,7 @@ def sitemap_xml():
     base = (request.url_root or 'https://ggendb.up.railway.app/').rstrip('/')
     # Prefer real public pages with distinct titles over SPA short-paths alone.
     paths = [
-        '/', '/game-news', '/about', '/contact', '/privacy-policy', '/tier-list',
+        '/', '/game-news', '/about', '/contact', '/privacy-policy',
         '/c', '/u', '/s', '/st', '/cal', '/tb', '/tl', '/ml', '/rk', '/op', '/new', '/esim',
     ]
     urls = ''.join(
