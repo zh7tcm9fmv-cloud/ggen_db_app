@@ -1,0 +1,660 @@
+{
+  "version": 2,
+  "notes": "Expanded gold after v5.4 cohort letter scales (SP vs UR) + structured scoring.",
+  "units_sp": [
+    {
+      "id": "1219000150",
+      "name": "Wing Gundam Zero (EW) (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1150000150",
+      "name": "Xi Gundam (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1031001250",
+      "name": "Atlas Gundam (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1230003850",
+      "name": "Gundam Double X (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1163000150",
+      "name": "Gundam F91 (Twin VSBR) (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1501003450",
+      "name": "Darilbalde (Season 2) (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1305000350",
+      "name": "Gundam Astray Gold Frame Amatsu Mina (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1219000450",
+      "name": "Gundam Heavyarms Custom (EW) (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1150000250",
+      "name": "Penelope (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1200003950",
+      "name": "Burning Gundam (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1330002850",
+      "name": "Infinite Justice Gundam (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1166000250",
+      "name": "Crossbone Gundam X1 Custom (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1330000750",
+      "name": "Destiny Gundam (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1501001650",
+      "name": "Gundam Aerial Rebuild (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1501002550",
+      "name": "Michaelis (Season 2) (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1114000450",
+      "name": "Nu Gundam (Double Fin Funnels) (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1144000550",
+      "name": "Unicorn Gundam 03 Phenex (Destroy Mode) (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1080000150",
+      "name": "Zeta Gundam (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1125001150",
+      "name": "Banshee Norn (Destroy Mode) (EX)",
+      "expect_bucket": "solid"
+    },
+    {
+      "id": "1430003450",
+      "name": "Gundam Barbatos Lupus Rex (EX)",
+      "expect_bucket": "solid"
+    },
+    {
+      "id": "1155000250",
+      "name": "Gundam F90 A.D.S. Type (EX)",
+      "expect_bucket": "solid"
+    },
+    {
+      "id": "1501003010",
+      "name": "Gundam Lfrith Thorn (Using Gundvölva)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1501002450",
+      "name": "Gundam Pharact (Season 2) (EX)",
+      "expect_bucket": "solid"
+    },
+    {
+      "id": "1017000950",
+      "name": "Kampfer (EX)",
+      "expect_bucket": "solid"
+    },
+    {
+      "id": "1725000150",
+      "name": "Liu Bei Unicorn Gundam (EX)",
+      "expect_bucket": "solid"
+    },
+    {
+      "id": "1300004650",
+      "name": "Providence Gundam (EX)",
+      "expect_bucket": "solid"
+    },
+    {
+      "id": "1001003700",
+      "name": "Gattle",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1095004110",
+      "name": "Catl",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1200003300",
+      "name": "Cushing",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1230002800",
+      "name": "Gable",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1009000600",
+      "name": "Oggo",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1095003910",
+      "name": "Yazan Gable's Geze",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1300002100",
+      "name": "ZuOOT",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1031003100",
+      "name": "Dahle (Flotation Equipment)",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1060002300",
+      "name": "Dom Tropen",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1230003500",
+      "name": "Estardoth",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1001003710",
+      "name": "Gattle",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1230002910",
+      "name": "Pyron",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1001002200",
+      "name": "Zock",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1370003100",
+      "name": "Anf",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1001000700",
+      "name": "Ball",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1300003000",
+      "name": "GOOhN",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1230002700",
+      "name": "Gadeel",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1095003810",
+      "name": "Geze",
+      "expect_bucket": "niche"
+    }
+  ],
+  "units_ssp": [
+    {
+      "id": "1219000150",
+      "name": "Wing Gundam Zero (EW) (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1150000150",
+      "name": "Xi Gundam (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1031001250",
+      "name": "Atlas Gundam (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1230003850",
+      "name": "Gundam Double X (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1163000150",
+      "name": "Gundam F91 (Twin VSBR) (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1501003450",
+      "name": "Darilbalde (Season 2) (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1305000350",
+      "name": "Gundam Astray Gold Frame Amatsu Mina (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1150000250",
+      "name": "Penelope (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1200003950",
+      "name": "Burning Gundam (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1219000450",
+      "name": "Gundam Heavyarms Custom (EW) (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1330002850",
+      "name": "Infinite Justice Gundam (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1166000250",
+      "name": "Crossbone Gundam X1 Custom (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1330000750",
+      "name": "Destiny Gundam (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1501002550",
+      "name": "Michaelis (Season 2) (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1144000550",
+      "name": "Unicorn Gundam 03 Phenex (Destroy Mode) (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1080000150",
+      "name": "Zeta Gundam (EX)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1095002550",
+      "name": "Qubeley (ZZ) (EX)",
+      "expect_bucket": "solid"
+    },
+    {
+      "id": "1144000500",
+      "name": "Unicorn Gundam 03 Phenex (Destroy Mode)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1379000300",
+      "name": "0 Gundam Full Armor",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1219000650",
+      "name": "Altron Gundam (EW) (EX)",
+      "expect_bucket": "solid"
+    },
+    {
+      "id": "1430003450",
+      "name": "Gundam Barbatos Lupus Rex (EX)",
+      "expect_bucket": "solid"
+    },
+    {
+      "id": "1230003800",
+      "name": "Gundam Double X",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1501003010",
+      "name": "Gundam Lfrith Thorn (Using Gundvölva)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1017000950",
+      "name": "Kampfer (EX)",
+      "expect_bucket": "solid"
+    },
+    {
+      "id": "1230003500",
+      "name": "Estardoth",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1370003100",
+      "name": "Anf",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1001000700",
+      "name": "Ball",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1095004000",
+      "name": "Capule",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1095004110",
+      "name": "Catl",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1430003310",
+      "name": "Mobile Worker Rear Support Type (Gjallarhorn)",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1013000700",
+      "name": "Ball Type K",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1200003300",
+      "name": "Cushing",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1095003500",
+      "name": "Dwadge",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1430006500",
+      "name": "Geirail",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1230002110",
+      "name": "Juracg",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1430003200",
+      "name": "Mobile Worker (Gjallarhorn)",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1009000600",
+      "name": "Oggo",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1370002810",
+      "name": "Tieren High Mobility Type",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1031000600",
+      "name": "Ball (Thunderbolt)",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1060001600",
+      "name": "Dra-C",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1300003000",
+      "name": "GOOhN",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1430001800",
+      "name": "Graze (Edmonton Colors)",
+      "expect_bucket": "niche"
+    }
+  ],
+  "pilots_sp": [
+    {
+      "id": "1125000200",
+      "name": "Riddhe Marcenas",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1162000100",
+      "name": "Seabook Arno",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1501000103",
+      "name": "Suletta Mercury",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1031000100",
+      "name": "Io Fleming",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1162000102",
+      "name": "Seabook Arno",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1370003701",
+      "name": "Setsuna F. Seiei",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1305001400",
+      "name": "Rondo Mina Sahaku",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1110000103",
+      "name": "Amuro Ray",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1400002000",
+      "name": "Asemu Asuno",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1501000502",
+      "name": "Shaddiq Zenelli",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1001000100",
+      "name": "Amuro Ray",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1300001701",
+      "name": "Athrun Zala",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1110000202",
+      "name": "Char Aznable",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1013001100",
+      "name": "Norris Packard",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1219000600",
+      "name": "Relena Darlian (EW)",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1230001301",
+      "name": "Shagia Frost",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1155000101",
+      "name": "Def Stallion",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1200000103",
+      "name": "Domon Kasshu",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1330000101",
+      "name": "Shinn Asuka",
+      "expect_bucket": "solid"
+    },
+    {
+      "id": "1330000103",
+      "name": "Shinn Asuka",
+      "expect_bucket": "solid"
+    },
+    {
+      "id": "1501000101",
+      "name": "Suletta Mercury",
+      "expect_bucket": "solid"
+    },
+    {
+      "id": "1219000101",
+      "name": "Heero Yuy (EW)",
+      "expect_bucket": "solid"
+    },
+    {
+      "id": "1144000102",
+      "name": "Jona Basta",
+      "expect_bucket": "solid"
+    },
+    {
+      "id": "1017000400",
+      "name": "Mikhail Kaminsky",
+      "expect_bucket": "solid"
+    },
+    {
+      "id": "1080002700",
+      "name": "Paptimus Scirocco",
+      "expect_bucket": "solid"
+    },
+    {
+      "id": "1021000400",
+      "name": "Sana Nima",
+      "expect_bucket": "recommended"
+    },
+    {
+      "id": "1370003500",
+      "name": "Ribbons Almark",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1200000303",
+      "name": "Sai Saici",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1200000203",
+      "name": "Chibodee Crocket",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1305000701",
+      "name": "Gai Murakumo",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1200000402",
+      "name": "George de Sand",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1300000102",
+      "name": "Kira Yamato",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1300000103",
+      "name": "Kira Yamato",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1300000104",
+      "name": "Kira Yamato",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1300002900",
+      "name": "Martin DaCosta",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1200000503",
+      "name": "Argo Gulskii",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1300002300",
+      "name": "Frederick Ades",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1300003200",
+      "name": "Lacus Clyne",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1300003201",
+      "name": "Lacus Clyne",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1200000701",
+      "name": "Rain Mikamura",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1300001901",
+      "name": "Yzak Joule",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "2300000700",
+      "name": "ZAFT Officer",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1305000600",
+      "name": "Captain GG",
+      "expect_bucket": "niche"
+    },
+    {
+      "id": "1095004400",
+      "name": "Gemon Bajack",
+      "expect_bucket": "niche"
+    }
+  ]
+}

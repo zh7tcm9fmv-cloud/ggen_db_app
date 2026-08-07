@@ -21,23 +21,42 @@ import app as A  # noqa: E402
 import sp_investment_rank as SIR  # noqa: E402
 
 LC = "EN"
-BUCKET_ORDER = ("priority", "strong", "situational", "low")
+BUCKET_ORDER = ("recommended", "solid", "situational", "niche")
 
 
-def _calibrate_letters_by_role(rows: list[dict], rules: dict) -> None:
-    """Absolute sheet cutoffs only (no percentile soft uplift)."""
+def _calibrate_letters_by_role(
+    rows: list[dict],
+    rules: dict,
+    *,
+    cutoffs_key: str = "letter_cutoffs",
+    ur_cutoffs_key: str | None = None,
+) -> None:
+    """
+    Absolute sheet cutoffs, split by investment cohort:
+    SP-eligible (has_sp) vs UR/Ultimate — so UR does not monopolize Recommended.
+    """
+    ur_key = ur_cutoffs_key or (
+        "ur_pilot_letter_cutoffs"
+        if cutoffs_key == "pilot_letter_cutoffs"
+        else "ur_letter_cutoffs"
+    )
     for row in rows:
-        letter = SIR.letter_for_total(rules, int(row.get("total") or 0))
+        has_sp = bool(row.get("has_sp"))
+        key = cutoffs_key if has_sp else (ur_key if rules.get(ur_key) else cutoffs_key)
+        letter = SIR.letter_for_total(
+            rules, int(row.get("total") or 0), cutoffs_key=key
+        )
         row["letter"] = letter
         row["bucket"] = SIR.bucket_for_letter(rules, letter)
-        row["calibration"] = "absolute_sheet"
+        row["letter_cohort"] = "sp" if has_sp else "ur"
+        row["calibration"] = f"absolute_sheet:{key}"
 
 
 def _sort_rows(rows: list[dict]) -> list[dict]:
     rows.sort(
         key=lambda x: (
-            BUCKET_ORDER.index(x.get("bucket") or "low")
-            if (x.get("bucket") or "low") in BUCKET_ORDER
+            BUCKET_ORDER.index(x.get("bucket") or "niche")
+            if (x.get("bucket") or "niche") in BUCKET_ORDER
             else 99,
             -int(x.get("total") or 0),
             x.get("name") or "",
@@ -54,25 +73,43 @@ def _enrich_acq(row: dict, kind: str) -> None:
     row["entity"] = kind if kind != "unit" else "unit"
 
 
-def build_unit_board(mode: str, rules: dict, expert_ids: list[str]) -> list[dict]:
+def build_unit_board(
+    mode: str,
+    rules: dict,
+    expert_ids: list[str],
+    tag_table: dict | None = None,
+) -> list[dict]:
     rows = []
     for uid in A.unit_list_playable_ids:
         try:
-            row = SIR.score_unit(A, uid, mode=mode, lc=LC, rules=rules)
+            row = SIR.score_unit(
+                A,
+                uid,
+                mode=mode,
+                lc=LC,
+                rules=rules,
+                tag_strategic_table=tag_table,
+                er_expert_ids=expert_ids,
+            )
         except Exception as e:
             print(f"  skip unit {uid}: {e}")
             continue
         if not row:
             continue
         _enrich_acq(row, "unit")
-        SIR.attach_er_expert_ids(A, row, "unit", expert_ids, LC)
+        if "er_expert_ids" not in row:
+            SIR.attach_er_expert_ids(A, row, "unit", expert_ids, LC)
         rows.append(row)
     _calibrate_letters_by_role(rows, rules)
     return _sort_rows(rows)
 
 
 def build_pilot_board(
-    rules: dict, unit_letter_by_id: dict, unit_index: dict, expert_ids: list[str]
+    rules: dict,
+    unit_letter_by_id: dict,
+    unit_index: dict,
+    expert_ids: list[str],
+    tag_table: dict | None = None,
 ) -> list[dict]:
     rows = []
     for cid in A.char_list_playable_ids:
@@ -84,6 +121,8 @@ def build_pilot_board(
                 rules=rules,
                 unit_letter_by_id=unit_letter_by_id,
                 unit_index=unit_index,
+                tag_strategic_table=tag_table,
+                er_expert_ids=expert_ids,
             )
         except Exception as e:
             print(f"  skip char {cid}: {e}")
@@ -91,18 +130,19 @@ def build_pilot_board(
         if not row:
             continue
         _enrich_acq(row, "character")
-        SIR.attach_er_expert_ids(A, row, "character", expert_ids, LC)
+        if "er_expert_ids" not in row:
+            SIR.attach_er_expert_ids(A, row, "character", expert_ids, LC)
         rows.append(row)
-    _calibrate_letters_by_role(rows, rules)
+    _calibrate_letters_by_role(rows, rules, cutoffs_key="pilot_letter_cutoffs")
     return _sort_rows(rows)
 
 
 def bucketize(rows: list[dict]) -> dict:
     out = {b: [] for b in BUCKET_ORDER}
     for r in rows:
-        b = r.get("bucket") or "low"
+        b = r.get("bucket") or "niche"
         if b not in out:
-            b = "low"
+            b = "niche"
         out[b].append(r)
     return out
 
@@ -117,19 +157,35 @@ def collect_tag_catalog(rows_lists: list[list[dict]]) -> list[str]:
     return sorted(tags, key=lambda s: s.lower())
 
 
+def _bucket_histogram(rows: list[dict]) -> dict[str, int]:
+    counts = {b: 0 for b in BUCKET_ORDER}
+    for r in rows:
+        b = r.get("bucket") or "niche"
+        if b not in counts:
+            b = "niche"
+        counts[b] += 1
+    return counts
+
+
 def main():
     rules = SIR.load_rules()
+    print(f"Rules version {rules.get('version')} buckets={list((rules.get('bucket_labels') or {}).values())}")
     print("Building ER Expert filter list…")
     er_filters = SIR.build_er_expert_filters(A, LC)
     expert_ids = [e["id"] for e in er_filters]
     print(f"  {len(er_filters)} expert stages")
 
+    print("Building strategic tag UR-weight tables…")
+    tag_table = SIR.get_tag_strategic_table(A, rules, LC)
+    pilot_tag_table = SIR.get_pilot_tag_strategic_table(A, rules, LC)
+    print(f"  unit tags={len(tag_table)} pilot tags={len(pilot_tag_table)}")
+
     print("Building unit SP board…")
-    sp_rows = build_unit_board("sp", rules, expert_ids)
-    print(f"  {len(sp_rows)} units")
+    sp_rows = build_unit_board("sp", rules, expert_ids, tag_table)
+    print(f"  {len(sp_rows)} units {_bucket_histogram(sp_rows)}")
     print("Building unit SSP board…")
-    ssp_rows = build_unit_board("ssp", rules, expert_ids)
-    print(f"  {len(ssp_rows)} units")
+    ssp_rows = build_unit_board("ssp", rules, expert_ids, tag_table)
+    print(f"  {len(ssp_rows)} units {_bucket_histogram(ssp_rows)}")
 
     unit_letter_by_id = {r["id"]: r.get("letter") or "" for r in sp_rows}
     # Prefer higher letter when SSP is better
@@ -150,14 +206,10 @@ def main():
     print(f"  {len(unit_index.get('bplus_ids') or [])} B+ units")
 
     print("Building pilot SP board…")
-    pilot_rows = build_pilot_board(rules, unit_letter_by_id, unit_index, expert_ids)
-    print(f"  {len(pilot_rows)} characters")
+    pilot_rows = build_pilot_board(rules, unit_letter_by_id, unit_index, expert_ids, pilot_tag_table)
+    print(f"  {len(pilot_rows)} characters {_bucket_histogram(pilot_rows)}")
 
     guide = SIR.scoring_guide_payload(rules)
-    guide["gaps"] = list(guide.get("gaps") or [])
-    guide["gaps"].append(
-        "Pilot recommend-MS points use this list's unit letters (SP/SSP best)."
-    )
     if not guide.get("intro"):
         guide["intro"] = (
             "Point-sum suggestion guide for SP/SSP chip investment, separated by class. "

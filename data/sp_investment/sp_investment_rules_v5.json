@@ -1,0 +1,1626 @@
+{
+  "version": 5,
+  "source": "ggen v5 unit-only criteria (ER access, UR tag weights, SP/SSP power baselines, neutral buckets)",
+  "notes": [
+    "v5: buckets Recommended / Solid / Situational / Niche",
+    "v5: units only focus; pilots deferred (pilot tables retained dormant)",
+    "v5: ER Expert eligible-stage count axis",
+    "v5: strategic tag value from Limited UR 1.5 / permanent UR 1.0 weights",
+    "v5: separate SP vs SSP weapon power bands",
+    "v5: MAP ammo + effect-range cell coverage (cap +3)",
+    "v5: weapon condition tiers (Low HP=0; strong conditions up to +2)",
+    "v5: terrain missing Space/Land -3; Sea extra; perfect-coverage bonus",
+    "Suggestion-list philosophy: strictly-better extras matter; close letters need human judgment.",
+    "v5.1: pilots scored with ER access + strategic tag UR weights + rarity adj",
+    "v5.1: large footprint (OccupiedAreaId 2) small positioning tax on Atk/Sup",
+    "v5.1: EX weapons intentionally not scored (UR-only / not an SP-SSP concern)",
+    "v5.1: separate pilot_letter_cutoffs (kit scores run hotter than unit totals)",
+    "v5.2: unit/pilot kits scored from TraitTypeIndex / CharacterSkillTraitType (not regex)",
+    "v5.2: movement follow-up from structured Chance Step / PostAttackMove types",
+    "v5.2: EN cost not scored",
+    "v5.3: weapon Debuff TargetValue→m_trait kind/magnitude; rare range-down structured",
+    "v5.3: ability/skill magnitude bands; public TraitType point tables in criteria",
+    "v5.4: MAP presence (+1 any MAP) + dash/MovingAttack (+1); ammo 2+ extra; coverage from dash path; axis cap +4",
+    "v5.4: practical rebalance — softer ER floor penalty, strategic-tag cap 2, movement-followup stacks to +2"
+  ],
+  "exclude_warships": true,
+  "exclude_character_ids": [],
+  "require_character_usable_unit_link": false,
+  "rarity_adjustment": {
+    "1": -5,
+    "2": -4,
+    "3": -2,
+    "4": 0,
+    "5": 0
+  },
+  "tag_points": [
+    {
+      "min": 0,
+      "max": 999,
+      "points": 0
+    }
+  ],
+  "tag_count_exclude_names": [
+    "SSR and Below",
+    "Mass-Produced",
+    "Test Type",
+    "Operation Meteor",
+    "Zero System",
+    "Flash System",
+    "Freeden",
+    "Alternative Series",
+    "U.C. Series",
+    "SEED Series",
+    "Wing Series",
+    "AGE Series",
+    "IBO Series",
+    "Witch from Mercury Series",
+    "Gundam",
+    "GM",
+    "Zaku",
+    "Mono-Eye",
+    "Transforming Unit",
+    "Protagonist",
+    "Rival",
+    "White",
+    "Red",
+    "Black",
+    "Blue",
+    "Gold",
+    "Pink",
+    "Zeon",
+    "Neo Zeon",
+    "EFSF (U.C.)",
+    "ZAFT",
+    "O.M.N.I.",
+    "AEUG",
+    "Celestial Being",
+    "OZ",
+    "Ultimate"
+  ],
+  "tag_count_exclude_suffixes": [
+    " Series",
+    " Fleet"
+  ],
+  "tag_weight": {
+    "bonus_per_match": 0,
+    "cap": 0,
+    "high_value_names": []
+  },
+  "pilot_tag_points": [
+    {
+      "min": 0,
+      "max": 999,
+      "points": 0
+    }
+  ],
+  "pilot_tag_weight": {
+    "bonus_per_match": 1,
+    "cap": 1,
+    "high_value_names": [
+      "Hard ER"
+    ]
+  },
+  "pilot_recommend_role_gate": {
+    "Attack": [
+      "Attack"
+    ],
+    "Support": [
+      "Attack",
+      "Support"
+    ],
+    "Defense": [
+      "Defense"
+    ]
+  },
+  "pilot_skill_tension_gate_regex": "(?i)tension|テンション|when\\s+tension|at\\s+max\\s+tension",
+  "series_affinity_points_each": 3,
+  "recommend_ms_letter_points": {
+    "S+": 5,
+    "S": 5,
+    "A+": 4,
+    "A": 3,
+    "B+": 2
+  },
+  "recommend_ms_multi_bplus_bonus": 1,
+  "pilot_stat_bands": {
+    "Ranged": {
+      "Attack": [
+        {
+          "max_exclusive": 700,
+          "points": 0
+        },
+        {
+          "max_exclusive": 735,
+          "points": 1
+        },
+        {
+          "max_exclusive": 770,
+          "points": 2
+        },
+        {
+          "max_exclusive": 795,
+          "points": 4
+        },
+        {
+          "max_exclusive": null,
+          "points": 6
+        }
+      ],
+      "Defense": [
+        {
+          "max_exclusive": 500,
+          "points": 0
+        },
+        {
+          "max_exclusive": 540,
+          "points": 0
+        },
+        {
+          "max_exclusive": 570,
+          "points": 1
+        },
+        {
+          "max_exclusive": 600,
+          "points": 2
+        },
+        {
+          "max_exclusive": null,
+          "points": 3
+        }
+      ],
+      "Support": [
+        {
+          "max_exclusive": 655,
+          "points": 0
+        },
+        {
+          "max_exclusive": 700,
+          "points": 1
+        },
+        {
+          "max_exclusive": 735,
+          "points": 2
+        },
+        {
+          "max_exclusive": 795,
+          "points": 4
+        },
+        {
+          "max_exclusive": null,
+          "points": 6
+        }
+      ]
+    },
+    "Melee": {
+      "Attack": [
+        {
+          "max_exclusive": 700,
+          "points": 0
+        },
+        {
+          "max_exclusive": 735,
+          "points": 1
+        },
+        {
+          "max_exclusive": 770,
+          "points": 2
+        },
+        {
+          "max_exclusive": 795,
+          "points": 4
+        },
+        {
+          "max_exclusive": null,
+          "points": 6
+        }
+      ],
+      "Defense": [
+        {
+          "max_exclusive": 500,
+          "points": 0
+        },
+        {
+          "max_exclusive": 540,
+          "points": 0
+        },
+        {
+          "max_exclusive": 570,
+          "points": 1
+        },
+        {
+          "max_exclusive": 600,
+          "points": 2
+        },
+        {
+          "max_exclusive": null,
+          "points": 3
+        }
+      ],
+      "Support": [
+        {
+          "max_exclusive": 655,
+          "points": 0
+        },
+        {
+          "max_exclusive": 700,
+          "points": 0
+        },
+        {
+          "max_exclusive": 735,
+          "points": 0
+        },
+        {
+          "max_exclusive": 795,
+          "points": 2
+        },
+        {
+          "max_exclusive": null,
+          "points": 3
+        }
+      ]
+    },
+    "Awaken": {
+      "Attack": [
+        {
+          "max_exclusive": 600,
+          "points": 0
+        },
+        {
+          "max_exclusive": 650,
+          "points": 1
+        },
+        {
+          "max_exclusive": 700,
+          "points": 2
+        },
+        {
+          "max_exclusive": 750,
+          "points": 4
+        },
+        {
+          "max_exclusive": null,
+          "points": 6
+        }
+      ],
+      "Defense": [
+        {
+          "max_exclusive": 500,
+          "points": 0
+        },
+        {
+          "max_exclusive": 550,
+          "points": 0
+        },
+        {
+          "max_exclusive": 600,
+          "points": 1
+        },
+        {
+          "max_exclusive": 700,
+          "points": 2
+        },
+        {
+          "max_exclusive": null,
+          "points": 3
+        }
+      ],
+      "Support": [
+        {
+          "max_exclusive": 600,
+          "points": 0
+        },
+        {
+          "max_exclusive": 650,
+          "points": 1
+        },
+        {
+          "max_exclusive": 700,
+          "points": 2
+        },
+        {
+          "max_exclusive": 750,
+          "points": 4
+        },
+        {
+          "max_exclusive": null,
+          "points": 6
+        }
+      ]
+    },
+    "Defense": {
+      "Attack": [
+        {
+          "max_exclusive": 460,
+          "points": 0
+        },
+        {
+          "max_exclusive": 500,
+          "points": 0
+        },
+        {
+          "max_exclusive": 525,
+          "points": 0
+        },
+        {
+          "max_exclusive": 550,
+          "points": 1
+        },
+        {
+          "max_exclusive": null,
+          "points": 2
+        }
+      ],
+      "Defense": [
+        {
+          "max_exclusive": 700,
+          "points": 0
+        },
+        {
+          "max_exclusive": 725,
+          "points": 2
+        },
+        {
+          "max_exclusive": 750,
+          "points": 4
+        },
+        {
+          "max_exclusive": 775,
+          "points": 6
+        },
+        {
+          "max_exclusive": null,
+          "points": 8
+        }
+      ],
+      "Support": [
+        {
+          "max_exclusive": 500,
+          "points": 0
+        },
+        {
+          "max_exclusive": 525,
+          "points": 0
+        },
+        {
+          "max_exclusive": 550,
+          "points": 0
+        },
+        {
+          "max_exclusive": 650,
+          "points": 2
+        },
+        {
+          "max_exclusive": null,
+          "points": 3
+        }
+      ]
+    },
+    "Reaction": {
+      "Attack": [
+        {
+          "max_exclusive": 550,
+          "points": 0
+        },
+        {
+          "max_exclusive": 575,
+          "points": 0
+        },
+        {
+          "max_exclusive": 600,
+          "points": 0
+        },
+        {
+          "max_exclusive": 650,
+          "points": 1
+        },
+        {
+          "max_exclusive": null,
+          "points": 2
+        }
+      ],
+      "Defense": [
+        {
+          "max_exclusive": 700,
+          "points": 0
+        },
+        {
+          "max_exclusive": 740,
+          "points": 0
+        },
+        {
+          "max_exclusive": 770,
+          "points": 1
+        },
+        {
+          "max_exclusive": 800,
+          "points": 2
+        },
+        {
+          "max_exclusive": null,
+          "points": 3
+        }
+      ],
+      "Support": [
+        {
+          "max_exclusive": 550,
+          "points": 0
+        },
+        {
+          "max_exclusive": 600,
+          "points": 0
+        },
+        {
+          "max_exclusive": 650,
+          "points": 0
+        },
+        {
+          "max_exclusive": 700,
+          "points": 2
+        },
+        {
+          "max_exclusive": null,
+          "points": 3
+        }
+      ]
+    }
+  },
+  "pilot_skill": {
+    "has_useful_points": 1,
+    "great_for_role_points": 2,
+    "two_great_points": 3,
+    "defense_ignore_regex": "(?i)accuracy|命中|ACC\\b",
+    "great_for_role": {
+      "Attack": [
+        "(?i)(?:increase|increases).{0,40}?(?:attack|atk|crit|damage)",
+        "(?i)攻撃力|クリティカル|ダメージ"
+      ],
+      "Defense": [
+        "(?i)(?:increase|increases).{0,40}?(?:defense|def|evasion|eva)",
+        "(?i)防御力|回避|軽減|减伤"
+      ],
+      "Support": [
+        "(?i)(?:reduce|decrease).{0,30}(?:enemy|hostile)|support attack|support defense|援護",
+        "(?i)防御力.{0,12}減|攻撃力.{0,12}減|サポート"
+      ]
+    }
+  },
+  "terrain": {
+    "deploy_min_level": 2,
+    "missing_space_or_land_penalty": -3,
+    "extra_terrain_points": 1,
+    "extra_terrain_keys": [
+      "Atmospheric",
+      "Underwater",
+      "Sea"
+    ],
+    "perfect_min_deployable": 4,
+    "perfect_bonus": 1
+  },
+  "transform_points": 1,
+  "map_ammo_points": {
+    "0": 0,
+    "1": 0,
+    "2": 1,
+    "3": 1,
+    "4": 1
+  },
+  "map_presence_points": 1,
+  "map_dash_points": 1,
+  "ability_structured": {
+    "cap": 3,
+    "permanent_stat_types": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 31, 32, 33, 34],
+    "zero_types": [100, 101, 102],
+    "movement_types": [19, 70, 80, 85, 107],
+    "exclude_name_substrings": [
+      "GN Field",
+      "Positron Reflector",
+      "ポジトロンリフレクター",
+      "GNフィールド"
+    ],
+    "role_points": {
+      "Attack": {
+        "17": 3,
+        "18": 2,
+        "39": 3,
+        "40": 2,
+        "62": 2,
+        "94": 3,
+        "49": 3,
+        "80": 3,
+        "85": 3,
+        "35": 2,
+        "44": 2,
+        "45": 2,
+        "78": 2,
+        "81": 1,
+        "82": 2,
+        "91": 1,
+        "92": 1,
+        "38": 1,
+        "75": 1,
+        "88": 1,
+        "89": 1,
+        "7": 2,
+        "8": 1
+      },
+      "Defense": {
+        "14": 3,
+        "15": 2,
+        "16": 3,
+        "93": 3,
+        "109": 3,
+        "110": 3,
+        "2": 2,
+        "50": 3,
+        "73": 3,
+        "79": 3,
+        "84": 3,
+        "9": 2,
+        "10": 1,
+        "51": 1,
+        "52": 2,
+        "86": 1,
+        "87": 2,
+        "90": 2
+      },
+      "Support": {
+        "38": 3,
+        "75": 2,
+        "88": 3,
+        "89": 2,
+        "51": 2,
+        "52": 2,
+        "86": 3,
+        "87": 3,
+        "90": 2,
+        "3": 1,
+        "20": 2,
+        "42": 2,
+        "43": 2,
+        "83": 2,
+        "17": 2,
+        "7": 2,
+        "70": 2,
+        "107": 2,
+        "19": 2,
+        "80": 2
+      }
+    },
+    "magnitude_points": {
+      "Attack": {
+        "17": [
+          {"max_exclusive": 10, "points": 1},
+          {"max_exclusive": 20, "points": 2},
+          {"max_exclusive": null, "points": 3}
+        ],
+        "39": [
+          {"max_exclusive": 15, "points": 1},
+          {"max_exclusive": 30, "points": 2},
+          {"max_exclusive": null, "points": 3}
+        ],
+        "62": [
+          {"max_exclusive": 15, "points": 1},
+          {"max_exclusive": 30, "points": 2},
+          {"max_exclusive": null, "points": 2}
+        ]
+      },
+      "Defense": {
+        "14": [
+          {"max_exclusive": 10, "points": 1},
+          {"max_exclusive": 20, "points": 2},
+          {"max_exclusive": null, "points": 3}
+        ],
+        "16": [
+          {"max_exclusive": 10, "points": 1},
+          {"max_exclusive": 25, "points": 2},
+          {"max_exclusive": null, "points": 3}
+        ]
+      },
+      "Support": {
+        "38": [
+          {"max_exclusive": 10, "points": 1},
+          {"max_exclusive": 20, "points": 2},
+          {"max_exclusive": null, "points": 3}
+        ],
+        "88": [
+          {"max_exclusive": 10, "points": 1},
+          {"max_exclusive": 25, "points": 2},
+          {"max_exclusive": null, "points": 3}
+        ]
+      }
+    }
+  },
+  "pilot_kit_cap": 14,
+  "pilot_skill_structured": {
+    "role_points": {
+      "Attack": {
+        "8": 3,
+        "12": 2,
+        "13": 3,
+        "19": 2,
+        "20": 2,
+        "21": 2,
+        "9": 2,
+        "10": 2,
+        "11": 2,
+        "24": 2,
+        "25": 2,
+        "5": 1
+      },
+      "Defense": {
+        "6": 3,
+        "14": 3,
+        "17": 3,
+        "18": 3,
+        "23": 2,
+        "27": 2,
+        "1": 1,
+        "24": 1
+      },
+      "Support": {
+        "22": 3,
+        "23": 3,
+        "26": 3,
+        "27": 3,
+        "1": 2,
+        "2": 1,
+        "28": 1,
+        "8": 2,
+        "7": 2,
+        "24": 2,
+        "25": 2,
+        "4": 1
+      }
+    },
+    "magnitude_points": {
+      "Attack": {
+        "8": [
+          {"max_exclusive": 20, "points": 1},
+          {"max_exclusive": 35, "points": 2},
+          {"max_exclusive": null, "points": 3}
+        ],
+        "9": [
+          {"max_exclusive": 15, "points": 2},
+          {"max_exclusive": null, "points": 3}
+        ]
+      },
+      "Defense": {
+        "17": [
+          {"max_exclusive": 20, "points": 1},
+          {"max_exclusive": 40, "points": 2},
+          {"max_exclusive": null, "points": 3}
+        ]
+      },
+      "Support": {
+        "8": [
+          {"max_exclusive": 20, "points": 1},
+          {"max_exclusive": 35, "points": 2},
+          {"max_exclusive": null, "points": 2}
+        ]
+      }
+    },
+    "specialty_types": {
+      "Ranged": 9,
+      "Melee": 10,
+      "Awaken": 11
+    },
+    "specialty_bonus": 1
+  },
+  "ability": {
+    "has_passive_points": 1,
+    "one_great_for_role_points": 2,
+    "two_great_for_role_points": 3,
+    "ignore_pure_stat_passives": true,
+    "exclude_name_substrings": [
+      "GN Field",
+      "Positron Reflector",
+      "ポジトロンリフレクター",
+      "GNフィールド"
+    ],
+    "effect_families": {
+      "Attack": [
+        "(?i)(?:increase|increases|raise).{0,40}?(?:attack|atk).{0,20}?\\d+",
+        "(?i)攻撃力.{0,12}\\d+",
+        "(?i)(?:increase|increases).{0,30}(?:damage dealt|crit)",
+        "(?i)damage dealt",
+        "(?i)クリティカル|ダメージ"
+      ],
+      "Defense": [
+        "(?i)(?:reduce|reduces).{0,30}damage taken",
+        "(?i)damage.{0,12}reduc",
+        "(?i)被(?:ダメ|伤|傷)|軽減|减伤|減傷",
+        "(?i)(?:increase|increases).{0,40}?(?:defense|def|evasion).{0,20}?\\d+",
+        "(?i)防御力.{0,12}\\d+",
+        "(?i)回避"
+      ],
+      "Support": [
+        "(?i)(?:reduce|decrease).{0,30}(?:enemy|hostile).{0,30}(?:def|defense|atk|attack|mob)",
+        "(?i)防御力.{0,12}\\d+.{0,8}減",
+        "(?i)攻撃力.{0,12}\\d+.{0,8}減",
+        "(?i)(?:recover|restore|heal).{0,24}(?:hp|EN)|回復",
+        "(?i)support attack|support defense|援護攻撃|援護防御",
+        "(?i)(?:increase|increases).{0,20}MP|MP.{0,12}增加",
+        "(?i)(?:increase|increases|raise).{0,40}?(?:attack|atk).{0,20}?\\d+"
+      ]
+    },
+    "great_for_role": {
+      "Attack": [
+        "(?i)(?:increase|increases|raise).{0,40}?(?:attack|atk).{0,12}?by\\s+\\d+",
+        "(?i)攻撃力.{0,12}\\d+\\s*[%％].{0,8}上昇",
+        "(?i)damage.{0,20}(?:dealt|increase)|dealt damage"
+      ],
+      "Defense": [
+        "(?i)(?:reduce|reduces).{0,30}damage taken|damage.{0,12}reduc",
+        "(?i)被(?:ダメ|伤|傷)|軽減|减伤|減傷",
+        "(?i)(?:increase|increases).{0,40}?(?:defense|def).{0,12}?by\\s+\\d+",
+        "(?i)防御力.{0,12}\\d+\\s*[%％].{0,8}上昇"
+      ],
+      "Support": [
+        "(?i)(?:reduce|decrease).{0,30}(?:enemy|hostile).{0,20}(?:def|defense|atk|attack|mob)",
+        "(?i)防御力.{0,12}\\d+\\s*[%％].{0,8}減",
+        "(?i)攻撃力.{0,12}\\d+\\s*[%％].{0,8}減",
+        "(?i)(?:recover|restore|heal).{0,24}(?:hp|EN)|回復",
+        "(?i)(?:increase|increases|raise).{0,40}?(?:attack|atk).{0,12}?by\\s+\\d+"
+      ]
+    },
+    "tension_gate_regex": "(?i)tension|テンション|when\\s+tension|at\\s+max\\s+tension",
+    "tension_gated_points_scale": 0
+  },
+  "linked_pilot": {
+    "none_points": 0,
+    "any_points": -1,
+    "very_good_points": 1,
+    "very_good_min_rarity_index": 4,
+    "heuristic": false
+  },
+  "max_tension_higher_tier_weapon_points": 1,
+  "preemptive_strike_points": 1,
+  "rare_debuff_points": 1,
+  "rare_debuff_keys": [
+    "range_beam",
+    "range_phys"
+  ],
+  "extra_life": {
+    "Attack": 1,
+    "Defense": 2,
+    "Support": 1,
+    "unit_id_allowlist": [],
+    "structured_trait_types": [84],
+    "ability_regex": "(?i)extra\\s*life|ejection|脱出|再出撃|復活|reviv|unbreakable"
+  },
+  "support_debuffs_at_range_4": {
+    "0": -1,
+    "1": 0,
+    "2_or_more": 1
+  },
+  "stat_bands": {
+    "HP": {
+      "Attack": [
+        {
+          "max_exclusive": 80000,
+          "points": -3
+        },
+        {
+          "max_exclusive": 86000,
+          "points": -2
+        },
+        {
+          "max_exclusive": 91000,
+          "points": -1
+        },
+        {
+          "max_exclusive": 95000,
+          "points": 0
+        },
+        {
+          "max_exclusive": null,
+          "points": 1
+        }
+      ],
+      "Defense": [
+        {
+          "max_exclusive": 105000,
+          "points": -2
+        },
+        {
+          "max_exclusive": 110000,
+          "points": -1
+        },
+        {
+          "max_exclusive": 125000,
+          "points": 0
+        },
+        {
+          "max_exclusive": 130000,
+          "points": 1
+        },
+        {
+          "max_exclusive": null,
+          "points": 2
+        }
+      ],
+      "Support": [
+        {
+          "max_exclusive": 83000,
+          "points": -1
+        },
+        {
+          "max_exclusive": 86000,
+          "points": -1
+        },
+        {
+          "max_exclusive": 91000,
+          "points": 0
+        },
+        {
+          "max_exclusive": 94000,
+          "points": 1
+        },
+        {
+          "max_exclusive": null,
+          "points": 1
+        }
+      ]
+    },
+    "ATK": {
+      "Attack": [
+        {
+          "max_exclusive": 11600,
+          "points": -2
+        },
+        {
+          "max_exclusive": 11710,
+          "points": 0
+        },
+        {
+          "max_exclusive": 12000,
+          "points": 0
+        },
+        {
+          "max_exclusive": 12400,
+          "points": 1
+        },
+        {
+          "max_exclusive": null,
+          "points": 2
+        }
+      ],
+      "Defense": [
+        {
+          "max_exclusive": 7800,
+          "points": -1
+        },
+        {
+          "max_exclusive": 8100,
+          "points": 0
+        },
+        {
+          "max_exclusive": 8500,
+          "points": 0
+        },
+        {
+          "max_exclusive": 9000,
+          "points": 1
+        },
+        {
+          "max_exclusive": null,
+          "points": 1
+        }
+      ],
+      "Support": [
+        {
+          "max_exclusive": 9000,
+          "points": -3
+        },
+        {
+          "max_exclusive": 9500,
+          "points": -2
+        },
+        {
+          "max_exclusive": 10000,
+          "points": -1
+        },
+        {
+          "max_exclusive": 10500,
+          "points": 1
+        },
+        {
+          "max_exclusive": null,
+          "points": 2
+        }
+      ]
+    },
+    "DEF": {
+      "Attack": [
+        {
+          "max_exclusive": 7800,
+          "points": -1
+        },
+        {
+          "max_exclusive": 8100,
+          "points": 0
+        },
+        {
+          "max_exclusive": 8600,
+          "points": 0
+        },
+        {
+          "max_exclusive": 9100,
+          "points": 1
+        },
+        {
+          "max_exclusive": null,
+          "points": 2
+        }
+      ],
+      "Defense": [
+        {
+          "max_exclusive": 9500,
+          "points": -3
+        },
+        {
+          "max_exclusive": 10500,
+          "points": -2
+        },
+        {
+          "max_exclusive": 11100,
+          "points": 0
+        },
+        {
+          "max_exclusive": 12000,
+          "points": 2
+        },
+        {
+          "max_exclusive": null,
+          "points": 3
+        }
+      ],
+      "Support": [
+        {
+          "max_exclusive": 8300,
+          "points": -1
+        },
+        {
+          "max_exclusive": 8600,
+          "points": 0
+        },
+        {
+          "max_exclusive": 9100,
+          "points": 0
+        },
+        {
+          "max_exclusive": 9400,
+          "points": 0
+        },
+        {
+          "max_exclusive": null,
+          "points": 1
+        }
+      ]
+    },
+    "MOB": {
+      "Attack": [
+        {
+          "max_exclusive": 9200,
+          "points": -1
+        },
+        {
+          "max_exclusive": 9400,
+          "points": 0
+        },
+        {
+          "max_exclusive": 9600,
+          "points": 0
+        },
+        {
+          "max_exclusive": 10000,
+          "points": 1
+        },
+        {
+          "max_exclusive": null,
+          "points": 2
+        }
+      ],
+      "Defense": [
+        {
+          "max_exclusive": 7700,
+          "points": 0
+        },
+        {
+          "max_exclusive": 7800,
+          "points": 0
+        },
+        {
+          "max_exclusive": 8100,
+          "points": 0
+        },
+        {
+          "max_exclusive": 8400,
+          "points": 0
+        },
+        {
+          "max_exclusive": null,
+          "points": 1
+        }
+      ],
+      "Support": [
+        {
+          "max_exclusive": 9200,
+          "points": -1
+        },
+        {
+          "max_exclusive": 9500,
+          "points": 0
+        },
+        {
+          "max_exclusive": 10000,
+          "points": 0
+        },
+        {
+          "max_exclusive": 10500,
+          "points": 1
+        },
+        {
+          "max_exclusive": null,
+          "points": 1
+        }
+      ]
+    }
+  },
+  "shield": {
+    "Attack": {
+      "has": 1,
+      "missing": 0
+    },
+    "Defense": {
+      "has": 1,
+      "missing": -2
+    },
+    "Support": {
+      "has": 1,
+      "missing": 0
+    }
+  },
+  "movement": {
+    "Attack": {
+      "3": -2,
+      "4": 0,
+      "5": 1,
+      "6": 2
+    },
+    "Defense": {
+      "3": -3,
+      "4": -1,
+      "5": 2,
+      "6": 3
+    },
+    "Support": {
+      "3": -1,
+      "4": 0,
+      "5": 1,
+      "6": 2
+    }
+  },
+  "weapon_range": {
+    "Attack": {
+      "1": -4,
+      "2": -3,
+      "3": -2,
+      "4": 0,
+      "5": 1,
+      "6": 3
+    },
+    "Defense": {
+      "1": -2,
+      "2": -1,
+      "3": 0,
+      "4": 0,
+      "5": 1,
+      "6": 2
+    },
+    "Support": {
+      "1": -4,
+      "2": -3,
+      "3": -2,
+      "4": 0,
+      "5": 1,
+      "6": 3
+    }
+  },
+  "weapon_power": {
+    "sp": {
+      "Attack": [
+        {
+          "max_exclusive": 5000,
+          "points": -1
+        },
+        {
+          "max_exclusive": 5400,
+          "points": 0
+        },
+        {
+          "max_exclusive": 5700,
+          "points": 1
+        },
+        {
+          "max_exclusive": 6000,
+          "points": 2
+        },
+        {
+          "max_exclusive": null,
+          "points": 3
+        }
+      ],
+      "Support": [
+        {
+          "max_exclusive": 5000,
+          "points": -1
+        },
+        {
+          "max_exclusive": 5400,
+          "points": 0
+        },
+        {
+          "max_exclusive": 5700,
+          "points": 1
+        },
+        {
+          "max_exclusive": 6000,
+          "points": 2
+        },
+        {
+          "max_exclusive": null,
+          "points": 3
+        }
+      ],
+      "Defense": [
+        {
+          "max_exclusive": 5000,
+          "points": -1
+        },
+        {
+          "max_exclusive": 5400,
+          "points": 0
+        },
+        {
+          "max_exclusive": 5700,
+          "points": 1
+        },
+        {
+          "max_exclusive": 6000,
+          "points": 1
+        },
+        {
+          "max_exclusive": null,
+          "points": 2
+        }
+      ]
+    },
+    "ssp": {
+      "Attack": [
+        {
+          "max_exclusive": 5600,
+          "points": -2
+        },
+        {
+          "max_exclusive": 6000,
+          "points": -1
+        },
+        {
+          "max_exclusive": 6300,
+          "points": 0
+        },
+        {
+          "max_exclusive": 6700,
+          "points": 1
+        },
+        {
+          "max_exclusive": null,
+          "points": 2
+        }
+      ],
+      "Support": [
+        {
+          "max_exclusive": 5600,
+          "points": -2
+        },
+        {
+          "max_exclusive": 6000,
+          "points": -1
+        },
+        {
+          "max_exclusive": 6300,
+          "points": 0
+        },
+        {
+          "max_exclusive": 6700,
+          "points": 1
+        },
+        {
+          "max_exclusive": null,
+          "points": 2
+        }
+      ],
+      "Defense": [
+        {
+          "max_exclusive": 5600,
+          "points": -1
+        },
+        {
+          "max_exclusive": 6000,
+          "points": 0
+        },
+        {
+          "max_exclusive": 6300,
+          "points": 0
+        },
+        {
+          "max_exclusive": 6700,
+          "points": 1
+        },
+        {
+          "max_exclusive": null,
+          "points": 1
+        }
+      ]
+    }
+  },
+  "max_debuff_level": {
+    "Defense": {
+      "none": -2,
+      "0": -2,
+      "3": -1,
+      "4": 0,
+      "5": 1,
+      "6": 2
+    },
+    "Support": {
+      "none": -3,
+      "0": -3,
+      "3": -2,
+      "4": -1,
+      "5": 1,
+      "6": 2
+    }
+  },
+  "debuff_pct_to_level": [
+    {
+      "min_pct": 0,
+      "level": null
+    },
+    {
+      "min_pct": 10,
+      "level": 3
+    },
+    {
+      "min_pct": 20,
+      "level": 4
+    },
+    {
+      "min_pct": 30,
+      "level": 5
+    },
+    {
+      "min_pct": 40,
+      "level": 6
+    }
+  ],
+  "maxweapon_bonus": {
+    "points_by_type": {
+      "0": 0,
+      "1": 2,
+      "2": 1,
+      "3": 0,
+      "4": 2,
+      "5": 1,
+      "6": 1,
+      "7": 2,
+      "8": 2
+    },
+    "ignore_higher_range_when_max_range_lte": 3,
+    "type_labels": {
+      "1": "Critical",
+      "2": "Higher HP",
+      "3": "Lower HP",
+      "4": "Higher range",
+      "5": "Lower range",
+      "6": "Higher MP",
+      "7": "Reduce Def",
+      "8": "Tile / map position"
+    },
+    "trait_type_to_bonus_type": {
+      "39": 1,
+      "40": 1,
+      "62": 1,
+      "94": 1,
+      "82": 2,
+      "81": 3,
+      "45": 4,
+      "44": 5,
+      "92": 6,
+      "91": 6,
+      "38": 7,
+      "88": 7
+    },
+    "detect": {
+      "1": [
+        "(?i)crit(?:ical)?(?:\\s+rate|\\s+chance|\\s+damage)?",
+        "(?i)クリティカル"
+      ],
+      "2": [
+        "(?i)higher your remaining HP",
+        "(?i)Weapon Power increases.{0,40}HP",
+        "(?i)HP.{0,40}Weapon Power increases",
+        "(?i)(?:higher|high)\\s*HP.{0,24}(?:weapon\\s*)?power",
+        "(?i)when\\s+HP\\s+is\\s+(?:high|full|max)",
+        "(?i)高HP|HPが高い"
+      ],
+      "3": [
+        "(?i)lower your remaining HP",
+        "(?i)Weapon Power increases.{0,40}low(?:er)?\\s*HP",
+        "(?i)low(?:er)?\\s*HP.{0,40}Weapon Power",
+        "(?i)(?:lower|low)\\s*HP.{0,24}(?:weapon\\s*)?power",
+        "(?i)when\\s+HP\\s+is\\s+(?:low|lower)",
+        "(?i)低HP|HPが低い"
+      ],
+      "4": [
+        "(?i)(?:higher|high|longer|increased?)\\s*(?:weapon\\s*)?range",
+        "(?i)farther you are from the enemy",
+        "(?i)射程.{0,8}(?:増加|上昇|アップ)"
+      ],
+      "5": [
+        "(?i)(?:lower|low|shorter|reduced?)\\s*(?:weapon\\s*)?range",
+        "(?i)closer you are to the enemy",
+        "(?i)射程.{0,8}(?:減少|低下|ダウン)"
+      ],
+      "6": [
+        "(?i)(?:higher|high|more|increased?)\\s*MP",
+        "(?i)higher your MP",
+        "(?i)MP.{0,8}(?:増加|上昇|アップ)|高MP"
+      ],
+      "7": [
+        "(?i)(?:reduce|reduces|decrease|decreases).{0,24}(?:enemy|hostile)?.{0,12}(?:def|defense)",
+        "(?i)improve decrease DEF weapon",
+        "(?i)防御力.{0,12}(?:減|低下)"
+      ],
+      "8": [
+        "(?i)\\b(?:tile|adjacent|on the map|map\\s*position|within\\s+\\d+\\s*(?:squares?|tiles?|spaces?))\\b",
+        "(?i)隣接|マス|タイル|マップ上"
+      ]
+    }
+  },
+  "letter_cutoffs": [
+    { "min": 15, "letter": "S+" },
+    { "min": 13, "letter": "S" },
+    { "min": 11, "letter": "A+" },
+    { "min": 9, "letter": "A" },
+    { "min": 7, "letter": "B+" },
+    { "min": 5, "letter": "B" },
+    { "min": 2, "letter": "C" },
+    { "min": 0, "letter": "D" },
+    { "min": -999, "letter": "E" }
+  ],
+  "ur_letter_cutoffs": [
+    { "min": 22, "letter": "S+" },
+    { "min": 18, "letter": "S" },
+    { "min": 14, "letter": "A+" },
+    { "min": 12, "letter": "A" },
+    { "min": 10, "letter": "B+" },
+    { "min": 8, "letter": "B" },
+    { "min": 5, "letter": "C" },
+    { "min": 3, "letter": "D" },
+    { "min": -999, "letter": "E" }
+  ],
+  "pilot_letter_cutoffs": [
+    { "min": 24, "letter": "S+" },
+    { "min": 21, "letter": "S" },
+    { "min": 18, "letter": "A+" },
+    { "min": 15, "letter": "A" },
+    { "min": 12, "letter": "B+" },
+    { "min": 9, "letter": "B" },
+    { "min": 5, "letter": "C" },
+    { "min": 2, "letter": "D" },
+    { "min": -999, "letter": "E" }
+  ],
+  "ur_pilot_letter_cutoffs": [
+    { "min": 32, "letter": "S+" },
+    { "min": 26, "letter": "S" },
+    { "min": 22, "letter": "A+" },
+    { "min": 18, "letter": "A" },
+    { "min": 15, "letter": "B+" },
+    { "min": 11, "letter": "B" },
+    { "min": 7, "letter": "C" },
+    { "min": 3, "letter": "D" },
+    { "min": -999, "letter": "E" }
+  ],
+  "bucket_by_letter": {
+    "S+": "recommended",
+    "S": "recommended",
+    "A+": "solid",
+    "A": "solid",
+    "B+": "situational",
+    "B": "situational",
+    "C": "niche",
+    "D": "niche",
+    "E": "niche"
+  },
+  "bucket_labels": {
+    "recommended": "Recommended",
+    "solid": "Solid",
+    "situational": "Situational",
+    "niche": "Niche"
+  },
+  "transform_stat_override_unit_ids": [
+    "1370011100"
+  ],
+  "scoring_guide": {
+    "version": 5.5,
+    "title": "How Investment Guide scoring works",
+    "intro": "Point-sum shortlist for SP/SSP chip investment on mobile suits and pilots (Attack / Defense / Support). Units have separate SP and SSP boards; pilots use SP only. Criteria favor practical sortie tools (MAP, mobility follow-ups, weapon power) over pure roster breadth. Close letters still need a human look.",
+    "overrides": [
+      "Each axis adds points; the total becomes a letter, then a bucket (Recommended / Solid / Situational / Niche).",
+      "Filter by tag or Eternal Road Expert stage to compare units that actually fit the same restriction."
+    ],
+    "gaps": [
+      "Letter cutoffs use separate scales for SP-eligible units/pilots vs UR/Ultimate, so UR kits do not lock out Recommended for chip investment targets.",
+      "Pilot recommended-MS points use this list's unit letters (SP/SSP best).",
+      "Strategic tag weights use how often tags appear on UR rosters (calibrated table).",
+      "Close letters still need a human look."
+    ]
+  },
+  "er_access_points": [
+    {
+      "min": 0,
+      "max": 2,
+      "points": -1
+    },
+    {
+      "min": 3,
+      "max": 6,
+      "points": -1
+    },
+    {
+      "min": 7,
+      "max": 12,
+      "points": 0
+    },
+    {
+      "min": 13,
+      "max": 18,
+      "points": 1
+    },
+    {
+      "min": 19,
+      "max": 24,
+      "points": 2
+    },
+    {
+      "min": 25,
+      "max": 999,
+      "points": 3
+    }
+  ],
+  "tag_strategic": {
+    "limited_ur_weight": 1.5,
+    "permanent_ur_weight": 1.0,
+    "min_ur_weight_to_count": 2.0,
+    "er_mention_bonus_per_stage": 0.15,
+    "include_er_mentioned_below_min": true,
+    "cap_points": 2,
+    "weight_bands": [
+      {
+        "max_exclusive": 3,
+        "points": -1
+      },
+      {
+        "max_exclusive": 8,
+        "points": 0
+      },
+      {
+        "max_exclusive": 15,
+        "points": 1
+      },
+      {
+        "max_exclusive": 25,
+        "points": 2
+      },
+      {
+        "max_exclusive": null,
+        "points": 3
+      }
+    ]
+  },
+  "movement_followup": {
+    "cap": 2,
+    "after_move_map_points": 1,
+    "extra_move_points": 1,
+    "extra_move_regex": "(?i)chance\\s*step|extra\\s+move|boost\\s+mov|movement\\s+(?:up|\\+)|移動力|チャンスステップ"
+  },
+  "map_coverage_points": [
+    {
+      "max_exclusive": 6,
+      "points": 0
+    },
+    {
+      "max_exclusive": 14,
+      "points": 1
+    },
+    {
+      "max_exclusive": 30,
+      "points": 2
+    },
+    {
+      "max_exclusive": null,
+      "points": 3
+    }
+  ],
+  "map_axis_cap": 4,
+  "pilot_tag_strategic": {
+    "limited_ur_weight": 1.5,
+    "permanent_ur_weight": 1.0,
+    "min_ur_weight_to_count": 2.0,
+    "er_mention_bonus_per_stage": 0.15,
+    "include_er_mentioned_below_min": true,
+    "cap_points": 2,
+    "weight_bands": [
+      {
+        "max_exclusive": 3,
+        "points": -1
+      },
+      {
+        "max_exclusive": 8,
+        "points": 0
+      },
+      {
+        "max_exclusive": 15,
+        "points": 1
+      },
+      {
+        "max_exclusive": 25,
+        "points": 2
+      },
+      {
+        "max_exclusive": null,
+        "points": 3
+      }
+    ]
+  },
+  "pilot_er_access_points": [
+    {
+      "min": 0,
+      "max": 2,
+      "points": -1
+    },
+    {
+      "min": 3,
+      "max": 6,
+      "points": -1
+    },
+    {
+      "min": 7,
+      "max": 12,
+      "points": 0
+    },
+    {
+      "min": 13,
+      "max": 18,
+      "points": 1
+    },
+    {
+      "min": 19,
+      "max": 24,
+      "points": 2
+    },
+    {
+      "min": 25,
+      "max": 999,
+      "points": 3
+    }
+  ],
+  "large_footprint": {
+    "Attack": -1,
+    "Support": -1,
+    "Defense": 0
+  }
+}

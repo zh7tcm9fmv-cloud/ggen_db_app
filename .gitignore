@@ -32,6 +32,12 @@ data/published/*.tmp
 data/published/*.pid
 data/published/*.log
 
+# Ko-fi CSV exports contain emails — never commit
+data/kofi/raw/
+data/kofi/_*.json
+data/kofi/_*.txt
+data/kofi/build_meta.json
+
 # Live banner pool vote totals (written at runtime; survive deploys in data/persistent/)
 data/banner_pool_votes.json
 data/persistent/banner_pool_votes.json

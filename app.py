@@ -108,6 +108,7 @@ def _app_js_bundle_version_tag():
         ('js', 'content_notices.js'),
         ('js', 'meta_synergy.js'),
         ('js', 'kofi_donate_promo.js'),
+        ('js', 'kofi_supporter_wall.js'),
         ('css', 'app_shell.css'),
         ('css', 'app_shell_bundle.min.css'),
         ('css', 'unit_best_pilots.css'),
@@ -116,6 +117,7 @@ def _app_js_bundle_version_tag():
         ('css', 'craft_ui.css'),
         ('css', 'master_league.css'),
         ('css', 'kofi_donate_promo.css'),
+        ('css', 'kofi_supporter_wall.css'),
     )
     # Include brand fonts so long-cache ?v= busts when an OTF/TTF is replaced.
     font_assets = (
@@ -14605,6 +14607,7 @@ def _serve_index():
         game_images_use_cdn=GAME_IMAGES_USE_CDN,
         app_js_version=_app_js_bundle_version_tag(),
         app_js_bundle=_app_js_served_bundle_name(),
+        kofi_page_url=KOFI_PAGE_URL,
     ))
     if INDEX_HTML_CACHE_CONTROL:
         r.headers['Cache-Control'] = INDEX_HTML_CACHE_CONTROL
@@ -15396,6 +15399,21 @@ def _sp_investment_public_enabled():
     return str(os.environ.get('SP_INVESTMENT_PUBLIC', '') or '').strip() == '1'
 
 
+def _sp_investment_is_preview_request():
+    """Unlisted preview URL (/sp-list-preview) or explicit ?preview=1 API unlock."""
+    path = (request.path or '').rstrip('/')
+    if path.endswith('/sp-list-preview') or path.endswith('/sp-list-demo'):
+        return True
+    if str(request.args.get('preview') or '').strip() == '1':
+        return True
+    return False
+
+
+def _sp_investment_serve_live():
+    """Full guide page/API: public launch, or unlisted preview."""
+    return _sp_investment_public_enabled() or _sp_investment_is_preview_request()
+
+
 def _sp_investment_json_path():
     if os.path.isfile(_PUBLISHED_SP_INVESTMENT_FILE):
         return _PUBLISHED_SP_INVESTMENT_FILE
@@ -15413,9 +15431,25 @@ def _sp_investment_character_is_sd_linked(cid):
     return False
 
 
+@app.route('/sp-list-preview')
+@app.route('/sp-list-demo')
+def sp_investment_preview_page():
+    """Unlisted preview — not linked from nav. Works while SP_INVESTMENT_PUBLIC is off."""
+    ver = _app_js_bundle_version_tag()
+    r = make_response(render_template(
+        'sp_investment.html',
+        image_cdn=IMAGE_CDN or '',
+        game_images_use_cdn=GAME_IMAGES_USE_CDN,
+        app_js_version=ver,
+        spi_preview=True,
+    ))
+    r.headers['Cache-Control'] = 'no-store'
+    r.headers['X-Robots-Tag'] = 'noindex, nofollow'
+    return r
+
+
 @app.route('/investment-guide')
 @app.route('/sp-list')
-@app.route('/sp-list-demo')
 @app.route('/en/sp-list')
 @app.route('/en/investment-guide')
 def sp_investment_page():
@@ -15435,6 +15469,7 @@ def sp_investment_page():
         image_cdn=IMAGE_CDN or '',
         game_images_use_cdn=GAME_IMAGES_USE_CDN,
         app_js_version=ver,
+        spi_preview=False,
     ))
     r.headers['Cache-Control'] = 'public, max-age=300'
     return r
@@ -15492,7 +15527,7 @@ def _sp_investment_attach_board(buckets, kind):
 @app.route('/api/sp_investment')
 def api_sp_investment():
     """Serve offline SP/SSP investment rankings with portrait thumbnails."""
-    if not _sp_investment_public_enabled():
+    if not _sp_investment_serve_live():
         return jsonify({'error': 'Investment Guide is under review'}), 404
     path = _sp_investment_json_path()
     if not os.path.isfile(path):
@@ -15514,12 +15549,14 @@ def api_sp_investment():
     chars = payload.get('characters') or {}
     if chars:
         _sp_investment_attach_board(chars.get('sp'), 'character')
-    if not payload.get('scoring_guide'):
+    if not payload.get('scoring_guide') or _sp_investment_is_preview_request():
         try:
             import sp_investment_rank as _sir
+            _sir.clear_rules_cache()
             payload['scoring_guide'] = _sir.scoring_guide_payload()
         except Exception:
-            payload['scoring_guide'] = {}
+            if not payload.get('scoring_guide'):
+                payload['scoring_guide'] = {}
     ck = f"sp_investment_v1_{int(os.path.getmtime(path))}"
     return jsonify_cacheable(payload, ck, public=True, max_age=300, convert_images=True)
 
@@ -15964,6 +16001,42 @@ def api_kofi_status():
     r = jsonify(payload)
     r.headers['Cache-Control'] = 'public, max-age=60'
     return r
+
+
+def _kofi_supporter_wall_path():
+    return os.path.join(app_dir, 'data', 'published', 'kofi_supporter_wall.json')
+
+
+def _load_kofi_supporter_wall():
+    path = _kofi_supporter_wall_path()
+    try:
+        with open(path, encoding='utf-8') as f:
+            row = json.load(f)
+        if isinstance(row, dict) and isinstance(row.get('supporters'), list):
+            return row
+    except (OSError, json.JSONDecodeError, TypeError, ValueError):
+        pass
+    return {
+        'version': 1,
+        'title': 'Thank you to {n} folks keeping this open.',
+        'join_label': 'Join the wall',
+        'count': 0,
+        'supporters': [],
+    }
+
+
+@app.route('/api/kofi/supporter-wall')
+def api_kofi_supporter_wall():
+    """Public supporter wall (names + thumbs only)."""
+    payload = dict(_load_kofi_supporter_wall())
+    payload['join_url'] = KOFI_PAGE_URL
+    payload['count'] = len(payload.get('supporters') or [])
+    # Stable cache key from file mtime when available
+    try:
+        mtime = int(os.path.getmtime(_kofi_supporter_wall_path()))
+    except OSError:
+        mtime = 0
+    return jsonify_cacheable(payload, f'kofi_supporter_wall:{mtime}', public=True, max_age=3600)
 
 
 @app.route('/admin/kofi-notice')

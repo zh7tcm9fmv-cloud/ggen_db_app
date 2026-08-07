@@ -7,16 +7,21 @@ from sp_investment_rank import (
     bucket_for_letter,
     clear_rules_cache,
     detect_weapon_bonus_type,
+    er_access_points,
     filter_scored_unit_tags,
     letter_for_total,
     load_rules,
+    map_coverage_points,
     pilot_tag_count_points,
     score_abilities,
+    score_ability_effects,
     score_features,
     score_pilot_features,
+    score_pilot_kit_structured,
+    strategic_tag_points,
     tag_count_points,
-    tag_weight_points,
     terrain_coverage_points,
+    weapon_power_bands_for_mode,
 )
 
 
@@ -26,8 +31,10 @@ class TestSpInvestmentBands(unittest.TestCase):
         clear_rules_cache()
         cls.rules = load_rules()
 
-    def test_rules_version_4(self):
-        self.assertEqual(self.rules.get("version"), 4)
+    def test_rules_version_5(self):
+        self.assertEqual(self.rules.get("version"), 5)
+        self.assertEqual(self.rules["bucket_labels"]["recommended"], "Recommended")
+        self.assertEqual(self.rules["bucket_labels"]["niche"], "Niche")
 
     def test_tag_points_disabled(self):
         self.assertEqual(tag_count_points(self.rules, 2), 0)
@@ -48,13 +55,24 @@ class TestSpInvestmentBands(unittest.TestCase):
         )
         self.assertEqual(scored, ["One-Shot Killer", "Land", "Aerial Use"])
 
-    def test_tag_weight_cap(self):
-        pts, meta = tag_weight_points(
+    def test_strategic_tag_bands(self):
+        table = {
+            "one-shot killer": {"ur_weight": 10.0, "er_mentions": 2, "effective_weight": 13.0},
+            "land": {"ur_weight": 8.0, "er_mentions": 0, "effective_weight": 8.0},
+        }
+        pts, meta = strategic_tag_points(
             self.rules,
-            ["One-Shot Killer", "Tough as Nails", "Land", "Aerial Use"],
+            ["One-Shot Killer", "Land", "Wing Series"],
+            table,
         )
-        self.assertEqual(pts, 2)
-        self.assertGreaterEqual(len(meta["matches"]), 2)
+        self.assertEqual(pts, 2)  # weight 21 → band 15-25 = +2
+        self.assertGreaterEqual(meta["weight"], 15)
+
+    def test_er_access_bands(self):
+        self.assertEqual(er_access_points(self.rules, 1), -1)
+        self.assertEqual(er_access_points(self.rules, 10), 0)
+        self.assertEqual(er_access_points(self.rules, 20), 2)
+        self.assertEqual(er_access_points(self.rules, 28), 3)
 
     def test_atk_attacker_bands_sheet(self):
         bands = self.rules["stat_bands"]["ATK"]["Attack"]
@@ -63,11 +81,15 @@ class TestSpInvestmentBands(unittest.TestCase):
         self.assertEqual(band_points(bands, 12000), 1)
         self.assertEqual(band_points(bands, 12400), 2)
 
-    def test_weapon_power_top_tier_6200(self):
-        bands = self.rules["weapon_power"]["Attack"]
-        self.assertEqual(band_points(bands, 5899), 0)
-        self.assertEqual(band_points(bands, 5900), 1)
-        self.assertEqual(band_points(bands, 6200), 3)
+    def test_weapon_power_sp_vs_ssp(self):
+        sp = weapon_power_bands_for_mode(self.rules, "sp", "Attack")
+        ssp = weapon_power_bands_for_mode(self.rules, "ssp", "Attack")
+        self.assertEqual(band_points(sp, 5200), 0)
+        self.assertEqual(band_points(sp, 5500), 1)
+        self.assertEqual(band_points(sp, 6100), 3)
+        self.assertEqual(band_points(ssp, 5800), -1)
+        self.assertEqual(band_points(ssp, 6100), 0)
+        self.assertEqual(band_points(ssp, 6800), 2)
 
     def test_def_move_4_is_minus_one(self):
         base = _minimal_features(role="Defense", MOV=4)
@@ -98,7 +120,8 @@ class TestSpInvestmentBands(unittest.TestCase):
             terrain={"Space": 3, "Atmospheric": 3, "Ground": 3, "Sea": 1, "Underwater": 2}
         )
         scored = score_features(feats, self.rules, mode="sp")
-        self.assertEqual(scored["breakdown"]["terrain"], 2)
+        # Atmo+UW extras = 2; deployable Space/Land/Atmo/UW = 4 → perfect +1 → 3
+        self.assertEqual(scored["breakdown"]["terrain"], 3)
 
     def test_terrain_missing_land_penalty(self):
         feats = _minimal_features(
@@ -107,9 +130,9 @@ class TestSpInvestmentBands(unittest.TestCase):
             terrain={"Space": 3, "Atmospheric": 3, "Ground": 1, "Sea": 1, "Underwater": 1},
         )
         scored = score_features(feats, self.rules, mode="sp")
-        self.assertEqual(scored["breakdown"]["terrain"], -2)
+        self.assertEqual(scored["breakdown"]["terrain"], -3)
         pts, meta = terrain_coverage_points(self.rules, feats["terrain"])
-        self.assertEqual(pts, -2)
+        self.assertEqual(pts, -3)
         self.assertFalse(meta["has_land"])
 
     def test_rarity_adjustment_n_vs_ssr(self):
@@ -119,11 +142,39 @@ class TestSpInvestmentBands(unittest.TestCase):
         self.assertEqual(ssr["breakdown"]["rarity"], 0)
         self.assertEqual(ssr["total"] - n["total"], 5)
 
-    def test_map_ammo(self):
-        feats = _minimal_features(map_ammo=1)
+    def test_map_ammo_and_coverage_cap(self):
+        # Presence +1; coverage <6 → 0; total 1
+        feats = _minimal_features(has_map_weapon=True, map_ammo=1, map_coverage_cells=5)
         self.assertEqual(score_features(feats, self.rules)["breakdown"]["map"], 1)
-        feats2 = _minimal_features(map_ammo=3)
-        self.assertEqual(score_features(feats2, self.rules)["breakdown"]["map"], 2)
+        # Presence + dash + ammo2+ + coverage3 = 6 → cap 4
+        feats2 = _minimal_features(
+            has_map_weapon=True,
+            has_dash_map=True,
+            map_ammo=3,
+            map_coverage_cells=50,
+        )
+        self.assertEqual(score_features(feats2, self.rules)["breakdown"]["map"], 4)
+        self.assertEqual(map_coverage_points(self.rules, 20), 2)
+
+    def test_map_presence_and_dash(self):
+        none = score_features(_minimal_features(has_map_weapon=False, map_ammo=0), self.rules)
+        any_map = score_features(
+            _minimal_features(has_map_weapon=True, map_ammo=1, map_coverage_cells=0),
+            self.rules,
+        )
+        dash = score_features(
+            _minimal_features(
+                has_map_weapon=True,
+                has_dash_map=True,
+                map_ammo=1,
+                map_coverage_cells=0,
+            ),
+            self.rules,
+        )
+        self.assertEqual(none["breakdown"]["map"], 0)
+        self.assertEqual(any_map["breakdown"]["map"], 1)
+        self.assertEqual(dash["breakdown"]["map"], 2)
+        self.assertEqual(dash["total"] - any_map["total"], 1)
 
     def test_shield_strictly_better(self):
         a = score_features(_minimal_features(has_shield=False), self.rules)
@@ -149,53 +200,9 @@ class TestSpInvestmentBands(unittest.TestCase):
         pts, meta = score_abilities(
             self.rules,
             "Attack",
-            ["Increased Attack LV 3\nIncrease Attack by 15%."],
+            ["Increased Attack\nIncrease Attack by 10%."],
         )
         self.assertEqual(pts, 0)
-        self.assertEqual(meta.get("skipped_stat"), 1)
-
-    def test_tension_gated_ability_ignored(self):
-        pts, meta = score_abilities(
-            self.rules,
-            "Support",
-            ["Overdrive\nWhen tension is Super Strong, increases attack by 20%"],
-        )
-        self.assertEqual(pts, 0)
-        self.assertGreaterEqual(meta.get("skipped_tension", 0), 1)
-
-    def test_great_ability_attacker(self):
-        pts, meta = score_abilities(
-            self.rules,
-            "Attack",
-            ["Overboost\nIncreases attack by 20%"],
-        )
-        self.assertEqual(pts, 2)
-        self.assertEqual(meta["great"], 1)
-
-    def test_letter_and_bucket_sheet(self):
-        self.assertEqual(letter_for_total(self.rules, 22), "S+")
-        self.assertEqual(letter_for_total(self.rules, 18), "S")
-        self.assertEqual(letter_for_total(self.rules, 14), "A+")
-        self.assertEqual(letter_for_total(self.rules, 12), "A")
-        self.assertEqual(letter_for_total(self.rules, 10), "B+")
-        self.assertEqual(letter_for_total(self.rules, 8), "B")
-        self.assertEqual(letter_for_total(self.rules, 5), "C")
-        self.assertEqual(letter_for_total(self.rules, 3), "D")
-        self.assertEqual(letter_for_total(self.rules, 2), "E")
-        self.assertEqual(bucket_for_letter(self.rules, "S+"), "priority")
-        self.assertEqual(bucket_for_letter(self.rules, "A"), "strong")
-        self.assertEqual(bucket_for_letter(self.rules, "B"), "situational")
-        self.assertEqual(bucket_for_letter(self.rules, "E"), "low")
-
-    def test_support_r4_debuffs(self):
-        feats = _minimal_features(role="Support", support_debuffs_range4_count=0)
-        self.assertEqual(score_features(feats, self.rules)["breakdown"]["support_r4_debuffs"], -1)
-        feats2 = _minimal_features(role="Support", support_debuffs_range4_count=2)
-        self.assertEqual(score_features(feats2, self.rules)["breakdown"]["support_r4_debuffs"], 1)
-
-    def test_support_max_debuff_softened(self):
-        feats = _minimal_features(role="Support", max_debuff_pct=0)
-        self.assertEqual(score_features(feats, self.rules)["breakdown"]["max_debuff"], -2)
 
     def test_weapon_bonus_typed(self):
         tid, pts = detect_weapon_bonus_type(
@@ -203,35 +210,66 @@ class TestSpInvestmentBands(unittest.TestCase):
             ["Increases critical rate when HP is high"],
         )
         self.assertIn(tid, (1, 2))
-        self.assertEqual(pts, 1)
+        self.assertGreaterEqual(pts, 1)
         tid_low, pts_low = detect_weapon_bonus_type(
             self.rules,
             ["Deals more damage when HP is low"],
         )
         self.assertEqual(tid_low, 3)
         self.assertEqual(pts_low, 0)
+        tid_hp, pts_hp = detect_weapon_bonus_type(
+            self.rules,
+            ["The higher your remaining HP is, the greater Weapon Power increases (up to 25%)."],
+        )
+        self.assertEqual(tid_hp, 2)
+        self.assertEqual(pts_hp, 1)
+
+    def test_extra_life_structured_not_heuristic(self):
+        feats = _minimal_features(has_extra_life=True, extra_life_source="structured")
+        scored = score_features(feats, self.rules)
+        self.assertGreater(scored["breakdown"]["extra_life"], 0)
+        self.assertNotIn("extra_life", scored["meta"].get("heuristic_keys") or [])
+        self.assertTrue((scored["meta"].get("extra_life") or {}).get("structured"))
+
+    def test_linked_pilot_not_heuristic(self):
+        feats = _minimal_features(has_linked_pilot=True, linked_pilot_very_good=True)
+        scored = score_features(feats, self.rules)
+        self.assertEqual(scored["breakdown"]["linked_pilot"], 1)
+        self.assertNotIn("linked_pilot", scored["meta"].get("heuristic_keys") or [])
+        self.assertFalse((scored["meta"].get("linked_pilot") or {}).get("heuristic"))
+
+    def test_weapon_bonus_structured_flag(self):
+        feats = _minimal_features(
+            weapon_bonus_type=1,
+            weapon_bonus_points=2,
+            weapon_bonus_structured=True,
+        )
+        scored = score_features(feats, self.rules)
+        self.assertEqual(scored["breakdown"]["weapon_bonus"], 2)
+        self.assertTrue((scored["meta"].get("weapon_bonus") or {}).get("structured"))
+        self.assertNotIn("weapon_bonus", scored["meta"].get("heuristic_keys") or [])
 
     def test_higher_range_bonus_ignored_when_short_range(self):
         short = _minimal_features(
             weapon_range=2,
             weapon_bonus_type=4,
-            weapon_bonus_points=1,
+            weapon_bonus_points=2,
         )
         self.assertEqual(score_features(short, self.rules)["breakdown"]["weapon_bonus"], 0)
         long = _minimal_features(
             weapon_range=5,
             weapon_bonus_type=4,
-            weapon_bonus_points=1,
+            weapon_bonus_points=2,
         )
-        self.assertEqual(score_features(long, self.rules)["breakdown"]["weapon_bonus"], 1)
+        self.assertEqual(score_features(long, self.rules)["breakdown"]["weapon_bonus"], 2)
 
     def test_weapon_bonus_in_score(self):
         base = _minimal_features(weapon_bonus_type=0, weapon_bonus_points=0)
-        with_bonus = _minimal_features(weapon_bonus_type=1, weapon_bonus_points=1)
+        with_bonus = _minimal_features(weapon_bonus_type=1, weapon_bonus_points=2)
         self.assertEqual(
             score_features(with_bonus, self.rules)["breakdown"]["weapon_bonus"]
             - score_features(base, self.rules)["breakdown"]["weapon_bonus"],
-            1,
+            2,
         )
 
     def test_pilot_tag_points_zeroed(self):
@@ -243,25 +281,10 @@ class TestSpInvestmentBands(unittest.TestCase):
             "role": "Attack",
             "tag_count": 4,
             "tags": ["Alternative Series", "Protagonist", "Hard ER", "Mono-Eye Pilot"],
-            "kit_items": [
-                {
-                    "kind": "skill",
-                    "name": "Ranged Boost LV 3",
-                    "blob": "Ranged Boost LV 3\nIncrease Ranged by 15% [1 turn].",
-                    "is_affinity": False,
-                },
-                {
-                    "kind": "skill",
-                    "name": "Sway LV 1",
-                    "blob": "Sway LV 1\nDuring the next fight after activating the effect, increase Evasion by 100%.",
-                    "is_affinity": False,
-                },
-                {
-                    "kind": "ability",
-                    "name": "Affinity: Operation Meteor LV 2",
-                    "blob": "Affinity: Operation Meteor LV 2\nWhen piloting units with specified tags…",
-                    "is_affinity": True,
-                },
+            "ability_effects": [],
+            "skill_effects": [
+                {"trait_type_index": 9, "trait_value": 15},
+                {"trait_type_index": 6, "trait_value": 100},
             ],
             "series_affinity_count": 1,
             "best_rec_ms_letter": "S",
@@ -278,56 +301,225 @@ class TestSpInvestmentBands(unittest.TestCase):
         self.assertEqual(scored["breakdown"]["recommend_ms"], 6)  # S=5 + multi bonus
         self.assertEqual(scored["breakdown"]["ranged"], 6)
         self.assertEqual(scored["specialty"], "Ranged")
-        self.assertEqual(scored["breakdown"]["skills_abilities"], 8)
-        self.assertGreaterEqual(scored["total"], 18)
+        self.assertGreaterEqual(scored["breakdown"]["skills_abilities"], 3)
+        self.assertFalse((scored["meta"].get("kit") or {}).get("heuristic"))
         self.assertTrue(any(x.get("kind") == "stat" and x.get("key") == "Ranged" for x in scored["detail_lines"]))
 
     def test_strong_attacker_golden_total(self):
-        """Hand-built strong attacker against sheet v4 bands."""
+        """Hand-built strong attacker against v5 bands."""
         feats = {
             "role": "Attack",
             "rarity_id": "4",
             "tag_count_scored": 5,
             "tags": ["One-Shot Killer", "Land", "Aerial Use", "Tough as Nails"],
+            "tag_strategic_table": {
+                "one-shot killer": {"ur_weight": 12.0, "er_mentions": 1, "effective_weight": 13.8},
+                "land": {"ur_weight": 10.0, "er_mentions": 0, "effective_weight": 10.0},
+                "aerial use": {"ur_weight": 6.0, "er_mentions": 0, "effective_weight": 6.0},
+                "tough as nails": {"ur_weight": 4.0, "er_mentions": 0, "effective_weight": 4.0},
+            },
+            "er_expert_eligible_count": 20,
             "terrain": {"Space": 3, "Atmospheric": 3, "Ground": 2, "Sea": 1, "Underwater": 1},
-            # terrain: Space+Land + Atmo = +1
-            "has_transform": True,  # +1
-            "map_ammo": 2,  # +2
-            "ability_blobs": ["Boost\nIncreases damage dealt by 15%"],  # +2 great
+            "has_transform": True,
+            "map_ammo": 2,
+            "map_coverage_cells": 22,
+            "has_map_weapon": True,
+            "has_dash_map": False,
+            "ability_effects": [
+                {
+                    "trait_type_index": 17,
+                    "trait_type_key": "DamageGivenCorrectionRate",
+                    "trait_value": 15,
+                    "has_active_cond": True,
+                }
+            ],
             "has_linked_pilot": True,
-            "linked_pilot_very_good": True,  # +1
-            "has_shield": True,  # +1
-            "HP": 96000,  # +1
-            "ATK": 12500,  # +2
-            "DEF": 9200,  # +2
-            "MOB": 10100,  # +2
-            "MOV": 6,  # +2
-            "weapon_range": 6,  # +3
-            "weapon_power": 6300,  # +3
+            "linked_pilot_very_good": True,
+            "has_shield": True,
+            "HP": 96000,
+            "ATK": 12500,
+            "DEF": 9200,
+            "MOB": 10100,
+            "MOV": 6,
+            "weapon_range": 6,
+            "weapon_power": 6100,
             "weapon_bonus_type": 1,
-            "weapon_bonus_points": 1,  # +1
+            "weapon_bonus_points": 2,
             "has_max_tension_higher_weapon": False,
-            "has_preemptive": True,  # +1
+            "has_preemptive": True,
             "has_rare_debuff": False,
             "has_extra_life": False,
+            "has_after_move_map": False,
+            "has_extra_move_kit": False,
             "max_debuff_pct": 0,
             "support_debuffs_range4_count": 0,
         }
         scored = score_features(feats, self.rules, mode="sp")
         self.assertEqual(scored["breakdown"]["tags"], 0)
-        self.assertEqual(scored["breakdown"]["tags_weight"], 2)
-        self.assertEqual(scored["breakdown"]["terrain"], 1)
-        self.assertEqual(scored["breakdown"]["weapon_bonus"], 1)
-        self.assertEqual(scored["breakdown"]["rarity"], 0)
-        # weight2 +terrain1 +transform1+map2+abil2+linked1 +pre1
-        # +hp1+atk2+def2+mob2+shield1+mov2+wr3+wp3+wb1 = 27
-        self.assertEqual(scored["total"], 27)
+        self.assertEqual(scored["breakdown"]["tags_weight"], 0)
+        self.assertEqual(scored["breakdown"]["tags_strategic"], 2)  # weight ~33.8 → capped +2
+        self.assertEqual(scored["breakdown"]["er_access"], 2)
+        self.assertEqual(scored["breakdown"]["terrain"], 1)  # Atmo only (2 deployable extras? Space Land Atmo = 3, not perfect)
+        self.assertEqual(scored["breakdown"]["map"], 4)  # presence + ammo2+ + cov2
+        self.assertEqual(scored["breakdown"]["weapon_power"], 3)
+        self.assertEqual(scored["breakdown"]["weapon_bonus"], 2)
+        self.assertEqual(scored["breakdown"]["abilities"], 2)  # dmg given 15% magnitude band
+        self.assertFalse(scored["meta"].get("abilities", {}).get("heuristic"))
+        self.assertNotIn("abilities", scored["meta"].get("heuristic_keys") or [])
         self.assertEqual(scored["letter"], "S+")
-        self.assertEqual(scored["bucket"], "priority")
+        self.assertEqual(scored["bucket"], "recommended")
+        self.assertEqual(bucket_for_letter(self.rules, "A"), "solid")
+        self.assertEqual(bucket_for_letter(self.rules, "C"), "niche")
+
+    def test_structured_permanent_atk_scores_zero(self):
+        pts, meta = score_ability_effects(
+            self.rules,
+            "Attack",
+            [
+                {
+                    "trait_type_index": 7,
+                    "trait_value": 20,
+                    "has_active_cond": False,
+                    "trait_type_key": "AttackChangeRate",
+                }
+            ],
+        )
+        self.assertEqual(pts, 0)
+        self.assertFalse(meta.get("heuristic"))
+
+    def test_structured_conditional_dmg_scores(self):
+        pts, _meta = score_ability_effects(
+            self.rules,
+            "Attack",
+            [
+                {
+                    "trait_type_index": 17,
+                    "trait_value": 15,
+                    "has_active_cond": True,
+                }
+            ],
+        )
+        self.assertEqual(pts, 2)  # magnitude band 10–19 → 2
+
+    def test_structured_dmg_high_magnitude(self):
+        pts, _meta = score_ability_effects(
+            self.rules,
+            "Attack",
+            [
+                {
+                    "trait_type_index": 17,
+                    "trait_value": 25,
+                    "has_active_cond": True,
+                }
+            ],
+        )
+        self.assertEqual(pts, 3)
+
+    def test_classify_range_down_beam(self):
+        from sp_investment_rank import classify_debuff_keys_from_meta
+
+        keys = classify_debuff_keys_from_meta(
+            {
+                "type_index": 12,
+                "status_type_index": 72,
+                "status_value": -2,
+                "twc_id": "5",
+                "weapon_attrs": [2],
+                "magnitude": 2,
+                "timing": 3,
+                "limit": 1,
+            }
+        )
+        self.assertEqual(keys, {"range_beam"})
+
+    def test_pilot_kit_structured_cap(self):
+        ability_effects = [
+            {"trait_type_index": 17, "trait_value": 20, "has_active_cond": True},
+            {"trait_type_index": 94, "trait_value": 1, "has_active_cond": True},
+            {"trait_type_index": 49, "trait_value": 1, "has_active_cond": True},
+        ]
+        skill_effects = [
+            {"trait_type_index": 8, "trait_value": 30},
+            {"trait_type_index": 13, "trait_value": 1},
+            {"trait_type_index": 9, "trait_value": 20},
+        ]
+        pts, meta = score_pilot_kit_structured(
+            self.rules, "Attack", "Ranged", ability_effects, skill_effects
+        )
+        self.assertLessEqual(pts, int(self.rules.get("pilot_kit_cap", 14)))
+        self.assertTrue(meta.get("structured"))
+        self.assertFalse(meta.get("heuristic"))
+
+    def test_scoring_guide_has_no_en_cost(self):
+        guide = self.rules.get("scoring_guide") or {}
+        blob = " ".join(guide.get("overrides") or []) + " ".join(guide.get("gaps") or [])
+        self.assertNotIn("EN cost", blob)
+
+    def test_public_criteria_from_live_rules(self):
+        from sp_investment_rank import build_public_criteria, scoring_guide_payload
+
+        crit = build_public_criteria(self.rules)
+        ids = [c["id"] for c in crit]
+        self.assertIn("er_access", ids)
+        self.assertIn("weapon_power_sp", ids)
+        self.assertIn("map", ids)
+        self.assertNotIn("not_scored", ids)
+        er = next(c for c in crit if c["id"] == "er_access")
+        self.assertTrue(er["objective"])
+        self.assertGreaterEqual(len(er["rows"]), 4)
+        guide = scoring_guide_payload(self.rules)
+        self.assertEqual(len(guide.get("criteria") or []), len(crit))
+        map_c = next(c for c in crit if c["id"] == "map")
+        blob = " ".join(f"{r['when']} {r['result']}" for r in map_c["rows"])
+        self.assertIn("Any MAP weapon", blob)
+        self.assertIn("Dash", blob)
 
     def test_low_hp_attacker_penalty(self):
         scored = score_features(_minimal_features(HP=79000), self.rules)
         self.assertEqual(scored["breakdown"]["hp"], -3)
+
+    def test_movement_followup_after_move_map(self):
+        a = score_features(_minimal_features(has_after_move_map=True), self.rules)
+        self.assertEqual(a["breakdown"]["movement_followup"], 1)
+
+    def test_movement_followup_stacks(self):
+        both = score_features(
+            _minimal_features(has_after_move_map=True, has_extra_move_kit=True),
+            self.rules,
+        )
+        self.assertEqual(both["breakdown"]["movement_followup"], 2)
+
+    def test_large_footprint_tax(self):
+        a = score_features(_minimal_features(is_large_footprint=True), self.rules)
+        self.assertEqual(a["breakdown"]["large_footprint"], -1)
+        d = score_features(
+            _minimal_features(role="Defense", is_large_footprint=True), self.rules
+        )
+        self.assertEqual(d["breakdown"]["large_footprint"], 0)
+
+    def test_pilot_er_and_rarity(self):
+        feats = {
+            "role": "Attack",
+            "rarity_id": "1",
+            "tag_count": 0,
+            "tags": ["Hard ER"],
+            "tag_strategic_table": {},
+            "er_expert_eligible_count": 20,
+            "kit_items": [],
+            "series_affinity_count": 0,
+            "best_rec_ms_letter": "",
+            "rec_ms_bplus_or_better_count": 0,
+            "Ranged": 700,
+            "Melee": 700,
+            "Awaken": 600,
+            "Defense": 500,
+            "Reaction": 550,
+        }
+        scored = score_pilot_features(feats, self.rules)
+        self.assertEqual(scored["breakdown"]["er_access"], 2)
+        self.assertEqual(scored["breakdown"]["rarity"], -5)
+        self.assertEqual(scored["breakdown"]["tags"], 1)  # Hard ER curated
+        self.assertEqual(scored["bucket"], bucket_for_letter(self.rules, scored["letter"]))
 
 
 def _minimal_features(**overrides):
@@ -337,26 +529,34 @@ def _minimal_features(**overrides):
         "tag_count": 0,
         "tag_count_scored": 0,
         "tags": [],
+        "tag_strategic_table": {},
+        "er_expert_eligible_count": 10,
         "terrain": {"Space": 1, "Atmospheric": 1, "Ground": 1, "Sea": 1, "Underwater": 1},
         "has_transform": False,
         "map_ammo": 0,
+        "map_coverage_cells": 0,
+        "has_map_weapon": False,
+        "has_dash_map": False,
         "ability_blobs": [],
         "has_linked_pilot": False,
         "linked_pilot_very_good": False,
         "has_shield": True,
+        "is_large_footprint": False,
         "HP": 88000,
         "ATK": 11800,
         "DEF": 8200,
         "MOB": 9300,
         "MOV": 4,
         "weapon_range": 4,
-        "weapon_power": 5500,
+        "weapon_power": 5200,
         "weapon_bonus_type": 0,
         "weapon_bonus_points": 0,
         "has_max_tension_higher_weapon": False,
         "has_preemptive": False,
         "has_rare_debuff": False,
         "has_extra_life": False,
+        "has_after_move_map": False,
+        "has_extra_move_kit": False,
         "max_debuff_pct": 0,
         "support_debuffs_range4_count": 0,
     }

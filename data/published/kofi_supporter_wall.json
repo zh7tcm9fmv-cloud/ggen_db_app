@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "title": "Thank you to {n} folks keeping this open.",
+  "join_label": "Join the wall",
+  "count": 18,
+  "supporters": [
+    {
+      "name": "Phil",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": true
+    },
+    {
+      "name": "Fire Red",
+      "thumb": "/static/images/KofiSupporters/fire_red.png",
+      "crown": false
+    },
+    {
+      "name": "岳尚賢",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": false
+    },
+    {
+      "name": "manafusion",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": false
+    },
+    {
+      "name": "Kamen Rider Decade",
+      "thumb": "/static/images/KofiSupporters/kamen_rider_decade.png",
+      "crown": false
+    },
+    {
+      "name": "Fortexfiend",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": false
+    },
+    {
+      "name": "Rain",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": false
+    },
+    {
+      "name": "休閒享樂",
+      "thumb": "/static/images/KofiSupporters/xiuxian_xiangle.png",
+      "crown": false
+    },
+    {
+      "name": "2PMgaming",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": false
+    },
+    {
+      "name": "大漢Erection",
+      "thumb": "/static/images/KofiSupporters/dahan_erection.png",
+      "crown": false
+    },
+    {
+      "name": "戳戳",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": false
+    },
+    {
+      "name": "A俊",
+      "thumb": "/static/images/KofiSupporters/ajun.png",
+      "crown": false
+    },
+    {
+      "name": "Ko-fi User",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": false
+    },
+    {
+      "name": "SP",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": false
+    },
+    {
+      "name": "Supporter",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": false
+    },
+    {
+      "name": "TheOtherMC",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": false
+    },
+    {
+      "name": "ymca",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": false
+    },
+    {
+      "name": "老狗司機",
+      "thumb": "/static/images/KofiSupporters/laogou_siji.png",
+      "crown": false
+    }
+  ]
+}

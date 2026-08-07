@@ -13,11 +13,13 @@ from pathlib import Path
 from typing import Any
 
 ROOT = Path(__file__).resolve().parent
-RULES_PATH = ROOT / "data" / "sp_investment" / "sp_investment_rules_v2.json"
+RULES_PATH = ROOT / "data" / "sp_investment" / "sp_investment_rules_v5.json"
 
 ROLE_BY_ID = {"1": "Attack", "2": "Defense", "3": "Support"}
 TERRAIN_KEYS = ("Space", "Atmospheric", "Ground", "Sea", "Underwater")
-HEURISTIC_KEYS = frozenset({"abilities", "linked_pilot", "extra_life", "rare_debuff", "tags_weight"})
+HEURISTIC_KEYS = frozenset(
+    {"abilities", "extra_life", "rare_debuff", "tags_strategic", "movement_followup"}
+)
 
 
 @lru_cache(maxsize=1)
@@ -28,6 +30,8 @@ def load_rules() -> dict:
 
 def clear_rules_cache() -> None:
     load_rules.cache_clear()
+    clear_tag_strategic_cache()
+    clear_structured_effect_caches()
 
 
 def band_points(bands: list, value: float | int) -> int:
@@ -107,8 +111,11 @@ def lookup_role_table(table: dict, role: str, key: str, default: int = 0) -> int
     return int(role_map.get(str(ik), default))
 
 
-def letter_for_total(rules: dict, total: int) -> str:
-    for row in rules.get("letter_cutoffs") or []:
+def letter_for_total(
+    rules: dict, total: int, *, cutoffs_key: str = "letter_cutoffs"
+) -> str:
+    rows = rules.get(cutoffs_key) or rules.get("letter_cutoffs") or []
+    for row in rows:
         if total >= int(row["min"]):
             return str(row["letter"])
     return "E"
@@ -134,10 +141,250 @@ def tag_weight_points(rules: dict, tag_names: list[str] | None) -> tuple[int, di
     return pts, {"matches": matches, "heuristic": True}
 
 
+def _er_expert_tag_mention_counts(A, lc: str = "EN") -> dict[str, int]:
+    """lineageId / lowercase name → how many ER Expert stages mention the tag."""
+    counts: dict[str, int] = {}
+    for sid, est in (getattr(A, "eternal_stage_map", None) or {}).items():
+        if int(est.get("stage_difficulty_type_index") or 1) != 3:
+            continue
+        sm = (getattr(A, "stage_map", None) or {}).get(sid, {}) or {}
+        for set_id in (sm.get("group1_set_id"), sm.get("group2_set_id")):
+            if not set_id or set_id == "0":
+                continue
+            for r in (getattr(A, "stage_sortie_set_content_map", None) or {}).get(set_id, []) or []:
+                tt = str(r.get("target_type_index") or "0")
+                if tt not in ("1", "3"):
+                    continue
+                for gc in (getattr(A, "stage_sortie_group_content_map", None) or {}).get(
+                    r.get("group_id", "0"), []
+                ) or []:
+                    if str(gc.get("restriction_type_index", "0")) != "2":
+                        continue
+                    tid = A.normalize_id(gc.get("target_id", "0"))
+                    if not tid or tid == "0":
+                        continue
+                    counts[tid] = counts.get(tid, 0) + 1
+                    lab = _restriction_label(A, "2", tid, lc)
+                    if lab and lab.get("name"):
+                        key = str(lab["name"]).strip().lower()
+                        counts[key] = counts.get(key, 0) + 1
+    return counts
+
+
+def build_tag_strategic_table(A, rules: dict | None = None, lc: str = "EN") -> dict[str, dict]:
+    """
+    Per scored tag name (lowercase): ur_weight, er_mentions, effective_weight.
+    Limited UR MS = 1.5, permanent UR MS = 1.0.
+    """
+    rules = rules or load_rules()
+    cfg = rules.get("tag_strategic") or {}
+    lim_w = float(cfg.get("limited_ur_weight", 1.5) or 1.5)
+    perm_w = float(cfg.get("permanent_ur_weight", 1.0) or 1.0)
+    er_bonus = float(cfg.get("er_mention_bonus_per_stage", 0.15) or 0.0)
+    limited = {A.normalize_id(x) for x in (getattr(A, "LIMITED_TIME_UNIT_IDS", None) or set())}
+    er_mentions = _er_expert_tag_mention_counts(A, lc)
+    ld = A.LANG_DATA.get(lc) or {}
+    lin_lookup = ld.get("lineage_lookup") or {}
+    id_to_names: dict[str, set[str]] = {}
+    for lid, entry in lin_lookup.items():
+        lid_n = A.normalize_id(lid)
+        if isinstance(entry, dict):
+            name = str(entry.get("name") or "").strip()
+        else:
+            name = str(entry or "").strip()
+        if name:
+            id_to_names.setdefault(lid_n, set()).add(name)
+
+    ur_weight_by_name: dict[str, float] = {}
+    for uid, info in (getattr(A, "unit_info_map", None) or {}).items():
+        main_id = A.normalize_id(info.get("main_unit_id") or "0")
+        uid_n = A.normalize_id(uid)
+        if main_id and main_id != "0" and main_id != uid_n:
+            continue
+        if str(info.get("body_type") or "1") == "2":
+            continue
+        if int(info.get("rarity", 1) or 1) < 5:
+            continue
+        w = lim_w if uid_n in limited else perm_w
+        tags = []
+        try:
+            tags = A.resolve_tags(A.unit_lin_map, uid, lc, "unit") or []
+        except Exception:
+            tags = A.unit_lin_map.get(uid, []) or []
+        for t in tags:
+            if isinstance(t, dict):
+                name = str(t.get("name") or "").strip()
+            else:
+                name = str(t or "").strip()
+            if not name or not filter_scored_unit_tags(rules, [name]):
+                continue
+            key = name.lower()
+            ur_weight_by_name[key] = ur_weight_by_name.get(key, 0.0) + w
+
+    table: dict[str, dict] = {}
+    for key, uw in ur_weight_by_name.items():
+        er_n = int(er_mentions.get(key, 0) or 0)
+        table[key] = {
+            "ur_weight": round(uw, 3),
+            "er_mentions": er_n,
+            "effective_weight": round(uw * (1.0 + er_bonus * er_n), 3),
+        }
+    for tid, n in er_mentions.items():
+        if not str(tid).isdigit():
+            continue
+        for name in id_to_names.get(A.normalize_id(tid), set()):
+            key = name.lower()
+            row = table.setdefault(
+                key,
+                {
+                    "ur_weight": float(ur_weight_by_name.get(key, 0.0) or 0.0),
+                    "er_mentions": 0,
+                    "effective_weight": 0.0,
+                },
+            )
+            row["er_mentions"] = max(int(row.get("er_mentions") or 0), int(n))
+            uw = float(row.get("ur_weight") or 0.0)
+            row["effective_weight"] = round(uw * (1.0 + er_bonus * int(row["er_mentions"])), 3)
+    return table
+
+
+_TAG_STRATEGIC_CACHE: dict[tuple, dict] = {}
+
+
+def get_tag_strategic_table(A, rules: dict | None = None, lc: str = "EN") -> dict[str, dict]:
+    rules = rules or load_rules()
+    key = (id(A), int(rules.get("version") or 0), lc)
+    cached = _TAG_STRATEGIC_CACHE.get(key)
+    if cached is not None:
+        return cached
+    table = build_tag_strategic_table(A, rules, lc)
+    _TAG_STRATEGIC_CACHE[key] = table
+    return table
+
+
+_PILOT_TAG_STRATEGIC_CACHE: dict[tuple, dict] = {}
+
+
+def clear_tag_strategic_cache() -> None:
+    _TAG_STRATEGIC_CACHE.clear()
+    _PILOT_TAG_STRATEGIC_CACHE.clear()
+
+
+def build_pilot_tag_strategic_table(A, rules: dict | None = None, lc: str = "EN") -> dict[str, dict]:
+    """Strategic tag weights from UR pilots (Limited 1.5 / permanent UR 1.0)."""
+    rules = rules or load_rules()
+    cfg = rules.get("pilot_tag_strategic") or rules.get("tag_strategic") or {}
+    lim_w = float(cfg.get("limited_ur_weight", 1.5) or 1.5)
+    perm_w = float(cfg.get("permanent_ur_weight", 1.0) or 1.0)
+    er_bonus = float(cfg.get("er_mention_bonus_per_stage", 0.15) or 0.0)
+    limited = {A.normalize_id(x) for x in (getattr(A, "LIMITED_TIME_CHARACTER_IDS", None) or set())}
+    er_mentions = _er_expert_tag_mention_counts(A, lc)
+    ur_weight_by_name: dict[str, float] = {}
+    for cid, info in (getattr(A, "char_info_map", None) or {}).items():
+        if int(info.get("rarity", 1) or 1) < 5:
+            continue
+        cid_n = A.normalize_id(cid)
+        w = lim_w if cid_n in limited else perm_w
+        tags = []
+        try:
+            tags = A.resolve_tags(A.char_lin_map, cid, lc, "character") or []
+        except Exception:
+            tags = A.char_lin_map.get(cid, []) or []
+        for t in tags:
+            name = str(t.get("name") if isinstance(t, dict) else t or "").strip()
+            if not name or not filter_scored_unit_tags(rules, [name]):
+                continue
+            key = name.lower()
+            ur_weight_by_name[key] = ur_weight_by_name.get(key, 0.0) + w
+    table: dict[str, dict] = {}
+    for key, uw in ur_weight_by_name.items():
+        er_n = int(er_mentions.get(key, 0) or 0)
+        table[key] = {
+            "ur_weight": round(uw, 3),
+            "er_mentions": er_n,
+            "effective_weight": round(uw * (1.0 + er_bonus * er_n), 3),
+        }
+    return table
+
+
+def get_pilot_tag_strategic_table(A, rules: dict | None = None, lc: str = "EN") -> dict[str, dict]:
+    rules = rules or load_rules()
+    key = (id(A), int(rules.get("version") or 0), lc, "pilot")
+    cached = _PILOT_TAG_STRATEGIC_CACHE.get(key)
+    if cached is not None:
+        return cached
+    table = build_pilot_tag_strategic_table(A, rules, lc)
+    _PILOT_TAG_STRATEGIC_CACHE[key] = table
+    return table
+
+
+def strategic_tag_points(
+    rules: dict, tag_names: list[str] | None, tag_table: dict[str, dict] | None
+) -> tuple[int, dict]:
+    """Sum effective UR weights for strategic tags on the unit, then band to points."""
+    cfg = rules.get("tag_strategic") or {}
+    if not cfg:
+        return 0, {"weight": 0.0, "tags": []}
+    min_w = float(cfg.get("min_ur_weight_to_count", 2.0) or 2.0)
+    include_er = bool(cfg.get("include_er_mentioned_below_min", True))
+    scored = filter_scored_unit_tags(rules, tag_names)
+    table = tag_table or {}
+    used = []
+    total_w = 0.0
+    for name in scored:
+        key = name.lower()
+        row = table.get(key) or {}
+        uw = float(row.get("ur_weight") or 0.0)
+        er_n = int(row.get("er_mentions") or 0)
+        eff = float(row.get("effective_weight") or 0.0)
+        if uw >= min_w or (include_er and er_n >= 1):
+            total_w += eff if eff else uw
+            used.append({"name": name, "ur_weight": uw, "er_mentions": er_n, "effective_weight": eff or uw})
+    if not used:
+        return 0, {"weight": 0.0, "tags": []}
+    pts = band_points(cfg.get("weight_bands") or [], total_w)
+    cap = int(cfg.get("cap_points", 3) or 3)
+    if pts > cap:
+        pts = cap
+    if pts < -cap:
+        pts = -cap
+    return pts, {"weight": round(total_w, 3), "tags": used[:12]}
+
+
+def weapon_power_bands_for_mode(rules: dict, mode: str, role: str) -> list:
+    """v5: weapon_power.sp|ssp.Role; fall back to flat weapon_power.Role (v4)."""
+    wp = rules.get("weapon_power") or {}
+    mode_key = "ssp" if str(mode).lower() == "ssp" else "sp"
+    if isinstance(wp.get(mode_key), dict):
+        return (wp.get(mode_key) or {}).get(role) or []
+    return wp.get(role) or []
+
+
+def movement_followup_points(rules: dict, features: dict) -> tuple[int, dict]:
+    cfg = rules.get("movement_followup") or {}
+    if not cfg:
+        return 0, {}
+    cap = int(cfg.get("cap", 1) or 1)
+    pts = 0
+    reasons = []
+    heuristic = False
+    if features.get("has_after_move_map"):
+        pts += int(cfg.get("after_move_map_points", 1) or 0)
+        reasons.append("after_move_map")
+    if features.get("has_extra_move_kit"):
+        pts += int(cfg.get("extra_move_points", 1) or 0)
+        reasons.append("extra_move_kit")
+        # Structured Chance Step / PostAttackMove is not heuristic; blob regex is.
+        heuristic = bool(features.get("extra_move_from_regex"))
+    pts = min(cap, pts)
+    return pts, {"reasons": reasons, "heuristic": heuristic}
+
+
 def detect_weapon_bonus_type(rules: dict, trait_lines: list[str]) -> tuple[int, int]:
     """
-    Return (bonus_type_id, points) for the highest-scoring typed bonus on the
-    given trait lines. Type 3 (Low HP) scores 0; other matches beat it.
+    Text fallback: (bonus_type_id, points) for the highest-scoring typed bonus on
+    trait lines. Type 3 (Low HP) scores 0; other matches beat it.
+    Prefer detect_weapon_bonus_structured when master trait IDs are available.
     """
     cfg = rules.get("maxweapon_bonus") or {}
     pts_map = cfg.get("points_by_type") or {}
@@ -164,14 +411,63 @@ def detect_weapon_bonus_type(rules: dict, trait_lines: list[str]) -> tuple[int, 
     return best_type, best_pts
 
 
+def detect_weapon_bonus_structured(A, uid: str, rules: dict) -> tuple[int, int, dict]:
+    """
+    Map weapon PassiveTrait → status TraitTypeIndex to maxweapon bonus types.
+    Returns (bonus_type_id, points, meta).
+    """
+    cfg = rules.get("maxweapon_bonus") or {}
+    pts_map = cfg.get("points_by_type") or {}
+    type_map = cfg.get("trait_type_to_bonus_type") or {}
+    if not type_map:
+        return 0, 0, {"structured": False, "reason": "no_trait_map"}
+    meta_by_id = _weapon_trait_meta_by_id(A)
+    best_type = 0
+    best_pts = -1
+    hit_types: list[int] = []
+    for tid in collect_unit_weapon_trait_ids(A, uid):
+        meta = meta_by_id.get(tid) or {}
+        # PassiveTrait (3) carries status TraitType; some bonuses are bare indices
+        st_tti = int(meta.get("status_type_index") or 0)
+        wtti = int(meta.get("type_index") or 0)
+        candidates = [st_tti] if st_tti else []
+        if wtti == 3 and not st_tti:
+            continue
+        for st in candidates:
+            btype_s = type_map.get(str(st))
+            if btype_s is None:
+                continue
+            btype = int(btype_s)
+            pts = int(pts_map.get(str(btype), 0) or 0)
+            hit_types.append(st)
+            if pts > best_pts or (pts == best_pts and btype > best_type):
+                best_type = btype
+                best_pts = pts
+    if best_pts < 0:
+        return 0, 0, {"structured": True, "hits": hit_types}
+    return best_type, best_pts, {"structured": True, "hits": hit_types, "type": best_type}
+
+
 def bucket_for_letter(rules: dict, letter: str) -> str:
-    return str((rules.get("bucket_by_letter") or {}).get(letter, "low"))
+    return str((rules.get("bucket_by_letter") or {}).get(letter, "niche"))
+
+
+def er_access_points(rules: dict, eligible_count: int) -> int:
+    n = int(eligible_count or 0)
+    for row in rules.get("er_access_points") or []:
+        if int(row.get("min", 0)) <= n <= int(row.get("max", 999)):
+            return int(row.get("points", 0) or 0)
+    return 0
+
+
+def map_coverage_points(rules: dict, cell_count: int) -> int:
+    return band_points(rules.get("map_coverage_points") or [], int(cell_count or 0))
 
 
 def terrain_coverage_points(rules: dict, terrain: dict | None) -> tuple[int, dict]:
     """
-    v4 terrain: 0 if Space+Land deployable; +1 per extra deployable terrain;
-    −2 if missing Land or Space.
+    v5 terrain: 0 if Space+Land deployable; +1 per extra (Atmo/UW/Sea);
+    −3 if missing Land or Space; +1 if 4+ deployable terrains.
     """
     terr_cfg = rules.get("terrain") or {}
     deploy_min = int(terr_cfg.get("deploy_min_level", 2))
@@ -184,18 +480,28 @@ def terrain_coverage_points(rules: dict, terrain: dict | None) -> tuple[int, dic
         "has_space": has_space,
         "has_land": has_land,
         "extra": [],
+        "deployable_count": 0,
     }
     if not has_space or not has_land:
-        penalty = int(terr_cfg.get("missing_space_or_land_penalty", -2))
+        penalty = int(terr_cfg.get("missing_space_or_land_penalty", -3))
         return penalty, meta
     pts = 0
-    extra_keys = terr_cfg.get("extra_terrain_keys") or ["Atmospheric", "Underwater"]
+    deployable = 0
+    for key in TERRAIN_KEYS:
+        if int(terrain.get(key, 1) or 1) >= deploy_min:
+            deployable += 1
+    meta["deployable_count"] = deployable
+    extra_keys = terr_cfg.get("extra_terrain_keys") or ["Atmospheric", "Underwater", "Sea"]
     per = int(terr_cfg.get("extra_terrain_points", 1))
     for key in extra_keys:
         lvl = int(terrain.get(key, 1) or 1)
         if lvl >= deploy_min:
             pts += per
             meta["extra"].append(key)
+    perfect_min = int(terr_cfg.get("perfect_min_deployable", 4) or 4)
+    if deployable >= perfect_min:
+        pts += int(terr_cfg.get("perfect_bonus", 1) or 0)
+        meta["perfect"] = True
     return pts, meta
 
 
@@ -229,7 +535,7 @@ def _is_pure_stat_passive(blob: str) -> bool:
 
 
 def score_abilities(rules: dict, role: str, ability_blobs: list[str]) -> tuple[int, dict]:
-    """Return (points, meta). Heuristic — effect families first, then great_for_role regex."""
+    """Legacy blob regex scorer (kept for tests). Prefer score_ability_effects."""
     abil_cfg = rules.get("ability") or {}
     excl = [str(x).lower() for x in (abil_cfg.get("exclude_name_substrings") or [])]
     ignore_stat = bool(abil_cfg.get("ignore_pure_stat_passives", False))
@@ -284,26 +590,724 @@ def score_abilities(rules: dict, role: str, ability_blobs: list[str]) -> tuple[i
     }
 
 
+def _ability_name_excluded(rules: dict, name: str) -> bool:
+    cfg = rules.get("ability_structured") or rules.get("ability") or {}
+    excl = [str(x).lower() for x in (cfg.get("exclude_name_substrings") or []) if str(x).strip()]
+    low = str(name or "").lower()
+    return any(x and x in low for x in excl)
+
+
+def _cond_id_active(raw) -> bool:
+    s = str(raw or "").strip()
+    return bool(s) and s not in ("0", "None", "none")
+
+
+def _points_for_trait_type(
+    rules: dict,
+    role: str,
+    tti: int,
+    has_active_cond: bool,
+    trait_value: int | float = 0,
+) -> int:
+    cfg = rules.get("ability_structured") or {}
+    tti = int(tti or 0)
+    if not tti:
+        return 0
+    if tti in {int(x) for x in (cfg.get("zero_types") or [])}:
+        return 0
+    # Owned by the extra_life axis (Unbreakable etc.) — do not double-count
+    el_types = {
+        int(x) for x in ((rules.get("extra_life") or {}).get("structured_trait_types") or [])
+    }
+    if tti in el_types:
+        return 0
+    permanent = {int(x) for x in (cfg.get("permanent_stat_types") or [])}
+    if tti in permanent and not has_active_cond:
+        return 0
+    # Prefer magnitude bands when present for this role+type
+    mag_tbl = ((cfg.get("magnitude_points") or {}).get(role) or {}).get(str(tti))
+    if mag_tbl:
+        return int(band_points(mag_tbl, abs(float(trait_value or 0))))
+    role_map = (cfg.get("role_points") or {}).get(role) or {}
+    return int(role_map.get(str(tti), 0) or 0)
+
+
+def score_ability_effects(
+    rules: dict, role: str, effects: list[dict] | None
+) -> tuple[int, dict]:
+    """Score unit/pilot ability traits from TraitTypeIndex (0–cap)."""
+    cfg = rules.get("ability_structured") or {}
+    cap = int(cfg.get("cap", 3) or 3)
+    by_type: dict[int, dict] = {}
+    for eff in effects or []:
+        tti = int(eff.get("trait_type_index") or 0)
+        if not tti:
+            continue
+        has_cond = bool(eff.get("has_active_cond"))
+        tval = int(eff.get("trait_value") or 0)
+        pts = _points_for_trait_type(rules, role, tti, has_cond, tval)
+        prev = by_type.get(tti)
+        if prev is None or pts > int(prev.get("points") or 0) or (
+            pts == int(prev.get("points") or 0)
+            and abs(tval) > abs(int(prev.get("trait_value") or 0))
+        ):
+            by_type[tti] = {
+                "trait_type_index": tti,
+                "trait_type_key": eff.get("trait_type_key") or "",
+                "trait_value": tval,
+                "has_active_cond": has_cond,
+                "points": pts,
+            }
+    contributing = [v for v in by_type.values() if int(v.get("points") or 0) > 0]
+    total = min(cap, sum(int(v["points"]) for v in contributing))
+    return total, {
+        "count": len(by_type),
+        "contributing": contributing,
+        "cap": cap,
+        "heuristic": False,
+        "structured": True,
+    }
+
+
+def effects_have_movement_followup(rules: dict, effects: list[dict] | None) -> bool:
+    move_types = {
+        int(x) for x in ((rules.get("ability_structured") or {}).get("movement_types") or [])
+    }
+    if not move_types:
+        move_types = {19, 70, 80, 85, 107}
+    for eff in effects or []:
+        if int(eff.get("trait_type_index") or 0) in move_types:
+            return True
+    return False
+
+
+def _trait_set_ids_for_ability(A, ab_id: str) -> list[str]:
+    tsid = A.normalize_id(A.abil_link_map.get(ab_id, ab_id))
+    if not tsid or tsid == "0":
+        return []
+    lookup_id = tsid[:-2] if len(tsid) > 2 else tsid
+    tids = A.trait_set_traits_map.get(tsid, []) or A.trait_set_traits_map.get(lookup_id, [])
+    return [A.normalize_id(t) for t in (tids or []) if A.normalize_id(t) not in ("", "0")]
+
+
+def _effects_from_trait_ids(A, trait_ids: list[str]) -> list[dict]:
+    out: list[dict] = []
+    seen: set[int] = set()
+    for tid in trait_ids:
+        tdata = A.trait_data_map.get(tid, {}) or {}
+        tti = int(tdata.get("trait_type_index") or 0)
+        if not tti or tti in seen:
+            continue
+        seen.add(tti)
+        out.append(
+            {
+                "trait_id": tid,
+                "trait_type_index": tti,
+                "trait_type_key": tdata.get("trait_type_key") or "",
+                "trait_type_label": tdata.get("trait_type_label") or "",
+                "trait_value": int(tdata.get("trait_value") or 0),
+                "has_active_cond": _cond_id_active(tdata.get("active_cond_id")),
+            }
+        )
+    return out
+
+
+def _ability_display_name(A, ab_id: str, lc: str) -> str:
+    ldc = A.LANG_DATA.get(lc) or {}
+    anm = ldc.get("abil_name_map") or {}
+    name = anm.get(A.normalize_id(ab_id)) or anm.get(ab_id) or ""
+    if isinstance(name, dict):
+        name = name.get("name") or name.get("text") or ""
+    return str(name or "")
+
+
+def collect_unit_ability_effects(
+    A, uid: str, mode: str = "sp", lc: str = "EN", rules: dict | None = None
+) -> list[dict]:
+    """Unique TraitType effects for a unit's abilities (SSP gains included in ssp mode)."""
+    rules = rules or load_rules()
+    merged: dict[int, dict] = {}
+    ability_ids: list[str] = []
+    for ab in A.unit_abil_map.get(uid, []) or []:
+        ability_ids.append(A.normalize_id(ab.get("id")))
+    if mode == "ssp":
+        for abid in A.unit_ssp_abil_gain_list.get(uid, []) or []:
+            ability_ids.append(A.normalize_id(abid))
+    for ab_id in ability_ids:
+        if not ab_id or ab_id == "0":
+            continue
+        name = _ability_display_name(A, ab_id, lc)
+        if _ability_name_excluded(rules, name):
+            continue
+        for eff in _effects_from_trait_ids(A, _trait_set_ids_for_ability(A, ab_id)):
+            tti = int(eff["trait_type_index"])
+            prev = merged.get(tti)
+            if prev is None or int(eff.get("trait_value") or 0) >= int(prev.get("trait_value") or 0):
+                row = dict(eff)
+                row["ability_id"] = ab_id
+                row["ability_name"] = name
+                merged[tti] = row
+    return list(merged.values())
+
+
+def collect_character_ability_effects(
+    A, cid: str, lc: str = "EN", rules: dict | None = None
+) -> list[dict]:
+    """Unique TraitType effects for a character's SP/normal abilities (excl. affinity names)."""
+    rules = rules or load_rules()
+    merged: dict[int, dict] = {}
+    try:
+        fa = [
+            x
+            for x in A.extract_data_list(A.char_abil)
+            if A.normalize_id(x.get("CharacterId", "")) == cid
+        ]
+    except Exception:
+        fa = []
+    for ab in fa:
+        bid = A.normalize_id(ab.get("AbilityId", ""))
+        spid = A.normalize_id(ab.get("SpAbilityId") or ab.get("spAbilityId") or "0")
+        use_id = spid if spid and spid not in ("0", "None", bid) else bid
+        if not use_id or use_id == "0":
+            continue
+        name = _ability_display_name(A, use_id, lc)
+        is_aff = False
+        try:
+            is_aff = bool(A._name_indicates_affinity_ability(name))
+        except Exception:
+            is_aff = bool(re.search(r"(?i)affinity|勢力|シリーズ", name))
+        if is_aff or _ability_name_excluded(rules, name):
+            continue
+        for eff in _effects_from_trait_ids(A, _trait_set_ids_for_ability(A, use_id)):
+            tti = int(eff["trait_type_index"])
+            prev = merged.get(tti)
+            if prev is None or int(eff.get("trait_value") or 0) >= int(prev.get("trait_value") or 0):
+                row = dict(eff)
+                row["ability_id"] = use_id
+                row["ability_name"] = name
+                merged[tti] = row
+    return list(merged.values())
+
+
+_char_skill_trait_cache: dict[str, Any] | None = None
+
+
+def _load_char_skill_trait_maps(A) -> dict[str, Any]:
+    """skill_id -> [{trait_type_index, trait_value, ...}] from master skill trait tables."""
+    global _char_skill_trait_cache
+    if _char_skill_trait_cache is not None:
+        return _char_skill_trait_cache
+
+    def _rows(raw) -> list:
+        if raw is None:
+            return []
+        if hasattr(A, "extract_data_list"):
+            try:
+                return list(A.extract_data_list(raw) or [])
+            except Exception:
+                pass
+        if isinstance(raw, list):
+            return raw
+        if isinstance(raw, dict):
+            return list(raw.get("Data") or raw.get("data") or [])
+        return []
+
+    trait_by_id: dict[str, dict] = {}
+    for item in _rows(getattr(A, "skill_trait_base", None)):
+        if not isinstance(item, dict):
+            continue
+        tid = A.normalize_id(item.get("Id") or item.get("id"))
+        if not tid or tid == "0":
+            continue
+        tti = int(item.get("TraitTypeIndex") or item.get("traitTypeIndex") or 0)
+        trait_by_id[tid] = {
+            "trait_id": tid,
+            "trait_type_index": tti,
+            "trait_value": int(item.get("TraitValue") or item.get("traitValue") or 0),
+        }
+    set_to_traits: dict[str, list[str]] = {}
+    base_dir = getattr(A, "BASE_DIR", None) or str(ROOT / "data" / "EN" / "master")
+    set_path = Path(base_dir) / "m_character_skill_trait_set.json"
+    try:
+        raw_set = json.loads(set_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        raw_set = []
+    for item in _rows(raw_set):
+        if not isinstance(item, dict):
+            continue
+        sid = A.normalize_id(item.get("Id") or item.get("id"))
+        tid = A.normalize_id(
+            item.get("CharacterSkillTraitId") or item.get("characterSkillTraitId")
+        )
+        if sid and sid != "0" and tid and tid != "0":
+            set_to_traits.setdefault(sid, []).append(tid)
+    skill_to_effects: dict[str, list[dict]] = {}
+    skill_base = getattr(A, "char_skill_base_data", None)
+    for item in _rows(skill_base):
+        if not isinstance(item, dict):
+            continue
+        skid = A.normalize_id(item.get("Id") or item.get("id"))
+        set_id = A.normalize_id(
+            item.get("CharacterSkillTraitSetId") or item.get("characterSkillTraitSetId")
+        )
+        if not skid or skid == "0" or not set_id or set_id == "0":
+            continue
+        effects = []
+        seen = set()
+        for tid in set_to_traits.get(set_id, []):
+            tr = trait_by_id.get(tid)
+            if not tr:
+                continue
+            tti = int(tr.get("trait_type_index") or 0)
+            if not tti or tti in seen:
+                continue
+            seen.add(tti)
+            effects.append(dict(tr))
+        if effects:
+            skill_to_effects[skid] = effects
+    _char_skill_trait_cache = {
+        "trait_by_id": trait_by_id,
+        "set_to_traits": set_to_traits,
+        "skill_to_effects": skill_to_effects,
+    }
+    return _char_skill_trait_cache
+
+
+def collect_character_skill_effects(A, cid: str) -> list[dict]:
+    """Active skill CharacterSkillTraitType effects for a character (deduped by type)."""
+    maps = _load_char_skill_trait_maps(A)
+    skill_map = maps.get("skill_to_effects") or {}
+    merged: dict[int, dict] = {}
+    try:
+        fs = [
+            x
+            for x in A.extract_data_list(A.char_skill)
+            if A.normalize_id(x.get("CharacterId", "")) == cid
+        ]
+    except Exception:
+        fs = []
+    for sk in fs:
+        for key in (
+            "SkillId",
+            "CharacterSkillId",
+            "skillId",
+            "SpSkillId",
+            "spSkillId",
+        ):
+            sid = A.normalize_id(sk.get(key) or "")
+            if not sid or sid == "0":
+                continue
+            for eff in skill_map.get(sid) or []:
+                tti = int(eff.get("trait_type_index") or 0)
+                if not tti:
+                    continue
+                prev = merged.get(tti)
+                if prev is None or int(eff.get("trait_value") or 0) >= int(
+                    prev.get("trait_value") or 0
+                ):
+                    row = dict(eff)
+                    row["skill_id"] = sid
+                    merged[tti] = row
+    return list(merged.values())
+
+
+def score_pilot_skill_effects(
+    rules: dict, role: str, specialty: str, effects: list[dict] | None
+) -> tuple[int, dict]:
+    cfg = rules.get("pilot_skill_structured") or {}
+    role_map = (cfg.get("role_points") or {}).get(role) or {}
+    mag_tbl_role = (cfg.get("magnitude_points") or {}).get(role) or {}
+    spec_types = cfg.get("specialty_types") or {}
+    spec_tti = int(spec_types.get(specialty) or 0)
+    spec_bonus = int(cfg.get("specialty_bonus", 1) or 1)
+    lines = []
+    total = 0
+    for eff in effects or []:
+        tti = int(eff.get("trait_type_index") or 0)
+        tval = abs(int(eff.get("trait_value") or 0))
+        mag_bands = mag_tbl_role.get(str(tti))
+        if mag_bands:
+            pts = int(band_points(mag_bands, tval))
+        else:
+            pts = int(role_map.get(str(tti), 0) or 0)
+        if spec_tti and tti == spec_tti:
+            pts += spec_bonus
+        if pts <= 0:
+            continue
+        total += pts
+        lines.append(
+            {
+                "trait_type_index": tti,
+                "trait_value": int(eff.get("trait_value") or 0),
+                "points": pts,
+                "skill_id": eff.get("skill_id") or "",
+            }
+        )
+    return total, {"lines": lines, "structured": True, "heuristic": False}
+
+
+def score_pilot_kit_structured(
+    rules: dict,
+    role: str,
+    specialty: str,
+    ability_effects: list[dict] | None,
+    skill_effects: list[dict] | None,
+    affinity_count: int = 0,
+) -> tuple[int, dict]:
+    """Combined pilot kit points from structured ability + skill traits (capped)."""
+    abil_pts, abil_meta = score_ability_effects(rules, role, ability_effects)
+    # Ability axis for pilots is uncapped by unit cap — re-sum contributing without unit cap
+    cfg = rules.get("ability_structured") or {}
+    by_type: dict[int, int] = {}
+    for eff in ability_effects or []:
+        tti = int(eff.get("trait_type_index") or 0)
+        pts = _points_for_trait_type(
+            rules,
+            role,
+            tti,
+            bool(eff.get("has_active_cond")),
+            int(eff.get("trait_value") or 0),
+        )
+        if pts > by_type.get(tti, 0):
+            by_type[tti] = pts
+    abil_raw = sum(by_type.values())
+    skill_pts, skill_meta = score_pilot_skill_effects(
+        rules, role, specialty, skill_effects
+    )
+    aff_each = int(rules.get("series_affinity_points_each", 3))
+    # affinity counted separately in score_pilot_features
+    raw = abil_raw + skill_pts
+    cap = int(rules.get("pilot_kit_cap", 14) or 14)
+    capped = min(cap, raw)
+    return capped, {
+        "ability_points": abil_raw,
+        "skill_points": skill_pts,
+        "raw": raw,
+        "cap": cap,
+        "abilities": abil_meta,
+        "skills": skill_meta,
+        "affinity_count": affinity_count,
+        "affinity_points_each": aff_each,
+        "structured": True,
+        "heuristic": False,
+    }
+
+
+_weapon_trait_meta_cache: dict[str, dict] | None = None
+_status_trait_raw_cache: dict[str, dict] | None = None
+_twc_attr_cache: dict[str, set[int]] | None = None
+
+
+def clear_structured_effect_caches() -> None:
+    global _char_skill_trait_cache, _weapon_trait_meta_cache, _status_trait_raw_cache
+    global _twc_attr_cache
+    _char_skill_trait_cache = None
+    _weapon_trait_meta_cache = None
+    _status_trait_raw_cache = None
+    _twc_attr_cache = None
+
+
+def _status_trait_raw_by_id(A) -> dict[str, dict]:
+    global _status_trait_raw_cache
+    if _status_trait_raw_cache is not None:
+        return _status_trait_raw_cache
+    out: dict[str, dict] = {}
+    for item in A.extract_data_list(getattr(A, "trait_logic_data", None) or []):
+        if not isinstance(item, dict):
+            continue
+        tid = A.normalize_id(item.get("Id") or item.get("id"))
+        if not tid or tid == "0":
+            continue
+        out[tid] = item
+    _status_trait_raw_cache = out
+    return out
+
+
+def _twc_weapon_attrs(A) -> dict[str, set[int]]:
+    """TargetWeaponConditionId -> set of WeaponAttributeType ints (1 phys, 2 beam, 3 special)."""
+    global _twc_attr_cache
+    if _twc_attr_cache is not None:
+        return _twc_attr_cache
+    out: dict[str, set[int]] = {}
+    base_dir = getattr(A, "BASE_DIR", None) or str(ROOT / "data" / "EN" / "master")
+    path = Path(base_dir) / "m_trait_condition_target_weapon.json"
+    try:
+        raw = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        raw = []
+    rows = []
+    if hasattr(A, "extract_data_list"):
+        try:
+            rows = list(A.extract_data_list(raw) or [])
+        except Exception:
+            rows = raw if isinstance(raw, list) else []
+    elif isinstance(raw, list):
+        rows = raw
+    for item in rows:
+        if not isinstance(item, dict):
+            continue
+        cid = A.normalize_id(item.get("Id") or item.get("id"))
+        if not cid or cid == "0":
+            continue
+        attrs: set[int] = set()
+        for part in str(item.get("WeaponAttributeTypes") or "").split(","):
+            part = part.strip()
+            if part.isdigit():
+                attrs.add(int(part))
+        out[cid] = attrs
+    _twc_attr_cache = out
+    return out
+
+
+def _weapon_trait_meta_by_id(A) -> dict[str, dict]:
+    """weapon_trait_id -> structured meta (type, status, magnitude, attrs)."""
+    global _weapon_trait_meta_cache
+    if _weapon_trait_meta_cache is not None:
+        return _weapon_trait_meta_cache
+    status = _status_trait_raw_by_id(A)
+    twc = _twc_weapon_attrs(A)
+    out: dict[str, dict] = {}
+    for item in A.extract_data_list(getattr(A, "weapon_trait_base_data", None) or []):
+        if not isinstance(item, dict):
+            continue
+        tid = A.normalize_id(item.get("Id") or item.get("id"))
+        if not tid or tid == "0":
+            continue
+        wtti = int(
+            item.get("WeaponTraitTypeIndex") or item.get("weaponTraitTypeIndex") or 0
+        )
+        target = A.normalize_id(item.get("TargetValue") or item.get("targetValue") or "0")
+        status_id = target if target and target != "0" and target in status else (
+            tid if tid in status else ""
+        )
+        st = status.get(status_id) or {}
+        st_tti = int(st.get("TraitTypeIndex") or st.get("traitTypeIndex") or 0)
+        st_val = int(st.get("TraitValue") or st.get("traitValue") or 0)
+        timing = int(st.get("ActionTimingTypeIndex") or 0)
+        limit = int(st.get("Limit") or 0)
+        twc_id = A.normalize_id(
+            st.get("TargetWeaponConditionId") or st.get("targetWeaponConditionId") or "0"
+        )
+        attrs = set(twc.get(twc_id) or ())
+        # ActiveConditionSetId can also encode phys/beam/special for damage-taken
+        # (handled lightly via twc only for investment keys).
+        magnitude = abs(st_val) if st else 0
+        if wtti in (8, 9, 10, 11, 14) and target and target.isdigit():
+            # Some non-debuff types store magnitude directly in TargetValue
+            magnitude = abs(int(target))
+        out[tid] = {
+            "type_index": wtti,
+            "status_trait_id": status_id,
+            "status_type_index": st_tti,
+            "status_value": st_val,
+            "magnitude": magnitude,
+            "timing": timing,
+            "limit": limit,
+            "twc_id": twc_id,
+            "weapon_attrs": sorted(attrs),
+        }
+    _weapon_trait_meta_cache = out
+    return out
+
+
+def _weapon_trait_type_by_id(A) -> dict[str, int]:
+    return {k: int(v.get("type_index") or 0) for k, v in _weapon_trait_meta_by_id(A).items()}
+
+
+def classify_debuff_keys_from_meta(meta: dict) -> set[str]:
+    """Map structured weapon-trait meta to browse/investment debuff keys."""
+    keys: set[str] = set()
+    wtti = int(meta.get("type_index") or 0)
+    st_tti = int(meta.get("status_type_index") or 0)
+    st_val = int(meta.get("status_value") or 0)
+    attrs = set(meta.get("weapon_attrs") or [])
+    timing = int(meta.get("timing") or 0)
+    limit = int(meta.get("limit") or 0)
+
+    if wtti == 13:
+        keys.add("preemptive")
+        return keys
+    if wtti == 5:
+        keys.add("absolute_hit")
+        return keys
+    if wtti == 9 and int(meta.get("magnitude") or 0) == 1:
+        keys.add("mp_1")
+        return keys
+
+    # Piercing: PassiveTrait → lasting DEF down for this attack (timing 0, limit 0)
+    if wtti == 3 and st_tti == 9 and st_val < 0 and timing == 0 and limit == 0:
+        keys.add("enemy_def_atk")
+        return keys
+
+    if wtti != 12:
+        return keys
+
+    if st_val >= 0 and st_tti not in (68, 70):
+        # Debuffs should reduce; skip ups
+        if st_tti != 72:
+            return keys
+
+    if st_tti == 7 and st_val < 0:
+        keys.add("atk_dn")
+    elif st_tti == 9 and st_val < 0:
+        keys.add("def_dn")
+    elif st_tti == 11 and st_val < 0:
+        keys.add("mob_dn")
+    elif st_tti == 1 and st_val < 0:
+        keys.add("acc_dn")
+    elif st_tti == 72 and st_val < 0:
+        # Range down — rare keys for phys/beam; awaken-only (twc 23) ignored for rare
+        twc_id = str(meta.get("twc_id") or "0")
+        if twc_id == "23":
+            return keys
+        if not attrs:
+            keys.update({"range_phys", "range_beam"})
+        else:
+            if 1 in attrs:
+                keys.add("range_phys")
+            if 2 in attrs:
+                keys.add("range_beam")
+    elif st_tti == 14 and st_val < 0:
+        if not attrs:
+            keys.update({"dmg_phys", "dmg_beam", "dmg_spec"})
+        else:
+            if 1 in attrs:
+                keys.add("dmg_phys")
+            if 2 in attrs:
+                keys.add("dmg_beam")
+            if 3 in attrs:
+                keys.add("dmg_spec")
+    elif st_tti == 78 and st_val < 0:
+        if not attrs:
+            keys.update({"wp_phys", "wp_beam", "wp_spec"})
+        else:
+            if 1 in attrs:
+                keys.add("wp_phys")
+            if 2 in attrs:
+                keys.add("wp_beam")
+            if 3 in attrs:
+                keys.add("wp_spec")
+    return keys
+
+
+def collect_unit_weapon_trait_ids(A, uid: str) -> list[str]:
+    ids: list[str] = []
+    seen: set[str] = set()
+    gpm = getattr(A, "growth_pattern_map", None) or {}
+
+    def _add_from_pattern(tsi: str) -> None:
+        if not tsi or tsi == "0":
+            return
+        by_lv = (getattr(A, "weapon_trait_change_map", None) or {}).get(tsi) or {}
+        for _lv, tids in by_lv.items():
+            for tid in tids or []:
+                nid = A.normalize_id(tid)
+                if nid and nid not in seen:
+                    seen.add(nid)
+                    ids.append(nid)
+        if tsi not in seen and tsi in _weapon_trait_meta_by_id(A):
+            seen.add(tsi)
+            ids.append(tsi)
+
+    for wp in A.unit_weapon_map.get(uid, []) or []:
+        wid = A.normalize_id(wp.get("id"))
+        wm = A.weapon_info_map.get(wid, {}) or {}
+        wsid = A.normalize_id(wm.get("weapon_status_id") or wid)
+        ws = A.weapon_status_map.get(wsid) or A.weapon_status_map.get(wid) or {}
+        candidates = [
+            A.normalize_id(ws.get("trait_correction_id") or "0"),
+            wid,
+            wsid,
+            A.normalize_id(wm.get("main_weapon_id") or "0"),
+        ]
+        # EX / growth weapons often stash traits on WeaponLevelGrowthPatternSetId
+        # → trait_change_set_id when OverrideWeaponTraitChangePatternSetId is 0.
+        gi = A.normalize_id(ws.get("growth_pattern_id") or "0")
+        if gi and gi != "0":
+            gd = gpm.get(gi) or {}
+            candidates.append(A.normalize_id(gd.get("trait_change_set_id") or "0"))
+        for tsi in candidates:
+            _add_from_pattern(tsi)
+    # SSP weapon effect trait ids (Custom Core / SSP grant lines)
+    for wp in A.unit_weapon_map.get(uid, []) or []:
+        wid = A.normalize_id(wp.get("id"))
+        wm = A.weapon_info_map.get(wid, {}) or {}
+        mwid = A.normalize_id(wm.get("main_weapon_id", "0") or "0")
+        for cid in (wid, mwid):
+            if not cid or cid == "0":
+                continue
+            for tid in getattr(A, "unit_ssp_weapon_effect_map", {}).get(cid) or []:
+                nid = A.normalize_id(tid)
+                if nid and nid not in seen:
+                    seen.add(nid)
+                    ids.append(nid)
+    return ids
+
+
+def collect_unit_structured_debuff_keys(A, uid: str) -> tuple[set[str], dict]:
+    """Return (keys, meta) from WeaponTraitType + m_trait TargetValue resolution."""
+    meta_by_id = _weapon_trait_meta_by_id(A)
+    keys: set[str] = set()
+    max_pierce = 0
+    types: set[int] = set()
+    for tid in collect_unit_weapon_trait_ids(A, uid):
+        meta = meta_by_id.get(tid)
+        if not meta:
+            continue
+        types.add(int(meta.get("type_index") or 0))
+        keys |= classify_debuff_keys_from_meta(meta)
+        if "enemy_def_atk" in classify_debuff_keys_from_meta(meta):
+            max_pierce = max(max_pierce, int(meta.get("magnitude") or 0))
+        # Also catch pierce magnitude without re-calling
+        wtti = int(meta.get("type_index") or 0)
+        if (
+            wtti == 3
+            and int(meta.get("status_type_index") or 0) == 9
+            and int(meta.get("status_value") or 0) < 0
+            and int(meta.get("timing") or 0) == 0
+            and int(meta.get("limit") or 0) == 0
+        ):
+            max_pierce = max(max_pierce, int(meta.get("magnitude") or 0))
+    return keys, {
+        "structured": True,
+        "type_indices": sorted(types),
+        "max_pierce_pct": max_pierce,
+        "heuristic": False,
+    }
+
+
+def collect_unit_weapon_trait_type_indices(A, uid: str) -> set[int]:
+    """WeaponTraitTypeIndex values attached to a unit's weapons via change patterns."""
+    meta_by_id = _weapon_trait_meta_by_id(A)
+    found: set[int] = set()
+    for tid in collect_unit_weapon_trait_ids(A, uid):
+        tti = int((meta_by_id.get(tid) or {}).get("type_index") or 0)
+        if tti:
+            found.add(tti)
+    return found
+
+
 def score_linked_pilot(rules: dict, has_linked: bool, linked_very_good: bool) -> tuple[int, dict]:
     cfg = rules.get("linked_pilot") or {}
+    # Objective: recommend-character link + rarity/role match from master data.
+    heuristic = bool(cfg.get("heuristic", False))
     if not has_linked:
-        return int(cfg.get("none_points", 0)), {"heuristic": True, "status": "none"}
+        return int(cfg.get("none_points", 0)), {"heuristic": heuristic, "status": "none"}
     if linked_very_good:
-        return int(cfg.get("very_good_points", 1)), {"heuristic": True, "status": "very_good"}
-    return int(cfg.get("any_points", -1)), {"heuristic": True, "status": "any"}
+        return int(cfg.get("very_good_points", 1)), {"heuristic": heuristic, "status": "very_good"}
+    return int(cfg.get("any_points", -1)), {"heuristic": heuristic, "status": "any"}
 
 
 def score_features(features: dict, rules: dict | None = None, mode: str = "sp") -> dict:
     """
-    Score a unit from a normalized feature dict.
+    Score a unit from a normalized feature dict (v5 unit criteria).
 
-    Required keys: role, tag_count, terrain (dict of levels), has_transform,
-    map_ammo, ability_blobs, has_linked_pilot, linked_pilot_very_good,
-    has_shield, HP, ATK, DEF, MOB, MOV, weapon_range, weapon_power,
+    Required keys: role, terrain, has_transform, map_ammo, map_coverage_cells,
+    ability_blobs, has_linked_pilot, linked_pilot_very_good, has_shield,
+    HP, ATK, DEF, MOB, MOV, weapon_range, weapon_power,
     has_max_tension_higher_weapon, has_preemptive, has_rare_debuff,
     has_extra_life, max_debuff_pct, support_debuffs_range4_count,
-    weapon_bonus_type (typed maxweapon_bonus; SP and SSP).
-    Optional: tags (names) for high-value tag weight bonus.
+    weapon_bonus_type, er_expert_eligible_count (optional).
     """
     rules = rules or load_rules()
     role = features.get("role") or "Attack"
@@ -312,49 +1316,96 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     breakdown: dict[str, Any] = {}
     meta: dict[str, Any] = {"heuristic_keys": []}
 
-    # A1 combat tags only (tag-count bands disabled in v4; curated weight bonus)
+    # Tag count bands (disabled) + strategic UR-weight tags
     scored_tags = features.get("scored_tags")
     if scored_tags is None:
         scored_tags = filter_scored_unit_tags(rules, features.get("tags") or [])
-    tag_n = int(features.get("tag_count_scored") if features.get("tag_count_scored") is not None else len(scored_tags))
-    tags_pts = tag_count_points(rules, tag_n)
-    breakdown["tags"] = tags_pts
-    tw_pts, tw_meta = tag_weight_points(rules, features.get("tags") or [])
-    breakdown["tags_weight"] = tw_pts
-    if tw_pts:
-        meta["tags_weight"] = tw_meta
-        meta["heuristic_keys"].append("tags_weight")
+    tag_n = int(
+        features.get("tag_count_scored")
+        if features.get("tag_count_scored") is not None
+        else len(scored_tags)
+    )
+    breakdown["tags"] = tag_count_points(rules, tag_n)
     meta["scored_tag_count"] = tag_n
 
-    # A2 terrain coverage (Space+Land base; extras; missing penalty)
+    tag_table = features.get("tag_strategic_table")
+    st_pts, st_meta = strategic_tag_points(rules, features.get("tags") or scored_tags, tag_table)
+    # Legacy curated weight only if strategic config absent
+    if not (rules.get("tag_strategic") or {}):
+        tw_pts, tw_meta = tag_weight_points(rules, features.get("tags") or [])
+        breakdown["tags_weight"] = tw_pts
+        if tw_pts:
+            meta["tags_weight"] = tw_meta
+            meta["heuristic_keys"].append("tags_weight")
+        breakdown["tags_strategic"] = 0
+    else:
+        breakdown["tags_weight"] = 0
+        breakdown["tags_strategic"] = st_pts
+        meta["tags_strategic"] = st_meta
+        if st_pts:
+            meta["heuristic_keys"].append("tags_strategic")
+
+    # ER Expert access
+    er_n = int(features.get("er_expert_eligible_count") or 0)
+    breakdown["er_access"] = er_access_points(rules, er_n)
+    meta["er_expert_eligible_count"] = er_n
+
+    # Terrain coverage
     terr_pts, terr_meta = terrain_coverage_points(rules, features.get("terrain") or {})
     breakdown["terrain"] = terr_pts
     meta["terrain"] = terr_meta
 
-    # A4 transform
+    # Transform
     breakdown["transform"] = int(rules.get("transform_points", 1)) if features.get("has_transform") else 0
 
-    # A5 MAP ammo only (no flat mapweapon stack)
+    # MAP presence + dash + multi-ammo + coverage (capped)
+    has_map = bool(features.get("has_map_weapon")) or int(features.get("map_ammo") or 0) > 0
+    presence_pts = int(rules.get("map_presence_points", 1) or 0) if has_map else 0
+    dash_pts = (
+        int(rules.get("map_dash_points", 1) or 0)
+        if features.get("has_dash_map")
+        else 0
+    )
     map_ammo = int(features.get("map_ammo") or 0)
     ammo_key = str(min(max(map_ammo, 0), 4))
     map_tbl = rules.get("map_ammo_points") or {}
     if ammo_key in map_tbl:
-        map_pts = int(map_tbl.get(ammo_key, 0))
+        ammo_pts = int(map_tbl.get(ammo_key, 0))
     elif map_ammo >= 2:
-        map_pts = int(map_tbl.get("2_or_more", 2))
-    elif map_ammo == 1:
-        map_pts = int(map_tbl.get("1", 1))
+        ammo_pts = int(map_tbl.get("2", 1))
     else:
-        map_pts = 0
+        ammo_pts = 0
+    cov_pts = map_coverage_points(rules, int(features.get("map_coverage_cells") or 0))
+    map_pts = presence_pts + dash_pts + ammo_pts + cov_pts
+    cap = int(rules.get("map_axis_cap", 4) or 4)
+    if map_pts > cap:
+        map_pts = cap
     breakdown["map"] = map_pts
+    meta["map"] = {
+        "presence_points": presence_pts,
+        "dash_points": dash_pts,
+        "ammo_points": ammo_pts,
+        "coverage_points": cov_pts,
+        "cells": int(features.get("map_coverage_cells") or 0),
+        "has_dash_map": bool(features.get("has_dash_map")),
+    }
 
-    # A6 abilities
-    abil_pts, abil_meta = score_abilities(rules, role, features.get("ability_blobs") or [])
-    breakdown["abilities"] = abil_pts
-    meta["abilities"] = abil_meta
-    meta["heuristic_keys"].append("abilities")
+    # Abilities — structured TraitType when ability_effects is provided
+    if features.get("ability_effects") is not None and rules.get("ability_structured"):
+        abil_pts, abil_meta = score_ability_effects(
+            rules, role, features.get("ability_effects") or []
+        )
+        breakdown["abilities"] = abil_pts
+        meta["abilities"] = abil_meta
+    else:
+        abil_pts, abil_meta = score_abilities(
+            rules, role, features.get("ability_blobs") or []
+        )
+        breakdown["abilities"] = abil_pts
+        meta["abilities"] = abil_meta
+        meta["heuristic_keys"].append("abilities")
 
-    # A7 linked pilot
+    # Linked pilot — recommend character rarity/role from master (not prose)
     lp_pts, lp_meta = score_linked_pilot(
         rules,
         bool(features.get("has_linked_pilot")),
@@ -362,34 +1413,34 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     )
     breakdown["linked_pilot"] = lp_pts
     meta["linked_pilot"] = lp_meta
-    meta["heuristic_keys"].append("linked_pilot")
+    if lp_meta.get("heuristic"):
+        meta["heuristic_keys"].append("linked_pilot")
 
-    # A8 max tension higher weapon
     breakdown["max_tension_weapon"] = (
         int(rules.get("max_tension_higher_tier_weapon_points", 1))
         if features.get("has_max_tension_higher_weapon")
         else 0
     )
-
-    # A9 preemptive
     breakdown["preemptive"] = (
         int(rules.get("preemptive_strike_points", 1)) if features.get("has_preemptive") else 0
     )
 
-    # A10 rare debuff
     rare_pts = int(rules.get("rare_debuff_points", 1)) if features.get("has_rare_debuff") else 0
     breakdown["rare_debuff"] = rare_pts
-    if rare_pts:
+    if rare_pts and str(features.get("debuff_keys_source") or "").startswith("text"):
         meta["heuristic_keys"].append("rare_debuff")
+    elif rare_pts:
+        meta["rare_debuff"] = {"structured": True, "source": features.get("debuff_keys_source")}
 
-    # A11 extra life
     el_pts = 0
     if features.get("has_extra_life"):
         el_pts = int((rules.get("extra_life") or {}).get(role, 1))
-        meta["heuristic_keys"].append("extra_life")
+        if features.get("extra_life_source") == "prose":
+            meta["heuristic_keys"].append("extra_life")
+        else:
+            meta["extra_life"] = {"structured": True, "source": features.get("extra_life_source")}
     breakdown["extra_life"] = el_pts
 
-    # A12 support long-range debuffs
     if role == "Support":
         n = int(features.get("support_debuffs_range4_count") or 0)
         tbl = rules.get("support_debuffs_at_range_4") or {}
@@ -400,30 +1451,31 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     else:
         breakdown["support_r4_debuffs"] = 0
 
-    # B stats
     for key, feat_key in (("HP", "HP"), ("ATK", "ATK"), ("DEF", "DEF"), ("MOB", "MOB")):
         bands = ((rules.get("stat_bands") or {}).get(key) or {}).get(role) or []
         breakdown[key.lower()] = band_points(bands, features.get(feat_key) or 0)
 
-    # Shield
     sh = (rules.get("shield") or {}).get(role) or {}
     breakdown["shield"] = int(sh.get("has", 0) if features.get("has_shield") else sh.get("missing", 0))
 
-    # Movement
     mov = int(features.get("MOV") or 0)
     mov_key = str(max(3, min(6, mov))) if mov else "3"
     if mov < 3:
         mov_key = "3"
     breakdown["movement"] = lookup_role_table(rules.get("movement") or {}, role, mov_key, 0)
+    mf_pts, mf_meta = movement_followup_points(rules, features)
+    breakdown["movement_followup"] = mf_pts
+    if mf_pts:
+        meta["movement_followup"] = mf_meta
+        if mf_meta.get("heuristic"):
+            meta["heuristic_keys"].append("movement_followup")
 
-    # Weapon range / power
     wr = int(features.get("weapon_range") or 0)
     wr_key = str(max(1, min(6, wr))) if wr else "1"
     breakdown["weapon_range"] = lookup_role_table(rules.get("weapon_range") or {}, role, wr_key, 0)
-    power_bands = ((rules.get("weapon_power") or {}).get(role) or [])
+    power_bands = weapon_power_bands_for_mode(rules, mode, role)
     breakdown["weapon_power"] = band_points(power_bands, features.get("weapon_power") or 0)
 
-    # Max debuff level (Def/Sup only)
     if role in ("Defense", "Support"):
         lvl = debuff_pct_to_level(rules, int(features.get("max_debuff_pct") or 0))
         tbl = (rules.get("max_debuff_level") or {}).get(role) or {}
@@ -434,7 +1486,6 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     else:
         breakdown["max_debuff"] = 0
 
-    # C typed weapon bonus (SP and SSP) — replaces coarse SSP-only conditional
     bonus_type = int(features.get("weapon_bonus_type") or 0)
     bonus_pts = int(features.get("weapon_bonus_points") or 0)
     if not bonus_type and features.get("best_weapon_trait_lines"):
@@ -442,11 +1493,9 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     elif bonus_type and not features.get("weapon_bonus_points"):
         pts_map = ((rules.get("maxweapon_bonus") or {}).get("points_by_type") or {})
         bonus_pts = int(pts_map.get(str(bonus_type), 0) or 0)
-    # Legacy fallback: ssp_weapon_conditional_count treated as High-HP-style +1 each (capped 1)
     if not bonus_type and mode == "ssp" and int(features.get("ssp_weapon_conditional_count") or 0) > 0:
         bonus_type = 2
         bonus_pts = int(((rules.get("maxweapon_bonus") or {}).get("points_by_type") or {}).get("2", 1))
-    # Higher-range bonus is not a substitute for short actual max range
     ignore_hi_rng = int(
         ((rules.get("maxweapon_bonus") or {}).get("ignore_higher_range_when_max_range_lte", 0) or 0)
     )
@@ -456,17 +1505,40 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     breakdown["weapon_bonus"] = bonus_pts
     if bonus_type:
         labels = ((rules.get("maxweapon_bonus") or {}).get("type_labels") or {})
-        meta["weapon_bonus"] = {"type": bonus_type, "label": labels.get(str(bonus_type), str(bonus_type))}
+        meta["weapon_bonus"] = {
+            "type": bonus_type,
+            "label": labels.get(str(bonus_type), str(bonus_type)),
+            "structured": bool(features.get("weapon_bonus_structured")),
+        }
+        if not features.get("weapon_bonus_structured"):
+            meta["heuristic_keys"].append("weapon_bonus")
 
-    # Rarity: N/R/SR must earn more raw points to match SSR letters
     rarity_pts = rarity_adjustment_points(rules, features.get("rarity_id"))
     breakdown["rarity"] = rarity_pts
-    if rarity_pts:
-        meta["heuristic_keys"].append("rarity")
+
+    # Large footprint (OccupiedAreaId 2) — positioning tax; not scored for Defense
+    fp_tbl = rules.get("large_footprint") or {}
+    if features.get("is_large_footprint"):
+        breakdown["large_footprint"] = int(fp_tbl.get(role, 0) or 0)
+    else:
+        breakdown["large_footprint"] = 0
 
     total = int(sum(int(v) for v in breakdown.values()))
     letter = letter_for_total(rules, total)
     bucket = bucket_for_letter(rules, letter)
+    detail_lines: list[dict] = []
+    for c in (meta.get("abilities") or {}).get("contributing") or []:
+        detail_lines.append(
+            {
+                "kind": "ability",
+                "label": c.get("trait_type_key") or f"type {c.get('trait_type_index')}",
+                "name": c.get("trait_type_key") or "",
+                "points": int(c.get("points") or 0),
+                "estimated": False,
+                "trait_type_index": c.get("trait_type_index"),
+                "trait_value": c.get("trait_value"),
+            }
+        )
     return {
         "total": total,
         "letter": letter,
@@ -475,6 +1547,7 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
         "meta": meta,
         "mode": mode,
         "role": role,
+        "detail_lines": detail_lines,
     }
 
 
@@ -569,21 +1642,43 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
     max_power_unrestricted = 0
     max_power_tension = 0
     map_ammo = 0
+    map_coverage_cells = 0
+    has_map_weapon = False
+    has_dash_map = False
+    has_after_move_map = False
     has_preemptive = False
     has_rare = False
     max_debuff_pct = 0
     support_debuff_kinds: set[str] = set()
     rare_keys = set(rules.get("rare_debuff_keys") or [])
     best_weapon_trait_lines: list[str] = []
+    structured_keys: set[str] = set()
+    debuff_source = "text"
 
     try:
-        debuff_keys = A.collect_unit_weapon_debuff_keys(uid, ld, lc, stat_mode=mode) or set()
+        structured_keys, s_meta = collect_unit_structured_debuff_keys(A, uid)
+        debuff_source = "structured"
+        if structured_keys & rare_keys:
+            has_rare = True
+        if "preemptive" in structured_keys:
+            has_preemptive = True
+        max_debuff_pct = max(max_debuff_pct, int(s_meta.get("max_pierce_pct") or 0))
     except Exception:
-        debuff_keys = set()
+        structured_keys = set()
+        s_meta = {}
+
+    # Text fallback for Custom Core / orphan traits (union, does not replace structure)
+    try:
+        text_keys = A.collect_unit_weapon_debuff_keys(uid, ld, lc, stat_mode=mode) or set()
+    except Exception:
+        text_keys = set()
+    debuff_keys = set(structured_keys) | set(text_keys)
     if debuff_keys & rare_keys:
         has_rare = True
     if "preemptive" in debuff_keys:
         has_preemptive = True
+    if text_keys - structured_keys:
+        debuff_source = "structured+text_fallback"
 
     for wp in A.unit_weapon_map.get(uid, []) or []:
         wid = A.normalize_id(wp.get("id"))
@@ -617,6 +1712,10 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
         power = int(ws.get("power", 0) or 0)
         if isinstance(levels, dict):
             power = max(power, int((levels.get(5, {}) or {}).get("power", 0) or 0))
+        elif isinstance(levels, list):
+            for lv in levels:
+                if isinstance(lv, dict) and int(lv.get("level") or 0) == 5:
+                    power = max(power, int(lv.get("power", 0) or 0))
         if mode == "ssp":
             mwid = A.normalize_id(wm.get("main_weapon_id", "0") or "0")
             for cid in (wid, mwid):
@@ -635,6 +1734,12 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
                     for tr in lv.get("traits", []) or []:
                         if tr:
                             trait_lines.append(str(tr))
+        elif isinstance(levels, list):
+            for lv in levels:
+                if isinstance(lv, dict):
+                    for tr in lv.get("traits", []) or []:
+                        if tr:
+                            trait_lines.append(str(tr))
         if mode == "ssp":
             mwid = A.normalize_id(wm.get("main_weapon_id", "0") or "0")
             for cid in (wid, mwid):
@@ -646,6 +1751,7 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
                     break
 
         if wt == "3":
+            has_map_weapon = True
             ammo = int(ws.get("ammo", 0) or wm.get("ammo", 0) or 0)
             if mode == "ssp":
                 mwid = A.normalize_id(wm.get("main_weapon_id", "0") or "0")
@@ -655,6 +1761,31 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
                             ammo += int(enh.get("value", 0) or 0)
                     break
             map_ammo = max(map_ammo, ammo)
+            cells = len(ws.get("map_coords") or [])
+            shoot_cells = len(ws.get("shooting_coords") or [])
+            if cells <= 0:
+                raw_ws = A.weapon_status_map.get(
+                    A.normalize_id(wm.get("weapon_status_id") or wid)
+                ) or A.weapon_status_map.get(wid) or {}
+                cells = len(raw_ws.get("map_coords") or [])
+                if shoot_cells <= 0:
+                    shoot_cells = len(raw_ws.get("shooting_coords") or [])
+            try:
+                mrt = int(A.normalize_id(wm.get("map_range_type", "0") or "0", "0"))
+            except Exception:
+                mrt = 0
+            is_dash = bool(ws.get("is_dash")) or mrt == 4  # MovingAttack
+            if is_dash:
+                has_dash_map = True
+                # Dash MAPs often store the practical line in shooting_coords.
+                cells = max(cells, shoot_cells)
+            map_coverage_cells = max(map_coverage_cells, cells)
+            try:
+                if A.is_map_weapon_after_move_unit_weapon(uid, wid, wt):
+                    has_after_move_map = True
+            except Exception:
+                if (A.weapon_status_map.get(wid) or {}).get("map_can_use_after_move"):
+                    has_after_move_map = True
         else:
             max_range = max(max_range, rx)
             if power > max_power:
@@ -669,11 +1800,19 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
                     if key in debuff_keys:
                         support_debuff_kinds.add(key)
 
-    # MAP ammo fallback from browse previews
-    if max_power <= 0:
+    if max_power <= 0 or not has_map_weapon:
         try:
             for prev in A.build_unit_browse_map_weapon_previews(uid, stat_mode=mode, ld=ld, lc=lc) or []:
+                has_map_weapon = True
                 map_ammo = max(map_ammo, int(prev.get("ammo") or 0))
+                cells = len(prev.get("map_coords") or [])
+                shoot_cells = len(prev.get("shooting_coords") or [])
+                if prev.get("is_dash") or str(prev.get("map_range_type") or "") == "4":
+                    has_dash_map = True
+                    cells = max(cells, shoot_cells)
+                map_coverage_cells = max(map_coverage_cells, cells)
+                if prev.get("map_can_use_after_move"):
+                    has_after_move_map = True
         except Exception:
             pass
 
@@ -685,12 +1824,20 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
             pass
 
     has_max_tension_higher = max_power_tension > max_power_unrestricted > 0
-    bonus_type, bonus_pts = detect_weapon_bonus_type(rules, best_weapon_trait_lines)
+    bonus_type, bonus_pts, bonus_meta = detect_weapon_bonus_structured(A, uid, rules)
+    weapon_bonus_structured = bool(bonus_meta.get("structured") and bonus_type)
+    if not bonus_type:
+        bonus_type, bonus_pts = detect_weapon_bonus_type(rules, best_weapon_trait_lines)
+        weapon_bonus_structured = False
 
     return {
         "weapon_range": max_range,
         "weapon_power": max_power,
         "map_ammo": map_ammo,
+        "map_coverage_cells": map_coverage_cells,
+        "has_map_weapon": has_map_weapon,
+        "has_dash_map": has_dash_map,
+        "has_after_move_map": has_after_move_map,
         "has_preemptive": has_preemptive,
         "has_rare_debuff": has_rare,
         "has_max_tension_higher_weapon": has_max_tension_higher,
@@ -698,7 +1845,10 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
         "support_debuffs_range4_count": len(support_debuff_kinds),
         "weapon_bonus_type": bonus_type,
         "weapon_bonus_points": bonus_pts,
+        "weapon_bonus_structured": weapon_bonus_structured,
         "best_weapon_trait_lines": best_weapon_trait_lines[:12],
+        "debuff_keys_source": debuff_source,
+        "debuff_keys_structured": sorted(structured_keys),
     }
 
 
@@ -714,16 +1864,37 @@ def _linked_pilot_flags(A, uid: str, info: dict, rules: dict) -> tuple[bool, boo
     return True, very
 
 
-def _has_extra_life(rules: dict, uid: str, ability_blobs: list[str]) -> bool:
+def _has_extra_life(
+    rules: dict,
+    uid: str,
+    ability_blobs: list[str],
+    ability_effects: list[dict] | None = None,
+) -> tuple[bool, str]:
+    """
+    Detect Unbreakable / revive-style survival.
+    Prefer TraitType 84 (Unbreakable); fall back to allowlist + prose regex.
+    Returns (has_extra_life, source) where source is structured|allowlist|prose|"".
+    """
     cfg = rules.get("extra_life") or {}
+    structured_types = {
+        int(x) for x in (cfg.get("structured_trait_types") or [84])
+    }
+    for eff in ability_effects or []:
+        try:
+            tti = int(eff.get("trait_type_index") or eff.get("TraitTypeIndex") or 0)
+        except (TypeError, ValueError):
+            continue
+        if tti in structured_types:
+            return True, "structured"
     allow = set(str(x) for x in (cfg.get("unit_id_allowlist") or []))
     if uid in allow:
-        return True
+        return True, "allowlist"
     pat = cfg.get("ability_regex")
-    if not pat:
-        return False
-    rx = re.compile(pat)
-    return any(rx.search(b or "") for b in ability_blobs)
+    if pat:
+        rx = re.compile(pat)
+        if any(rx.search(b or "") for b in ability_blobs):
+            return True, "prose"
+    return False, ""
 
 
 def _source_bucket(A, info: dict) -> str:
@@ -790,6 +1961,9 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
 
     terrain = _effective_terrain(A, uid, info, use_mode if use_mode == "ssp" else "sp")
     ability_blobs = _ability_blobs_for_unit(A, uid, lc, ld, use_mode)
+    ability_effects = collect_unit_ability_effects(
+        A, uid, mode=use_mode if use_mode in ("sp", "ssp") else "sp", lc=lc, rules=rules
+    )
     has_linked, linked_vg = _linked_pilot_flags(A, uid, info, rules)
     has_shield = False
     try:
@@ -797,8 +1971,13 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
     except Exception:
         has_shield = False
 
+    is_large_footprint = int(info.get("occupied_area_id") or 1) == 2
+
     wfeat = _weapon_features(A, uid, ld, lc, use_mode if use_mode in ("sp", "ssp") else "sp", rules)
-    has_extra = _has_extra_life(rules, uid, ability_blobs)
+    has_extra, extra_src = _has_extra_life(rules, uid, ability_blobs, ability_effects)
+
+    has_extra_move_kit = effects_have_movement_followup(rules, ability_effects)
+    extra_move_from_regex = False
 
     rarity_letter = A.RARITY_MAP.get(str(ri), "Unknown") if hasattr(A, "RARITY_MAP") else str(ri)
     name = ""
@@ -829,27 +2008,48 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
         "terrain": terrain,
         "has_transform": has_transform,
         "ability_blobs": ability_blobs,
+        "ability_effects": ability_effects,
         "has_linked_pilot": has_linked,
         "linked_pilot_very_good": linked_vg,
         "has_shield": has_shield,
+        "is_large_footprint": is_large_footprint,
         "HP": int(stats.get("HP") or 0),
         "ATK": int(stats.get("ATK") or 0),
         "DEF": int(stats.get("DEF") or 0),
         "MOB": int(stats.get("MOB") or 0),
         "MOV": int(stats.get("MOV") or stats.get("Move") or 0),
         "has_extra_life": has_extra,
-        "has_map": int(wfeat.get("map_ammo") or 0) > 0,
+        "extra_life_source": extra_src,
+        "has_extra_move_kit": has_extra_move_kit,
+        "extra_move_from_regex": extra_move_from_regex,
+        "has_map": bool(wfeat.get("has_map_weapon")) or int(wfeat.get("map_ammo") or 0) > 0,
         **wfeat,
     }
 
 
-def score_unit(A, uid: str, mode: str = "sp", lc: str = "EN", rules: dict | None = None) -> dict | None:
+def score_unit(
+    A,
+    uid: str,
+    mode: str = "sp",
+    lc: str = "EN",
+    rules: dict | None = None,
+    tag_strategic_table: dict | None = None,
+    er_expert_ids: list[str] | None = None,
+) -> dict | None:
     rules = rules or load_rules()
     feats = extract_unit_features(A, uid, mode=mode, lc=lc, rules=rules)
     if not feats:
         return None
     if feats.get("is_warship") and rules.get("exclude_warships", True):
         return None
+    if tag_strategic_table is not None:
+        feats["tag_strategic_table"] = tag_strategic_table
+    elif rules.get("tag_strategic"):
+        feats["tag_strategic_table"] = get_tag_strategic_table(A, rules, lc)
+    if er_expert_ids is not None:
+        elig = [sid for sid in er_expert_ids if entity_eligible_on_stage(A, uid, sid, kind="unit", lc=lc)]
+        feats["er_expert_eligible_count"] = len(elig)
+        feats["er_expert_ids"] = elig
     scored = score_features(feats, rules=rules, mode=mode)
     row = {
         "id": feats["id"],
@@ -869,6 +2069,7 @@ def score_unit(A, uid: str, mode: str = "sp", lc: str = "EN", rules: dict | None
         "breakdown": scored["breakdown"],
         "meta": scored.get("meta") or {},
         "mode": mode,
+        "detail_lines": scored.get("detail_lines") or [],
         "stats": {
             "HP": feats.get("HP"),
             "ATK": feats.get("ATK"),
@@ -877,7 +2078,562 @@ def score_unit(A, uid: str, mode: str = "sp", lc: str = "EN", rules: dict | None
             "MOV": feats.get("MOV"),
         },
     }
+    if feats.get("er_expert_ids") is not None:
+        row["er_expert_ids"] = list(feats.get("er_expert_ids") or [])
     return row
+
+
+def _fmt_points(pts) -> str:
+    n = int(pts or 0)
+    if n > 0:
+        return f"+{n}"
+    return str(n)
+
+
+def _humanize_effect_name(raw: str) -> str:
+    """Turn enum-ish CamelCase into short player-facing labels."""
+    s = str(raw or "").strip()
+    if not s:
+        return ""
+    spaced = re.sub(r"(?<!^)([A-Z])", r" \1", s.replace("_", " "))
+    spaced = re.sub(r"\s+", " ", spaced).strip()
+    replacements = (
+        (r"(?i)\btrait type\b", "effect"),
+        (r"(?i)\bcharacter skill trait type\b", "skill effect"),
+        (r"(?i)\bweapon trait type\b", "weapon effect"),
+        (r"(?i)\bweapon power high hp boost\b", "Weapon power rises with remaining HP"),
+        (r"(?i)\bweapon power low hp boost\b", "Weapon power rises when HP is low"),
+        (r"(?i)\bweapon power high mp boost\b", "Weapon power rises with MP"),
+        (r"(?i)\bweapon power low mp boost\b", "Weapon power rises when MP is low"),
+        (r"(?i)\bweapon power change proximity\b", "Weapon power (closer range)"),
+        (r"(?i)\bweapon power change remoteness\b", "Weapon power (longer range)"),
+        (r"(?i)\bdamage given correction rate\b", "Damage dealt"),
+        (r"(?i)\bdamage taken correction rate\b", "Damage taken"),
+        (r"(?i)\bcritical damage given correction rate\b", "Critical damage"),
+        (r"(?i)\battack critical rate change rate\b", "Critical rate"),
+        (r"(?i)\bguaranteed critical\b", "Guaranteed critical"),
+    )
+    out = spaced
+    for pat, rep in replacements:
+        out = re.sub(pat, rep, out)
+    return out
+
+
+def build_public_criteria(rules: dict | None = None) -> list[dict]:
+    """
+    User-facing objective criteria blocks derived from the live rules sheet.
+    Keep this in sync with score_features / score_pilot_features axes.
+    """
+    rules = rules or load_rules()
+    criteria: list[dict] = []
+
+    criteria.append(
+        {
+            "id": "buckets",
+            "title": "Buckets from letters",
+            "applies": ["units", "pilots"],
+            "objective": True,
+            "summary": "Point total maps to a letter, then to a bucket. Players mainly see buckets.",
+            "rows": [
+                {"when": "S+ or S", "result": "Recommended"},
+                {"when": "A+ or A", "result": "Solid"},
+                {"when": "B+ or B", "result": "Situational"},
+                {"when": "C, D, or E", "result": "Niche"},
+            ],
+        }
+    )
+
+    er_rows = []
+    for row in rules.get("er_access_points") or []:
+        er_rows.append(
+            {
+                "when": f"{row.get('min')}–{row.get('max')} Expert stages",
+                "result": _fmt_points(row.get("points")),
+            }
+        )
+    criteria.append(
+        {
+            "id": "er_access",
+            "title": "Eternal Road Expert access",
+            "applies": ["units", "pilots"],
+            "objective": True,
+            "summary": "How many ER Expert stages the unit or pilot can sortie into (tag/series eligibility, including unit+character type-3 rules).",
+            "rows": er_rows,
+        }
+    )
+
+    st = rules.get("tag_strategic") or {}
+    tag_rows = []
+    prev = 0
+    for band in st.get("weight_bands") or []:
+        mx = band.get("max_exclusive")
+        pts = band.get("points")
+        if mx is None:
+            tag_rows.append({"when": f"weight ≥ {prev}", "result": _fmt_points(pts)})
+        else:
+            tag_rows.append(
+                {"when": f"weight {prev}–{int(mx) - 1}", "result": _fmt_points(pts)}
+            )
+            prev = int(mx)
+    criteria.append(
+        {
+            "id": "strategic_tags",
+            "title": "Strategic tags",
+            "applies": ["units", "pilots"],
+            "objective": True,
+            "summary": (
+                f"Non-flavor tags scored by how often they appear on UR units "
+                f"(limited UR counts more than permanent UR). "
+                f"Cap {_fmt_points(st.get('cap_points', 3))}."
+            ),
+            "rows": tag_rows,
+        }
+    )
+
+    terr = rules.get("terrain") or {}
+    criteria.append(
+        {
+            "id": "terrain",
+            "title": "Terrain coverage (units)",
+            "applies": ["units"],
+            "objective": True,
+            "summary": "Deploy tier ≥2 counts as usable. SSP board uses SSP-upgraded terrain.",
+            "rows": [
+                {
+                    "when": "Missing Space or Land",
+                    "result": _fmt_points(terr.get("missing_space_or_land_penalty", -3)),
+                },
+                {"when": "Space + Land only", "result": "0"},
+                {
+                    "when": "+ Atmospheric / Underwater / Sea (each)",
+                    "result": _fmt_points(terr.get("extra_terrain_points", 1)),
+                },
+                {
+                    "when": f"Perfect ({terr.get('perfect_min_deployable', 4)}+ of Space/Land/Atmo/UW/Sea)",
+                    "result": _fmt_points(terr.get("perfect_bonus", 1)) + " extra",
+                },
+            ],
+        }
+    )
+
+    mov = rules.get("movement") or {}
+    mov_rows = []
+    for key in ("3", "4", "5", "6"):
+        bits = []
+        for role in ("Attack", "Defense", "Support"):
+            bits.append(f"{role[0]} {_fmt_points((mov.get(role) or {}).get(key, 0))}")
+        label = "MOV ≤3" if key == "3" else ("MOV ≥6" if key == "6" else f"MOV {key}")
+        mov_rows.append({"when": label, "result": " / ".join(bits)})
+    criteria.append(
+        {
+            "id": "movement",
+            "title": "MOV (units)",
+            "applies": ["units"],
+            "objective": True,
+            "summary": "Primary movement axis by role. Follow-up (stacks, cap +2): after-move MAP and/or Chance Step / PostAttackMove.",
+            "rows": mov_rows,
+        }
+    )
+
+    sp_atk = ((rules.get("weapon_power") or {}).get("sp") or {}).get("Attack") or []
+    ssp_atk = ((rules.get("weapon_power") or {}).get("ssp") or {}).get("Attack") or []
+
+    def _power_rows(bands: list) -> list[dict]:
+        out = []
+        prev = None
+        for b in bands or []:
+            mx = b.get("max_exclusive")
+            pts = _fmt_points(b.get("points"))
+            if prev is None:
+                when = f"power < {mx}" if mx is not None else "any"
+            elif mx is None:
+                when = f"power ≥ {prev}"
+            else:
+                when = f"power {prev}–{int(mx) - 1}"
+            out.append({"when": when, "result": pts})
+            if mx is not None:
+                prev = int(mx)
+        return out
+
+    criteria.append(
+        {
+            "id": "weapon_power_sp",
+            "title": "Weapon power — SP board (Attack shown; Defense capped lower)",
+            "applies": ["units"],
+            "objective": True,
+            "summary": "Max non-MAP Lv5 power for the board. SP mediocrity ~5000–5400.",
+            "rows": _power_rows(sp_atk),
+        }
+    )
+    criteria.append(
+        {
+            "id": "weapon_power_ssp",
+            "title": "Weapon power — SSP board (Attack shown; Defense capped lower)",
+            "applies": ["units"],
+            "objective": True,
+            "summary": "Includes SSP enhance. SSP mediocrity ~6000.",
+            "rows": _power_rows(ssp_atk),
+        }
+    )
+
+    mwb = rules.get("maxweapon_bonus") or {}
+    mwb_rows = []
+    labels = mwb.get("type_labels") or {}
+    pts_by = mwb.get("points_by_type") or {}
+    for tid in sorted(pts_by.keys(), key=lambda x: int(x)):
+        if tid == "0":
+            continue
+        mwb_rows.append(
+            {
+                "when": labels.get(str(tid), f"Type {tid}"),
+                "result": _fmt_points(pts_by.get(str(tid), 0)),
+            }
+        )
+    criteria.append(
+        {
+            "id": "weapon_bonus",
+            "title": "Weapon conditional bonus (units)",
+            "applies": ["units"],
+            "objective": True,
+            "summary": (
+                "Best matching conditional weapon power / crit / DEF-debuff boost on the kit "
+                "(from weapon effect data). "
+                f"Higher-range bonus ignored when max range ≤{mwb.get('ignore_higher_range_when_max_range_lte', 3)}."
+            ),
+            "rows": mwb_rows,
+        }
+    )
+
+    wr_tbl = rules.get("weapon_range") or {}
+    wr_rows = []
+    for rng in ("1", "2", "3", "4", "5", "6"):
+        bits = []
+        for role in ("Attack", "Defense", "Support"):
+            bits.append(f"{role[0]} {_fmt_points((wr_tbl.get(role) or {}).get(rng, 0))}")
+        wr_rows.append({"when": f"Max range {rng}", "result": " / ".join(bits)})
+    criteria.append(
+        {
+            "id": "weapon_range",
+            "title": "Weapon range (units)",
+            "applies": ["units"],
+            "objective": True,
+            "summary": "Highest non-MAP weapon range on the board.",
+            "rows": wr_rows,
+        }
+    )
+
+    el = rules.get("extra_life") or {}
+    criteria.append(
+        {
+            "id": "combat_flags",
+            "title": "Combat flags (units)",
+            "applies": ["units"],
+            "objective": True,
+            "summary": "Small combat bonuses read from unit abilities and mechanisms.",
+            "rows": [
+                {
+                    "when": "Transform / alternate form",
+                    "result": _fmt_points(rules.get("transform_points", 1)),
+                },
+                {
+                    "when": "Best weapon only usable at Max Vigor, and stronger than the unrestricted best",
+                    "result": _fmt_points(rules.get("max_tension_higher_tier_weapon_points", 1)),
+                },
+                {
+                    "when": "Preemptive Strike",
+                    "result": _fmt_points(rules.get("preemptive_strike_points", 1)),
+                },
+                {
+                    "when": "Rare physical/beam range-down on hit",
+                    "result": _fmt_points(rules.get("rare_debuff_points", 1)),
+                },
+                {
+                    "when": "Unbreakable (survive lethal once)",
+                    "result": (
+                        f"Atk {_fmt_points(el.get('Attack', 1))} / "
+                        f"Def {_fmt_points(el.get('Defense', 2))} / "
+                        f"Sup {_fmt_points(el.get('Support', 1))}"
+                    ),
+                },
+            ],
+        }
+    )
+
+    sh = rules.get("shield") or {}
+    criteria.append(
+        {
+            "id": "shield",
+            "title": "Shield mechanism (units)",
+            "applies": ["units"],
+            "objective": True,
+            "summary": "Whether the unit has a shield (from unit mechanisms).",
+            "rows": [
+                {
+                    "when": "Has shield — Attack",
+                    "result": _fmt_points((sh.get("Attack") or {}).get("has", 1)),
+                },
+                {
+                    "when": "Missing shield — Defense",
+                    "result": _fmt_points((sh.get("Defense") or {}).get("missing", -2)),
+                },
+                {
+                    "when": "Has shield — Defense / Support",
+                    "result": (
+                        f"Def {_fmt_points((sh.get('Defense') or {}).get('has', 1))} / "
+                        f"Sup {_fmt_points((sh.get('Support') or {}).get('has', 1))}"
+                    ),
+                },
+            ],
+        }
+    )
+
+    # Unit SP-grown stats (HP/ATK/DEF/MOB) — Attack bands as the readable sample
+    def _stat_band_rows(stat_key: str) -> list[dict]:
+        bands = ((rules.get("stat_bands") or {}).get(stat_key) or {}).get("Attack") or []
+        out = []
+        prev = None
+        for b in bands:
+            mx = b.get("max_exclusive")
+            pts = _fmt_points(b.get("points"))
+            if prev is None:
+                when = f"{stat_key} < {mx}" if mx is not None else "any"
+            elif mx is None:
+                when = f"{stat_key} ≥ {prev}"
+            else:
+                when = f"{stat_key} {prev}–{int(mx) - 1}"
+            out.append({"when": when + " (Attack shown)", "result": pts})
+            if mx is not None:
+                prev = int(mx)
+        return out
+
+    criteria.append(
+        {
+            "id": "unit_stats",
+            "title": "Unit SP-grown stats (HP / ATK / DEF / MOB)",
+            "applies": ["units"],
+            "objective": True,
+            "summary": "Role-specific bands; Attack table shown as the sample. Defense/Support use their own sheets.",
+            "rows": (
+                _stat_band_rows("HP")[:4]
+                + _stat_band_rows("ATK")[:4]
+                + _stat_band_rows("DEF")[:3]
+                + _stat_band_rows("MOB")[:3]
+            ),
+        }
+    )
+
+    md = rules.get("max_debuff_level") or {}
+    sr4 = rules.get("support_debuffs_at_range_4") or {}
+    debuff_rows = [
+        {"when": "Attack role", "result": "0 (not scored)"},
+        {
+            "when": "Support: 0 / 1 / 2+ distinct R4+ debuff kinds",
+            "result": (
+                f"{_fmt_points(sr4.get('0', -1))} / "
+                f"{_fmt_points(sr4.get('1', 0))} / "
+                f"{_fmt_points(sr4.get('2_or_more', 1))}"
+            ),
+        },
+    ]
+    for role_name in ("Defense", "Support"):
+        tbl = md.get(role_name) or {}
+        bits = []
+        for key in ("none", "3", "4", "5", "6"):
+            if key in tbl:
+                label = "none" if key == "none" else f"Lv{key}"
+                bits.append(f"{label} {_fmt_points(tbl.get(key))}")
+        if bits:
+            debuff_rows.append({"when": f"{role_name} pierce / DEF-down level", "result": " · ".join(bits)})
+    criteria.append(
+        {
+            "id": "debuffs",
+            "title": "Debuffs (Defense / Support units)",
+            "applies": ["units"],
+            "objective": True,
+            "summary": "Pierce % maps to levels (≈10%→3 … 40%+→6). Support also scores distinct debuff kinds at range ≥4.",
+            "rows": debuff_rows,
+        }
+    )
+
+    lp = rules.get("linked_pilot") or {}
+    criteria.append(
+        {
+            "id": "linked_pilot",
+            "title": "Linked / recommend pilot (units)",
+            "applies": ["units"],
+            "objective": True,
+            "summary": "From recommend-character link: rarity index + same role as the unit.",
+            "rows": [
+                {"when": "No linked pilot", "result": _fmt_points(lp.get("none_points", 0))},
+                {
+                    "when": (
+                        f"Linked, rarity index ≥{lp.get('very_good_min_rarity_index', 4)} "
+                        "and same role"
+                    ),
+                    "result": _fmt_points(lp.get("very_good_points", 1)),
+                },
+                {"when": "Linked otherwise", "result": _fmt_points(lp.get("any_points", -1))},
+            ],
+        }
+    )
+
+    map_cov = []
+    prev = 0
+    for band in rules.get("map_coverage_points") or []:
+        mx = band.get("max_exclusive")
+        pts = band.get("points")
+        if mx is None:
+            map_cov.append({"when": f"≥ {prev} cells", "result": _fmt_points(pts)})
+        else:
+            map_cov.append(
+                {"when": f"{prev}–{int(mx) - 1} cells", "result": _fmt_points(pts)}
+            )
+            prev = int(mx)
+    criteria.append(
+        {
+            "id": "map",
+            "title": "MAP weapons (units)",
+            "applies": ["units"],
+            "objective": True,
+            "summary": (
+                "Practical MAP tools: presence for any MAP, extra for dash/MovingAttack, "
+                f"ammo 2+, and effect-range coverage. Combined cap "
+                f"{_fmt_points(rules.get('map_axis_cap', 4))}."
+            ),
+            "rows": [
+                {
+                    "when": "Any MAP weapon",
+                    "result": _fmt_points(rules.get("map_presence_points", 1)),
+                },
+                {
+                    "when": "Dash / MovingAttack MAP",
+                    "result": _fmt_points(rules.get("map_dash_points", 1)),
+                },
+                {"when": "Ammo 1", "result": "0 (covered by presence)"},
+                {"when": "Ammo ≥2", "result": _fmt_points((rules.get("map_ammo_points") or {}).get("2", 1))},
+                *map_cov,
+            ],
+        }
+    )
+
+    criteria.append(
+        {
+            "id": "abilities",
+            "title": "Abilities / kit",
+            "applies": ["units", "pilots"],
+            "objective": True,
+            "summary": (
+                "Scored from ability and skill effect data in the game masters. "
+                "Permanent ATK/DEF/HP/MOV with no condition scores 0 here. "
+                "Strong % effects use size bands (for example damage dealt 10/20/30%+). "
+                f"Unit ability axis caps at +3; pilot kit caps at +{int(rules.get('pilot_kit_cap', 14))}."
+            ),
+            "rows": [
+                {"when": "Role-relevant combat effects", "result": "Points by effect (+ size bands)"},
+                {"when": "Permanent flat/rate stats, no condition", "result": "0"},
+                {"when": "MAP ammo effects", "result": "0 here (counted on MAP axis)"},
+                {"when": "Physical/beam weapon range-down on hit", "result": "Rare debuff +1"},
+                {"when": "Unbreakable (mainly pilots)", "result": "Extra-life role bonus (separate axis)"},
+            ],
+        }
+    )
+
+    # Publish flat role→effect point tables for transparency
+    try:
+        import game_enums as _ge
+    except Exception:
+        _ge = None
+
+    def _type_label(tti: int) -> str:
+        if _ge is not None:
+            try:
+                return _humanize_effect_name(str(_ge.enum_key("TraitType", tti) or tti))
+            except Exception:
+                pass
+        return str(tti)
+
+    abil_cfg = rules.get("ability_structured") or {}
+    for role in ("Attack", "Defense", "Support"):
+        rp = (abil_cfg.get("role_points") or {}).get(role) or {}
+        rows = []
+        for tti_s, pts in sorted(rp.items(), key=lambda kv: (-int(kv[1]), int(kv[0]))):
+            mag = ((abil_cfg.get("magnitude_points") or {}).get(role) or {}).get(tti_s)
+            label = _type_label(int(tti_s))
+            if mag:
+                bits = []
+                prev = 0
+                for b in mag:
+                    mx = b.get("max_exclusive")
+                    if mx is None:
+                        bits.append(f"≥{prev}%→{_fmt_points(b.get('points'))}")
+                    else:
+                        bits.append(f"{prev}–{int(mx)-1}%→{_fmt_points(b.get('points'))}")
+                        prev = int(mx)
+                result = "; ".join(bits)
+            else:
+                result = _fmt_points(pts)
+            rows.append({"when": label, "result": result})
+        criteria.append(
+            {
+                "id": f"ability_table_{role.lower()}",
+                "title": f"Unit ability effect points — {role}",
+                "applies": ["units"],
+                "objective": True,
+                "summary": "Base points when size bands are absent; otherwise the size table applies.",
+                "rows": rows[:24],
+            }
+        )
+
+    fp = rules.get("large_footprint") or {}
+    criteria.append(
+        {
+            "id": "footprint",
+            "title": "Large footprint (2×2)",
+            "applies": ["units"],
+            "objective": True,
+            "summary": "Units that occupy a 2×2 area pay a positioning tax (except Defense).",
+            "rows": [
+                {"when": "Attack", "result": _fmt_points(fp.get("Attack", -1))},
+                {"when": "Support", "result": _fmt_points(fp.get("Support", -1))},
+                {"when": "Defense", "result": _fmt_points(fp.get("Defense", 0))},
+            ],
+        }
+    )
+
+    rar = rules.get("rarity_adjustment") or {}
+    criteria.append(
+        {
+            "id": "rarity",
+            "title": "Rarity adjustment",
+            "applies": ["units", "pilots"],
+            "objective": True,
+            "summary": "Stops N/R from sharing SSR/UR letters.",
+            "rows": [
+                {"when": "N", "result": _fmt_points(rar.get("1", -5))},
+                {"when": "R", "result": _fmt_points(rar.get("2", -4))},
+                {"when": "SR", "result": _fmt_points(rar.get("3", -2))},
+                {"when": "SSR / UR", "result": _fmt_points(rar.get("4", 0))},
+            ],
+        }
+    )
+
+    criteria.append(
+        {
+            "id": "pilots_extra",
+            "title": "Pilot-only axes",
+            "applies": ["pilots"],
+            "objective": True,
+            "summary": "Pilots use the SP board only.",
+            "rows": [
+                {"when": "SP grown stats (Ranged / Melee / Awaken / Defense / Reaction)", "result": "Band points by role"},
+                {"when": "Series affinity abilities", "result": f"+{int(rules.get('series_affinity_points_each', 3))} each"},
+                {"when": "Best recommended MS letter (B+ and up)", "result": "From this guide’s unit letters"},
+                {"when": "Unbreakable on pilot abilities", "result": "Extra-life role bonus"},
+            ],
+        }
+    )
+
+    return criteria
 
 
 def scoring_guide_payload(rules: dict | None = None) -> dict:
@@ -885,8 +2641,18 @@ def scoring_guide_payload(rules: dict | None = None) -> dict:
     guide = dict(rules.get("scoring_guide") or {})
     guide["bucket_labels"] = rules.get("bucket_labels") or {}
     guide["letter_cutoffs"] = rules.get("letter_cutoffs") or []
-    guide["version"] = rules.get("version", 1)
+    guide["ur_letter_cutoffs"] = rules.get("ur_letter_cutoffs") or []
+    guide["pilot_letter_cutoffs"] = rules.get("pilot_letter_cutoffs") or rules.get(
+        "letter_cutoffs"
+    ) or []
+    guide["ur_pilot_letter_cutoffs"] = rules.get("ur_pilot_letter_cutoffs") or []
+    # Prefer nested guide version (e.g. 5.4) over top-level rules.version
+    guide["version"] = (rules.get("scoring_guide") or {}).get("version") or rules.get(
+        "version", 1
+    )
     guide["covers"] = ["units_sp", "units_ssp", "pilots_sp"]
+    # Always rebuild criteria from live bands so the UI matches the scorer.
+    guide["criteria"] = build_public_criteria(rules)
     return guide
 
 
@@ -995,7 +2761,7 @@ def _score_pilot_kit_lines(
 
 
 def score_pilot_features(features: dict, rules: dict | None = None) -> dict:
-    """Score a pilot (character) for SP investment."""
+    """Score a pilot (character) for SP investment (v5 axes)."""
     rules = rules or load_rules()
     role = features.get("role") or "Attack"
     if role not in ("Attack", "Defense", "Support"):
@@ -1010,13 +2776,22 @@ def score_pilot_features(features: dict, rules: dict | None = None) -> dict:
         {"tag_weight": rules.get("pilot_tag_weight") or {}},
         features.get("tags") or [],
     )
-    tags_total = tag_pts + tw_pts
+    st_cfg = rules.get("pilot_tag_strategic") or rules.get("tag_strategic") or {}
+    st_pts = 0
+    st_meta: dict = {}
+    if st_cfg:
+        st_pts, st_meta = strategic_tag_points(
+            {**rules, "tag_strategic": st_cfg},
+            features.get("tags") or [],
+            features.get("tag_strategic_table"),
+        )
+    tags_total = tag_pts + tw_pts + st_pts
     breakdown["tags"] = tags_total
     tag_names = [str(t) for t in (features.get("tags") or []) if t]
     detail_lines.append(
         {
             "kind": "tags",
-            "label": "Combat tags",
+            "label": "Strategic / combat tags",
             "detail": ", ".join(tag_names) if tag_names else "—",
             "points": tags_total,
         }
@@ -1024,6 +2799,27 @@ def score_pilot_features(features: dict, rules: dict | None = None) -> dict:
     if tw_pts:
         meta["tags_weight"] = tw_meta
         meta["heuristic_keys"].append("tags_weight")
+    if st_pts:
+        meta["tags_strategic"] = st_meta
+        meta["heuristic_keys"].append("tags_strategic")
+
+    er_rows = rules.get("pilot_er_access_points") or rules.get("er_access_points") or []
+    er_n = int(features.get("er_expert_eligible_count") or 0)
+    er_pts = 0
+    for row in er_rows:
+        if int(row.get("min", 0)) <= er_n <= int(row.get("max", 999)):
+            er_pts = int(row.get("points", 0) or 0)
+            break
+    breakdown["er_access"] = er_pts
+    meta["er_expert_eligible_count"] = er_n
+    detail_lines.append(
+        {
+            "kind": "er_access",
+            "label": "ER Expert access",
+            "detail": f"{er_n} stages",
+            "points": er_pts,
+        }
+    )
 
     for key in ("Ranged", "Melee", "Awaken", "Defense", "Reaction"):
         bands = ((rules.get("pilot_stat_bands") or {}).get(key) or {}).get(role) or []
@@ -1041,54 +2837,132 @@ def score_pilot_features(features: dict, rules: dict | None = None) -> dict:
             }
         )
 
-    kit_items = list(features.get("kit_items") or [])
-    if not kit_items:
-        for blob in features.get("skill_blobs") or []:
-            text = str(blob or "").strip()
-            if text:
-                kit_items.append(
-                    {
-                        "kind": "skill",
-                        "name": text.split("\n", 1)[0].strip(),
-                        "blob": text,
-                        "is_affinity": False,
-                    }
-                )
-        for blob in features.get("ability_blobs") or []:
-            text = str(blob or "").strip()
-            if not text:
+    use_structured = bool(rules.get("pilot_skill_structured") or rules.get("ability_structured")) and (
+        features.get("ability_effects") is not None or features.get("skill_effects") is not None
+    )
+    if use_structured:
+        aff_n = int(features.get("series_affinity_count") or 0)
+        kit_pts, kit_meta = score_pilot_kit_structured(
+            rules,
+            role,
+            specialty,
+            features.get("ability_effects") or [],
+            features.get("skill_effects") or [],
+            affinity_count=aff_n,
+        )
+        breakdown["skills_abilities"] = kit_pts
+        meta["kit"] = kit_meta
+        for line in (kit_meta.get("skills") or {}).get("lines") or []:
+            detail_lines.append(
+                {
+                    "kind": "skill",
+                    "label": f"Skill trait {line.get('trait_type_index')}",
+                    "name": f"type {line.get('trait_type_index')}",
+                    "points": int(line.get("points") or 0),
+                    "is_affinity": False,
+                    "estimated": False,
+                    "trait_type_index": line.get("trait_type_index"),
+                    "trait_value": line.get("trait_value"),
+                }
+            )
+        for eff in features.get("ability_effects") or []:
+            tti = int(eff.get("trait_type_index") or 0)
+            pts = _points_for_trait_type(
+                rules,
+                role,
+                tti,
+                bool(eff.get("has_active_cond")),
+                int(eff.get("trait_value") or 0),
+            )
+            if pts <= 0:
                 continue
-            name = text.split("\n", 1)[0].strip()
-            is_aff = bool(re.search(r"(?i)affinity|勢力|シリーズ", name))
-            kit_items.append(
-                {"kind": "ability", "name": name, "blob": text, "is_affinity": is_aff}
+            detail_lines.append(
+                {
+                    "kind": "ability",
+                    "label": eff.get("ability_name")
+                    or eff.get("trait_type_key")
+                    or f"type {tti}",
+                    "name": eff.get("ability_name") or eff.get("trait_type_key") or "",
+                    "points": pts,
+                    "is_affinity": False,
+                    "estimated": False,
+                    "trait_type_index": tti,
+                    "trait_value": eff.get("trait_value"),
+                    "trait_type_key": eff.get("trait_type_key") or "",
+                }
+            )
+        breakdown["series_affinity"] = aff_n * int(
+            rules.get("series_affinity_points_each", 3)
+        )
+    else:
+        kit_items = list(features.get("kit_items") or [])
+        if not kit_items:
+            for blob in features.get("skill_blobs") or []:
+                text = str(blob or "").strip()
+                if text:
+                    kit_items.append(
+                        {
+                            "kind": "skill",
+                            "name": text.split("\n", 1)[0].strip(),
+                            "blob": text,
+                            "is_affinity": False,
+                        }
+                    )
+            for blob in features.get("ability_blobs") or []:
+                text = str(blob or "").strip()
+                if not text:
+                    continue
+                name = text.split("\n", 1)[0].strip()
+                is_aff = bool(re.search(r"(?i)affinity|勢力|シリーズ", name))
+                kit_items.append(
+                    {"kind": "ability", "name": name, "blob": text, "is_affinity": is_aff}
+                )
+
+        kit_pts, kit_meta = _score_pilot_kit_lines(rules, role, specialty, kit_items)
+        breakdown["skills_abilities"] = kit_pts
+        meta["kit"] = kit_meta
+        meta["heuristic_keys"].append("skills_abilities")
+        for line in kit_meta.get("lines") or []:
+            detail_lines.append(
+                {
+                    "kind": line.get("kind") or "ability",
+                    "label": line.get("name") or "",
+                    "name": line.get("name") or "",
+                    "points": int(line.get("points") or 0),
+                    "is_affinity": bool(line.get("is_affinity")),
+                    "estimated": True,
+                }
             )
 
-    kit_pts, kit_meta = _score_pilot_kit_lines(rules, role, specialty, kit_items)
-    breakdown["skills_abilities"] = kit_pts
-    meta["kit"] = kit_meta
-    meta["heuristic_keys"].append("skills_abilities")
-    for line in kit_meta.get("lines") or []:
+        aff_n = int(features.get("series_affinity_count") or 0)
+        aff_each = int(rules.get("series_affinity_points_each", 3))
+        aff_from_lines = sum(
+            int(x.get("points") or 0)
+            for x in (kit_meta.get("lines") or [])
+            if x.get("is_affinity")
+        )
+        breakdown["series_affinity"] = aff_from_lines if aff_from_lines else aff_n * aff_each
+
+    el_pts = 0
+    if features.get("has_extra_life"):
+        el_pts = int((rules.get("extra_life") or {}).get(role, 1))
+        if features.get("extra_life_source") == "prose":
+            meta["heuristic_keys"].append("extra_life")
+        else:
+            meta["extra_life"] = {
+                "structured": True,
+                "source": features.get("extra_life_source"),
+            }
+    breakdown["extra_life"] = el_pts
+    if el_pts:
         detail_lines.append(
             {
-                "kind": line.get("kind") or "ability",
-                "label": line.get("name") or "",
-                "name": line.get("name") or "",
-                "points": int(line.get("points") or 0),
-                "is_affinity": bool(line.get("is_affinity")),
-                "estimated": True,
+                "kind": "extra_life",
+                "label": "Unbreakable / extra life",
+                "detail": features.get("extra_life_source") or "yes",
+                "points": el_pts,
             }
         )
-
-    aff_n = int(features.get("series_affinity_count") or 0)
-    aff_each = int(rules.get("series_affinity_points_each", 3))
-    # Prefer counting from scored affinity kit lines when present.
-    aff_from_lines = sum(
-        int(x.get("points") or 0)
-        for x in (kit_meta.get("lines") or [])
-        if x.get("is_affinity")
-    )
-    breakdown["series_affinity"] = aff_from_lines if aff_from_lines else aff_n * aff_each
 
     letter_pts_map = rules.get("recommend_ms_letter_points") or {}
     best_letter = features.get("best_rec_ms_letter") or ""
@@ -1105,8 +2979,11 @@ def score_pilot_features(features: dict, rules: dict | None = None) -> dict:
         }
     )
 
+    rarity_pts = rarity_adjustment_points(rules, features.get("rarity_id"))
+    breakdown["rarity"] = rarity_pts
+
     total = int(sum(int(v) for v in breakdown.values()))
-    letter = letter_for_total(rules, total)
+    letter = letter_for_total(rules, total, cutoffs_key="pilot_letter_cutoffs")
     bucket = bucket_for_letter(rules, letter)
     return {
         "total": total,
@@ -1522,6 +3399,10 @@ def character_is_investment_eligible(
     denylist = {str(x) for x in (rules.get("exclude_character_ids") or []) if str(x)}
     if cid in denylist:
         return False
+    info = (getattr(A, "char_info_map", None) or {}).get(cid) or {}
+    # Role 0 = NPC / story-only — never investment targets (even if they have kit rows).
+    if str(info.get("role", "0") or "0") == "0":
+        return False
     playable = getattr(A, "char_list_playable_ids", None)
     if playable is not None and cid not in playable:
         return False
@@ -1576,6 +3457,9 @@ def extract_character_features(
     kit_items, aff, req_tags, req_series = _char_kit_items(A, cid, lc, ldc)
     ability_blobs = [x["blob"] for x in kit_items if x.get("kind") == "ability"]
     skill_blobs = [x["blob"] for x in kit_items if x.get("kind") == "skill"]
+    ability_effects = collect_character_ability_effects(A, cid, lc=lc, rules=rules)
+    skill_effects = collect_character_skill_effects(A, cid)
+    has_extra, extra_src = _has_extra_life(rules, cid, ability_blobs, ability_effects)
 
     specialty = pilot_specialty(
         {
@@ -1681,6 +3565,10 @@ def extract_character_features(
         "tags": [t.get("name") if isinstance(t, dict) else str(t) for t in tags][:40],
         "ability_blobs": ability_blobs,
         "skill_blobs": skill_blobs,
+        "ability_effects": ability_effects,
+        "skill_effects": skill_effects,
+        "has_extra_life": has_extra,
+        "extra_life_source": extra_src,
         "kit_items": kit_items,
         "series_affinity_count": aff,
         "required_unit_tag_ids": req_tags,
@@ -1709,6 +3597,8 @@ def score_character(
     rules: dict | None = None,
     unit_letter_by_id: dict | None = None,
     unit_index: dict | None = None,
+    tag_strategic_table: dict | None = None,
+    er_expert_ids: list[str] | None = None,
 ) -> dict | None:
     rules = rules or load_rules()
     feats = extract_character_features(
@@ -1721,8 +3611,20 @@ def score_character(
     )
     if not feats:
         return None
+    if tag_strategic_table is not None:
+        feats["tag_strategic_table"] = tag_strategic_table
+    elif rules.get("pilot_tag_strategic") or rules.get("tag_strategic"):
+        feats["tag_strategic_table"] = get_pilot_tag_strategic_table(A, rules, lc)
+    if er_expert_ids is not None:
+        elig = [
+            sid
+            for sid in er_expert_ids
+            if entity_eligible_on_stage(A, cid, sid, kind="character", lc=lc)
+        ]
+        feats["er_expert_eligible_count"] = len(elig)
+        feats["er_expert_ids"] = elig
     scored = score_pilot_features(feats, rules=rules)
-    return {
+    row = {
         "id": feats["id"],
         "name": feats.get("name") or "",
         "entity": "character",
@@ -1753,6 +3655,9 @@ def score_character(
         },
         "best_rec_ms_letter": feats.get("best_rec_ms_letter") or "",
     }
+    if feats.get("er_expert_ids") is not None:
+        row["er_expert_ids"] = list(feats.get("er_expert_ids") or [])
+    return row
 
 
 def entity_matches_group(A, eid: str, group_id: str, kind: str, lc: str = "EN") -> bool:
@@ -1778,7 +3683,8 @@ def entity_matches_sortie_set(A, eid: str, set_id: str, kind: str, lc: str = "EN
         return True
     rows = A.stage_sortie_set_content_map.get(set_id, []) or []
     want = "1" if kind == "unit" else "2"
-    typed = [r for r in rows if str(r.get("target_type_index")) == want]
+    # Target type 3 = unit + character; treat as applying to both kinds.
+    typed = [r for r in rows if str(r.get("target_type_index")) in (want, "3")]
     if not typed:
         # If stage only restricts the other entity type, treat as unrestricted for this kind
         return True
@@ -1852,8 +3758,24 @@ def build_er_expert_filters(A, lc: str = "EN") -> list[dict]:
                 continue
             for r in A.stage_sortie_set_content_map.get(set_id, []) or []:
                 tt = str(r.get("target_type_index") or "0")
-                bucket = unit_labels if tt == "1" else (char_labels if tt == "2" else None)
-                if bucket is None:
+                if tt == "1":
+                    bucket = unit_labels
+                elif tt == "2":
+                    bucket = char_labels
+                elif tt == "3":
+                    # Both — collect into unit and character label lists
+                    for gc in A.stage_sortie_group_content_map.get(r.get("group_id", "0"), []) or []:
+                        lab = _restriction_label(
+                            A,
+                            str(gc.get("restriction_type_index", "0")),
+                            gc.get("target_id", "0"),
+                            lc,
+                        )
+                        if lab:
+                            unit_labels.append(lab)
+                            char_labels.append(lab)
+                    continue
+                else:
                     continue
                 for gc in A.stage_sortie_group_content_map.get(r.get("group_id", "0"), []) or []:
                     lab = _restriction_label(

@@ -1,0 +1,123 @@
+/* Ko-fi supporter wall — above site footer on Character / Unit / Supporter tabs */
+.kofi-supporter-wall {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 1.35rem 1rem 0.35rem;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+.kofi-supporter-wall[hidden] {
+  display: none !important;
+}
+.kofi-supporter-wall-inner {
+  border-top: 1px solid rgba(42, 54, 84, 0.85);
+  padding-top: 1.15rem;
+}
+.kofi-supporter-wall-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  margin: 0 0 0.95rem;
+}
+.kofi-supporter-wall-title {
+  margin: 0;
+  font-size: clamp(0.95rem, 2.2vw, 1.1rem);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  line-height: 1.35;
+}
+.kofi-supporter-wall-join {
+  color: var(--accent-cyan);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: var(--transition);
+}
+.kofi-supporter-wall-join:hover {
+  color: #7eecff;
+  text-decoration: underline;
+}
+.kofi-supporter-wall-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+  gap: 0.65rem 0.55rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.kofi-supporter-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  min-width: 0;
+  text-align: center;
+}
+.kofi-supporter-avatar-wrap {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  flex-shrink: 0;
+}
+.kofi-supporter-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  background: var(--bg-card);
+  border: 2px solid rgba(42, 54, 84, 0.95);
+  box-shadow: var(--shadow-surface);
+}
+.kofi-supporter-avatar--fallback {
+  object-fit: contain;
+  padding: 8px;
+  box-sizing: border-box;
+  background: rgba(17, 24, 39, 0.95);
+}
+.kofi-supporter-crown {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1rem;
+  line-height: 1;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.65));
+  pointer-events: none;
+  z-index: 1;
+}
+.kofi-supporter-card--crown .kofi-supporter-avatar {
+  border-color: rgba(255, 215, 0, 0.75);
+  box-shadow: var(--shadow-surface), 0 0 0 2px rgba(255, 215, 0, 0.2);
+}
+.kofi-supporter-name {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  line-height: 1.25;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 2px;
+}
+
+@media (max-width: 640px) {
+  .kofi-supporter-wall {
+    padding: 1.1rem 0.85rem 0.25rem;
+  }
+  .kofi-supporter-wall-grid {
+    grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+    gap: 0.55rem 0.4rem;
+  }
+  .kofi-supporter-avatar-wrap,
+  .kofi-supporter-avatar {
+    width: 46px;
+    height: 46px;
+  }
+}
