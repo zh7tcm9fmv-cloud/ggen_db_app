@@ -136,7 +136,16 @@
   function fetchWall() {
     if (loaded && data) return Promise.resolve(data);
     if (loading) return loading;
-    loading = fetch('/api/kofi/supporter-wall', { credentials: 'same-origin' })
+    var bust = '';
+    try {
+      bust = encodeURIComponent(String(global.__GGEN_APP_VERSION__ || Date.now()));
+    } catch (_) {
+      bust = String(Date.now());
+    }
+    loading = fetch('/api/kofi/supporter-wall?v=' + bust, {
+      credentials: 'same-origin',
+      cache: 'no-cache',
+    })
       .then(function (r) {
         if (!r.ok) throw new Error('wall ' + r.status);
         return r.json();

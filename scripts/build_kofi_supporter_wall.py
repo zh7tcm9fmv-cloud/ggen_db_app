@@ -32,6 +32,7 @@ THUMB_FILES = {
     "fortexfiend": "fortexfiend.png",
     "manafusion": "manafusion.png",
     "2pmgaming": "2pmgaming.png",
+    "theothermc": "theothermc.png",
     "fire red": "fire_red.png",
     "kamen rider decade": "kamen_rider_decade.png",
     "大漢erection": "dahan_erection.png",
