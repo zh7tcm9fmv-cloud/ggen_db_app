@@ -724,9 +724,43 @@ class TestSpInvestmentBands(unittest.TestCase):
         )
         self.assertEqual(support_strong["breakdown"]["max_debuff"], 2)
 
-    def test_low_hp_attacker_penalty(self):
+    def test_low_hp_attacker_no_floor_penalty(self):
         scored = score_features(_minimal_features(HP=79000), self.rules)
-        self.assertEqual(scored["breakdown"]["hp"], -3)
+        self.assertEqual(scored["breakdown"]["hp"], 0)
+        high = score_features(_minimal_features(HP=102000), self.rules)
+        self.assertEqual(high["breakdown"]["hp"], 2)
+
+    def test_ssp_attack_en_upside_only(self):
+        low = score_features(_minimal_features(EN=350), self.rules, mode="ssp")
+        self.assertEqual(low["breakdown"]["en"], 0)
+        mid = score_features(_minimal_features(EN=420), self.rules, mode="ssp")
+        self.assertEqual(mid["breakdown"]["en"], 1)
+        hi = score_features(_minimal_features(EN=500), self.rules, mode="ssp")
+        self.assertEqual(hi["breakdown"]["en"], 2)
+        sp = score_features(_minimal_features(EN=500), self.rules, mode="sp")
+        self.assertEqual(sp["breakdown"]["en"], 0)
+
+    def test_stat_outlier_attack_hp(self):
+        scored = score_features(_minimal_features(HP=106000), self.rules)
+        self.assertEqual(scored["breakdown"]["stat_outlier"], 1)
+
+    def test_special_defense_presence(self):
+        none = score_features(_minimal_features(special_defense_kinds=[]), self.rules)
+        self.assertEqual(none["breakdown"]["special_defense"], 0)
+        one = score_features(
+            _minimal_features(special_defense_kinds=["14"]), self.rules
+        )
+        self.assertEqual(one["breakdown"]["special_defense"], 1)
+        two = score_features(
+            _minimal_features(special_defense_kinds=["14", "109"]), self.rules
+        )
+        self.assertEqual(two["breakdown"]["special_defense"], 2)
+
+    def test_ur_pilot_dependence_tax(self):
+        free = score_features(_minimal_features(ur_pilot_dependent=False), self.rules)
+        self.assertEqual(free["breakdown"]["ur_pilot_dependence"], 0)
+        dep = score_features(_minimal_features(ur_pilot_dependent=True), self.rules)
+        self.assertEqual(dep["breakdown"]["ur_pilot_dependence"], -1)
 
     def test_movement_followup_after_move_map(self):
         a = score_features(_minimal_features(has_after_move_map=True), self.rules)
@@ -809,9 +843,45 @@ class TestSpInvestmentBands(unittest.TestCase):
         }
         scored = score_pilot_features(feats, self.rules)
         self.assertEqual(scored["breakdown"]["er_access"], 2)
-        self.assertEqual(scored["breakdown"]["rarity"], -5)
+        self.assertEqual(scored["breakdown"]["rarity"], -2)
         self.assertEqual(scored["breakdown"]["tags"], 1)  # Hard ER curated
         self.assertEqual(scored["bucket"], bucket_for_letter(self.rules, scored["letter"]))
+
+    def test_pilot_sr_rarity_not_penalized(self):
+        feats = {
+            "id": "p1",
+            "role": "Attack",
+            "rarity_id": "3",
+            "specialty": "Ranged",
+            "tag_count": 0,
+            "tags": [],
+            "tag_strategic_table": {},
+            "er_expert_eligible_count": 5,
+            "ability_effects": [],
+            "skill_effects": [],
+            "kit_items": [],
+            "series_affinity_count": 0,
+            "best_rec_ms_letter": "",
+            "rec_ms_bplus_or_better_count": 0,
+            "Ranged": 700,
+            "Melee": 700,
+            "Awaken": 600,
+            "Defense": 500,
+            "Reaction": 550,
+        }
+        scored = score_pilot_features(feats, self.rules)
+        self.assertEqual(scored["breakdown"]["rarity"], 0)
+
+    def test_public_criteria_includes_pilot_stats_and_v515_axes(self):
+        from sp_investment_rank import build_public_criteria
+
+        crit = build_public_criteria(self.rules)
+        ids = {c["id"] for c in crit}
+        self.assertIn("pilot_stats_attack", ids)
+        self.assertIn("special_defense", ids)
+        self.assertIn("ur_pilot_dependence", ids)
+        self.assertIn("stat_outlier", ids)
+        self.assertIn("pilot_rarity", ids)
 
 
 def _minimal_features(**overrides):
@@ -838,6 +908,7 @@ def _minimal_features(**overrides):
         "has_shield": True,
         "is_large_footprint": False,
         "HP": 88000,
+        "EN": 380,
         "ATK": 11800,
         "DEF": 8200,
         "MOB": 9300,
@@ -856,6 +927,8 @@ def _minimal_features(**overrides):
         "max_debuff_pct": 0,
         "support_debuffs_range4_count": 0,
         "support_debuffs_range5_count": 0,
+        "special_defense_kinds": [],
+        "ur_pilot_dependent": False,
     }
     base.update(overrides)
     return base

@@ -31,7 +31,8 @@
     "v5.11: softer ER bands (<2 −1, 2–4 +1, 5+ +2); terrain floor is Space+(Land|Atmosphere); no Defense-only Atmospheric tax",
     "v5.12: Max Vigor–only best weapon is a penalty (MP/pilot-gated); SSP ability replaces applied; Defense scores Regeneration/HP restore; role stat bands — Attack ATK>MOB, Support MOB>ATK (no ATK floor penalty), Defense ATK upside-only ≥9000",
     "v5.13: free/dev/event +1 vs gacha 0; MOV 5 neutral; weapon bonus from strongest attack; split crit dmg/rate/guaranteed; drop tile bonus; softer range 1–3; dual Ranged/Melee/Awaken attr +1; Lupus/Rex signature +3; affinity same-role; MAP coverage 0–14/15–24/25+ and ignore non-damage MAP",
-    "v5.14: SP board ignores SSP Custom Core weapons (…80/…90); Attack DEF not scored; Attack ATK mid band awards points (no 0 dead-zone)"
+    "v5.14: SP board ignores SSP Custom Core weapons (…80/…90); Attack DEF not scored; Attack ATK mid band awards points (no 0 dead-zone)",
+    "v5.15: Attack/Support HP upside-only (no floor penalties); Defense HP/DEF floors kept; SSP Attack EN upside-only; secondary-stat outlier niche bonus; special_defense presence (DR/I-field/barrier); soft UR-recommend pilot dependence −1; softer pilot_rarity_adjustment (SR not punished like unit SR)"
   ],
   "exclude_warships": true,
   "exclude_character_ids": [],
@@ -40,6 +41,13 @@
     "1": -5,
     "2": -4,
     "3": -2,
+    "4": 0,
+    "5": 0
+  },
+  "pilot_rarity_adjustment": {
+    "1": -2,
+    "2": -1,
+    "3": 0,
     "4": 0,
     "5": 0
   },
@@ -864,18 +872,6 @@
     "HP": {
       "Attack": [
         {
-          "max_exclusive": 80000,
-          "points": -3
-        },
-        {
-          "max_exclusive": 86000,
-          "points": -2
-        },
-        {
-          "max_exclusive": 91000,
-          "points": -1
-        },
-        {
           "max_exclusive": 95000,
           "points": 0
         },
@@ -912,14 +908,6 @@
       ],
       "Support": [
         {
-          "max_exclusive": 83000,
-          "points": -1
-        },
-        {
-          "max_exclusive": 86000,
-          "points": -1
-        },
-        {
           "max_exclusive": 91000,
           "points": 0
         },
@@ -930,6 +918,34 @@
         {
           "max_exclusive": null,
           "points": 1
+        }
+      ]
+    },
+    "EN": {
+      "Attack": [
+        {
+          "max_exclusive": 400,
+          "points": 0
+        },
+        {
+          "max_exclusive": 450,
+          "points": 1
+        },
+        {
+          "max_exclusive": null,
+          "points": 2
+        }
+      ],
+      "Defense": [
+        {
+          "max_exclusive": null,
+          "points": 0
+        }
+      ],
+      "Support": [
+        {
+          "max_exclusive": null,
+          "points": 0
         }
       ]
     },
@@ -1119,6 +1135,47 @@
       "has": 1,
       "missing": 0
     }
+  },
+  "en_stat_modes": ["ssp"],
+  "stat_outlier": {
+    "cap": 2,
+    "points_per_hit": 1,
+    "by_role": {
+      "Attack": [
+        {"stat": "HP", "min": 105000},
+        {"stat": "EN", "min": 450, "modes": ["ssp"]}
+      ],
+      "Defense": [
+        {"stat": "ATK", "min": 11000}
+      ],
+      "Support": [
+        {"stat": "DEF", "min": 10000},
+        {"stat": "HP", "min": 98000}
+      ]
+    }
+  },
+  "special_defense": {
+    "trait_types": [14, 15, 16, 73, 79, 93, 109, 110],
+    "kind_labels": {
+      "14": "Damage taken down %",
+      "15": "Damage taken down flat",
+      "16": "Defensive damage reduction",
+      "73": "Anti-damage shield effect",
+      "79": "Damage negation",
+      "93": "Damage taken upper limit",
+      "109": "Damage barrier (HP%)",
+      "110": "Damage cut"
+    },
+    "points": {
+      "0": 0,
+      "1": 1,
+      "2_or_more": 2
+    }
+  },
+  "ur_pilot_dependence": {
+    "min_recommend_rarity_index": 5,
+    "dependent_points": -1,
+    "independent_points": 0
   },
   "movement": {
     "Attack": {
@@ -1522,9 +1579,9 @@
     "1370011100"
   ],
   "scoring_guide": {
-    "version": 5.5,
+    "version": 5.15,
     "title": "How Investment Guide scoring works",
-    "intro": "Point-sum shortlist for SP/SSP chip investment on mobile suits and pilots (Attack / Defense / Support). Units have separate SP and SSP boards; pilots use SP only. Criteria favor practical sortie tools (MAP, mobility follow-ups, weapon power) and a deep affinity pilot pool over a single linked recommend. Close letters still need a human look.",
+    "intro": "Point-sum shortlist for SP/SSP chip investment on mobile suits and pilots (Attack / Defense / Support). Units have separate SP and SSP boards; pilots use SP only. Criteria favor practical sortie tools (MAP, mobility follow-ups, weapon power) and a deep affinity pilot pool over a single linked recommend. Minor Attack stats (HP, SSP EN) are upside-only — no floor punishment. Close letters still need a human look.",
     "overrides": [
       "Each axis adds points; the total becomes a letter, then a bucket (Recommended / Solid / Situational / Niche).",
       "Filter by tag or Eternal Road Expert stage to compare units that actually fit the same restriction."
@@ -1535,6 +1592,8 @@
       "Strategic tag weights use how often tags appear on UR rosters (calibrated table).",
       "Affinity pilot pool counts SSR+ pilots with piloting-tag / EX-pair affinity for the MS (not supporter amp %).",
       "Transform scores only when the alternate form unlocks deployable terrain, higher MOV, longer range, higher weapon power, or adds MAP.",
+      "Attack HP and SSP Attack EN are upside-only; Defense still taxes low HP/DEF. Special defenses (I-field / DR / barrier) are presence bonuses beyond the shield mechanism.",
+      "Units whose recommend pilot is UR/Ultimate take a mild −1 dependence tax (still usable with lower rarity pilots).",
       "Close letters still need a human look."
     ]
   },

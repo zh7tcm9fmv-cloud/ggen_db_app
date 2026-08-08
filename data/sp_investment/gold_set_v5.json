@@ -1,6 +1,6 @@
 {
-  "version": 2,
-  "notes": "Expanded gold after v5.4 cohort letter scales (SP vs UR) + structured scoring.",
+  "version": 3,
+  "notes": "v5.15: Attack HP/SSP EN upside-only, outlier, special_defense, UR-pilot dependence, softer pilot rarity.",
   "units_sp": [
     {
       "id": "1219000150",
@@ -30,7 +30,7 @@
     {
       "id": "1501003450",
       "name": "Darilbalde (Season 2) (EX)",
-      "expect_bucket": "recommended"
+      "expect_bucket": "solid"
     },
     {
       "id": "1305000350",
@@ -105,7 +105,7 @@
     {
       "id": "1155000250",
       "name": "Gundam F90 A.D.S. Type (EX)",
-      "expect_bucket": "solid"
+      "expect_bucket": "recommended"
     },
     {
       "id": "1501003010",
@@ -115,7 +115,7 @@
     {
       "id": "1501002450",
       "name": "Gundam Pharact (Season 2) (EX)",
-      "expect_bucket": "solid"
+      "expect_bucket": "recommended"
     },
     {
       "id": "1017000950",
@@ -130,7 +130,7 @@
     {
       "id": "1300004650",
       "name": "Providence Gundam (EX)",
-      "expect_bucket": "solid"
+      "expect_bucket": "recommended"
     },
     {
       "id": "1001003700",
@@ -252,12 +252,12 @@
     {
       "id": "1501003450",
       "name": "Darilbalde (Season 2) (EX)",
-      "expect_bucket": "recommended"
+      "expect_bucket": "solid"
     },
     {
       "id": "1305000350",
       "name": "Gundam Astray Gold Frame Amatsu Mina (EX)",
-      "expect_bucket": "recommended"
+      "expect_bucket": "solid"
     },
     {
       "id": "1150000250",
@@ -282,7 +282,7 @@
     {
       "id": "1166000250",
       "name": "Crossbone Gundam X1 Custom (EX)",
-      "expect_bucket": "recommended"
+      "expect_bucket": "solid"
     },
     {
       "id": "1330000750",
@@ -307,7 +307,7 @@
     {
       "id": "1095002550",
       "name": "Qubeley (ZZ) (EX)",
-      "expect_bucket": "solid"
+      "expect_bucket": "recommended"
     },
     {
       "id": "1144000500",
@@ -572,88 +572,8 @@
       "expect_bucket": "niche"
     },
     {
-      "id": "1200000303",
-      "name": "Sai Saici",
-      "expect_bucket": "niche"
-    },
-    {
-      "id": "1200000203",
-      "name": "Chibodee Crocket",
-      "expect_bucket": "niche"
-    },
-    {
-      "id": "1305000701",
-      "name": "Gai Murakumo",
-      "expect_bucket": "niche"
-    },
-    {
-      "id": "1200000402",
-      "name": "George de Sand",
-      "expect_bucket": "niche"
-    },
-    {
-      "id": "1300000102",
-      "name": "Kira Yamato",
-      "expect_bucket": "niche"
-    },
-    {
-      "id": "1300000103",
-      "name": "Kira Yamato",
-      "expect_bucket": "niche"
-    },
-    {
-      "id": "1300000104",
-      "name": "Kira Yamato",
-      "expect_bucket": "niche"
-    },
-    {
-      "id": "1300002900",
-      "name": "Martin DaCosta",
-      "expect_bucket": "niche"
-    },
-    {
-      "id": "1200000503",
-      "name": "Argo Gulskii",
-      "expect_bucket": "niche"
-    },
-    {
-      "id": "1300002300",
-      "name": "Frederick Ades",
-      "expect_bucket": "niche"
-    },
-    {
-      "id": "1300003200",
-      "name": "Lacus Clyne",
-      "expect_bucket": "niche"
-    },
-    {
-      "id": "1300003201",
-      "name": "Lacus Clyne",
-      "expect_bucket": "niche"
-    },
-    {
       "id": "1200000701",
       "name": "Rain Mikamura",
-      "expect_bucket": "niche"
-    },
-    {
-      "id": "1300001901",
-      "name": "Yzak Joule",
-      "expect_bucket": "niche"
-    },
-    {
-      "id": "2300000700",
-      "name": "ZAFT Officer",
-      "expect_bucket": "niche"
-    },
-    {
-      "id": "1305000600",
-      "name": "Captain GG",
-      "expect_bucket": "niche"
-    },
-    {
-      "id": "1095004400",
-      "name": "Gemon Bajack",
       "expect_bucket": "niche"
     }
   ]

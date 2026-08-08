@@ -46,7 +46,7 @@
     },
     rarity: {
       label: 'Rarity',
-      tip: 'N/R/SR get a penalty so they do not share top letters with SSR. SSR and UR start even before other axes.',
+      tip: 'Units: N/R/SR get a penalty so they do not share top letters with SSR. Pilots use a softer table — SR is not buried. SSR and UR start even before other axes.',
     },
     transform: {
       label: 'Transform advantage',
@@ -76,6 +76,11 @@
       label: 'Affinity pilot pool',
       tip: 'How many same-role SSR+ pilots have piloting-tag / EX-pair affinity for this MS. Defenders do not count for attacker MS.',
     },
+    ur_pilot_dependence: {
+      label: 'UR pilot dependence',
+      tip: 'Mild −1 when the MS recommend pilot is UR/Ultimate (peak kit often assumes that pilot). Still usable with SSR affinity pilots.',
+      hideIfZero: true,
+    },
     max_tension_weapon: {
       label: 'Max Vigor weapon',
       tip: 'Strongest weapon is Max Vigor only (beats unrestricted best) — MP/pilot-gated, so it is a mild penalty vs always-usable power.',
@@ -96,7 +101,15 @@
       label: 'Debuffs at range',
       tip: 'Defense/Support only. Defense counts useful debuff kinds from range 4+ (light). Support needs range 5+ kinds — none is a penalty; two or more is a bonus. Not scored for Attack.',
     },
-    hp: { label: 'HP', tip: 'SP-grown HP band for this role.' },
+    hp: {
+      label: 'HP',
+      tip: 'Attack/Support: upside-only (high HP helps, low HP is not punished). Defense still taxes low HP.',
+    },
+    en: {
+      label: 'EN',
+      tip: 'SSP Attack only — upside for high EN so juice-hungry kits are rewarded. Not scored on SP, and never a penalty.',
+      hideIfZero: true,
+    },
     atk: { label: 'ATK', tip: 'SP-grown ATK band for this role. Attack units score this heavily.' },
     def: {
       label: 'DEF',
@@ -104,6 +117,16 @@
       hideIfZero: true,
     },
     mob: { label: 'MOB', tip: 'SP-grown Mobility band for this role.' },
+    stat_outlier: {
+      label: 'Stat outlier',
+      tip: 'Small niche bonus when a secondary stat is clearly exceptional for the role (e.g. very high Attack HP/EN). Cap +2.',
+      hideIfZero: true,
+    },
+    special_defense: {
+      label: 'Special defense',
+      tip: 'Presence bonus for ability mitigation beyond the shield mechanism (damage taken down, barriers, negation). No missing penalty.',
+      hideIfZero: true,
+    },
     shield: {
       label: 'Shield',
       tip: 'Has a shield mechanism (~20% damage neglect). Defense units lose points if they lack one.',
@@ -1126,6 +1149,10 @@
         : row.has_sp
           ? '<span class="spi-chip spi-chip-cohort">SP-eligible scale</span>'
           : '';
+    const urPilotBadge =
+      !isPilot && row.peaks_with_ur_pilot
+        ? '<span class="spi-chip spi-chip-warn" title="Recommend pilot is UR/Ultimate — peak kit often assumes that pilot">Peaks with UR pilot</span>'
+        : '';
 
     const header = `<div class="spi-dossier-head">
       <div class="spi-dossier-thumb">${renderFramedThumb(row, kind)}</div>
@@ -1136,6 +1163,7 @@
           ${letterChip(row.letter)}
           <span class="spi-chip score">Total: ${esc(row.total)} Pt</span>
           ${cohort}
+          ${urPilotBadge}
         </div>
       </div>
     </div>`;

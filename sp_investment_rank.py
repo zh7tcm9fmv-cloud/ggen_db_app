@@ -118,6 +118,12 @@ def rarity_adjustment_points(rules: dict, rarity_id: str | int | None) -> int:
     return int(tbl.get(str(rarity_id if rarity_id is not None else ""), 0) or 0)
 
 
+def pilot_rarity_adjustment_points(rules: dict, rarity_id: str | int | None) -> int:
+    """Softer rarity floors for pilots (SR SP pilots are often still investable)."""
+    tbl = rules.get("pilot_rarity_adjustment") or rules.get("rarity_adjustment") or {}
+    return int(tbl.get(str(rarity_id if rarity_id is not None else ""), 0) or 0)
+
+
 def lookup_role_table(table: dict, role: str, key: str, default: int = 0) -> int:
     role_map = (table or {}).get(role) or {}
     if key in role_map:
@@ -1902,6 +1908,33 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
         bands = ((rules.get("stat_bands") or {}).get(key) or {}).get(role) or []
         breakdown[key.lower()] = band_points(bands, features.get(feat_key) or 0)
 
+    # EN: SSP Attack upside-only (SP and non-Attack stay 0 unless bands say otherwise)
+    en_modes = {str(m) for m in (rules.get("en_stat_modes") or ["ssp"])}
+    if str(mode) in en_modes:
+        en_bands = ((rules.get("stat_bands") or {}).get("EN") or {}).get(role) or []
+        breakdown["en"] = band_points(en_bands, features.get("EN") or 0)
+    else:
+        breakdown["en"] = 0
+
+    outlier_pts, outlier_meta = score_stat_outlier(rules, features, role, mode)
+    breakdown["stat_outlier"] = outlier_pts
+    if outlier_pts:
+        meta["stat_outlier"] = outlier_meta
+
+    sd_pts, sd_meta = score_special_defense(rules, features.get("special_defense_kinds") or [])
+    breakdown["special_defense"] = sd_pts
+    if sd_pts or sd_meta.get("count"):
+        meta["special_defense"] = sd_meta
+
+    ur_dep = bool(features.get("ur_pilot_dependent"))
+    ur_pts, ur_meta = score_ur_pilot_dependence(rules, ur_dep)
+    breakdown["ur_pilot_dependence"] = ur_pts
+    if ur_dep or ur_pts:
+        meta["ur_pilot_dependence"] = {
+            **ur_meta,
+            **(features.get("ur_pilot_dependence_meta") or {}),
+        }
+
     sh = (rules.get("shield") or {}).get(role) or {}
     breakdown["shield"] = int(sh.get("has", 0) if features.get("has_shield") else sh.get("missing", 0))
 
@@ -2371,6 +2404,96 @@ def _linked_pilot_flags(A, uid: str, info: dict, rules: dict) -> tuple[bool, boo
     return True, very
 
 
+def _ur_recommend_pilot_dependence(A, uid: str, info: dict, rules: dict) -> tuple[bool, dict]:
+    """True when the MS recommend / linked pilot is UR+ (peak kit often UR-gated)."""
+    cfg = rules.get("ur_pilot_dependence") or {}
+    min_ri = int(cfg.get("min_recommend_rarity_index", 5) or 5)
+    cid = ""
+    try:
+        cid = A.resolve_unit_recommend_character_id(uid, info) or ""
+    except Exception:
+        cid = ""
+    if not cid:
+        return False, {"recommend_character_id": "", "recommend_rarity_index": 0}
+    cinfo = A.char_info_map.get(cid, {}) or {}
+    ri = int(cinfo.get("rarity", 1) or 1)
+    is_ult = bool(cinfo.get("is_ultimate", False))
+    dependent = ri >= min_ri or is_ult
+    return dependent, {
+        "recommend_character_id": str(cid),
+        "recommend_rarity_index": ri,
+        "recommend_is_ultimate": is_ult,
+    }
+
+
+def _special_defense_kinds(rules: dict, ability_effects: list[dict] | None) -> list[str]:
+    """Distinct special-defense TraitType ids present on unit abilities (not the shield mechanism)."""
+    cfg = rules.get("special_defense") or {}
+    wanted = {int(x) for x in (cfg.get("trait_types") or [])}
+    if not wanted:
+        return []
+    found: set[int] = set()
+    for eff in ability_effects or []:
+        try:
+            tti = int(eff.get("trait_type_index") or eff.get("TraitTypeIndex") or 0)
+        except (TypeError, ValueError):
+            continue
+        if tti in wanted:
+            found.add(tti)
+    return [str(x) for x in sorted(found)]
+
+
+def score_special_defense(rules: dict, kinds: list[str] | None) -> tuple[int, dict]:
+    cfg = rules.get("special_defense") or {}
+    pts_tbl = cfg.get("points") or {}
+    n = len(kinds or [])
+    if n <= 0:
+        pts = int(pts_tbl.get("0", 0) or 0)
+    elif n == 1:
+        pts = int(pts_tbl.get("1", 1) or 0)
+    else:
+        pts = int(pts_tbl.get("2_or_more", pts_tbl.get("2", 2)) or 0)
+    labels = cfg.get("kind_labels") or {}
+    return pts, {
+        "kinds": list(kinds or []),
+        "labels": [labels.get(k, k) for k in (kinds or [])],
+        "count": n,
+    }
+
+
+def score_stat_outlier(rules: dict, features: dict, role: str, mode: str) -> tuple[int, dict]:
+    """Small niche bonus when secondary stats are clearly exceptional for the role."""
+    cfg = rules.get("stat_outlier") or {}
+    cap = int(cfg.get("cap", 2) or 2)
+    per = int(cfg.get("points_per_hit", 1) or 1)
+    hits: list[dict] = []
+    for row in (cfg.get("by_role") or {}).get(role) or []:
+        modes = row.get("modes")
+        if modes is not None and str(mode) not in {str(m) for m in modes}:
+            continue
+        stat = str(row.get("stat") or "")
+        if not stat:
+            continue
+        try:
+            min_v = int(row.get("min", 0) or 0)
+        except (TypeError, ValueError):
+            continue
+        val = int(features.get(stat) or 0)
+        if val >= min_v:
+            hits.append({"stat": stat, "value": val, "min": min_v})
+    pts = min(cap, per * len(hits))
+    return pts, {"hits": hits, "cap": cap}
+
+
+def score_ur_pilot_dependence(rules: dict, dependent: bool) -> tuple[int, dict]:
+    cfg = rules.get("ur_pilot_dependence") or {}
+    if dependent:
+        pts = int(cfg.get("dependent_points", -1) or 0)
+    else:
+        pts = int(cfg.get("independent_points", 0) or 0)
+    return pts, {"dependent": bool(dependent)}
+
+
 def _has_extra_life(
     rules: dict,
     uid: str,
@@ -2496,6 +2619,9 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
     except Exception:
         has_shield = False
 
+    special_def_kinds = _special_defense_kinds(rules, ability_effects)
+    ur_dep, ur_dep_meta = _ur_recommend_pilot_dependence(A, uid, info, rules)
+
     is_large_footprint = int(info.get("occupied_area_id") or 1) == 2
 
     wfeat = _weapon_features(A, uid, ld, lc, use_mode if use_mode in ("sp", "ssp") else "sp", rules)
@@ -2542,8 +2668,12 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
         "affinity_pilot_count": aff_n,
         "affinity_pilot_meta": aff_meta,
         "has_shield": has_shield,
+        "special_defense_kinds": special_def_kinds,
+        "ur_pilot_dependent": ur_dep,
+        "ur_pilot_dependence_meta": ur_dep_meta,
         "is_large_footprint": is_large_footprint,
         "HP": int(stats.get("HP") or 0),
+        "EN": int(stats.get("EN") or 0),
         "ATK": int(stats.get("ATK") or 0),
         "DEF": int(stats.get("DEF") or 0),
         "MOB": int(stats.get("MOB") or 0),
@@ -2602,11 +2732,13 @@ def score_unit(
         "detail_lines": scored.get("detail_lines") or [],
         "stats": {
             "HP": feats.get("HP"),
+            "EN": feats.get("EN"),
             "ATK": feats.get("ATK"),
             "DEF": feats.get("DEF"),
             "MOB": feats.get("MOB"),
             "MOV": feats.get("MOV"),
         },
+        "peaks_with_ur_pilot": bool(feats.get("ur_pilot_dependent")),
     }
     if feats.get("er_expert_ids") is not None:
         row["er_expert_ids"] = list(feats.get("er_expert_ids") or [])
@@ -2681,12 +2813,13 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "title": "Attack priorities",
             "applies": ["units"],
             "objective": True,
-            "summary": "Damage ceiling first (ATK + weapon power), then HP and MOV. MOB is a soft secondary — high ATK matters more than high MOB.",
+            "summary": "Damage ceiling first (ATK + weapon power), then MOV/MAP. HP and SSP EN are upside-only — high is a bonus, low is not punished. MOB is a soft secondary.",
             "rows": [
-                {"when": "Primary", "result": "ATK · weapon power · HP · MOV"},
+                {"when": "Primary", "result": "ATK · weapon power · MOV"},
+                {"when": "Upside only", "result": "HP · SSP EN (no floor penalty)"},
                 {"when": "Soft secondary", "result": "MOB (lower ceiling than ATK)"},
-                {"when": "Great extras", "result": "MAP presence / dash / coverage"},
-                {"when": "Not scored", "result": "DEF · Debuff kinds · Debuff strength"},
+                {"when": "Great extras", "result": "MAP presence / dash / coverage · special defense kits"},
+                {"when": "Not scored", "result": "DEF · Debuff kinds · Debuff strength · SP EN"},
             ],
         }
     )
@@ -2696,11 +2829,12 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "title": "Defense priorities",
             "applies": ["units"],
             "objective": True,
-            "summary": "High HP or DEF, a shield (~20% damage neglect), high MOV for support-defense coverage, solid terrain (Space + Land or Atmos), survivability kits (damage reduction / HP restore), plus a few good debuffs. ATK is upside only (≥9000).",
+            "summary": "High HP or DEF, a shield (~20% damage neglect), high MOV for support-defense coverage, solid terrain (Space + Land or Atmos), survivability kits (damage reduction / HP restore), plus a few good debuffs. ATK is upside only (≥9000). Special defenses (I-field / barrier / DR) are extra presence bonuses.",
             "rows": [
                 {"when": "Primary", "result": "HP · DEF · shield · MOV · terrain · survivability abilities"},
                 {"when": "Secondary", "result": "A few good pierce / DEF-down debuffs (R4+ kinds)"},
                 {"when": "ATK upside", "result": "≥9000 mild bonus; below that, no penalty"},
+                {"when": "Special defense", "result": "Presence bonus for DR / barrier / negation kits"},
             ],
         }
     )
@@ -2710,10 +2844,10 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "title": "Support priorities",
             "applies": ["units"],
             "objective": True,
-            "summary": "Debuff weapon range should be at least 5 (lower is weaker), then variety and strength of debuffs, then high MOB/MOV. ATK is mild upside only — no penalty for lower attack.",
+            "summary": "Debuff weapon range should be at least 5 (lower is weaker), then variety and strength of debuffs, then high MOB/MOV. ATK and HP are mild upside only — no floor penalty for lower values.",
             "rows": [
                 {"when": "Primary", "result": "Weapon range ≥5 · R5+ debuff kinds · debuff strength · MOB · MOV"},
-                {"when": "Secondary", "result": "ATK / weapon power (mild upside, no floor penalty)"},
+                {"when": "Secondary", "result": "ATK / weapon power / HP (mild upside, no floor penalty)"},
             ],
         }
     )
@@ -3058,6 +3192,87 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             }
         )
 
+    sd_cfg = rules.get("special_defense") or {}
+    if sd_cfg:
+        sd_pts = sd_cfg.get("points") or {}
+        criteria.append(
+            {
+                "id": "special_defense",
+                "title": "Special defense kits (units)",
+                "applies": ["units"],
+                "objective": True,
+                "summary": (
+                    "Presence bonus for ability-based mitigation beyond the shield mechanism "
+                    "(damage taken down, defensive DR, negation, HP% barrier / I-field-style cut). "
+                    "No missing penalty — Attack/Support glass cannons are not taxed."
+                ),
+                "rows": [
+                    {"when": "No special defense traits", "result": _fmt_points(sd_pts.get("0", 0))},
+                    {"when": "1 distinct special-defense trait", "result": _fmt_points(sd_pts.get("1", 1))},
+                    {
+                        "when": "2+ distinct special-defense traits",
+                        "result": _fmt_points(sd_pts.get("2_or_more", 2)),
+                    },
+                ],
+            }
+        )
+
+    ur_cfg = rules.get("ur_pilot_dependence") or {}
+    if ur_cfg:
+        criteria.append(
+            {
+                "id": "ur_pilot_dependence",
+                "title": "UR recommend-pilot dependence (units)",
+                "applies": ["units"],
+                "objective": True,
+                "summary": (
+                    "Mild tax when the MS recommend / linked pilot is UR or Ultimate "
+                    "(peak kit often assumes that pilot). Still investable with SSR affinity pilots — "
+                    "this is disclosure, not a tombstone."
+                ),
+                "rows": [
+                    {
+                        "when": "Recommend pilot is SSR or below",
+                        "result": _fmt_points(ur_cfg.get("independent_points", 0)),
+                    },
+                    {
+                        "when": (
+                            f"Recommend pilot rarity index ≥{ur_cfg.get('min_recommend_rarity_index', 5)} "
+                            "or Ultimate"
+                        ),
+                        "result": _fmt_points(ur_cfg.get("dependent_points", -1)),
+                    },
+                ],
+            }
+        )
+
+    outlier_cfg = rules.get("stat_outlier") or {}
+    if outlier_cfg:
+        out_rows = []
+        for role_name in ROLE_ALL:
+            for hit in (outlier_cfg.get("by_role") or {}).get(role_name) or []:
+                modes = hit.get("modes")
+                mode_note = f" ({'/'.join(str(m).upper() for m in modes)} only)" if modes else ""
+                out_rows.append(
+                    {
+                        "when": f"{role_name}: {hit.get('stat')} ≥ {hit.get('min')}{mode_note}",
+                        "result": _fmt_points(outlier_cfg.get("points_per_hit", 1)),
+                    }
+                )
+        criteria.append(
+            {
+                "id": "stat_outlier",
+                "title": "Exceptional secondary stats (units)",
+                "applies": ["units"],
+                "objective": True,
+                "summary": (
+                    f"Niche bonus when a secondary stat is clearly above average for the role. "
+                    f"Cap {_fmt_points(outlier_cfg.get('cap', 2))}."
+                ),
+                "rows": out_rows,
+            }
+        )
+
     def _stat_band_rows_for_role(stat_key: str, role_name: str) -> list[dict]:
         bands = ((rules.get("stat_bands") or {}).get(stat_key) or {}).get(role_name) or []
         out = []
@@ -3079,15 +3294,36 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
     for role_name in ROLE_ALL:
         if role_name == "Attack":
             stat_summary = (
-                "Attack favors ATK ceiling over MOB. HP still banded; DEF not scored; MOB soft-capped."
+                "Attack favors ATK ceiling over MOB. HP is upside-only (no floor penalty). "
+                "DEF not scored. EN scores on the SSP board only (upside-only). MOB soft-capped."
+            )
+            stat_rows = (
+                _stat_band_rows_for_role("HP", role_name)
+                + _stat_band_rows_for_role("EN", role_name)
+                + _stat_band_rows_for_role("ATK", role_name)
+                + _stat_band_rows_for_role("DEF", role_name)
+                + _stat_band_rows_for_role("MOB", role_name)
             )
         elif role_name == "Defense":
             stat_summary = (
-                "Defense focuses on HP + DEF. ATK is upside only (≥9000 → +1, ≥10000 → +2; no floor penalty)."
+                "Defense focuses on HP + DEF (floor penalties kept). "
+                "ATK is upside only (≥9000 → +1, ≥10000 → +2; no floor penalty)."
+            )
+            stat_rows = (
+                _stat_band_rows_for_role("HP", role_name)
+                + _stat_band_rows_for_role("ATK", role_name)
+                + _stat_band_rows_for_role("DEF", role_name)
+                + _stat_band_rows_for_role("MOB", role_name)
             )
         else:
             stat_summary = (
-                "Support favors MOB ceiling; ATK is mild upside with no floor penalty."
+                "Support favors MOB ceiling; ATK and HP are mild upside with no floor penalty."
+            )
+            stat_rows = (
+                _stat_band_rows_for_role("HP", role_name)
+                + _stat_band_rows_for_role("ATK", role_name)
+                + _stat_band_rows_for_role("DEF", role_name)
+                + _stat_band_rows_for_role("MOB", role_name)
             )
         criteria.append(
             {
@@ -3096,12 +3332,7 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
                 "applies": ["units"],
                 "objective": True,
                 "summary": stat_summary,
-                "rows": (
-                    _stat_band_rows_for_role("HP", role_name)
-                    + _stat_band_rows_for_role("ATK", role_name)
-                    + _stat_band_rows_for_role("DEF", role_name)
-                    + _stat_band_rows_for_role("MOB", role_name)
-                ),
+                "rows": stat_rows,
             }
         )
 
@@ -3338,10 +3569,10 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
     criteria.append(
         {
             "id": "rarity",
-            "title": "Rarity adjustment",
-            "applies": ["units", "pilots"],
+            "title": "Rarity adjustment (units)",
+            "applies": ["units"],
             "objective": True,
-            "summary": "Stops N/R from sharing SSR/UR letters.",
+            "summary": "Stops N/R/SR units from sharing SSR/UR letters.",
             "rows": [
                 {"when": "N", "result": _fmt_points(rar.get("1", -5))},
                 {"when": "R", "result": _fmt_points(rar.get("2", -4))},
@@ -3351,15 +3582,72 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
         }
     )
 
+    prar = rules.get("pilot_rarity_adjustment") or rar
+    criteria.append(
+        {
+            "id": "pilot_rarity",
+            "title": "Rarity adjustment (pilots)",
+            "applies": ["pilots"],
+            "objective": True,
+            "summary": (
+                "Softer than units — cracked SR SP pilots should not be buried by rarity alone. "
+                "SSR/UR start even."
+            ),
+            "rows": [
+                {"when": "N", "result": _fmt_points(prar.get("1", -2))},
+                {"when": "R", "result": _fmt_points(prar.get("2", -1))},
+                {"when": "SR", "result": _fmt_points(prar.get("3", 0))},
+                {"when": "SSR / UR", "result": _fmt_points(prar.get("4", 0))},
+            ],
+        }
+    )
+
+    def _pilot_stat_band_rows(stat_key: str, role_name: str) -> list[dict]:
+        bands = ((rules.get("pilot_stat_bands") or {}).get(stat_key) or {}).get(role_name) or []
+        out = []
+        prev = None
+        for b in bands:
+            mx = b.get("max_exclusive")
+            pts = _fmt_points(b.get("points"))
+            if prev is None:
+                when = f"{stat_key} < {mx}" if mx is not None else "any"
+            elif mx is None:
+                when = f"{stat_key} ≥ {prev}"
+            else:
+                when = f"{stat_key} {prev}–{int(mx) - 1}"
+            out.append({"when": when, "result": pts})
+            if mx is not None:
+                prev = int(mx)
+        return out
+
+    for role_name in ROLE_ALL:
+        pstat_rows = []
+        for sk in ("Ranged", "Melee", "Awaken", "Defense", "Reaction"):
+            pstat_rows.extend(_pilot_stat_band_rows(sk, role_name))
+        if pstat_rows:
+            criteria.append(
+                {
+                    "id": f"pilot_stats_{role_name.lower()}",
+                    "title": f"Pilot SP-grown stats — {role_name}",
+                    "applies": ["pilots"],
+                    "objective": True,
+                    "summary": (
+                        "SP-list grown stats for this pilot role. Specialty axes (Ranged/Melee/Awaken) "
+                        "matter most for Attack; Defense/Reaction matter more for Defense pilots."
+                    ),
+                    "rows": pstat_rows,
+                }
+            )
+
     criteria.append(
         {
             "id": "pilots_extra",
             "title": "Pilot-only axes",
             "applies": ["pilots"],
             "objective": True,
-            "summary": "Pilots use the SP board only.",
+            "summary": "Pilots use the SP board only. See Pilot SP-grown stats blocks for band tables.",
             "rows": [
-                {"when": "SP grown stats (Ranged / Melee / Awaken / Defense / Reaction)", "result": "Band points by role"},
+                {"when": "SP grown stats (Ranged / Melee / Awaken / Defense / Reaction)", "result": "Band points by role (see tables above)"},
                 {"when": "Series affinity abilities", "result": f"+{int(rules.get('series_affinity_points_each', 3))} each"},
                 {"when": "Best recommended MS letter (B+ and up)", "result": "From this guide’s unit letters"},
                 {"when": "Unbreakable on pilot abilities", "result": "Extra-life role bonus"},
@@ -3393,6 +3681,9 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
         "unit_stats_attack": ["Attack"],
         "unit_stats_defense": ["Defense"],
         "unit_stats_support": ["Support"],
+        "pilot_stats_attack": ["Attack"],
+        "pilot_stats_defense": ["Defense"],
+        "pilot_stats_support": ["Support"],
     }
     for c in criteria:
         c["roles"] = list(role_map.get(c.get("id"), ROLE_ALL))
@@ -3743,7 +4034,7 @@ def score_pilot_features(features: dict, rules: dict | None = None) -> dict:
         }
     )
 
-    rarity_pts = rarity_adjustment_points(rules, features.get("rarity_id"))
+    rarity_pts = pilot_rarity_adjustment_points(rules, features.get("rarity_id"))
     breakdown["rarity"] = rarity_pts
 
     total = int(sum(int(v) for v in breakdown.values()))

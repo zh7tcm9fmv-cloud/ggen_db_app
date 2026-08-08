@@ -667,6 +667,11 @@ html.spi-modal-open body.spi-page {
   color: var(--accent-cyan);
   font-weight: 600;
 }
+.spi-chip-warn {
+  background: rgba(255, 176, 32, 0.12);
+  color: #e8a020;
+  font-weight: 600;
+}
 .spi-chip.score {
   font-variant-numeric: tabular-nums;
 }
