@@ -579,30 +579,30 @@ html.spi-modal-open body.spi-page {
   color: #000;
   border: 1px solid transparent;
 }
-/* S = rainbow (UR-class); A = SSR gold; B = SR; C = R; D = N; E = darker grey; + = same tone, flashier */
+/* S = UR orange-gold; A = SSR gold; B = R blue; C = green; D = N; E = darker grey; + = same tone, flashier */
 .spi-chip.letter.letter-S {
-  background: linear-gradient(135deg, #ff3b5c, #ff8c00, #ffd700, #22c55e, #3b82f6, #a855f7);
-  box-shadow: 0 0 8px rgba(255, 107, 53, 0.4), 0 0 4px rgba(168, 85, 247, 0.35);
-  text-shadow: 0 0 4px rgba(255, 255, 255, 0.35);
+  background: linear-gradient(135deg, #ff6b35, #ffd700, #ff6b35);
+  box-shadow: 0 0 8px rgba(255, 215, 0, 0.45);
+  text-shadow: 0 0 4px rgba(255, 215, 0, 0.5);
 }
 .spi-chip.letter.letter-S-plus {
   background: linear-gradient(
     120deg,
-    #ff3b5c 0%,
-    #ff8c00 18%,
-    #ffd700 36%,
-    #22c55e 54%,
-    #3b82f6 72%,
-    #a855f7 88%,
-    #ff3b5c 100%
+    #ff4d1a 0%,
+    #ff6b35 18%,
+    #ffb347 36%,
+    #ffd700 50%,
+    #fff0a0 58%,
+    #ffd700 68%,
+    #ff8c42 82%,
+    #ff4d1a 100%
   );
   background-size: 240% 240%;
   animation: spiLetterShine 2.2s ease-in-out infinite;
   box-shadow:
     0 0 14px rgba(255, 215, 0, 0.55),
-    0 0 8px rgba(59, 130, 246, 0.45),
-    0 0 4px rgba(255, 59, 92, 0.5);
-  text-shadow: 0 0 8px rgba(255, 255, 255, 0.55);
+    0 0 6px rgba(255, 107, 53, 0.5);
+  text-shadow: 0 0 6px rgba(255, 215, 0, 0.65);
 }
 .spi-chip.letter.letter-A {
   background: linear-gradient(135deg, #ffd700, #ffed4a);
@@ -693,13 +693,25 @@ html.spi-modal-open body.spi-page {
   font-weight: 800;
 }
 .spi-letter-chip.letter-S {
-  background: linear-gradient(135deg, #ff3b5c, #ff8c00, #ffd700, #22c55e, #3b82f6, #a855f7);
+  background: linear-gradient(135deg, #ff6b35, #ffd700, #ff6b35);
+  text-shadow: 0 0 4px rgba(255, 215, 0, 0.5);
 }
 .spi-letter-chip.letter-S-plus {
-  background: linear-gradient(120deg, #ff3b5c, #ff8c00, #ffd700, #22c55e, #3b82f6, #a855f7, #ff3b5c);
+  background: linear-gradient(
+    120deg,
+    #ff4d1a,
+    #ff6b35,
+    #ffb347,
+    #ffd700,
+    #fff0a0,
+    #ffd700,
+    #ff8c42,
+    #ff4d1a
+  );
   background-size: 240% 240%;
   animation: spiLetterShine 2.2s ease-in-out infinite;
   box-shadow: 0 0 10px rgba(255, 215, 0, 0.45);
+  text-shadow: 0 0 4px rgba(255, 215, 0, 0.5);
 }
 .spi-letter-chip.letter-A { background: linear-gradient(135deg, #ffd700, #ffed4a); }
 .spi-letter-chip.letter-A-plus {
