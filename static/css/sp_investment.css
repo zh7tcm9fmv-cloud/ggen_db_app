@@ -21,6 +21,26 @@ body.spi-page .bg-pattern {
 }
 
 .spi-app-header .header-brand { text-decoration: none; color: inherit; }
+
+/* Non-sticky on IG: avoids Chrome URL-bar resize leaving content under a floating bar */
+body.spi-page .spi-app-header.app-header {
+  position: relative;
+  top: auto;
+  z-index: 40;
+}
+body.spi-page.spi-modal-open .spi-app-header {
+  display: none;
+}
+html.spi-modal-open {
+  overflow: hidden !important;
+  height: 100%;
+  overscroll-behavior: none;
+}
+html.spi-modal-open body.spi-page {
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
+
 .spi-preview-banner {
   display: flex;
   align-items: flex-start;
@@ -300,12 +320,26 @@ body.spi-page .bg-pattern {
 }
 
 .spi-toolbar {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   margin-bottom: 0.9rem;
   padding: 10px 12px;
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-surface);
+}
+.spi-toolbar .list-toolbar-left--browse {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  gap: 0;
+  box-sizing: border-box;
 }
 .spi-toolbar .browse-toolbar-top-row {
   display: flex;
@@ -314,6 +348,7 @@ body.spi-page .bg-pattern {
   gap: 10px;
   width: 100%;
   margin-bottom: 10px;
+  box-sizing: border-box;
 }
 .spi-toolbar .browse-toolbar-leading {
   display: flex;
@@ -322,6 +357,8 @@ body.spi-page .bg-pattern {
   gap: 8px;
   flex: 1 1 auto;
   min-width: 0;
+  width: 100%;
+  max-width: 100%;
 }
 .spi-toolbar .filter-input-wrap--organic {
   flex: 1 1 220px;
@@ -342,6 +379,8 @@ body.spi-page .bg-pattern {
   align-items: center;
   gap: 8px 10px;
   margin-top: 2px;
+  width: 100%;
+  box-sizing: border-box;
 }
 .spi-filter-row--secondary {
   margin-top: 10px;
@@ -750,24 +789,28 @@ body.spi-page .bg-pattern {
 .spi-modal {
   position: fixed;
   inset: 0;
-  z-index: 80;
+  z-index: 320;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
-  padding: 1rem;
+  padding: max(0.5rem, env(safe-area-inset-top, 0px)) 0.65rem max(0.5rem, env(safe-area-inset-bottom, 0px));
+  box-sizing: border-box;
 }
 .spi-modal-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(2, 6, 23, 0.78);
+  background: rgba(2, 6, 23, 0.82);
   backdrop-filter: blur(2px);
 }
 .spi-modal-card {
   position: relative;
   z-index: 1;
   width: min(520px, 100%);
-  max-height: min(88vh, 820px);
+  max-height: min(92dvh, 880px);
+  margin: auto;
   overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
   background: var(--bg-modal);
   border: 1px solid var(--border-color);
   border-top: 1px solid rgba(0, 212, 255, 0.22);
@@ -1099,6 +1142,99 @@ body.spi-page .bg-pattern {
   font-size: 0.85rem;
 }
 
+@media (max-width: 768px) {
+  /* mobile_layout forces browse toolbars into a 4-col grid; IG filter rows
+     were only spanning one column and looked squeezed to the left. */
+  body.spi-page .spi-toolbar .list-toolbar-left--browse {
+    display: flex !important;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    grid-template-columns: none;
+  }
+  body.spi-page .spi-toolbar .list-toolbar-left--browse > .browse-toolbar-top-row,
+  body.spi-page .spi-toolbar .list-toolbar-left--browse > .spi-filter-row {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+  .spi-toolbar {
+    padding: 10px;
+  }
+  .spi-toolbar .browse-toolbar-top-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .spi-toolbar .browse-toolbar-leading {
+    width: 100%;
+  }
+  .spi-toolbar .filter-input-wrap--organic {
+    flex: 1 1 100%;
+    max-width: none;
+    min-width: 0;
+    width: 100%;
+  }
+  .spi-toolbar .list-toolbar-result-count {
+    margin-left: 0;
+    width: 100%;
+  }
+  .spi-filter-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .spi-seg,
+  .spi-role-seg {
+    display: flex;
+    width: 100%;
+    flex-wrap: nowrap;
+  }
+  .spi-seg .role-filter-btn {
+    flex: 1 1 0;
+    justify-content: center;
+    min-width: 0;
+    padding-left: 6px;
+    padding-right: 6px;
+    font-size: 12px;
+  }
+  .spi-filter-row--secondary {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .spi-filter-row--secondary .spi-check {
+    min-height: 40px;
+    width: 100%;
+    padding: 6px 10px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: var(--bg-input);
+    box-sizing: border-box;
+  }
+  .spi-filter-row--secondary .rarity-filter-wrap {
+    max-width: none;
+    width: 100%;
+  }
+  .spi-filter-row--secondary .rarity-filter-btn {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .spi-modal {
+    padding: max(0.35rem, env(safe-area-inset-top, 0px)) 0.4rem max(0.35rem, env(safe-area-inset-bottom, 0px));
+  }
+  .spi-modal-card,
+  .spi-modal-card--wide {
+    width: 100%;
+    max-height: min(94dvh, 100%);
+    border-radius: var(--radius-md);
+    padding: 1rem 0.9rem 1.2rem;
+  }
+  .spi-bar-row {
+    grid-template-columns: minmax(5.5rem, 7.5rem) 1fr auto;
+  }
+}
 @media (max-width: 720px) {
   .spi-hero {
     grid-template-columns: 1fr;
@@ -1117,9 +1253,5 @@ body.spi-page .bg-pattern {
   }
   .spi-cards {
     grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
-  }
-  .spi-toolbar .list-toolbar-result-count {
-    margin-left: 0;
-    width: 100%;
   }
 }

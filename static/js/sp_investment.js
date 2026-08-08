@@ -1154,12 +1154,16 @@
         <a href="${detailPath}${encodeURIComponent(row.id)}" target="_blank" rel="noopener">Open in database</a>
       </div>`;
     $('#spiModal').hidden = false;
+    document.body.classList.add('spi-modal-open');
+    document.documentElement.classList.add('spi-modal-open');
     void loadEntityStatRanks(row, kind);
   }
 
   function closeModal() {
     _spiModalEntityKey = '';
     $('#spiModal').hidden = true;
+    document.body.classList.remove('spi-modal-open');
+    document.documentElement.classList.remove('spi-modal-open');
   }
 
   function bindControls() {
