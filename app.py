@@ -14867,34 +14867,37 @@ def _tier_mockup_thumb(entity_id, kind):
     """List thumbnail for tier list cards (same resolution chain as browse APIs)."""
     eid = normalize_id(entity_id)
 
-    def _first_servable(*paths):
+    def _first_path(*paths):
+        # Prefer on-disk / CDN-servable; else keep index path so published SPI still
+        # ships /static/images/… URLs (Railway CDN converts them at serve time).
         for p in paths:
             if p and _image_path_servable(p):
                 return p
-        if IMAGE_CDN and GAME_IMAGES_USE_CDN:
-            for p in paths:
-                if p:
-                    return p
+        for p in paths:
+            if p:
+                return p
         return None
 
     if kind == 'unit':
         info = unit_info_map.get(eid, {})
         rids = info.get('resource_ids', [])
-        return _first_servable(
-            find_list_thumb(rids, eid, 'images/unit_portraits'),
-            find_portrait(rids, eid, 'images/unit_portraits'),
+        folder = 'images/unit_portraits'
+        return _first_path(
+            find_list_thumb(rids, eid, folder),
+            find_portrait(rids, eid, folder),
         )
     if kind == 'character':
         info = char_info_map.get(eid, {})
         rids = info.get('resource_ids', [])
-        return _first_servable(
-            find_list_thumb(rids, eid, 'images/portraits'),
-            find_portrait(rids, eid, 'images/portraits'),
+        folder = 'images/portraits'
+        return _first_path(
+            find_list_thumb(rids, eid, folder),
+            find_portrait(rids, eid, folder),
         )
     if kind == 'supporter':
         info = supporter_info_map.get(eid, {})
         rid = info.get('resource_id')
-        return _first_servable(
+        return _first_path(
             find_supporter_portrait(rid, eid),
             find_supporter_full_portrait(rid),
             find_list_thumb([rid] if rid else [], eid, 'images/portraits'),
@@ -14925,10 +14928,11 @@ def _tier_mockup_row_icons(row, kind):
 def _tier_mockup_attach_thumbs(rows, kind):
     for row in rows or []:
         if isinstance(row, dict) and row.get('id'):
-            thumb = _tier_mockup_thumb(row['id'], kind) or ''
-            # Browse/detail use `thum`; tier/SP list historically used `thumb` — set both.
-            row['thumb'] = thumb
-            row['thum'] = thumb
+            if not (row.get('thum') or row.get('thumb')):
+                thumb = _tier_mockup_thumb(row['id'], kind) or ''
+                # Browse/detail use `thum`; tier/SP list historically used `thumb` — set both.
+                row['thumb'] = thumb
+                row['thum'] = thumb
             row.update(_tier_mockup_row_icons(row, kind))
 
 
@@ -15579,18 +15583,16 @@ def _sp_investment_prepare_payload(path):
     _sp_investment_strip_payload_bloat(payload)
     units = payload.get('units') or {}
     if units:
-        if not _sp_investment_board_has_thumbs(units.get('sp')):
-            _sp_investment_attach_board(units.get('sp'), 'unit')
-        if not _sp_investment_board_has_thumbs(units.get('ssp')):
-            _sp_investment_attach_board(units.get('ssp'), 'unit')
+        # Always run attach: fills missing thumbs only (skips rows that already have thum).
+        _sp_investment_attach_board(units.get('sp'), 'unit')
+        _sp_investment_attach_board(units.get('ssp'), 'unit')
         payload['sp'] = units.get('sp') or payload.get('sp') or {}
         payload['ssp'] = units.get('ssp') or payload.get('ssp') or {}
     else:
         for board_key in ('sp', 'ssp'):
-            if not _sp_investment_board_has_thumbs(payload.get(board_key)):
-                _sp_investment_attach_board(payload.get(board_key), 'unit')
+            _sp_investment_attach_board(payload.get(board_key), 'unit')
     chars = payload.get('characters') or {}
-    if chars and not _sp_investment_board_has_thumbs(chars.get('sp')):
+    if chars:
         _sp_investment_attach_board(chars.get('sp'), 'character')
     if not payload.get('scoring_guide'):
         try:
