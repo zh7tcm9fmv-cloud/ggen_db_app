@@ -14864,44 +14864,26 @@ def _tier_mockup_walk_apply_limited(payload):
 
 
 def _tier_mockup_thumb(entity_id, kind):
-    """List thumbnail for tier list cards (same resolution chain as browse APIs)."""
+    """List/grid thumbnail — Trait/thum only (never full ub_/cb_ portraits)."""
     eid = normalize_id(entity_id)
-
-    def _first_path(*paths):
-        # Prefer on-disk / CDN-servable; else keep index path so published SPI still
-        # ships /static/images/… URLs (Railway CDN converts them at serve time).
-        for p in paths:
-            if p and _image_path_servable(p):
-                return p
-        for p in paths:
-            if p:
-                return p
-        return None
 
     if kind == 'unit':
         info = unit_info_map.get(eid, {})
         rids = info.get('resource_ids', [])
-        folder = 'images/unit_portraits'
-        return _first_path(
-            find_list_thumb(rids, eid, folder),
-            find_portrait(rids, eid, folder),
-        )
+        # Prefer Trait/thum even when the file is CDN/index-only (local disk may lack it).
+        return _find_trait_thum_list_asset(rids, eid)
     if kind == 'character':
         info = char_info_map.get(eid, {})
         rids = info.get('resource_ids', [])
-        folder = 'images/portraits'
-        return _first_path(
-            find_list_thumb(rids, eid, folder),
-            find_portrait(rids, eid, folder),
-        )
+        if eid in MANUAL_CHARACTER_PORTRAIT_OVERRIDE:
+            return MANUAL_CHARACTER_PORTRAIT_OVERRIDE[eid]
+        return _find_trait_thum_list_asset(rids, eid)
     if kind == 'supporter':
         info = supporter_info_map.get(eid, {})
         rid = info.get('resource_id')
-        return _first_path(
-            find_supporter_portrait(rid, eid),
-            find_supporter_full_portrait(rid),
-            find_list_thumb([rid] if rid else [], eid, 'images/portraits'),
-            find_portrait([rid] if rid else [], eid, 'images/portraits'),
+        return (
+            find_supporter_portrait(rid, eid)
+            or find_list_thumb([rid] if rid else [], eid, 'images/portraits')
         )
     return None
 
@@ -14928,9 +14910,10 @@ def _tier_mockup_row_icons(row, kind):
 def _tier_mockup_attach_thumbs(rows, kind):
     for row in rows or []:
         if isinstance(row, dict) and row.get('id'):
-            if not (row.get('thum') or row.get('thumb')):
+            existing = str(row.get('thum') or row.get('thumb') or '')
+            # List cards must use Trait/thum — replace full ub_/cb_ portraits if baked earlier.
+            if '/Trait/thum/' not in existing.replace('\\', '/'):
                 thumb = _tier_mockup_thumb(row['id'], kind) or ''
-                # Browse/detail use `thum`; tier/SP list historically used `thumb` — set both.
                 row['thumb'] = thumb
                 row['thum'] = thumb
             row.update(_tier_mockup_row_icons(row, kind))
