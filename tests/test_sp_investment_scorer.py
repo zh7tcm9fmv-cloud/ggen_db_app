@@ -23,6 +23,7 @@ from sp_investment_rank import (
     tag_count_points,
     terrain_coverage_points,
     weapon_power_bands_for_mode,
+    _weapon_is_ssp_custom_core_id,
 )
 
 
@@ -80,10 +81,13 @@ class TestSpInvestmentBands(unittest.TestCase):
 
     def test_atk_attacker_bands_sheet(self):
         bands = self.rules["stat_bands"]["ATK"]["Attack"]
-        self.assertEqual(band_points(bands, 11599), -2)
-        self.assertEqual(band_points(bands, 11600), 0)
-        self.assertEqual(band_points(bands, 12000), 1)
-        self.assertEqual(band_points(bands, 12400), 2)
+        self.assertEqual(band_points(bands, 11199), -2)
+        self.assertEqual(band_points(bands, 11200), -1)
+        self.assertEqual(band_points(bands, 11599), -1)
+        self.assertEqual(band_points(bands, 11600), 1)
+        self.assertEqual(band_points(bands, 11919), 1)
+        self.assertEqual(band_points(bands, 12000), 2)
+        self.assertEqual(band_points(bands, 12400), 3)
         self.assertEqual(band_points(bands, 12800), 3)
 
     def test_atk_defense_upside_only(self):
@@ -97,6 +101,18 @@ class TestSpInvestmentBands(unittest.TestCase):
         bands = self.rules["stat_bands"]["ATK"]["Support"]
         self.assertEqual(band_points(bands, 8000), 0)
         self.assertEqual(band_points(bands, 10500), 1)
+
+    def test_def_not_scored_for_attack(self):
+        bands = self.rules["stat_bands"]["DEF"]["Attack"]
+        self.assertEqual(band_points(bands, 5000), 0)
+        self.assertEqual(band_points(bands, 8944), 0)
+        self.assertEqual(band_points(bands, 12000), 0)
+
+    def test_ssp_custom_core_weapon_ids(self):
+        self.assertTrue(_weapon_is_ssp_custom_core_id("121900020080"))
+        self.assertTrue(_weapon_is_ssp_custom_core_id("121900020090"))
+        self.assertFalse(_weapon_is_ssp_custom_core_id("121900020001"))
+        self.assertFalse(_weapon_is_ssp_custom_core_id("115900100004"))
 
     def test_mob_attacker_soft_ceiling(self):
         bands = self.rules["stat_bands"]["MOB"]["Attack"]

@@ -97,8 +97,12 @@
       tip: 'Defense/Support only. Defense counts useful debuff kinds from range 4+ (light). Support needs range 5+ kinds — none is a penalty; two or more is a bonus. Not scored for Attack.',
     },
     hp: { label: 'HP', tip: 'SP-grown HP band for this role.' },
-    atk: { label: 'ATK', tip: 'SP-grown ATK band for this role.' },
-    def: { label: 'DEF', tip: 'SP-grown DEF band for this role.' },
+    atk: { label: 'ATK', tip: 'SP-grown ATK band for this role. Attack units score this heavily.' },
+    def: {
+      label: 'DEF',
+      tip: 'SP-grown DEF band. Scored for Defense (and lightly for Support); not scored for Attack.',
+      hideIfZero: true,
+    },
     mob: { label: 'MOB', tip: 'SP-grown Mobility band for this role.' },
     shield: {
       label: 'Shield',

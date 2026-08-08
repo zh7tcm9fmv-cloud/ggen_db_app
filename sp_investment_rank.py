@@ -484,8 +484,10 @@ def detect_weapon_bonus_structured(
     return best_type, best_pts, {"structured": True, "hits": hit_types, "type": best_type}
 
 
-def collect_weapon_trait_ids_for_weapon(A, wid: str, wm: dict | None = None) -> list[str]:
-    """Trait ids attached to one weapon (growth / change patterns + SSP grants)."""
+def collect_weapon_trait_ids_for_weapon(
+    A, wid: str, wm: dict | None = None, mode: str = "sp"
+) -> list[str]:
+    """Trait ids attached to one weapon (growth / change patterns + SSP grants when mode=ssp)."""
     ids: list[str] = []
     seen: set[str] = set()
     gpm = getattr(A, "growth_pattern_map", None) or {}
@@ -520,16 +522,23 @@ def collect_weapon_trait_ids_for_weapon(A, wid: str, wm: dict | None = None) -> 
         candidates.append(A.normalize_id(gd.get("trait_change_set_id") or "0"))
     for tsi in candidates:
         _add_from_pattern(tsi)
-    mwid = A.normalize_id(wm.get("main_weapon_id", "0") or "0")
-    for cid in (wid, mwid):
-        if not cid or cid == "0":
-            continue
-        for tid in (getattr(A, "unit_ssp_weapon_effect_map", {}) or {}).get(cid) or []:
-            nid = A.normalize_id(tid)
-            if nid and nid not in seen:
-                seen.add(nid)
-                ids.append(nid)
+    if str(mode).lower() == "ssp":
+        mwid = A.normalize_id(wm.get("main_weapon_id", "0") or "0")
+        for cid in (wid, mwid):
+            if not cid or cid == "0":
+                continue
+            for tid in (getattr(A, "unit_ssp_weapon_effect_map", {}) or {}).get(cid) or []:
+                nid = A.normalize_id(tid)
+                if nid and nid not in seen:
+                    seen.add(nid)
+                    ids.append(nid)
     return ids
+
+
+def _weapon_is_ssp_custom_core_id(wid: str) -> bool:
+    """SSP Custom Core weapon ids end in …80 (MAP) or …90 (attack)."""
+    w = str(wid or "")
+    return w.endswith("80") or w.endswith("90")
 
 
 def bucket_for_letter(rules: dict, letter: str) -> str:
@@ -1479,7 +1488,7 @@ def classify_debuff_keys_from_meta(meta: dict) -> set[str]:
     return keys
 
 
-def collect_unit_weapon_trait_ids(A, uid: str) -> list[str]:
+def collect_unit_weapon_trait_ids(A, uid: str, mode: str = "sp") -> list[str]:
     ids: list[str] = []
     seen: set[str] = set()
     gpm = getattr(A, "growth_pattern_map", None) or {}
@@ -1500,6 +1509,8 @@ def collect_unit_weapon_trait_ids(A, uid: str) -> list[str]:
 
     for wp in A.unit_weapon_map.get(uid, []) or []:
         wid = A.normalize_id(wp.get("id"))
+        if mode != "ssp" and _weapon_is_ssp_custom_core_id(wid):
+            continue
         wm = A.weapon_info_map.get(wid, {}) or {}
         wsid = A.normalize_id(wm.get("weapon_status_id") or wid)
         ws = A.weapon_status_map.get(wsid) or A.weapon_status_map.get(wid) or {}
@@ -1518,28 +1529,31 @@ def collect_unit_weapon_trait_ids(A, uid: str) -> list[str]:
         for tsi in candidates:
             _add_from_pattern(tsi)
     # SSP weapon effect trait ids (Custom Core / SSP grant lines)
-    for wp in A.unit_weapon_map.get(uid, []) or []:
-        wid = A.normalize_id(wp.get("id"))
-        wm = A.weapon_info_map.get(wid, {}) or {}
-        mwid = A.normalize_id(wm.get("main_weapon_id", "0") or "0")
-        for cid in (wid, mwid):
-            if not cid or cid == "0":
-                continue
-            for tid in getattr(A, "unit_ssp_weapon_effect_map", {}).get(cid) or []:
-                nid = A.normalize_id(tid)
-                if nid and nid not in seen:
-                    seen.add(nid)
-                    ids.append(nid)
+    if str(mode).lower() == "ssp":
+        for wp in A.unit_weapon_map.get(uid, []) or []:
+            wid = A.normalize_id(wp.get("id"))
+            wm = A.weapon_info_map.get(wid, {}) or {}
+            mwid = A.normalize_id(wm.get("main_weapon_id", "0") or "0")
+            for cid in (wid, mwid):
+                if not cid or cid == "0":
+                    continue
+                for tid in getattr(A, "unit_ssp_weapon_effect_map", {}).get(cid) or []:
+                    nid = A.normalize_id(tid)
+                    if nid and nid not in seen:
+                        seen.add(nid)
+                        ids.append(nid)
     return ids
 
 
-def collect_unit_structured_debuff_keys(A, uid: str) -> tuple[set[str], dict]:
+def collect_unit_structured_debuff_keys(
+    A, uid: str, mode: str = "sp"
+) -> tuple[set[str], dict]:
     """Return (keys, meta) from WeaponTraitType + m_trait TargetValue resolution."""
     meta_by_id = _weapon_trait_meta_by_id(A)
     keys: set[str] = set()
     max_pierce = 0
     types: set[int] = set()
-    for tid in collect_unit_weapon_trait_ids(A, uid):
+    for tid in collect_unit_weapon_trait_ids(A, uid, mode=mode):
         meta = meta_by_id.get(tid)
         if not meta:
             continue
@@ -2117,7 +2131,7 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
     map_min_power = int(rules.get("map_min_power", 1) or 1)
 
     try:
-        structured_keys, s_meta = collect_unit_structured_debuff_keys(A, uid)
+        structured_keys, s_meta = collect_unit_structured_debuff_keys(A, uid, mode=mode)
         debuff_source = "structured"
         if structured_keys & rare_keys:
             has_rare = True
@@ -2143,6 +2157,9 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
 
     for wp in A.unit_weapon_map.get(uid, []) or []:
         wid = A.normalize_id(wp.get("id"))
+        # SSP Custom Core weapons (…80 MAP / …90 attack) only exist after SSP.
+        if mode != "ssp" and _weapon_is_ssp_custom_core_id(wid):
+            continue
         wm = A.weapon_info_map.get(wid, {})
         wt = str(wm.get("weapon_type", "1") or "1")
         try:
@@ -2299,8 +2316,17 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
 
     has_max_tension_higher = max_power_tension > max_power_unrestricted > 0
     strongest_trait_ids: list[str] | None = None
-    if (rules.get("maxweapon_bonus") or {}).get("from_strongest_weapon_only", True) and best_weapon_id:
-        strongest_trait_ids = collect_weapon_trait_ids_for_weapon(A, best_weapon_id, best_weapon_wm)
+    from_strongest = bool(
+        (rules.get("maxweapon_bonus") or {}).get("from_strongest_weapon_only", True)
+    )
+    if from_strongest and best_weapon_id:
+        strongest_trait_ids = collect_weapon_trait_ids_for_weapon(
+            A, best_weapon_id, best_weapon_wm, mode=mode
+        )
+    elif from_strongest:
+        strongest_trait_ids = []
+    else:
+        strongest_trait_ids = collect_unit_weapon_trait_ids(A, uid, mode=mode)
     bonus_type, bonus_pts, bonus_meta = detect_weapon_bonus_structured(
         A, uid, rules, trait_ids=strongest_trait_ids
     )
@@ -2660,7 +2686,7 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
                 {"when": "Primary", "result": "ATK · weapon power · HP · MOV"},
                 {"when": "Soft secondary", "result": "MOB (lower ceiling than ATK)"},
                 {"when": "Great extras", "result": "MAP presence / dash / coverage"},
-                {"when": "Not scored", "result": "Debuff kinds · Debuff strength"},
+                {"when": "Not scored", "result": "DEF · Debuff kinds · Debuff strength"},
             ],
         }
     )
@@ -3053,7 +3079,7 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
     for role_name in ROLE_ALL:
         if role_name == "Attack":
             stat_summary = (
-                "Attack favors ATK ceiling over MOB. HP/DEF still banded; MOB soft-capped."
+                "Attack favors ATK ceiling over MOB. HP still banded; DEF not scored; MOB soft-capped."
             )
         elif role_name == "Defense":
             stat_summary = (

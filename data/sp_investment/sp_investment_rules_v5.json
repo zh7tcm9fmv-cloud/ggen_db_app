@@ -30,7 +30,8 @@
     "v5.10: debuff strength counts lasting DEF-down magnitude (not only instant pierce); Support/Defense MAP axis cap 2; damage-taken downs count as a debuff kind",
     "v5.11: softer ER bands (<2 −1, 2–4 +1, 5+ +2); terrain floor is Space+(Land|Atmosphere); no Defense-only Atmospheric tax",
     "v5.12: Max Vigor–only best weapon is a penalty (MP/pilot-gated); SSP ability replaces applied; Defense scores Regeneration/HP restore; role stat bands — Attack ATK>MOB, Support MOB>ATK (no ATK floor penalty), Defense ATK upside-only ≥9000",
-    "v5.13: free/dev/event +1 vs gacha 0; MOV 5 neutral; weapon bonus from strongest attack; split crit dmg/rate/guaranteed; drop tile bonus; softer range 1–3; dual Ranged/Melee/Awaken attr +1; Lupus/Rex signature +3; affinity same-role; MAP coverage 0–14/15–24/25+ and ignore non-damage MAP"
+    "v5.13: free/dev/event +1 vs gacha 0; MOV 5 neutral; weapon bonus from strongest attack; split crit dmg/rate/guaranteed; drop tile bonus; softer range 1–3; dual Ranged/Melee/Awaken attr +1; Lupus/Rex signature +3; affinity same-role; MAP coverage 0–14/15–24/25+ and ignore non-damage MAP",
+    "v5.14: SP board ignores SSP Custom Core weapons (…80/…90); Attack DEF not scored; Attack ATK mid band awards points (no 0 dead-zone)"
   ],
   "exclude_warships": true,
   "exclude_character_ids": [],
@@ -935,20 +936,24 @@
     "ATK": {
       "Attack": [
         {
-          "max_exclusive": 11600,
+          "max_exclusive": 11200,
           "points": -2
         },
         {
-          "max_exclusive": 12000,
-          "points": 0
+          "max_exclusive": 11600,
+          "points": -1
         },
         {
-          "max_exclusive": 12400,
+          "max_exclusive": 12000,
           "points": 1
         },
         {
-          "max_exclusive": 12800,
+          "max_exclusive": 12400,
           "points": 2
+        },
+        {
+          "max_exclusive": 12800,
+          "points": 3
         },
         {
           "max_exclusive": null,
@@ -987,24 +992,8 @@
     "DEF": {
       "Attack": [
         {
-          "max_exclusive": 7800,
-          "points": -1
-        },
-        {
-          "max_exclusive": 8100,
-          "points": 0
-        },
-        {
-          "max_exclusive": 8600,
-          "points": 0
-        },
-        {
-          "max_exclusive": 9100,
-          "points": 1
-        },
-        {
           "max_exclusive": null,
-          "points": 2
+          "points": 0
         }
       ],
       "Defense": [
