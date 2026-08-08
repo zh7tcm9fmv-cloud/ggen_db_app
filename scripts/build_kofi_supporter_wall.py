@@ -40,6 +40,7 @@ THUMB_FILES = {
     "休閒享樂": "xiuxian_xiangle.png",
     "老狗司機": "laogou_siji.png",
     "岳尚賢": "yue_shangxian.png",
+    "yoko": "yoko.png",
 }
 
 

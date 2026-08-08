@@ -2,7 +2,7 @@
   "version": 1,
   "title": "Thank you to {n} Newtypes keeping this database alive.",
   "join_label": "Join the wall",
-  "count": 18,
+  "count": 19,
   "supporters": [
     {
       "name": "Phil",
@@ -92,6 +92,11 @@
     {
       "name": "老狗司機",
       "thumb": "/static/images/KofiSupporters/laogou_siji.png",
+      "crown": false
+    },
+    {
+      "name": "yoko",
+      "thumb": "/static/images/KofiSupporters/yoko.png",
       "crown": false
     }
   ]
