@@ -143,7 +143,22 @@ def bucketize(rows: list[dict]) -> dict:
         b = r.get("bucket") or "niche"
         if b not in out:
             b = "niche"
-        out[b].append(r)
+        out[b].append(_lean_public_row(r))
+    return out
+
+
+_SPI_DROP_ROW_KEYS = frozenset({"meta", "detail_lines", "calibration"})
+
+
+def _lean_public_row(row: dict) -> dict:
+    """Strip scorer debug fields the /IG client never reads (keeps payload snappy)."""
+    out = {k: v for k, v in row.items() if k not in _SPI_DROP_ROW_KEYS}
+    bd = out.get("breakdown")
+    if isinstance(bd, dict):
+        out["breakdown"] = {k: v for k, v in bd.items() if v}
+    recs = out.get("recommended_units")
+    if isinstance(recs, list) and not recs:
+        out.pop("recommended_units", None)
     return out
 
 
@@ -218,6 +233,15 @@ def main():
 
     tag_catalog = collect_tag_catalog([sp_rows, ssp_rows, pilot_rows])
 
+    units_sp = bucketize(sp_rows)
+    units_ssp = bucketize(ssp_rows)
+    chars_sp = bucketize(pilot_rows)
+
+    print("Attaching thumbs/icons for published payload…")
+    A._sp_investment_attach_board(units_sp, "unit")
+    A._sp_investment_attach_board(units_ssp, "unit")
+    A._sp_investment_attach_board(chars_sp, "character")
+
     payload = {
         "version": int(rules.get("version", 1)) + 1,
         "lang": LC,
@@ -226,15 +250,15 @@ def main():
         "er_expert_filters": er_filters,
         "tag_catalog": tag_catalog,
         "units": {
-            "sp": bucketize(sp_rows),
-            "ssp": bucketize(ssp_rows),
+            "sp": units_sp,
+            "ssp": units_ssp,
         },
         "characters": {
-            "sp": bucketize(pilot_rows),
+            "sp": chars_sp,
         },
         # Back-compat aliases for older client
-        "sp": bucketize(sp_rows),
-        "ssp": bucketize(ssp_rows),
+        "sp": units_sp,
+        "ssp": units_ssp,
         "scoring_guide": guide,
         "counts": {
             "units_sp": len(sp_rows),

@@ -1261,6 +1261,7 @@
     bindControls();
     try {
       const apiUrl = window.__SPI_PREVIEW__ ? '/api/sp_investment?preview=1' : '/api/sp_investment';
+      // Allow HTTP cache (API max-age=300) — do not force no-cache on every visit.
       const r = await fetch(apiUrl);
       if (!r.ok) throw new Error('HTTP ' + r.status);
       payload = await r.json();

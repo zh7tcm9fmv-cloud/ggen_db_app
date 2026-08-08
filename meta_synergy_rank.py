@@ -5284,9 +5284,8 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
         row_base = _group_for_def_tier(g, def_tier) if g.get('rankings_by_tier') else g
         if not row_base:
             row_base = g
-        # Instant path for fresh boards. Stale DEF boards must NOT be served — older catalogs
-        # baked support_def_score=18 / SDx2 for nearly everyone and omitted Force Guard, so the
-        # Top Def list order is wrong (async refresh never fixed Railway / iOS).
+        # Instant path for fresh boards. Empty skills-off / defender boards sync-enrich;
+        # stale boards serve published immediately and refresh in the background.
         has_off = bool(
             ((row_base.get('rankings_no_active_skills') or {}).get(rank_mode) or {}).get('pilots')
         )
@@ -5300,20 +5299,22 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
         def_ver = int((row_base.get('rankings_defender') or {}).get('board_version') or 0)
         missing_off = not has_off
         stale_off = has_off and off_ver < int(_SKILLS_OFF_BOARD_VERSION)
-        # Treat missing OR outdated defender boards as blocking rebuild.
-        need_def = _unit_is_defense_role(uid) and (
-            not has_def_on
-            or not has_def_off
-            or def_ver < int(_DEFENDER_BOARD_VERSION)
+        is_def_role = _unit_is_defense_role(uid)
+        missing_def = is_def_role and (not has_def_on or not has_def_off)
+        stale_def = (
+            is_def_role
+            and has_def_on
+            and has_def_off
+            and def_ver < int(_DEFENDER_BOARD_VERSION)
         )
-        if missing_off or need_def:
+        if missing_off or missing_def:
             try:
                 if missing_off:
                     row_base = enrich_group_no_active_skills(
                         row_base, lc, lite=False, rank_mode=rank_mode, def_tier=def_tier,
                         force=True,
                     )
-                if need_def:
+                if missing_def:
                     row_base = enrich_group_defender_rankings(row_base, lc, force=True)
                 if isinstance(g, dict) and isinstance(row_base, dict):
                     for k in (
@@ -5322,15 +5323,15 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
                     ):
                         if k in row_base:
                             g[k] = row_base[k]
-                if need_def:
+                if missing_def:
                     _invalidate_unit_best_pilot_api_cache(uid)
                     _schedule_persist_bsp_group(uid, g)
             except Exception as e:
                 print(f'best_synergy enrich failed ({uid}): {e}')
-        elif stale_off:
+        elif stale_off or stale_def:
             _schedule_bsp_board_refresh(
                 g, uid, lc, rank_mode=rank_mode, def_tier=def_tier,
-                refresh_off=True, refresh_def=False,
+                refresh_off=stale_off, refresh_def=stale_def,
             )
         if include_all_modes and isinstance(row_base.get('rankings'), dict):
             modes_out = {}

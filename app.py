@@ -15509,6 +15509,102 @@ def _sp_investment_attach_board(buckets, kind):
                         ru.update(_tier_mockup_row_icons(ru, 'unit'))
 
 
+_SPI_API_PAYLOAD_CACHE = {
+    'mtime': None,
+    'payload': None,
+}
+_SPI_DROP_ROW_KEYS = frozenset({'meta', 'detail_lines', 'calibration'})
+
+
+def _sp_investment_lean_row(row):
+    if not isinstance(row, dict):
+        return row
+    out = {k: v for k, v in row.items() if k not in _SPI_DROP_ROW_KEYS}
+    bd = out.get('breakdown')
+    if isinstance(bd, dict):
+        out['breakdown'] = {k: v for k, v in bd.items() if v}
+    recs = out.get('recommended_units')
+    if isinstance(recs, list) and not recs:
+        out.pop('recommended_units', None)
+    return out
+
+
+def _sp_investment_strip_payload_bloat(payload):
+    """Drop unused scorer debug fields from older published builds."""
+    if not isinstance(payload, dict):
+        return payload
+    for side_key in ('units', 'characters', 'sp', 'ssp'):
+        side = payload.get(side_key)
+        if not isinstance(side, dict):
+            continue
+        # units/characters: {sp:{bucket:[rows]}} or legacy flat buckets
+        sample = next(iter(side.values()), None) if side else None
+        if isinstance(sample, dict) and any(isinstance(v, list) for v in sample.values()):
+            for mode, buckets in side.items():
+                if not isinstance(buckets, dict):
+                    continue
+                for bname, rows in list(buckets.items()):
+                    if isinstance(rows, list):
+                        buckets[bname] = [_sp_investment_lean_row(r) for r in rows]
+        else:
+            for bname, rows in list(side.items()):
+                if isinstance(rows, list):
+                    side[bname] = [_sp_investment_lean_row(r) for r in rows]
+    return payload
+
+
+def _sp_investment_board_has_thumbs(buckets):
+    """True if published rows already carry thumbs (skip slow re-attach)."""
+    if not isinstance(buckets, dict):
+        return False
+    for rows in buckets.values():
+        if not isinstance(rows, list):
+            continue
+        for row in rows[:40]:
+            if isinstance(row, dict) and row.get('thum'):
+                return True
+    return False
+
+
+def _sp_investment_prepare_payload(path):
+    """Load + lean + attach thumbs once per file mtime (cached in memory)."""
+    mtime = os.path.getmtime(path)
+    cached = _SPI_API_PAYLOAD_CACHE
+    if cached['mtime'] == mtime and cached['payload'] is not None:
+        return cached['payload'], mtime
+    with open(path, 'r', encoding='utf-8') as f:
+        payload = json.load(f)
+    payload.pop('sp_flat', None)
+    payload.pop('ssp_flat', None)
+    _sp_investment_strip_payload_bloat(payload)
+    units = payload.get('units') or {}
+    if units:
+        if not _sp_investment_board_has_thumbs(units.get('sp')):
+            _sp_investment_attach_board(units.get('sp'), 'unit')
+        if not _sp_investment_board_has_thumbs(units.get('ssp')):
+            _sp_investment_attach_board(units.get('ssp'), 'unit')
+        payload['sp'] = units.get('sp') or payload.get('sp') or {}
+        payload['ssp'] = units.get('ssp') or payload.get('ssp') or {}
+    else:
+        for board_key in ('sp', 'ssp'):
+            if not _sp_investment_board_has_thumbs(payload.get(board_key)):
+                _sp_investment_attach_board(payload.get(board_key), 'unit')
+    chars = payload.get('characters') or {}
+    if chars and not _sp_investment_board_has_thumbs(chars.get('sp')):
+        _sp_investment_attach_board(chars.get('sp'), 'character')
+    if not payload.get('scoring_guide'):
+        try:
+            import sp_investment_rank as _sir
+            payload['scoring_guide'] = _sir.scoring_guide_payload()
+        except Exception:
+            payload['scoring_guide'] = {}
+    # Convert CDN image URLs once so jsonify_cacheable can skip re-walking.
+    payload = convert_image_urls(payload)
+    cached['mtime'] = mtime
+    cached['payload'] = payload
+    return payload, mtime
+
+
 @app.route('/api/sp_investment')
 def api_sp_investment():
     """Serve offline SP/SSP investment rankings with portrait thumbnails."""
@@ -15517,33 +15613,25 @@ def api_sp_investment():
     path = _sp_investment_json_path()
     if not os.path.isfile(path):
         return jsonify({'error': 'sp_investment_v1.json not found — run scripts/build_sp_investment_rankings.py'}), 404
-    with open(path, 'r', encoding='utf-8') as f:
-        payload = json.load(f)
-    payload.pop('sp_flat', None)
-    payload.pop('ssp_flat', None)
-    units = payload.get('units') or {}
-    if units:
-        _sp_investment_attach_board(units.get('sp'), 'unit')
-        _sp_investment_attach_board(units.get('ssp'), 'unit')
-        # keep legacy top-level aliases in sync
-        payload['sp'] = units.get('sp') or payload.get('sp') or {}
-        payload['ssp'] = units.get('ssp') or payload.get('ssp') or {}
-    else:
-        for board_key in ('sp', 'ssp'):
-            _sp_investment_attach_board(payload.get(board_key), 'unit')
-    chars = payload.get('characters') or {}
-    if chars:
-        _sp_investment_attach_board(chars.get('sp'), 'character')
-    if not payload.get('scoring_guide') or _sp_investment_is_preview_request():
-        try:
-            import sp_investment_rank as _sir
-            _sir.clear_rules_cache()
-            payload['scoring_guide'] = _sir.scoring_guide_payload()
-        except Exception:
-            if not payload.get('scoring_guide'):
-                payload['scoring_guide'] = {}
-    ck = f"sp_investment_v1_{int(os.path.getmtime(path))}"
-    return jsonify_cacheable(payload, ck, public=True, max_age=300, convert_images=True)
+    payload, mtime = _sp_investment_prepare_payload(path)
+    ck = f"sp_investment_v1_lean_{int(mtime)}"
+    resp = jsonify_cacheable(payload, ck, public=True, max_age=300, convert_images=False)
+    # Gzip large board JSON when the client accepts it (Railway/edge may not compress JSON).
+    if resp.status_code == 200:
+        accept = (request.headers.get('Accept-Encoding') or '').lower()
+        if 'gzip' in accept and 'Content-Encoding' not in resp.headers:
+            import gzip as _gzip
+            raw = resp.get_data()
+            if raw and len(raw) > 2048:
+                compressed = _gzip.compress(raw, compresslevel=5)
+                if len(compressed) < len(raw):
+                    resp.set_data(compressed)
+                    resp.headers['Content-Encoding'] = 'gzip'
+                    resp.headers['Content-Length'] = str(len(compressed))
+                    vary = resp.headers.get('Vary') or ''
+                    if 'Accept-Encoding' not in vary:
+                        resp.headers['Vary'] = (vary + ', Accept-Encoding').lstrip(', ').strip()
+    return resp
 
 
 @app.route('/privacy-policy')
