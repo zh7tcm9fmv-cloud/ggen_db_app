@@ -242,6 +242,20 @@ def _env_strip_quotes(val):
 
 
 IMAGE_CDN = os.environ.get('IMAGE_CDN', '').rstrip('/')
+# Brand fonts: prefer jsDelivr (week-long cache) over GitHub Pages (max-age=600 → re-download loop).
+# Keeps multi-MB OTFs off Railway egress. Override with FONT_CDN=0 to force same-origin /static/font/.
+_DEFAULT_FONT_CDN = 'https://cdn.jsdelivr.net/gh/zh7tcm9fmv-cloud/ggen_db_images@main'
+_font_cdn_env = _env_strip_quotes(os.environ.get('FONT_CDN'))
+if _font_cdn_env is None or _font_cdn_env == '':
+    # Always prefer jsDelivr unless explicitly disabled — multi-MB OTFs must not bill Railway egress.
+    FONT_CDN = _DEFAULT_FONT_CDN
+else:
+    FONT_CDN = _font_cdn_env.rstrip('/')
+    if FONT_CDN.lower() in ('0', 'false', 'off', 'no'):
+        FONT_CDN = ''
+# Video proxy streams GitHub blobs through Railway (Range + loops = huge egress). Off by default.
+_vp = (os.environ.get('VIDEO_PROXY_ENABLED') or '0').strip().lower()
+VIDEO_PROXY_ENABLED = _vp in ('1', 'true', 'yes', 'on')
 _DEFAULT_VIDEO_CDN = 'https://raw.githubusercontent.com/zh7tcm9fmv-cloud/ggen_db_videos/main'
 _video_cdn_env = _env_strip_quotes(os.environ.get('VIDEO_CDN'))
 if _video_cdn_env is None or _video_cdn_env == '':
@@ -471,6 +485,11 @@ if IMAGE_CDN and not GAME_IMAGES_USE_CDN:
     print("  Image URLs: /static/images/* served from this app (GAME_IMAGES_USE_CDN=0). Remove it or set to 1 to use IMAGE_CDN for game assets.")
 elif IMAGE_CDN:
     print(f"  Image CDN: {IMAGE_CDN}/images/* (WebP preferred)")
+if FONT_CDN:
+    print(f"  Font CDN: {FONT_CDN}/font/* (brand OTFs off Railway egress)")
+else:
+    print("  Font CDN: off — brand OTFs from /static/font/ (same-origin)")
+print(f"  Video proxy: {'ON (Railway egress risk)' if VIDEO_PROXY_ENABLED else 'off — browsers hit VIDEO_CDN directly'}")
 if VIDEO_CDN:
     print(f"  Video CDN: {VIDEO_CDN}/gacha/*.{VIDEO_FILE_EXT}, {VIDEO_CDN}/{VIDEO_UNIT_SUBDIR}/*.{VIDEO_FILE_EXT}")
 
@@ -14600,10 +14619,12 @@ def _serve_index():
     r = make_response(render_template(
         'index.html',
         image_cdn=IMAGE_CDN or '',
+        font_cdn=FONT_CDN or '',
         video_cdn=VIDEO_CDN or '',
         video_file_ext=VIDEO_FILE_EXT,
         video_hash_suffix=VIDEO_HASH_SUFFIX,
         video_unit_subdir=VIDEO_UNIT_SUBDIR,
+        video_proxy_enabled=VIDEO_PROXY_ENABLED,
         game_images_use_cdn=GAME_IMAGES_USE_CDN,
         app_js_version=_app_js_bundle_version_tag(),
         app_js_bundle=_app_js_served_bundle_name(),
@@ -14965,8 +14986,12 @@ def _video_proxy_content_type(filename):
 
 @app.route('/api/video/<folder>/<path:filename>', methods=['GET', 'HEAD'])
 def api_video_proxy(folder, filename):
-    """Stream game videos with HTTP Range (206) support for Chrome seek/loop."""
-    if not VIDEO_CDN:
+    """Stream game videos with HTTP Range (206) support for Chrome seek/loop.
+
+    Disabled by default: proxying multi‑MB MP4s through Railway burned network egress.
+    Set VIDEO_PROXY_ENABLED=1 only if direct VIDEO_CDN playback is broken.
+    """
+    if not VIDEO_PROXY_ENABLED or not VIDEO_CDN:
         raise NotFound()
     folder = str(folder or '').strip('/')
     if folder not in _video_proxy_allowed_folders():
@@ -15396,6 +15421,7 @@ def _render_sp_investment_soft_launch(spi_preview=True):
     r = make_response(render_template(
         'sp_investment.html',
         image_cdn=IMAGE_CDN or '',
+        font_cdn=FONT_CDN or '',
         game_images_use_cdn=GAME_IMAGES_USE_CDN,
         app_js_version=ver,
         spi_preview=spi_preview,
@@ -15439,6 +15465,7 @@ def sp_investment_page():
     r = make_response(render_template(
         'sp_investment.html',
         image_cdn=IMAGE_CDN or '',
+        font_cdn=FONT_CDN or '',
         game_images_use_cdn=GAME_IMAGES_USE_CDN,
         app_js_version=ver,
         spi_preview=False,
@@ -15501,6 +15528,8 @@ _SPI_API_PAYLOAD_CACHE = {
     'payload': None,
 }
 _SPI_DROP_ROW_KEYS = frozenset({'meta', 'detail_lines', 'calibration'})
+# Always keep these breakdown axes even at 0 so the dossier does not look like they were unscored.
+_SPI_KEEP_BREAKDOWN_ZERO = frozenset({'terrain'})
 
 
 def _sp_investment_lean_row(row):
@@ -15509,7 +15538,11 @@ def _sp_investment_lean_row(row):
     out = {k: v for k, v in row.items() if k not in _SPI_DROP_ROW_KEYS}
     bd = out.get('breakdown')
     if isinstance(bd, dict):
-        out['breakdown'] = {k: v for k, v in bd.items() if v}
+        out['breakdown'] = {
+            k: v
+            for k, v in bd.items()
+            if v or k in _SPI_KEEP_BREAKDOWN_ZERO
+        }
     recs = out.get('recommended_units')
     if isinstance(recs, list) and not recs:
         out.pop('recommended_units', None)
@@ -15847,6 +15880,7 @@ def game_news_page():
     r = make_response(render_template(
         'game_news.html',
         image_cdn=IMAGE_CDN or '',
+        font_cdn=FONT_CDN or '',
         game_images_use_cdn=GAME_IMAGES_USE_CDN,
         app_js_version=_app_js_bundle_version_tag(),
     ))
@@ -16089,6 +16123,10 @@ def api_kofi_supporter_wall():
     payload = dict(_load_kofi_supporter_wall())
     payload['join_url'] = KOFI_PAGE_URL
     payload['count'] = len(payload.get('supporters') or [])
+    # Prefer CDN WebP thumbs (same rewrite as browse/detail image fields).
+    for row in payload.get('supporters') or []:
+        if isinstance(row, dict) and row.get('thumb'):
+            row['thumb'] = game_image_public_url(row['thumb'])
     # Stable cache key from file mtime when available
     try:
         mtime = int(os.path.getmtime(_kofi_supporter_wall_path()))

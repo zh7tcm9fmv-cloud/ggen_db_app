@@ -1,12 +1,18 @@
 {# Inject multi-MB brand / CJK @font-face after first paint so portraits stay snappy.
+   Prefer FONT_CDN (jsDelivr) so Railway does not burn egress on OTFs.
    Stacks stay brand-first; until faces register, the browser uses system fallbacks. #}
 <script>
 (function(){
   var v={{ app_js_version|tojson }};
+  var fontCdn={{ (font_cdn if font_cdn is defined else '')|tojson }};
   var injectedFor='';
   function currentLang(){
     var lang=String(document.documentElement.getAttribute('data-ui-lang')||'EN').trim().toUpperCase();
     return lang==='JP'?'JA':lang;
+  }
+  function fontUrl(cdnRel, localRel){
+    if(fontCdn)return String(fontCdn).replace(/\/+$/,'')+'/font/'+cdnRel+(v?'?v='+encodeURIComponent(v):'');
+    return '/static/font/'+localRel+(v?'?v='+encodeURIComponent(v):'');
   }
   function inject(){
     var lang=currentLang();
@@ -15,17 +21,16 @@
     if(el)el.remove();
     var parts=[];
     function face(fam,url,fmt,weight){
-      parts.push("@font-face{font-family:'"+fam+"';src:url('"+url+"?v="+encodeURIComponent(v)+"') format('"+fmt+"');font-weight:"+weight+";font-style:normal;font-display:swap}");
+      parts.push("@font-face{font-family:'"+fam+"';src:url('"+url+"') format('"+fmt+"');font-weight:"+weight+";font-style:normal;font-display:swap}");
     }
-    /* Brand + JP body fallback — needed on every locale (EN title uses FOTK). */
-    face('FOTK Yoon Gothic 780 JP','/static/font/FOTK-YoonGothic780_JP.otf','opentype','500');
-    face('ShinGoPr6DeBold','/static/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf','opentype','normal');
+    /* CDN nesting matches ggen_db_images/font/; local app keeps flat FOTK/UDShinGo copies. */
+    face('FOTK Yoon Gothic 780 JP',fontUrl('JapaneseTextFont/FOTK-YoonGothic780_JP.otf','FOTK-YoonGothic780_JP.otf'),'opentype','500');
+    face('ShinGoPr6DeBold',fontUrl('JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf','JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf'),'opentype','normal');
     if(lang==='TW'||lang==='HK'){
-      face('UDShinGoStdTCMed','/static/font/UDShinGoStdTC-Med.otf','opentype','500');
+      face('UDShinGoStdTCMed',fontUrl('JapaneseTextFont/UDShinGoStdTC-Med.otf','UDShinGoStdTC-Med.otf'),'opentype','500');
     }
-    /* Noto only when the active UI lang puts it in the body stack (not EN). */
     if(lang==='JA'||lang==='TW'||lang==='HK'){
-      face('Noto Sans JP','/static/font/NotoSansJP.ttf','truetype','100 900');
+      face('Noto Sans JP',fontUrl('NotoSansJP.ttf','NotoSansJP.ttf'),'truetype','100 900');
     }
     var s=document.createElement('style');
     s.id='ggenBrandFonts';
@@ -39,7 +44,6 @@
   }
   if(document.readyState==='complete')schedule();
   else window.addEventListener('load',schedule);
-  /* Lang switch may need Noto/UDShinGo that EN boot skipped. */
   window.__ggenInjectBrandFonts=inject;
 })();
 </script>

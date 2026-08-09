@@ -530,6 +530,7 @@ window.__GGEN_VIDEO_CDN__ = '{{ video_cdn }}';
 window.__GGEN_VIDEO_FILE_EXT__ = '{{ video_file_ext | default("mp4", true) }}';
 window.__GGEN_VIDEO_HASH_SUFFIX__ = '{{ video_hash_suffix | default("", true) }}';
 window.__GGEN_VIDEO_UNIT_SUBDIR__ = '{{ video_unit_subdir | default("unit", true) }}';
+window.__GGEN_VIDEO_PROXY__ = {{ (video_proxy_enabled if video_proxy_enabled is defined else false)|tojson }};
 window.__GGEN_GAME_IMAGES_USE_CDN__ = {{ (true if image_cdn else (game_images_use_cdn if game_images_use_cdn is defined else false)) | tojson }};
 window.__GGEN_APP_VERSION__ = {{ app_js_version | tojson }};
 window.__GGEN_KOFI_PAGE_URL__ = {{ (kofi_page_url if kofi_page_url is defined else 'https://ko-fi.com/E1E21WL8RV') | tojson }};

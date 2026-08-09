@@ -7,7 +7,8 @@ Usage:
     --subscribers path/to/Subscriber_*.csv
 
 Defaults look in data/kofi/raw/supporters.csv and subscribers.csv.
-Custom thumbs live in static/images/KofiSupporters/ (see THUMB_FILES).
+Custom thumbs live under images/KofiSupporters/ on the image CDN (WebP).
+Local static/images/KofiSupporters/ copies are optional (build no longer requires them).
 """
 from __future__ import annotations
 
@@ -26,23 +27,23 @@ THUMB_DIR = ROOT / "static" / "images" / "KofiSupporters"
 FALLBACK_THUMB = "/static/images/UI/UI_Home_Menu_Icon_Shop.webp"
 CROWN_NAME = "Phil"
 
-# Display name (casefold) -> filename under static/images/KofiSupporters/
+# Display name (casefold) -> WebP filename under images/KofiSupporters/ (CDN + image_index)
 THUMB_FILES = {
-    "phil": "phil.png",
-    "fortexfiend": "fortexfiend.png",
-    "manafusion": "manafusion.png",
-    "2pmgaming": "2pmgaming.png",
-    "theothermc": "theothermc.png",
-    "fire red": "fire_red.png",
-    "kamen rider decade": "kamen_rider_decade.png",
-    "大漢erection": "dahan_erection.png",
-    "a俊": "ajun.png",
-    "休閒享樂": "xiuxian_xiangle.png",
-    "老狗司機": "laogou_siji.png",
-    "岳尚賢": "yue_shangxian.png",
-    "yoko": "yoko.png",
-    "剎那": "setsuna.png",
-    "戳戳": "chuochuo.png",
+    "phil": "phil.webp",
+    "fortexfiend": "fortexfiend.webp",
+    "manafusion": "manafusion.webp",
+    "2pmgaming": "2pmgaming.webp",
+    "theothermc": "theothermc.webp",
+    "fire red": "fire_red.webp",
+    "kamen rider decade": "kamen_rider_decade.webp",
+    "大漢erection": "dahan_erection.webp",
+    "a俊": "ajun.webp",
+    "休閒享樂": "xiuxian_xiangle.webp",
+    "老狗司機": "laogou_siji.webp",
+    "岳尚賢": "yue_shangxian.webp",
+    "yoko": "yoko.webp",
+    "剎那": "setsuna.webp",
+    "戳戳": "chuochuo.webp",
 }
 
 
@@ -135,8 +136,7 @@ def thumb_for(name: str) -> str:
     fn = THUMB_FILES.get(name.casefold())
     if not fn:
         return FALLBACK_THUMB
-    if not (THUMB_DIR / fn).is_file():
-        return FALLBACK_THUMB
+    # CDN / image_index is source of truth — local PNG copies are optional.
     return f"/static/images/KofiSupporters/{fn}"
 
 

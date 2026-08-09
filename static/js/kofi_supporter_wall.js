@@ -45,13 +45,15 @@
   function thumbUrl(path) {
     var p = path || FALLBACK;
     try {
-      if (p.indexOf('/static/images/KofiSupporters/') === 0) return p;
-      if (typeof global.imgUrlPreferCdn === 'function' && /\/static\/images\/UI\//.test(p)) {
-        return global.imgUrlPreferCdn(p);
+      if (typeof global.imgUrlPreferCdn === 'function' && p.indexOf('/static/images/') === 0) {
+        var u = global.imgUrlPreferCdn(p);
+        if (u) return u;
       }
       if (typeof global.imgUrl === 'function' && p.indexOf('/static/images/') === 0) {
-        return global.imgUrl(p);
+        var u2 = global.imgUrl(p);
+        if (u2) return u2;
       }
+      if (/^https?:\/\//i.test(p)) return p;
     } catch (_) {}
     return p;
   }

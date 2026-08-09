@@ -16,6 +16,7 @@ const VIDEO_CDN = (function(){
 const VIDEO_FILE_EXT = String(window.__GGEN_VIDEO_FILE_EXT__ || 'mp4').replace(/^\./, '');
 const VIDEO_HASH_SUFFIX = window.__GGEN_VIDEO_HASH_SUFFIX__ != null ? String(window.__GGEN_VIDEO_HASH_SUFFIX__) : '';
 const VIDEO_UNIT_SUBDIR = String(window.__GGEN_VIDEO_UNIT_SUBDIR__ || 'unit').replace(/^\/+|\/+$/g, '');
+const VIDEO_PROXY_ENABLED = window.__GGEN_VIDEO_PROXY__ === true;
 const GAME_IMAGES_USE_CDN = window.__GGEN_GAME_IMAGES_USE_CDN__ !== false && !!(IMAGE_CDN || window.__GGEN_GAME_IMAGES_USE_CDN__);
 function _isBlockedMediaUrl(u) {
     if (!u) return true;
@@ -38,7 +39,7 @@ function videoUrl(folder, resourceId, extOpt) {
     return _isBlockedMediaUrl(out) ? '' : out;
 }
 function gachaVideoUrl(movieId) { return videoUrl('gacha', movieId); }
-function unitLbVideoUrl(movieId){const c=_videoUrlCandidates(VIDEO_UNIT_SUBDIR,movieId);return c[0]||_lbVideoProxyBuildUrl(VIDEO_UNIT_SUBDIR,movieId,VIDEO_HASH_SUFFIX||'',VIDEO_FILE_EXT||'mp4')}
+function unitLbVideoUrl(movieId){const c=_videoUrlCandidates(VIDEO_UNIT_SUBDIR,movieId);return c[0]||(VIDEO_PROXY_ENABLED?_lbVideoProxyBuildUrl(VIDEO_UNIT_SUBDIR,movieId,VIDEO_HASH_SUFFIX||'',VIDEO_FILE_EXT||'mp4'):'')}
 function videoCdnEnabled() { return !!VIDEO_CDN; }
 const _imgUrlCache = new Map();
 const _imgUrlCacheMax = 8192;
@@ -1616,7 +1617,7 @@ function _mediaVideoPlayCandidates(folder,resourceId,opts){
   const out=[];const seen=new Set();const push=u=>{if(u&&!seen.has(u)){seen.add(u);out.push(u)}};
   _videoUrlCandidates(folder,resourceId).forEach(push);
   const nativeOnly=typeof o.nativeLoop==='boolean'?o.nativeLoop:_lbVideoUseNativeLoop();
-  if(o.proxyFallback!==false&&!nativeOnly)_videoProxyCandidates(folder,resourceId).forEach(push);
+  if(o.proxyFallback!==false&&VIDEO_PROXY_ENABLED&&!nativeOnly)_videoProxyCandidates(folder,resourceId).forEach(push);
   return out;
 }
 function _lbVideoPlayCandidates(folder,resourceId,nativeLoop){

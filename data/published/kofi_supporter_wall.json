@@ -1,4 +1,4 @@
-{
+﻿{
   "version": 1,
   "title": "Thank you to {n} Newtypes keeping this database alive.",
   "join_label": "Join the wall",
@@ -6,32 +6,32 @@
   "supporters": [
     {
       "name": "Phil",
-      "thumb": "/static/images/KofiSupporters/phil.png",
+      "thumb": "/static/images/KofiSupporters/phil.webp",
       "crown": true
     },
     {
       "name": "Fire Red",
-      "thumb": "/static/images/KofiSupporters/fire_red.png",
+      "thumb": "/static/images/KofiSupporters/fire_red.webp",
       "crown": false
     },
     {
-      "name": "岳尚賢",
-      "thumb": "/static/images/KofiSupporters/yue_shangxian.png",
+      "name": "å²³å°šè³¢",
+      "thumb": "/static/images/KofiSupporters/yue_shangxian.webp",
       "crown": false
     },
     {
       "name": "manafusion",
-      "thumb": "/static/images/KofiSupporters/manafusion.png",
+      "thumb": "/static/images/KofiSupporters/manafusion.webp",
       "crown": false
     },
     {
       "name": "Kamen Rider Decade",
-      "thumb": "/static/images/KofiSupporters/kamen_rider_decade.png",
+      "thumb": "/static/images/KofiSupporters/kamen_rider_decade.webp",
       "crown": false
     },
     {
       "name": "Fortexfiend",
-      "thumb": "/static/images/KofiSupporters/fortexfiend.png",
+      "thumb": "/static/images/KofiSupporters/fortexfiend.webp",
       "crown": false
     },
     {
@@ -40,28 +40,28 @@
       "crown": false
     },
     {
-      "name": "休閒享樂",
-      "thumb": "/static/images/KofiSupporters/xiuxian_xiangle.png",
+      "name": "ä¼‘é–’äº«æ¨‚",
+      "thumb": "/static/images/KofiSupporters/xiuxian_xiangle.webp",
       "crown": false
     },
     {
       "name": "2PMgaming",
-      "thumb": "/static/images/KofiSupporters/2pmgaming.png",
+      "thumb": "/static/images/KofiSupporters/2pmgaming.webp",
       "crown": false
     },
     {
-      "name": "A俊",
-      "thumb": "/static/images/KofiSupporters/ajun.png",
+      "name": "Aä¿Š",
+      "thumb": "/static/images/KofiSupporters/ajun.webp",
       "crown": false
     },
     {
-      "name": "大漢Erection",
-      "thumb": "/static/images/KofiSupporters/dahan_erection.png",
+      "name": "å¤§æ¼¢Erection",
+      "thumb": "/static/images/KofiSupporters/dahan_erection.webp",
       "crown": false
     },
     {
-      "name": "戳戳",
-      "thumb": "/static/images/KofiSupporters/chuochuo.png",
+      "name": "æˆ³æˆ³",
+      "thumb": "/static/images/KofiSupporters/chuochuo.webp",
       "crown": false
     },
     {
@@ -81,7 +81,7 @@
     },
     {
       "name": "TheOtherMC",
-      "thumb": "/static/images/KofiSupporters/theothermc.png",
+      "thumb": "/static/images/KofiSupporters/theothermc.webp",
       "crown": false
     },
     {
@@ -91,17 +91,17 @@
     },
     {
       "name": "yoko",
-      "thumb": "/static/images/KofiSupporters/yoko.png",
+      "thumb": "/static/images/KofiSupporters/yoko.webp",
       "crown": false
     },
     {
-      "name": "剎那",
-      "thumb": "/static/images/KofiSupporters/setsuna.png",
+      "name": "å‰Žé‚£",
+      "thumb": "/static/images/KofiSupporters/setsuna.webp",
       "crown": false
     },
     {
-      "name": "老狗司機",
-      "thumb": "/static/images/KofiSupporters/laogou_siji.png",
+      "name": "è€ç‹—å¸æ©Ÿ",
+      "thumb": "/static/images/KofiSupporters/laogou_siji.webp",
       "crown": false
     }
   ]
