@@ -16102,7 +16102,8 @@ def _kofi_supporter_wall_path():
 def _load_kofi_supporter_wall():
     path = _kofi_supporter_wall_path()
     try:
-        with open(path, encoding='utf-8') as f:
+        # utf-8-sig tolerates accidental BOM (e.g. Windows editors) that break strict utf-8 json.load.
+        with open(path, encoding='utf-8-sig') as f:
             row = json.load(f)
         if isinstance(row, dict) and isinstance(row.get('supporters'), list):
             return row
