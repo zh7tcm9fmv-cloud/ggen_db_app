@@ -32,7 +32,8 @@
     "v5.12: Max Vigor–only best weapon is a penalty (MP/pilot-gated); SSP ability replaces applied; Defense scores Regeneration/HP restore; role stat bands — Attack ATK>MOB, Support MOB>ATK (no ATK floor penalty), Defense ATK upside-only ≥9000",
     "v5.13: free/dev/event +1 vs gacha 0; MOV 5 neutral; weapon bonus from strongest attack; split crit dmg/rate/guaranteed; drop tile bonus; softer range 1–3; dual Ranged/Melee/Awaken attr +1; Lupus/Rex signature +3; affinity same-role; MAP coverage 0–14/15–24/25+ and ignore non-damage MAP",
     "v5.14: SP board ignores SSP Custom Core weapons (…80/…90); Attack DEF not scored; Attack ATK mid band awards points (no 0 dead-zone)",
-    "v5.15: Attack/Support HP upside-only (no floor penalties); Defense HP/DEF floors kept; SSP Attack EN upside-only; secondary-stat outlier niche bonus; special_defense presence (DR/I-field/barrier); soft UR-recommend pilot dependence −1; softer pilot_rarity_adjustment (SR not punished like unit SR)"
+    "v5.15: Attack/Support HP upside-only (no floor penalties); Defense HP/DEF floors kept; SSP Attack EN upside-only; secondary-stat outlier niche bonus; special_defense presence (DR/I-field/barrier); soft UR-recommend pilot dependence −1; softer pilot_rarity_adjustment (SR not punished like unit SR)",
+    "v5.16: pilot recommend-MS / affinity matches require A or higher (A / A+ / S / S+); B+ no longer scores — cuts junk-frame affinity spam"
   ],
   "exclude_warships": true,
   "exclude_character_ids": [],
@@ -133,12 +134,12 @@
   },
   "pilot_skill_tension_gate_regex": "(?i)tension|テンション|when\\s+tension|at\\s+max\\s+tension",
   "series_affinity_points_each": 3,
+  "recommend_ms_min_letter": "A",
   "recommend_ms_letter_points": {
     "S+": 5,
     "S": 5,
     "A+": 4,
-    "A": 3,
-    "B+": 2
+    "A": 3
   },
   "recommend_ms_multi_bplus_bonus": 1,
   "pilot_stat_bands": {
@@ -1579,7 +1580,7 @@
     "1370011100"
   ],
   "scoring_guide": {
-    "version": 5.15,
+    "version": 5.16,
     "title": "How Investment Guide scoring works",
     "intro": "Point-sum shortlist for SP/SSP chip investment on mobile suits and pilots (Attack / Defense / Support). Units have separate SP and SSP boards; pilots use SP only. Criteria favor practical sortie tools (MAP, mobility follow-ups, weapon power) and a deep affinity pilot pool over a single linked recommend. Minor Attack stats (HP, SSP EN) are upside-only — no floor punishment. Close letters still need a human look.",
     "overrides": [
@@ -1591,6 +1592,7 @@
       "Pilot recommended-MS points use this list's unit letters (SP/SSP best).",
       "Strategic tag weights use how often tags appear on UR rosters (calibrated table).",
       "Affinity pilot pool counts SSR+ pilots with piloting-tag / EX-pair affinity for the MS (not supporter amp %).",
+      "Pilot recommended-MS points only count units graded A / A+ / S / S+ on this guide (SP or SSP best) — B+ and below do not score.",
       "Transform scores only when the alternate form unlocks deployable terrain, higher MOV, longer range, higher weapon power, or adds MAP.",
       "Attack HP and SSP Attack EN are upside-only; Defense still taxes low HP/DEF. Special defenses (I-field / DR / barrier) are presence bonuses beyond the shield mechanism.",
       "Units whose recommend pilot is UR/Ultimate take a mild −1 dependence tax (still usable with lower rarity pilots).",

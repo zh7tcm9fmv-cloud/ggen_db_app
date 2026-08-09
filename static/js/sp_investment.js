@@ -70,7 +70,7 @@
     },
     recommend_ms: {
       label: 'Recommended Mobile Suits',
-      tip: 'Bonus from this pilot’s best recommended MS letter on this guide (B+ and up), plus a small multi-match bonus.',
+      tip: 'Bonus from this pilot’s best matching MS letter on this guide (A / A+ / S / S+ only — B+ no longer scores), plus a small multi-match bonus.',
     },
     linked_pilot: {
       label: 'Affinity pilot pool',
@@ -1057,7 +1057,7 @@
     if (!units.length && !recPts) {
       return `<section class="spi-dossier-section">
         <h4 class="spi-dossier-h">Recommended Mobile Suits</h4>
-        <p class="spi-dossier-empty">No B+ or higher matches from this pilot’s tag / series gates and specialty.</p>
+        <p class="spi-dossier-empty">No A or higher matches from this pilot’s tag / series gates and specialty.</p>
       </section>`;
     }
     const cards = units
@@ -1074,7 +1074,7 @@
       .join('');
     return `<section class="spi-dossier-section">
       <div class="spi-dossier-section-head">
-        <h4 class="spi-dossier-h">Recommended Mobile Suits <span class="spi-dossier-h-sub">B+ and up</span></h4>
+        <h4 class="spi-dossier-h">Recommended Mobile Suits <span class="spi-dossier-h-sub">A and up</span></h4>
         ${ptsBadge(recPts)}
       </div>
       <p class="spi-dossier-note">Matched by ability tag/series gates and pilot specialty${row.specialty ? ` (${esc(row.specialty)})` : ''}. Defense units skip the specialty check.</p>

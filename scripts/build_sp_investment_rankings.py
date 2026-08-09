@@ -218,7 +218,7 @@ def main():
 
     print("Indexing units for pilot MS recommendations…")
     unit_index = SIR.build_unit_recommend_index(A, list(best_unit_rows.values()), LC)
-    print(f"  {len(unit_index.get('bplus_ids') or [])} B+ units")
+    print(f"  {len(unit_index.get('bplus_ids') or [])} A+ eligible units for pilot MS match")
 
     print("Building pilot SP board…")
     pilot_rows = build_pilot_board(rules, unit_letter_by_id, unit_index, expert_ids, pilot_tag_table)

@@ -3649,7 +3649,7 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "rows": [
                 {"when": "SP grown stats (Ranged / Melee / Awaken / Defense / Reaction)", "result": "Band points by role (see tables above)"},
                 {"when": "Series affinity abilities", "result": f"+{int(rules.get('series_affinity_points_each', 3))} each"},
-                {"when": "Best recommended MS letter (B+ and up)", "result": "From this guide’s unit letters"},
+                {"when": "Best recommended MS letter (A and up)", "result": "From this guide’s unit letters (B+ no longer scores)"},
                 {"when": "Unbreakable on pilot abilities", "result": "Extra-life role bonus"},
             ],
         }
@@ -3727,6 +3727,25 @@ _PILOT_GREAT_UTILITY = re.compile(
     r"援護攻撃|援護防御|ステップ|スウェイ"
 )
 _LETTER_ORDER = ("E", "D", "C", "B", "B+", "A", "A+", "S", "S+")
+
+
+def letter_pts_allowed(rules: dict) -> set[str]:
+    return set((rules.get("recommend_ms_letter_points") or {}).keys())
+
+
+def recommend_ms_min_letter(rules: dict | None = None) -> str:
+    """Minimum unit letter that counts for pilot recommend-MS / affinity matching."""
+    rules = rules or {}
+    lit = str(rules.get("recommend_ms_min_letter") or "A").strip() or "A"
+    if lit not in _LETTER_ORDER:
+        return "A"
+    return lit
+
+
+def letter_meets_min(letter: str, min_letter: str) -> bool:
+    if letter not in _LETTER_ORDER or min_letter not in _LETTER_ORDER:
+        return False
+    return _LETTER_ORDER.index(letter) >= _LETTER_ORDER.index(min_letter)
 
 
 def pilot_specialty(features: dict) -> str:
@@ -4022,13 +4041,18 @@ def score_pilot_features(features: dict, rules: dict | None = None) -> dict:
     letter_pts_map = rules.get("recommend_ms_letter_points") or {}
     best_letter = features.get("best_rec_ms_letter") or ""
     rec_pts = int(letter_pts_map.get(best_letter, 0) or 0)
+    min_lit = recommend_ms_min_letter(rules)
     if int(features.get("rec_ms_bplus_or_better_count") or 0) > 1:
-        rec_pts += int(rules.get("recommend_ms_multi_bplus_bonus", 1))
+        rec_pts += int(
+            rules.get("recommend_ms_multi_match_bonus")
+            or rules.get("recommend_ms_multi_bplus_bonus", 1)
+            or 0
+        )
     breakdown["recommend_ms"] = rec_pts
     detail_lines.append(
         {
             "kind": "recommend",
-            "label": "Recommended MS (B+ and up)",
+            "label": f"Recommended MS ({min_lit} and up)",
             "detail": best_letter or "—",
             "points": rec_pts,
         }
@@ -4277,11 +4301,13 @@ def unit_primary_specialty(A, uid: str, lc: str = "EN") -> str:
 
 def build_unit_recommend_index(A, unit_rows: list[dict], lc: str = "EN") -> dict:
     """Index SP/SSP-scored units for pilot→MS recommendation matching."""
-    allowed = letter_pts_allowed(load_rules())
+    rules = load_rules()
+    allowed = letter_pts_allowed(rules)
+    min_lit = recommend_ms_min_letter(rules)
     index = {
         "by_id": {},
         "by_recommend_char": {},
-        "bplus_ids": [],
+        "bplus_ids": [],  # eligible ids at recommend_ms_min_letter+ (legacy key name)
     }
     for row in unit_rows or []:
         uid = A.normalize_id(row.get("id") or "")
@@ -4325,7 +4351,7 @@ def build_unit_recommend_index(A, unit_rows: list[dict], lc: str = "EN") -> dict
             "series_set": str(info.get("series_set") or A.unit_ser_map.get(uid, "") or ""),
         }
         index["by_id"][uid] = entry
-        if lit in allowed and _LETTER_ORDER.index(lit) >= _LETTER_ORDER.index("B+"):
+        if lit in allowed and letter_meets_min(lit, min_lit):
             index["bplus_ids"].append(uid)
         try:
             rc = A.resolve_unit_recommend_character_id(uid, info) if hasattr(A, "resolve_unit_recommend_character_id") else ""
@@ -4350,14 +4376,15 @@ def match_recommended_units(
     lc: str = "EN",
 ) -> list[dict]:
     """
-    MS recommendations: B+ and up, must satisfy pilot ability tag/series gates,
-    use the pilot's Ranged/Melee/Awaken specialty (Defense units exempt),
-    and match v4 role gates (Attack→Attack, Support→Attack+Support, Defense→Defense).
-    Official/linked pairs always allowed.
+    MS recommendations: recommend_ms_min_letter and up (default A), must satisfy pilot
+    ability tag/series gates, use the pilot's Ranged/Melee/Awaken specialty (Defense
+    units exempt), and match v4 role gates (Attack→Attack, Support→Attack+Support,
+    Defense→Defense). Official/linked pairs always allowed when letter qualifies.
     """
     rules = rules or load_rules()
     by_id = unit_index.get("by_id") or {}
     allowed = letter_pts_allowed(rules)
+    min_lit = recommend_ms_min_letter(rules)
     role_gate = (rules.get("pilot_recommend_role_gate") or {}).get(role) or None
     cand: dict[str, dict] = {}
 
@@ -4374,7 +4401,7 @@ def match_recommended_units(
         if not ent:
             return
         lit = ent.get("letter") or ""
-        if lit not in allowed or _LETTER_ORDER.index(lit) < _LETTER_ORDER.index("B+"):
+        if lit not in allowed or not letter_meets_min(lit, min_lit):
             return
         u_role = ent.get("role") or ""
         if not _role_ok(u_role, reason):
@@ -4572,9 +4599,10 @@ def extract_character_features(
         except Exception:
             pass
         allowed = letter_pts_allowed(rules)
+        min_lit = recommend_ms_min_letter(rules)
         for uid in cand_uids:
             lit = unit_letter_by_id.get(uid) or ""
-            if lit in allowed and _LETTER_ORDER.index(lit) >= _LETTER_ORDER.index("B+"):
+            if lit in allowed and letter_meets_min(lit, min_lit):
                 recommended_units.append(
                     {
                         "id": uid,
@@ -4587,17 +4615,23 @@ def extract_character_features(
                 )
 
     allowed = letter_pts_allowed(rules)
+    min_lit = recommend_ms_min_letter(rules)
     bplus_or_better = 0
     best = ""
     for u in recommended_units:
         lit = u.get("letter") or unit_letter_by_id.get(u.get("id") or "") or ""
         u["letter"] = lit
-        if lit in allowed and _LETTER_ORDER.index(lit) >= _LETTER_ORDER.index("B+"):
+        if lit in allowed and letter_meets_min(lit, min_lit):
             bplus_or_better += 1
         if lit in _LETTER_ORDER and (
             not best or _LETTER_ORDER.index(lit) > _LETTER_ORDER.index(best if best in _LETTER_ORDER else "E")
         ):
             best = lit
+        # Best letter only counts for scoring if it meets the min floor
+    if best and best not in allowed:
+        best = ""
+    if best and not letter_meets_min(best, min_lit):
+        best = ""
 
     rarity_letter = A.RARITY_MAP.get(str(ri), "Unknown") if hasattr(A, "RARITY_MAP") else str(ri)
     try:
@@ -4639,10 +4673,6 @@ def extract_character_features(
         "Defense": int(totals.get("Defense") or 0),
         "Reaction": int(totals.get("Reaction") or 0),
     }
-
-
-def letter_pts_allowed(rules: dict) -> set[str]:
-    return set((rules.get("recommend_ms_letter_points") or {}).keys())
 
 
 def score_character(

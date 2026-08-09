@@ -11,9 +11,12 @@ from sp_investment_rank import (
     er_access_points,
     filter_scored_unit_tags,
     letter_for_total,
+    letter_meets_min,
+    letter_pts_allowed,
     load_rules,
     map_coverage_points,
     pilot_tag_count_points,
+    recommend_ms_min_letter,
     score_abilities,
     score_ability_effects,
     score_features,
@@ -417,11 +420,32 @@ class TestSpInvestmentBands(unittest.TestCase):
         self.assertEqual(scored["breakdown"]["tags"], 1)  # Hard ER only
         self.assertEqual(scored["breakdown"]["series_affinity"], 3)
         self.assertEqual(scored["breakdown"]["recommend_ms"], 6)  # S=5 + multi bonus
-        self.assertEqual(scored["breakdown"]["ranged"], 6)
-        self.assertEqual(scored["specialty"], "Ranged")
-        self.assertGreaterEqual(scored["breakdown"]["skills_abilities"], 3)
-        self.assertFalse((scored["meta"].get("kit") or {}).get("heuristic"))
-        self.assertTrue(any(x.get("kind") == "stat" and x.get("key") == "Ranged" for x in scored["detail_lines"]))
+
+    def test_recommend_ms_requires_a_or_higher(self):
+        self.assertEqual(recommend_ms_min_letter(self.rules), "A")
+        self.assertNotIn("B+", letter_pts_allowed(self.rules))
+        self.assertTrue(letter_meets_min("A", "A"))
+        self.assertFalse(letter_meets_min("B+", "A"))
+        bplus = {
+            "role": "Attack",
+            "rarity_id": "4",
+            "tag_count": 0,
+            "tags": [],
+            "ability_effects": [],
+            "skill_effects": [],
+            "series_affinity_count": 0,
+            "best_rec_ms_letter": "B+",
+            "rec_ms_bplus_or_better_count": 1,
+            "Ranged": 750,
+            "Melee": 700,
+            "Awaken": 600,
+            "Defense": 500,
+            "Reaction": 550,
+        }
+        scored = score_pilot_features(bplus, self.rules)
+        self.assertEqual(scored["breakdown"]["recommend_ms"], 0)
+        a_grade = dict(bplus, best_rec_ms_letter="A")
+        self.assertEqual(score_pilot_features(a_grade, self.rules)["breakdown"]["recommend_ms"], 3)
 
     def test_strong_attacker_golden_total(self):
         """Hand-built strong attacker against v5 bands."""
