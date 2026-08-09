@@ -1868,7 +1868,7 @@
   }
 
   function scheduleIdle(fn) {
-    // Prefer next frame so detail paint wins, then prefetch starts immediately.
+    // Prefer next frame so detail paint wins, then light follow-up work.
     if (typeof global.requestAnimationFrame === 'function') {
       global.requestAnimationFrame(function () {
         global.setTimeout(fn, 0);
@@ -1876,6 +1876,17 @@
     } else {
       global.setTimeout(fn, 0);
     }
+  }
+
+  /** Top-10 JSON is ~0.5MB — wait so unit portrait CDN wins the first bandwidth window. */
+  function scheduleDetailPrefetch(fn) {
+    global.setTimeout(function () {
+      if (typeof global.requestIdleCallback === 'function') {
+        global.requestIdleCallback(fn, { timeout: 2500 });
+      } else {
+        fn();
+      }
+    }, 1600);
   }
 
   function prefetchRankings(unitId) {
@@ -1934,8 +1945,8 @@
     syncPanelSubtitle();
     void ensureDefenderTiers();
     if (d && isEligible(d)) {
-      // After detail paints: prefetch Top 10 from published cache (does not block /api/unit).
-      scheduleIdle(function () {
+      // After portraits get a head start: prefetch Top 10 (does not block /api/unit).
+      scheduleDetailPrefetch(function () {
         if (String(state.unitId) !== String(d.id)) return;
         prefetchRankings(d.id);
       });
