@@ -23,7 +23,6 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = ROOT / "data" / "kofi" / "raw"
 PUB_PATH = ROOT / "data" / "published" / "kofi_supporter_wall.json"
-THUMB_DIR = ROOT / "static" / "images" / "KofiSupporters"
 FALLBACK_THUMB = "/static/images/UI/UI_Home_Menu_Icon_Shop.webp"
 CROWN_NAME = "Phil"
 
