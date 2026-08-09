@@ -7,12 +7,9 @@
 <link rel="preload" href="{{ url_for('static', filename='font/roboto_medium_numbers.ttf') }}?v={{ app_js_version }}" as="font" type="font/ttf" crossorigin>
 <style>
 @font-face{font-family:'RobotoMediumNumbers';src:url('{{ url_for('static', filename='font/roboto_medium_numbers.ttf') }}?v={{ app_js_version }}') format('truetype');font-weight:normal;font-style:normal;font-display:swap}
-@font-face{font-family:'Noto Sans JP';src:url('{{ url_for('static', filename='font/NotoSansJP.ttf') }}?v={{ app_js_version }}') format('truetype');font-weight:100 900;font-style:normal;font-display:swap}
-@font-face{font-family:'ShinGoPr6DeBold';src:url('{{ url_for('static', filename='font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf') }}?v={{ app_js_version }}') format('opentype');font-weight:normal;font-style:normal;font-display:optional}
-@font-face{font-family:'UDShinGoStdTCMed';src:url('{{ url_for('static', filename='font/UDShinGoStdTC-Med.otf') }}?v={{ app_js_version }}') format('opentype');font-weight:500;font-style:normal;font-display:optional}
-@font-face{font-family:'FOTK Yoon Gothic 780 JP';src:url('{{ url_for('static', filename='font/FOTK-YoonGothic780_JP.otf') }}?v={{ app_js_version }}') format('opentype');font-weight:500;font-style:normal;font-display:optional}
 </style>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/app_shell_bundle.min.css') }}?v={{ app_js_version }}">
+{% include '_defer_brand_fonts.html' %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/sp_investment.css') }}?v={{ app_js_version }}">
 <script>
 window.__GGEN_IMAGE_CDN__ = {{ (image_cdn or '')|tojson }};

@@ -62,7 +62,7 @@ window.__ggenLoadGtm=function(){
 {% endif %}
 <script>
 (function(){
-  /* Perf: preload tiny Roboto only. Body/brand OTFs load via @font-face (optional) so portraits stay snappy. */
+  /* Perf: preload tiny Roboto only. Multi-MB brand/CJK faces inject after idle (see _defer_brand_fonts). */
   var v={{ app_js_version|tojson }};
   var link=document.createElement('link');
   link.rel='preload';link.as='font';link.type='font/ttf';link.crossOrigin='anonymous';
@@ -74,12 +74,9 @@ window.__ggenLoadGtm=function(){
 /* Prefer CDN emblem without putting url() in a CSS variable (breaks Dark Reader / similar). */
 .brand-title-row::before{background-image:url('{% if image_cdn %}{{ image_cdn }}/images/UI/brand-emblem-panel.webp{% else %}/static/images/UI/brand-emblem-panel.webp{% endif %}')}
 @font-face{font-family:'RobotoMediumNumbers';src:url('/static/font/roboto_medium_numbers.ttf?v={{ app_js_version }}') format('truetype');font-weight:normal;font-style:normal;font-display:swap}
-@font-face{font-family:'Noto Sans JP';src:url('/static/font/NotoSansJP.ttf?v={{ app_js_version }}') format('truetype');font-weight:100 900;font-style:normal;font-display:swap}
-@font-face{font-family:'ShinGoPr6DeBold';src:url('/static/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf?v={{ app_js_version }}') format('opentype');font-weight:normal;font-style:normal;font-display:optional}
-@font-face{font-family:'UDShinGoStdTCMed';src:url('/static/font/UDShinGoStdTC-Med.otf?v={{ app_js_version }}') format('opentype');font-weight:500;font-style:normal;font-display:optional}
-@font-face{font-family:'FOTK Yoon Gothic 780 JP';src:url('/static/font/FOTK-YoonGothic780_JP.otf?v={{ app_js_version }}') format('opentype');font-weight:500;font-style:normal;font-display:optional}
 </style>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/app_shell_bundle.min.css') }}?v={{ app_js_version }}">
+{% include '_defer_brand_fonts.html' %}
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->

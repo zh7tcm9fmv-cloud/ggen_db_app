@@ -1,0 +1,45 @@
+{# Inject multi-MB brand / CJK @font-face after first paint so portraits stay snappy.
+   Stacks stay brand-first; until faces register, the browser uses system fallbacks. #}
+<script>
+(function(){
+  var v={{ app_js_version|tojson }};
+  var injectedFor='';
+  function currentLang(){
+    var lang=String(document.documentElement.getAttribute('data-ui-lang')||'EN').trim().toUpperCase();
+    return lang==='JP'?'JA':lang;
+  }
+  function inject(){
+    var lang=currentLang();
+    if(document.getElementById('ggenBrandFonts')&&injectedFor===lang)return;
+    var el=document.getElementById('ggenBrandFonts');
+    if(el)el.remove();
+    var parts=[];
+    function face(fam,url,fmt,weight){
+      parts.push("@font-face{font-family:'"+fam+"';src:url('"+url+"?v="+encodeURIComponent(v)+"') format('"+fmt+"');font-weight:"+weight+";font-style:normal;font-display:swap}");
+    }
+    /* Brand + JP body fallback — needed on every locale (EN title uses FOTK). */
+    face('FOTK Yoon Gothic 780 JP','/static/font/FOTK-YoonGothic780_JP.otf','opentype','500');
+    face('ShinGoPr6DeBold','/static/font/JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf','opentype','normal');
+    if(lang==='TW'||lang==='HK'){
+      face('UDShinGoStdTCMed','/static/font/UDShinGoStdTC-Med.otf','opentype','500');
+    }
+    /* Noto only when the active UI lang puts it in the body stack (not EN). */
+    if(lang==='JA'||lang==='TW'||lang==='HK'){
+      face('Noto Sans JP','/static/font/NotoSansJP.ttf','truetype','100 900');
+    }
+    var s=document.createElement('style');
+    s.id='ggenBrandFonts';
+    s.textContent=parts.join('');
+    document.head.appendChild(s);
+    injectedFor=lang;
+  }
+  function schedule(){
+    if(window.requestIdleCallback)requestIdleCallback(inject,{timeout:3500});
+    else setTimeout(inject,2000);
+  }
+  if(document.readyState==='complete')schedule();
+  else window.addEventListener('load',schedule);
+  /* Lang switch may need Noto/UDShinGo that EN boot skipped. */
+  window.__ggenInjectBrandFonts=inject;
+})();
+</script>
