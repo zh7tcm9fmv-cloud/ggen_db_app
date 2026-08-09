@@ -41,6 +41,8 @@ THUMB_FILES = {
     "老狗司機": "laogou_siji.png",
     "岳尚賢": "yue_shangxian.png",
     "yoko": "yoko.png",
+    "剎那": "setsuna.png",
+    "戳戳": "chuochuo.png",
 }
 
 
@@ -118,6 +120,10 @@ def load_merged(supporters_csv: Path, subscribers_csv: Path) -> list[dict]:
             row["name"] = "Kamen Rider Decade"
         elif key == "a俊":
             row["name"] = "A俊"
+        elif key == "剎那":
+            row["name"] = "剎那"
+        elif key == "戳戳":
+            row["name"] = "戳戳"
         elif key == CROWN_NAME.casefold():
             row["name"] = CROWN_NAME
 

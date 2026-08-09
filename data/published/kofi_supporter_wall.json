@@ -2,7 +2,7 @@
   "version": 1,
   "title": "Thank you to {n} Newtypes keeping this database alive.",
   "join_label": "Join the wall",
-  "count": 19,
+  "count": 20,
   "supporters": [
     {
       "name": "Phil",
@@ -50,18 +50,18 @@
       "crown": false
     },
     {
+      "name": "A俊",
+      "thumb": "/static/images/KofiSupporters/ajun.png",
+      "crown": false
+    },
+    {
       "name": "大漢Erection",
       "thumb": "/static/images/KofiSupporters/dahan_erection.png",
       "crown": false
     },
     {
       "name": "戳戳",
-      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
-      "crown": false
-    },
-    {
-      "name": "A俊",
-      "thumb": "/static/images/KofiSupporters/ajun.png",
+      "thumb": "/static/images/KofiSupporters/chuochuo.png",
       "crown": false
     },
     {
@@ -90,13 +90,18 @@
       "crown": false
     },
     {
-      "name": "老狗司機",
-      "thumb": "/static/images/KofiSupporters/laogou_siji.png",
+      "name": "yoko",
+      "thumb": "/static/images/KofiSupporters/yoko.png",
       "crown": false
     },
     {
-      "name": "yoko",
-      "thumb": "/static/images/KofiSupporters/yoko.png",
+      "name": "剎那",
+      "thumb": "/static/images/KofiSupporters/setsuna.png",
+      "crown": false
+    },
+    {
+      "name": "老狗司機",
+      "thumb": "/static/images/KofiSupporters/laogou_siji.png",
       "crown": false
     }
   ]
