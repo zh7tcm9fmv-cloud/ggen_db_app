@@ -1584,22 +1584,22 @@
   "scoring_guide": {
     "version": 5.17,
     "title": "How Investment Guide scoring works",
-    "intro": "Point-sum shortlist for SP/SSP chip investment on mobile suits and pilots (Attack / Defense / Support). Units have separate SP and SSP boards; pilots use SP only. Criteria favor practical sortie tools (MAP, mobility follow-ups, weapon power) and a deep affinity pilot pool over a single linked recommend. Minor Attack stats (HP, SSP EN) are upside-only — no floor punishment. Close letters still need a human look.",
+    "intro": "Point-sum shortlist for SP Conversion / SSP Conversion investment on Units and Characters (Attack Type / Defense Type / Support Type). Units have separate SP and SSP boards; Characters use SP only. Criteria favor practical sortie tools (MAP Weapon, mobility follow-ups, weapon power) and a deep affinity Character pool over a single linked recommend. Minor Attack Type stats (HP, SSP EN) are upside-only — no floor punishment. Close letters still need a human look.",
     "overrides": [
       "Each axis adds points; the total becomes a letter, then a bucket (Recommended / Solid / Situational / Niche).",
-      "Filter by tag or Eternal Road Expert stage to compare units that actually fit the same restriction."
+      "Filter by Tag or Eternal Road Expert stage to compare Units that actually fit the same restriction."
     ],
     "gaps": [
-      "Non-Ultimate UR units are omitted from this guide for now — their kits are too unique for the shared SP/SSP criteria.",
-      "Ultimate units stay on the board. Their series Advantage: ability is withheld from the base score and only applied when a tag filter matches that Advantage series.",
-      "Letter cutoffs use separate scales for SP-eligible units/pilots vs Ultimate, so Ultimate kits do not lock out Recommended for chip investment targets.",
-      "Pilot recommended-MS points use this list's unit letters (SP/SSP best).",
-      "Strategic tag weights use how often tags appear on UR rosters (calibrated table).",
-      "Affinity pilot pool counts SSR+ pilots with piloting-tag / EX-pair affinity for the MS (not supporter amp %).",
-      "Pilot recommended-MS points only count units graded A / A+ / S / S+ on this guide (SP or SSP best) — B+ and below do not score.",
-      "Transform scores only when the alternate form unlocks deployable terrain, higher MOV, longer range, higher weapon power, or adds MAP.",
-      "Attack HP and SSP Attack EN are upside-only; Defense still taxes low HP/DEF. Special defenses (I-field / DR / barrier) are presence bonuses beyond the shield mechanism.",
-      "Units whose recommend pilot is UR/Ultimate take a mild −1 dependence tax (still usable with lower rarity pilots).",
+      "Non-Ultimate UR Units are omitted for now — their kits are too unique for the shared SP Conversion / SSP Conversion criteria.",
+      "Ultimate Units stay on the board. Their series Advantage: Unit Ability is withheld from the base score and only applied when a Tag filter matches that Advantage series.",
+      "Letter cutoffs use separate scales for SP Conversion targets vs Ultimate Units, so Ultimate kits do not lock out Recommended for chip investment.",
+      "Character Recommended Units points use this list’s Unit letters (SP / SSP best).",
+      "Strategic Tag weights use how often Tags appear on UR Unit rosters (calibrated table).",
+      "Affinity Character pool counts SSR+ Characters with piloting-Tag / EX-pair affinity for the Unit (not Supporter amp %).",
+      "Character Recommended Units points only count Units graded A / A+ / S / S+ on this guide (SP or SSP best) — B+ and below do not score.",
+      "Transform scores only when the alternate form unlocks deployable Terrain Capability, higher MOV, longer range, higher weapon power, or adds a MAP Weapon.",
+      "Attack Type HP and SSP Attack Type EN are upside-only; Defense Type still taxes low HP/DEF. Special defenses (I-field / DR / barrier) are presence bonuses beyond the shield mechanism.",
+      "Units whose recommend Character is UR / Ultimate take a mild −1 dependence tax (still usable with lower-rarity Characters).",
       "Close letters still need a human look."
     ]
   },

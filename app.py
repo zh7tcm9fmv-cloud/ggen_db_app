@@ -15524,10 +15524,226 @@ def _sp_investment_attach_board(buckets, kind):
 _SPI_API_PAYLOAD_CACHE = {
     'mtime': None,
     'payload': None,
+    'by_lang': {},  # lc -> (mtime, payload)
 }
 _SPI_DROP_ROW_KEYS = frozenset({'meta', 'detail_lines', 'calibration'})
 # Always keep these breakdown axes even at 0 so the dossier does not look like they were unscored.
 _SPI_KEEP_BREAKDOWN_ZERO = frozenset({'terrain'})
+
+_SPI_ER_UI = {
+    'EN': {'stage': 'Stage {n}', 'free': 'Free for all', 'restricted': 'restricted'},
+    'JA': {'stage': 'ステージ {n}', 'free': '制限なし', 'restricted': '制限あり'},
+    'TW': {'stage': '關卡 {n}', 'free': '無限制', 'restricted': '有限制'},
+    'HK': {'stage': '關卡 {n}', 'free': '無限制', 'restricted': '有限制'},
+}
+_SPI_TAG_NAME_CACHE = {}  # lc -> {en_name_lower: loc_name}
+
+
+def _spi_norm_lang(lc):
+    lc = (lc or DEFAULT_LANG).upper()
+    if lc == 'JP':
+        lc = 'JA'
+    if lc not in ('EN', 'JA', 'TW', 'HK'):
+        lc = DEFAULT_LANG
+    return lc
+
+
+def _spi_lineage_name(entry):
+    if isinstance(entry, dict):
+        return str(entry.get('name') or entry.get('text') or '').strip()
+    return str(entry or '').strip()
+
+
+def _spi_tag_en_to_locale_map(lc):
+    """Map English tag display names → locale names via shared lineage ids."""
+    lc = _spi_norm_lang(lc)
+    if lc == 'EN':
+        return {}
+    cached = _SPI_TAG_NAME_CACHE.get(lc)
+    if cached is not None:
+        return cached
+    en_ld = LANG_DATA.get('EN') or {}
+    loc_ld = LANG_DATA.get(lc) or {}
+    en_lu = en_ld.get('lineage_lookup') or {}
+    loc_lu = loc_ld.get('lineage_lookup') or {}
+    out = {}
+    for tid, en_entry in en_lu.items():
+        en_name = _spi_lineage_name(en_entry)
+        if not en_name:
+            continue
+        loc_name = _spi_lineage_name(loc_lu.get(tid))
+        if loc_name and loc_name != en_name:
+            out[en_name.lower()] = loc_name
+            out[en_name] = loc_name
+    # Series display names (ER restrictions / Advantage series)
+    en_ser = en_ld.get('series_name_map') or {}
+    loc_ser = loc_ld.get('series_name_map') or {}
+    for sid, en_name in en_ser.items():
+        en_name = str(en_name or '').strip()
+        if not en_name:
+            continue
+        loc_name = str(loc_ser.get(sid) or '').strip()
+        if loc_name and loc_name != en_name:
+            out[en_name.lower()] = loc_name
+            out[en_name] = loc_name
+    _SPI_TAG_NAME_CACHE[lc] = out
+    return out
+
+
+def _spi_translate_tag_name(name, tag_map):
+    if not name or not tag_map:
+        return name
+    return tag_map.get(name) or tag_map.get(str(name).lower()) or name
+
+
+def _spi_localize_er_filters(lc):
+    """Rebuild Eternal Road Expert filter labels in the request locale."""
+    lc = _spi_norm_lang(lc)
+    try:
+        import sp_investment_rank as _sir
+        rows = _sir.build_er_expert_filters(sys.modules[__name__], lc)
+    except Exception:
+        return None
+    ui = _SPI_ER_UI.get(lc) or _SPI_ER_UI['EN']
+    out = []
+    for row in rows or []:
+        r = dict(row)
+        num = int(r.get('number') or 0)
+        stage_prefix = (ui.get('stage') or 'Stage {n}').replace('{n}', str(num)) if num else str(r.get('id') or '')
+        unit_uniq = r.get('unit_restrictions') or r.get('restrictions') or []
+        char_uniq = r.get('character_restrictions') or []
+        unit_short = ", ".join(x.get('name') for x in unit_uniq[:3] if x.get('name')) or ui.get('restricted', 'restricted')
+        if r.get('character_free_for_all'):
+            char_short = ui.get('free', 'Free for all')
+        else:
+            char_short = ", ".join(x.get('name') for x in char_uniq[:3] if x.get('name')) or ui.get('restricted', 'restricted')
+        r['unit_label'] = f"{stage_prefix} ({unit_short})"
+        r['character_label'] = f"{stage_prefix} ({char_short})"
+        # Back-compat primary label follows units (most common filter use).
+        r['label'] = r['unit_label']
+        out.append(r)
+    return out
+
+
+def _spi_localize_series_advantage(adv, lc, tag_map):
+    if not isinstance(adv, dict):
+        return adv
+    out = dict(adv)
+    ab_id = out.get('ability_id')
+    if ab_id:
+        try:
+            ld = get_lang_data(lc)
+            nm = get_ability_name_for_search(str(ab_id), ld.get('abil_name_map') or {}, abil_link_map)
+            if nm:
+                out['ability_name'] = nm
+        except Exception:
+            pass
+    sids = out.get('series_ids') or []
+    if sids:
+        ld = LANG_DATA.get(lc) or {}
+        snm = ld.get('series_name_map') or {}
+        for sid in sids:
+            name = snm.get(str(sid)) or snm.get(normalize_id(sid))
+            if name:
+                out['series_name'] = str(name)
+                break
+    elif out.get('series_name'):
+        out['series_name'] = _spi_translate_tag_name(out.get('series_name'), tag_map)
+    mt = out.get('match_tags') or []
+    if mt:
+        out['match_tags'] = [_spi_translate_tag_name(x, tag_map) for x in mt]
+    return out
+
+
+def _spi_localize_board_rows(buckets, kind, lc, tag_map):
+    if not isinstance(buckets, dict):
+        return
+    ld = get_lang_data(lc)
+    for bname, rows in list(buckets.items()):
+        if not isinstance(rows, list):
+            continue
+        new_rows = []
+        for row in rows:
+            if not isinstance(row, dict):
+                new_rows.append(row)
+                continue
+            r = dict(row)
+            eid = normalize_id(r.get('id'))
+            try:
+                if kind == 'character':
+                    nm = _wn_char_name(eid, ld) or ''
+                else:
+                    nm = _wn_unit_name(eid, ld) or ''
+                if nm and not str(nm).startswith(('Unit ', 'Character ', 'Char ')):
+                    r['name'] = nm
+            except Exception:
+                pass
+            # Keep role key in EN (Attack/Defense/Support) for client filters.
+            tags = r.get('tags') or []
+            if tags and tag_map:
+                r['tags'] = [_spi_translate_tag_name(t, tag_map) for t in tags]
+            if r.get('series_advantage'):
+                r['series_advantage'] = _spi_localize_series_advantage(
+                    r.get('series_advantage'), lc, tag_map
+                )
+            new_rows.append(r)
+        buckets[bname] = new_rows
+
+
+def _sp_investment_localize_payload(payload, lc):
+    """Return a locale-specific copy: names, tags, ER filters. Role keys stay EN."""
+    import copy
+
+    lc = _spi_norm_lang(lc)
+    if lc == 'EN' or not isinstance(payload, dict):
+        return payload
+    tag_map = _spi_tag_en_to_locale_map(lc)
+    out = copy.deepcopy(payload)
+    out['lang'] = lc
+    # Bucket labels — client also overlays; keep EN keys with localized display.
+    bl = out.get('bucket_labels') or {}
+    loc_bl = {
+        'EN': bl,
+        'JA': {
+            'recommended': '推奨',
+            'solid': '堅実',
+            'situational': '状況次第',
+            'niche': 'ニッチ',
+        },
+        'TW': {
+            'recommended': '推薦',
+            'solid': '穩健',
+            'situational': '看場合',
+            'niche': '小眾',
+        },
+        'HK': {
+            'recommended': '推薦',
+            'solid': '穩健',
+            'situational': '睇場合',
+            'niche': '小眾',
+        },
+    }
+    if lc in loc_bl and loc_bl[lc]:
+        out['bucket_labels'] = dict(loc_bl[lc])
+    catalog = out.get('tag_catalog') or []
+    if catalog and tag_map:
+        out['tag_catalog'] = [_spi_translate_tag_name(t, tag_map) for t in catalog]
+    er = _spi_localize_er_filters(lc)
+    if er is not None:
+        out['er_expert_filters'] = er
+    units = out.get('units') or {}
+    if units:
+        _spi_localize_board_rows(units.get('sp'), 'unit', lc, tag_map)
+        _spi_localize_board_rows(units.get('ssp'), 'unit', lc, tag_map)
+        out['sp'] = units.get('sp') or out.get('sp') or {}
+        out['ssp'] = units.get('ssp') or out.get('ssp') or {}
+    else:
+        _spi_localize_board_rows(out.get('sp'), 'unit', lc, tag_map)
+        _spi_localize_board_rows(out.get('ssp'), 'unit', lc, tag_map)
+    chars = out.get('characters') or {}
+    if chars:
+        _spi_localize_board_rows(chars.get('sp'), 'character', lc, tag_map)
+    return out
 
 
 def _sp_investment_lean_row(row):
@@ -15618,7 +15834,24 @@ def _sp_investment_prepare_payload(path):
     payload = convert_image_urls(payload)
     cached['mtime'] = mtime
     cached['payload'] = payload
+    cached['by_lang'] = {}
     return payload, mtime
+
+
+def _sp_investment_payload_for_lang(path, lc):
+    """EN board + optional per-locale name/tag/ER overlay (cached by mtime+lang)."""
+    base, mtime = _sp_investment_prepare_payload(path)
+    lc = _spi_norm_lang(lc)
+    if lc == 'EN':
+        return base, mtime
+    cached = _SPI_API_PAYLOAD_CACHE.get('by_lang') or {}
+    hit = cached.get(lc)
+    if hit and hit[0] == mtime and hit[1] is not None:
+        return hit[1], mtime
+    localized = _sp_investment_localize_payload(base, lc)
+    cached[lc] = (mtime, localized)
+    _SPI_API_PAYLOAD_CACHE['by_lang'] = cached
+    return localized, mtime
 
 
 @app.route('/api/sp_investment')
@@ -15629,8 +15862,9 @@ def api_sp_investment():
     path = _sp_investment_json_path()
     if not os.path.isfile(path):
         return jsonify({'error': 'sp_investment_v1.json not found — run scripts/build_sp_investment_rankings.py'}), 404
-    payload, mtime = _sp_investment_prepare_payload(path)
-    ck = f"sp_investment_v1_lean_{int(mtime)}"
+    lc = _spi_norm_lang(request.args.get('lang') or DEFAULT_LANG)
+    payload, mtime = _sp_investment_payload_for_lang(path, lc)
+    ck = f"sp_investment_v1_lean_{lc}_{int(mtime)}"
     resp = jsonify_cacheable(payload, ck, public=True, max_age=300, convert_images=False)
     # Gzip large board JSON when the client accepts it (Railway/edge may not compress JSON).
     if resp.status_code == 200:

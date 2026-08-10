@@ -17,7 +17,11 @@ window.__GGEN_GAME_IMAGES_USE_CDN__ = {{ (game_images_use_cdn if game_images_use
 window.__SPI_PREVIEW__ = {{ (spi_preview if spi_preview is defined else false)|tojson }};
 try {
   var _lg = localStorage.getItem('ggen_lang');
-  if (_lg) document.documentElement.setAttribute('data-ui-lang', _lg);
+  if (_lg) {
+    document.documentElement.setAttribute('data-ui-lang', _lg);
+    var _htmlLang = (_lg === 'JA' || _lg === 'JP') ? 'ja' : (_lg === 'TW' || _lg === 'HK' ? 'zh' : 'en');
+    document.documentElement.setAttribute('lang', _htmlLang);
+  }
 } catch (e) {}
 </script>
 </head>
@@ -38,10 +42,18 @@ try {
             <span class="brand-word brand-word-db brand-frame-3">DB</span>
           </h1>
         </div>
-        <div class="brand-sub">Investment Guide</div>
+        <div class="brand-sub" data-i18n="brand_sub">Investment Guide</div>
       </div>
     </a>
-    <a class="spi-header-back" href="/">← Database</a>
+    <div class="spi-header-actions">
+      <div class="spi-lang" role="group" data-i18n-aria="lang_aria" aria-label="Language">
+        <button type="button" class="spi-lang-btn" data-lang="EN" title="EN">EN</button>
+        <button type="button" class="spi-lang-btn" data-lang="JA" title="JP">JP</button>
+        <button type="button" class="spi-lang-btn" data-lang="TW" title="TW">TW</button>
+        <button type="button" class="spi-lang-btn" data-lang="HK" title="HK">HK</button>
+      </div>
+      <a class="spi-header-back" href="/" data-i18n="back_db">← Database</a>
+    </div>
   </div>
 </header>
 
@@ -49,35 +61,35 @@ try {
   {% if spi_preview or spi_soft_launch %}
   <div class="spi-preview-banner" role="status">
     <span class="spi-preview-banner-dot" aria-hidden="true"></span>
-    <span class="spi-preview-banner-text"><strong>Friends preview</strong> · live at <code>/IG</code>, not in the main nav yet. Tell us what looks wrong.</span>
+    <span class="spi-preview-banner-text" data-i18n="preview_banner">Friends preview · live at /IG, not in the main nav yet. Tell us what looks wrong.</span>
   </div>
   {% endif %}
   <header class="spi-hero">
     <div class="spi-hero-copy">
-      <p class="spi-hero-kicker">SP &amp; SSP priorities</p>
-      <h1 class="spi-hero-title">Investment Guide</h1>
-      <p class="spi-hero-lead">Should you spend SP or SSP chips on this Mobile Suit or pilot? Neutral shortlist buckets: Recommended, Solid, Situational, Niche. Not a damage calculator. Unit SP and SSP boards use separate weapon baselines.</p>
+      <p class="spi-hero-kicker" data-i18n="hero_kicker">SP Conversion &amp; SSP Conversion priorities</p>
+      <h1 class="spi-hero-title" data-i18n="hero_title">Investment Guide</h1>
+      <p class="spi-hero-lead" data-i18n="hero_lead">Should you invest SP Conversion or SSP Conversion materials on this Unit or Character? Neutral shortlist buckets: Recommended, Solid, Situational, Niche. Not a damage calculator. Unit SP and SSP boards use separate weapon baselines.</p>
     </div>
-    <ul class="spi-hero-buckets" aria-label="Shortlist buckets">
-      <li class="spi-hero-bucket spi-hero-bucket--recommended"><span>Recommended</span></li>
-      <li class="spi-hero-bucket spi-hero-bucket--solid"><span>Solid</span></li>
-      <li class="spi-hero-bucket spi-hero-bucket--situational"><span>Situational</span></li>
-      <li class="spi-hero-bucket spi-hero-bucket--niche"><span>Niche</span></li>
+    <ul class="spi-hero-buckets" data-i18n-aria="buckets_aria" aria-label="Shortlist buckets">
+      <li class="spi-hero-bucket spi-hero-bucket--recommended"><span data-i18n-bucket="recommended">Recommended</span></li>
+      <li class="spi-hero-bucket spi-hero-bucket--solid"><span data-i18n-bucket="solid">Solid</span></li>
+      <li class="spi-hero-bucket spi-hero-bucket--situational"><span data-i18n-bucket="situational">Situational</span></li>
+      <li class="spi-hero-bucket spi-hero-bucket--niche"><span data-i18n-bucket="niche">Niche</span></li>
     </ul>
   </header>
 
   <section id="spiScoringPanel" class="spi-scoring-panel" aria-labelledby="spiScoringTitle">
     <button type="button" class="spi-scoring-toggle" id="spiScoringToggle" aria-expanded="false">
-      <h2 id="spiScoringTitle" class="spi-scoring-title">How scoring works</h2>
+      <h2 id="spiScoringTitle" class="spi-scoring-title" data-i18n="scoring_title">How scoring works</h2>
       <span class="spi-scoring-chevron" aria-hidden="true">▾</span>
     </button>
     <div id="spiScoringBody" class="spi-scoring-body is-collapsed">
-      <p id="spiScoringIntro" class="spi-scoring-intro">Loading…</p>
+      <p id="spiScoringIntro" class="spi-scoring-intro" data-i18n="scoring_loading">Loading…</p>
       <ul id="spiScoringOverrides" class="spi-scoring-list"></ul>
-      <div id="spiCriteria" class="spi-criteria" aria-label="Objective scoring criteria"></div>
-      <h3 class="spi-scoring-subhead" id="spiGapsHeading">Known limits</h3>
+      <div id="spiCriteria" class="spi-criteria" data-i18n-aria="criteria_aria" aria-label="Objective scoring criteria"></div>
+      <h3 class="spi-scoring-subhead" id="spiGapsHeading" data-i18n="known_limits">Known limits</h3>
       <ul id="spiScoringGaps" class="spi-scoring-list spi-scoring-gaps"></ul>
-      <h3 class="spi-scoring-subhead">Letter cutoffs</h3>
+      <h3 class="spi-scoring-subhead" data-i18n="letter_cutoffs">Letter cutoffs</h3>
       <div id="spiLetterCutoffs" class="spi-letter-cutoffs"></div>
     </div>
   </section>
@@ -87,69 +99,69 @@ try {
       <div class="browse-toolbar-top-row">
         <div class="browse-toolbar-leading">
           <span class="filter-input-wrap filter-input-wrap--compact filter-input-wrap--organic">
-            <input type="text" class="filter-input filter-input--organic" id="spiSearch" placeholder="Search name or tag…" aria-label="Search" autocomplete="off">
-            <button type="button" class="filter-input-clear" id="spiSearchClear" aria-label="Clear search" hidden>×</button>
+            <input type="text" class="filter-input filter-input--organic" id="spiSearch" placeholder="Search name or tag…" data-i18n-placeholder="search_ph" aria-label="Search" data-i18n-aria="search_aria" autocomplete="off">
+            <button type="button" class="filter-input-clear" id="spiSearchClear" aria-label="Clear search" data-i18n-aria="clear_search" hidden>×</button>
             <span class="filter-input-sizer" aria-hidden="true"></span>
           </span>
-          <button type="button" class="browse-filters-clear-btn" id="spiResetFilters">Clear</button>
+          <button type="button" class="browse-filters-clear-btn" id="spiResetFilters" data-i18n="clear_filters">Clear</button>
         </div>
-        <div class="list-toolbar-result-count" id="spiStatus" aria-live="polite">Loading…</div>
+        <div class="list-toolbar-result-count" id="spiStatus" aria-live="polite" data-i18n="loading">Loading…</div>
       </div>
 
       <div class="spi-filter-row">
-        <div class="spi-seg" role="group" aria-label="Entity">
+        <div class="spi-seg" role="group" aria-label="Entity" data-i18n-aria="entity_aria">
           <button type="button" class="role-filter-btn active" data-entity="units" title="Units">
-            <img class="filter-inline-icon role-filter-chip" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_Icon_Bromide_MS.webp{% else %}/static/images/UI/UI_Common_Icon_Bromide_MS.webp{% endif %}" alt="" width="18" height="18" loading="lazy" decoding="async"> Units
+            <img class="filter-inline-icon role-filter-chip" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_Icon_Bromide_MS.webp{% else %}/static/images/UI/UI_Common_Icon_Bromide_MS.webp{% endif %}" alt="" width="18" height="18" loading="lazy" decoding="async"> <span data-i18n="units">Units</span>
           </button>
-          <button type="button" class="role-filter-btn" data-entity="characters" title="Pilots">
-            <img class="filter-inline-icon role-filter-chip" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_Tmb_PriorPilot_Icon.webp{% else %}/static/images/UI/UI_Common_Tmb_PriorPilot_Icon.webp{% endif %}" alt="" width="18" height="18" loading="lazy" decoding="async"> Pilots
+          <button type="button" class="role-filter-btn" data-entity="characters" title="Characters">
+            <img class="filter-inline-icon role-filter-chip" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_Tmb_PriorPilot_Icon.webp{% else %}/static/images/UI/UI_Common_Tmb_PriorPilot_Icon.webp{% endif %}" alt="" width="18" height="18" loading="lazy" decoding="async"> <span data-i18n="characters">Characters</span>
           </button>
         </div>
-        <div class="spi-seg" id="spiBoardTabs" role="group" aria-label="Board">
-          <button type="button" class="role-filter-btn active spi-board-btn" data-board="sp" title="SP" aria-label="SP">
+        <div class="spi-seg" id="spiBoardTabs" role="group" aria-label="Board" data-i18n-aria="board_aria">
+          <button type="button" class="role-filter-btn active spi-board-btn" data-board="sp" title="SP Conversion" aria-label="SP">
             <img class="filter-inline-icon role-filter-chip spi-board-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_Icon_Sp.webp{% else %}/static/images/UI/UI_Common_Icon_Sp.webp{% endif %}" alt="" width="28" height="18" loading="lazy" decoding="async">
           </button>
-          <button type="button" class="role-filter-btn spi-board-btn" data-board="ssp" title="SSP" aria-label="SSP">
+          <button type="button" class="role-filter-btn spi-board-btn" data-board="ssp" title="SSP Conversion" aria-label="SSP">
             <img class="filter-inline-icon role-filter-chip spi-board-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_Icon_Ssp.webp{% else %}/static/images/UI/UI_Common_Icon_Ssp.webp{% endif %}" alt="" width="36" height="18" loading="lazy" decoding="async">
           </button>
         </div>
-        <div class="spi-seg spi-role-seg" role="group" aria-label="Role">
-          <button type="button" class="role-filter-btn active" data-role="Attack" title="Attack">
-            <img class="filter-inline-icon role-filter-chip" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_TypeIcon_Attack_M.webp{% else %}/static/images/UI/UI_Common_TypeIcon_Attack_M.webp{% endif %}" alt=""> Attack
+        <div class="spi-seg spi-role-seg" role="group" aria-label="Role" data-i18n-aria="role_aria">
+          <button type="button" class="role-filter-btn active" data-role="Attack" title="Attack Type">
+            <img class="filter-inline-icon role-filter-chip" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_TypeIcon_Attack_M.webp{% else %}/static/images/UI/UI_Common_TypeIcon_Attack_M.webp{% endif %}" alt=""> <span data-i18n-role="Attack">Attack</span>
           </button>
-          <button type="button" class="role-filter-btn" data-role="Defense" title="Defense">
-            <img class="filter-inline-icon role-filter-chip" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_TypeIcon_Defense_M.webp{% else %}/static/images/UI/UI_Common_TypeIcon_Defense_M.webp{% endif %}" alt=""> Defense
+          <button type="button" class="role-filter-btn" data-role="Defense" title="Defense Type">
+            <img class="filter-inline-icon role-filter-chip" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_TypeIcon_Defense_M.webp{% else %}/static/images/UI/UI_Common_TypeIcon_Defense_M.webp{% endif %}" alt=""> <span data-i18n-role="Defense">Defense</span>
           </button>
-          <button type="button" class="role-filter-btn" data-role="Support" title="Support">
-            <img class="filter-inline-icon role-filter-chip" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_TypeIcon_Support_M.webp{% else %}/static/images/UI/UI_Common_TypeIcon_Support_M.webp{% endif %}" alt=""> Support
+          <button type="button" class="role-filter-btn" data-role="Support" title="Support Type">
+            <img class="filter-inline-icon role-filter-chip" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_TypeIcon_Support_M.webp{% else %}/static/images/UI/UI_Common_TypeIcon_Support_M.webp{% endif %}" alt=""> <span data-i18n-role="Support">Support</span>
           </button>
         </div>
       </div>
 
       <div class="spi-filter-row spi-filter-row--secondary">
-        <label class="spi-check"><input type="checkbox" id="spiShowLowRarity"> Show N/R/SR</label>
-        <label class="spi-check" id="spiMapOnlyWrap"><input type="checkbox" id="spiMapOnly"> MAP only</label>
-        <label class="spi-check"><input type="checkbox" id="spiHasSpOnly" checked> SP-eligible only (Ultimate stays)</label>
+        <label class="spi-check"><input type="checkbox" id="spiShowLowRarity"><span id="spiLowRarityLabel"> Show N/R/SR</span></label>
+        <label class="spi-check" id="spiMapOnlyWrap"><input type="checkbox" id="spiMapOnly"> <span data-i18n="map_only">MAP Weapon only</span></label>
+        <label class="spi-check"><input type="checkbox" id="spiHasSpOnly" checked> <span data-i18n="sp_eligible_only">SP Conversion targets only (Ultimate Units stay)</span></label>
 
         <div class="rarity-filter-wrap source-filter-wrap" id="spiSourceWrap">
-          <button type="button" class="rarity-filter-btn role-filter-dd-btn" id="spiSourceFilterBtn" aria-expanded="false" aria-haspopup="true" title="Source">
-            <span id="spiSourceFilterLabel" class="filter-btn-label-inner"><span class="source-filter-btn-plain">All sources</span></span>
+          <button type="button" class="rarity-filter-btn role-filter-dd-btn" id="spiSourceFilterBtn" aria-expanded="false" aria-haspopup="true" title="Source" data-i18n-title="source_filter_title">
+            <span id="spiSourceFilterLabel" class="filter-btn-label-inner"><span class="source-filter-btn-plain" data-i18n="all_sources">All sources</span></span>
             <span class="rarity-filter-caret">▾</span>
           </button>
           <div class="rarity-filter-panel source-filter-panel filter-dropdown-panel" id="spiSourceFilterPanel" role="menu" hidden></div>
         </div>
 
         <div class="rarity-filter-wrap" id="spiTagWrap">
-          <button type="button" class="rarity-filter-btn role-filter-dd-btn" id="spiTagFilterBtn" aria-expanded="false" aria-haspopup="true" title="Tag">
-            <span id="spiTagFilterLabel" class="filter-btn-label-inner"><span class="source-filter-btn-plain">No tag filter</span></span>
+          <button type="button" class="rarity-filter-btn role-filter-dd-btn" id="spiTagFilterBtn" aria-expanded="false" aria-haspopup="true" title="Tag" data-i18n-title="tag_filter_title">
+            <span id="spiTagFilterLabel" class="filter-btn-label-inner"><span class="source-filter-btn-plain" data-i18n="no_tag_filter">No tag filter</span></span>
             <span class="rarity-filter-caret">▾</span>
           </button>
           <div class="rarity-filter-panel filter-dropdown-panel spi-dd-panel--tall" id="spiTagFilterPanel" role="menu" hidden></div>
         </div>
 
         <div class="rarity-filter-wrap" id="spiErWrap">
-          <button type="button" class="rarity-filter-btn role-filter-dd-btn" id="spiErFilterBtn" aria-expanded="false" aria-haspopup="true" title="Eternal Road Expert">
-            <span id="spiErFilterLabel" class="filter-btn-label-inner"><span class="source-filter-btn-plain">No ER Expert filter</span></span>
+          <button type="button" class="rarity-filter-btn role-filter-dd-btn" id="spiErFilterBtn" aria-expanded="false" aria-haspopup="true" title="Eternal Road Expert" data-i18n-title="er_filter_title">
+            <span id="spiErFilterLabel" class="filter-btn-label-inner"><span class="source-filter-btn-plain" data-i18n="no_er_filter">No Eternal Road Expert filter</span></span>
             <span class="rarity-filter-caret">▾</span>
           </button>
           <div class="rarity-filter-panel filter-dropdown-panel spi-dd-panel--tall" id="spiErFilterPanel" role="menu" hidden></div>
@@ -163,15 +175,17 @@ try {
   <div id="spiModal" class="spi-modal" hidden>
     <div class="spi-modal-backdrop" data-close="1"></div>
     <div class="spi-modal-card" role="dialog" aria-modal="true" aria-labelledby="spiModalTitle">
-      <button type="button" class="spi-modal-close" data-close="1" aria-label="Close">×</button>
+      <button type="button" class="spi-modal-close" data-close="1" aria-label="Close" data-i18n-aria="close">×</button>
       <div id="spiModalBody"></div>
     </div>
   </div>
 
   <footer class="spi-foot" role="contentinfo">
-    <p class="muted">This page is not affiliated with Bandai Namco Entertainment Inc. Scoring is a neutral point-sum guide; letters may not match other lists.</p>
+    <p class="muted" data-i18n="foot">This page is not affiliated with Bandai Namco Entertainment Inc. Scoring is a neutral point-sum guide; letters may not match other lists.</p>
   </footer>
 </main>
+<script src="{{ url_for('static', filename='js/sp_investment_i18n.js') }}?v={{ app_js_version }}" defer></script>
+<script src="{{ url_for('static', filename='js/sp_investment_i18n_guide.js') }}?v={{ app_js_version }}" defer></script>
 <script src="{{ url_for('static', filename='js/sp_investment.js') }}?v={{ app_js_version }}" defer></script>
 </body>
 </html>

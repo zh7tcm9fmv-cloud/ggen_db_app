@@ -5083,6 +5083,8 @@ def build_er_expert_filters(A, lc: str = "EN") -> list[dict]:
         unit_uniq = _dedupe_restrictions(unit_labels)
         char_uniq = _dedupe_restrictions(char_labels)
         char_free = len(char_uniq) == 0
+        # Keep short labels in EN here; /api/sp_investment?lang= rewrites via
+        # build_er_expert_filters(lc) + _spi_er_ui_labels for Stage / Free for all.
         unit_short = ", ".join(x["name"] for x in unit_uniq[:3]) or "restricted"
         if char_free:
             char_short = "Free for all"

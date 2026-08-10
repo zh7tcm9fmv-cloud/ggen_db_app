@@ -69,6 +69,41 @@ html.spi-modal-open body.spi-page {
   font-weight: 800;
   letter-spacing: 0.02em;
 }
+.spi-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.spi-lang {
+  display: inline-flex;
+  gap: 0.2rem;
+  padding: 0.15rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.spi-lang-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 0.28rem 0.45rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.spi-lang-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+.spi-lang-btn.active {
+  color: #0b1220;
+  background: #7dd3fc;
+}
 .spi-header-back {
   color: var(--text-muted);
   text-decoration: none;

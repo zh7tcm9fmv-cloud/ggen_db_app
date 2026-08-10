@@ -191,8 +191,112 @@
     return Math.round(v).toLocaleString('en-US');
   }
 
+  const LANG_STORAGE_KEY = 'ggen_lang';
+
+  function persistLang(l) {
+    try {
+      if (l) localStorage.setItem(LANG_STORAGE_KEY, String(l));
+    } catch (e) {}
+  }
+
+  function readPersistedLang() {
+    try {
+      return localStorage.getItem(LANG_STORAGE_KEY) || '';
+    } catch (e) {
+      return '';
+    }
+  }
+
   function uiLang() {
-    return String(document.documentElement.getAttribute('data-ui-lang') || 'EN').toUpperCase() || 'EN';
+    const raw = document.documentElement.getAttribute('data-ui-lang') || readPersistedLang() || 'EN';
+    if (window.SpiI18n && typeof SpiI18n.normLang === 'function') return SpiI18n.normLang(raw);
+    const k = String(raw || 'EN').toUpperCase();
+    if (k === 'JP') return 'JA';
+    if (k === 'JA' || k === 'TW' || k === 'HK' || k === 'EN') return k;
+    return 'EN';
+  }
+
+  function t(key, vars) {
+    return (window.SpiI18n && SpiI18n.t(uiLang(), key, vars)) || key;
+  }
+
+  function tRole(roleKey) {
+    return (window.SpiI18n && SpiI18n.tRole(uiLang(), roleKey)) || roleKey;
+  }
+
+  function tBucket(key) {
+    return (window.SpiI18n && SpiI18n.tBucket(uiLang(), key)) || key;
+  }
+
+  function breakdownMetaFor(key) {
+    const base = BREAKDOWN_META[key] || {};
+    const i18nMeta = (window.SpiI18n && SpiI18n.breakdownMeta(uiLang(), key)) || null;
+    return Object.assign({}, base, i18nMeta || {});
+  }
+
+  function applyLangStatic() {
+    const lc = uiLang();
+    document.documentElement.setAttribute('data-ui-lang', lc);
+    const htmlLang = lc === 'JA' ? 'ja' : lc === 'TW' || lc === 'HK' ? 'zh' : 'en';
+    document.documentElement.setAttribute('lang', htmlLang);
+    document.title = t('page_title');
+
+    document.querySelectorAll('[data-i18n]').forEach((el) => {
+      const key = el.getAttribute('data-i18n');
+      if (key) el.textContent = t(key);
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
+      const key = el.getAttribute('data-i18n-placeholder');
+      if (key) el.setAttribute('placeholder', t(key));
+    });
+    document.querySelectorAll('[data-i18n-aria]').forEach((el) => {
+      const key = el.getAttribute('data-i18n-aria');
+      if (key) el.setAttribute('aria-label', t(key));
+    });
+    document.querySelectorAll('[data-i18n-title]').forEach((el) => {
+      const key = el.getAttribute('data-i18n-title');
+      if (key) el.setAttribute('title', t(key));
+    });
+    document.querySelectorAll('[data-i18n-bucket]').forEach((el) => {
+      const key = el.getAttribute('data-i18n-bucket');
+      if (key) el.textContent = tBucket(key);
+    });
+    document.querySelectorAll('[data-i18n-role]').forEach((el) => {
+      const key = el.getAttribute('data-i18n-role');
+      if (key) el.textContent = tRole(key);
+    });
+
+    syncLowRarityLabel();
+
+    document.querySelectorAll('.spi-lang-btn').forEach((btn) => {
+      const btnLang =
+        window.SpiI18n && typeof SpiI18n.normLang === 'function'
+          ? SpiI18n.normLang(btn.getAttribute('data-lang'))
+          : String(btn.getAttribute('data-lang') || '').toUpperCase();
+      btn.classList.toggle('active', btnLang === lc);
+      btn.setAttribute('aria-pressed', btnLang === lc ? 'true' : 'false');
+    });
+
+    updateSourceFilterLabel();
+    updateTagFilterLabel();
+    updateErFilterLabel();
+  }
+
+  async function setLang(lc) {
+    const norm =
+      window.SpiI18n && typeof SpiI18n.normLang === 'function'
+        ? SpiI18n.normLang(lc)
+        : String(lc || 'EN').toUpperCase();
+    if (norm === uiLang() && document.documentElement.getAttribute('data-ui-lang') === norm) {
+      applyLangStatic();
+      return;
+    }
+    persistLang(norm);
+    document.documentElement.setAttribute('data-ui-lang', norm);
+    tagFilter = '';
+    updateTagFilterLabel();
+    applyLangStatic();
+    await fetchPayload();
   }
 
   function entityStatKeys(kind) {
@@ -664,17 +768,9 @@
   }
 
   function syncLowRarityLabel() {
-    const low = $('#spiShowLowRarity');
-    if (!low) return;
-    const wrap = low.closest('label');
-    if (!wrap) return;
-    const text = entity === 'characters' ? ' Show N/R' : ' Show N/R/SR';
-    // Keep the checkbox as first child; replace trailing label text nodes.
-    const nodes = Array.from(wrap.childNodes);
-    nodes.forEach((n) => {
-      if (n.nodeType === 3) wrap.removeChild(n);
-    });
-    wrap.appendChild(document.createTextNode(text));
+    const el = $('#spiLowRarityLabel');
+    if (!el) return;
+    el.textContent = entity === 'characters' ? t('show_low_rarity_chars') : t('show_low_rarity_units');
   }
 
   function currentBuckets() {
@@ -713,12 +809,14 @@
     return true;
   }
 
-  const SOURCE_OPTS = [
-    { value: 'all', label: 'All sources' },
-    { value: 'gacha', label: 'Gacha' },
-    { value: 'event', label: 'Event / other' },
-    { value: 'dev', label: 'Development' },
-  ];
+  function sourceOpts() {
+    return [
+      { value: 'all', label: t('all_sources') },
+      { value: 'gacha', label: t('source_gacha') },
+      { value: 'event', label: t('source_event') },
+      { value: 'dev', label: t('source_dev') },
+    ];
+  }
 
   function closeSpiFilterPanels() {
     ['spiSource', 'spiTag', 'spiEr'].forEach((pfx) => {
@@ -777,16 +875,17 @@
   }
 
   function updateSourceFilterLabel() {
-    const opt = SOURCE_OPTS.find((o) => o.value === sourceFilter) || SOURCE_OPTS[0];
+    const opts = sourceOpts();
+    const opt = opts.find((o) => o.value === sourceFilter) || opts[0];
     setFilterBtnLabel($('#spiSourceFilterLabel'), opt.label, sourceFilter !== 'all');
   }
 
   function updateTagFilterLabel() {
-    setFilterBtnLabel($('#spiTagFilterLabel'), tagFilter || 'No tag filter', !!tagFilter);
+    setFilterBtnLabel($('#spiTagFilterLabel'), tagFilter || t('no_tag_filter'), !!tagFilter);
   }
 
   function updateErFilterLabel() {
-    let text = 'No ER Expert filter';
+    let text = t('no_er_filter');
     if (erFilter && payload) {
       const ers = payload.er_expert_filters || [];
       const hit = ers.find((e) => String(e.id) === String(erFilter));
@@ -813,7 +912,7 @@
   function fillSourcePanel() {
     const panel = $('#spiSourceFilterPanel');
     if (!panel) return;
-    panel.innerHTML = SOURCE_OPTS.map((o) => ddRowHtml(o.value, o.label, sourceFilter === o.value, 'source')).join('');
+    panel.innerHTML = sourceOpts().map((o) => ddRowHtml(o.value, o.label, sourceFilter === o.value, 'source')).join('');
     panel.querySelectorAll('input[type="radio"]').forEach((inp) => {
       inp.addEventListener('change', () => {
         sourceFilter = inp.value || 'all';
@@ -829,8 +928,8 @@
     if (!panel) return;
     const tags = (payload && payload.tag_catalog) || [];
     const rows =
-      ddRowHtml('', 'No tag filter', !tagFilter, 'tag') +
-      tags.map((t) => ddRowHtml(t, t, tagFilter === t, 'tag')).join('');
+      ddRowHtml('', t('no_tag_filter'), !tagFilter, 'tag') +
+      tags.map((tagName) => ddRowHtml(tagName, tagName, tagFilter === tagName, 'tag')).join('');
     panel.innerHTML = `<input type="search" class="filter-dd-search" placeholder="Search tags…" aria-label="Search tags" autocomplete="off">
       <div class="spi-dd-scroll">${rows}<div class="spi-dd-empty" hidden>No matching tags</div></div>`;
     const search = panel.querySelector('.filter-dd-search');
@@ -853,7 +952,7 @@
     if (!panel) return;
     const ers = (payload && payload.er_expert_filters) || [];
     const rows =
-      ddRowHtml('', 'No ER Expert filter', !erFilter, 'er') +
+      ddRowHtml('', t('no_er_filter'), !erFilter, 'er') +
       ers
         .map((e) => {
           const label =
@@ -891,11 +990,28 @@
 
   function renderScoringGuide() {
     const g = (payload && payload.scoring_guide) || {};
-    $('#spiScoringIntro').textContent = g.intro || 'Point-sum investment guide for SP/SSP chips.';
+    const guide = window.SpiI18nGuide;
+    const lc = uiLang();
+    const guideTitle = t('guide_title');
+    const guideIntro = t('guide_intro');
+    const titleEl = $('#spiScoringTitle');
+    if (titleEl) titleEl.textContent = guideTitle !== 'guide_title' ? guideTitle : t('scoring_title');
+    $('#spiScoringIntro').textContent =
+      guideIntro !== 'guide_intro' ? guideIntro : g.intro || t('scoring_loading');
+
+    const ovLines =
+      guide && typeof guide.overrides === 'function' ? guide.overrides(lc) : g.overrides || [];
+    const gapLines = guide && typeof guide.gaps === 'function' ? guide.gaps(lc) : g.gaps || [];
     const ov = $('#spiScoringOverrides');
-    ov.innerHTML = (g.overrides || []).map((t) => `<li>${esc(t)}</li>`).join('');
+    ov.innerHTML = (ovLines || []).map((line) => `<li>${esc(line)}</li>`).join('');
     const gaps = $('#spiScoringGaps');
-    gaps.innerHTML = (g.gaps || []).map((t) => `<li>${esc(t)}</li>`).join('');
+    gaps.innerHTML = (gapLines || []).map((line) => `<li>${esc(line)}</li>`).join('');
+
+    const badgeObjective =
+      guide && typeof guide.badgeObjective === 'function' ? guide.badgeObjective(lc) : 'Objective';
+    const badgeEstimate =
+      guide && typeof guide.badgeEstimate === 'function' ? guide.badgeEstimate(lc) : 'Estimate';
+
     const criteriaEl = $('#spiCriteria');
     if (criteriaEl) {
       const applyFilter = entity === 'characters' ? 'pilots' : 'units';
@@ -912,31 +1028,58 @@
       });
       criteriaEl.innerHTML = visible
         .map((c) => {
+          const cid = String(c.id || '');
+          const loc = guide && typeof guide.criteria === 'function' ? guide.criteria(lc, cid) : null;
           const obj = c.objective !== false;
           const badge = obj
-            ? `<span class="spi-criteria-badge">Objective</span>`
-            : `<span class="spi-criteria-badge spi-criteria-badge--soft">Estimate</span>`;
+            ? `<span class="spi-criteria-badge">${esc(badgeObjective)}</span>`
+            : `<span class="spi-criteria-badge spi-criteria-badge--soft">${esc(badgeEstimate)}</span>`;
           const applies = (c.applies || [])
-            .map((a) => `<span class="spi-criteria-badge spi-criteria-badge--soft">${esc(a)}</span>`)
+            .map((a) => {
+              const label =
+                a === 'units'
+                  ? t('applies_units')
+                  : a === 'pilots' || a === 'characters'
+                    ? t('applies_characters')
+                    : a;
+              return `<span class="spi-criteria-badge spi-criteria-badge--soft">${esc(label)}</span>`;
+            })
             .join('');
           const roleBadges = (c.roles || [])
             .filter((r) => r && r !== 'all')
-            .map((r) => `<span class="spi-criteria-badge spi-criteria-badge--soft">${esc(r)}</span>`)
+            .map((r) => `<span class="spi-criteria-badge spi-criteria-badge--soft">${esc(tRole(r))}</span>`)
             .join('');
           const rows = (c.rows || [])
-            .map(
-              (r) => `<tr><th scope="row">${esc(r.when || '')}</th><td>${esc(r.result || r.points || '')}</td></tr>`
-            )
+            .map((r) => {
+              let when = String(r.when || '');
+              let result = String(r.result != null ? r.result : r.points != null ? r.points : '');
+              if (guide && typeof guide.localizeRow === 'function') {
+                const lr = guide.localizeRow(lc, cid, when, result) || {};
+                when = lr.when != null ? lr.when : when;
+                result = lr.result != null ? lr.result : result;
+              }
+              when = when
+                .replace(/\bTraitType\b/g, 'effect')
+                .replace(/\bCharacterSkillTraitType\b/g, 'skill effect')
+                .replace(/\bWeaponTraitType\b/g, 'weapon effect');
+              result = result
+                .replace(/\bTraitType\b/g, 'effect')
+                .replace(/\bCharacterSkillTraitType\b/g, 'skill effect')
+                .replace(/\bWeaponTraitType\b/g, 'weapon effect');
+              return `<tr><th scope="row">${esc(when)}</th><td>${esc(result)}</td></tr>`;
+            })
             .join('');
-          const title = String(c.title || c.id || '')
+          let title = loc && loc.title ? String(loc.title) : String(c.title || c.id || '');
+          let summary = loc && loc.summary ? String(loc.summary) : String(c.summary || '');
+          title = title
             .replace(/\bTraitType\b/g, 'effect')
             .replace(/\bCharacterSkillTraitType\b/g, 'skill effect');
-          const summary = String(c.summary || '')
+          summary = summary
             .replace(/\bTraitType\b/g, 'effect')
             .replace(/\bCharacterSkillTraitType\b/g, 'skill effect')
             .replace(/\bWeaponTraitType\b/g, 'weapon effect')
             .replace(/\bOccupiedAreaId\b/g, 'footprint');
-          return `<article class="spi-criteria-block" data-criteria="${esc(c.id || '')}">
+          return `<article class="spi-criteria-block" data-criteria="${esc(cid)}">
             <div class="spi-criteria-head">
               <h3 class="spi-criteria-title">${esc(title)}</h3>
               ${badge}${applies}${roleBadges}
@@ -963,13 +1106,14 @@
         .join('');
       return `<div class="spi-cutoff-group"><span class="spi-cutoff-group-label">${esc(title)}</span>${bits}</div>`;
     };
-    const bucketBits = Object.keys(labels)
-      .map((k) => `<span class="spi-letter-chip">${esc(labels[k])}</span>`)
-      .join('');
+    const bucketBits = BUCKET_ORDER.map((k) => {
+      const label = labels[k] || tBucket(k);
+      return `<span class="spi-letter-chip">${esc(label)}</span>`;
+    }).join('');
     cuts.innerHTML =
-      fmtCuts(spCuts, 'SP-eligible grades') +
-      fmtCuts(urCuts, 'Ultimate grades') +
-      `<div class="spi-cutoff-group"><span class="spi-cutoff-group-label">Buckets</span>${bucketBits}</div>`;
+      fmtCuts(spCuts, t('sp_grades')) +
+      fmtCuts(urCuts, t('ultimate_grades')) +
+      `<div class="spi-cutoff-group"><span class="spi-cutoff-group-label">${esc(t('buckets_label'))}</span>${bucketBits}</div>`;
   }
 
   function syncBoardTabsVisibility() {
@@ -1024,7 +1168,7 @@
       const cards = rows
         .map((r) => {
           const advNote = r._advantage_active
-            ? `<span class="spi-chip spi-chip-adv" title="Series Advantage applied for this tag">+${esc(r._advantage_points)} Adv</span>`
+            ? `<span class="spi-chip spi-chip-adv" title="${esc(t('adv_on', { n: r._advantage_points }))}">${esc(t('adv_chip', { n: r._advantage_points }))}</span>`
             : '';
           return `<button type="button" class="spi-card" data-id="${esc(r.id)}">
             <div class="spi-card-thumb-wrap">${renderFramedThumb(r, kind)}</div>
@@ -1039,10 +1183,10 @@
         .join('');
       html += `<section class="spi-bucket">
         <div class="spi-bucket-head" data-bucket="${esc(bk)}">
-          <h3>${esc(labels[bk] || bk)}</h3>
+          <h3>${esc(labels[bk] || tBucket(bk) || bk)}</h3>
           <span class="spi-bucket-count">${rows.length}</span>
         </div>
-        <div class="spi-cards">${cards || '<p class="spi-status">No units in this bucket for current filters.</p>'}</div>
+        <div class="spi-cards">${cards || `<p class="spi-status">${esc(t('no_bucket'))}</p>`}</div>
       </section>`;
     });
     grid.innerHTML = html;
@@ -1054,10 +1198,11 @@
         : board === 'ssp'
           ? counts.units_ssp || counts.ssp || 0
           : counts.units_sp || counts.sp || 0;
-    const label = entity === 'characters' ? 'Pilots SP' : board.toUpperCase();
-    const cohortNote = !hasSpOnly ? ' · Ultimate uses a separate grade scale' : '';
-    const advNote = tagFilter ? ' · Ultimate Advantage on matching series tags' : '';
-    statusEl.textContent = `Showing ${shown} of ${totalBoard} · ${label} · ${role}${cohortNote}${advNote}`;
+    const label = entity === 'characters' ? t('pilots_sp') : board.toUpperCase();
+    const cohortNote = !hasSpOnly ? t('cohort_ultimate') : '';
+    const advNote = tagFilter ? t('adv_note') : '';
+    statusEl.textContent =
+      t('showing', { shown, total: totalBoard, board: label, role: tRole(role) }) + cohortNote + advNote;
   }
 
   function ptsBadge(pts) {
@@ -1095,17 +1240,18 @@
     const out = [];
     Object.keys(BREAKDOWN_META).forEach((k) => {
       if (bd[k] == null) return;
-      const meta = BREAKDOWN_META[k];
+      const meta = breakdownMetaFor(k);
       const pts = Number(bd[k]) || 0;
       if (meta.hideIfZero && pts === 0) return;
-      out.push({ key: k, label: meta.label, tip: meta.tip || '', pts });
+      out.push({ key: k, label: meta.label || k, tip: meta.tip || '', pts });
     });
     // Include any unknown keys that actually scored
     Object.keys(bd || {}).forEach((k) => {
       if (BREAKDOWN_META[k]) return;
       const pts = Number(bd[k]) || 0;
       if (!pts) return;
-      out.push({ key: k, label: k.replace(/_/g, ' '), tip: '', pts });
+      const meta = breakdownMetaFor(k);
+      out.push({ key: k, label: meta.label || k.replace(/_/g, ' '), tip: meta.tip || '', pts });
     });
     out.sort((a, b) => Math.abs(b.pts) - Math.abs(a.pts) || a.label.localeCompare(b.label));
     return out;
@@ -1136,16 +1282,16 @@
   function renderRecommendedUnits(row) {
     if (row.is_sd_linked) {
       return `<section class="spi-dossier-section">
-        <h4 class="spi-dossier-h">Recommended Mobile Suits</h4>
-        <p class="spi-dossier-empty">SD characters are permanently linked to their Mobile Suit and are not interchangeable; no recommendation list.</p>
+        <h4 class="spi-dossier-h">${esc(t('recommend_ms'))}</h4>
+        <p class="spi-dossier-empty">${esc(t('recommend_sd'))}</p>
       </section>`;
     }
     const units = row.recommended_units || [];
     const recPts = (row.breakdown && row.breakdown.recommend_ms) || 0;
     if (!units.length && !recPts) {
       return `<section class="spi-dossier-section">
-        <h4 class="spi-dossier-h">Recommended Mobile Suits</h4>
-        <p class="spi-dossier-empty">No A or higher matches from this pilot’s tag / series gates and specialty.</p>
+        <h4 class="spi-dossier-h">${esc(t('recommend_ms'))}</h4>
+        <p class="spi-dossier-empty">${esc(t('recommend_none'))}</p>
       </section>`;
     }
     const cards = units
@@ -1160,13 +1306,14 @@
         </a>`;
       })
       .join('');
+    const spec = row.specialty ? ` (${row.specialty})` : '';
     return `<section class="spi-dossier-section">
       <div class="spi-dossier-section-head">
-        <h4 class="spi-dossier-h">Recommended Mobile Suits <span class="spi-dossier-h-sub">A and up</span></h4>
+        <h4 class="spi-dossier-h">${esc(t('recommend_ms'))} <span class="spi-dossier-h-sub">${esc(t('recommend_ms_sub'))}</span></h4>
         ${ptsBadge(recPts)}
       </div>
-      <p class="spi-dossier-note">Matched by ability tag/series gates and pilot specialty${row.specialty ? ` (${esc(row.specialty)})` : ''}. Defense units skip the specialty check.</p>
-      <div class="spi-rec-grid">${cards || '<p class="spi-dossier-empty">None on the current board.</p>'}</div>
+      <p class="spi-dossier-note">${esc(t('recommend_ms_note', { spec }))}</p>
+      <div class="spi-rec-grid">${cards || `<p class="spi-dossier-empty">${esc(t('recommend_none'))}</p>`}</div>
     </section>`;
   }
 
@@ -1233,31 +1380,31 @@
 
     const cohort =
       row.letter_cohort === 'ur'
-        ? '<span class="spi-chip spi-chip-cohort">Ultimate scale</span>'
+        ? `<span class="spi-chip spi-chip-cohort">${esc(t('cohort_ult'))}</span>`
         : row.has_sp
-          ? '<span class="spi-chip spi-chip-cohort">SP-eligible scale</span>'
+          ? `<span class="spi-chip spi-chip-cohort">${esc(t('cohort_sp'))}</span>`
           : '';
     const urPilotBadge =
       !isPilot && row.peaks_with_ur_pilot
-        ? '<span class="spi-chip spi-chip-warn" title="Recommend pilot is UR/Ultimate — peak kit often assumes that pilot">Peaks with UR pilot</span>'
+        ? `<span class="spi-chip spi-chip-warn" title="${esc(t('peaks_ur_pilot_tip'))}">${esc(t('peaks_ur_pilot'))}</span>`
         : '';
     const adv = row.series_advantage;
     const advActive = !!row._advantage_active;
     const advBadge =
       !isPilot && adv
         ? advActive
-          ? `<span class="spi-chip spi-chip-adv" title="${esc(adv.ability_name || '')}">Advantage +${esc(adv.points)} (tag match)</span>`
-          : `<span class="spi-chip spi-chip-muted" title="${esc(adv.ability_name || '')}">Advantage +${esc(adv.points)} in-series only</span>`
+          ? `<span class="spi-chip spi-chip-adv" title="${esc(adv.ability_name || '')}">${esc(t('adv_on', { n: adv.points }))}</span>`
+          : `<span class="spi-chip spi-chip-muted" title="${esc(adv.ability_name || '')}">${esc(t('adv_off', { n: adv.points }))}</span>`
         : '';
 
     const header = `<div class="spi-dossier-head">
       <div class="spi-dossier-thumb">${renderFramedThumb(row, kind)}</div>
       <div class="spi-dossier-head-text">
         <h3 class="spi-modal-title" id="spiModalTitle">${esc(row.name || row.id)}</h3>
-        <p class="spi-modal-sub">${esc(row.role)}${isPilot && row.specialty ? ` · ${esc(row.specialty)}` : ''} · ${esc((row.mode || board) || '').toUpperCase()}</p>
+        <p class="spi-modal-sub">${esc(tRole(row.role) || row.role)}${isPilot && row.specialty ? ` · ${esc(row.specialty)}` : ''} · ${esc((row.mode || board) || '').toUpperCase()}</p>
         <div class="spi-dossier-badges">
           ${letterChip(row.letter)}
-          <span class="spi-chip score">Total: ${esc(row.total)} Pt</span>
+          <span class="spi-chip score">${esc(t('total_pt', { n: row.total }))}</span>
           ${cohort}
           ${urPilotBadge}
           ${advBadge}
@@ -1268,7 +1415,7 @@
     const specialtyBlock = renderEntityStatsBlock(row, kind);
 
     const scoreBlock = `<section class="spi-dossier-section spi-dossier-section--score">
-      <h4 class="spi-dossier-h">Score breakdown <span class="spi-dossier-h-sub">hover a bar for details</span></h4>
+      <h4 class="spi-dossier-h">${esc(t('score_breakdown'))} <span class="spi-dossier-h-sub">${esc(t('score_breakdown_sub'))}</span></h4>
       ${renderScoreViz(row)}
     </section>`;
 
@@ -1280,7 +1427,7 @@
       ${scoreBlock}
       ${recBlock}
       <div class="spi-modal-actions">
-        <a href="${detailPath}${encodeURIComponent(row.id)}" target="_blank" rel="noopener">Open in database</a>
+        <a href="${detailPath}${encodeURIComponent(row.id)}" target="_blank" rel="noopener">${esc(t('open_in_db'))}</a>
       </div>`;
     $('#spiModal').hidden = false;
     document.body.classList.add('spi-modal-open');
@@ -1338,11 +1485,11 @@
     document.addEventListener('click', (e) => {
       if (!e.target.closest('#spiSourceWrap, #spiTagWrap, #spiErWrap')) closeSpiFilterPanels();
     });
-    let t = null;
+    let searchTimer = null;
     $('#spiSearch').addEventListener('input', (e) => {
       syncSearchClear();
-      clearTimeout(t);
-      t = setTimeout(() => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => {
         searchQuery = e.target.value || '';
         render();
       }, 120);
@@ -1379,25 +1526,46 @@
       const collapsed = body.classList.toggle('is-collapsed');
       $('#spiScoringToggle').setAttribute('aria-expanded', collapsed ? 'false' : 'true');
     });
+    document.querySelectorAll('.spi-lang-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const lc = btn.getAttribute('data-lang') || 'EN';
+        void setLang(lc);
+      });
+    });
   }
 
-  async function boot() {
-    statusEl.textContent = 'Loading rankings…';
-    bindControls();
+  function spiApiUrl() {
+    const lang = uiLang();
+    if (window.__SPI_PREVIEW__) {
+      return `/api/sp_investment?preview=1&lang=${encodeURIComponent(lang)}`;
+    }
+    return `/api/sp_investment?lang=${encodeURIComponent(lang)}`;
+  }
+
+  async function fetchPayload() {
+    statusEl.textContent = t('loading');
+    grid.setAttribute('aria-busy', 'true');
     try {
-      const apiUrl = window.__SPI_PREVIEW__ ? '/api/sp_investment?preview=1' : '/api/sp_investment';
-      // Allow HTTP cache (API max-age=300) — do not force no-cache on every visit.
-      const r = await fetch(apiUrl);
+      const r = await fetch(spiApiUrl());
       if (!r.ok) throw new Error('HTTP ' + r.status);
       payload = await r.json();
       if (payload.error) throw new Error(payload.error);
+      applyLangStatic();
       fillFilterSelects();
       renderScoringGuide();
       render();
     } catch (err) {
-      statusEl.textContent = 'Failed to load: ' + (err && err.message ? err.message : err);
+      statusEl.textContent = t('status_error');
       grid.innerHTML = '';
+      grid.setAttribute('aria-busy', 'false');
     }
+  }
+
+  async function boot() {
+    applyLangStatic();
+    bindControls();
+    statusEl.textContent = t('loading');
+    await fetchPayload();
   }
 
   boot();
