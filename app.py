@@ -15455,9 +15455,9 @@ def _render_sp_investment_public():
 @app.route('/en/sp-list')
 @app.route('/en/investment-guide')
 def sp_investment_page():
-    """Investment Priority — SP/SSP shortlist boards (precomputed suggestion buckets)."""
-    ver = _app_js_bundle_version_tag()
+    """Investment Priority — SPA tab at /ip (same shell as main site)."""
     if not _sp_investment_public_enabled():
+        ver = _app_js_bundle_version_tag()
         r = make_response(render_template(
             'sp_investment_offline.html',
             image_cdn=IMAGE_CDN or '',
@@ -15466,7 +15466,7 @@ def sp_investment_page():
         ))
         r.headers['Cache-Control'] = 'no-store'
         return r
-    return _render_sp_investment_public()
+    return _serve_index()
 
 
 @app.route('/IG')
@@ -24236,7 +24236,7 @@ def get_unit(unit_id):
 
 # Client history short-paths (must stay in sync with parseBrowseShortPath in static/js/app.js).
 _SPA_TAB_PATHS = frozenset({
-    'c', 'u', 's', 'new', 'tl', 'banners', 'st', 'esim', 'ml', 'cal', 'tb', 'op', 'pt', 'rk', 'msy',
+    'c', 'u', 's', 'new', 'tl', 'banners', 'st', 'esim', 'ml', 'cal', 'tb', 'op', 'pt', 'rk', 'msy', 'ip',
 })
 _SPA_DETAIL_PREFIXES = frozenset({'u', 'c', 's', 'op', 'pt', 'es'})
 

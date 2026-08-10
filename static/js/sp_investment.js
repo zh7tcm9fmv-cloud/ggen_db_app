@@ -211,7 +211,9 @@
   }
 
   function uiLang() {
-    const raw = document.documentElement.getAttribute('data-ui-lang') || readPersistedLang() || 'EN';
+    let raw = '';
+    if (isEmbedded() && window.S && S.lang) raw = S.lang;
+    else raw = document.documentElement.getAttribute('data-ui-lang') || readPersistedLang() || 'EN';
     if (window.SpiI18n && typeof SpiI18n.normLang === 'function') return SpiI18n.normLang(raw);
     const k = String(raw || 'EN').toUpperCase();
     if (k === 'JP') return 'JA';
@@ -237,41 +239,52 @@
     return Object.assign({}, base, i18nMeta || {});
   }
 
+  function isEmbedded() {
+    return !!document.getElementById('panel-investment_priority');
+  }
+
+  function spiRoot() {
+    return document.getElementById('panel-investment_priority') || document.querySelector('.spi-shell') || document;
+  }
+
   function applyLangStatic() {
     const lc = uiLang();
-    document.documentElement.setAttribute('data-ui-lang', lc);
-    const htmlLang = lc === 'JA' ? 'ja' : lc === 'TW' || lc === 'HK' ? 'zh' : 'en';
-    document.documentElement.setAttribute('lang', htmlLang);
-    document.title = t('page_title');
+    if (!isEmbedded()) {
+      document.documentElement.setAttribute('data-ui-lang', lc);
+      const htmlLang = lc === 'JA' ? 'ja' : lc === 'TW' || lc === 'HK' ? 'zh' : 'en';
+      document.documentElement.setAttribute('lang', htmlLang);
+      document.title = t('page_title');
+    }
 
-    document.querySelectorAll('[data-i18n]').forEach((el) => {
+    const root = spiRoot();
+    root.querySelectorAll('[data-i18n]').forEach((el) => {
       const key = el.getAttribute('data-i18n');
       if (key) el.textContent = t(key);
     });
-    document.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
+    root.querySelectorAll('[data-i18n-placeholder]').forEach((el) => {
       const key = el.getAttribute('data-i18n-placeholder');
       if (key) el.setAttribute('placeholder', t(key));
     });
-    document.querySelectorAll('[data-i18n-aria]').forEach((el) => {
+    root.querySelectorAll('[data-i18n-aria]').forEach((el) => {
       const key = el.getAttribute('data-i18n-aria');
       if (key) el.setAttribute('aria-label', t(key));
     });
-    document.querySelectorAll('[data-i18n-title]').forEach((el) => {
+    root.querySelectorAll('[data-i18n-title]').forEach((el) => {
       const key = el.getAttribute('data-i18n-title');
       if (key) el.setAttribute('title', t(key));
     });
-    document.querySelectorAll('[data-i18n-bucket]').forEach((el) => {
+    root.querySelectorAll('[data-i18n-bucket]').forEach((el) => {
       const key = el.getAttribute('data-i18n-bucket');
       if (key) el.textContent = tBucket(key);
     });
-    document.querySelectorAll('[data-i18n-role]').forEach((el) => {
+    root.querySelectorAll('[data-i18n-role]').forEach((el) => {
       const key = el.getAttribute('data-i18n-role');
       if (key) el.textContent = tRole(key);
     });
 
     syncLowRarityLabel();
 
-    document.querySelectorAll('.spi-lang-btn').forEach((btn) => {
+    root.querySelectorAll('.spi-lang-btn').forEach((btn) => {
       const btnLang =
         window.SpiI18n && typeof SpiI18n.normLang === 'function'
           ? SpiI18n.normLang(btn.getAttribute('data-lang'))
@@ -624,10 +637,18 @@
   let erFilter = '';
   let searchQuery = '';
   let rowById = new Map();
+  let _payloadLang = '';
+  let _controlsBound = false;
+  let grid = null;
+  let statusEl = null;
 
-  const $ = (sel) => document.querySelector(sel);
-  const grid = $('#spiGrid');
-  const statusEl = $('#spiStatus');
+  const $ = (sel) => spiRoot().querySelector(sel);
+
+  function resolveDom() {
+    if (!grid) grid = document.getElementById('spiGrid');
+    if (!statusEl) statusEl = document.getElementById('spiStatus');
+    return !!(grid && statusEl);
+  }
 
   function esc(s) {
     const d = document.createElement('div');
@@ -1460,7 +1481,7 @@
       ${scoreBlock}
       ${recBlock}
       <div class="spi-modal-actions">
-        <a href="${detailPath}${encodeURIComponent(row.id)}" target="_blank" rel="noopener">${esc(t('open_in_db'))}</a>
+        <a href="${detailPath}${encodeURIComponent(row.id)}"${isEmbedded() ? ` onclick="event.preventDefault();openDetail('${kind}','${escJs(row.id)}')"` : ' target="_blank" rel="noopener"'}>${esc(t('open_in_db'))}</a>
       </div>`;
     $('#spiModal').hidden = false;
     document.body.classList.add('spi-modal-open');
@@ -1567,7 +1588,7 @@
       const collapsed = body.classList.toggle('is-collapsed');
       $('#spiScoringToggle').setAttribute('aria-expanded', collapsed ? 'false' : 'true');
     });
-    document.querySelectorAll('.spi-lang-btn').forEach((btn) => {
+    spiRoot().querySelectorAll('.spi-lang-btn').forEach((btn) => {
       btn.addEventListener('click', () => {
         const lc = btn.getAttribute('data-lang') || 'EN';
         void setLang(lc);
@@ -1584,6 +1605,7 @@
   }
 
   async function fetchPayload() {
+    if (!resolveDom()) return;
     statusEl.textContent = t('loading');
     grid.setAttribute('aria-busy', 'true');
     try {
@@ -1591,6 +1613,7 @@
       if (!r.ok) throw new Error('HTTP ' + r.status);
       payload = await r.json();
       if (payload.error) throw new Error(payload.error);
+      _payloadLang = uiLang();
       applyLangStatic();
       fillFilterSelects();
       renderScoringGuide();
@@ -1603,11 +1626,46 @@
   }
 
   async function boot() {
+    if (!resolveDom()) return;
     applyLangStatic();
-    bindControls();
+    if (!_controlsBound) {
+      bindControls();
+      _controlsBound = true;
+    }
+    if (_payloadLang === uiLang() && payload) {
+      renderScoringGuide();
+      render();
+      return;
+    }
     statusEl.textContent = t('loading');
     await fetchPayload();
   }
 
-  boot();
+  async function onLangChange() {
+    if (!resolveDom()) return;
+    const lc = uiLang();
+    if (_payloadLang === lc && payload) {
+      tagFilter = '';
+      applyLangStatic();
+      renderScoringGuide();
+      render();
+      return;
+    }
+    tagFilter = '';
+    applyLangStatic();
+    await fetchPayload();
+  }
+
+  window.GgenSpInvestment = {
+    _ready: false,
+    boot,
+    onTabShown: boot,
+    onLangChange,
+  };
+
+  if (document.body.classList.contains('spi-page')) {
+    boot().then(() => {
+      window.GgenSpInvestment._ready = true;
+    });
+  }
 })();

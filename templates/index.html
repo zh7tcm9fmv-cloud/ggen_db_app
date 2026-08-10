@@ -100,7 +100,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <button class="nav-tab" data-tab="team_builder" id="navTbTab" onclick="switchTab('team_builder')"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_FooterIcon_Formation_Nega.webp{% else %}/static/images/UI/UI_Common_FooterIcon_Formation_Nega.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Team Builder</span></button>
 <button class="nav-tab" data-tab="latest_release" id="navLatestTab" onclick="switchTab('latest_release')"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_FooterIcon_Menu_Nega.webp{% else %}/static/images/UI/UI_Common_FooterIcon_Menu_Nega.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Latest Release</span></button>
 <a class="nav-tab" href="/tl" data-tab="banner_timeline" id="navBannerTimelineTab" role="tab" onclick="event.preventDefault();switchTab('banner_timeline')"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_FooterIcon_Gasha_Nega.webp{% else %}/static/images/UI/UI_Common_FooterIcon_Gasha_Nega.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Unit Assembly</span></a>
-<a class="nav-tab" href="/ip" id="navInvestmentTab"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_FooterIcon_Mypage_Nega.webp{% else %}/static/images/UI/UI_Common_FooterIcon_Mypage_Nega.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Investment Priority</span></a>
+<a class="nav-tab" href="/ip" data-tab="investment_priority" id="navInvestmentTab" role="tab" onclick="event.preventDefault();switchTab('investment_priority')"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_FooterIcon_Mypage_Nega.webp{% else %}/static/images/UI/UI_Common_FooterIcon_Mypage_Nega.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Investment Priority</span></a>
 <a class="nav-tab" href="/game-news" id="navGameNewsTab"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_MenuIcon_OfficialWebsite.webp{% else %}/static/images/UI/UI_Common_MenuIcon_OfficialWebsite.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label">Game News</span></a>
 </div><button type="button" class="nav-tabs-edge-hint nav-tabs-edge-hint--right" id="navTabsEdgeHintRight" hidden aria-label="More tabs with notifications"><span class="nav-tabs-edge-flare-wrap ui-notice-anchor" id="navTabsEdgeFlareWrapRight" aria-hidden="true"></span><span class="nav-tabs-edge-chevron" aria-hidden="true">›</span></button></div>
 </header>
@@ -400,6 +400,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 <div class="tab-panel" id="panel-latest_release"><div id="latestReleaseLoading" class="loading-overlay" style="display:none"><div class="spinner"></div></div><div id="latestReleaseRoot" class="lr-root"></div></div>
 <div class="tab-panel" id="panel-banner_timeline"><div id="bannerTimelineLoading" class="loading-overlay" style="display:none"><div class="spinner"></div></div><div class="bt-wrap"><div id="bannerTimelineRoot" class="bt-root"></div></div></div>
+<div class="tab-panel" id="panel-investment_priority">{% with spi_embedded=true %}{% include '_sp_investment_panel.html' %}{% endwith %}</div>
 </main>
 <footer class="site-footer-links" role="contentinfo">
 <section id="kofiSupporterWall" class="kofi-supporter-wall" hidden aria-hidden="true" aria-label="Supporter wall"></section>
@@ -589,7 +590,8 @@ window.__GGEN_LAZY__=(function(){
     'kofi_supporter_wall': url_for('static', filename='css/kofi_supporter_wall.css'),
     'unit_best_pilots': url_for('static', filename='css/unit_best_pilots.css'),
     'master_league': url_for('static', filename='css/master_league.css'),
-    'craft_ui': url_for('static', filename='css/craft_ui.css')
+    'craft_ui': url_for('static', filename='css/craft_ui.css'),
+    'sp_investment': url_for('static', filename='css/sp_investment.css')
   } | tojson }};
   var js={{ {
     'e_simulator': url_for('static', filename='js/e_simulator.js'),
@@ -598,7 +600,10 @@ window.__GGEN_LAZY__=(function(){
     'kofi_donate_promo': url_for('static', filename='js/kofi_donate_promo.js'),
     'kofi_supporter_wall': url_for('static', filename='js/kofi_supporter_wall.js'),
     'unit_best_pilots': url_for('static', filename='js/unit_best_pilots.js'),
-    'content_notices': url_for('static', filename='js/content_notices.js')
+    'content_notices': url_for('static', filename='js/content_notices.js'),
+    'sp_investment_i18n': url_for('static', filename='js/sp_investment_i18n.js'),
+    'sp_investment_i18n_guide': url_for('static', filename='js/sp_investment_i18n_guide.js'),
+    'sp_investment': url_for('static', filename='js/sp_investment.js')
   } | tojson }};
   var cache={};
   function withV(url, bump){
@@ -640,6 +645,16 @@ window.__GGEN_LAZY__=(function(){
   }
   function ensureMasterLeagueCss(){return loadCss('master_league')}
   function ensureCraftUiCss(){return loadCss('craft_ui')}
+  function ensureSpInvestment(){
+    if(window.GgenSpInvestment&&window.GgenSpInvestment._ready)return Promise.resolve(window.GgenSpInvestment);
+    return Promise.all([
+      loadCss('sp_investment'),
+      loadCss('kofi_supporter_wall'),
+      loadJs('sp_investment_i18n'),
+      loadJs('sp_investment_i18n_guide'),
+      loadJs('sp_investment')
+    ]).then(function(){return window.GgenSpInvestment||null});
+  }
   function ensureContentNotices(){
     if(window.GgenContentNotices)return Promise.resolve(window.GgenContentNotices);
     return loadJs('content_notices').then(function(){return window.GgenContentNotices||null});
@@ -678,6 +693,7 @@ window.__GGEN_LAZY__=(function(){
     ensureUnitBestPilots:ensureUnitBestPilots,
     ensureMasterLeagueCss:ensureMasterLeagueCss,
     ensureCraftUiCss:ensureCraftUiCss,
+    ensureSpInvestment:ensureSpInvestment,
     ensureContentNotices:ensureContentNotices
   };
 })();

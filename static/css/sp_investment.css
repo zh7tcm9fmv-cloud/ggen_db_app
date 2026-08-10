@@ -1367,3 +1367,17 @@ html.spi-modal-open body.spi-page {
     grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
   }
 }
+
+/* Embedded in main SPA tab — reuse site header/nav; no standalone page chrome */
+#panel-investment_priority::before {
+  background-image: url('/static/images/Background/obg_013_garage.webp');
+}
+#panel-investment_priority .spi-shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 1rem 0.75rem 2.5rem;
+}
+html.spi-modal-open body {
+  overflow: hidden !important;
+  overscroll-behavior: none;
+}
