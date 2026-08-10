@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/app_shell_bundle.min.css') }}?v={{ app_js_version }}">
 {% include '_defer_brand_fonts.html' %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/sp_investment.css') }}?v={{ app_js_version }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/kofi_supporter_wall.css') }}?v={{ app_js_version }}">
 <script>
 window.__GGEN_IMAGE_CDN__ = {{ (image_cdn or '')|tojson }};
 window.__GGEN_GAME_IMAGES_USE_CDN__ = {{ (game_images_use_cdn if game_images_use_cdn is defined else true)|tojson }};
@@ -61,7 +62,7 @@ try {
   {% if spi_preview or spi_soft_launch %}
   <div class="spi-preview-banner" role="status">
     <span class="spi-preview-banner-dot" aria-hidden="true"></span>
-    <span class="spi-preview-banner-text" data-i18n="preview_banner">Friends preview · live at /IG, not in the main nav yet. Tell us what looks wrong.</span>
+    <span class="spi-preview-banner-text" data-i18n="preview_banner">Friends preview · live at /IP, not in the main nav yet. Tell us what looks wrong.</span>
   </div>
   {% endif %}
   <header class="spi-hero">
@@ -71,6 +72,7 @@ try {
       <p class="spi-hero-lead" data-i18n="hero_lead">Should you invest SP Conversion or SSP Conversion materials on this Unit or Character? Neutral shortlist buckets: Recommended, Solid, Situational, Niche. Not a damage calculator. Unit SP and SSP boards use separate weapon baselines.</p>
     </div>
     <ul class="spi-hero-buckets" data-i18n-aria="buckets_aria" aria-label="Shortlist buckets">
+      <li class="spi-hero-bucket spi-hero-bucket--priority"><span data-i18n-bucket="priority">BEYOND THE TIME</span></li>
       <li class="spi-hero-bucket spi-hero-bucket--recommended"><span data-i18n-bucket="recommended">Recommended</span></li>
       <li class="spi-hero-bucket spi-hero-bucket--solid"><span data-i18n-bucket="solid">Solid</span></li>
       <li class="spi-hero-bucket spi-hero-bucket--situational"><span data-i18n-bucket="situational">Situational</span></li>
@@ -186,6 +188,22 @@ try {
       <div id="spiModalBody"></div>
     </div>
   </div>
+
+  <section class="spi-credit-wall" aria-labelledby="spiCreditTitle">
+    <div class="kofi-supporter-wall-inner">
+      <div class="kofi-supporter-wall-head">
+        <h2 class="kofi-supporter-wall-title" id="spiCreditTitle" data-i18n="credit_line">Credit: PhiphyL</h2>
+      </div>
+      <ul class="kofi-supporter-wall-grid" data-i18n-aria="credit_aria" aria-label="Credit">
+        <li class="kofi-supporter-card">
+          <div class="kofi-supporter-avatar-wrap">
+            <img class="kofi-supporter-avatar" src="{% if image_cdn %}{{ image_cdn }}/images/KofiSupporters/PhiphyL.webp{% else %}/static/images/KofiSupporters/PhiphyL.webp{% endif %}" alt="" width="52" height="52" loading="lazy" decoding="async" onerror="window.gameImageUrlFallback&&gameImageUrlFallback(this)">
+          </div>
+          <div class="kofi-supporter-name" title="PhiphyL">PhiphyL</div>
+        </li>
+      </ul>
+    </div>
+  </section>
 
   <footer class="spi-foot" role="contentinfo">
     <p class="muted" data-i18n="foot">This page is not affiliated with Bandai Namco Entertainment Inc. Scoring is a neutral point-sum guide; letters may not match other lists.</p>

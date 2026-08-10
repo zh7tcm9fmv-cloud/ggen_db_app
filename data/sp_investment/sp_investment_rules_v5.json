@@ -37,7 +37,9 @@
     "v5.17: drop non-Ultimate UR units from Investment Guide boards (kits too unique to share SP criteria); keep Ultimate; series Advantage: abilities score only when the active tag filter matches that series",
     "v5.18: pilot ability flat add-on (conditional +1, conditional CS/SA/SD +2, InitialMp type46 +1); pilot skills flat 0/+1/+2 per skill summed (dmg +1, CS/SA/SD & Sway/MpBoost +2)",
     "v5.19: exclude UR characters from Investment Guide (no SP Conversion; no Ultimate Characters in-game); client hides N/R characters unless Show N/R is checked",
-    "v5.20: Character board default is SSR only (same idea as units); Show N/R/SR opts in lower rarities — SR was wrongly always-on so the toggle looked dead"
+    "v5.20: Character board default is SSR only (same idea as units); Show N/R/SR opts in lower rarities — SR was wrongly always-on so the toggle looked dead",
+    "v5.21: true S+ tier — score 17+ maps to letter S+ and the BEYOND THE TIME bucket above Recommended; S letter (13–16 SP scale) stays Recommended",
+    "v5.22: top bucket display label BEYOND THE TIME (same in all locales; letter grade S+ unchanged)"
   ],
   "exclude_warships": true,
   "exclude_ur_units": true,
@@ -1470,7 +1472,7 @@
     ]
   },
   "letter_cutoffs": [
-    { "min": 15, "letter": "S+" },
+    { "min": 17, "letter": "S+" },
     { "min": 13, "letter": "S" },
     { "min": 11, "letter": "A+" },
     { "min": 9, "letter": "A" },
@@ -1481,40 +1483,40 @@
     { "min": -999, "letter": "E" }
   ],
   "ur_letter_cutoffs": [
-    { "min": 22, "letter": "S+" },
-    { "min": 18, "letter": "S" },
-    { "min": 14, "letter": "A+" },
-    { "min": 12, "letter": "A" },
-    { "min": 10, "letter": "B+" },
-    { "min": 8, "letter": "B" },
-    { "min": 5, "letter": "C" },
-    { "min": 3, "letter": "D" },
+    { "min": 17, "letter": "S+" },
+    { "min": 13, "letter": "S" },
+    { "min": 11, "letter": "A+" },
+    { "min": 9, "letter": "A" },
+    { "min": 7, "letter": "B+" },
+    { "min": 5, "letter": "B" },
+    { "min": 2, "letter": "C" },
+    { "min": 0, "letter": "D" },
     { "min": -999, "letter": "E" }
   ],
   "pilot_letter_cutoffs": [
-    { "min": 24, "letter": "S+" },
-    { "min": 21, "letter": "S" },
-    { "min": 18, "letter": "A+" },
-    { "min": 15, "letter": "A" },
-    { "min": 12, "letter": "B+" },
-    { "min": 9, "letter": "B" },
-    { "min": 5, "letter": "C" },
-    { "min": 2, "letter": "D" },
+    { "min": 17, "letter": "S+" },
+    { "min": 13, "letter": "S" },
+    { "min": 11, "letter": "A+" },
+    { "min": 9, "letter": "A" },
+    { "min": 7, "letter": "B+" },
+    { "min": 5, "letter": "B" },
+    { "min": 2, "letter": "C" },
+    { "min": 0, "letter": "D" },
     { "min": -999, "letter": "E" }
   ],
   "ur_pilot_letter_cutoffs": [
-    { "min": 32, "letter": "S+" },
-    { "min": 26, "letter": "S" },
-    { "min": 22, "letter": "A+" },
-    { "min": 18, "letter": "A" },
-    { "min": 15, "letter": "B+" },
-    { "min": 11, "letter": "B" },
-    { "min": 7, "letter": "C" },
-    { "min": 3, "letter": "D" },
+    { "min": 17, "letter": "S+" },
+    { "min": 13, "letter": "S" },
+    { "min": 11, "letter": "A+" },
+    { "min": 9, "letter": "A" },
+    { "min": 7, "letter": "B+" },
+    { "min": 5, "letter": "B" },
+    { "min": 2, "letter": "C" },
+    { "min": 0, "letter": "D" },
     { "min": -999, "letter": "E" }
   ],
   "bucket_by_letter": {
-    "S+": "recommended",
+    "S+": "priority",
     "S": "recommended",
     "A+": "solid",
     "A": "solid",
@@ -1525,6 +1527,7 @@
     "E": "niche"
   },
   "bucket_labels": {
+    "priority": "BEYOND THE TIME",
     "recommended": "Recommended",
     "solid": "Solid",
     "situational": "Situational",
@@ -1534,11 +1537,11 @@
     "1370011100"
   ],
   "scoring_guide": {
-    "version": 5.19,
+    "version": 5.22,
     "title": "How Investment Guide scoring works",
     "intro": "Point-sum shortlist for SP Conversion / SSP Conversion investment on Units and Characters (Attack Type / Defense Type / Support Type). Units have separate SP and SSP boards; Characters use SP only. Criteria favor practical sortie tools (MAP Weapon, mobility follow-ups, weapon power) and a deep affinity Character pool over a single linked recommend. Minor Attack Type stats (HP, SSP EN) are upside-only — no floor punishment. Close letters still need a human look.",
     "overrides": [
-      "Each axis adds points; the total becomes a letter, then a bucket (Recommended / Solid / Situational / Niche).",
+      "Each axis adds points; the total becomes a letter, then a bucket (BEYOND THE TIME / Recommended / Solid / Situational / Niche). Score 17+ earns letter S+ and the BEYOND THE TIME bucket.",
       "Filter by Tag or Eternal Road Expert stage to compare Units that actually fit the same restriction."
     ],
     "gaps": [

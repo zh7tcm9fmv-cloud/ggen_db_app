@@ -21,7 +21,7 @@ import app as A  # noqa: E402
 import sp_investment_rank as SIR  # noqa: E402
 
 LC = "EN"
-BUCKET_ORDER = ("recommended", "solid", "situational", "niche")
+BUCKET_ORDER = ("priority", "recommended", "solid", "situational", "niche")
 
 
 def _calibrate_letters_by_role(

@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const BUCKET_ORDER = ['recommended', 'solid', 'situational', 'niche'];
+  const BUCKET_ORDER = ['priority', 'recommended', 'solid', 'situational', 'niche'];
   const RARITY_BASE_MAP = {
     UR: '/static/images/UI/UI_Common_Tmb_Square_UR_Base.webp',
     SSR: '/static/images/UI/UI_Common_Tmb_Square_SSR_Base.webp',

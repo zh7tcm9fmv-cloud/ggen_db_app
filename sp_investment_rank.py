@@ -3071,7 +3071,8 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "objective": True,
             "summary": "Point total maps to a letter, then to a bucket. Players mainly see buckets.",
             "rows": [
-                {"when": "S+ or S", "result": "Recommended"},
+                {"when": "S+ (score 17+)", "result": "BEYOND THE TIME"},
+                {"when": "S", "result": "Recommended"},
                 {"when": "A+ or A", "result": "Solid"},
                 {"when": "B+ or B", "result": "Situational"},
                 {"when": "C, D, or E", "result": "Niche"},

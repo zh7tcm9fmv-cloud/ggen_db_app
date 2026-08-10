@@ -1,5 +1,5 @@
 /**
- * Investment Priority (/ig) UI strings.
+ * Investment Priority (/ip) UI strings.
  * Prefer official in-game terms from m_help / unit type labels:
  * Units, Characters, MAP Weapon, SP/SSP Conversion, Ultimate Units,
  * Eternal Road, Attack/Defense/Support Type, Vigor (JA: テンション), Tags/Series.
@@ -16,24 +16,28 @@
 
   const BUCKET = {
     EN: {
+      priority: 'BEYOND THE TIME',
       recommended: 'Recommended',
       solid: 'Solid',
       situational: 'Situational',
       niche: 'Niche',
     },
     JA: {
+      priority: 'BEYOND THE TIME',
       recommended: '推奨',
       solid: '堅実',
       situational: '状況次第',
       niche: 'ニッチ',
     },
     TW: {
+      priority: 'BEYOND THE TIME',
       recommended: '推薦',
       solid: '穩健',
       situational: '看場合',
       niche: '小眾',
     },
     HK: {
+      priority: 'BEYOND THE TIME',
       recommended: '推薦',
       solid: '穩健',
       situational: '睇場合',
@@ -48,7 +52,7 @@
       brand_sub: 'Investment Priority',
       back_db: '← Database',
       preview_banner:
-        'Friends preview · live at /IG, not in the main nav yet. Tell us what looks wrong.',
+        'Friends preview · live at /IP, not in the main nav yet. Tell us what looks wrong.',
       preview_strong: 'Friends preview',
       hero_kicker: 'SP Conversion & SSP Conversion priorities',
       hero_title: 'Investment Priority',
@@ -93,6 +97,8 @@
       stat_mov: 'MOV',
       foot:
         'This page is not affiliated with Bandai Namco Entertainment Inc. Scoring is a neutral point-sum guide; letters may not match other lists.',
+      credit_line: 'Credit: PhiphyL',
+      credit_aria: 'Credit',
       close: 'Close',
       loading: 'Loading…',
       showing: 'Showing {shown} of {total} · {board} · {role}',
@@ -135,7 +141,7 @@
       page_title: '投資優先度 - GGen Eternal Database',
       brand_sub: '投資優先度',
       back_db: '← データベース',
-      preview_banner: 'フレンド向けプレビュー · /IG で公開中（メインナビ未掲載）。気になる点があれば教えてください。',
+      preview_banner: 'フレンド向けプレビュー · /IP で公開中（メインナビ未掲載）。気になる点があれば教えてください。',
       preview_strong: 'フレンド向けプレビュー',
       hero_kicker: 'SP化・SSP化の優先度',
       hero_title: '投資優先度',
@@ -180,6 +186,8 @@
       stat_mov: '移動力',
       foot:
         '本ページはバンダイナムコエンターテインメント非公式です。スコアは中立の点加算ガイドであり、他リストの評価と一致しない場合があります。',
+      credit_line: 'Credit: PhiphyL',
+      credit_aria: 'クレジット',
       close: '閉じる',
       loading: '読み込み中…',
       showing: '{shown} / {total} 件表示 · {board} · {role}',
@@ -222,7 +230,7 @@
       page_title: '投資優先度 - GGen Eternal Database',
       brand_sub: '投資優先度',
       back_db: '← 資料庫',
-      preview_banner: '好友預覽 · 已在 /IG 上線，尚未放入主選單。有問題請告訴我們。',
+      preview_banner: '好友預覽 · 已在 /IP 上線，尚未放入主選單。有問題請告訴我們。',
       preview_strong: '好友預覽',
       hero_kicker: 'SP化與 SSP化優先度',
       hero_title: '投資優先度',
@@ -267,6 +275,8 @@
       stat_mov: '移動力',
       foot:
         '本頁非萬代南夢宮娛樂官方。評分為中立加分指南，字母等級可能與其他榜單不同。',
+      credit_line: 'Credit: PhiphyL',
+      credit_aria: '鳴謝',
       close: '關閉',
       loading: '載入中…',
       showing: '顯示 {shown} / {total} · {board} · {role}',
@@ -308,7 +318,7 @@
       page_title: '投資優先度 - GGen Eternal Database',
       brand_sub: '投資優先度',
       back_db: '← 資料庫',
-      preview_banner: '好友預覽 · 已在 /IG 上線，尚未放入主選單。有問題請話我哋知。',
+      preview_banner: '好友預覽 · 已在 /IP 上線，尚未放入主選單。有問題請話我哋知。',
       preview_strong: '好友預覽',
       hero_kicker: 'SP化同 SSP化優先度',
       hero_title: '投資優先度',
@@ -353,6 +363,8 @@
       stat_mov: '移動力',
       foot:
         '本頁非萬代南夢宮娛樂官方。評分為中立加分指南，字母等級可能同其他榜單唔一樣。',
+      credit_line: 'Credit: PhiphyL',
+      credit_aria: '鳴謝',
       close: '關閉',
       loading: '載入中…',
       showing: '顯示 {shown} / {total} · {board} · {role}',

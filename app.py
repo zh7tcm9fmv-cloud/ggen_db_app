@@ -15447,8 +15447,8 @@ def _render_sp_investment_public():
     return r
 
 
-@app.route('/IG')
-@app.route('/ig')
+@app.route('/IP')
+@app.route('/ip')
 @app.route('/investment-priority')
 @app.route('/investment-guide')
 @app.route('/sp-list')
@@ -15467,6 +15467,13 @@ def sp_investment_page():
         r.headers['Cache-Control'] = 'no-store'
         return r
     return _render_sp_investment_public()
+
+
+@app.route('/IG')
+@app.route('/ig')
+def sp_investment_ig_redirect():
+    """Legacy soft-launch path → /ip."""
+    return redirect('/ip', code=301)
 
 
 @app.route('/sp-list-preview')
@@ -15709,18 +15716,21 @@ def _sp_investment_localize_payload(payload, lc):
     loc_bl = {
         'EN': bl,
         'JA': {
+            'priority': 'BEYOND THE TIME',
             'recommended': '推奨',
             'solid': '堅実',
             'situational': '状況次第',
             'niche': 'ニッチ',
         },
         'TW': {
+            'priority': 'BEYOND THE TIME',
             'recommended': '推薦',
             'solid': '穩健',
             'situational': '看場合',
             'niche': '小眾',
         },
         'HK': {
+            'priority': 'BEYOND THE TIME',
             'recommended': '推薦',
             'solid': '穩健',
             'situational': '睇場合',
@@ -24283,7 +24293,7 @@ def sitemap_xml():
     base = (request.url_root or 'https://ggendb.up.railway.app/').rstrip('/')
     # Prefer real public pages with distinct titles over SPA short-paths alone.
     paths = [
-        '/', '/ig', '/game-news', '/about', '/contact', '/privacy-policy',
+        '/', '/ip', '/game-news', '/about', '/contact', '/privacy-policy',
         '/c', '/u', '/s', '/st', '/cal', '/tb', '/tl', '/ml', '/rk', '/op', '/new', '/esim',
     ]
     urls = ''.join(

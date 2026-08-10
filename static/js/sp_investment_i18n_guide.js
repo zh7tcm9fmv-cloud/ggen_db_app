@@ -9,7 +9,7 @@
   const GUIDE = {
     "EN": {
       "overrides": [
-        "Each axis adds points; the total becomes a letter, then a bucket (Recommended / Solid / Situational / Niche).",
+        "Each axis adds points; the total becomes a letter, then a bucket (BEYOND THE TIME / Recommended / Solid / Situational / Niche). Score 17+ earns letter S+ and the BEYOND THE TIME bucket.",
         "Filter by Tag or Eternal Road Expert stage to compare Units that actually fit the same restriction."
       ],
       "gaps": [
@@ -91,12 +91,14 @@
         "title": "レターからの区分",
         "summary": "点合計がレターになり、さらに区分へ振り分けられます。プレイヤーは主に区分を見ます。",
         "when": {
-          "S+ or S": "S+ または S",
+          "S+ (score 17+)": "S+（17点以上）",
+          "S": "S",
           "A+ or A": "A+ または A",
           "B+ or B": "B+ または B",
           "C, D, or E": "C、D、または E"
         },
         "result": {
+          "BEYOND THE TIME": "BEYOND THE TIME",
           "Recommended": "推奨",
           "Solid": "堅実",
           "Situational": "状況次第",
@@ -838,12 +840,14 @@
         "title": "由字母到分桶",
         "summary": "點數合計對應字母，再對應分桶。玩家主要看分桶。",
         "when": {
-          "S+ or S": "S+ 或 S",
+          "S+ (score 17+)": "S+（17 分以上）",
+          "S": "S",
           "A+ or A": "A+ 或 A",
           "B+ or B": "B+ 或 B",
           "C, D, or E": "C、D 或 E"
         },
         "result": {
+          "BEYOND THE TIME": "BEYOND THE TIME",
           "Recommended": "推薦",
           "Solid": "穩健",
           "Situational": "看場合",
@@ -1581,12 +1585,14 @@
         "title": "由字母到分桶",
         "summary": "點數合計對應字母，再對應分桶。玩家主要睇分桶。",
         "when": {
-          "S+ or S": "S+ 或 S",
+          "S+ (score 17+)": "S+（17 分以上）",
+          "S": "S",
           "A+ or A": "A+ 或 A",
           "B+ or B": "B+ 或 B",
           "C, D, or E": "C、D 或 E"
         },
         "result": {
+          "BEYOND THE TIME": "BEYOND THE TIME",
           "Recommended": "推薦",
           "Solid": "穩健",
           "Situational": "睇場合",

@@ -38,6 +38,7 @@ class TestSpInvestmentBands(unittest.TestCase):
 
     def test_rules_version_5(self):
         self.assertEqual(self.rules.get("version"), 5)
+        self.assertEqual(self.rules["bucket_labels"]["priority"], "BEYOND THE TIME")
         self.assertEqual(self.rules["bucket_labels"]["recommended"], "Recommended")
         self.assertEqual(self.rules["bucket_labels"]["niche"], "Niche")
 
@@ -512,8 +513,9 @@ class TestSpInvestmentBands(unittest.TestCase):
         self.assertFalse(scored["meta"].get("abilities", {}).get("heuristic"))
         self.assertNotIn("abilities", scored["meta"].get("heuristic_keys") or [])
         self.assertEqual(scored["letter"], "S+")
-        self.assertEqual(scored["bucket"], "recommended")
-        self.assertEqual(bucket_for_letter(self.rules, "A"), "solid")
+        self.assertEqual(scored["bucket"], "priority")
+        self.assertEqual(bucket_for_letter(self.rules, "S+"), "priority")
+        self.assertEqual(bucket_for_letter(self.rules, "S"), "recommended")
         self.assertEqual(bucket_for_letter(self.rules, "C"), "niche")
 
     def test_structured_permanent_atk_scores_zero(self):
