@@ -715,10 +715,10 @@
   function rarityOk(row) {
     const ri = rarityIndex(row);
     if (entity === 'characters') {
-      // No UR characters on this board. Default = SSR + SR; checkbox adds N/R only.
+      // No UR/Ultimate characters. Default = SSR only; checkbox adds N/R/SR.
       if (ri >= 5 || ri < 1) return false;
       if (showLowRarity) return ri <= 4;
-      return ri === 3 || ri === 4;
+      return ri === 4;
     }
     // Units: default SSR / UR / Ultimate; checkbox adds N/R/SR.
     if (showLowRarity) return true;
