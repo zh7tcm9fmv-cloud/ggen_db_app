@@ -1,5 +1,5 @@
 /**
- * Investment Guide (/ig) UI strings.
+ * Investment Priority (/ig) UI strings.
  * Prefer official in-game terms from m_help / unit type labels:
  * Units, Characters, MAP Weapon, SP/SSP Conversion, Ultimate Units,
  * Eternal Road, Attack/Defense/Support Type, Vigor (JA: テンション), Tags/Series.
@@ -44,14 +44,14 @@
   /** Shared page chrome — keys used by template data-i18n and JS t(). */
   const UI = {
     EN: {
-      page_title: 'Investment Guide - GGen Eternal Database',
-      brand_sub: 'Investment Guide',
+      page_title: 'Investment Priority - GGen Eternal Database',
+      brand_sub: 'Investment Priority',
       back_db: '← Database',
       preview_banner:
         'Friends preview · live at /IG, not in the main nav yet. Tell us what looks wrong.',
       preview_strong: 'Friends preview',
       hero_kicker: 'SP Conversion & SSP Conversion priorities',
-      hero_title: 'Investment Guide',
+      hero_title: 'Investment Priority',
       hero_lead:
         'Should you invest SP Conversion or SSP Conversion materials on this Unit or Character? Neutral shortlist buckets: Recommended, Solid, Situational, Niche. Not a damage calculator. Unit SP and SSP boards use separate weapon baselines.',
       disclaimer:
@@ -74,7 +74,9 @@
       show_low_rarity_units: ' Show N/R/SR',
       show_low_rarity_chars: ' Show N/R/SR',
       map_only: 'MAP Weapon only',
-      sp_eligible_only: 'SP Conversion targets only (Ultimate Units stay)',
+      sp_eligible_only: 'SP Conversion targets only',
+      ult_toggle_title: 'Ultimate Units',
+      ult_toggle_aria: 'Show Ultimate Units',
       all_sources: 'All sources',
       source_gacha: 'Units from Unit Assembly',
       source_event: 'Other',
@@ -120,8 +122,8 @@
       recommend_sd:
         'SD Characters are permanently linked to their Unit and are not interchangeable; no recommendation list.',
       no_bucket: 'No Units in this bucket for current filters.',
-      status_error: 'Could not load Investment Guide data.',
-      guide_title: 'How Investment Guide scoring works',
+      status_error: 'Could not load Investment Priority data.',
+      guide_title: 'How Investment Priority scoring works',
       guide_intro:
         'Point-sum shortlist for SP Conversion / SSP Conversion investment on Units and Characters (Attack Type / Defense Type / Support Type). Units have separate SP and SSP boards; Characters use SP only. Criteria favor practical sortie tools (MAP Weapon, mobility follow-ups, weapon power) and a deep affinity Character pool over a single linked recommend. Minor Attack Type stats (HP, SSP EN) are upside-only — no floor punishment. Close letters still need a human look.',
       criteria_aria: 'Objective scoring criteria',
@@ -130,13 +132,13 @@
       lang_aria: 'Language',
     },
     JA: {
-      page_title: '投資ガイド - GGen Eternal Database',
-      brand_sub: '投資ガイド',
+      page_title: '投資優先度 - GGen Eternal Database',
+      brand_sub: '投資優先度',
       back_db: '← データベース',
       preview_banner: 'フレンド向けプレビュー · /IG で公開中（メインナビ未掲載）。気になる点があれば教えてください。',
       preview_strong: 'フレンド向けプレビュー',
       hero_kicker: 'SP化・SSP化の優先度',
-      hero_title: '投資ガイド',
+      hero_title: '投資優先度',
       hero_lead:
         'このユニット／キャラクターに SP化・SSP化の素材を使うべきか？ 中立の候補区分：推奨・堅実・状況次第・ニッチ。ダメージ計算機ではありません。ユニットの SP / SSP 盤は武装基準が別です。',
       disclaimer:
@@ -159,7 +161,9 @@
       show_low_rarity_units: ' N/R/SR を表示',
       show_low_rarity_chars: ' N/R/SR を表示',
       map_only: 'MAP兵器のみ',
-      sp_eligible_only: 'SP化対象のみ（アルティメットユニットは残す）',
+      sp_eligible_only: 'SP化対象のみ',
+      ult_toggle_title: 'アルティメットユニット',
+      ult_toggle_aria: 'アルティメットユニットを表示',
       all_sources: 'すべての入手元',
       source_gacha: 'ユニット補給',
       source_event: 'その他',
@@ -205,8 +209,8 @@
       recommend_sd:
         'SDキャラクターはユニットと固定リンクのため入れ替え不可です。推奨リストはありません。',
       no_bucket: 'この区分に、現在のフィルタ条件のユニットはありません。',
-      status_error: '投資ガイドデータを読み込めませんでした。',
-      guide_title: '投資ガイドのスコアリング',
+      status_error: '投資優先度データを読み込めませんでした。',
+      guide_title: '投資優先度のスコアリング',
       guide_intro:
         'ユニット／キャラクター（攻撃型・耐久型・支援型）への SP化・SSP化投資の点加算ショートリストです。ユニットは SP / SSP 別ボード、キャラクターは SP のみ。MAP兵器・追加行動・武装威力など実戦向きの要素と、深いアフィニティ候補を重視します。',
       criteria_aria: '客観スコア基準',
@@ -215,13 +219,13 @@
       lang_aria: '言語',
     },
     TW: {
-      page_title: '投資指南 - GGen Eternal Database',
-      brand_sub: '投資指南',
+      page_title: '投資優先度 - GGen Eternal Database',
+      brand_sub: '投資優先度',
       back_db: '← 資料庫',
       preview_banner: '好友預覽 · 已在 /IG 上線，尚未放入主選單。有問題請告訴我們。',
       preview_strong: '好友預覽',
       hero_kicker: 'SP化與 SSP化優先度',
-      hero_title: '投資指南',
+      hero_title: '投資優先度',
       hero_lead:
         '該不該把 SP化／SSP化素材投在這名單位或角色上？中立候選分桶：推薦、穩健、看場合、小眾。不是傷害計算器。單位的 SP／SSP 盤使用不同武裝基準。',
       disclaimer:
@@ -244,7 +248,9 @@
       show_low_rarity_units: ' 顯示 N/R/SR',
       show_low_rarity_chars: ' 顯示 N/R/SR',
       map_only: '僅 MAP兵器',
-      sp_eligible_only: '僅 SP化對象（保留終極單位）',
+      sp_eligible_only: '僅 SP化對象',
+      ult_toggle_title: '終極單位',
+      ult_toggle_aria: '顯示終極單位',
       all_sources: '全部取得來源',
       source_gacha: '單位補給獲得單位',
       source_event: '其他',
@@ -289,8 +295,8 @@
       recommend_none: '目前看板沒有符合項目。',
       recommend_sd: 'SD 角色與單位永久綁定、不可互換，因此沒有推薦清單。',
       no_bucket: '此分桶在目前篩選下沒有單位。',
-      status_error: '無法載入投資指南資料。',
-      guide_title: '投資指南評分說明',
+      status_error: '無法載入投資優先度資料。',
+      guide_title: '投資優先度評分說明',
       guide_intro:
         '單位／角色（攻擊型／耐久型／支援型）的 SP化／SSP化投資加分清單。單位分 SP／SSP 看板，角色僅 SP。偏重 MAP兵器、追加行動、武裝威力，以及較深的親和角色池。',
       criteria_aria: '客觀評分條件',
@@ -299,13 +305,13 @@
       lang_aria: '語言',
     },
     HK: {
-      page_title: '投資指南 - GGen Eternal Database',
-      brand_sub: '投資指南',
+      page_title: '投資優先度 - GGen Eternal Database',
+      brand_sub: '投資優先度',
       back_db: '← 資料庫',
       preview_banner: '好友預覽 · 已在 /IG 上線，尚未放入主選單。有問題請話我哋知。',
       preview_strong: '好友預覽',
       hero_kicker: 'SP化同 SSP化優先度',
-      hero_title: '投資指南',
+      hero_title: '投資優先度',
       hero_lead:
         '應唔應該將 SP化／SSP化素材投喺呢個單位或角色？中立候選分桶：推薦、穩健、睇場合、小眾。唔係傷害計算器。單位嘅 SP／SSP 盤用唔同武裝基準。',
       disclaimer:
@@ -328,7 +334,9 @@
       show_low_rarity_units: ' 顯示 N/R/SR',
       show_low_rarity_chars: ' 顯示 N/R/SR',
       map_only: '只顯示 MAP兵器',
-      sp_eligible_only: '只顯示 SP化對象（保留終極單位）',
+      sp_eligible_only: '只顯示 SP化對象',
+      ult_toggle_title: '終極單位',
+      ult_toggle_aria: '顯示終極單位',
       all_sources: '全部取得來源',
       source_gacha: '單位補給獲得單位',
       source_event: '其他',
@@ -373,8 +381,8 @@
       recommend_none: '而家看板冇符合項目。',
       recommend_sd: 'SD 角色同單位永久綁定、唔可互換，所以冇推薦清單。',
       no_bucket: '呢個分桶喺而家篩選下冇單位。',
-      status_error: '載入唔到投資指南資料。',
-      guide_title: '投資指南評分說明',
+      status_error: '載入唔到投資優先度資料。',
+      guide_title: '投資優先度評分說明',
       guide_intro:
         '單位／角色（攻擊型／耐久型／支援型）嘅 SP化／SSP化投資加分清單。單位分 SP／SSP 看板，角色淨係 SP。偏重 MAP兵器、追加行動、武裝威力，同埋較深嘅親和角色池。',
       criteria_aria: '客觀評分條件',

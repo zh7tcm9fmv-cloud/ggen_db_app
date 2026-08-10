@@ -15376,15 +15376,16 @@ _PUBLISHED_SP_INVESTMENT_FILE = os.path.join(app_dir, 'data', 'published', 'sp_i
 
 
 def _sp_investment_public_enabled():
-    """Investment Guide is offline by default; set SP_INVESTMENT_PUBLIC=1 to publish."""
-    return str(os.environ.get('SP_INVESTMENT_PUBLIC', '') or '').strip() == '1'
+    """Investment Priority is public by default. Set SP_INVESTMENT_PUBLIC=0 to take offline."""
+    v = str(os.environ.get('SP_INVESTMENT_PUBLIC', '1') or '1').strip().lower()
+    return v not in ('0', 'false', 'off', 'no')
 
 
 def _sp_investment_is_preview_request():
-    """Unlisted soft-launch URLs (/IG, /sp-list-preview) or explicit ?preview=1 API unlock."""
+    """Unlisted soft-launch URLs (/sp-list-preview) or explicit ?preview=1 API unlock."""
     path = (request.path or '').rstrip('/')
     low = path.lower()
-    if low.endswith('/ig') or low.endswith('/sp-list-preview') or low.endswith('/sp-list-demo'):
+    if low.endswith('/sp-list-preview') or low.endswith('/sp-list-demo'):
         return True
     if str(request.args.get('preview') or '').strip() == '1':
         return True
@@ -15430,26 +15431,31 @@ def _render_sp_investment_soft_launch(spi_preview=True):
     return r
 
 
+def _render_sp_investment_public():
+    """Public Investment Priority page (indexed, linked from main nav)."""
+    ver = _app_js_bundle_version_tag()
+    r = make_response(render_template(
+        'sp_investment.html',
+        image_cdn=IMAGE_CDN or '',
+        font_cdn=FONT_CDN or '',
+        game_images_use_cdn=GAME_IMAGES_USE_CDN,
+        app_js_version=ver,
+        spi_preview=False,
+        spi_soft_launch=False,
+    ))
+    r.headers['Cache-Control'] = 'public, max-age=300'
+    return r
+
+
 @app.route('/IG')
 @app.route('/ig')
-def sp_investment_ig_page():
-    """Friends soft-launch of Investment Guide — not in nav yet."""
-    return _render_sp_investment_soft_launch(spi_preview=True)
-
-
-@app.route('/sp-list-preview')
-@app.route('/sp-list-demo')
-def sp_investment_preview_page():
-    """Unlisted preview — not linked from nav. Works while SP_INVESTMENT_PUBLIC is off."""
-    return _render_sp_investment_soft_launch(spi_preview=True)
-
-
+@app.route('/investment-priority')
 @app.route('/investment-guide')
 @app.route('/sp-list')
 @app.route('/en/sp-list')
 @app.route('/en/investment-guide')
 def sp_investment_page():
-    """SP/SSP chip investment guide (precomputed suggestion buckets)."""
+    """Investment Priority — SP/SSP shortlist boards (precomputed suggestion buckets)."""
     ver = _app_js_bundle_version_tag()
     if not _sp_investment_public_enabled():
         r = make_response(render_template(
@@ -15460,16 +15466,14 @@ def sp_investment_page():
         ))
         r.headers['Cache-Control'] = 'no-store'
         return r
-    r = make_response(render_template(
-        'sp_investment.html',
-        image_cdn=IMAGE_CDN or '',
-        font_cdn=FONT_CDN or '',
-        game_images_use_cdn=GAME_IMAGES_USE_CDN,
-        app_js_version=ver,
-        spi_preview=False,
-    ))
-    r.headers['Cache-Control'] = 'public, max-age=300'
-    return r
+    return _render_sp_investment_public()
+
+
+@app.route('/sp-list-preview')
+@app.route('/sp-list-demo')
+def sp_investment_preview_page():
+    """Unlisted preview — works while SP_INVESTMENT_PUBLIC is off."""
+    return _render_sp_investment_soft_launch(spi_preview=True)
 
 
 def _sp_investment_attach_board(buckets, kind):
@@ -15858,7 +15862,7 @@ def _sp_investment_payload_for_lang(path, lc):
 def api_sp_investment():
     """Serve offline SP/SSP investment rankings with portrait thumbnails."""
     if not _sp_investment_serve_live():
-        return jsonify({'error': 'Investment Guide is under review'}), 404
+        return jsonify({'error': 'Investment Priority is temporarily offline'}), 404
     path = _sp_investment_json_path()
     if not os.path.isfile(path):
         return jsonify({'error': 'sp_investment_v1.json not found — run scripts/build_sp_investment_rankings.py'}), 404
@@ -24279,7 +24283,7 @@ def sitemap_xml():
     base = (request.url_root or 'https://ggendb.up.railway.app/').rstrip('/')
     # Prefer real public pages with distinct titles over SPA short-paths alone.
     paths = [
-        '/', '/game-news', '/about', '/contact', '/privacy-policy',
+        '/', '/ig', '/game-news', '/about', '/contact', '/privacy-policy',
         '/c', '/u', '/s', '/st', '/cal', '/tb', '/tl', '/ml', '/rk', '/op', '/new', '/esim',
     ]
     urls = ''.join(

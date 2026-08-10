@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Investment Guide - GGen Eternal Database</title>
+<title>Investment Priority - GGen Eternal Database</title>
 <link rel="preload" href="{{ url_for('static', filename='font/roboto_medium_numbers.ttf') }}?v={{ app_js_version }}" as="font" type="font/ttf" crossorigin>
 <style>
 @font-face{font-family:'RobotoMediumNumbers';src:url('{{ url_for('static', filename='font/roboto_medium_numbers.ttf') }}?v={{ app_js_version }}') format('truetype');font-weight:normal;font-style:normal;font-display:swap}
@@ -42,7 +42,7 @@ try {
             <span class="brand-word brand-word-db brand-frame-3">DB</span>
           </h1>
         </div>
-        <div class="brand-sub" data-i18n="brand_sub">Investment Guide</div>
+        <div class="brand-sub" data-i18n="brand_sub">Investment Priority</div>
       </div>
     </a>
     <div class="spi-header-actions">
@@ -67,7 +67,7 @@ try {
   <header class="spi-hero">
     <div class="spi-hero-copy">
       <p class="spi-hero-kicker" data-i18n="hero_kicker">SP Conversion &amp; SSP Conversion priorities</p>
-      <h1 class="spi-hero-title" data-i18n="hero_title">Investment Guide</h1>
+      <h1 class="spi-hero-title" data-i18n="hero_title">Investment Priority</h1>
       <p class="spi-hero-lead" data-i18n="hero_lead">Should you invest SP Conversion or SSP Conversion materials on this Unit or Character? Neutral shortlist buckets: Recommended, Solid, Situational, Niche. Not a damage calculator. Unit SP and SSP boards use separate weapon baselines.</p>
     </div>
     <ul class="spi-hero-buckets" data-i18n-aria="buckets_aria" aria-label="Shortlist buckets">
@@ -128,6 +128,9 @@ try {
           <button type="button" class="role-filter-btn spi-board-btn" data-board="ssp" title="SSP Conversion" aria-label="SSP">
             <img class="filter-inline-icon role-filter-chip spi-board-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_Icon_Ssp.webp{% else %}/static/images/UI/UI_Common_Icon_Ssp.webp{% endif %}" alt="" width="36" height="18" loading="lazy" decoding="async">
           </button>
+          <button type="button" class="role-filter-btn spi-board-btn spi-ult-toggle" id="spiUltToggle" aria-pressed="false" data-i18n-title="ult_toggle_title" title="Ultimate Units" data-i18n-aria="ult_toggle_aria" aria-label="Ultimate Units">
+            <img class="filter-inline-icon role-filter-chip spi-board-icon spi-ult-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_Icon_ULT.webp{% else %}/static/images/UI/UI_Common_Icon_ULT.webp{% endif %}" alt="" width="28" height="18" loading="lazy" decoding="async">
+          </button>
         </div>
         <div class="spi-seg spi-role-seg" role="group" aria-label="Role" data-i18n-aria="role_aria">
           <button type="button" class="role-filter-btn active" data-role="Attack" title="Attack Type">
@@ -145,7 +148,7 @@ try {
       <div class="spi-filter-row spi-filter-row--secondary">
         <label class="spi-check"><input type="checkbox" id="spiShowLowRarity"><span id="spiLowRarityLabel"> Show N/R/SR</span></label>
         <label class="spi-check" id="spiMapOnlyWrap"><input type="checkbox" id="spiMapOnly"> <span data-i18n="map_only">MAP Weapon only</span></label>
-        <label class="spi-check"><input type="checkbox" id="spiHasSpOnly" checked> <span data-i18n="sp_eligible_only">SP Conversion targets only (Ultimate Units stay)</span></label>
+        <label class="spi-check"><input type="checkbox" id="spiHasSpOnly" checked> <span data-i18n="sp_eligible_only">SP Conversion targets only</span></label>
 
         <div class="rarity-filter-wrap source-filter-wrap" id="spiSourceWrap">
           <button type="button" class="rarity-filter-btn role-filter-dd-btn" id="spiSourceFilterBtn" aria-expanded="false" aria-haspopup="true" title="Source" data-i18n-title="source_filter_title">

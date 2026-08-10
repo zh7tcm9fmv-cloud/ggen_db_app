@@ -467,6 +467,17 @@ html.spi-modal-open body.spi-page {
   height: 18px;
   object-fit: contain;
 }
+.spi-ult-toggle {
+  margin-left: 2px;
+}
+.spi-ult-toggle .spi-ult-icon {
+  height: 18px;
+  width: auto;
+}
+.spi-ult-toggle[aria-pressed='true'],
+.spi-ult-toggle.active {
+  box-shadow: inset 0 0 0 1px rgba(232, 168, 56, 0.55);
+}
 .spi-check {
   display: inline-flex;
   align-items: center;

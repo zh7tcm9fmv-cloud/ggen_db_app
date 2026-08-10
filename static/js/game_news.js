@@ -10,24 +10,28 @@ const UI = {
   EN: {
     page_title: 'Game News',
     nav_home: '← GGen Eternal Database',
+    nav_investment: 'Investment Priority',
     iframe_title: 'SD Gundam G Generation ETERNAL — update information',
     close: 'Close',
   },
   TW: {
     page_title: '遊戲公告',
     nav_home: '← GGen 資料庫',
+    nav_investment: '投資優先度',
     iframe_title: 'SD鋼彈 G世代 永恆 — 更新資訊',
     close: '關閉',
   },
   HK: {
     page_title: '遊戲公告',
     nav_home: '← GGen 資料庫',
+    nav_investment: '投資優先度',
     iframe_title: 'SD高達 G世代 永恆 — 更新資訊',
     close: '關閉',
   },
   JP: {
     page_title: 'ゲームニュース',
     nav_home: '← GGen Eternal Database',
+    nav_investment: '投資優先度',
     iframe_title: 'SDガンダム ジージェネ エターナル — 更新情報',
     close: '閉じる',
   },
@@ -178,6 +182,11 @@ function applyGameNewsUi() {
     const lbl = navEl.querySelector('.nav-tab-label');
     if (lbl) lbl.textContent = u.nav_home;
     else navEl.textContent = u.nav_home;
+  }
+  const navInv = document.getElementById('gameNewsNavInvestment');
+  if (navInv) {
+    const lbl = navInv.querySelector('.nav-tab-label');
+    if (lbl) lbl.textContent = u.nav_investment;
   }
   const ifr = document.getElementById('gameNewsFrame');
   if (ifr) {

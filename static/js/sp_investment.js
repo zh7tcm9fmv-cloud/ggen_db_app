@@ -618,6 +618,7 @@
   let showLowRarity = false;
   let mapOnly = false;
   let hasSpOnly = true;
+  let showUlt = false;
   let sourceFilter = 'all';
   let tagFilter = '';
   let erFilter = '';
@@ -712,6 +713,10 @@
     return map[String((row && row.rarity) || '').toUpperCase()] || 0;
   }
 
+  function isUltimateRow(row) {
+    return row && (row.is_ultimate === true || row.is_ultimate === 1);
+  }
+
   function rarityOk(row) {
     const ri = rarityIndex(row);
     if (entity === 'characters') {
@@ -722,7 +727,7 @@
     }
     // Units: default SSR / UR / Ultimate; checkbox adds N/R/SR.
     if (showLowRarity) return true;
-    if (ri >= 4 || row.is_ultimate === true || row.is_ultimate === 1) return true;
+    if (ri >= 4 || isUltimateRow(row)) return true;
     return false;
   }
 
@@ -806,8 +811,11 @@
     if (String(row.role_id || '') === '0') return false;
     if ((row.role || '') !== role) return false;
     if (!rarityOk(row)) return false;
-    // SP-eligible filter keeps Ultimate units (UR rarity without Ultimate is omitted from data).
-    if (hasSpOnly && !row.has_sp && !row.is_ultimate) return false;
+    const ult = isUltimateRow(row);
+    // Ultimate Units only when the ULT toggle is on (Units board).
+    if (entity === 'units' && ult && !showUlt) return false;
+    // SP-eligible filter; Ultimate Units use the ULT toggle instead of has_sp.
+    if (hasSpOnly && !row.has_sp && !ult) return false;
     if (entity === 'units' && mapOnly && !row.has_map) return false;
     if (sourceFilter !== 'all' && (row.source || '') !== sourceFilter) return false;
     if (tagFilter) {
@@ -1140,6 +1148,7 @@
     if (entity === 'characters') {
       if (boardTabs) boardTabs.style.display = 'none';
       board = 'sp';
+      showUlt = false;
       if (mapWrap) mapWrap.style.display = 'none';
     } else {
       if (boardTabs) boardTabs.style.display = '';
@@ -1217,7 +1226,7 @@
           ? counts.units_ssp || counts.ssp || 0
           : counts.units_sp || counts.sp || 0;
     const label = entity === 'characters' ? t('pilots_sp') : board.toUpperCase();
-    const cohortNote = !hasSpOnly ? t('cohort_ultimate') : '';
+    const cohortNote = showUlt ? t('cohort_ultimate') : '';
     const advNote = tagFilter ? t('adv_note') : '';
     statusEl.textContent =
       t('showing', { shown, total: totalBoard, board: label, role: tRole(role) }) + cohortNote + advNote;
@@ -1345,15 +1354,21 @@
   }
 
   function applyFilterDom() {
+    syncBoardTabsVisibility();
     document.querySelectorAll('.role-filter-btn[data-entity]').forEach((b) => {
       b.classList.toggle('active', b.dataset.entity === entity);
     });
-    document.querySelectorAll('#spiBoardTabs .role-filter-btn').forEach((b) => {
+    document.querySelectorAll('#spiBoardTabs .role-filter-btn[data-board]').forEach((b) => {
       b.classList.toggle('active', b.dataset.board === board);
     });
     document.querySelectorAll('.spi-role-seg .role-filter-btn').forEach((b) => {
       b.classList.toggle('active', b.dataset.role === role);
     });
+    const ultBtn = $('#spiUltToggle');
+    if (ultBtn) {
+      ultBtn.classList.toggle('active', showUlt);
+      ultBtn.setAttribute('aria-pressed', showUlt ? 'true' : 'false');
+    }
     const low = $('#spiShowLowRarity');
     if (low) low.checked = showLowRarity;
     syncLowRarityLabel();
@@ -1367,7 +1382,6 @@
     const search = $('#spiSearch');
     if (search) search.value = searchQuery;
     syncSearchClear();
-    syncBoardTabsVisibility();
   }
 
   function resetFilters() {
@@ -1376,6 +1390,7 @@
     showLowRarity = false;
     mapOnly = false;
     hasSpOnly = true;
+    showUlt = false;
     sourceFilter = 'all';
     tagFilter = '';
     erFilter = '';
@@ -1470,13 +1485,21 @@
         render();
       });
     });
-    document.querySelectorAll('#spiBoardTabs .role-filter-btn').forEach((btn) => {
+    document.querySelectorAll('#spiBoardTabs .role-filter-btn[data-board]').forEach((btn) => {
       btn.addEventListener('click', () => {
         board = btn.dataset.board || 'sp';
         applyFilterDom();
         render();
       });
     });
+    const ultToggle = $('#spiUltToggle');
+    if (ultToggle) {
+      ultToggle.addEventListener('click', () => {
+        showUlt = !showUlt;
+        applyFilterDom();
+        render();
+      });
+    }
     document.querySelectorAll('.spi-role-seg .role-filter-btn').forEach((btn) => {
       btn.addEventListener('click', () => {
         role = btn.dataset.role || 'Attack';
