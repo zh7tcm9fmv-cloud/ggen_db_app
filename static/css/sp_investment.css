@@ -500,6 +500,14 @@ html.spi-modal-open body.spi-page {
   flex: 0 1 auto;
   max-width: min(260px, 100%);
 }
+/* Browse CSS sets .skill-filter-wrap { display:inline-flex }, which overrides [hidden]. */
+#spiSkillWrap[hidden],
+#spiAbilWrap[hidden] {
+  display: none !important;
+}
+.spi-shell.spi-entity-units #spiSkillWrap {
+  display: none !important;
+}
 .spi-dd-panel--tall {
   width: min(320px, 92vw);
   max-height: min(70vh, 420px);

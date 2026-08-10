@@ -660,7 +660,7 @@
   let entity = 'units';
   let board = 'sp';
   let role = 'Attack';
-  let raritySel = new Set(['SSR', 'UR']);
+  let raritySel = new Set(['SSR']);
   let mapOnly = false;
   let hasSpOnly = true;
   let showUlt = false;
@@ -787,18 +787,22 @@
   }
 
   function rarityKeysForEntity() {
-    return entity === 'characters' ? ['SSR', 'SR', 'R', 'N'] : ['UR', 'SSR', 'SR', 'R', 'N'];
+    // Units: no UR option — Ultimate Units use the ULT toggle. Characters: no UR.
+    return ['SSR', 'SR', 'R', 'N'];
   }
 
   function defaultRaritySel() {
-    return entity === 'characters' ? new Set(['SSR']) : new Set(['SSR', 'UR']);
+    return new Set(['SSR']);
   }
 
   function rarityOk(row) {
+    // Ultimate Units are gated by the ULT toggle, not the rarity multi-select.
+    if (entity === 'units' && isUltimateRow(row)) return true;
     const letter = rarityLetter(row);
     if (!letter) return false;
     // Guide omits non-Ultimate UR pilots; characters never include UR here.
     if (entity === 'characters' && (letter === 'UR' || rarityIndex(row) >= 5)) return false;
+    if (entity === 'units' && letter === 'UR') return false;
     return raritySel.has(letter);
   }
 
@@ -939,15 +943,13 @@
       const ids = row.er_expert_ids || [];
       if (!ids.map(String).includes(String(erFilter))) return false;
     }
-    if (entity === 'characters') {
-      if (skillFilterIds.length) {
-        const have = new Set((row.skills || []).map((s) => String((s && s.id) || '')));
-        if (!skillFilterIds.every((id) => have.has(String(id)))) return false;
-      }
-      if (abilFilterIds.length) {
-        const have = new Set((row.abilities || []).map((a) => String((a && a.id) || '')));
-        if (!abilFilterIds.every((id) => have.has(String(id)))) return false;
-      }
+    if (entity === 'characters' && skillFilterIds.length) {
+      const have = new Set((row.skills || []).map((s) => String((s && s.id) || '')));
+      if (!skillFilterIds.every((id) => have.has(String(id)))) return false;
+    }
+    if (abilFilterIds.length) {
+      const have = new Set((row.abilities || []).map((a) => String((a && a.id) || '')));
+      if (!abilFilterIds.every((id) => have.has(String(id)))) return false;
     }
     const q = searchQuery.trim().toLowerCase();
     if (q && !rowMatchesSearch(row, q)) return false;
@@ -994,6 +996,8 @@
       btn.setAttribute('aria-expanded', 'true');
       btn.classList.add('active');
       if (pfx === 'spiTag' || pfx === 'spiEr' || pfx === 'spiSkill' || pfx === 'spiAbil') {
+        if (pfx === 'spiSkill' && !panel.querySelector('input[type="checkbox"]')) fillSkillPanel();
+        if (pfx === 'spiAbil' && !panel.querySelector('input[type="checkbox"]')) fillAbilPanel();
         const search = panel.querySelector('.filter-dd-search');
         if (search) {
           search.value = '';
@@ -1137,10 +1141,16 @@
     setFilterBtnLabel($('#spiErFilterLabel'), text, !!erFilter);
   }
 
-  function collectPilotKitCatalog(kind) {
+  function collectKitCatalog(kind) {
     const key = kind === 'skill' ? 'skills' : 'abilities';
     const byId = new Map();
-    const buckets = ((payload && payload.characters) || {}).sp || {};
+    let buckets = {};
+    if (entity === 'characters') {
+      buckets = ((payload && payload.characters) || {}).sp || {};
+    } else {
+      const units = (payload && payload.units) || {};
+      buckets = units[board] || units.sp || {};
+    }
     Object.keys(buckets).forEach((bk) => {
       (buckets[bk] || []).forEach((row) => {
         (row[key] || []).forEach((it) => {
@@ -1180,7 +1190,7 @@
     }
     if (btn) btn.classList.add('active');
     if (skillFilterIds.length === 1) {
-      const cat = collectPilotKitCatalog('skill');
+      const cat = collectKitCatalog('skill');
       const hit = cat.find((x) => String(x.id) === String(skillFilterIds[0]));
       const name = (hit && hit.name) || skillFilterIds[0];
       const icon = (hit && hit.icon) || lead;
@@ -1190,26 +1200,39 @@
     label.innerHTML = kitFilterChipHtml(lead, t('skill_filter_n', { n: skillFilterIds.length }));
   }
 
+  function abilFilterTitleKey() {
+    return entity === 'characters' ? 'abil_filter_title' : 'unit_abil_filter_title';
+  }
+
+  function noAbilFilterKey() {
+    return entity === 'characters' ? 'no_abil_filter' : 'no_unit_abil_filter';
+  }
+
+  function abilFilterNKey() {
+    return entity === 'characters' ? 'abil_filter_n' : 'unit_abil_filter_n';
+  }
+
   function updateAbilFilterLabel() {
     const label = $('#spiAbilFilterLabel');
     const btn = $('#spiAbilFilterBtn');
     if (!label) return;
     const lead = SPI_ABIL_FILTER_ICON;
+    if (btn) btn.setAttribute('title', t(abilFilterTitleKey()));
     if (!abilFilterIds.length) {
-      label.innerHTML = kitFilterChipHtml(lead, t('no_abil_filter'));
+      label.innerHTML = kitFilterChipHtml(lead, t(noAbilFilterKey()));
       if (btn) btn.classList.remove('active');
       return;
     }
     if (btn) btn.classList.add('active');
     if (abilFilterIds.length === 1) {
-      const cat = collectPilotKitCatalog('ability');
+      const cat = collectKitCatalog('ability');
       const hit = cat.find((x) => String(x.id) === String(abilFilterIds[0]));
       const name = (hit && hit.name) || abilFilterIds[0];
       const icon = (hit && hit.icon) || lead;
       label.innerHTML = kitFilterChipHtml(icon, name);
       return;
     }
-    label.innerHTML = kitFilterChipHtml(lead, t('abil_filter_n', { n: abilFilterIds.length }));
+    label.innerHTML = kitFilterChipHtml(lead, t(abilFilterNKey(), { n: abilFilterIds.length }));
   }
 
   function kitFilterRowHtml(item, group, checked) {
@@ -1230,7 +1253,7 @@
   function fillSkillPanel() {
     const panel = $('#spiSkillFilterPanel');
     if (!panel) return;
-    const rows = collectPilotKitCatalog('skill')
+    const rows = collectKitCatalog('skill')
       .map((it) => kitFilterRowHtml(it, 'skill', skillFilterIds.includes(String(it.id))))
       .join('');
     panel.innerHTML = `${spiDdSearchWrapHtml(t('skill_search_ph'), t('skill_search_aria'))}
@@ -1258,11 +1281,14 @@
   function fillAbilPanel() {
     const panel = $('#spiAbilFilterPanel');
     if (!panel) return;
-    const rows = collectPilotKitCatalog('ability')
+    const rows = collectKitCatalog('ability')
       .map((it) => kitFilterRowHtml(it, 'abil', abilFilterIds.includes(String(it.id))))
       .join('');
-    panel.innerHTML = `${spiDdSearchWrapHtml(t('abil_search_ph'), t('abil_search_aria'))}
-      <div class="spi-dd-scroll">${rows || ''}<div class="spi-dd-empty" hidden>${esc(t('abil_search_empty'))}</div></div>
+    const searchPh = entity === 'characters' ? t('abil_search_ph') : t('unit_abil_search_ph');
+    const searchAria = entity === 'characters' ? t('abil_search_aria') : t('unit_abil_search_aria');
+    const emptyMsg = entity === 'characters' ? t('abil_search_empty') : t('unit_abil_search_empty');
+    panel.innerHTML = `${spiDdSearchWrapHtml(searchPh, searchAria)}
+      <div class="spi-dd-scroll">${rows || ''}<div class="spi-dd-empty" hidden>${esc(emptyMsg)}</div></div>
       ${spiDdFooterHtml()}`;
     bindSpiDdSearch(panel);
     panel.querySelectorAll('input[type="checkbox"]').forEach((inp) => {
@@ -1283,9 +1309,9 @@
     });
   }
 
-  function renderPilotKitHtml(row) {
+  function renderEntityKitHtml(row, isPilot) {
     const abilities = Array.isArray(row && row.abilities) ? row.abilities : [];
-    const skills = Array.isArray(row && row.skills) ? row.skills : [];
+    const skills = isPilot && Array.isArray(row && row.skills) ? row.skills : [];
     if (!abilities.length && !skills.length) {
       return `<div class="spi-dossier-kit spi-dossier-kit--empty" aria-hidden="true"></div>`;
     }
@@ -1295,13 +1321,15 @@
         : '';
       return `<span class="spi-kit-chip" title="${escAttr(it.name || '')}">${ic}<span class="spi-kit-name">${esc(it.name || '')}</span></span>`;
     };
+    const abilLabel = isPilot ? t('kit_abilities') : t('kit_unit_abilities');
     const abilBlock = abilities.length
-      ? `<div><p class="spi-kit-group-label">${esc(t('kit_abilities'))}</p><div class="spi-kit-row">${abilities.map(chip).join('')}</div></div>`
+      ? `<div><p class="spi-kit-group-label">${esc(abilLabel)}</p><div class="spi-kit-row">${abilities.map(chip).join('')}</div></div>`
       : '';
     const skillBlock = skills.length
       ? `<div><p class="spi-kit-group-label">${esc(t('kit_skills'))}</p><div class="spi-kit-row">${skills.map(chip).join('')}</div></div>`
       : '';
-    return `<div class="spi-dossier-kit" aria-label="${escAttr(t('kit_aria'))}">${abilBlock}${skillBlock}</div>`;
+    const aria = isPilot ? t('kit_aria') : t('kit_unit_aria');
+    return `<div class="spi-dossier-kit" aria-label="${escAttr(aria)}">${abilBlock}${skillBlock}</div>`;
   }
 
   function ddRowHtml(value, label, checked, group, filterText) {
@@ -1591,20 +1619,34 @@
     const mapWrap = $('#spiMapOnlyWrap');
     const skillWrap = $('#spiSkillWrap');
     const abilWrap = $('#spiAbilWrap');
+    const shell = spiRoot();
+    if (shell && shell.classList) {
+      shell.classList.toggle('spi-entity-characters', entity === 'characters');
+      shell.classList.toggle('spi-entity-units', entity !== 'characters');
+      shell.setAttribute('data-spi-entity', entity === 'characters' ? 'characters' : 'units');
+    }
     if (entity === 'characters') {
       if (boardTabs) boardTabs.style.display = 'none';
       board = 'sp';
       showUlt = false;
       if (mapWrap) mapWrap.style.display = 'none';
-      if (skillWrap) skillWrap.hidden = false;
-      if (abilWrap) abilWrap.hidden = false;
+      if (skillWrap) {
+        skillWrap.hidden = false;
+        skillWrap.style.display = '';
+      }
     } else {
       if (boardTabs) boardTabs.style.display = '';
       if (mapWrap) mapWrap.style.display = '';
-      if (skillWrap) skillWrap.hidden = true;
-      if (abilWrap) abilWrap.hidden = true;
+      if (skillWrap) {
+        skillWrap.hidden = true;
+        skillWrap.style.display = 'none';
+      }
       skillFilterIds = [];
-      abilFilterIds = [];
+    }
+    // Unit Ability / Character Abilities filter is available on both boards.
+    if (abilWrap) {
+      abilWrap.hidden = false;
+      abilWrap.style.display = '';
     }
   }
 
@@ -1899,7 +1941,7 @@
           ${advBadge}
         </div>
       </div>
-      ${isPilot ? renderPilotKitHtml(row) : ''}
+      ${renderEntityKitHtml(row, isPilot)}
     </div>`;
 
     const specialtyBlock = renderEntityStatsBlock(row, kind);
@@ -1973,6 +2015,8 @@
         abilFilterIds = [];
         applyFilterDom();
         fillFilterSelects();
+        updateSkillFilterLabel();
+        updateAbilFilterLabel();
         renderScoringGuide();
         render();
       });
@@ -1980,7 +2024,10 @@
     document.querySelectorAll('#spiBoardTabs .role-filter-btn[data-board]').forEach((btn) => {
       btn.addEventListener('click', () => {
         board = btn.dataset.board || 'sp';
+        abilFilterIds = [];
         applyFilterDom();
+        fillAbilPanel();
+        updateAbilFilterLabel();
         render();
       });
     });

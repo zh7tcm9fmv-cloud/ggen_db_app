@@ -2303,16 +2303,20 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     }
 
 
-def _ability_blobs_for_unit(A, uid: str, lc: str, ld: dict, mode: str) -> list[str]:
-    blobs: list[str] = []
+def _unit_ability_kit_items(A, uid: str, lc: str, ld: dict, mode: str) -> list[dict]:
+    """Lean Unit Ability chips (id/name/icon) + blobs for scoring."""
+    items: list[dict] = []
     ldc = A.LANG_DATA.get(lc) or ld
     replace_map = (A.unit_ssp_abil_replace_map.get(uid, {}) or {}) if mode == "ssp" else {}
-    for ab in A.unit_abil_map.get(uid, []) or []:
-        base_id = str(ab.get("id") or "")
-        use_id = str(replace_map.get(base_id) or replace_map.get(A.normalize_id(base_id)) or base_id)
+    seen: set[str] = set()
+
+    def _append_entry(use_id: str, sort_order: int = 0) -> None:
+        uid_key = A.normalize_id(use_id) if hasattr(A, "normalize_id") else str(use_id)
+        if not uid_key or uid_key == "0" or uid_key in seen:
+            return
         try:
             entry = A.build_ability_entry(
-                use_id,
+                str(use_id),
                 ldc.get("abil_name_map", {}),
                 A.abil_link_map,
                 A.trait_set_traits_map,
@@ -2324,52 +2328,67 @@ def _ability_blobs_for_unit(A, uid: str, lc: str, ld: dict, mode: str) -> list[s
                 ldc.get("series_name_map", {}),
                 A.ability_resource_map,
                 ldc.get("abil_desc_map", {}),
-                sort_order=ab.get("sort", 0),
+                sort_order=sort_order,
                 lang_code=lc,
+                unit_id=uid,
             )
         except Exception:
-            continue
+            return
         if not entry:
-            continue
+            return
         if mode != "ssp" and entry.get("ssp_only"):
-            continue
+            return
         name = str(entry.get("name") or "")
+        if not name:
+            return
         parts = [name]
         for d in entry.get("details") or []:
             if isinstance(d, dict) and d.get("text"):
                 parts.append(str(d["text"]))
             elif isinstance(d, str):
                 parts.append(d)
-        blobs.append("\n".join(parts))
+        seen.add(uid_key)
+        items.append(
+            {
+                "kind": "ability",
+                "id": str(use_id),
+                "name": name,
+                "icon": str(entry.get("icon") or ""),
+                "blob": "\n".join(parts),
+            }
+        )
+
+    for ab in A.unit_abil_map.get(uid, []) or []:
+        base_id = str(ab.get("id") or "")
+        use_id = str(replace_map.get(base_id) or replace_map.get(A.normalize_id(base_id)) or base_id)
+        _append_entry(use_id, int(ab.get("sort", 0) or 0))
     if mode == "ssp":
         for abid in A.unit_ssp_abil_gain_list.get(uid, []) or []:
-            try:
-                entry = A.build_ability_entry(
-                    str(abid),
-                    ldc.get("abil_name_map", {}),
-                    A.abil_link_map,
-                    A.trait_set_traits_map,
-                    A.trait_data_map,
-                    ldc.get("lang_text_map", {}),
-                    ldc.get("lang_text_map", {}),
-                    A.trait_condition_raw_map,
-                    ldc.get("lineage_lookup", {}),
-                    ldc.get("series_name_map", {}),
-                    A.ability_resource_map,
-                    ldc.get("abil_desc_map", {}),
-                    lang_code=lc,
-                )
-            except Exception:
-                continue
-            if not entry:
-                continue
-            name = str(entry.get("name") or "")
-            parts = [name]
-            for d in entry.get("details") or []:
-                if isinstance(d, dict) and d.get("text"):
-                    parts.append(str(d["text"]))
-            blobs.append("\n".join(parts))
-    return blobs
+            _append_entry(str(abid), 0)
+    return items
+
+
+def _ability_blobs_for_unit(A, uid: str, lc: str, ld: dict, mode: str) -> list[str]:
+    return [str(x.get("blob") or "") for x in _unit_ability_kit_items(A, uid, lc, ld, mode) if x.get("blob")]
+
+
+def _lean_ability_list(kit_items: list[dict] | None) -> list[dict]:
+    """Public SPI ability chips: id + name + icon."""
+    out: list[dict] = []
+    for it in kit_items or []:
+        if not isinstance(it, dict):
+            continue
+        name = str(it.get("name") or "").strip()
+        if not name:
+            continue
+        out.append(
+            {
+                "id": str(it.get("id") or ""),
+                "name": name,
+                "icon": str(it.get("icon") or ""),
+            }
+        )
+    return out
 
 
 def _effective_terrain(A, uid: str, info: dict, mode: str) -> dict:
@@ -2886,7 +2905,8 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
     scored_tags = filter_scored_unit_tags(rules, tag_names)
 
     terrain = _effective_terrain(A, uid, info, use_mode if use_mode == "ssp" else "sp")
-    ability_blobs = _ability_blobs_for_unit(A, uid, lc, ld, use_mode)
+    ability_kit = _unit_ability_kit_items(A, uid, lc, ld, use_mode)
+    ability_blobs = [str(x.get("blob") or "") for x in ability_kit if x.get("blob")]
     # Ultimate series Advantage: is withheld from the base ability score (in-series only).
     # Collect without it so other traits are not lost in the per-type merge.
     skip_adv = bool(is_ult)
@@ -2978,6 +2998,7 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
         "transform_meta": transform_meta,
         "ability_blobs": ability_blobs,
         "ability_effects": ability_effects,
+        "ability_kit": ability_kit,
         "series_advantage": series_advantage,
         "has_linked_pilot": has_linked,
         "linked_pilot_very_good": linked_vg,
@@ -3037,6 +3058,7 @@ def score_unit(
         feats["er_expert_eligible_count"] = len(elig)
         feats["er_expert_ids"] = elig
     scored = score_features(feats, rules=rules, mode=mode)
+    abilities = _lean_ability_list(feats.get("ability_kit"))
     row = {
         "id": feats["id"],
         "name": feats.get("name") or "",
@@ -3056,6 +3078,7 @@ def score_unit(
         "meta": scored.get("meta") or {},
         "mode": mode,
         "detail_lines": scored.get("detail_lines") or [],
+        "abilities": abilities,
         "stats": {
             "HP": feats.get("HP"),
             "EN": feats.get("EN"),

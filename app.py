@@ -15730,11 +15730,10 @@ def _spi_localize_board_rows(buckets, kind, lc, tag_map):
                 r['series_advantage'] = _spi_localize_series_advantage(
                     r.get('series_advantage'), lc, tag_map
                 )
-            if kind == 'character':
-                if r.get('abilities'):
-                    r['abilities'] = _spi_localize_char_kit_list(r.get('abilities'), 'ability', lc)
-                if r.get('skills'):
-                    r['skills'] = _spi_localize_char_kit_list(r.get('skills'), 'skill', lc)
+            if r.get('abilities'):
+                r['abilities'] = _spi_localize_char_kit_list(r.get('abilities'), 'ability', lc)
+            if kind == 'character' and r.get('skills'):
+                r['skills'] = _spi_localize_char_kit_list(r.get('skills'), 'skill', lc)
             new_rows.append(r)
         buckets[bname] = new_rows
 
