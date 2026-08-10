@@ -1,7 +1,9 @@
-{# Permanent font policy (perf + design + no Railway font egress):
-   - Brand: tiny same-origin WOFF2 Latin subset (~60KB) of FOTK — never the 3.6MB OTF.
+{# Font policy (look + perf + no Railway font egress):
+   - Brand: tiny same-origin WOFF2 Latin subset (~60KB) — never the 3.6MB FOTK OTF.
    - EN: no multi-MB CJK download; system fonts cover JP names in English UI.
-   - JA/TW/HK: one deferred CDN body font family, paused while detail is open. #}
+   - JA/TW/HK: restore pre-perf stacks — ShinGo + Noto (+ UDShinGo for TW/HK) from FONT_CDN,
+     deferred after load/idle, paused while detail is open.
+   Do not change fonts unless the owner explicitly asks. #}
 <script>
 (function(){
   var v={{ app_js_version|tojson }};
@@ -19,9 +21,9 @@
   function needsBodyCjk(lang){
     return lang==='JA'||lang==='TW'||lang==='HK';
   }
-  function cdnFontUrl(cdnRel){
-    if(!fontCdn)return '';
-    return String(fontCdn).replace(/\/+$/,'')+'/font/'+cdnRel+(v?'?v='+encodeURIComponent(v):'');
+  function fontUrl(cdnRel, localRel){
+    if(fontCdn)return String(fontCdn).replace(/\/+$/,'')+'/font/'+cdnRel+(v?'?v='+encodeURIComponent(v):'');
+    return '/static/font/'+localRel+(v?'?v='+encodeURIComponent(v):'');
   }
   function localFontUrl(rel){
     return '/static/font/'+rel+(v?'?v='+encodeURIComponent(v):'');
@@ -29,9 +31,10 @@
   function detailOpen(){
     try{return !!(document.body&&document.body.classList.contains('detail-modal-open'))}catch(_){return false}
   }
-  function face(fam,url,fmt,weight,unicodeRange){
+  /* swap so locale CJK faces actually apply after idle inject (optional left system fonts stuck). */
+  function face(fam,url,fmt,weight,display,unicodeRange){
     var ur=unicodeRange?('unicode-range:'+unicodeRange+';'):'';
-    return "@font-face{font-family:'"+fam+"';src:url('"+url+"') format('"+fmt+"');font-weight:"+weight+";font-style:normal;font-display:optional;"+ur+"}";
+    return "@font-face{font-family:'"+fam+"';src:url('"+url+"') format('"+fmt+"');font-weight:"+weight+";font-style:normal;font-display:"+(display||'swap')+";"+ur+"}";
   }
   function appendFaces(id,css){
     var old=document.getElementById(id);
@@ -51,26 +54,39 @@
       localFontUrl('FOTK-YoonGothic780_JP-brand.woff2'),
       'woff2',
       '500',
+      'optional',
       'U+0020-007E,U+00A0-00FF'
     ));
     injectedBrand=true;
   }
 
-  /* Locale body CJK — never on EN. From FONT_CDN (jsDelivr) so Railway is not billed. */
+  /* Locale body CJK — never on EN. FONT_CDN (jsDelivr) so Railway is not billed. */
   function injectBody(){
     var lang=currentLang();
     if(!needsBodyCjk(lang)){injectedBodyFor=lang;return}
     if(paused||detailOpen()){scheduleBody();return}
     if(injectedBodyFor===lang)return;
     var parts=[];
-    if(lang==='JA'){
-      var noto=cdnFontUrl('NotoSansJP.ttf')||localFontUrl('NotoSansJP.ttf');
-      parts.push(face('Noto Sans JP',noto,'truetype','100 900',''));
-    }else if(lang==='TW'||lang==='HK'){
-      var ud=cdnFontUrl('JapaneseTextFont/UDShinGoStdTC-Med.otf')||localFontUrl('UDShinGoStdTC-Med.otf');
-      parts.push(face('UDShinGoStdTCMed',ud,'opentype','500',''));
+    parts.push(face(
+      'ShinGoPr6DeBold',
+      fontUrl('JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf','JapaneseTextFont/A-OTF-ShinGoPr6-DeBold.otf'),
+      'opentype',
+      'normal'
+    ));
+    if(lang==='TW'||lang==='HK'){
+      parts.push(face(
+        'UDShinGoStdTCMed',
+        fontUrl('JapaneseTextFont/UDShinGoStdTC-Med.otf','UDShinGoStdTC-Med.otf'),
+        'opentype',
+        '500'
+      ));
     }
-    if(!parts.length){injectedBodyFor=lang;return}
+    parts.push(face(
+      'Noto Sans JP',
+      fontUrl('NotoSansJP.ttf','NotoSansJP.ttf'),
+      'truetype',
+      '100 900'
+    ));
     appendFaces('ggenBrandFontBody',parts.join(''));
     injectedBodyFor=lang;
   }
