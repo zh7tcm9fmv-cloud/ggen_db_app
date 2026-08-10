@@ -114,13 +114,18 @@ def filter_scored_unit_tags(rules: dict, tag_names: list[str] | None) -> list[st
 
 
 def rarity_adjustment_points(rules: dict, rarity_id: str | int | None) -> int:
+    """Legacy hook — v5.25+ rarity tables are empty (kit quality carries rank)."""
     tbl = rules.get("rarity_adjustment") or {}
+    if not tbl:
+        return 0
     return int(tbl.get(str(rarity_id if rarity_id is not None else ""), 0) or 0)
 
 
 def pilot_rarity_adjustment_points(rules: dict, rarity_id: str | int | None) -> int:
-    """Softer rarity floors for pilots (SR SP pilots are often still investable)."""
+    """Legacy hook — v5.25+ pilot rarity tables are empty."""
     tbl = rules.get("pilot_rarity_adjustment") or rules.get("rarity_adjustment") or {}
+    if not tbl:
+        return 0
     return int(tbl.get(str(rarity_id if rarity_id is not None else ""), 0) or 0)
 
 
@@ -913,6 +918,11 @@ def _points_for_trait_type(
         return 0
     if tti in {int(x) for x in (cfg.get("zero_types") or [])}:
         return 0
+    en_types = {int(x) for x in (cfg.get("en_economy_types") or [])}
+    if tti in en_types:
+        zero_roles = cfg.get("en_economy_zero_roles") or ["Attack", "Support", "Defense"]
+        if role in zero_roles:
+            return 0
     # Owned by the extra_life axis (Unbreakable etc.) — do not double-count
     el_types = {
         int(x) for x in ((rules.get("extra_life") or {}).get("structured_trait_types") or [])
@@ -1376,11 +1386,26 @@ def collect_character_skill_effects(A, cid: str) -> list[dict]:
     return out
 
 
-def _points_for_skill_trait_type(cfg: dict, tti: int) -> int:
-    """Flat skill points: Sway/MP or CS/SA/SD = +2, dmg = +1, else 0."""
+def _points_for_skill_trait_type(cfg: dict, tti: int, role: str = "Attack") -> int:
+    """Role-weighted skill points (v5.25+): damage/range/surv/mobility > MP > EN=0."""
     tti = int(tti or 0)
     if not tti:
         return 0
+    role = role if role in ("Attack", "Defense", "Support") else "Attack"
+    if tti in {int(x) for x in (cfg.get("zero_types") or [])}:
+        return 0
+    families = cfg.get("role_family_points") or {}
+    if families:
+        for fam in families.values():
+            if not isinstance(fam, dict):
+                continue
+            types = {int(x) for x in (fam.get("types") or [])}
+            if tti not in types:
+                continue
+            pts_by_role = fam.get("points") or {}
+            return int(pts_by_role.get(role, pts_by_role.get("Attack", 0)) or 0)
+        return 0
+    # Legacy flat buckets (pre-v5.25)
     sway_mp = {int(x) for x in (cfg.get("sway_mp_types") or [])}
     util = {int(x) for x in (cfg.get("utility_cs_sa_sd_types") or [])}
     dmg = {int(x) for x in (cfg.get("dmg_types") or [])}
@@ -1411,7 +1436,7 @@ def score_pilot_skill_effects(
         best_val = 0
         for eff in effs:
             tti = int(eff.get("trait_type_index") or 0)
-            pts = _points_for_skill_trait_type(cfg, tti)
+            pts = _points_for_skill_trait_type(cfg, tti, role)
             if pts > best_pts:
                 best_pts = pts
                 best_tti = tti
@@ -1431,9 +1456,44 @@ def score_pilot_skill_effects(
         "lines": lines,
         "structured": True,
         "heuristic": False,
-        "mode": "flat_per_skill",
+        "mode": str(cfg.get("mode") or "role_weighted"),
         "skill_count": len(by_skill),
+        "role": role,
     }
+
+
+def recommend_ms_portfolio_points(rules: dict, features: dict) -> tuple[int, dict]:
+    """Top-N recommended Unit letters → points, capped (v5.25 portfolio)."""
+    letter_pts_map = rules.get("recommend_ms_letter_points") or {}
+    top_n = int(rules.get("recommend_ms_top_n", 3) or 3)
+    cap = int(rules.get("recommend_ms_cap", 3) or 3)
+    letters: list[str] = []
+    for u in features.get("recommended_units") or []:
+        if not isinstance(u, dict):
+            continue
+        lit = str(u.get("letter") or "").strip()
+        if lit in letter_pts_map:
+            letters.append(lit)
+    if not letters:
+        best = str(features.get("best_rec_ms_letter") or "").strip()
+        if best in letter_pts_map:
+            letters = [best]
+    letters.sort(
+        key=lambda L: _LETTER_ORDER.index(L) if L in _LETTER_ORDER else -1,
+        reverse=True,
+    )
+    taken = letters[: max(0, top_n)]
+    raw = sum(int(letter_pts_map.get(L, 0) or 0) for L in taken)
+    # Legacy multi-match bonus only when explicitly > 0 (disabled in v5.25).
+    multi_bonus = int(
+        rules.get("recommend_ms_multi_match_bonus")
+        or rules.get("recommend_ms_multi_bplus_bonus", 0)
+        or 0
+    )
+    if multi_bonus and int(features.get("rec_ms_bplus_or_better_count") or 0) > 1:
+        raw += multi_bonus
+    pts = min(cap, raw) if cap > 0 else raw
+    return pts, {"letters": taken, "raw": raw, "cap": cap, "top_n": top_n}
 
 
 def _score_pilot_ability_flat(
@@ -3181,7 +3241,7 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "title": "Attack priorities",
             "applies": ["units"],
             "objective": True,
-            "summary": "Damage ceiling first (ATK + weapon power), then MOV/MAP. HP and SSP EN are upside-only — high is a bonus, low is not punished. Mobility (MOB — Accuracy/Evasion) is a soft secondary.",
+            "summary": "Damage ceiling first (ATK + weapon power), then MOV/MAP. HP and SSP EN are upside-only — high is a bonus, low is not punished. Mobility (MOB — Evasion) is a soft secondary.",
             "rows": [
                 {"when": "Primary", "result": "ATK · weapon power · MOV"},
                 {"when": "Upside only", "result": "HP · SSP EN (no floor penalty)"},
@@ -3318,7 +3378,7 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
                 "applies": ["units"],
                 "objective": True,
                 "summary": (
-                    "Primary movement axis. Follow-up (stacks, cap +2): after-move MAP "
+                    "Primary MOV score. Follow-up (stacks, cap +2): after-move MAP "
                     "and/or Chance Step / PostAttackMove."
                 ),
                 "rows": mov_rows,
@@ -3670,7 +3730,7 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
     for role_name in ROLE_ALL:
         if role_name == "Attack":
             stat_summary = (
-                "Attack favors ATK ceiling over Mobility (MOB — Accuracy/Evasion). "
+                "Attack favors ATK ceiling over Mobility (MOB — Evasion). "
                 "HP is upside-only (no floor penalty). DEF not scored. "
                 "EN scores on the SSP board only (upside-only). MOB soft-capped."
             )
@@ -3694,7 +3754,7 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             )
         else:
             stat_summary = (
-                "Support favors Mobility (MOB — Accuracy/Evasion) ceiling; "
+                "Support favors Mobility (MOB — Evasion) ceiling; "
                 "ATK and HP are mild upside with no floor penalty."
             )
             stat_rows = (
@@ -3717,7 +3777,7 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
     md = rules.get("max_debuff_level") or {}
     kinds = rules.get("support_debuffs_kinds") or {}
     debuff_rows = [
-        {"when": "Attack role", "result": "Not scored (axes omitted)"},
+        {"when": "Attack role", "result": "Not scored"},
     ]
     for role_name in ("Defense", "Support"):
         kcfg = kinds.get(role_name) or {}
@@ -3748,7 +3808,7 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "applies": ["units"],
             "objective": True,
             "summary": (
-                "Attack units skip these axes. Debuff strength uses lasting DEF-down % "
+                "Attack Type Units skip these factors. Debuff strength uses lasting DEF-down % "
                 "or instant pierce (≈10%→3 … 40%+→6). "
                 "Defense counts distinct debuff kinds at range ≥4 (light; damage-taken downs count as one kind). "
                 "Support counts kinds at range ≥5 and cares more about strength."
@@ -3875,31 +3935,31 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
                 "Scored from ability and skill effect data in the game masters. "
                 "Permanent ATK/DEF/HP/MOV with no condition scores 0 here. "
                 "Strong % effects use size bands (for example damage dealt 10/20/30%+). "
-                f"Unit ability axis caps at +3; pilot kit caps at +{int(rules.get('pilot_kit_cap', 14))}."
+                f"Unit Ability score caps at +3; Character kit caps at +{int(rules.get('pilot_kit_cap', 14))}."
             ),
             "rows": [
                 {"when": "Role-relevant combat effects", "result": "Points by effect (+ size bands)"},
                 {"when": "Permanent flat/rate stats, no condition", "result": "0"},
-                {"when": "MAP ammo effects", "result": "0 here (counted on MAP axis)"},
+                {"when": "MAP ammo effects", "result": "0 here (counted under MAP)"},
                 {"when": "Physical/beam weapon range-down on hit", "result": "Rare debuff +1"},
-                {"when": "Unbreakable (mainly pilots)", "result": "Extra-life role bonus (separate axis)"},
+                {"when": "Unbreakable (mainly pilots)", "result": "Extra-life role bonus (separate factor)"},
             ],
         }
     )
 
     pflat = rules.get("pilot_ability_flat") or {}
-    pskill = rules.get("pilot_skill_structured") or {}
     criteria.append(
         {
             "id": "pilot_kit_flat",
-            "title": "Pilot ability & skill flat bonuses",
+            "title": "Character ability & skill bonuses",
             "applies": ["pilots"],
             "objective": True,
             "summary": (
                 "On top of role TraitType ability points: Support Defense / Support Attack·Counter "
                 "flat bonuses prefer always-on over gated kits, plus Initial MP. "
-                "Active skills are scored per skill (0 / +1 / +2) and summed — same-role melee/range "
-                "style kits are not overweighted."
+                "Active skills are role-weighted: damage / range / mobility / survivability score highest; "
+                "MP Up is moderate; EN Charge / Save EN score 0. Attack Type still values damage skills highly; "
+                "Support Type also scores damage well."
             ),
             "rows": [
                 {
@@ -3919,21 +3979,24 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
                     "result": _fmt_points(pflat.get("initial_mp_points", 1)),
                 },
                 {
-                    "when": "Non-damage skill (MOV, range, EN/HP restore, DEF up, hit/eva, …)",
-                    "result": "0",
+                    "when": "Damage skill (Attack Burst, Ranged/Melee/Awaken Boost, …)",
+                    "result": "Attack/Support +2 · Defense +1 each",
                 },
                 {
-                    "when": "Damage skill (attack burst, Critical up, melee/range/awaken)",
-                    "result": _fmt_points(pskill.get("dmg_points", 1)) + " each skill",
+                    "when": "Range / High Speed / Sway / Force Guard / HP Repair",
+                    "result": "+2 each (all roles)",
                 },
                 {
                     "when": "Utility skill (extra CS / SA / SD for 1 turn)",
-                    "result": _fmt_points(pskill.get("utility_cs_sa_sd_points", 2))
-                    + " each skill",
+                    "result": "Attack +1 · Support/Defense +2 each",
                 },
                 {
-                    "when": "Sway or MP Up skill",
-                    "result": _fmt_points(pskill.get("sway_mp_points", 2)) + " each skill",
+                    "when": "MP Up skill",
+                    "result": "+1 each",
+                },
+                {
+                    "when": "EN Charge / Save EN",
+                    "result": "0",
                 },
             ],
         }
@@ -4003,41 +4066,62 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
     )
 
     rar = rules.get("rarity_adjustment") or {}
-    criteria.append(
-        {
-            "id": "rarity",
-            "title": "Rarity adjustment (units)",
-            "applies": ["units"],
-            "objective": True,
-            "summary": "Stops N/R/SR units from sharing SSR/UR letters.",
-            "rows": [
-                {"when": "N", "result": _fmt_points(rar.get("1", -5))},
-                {"when": "R", "result": _fmt_points(rar.get("2", -4))},
-                {"when": "SR", "result": _fmt_points(rar.get("3", -2))},
-                {"when": "SSR / UR", "result": _fmt_points(rar.get("4", 0))},
-            ],
-        }
-    )
+    if rar:
+        criteria.append(
+            {
+                "id": "rarity",
+                "title": "Rarity adjustment (units)",
+                "applies": ["units"],
+                "objective": True,
+                "summary": "Legacy rarity floors (disabled when the table is empty).",
+                "rows": [
+                    {"when": "N", "result": _fmt_points(rar.get("1", 0))},
+                    {"when": "R", "result": _fmt_points(rar.get("2", 0))},
+                    {"when": "SR", "result": _fmt_points(rar.get("3", 0))},
+                    {"when": "SSR / UR", "result": _fmt_points(rar.get("4", 0))},
+                ],
+            }
+        )
+    else:
+        criteria.append(
+            {
+                "id": "rarity",
+                "title": "Rarity adjustment (units)",
+                "applies": ["units"],
+                "objective": True,
+                "summary": "Not scored — kit and combat score factors carry the rank. Lower rarities usually have fewer strong skills/abilities.",
+                "rows": [{"when": "All rarities", "result": "0"}],
+            }
+        )
 
-    prar = rules.get("pilot_rarity_adjustment") or rar
-    criteria.append(
-        {
-            "id": "pilot_rarity",
-            "title": "Rarity adjustment (pilots)",
-            "applies": ["pilots"],
-            "objective": True,
-            "summary": (
-                "Softer than units — cracked SR SP pilots should not be buried by rarity alone. "
-                "SSR/UR start even."
-            ),
-            "rows": [
-                {"when": "N", "result": _fmt_points(prar.get("1", -2))},
-                {"when": "R", "result": _fmt_points(prar.get("2", -1))},
-                {"when": "SR", "result": _fmt_points(prar.get("3", 0))},
-                {"when": "SSR / UR", "result": _fmt_points(prar.get("4", 0))},
-            ],
-        }
-    )
+    prar = rules.get("pilot_rarity_adjustment") or {}
+    if prar:
+        criteria.append(
+            {
+                "id": "pilot_rarity",
+                "title": "Rarity adjustment (Characters)",
+                "applies": ["pilots"],
+                "objective": True,
+                "summary": "Legacy Character rarity floors (disabled when the table is empty).",
+                "rows": [
+                    {"when": "N", "result": _fmt_points(prar.get("1", 0))},
+                    {"when": "R", "result": _fmt_points(prar.get("2", 0))},
+                    {"when": "SR", "result": _fmt_points(prar.get("3", 0))},
+                    {"when": "SSR / UR", "result": _fmt_points(prar.get("4", 0))},
+                ],
+            }
+        )
+    else:
+        criteria.append(
+            {
+                "id": "pilot_rarity",
+                "title": "Rarity adjustment (Characters)",
+                "applies": ["pilots"],
+                "objective": True,
+                "summary": "Not scored — Character Skill / Ability usefulness and Recommended Units carry the rank.",
+                "rows": [{"when": "All rarities", "result": "0"}],
+            }
+        )
 
     def _pilot_stat_band_rows(stat_key: str, role_name: str) -> list[dict]:
         bands = ((rules.get("pilot_stat_bands") or {}).get(stat_key) or {}).get(role_name) or []
@@ -4069,8 +4153,8 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
                     "applies": ["pilots"],
                     "objective": True,
                     "summary": (
-                        "SP-list grown stats for this pilot role. Specialty axes (Ranged/Melee/Awaken) "
-                        "matter most for Attack; Defense/Reaction matter more for Defense pilots."
+                        "SP-list grown stats for this Character role. Specialty stats (Ranged/Melee/Awaken) "
+                        "matter most for Attack; Defense/Reaction matter more for Defense Characters."
                     ),
                     "rows": pstat_rows,
                 }
@@ -4079,15 +4163,23 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
     criteria.append(
         {
             "id": "pilots_extra",
-            "title": "Pilot-only axes",
+            "title": "Character-only factors",
             "applies": ["pilots"],
             "objective": True,
-            "summary": "Pilots use the SP board only. See Pilot SP-grown stats blocks for band tables.",
+            "summary": "Characters use the SP board only. See Character SP-grown stats blocks for band tables.",
             "rows": [
                 {"when": "SP grown stats (Ranged / Melee / Awaken / Defense / Reaction)", "result": "Band points by role (see tables above)"},
                 {"when": "Series affinity abilities", "result": f"+{int(rules.get('series_affinity_points_each', 3))} each"},
-                {"when": "Best recommended MS letter (A and up)", "result": "From this guide’s unit letters (B+ no longer scores)"},
-                {"when": "Unbreakable on pilot abilities", "result": "Extra-life role bonus"},
+                {
+                    "when": "Recommended Units portfolio (A and up)",
+                    "result": (
+                        f"Top {int(rules.get('recommend_ms_top_n', 3) or 3)}: "
+                        f"A/A+ +{int((rules.get('recommend_ms_letter_points') or {}).get('A', 1))}, "
+                        f"S/S+ +{int((rules.get('recommend_ms_letter_points') or {}).get('S', 2))}, "
+                        f"cap +{int(rules.get('recommend_ms_cap', 3) or 3)}"
+                    ),
+                },
+                {"when": "Unbreakable on Character abilities", "result": "Extra-life role bonus"},
             ],
         }
     )
@@ -4506,22 +4598,18 @@ def score_pilot_features(features: dict, rules: dict | None = None) -> dict:
             }
         )
 
-    letter_pts_map = rules.get("recommend_ms_letter_points") or {}
-    best_letter = features.get("best_rec_ms_letter") or ""
-    rec_pts = int(letter_pts_map.get(best_letter, 0) or 0)
+    rec_pts, rec_meta = recommend_ms_portfolio_points(rules, features)
     min_lit = recommend_ms_min_letter(rules)
-    if int(features.get("rec_ms_bplus_or_better_count") or 0) > 1:
-        rec_pts += int(
-            rules.get("recommend_ms_multi_match_bonus")
-            or rules.get("recommend_ms_multi_bplus_bonus", 1)
-            or 0
-        )
     breakdown["recommend_ms"] = rec_pts
+    meta["recommend_ms"] = rec_meta
+    detail_letters = ", ".join(rec_meta.get("letters") or []) or (
+        features.get("best_rec_ms_letter") or "—"
+    )
     detail_lines.append(
         {
             "kind": "recommend",
             "label": f"Recommended MS ({min_lit} and up)",
-            "detail": best_letter or "—",
+            "detail": detail_letters,
             "points": rec_pts,
         }
     )

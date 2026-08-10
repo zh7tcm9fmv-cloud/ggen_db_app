@@ -548,7 +548,7 @@
     },
   };
 
-  /** Breakdown axis labels/tips — game terms where possible. */
+  /** Breakdown score-factor labels/tips — game terms where possible. */
   const BREAKDOWN = {
     EN: {
       tags: { label: 'Tag count', tip: 'Count of scored tags. Currently 0 — value is under Strategic tags.' },
@@ -566,7 +566,7 @@
       },
       rarity: {
         label: 'Rarity',
-        tip: 'Units: N/R/SR are penalized vs SSR. Characters use a softer table. SSR and Ultimate Units start even. Non-Ultimate UR kits are omitted.',
+        tip: 'Not scored — kit and other score factors carry the rank. Lower rarities usually have fewer strong skills/abilities. Non-Ultimate UR kits are omitted.',
       },
       transform: {
         label: 'Transform advantage',
@@ -582,7 +582,7 @@
       },
       skills_abilities: {
         label: 'Character Skills & Abilities',
-        tip: 'Character Skills plus Character Abilities that help their type.',
+        tip: 'Role-weighted Character Skills plus Ability effects. Damage / range / mobility / survivability score highest; MP Up is moderate; EN Charge / Save EN score 0.',
       },
       series_affinity: {
         label: 'Series affinity',
@@ -590,7 +590,7 @@
       },
       recommend_ms: {
         label: 'Recommended Units',
-        tip: 'Bonus from this Character’s best matching Unit letter on this guide (A / A+ / S / S+ only).',
+        tip: 'Top 3 matching Units on this guide: A/A+ = +1, S/S+ = +2, cap +3. B+ and below do not score.',
       },
       linked_pilot: {
         label: 'Affinity Character pool',
@@ -634,7 +634,7 @@
       },
       mob: {
         label: 'MOB',
-        tip: 'Mobility (MOB). Affects Accuracy and Evasion. Scored from SP-grown MOB for this Unit Type — Support Type values it more; Attack Type treats it as a softer secondary vs ATK.',
+        tip: 'Mobility (MOB). Raises Evasion when this unit is attacked. Scored from SP-grown MOB for this Unit Type — Support Type values it more; Attack Type treats it as a softer secondary vs ATK.',
       },
       source: {
         label: 'Acquisition',
@@ -698,7 +698,7 @@
       },
       rarity: {
         label: 'レアリティ',
-        tip: 'ユニット：N/R/SR は SSR より減点。キャラクターは緩め。SSR とアルティメットユニットは同起点。通常 UR は本ガイド対象外。',
+        tip: '採点外 — キットと他の加点項目で順位が決まります。低レアは強いスキル／アビリティが少ない傾向。通常 UR は本ガイド対象外。',
       },
       transform: {
         label: '変形メリット',
@@ -714,7 +714,7 @@
       },
       skills_abilities: {
         label: 'キャラクタースキル・アビリティ',
-        tip: 'キャラクタースキルと、タイプに効くキャラクターアビリティ。',
+        tip: 'ロール加重のキャラクタースキルとアビリティ。ダメージ／射程／機動／生存が高評価。MPアップは中程度。ENチャージ／セーブは 0。',
       },
       series_affinity: {
         label: 'シリーズアフィニティ',
@@ -722,7 +722,7 @@
       },
       recommend_ms: {
         label: '推奨ユニット',
-        tip: 'このキャラクターに合う本ガイドのユニット評価（A / A+ / S / S+ のみ）。',
+        tip: '本ガイド上位3機：A/A+ は +1、S/S+ は +2、上限 +3。B+ 以下は加点なし。',
       },
       linked_pilot: {
         label: 'アフィニティキャラ候補',
@@ -760,7 +760,7 @@
       en: { label: 'EN', tip: 'SSP 攻撃型のみ — 高 EN を加点。SP 盤では非対象。' },
       mob: {
         label: '機動力',
-        tip: '機動力は命中率・回避率に影響します。SP成長後の機動力を採点。支援型で重視、攻撃型では攻撃力より弱い副次。',
+        tip: '機動力は被弾時の回避率を上げます。SP成長後の機動力を採点。支援型で重視、攻撃型では攻撃力より弱い副次。',
       },
       source: {
         label: '入手元',
@@ -824,7 +824,7 @@
       },
       rarity: {
         label: '稀有度',
-        tip: '單位：N/R/SR 相對 SSR 扣分。角色較寬鬆。SSR 與終極單位同起跑。一般 UR 不列入本指南。',
+        tip: '不計分 — 由套件與其他加分項目決定順位。低稀有度通常較少強技能／能力。一般 UR 不列入本指南。',
       },
       transform: {
         label: '變形優勢',
@@ -840,7 +840,7 @@
       },
       skills_abilities: {
         label: '角色技能與能力',
-        tip: '角色技能，以及對類型有幫助的角色能力。',
+        tip: '依類型加權的角色技能與能力。損傷／射程／機動／生存較高；MP 上升中等；EN 恢復／節省為 0。',
       },
       series_affinity: {
         label: '系列親和',
@@ -848,7 +848,7 @@
       },
       recommend_ms: {
         label: '推薦單位',
-        tip: '此角色在本指南中最匹配的單位字母（僅 A / A+ / S / S+）。',
+        tip: '本指南前 3 機：A/A+ +1、S/S+ +2，上限 +3。B+ 以下不加分。',
       },
       linked_pilot: {
         label: '親和角色池',
@@ -886,7 +886,7 @@
       en: { label: 'EN', tip: '僅 SSP 攻擊型 — 高 EN 加分。SP 盤不計。' },
       mob: {
         label: '機動力',
-        tip: '機動力影響命中率及閃避率。依 SP 成長後機動力計分；支援型較重視，攻擊型相對攻擊力為較弱次要項。',
+        tip: '機動力提高受擊時的閃避率。依 SP 成長後機動力計分；支援型較重視，攻擊型相對攻擊力為較弱次要項。',
       },
       source: {
         label: '取得來源',
@@ -946,7 +946,7 @@
     },
     mob: {
       label: '機動力',
-      tip: '機動力影響命中率同閃避率。跟 SP 成長後機動力計分；支援型較睇重，攻擊型相對攻擊力係較弱次要項。',
+      tip: '機動力提高受擊時嘅閃避率。跟 SP 成長後機動力計分；支援型較睇重，攻擊型相對攻擊力係較弱次要項。',
     },
     source: {
       label: '取得來源',

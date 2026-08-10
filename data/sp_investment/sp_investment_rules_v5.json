@@ -41,27 +41,16 @@
     "v5.21: true S+ tier — score 17+ maps to letter S+ and the BEYOND THE TIME bucket above Recommended; S letter (13–16 SP scale) stays Recommended",
     "v5.22: top bucket display label BEYOND THE TIME (same in all locales; letter grade S+ unchanged)",
     "v5.23: Character BEYOND THE TIME cutoff raised to score 23+ (~top 5%); Units stay at 17+ for S+ / BEYOND THE TIME",
-    "v5.24: Recovery/ally MAP (MapWeaponTraitCategory Recovery / MP-supply) scored separately (+1 support MAP) — not as damage MAP presence/coverage (fixes Unicorn TWC Final overscore)"
+    "v5.24: Recovery/ally MAP (MapWeaponTraitCategory Recovery / MP-supply) scored separately (+1 support MAP) — not as damage MAP presence/coverage (fixes Unicorn TWC Final overscore)",
+    "v5.25: drop rarity_adjustment (kit quality carries rank); role-weighted Character skills (damage/range/surv/mobility > MP > EN=0); recommend_ms portfolio top-3 A/A+=1 S/S+=2 cap 3; Attack ability EN-economy types score 0; pilot letter S at 20+, S+ at 23+"
   ],
   "exclude_warships": true,
   "exclude_ur_units": true,
   "exclude_ur_characters": true,
   "exclude_character_ids": [],
   "require_character_usable_unit_link": false,
-  "rarity_adjustment": {
-    "1": -5,
-    "2": -4,
-    "3": -2,
-    "4": 0,
-    "5": 0
-  },
-  "pilot_rarity_adjustment": {
-    "1": -2,
-    "2": -1,
-    "3": 0,
-    "4": 0,
-    "5": 0
-  },
+  "rarity_adjustment": {},
+  "pilot_rarity_adjustment": {},
   "tag_points": [
     {
       "min": 0,
@@ -146,12 +135,14 @@
   "series_affinity_points_each": 3,
   "recommend_ms_min_letter": "A",
   "recommend_ms_letter_points": {
-    "S+": 5,
-    "S": 5,
-    "A+": 4,
-    "A": 3
+    "S+": 2,
+    "S": 2,
+    "A+": 1,
+    "A": 1
   },
-  "recommend_ms_multi_bplus_bonus": 1,
+  "recommend_ms_top_n": 3,
+  "recommend_ms_cap": 3,
+  "recommend_ms_multi_bplus_bonus": 0,
   "pilot_stat_bands": {
     "Ranged": {
       "Attack": [
@@ -551,6 +542,8 @@
     "cap": 3,
     "permanent_stat_types": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 31, 32, 33, 34],
     "zero_types": [100, 101, 102],
+    "en_economy_types": [5, 33, 34, 47],
+    "en_economy_zero_roles": ["Attack", "Support", "Defense"],
     "movement_types": [19, 70, 80, 85, 107],
     "exclude_name_substrings": [
       "GN Field",
@@ -688,14 +681,39 @@
     "initial_mp_points": 1
   },
   "pilot_skill_structured": {
-    "mode": "flat_per_skill",
-    "dmg_points": 1,
+    "mode": "role_weighted",
+    "role_family_points": {
+      "damage": {
+        "types": [8, 9, 10, 11, 12, 19, 20, 21],
+        "points": { "Attack": 2, "Support": 2, "Defense": 1 }
+      },
+      "range_mobility_surv": {
+        "types": [1, 3, 7, 14, 17],
+        "points": { "Attack": 2, "Support": 2, "Defense": 2 }
+      },
+      "utility_cs_sa_sd": {
+        "types": [22, 23, 24, 25, 26, 27],
+        "points": { "Attack": 1, "Support": 2, "Defense": 2 }
+      },
+      "mp_up": {
+        "types": [4],
+        "points": { "Attack": 1, "Support": 1, "Defense": 1 }
+      },
+      "en_economy": {
+        "types": [2, 15],
+        "points": { "Attack": 0, "Support": 0, "Defense": 0 }
+      }
+    },
+    "dmg_points": 2,
     "utility_cs_sa_sd_points": 2,
     "sway_mp_points": 2,
     "dmg_types": [8, 9, 10, 11, 12, 19, 20, 21],
     "utility_cs_sa_sd_types": [22, 23, 24, 25, 26, 27],
-    "sway_mp_types": [4, 14],
-    "zero_types": [1, 2, 3, 5, 6, 7, 13, 15, 16, 17, 18, 28, 29, 30, 31],
+    "sway_mp_types": [14],
+    "mp_up_types": [4],
+    "range_mobility_surv_types": [1, 3, 7, 14, 17],
+    "en_economy_types": [2, 15],
+    "zero_types": [5, 6, 13, 16, 18, 28, 29, 30, 31],
     "specialty_types": {
       "Ranged": 9,
       "Melee": 10,
@@ -1499,24 +1517,24 @@
   ],
   "pilot_letter_cutoffs": [
     { "min": 23, "letter": "S+" },
-    { "min": 13, "letter": "S" },
-    { "min": 11, "letter": "A+" },
-    { "min": 9, "letter": "A" },
-    { "min": 7, "letter": "B+" },
-    { "min": 5, "letter": "B" },
-    { "min": 2, "letter": "C" },
-    { "min": 0, "letter": "D" },
+    { "min": 20, "letter": "S" },
+    { "min": 17, "letter": "A+" },
+    { "min": 15, "letter": "A" },
+    { "min": 13, "letter": "B+" },
+    { "min": 11, "letter": "B" },
+    { "min": 8, "letter": "C" },
+    { "min": 5, "letter": "D" },
     { "min": -999, "letter": "E" }
   ],
   "ur_pilot_letter_cutoffs": [
     { "min": 23, "letter": "S+" },
-    { "min": 13, "letter": "S" },
-    { "min": 11, "letter": "A+" },
-    { "min": 9, "letter": "A" },
-    { "min": 7, "letter": "B+" },
-    { "min": 5, "letter": "B" },
-    { "min": 2, "letter": "C" },
-    { "min": 0, "letter": "D" },
+    { "min": 20, "letter": "S" },
+    { "min": 17, "letter": "A+" },
+    { "min": 15, "letter": "A" },
+    { "min": 13, "letter": "B+" },
+    { "min": 11, "letter": "B" },
+    { "min": 8, "letter": "C" },
+    { "min": 5, "letter": "D" },
     { "min": -999, "letter": "E" }
   ],
   "bucket_by_letter": {
@@ -1545,7 +1563,7 @@
     "title": "How Investment Guide scoring works",
     "intro": "Point-sum shortlist for SP Conversion / SSP Conversion investment on Units and Characters (Attack Type / Defense Type / Support Type). Units have separate SP and SSP boards; Characters use SP only. Criteria favor practical sortie tools (MAP Weapon, mobility follow-ups, weapon power) and a deep affinity Character pool over a single linked recommend. Minor Attack Type stats (HP, SSP EN) are upside-only — no floor punishment. Close letters still need a human look.",
     "overrides": [
-      "Each axis adds points; the total becomes a letter, then a bucket (BEYOND THE TIME / Recommended / Solid / Situational / Niche). Units: score 17+ earns letter S+ and BEYOND THE TIME. Characters: score 23+ (~top 5%) earns S+ and BEYOND THE TIME.",
+      "Each score factor adds points; the total becomes a letter, then a bucket (BEYOND THE TIME / Recommended / Solid / Situational / Niche). Units: score 17+ earns letter S+ and BEYOND THE TIME. Characters: score 23+ (~top 5%) earns S+ and BEYOND THE TIME; Characters need score 20+ for letter S.",
       "Filter by Tag or Eternal Road Expert stage to compare Units that actually fit the same restriction."
     ],
     "gaps": [
@@ -1555,8 +1573,8 @@
       "Character Recommended Units points use this list’s Unit letters (SP / SSP best).",
       "Strategic Tag weights use how often Tags appear on UR Unit rosters (calibrated table).",
       "Affinity Character pool counts SSR+ Characters with piloting-Tag / EX-pair affinity for the Unit (not Supporter amp %).",
-      "Character Recommended Units points only count Units graded A / A+ / S / S+ on this guide (SP or SSP best) — B+ and below do not score.",
-      "Character kits add flat Conditional Ability / Initial MP bonuses on top of TraitType points; active skills score 0 / +1 / +2 per skill and sum.",
+      "Character Recommended Units use a portfolio: top 3 Units graded A / A+ / S / S+ (SP or SSP best) — A/A+ = +1, S/S+ = +2, cap +3. B+ and below do not score.",
+      "Character kits add flat Conditional Ability / Initial MP bonuses on top of TraitType points; active skills are role-weighted (damage / range / survivability / mobility over MP; EN Charge / Save EN = 0).",
       "UR Characters are omitted from the Character board (not SP Conversion targets; there are no Ultimate Characters).",
       "Transform scores only when the alternate form unlocks deployable Terrain Capability, higher MOV, longer range, higher weapon power, or adds a MAP Weapon.",
       "Attack Type HP and SSP Attack Type EN are upside-only; Defense Type still taxes low HP/DEF. Special defenses (I-field / DR / barrier) are presence bonuses beyond the shield mechanism.",

@@ -9,7 +9,7 @@
   const GUIDE = {
     "EN": {
       "overrides": [
-        "Each axis adds points; the total becomes a letter, then a bucket (BEYOND THE TIME / Recommended / Solid / Situational / Niche). Units: score 17+ earns letter S+ and BEYOND THE TIME. Characters: score 23+ (~top 5%) earns S+ and BEYOND THE TIME.",
+        "Each score factor adds points; the total becomes a letter, then a bucket (BEYOND THE TIME / Recommended / Solid / Situational / Niche). Units: score 17+ earns letter S+ and BEYOND THE TIME. Characters: score 23+ (~top 5%) earns S+ and BEYOND THE TIME; Characters need score 20+ for letter S.",
         "Filter by Tag or Eternal Road Expert stage to compare Units that actually fit the same restriction."
       ],
       "gaps": [
@@ -28,7 +28,7 @@
     },
     "JA": {
       "overrides": [
-        "各軸が加点され、合計がレターになり、さらに区分（推奨／堅実／状況次第／ニッチ）へ振り分けられます。",
+        "各項目が加点され、合計がレターになり、さらに区分（推奨／堅実／状況次第／ニッチ）へ振り分けられます。",
         "タグやエターナルロード Expert ステージで絞り、同じ制限に合うユニット同士を比較してください。"
       ],
       "gaps": [
@@ -47,7 +47,7 @@
     },
     "TW": {
       "overrides": [
-        "各軸加分後合計成字母，再對應分桶（推薦／穩健／看場合／小眾）。",
+        "各項目加分後合計成字母，再對應分桶（推薦／穩健／看場合／小眾）。",
         "可用標籤或永恆之路 Expert 關卡篩選，比較真正符合同一限制的單位。"
       ],
       "gaps": [
@@ -66,7 +66,7 @@
     },
     "HK": {
       "overrides": [
-        "各軸加分後合計成字母，再對應分桶（推薦／穩健／睇場合／小眾）。",
+        "各項目加分後合計成字母，再對應分桶（推薦／穩健／睇場合／小眾）。",
         "可用標籤或永恆之路 Expert 關卡篩選，比較真正符合同一限制嘅單位。"
       ],
       "gaps": [
@@ -108,7 +108,7 @@
       },
       "role_focus_attack": {
         "title": "攻撃型の優先事項",
-        "summary": "まず火力上限（攻撃力＋武装威力）、次に移動力／MAP兵器。HP と SSP EN は上振れのみ — 高いと加点、低くても減点しません。機動力（命中・回避）は弱い副次。",
+        "summary": "まず火力上限（攻撃力＋武装威力）、次に移動力／MAP兵器。HP と SSP EN は上振れのみ — 高いと加点、低くても減点しません。機動力（回避）は弱い副次。",
         "when": {
           "Primary": "主軸",
           "Upside only": "上振れのみ",
@@ -192,7 +192,7 @@
       },
       "movement_attack": {
         "title": "移動力 — 攻撃型",
-        "summary": "主軸の移動。追撃（加算、上限 +2）：移動後 MAP および／または チャンスステップ／攻撃後移動。",
+        "summary": "移動力の主な加点。追撃（加算、上限 +2）：移動後 MAP および／または チャンスステップ／攻撃後移動。",
         "when": {
           "MOV ≤3": "MOV ≤3",
           "MOV 4": "MOV 4",
@@ -203,7 +203,7 @@
       },
       "movement_defense": {
         "title": "移動力 — 耐久型",
-        "summary": "主軸の移動。追撃（加算、上限 +2）：移動後 MAP および／または チャンスステップ／攻撃後移動。",
+        "summary": "移動力の主な加点。追撃（加算、上限 +2）：移動後 MAP および／または チャンスステップ／攻撃後移動。",
         "when": {
           "MOV ≤3": "MOV ≤3",
           "MOV 4": "MOV 4",
@@ -214,7 +214,7 @@
       },
       "movement_support": {
         "title": "移動力 — 支援型",
-        "summary": "主軸の移動。追撃（加算、上限 +2）：移動後 MAP および／または チャンスステップ／攻撃後移動。",
+        "summary": "移動力の主な加点。追撃（加算、上限 +2）：移動後 MAP および／または チャンスステップ／攻撃後移動。",
         "when": {
           "MOV ≤3": "MOV ≤3",
           "MOV 4": "MOV 4",
@@ -528,7 +528,7 @@
       },
       "debuffs": {
         "title": "弱体（耐久型／支援型ユニット）",
-        "summary": "攻撃型はこれらの軸をスキップ。弱体強度は持続 DEF ダウン％または即時貫通（≈10%→3 … 40%+→6）。耐久型は射程 ≥4 の異なる弱体種を数える（軽め；被ダメージ減は1種）。支援型は射程 ≥5 の種を数え、強度をより重視。",
+        "summary": "攻撃型はこれらの項目をスキップ。弱体強度は持続 DEF ダウン％または即時貫通（≈10%→3 … 40%+→6）。耐久型は射程 ≥4 の異なる弱体種を数える（軽め；被ダメージ減は1種）。支援型は射程 ≥5 の種を数え、強度をより重視。",
         "when": {
           "Attack role": "攻撃型",
           "Defense: 0 / 1 / 2+ distinct R4+ debuff kinds": "耐久型：射程4+ の異なる弱体種 0／1／2+",
@@ -537,7 +537,7 @@
           "Support pierce / DEF-down level": "支援型の貫通／DEFダウン段階"
         },
         "result": {
-          "Not scored (axes omitted)": "採点外（軸を省略）",
+          "Not scored": "採点外",
           "0 / 0 / +1": "0／0／+1",
           "-1 / 0 / +1": "−1／0／+1",
           "none -2 · Lv3 -1 · Lv4 0 · Lv5 +1 · Lv6 +2": "なし −2 · Lv3 −1 · Lv4 0 · Lv5 +1 · Lv6 +2",
@@ -574,7 +574,7 @@
       },
       "abilities": {
         "title": "アビリティ／キット",
-        "summary": "ゲームマスターのアビリティ・スキル効果データから採点。無条件の恒常 ATK／DEF／HP／MOV はここでは 0。強い％効果はサイズ帯（例：与ダメージ 10／20／30%+）。ユニットアビリティ軸の上限は +3、キャラクターキットは +14。",
+        "summary": "ゲームマスターのアビリティ・スキル効果データから採点。無条件の恒常 ATK／DEF／HP／MOV はここでは 0。強い％効果はサイズ帯（例：与ダメージ 10／20／30%+）。ユニットアビリティの加点上限は +3、キャラクターキットは +14。",
         "when": {
           "Role-relevant combat effects": "タイプに効く戦闘効果",
           "Permanent flat/rate stats, no condition": "無条件の恒常フラット／割合ステ",
@@ -584,9 +584,9 @@
         },
         "result": {
           "Points by effect (+ size bands)": "効果ごとの点（＋サイズ帯）",
-          "0 here (counted on MAP axis)": "ここでは0（MAP軸で計上）",
+          "0 here (counted under MAP)": "ここでは0（MAPで計上）",
           "Rare debuff +1": "稀少弱体 +1",
-          "Extra-life role bonus (separate axis)": "追加命タイプボーナス（別軸）"
+          "Extra-life role bonus (separate factor)": "追加命タイプボーナス（別項目）"
         }
       },
       "pilot_kit_flat": {
@@ -704,29 +704,31 @@
       },
       "rarity": {
         "title": "レアリティ調整（ユニット）",
-        "summary": "N／R／SR が SSR／UR と同じレター帯に並ばないようにします。",
+        "summary": "採点外 — キットと戦闘加点で順位が決まります。低レアは強いスキル／アビリティが少ない傾向です。",
         "when": {
           "N": "N",
           "R": "R",
           "SR": "SR",
-          "SSR / UR": "SSR／UR"
+          "SSR / UR": "SSR／UR",
+          "All rarities": "全レアリティ"
         },
         "result": {}
       },
       "pilot_rarity": {
         "title": "レアリティ調整（キャラクター）",
-        "summary": "ユニットより緩め — 強い SR の SP キャラクターがレアリティだけで埋もれないように。SSR／UR は同起点。",
+        "summary": "採点外 — キャラクタースキル／アビリティの有用性と推奨ユニットで順位が決まります。",
         "when": {
           "N": "N",
           "R": "R",
           "SR": "SR",
-          "SSR / UR": "SSR／UR"
+          "SSR / UR": "SSR／UR",
+          "All rarities": "全レアリティ"
         },
         "result": {}
       },
       "pilot_stats_attack": {
         "title": "キャラクター SP 成長ステータス — 攻撃型",
-        "summary": "このキャラクタータイプの SP リスト成長ステータス。攻撃型は適性軸（射撃／格闘／覚醒）が重要。耐久型キャラクターは守備／反応がより重要。",
+        "summary": "このキャラクタータイプの SP リスト成長ステータス。攻撃型は適性ステータス（射撃／格闘／覚醒）が重要。耐久型キャラクターは守備／反応がより重要。",
         "when": {
           "Ranged < 700": "射撃値 < 700",
           "Ranged 700–734": "射撃値 700–734",
@@ -758,7 +760,7 @@
       },
       "pilot_stats_defense": {
         "title": "キャラクター SP 成長ステータス — 耐久型",
-        "summary": "このキャラクタータイプの SP リスト成長ステータス。攻撃型は適性軸（射撃／格闘／覚醒）が重要。耐久型キャラクターは守備／反応がより重要。",
+        "summary": "このキャラクタータイプの SP リスト成長ステータス。攻撃型は適性ステータス（射撃／格闘／覚醒）が重要。耐久型キャラクターは守備／反応がより重要。",
         "when": {
           "Ranged < 500": "射撃値 < 500",
           "Ranged 500–539": "射撃値 500–539",
@@ -790,7 +792,7 @@
       },
       "pilot_stats_support": {
         "title": "キャラクター SP 成長ステータス — 支援型",
-        "summary": "このキャラクタータイプの SP リスト成長ステータス。攻撃型は適性軸（射撃／格闘／覚醒）が重要。耐久型キャラクターは守備／反応がより重要。",
+        "summary": "このキャラクタータイプの SP リスト成長ステータス。攻撃型は適性ステータス（射撃／格闘／覚醒）が重要。耐久型キャラクターは守備／反応がより重要。",
         "when": {
           "Ranged < 655": "射撃値 < 655",
           "Ranged 655–699": "射撃値 655–699",
@@ -821,7 +823,7 @@
         "result": {}
       },
       "pilots_extra": {
-        "title": "キャラクター専用軸",
+        "title": "キャラクター専用項目",
         "summary": "キャラクターは SP 盤のみ。帯表はキャラクター SP 成長ステータス各ブロックを参照。",
         "when": {
           "SP grown stats (Ranged / Melee / Awaken / Defense / Reaction)": "SP成長ステータス（射撃値／格闘値／覚醒値／守備値／反応値）",
@@ -942,7 +944,7 @@
       },
       "movement_attack": {
         "title": "移動力 — 攻擊型",
-        "summary": "主要移動軸。追擊（可疊加，上限 +2）：移動後 MAP 及／或 額外行動／攻擊後移動。",
+        "summary": "移動力的主要加分。追擊（可疊加，上限 +2）：移動後 MAP 及／或 額外行動／攻擊後移動。",
         "when": {
           "MOV ≤3": "MOV ≤3",
           "MOV 4": "MOV 4",
@@ -953,7 +955,7 @@
       },
       "movement_defense": {
         "title": "移動力 — 耐久型",
-        "summary": "主要移動軸。追擊（可疊加，上限 +2）：移動後 MAP 及／或 額外行動／攻擊後移動。",
+        "summary": "移動力的主要加分。追擊（可疊加，上限 +2）：移動後 MAP 及／或 額外行動／攻擊後移動。",
         "when": {
           "MOV ≤3": "MOV ≤3",
           "MOV 4": "MOV 4",
@@ -964,7 +966,7 @@
       },
       "movement_support": {
         "title": "移動力 — 支援型",
-        "summary": "主要移動軸。追擊（可疊加，上限 +2）：移動後 MAP 及／或 額外行動／攻擊後移動。",
+        "summary": "移動力的主要加分。追擊（可疊加，上限 +2）：移動後 MAP 及／或 額外行動／攻擊後移動。",
         "when": {
           "MOV ≤3": "MOV ≤3",
           "MOV 4": "MOV 4",
@@ -1275,7 +1277,7 @@
       },
       "debuffs": {
         "title": "弱化（耐久型／支援型單位）",
-        "summary": "攻擊型略過這些軸。弱化強度用持續 DEF 下降％或即時貫穿（≈10%→3 … 40%+→6）。耐久型計算射程 ≥4 的不同弱化種類（較輕；受傷降低算一種）。支援型計算射程 ≥5 的種類，更看重強度。",
+        "summary": "攻擊型略過這些項目。弱化強度用持續 DEF 下降％或即時貫穿（≈10%→3 … 40%+→6）。耐久型計算射程 ≥4 的不同弱化種類（較輕；受傷降低算一種）。支援型計算射程 ≥5 的種類，更看重強度。",
         "when": {
           "Attack role": "攻擊型",
           "Defense: 0 / 1 / 2+ distinct R4+ debuff kinds": "耐久型：射程 4+ 不同弱化種類 0／1／2+",
@@ -1284,7 +1286,7 @@
           "Support pierce / DEF-down level": "支援型貫穿／DEF 下降等級"
         },
         "result": {
-          "Not scored (axes omitted)": "不計分（略過軸）",
+          "Not scored": "不計分",
           "0 / 0 / +1": "0／0／+1",
           "-1 / 0 / +1": "−1／0／+1",
           "none -2 · Lv3 -1 · Lv4 0 · Lv5 +1 · Lv6 +2": "無 −2 · Lv3 −1 · Lv4 0 · Lv5 +1 · Lv6 +2",
@@ -1321,7 +1323,7 @@
       },
       "abilities": {
         "title": "能力／套件",
-        "summary": "依遊戲主資料的能力與技能效果計分。無條件的固定 ATK／DEF／HP／移動力此處為 0。強％效果用尺寸帶（例如造成損傷 10／20／30%+）。單位能力軸上限 +3；角色套件上限 +14。",
+        "summary": "依遊戲主資料的能力與技能效果計分。無條件的固定 ATK／DEF／HP／移動力此處為 0。強％效果用尺寸帶（例如造成損傷 10／20／30%+）。單位能力加分上限 +3；角色套件上限 +14。",
         "when": {
           "Role-relevant combat effects": "對類型有用的戰鬥效果",
           "Permanent flat/rate stats, no condition": "無條件的固定／比例數值",
@@ -1331,9 +1333,9 @@
         },
         "result": {
           "Points by effect (+ size bands)": "依效果給分（＋尺寸帶）",
-          "0 here (counted on MAP axis)": "此處 0（計入 MAP 軸）",
+          "0 here (counted under MAP)": "此處 0（計入 MAP）",
           "Rare debuff +1": "稀有弱化 +1",
-          "Extra-life role bonus (separate axis)": "額外生命類型加分（另軸）"
+          "Extra-life role bonus (separate factor)": "額外生命類型加分（另計）"
         }
       },
       "pilot_kit_flat": {
@@ -1451,29 +1453,31 @@
       },
       "rarity": {
         "title": "稀有度調整（單位）",
-        "summary": "避免 N／R／SR 單位與 SSR／UR 共用同一字母帶。",
+        "summary": "不計分 — 由套件與戰鬥加分項目決定順位。低稀有度通常較少強技能／能力。",
         "when": {
           "N": "N",
           "R": "R",
           "SR": "SR",
-          "SSR / UR": "SSR／UR"
+          "SSR / UR": "SSR／UR",
+          "All rarities": "全部稀有度"
         },
         "result": {}
       },
       "pilot_rarity": {
         "title": "稀有度調整（角色）",
-        "summary": "比單位寬鬆 — 強力 SR 的 SP 角色不應只因稀有度被埋沒。SSR／UR 同起点。",
+        "summary": "不計分 — 由角色技能／能力實用性與推薦單位決定順位。",
         "when": {
           "N": "N",
           "R": "R",
           "SR": "SR",
-          "SSR / UR": "SSR／UR"
+          "SSR / UR": "SSR／UR",
+          "All rarities": "全部稀有度"
         },
         "result": {}
       },
       "pilot_stats_attack": {
         "title": "角色 SP 養成數值 — 攻擊型",
-        "summary": "此角色類型的 SP 清單養成數值。攻擊型最看重適性軸（射擊／格鬥／覺醒）；耐久型角色更看重守備／反應。",
+        "summary": "此角色類型的 SP 清單養成數值。攻擊型最看重適性數值（射擊／格鬥／覺醒）；耐久型角色更看重守備／反應。",
         "when": {
           "Ranged < 700": "射擊值 < 700",
           "Ranged 700–734": "射擊值 700–734",
@@ -1505,7 +1509,7 @@
       },
       "pilot_stats_defense": {
         "title": "角色 SP 養成數值 — 耐久型",
-        "summary": "此角色類型的 SP 清單養成數值。攻擊型最看重適性軸（射擊／格鬥／覺醒）；耐久型角色更看重守備／反應。",
+        "summary": "此角色類型的 SP 清單養成數值。攻擊型最看重適性數值（射擊／格鬥／覺醒）；耐久型角色更看重守備／反應。",
         "when": {
           "Ranged < 500": "射擊值 < 500",
           "Ranged 500–539": "射擊值 500–539",
@@ -1537,7 +1541,7 @@
       },
       "pilot_stats_support": {
         "title": "角色 SP 養成數值 — 支援型",
-        "summary": "此角色類型的 SP 清單養成數值。攻擊型最看重適性軸（射擊／格鬥／覺醒）；耐久型角色更看重守備／反應。",
+        "summary": "此角色類型的 SP 清單養成數值。攻擊型最看重適性數值（射擊／格鬥／覺醒）；耐久型角色更看重守備／反應。",
         "when": {
           "Ranged < 655": "射擊值 < 655",
           "Ranged 655–699": "射擊值 655–699",
@@ -1568,7 +1572,7 @@
         "result": {}
       },
       "pilots_extra": {
-        "title": "角色專用軸",
+        "title": "角色專用項目",
         "summary": "角色僅使用 SP 盤。帶狀表見上方角色 SP 養成數值各區塊。",
         "when": {
           "SP grown stats (Ranged / Melee / Awaken / Defense / Reaction)": "SP 養成數值（射擊值／格鬥值／覺醒值／守備值／反應值）",
@@ -1689,7 +1693,7 @@
       },
       "movement_attack": {
         "title": "移動力 — 攻擊型",
-        "summary": "主要移動軸。追擊（可疊加，上限 +2）：移動後 MAP 及／或 額外行動／攻擊後移動。",
+        "summary": "移動力的主要加分。追擊（可疊加，上限 +2）：移動後 MAP 及／或 額外行動／攻擊後移動。",
         "when": {
           "MOV ≤3": "MOV ≤3",
           "MOV 4": "MOV 4",
@@ -1700,7 +1704,7 @@
       },
       "movement_defense": {
         "title": "移動力 — 耐久型",
-        "summary": "主要移動軸。追擊（可疊加，上限 +2）：移動後 MAP 及／或 額外行動／攻擊後移動。",
+        "summary": "移動力的主要加分。追擊（可疊加，上限 +2）：移動後 MAP 及／或 額外行動／攻擊後移動。",
         "when": {
           "MOV ≤3": "MOV ≤3",
           "MOV 4": "MOV 4",
@@ -1711,7 +1715,7 @@
       },
       "movement_support": {
         "title": "移動力 — 支援型",
-        "summary": "主要移動軸。追擊（可疊加，上限 +2）：移動後 MAP 及／或 額外行動／攻擊後移動。",
+        "summary": "移動力的主要加分。追擊（可疊加，上限 +2）：移動後 MAP 及／或 額外行動／攻擊後移動。",
         "when": {
           "MOV ≤3": "MOV ≤3",
           "MOV 4": "MOV 4",
@@ -2022,7 +2026,7 @@
       },
       "debuffs": {
         "title": "弱化（耐久型／支援型單位）",
-        "summary": "攻擊型略過呢啲軸。弱化強度用持續 DEF 下降％或即時貫穿（≈10%→3 … 40%+→6）。耐久型計算射程 ≥4 嘅唔同弱化種類（較輕；受傷降低算一種）。支援型計算射程 ≥5 嘅種類，更睇重強度。",
+        "summary": "攻擊型略過呢啲項目。弱化強度用持續 DEF 下降％或即時貫穿（≈10%→3 … 40%+→6）。耐久型計算射程 ≥4 嘅唔同弱化種類（較輕；受傷降低算一種）。支援型計算射程 ≥5 嘅種類，更睇重強度。",
         "when": {
           "Attack role": "攻擊型",
           "Defense: 0 / 1 / 2+ distinct R4+ debuff kinds": "耐久型：射程 4+ 不同弱化種類 0／1／2+",
@@ -2031,7 +2035,7 @@
           "Support pierce / DEF-down level": "支援型貫穿／DEF 下降等級"
         },
         "result": {
-          "Not scored (axes omitted)": "唔計分（略過軸）",
+          "Not scored": "唔計分",
           "0 / 0 / +1": "0／0／+1",
           "-1 / 0 / +1": "−1／0／+1",
           "none -2 · Lv3 -1 · Lv4 0 · Lv5 +1 · Lv6 +2": "無 −2 · Lv3 −1 · Lv4 0 · Lv5 +1 · Lv6 +2",
@@ -2068,7 +2072,7 @@
       },
       "abilities": {
         "title": "能力／套件",
-        "summary": "跟遊戲主資料嘅能力同技能效果計分。無條件嘅固定 ATK／DEF／HP／移動力呢度係 0。強％效果用尺寸帶（例如造成損傷 10／20／30%+）。單位能力軸上限 +3；角色套件上限 +14。",
+        "summary": "跟遊戲主資料嘅能力同技能效果計分。無條件嘅固定 ATK／DEF／HP／移動力呢度係 0。強％效果用尺寸帶（例如造成損傷 10／20／30%+）。單位能力加分上限 +3；角色套件上限 +14。",
         "when": {
           "Role-relevant combat effects": "對類型有用嘅戰鬥效果",
           "Permanent flat/rate stats, no condition": "無條件嘅固定／比例數值",
@@ -2078,9 +2082,9 @@
         },
         "result": {
           "Points by effect (+ size bands)": "跟效果俾分（＋尺寸帶）",
-          "0 here (counted on MAP axis)": "呢度 0（計入 MAP 軸）",
+          "0 here (counted under MAP)": "呢度 0（計入 MAP）",
           "Rare debuff +1": "稀有弱化 +1",
-          "Extra-life role bonus (separate axis)": "額外生命類型加分（另軸）"
+          "Extra-life role bonus (separate factor)": "額外生命類型加分（另計）"
         }
       },
       "pilot_kit_flat": {
@@ -2198,29 +2202,31 @@
       },
       "rarity": {
         "title": "稀有度調整（單位）",
-        "summary": "避免 N／R／SR 單位同 SSR／UR 共用同一字母帶。",
+        "summary": "唔計分 — 由套件同戰鬥加分項目決定順位。低稀有度通常較少強技能／能力。",
         "when": {
           "N": "N",
           "R": "R",
           "SR": "SR",
-          "SSR / UR": "SSR／UR"
+          "SSR / UR": "SSR／UR",
+          "All rarities": "全部稀有度"
         },
         "result": {}
       },
       "pilot_rarity": {
         "title": "稀有度調整（角色）",
-        "summary": "比單位寬鬆 — 強力 SR 嘅 SP 角色唔應該淨係因為稀有度被埋沒。SSR／UR 同起点。",
+        "summary": "唔計分 — 由角色技能／能力實用性同推薦單位決定順位。",
         "when": {
           "N": "N",
           "R": "R",
           "SR": "SR",
-          "SSR / UR": "SSR／UR"
+          "SSR / UR": "SSR／UR",
+          "All rarities": "全部稀有度"
         },
         "result": {}
       },
       "pilot_stats_attack": {
         "title": "角色 SP 養成數值 — 攻擊型",
-        "summary": "呢個角色類型嘅 SP 清單養成數值。攻擊型最睇重適性軸（射擊／格鬥／覺醒）；耐久型角色更睇重守備／反應。",
+        "summary": "呢個角色類型嘅 SP 清單養成數值。攻擊型最睇重適性數值（射擊／格鬥／覺醒）；耐久型角色更睇重守備／反應。",
         "when": {
           "Ranged < 700": "射擊值 < 700",
           "Ranged 700–734": "射擊值 700–734",
@@ -2252,7 +2258,7 @@
       },
       "pilot_stats_defense": {
         "title": "角色 SP 養成數值 — 耐久型",
-        "summary": "呢個角色類型嘅 SP 清單養成數值。攻擊型最睇重適性軸（射擊／格鬥／覺醒）；耐久型角色更睇重守備／反應。",
+        "summary": "呢個角色類型嘅 SP 清單養成數值。攻擊型最睇重適性數值（射擊／格鬥／覺醒）；耐久型角色更睇重守備／反應。",
         "when": {
           "Ranged < 500": "射擊值 < 500",
           "Ranged 500–539": "射擊值 500–539",
@@ -2284,7 +2290,7 @@
       },
       "pilot_stats_support": {
         "title": "角色 SP 養成數值 — 支援型",
-        "summary": "呢個角色類型嘅 SP 清單養成數值。攻擊型最睇重適性軸（射擊／格鬥／覺醒）；耐久型角色更睇重守備／反應。",
+        "summary": "呢個角色類型嘅 SP 清單養成數值。攻擊型最睇重適性數值（射擊／格鬥／覺醒）；耐久型角色更睇重守備／反應。",
         "when": {
           "Ranged < 655": "射擊值 < 655",
           "Ranged 655–699": "射擊值 655–699",
@@ -2315,7 +2321,7 @@
         "result": {}
       },
       "pilots_extra": {
-        "title": "角色專用軸",
+        "title": "角色專用項目",
         "summary": "角色淨用 SP 盤。帶狀表睇上方角色 SP 養成數值各區塊。",
         "when": {
           "SP grown stats (Ranged / Melee / Awaken / Defense / Reaction)": "SP 養成數值（射擊值／格鬥值／覺醒值／守備值／反應值）",

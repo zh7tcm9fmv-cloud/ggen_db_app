@@ -218,12 +218,11 @@ class TestSpInvestmentBands(unittest.TestCase):
         scored = score_features(feats, self.rules, mode="sp")
         self.assertEqual(scored["breakdown"]["terrain"], -3)
 
-    def test_rarity_adjustment_n_vs_ssr(self):
+    def test_rarity_adjustment_disabled(self):
         n = score_features(_minimal_features(rarity_id="1"), self.rules)
         ssr = score_features(_minimal_features(rarity_id="4"), self.rules)
-        self.assertEqual(n["breakdown"]["rarity"], -5)
+        self.assertEqual(n["breakdown"]["rarity"], 0)
         self.assertEqual(ssr["breakdown"]["rarity"], 0)
-        self.assertEqual(ssr["total"] - n["total"], 5)
 
     def test_map_ammo_and_coverage_cap(self):
         # Presence +1; coverage <6 → 0; total 1
@@ -465,7 +464,8 @@ class TestSpInvestmentBands(unittest.TestCase):
         scored = score_pilot_features(feats, self.rules)
         self.assertEqual(scored["breakdown"]["tags"], 1)  # Hard ER only
         self.assertEqual(scored["breakdown"]["series_affinity"], 3)
-        self.assertEqual(scored["breakdown"]["recommend_ms"], 6)  # S=5 + multi bonus
+        # Portfolio: single S letter → +2 (cap 3); multi-match bonus disabled
+        self.assertEqual(scored["breakdown"]["recommend_ms"], 2)
 
     def test_recommend_ms_requires_a_or_higher(self):
         self.assertEqual(recommend_ms_min_letter(self.rules), "A")
@@ -491,7 +491,33 @@ class TestSpInvestmentBands(unittest.TestCase):
         scored = score_pilot_features(bplus, self.rules)
         self.assertEqual(scored["breakdown"]["recommend_ms"], 0)
         a_grade = dict(bplus, best_rec_ms_letter="A")
-        self.assertEqual(score_pilot_features(a_grade, self.rules)["breakdown"]["recommend_ms"], 3)
+        self.assertEqual(score_pilot_features(a_grade, self.rules)["breakdown"]["recommend_ms"], 1)
+
+    def test_recommend_ms_portfolio_cap(self):
+        feats = {
+            "role": "Attack",
+            "rarity_id": "4",
+            "tag_count": 0,
+            "tags": [],
+            "ability_effects": [],
+            "skill_effects": [],
+            "series_affinity_count": 0,
+            "recommended_units": [
+                {"id": "1", "letter": "S+"},
+                {"id": "2", "letter": "S"},
+                {"id": "3", "letter": "A+"},
+                {"id": "4", "letter": "A"},
+            ],
+            "best_rec_ms_letter": "S+",
+            "rec_ms_bplus_or_better_count": 4,
+            "Ranged": 750,
+            "Melee": 700,
+            "Awaken": 600,
+            "Defense": 500,
+            "Reaction": 550,
+        }
+        # Top 3: S+ + S + A+ = 2+2+1 = 5 → cap 3
+        self.assertEqual(score_pilot_features(feats, self.rules)["breakdown"]["recommend_ms"], 3)
 
     def test_strong_attacker_golden_total(self):
         """Hand-built strong attacker against v5 bands."""
@@ -1010,7 +1036,7 @@ class TestSpInvestmentBands(unittest.TestCase):
         }
         scored = score_pilot_features(feats, self.rules)
         self.assertEqual(scored["breakdown"]["er_access"], 2)
-        self.assertEqual(scored["breakdown"]["rarity"], -2)
+        self.assertEqual(scored["breakdown"]["rarity"], 0)
         self.assertEqual(scored["breakdown"]["tags"], 1)  # Hard ER curated
         self.assertEqual(scored["bucket"], bucket_for_letter(self.rules, scored["letter"]))
 

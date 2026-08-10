@@ -56,7 +56,7 @@
     },
     rarity: {
       label: 'Rarity',
-      tip: 'Units: N/R/SR get a penalty so they do not share top letters with SSR. Pilots use a softer table — SR is not buried. SSR and Ultimate start even before other axes. Non-Ultimate UR kits are omitted from this guide.',
+      tip: 'Not scored — kit and other score factors carry the rank. Lower rarities usually have fewer strong skills/abilities. Non-Ultimate UR kits are omitted from this guide.',
     },
     transform: {
       label: 'Transform advantage',
@@ -72,7 +72,7 @@
     },
     skills_abilities: {
       label: 'Skills & abilities',
-      tip: 'Pilot active skills plus passive ability effects that help their role.',
+      tip: 'Role-weighted Character Skills plus Ability effects. Damage / range / mobility / survivability score highest; MP Up is moderate; EN Charge / Save EN score 0.',
     },
     series_affinity: {
       label: 'Series affinity',
@@ -80,7 +80,7 @@
     },
     recommend_ms: {
       label: 'Recommended Mobile Suits',
-      tip: 'Bonus from this pilot’s best matching MS letter on this guide (A / A+ / S / S+ only — B+ no longer scores), plus a small multi-match bonus.',
+      tip: 'Bonus from this Character’s best matching Units on this guide (top 3: A/A+ = +1, S/S+ = +2, cap +3). B+ and below do not score.',
     },
     linked_pilot: {
       label: 'Affinity pilot pool',
@@ -128,7 +128,7 @@
     },
     mob: {
       label: 'MOB',
-      tip: 'Mobility (MOB). Affects Accuracy and Evasion. Scored from SP-grown MOB for this Unit Type — Support Type values it more; Attack Type treats it as a softer secondary vs ATK.',
+      tip: 'Mobility (MOB). Raises Evasion when this unit is attacked. Scored from SP-grown MOB for this Unit Type — Support Type values it more; Attack Type treats it as a softer secondary vs ATK.',
     },
     stat_outlier: {
       label: 'Stat outlier',
@@ -1811,7 +1811,7 @@
   function renderScoreViz(row) {
     const entries = breakdownEntries(row.breakdown || {});
     if (!entries.length) {
-      return `<p class="spi-dossier-empty">No scored axes for this entry.</p>`;
+      return `<p class="spi-dossier-empty">No score factors for this entry.</p>`;
     }
     const maxAbs = Math.max(1, ...entries.map((e) => Math.abs(e.pts)));
     const bars = entries
