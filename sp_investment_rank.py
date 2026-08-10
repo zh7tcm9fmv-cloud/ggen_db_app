@@ -1020,9 +1020,14 @@ def _ability_display_name(A, ab_id: str, lc: str) -> str:
 
 
 def collect_unit_ability_effects(
-    A, uid: str, mode: str = "sp", lc: str = "EN", rules: dict | None = None
+    A, uid: str, mode: str = "sp", lc: str = "EN", rules: dict | None = None,
+    *, exclude_advantage: bool = False,
 ) -> list[dict]:
-    """Unique TraitType effects for a unit's abilities (SSP replaces + gains in ssp mode)."""
+    """Unique TraitType effects for a unit's abilities (SSP replaces + gains in ssp mode).
+
+    When ``exclude_advantage`` is True, skip ``Advantage: …`` series abilities so lower-value
+    traits from other abilities are not swallowed by the per-type merge.
+    """
     rules = rules or load_rules()
     merged: dict[int, dict] = {}
     ability_ids: list[str] = []
@@ -1043,6 +1048,8 @@ def collect_unit_ability_effects(
         name = _ability_display_name(A, ab_id, lc)
         if _ability_name_excluded(rules, name):
             continue
+        if exclude_advantage and _is_series_advantage_ability_name(name):
+            continue
         for eff in _effects_from_trait_ids(A, _trait_set_ids_for_ability(A, ab_id)):
             tti = int(eff["trait_type_index"])
             prev = merged.get(tti)
@@ -1053,6 +1060,161 @@ def collect_unit_ability_effects(
                 merged[tti] = row
     return list(merged.values())
 
+
+_SERIES_ADVANTAGE_NAME_RE = re.compile(r"(?i)^\s*Advantage\s*:")
+_SERIES_ADVANTAGE_PARSE_RE = re.compile(
+    r"(?i)^\s*Advantage\s*:\s*(.+?)(?:\s+LV\.?\s*\d+)?\s*$"
+)
+
+
+def _is_series_advantage_ability_name(name: str) -> bool:
+    return bool(_SERIES_ADVANTAGE_NAME_RE.match(str(name or "")))
+
+
+def _parse_series_advantage_name(name: str) -> str:
+    m = _SERIES_ADVANTAGE_PARSE_RE.match(str(name or ""))
+    return (m.group(1).strip() if m else "").strip()
+
+
+def _series_ids_for_ability(A, ab_id: str) -> list[str]:
+    """Series ids referenced by an ability's active conditions."""
+    out: list[str] = []
+    cond_map = getattr(A, "trait_condition_raw_map", None) or {}
+    for tid in _trait_set_ids_for_ability(A, ab_id):
+        tdata = A.trait_data_map.get(tid, {}) or {}
+        acid = A.normalize_id(tdata.get("active_cond_id") or "0")
+        if not _cond_id_active(acid):
+            continue
+        raw = cond_map.get(acid) or {}
+        for sid in raw.get("series") or []:
+            s = str(sid or "").strip()
+            if s and s not in out:
+                out.append(s)
+    return out
+
+
+_GENERIC_SERIES_TAG_CORES = frozenset(
+    {
+        "gundam",
+        "mobile suit",
+        "mobile",
+        "suit",
+        "ms",
+        "unit",
+        "series",
+        "alternative",
+        "rival",
+        "red",
+        "blue",
+        "white",
+        "black",
+        "ultimate",
+    }
+)
+
+
+def _match_tags_for_series_advantage(series_name: str, tag_names: list[str] | None) -> list[str]:
+    """Unit tags that plausibly select this Advantage series (e.g. Wing Series → Wing)."""
+    series = str(series_name or "").strip().lower()
+    if not series:
+        return []
+    matched: list[str] = []
+    for raw in tag_names or []:
+        tag = str(raw or "").strip()
+        if not tag:
+            continue
+        is_series_tag = bool(re.search(r"(?i)\bseries\b", tag))
+        core = re.sub(r"(?i)\s+series\s*$", "", tag).strip().lower()
+        if len(core) < 3 or core in _GENERIC_SERIES_TAG_CORES:
+            continue
+        # Prefer "* Series" lineage tags; allow exact non-generic cores otherwise.
+        if core in series or (is_series_tag and series.find(core) >= 0):
+            matched.append(tag)
+    return matched
+
+
+def build_series_advantage_meta_from_effects(
+    *,
+    ability_name: str,
+    ability_id: str,
+    series_ids: list[str] | None,
+    series_name: str,
+    tag_names: list[str] | None,
+    base_ability_points: int,
+    full_ability_points: int,
+) -> dict:
+    """Package withheld series-Advantage points for tag-matched client re-score."""
+    return {
+        "ability_id": ability_id,
+        "ability_name": ability_name,
+        "series_name": series_name,
+        "series_ids": list(series_ids or []),
+        "match_tags": _match_tags_for_series_advantage(series_name, tag_names),
+        "points": max(0, int(full_ability_points) - int(base_ability_points)),
+    }
+
+
+def _first_series_advantage_ability(
+    A, uid: str, *, mode: str, lc: str
+) -> tuple[str, str, list[str], str]:
+    """Return (ability_id, ability_name, series_ids, series_name) for the unit's Advantage: kit."""
+    ability_ids: list[str] = []
+    replace_map = A.unit_ssp_abil_replace_map.get(uid, {}) or {} if mode == "ssp" else {}
+    for ab in A.unit_abil_map.get(uid, []) or []:
+        ab_id = A.normalize_id(ab.get("id"))
+        if mode == "ssp" and ab_id in replace_map:
+            ab_id = A.normalize_id(replace_map.get(ab_id))
+        ability_ids.append(ab_id)
+    if mode == "ssp":
+        for abid in A.unit_ssp_abil_gain_list.get(uid, []) or []:
+            ability_ids.append(A.normalize_id(abid))
+    for ab_id in ability_ids:
+        if not ab_id or ab_id == "0":
+            continue
+        name = _ability_display_name(A, ab_id, lc)
+        if not _is_series_advantage_ability_name(name):
+            continue
+        return ab_id, name, _series_ids_for_ability(A, ab_id), _parse_series_advantage_name(name)
+    return "", "", [], ""
+
+
+def build_series_advantage_meta(
+    A,
+    uid: str,
+    *,
+    mode: str,
+    lc: str,
+    rules: dict,
+    role: str,
+    tag_names: list[str] | None,
+    base_effects: list[dict] | None = None,
+    full_effects: list[dict] | None = None,
+) -> dict | None:
+    """Describe an Ultimate unit's series Advantage: ability (points withheld until tag match)."""
+    adv_id, adv_name, series_ids, series_name = _first_series_advantage_ability(
+        A, uid, mode=mode, lc=lc
+    )
+    if not adv_name:
+        return None
+    if base_effects is None:
+        base_effects = collect_unit_ability_effects(
+            A, uid, mode=mode, lc=lc, rules=rules, exclude_advantage=True
+        )
+    if full_effects is None:
+        full_effects = collect_unit_ability_effects(
+            A, uid, mode=mode, lc=lc, rules=rules, exclude_advantage=False
+        )
+    base_pts, _ = score_ability_effects(rules, role, base_effects)
+    full_pts, _ = score_ability_effects(rules, role, full_effects)
+    return build_series_advantage_meta_from_effects(
+        ability_name=adv_name,
+        ability_id=adv_id,
+        series_ids=series_ids,
+        series_name=series_name,
+        tag_names=tag_names,
+        base_ability_points=base_pts,
+        full_ability_points=full_pts,
+    )
 
 def collect_character_ability_effects(
     A, cid: str, lc: str = "EN", rules: dict | None = None
@@ -2606,8 +2768,28 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
 
     terrain = _effective_terrain(A, uid, info, use_mode if use_mode == "ssp" else "sp")
     ability_blobs = _ability_blobs_for_unit(A, uid, lc, ld, use_mode)
+    # Ultimate series Advantage: is withheld from the base ability score (in-series only).
+    # Collect without it so other traits are not lost in the per-type merge.
+    skip_adv = bool(is_ult)
     ability_effects = collect_unit_ability_effects(
-        A, uid, mode=use_mode if use_mode in ("sp", "ssp") else "sp", lc=lc, rules=rules
+        A,
+        uid,
+        mode=use_mode if use_mode in ("sp", "ssp") else "sp",
+        lc=lc,
+        rules=rules,
+        exclude_advantage=skip_adv,
+    )
+    ability_effects_full = (
+        collect_unit_ability_effects(
+            A,
+            uid,
+            mode=use_mode if use_mode in ("sp", "ssp") else "sp",
+            lc=lc,
+            rules=rules,
+            exclude_advantage=False,
+        )
+        if skip_adv
+        else ability_effects
     )
     has_linked, linked_vg = _linked_pilot_flags(A, uid, info, rules)
     aff_n, aff_meta = count_affinity_pilots_for_unit(
@@ -2619,15 +2801,15 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
     except Exception:
         has_shield = False
 
-    special_def_kinds = _special_defense_kinds(rules, ability_effects)
+    special_def_kinds = _special_defense_kinds(rules, ability_effects_full)
     ur_dep, ur_dep_meta = _ur_recommend_pilot_dependence(A, uid, info, rules)
 
     is_large_footprint = int(info.get("occupied_area_id") or 1) == 2
 
     wfeat = _weapon_features(A, uid, ld, lc, use_mode if use_mode in ("sp", "ssp") else "sp", rules)
-    has_extra, extra_src = _has_extra_life(rules, uid, ability_blobs, ability_effects)
+    has_extra, extra_src = _has_extra_life(rules, uid, ability_blobs, ability_effects_full)
 
-    has_extra_move_kit = effects_have_movement_followup(rules, ability_effects)
+    has_extra_move_kit = effects_have_movement_followup(rules, ability_effects_full)
     extra_move_from_regex = False
 
     rarity_letter = A.RARITY_MAP.get(str(ri), "Unknown") if hasattr(A, "RARITY_MAP") else str(ri)
@@ -2640,6 +2822,20 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
         name = ""
     if not name or name.startswith("Unit "):
         name = ""
+
+    series_advantage = None
+    if is_ult:
+        series_advantage = build_series_advantage_meta(
+            A,
+            uid,
+            mode=use_mode if use_mode in ("sp", "ssp") else "sp",
+            lc=lc,
+            rules=rules,
+            role=role,
+            tag_names=tag_names,
+            base_effects=ability_effects,
+            full_effects=ability_effects_full,
+        )
 
     return {
         "id": uid,
@@ -2663,6 +2859,7 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
         "transform_meta": transform_meta,
         "ability_blobs": ability_blobs,
         "ability_effects": ability_effects,
+        "series_advantage": series_advantage,
         "has_linked_pilot": has_linked,
         "linked_pilot_very_good": linked_vg,
         "affinity_pilot_count": aff_n,
@@ -2702,6 +2899,14 @@ def score_unit(
         return None
     if feats.get("is_warship") and rules.get("exclude_warships", True):
         return None
+    # Non-Ultimate UR kits are too unique for shared SP/SSP criteria (v5.17).
+    if rules.get("exclude_ur_units", True):
+        try:
+            ri = int(feats.get("rarity_id") or 0)
+        except (TypeError, ValueError):
+            ri = 0
+        if ri >= 5 and not feats.get("is_ultimate"):
+            return None
     if tag_strategic_table is not None:
         feats["tag_strategic_table"] = tag_strategic_table
     elif rules.get("tag_strategic"):
@@ -2740,6 +2945,8 @@ def score_unit(
         },
         "peaks_with_ur_pilot": bool(feats.get("ur_pilot_dependent")),
     }
+    if feats.get("series_advantage"):
+        row["series_advantage"] = feats.get("series_advantage")
     if feats.get("er_expert_ids") is not None:
         row["er_expert_ids"] = list(feats.get("er_expert_ids") or [])
     return row
@@ -3553,14 +3760,15 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
     criteria.append(
         {
             "id": "footprint",
-            "title": "Large footprint (2×2)",
+            "title": "2×2 footprint (units)",
             "applies": ["units"],
             "objective": True,
-            "summary": "2×2 units get a mild bonus — wider MAP/buff coverage usually outweighs placement inconvenience.",
+            "summary": "Units with OccupiedArea 2×2 get a mild upside — wider MAP/buff coverage usually outweighs placement inconvenience.",
             "rows": [
-                {"when": "Attack", "result": _fmt_points(fp.get("Attack", 1))},
-                {"when": "Support", "result": _fmt_points(fp.get("Support", 1))},
-                {"when": "Defense", "result": _fmt_points(fp.get("Defense", 1))},
+                {"when": "Attack 2×2", "result": _fmt_points(fp.get("Attack", 1))},
+                {"when": "Support 2×2", "result": _fmt_points(fp.get("Support", 1))},
+                {"when": "Defense 2×2", "result": _fmt_points(fp.get("Defense", 1))},
+                {"when": "Not 2×2", "result": "0"},
             ],
         }
     )
@@ -3695,6 +3903,7 @@ def scoring_guide_payload(rules: dict | None = None) -> dict:
     rules = rules or load_rules()
     guide = dict(rules.get("scoring_guide") or {})
     guide["bucket_labels"] = rules.get("bucket_labels") or {}
+    guide["bucket_by_letter"] = rules.get("bucket_by_letter") or {}
     guide["letter_cutoffs"] = rules.get("letter_cutoffs") or []
     guide["ur_letter_cutoffs"] = rules.get("ur_letter_cutoffs") or []
     guide["pilot_letter_cutoffs"] = rules.get("pilot_letter_cutoffs") or rules.get(

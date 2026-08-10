@@ -908,6 +908,34 @@ class TestSpInvestmentBands(unittest.TestCase):
         self.assertIn("pilot_rarity", ids)
 
 
+class TestSeriesAdvantageHelpers(unittest.TestCase):
+    def test_parse_advantage_series_name(self):
+        from sp_investment_rank import (
+            _is_series_advantage_ability_name,
+            _match_tags_for_series_advantage,
+            _parse_series_advantage_name,
+        )
+
+        self.assertTrue(_is_series_advantage_ability_name("Advantage: Mobile Suit Gundam Wing LV 2"))
+        self.assertFalse(_is_series_advantage_ability_name("Increased ATK LV 2"))
+        self.assertEqual(
+            _parse_series_advantage_name("Advantage: Mobile Suit Gundam Wing LV 2"),
+            "Mobile Suit Gundam Wing",
+        )
+        tags = _match_tags_for_series_advantage(
+            "Mobile Suit Gundam Wing",
+            ["Wing Series", "Gundam", "Newtype", "Rival"],
+        )
+        self.assertEqual(tags, ["Wing Series"])
+        self.assertNotIn("Gundam", tags)
+        self.assertNotIn("Newtype", tags)
+
+    def test_exclude_ur_units_flag(self):
+        clear_rules_cache()
+        rules = load_rules()
+        self.assertTrue(rules.get("exclude_ur_units", True))
+
+
 def _minimal_features(**overrides):
     base = {
         "id": "0",

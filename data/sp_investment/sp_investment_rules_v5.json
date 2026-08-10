@@ -33,9 +33,11 @@
     "v5.13: free/dev/event +1 vs gacha 0; MOV 5 neutral; weapon bonus from strongest attack; split crit dmg/rate/guaranteed; drop tile bonus; softer range 1–3; dual Ranged/Melee/Awaken attr +1; Lupus/Rex signature +3; affinity same-role; MAP coverage 0–14/15–24/25+ and ignore non-damage MAP",
     "v5.14: SP board ignores SSP Custom Core weapons (…80/…90); Attack DEF not scored; Attack ATK mid band awards points (no 0 dead-zone)",
     "v5.15: Attack/Support HP upside-only (no floor penalties); Defense HP/DEF floors kept; SSP Attack EN upside-only; secondary-stat outlier niche bonus; special_defense presence (DR/I-field/barrier); soft UR-recommend pilot dependence −1; softer pilot_rarity_adjustment (SR not punished like unit SR)",
-    "v5.16: pilot recommend-MS / affinity matches require A or higher (A / A+ / S / S+); B+ no longer scores — cuts junk-frame affinity spam"
+    "v5.16: pilot recommend-MS / affinity matches require A or higher (A / A+ / S / S+); B+ no longer scores — cuts junk-frame affinity spam",
+    "v5.17: drop non-Ultimate UR units from Investment Guide boards (kits too unique to share SP criteria); keep Ultimate; series Advantage: abilities score only when the active tag filter matches that series"
   ],
   "exclude_warships": true,
+  "exclude_ur_units": true,
   "exclude_character_ids": [],
   "require_character_usable_unit_link": false,
   "rarity_adjustment": {
@@ -1580,7 +1582,7 @@
     "1370011100"
   ],
   "scoring_guide": {
-    "version": 5.16,
+    "version": 5.17,
     "title": "How Investment Guide scoring works",
     "intro": "Point-sum shortlist for SP/SSP chip investment on mobile suits and pilots (Attack / Defense / Support). Units have separate SP and SSP boards; pilots use SP only. Criteria favor practical sortie tools (MAP, mobility follow-ups, weapon power) and a deep affinity pilot pool over a single linked recommend. Minor Attack stats (HP, SSP EN) are upside-only — no floor punishment. Close letters still need a human look.",
     "overrides": [
@@ -1588,7 +1590,9 @@
       "Filter by tag or Eternal Road Expert stage to compare units that actually fit the same restriction."
     ],
     "gaps": [
-      "Letter cutoffs use separate scales for SP-eligible units/pilots vs UR/Ultimate, so UR kits do not lock out Recommended for chip investment targets.",
+      "Non-Ultimate UR units are omitted from this guide for now — their kits are too unique for the shared SP/SSP criteria.",
+      "Ultimate units stay on the board. Their series Advantage: ability is withheld from the base score and only applied when a tag filter matches that Advantage series.",
+      "Letter cutoffs use separate scales for SP-eligible units/pilots vs Ultimate, so Ultimate kits do not lock out Recommended for chip investment targets.",
       "Pilot recommended-MS points use this list's unit letters (SP/SSP best).",
       "Strategic tag weights use how often tags appear on UR rosters (calibrated table).",
       "Affinity pilot pool counts SSR+ pilots with piloting-tag / EX-pair affinity for the MS (not supporter amp %).",

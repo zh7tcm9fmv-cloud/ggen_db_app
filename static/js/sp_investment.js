@@ -37,16 +37,17 @@
       tip: 'How many Eternal Road Expert stages this unit or pilot can enter. Under 2 is −1; 2–4 is +1; 5 or more is +2.',
     },
     large_footprint: {
-      label: 'Large footprint',
-      tip: '2×2 units get +1 — wider MAP and buff coverage usually outweighs the placement inconvenience.',
+      label: '2×2',
+      tip: 'Occupied area is 2×2. Mild upside (+1) — wider MAP and buff coverage usually outweighs placement inconvenience.',
+      hideIfZero: true,
     },
     terrain: {
       label: 'Terrain coverage',
-      tip: 'Need Space plus Land or Atmospheric for a neutral score (Space+Atmos with no Land is OK). Extra terrains add points. Missing Space, or both Land and Atmospheric, is a penalty.',
+      tip: 'Need Space plus Land or Atmospheric for a neutral (0) score — Space+Atmos with no Land is OK (e.g. Byarlant). Extra terrains add points. Missing Space, or both Land and Atmospheric, is −3. A 0 here still means the floor was met; it is not skipped.',
     },
     rarity: {
       label: 'Rarity',
-      tip: 'Units: N/R/SR get a penalty so they do not share top letters with SSR. Pilots use a softer table — SR is not buried. SSR and UR start even before other axes.',
+      tip: 'Units: N/R/SR get a penalty so they do not share top letters with SSR. Pilots use a softer table — SR is not buried. SSR and Ultimate start even before other axes. Non-Ultimate UR kits are omitted from this guide.',
     },
     transform: {
       label: 'Transform advantage',
@@ -603,6 +604,65 @@
     return false;
   }
 
+  function seriesAdvantageApplies(row) {
+    const adv = row && row.series_advantage;
+    if (!adv || !tagFilter) return false;
+    const tag = String(tagFilter).trim().toLowerCase();
+    if (!tag) return false;
+    const matchTags = (adv.match_tags || []).map((t) => String(t).trim().toLowerCase());
+    if (matchTags.includes(tag)) return true;
+    const series = String(adv.series_name || '').trim().toLowerCase();
+    if (!series) return false;
+    const tagCore = tag.replace(/\s+series\s*$/i, '').trim();
+    const generic = new Set([
+      'gundam', 'mobile suit', 'mobile', 'suit', 'ms', 'unit', 'series',
+      'alternative', 'rival', 'red', 'blue', 'white', 'black', 'ultimate',
+    ]);
+    if (tagCore.length < 3 || generic.has(tagCore)) return false;
+    if (series.includes(tagCore)) return true;
+    return false;
+  }
+
+  function letterFromTotal(total, cohort) {
+    const g = (payload && payload.scoring_guide) || {};
+    const cuts =
+      cohort === 'ur'
+        ? g.ur_letter_cutoffs || g.letter_cutoffs || []
+        : g.letter_cutoffs || [];
+    const n = Number(total) || 0;
+    for (let i = 0; i < cuts.length; i++) {
+      if (n >= Number(cuts[i].min)) return String(cuts[i].letter || 'E');
+    }
+    return 'E';
+  }
+
+  function bucketFromLetter(letter) {
+    const g = (payload && payload.scoring_guide) || {};
+    const map = g.bucket_by_letter || payload.bucket_by_letter || {};
+    return map[letter] || 'niche';
+  }
+
+  /** Base published row + Ultimate series Advantage when the active tag matches. */
+  function effectiveRow(row) {
+    if (!row) return row;
+    const adv = row.series_advantage;
+    const apply = seriesAdvantageApplies(row) && Number((adv && adv.points) || 0) > 0;
+    if (!apply) {
+      return row._advantage_active ? { ...row, _advantage_active: false } : row;
+    }
+    const total = Number(row.total || 0) + Number(adv.points || 0);
+    const cohort = row.letter_cohort || (row.has_sp ? 'sp' : 'ur');
+    const letter = letterFromTotal(total, cohort);
+    return {
+      ...row,
+      total,
+      letter,
+      bucket: bucketFromLetter(letter),
+      _advantage_active: true,
+      _advantage_points: Number(adv.points || 0),
+    };
+  }
+
   function syncLowRarityLabel() {
     const low = $('#spiShowLowRarity');
     if (!low) return;
@@ -632,7 +692,8 @@
     if (String(row.role_id || '') === '0') return false;
     if ((row.role || '') !== role) return false;
     if (!rarityOk(row)) return false;
-    if (hasSpOnly && !row.has_sp) return false;
+    // SP-eligible filter keeps Ultimate units (UR rarity without Ultimate is omitted from data).
+    if (hasSpOnly && !row.has_sp && !row.is_ultimate) return false;
     if (entity === 'units' && mapOnly && !row.has_map) return false;
     if (sourceFilter !== 'all' && (row.source || '') !== sourceFilter) return false;
     if (tagFilter) {
@@ -907,7 +968,7 @@
       .join('');
     cuts.innerHTML =
       fmtCuts(spCuts, 'SP-eligible grades') +
-      fmtCuts(urCuts, 'UR / Ultimate grades') +
+      fmtCuts(urCuts, 'Ultimate grades') +
       `<div class="spi-cutoff-group"><span class="spi-cutoff-group-label">Buckets</span>${bucketBits}</div>`;
   }
 
@@ -932,20 +993,46 @@
     const order = payload.bucket_order || BUCKET_ORDER;
     const kind = entity === 'characters' ? 'character' : 'unit';
     rowById = new Map();
+
+    const byBucket = {};
+    order.forEach((bk) => {
+      byBucket[bk] = [];
+    });
+    Object.keys(buckets || {}).forEach((bk) => {
+      (buckets[bk] || []).forEach((raw) => {
+        if (!passesFilters(raw)) return;
+        const r = effectiveRow(raw);
+        rowById.set(String(raw.id), r);
+        const dest = r.bucket || 'niche';
+        if (!byBucket[dest]) byBucket[dest] = [];
+        byBucket[dest].push(r);
+      });
+    });
+    order.forEach((bk) => {
+      (byBucket[bk] || []).sort(
+        (a, b) =>
+          Number(b.total || 0) - Number(a.total || 0) ||
+          String(a.name || '').localeCompare(String(b.name || ''))
+      );
+    });
+
     let shown = 0;
     let html = '';
     order.forEach((bk) => {
-      const rows = (buckets[bk] || []).filter(passesFilters);
-      rows.forEach((r) => rowById.set(String(r.id), r));
+      const rows = byBucket[bk] || [];
       shown += rows.length;
       const cards = rows
         .map((r) => {
+          const advNote = r._advantage_active
+            ? `<span class="spi-chip spi-chip-adv" title="Series Advantage applied for this tag">+${esc(r._advantage_points)} Adv</span>`
+            : '';
           return `<button type="button" class="spi-card" data-id="${esc(r.id)}">
             <div class="spi-card-thumb-wrap">${renderFramedThumb(r, kind)}</div>
             <div class="spi-card-name">${esc(r.name || r.id)}</div>
             <div class="spi-card-meta">
               <span class="spi-chip letter ${letterClass(r.letter)}">${esc(r.letter || '?')}</span>
               <span class="spi-chip score">${esc(r.total)} Pt</span>
+              ${advNote}
             </div>
           </button>`;
         })
@@ -968,8 +1055,9 @@
           ? counts.units_ssp || counts.ssp || 0
           : counts.units_sp || counts.sp || 0;
     const label = entity === 'characters' ? 'Pilots SP' : board.toUpperCase();
-    const cohortNote = !hasSpOnly ? ' · UR/Ultimate use a separate grade scale' : '';
-    statusEl.textContent = `Showing ${shown} of ${totalBoard} · ${label} · ${role}${cohortNote}`;
+    const cohortNote = !hasSpOnly ? ' · Ultimate uses a separate grade scale' : '';
+    const advNote = tagFilter ? ' · Ultimate Advantage on matching series tags' : '';
+    statusEl.textContent = `Showing ${shown} of ${totalBoard} · ${label} · ${role}${cohortNote}${advNote}`;
   }
 
   function ptsBadge(pts) {
@@ -1145,13 +1233,21 @@
 
     const cohort =
       row.letter_cohort === 'ur'
-        ? '<span class="spi-chip spi-chip-cohort">UR / Ultimate scale</span>'
+        ? '<span class="spi-chip spi-chip-cohort">Ultimate scale</span>'
         : row.has_sp
           ? '<span class="spi-chip spi-chip-cohort">SP-eligible scale</span>'
           : '';
     const urPilotBadge =
       !isPilot && row.peaks_with_ur_pilot
         ? '<span class="spi-chip spi-chip-warn" title="Recommend pilot is UR/Ultimate — peak kit often assumes that pilot">Peaks with UR pilot</span>'
+        : '';
+    const adv = row.series_advantage;
+    const advActive = !!row._advantage_active;
+    const advBadge =
+      !isPilot && adv
+        ? advActive
+          ? `<span class="spi-chip spi-chip-adv" title="${esc(adv.ability_name || '')}">Advantage +${esc(adv.points)} (tag match)</span>`
+          : `<span class="spi-chip spi-chip-muted" title="${esc(adv.ability_name || '')}">Advantage +${esc(adv.points)} in-series only</span>`
         : '';
 
     const header = `<div class="spi-dossier-head">
@@ -1164,6 +1260,7 @@
           <span class="spi-chip score">Total: ${esc(row.total)} Pt</span>
           ${cohort}
           ${urPilotBadge}
+          ${advBadge}
         </div>
       </div>
     </div>`;
