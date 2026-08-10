@@ -1340,10 +1340,11 @@ def _load_char_skill_trait_maps(A) -> dict[str, Any]:
 
 
 def collect_character_skill_effects(A, cid: str) -> list[dict]:
-    """Active skill CharacterSkillTraitType effects for a character (deduped by type)."""
+    """Active skill CharacterSkillTraitType effects per skill (not cross-skill deduped)."""
     maps = _load_char_skill_trait_maps(A)
     skill_map = maps.get("skill_to_effects") or {}
-    merged: dict[int, dict] = {}
+    out: list[dict] = []
+    seen_sids: set[str] = set()
     try:
         fs = [
             x
@@ -1361,55 +1362,115 @@ def collect_character_skill_effects(A, cid: str) -> list[dict]:
             "spSkillId",
         ):
             sid = A.normalize_id(sk.get(key) or "")
-            if not sid or sid == "0":
+            if not sid or sid == "0" or sid in seen_sids:
                 continue
+            seen_sids.add(sid)
             for eff in skill_map.get(sid) or []:
                 tti = int(eff.get("trait_type_index") or 0)
                 if not tti:
                     continue
-                prev = merged.get(tti)
-                if prev is None or int(eff.get("trait_value") or 0) >= int(
-                    prev.get("trait_value") or 0
-                ):
-                    row = dict(eff)
-                    row["skill_id"] = sid
-                    merged[tti] = row
-    return list(merged.values())
+                row = dict(eff)
+                row["skill_id"] = sid
+                out.append(row)
+            break
+    return out
+
+
+def _points_for_skill_trait_type(cfg: dict, tti: int) -> int:
+    """Flat skill points: Sway/MP or CS/SA/SD = +2, dmg = +1, else 0."""
+    tti = int(tti or 0)
+    if not tti:
+        return 0
+    sway_mp = {int(x) for x in (cfg.get("sway_mp_types") or [])}
+    util = {int(x) for x in (cfg.get("utility_cs_sa_sd_types") or [])}
+    dmg = {int(x) for x in (cfg.get("dmg_types") or [])}
+    if tti in sway_mp:
+        return int(cfg.get("sway_mp_points", 2) or 2)
+    if tti in util:
+        return int(cfg.get("utility_cs_sa_sd_points", 2) or 2)
+    if tti in dmg:
+        return int(cfg.get("dmg_points", 1) or 1)
+    return 0
 
 
 def score_pilot_skill_effects(
     rules: dict, role: str, specialty: str, effects: list[dict] | None
 ) -> tuple[int, dict]:
+    """Score every skill (max category among its effects), then sum."""
     cfg = rules.get("pilot_skill_structured") or {}
-    role_map = (cfg.get("role_points") or {}).get(role) or {}
-    mag_tbl_role = (cfg.get("magnitude_points") or {}).get(role) or {}
-    spec_types = cfg.get("specialty_types") or {}
-    spec_tti = int(spec_types.get(specialty) or 0)
-    spec_bonus = int(cfg.get("specialty_bonus", 1) or 1)
+    by_skill: dict[str, list[dict]] = {}
+    for i, eff in enumerate(effects or []):
+        sid = str(eff.get("skill_id") or "").strip() or f"_eff_{i}"
+        by_skill.setdefault(sid, []).append(eff)
+
     lines = []
     total = 0
-    for eff in effects or []:
-        tti = int(eff.get("trait_type_index") or 0)
-        tval = abs(int(eff.get("trait_value") or 0))
-        mag_bands = mag_tbl_role.get(str(tti))
-        if mag_bands:
-            pts = int(band_points(mag_bands, tval))
-        else:
-            pts = int(role_map.get(str(tti), 0) or 0)
-        if spec_tti and tti == spec_tti:
-            pts += spec_bonus
-        if pts <= 0:
+    for sid, effs in by_skill.items():
+        best_pts = 0
+        best_tti = 0
+        best_val = 0
+        for eff in effs:
+            tti = int(eff.get("trait_type_index") or 0)
+            pts = _points_for_skill_trait_type(cfg, tti)
+            if pts > best_pts:
+                best_pts = pts
+                best_tti = tti
+                best_val = int(eff.get("trait_value") or 0)
+        if best_pts <= 0:
             continue
-        total += pts
+        total += best_pts
         lines.append(
             {
-                "trait_type_index": tti,
-                "trait_value": int(eff.get("trait_value") or 0),
-                "points": pts,
-                "skill_id": eff.get("skill_id") or "",
+                "trait_type_index": best_tti,
+                "trait_value": best_val,
+                "points": best_pts,
+                "skill_id": sid,
             }
         )
-    return total, {"lines": lines, "structured": True, "heuristic": False}
+    return total, {
+        "lines": lines,
+        "structured": True,
+        "heuristic": False,
+        "mode": "flat_per_skill",
+        "skill_count": len(by_skill),
+    }
+
+
+def _score_pilot_ability_flat(
+    rules: dict, ability_effects: list[dict] | None
+) -> tuple[int, dict]:
+    """Add-on: conditional +1 (or +2 if conditional CS/SA/SD); InitialMp type46 +1."""
+    cfg = rules.get("pilot_ability_flat") or {}
+    cs_types = {int(x) for x in (cfg.get("cs_sa_sd_types") or [])}
+    mp_type = int(cfg.get("initial_mp_type", 46) or 46)
+    cond_pts = int(cfg.get("conditional_points", 1) or 1)
+    cond_cs_pts = int(cfg.get("conditional_cs_sa_sd_points", 2) or 2)
+    mp_pts = int(cfg.get("initial_mp_points", 1) or 1)
+
+    has_cond = False
+    has_cond_cs = False
+    has_mp = False
+    for eff in ability_effects or []:
+        tti = int(eff.get("trait_type_index") or 0)
+        cond = bool(eff.get("has_active_cond"))
+        if cond:
+            has_cond = True
+            if tti in cs_types:
+                has_cond_cs = True
+        if tti == mp_type:
+            has_mp = True
+
+    flat_cond = cond_cs_pts if has_cond_cs else (cond_pts if has_cond else 0)
+    flat_mp = mp_pts if has_mp else 0
+    total = flat_cond + flat_mp
+    return total, {
+        "conditional_points": flat_cond,
+        "initial_mp_points": flat_mp,
+        "has_conditional": has_cond,
+        "has_conditional_cs_sa_sd": has_cond_cs,
+        "has_initial_mp": has_mp,
+        "total": total,
+    }
 
 
 def score_pilot_kit_structured(
@@ -1423,7 +1484,6 @@ def score_pilot_kit_structured(
     """Combined pilot kit points from structured ability + skill traits (capped)."""
     abil_pts, abil_meta = score_ability_effects(rules, role, ability_effects)
     # Ability axis for pilots is uncapped by unit cap — re-sum contributing without unit cap
-    cfg = rules.get("ability_structured") or {}
     by_type: dict[int, int] = {}
     for eff in ability_effects or []:
         tti = int(eff.get("trait_type_index") or 0)
@@ -1437,16 +1497,21 @@ def score_pilot_kit_structured(
         if pts > by_type.get(tti, 0):
             by_type[tti] = pts
     abil_raw = sum(by_type.values())
+    flat_pts, flat_meta = _score_pilot_ability_flat(rules, ability_effects)
+    abil_total = abil_raw + flat_pts
     skill_pts, skill_meta = score_pilot_skill_effects(
         rules, role, specialty, skill_effects
     )
     aff_each = int(rules.get("series_affinity_points_each", 3))
     # affinity counted separately in score_pilot_features
-    raw = abil_raw + skill_pts
+    raw = abil_total + skill_pts
     cap = int(rules.get("pilot_kit_cap", 14) or 14)
     capped = min(cap, raw)
     return capped, {
-        "ability_points": abil_raw,
+        "ability_points": abil_total,
+        "ability_trait_points": abil_raw,
+        "ability_flat_points": flat_pts,
+        "ability_flat": flat_meta,
         "skill_points": skill_pts,
         "raw": raw,
         "cap": cap,
@@ -3710,6 +3775,54 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
         }
     )
 
+    pflat = rules.get("pilot_ability_flat") or {}
+    pskill = rules.get("pilot_skill_structured") or {}
+    criteria.append(
+        {
+            "id": "pilot_kit_flat",
+            "title": "Pilot ability & skill flat bonuses",
+            "applies": ["pilots"],
+            "objective": True,
+            "summary": (
+                "On top of role TraitType ability points: unique conditional / Initial MP bonuses. "
+                "Active skills are scored per skill (0 / +1 / +2) and summed — same-role melee/range "
+                "style kits are not overweighted."
+            ),
+            "rows": [
+                {
+                    "when": "Conditional ability (any ActiveCondition)",
+                    "result": _fmt_points(pflat.get("conditional_points", 1)),
+                },
+                {
+                    "when": "Conditional ability grants extra CS / SA / SD",
+                    "result": _fmt_points(pflat.get("conditional_cs_sa_sd_points", 2))
+                    + " (instead of conditional +1)",
+                },
+                {
+                    "when": "Initial MP ability (Cyber-Newtype / Enhanced Human, type 46)",
+                    "result": _fmt_points(pflat.get("initial_mp_points", 1)),
+                },
+                {
+                    "when": "Non-damage skill (MOV, range, EN/HP restore, DEF up, hit/eva, …)",
+                    "result": "0",
+                },
+                {
+                    "when": "Damage skill (attack burst, Critical up, melee/range/awaken)",
+                    "result": _fmt_points(pskill.get("dmg_points", 1)) + " each skill",
+                },
+                {
+                    "when": "Utility skill (extra CS / SA / SD for 1 turn)",
+                    "result": _fmt_points(pskill.get("utility_cs_sa_sd_points", 2))
+                    + " each skill",
+                },
+                {
+                    "when": "Sway or MP Up skill",
+                    "result": _fmt_points(pskill.get("sway_mp_points", 2)) + " each skill",
+                },
+            ],
+        }
+    )
+
     # Publish flat role→effect point tables for transparency
     try:
         import game_enums as _ge
@@ -4146,6 +4259,34 @@ def score_pilot_features(features: dict, rules: dict | None = None) -> dict:
                     "estimated": False,
                     "trait_type_index": line.get("trait_type_index"),
                     "trait_value": line.get("trait_value"),
+                    "skill_id": line.get("skill_id") or "",
+                }
+            )
+        flat_meta = kit_meta.get("ability_flat") or {}
+        if int(flat_meta.get("conditional_points") or 0) > 0:
+            detail_lines.append(
+                {
+                    "kind": "ability_flat",
+                    "label": (
+                        "Conditional ability (extra CS/SA/SD)"
+                        if flat_meta.get("has_conditional_cs_sa_sd")
+                        else "Conditional ability"
+                    ),
+                    "name": "pilot_ability_flat_conditional",
+                    "points": int(flat_meta.get("conditional_points") or 0),
+                    "is_affinity": False,
+                    "estimated": False,
+                }
+            )
+        if int(flat_meta.get("initial_mp_points") or 0) > 0:
+            detail_lines.append(
+                {
+                    "kind": "ability_flat",
+                    "label": "Initial MP ability (Cyber-Newtype / Enhanced Human)",
+                    "name": "pilot_ability_flat_initial_mp",
+                    "points": int(flat_meta.get("initial_mp_points") or 0),
+                    "is_affinity": False,
+                    "estimated": False,
                 }
             )
         for eff in features.get("ability_effects") or []:

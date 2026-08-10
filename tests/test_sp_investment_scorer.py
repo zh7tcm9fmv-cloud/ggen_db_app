@@ -609,9 +609,9 @@ class TestSpInvestmentBands(unittest.TestCase):
             {"trait_type_index": 49, "trait_value": 1, "has_active_cond": True},
         ]
         skill_effects = [
-            {"trait_type_index": 8, "trait_value": 30},
-            {"trait_type_index": 13, "trait_value": 1},
-            {"trait_type_index": 9, "trait_value": 20},
+            {"trait_type_index": 8, "trait_value": 30, "skill_id": "s1"},
+            {"trait_type_index": 13, "trait_value": 1, "skill_id": "s2"},
+            {"trait_type_index": 9, "trait_value": 20, "skill_id": "s3"},
         ]
         pts, meta = score_pilot_kit_structured(
             self.rules, "Attack", "Ranged", ability_effects, skill_effects
@@ -619,6 +619,85 @@ class TestSpInvestmentBands(unittest.TestCase):
         self.assertLessEqual(pts, int(self.rules.get("pilot_kit_cap", 14)))
         self.assertTrue(meta.get("structured"))
         self.assertFalse(meta.get("heuristic"))
+        # conditional +1 flat on top of trait points; skills: dmg+1, sure-hit 0, dmg+1
+        self.assertEqual(meta.get("ability_flat_points"), 1)
+        self.assertEqual(meta.get("skill_points"), 2)
+
+    def test_pilot_ability_flat_conditional_and_mp(self):
+        from sp_investment_rank import _score_pilot_ability_flat
+
+        pts, meta = _score_pilot_ability_flat(
+            self.rules,
+            [
+                {"trait_type_index": 17, "trait_value": 10, "has_active_cond": True},
+                {"trait_type_index": 46, "trait_value": 20, "has_active_cond": False},
+            ],
+        )
+        self.assertEqual(pts, 2)  # cond +1 + mp +1
+        self.assertEqual(meta["conditional_points"], 1)
+        self.assertEqual(meta["initial_mp_points"], 1)
+
+    def test_pilot_ability_flat_conditional_cs_is_plus_two(self):
+        from sp_investment_rank import _score_pilot_ability_flat
+
+        pts, meta = _score_pilot_ability_flat(
+            self.rules,
+            [
+                {"trait_type_index": 80, "trait_value": 1, "has_active_cond": True},
+            ],
+        )
+        self.assertEqual(pts, 2)
+        self.assertTrue(meta["has_conditional_cs_sa_sd"])
+        self.assertEqual(meta["conditional_points"], 2)
+
+    def test_pilot_skills_flat_per_skill_sum(self):
+        from sp_investment_rank import score_pilot_skill_effects
+
+        # two separate dmg skills → +1 each; non-dmg ignored; sway +2 all roles
+        pts, meta = score_pilot_skill_effects(
+            self.rules,
+            "Attack",
+            "Ranged",
+            [
+                {"trait_type_index": 8, "trait_value": 30, "skill_id": "a"},
+                {"trait_type_index": 12, "trait_value": 20, "skill_id": "b"},
+                {"trait_type_index": 7, "trait_value": 1, "skill_id": "c"},
+                {"trait_type_index": 14, "trait_value": 1, "skill_id": "d"},
+            ],
+        )
+        self.assertEqual(pts, 4)  # 1+1+0+2
+        self.assertEqual(meta.get("mode"), "flat_per_skill")
+
+        pts_sup, _ = score_pilot_skill_effects(
+            self.rules,
+            "Support",
+            "Ranged",
+            [{"trait_type_index": 4, "trait_value": 20, "skill_id": "mp"}],
+        )
+        self.assertEqual(pts_sup, 2)
+
+        pts_def, _ = score_pilot_skill_effects(
+            self.rules,
+            "Defense",
+            "Melee",
+            [{"trait_type_index": 14, "trait_value": 1, "skill_id": "sway"}],
+        )
+        self.assertEqual(pts_def, 2)
+
+    def test_unit_ability_scoring_unchanged_by_pilot_flat(self):
+        # unit path still uses ability_structured only (no pilot flat)
+        pts, _ = score_ability_effects(
+            self.rules,
+            "Attack",
+            [
+                {
+                    "trait_type_index": 17,
+                    "trait_value": 15,
+                    "has_active_cond": True,
+                }
+            ],
+        )
+        self.assertEqual(pts, 2)
 
     def test_scoring_guide_has_no_en_cost(self):
         guide = self.rules.get("scoring_guide") or {}
@@ -634,6 +713,7 @@ class TestSpInvestmentBands(unittest.TestCase):
         self.assertIn("weapon_power_sp_attack", ids)
         self.assertIn("role_focus_attack", ids)
         self.assertIn("map", ids)
+        self.assertIn("pilot_kit_flat", ids)
         self.assertNotIn("not_scored", ids)
         er = next(c for c in crit if c["id"] == "er_access")
         self.assertTrue(er["objective"])

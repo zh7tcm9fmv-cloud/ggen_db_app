@@ -581,6 +581,24 @@
           "Extra-life role bonus (separate axis)": "追加命タイプボーナス（別軸）"
         }
       },
+      "pilot_kit_flat": {
+        "title": "キャラクターアビリティ／スキル定額加点",
+        "summary": "タイプ別 TraitType 点に加え、条件アビリティ／初期MPの定額加点。アクティブスキルはスキルごとに 0／+1／+2 を合算。",
+        "when": {
+          "Conditional ability (any ActiveCondition)": "条件アビリティ（発動条件あり）",
+          "Conditional ability grants extra CS / SA / SD": "条件アビリティが追加CS／SA／SD",
+          "Initial MP ability (Cyber-Newtype / Enhanced Human, type 46)": "初期MPアビリティ（強化人間／サイコミュ系、type 46）",
+          "Non-damage skill (MOV, range, EN/HP restore, DEF up, hit/eva, …)": "非ダメージスキル（移動力・射程・EN／HP回復・防御アップ・命中／回避など）",
+          "Damage skill (attack burst, Critical up, melee/range/awaken)": "ダメージスキル（攻撃バースト・クリティカルアップ・格闘／射撃／覚醒）",
+          "Utility skill (extra CS / SA / SD for 1 turn)": "ユーティリティスキル（1ターン追加CS／SA／SD）",
+          "Sway or MP Up skill": "スウェイまたはMPアップスキル"
+        },
+        "result": {
+          "+2 (instead of conditional +1)": "+2（条件+1の代わり）",
+          "+1 each skill": "スキルごと +1",
+          "+2 each skill": "スキルごと +2"
+        }
+      },
       "ability_table_attack": {
         "title": "ユニットアビリティ効果 — 攻撃型",
         "summary": "サイズ帯がないときの基礎点。ある場合はサイズ表を適用。",
@@ -1306,6 +1324,24 @@
           "Extra-life role bonus (separate axis)": "額外生命類型加分（另軸）"
         }
       },
+      "pilot_kit_flat": {
+        "title": "角色能力／技能定額加分",
+        "summary": "在類型 TraitType 點數之上，另加條件能力／初始 MP 定額分。主動技能依每技能 0／+1／+2 合計。",
+        "when": {
+          "Conditional ability (any ActiveCondition)": "條件能力（有發動條件）",
+          "Conditional ability grants extra CS / SA / SD": "條件能力提供額外 CS／SA／SD",
+          "Initial MP ability (Cyber-Newtype / Enhanced Human, type 46)": "初始 MP 能力（強化人間／Cyber-Newtype，type 46）",
+          "Non-damage skill (MOV, range, EN/HP restore, DEF up, hit/eva, …)": "非損傷技能（移動力、射程、EN／HP 回復、防禦上升、命中／閃避等）",
+          "Damage skill (attack burst, Critical up, melee/range/awaken)": "損傷技能（攻擊爆發、爆擊上升、格鬥／射擊／覺醒）",
+          "Utility skill (extra CS / SA / SD for 1 turn)": "輔助技能（1 回合額外 CS／SA／SD）",
+          "Sway or MP Up skill": "Sway 或 MP 上升技能"
+        },
+        "result": {
+          "+2 (instead of conditional +1)": "+2（取代條件 +1）",
+          "+1 each skill": "每技能 +1",
+          "+2 each skill": "每技能 +2"
+        }
+      },
       "ability_table_attack": {
         "title": "單位能力效果 — 攻擊型",
         "summary": "無尺寸帶時的基礎分；有則套用尺寸表。",
@@ -2029,6 +2065,24 @@
           "0 here (counted on MAP axis)": "呢度 0（計入 MAP 軸）",
           "Rare debuff +1": "稀有弱化 +1",
           "Extra-life role bonus (separate axis)": "額外生命類型加分（另軸）"
+        }
+      },
+      "pilot_kit_flat": {
+        "title": "角色能力／技能定額加分",
+        "summary": "喺類型 TraitType 分數之上，再加條件能力／初始 MP 定額分。主動技能按每技能 0／+1／+2 合計。",
+        "when": {
+          "Conditional ability (any ActiveCondition)": "條件能力（有發動條件）",
+          "Conditional ability grants extra CS / SA / SD": "條件能力提供額外 CS／SA／SD",
+          "Initial MP ability (Cyber-Newtype / Enhanced Human, type 46)": "初始 MP 能力（強化人間／Cyber-Newtype，type 46）",
+          "Non-damage skill (MOV, range, EN/HP restore, DEF up, hit/eva, …)": "非損傷技能（移動力、射程、EN／HP 回復、防禦上升、命中／閃避等）",
+          "Damage skill (attack burst, Critical up, melee/range/awaken)": "損傷技能（攻擊爆發、爆擊上升、格鬥／射擊／覺醒）",
+          "Utility skill (extra CS / SA / SD for 1 turn)": "輔助技能（1 回合額外 CS／SA／SD）",
+          "Sway or MP Up skill": "Sway 或 MP 上升技能"
+        },
+        "result": {
+          "+2 (instead of conditional +1)": "+2（取代條件 +1）",
+          "+1 each skill": "每技能 +1",
+          "+2 each skill": "每技能 +2"
         }
       },
       "ability_table_attack": {
