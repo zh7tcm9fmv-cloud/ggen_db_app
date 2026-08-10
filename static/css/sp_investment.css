@@ -508,17 +508,49 @@ html.spi-modal-open body.spi-page {
   flex-direction: column;
   padding: 0;
 }
-.spi-dd-panel--tall .filter-dd-search {
+.spi-dd-panel--tall .spi-dd-search-wrap {
+  position: relative;
   flex-shrink: 0;
   margin: 8px 10px 6px;
-  width: calc(100% - 20px);
+}
+.spi-dd-panel--tall .filter-dd-search {
+  flex-shrink: 0;
+  margin: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding-right: 2rem;
+}
+.spi-dd-panel--tall .spi-dd-search-clear {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 .spi-dd-panel--tall .spi-dd-scroll {
   overflow-y: auto;
-  max-height: min(60vh, 360px);
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: min(52vh, 300px);
   padding: 0 0 4px;
 }
-.spi-dd-panel--tall[hidden] {
+.spi-dd-panel--tall .filter-panel-clear-wrap,
+#spiSourceFilterPanel .filter-panel-clear-wrap {
+  flex-shrink: 0;
+}
+#spiSourceFilterPanel {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  max-height: min(70vh, 360px);
+  overflow: hidden;
+}
+#spiSourceFilterPanel .spi-dd-scroll {
+  overflow-y: auto;
+  max-height: min(50vh, 280px);
+  padding: 4px 0;
+}
+.spi-dd-panel--tall[hidden],
+#spiSourceFilterPanel[hidden] {
   display: none !important;
 }
 .spi-dd-empty {

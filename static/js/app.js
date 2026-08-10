@@ -2182,6 +2182,7 @@ S._stageDetailUiRestore=null;
 syncDetailBrowseNavUi();
 updateScrollTopFabVisibility();
 if(window.GgenUnitBestPilots&&typeof GgenUnitBestPilots.onDetailClose==='function')GgenUnitBestPilots.onDetailClose();
+if(window.GgenSpInvestment&&typeof GgenSpInvestment.onAppDetailClosed==='function')GgenSpInvestment.onAppDetailClosed();
 }
 function _detailTabForType(type){
 if(type==='unit')return'units';

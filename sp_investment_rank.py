@@ -1439,28 +1439,40 @@ def score_pilot_skill_effects(
 def _score_pilot_ability_flat(
     rules: dict, ability_effects: list[dict] | None
 ) -> tuple[int, dict]:
-    """Add-on: conditional +1 (or +2 if conditional CS/SA/SD); InitialMp type46 +1."""
+    """Add-on: unconditional CS/SA/SD +2, conditional CS/SA/SD +1, other cond +1; InitialMp type46 +1."""
     cfg = rules.get("pilot_ability_flat") or {}
     cs_types = {int(x) for x in (cfg.get("cs_sa_sd_types") or [])}
     mp_type = int(cfg.get("initial_mp_type", 46) or 46)
     cond_pts = int(cfg.get("conditional_points", 1) or 1)
-    cond_cs_pts = int(cfg.get("conditional_cs_sa_sd_points", 2) or 2)
+    uncond_cs_pts = int(cfg.get("unconditional_cs_sa_sd_points", 2) or 2)
+    cond_cs_pts = int(cfg.get("conditional_cs_sa_sd_points", 1) or 1)
     mp_pts = int(cfg.get("initial_mp_points", 1) or 1)
 
     has_cond = False
     has_cond_cs = False
+    has_uncond_cs = False
     has_mp = False
     for eff in ability_effects or []:
         tti = int(eff.get("trait_type_index") or 0)
         cond = bool(eff.get("has_active_cond"))
+        if tti in cs_types:
+            if cond:
+                has_cond_cs = True
+            else:
+                has_uncond_cs = True
         if cond:
             has_cond = True
-            if tti in cs_types:
-                has_cond_cs = True
         if tti == mp_type:
             has_mp = True
 
-    flat_cond = cond_cs_pts if has_cond_cs else (cond_pts if has_cond else 0)
+    if has_uncond_cs:
+        flat_cond = uncond_cs_pts
+    elif has_cond_cs:
+        flat_cond = cond_cs_pts
+    elif has_cond:
+        flat_cond = cond_pts
+    else:
+        flat_cond = 0
     flat_mp = mp_pts if has_mp else 0
     total = flat_cond + flat_mp
     return total, {
@@ -1468,6 +1480,7 @@ def _score_pilot_ability_flat(
         "initial_mp_points": flat_mp,
         "has_conditional": has_cond,
         "has_conditional_cs_sa_sd": has_cond_cs,
+        "has_unconditional_cs_sa_sd": has_uncond_cs,
         "has_initial_mp": has_mp,
         "total": total,
     }
@@ -2770,6 +2783,9 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
     info = A.unit_info_map.get(uid) or {}
     if not info:
         return None
+    # ScheduleId 9999990001 = non-playable / stage-NPC shell (not obtainable in-game).
+    if str(info.get("schedule_id", "0") or "0") == "9999990001":
+        return None
     ri = int(info.get("rarity", 1) or 1)
     is_ult = bool(info.get("is_ultimate", False))
     has_sp = ri <= 4 and not is_ult
@@ -3811,19 +3827,23 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "applies": ["pilots"],
             "objective": True,
             "summary": (
-                "On top of role TraitType ability points: unique conditional / Initial MP bonuses. "
+                "On top of role TraitType ability points: Support Defense / Support Attack·Counter "
+                "flat bonuses prefer always-on over gated kits, plus Initial MP. "
                 "Active skills are scored per skill (0 / +1 / +2) and summed — same-role melee/range "
                 "style kits are not overweighted."
             ),
             "rows": [
                 {
-                    "when": "Conditional ability (any ActiveCondition)",
-                    "result": _fmt_points(pflat.get("conditional_points", 1)),
+                    "when": "Unconditional Support Defense or Support Attack/Counter on an ability",
+                    "result": _fmt_points(pflat.get("unconditional_cs_sa_sd_points", 2)),
                 },
                 {
-                    "when": "Conditional ability grants extra CS / SA / SD",
-                    "result": _fmt_points(pflat.get("conditional_cs_sa_sd_points", 2))
-                    + " (instead of conditional +1)",
+                    "when": "Conditional Support Defense or Support Attack/Counter on an ability",
+                    "result": _fmt_points(pflat.get("conditional_cs_sa_sd_points", 1)),
+                },
+                {
+                    "when": "Other conditional ability (any ActiveCondition, no SA/SD)",
+                    "result": _fmt_points(pflat.get("conditional_points", 1)),
                 },
                 {
                     "when": "Initial MP ability (Cyber-Newtype / Enhanced Human, type 46)",
@@ -4291,14 +4311,16 @@ def score_pilot_features(features: dict, rules: dict | None = None) -> dict:
             )
         flat_meta = kit_meta.get("ability_flat") or {}
         if int(flat_meta.get("conditional_points") or 0) > 0:
+            if flat_meta.get("has_unconditional_cs_sa_sd"):
+                flat_label = "Unconditional Support Defense / Support Attack·Counter"
+            elif flat_meta.get("has_conditional_cs_sa_sd"):
+                flat_label = "Conditional Support Defense / Support Attack·Counter"
+            else:
+                flat_label = "Conditional ability"
             detail_lines.append(
                 {
                     "kind": "ability_flat",
-                    "label": (
-                        "Conditional ability (extra CS/SA/SD)"
-                        if flat_meta.get("has_conditional_cs_sa_sd")
-                        else "Conditional ability"
-                    ),
+                    "label": flat_label,
                     "name": "pilot_ability_flat_conditional",
                     "points": int(flat_meta.get("conditional_points") or 0),
                     "is_affinity": False,
@@ -4861,6 +4883,9 @@ def character_is_investment_eligible(
     info = (getattr(A, "char_info_map", None) or {}).get(cid) or {}
     # Role 0 = NPC / story-only — never investment targets (even if they have kit rows).
     if str(info.get("role", "0") or "0") == "0":
+        return False
+    # ScheduleId 9999990001 = non-playable / stage-NPC shell (not obtainable in-game).
+    if str(info.get("schedule_id", "0") or "0") == "9999990001":
         return False
     # UR characters are not SP Conversion targets and there are no Ultimate Characters.
     if rules.get("exclude_ur_characters", True):

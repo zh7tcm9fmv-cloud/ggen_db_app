@@ -15692,6 +15692,7 @@ def _spi_localize_board_rows(buckets, kind, lc, tag_map):
             # Keep role key in EN (Attack/Defense/Support) for client filters.
             tags = r.get('tags') or []
             if tags and tag_map:
+                r['tags_en'] = list(tags)
                 r['tags'] = [_spi_translate_tag_name(t, tag_map) for t in tags]
             if r.get('series_advantage'):
                 r['series_advantage'] = _spi_localize_series_advantage(
@@ -15741,6 +15742,7 @@ def _sp_investment_localize_payload(payload, lc):
         out['bucket_labels'] = dict(loc_bl[lc])
     catalog = out.get('tag_catalog') or []
     if catalog and tag_map:
+        out['tag_catalog_en'] = list(catalog)
         out['tag_catalog'] = [_spi_translate_tag_name(t, tag_map) for t in catalog]
     er = _spi_localize_er_filters(lc)
     if er is not None:
@@ -15801,6 +15803,99 @@ def _sp_investment_strip_payload_bloat(payload):
     return payload
 
 
+def _spi_entity_is_nonplayable_shell(eid, kind):
+    """True for ScheduleId 9999990001 stage/NPC shells (not obtainable in-game)."""
+    eid = normalize_id(eid)
+    if not eid or eid == '0':
+        return True
+    if kind == 'character':
+        info = char_info_map.get(eid) or {}
+    else:
+        info = unit_info_map.get(eid) or {}
+    return normalize_id(info.get('schedule_id', '0')) == '9999990001'
+
+
+def _sp_investment_drop_nonplayable_rows(payload):
+    """Remove non-playable ScheduleId shells from published SPI boards (and recommended lists)."""
+    if not isinstance(payload, dict):
+        return payload
+
+    def _filter_rows(rows, kind):
+        out = []
+        for r in rows or []:
+            if not isinstance(r, dict):
+                continue
+            if _spi_entity_is_nonplayable_shell(r.get('id'), kind):
+                continue
+            recs = r.get('recommended_units')
+            if isinstance(recs, list) and recs:
+                r = dict(r)
+                r['recommended_units'] = [
+                    x
+                    for x in recs
+                    if isinstance(x, dict) and not _spi_entity_is_nonplayable_shell(x.get('id'), 'unit')
+                ]
+            out.append(r)
+        return out
+
+    def _filter_side(side, kind):
+        if not isinstance(side, dict):
+            return
+        sample = next(iter(side.values()), None) if side else None
+        if isinstance(sample, dict) and any(isinstance(v, list) for v in sample.values()):
+            for mode, buckets in side.items():
+                if not isinstance(buckets, dict):
+                    continue
+                for bname, rows in list(buckets.items()):
+                    if isinstance(rows, list):
+                        buckets[bname] = _filter_rows(rows, kind)
+        else:
+            for bname, rows in list(side.items()):
+                if isinstance(rows, list):
+                    side[bname] = _filter_rows(rows, kind)
+
+    units = payload.get('units')
+    if isinstance(units, dict):
+        _filter_side(units, 'unit')
+    chars = payload.get('characters')
+    if isinstance(chars, dict):
+        _filter_side(chars, 'character')
+    if isinstance(payload.get('sp'), dict):
+        _filter_side(payload.get('sp'), 'unit')
+    if isinstance(payload.get('ssp'), dict):
+        _filter_side(payload.get('ssp'), 'unit')
+
+    def _board_row_count(side, mode_key=None):
+        if not isinstance(side, dict):
+            return 0
+        if mode_key and isinstance(side.get(mode_key), dict):
+            buckets = side.get(mode_key) or {}
+            return sum(len(v) for v in buckets.values() if isinstance(v, list))
+        sample = next(iter(side.values()), None) if side else None
+        if isinstance(sample, dict) and any(isinstance(v, list) for v in sample.values()):
+            # Nested modes without explicit key — sum first mode only if asked
+            return 0
+        return sum(len(v) for v in side.values() if isinstance(v, list))
+
+    counts = dict(payload.get('counts') or {})
+    if isinstance(units, dict):
+        usp = _board_row_count(units, 'sp')
+        ussp = _board_row_count(units, 'ssp')
+        if usp:
+            counts['units_sp'] = usp
+            counts['sp'] = usp
+        if ussp:
+            counts['units_ssp'] = ussp
+            counts['ssp'] = ussp
+    if isinstance(chars, dict):
+        csp = _board_row_count(chars, 'sp')
+        if csp:
+            counts['characters_sp'] = csp
+    if counts:
+        payload['counts'] = counts
+    return payload
+
+
 def _sp_investment_board_has_thumbs(buckets):
     """True if published rows already carry thumbs (skip slow re-attach)."""
     if not isinstance(buckets, dict):
@@ -15825,6 +15920,7 @@ def _sp_investment_prepare_payload(path):
     payload.pop('sp_flat', None)
     payload.pop('ssp_flat', None)
     _sp_investment_strip_payload_bloat(payload)
+    _sp_investment_drop_nonplayable_rows(payload)
     units = payload.get('units') or {}
     if units:
         # Always run attach: fills missing thumbs only (skips rows that already have thum).

@@ -590,10 +590,11 @@
       },
       "pilot_kit_flat": {
         "title": "キャラクターアビリティ／スキル定額加点",
-        "summary": "タイプ別 TraitType 点に加え、条件アビリティ／初期MPの定額加点。アクティブスキルはスキルごとに 0／+1／+2 を合算。",
+        "summary": "タイプ別 TraitType 点に加え、無条件の支援防御／支援攻撃・支援反撃を優先加点し、条件付きは低め。初期MP加点もあり。アクティブスキルはスキルごとに 0／+1／+2 を合算。",
         "when": {
-          "Conditional ability (any ActiveCondition)": "条件アビリティ（発動条件あり）",
-          "Conditional ability grants extra CS / SA / SD": "条件アビリティが追加CS／SA／SD",
+          "Unconditional Support Defense or Support Attack/Counter on an ability": "アビリティに無条件の支援防御または支援攻撃・支援反撃",
+          "Conditional Support Defense or Support Attack/Counter on an ability": "アビリティに条件付きの支援防御または支援攻撃・支援反撃",
+          "Other conditional ability (any ActiveCondition, no SA/SD)": "その他の条件アビリティ（発動条件あり・SA／SD以外）",
           "Initial MP ability (Cyber-Newtype / Enhanced Human, type 46)": "初期MPアビリティ（強化人間／サイコミュ系、type 46）",
           "Non-damage skill (MOV, range, EN/HP restore, DEF up, hit/eva, …)": "非ダメージスキル（移動力・射程・EN／HP回復・防御アップ・命中／回避など）",
           "Damage skill (attack burst, Critical up, melee/range/awaken)": "ダメージスキル（攻撃バースト・クリティカルアップ・格闘／射撃／覚醒）",
@@ -601,7 +602,6 @@
           "Sway or MP Up skill": "スウェイまたはMPアップスキル"
         },
         "result": {
-          "+2 (instead of conditional +1)": "+2（条件+1の代わり）",
           "+1 each skill": "スキルごと +1",
           "+2 each skill": "スキルごと +2"
         }
@@ -1336,10 +1336,11 @@
       },
       "pilot_kit_flat": {
         "title": "角色能力／技能定額加分",
-        "summary": "在類型 TraitType 點數之上，另加條件能力／初始 MP 定額分。主動技能依每技能 0／+1／+2 合計。",
+        "summary": "在類型 TraitType 點數之上，無條件的支援防禦／支援攻擊·支援反擊優先加分，有條件者較低，另有初始 MP。主動技能依每技能 0／+1／+2 合計。",
         "when": {
-          "Conditional ability (any ActiveCondition)": "條件能力（有發動條件）",
-          "Conditional ability grants extra CS / SA / SD": "條件能力提供額外 CS／SA／SD",
+          "Unconditional Support Defense or Support Attack/Counter on an ability": "能力具有無條件的支援防禦或支援攻擊／支援反擊",
+          "Conditional Support Defense or Support Attack/Counter on an ability": "能力具有條件性的支援防禦或支援攻擊／支援反擊",
+          "Other conditional ability (any ActiveCondition, no SA/SD)": "其他條件能力（有發動條件、非 SA／SD）",
           "Initial MP ability (Cyber-Newtype / Enhanced Human, type 46)": "初始 MP 能力（強化人間／Cyber-Newtype，type 46）",
           "Non-damage skill (MOV, range, EN/HP restore, DEF up, hit/eva, …)": "非損傷技能（移動力、射程、EN／HP 回復、防禦上升、命中／閃避等）",
           "Damage skill (attack burst, Critical up, melee/range/awaken)": "損傷技能（攻擊爆發、爆擊上升、格鬥／射擊／覺醒）",
@@ -1347,7 +1348,6 @@
           "Sway or MP Up skill": "Sway 或 MP 上升技能"
         },
         "result": {
-          "+2 (instead of conditional +1)": "+2（取代條件 +1）",
           "+1 each skill": "每技能 +1",
           "+2 each skill": "每技能 +2"
         }
@@ -2082,10 +2082,11 @@
       },
       "pilot_kit_flat": {
         "title": "角色能力／技能定額加分",
-        "summary": "喺類型 TraitType 分數之上，再加條件能力／初始 MP 定額分。主動技能按每技能 0／+1／+2 合計。",
+        "summary": "喺類型 TraitType 分數之上，無條件嘅支援防禦／支援攻擊·支援反擊優先加分，有條件嘅較低，另有初始 MP。主動技能按每技能 0／+1／+2 合計。",
         "when": {
-          "Conditional ability (any ActiveCondition)": "條件能力（有發動條件）",
-          "Conditional ability grants extra CS / SA / SD": "條件能力提供額外 CS／SA／SD",
+          "Unconditional Support Defense or Support Attack/Counter on an ability": "能力有無條件嘅支援防禦或支援攻擊／支援反擊",
+          "Conditional Support Defense or Support Attack/Counter on an ability": "能力有條件性嘅支援防禦或支援攻擊／支援反擊",
+          "Other conditional ability (any ActiveCondition, no SA/SD)": "其他條件能力（有發動條件、非 SA／SD）",
           "Initial MP ability (Cyber-Newtype / Enhanced Human, type 46)": "初始 MP 能力（強化人間／Cyber-Newtype，type 46）",
           "Non-damage skill (MOV, range, EN/HP restore, DEF up, hit/eva, …)": "非損傷技能（移動力、射程、EN／HP 回復、防禦上升、命中／閃避等）",
           "Damage skill (attack burst, Critical up, melee/range/awaken)": "損傷技能（攻擊爆發、爆擊上升、格鬥／射擊／覺醒）",
@@ -2093,7 +2094,6 @@
           "Sway or MP Up skill": "Sway 或 MP 上升技能"
         },
         "result": {
-          "+2 (instead of conditional +1)": "+2（取代條件 +1）",
           "+1 each skill": "每技能 +1",
           "+2 each skill": "每技能 +2"
         }

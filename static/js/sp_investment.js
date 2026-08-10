@@ -187,6 +187,8 @@
   const _spiRankIndexByKey = Object.create(null);
   const _spiRankIndexPromises = Object.create(null);
   let _spiModalEntityKey = '';
+  let _spiRestoreRow = null;
+  let _spiOpeningDetail = false;
 
   function fmtN(n) {
     const v = Number(n);
@@ -656,6 +658,13 @@
     return d.innerHTML;
   }
 
+  function escAttr(s) {
+    return String(s == null ? '' : s)
+      .replace(/&/g, '&amp;')
+      .replace(/"/g, '&quot;')
+      .replace(/</g, '&lt;');
+  }
+
   function imgUrl(path) {
     if (!path) return '';
     const p = String(path);
@@ -827,6 +836,20 @@
     return payload[board] || {};
   }
 
+  function rowMatchesSearch(row, q) {
+    if (!q) return true;
+    const name = String(row.name || '').toLowerCase();
+    const tags = (row.tags || []).join(' ').toLowerCase();
+    const tagsEn = (row.tags_en || row.tags || []).join(' ').toLowerCase();
+    const id = String(row.id || '').toLowerCase();
+    return name.includes(q) || tags.includes(q) || tagsEn.includes(q) || id.includes(q);
+  }
+
+  function syncSearchFromInput() {
+    const input = $('#spiSearch');
+    if (input) searchQuery = String(input.value || '');
+  }
+
   function passesFilters(row) {
     // Role 0 = NPC / story-only — never show on this guide.
     if (String(row.role_id || '') === '0') return false;
@@ -848,11 +871,7 @@
       if (!ids.map(String).includes(String(erFilter))) return false;
     }
     const q = searchQuery.trim().toLowerCase();
-    if (q) {
-      const name = String(row.name || '').toLowerCase();
-      const tags = (row.tags || []).join(' ').toLowerCase();
-      if (!name.includes(q) && !tags.includes(q) && !String(row.id).includes(q)) return false;
-    }
+    if (q && !rowMatchesSearch(row, q)) return false;
     return true;
   }
 
@@ -893,6 +912,8 @@
         if (search) {
           search.value = '';
           filterDdRows(panel, '');
+          const clearBtn = panel.querySelector('.spi-dd-search-clear');
+          if (clearBtn) clearBtn.hidden = true;
           setTimeout(() => search.focus(), 0);
         }
       }
@@ -903,15 +924,97 @@
     const needle = String(q || '')
       .trim()
       .toLowerCase();
+    // Use getAttribute + style.display — author CSS sets .rarity-filter-row{display:flex}
+    // which can override the [hidden] attribute in practice (same pattern as browse filters).
     const rows = panel.querySelectorAll('.rarity-filter-row[data-filter-text]');
     let shown = 0;
     rows.forEach((row) => {
-      const ok = !needle || String(row.dataset.filterText || '').includes(needle);
-      row.hidden = !ok;
+      const hay = String(row.getAttribute('data-filter-text') || '').toLowerCase();
+      const ok = !needle || hay.includes(needle);
+      row.style.display = ok ? '' : 'none';
       if (ok) shown += 1;
     });
     const empty = panel.querySelector('.spi-dd-empty');
     if (empty) empty.hidden = shown > 0 || !needle;
+  }
+
+  function spiDdSearchWrapHtml(placeholder, aria) {
+    return `<div class="spi-dd-search-wrap">
+      <input type="search" class="filter-dd-search" placeholder="${escAttr(placeholder)}" aria-label="${escAttr(aria)}" autocomplete="off">
+      <button type="button" class="filter-input-clear spi-dd-search-clear" aria-label="${escAttr(t('clear_search'))}" hidden>×</button>
+    </div>`;
+  }
+
+  function spiDdFooterHtml() {
+    return `<div class="filter-panel-clear-wrap spi-dd-footer" data-footer-ready="1">
+      <div class="filter-panel-footer-left"></div>
+      <div class="filter-panel-footer-right">
+        <button type="button" class="filter-panel-esc-btn" data-filter-esc="1">${esc(t('filter_esc'))}</button>
+        <button type="button" class="filter-panel-clear-btn" data-filter-clear="1">${esc(t('filter_clear'))}</button>
+      </div>
+    </div>`;
+  }
+
+  function bindSpiDdSearch(panel) {
+    const search = panel.querySelector('.filter-dd-search');
+    const clearBtn = panel.querySelector('.spi-dd-search-clear');
+    if (!search) return;
+    const syncClear = () => {
+      const has = !!String(search.value || '').trim();
+      if (clearBtn) clearBtn.hidden = !has;
+    };
+    search.addEventListener('input', () => {
+      filterDdRows(panel, search.value);
+      syncClear();
+    });
+    search.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        e.stopPropagation();
+        if (String(search.value || '').trim()) {
+          search.value = '';
+          filterDdRows(panel, '');
+          syncClear();
+        } else {
+          closeSpiFilterPanels();
+        }
+      }
+    });
+    search.addEventListener('click', (e) => e.stopPropagation());
+    if (clearBtn) {
+      clearBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        search.value = '';
+        filterDdRows(panel, '');
+        syncClear();
+        search.focus();
+      });
+    }
+    syncClear();
+  }
+
+  function bindSpiDdFooter(panel, onClear) {
+    const escBtn = panel.querySelector('[data-filter-esc]');
+    const clrBtn = panel.querySelector('[data-filter-clear]');
+    if (escBtn) {
+      escBtn.textContent = t('filter_esc');
+      escBtn.onclick = (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        closeSpiFilterPanels();
+      };
+    }
+    if (clrBtn) {
+      clrBtn.textContent = t('filter_clear');
+      clrBtn.onclick = (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        try {
+          onClear && onClear();
+        } catch (_) {}
+      };
+    }
   }
 
   function setFilterBtnLabel(labelEl, text, active) {
@@ -948,10 +1051,11 @@
     setFilterBtnLabel($('#spiErFilterLabel'), text, !!erFilter);
   }
 
-  function ddRowHtml(value, label, checked, group) {
+  function ddRowHtml(value, label, checked, group, filterText) {
     const id = `spiDd_${group}_${String(value).replace(/[^a-zA-Z0-9_-]/g, '_') || 'all'}`;
-    return `<label class="rarity-filter-row" data-filter-text="${esc(String(label).toLowerCase())}">
-      <input type="radio" name="spiDd_${esc(group)}" id="${esc(id)}" value="${esc(value)}" ${checked ? 'checked' : ''}>
+    const ft = filterText != null ? filterText : String(label).toLowerCase();
+    return `<label class="rarity-filter-row" data-filter-text="${escAttr(ft)}">
+      <input type="radio" name="spiDd_${escAttr(group)}" id="${escAttr(id)}" value="${escAttr(value)}" ${checked ? 'checked' : ''}>
       <span class="rarity-filter-all-label">${esc(label)}</span>
     </label>`;
   }
@@ -959,7 +1063,8 @@
   function fillSourcePanel() {
     const panel = $('#spiSourceFilterPanel');
     if (!panel) return;
-    panel.innerHTML = sourceOpts().map((o) => ddRowHtml(o.value, o.label, sourceFilter === o.value, 'source')).join('');
+    const rows = sourceOpts().map((o) => ddRowHtml(o.value, o.label, sourceFilter === o.value, 'source')).join('');
+    panel.innerHTML = `<div class="spi-dd-scroll">${rows}</div>${spiDdFooterHtml()}`;
     panel.querySelectorAll('input[type="radio"]').forEach((inp) => {
       inp.addEventListener('change', () => {
         sourceFilter = inp.value || 'all';
@@ -968,22 +1073,33 @@
         render();
       });
     });
+    bindSpiDdFooter(panel, () => {
+      sourceFilter = 'all';
+      updateSourceFilterLabel();
+      fillSourcePanel();
+      closeSpiFilterPanels();
+      render();
+    });
   }
 
   function fillTagPanel() {
     const panel = $('#spiTagFilterPanel');
     if (!panel) return;
     const tags = (payload && payload.tag_catalog) || [];
+    const tagsEn = (payload && payload.tag_catalog_en) || tags;
     const rows =
       ddRowHtml('', t('no_tag_filter'), !tagFilter, 'tag') +
-      tags.map((tagName) => ddRowHtml(tagName, tagName, tagFilter === tagName, 'tag')).join('');
-    panel.innerHTML = `<input type="search" class="filter-dd-search" placeholder="Search tags…" aria-label="Search tags" autocomplete="off">
-      <div class="spi-dd-scroll">${rows}<div class="spi-dd-empty" hidden>No matching tags</div></div>`;
-    const search = panel.querySelector('.filter-dd-search');
-    if (search) {
-      search.addEventListener('input', () => filterDdRows(panel, search.value));
-      search.addEventListener('click', (e) => e.stopPropagation());
-    }
+      tags
+        .map((tagName, i) => {
+          const en = tagsEn[i] || tagName;
+          const ft = `${tagName} ${en}`.toLowerCase();
+          return ddRowHtml(tagName, tagName, tagFilter === tagName, 'tag', ft);
+        })
+        .join('');
+    panel.innerHTML = `${spiDdSearchWrapHtml(t('tag_search_ph'), t('tag_search_aria'))}
+      <div class="spi-dd-scroll">${rows}<div class="spi-dd-empty" hidden>${esc(t('tag_search_empty'))}</div></div>
+      ${spiDdFooterHtml()}`;
+    bindSpiDdSearch(panel);
     panel.querySelectorAll('input[type="radio"]').forEach((inp) => {
       inp.addEventListener('change', () => {
         tagFilter = inp.value || '';
@@ -991,6 +1107,13 @@
         closeSpiFilterPanels();
         render();
       });
+    });
+    bindSpiDdFooter(panel, () => {
+      tagFilter = '';
+      updateTagFilterLabel();
+      fillTagPanel();
+      closeSpiFilterPanels();
+      render();
     });
   }
 
@@ -1006,16 +1129,15 @@
             entity === 'characters'
               ? e.character_label || e.label || e.id
               : e.unit_label || e.label || e.id;
-          return ddRowHtml(String(e.id), label, String(erFilter) === String(e.id), 'er');
+          const en = e.label || e.unit_label || e.character_label || e.id;
+          const ft = `${label} ${en} ${e.id}`.toLowerCase();
+          return ddRowHtml(String(e.id), label, String(erFilter) === String(e.id), 'er', ft);
         })
         .join('');
-    panel.innerHTML = `<input type="search" class="filter-dd-search" placeholder="Search ER Expert…" aria-label="Search ER Expert stages" autocomplete="off">
-      <div class="spi-dd-scroll">${rows}<div class="spi-dd-empty" hidden>No matching stages</div></div>`;
-    const search = panel.querySelector('.filter-dd-search');
-    if (search) {
-      search.addEventListener('input', () => filterDdRows(panel, search.value));
-      search.addEventListener('click', (e) => e.stopPropagation());
-    }
+    panel.innerHTML = `${spiDdSearchWrapHtml(t('er_search_ph'), t('er_search_aria'))}
+      <div class="spi-dd-scroll">${rows}<div class="spi-dd-empty" hidden>${esc(t('er_search_empty'))}</div></div>
+      ${spiDdFooterHtml()}`;
+    bindSpiDdSearch(panel);
     panel.querySelectorAll('input[type="radio"]').forEach((inp) => {
       inp.addEventListener('change', () => {
         erFilter = inp.value || '';
@@ -1023,6 +1145,13 @@
         closeSpiFilterPanels();
         render();
       });
+    });
+    bindSpiDdFooter(panel, () => {
+      erFilter = '';
+      updateErFilterLabel();
+      fillErPanel();
+      closeSpiFilterPanels();
+      render();
     });
   }
 
@@ -1179,6 +1308,8 @@
 
   function render() {
     if (!payload) return;
+    if (!resolveDom()) return;
+    syncSearchFromInput();
     syncBoardTabsVisibility();
     const buckets = currentBuckets();
     const labels = payload.bucket_labels || {};
@@ -1481,16 +1612,48 @@
       ${scoreBlock}
       ${recBlock}
       <div class="spi-modal-actions">
-        <a href="${detailPath}${encodeURIComponent(row.id)}"${isEmbedded() ? ` onclick="event.preventDefault();openDetail('${kind}','${escJs(row.id)}')"` : ' target="_blank" rel="noopener"'}>${esc(t('open_in_db'))}</a>
+        <a href="${detailPath}${encodeURIComponent(row.id)}"${isEmbedded() ? ` data-spi-open-db="${escAttr(kind)}:${escAttr(row.id)}"` : ' target="_blank" rel="noopener"'}>${esc(t('open_in_db'))}</a>
       </div>`;
     $('#spiModal').hidden = false;
     document.body.classList.add('spi-modal-open');
     document.documentElement.classList.add('spi-modal-open');
+    const openDb = $('#spiModalBody').querySelector('[data-spi-open-db]');
+    if (openDb) {
+      openDb.addEventListener('click', (e) => {
+        e.preventDefault();
+        openDbDetail(kind, row);
+      });
+    }
     void loadEntityStatRanks(row, kind);
+  }
+
+  function openDbDetail(kind, row) {
+    if (!row || !isEmbedded()) return;
+    _spiRestoreRow = row;
+    _spiOpeningDetail = true;
+    closeModal();
+    _spiOpeningDetail = false;
+    if (typeof openDetail === 'function') {
+      void openDetail(kind, String(row.id));
+    }
+  }
+
+  function onAppDetailClosed() {
+    if (!_spiRestoreRow) return;
+    const row = _spiRestoreRow;
+    _spiRestoreRow = null;
+    if (!isEmbedded()) return;
+    try {
+      if (window.S && S.currentTab && S.currentTab !== 'investment_priority') return;
+    } catch (_) {}
+    const panel = document.getElementById('panel-investment_priority');
+    if (panel && !panel.classList.contains('active')) return;
+    openModal(row);
   }
 
   function closeModal() {
     _spiModalEntityKey = '';
+    if (!_spiOpeningDetail) _spiRestoreRow = null;
     $('#spiModal').hidden = true;
     document.body.classList.remove('spi-modal-open');
     document.documentElement.classList.remove('spi-modal-open');
@@ -1632,6 +1795,7 @@
       bindControls();
       _controlsBound = true;
     }
+    syncSearchFromInput();
     if (_payloadLang === uiLang() && payload) {
       renderScoringGuide();
       render();
@@ -1661,6 +1825,7 @@
     boot,
     onTabShown: boot,
     onLangChange,
+    onAppDetailClosed,
   };
 
   if (document.body.classList.contains('spi-page')) {

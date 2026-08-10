@@ -35,7 +35,7 @@
     "v5.15: Attack/Support HP upside-only (no floor penalties); Defense HP/DEF floors kept; SSP Attack EN upside-only; secondary-stat outlier niche bonus; special_defense presence (DR/I-field/barrier); soft UR-recommend pilot dependence −1; softer pilot_rarity_adjustment (SR not punished like unit SR)",
     "v5.16: pilot recommend-MS / affinity matches require A or higher (A / A+ / S / S+); B+ no longer scores — cuts junk-frame affinity spam",
     "v5.17: drop non-Ultimate UR units from Investment Guide boards (kits too unique to share SP criteria); keep Ultimate; series Advantage: abilities score only when the active tag filter matches that series",
-    "v5.18: pilot ability flat add-on (conditional +1, conditional CS/SA/SD +2, InitialMp type46 +1); pilot skills flat 0/+1/+2 per skill summed (dmg +1, CS/SA/SD & Sway/MpBoost +2)",
+    "v5.18: pilot ability flat add-on (unconditional CS/SA/SD +2, conditional CS/SA/SD +1, other conditional +1, InitialMp type46 +1); pilot skills flat 0/+1/+2 per skill summed (dmg +1, CS/SA/SD & Sway/MpBoost +2)",
     "v5.19: exclude UR characters from Investment Guide (no SP Conversion; no Ultimate Characters in-game); client hides N/R characters unless Show N/R is checked",
     "v5.20: Character board default is SSR only (same idea as units); Show N/R/SR opts in lower rarities — SR was wrongly always-on so the toggle looked dead",
     "v5.21: true S+ tier — score 17+ maps to letter S+ and the BEYOND THE TIME bucket above Recommended; S letter (13–16 SP scale) stays Recommended",
@@ -679,7 +679,8 @@
   "pilot_kit_cap": 14,
   "pilot_ability_flat": {
     "conditional_points": 1,
-    "conditional_cs_sa_sd_points": 2,
+    "unconditional_cs_sa_sd_points": 2,
+    "conditional_cs_sa_sd_points": 1,
     "cs_sa_sd_types": [19, 80, 85, 51, 52, 86, 87, 90],
     "initial_mp_type": 46,
     "initial_mp_points": 1

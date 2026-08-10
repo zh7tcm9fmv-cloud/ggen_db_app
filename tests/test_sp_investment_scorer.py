@@ -653,11 +653,11 @@ class TestSpInvestmentBands(unittest.TestCase):
                 {"trait_type_index": 46, "trait_value": 20, "has_active_cond": False},
             ],
         )
-        self.assertEqual(pts, 2)  # cond +1 + mp +1
+        self.assertEqual(pts, 2)  # other cond +1 + mp +1
         self.assertEqual(meta["conditional_points"], 1)
         self.assertEqual(meta["initial_mp_points"], 1)
 
-    def test_pilot_ability_flat_conditional_cs_is_plus_two(self):
+    def test_pilot_ability_flat_conditional_cs_is_plus_one(self):
         from sp_investment_rank import _score_pilot_ability_flat
 
         pts, meta = _score_pilot_ability_flat(
@@ -666,8 +666,22 @@ class TestSpInvestmentBands(unittest.TestCase):
                 {"trait_type_index": 80, "trait_value": 1, "has_active_cond": True},
             ],
         )
-        self.assertEqual(pts, 2)
+        self.assertEqual(pts, 1)
         self.assertTrue(meta["has_conditional_cs_sa_sd"])
+        self.assertFalse(meta["has_unconditional_cs_sa_sd"])
+        self.assertEqual(meta["conditional_points"], 1)
+
+    def test_pilot_ability_flat_unconditional_cs_is_plus_two(self):
+        from sp_investment_rank import _score_pilot_ability_flat
+
+        pts, meta = _score_pilot_ability_flat(
+            self.rules,
+            [
+                {"trait_type_index": 80, "trait_value": 1, "has_active_cond": False},
+            ],
+        )
+        self.assertEqual(pts, 2)
+        self.assertTrue(meta["has_unconditional_cs_sa_sd"])
         self.assertEqual(meta["conditional_points"], 2)
 
     def test_pilot_skills_flat_per_skill_sum(self):
@@ -1056,6 +1070,25 @@ class TestSeriesAdvantageHelpers(unittest.TestCase):
         rules = load_rules()
         self.assertTrue(character_is_investment_eligible(A, "c_ssr", rules))
         self.assertFalse(character_is_investment_eligible(A, "c_ur", rules))
+
+    def test_character_eligibility_drops_schedule_shell(self):
+        from sp_investment_rank import character_is_investment_eligible
+
+        class _FakeA:
+            char_list_playable_ids = {"c_ok", "c_shell"}
+            char_info_map = {
+                "c_ok": {"rarity": 4, "role": "1", "schedule_id": "0"},
+                "c_shell": {"rarity": 2, "role": "3", "schedule_id": "9999990001"},
+            }
+
+            @staticmethod
+            def normalize_id(x):
+                return str(x)
+
+        A = _FakeA()
+        rules = load_rules()
+        self.assertTrue(character_is_investment_eligible(A, "c_ok", rules))
+        self.assertFalse(character_is_investment_eligible(A, "c_shell", rules))
 
 
 def _minimal_features(**overrides):
