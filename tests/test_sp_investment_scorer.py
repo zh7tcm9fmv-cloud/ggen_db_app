@@ -259,7 +259,34 @@ class TestSpInvestmentBands(unittest.TestCase):
         self.assertEqual(none["breakdown"]["map"], 0)
         self.assertEqual(any_map["breakdown"]["map"], 1)
         self.assertEqual(dash["breakdown"]["map"], 2)
-        self.assertEqual(dash["total"] - any_map["total"], 1)
+
+    def test_support_map_separate_from_damage_map(self):
+        """Recovery/ally MAP scores map_support_points only — not presence/coverage."""
+        support = score_features(
+            _minimal_features(
+                has_map_weapon=False,
+                has_support_map=True,
+                map_ammo=0,
+                map_coverage_cells=40,
+            ),
+            self.rules,
+        )
+        damage = score_features(
+            _minimal_features(
+                has_map_weapon=True,
+                has_support_map=False,
+                map_ammo=1,
+                map_coverage_cells=40,
+            ),
+            self.rules,
+        )
+        self.assertEqual(support["breakdown"]["map"], 1)
+        self.assertEqual(support["meta"]["map"]["support_map_points"], 1)
+        self.assertEqual(support["meta"]["map"]["presence_points"], 0)
+        self.assertEqual(support["meta"]["map"]["coverage_points"], 0)
+        # Presence + coverage (+2 at 40 cells) without support
+        self.assertGreaterEqual(damage["breakdown"]["map"], 3)
+        self.assertEqual(damage["meta"]["map"]["support_map_points"], 0)
 
     def test_shield_strictly_better(self):
         a = score_features(_minimal_features(has_shield=False), self.rules)

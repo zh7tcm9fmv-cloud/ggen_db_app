@@ -40,7 +40,8 @@
     "v5.20: Character board default is SSR only (same idea as units); Show N/R/SR opts in lower rarities — SR was wrongly always-on so the toggle looked dead",
     "v5.21: true S+ tier — score 17+ maps to letter S+ and the BEYOND THE TIME bucket above Recommended; S letter (13–16 SP scale) stays Recommended",
     "v5.22: top bucket display label BEYOND THE TIME (same in all locales; letter grade S+ unchanged)",
-    "v5.23: Character BEYOND THE TIME cutoff raised to score 23+ (~top 5%); Units stay at 17+ for S+ / BEYOND THE TIME"
+    "v5.23: Character BEYOND THE TIME cutoff raised to score 23+ (~top 5%); Units stay at 17+ for S+ / BEYOND THE TIME",
+    "v5.24: Recovery/ally MAP (MapWeaponTraitCategory Recovery / MP-supply) scored separately (+1 support MAP) — not as damage MAP presence/coverage (fixes Unicorn TWC Final overscore)"
   ],
   "exclude_warships": true,
   "exclude_ur_units": true,
@@ -545,6 +546,7 @@
   },
   "map_presence_points": 1,
   "map_dash_points": 1,
+  "map_support_points": 1,
   "ability_structured": {
     "cap": 3,
     "permanent_stat_types": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 31, 32, 33, 34],

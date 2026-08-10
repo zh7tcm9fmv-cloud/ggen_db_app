@@ -557,9 +557,10 @@
       },
       "map": {
         "title": "MAP兵器（ユニット）",
-        "summary": "ダメージ MAP のみ（威力 ≥1）— Live Concert Zaku など非ダメージ MAP は無視。ダメージ MAP の存在、ダッシュ／移動攻撃、弾数2+、範囲（0–14マス=0、15–24=+1、25+=+2）で加点。攻撃型上限 +4、耐久／支援型上限 +2。",
+        "summary": "ダメージMAP（攻撃カテゴリ・威力≥1）：存在、ダッシュ／移動攻撃、弾数2+、範囲（0–14マス=0、15–24=+1、25+=+2）。回復／味方支援MAP（回復カテゴリ、例：MP供給のサイコ・フィールド／Live Concert）は代わりに +1（ダメージMAPの範囲点は付けない）。攻撃型上限 +4、耐久／支援型上限 +2。",
         "when": {
-          "Any MAP weapon": "いずれかのMAP兵器",
+          "Damage MAP weapon": "ダメージMAP兵器",
+          "Recovery / ally-support MAP (MP supply, buff allies)": "回復／味方支援MAP（MP供給・味方強化）",
           "Dash / MovingAttack MAP": "ダッシュ／移動攻撃MAP",
           "Ammo 1": "弾数1",
           "Ammo ≥2": "弾数≥2",
@@ -1303,9 +1304,10 @@
       },
       "map": {
         "title": "MAP兵器（單位）",
-        "summary": "僅計損傷 MAP（威力 ≥1）— Live Concert Zaku 等非損傷 MAP 忽略。任何損傷 MAP 的存在、衝刺／移動攻擊、彈數 2+、覆蓋（0–14 格=0、15–24=+1、25+=+2）。攻擊型上限 +4；耐久／支援型上限 +2。",
+        "summary": "損傷 MAP（攻擊類別、威力 ≥1）：存在、衝刺／移動攻擊、彈數 2+、覆蓋（0–14 格=0、15–24=+1、25+=+2）。回復／友方支援 MAP（回復類別，例如 MP 供給的 Psycho-Field／Live Concert）改計 +1，不給損傷 MAP 的覆蓋分。攻擊型上限 +4；耐久／支援型上限 +2。",
         "when": {
-          "Any MAP weapon": "任一 MAP兵器",
+          "Damage MAP weapon": "損傷 MAP兵器",
+          "Recovery / ally-support MAP (MP supply, buff allies)": "回復／友方支援 MAP（MP 供給、強化友軍）",
           "Dash / MovingAttack MAP": "衝刺／移動攻擊 MAP",
           "Ammo 1": "彈數 1",
           "Ammo ≥2": "彈數 ≥2",
@@ -2049,9 +2051,10 @@
       },
       "map": {
         "title": "MAP兵器（單位）",
-        "summary": "淨計損傷 MAP（威力 ≥1）— Live Concert Zaku 等非損傷 MAP 忽略。任何損傷 MAP 嘅存在、衝刺／移動攻擊、彈數 2+、覆蓋（0–14 格=0、15–24=+1、25+=+2）。攻擊型上限 +4；耐久／支援型上限 +2。",
+        "summary": "損傷 MAP（攻擊類別、威力 ≥1）：存在、衝刺／移動攻擊、彈數 2+、覆蓋（0–14 格=0、15–24=+1、25+=+2）。回復／友方支援 MAP（回復類別，例如 MP 供給嘅 Psycho-Field／Live Concert）改計 +1，唔畀損傷 MAP 嘅覆蓋分。攻擊型上限 +4；耐久／支援型上限 +2。",
         "when": {
-          "Any MAP weapon": "任一 MAP兵器",
+          "Damage MAP weapon": "損傷 MAP兵器",
+          "Recovery / ally-support MAP (MP supply, buff allies)": "回復／友方支援 MAP（MP 供給、強化友軍）",
           "Dash / MovingAttack MAP": "衝刺／移動攻擊 MAP",
           "Ammo 1": "彈數 1",
           "Ammo ≥2": "彈數 ≥2",

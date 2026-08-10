@@ -1029,6 +1029,62 @@ html.spi-modal-open body.spi-page {
   margin-bottom: 1.1rem;
   padding-bottom: 1rem;
   border-bottom: 1px solid var(--border-color);
+  flex-wrap: wrap;
+}
+.spi-dossier-head-text {
+  flex: 1 1 180px;
+  min-width: 0;
+}
+.spi-dossier-kit {
+  flex: 1 1 240px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-width: 100%;
+}
+.spi-kit-group-label {
+  margin: 0;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.spi-kit-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.28rem 0.4rem;
+  align-items: center;
+}
+.spi-kit-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  max-width: 100%;
+  padding: 0.12rem 0.4rem 0.12rem 0.18rem;
+  border-radius: 6px;
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(71, 85, 105, 0.55);
+}
+.spi-kit-ic {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border-radius: 4px;
+}
+.spi-kit-name {
+  font-size: 0.72rem;
+  line-height: 1.2;
+  color: var(--text-primary, #e2e8f0);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 9.5rem;
+}
+.spi-dossier-kit--empty {
+  display: none;
 }
 .spi-dossier-thumb .list-thumb-composite {
   width: 88px !important;

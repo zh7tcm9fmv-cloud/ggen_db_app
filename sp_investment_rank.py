@@ -2039,25 +2039,36 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     if tr_meta:
         meta["transform"] = tr_meta
 
-    # MAP presence + dash + multi-ammo + coverage (capped)
+    # MAP presence + dash + multi-ammo + coverage (capped); recovery/ally MAP is separate +1
     has_map = bool(features.get("has_map_weapon")) or int(features.get("map_ammo") or 0) > 0
     presence_pts = int(rules.get("map_presence_points", 1) or 0) if has_map else 0
     dash_pts = (
         int(rules.get("map_dash_points", 1) or 0)
-        if features.get("has_dash_map")
+        if has_map and features.get("has_dash_map")
         else 0
     )
-    map_ammo = int(features.get("map_ammo") or 0)
+    map_ammo = int(features.get("map_ammo") or 0) if has_map else 0
     ammo_key = str(min(max(map_ammo, 0), 4))
     map_tbl = rules.get("map_ammo_points") or {}
-    if ammo_key in map_tbl:
+    if not has_map:
+        ammo_pts = 0
+    elif ammo_key in map_tbl:
         ammo_pts = int(map_tbl.get(ammo_key, 0))
     elif map_ammo >= 2:
         ammo_pts = int(map_tbl.get("2", 1))
     else:
         ammo_pts = 0
-    cov_pts = map_coverage_points(rules, int(features.get("map_coverage_cells") or 0))
-    map_pts = presence_pts + dash_pts + ammo_pts + cov_pts
+    cov_pts = (
+        map_coverage_points(rules, int(features.get("map_coverage_cells") or 0))
+        if has_map
+        else 0
+    )
+    support_map_pts = (
+        int(rules.get("map_support_points", 1) or 0)
+        if features.get("has_support_map")
+        else 0
+    )
+    map_pts = presence_pts + dash_pts + ammo_pts + cov_pts + support_map_pts
     cap_by_role = rules.get("map_axis_cap_by_role") or {}
     if role in cap_by_role:
         cap = int(cap_by_role.get(role, rules.get("map_axis_cap", 4)) or 4)
@@ -2071,8 +2082,10 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
         "dash_points": dash_pts,
         "ammo_points": ammo_pts,
         "coverage_points": cov_pts,
+        "support_map_points": support_map_pts,
         "cells": int(features.get("map_coverage_cells") or 0),
         "has_dash_map": bool(features.get("has_dash_map")),
+        "has_support_map": bool(features.get("has_support_map")),
     }
 
     # Abilities — structured TraitType when ability_effects is provided
@@ -2386,6 +2399,7 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
     map_ammo = 0
     map_coverage_cells = 0
     has_map_weapon = False
+    has_support_map = False
     has_dash_map = False
     has_after_move_map = False
     has_preemptive = False
@@ -2402,6 +2416,19 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
     debuff_source = "text"
     map_require_damage = bool(rules.get("map_require_damage", True))
     map_min_power = int(rules.get("map_min_power", 1) or 1)
+
+    def _is_recovery_support_map(wid_n: str, wm_row: dict, wt_s: str) -> bool:
+        """Ally/support MAP (Recovery category / MP supply) — not a damage MAP."""
+        if str(wm_row.get("map_trait_category") or "0") == "2":
+            return True
+        try:
+            if hasattr(A, "is_map_weapon_recovery_supply_mp") and A.is_map_weapon_recovery_supply_mp(
+                uid, wid_n, wt_s
+            ):
+                return True
+        except Exception:
+            pass
+        return False
 
     try:
         structured_keys, s_meta = collect_unit_structured_debuff_keys(A, uid, mode=mode)
@@ -2502,7 +2529,12 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
                     break
 
         if wt == "3":
-            # Non-damage MAP (e.g. Live Concert Zaku buff MAP) — skip for MAP axis
+            # Recovery / ally-support MAP (e.g. Live Concert, Unicorn TWC Psycho-Field) —
+            # grant a separate support-MAP flag; do not score as damage MAP.
+            if _is_recovery_support_map(wid, wm, wt):
+                has_support_map = True
+                continue
+            # Non-damage MAP with no Recovery tag (legacy zero-power) — skip for MAP axis
             if map_require_damage and power < map_min_power:
                 continue
             has_map_weapon = True
@@ -2564,6 +2596,11 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
     if max_power <= 0 or not has_map_weapon:
         try:
             for prev in A.build_unit_browse_map_weapon_previews(uid, stat_mode=mode, ld=ld, lc=lc) or []:
+                prev_wid = A.normalize_id(prev.get("id") or prev.get("weapon_id") or "0")
+                prev_wm = A.weapon_info_map.get(prev_wid, {}) if prev_wid and prev_wid != "0" else {}
+                if _is_recovery_support_map(prev_wid, prev_wm, "3"):
+                    has_support_map = True
+                    continue
                 prev_power = int(prev.get("power") or 0)
                 if map_require_damage and prev_power < map_min_power:
                     continue
@@ -2614,6 +2651,7 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
         "map_ammo": map_ammo,
         "map_coverage_cells": map_coverage_cells,
         "has_map_weapon": has_map_weapon,
+        "has_support_map": has_support_map,
         "has_dash_map": has_dash_map,
         "has_after_move_map": has_after_move_map,
         "has_preemptive": has_preemptive,
@@ -2960,7 +2998,9 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
         "extra_life_source": extra_src,
         "has_extra_move_kit": has_extra_move_kit,
         "extra_move_from_regex": extra_move_from_regex,
-        "has_map": bool(wfeat.get("has_map_weapon")) or int(wfeat.get("map_ammo") or 0) > 0,
+        "has_map": bool(wfeat.get("has_map_weapon"))
+        or bool(wfeat.get("has_support_map"))
+        or int(wfeat.get("map_ammo") or 0) > 0,
         **wfeat,
     }
 
@@ -3773,17 +3813,23 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "applies": ["units"],
             "objective": True,
             "summary": (
-                "Damage MAP only (power ≥1) — non-damage MAPs like Live Concert Zaku are ignored. "
-                "Presence for any damage MAP, extra for dash/MovingAttack, ammo 2+, and coverage "
-                "(0–14 cells = 0, 15–24 = +1, 25+ = +2). Attack cap "
+                "Damage MAP (Attack category, power ≥1): presence, dash/MovingAttack, ammo 2+, and coverage "
+                "(0–14 cells = 0, 15–24 = +1, 25+ = +2). "
+                "Recovery / ally-support MAP (category Recovery, e.g. MP-supply Psycho-Field / Live Concert) "
+                f"scores {_fmt_points(rules.get('map_support_points', 1))} instead — not full damage-MAP coverage. "
+                "Attack cap "
                 f"{_fmt_points((rules.get('map_axis_cap_by_role') or {}).get('Attack', rules.get('map_axis_cap', 4)))}; "
                 f"Defense/Support cap "
                 f"{_fmt_points((rules.get('map_axis_cap_by_role') or {}).get('Support', 2))}."
             ),
             "rows": [
                 {
-                    "when": "Any MAP weapon",
+                    "when": "Damage MAP weapon",
                     "result": _fmt_points(rules.get("map_presence_points", 1)),
+                },
+                {
+                    "when": "Recovery / ally-support MAP (MP supply, buff allies)",
+                    "result": _fmt_points(rules.get("map_support_points", 1)),
                 },
                 {
                     "when": "Dash / MovingAttack MAP",
@@ -4598,7 +4644,9 @@ def _char_kit_items(A, cid: str, lc: str, ldc: dict) -> tuple[list[dict], int, l
         items.append(
             {
                 "kind": "ability",
+                "id": str(use_id),
                 "name": name,
+                "icon": str(entry.get("icon") or ""),
                 "blob": blob,
                 "is_affinity": is_aff,
                 "required_tag_ids": t_ids,
@@ -4616,9 +4664,11 @@ def _char_kit_items(A, cid: str, lc: str, ldc: dict) -> tuple[list[dict], int, l
         try:
             sname = ""
             blob = ""
+            sicon = ""
             if hasattr(A, "resolve_char_skill"):
                 r = A.resolve_char_skill(str(sid), ldc, 0, False) or {}
                 sname = str(r.get("name") or "")
+                sicon = str(r.get("icon") or "")
                 details = r.get("details") or []
                 texts = [sname]
                 for d in details:
@@ -4635,7 +4685,9 @@ def _char_kit_items(A, cid: str, lc: str, ldc: dict) -> tuple[list[dict], int, l
                 items.append(
                     {
                         "kind": "skill",
+                        "id": str(sid),
                         "name": sname or blob.split("\n", 1)[0].strip(),
+                        "icon": sicon,
                         "blob": blob,
                         "is_affinity": False,
                     }
@@ -4653,6 +4705,28 @@ def _char_kit_items(A, cid: str, lc: str, ldc: dict) -> tuple[list[dict], int, l
         return out
 
     return items, aff, _uniq(req_tags), _uniq(req_series)
+
+
+def _lean_char_kit_lists(kit_items: list[dict] | None) -> tuple[list[dict], list[dict]]:
+    """Public SPI kit chips: id + name + icon (no effect blobs)."""
+    abilities: list[dict] = []
+    skills: list[dict] = []
+    for it in kit_items or []:
+        if not isinstance(it, dict):
+            continue
+        name = str(it.get("name") or "").strip()
+        if not name:
+            continue
+        lean = {
+            "id": str(it.get("id") or ""),
+            "name": name,
+            "icon": str(it.get("icon") or ""),
+        }
+        if it.get("kind") == "skill":
+            skills.append(lean)
+        else:
+            abilities.append(lean)
+    return abilities, skills
 
 
 def unit_primary_specialty(A, uid: str, lc: str = "EN") -> str:
@@ -5115,6 +5189,7 @@ def score_character(
         feats["er_expert_eligible_count"] = len(elig)
         feats["er_expert_ids"] = elig
     scored = score_pilot_features(feats, rules=rules)
+    abilities, skills = _lean_char_kit_lists(feats.get("kit_items"))
     row = {
         "id": feats["id"],
         "name": feats.get("name") or "",
@@ -5137,6 +5212,8 @@ def score_character(
         "is_sd_linked": bool(feats.get("is_sd_linked")),
         "detail_lines": scored.get("detail_lines") or [],
         "recommended_units": feats.get("recommended_units") or [],
+        "abilities": abilities,
+        "skills": skills,
         "stats": {
             "Ranged": feats.get("Ranged"),
             "Melee": feats.get("Melee"),

@@ -8004,7 +8004,7 @@ def create_weapon_master_map(d):
             wsid = normalize_id(item.get('WeaponStatusId') or item.get('weaponStatusId'))
             if wsid == '0':
                 wsid = wid
-            lookup[wid] = {'name_lang_id': normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId')), 'attribute': normalize_id(item.get('WeaponAttributeSetId') or item.get('weaponAttributeSetId')), 'weapon_type': normalize_id(item.get('WeaponTypeIndex') or item.get('weaponTypeIndex'), '1'), 'main_weapon_id': normalize_id(item.get('MainWeaponId') or item.get('mainWeaponId')), 'weapon_status_id': wsid, 'attack_attribute': normalize_id(item.get('AttackAttributeSetId') or item.get('attackAttributeSetId')), 'capability_set_id': normalize_id(item.get('WeaponCapabilitySetId') or item.get('weaponCapabilitySetId')), 'tension_type': normalize_id(item.get('TensionTypeIndex') or item.get('tensionTypeIndex'), '0'), 'map_range_type': normalize_id(item.get('MapWeaponRangeTypeIndex') or item.get('mapWeaponRangeTypeIndex'), '0'), 'hp_cost_rate': hp_cost}
+            lookup[wid] = {'name_lang_id': normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId')), 'attribute': normalize_id(item.get('WeaponAttributeSetId') or item.get('weaponAttributeSetId')), 'weapon_type': normalize_id(item.get('WeaponTypeIndex') or item.get('weaponTypeIndex'), '1'), 'main_weapon_id': normalize_id(item.get('MainWeaponId') or item.get('mainWeaponId')), 'weapon_status_id': wsid, 'attack_attribute': normalize_id(item.get('AttackAttributeSetId') or item.get('attackAttributeSetId')), 'capability_set_id': normalize_id(item.get('WeaponCapabilitySetId') or item.get('weaponCapabilitySetId')), 'tension_type': normalize_id(item.get('TensionTypeIndex') or item.get('tensionTypeIndex'), '0'), 'map_range_type': normalize_id(item.get('MapWeaponRangeTypeIndex') or item.get('mapWeaponRangeTypeIndex'), '0'), 'map_trait_category': normalize_id(item.get('MapWeaponTraitCategoryTypeIndex') or item.get('mapWeaponTraitCategoryTypeIndex'), '0'), 'hp_cost_rate': hp_cost}
     return lookup
 
 def create_weapon_status_map(d):
@@ -15666,6 +15666,38 @@ def _spi_localize_series_advantage(adv, lc, tag_map):
     return out
 
 
+def _spi_localize_char_kit_list(items, kind, lc):
+    """Relocalize lean ability/skill chip names for SPI character rows."""
+    if not isinstance(items, list) or not items:
+        return items
+    ld = get_lang_data(lc)
+    out = []
+    for it in items:
+        if not isinstance(it, dict):
+            continue
+        row = dict(it)
+        eid = normalize_id(row.get('id'))
+        if not eid or eid == '0':
+            out.append(row)
+            continue
+        try:
+            if kind == 'ability':
+                nm = get_ability_name_for_search(
+                    eid, ld.get('abil_name_map') or {}, abil_link_map
+                )
+            else:
+                sk = resolve_char_skill(str(eid), ld, 0, False) or {}
+                nm = sk.get('name') or ''
+                if sk.get('icon') and not row.get('icon'):
+                    row['icon'] = sk.get('icon')
+            if nm:
+                row['name'] = nm
+        except Exception:
+            pass
+        out.append(row)
+    return out
+
+
 def _spi_localize_board_rows(buckets, kind, lc, tag_map):
     if not isinstance(buckets, dict):
         return
@@ -15698,6 +15730,11 @@ def _spi_localize_board_rows(buckets, kind, lc, tag_map):
                 r['series_advantage'] = _spi_localize_series_advantage(
                     r.get('series_advantage'), lc, tag_map
                 )
+            if kind == 'character':
+                if r.get('abilities'):
+                    r['abilities'] = _spi_localize_char_kit_list(r.get('abilities'), 'ability', lc)
+                if r.get('skills'):
+                    r['skills'] = _spi_localize_char_kit_list(r.get('skills'), 'skill', lc)
             new_rows.append(r)
         buckets[bname] = new_rows
 

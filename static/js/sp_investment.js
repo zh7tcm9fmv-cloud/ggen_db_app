@@ -16,6 +16,15 @@
     R: '/static/images/UI/UI_Common_Tmb_Square_R_Frame.webp',
     N: '/static/images/UI/UI_Common_Tmb_Square_None_Frame%20%236338.webp',
   };
+  const RARITY_FILTER_ICONS = {
+    UR: '/static/images/Rarity/UI_Common_RarityIcon_UR.webp',
+    SSR: '/static/images/Rarity/UI_Common_RarityIcon_SSR.webp',
+    SR: '/static/images/Rarity/UI_Common_RarityIcon_SR.webp',
+    R: '/static/images/Rarity/UI_Common_RarityIcon_R.webp',
+    N: '/static/images/Rarity/UI_Common_RarityIcon_N.webp',
+  };
+  const SPI_SKILL_FILTER_ICON = '/static/images/Trait/trait_10150101.webp';
+  const SPI_ABIL_FILTER_ICON = '/static/images/Trait/trait_10190102.webp';
 
   const BREAKDOWN_META = {
     tags: {
@@ -55,7 +64,7 @@
     },
     map: {
       label: 'MAP weapons',
-      tip: 'Any MAP +1. Dash/MovingAttack +1 more. Ammo 2+ and wider coverage add points. Attack can score up to +4; Defense/Support cap at +2 so MAP does not dominate those roles.',
+      tip: 'Damage MAP +1 presence; dash/MovingAttack, ammo 2+, and coverage add more. Recovery / ally-support MAP (MP supply) scores +1 separately — not as a damage MAP. Attack can score up to +4; Defense/Support cap at +2.',
     },
     abilities: {
       label: 'Abilities',
@@ -284,7 +293,7 @@
       if (key) el.textContent = tRole(key);
     });
 
-    syncLowRarityLabel();
+    updateRarityFilterLabel();
 
     root.querySelectorAll('.spi-lang-btn').forEach((btn) => {
       const btnLang =
@@ -297,6 +306,8 @@
 
     updateSourceFilterLabel();
     updateTagFilterLabel();
+    updateSkillFilterLabel();
+    updateAbilFilterLabel();
     updateErFilterLabel();
   }
 
@@ -340,9 +351,21 @@
     return null;
   }
 
-  function rankIndexCacheKey(kind) {
-    if (kind === 'character') return 'characters:sp';
-    return `units:${board === 'ssp' ? 'ssp' : 'sp'}`;
+  function roleApiId(rowOrRole) {
+    if (rowOrRole && typeof rowOrRole === 'object') {
+      const rid = String(rowOrRole.role_id || '').trim();
+      if (rid === '1' || rid === '2' || rid === '3') return rid;
+      return roleApiId(rowOrRole.role);
+    }
+    const map = { Attack: '1', Defense: '2', Support: '3' };
+    return map[String(rowOrRole || '').trim()] || '';
+  }
+
+  function rankIndexCacheKey(kind, roleId) {
+    const rid = String(roleId || '').trim();
+    const rolePart = rid === '1' || rid === '2' || rid === '3' ? rid : 'all';
+    if (kind === 'character') return `characters:sp:${rolePart}`;
+    return `units:${board === 'ssp' ? 'ssp' : 'sp'}:${rolePart}`;
   }
 
   function renderInlineRankRadial(meta) {
@@ -430,16 +453,17 @@
     // Units may lack EN in published payload — still show the grid and fill from ranking.
     if (!hasAny && kind === 'character') return '';
     const specialty = kind === 'character' ? row.specialty : '';
+    const roleLabel = tRole(row.role) || row.role || '';
     const cards = keys
       .map((k) => renderEntityStatCard(kind, k, entityStatValue(row, k), null, specialty && k === specialty))
       .join('');
     const modeNote =
       kind === 'character'
-        ? `SP-grown totals · specialty for MS matching: <strong>${esc(specialty || '·')}</strong>`
-        : `${String(row.mode || board || 'sp').toUpperCase()} board stats · same ranking pool as the database detail page`;
+        ? `${esc(t('stats_note_pilot', { role: roleLabel, specialty: specialty || '·' }))}`
+        : `${esc(t('stats_note_unit', { mode: String(row.mode || board || 'sp').toUpperCase(), role: roleLabel }))}`;
     return `<section class="spi-dossier-section spi-entity-stats-block" id="spiEntityStats">
       <div class="spi-dossier-section-head">
-        <h4 class="spi-dossier-h">Stats <span class="spi-dossier-h-sub">global ranking</span></h4>
+        <h4 class="spi-dossier-h">${esc(t('stats_heading'))} <span class="spi-dossier-h-sub">${esc(t('stats_rank_within_role', { role: roleLabel }))}</span></h4>
       </div>
       <p class="spi-dossier-note">${modeNote}</p>
       <div class="stats-grid spi-stats-grid">${cards}</div>
@@ -503,13 +527,14 @@
     return ahead;
   }
 
-  async function fetchUnitRowForRanks(id) {
+  async function fetchUnitRowForRanks(id, roleId) {
     const lang = uiLang();
     const mode = board === 'ssp' ? 'ssp' : 'sp';
+    const roleQ = roleId ? `&role=${encodeURIComponent(roleId)}` : '';
     // id search includes transform alternates that ranking_bulk otherwise skips.
     const url =
       `/api/units?lang=${encodeURIComponent(lang)}` +
-      `&q=${encodeURIComponent(id)}&stat_mode=${mode}&per_page=20&page=1`;
+      `&q=${encodeURIComponent(id)}&stat_mode=${mode}${roleQ}&per_page=20&page=1`;
     const r = await fetch(url);
     if (!r.ok) return null;
     const d = await r.json();
@@ -517,23 +542,27 @@
     return rows.find((x) => String(x && x.id) === String(id)) || null;
   }
 
-  async function warmSpiRankIndex(kind) {
-    const ck = rankIndexCacheKey(kind);
+  async function warmSpiRankIndex(kind, roleId) {
+    const ck = rankIndexCacheKey(kind, roleId);
     if (_spiRankIndexByKey[ck]) return _spiRankIndexByKey[ck];
     if (_spiRankIndexPromises[ck]) return _spiRankIndexPromises[ck];
     _spiRankIndexPromises[ck] = (async () => {
       const lang = uiLang();
       const keys = entityStatKeys(kind);
+      const roleQ =
+        roleId === '1' || roleId === '2' || roleId === '3'
+          ? `&role=${encodeURIComponent(roleId)}`
+          : '';
       let url;
       if (kind === 'character') {
         url =
           `/api/characters?lang=${encodeURIComponent(lang)}` +
-          `&sort=Ranged&dir=desc&sp=1&stat_bounds=1&ranking_bulk=1&per_page=50000&page=1`;
+          `&sort=Ranged&dir=desc&sp=1&stat_bounds=1&ranking_bulk=1${roleQ}&per_page=50000&page=1`;
       } else {
         const mode = board === 'ssp' ? 'ssp' : 'sp';
         url =
           `/api/units?lang=${encodeURIComponent(lang)}` +
-          `&sort=HP&dir=desc&stat_mode=${mode}&stat_bounds=1&ranking_bulk=1&per_page=50000&page=1`;
+          `&sort=HP&dir=desc&stat_mode=${mode}&stat_bounds=1&ranking_bulk=1${roleQ}&per_page=50000&page=1`;
       }
       const r = await fetch(url);
       if (!r.ok) throw new Error('HTTP ' + r.status);
@@ -572,17 +601,18 @@
   async function loadEntityStatRanks(row, kind) {
     if (!row || !row.id) return;
     const id = String(row.id);
-    const modalKey = `${kind}:${id}:${rankIndexCacheKey(kind)}`;
+    const roleId = roleApiId(row);
+    const modalKey = `${kind}:${id}:${rankIndexCacheKey(kind, roleId)}`;
     _spiModalEntityKey = modalKey;
     try {
-      const idx = await warmSpiRankIndex(kind);
+      const idx = await warmSpiRankIndex(kind, roleId);
       if (_spiModalEntityKey !== modalKey) return;
       const keys = entityStatKeys(kind);
       const missingFromList = keys.some((sk) => !(idx[sk] && idx[sk].byId.has(id)));
       let apiRow = null;
       if (missingFromList && kind === 'unit') {
         try {
-          apiRow = await fetchUnitRowForRanks(id);
+          apiRow = await fetchUnitRowForRanks(id, roleId);
         } catch (_) {
           apiRow = null;
         }
@@ -618,7 +648,7 @@
       const host = $('#spiEntityStats');
       if (host && _spiModalEntityKey === modalKey) {
         const note = host.querySelector('.spi-dossier-note');
-        if (note) note.textContent = 'Stats shown. Ranking unavailable right now.';
+        if (note) note.textContent = t('stats_rank_unavailable');
         host.querySelectorAll('.stat-inline-rank.is-loading').forEach((el) => {
           el.innerHTML = `<div class="radial-loading">—</div>`;
         });
@@ -630,13 +660,15 @@
   let entity = 'units';
   let board = 'sp';
   let role = 'Attack';
-  let showLowRarity = false;
+  let raritySel = new Set(['SSR', 'UR']);
   let mapOnly = false;
   let hasSpOnly = true;
   let showUlt = false;
   let sourceFilter = 'all';
   let tagFilter = '';
   let erFilter = '';
+  let skillFilterIds = [];
+  let abilFilterIds = [];
   let searchQuery = '';
   let rowById = new Map();
   let _payloadLang = '';
@@ -747,18 +779,27 @@
     return row && (row.is_ultimate === true || row.is_ultimate === 1);
   }
 
+  function rarityLetter(row) {
+    const letter = String((row && row.rarity) || '').toUpperCase();
+    if (letter && letter !== 'NONE' && letter !== 'NULL') return letter;
+    const map = { 1: 'N', 2: 'R', 3: 'SR', 4: 'SSR', 5: 'UR' };
+    return map[rarityIndex(row)] || '';
+  }
+
+  function rarityKeysForEntity() {
+    return entity === 'characters' ? ['SSR', 'SR', 'R', 'N'] : ['UR', 'SSR', 'SR', 'R', 'N'];
+  }
+
+  function defaultRaritySel() {
+    return entity === 'characters' ? new Set(['SSR']) : new Set(['SSR', 'UR']);
+  }
+
   function rarityOk(row) {
-    const ri = rarityIndex(row);
-    if (entity === 'characters') {
-      // No UR/Ultimate characters. Default = SSR only; checkbox adds N/R/SR.
-      if (ri >= 5 || ri < 1) return false;
-      if (showLowRarity) return ri <= 4;
-      return ri === 4;
-    }
-    // Units: default SSR / UR / Ultimate; checkbox adds N/R/SR.
-    if (showLowRarity) return true;
-    if (ri >= 4 || isUltimateRow(row)) return true;
-    return false;
+    const letter = rarityLetter(row);
+    if (!letter) return false;
+    // Guide omits non-Ultimate UR pilots; characters never include UR here.
+    if (entity === 'characters' && (letter === 'UR' || rarityIndex(row) >= 5)) return false;
+    return raritySel.has(letter);
   }
 
   function seriesAdvantageApplies(row) {
@@ -820,10 +861,38 @@
     };
   }
 
+  function rarityIconHtml(keys) {
+    return (keys || [])
+      .map((k) => {
+        const path = RARITY_FILTER_ICONS[k];
+        if (!path) return '';
+        return `<img class="filter-inline-icon rarity-filter-chip" src="${esc(imgUrl(path))}" alt="" role="presentation" loading="lazy" decoding="async" onerror="gameImageUrlFallback(this)">`;
+      })
+      .join('');
+  }
+
+  function isRarityFilterDefault() {
+    const def = defaultRaritySel();
+    if (raritySel.size !== def.size) return false;
+    for (const k of def) if (!raritySel.has(k)) return false;
+    return true;
+  }
+
+  function updateRarityFilterLabel() {
+    const label = $('#spiRarityFilterLabel');
+    const btn = $('#spiRarityFilterBtn');
+    if (!label) return;
+    const keys = rarityKeysForEntity().filter((k) => raritySel.has(k));
+    if (!keys.length) {
+      label.textContent = '—';
+    } else {
+      label.innerHTML = rarityIconHtml(keys);
+    }
+    if (btn) btn.classList.toggle('active', !isRarityFilterDefault() || keys.length === 0);
+  }
+
   function syncLowRarityLabel() {
-    const el = $('#spiLowRarityLabel');
-    if (!el) return;
-    el.textContent = entity === 'characters' ? t('show_low_rarity_chars') : t('show_low_rarity_units');
+    updateRarityFilterLabel();
   }
 
   function currentBuckets() {
@@ -870,6 +939,16 @@
       const ids = row.er_expert_ids || [];
       if (!ids.map(String).includes(String(erFilter))) return false;
     }
+    if (entity === 'characters') {
+      if (skillFilterIds.length) {
+        const have = new Set((row.skills || []).map((s) => String((s && s.id) || '')));
+        if (!skillFilterIds.every((id) => have.has(String(id)))) return false;
+      }
+      if (abilFilterIds.length) {
+        const have = new Set((row.abilities || []).map((a) => String((a && a.id) || '')));
+        if (!abilFilterIds.every((id) => have.has(String(id)))) return false;
+      }
+    }
     const q = searchQuery.trim().toLowerCase();
     if (q && !rowMatchesSearch(row, q)) return false;
     return true;
@@ -885,13 +964,20 @@
   }
 
   function closeSpiFilterPanels() {
-    ['spiSource', 'spiTag', 'spiEr'].forEach((pfx) => {
+    ['spiRarity', 'spiSource', 'spiTag', 'spiSkill', 'spiAbil', 'spiEr'].forEach((pfx) => {
       const panel = document.getElementById(pfx + 'FilterPanel');
       const btn = document.getElementById(pfx + 'FilterBtn');
       if (panel) panel.hidden = true;
       if (btn) {
         btn.setAttribute('aria-expanded', 'false');
-        btn.classList.toggle('active', pfx === 'spiSource' ? sourceFilter !== 'all' : pfx === 'spiTag' ? !!tagFilter : !!erFilter);
+        if (pfx === 'spiRarity') btn.classList.toggle('active', !isRarityFilterDefault() || raritySel.size === 0);
+        else if (pfx === 'spiSkill') btn.classList.toggle('active', skillFilterIds.length > 0);
+        else if (pfx === 'spiAbil') btn.classList.toggle('active', abilFilterIds.length > 0);
+        else
+          btn.classList.toggle(
+            'active',
+            pfx === 'spiSource' ? sourceFilter !== 'all' : pfx === 'spiTag' ? !!tagFilter : !!erFilter
+          );
       }
     });
   }
@@ -907,7 +993,7 @@
       panel.hidden = false;
       btn.setAttribute('aria-expanded', 'true');
       btn.classList.add('active');
-      if (pfx === 'spiTag' || pfx === 'spiEr') {
+      if (pfx === 'spiTag' || pfx === 'spiEr' || pfx === 'spiSkill' || pfx === 'spiAbil') {
         const search = panel.querySelector('.filter-dd-search');
         if (search) {
           search.value = '';
@@ -1051,6 +1137,173 @@
     setFilterBtnLabel($('#spiErFilterLabel'), text, !!erFilter);
   }
 
+  function collectPilotKitCatalog(kind) {
+    const key = kind === 'skill' ? 'skills' : 'abilities';
+    const byId = new Map();
+    const buckets = ((payload && payload.characters) || {}).sp || {};
+    Object.keys(buckets).forEach((bk) => {
+      (buckets[bk] || []).forEach((row) => {
+        (row[key] || []).forEach((it) => {
+          if (!it || !it.id) return;
+          const id = String(it.id);
+          if (!byId.has(id)) {
+            byId.set(id, {
+              id,
+              name: String(it.name || id),
+              icon: String(it.icon || ''),
+            });
+          }
+        });
+      });
+    });
+    return Array.from(byId.values()).sort((a, b) =>
+      String(a.name || '').localeCompare(String(b.name || ''))
+    );
+  }
+
+  function kitFilterChipHtml(iconPath, label) {
+    const ic = iconPath
+      ? `<img class="skill-filter-toolbar-ic" src="${esc(imgUrl(iconPath))}" alt="" role="presentation" loading="lazy" decoding="async" onerror="gameImageUrlFallback(this)">`
+      : '';
+    return `<span class="skill-filter-toolbar-label">${ic}<span class="source-filter-btn-plain">${esc(label)}</span></span>`;
+  }
+
+  function updateSkillFilterLabel() {
+    const label = $('#spiSkillFilterLabel');
+    const btn = $('#spiSkillFilterBtn');
+    if (!label) return;
+    const lead = SPI_SKILL_FILTER_ICON;
+    if (!skillFilterIds.length) {
+      label.innerHTML = kitFilterChipHtml(lead, t('no_skill_filter'));
+      if (btn) btn.classList.remove('active');
+      return;
+    }
+    if (btn) btn.classList.add('active');
+    if (skillFilterIds.length === 1) {
+      const cat = collectPilotKitCatalog('skill');
+      const hit = cat.find((x) => String(x.id) === String(skillFilterIds[0]));
+      const name = (hit && hit.name) || skillFilterIds[0];
+      const icon = (hit && hit.icon) || lead;
+      label.innerHTML = kitFilterChipHtml(icon, name);
+      return;
+    }
+    label.innerHTML = kitFilterChipHtml(lead, t('skill_filter_n', { n: skillFilterIds.length }));
+  }
+
+  function updateAbilFilterLabel() {
+    const label = $('#spiAbilFilterLabel');
+    const btn = $('#spiAbilFilterBtn');
+    if (!label) return;
+    const lead = SPI_ABIL_FILTER_ICON;
+    if (!abilFilterIds.length) {
+      label.innerHTML = kitFilterChipHtml(lead, t('no_abil_filter'));
+      if (btn) btn.classList.remove('active');
+      return;
+    }
+    if (btn) btn.classList.add('active');
+    if (abilFilterIds.length === 1) {
+      const cat = collectPilotKitCatalog('ability');
+      const hit = cat.find((x) => String(x.id) === String(abilFilterIds[0]));
+      const name = (hit && hit.name) || abilFilterIds[0];
+      const icon = (hit && hit.icon) || lead;
+      label.innerHTML = kitFilterChipHtml(icon, name);
+      return;
+    }
+    label.innerHTML = kitFilterChipHtml(lead, t('abil_filter_n', { n: abilFilterIds.length }));
+  }
+
+  function kitFilterRowHtml(item, group, checked) {
+    const id = `spiKit_${group}_${String(item.id).replace(/[^a-zA-Z0-9_-]/g, '_')}`;
+    const ft = String(item.name || '').toLowerCase();
+    const ic = item.icon
+      ? `<img class="skill-browse-ic" src="${esc(imgUrl(item.icon))}" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback(this)">`
+      : '';
+    return `<label class="rarity-filter-row list-filter-tag-item skill-browse-row" data-filter-text="${escAttr(ft)}">
+      <input type="checkbox" id="${escAttr(id)}" value="${escAttr(item.id)}" ${checked ? 'checked' : ''}>
+      <span class="tag-composite list-filter-tag-composite skill-browse-row-inner">
+        <span class="tag-part-icon">${ic}</span>
+        <span class="tag-part-value">${esc(item.name)}</span>
+      </span>
+    </label>`;
+  }
+
+  function fillSkillPanel() {
+    const panel = $('#spiSkillFilterPanel');
+    if (!panel) return;
+    const rows = collectPilotKitCatalog('skill')
+      .map((it) => kitFilterRowHtml(it, 'skill', skillFilterIds.includes(String(it.id))))
+      .join('');
+    panel.innerHTML = `${spiDdSearchWrapHtml(t('skill_search_ph'), t('skill_search_aria'))}
+      <div class="spi-dd-scroll">${rows || ''}<div class="spi-dd-empty" hidden>${esc(t('skill_search_empty'))}</div></div>
+      ${spiDdFooterHtml()}`;
+    bindSpiDdSearch(panel);
+    panel.querySelectorAll('input[type="checkbox"]').forEach((inp) => {
+      inp.addEventListener('change', () => {
+        skillFilterIds = Array.from(panel.querySelectorAll('input[type="checkbox"]:checked')).map((x) =>
+          String(x.value)
+        );
+        updateSkillFilterLabel();
+        render();
+      });
+    });
+    bindSpiDdFooter(panel, () => {
+      skillFilterIds = [];
+      updateSkillFilterLabel();
+      fillSkillPanel();
+      closeSpiFilterPanels();
+      render();
+    });
+  }
+
+  function fillAbilPanel() {
+    const panel = $('#spiAbilFilterPanel');
+    if (!panel) return;
+    const rows = collectPilotKitCatalog('ability')
+      .map((it) => kitFilterRowHtml(it, 'abil', abilFilterIds.includes(String(it.id))))
+      .join('');
+    panel.innerHTML = `${spiDdSearchWrapHtml(t('abil_search_ph'), t('abil_search_aria'))}
+      <div class="spi-dd-scroll">${rows || ''}<div class="spi-dd-empty" hidden>${esc(t('abil_search_empty'))}</div></div>
+      ${spiDdFooterHtml()}`;
+    bindSpiDdSearch(panel);
+    panel.querySelectorAll('input[type="checkbox"]').forEach((inp) => {
+      inp.addEventListener('change', () => {
+        abilFilterIds = Array.from(panel.querySelectorAll('input[type="checkbox"]:checked')).map((x) =>
+          String(x.value)
+        );
+        updateAbilFilterLabel();
+        render();
+      });
+    });
+    bindSpiDdFooter(panel, () => {
+      abilFilterIds = [];
+      updateAbilFilterLabel();
+      fillAbilPanel();
+      closeSpiFilterPanels();
+      render();
+    });
+  }
+
+  function renderPilotKitHtml(row) {
+    const abilities = Array.isArray(row && row.abilities) ? row.abilities : [];
+    const skills = Array.isArray(row && row.skills) ? row.skills : [];
+    if (!abilities.length && !skills.length) {
+      return `<div class="spi-dossier-kit spi-dossier-kit--empty" aria-hidden="true"></div>`;
+    }
+    const chip = (it) => {
+      const ic = it.icon
+        ? `<img class="spi-kit-ic" src="${esc(imgUrl(it.icon))}" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback(this)">`
+        : '';
+      return `<span class="spi-kit-chip" title="${escAttr(it.name || '')}">${ic}<span class="spi-kit-name">${esc(it.name || '')}</span></span>`;
+    };
+    const abilBlock = abilities.length
+      ? `<div><p class="spi-kit-group-label">${esc(t('kit_abilities'))}</p><div class="spi-kit-row">${abilities.map(chip).join('')}</div></div>`
+      : '';
+    const skillBlock = skills.length
+      ? `<div><p class="spi-kit-group-label">${esc(t('kit_skills'))}</p><div class="spi-kit-row">${skills.map(chip).join('')}</div></div>`
+      : '';
+    return `<div class="spi-dossier-kit" aria-label="${escAttr(t('kit_aria'))}">${abilBlock}${skillBlock}</div>`;
+  }
+
   function ddRowHtml(value, label, checked, group, filterText) {
     const id = `spiDd_${group}_${String(value).replace(/[^a-zA-Z0-9_-]/g, '_') || 'all'}`;
     const ft = filterText != null ? filterText : String(label).toLowerCase();
@@ -1058,6 +1311,41 @@
       <input type="radio" name="spiDd_${escAttr(group)}" id="${escAttr(id)}" value="${escAttr(value)}" ${checked ? 'checked' : ''}>
       <span class="rarity-filter-all-label">${esc(label)}</span>
     </label>`;
+  }
+
+  function fillRarityPanel() {
+    const panel = $('#spiRarityFilterPanel');
+    if (!panel) return;
+    const keys = rarityKeysForEntity();
+    const rows = keys
+      .map((k) => {
+        const id = `spiRarity_${k}`;
+        const checked = raritySel.has(k) ? 'checked' : '';
+        return `<label class="rarity-filter-row">
+      <input type="checkbox" id="${escAttr(id)}" value="${escAttr(k)}" ${checked}>
+      <span class="rarity-row-hit"><span class="rarity-row-one-icon">${rarityIconHtml([k])}</span></span>
+    </label>`;
+      })
+      .join('');
+    panel.innerHTML = `<div class="spi-dd-scroll">${rows}</div>${spiDdFooterHtml()}`;
+    panel.querySelectorAll('input[type="checkbox"]').forEach((inp) => {
+      inp.addEventListener('change', () => {
+        const next = new Set();
+        panel.querySelectorAll('input[type="checkbox"]').forEach((box) => {
+          if (box.checked) next.add(box.value);
+        });
+        raritySel = next;
+        updateRarityFilterLabel();
+        render();
+      });
+    });
+    bindSpiDdFooter(panel, () => {
+      raritySel = new Set(rarityKeysForEntity());
+      updateRarityFilterLabel();
+      fillRarityPanel();
+      closeSpiFilterPanels();
+      render();
+    });
   }
 
   function fillSourcePanel() {
@@ -1156,11 +1444,17 @@
   }
 
   function fillFilterSelects() {
+    fillRarityPanel();
     fillSourcePanel();
     fillTagPanel();
+    fillSkillPanel();
+    fillAbilPanel();
     fillErPanel();
+    updateRarityFilterLabel();
     updateSourceFilterLabel();
     updateTagFilterLabel();
+    updateSkillFilterLabel();
+    updateAbilFilterLabel();
     updateErFilterLabel();
   }
 
@@ -1295,14 +1589,22 @@
   function syncBoardTabsVisibility() {
     const boardTabs = $('#spiBoardTabs');
     const mapWrap = $('#spiMapOnlyWrap');
+    const skillWrap = $('#spiSkillWrap');
+    const abilWrap = $('#spiAbilWrap');
     if (entity === 'characters') {
       if (boardTabs) boardTabs.style.display = 'none';
       board = 'sp';
       showUlt = false;
       if (mapWrap) mapWrap.style.display = 'none';
+      if (skillWrap) skillWrap.hidden = false;
+      if (abilWrap) abilWrap.hidden = false;
     } else {
       if (boardTabs) boardTabs.style.display = '';
       if (mapWrap) mapWrap.style.display = '';
+      if (skillWrap) skillWrap.hidden = true;
+      if (abilWrap) abilWrap.hidden = true;
+      skillFilterIds = [];
+      abilFilterIds = [];
     }
   }
 
@@ -1521,15 +1823,15 @@
       ultBtn.classList.toggle('active', showUlt);
       ultBtn.setAttribute('aria-pressed', showUlt ? 'true' : 'false');
     }
-    const low = $('#spiShowLowRarity');
-    if (low) low.checked = showLowRarity;
-    syncLowRarityLabel();
+    updateRarityFilterLabel();
     const map = $('#spiMapOnly');
     if (map) map.checked = mapOnly;
     const sp = $('#spiHasSpOnly');
     if (sp) sp.checked = hasSpOnly;
     updateSourceFilterLabel();
     updateTagFilterLabel();
+    updateSkillFilterLabel();
+    updateAbilFilterLabel();
     updateErFilterLabel();
     const search = $('#spiSearch');
     if (search) search.value = searchQuery;
@@ -1539,13 +1841,15 @@
   function resetFilters() {
     board = 'sp';
     role = 'Attack';
-    showLowRarity = false;
+    raritySel = defaultRaritySel();
     mapOnly = false;
     hasSpOnly = true;
     showUlt = false;
     sourceFilter = 'all';
     tagFilter = '';
     erFilter = '';
+    skillFilterIds = [];
+    abilFilterIds = [];
     searchQuery = '';
     applyFilterDom();
     fillFilterSelects();
@@ -1595,6 +1899,7 @@
           ${advBadge}
         </div>
       </div>
+      ${isPilot ? renderPilotKitHtml(row) : ''}
     </div>`;
 
     const specialtyBlock = renderEntityStatsBlock(row, kind);
@@ -1663,6 +1968,9 @@
     document.querySelectorAll('.role-filter-btn[data-entity]').forEach((btn) => {
       btn.addEventListener('click', () => {
         entity = btn.dataset.entity || 'units';
+        raritySel = defaultRaritySel();
+        skillFilterIds = [];
+        abilFilterIds = [];
         applyFilterDom();
         fillFilterSelects();
         renderScoringGuide();
@@ -1692,10 +2000,7 @@
         render();
       });
     });
-    $('#spiShowLowRarity').addEventListener('change', (e) => {
-      showLowRarity = !!e.target.checked;
-      render();
-    });
+    $('#spiRarityFilterBtn').addEventListener('click', (e) => toggleSpiFilterPanel('spiRarity', e));
     $('#spiMapOnly').addEventListener('change', (e) => {
       mapOnly = !!e.target.checked;
       render();
@@ -1706,9 +2011,18 @@
     });
     $('#spiSourceFilterBtn').addEventListener('click', (e) => toggleSpiFilterPanel('spiSource', e));
     $('#spiTagFilterBtn').addEventListener('click', (e) => toggleSpiFilterPanel('spiTag', e));
+    const skillBtn = $('#spiSkillFilterBtn');
+    if (skillBtn) skillBtn.addEventListener('click', (e) => toggleSpiFilterPanel('spiSkill', e));
+    const abilBtn = $('#spiAbilFilterBtn');
+    if (abilBtn) abilBtn.addEventListener('click', (e) => toggleSpiFilterPanel('spiAbil', e));
     $('#spiErFilterBtn').addEventListener('click', (e) => toggleSpiFilterPanel('spiEr', e));
     document.addEventListener('click', (e) => {
-      if (!e.target.closest('#spiSourceWrap, #spiTagWrap, #spiErWrap')) closeSpiFilterPanels();
+      if (
+        !e.target.closest(
+          '#spiRarityWrap, #spiSourceWrap, #spiTagWrap, #spiSkillWrap, #spiAbilWrap, #spiErWrap'
+        )
+      )
+        closeSpiFilterPanels();
     });
     let searchTimer = null;
     $('#spiSearch').addEventListener('input', (e) => {
