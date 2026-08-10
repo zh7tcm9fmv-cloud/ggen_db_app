@@ -3065,13 +3065,29 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
 
     criteria.append(
         {
-            "id": "buckets",
-            "title": "Buckets from letters",
-            "applies": ["units", "pilots"],
+            "id": "buckets_units",
+            "title": "Buckets from letters (Units)",
+            "applies": ["units"],
             "objective": True,
             "summary": "Point total maps to a letter, then to a bucket. Players mainly see buckets.",
             "rows": [
                 {"when": "S+ (score 17+)", "result": "BEYOND THE TIME"},
+                {"when": "S", "result": "Recommended"},
+                {"when": "A+ or A", "result": "Solid"},
+                {"when": "B+ or B", "result": "Situational"},
+                {"when": "C, D, or E", "result": "Niche"},
+            ],
+        }
+    )
+    criteria.append(
+        {
+            "id": "buckets_pilots",
+            "title": "Buckets from letters (Characters)",
+            "applies": ["pilots"],
+            "objective": True,
+            "summary": "Character kits score hotter than Units — BEYOND THE TIME needs score 23+ (~top 5%).",
+            "rows": [
+                {"when": "S+ (score 23+)", "result": "BEYOND THE TIME"},
                 {"when": "S", "result": "Recommended"},
                 {"when": "A+ or A", "result": "Solid"},
                 {"when": "B+ or B", "result": "Situational"},

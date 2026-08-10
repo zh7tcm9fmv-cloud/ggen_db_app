@@ -42,6 +42,24 @@ class TestSpInvestmentBands(unittest.TestCase):
         self.assertEqual(self.rules["bucket_labels"]["recommended"], "Recommended")
         self.assertEqual(self.rules["bucket_labels"]["niche"], "Niche")
 
+    def test_pilot_beyond_the_time_cutoff_23(self):
+        from sp_investment_rank import letter_for_total
+
+        s_plus = next(
+            r for r in self.rules["pilot_letter_cutoffs"] if r["letter"] == "S+"
+        )
+        self.assertEqual(s_plus["min"], 23)
+        self.assertEqual(
+            letter_for_total(self.rules, 22, cutoffs_key="pilot_letter_cutoffs"), "S"
+        )
+        self.assertEqual(
+            letter_for_total(self.rules, 23, cutoffs_key="pilot_letter_cutoffs"), "S+"
+        )
+        unit_s_plus = next(
+            r for r in self.rules["letter_cutoffs"] if r["letter"] == "S+"
+        )
+        self.assertEqual(unit_s_plus["min"], 17)
+
     def test_tag_points_disabled(self):
         self.assertEqual(tag_count_points(self.rules, 2), 0)
         self.assertEqual(tag_count_points(self.rules, 9), 0)
@@ -716,6 +734,8 @@ class TestSpInvestmentBands(unittest.TestCase):
         self.assertIn("role_focus_attack", ids)
         self.assertIn("map", ids)
         self.assertIn("pilot_kit_flat", ids)
+        self.assertIn("buckets_units", ids)
+        self.assertIn("buckets_pilots", ids)
         self.assertNotIn("not_scored", ids)
         er = next(c for c in crit if c["id"] == "er_access")
         self.assertTrue(er["objective"])

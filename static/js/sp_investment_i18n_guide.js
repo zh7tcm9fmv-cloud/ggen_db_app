@@ -9,7 +9,7 @@
   const GUIDE = {
     "EN": {
       "overrides": [
-        "Each axis adds points; the total becomes a letter, then a bucket (BEYOND THE TIME / Recommended / Solid / Situational / Niche). Score 17+ earns letter S+ and the BEYOND THE TIME bucket.",
+        "Each axis adds points; the total becomes a letter, then a bucket (BEYOND THE TIME / Recommended / Solid / Situational / Niche). Units: score 17+ earns letter S+ and BEYOND THE TIME. Characters: score 23+ (~top 5%) earns S+ and BEYOND THE TIME.",
         "Filter by Tag or Eternal Road Expert stage to compare Units that actually fit the same restriction."
       ],
       "gaps": [
@@ -92,6 +92,7 @@
         "summary": "点合計がレターになり、さらに区分へ振り分けられます。プレイヤーは主に区分を見ます。",
         "when": {
           "S+ (score 17+)": "S+（17点以上）",
+          "S+ (score 23+)": "S+（23点以上）",
           "S": "S",
           "A+ or A": "A+ または A",
           "B+ or B": "B+ または B",
@@ -841,6 +842,7 @@
         "summary": "點數合計對應字母，再對應分桶。玩家主要看分桶。",
         "when": {
           "S+ (score 17+)": "S+（17 分以上）",
+          "S+ (score 23+)": "S+（23 分以上）",
           "S": "S",
           "A+ or A": "A+ 或 A",
           "B+ or B": "B+ 或 B",
@@ -1586,6 +1588,7 @@
         "summary": "點數合計對應字母，再對應分桶。玩家主要睇分桶。",
         "when": {
           "S+ (score 17+)": "S+（17 分以上）",
+          "S+ (score 23+)": "S+（23 分以上）",
           "S": "S",
           "A+ or A": "A+ 或 A",
           "B+ or B": "B+ 或 B",
@@ -2378,7 +2381,10 @@
     if (L === 'EN') return null;
     const pack = CRITERIA[L];
     if (!pack || !id) return null;
-    const c = pack[id];
+    let c = pack[id];
+    if (!c && (id === 'buckets_units' || id === 'buckets_pilots') && pack.buckets) {
+      c = pack.buckets;
+    }
     if (!c) return null;
     return {
       title: c.title,
