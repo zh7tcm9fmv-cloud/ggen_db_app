@@ -4845,6 +4845,10 @@ def character_is_investment_eligible(
     # Role 0 = NPC / story-only — never investment targets (even if they have kit rows).
     if str(info.get("role", "0") or "0") == "0":
         return False
+    # UR characters are not SP Conversion targets and there are no Ultimate Characters.
+    if rules.get("exclude_ur_characters", True):
+        if int(info.get("rarity", 1) or 1) >= 5:
+            return False
     playable = getattr(A, "char_list_playable_ids", None)
     if playable is not None and cid not in playable:
         return False

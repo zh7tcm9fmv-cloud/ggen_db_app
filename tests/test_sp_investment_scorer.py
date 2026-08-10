@@ -1014,6 +1014,26 @@ class TestSeriesAdvantageHelpers(unittest.TestCase):
         clear_rules_cache()
         rules = load_rules()
         self.assertTrue(rules.get("exclude_ur_units", True))
+        self.assertTrue(rules.get("exclude_ur_characters", True))
+
+    def test_character_eligibility_drops_ur(self):
+        from sp_investment_rank import character_is_investment_eligible
+
+        class _FakeA:
+            char_list_playable_ids = {"c_ssr", "c_ur"}
+            char_info_map = {
+                "c_ssr": {"rarity": 4, "role": "1"},
+                "c_ur": {"rarity": 5, "role": "1"},
+            }
+
+            @staticmethod
+            def normalize_id(x):
+                return str(x)
+
+        A = _FakeA()
+        rules = load_rules()
+        self.assertTrue(character_is_investment_eligible(A, "c_ssr", rules))
+        self.assertFalse(character_is_investment_eligible(A, "c_ur", rules))
 
 
 def _minimal_features(**overrides):

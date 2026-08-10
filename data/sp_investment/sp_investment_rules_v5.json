@@ -35,10 +35,12 @@
     "v5.15: Attack/Support HP upside-only (no floor penalties); Defense HP/DEF floors kept; SSP Attack EN upside-only; secondary-stat outlier niche bonus; special_defense presence (DR/I-field/barrier); soft UR-recommend pilot dependence −1; softer pilot_rarity_adjustment (SR not punished like unit SR)",
     "v5.16: pilot recommend-MS / affinity matches require A or higher (A / A+ / S / S+); B+ no longer scores — cuts junk-frame affinity spam",
     "v5.17: drop non-Ultimate UR units from Investment Guide boards (kits too unique to share SP criteria); keep Ultimate; series Advantage: abilities score only when the active tag filter matches that series",
-    "v5.18: pilot ability flat add-on (conditional +1, conditional CS/SA/SD +2, InitialMp type46 +1); pilot skills flat 0/+1/+2 per skill summed (dmg +1, CS/SA/SD & Sway/MpBoost +2)"
+    "v5.18: pilot ability flat add-on (conditional +1, conditional CS/SA/SD +2, InitialMp type46 +1); pilot skills flat 0/+1/+2 per skill summed (dmg +1, CS/SA/SD & Sway/MpBoost +2)",
+    "v5.19: exclude UR characters from Investment Guide (no SP Conversion; no Ultimate Characters in-game); client hides N/R characters unless Show N/R is checked"
   ],
   "exclude_warships": true,
   "exclude_ur_units": true,
+  "exclude_ur_characters": true,
   "exclude_character_ids": [],
   "require_character_usable_unit_link": false,
   "rarity_adjustment": {
@@ -1531,7 +1533,7 @@
     "1370011100"
   ],
   "scoring_guide": {
-    "version": 5.18,
+    "version": 5.19,
     "title": "How Investment Guide scoring works",
     "intro": "Point-sum shortlist for SP Conversion / SSP Conversion investment on Units and Characters (Attack Type / Defense Type / Support Type). Units have separate SP and SSP boards; Characters use SP only. Criteria favor practical sortie tools (MAP Weapon, mobility follow-ups, weapon power) and a deep affinity Character pool over a single linked recommend. Minor Attack Type stats (HP, SSP EN) are upside-only — no floor punishment. Close letters still need a human look.",
     "overrides": [
@@ -1547,6 +1549,7 @@
       "Affinity Character pool counts SSR+ Characters with piloting-Tag / EX-pair affinity for the Unit (not Supporter amp %).",
       "Character Recommended Units points only count Units graded A / A+ / S / S+ on this guide (SP or SSP best) — B+ and below do not score.",
       "Character kits add flat Conditional Ability / Initial MP bonuses on top of TraitType points; active skills score 0 / +1 / +2 per skill and sum.",
+      "UR Characters are omitted from the Character board (not SP Conversion targets; there are no Ultimate Characters).",
       "Transform scores only when the alternate form unlocks deployable Terrain Capability, higher MOV, longer range, higher weapon power, or adds a MAP Weapon.",
       "Attack Type HP and SSP Attack Type EN are upside-only; Defense Type still taxes low HP/DEF. Special defenses (I-field / DR / barrier) are presence bonuses beyond the shield mechanism.",
       "Units whose recommend Character is UR / Ultimate take a mild −1 dependence tax (still usable with lower-rarity Characters).",

@@ -105,7 +105,7 @@
       cohort_ult: 'Ultimate scale',
       peaks_ur_pilot: 'Peaks with UR Character',
       peaks_ur_pilot_tip:
-        'Recommend Character is UR / Ultimate Unit tier — peak kit often assumes that Character. Still usable with SSR affinity Characters.',
+        'Recommend Character is UR — peak kit often assumes that Character. Still usable with SSR affinity Characters.',
       adv_on: 'Advantage +{n} (tag match)',
       adv_off: 'Advantage +{n} in-series only',
       adv_chip: '+{n} Adv',
@@ -187,7 +187,7 @@
       cohort_ult: 'アルティメットスケール',
       peaks_ur_pilot: 'URキャラ前提が強い',
       peaks_ur_pilot_tip:
-        '推奨キャラクターが UR / アルティメット帯 — ピーク性能はそのキャラ前提が多いです。SSRアフィニティキャラでも運用可。',
+        '推奨キャラクターが UR — ピーク性能はそのキャラ前提が多いです。SSRアフィニティキャラでも運用可。',
       adv_on: 'Advantage +{n}（タグ一致）',
       adv_off: 'Advantage +{n}（シリーズ内のみ）',
       adv_chip: '+{n} Adv',
@@ -269,7 +269,7 @@
       cohort_ult: '終極單位量表',
       peaks_ur_pilot: '偏 UR 角色',
       peaks_ur_pilot_tip:
-        '推薦角色為 UR／終極單位帶 — 峰值常假設該角色。仍可用 SSR 親和角色。',
+        '推薦角色為 UR — 峰值常假設該角色。仍可用 SSR 親和角色。',
       adv_on: 'Advantage +{n}（標籤相符）',
       adv_off: 'Advantage +{n}（僅系列內）',
       adv_chip: '+{n} Adv',
@@ -350,7 +350,7 @@
       cohort_ult: '終極單位量表',
       peaks_ur_pilot: '偏 UR 角色',
       peaks_ur_pilot_tip:
-        '推薦角色係 UR／終極單位帶 — 峰值多數假設嗰個角色。仍然可以用 SSR 親和角色。',
+        '推薦角色係 UR — 峰值多數假設嗰個角色。仍然可以用 SSR 親和角色。',
       adv_on: 'Advantage +{n}（標籤相符）',
       adv_off: 'Advantage +{n}（只限系列內）',
       adv_chip: '+{n} Adv',

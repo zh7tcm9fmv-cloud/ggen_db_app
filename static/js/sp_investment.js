@@ -705,12 +705,24 @@
     </div>`;
   }
 
+  function rarityIndex(row) {
+    const rid = Number(row && row.rarity_id);
+    if (Number.isFinite(rid) && rid > 0) return rid;
+    const map = { N: 1, R: 2, SR: 3, SSR: 4, UR: 5 };
+    return map[String((row && row.rarity) || '').toUpperCase()] || 0;
+  }
+
   function rarityOk(row) {
-    const r = String(row.rarity || '').toUpperCase();
+    const ri = rarityIndex(row);
+    if (entity === 'characters') {
+      // No UR characters on this board. Default = SSR + SR; checkbox adds N/R only.
+      if (ri >= 5 || ri < 1) return false;
+      if (showLowRarity) return ri <= 4;
+      return ri === 3 || ri === 4;
+    }
+    // Units: default SSR / UR / Ultimate; checkbox adds N/R/SR.
     if (showLowRarity) return true;
-    if (r === 'SSR' || r === 'UR' || !!row.is_ultimate) return true;
-    // Pilots: many SRs compete with SSRs — show SR by default; N/R still opt-in.
-    if (entity === 'characters' && r === 'SR') return true;
+    if (ri >= 4 || row.is_ultimate === true || row.is_ultimate === 1) return true;
     return false;
   }
 
