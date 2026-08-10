@@ -117,7 +117,10 @@
       tip: 'SP-grown DEF band. Scored for Defense (and lightly for Support); not scored for Attack.',
       hideIfZero: true,
     },
-    mob: { label: 'MOB', tip: 'SP-grown Mobility band for this role.' },
+    mob: {
+      label: 'MOB',
+      tip: 'Mobility (MOB). Affects Accuracy and Evasion. Scored from SP-grown MOB for this Unit Type — Support Type values it more; Attack Type treats it as a softer secondary vs ATK.',
+    },
     stat_outlier: {
       label: 'Stat outlier',
       tip: 'Small niche bonus when a secondary stat is clearly exceptional for the role (e.g. very high Attack HP/EN). Cap +2.',
@@ -159,7 +162,7 @@
     },
     source: {
       label: 'Acquisition',
-      tip: 'Dev / event / other free units get +1; gacha/assembly stays 0.',
+      tip: 'How the Unit is obtained: Development Unit and Other get +1; Units from Unit Assembly stay 0.',
     },
     max_debuff: {
       label: 'Debuff strength',
@@ -305,6 +308,9 @@
 
   function entityStatLabel(kind, key) {
     if (kind === 'character') return key;
+    if (key === 'MOB') return t('stat_mob') || 'MOB';
+    if (key === 'ATK') return t('stat_atk') || 'ATK';
+    if (key === 'DEF') return t('stat_def') || 'DEF';
     return UNIT_STAT_LABELS[key] || key;
   }
 

@@ -105,7 +105,7 @@
       },
       "role_focus_attack": {
         "title": "攻撃型の優先事項",
-        "summary": "まず火力上限（ATK＋武装威力）、次に MOV／MAP兵器。HP と SSP EN は上振れのみ — 高いと加点、低くても減点しません。MOB は弱い副次。",
+        "summary": "まず火力上限（攻撃力＋武装威力）、次に移動力／MAP兵器。HP と SSP EN は上振れのみ — 高いと加点、低くても減点しません。機動力（命中・回避）は弱い副次。",
         "when": {
           "Primary": "主軸",
           "Upside only": "上振れのみ",
@@ -114,11 +114,12 @@
           "Not scored": "採点外"
         },
         "result": {
-          "ATK · weapon power · MOV": "ATK · 武装威力 · MOV",
+          "ATK · weapon power · MOV": "攻撃力 · 武装威力 · 移動力",
           "HP · SSP EN (no floor penalty)": "HP · SSP EN（床減点なし）",
-          "MOB (lower ceiling than ATK)": "MOB（上限はATKより低い）",
+          "Mobility / MOB (lower ceiling than ATK)": "機動力（上限は攻撃力より低い）",
+          "MOB (lower ceiling than ATK)": "機動力（上限は攻撃力より低い）",
           "MAP presence / dash / coverage · special defense kits": "MAP存在／ダッシュ／範囲 · 特殊防御キット",
-          "DEF · Debuff kinds · Debuff strength · SP EN": "DEF · 弱体種 · 弱体強度 · SP EN"
+          "DEF · Debuff kinds · Debuff strength · SP EN": "防御力 · 弱体種 · 弱体強度 · SP EN"
         }
       },
       "role_focus_defense": {
@@ -139,14 +140,14 @@
       },
       "role_focus_support": {
         "title": "支援型の優先事項",
-        "summary": "弱体武装の射程は最低5（それ未満は弱い）、次に弱体の種類と強さ、次に高 MOB／MOV。ATK と HP は軽い上振れのみ — 低い値への床減点はありません。",
+        "summary": "弱体武装の射程は最低5（それ未満は弱い）、次に弱体の種類と強さ、次に高機動力／移動力。攻撃力と HP は軽い上振れのみ — 低い値への床減点はありません。",
         "when": {
           "Primary": "主軸",
           "Secondary": "副次"
         },
         "result": {
-          "Weapon range ≥5 · R5+ debuff kinds · debuff strength · MOB · MOV": "武装射程≥5 · 射程5+弱体種 · 弱体強度 · MOB · MOV",
-          "ATK / weapon power / HP (mild upside, no floor penalty)": "ATK／武装威力／HP（軽い上振れ、床減点なし）"
+          "Weapon range ≥5 · R5+ debuff kinds · debuff strength · Mobility (MOB) · MOV": "武装射程≥5 · 射程5+弱体種 · 弱体強度 · 機動力 · 移動力",
+          "ATK / weapon power / HP (mild upside, no floor penalty)": "攻撃力／武装威力／HP（軽い上振れ、床減点なし）"
         }
       },
       "er_access": {
@@ -325,12 +326,15 @@
         "result": {}
       },
       "source_bucket": {
-        "title": "入手経路（ユニット）",
-        "summary": "開発／イベント／その他の無料ユニットは軽い上振れ。ガチャ／組み立ては平坦。",
+        "title": "入手元（ユニット）",
+        "summary": "開発ユニット・その他は軽い上振れ。ユニット補給は平坦（0）。",
         "when": {
-          "Gacha / assembly": "ガチャ／組み立て",
-          "Development": "開発",
-          "Event / other": "イベント／その他"
+          "Units from Unit Assembly": "ユニット補給",
+          "Development Unit": "開発ユニット",
+          "Other": "その他",
+          "Gacha / assembly": "ユニット補給",
+          "Development": "開発ユニット",
+          "Event / other": "その他"
         },
         "result": {}
       },
@@ -449,7 +453,7 @@
       },
       "unit_stats_attack": {
         "title": "ユニット SP 成長ステータス — 攻撃型",
-        "summary": "攻撃型は MOB より ATK 上限を重視。HP は上振れのみ（床減点なし）。DEF は採点外。EN は SSP 盤のみ（上振れのみ）。MOB はソフトキャップ。",
+        "summary": "攻撃型は機動力より攻撃力上限を重視。HP は上振れのみ（床減点なし）。DEF は採点外。EN は SSP 盤のみ（上振れのみ）。機動力はソフトキャップ。",
         "when": {
           "HP < 95000": "HP < 95000",
           "HP 95000–99999": "HP 95000–99999",
@@ -464,10 +468,10 @@
           "ATK 12400–12799": "ATK 12400–12799",
           "ATK ≥ 12800": "ATK ≥ 12800",
           "any": "any",
-          "MOB < 9000": "MOB < 9000",
-          "MOB 9000–9599": "MOB 9000–9599",
-          "MOB 9600–9999": "MOB 9600–9999",
-          "MOB ≥ 10000": "MOB ≥ 10000"
+          "Mobility (MOB) < 9000": "機動力 < 9000",
+          "Mobility (MOB) 9000–9599": "機動力 9000–9599",
+          "Mobility (MOB) 9600–9999": "機動力 9600–9999",
+          "Mobility (MOB) ≥ 10000": "機動力 ≥ 10000"
         },
         "result": {}
       },
@@ -488,17 +492,17 @@
           "DEF 10500–11099": "DEF 10500–11099",
           "DEF 11100–11999": "DEF 11100–11999",
           "DEF ≥ 12000": "DEF ≥ 12000",
-          "MOB < 7700": "MOB < 7700",
-          "MOB 7700–7799": "MOB 7700–7799",
-          "MOB 7800–8099": "MOB 7800–8099",
-          "MOB 8100–8399": "MOB 8100–8399",
-          "MOB ≥ 8400": "MOB ≥ 8400"
+          "Mobility (MOB) < 7700": "機動力 < 7700",
+          "Mobility (MOB) 7700–7799": "機動力 7700–7799",
+          "Mobility (MOB) 7800–8099": "機動力 7800–8099",
+          "Mobility (MOB) 8100–8399": "機動力 8100–8399",
+          "Mobility (MOB) ≥ 8400": "機動力 ≥ 8400"
         },
         "result": {}
       },
       "unit_stats_support": {
         "title": "ユニット SP 成長ステータス — 支援型",
-        "summary": "支援型は MOB 上限を重視。ATK と HP は軽い上振れで床減点なし。",
+        "summary": "支援型は機動力上限を重視。ATK と HP は軽い上振れで床減点なし。",
         "when": {
           "HP < 91000": "HP < 91000",
           "HP 91000–93999": "HP 91000–93999",
@@ -511,11 +515,11 @@
           "DEF 8600–9099": "DEF 8600–9099",
           "DEF 9100–9399": "DEF 9100–9399",
           "DEF ≥ 9400": "DEF ≥ 9400",
-          "MOB < 9000": "MOB < 9000",
-          "MOB 9000–9499": "MOB 9000–9499",
-          "MOB 9500–9999": "MOB 9500–9999",
-          "MOB 10000–10499": "MOB 10000–10499",
-          "MOB ≥ 10500": "MOB ≥ 10500"
+          "Mobility (MOB) < 9000": "機動力 < 9000",
+          "Mobility (MOB) 9000–9499": "機動力 9000–9499",
+          "Mobility (MOB) 9500–9999": "機動力 9500–9999",
+          "Mobility (MOB) 10000–10499": "機動力 10000–10499",
+          "Mobility (MOB) ≥ 10500": "機動力 ≥ 10500"
         },
         "result": {}
       },
@@ -859,7 +863,7 @@
         "result": {
           "ATK · weapon power · MOV": "ATK · 武裝威力 · MOV",
           "HP · SSP EN (no floor penalty)": "HP · SSP EN（無下限扣分）",
-          "MOB (lower ceiling than ATK)": "MOB（上限低於 ATK）",
+          "Mobility / MOB (lower ceiling than ATK)": "機動力（上限低於攻擊力）",
           "MAP presence / dash / coverage · special defense kits": "MAP 存在／衝刺／覆蓋 · 特殊防禦套件",
           "DEF · Debuff kinds · Debuff strength · SP EN": "DEF · 弱化種類 · 弱化強度 · SP EN"
         }
@@ -882,14 +886,14 @@
       },
       "role_focus_support": {
         "title": "支援型優先事項",
-        "summary": "弱化武裝射程至少 5（更短則較弱），再看弱化種類與強度，再看高 MOB／移動力。ATK 與 HP 僅輕微上振 — 較低數值無下限扣分。",
+        "summary": "弱化武裝射程至少 5（更短則較弱），再看弱化種類與強度，再看高機動力／移動力。攻擊力與 HP 僅輕微上振 — 較低數值無下限扣分。",
         "when": {
           "Primary": "主軸",
           "Secondary": "次要"
         },
         "result": {
-          "Weapon range ≥5 · R5+ debuff kinds · debuff strength · MOB · MOV": "武裝射程≥5 · 射程5+弱化種類 · 弱化強度 · MOB · 移動力",
-          "ATK / weapon power / HP (mild upside, no floor penalty)": "ATK／武裝威力／HP（輕微上振，無下限扣分）"
+          "Weapon range ≥5 · R5+ debuff kinds · debuff strength · Mobility (MOB) · MOV": "武裝射程≥5 · 射程5+弱化種類 · 弱化強度 · 機動力 · 移動力",
+          "ATK / weapon power / HP (mild upside, no floor penalty)": "攻擊力／武裝威力／HP（輕微上振，無下限扣分）"
         }
       },
       "er_access": {
@@ -1068,12 +1072,12 @@
         "result": {}
       },
       "source_bucket": {
-        "title": "入手途徑（單位）",
-        "summary": "開發／活動／其他免費單位有輕微上振；轉蛋／組裝維持持平。",
+        "title": "取得來源（單位）",
+        "summary": "開發單位與其他輕微上振；單位補給獲得單位維持 0。",
         "when": {
-          "Gacha / assembly": "轉蛋／組裝",
-          "Development": "開發",
-          "Event / other": "活動／其他"
+          "Units from Unit Assembly": "單位補給獲得單位",
+          "Development Unit": "開發單位",
+          "Other": "其他"
         },
         "result": {}
       },
@@ -1192,7 +1196,7 @@
       },
       "unit_stats_attack": {
         "title": "單位 SP 養成數值 — 攻擊型",
-        "summary": "攻擊型重視 ATK 上限多於 MOB。HP 僅上振（無下限扣分）。DEF 不計分。EN 僅在 SSP 盤計分（僅上振）。MOB 軟上限。",
+        "summary": "攻擊型重視攻擊力上限多於機動力。HP 僅上振（無下限扣分）。DEF 不計分。EN 僅在 SSP 盤計分（僅上振）。機動力軟上限。",
         "when": {
           "HP < 95000": "HP < 95000",
           "HP 95000–99999": "HP 95000–99999",
@@ -1207,10 +1211,10 @@
           "ATK 12400–12799": "ATK 12400–12799",
           "ATK ≥ 12800": "ATK ≥ 12800",
           "any": "any",
-          "MOB < 9000": "MOB < 9000",
-          "MOB 9000–9599": "MOB 9000–9599",
-          "MOB 9600–9999": "MOB 9600–9999",
-          "MOB ≥ 10000": "MOB ≥ 10000"
+          "Mobility (MOB) < 9000": "機動力 < 9000",
+          "Mobility (MOB) 9000–9599": "機動力 9000–9599",
+          "Mobility (MOB) 9600–9999": "機動力 9600–9999",
+          "Mobility (MOB) ≥ 10000": "機動力 ≥ 10000"
         },
         "result": {}
       },
@@ -1231,17 +1235,17 @@
           "DEF 10500–11099": "DEF 10500–11099",
           "DEF 11100–11999": "DEF 11100–11999",
           "DEF ≥ 12000": "DEF ≥ 12000",
-          "MOB < 7700": "MOB < 7700",
-          "MOB 7700–7799": "MOB 7700–7799",
-          "MOB 7800–8099": "MOB 7800–8099",
-          "MOB 8100–8399": "MOB 8100–8399",
-          "MOB ≥ 8400": "MOB ≥ 8400"
+          "Mobility (MOB) < 7700": "機動力 < 7700",
+          "Mobility (MOB) 7700–7799": "機動力 7700–7799",
+          "Mobility (MOB) 7800–8099": "機動力 7800–8099",
+          "Mobility (MOB) 8100–8399": "機動力 8100–8399",
+          "Mobility (MOB) ≥ 8400": "機動力 ≥ 8400"
         },
         "result": {}
       },
       "unit_stats_support": {
         "title": "單位 SP 養成數值 — 支援型",
-        "summary": "支援型重視 MOB 上限；ATK 與 HP 為輕微上振且無下限扣分。",
+        "summary": "支援型重視機動力上限；ATK 與 HP 為輕微上振且無下限扣分。",
         "when": {
           "HP < 91000": "HP < 91000",
           "HP 91000–93999": "HP 91000–93999",
@@ -1254,11 +1258,11 @@
           "DEF 8600–9099": "DEF 8600–9099",
           "DEF 9100–9399": "DEF 9100–9399",
           "DEF ≥ 9400": "DEF ≥ 9400",
-          "MOB < 9000": "MOB < 9000",
-          "MOB 9000–9499": "MOB 9000–9499",
-          "MOB 9500–9999": "MOB 9500–9999",
-          "MOB 10000–10499": "MOB 10000–10499",
-          "MOB ≥ 10500": "MOB ≥ 10500"
+          "Mobility (MOB) < 9000": "機動力 < 9000",
+          "Mobility (MOB) 9000–9499": "機動力 9000–9499",
+          "Mobility (MOB) 9500–9999": "機動力 9500–9999",
+          "Mobility (MOB) 10000–10499": "機動力 10000–10499",
+          "Mobility (MOB) ≥ 10500": "機動力 ≥ 10500"
         },
         "result": {}
       },
@@ -1602,7 +1606,7 @@
         "result": {
           "ATK · weapon power · MOV": "ATK · 武裝威力 · MOV",
           "HP · SSP EN (no floor penalty)": "HP · SSP EN（無下限扣分）",
-          "MOB (lower ceiling than ATK)": "MOB（上限低於 ATK）",
+          "Mobility / MOB (lower ceiling than ATK)": "機動力（上限低於攻擊力）",
           "MAP presence / dash / coverage · special defense kits": "MAP 存在／衝刺／覆蓋 · 特殊防禦套件",
           "DEF · Debuff kinds · Debuff strength · SP EN": "DEF · 弱化種類 · 弱化強度 · SP EN"
         }
@@ -1625,14 +1629,14 @@
       },
       "role_focus_support": {
         "title": "支援型優先事項",
-        "summary": "弱化武裝射程至少 5（更短就較弱），再睇弱化種類同強度，再睇高 MOB／移動力。ATK 同 HP 淨係輕微上振 — 較低數值無下限扣分。",
+        "summary": "弱化武裝射程至少 5（更短就較弱），再睇弱化種類同強度，再睇高機動力／移動力。攻擊力同 HP 淨係輕微上振 — 較低數值無下限扣分。",
         "when": {
           "Primary": "主軸",
           "Secondary": "次要"
         },
         "result": {
-          "Weapon range ≥5 · R5+ debuff kinds · debuff strength · MOB · MOV": "武裝射程≥5 · 射程5+弱化種類 · 弱化強度 · MOB · 移動力",
-          "ATK / weapon power / HP (mild upside, no floor penalty)": "ATK／武裝威力／HP（輕微上振，無下限扣分）"
+          "Weapon range ≥5 · R5+ debuff kinds · debuff strength · Mobility (MOB) · MOV": "武裝射程≥5 · 射程5+弱化種類 · 弱化強度 · 機動力 · 移動力",
+          "ATK / weapon power / HP (mild upside, no floor penalty)": "攻擊力／武裝威力／HP（輕微上振，無下限扣分）"
         }
       },
       "er_access": {
@@ -1811,12 +1815,12 @@
         "result": {}
       },
       "source_bucket": {
-        "title": "入手途徑（單位）",
-        "summary": "開發／活動／其他免費單位有輕微上振；轉蛋／組裝維持持平。",
+        "title": "取得來源（單位）",
+        "summary": "開發單位與其他輕微上振；單位補給獲得單位維持 0。",
         "when": {
-          "Gacha / assembly": "轉蛋／組裝",
-          "Development": "開發",
-          "Event / other": "活動／其他"
+          "Units from Unit Assembly": "單位補給獲得單位",
+          "Development Unit": "開發單位",
+          "Other": "其他"
         },
         "result": {}
       },
@@ -1935,7 +1939,7 @@
       },
       "unit_stats_attack": {
         "title": "單位 SP 養成數值 — 攻擊型",
-        "summary": "攻擊型重視 ATK 上限多過 MOB。HP 淨計上振（無下限扣分）。DEF 唔計分。EN 淨喺 SSP 盤計分（淨上振）。MOB 軟上限。",
+        "summary": "攻擊型重視攻擊力上限多過機動力。HP 淨計上振（無下限扣分）。DEF 唔計分。EN 淨喺 SSP 盤計分（淨上振）。機動力軟上限。",
         "when": {
           "HP < 95000": "HP < 95000",
           "HP 95000–99999": "HP 95000–99999",
@@ -1950,10 +1954,10 @@
           "ATK 12400–12799": "ATK 12400–12799",
           "ATK ≥ 12800": "ATK ≥ 12800",
           "any": "any",
-          "MOB < 9000": "MOB < 9000",
-          "MOB 9000–9599": "MOB 9000–9599",
-          "MOB 9600–9999": "MOB 9600–9999",
-          "MOB ≥ 10000": "MOB ≥ 10000"
+          "Mobility (MOB) < 9000": "機動力 < 9000",
+          "Mobility (MOB) 9000–9599": "機動力 9000–9599",
+          "Mobility (MOB) 9600–9999": "機動力 9600–9999",
+          "Mobility (MOB) ≥ 10000": "機動力 ≥ 10000"
         },
         "result": {}
       },
@@ -1974,17 +1978,17 @@
           "DEF 10500–11099": "DEF 10500–11099",
           "DEF 11100–11999": "DEF 11100–11999",
           "DEF ≥ 12000": "DEF ≥ 12000",
-          "MOB < 7700": "MOB < 7700",
-          "MOB 7700–7799": "MOB 7700–7799",
-          "MOB 7800–8099": "MOB 7800–8099",
-          "MOB 8100–8399": "MOB 8100–8399",
-          "MOB ≥ 8400": "MOB ≥ 8400"
+          "Mobility (MOB) < 7700": "機動力 < 7700",
+          "Mobility (MOB) 7700–7799": "機動力 7700–7799",
+          "Mobility (MOB) 7800–8099": "機動力 7800–8099",
+          "Mobility (MOB) 8100–8399": "機動力 8100–8399",
+          "Mobility (MOB) ≥ 8400": "機動力 ≥ 8400"
         },
         "result": {}
       },
       "unit_stats_support": {
         "title": "單位 SP 養成數值 — 支援型",
-        "summary": "支援型重視 MOB 上限；ATK 同 HP 係輕微上振而且無下限扣分。",
+        "summary": "支援型重視機動力上限；ATK 同 HP 係輕微上振而且無下限扣分。",
         "when": {
           "HP < 91000": "HP < 91000",
           "HP 91000–93999": "HP 91000–93999",
@@ -1997,11 +2001,11 @@
           "DEF 8600–9099": "DEF 8600–9099",
           "DEF 9100–9399": "DEF 9100–9399",
           "DEF ≥ 9400": "DEF ≥ 9400",
-          "MOB < 9000": "MOB < 9000",
-          "MOB 9000–9499": "MOB 9000–9499",
-          "MOB 9500–9999": "MOB 9500–9999",
-          "MOB 10000–10499": "MOB 10000–10499",
-          "MOB ≥ 10500": "MOB ≥ 10500"
+          "Mobility (MOB) < 9000": "機動力 < 9000",
+          "Mobility (MOB) 9000–9499": "機動力 9000–9499",
+          "Mobility (MOB) 9500–9999": "機動力 9500–9999",
+          "Mobility (MOB) 10000–10499": "機動力 10000–10499",
+          "Mobility (MOB) ≥ 10500": "機動力 ≥ 10500"
         },
         "result": {}
       },

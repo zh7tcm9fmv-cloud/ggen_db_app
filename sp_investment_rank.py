@@ -3085,11 +3085,11 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "title": "Attack priorities",
             "applies": ["units"],
             "objective": True,
-            "summary": "Damage ceiling first (ATK + weapon power), then MOV/MAP. HP and SSP EN are upside-only — high is a bonus, low is not punished. MOB is a soft secondary.",
+            "summary": "Damage ceiling first (ATK + weapon power), then MOV/MAP. HP and SSP EN are upside-only — high is a bonus, low is not punished. Mobility (MOB — Accuracy/Evasion) is a soft secondary.",
             "rows": [
                 {"when": "Primary", "result": "ATK · weapon power · MOV"},
                 {"when": "Upside only", "result": "HP · SSP EN (no floor penalty)"},
-                {"when": "Soft secondary", "result": "MOB (lower ceiling than ATK)"},
+                {"when": "Soft secondary", "result": "Mobility / MOB (lower ceiling than ATK)"},
                 {"when": "Great extras", "result": "MAP presence / dash / coverage · special defense kits"},
                 {"when": "Not scored", "result": "DEF · Debuff kinds · Debuff strength · SP EN"},
             ],
@@ -3116,9 +3116,9 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "title": "Support priorities",
             "applies": ["units"],
             "objective": True,
-            "summary": "Debuff weapon range should be at least 5 (lower is weaker), then variety and strength of debuffs, then high MOB/MOV. ATK and HP are mild upside only — no floor penalty for lower values.",
+            "summary": "Debuff weapon range should be at least 5 (lower is weaker), then variety and strength of debuffs, then high Mobility (MOB) / MOV. ATK and HP are mild upside only — no floor penalty for lower values.",
             "rows": [
-                {"when": "Primary", "result": "Weapon range ≥5 · R5+ debuff kinds · debuff strength · MOB · MOV"},
+                {"when": "Primary", "result": "Weapon range ≥5 · R5+ debuff kinds · debuff strength · Mobility (MOB) · MOV"},
                 {"when": "Secondary", "result": "ATK / weapon power / HP (mild upside, no floor penalty)"},
             ],
         }
@@ -3350,11 +3350,11 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
                 "title": "Acquisition route (units)",
                 "applies": ["units"],
                 "objective": True,
-                "summary": "Dev / event / other free units get a mild upside; gacha/assembly stays flat.",
+                "summary": "Development Unit and Other get a mild upside; Units from Unit Assembly stay flat.",
                 "rows": [
-                    {"when": "Gacha / assembly", "result": _fmt_points(src_pts.get("gacha", 0))},
-                    {"when": "Development", "result": _fmt_points(src_pts.get("dev", 1))},
-                    {"when": "Event / other", "result": _fmt_points(src_pts.get("event", 1))},
+                    {"when": "Units from Unit Assembly", "result": _fmt_points(src_pts.get("gacha", 0))},
+                    {"when": "Development Unit", "result": _fmt_points(src_pts.get("dev", 1))},
+                    {"when": "Other", "result": _fmt_points(src_pts.get("event", 1))},
                 ],
             }
         )
@@ -3547,17 +3547,25 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
 
     def _stat_band_rows_for_role(stat_key: str, role_name: str) -> list[dict]:
         bands = ((rules.get("stat_bands") or {}).get(stat_key) or {}).get(role_name) or []
+        # Player-facing label: MOB is the in-game EN abbreviation for Mobility.
+        label = {
+            "MOB": "Mobility (MOB)",
+            "ATK": "ATK",
+            "DEF": "DEF",
+            "HP": "HP",
+            "EN": "EN",
+        }.get(stat_key, stat_key)
         out = []
         prev = None
         for b in bands:
             mx = b.get("max_exclusive")
             pts = _fmt_points(b.get("points"))
             if prev is None:
-                when = f"{stat_key} < {mx}" if mx is not None else "any"
+                when = f"{label} < {mx}" if mx is not None else "any"
             elif mx is None:
-                when = f"{stat_key} ≥ {prev}"
+                when = f"{label} ≥ {prev}"
             else:
-                when = f"{stat_key} {prev}–{int(mx) - 1}"
+                when = f"{label} {prev}–{int(mx) - 1}"
             out.append({"when": when, "result": pts})
             if mx is not None:
                 prev = int(mx)
@@ -3566,8 +3574,9 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
     for role_name in ROLE_ALL:
         if role_name == "Attack":
             stat_summary = (
-                "Attack favors ATK ceiling over MOB. HP is upside-only (no floor penalty). "
-                "DEF not scored. EN scores on the SSP board only (upside-only). MOB soft-capped."
+                "Attack favors ATK ceiling over Mobility (MOB — Accuracy/Evasion). "
+                "HP is upside-only (no floor penalty). DEF not scored. "
+                "EN scores on the SSP board only (upside-only). MOB soft-capped."
             )
             stat_rows = (
                 _stat_band_rows_for_role("HP", role_name)
@@ -3589,7 +3598,8 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             )
         else:
             stat_summary = (
-                "Support favors MOB ceiling; ATK and HP are mild upside with no floor penalty."
+                "Support favors Mobility (MOB — Accuracy/Evasion) ceiling; "
+                "ATK and HP are mild upside with no floor penalty."
             )
             stat_rows = (
                 _stat_band_rows_for_role("HP", role_name)
