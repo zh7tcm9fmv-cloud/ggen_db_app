@@ -981,6 +981,48 @@ html.spi-modal-open body.spi-page {
   gap: 0.45rem;
   align-items: center;
   cursor: help;
+  border-radius: 0.45rem;
+  padding: 0.2rem 0.25rem;
+  margin: 0 -0.25rem;
+  outline: none;
+}
+.spi-bar-row:not(.spi-bar-row--static):hover,
+.spi-bar-row:not(.spi-bar-row--static):focus-visible {
+  background: rgba(148, 163, 184, 0.08);
+}
+.spi-bar-row.is-open,
+.spi-bar-row[aria-expanded='true'] {
+  background: rgba(148, 163, 184, 0.12);
+}
+.spi-bar-row > .spi-bar-label {
+  grid-column: 1;
+  grid-row: 1;
+}
+.spi-bar-row > .spi-bar-track {
+  grid-column: 2;
+  grid-row: 1;
+}
+.spi-bar-row > .spi-pts {
+  grid-column: 3;
+  grid-row: 1;
+}
+.spi-bar-row > .spi-bar-tip {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  margin: 0.05rem 0 0.15rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: 0.4rem;
+  background: rgba(15, 23, 42, 0.45);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  font-weight: 500;
+  line-height: 1.45;
+  white-space: normal;
+  cursor: default;
+}
+.spi-bar-row > .spi-bar-tip[hidden] {
+  display: none !important;
 }
 .spi-bar-label {
   font-size: 0.72rem;
@@ -1125,6 +1167,17 @@ html.spi-modal-open body.spi-page {
   text-transform: none;
   color: var(--text-muted);
   opacity: 0.85;
+}
+.spi-dossier-h-sub--coarse {
+  display: none;
+}
+@media (hover: none) {
+  .spi-dossier-h-sub--fine {
+    display: none;
+  }
+  .spi-dossier-h-sub--coarse {
+    display: inline;
+  }
 }
 .spi-dossier-note {
   margin: 0 0 0.75rem;

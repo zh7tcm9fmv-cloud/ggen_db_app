@@ -1759,6 +1759,34 @@
     return text ? ` title="${esc(text)}" data-tip="${esc(text)}"` : '';
   }
 
+  function collapseSpiBarTips(exceptRow) {
+    const modal = $('#spiModal');
+    if (!modal) return false;
+    let closed = false;
+    modal.querySelectorAll('.spi-bar-row[aria-expanded="true"], .spi-bar-row.is-open').forEach((row) => {
+      if (exceptRow && row === exceptRow) return;
+      row.classList.remove('is-open');
+      row.setAttribute('aria-expanded', 'false');
+      const tip = row.querySelector('.spi-bar-tip');
+      if (tip) tip.hidden = true;
+      closed = true;
+    });
+    return closed;
+  }
+
+  function toggleSpiBarTip(row) {
+    if (!row || !row.classList.contains('spi-bar-row') || row.classList.contains('spi-bar-row--static')) {
+      return;
+    }
+    const wasOpen = row.getAttribute('aria-expanded') === 'true';
+    collapseSpiBarTips();
+    if (wasOpen) return;
+    row.classList.add('is-open');
+    row.setAttribute('aria-expanded', 'true');
+    const tip = row.querySelector('.spi-bar-tip');
+    if (tip) tip.hidden = false;
+  }
+
   function breakdownEntries(bd) {
     const out = [];
     Object.keys(BREAKDOWN_META).forEach((k) => {
@@ -1787,13 +1815,19 @@
     }
     const maxAbs = Math.max(1, ...entries.map((e) => Math.abs(e.pts)));
     const bars = entries
-      .map((e) => {
+      .map((e, i) => {
         const pct = Math.round((Math.abs(e.pts) / maxAbs) * 100);
         const tone = e.pts > 0 ? 'pos' : e.pts < 0 ? 'neg' : 'zero';
-        return `<div class="spi-bar-row" ${tipAttr(e.tip)}>
-          <span class="spi-bar-label">${esc(e.label)}</span>
+        const main = `<span class="spi-bar-label">${esc(e.label)}</span>
           <div class="spi-bar-track"><span class="spi-bar-fill spi-bar-${tone}" style="width:${pct}%"></span></div>
-          ${ptsBadge(e.pts)}
+          ${ptsBadge(e.pts)}`;
+        if (!e.tip) {
+          return `<div class="spi-bar-row spi-bar-row--static">${main}</div>`;
+        }
+        const tipId = `spiBarTip_${i}`;
+        return `<div class="spi-bar-row" role="button" tabindex="0" aria-expanded="false" aria-controls="${escAttr(tipId)}" ${tipAttr(e.tip)}>
+          ${main}
+          <div class="spi-bar-tip" id="${escAttr(tipId)}" hidden>${esc(e.tip)}</div>
         </div>`;
       })
       .join('');
@@ -1947,7 +1981,10 @@
     const specialtyBlock = renderEntityStatsBlock(row, kind);
 
     const scoreBlock = `<section class="spi-dossier-section spi-dossier-section--score">
-      <h4 class="spi-dossier-h">${esc(t('score_breakdown'))} <span class="spi-dossier-h-sub">${esc(t('score_breakdown_sub'))}</span></h4>
+      <h4 class="spi-dossier-h">${esc(t('score_breakdown'))}
+        <span class="spi-dossier-h-sub spi-dossier-h-sub--fine">${esc(t('score_breakdown_sub'))}</span>
+        <span class="spi-dossier-h-sub spi-dossier-h-sub--coarse">${esc(t('score_breakdown_sub_touch'))}</span>
+      </h4>
       ${renderScoreViz(row)}
     </section>`;
 
@@ -1999,6 +2036,7 @@
   }
 
   function closeModal() {
+    collapseSpiBarTips();
     _spiModalEntityKey = '';
     if (!_spiOpeningDetail) _spiRestoreRow = null;
     $('#spiModal').hidden = true;
@@ -2099,11 +2137,34 @@
       openModal(rowById.get(String(card.dataset.id)));
     });
     $('#spiModal').addEventListener('click', (e) => {
-      if (e.target && e.target.getAttribute('data-close')) closeModal();
+      if (e.target && e.target.getAttribute('data-close')) {
+        closeModal();
+        return;
+      }
+      const row = e.target.closest && e.target.closest('.spi-bar-row');
+      const body = $('#spiModalBody');
+      if (row && body && body.contains(row) && !row.classList.contains('spi-bar-row--static')) {
+        e.preventDefault();
+        toggleSpiBarTip(row);
+        return;
+      }
+      if (body && e.target && body.contains(e.target)) {
+        collapseSpiBarTips();
+      }
+    });
+    $('#spiModal').addEventListener('keydown', (e) => {
+      const row = e.target && e.target.closest && e.target.closest('.spi-bar-row');
+      if (!row || row.classList.contains('spi-bar-row--static')) return;
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleSpiBarTip(row);
+      }
     });
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         closeSpiFilterPanels();
+        const modal = $('#spiModal');
+        if (modal && !modal.hidden && collapseSpiBarTips()) return;
         closeModal();
       }
     });
