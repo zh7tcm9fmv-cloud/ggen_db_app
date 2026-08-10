@@ -54,6 +54,9 @@
       hero_title: 'Investment Guide',
       hero_lead:
         'Should you invest SP Conversion or SSP Conversion materials on this Unit or Character? Neutral shortlist buckets: Recommended, Solid, Situational, Niche. Not a damage calculator. Unit SP and SSP boards use separate weapon baselines.',
+      disclaimer:
+        'Rankings here are scored objectively from published criteria — they do not reflect personal favorites or subjective preference. How you spend your precious resources is ultimately up to you; prioritize the Units and Characters you enjoy.',
+      disclaimer_aria: 'Disclaimer',
       buckets_aria: 'Shortlist buckets',
       scoring_title: 'How scoring works',
       scoring_loading: 'Loading…',
@@ -136,6 +139,9 @@
       hero_title: '投資ガイド',
       hero_lead:
         'このユニット／キャラクターに SP化・SSP化の素材を使うべきか？ 中立の候補区分：推奨・堅実・状況次第・ニッチ。ダメージ計算機ではありません。ユニットの SP / SSP 盤は武装基準が別です。',
+      disclaimer:
+        'このリストは公開された採点基準に基づく客観スコアです。個人の好みや主観は含まれません。貴重な資源をどう使うかの最終判断はあなた自身にあり、好きなユニット／キャラクターを優先して構いません。',
+      disclaimer_aria: 'ご注意',
       buckets_aria: '候補区分',
       scoring_title: 'スコアの仕組み',
       scoring_loading: '読み込み中…',
@@ -218,6 +224,9 @@
       hero_title: '投資指南',
       hero_lead:
         '該不該把 SP化／SSP化素材投在這名單位或角色上？中立候選分桶：推薦、穩健、看場合、小眾。不是傷害計算器。單位的 SP／SSP 盤使用不同武裝基準。',
+      disclaimer:
+        '本清單依公開評分標準客觀排名，不含個人偏好或主觀喜好。珍貴資源最終如何運用，請依您喜愛的單位／角色自行決定。',
+      disclaimer_aria: '聲明',
       buckets_aria: '候選分桶',
       scoring_title: '評分方式',
       scoring_loading: '載入中…',
@@ -299,6 +308,9 @@
       hero_title: '投資指南',
       hero_lead:
         '應唔應該將 SP化／SSP化素材投喺呢個單位或角色？中立候選分桶：推薦、穩健、睇場合、小眾。唔係傷害計算器。單位嘅 SP／SSP 盤用唔同武裝基準。',
+      disclaimer:
+        '呢份清單係按公開評分準則客觀排名，唔包個人喜好或主觀偏愛。珍貴資源點樣用，最終由你自己決定——可以優先你鍾意嘅單位／角色。',
+      disclaimer_aria: '聲明',
       buckets_aria: '候選分桶',
       scoring_title: '評分方式',
       scoring_loading: '載入中…',

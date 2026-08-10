@@ -148,6 +148,8 @@ def bucketize(rows: list[dict]) -> dict:
 
 
 _SPI_DROP_ROW_KEYS = frozenset({"meta", "detail_lines", "calibration"})
+# Keep even at 0 so dossier bars do not look like the axis was skipped.
+_SPI_KEEP_BREAKDOWN_ZERO = frozenset({"terrain"})
 
 
 def _lean_public_row(row: dict) -> dict:
@@ -155,7 +157,9 @@ def _lean_public_row(row: dict) -> dict:
     out = {k: v for k, v in row.items() if k not in _SPI_DROP_ROW_KEYS}
     bd = out.get("breakdown")
     if isinstance(bd, dict):
-        out["breakdown"] = {k: v for k, v in bd.items() if v}
+        out["breakdown"] = {
+            k: v for k, v in bd.items() if v or k in _SPI_KEEP_BREAKDOWN_ZERO
+        }
     recs = out.get("recommended_units")
     if isinstance(recs, list) and not recs:
         out.pop("recommended_units", None)
