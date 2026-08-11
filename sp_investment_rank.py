@@ -6049,13 +6049,34 @@ def entity_eligible_on_stage(A, eid: str, stage_id: str, kind: str = "unit", lc:
     return any(entity_matches_sortie_set(A, eid, s, kind, lc) for s in sets)
 
 
+def _lookup_series_display_name(snm: dict, tid: str) -> str | None:
+    """Resolve m_series Id (e.g. 10 / 800 / 950) via series_name_map aliases (0010, 0800, …)."""
+    if not tid or tid == "0":
+        return None
+    if tid in snm:
+        return str(snm[tid])
+    for width in (4, 5, 6, 7, 8):
+        key = tid.zfill(width)
+        if key in snm:
+            return str(snm[key])
+    padded = tid.zfill(4)
+    for k, v in snm.items():
+        if not v:
+            continue
+        ks = str(k)
+        if ks.endswith(padded) or ks == tid:
+            return str(v)
+    return None
+
+
 def _restriction_label(A, rt: str, tid: str, lc: str = "EN") -> dict | None:
     ld = A.LANG_DATA.get(lc) or {}
     tid = A.normalize_id(tid)
     if not tid or tid == "0":
         return None
     if rt == "1":
-        name = (ld.get("series_name_map") or {}).get(tid) or tid
+        snm = ld.get("series_name_map") or {}
+        name = _lookup_series_display_name(snm, tid) or tid
         return {"kind": "series", "id": tid, "name": str(name)}
     if rt == "2":
         entry = (ld.get("lineage_lookup") or {}).get(tid)

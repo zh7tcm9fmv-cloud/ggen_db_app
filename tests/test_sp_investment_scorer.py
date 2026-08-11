@@ -116,6 +116,34 @@ class TestSpInvestmentBands(unittest.TestCase):
                     tip, 5, f"{stat}/{role} specialty tip {tip} exceeds +5"
                 )
 
+    def test_er_series_restriction_name_lookup(self):
+        from sp_investment_rank import _lookup_series_display_name, _restriction_label
+
+        snm = {
+            "0010": "Mobile Suit Gundam",
+            "0800": "Mobile Suit Z Gundam",
+            "0950": "Mobile Suit Gundam ZZ",
+        }
+        self.assertEqual(_lookup_series_display_name(snm, "10"), "Mobile Suit Gundam")
+        self.assertEqual(_lookup_series_display_name(snm, "800"), "Mobile Suit Z Gundam")
+        self.assertEqual(_lookup_series_display_name(snm, "950"), "Mobile Suit Gundam ZZ")
+
+        class A:
+            LANG_DATA = {"EN": {"series_name_map": snm, "lineage_lookup": {}}}
+
+            @staticmethod
+            def normalize_id(x, default="0"):
+                s = str(x if x is not None else default).strip()
+                if not s:
+                    return default
+                if s.isdigit():
+                    return str(int(s))
+                return s
+
+        lab = _restriction_label(A, "1", "10", "EN")
+        self.assertEqual(lab["name"], "Mobile Suit Gundam")
+        self.assertNotEqual(lab["name"], "10")
+
     def test_pilot_letter_hybrid_top_pct(self):
         from sp_investment_rank import calibrate_pilot_letters_hybrid
 
