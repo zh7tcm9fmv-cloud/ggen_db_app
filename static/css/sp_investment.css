@@ -527,6 +527,33 @@ html.spi-modal-open body.spi-page {
   flex-direction: column;
   padding: 0;
 }
+/* Tag filter: same wide 2-col chip panel as Units/Characters Tag (lineage). */
+#spiTagFilterPanel.spi-dd-panel--lineage,
+.spi-dd-panel--tall.spi-dd-panel--lineage {
+  width: min(92vw, 580px);
+  max-width: min(92vw, 580px);
+  max-height: none;
+  overflow: visible;
+  padding: 0;
+  box-sizing: border-box;
+}
+#spiTagFilterPanel.spi-dd-panel--lineage .spi-dd-search-wrap {
+  margin: 8px 10px 0;
+}
+#spiTagFilterPanel.spi-dd-panel--lineage .filter-panel-scroll-inner,
+#spiTagFilterPanel.spi-dd-panel--lineage .spi-dd-scroll {
+  max-height: min(70vh, 480px);
+  overflow-y: auto;
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 8px 10px 10px;
+}
+#spiTagFilterPanel.spi-dd-panel--lineage .browse-lineage-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  align-items: start;
+}
 .spi-dd-panel--tall .spi-dd-search-wrap {
   position: relative;
   flex-shrink: 0;

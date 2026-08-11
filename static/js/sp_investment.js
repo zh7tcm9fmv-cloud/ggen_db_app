@@ -25,6 +25,8 @@
   };
   const SPI_SKILL_FILTER_ICON = '/static/images/Trait/trait_10150101.webp';
   const SPI_ABIL_FILTER_ICON = '/static/images/Trait/trait_10190102.webp';
+  const SPI_TAG_ICON_CHAR = '/static/images/UI/UI_Common_Icon_Category_Chara_Main.webp';
+  const SPI_TAG_ICON_UNIT = '/static/images/UI/UI_Common_Icon_Category_MS_Main.webp';
 
   const BREAKDOWN_META = {
     tags: {
@@ -1123,7 +1125,10 @@
       .toLowerCase();
     // Use getAttribute + style.display — author CSS sets .rarity-filter-row{display:flex}
     // which can override the [hidden] attribute in practice (same pattern as browse filters).
-    const rows = panel.querySelectorAll('.rarity-filter-row[data-filter-text]');
+    // Lineage-style tag chips use .list-filter-tag-item without .rarity-filter-row.
+    const rows = panel.querySelectorAll(
+      '.rarity-filter-row[data-filter-text], .list-filter-tag-item[data-filter-text]'
+    );
     let shown = 0;
     rows.forEach((row) => {
       const hay = String(row.getAttribute('data-filter-text') || '').toLowerCase();
@@ -1274,18 +1279,30 @@
     );
   }
 
+  function spiTagIconPath() {
+    return entity === 'characters' ? SPI_TAG_ICON_CHAR : SPI_TAG_ICON_UNIT;
+  }
+
+  function setTagFilterBtnLabel(text, active) {
+    const labelEl = $('#spiTagFilterLabel');
+    if (!labelEl) return;
+    const ic = spiTagIconPath();
+    labelEl.innerHTML = `<span class="list-filter-btn-mini"><img class="filter-inline-icon role-filter-chip" src="${esc(imgUrl(ic))}" alt="" role="presentation"><span class="source-filter-btn-plain">${esc(text)}</span></span>`;
+    const btn = labelEl.closest('.rarity-filter-btn');
+    if (btn) btn.classList.toggle('active', !!active);
+  }
+
   function updateTagFilterLabel() {
     if (!tagFilters.length) {
-      setFilterBtnLabel($('#spiTagFilterLabel'), t('no_tag_filter'), false);
+      setTagFilterBtnLabel(t('no_tag_filter'), false);
       return;
     }
     if (tagFilters.length === 1) {
-      setFilterBtnLabel($('#spiTagFilterLabel'), tagFilters[0], true);
+      setTagFilterBtnLabel(tagFilters[0], true);
       return;
     }
     const nLabel = t('tag_filter_n', { n: tagFilters.length });
-    setFilterBtnLabel(
-      $('#spiTagFilterLabel'),
+    setTagFilterBtnLabel(
       nLabel.startsWith('tag_filter') ? `${tagFilters.length} tags` : nLabel,
       true
     );
@@ -1597,6 +1614,18 @@
     );
   }
 
+  function tagFilterRowHtml(tagName, en, checked) {
+    const ft = `${tagName} ${en || ''}`.toLowerCase();
+    const ic = spiTagIconPath();
+    return `<label class="list-filter-tag-item" data-filter-text="${escAttr(ft)}">
+      <input type="checkbox" class="list-filter-sr" name="spiDd_tag" value="${escAttr(tagName)}" ${checked ? 'checked' : ''}>
+      <span class="tag-composite list-filter-tag-composite">
+        <span class="tag-part-icon"><img class="tag-icon-fg" src="${esc(imgUrl(ic))}" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback(this)"></span>
+        <span class="tag-part-value">${esc(tagName)}</span>
+      </span>
+    </label>`;
+  }
+
   function fillTagPanel() {
     const panel = $('#spiTagFilterPanel');
     if (!panel) return;
@@ -1606,12 +1635,15 @@
     const rows = tags
       .map((tagName, i) => {
         const en = tagsEn[i] || tagName;
-        const ft = `${tagName} ${en}`.toLowerCase();
-        return ddCheckRowHtml(tagName, tagName, sel.has(String(tagName)), 'tag', ft);
+        return tagFilterRowHtml(tagName, en, sel.has(String(tagName)));
       })
       .join('');
+    // Match Units/Characters Tag (lineage) browse panel: wide + 2-col chip grid.
     panel.innerHTML = `${spiDdSearchWrapHtml(t('tag_search_ph'), t('tag_search_aria'))}
-      <div class="spi-dd-scroll">${rows}<div class="spi-dd-empty" hidden>${esc(t('tag_search_empty'))}</div></div>
+      <div class="filter-panel-scroll-inner spi-dd-scroll">
+        <div class="filter-panel-grid browse-lineage-grid">${rows}</div>
+        <div class="spi-dd-empty" hidden>${esc(t('tag_search_empty'))}</div>
+      </div>
       ${spiDdFooterHtml('tag')}`;
     bindSpiDdSearch(panel);
     panel.querySelectorAll('input[type="checkbox"]').forEach((inp) => {
