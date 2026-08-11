@@ -1470,15 +1470,17 @@ html.spi-modal-open body.spi-page {
     padding-right: 6px;
     font-size: 12px;
   }
+  /* Match browse mobile: filters sit 2-up (not full-width stacked). */
   .spi-filter-row--secondary {
-    display: flex;
-    flex-direction: column;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--mobile-grid-gutter, 16px);
     align-items: stretch;
-    gap: 8px;
   }
   .spi-filter-row--secondary .spi-check {
     min-height: 40px;
     width: 100%;
+    min-width: 0;
     padding: 6px 10px;
     border: 1px solid var(--border-color);
     border-radius: var(--radius-sm);
@@ -1487,7 +1489,8 @@ html.spi-modal-open body.spi-page {
   }
   .spi-filter-row--secondary .rarity-filter-wrap {
     max-width: none;
-    width: 100%;
+    width: auto;
+    min-width: 0;
   }
   .spi-filter-row--secondary .rarity-filter-btn {
     width: 100%;
