@@ -6,6 +6,7 @@ Pure scoring lives in score_features(); feature extraction uses app helpers.
 from __future__ import annotations
 
 import json
+import math
 import os
 import re
 from functools import lru_cache
@@ -168,6 +169,125 @@ def letter_for_total(
         if total >= int(row["min"]):
             return str(row["letter"])
     return "E"
+
+
+_LETTER_RANK = {
+    "S+": 0,
+    "S": 1,
+    "A+": 2,
+    "A": 3,
+    "B+": 4,
+    "B": 5,
+    "C": 6,
+    "D": 7,
+    "E": 8,
+}
+
+
+def _letter_rank(letter: str) -> int:
+    return int(_LETTER_RANK.get(str(letter or "E"), 99))
+
+
+def _letter_at_least(letter: str, min_letter: str) -> bool:
+    """True when letter is min_letter or better (S+ best)."""
+    return _letter_rank(letter) <= _letter_rank(min_letter)
+
+
+def calibrate_pilot_letters_hybrid(
+    rows: list[dict],
+    rules: dict,
+    *,
+    cutoffs_key: str = "pilot_letter_cutoffs",
+) -> None:
+    """
+    Hybrid Character letters (publish-time):
+    - Absolute role cutoffs for A+ and below
+    - Within each Character Type, top ~s_plus_top_pct → S+, top ~s_top_pct → S or better
+    - Absolute A+ floor required to enter S/S+; absolute S/S+ outside the window demote to A+
+    Mutates rows in place (letter / bucket / calibration).
+    """
+    cfg = rules.get("pilot_letter_hybrid") or {}
+    if not cfg.get("enabled", False):
+        for row in rows:
+            role = row.get("role")
+            letter = letter_for_total(
+                rules,
+                int(row.get("total") or 0),
+                cutoffs_key=cutoffs_key,
+                role=role if isinstance(role, str) else None,
+            )
+            row["letter"] = letter
+            row["bucket"] = bucket_for_letter(rules, letter)
+            row["calibration"] = f"absolute_sheet:{cutoffs_key}:{role or ''}"
+        return
+
+    s_plus_pct = float(cfg.get("s_plus_top_pct", 0.03) or 0.03)
+    s_pct = float(cfg.get("s_top_pct", 0.08) or 0.08)
+    if s_pct < s_plus_pct:
+        s_pct = s_plus_pct
+    min_abs = str(cfg.get("min_abs_letter_for_s") or "A+")
+    min_role_n = int(cfg.get("min_role_count", 1) or 1)
+
+    # Absolute baseline for every row first
+    by_role: dict[str, list[dict]] = {"Attack": [], "Defense": [], "Support": []}
+    for row in rows:
+        role = row.get("role") if row.get("role") in by_role else None
+        abs_letter = letter_for_total(
+            rules,
+            int(row.get("total") or 0),
+            cutoffs_key=cutoffs_key,
+            role=role,
+        )
+        row["_abs_letter"] = abs_letter
+        row["letter"] = abs_letter
+        row["bucket"] = bucket_for_letter(rules, abs_letter)
+        row["calibration"] = f"absolute_sheet:{cutoffs_key}:{role or ''}"
+        if role:
+            by_role[role].append(row)
+
+    for role, group in by_role.items():
+        if len(group) < min_role_n:
+            continue
+        group.sort(
+            key=lambda r: (
+                -int(r.get("total") or 0),
+                str(r.get("name") or ""),
+                str(r.get("id") or ""),
+            )
+        )
+        n = len(group)
+        n_splus = max(1, int(math.ceil(n * s_plus_pct))) if n else 0
+        n_s = max(n_splus, int(math.ceil(n * s_pct))) if n else 0
+
+        assigned_splus = 0
+        assigned_s = 0
+        for row in group:
+            abs_letter = str(row.get("_abs_letter") or "E")
+            eligible = _letter_at_least(abs_letter, min_abs)
+            if eligible and assigned_splus < n_splus:
+                letter = "S+"
+                assigned_splus += 1
+                assigned_s += 1
+                cal = f"hybrid_pct:{role}:S+"
+            elif eligible and assigned_s < n_s:
+                letter = "S"
+                assigned_s += 1
+                cal = f"hybrid_pct:{role}:S"
+            else:
+                # Outside S window: keep absolute, but never keep absolute S/S+
+                if abs_letter in ("S+", "S"):
+                    letter = "A+"
+                    cal = f"hybrid_cap_A+:{role}"
+                else:
+                    letter = abs_letter
+                    cal = f"absolute_sheet:{cutoffs_key}:{role}"
+            row["letter"] = letter
+            row["bucket"] = bucket_for_letter(rules, letter)
+            row["calibration"] = cal
+            row.pop("_abs_letter", None)
+
+    for row in rows:
+        row.pop("_abs_letter", None)
 
 
 def tag_weight_points(rules: dict, tag_names: list[str] | None) -> tuple[int, dict]:
@@ -2802,8 +2922,10 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
             pass
         return False
 
+    structured_ok = False
     try:
         structured_keys, s_meta = collect_unit_structured_debuff_keys(A, uid, mode=mode)
+        structured_ok = True
         debuff_source = "structured"
         if structured_keys & rare_keys:
             has_rare = True
@@ -2814,11 +2936,16 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
         structured_keys = set()
         s_meta = {}
 
-    # Text fallback for Custom Core / orphan traits (union, does not replace structure)
+    # Text fallback for orphan traits (union). When structured resolution succeeded,
+    # do not let text invent WeaponTraitType-owned keys (e.g. SSP-only Preemptive on …90
+    # weapons that still appear in SP trait text dumps).
+    _structured_owned_keys = frozenset({"preemptive", "absolute_hit"})
     try:
         text_keys = A.collect_unit_weapon_debuff_keys(uid, ld, lc, stat_mode=mode) or set()
     except Exception:
         text_keys = set()
+    if structured_ok:
+        text_keys = set(text_keys) - _structured_owned_keys
     debuff_keys = set(structured_keys) | set(text_keys)
     if debuff_keys & rare_keys:
         has_rare = True
@@ -3523,14 +3650,15 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "applies": ["pilots"],
             "objective": True,
             "summary": (
-                "Character letters are role-relative so Attack / Defense / Support compete within type. "
-                "Attack: S at 20+, S+ at 23+. Defense: S at 23+, S+ at 26+. Support: S at 22+, S+ at 25+."
+                "Hybrid within Character Type: kit points stay absolute; "
+                "S+ ≈ top 3% and S ≈ top 8% by total (absolute A+ floor). "
+                "A+ and below use role-relative point cutoffs. "
+                "Specialty tip (Ranged/Melee/Awaken) caps at +5."
             ),
             "rows": [
-                {"when": "Attack — S+ (23+) / S (20+)", "result": "BEYOND THE TIME / Recommended"},
-                {"when": "Defense — S+ (26+) / S (23+)", "result": "BEYOND THE TIME / Recommended"},
-                {"when": "Support — S+ (25+) / S (22+)", "result": "BEYOND THE TIME / Recommended"},
-                {"when": "A+ or A", "result": "Solid"},
+                {"when": "Top ~3% of role (A+ floor)", "result": "S+ → BEYOND THE TIME"},
+                {"when": "Top ~8% of role (A+ floor)", "result": "S → Recommended"},
+                {"when": "Absolute A+ or A (role cutoffs)", "result": "Solid"},
                 {"when": "B+ or B", "result": "Situational"},
                 {"when": "C, D, or E", "result": "Niche"},
             ],
@@ -4653,6 +4781,7 @@ def scoring_guide_payload(rules: dict | None = None) -> dict:
         "letter_cutoffs"
     ) or []
     guide["pilot_letter_cutoffs_by_role"] = rules.get("pilot_letter_cutoffs_by_role") or {}
+    guide["pilot_letter_hybrid"] = rules.get("pilot_letter_hybrid") or {}
     guide["ur_pilot_letter_cutoffs"] = rules.get("ur_pilot_letter_cutoffs") or []
     # Prefer nested guide version (e.g. 5.4) over top-level rules.version
     guide["version"] = (rules.get("scoring_guide") or {}).get("version") or rules.get(

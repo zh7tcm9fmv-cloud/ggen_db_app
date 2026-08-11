@@ -9,7 +9,7 @@
   const GUIDE = {
     "EN": {
       "overrides": [
-        "Each score factor adds points; the total becomes a letter, then a bucket (BEYOND THE TIME / Recommended / Solid / Situational / Niche). Units: score 17+ earns letter S+ and BEYOND THE TIME. Characters use role-relative letter cutoffs (Attack S at 20+ / S+ at 23+; Defense S at 23+ / S+ at 26+; Support S at 22+ / S+ at 25+).",
+        "Each score factor adds points; the total becomes a letter, then a bucket (BEYOND THE TIME / Recommended / Solid / Situational / Niche). Units: score 17+ earns letter S+ and BEYOND THE TIME. Characters: kit points stay absolute; within each Character Type, S+ ≈ top 3% and S ≈ top 8% (absolute A+ floor); A+ and below use role-relative point cutoffs.",
         "Filter by Tag or Eternal Road Expert stage to compare Units that actually fit the same restriction.",
         "This is a general investment ranking that can also help on Expert — not a dedicated Expert-clears ladder."
       ],
@@ -25,7 +25,7 @@
         "Terrain Capability extras need full affinity circle (Lv≥3); triangle Space/Atmospheric is a mild penalty, not a strength.",
         "Acquisition is filter-only; multi-select Acquisition (OR) can exclude Unit Assembly by picking Development + Other.",
         "Limited-time Supporter leader Tags: +1 per matched kit Tag, cap +2.",
-        "Character letters are role-relative (Attack / Defense / Support each have their own S / S+ bars).",
+        "Character letters are hybrid within Character Type: S+ ≈ top 3% / S ≈ top 8% (absolute A+ floor); specialty tip (Ranged/Melee/Awaken) caps at +5.",
         "Support Type debuff kinds use base weapon range — SSP range enhance does not invent Range-5 credit for Range-4 kits.",
         "Support Type weapon_bonus is capped at +1.",
         "Transform scores only when the alternate form unlocks deployable Terrain Capability, higher MOV, longer range, higher weapon power, or adds a MAP Weapon.",
@@ -36,7 +36,7 @@
     },
     "JA": {
       "overrides": [
-        "各項目が加点され、合計がレターになり、さらに区分（推奨／堅実／状況次第／ニッチ）へ振り分けられます。キャラクターは役割別のレター閾値です（攻撃型 S 20+／S+ 23+、耐久型 S 23+／S+ 26+、支援型 S 22+／S+ 25+）。",
+        "各項目が加点され、合計がレターになり、さらに区分へ振り分けられます。キャラクターは役割内の上位約3%が S+、約8%が S（絶対 A+ 以上が条件）。A+ 以下は役割別の点数閾値です。",
         "タグやエターナルロード Expert ステージで絞り、同じ制限に合うユニット同士を比較してください。",
         "一般運用向けの投資ランキングで、Expert でも使えることがある、という位置づけです（特定 Expert 攻略専用ではありません）。"
       ],
@@ -55,7 +55,7 @@
         "地形適性の追加点は完全適性◯（Lv≥3）が必要。△の宇宙／空中は軽い減点であり強みとして扱いません。",
         "入手元はフィルタのみ。複数選択（OR）で開発ユニット＋その他を選ぶとガシャ獲得ユニットを除外できます。",
         "期間限定サポーターのリーダースキル対象タグはキット上1つにつき +1（上限 +2）。",
-        "キャラクターのレターは役割別（攻撃型／耐久型／支援型で S／S+ の基準が異なります）。",
+        "キャラクターのレターは役割内ハイブリッド（上位約3%が S+、約8%が S。絶対 A+ 以上が条件）。特殊ステの上限は +5。",
         "支援型の弱化種類は基礎武装射程で判定 — SSP の射程強化だけでは射程5扱いにはしません。",
         "支援型の武装条件ボーナスは上限 +1。",
         "レターが僅差のときは人の目での確認が必要です。"
@@ -63,7 +63,7 @@
     },
     "TW": {
       "overrides": [
-        "各項目加分後合計成字母，再對應分桶（推薦／穩健／看場合／小眾）。角色依類型使用不同字母門檻（攻擊型 S 20+／S+ 23+、耐久型 S 23+／S+ 26+、支援型 S 22+／S+ 25+）。",
+        "各項目加分後合計成字母，再對應分桶。角色在各類型內約前 3% 為 S+、約前 8% 為 S（須達絕對 A+）；A+ 以下用類型分數門檻。",
         "可用標籤或永恆之路 Expert 關卡篩選，比較真正符合同一限制的單位。",
         "這是偏一般投資用途的排名，也能偶爾用於 Expert — 不是專攻 Expert 通關的排行榜。"
       ],
@@ -82,7 +82,7 @@
         "地形適性額外分需完全適性「圓」（Lv≥3）；「三角形」宇宙／空中為輕微扣分，不當作成優勢。",
         "取得來源僅為篩選；可複選（OR）同時選開發單位與其他來排除單位補給獲得單位。",
         "限定期間支援人員隊長技能標籤：套件上每個符合標籤 +1，上限 +2。",
-        "角色字母依類型相對評比（攻擊型／耐久型／支援型各有自己的 S／S+ 門檻）。",
+        "角色字母為類型內混合制：約前 3% S+、約前 8% S（須達絕對 A+）；特殊能力上限 +5。",
         "支援型弱化種類以基礎武裝射程判定 — SSP 射程強化不會把射程 4 套件當成射程 5。",
         "支援型武裝條件加成上限 +1。",
         "字母接近時仍需人工再看一眼。"
@@ -90,7 +90,7 @@
     },
     "HK": {
       "overrides": [
-        "各項目加分後合計成字母，再對應分桶（推薦／穩健／睇場合／小眾）。角色跟類型用唔同字母門檻（攻擊型 S 20+／S+ 23+、耐久型 S 23+／S+ 26+、支援型 S 22+／S+ 25+）。",
+        "各項目加分後合計成字母，再對應分桶。角色喺各類型入面約前 3% 係 S+、約前 8% 係 S（要達絕對 A+）；A+ 以下用類型分數門檻。",
         "可用標籤或永恆之路 Expert 關卡篩選，比較真正符合同一限制嘅單位。",
         "呢個係偏一般投資用途嘅排名，都間中可以用喺 Expert — 唔係專攻 Expert 通關嘅排行榜。"
       ],
@@ -109,7 +109,7 @@
         "地形適性額外分要完全適性「圓」（Lv≥3）；「三角形」宇宙／空中係輕微扣分，唔當作成優勢。",
         "取得來源淨係篩選；可以複選（OR）同時揀開發單位同其他嚟排除機體補給獲得單位。",
         "限定期間支援人員隊長技能標籤：套件上每個符合標籤 +1，上限 +2。",
-        "角色字母跟類型相對評比（攻擊型／耐久型／支援型各自有 S／S+ 門檻）。",
+        "角色字母係類型內混合制：約前 3% S+、約前 8% S（要達絕對 A+）；特殊能力上限 +5。",
         "支援型弱化種類用基礎武裝射程判定 — SSP 射程強化唔會將射程 4 套件當射程 5。",
         "支援型武裝條件加成上限 +1。",
         "字母好接近嘅時候仍然要人眼再睇一次。"

@@ -47,7 +47,8 @@
     "v5.27: Reliability pass from review pairs — unit ER bands compressed (4 vs 6 stages no longer a free tier); terrain extras need full affinity (Lv3), triangle Space/Atmospheric −1 and block perfect; exclude Advantage: from ability score; HP/Counter conditional ATK capped; Attack permanent ATK +1; Attack MOV6 +1; tiny MAP needs ≥3 cells; Support max_debuff cliff softened; Character recommend_ms cap 2",
     "v5.28: drop Acquisition from score (filter only); +1 when a Unit/Character tag is covered by a limited pickup Supporter leader skill (listed in guide); /ip Tag·ER·Skill·Ability filters use browse-style AND/OR combine",
     "v5.29: general-use over ER double-count — strategic tags skip tags already on Expert restrictions (ER access covers those); limited Supporter tags +1 per matched tag cap 2 (no half-points); Acquisition multi-select so Dev+Other can exclude Unit Assembly",
-    "v5.30: Character letters are role-relative (Defense/Support higher S bars); Defense Character DEF tip +5→+3; Support SSP honesty — debuff kinds use base weapon range (SSP range enhance does not invent R5); Support weapon_bonus cap +1"
+    "v5.30: Character letters are role-relative (Defense/Support higher S bars); Defense Character DEF tip +5→+3; Support SSP honesty — debuff kinds use base weapon range (SSP range enhance does not invent R5); Support weapon_bonus cap +1",
+    "v5.31: Character specialty tip +6→+5 on Ranged/Melee/Awaken (all roles that used +6); hybrid Character letters — S/S+ by within-role percentile (~top 3% / ~top 8%), A+ and below absolute"
   ],
   "exclude_warships": true,
   "exclude_ur_units": true,
@@ -142,9 +143,21 @@
   "pilot_series_affinity_cap": 2,
   "pilot_combat_actions": {
     "cap": 3,
-    "chance_step_plus": { "Attack": 2, "Support": 1, "Defense": 1 },
-    "support_attack_plus": { "Attack": 1, "Support": 2, "Defense": 1 },
-    "support_defense_plus": { "Attack": 0, "Support": 1, "Defense": 2 },
+    "chance_step_plus": {
+      "Attack": 2,
+      "Support": 1,
+      "Defense": 1
+    },
+    "support_attack_plus": {
+      "Attack": 1,
+      "Support": 2,
+      "Defense": 1
+    },
+    "support_defense_plus": {
+      "Attack": 0,
+      "Support": 1,
+      "Defense": 2
+    },
     "note": "Master-data ability text: Chance Step +1 / Support Attack +1 / Support Defense +1 (same detection as browse x2 filters). Role-weighted; not video clear priors."
   },
   "recommend_ms_min_letter": "A",
@@ -178,7 +191,7 @@
         },
         {
           "max_exclusive": null,
-          "points": 6
+          "points": 5
         }
       ],
       "Defense": [
@@ -222,7 +235,7 @@
         },
         {
           "max_exclusive": null,
-          "points": 6
+          "points": 5
         }
       ]
     },
@@ -246,7 +259,7 @@
         },
         {
           "max_exclusive": null,
-          "points": 6
+          "points": 5
         }
       ],
       "Defense": [
@@ -314,7 +327,7 @@
         },
         {
           "max_exclusive": null,
-          "points": 6
+          "points": 5
         }
       ],
       "Defense": [
@@ -358,7 +371,7 @@
         },
         {
           "max_exclusive": null,
-          "points": 6
+          "points": 5
         }
       ]
     },
@@ -518,7 +531,10 @@
   "terrain": {
     "deploy_min_level": 2,
     "full_affinity_level": 3,
-    "triangle_penalty_keys": ["Space", "Atmospheric"],
+    "triangle_penalty_keys": [
+      "Space",
+      "Atmospheric"
+    ],
     "triangle_penalty_points": -1,
     "missing_space_or_land_penalty": -3,
     "defense_missing_atmospheric_penalty": 0,
@@ -556,20 +572,65 @@
   "map_support_points": 1,
   "ability_structured": {
     "cap": 3,
-    "permanent_stat_types": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 31, 32, 33, 34],
+    "permanent_stat_types": [
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      31,
+      32,
+      33,
+      34
+    ],
     "permanent_atk_exception": {
-      "roles": ["Attack"],
-      "types": [7],
+      "roles": [
+        "Attack"
+      ],
+      "types": [
+        7
+      ],
       "points": 1,
       "note": "Unconditional ATK% still counts lightly for Attack — reliable kit vs HP/Counter gates"
     },
     "conditional_damage_cap": 1,
-    "conditional_damage_types": [7, 17, 39, 40, 62, 94],
+    "conditional_damage_types": [
+      7,
+      17,
+      39,
+      40,
+      62,
+      94
+    ],
     "conditional_unreliable_name_regex": "(?i)\\(HP\\s*conditions\\)|\\(Action:\\s*Counter\\)|low\\s*hp|HP条件|反撃時|カウンター",
-    "zero_types": [100, 101, 102],
-    "en_economy_types": [5, 33, 34, 47],
-    "en_economy_zero_roles": ["Attack", "Support", "Defense"],
-    "movement_types": [19, 70, 80, 85, 107],
+    "zero_types": [
+      100,
+      101,
+      102
+    ],
+    "en_economy_types": [
+      5,
+      33,
+      34,
+      47
+    ],
+    "en_economy_zero_roles": [
+      "Attack",
+      "Support",
+      "Defense"
+    ],
+    "movement_types": [
+      19,
+      70,
+      80,
+      85,
+      107
+    ],
     "exclude_name_substrings": [
       "GN Field",
       "Positron Reflector",
@@ -652,48 +713,120 @@
     "magnitude_points": {
       "Attack": {
         "17": [
-          {"max_exclusive": 10, "points": 1},
-          {"max_exclusive": 20, "points": 2},
-          {"max_exclusive": null, "points": 3}
+          {
+            "max_exclusive": 10,
+            "points": 1
+          },
+          {
+            "max_exclusive": 20,
+            "points": 2
+          },
+          {
+            "max_exclusive": null,
+            "points": 3
+          }
         ],
         "39": [
-          {"max_exclusive": 15, "points": 1},
-          {"max_exclusive": 30, "points": 2},
-          {"max_exclusive": null, "points": 3}
+          {
+            "max_exclusive": 15,
+            "points": 1
+          },
+          {
+            "max_exclusive": 30,
+            "points": 2
+          },
+          {
+            "max_exclusive": null,
+            "points": 3
+          }
         ],
         "62": [
-          {"max_exclusive": 15, "points": 1},
-          {"max_exclusive": 30, "points": 2},
-          {"max_exclusive": null, "points": 2}
+          {
+            "max_exclusive": 15,
+            "points": 1
+          },
+          {
+            "max_exclusive": 30,
+            "points": 2
+          },
+          {
+            "max_exclusive": null,
+            "points": 2
+          }
         ]
       },
       "Defense": {
         "14": [
-          {"max_exclusive": 10, "points": 1},
-          {"max_exclusive": 20, "points": 2},
-          {"max_exclusive": null, "points": 3}
+          {
+            "max_exclusive": 10,
+            "points": 1
+          },
+          {
+            "max_exclusive": 20,
+            "points": 2
+          },
+          {
+            "max_exclusive": null,
+            "points": 3
+          }
         ],
         "16": [
-          {"max_exclusive": 10, "points": 1},
-          {"max_exclusive": 25, "points": 2},
-          {"max_exclusive": null, "points": 3}
+          {
+            "max_exclusive": 10,
+            "points": 1
+          },
+          {
+            "max_exclusive": 25,
+            "points": 2
+          },
+          {
+            "max_exclusive": null,
+            "points": 3
+          }
         ],
         "83": [
-          {"max_exclusive": 25, "points": 1},
-          {"max_exclusive": 50, "points": 2},
-          {"max_exclusive": null, "points": 3}
+          {
+            "max_exclusive": 25,
+            "points": 1
+          },
+          {
+            "max_exclusive": 50,
+            "points": 2
+          },
+          {
+            "max_exclusive": null,
+            "points": 3
+          }
         ]
       },
       "Support": {
         "38": [
-          {"max_exclusive": 10, "points": 1},
-          {"max_exclusive": 20, "points": 2},
-          {"max_exclusive": null, "points": 3}
+          {
+            "max_exclusive": 10,
+            "points": 1
+          },
+          {
+            "max_exclusive": 20,
+            "points": 2
+          },
+          {
+            "max_exclusive": null,
+            "points": 3
+          }
         ],
         "88": [
-          {"max_exclusive": 10, "points": 1},
-          {"max_exclusive": 25, "points": 2},
-          {"max_exclusive": null, "points": 3}
+          {
+            "max_exclusive": 10,
+            "points": 1
+          },
+          {
+            "max_exclusive": 25,
+            "points": 2
+          },
+          {
+            "max_exclusive": null,
+            "points": 3
+          }
         ]
       }
     }
@@ -703,7 +836,16 @@
     "conditional_points": 1,
     "unconditional_cs_sa_sd_points": 2,
     "conditional_cs_sa_sd_points": 1,
-    "cs_sa_sd_types": [19, 80, 85, 51, 52, 86, 87, 90],
+    "cs_sa_sd_types": [
+      19,
+      80,
+      85,
+      51,
+      52,
+      86,
+      87,
+      90
+    ],
     "initial_mp_type": 46,
     "initial_mp_points": 1
   },
@@ -711,36 +853,122 @@
     "mode": "role_weighted",
     "role_family_points": {
       "damage": {
-        "types": [8, 9, 10, 11, 12, 19, 20, 21],
-        "points": { "Attack": 2, "Support": 2, "Defense": 1 }
+        "types": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          19,
+          20,
+          21
+        ],
+        "points": {
+          "Attack": 2,
+          "Support": 2,
+          "Defense": 1
+        }
       },
       "range_mobility_surv": {
-        "types": [1, 3, 7, 14, 17],
-        "points": { "Attack": 2, "Support": 2, "Defense": 2 }
+        "types": [
+          1,
+          3,
+          7,
+          14,
+          17
+        ],
+        "points": {
+          "Attack": 2,
+          "Support": 2,
+          "Defense": 2
+        }
       },
       "utility_cs_sa_sd": {
-        "types": [22, 23, 24, 25, 26, 27],
-        "points": { "Attack": 1, "Support": 2, "Defense": 2 }
+        "types": [
+          22,
+          23,
+          24,
+          25,
+          26,
+          27
+        ],
+        "points": {
+          "Attack": 1,
+          "Support": 2,
+          "Defense": 2
+        }
       },
       "mp_up": {
-        "types": [4],
-        "points": { "Attack": 1, "Support": 1, "Defense": 1 }
+        "types": [
+          4
+        ],
+        "points": {
+          "Attack": 1,
+          "Support": 1,
+          "Defense": 1
+        }
       },
       "en_economy": {
-        "types": [2, 15],
-        "points": { "Attack": 0, "Support": 0, "Defense": 0 }
+        "types": [
+          2,
+          15
+        ],
+        "points": {
+          "Attack": 0,
+          "Support": 0,
+          "Defense": 0
+        }
       }
     },
     "dmg_points": 2,
     "utility_cs_sa_sd_points": 2,
     "sway_mp_points": 2,
-    "dmg_types": [8, 9, 10, 11, 12, 19, 20, 21],
-    "utility_cs_sa_sd_types": [22, 23, 24, 25, 26, 27],
-    "sway_mp_types": [14],
-    "mp_up_types": [4],
-    "range_mobility_surv_types": [1, 3, 7, 14, 17],
-    "en_economy_types": [2, 15],
-    "zero_types": [5, 6, 13, 16, 18, 28, 29, 30, 31],
+    "dmg_types": [
+      8,
+      9,
+      10,
+      11,
+      12,
+      19,
+      20,
+      21
+    ],
+    "utility_cs_sa_sd_types": [
+      22,
+      23,
+      24,
+      25,
+      26,
+      27
+    ],
+    "sway_mp_types": [
+      14
+    ],
+    "mp_up_types": [
+      4
+    ],
+    "range_mobility_surv_types": [
+      1,
+      3,
+      7,
+      14,
+      17
+    ],
+    "en_economy_types": [
+      2,
+      15
+    ],
+    "zero_types": [
+      5,
+      6,
+      13,
+      16,
+      18,
+      28,
+      29,
+      30,
+      31
+    ],
     "specialty_types": {
       "Ranged": 9,
       "Melee": 10,
@@ -852,7 +1080,9 @@
     "Defense": 2,
     "Support": 1,
     "unit_id_allowlist": [],
-    "structured_trait_types": [84],
+    "structured_trait_types": [
+      84
+    ],
     "ability_regex": "(?i)extra\\s*life|ejection|脱出|再出撃|復活|reviv|unbreakable"
   },
   "support_debuffs_kinds": {
@@ -1142,26 +1372,55 @@
       "missing": 0
     }
   },
-  "en_stat_modes": ["ssp"],
+  "en_stat_modes": [
+    "ssp"
+  ],
   "stat_outlier": {
     "cap": 2,
     "points_per_hit": 1,
     "by_role": {
       "Attack": [
-        {"stat": "HP", "min": 105000},
-        {"stat": "EN", "min": 450, "modes": ["ssp"]}
+        {
+          "stat": "HP",
+          "min": 105000
+        },
+        {
+          "stat": "EN",
+          "min": 450,
+          "modes": [
+            "ssp"
+          ]
+        }
       ],
       "Defense": [
-        {"stat": "ATK", "min": 11000}
+        {
+          "stat": "ATK",
+          "min": 11000
+        }
       ],
       "Support": [
-        {"stat": "DEF", "min": 10000},
-        {"stat": "HP", "min": 98000}
+        {
+          "stat": "DEF",
+          "min": 10000
+        },
+        {
+          "stat": "HP",
+          "min": 98000
+        }
       ]
     }
   },
   "special_defense": {
-    "trait_types": [14, 15, 16, 73, 79, 93, 109, 110],
+    "trait_types": [
+      14,
+      15,
+      16,
+      73,
+      79,
+      93,
+      109,
+      110
+    ],
     "kind_labels": {
       "14": "Damage taken down %",
       "15": "Damage taken down flat",
@@ -1530,83 +1789,272 @@
     ]
   },
   "letter_cutoffs": [
-    { "min": 17, "letter": "S+" },
-    { "min": 13, "letter": "S" },
-    { "min": 11, "letter": "A+" },
-    { "min": 9, "letter": "A" },
-    { "min": 7, "letter": "B+" },
-    { "min": 5, "letter": "B" },
-    { "min": 2, "letter": "C" },
-    { "min": 0, "letter": "D" },
-    { "min": -999, "letter": "E" }
+    {
+      "min": 17,
+      "letter": "S+"
+    },
+    {
+      "min": 13,
+      "letter": "S"
+    },
+    {
+      "min": 11,
+      "letter": "A+"
+    },
+    {
+      "min": 9,
+      "letter": "A"
+    },
+    {
+      "min": 7,
+      "letter": "B+"
+    },
+    {
+      "min": 5,
+      "letter": "B"
+    },
+    {
+      "min": 2,
+      "letter": "C"
+    },
+    {
+      "min": 0,
+      "letter": "D"
+    },
+    {
+      "min": -999,
+      "letter": "E"
+    }
   ],
   "ur_letter_cutoffs": [
-    { "min": 17, "letter": "S+" },
-    { "min": 13, "letter": "S" },
-    { "min": 11, "letter": "A+" },
-    { "min": 9, "letter": "A" },
-    { "min": 7, "letter": "B+" },
-    { "min": 5, "letter": "B" },
-    { "min": 2, "letter": "C" },
-    { "min": 0, "letter": "D" },
-    { "min": -999, "letter": "E" }
+    {
+      "min": 17,
+      "letter": "S+"
+    },
+    {
+      "min": 13,
+      "letter": "S"
+    },
+    {
+      "min": 11,
+      "letter": "A+"
+    },
+    {
+      "min": 9,
+      "letter": "A"
+    },
+    {
+      "min": 7,
+      "letter": "B+"
+    },
+    {
+      "min": 5,
+      "letter": "B"
+    },
+    {
+      "min": 2,
+      "letter": "C"
+    },
+    {
+      "min": 0,
+      "letter": "D"
+    },
+    {
+      "min": -999,
+      "letter": "E"
+    }
   ],
   "pilot_letter_cutoffs": [
-    { "min": 23, "letter": "S+" },
-    { "min": 20, "letter": "S" },
-    { "min": 17, "letter": "A+" },
-    { "min": 15, "letter": "A" },
-    { "min": 13, "letter": "B+" },
-    { "min": 11, "letter": "B" },
-    { "min": 8, "letter": "C" },
-    { "min": 5, "letter": "D" },
-    { "min": -999, "letter": "E" }
+    {
+      "min": 23,
+      "letter": "S+"
+    },
+    {
+      "min": 20,
+      "letter": "S"
+    },
+    {
+      "min": 17,
+      "letter": "A+"
+    },
+    {
+      "min": 15,
+      "letter": "A"
+    },
+    {
+      "min": 13,
+      "letter": "B+"
+    },
+    {
+      "min": 11,
+      "letter": "B"
+    },
+    {
+      "min": 8,
+      "letter": "C"
+    },
+    {
+      "min": 5,
+      "letter": "D"
+    },
+    {
+      "min": -999,
+      "letter": "E"
+    }
   ],
   "pilot_letter_cutoffs_by_role": {
     "Attack": [
-      { "min": 23, "letter": "S+" },
-      { "min": 20, "letter": "S" },
-      { "min": 17, "letter": "A+" },
-      { "min": 15, "letter": "A" },
-      { "min": 13, "letter": "B+" },
-      { "min": 11, "letter": "B" },
-      { "min": 8, "letter": "C" },
-      { "min": 5, "letter": "D" },
-      { "min": -999, "letter": "E" }
+      {
+        "min": 23,
+        "letter": "S+"
+      },
+      {
+        "min": 20,
+        "letter": "S"
+      },
+      {
+        "min": 17,
+        "letter": "A+"
+      },
+      {
+        "min": 15,
+        "letter": "A"
+      },
+      {
+        "min": 13,
+        "letter": "B+"
+      },
+      {
+        "min": 11,
+        "letter": "B"
+      },
+      {
+        "min": 8,
+        "letter": "C"
+      },
+      {
+        "min": 5,
+        "letter": "D"
+      },
+      {
+        "min": -999,
+        "letter": "E"
+      }
     ],
     "Defense": [
-      { "min": 26, "letter": "S+" },
-      { "min": 23, "letter": "S" },
-      { "min": 20, "letter": "A+" },
-      { "min": 17, "letter": "A" },
-      { "min": 14, "letter": "B+" },
-      { "min": 11, "letter": "B" },
-      { "min": 8, "letter": "C" },
-      { "min": 5, "letter": "D" },
-      { "min": -999, "letter": "E" }
+      {
+        "min": 26,
+        "letter": "S+"
+      },
+      {
+        "min": 23,
+        "letter": "S"
+      },
+      {
+        "min": 20,
+        "letter": "A+"
+      },
+      {
+        "min": 17,
+        "letter": "A"
+      },
+      {
+        "min": 14,
+        "letter": "B+"
+      },
+      {
+        "min": 11,
+        "letter": "B"
+      },
+      {
+        "min": 8,
+        "letter": "C"
+      },
+      {
+        "min": 5,
+        "letter": "D"
+      },
+      {
+        "min": -999,
+        "letter": "E"
+      }
     ],
     "Support": [
-      { "min": 25, "letter": "S+" },
-      { "min": 22, "letter": "S" },
-      { "min": 18, "letter": "A+" },
-      { "min": 15, "letter": "A" },
-      { "min": 13, "letter": "B+" },
-      { "min": 11, "letter": "B" },
-      { "min": 8, "letter": "C" },
-      { "min": 5, "letter": "D" },
-      { "min": -999, "letter": "E" }
+      {
+        "min": 25,
+        "letter": "S+"
+      },
+      {
+        "min": 22,
+        "letter": "S"
+      },
+      {
+        "min": 18,
+        "letter": "A+"
+      },
+      {
+        "min": 15,
+        "letter": "A"
+      },
+      {
+        "min": 13,
+        "letter": "B+"
+      },
+      {
+        "min": 11,
+        "letter": "B"
+      },
+      {
+        "min": 8,
+        "letter": "C"
+      },
+      {
+        "min": 5,
+        "letter": "D"
+      },
+      {
+        "min": -999,
+        "letter": "E"
+      }
     ]
   },
   "ur_pilot_letter_cutoffs": [
-    { "min": 23, "letter": "S+" },
-    { "min": 20, "letter": "S" },
-    { "min": 17, "letter": "A+" },
-    { "min": 15, "letter": "A" },
-    { "min": 13, "letter": "B+" },
-    { "min": 11, "letter": "B" },
-    { "min": 8, "letter": "C" },
-    { "min": 5, "letter": "D" },
-    { "min": -999, "letter": "E" }
+    {
+      "min": 23,
+      "letter": "S+"
+    },
+    {
+      "min": 20,
+      "letter": "S"
+    },
+    {
+      "min": 17,
+      "letter": "A+"
+    },
+    {
+      "min": 15,
+      "letter": "A"
+    },
+    {
+      "min": 13,
+      "letter": "B+"
+    },
+    {
+      "min": 11,
+      "letter": "B"
+    },
+    {
+      "min": 8,
+      "letter": "C"
+    },
+    {
+      "min": 5,
+      "letter": "D"
+    },
+    {
+      "min": -999,
+      "letter": "E"
+    }
   ],
   "bucket_by_letter": {
     "S+": "priority",
@@ -1630,11 +2078,11 @@
     "1370011100"
   ],
   "scoring_guide": {
-    "version": "5.30",
+    "version": "5.31",
     "title": "How Investment Guide scoring works",
     "intro": "Point-sum shortlist for SP Conversion / SSP Conversion investment on Units and Characters (Attack Type / Defense Type / Support Type). Units have separate SP and SSP boards; Characters use SP only. Criteria favor practical sortie tools (MAP Weapon, mobility follow-ups, weapon power) and a deep affinity Character pool over a single linked recommend. Minor Attack Type stats (HP, SSP EN) are upside-only — no floor punishment. Close letters still need a human look.",
     "overrides": [
-      "Each score factor adds points; the total becomes a letter, then a bucket (BEYOND THE TIME / Recommended / Solid / Situational / Niche). Units: score 17+ earns letter S+ and BEYOND THE TIME. Characters use role-relative letter cutoffs so Attack / Defense / Support compete within type (Defense and Support need higher totals for S / S+).",
+      "Each score factor adds points; the total becomes a letter, then a bucket (BEYOND THE TIME / Recommended / Solid / Situational / Niche). Units: score 17+ earns letter S+ and BEYOND THE TIME. Characters: kit points stay absolute; within each Character Type, S+ is roughly the top 3% and S the top 8% (with an absolute A+ floor); A+ and below use role-relative point cutoffs.",
       "Filter by Tag or Eternal Road Expert stage to compare Units that actually fit the same restriction.",
       "This is a general investment ranking that can also help on Expert — not a dedicated Expert-clears ladder (kit quality should not collapse when one stage’s AI or stats shift)."
     ],
@@ -1655,7 +2103,7 @@
       "Terrain Capability extras need full affinity circle (Lv≥3); triangle Space/Atmospheric is a mild penalty, not a strength.",
       "Acquisition (Unit Assembly / Development / Other) is a filter only — it does not change letter scores. Multi-select Acquisition (OR) can exclude Unit Assembly by picking Development + Other.",
       "Limited-time Unit Assembly Supporter leader Tags: +1 per matched Tag on the kit, cap +2 (integer points only).",
-      "Character letters are role-relative (Attack / Defense / Support each have their own S / S+ bars) so kit heat competes within Character Type.",
+      "Character letters are hybrid within Character Type: S+ ≈ top 3% and S ≈ top 8% by kit total (absolute A+ floor); A+ and below use role-relative point cutoffs. Specialty tip for Ranged/Melee/Awaken caps at +5.",
       "Support Type debuff-kind scoring uses base weapon range — SSP range enhance does not invent Range-5 credit for Range-4 kits.",
       "Support Type weapon_bonus is capped at +1 (Higher-range style bonuses stay Attack-flavored).",
       "Close letters still need a human look."
@@ -1790,5 +2238,13 @@
     "Attack": 1,
     "Support": 1,
     "Defense": 1
+  },
+  "pilot_letter_hybrid": {
+    "enabled": true,
+    "s_plus_top_pct": 0.03,
+    "s_top_pct": 0.08,
+    "min_abs_letter_for_s": "A+",
+    "min_role_count": 1,
+    "note": "Within each Character Type: top ~3% = S+ (BEYOND THE TIME), top ~8% = S or better (Recommended). Must meet absolute A+ floor. A and below stay on absolute role cutoffs; absolute S/S+ outside the percentile window demote to A+."
   }
 }

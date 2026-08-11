@@ -2626,6 +2626,12 @@ def unit_weapon_subset_has_range_tier(
         uid, ld, lc, stat_mode, subset, cond_active, pilot_cond_active)
 
 
+def _weapon_id_is_ssp_custom_core(wid):
+    """SSP Custom Core weapon ids end in …80 (MAP) or …90 (attack) — SP/normal must ignore them."""
+    w = normalize_id(wid)
+    return w.endswith('80') or w.endswith('90')
+
+
 def iter_unit_weapon_trait_texts(uid, ld, lang_code, stat_mode='normal'):
     """Resolved weapon trait / SSP weapon effect lines (same coverage as collect_unit_weapons_search_text)."""
     sm = (stat_mode or 'normal').strip().lower()
@@ -2633,6 +2639,9 @@ def iter_unit_weapon_trait_texts(uid, ld, lang_code, stat_mode='normal'):
         sm = 'normal'
     for wp in unit_weapon_map.get(uid, []):
         wid = wp['id']
+        # Custom Core weapons only exist after SSP (Burning Gundam …90 Preemptive, etc.).
+        if sm != 'ssp' and _weapon_id_is_ssp_custom_core(wid):
+            continue
         wm = weapon_info_map.get(wid, {})
         ws = resolve_weapon_stats(
             wm, weapon_status_map, weapon_correction_map, ld['weapon_trait_map'], ld['weapon_capability_map'],

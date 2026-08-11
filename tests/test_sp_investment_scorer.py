@@ -108,6 +108,46 @@ class TestSpInvestmentBands(unittest.TestCase):
         self.assertLessEqual(tip, 3)
         self.assertEqual(band_points(bands, 950), 3)
 
+    def test_specialty_tip_capped_at_5(self):
+        for stat in ("Ranged", "Melee", "Awaken"):
+            for role, bands in (self.rules["pilot_stat_bands"].get(stat) or {}).items():
+                tip = int((bands or [{}])[-1].get("points") or 0)
+                self.assertLessEqual(
+                    tip, 5, f"{stat}/{role} specialty tip {tip} exceeds +5"
+                )
+
+    def test_pilot_letter_hybrid_top_pct(self):
+        from sp_investment_rank import calibrate_pilot_letters_hybrid
+
+        # 100 Attack rows: top 3% → 3 S+, top 8% → 8 S-or-better
+        rows = []
+        for i in range(100):
+            rows.append(
+                {
+                    "id": f"a{i}",
+                    "name": f"Attack {i:03d}",
+                    "role": "Attack",
+                    "total": 100 - i,  # 100 .. 1
+                    "has_sp": True,
+                }
+            )
+        # Force absolute floor to A+ via high totals + Attack cutoffs (S at 20)
+        calibrate_pilot_letters_hybrid(
+            rows, self.rules, cutoffs_key="pilot_letter_cutoffs"
+        )
+        letters = [r["letter"] for r in rows]
+        self.assertEqual(letters.count("S+"), 3)
+        self.assertEqual(letters.count("S"), 5)  # 8 - 3
+        self.assertEqual(rows[0]["letter"], "S+")
+        self.assertEqual(rows[2]["letter"], "S+")
+        self.assertEqual(rows[3]["letter"], "S")
+        self.assertEqual(rows[7]["letter"], "S")
+        self.assertEqual(rows[8]["letter"], "A+")  # outside window, demoted/capped
+        hy = self.rules.get("pilot_letter_hybrid") or {}
+        self.assertTrue(hy.get("enabled"))
+        self.assertAlmostEqual(float(hy.get("s_plus_top_pct") or 0), 0.03)
+        self.assertAlmostEqual(float(hy.get("s_top_pct") or 0), 0.08)
+
     def test_tag_points_disabled(self):
         self.assertEqual(tag_count_points(self.rules, 2), 0)
         self.assertEqual(tag_count_points(self.rules, 9), 0)

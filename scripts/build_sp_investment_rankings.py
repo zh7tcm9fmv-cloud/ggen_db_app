@@ -138,7 +138,15 @@ def build_pilot_board(
         if "er_expert_ids" not in row:
             SIR.attach_er_expert_ids(A, row, "character", expert_ids, LC)
         rows.append(row)
-    _calibrate_letters_by_role(rows, rules, cutoffs_key="pilot_letter_cutoffs")
+    # Characters: hybrid S/S+ within role when enabled; else absolute role cutoffs.
+    if (rules.get("pilot_letter_hybrid") or {}).get("enabled"):
+        SIR.calibrate_pilot_letters_hybrid(
+            rows, rules, cutoffs_key="pilot_letter_cutoffs"
+        )
+    else:
+        _calibrate_letters_by_role(
+            rows, rules, cutoffs_key="pilot_letter_cutoffs"
+        )
     return _sort_rows(rows)
 
 

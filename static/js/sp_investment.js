@@ -927,13 +927,31 @@
     return payload[board] || {};
   }
 
+  /** Browse-parity name shortcuts (SF / IJ / God / FATB / Devil). */
+  function expandSpiSearchQuery(q) {
+    let s = String(q || '').trim();
+    if (!s) return '';
+    s = s.replace(/\bdevil\s+gundam\b/gi, 'dark gundam');
+    s = s.replace(/\bfatb\b/gi, 'full armor gundam thunderbolt');
+    s = s.replace(/\bsf\b/gi, 'strike freedom');
+    s = s.replace(/\bgod\b/gi, 'burning gundam');
+    s = s.replace(/\bij\b/gi, 'infinite justice');
+    return s.trim();
+  }
+
   function rowMatchesSearch(row, q) {
     if (!q) return true;
+    const expanded = expandSpiSearchQuery(q).toLowerCase();
     const name = String(row.name || '').toLowerCase();
     const tags = (row.tags || []).join(' ').toLowerCase();
     const tagsEn = (row.tags_en || row.tags || []).join(' ').toLowerCase();
     const id = String(row.id || '').toLowerCase();
-    return name.includes(q) || tags.includes(q) || tagsEn.includes(q) || id.includes(q);
+    const hay = `${name} ${tags} ${tagsEn} ${id}`;
+    if (hay.includes(expanded)) return true;
+    // Multi-word expansions (e.g. "strike freedom") — require all tokens.
+    const parts = expanded.split(/\s+/).filter(Boolean);
+    if (parts.length > 1 && parts.every((p) => hay.includes(p))) return true;
+    return false;
   }
 
   function syncSearchFromInput() {
