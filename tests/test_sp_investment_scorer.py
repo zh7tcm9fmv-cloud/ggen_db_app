@@ -869,6 +869,24 @@ class TestSpInvestmentBands(unittest.TestCase):
         )
         self.assertEqual(scored["breakdown"]["max_tension_weapon"], -1)
 
+    def test_ssp_custom_core_bypasses_max_tension_juice(self):
+        """00 Raiser Final: SSP …90 bypass; gated SP +type1 enhance must not re-apply −1."""
+        import app as A
+        from sp_investment_rank import extract_unit_features, score_unit
+
+        uid = "1370005900"
+        if uid not in (A.unit_weapon_map or {}):
+            self.skipTest("master data not loaded")
+        sp_f = extract_unit_features(A, uid, mode="sp", lc="EN", rules=self.rules)
+        ssp_f = extract_unit_features(A, uid, mode="ssp", lc="EN", rules=self.rules)
+        self.assertTrue(sp_f.get("has_max_tension_higher_weapon"))
+        self.assertFalse(ssp_f.get("has_max_tension_higher_weapon"))
+        # Damage reference still includes full SSP power on the gated gun.
+        self.assertGreaterEqual(int(ssp_f.get("weapon_power") or 0), int(sp_f.get("weapon_power") or 0))
+        scored = score_unit(A, uid, mode="ssp", lc="EN", rules=self.rules)
+        if scored:
+            self.assertEqual(int((scored.get("breakdown") or {}).get("max_tension_weapon") or 0), 0)
+
     def test_classify_range_down_beam(self):
         from sp_investment_rank import classify_debuff_keys_from_meta
 

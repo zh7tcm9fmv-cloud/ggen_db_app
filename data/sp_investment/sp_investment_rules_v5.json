@@ -48,7 +48,8 @@
     "v5.28: drop Acquisition from score (filter only); +1 when a Unit/Character tag is covered by a limited pickup Supporter leader skill (listed in guide); /ip Tag·ER·Skill·Ability filters use browse-style AND/OR combine",
     "v5.29: general-use over ER double-count — strategic tags skip tags already on Expert restrictions (ER access covers those); limited Supporter tags +1 per matched tag cap 2 (no half-points); Acquisition multi-select so Dev+Other can exclude Unit Assembly",
     "v5.30: Character letters are role-relative (Defense/Support higher S bars); Defense Character DEF tip +5→+3; Support SSP honesty — debuff kinds use base weapon range (SSP range enhance does not invent R5); Support weapon_bonus cap +1",
-    "v5.31: Character specialty tip +6→+5 on Ranged/Melee/Awaken (all roles that used +6); hybrid Character letters — S/S+ by within-role percentile (~top 3% / ~top 8%), A+ and below absolute"
+    "v5.31: Character specialty tip +6→+5 on Ranged/Melee/Awaken (all roles that used +6); hybrid Character letters — S/S+ by within-role percentile (~top 3% / ~top 8%), A+ and below absolute",
+    "v5.32: Max Vigor weapon −1 only when a Max-Vigor-gated gun outpowers unrestricted options; on SSP, compare gated guns without type-1 power enhance so Custom Core (…90) bypass is not undone by juicing the still-gated SP weapon (00 Raiser Final Battle SSP)"
   ],
   "exclude_warships": true,
   "exclude_ur_units": true,
@@ -2078,7 +2079,7 @@
     "1370011100"
   ],
   "scoring_guide": {
-    "version": "5.31",
+    "version": "5.32",
     "title": "How Investment Guide scoring works",
     "intro": "Point-sum shortlist for SP Conversion / SSP Conversion investment on Units and Characters (Attack Type / Defense Type / Support Type). Units have separate SP and SSP boards; Characters use SP only. Criteria favor practical sortie tools (MAP Weapon, mobility follow-ups, weapon power) and a deep affinity Character pool over a single linked recommend. Minor Attack Type stats (HP, SSP EN) are upside-only — no floor punishment. Close letters still need a human look.",
     "overrides": [
@@ -2106,6 +2107,7 @@
       "Character letters are hybrid within Character Type: S+ ≈ top 3% and S ≈ top 8% by kit total (absolute A+ floor); A+ and below use role-relative point cutoffs. Specialty tip for Ranged/Melee/Awaken caps at +5.",
       "Support Type debuff-kind scoring uses base weapon range — SSP range enhance does not invent Range-5 credit for Range-4 kits.",
       "Support Type weapon_bonus is capped at +1 (Higher-range style bonuses stay Attack-flavored).",
+      "Max Vigor −1 is for guns that require Max Vigor to fire and outpower every unrestricted option (Twin Satellite–class). On SSP, Custom Core (…90) is the bypass — SSP power enhance on a still-gated SP weapon does not re-apply that −1.",
       "Close letters still need a human look."
     ]
   },

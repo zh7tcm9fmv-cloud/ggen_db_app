@@ -2994,13 +2994,17 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
             for lv in levels:
                 if isinstance(lv, dict) and int(lv.get("level") or 0) == 5:
                     power = max(power, int(lv.get("power", 0) or 0))
+        # SSP type-1 power enhance — applied to weapon_power / bonuses reference,
+        # but not to Max Vigor *penalty* comparison for tension-gated guns (below).
+        ssp_power_enhance = 0
         if mode == "ssp":
             mwid = A.normalize_id(wm.get("main_weapon_id", "0") or "0")
             for cid in (wid, mwid):
                 for enh in A.unit_ssp_weapon_enhance_map.get(cid) or []:
                     if str(enh.get("type")) == "1":
-                        power += int(enh.get("value", 0) or 0)
+                        ssp_power_enhance += int(enh.get("value", 0) or 0)
                 break
+            power += ssp_power_enhance
         tension_max = str(wm.get("tension_type", "0") or "0") == "4"
         trait_lines: list[str] = []
         for tr in ws.get("traits", []) or []:
@@ -3083,8 +3087,13 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
                 best_weapon_id = wid
                 best_weapon_wm = wm
                 best_attack_attr_count = attr_n
+            # Max Vigor penalty: "best damage needs Max Vigor to fire" (e.g. Twin
+            # Satellite Cannon). SSP Custom Core (…90) is the unrestricted bypass —
+            # do not let SSP type-1 power juice on a still-gated SP weapon beat that
+            # bypass by +100 and re-apply −1 (00 Raiser Final Battle SSP).
             if tension_max:
-                max_power_tension = max(max_power_tension, power)
+                tension_cmp_power = power - ssp_power_enhance if mode == "ssp" else power
+                max_power_tension = max(max_power_tension, tension_cmp_power)
             else:
                 max_power_unrestricted = max(max_power_unrestricted, power)
             if rx_base >= 4:
@@ -4101,8 +4110,10 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
                 },
                 {
                     "when": (
-                        "Best weapon only usable at Max Vigor (stronger than unrestricted best) "
-                        "— MP/pilot-gated; weak for ML / one-turn kill"
+                        "A Max Vigor–gated weapon outpowers every unrestricted weapon "
+                        "(e.g. Twin Satellite Cannon) — MP/pilot-gated; weak for ML / one-turn kill. "
+                        "SSP Custom Core (…90) counts as unrestricted bypass; SSP power enhance on a "
+                        "still-gated SP weapon does not re-trigger this −1"
                     ),
                     "result": _fmt_points(rules.get("max_tension_higher_tier_weapon_points", -1)),
                 },
