@@ -527,8 +527,7 @@ html.spi-modal-open body.spi-page {
   flex-direction: column;
   padding: 0;
 }
-/* Tag filter: same wide 2-col chip panel as Units/Characters Tag (lineage). */
-#spiTagFilterPanel.spi-dd-panel--lineage,
+/* Tag / ER: same wide 2-col chip panel as Units/Characters Tag (lineage). */
 .spi-dd-panel--tall.spi-dd-panel--lineage {
   width: min(92vw, 580px);
   max-width: min(92vw, 580px);
@@ -537,22 +536,54 @@ html.spi-modal-open body.spi-page {
   padding: 0;
   box-sizing: border-box;
 }
-#spiTagFilterPanel.spi-dd-panel--lineage .spi-dd-search-wrap {
+/* Skill / Ability: match browse skill/ability filter width + 2-col grid. */
+.spi-dd-panel--tall.spi-dd-panel--skill {
+  width: min(92vw, 480px);
+  min-width: min(92vw, 420px);
+  max-width: min(92vw, 480px);
+  max-height: none;
+  overflow: visible;
+  padding: 0;
+  box-sizing: border-box;
+}
+.spi-dd-panel--tall.spi-dd-panel--lineage .spi-dd-search-wrap,
+.spi-dd-panel--tall.spi-dd-panel--skill .spi-dd-search-wrap {
   margin: 8px 10px 0;
 }
-#spiTagFilterPanel.spi-dd-panel--lineage .filter-panel-scroll-inner,
-#spiTagFilterPanel.spi-dd-panel--lineage .spi-dd-scroll {
+.spi-dd-panel--tall.spi-dd-panel--lineage .filter-panel-scroll-inner,
+.spi-dd-panel--tall.spi-dd-panel--lineage .spi-dd-scroll,
+.spi-dd-panel--tall.spi-dd-panel--skill .filter-panel-scroll-inner,
+.spi-dd-panel--tall.spi-dd-panel--skill .spi-dd-scroll {
   max-height: min(70vh, 480px);
   overflow-y: auto;
   flex: 1 1 auto;
   min-height: 0;
   padding: 8px 10px 10px;
 }
-#spiTagFilterPanel.spi-dd-panel--lineage .browse-lineage-grid {
+.spi-dd-panel--tall.spi-dd-panel--lineage .browse-lineage-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 6px;
   align-items: start;
+}
+.spi-dd-panel--tall.spi-dd-panel--skill .skill-filter-grid-browse {
+  max-height: none;
+  overflow: visible;
+}
+.spi-er-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.35rem;
+  height: 1.35rem;
+  padding: 0 4px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--accent-cyan);
+  background: rgba(0, 212, 255, 0.14);
+  border: 1px solid rgba(0, 212, 255, 0.35);
+  line-height: 1;
 }
 .spi-dd-panel--tall .spi-dd-search-wrap {
   position: relative;
@@ -583,17 +614,29 @@ html.spi-modal-open body.spi-page {
 #spiSourceFilterPanel .filter-panel-clear-wrap {
   flex-shrink: 0;
 }
+/* Source: only 3 options — shrink-wrap, no tall empty scroll well. */
 #spiSourceFilterPanel {
   display: flex;
   flex-direction: column;
-  padding: 0;
-  max-height: min(70vh, 360px);
-  overflow: hidden;
+  width: max-content;
+  min-width: 0;
+  max-width: min(280px, 92vw);
+  height: auto;
+  max-height: none;
+  overflow: visible;
+  padding: 4px 0 0;
+  box-sizing: border-box;
 }
+#spiSourceFilterPanel .spi-source-scroll,
 #spiSourceFilterPanel .spi-dd-scroll {
-  overflow-y: auto;
-  max-height: min(50vh, 280px);
-  padding: 4px 0;
+  flex: 0 0 auto;
+  overflow: visible;
+  max-height: none;
+  height: auto;
+  padding: 0;
+}
+#spiSourceFilterPanel .rarity-filter-row {
+  padding: 6px 12px;
 }
 .spi-dd-panel--tall[hidden],
 #spiSourceFilterPanel[hidden] {

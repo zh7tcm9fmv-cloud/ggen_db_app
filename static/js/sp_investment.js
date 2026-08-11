@@ -1432,8 +1432,8 @@
     const ic = item.icon
       ? `<img class="skill-browse-ic" src="${esc(imgUrl(item.icon))}" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback(this)">`
       : '';
-    return `<label class="rarity-filter-row list-filter-tag-item skill-browse-row" data-filter-text="${escAttr(ft)}">
-      <input type="checkbox" id="${escAttr(id)}" value="${escAttr(item.id)}" ${checked ? 'checked' : ''}>
+    return `<label class="list-filter-tag-item skill-browse-row" data-filter-text="${escAttr(ft)}">
+      <input type="checkbox" class="list-filter-sr skill-browse-item" id="${escAttr(id)}" value="${escAttr(item.id)}" ${checked ? 'checked' : ''}>
       <span class="tag-composite list-filter-tag-composite skill-browse-row-inner">
         <span class="tag-part-icon">${ic}</span>
         <span class="tag-part-value">${esc(item.name)}</span>
@@ -1448,7 +1448,10 @@
       .map((it) => kitFilterRowHtml(it, 'skill', skillFilterIds.includes(String(it.id))))
       .join('');
     panel.innerHTML = `${spiDdSearchWrapHtml(t('skill_search_ph'), t('skill_search_aria'))}
-      <div class="spi-dd-scroll">${rows || ''}<div class="spi-dd-empty" hidden>${esc(t('skill_search_empty'))}</div></div>
+      <div class="filter-panel-scroll-inner spi-dd-scroll">
+        <div class="skill-filter-grid-browse">${rows || ''}</div>
+        <div class="spi-dd-empty" hidden>${esc(t('skill_search_empty'))}</div>
+      </div>
       ${spiDdFooterHtml('skill')}`;
     bindSpiDdSearch(panel);
     panel.querySelectorAll('input[type="checkbox"]').forEach((inp) => {
@@ -1483,7 +1486,10 @@
     const searchAria = entity === 'characters' ? t('abil_search_aria') : t('unit_abil_search_aria');
     const emptyMsg = entity === 'characters' ? t('abil_search_empty') : t('unit_abil_search_empty');
     panel.innerHTML = `${spiDdSearchWrapHtml(searchPh, searchAria)}
-      <div class="spi-dd-scroll">${rows || ''}<div class="spi-dd-empty" hidden>${esc(emptyMsg)}</div></div>
+      <div class="filter-panel-scroll-inner spi-dd-scroll">
+        <div class="skill-filter-grid-browse">${rows || ''}</div>
+        <div class="spi-dd-empty" hidden>${esc(emptyMsg)}</div>
+      </div>
       ${spiDdFooterHtml('abil')}`;
     bindSpiDdSearch(panel);
     panel.querySelectorAll('input[type="checkbox"]').forEach((inp) => {
@@ -1588,10 +1594,17 @@
     const panel = $('#spiSourceFilterPanel');
     if (!panel) return;
     const sel = new Set(sourceFilters.map(String));
+    // Compact checkbox list (not the wide 2-col chip panels) — only 3 options.
     const rows = sourceOpts()
-      .map((o) => ddCheckRowHtml(o.value, o.label, sel.has(String(o.value)), 'source'))
+      .map((o) => {
+        const id = `spiDd_source_${String(o.value).replace(/[^a-zA-Z0-9_-]/g, '_')}`;
+        return `<label class="rarity-filter-row" data-filter-text="${escAttr(String(o.label).toLowerCase())}">
+      <input type="checkbox" name="spiDd_source" id="${escAttr(id)}" value="${escAttr(o.value)}" ${sel.has(String(o.value)) ? 'checked' : ''}>
+      <span class="rarity-filter-all-label">${esc(o.label)}</span>
+    </label>`;
+      })
       .join('');
-    panel.innerHTML = `<div class="spi-dd-scroll">${rows}</div>${spiDdFooterHtml('source')}`;
+    panel.innerHTML = `<div class="spi-dd-scroll spi-source-scroll">${rows}</div>${spiDdFooterHtml('source')}`;
     panel.querySelectorAll('input[type="checkbox"]').forEach((inp) => {
       inp.addEventListener('change', () => {
         sourceFilters = Array.from(panel.querySelectorAll('input[type="checkbox"]:checked')).map((x) =>
@@ -1668,6 +1681,21 @@
     );
   }
 
+  function erFilterRowHtml(e, label, en, checked) {
+    const ft = `${label} ${en || ''} ${e.id}`.toLowerCase();
+    const num = e.number != null ? String(e.number) : '';
+    const numHtml = num
+      ? `<span class="spi-er-num" aria-hidden="true">${esc(num)}</span>`
+      : '';
+    return `<label class="list-filter-tag-item" data-filter-text="${escAttr(ft)}">
+      <input type="checkbox" class="list-filter-sr" name="spiDd_er" value="${escAttr(String(e.id))}" ${checked ? 'checked' : ''}>
+      <span class="tag-composite list-filter-tag-composite">
+        <span class="tag-part-icon">${numHtml}</span>
+        <span class="tag-part-value">${esc(label)}</span>
+      </span>
+    </label>`;
+  }
+
   function fillErPanel() {
     const panel = $('#spiErFilterPanel');
     if (!panel) return;
@@ -1680,12 +1708,14 @@
             ? e.character_label || e.label || e.id
             : e.unit_label || e.label || e.id;
         const en = e.label || e.unit_label || e.character_label || e.id;
-        const ft = `${label} ${en} ${e.id}`.toLowerCase();
-        return ddCheckRowHtml(String(e.id), label, sel.has(String(e.id)), 'er', ft);
+        return erFilterRowHtml(e, label, en, sel.has(String(e.id)));
       })
       .join('');
     panel.innerHTML = `${spiDdSearchWrapHtml(t('er_search_ph'), t('er_search_aria'))}
-      <div class="spi-dd-scroll">${rows}<div class="spi-dd-empty" hidden>${esc(t('er_search_empty'))}</div></div>
+      <div class="filter-panel-scroll-inner spi-dd-scroll">
+        <div class="filter-panel-grid browse-lineage-grid">${rows}</div>
+        <div class="spi-dd-empty" hidden>${esc(t('er_search_empty'))}</div>
+      </div>
       ${spiDdFooterHtml('er')}`;
     bindSpiDdSearch(panel);
     panel.querySelectorAll('input[type="checkbox"]').forEach((inp) => {
