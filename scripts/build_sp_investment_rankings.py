@@ -43,13 +43,16 @@ def _calibrate_letters_by_role(
     for row in rows:
         has_sp = bool(row.get("has_sp"))
         key = cutoffs_key if has_sp else (ur_key if rules.get(ur_key) else cutoffs_key)
+        role = None
+        if key in ("pilot_letter_cutoffs", "ur_pilot_letter_cutoffs"):
+            role = row.get("role")
         letter = SIR.letter_for_total(
-            rules, int(row.get("total") or 0), cutoffs_key=key
+            rules, int(row.get("total") or 0), cutoffs_key=key, role=role
         )
         row["letter"] = letter
         row["bucket"] = SIR.bucket_for_letter(rules, letter)
         row["letter_cohort"] = "sp" if has_sp else "ur"
-        row["calibration"] = f"absolute_sheet:{key}"
+        row["calibration"] = f"absolute_sheet:{key}" + (f":{role}" if role else "")
 
 
 def _sort_rows(rows: list[dict]) -> list[dict]:
@@ -110,6 +113,7 @@ def build_pilot_board(
     unit_index: dict,
     expert_ids: list[str],
     tag_table: dict | None = None,
+    er_restricted_ids: list[str] | None = None,
 ) -> list[dict]:
     rows = []
     for cid in A.char_list_playable_ids:
@@ -123,6 +127,7 @@ def build_pilot_board(
                 unit_index=unit_index,
                 tag_strategic_table=tag_table,
                 er_expert_ids=expert_ids,
+                er_restricted_ids=er_restricted_ids,
             )
         except Exception as e:
             print(f"  skip char {cid}: {e}")
@@ -192,7 +197,13 @@ def main():
     print("Building ER Expert filter list…")
     er_filters = SIR.build_er_expert_filters(A, LC)
     expert_ids = [e["id"] for e in er_filters]
-    print(f"  {len(er_filters)} expert stages")
+    er_restricted_ids = [
+        e["id"] for e in er_filters if not e.get("character_free_for_all")
+    ]
+    print(
+        f"  {len(er_filters)} expert stages "
+        f"({len(er_restricted_ids)} character-restricted)"
+    )
 
     print("Building strategic tag UR-weight tables…")
     tag_table = SIR.get_tag_strategic_table(A, rules, LC)
@@ -225,7 +236,14 @@ def main():
     print(f"  {len(unit_index.get('bplus_ids') or [])} A+ eligible units for pilot MS match")
 
     print("Building pilot SP board…")
-    pilot_rows = build_pilot_board(rules, unit_letter_by_id, unit_index, expert_ids, pilot_tag_table)
+    pilot_rows = build_pilot_board(
+        rules,
+        unit_letter_by_id,
+        unit_index,
+        expert_ids,
+        pilot_tag_table,
+        er_restricted_ids=er_restricted_ids,
+    )
     print(f"  {len(pilot_rows)} characters {_bucket_histogram(pilot_rows)}")
 
     guide = SIR.scoring_guide_payload(rules)
@@ -236,6 +254,9 @@ def main():
         )
 
     tag_catalog = collect_tag_catalog([sp_rows, ssp_rows, pilot_rows])
+    lim_supp_tags = SIR.get_limited_supporter_tag_catalog(A, LC)
+    print(f"  limited supporter tags={len(lim_supp_tags)}")
+    guide["limited_supporter_tag_catalog"] = lim_supp_tags
 
     units_sp = bucketize(sp_rows)
     units_ssp = bucketize(ssp_rows)
@@ -253,6 +274,7 @@ def main():
         "bucket_labels": rules.get("bucket_labels") or {},
         "er_expert_filters": er_filters,
         "tag_catalog": tag_catalog,
+        "limited_supporter_tag_catalog": lim_supp_tags,
         "units": {
             "sp": units_sp,
             "ssp": units_ssp,

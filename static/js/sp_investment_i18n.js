@@ -92,8 +92,18 @@
       source_gacha: 'Units from Unit Assembly',
       source_event: 'Other',
       source_dev: 'Development Unit',
+      source_filter_n: '{n} sources',
       no_tag_filter: 'No tag filter',
+      tag_filter_n: '{n} tags',
       no_er_filter: 'No Eternal Road Expert filter',
+      er_filter_n: '{n} stages',
+      combine_tt_and: 'AND — match all selected',
+      combine_tt_and_or: 'AND+OR — first required, any of the rest',
+      combine_tt_or: 'OR — match any selected',
+      lim_supp_tags_title: 'Limited-time Supporter tags',
+      lim_supp_tags_intro:
+        'Tags covered by limited-time Unit Assembly Supporters’ leader skills (+1 per Tag on the kit, cap +2):',
+      lim_supp_tags_empty: 'No limited-time Supporter tags detected in this build.',
       no_skill_filter: 'All Character Skills',
       no_abil_filter: 'All Character Abilities',
       no_unit_abil_filter: 'All Unit Abilities',
@@ -217,8 +227,18 @@
       source_gacha: 'ユニット補給',
       source_event: 'その他',
       source_dev: '開発ユニット',
+      source_filter_n: '{n} 入手元',
       no_tag_filter: 'タグフィルタなし',
+      tag_filter_n: '{n} タグ',
       no_er_filter: 'エターナルロード Expert フィルタなし',
+      er_filter_n: '{n} ステージ',
+      combine_tt_and: 'AND — 選択をすべて満たす',
+      combine_tt_and_or: 'AND+OR — 先頭必須＋残りいずれか',
+      combine_tt_or: 'OR — いずれか一致',
+      lim_supp_tags_title: '期間限定サポーター対象タグ',
+      lim_supp_tags_intro:
+        '期間限定ガシャのサポーターのリーダースキルが対象とするタグ（キット上の対象タグ1つにつき +1、上限 +2）：',
+      lim_supp_tags_empty: 'このビルドに期間限定サポーター対象タグはありません。',
       no_skill_filter: 'すべてのキャラクタースキル',
       no_abil_filter: 'すべてのキャラクターアビリティ',
       no_unit_abil_filter: 'すべてのユニットアビリティ',
@@ -342,8 +362,18 @@
       source_gacha: '單位補給獲得單位',
       source_event: '其他',
       source_dev: '開發單位',
+      source_filter_n: '{n} 個來源',
       no_tag_filter: '無標籤篩選',
+      tag_filter_n: '{n} 個標籤',
       no_er_filter: '無永恆之路 Expert 篩選',
+      er_filter_n: '{n} 個關卡',
+      combine_tt_and: 'AND — 須符合全部選取',
+      combine_tt_and_or: 'AND+OR — 第一項必備，其餘任一',
+      combine_tt_or: 'OR — 符合任一選取',
+      lim_supp_tags_title: '限定期間支援人員標籤',
+      lim_supp_tags_intro:
+        '限定期間機體補給的支援人員隊長技能涵蓋的標籤（每個標籤 +1，上限 +2）：',
+      lim_supp_tags_empty: '此建置未偵測到限定期間支援人員標籤。',
       no_skill_filter: '全部角色技能',
       no_abil_filter: '全部角色能力',
       no_unit_abil_filter: '全部單位能力',
@@ -466,8 +496,18 @@
       source_gacha: '單位補給獲得單位',
       source_event: '其他',
       source_dev: '開發單位',
+      source_filter_n: '{n} 個來源',
       no_tag_filter: '無標籤篩選',
+      tag_filter_n: '{n} 個標籤',
       no_er_filter: '無永恆之路 Expert 篩選',
+      er_filter_n: '{n} 個關卡',
+      combine_tt_and: 'AND — 要符合全部揀選',
+      combine_tt_and_or: 'AND+OR — 第一項必備，其餘任一',
+      combine_tt_or: 'OR — 符合任一揀選',
+      lim_supp_tags_title: '限定期間支援人員標籤',
+      lim_supp_tags_intro:
+        '限定期間機體補給嘅支援人員隊長技能涵蓋嘅標籤（每個標籤 +1，上限 +2）：',
+      lim_supp_tags_empty: '呢個建置未偵測到限定期間支援人員標籤。',
       no_skill_filter: '全部角色技能',
       no_abil_filter: '全部角色能力',
       no_unit_abil_filter: '全部單位能力',
@@ -554,15 +594,23 @@
       tags: { label: 'Tag count', tip: 'Count of scored tags. Currently 0 — value is under Strategic tags.' },
       tags_strategic: {
         label: 'Strategic tags',
-        tip: 'Bonus from tags that show up often on UR Units (especially limited). Cap applies.',
+        tip: 'Bonus from tags that show up often on UR Units (especially limited). Tags already on Expert restrictions are skipped here — Expert access covers them. Cap applies.',
+      },
+      limited_supporter_tags: {
+        label: 'Limited-time Supporter tags',
+        tip: '+1 per Tag covered by a limited-time Unit Assembly Supporter’s tier-3 leader skill, cap +2. Listed under Limited-time Supporter tags in the scoring guide.',
       },
       er_access: {
         label: 'Eternal Road Expert access',
-        tip: 'How many Eternal Road Expert stages this Unit or Character can enter. Under 2 is −1; 2–4 is +1; 5+ is +2.',
+        tip: 'Units: Expert stages (0–1 → 0; 2–6 → +1; 7+ → +2). Characters: character-restricted Expert only (0 → 0; 1 → +1; 2+ → +2).',
+      },
+      combat_actions: {
+        label: 'Combat actions',
+        tip: 'Master-data Chance Step +1, Support Attack +1, or Support Defense +1 (browse ×2 filter family). Role-weighted; cap +3. Not based on clear videos.',
       },
       terrain: {
         label: 'Terrain Capability',
-        tip: 'Need Space plus Land or Atmospheric for neutral (0). Missing Space, or both Land and Atmospheric, is −3.',
+        tip: 'Floor: Space plus Land or Atmospheric at deploy Lv≥2. Extras need full affinity circle (Lv≥3). Terrain Capability triangle (Lv2) Space/Atmospheric each −1. Perfect bonus needs no triangle on those keys.',
       },
       rarity: {
         label: 'Rarity',
@@ -574,11 +622,11 @@
       },
       map: {
         label: 'MAP Weapon',
-        tip: 'Damage MAP +1 presence; dash/Moving Attack, ammo 2+, and coverage add more. Recovery / ally-support MAP (MP supply) scores +1 separately. Attack Type up to +4; Defense/Support Type cap +2.',
+        tip: 'Damage MAP needs ≥3 coverage cells for presence. Tiny 1-cell MAP is not a free +1. Dash/Moving Attack, ammo 2+, coverage add more. Recovery / ally-support MAP +1 separately. Attack Type up to +4; Defense/Support Type cap +2.',
       },
       abilities: {
         label: 'Unit Ability',
-        tip: 'Role-relevant Unit Ability effects. Permanent plain stat ups with no condition score 0 here.',
+        tip: 'Role-relevant Unit Ability effects. Permanent plain stats usually 0 (Attack gets light unconditional ATK% credit). HP/Counter-gated ATK soft-capped. Advantage: series abilities do not score here.',
       },
       skills_abilities: {
         label: 'Character Skills & Abilities',
@@ -586,11 +634,11 @@
       },
       series_affinity: {
         label: 'Series affinity',
-        tip: 'Points for series / faction affinity abilities.',
+        tip: 'Characters: +2 per series/faction affinity ability, cap +2. Units use the unit affinity table.',
       },
       recommend_ms: {
         label: 'Recommended Units',
-        tip: 'Top 3 matching Units on this guide: A/A+ = +1, S/S+ = +2, cap +3. B+ and below do not score.',
+        tip: 'Top 3 matching Units on this guide: A/A+ = +1, S/S+ = +2, cap +2. B+ and below do not score.',
       },
       linked_pilot: {
         label: 'Affinity Character pool',
@@ -638,7 +686,7 @@
       },
       source: {
         label: 'Acquisition',
-        tip: 'How the Unit is obtained: Development Unit and Other get +1; Units from Unit Assembly stay 0.',
+        tip: 'Filter only — does not change letter scores. Multi-select (OR): pick Development + Other to exclude Unit Assembly.',
       },
       movement_followup: {
         label: 'Movement follow-up',
@@ -686,15 +734,23 @@
       tags: { label: 'タグ数', tip: 'スコア対象タグ数。現状は常に 0 — 価値は戦略タグ側。' },
       tags_strategic: {
         label: '戦略タグ',
-        tip: 'URユニット（特に限定）に多いタグへの加点。上限あり。',
+        tip: 'URユニット（特に限定）に多いタグへの加点。すでに Expert 制限に出ているタグはここでは加点しない（Expert 適性が担う）。上限あり。',
+      },
+      limited_supporter_tags: {
+        label: '期間限定サポーター対象タグ',
+        tip: '期間限定ガシャのサポーターのリーダースキル（第3段階）が対象とするタグ1つにつき +1（上限 +2）。採点ガイドに一覧あり。',
       },
       er_access: {
         label: 'エターナルロード Expert 適性',
-        tip: '出撃可能なエターナルロード Expert ステージ数。2未満 −1、2–4 +1、5以上 +2。',
+        tip: 'ユニット：出撃可能な Expert ステージ数（0–1→0、2–6→+1、7以上→+2）。キャラクター：キャラ制限のある Expert のみ（0→0、1→+1、2以上→+2）。キャラ自由出撃ステージは加点しません。',
+      },
+      combat_actions: {
+        label: '戦闘行動',
+        tip: 'マスターデータ上のチャンスステップ+1／支援攻撃+1／支援防御+1（一覧の×2フィルタと同系統）。ロール加重、上限+3。クリア動画の採用頻度は使いません。',
       },
       terrain: {
         label: '地形適性',
-        tip: '宇宙＋地上または空中で中立（0）。宇宙欠如、または地上と空中の両方欠如は −3。',
+        tip: '床は宇宙＋地上または空中（出撃適性◯／△相当のLv≥2）。追加は完全適性◯（Lv≥3）。地形適性△（Lv2）の宇宙／空中は各−1。完璧ボーナスはそれらの△がある場合は付きません。',
       },
       rarity: {
         label: 'レアリティ',
@@ -706,11 +762,11 @@
       },
       map: {
         label: 'MAP兵器',
-        tip: 'ダメージMAPは存在+1。ダッシュ／移動攻撃・弾数・範囲で加点。回復／味方支援MAP（MP供給）は別枠+1。攻撃型最大+4、耐久／支援型は上限+2。',
+        tip: 'ダメージMAPは範囲マス≥3で存在点。1マスMAPは無料の+1にしない。ダッシュ／移動攻撃・弾数・範囲で加点。回復／味方支援MAPは別枠+1。攻撃型最大+4、耐久／支援型は上限+2。',
       },
       abilities: {
         label: 'ユニットアビリティ',
-        tip: 'タイプに効くユニットアビリティ。無条件の単純ステータス上昇はここでは 0。',
+        tip: 'タイプに効くユニットアビリティ。無条件の単純ステは通常0（攻撃型は無条件の攻撃力%に軽い加点）。HP／反撃条件の攻撃力は上限あり。Advantage:シリーズはここでは加点なし。',
       },
       skills_abilities: {
         label: 'キャラクタースキル・アビリティ',
@@ -718,11 +774,11 @@
       },
       series_affinity: {
         label: 'シリーズアフィニティ',
-        tip: 'シリーズ／勢力アフィニティアビリティの加点。',
+        tip: 'キャラクター：シリーズ／勢力アフィニティ1つあたり+2（上限+2）。ユニットはユニット側の表に従います。',
       },
       recommend_ms: {
         label: '推奨ユニット',
-        tip: '本ガイド上位3機：A/A+ は +1、S/S+ は +2、上限 +3。B+ 以下は加点なし。',
+        tip: '本ガイド上位3機：A/A+ は +1、S/S+ は +2、上限 +2。B+ 以下は加点なし。',
       },
       linked_pilot: {
         label: 'アフィニティキャラ候補',
@@ -764,7 +820,7 @@
       },
       source: {
         label: '入手元',
-        tip: '開発ユニット・その他は +1。ユニット補給は 0。',
+        tip: 'フィルタのみ — レターには影響しません。複数選択（OR）で開発ユニット＋その他を選ぶとガシャ獲得ユニットを除外できます。',
       },
       movement_followup: {
         label: '追加行動・追撃移動',
@@ -812,15 +868,23 @@
       tags: { label: '標籤數', tip: '計分標籤數。目前固定 0 — 價值改由戰略標籤處理。' },
       tags_strategic: {
         label: '戰略標籤',
-        tip: '常出現在 UR 單位（尤其限定）上的標籤加分，有上限。',
+        tip: '常出現在 UR 單位（尤其限定）上的標籤加分。已出現在 Expert 限制中的標籤此處不加分（由 Expert 適性承擔）。有上限。',
+      },
+      limited_supporter_tags: {
+        label: '限定期間支援人員標籤',
+        tip: '每個由限定期間機體補給支援人員隊長技能（第 3 階）涵蓋的標籤 +1，上限 +2。計分指南有清單。',
       },
       er_access: {
         label: '永恆之路 Expert 適性',
-        tip: '可出擊的永恆之路 Expert 關卡數。少於 2 −1；2–4 +1；5 以上 +2。',
+        tip: '單位：可出擊的 Expert 關卡數（0–1→0；2–6→+1；7 以上→+2）。角色：只計有角色限制的 Expert（0→0；1→+1；2 以上→+2）。角色自由出擊關卡不加分。',
+      },
+      combat_actions: {
+        label: '戰鬥行動',
+        tip: '主資料中的額外行動+1／支援攻擊+1／支援防禦+1（與一覽 ×2 篩選同系統）。依類型加權，上限 +3。不以通關影片出場次數計分。',
       },
       terrain: {
         label: '地形適性',
-        tip: '需宇宙＋地面或空中才為中立（0）。缺宇宙，或地面與空中皆缺為 −3。',
+        tip: '底線需宇宙＋地面或空中（出擊適性圓／三角形相當的 Lv≥2）。額外需完全適性「圓」（Lv≥3）。地形適性「三角形」（Lv2）的宇宙／空中各 −1。完美加分在上述有三角形時不套用。',
       },
       rarity: {
         label: '稀有度',
@@ -832,11 +896,11 @@
       },
       map: {
         label: 'MAP兵器',
-        tip: '損傷 MAP 存在 +1；衝刺／移動攻擊、彈數與範圍再加分。回復／友方支援 MAP（MP 供給）另計 +1。攻擊型最高 +4；耐久／支援型上限 +2。',
+        tip: '損傷 MAP 需覆蓋格數 ≥3 才有存在分。1 格 MAP 不免費 +1。衝刺／移動攻擊、彈數與範圍再加分。回復／友方支援 MAP 另計 +1。攻擊型最高 +4；耐久／支援型上限 +2。',
       },
       abilities: {
         label: '單位能力',
-        tip: '對該類型有用的單位能力。無條件純數值提升此處為 0。',
+        tip: '對該類型有用的單位能力。無條件純數值提升通常為 0（攻擊型對無條件攻擊力% 有輕微加分）。HP／反擊條件的攻擊力有上限。Advantage: 系列能力此處不加分。',
       },
       skills_abilities: {
         label: '角色技能與能力',
@@ -844,11 +908,11 @@
       },
       series_affinity: {
         label: '系列親和',
-        tip: '系列／勢力親和能力加分。',
+        tip: '角色：每個系列／勢力親和 +2（上限 +2）。單位依單位側規則。',
       },
       recommend_ms: {
         label: '推薦單位',
-        tip: '本指南前 3 機：A/A+ +1、S/S+ +2，上限 +3。B+ 以下不加分。',
+        tip: '本指南前 3 機：A/A+ +1、S/S+ +2，上限 +2。B+ 以下不加分。',
       },
       linked_pilot: {
         label: '親和角色池',
@@ -890,7 +954,7 @@
       },
       source: {
         label: '取得來源',
-        tip: '開發單位與其他 +1；單位補給獲得單位為 0。',
+        tip: '僅篩選 — 不影響字母分數。可複選（OR）：同時選開發單位與其他即可排除單位補給獲得單位。',
       },
       movement_followup: {
         label: '追加行動／追擊移動',
@@ -938,11 +1002,27 @@
   BREAKDOWN.HK = Object.assign({}, BREAKDOWN.TW, {
     er_access: {
       label: '永恆之路 Expert 適性',
-      tip: '可出擊嘅永恆之路 Expert 關卡數。少過 2 −1；2–4 +1；5 或以上 +2。',
+      tip: '單位：可出擊嘅 Expert 關卡數（0–1→0；2–6→+1；7 或以上→+2）。角色：只計有角色限制嘅 Expert（0→0；1→+1；2 或以上→+2）。角色自由出擊關卡唔加分。',
+    },
+    combat_actions: {
+      label: '戰鬥行動',
+      tip: '主資料入面嘅額外行動+1／支援攻擊+1／支援防禦+1（同列表 ×2 篩選同一套）。跟類型加權，上限 +3。唔會用通關影片出場次數計分。',
+    },
+    terrain: {
+      label: '地形適性',
+      tip: '底線要宇宙＋地面或空中（出擊適性圓／三角形相當嘅 Lv≥2）。額外要完全適性「圓」（Lv≥3）。地形適性「三角形」（Lv2）嘅宇宙／空中各 −1。完美加分喺上述有三角形時唔套用。',
     },
     map: {
       label: 'MAP兵器',
-      tip: '損傷 MAP 存在 +1；衝刺／移動攻擊、彈數同範圍再加分。回復／友方支援 MAP（MP 供給）另計 +1。攻擊型最高 +4；耐久／支援型上限 +2。',
+      tip: '損傷 MAP 要覆蓋格數 ≥3 先有存在分。1 格 MAP 唔免費 +1。衝刺／移動攻擊、彈數同範圍再加分。回復／友方支援 MAP 另計 +1。攻擊型最高 +4；耐久／支援型上限 +2。',
+    },
+    abilities: {
+      label: '單位能力',
+      tip: '對該類型有用嘅單位能力。無條件純數值提升通常係 0（攻擊型對無條件攻擊力% 有輕微加分）。HP／反擊條件嘅攻擊力有上限。Advantage: 系列能力呢度唔加分。',
+    },
+    recommend_ms: {
+      label: '推薦單位',
+      tip: '本指南前 3 機：A/A+ +1、S/S+ +2，上限 +2。B+ 或以下唔加分。',
     },
     mob: {
       label: '機動力',
@@ -950,7 +1030,7 @@
     },
     source: {
       label: '取得來源',
-      tip: '開發單位同其他 +1；單位補給獲得單位係 0。',
+      tip: '淨係篩選 — 唔影響字母分數。可以複選（OR）：同時揀開發單位同其他即可排除機體補給獲得單位。',
     },
   });
 

@@ -39,11 +39,21 @@
     },
     tags_strategic: {
       label: 'Strategic tags',
-      tip: 'Bonus from tags that show up often on UR units (especially limited URs). More common combat tags score higher, with a small cap.',
+      tip: 'Bonus from tags that show up often on UR units (especially limited URs). Tags already on Expert restrictions are skipped here — Expert access covers them. Cap applies.',
+    },
+    limited_supporter_tags: {
+      label: 'Limited-time Supporter tags',
+      tip: '+1 per Tag covered by a limited-time Unit Assembly Supporter’s tier-3 leader skill, cap +2. Those Supporters are why players save gems.',
+      hideIfZero: true,
     },
     er_access: {
       label: 'Eternal Road Expert access',
-      tip: 'How many Eternal Road Expert stages this unit or pilot can enter. Under 2 is −1; 2–4 is +1; 5 or more is +2.',
+      tip: 'Units: Expert stages this Unit can enter (0–1 → 0; 2–6 → +1; 7+ → +2) — small eligibility gaps do not create free tiers. Characters: only character-restricted Expert stages (0 → 0; 1 → +1; 2+ → +2).',
+    },
+    combat_actions: {
+      label: 'Combat actions',
+      tip: 'Master-data Chance Step +1, Support Attack +1, or Support Defense +1 (same idea as browse ×2 filters). Role-weighted; cap +3. Not based on clear videos.',
+      hideIfZero: true,
     },
     large_footprint: {
       label: '2×2',
@@ -52,7 +62,7 @@
     },
     terrain: {
       label: 'Terrain coverage',
-      tip: 'Need Space plus Land or Atmospheric for a neutral (0) score — Space+Atmos with no Land is OK (e.g. Byarlant). Extra terrains add points. Missing Space, or both Land and Atmospheric, is −3. A 0 here still means the floor was met; it is not skipped.',
+      tip: 'Floor: Space plus Land or Atmospheric at deploy Lv≥2. Extras need full affinity circle (Lv≥3). Terrain Capability triangle (Lv2) Space/Atmospheric each −1. Perfect bonus needs full-affinity coverage with no triangle on those keys.',
     },
     rarity: {
       label: 'Rarity',
@@ -64,11 +74,11 @@
     },
     map: {
       label: 'MAP weapons',
-      tip: 'Damage MAP +1 presence; dash/MovingAttack, ammo 2+, and coverage add more. Recovery / ally-support MAP (MP supply) scores +1 separately — not as a damage MAP. Attack can score up to +4; Defense/Support cap at +2.',
+      tip: 'Damage MAP needs enough coverage cells (≥3) for presence; dash/MovingAttack, ammo 2+, and coverage add more. Tiny 1-cell MAP is not a free +1. Recovery / ally-support MAP scores +1 separately. Attack up to +4; Defense/Support cap +2.',
     },
     abilities: {
       label: 'Abilities',
-      tip: 'Role-relevant ability effects (damage, defense, support tools, movement tricks). Permanent plain stat ups with no condition score 0 here.',
+      tip: 'Role-relevant ability effects. Permanent plain stats are usually 0 (Attack gets light credit for unconditional ATK%). HP/Counter-gated ATK is soft-capped. Advantage: series abilities do not score here (in-series only).',
     },
     skills_abilities: {
       label: 'Skills & abilities',
@@ -76,11 +86,11 @@
     },
     series_affinity: {
       label: 'Series affinity',
-      tip: 'Points for series / faction affinity abilities.',
+      tip: 'Characters: +2 per series/faction affinity ability, cap +2. Units keep the unit affinity table.',
     },
     recommend_ms: {
       label: 'Recommended Mobile Suits',
-      tip: 'Bonus from this Character’s best matching Units on this guide (top 3: A/A+ = +1, S/S+ = +2, cap +3). B+ and below do not score.',
+      tip: 'Bonus from this Character’s best matching Units on this guide (top 3: A/A+ = +1, S/S+ = +2, cap +2). B+ and below do not score. Affinity-linked frames help, but do not outrank a stronger unconditional kit by themselves.',
     },
     linked_pilot: {
       label: 'Affinity pilot pool',
@@ -171,7 +181,8 @@
     },
     source: {
       label: 'Acquisition',
-      tip: 'How the Unit is obtained: Development Unit and Other get +1; Units from Unit Assembly stay 0.',
+      tip: 'Filter only — does not change letter scores. Multi-select (OR): pick Development + Other to exclude Unit Assembly.',
+      hideIfZero: true,
     },
     max_debuff: {
       label: 'Debuff strength',
@@ -322,7 +333,7 @@
     }
     persistLang(norm);
     document.documentElement.setAttribute('data-ui-lang', norm);
-    tagFilter = '';
+    tagFilters = [];
     updateTagFilterLabel();
     applyLangStatic();
     await fetchPayload();
@@ -664,9 +675,14 @@
   let mapOnly = false;
   let hasSpOnly = true;
   let showUlt = false;
-  let sourceFilter = 'all';
-  let tagFilter = '';
-  let erFilter = '';
+  let sourceFilters = [];
+  let sourceCombine = 'or';
+  let tagFilters = [];
+  let erFilters = [];
+  let tagCombine = 'and';
+  let erCombine = 'and';
+  let skillCombine = 'and';
+  let abilCombine = 'and';
   let skillFilterIds = [];
   let abilFilterIds = [];
   let searchQuery = '';
@@ -808,20 +824,22 @@
 
   function seriesAdvantageApplies(row) {
     const adv = row && row.series_advantage;
-    if (!adv || !tagFilter) return false;
-    const tag = String(tagFilter).trim().toLowerCase();
-    if (!tag) return false;
+    if (!adv || !tagFilters.length) return false;
     const matchTags = (adv.match_tags || []).map((t) => String(t).trim().toLowerCase());
-    if (matchTags.includes(tag)) return true;
     const series = String(adv.series_name || '').trim().toLowerCase();
-    if (!series) return false;
-    const tagCore = tag.replace(/\s+series\s*$/i, '').trim();
     const generic = new Set([
       'gundam', 'mobile suit', 'mobile', 'suit', 'ms', 'unit', 'series',
       'alternative', 'rival', 'red', 'blue', 'white', 'black', 'ultimate',
     ]);
-    if (tagCore.length < 3 || generic.has(tagCore)) return false;
-    if (series.includes(tagCore)) return true;
+    for (const raw of tagFilters) {
+      const tag = String(raw || '').trim().toLowerCase();
+      if (!tag) continue;
+      if (matchTags.includes(tag)) return true;
+      if (!series) continue;
+      const tagCore = tag.replace(/\s+series\s*$/i, '').trim();
+      if (tagCore.length < 3 || generic.has(tagCore)) continue;
+      if (series.includes(tagCore)) return true;
+    }
     return false;
   }
 
@@ -934,22 +952,25 @@
     // SP-eligible filter; Ultimate Units use the ULT toggle instead of has_sp.
     if (hasSpOnly && !row.has_sp && !ult) return false;
     if (entity === 'units' && mapOnly && !row.has_map) return false;
-    if (sourceFilter !== 'all' && (row.source || '') !== sourceFilter) return false;
-    if (tagFilter) {
-      const tags = (row.tags || []).map((t) => String(t));
-      if (!tags.includes(tagFilter)) return false;
+    if (sourceFilters.length) {
+      const src = String(row.source || '');
+      if (!spiCombineMatch(sourceFilters, (want) => src === String(want), sourceCombine)) return false;
     }
-    if (erFilter) {
-      const ids = row.er_expert_ids || [];
-      if (!ids.map(String).includes(String(erFilter))) return false;
+    if (tagFilters.length) {
+      const tags = (row.tags || []).map((t) => String(t));
+      if (!spiCombineMatch(tagFilters, (want) => tags.includes(String(want)), tagCombine)) return false;
+    }
+    if (erFilters.length) {
+      const ids = (row.er_expert_ids || []).map(String);
+      if (!spiCombineMatch(erFilters, (want) => ids.includes(String(want)), erCombine)) return false;
     }
     if (entity === 'characters' && skillFilterIds.length) {
       const have = new Set((row.skills || []).map((s) => String((s && s.id) || '')));
-      if (!skillFilterIds.every((id) => have.has(String(id)))) return false;
+      if (!spiCombineMatch(skillFilterIds, (id) => have.has(String(id)), skillCombine)) return false;
     }
     if (abilFilterIds.length) {
       const have = new Set((row.abilities || []).map((a) => String((a && a.id) || '')));
-      if (!abilFilterIds.every((id) => have.has(String(id)))) return false;
+      if (!spiCombineMatch(abilFilterIds, (id) => have.has(String(id)), abilCombine)) return false;
     }
     const q = searchQuery.trim().toLowerCase();
     if (q && !rowMatchesSearch(row, q)) return false;
@@ -958,11 +979,81 @@
 
   function sourceOpts() {
     return [
-      { value: 'all', label: t('all_sources') },
       { value: 'gacha', label: t('source_gacha') },
       { value: 'event', label: t('source_event') },
       { value: 'dev', label: t('source_dev') },
     ];
+  }
+
+  function spiCombineOp(v) {
+    return v === 'or' || v === 'and_or' ? v : 'and';
+  }
+
+  function nextSpiCombineMode(v) {
+    const m = spiCombineOp(v);
+    return m === 'and' ? 'and_or' : m === 'and_or' ? 'or' : 'and';
+  }
+
+  function spiCombineModeFromClick(ev, btn) {
+    const modes = ['and', 'and_or', 'or'];
+    if (!ev || !ev.detail) return nextSpiCombineMode(btn && btn.dataset.combineMode);
+    const rect = btn.getBoundingClientRect();
+    const idx = Math.min(2, Math.max(0, Math.floor(((ev.clientX - rect.left) / Math.max(rect.width, 1)) * 3)));
+    return modes[idx];
+  }
+
+  function spiCombineMatch(items, matchOne, combine) {
+    const seq = (items || []).map((x) => x).filter((x) => x != null && String(x) !== '');
+    if (!seq.length) return true;
+    if (seq.length === 1) return !!matchOne(seq[0]);
+    const mode = spiCombineOp(combine);
+    if (mode === 'or') return seq.some((x) => matchOne(x));
+    if (mode === 'and_or') return matchOne(seq[0]) && seq.slice(1).some((x) => matchOne(x));
+    return seq.every((x) => matchOne(x));
+  }
+
+  let _spiCombineClip = 0;
+  function spiCombineSegToggleMarkup() {
+    _spiCombineClip += 1;
+    const cid = `spiCombClip${_spiCombineClip}`;
+    const andSvg =
+      `<svg xmlns="http://www.w3.org/2000/svg" class="browse-combine-venn" viewBox="0 0 28 26" aria-hidden="true">` +
+      `<defs><clipPath id="${cid}"><circle cx="10" cy="13" r="8"/></clipPath></defs>` +
+      `<circle cx="10" cy="13" r="8" fill="none" stroke="currentColor" stroke-width=".85" opacity=".55"/>` +
+      `<circle cx="18" cy="13" r="8" fill="none" stroke="currentColor" stroke-width=".85" opacity=".55"/>` +
+      `<circle cx="18" cy="13" r="8" fill="currentColor" clip-path="url(#${cid})"/></svg>`;
+    const andOrSvg =
+      `<svg xmlns="http://www.w3.org/2000/svg" class="browse-combine-venn browse-combine-venn--and-or" viewBox="0 0 41 26" aria-hidden="true">` +
+      `<circle cx="10" cy="13" r="8" fill="currentColor"/>` +
+      `<circle cx="10" cy="13" r="8" fill="none" stroke="currentColor" stroke-width=".85" opacity=".55"/>` +
+      `<path fill="currentColor" opacity=".88" d="M22 13a5.5 5.5 0 0 1 5.5-5.5H33a5.5 5.5 0 0 1 5.5 5.5v0a5.5 5.5 0 0 1-5.5 5.5h-5.5A5.5 5.5 0 0 1 22 13Z"/></svg>`;
+    const orSvg =
+      `<svg xmlns="http://www.w3.org/2000/svg" class="browse-combine-venn" viewBox="0 0 28 26" aria-hidden="true">` +
+      `<circle cx="10" cy="13" r="8" fill="currentColor" opacity=".55"/>` +
+      `<circle cx="18" cy="13" r="8" fill="currentColor" opacity=".55"/></svg>`;
+    return (
+      `<span class="browse-combine-seg-thumb"></span>` +
+      `<span class="browse-combine-seg browse-combine-seg--and">${andSvg}</span>` +
+      `<span class="browse-combine-seg browse-combine-seg--and-or">${andOrSvg}</span>` +
+      `<span class="browse-combine-seg browse-combine-seg--or">${orSvg}</span>`
+    );
+  }
+
+  function syncSpiCombineToggleUi(btn, mode) {
+    if (!btn) return;
+    const m = spiCombineOp(mode);
+    btn.classList.remove('browse-filter-combine-toggle--or', 'browse-filter-combine-toggle--and-or');
+    if (m === 'or') btn.classList.add('browse-filter-combine-toggle--or');
+    else if (m === 'and_or') btn.classList.add('browse-filter-combine-toggle--and-or');
+    btn.dataset.combineMode = m;
+    const tt =
+      m === 'or'
+        ? t('combine_tt_or')
+        : m === 'and_or'
+          ? t('combine_tt_and_or')
+          : t('combine_tt_and');
+    btn.title = tt !== 'combine_tt_and' && !String(tt).startsWith('combine_') ? tt : m === 'or' ? 'OR' : m === 'and_or' ? 'AND + OR' : 'AND';
+    btn.setAttribute('aria-label', btn.title);
   }
 
   function closeSpiFilterPanels() {
@@ -975,11 +1066,9 @@
         if (pfx === 'spiRarity') btn.classList.toggle('active', !isRarityFilterDefault() || raritySel.size === 0);
         else if (pfx === 'spiSkill') btn.classList.toggle('active', skillFilterIds.length > 0);
         else if (pfx === 'spiAbil') btn.classList.toggle('active', abilFilterIds.length > 0);
-        else
-          btn.classList.toggle(
-            'active',
-            pfx === 'spiSource' ? sourceFilter !== 'all' : pfx === 'spiTag' ? !!tagFilter : !!erFilter
-          );
+        else if (pfx === 'spiSource') btn.classList.toggle('active', sourceFilters.length > 0);
+        else if (pfx === 'spiTag') btn.classList.toggle('active', tagFilters.length > 0);
+        else btn.classList.toggle('active', erFilters.length > 0);
       }
     });
   }
@@ -1035,16 +1124,6 @@
     </div>`;
   }
 
-  function spiDdFooterHtml() {
-    return `<div class="filter-panel-clear-wrap spi-dd-footer" data-footer-ready="1">
-      <div class="filter-panel-footer-left"></div>
-      <div class="filter-panel-footer-right">
-        <button type="button" class="filter-panel-esc-btn" data-filter-esc="1">${esc(t('filter_esc'))}</button>
-        <button type="button" class="filter-panel-clear-btn" data-filter-clear="1">${esc(t('filter_clear'))}</button>
-      </div>
-    </div>`;
-  }
-
   function bindSpiDdSearch(panel) {
     const search = panel.querySelector('.filter-dd-search');
     const clearBtn = panel.querySelector('.spi-dd-search-clear');
@@ -1084,9 +1163,41 @@
     syncClear();
   }
 
-  function bindSpiDdFooter(panel, onClear) {
+  function spiDdFooterHtml(combineKey) {
+    const left = combineKey
+      ? `<button type="button" class="browse-filter-combine-toggle" role="button" data-spi-combine="${escAttr(combineKey)}"><span class="browse-combine-seg-toggle" aria-hidden="true">${spiCombineSegToggleMarkup()}</span></button>`
+      : '';
+    return `<div class="filter-panel-clear-wrap spi-dd-footer" data-footer-ready="1"${combineKey ? ` data-spi-comb-key="${escAttr(combineKey)}"` : ''}>
+      <div class="filter-panel-footer-left">${left}</div>
+      <div class="filter-panel-footer-right">
+        <button type="button" class="filter-panel-esc-btn" data-filter-esc="1">${esc(t('filter_esc'))}</button>
+        <button type="button" class="filter-panel-clear-btn" data-filter-clear="1">${esc(t('filter_clear'))}</button>
+      </div>
+    </div>`;
+  }
+
+  function getSpiCombineMode(key) {
+    if (key === 'tag') return tagCombine;
+    if (key === 'er') return erCombine;
+    if (key === 'skill') return skillCombine;
+    if (key === 'abil') return abilCombine;
+    if (key === 'source') return sourceCombine;
+    return 'and';
+  }
+
+  function setSpiCombineMode(key, mode) {
+    const m = spiCombineOp(mode);
+    if (key === 'tag') tagCombine = m;
+    else if (key === 'er') erCombine = m;
+    else if (key === 'skill') skillCombine = m;
+    else if (key === 'abil') abilCombine = m;
+    else if (key === 'source') sourceCombine = m;
+  }
+
+  function bindSpiDdFooter(panel, onClear, combineKey) {
     const escBtn = panel.querySelector('[data-filter-esc]');
     const clrBtn = panel.querySelector('[data-filter-clear]');
+    const combBtn = panel.querySelector('.browse-filter-combine-toggle');
     if (escBtn) {
       escBtn.textContent = t('filter_esc');
       escBtn.onclick = (ev) => {
@@ -1105,6 +1216,18 @@
         } catch (_) {}
       };
     }
+    if (combBtn && combineKey) {
+      syncSpiCombineToggleUi(combBtn, getSpiCombineMode(combineKey));
+      combBtn.onclick = (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        const next = spiCombineModeFromClick(ev, combBtn);
+        if (getSpiCombineMode(combineKey) === next) return;
+        setSpiCombineMode(combineKey, next);
+        syncSpiCombineToggleUi(combBtn, next);
+        render();
+      };
+    }
   }
 
   function setFilterBtnLabel(labelEl, text, active) {
@@ -1115,30 +1238,63 @@
   }
 
   function updateSourceFilterLabel() {
-    const opts = sourceOpts();
-    const opt = opts.find((o) => o.value === sourceFilter) || opts[0];
-    setFilterBtnLabel($('#spiSourceFilterLabel'), opt.label, sourceFilter !== 'all');
+    if (!sourceFilters.length) {
+      setFilterBtnLabel($('#spiSourceFilterLabel'), t('all_sources'), false);
+      return;
+    }
+    if (sourceFilters.length === 1) {
+      const opts = sourceOpts();
+      const opt = opts.find((o) => o.value === sourceFilters[0]) || opts[0];
+      setFilterBtnLabel($('#spiSourceFilterLabel'), opt.label, true);
+      return;
+    }
+    const nLabel = t('source_filter_n', { n: sourceFilters.length });
+    setFilterBtnLabel(
+      $('#spiSourceFilterLabel'),
+      nLabel.startsWith('source_filter') ? `${sourceFilters.length} sources` : nLabel,
+      true
+    );
   }
 
   function updateTagFilterLabel() {
-    setFilterBtnLabel($('#spiTagFilterLabel'), tagFilter || t('no_tag_filter'), !!tagFilter);
+    if (!tagFilters.length) {
+      setFilterBtnLabel($('#spiTagFilterLabel'), t('no_tag_filter'), false);
+      return;
+    }
+    if (tagFilters.length === 1) {
+      setFilterBtnLabel($('#spiTagFilterLabel'), tagFilters[0], true);
+      return;
+    }
+    const nLabel = t('tag_filter_n', { n: tagFilters.length });
+    setFilterBtnLabel(
+      $('#spiTagFilterLabel'),
+      nLabel.startsWith('tag_filter') ? `${tagFilters.length} tags` : nLabel,
+      true
+    );
   }
 
   function updateErFilterLabel() {
-    let text = t('no_er_filter');
-    if (erFilter && payload) {
-      const ers = payload.er_expert_filters || [];
-      const hit = ers.find((e) => String(e.id) === String(erFilter));
-      if (hit) {
-        text =
-          entity === 'characters'
-            ? hit.character_label || hit.label || hit.id
-            : hit.unit_label || hit.label || hit.id;
-      } else {
-        text = String(erFilter);
-      }
+    if (!erFilters.length) {
+      setFilterBtnLabel($('#spiErFilterLabel'), t('no_er_filter'), false);
+      return;
     }
-    setFilterBtnLabel($('#spiErFilterLabel'), text, !!erFilter);
+    if (erFilters.length === 1) {
+      const ers = (payload && payload.er_expert_filters) || [];
+      const hit = ers.find((e) => String(e.id) === String(erFilters[0]));
+      const text = hit
+        ? entity === 'characters'
+          ? hit.character_label || hit.label || hit.id
+          : hit.unit_label || hit.label || hit.id
+        : String(erFilters[0]);
+      setFilterBtnLabel($('#spiErFilterLabel'), text, true);
+      return;
+    }
+    const nLabel = t('er_filter_n', { n: erFilters.length });
+    setFilterBtnLabel(
+      $('#spiErFilterLabel'),
+      nLabel.startsWith('er_filter') ? `${erFilters.length} stages` : nLabel,
+      true
+    );
   }
 
   function collectKitCatalog(kind) {
@@ -1258,7 +1414,7 @@
       .join('');
     panel.innerHTML = `${spiDdSearchWrapHtml(t('skill_search_ph'), t('skill_search_aria'))}
       <div class="spi-dd-scroll">${rows || ''}<div class="spi-dd-empty" hidden>${esc(t('skill_search_empty'))}</div></div>
-      ${spiDdFooterHtml()}`;
+      ${spiDdFooterHtml('skill')}`;
     bindSpiDdSearch(panel);
     panel.querySelectorAll('input[type="checkbox"]').forEach((inp) => {
       inp.addEventListener('change', () => {
@@ -1269,13 +1425,17 @@
         render();
       });
     });
-    bindSpiDdFooter(panel, () => {
-      skillFilterIds = [];
-      updateSkillFilterLabel();
-      fillSkillPanel();
-      closeSpiFilterPanels();
-      render();
-    });
+    bindSpiDdFooter(
+      panel,
+      () => {
+        skillFilterIds = [];
+        updateSkillFilterLabel();
+        fillSkillPanel();
+        closeSpiFilterPanels();
+        render();
+      },
+      'skill'
+    );
   }
 
   function fillAbilPanel() {
@@ -1289,7 +1449,7 @@
     const emptyMsg = entity === 'characters' ? t('abil_search_empty') : t('unit_abil_search_empty');
     panel.innerHTML = `${spiDdSearchWrapHtml(searchPh, searchAria)}
       <div class="spi-dd-scroll">${rows || ''}<div class="spi-dd-empty" hidden>${esc(emptyMsg)}</div></div>
-      ${spiDdFooterHtml()}`;
+      ${spiDdFooterHtml('abil')}`;
     bindSpiDdSearch(panel);
     panel.querySelectorAll('input[type="checkbox"]').forEach((inp) => {
       inp.addEventListener('change', () => {
@@ -1300,13 +1460,17 @@
         render();
       });
     });
-    bindSpiDdFooter(panel, () => {
-      abilFilterIds = [];
-      updateAbilFilterLabel();
-      fillAbilPanel();
-      closeSpiFilterPanels();
-      render();
-    });
+    bindSpiDdFooter(
+      panel,
+      () => {
+        abilFilterIds = [];
+        updateAbilFilterLabel();
+        fillAbilPanel();
+        closeSpiFilterPanels();
+        render();
+      },
+      'abil'
+    );
   }
 
   function renderEntityKitHtml(row, isPilot) {
@@ -1330,6 +1494,15 @@
       : '';
     const aria = isPilot ? t('kit_aria') : t('kit_unit_aria');
     return `<div class="spi-dossier-kit" aria-label="${escAttr(aria)}">${abilBlock}${skillBlock}</div>`;
+  }
+
+  function ddCheckRowHtml(value, label, checked, group, filterText) {
+    const id = `spiDd_${group}_${String(value).replace(/[^a-zA-Z0-9_-]/g, '_') || 'all'}`;
+    const ft = filterText != null ? filterText : String(label).toLowerCase();
+    return `<label class="rarity-filter-row list-filter-tag-item" data-filter-text="${escAttr(ft)}">
+      <input type="checkbox" name="spiDd_${escAttr(group)}" id="${escAttr(id)}" value="${escAttr(value)}" ${checked ? 'checked' : ''}>
+      <span class="rarity-filter-all-label">${esc(label)}</span>
+    </label>`;
   }
 
   function ddRowHtml(value, label, checked, group, filterText) {
@@ -1379,23 +1552,31 @@
   function fillSourcePanel() {
     const panel = $('#spiSourceFilterPanel');
     if (!panel) return;
-    const rows = sourceOpts().map((o) => ddRowHtml(o.value, o.label, sourceFilter === o.value, 'source')).join('');
-    panel.innerHTML = `<div class="spi-dd-scroll">${rows}</div>${spiDdFooterHtml()}`;
-    panel.querySelectorAll('input[type="radio"]').forEach((inp) => {
+    const sel = new Set(sourceFilters.map(String));
+    const rows = sourceOpts()
+      .map((o) => ddCheckRowHtml(o.value, o.label, sel.has(String(o.value)), 'source'))
+      .join('');
+    panel.innerHTML = `<div class="spi-dd-scroll">${rows}</div>${spiDdFooterHtml('source')}`;
+    panel.querySelectorAll('input[type="checkbox"]').forEach((inp) => {
       inp.addEventListener('change', () => {
-        sourceFilter = inp.value || 'all';
+        sourceFilters = Array.from(panel.querySelectorAll('input[type="checkbox"]:checked')).map((x) =>
+          String(x.value)
+        );
         updateSourceFilterLabel();
-        closeSpiFilterPanels();
         render();
       });
     });
-    bindSpiDdFooter(panel, () => {
-      sourceFilter = 'all';
-      updateSourceFilterLabel();
-      fillSourcePanel();
-      closeSpiFilterPanels();
-      render();
-    });
+    bindSpiDdFooter(
+      panel,
+      () => {
+        sourceFilters = [];
+        updateSourceFilterLabel();
+        fillSourcePanel();
+        closeSpiFilterPanels();
+        render();
+      },
+      'source'
+    );
   }
 
   function fillTagPanel() {
@@ -1403,72 +1584,80 @@
     if (!panel) return;
     const tags = (payload && payload.tag_catalog) || [];
     const tagsEn = (payload && payload.tag_catalog_en) || tags;
-    const rows =
-      ddRowHtml('', t('no_tag_filter'), !tagFilter, 'tag') +
-      tags
-        .map((tagName, i) => {
-          const en = tagsEn[i] || tagName;
-          const ft = `${tagName} ${en}`.toLowerCase();
-          return ddRowHtml(tagName, tagName, tagFilter === tagName, 'tag', ft);
-        })
-        .join('');
+    const sel = new Set(tagFilters.map(String));
+    const rows = tags
+      .map((tagName, i) => {
+        const en = tagsEn[i] || tagName;
+        const ft = `${tagName} ${en}`.toLowerCase();
+        return ddCheckRowHtml(tagName, tagName, sel.has(String(tagName)), 'tag', ft);
+      })
+      .join('');
     panel.innerHTML = `${spiDdSearchWrapHtml(t('tag_search_ph'), t('tag_search_aria'))}
       <div class="spi-dd-scroll">${rows}<div class="spi-dd-empty" hidden>${esc(t('tag_search_empty'))}</div></div>
-      ${spiDdFooterHtml()}`;
+      ${spiDdFooterHtml('tag')}`;
     bindSpiDdSearch(panel);
-    panel.querySelectorAll('input[type="radio"]').forEach((inp) => {
+    panel.querySelectorAll('input[type="checkbox"]').forEach((inp) => {
       inp.addEventListener('change', () => {
-        tagFilter = inp.value || '';
+        tagFilters = Array.from(panel.querySelectorAll('input[type="checkbox"]:checked')).map((x) =>
+          String(x.value)
+        );
         updateTagFilterLabel();
-        closeSpiFilterPanels();
         render();
       });
     });
-    bindSpiDdFooter(panel, () => {
-      tagFilter = '';
-      updateTagFilterLabel();
-      fillTagPanel();
-      closeSpiFilterPanels();
-      render();
-    });
+    bindSpiDdFooter(
+      panel,
+      () => {
+        tagFilters = [];
+        updateTagFilterLabel();
+        fillTagPanel();
+        closeSpiFilterPanels();
+        render();
+      },
+      'tag'
+    );
   }
 
   function fillErPanel() {
     const panel = $('#spiErFilterPanel');
     if (!panel) return;
     const ers = (payload && payload.er_expert_filters) || [];
-    const rows =
-      ddRowHtml('', t('no_er_filter'), !erFilter, 'er') +
-      ers
-        .map((e) => {
-          const label =
-            entity === 'characters'
-              ? e.character_label || e.label || e.id
-              : e.unit_label || e.label || e.id;
-          const en = e.label || e.unit_label || e.character_label || e.id;
-          const ft = `${label} ${en} ${e.id}`.toLowerCase();
-          return ddRowHtml(String(e.id), label, String(erFilter) === String(e.id), 'er', ft);
-        })
-        .join('');
+    const sel = new Set(erFilters.map(String));
+    const rows = ers
+      .map((e) => {
+        const label =
+          entity === 'characters'
+            ? e.character_label || e.label || e.id
+            : e.unit_label || e.label || e.id;
+        const en = e.label || e.unit_label || e.character_label || e.id;
+        const ft = `${label} ${en} ${e.id}`.toLowerCase();
+        return ddCheckRowHtml(String(e.id), label, sel.has(String(e.id)), 'er', ft);
+      })
+      .join('');
     panel.innerHTML = `${spiDdSearchWrapHtml(t('er_search_ph'), t('er_search_aria'))}
       <div class="spi-dd-scroll">${rows}<div class="spi-dd-empty" hidden>${esc(t('er_search_empty'))}</div></div>
-      ${spiDdFooterHtml()}`;
+      ${spiDdFooterHtml('er')}`;
     bindSpiDdSearch(panel);
-    panel.querySelectorAll('input[type="radio"]').forEach((inp) => {
+    panel.querySelectorAll('input[type="checkbox"]').forEach((inp) => {
       inp.addEventListener('change', () => {
-        erFilter = inp.value || '';
+        erFilters = Array.from(panel.querySelectorAll('input[type="checkbox"]:checked')).map((x) =>
+          String(x.value)
+        );
         updateErFilterLabel();
-        closeSpiFilterPanels();
         render();
       });
     });
-    bindSpiDdFooter(panel, () => {
-      erFilter = '';
-      updateErFilterLabel();
-      fillErPanel();
-      closeSpiFilterPanels();
-      render();
-    });
+    bindSpiDdFooter(
+      panel,
+      () => {
+        erFilters = [];
+        updateErFilterLabel();
+        fillErPanel();
+        closeSpiFilterPanels();
+        render();
+      },
+      'er'
+    );
   }
 
   function fillFilterSelects() {
@@ -1584,6 +1773,29 @@
             </div>
             ${summary ? `<p class="spi-criteria-summary">${esc(summary)}</p>` : ''}
             ${rows ? `<table class="spi-criteria-table"><tbody>${rows}</tbody></table>` : ''}
+            ${
+              cid === 'limited_supporter_tags'
+                ? (() => {
+                    const cat =
+                      (g && g.limited_supporter_tag_catalog) ||
+                      (payload && payload.limited_supporter_tag_catalog) ||
+                      [];
+                    if (!cat.length) {
+                      return `<p class="spi-criteria-summary">${esc(t('lim_supp_tags_empty'))}</p>`;
+                    }
+                    const lis = cat
+                      .map((row) => {
+                        const nm = row.name || row.id || '';
+                        const supps = (row.supporter_names || []).slice(0, 4).join(', ');
+                        return `<li><strong>${esc(nm)}</strong>${supps ? ` — ${esc(supps)}` : ''}</li>`;
+                      })
+                      .join('');
+                    return `<div class="spi-lim-supp-tags"><p class="spi-criteria-summary">${esc(
+                      t('lim_supp_tags_intro')
+                    )}</p><ul class="spi-lim-supp-tag-list">${lis}</ul></div>`;
+                  })()
+                : ''
+            }
           </article>`;
         })
         .join('');
@@ -1723,7 +1935,7 @@
           : counts.units_sp || counts.sp || 0;
     const label = entity === 'characters' ? t('pilots_sp') : board.toUpperCase();
     const cohortNote = showUlt ? t('cohort_ultimate') : '';
-    const advNote = tagFilter ? t('adv_note') : '';
+    const advNote = tagFilters.length ? t('adv_note') : '';
     statusEl.textContent =
       t('showing', { shown, total: totalBoard, board: label, role: tRole(role) }) + cohortNote + advNote;
   }
@@ -1921,9 +2133,14 @@
     mapOnly = false;
     hasSpOnly = true;
     showUlt = false;
-    sourceFilter = 'all';
-    tagFilter = '';
-    erFilter = '';
+    sourceFilters = [];
+    tagFilters = [];
+    erFilters = [];
+    tagCombine = 'and';
+    erCombine = 'and';
+    skillCombine = 'and';
+    abilCombine = 'and';
+    sourceCombine = 'or';
     skillFilterIds = [];
     abilFilterIds = [];
     searchQuery = '';
@@ -2231,13 +2448,13 @@
     if (!resolveDom()) return;
     const lc = uiLang();
     if (_payloadLang === lc && payload) {
-      tagFilter = '';
+      tagFilters = [];
       applyLangStatic();
       renderScoringGuide();
       render();
       return;
     }
-    tagFilter = '';
+    tagFilters = [];
     applyLangStatic();
     await fetchPayload();
   }

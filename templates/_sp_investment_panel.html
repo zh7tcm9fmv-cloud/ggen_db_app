@@ -96,6 +96,14 @@
           <div class="rarity-filter-panel filter-dropdown-panel" id="spiRarityFilterPanel" role="menu" hidden></div>
         </div>
 
+        <div class="rarity-filter-wrap source-filter-wrap" id="spiSourceWrap">
+          <button type="button" class="rarity-filter-btn role-filter-dd-btn" id="spiSourceFilterBtn" aria-expanded="false" aria-haspopup="true" title="Source" data-i18n-title="source_filter_title">
+            <span id="spiSourceFilterLabel" class="filter-btn-label-inner"><span class="source-filter-btn-plain" data-i18n="all_sources">All sources</span></span>
+            <span class="rarity-filter-caret">▾</span>
+          </button>
+          <div class="rarity-filter-panel source-filter-panel filter-dropdown-panel" id="spiSourceFilterPanel" role="menu" hidden></div>
+        </div>
+
         <div class="rarity-filter-wrap skill-filter-wrap" id="spiSkillWrap" hidden>
           <button type="button" class="rarity-filter-btn role-filter-dd-btn" id="spiSkillFilterBtn" aria-expanded="false" aria-haspopup="true" title="Character Skills" data-i18n-title="skill_filter_title">
             <span id="spiSkillFilterLabel" class="filter-btn-label-inner"><span class="source-filter-btn-plain" data-i18n="no_skill_filter">All Character Skills</span></span>
@@ -110,17 +118,6 @@
             <span class="rarity-filter-caret">▾</span>
           </button>
           <div class="rarity-filter-panel filter-dropdown-panel spi-dd-panel--tall" id="spiAbilFilterPanel" role="menu" hidden></div>
-        </div>
-
-        <label class="spi-check" id="spiMapOnlyWrap"><input type="checkbox" id="spiMapOnly"> <span data-i18n="map_only">MAP Weapon only</span></label>
-        <label class="spi-check"><input type="checkbox" id="spiHasSpOnly" checked> <span data-i18n="sp_eligible_only">SP Conversion targets only</span></label>
-
-        <div class="rarity-filter-wrap source-filter-wrap" id="spiSourceWrap">
-          <button type="button" class="rarity-filter-btn role-filter-dd-btn" id="spiSourceFilterBtn" aria-expanded="false" aria-haspopup="true" title="Source" data-i18n-title="source_filter_title">
-            <span id="spiSourceFilterLabel" class="filter-btn-label-inner"><span class="source-filter-btn-plain" data-i18n="all_sources">All sources</span></span>
-            <span class="rarity-filter-caret">▾</span>
-          </button>
-          <div class="rarity-filter-panel source-filter-panel filter-dropdown-panel" id="spiSourceFilterPanel" role="menu" hidden></div>
         </div>
 
         <div class="rarity-filter-wrap" id="spiTagWrap">
@@ -138,6 +135,9 @@
           </button>
           <div class="rarity-filter-panel filter-dropdown-panel spi-dd-panel--tall" id="spiErFilterPanel" role="menu" hidden></div>
         </div>
+
+        <label class="spi-check" id="spiMapOnlyWrap"><input type="checkbox" id="spiMapOnly"> <span data-i18n="map_only">MAP Weapon only</span></label>
+        <label class="spi-check"><input type="checkbox" id="spiHasSpOnly" checked> <span data-i18n="sp_eligible_only">SP Conversion targets only</span></label>
       </div>
     </div>
   </div>

@@ -149,9 +149,21 @@ def lookup_role_table(table: dict, role: str, key: str, default: int = 0) -> int
 
 
 def letter_for_total(
-    rules: dict, total: int, *, cutoffs_key: str = "letter_cutoffs"
+    rules: dict,
+    total: int,
+    *,
+    cutoffs_key: str = "letter_cutoffs",
+    role: str | None = None,
 ) -> str:
-    rows = rules.get(cutoffs_key) or rules.get("letter_cutoffs") or []
+    """Map point total to letter. Optional role uses pilot_letter_cutoffs_by_role."""
+    rows = None
+    if role and cutoffs_key in ("pilot_letter_cutoffs", "ur_pilot_letter_cutoffs"):
+        by_role = rules.get("pilot_letter_cutoffs_by_role") or {}
+        role_key = role if role in ("Attack", "Defense", "Support") else None
+        if role_key:
+            rows = by_role.get(role_key)
+    if not rows:
+        rows = rules.get(cutoffs_key) or rules.get("letter_cutoffs") or []
     for row in rows:
         if total >= int(row["min"]):
             return str(row["letter"])
@@ -358,15 +370,21 @@ def get_pilot_tag_strategic_table(A, rules: dict | None = None, lc: str = "EN") 
 def strategic_tag_points(
     rules: dict, tag_names: list[str] | None, tag_table: dict[str, dict] | None
 ) -> tuple[int, dict]:
-    """Sum effective UR weights for strategic tags on the unit, then band to points."""
+    """Sum effective UR weights for strategic tags on the unit, then band to points.
+
+    v5.29: when exclude_er_mentioned_tags is set, tags that already appear on Expert
+    restrictions are skipped — ER access covers that value (general ranking, less double-count).
+    """
     cfg = rules.get("tag_strategic") or {}
     if not cfg:
         return 0, {"weight": 0.0, "tags": []}
     min_w = float(cfg.get("min_ur_weight_to_count", 2.0) or 2.0)
     include_er = bool(cfg.get("include_er_mentioned_below_min", True))
+    exclude_er = bool(cfg.get("exclude_er_mentioned_tags", False))
     scored = filter_scored_unit_tags(rules, tag_names)
     table = tag_table or {}
     used = []
+    skipped_er = []
     total_w = 0.0
     for name in scored:
         key = name.lower()
@@ -374,18 +392,132 @@ def strategic_tag_points(
         uw = float(row.get("ur_weight") or 0.0)
         er_n = int(row.get("er_mentions") or 0)
         eff = float(row.get("effective_weight") or 0.0)
+        if exclude_er and er_n >= 1:
+            skipped_er.append({"name": name, "ur_weight": uw, "er_mentions": er_n})
+            continue
         if uw >= min_w or (include_er and er_n >= 1):
             total_w += eff if eff else uw
             used.append({"name": name, "ur_weight": uw, "er_mentions": er_n, "effective_weight": eff or uw})
     if not used:
-        return 0, {"weight": 0.0, "tags": []}
+        return 0, {"weight": 0.0, "tags": [], "skipped_er_tags": skipped_er[:12]}
     pts = band_points(cfg.get("weight_bands") or [], total_w)
     cap = int(cfg.get("cap_points", 3) or 3)
     if pts > cap:
         pts = cap
     if pts < -cap:
         pts = -cap
-    return pts, {"weight": round(total_w, 3), "tags": used[:12]}
+    return pts, {"weight": round(total_w, 3), "tags": used[:12], "skipped_er_tags": skipped_er[:12]}
+
+
+def build_limited_supporter_tag_catalog(A, lc: str = "EN") -> list[dict]:
+    """
+    Tags/series covered by limited pickup Supporter tier-3 leader skills.
+    Each entry: {id, name, supporter_ids, supporter_names}.
+    """
+    lim = {A.normalize_id(x) for x in (getattr(A, "LIMITED_TIME_SUPPORTER_IDS", None) or set())}
+    if not lim:
+        return []
+    ld = A.LANG_DATA.get(lc) or {}
+    llk = ld.get("lineage_lookup") or {}
+    snm = ld.get("series_name_map") or {}
+    leader_map = getattr(A, "supporter_leader_map", None) or {}
+    by_key: dict[str, dict] = {}
+
+    def _supp_name(sid: str) -> str:
+        try:
+            return str(A._wn_supporter_name(sid, ld) or sid)
+        except Exception:
+            return str(sid)
+
+    for sid in sorted(lim):
+        for ls in leader_map.get(sid, []) or []:
+            if int(ls.get("tier") or 0) != 3:
+                continue
+            tags = A.resolve_condition_tags(
+                ls.get("trait_cond_id", "0"),
+                getattr(A, "trait_condition_raw_map", None) or {},
+                llk,
+                snm,
+                lc,
+            )
+            for t in tags or []:
+                if not isinstance(t, dict):
+                    continue
+                tid = str(t.get("id") or "").strip()
+                name = str(t.get("name") or "").strip()
+                if not name and tid and tid != "0":
+                    entry = llk.get(A.normalize_id(tid)) or llk.get(tid)
+                    if isinstance(entry, dict):
+                        name = str(entry.get("name") or "").strip()
+                    elif entry:
+                        name = str(entry).strip()
+                    if not name:
+                        name = str(snm.get(A.normalize_id(tid)) or snm.get(tid) or "").strip()
+                if not name:
+                    continue
+                key = name.lower()
+                row = by_key.setdefault(
+                    key,
+                    {
+                        "id": tid if tid and tid != "0" else "",
+                        "name": name,
+                        "supporter_ids": [],
+                        "supporter_names": [],
+                    },
+                )
+                if sid not in row["supporter_ids"]:
+                    row["supporter_ids"].append(sid)
+                    row["supporter_names"].append(_supp_name(sid))
+    return sorted(by_key.values(), key=lambda r: str(r.get("name") or "").lower())
+
+
+_LIMITED_SUPPORTER_TAG_CACHE: dict[tuple, list[dict]] = {}
+
+
+def get_limited_supporter_tag_catalog(A, lc: str = "EN") -> list[dict]:
+    key = (id(A), lc)
+    cached = _LIMITED_SUPPORTER_TAG_CACHE.get(key)
+    if cached is not None:
+        return cached
+    catalog = build_limited_supporter_tag_catalog(A, lc)
+    _LIMITED_SUPPORTER_TAG_CACHE[key] = catalog
+    return catalog
+
+
+def limited_supporter_tag_name_set(catalog: list[dict] | None) -> set[str]:
+    out: set[str] = set()
+    for row in catalog or []:
+        name = str(row.get("name") or "").strip()
+        if name:
+            out.add(name.lower())
+    return out
+
+
+def limited_supporter_tag_points(
+    rules: dict, tag_names: list[str] | None, covered_names: set[str] | None
+) -> tuple[int, dict]:
+    """+N per kit tag covered by a limited-time Supporter leader skill (cap)."""
+    cfg = rules.get("limited_supporter_tags") or {}
+    if not cfg or not covered_names:
+        return 0, {"matched": []}
+    pts_each = int(cfg.get("points", 1) or 0)
+    if pts_each == 0:
+        return 0, {"matched": []}
+    cap = int(cfg.get("cap", pts_each) or pts_each)
+    matched = []
+    seen = set()
+    for name in tag_names or []:
+        n = str(name or "").strip()
+        if not n:
+            continue
+        key = n.lower()
+        if key in covered_names and key not in seen:
+            seen.add(key)
+            matched.append(n)
+    if not matched:
+        return 0, {"matched": []}
+    pts = min(len(matched) * pts_each, cap)
+    return pts, {"matched": matched[:12], "raw": len(matched) * pts_each, "cap": cap}
 
 
 def weapon_power_bands_for_mode(rules: dict, mode: str, role: str) -> list:
@@ -722,13 +854,13 @@ def terrain_coverage_points(
     rules: dict, terrain: dict | None, role: str | None = None
 ) -> tuple[int, dict]:
     """
-    Terrain floor: Space + (Land or Atmospheric) → 0.
-    Extra +1 each for Atmospheric / Underwater / Sea when truly extra
-    (Atmospheric does not double-dip when it is substituting for Land).
-    Perfect coverage bonus when 4+ deployable terrains.
+    Terrain floor: Space + (Land or Atmospheric) at deploy level → 0.
+    Extras / perfect use full-affinity level (default Lv3) so triangle (Lv2) does not inflate.
+    Triangle Space / Atmospheric each apply a small penalty.
     """
     terr_cfg = rules.get("terrain") or {}
     deploy_min = int(terr_cfg.get("deploy_min_level", 2))
+    full_min = int(terr_cfg.get("full_affinity_level", 3) or 3)
     terrain = terrain or {}
     space = int(terrain.get("Space", 1) or 1)
     ground = int(terrain.get("Ground", 1) or 1)
@@ -746,6 +878,8 @@ def terrain_coverage_points(
         "atmos_substitutes_land": atmos_substitutes_land,
         "extra": [],
         "deployable_count": 0,
+        "full_affinity_count": 0,
+        "triangle_keys": [],
     }
     if not has_space or not has_ground_cover:
         pts = int(terr_cfg.get("missing_space_or_land_penalty", -3))
@@ -753,15 +887,20 @@ def terrain_coverage_points(
 
     pts = 0
     deployable = 0
+    full_count = 0
     for key in TERRAIN_KEYS:
-        if int(terrain.get(key, 1) or 1) >= deploy_min:
+        lvl = int(terrain.get(key, 1) or 1)
+        if lvl >= deploy_min:
             deployable += 1
+        if lvl >= full_min:
+            full_count += 1
     meta["deployable_count"] = deployable
+    meta["full_affinity_count"] = full_count
     extra_keys = terr_cfg.get("extra_terrain_keys") or ["Atmospheric", "Underwater", "Sea"]
     per = int(terr_cfg.get("extra_terrain_points", 1))
     for key in extra_keys:
         lvl = int(terrain.get(key, 1) or 1)
-        if lvl < deploy_min:
+        if lvl < full_min:
             continue
         # Atmos already satisfied the Land/Atmos floor — do not also award +1 extra
         if key == "Atmospheric" and atmos_substitutes_land:
@@ -769,7 +908,20 @@ def terrain_coverage_points(
         pts += per
         meta["extra"].append(key)
     perfect_min = int(terr_cfg.get("perfect_min_deployable", 4) or 4)
-    if deployable >= perfect_min:
+    tri_keys = terr_cfg.get("triangle_penalty_keys") or ["Space", "Atmospheric"]
+    tri_pts = int(terr_cfg.get("triangle_penalty_points", -1) or 0)
+    if tri_pts:
+        for key in tri_keys:
+            lvl = int(terrain.get(key, 1) or 1)
+            if lvl == deploy_min and deploy_min < full_min:
+                pts += tri_pts
+                meta["triangle_keys"].append(key)
+    # Perfect affinity should not stack with triangle Space/Atmospheric
+    allow_perfect = True
+    if terr_cfg.get("perfect_requires_no_triangle", True) and meta["triangle_keys"]:
+        allow_perfect = False
+        meta["perfect_blocked_by_triangle"] = True
+    if allow_perfect and full_count >= perfect_min:
         pts += int(terr_cfg.get("perfect_bonus", 1) or 0)
         meta["perfect"] = True
     return pts, meta
@@ -911,12 +1063,16 @@ def _points_for_trait_type(
     tti: int,
     has_active_cond: bool,
     trait_value: int | float = 0,
+    *,
+    ability_name: str = "",
 ) -> int:
     cfg = rules.get("ability_structured") or {}
     tti = int(tti or 0)
     if not tti:
         return 0
     if tti in {int(x) for x in (cfg.get("zero_types") or [])}:
+        return 0
+    if ability_name and _ability_name_excluded(rules, ability_name):
         return 0
     en_types = {int(x) for x in (cfg.get("en_economy_types") or [])}
     if tti in en_types:
@@ -931,13 +1087,31 @@ def _points_for_trait_type(
         return 0
     permanent = {int(x) for x in (cfg.get("permanent_stat_types") or [])}
     if tti in permanent and not has_active_cond:
+        # Attack: light credit for unconditional ATK% (reliable vs HP/Counter gates)
+        pe = cfg.get("permanent_atk_exception") or {}
+        pe_types = {int(x) for x in (pe.get("types") or [])}
+        pe_roles = pe.get("roles") or []
+        if tti in pe_types and role in pe_roles:
+            return int(pe.get("points", 1) or 0)
         return 0
     # Prefer magnitude bands when present for this role+type
     mag_tbl = ((cfg.get("magnitude_points") or {}).get(role) or {}).get(str(tti))
     if mag_tbl:
-        return int(band_points(mag_tbl, abs(float(trait_value or 0))))
-    role_map = (cfg.get("role_points") or {}).get(role) or {}
-    return int(role_map.get(str(tti), 0) or 0)
+        pts = int(band_points(mag_tbl, abs(float(trait_value or 0))))
+    else:
+        role_map = (cfg.get("role_points") or {}).get(role) or {}
+        pts = int(role_map.get(str(tti), 0) or 0)
+    if pts <= 0:
+        return 0
+    # HP / Counter-gated damage is real but not full-time — soft-cap
+    dmg_types = {int(x) for x in (cfg.get("conditional_damage_types") or [])}
+    if has_active_cond and tti in dmg_types:
+        name_re = cfg.get("conditional_unreliable_name_regex") or ""
+        unreliable = bool(re.search(name_re, str(ability_name or ""))) if name_re else True
+        if unreliable:
+            cap = int(cfg.get("conditional_damage_cap", 1) or 1)
+            pts = min(pts, cap)
+    return pts
 
 
 def score_ability_effects(
@@ -953,7 +1127,10 @@ def score_ability_effects(
             continue
         has_cond = bool(eff.get("has_active_cond"))
         tval = int(eff.get("trait_value") or 0)
-        pts = _points_for_trait_type(rules, role, tti, has_cond, tval)
+        name = str(eff.get("ability_name") or "")
+        pts = _points_for_trait_type(
+            rules, role, tti, has_cond, tval, ability_name=name
+        )
         prev = by_type.get(tti)
         if prev is None or pts > int(prev.get("points") or 0) or (
             pts == int(prev.get("points") or 0)
@@ -965,6 +1142,7 @@ def score_ability_effects(
                 "trait_value": tval,
                 "has_active_cond": has_cond,
                 "points": pts,
+                "ability_name": name,
             }
     contributing = [v for v in by_type.values() if int(v.get("points") or 0) > 0]
     total = min(cap, sum(int(v["points"]) for v in contributing))
@@ -1546,6 +1724,101 @@ def _score_pilot_ability_flat(
     }
 
 
+_COMBAT_ACTION_NAME_CS = re.compile(
+    r"(?i)chance\s*step|チャンスステップ|額外行動"
+)
+_COMBAT_ACTION_NAME_SA = re.compile(
+    r"(?i)support\s*attack|支援攻撃|支援攻擊"
+)
+_COMBAT_ACTION_NAME_SD = re.compile(
+    r"(?i)support\s*defense|支援防御|支援防禦|支援防衛"
+)
+
+
+def detect_pilot_combat_action_flags(A, cid: str, lc: str = "EN") -> dict[str, bool]:
+    """Detect Chance Step / Support Attack / Support Defense +1 economy from master data.
+
+    Prefers the same ability-detail regexes as browse x2 filters when available;
+    falls back to ability display names. Not derived from clear videos.
+    """
+    flags = {
+        "chance_step_plus": False,
+        "support_attack_plus": False,
+        "support_defense_plus": False,
+    }
+    matcher = getattr(A, "_char_matches_special_x2_filter", None)
+    cs_id = getattr(A, "CHANCE_STEP_EX_FILTER_ID", "chance_step_ex")
+    sa_id = getattr(A, "SUPPORT_ATK_X2_FILTER_ID", "support_attack_x2")
+    sd_id = getattr(A, "SUPPORT_DEF_X2_FILTER_ID", "support_defense_x2")
+    if callable(matcher):
+        try:
+            # include_conditional: tag/series-gated +1 still grants the economy in restricted ER
+            if matcher(cid, cs_id, include_sp=True, include_conditional=True):
+                flags["chance_step_plus"] = True
+        except Exception:
+            pass
+        try:
+            # x2 filter wants >=2 hits; also accept role precomputed sets / name fallback
+            if cid in getattr(A, "SUPPORT_ATK_X2_CHARACTER_IDS", set()):
+                flags["support_attack_plus"] = True
+            if cid in getattr(A, "SUPPORT_DEF_X2_CHARACTER_IDS", set()):
+                flags["support_defense_plus"] = True
+        except Exception:
+            pass
+
+    # Name / EX ability-id fallback (covers Attack CS and non-role-gated kits)
+    cs_aids = getattr(A, "CHANCE_STEP_EX_ABILITY_IDS", None) or set()
+    try:
+        rows = [
+            x
+            for x in A.extract_data_list(A.char_abil)
+            if A.normalize_id(x.get("CharacterId", "")) == cid
+        ]
+    except Exception:
+        rows = []
+    for ab in rows:
+        for key in ("AbilityId", "SpAbilityId", "spAbilityId"):
+            aid = A.normalize_id(ab.get(key) or "0")
+            if not aid or aid in ("0", "None"):
+                continue
+            if aid in cs_aids:
+                flags["chance_step_plus"] = True
+            name = _ability_display_name(A, aid, lc) or ""
+            if _COMBAT_ACTION_NAME_CS.search(name):
+                flags["chance_step_plus"] = True
+            if _COMBAT_ACTION_NAME_SA.search(name):
+                flags["support_attack_plus"] = True
+            if _COMBAT_ACTION_NAME_SD.search(name):
+                flags["support_defense_plus"] = True
+    return flags
+
+
+def score_pilot_combat_actions(
+    rules: dict, role: str, flags: dict | None
+) -> tuple[int, dict]:
+    """Role-weighted points for 2cs / 2sa / 2sd-style action economy."""
+    cfg = rules.get("pilot_combat_actions") or {}
+    flags = flags or {}
+    parts: list[dict] = []
+    raw = 0
+    for key, label in (
+        ("chance_step_plus", "Chance Step +1"),
+        ("support_attack_plus", "Support Attack +1"),
+        ("support_defense_plus", "Support Defense +1"),
+    ):
+        if not flags.get(key):
+            continue
+        role_pts = cfg.get(key) or {}
+        pts = int(role_pts.get(role, 0) or 0)
+        if pts <= 0:
+            continue
+        raw += pts
+        parts.append({"key": key, "label": label, "points": pts})
+    cap = int(cfg.get("cap", 3) or 3)
+    total = min(cap, raw) if cap > 0 else raw
+    return total, {"parts": parts, "raw": raw, "cap": cap, "total": total}
+
+
 def score_pilot_kit_structured(
     rules: dict,
     role: str,
@@ -1566,6 +1839,7 @@ def score_pilot_kit_structured(
             tti,
             bool(eff.get("has_active_cond")),
             int(eff.get("trait_value") or 0),
+            ability_name=str(eff.get("ability_name") or ""),
         )
         if pts > by_type.get(tti, 0):
             by_type[tti] = pts
@@ -2080,6 +2354,16 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
         if st_pts:
             meta["heuristic_keys"].append("tags_strategic")
 
+    lim_cov = features.get("limited_supporter_tag_names")
+    if lim_cov is None and features.get("limited_supporter_tag_catalog") is not None:
+        lim_cov = limited_supporter_tag_name_set(features.get("limited_supporter_tag_catalog"))
+    lim_pts, lim_meta = limited_supporter_tag_points(
+        rules, features.get("tags") or scored_tags, lim_cov
+    )
+    breakdown["limited_supporter_tags"] = lim_pts
+    if lim_pts:
+        meta["limited_supporter_tags"] = lim_meta
+
     # ER Expert access
     er_n = int(features.get("er_expert_eligible_count") or 0)
     breakdown["er_access"] = er_access_points(rules, er_n)
@@ -2101,16 +2385,21 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
 
     # MAP presence + dash + multi-ammo + coverage (capped); recovery/ally MAP is separate +1
     has_map = bool(features.get("has_map_weapon")) or int(features.get("map_ammo") or 0) > 0
-    presence_pts = int(rules.get("map_presence_points", 1) or 0) if has_map else 0
+    map_cells = int(features.get("map_coverage_cells") or 0)
+    min_map_cells = int(rules.get("map_presence_min_cells", 0) or 0)
+    map_counts_as_presence = has_map and (min_map_cells <= 0 or map_cells >= min_map_cells)
+    presence_pts = (
+        int(rules.get("map_presence_points", 1) or 0) if map_counts_as_presence else 0
+    )
     dash_pts = (
         int(rules.get("map_dash_points", 1) or 0)
-        if has_map and features.get("has_dash_map")
+        if map_counts_as_presence and features.get("has_dash_map")
         else 0
     )
     map_ammo = int(features.get("map_ammo") or 0) if has_map else 0
     ammo_key = str(min(max(map_ammo, 0), 4))
     map_tbl = rules.get("map_ammo_points") or {}
-    if not has_map:
+    if not map_counts_as_presence:
         ammo_pts = 0
     elif ammo_key in map_tbl:
         ammo_pts = int(map_tbl.get(ammo_key, 0))
@@ -2119,8 +2408,8 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     else:
         ammo_pts = 0
     cov_pts = (
-        map_coverage_points(rules, int(features.get("map_coverage_cells") or 0))
-        if has_map
+        map_coverage_points(rules, map_cells)
+        if map_counts_as_presence
         else 0
     )
     support_map_pts = (
@@ -2293,6 +2582,9 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     if bonus_type == 4 and wr <= ignore_hi_rng:
         bonus_type = 0
         bonus_pts = 0
+    cap_by_role = ((rules.get("maxweapon_bonus") or {}).get("cap_by_role") or {})
+    if role in cap_by_role and bonus_pts > int(cap_by_role.get(role) or 0):
+        bonus_pts = int(cap_by_role.get(role) or 0)
     breakdown["weapon_bonus"] = bonus_pts
     if bonus_type:
         labels = ((rules.get("maxweapon_bonus") or {}).get("type_labels") or {})
@@ -2300,6 +2592,7 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
             "type": bonus_type,
             "label": labels.get(str(bonus_type), str(bonus_type)),
             "structured": bool(features.get("weapon_bonus_structured")),
+            "capped_by_role": role if role in cap_by_role else None,
         }
         if not features.get("weapon_bonus_structured"):
             meta["heuristic_keys"].append("weapon_bonus")
@@ -2558,6 +2851,7 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
         except Exception:
             continue
         rx = int(ws.get("range_max", 0) or 0)
+        rx_base = rx
         if mode == "ssp":
             mwid = A.normalize_id(wm.get("main_weapon_id", "0") or "0")
             for cid in (wid, mwid):
@@ -2666,10 +2960,10 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
                 max_power_tension = max(max_power_tension, power)
             else:
                 max_power_unrestricted = max(max_power_unrestricted, power)
-            if rx >= 4:
+            if rx_base >= 4:
                 for key in _support_debuff_kind_set(debuff_keys):
                     support_debuff_kinds_r4.add(key)
-                    if rx >= 5:
+                    if rx_base >= 5:
                         support_debuff_kinds_r5.add(key)
 
     if max_power <= 0 or not has_map_weapon:
@@ -3113,6 +3407,10 @@ def score_unit(
         feats["tag_strategic_table"] = tag_strategic_table
     elif rules.get("tag_strategic"):
         feats["tag_strategic_table"] = get_tag_strategic_table(A, rules, lc)
+    if rules.get("limited_supporter_tags"):
+        lim_cat = get_limited_supporter_tag_catalog(A, lc)
+        feats["limited_supporter_tag_catalog"] = lim_cat
+        feats["limited_supporter_tag_names"] = limited_supporter_tag_name_set(lim_cat)
     if er_expert_ids is not None:
         elig = [sid for sid in er_expert_ids if entity_eligible_on_stage(A, uid, sid, kind="unit", lc=lc)]
         feats["er_expert_eligible_count"] = len(elig)
@@ -3224,10 +3522,14 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "title": "Buckets from letters (Characters)",
             "applies": ["pilots"],
             "objective": True,
-            "summary": "Character kits score hotter than Units — BEYOND THE TIME needs score 23+ (~top 5%).",
+            "summary": (
+                "Character letters are role-relative so Attack / Defense / Support compete within type. "
+                "Attack: S at 20+, S+ at 23+. Defense: S at 23+, S+ at 26+. Support: S at 22+, S+ at 25+."
+            ),
             "rows": [
-                {"when": "S+ (score 23+)", "result": "BEYOND THE TIME"},
-                {"when": "S", "result": "Recommended"},
+                {"when": "Attack — S+ (23+) / S (20+)", "result": "BEYOND THE TIME / Recommended"},
+                {"when": "Defense — S+ (26+) / S (23+)", "result": "BEYOND THE TIME / Recommended"},
+                {"when": "Support — S+ (25+) / S (22+)", "result": "BEYOND THE TIME / Recommended"},
                 {"when": "A+ or A", "result": "Solid"},
                 {"when": "B+ or B", "result": "Situational"},
                 {"when": "C, D, or E", "result": "Niche"},
@@ -3291,13 +3593,77 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
     criteria.append(
         {
             "id": "er_access",
-            "title": "Eternal Road Expert access",
-            "applies": ["units", "pilots"],
+            "title": "Eternal Road Expert access (Units)",
+            "applies": ["units"],
             "objective": True,
-            "summary": "How many ER Expert stages the unit or pilot can sortie into (tag/series eligibility, including unit+character type-3 rules).",
+            "summary": "How many ER Expert stages the Unit can sortie into (tag/series eligibility).",
             "rows": er_rows,
         }
     )
+
+    per_rows = []
+    for row in rules.get("pilot_er_access_points") or []:
+        per_rows.append(
+            {
+                "when": f"{row.get('min')}–{row.get('max')} character-restricted Expert stages",
+                "result": _fmt_points(row.get("points")),
+            }
+        )
+    criteria.append(
+        {
+            "id": "pilot_er_access",
+            "title": "Eternal Road Expert access (Characters)",
+            "applies": ["pilots"],
+            "objective": True,
+            "summary": (
+                "Counts only Expert stages that restrict Characters (series/tag sortie gates). "
+                "Free-for-all Character stages do not inflate this score — broad eligibility is not investment value."
+            ),
+            "rows": per_rows,
+        }
+    )
+
+    ca = rules.get("pilot_combat_actions") or {}
+    if ca:
+        criteria.append(
+            {
+                "id": "pilot_combat_actions",
+                "title": "Combat actions — Chance Step / Support Attack / Support Defense +1",
+                "applies": ["pilots"],
+                "objective": True,
+                "summary": (
+                    "Master-data ability text that grants Chance Step +1, Support Attack +1, or Support Defense +1 "
+                    "(same detection family as browse ×2 filters). Role-weighted; cap "
+                    f"{_fmt_points(ca.get('cap', 3))}. Not based on clear videos."
+                ),
+                "rows": [
+                    {
+                        "when": "Chance Step +1",
+                        "result": (
+                            f"Attack {_fmt_points((ca.get('chance_step_plus') or {}).get('Attack', 0))} · "
+                            f"Support {_fmt_points((ca.get('chance_step_plus') or {}).get('Support', 0))} · "
+                            f"Defense {_fmt_points((ca.get('chance_step_plus') or {}).get('Defense', 0))}"
+                        ),
+                    },
+                    {
+                        "when": "Support Attack +1",
+                        "result": (
+                            f"Attack {_fmt_points((ca.get('support_attack_plus') or {}).get('Attack', 0))} · "
+                            f"Support {_fmt_points((ca.get('support_attack_plus') or {}).get('Support', 0))} · "
+                            f"Defense {_fmt_points((ca.get('support_attack_plus') or {}).get('Defense', 0))}"
+                        ),
+                    },
+                    {
+                        "when": "Support Defense +1",
+                        "result": (
+                            f"Attack {_fmt_points((ca.get('support_defense_plus') or {}).get('Attack', 0))} · "
+                            f"Support {_fmt_points((ca.get('support_defense_plus') or {}).get('Support', 0))} · "
+                            f"Defense {_fmt_points((ca.get('support_defense_plus') or {}).get('Defense', 0))}"
+                        ),
+                    },
+                ],
+            }
+        )
 
     st = rules.get("tag_strategic") or {}
     tag_rows = []
@@ -3321,6 +3687,8 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "summary": (
                 f"Non-flavor tags scored by how often they appear on UR units "
                 f"(limited UR counts more than permanent UR). "
+                f"Tags that already appear on Expert restrictions are skipped — "
+                f"Expert access covers that value (less double-counting as lists converge). "
                 f"Cap {_fmt_points(st.get('cap_points', 3))}."
             ),
             "rows": tag_rows,
@@ -3335,7 +3703,10 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "applies": ["units"],
             "objective": True,
             "summary": (
-                "Deploy tier ≥2 counts as usable. SSP board uses SSP-upgraded terrain. "
+                "Deploy tier ≥2 counts as usable for the floor. "
+                "Extras and perfect need full affinity (Lv≥3) — triangle (Lv2) does not inflate. "
+                "Triangle Space / Atmospheric each −1. Perfect bonus is withheld when any of those are triangle. "
+                "SSP board uses SSP-upgraded terrain. "
                 "Floor is Space plus Land or Atmospheric (Byarlant-style Space+Atmos is fine)."
             ),
             "rows": [
@@ -3343,17 +3714,17 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
                     "when": "Missing Space, or missing both Land and Atmospheric",
                     "result": _fmt_points(terr.get("missing_space_or_land_penalty", -3)),
                 },
-                {"when": "Space + Land (or Space + Atmospheric)", "result": "0"},
+                {"when": "Space + Land (or Space + Atmospheric) at deploy Lv≥2", "result": "0"},
                 {
-                    "when": "+ Atmospheric / Underwater / Sea (each)",
+                    "when": "+ Atmospheric / Underwater / Sea at full affinity Lv≥3 (each)",
                     "result": _fmt_points(terr.get("extra_terrain_points", 1)),
                 },
                 {
-                    "when": "Atmospheric used as Land substitute (no Land)",
-                    "result": "0 extra for Atmospheric",
+                    "when": "Triangle (Lv2) Space or Atmospheric (each)",
+                    "result": _fmt_points(terr.get("triangle_penalty_points", -1)),
                 },
                 {
-                    "when": f"Perfect ({terr.get('perfect_min_deployable', 4)}+ of Space/Land/Atmo/UW/Sea)",
+                    "when": f"Perfect ({terr.get('perfect_min_deployable', 4)}+ terrains at full affinity, no triangle)",
                     "result": _fmt_points(terr.get("perfect_bonus", 1)) + " extra",
                 },
             ],
@@ -3451,7 +3822,8 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
                 "not other weapons on the kit. "
                 "Critical damage is mild (+1); critical rate needs ≥20% for +1; guaranteed crit is +2. "
                 "Tile/map-position prose bonus is retired (0). "
-                f"Higher-range bonus ignored when max range ≤{mwb.get('ignore_higher_range_when_max_range_lte', 3)}."
+                f"Higher-range bonus ignored when max range ≤{mwb.get('ignore_higher_range_when_max_range_lte', 3)}. "
+                "Support Type weapon_bonus is capped at +1."
             ),
             "rows": mwb_rows,
         }
@@ -3499,18 +3871,50 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
         )
 
     src_pts = rules.get("source_bucket_points") or {}
-    if src_pts:
+    criteria.append(
+        {
+            "id": "source_bucket",
+            "title": "Acquisition route (units) — filter only",
+            "applies": ["units"],
+            "objective": True,
+            "summary": (
+                "Acquisition does not change letter scores. Use the Acquisition filter to compare "
+                "Unit Assembly vs Development Unit vs Other. Score points are 0 for all routes."
+            ),
+            "rows": [
+                {"when": "Units from Unit Assembly", "result": _fmt_points(src_pts.get("gacha", 0))},
+                {"when": "Development Unit", "result": _fmt_points(src_pts.get("dev", 0))},
+                {"when": "Other", "result": _fmt_points(src_pts.get("event", 0))},
+            ],
+        }
+    )
+
+    lim_cfg = rules.get("limited_supporter_tags") or {}
+    if lim_cfg:
+        lim_pts = int(lim_cfg.get("points", 1) or 1)
+        lim_cap = int(lim_cfg.get("cap", lim_pts) or lim_pts)
         criteria.append(
             {
-                "id": "source_bucket",
-                "title": "Acquisition route (units)",
-                "applies": ["units"],
+                "id": "limited_supporter_tags",
+                "title": "Limited-time Supporter tag coverage",
+                "applies": ["units", "pilots"],
                 "objective": True,
-                "summary": "Development Unit and Other get a mild upside; Units from Unit Assembly stay flat.",
+                "summary": (
+                    "Per kit Tag covered by a limited-time Unit Assembly Supporter’s "
+                    f"tier-3 leader skill: {_fmt_points(lim_pts)} each, "
+                    f"cap {_fmt_points(lim_cap)} (integer points only). "
+                    "Those Supporters are the gem-saving targets players wait for; the guide lists "
+                    "covered Tags under limited_supporter_tag_catalog."
+                ),
                 "rows": [
-                    {"when": "Units from Unit Assembly", "result": _fmt_points(src_pts.get("gacha", 0))},
-                    {"when": "Development Unit", "result": _fmt_points(src_pts.get("dev", 1))},
-                    {"when": "Other", "result": _fmt_points(src_pts.get("event", 1))},
+                    {
+                        "when": "Each Tag covered by a limited-time Supporter leader skill",
+                        "result": _fmt_points(lim_pts),
+                    },
+                    {
+                        "when": "Cap",
+                        "result": _fmt_points(lim_cap),
+                    },
                 ],
             }
         )
@@ -3811,7 +4215,8 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
                 "Attack Type Units skip these factors. Debuff strength uses lasting DEF-down % "
                 "or instant pierce (≈10%→3 … 40%+→6). "
                 "Defense counts distinct debuff kinds at range ≥4 (light; damage-taken downs count as one kind). "
-                "Support counts kinds at range ≥5 and cares more about strength."
+                "Support counts kinds at base weapon range ≥5 (SSP range enhance does not invent R5 credit) "
+                "and cares more about strength."
             ),
             "rows": debuff_rows,
         }
@@ -3896,7 +4301,9 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "applies": ["units"],
             "objective": True,
             "summary": (
-                "Damage MAP (Attack category, power ≥1): presence, dash/MovingAttack, ammo 2+, and coverage "
+                "Damage MAP (Attack category, power ≥1): presence needs "
+                f"≥{int(rules.get('map_presence_min_cells', 0) or 0)} coverage cells "
+                "(tiny 1-cell MAP is not a free presence point), then dash/MovingAttack, ammo 2+, and coverage "
                 "(0–14 cells = 0, 15–24 = +1, 25+ = +2). "
                 "Recovery / ally-support MAP (category Recovery, e.g. MP-supply Psycho-Field / Live Concert) "
                 f"scores {_fmt_points(rules.get('map_support_points', 1))} instead — not full damage-MAP coverage. "
@@ -3908,7 +4315,12 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "rows": [
                 {
                     "when": "Damage MAP weapon",
-                    "result": _fmt_points(rules.get("map_presence_points", 1)),
+                    "result": (
+                        f"{_fmt_points(rules.get('map_presence_points', 1))} "
+                        f"(needs ≥{int(rules.get('map_presence_min_cells', 0) or 0)} cells)"
+                        if int(rules.get("map_presence_min_cells", 0) or 0) > 0
+                        else _fmt_points(rules.get("map_presence_points", 1))
+                    ),
                 },
                 {
                     "when": "Recovery / ally-support MAP (MP supply, buff allies)",
@@ -3933,13 +4345,16 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "objective": True,
             "summary": (
                 "Scored from ability and skill effect data in the game masters. "
-                "Permanent ATK/DEF/HP/MOV with no condition scores 0 here. "
+                "Permanent DEF/HP/MOV with no condition scores 0; Attack Type gets light credit for unconditional ATK%. "
+                "HP- or Counter-gated ATK is soft-capped. Advantage: series abilities do not score here. "
                 "Strong % effects use size bands (for example damage dealt 10/20/30%+). "
                 f"Unit Ability score caps at +3; Character kit caps at +{int(rules.get('pilot_kit_cap', 14))}."
             ),
             "rows": [
                 {"when": "Role-relevant combat effects", "result": "Points by effect (+ size bands)"},
-                {"when": "Permanent flat/rate stats, no condition", "result": "0"},
+                {"when": "Permanent flat/rate stats, no condition", "result": "0 (Attack unconditional ATK% +1)"},
+                {"when": "HP / Counter gated ATK%", "result": "Soft-capped"},
+                {"when": "Advantage: series ability", "result": "0 here (in-series / tag filter only)"},
                 {"when": "MAP ammo effects", "result": "0 here (counted under MAP)"},
                 {"when": "Physical/beam weapon range-down on hit", "result": "Rare debuff +1"},
                 {"when": "Unbreakable (mainly pilots)", "result": "Extra-life role bonus (separate factor)"},
@@ -4169,7 +4584,14 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "summary": "Characters use the SP board only. See Character SP-grown stats blocks for band tables.",
             "rows": [
                 {"when": "SP grown stats (Ranged / Melee / Awaken / Defense / Reaction)", "result": "Band points by role (see tables above)"},
-                {"when": "Series affinity abilities", "result": f"+{int(rules.get('series_affinity_points_each', 3))} each"},
+                {"when": "Series affinity abilities (Units)", "result": f"+{int(rules.get('series_affinity_points_each', 3))} each"},
+                {
+                    "when": "Series affinity abilities (Characters)",
+                    "result": (
+                        f"+{int(rules.get('pilot_series_affinity_points_each') or rules.get('series_affinity_points_each', 3))} each, "
+                        f"cap +{int(rules.get('pilot_series_affinity_cap', 2) or 2)}"
+                    ),
+                },
                 {
                     "when": "Recommended Units portfolio (A and up)",
                     "result": (
@@ -4230,6 +4652,7 @@ def scoring_guide_payload(rules: dict | None = None) -> dict:
     guide["pilot_letter_cutoffs"] = rules.get("pilot_letter_cutoffs") or rules.get(
         "letter_cutoffs"
     ) or []
+    guide["pilot_letter_cutoffs_by_role"] = rules.get("pilot_letter_cutoffs_by_role") or {}
     guide["ur_pilot_letter_cutoffs"] = rules.get("ur_pilot_letter_cutoffs") or []
     # Prefer nested guide version (e.g. 5.4) over top-level rules.version
     guide["version"] = (rules.get("scoring_guide") or {}).get("version") or rules.get(
@@ -4310,7 +4733,10 @@ def _score_one_pilot_kit_line(
     name = str(item.get("name") or "")
     blob = str(item.get("blob") or name)
     if item.get("is_affinity"):
-        return int(rules.get("series_affinity_points_each", 3))
+        return int(
+            rules.get("pilot_series_affinity_points_each")
+            or rules.get("series_affinity_points_each", 3)
+        )
     # Permanent stat % is already reflected in scored SP totals.
     if _PILOT_STAT_BOOST_NAME.search(name) or _PILOT_STAT_BOOST_NAME.search(blob.split("\n", 1)[0]):
         return 0
@@ -4364,6 +4790,19 @@ def _score_pilot_kit_lines(
     return total, {"lines": scored, "heuristic": True, "count": len(scored)}
 
 
+def _pilot_series_affinity_points(rules: dict, affinity_count: int) -> int:
+    each = int(
+        rules.get("pilot_series_affinity_points_each")
+        or rules.get("series_affinity_points_each", 3)
+        or 0
+    )
+    raw = max(0, int(affinity_count or 0)) * each
+    cap = rules.get("pilot_series_affinity_cap")
+    if cap is None:
+        return raw
+    return min(int(cap), raw)
+
+
 def score_pilot_features(features: dict, rules: dict | None = None) -> dict:
     """Score a pilot (character) for SP investment (v5 axes)."""
     rules = rules or load_rules()
@@ -4407,20 +4846,52 @@ def score_pilot_features(features: dict, rules: dict | None = None) -> dict:
         meta["tags_strategic"] = st_meta
         meta["heuristic_keys"].append("tags_strategic")
 
+    lim_cov = features.get("limited_supporter_tag_names")
+    if lim_cov is None and features.get("limited_supporter_tag_catalog") is not None:
+        lim_cov = limited_supporter_tag_name_set(features.get("limited_supporter_tag_catalog"))
+    lim_pts, lim_meta = limited_supporter_tag_points(
+        rules, features.get("tags") or [], lim_cov
+    )
+    breakdown["limited_supporter_tags"] = lim_pts
+    if lim_pts:
+        meta["limited_supporter_tags"] = lim_meta
+        detail_lines.append(
+            {
+                "kind": "limited_supporter_tags",
+                "label": "Limited Supporter tags",
+                "detail": ", ".join(lim_meta.get("matched") or []) or "—",
+                "points": lim_pts,
+            }
+        )
+
+    # Characters: prefer character-restricted Expert stage count (objective sortie gates).
+    # Units keep total eligibility via er_access_points elsewhere.
     er_rows = rules.get("pilot_er_access_points") or rules.get("er_access_points") or []
-    er_n = int(features.get("er_expert_eligible_count") or 0)
+    if features.get("er_expert_restricted_count") is not None:
+        er_n = int(features.get("er_expert_restricted_count") or 0)
+        er_mode = "character_restricted"
+    else:
+        er_n = int(features.get("er_expert_eligible_count") or 0)
+        er_mode = "eligible_all"
     er_pts = 0
     for row in er_rows:
         if int(row.get("min", 0)) <= er_n <= int(row.get("max", 999)):
             er_pts = int(row.get("points", 0) or 0)
             break
     breakdown["er_access"] = er_pts
-    meta["er_expert_eligible_count"] = er_n
+    meta["er_expert_eligible_count"] = int(features.get("er_expert_eligible_count") or 0)
+    meta["er_expert_restricted_count"] = er_n if er_mode == "character_restricted" else None
+    meta["er_access_mode"] = er_mode
+    er_detail = (
+        f"{er_n} character-restricted Expert stages"
+        if er_mode == "character_restricted"
+        else f"{er_n} stages"
+    )
     detail_lines.append(
         {
             "kind": "er_access",
-            "label": "ER Expert access",
-            "detail": f"{er_n} stages",
+            "label": "ER Expert access (restricted)",
+            "detail": er_detail,
             "points": er_pts,
         }
     )
@@ -4507,6 +4978,7 @@ def score_pilot_features(features: dict, rules: dict | None = None) -> dict:
                 tti,
                 bool(eff.get("has_active_cond")),
                 int(eff.get("trait_value") or 0),
+                ability_name=str(eff.get("ability_name") or ""),
             )
             if pts <= 0:
                 continue
@@ -4525,9 +4997,21 @@ def score_pilot_features(features: dict, rules: dict | None = None) -> dict:
                     "trait_type_key": eff.get("trait_type_key") or "",
                 }
             )
-        breakdown["series_affinity"] = aff_n * int(
-            rules.get("series_affinity_points_each", 3)
-        )
+        breakdown["series_affinity"] = _pilot_series_affinity_points(rules, aff_n)
+        if breakdown["series_affinity"]:
+            detail_lines.append(
+                {
+                    "kind": "affinity",
+                    "label": "Series affinity",
+                    "detail": (
+                        f"{aff_n} abilit"
+                        f"{'y' if aff_n == 1 else 'ies'} "
+                        f"(+{int(rules.get('pilot_series_affinity_points_each') or rules.get('series_affinity_points_each', 3))} each, "
+                        f"cap {rules.get('pilot_series_affinity_cap', '—')})"
+                    ),
+                    "points": breakdown["series_affinity"],
+                }
+            )
     else:
         kit_items = list(features.get("kit_items") or [])
         if not kit_items:
@@ -4559,7 +5043,7 @@ def score_pilot_features(features: dict, rules: dict | None = None) -> dict:
         for line in kit_meta.get("lines") or []:
             detail_lines.append(
                 {
-                    "kind": line.get("kind") or "ability",
+                    "kind": line.get("kind") or "kit",
                     "label": line.get("name") or "",
                     "name": line.get("name") or "",
                     "points": int(line.get("points") or 0),
@@ -4567,15 +5051,45 @@ def score_pilot_features(features: dict, rules: dict | None = None) -> dict:
                     "estimated": True,
                 }
             )
-
         aff_n = int(features.get("series_affinity_count") or 0)
-        aff_each = int(rules.get("series_affinity_points_each", 3))
         aff_from_lines = sum(
-            int(x.get("points") or 0)
-            for x in (kit_meta.get("lines") or [])
-            if x.get("is_affinity")
+            int(line.get("points") or 0)
+            for line in kit_meta.get("lines") or []
+            if line.get("is_affinity")
         )
-        breakdown["series_affinity"] = aff_from_lines if aff_from_lines else aff_n * aff_each
+        aff_each = int(
+            rules.get("pilot_series_affinity_points_each")
+            or rules.get("series_affinity_points_each", 3)
+        )
+        breakdown["series_affinity"] = (
+            aff_from_lines
+            if aff_from_lines
+            else _pilot_series_affinity_points(rules, aff_n)
+        )
+        if breakdown["series_affinity"] and not aff_from_lines:
+            detail_lines.append(
+                {
+                    "kind": "affinity",
+                    "label": "Series affinity",
+                    "detail": f"{aff_n} × {aff_each} (cap applied)",
+                    "points": breakdown["series_affinity"],
+                }
+            )
+
+    ca_flags = features.get("combat_action_flags") or {}
+    ca_pts, ca_meta = score_pilot_combat_actions(rules, role, ca_flags)
+    breakdown["combat_actions"] = ca_pts
+    meta["combat_actions"] = ca_meta
+    if ca_pts or ca_meta.get("parts"):
+        labels = ", ".join(p["label"] for p in (ca_meta.get("parts") or [])) or "—"
+        detail_lines.append(
+            {
+                "kind": "combat_actions",
+                "label": "Combat actions (2cs / 2sa / 2sd)",
+                "detail": labels,
+                "points": ca_pts,
+            }
+        )
 
     el_pts = 0
     if features.get("has_extra_life"):
@@ -4618,7 +5132,9 @@ def score_pilot_features(features: dict, rules: dict | None = None) -> dict:
     breakdown["rarity"] = rarity_pts
 
     total = int(sum(int(v) for v in breakdown.values()))
-    letter = letter_for_total(rules, total, cutoffs_key="pilot_letter_cutoffs")
+    letter = letter_for_total(
+        rules, total, cutoffs_key="pilot_letter_cutoffs", role=role
+    )
     bucket = bucket_for_letter(rules, letter)
     return {
         "total": total,
@@ -5275,6 +5791,7 @@ def score_character(
     unit_index: dict | None = None,
     tag_strategic_table: dict | None = None,
     er_expert_ids: list[str] | None = None,
+    er_restricted_ids: list[str] | None = None,
 ) -> dict | None:
     rules = rules or load_rules()
     feats = extract_character_features(
@@ -5291,6 +5808,10 @@ def score_character(
         feats["tag_strategic_table"] = tag_strategic_table
     elif rules.get("pilot_tag_strategic") or rules.get("tag_strategic"):
         feats["tag_strategic_table"] = get_pilot_tag_strategic_table(A, rules, lc)
+    if rules.get("limited_supporter_tags"):
+        lim_cat = get_limited_supporter_tag_catalog(A, lc)
+        feats["limited_supporter_tag_catalog"] = lim_cat
+        feats["limited_supporter_tag_names"] = limited_supporter_tag_name_set(lim_cat)
     if er_expert_ids is not None:
         elig = [
             sid
@@ -5299,6 +5820,23 @@ def score_character(
         ]
         feats["er_expert_eligible_count"] = len(elig)
         feats["er_expert_ids"] = elig
+    if er_restricted_ids is not None:
+        rest = [
+            sid
+            for sid in er_restricted_ids
+            if entity_eligible_on_stage(A, cid, sid, kind="character", lc=lc)
+        ]
+        feats["er_expert_restricted_count"] = len(rest)
+        feats["er_expert_restricted_ids"] = rest
+    elif (
+        er_expert_ids is not None
+        and str(rules.get("pilot_er_access_mode") or "") == "character_restricted"
+    ):
+        # Fallback: treat all provided ids as restricted if caller did not split.
+        feats["er_expert_restricted_count"] = int(
+            feats.get("er_expert_eligible_count") or 0
+        )
+    feats["combat_action_flags"] = detect_pilot_combat_action_flags(A, cid, lc)
     scored = score_pilot_features(feats, rules=rules)
     abilities, skills = _lean_char_kit_lists(feats.get("kit_items"))
     row = {

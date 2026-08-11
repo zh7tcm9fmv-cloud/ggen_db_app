@@ -439,6 +439,17 @@ html.spi-modal-open body.spi-page {
   padding-top: 10px;
   border-top: 1px solid rgba(42, 54, 84, 0.55);
 }
+.spi-lim-supp-tag-list {
+  margin: 6px 0 0;
+  padding-left: 1.2em;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+.spi-lim-supp-tag-list strong {
+  color: var(--text-primary);
+  font-weight: 650;
+}
 .spi-seg {
   display: inline-flex;
   flex-wrap: wrap;

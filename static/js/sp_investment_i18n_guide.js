@@ -9,17 +9,25 @@
   const GUIDE = {
     "EN": {
       "overrides": [
-        "Each score factor adds points; the total becomes a letter, then a bucket (BEYOND THE TIME / Recommended / Solid / Situational / Niche). Units: score 17+ earns letter S+ and BEYOND THE TIME. Characters: score 23+ (~top 5%) earns S+ and BEYOND THE TIME; Characters need score 20+ for letter S.",
-        "Filter by Tag or Eternal Road Expert stage to compare Units that actually fit the same restriction."
+        "Each score factor adds points; the total becomes a letter, then a bucket (BEYOND THE TIME / Recommended / Solid / Situational / Niche). Units: score 17+ earns letter S+ and BEYOND THE TIME. Characters use role-relative letter cutoffs (Attack S at 20+ / S+ at 23+; Defense S at 23+ / S+ at 26+; Support S at 22+ / S+ at 25+).",
+        "Filter by Tag or Eternal Road Expert stage to compare Units that actually fit the same restriction.",
+        "This is a general investment ranking that can also help on Expert — not a dedicated Expert-clears ladder."
       ],
       "gaps": [
         "Non-Ultimate UR Units are omitted for now — their kits are too unique for the shared SP Conversion / SSP Conversion criteria.",
         "Ultimate Units stay on the board. Their series Advantage: Unit Ability is withheld from the base score and only applied when a Tag filter matches that Advantage series.",
         "Letter cutoffs use separate scales for SP Conversion targets vs Ultimate Units, so Ultimate kits do not lock out Recommended for chip investment.",
         "Character Recommended Units points use this list’s Unit letters (SP / SSP best).",
-        "Strategic Tag weights use how often Tags appear on UR Unit rosters (calibrated table).",
+        "Strategic Tag weights use UR roster frequency, but Tags that already appear on Expert restrictions are skipped here — Expert access covers that value.",
         "Affinity Character pool counts SSR+ Characters with piloting-Tag / EX-pair affinity for the Unit (not Supporter amp %).",
-        "Character Recommended Units points only count Units graded A / A+ / S / S+ on this guide (SP or SSP best) — B+ and below do not score.",
+        "Character Recommended Units points only count Units graded A / A+ / S / S+ on this guide (SP or SSP best) — B+ and below do not score (top 3, cap +2).",
+        "Unit Expert access bands are compressed so a small eligibility gap is not a free letter tier.",
+        "Terrain Capability extras need full affinity circle (Lv≥3); triangle Space/Atmospheric is a mild penalty, not a strength.",
+        "Acquisition is filter-only; multi-select Acquisition (OR) can exclude Unit Assembly by picking Development + Other.",
+        "Limited-time Supporter leader Tags: +1 per matched kit Tag, cap +2.",
+        "Character letters are role-relative (Attack / Defense / Support each have their own S / S+ bars).",
+        "Support Type debuff kinds use base weapon range — SSP range enhance does not invent Range-5 credit for Range-4 kits.",
+        "Support Type weapon_bonus is capped at +1.",
         "Transform scores only when the alternate form unlocks deployable Terrain Capability, higher MOV, longer range, higher weapon power, or adds a MAP Weapon.",
         "Attack Type HP and SSP Attack Type EN are upside-only; Defense Type still taxes low HP/DEF. Special defenses (I-field / DR / barrier) are presence bonuses beyond the shield mechanism.",
         "Units whose recommend Character is UR / Ultimate take a mild −1 dependence tax (still usable with lower-rarity Characters).",
@@ -28,58 +36,82 @@
     },
     "JA": {
       "overrides": [
-        "各項目が加点され、合計がレターになり、さらに区分（推奨／堅実／状況次第／ニッチ）へ振り分けられます。",
-        "タグやエターナルロード Expert ステージで絞り、同じ制限に合うユニット同士を比較してください。"
+        "各項目が加点され、合計がレターになり、さらに区分（推奨／堅実／状況次第／ニッチ）へ振り分けられます。キャラクターは役割別のレター閾値です（攻撃型 S 20+／S+ 23+、耐久型 S 23+／S+ 26+、支援型 S 22+／S+ 25+）。",
+        "タグやエターナルロード Expert ステージで絞り、同じ制限に合うユニット同士を比較してください。",
+        "一般運用向けの投資ランキングで、Expert でも使えることがある、という位置づけです（特定 Expert 攻略専用ではありません）。"
       ],
       "gaps": [
         "通常の UR ユニットは本ガイド対象外です — キットが固有すぎて共有の SP化／SSP化基準に載せにくいためです。",
         "アルティメットユニットは掲載します。シリーズ Advantage アビリティは基礎点から外し、Advantage シリーズに一致するタグフィルタ時のみ加算します。",
         "レター閾値は SP化対象のユニット／キャラクターとアルティメットで別表です。アルティメットがチップ投資先の「推奨」を独占しないようにしています。",
         "キャラクターの推奨 MS 点は、本リストのユニットレター（SP／SSP の良い方）を使います。",
-        "戦略タグの重みは、UR 編成にそのタグがどれだけ出るかに基づきます（校正テーブル）。",
+        "戦略タグは UR 編成での出現頻度を使いますが、すでに Expert 制限に出ているタグはここでは加点しません（Expert 適性が担います）。",
         "アフィニティ候補数は、その MS に搭乗タグ／EX ペア親和がある SSR+ キャラクターを数えます（サポーター増幅％ではありません）。",
-        "キャラクターの推奨 MS 点は、本ガイドで A／A+／S／S+（SP または SSP の良い方）のユニットのみ — B+ 以下は加点しません。",
+        "キャラクターの推奨 MS 点は、本ガイドで A／A+／S／S+（SP または SSP の良い方）のユニットのみ — B+ 以下は加点しません（上位3機・上限 +2）。",
         "変形は、別形態が出撃可能地形・より高い MOV・より長い射程・より高い武装威力を解放するか、MAP兵器を追加する場合のみ加点します。",
         "攻撃型の HP と SSP 攻撃型の EN は上振れのみ。耐久型は低 HP／DEF を減点します。特殊防御（Iフィールド／DR／バリア）はシールド機構を超える存在ボーナスです。",
         "推奨キャラクターが UR／アルティメットのユニットは軽い −1 依存税（下位レアのキャラクターでも運用可）。",
+        "ユニットの Expert 適性帯は圧縮しており、わずかな出撃差だけではレターが飛びません。",
+        "地形適性の追加点は完全適性◯（Lv≥3）が必要。△の宇宙／空中は軽い減点であり強みとして扱いません。",
+        "入手元はフィルタのみ。複数選択（OR）で開発ユニット＋その他を選ぶとガシャ獲得ユニットを除外できます。",
+        "期間限定サポーターのリーダースキル対象タグはキット上1つにつき +1（上限 +2）。",
+        "キャラクターのレターは役割別（攻撃型／耐久型／支援型で S／S+ の基準が異なります）。",
+        "支援型の弱化種類は基礎武装射程で判定 — SSP の射程強化だけでは射程5扱いにはしません。",
+        "支援型の武装条件ボーナスは上限 +1。",
         "レターが僅差のときは人の目での確認が必要です。"
       ]
     },
     "TW": {
       "overrides": [
-        "各項目加分後合計成字母，再對應分桶（推薦／穩健／看場合／小眾）。",
-        "可用標籤或永恆之路 Expert 關卡篩選，比較真正符合同一限制的單位。"
+        "各項目加分後合計成字母，再對應分桶（推薦／穩健／看場合／小眾）。角色依類型使用不同字母門檻（攻擊型 S 20+／S+ 23+、耐久型 S 23+／S+ 26+、支援型 S 22+／S+ 25+）。",
+        "可用標籤或永恆之路 Expert 關卡篩選，比較真正符合同一限制的單位。",
+        "這是偏一般投資用途的排名，也能偶爾用於 Expert — 不是專攻 Expert 通關的排行榜。"
       ],
       "gaps": [
         "非終極的 UR 單位暫不列入本指南 — 套件過於獨特，難以套用共通的 SP化／SSP化條件。",
         "終極單位仍會上榜。其系列 Advantage 能力不計入基礎分，僅在標籤篩選符合該 Advantage 系列時套用。",
         "字母門檻對 SP化對象單位／角色與終極單位使用不同量表，避免終極單位擠掉籌碼投資目標的「推薦」。",
         "角色推薦單位分數使用本清單的單位字母（取 SP／SSP 較佳者）。",
-        "戰略標籤權重依該標籤在 UR 陣容出現頻率（校正表）。",
+        "戰略標籤依 UR 陣容出現頻率，但已出現在 Expert 限制中的標籤此處不加分（由 Expert 適性承擔）。",
         "親和角色池計算對該單位具有駕駛標籤／EX 配對親和的 SSR+ 角色（不是支援人員增幅％）。",
-        "角色推薦單位分數只計算本指南評為 A／A+／S／S+ 的單位（取 SP 或 SSP 較佳）— B+ 以下不加分。",
+        "角色推薦單位分數只計算本指南評為 A／A+／S／S+ 的單位（取 SP 或 SSP 較佳）— B+ 以下不加分（前 3 機、上限 +2）。",
         "變形僅在替換形態解鎖可出擊地形、更高移動力、更長射程、更高武裝威力，或新增 MAP兵器 時計分。",
         "攻擊型 HP 與 SSP 攻擊型 EN 僅計上振；耐久型仍會對低 HP／DEF 扣分。特殊防禦（I力場／DR／屏障）是護盾機構以外的存在加分。",
         "推薦角色為 UR／終極的單位有輕微 −1 依賴稅（仍可用較低稀有度角色）。",
+        "單位 Expert 適性分帶已壓縮，微小出擊差不會直接造成字母級差。",
+        "地形適性額外分需完全適性「圓」（Lv≥3）；「三角形」宇宙／空中為輕微扣分，不當作成優勢。",
+        "取得來源僅為篩選；可複選（OR）同時選開發單位與其他來排除單位補給獲得單位。",
+        "限定期間支援人員隊長技能標籤：套件上每個符合標籤 +1，上限 +2。",
+        "角色字母依類型相對評比（攻擊型／耐久型／支援型各有自己的 S／S+ 門檻）。",
+        "支援型弱化種類以基礎武裝射程判定 — SSP 射程強化不會把射程 4 套件當成射程 5。",
+        "支援型武裝條件加成上限 +1。",
         "字母接近時仍需人工再看一眼。"
       ]
     },
     "HK": {
       "overrides": [
-        "各項目加分後合計成字母，再對應分桶（推薦／穩健／睇場合／小眾）。",
-        "可用標籤或永恆之路 Expert 關卡篩選，比較真正符合同一限制嘅單位。"
+        "各項目加分後合計成字母，再對應分桶（推薦／穩健／睇場合／小眾）。角色跟類型用唔同字母門檻（攻擊型 S 20+／S+ 23+、耐久型 S 23+／S+ 26+、支援型 S 22+／S+ 25+）。",
+        "可用標籤或永恆之路 Expert 關卡篩選，比較真正符合同一限制嘅單位。",
+        "呢個係偏一般投資用途嘅排名，都間中可以用喺 Expert — 唔係專攻 Expert 通關嘅排行榜。"
       ],
       "gaps": [
         "非終極嘅 UR 單位暫時唔列入本指南 — 套件太獨特，難套用共通嘅 SP化／SSP化條件。",
         "終極單位仍然會上榜。佢嘅系列 Advantage 能力唔計入基礎分，淨係標籤篩選符合嗰個 Advantage 系列先套用。",
         "字母門檻對 SP化對象單位／角色同終極單位用唔同量表，避免終極單位搶晒籌碼投資目標嘅「推薦」。",
         "角色推薦單位分數用本清單嘅單位字母（取 SP／SSP 較佳嗰邊）。",
-        "戰略標籤權重跟住該標籤喺 UR 陣容出現頻率（校正表）。",
+        "戰略標籤跟 UR 陣容出現頻率，但已經出現喺 Expert 限制入面嘅標籤呢度唔加分（由 Expert 適性承擔）。",
         "親和角色池數對該單位有駕駛標籤／EX 配對親和嘅 SSR+ 角色（唔係支援人員增幅％）。",
-        "角色推薦單位分數淨計本指南評做 A／A+／S／S+ 嘅單位（取 SP 或 SSP 較佳）— B+ 或以下唔加分。",
+        "角色推薦單位分數淨計本指南評做 A／A+／S／S+ 嘅單位（取 SP 或 SSP 較佳）— B+ 或以下唔加分（前 3 機、上限 +2）。",
         "變形淨係喺替換形態解鎖可出擊地形、更高移動力、更長射程、更高武裝威力，或者加咗 MAP兵器 先計分。",
         "攻擊型 HP 同 SSP 攻擊型 EN 淨計上振；耐久型仍然會對低 HP／DEF 扣分。特殊防禦（I力場／DR／屏障）係護盾機構以外嘅存在加分。",
         "推薦角色係 UR／終極嘅單位有輕微 −1 依賴稅（仍然可以用較低稀有度角色）。",
+        "單位 Expert 適性分帶已壓縮，細微出擊差唔會直接造成字母級差。",
+        "地形適性額外分要完全適性「圓」（Lv≥3）；「三角形」宇宙／空中係輕微扣分，唔當作成優勢。",
+        "取得來源淨係篩選；可以複選（OR）同時揀開發單位同其他嚟排除機體補給獲得單位。",
+        "限定期間支援人員隊長技能標籤：套件上每個符合標籤 +1，上限 +2。",
+        "角色字母跟類型相對評比（攻擊型／耐久型／支援型各自有 S／S+ 門檻）。",
+        "支援型弱化種類用基礎武裝射程判定 — SSP 射程強化唔會將射程 4 套件當射程 5。",
+        "支援型武裝條件加成上限 +1。",
         "字母好接近嘅時候仍然要人眼再睇一次。"
       ]
     }
@@ -154,18 +186,38 @@
         }
       },
       "er_access": {
-        "title": "エターナルロード Expert 適性",
-        "summary": "ユニットまたはキャラクターが出撃できるエターナルロード Expert ステージ数（タグ／シリーズ適性。ユニット＋キャラクターのタイプ3ルール含む）。",
+        "title": "エターナルロード Expert 適性（ユニット）",
+        "summary": "ユニットが出撃できるエターナルロード Expert ステージ数（タグ／シリーズ適性）。小さな適性差だけで帯が変わらないよう圧縮しています。",
         "when": {
           "0–1 Expert stages": "Expert ステージ 0–1",
-          "2–4 Expert stages": "Expert ステージ 2–4",
-          "5–999 Expert stages": "Expert ステージ 5–999"
+          "2–6 Expert stages": "Expert ステージ 2–6",
+          "7–999 Expert stages": "Expert ステージ 7–999"
+        },
+        "result": {}
+      },
+      "pilot_er_access": {
+        "title": "エターナルロード Expert 適性（キャラクター）",
+        "summary": "キャラクター制限のある Expert ステージのみを数えます。キャラ自由出撃ステージでは加点しません。",
+        "when": {
+          "0–0 character-restricted Expert stages": "キャラ制限 Expert 0",
+          "1–1 character-restricted Expert stages": "キャラ制限 Expert 1",
+          "2–999 character-restricted Expert stages": "キャラ制限 Expert 2+"
+        },
+        "result": {}
+      },
+      "pilot_combat_actions": {
+        "title": "戦闘行動 — チャンスステップ／支援攻撃／支援防御 +1",
+        "summary": "マスターデータ上の +1 行動経済（一覧×2フィルタと同系統）。ロール加重。クリア動画の採用頻度は使いません。",
+        "when": {
+          "Chance Step +1": "チャンスステップ +1",
+          "Support Attack +1": "支援攻撃 +1",
+          "Support Defense +1": "支援防御 +1"
         },
         "result": {}
       },
       "strategic_tags": {
         "title": "戦略タグ",
-        "summary": "フレーバー以外のタグを、UR ユニットでの出現頻度で採点（限定 UR は常設 UR より重い）。上限 +2。",
+        "summary": "フレーバー以外のタグを、UR ユニットでの出現頻度で採点（限定 UR は常設 UR より重い）。すでに Expert 制限に出ているタグはここでは加点しない。上限 +2。",
         "when": {
           "weight 0–2": "重み 0–2",
           "weight 3–7": "重み 3–7",
@@ -177,13 +229,15 @@
       },
       "terrain": {
         "title": "地形適性（ユニット）",
-        "summary": "出撃ティア ≥2 を使用可とみなします。SSP 盤は SSP 強化後の地形。床は宇宙＋地上または空中（バイアラン式の宇宙＋空中も可）。",
+        "summary": "出撃ティア ≥2 を使用可とみなします。追加／完璧は完全適性（Lv≥3・◯）。地形適性△（Lv2）の宇宙／空中は各−1。SSP 盤は SSP 強化後の地形。床は宇宙＋地上または空中（バイアラン式の宇宙＋空中も可）。",
         "when": {
           "Missing Space, or missing both Land and Atmospheric": "宇宙欠如、または地上と空中の両方欠如",
-          "Space + Land (or Space + Atmospheric)": "宇宙＋地上（または宇宙＋空中）",
-          "+ Atmospheric / Underwater / Sea (each)": "＋空中／水中／海（各）",
-          "Atmospheric used as Land substitute (no Land)": "空中を地上の代替に使用（地上なし）",
-          "Perfect (4+ of Space/Land/Atmo/UW/Sea)": "完璧（宇宙／地上／空中／水中／海のうち4つ以上）"
+          "Space + Land (or Space + Atmospheric) at deploy Lv≥2": "宇宙＋地上（または宇宙＋空中）出撃 Lv≥2",
+          "+ Atmospheric / Underwater / Sea at full affinity Lv≥3 (each)": "＋空中／水中／海（各・完全適性 Lv≥3）",
+          "Triangle (Lv2) Space or Atmospheric (each)": "地形適性△（Lv2）の宇宙または空中（各）",
+          "Perfect (4+ terrains at full affinity, no triangle)": "完璧（完全適性4つ以上・△なし）",
+          "Perfect (4+ terrains at full affinity)": "完璧（完全適性の宇宙／地上／空中／水中／海のうち4つ以上）",
+          "Atmospheric used as Land substitute (no Land)": "空中を地上の代替に使用（地上なし）"
         },
         "result": {
           "0 extra for Atmospheric": "空中への追加0",
@@ -329,8 +383,8 @@
         "result": {}
       },
       "source_bucket": {
-        "title": "入手元（ユニット）",
-        "summary": "開発ユニット・その他は軽い上振れ。ユニット補給は平坦（0）。",
+        "title": "入手元（ユニット）— フィルタのみ",
+        "summary": "レターには影響しません。ガシャ獲得ユニット／開発ユニット／その他は入手元フィルタで比較。各ルートの加点は 0。",
         "when": {
           "Units from Unit Assembly": "ユニット補給",
           "Development Unit": "開発ユニット",
@@ -338,6 +392,16 @@
           "Gacha / assembly": "ユニット補給",
           "Development": "開発ユニット",
           "Event / other": "その他"
+        },
+        "result": {}
+      },
+      "limited_supporter_tags": {
+        "title": "期間限定サポーター対象タグ",
+        "summary": "期間限定ガシャのサポーターのリーダースキル（第3段階）が対象とするタグ1つにつき +1（上限 +2）。一覧は採点ガイド下部。",
+        "when": {
+          "Any Tag covered by a limited-time Supporter leader skill": "期間限定サポーターのリーダースキル対象タグを1つでも持つ",
+          "Each Tag covered by a limited-time Supporter leader skill": "対象タグ1つあたり",
+          "Cap": "上限"
         },
         "result": {}
       },
@@ -574,16 +638,21 @@
       },
       "abilities": {
         "title": "アビリティ／キット",
-        "summary": "ゲームマスターのアビリティ・スキル効果データから採点。無条件の恒常 ATK／DEF／HP／MOV はここでは 0。強い％効果はサイズ帯（例：与ダメージ 10／20／30%+）。ユニットアビリティの加点上限は +3、キャラクターキットは +14。",
+        "summary": "ゲームマスターのアビリティ・スキル効果データから採点。無条件の恒常 DEF／HP／MOV はここでは 0。攻撃型は無条件の攻撃力%に軽い加点。HP／反撃条件の攻撃力は上限あり。Advantage:シリーズはここでは加点なし。強い％効果はサイズ帯。ユニットアビリティ上限 +3、キャラクターキットは +14。",
         "when": {
           "Role-relevant combat effects": "タイプに効く戦闘効果",
           "Permanent flat/rate stats, no condition": "無条件の恒常フラット／割合ステ",
+          "HP / Counter gated ATK%": "HP／反撃条件の攻撃力%",
+          "Advantage: series ability": "Advantage:シリーズアビリティ",
           "MAP ammo effects": "MAP弾数効果",
           "Physical/beam weapon range-down on hit": "命中時の実弾／ビーム武装射程ダウン",
           "Unbreakable (mainly pilots)": "不屈（主にキャラクター）"
         },
         "result": {
           "Points by effect (+ size bands)": "効果ごとの点（＋サイズ帯）",
+          "0 (Attack unconditional ATK% +1)": "0（攻撃型の無条件攻撃力%は +1）",
+          "Soft-capped": "上限あり",
+          "0 here (in-series / tag filter only)": "ここでは0（シリーズ内／タグ一致時のみ）",
           "0 here (counted under MAP)": "ここでは0（MAPで計上）",
           "Rare debuff +1": "稀少弱体 +1",
           "Extra-life role bonus (separate factor)": "追加命タイプボーナス（別項目）"
@@ -906,18 +975,38 @@
         }
       },
       "er_access": {
-        "title": "永恆之路 Expert 適性",
-        "summary": "單位或角色可出擊的永恆之路 Expert 關卡數（標籤／系列適性，含單位＋角色類型 3 規則）。",
+        "title": "永恆之路 Expert 適性（單位）",
+        "summary": "單位可出擊的永恆之路 Expert 關卡數（標籤／系列適性）。壓縮分帶，避免微小適性差直接造成級差。",
         "when": {
           "0–1 Expert stages": "Expert 關卡 0–1",
-          "2–4 Expert stages": "Expert 關卡 2–4",
-          "5–999 Expert stages": "Expert 關卡 5–999"
+          "2–6 Expert stages": "Expert 關卡 2–6",
+          "7–999 Expert stages": "Expert 關卡 7–999"
+        },
+        "result": {}
+      },
+      "pilot_er_access": {
+        "title": "永恆之路 Expert 適性（角色）",
+        "summary": "只計算有角色限制的 Expert 關卡。角色自由出擊關卡不加分。",
+        "when": {
+          "0–0 character-restricted Expert stages": "角色限制 Expert 0",
+          "1–1 character-restricted Expert stages": "角色限制 Expert 1",
+          "2–999 character-restricted Expert stages": "角色限制 Expert 2+"
+        },
+        "result": {}
+      },
+      "pilot_combat_actions": {
+        "title": "戰鬥行動 — 額外行動／支援攻擊／支援防禦 +1",
+        "summary": "主資料中的 +1 行動經濟（與一覽 ×2 篩選同系統）。依類型加權。不以通關影片出場次數計分。",
+        "when": {
+          "Chance Step +1": "額外行動 +1",
+          "Support Attack +1": "支援攻擊 +1",
+          "Support Defense +1": "支援防禦 +1"
         },
         "result": {}
       },
       "strategic_tags": {
         "title": "戰略標籤",
-        "summary": "非風味標籤依其在 UR 單位出現頻率計分（限定 UR 重於常駐 UR）。上限 +2。",
+        "summary": "非風味標籤依其在 UR 單位出現頻率計分（限定 UR 重於常駐 UR）。已出現在 Expert 限制中的標籤此處不加分。上限 +2。",
         "when": {
           "weight 0–2": "權重 0–2",
           "weight 3–7": "權重 3–7",
@@ -929,13 +1018,15 @@
       },
       "terrain": {
         "title": "地形適性（單位）",
-        "summary": "出擊等級 ≥2 視為可用。SSP 盤使用 SSP 強化後地形。下限為宇宙＋地上或空中（拜亞蘭式宇宙＋空中亦可）。",
+        "summary": "出擊等級 ≥2 視為可用。額外／完美需完全適性（Lv≥3・圓）。地形適性「三角形」（Lv2）的宇宙／空中各 −1。SSP 盤使用 SSP 強化後地形。下限為宇宙＋地上或空中（拜亞蘭式宇宙＋空中亦可）。",
         "when": {
           "Missing Space, or missing both Land and Atmospheric": "缺少宇宙，或同時缺少地上與空中",
-          "Space + Land (or Space + Atmospheric)": "宇宙＋地上（或宇宙＋空中）",
-          "+ Atmospheric / Underwater / Sea (each)": "＋空中／水中／海（各）",
-          "Atmospheric used as Land substitute (no Land)": "以空中代替地上（無地上）",
-          "Perfect (4+ of Space/Land/Atmo/UW/Sea)": "完美（宇宙／地上／空中／水中／海中 4 項以上）"
+          "Space + Land (or Space + Atmospheric) at deploy Lv≥2": "宇宙＋地上（或宇宙＋空中）出擊 Lv≥2",
+          "+ Atmospheric / Underwater / Sea at full affinity Lv≥3 (each)": "＋空中／水中／海（各・完全適性 Lv≥3）",
+          "Triangle (Lv2) Space or Atmospheric (each)": "地形適性「三角形」（Lv2）的宇宙或空中（各）",
+          "Perfect (4+ terrains at full affinity, no triangle)": "完美（完全適性 4 項以上、無三角形）",
+          "Perfect (4+ terrains at full affinity)": "完美（完全適性的宇宙／地上／空中／水中／海 4 項以上）",
+          "Atmospheric used as Land substitute (no Land)": "以空中代替地上（無地上）"
         },
         "result": {
           "0 extra for Atmospheric": "空中額外 0",
@@ -1081,12 +1172,22 @@
         "result": {}
       },
       "source_bucket": {
-        "title": "取得來源（單位）",
-        "summary": "開發單位與其他輕微上振；單位補給獲得單位維持 0。",
+        "title": "取得來源（單位）— 僅篩選",
+        "summary": "不影響字母分數。用取得來源篩選比較單位補給獲得單位／開發單位／其他。各途徑加分為 0。",
         "when": {
           "Units from Unit Assembly": "單位補給獲得單位",
           "Development Unit": "開發單位",
           "Other": "其他"
+        },
+        "result": {}
+      },
+      "limited_supporter_tags": {
+        "title": "限定期間支援人員標籤",
+        "summary": "每個由限定期間機體補給支援人員隊長技能（第 3 階）涵蓋的標籤 +1，上限 +2。清單見計分指南。",
+        "when": {
+          "Any Tag covered by a limited-time Supporter leader skill": "持有任一限定期間支援人員隊長技能涵蓋的標籤",
+          "Each Tag covered by a limited-time Supporter leader skill": "每個符合標籤",
+          "Cap": "上限"
         },
         "result": {}
       },
@@ -1323,16 +1424,21 @@
       },
       "abilities": {
         "title": "能力／套件",
-        "summary": "依遊戲主資料的能力與技能效果計分。無條件的固定 ATK／DEF／HP／移動力此處為 0。強％效果用尺寸帶（例如造成損傷 10／20／30%+）。單位能力加分上限 +3；角色套件上限 +14。",
+        "summary": "依遊戲主資料的能力與技能效果計分。無條件的固定 DEF／HP／移動力此處為 0；攻擊型對無條件攻擊力% 有輕微加分。HP／反擊條件的攻擊力有上限。Advantage: 系列能力此處不加分。強％效果用尺寸帶。單位能力上限 +3；角色套件上限 +14。",
         "when": {
           "Role-relevant combat effects": "對類型有用的戰鬥效果",
           "Permanent flat/rate stats, no condition": "無條件的固定／比例數值",
+          "HP / Counter gated ATK%": "HP／反擊條件的攻擊力%",
+          "Advantage: series ability": "Advantage: 系列能力",
           "MAP ammo effects": "MAP 彈數效果",
           "Physical/beam weapon range-down on hit": "命中時實彈／光束武裝射程下降",
           "Unbreakable (mainly pilots)": "不屈（主要為角色）"
         },
         "result": {
           "Points by effect (+ size bands)": "依效果給分（＋尺寸帶）",
+          "0 (Attack unconditional ATK% +1)": "0（攻擊型無條件攻擊力% 為 +1）",
+          "Soft-capped": "有上限",
+          "0 here (in-series / tag filter only)": "此處 0（僅系列內／標籤相符時）",
           "0 here (counted under MAP)": "此處 0（計入 MAP）",
           "Rare debuff +1": "稀有弱化 +1",
           "Extra-life role bonus (separate factor)": "額外生命類型加分（另計）"
@@ -1655,18 +1761,38 @@
         }
       },
       "er_access": {
-        "title": "永恆之路 Expert 適性",
-        "summary": "單位或角色可出擊嘅永恆之路 Expert 關卡數（標籤／系列適性，含單位＋角色類型 3 規則）。",
+        "title": "永恆之路 Expert 適性（單位）",
+        "summary": "單位可出擊嘅永恆之路 Expert 關卡數（標籤／系列適性）。壓縮分帶，避免細微適性差直接造成級差。",
         "when": {
           "0–1 Expert stages": "Expert 關卡 0–1",
-          "2–4 Expert stages": "Expert 關卡 2–4",
-          "5–999 Expert stages": "Expert 關卡 5–999"
+          "2–6 Expert stages": "Expert 關卡 2–6",
+          "7–999 Expert stages": "Expert 關卡 7–999"
+        },
+        "result": {}
+      },
+      "pilot_er_access": {
+        "title": "永恆之路 Expert 適性（角色）",
+        "summary": "只計有角色限制嘅 Expert 關卡。角色自由出擊關卡唔加分。",
+        "when": {
+          "0–0 character-restricted Expert stages": "角色限制 Expert 0",
+          "1–1 character-restricted Expert stages": "角色限制 Expert 1",
+          "2–999 character-restricted Expert stages": "角色限制 Expert 2+"
+        },
+        "result": {}
+      },
+      "pilot_combat_actions": {
+        "title": "戰鬥行動 — 額外行動／支援攻擊／支援防禦 +1",
+        "summary": "主資料入面嘅 +1 行動經濟（同列表 ×2 篩選同一套）。跟類型加權。唔會用通關影片出場次數計分。",
+        "when": {
+          "Chance Step +1": "額外行動 +1",
+          "Support Attack +1": "支援攻擊 +1",
+          "Support Defense +1": "支援防禦 +1"
         },
         "result": {}
       },
       "strategic_tags": {
         "title": "戰略標籤",
-        "summary": "非風味標籤跟住佢喺 UR 單位出現頻率計分（限定 UR 重過常駐 UR）。上限 +2。",
+        "summary": "非風味標籤跟住佢喺 UR 單位出現頻率計分（限定 UR 重過常駐 UR）。已經出現喺 Expert 限制入面嘅標籤呢度唔加分。上限 +2。",
         "when": {
           "weight 0–2": "權重 0–2",
           "weight 3–7": "權重 3–7",
@@ -1678,13 +1804,15 @@
       },
       "terrain": {
         "title": "地形適性（單位）",
-        "summary": "出擊等級 ≥2 視為可用。SSP 盤用 SSP 強化後地形。下限係宇宙＋地上或空中（拜亞蘭式宇宙＋空中都得）。",
+        "summary": "出擊等級 ≥2 視為可用。額外／完美要完全適性（Lv≥3・圓）。地形適性「三角形」（Lv2）嘅宇宙／空中各 −1。SSP 盤用 SSP 強化後地形。下限係宇宙＋地上或空中（拜亞蘭式宇宙＋空中都得）。",
         "when": {
           "Missing Space, or missing both Land and Atmospheric": "缺少宇宙，或同時缺少地上與空中",
-          "Space + Land (or Space + Atmospheric)": "宇宙＋地上（或宇宙＋空中）",
-          "+ Atmospheric / Underwater / Sea (each)": "＋空中／水中／海（各）",
-          "Atmospheric used as Land substitute (no Land)": "以空中代替地上（無地上）",
-          "Perfect (4+ of Space/Land/Atmo/UW/Sea)": "完美（宇宙／地上／空中／水中／海中 4 項以上）"
+          "Space + Land (or Space + Atmospheric) at deploy Lv≥2": "宇宙＋地上（或宇宙＋空中）出擊 Lv≥2",
+          "+ Atmospheric / Underwater / Sea at full affinity Lv≥3 (each)": "＋空中／水中／海（各・完全適性 Lv≥3）",
+          "Triangle (Lv2) Space or Atmospheric (each)": "地形適性「三角形」（Lv2）嘅宇宙或空中（各）",
+          "Perfect (4+ terrains at full affinity, no triangle)": "完美（完全適性 4 項以上、無三角形）",
+          "Perfect (4+ terrains at full affinity)": "完美（完全適性嘅宇宙／地上／空中／水中／海 4 項以上）",
+          "Atmospheric used as Land substitute (no Land)": "以空中代替地上（無地上）"
         },
         "result": {
           "0 extra for Atmospheric": "空中額外 0",
@@ -1830,12 +1958,22 @@
         "result": {}
       },
       "source_bucket": {
-        "title": "取得來源（單位）",
-        "summary": "開發單位與其他輕微上振；單位補給獲得單位維持 0。",
+        "title": "取得來源（單位）— 淨係篩選",
+        "summary": "唔影響字母分數。用取得來源篩選比較機體補給獲得單位／開發單位／其他。各途徑加分為 0。",
         "when": {
           "Units from Unit Assembly": "單位補給獲得單位",
           "Development Unit": "開發單位",
           "Other": "其他"
+        },
+        "result": {}
+      },
+      "limited_supporter_tags": {
+        "title": "限定期間支援人員標籤",
+        "summary": "每個由限定期間機體補給支援人員隊長技能（第 3 階）涵蓋嘅標籤 +1，上限 +2。清單見計分指南。",
+        "when": {
+          "Any Tag covered by a limited-time Supporter leader skill": "持有任一限定期間支援人員隊長技能涵蓋嘅標籤",
+          "Each Tag covered by a limited-time Supporter leader skill": "每個符合標籤",
+          "Cap": "上限"
         },
         "result": {}
       },
@@ -2072,16 +2210,21 @@
       },
       "abilities": {
         "title": "能力／套件",
-        "summary": "跟遊戲主資料嘅能力同技能效果計分。無條件嘅固定 ATK／DEF／HP／移動力呢度係 0。強％效果用尺寸帶（例如造成損傷 10／20／30%+）。單位能力加分上限 +3；角色套件上限 +14。",
+        "summary": "跟遊戲主資料嘅能力同技能效果計分。無條件嘅固定 DEF／HP／移動力呢度係 0；攻擊型對無條件攻擊力% 有輕微加分。HP／反擊條件嘅攻擊力有上限。Advantage: 系列能力呢度唔加分。強％效果用尺寸帶。單位能力上限 +3；角色套件上限 +14。",
         "when": {
           "Role-relevant combat effects": "對類型有用嘅戰鬥效果",
           "Permanent flat/rate stats, no condition": "無條件嘅固定／比例數值",
+          "HP / Counter gated ATK%": "HP／反擊條件嘅攻擊力%",
+          "Advantage: series ability": "Advantage: 系列能力",
           "MAP ammo effects": "MAP 彈數效果",
           "Physical/beam weapon range-down on hit": "命中時實彈／鐳射武裝射程下降",
           "Unbreakable (mainly pilots)": "不屈（主要係角色）"
         },
         "result": {
           "Points by effect (+ size bands)": "跟效果俾分（＋尺寸帶）",
+          "0 (Attack unconditional ATK% +1)": "0（攻擊型無條件攻擊力% 係 +1）",
+          "Soft-capped": "有上限",
+          "0 here (in-series / tag filter only)": "呢度 0（淨係系列內／標籤相符時）",
           "0 here (counted under MAP)": "呢度 0（計入 MAP）",
           "Rare debuff +1": "稀有弱化 +1",
           "Extra-life role bonus (separate factor)": "額外生命類型加分（另計）"
