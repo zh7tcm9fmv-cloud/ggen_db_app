@@ -367,6 +367,14 @@
     "ip_e490a8f78f85ad5165aff54c06a667f3:unit:1159001000:sp": "up",
     "ip_4ef92c3611b3bbb4012ba0a2651d61ab:unit:1144000500:ssp": "up",
     "ip_4ef92c3611b3bbb4012ba0a2651d61ab:unit:1370009810:sp": "up",
+    "ip_e490a8f78f85ad5165aff54c06a667f3:unit:1300004500:sp": "up",
+    "ip_e490a8f78f85ad5165aff54c06a667f3:unit:1144000500:sp": "up",
+    "ip_e490a8f78f85ad5165aff54c06a667f3:unit:1230005300:ssp": "up",
+    "ip_e490a8f78f85ad5165aff54c06a667f3:unit:1150000200:ssp": "up",
+    "ip_e490a8f78f85ad5165aff54c06a667f3:unit:1144000500:ssp": "up",
+    "ip_e490a8f78f85ad5165aff54c06a667f3:unit:1370005900:ssp": "up",
+    "ip_e490a8f78f85ad5165aff54c06a667f3:unit:1370011300:ssp": "up",
+    "ip_e490a8f78f85ad5165aff54c06a667f3:unit:1159001000:ssp": "up",
     "ip_e490a8f78f85ad5165aff54c06a667f3:character:1017000800:sp": "up",
     "ip_e490a8f78f85ad5165aff54c06a667f3:character:1162000500:sp": "up",
     "ip_e490a8f78f85ad5165aff54c06a667f3:character:1330002200:sp": "up",
@@ -464,7 +472,7 @@
       "down": 0
     },
     "unit:1144000500:sp": {
-      "up": 1,
+      "up": 2,
       "down": 0
     },
     "unit:1200000100:sp": {
@@ -560,7 +568,7 @@
       "down": 0
     },
     "unit:1370005900:ssp": {
-      "up": 6,
+      "up": 7,
       "down": 0
     },
     "unit:1431001310:ssp": {
@@ -920,7 +928,7 @@
       "down": 0
     },
     "unit:1230005300:ssp": {
-      "up": 1,
+      "up": 2,
       "down": 1
     },
     "unit:1007000200:ssp": {
@@ -1008,7 +1016,7 @@
       "down": 0
     },
     "unit:1150000200:ssp": {
-      "up": 1,
+      "up": 2,
       "down": 0
     },
     "unit:1095000300:sp": {
@@ -1020,10 +1028,22 @@
       "down": 0
     },
     "unit:1144000500:ssp": {
-      "up": 1,
+      "up": 2,
       "down": 0
     },
     "unit:1370009810:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1300004500:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1370011300:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1159001000:ssp": {
       "up": 1,
       "down": 0
     },
