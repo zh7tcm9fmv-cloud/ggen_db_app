@@ -16089,6 +16089,8 @@ _SPI_VOTES_CACHE = {'mtime': None, 'data': None}
 _SPI_VOTE_RATE_LIMIT_SEC = 0.12
 _spi_vote_recent_by_ip = {}
 _SPI_BUCKET_ORDER = ('priority', 'recommended', 'solid', 'situational', 'niche')
+# Bump to wipe all prior ballots/tallies once on load (fixes bad double-counts / test spam).
+_SPI_VOTES_DATA_VERSION = 2
 
 
 def _spi_votes_file_path():
@@ -16101,8 +16103,109 @@ def _spi_votes_file_path():
     return os.path.join(app_dir, 'data', 'persistent', 'sp_investment_votes.json')
 
 
+def _spi_votes_lock_path():
+    return _spi_votes_file_path() + '.lock'
+
+
 def _spi_votes_empty():
-    return {'version': 1, 'targets': {}, 'ballots': {}}
+    return {'version': int(_SPI_VOTES_DATA_VERSION), 'targets': {}, 'ballots': {}}
+
+
+class _SpiVotesFileLock:
+    """Cross-process lock so multi-worker gunicorn cannot double-apply the same ballot."""
+
+    def __init__(self, path, timeout=8.0):
+        self.path = path
+        self.timeout = float(timeout or 8.0)
+        self._fh = None
+
+    def __enter__(self):
+        parent = os.path.dirname(self.path) or '.'
+        try:
+            os.makedirs(parent, exist_ok=True)
+        except OSError:
+            pass
+        start = time.time()
+        self._fh = open(self.path, 'a+b')
+        while True:
+            try:
+                if os.name == 'nt':
+                    import msvcrt
+                    self._fh.seek(0)
+                    msvcrt.locking(self._fh.fileno(), msvcrt.LK_NBLCK, 1)
+                else:
+                    import fcntl
+                    fcntl.flock(self._fh.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+                return self
+            except OSError:
+                if (time.time() - start) >= self.timeout:
+                    try:
+                        self._fh.close()
+                    except Exception:
+                        pass
+                    self._fh = None
+                    raise TimeoutError('spi_votes lock timeout')
+                time.sleep(0.04)
+
+    def __exit__(self, exc_type, exc, tb):
+        if not self._fh:
+            return False
+        try:
+            if os.name == 'nt':
+                import msvcrt
+                self._fh.seek(0)
+                msvcrt.locking(self._fh.fileno(), msvcrt.LK_UNLCK, 1)
+            else:
+                import fcntl
+                fcntl.flock(self._fh.fileno(), fcntl.LOCK_UN)
+        except Exception:
+            pass
+        try:
+            self._fh.close()
+        except Exception:
+            pass
+        self._fh = None
+        return False
+
+
+def _spi_votes_normalize(raw):
+    data = _spi_votes_empty()
+    if not isinstance(raw, dict):
+        return data
+    try:
+        ver = int(raw.get('version') or 0)
+    except (TypeError, ValueError):
+        ver = 0
+    if ver < int(_SPI_VOTES_DATA_VERSION):
+        # One-shot wipe when schema bumps (owner reset / corrupt tallies).
+        print(
+            f'spi_votes: wiping store (version {ver} → {_SPI_VOTES_DATA_VERSION})'
+        )
+        return data
+    data['version'] = int(_SPI_VOTES_DATA_VERSION)
+    data['ballots'] = {
+        str(k): v
+        for k, v in dict(raw.get('ballots') or {}).items()
+        if v in ('up', 'down')
+    }
+    # Tallies are always derived from ballots so duplicate increments cannot stick.
+    data['targets'] = _spi_targets_from_ballots(data['ballots'])
+    return data
+
+
+def _spi_targets_from_ballots(ballots):
+    """Unique IP ballots → up/down counts. Ballot key = `{voter_id}:{kind}:{id}:{board}`."""
+    targets = {}
+    for bkey, vote in (ballots or {}).items():
+        if vote not in ('up', 'down'):
+            continue
+        parts = str(bkey).split(':')
+        if len(parts) < 4:
+            continue
+        tkey = ':'.join(parts[1:])
+        row = targets.setdefault(tkey, {'up': 0, 'down': 0})
+        row[vote] = int(row.get(vote) or 0) + 1
+    return targets
 
 
 def _spi_votes_load(force=False):
@@ -16119,10 +16222,18 @@ def _spi_votes_load(force=False):
         try:
             with open(path, 'r', encoding='utf-8') as f:
                 raw = json.load(f)
-            if isinstance(raw, dict):
-                data['targets'] = dict(raw.get('targets') or {})
-                data['ballots'] = dict(raw.get('ballots') or {})
-                data['version'] = int(raw.get('version') or 1)
+            data = _spi_votes_normalize(raw)
+            # Persist wipe / recompute so disk matches memory.
+            if (
+                not isinstance(raw, dict)
+                or int(raw.get('version') or 0) < int(_SPI_VOTES_DATA_VERSION)
+                or dict(raw.get('targets') or {}) != data.get('targets')
+            ):
+                _spi_votes_save(data)
+                try:
+                    mtime = os.path.getmtime(path)
+                except OSError:
+                    mtime = time.time()
         except Exception as e:
             print(f'spi_votes: load failed: {e}')
     cached['mtime'] = mtime
@@ -16138,10 +16249,15 @@ def _spi_votes_save(data):
     except OSError as e:
         print(f'spi_votes: mkdir failed: {e}')
         return False
+    payload = {
+        'version': int(_SPI_VOTES_DATA_VERSION),
+        'ballots': dict((data or {}).get('ballots') or {}),
+        'targets': _spi_targets_from_ballots((data or {}).get('ballots') or {}),
+    }
     tmp = path + '.tmp'
     try:
         with open(tmp, 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, separators=(',', ':'))
+            json.dump(payload, f, ensure_ascii=False, separators=(',', ':'))
         os.replace(tmp, path)
     except OSError as e:
         print(f'spi_votes: save failed: {e}')
@@ -16155,7 +16271,7 @@ def _spi_votes_save(data):
         _SPI_VOTES_CACHE['mtime'] = os.path.getmtime(path)
     except OSError:
         _SPI_VOTES_CACHE['mtime'] = time.time()
-    _SPI_VOTES_CACHE['data'] = data
+    _SPI_VOTES_CACHE['data'] = payload
     return True
 
 
@@ -16368,41 +16484,52 @@ def api_sp_investment_vote():
     if _spi_vote_rate_limited(voter_id, tkey):
         return jsonify({'error': 'rate_limited'}), 429
     bkey = _spi_vote_ballot_key(voter_id, tkey)
-    with _SPI_VOTES_LOCK:
-        data = _spi_votes_load(force=True)
-        targets = dict(data.get('targets') or {})
-        ballots = dict(data.get('ballots') or {})
-        target = dict(targets.get(tkey) or {'up': 0, 'down': 0})
-        prev = ballots.get(bkey)
-        if prev == 'up':
-            target['up'] = max(0, int(target.get('up') or 0) - 1)
-        elif prev == 'down':
-            target['down'] = max(0, int(target.get('down') or 0) - 1)
-        if vote == 'clear':
-            ballots.pop(bkey, None)
-        else:
-            ballots[bkey] = vote
-            if vote == 'up':
-                target['up'] = int(target.get('up') or 0) + 1
-            else:
-                target['down'] = int(target.get('down') or 0) + 1
-        if int(target.get('up') or 0) == 0 and int(target.get('down') or 0) == 0:
-            targets.pop(tkey, None)
-        else:
-            targets[tkey] = {'up': int(target.get('up') or 0), 'down': int(target.get('down') or 0)}
-        data = {'version': 1, 'targets': targets, 'ballots': ballots}
-        if not _spi_votes_save(data):
-            return jsonify({'error': 'persist_failed'}), 500
+    prev = None
+    unchanged = False
+    data = _spi_votes_empty()
+    try:
+        with _SPI_VOTES_LOCK:
+            with _SpiVotesFileLock(_spi_votes_lock_path()):
+                data = _spi_votes_load(force=True)
+                ballots = dict(data.get('ballots') or {})
+                prev = ballots.get(bkey)
+                # Idempotent: same IP cannot stack another identical vote.
+                if vote in ('up', 'down') and prev == vote:
+                    unchanged = True
+                    targets = _spi_targets_from_ballots(ballots)
+                    data = {
+                        'version': int(_SPI_VOTES_DATA_VERSION),
+                        'ballots': ballots,
+                        'targets': targets,
+                    }
+                    _SPI_VOTES_CACHE['data'] = data
+                else:
+                    if vote == 'clear':
+                        ballots.pop(bkey, None)
+                    else:
+                        ballots[bkey] = vote
+                    targets = _spi_targets_from_ballots(ballots)
+                    data = {
+                        'version': int(_SPI_VOTES_DATA_VERSION),
+                        'ballots': ballots,
+                        'targets': targets,
+                    }
+                    if not _spi_votes_save(data):
+                        return jsonify({'error': 'persist_failed'}), 500
+    except TimeoutError:
+        return jsonify({'error': 'busy'}), 503
     _spi_vote_recent_by_ip[voter_id] = (time.time(), tkey)
     tallies = _spi_vote_tallies_map(data)
     entry = tallies.get(tkey) or {'up': 0, 'down': 0, 'community_adj': 0}
+    my_vote = (data.get('ballots') or {}).get(bkey)
     return jsonify({
         'ok': True,
         'key': tkey,
-        'my_vote': None if vote == 'clear' else vote,
+        'my_vote': my_vote if my_vote in ('up', 'down') else None,
         'up': entry['up'],
         'down': entry['down'],
         'community_adj': entry['community_adj'],
+        'unchanged': unchanged,
     })
 
 

@@ -218,6 +218,7 @@
   let voteTallies = Object.create(null);
   let voteMine = Object.create(null);
   let voteBusyKey = '';
+  const voteInFlight = Object.create(null);
 
   const SPI_VOTE_ICON_UP = '/static/images/UI/UI_Common_MapUI_Icon_CursorImportant.webp';
   const SPI_VOTE_ICON_DOWN = '/static/images/UI/UI_Common_MapUI_Icon_CursorTaget.webp';
@@ -345,12 +346,29 @@
 
   async function submitSpiVote(kind, id, boardName, vote) {
     const key = voteTargetKey(kind, id, boardName);
-    if (voteBusyKey === key) return;
+    if (voteBusyKey === key || voteInFlight[key]) return;
     voteBusyKey = key;
+    voteInFlight[key] = true;
     const mine = voteMine[key] || null;
     let next = vote;
     if (vote === 'up' && mine === 'up') next = 'clear';
     if (vote === 'down' && mine === 'down') next = 'clear';
+    // Already at requested state (e.g. duplicate click before mine synced).
+    if (next === 'up' && mine === 'up') {
+      voteBusyKey = '';
+      delete voteInFlight[key];
+      return;
+    }
+    if (next === 'down' && mine === 'down') {
+      voteBusyKey = '';
+      delete voteInFlight[key];
+      return;
+    }
+    if (next === 'clear' && !mine) {
+      voteBusyKey = '';
+      delete voteInFlight[key];
+      return;
+    }
 
     const prevTall = Object.assign({}, voteTallies[key] || { up: 0, down: 0, community_adj: 0 });
     const prevMine = mine;
@@ -408,6 +426,7 @@
       patchVoteDom(kind, id, boardName);
     } finally {
       voteBusyKey = '';
+      delete voteInFlight[key];
     }
   }
 
