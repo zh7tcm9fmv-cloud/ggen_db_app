@@ -995,8 +995,11 @@ def analyze_transform_gains(
             )
             bstats = A._unit_lb_row_to_api(bblock, use_mode, False) or {}
             base_mov = int(bstats.get("MOV") or bstats.get("Move") or 0)
+        else:
+            bstats = dict(base_stats or {})
     except Exception:
-        pass
+        pstats = {}
+        bstats = dict(base_stats or {})
 
     base_w = _weapon_features(A, base_id, ld, lc, use_mode, rules)
     alt_w = _weapon_features(A, alt_id, ld, lc, use_mode, rules)
@@ -1028,6 +1031,8 @@ def analyze_transform_gains(
         "weapon_power": {"base": base_power, "alt": alt_power},
         "map": {"base": base_map, "alt": alt_map},
         "gains": list(gains),
+        "alt_stats": pstats if isinstance(pstats, dict) else {},
+        "base_stats": bstats if isinstance(bstats, dict) else dict(base_stats or {}),
     }
     return True, gains, meta
 
@@ -1917,21 +1922,33 @@ _COMBAT_ACTION_NAME_SD = re.compile(
 )
 
 
-def detect_pilot_combat_action_flags(A, cid: str, lc: str = "EN") -> dict[str, bool]:
+def _combat_action_family_name(name: str, aid: str) -> str:
+    fam = re.sub(
+        r"\s*(?:lv\.?|level)\s*\d+\s*$",
+        "",
+        str(name or "").strip(),
+        flags=re.IGNORECASE,
+    ).strip()
+    return fam.lower() or str(aid)
+
+
+def detect_pilot_combat_action_flags(A, cid: str, lc: str = "EN") -> dict:
     """Detect Chance Step / Support Attack / Support Defense +1 economy from master data.
 
     Prefers the same ability-detail regexes as browse x2 filters when available;
-    falls back to ability display names. Not derived from clear videos.
+    falls back to ability display names. Counts distinct ability families so a
+    second SD +1 line can score as extra (3 SD). Not derived from clear videos.
     """
     flags = {
         "chance_step_plus": False,
         "support_attack_plus": False,
         "support_defense_plus": False,
+        "chance_step_plus_count": 0,
+        "support_attack_plus_count": 0,
+        "support_defense_plus_count": 0,
     }
     matcher = getattr(A, "_char_matches_special_x2_filter", None)
     cs_id = getattr(A, "CHANCE_STEP_EX_FILTER_ID", "chance_step_ex")
-    sa_id = getattr(A, "SUPPORT_ATK_X2_FILTER_ID", "support_attack_x2")
-    sd_id = getattr(A, "SUPPORT_DEF_X2_FILTER_ID", "support_defense_x2")
     if callable(matcher):
         try:
             # include_conditional: tag/series-gated +1 still grants the economy in restricted ER
@@ -1940,7 +1957,6 @@ def detect_pilot_combat_action_flags(A, cid: str, lc: str = "EN") -> dict[str, b
         except Exception:
             pass
         try:
-            # x2 filter wants >=2 hits; also accept role precomputed sets / name fallback
             if cid in getattr(A, "SUPPORT_ATK_X2_CHARACTER_IDS", set()):
                 flags["support_attack_plus"] = True
             if cid in getattr(A, "SUPPORT_DEF_X2_CHARACTER_IDS", set()):
@@ -1948,7 +1964,6 @@ def detect_pilot_combat_action_flags(A, cid: str, lc: str = "EN") -> dict[str, b
         except Exception:
             pass
 
-    # Name / EX ability-id fallback (covers Attack CS and non-role-gated kits)
     cs_aids = getattr(A, "CHANCE_STEP_EX_ABILITY_IDS", None) or set()
     try:
         rows = [
@@ -1958,29 +1973,73 @@ def detect_pilot_combat_action_flags(A, cid: str, lc: str = "EN") -> dict[str, b
         ]
     except Exception:
         rows = []
+    cs_fams: set[str] = set()
+    sa_fams: set[str] = set()
+    sd_fams: set[str] = set()
+    seen_aids: set[str] = set()
     for ab in rows:
         for key in ("AbilityId", "SpAbilityId", "spAbilityId"):
             aid = A.normalize_id(ab.get(key) or "0")
-            if not aid or aid in ("0", "None"):
+            if not aid or aid in ("0", "None") or aid in seen_aids:
                 continue
-            if aid in cs_aids:
-                flags["chance_step_plus"] = True
+            seen_aids.add(aid)
             name = _ability_display_name(A, aid, lc) or ""
-            if _COMBAT_ACTION_NAME_CS.search(name):
+            fam = _combat_action_family_name(name, aid)
+            if aid in cs_aids or _COMBAT_ACTION_NAME_CS.search(name):
                 flags["chance_step_plus"] = True
+                cs_fams.add(fam)
             if _COMBAT_ACTION_NAME_SA.search(name):
                 flags["support_attack_plus"] = True
+                sa_fams.add(fam)
             if _COMBAT_ACTION_NAME_SD.search(name):
                 flags["support_defense_plus"] = True
+                sd_fams.add(fam)
+            try:
+                for eff in _effects_from_trait_ids(A, _trait_set_ids_for_ability(A, aid)):
+                    tti = int(eff.get("trait_type_index") or 0)
+                    if tti == 52:
+                        flags["support_defense_plus"] = True
+                        sd_fams.add(fam)
+                    elif tti == 51:
+                        flags["support_attack_plus"] = True
+                        sa_fams.add(fam)
+            except Exception:
+                pass
+    flags["chance_step_plus_count"] = max(
+        len(cs_fams), 1 if flags["chance_step_plus"] else 0
+    )
+    flags["support_attack_plus_count"] = max(
+        len(sa_fams), 1 if flags["support_attack_plus"] else 0
+    )
+    flags["support_defense_plus_count"] = max(
+        len(sd_fams), 1 if flags["support_defense_plus"] else 0
+    )
     return flags
+
+
+def _combat_action_flag_count(flags: dict, key: str) -> int:
+    cnt = flags.get(f"{key}_count")
+    if cnt is not None:
+        try:
+            n = int(cnt)
+        except (TypeError, ValueError):
+            n = 0
+        if n > 0:
+            return n
+    return 1 if flags.get(key) else 0
 
 
 def score_pilot_combat_actions(
     rules: dict, role: str, flags: dict | None
 ) -> tuple[int, dict]:
-    """Role-weighted points for 2cs / 2sa / 2sd-style action economy."""
+    """Role-weighted points for 2cs / 2sa / 2sd-style action economy.
+
+    First matching family uses the role table; extra distinct Support Defense +1
+    families add support_defense_extra (3 SD).
+    """
     cfg = rules.get("pilot_combat_actions") or {}
     flags = flags or {}
+    extra_sd = cfg.get("support_defense_extra") or {}
     parts: list[dict] = []
     raw = 0
     for key, label in (
@@ -1988,14 +2047,26 @@ def score_pilot_combat_actions(
         ("support_attack_plus", "Support Attack +1"),
         ("support_defense_plus", "Support Defense +1"),
     ):
-        if not flags.get(key):
+        n = _combat_action_flag_count(flags, key)
+        if n <= 0:
             continue
         role_pts = cfg.get(key) or {}
-        pts = int(role_pts.get(role, 0) or 0)
+        first = int(role_pts.get(role, 0) or 0)
+        extra = 0
+        if key == "support_defense_plus" and n > 1:
+            extra = int(extra_sd.get(role, 0) or 0) * (n - 1)
+        pts = first + extra
         if pts <= 0:
             continue
         raw += pts
-        parts.append({"key": key, "label": label, "points": pts})
+        parts.append(
+            {
+                "key": key,
+                "label": label if n <= 1 else f"{label} ×{n}",
+                "points": pts,
+                "count": n,
+            }
+        )
     cap = int(cfg.get("cap", 3) or 3)
     total = min(cap, raw) if cap > 0 else raw
     return total, {"parts": parts, "raw": raw, "cap": cap, "total": total}
@@ -3399,6 +3470,44 @@ def _source_bucket(A, info: dict) -> str:
     return "event"
 
 
+def _stat_num(stats: dict | None, key: str) -> int:
+    if not stats:
+        return 0
+    try:
+        return int(stats.get(key) or stats.get(key.upper()) or stats.get(key.lower()) or 0)
+    except (TypeError, ValueError):
+        return 0
+
+
+def transform_alt_improves_combat_stats(
+    base_stats: dict | None, alt_stats: dict | None, rules: dict | None = None
+) -> bool:
+    """True when alt form raises HP, DEF, or ATK vs base (catalog-wide transform override)."""
+    cfg = (rules or {}).get("transform") or {}
+    keys = cfg.get("stat_override_keys") or ["HP", "DEF", "ATK"]
+    need = int(cfg.get("stat_override_min_increase", 1) or 1)
+    for key in keys:
+        if _stat_num(alt_stats, str(key)) >= _stat_num(base_stats, str(key)) + need:
+            return True
+    return False
+
+
+def merge_better_combat_stats(
+    base_stats: dict | None, alt_stats: dict | None, rules: dict | None = None
+) -> dict:
+    """Per-stat max of base vs alt for HP/DEF/ATK (and any listed override keys)."""
+    out = dict(base_stats or {})
+    cfg = (rules or {}).get("transform") or {}
+    keys = [str(k) for k in (cfg.get("stat_override_keys") or ["HP", "DEF", "ATK"])]
+    alt = alt_stats or {}
+    for key in keys:
+        b = _stat_num(out, key)
+        a = _stat_num(alt, key)
+        if a > b:
+            out[key] = a
+    return out
+
+
 def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: dict | None = None) -> dict | None:
     """Build feature dict for one unit under sp|ssp. Returns None if not scoreable."""
     rules = rules or load_rules()
@@ -3428,7 +3537,7 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
     except Exception:
         stats = {}
 
-    # Transform override (Reborns allowlist)
+    # Transform: use better HP/DEF/ATK from alt form when it actually improves those stats.
     override_ids = set(str(x) for x in (rules.get("transform_stat_override_unit_ids") or []))
     partner = None
     try:
@@ -3451,15 +3560,13 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
             base_stats=stats,
         )
         has_transform = bool(_has_p) or has_transform
-    if uid in override_ids and partner:
-        try:
-            pinfo = A.unit_info_map.get(partner, {})
-            pblock = A._unit_max_lb_stat_block(partner, pinfo, A.unit_stat_map.get(partner, {}), ldc)
-            pstats = A._unit_lb_row_to_api(pblock, use_mode, False) or {}
-            if pstats:
-                stats = pstats
-        except Exception:
-            pass
+    alt_stats = (transform_meta or {}).get("alt_stats") or {}
+    use_alt_stats = transform_alt_improves_combat_stats(stats, alt_stats, rules)
+    if not use_alt_stats and uid in override_ids and alt_stats:
+        use_alt_stats = True
+    if use_alt_stats and alt_stats:
+        stats = merge_better_combat_stats(stats, alt_stats, rules)
+        transform_meta["used_alt_combat_stats"] = True
 
     tags = []
     try:
@@ -3773,7 +3880,7 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "title": "Defense priorities",
             "applies": ["units"],
             "objective": True,
-            "summary": "High HP or DEF, a shield (~20% damage neglect), high MOV for support-defense coverage, solid terrain (Space + Land or Atmos), survivability kits (damage reduction / HP restore), plus a few good debuffs. ATK is upside only (≥9000). Special defenses (I-field / barrier / DR) are extra presence bonuses.",
+            "summary": "High HP or DEF, a shield (~20% damage neglect), high MOV for support-defense coverage, solid terrain (Space + Land or Atmos), survivability kits (damage reduction / HP restore), plus a few good debuffs. HP/DEF floors are mild (−1). ATK is upside only (≥9000). Special defenses (I-field / barrier / DR) are extra presence bonuses.",
             "rows": [
                 {"when": "Primary", "result": "HP · DEF · shield · MOV · terrain · survivability abilities"},
                 {"when": "Secondary", "result": "A few good pierce / DEF-down debuffs (R4+ kinds)"},
@@ -3848,7 +3955,9 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
                 "summary": (
                     "Master-data ability text that grants Chance Step +1, Support Attack +1, or Support Defense +1 "
                     "(same detection family as browse ×2 filters). Role-weighted; cap "
-                    f"{_fmt_points(ca.get('cap', 3))}. Not based on clear videos."
+                    f"{_fmt_points(ca.get('cap', 3))}. A second distinct Support Defense +1 family is extra "
+                    f"(Defense/Support {_fmt_points(((ca.get('support_defense_extra') or {}).get('Defense', 1)))}). "
+                    "Not based on clear videos."
                 ),
                 "rows": [
                     {
@@ -3873,6 +3982,14 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
                             f"Attack {_fmt_points((ca.get('support_defense_plus') or {}).get('Attack', 0))} · "
                             f"Support {_fmt_points((ca.get('support_defense_plus') or {}).get('Support', 0))} · "
                             f"Defense {_fmt_points((ca.get('support_defense_plus') or {}).get('Defense', 0))}"
+                        ),
+                    },
+                    {
+                        "when": "Support Defense +1 (second distinct family / 3 SD)",
+                        "result": (
+                            f"Attack {_fmt_points((ca.get('support_defense_extra') or {}).get('Attack', 0))} · "
+                            f"Support {_fmt_points((ca.get('support_defense_extra') or {}).get('Support', 0))} · "
+                            f"Defense {_fmt_points((ca.get('support_defense_extra') or {}).get('Defense', 0))}"
                         ),
                     },
                 ],
@@ -4788,8 +4905,12 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
                     "applies": ["pilots"],
                     "objective": True,
                     "summary": (
-                        "SP-list grown stats for this Character role. Specialty stats (Ranged/Melee/Awaken) "
-                        "matter most for Attack; Defense/Reaction matter more for Defense Characters."
+                        "SP-list grown stats for this Character role. "
+                        + (
+                            "Defense/Reaction are primary; Ranged/Melee/Awaken are upside-only (cap +1)."
+                            if role_name == "Defense"
+                            else "Specialty stats (Ranged/Melee/Awaken) matter most for Attack; Defense/Reaction matter more for Defense Characters."
+                        )
                     ),
                     "rows": pstat_rows,
                 }

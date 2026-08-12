@@ -102,7 +102,26 @@ class TestSpInvestmentBands(unittest.TestCase):
             "A+",
         )
 
-    def test_defense_pilot_def_band_tip_capped(self):
+    def test_defense_pilot_attack_stats_upside_only(self):
+        for stat in ("Ranged", "Melee", "Awaken"):
+            bands = self.rules["pilot_stat_bands"][stat]["Defense"]
+            tip = int((bands or [{}])[-1].get("points") or 0)
+            self.assertLessEqual(tip, 1, f"{stat}/Defense tip {tip} exceeds +1")
+            self.assertEqual(band_points(bands, 599), 0)
+            self.assertEqual(band_points(bands, 800), 1)
+
+    def test_defense_unit_hp_def_floors_soft(self):
+        hp = self.rules["stat_bands"]["HP"]["Defense"]
+        self.assertEqual(band_points(hp, 100000), -1)
+        self.assertEqual(band_points(hp, 105000), 0)
+        self.assertEqual(band_points(hp, 110000), 1)
+        self.assertEqual(band_points(hp, 120000), 2)
+        de = self.rules["stat_bands"]["DEF"]["Defense"]
+        self.assertEqual(band_points(de, 9000), -1)
+        self.assertEqual(band_points(de, 9500), 0)
+        self.assertEqual(band_points(de, 10500), 1)
+        self.assertEqual(band_points(de, 11100), 2)
+        self.assertEqual(band_points(de, 12000), 3)
         bands = self.rules["pilot_stat_bands"]["Defense"]["Defense"]
         tip = bands[-1]["points"]
         self.assertLessEqual(tip, 3)
@@ -451,14 +470,18 @@ class TestSpInvestmentBands(unittest.TestCase):
         feats = _minimal_features(role="Defense", has_shield=False)
         self.assertEqual(score_features(feats, self.rules)["breakdown"]["shield"], -2)
 
-    def test_gn_field_excluded_from_abilities(self):
+    def test_gn_field_not_name_excluded(self):
+        for key in ("ability_structured", "ability"):
+            excl = [str(x).lower() for x in ((self.rules.get(key) or {}).get("exclude_name_substrings") or [])]
+            self.assertFalse(any("gn field" in x for x in excl), key)
+            self.assertFalse(any("positron" in x for x in excl), key)
         pts, meta = score_abilities(
             self.rules,
-            "Attack",
-            ["GN Field\nReduces beam damage"],
+            "Defense",
+            ["GN Field\nReduces damage taken"],
         )
-        self.assertEqual(pts, 0)
-        self.assertEqual(meta["count"], 0)
+        self.assertGreater(pts, 0)
+        self.assertGreater(meta["count"], 0)
 
     def test_pure_stat_passive_ignored(self):
         pts, meta = score_abilities(
@@ -690,7 +713,7 @@ class TestSpInvestmentBands(unittest.TestCase):
         self.assertEqual(pilot_tag_count_points(self.rules, 1), 0)
         self.assertEqual(pilot_tag_count_points(self.rules, 10), 0)
 
-    def test_pilot_hard_er_tag_bonus(self):
+    def test_pilot_hard_er_tag_not_scored(self):
         feats = {
             "role": "Attack",
             "tag_count": 4,
@@ -710,7 +733,7 @@ class TestSpInvestmentBands(unittest.TestCase):
             "Reaction": 620,
         }
         scored = score_pilot_features(feats, self.rules)
-        self.assertEqual(scored["breakdown"]["tags"], 1)  # Hard ER only
+        self.assertEqual(scored["breakdown"]["tags"], 0)
         self.assertEqual(scored["breakdown"]["series_affinity"], 2)
         # Portfolio: single S letter → +2 (cap 2); multi-match bonus disabled
         self.assertEqual(scored["breakdown"]["recommend_ms"], 2)
@@ -1361,8 +1384,50 @@ class TestSpInvestmentBands(unittest.TestCase):
             "Attack",
             {"chance_step_plus": True, "support_attack_plus": True, "support_defense_plus": True},
         )
-        # Attack: CS+2 + SA+1 + SD+0 = 3, cap 3
+        # Attack: CS+2 + SA+1 + SD+0 = 3, cap 4
         self.assertEqual(atk_pts, 3)
+
+        def_one, _ = score_pilot_combat_actions(
+            self.rules,
+            "Defense",
+            {"support_defense_plus": True, "support_defense_plus_count": 1},
+        )
+        self.assertEqual(def_one, 2)
+        def_two, meta_two = score_pilot_combat_actions(
+            self.rules,
+            "Defense",
+            {"support_defense_plus": True, "support_defense_plus_count": 2},
+        )
+        self.assertEqual(def_two, 3)
+        self.assertEqual(meta_two["parts"][0]["count"], 2)
+
+        sup_sd, _ = score_pilot_combat_actions(
+            self.rules,
+            "Support",
+            {
+                "support_attack_plus": True,
+                "support_defense_plus": True,
+                "support_defense_plus_count": 1,
+            },
+        )
+        # Support SA+2 + SD+2 = 4, cap 4
+        self.assertEqual(sup_sd, 4)
+
+    def test_transform_better_combat_stats(self):
+        from sp_investment_rank import (
+            merge_better_combat_stats,
+            transform_alt_improves_combat_stats,
+        )
+
+        base = {"HP": 100000, "DEF": 9000, "ATK": 8000, "MOB": 7000}
+        alt = {"HP": 120000, "DEF": 11000, "ATK": 8500, "MOB": 7000}
+        self.assertTrue(transform_alt_improves_combat_stats(base, alt, self.rules))
+        merged = merge_better_combat_stats(base, alt, self.rules)
+        self.assertEqual(merged["HP"], 120000)
+        self.assertEqual(merged["DEF"], 11000)
+        self.assertEqual(merged["ATK"], 8500)
+        same = {"HP": 100000, "DEF": 9000, "ATK": 8000}
+        self.assertFalse(transform_alt_improves_combat_stats(base, same, self.rules))
 
     def test_pilot_series_affinity_cap(self):
         from sp_investment_rank import _pilot_series_affinity_points

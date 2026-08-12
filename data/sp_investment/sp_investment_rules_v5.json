@@ -51,7 +51,8 @@
     "v5.31: Character specialty tip +6→+5 on Ranged/Melee/Awaken (all roles that used +6); hybrid Character letters — S/S+ by within-role percentile (~top 3% / ~top 8%), A+ and below absolute",
     "v5.32: Max Vigor weapon −1 only when a Max-Vigor-gated gun outpowers unrestricted options; on SSP, compare gated guns without type-1 power enhance so Custom Core (…90) bypass is not undone by juicing the still-gated SP weapon (00 Raiser Final Battle SSP)",
     "v5.33: Replace Lupus/Rex signature allowlist (+3) with catalog-wide multi damage-type bonus (+1) from WeaponAttributeSetId Beam/Physical/Special combos (incl. MAP) — Vidar / Grand Master / Michaelis S2 / Thunderbolt MAP etc.",
-    "v5.34: Multi damage-type points +1→+2; community vote nudge capped at ±2 (IP ballot); Unit dossiers list recommended Characters"
+    "v5.34: Multi damage-type points +1→+2; community vote nudge capped at ±2 (IP ballot); Unit dossiers list recommended Characters",
+    "v5.35: Defense Characters — Ranged/Melee/Awaken upside-only (cap +1); Defense/Reaction stay primary. Extra Support Defense +1 line scores +1. Support-role SD +1→+2, combat-actions cap 4. Defense Unit HP/DEF floors softened and +2 HP reachable. Drop dead Hard ER tag. Transform uses better HP/DEF/ATK from alt form (no Reborns allowlist). GN Field / Positron Reflector no longer name-excluded from ability score"
   ],
   "exclude_warships": true,
   "exclude_ur_units": true,
@@ -122,11 +123,9 @@
     }
   ],
   "pilot_tag_weight": {
-    "bonus_per_match": 1,
-    "cap": 1,
-    "high_value_names": [
-      "Hard ER"
-    ]
+    "bonus_per_match": 0,
+    "cap": 0,
+    "high_value_names": []
   },
   "pilot_recommend_role_gate": {
     "Attack": [
@@ -145,7 +144,7 @@
   "pilot_series_affinity_points_each": 2,
   "pilot_series_affinity_cap": 2,
   "pilot_combat_actions": {
-    "cap": 3,
+    "cap": 4,
     "chance_step_plus": {
       "Attack": 2,
       "Support": 1,
@@ -158,10 +157,15 @@
     },
     "support_defense_plus": {
       "Attack": 0,
-      "Support": 1,
+      "Support": 2,
       "Defense": 2
     },
-    "note": "Master-data ability text: Chance Step +1 / Support Attack +1 / Support Defense +1 (same detection as browse x2 filters). Role-weighted; not video clear priors."
+    "support_defense_extra": {
+      "Attack": 0,
+      "Support": 1,
+      "Defense": 1
+    },
+    "note": "v5.35: First SD +1 ability is role identity (Defense +2, Support +2). A second distinct SD +1 family is extra +1 (3 SD). Cap 4 so Support SA+2 and SD+2 can both show. Not video clear priors."
   },
   "recommend_ms_min_letter": "A",
   "recommend_ms_letter_points": {
@@ -199,24 +203,12 @@
       ],
       "Defense": [
         {
-          "max_exclusive": 500,
+          "max_exclusive": 700,
           "points": 0
-        },
-        {
-          "max_exclusive": 540,
-          "points": 0
-        },
-        {
-          "max_exclusive": 570,
-          "points": 1
-        },
-        {
-          "max_exclusive": 600,
-          "points": 2
         },
         {
           "max_exclusive": null,
-          "points": 3
+          "points": 1
         }
       ],
       "Support": [
@@ -267,24 +259,12 @@
       ],
       "Defense": [
         {
-          "max_exclusive": 500,
+          "max_exclusive": 700,
           "points": 0
-        },
-        {
-          "max_exclusive": 540,
-          "points": 0
-        },
-        {
-          "max_exclusive": 570,
-          "points": 1
-        },
-        {
-          "max_exclusive": 600,
-          "points": 2
         },
         {
           "max_exclusive": null,
-          "points": 3
+          "points": 1
         }
       ],
       "Support": [
@@ -335,24 +315,12 @@
       ],
       "Defense": [
         {
-          "max_exclusive": 500,
+          "max_exclusive": 650,
           "points": 0
-        },
-        {
-          "max_exclusive": 550,
-          "points": 0
-        },
-        {
-          "max_exclusive": 600,
-          "points": 1
-        },
-        {
-          "max_exclusive": 700,
-          "points": 2
         },
         {
           "max_exclusive": null,
-          "points": 3
+          "points": 1
         }
       ],
       "Support": [
@@ -560,7 +528,9 @@
     "mov_min_increase": 1,
     "range_min_increase": 1,
     "power_min_increase": 1,
-    "note": "Only score when alt form unlocks terrain, MOV, range, power, or MAP vs base form"
+    "stat_override_keys": ["HP", "DEF", "ATK"],
+    "stat_override_min_increase": 1,
+    "note": "Only score when alt form unlocks terrain, MOV, range, power, or MAP vs base form. Combat stats use the better of base/alt HP·DEF·ATK when the alt form actually improves those (catalog-wide; replaces Reborns allowlist)."
   },
   "map_ammo_points": {
     "0": 0,
@@ -635,10 +605,6 @@
       107
     ],
     "exclude_name_substrings": [
-      "GN Field",
-      "Positron Reflector",
-      "ポジトロンリフレクター",
-      "GNフィールド",
       "Advantage:",
       "Advantage："
     ],
@@ -985,10 +951,8 @@
     "two_great_for_role_points": 3,
     "ignore_pure_stat_passives": true,
     "exclude_name_substrings": [
-      "GN Field",
-      "Positron Reflector",
-      "ポジトロンリフレクター",
-      "GNフィールド"
+      "Advantage:",
+      "Advantage："
     ],
     "effect_families": {
       "Attack": [
@@ -1126,18 +1090,14 @@
       "Defense": [
         {
           "max_exclusive": 105000,
-          "points": -2
-        },
-        {
-          "max_exclusive": 110000,
           "points": -1
         },
         {
-          "max_exclusive": 125000,
+          "max_exclusive": 110000,
           "points": 0
         },
         {
-          "max_exclusive": 130000,
+          "max_exclusive": 120000,
           "points": 1
         },
         {
@@ -1254,15 +1214,15 @@
       "Defense": [
         {
           "max_exclusive": 9500,
-          "points": -3
+          "points": -1
         },
         {
           "max_exclusive": 10500,
-          "points": -2
+          "points": 0
         },
         {
           "max_exclusive": 11100,
-          "points": 0
+          "points": 1
         },
         {
           "max_exclusive": 12000,
@@ -2078,11 +2038,9 @@
     "situational": "Situational",
     "niche": "Niche"
   },
-  "transform_stat_override_unit_ids": [
-    "1370011100"
-  ],
+  "transform_stat_override_unit_ids": [],
   "scoring_guide": {
-    "version": "5.34",
+    "version": "5.35",
     "title": "How Investment Guide scoring works",
     "intro": "Point-sum shortlist for SP Conversion / SSP Conversion investment on Units and Characters (Attack Type / Defense Type / Support Type). Units have separate SP and SSP boards; Characters use SP only. Criteria favor practical sortie tools (MAP Weapon, mobility follow-ups, weapon power) and a deep affinity Character pool over a single linked recommend. Minor Attack Type stats (HP, SSP EN) are upside-only — no floor punishment. Close letters still need a human look.",
     "overrides": [
@@ -2100,19 +2058,22 @@
       "Character Recommended Units use a portfolio: top 3 Units graded A / A+ / S / S+ (SP or SSP best) — A/A+ = +1, S/S+ = +2, cap +2. B+ and below do not score.",
       "Character kits add flat Conditional Ability / Initial MP bonuses on top of TraitType points; active skills are role-weighted (damage / range / survivability / mobility over MP; EN Charge / Save EN = 0).",
       "UR Characters are omitted from the Character board (not SP Conversion targets; there are no Ultimate Characters).",
-      "Transform scores only when the alternate form unlocks deployable Terrain Capability, higher MOV, longer range, higher weapon power, or adds a MAP Weapon.",
-      "Attack Type HP and SSP Attack Type EN are upside-only; Defense Type still taxes low HP/DEF. Special defenses (I-field / DR / barrier) are presence bonuses beyond the shield mechanism.",
+      "Transform scores only when the alternate form unlocks deployable Terrain Capability, higher MOV, longer range, higher weapon power, or adds a MAP Weapon. Combat stats use the better of base/alt HP·DEF·ATK when the alt form improves those.",
+      "Attack Type HP and SSP Attack Type EN are upside-only; Defense Type HP/DEF floors are mild (−1) and the +2 HP band starts at 120k so survivability can create rank. ATK stays upside-only. Special defenses (I-field / DR / barrier) are presence bonuses beyond the shield mechanism.",
       "Units whose recommend Character is UR / Ultimate take a mild −1 dependence tax (still usable with lower-rarity Characters).",
       "Unit Expert access bands are compressed so a small eligibility gap (e.g. 4 vs 6 stages) is not a free letter tier.",
       "Terrain Capability extras need full affinity circle (Lv≥3); triangle Space/Atmospheric is a mild penalty, not a strength.",
       "Acquisition (Unit Assembly / Development / Other) is a filter only — it does not change letter scores. Multi-select Acquisition (OR) can exclude Unit Assembly by picking Development + Other.",
       "Limited-time Unit Assembly Supporter leader Tags: +1 per matched Tag on the kit, cap +2 (integer points only).",
-      "Character letters are hybrid within Character Type: S+ ≈ top 3% and S ≈ top 8% by kit total (absolute A+ floor); A+ and below use role-relative point cutoffs. Specialty tip for Ranged/Melee/Awaken caps at +5.",
+      "Character letters are hybrid within Character Type: S+ ≈ top 3% and S ≈ top 8% by kit total (absolute A+ floor); A+ and below use role-relative point cutoffs. Specialty tip for Ranged/Melee/Awaken caps at +5 (Attack/Support). Defense Type Characters score Defense/Reaction first; Ranged/Melee/Awaken are upside-only (cap +1).",
       "Support Type debuff-kind scoring uses base weapon range — SSP range enhance does not invent Range-5 credit for Range-4 kits.",
       "Support Type weapon_bonus is capped at +1 (Higher-range style bonuses stay Attack-flavored).",
       "Max Vigor −1 is for guns that require Max Vigor to fire and outpower every unrestricted option (Twin Satellite–class). On SSP, Custom Core (…90) is the bypass — SSP power enhance on a still-gated SP weapon does not re-apply that −1.",
       "Multi damage-type (+2): any weapon (including MAP) whose WeaponAttribute combines Beam / Physical / Special. Not limited to Barbatos Lupus / Rex — those were an early allowlist placeholder.",
       "Community votes nudge the displayed total by at most ±2 (IP-limited). Objective kit score remains primary; kits with no votes stay at 0 nudge.",
+      "Combat actions: first Support Defense +1 is Durability/Support identity (+2). A second distinct SD +1 family is extra +1 (3 SD). Support Attack +1 stays +2 on Support. Cap 4.",
+      "Transform combat stats: when the alt form raises HP, DEF, or ATK vs base, score the better of each (no unit-id allowlist).",
+      "GN Field / Positron Reflector score like other damage-reduction kits (no name exclude).",
       "Multi combat specialty (+1): strongest attack uses 2+ of Ranged / Melee / Awaken (separate from damage type).",
       "Close letters still need a human look."
     ]
