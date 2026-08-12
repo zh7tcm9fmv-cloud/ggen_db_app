@@ -288,14 +288,14 @@
     const info = voteInfoForRow(row, kind);
     const adjN = info.adj > 0 ? `+${info.adj}` : String(info.adj || 0);
     return `<div class="spi-card-community" title="${escAttr(t('community_tip'))}">${esc(
-      t('vote_adj_detail', { n: adjN, up: info.up, down: info.down })
+      t('vote_adj', { n: adjN })
     )}</div>`;
   }
 
   function communityAdjLabel(kind, id, boardName) {
     const info = voteInfoForRow({ id, mode: boardName }, kind);
     const adjN = info.adj > 0 ? `+${info.adj}` : String(info.adj || 0);
-    return t('vote_adj_detail', { n: adjN, up: info.up, down: info.down });
+    return t('vote_adj', { n: adjN });
   }
 
   function softLiveRerank(focusId) {
@@ -2437,8 +2437,26 @@
     return out;
   }
 
+  function scoreBreakdownForRow(row) {
+    const bd = Object.assign({}, (row && row.breakdown) || {});
+    const kind =
+      String((row && row.entity) || '') === 'character' || entity === 'characters'
+        ? 'character'
+        : 'unit';
+    const info = voteInfoForRow(row, kind);
+    let adj = Number(row && row.community_adj);
+    if (!Number.isFinite(adj)) adj = info.adj;
+    // Show Community bar when there is a nudge or any votes (counts stay on corner icons).
+    if (adj || info.up || info.down || bd.community) {
+      bd.community = adj;
+    } else {
+      delete bd.community;
+    }
+    return bd;
+  }
+
   function renderScoreViz(row) {
-    const entries = breakdownEntries(row.breakdown || {});
+    const entries = breakdownEntries(scoreBreakdownForRow(row));
     if (!entries.length) {
       return `<p class="spi-dossier-empty">No score factors for this entry.</p>`;
     }
