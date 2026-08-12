@@ -713,7 +713,8 @@ html.spi-modal-open body.spi-page {
   flex-direction: column;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.55rem 0.4rem 0.7rem;
+  /* Top/side padding keeps corner votes clear of the portrait thumb */
+  padding: 1.85rem 0.55rem 0.7rem;
   border-radius: var(--radius-md);
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -771,7 +772,7 @@ html.spi-modal-open body.spi-page {
 .spi-vote-corner {
   pointer-events: auto;
   position: absolute;
-  top: 3px;
+  top: 4px;
   display: inline-flex;
   flex-direction: column;
   align-items: center;
@@ -790,10 +791,10 @@ html.spi-modal-open body.spi-page {
   opacity: 0.92;
 }
 .spi-vote-corner.spi-vote-up {
-  left: 3px;
+  left: 4px;
 }
 .spi-vote-corner.spi-vote-down {
-  right: 3px;
+  right: 4px;
 }
 .spi-vote-corner img {
   width: 18px;
@@ -1721,6 +1722,18 @@ html.spi-modal-open body.spi-page {
   }
   .spi-cards {
     grid-template-columns: repeat(auto-fill, minmax(118px, 1fr));
+  }
+  .spi-card {
+    padding: 2.05rem 0.6rem 0.7rem;
+  }
+  .spi-vote-corner {
+    top: 5px;
+  }
+  .spi-vote-corner.spi-vote-up {
+    left: 5px;
+  }
+  .spi-vote-corner.spi-vote-down {
+    right: 5px;
   }
 }
 
