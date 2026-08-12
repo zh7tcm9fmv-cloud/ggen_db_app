@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "revision": 5,
+  "revision": 6,
   "ballots": {
     "ip_66156fb414cf9f2a1cf04687a9f20ad3:unit:1155000700:sp": "up",
     "ip_5eec486cb421650787a633fc3642f882:unit:1155000700:sp": "up",
@@ -882,12 +882,6 @@
     "ip_2bbee176743cba4d60b704e715d91b4f:unit:1017000510:sp": "down",
     "ip_2985dc9d09af0afb961de1d34645d62e:unit:1409000600:sp": "up",
     "ip_95afb44b2bc18ad93074de0d4efefb69:unit:1409000600:sp": "up",
-    "ip_5c6c551a4f5fb97633f5f77b73b0d9b4:unit:1139000100:ssp": "up",
-    "ip_755e182df3d7244d1a498177b442873d:unit:1139000100:ssp": "up",
-    "ip_97569a436312cc1606a4d84ca60865c0:unit:1139000100:ssp": "up",
-    "ip_772984ba62e19fa9167374be33a1eb44:unit:1139000100:ssp": "up",
-    "ip_f15efd511bbc3a88c0b0a31a26202e94:unit:1139000100:ssp": "up",
-    "ip_8909bf914f89a3a87a0b771881dda9f7:unit:1139000100:ssp": "up",
     "ip_b0739adde25a960e8ada4698322ed0e5:character:1378000100:sp": "up",
     "ip_fdef31b1d36022a059a5d88b7cf11eb3:character:1378000100:sp": "up",
     "ip_fb2f1a097bba473aa2ddabb792a53cbb:character:1378000100:sp": "up",
@@ -1228,11 +1222,6 @@
     "ip_d939d99fa90ee110b337a156f00be7f7:unit:1850003302:ssp": "down",
     "ip_6dcad0342dae0a02fa9f2ba265affc72:unit:1850003302:ssp": "down",
     "ip_6f9435fea1adfb2c640fc9a265a0072d:unit:1850003302:ssp": "down",
-    "ip_1867e90ddf1f234a3f10d816eaf33c2e:unit:1031001200:ssp": "up",
-    "ip_b446c5c4b01c9ed50d05e1751c911f78:unit:1031001200:ssp": "up",
-    "ip_d9b471edab34ae2a5e6475a241f4ecf5:unit:1031001200:ssp": "up",
-    "ip_ae301f72aff8dd360b1ba664a484492d:unit:1031001200:ssp": "up",
-    "ip_5bef44ba4117d9e071f710fdeecd7921:unit:1031001200:ssp": "up",
     "ip_41a4bca275351be0dc7be8801e985076:unit:1155000500:ssp": "up",
     "ip_19a772e823bfc982afe6b584cf8b0d84:unit:1155000500:ssp": "up",
     "ip_77109ad2eb8e4dfa8e6543c9b3dc7bab:unit:1155000500:ssp": "up",
@@ -4120,10 +4109,6 @@
       "up": 2,
       "down": 0
     },
-    "unit:1139000100:ssp": {
-      "up": 6,
-      "down": 0
-    },
     "character:1378000100:sp": {
       "up": 4,
       "down": 1
@@ -4463,10 +4448,6 @@
     "unit:1850003302:ssp": {
       "up": 2,
       "down": 4
-    },
-    "unit:1031001200:ssp": {
-      "up": 5,
-      "down": 0
     },
     "unit:1155000500:ssp": {
       "up": 7,
