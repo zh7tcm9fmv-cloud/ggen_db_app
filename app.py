@@ -16089,8 +16089,20 @@ _SPI_VOTES_CACHE = {'mtime': None, 'data': None}
 _SPI_VOTE_RATE_LIMIT_SEC = 0.12
 _spi_vote_recent_by_ip = {}
 _SPI_BUCKET_ORDER = ('priority', 'recommended', 'solid', 'situational', 'niche')
-# Bump to wipe all prior ballots/tallies once on load (fixes bad double-counts / test spam).
+# Schema version for the on-disk store. Do NOT bump this to wipe votes — that
+# resets community ballots on every Railway deploy. Use GGEN_SPI_VOTES_WIPE=1.
 _SPI_VOTES_DATA_VERSION = 2
+_PUBLISHED_SPI_VOTES_FILE = os.path.join(app_dir, 'data', 'published', 'sp_investment_votes.json')
+_SPI_VOTES_GITHUB_SHA = None
+_SPI_VOTES_LAST_REMOTE_PULL = 0.0
+_SPI_VOTES_GITHUB_PUSH_LOCK = threading.Lock()
+_SPI_VOTES_HYDRATE_LOCK = threading.Lock()
+_SPI_VOTES_HYDRATED = False
+_SPI_VOTES_SHUTDOWN_SYNC_DONE = False
+_SPI_VOTES_LAST_PUSHED_COUNT = -1
+_SPI_VOTES_LAST_ASYNC_PUSH = 0.0
+_SPI_VOTES_DEBOUNCE_TIMER = None
+_SPI_VOTES_DEBOUNCE_LOCK = threading.Lock()
 
 
 def _spi_votes_file_path():
@@ -16109,6 +16121,79 @@ def _spi_votes_lock_path():
 
 def _spi_votes_empty():
     return {'version': int(_SPI_VOTES_DATA_VERSION), 'targets': {}, 'ballots': {}}
+
+
+def _spi_votes_wipe_requested():
+    raw = (os.environ.get('GGEN_SPI_VOTES_WIPE') or '').strip().lower()
+    return raw in ('1', 'true', 'yes', 'wipe')
+
+
+def _spi_votes_has_data(data):
+    if not isinstance(data, dict):
+        return False
+    ballots = data.get('ballots') or {}
+    if isinstance(ballots, dict) and ballots:
+        return True
+    for row in (data.get('targets') or {}).values():
+        if not isinstance(row, dict):
+            continue
+        if int(row.get('up') or 0) or int(row.get('down') or 0):
+            return True
+    return False
+
+
+def _spi_votes_has_ip_ballots(data):
+    if not isinstance(data, dict):
+        return False
+    for key in (data.get('ballots') or {}):
+        if str(key).startswith('ip_'):
+            return True
+    return False
+
+
+def _spi_votes_ballot_count(data):
+    if not isinstance(data, dict):
+        return 0
+    ballots = data.get('ballots') or {}
+    return len(ballots) if isinstance(ballots, dict) else 0
+
+
+def _spi_votes_synthesize_ballots_from_targets(targets):
+    """Rebuild ballot keys from tallies so a snapshot survives normalize()."""
+    ballots = {}
+    if not isinstance(targets, dict):
+        return ballots
+    for tkey, row in targets.items():
+        if not isinstance(row, dict):
+            continue
+        key = str(tkey or '').strip()
+        if not key or key.count(':') < 2:
+            continue
+        try:
+            up = max(0, int(row.get('up') or 0))
+            down = max(0, int(row.get('down') or 0))
+        except (TypeError, ValueError):
+            continue
+        for i in range(up):
+            ballots[f'restored_up_{i}:{key}'] = 'up'
+        for i in range(down):
+            ballots[f'restored_down_{i}:{key}'] = 'down'
+    return ballots
+
+
+def _spi_votes_consume_restore(ballots, tkey, vote):
+    """Drop one placeholder ballot when a real IP vote lands for the same target."""
+    if vote not in ('up', 'down') or not tkey:
+        return False
+    suffix = ':' + str(tkey)
+    for key, val in list((ballots or {}).items()):
+        if val != vote:
+            continue
+        ks = str(key)
+        if ks.startswith('restored_') and ks.endswith(suffix):
+            ballots.pop(key, None)
+            return True
+    return False
 
 
 class _SpiVotesFileLock:
@@ -16176,20 +16261,23 @@ def _spi_votes_normalize(raw):
         ver = int(raw.get('version') or 0)
     except (TypeError, ValueError):
         ver = 0
-    if ver < int(_SPI_VOTES_DATA_VERSION):
-        # One-shot wipe when schema bumps (owner reset / corrupt tallies).
-        print(
-            f'spi_votes: wiping store (version {ver} → {_SPI_VOTES_DATA_VERSION})'
-        )
+    if _spi_votes_wipe_requested():
+        print('spi_votes: wiping store (GGEN_SPI_VOTES_WIPE)')
         return data
     data['version'] = int(_SPI_VOTES_DATA_VERSION)
-    data['ballots'] = {
+    ballots = {
         str(k): v
         for k, v in dict(raw.get('ballots') or {}).items()
         if v in ('up', 'down')
     }
-    # Tallies are always derived from ballots so duplicate increments cannot stick.
-    data['targets'] = _spi_targets_from_ballots(data['ballots'])
+    # Tally-only snapshots (public API restore / bundled seed) have targets but
+    # no ballots. Synthesize placeholders so normalize does not zero the counts.
+    if not ballots:
+        ballots = _spi_votes_synthesize_ballots_from_targets(raw.get('targets') or {})
+    data['ballots'] = ballots
+    data['targets'] = _spi_targets_from_ballots(ballots)
+    if ver and ver != int(_SPI_VOTES_DATA_VERSION):
+        print(f'spi_votes: migrated store version {ver} -> {_SPI_VOTES_DATA_VERSION} (ballots kept)')
     return data
 
 
@@ -16223,25 +16311,37 @@ def _spi_votes_load(force=False):
             with open(path, 'r', encoding='utf-8') as f:
                 raw = json.load(f)
             data = _spi_votes_normalize(raw)
-            # Persist wipe / recompute so disk matches memory.
+            # Persist migrate / recompute so disk matches memory.
             if (
                 not isinstance(raw, dict)
-                or int(raw.get('version') or 0) < int(_SPI_VOTES_DATA_VERSION)
+                or int(raw.get('version') or 0) != int(_SPI_VOTES_DATA_VERSION)
                 or dict(raw.get('targets') or {}) != data.get('targets')
+                or dict(raw.get('ballots') or {}) != data.get('ballots')
             ):
-                _spi_votes_save(data)
+                _spi_votes_save(data, sync_github=False)
                 try:
                     mtime = os.path.getmtime(path)
                 except OSError:
                     mtime = time.time()
         except Exception as e:
             print(f'spi_votes: load failed: {e}')
+    if not _spi_votes_has_data(data):
+        _spi_votes_hydrate_from_remote(force=True)
+        cached = _SPI_VOTES_CACHE
+        if cached['data'] is not None and _spi_votes_has_data(cached['data']):
+            return cached['data']
+        if os.path.isfile(path):
+            try:
+                with open(path, 'r', encoding='utf-8') as f:
+                    data = _spi_votes_normalize(json.load(f))
+            except Exception:
+                pass
     cached['mtime'] = mtime
     cached['data'] = data
     return data
 
 
-def _spi_votes_save(data):
+def _spi_votes_save(data, *, sync_github=True):
     path = _spi_votes_file_path()
     parent = os.path.dirname(path) or '.'
     try:
@@ -16272,7 +16372,358 @@ def _spi_votes_save(data):
     except OSError:
         _SPI_VOTES_CACHE['mtime'] = time.time()
     _SPI_VOTES_CACHE['data'] = payload
+    if sync_github:
+        _spi_votes_after_save(payload)
     return True
+
+
+def _spi_votes_github_path():
+    return (
+        os.environ.get('GGEN_SPI_VOTES_GITHUB_PATH')
+        or 'data/published/sp_investment_votes.json'
+    ).strip().lstrip('/')
+
+
+def _spi_votes_github_config():
+    """Reuse banner-votes GitHub token/repo/branch; only the file path differs."""
+    cfg = _banner_pool_votes_github_config()
+    if not cfg:
+        return None
+    token, repo, _banner_path, branch = cfg
+    return token, repo, _spi_votes_github_path(), branch
+
+
+def _spi_votes_sync_mode():
+    raw = (os.environ.get('GGEN_SPI_VOTES_SYNC_MODE') or '').strip().lower()
+    if raw in ('off', 'none', 'false', '0', 'never'):
+        return 'off'
+    if raw in ('vote', 'each', 'always', 'every'):
+        return 'vote'
+    if raw in ('shutdown', 'deploy', 'exit', 'stop', 'on', 'true', '1'):
+        return 'shutdown'
+    # Default: follow banner votes sync (same Railway token).
+    return _banner_pool_votes_sync_mode()
+
+
+def _spi_votes_use_github_api():
+    return bool(_spi_votes_github_config()) and _spi_votes_sync_mode() != 'off'
+
+
+def _spi_votes_import_url():
+    explicit = (os.environ.get('GGEN_SPI_VOTES_IMPORT_URL') or '').strip()
+    if explicit:
+        return explicit
+    cfg = _spi_votes_github_config()
+    if not cfg:
+        repo = (os.environ.get('GGEN_BANNER_VOTES_GITHUB_REPO') or os.environ.get('GITHUB_REPOSITORY') or '').strip()
+        if not repo or '/' not in repo:
+            return ''
+        branch = _banner_pool_votes_github_branch()
+        return f'https://raw.githubusercontent.com/{repo}/{branch}/{_spi_votes_github_path()}'
+    _token, repo, path, branch = cfg
+    return f'https://raw.githubusercontent.com/{repo}/{branch}/{path}'
+
+
+def _spi_votes_bundled_snapshot():
+    data = load_json(_PUBLISHED_SPI_VOTES_FILE)
+    return data if isinstance(data, dict) else None
+
+
+def _spi_votes_prune_restored_over_ip(ballots):
+    """Drop placeholder restored_* ballots when a real ip_ ballot covers the same target+vote."""
+    covered = set()
+    for key, vote in list((ballots or {}).items()):
+        if vote not in ('up', 'down'):
+            continue
+        ks = str(key)
+        if not ks.startswith('ip_'):
+            continue
+        parts = ks.split(':')
+        if len(parts) < 4:
+            continue
+        covered.add((':'.join(parts[1:]), vote))
+    if not covered:
+        return ballots
+    out = {}
+    for key, vote in (ballots or {}).items():
+        ks = str(key)
+        if ks.startswith('restored_') and vote in ('up', 'down'):
+            parts = ks.split(':')
+            if len(parts) >= 4 and (':'.join(parts[1:]), vote) in covered:
+                continue
+        out[ks] = vote
+    return out
+
+
+def _spi_votes_merge_snapshots(*snaps):
+    ballots = {}
+    for snap in snaps:
+        if not isinstance(snap, dict):
+            continue
+        raw_ballots = dict(snap.get('ballots') or {})
+        if not raw_ballots and snap.get('targets'):
+            raw_ballots = _spi_votes_synthesize_ballots_from_targets(snap.get('targets') or {})
+        for k, v in raw_ballots.items():
+            if v in ('up', 'down'):
+                ballots[str(k)] = v
+    ballots = _spi_votes_prune_restored_over_ip(ballots)
+    return {
+        'version': int(_SPI_VOTES_DATA_VERSION),
+        'ballots': ballots,
+        'targets': _spi_targets_from_ballots(ballots),
+    }
+
+
+def _spi_votes_is_richer(merged, local):
+    if not isinstance(local, dict) or not _spi_votes_has_data(local):
+        return _spi_votes_has_data(merged)
+    m_ip = sum(1 for k in ((merged or {}).get('ballots') or {}) if str(k).startswith('ip_'))
+    l_ip = sum(1 for k in (local.get('ballots') or {}) if str(k).startswith('ip_'))
+    if m_ip != l_ip:
+        return m_ip > l_ip
+    return _spi_votes_ballot_count(merged) > _spi_votes_ballot_count(local)
+
+
+def _spi_votes_fetch_github():
+    global _SPI_VOTES_GITHUB_SHA
+    cfg = _spi_votes_github_config()
+    if not cfg:
+        return None
+    token, repo, path, branch = cfg
+    url = f'https://api.github.com/repos/{repo}/contents/{quote(path)}?ref={quote(branch)}'
+    headers = _banner_pool_votes_github_api_headers(token)
+    try:
+        req = Request(url, headers=headers, method='GET')
+        with urlopen(req, timeout=10) as resp:
+            meta = json.loads(resp.read().decode('utf-8'))
+        if not isinstance(meta, dict) or meta.get('encoding') != 'base64':
+            return None
+        content = base64.b64decode(meta.get('content', '').replace('\n', '')).decode('utf-8')
+        data = json.loads(content)
+        _SPI_VOTES_GITHUB_SHA = meta.get('sha')
+        return data if isinstance(data, dict) else None
+    except HTTPError as e:
+        if e.code == 404:
+            print(f'spi_votes: vote file not on {branch} yet (first save pending)')
+        else:
+            print(f'spi_votes: GitHub fetch failed: {e}')
+        return None
+    except (URLError, OSError, json.JSONDecodeError, ValueError) as e:
+        print(f'spi_votes: GitHub fetch failed: {e}')
+        return None
+
+
+def _spi_votes_push_github(data, *, retries=2):
+    global _SPI_VOTES_GITHUB_SHA
+    cfg = _spi_votes_github_config()
+    if not cfg:
+        return False
+    token, repo, path, branch = cfg
+    _banner_pool_votes_ensure_github_branch()
+    url = f'https://api.github.com/repos/{repo}/contents/{quote(path)}'
+    payload = json.dumps(data, ensure_ascii=False, indent=2).encode('utf-8') + b'\n'
+    headers = {
+        **_banner_pool_votes_github_api_headers(token),
+        'Content-Type': 'application/json',
+    }
+    with _SPI_VOTES_GITHUB_PUSH_LOCK:
+        for attempt in range(retries + 1):
+            if attempt and not _SPI_VOTES_GITHUB_SHA:
+                _spi_votes_fetch_github()
+            body = {
+                'message': 'chore: snapshot SP investment community votes',
+                'content': base64.b64encode(payload).decode('ascii'),
+                'branch': branch,
+            }
+            if _SPI_VOTES_GITHUB_SHA:
+                body['sha'] = _SPI_VOTES_GITHUB_SHA
+            try:
+                req = Request(url, data=json.dumps(body).encode('utf-8'), headers=headers, method='PUT')
+                with urlopen(req, timeout=12) as resp:
+                    meta = json.loads(resp.read().decode('utf-8'))
+                content = meta.get('content') if isinstance(meta, dict) else None
+                if isinstance(content, dict) and content.get('sha'):
+                    _SPI_VOTES_GITHUB_SHA = content['sha']
+                return True
+            except HTTPError as e:
+                if e.code in (404, 422) and attempt < retries:
+                    _SPI_VOTES_GITHUB_SHA = None
+                    if _banner_pool_votes_ensure_github_branch():
+                        continue
+                if e.code == 409 and attempt < retries:
+                    _SPI_VOTES_GITHUB_SHA = None
+                    _spi_votes_fetch_github()
+                    continue
+                print(f'spi_votes: GitHub push failed: {e}')
+                return False
+            except (URLError, OSError, json.JSONDecodeError) as e:
+                print(f'spi_votes: GitHub push failed: {e}')
+                return False
+    return False
+
+
+def _spi_votes_remote_fetch():
+    data = _spi_votes_fetch_github() if _spi_votes_use_github_api() else None
+    if _spi_votes_has_data(data):
+        return data
+    url = _spi_votes_import_url()
+    if not url:
+        return None
+    try:
+        req = Request(url, headers={}, method='GET')
+        with urlopen(req, timeout=20) as resp:
+            raw = resp.read().decode('utf-8')
+        data = json.loads(raw)
+        return data if isinstance(data, dict) and _spi_votes_has_data(data) else None
+    except (HTTPError, URLError, OSError, json.JSONDecodeError) as e:
+        print(f'spi_votes: import URL fetch failed: {e}')
+        return None
+
+
+def _spi_votes_hydrate_from_remote(*, force=False):
+    """Merge GitHub / bundled published snapshot into the local SPI votes file."""
+    global _SPI_VOTES_LAST_REMOTE_PULL, _SPI_VOTES_HYDRATED
+    with _SPI_VOTES_HYDRATE_LOCK:
+        now = time.time()
+        if not force and _SPI_VOTES_HYDRATED and (now - _SPI_VOTES_LAST_REMOTE_PULL) < 300.0:
+            return
+        path = _spi_votes_file_path()
+        local = None
+        if os.path.isfile(path):
+            try:
+                with open(path, 'r', encoding='utf-8') as f:
+                    local = json.load(f)
+            except (OSError, json.JSONDecodeError):
+                local = None
+        if not force and _spi_votes_has_ip_ballots(local) and (now - _SPI_VOTES_LAST_REMOTE_PULL) < 900.0:
+            _SPI_VOTES_HYDRATED = True
+            return
+        _SPI_VOTES_LAST_REMOTE_PULL = now
+        remote = _spi_votes_remote_fetch()
+        bundled = _spi_votes_bundled_snapshot()
+        merged = _spi_votes_merge_snapshots(local, remote, bundled)
+        if _spi_votes_is_richer(merged, local or {}) or (
+            not _spi_votes_has_data(local) and _spi_votes_has_data(merged)
+        ):
+            if _spi_votes_save(merged, sync_github=False):
+                print(f'spi_votes: hydrated ({_spi_votes_ballot_count(merged)} ballots)')
+        _SPI_VOTES_HYDRATED = True
+
+
+def _spi_votes_push_from_disk(*, reason='async', force=False):
+    global _SPI_VOTES_LAST_ASYNC_PUSH, _SPI_VOTES_LAST_PUSHED_COUNT, _SPI_VOTES_SHUTDOWN_SYNC_DONE
+    if _spi_votes_sync_mode() == 'off' or not _spi_votes_github_config():
+        return False
+    if not force:
+        since_push = time.time() - _SPI_VOTES_LAST_ASYNC_PUSH
+        if since_push < _BANNER_VOTES_PUSH_DEBOUNCE_SEC:
+            return False
+    path = _spi_votes_file_path()
+    data = None
+    if os.path.isfile(path):
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+        except (OSError, json.JSONDecodeError):
+            data = None
+    remote = _spi_votes_fetch_github() if _spi_votes_use_github_api() else None
+    data = _spi_votes_merge_snapshots(data, remote, _spi_votes_bundled_snapshot())
+    if not _spi_votes_has_data(data):
+        return False
+    n = _spi_votes_ballot_count(data)
+    if not force and n == _SPI_VOTES_LAST_PUSHED_COUNT:
+        return False
+    ok = _spi_votes_push_github(data)
+    if ok:
+        _SPI_VOTES_LAST_ASYNC_PUSH = time.time()
+        _SPI_VOTES_LAST_PUSHED_COUNT = n
+        _SPI_VOTES_SHUTDOWN_SYNC_DONE = True
+        print(f'spi_votes: GitHub snapshot ({reason}, {n} ballots)')
+    else:
+        print(f'spi_votes: GitHub snapshot failed ({reason})')
+    return ok
+
+
+def _spi_votes_cancel_debounced_push():
+    global _SPI_VOTES_DEBOUNCE_TIMER
+    with _SPI_VOTES_DEBOUNCE_LOCK:
+        if _SPI_VOTES_DEBOUNCE_TIMER:
+            _SPI_VOTES_DEBOUNCE_TIMER.cancel()
+            _SPI_VOTES_DEBOUNCE_TIMER = None
+
+
+def _spi_votes_schedule_debounced_push():
+    global _SPI_VOTES_DEBOUNCE_TIMER
+    mode = _spi_votes_sync_mode()
+    if mode == 'off' or not _spi_votes_github_config():
+        return
+    if mode == 'vote':
+        threading.Thread(
+            target=lambda: _spi_votes_push_from_disk(reason='vote', force=True),
+            daemon=True,
+        ).start()
+        return
+
+    def _run():
+        _spi_votes_push_from_disk(reason='debounced', force=True)
+
+    with _SPI_VOTES_DEBOUNCE_LOCK:
+        if _SPI_VOTES_DEBOUNCE_TIMER:
+            _SPI_VOTES_DEBOUNCE_TIMER.cancel()
+        _SPI_VOTES_DEBOUNCE_TIMER = threading.Timer(_BANNER_VOTES_PUSH_DEBOUNCE_SEC, _run)
+        _SPI_VOTES_DEBOUNCE_TIMER.daemon = True
+        _SPI_VOTES_DEBOUNCE_TIMER.start()
+
+
+def _spi_votes_flush_to_github(reason='shutdown', *, force=False):
+    global _SPI_VOTES_SHUTDOWN_SYNC_DONE
+    if _SPI_VOTES_SHUTDOWN_SYNC_DONE and not force:
+        return
+    if _spi_votes_sync_mode() == 'off' or not _spi_votes_github_config():
+        return
+    _spi_votes_cancel_debounced_push()
+    return _spi_votes_push_from_disk(reason=reason, force=True)
+
+
+def _spi_votes_after_save(data):
+    _spi_votes_schedule_debounced_push()
+
+
+def _spi_votes_storage_warning():
+    if not _banner_pool_votes_on_railway():
+        return
+    if (os.environ.get('GGEN_SPI_VOTES_PATH') or '').strip():
+        return
+    if _spi_votes_sync_mode() == 'off':
+        print(
+            'spi_votes: Railway sync is OFF — community votes reset on every deploy. '
+            'Keep GGEN_BANNER_VOTES_GITHUB_TOKEN set (SPI reuses it) or set GGEN_SPI_VOTES_SYNC_MODE=shutdown.'
+        )
+        return
+    if not _spi_votes_github_config():
+        print(
+            'spi_votes: Railway has no GitHub token. Set GGEN_BANNER_VOTES_GITHUB_TOKEN '
+            'so SP investment votes save to branch banner-votes-data after each vote (~45s debounce).'
+        )
+
+
+def _spi_votes_boot():
+    """Hydrate from published/GitHub once at process start (non-blocking for empty disk)."""
+    try:
+        _spi_votes_hydrate_from_remote(force=True)
+    except Exception as e:
+        print(f'spi_votes: boot hydrate failed: {e}')
+    _spi_votes_storage_warning()
+    cfg = _spi_votes_github_config()
+    print(
+        'spi_votes:',
+        f'path={_spi_votes_file_path()}',
+        f'published={_PUBLISHED_SPI_VOTES_FILE}',
+        f'github={"on" if cfg else "off"}',
+        f'github_branch={cfg[3] if cfg else "-"}',
+        f'sync_mode={_spi_votes_sync_mode()}',
+        f'railway={"yes" if _banner_pool_votes_on_railway() else "no"}',
+    )
 
 
 def _spi_vote_target_key(kind, eid, board):
@@ -16507,6 +16958,8 @@ def api_sp_investment_vote():
                     if vote == 'clear':
                         ballots.pop(bkey, None)
                     else:
+                        if prev is None and not str(bkey).startswith('restored_'):
+                            _spi_votes_consume_restore(ballots, tkey, vote)
                         ballots[bkey] = vote
                     targets = _spi_targets_from_ballots(ballots)
                     data = {
@@ -23040,12 +23493,17 @@ def _banner_pool_votes_register_shutdown_sync():
     global _BANNER_VOTES_SHUTDOWN_REGISTERED
     if _BANNER_VOTES_SHUTDOWN_REGISTERED:
         return
-    if _banner_pool_votes_sync_mode() != 'shutdown':
+    banner_on = _banner_pool_votes_sync_mode() == 'shutdown'
+    spi_on = _spi_votes_sync_mode() == 'shutdown'
+    if not banner_on and not spi_on:
         return
     _BANNER_VOTES_SHUTDOWN_REGISTERED = True
 
     def _term(signum, _frame):
-        _banner_pool_votes_flush_to_github(f'signal:{signum}', force=True)
+        if banner_on:
+            _banner_pool_votes_flush_to_github(f'signal:{signum}', force=True)
+        if spi_on:
+            _spi_votes_flush_to_github(f'signal:{signum}', force=True)
 
     try:
         signal.signal(signal.SIGTERM, _term)
@@ -23177,6 +23635,7 @@ if _banner_pool_votes_github_config():
 _banner_pool_votes_hydrate_from_remote(force=True)
 _banner_pool_votes_register_shutdown_sync()
 _banner_pool_votes_storage_warning()
+_spi_votes_boot()
 _cfg = _banner_pool_votes_github_config()
 print(
     'banner_pool_votes:',

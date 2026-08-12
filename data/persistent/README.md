@@ -62,6 +62,26 @@ The app now auto-creates that branch on first boot if the token has **Contents +
 
 ---
 
+## SP Investment community votes (same GitHub backup)
+
+Investment Priority (`/ig`) community up/down votes use the **same Railway token + `banner-votes-data` branch** as banner votes. They write a separate file:
+
+| Variable | Notes |
+|----------|--------|
+| `GGEN_BANNER_VOTES_GITHUB_TOKEN` | Same PAT — SPI reuses it (no extra token needed) |
+| `GGEN_SPI_VOTES_SYNC_MODE` | Optional; defaults to banner sync mode (`shutdown`) |
+| `GGEN_SPI_VOTES_GITHUB_PATH` | Optional; default `data/published/sp_investment_votes.json` |
+| `GGEN_SPI_VOTES_WIPE` | Set to `1` only for a deliberate full reset — **never bump schema version to wipe** |
+
+Bundled seed (committed on `main`): `data/published/sp_investment_votes.json`  
+Live runtime file: volume / `data/persistent/sp_investment_votes.json` (gitignored)
+
+On boot, Railway merges: local disk + GitHub snapshot + bundled seed. After votes, SPI snapshots to `banner-votes-data` (~45s debounce) and again on SIGTERM — same pattern as banner votes.
+
+Confirm file on the votes branch: `https://github.com/zh7tcm9fmv-cloud/ggen_db_app/blob/banner-votes-data/data/published/sp_investment_votes.json`
+
+---
+
 ## Site feedback (no Railway volume)
 
 The in-site feedback form posts to `/api/feedback`. Without a Railway volume, local file storage is ephemeral (lost on redeploy). Forward submissions to Google Sheets instead:
