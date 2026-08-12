@@ -290,20 +290,68 @@
     return `<div class="spi-card-community" title="${escAttr(t('community_tip'))}">${esc(t('vote_adj', { n: adjN }))}</div>`;
   }
 
+  function letterFromTotalForKind(row, total, kind) {
+    const g = (payload && payload.scoring_guide) || {};
+    let cuts;
+    if (kind === 'character') {
+      cuts = g.pilot_letter_cutoffs || g.letter_cutoffs || [];
+    } else {
+      const cohort = row.letter_cohort || (row.has_sp ? 'sp' : 'ur');
+      cuts =
+        cohort === 'ur'
+          ? g.ur_letter_cutoffs || g.letter_cutoffs || []
+          : g.letter_cutoffs || [];
+    }
+    const n = Number(total) || 0;
+    for (let i = 0; i < (cuts || []).length; i++) {
+      if (n >= Number(cuts[i].min)) return String(cuts[i].letter || 'E');
+    }
+    return 'E';
+  }
+
+  function clampCommunityAdj(up, down) {
+    const net = (Number(up) || 0) - (Number(down) || 0);
+    if (net > 2) return 2;
+    if (net < -2) return -2;
+    return net;
+  }
+
   async function submitSpiVote(kind, id, boardName, vote) {
     const key = voteTargetKey(kind, id, boardName);
     if (voteBusyKey === key) return;
+    voteBusyKey = key;
     const mine = voteMine[key] || null;
     let next = vote;
     if (vote === 'up' && mine === 'up') next = 'clear';
     if (vote === 'down' && mine === 'down') next = 'clear';
-    voteBusyKey = key;
+
+    const prevTall = Object.assign({}, voteTallies[key] || { up: 0, down: 0, community_adj: 0 });
+    const prevMine = mine;
+
+    // Optimistic local update so the card reacts immediately (no page refresh).
+    let up = Number(prevTall.up || 0) || 0;
+    let down = Number(prevTall.down || 0) || 0;
+    if (prevMine === 'up') up = Math.max(0, up - 1);
+    if (prevMine === 'down') down = Math.max(0, down - 1);
+    if (next === 'up') up += 1;
+    else if (next === 'down') down += 1;
+    voteTallies[key] = {
+      up,
+      down,
+      community_adj: clampCommunityAdj(up, down),
+    };
+    if (next === 'clear') delete voteMine[key];
+    else voteMine[key] = next;
+    applyVoteToLocalRow(kind, id, boardName, voteTallies[key]);
+    patchVoteDom(kind, id, boardName);
+
     try {
       const r = await fetch('/api/sp_investment/vote', {
         method: 'POST',
         credentials: 'same-origin',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ kind, id, board: boardName, vote: next }),
+        cache: 'no-store',
       });
       if (!r.ok) throw new Error('HTTP ' + r.status);
       const d = await r.json();
@@ -315,30 +363,13 @@
       if (d.my_vote) voteMine[key] = d.my_vote;
       else delete voteMine[key];
       applyVoteToLocalRow(kind, id, boardName, voteTallies[key]);
-      render();
-      const modal = $('#spiModal');
-      if (modal && !modal.hidden) {
-        const openId = _spiModalEntityKey;
-        if (openId === `${kind}:${id}`) {
-          const row = findRowById(id);
-          if (row) openModal(row);
-        }
-      }
-      // Refresh board so letter/bucket match server clamp merge (non-blocking).
-      fetch(spiApiUrl())
-        .then((r) => (r && r.ok ? r.json() : null))
-        .then((p) => {
-          if (!p || p.error) return;
-          payload = p;
-          render();
-          if (modal && !modal.hidden && _spiModalEntityKey === `${kind}:${id}`) {
-            const row = findRowById(id);
-            if (row) openModal(row);
-          }
-        })
-        .catch(() => {});
+      patchVoteDom(kind, id, boardName);
     } catch (e) {
-      /* keep prior UI */
+      voteTallies[key] = prevTall;
+      if (prevMine) voteMine[key] = prevMine;
+      else delete voteMine[key];
+      applyVoteToLocalRow(kind, id, boardName, prevTall);
+      patchVoteDom(kind, id, boardName);
     } finally {
       voteBusyKey = '';
     }
@@ -349,11 +380,12 @@
     const adj = Number((tally && tally.community_adj) || 0) || 0;
     const boards =
       kind === 'character'
-        ? [(((payload.characters || {}).sp) || {})]
+        ? [((payload.characters || {}).sp) || {}]
         : [
             ((payload.units || {}).sp) || payload.sp || {},
             ((payload.units || {}).ssp) || payload.ssp || {},
           ];
+    let touched = null;
     boards.forEach((buckets) => {
       if (!buckets || typeof buckets !== 'object') return;
       Object.keys(buckets).forEach((bk) => {
@@ -361,10 +393,17 @@
         if (!Array.isArray(rows)) return;
         rows.forEach((row) => {
           if (!row || String(row.id) !== String(id)) return;
-          if (kind !== 'character' && boardName && row.mode && row.mode !== boardName) return;
-          const objective = Number(
-            row.total_objective != null ? row.total_objective : row.total
+          if (kind !== 'character' && boardName && row.mode && String(row.mode) !== String(boardName)) {
+            return;
+          }
+          let objective = Number(
+            row.total_objective != null ? row.total_objective : NaN
           );
+          if (!Number.isFinite(objective)) {
+            // Strip any prior community adj so we don't double-count.
+            const prevAdj = Number(row.community_adj || 0) || 0;
+            objective = (Number(row.total) || 0) - prevAdj;
+          }
           row.total_objective = objective;
           row.community_adj = adj;
           row.total = objective + adj;
@@ -372,9 +411,86 @@
           if (adj) bd.community = adj;
           else delete bd.community;
           row.breakdown = bd;
+          row.letter = letterFromTotalForKind(row, row.total, kind);
+          row.bucket = bucketFromLetter(row.letter);
+          touched = row;
         });
       });
     });
+    if (touched && rowById) rowById.set(String(id), touched);
+  }
+
+  function patchVoteDom(kind, id, boardName) {
+    const info = voteInfoForRow({ id, mode: boardName }, kind);
+    const adjN = info.adj > 0 ? `+${info.adj}` : String(info.adj || 0);
+    const adjLabel = t('vote_adj', { n: adjN });
+    const row = findRowById(id) || (rowById && rowById.get(String(id)));
+    const total = row ? Number(row.total) || 0 : null;
+    const letter = row ? row.letter || '?' : null;
+    const idSel = String(id).replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+
+    const syncVoteWrap = (wrap) => {
+      if (!wrap) return;
+      const upBtn = wrap.querySelector('.spi-vote-up');
+      const downBtn = wrap.querySelector('.spi-vote-down');
+      if (upBtn) {
+        upBtn.classList.toggle('is-active', info.mine === 'up');
+        upBtn.setAttribute('aria-pressed', info.mine === 'up' ? 'true' : 'false');
+        const c = upBtn.querySelector('.spi-vote-count');
+        if (c) c.textContent = String(info.up);
+      }
+      if (downBtn) {
+        downBtn.classList.toggle('is-active', info.mine === 'down');
+        downBtn.setAttribute('aria-pressed', info.mine === 'down' ? 'true' : 'false');
+        const c = downBtn.querySelector('.spi-vote-count');
+        if (c) c.textContent = String(info.down);
+      }
+    };
+
+    const root = spiRoot() || document;
+    root.querySelectorAll(`.spi-card[data-id="${idSel}"]`).forEach((card) => {
+      syncVoteWrap(card.querySelector('[data-vote-id]'));
+      const score = card.querySelector('.spi-chip.score');
+      if (score && total != null) score.textContent = `${total} Pt`;
+      const lit = card.querySelector('.spi-chip.letter');
+      if (lit && letter) {
+        lit.textContent = letter;
+        lit.className = `spi-chip letter ${letterClass(letter)}`;
+      }
+      const comm = card.querySelector('.spi-card-community');
+      if (comm) comm.textContent = adjLabel;
+    });
+
+    const modal = $('#spiModal');
+    if (modal && !modal.hidden && _spiModalEntityKey === `${kind}:${id}`) {
+      const body = $('#spiModalBody');
+      if (body) {
+        syncVoteWrap(body.querySelector('[data-vote-id]'));
+        const score = body.querySelector('.spi-dossier-badges .spi-chip.score');
+        if (score && total != null) score.textContent = t('total_pt', { n: total });
+        const lit = body.querySelector('.spi-dossier-badges .spi-chip.letter');
+        if (lit && letter) {
+          lit.textContent = letter;
+          lit.className = `spi-chip letter ${letterClass(letter)}`;
+          lit.setAttribute('title', `Grade ${letter}`);
+        }
+        const comm = body.querySelector('.spi-dossier-head-text .spi-card-community');
+        if (comm) comm.textContent = adjLabel;
+        const viz = body.querySelector('.spi-dossier-section--score');
+        if (viz && row) {
+          const next = document.createElement('div');
+          next.innerHTML = `<section class="spi-dossier-section spi-dossier-section--score">
+            <h4 class="spi-dossier-h">${esc(t('score_breakdown'))}
+              <span class="spi-dossier-h-sub spi-dossier-h-sub--fine">${esc(t('score_breakdown_sub'))}</span>
+              <span class="spi-dossier-h-sub spi-dossier-h-sub--coarse">${esc(t('score_breakdown_sub_touch'))}</span>
+            </h4>
+            ${renderScoreViz(row)}
+          </section>`;
+          const fresh = next.firstElementChild;
+          if (fresh) viz.replaceWith(fresh);
+        }
+      }
+    }
   }
 
   function findRowById(id) {
