@@ -1,27 +1,352 @@
 {
   "version": 2,
   "ballots": {
-    "restored_up_0:character:1001000403:sp": "up",
-    "restored_up_0:character:1001001901:sp": "up",
-    "restored_up_0:character:1150000102:sp": "up",
-    "restored_up_0:character:1162000500:sp": "up",
-    "restored_up_0:character:1217000300:sp": "up",
-    "restored_down_0:character:1305000100:sp": "down",
-    "restored_up_0:character:1330002200:sp": "up",
-    "restored_up_0:character:1370000202:sp": "up",
-    "restored_up_0:character:1705001700:sp": "up",
-    "restored_up_0:unit:1085000110:sp": "up",
-    "restored_up_0:unit:1133000600:sp": "up",
-    "restored_up_0:unit:1144000500:sp": "up",
-    "restored_up_0:unit:1200000100:sp": "up",
-    "restored_up_0:unit:1230005300:sp": "up",
-    "restored_up_0:unit:1300004200:sp": "up",
-    "restored_down_0:unit:1310000300:ssp": "down",
-    "restored_up_0:unit:1330006700:sp": "up",
-    "restored_down_0:unit:1370000160:sp": "down",
-    "restored_up_0:unit:1370005900:sp": "up",
-    "restored_up_0:unit:1370011100:sp": "up",
-    "restored_up_0:unit:1430003400:sp": "up"
+    "ip_cb9f54adbc71742ffd689fbf2e248351:character:1001000403:sp": "up",
+    "ip_d103646de54ae039aa48125a88dd83ea:character:1001001901:sp": "up",
+    "ip_6c534846072a0ee81399e4db90b46930:character:1001004800:sp": "down",
+    "ip_d0437d595e46521c04779b0965ba39b5:character:1022000600:sp": "up",
+    "ip_00f44752fedb0672abcfe32a49ce0436:character:1150000102:sp": "up",
+    "ip_edce2a5f32284a8953c39df306230cbf:character:1162000500:sp": "up",
+    "ip_7a22882a4b1fb1de16900906ab069a3a:character:1210000103:sp": "up",
+    "ip_3522406464fe70e389d1c72316f64dc8:character:1217000300:sp": "up",
+    "ip_8d9da6df8e993ea00f1e899417e50643:character:1304000200:sp": "down",
+    "ip_09e18d9b410a99719575a539683c16ec:character:1305000100:sp": "down",
+    "ip_b6598d5056da28c12332780592e63de3:character:1330002200:sp": "up",
+    "ip_c6138051e605a68a899c3d7be78037aa:character:1370000202:sp": "up",
+    "ip_9dff8d5ce8920e0d7c668a2f67725f1e:character:1382100100:sp": "up",
+    "ip_c528be24cec97558a8f8b5a8b7e5fe5e:character:1705001700:sp": "up",
+    "ip_04ada3fcaf374ceb048bee3acece358d:unit:1085000110:sp": "up",
+    "ip_039d12ef79083b2b2d6cfc77df96f492:unit:1133000600:sp": "up",
+    "ip_3c136da5cf83b60f26db5bda6efb8c4a:unit:1144000500:sp": "up",
+    "ip_d03ed615e2b01ac072a179d68e6832ba:unit:1200000100:sp": "up",
+    "ip_336f31d69259c160bdac7253a53ae729:unit:1219000600:sp": "up",
+    "ip_eab59c27a7c4f1e07a71c591cdf88cf0:unit:1230005300:sp": "up",
+    "ip_d3d43f22ddd781de70801805b6ab6c54:unit:1310000300:ssp": "down",
+    "ip_2bc2fa52cc8782b6e6c6276411f17a5f:unit:1330006700:sp": "up",
+    "ip_2de6d1861b75ac0f6e21d433cb43e75b:unit:1370000160:sp": "down",
+    "ip_32f00a3b09a9fbc789bae627cd68a1ae:unit:1370005900:sp": "up",
+    "ip_9ce555d927e0cfc1cb5d70947d5fe694:unit:1370011100:sp": "up",
+    "ip_605332db99d29f01667ea293efa7e0b3:unit:1370011300:sp": "down",
+    "ip_cb7631ee2574d428169c913d39ef984b:unit:1430003400:sp": "up",
+    "ip_487bd29576fda2be93262bb1ebecc06f:character:1430000101:sp": "up",
+    "ip_f069db381a28c7c30b8a75059d526120:character:1009000800:sp": "up",
+    "ip_71e51b3a749067464f48bba90c5f687a:unit:1430003400:sp": "up",
+    "ip_2f657e3010b074fa433c77c791d83449:unit:1370011100:sp": "up",
+    "ip_e8213815db0b55e3802becb9a43342d7:unit:1155000500:sp": "up",
+    "ip_33146378808c4d4cff04060c5df87bdb:character:1144000400:sp": "up",
+    "ip_3e1625df541d0e22ba7d5fc74d949c80:unit:1342000102:sp": "down",
+    "ip_71df3906a11e29671bab936bb356aa30:unit:1370005700:sp": "up",
+    "ip_68b7398bb89b8016f0dc4e9f74465030:unit:1501000160:sp": "up",
+    "ip_04714fe6f636911f35e442b17702f1d8:unit:1330001100:ssp": "up",
+    "ip_09ff7214156f700d74745f91043cc08a:character:1850002700:sp": "up",
+    "ip_d1f2f2c5442617cb19752c800754e1c7:unit:1200004700:ssp": "up",
+    "ip_2e72eaa2d0c10c1e76db120f9efaf43f:unit:1430003400:sp": "up",
+    "ip_583fd14ae1827c60a0c9aac0bcb7d554:unit:1080003900:sp": "up",
+    "ip_90086827895e66a9a7da95fcc135af2a:unit:1370005700:ssp": "up",
+    "ip_f5b5c801170d4eb4d58417219f3a5098:unit:1370005900:sp": "up",
+    "ip_a77f50fec9e4d7e823be94b385edfe99:unit:1300000200:sp": "up",
+    "ip_409e74019f2c9c814e95e3df991125f7:character:1705001700:sp": "down",
+    "ip_770e67e2954fa12abce1a372503e91c5:unit:1175000110:sp": "up",
+    "ip_96860f5a0e6a5426a04aabf5d95e9e34:unit:1219000300:sp": "up",
+    "ip_563eacb63faca70b79d2971e407907e0:unit:1370005900:ssp": "up",
+    "ip_4fc6727a5b9ed024f0f591297d3f8586:unit:1431001310:ssp": "up",
+    "ip_11ca8ae9246fa01c22ac1146a68b9130:character:1150000102:sp": "up",
+    "ip_742b0880c3ac107753414a81388cef5d:unit:1850002200:sp": "up",
+    "ip_8da91bcd550bd5242daadbb0c15b4b88:unit:1210001100:ssp": "up",
+    "ip_4b4d2e55abaad52f6c66a9b89048e4be:unit:1370005700:sp": "down",
+    "ip_eb44487048cdc2d22a1b939edae266f4:unit:1300001400:ssp": "up",
+    "ip_5a44c4b6edfd025e5a23da26c4446fd4:unit:1370005700:sp": "up",
+    "ip_ec660eb642e7465496de783b17768d1e:unit:1114000100:sp": "up",
+    "ip_dd7512a084ffd8e20fb6f6b3d16bb146:character:1330001300:sp": "down",
+    "ip_b0921027f87befd8ec5f2faa65c351e9:character:1300003500:sp": "up",
+    "ip_4d718129f08793b6d56c1663d17f3ddc:unit:1200000100:sp": "up",
+    "ip_5342c32d13c8a21bc982eda6c302235d:character:1705001700:sp": "up",
+    "ip_1e1c47f8f653589124b5371ccf3f5f82:unit:1370005900:sp": "up",
+    "ip_933e720ec885d9667862ebaf66d1bf2b:character:1370000202:sp": "up",
+    "ip_803ed19a34f1d0766cf3b598c956f234:unit:1219000200:sp": "up",
+    "ip_53b04ed2e3423b3deb4130526a5b58aa:unit:1009000110:ssp": "down",
+    "ip_7ff5d1b1b29ebd179ce99475cff1c62f:character:1031000900:sp": "up",
+    "ip_a923bd7056764c3ed6c26f8ab3a5fbbc:character:1095001800:sp": "down",
+    "ip_a6a2eabaa29e203b6da00b29c67f568f:unit:1370005900:ssp": "up",
+    "ip_4a268677c190603e66cad243833246d6:character:1705001700:sp": "up",
+    "ip_d72b2c95ed27e0f72f709e5fee47b2bf:unit:1330006700:sp": "up",
+    "ip_02d89c1c757643eb26e5d570ac60512b:character:1150000102:sp": "down",
+    "ip_926080da6e198b0b34c3cfb3fd455ee5:unit:1125003800:ssp": "up",
+    "ip_219b42b3ac935c75d3ddbca5c0d917e3:unit:1370005700:ssp": "up",
+    "ip_a785f0cea0d2e67cd0d0aea5e3732ced:unit:1230001410:sp": "up",
+    "ip_d37b8e759319139772a323e1bd0c029d:unit:1370005900:sp": "down",
+    "ip_dcea14f5cf6afd9416b82afd36621c90:unit:1330006700:sp": "up",
+    "ip_ded3e585179ba4be464240af2b665fe6:unit:1330006700:sp": "up",
+    "ip_32d26d8d113a501388f559040f6f11e8:unit:1031001700:ssp": "up",
+    "ip_9904628591fab7e88dad7d546394b520:character:1308000200:sp": "up",
+    "ip_7ea0161082dfffd96f7af4250bc42d6d:unit:1125005110:ssp": "up",
+    "ip_e8eb65221999401690d998e4fcdfa7ec:unit:1330006700:sp": "up",
+    "ip_06c36e3f971c82fde4bd75ed83f71bef:unit:1370005900:sp": "up",
+    "ip_4b3eb9559478248d6bb7f23f57295a96:character:1162000501:sp": "down",
+    "ip_f088c3acefc3a3cacf1278ae00a3be1d:unit:1501001600:sp": "up",
+    "ip_468d1c6fba8fad6ad84cd8d3f5f8fa8f:unit:1370011100:sp": "up",
+    "ip_ba88e30ff6a1be1bedeef3762eca7702:unit:1370005700:sp": "up",
+    "ip_456ed897124acf958aa098939a484c4d:unit:1370005700:ssp": "up",
+    "ip_1ce413f5519ec55483e6571efe1a2081:unit:1060000200:sp": "up",
+    "ip_4397829ac292917e1f1218f8e22f64cd:character:1009000101:sp": "down",
+    "ip_acde83912408f2ad581b9db0a8eb1aec:character:1330001700:sp": "up",
+    "ip_6e6f1402b5f4bf034a2d2b668565ffed:unit:1200000100:sp": "up",
+    "ip_43f0c7151c992cd506c7446e33a519d0:unit:1305000400:ssp": "up",
+    "ip_3e13a8c235a13970ffdb41b02a368750:unit:1400002700:ssp": "up",
+    "ip_54667972fd582a79aed99d4618a9ecf0:unit:1144000100:sp": "up",
+    "ip_e02a78619919969cac51f30786f3e7bc:unit:1370011100:sp": "up",
+    "ip_70299272fbb84f1102a7f3510648d879:unit:1370005700:ssp": "up",
+    "ip_70d7f1931e7503911a9c0ac11a4ccd0c:unit:1750000400:sp": "up",
+    "ip_4d92e62b0f7a5c55a9c6fe662e0483e8:unit:1370005700:sp": "up",
+    "ip_942dd7dff461b5bfdead6d091b1e643c:unit:1200000100:sp": "up",
+    "ip_68a0ae5793cbdcfd5cde90b1e9eba70a:unit:1370005900:ssp": "up",
+    "ip_86b8f73849e571b313724f48545accfb:unit:1370010700:ssp": "up",
+    "ip_4a189a2181918096bb2f61d44b4c99dc:unit:1200000100:sp": "up",
+    "ip_bc4784a86889d06507d05623d57e11b3:unit:1400006400:sp": "down",
+    "ip_8d4293227d7cb98044ffdd718fea5e57:unit:1330006700:sp": "up",
+    "ip_f8ce9aba37392f73106e212a3ae22669:character:1305000100:sp": "up",
+    "ip_2b241fe91ec61de2c25f54ad4ebe760e:unit:1400002400:ssp": "up",
+    "ip_3b83d685a664098d0a8110bb1c705ad7:character:1370000202:sp": "down",
+    "ip_aac2f0e8518c008af96e3b43eedbebc9:unit:1370005700:ssp": "up",
+    "ip_9e12f19fe0f0d326aaaf1b5877b591bc:unit:1370005900:sp": "up",
+    "ip_5b4f74f60753caf35896b3a7c0c6c709:character:1150000102:sp": "up",
+    "ip_8bb104c07ab0b3ca1ca8861677d7dd8a:unit:1370005700:ssp": "up",
+    "ip_dd772e5176b423667e7da788ae3e011a:character:1055000600:sp": "up",
+    "ip_9ce4936e0f30730618905d9fb6cf97e1:character:1055000200:sp": "up",
+    "ip_9424ef17d6f9770469b6f0f1876b4246:unit:1430003400:sp": "up",
+    "ip_7b625d6a98f870baf19f3389b78052c0:unit:1370005700:sp": "down",
+    "ip_21ff41ad22d97b519056a7351e036956:character:1021000201:sp": "up",
+    "ip_8d5ada5f179fc0a105a3055ee1f7ba92:character:1150000102:sp": "up",
+    "ip_e177217c3482a78d593dc0f199b49de0:unit:1430003400:sp": "up",
+    "ip_dfc765fb7f6b00e9a57bcd066c8890aa:unit:1200000100:sp": "down",
+    "ip_7013651635e8f90fd688cec36b1abd24:unit:1330006700:sp": "up",
+    "ip_a50e6b9c522bdce9a1f53aafc05f073d:unit:1200003900:ssp": "down",
+    "ip_38bfb9ad70af5d962abfeb6667850bb3:unit:1430003400:sp": "up",
+    "ip_49b95b6c535033ae0104afaaf8a81337:unit:1370011100:sp": "up",
+    "ip_7eefe0f615c237a2cb806dfb9a9ac3fd:unit:1431001810:ssp": "up",
+    "ip_8c38231c15ef0ded45793347b4112347:unit:1370005900:sp": "up",
+    "ip_87486b7ee94d7ca3faf67f243236b414:unit:1370011100:sp": "up",
+    "ip_b941364d67156d6e71561bfbf4cf0dc7:unit:1370011100:sp": "down",
+    "ip_e5b2341b65145afcec8eaf13e8a97e9a:unit:1175000110:ssp": "up",
+    "ip_903a3fefbb6943080816dfa43c1eca0c:unit:1705001510:ssp": "up",
+    "ip_e4cd96bc736c51ff4637b479595f2fb5:unit:1095001800:ssp": "up",
+    "ip_727d6fc24669a6291345ce5bc4f2d0d4:unit:1200000100:sp": "up",
+    "ip_4db1f09fb5f300494040ad749d00edc7:unit:1200000100:sp": "up",
+    "ip_a88b4d2a1bb57187cd04dda2a5eb5b61:unit:1095001100:ssp": "up",
+    "ip_c4f192e2c004df56b0889e1b709beb26:unit:1370005900:sp": "down",
+    "ip_0b12286dd1e0358b69f5a3085939c7cc:unit:1330006700:sp": "up",
+    "ip_731d0bc3b10a7620dc8bf7b24c881927:character:1705001700:sp": "up",
+    "ip_a7b1b7527f10be9247c0c1737a87a141:unit:1308000501:sp": "down",
+    "ip_f32ede22221f2bae031999d932ad7b31:unit:1155000200:sp": "up",
+    "ip_50ae7cb35ea9299ae49fe55efe645008:unit:1200000100:sp": "up",
+    "ip_c2822e7ba9fcc3aaa9a46a26b5088d93:unit:1501003400:sp": "up",
+    "ip_79dde91bae893ec033f17b1fcb8a99bc:unit:1370005700:ssp": "up",
+    "ip_ea1c28eacb0e0e70e55f4102d2fe071d:unit:1125003310:sp": "up",
+    "ip_c048222ce1baafc04739bf3e82df8c70:character:1219000500:sp": "up",
+    "ip_25d44a0234653a21cc56feb0cbc9d140:character:1330000105:sp": "up",
+    "ip_7a048df011131d28ca1d8108a199ca12:character:1705001700:sp": "up",
+    "ip_498f189038984b4a24771c0b68dad9cc:unit:1330006700:sp": "up",
+    "ip_e45c358c87b7b6deeee3e1614c831828:unit:1501002400:ssp": "up",
+    "ip_e94acacf6986215a89076e3005e3fc71:unit:1230004100:ssp": "up",
+    "ip_bc775b0e897c150c1cf4566a8459e938:unit:1370010900:ssp": "up",
+    "ip_ff7ce467d437229cc1d9a1e9babf4ca9:unit:1026000110:ssp": "up",
+    "ip_31f163884f87f5faa0815d8a3a7408f0:character:1300003500:sp": "up",
+    "ip_c3ec5ecb139c01b716fa57eb5e5c190b:unit:1200000100:sp": "up",
+    "ip_7c70f7013fc65fa4854f19a22dd20368:character:1370005100:sp": "up",
+    "ip_0177c7f43744b45c686fb8a3478d1cf2:unit:1370011100:sp": "up",
+    "ip_60b4941d9990dd0ec2865a1c8e2772f4:character:1125001100:sp": "up",
+    "ip_15a78774dd55f056bb15ffdd97ae35f0:character:1370000202:sp": "up",
+    "ip_67e2045d3036222fd5fb99ef1ffa1b70:unit:1370005700:ssp": "up",
+    "ip_36d298c8fdd2c1bed41e321d10cff8a6:character:1705001700:sp": "up",
+    "ip_8d1e4cbd340bc4fa264a195732dda64b:unit:1155000110:ssp": "up",
+    "ip_ef92178031e2cad862633207a7c79c68:unit:1379000100:sp": "up",
+    "ip_8d49b408e1660b740af03c33b0724b11:character:1370000202:sp": "up",
+    "ip_b123e5a0eb7f91054a3d123dcdb2266f:character:1013000101:sp": "up",
+    "ip_9c7e317ff13b1b6d6394a66fe13f2b0d:unit:1200000810:ssp": "down",
+    "ip_5ce37c2a6a320ff159de418b010c3106:unit:1144000400:ssp": "up",
+    "ip_4008795f8cd5850347d9c6d84f72bd7b:unit:1200000100:sp": "up",
+    "ip_87ba03304b8e881a6d3717c794a17fbb:unit:1110000900:ssp": "up",
+    "ip_6826e3bc4257f0aa3cfe65e28e092d22:character:1370000202:sp": "up",
+    "ip_83835ed49d75d1457dd75d669651595b:unit:1300004500:ssp": "up",
+    "ip_59ec902064660cc13956c525962be9fb:unit:1370005900:sp": "up",
+    "ip_4854a5bb9fe9c4bcdb78d709758cbfd4:unit:1095003300:sp": "up",
+    "ip_50e9cf9dee8d0828e3ae4827cd191c8c:unit:1370011100:sp": "down",
+    "ip_260fa3e870ce7d15bb7824003afadb30:unit:1125003310:ssp": "up",
+    "ip_a93df204280dbc8ca3cdefcd6e74181e:unit:1330006700:sp": "up",
+    "ip_5620daec42f2d8405e6de0e6f7f5a6e1:unit:1060000600:ssp": "up",
+    "ip_03d8448d84be4dac895a35ee94767bd1:unit:1400006400:sp": "up",
+    "ip_5d29334d8ec12980b60f67c883c05ba6:character:1705001700:sp": "up",
+    "ip_98c686f32c2412d0748fe7d297c58f1c:character:1370005100:sp": "down",
+    "ip_24d4308216e27137444365a7effe6573:character:1300002200:sp": "up",
+    "ip_5bf0376ddaae160efec49b46d892b483:unit:1430003400:sp": "up",
+    "ip_fce3266aba5b39b6b862e936be5340fd:character:1400001700:sp": "up",
+    "ip_19941b1b518580285c06a5a9a0d20c12:unit:1850002000:ssp": "up",
+    "ip_5aad11738bb08c2c2771dc69346b676e:unit:1370005900:sp": "up",
+    "ip_9c55dfd4edf2ab33517535894e54f3dc:unit:1370005700:sp": "up",
+    "ip_97c38d38c2565de814fe3e7eed04e46f:unit:1211000100:ssp": "up",
+    "ip_d495f086e2aba8163f115caf9649dd19:unit:1200000100:sp": "up",
+    "ip_66c8d15558a331b87113a02a08665e19:character:1150000102:sp": "up",
+    "ip_4392d7427c553b6ad07d0777ca8a6468:character:1150000102:sp": "up",
+    "ip_517a2f21f2f015a67b4120c0c97c826b:unit:1210003400:ssp": "up",
+    "ip_86ead7544c3c2acd759e2a74c5211e8d:unit:1370005700:ssp": "up",
+    "ip_1756bd685415680a5fd569ec27cd5da7:character:1705001700:sp": "up",
+    "ip_947e96981d13aa5427b885fe26ee5e19:unit:1705001510:ssp": "up",
+    "ip_cd7b4286b77f42b503df71ad1df09843:unit:1430003400:sp": "up",
+    "ip_9b0e0f47f9f2d8ad0b92d4a5dca605a6:character:1705001200:sp": "up",
+    "ip_d6c7d4a93012b2fb330c301b945d1d14:unit:1370005900:ssp": "up",
+    "ip_ccda7390e12e6518134687909bae37dc:unit:1330006700:sp": "up",
+    "ip_db7422ccdeb08e724d78baa217ac2ff1:unit:1330002600:ssp": "up",
+    "ip_eb828e1477d817fb7188dc376cbc26e5:unit:1013000800:ssp": "up",
+    "ip_d5c61e95778dbc2801d8d838936bcb61:unit:1304001100:ssp": "up",
+    "ip_182b809976f89d3f40a62a602315ac4a:character:1705001700:sp": "up",
+    "ip_6bce109430fd60d61885eab676f3d54f:unit:1150000200:sp": "up",
+    "ip_3112f2f319059c656ee4dd2409578184:unit:1001001500:sp": "up",
+    "ip_200fff04c8fab4a237bcf0bdaf79eb64:character:1370000202:sp": "up",
+    "ip_de9c9279ef412e2e815894129086f92b:unit:1370005900:ssp": "up",
+    "ip_da1448e95597c1b47bede2b6ba21f20a:character:1370000202:sp": "up",
+    "ip_47ad6f3f6fe3ea87fd5177b03e6234f2:character:1060002200:sp": "up",
+    "ip_9ceb41358d5dba659788cdb81b12e627:unit:1125005500:sp": "up",
+    "ip_0532942008c4cc29c1e599914a2263ba:character:1304000200:sp": "up",
+    "ip_e864fcd3369e900eb46018b1ce40a28c:unit:1370005900:sp": "up",
+    "ip_ee23061e95fc8b169d8bd6ab4c6d9408:character:1080002800:sp": "up",
+    "ip_685358368c0edb2ce45557f9220323e8:unit:1080003860:ssp": "up",
+    "ip_d2adee2af83e36d5459c0762ae2f7c01:unit:1370005700:sp": "up",
+    "ip_2e074b4da859adb2ca92c02ff2d9776b:character:1705001700:sp": "up",
+    "ip_4f22223752dee146ae6f4e6c282ed782:unit:1200000100:sp": "down",
+    "ip_c2af44fac76d5978f1fd3716b9d2bd15:character:1150000102:sp": "down",
+    "ip_09a3614b014853b1d42d8cb47e470630:character:1705001700:sp": "up",
+    "ip_47bc3b3aeb25dbbddc046a31950283e4:unit:1084000210:ssp": "up",
+    "ip_98798c2f1be076b38699c983a41a68bc:unit:1330006700:sp": "up",
+    "ip_7e986e18ffcc0811c22e4d8ed7aed4a8:unit:1370011100:sp": "down",
+    "ip_5ef7c772ebce2195b6f9ef256117e76b:unit:1400006400:ssp": "up",
+    "ip_faa62d7339994590dd87b56679f34f68:character:1009000800:sp": "down",
+    "ip_0bbf6ec754007235d1697afddfbf7a76:unit:1705001200:sp": "down",
+    "ip_05c5c698fa8c02a69a4f500d4efac504:unit:1370007800:ssp": "up",
+    "ip_f39fd660d184c1f4185604eb07c74588:character:1095004300:sp": "up",
+    "ip_d24056d9bd70095d90bd37f3ee428a86:unit:1370011100:sp": "up",
+    "ip_fedd0a5b8492f7b5e06051af4a329000:character:1144000500:sp": "up",
+    "ip_7881764e3cac4fa9232195769efa313d:unit:1370011100:sp": "up",
+    "ip_64712162f7f45002f86d9203a1824a90:character:1370000202:sp": "up",
+    "ip_45b9ae84033272f77979ee00c6c8fe94:character:1150000102:sp": "up",
+    "ip_1242b9233e8997e88ae7adaf47ee7ff6:unit:1001002700:sp": "up",
+    "ip_303ce1266b659b99b05ddf436e8306ab:character:1125001600:sp": "up",
+    "ip_e127d9ccda3f931cad12af175a50f747:unit:1370011100:sp": "up",
+    "ip_9405e84a6cf451cd045a57dd232fdba1:character:1300003700:sp": "up",
+    "ip_bb8c45f777e5093652d9bf79d7fa0a12:character:1370000202:sp": "up",
+    "ip_3537046439082d987c06ab99e8092dba:unit:1430007200:ssp": "up",
+    "ip_5d7ea5cc0778c1f633416c92c403f01a:character:1080003400:sp": "up",
+    "ip_6183d43d6179eb783ae36d2c57c851f0:character:1150000102:sp": "up",
+    "ip_d0022dc7d1488736a8d91f2cb08979b7:unit:1330006700:sp": "up",
+    "ip_c334d4ffcb5e7748a2fbd711a81f60bd:unit:1764000202:sp": "up",
+    "ip_762c27fdfb998cf682a31fde16cd01dd:unit:1370005700:sp": "up",
+    "ip_179cd57dfc1ae61c883f359ec35faf6e:unit:1370009810:ssp": "up",
+    "ip_9e3afd2e0987f7cbe43ed83ac955692f:character:1150000400:sp": "up",
+    "ip_f90825b59fea75c5c1b484e8d8f299e4:character:1430002601:sp": "up",
+    "ip_dd51c937420b58842d6394d17bd4277d:unit:1370011100:sp": "up",
+    "ip_d57379a481aceb3a3df6d20df7447559:unit:1230005300:ssp": "down",
+    "ip_faea99b66ecd3ebb87d887c02c2e08f2:unit:1007000200:ssp": "up",
+    "ip_95cbc6ec46da5edc44d2abc7b07d843f:unit:1330006700:sp": "up",
+    "ip_0f51312a2471fd31b20c8d50af278662:unit:1850003200:ssp": "up",
+    "ip_3affa93d07f87281928b6186207145ca:unit:1230005300:ssp": "up",
+    "ip_570891e3f836616b4a1c8f4fae568349:character:1095000402:sp": "down",
+    "ip_b02611e0a9699871fee0174aeb9c49ec:character:1705001700:sp": "up",
+    "ip_855d7443b15dd8821cfe3115ffda8f34:unit:1009000510:ssp": "up",
+    "ip_2b1ed2fef8bb4d554b765b6c5ce77664:character:1150000102:sp": "up",
+    "ip_90edb2587cb2a5e25181a99c1f9a9079:unit:1200000100:sp": "up",
+    "ip_43f6cc0ba51ca8c3f345827e2765fe4c:character:1080000202:sp": "up",
+    "ip_b9aacd555b9f4ea490b42604d79a8550:unit:1200000100:sp": "up",
+    "ip_04a98908f89bb64a40382746b3098c4f:unit:1430003400:sp": "up",
+    "ip_bb4b55be7005fe3f7759c3b6e932ec54:unit:1125000900:sp": "up",
+    "ip_8a7de2d67db2a7d36bcb74cfa654d5ad:unit:1370005700:ssp": "up",
+    "ip_bfbe0836be42ec4230928d7dad5dd123:character:1001004300:sp": "up",
+    "ip_8eb61fc3dc23aa68655e598b2d7a6e4b:character:1150000102:sp": "up",
+    "ip_5ffc8fc47c824148edabb0f0aaf2742f:unit:1007001160:sp": "down",
+    "ip_bc0b07feeb75b2bdd0882d8aca7ee6d7:unit:1370005700:sp": "up",
+    "ip_9470f56392211343dbd305752bbd6197:unit:1144000400:ssp": "up",
+    "ip_716acd45027dace9a01105222d5fbcc6:unit:1021000210:ssp": "up",
+    "ip_e9a1d2f8f21688aeee0a8a6ded4f5f5d:unit:1370005700:sp": "up",
+    "ip_2a90155f102336910e9dc8954b60bee8:unit:1125003310:ssp": "down",
+    "ip_1b36643f33929957f1be8cb7c79a3b14:unit:1230004300:sp": "up",
+    "ip_72c89d954b125c1aa7084d230f9009ad:unit:1370007900:ssp": "up",
+    "ip_fc2890d0d97f6e161b571e41e6722498:unit:1098000110:ssp": "up",
+    "ip_499702bd66f8bce6b7d193bb1ac975dd:character:1150000102:sp": "up",
+    "ip_69b5260ecec7e101ad0d25db7f7c38a9:unit:1055000260:ssp": "up",
+    "ip_6b5612cc312663605cb4f9da0e8a9dac:unit:1370005700:ssp": "up",
+    "ip_57704de53a3e1b744be1d562f3000b7f:unit:1370005900:sp": "up",
+    "ip_02a0808f86ea6880713c2865dede3d7d:character:1705001700:sp": "up",
+    "ip_c4ea8b96940073765cde53cf11ec8811:unit:1370011100:sp": "up",
+    "ip_51a7ab5e6f5cff34878edf90f6e70e45:unit:1095001200:sp": "up",
+    "ip_6c433639b3da21fc743220daaa79e5e2:unit:1370005700:ssp": "up",
+    "ip_eecae53e0596c30e9960a0ddbe3f292d:unit:1370010300:ssp": "down",
+    "ip_e57d37df0363b3bda7c9a16fa1506292:character:1080001600:sp": "up",
+    "ip_4cbfd671136f80792c356b70c2b8ba47:unit:1370005900:ssp": "up",
+    "ip_26de4ee90eec1bce1764258e69317a62:character:1125001600:sp": "up",
+    "ip_565d1936d7f62d5f10daa6f1131e2366:unit:1370005700:ssp": "down",
+    "ip_136d5f7a9b98f897118ea97a7728d4b3:unit:1310000300:ssp": "up",
+    "ip_f1cd2f5516245c77a90958968270610c:character:1001000600:sp": "up",
+    "ip_d6f8e4dfa5f85ded502ec138b7aaa0b4:unit:1060000600:ssp": "up",
+    "ip_6258a7ff2e81d4a335717fc3dbdbe38c:unit:1430007200:ssp": "up",
+    "ip_fde5050bac2cf0aede1ccef9b1f302f2:unit:1370005900:sp": "up",
+    "ip_caef0500e93ec4abccd75e027eefbfcd:character:1501001500:sp": "up",
+    "ip_5049c9aa786d7080a125f5c3bd352592:unit:1370005700:sp": "down",
+    "ip_0f9500843d7ee5ebffe50dd820e4e44b:unit:1230004300:sp": "up",
+    "ip_ba93f0d1685c1e61800398e7ffb57fb0:unit:1370005700:sp": "up",
+    "ip_e07e50919c596c701fb5b7f449aaa047:unit:1370005700:sp": "up",
+    "ip_729d1ed87eea526dc89d1037d485ba69:character:1705001700:sp": "up",
+    "ip_e3f5b89755b505eeb9b9ce65745155cc:unit:1430007200:ssp": "up",
+    "ip_ffcaf381a20bb2000d83eb75af050f7d:unit:1370005900:sp": "up",
+    "ip_854c2ae9353ca8f1e8dbd6511f12ab10:unit:1370005900:sp": "up",
+    "ip_066410eabb6bc395bdf6e38253cb48ce:unit:1200004700:ssp": "up",
+    "ip_83c563769275763d4a7ec0566484aad9:unit:1370005700:ssp": "up",
+    "ip_8fe7b387660625be5c20aceffff96b7f:unit:1370005900:sp": "up",
+    "ip_d688fc75c766cc925f66c1884115c575:character:1370000202:sp": "up",
+    "ip_3a0b17fc73fb4e616957f7f9386d176d:character:1217000200:sp": "up",
+    "ip_1afeb63e3955f472c24399b65bfda8a0:unit:1370005700:sp": "up",
+    "ip_a5f414c39fd5b960bc8e07bc5bab76a1:unit:1200000100:sp": "up",
+    "ip_4b013c14c2c7929a82e9354a18d31a75:character:1017000800:sp": "up",
+    "ip_f6d7a18da23d278b05640f4663237f7c:unit:1370011100:sp": "up",
+    "ip_5f4d82d90c56ad6f780a80617b2aac26:character:1310000200:sp": "up",
+    "ip_a9f3ee2303742bc4dd7cc8566a117c2b:unit:1370011100:sp": "up",
+    "ip_700d49d2f5bd2eb6b545158820603100:unit:1370005900:sp": "up",
+    "ip_e2297412bbaedcf0fc6f330b7efd1d92:unit:1370005900:sp": "up",
+    "ip_4907158624e77b594b7cd6c4a1dadc06:unit:1370005900:sp": "up",
+    "ip_a6b38cdaae4732bf6f887fb5fdc80bb3:unit:1370005900:sp": "up",
+    "ip_3775b2643441f43b2d02bf61a82dbaa5:unit:1370005900:sp": "up",
+    "ip_7a5135fde92955afeca93c69e361c852:unit:1370005900:sp": "up",
+    "ip_a789855d913674a9a3a449152f18c5dc:unit:1370005900:sp": "up",
+    "ip_506d504ee3edfbb76b067cc11b2480a7:unit:1370005900:sp": "up",
+    "ip_e4c2cfe4a3297a19fd8db5707467aeb4:unit:1370005900:sp": "up",
+    "ip_3323351874263342f83cbb82beab4ad8:unit:1370005900:sp": "up",
+    "ip_347e8dbab6f860357d67ba0f5ab2d095:unit:1370005900:sp": "up",
+    "ip_6cda77c939810a1adb585e79f8538724:unit:1370005900:sp": "up",
+    "ip_1e4b041a462ab24f37379ebaaacde534:unit:1370005900:sp": "up",
+    "ip_38d0b8217acea6d9f31705b5de55f7c4:unit:1370005900:sp": "up",
+    "ip_15dd889de14fcdee60e3b29a20a85cb3:unit:1370005900:sp": "up",
+    "ip_124005ae63a733b3f2e8e787eda5bc2f:unit:1370005900:sp": "up",
+    "ip_11eecbf2d940e56fccfda06c8ac14bdc:unit:1370005900:sp": "up",
+    "ip_e30a599616461a23580d3259e0f9f236:unit:1370005900:sp": "up",
+    "ip_aed141971ec8820e25cf998f77f25a1e:unit:1370005900:sp": "up",
+    "ip_578ef9c7dbbb0841e747f49cd30d9dc7:unit:1370005900:sp": "up",
+    "ip_eb280f76e3a73a98ad0374ab5c3eb403:unit:1370005900:sp": "up",
+    "ip_2e19abc67665ecdf31e778731e4837d7:unit:1370005900:sp": "up",
+    "ip_4427ed687dad63da79710c93970bf61c:unit:1370005900:sp": "up",
+    "ip_e20cb5fa7816872083a7ecc35309fc8a:unit:1370005900:sp": "up",
+    "ip_50582abcfca5a8504821b464264765b8:unit:1370005900:sp": "up",
+    "ip_e96bb54ad3f11beaf86927da29f7da56:unit:1370005900:sp": "up",
+    "ip_32ec7d0f9c534de00f774ce01d13ce47:unit:1370005700:sp": "up",
+    "ip_b883356b5e5cc9847d6c8efc0b50e8c5:unit:1370005700:sp": "up",
+    "ip_7a772b0e3f4bb6b9020563b97e785013:unit:1370005700:sp": "up",
+    "ip_b5b0ea823c8305d305f06aafb5e89b74:unit:1370005700:sp": "up",
+    "ip_010776f418c8f736e6819779661adfcc:unit:1370005700:sp": "up",
+    "ip_c1472425e7a3d7c2976047380703c128:unit:1370005700:sp": "up",
+    "ip_f81e07172501b8ebb11b1bc4fb3cbecf:unit:1370005900:sp": "up",
+    "ip_779f6898a243ec42363be53be25d38b1:unit:1370005900:sp": "up",
+    "ip_4cf40707b35411db1b5eaab695aed341:unit:1370005900:sp": "up",
+    "ip_01d44ae753f132ce383da82e2c2191d8:unit:1370005900:sp": "up",
+    "ip_b7fde4f909150bc61b8ad0a5aa08fbb7:unit:1370005900:sp": "up",
+    "ip_409595f224393b0aa703a86738d033b0:unit:1370005900:sp": "up",
+    "ip_6f3332e1e916cf494c47802ebbde0136:unit:1370005900:sp": "up",
+    "ip_5462034486e16177f4426d38be61d468:unit:1370005900:sp": "up"
   },
   "targets": {
     "character:1001000403:sp": {
@@ -32,11 +357,23 @@
       "up": 1,
       "down": 0
     },
-    "character:1150000102:sp": {
+    "character:1001004800:sp": {
+      "up": 0,
+      "down": 1
+    },
+    "character:1022000600:sp": {
       "up": 1,
       "down": 0
     },
+    "character:1150000102:sp": {
+      "up": 11,
+      "down": 2
+    },
     "character:1162000500:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1210000103:sp": {
       "up": 1,
       "down": 0
     },
@@ -44,8 +381,12 @@
       "up": 1,
       "down": 0
     },
+    "character:1304000200:sp": {
+      "up": 1,
+      "down": 1
+    },
     "character:1305000100:sp": {
-      "up": 0,
+      "up": 1,
       "down": 1
     },
     "character:1330002200:sp": {
@@ -53,12 +394,16 @@
       "down": 0
     },
     "character:1370000202:sp": {
+      "up": 10,
+      "down": 1
+    },
+    "character:1382100100:sp": {
       "up": 1,
       "down": 0
     },
     "character:1705001700:sp": {
-      "up": 1,
-      "down": 0
+      "up": 14,
+      "down": 1
     },
     "unit:1085000110:sp": {
       "up": 1,
@@ -73,6 +418,10 @@
       "down": 0
     },
     "unit:1200000100:sp": {
+      "up": 14,
+      "down": 2
+    },
+    "unit:1219000600:sp": {
       "up": 1,
       "down": 0
     },
@@ -80,16 +429,12 @@
       "up": 1,
       "down": 0
     },
-    "unit:1300004200:sp": {
-      "up": 1,
-      "down": 0
-    },
     "unit:1310000300:ssp": {
-      "up": 0,
+      "up": 1,
       "down": 1
     },
     "unit:1330006700:sp": {
-      "up": 1,
+      "up": 14,
       "down": 0
     },
     "unit:1370000160:sp": {
@@ -97,14 +442,526 @@
       "down": 1
     },
     "unit:1370005900:sp": {
-      "up": 1,
-      "down": 0
+      "up": 48,
+      "down": 2
     },
     "unit:1370011100:sp": {
+      "up": 14,
+      "down": 3
+    },
+    "unit:1370011300:sp": {
+      "up": 0,
+      "down": 1
+    },
+    "unit:1430003400:sp": {
+      "up": 9,
+      "down": 0
+    },
+    "character:1430000101:sp": {
       "up": 1,
       "down": 0
     },
-    "unit:1430003400:sp": {
+    "character:1009000800:sp": {
+      "up": 1,
+      "down": 1
+    },
+    "unit:1155000500:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1144000400:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1342000102:sp": {
+      "up": 0,
+      "down": 1
+    },
+    "unit:1370005700:sp": {
+      "up": 18,
+      "down": 3
+    },
+    "unit:1501000160:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1330001100:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1850002700:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1200004700:ssp": {
+      "up": 2,
+      "down": 0
+    },
+    "unit:1080003900:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1370005700:ssp": {
+      "up": 13,
+      "down": 1
+    },
+    "unit:1300000200:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1175000110:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1219000300:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1370005900:ssp": {
+      "up": 6,
+      "down": 0
+    },
+    "unit:1431001310:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1850002200:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1210001100:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1300001400:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1114000100:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1330001300:sp": {
+      "up": 0,
+      "down": 1
+    },
+    "character:1300003500:sp": {
+      "up": 2,
+      "down": 0
+    },
+    "unit:1219000200:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1009000110:ssp": {
+      "up": 0,
+      "down": 1
+    },
+    "character:1031000900:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1095001800:sp": {
+      "up": 0,
+      "down": 1
+    },
+    "unit:1125003800:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1230001410:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1031001700:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1308000200:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1125005110:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1162000501:sp": {
+      "up": 0,
+      "down": 1
+    },
+    "unit:1501001600:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1060000200:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1009000101:sp": {
+      "up": 0,
+      "down": 1
+    },
+    "character:1330001700:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1305000400:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1400002700:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1144000100:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1750000400:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1370010700:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1400006400:sp": {
+      "up": 1,
+      "down": 1
+    },
+    "unit:1400002400:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1055000600:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1055000200:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1021000201:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1200003900:ssp": {
+      "up": 0,
+      "down": 1
+    },
+    "unit:1431001810:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1175000110:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1705001510:ssp": {
+      "up": 2,
+      "down": 0
+    },
+    "unit:1095001800:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1095001100:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1308000501:sp": {
+      "up": 0,
+      "down": 1
+    },
+    "unit:1155000200:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1501003400:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1125003310:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1219000500:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1330000105:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1501002400:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1230004100:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1370010900:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1026000110:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1370005100:sp": {
+      "up": 1,
+      "down": 1
+    },
+    "character:1125001100:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1155000110:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1379000100:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1013000101:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1200000810:ssp": {
+      "up": 0,
+      "down": 1
+    },
+    "unit:1144000400:ssp": {
+      "up": 2,
+      "down": 0
+    },
+    "unit:1110000900:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1300004500:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1095003300:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1125003310:ssp": {
+      "up": 1,
+      "down": 1
+    },
+    "unit:1060000600:ssp": {
+      "up": 2,
+      "down": 0
+    },
+    "character:1300002200:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1400001700:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1850002000:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1211000100:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1210003400:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1705001200:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1330002600:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1013000800:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1304001100:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1150000200:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1001001500:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1060002200:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1125005500:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1080002800:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1080003860:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1084000210:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1400006400:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1705001200:sp": {
+      "up": 0,
+      "down": 1
+    },
+    "unit:1370007800:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1095004300:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1144000500:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1001002700:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1125001600:sp": {
+      "up": 2,
+      "down": 0
+    },
+    "character:1300003700:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1430007200:ssp": {
+      "up": 3,
+      "down": 0
+    },
+    "character:1080003400:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1764000202:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1370009810:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1150000400:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1430002601:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1230005300:ssp": {
+      "up": 1,
+      "down": 1
+    },
+    "unit:1007000200:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1850003200:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1095000402:sp": {
+      "up": 0,
+      "down": 1
+    },
+    "unit:1009000510:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1080000202:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1125000900:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1001004300:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1007001160:sp": {
+      "up": 0,
+      "down": 1
+    },
+    "unit:1021000210:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1230004300:sp": {
+      "up": 2,
+      "down": 0
+    },
+    "unit:1370007900:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1098000110:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1055000260:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1095001200:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "unit:1370010300:ssp": {
+      "up": 0,
+      "down": 1
+    },
+    "character:1080001600:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1001000600:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1501001500:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1217000200:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1017000800:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1310000200:sp": {
       "up": 1,
       "down": 0
     }
