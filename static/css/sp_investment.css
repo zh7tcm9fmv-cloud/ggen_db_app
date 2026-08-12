@@ -708,6 +708,7 @@ html.spi-modal-open body.spi-page {
   gap: 0.65rem;
 }
 .spi-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -750,6 +751,71 @@ html.spi-modal-open body.spi-page {
   align-items: center;
   justify-content: center;
 }
+.spi-card-community {
+  margin: 0;
+  font-size: 0.64rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.spi-vote-corners {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+.spi-vote-corner {
+  pointer-events: auto;
+  position: absolute;
+  top: 3px;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin: 0;
+  padding: 2px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: rgba(8, 14, 28, 0.55);
+  color: var(--text-secondary);
+  cursor: pointer;
+  line-height: 1;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: background 0.15s ease, box-shadow 0.15s ease, opacity 0.15s ease;
+  opacity: 0.92;
+}
+.spi-vote-corner.spi-vote-up {
+  left: 3px;
+}
+.spi-vote-corner.spi-vote-down {
+  right: 3px;
+}
+.spi-vote-corner img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.75));
+}
+.spi-vote-corner .spi-vote-count {
+  font-size: 0.58rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+  line-height: 1;
+  margin-top: 1px;
+}
+.spi-vote-corner:hover,
+.spi-vote-corner.is-active {
+  opacity: 1;
+  background: rgba(0, 212, 255, 0.14);
+  box-shadow: 0 0 0 1px rgba(0, 212, 255, 0.45);
+}
+.spi-vote-corner.is-active .spi-vote-count {
+  color: var(--accent-cyan);
+}
 .spi-vote {
   display: flex;
   flex-wrap: wrap;
@@ -757,48 +823,46 @@ html.spi-modal-open body.spi-page {
   gap: 0.35rem;
   margin-top: 0.45rem;
 }
-.spi-vote--compact {
-  margin-top: 0.35rem;
-  justify-content: center;
-  width: 100%;
+.spi-vote--dossier {
+  margin-top: 0.4rem;
 }
 .spi-vote-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.2rem;
-  padding: 0.12rem 0.35rem;
-  border: 1px solid rgba(148, 163, 184, 0.35);
-  border-radius: 6px;
-  background: rgba(15, 23, 42, 0.25);
+  gap: 0.22rem;
+  padding: 0.15rem 0.4rem;
+  border: 1px solid rgba(100, 170, 255, 0.35);
+  border-radius: var(--radius-sm);
+  background: rgba(12, 20, 36, 0.85);
   color: var(--text-secondary);
   cursor: pointer;
   line-height: 1;
+  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 .spi-vote-btn img {
   width: 18px;
   height: 18px;
   object-fit: contain;
-  opacity: 0.85;
+  display: block;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.65));
 }
-.spi-vote-btn.is-active {
-  border-color: rgba(56, 189, 248, 0.7);
-  background: rgba(56, 189, 248, 0.15);
-}
-.spi-vote-btn.is-active img {
-  opacity: 1;
-}
-.spi-vote-count {
+.spi-vote-btn .spi-vote-count {
   font-size: 0.68rem;
   font-weight: 700;
+  font-variant-numeric: tabular-nums;
   min-width: 0.75rem;
 }
-.spi-vote-adj {
-  font-size: 0.68rem;
-  font-weight: 600;
-  color: var(--text-muted);
+.spi-vote-btn:hover,
+.spi-vote-btn.is-active {
+  border-color: rgba(0, 212, 255, 0.65);
+  background: rgba(0, 212, 255, 0.12);
+  box-shadow: 0 0 0 1px rgba(0, 212, 255, 0.28);
 }
-.spi-dossier-head-text .spi-vote {
-  margin-top: 0.55rem;
+.spi-dossier-head-text .spi-card-community {
+  margin-top: 0.25rem;
+  font-size: 0.72rem;
 }
 .spi-community-note {
   margin: 0.55rem 0 0;

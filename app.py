@@ -16307,16 +16307,26 @@ def _spi_payload_with_community_votes(payload, votes_data):
     return out
 
 
-def _spi_vote_rate_limited(voter_id):
+def _spi_vote_rate_limited(voter_id, target_key=None):
+    """Light debounce only — same target may switch freely so up→down works."""
     if not voter_id:
         return False
     now = time.time()
     stale_before = now - 60
     for k, ts in list(_spi_vote_recent_by_ip.items()):
-        if ts < stale_before:
+        val = ts[0] if isinstance(ts, (tuple, list)) else ts
+        if val < stale_before:
             del _spi_vote_recent_by_ip[k]
-    last = _spi_vote_recent_by_ip.get(voter_id, 0)
-    return (now - last) < _SPI_VOTE_RATE_LIMIT_SEC
+    last = _spi_vote_recent_by_ip.get(voter_id)
+    if not last:
+        return False
+    if isinstance(last, (tuple, list)):
+        last_ts, last_key = last[0], last[1] if len(last) > 1 else None
+    else:
+        last_ts, last_key = last, None
+    if target_key and last_key == target_key:
+        return (now - last_ts) < 0.05
+    return (now - last_ts) < _SPI_VOTE_RATE_LIMIT_SEC
 
 
 @app.route('/api/sp_investment/votes')
@@ -16355,7 +16365,7 @@ def api_sp_investment_vote():
     voter_id = _bt_vote_voter_id()
     if not voter_id:
         return jsonify({'error': 'unable to identify voter'}), 400
-    if _spi_vote_rate_limited(voter_id):
+    if _spi_vote_rate_limited(voter_id, tkey):
         return jsonify({'error': 'rate_limited'}), 429
     bkey = _spi_vote_ballot_key(voter_id, tkey)
     with _SPI_VOTES_LOCK:
@@ -16383,7 +16393,7 @@ def api_sp_investment_vote():
         data = {'version': 1, 'targets': targets, 'ballots': ballots}
         if not _spi_votes_save(data):
             return jsonify({'error': 'persist_failed'}), 500
-    _spi_vote_recent_by_ip[voter_id] = time.time()
+    _spi_vote_recent_by_ip[voter_id] = (time.time(), tkey)
     tallies = _spi_vote_tallies_map(data)
     entry = tallies.get(tkey) or {'up': 0, 'down': 0, 'community_adj': 0}
     return jsonify({

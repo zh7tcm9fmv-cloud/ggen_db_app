@@ -257,18 +257,37 @@
     const upActive = info.mine === 'up' ? ' is-active' : '';
     const downActive = info.mine === 'down' ? ' is-active' : '';
     const adjN = info.adj > 0 ? `+${info.adj}` : String(info.adj || 0);
-    const cls = compact ? 'spi-vote spi-vote--compact' : 'spi-vote';
-    return `<div class="${cls}" data-vote-key="${escAttr(info.key)}" data-vote-kind="${escAttr(kind)}" data-vote-id="${escAttr(row.id)}" data-vote-board="${escAttr(kind === 'character' ? 'sp' : row.mode || board)}">
+    const boardAttr = escAttr(kind === 'character' ? 'sp' : row.mode || board);
+    const attrs = `data-vote-key="${escAttr(info.key)}" data-vote-kind="${escAttr(kind)}" data-vote-id="${escAttr(row.id)}" data-vote-board="${boardAttr}"`;
+    if (compact) {
+      // Corner icons on list cards — no nested <button> inside card button.
+      return `<span class="spi-vote-corners" ${attrs}>
+        <button type="button" class="spi-vote-corner spi-vote-up${upActive}" data-vote="up" title="${escAttr(t('vote_up'))}" aria-label="${escAttr(t('vote_up'))}" aria-pressed="${info.mine === 'up' ? 'true' : 'false'}">
+          <img src="${upSrc}" alt="" width="20" height="20" decoding="async" onerror="gameImageUrlFallback(this)">
+          <span class="spi-vote-count">${esc(String(info.up))}</span>
+        </button>
+        <button type="button" class="spi-vote-corner spi-vote-down${downActive}" data-vote="down" title="${escAttr(t('vote_down'))}" aria-label="${escAttr(t('vote_down'))}" aria-pressed="${info.mine === 'down' ? 'true' : 'false'}">
+          <img src="${downSrc}" alt="" width="20" height="20" decoding="async" onerror="gameImageUrlFallback(this)">
+          <span class="spi-vote-count">${esc(String(info.down))}</span>
+        </button>
+      </span>`;
+    }
+    return `<div class="spi-vote spi-vote--dossier" ${attrs}>
       <button type="button" class="spi-vote-btn spi-vote-up${upActive}" data-vote="up" title="${escAttr(t('vote_up'))}" aria-label="${escAttr(t('vote_up'))}" aria-pressed="${info.mine === 'up' ? 'true' : 'false'}">
-        <img src="${upSrc}" alt="" width="22" height="22" decoding="async" onerror="gameImageUrlFallback(this)">
+        <img src="${upSrc}" alt="" width="20" height="20" decoding="async" onerror="gameImageUrlFallback(this)">
         <span class="spi-vote-count">${esc(String(info.up))}</span>
       </button>
       <button type="button" class="spi-vote-btn spi-vote-down${downActive}" data-vote="down" title="${escAttr(t('vote_down'))}" aria-label="${escAttr(t('vote_down'))}" aria-pressed="${info.mine === 'down' ? 'true' : 'false'}">
-        <img src="${downSrc}" alt="" width="22" height="22" decoding="async" onerror="gameImageUrlFallback(this)">
+        <img src="${downSrc}" alt="" width="20" height="20" decoding="async" onerror="gameImageUrlFallback(this)">
         <span class="spi-vote-count">${esc(String(info.down))}</span>
       </button>
-      <span class="spi-vote-adj" title="${escAttr(t('community_tip'))}">${esc(t('vote_adj', { n: adjN }))}</span>
     </div>`;
+  }
+
+  function communityAdjLine(row, kind) {
+    const info = voteInfoForRow(row, kind);
+    const adjN = info.adj > 0 ? `+${info.adj}` : String(info.adj || 0);
+    return `<div class="spi-card-community" title="${escAttr(t('community_tip'))}">${esc(t('vote_adj', { n: adjN }))}</div>`;
   }
 
   async function submitSpiVote(kind, id, boardName, vote) {
@@ -2150,7 +2169,8 @@
           const advNote = r._advantage_active
             ? `<span class="spi-chip spi-chip-adv" title="${esc(t('adv_on', { n: r._advantage_points }))}">${esc(t('adv_chip', { n: r._advantage_points }))}</span>`
             : '';
-          return `<button type="button" class="spi-card" data-id="${esc(r.id)}">
+          return `<div class="spi-card" role="button" tabindex="0" data-id="${esc(r.id)}">
+            ${renderVoteControls(r, kind, true)}
             <div class="spi-card-thumb-wrap">${renderFramedThumb(r, kind)}</div>
             <div class="spi-card-name">${esc(r.name || r.id)}</div>
             <div class="spi-card-meta">
@@ -2158,8 +2178,8 @@
               <span class="spi-chip score">${esc(r.total)} Pt</span>
               ${advNote}
             </div>
-            ${renderVoteControls(r, kind, true)}
-          </button>`;
+            ${communityAdjLine(r, kind)}
+          </div>`;
         })
         .join('');
       html += `<section class="spi-bucket">
@@ -2472,6 +2492,7 @@
           ${urPilotBadge}
           ${advBadge}
         </div>
+        ${communityAdjLine(row, kind)}
         ${renderVoteControls(row, kind, false)}
       </div>
       ${renderEntityKitHtml(row, isPilot)}
@@ -2632,11 +2653,11 @@
     const resetBtn = $('#spiResetFilters');
     if (resetBtn) resetBtn.addEventListener('click', resetFilters);
     grid.addEventListener('click', (e) => {
-      const voteBtn = e.target.closest('.spi-vote-btn');
+      const voteBtn = e.target.closest('.spi-vote-btn, .spi-vote-corner');
       if (voteBtn) {
         e.preventDefault();
         e.stopPropagation();
-        const wrap = voteBtn.closest('.spi-vote');
+        const wrap = voteBtn.closest('[data-vote-id]');
         if (!wrap) return;
         void submitSpiVote(
           wrap.getAttribute('data-vote-kind') || 'unit',
@@ -2650,12 +2671,20 @@
       if (!card) return;
       openModal(rowById.get(String(card.dataset.id)));
     });
+    grid.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      if (e.target.closest('.spi-vote-btn, .spi-vote-corner')) return;
+      const card = e.target.closest('.spi-card');
+      if (!card || e.target !== card) return;
+      e.preventDefault();
+      openModal(rowById.get(String(card.dataset.id)));
+    });
     $('#spiModal').addEventListener('click', (e) => {
-      const voteBtn = e.target.closest('.spi-vote-btn');
+      const voteBtn = e.target.closest('.spi-vote-btn, .spi-vote-corner');
       if (voteBtn) {
         e.preventDefault();
         e.stopPropagation();
-        const wrap = voteBtn.closest('.spi-vote');
+        const wrap = voteBtn.closest('[data-vote-id]');
         if (!wrap) return;
         void submitSpiVote(
           wrap.getAttribute('data-vote-kind') || 'unit',
