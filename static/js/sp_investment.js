@@ -287,7 +287,34 @@
   function communityAdjLine(row, kind) {
     const info = voteInfoForRow(row, kind);
     const adjN = info.adj > 0 ? `+${info.adj}` : String(info.adj || 0);
-    return `<div class="spi-card-community" title="${escAttr(t('community_tip'))}">${esc(t('vote_adj', { n: adjN }))}</div>`;
+    return `<div class="spi-card-community" title="${escAttr(t('community_tip'))}">${esc(
+      t('vote_adj_detail', { n: adjN, up: info.up, down: info.down })
+    )}</div>`;
+  }
+
+  function communityAdjLabel(kind, id, boardName) {
+    const info = voteInfoForRow({ id, mode: boardName }, kind);
+    const adjN = info.adj > 0 ? `+${info.adj}` : String(info.adj || 0);
+    return t('vote_adj_detail', { n: adjN, up: info.up, down: info.down });
+  }
+
+  function softLiveRerank(focusId) {
+    /** Re-sort / rebucket list from local totals — no API board refetch, no modal rebuild. */
+    const y = window.scrollY || window.pageYOffset || 0;
+    render();
+    window.scrollTo(0, y);
+    if (!focusId || !grid) return;
+    const idSel = String(focusId).replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+    const card = grid.querySelector(`.spi-card[data-id="${idSel}"]`);
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    if (rect.top < 72 || rect.bottom > window.innerHeight - 48) {
+      try {
+        card.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      } catch (_) {
+        card.scrollIntoView(false);
+      }
+    }
   }
 
   function letterFromTotalForKind(row, total, kind) {
@@ -343,6 +370,7 @@
     if (next === 'clear') delete voteMine[key];
     else voteMine[key] = next;
     applyVoteToLocalRow(kind, id, boardName, voteTallies[key]);
+    softLiveRerank(id);
     patchVoteDom(kind, id, boardName);
 
     try {
@@ -355,20 +383,28 @@
       });
       if (!r.ok) throw new Error('HTTP ' + r.status);
       const d = await r.json();
-      voteTallies[key] = {
+      const nextTall = {
         up: Number(d.up || 0) || 0,
         down: Number(d.down || 0) || 0,
         community_adj: Number(d.community_adj || 0) || 0,
       };
+      const changed =
+        nextTall.up !== voteTallies[key].up ||
+        nextTall.down !== voteTallies[key].down ||
+        nextTall.community_adj !== voteTallies[key].community_adj ||
+        (d.my_vote || null) !== (voteMine[key] || null);
+      voteTallies[key] = nextTall;
       if (d.my_vote) voteMine[key] = d.my_vote;
       else delete voteMine[key];
       applyVoteToLocalRow(kind, id, boardName, voteTallies[key]);
+      if (changed) softLiveRerank(id);
       patchVoteDom(kind, id, boardName);
     } catch (e) {
       voteTallies[key] = prevTall;
       if (prevMine) voteMine[key] = prevMine;
       else delete voteMine[key];
       applyVoteToLocalRow(kind, id, boardName, prevTall);
+      softLiveRerank(id);
       patchVoteDom(kind, id, boardName);
     } finally {
       voteBusyKey = '';
@@ -422,8 +458,7 @@
 
   function patchVoteDom(kind, id, boardName) {
     const info = voteInfoForRow({ id, mode: boardName }, kind);
-    const adjN = info.adj > 0 ? `+${info.adj}` : String(info.adj || 0);
-    const adjLabel = t('vote_adj', { n: adjN });
+    const adjLabel = communityAdjLabel(kind, id, boardName);
     const row = findRowById(id) || (rowById && rowById.get(String(id)));
     const total = row ? Number(row.total) || 0 : null;
     const letter = row ? row.letter || '?' : null;

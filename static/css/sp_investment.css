@@ -753,11 +753,14 @@ html.spi-modal-open body.spi-page {
 }
 .spi-card-community {
   margin: 0;
-  font-size: 0.64rem;
+  font-size: 0.62rem;
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.25;
   color: var(--text-muted);
   font-variant-numeric: tabular-nums;
+  max-width: 100%;
+  padding: 0 0.15rem;
+  word-break: break-word;
 }
 .spi-vote-corners {
   position: absolute;
