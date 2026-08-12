@@ -16120,7 +16120,22 @@ def _spi_votes_lock_path():
 
 
 def _spi_votes_empty():
-    return {'version': int(_SPI_VOTES_DATA_VERSION), 'targets': {}, 'ballots': {}}
+    return {
+        'version': int(_SPI_VOTES_DATA_VERSION),
+        'revision': 0,
+        'targets': {},
+        'ballots': {},
+    }
+
+
+def _spi_votes_revision(data):
+    """Monotonic snapshot revision — higher wins on hydrate (avoids stacking old seeds)."""
+    if not isinstance(data, dict):
+        return 0
+    try:
+        return max(0, int(data.get('revision') or 0))
+    except (TypeError, ValueError):
+        return 0
 
 
 def _spi_votes_wipe_requested():
@@ -16158,8 +16173,15 @@ def _spi_votes_ballot_count(data):
     return len(ballots) if isinstance(ballots, dict) else 0
 
 
+def _spi_votes_stable_ballot_key(tkey, vote, index):
+    digest = hashlib.sha256(
+        f'spi-seed:{vote}:{tkey}:{int(index)}'.encode('utf-8')
+    ).hexdigest()[:32]
+    return f'ip_{digest}:{tkey}'
+
+
 def _spi_votes_synthesize_ballots_from_targets(targets):
-    """Rebuild ballot keys from tallies so a snapshot survives normalize()."""
+    """Rebuild deterministic ballot keys from tallies so normalize() keeps counts."""
     ballots = {}
     if not isinstance(targets, dict):
         return ballots
@@ -16175,9 +16197,9 @@ def _spi_votes_synthesize_ballots_from_targets(targets):
         except (TypeError, ValueError):
             continue
         for i in range(up):
-            ballots[f'restored_up_{i}:{key}'] = 'up'
+            ballots[_spi_votes_stable_ballot_key(key, 'up', i)] = 'up'
         for i in range(down):
-            ballots[f'restored_down_{i}:{key}'] = 'down'
+            ballots[_spi_votes_stable_ballot_key(key, 'down', i)] = 'down'
     return ballots
 
 
@@ -16265,6 +16287,7 @@ def _spi_votes_normalize(raw):
         print('spi_votes: wiping store (GGEN_SPI_VOTES_WIPE)')
         return data
     data['version'] = int(_SPI_VOTES_DATA_VERSION)
+    data['revision'] = _spi_votes_revision(raw)
     ballots = {
         str(k): v
         for k, v in dict(raw.get('ballots') or {}).items()
@@ -16351,6 +16374,7 @@ def _spi_votes_save(data, *, sync_github=True):
         return False
     payload = {
         'version': int(_SPI_VOTES_DATA_VERSION),
+        'revision': _spi_votes_revision(data),
         'ballots': dict((data or {}).get('ballots') or {}),
         'targets': _spi_targets_from_ballots((data or {}).get('ballots') or {}),
     }
@@ -16456,10 +16480,20 @@ def _spi_votes_prune_restored_over_ip(ballots):
 
 
 def _spi_votes_merge_snapshots(*snaps):
+    valid = [s for s in snaps if isinstance(s, dict)]
+    if not valid:
+        return {
+            'version': int(_SPI_VOTES_DATA_VERSION),
+            'revision': 0,
+            'ballots': {},
+            'targets': {},
+        }
+    max_rev = max(_spi_votes_revision(s) for s in valid)
+    # Newer revision replaces older stacked seeds entirely (do not union across revisions).
+    if max_rev > 0:
+        valid = [s for s in valid if _spi_votes_revision(s) == max_rev]
     ballots = {}
-    for snap in snaps:
-        if not isinstance(snap, dict):
-            continue
+    for snap in valid:
         raw_ballots = dict(snap.get('ballots') or {})
         if not raw_ballots and snap.get('targets'):
             raw_ballots = _spi_votes_synthesize_ballots_from_targets(snap.get('targets') or {})
@@ -16469,12 +16503,17 @@ def _spi_votes_merge_snapshots(*snaps):
     ballots = _spi_votes_prune_restored_over_ip(ballots)
     return {
         'version': int(_SPI_VOTES_DATA_VERSION),
+        'revision': max_rev,
         'ballots': ballots,
         'targets': _spi_targets_from_ballots(ballots),
     }
 
 
 def _spi_votes_is_richer(merged, local):
+    m_rev = _spi_votes_revision(merged)
+    l_rev = _spi_votes_revision(local)
+    if m_rev != l_rev:
+        return m_rev > l_rev
     if not isinstance(local, dict) or not _spi_votes_has_data(local):
         return _spi_votes_has_data(merged)
     m_ip = sum(1 for k in ((merged or {}).get('ballots') or {}) if str(k).startswith('ip_'))
@@ -16585,8 +16624,6 @@ def _spi_votes_hydrate_from_remote(*, force=False):
     global _SPI_VOTES_LAST_REMOTE_PULL, _SPI_VOTES_HYDRATED
     with _SPI_VOTES_HYDRATE_LOCK:
         now = time.time()
-        if not force and _SPI_VOTES_HYDRATED and (now - _SPI_VOTES_LAST_REMOTE_PULL) < 300.0:
-            return
         path = _spi_votes_file_path()
         local = None
         if os.path.isfile(path):
@@ -16595,18 +16632,34 @@ def _spi_votes_hydrate_from_remote(*, force=False):
                     local = json.load(f)
             except (OSError, json.JSONDecodeError):
                 local = None
-        if not force and _spi_votes_has_ip_ballots(local) and (now - _SPI_VOTES_LAST_REMOTE_PULL) < 900.0:
+        bundled = _spi_votes_bundled_snapshot()
+        needs_rev = _spi_votes_revision(bundled) > _spi_votes_revision(local)
+        if (
+            not force
+            and not needs_rev
+            and _SPI_VOTES_HYDRATED
+            and (now - _SPI_VOTES_LAST_REMOTE_PULL) < 300.0
+        ):
+            return
+        if (
+            not force
+            and not needs_rev
+            and _spi_votes_has_ip_ballots(local)
+            and (now - _SPI_VOTES_LAST_REMOTE_PULL) < 900.0
+        ):
             _SPI_VOTES_HYDRATED = True
             return
         _SPI_VOTES_LAST_REMOTE_PULL = now
         remote = _spi_votes_remote_fetch()
-        bundled = _spi_votes_bundled_snapshot()
         merged = _spi_votes_merge_snapshots(local, remote, bundled)
-        if _spi_votes_is_richer(merged, local or {}) or (
+        if needs_rev or _spi_votes_is_richer(merged, local or {}) or (
             not _spi_votes_has_data(local) and _spi_votes_has_data(merged)
         ):
             if _spi_votes_save(merged, sync_github=False):
-                print(f'spi_votes: hydrated ({_spi_votes_ballot_count(merged)} ballots)')
+                print(
+                    f'spi_votes: hydrated (rev={_spi_votes_revision(merged)}, '
+                    f'{_spi_votes_ballot_count(merged)} ballots)'
+                )
         _SPI_VOTES_HYDRATED = True
 
 
@@ -16942,6 +16995,7 @@ def api_sp_investment_vote():
         with _SPI_VOTES_LOCK:
             with _SpiVotesFileLock(_spi_votes_lock_path()):
                 data = _spi_votes_load(force=True)
+                rev = _spi_votes_revision(data)
                 ballots = dict(data.get('ballots') or {})
                 prev = ballots.get(bkey)
                 # Idempotent: same IP cannot stack another identical vote.
@@ -16950,6 +17004,7 @@ def api_sp_investment_vote():
                     targets = _spi_targets_from_ballots(ballots)
                     data = {
                         'version': int(_SPI_VOTES_DATA_VERSION),
+                        'revision': rev,
                         'ballots': ballots,
                         'targets': targets,
                     }
@@ -16964,6 +17019,7 @@ def api_sp_investment_vote():
                     targets = _spi_targets_from_ballots(ballots)
                     data = {
                         'version': int(_SPI_VOTES_DATA_VERSION),
+                        'revision': rev,
                         'ballots': ballots,
                         'targets': targets,
                     }
