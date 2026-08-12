@@ -174,12 +174,16 @@
       tip: 'Conditional boost on the strongest attack only. Crit damage is mild; crit rate needs ~20%+; guaranteed crit is stronger.',
     },
     dual_attack_attr: {
-      label: 'Multi-type weapon',
-      tip: 'Strongest attack uses 2+ of Ranged/Melee/Awaken (e.g. Enhanced ZZ).',
+      label: 'Multi combat specialty',
+      tip: 'Strongest attack uses 2+ of Ranged/Melee/Awaken (e.g. Enhanced ZZ). Not Beam/Physical/Special.',
     },
-    signature_weapon: {
-      label: 'Signature kit',
-      tip: 'Allowlisted Lupus / Lupus Rex family bonus for their uniquely strong weapon kits.',
+    multi_weapon_attr: {
+      label: 'Multi damage type',
+      tip: 'Any weapon (including MAP) combines Beam/Physical/Special damage types (+2).',
+    },
+    community: {
+      label: 'Community',
+      tip: 'IP-limited up/down nudge, hard-capped at ±2. Kits with no votes stay at 0.',
     },
     source: {
       label: 'Acquisition',
@@ -211,6 +215,167 @@
   let _spiModalEntityKey = '';
   let _spiRestoreRow = null;
   let _spiOpeningDetail = false;
+  let voteTallies = Object.create(null);
+  let voteMine = Object.create(null);
+  let voteBusyKey = '';
+
+  const SPI_VOTE_ICON_UP = '/static/images/UI/UI_Common_MapUI_Icon_CursorImportant.webp';
+  const SPI_VOTE_ICON_DOWN = '/static/images/UI/UI_Common_MapUI_Icon_CursorTaget.webp';
+
+  function voteTargetKey(kind, id, boardName) {
+    const k = kind === 'character' ? 'character' : 'unit';
+    const b = k === 'character' ? 'sp' : String(boardName || board || 'sp');
+    return `${k}:${String(id || '')}:${b}`;
+  }
+
+  function voteInfoForRow(row, kind) {
+    const key = voteTargetKey(kind, row && row.id, row && (row.mode || board));
+    const tall = voteTallies[key] || {};
+    const up = Number(tall.up || 0) || 0;
+    const down = Number(tall.down || 0) || 0;
+    let adj = Number(tall.community_adj);
+    if (!Number.isFinite(adj)) {
+      adj = Number(row && row.community_adj);
+      if (!Number.isFinite(adj)) {
+        const net = up - down;
+        adj = Math.max(-2, Math.min(2, net));
+      }
+    }
+    return {
+      key,
+      up,
+      down,
+      adj,
+      mine: voteMine[key] || null,
+    };
+  }
+
+  function renderVoteControls(row, kind, compact) {
+    const info = voteInfoForRow(row, kind);
+    const upSrc = escAttr(imgUrl(SPI_VOTE_ICON_UP));
+    const downSrc = escAttr(imgUrl(SPI_VOTE_ICON_DOWN));
+    const upActive = info.mine === 'up' ? ' is-active' : '';
+    const downActive = info.mine === 'down' ? ' is-active' : '';
+    const adjN = info.adj > 0 ? `+${info.adj}` : String(info.adj || 0);
+    const cls = compact ? 'spi-vote spi-vote--compact' : 'spi-vote';
+    return `<div class="${cls}" data-vote-key="${escAttr(info.key)}" data-vote-kind="${escAttr(kind)}" data-vote-id="${escAttr(row.id)}" data-vote-board="${escAttr(kind === 'character' ? 'sp' : row.mode || board)}">
+      <button type="button" class="spi-vote-btn spi-vote-up${upActive}" data-vote="up" title="${escAttr(t('vote_up'))}" aria-label="${escAttr(t('vote_up'))}" aria-pressed="${info.mine === 'up' ? 'true' : 'false'}">
+        <img src="${upSrc}" alt="" width="22" height="22" decoding="async" onerror="gameImageUrlFallback(this)">
+        <span class="spi-vote-count">${esc(String(info.up))}</span>
+      </button>
+      <button type="button" class="spi-vote-btn spi-vote-down${downActive}" data-vote="down" title="${escAttr(t('vote_down'))}" aria-label="${escAttr(t('vote_down'))}" aria-pressed="${info.mine === 'down' ? 'true' : 'false'}">
+        <img src="${downSrc}" alt="" width="22" height="22" decoding="async" onerror="gameImageUrlFallback(this)">
+        <span class="spi-vote-count">${esc(String(info.down))}</span>
+      </button>
+      <span class="spi-vote-adj" title="${escAttr(t('community_tip'))}">${esc(t('vote_adj', { n: adjN }))}</span>
+    </div>`;
+  }
+
+  async function submitSpiVote(kind, id, boardName, vote) {
+    const key = voteTargetKey(kind, id, boardName);
+    if (voteBusyKey === key) return;
+    const mine = voteMine[key] || null;
+    let next = vote;
+    if (vote === 'up' && mine === 'up') next = 'clear';
+    if (vote === 'down' && mine === 'down') next = 'clear';
+    voteBusyKey = key;
+    try {
+      const r = await fetch('/api/sp_investment/vote', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ kind, id, board: boardName, vote: next }),
+      });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const d = await r.json();
+      voteTallies[key] = {
+        up: Number(d.up || 0) || 0,
+        down: Number(d.down || 0) || 0,
+        community_adj: Number(d.community_adj || 0) || 0,
+      };
+      if (d.my_vote) voteMine[key] = d.my_vote;
+      else delete voteMine[key];
+      applyVoteToLocalRow(kind, id, boardName, voteTallies[key]);
+      render();
+      const modal = $('#spiModal');
+      if (modal && !modal.hidden) {
+        const openId = _spiModalEntityKey;
+        if (openId === `${kind}:${id}`) {
+          const row = findRowById(id);
+          if (row) openModal(row);
+        }
+      }
+      // Refresh board so letter/bucket match server clamp merge (non-blocking).
+      fetch(spiApiUrl())
+        .then((r) => (r && r.ok ? r.json() : null))
+        .then((p) => {
+          if (!p || p.error) return;
+          payload = p;
+          render();
+          if (modal && !modal.hidden && _spiModalEntityKey === `${kind}:${id}`) {
+            const row = findRowById(id);
+            if (row) openModal(row);
+          }
+        })
+        .catch(() => {});
+    } catch (e) {
+      /* keep prior UI */
+    } finally {
+      voteBusyKey = '';
+    }
+  }
+
+  function applyVoteToLocalRow(kind, id, boardName, tally) {
+    if (!payload) return;
+    const adj = Number((tally && tally.community_adj) || 0) || 0;
+    const boards =
+      kind === 'character'
+        ? [(((payload.characters || {}).sp) || {})]
+        : [
+            ((payload.units || {}).sp) || payload.sp || {},
+            ((payload.units || {}).ssp) || payload.ssp || {},
+          ];
+    boards.forEach((buckets) => {
+      if (!buckets || typeof buckets !== 'object') return;
+      Object.keys(buckets).forEach((bk) => {
+        const rows = buckets[bk];
+        if (!Array.isArray(rows)) return;
+        rows.forEach((row) => {
+          if (!row || String(row.id) !== String(id)) return;
+          if (kind !== 'character' && boardName && row.mode && row.mode !== boardName) return;
+          const objective = Number(
+            row.total_objective != null ? row.total_objective : row.total
+          );
+          row.total_objective = objective;
+          row.community_adj = adj;
+          row.total = objective + adj;
+          const bd = Object.assign({}, row.breakdown || {});
+          if (adj) bd.community = adj;
+          else delete bd.community;
+          row.breakdown = bd;
+        });
+      });
+    });
+  }
+
+  function findRowById(id) {
+    const buckets = currentBoardBuckets();
+    if (!buckets) return null;
+    for (const bk of BUCKET_ORDER) {
+      const rows = buckets[bk] || [];
+      for (const r of rows) {
+        if (r && String(r.id) === String(id)) return r;
+      }
+    }
+    return null;
+  }
+
+  function currentBoardBuckets() {
+    if (!payload) return null;
+    if (entity === 'characters') return ((payload.characters || {}).sp) || {};
+    if (board === 'ssp') return ((payload.units || {}).ssp) || payload.ssp || {};
+    return ((payload.units || {}).sp) || payload.sp || {};
+  }
 
   function fmtN(n) {
     const v = Number(n);
@@ -1993,6 +2158,7 @@
               <span class="spi-chip score">${esc(r.total)} Pt</span>
               ${advNote}
             </div>
+            ${renderVoteControls(r, kind, true)}
           </button>`;
         })
         .join('');
@@ -2166,6 +2332,41 @@
     </section>`;
   }
 
+  function renderRecommendedCharacters(row) {
+    if (row.is_sd) {
+      return `<section class="spi-dossier-section">
+        <h4 class="spi-dossier-h">${esc(t('recommend_ch'))}</h4>
+        <p class="spi-dossier-empty">${esc(t('recommend_sd'))}</p>
+      </section>`;
+    }
+    const chars = row.recommended_characters || [];
+    if (!chars.length) {
+      return `<section class="spi-dossier-section">
+        <h4 class="spi-dossier-h">${esc(t('recommend_ch'))}</h4>
+        <p class="spi-dossier-empty">${esc(t('recommend_none'))}</p>
+      </section>`;
+    }
+    const cards = chars
+      .map((c) => {
+        const thumb = renderFramedThumb(c, 'character');
+        return `<a class="spi-rec-card" href="/c/${encodeURIComponent(c.id)}" target="_blank" rel="noopener">
+          ${thumb}
+          <div class="spi-rec-meta">
+            <span class="spi-rec-name">${esc(c.name || c.id)}</span>
+            <span class="spi-chip letter ${letterClass(c.letter)}">${esc(c.letter || '?')}</span>
+          </div>
+        </a>`;
+      })
+      .join('');
+    return `<section class="spi-dossier-section">
+      <div class="spi-dossier-section-head">
+        <h4 class="spi-dossier-h">${esc(t('recommend_ch'))} <span class="spi-dossier-h-sub">${esc(t('recommend_ch_sub'))}</span></h4>
+      </div>
+      <p class="spi-dossier-note">${esc(t('recommend_ch_note'))}</p>
+      <div class="spi-rec-grid">${cards}</div>
+    </section>`;
+  }
+
   function syncSearchClear() {
     const input = $('#spiSearch');
     const clearBtn = $('#spiSearchClear');
@@ -2271,6 +2472,7 @@
           ${urPilotBadge}
           ${advBadge}
         </div>
+        ${renderVoteControls(row, kind, false)}
       </div>
       ${renderEntityKitHtml(row, isPilot)}
     </div>`;
@@ -2285,8 +2487,9 @@
       ${renderScoreViz(row)}
     </section>`;
 
-    const recBlock = isPilot ? renderRecommendedUnits(row) : '';
+    const recBlock = isPilot ? renderRecommendedUnits(row) : renderRecommendedCharacters(row);
 
+    _spiModalEntityKey = `${kind}:${row.id}`;
     $('#spiModalBody').innerHTML = `
       ${header}
       ${specialtyBlock}
@@ -2429,11 +2632,39 @@
     const resetBtn = $('#spiResetFilters');
     if (resetBtn) resetBtn.addEventListener('click', resetFilters);
     grid.addEventListener('click', (e) => {
+      const voteBtn = e.target.closest('.spi-vote-btn');
+      if (voteBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const wrap = voteBtn.closest('.spi-vote');
+        if (!wrap) return;
+        void submitSpiVote(
+          wrap.getAttribute('data-vote-kind') || 'unit',
+          wrap.getAttribute('data-vote-id'),
+          wrap.getAttribute('data-vote-board') || 'sp',
+          voteBtn.getAttribute('data-vote')
+        );
+        return;
+      }
       const card = e.target.closest('.spi-card');
       if (!card) return;
       openModal(rowById.get(String(card.dataset.id)));
     });
     $('#spiModal').addEventListener('click', (e) => {
+      const voteBtn = e.target.closest('.spi-vote-btn');
+      if (voteBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const wrap = voteBtn.closest('.spi-vote');
+        if (!wrap) return;
+        void submitSpiVote(
+          wrap.getAttribute('data-vote-kind') || 'unit',
+          wrap.getAttribute('data-vote-id'),
+          wrap.getAttribute('data-vote-board') || 'sp',
+          voteBtn.getAttribute('data-vote')
+        );
+        return;
+      }
       if (e.target && e.target.getAttribute('data-close')) {
         closeModal();
         return;
@@ -2491,11 +2722,22 @@
     statusEl.textContent = t('loading');
     grid.setAttribute('aria-busy', 'true');
     try {
+      const votesP = fetch('/api/sp_investment/votes', {
+        credentials: 'same-origin',
+        cache: 'no-store',
+      })
+        .then((r) => (r && r.ok ? r.json() : null))
+        .catch(() => null);
       const r = await fetch(spiApiUrl());
       if (!r.ok) throw new Error('HTTP ' + r.status);
       payload = await r.json();
       if (payload.error) throw new Error(payload.error);
       _payloadLang = uiLang();
+      const votes = await votesP;
+      if (votes && typeof votes === 'object') {
+        voteTallies = Object.assign(Object.create(null), votes.tallies || {});
+        voteMine = Object.assign(Object.create(null), votes.mine || {});
+      }
       applyLangStatic();
       fillFilterSelects();
       renderScoringGuide();

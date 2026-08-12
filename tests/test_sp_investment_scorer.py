@@ -528,11 +528,62 @@ class TestSpInvestmentBands(unittest.TestCase):
         self.assertEqual(none["breakdown"]["dual_attack_attr"], 0)
         self.assertEqual(dual["breakdown"]["dual_attack_attr"], 1)
 
-    def test_signature_weapon_lupus(self):
-        base = score_features(_minimal_features(id="999"), self.rules)
+    def test_multi_weapon_attr_replaces_lupus_allowlist(self):
+        none = score_features(_minimal_features(has_multi_weapon_attr=False, max_weapon_attr_types=1), self.rules)
+        multi = score_features(_minimal_features(has_multi_weapon_attr=True, max_weapon_attr_types=2), self.rules)
+        self.assertEqual(none["breakdown"].get("multi_weapon_attr", 0), 0)
+        self.assertEqual(multi["breakdown"]["multi_weapon_attr"], 2)
+        # Old allowlist must not grant a free +3 anymore.
         lupus = score_features(_minimal_features(id="1430003600"), self.rules)
-        self.assertEqual(base["breakdown"]["signature_weapon"], 0)
-        self.assertEqual(lupus["breakdown"]["signature_weapon"], 3)
+        self.assertEqual(lupus["breakdown"].get("signature_weapon", 0), 0)
+        self.assertEqual(lupus["breakdown"].get("multi_weapon_attr", 0), 0)
+
+    def test_multi_weapon_attr_live_examples(self):
+        """Feedback examples + former allowlist — catalog rule, not ID list."""
+        import app as A
+        from sp_investment_rank import extract_unit_features, score_unit
+
+        cases = {
+            "1430003400": True,  # Lupus Rex
+            "1430004800": True,  # Kimaris Vidar
+            "1200005200": True,  # Grand Master
+            "1501002500": True,  # Michaelis S2
+            "1031000300": True,  # Psycho Zaku (MAP multi)
+            "1031000100": True,  # FA Thunderbolt (MAP multi)
+        }
+        if "1430003400" not in (A.unit_weapon_map or {}):
+            self.skipTest("master data not loaded")
+        for uid, expect in cases.items():
+            feats = extract_unit_features(A, uid, mode="sp", lc="EN", rules=self.rules)
+            self.assertEqual(bool(feats and feats.get("has_multi_weapon_attr")), expect, uid)
+            scored = score_unit(A, uid, mode="sp", lc="EN", rules=self.rules)
+            if not scored:
+                continue
+            pts = int((scored.get("breakdown") or {}).get("multi_weapon_attr") or 0)
+            self.assertEqual(pts, 2 if expect else 0, uid)
+
+    def test_community_adj_clamp(self):
+        from sp_investment_rank import community_adj_points, apply_community_adj_to_row
+
+        self.assertEqual(community_adj_points(0, 0, self.rules), 0)
+        self.assertEqual(community_adj_points(1, 0, self.rules), 1)
+        self.assertEqual(community_adj_points(5, 0, self.rules), 2)
+        self.assertEqual(community_adj_points(0, 9, self.rules), -2)
+        self.assertEqual(community_adj_points(3, 3, self.rules), 0)
+        row = {
+            "entity": "unit",
+            "total": 10,
+            "has_sp": True,
+            "role": "Attack",
+            "breakdown": {"map": 2},
+            "letter": "A",
+            "bucket": "recommended",
+        }
+        out = apply_community_adj_to_row(row, 2, self.rules)
+        self.assertEqual(out["total_objective"], 10)
+        self.assertEqual(out["community_adj"], 2)
+        self.assertEqual(out["total"], 12)
+        self.assertEqual(out["breakdown"].get("community"), 2)
 
     def test_extra_life_structured_not_heuristic(self):
         feats = _minimal_features(has_extra_life=True, extra_life_source="structured")

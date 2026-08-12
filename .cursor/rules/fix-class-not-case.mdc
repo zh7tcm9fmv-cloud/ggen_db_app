@@ -1,0 +1,17 @@
+---
+description: Bug reports = fix the class of issue catalog-wide, then double-check breadth
+alwaysApply: true
+---
+
+# Fix the whole class, not the example
+
+When the owner reports a bug, wrong score, wrong filter, missing case, or “we missed X”:
+
+1. **Treat the cited ID/UI as a repro**, not the full scope. Find the underlying rule/heuristic and fix that.
+2. **Do not** ship ID-specific special cases (`if uid == "1370005900"`) unless master data is truly unique and there is no general signal.
+3. **Double-check breadth before calling it done:**
+   - Scan the full catalog / same code path for other hits (same pattern, same field, same board).
+   - Report counts: how many were wrong, how many still correctly fail, example names.
+   - Prefer a one-off script or assertion over eyeballing one unit.
+4. **After the fix**, verify the original repro *and* at least one other affected case (or confirm the scan shows zero remaining false positives of that class).
+5. If a true one-off is unavoidable, say so explicitly and why a general rule cannot cover it.

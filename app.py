@@ -15516,6 +15516,8 @@ def _sp_investment_attach_board(buckets, kind):
                 row['acquisition_icon'] = ACQUISITION_ROUTE_ICONS.get(acq, '')
             if kind == 'unit':
                 row['is_sd'] = bool(_unit_has_sd_mechanism(unit_info_map.get(normalize_id(row['id'])), row['id']))
+                if row.get('is_sd'):
+                    row['recommended_characters'] = []
             if kind == 'character':
                 is_sd = bool(row.get('is_sd_linked')) or _sp_investment_character_is_sd_linked(row['id'])
                 row['is_sd_linked'] = is_sd
@@ -15539,6 +15541,24 @@ def _sp_investment_attach_board(buckets, kind):
                         ru['acquisition_icon'] = ACQUISITION_ROUTE_ICONS.get(acq, '')
                     if not ru.get('role_icon'):
                         ru.update(_tier_mockup_row_icons(ru, 'unit'))
+            # Nested recommended Character thumbs (unit detail panel)
+            rec_ch = row.get('recommended_characters')
+            if kind == 'unit' and isinstance(rec_ch, list) and rec_ch:
+                _tier_mockup_attach_thumbs(rec_ch, 'character')
+                for rc in rec_ch:
+                    if not isinstance(rc, dict) or not rc.get('id'):
+                        continue
+                    if not (rc.get('name') or '').strip():
+                        try:
+                            rc['name'] = _wn_char_name(rc['id'], ld) or ''
+                        except Exception:
+                            pass
+                    if not rc.get('acquisition_icon'):
+                        cinfo = char_info_map.get(normalize_id(rc['id']), {}) or {}
+                        acq = str(cinfo.get('acquisition_route', '0') or '0')
+                        rc['acquisition_icon'] = ACQUISITION_ROUTE_ICONS.get(acq, '')
+                    if not rc.get('role_icon'):
+                        rc.update(_tier_mockup_row_icons(rc, 'character'))
 
 
 _SPI_API_PAYLOAD_CACHE = {
@@ -15821,6 +15841,9 @@ def _sp_investment_lean_row(row):
     recs = out.get('recommended_units')
     if isinstance(recs, list) and not recs:
         out.pop('recommended_units', None)
+    rec_ch = out.get('recommended_characters')
+    if isinstance(rec_ch, list) and not rec_ch:
+        out.pop('recommended_characters', None)
     return out
 
 
@@ -15873,13 +15896,32 @@ def _sp_investment_drop_nonplayable_rows(payload):
             if _spi_entity_is_nonplayable_shell(r.get('id'), kind):
                 continue
             recs = r.get('recommended_units')
+            rec_ch = r.get('recommended_characters')
+            need_copy = False
+            new_recs = None
+            new_rec_ch = None
             if isinstance(recs, list) and recs:
-                r = dict(r)
-                r['recommended_units'] = [
+                new_recs = [
                     x
                     for x in recs
                     if isinstance(x, dict) and not _spi_entity_is_nonplayable_shell(x.get('id'), 'unit')
                 ]
+                if len(new_recs) != len(recs):
+                    need_copy = True
+            if isinstance(rec_ch, list) and rec_ch:
+                new_rec_ch = [
+                    x
+                    for x in rec_ch
+                    if isinstance(x, dict) and not _spi_entity_is_nonplayable_shell(x.get('id'), 'character')
+                ]
+                if len(new_rec_ch) != len(rec_ch):
+                    need_copy = True
+            if need_copy:
+                r = dict(r)
+                if new_recs is not None:
+                    r['recommended_units'] = new_recs
+                if new_rec_ch is not None:
+                    r['recommended_characters'] = new_rec_ch
             out.append(r)
         return out
 
@@ -16019,7 +16061,10 @@ def api_sp_investment():
         return jsonify({'error': 'sp_investment_v1.json not found — run scripts/build_sp_investment_rankings.py'}), 404
     lc = _spi_norm_lang(request.args.get('lang') or DEFAULT_LANG)
     payload, mtime = _sp_investment_payload_for_lang(path, lc)
-    ck = f"sp_investment_v1_lean_{lc}_{int(mtime)}"
+    votes_data = _spi_votes_load()
+    votes_mtime = int(_SPI_VOTES_CACHE.get('mtime') or 0)
+    payload = _spi_payload_with_community_votes(payload, votes_data)
+    ck = f"sp_investment_v1_lean_{lc}_{int(mtime)}_{votes_mtime}"
     resp = jsonify_cacheable(payload, ck, public=True, max_age=300, convert_images=False)
     # Gzip large board JSON when the client accepts it (Railway/edge may not compress JSON).
     if resp.status_code == 200:
@@ -16037,6 +16082,318 @@ def api_sp_investment():
                     if 'Accept-Encoding' not in vary:
                         resp.headers['Vary'] = (vary + ', Accept-Encoding').lstrip(', ').strip()
     return resp
+
+
+_SPI_VOTES_LOCK = threading.Lock()
+_SPI_VOTES_CACHE = {'mtime': None, 'data': None}
+_SPI_VOTE_RATE_LIMIT_SEC = 0.12
+_spi_vote_recent_by_ip = {}
+_SPI_BUCKET_ORDER = ('priority', 'recommended', 'solid', 'situational', 'niche')
+
+
+def _spi_votes_file_path():
+    custom = (os.environ.get('GGEN_SPI_VOTES_PATH') or '').strip()
+    if custom:
+        return os.path.abspath(custom)
+    vol = (os.environ.get('GGEN_PERSISTENT_DIR') or os.environ.get('RAILWAY_VOLUME_MOUNT_PATH') or '').strip()
+    if vol:
+        return os.path.join(vol, 'sp_investment_votes.json')
+    return os.path.join(app_dir, 'data', 'persistent', 'sp_investment_votes.json')
+
+
+def _spi_votes_empty():
+    return {'version': 1, 'targets': {}, 'ballots': {}}
+
+
+def _spi_votes_load(force=False):
+    path = _spi_votes_file_path()
+    try:
+        mtime = os.path.getmtime(path) if os.path.isfile(path) else 0
+    except OSError:
+        mtime = 0
+    cached = _SPI_VOTES_CACHE
+    if not force and cached['data'] is not None and cached['mtime'] == mtime:
+        return cached['data']
+    data = _spi_votes_empty()
+    if os.path.isfile(path):
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                raw = json.load(f)
+            if isinstance(raw, dict):
+                data['targets'] = dict(raw.get('targets') or {})
+                data['ballots'] = dict(raw.get('ballots') or {})
+                data['version'] = int(raw.get('version') or 1)
+        except Exception as e:
+            print(f'spi_votes: load failed: {e}')
+    cached['mtime'] = mtime
+    cached['data'] = data
+    return data
+
+
+def _spi_votes_save(data):
+    path = _spi_votes_file_path()
+    parent = os.path.dirname(path) or '.'
+    try:
+        os.makedirs(parent, exist_ok=True)
+    except OSError as e:
+        print(f'spi_votes: mkdir failed: {e}')
+        return False
+    tmp = path + '.tmp'
+    try:
+        with open(tmp, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, separators=(',', ':'))
+        os.replace(tmp, path)
+    except OSError as e:
+        print(f'spi_votes: save failed: {e}')
+        try:
+            if os.path.isfile(tmp):
+                os.remove(tmp)
+        except OSError:
+            pass
+        return False
+    try:
+        _SPI_VOTES_CACHE['mtime'] = os.path.getmtime(path)
+    except OSError:
+        _SPI_VOTES_CACHE['mtime'] = time.time()
+    _SPI_VOTES_CACHE['data'] = data
+    return True
+
+
+def _spi_vote_target_key(kind, eid, board):
+    kind = 'character' if str(kind or '') == 'character' else 'unit'
+    eid = normalize_id(eid)
+    board = str(board or 'sp').lower()
+    if kind == 'character':
+        board = 'sp'
+    elif board not in ('sp', 'ssp'):
+        board = 'sp'
+    if not eid or eid == '0':
+        return None
+    return f'{kind}:{eid}:{board}'
+
+
+def _spi_vote_ballot_key(voter_id, target_key):
+    return f'{voter_id}:{target_key}'
+
+
+def _spi_community_adj_for_target(target):
+    try:
+        import sp_investment_rank as _sir
+        up = int((target or {}).get('up') or 0)
+        down = int((target or {}).get('down') or 0)
+        return int(_sir.community_adj_points(up, down))
+    except Exception:
+        up = int((target or {}).get('up') or 0)
+        down = int((target or {}).get('down') or 0)
+        net = up - down
+        if net > 2:
+            return 2
+        if net < -2:
+            return -2
+        return net
+
+
+def _spi_vote_tallies_map(data):
+    out = {}
+    for key, target in ((data or {}).get('targets') or {}).items():
+        if not isinstance(target, dict):
+            continue
+        adj = _spi_community_adj_for_target(target)
+        out[str(key)] = {
+            'up': int(target.get('up') or 0),
+            'down': int(target.get('down') or 0),
+            'community_adj': adj,
+        }
+    return out
+
+
+def _spi_rebucket_rows(rows, rules):
+    buckets = {b: [] for b in _SPI_BUCKET_ORDER}
+    for r in rows:
+        if not isinstance(r, dict):
+            continue
+        b = r.get('bucket') or 'niche'
+        if b not in buckets:
+            b = 'niche'
+        buckets[b].append(r)
+    for b in buckets:
+        buckets[b].sort(
+            key=lambda x: (
+                -int(x.get('total') or 0),
+                str(x.get('name') or ''),
+                str(x.get('id') or ''),
+            )
+        )
+    return buckets
+
+
+def _spi_apply_votes_to_board_side(side, kind, tallies, rules):
+    """Return a new mode→buckets map with community_adj applied (does not mutate cache)."""
+    if not isinstance(side, dict):
+        return side
+    sample = next(iter(side.values()), None) if side else None
+    # Nested: {sp: {bucket: [rows]}}
+    if isinstance(sample, dict) and any(isinstance(v, list) for v in (sample or {}).values()):
+        out = {}
+        for mode, buckets in side.items():
+            if not isinstance(buckets, dict):
+                out[mode] = buckets
+                continue
+            flat = []
+            for rows in buckets.values():
+                for r in rows or []:
+                    if not isinstance(r, dict) or not r.get('id'):
+                        continue
+                    board = 'sp' if kind == 'character' else str(mode or 'sp')
+                    tkey = _spi_vote_target_key(kind, r.get('id'), board)
+                    adj = int((tallies.get(tkey) or {}).get('community_adj') or 0)
+                    row = dict(r)
+                    try:
+                        import sp_investment_rank as _sir
+                        row = _sir.apply_community_adj_to_row(row, adj, rules)
+                    except Exception:
+                        row.setdefault('total_objective', row.get('total'))
+                        row['community_adj'] = adj
+                        row['total'] = int(row.get('total_objective') or 0) + adj
+                    flat.append(row)
+            out[mode] = _spi_rebucket_rows(flat, rules)
+        return out
+    # Legacy flat buckets
+    flat = []
+    for rows in side.values():
+        for r in rows or []:
+            if not isinstance(r, dict) or not r.get('id'):
+                continue
+            tkey = _spi_vote_target_key(kind, r.get('id'), 'sp')
+            adj = int((tallies.get(tkey) or {}).get('community_adj') or 0)
+            row = dict(r)
+            try:
+                import sp_investment_rank as _sir
+                row = _sir.apply_community_adj_to_row(row, adj, rules)
+            except Exception:
+                row.setdefault('total_objective', row.get('total'))
+                row['community_adj'] = adj
+                row['total'] = int(row.get('total_objective') or 0) + adj
+            flat.append(row)
+    return _spi_rebucket_rows(flat, rules)
+
+
+def _spi_payload_with_community_votes(payload, votes_data):
+    if not isinstance(payload, dict):
+        return payload
+    tallies = _spi_vote_tallies_map(votes_data)
+    if not any(int(v.get('community_adj') or 0) for v in tallies.values()):
+        # Still stamp total_objective on a shallow pass? Skip for speed when quiet.
+        return payload
+    try:
+        import sp_investment_rank as _sir
+        rules = _sir.load_rules()
+    except Exception:
+        rules = {}
+    out = dict(payload)
+    units = payload.get('units')
+    if isinstance(units, dict):
+        out['units'] = _spi_apply_votes_to_board_side(units, 'unit', tallies, rules)
+        out['sp'] = (out['units'].get('sp') if isinstance(out['units'], dict) else None) or payload.get('sp')
+        out['ssp'] = (out['units'].get('ssp') if isinstance(out['units'], dict) else None) or payload.get('ssp')
+    else:
+        if isinstance(payload.get('sp'), dict):
+            out['sp'] = _spi_apply_votes_to_board_side(payload.get('sp'), 'unit', tallies, rules)
+        if isinstance(payload.get('ssp'), dict):
+            out['ssp'] = _spi_apply_votes_to_board_side(payload.get('ssp'), 'unit', tallies, rules)
+    chars = payload.get('characters')
+    if isinstance(chars, dict):
+        out['characters'] = _spi_apply_votes_to_board_side(chars, 'character', tallies, rules)
+    return out
+
+
+def _spi_vote_rate_limited(voter_id):
+    if not voter_id:
+        return False
+    now = time.time()
+    stale_before = now - 60
+    for k, ts in list(_spi_vote_recent_by_ip.items()):
+        if ts < stale_before:
+            del _spi_vote_recent_by_ip[k]
+    last = _spi_vote_recent_by_ip.get(voter_id, 0)
+    return (now - last) < _SPI_VOTE_RATE_LIMIT_SEC
+
+
+@app.route('/api/sp_investment/votes')
+def api_sp_investment_votes():
+    if not _sp_investment_serve_live():
+        return jsonify({'error': 'Investment Priority is temporarily offline'}), 404
+    data = _spi_votes_load()
+    tallies = _spi_vote_tallies_map(data)
+    voter_id = _bt_vote_voter_id()
+    mine = {}
+    if voter_id:
+        prefix = f'{voter_id}:'
+        for bkey, vote in (data.get('ballots') or {}).items():
+            if not str(bkey).startswith(prefix):
+                continue
+            tkey = str(bkey)[len(prefix):]
+            if vote in ('up', 'down'):
+                mine[tkey] = vote
+    return jsonify({'tallies': tallies, 'mine': mine, 'cap': 2})
+
+
+@app.route('/api/sp_investment/vote', methods=['POST'])
+def api_sp_investment_vote():
+    if not _sp_investment_serve_live():
+        return jsonify({'error': 'Investment Priority is temporarily offline'}), 404
+    body = request.get_json(silent=True) or {}
+    kind = body.get('kind') or body.get('entity') or 'unit'
+    eid = body.get('id') or body.get('entity_id') or '0'
+    board = body.get('board') or 'sp'
+    vote = str(body.get('vote') or '').strip().lower()
+    if vote not in ('up', 'down', 'clear'):
+        return jsonify({'error': 'vote must be up, down, or clear'}), 400
+    tkey = _spi_vote_target_key(kind, eid, board)
+    if not tkey:
+        return jsonify({'error': 'invalid target'}), 400
+    voter_id = _bt_vote_voter_id()
+    if not voter_id:
+        return jsonify({'error': 'unable to identify voter'}), 400
+    if _spi_vote_rate_limited(voter_id):
+        return jsonify({'error': 'rate_limited'}), 429
+    bkey = _spi_vote_ballot_key(voter_id, tkey)
+    with _SPI_VOTES_LOCK:
+        data = _spi_votes_load(force=True)
+        targets = dict(data.get('targets') or {})
+        ballots = dict(data.get('ballots') or {})
+        target = dict(targets.get(tkey) or {'up': 0, 'down': 0})
+        prev = ballots.get(bkey)
+        if prev == 'up':
+            target['up'] = max(0, int(target.get('up') or 0) - 1)
+        elif prev == 'down':
+            target['down'] = max(0, int(target.get('down') or 0) - 1)
+        if vote == 'clear':
+            ballots.pop(bkey, None)
+        else:
+            ballots[bkey] = vote
+            if vote == 'up':
+                target['up'] = int(target.get('up') or 0) + 1
+            else:
+                target['down'] = int(target.get('down') or 0) + 1
+        if int(target.get('up') or 0) == 0 and int(target.get('down') or 0) == 0:
+            targets.pop(tkey, None)
+        else:
+            targets[tkey] = {'up': int(target.get('up') or 0), 'down': int(target.get('down') or 0)}
+        data = {'version': 1, 'targets': targets, 'ballots': ballots}
+        if not _spi_votes_save(data):
+            return jsonify({'error': 'persist_failed'}), 500
+    _spi_vote_recent_by_ip[voter_id] = time.time()
+    tallies = _spi_vote_tallies_map(data)
+    entry = tallies.get(tkey) or {'up': 0, 'down': 0, 'community_adj': 0}
+    return jsonify({
+        'ok': True,
+        'key': tkey,
+        'my_vote': None if vote == 'clear' else vote,
+        'up': entry['up'],
+        'down': entry['down'],
+        'community_adj': entry['community_adj'],
+    })
 
 
 @app.route('/privacy-policy')

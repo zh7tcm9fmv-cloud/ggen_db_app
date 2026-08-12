@@ -750,6 +750,62 @@ html.spi-modal-open body.spi-page {
   align-items: center;
   justify-content: center;
 }
+.spi-vote {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.45rem;
+}
+.spi-vote--compact {
+  margin-top: 0.35rem;
+  justify-content: center;
+  width: 100%;
+}
+.spi-vote-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.12rem 0.35rem;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 6px;
+  background: rgba(15, 23, 42, 0.25);
+  color: var(--text-secondary);
+  cursor: pointer;
+  line-height: 1;
+}
+.spi-vote-btn img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  opacity: 0.85;
+}
+.spi-vote-btn.is-active {
+  border-color: rgba(56, 189, 248, 0.7);
+  background: rgba(56, 189, 248, 0.15);
+}
+.spi-vote-btn.is-active img {
+  opacity: 1;
+}
+.spi-vote-count {
+  font-size: 0.68rem;
+  font-weight: 700;
+  min-width: 0.75rem;
+}
+.spi-vote-adj {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.spi-dossier-head-text .spi-vote {
+  margin-top: 0.55rem;
+}
+.spi-community-note {
+  margin: 0.55rem 0 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--text-muted);
+}
 .spi-chip {
   font-size: 0.68rem;
   font-weight: 700;

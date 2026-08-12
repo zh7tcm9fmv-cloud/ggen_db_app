@@ -176,6 +176,9 @@ def _lean_public_row(row: dict) -> dict:
     recs = out.get("recommended_units")
     if isinstance(recs, list) and not recs:
         out.pop("recommended_units", None)
+    rec_ch = out.get("recommended_characters")
+    if isinstance(rec_ch, list) and not rec_ch:
+        out.pop("recommended_characters", None)
     return out
 
 
@@ -253,6 +256,10 @@ def main():
         er_restricted_ids=er_restricted_ids,
     )
     print(f"  {len(pilot_rows)} characters {_bucket_histogram(pilot_rows)}")
+
+    print("Attaching recommended Characters on unit boards…")
+    SIR.attach_recommended_characters_to_unit_rows(A, sp_rows, pilot_rows, rules=rules, lc=LC)
+    SIR.attach_recommended_characters_to_unit_rows(A, ssp_rows, pilot_rows, rules=rules, lc=LC)
 
     guide = SIR.scoring_guide_payload(rules)
     if not guide.get("intro"):

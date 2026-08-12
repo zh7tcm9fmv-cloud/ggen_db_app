@@ -28,6 +28,8 @@
         "Character letters are hybrid within Character Type: S+ ≈ top 3% / S ≈ top 8% (absolute A+ floor); specialty tip (Ranged/Melee/Awaken) caps at +5.",
         "Support Type debuff kinds use base weapon range — SSP range enhance does not invent Range-5 credit for Range-4 kits.",
         "Support Type weapon_bonus is capped at +1.",
+        "Multi damage-type (+2): any weapon (including MAP) combining Beam / Physical / Special — catalog-wide (replaces the old Lupus/Rex-only allowlist).",
+        "Community votes nudge the displayed total by at most ±2 (IP-limited). Objective kit score remains primary.",
         "Transform scores only when the alternate form unlocks deployable Terrain Capability, higher MOV, longer range, higher weapon power, or adds a MAP Weapon.",
         "Attack Type HP and SSP Attack Type EN are upside-only; Defense Type still taxes low HP/DEF. Special defenses (I-field / DR / barrier) are presence bonuses beyond the shield mechanism.",
         "Units whose recommend Character is UR / Ultimate take a mild −1 dependence tax (still usable with lower-rarity Characters).",
@@ -367,18 +369,20 @@
         "result": {}
       },
       "dual_attack_attr": {
-        "title": "複属性攻撃（ユニット）",
-        "summary": "最強攻撃が射撃／格闘／覚醒のうち2つ以上を使う（例：強化 ZZ ハイメガキャノン）。",
+        "title": "複合適性攻撃（ユニット）",
+        "summary": "最強攻撃が射撃／格闘／覚醒のうち2つ以上を使う（例：強化 ZZ ハイメガキャノン）。ビーム／物理／特殊の複合ダメージ属性とは別。",
         "when": {
-          "≥2 attack types on strongest weapon": "最強武装に攻撃属性が2つ以上"
+          "≥2 combat specialties on strongest weapon": "最強武装に攻撃適性が2つ以上",
+          "≥2 attack types on strongest weapon": "最強武装に攻撃適性が2つ以上"
         },
         "result": {}
       },
-      "signature_weapon": {
-        "title": "シグネチャ武装キット（ユニット）",
-        "summary": "バルバトスルプス／ルプスレクス系統 — EX 風の多条件武装キット",
+      "multi_weapon_attr": {
+        "title": "複合ダメージ属性（ユニット）",
+        "summary": "武装（MAP含む）がビーム／物理／特殊を2種以上持つ。カタログ全体 — バルバトスルプス／レクス限定ではない。",
         "when": {
-          "Barbatos Lupus / Lupus Rex family": "バルバトスルプス／ルプスレクス系統"
+          "≥2 damage types on any weapon (MAP counted)": "いずれかの武装がダメージ属性2種以上（MAP含む）",
+          "≥2 damage types on any weapon": "いずれかの武装がダメージ属性2種以上"
         },
         "result": {}
       },
@@ -1156,18 +1160,20 @@
         "result": {}
       },
       "dual_attack_attr": {
-        "title": "複屬性攻擊（單位）",
-        "summary": "最強攻擊使用射擊／格鬥／覺醒中兩種以上（例：強化 ZZ 高メガ加農）。",
+        "title": "複合適性攻擊（單位）",
+        "summary": "最強攻擊使用射擊／格鬥／覺醒中兩種以上（例：強化 ZZ 高メガ加農）。與光束／物理／特殊的複合損傷屬性不同。",
         "when": {
-          "≥2 attack types on strongest weapon": "最強武裝具有 2 種以上攻擊屬性"
+          "≥2 combat specialties on strongest weapon": "最強武裝具有 2 種以上攻擊適性",
+          "≥2 attack types on strongest weapon": "最強武裝具有 2 種以上攻擊適性"
         },
         "result": {}
       },
-      "signature_weapon": {
-        "title": "招牌武裝套件（單位）",
-        "summary": "巴巴托斯狼王／狼王Rex 系統 — EX 風格多條件武裝套件",
+      "multi_weapon_attr": {
+        "title": "複合損傷屬性（單位）",
+        "summary": "武裝（含 MAP）具備光束／物理／特殊中兩種以上。全圖鑑適用 — 非巴巴托斯狼王／狼王Rex 限定。",
         "when": {
-          "Barbatos Lupus / Lupus Rex family": "巴巴托斯狼王／狼王Rex 系統"
+          "≥2 damage types on any weapon (MAP counted)": "任一武裝具有 2 種以上損傷屬性（含 MAP）",
+          "≥2 damage types on any weapon": "任一武裝具有 2 種以上損傷屬性"
         },
         "result": {}
       },
@@ -1942,18 +1948,20 @@
         "result": {}
       },
       "dual_attack_attr": {
-        "title": "複屬性攻擊（單位）",
-        "summary": "最強攻擊用射擊／格鬥／覺醒入面兩種或以上（例：強化 ZZ 高メガ加農）。",
+        "title": "複合適性攻擊（單位）",
+        "summary": "最強攻擊用射擊／格鬥／覺醒入面兩種或以上（例：強化 ZZ 高メガ加農）。同鐳射／物理／特殊嘅複合損傷屬性唔同。",
         "when": {
-          "≥2 attack types on strongest weapon": "最強武裝具有 2 種以上攻擊屬性"
+          "≥2 combat specialties on strongest weapon": "最強武裝具有 2 種以上攻擊適性",
+          "≥2 attack types on strongest weapon": "最強武裝具有 2 種以上攻擊適性"
         },
         "result": {}
       },
-      "signature_weapon": {
-        "title": "招牌武裝套件（單位）",
-        "summary": "巴巴托斯狼王／狼王Rex 系統 — EX 風格多條件武裝套件",
+      "multi_weapon_attr": {
+        "title": "複合損傷屬性（單位）",
+        "summary": "武裝（含 MAP）具備鐳射／物理／特殊入面兩種或以上。全圖鑑適用 — 唔係巴巴托斯狼王／狼王Rex 限定。",
         "when": {
-          "Barbatos Lupus / Lupus Rex family": "巴巴托斯狼王／狼王Rex 系統"
+          "≥2 damage types on any weapon (MAP counted)": "任一武裝具有 2 種以上損傷屬性（含 MAP）",
+          "≥2 damage types on any weapon": "任一武裝具有 2 種以上損傷屬性"
         },
         "result": {}
       },

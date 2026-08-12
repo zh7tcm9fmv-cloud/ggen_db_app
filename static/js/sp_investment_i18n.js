@@ -172,9 +172,21 @@
       recommend_ms_sub: 'A and up',
       recommend_ms_note:
         'Matched by ability tag/series gates and Character specialty{spec}. Defense Type Units skip the specialty check.',
+      recommend_ch: 'Recommended Characters',
+      recommend_ch_sub: 'Top 3',
+      recommend_ch_note:
+        'Official recommend Character first, then affinity-pool Characters already on this guide (same Type preferred).',
       recommend_none: 'None on the current board.',
       recommend_sd:
         'SD Characters are permanently linked to their Unit and are not interchangeable; no recommendation list.',
+      community: 'Community',
+      community_tip: 'IP-limited up/down nudge, hard-capped at ±2. Kits with no votes stay at 0.',
+      community_note:
+        'Community up/down votes nudge the displayed total by at most ±2 (one ballot per IP). Objective kit score remains primary; kits with no votes stay at 0 nudge.',
+      vote_up: 'Upvote',
+      vote_down: 'Downvote',
+      vote_clear: 'Clear vote',
+      vote_adj: 'Community {n}',
       no_bucket: 'No Units in this bucket for current filters.',
       status_error: 'Could not load Investment Priority data.',
       guide_title: 'How Investment Priority scoring works',
@@ -309,9 +321,21 @@
       recommend_ms_sub: 'A以上',
       recommend_ms_note:
         'アビリティのタグ／シリーズ条件とキャラクター適性で照合{spec}。耐久型ユニットは適性チェックを省略します。',
+      recommend_ch: '推奨キャラクター',
+      recommend_ch_sub: '上位3名',
+      recommend_ch_note:
+        '公式推奨キャラクターを優先し、続けて本ガイド上のアフィニティ候補（同タイプ優先）を最大3名まで。',
       recommend_none: '現在のボードに該当なし。',
       recommend_sd:
         'SDキャラクターはユニットと固定リンクのため入れ替え不可です。推奨リストはありません。',
+      community: 'コミュニティ',
+      community_tip: 'IP単位の上下票による補正。上限は±2。票がないキットは0のまま。',
+      community_note:
+        'コミュニティの上下票は表示合計を最大±2まで調整します（IPごとに1票）。客観キット点が主で、票がないキットの補正は0です。',
+      vote_up: '上げる',
+      vote_down: '下げる',
+      vote_clear: '票を取り消す',
+      vote_adj: 'コミュニティ {n}',
       no_bucket: 'この区分に、現在のフィルタ条件のユニットはありません。',
       status_error: '投資優先度データを読み込めませんでした。',
       guide_title: '投資優先度のスコアリング',
@@ -446,8 +470,19 @@
       recommend_ms_sub: 'A 以上',
       recommend_ms_note:
         '依能力的標籤／系列條件與角色適性比對{spec}。耐久型單位略過適性檢查。',
+      recommend_ch: '推薦角色',
+      recommend_ch_sub: '前 3 名',
+      recommend_ch_note: '優先官方推薦角色，再列入本指南上的親和角色（同類型優先），最多 3 名。',
       recommend_none: '目前看板沒有符合項目。',
       recommend_sd: 'SD 角色與單位永久綁定、不可互換，因此沒有推薦清單。',
+      community: '社群',
+      community_tip: '依 IP 上下票調整，上限 ±2。沒有票的套件維持 0。',
+      community_note:
+        '社群上下票最多將顯示合計調整 ±2（每個 IP 一票）。客觀套件分數為主；沒有票的套件調整為 0。',
+      vote_up: '加分',
+      vote_down: '減分',
+      vote_clear: '取消投票',
+      vote_adj: '社群 {n}',
       no_bucket: '此分桶在目前篩選下沒有單位。',
       status_error: '無法載入投資優先度資料。',
       guide_title: '投資優先度評分說明',
@@ -582,8 +617,19 @@
       recommend_ms_sub: 'A 或以上',
       recommend_ms_note:
         '按能力嘅標籤／系列條件同角色適性比對{spec}。耐久型單位會略過適性檢查。',
+      recommend_ch: '推薦角色',
+      recommend_ch_sub: '前 3 名',
+      recommend_ch_note: '優先官方推薦角色，再列入本指南上嘅親和角色（同類型優先），最多 3 名。',
       recommend_none: '而家看板冇符合項目。',
       recommend_sd: 'SD 角色同單位永久綁定、唔可互換，所以冇推薦清單。',
+      community: '社群',
+      community_tip: '跟 IP 上下票調整，上限 ±2。冇票嘅套件維持 0。',
+      community_note:
+        '社群上下票最多將顯示合計調整 ±2（每個 IP 一票）。客觀套件分數為主；冇票嘅套件調整為 0。',
+      vote_up: '加分',
+      vote_down: '減分',
+      vote_clear: '取消投票',
+      vote_adj: '社群 {n}',
       no_bucket: '呢個分桶喺而家篩選下冇單位。',
       status_error: '載入唔到投資優先度資料。',
       guide_title: '投資優先度評分說明',
@@ -648,6 +694,10 @@
         label: 'Recommended Units',
         tip: 'Top 3 matching Units on this guide: A/A+ = +1, S/S+ = +2, cap +2. B+ and below do not score.',
       },
+      community: {
+        label: 'Community',
+        tip: 'IP-limited up/down nudge, hard-capped at ±2. Kits with no votes stay at 0.',
+      },
       linked_pilot: {
         label: 'Affinity Character pool',
         tip: 'How many same-type SSR+ Characters have piloting-tag / EX-pair affinity for this Unit.',
@@ -709,12 +759,12 @@
         tip: 'Conditional boost on the strongest attack only. Crit damage is mild; crit rate needs ~20%+; guaranteed crit is stronger.',
       },
       dual_attack_attr: {
-        label: 'Multi-type weapon',
-        tip: 'Strongest attack uses 2+ of Ranged/Melee/Awaken.',
+        label: 'Multi combat specialty',
+        tip: 'Strongest attack uses 2+ of Ranged/Melee/Awaken. Not Beam/Physical/Special.',
       },
-      signature_weapon: {
-        label: 'Signature kit',
-        tip: 'Allowlisted Lupus / Lupus Rex family bonus for their uniquely strong weapon kits.',
+      multi_weapon_attr: {
+        label: 'Multi damage type',
+        tip: 'Any weapon (including MAP) combines Beam/Physical/Special damage types.',
       },
       support_r4_debuffs: {
         label: 'Debuffs at range',
@@ -788,6 +838,10 @@
         label: '推奨ユニット',
         tip: '本ガイド上位3機：A/A+ は +1、S/S+ は +2、上限 +2。B+ 以下は加点なし。',
       },
+      community: {
+        label: 'コミュニティ',
+        tip: 'IP単位の上下票による補正。上限は±2。票がないキットは0のまま。',
+      },
       linked_pilot: {
         label: 'アフィニティキャラ候補',
         tip: '同タイプ SSR+ で、搭乗タグ／EXペア親和があるキャラクター数。',
@@ -844,11 +898,11 @@
       },
       dual_attack_attr: {
         label: '複合適性武装',
-        tip: '最強攻撃が射撃／格闘／覚醒のうち2種以上。',
+        tip: '最強攻撃が射撃／格闘／覚醒のうち2種以上（ビーム／物理／特殊とは別）。',
       },
-      signature_weapon: {
-        label: 'シグネチャキット',
-        tip: 'バルバトスルプス／ルプスレクス系統の特別加点。',
+      multi_weapon_attr: {
+        label: '複合ダメージ属性',
+        tip: '武装（MAP含む）がビーム／物理／特殊のうち2種以上を持つ。',
       },
       support_r4_debuffs: {
         label: '射程内弱体',
@@ -922,6 +976,10 @@
         label: '推薦單位',
         tip: '本指南前 3 機：A/A+ +1、S/S+ +2，上限 +2。B+ 以下不加分。',
       },
+      community: {
+        label: '社群',
+        tip: '依 IP 上下票調整，上限 ±2。沒有票的套件維持 0。',
+      },
       linked_pilot: {
         label: '親和角色池',
         tip: '同類型 SSR+，且具駕駛標籤／EX 配對親和的角色數。',
@@ -978,11 +1036,11 @@
       },
       dual_attack_attr: {
         label: '複合適性武裝',
-        tip: '最強攻擊具備射擊／格鬥／覺醒中兩種以上。',
+        tip: '最強攻擊具備射擊／格鬥／覺醒中兩種以上（與光束／物理／特殊不同）。',
       },
-      signature_weapon: {
-        label: '招牌武裝套件',
-        tip: '巴巴托斯狼王／狼王 Rex 系列特別加分。',
+      multi_weapon_attr: {
+        label: '複合損傷屬性',
+        tip: '武裝（含 MAP）具備光束／物理／特殊中兩種以上。',
       },
       support_r4_debuffs: {
         label: '射程內弱化',
@@ -1008,6 +1066,10 @@
     },
   };
   BREAKDOWN.HK = Object.assign({}, BREAKDOWN.TW, {
+    multi_weapon_attr: {
+      label: '複合損傷屬性',
+      tip: '武裝（含 MAP）具備鐳射／物理／特殊入面兩種或以上。',
+    },
     er_access: {
       label: '永恆之路 Expert 適性',
       tip: '單位：可出擊嘅 Expert 關卡數（0–1→0；2–6→+1；7 或以上→+2）。角色：只計有角色限制嘅 Expert（0→0；1→+1；2 或以上→+2）。角色自由出擊關卡唔加分。',
@@ -1031,6 +1093,10 @@
     recommend_ms: {
       label: '推薦單位',
       tip: '本指南前 3 機：A/A+ +1、S/S+ +2，上限 +2。B+ 或以下唔加分。',
+    },
+    community: {
+      label: '社群',
+      tip: '跟 IP 上下票調整，上限 ±2。冇票嘅套件維持 0。',
     },
     mob: {
       label: '機動力',

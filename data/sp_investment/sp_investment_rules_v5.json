@@ -49,7 +49,9 @@
     "v5.29: general-use over ER double-count — strategic tags skip tags already on Expert restrictions (ER access covers those); limited Supporter tags +1 per matched tag cap 2 (no half-points); Acquisition multi-select so Dev+Other can exclude Unit Assembly",
     "v5.30: Character letters are role-relative (Defense/Support higher S bars); Defense Character DEF tip +5→+3; Support SSP honesty — debuff kinds use base weapon range (SSP range enhance does not invent R5); Support weapon_bonus cap +1",
     "v5.31: Character specialty tip +6→+5 on Ranged/Melee/Awaken (all roles that used +6); hybrid Character letters — S/S+ by within-role percentile (~top 3% / ~top 8%), A+ and below absolute",
-    "v5.32: Max Vigor weapon −1 only when a Max-Vigor-gated gun outpowers unrestricted options; on SSP, compare gated guns without type-1 power enhance so Custom Core (…90) bypass is not undone by juicing the still-gated SP weapon (00 Raiser Final Battle SSP)"
+    "v5.32: Max Vigor weapon −1 only when a Max-Vigor-gated gun outpowers unrestricted options; on SSP, compare gated guns without type-1 power enhance so Custom Core (…90) bypass is not undone by juicing the still-gated SP weapon (00 Raiser Final Battle SSP)",
+    "v5.33: Replace Lupus/Rex signature allowlist (+3) with catalog-wide multi damage-type bonus (+1) from WeaponAttributeSetId Beam/Physical/Special combos (incl. MAP) — Vidar / Grand Master / Michaelis S2 / Thunderbolt MAP etc.",
+    "v5.34: Multi damage-type points +1→+2; community vote nudge capped at ±2 (IP ballot); Unit dossiers list recommended Characters"
   ],
   "exclude_warships": true,
   "exclude_ur_units": true,
@@ -1776,18 +1778,19 @@
   },
   "dual_attack_attr": {
     "min_types": 2,
-    "points": 1
+    "points": 1,
+    "note": "Ranged/Melee/Awaken combat specialties on the strongest attack (AttackAttributeSetId) — not Beam/Physical/Special."
   },
-  "signature_weapon_units": {
-    "points": 3,
-    "note": "Barbatos Lupus / Lupus Rex family — EX-style multi-condition weapon kits",
-    "unit_ids": [
-      "1430003400",
-      "1430003450",
-      "1430003500",
-      "1430003600",
-      "1430003700"
-    ]
+  "multi_weapon_attr": {
+    "min_types": 2,
+    "points": 2,
+    "include_map": true,
+    "note": "v5.34: Any kit weapon (incl. MAP) with WeaponAttributeSetId combining Beam/Physical/Special (ids 4–8). Replaces Lupus/Rex signature_weapon allowlist. Points +2."
+  },
+  "community_votes": {
+    "enabled": true,
+    "cap": 2,
+    "note": "v5.34: IP ballot up/down; community_adj = clamp(up-down, -cap, +cap). No votes → 0."
   },
   "letter_cutoffs": [
     {
@@ -2079,7 +2082,7 @@
     "1370011100"
   ],
   "scoring_guide": {
-    "version": "5.32",
+    "version": "5.34",
     "title": "How Investment Guide scoring works",
     "intro": "Point-sum shortlist for SP Conversion / SSP Conversion investment on Units and Characters (Attack Type / Defense Type / Support Type). Units have separate SP and SSP boards; Characters use SP only. Criteria favor practical sortie tools (MAP Weapon, mobility follow-ups, weapon power) and a deep affinity Character pool over a single linked recommend. Minor Attack Type stats (HP, SSP EN) are upside-only — no floor punishment. Close letters still need a human look.",
     "overrides": [
@@ -2108,6 +2111,9 @@
       "Support Type debuff-kind scoring uses base weapon range — SSP range enhance does not invent Range-5 credit for Range-4 kits.",
       "Support Type weapon_bonus is capped at +1 (Higher-range style bonuses stay Attack-flavored).",
       "Max Vigor −1 is for guns that require Max Vigor to fire and outpower every unrestricted option (Twin Satellite–class). On SSP, Custom Core (…90) is the bypass — SSP power enhance on a still-gated SP weapon does not re-apply that −1.",
+      "Multi damage-type (+2): any weapon (including MAP) whose WeaponAttribute combines Beam / Physical / Special. Not limited to Barbatos Lupus / Rex — those were an early allowlist placeholder.",
+      "Community votes nudge the displayed total by at most ±2 (IP-limited). Objective kit score remains primary; kits with no votes stay at 0 nudge.",
+      "Multi combat specialty (+1): strongest attack uses 2+ of Ranged / Melee / Awaken (separate from damage type).",
       "Close letters still need a human look."
     ]
   },

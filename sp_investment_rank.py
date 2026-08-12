@@ -184,6 +184,61 @@ _LETTER_RANK = {
 }
 
 
+def community_adj_points(up: int, down: int, rules: dict | None = None) -> int:
+    """Clamp (up - down) to ±cap from community_votes (default 2). No votes → 0."""
+    rules = rules or load_rules()
+    cfg = rules.get("community_votes") or {}
+    if cfg.get("enabled") is False:
+        return 0
+    try:
+        cap = abs(int(cfg.get("cap", 2) or 2))
+    except (TypeError, ValueError):
+        cap = 2
+    try:
+        net = int(up or 0) - int(down or 0)
+    except (TypeError, ValueError):
+        net = 0
+    if net > cap:
+        return cap
+    if net < -cap:
+        return -cap
+    return net
+
+
+def apply_community_adj_to_row(row: dict, adj: int, rules: dict | None = None) -> dict:
+    """Return a shallow-copied row with total/letter/bucket updated by community_adj."""
+    rules = rules or load_rules()
+    if not isinstance(row, dict):
+        return row
+    out = dict(row)
+    try:
+        objective = int(out.get("total_objective", out.get("total") or 0) or 0)
+    except (TypeError, ValueError):
+        objective = 0
+    adj_i = int(adj or 0)
+    out["total_objective"] = objective
+    out["community_adj"] = adj_i
+    out["total"] = objective + adj_i
+    bd = dict(out.get("breakdown") or {})
+    if adj_i:
+        bd["community"] = adj_i
+    else:
+        bd.pop("community", None)
+    out["breakdown"] = bd
+    entity = str(out.get("entity") or "")
+    role = out.get("role") or None
+    if entity == "character":
+        out["letter"] = letter_for_total(
+            rules, out["total"], cutoffs_key="pilot_letter_cutoffs", role=role
+        )
+    else:
+        has_sp = bool(out.get("has_sp"))
+        key = "letter_cutoffs" if has_sp else "ur_letter_cutoffs"
+        out["letter"] = letter_for_total(rules, out["total"], cutoffs_key=key, role=role)
+    out["bucket"] = bucket_for_letter(rules, out.get("letter") or "E")
+    return out
+
+
 def _letter_rank(letter: str) -> int:
     return int(_LETTER_RANK.get(str(letter or "E"), 99))
 
@@ -802,6 +857,13 @@ def _weapon_is_ssp_custom_core_id(wid: str) -> bool:
     """SSP Custom Core weapon ids end in …80 (MAP) or …90 (attack)."""
     w = str(wid or "")
     return w.endswith("80") or w.endswith("90")
+
+
+def _weapon_damage_attr_type_count(A, attribute_set_id) -> int:
+    """Beam/Physical/Special type count from WeaponAttributeSetId (not Ranged/Melee/Awaken)."""
+    aid = str(attribute_set_id or "0")
+    keys = (getattr(A, "WEAPON_ATTR_SET_TYPE_KEYS", None) or {}).get(aid) or []
+    return len(keys)
 
 
 def bucket_for_letter(rules: dict, letter: str) -> str:
@@ -2410,6 +2472,7 @@ def count_affinity_pilots_for_unit(
         "count": len(matched),
         "unit_factions": sorted(unit_factions)[:16],
         "sample_pilot_ids": matched[:12],
+        "pilot_ids": matched,
         "require_same_role": require_same_role,
     }
 
@@ -2725,7 +2788,7 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     src_pts = rules.get("source_bucket_points") or {}
     breakdown["source"] = int(src_pts.get(src, 0) or 0)
 
-    # Strongest weapon uses 2+ of Ranged/Melee/Awaken (e.g. Enhanced ZZ)
+    # Strongest weapon uses 2+ of Ranged/Melee/Awaken (combat specialty — not damage type)
     da = rules.get("dual_attack_attr") or {}
     min_attrs = int(da.get("min_types", 2) or 2)
     if int(features.get("best_attack_attr_count") or 0) >= min_attrs:
@@ -2733,13 +2796,15 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     else:
         breakdown["dual_attack_attr"] = 0
 
-    # Signature kits (Barbatos Lupus / Rex family)
-    sig = rules.get("signature_weapon_units") or {}
-    sig_ids = {str(x) for x in (sig.get("unit_ids") or [])}
-    if str(features.get("id") or "") in sig_ids:
-        breakdown["signature_weapon"] = int(sig.get("points", 0) or 0)
+    # Multi damage-type Beam/Physical/Special (any kit weapon incl. MAP). Replaces Lupus allowlist.
+    mwa = rules.get("multi_weapon_attr") or {}
+    min_dmg = int(mwa.get("min_types", 2) or 2)
+    if int(features.get("max_weapon_attr_types") or 0) >= min_dmg or features.get(
+        "has_multi_weapon_attr"
+    ):
+        breakdown["multi_weapon_attr"] = int(mwa.get("points", 1) or 0)
     else:
-        breakdown["signature_weapon"] = 0
+        breakdown["multi_weapon_attr"] = 0
 
     # Large footprint (OccupiedAreaId 2) — mild upside (wider MAP/buff coverage)
     fp_tbl = rules.get("large_footprint") or {}
@@ -2904,6 +2969,8 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
     best_weapon_id = ""
     best_weapon_wm: dict = {}
     best_attack_attr_count = 0
+    has_multi_weapon_attr = False
+    max_weapon_attr_types = 0
     structured_keys: set[str] = set()
     debuff_source = "text"
     map_require_damage = bool(rules.get("map_require_damage", True))
@@ -2961,6 +3028,12 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
             continue
         wm = A.weapon_info_map.get(wid, {})
         wt = str(wm.get("weapon_type", "1") or "1")
+        # Multi damage-type (Beam/Physical/Special) — include MAP; SP skips …80/…90 above.
+        dmg_attr_n = _weapon_damage_attr_type_count(A, wm.get("attribute"))
+        if dmg_attr_n >= 2:
+            has_multi_weapon_attr = True
+            if dmg_attr_n > max_weapon_attr_types:
+                max_weapon_attr_types = dmg_attr_n
         try:
             ws = A.resolve_weapon_stats(
                 wm,
@@ -3174,6 +3247,8 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
         "weapon_bonus_structured": weapon_bonus_structured,
         "best_weapon_trait_lines": best_weapon_trait_lines[:12],
         "best_attack_attr_count": best_attack_attr_count,
+        "has_multi_weapon_attr": has_multi_weapon_attr,
+        "max_weapon_attr_types": max_weapon_attr_types,
         "debuff_keys_source": debuff_source,
         "debuff_keys_structured": sorted(structured_keys),
     }
@@ -3565,7 +3640,9 @@ def score_unit(
         "source": feats.get("source"),
         "has_map": bool(feats.get("has_map")),
         "tags": feats.get("tags") or [],
+        "entity": "unit",
         "total": scored["total"],
+        "total_objective": scored["total"],
         "letter": scored["letter"],
         "bucket": scored["bucket"],
         "breakdown": scored["breakdown"],
@@ -3970,38 +4047,42 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
     criteria.append(
         {
             "id": "dual_attack_attr",
-            "title": "Multi-type attack attribute (units)",
+            "title": "Multi combat specialty (units)",
             "applies": ["units"],
             "objective": True,
             "summary": (
                 "Strongest attack uses 2+ of Ranged / Melee / Awaken "
-                "(e.g. Enhanced ZZ High Mega Cannon)."
+                "(AttackAttributeSetId — e.g. Enhanced ZZ High Mega Cannon). "
+                "Not the Beam / Physical / Special damage-type axis."
             ),
             "rows": [
                 {
-                    "when": f"≥{int(da.get('min_types', 2))} attack types on strongest weapon",
+                    "when": f"≥{int(da.get('min_types', 2))} combat specialties on strongest weapon",
                     "result": _fmt_points(da.get("points", 1)),
                 }
             ],
         }
     )
 
-    sig = rules.get("signature_weapon_units") or {}
-    if sig.get("unit_ids"):
+    mwa = rules.get("multi_weapon_attr") or {}
+    if mwa:
         criteria.append(
             {
-                "id": "signature_weapon",
-                "title": "Signature weapon kits (units)",
+                "id": "multi_weapon_attr",
+                "title": "Multi damage type (units)",
                 "applies": ["units"],
                 "objective": True,
-                "summary": str(
-                    sig.get("note")
-                    or "Allowlisted units with uniquely strong EX-style weapon kits."
+                "summary": (
+                    "Any kit weapon (including MAP) combines Beam / Physical / Special "
+                    "(WeaponAttributeSetId). Catalog-wide — not a Lupus/Rex-only allowlist."
                 ),
                 "rows": [
                     {
-                        "when": "Barbatos Lupus / Lupus Rex family",
-                        "result": _fmt_points(sig.get("points", 3)),
+                        "when": (
+                            f"≥{int(mwa.get('min_types', 2))} damage types on any weapon"
+                            + (" (MAP counted)" if mwa.get("include_map", True) else "")
+                        ),
+                        "result": _fmt_points(mwa.get("points", 1)),
                     }
                 ],
             }
@@ -5710,6 +5791,123 @@ def match_recommended_units(
     return rows[:24]
 
 
+def match_recommended_characters(
+    A,
+    uid: str,
+    unit_role: str,
+    unit_role_id: str,
+    char_by_id: dict,
+    rules: dict | None = None,
+    lc: str = "EN",
+    cap: int = 3,
+    affinity_pool: list[dict] | None = None,
+) -> list[dict]:
+    """
+    Unit → Character recommendations (publish-time):
+    1) Official recommend Character when on the Character SPI board
+    2) Affinity-pool Characters already on that board (same role preferred), top `cap`
+    """
+    rules = rules or load_rules()
+    uid = A.normalize_id(uid) if hasattr(A, "normalize_id") else str(uid)
+    char_by_id = char_by_id or {}
+    out: list[dict] = []
+    seen: set[str] = set()
+
+    def _row_for(cid: str, reason: str) -> dict | None:
+        cid = A.normalize_id(cid) if hasattr(A, "normalize_id") else str(cid)
+        ent = char_by_id.get(cid)
+        if not ent or ent.get("is_sd_linked"):
+            return None
+        lit = ent.get("letter") or ""
+        return {
+            "id": cid,
+            "name": ent.get("name") or "",
+            "letter": lit,
+            "role": ent.get("role"),
+            "rarity": ent.get("rarity"),
+            "acquisition_icon": ent.get("acquisition_icon") or "",
+            "specialty": ent.get("specialty") or "",
+            "reason": reason,
+        }
+
+    info = (getattr(A, "unit_info_map", None) or {}).get(uid) or {}
+    try:
+        if hasattr(A, "_unit_has_sd_mechanism") and A._unit_has_sd_mechanism(info, uid):
+            return []
+    except Exception:
+        pass
+
+    try:
+        rc = (
+            A.resolve_unit_recommend_character_id(uid, info)
+            if hasattr(A, "resolve_unit_recommend_character_id")
+            else ""
+        )
+    except Exception:
+        rc = ""
+    if rc:
+        official = _row_for(rc, "official")
+        if official:
+            out.append(official)
+            seen.add(official["id"])
+
+    _n, meta = count_affinity_pilots_for_unit(
+        A, uid, unit_role_id, rules=rules, lc=lc, pool=affinity_pool
+    )
+    aff_rows: list[dict] = []
+    for pid in meta.get("pilot_ids") or meta.get("sample_pilot_ids") or []:
+        if not pid or pid in seen:
+            continue
+        row = _row_for(pid, "affinity")
+        if row:
+            aff_rows.append(row)
+    unit_role_s = str(unit_role or "")
+    aff_rows.sort(
+        key=lambda r: (
+            0 if str(r.get("role") or "") == unit_role_s else 1,
+            -_LETTER_ORDER.index(r.get("letter") or "E")
+            if (r.get("letter") or "E") in _LETTER_ORDER
+            else 0,
+            r.get("name") or "",
+            r.get("id") or "",
+        )
+    )
+    for row in aff_rows:
+        if len(out) >= cap:
+            break
+        out.append(row)
+        seen.add(row["id"])
+    return out[:cap]
+
+
+def attach_recommended_characters_to_unit_rows(
+    A,
+    unit_rows: list[dict],
+    pilot_rows: list[dict],
+    rules: dict | None = None,
+    lc: str = "EN",
+    cap: int = 3,
+) -> None:
+    """Mutate unit rows with recommended_characters from the Character SPI board."""
+    rules = rules or load_rules()
+    char_by_id = {str(r.get("id")): r for r in (pilot_rows or []) if r.get("id")}
+    pool = build_affinity_pilot_pool(A, rules, lc)
+    for r in unit_rows or []:
+        if not isinstance(r, dict) or not r.get("id"):
+            continue
+        r["recommended_characters"] = match_recommended_characters(
+            A,
+            r["id"],
+            r.get("role") or "",
+            r.get("role_id") or "",
+            char_by_id,
+            rules=rules,
+            lc=lc,
+            cap=cap,
+            affinity_pool=pool,
+        )
+
+
 def character_is_investment_eligible(
     A, cid: str, rules: dict | None = None, unit_index: dict | None = None
 ) -> bool:
@@ -5992,6 +6190,7 @@ def score_character(
         "has_map": False,
         "tags": feats.get("tags") or [],
         "total": scored["total"],
+        "total_objective": scored["total"],
         "letter": scored["letter"],
         "bucket": scored["bucket"],
         "breakdown": scored["breakdown"],
