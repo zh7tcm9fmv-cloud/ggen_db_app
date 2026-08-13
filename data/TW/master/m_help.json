@@ -700,6 +700,16 @@
     "ScheduleId": 0
   },
   {
+    "Id": 1082011,
+    "TitleLanguageId": 170200000001082011,
+    "CategoryTypeIndex": 1,
+    "HelpCategoryId": 1081,
+    "SortOrder": 1081035,
+    "ContentLanguageId": 170300000001082011,
+    "ImageResourceId": "",
+    "ScheduleId": 0
+  },
+  {
     "Id": 1091011,
     "TitleLanguageId": 170200000001091011,
     "CategoryTypeIndex": 1,

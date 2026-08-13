@@ -2004,6 +2004,36 @@
     "DamagedEffectId": "ef_mpd_0023_007_vulcan_mikailis"
   },
   {
+    "Id": 290168,
+    "WeaponEffectPrefabPairSetId": 290168,
+    "WeaponEffectId": "ef_mpa_0023_000_shinearrow",
+    "DamagedEffectId": "ef_mpd_0023_010_shinearrow"
+  },
+  {
+    "Id": 290169,
+    "WeaponEffectPrefabPairSetId": 290169,
+    "WeaponEffectId": "ef_mpa_0023_000_laser",
+    "DamagedEffectId": "ef_mpd_0023_000_laser"
+  },
+  {
+    "Id": 290170,
+    "WeaponEffectPrefabPairSetId": 290170,
+    "WeaponEffectId": "ef_mpa_0023_006_thunderlance",
+    "DamagedEffectId": "ef_mpd_0023_006_thunderlance"
+  },
+  {
+    "Id": 290171,
+    "WeaponEffectPrefabPairSetId": 290171,
+    "WeaponEffectId": "ef_mpa_0023_006_senkoken",
+    "DamagedEffectId": "ef_mpd_0023_006_senkoken"
+  },
+  {
+    "Id": 290172,
+    "WeaponEffectPrefabPairSetId": 290172,
+    "WeaponEffectId": "ef_mpa_0023_006_greatomegacannon",
+    "DamagedEffectId": "ef_mpd_0001_001_beamrifle"
+  },
+  {
     "Id": 290174,
     "WeaponEffectPrefabPairSetId": 290174,
     "WeaponEffectId": "ef_mpa_0023_000_hatchfullopen",
@@ -3276,10 +3306,28 @@
     "DamagedEffectId": "ef_mpd_0033_004_fan"
   },
   {
+    "Id": 430009,
+    "WeaponEffectPrefabPairSetId": 430009,
+    "WeaponEffectId": "ef_mpa_0033_004_gigafan",
+    "DamagedEffectId": "ef_mpd_0033_004_gigafan"
+  },
+  {
     "Id": 440003,
     "WeaponEffectPrefabPairSetId": 440003,
     "WeaponEffectId": "ef_mpa_0034_002_liphila2shots",
     "DamagedEffectId": "ef_mpd_0034_002_liphila"
+  },
+  {
+    "Id": 440009,
+    "WeaponEffectPrefabPairSetId": 440009,
+    "WeaponEffectId": "ef_mpa_0034_002_moviliphila",
+    "DamagedEffectId": "ef_mpd_0034_002_moviliphila"
+  },
+  {
+    "Id": 440010,
+    "WeaponEffectPrefabPairSetId": 440010,
+    "WeaponEffectId": "ef_mpa_0034_002_megaliphila",
+    "DamagedEffectId": "ef_mpd_0034_002_megaliphila"
   },
   {
     "Id": 450001,
@@ -3724,6 +3772,18 @@
     "WeaponEffectPrefabPairSetId": 900100,
     "WeaponEffectId": "ef_mpw_003_02_snipe",
     "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900101,
+    "WeaponEffectPrefabPairSetId": 900101,
+    "WeaponEffectId": "ef_mpw_068_01_shinearrow",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900102,
+    "WeaponEffectPrefabPairSetId": 900101,
+    "WeaponEffectId": "ef_mpa_0023_010_shinearrow",
+    "DamagedEffectId": "ef_mpd_0023_000_shinearrow"
   },
   {
     "Id": 900103,
@@ -4296,6 +4356,36 @@
     "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
   },
   {
+    "Id": 900199,
+    "WeaponEffectPrefabPairSetId": 900199,
+    "WeaponEffectId": "ef_mpw_086_01_twinbeamcannon_sd",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900200,
+    "WeaponEffectPrefabPairSetId": 900200,
+    "WeaponEffectId": "ef_mpw_098_01_renzoku",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900201,
+    "WeaponEffectPrefabPairSetId": 900201,
+    "WeaponEffectId": "ef_mpw_099_01_thunderspear",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900202,
+    "WeaponEffectPrefabPairSetId": 900202,
+    "WeaponEffectId": "ef_mpw_100_01_sabe",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900203,
+    "WeaponEffectPrefabPairSetId": 900203,
+    "WeaponEffectId": "ef_mpw_101_01_rockthrow",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
     "Id": 900204,
     "WeaponEffectPrefabPairSetId": 900204,
     "WeaponEffectId": "ef_mpw_061_06_tackle",
@@ -4305,6 +4395,18 @@
     "Id": 900205,
     "WeaponEffectPrefabPairSetId": 900205,
     "WeaponEffectId": "ef_mpw_102_01_dragonhang",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900206,
+    "WeaponEffectPrefabPairSetId": 900206,
+    "WeaponEffectId": "ef_mpw_103_01_stamp",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900207,
+    "WeaponEffectPrefabPairSetId": 900207,
+    "WeaponEffectId": "ef_mpw_104_01_zetashockwave",
     "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
   },
   {
@@ -4324,6 +4426,36 @@
     "WeaponEffectPrefabPairSetId": 900210,
     "WeaponEffectId": "ef_mpw_106_01_psychofield_special",
     "DamagedEffectId": "ef_mpd_0026_03_mapweapon_recover"
+  },
+  {
+    "Id": 900211,
+    "WeaponEffectPrefabPairSetId": 900211,
+    "WeaponEffectId": "ef_mpw_061_07_tackle",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900212,
+    "WeaponEffectPrefabPairSetId": 900201,
+    "WeaponEffectId": "ef_mpa_099_01_thunderspear",
+    "DamagedEffectId": "ef_mpd_099_01_thunderspear"
+  },
+  {
+    "Id": 900213,
+    "WeaponEffectPrefabPairSetId": 900203,
+    "WeaponEffectId": "ef_mpa_101_01_rockthrow",
+    "DamagedEffectId": "ef_mpd_101_01_rockthrow"
+  },
+  {
+    "Id": 900214,
+    "WeaponEffectPrefabPairSetId": 900214,
+    "WeaponEffectId": "ef_mpw_106_01_blackfog",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900215,
+    "WeaponEffectPrefabPairSetId": 900215,
+    "WeaponEffectId": "ef_mpw_107_01_megatour",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
   },
   {
     "Id": 8000009,
@@ -8792,6 +8924,126 @@
   {
     "Id": 8007812,
     "WeaponEffectPrefabPairSetId": 80078,
+    "WeaponEffectId": "ef_mpa_1000_000_null",
+    "DamagedEffectId": "ef_mpd_1000_000_null"
+  },
+  {
+    "Id": 8007901,
+    "WeaponEffectPrefabPairSetId": 80079,
+    "WeaponEffectId": "ef_mpa_1000_000_sword_versalknight_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_sword_versalknight_ex1"
+  },
+  {
+    "Id": 8007902,
+    "WeaponEffectPrefabPairSetId": 80079,
+    "WeaponEffectId": "ef_mpa_1000_000_sword_versalknight_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_sword_versalknight_ex1"
+  },
+  {
+    "Id": 8007903,
+    "WeaponEffectPrefabPairSetId": 80079,
+    "WeaponEffectId": "ef_mpa_1000_000_sword_versalknight_ex3",
+    "DamagedEffectId": "ef_mpd_1000_000_sword_versalknight_ex3"
+  },
+  {
+    "Id": 8007904,
+    "WeaponEffectPrefabPairSetId": 80079,
+    "WeaponEffectId": "ef_mpa_1000_000_spear_versalknight_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_spear_versalknight_ex1"
+  },
+  {
+    "Id": 8007905,
+    "WeaponEffectPrefabPairSetId": 80079,
+    "WeaponEffectId": "ef_mpa_1000_000_spear_versalknight_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_spear_versalknight_ex2"
+  },
+  {
+    "Id": 8007906,
+    "WeaponEffectPrefabPairSetId": 80079,
+    "WeaponEffectId": "ef_mpa_1000_000_tackle_versalknight",
+    "DamagedEffectId": "ef_mpd_1000_000_tackle_versalknight"
+  },
+  {
+    "Id": 8007907,
+    "WeaponEffectPrefabPairSetId": 80079,
+    "WeaponEffectId": "ef_mpa_1000_000_liphila_versalknight",
+    "DamagedEffectId": "ef_mpd_1000_000_liphila_versalknight"
+  },
+  {
+    "Id": 8007908,
+    "WeaponEffectPrefabPairSetId": 80079,
+    "WeaponEffectId": "ef_mpa_1000_000_mahouzin_versalknight_ex1",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8007909,
+    "WeaponEffectPrefabPairSetId": 80079,
+    "WeaponEffectId": "ef_mpa_1000_000_mahouzin_versalknight_ex2",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8007910,
+    "WeaponEffectPrefabPairSetId": 80079,
+    "WeaponEffectId": "ef_mpa_1000_000_dash_versalknight",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8007911,
+    "WeaponEffectPrefabPairSetId": 80079,
+    "WeaponEffectId": "ef_mpa_1000_000_thunder_versalknight",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8007912,
+    "WeaponEffectPrefabPairSetId": 80079,
+    "WeaponEffectId": "ef_mpa_1000_000_aura_versalknight",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8007913,
+    "WeaponEffectPrefabPairSetId": 80079,
+    "WeaponEffectId": "ef_mpa_1000_000_road_versalknight",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8008001,
+    "WeaponEffectPrefabPairSetId": 80080,
+    "WeaponEffectId": "ef_mpa_1000_000_furinkazan_daisyogun",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8008002,
+    "WeaponEffectPrefabPairSetId": 80080,
+    "WeaponEffectId": "ef_mpa_1000_000_hououken_daisyogun",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8008003,
+    "WeaponEffectPrefabPairSetId": 80080,
+    "WeaponEffectId": "ef_mpa_1000_000_tyouhouou_daisyogun",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8008004,
+    "WeaponEffectPrefabPairSetId": 80080,
+    "WeaponEffectId": "ef_mpa_1000_000_dash_daisyogun",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8008005,
+    "WeaponEffectPrefabPairSetId": 80080,
+    "WeaponEffectId": "ef_mpa_1000_000_hit_daisyogun",
+    "DamagedEffectId": "ef_mpd_1000_000_hit_daisyogun"
+  },
+  {
+    "Id": 8008006,
+    "WeaponEffectPrefabPairSetId": 80080,
+    "WeaponEffectId": "ef_mpa_1000_000_spark_daisyogun",
+    "DamagedEffectId": "ef_mpd_1000_000_spark_daisyogun"
+  },
+  {
+    "Id": 8008007,
+    "WeaponEffectPrefabPairSetId": 80080,
     "WeaponEffectId": "ef_mpa_1000_000_null",
     "DamagedEffectId": "ef_mpd_1000_000_null"
   },

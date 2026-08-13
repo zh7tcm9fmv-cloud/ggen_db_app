@@ -4784,6 +4784,330 @@
     "value": "Increased Physical Damage Effect Value Boost"
   },
   {
+    "id": 140700000300960101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300960102,
+    "value": "Decreased DEF [1 turn] LV 1"
+  },
+  {
+    "id": 140700000300960103,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300960201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300960202,
+    "value": "Decreased DEF [1 turn] LV 2"
+  },
+  {
+    "id": 140700000300960203,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300960301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300960302,
+    "value": "Decreased DEF [1 turn] LV 3"
+  },
+  {
+    "id": 140700000300960303,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300960401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300960402,
+    "value": "Decreased DEF [1 turn] LV 4"
+  },
+  {
+    "id": 140700000300960403,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300960501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300960502,
+    "value": "Decreased DEF [1 turn] LV 5"
+  },
+  {
+    "id": 140700000300960503,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300960601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300960602,
+    "value": "Decreased DEF [1 turn] LV 6"
+  },
+  {
+    "id": 140700000300960603,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300960701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300960702,
+    "value": "Decreased DEF [1 turn] LV 7"
+  },
+  {
+    "id": 140700000300960703,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300960801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300960802,
+    "value": "Decreased DEF [1 turn] LV 8"
+  },
+  {
+    "id": 140700000300960803,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300960901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300960902,
+    "value": "Decreased DEF [1 turn] LV 9"
+  },
+  {
+    "id": 140700000300960903,
+    "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140700000300970101,
+    "value": "Increased Special Damage [1 turn] LV 1"
+  },
+  {
+    "id": 140700000300970102,
+    "value": "Increased Special Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000300970201,
+    "value": "Increased Special Damage [1 turn] LV 2"
+  },
+  {
+    "id": 140700000300970202,
+    "value": "Increased Special Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000300970301,
+    "value": "Increased Special Damage [1 turn] LV 3"
+  },
+  {
+    "id": 140700000300970302,
+    "value": "Increased Special Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000300970401,
+    "value": "Increased Special Damage [1 turn] LV 4"
+  },
+  {
+    "id": 140700000300970402,
+    "value": "Increased Special Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000300970501,
+    "value": "Increased Special Damage [1 turn] LV 5"
+  },
+  {
+    "id": 140700000300970502,
+    "value": "Increased Special Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000300970601,
+    "value": "Increased Special Damage [1 turn] LV 6"
+  },
+  {
+    "id": 140700000300970602,
+    "value": "Increased Special Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000300970701,
+    "value": "Increased Special Damage [1 turn] LV 7"
+  },
+  {
+    "id": 140700000300970702,
+    "value": "Increased Special Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000300970801,
+    "value": "Increased Special Damage [1 turn] LV 8"
+  },
+  {
+    "id": 140700000300970802,
+    "value": "Increased Special Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000300970901,
+    "value": "Increased Special Damage [1 turn] LV 9"
+  },
+  {
+    "id": 140700000300970902,
+    "value": "Increased Special Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000300990101,
+    "value": "Static Accuracy"
+  },
+  {
+    "id": 140700000300990102,
+    "value": "Chance Step Increase"
+  },
+  {
+    "id": 140700000300990103,
+    "value": "Increased Critical Damage LV 1"
+  },
+  {
+    "id": 140700000300990104,
+    "value": "Increased Critical Rate LV 1"
+  },
+  {
+    "id": 140700000300990201,
+    "value": "Static Accuracy"
+  },
+  {
+    "id": 140700000300990202,
+    "value": "Chance Step Increase"
+  },
+  {
+    "id": 140700000300990203,
+    "value": "Increased Critical Damage LV 2"
+  },
+  {
+    "id": 140700000300990204,
+    "value": "Increased Critical Rate LV 2"
+  },
+  {
+    "id": 140700000300990301,
+    "value": "Static Accuracy"
+  },
+  {
+    "id": 140700000300990302,
+    "value": "Chance Step Increase"
+  },
+  {
+    "id": 140700000300990303,
+    "value": "Increased Critical Damage LV 3"
+  },
+  {
+    "id": 140700000300990304,
+    "value": "Increased Critical Rate LV 3"
+  },
+  {
+    "id": 140700000300990401,
+    "value": "Static Accuracy"
+  },
+  {
+    "id": 140700000300990402,
+    "value": "Chance Step Increase"
+  },
+  {
+    "id": 140700000300990403,
+    "value": "Increased Critical Damage LV 4"
+  },
+  {
+    "id": 140700000300990404,
+    "value": "Increased Critical Rate LV 4"
+  },
+  {
+    "id": 140700000300990501,
+    "value": "Static Accuracy"
+  },
+  {
+    "id": 140700000300990502,
+    "value": "Chance Step Increase"
+  },
+  {
+    "id": 140700000300990503,
+    "value": "Increased Critical Damage LV 5"
+  },
+  {
+    "id": 140700000300990504,
+    "value": "Increased Critical Rate LV 5"
+  },
+  {
+    "id": 140700000300990601,
+    "value": "Static Accuracy"
+  },
+  {
+    "id": 140700000300990602,
+    "value": "Chance Step Increase"
+  },
+  {
+    "id": 140700000300990603,
+    "value": "Increased Critical Damage LV 6"
+  },
+  {
+    "id": 140700000300990604,
+    "value": "Increased Critical Rate LV 6"
+  },
+  {
+    "id": 140700000300990701,
+    "value": "Static Accuracy"
+  },
+  {
+    "id": 140700000300990702,
+    "value": "Chance Step Increase"
+  },
+  {
+    "id": 140700000300990703,
+    "value": "Increased Critical Damage LV 7"
+  },
+  {
+    "id": 140700000300990704,
+    "value": "Increased Critical Rate LV 7"
+  },
+  {
+    "id": 140700000300990801,
+    "value": "Static Accuracy"
+  },
+  {
+    "id": 140700000300990802,
+    "value": "Chance Step Increase"
+  },
+  {
+    "id": 140700000300990803,
+    "value": "Increased Critical Damage LV 8"
+  },
+  {
+    "id": 140700000300990804,
+    "value": "Increased Critical Rate LV 8"
+  },
+  {
+    "id": 140700000300990901,
+    "value": "Static Accuracy"
+  },
+  {
+    "id": 140700000300990902,
+    "value": "Chance Step Increase"
+  },
+  {
+    "id": 140700000300990903,
+    "value": "Increased Critical Damage LV 9"
+  },
+  {
+    "id": 140700000300990904,
+    "value": "Increased Critical Rate LV 9"
+  },
+  {
     "id": 140700000310010101,
     "value": "Decreased ATK [1 turn] LV 1"
   },
@@ -8420,6 +8744,54 @@
     "value": "Physical Weapon Power Down [1 turn] LV 15"
   },
   {
+    "id": 140700000700660101,
+    "value": "Decreased ATK [1 turn] LV 1"
+  },
+  {
+    "id": 140700000700660102,
+    "value": "Decreased DEF [1 turn] LV 1"
+  },
+  {
+    "id": 140700000700660201,
+    "value": "Decreased ATK [1 turn] LV 2"
+  },
+  {
+    "id": 140700000700660202,
+    "value": "Decreased DEF [1 turn] LV 2"
+  },
+  {
+    "id": 140700000700660301,
+    "value": "Decreased ATK [1 turn] LV 3"
+  },
+  {
+    "id": 140700000700660302,
+    "value": "Decreased DEF [1 turn] LV 3"
+  },
+  {
+    "id": 140700000700660401,
+    "value": "Decreased ATK [1 turn] LV 4"
+  },
+  {
+    "id": 140700000700660402,
+    "value": "Decreased DEF [1 turn] LV 4"
+  },
+  {
+    "id": 140700000700660501,
+    "value": "Decreased ATK [1 turn] LV 5"
+  },
+  {
+    "id": 140700000700660502,
+    "value": "Decreased DEF [1 turn] LV 5"
+  },
+  {
+    "id": 140700000700660901,
+    "value": "Decreased ATK [1 turn] LV 9"
+  },
+  {
+    "id": 140700000700660902,
+    "value": "Decreased DEF [1 turn] LV 9"
+  },
+  {
     "id": 140800000300010101,
     "value": "Inflict \"ATK Down 10%\" on the enemy [1 turn]."
   },
@@ -11349,7 +11721,7 @@
   },
   {
     "id": 140800000300590102,
-    "value": "Decrease MP by 1."
+    "value": "Reduce MP by 1 on hit enemy"
   },
   {
     "id": 140800000300590103,
@@ -11361,7 +11733,7 @@
   },
   {
     "id": 140800000300590202,
-    "value": "Decrease MP by 1."
+    "value": "Reduce MP by 1 on hit enemy"
   },
   {
     "id": 140800000300590203,
@@ -11373,7 +11745,7 @@
   },
   {
     "id": 140800000300590302,
-    "value": "Decrease MP by 1."
+    "value": "Reduce MP by 1 on hit enemy"
   },
   {
     "id": 140800000300590303,
@@ -11385,7 +11757,7 @@
   },
   {
     "id": 140800000300590402,
-    "value": "Decrease MP by 1."
+    "value": "Reduce MP by 1 on hit enemy"
   },
   {
     "id": 140800000300590403,
@@ -11397,7 +11769,7 @@
   },
   {
     "id": 140800000300590502,
-    "value": "Decrease MP by 1."
+    "value": "Reduce MP by 1 on hit enemy"
   },
   {
     "id": 140800000300590503,
@@ -11409,7 +11781,7 @@
   },
   {
     "id": 140800000300590602,
-    "value": "Decrease MP by 1."
+    "value": "Reduce MP by 1 on hit enemy"
   },
   {
     "id": 140800000300590603,
@@ -11421,7 +11793,7 @@
   },
   {
     "id": 140800000300590702,
-    "value": "Decrease MP by 1."
+    "value": "Reduce MP by 1 on hit enemy"
   },
   {
     "id": 140800000300590703,
@@ -11433,7 +11805,7 @@
   },
   {
     "id": 140800000300590802,
-    "value": "Decrease MP by 1."
+    "value": "Reduce MP by 1 on hit enemy"
   },
   {
     "id": 140800000300590803,
@@ -11445,7 +11817,7 @@
   },
   {
     "id": 140800000300590902,
-    "value": "Decrease MP by 1."
+    "value": "Reduce MP by 1 on hit enemy"
   },
   {
     "id": 140800000300590903,
@@ -13166,6 +13538,330 @@
   {
     "id": 140800000300940902,
     "value": "When engaging enemies that include  EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Increased Physical Damage."
+  },
+  {
+    "id": 140800000300960101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300960102,
+    "value": "Inflict \"DEF Down 10%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300960103,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300960201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300960202,
+    "value": "Inflict \"DEF Down 15%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300960203,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300960301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300960302,
+    "value": "Inflict \"DEF Down 20%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300960303,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300960401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300960402,
+    "value": "Inflict \"DEF Down 25%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300960403,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300960501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300960502,
+    "value": "Inflict \"DEF Down 30%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300960503,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300960601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300960602,
+    "value": "Inflict \"DEF Down 35%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300960603,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300960701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300960702,
+    "value": "Inflict \"DEF Down 40%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300960703,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300960801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300960802,
+    "value": "Inflict \"DEF Down 45%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300960803,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300960901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300960902,
+    "value": "Inflict \"DEF Down 50%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000300960903,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Decreased DEF."
+  },
+  {
+    "id": 140800000300970101,
+    "value": "Inflict \"Damage Taken from Special Weapons Up 10%\" on the enemy[1 turn]."
+  },
+  {
+    "id": 140800000300970102,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Increased Special Damage taken."
+  },
+  {
+    "id": 140800000300970201,
+    "value": "Inflict \"Damage Taken from Special Weapons Up 15%\" on the enemy[1 turn]."
+  },
+  {
+    "id": 140800000300970202,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Increased Special Damage taken."
+  },
+  {
+    "id": 140800000300970301,
+    "value": "Inflict \"Damage Taken from Special Weapons Up 20%\" on the enemy[1 turn]."
+  },
+  {
+    "id": 140800000300970302,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Increased Special Damage taken."
+  },
+  {
+    "id": 140800000300970401,
+    "value": "Inflict \"Damage Taken from Special Weapons Up 25%\" on the enemy[1 turn]."
+  },
+  {
+    "id": 140800000300970402,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Increased Special Damage taken."
+  },
+  {
+    "id": 140800000300970501,
+    "value": "Inflict \"Damage Taken from Special Weapons Up 30%\" on the enemy[1 turn]."
+  },
+  {
+    "id": 140800000300970502,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Increased Special Damage taken."
+  },
+  {
+    "id": 140800000300970601,
+    "value": "Inflict \"Damage Taken from Special Weapons Up 35%\" on the enemy[1 turn]."
+  },
+  {
+    "id": 140800000300970602,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Increased Special Damage taken."
+  },
+  {
+    "id": 140800000300970701,
+    "value": "Inflict \"Damage Taken from Special Weapons Up 40%\" on the enemy[1 turn]."
+  },
+  {
+    "id": 140800000300970702,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Increased Special Damage taken."
+  },
+  {
+    "id": 140800000300970801,
+    "value": "Inflict \"Damage Taken from Special Weapons Up 45%\" on the enemy[1 turn]."
+  },
+  {
+    "id": 140800000300970802,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Increased Special Damage taken."
+  },
+  {
+    "id": 140800000300970901,
+    "value": "Inflict \"Damage Taken from Special Weapons Up 50%\" on the enemy[1 turn]."
+  },
+  {
+    "id": 140800000300970902,
+    "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Increased Special Damage taken."
+  },
+  {
+    "id": 140800000300990101,
+    "value": "Static Accuracy 90%"
+  },
+  {
+    "id": 140800000300990102,
+    "value": "Increase Critical Damage by 10%."
+  },
+  {
+    "id": 140800000300990103,
+    "value": "Activate by acquiring a Chance Step when an attack hits.\nWhen engaging enemies who have the SD Gundam tag,\nincrease own Critical Rate by 100%."
+  },
+  {
+    "id": 140800000300990104,
+    "value": ""
+  },
+  {
+    "id": 140800000300990201,
+    "value": "Static Accuracy 90%"
+  },
+  {
+    "id": 140800000300990202,
+    "value": "Increase Critical Damage by 15%."
+  },
+  {
+    "id": 140800000300990203,
+    "value": "Activate by acquiring a Chance Step when an attack hits.\nWhen engaging enemies who have the SD Gundam tag,\nincrease own Critical Rate by 100%."
+  },
+  {
+    "id": 140800000300990204,
+    "value": ""
+  },
+  {
+    "id": 140800000300990301,
+    "value": "Static Accuracy 90%"
+  },
+  {
+    "id": 140800000300990302,
+    "value": "Increase Critical Damage by 20%."
+  },
+  {
+    "id": 140800000300990303,
+    "value": "Activate by acquiring a Chance Step when an attack hits.\nWhen engaging enemies who have the SD Gundam tag,\nincrease own Critical Rate by 100%."
+  },
+  {
+    "id": 140800000300990304,
+    "value": ""
+  },
+  {
+    "id": 140800000300990401,
+    "value": "Static Accuracy 90%"
+  },
+  {
+    "id": 140800000300990402,
+    "value": "Increase Critical Damage by 25%."
+  },
+  {
+    "id": 140800000300990403,
+    "value": "Activate by acquiring a Chance Step when an attack hits.\nWhen engaging enemies who have the SD Gundam tag,\nincrease own Critical Rate by 100%."
+  },
+  {
+    "id": 140800000300990404,
+    "value": ""
+  },
+  {
+    "id": 140800000300990501,
+    "value": "Static Accuracy 90%"
+  },
+  {
+    "id": 140800000300990502,
+    "value": "Increase Critical Damage by 30%."
+  },
+  {
+    "id": 140800000300990503,
+    "value": "Activate by acquiring a Chance Step when an attack hits.\nWhen engaging enemies who have the SD Gundam tag,\nincrease own Critical Rate by 100%."
+  },
+  {
+    "id": 140800000300990504,
+    "value": ""
+  },
+  {
+    "id": 140800000300990601,
+    "value": "Static Accuracy 90%"
+  },
+  {
+    "id": 140800000300990602,
+    "value": "Increase Critical Damage by 35%."
+  },
+  {
+    "id": 140800000300990603,
+    "value": "Activate by acquiring a Chance Step when an attack hits.\nWhen engaging enemies who have the SD Gundam tag,\nincrease own Critical Rate by 100%."
+  },
+  {
+    "id": 140800000300990604,
+    "value": ""
+  },
+  {
+    "id": 140800000300990701,
+    "value": "Static Accuracy 90%"
+  },
+  {
+    "id": 140800000300990702,
+    "value": "Increase Critical Damage by 40%."
+  },
+  {
+    "id": 140800000300990703,
+    "value": "Activate by acquiring a Chance Step when an attack hits.\nWhen engaging enemies who have the SD Gundam tag,\nincrease own Critical Rate by 100%."
+  },
+  {
+    "id": 140800000300990704,
+    "value": ""
+  },
+  {
+    "id": 140800000300990801,
+    "value": "Static Accuracy 90%"
+  },
+  {
+    "id": 140800000300990802,
+    "value": "Increase Critical Damage by 45%."
+  },
+  {
+    "id": 140800000300990803,
+    "value": "Activate by acquiring a Chance Step when an attack hits.\nWhen engaging enemies who have the SD Gundam tag,\nincrease own Critical Rate by 100%."
+  },
+  {
+    "id": 140800000300990804,
+    "value": ""
+  },
+  {
+    "id": 140800000300990901,
+    "value": "Static Accuracy 90%"
+  },
+  {
+    "id": 140800000300990902,
+    "value": "Increase Critical Damage by 50%."
+  },
+  {
+    "id": 140800000300990903,
+    "value": "Activate by acquiring a Chance Step when an attack hits.\nWhen engaging enemies who have the SD Gundam tag,\nincrease own Critical Rate by 100%."
+  },
+  {
+    "id": 140800000300990904,
+    "value": ""
   },
   {
     "id": 140800000310010101,
@@ -16802,5 +17498,53 @@
   {
     "id": 140800000700521502,
     "value": "Inflict \"Decrease physical weapon Power by 80%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700660101,
+    "value": "Inflict \"ATK Down 10%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700660102,
+    "value": "Inflict \"DEF Down 10%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700660201,
+    "value": "Inflict \"ATK Down 15%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700660202,
+    "value": "Inflict \"DEF Down 15%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700660301,
+    "value": "Inflict \"ATK Down 20%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700660302,
+    "value": "Inflict \"DEF Down 20%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700660401,
+    "value": "Inflict \"ATK Down 25%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700660402,
+    "value": "Inflict \"DEF Down 25%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700660501,
+    "value": "Inflict \"ATK Down 30%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700660502,
+    "value": "Inflict \"DEF Down 30%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700660901,
+    "value": "Inflict \"ATK Down 50%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700660902,
+    "value": "Inflict \"DEF Down 50%\" on the enemy [1 turn]."
   }
 ]

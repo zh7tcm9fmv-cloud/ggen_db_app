@@ -9,8 +9,8 @@
   const GUIDE = {
     "EN": {
       "overrides": [
-        "Each score factor adds points; the total becomes a letter, then a bucket (BEYOND THE TIME / Recommended / Solid / Situational / Niche). Units: Attack/Support score 17+ earns S+ and BEYOND THE TIME. Defense Type Units need 18+ and must tank more than one hit (HP + Shield Defense / special DR / Unbreakable) plus Preemptive Strike or Support Defense coverage (unit SD kit or MOV 6). Characters: kit points stay absolute; within each Character Type, S+ ≈ top 3% and S ≈ top 8% (absolute A+ floor); A+ and below use role-relative point cutoffs.",
-        "Filter by Tag or Eternal Road Expert stage to compare Units that actually fit the same restriction.",
+        "Each score factor adds points; the total becomes a letter, then a bucket (BEYOND THE TIME / Recommended / Solid / Situational / Niche). Units: Attack score 17+ earns S+ and BEYOND THE TIME. Support Type Units need 17+ with lasting DEF Down / pierce at Lv5+ (30%+). Defense Type Units need 18+, lasting ATK Down at Lv5+ (30%+), tank more than one hit (HP + Shield Defense / special DR / Unbreakable), plus Preemptive Strike or Support Defense coverage (unit SD kit or MOV 6). Characters: kit points stay absolute; within each Character Type, S+ ≈ top 3% and S ≈ top 8% (absolute A+ floor); A+ and below use role-relative point cutoffs. Defense Type Characters also need a Defense or Reaction band for BEYOND THE TIME.",
+        "Filter by Series, Tag, or Eternal Road Expert stage to compare Units and Characters that actually fit the same restriction.",
         "This is a general investment ranking that can also help on Expert — not a dedicated Expert-clears ladder."
       ],
       "gaps": [
@@ -38,8 +38,8 @@
     },
     "JA": {
       "overrides": [
-        "各項目が加点され、合計がレターになり、さらに区分へ振り分けられます。ユニットの攻撃型／支援型は 17点以上で S+（BEYOND THE TIME）。耐久型ユニットは 18点以上に加え、1撃以上耐える生存（HP＋シールド防御／特殊DR／脱出機能）と先制攻撃または支援防御のカバー（機体の支援防御キットまたは MOV 6）が必要です。キャラクターは役割内の上位約3%が S+、約8%が S（絶対 A+ 以上が条件）。A+ 以下は役割別の点数閾値です。",
-        "タグやエターナルロード Expert ステージで絞り、同じ制限に合うユニット同士を比較してください。",
+        "各項目が加点され、合計がレターになり、さらに区分へ振り分けられます。ユニットの攻撃型は 17点以上で S+（BEYOND THE TIME）。支援型ユニットは 17点以上に加え持続防御力減少／貫通（Lv5／30%+）が必要です。耐久型ユニットは 18点以上に加え、持続攻撃力減少（Lv5／30%+）、1撃以上耐える生存（HP＋シールド防御／特殊DR／脱出機能）、先制攻撃または支援防御のカバー（機体の支援防御キットまたは MOV 6）が必要です。キャラクターは役割内の上位約3%が S+、約8%が S（絶対 A+ 以上が条件）。耐久型キャラクターの S+ は防御または反応が A+ 帯以上であることも条件です。A+ 以下は役割別の点数閾値です。",
+        "シリーズ・タグ・エターナルロード Expert ステージで絞り、同じ制限に合うユニット／キャラクター同士を比較してください。",
         "一般運用向けの投資ランキングで、Expert でも使えることがある、という位置づけです（特定 Expert 攻略専用ではありません）。"
       ],
       "gaps": [
@@ -65,8 +65,8 @@
     },
     "TW": {
       "overrides": [
-        "各項目加分後合計成字母，再對應分桶。單位攻擊型／支援型 17 分以上為 S+（BEYOND THE TIME）。耐久型單位需 18 分以上，且能承受超過一擊（HP＋盾牌防禦／特殊減傷／逃生機能），並具備先發攻擊或支援防禦覆蓋（機體支援防禦套件或移動力 6）。角色在各類型內約前 3% 為 S+、約前 8% 為 S（須達絕對 A+）；A+ 以下用類型分數門檻。",
-        "可用標籤或永恆之路 Expert 關卡篩選，比較真正符合同一限制的單位。",
+        "各項目加分後合計成字母，再對應分桶。單位攻擊型 17 分以上為 S+（BEYOND THE TIME）。支援型單位需 17 分以上且有持續防禦力減少／貫穿（Lv5／30%+）。耐久型單位需 18 分以上，且有持續攻擊力減少（Lv5／30%+）、能承受超過一擊（HP＋盾牌防禦／特殊減傷／逃生機能），並具備先發攻擊或支援防禦覆蓋（機體支援防禦套件或移動力 6）。角色在各類型內約前 3% 為 S+、約前 8% 為 S（須達絕對 A+）；耐久型角色另需防禦或反應達 A+ 帶。A+ 以下用類型分數門檻。",
+        "可用系列、標籤或永恆之路 Expert 關卡篩選，比較真正符合同一限制的單位與角色。",
         "這是偏一般投資用途的排名，也能偶爾用於 Expert — 不是專攻 Expert 通關的排行榜。"
       ],
       "gaps": [
@@ -92,8 +92,8 @@
     },
     "HK": {
       "overrides": [
-        "各項目加分後合計成字母，再對應分桶。單位攻擊型／支援型 17 分以上係 S+（BEYOND THE TIME）。耐久型單位要 18 分以上，而且要頂得過一擊（HP＋盾牌防禦／特殊減傷／逃生機能），再加先發攻擊或支援防禦覆蓋（機體支援防禦套件或移動力 6）。角色喺各類型入面約前 3% 係 S+、約前 8% 係 S（要達絕對 A+）；A+ 以下用類型分數門檻。",
-        "可用標籤或永恆之路 Expert 關卡篩選，比較真正符合同一限制嘅單位。",
+        "各項目加分後合計成字母，再對應分桶。單位攻擊型 17 分以上係 S+（BEYOND THE TIME）。支援型單位要 17 分以上而且有持續防禦力減少／貫穿（Lv5／30%+）。耐久型單位要 18 分以上，而且要有持續攻擊力減少（Lv5／30%+）、頂得過一擊（HP＋盾牌防禦／特殊減傷／逃生機能），再加先發攻擊或支援防禦覆蓋（機體支援防禦套件或移動力 6）。角色喺各類型入面約前 3% 係 S+、約前 8% 係 S（要達絕對 A+）；耐久型角色另外要防禦或反應達 A+ 帶。A+ 以下用類型分數門檻。",
+        "可用系列、標籤或永恆之路 Expert 關卡篩選，比較真正符合同一限制嘅單位同角色。",
         "呢個係偏一般投資用途嘅排名，都間中可以用喺 Expert — 唔係專攻 Expert 通關嘅排行榜。"
       ],
       "gaps": [
@@ -127,6 +127,8 @@
         "when": {
           "S+ (score 17+)": "S+（17点以上）",
           "S+ Defense Type": "S+ 耐久型",
+          "S+ Support Type": "S+ 支援型",
+          "S+ Defense Type Characters": "S+ 耐久型キャラクター",
           "S+ (score 23+)": "S+（23点以上）",
           "S": "S",
           "A+ or A": "A+ または A",
@@ -135,8 +137,12 @@
         },
         "result": {
           "BEYOND THE TIME": "BEYOND THE TIME",
+          "BEYOND THE TIME (Attack)": "BEYOND THE TIME（攻撃型）",
           "BEYOND THE TIME (Attack / Support)": "BEYOND THE TIME（攻撃型／支援型）",
           "BEYOND THE TIME only at 18+ if the kit tanks more than one hit (HP + Shield Defense / special DR / Unbreakable) and has Preemptive Strike or Support Defense coverage (unit SD kit or MOV 6)": "18点以上かつ、1撃以上耐える生存（HP＋シールド防御／特殊DR／脱出機能）と先制攻撃または支援防御カバー（機体キットまたは MOV 6）がある場合のみ BEYOND THE TIME",
+          "BEYOND THE TIME only at 18+ if the kit tanks more than one hit (HP + Shield Defense / special DR / Unbreakable) and has lasting ATK Down at Lv5+ (30%+ — tank analog of Support DEF Down), and has Preemptive Strike or Support Defense coverage (unit SD kit or MOV 6)": "18点以上かつ持続攻撃力減少（Lv5／30%+）、1撃以上耐える生存（HP＋シールド防御／特殊DR／脱出機能）、先制攻撃または支援防御カバー（機体キットまたは MOV 6）がある場合のみ BEYOND THE TIME",
+          "BEYOND THE TIME only at 17+ with lasting DEF Down / pierce at Lv5+ (30%+). MAP-only kits stay Recommended": "17点以上かつ持続防御力減少／貫通（Lv5／30%+）がある場合のみ BEYOND THE TIME。MAPのみのキットは推奨にとどまる",
+          "BEYOND THE TIME only with Defense or Reaction band points (kit-only Durability Characters stay Recommended)": "防御または反応の帯点がある場合のみ BEYOND THE TIME（キット加点のみの耐久型キャラクターは推奨にとどまる）",
           "Recommended": "推奨",
           "Solid": "堅実",
           "Situational": "状況次第",
@@ -164,7 +170,7 @@
       },
       "role_focus_defense": {
         "title": "耐久型の優先事項",
-        "summary": "高 HP または DEF、シールド防御（約20%損傷無視）、支援防御カバー用の高 MOV、堅実な地形（宇宙＋地上または空中）、生存キット（損傷軽減／HP回復）、加えて良い弱体をいくつか。ATK は上振れのみ（≥9000）。特殊防御（Iフィールド／バリア／DR）は追加の存在ボーナスです。BEYOND THE TIME には、1撃以上耐える生存と先制攻撃または支援防御カバーが追加で必要です。",
+        "summary": "高 HP または DEF、シールド防御（約20%損傷無視）、支援防御カバー用の高 MOV、堅実な地形（宇宙＋地上または空中）、生存キット（損傷軽減／HP回復）、加えて攻撃力減少（支援型の防御力減少に相当する耐久手段）。ATK は上振れのみ（≥9000）。特殊防御（Iフィールド／バリア／DR）は追加の存在ボーナスです。BEYOND THE TIME には、1撃以上耐える生存と先制攻撃または支援防御カバーが追加で必要です。",
         "when": {
           "Primary": "主軸",
           "Secondary": "副次",
@@ -175,9 +181,11 @@
         "result": {
           "HP · DEF · shield · MOV · terrain · survivability abilities": "HP · DEF · シールド · MOV · 地形 · 生存アビリティ",
           "A few good pierce / DEF-down debuffs (R4+ kinds)": "良い貫通／DEFダウン弱体をいくつか（射程4+種）",
+          "ATK Down strength (R4+ kinds) — tank analog of Support DEF Down": "攻撃力減少の強度（射程4+種）— 支援型の防御力減少に相当する耐久手段",
           "≥9000 mild bonus; below that, no penalty": "≥9000 で軽い加点；未満は減点なし",
           "Presence bonus for DR / barrier / negation kits": "DR／バリア／無効化キットの存在ボーナス",
-          "18+ points, HP that survives more than one hit, and Preemptive Strike or Support Defense coverage": "18点以上、1撃以上耐える HP、先制攻撃または支援防御カバー"
+          "18+ points, HP that survives more than one hit, and Preemptive Strike or Support Defense coverage": "18点以上、1撃以上耐える HP、先制攻撃または支援防御カバー",
+          "18+ points, lasting ATK Down Lv5+, HP that survives more than one hit, and Preemptive Strike or Support Defense coverage": "18点以上、持続攻撃力減少 Lv5+、1撃以上耐える HP、先制攻撃または支援防御カバー"
         }
       },
       "role_focus_support": {
@@ -601,12 +609,14 @@
       },
       "debuffs": {
         "title": "弱体（耐久型／支援型ユニット）",
-        "summary": "攻撃型はこれらの項目をスキップ。弱体強度は持続 DEF ダウン％または即時貫通（≈10%→3 … 40%+→6）。耐久型は射程 ≥4 の異なる弱体種を数える（軽め；被ダメージ減は1種）。支援型は射程 ≥5 の種を数え、強度をより重視。",
+        "summary": "攻撃型はこれらの項目をスキップ。支援型の弱体強度は持続防御力減少％または即時貫通（≈10%→3 … 40%+→6）。耐久型の弱体強度は持続攻撃力減少％（被ダメージを下げ、耐えるヒット数を増やす）。耐久型は射程 ≥4 の異なる弱体種を数える（軽め；被ダメージ減は1種）。支援型は射程 ≥5 の種を数え、強度をより重視。支援型の BEYOND THE TIME には防御力減少／貫通 Lv5+ も必要。",
         "when": {
           "Attack role": "攻撃型",
           "Defense: 0 / 1 / 2+ distinct R4+ debuff kinds": "耐久型：射程4+ の異なる弱体種 0／1／2+",
           "Support: 0 / 1 / 2+ distinct R5+ debuff kinds": "支援型：射程5+ の異なる弱体種 0／1／2+",
           "Defense pierce / DEF-down level": "耐久型の貫通／DEFダウン段階",
+          "Defense ATK Down level": "耐久型の攻撃力減少段階",
+          "Support DEF Down / pierce level": "支援型の防御力減少／貫通段階",
           "Support pierce / DEF-down level": "支援型の貫通／DEFダウン段階"
         },
         "result": {
@@ -924,6 +934,8 @@
         "when": {
           "S+ (score 17+)": "S+（17 分以上）",
           "S+ Defense Type": "S+ 耐久型",
+          "S+ Support Type": "S+ 支援型",
+          "S+ Defense Type Characters": "S+ 耐久型角色",
           "S+ (score 23+)": "S+（23 分以上）",
           "S": "S",
           "A+ or A": "A+ 或 A",
@@ -932,8 +944,12 @@
         },
         "result": {
           "BEYOND THE TIME": "BEYOND THE TIME",
+          "BEYOND THE TIME (Attack)": "BEYOND THE TIME（攻擊型）",
           "BEYOND THE TIME (Attack / Support)": "BEYOND THE TIME（攻擊型／支援型）",
           "BEYOND THE TIME only at 18+ if the kit tanks more than one hit (HP + Shield Defense / special DR / Unbreakable) and has Preemptive Strike or Support Defense coverage (unit SD kit or MOV 6)": "需 18 分以上，且能承受超過一擊（HP＋盾牌防禦／特殊減傷／逃生機能），並具備先發攻擊或支援防禦覆蓋（機體套件或移動力 6）才進入 BEYOND THE TIME",
+          "BEYOND THE TIME only at 18+ if the kit tanks more than one hit (HP + Shield Defense / special DR / Unbreakable) and has lasting ATK Down at Lv5+ (30%+ — tank analog of Support DEF Down), and has Preemptive Strike or Support Defense coverage (unit SD kit or MOV 6)": "需 18 分以上，且有持續攻擊力減少（Lv5／30%+）、能承受超過一擊（HP＋盾牌防禦／特殊減傷／逃生機能），並具備先發攻擊或支援防禦覆蓋（機體套件或移動力 6）才進入 BEYOND THE TIME",
+          "BEYOND THE TIME only at 17+ with lasting DEF Down / pierce at Lv5+ (30%+). MAP-only kits stay Recommended": "需 17 分以上且有持續防禦力減少／貫穿（Lv5／30%+）才進入 BEYOND THE TIME。僅有 MAP 的套件維持推薦",
+          "BEYOND THE TIME only with Defense or Reaction band points (kit-only Durability Characters stay Recommended)": "需有防禦或反應帶分數才進入 BEYOND THE TIME（僅靠套件加分的耐久型角色維持推薦）",
           "Recommended": "推薦",
           "Solid": "穩健",
           "Situational": "看場合",
@@ -960,7 +976,7 @@
       },
       "role_focus_defense": {
         "title": "耐久型優先事項",
-        "summary": "高 HP 或 DEF、盾牌防禦（約忽略 20% 損傷）、支援防禦覆蓋用的高移動力、穩健地形（宇宙＋地上或空中）、生存套件（損傷減輕／HP 回復），外加幾個好用的弱化。ATK 僅計上振（≥9000）。特殊防禦（I力場／屏障／DR）為額外存在加分。BEYOND THE TIME 另需能承受超過一擊，以及先發攻擊或支援防禦覆蓋。",
+        "summary": "高 HP 或 DEF、盾牌防禦（約忽略 20% 損傷）、支援防禦覆蓋用的高移動力、穩健地形（宇宙＋地上或空中）、生存套件（損傷減輕／HP 回復），外加攻擊力減少（對應支援型防禦力減少的耐久手段）。ATK 僅計上振（≥9000）。特殊防禦（I力場／屏障／DR）為額外存在加分。BEYOND THE TIME 另需能承受超過一擊，以及先發攻擊或支援防禦覆蓋。",
         "when": {
           "Primary": "主軸",
           "Secondary": "次要",
@@ -971,9 +987,11 @@
         "result": {
           "HP · DEF · shield · MOV · terrain · survivability abilities": "HP · DEF · 盾 · 移動力 · 地形 · 生存能力",
           "A few good pierce / DEF-down debuffs (R4+ kinds)": "幾個好用的貫穿／DEF 下降弱化（射程 4+ 種）",
+          "ATK Down strength (R4+ kinds) — tank analog of Support DEF Down": "攻擊力減少強度（射程 4+ 種）— 對應支援型防禦力減少的耐久手段",
           "≥9000 mild bonus; below that, no penalty": "≥9000 輕微加分；低於則不扣分",
           "Presence bonus for DR / barrier / negation kits": "DR／屏障／無效化套件的存在加分",
-          "18+ points, HP that survives more than one hit, and Preemptive Strike or Support Defense coverage": "18 分以上、能承受超過一擊的 HP、先發攻擊或支援防禦覆蓋"
+          "18+ points, HP that survives more than one hit, and Preemptive Strike or Support Defense coverage": "18 分以上、能承受超過一擊的 HP、先發攻擊或支援防禦覆蓋",
+          "18+ points, lasting ATK Down Lv5+, HP that survives more than one hit, and Preemptive Strike or Support Defense coverage": "18 分以上、持續攻擊力減少 Lv5+、能承受超過一擊的 HP、先發攻擊或支援防禦覆蓋"
         }
       },
       "role_focus_support": {
@@ -1394,12 +1412,14 @@
       },
       "debuffs": {
         "title": "弱化（耐久型／支援型單位）",
-        "summary": "攻擊型略過這些項目。弱化強度用持續 DEF 下降％或即時貫穿（≈10%→3 … 40%+→6）。耐久型計算射程 ≥4 的不同弱化種類（較輕；受傷降低算一種）。支援型計算射程 ≥5 的種類，更看重強度。",
+        "summary": "攻擊型略過這些項目。支援型弱化強度用持續防禦力減少％或即時貫穿（≈10%→3 … 40%+→6）。耐久型弱化強度用持續攻擊力減少％（降低敵攻擊力以多扛幾下）。耐久型計算射程 ≥4 的不同弱化種類（較輕；受傷降低算一種）。支援型計算射程 ≥5 的種類，更看重強度。支援型 BEYOND THE TIME 另需防禦力減少／貫穿 Lv5+。",
         "when": {
           "Attack role": "攻擊型",
           "Defense: 0 / 1 / 2+ distinct R4+ debuff kinds": "耐久型：射程 4+ 不同弱化種類 0／1／2+",
           "Support: 0 / 1 / 2+ distinct R5+ debuff kinds": "支援型：射程 5+ 不同弱化種類 0／1／2+",
           "Defense pierce / DEF-down level": "耐久型貫穿／DEF 下降等級",
+          "Defense ATK Down level": "耐久型攻擊力減少等級",
+          "Support DEF Down / pierce level": "支援型防禦力減少／貫穿等級",
           "Support pierce / DEF-down level": "支援型貫穿／DEF 下降等級"
         },
         "result": {
@@ -1717,6 +1737,8 @@
         "when": {
           "S+ (score 17+)": "S+（17 分以上）",
           "S+ Defense Type": "S+ 耐久型",
+          "S+ Support Type": "S+ 支援型",
+          "S+ Defense Type Characters": "S+ 耐久型角色",
           "S+ (score 23+)": "S+（23 分以上）",
           "S": "S",
           "A+ or A": "A+ 或 A",
@@ -1725,8 +1747,12 @@
         },
         "result": {
           "BEYOND THE TIME": "BEYOND THE TIME",
+          "BEYOND THE TIME (Attack)": "BEYOND THE TIME（攻擊型）",
           "BEYOND THE TIME (Attack / Support)": "BEYOND THE TIME（攻擊型／支援型）",
           "BEYOND THE TIME only at 18+ if the kit tanks more than one hit (HP + Shield Defense / special DR / Unbreakable) and has Preemptive Strike or Support Defense coverage (unit SD kit or MOV 6)": "要 18 分以上，而且要頂得過一擊（HP＋盾牌防禦／特殊減傷／逃生機能），再加先發攻擊或支援防禦覆蓋（機體套件或移動力 6）先入 BEYOND THE TIME",
+          "BEYOND THE TIME only at 18+ if the kit tanks more than one hit (HP + Shield Defense / special DR / Unbreakable) and has lasting ATK Down at Lv5+ (30%+ — tank analog of Support DEF Down), and has Preemptive Strike or Support Defense coverage (unit SD kit or MOV 6)": "要 18 分以上，而且要有持續攻擊力減少（Lv5／30%+）、頂得過一擊（HP＋盾牌防禦／特殊減傷／逃生機能），再加先發攻擊或支援防禦覆蓋（機體套件或移動力 6）先入 BEYOND THE TIME",
+          "BEYOND THE TIME only at 17+ with lasting DEF Down / pierce at Lv5+ (30%+). MAP-only kits stay Recommended": "要 17 分以上而且有持續防禦力減少／貫穿（Lv5／30%+）先入 BEYOND THE TIME。淨係 MAP 嘅套件維持推薦",
+          "BEYOND THE TIME only with Defense or Reaction band points (kit-only Durability Characters stay Recommended)": "要有防禦或反應帶分數先入 BEYOND THE TIME（淨靠套件加分嘅耐久型角色維持推薦）",
           "Recommended": "推薦",
           "Solid": "穩健",
           "Situational": "睇場合",
@@ -1753,7 +1779,7 @@
       },
       "role_focus_defense": {
         "title": "耐久型優先事項",
-        "summary": "高 HP 或 DEF、盾牌防禦（約忽略 20% 損傷）、支援防禦覆蓋用嘅高移動力、穩健地形（宇宙＋地上或空中）、生存套件（損傷減輕／HP 回復），外加幾個好用嘅弱化。ATK 淨計上振（≥9000）。特殊防禦（I力場／屏障／DR）係額外存在加分。BEYOND THE TIME 另外要頂得過一擊，同埋先發攻擊或支援防禦覆蓋。",
+        "summary": "高 HP 或 DEF、盾牌防禦（約忽略 20% 損傷）、支援防禦覆蓋用嘅高移動力、穩健地形（宇宙＋地上或空中）、生存套件（損傷減輕／HP 回復），外加攻擊力減少（對應支援型防禦力減少嘅耐久手段）。ATK 淨計上振（≥9000）。特殊防禦（I力場／屏障／DR）係額外存在加分。BEYOND THE TIME 另外要頂得過一擊，同埋先發攻擊或支援防禦覆蓋。",
         "when": {
           "Primary": "主軸",
           "Secondary": "次要",
@@ -1764,9 +1790,11 @@
         "result": {
           "HP · DEF · shield · MOV · terrain · survivability abilities": "HP · DEF · 盾 · 移動力 · 地形 · 生存能力",
           "A few good pierce / DEF-down debuffs (R4+ kinds)": "幾個好用嘅貫穿／DEF 下降弱化（射程 4+ 種）",
+          "ATK Down strength (R4+ kinds) — tank analog of Support DEF Down": "攻擊力減少強度（射程 4+ 種）— 對應支援型防禦力減少嘅耐久手段",
           "≥9000 mild bonus; below that, no penalty": "≥9000 輕微加分；低過就唔扣分",
           "Presence bonus for DR / barrier / negation kits": "DR／屏障／無效化套件的存在加分",
-          "18+ points, HP that survives more than one hit, and Preemptive Strike or Support Defense coverage": "18 分以上、頂得過一擊嘅 HP、先發攻擊或支援防禦覆蓋"
+          "18+ points, HP that survives more than one hit, and Preemptive Strike or Support Defense coverage": "18 分以上、頂得過一擊嘅 HP、先發攻擊或支援防禦覆蓋",
+          "18+ points, lasting ATK Down Lv5+, HP that survives more than one hit, and Preemptive Strike or Support Defense coverage": "18 分以上、持續攻擊力減少 Lv5+、頂得過一擊嘅 HP、先發攻擊或支援防禦覆蓋"
         }
       },
       "role_focus_support": {
@@ -2187,12 +2215,14 @@
       },
       "debuffs": {
         "title": "弱化（耐久型／支援型單位）",
-        "summary": "攻擊型略過呢啲項目。弱化強度用持續 DEF 下降％或即時貫穿（≈10%→3 … 40%+→6）。耐久型計算射程 ≥4 嘅唔同弱化種類（較輕；受傷降低算一種）。支援型計算射程 ≥5 嘅種類，更睇重強度。",
+        "summary": "攻擊型略過呢啲項目。支援型弱化強度用持續防禦力減少％或即時貫穿（≈10%→3 … 40%+→6）。耐久型弱化強度用持續攻擊力減少％（降低敵攻擊力嚟多頂幾下）。耐久型計算射程 ≥4 嘅唔同弱化種類（較輕；受傷降低算一種）。支援型計算射程 ≥5 嘅種類，更睇重強度。支援型 BEYOND THE TIME 另外要防禦力減少／貫穿 Lv5+。",
         "when": {
           "Attack role": "攻擊型",
           "Defense: 0 / 1 / 2+ distinct R4+ debuff kinds": "耐久型：射程 4+ 不同弱化種類 0／1／2+",
           "Support: 0 / 1 / 2+ distinct R5+ debuff kinds": "支援型：射程 5+ 不同弱化種類 0／1／2+",
           "Defense pierce / DEF-down level": "耐久型貫穿／DEF 下降等級",
+          "Defense ATK Down level": "耐久型攻擊力減少等級",
+          "Support DEF Down / pierce level": "支援型防禦力減少／貫穿等級",
           "Support pierce / DEF-down level": "支援型貫穿／DEF 下降等級"
         },
         "result": {

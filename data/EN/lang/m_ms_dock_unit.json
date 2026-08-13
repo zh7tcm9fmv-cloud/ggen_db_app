@@ -224,6 +224,10 @@
     "value": "Gundam Calibarn"
   },
   {
+    "id": 110100001705003100,
+    "value": "Giant Psycho Golem"
+  },
+  {
     "id": 110200001001000100,
     "value": "Driven into a corner by the invading mobile suits of the Principality of Zeon, the Federation Forces developed this melee combat MS based on the development plan known as Operation V, which was intended to turn the tide of the war.\nBecause it was designed for combat data collection and versatile functionality, it has a Core Block system compatible with the Guncannon and Guntank, Luna Titanium alloy armor, a beam rifle with the power of a warship's main gun, and other technologies that were cutting edge at the time of its creation.\nIt was among the best of the mobile weapons used during the One Year War.\nIt was so versatile that it could fight everywhere from space to undersea with almost no modifications, and was even able to enter the atmosphere on its own.\nThe Gundam and its superior performance continued to pile up victories as the main weapon of the White Base Corps, and it was widely feared by the Zeon Forces, who nicknamed it the \"Federation's White Devil.\""
   },
@@ -442,5 +446,9 @@
   {
     "id": 110200001501002000,
     "value": "A prototype machine developed by the Ochs Earth Corporation and the Vanadis Institute.\nBecause it was designed with absolutely no guarantee of preserving the pilot's life, it lost its competition with the Lfrith, and all records of its research and development were subsequently deleted.\nDuring the Vanadis Incident, it was confiscated by the Space Assembly League and secretly kept in storage."
+  },
+  {
+    "id": 110200001705003100,
+    "value": "A stone giant said to have nearly brought the world to destruction.\nOnce sealed by a pair of crystal balls known as the Rufoi Stars, it was revived by Zeon in an attempt to harness its terrible power.\nThe red crystal ball was meant to revive it, while the blue one was meant to control it. Zeon revived it with the red crystal ball before obtaining the blue one, causing it to run amok."
   }
 ]

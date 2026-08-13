@@ -29,7 +29,7 @@
   },
   {
     "id": 250800070500101007,
-    "value": "Maruha Village"
+    "value": "Mahal Village"
   },
   {
     "id": 250800070500101008,
@@ -46,6 +46,34 @@
   {
     "id": 250800070500101011,
     "value": "Satan Gundam Castle"
+  },
+  {
+    "id": 250800070500101012,
+    "value": "Sweetwater Town"
+  },
+  {
+    "id": 250800070500101013,
+    "value": "Green Oasis Town"
+  },
+  {
+    "id": 250800070500101014,
+    "value": "Pergamino Palace"
+  },
+  {
+    "id": 250800070500101015,
+    "value": "Fairy Forest"
+  },
+  {
+    "id": 250800070500101016,
+    "value": "Pit of Summoning"
+  },
+  {
+    "id": 250800070500101017,
+    "value": "Stone Castle"
+  },
+  {
+    "id": 250800070500101018,
+    "value": "Dark Abyss"
   },
   {
     "id": 250900070500101001,
@@ -73,7 +101,7 @@
   },
   {
     "id": 250900070500101007,
-    "value": "Maruha Village\nA village located at the eastern edge of the Saddrac World."
+    "value": "Mahal Village\nA village located at the eastern edge of the Saddrac World."
   },
   {
     "id": 250900070500101008,
@@ -90,6 +118,34 @@
   {
     "id": 250900070500101011,
     "value": "Satan Gundam Castle\nThe Satan Gundam appeared suddenly in the Saddrac World along with the falling star.\nIt has made this ancient castle its base.\nThe place is heavily guarded."
+  },
+  {
+    "id": 250900070500101012,
+    "value": "Sweetwater Town\nA peaceful town known for its pure water.\nSituated in the middle of a lake, it can only be reached by boat."
+  },
+  {
+    "id": 250900070500101013,
+    "value": "Green Oasis Town\nA beautiful town where life is easy.\nA great desert expands to the south."
+  },
+  {
+    "id": 250900070500101014,
+    "value": "Pergamino Palace\nThis was once a peaceful town,\nbut after the betrayal by Cleric M'Quve Katze, the king was imprisoned\nand the nation rapidly overtaken by a cult worshipping the giant."
+  },
+  {
+    "id": 250900070500101015,
+    "value": "Fairy Forest\nAn island in the sea east of Pergamino, inhabited solely by fairies.\nThe winged fairy Kikka lives on this island."
+  },
+  {
+    "id": 250900070500101016,
+    "value": "Pit of Summoning\nA wise elder who possesses the Call spell tome lives here.\nThis spell can be used to give a Carddass physical form and have it fight by your side."
+  },
+  {
+    "id": 250900070500101017,
+    "value": "Stone Castle\nAn enormous ruin in the middle of a desert.\nAny who wish to enter or leave must brave the constant sandstorms that surround it.\nM'Quve Katze, who plans to resurrect the giant, has made it his base of operations."
+  },
+  {
+    "id": 250900070500101018,
+    "value": "Dark Abyss\nA labyrinth said to contain  the Recall spell tome.\nThis spell banishes creatures summoned by enemies."
   },
   {
     "id": 250900070500102002,
@@ -114,5 +170,25 @@
   {
     "id": 250900070500102007,
     "value": "Fairy GM Sniper Custom\nI'm the GM Sniper Custom, fairy of the forest!"
+  },
+  {
+    "id": 250900070500102010,
+    "value": "Knight Gundam\nIf this giant is so gentle, surely there's no harm in seeing for ourselves!"
+  },
+  {
+    "id": 250900070500102011,
+    "value": "Knight Sayla\nKnight Gundam! Take this!"
+  },
+  {
+    "id": 250900070500102012,
+    "value": "Martial Artist Nemo\nHyah, greetings. I am Martial Artist Nemo."
+  },
+  {
+    "id": 250900070500102013,
+    "value": "Golden Knight\nFollow the red knight! He disappeared into the desert!"
+  },
+  {
+    "id": 250900070500102015,
+    "value": "Fairy GM Sniper Custom\nThere's an ancient tale told among fairies.\nIt's about the Bow and Arrow of Light."
   }
 ]

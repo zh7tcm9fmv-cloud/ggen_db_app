@@ -3282,6 +3282,102 @@
     "MapId": 1705007
   },
   {
+    "Id": 705200100102000000,
+    "StageId": 70520101,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1705001
+  },
+  {
+    "Id": 705200100302000000,
+    "StageId": 70520103,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1705201
+  },
+  {
+    "Id": 705200200202000000,
+    "StageId": 70520202,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1705201
+  },
+  {
+    "Id": 705200300202000000,
+    "StageId": 70520302,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1705201
+  },
+  {
+    "Id": 705200400202000000,
+    "StageId": 70520402,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1705204
+  },
+  {
+    "Id": 705200500202000000,
+    "StageId": 70520502,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1705204
+  },
+  {
+    "Id": 705200600202000000,
+    "StageId": 70520602,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1705206
+  },
+  {
+    "Id": 705200700102000000,
+    "StageId": 70520701,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1705204
+  },
+  {
+    "Id": 705200800102000000,
+    "StageId": 70520801,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1705201
+  },
+  {
+    "Id": 705200900102000000,
+    "StageId": 70520901,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1705206
+  },
+  {
+    "Id": 705205000102000000,
+    "StageId": 70525001,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1705204
+  },
+  {
+    "Id": 705205000202000000,
+    "StageId": 70525002,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1705204
+  },
+  {
+    "Id": 705205000302000000,
+    "StageId": 70525003,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1705204
+  },
+  {
+    "Id": 705206000102000000,
+    "StageId": 70526001,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1705206
+  },
+  {
+    "Id": 705206000202000000,
+    "StageId": 70526002,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1705206
+  },
+  {
+    "Id": 705206000302000000,
+    "StageId": 70526003,
+    "StageDifficultyTypeIndex": 1,
+    "MapId": 1705206
+  },
+  {
     "Id": 900000100102000000,
     "StageId": 90000101,
     "StageDifficultyTypeIndex": 1,

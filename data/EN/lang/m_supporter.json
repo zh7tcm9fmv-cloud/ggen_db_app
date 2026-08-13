@@ -324,6 +324,14 @@
     "value": "Knight Sayla & Pegasus White Base"
   },
   {
+    "id": 160100001705000350,
+    "value": "Knight Amuro (Dijeh Armor)"
+  },
+  {
+    "id": 160100001705000460,
+    "value": "Fairy Kikka & Bow & Arrow of Light"
+  },
+  {
     "id": 160100001850000160,
     "value": "Xenon Teegel & Carry Base 2"
   },
@@ -660,6 +668,14 @@
     "value": "Knight Sayla & Pegasus White Base"
   },
   {
+    "id": 160300001705000350,
+    "value": "Knight Amuro (Dijeh Armor)"
+  },
+  {
+    "id": 160300001705000460,
+    "value": "Fairy Kikka & Bow & Arrow of Light"
+  },
+  {
     "id": 160300001850000160,
     "value": "Xenon Teegel & Carry Base 2"
   },
@@ -862,5 +878,9 @@
   {
     "id": 160800001705000150,
     "value": "Power is countered by magic, and magic by power. That's the basic rule of battle."
+  },
+  {
+    "id": 160800001705000350,
+    "value": "I vow to return peace to these lands!"
   }
 ]

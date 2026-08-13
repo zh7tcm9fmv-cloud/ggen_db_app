@@ -15568,7 +15568,7 @@ _SPI_API_PAYLOAD_CACHE = {
 }
 _SPI_DROP_ROW_KEYS = frozenset({'meta', 'detail_lines', 'calibration'})
 # Always keep these breakdown axes even at 0 so the dossier does not look like they were unscored.
-_SPI_KEEP_BREAKDOWN_ZERO = frozenset({'terrain'})
+_SPI_KEEP_BREAKDOWN_ZERO = frozenset({'terrain', 'max_debuff'})
 
 _SPI_ER_UI = {
     'EN': {'stage': 'Stage {n}', 'free': 'Free for all', 'restricted': 'restricted'},
@@ -15634,6 +15634,30 @@ def _spi_translate_tag_name(name, tag_map):
     if not name or not tag_map:
         return name
     return tag_map.get(name) or tag_map.get(str(name).lower()) or name
+
+
+def _spi_localize_series_catalog(catalog, lc):
+    """Localize series filter names from LANG series_name_map / series_list."""
+    lc = _spi_norm_lang(lc)
+    ld = get_lang_data(lc)
+    snm = ld.get('series_name_map') or {}
+    sl = ld.get('series_list') or []
+    out = []
+    for row in catalog or []:
+        if not isinstance(row, dict):
+            continue
+        r = dict(row)
+        sid = normalize_id(r.get('id'))
+        name = snm.get(sid)
+        if not name:
+            for lid, val in sl:
+                if str(lid).endswith(sid):
+                    name = val
+                    break
+        if name:
+            r['name'] = name
+        out.append(r)
+    return out
 
 
 def _spi_localize_er_filters(lc):
@@ -15809,6 +15833,10 @@ def _sp_investment_localize_payload(payload, lc):
     if catalog and tag_map:
         out['tag_catalog_en'] = list(catalog)
         out['tag_catalog'] = [_spi_translate_tag_name(t, tag_map) for t in catalog]
+    series_cat = out.get('series_catalog') or []
+    if series_cat:
+        out['series_catalog_en'] = [dict(r) for r in series_cat if isinstance(r, dict)]
+        out['series_catalog'] = _spi_localize_series_catalog(series_cat, lc)
     er = _spi_localize_er_filters(lc)
     if er is not None:
         out['er_expert_filters'] = er

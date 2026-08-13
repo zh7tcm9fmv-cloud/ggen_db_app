@@ -2880,6 +2880,78 @@
     "IsUsingMaxTraitValue": false
   },
   {
+    "Id": 170500035000,
+    "SupporterLeaderSkillContentSetId": 170500035000,
+    "NameLanguageId": 0,
+    "DescriptionLanguageId": 160700000000100250,
+    "ResourceId": "0",
+    "RarityIndex": 5,
+    "IsUsingMaxTraitValue": false
+  },
+  {
+    "Id": 170500035001,
+    "SupporterLeaderSkillContentSetId": 170500035001,
+    "NameLanguageId": 0,
+    "DescriptionLanguageId": 160700000000100300,
+    "ResourceId": "0",
+    "RarityIndex": 5,
+    "IsUsingMaxTraitValue": false
+  },
+  {
+    "Id": 170500035002,
+    "SupporterLeaderSkillContentSetId": 170500035002,
+    "NameLanguageId": 0,
+    "DescriptionLanguageId": 160700000000100330,
+    "ResourceId": "0",
+    "RarityIndex": 5,
+    "IsUsingMaxTraitValue": false
+  },
+  {
+    "Id": 170500035003,
+    "SupporterLeaderSkillContentSetId": 170500035003,
+    "NameLanguageId": 0,
+    "DescriptionLanguageId": 160700000000100360,
+    "ResourceId": "0",
+    "RarityIndex": 5,
+    "IsUsingMaxTraitValue": false
+  },
+  {
+    "Id": 170500046000,
+    "SupporterLeaderSkillContentSetId": 170500046000,
+    "NameLanguageId": 0,
+    "DescriptionLanguageId": 160700000000100100,
+    "ResourceId": "0",
+    "RarityIndex": 3,
+    "IsUsingMaxTraitValue": false
+  },
+  {
+    "Id": 170500046001,
+    "SupporterLeaderSkillContentSetId": 170500046001,
+    "NameLanguageId": 0,
+    "DescriptionLanguageId": 160700000000100120,
+    "ResourceId": "0",
+    "RarityIndex": 3,
+    "IsUsingMaxTraitValue": false
+  },
+  {
+    "Id": 170500046002,
+    "SupporterLeaderSkillContentSetId": 170500046002,
+    "NameLanguageId": 0,
+    "DescriptionLanguageId": 160700000000100130,
+    "ResourceId": "0",
+    "RarityIndex": 3,
+    "IsUsingMaxTraitValue": false
+  },
+  {
+    "Id": 170500046003,
+    "SupporterLeaderSkillContentSetId": 170500046003,
+    "NameLanguageId": 0,
+    "DescriptionLanguageId": 160700000000100140,
+    "ResourceId": "0",
+    "RarityIndex": 3,
+    "IsUsingMaxTraitValue": false
+  },
+  {
     "Id": 185000016000,
     "SupporterLeaderSkillContentSetId": 185000016000,
     "NameLanguageId": 0,

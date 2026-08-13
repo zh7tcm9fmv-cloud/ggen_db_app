@@ -3076,6 +3076,22 @@
     "value": ""
   },
   {
+    "id": 141200000101700201,
+    "value": "When Vigor is Max or higher,\nincrease ATK by 7%."
+  },
+  {
+    "id": 141200000101700202,
+    "value": "When Vigor is Supercharged or higher,\nfurther increase ATK by 8%."
+  },
+  {
+    "id": 141200000101710301,
+    "value": "When Vigor is Max or higher,\n40% chance to evade Physical Melee, Beam Melee, and Physical Ranged attacks. (Up to 3 times per turn.)"
+  },
+  {
+    "id": 141200000101720101,
+    "value": "When executing a Support Attack or Counter,\nthe max range of Special Weapon is increased by 1."
+  },
+  {
     "id": 141200000200010101,
     "value": "Increase Melee by 5%."
   },
@@ -8640,6 +8656,58 @@
     "value": ""
   },
   {
+    "id": 141200000202820101,
+    "value": "When piloting units with specified tags,\nincrease damage dealt to the enemy by 15%,\nreduce damage taken by 15%,\nand increase MP by 5."
+  },
+  {
+    "id": 141200000202820102,
+    "value": ""
+  },
+  {
+    "id": 141200000202820103,
+    "value": ""
+  },
+  {
+    "id": 141200000202830101,
+    "value": "Support Attack/Counter +1 time(s)."
+  },
+  {
+    "id": 141200000202830102,
+    "value": "Increase ATK and DEF by 2% (permanent)\nfor same-squad units with the [Condition 1] tag,\nand increase ATK and DEF by 3% (permanent)\nfor same-squad units with the [Condition 2] tag."
+  },
+  {
+    "id": 141200000202830103,
+    "value": ""
+  },
+  {
+    "id": 141200000202830104,
+    "value": ""
+  },
+  {
+    "id": 141200000202830105,
+    "value": ""
+  },
+  {
+    "id": 141200000202830106,
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%."
+  },
+  {
+    "id": 141200000202830107,
+    "value": "Increase ATK by 2%."
+  },
+  {
+    "id": 141200000202830108,
+    "value": "Increase DEF by 2%."
+  },
+  {
+    "id": 141200000202830109,
+    "value": "Increase ATK by 3%."
+  },
+  {
+    "id": 141200000202830110,
+    "value": "Increase DEF by 3%."
+  },
+  {
     "id": 141200000300010101,
     "value": "ATK Down {0}%."
   },
@@ -9640,6 +9708,22 @@
     "value": "Damage Taken from Physical Weapons Up {0}%"
   },
   {
+    "id": 141200000300460101,
+    "value": "Damage Taken from Special Weapons Up {0}%"
+  },
+  {
+    "id": 141200000300460201,
+    "value": "Damage Taken from Special Weapons Up {0}%"
+  },
+  {
+    "id": 141200000300460301,
+    "value": "Damage Taken from Special Weapons Up {0}%"
+  },
+  {
+    "id": 141200000300470101,
+    "value": "Increase Critical Rate by 100%."
+  },
+  {
     "id": 141200000300480101,
     "value": "The max range of Awaken Weapon is decrease by {0}."
   },
@@ -9674,6 +9758,14 @@
   {
     "id": 141200000300480901,
     "value": "The max range of Awaken Weapon is decrease by {0}."
+  },
+  {
+    "id": 141200000300490102,
+    "value": "Chance Step +1 time(s)."
+  },
+  {
+    "id": 141200000300490150,
+    "value": "Chance Step +1 time(s)."
   },
   {
     "id": 141200000310010101,
@@ -14848,6 +14940,22 @@
     "value": "Increase ATK by 8%."
   },
   {
+    "id": 141200000406840101,
+    "value": "Increase ATK by 10%."
+  },
+  {
+    "id": 141200000406840102,
+    "value": "When combating enemies with specified tags,\nincrease ATK by 5%."
+  },
+  {
+    "id": 141200000406850101,
+    "value": "Increase Critical Rate by 7%."
+  },
+  {
+    "id": 141200000406850102,
+    "value": "When equipped to a Unit possessing specified tags,\nincrease Critical Rate by 3%."
+  },
+  {
     "id": 141200000406900101,
     "value": "Increase DEF by 5%."
   },
@@ -18646,6 +18754,42 @@
   {
     "id": 141200000612190101,
     "value": "Increase ATK by 50%\nfor squad units piloted by Carozzo Ronah."
+  },
+  {
+    "id": 141200000612300101,
+    "value": "Increase ATK by 100%."
+  },
+  {
+    "id": 141200000612320101,
+    "value": "Increase squad Sorceress Qubeley ATK by 100%"
+  },
+  {
+    "id": 141200000612330101,
+    "value": "At the start of every turn, restores Giant Mud Golem HP by 20%"
+  },
+  {
+    "id": 141200000612330102,
+    "value": "At the start of every turn, restores Giant Mud Golem HP by 50%"
+  },
+  {
+    "id": 141200000612340101,
+    "value": "For units piloted by Giant Psycho Golem and Giant Mud Golem in your squad,\nincrease ATK and DEF by 50%,\nand restore HP by 10%."
+  },
+  {
+    "id": 141200000612340102,
+    "value": ""
+  },
+  {
+    "id": 141200000612340103,
+    "value": ""
+  },
+  {
+    "id": 141200000612350101,
+    "value": "Increase ATK and DEF by 25%\nfor squad units piloted by Warrior Desert Dom, and Warrior Desert Zaku"
+  },
+  {
+    "id": 141200000612350102,
+    "value": ""
   },
   {
     "id": 141200000699000101,

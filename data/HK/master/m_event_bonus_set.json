@@ -117,6 +117,22 @@
   },
   {
     "Id": 200004,
+    "EventBonusId": 20000406
+  },
+  {
+    "Id": 200004,
+    "EventBonusId": 20000407
+  },
+  {
+    "Id": 200004,
+    "EventBonusId": 20000408
+  },
+  {
+    "Id": 200004,
+    "EventBonusId": 20000409
+  },
+  {
+    "Id": 200004,
     "EventBonusId": 20000411
   },
   {
@@ -470,6 +486,50 @@
   {
     "Id": 200014,
     "EventBonusId": 20001410
+  },
+  {
+    "Id": 200015,
+    "EventBonusId": 20001501
+  },
+  {
+    "Id": 200015,
+    "EventBonusId": 20001502
+  },
+  {
+    "Id": 200015,
+    "EventBonusId": 20001503
+  },
+  {
+    "Id": 200015,
+    "EventBonusId": 20001504
+  },
+  {
+    "Id": 200015,
+    "EventBonusId": 20001505
+  },
+  {
+    "Id": 200015,
+    "EventBonusId": 20001506
+  },
+  {
+    "Id": 200015,
+    "EventBonusId": 20001507
+  },
+  {
+    "Id": 200015,
+    "EventBonusId": 20001508
+  },
+  {
+    "Id": 200015,
+    "EventBonusId": 20001509
+  },
+  {
+    "Id": 200015,
+    "EventBonusId": 20001510
+  },
+  {
+    "Id": 200015,
+    "EventBonusId": 20001511
   },
   {
     "Id": 250001,

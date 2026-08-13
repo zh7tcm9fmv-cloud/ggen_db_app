@@ -27,6 +27,7 @@
   const SPI_ABIL_FILTER_ICON = '/static/images/Trait/trait_10190102.webp';
   const SPI_TAG_ICON_CHAR = '/static/images/UI/UI_Common_Icon_Category_Chara_Main.webp';
   const SPI_TAG_ICON_UNIT = '/static/images/UI/UI_Common_Icon_Category_MS_Main.webp';
+  const SPI_SERIES_ALL_LOGO = '/static/images/Logo-Series/logo_l_series_0010.webp';
 
   const BREAKDOWN_META = {
     tags: {
@@ -192,7 +193,7 @@
     },
     max_debuff: {
       label: 'Debuff strength',
-      tip: 'Defense/Support only: lasting DEF-down % or instant pierce on weapons (stronger = more points). Not scored for Attack.',
+      tip: 'Defense Type: lasting ATK Down % (how many more hits the tank can take). Support Type: lasting DEF Down % or instant pierce. Not scored for Attack.',
     },
     ranged: { label: 'Ranged', tip: 'Pilot Ranged after SP growth.' },
     melee: { label: 'Melee', tip: 'Pilot Melee after SP growth.' },
@@ -673,6 +674,7 @@
 
     updateSourceFilterLabel();
     updateTagFilterLabel();
+    updateSeriesFilterLabel();
     updateSkillFilterLabel();
     updateAbilFilterLabel();
     updateErFilterLabel();
@@ -690,7 +692,9 @@
     persistLang(norm);
     document.documentElement.setAttribute('data-ui-lang', norm);
     tagFilters = [];
+    seriesFilters = [];
     updateTagFilterLabel();
+    updateSeriesFilterLabel();
     applyLangStatic();
     await fetchPayload();
   }
@@ -1034,8 +1038,10 @@
   let sourceFilters = [];
   let sourceCombine = 'or';
   let tagFilters = [];
+  let seriesFilters = [];
   let erFilters = [];
   let tagCombine = 'and';
+  let seriesCombine = 'and';
   let erCombine = 'and';
   let skillCombine = 'and';
   let abilCombine = 'and';
@@ -1334,6 +1340,10 @@
       const tags = (row.tags || []).map((t) => String(t));
       if (!spiCombineMatch(tagFilters, (want) => tags.includes(String(want)), tagCombine)) return false;
     }
+    if (seriesFilters.length) {
+      const ids = (row.series_ids || []).map(String);
+      if (!spiCombineMatch(seriesFilters, (want) => ids.includes(String(want)), seriesCombine)) return false;
+    }
     if (erFilters.length) {
       const ids = (row.er_expert_ids || []).map(String);
       if (!spiCombineMatch(erFilters, (want) => ids.includes(String(want)), erCombine)) return false;
@@ -1431,7 +1441,7 @@
   }
 
   function closeSpiFilterPanels() {
-    ['spiRarity', 'spiSource', 'spiTag', 'spiSkill', 'spiAbil', 'spiEr'].forEach((pfx) => {
+    ['spiRarity', 'spiSource', 'spiTag', 'spiSeries', 'spiSkill', 'spiAbil', 'spiEr'].forEach((pfx) => {
       const panel = document.getElementById(pfx + 'FilterPanel');
       const btn = document.getElementById(pfx + 'FilterBtn');
       if (panel) panel.hidden = true;
@@ -1442,6 +1452,7 @@
         else if (pfx === 'spiAbil') btn.classList.toggle('active', abilFilterIds.length > 0);
         else if (pfx === 'spiSource') btn.classList.toggle('active', sourceFilters.length > 0);
         else if (pfx === 'spiTag') btn.classList.toggle('active', tagFilters.length > 0);
+        else if (pfx === 'spiSeries') btn.classList.toggle('active', seriesFilters.length > 0);
         else btn.classList.toggle('active', erFilters.length > 0);
       }
     });
@@ -1458,7 +1469,7 @@
       panel.hidden = false;
       btn.setAttribute('aria-expanded', 'true');
       btn.classList.add('active');
-      if (pfx === 'spiTag' || pfx === 'spiEr' || pfx === 'spiSkill' || pfx === 'spiAbil') {
+      if (pfx === 'spiTag' || pfx === 'spiSeries' || pfx === 'spiEr' || pfx === 'spiSkill' || pfx === 'spiAbil') {
         if (pfx === 'spiSkill' && !panel.querySelector('input[type="checkbox"]')) fillSkillPanel();
         if (pfx === 'spiAbil' && !panel.querySelector('input[type="checkbox"]')) fillAbilPanel();
         const search = panel.querySelector('.filter-dd-search');
@@ -1555,6 +1566,7 @@
 
   function getSpiCombineMode(key) {
     if (key === 'tag') return tagCombine;
+    if (key === 'series') return seriesCombine;
     if (key === 'er') return erCombine;
     if (key === 'skill') return skillCombine;
     if (key === 'abil') return abilCombine;
@@ -1565,6 +1577,7 @@
   function setSpiCombineMode(key, mode) {
     const m = spiCombineOp(mode);
     if (key === 'tag') tagCombine = m;
+    else if (key === 'series') seriesCombine = m;
     else if (key === 'er') erCombine = m;
     else if (key === 'skill') skillCombine = m;
     else if (key === 'abil') abilCombine = m;
@@ -2035,6 +2048,119 @@
     );
   }
 
+  function seriesCatalogRows() {
+    const cat = (payload && payload.series_catalog) || [];
+    const enCat = (payload && payload.series_catalog_en) || cat;
+    const present = new Set();
+    const buckets = currentBuckets();
+    Object.keys(buckets || {}).forEach((bk) => {
+      (buckets[bk] || []).forEach((row) => {
+        (row.series_ids || []).forEach((sid) => present.add(String(sid)));
+      });
+    });
+    return cat
+      .map((row, i) => {
+        const id = String((row && row.id) || '');
+        if (!id || (present.size && !present.has(id))) return null;
+        const en = enCat[i] && enCat[i].name ? String(enCat[i].name) : id;
+        return {
+          id,
+          name: String((row && row.name) || id),
+          nameEn: en,
+          icon: String((row && row.icon) || ''),
+        };
+      })
+      .filter(Boolean);
+  }
+
+  function seriesFilterRowHtml(row, checked) {
+    const ft = `${row.name} ${row.nameEn || ''} ${row.id}`.toLowerCase();
+    const ic = row.icon
+      ? `<img class="tag-icon-fg" src="${esc(imgUrl(row.icon))}" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback(this)">`
+      : `<span class="series-icon-fallback"></span>`;
+    return `<label class="list-filter-tag-item" data-filter-text="${escAttr(ft)}">
+      <input type="checkbox" class="list-filter-sr" name="spiDd_series" value="${escAttr(row.id)}" ${checked ? 'checked' : ''}>
+      <span class="tag-composite list-filter-tag-composite list-filter-series-row">
+        <span class="tag-part-icon">${ic}</span>
+        <span class="tag-part-value">${esc(row.name)}</span>
+      </span>
+    </label>`;
+  }
+
+  function fillSeriesPanel() {
+    const panel = $('#spiSeriesFilterPanel');
+    if (!panel) return;
+    const sel = new Set(seriesFilters.map(String));
+    const rows = seriesCatalogRows()
+      .map((row) => seriesFilterRowHtml(row, sel.has(String(row.id))))
+      .join('');
+    panel.innerHTML = `${spiDdSearchWrapHtml(t('series_search_ph'), t('series_search_aria'))}
+      <div class="filter-panel-scroll-inner spi-dd-scroll">
+        <div class="filter-panel-grid browse-series-grid">${rows}</div>
+        <div class="spi-dd-empty" hidden>${esc(t('series_search_empty'))}</div>
+      </div>
+      ${spiDdFooterHtml('series')}`;
+    bindSpiDdSearch(panel);
+    panel.querySelectorAll('input[type="checkbox"]').forEach((inp) => {
+      inp.addEventListener('change', () => {
+        seriesFilters = Array.from(panel.querySelectorAll('input[type="checkbox"]:checked')).map((x) =>
+          String(x.value)
+        );
+        updateSeriesFilterLabel();
+        render();
+      });
+    });
+    bindSpiDdFooter(
+      panel,
+      () => {
+        seriesFilters = [];
+        updateSeriesFilterLabel();
+        fillSeriesPanel();
+        closeSpiFilterPanels();
+        render();
+      },
+      'series'
+    );
+  }
+
+  function updateSeriesFilterLabel() {
+    const labelEl = $('#spiSeriesFilterLabel');
+    const btn = labelEl && labelEl.closest('.rarity-filter-btn');
+    if (!labelEl) return;
+    const allIc = `<img class="filter-inline-icon role-filter-chip" src="${esc(imgUrl(SPI_SERIES_ALL_LOGO))}" alt="" role="presentation">`;
+    if (!seriesFilters.length) {
+      labelEl.innerHTML = `<span class="list-filter-btn-mini series-filter-btn-all" title="${escAttr(t('no_series_filter'))}">${allIc}<span class="source-filter-btn-plain">${esc(t('no_series_filter'))}</span></span>`;
+      if (btn) btn.classList.remove('active');
+      return;
+    }
+    const cat = seriesCatalogRows();
+    const rowFor = (sid) => cat.find((r) => String(r.id) === String(sid));
+    if (seriesFilters.length === 1) {
+      const hit = rowFor(seriesFilters[0]);
+      const nm = hit ? hit.name : String(seriesFilters[0]);
+      const ic = hit && hit.icon
+        ? `<img class="filter-inline-icon role-filter-chip" src="${esc(imgUrl(hit.icon))}" alt="" role="presentation">`
+        : allIc;
+      labelEl.innerHTML = `<span class="list-filter-btn-mini">${ic}<span class="source-filter-btn-plain">${esc(nm)}</span></span>`;
+      if (btn) btn.classList.add('active');
+      return;
+    }
+    const iconsHtml = seriesFilters
+      .map((sid) => {
+        const hit = rowFor(sid);
+        const nm = hit ? hit.name : String(sid);
+        if (hit && hit.icon) {
+          return `<img class="series-filter-toolbar-ic" src="${esc(imgUrl(hit.icon))}" alt="" role="presentation" title="${escAttr(nm)}">`;
+        }
+        return `<span class="series-filter-toolbar-fallback" title="${escAttr(nm)}"></span>`;
+      })
+      .join('');
+    const nLabel = t('series_filter_n', { n: seriesFilters.length });
+    const txt = nLabel.startsWith('series_filter') ? `${seriesFilters.length} series` : nLabel;
+    labelEl.innerHTML = `<span class="series-filter-toolbar-icons">${iconsHtml}</span><span class="source-filter-btn-plain">${esc(txt)}</span>`;
+    if (btn) btn.classList.add('active');
+  }
+
   function erFilterRowHtml(e, label, en, checked) {
     const ft = `${label} ${en || ''} ${e.id}`.toLowerCase();
     const num = e.number != null ? String(e.number) : '';
@@ -2098,12 +2224,14 @@
     fillRarityPanel();
     fillSourcePanel();
     fillTagPanel();
+    fillSeriesPanel();
     fillSkillPanel();
     fillAbilPanel();
     fillErPanel();
     updateRarityFilterLabel();
     updateSourceFilterLabel();
     updateTagFilterLabel();
+    updateSeriesFilterLabel();
     updateSkillFilterLabel();
     updateAbilFilterLabel();
     updateErFilterLabel();
@@ -2607,6 +2735,7 @@
     if (sp) sp.checked = hasSpOnly;
     updateSourceFilterLabel();
     updateTagFilterLabel();
+    updateSeriesFilterLabel();
     updateSkillFilterLabel();
     updateAbilFilterLabel();
     updateErFilterLabel();
@@ -2624,8 +2753,10 @@
     showUlt = false;
     sourceFilters = [];
     tagFilters = [];
+    seriesFilters = [];
     erFilters = [];
     tagCombine = 'and';
+    seriesCombine = 'and';
     erCombine = 'and';
     skillCombine = 'and';
     abilCombine = 'and';
@@ -2774,7 +2905,9 @@
         abilFilterIds = [];
         applyFilterDom();
         fillAbilPanel();
+        fillSeriesPanel();
         updateAbilFilterLabel();
+        updateSeriesFilterLabel();
         render();
       });
     });
@@ -2805,6 +2938,8 @@
     });
     $('#spiSourceFilterBtn').addEventListener('click', (e) => toggleSpiFilterPanel('spiSource', e));
     $('#spiTagFilterBtn').addEventListener('click', (e) => toggleSpiFilterPanel('spiTag', e));
+    const seriesBtn = $('#spiSeriesFilterBtn');
+    if (seriesBtn) seriesBtn.addEventListener('click', (e) => toggleSpiFilterPanel('spiSeries', e));
     const skillBtn = $('#spiSkillFilterBtn');
     if (skillBtn) skillBtn.addEventListener('click', (e) => toggleSpiFilterPanel('spiSkill', e));
     const abilBtn = $('#spiAbilFilterBtn');
@@ -2813,7 +2948,7 @@
     document.addEventListener('click', (e) => {
       if (
         !e.target.closest(
-          '#spiRarityWrap, #spiSourceWrap, #spiTagWrap, #spiSkillWrap, #spiAbilWrap, #spiErWrap'
+          '#spiRarityWrap, #spiSourceWrap, #spiTagWrap, #spiSeriesWrap, #spiSkillWrap, #spiAbilWrap, #spiErWrap'
         )
       )
         closeSpiFilterPanels();

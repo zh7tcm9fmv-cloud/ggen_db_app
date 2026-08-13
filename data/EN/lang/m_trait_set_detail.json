@@ -325,23 +325,23 @@
   },
   {
     "id": 140100000100170100,
-    "value": "(Vigor conditions) Increased ATK & DEF LV 1"
+    "value": "(Cnd: Vigor) Increased ATK & DEF LV 1"
   },
   {
     "id": 140100000100170200,
-    "value": "(Vigor conditions) Increased ATK & DEF LV 2"
+    "value": "(Cnd: Vigor) Increased ATK & DEF LV 2"
   },
   {
     "id": 140100000100170300,
-    "value": "(Vigor conditions) Increased ATK & DEF LV 3"
+    "value": "(Cnd: Vigor) Increased ATK & DEF LV 3"
   },
   {
     "id": 140100000100170400,
-    "value": "(Vigor conditions) Increased ATK & DEF LV 4"
+    "value": "(Cnd: Vigor) Increased ATK & DEF LV 4"
   },
   {
     "id": 140100000100170500,
-    "value": "(Vigor conditions) Increased ATK & DEF LV 5"
+    "value": "(Cnd: Vigor) Increased ATK & DEF LV 5"
   },
   {
     "id": 140100000100180101,
@@ -1249,7 +1249,7 @@
   },
   {
     "id": 140100000100680200,
-    "value": "(Vigor conditions) Increased ATK & EN consumption LV2"
+    "value": "(Cnd: Vigor) Increased ATK & EN consumption LV2"
   },
   {
     "id": 140100000100690100,
@@ -1273,23 +1273,23 @@
   },
   {
     "id": 140100000100700101,
-    "value": "(Vigor conditions) Increased Critical Rate LV1"
+    "value": "(Cnd: Vigor) Increased Critical Rate LV1"
   },
   {
     "id": 140100000100700201,
-    "value": "(Vigor conditions) Increased Critical Rate LV2"
+    "value": "(Cnd: Vigor) Increased Critical Rate LV2"
   },
   {
     "id": 140100000100700301,
-    "value": "(Vigor conditions) Increased Critical Rate LV3"
+    "value": "(Cnd: Vigor) Increased Critical Rate LV3"
   },
   {
     "id": 140100000100700401,
-    "value": "(Vigor conditions) Increased Critical Rate LV 4"
+    "value": "(Cnd: Vigor) Increased Critical Rate LV 4"
   },
   {
     "id": 140100000100700501,
-    "value": "(Vigor conditions) Increased Critical Rate LV5"
+    "value": "(Cnd: Vigor) Increased Critical Rate LV5"
   },
   {
     "id": 140100000100710100,
@@ -1509,15 +1509,15 @@
   },
   {
     "id": 140100000100870201,
-    "value": "(Vigor conditions) Increased ATK LV 2"
+    "value": "(Cnd: Vigor) Increased ATK LV 2"
   },
   {
     "id": 140100000100870301,
-    "value": "(Vigor conditions) Increased ATK LV 3"
+    "value": "(Cnd: Vigor) Increased ATK LV 3"
   },
   {
     "id": 140100000100880201,
-    "value": "(Vigor conditions) Increased DEF LV 2"
+    "value": "(Cnd: Vigor) Increased DEF LV 2"
   },
   {
     "id": 140100000100890200,
@@ -1569,15 +1569,15 @@
   },
   {
     "id": 140100000100940200,
-    "value": "(Vigor conditions) Increased ATK & MOB LV 2"
+    "value": "(Cnd: Vigor) Increased ATK & MOB LV 2"
   },
   {
     "id": 140100000100940300,
-    "value": "(Vigor conditions) Increased ATK & MOB LV 3"
+    "value": "(Cnd: Vigor) Increased ATK & MOB LV 3"
   },
   {
     "id": 140100000100950300,
-    "value": "(Vigor conditions) Increased DEF & MOB LV 3"
+    "value": "(Cnd: Vigor) Increased DEF & MOB LV 3"
   },
   {
     "id": 140100000100960100,
@@ -1621,7 +1621,7 @@
   },
   {
     "id": 140100000101010101,
-    "value": "(Vigor conditions)  Beam Weapons Max Range Up LV 1"
+    "value": "(Cnd: Vigor)  Beam Weapons Max Range Up LV 1"
   },
   {
     "id": 140100000101020101,
@@ -1633,7 +1633,7 @@
   },
   {
     "id": 140100000101030200,
-    "value": "(Vigor conditions) Increased ATK & Decreased DEF LV 2"
+    "value": "(Cnd: Vigor) Increased ATK & Decreased DEF LV 2"
   },
   {
     "id": 140100000101040101,
@@ -1657,7 +1657,7 @@
   },
   {
     "id": 140100000101070101,
-    "value": "(Vigor conditions) Increased MOV LV1"
+    "value": "(Cnd: Vigor) Increased MOV LV1"
   },
   {
     "id": 140100000101080200,
@@ -1737,11 +1737,11 @@
   },
   {
     "id": 140100000101150101,
-    "value": "(Action: Support) Increased ATK LV 1"
+    "value": "(When Supporting) Increased ATK LV 1"
   },
   {
     "id": 140100000101150201,
-    "value": "(Action: Support) Increased ATK LV 2"
+    "value": "(When Supporting) Increased ATK LV 2"
   },
   {
     "id": 140100000101150301,
@@ -1749,15 +1749,15 @@
   },
   {
     "id": 140100000101160201,
-    "value": "(Action: Counter) Increased ATK LV 2"
+    "value": "(When countering) Increased ATK LV 2"
   },
   {
     "id": 140100000101160401,
-    "value": "(Action: Counter) Increased ATK LV 4"
+    "value": "(When countering) Increased ATK LV 4"
   },
   {
     "id": 140100000101180101,
-    "value": "(Vigor conditions)  Physical & Beam Weapons Max Range Up LV 1"
+    "value": "(Cnd: Vigor)  Physical & Beam Weapons Max Range Up LV 1"
   },
   {
     "id": 140100000101190101,
@@ -1769,7 +1769,7 @@
   },
   {
     "id": 140100000101220101,
-    "value": "(Vigor conditions) Physical Weapons Max Range Up LV1"
+    "value": "(Cnd: Vigor) Physical Weapons Max Range Up LV1"
   },
   {
     "id": 140100000101230100,
@@ -1793,23 +1793,23 @@
   },
   {
     "id": 140100000101240101,
-    "value": "(Vigor conditions) Improve Decrease DEF Effect LV1"
+    "value": "(Cnd: Vigor) Improve Decrease DEF Effect LV1"
   },
   {
     "id": 140100000101240201,
-    "value": "(Vigor conditions) Improve Decrease DEF Effect LV2"
+    "value": "(Cnd: Vigor) Improve Decrease DEF Effect LV2"
   },
   {
     "id": 140100000101240301,
-    "value": "(Vigor conditions) Improve Decrease DEF Effect LV3"
+    "value": "(Cnd: Vigor) Improve Decrease DEF Effect LV3"
   },
   {
     "id": 140100000101240401,
-    "value": "(Vigor conditions) Improve Decrease DEF Effect LV4"
+    "value": "(Cnd: Vigor) Improve Decrease DEF Effect LV4"
   },
   {
     "id": 140100000101240501,
-    "value": "(Vigor conditions) Improve Decrease DEF Effect LV5"
+    "value": "(Cnd: Vigor) Improve Decrease DEF Effect LV5"
   },
   {
     "id": 140100000101250200,
@@ -2085,11 +2085,11 @@
   },
   {
     "id": 140100000101600100,
-    "value": "(Vigor conditions) Increased ATK & Critical Rate LV 1"
+    "value": "(Cnd: Vigor) Increased ATK & Critical Rate LV 1"
   },
   {
     "id": 140100000101600300,
-    "value": "(Vigor conditions) Increased ATK & Critical Rate LV 3"
+    "value": "(Cnd: Vigor) Increased ATK & Critical Rate LV 3"
   },
   {
     "id": 140100000101610200,
@@ -2109,7 +2109,7 @@
   },
   {
     "id": 140100000101630101,
-    "value": "(Vigor conditions) Special Weapons Max Range Up LV 1"
+    "value": "(Cnd: Vigor) Special Weapons Max Range Up LV 1"
   },
   {
     "id": 140100000101640101,
@@ -2154,6 +2154,18 @@
   {
     "id": 140100000101690200,
     "value": "(EN Conditions) Increased ATK and Critical Rate & Increased EN Cost LV 2"
+  },
+  {
+    "id": 140100000101700200,
+    "value": "(Cnd: Vigor) Increased ATK LV 2"
+  },
+  {
+    "id": 140100000101710301,
+    "value": "(Cnd: Vigor) Parry LV 3"
+  },
+  {
+    "id": 140100000101720101,
+    "value": "(When Supporting) Special Weapon Increased Max Range LV 1"
   },
   {
     "id": 140100000200010101,
@@ -2717,23 +2729,23 @@
   },
   {
     "id": 140100000200290100,
-    "value": "(Vigor conditions) Ranged & Melee Up LV 1"
+    "value": "(Cnd: Vigor) Ranged & Melee Up LV 1"
   },
   {
     "id": 140100000200290200,
-    "value": "(Vigor conditions) Ranged & Melee Up LV 2"
+    "value": "(Cnd: Vigor) Ranged & Melee Up LV 2"
   },
   {
     "id": 140100000200290300,
-    "value": "(Vigor conditions) Ranged & Melee Up LV 3"
+    "value": "(Cnd: Vigor) Ranged & Melee Up LV 3"
   },
   {
     "id": 140100000200290400,
-    "value": "(Vigor conditions) Ranged & Melee Up LV 4"
+    "value": "(Cnd: Vigor) Ranged & Melee Up LV 4"
   },
   {
     "id": 140100000200290500,
-    "value": "(Vigor conditions) Ranged & Melee Up LV 5"
+    "value": "(Cnd: Vigor) Ranged & Melee Up LV 5"
   },
   {
     "id": 140100000200300100,
@@ -4761,15 +4773,15 @@
   },
   {
     "id": 140100000202080202,
-    "value": "(Vigor conditions)Increased Critical Rate"
+    "value": "(Cnd: Vigor)Increased Critical Rate"
   },
   {
     "id": 140100000202080203,
-    "value": "(Vigor conditions)Increased Melee"
+    "value": "(Cnd: Vigor)Increased Melee"
   },
   {
     "id": 140100000202080204,
-    "value": "(Vigor conditions)Increased Reaction"
+    "value": "(Cnd: Vigor)Increased Reaction"
   },
   {
     "id": 140100000202080300,
@@ -4781,15 +4793,15 @@
   },
   {
     "id": 140100000202080302,
-    "value": "(Vigor conditions)Increased Critical Rate"
+    "value": "(Cnd: Vigor)Increased Critical Rate"
   },
   {
     "id": 140100000202080303,
-    "value": "(Vigor conditions)Increased Melee"
+    "value": "(Cnd: Vigor)Increased Melee"
   },
   {
     "id": 140100000202080304,
-    "value": "(Vigor conditions)Increased Reaction"
+    "value": "(Cnd: Vigor)Increased Reaction"
   },
   {
     "id": 140100000202080400,
@@ -5206,6 +5218,30 @@
   {
     "id": 140100000202810100,
     "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000202820100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000202830100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000202830107,
+    "value": "Increased ATK"
+  },
+  {
+    "id": 140100000202830108,
+    "value": "Increased DEF"
+  },
+  {
+    "id": 140100000202830109,
+    "value": "Increased ATK"
+  },
+  {
+    "id": 140100000202830110,
+    "value": "Increased DEF"
   },
   {
     "id": 140100000300010101,
@@ -6208,6 +6244,22 @@
     "value": "Increased Physical Damage Effect Value Boost"
   },
   {
+    "id": 140100000300460101,
+    "value": "Increased Special Damage Effect Value Boost"
+  },
+  {
+    "id": 140100000300460201,
+    "value": "Increased Special Damage Effect Value Boost"
+  },
+  {
+    "id": 140100000300460301,
+    "value": "Increased Special Damage Effect Value Boost"
+  },
+  {
+    "id": 140100000300470101,
+    "value": "Increased Critical Rate"
+  },
+  {
     "id": 140100000300480101,
     "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 1"
   },
@@ -6242,6 +6294,14 @@
   {
     "id": 140100000300480901,
     "value": "Awaken Weapons Max Range Down [1 turn(s)] LV 9"
+  },
+  {
+    "id": 140100000300490102,
+    "value": "Chance Step Increase"
+  },
+  {
+    "id": 140100000300490150,
+    "value": "Chance Step Increase"
   },
   {
     "id": 140100000310010101,
@@ -10840,6 +10900,14 @@
     "value": "Limiter OFF SR (Mobile Suit Gundam SEED C.E. 73 -Stargazer-)"
   },
   {
+    "id": 140100000406840100,
+    "value": "Bow & Arrow of Light"
+  },
+  {
+    "id": 140100000406850100,
+    "value": "Club"
+  },
+  {
     "id": 140100000406900100,
     "value": "Reinforced Armor SR (Fierce Enemy Assault)"
   },
@@ -14066,6 +14134,30 @@
   {
     "id": 140100000612190101,
     "value": "(Character conditions)  Increased ATK"
+  },
+  {
+    "id": 140100000612300101,
+    "value": "Increased ATK"
+  },
+  {
+    "id": 140100000612320101,
+    "value": "(Character conditions) Increased ATK"
+  },
+  {
+    "id": 140100000612330101,
+    "value": "(Character conditions) HP Restoration LV 1"
+  },
+  {
+    "id": 140100000612330102,
+    "value": "(Character conditions) HP Restoration LV 2"
+  },
+  {
+    "id": 140100000612340100,
+    "value": "(Character conditions) HP Restoration, Increased ATK & DEF LV 1"
+  },
+  {
+    "id": 140100000612350100,
+    "value": "(Character conditions) Increased ATK & DEF LV 1"
   },
   {
     "id": 140100000699000101,

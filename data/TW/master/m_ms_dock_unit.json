@@ -548,5 +548,15 @@
     "SeriesId": 5010,
     "ModelNumber": "X-EX01",
     "ScheduleId": 2512409901
+  },
+  {
+    "Id": 1705003100,
+    "ResourceId": "g7050u03100",
+    "NameLanguageId": 110100001705003100,
+    "ProfileLanguageId": 110200001705003100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 7052,
+    "ModelNumber": "-",
+    "ScheduleId": 2608209901
   }
 ]

@@ -309,7 +309,7 @@
     "TitleLanguageId": 250100000000200004,
     "PointItemId": 222000040001,
     "ShopId": 18200004,
-    "EventTopDisplayPriority": 26075000
+    "EventTopDisplayPriority": 26082000
   },
   {
     "Id": 200005,
@@ -440,6 +440,19 @@
     "PointItemId": 222000140001,
     "ShopId": 0,
     "EventTopDisplayPriority": 26062001
+  },
+  {
+    "Id": 200015,
+    "EventTypeIndex": 7,
+    "ResourceId": "se_banner_200015",
+    "ScheduleId": 2608201302,
+    "ChallengeScheduleId": 2608201301,
+    "EventBonusSetId": 200015,
+    "PickupRewardSetId": 36200015000000,
+    "TitleLanguageId": 250100000000200015,
+    "PointItemId": 222000150001,
+    "ShopId": 18200004,
+    "EventTopDisplayPriority": 26082001
   },
   {
     "Id": 210001,

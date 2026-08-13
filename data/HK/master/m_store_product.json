@@ -1246,6 +1246,48 @@
     "IsSubscription": false
   },
   {
+    "ProductGroupId": 226082001,
+    "StoreTypeIndex": 1,
+    "ProductId": "ei",
+    "JpyPrice": 480,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226082001,
+    "StoreTypeIndex": 2,
+    "ProductId": "ei",
+    "JpyPrice": 480,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226082002,
+    "StoreTypeIndex": 1,
+    "ProductId": "ej",
+    "JpyPrice": 1500,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226082002,
+    "StoreTypeIndex": 2,
+    "ProductId": "ej",
+    "JpyPrice": 1500,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226082003,
+    "StoreTypeIndex": 3,
+    "ProductId": "ek",
+    "JpyPrice": 3000,
+    "IsSubscription": false
+  },
+  {
+    "ProductGroupId": 226082003,
+    "StoreTypeIndex": 4,
+    "ProductId": "ek",
+    "JpyPrice": 3000,
+    "IsSubscription": false
+  },
+  {
     "ProductGroupId": 325041001,
     "StoreTypeIndex": 2,
     "ProductId": "gpp_a",

@@ -53,7 +53,8 @@
     "v5.33: Replace Lupus/Rex signature allowlist (+3) with catalog-wide multi damage-type bonus (+1) from WeaponAttributeSetId Beam/Physical/Special combos (incl. MAP) — Vidar / Grand Master / Michaelis S2 / Thunderbolt MAP etc.",
     "v5.34: Multi damage-type points +1→+2; community vote nudge capped at ±2 (IP ballot); Unit dossiers list recommended Characters",
     "v5.35: Defense Characters — Ranged/Melee/Awaken upside-only (cap +1); Defense/Reaction stay primary. Extra Support Defense +1 line scores +1. Support-role SD +1→+2, combat-actions cap 4. Defense Unit HP/DEF floors softened and +2 HP reachable. Drop dead Hard ER tag. Transform uses better HP/DEF/ATK from alt form (no Reborns allowlist). GN Field / Positron Reflector no longer name-excluded from ability score",
-    "v5.36: Defense Type Units — S+ / BEYOND THE TIME needs 18+ and a hard-stage gate: tank more than one hit (HP + Shield Defense / special DR / Unbreakable) plus Preemptive Strike or Support Defense coverage (unit SD kit or MOV 6). Stops fat SSP kits flooding the top bucket without a real tank or intercept role"
+    "v5.36: Defense Type Units — S+ / BEYOND THE TIME needs 18+ and a hard-stage gate: tank more than one hit (HP + Shield Defense / special DR / Unbreakable) plus Preemptive Strike or Support Defense coverage (unit SD kit or MOV 6). Stops fat SSP kits flooding the top bucket without a real tank or intercept role",
+    "v5.37: Defense Type debuff strength is lasting ATK Down (tank analog of Support DEF Down). Defense S+ also requires ATK Down Lv5+ (same idea as Support needing DEF Down). Support S+ needs DEF Down / pierce at Lv5+. Defense Character S+ needs a Defense or Reaction band. Series filters on /ig for Units and Characters"
   ],
   "exclude_warships": true,
   "exclude_ur_units": true,
@@ -1914,8 +1915,19 @@
     "min_hp_points": 1,
     "high_hp_points": 2,
     "min_movement_points": 2,
+    "min_atk_down_points": 1,
     "support_defense_trait_types": [52, 87, 90],
-    "note": "Defense Type S+ / BEYOND THE TIME: tank more than one hit (HP band + Shield Defense / special DR / Unbreakable) and a hard-stage edge (Preemptive Strike, unit Support Defense kit, or MOV 6 for Support Defense coverage)."
+    "note": "Defense Type S+ / BEYOND THE TIME: tank more than one hit (HP band + Shield Defense / special DR / Unbreakable), lasting ATK Down Lv5+ (tank analog of Support DEF Down), and a hard-stage edge (Preemptive Strike, unit Support Defense kit, or MOV 6 for Support Defense coverage)."
+  },
+  "support_bbt_gate": {
+    "enabled": true,
+    "min_max_debuff_points": 1,
+    "note": "Support Type S+ / BEYOND THE TIME needs lasting DEF Down / pierce at Lv5+ (30%+). MAP-only kits stay Recommended."
+  },
+  "defense_pilot_bbt_gate": {
+    "enabled": true,
+    "min_primary_stat_points": 1,
+    "note": "Defense Character S+ needs Defense or Reaction band points. Kit-only Durability Characters stay Recommended."
   },
   "pilot_letter_cutoffs": [
     {
@@ -2129,12 +2141,12 @@
   },
   "transform_stat_override_unit_ids": [],
   "scoring_guide": {
-    "version": "5.36",
+    "version": "5.37",
     "title": "How Investment Guide scoring works",
     "intro": "Point-sum shortlist for SP Conversion / SSP Conversion investment on Units and Characters (Attack Type / Defense Type / Support Type). Units have separate SP and SSP boards; Characters use SP only. Criteria favor practical sortie tools (MAP Weapon, mobility follow-ups, weapon power) and a deep affinity Character pool over a single linked recommend. Minor Attack Type stats (HP, SSP EN) are upside-only — no floor punishment. Close letters still need a human look.",
     "overrides": [
-      "Each score factor adds points; the total becomes a letter, then a bucket (BEYOND THE TIME / Recommended / Solid / Situational / Niche). Units: Attack/Support score 17+ earns S+ and BEYOND THE TIME. Defense Type Units need 18+ and must tank more than one hit (HP + Shield Defense / special DR / Unbreakable) plus Preemptive Strike or Support Defense coverage (unit SD kit or MOV 6). Characters: kit points stay absolute; within each Character Type, S+ is roughly the top 3% and S the top 8% (with an absolute A+ floor); A+ and below use role-relative point cutoffs.",
-      "Filter by Tag or Eternal Road Expert stage to compare Units that actually fit the same restriction.",
+      "Each score factor adds points; the total becomes a letter, then a bucket (BEYOND THE TIME / Recommended / Solid / Situational / Niche). Units: Attack score 17+ earns S+ and BEYOND THE TIME. Defense Type Units need 18+, lasting ATK Down at Lv5+ (30%+), tank more than one hit (HP + Shield Defense / special DR / Unbreakable), plus Preemptive Strike or Support Defense coverage (unit SD kit or MOV 6). Support Type Units need 17+ with lasting DEF Down / pierce at Lv5+ (30%+). Characters: kit points stay absolute; within each Character Type, S+ is roughly the top 3% and S the top 8% (with an absolute A+ floor); A+ and below use role-relative point cutoffs. Defense Type Characters also need a Defense or Reaction band for BEYOND THE TIME.",
+      "Filter by Series, Tag, or Eternal Road Expert stage to compare Units and Characters that actually fit the same restriction.",
       "This is a general investment ranking that can also help on Expert — not a dedicated Expert-clears ladder (kit quality should not collapse when one stage’s AI or stats shift)."
     ],
     "gaps": [
@@ -2148,7 +2160,9 @@
       "Character kits add flat Conditional Ability / Initial MP bonuses on top of TraitType points; active skills are role-weighted (damage / range / survivability / mobility over MP; EN Charge / Save EN = 0).",
       "UR Characters are omitted from the Character board (not SP Conversion targets; there are no Ultimate Characters).",
       "Transform scores only when the alternate form unlocks deployable Terrain Capability, higher MOV, longer range, higher weapon power, or adds a MAP Weapon. Combat stats use the better of base/alt HP·DEF·ATK when the alt form improves those.",
-      "Attack Type HP and SSP Attack Type EN are upside-only; Defense Type HP/DEF floors are mild (−1) and the +2 HP band starts at 120k so survivability can create rank. ATK stays upside-only. Special defenses (I-field / DR / barrier) are presence bonuses beyond the shield mechanism. Defense Type BEYOND THE TIME also requires a hard-stage kit: tank more than one hit and Preemptive Strike or Support Defense coverage.",
+      "Attack Type HP and SSP Attack Type EN are upside-only; Defense Type HP/DEF floors are mild (−1) and the +2 HP band starts at 120k so survivability can create rank. ATK stays upside-only. Special defenses (I-field / DR / barrier) are presence bonuses beyond the shield mechanism. Defense Type BEYOND THE TIME also requires a hard-stage kit: tank more than one hit and Preemptive Strike or Support Defense coverage. Lasting ATK Down is Defense Type debuff strength (tank analog of Support DEF Down) and also counts as tank mitigation.",
+      "Support Type BEYOND THE TIME needs lasting DEF Down / pierce at Lv5+ (30%+) so MAP-padded kits stay Recommended.",
+      "Defense Type Characters need a Defense or Reaction band for BEYOND THE TIME — kit-only Durability Characters stay Recommended.",
       "Units whose recommend Character is UR / Ultimate take a mild −1 dependence tax (still usable with lower-rarity Characters).",
       "Unit Expert access bands are compressed so a small eligibility gap (e.g. 4 vs 6 stages) is not a free letter tier.",
       "Terrain Capability extras need full affinity circle (Lv≥3); triangle Space/Atmospheric is a mild penalty, not a strength.",

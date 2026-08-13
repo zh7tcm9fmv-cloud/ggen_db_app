@@ -142,21 +142,53 @@ class TestSpInvestmentBands(unittest.TestCase):
             letter_for_total(self.rules, 18, cutoffs_key="letter_cutoffs", role="Defense"),
             "S+",
         )
-        paper = {"hp": -1, "shield": 1, "special_defense": 0, "extra_life": 0, "preemptive": 1, "movement": 2}
+        paper = {"hp": -1, "shield": 1, "special_defense": 0, "extra_life": 0, "preemptive": 1, "movement": 2, "max_debuff": 1}
         self.assertEqual(
             letter_for_unit_total(
                 self.rules, 19, role="Defense", has_sp=True, breakdown=paper
             ),
             "S",
         )
-        tank = {"hp": 2, "shield": 1, "special_defense": 1, "extra_life": 0, "preemptive": 0, "movement": 2}
+        # Fat kit without lasting ATK Down stays Recommended (Support-symmetric).
+        no_atk_down = {
+            "hp": 2,
+            "shield": 1,
+            "special_defense": 1,
+            "extra_life": 0,
+            "preemptive": 0,
+            "movement": 2,
+            "max_debuff": 0,
+        }
+        self.assertEqual(
+            letter_for_unit_total(
+                self.rules, 18, role="Defense", has_sp=True, breakdown=no_atk_down
+            ),
+            "S",
+        )
+        tank = {
+            "hp": 2,
+            "shield": 1,
+            "special_defense": 1,
+            "extra_life": 0,
+            "preemptive": 0,
+            "movement": 2,
+            "max_debuff": 1,
+        }
         self.assertEqual(
             letter_for_unit_total(
                 self.rules, 18, role="Defense", has_sp=True, breakdown=tank
             ),
             "S+",
         )
-        no_edge = {"hp": 2, "shield": 1, "special_defense": 1, "extra_life": 0, "preemptive": 0, "movement": 0}
+        no_edge = {
+            "hp": 2,
+            "shield": 1,
+            "special_defense": 1,
+            "extra_life": 0,
+            "preemptive": 0,
+            "movement": 0,
+            "max_debuff": 1,
+        }
         self.assertEqual(
             letter_for_unit_total(
                 self.rules, 19, role="Defense", has_sp=True, breakdown=no_edge
@@ -170,10 +202,45 @@ class TestSpInvestmentBands(unittest.TestCase):
             "extra_life": 0,
             "preemptive": 1,
             "movement": 0,
+            "max_debuff": 1,
         }
         self.assertEqual(
             letter_for_unit_total(
                 self.rules, 18, role="Defense", has_sp=True, breakdown=first_strike
+            ),
+            "S+",
+        )
+        # ATK Down alone is not enough — still need HP/shield tankiness.
+        atk_down_only = {
+            "hp": 0,
+            "shield": 0,
+            "special_defense": 0,
+            "extra_life": 0,
+            "preemptive": 0,
+            "movement": 2,
+            "max_debuff": 1,
+        }
+        self.assertEqual(
+            letter_for_unit_total(
+                self.rules, 18, role="Defense", has_sp=True, breakdown=atk_down_only
+            ),
+            "S",
+        )
+
+    def test_support_unit_splus_needs_def_down(self):
+        from sp_investment_rank import letter_for_unit_total
+
+        map_only = {"max_debuff": 0, "map": 2, "support_r4_debuffs": 1}
+        self.assertEqual(
+            letter_for_unit_total(
+                self.rules, 18, role="Support", has_sp=True, breakdown=map_only
+            ),
+            "S",
+        )
+        with_def_down = {"max_debuff": 1, "map": 2, "support_r4_debuffs": 1}
+        self.assertEqual(
+            letter_for_unit_total(
+                self.rules, 17, role="Support", has_sp=True, breakdown=with_def_down
             ),
             "S+",
         )
@@ -245,6 +312,34 @@ class TestSpInvestmentBands(unittest.TestCase):
         self.assertTrue(hy.get("enabled"))
         self.assertAlmostEqual(float(hy.get("s_plus_top_pct") or 0), 0.03)
         self.assertAlmostEqual(float(hy.get("s_top_pct") or 0), 0.08)
+
+    def test_defense_pilot_splus_needs_def_or_reaction(self):
+        from sp_investment_rank import calibrate_pilot_letters_hybrid
+
+        rows = []
+        for i in range(100):
+            # Kit-only Durability (#0) has no DEF/Reaction band; everyone else does
+            # so skipped S+ slots refill from the next eligible pilots.
+            if i == 0:
+                bd = {"defense": 0, "reaction": 0, "skills_abilities": 11}
+            else:
+                bd = {"defense": 2, "reaction": 0, "skills_abilities": 8}
+            rows.append(
+                {
+                    "id": f"d{i}",
+                    "name": f"Defense {i:03d}",
+                    "role": "Defense",
+                    "total": 100 - i,
+                    "has_sp": True,
+                    "breakdown": bd,
+                }
+            )
+        calibrate_pilot_letters_hybrid(
+            rows, self.rules, cutoffs_key="pilot_letter_cutoffs"
+        )
+        self.assertEqual(rows[0]["letter"], "S")
+        self.assertEqual(rows[1]["letter"], "S+")
+        self.assertEqual(sum(1 for r in rows if r["letter"] == "S+"), 3)
 
     def test_tag_points_disabled(self):
         self.assertEqual(tag_count_points(self.rules, 2), 0)
@@ -1257,19 +1352,50 @@ class TestSpInvestmentBands(unittest.TestCase):
             }
         )
         self.assertIn("def_dn", keys)
-        # score_features uses max_debuff_pct bands — 25% → level 4 → Defense 0 / Support 0
+        # Support strength still uses DEF Down / pierce. Defense strength is ATK Down.
         defense = score_features(
-            _minimal_features(role="Defense", max_debuff_pct=25), self.rules
+            _minimal_features(role="Defense", max_debuff_pct=25, max_atk_dn_pct=0),
+            self.rules,
         )
         support = score_features(
             _minimal_features(role="Support", max_debuff_pct=25), self.rules
         )
-        self.assertEqual(defense["breakdown"]["max_debuff"], 0)
+        self.assertEqual(defense["breakdown"]["max_debuff"], -2)
         self.assertEqual(support["breakdown"]["max_debuff"], 0)
         support_strong = score_features(
             _minimal_features(role="Support", max_debuff_pct=40), self.rules
         )
         self.assertEqual(support_strong["breakdown"]["max_debuff"], 2)
+
+    def test_lasting_atk_down_feeds_defense_max_debuff(self):
+        from sp_investment_rank import classify_debuff_keys_from_meta
+
+        keys = classify_debuff_keys_from_meta(
+            {
+                "type_index": 12,
+                "status_type_index": 7,
+                "status_value": -30,
+                "magnitude": 30,
+                "timing": 1,
+                "limit": 1,
+                "weapon_attrs": [],
+            }
+        )
+        self.assertIn("atk_dn", keys)
+        defense = score_features(
+            _minimal_features(role="Defense", max_atk_dn_pct=30, max_debuff_pct=0),
+            self.rules,
+        )
+        support = score_features(
+            _minimal_features(role="Support", max_atk_dn_pct=30, max_debuff_pct=0),
+            self.rules,
+        )
+        self.assertEqual(defense["breakdown"]["max_debuff"], 1)
+        self.assertEqual(support["breakdown"]["max_debuff"], -2)
+        defense_strong = score_features(
+            _minimal_features(role="Defense", max_atk_dn_pct=40), self.rules
+        )
+        self.assertEqual(defense_strong["breakdown"]["max_debuff"], 2)
 
     def test_low_hp_attacker_no_floor_penalty(self):
         scored = score_features(_minimal_features(HP=79000), self.rules)
@@ -1634,6 +1760,7 @@ def _minimal_features(**overrides):
         "has_after_move_map": False,
         "has_extra_move_kit": False,
         "max_debuff_pct": 0,
+        "max_atk_dn_pct": 0,
         "support_debuffs_range4_count": 0,
         "support_debuffs_range5_count": 0,
         "special_defense_kinds": [],

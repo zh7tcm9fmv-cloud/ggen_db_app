@@ -170,7 +170,7 @@ def bucketize(rows: list[dict]) -> dict:
 
 _SPI_DROP_ROW_KEYS = frozenset({"meta", "detail_lines", "calibration"})
 # Keep even at 0 so dossier bars do not look like the axis was skipped.
-_SPI_KEEP_BREAKDOWN_ZERO = frozenset({"terrain"})
+_SPI_KEEP_BREAKDOWN_ZERO = frozenset({"terrain", "max_debuff"})
 
 
 def _lean_public_row(row: dict) -> dict:
@@ -277,8 +277,10 @@ def main():
         )
 
     tag_catalog = collect_tag_catalog([sp_rows, ssp_rows, pilot_rows])
+    series_catalog = SIR.build_series_catalog(A, [sp_rows, ssp_rows, pilot_rows], LC)
     lim_supp_tags = SIR.get_limited_supporter_tag_catalog(A, LC)
     print(f"  limited supporter tags={len(lim_supp_tags)}")
+    print(f"  series catalog={len(series_catalog)}")
     guide["limited_supporter_tag_catalog"] = lim_supp_tags
 
     units_sp = bucketize(sp_rows)
@@ -297,6 +299,7 @@ def main():
         "bucket_labels": rules.get("bucket_labels") or {},
         "er_expert_filters": er_filters,
         "tag_catalog": tag_catalog,
+        "series_catalog": series_catalog,
         "limited_supporter_tag_catalog": lim_supp_tags,
         "units": {
             "sp": units_sp,

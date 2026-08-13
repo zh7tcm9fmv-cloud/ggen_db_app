@@ -280,6 +280,10 @@
     "value": "Counter Prediction"
   },
   {
+    "id": 170200000001082011,
+    "value": "Parry"
+  },
+  {
     "id": 170200000001091011,
     "value": "Main Stages"
   },
@@ -465,7 +469,7 @@
   },
   {
     "id": 170300000001011061,
-    "value": "Weapons have effects that vary depending on unit type.\n\nTypes of weapon effects:\n\n- Powerful Type\nEffects: Primarily deals significant damage to enemies.\nIcon Color: Red\n\n- Impairing Type\nEffects: Primarily weakens enemy units.\nIcon Color: Yellow\n\n- Interference Type\nEffects: Primarily disrupts enemy units' actions.\nIcon Color: Purple\n\n- Preemptive Strike\nEnables attack at the start of battle.\nBattles begin in the preemptive phase, then proceed to the normal phase. Weapons with preemptive strike will employ it in the preemptive phase.\nThe effect applies to Counters, Support Attacks, and Counter Supports, enabling their use at the start of battle.\n*If both the attacker and the counterattacker have Preemptive Strike, the attacker is prioritized.\n*If an enemy's HP falls to 0 in the preemptive phase, they will not take part in the normal phase.\n\n- Other\nEffects: No special effects, but consumes less EN\nIcon Color: Green\n\n*Stacking Rules for Impairing Effects:\nIdentical impairing effects do not stack. Instead, the effect with the higher value will overwrite the lower one.\nAdditionally, the duration (number of turns) of the impairing effect will be replaced by the duration of the higher-value effect.\n\n*Maximum Range Reduction Disruptive Effect Rules\nThe maximum range reduction Weapon Effect does not get applied until after the resolution of the initial attack and all triggered actions such as counterattacks.\nThe maximum range reduction Weapon Effect only reduces the maximum range. The maximum range can never go below the minimum range."
+    "value": "Weapons have effects that vary depending on unit type.\n\nTypes of weapon effects:\n\n- Powerful Type\nEffects: Primarily deals significant damage to enemies.\nIcon Color: Red\n\n- Impairing Type\nEffects: Primarily weakens enemy units.\nIcon Color: Yellow\n\n- Interference Type\nEffects: Primarily disrupts enemy units' actions.\nIcon Color: Purple\n\n- Preemptive Strike\nEnables attack at the start of battle.\nBattles begin in the preemptive phase, then proceed to the normal phase. Weapons with preemptive strike will employ it in the preemptive phase.\nThe effect applies to Counters, Support Attacks, and Counter Supports, enabling their use at the start of battle.\n*If both the attacker and the counterattacker have Preemptive Strike, the attacker is prioritized.\n*If an enemy's HP falls to 0 in the preemptive phase, they will not take part in the normal phase.\n\n・Static Accuracy\nAn effect that allows attacks to have a fixed accuracy,\nregardless of your or your opponent's stats or modifiers.\n*Attacks cannot hit units with character skill Sway activated.\n\n- Other\nEffects: No special effects, but consumes less EN\nIcon Color: Green\n\n*Stacking Rules for Impairing Effects:\nIdentical impairing effects do not stack. Instead, the effect with the higher value will overwrite the lower one.\nAdditionally, the duration (number of turns) of the impairing effect will be replaced by the duration of the higher-value effect.\n\n*Maximum Range Reduction Disruptive Effect Rules\nThe maximum range reduction Weapon Effect does not get applied until after the resolution of the initial attack and all triggered actions such as counterattacks.\nThe maximum range reduction Weapon Effect only reduces the maximum range. The maximum range can never go below the minimum range."
   },
   {
     "id": 170300000001011071,
@@ -509,7 +513,7 @@
   },
   {
     "id": 170300000001021051,
-    "value": "Characters possess unique skills called Character Skills.\nCharacters may learn skills by reaching certain levels.\n\nIf a unit has not yet taken action during your phase, you can spend SP to activate a skill.\nAfter activating a character skill, you cannot activate another character skill with the same effect on that unit until the previous effect expires.\n\nAdditionally, skills have a priority order for their effects.\n\nUsing the character skill Sway will not allow you to evade attacks made with the weapon effect Absolute Hit.\nSimilarly, using the character skill Lock On will not enable you to hit a unit that has activated the character skill Sway.\n\nChance Step, Support Attack, and Support Defense count increases granted by a Character Skill will remain until used."
+    "value": "Characters possess unique skills called Character Skills.\nCharacters may learn skills by reaching certain levels.\n\nIf a unit has not yet taken action during your phase, you can spend SP to activate a skill.\nAfter activating a character skill, you cannot activate another character skill with the same effect on that unit until the previous effect expires.\n\nAdditionally, skills have a priority order for their effects.\n\nUsing the character skill Sway will not allow you to evade attacks made with the weapon effect Absolute Hit.\nSimilarly, using the character skill Lock On will not enable you to hit a unit that has activated the character skill Sway.\nEven when using a weapon with the Fixed Accuracy effect, attacks cannot hit a units with character skill Sway activated.\n\nChance Step, Support Attack, and Support Defense count increases granted by a Character Skill will remain until used."
   },
   {
     "id": 170300000001021061,
@@ -674,6 +678,10 @@
   {
     "id": 170300000001081091,
     "value": "Exclamation marks displayed on the field when moving a unit indicate the attack range of enemy units. \nYou can avoid a counterattack by attacking from outside the enemy unit's attack range."
+  },
+  {
+    "id": 170300000001082011,
+    "value": "Parry is an action that can be performed by units that have the unit ability Parry.\nWhen Parry activates, you can evade attacks from specified weapons.\n\n*There is a limit to how many times Parry can activate per turn.\n*Cannot evade attacks from weapons with the Perfect Accuracy weapon effect.\n*Cannot evade attacks with character skill Lock On activated.\n*Cannot evade attacks from MAP Weapons."
   },
   {
     "id": 170300000001091011,

@@ -253,5 +253,22 @@
     "ReleaseConditionTypeIndex": 1,
     "ReleaseConditionValue": 0,
     "SortOrder": 0
+  },
+  {
+    "HomeUnitStyleTypeIndex": 16,
+    "ReleaseConditionCollectionBookRegistrationCount": 0,
+    "UnitCount": 0,
+    "MaxRotationDegree": 0,
+    "MinRotationDegree": 0,
+    "MaxScaleRatePercent": 0,
+    "MinScaleRatePercent": 0,
+    "MaxPositionX": 0,
+    "MinPositionX": 0,
+    "MaxPositionY": 0,
+    "MinPositionY": 0,
+    "ReleaseConditionTextOverrideLanguageId": 240500000000000005,
+    "ReleaseConditionTypeIndex": 2,
+    "ReleaseConditionValue": 990000000007,
+    "SortOrder": 1
   }
 ]

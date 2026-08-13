@@ -1200,6 +1200,36 @@
     "AssetDownloadTimingTypeIndex": 1
   },
   {
+    "Id": 1705000350,
+    "NameLanguageId": 160100001705000350,
+    "DescriptionLanguageId": 0,
+    "SortNameLanguageId": 160300001705000350,
+    "RarityIndex": 5,
+    "MaxHpAdditionValue": 2700,
+    "MaxAttackAdditionValue": 230,
+    "ResourceId": "g7050s00300",
+    "LimitBreakItemId": 0,
+    "SupporterAcquisitionRouteTypeIndex": 1,
+    "GashaObtainedWordLanguageId": 160800001705000350,
+    "ScheduleId": 2608209901,
+    "AssetDownloadTimingTypeIndex": 3
+  },
+  {
+    "Id": 1705000460,
+    "NameLanguageId": 160100001705000460,
+    "DescriptionLanguageId": 0,
+    "SortNameLanguageId": 160300001705000460,
+    "RarityIndex": 3,
+    "MaxHpAdditionValue": 1850,
+    "MaxAttackAdditionValue": 165,
+    "ResourceId": "g7050s00400",
+    "LimitBreakItemId": 0,
+    "SupporterAcquisitionRouteTypeIndex": 2,
+    "GashaObtainedWordLanguageId": 0,
+    "ScheduleId": 2608209901,
+    "AssetDownloadTimingTypeIndex": 1
+  },
+  {
     "Id": 1850000160,
     "NameLanguageId": 160100001850000160,
     "DescriptionLanguageId": 0,

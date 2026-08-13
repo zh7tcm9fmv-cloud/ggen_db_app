@@ -201,7 +201,8 @@ def defense_unit_bbt_eligible(
 ) -> bool:
     """Hard-stage bar for Defense Type S+ / BEYOND THE TIME.
 
-    Tank more than one hit, and bring Preemptive Strike or Support Defense coverage.
+    Tank more than one hit, bring Preemptive Strike or Support Defense coverage,
+    and lasting ATK Down (tank analog of Support DEF Down — fewer incoming hits).
     """
     cfg = rules.get("defense_bbt_gate") or {}
     if cfg.get("enabled") is False:
@@ -215,11 +216,13 @@ def defense_unit_bbt_eligible(
         extra_life = int(bd.get("extra_life") or 0)
         pre = int(bd.get("preemptive") or 0)
         mov = int(bd.get("movement") or 0)
+        atk_dn = int(bd.get("max_debuff") or 0)
     except (TypeError, ValueError):
         return False
     min_hp = int(cfg.get("min_hp_points", 1) or 1)
     high_hp = int(cfg.get("high_hp_points", 2) or 2)
     min_mov = int(cfg.get("min_movement_points", 2) or 2)
+    min_atk_dn = int(cfg.get("min_atk_down_points", 1) or 1)
     tank = extra_life > 0 or hp >= high_hp or (
         hp >= min_hp and (shield > 0 or spec >= 1)
     )
@@ -229,7 +232,37 @@ def defense_unit_bbt_eligible(
         or int(bd.get("unit_support_defense") or 0) > 0
         or mov >= min_mov
     )
-    return bool(tank and advantage)
+    # Required identity debuff — same idea as Support BBT needing DEF Down / pierce.
+    atk_down_ok = atk_dn >= min_atk_dn
+    return bool(tank and advantage and atk_down_ok)
+
+
+def support_unit_bbt_eligible(rules: dict, breakdown: dict | None) -> bool:
+    """Support Type S+ / BEYOND THE TIME needs real DEF Down / pierce, not MAP padding."""
+    cfg = rules.get("support_bbt_gate") or {}
+    if cfg.get("enabled") is False:
+        return True
+    try:
+        md = int((breakdown or {}).get("max_debuff") or 0)
+        need = int(cfg.get("min_max_debuff_points", 1) or 1)
+    except (TypeError, ValueError):
+        return False
+    return md >= need
+
+
+def defense_pilot_bbt_eligible(rules: dict, row: dict | None) -> bool:
+    """Defense Character S+ needs a real Defense or Reaction band, not kit-only."""
+    cfg = rules.get("defense_pilot_bbt_gate") or {}
+    if cfg.get("enabled") is False:
+        return True
+    bd = (row or {}).get("breakdown") or {}
+    try:
+        defense = int(bd.get("defense") or 0)
+        reaction = int(bd.get("reaction") or 0)
+        need = int(cfg.get("min_primary_stat_points", 1) or 1)
+    except (TypeError, ValueError):
+        return False
+    return max(defense, reaction) >= need
 
 
 def letter_for_unit_total(
@@ -247,6 +280,9 @@ def letter_for_unit_total(
     )
     if str(role) == "Defense" and letter == "S+":
         if not defense_unit_bbt_eligible(rules, breakdown, features):
+            return "S"
+    if str(role) == "Support" and letter == "S+":
+        if not support_unit_bbt_eligible(rules, breakdown):
             return "S"
     return letter
 
@@ -404,7 +440,14 @@ def calibrate_pilot_letters_hybrid(
         for row in group:
             abs_letter = str(row.get("_abs_letter") or "E")
             eligible = _letter_at_least(abs_letter, min_abs)
-            if eligible and assigned_splus < n_splus:
+            want_splus = eligible and assigned_splus < n_splus
+            if (
+                want_splus
+                and role == "Defense"
+                and not defense_pilot_bbt_eligible(rules, row)
+            ):
+                want_splus = False
+            if want_splus:
                 letter = "S+"
                 assigned_splus += 1
                 assigned_s += 1
@@ -1238,6 +1281,37 @@ def debuff_pct_to_level(rules: dict, pct: int) -> int | None:
         if int(pct or 0) >= int(row.get("min_pct", 0) or 0):
             level = row.get("level")
     return None if level is None else int(level)
+
+
+def debuff_strength_pct_for_role(features: dict, role: str) -> int:
+    """Primary debuff magnitude for the strength axis.
+
+    Support: lasting DEF Down / instant pierce.
+    Defense: lasting ATK Down (how many more hits the tank can take).
+    """
+    if role == "Defense":
+        if "max_atk_dn_pct" in features:
+            return int(features.get("max_atk_dn_pct") or 0)
+        return 0
+    return int(features.get("max_debuff_pct") or 0)
+
+
+_ATK_DOWN_PCT_RE = re.compile(
+    r"(?i)(?:ATK\s*Down\s*(\d+)\s*%|攻撃力(\d+)\s*%\s*減少|攻擊力減少\s*(\d+)\s*%)"
+)
+
+
+def atk_down_pct_from_trait_text(line: str) -> int:
+    m = _ATK_DOWN_PCT_RE.search(str(line or ""))
+    if not m:
+        return 0
+    for g in m.groups():
+        if g:
+            try:
+                return int(g)
+            except (TypeError, ValueError):
+                continue
+    return 0
 
 
 _PURE_STAT_PASSIVE_NAME = re.compile(
@@ -2470,6 +2544,7 @@ def collect_unit_structured_debuff_keys(
     meta_by_id = _weapon_trait_meta_by_id(A)
     keys: set[str] = set()
     max_pierce = 0
+    max_atk_dn = 0
     types: set[int] = set()
     for tid in collect_unit_weapon_trait_ids(A, uid, mode=mode):
         meta = meta_by_id.get(tid)
@@ -2479,9 +2554,11 @@ def collect_unit_structured_debuff_keys(
         classified = classify_debuff_keys_from_meta(meta)
         keys |= classified
         mag = abs(int(meta.get("magnitude") or 0))
-        # Instant pierce (WeaponTraitType 3) and lasting DEF-down both feed debuff strength
+        # Instant pierce (WeaponTraitType 3) and lasting DEF-down feed Support strength
         if "enemy_def_atk" in classified or "def_dn" in classified:
             max_pierce = max(max_pierce, mag)
+        if "atk_dn" in classified:
+            max_atk_dn = max(max_atk_dn, mag)
         wtti = int(meta.get("type_index") or 0)
         if (
             wtti == 3
@@ -2495,6 +2572,7 @@ def collect_unit_structured_debuff_keys(
         "structured": True,
         "type_indices": sorted(types),
         "max_pierce_pct": max_pierce,
+        "max_atk_dn_pct": max_atk_dn,
         "heuristic": False,
     }
 
@@ -2898,7 +2976,7 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     breakdown["weapon_power"] = band_points(power_bands, features.get("weapon_power") or 0)
 
     if role in ("Defense", "Support"):
-        lvl = debuff_pct_to_level(rules, int(features.get("max_debuff_pct") or 0))
+        lvl = debuff_pct_to_level(rules, debuff_strength_pct_for_role(features, role))
         tbl = (rules.get("max_debuff_level") or {}).get(role) or {}
         if lvl is None:
             breakdown["max_debuff"] = int(tbl.get("none", tbl.get("0", 0)))
@@ -3129,6 +3207,7 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
     has_preemptive = False
     has_rare = False
     max_debuff_pct = 0
+    max_atk_dn_pct = 0
     support_debuff_kinds_r4: set[str] = set()
     support_debuff_kinds_r5: set[str] = set()
     rare_keys = set(rules.get("rare_debuff_keys") or [])
@@ -3166,6 +3245,7 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
         if "preemptive" in structured_keys:
             has_preemptive = True
         max_debuff_pct = max(max_debuff_pct, int(s_meta.get("max_pierce_pct") or 0))
+        max_atk_dn_pct = max(max_atk_dn_pct, int(s_meta.get("max_atk_dn_pct") or 0))
     except Exception:
         structured_keys = set()
         s_meta = {}
@@ -3372,6 +3452,7 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
             max_debuff_pct = max(max_debuff_pct, int(b or 0), int(v or 0))
         except Exception:
             pass
+        max_atk_dn_pct = max(max_atk_dn_pct, atk_down_pct_from_trait_text(line))
 
     has_max_tension_higher = max_power_tension > max_power_unrestricted > 0
     strongest_trait_ids: list[str] | None = None
@@ -3407,6 +3488,7 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
         "has_rare_debuff": has_rare,
         "has_max_tension_higher_weapon": has_max_tension_higher,
         "max_debuff_pct": max_debuff_pct,
+        "max_atk_dn_pct": max_atk_dn_pct,
         "support_debuffs_range4_count": len(support_debuff_kinds_r4),
         "support_debuffs_range5_count": len(support_debuff_kinds_r5),
         "weapon_bonus_type": bonus_type,
@@ -3604,6 +3686,68 @@ def merge_better_combat_stats(
     return out
 
 
+def entity_series_ids(A, eid: str, kind: str, lc: str = "EN") -> list[str]:
+    """m_series ids on a unit or character (via series set), matching browse Series filters."""
+    nid = A.normalize_id(eid) if hasattr(A, "normalize_id") else str(eid or "")
+    if not nid or nid == "0":
+        return []
+    set_id = ""
+    if kind == "character":
+        ld = A.get_lang_data(lc) if hasattr(A, "get_lang_data") else {}
+        set_id = str((ld.get("char_ser_map") or {}).get(nid) or "")
+    else:
+        info = (getattr(A, "unit_info_map", None) or {}).get(nid) or {}
+        set_id = str(info.get("series_set") or (getattr(A, "unit_ser_map", None) or {}).get(nid, "") or "")
+    if not set_id or set_id == "0":
+        return []
+    try:
+        resolved = A.resolve_series(set_id, lc) or []
+    except Exception:
+        resolved = []
+    out: list[str] = []
+    seen: set[str] = set()
+    for row in resolved:
+        sid = str((row or {}).get("id") or "")
+        if sid and sid != "0" and sid not in seen:
+            seen.add(sid)
+            out.append(sid)
+    return out
+
+
+def build_series_catalog(A, rows_lists: list[list[dict]], lc: str = "EN") -> list[dict]:
+    """Distinct series id/name/icon rows for Investment Priority Series filters."""
+    seen: dict[str, dict] = {}
+    ld = A.get_lang_data(lc) if hasattr(A, "get_lang_data") else {}
+    sl = ld.get("series_list") or []
+    icon_map = getattr(A, "series_id_to_icon", None) or {}
+    for rows in rows_lists:
+        for r in rows or []:
+            for sid in r.get("series_ids") or []:
+                sid = str(sid)
+                if not sid or sid == "0" or sid in seen:
+                    continue
+                name = sid
+                for lid, val in sl:
+                    if str(lid).endswith(sid):
+                        name = val
+                        break
+                icon = icon_map.get(sid, "") or ""
+                if not icon and hasattr(A, "find_series_icon"):
+                    try:
+                        icon = A.find_series_icon(sid) or ""
+                    except Exception:
+                        icon = ""
+                seen[sid] = {"id": sid, "name": name, "icon": icon or ""}
+
+    def _sid_key(row: dict) -> tuple:
+        try:
+            return (0, int(row["id"]))
+        except (TypeError, ValueError):
+            return (1, str(row["id"]))
+
+    return sorted(seen.values(), key=_sid_key)
+
+
 def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: dict | None = None) -> dict | None:
     """Build feature dict for one unit under sp|ssp. Returns None if not scoreable."""
     rules = rules or load_rules()
@@ -3772,6 +3916,7 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
         "tag_count_scored": len(scored_tags),
         "scored_tags": scored_tags,
         "tags": tag_names,
+        "series_ids": entity_series_ids(A, uid, "unit", lc),
         "terrain": terrain,
         "has_transform": has_transform,
         "has_transform_advantage": bool(transform_gains),
@@ -3857,6 +4002,7 @@ def score_unit(
         "source": feats.get("source"),
         "has_map": bool(feats.get("has_map")),
         "tags": feats.get("tags") or [],
+        "series_ids": list(feats.get("series_ids") or []),
         "entity": "unit",
         "total": scored["total"],
         "total_objective": scored["total"],
@@ -3936,15 +4082,23 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "title": "Buckets from letters (Units)",
             "applies": ["units"],
             "objective": True,
-            "summary": "Point total maps to a letter, then to a bucket. Players mainly see buckets. Defense Type Units need a higher S+ bar and a hard-stage kit.",
+            "summary": "Point total maps to a letter, then to a bucket. Players mainly see buckets. Defense Type Units need a higher S+ bar and a hard-stage kit. Support Type S+ needs lasting DEF Down.",
             "rows": [
-                {"when": "S+ (score 17+)", "result": "BEYOND THE TIME (Attack / Support)"},
+                {"when": "S+ (score 17+)", "result": "BEYOND THE TIME (Attack)"},
                 {
                     "when": "S+ Defense Type",
                     "result": (
                         "BEYOND THE TIME only at 18+ if the kit tanks more than one hit "
-                        "(HP + Shield Defense / special DR / Unbreakable) and has Preemptive Strike "
+                        "(HP + Shield Defense / special DR / Unbreakable), has lasting ATK Down at Lv5+ "
+                        "(30%+ — tank analog of Support DEF Down), and has Preemptive Strike "
                         "or Support Defense coverage (unit SD kit or MOV 6)"
+                    ),
+                },
+                {
+                    "when": "S+ Support Type",
+                    "result": (
+                        "BEYOND THE TIME only at 17+ with lasting DEF Down / pierce at Lv5+ (30%+). "
+                        "MAP-only kits stay Recommended"
                     ),
                 },
                 {"when": "S", "result": "Recommended"},
@@ -3964,10 +4118,15 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
                 "Hybrid within Character Type: kit points stay absolute; "
                 "S+ ≈ top 3% and S ≈ top 8% by total (absolute A+ floor). "
                 "A+ and below use role-relative point cutoffs. "
-                "Specialty tip (Ranged/Melee/Awaken) caps at +5."
+                "Specialty tip (Ranged/Melee/Awaken) caps at +5. "
+                "Defense Type Characters need a real Defense or Reaction band for BEYOND THE TIME."
             ),
             "rows": [
                 {"when": "Top ~3% of role (A+ floor)", "result": "S+ → BEYOND THE TIME"},
+                {
+                    "when": "S+ Defense Type Characters",
+                    "result": "BEYOND THE TIME only with Defense or Reaction band points (kit-only Durability Characters stay Recommended)",
+                },
                 {"when": "Top ~8% of role (A+ floor)", "result": "S → Recommended"},
                 {"when": "Absolute A+ or A (role cutoffs)", "result": "Solid"},
                 {"when": "B+ or B", "result": "Situational"},
@@ -3998,15 +4157,15 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "title": "Defense priorities",
             "applies": ["units"],
             "objective": True,
-            "summary": "High HP or DEF, a shield (~20% damage neglect), high MOV for Support Defense coverage, solid terrain (Space + Land or Atmos), survivability kits (damage reduction / HP restore), plus a few good debuffs. HP/DEF floors are mild (−1). ATK is upside only (≥9000). Special defenses (I-field / barrier / DR) are extra presence bonuses. BEYOND THE TIME additionally requires tanking more than one hit and Preemptive Strike or Support Defense coverage — fat SSP kits without that edge stay Recommended.",
+            "summary": "High HP or DEF, a shield (~20% damage neglect), high MOV for Support Defense coverage, solid terrain (Space + Land or Atmos), survivability kits (damage reduction / HP restore), plus ATK Down (the tank analog of Support DEF Down — lower enemy ATK is more hits survived). HP/DEF floors are mild (−1). ATK is upside only (≥9000). Special defenses (I-field / barrier / DR) are extra presence bonuses. BEYOND THE TIME additionally requires tanking more than one hit and Preemptive Strike or Support Defense coverage — fat SSP kits without that edge stay Recommended.",
             "rows": [
                 {"when": "Primary", "result": "HP · DEF · shield · MOV · terrain · survivability abilities"},
-                {"when": "Secondary", "result": "A few good pierce / DEF-down debuffs (R4+ kinds)"},
+                {"when": "Secondary", "result": "ATK Down strength (R4+ kinds) — tank analog of Support DEF Down"},
                 {"when": "ATK upside", "result": "≥9000 mild bonus; below that, no penalty"},
                 {"when": "Special defense", "result": "Presence bonus for DR / barrier / negation kits"},
                 {
                     "when": "BEYOND THE TIME gate",
-                    "result": "18+ points, HP that survives more than one hit, and Preemptive Strike or Support Defense coverage",
+                    "result": "18+ points, lasting ATK Down Lv5+, HP that survives more than one hit, and Preemptive Strike or Support Defense coverage",
                 },
             ],
         }
@@ -4663,7 +4822,12 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
                 label = "none" if key == "none" else f"Lv{key}"
                 bits.append(f"{label} {_fmt_points(tbl.get(key))}")
         if bits:
-            debuff_rows.append({"when": f"{role_name} pierce / DEF-down level", "result": " · ".join(bits)})
+            label = (
+                "Defense ATK Down level"
+                if role_name == "Defense"
+                else "Support DEF Down / pierce level"
+            )
+            debuff_rows.append({"when": label, "result": " · ".join(bits)})
     criteria.append(
         {
             "id": "debuffs",
@@ -4671,11 +4835,13 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "applies": ["units"],
             "objective": True,
             "summary": (
-                "Attack Type Units skip these factors. Debuff strength uses lasting DEF-down % "
+                "Attack Type Units skip these factors. Support strength uses lasting DEF Down % "
                 "or instant pierce (≈10%→3 … 40%+→6). "
+                "Defense Type strength uses lasting ATK Down % — the tank analog of Support DEF Down, "
+                "because lower enemy ATK is more hits survived. "
                 "Defense counts distinct debuff kinds at range ≥4 (light; damage-taken downs count as one kind). "
                 "Support counts kinds at base weapon range ≥5 (SSP range enhance does not invent R5 credit) "
-                "and cares more about strength."
+                "and cares more about strength. Support BEYOND THE TIME also needs DEF Down / pierce at Lv5+."
             ),
             "rows": debuff_rows,
         }
@@ -6340,6 +6506,7 @@ def extract_character_features(
         "source": _source_bucket(A, info),
         "tag_count": len(tags),
         "tags": [t.get("name") if isinstance(t, dict) else str(t) for t in tags][:40],
+        "series_ids": entity_series_ids(A, cid, "character", lc),
         "ability_blobs": ability_blobs,
         "skill_blobs": skill_blobs,
         "ability_effects": ability_effects,
@@ -6432,6 +6599,7 @@ def score_character(
         "source": feats.get("source"),
         "has_map": False,
         "tags": feats.get("tags") or [],
+        "series_ids": list(feats.get("series_ids") or []),
         "total": scored["total"],
         "total_objective": scored["total"],
         "letter": scored["letter"],

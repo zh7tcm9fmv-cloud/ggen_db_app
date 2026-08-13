@@ -19832,6 +19832,46 @@
     "value": "Take this!"
   },
   {
+    "id": 100701700000100011,
+    "value": "Calabash Funnels!"
+  },
+  {
+    "id": 100701700000100012,
+    "value": "Calabash Funnels!"
+  },
+  {
+    "id": 100701700000200001,
+    "value": "Face your judgment!"
+  },
+  {
+    "id": 100701700000200002,
+    "value": "Face your judgment!"
+  },
+  {
+    "id": 100701700000200003,
+    "value": "Haaah!"
+  },
+  {
+    "id": 100701700000200004,
+    "value": "Haaah!"
+  },
+  {
+    "id": 100701700000200005,
+    "value": "Prepare yourself!"
+  },
+  {
+    "id": 100701700000200006,
+    "value": "Prepare yourself!"
+  },
+  {
+    "id": 100701700000200007,
+    "value": "I have you!"
+  },
+  {
+    "id": 100701700000200008,
+    "value": "I have you!"
+  },
+  {
     "id": 100701705000200001,
     "value": "Mwahaha!"
   },
@@ -20310,6 +20350,382 @@
   {
     "id": 100701705001900008,
     "value": "Raghhh!"
+  },
+  {
+    "id": 100701705002000001,
+    "value": "MMMUGH!"
+  },
+  {
+    "id": 100701705002000002,
+    "value": "MMMUGH!"
+  },
+  {
+    "id": 100701705002000003,
+    "value": "Mmmud!"
+  },
+  {
+    "id": 100701705002000004,
+    "value": "Mmmud!"
+  },
+  {
+    "id": 100701705002000005,
+    "value": "Mmmwogh!"
+  },
+  {
+    "id": 100701705002000006,
+    "value": "Mmmwogh!"
+  },
+  {
+    "id": 100701705002100001,
+    "value": "Novice!"
+  },
+  {
+    "id": 100701705002100002,
+    "value": "Novice!"
+  },
+  {
+    "id": 100701705002100003,
+    "value": "Fledgling!"
+  },
+  {
+    "id": 100701705002100004,
+    "value": "Fledgling!"
+  },
+  {
+    "id": 100701705002100005,
+    "value": "Haaah!"
+  },
+  {
+    "id": 100701705002100006,
+    "value": "Haaah!"
+  },
+  {
+    "id": 100701705002100007,
+    "value": "You let your guard down!"
+  },
+  {
+    "id": 100701705002100008,
+    "value": "You let your guard down!"
+  },
+  {
+    "id": 100701705002200001,
+    "value": "You're weak!"
+  },
+  {
+    "id": 100701705002200002,
+    "value": "You're weak!"
+  },
+  {
+    "id": 100701705002200003,
+    "value": "You're through!"
+  },
+  {
+    "id": 100701705002200004,
+    "value": "You're through!"
+  },
+  {
+    "id": 100701705002200005,
+    "value": "Out of my sight!"
+  },
+  {
+    "id": 100701705002200006,
+    "value": "Out of my sight!"
+  },
+  {
+    "id": 100701705002200007,
+    "value": "Haaah!"
+  },
+  {
+    "id": 100701705002200008,
+    "value": "Haaah!"
+  },
+  {
+    "id": 100701705002300001,
+    "value": "I have you!"
+  },
+  {
+    "id": 100701705002300002,
+    "value": "I have you!"
+  },
+  {
+    "id": 100701705002300003,
+    "value": "Grgh!"
+  },
+  {
+    "id": 100701705002300004,
+    "value": "Grgh!"
+  },
+  {
+    "id": 100701705002300005,
+    "value": "Yaaah!"
+  },
+  {
+    "id": 100701705002300006,
+    "value": "Yaaah!"
+  },
+  {
+    "id": 100701705002300007,
+    "value": "There!"
+  },
+  {
+    "id": 100701705002300008,
+    "value": "There!"
+  },
+  {
+    "id": 100701705002400001,
+    "value": "Yaaah!"
+  },
+  {
+    "id": 100701705002400002,
+    "value": "Yaaah!"
+  },
+  {
+    "id": 100701705002400003,
+    "value": "Unghhh!"
+  },
+  {
+    "id": 100701705002400004,
+    "value": "Unghhh!"
+  },
+  {
+    "id": 100701705002400005,
+    "value": "I'll cut you down!"
+  },
+  {
+    "id": 100701705002400006,
+    "value": "I'll cut you down!"
+  },
+  {
+    "id": 100701705002400007,
+    "value": "Don't mock me!"
+  },
+  {
+    "id": 100701705002400008,
+    "value": "Don't mock me!"
+  },
+  {
+    "id": 100701705002600001,
+    "value": "You are desperate!"
+  },
+  {
+    "id": 100701705002600002,
+    "value": "You are desperate!"
+  },
+  {
+    "id": 100701705002600003,
+    "value": "Too slow!"
+  },
+  {
+    "id": 100701705002600004,
+    "value": "Too slow!"
+  },
+  {
+    "id": 100701705002600005,
+    "value": "There!"
+  },
+  {
+    "id": 100701705002600006,
+    "value": "There!"
+  },
+  {
+    "id": 100701705002600007,
+    "value": "I'll run you through!"
+  },
+  {
+    "id": 100701705002600008,
+    "value": "I'll run you through!"
+  },
+  {
+    "id": 100701705002700001,
+    "value": "Unghhh!"
+  },
+  {
+    "id": 100701705002700002,
+    "value": "Unghhh!"
+  },
+  {
+    "id": 100701705002700003,
+    "value": "Go to hell!"
+  },
+  {
+    "id": 100701705002700004,
+    "value": "Go to hell!"
+  },
+  {
+    "id": 100701705002700005,
+    "value": "I'll crush you!"
+  },
+  {
+    "id": 100701705002700006,
+    "value": "I'll crush you!"
+  },
+  {
+    "id": 100701705002700007,
+    "value": "You're finished!"
+  },
+  {
+    "id": 100701705002700008,
+    "value": "You're finished!"
+  },
+  {
+    "id": 100701705002900001,
+    "value": "Arghhh!"
+  },
+  {
+    "id": 100701705002900002,
+    "value": "Arghhh!"
+  },
+  {
+    "id": 100701705002900003,
+    "value": "You're mine!"
+  },
+  {
+    "id": 100701705002900004,
+    "value": "You're mine!"
+  },
+  {
+    "id": 100701705002900005,
+    "value": "Argh!"
+  },
+  {
+    "id": 100701705002900006,
+    "value": "Argh!"
+  },
+  {
+    "id": 100701705002900007,
+    "value": "It's over!"
+  },
+  {
+    "id": 100701705002900008,
+    "value": "It's over!"
+  },
+  {
+    "id": 100701705002900009,
+    "value": "I call upon the power of magic!"
+  },
+  {
+    "id": 100701705002900010,
+    "value": "I call upon the power of magic!"
+  },
+  {
+    "id": 100701705003200001,
+    "value": "Goar!"
+  },
+  {
+    "id": 100701705003200002,
+    "value": "Goar!"
+  },
+  {
+    "id": 100701705003200003,
+    "value": "Oarrrgh!"
+  },
+  {
+    "id": 100701705003200004,
+    "value": "Oarrrgh!"
+  },
+  {
+    "id": 100701705003200005,
+    "value": "Worrrgh!"
+  },
+  {
+    "id": 100701705003200006,
+    "value": "Worrrgh!"
+  },
+  {
+    "id": 100701705003300001,
+    "value": "Hyaaah!"
+  },
+  {
+    "id": 100701705003300002,
+    "value": "Hyaaah!"
+  },
+  {
+    "id": 100701705003300003,
+    "value": "Haaah!"
+  },
+  {
+    "id": 100701705003300004,
+    "value": "Haaah!"
+  },
+  {
+    "id": 100701705003300005,
+    "value": "Yaaah!"
+  },
+  {
+    "id": 100701705003300006,
+    "value": "Yaaah!"
+  },
+  {
+    "id": 100701705003300007,
+    "value": "Whoa!"
+  },
+  {
+    "id": 100701705003300008,
+    "value": "Whoa!"
+  },
+  {
+    "id": 100701705003400001,
+    "value": "No mercy!"
+  },
+  {
+    "id": 100701705003400002,
+    "value": "No mercy!"
+  },
+  {
+    "id": 100701705003400003,
+    "value": "You're open!"
+  },
+  {
+    "id": 100701705003400004,
+    "value": "You're open!"
+  },
+  {
+    "id": 100701705003400005,
+    "value": "Give it up!"
+  },
+  {
+    "id": 100701705003400006,
+    "value": "Give it up!"
+  },
+  {
+    "id": 100701705003400007,
+    "value": "How's this for you?!"
+  },
+  {
+    "id": 100701705003400008,
+    "value": "How's this for you?!"
+  },
+  {
+    "id": 100701705003500001,
+    "value": "Imbecile!"
+  },
+  {
+    "id": 100701705003500002,
+    "value": "Imbecile!"
+  },
+  {
+    "id": 100701705003500003,
+    "value": "Eat this!"
+  },
+  {
+    "id": 100701705003500004,
+    "value": "Eat this!"
+  },
+  {
+    "id": 100701705003500005,
+    "value": "Now, to end your suffering!"
+  },
+  {
+    "id": 100701705003500006,
+    "value": "Now, to end your suffering!"
+  },
+  {
+    "id": 100701705003500007,
+    "value": "I think not!"
+  },
+  {
+    "id": 100701705003500008,
+    "value": "I think not!"
   },
   {
     "id": 100701709000100001,

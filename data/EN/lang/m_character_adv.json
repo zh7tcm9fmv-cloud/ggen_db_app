@@ -4204,8 +4204,20 @@
     "value": "Musha Gundam"
   },
   {
+    "id": 100400001700000200,
+    "value": "Sandaime Gundam Daishogun"
+  },
+  {
     "id": 100400001705000100,
     "value": "Full Armor Knight Gundam"
+  },
+  {
+    "id": 100400001705000101,
+    "value": "Full Armor Knight Gundam"
+  },
+  {
+    "id": 100400001705000102,
+    "value": "Knight Gundam"
   },
   {
     "id": 100400001705000200,
@@ -4280,8 +4292,56 @@
     "value": "Gundam"
   },
   {
+    "id": 100400001705002000,
+    "value": "Giant Mud Golem"
+  },
+  {
+    "id": 100400001705002100,
+    "value": "Knight Galbaldy Alpha"
+  },
+  {
+    "id": 100400001705002200,
+    "value": "Knight Galbaldy Beta"
+  },
+  {
+    "id": 100400001705002300,
+    "value": "Warrior Desert Zaku"
+  },
+  {
+    "id": 100400001705002400,
+    "value": "Warrior Desert Dom"
+  },
+  {
+    "id": 100400001705002600,
+    "value": "Swordsman Gelgoog"
+  },
+  {
+    "id": 100400001705002700,
+    "value": "Warrior Rick Dom II"
+  },
+  {
+    "id": 100400001705002900,
+    "value": "Versal Knight Gundam"
+  },
+  {
     "id": 100400001705003100,
     "value": "Knight Gundam"
+  },
+  {
+    "id": 100400001705003200,
+    "value": "Giant Psycho Golem"
+  },
+  {
+    "id": 100400001705003300,
+    "value": "Martial Artist Nemo"
+  },
+  {
+    "id": 100400001705003400,
+    "value": "Golden Knight"
+  },
+  {
+    "id": 100400001705003500,
+    "value": "Sorcerer Messala"
   },
   {
     "id": 100400001709000100,
@@ -5928,6 +5988,18 @@
     "value": "Dawn of Fold Member"
   },
   {
+    "id": 100400002705000001,
+    "value": "Fairy Kikka"
+  },
+  {
+    "id": 100400002705000002,
+    "value": "Cleric M'Quve Katze"
+  },
+  {
+    "id": 100400002705000004,
+    "value": "Knight Amuro"
+  },
+  {
     "id": 100400002705000005,
     "value": "Princess Fraw"
   },
@@ -5942,6 +6014,18 @@
   {
     "id": 100400002705000008,
     "value": "Sorceress Lalah"
+  },
+  {
+    "id": 100400002705000011,
+    "value": "Sieg Zeon"
+  },
+  {
+    "id": 100400002705000012,
+    "value": "GM Henson"
+  },
+  {
+    "id": 100400002705000017,
+    "value": "Seer Sarasa"
   },
   {
     "id": 100400002850000100,

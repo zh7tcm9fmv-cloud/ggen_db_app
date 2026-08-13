@@ -208,6 +208,19 @@
     "SspMaxMobility": 412
   },
   {
+    "Id": 100017,
+    "SspHp": 263,
+    "SspEn": 1,
+    "SspAttack": 25,
+    "SspDefense": 24,
+    "SspMobility": 19,
+    "SspMaxHp": 5264,
+    "SspMaxEn": 16,
+    "SspMaxAttack": 503,
+    "SspMaxDefense": 481,
+    "SspMaxMobility": 389
+  },
+  {
     "Id": 100018,
     "SspHp": 240,
     "SspEn": 1,
