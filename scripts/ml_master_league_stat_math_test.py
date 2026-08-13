@@ -71,6 +71,22 @@ def _main() -> None:
     assert no_ml == 20_025, no_ml
     assert yes_ml == 26_058, yes_ml
 
+    # Versal Knight Gundam (EX) LB1 in-game sheet (share /cal Leveler-adjacent setup):
+    # base 10126, MS +15%, Limiter OFF +12%, Lacus LB2 leader +40%, ATK support +260 → 17170
+    # (ceil would be 17171 and overshoots damage 238778 → 238918)
+    versal = ms_attack_from_base(
+        10_126,
+        passive_pct=15,
+        master_league=False,
+        op_attack_pct=12,
+        ex_squad_pct=0,
+        leader_pct=40,
+        turn_atk_pct=0,
+        op_attack_flat=0,
+        atk_support_flat=260,
+    )
+    assert versal == 17_170, versal
+
     # Synthetic
     assert (
         ms_attack_from_base(
@@ -87,7 +103,7 @@ def _main() -> None:
         == F(10_000 * (100 + 10 + 20 + 50) / 100) + 5 + 7
     )
 
-    print("ml_master_league_stat_math_test: OK (Burning 20025 / 26058 + synthetic)")
+    print("ml_master_league_stat_math_test: OK (Burning 20025 / 26058 + Versal 17170 + synthetic)")
 
 
 if __name__ == "__main__":

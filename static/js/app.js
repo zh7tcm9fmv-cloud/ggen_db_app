@@ -12234,10 +12234,10 @@ const pctAtkNoEx=F(atkBase*(100+pAtk+opAt+tAtk+sheetBuffPct+lp+(scAtk|0)+(supCnt
 const atkHtml=L(pctAtkNoEx,'Option part %, 1-turn MS ATK %, leader %, ML/GO, squad conditions, Support Attack/Counter % (EX squad % is on the EX line below)')+L(opFlat.Attack|0,'Option part flat Attack')+L(atkSupport|0,'Supporter ATK support');
 return{hpHtml,atkHtml,defHtml,mobHtml};
 }
-/** opts.useFloor: probe-only — force floor on % buckets. Default ceil matches in-game MS sheet (e.g. Altron LB1 + Limiter OFF 12% + Sumeragi LB1 leader 36% + ATK support 240 → 14184). */
+/** MS growth % buckets use floor (integer %). In-game Versal LB1 10126 +15%+12%+Lacus LB2 40% + ATK support 260 → 17170 (not ceil 17171). opts.useCeil: probe-only. */
 function _dcGetModifiedAttackerUnitStatsFromCtx(ctx,atkUnitStats,opts){
 const F=Math.floor,C=Math.ceil;
-const R=(opts&&opts.useFloor)?F:C;
+const R=(opts&&opts.useCeil)?C:F;
 const c=ctx||{};
 const scAtk=c.squadCondAtkPct|0;
 const scDef=c.squadCondDefPct|0;
