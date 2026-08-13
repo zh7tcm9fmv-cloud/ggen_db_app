@@ -1,5 +1,12 @@
 [
   {
+    "MapNpcId": 705200600202000030,
+    "StrategyHintTypeIndex": 1,
+    "StrategyHintTargetValue": 170500220003,
+    "AttentionResourceId": "strategy_hint_0007",
+    "DisplayTypeIndex": 1
+  },
+  {
     "MapNpcId": 901100100102000001,
     "StrategyHintTypeIndex": 1,
     "StrategyHintTargetValue": 908000380005,

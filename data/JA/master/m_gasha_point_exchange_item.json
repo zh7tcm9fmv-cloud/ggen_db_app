@@ -2396,5 +2396,82 @@
     "Limit": 0,
     "SortOrder": 5,
     "ResourceId": ""
+  },
+  {
+    "Id": 260820030101,
+    "GashaPointExchangeId": 2608200301,
+    "GashaContentDetailId": 0,
+    "GashaPointExchangeItemTypeIndex": 1,
+    "TargetId": 11705002050,
+    "Point": 200,
+    "Limit": 0,
+    "SortOrder": 1,
+    "ResourceId": ""
+  },
+  {
+    "Id": 260820030102,
+    "GashaPointExchangeId": 2608200301,
+    "GashaContentDetailId": 0,
+    "GashaPointExchangeItemTypeIndex": 1,
+    "TargetId": 11700000250,
+    "Point": 200,
+    "Limit": 0,
+    "SortOrder": 2,
+    "ResourceId": ""
+  },
+  {
+    "Id": 260820030103,
+    "GashaPointExchangeId": 2608200301,
+    "GashaContentDetailId": 0,
+    "GashaPointExchangeItemTypeIndex": 1,
+    "TargetId": 11705000550,
+    "Point": 200,
+    "Limit": 0,
+    "SortOrder": 3,
+    "ResourceId": ""
+  },
+  {
+    "Id": 260820030104,
+    "GashaPointExchangeId": 2608200301,
+    "GashaContentDetailId": 0,
+    "GashaPointExchangeItemTypeIndex": 1,
+    "TargetId": 21705000350,
+    "Point": 300,
+    "Limit": 1,
+    "SortOrder": 4,
+    "ResourceId": ""
+  },
+  {
+    "Id": 260820030105,
+    "GashaPointExchangeId": 2608200301,
+    "GashaContentDetailId": 0,
+    "GashaPointExchangeItemTypeIndex": 1,
+    "TargetId": 21705000150,
+    "Point": 300,
+    "Limit": 1,
+    "SortOrder": 5,
+    "ResourceId": ""
+  },
+  {
+    "Id": 260820030106,
+    "GashaPointExchangeId": 2608200301,
+    "GashaContentDetailId": 0,
+    "GashaPointExchangeItemTypeIndex": 1,
+    "TargetId": 11705003010,
+    "Point": 40,
+    "Limit": 0,
+    "SortOrder": 6,
+    "ResourceId": ""
+  },
+  {
+    "Id": 260820030107,
+    "GashaPointExchangeId": 2608200301,
+    "GashaContentDetailId": 0,
+    "GashaPointExchangeItemTypeIndex": 1,
+    "TargetId": 11705004310,
+    "Point": 40,
+    "Limit": 0,
+    "SortOrder": 7,
+    "ResourceId": ""
   }
 ]

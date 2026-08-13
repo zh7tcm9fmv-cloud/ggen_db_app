@@ -16,5 +16,23 @@
     "EventTypeIndex": 1,
     "TargetId": 1030000003,
     "MapStageObjectId": 9003
+  },
+  {
+    "Id": 900008,
+    "EventTypeIndex": 3,
+    "TargetId": 99147052000001,
+    "MapStageObjectId": 9001
+  },
+  {
+    "Id": 900009,
+    "EventTypeIndex": 3,
+    "TargetId": 99147052000002,
+    "MapStageObjectId": 9002
+  },
+  {
+    "Id": 900010,
+    "EventTypeIndex": 3,
+    "TargetId": 99147052000003,
+    "MapStageObjectId": 9003
   }
 ]

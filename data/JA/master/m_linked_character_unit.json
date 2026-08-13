@@ -4,6 +4,10 @@
     "CharacterId": 1700000100
   },
   {
+    "UnitId": 1700000250,
+    "CharacterId": 1700000200
+  },
+  {
     "UnitId": 1705000100,
     "CharacterId": 1705001900
   },
@@ -86,6 +90,62 @@
   {
     "UnitId": 1705001900,
     "CharacterId": 1705000900
+  },
+  {
+    "UnitId": 1705002050,
+    "CharacterId": 1705002900
+  },
+  {
+    "UnitId": 1705002200,
+    "CharacterId": 1705000101
+  },
+  {
+    "UnitId": 1705002260,
+    "CharacterId": 1705000102
+  },
+  {
+    "UnitId": 1705002900,
+    "CharacterId": 1705003300
+  },
+  {
+    "UnitId": 1705003010,
+    "CharacterId": 1705003400
+  },
+  {
+    "UnitId": 1705003100,
+    "CharacterId": 1705003200
+  },
+  {
+    "UnitId": 1705003200,
+    "CharacterId": 1705003500
+  },
+  {
+    "UnitId": 1705004310,
+    "CharacterId": 1705002000
+  },
+  {
+    "UnitId": 1705004400,
+    "CharacterId": 1705002100
+  },
+  {
+    "UnitId": 1705004500,
+    "CharacterId": 1705002200
+  },
+  {
+    "UnitId": 1705004600,
+    "CharacterId": 1705002300
+  },
+  {
+    "UnitId": 1705004700,
+    "CharacterId": 1705002400
+  },
+  {
+    "UnitId": 1705004910,
+    "CharacterId": 1705002600
+  },
+  {
+    "UnitId": 1705005010,
+    "CharacterId": 1705002700
   },
   {
     "UnitId": 1705005500,

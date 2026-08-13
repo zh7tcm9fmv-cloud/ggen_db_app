@@ -7,5 +7,14 @@
     "ScheduleId": 2603609907,
     "Priority": 1,
     "RequiresAgeVerification": true
+  },
+  {
+    "Id": 26082001,
+    "PlatformTypeIndex": 1,
+    "TransitionId": 0,
+    "ResourceId": "shop_payment_link_banner_26082001",
+    "ScheduleId": 2608202001,
+    "Priority": 26082001,
+    "RequiresAgeVerification": true
   }
 ]

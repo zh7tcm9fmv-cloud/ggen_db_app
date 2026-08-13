@@ -38,5 +38,15 @@
     "Id": 991326064007010102,
     "ConditionMultiTargetValueGroupId": 9913260640070101,
     "TargetValue": 2
+  },
+  {
+    "Id": 991326081007010101,
+    "ConditionMultiTargetValueGroupId": 9913260810070101,
+    "TargetValue": 1
+  },
+  {
+    "Id": 991326081007010102,
+    "ConditionMultiTargetValueGroupId": 9913260810070101,
+    "TargetValue": 2
   }
 ]

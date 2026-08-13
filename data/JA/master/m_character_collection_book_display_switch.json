@@ -2590,6 +2590,11 @@
     "CharacterId": 1700000100
   },
   {
+    "CharacterCollectionBookId": 70010002,
+    "DisplayPriority": 1700000200,
+    "CharacterId": 1700000200
+  },
+  {
     "CharacterCollectionBookId": 70500001,
     "DisplayPriority": 1705001900,
     "CharacterId": 1705001900
@@ -2655,9 +2660,74 @@
     "CharacterId": 1705001500
   },
   {
+    "CharacterCollectionBookId": 70500014,
+    "DisplayPriority": 1705000101,
+    "CharacterId": 1705000101
+  },
+  {
+    "CharacterCollectionBookId": 70500015,
+    "DisplayPriority": 1705003400,
+    "CharacterId": 1705003400
+  },
+  {
+    "CharacterCollectionBookId": 70500016,
+    "DisplayPriority": 1705003300,
+    "CharacterId": 1705003300
+  },
+  {
+    "CharacterCollectionBookId": 70500017,
+    "DisplayPriority": 1705003200,
+    "CharacterId": 1705003200
+  },
+  {
+    "CharacterCollectionBookId": 70500018,
+    "DisplayPriority": 1705002000,
+    "CharacterId": 1705002000
+  },
+  {
+    "CharacterCollectionBookId": 70500019,
+    "DisplayPriority": 1705003500,
+    "CharacterId": 1705003500
+  },
+  {
+    "CharacterCollectionBookId": 70500020,
+    "DisplayPriority": 1705002100,
+    "CharacterId": 1705002100
+  },
+  {
+    "CharacterCollectionBookId": 70500021,
+    "DisplayPriority": 1705002200,
+    "CharacterId": 1705002200
+  },
+  {
+    "CharacterCollectionBookId": 70500022,
+    "DisplayPriority": 1705002600,
+    "CharacterId": 1705002600
+  },
+  {
+    "CharacterCollectionBookId": 70500023,
+    "DisplayPriority": 1705002700,
+    "CharacterId": 1705002700
+  },
+  {
+    "CharacterCollectionBookId": 70500024,
+    "DisplayPriority": 1705002300,
+    "CharacterId": 1705002300
+  },
+  {
+    "CharacterCollectionBookId": 70500025,
+    "DisplayPriority": 1705002400,
+    "CharacterId": 1705002400
+  },
+  {
     "CharacterCollectionBookId": 70500034,
     "DisplayPriority": 1705003100,
     "CharacterId": 1705003100
+  },
+  {
+    "CharacterCollectionBookId": 70500035,
+    "DisplayPriority": 1705002900,
+    "CharacterId": 1705002900
   },
   {
     "CharacterCollectionBookId": 70900001,
