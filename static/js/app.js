@@ -9863,15 +9863,16 @@ const atkSpanClass=hAtk==='dc-stat-val--penalized'?'dc-stat-val--penalized':((ex
 let atkMainTitle=exSq>0?(counterActive?'Includes EX squad ATK % and own ATK when countering (unit)':'Includes EX squad ATK %'):(counterActive?'Includes own ATK when countering (unit)':'');
 if(supCntActive){atkMainTitle=(atkMainTitle?atkMainTitle+'; ':'')+'Support Attack/Counter +% MS ATK (pilot)'}
 const atkAdvTitle=advantageTagActive?` (+${advAtkFlat} MS Attack: ${advAtkPct}% of raw LB Attack base; flat add, not +${advAtkPct}% on total MS ATK)`:'';
-const atkBonusInline=Math.max(0,atkShow-(uEff.atkDbCorePassive|0));
-const atkInlineBonusHtml=`<span id="dcAtkUnitAtkInlineBonus" class="stat-card-bonus" style="display:inline;margin-left:4px;color:var(--accent-green);font-weight:600;font-size:13px">${atkBonusInline>0?`(+${fmtN(atkBonusInline)})`:''}</span>`;
+/* Inline (+N) matches in-game MS sheet: total − raw LB growth base (not core-with-unit-ability%). */
+const atkBonusInline=Math.max(0,atkShow-(uEff.advantageFlatGrowthAtk|0));
+const atkInlineBonusHtml=`<span id="dcAtkUnitAtkInlineBonus" class="stat-card-bonus" style="display:inline;margin-left:4px;font-weight:600;font-size:13px" title="Total − raw LB Attack (same green delta as in-game MS sheet)">${atkBonusInline>0?`(+${fmtN(atkBonusInline)})`:''}</span>`;
 const atkMainSpan=`<span id="dcAtkUnitAtkMain"${atkSpanClass?` class="${atkSpanClass}"`:''}${!atkSpanClass&&spAtk?spAtk:''}${(atkMainTitle||atkAdvTitle)?` title="${escAttr((atkMainTitle||'')+atkAdvTitle)}"`:''}>${fmtN(atkShow)}</span>${atkInlineBonusHtml}`;
-const hpBonusIn=Math.max(0,hpS-(uEff.hpDbCorePassive|0));
-const hpInlineBonus=hpBonusIn>0?`<span class="stat-card-bonus" style="display:inline;margin-left:4px;color:var(--accent-green);font-weight:600;font-size:13px">(+${fmtN(hpBonusIn)})</span>`:'';
-const defBonusIn=Math.max(0,defShowAdv-(uEff.defDbCorePassive|0));
-const defInlineBonus=defBonusIn>0?`<span class="stat-card-bonus" style="display:inline;margin-left:4px;color:var(--accent-green);font-weight:600;font-size:13px">(+${fmtN(defBonusIn)})</span>`:'';
-const mobBonusIn=Math.max(0,mobS-(uEff.mobDbCorePassive|0));
-const mobInlineBonus=mobBonusIn>0?`<span class="stat-card-bonus" style="display:inline;margin-left:4px;color:var(--accent-green);font-weight:600;font-size:13px">(+${fmtN(mobBonusIn)})</span>`:'';
+const hpBonusIn=Math.max(0,hpS-(uEff.hpGrowthBase|0));
+const hpInlineBonus=hpBonusIn>0?`<span class="stat-card-bonus" style="display:inline;margin-left:4px;font-weight:600;font-size:13px" title="Total − raw LB HP (same green delta as in-game MS sheet)">(+${fmtN(hpBonusIn)})</span>`:'';
+const defBonusIn=Math.max(0,defShowAdv-(uEff.advantageFlatGrowthDef|0));
+const defInlineBonus=defBonusIn>0?`<span class="stat-card-bonus" style="display:inline;margin-left:4px;font-weight:600;font-size:13px" title="Total − raw LB Defense (same green delta as in-game MS sheet)">(+${fmtN(defBonusIn)})</span>`:'';
+const mobBonusIn=Math.max(0,mobS-(uEff.mobGrowthBase|0));
+const mobInlineBonus=mobBonusIn>0?`<span class="stat-card-bonus" style="display:inline;margin-left:4px;font-weight:600;font-size:13px" title="Total − raw LB Mobility (same green delta as in-game MS sheet)">(+${fmtN(mobBonusIn)})</span>`:'';
 const defPairBuff=defShow!==defS;
 const spDefCls=hDef==='dc-stat-val--penalized'?'dc-stat-val--penalized':((hDef||defPairBuff||advDefFlat>0||unitTurnDefOn||sheetBuffOn)?'dc-stat-val--buffed':'');
 const spDefFinal=spDefCls?` class="${spDefCls}"`:'';
@@ -9911,7 +9912,7 @@ const advAtkPct=_dcAdvantageTagAtkPctFromAbilities(ud,S.dc.defNpc);
 const advGrAtk=uEff.advantageFlatGrowthAtk|0;
 const atkMid=_dcApplyAdvantageTagAtkToUnitAtk(_dcApplyCounterOwnAtkToUnitAtk(atkAfterPair),advAtkPct,advGrAtk);
 const atkDisp=atkMid;
-const atkBonusRe=Math.max(0,atkDisp-(uEff.atkDbCorePassive|0));
+const atkBonusRe=Math.max(0,atkDisp-(uEff.advantageFlatGrowthAtk|0));
 const bonusEl=document.getElementById('dcAtkUnitAtkInlineBonus');
 if(bonusEl)bonusEl.textContent=atkBonusRe>0?`(+${fmtN(atkBonusRe)})`:'';
 const uCp=!!(ud.has_cond_stats&&S.dc.unitCondPassive);
@@ -12186,7 +12187,7 @@ cb.disabled=false;
 _dcApplyAutoZeonForMatchingDefender(info.wt);
 cb.checked=S.dc.applyZeonEnemyTag!==false;
 }
-/** Green +lines under MS HP/ATK/DEF/MOB: % bucket uses floor to match database stat display and in-game damage (same as panel MS ATK). */
+/** Breakdown +lines under MS HP/ATK/DEF/MOB: % bucket uses floor (same as panel MS ATK). Supporter flats use a distinct color. */
 function _dcMsStatEnhancementLinesHtml(ctx,atkUnitStats){
 const F=Math.floor;
 const c=ctx||{};
@@ -12216,10 +12217,10 @@ const opAt=opPct.Attack||0;
 let turnAtkPct=0;
 if(c.unitTurnBuffAtk&&c.atkUnitData&&!c.atkUnitData._manual)turnAtkPct=Math.max(0,_dcGetDetectedUnitTurnBuffPercents(c.atkUnitData).atkPct|0);
 const tAtk=turnAtkPct|0;
-function L(n,longT){const v=Math.max(0,Math.floor(Number(n)||0));if(!v)return'';return`<div class="stat-card-bonus" title="${escAttr(longT)}">+${fmtN(v)}</div>`}
+function L(n,longT,cls){const v=Math.max(0,Math.floor(Number(n)||0));if(!v)return'';const cName=cls?`stat-card-bonus ${cls}`:'stat-card-bonus';return`<div class="${cName}" title="${escAttr(longT)}">+${fmtN(v)}</div>`}
 const coreHp=F(hpBase*(100+pHp)/100);
 const pctHp=F(hpBase*(100+pHp+(opPct.HP|0)+lp+sheetBuffPct)/100)-coreHp;
-const hpHtml=L(pctHp,'Option part %, leader skill %, Master League / Grand Offensive (HP)')+L(opFlat.HP|0,'Option part flat HP')+L(hpSupport|0,'Supporter HP support');
+const hpHtml=L(pctHp,'Option part %, leader skill %, Master League / Grand Offensive (HP)')+L(opFlat.HP|0,'Option part flat HP')+L(hpSupport|0,'Supporter HP support','stat-card-bonus--supporter-flat');
 const scAtk=c.squadCondAtkPct|0;
 const scDef=c.squadCondDefPct|0;
 const supCnt=_dcEffectiveSupportCounterAtkPctFromCtx(c);
@@ -12231,7 +12232,7 @@ const pctMob=F(mobBase*(100+pMob+(opPct.Mobility|0)+lp+sheetBuffPct)/100)-coreMo
 const mobHtml=L(pctMob,'Option part %, leader skill %, Master League / Grand Offensive (MOB)')+L(opFlat.Mobility|0,'Option part flat Mobility');
 const coreAtk=F(atkBase*(100+pAtk)/100);
 const pctAtkNoEx=F(atkBase*(100+pAtk+opAt+tAtk+sheetBuffPct+lp+(scAtk|0)+(supCnt|0))/100)-coreAtk;
-const atkHtml=L(pctAtkNoEx,'Option part %, 1-turn MS ATK %, leader %, ML/GO, squad conditions, Support Attack/Counter % (EX squad % is on the EX line below)')+L(opFlat.Attack|0,'Option part flat Attack')+L(atkSupport|0,'Supporter ATK support');
+const atkHtml=L(pctAtkNoEx,'Option part %, 1-turn MS ATK %, leader %, ML/GO, squad conditions, Support Attack/Counter % (EX squad % is on the EX line below)')+L(opFlat.Attack|0,'Option part flat Attack')+L(atkSupport|0,'Supporter ATK support','stat-card-bonus--supporter-flat');
 return{hpHtml,atkHtml,defHtml,mobHtml};
 }
 /** MS growth % buckets use floor (integer %). In-game Versal LB1 10126 +15%+12%+Lacus LB2 40% + ATK support 260 → 17170 (not ceil 17171). opts.useCeil: probe-only. */
@@ -12289,7 +12290,7 @@ const hpDbCorePassive=F(hpBase*(100+pHp)/100);
 const defDbCorePassive=F(defBase*(100+pDef)/100);
 const mobDbCorePassive=F(mobBase*(100+pMob)/100);
 const atkDbCorePassive=F(atkBase*(100+pAtk)/100);
-return{unitAtk,unitHp,unitDefVal,unitMob,unitMove,atkSupport,leaderPct,supportCounterPct:supCnt|0,unitAtkExSquadBase,unitAtkGrowthAfterOptions,unitDefExSquadBase,deltaExAtk,advantageFlatGrowthAtk:atkBase,advantageFlatGrowthDef:defBase,hpDbCorePassive,defDbCorePassive,mobDbCorePassive,atkDbCorePassive};
+return{unitAtk,unitHp,unitDefVal,unitMob,unitMove,atkSupport,leaderPct,supportCounterPct:supCnt|0,unitAtkExSquadBase,unitAtkGrowthAfterOptions,unitDefExSquadBase,deltaExAtk,advantageFlatGrowthAtk:atkBase,advantageFlatGrowthDef:defBase,hpGrowthBase:hpBase,mobGrowthBase:mobBase,hpDbCorePassive,defDbCorePassive,mobDbCorePassive,atkDbCorePassive};
 }
 function _dcGetModifiedAttackerUnitStats(atkUnitStats){return _dcGetModifiedAttackerUnitStatsFromCtx(S.dc,atkUnitStats);}
 function _dcPilotAtkStatLabelForWeapon(wpn){
