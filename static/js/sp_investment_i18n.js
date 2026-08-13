@@ -181,7 +181,7 @@
       recommend_ch: 'Recommended Characters',
       recommend_ch_sub: 'Top 3',
       recommend_ch_note:
-        'Official recommend Character first, then affinity-pool Characters already on this guide (same Type preferred).',
+        'Official recommend Character first (when Ranged / Melee / Awaken matches the Unit’s strongest weapon), then affinity Characters on this guide with the same specialty match — SR included to fill up to 3. Defense Type Units skip the specialty check.',
       recommend_none: 'None on the current board.',
       recommend_sd:
         'SD Characters are permanently linked to their Unit and are not interchangeable; no recommendation list.',
@@ -336,7 +336,7 @@
       recommend_ch: '推奨キャラクター',
       recommend_ch_sub: '上位3名',
       recommend_ch_note:
-        '公式推奨キャラクターを優先し、続けて本ガイド上のアフィニティ候補（同タイプ優先）を最大3名まで。',
+        '公式推奨キャラクターを優先（射撃／格闘／覚醒がユニット最強武装と一致する場合）。続けて本ガイド上のアフィニティ候補で同じ専門値が合うもの（SR含む）を最大3名まで。耐久型ユニットは専門値チェックなし。',
       recommend_none: '現在のボードに該当なし。',
       recommend_sd:
         'SDキャラクターはユニットと固定リンクのため入れ替え不可です。推奨リストはありません。',
@@ -490,7 +490,7 @@
         '依能力的標籤／系列條件與角色適性比對{spec}。耐久型單位略過適性檢查。',
       recommend_ch: '推薦角色',
       recommend_ch_sub: '前 3 名',
-      recommend_ch_note: '優先官方推薦角色，再列入本指南上的親和角色（同類型優先），最多 3 名。',
+      recommend_ch_note: '優先官方推薦角色（射擊／格鬥／覺醒與單位最強武裝相符時），再列入本指南上親和且專長相符的角色（含 SR）最多 3 名。耐久型單位略過專長檢查。',
       recommend_none: '目前看板沒有符合項目。',
       recommend_sd: 'SD 角色與單位永久綁定、不可互換，因此沒有推薦清單。',
       community: '社群',
@@ -643,7 +643,7 @@
         '按能力嘅標籤／系列條件同角色適性比對{spec}。耐久型單位會略過適性檢查。',
       recommend_ch: '推薦角色',
       recommend_ch_sub: '前 3 名',
-      recommend_ch_note: '優先官方推薦角色，再列入本指南上嘅親和角色（同類型優先），最多 3 名。',
+      recommend_ch_note: '優先官方推薦角色（射擊／格鬥／覺醒同單位最強武裝相符時），再列入本指南上親和而且專長相符嘅角色（含 SR）最多 3 名。耐久型單位略過專長檢查。',
       recommend_none: '而家看板冇符合項目。',
       recommend_sd: 'SD 角色同單位永久綁定、唔可互換，所以冇推薦清單。',
       community: '社群',

@@ -2685,11 +2685,14 @@
     const cards = chars
       .map((c) => {
         const thumb = renderFramedThumb(c, 'character');
+        const specChip = c.specialty
+          ? `<span class="spi-chip">${esc(c.specialty)}</span>`
+          : '';
         return `<a class="spi-rec-card" href="/c/${encodeURIComponent(c.id)}" target="_blank" rel="noopener">
           ${thumb}
           <div class="spi-rec-meta">
             <span class="spi-rec-name">${esc(c.name || c.id)}</span>
-            <span class="spi-chip letter ${letterClass(c.letter)}">${esc(c.letter || '?')}</span>
+            <span class="spi-chip letter ${letterClass(c.letter)}">${esc(c.letter || '?')}</span>${specChip}
           </div>
         </a>`;
       })

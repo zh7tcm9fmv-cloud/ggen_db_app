@@ -1793,5 +1793,281 @@ def _minimal_features(**overrides):
     return base
 
 
+class TestRecommendedCharactersSpecialty(unittest.TestCase):
+    """Unit → Character recs must match peak-weapon specialty (Defense exempt)."""
+
+    def test_melee_peak_excludes_ranged_ssr_prefers_melee_sr(self):
+        from unittest.mock import patch
+
+        from sp_investment_rank import match_recommended_characters
+
+        class _FakeA:
+            unit_info_map = {"u_melee": {"role": "1", "recommend_character_id": "c_ranged_ssr"}}
+            LANG_DATA = {"EN": {}}
+
+            @staticmethod
+            def normalize_id(x):
+                return str(x)
+
+            @staticmethod
+            def resolve_unit_recommend_character_id(uid, info=None):
+                return "c_ranged_ssr"
+
+            @staticmethod
+            def _factions_for_playable_unit_ids(uids, lc):
+                return {"wing"}
+
+        char_by_id = {
+            "c_ranged_ssr": {
+                "id": "c_ranged_ssr",
+                "name": "Heero",
+                "letter": "S",
+                "role": "Attack",
+                "rarity": "SSR",
+                "specialty": "Ranged",
+            },
+            "c_melee_sr": {
+                "id": "c_melee_sr",
+                "name": "Duo",
+                "letter": "A",
+                "role": "Attack",
+                "rarity": "SR",
+                "specialty": "Melee",
+            },
+            "c_melee_ssr": {
+                "id": "c_melee_ssr",
+                "name": "Wufei",
+                "letter": "A+",
+                "role": "Attack",
+                "rarity": "SSR",
+                "specialty": "Melee",
+            },
+        }
+        board_aff = [
+            {
+                "id": "c_ranged_ssr",
+                "factions": frozenset({"wing"}),
+                "pair_unit_ids": frozenset(),
+                "role": "Attack",
+            },
+            {
+                "id": "c_melee_sr",
+                "factions": frozenset({"wing"}),
+                "pair_unit_ids": frozenset(),
+                "role": "Attack",
+            },
+            {
+                "id": "c_melee_ssr",
+                "factions": frozenset({"wing"}),
+                "pair_unit_ids": frozenset(),
+                "role": "Attack",
+            },
+        ]
+        with patch(
+            "sp_investment_rank.unit_peak_weapon_specialties",
+            return_value=frozenset({"Melee"}),
+        ), patch(
+            "sp_investment_rank.count_affinity_pilots_for_unit",
+            return_value=(
+                3,
+                {
+                    "pilot_ids": ["c_ranged_ssr", "c_melee_ssr", "c_melee_sr"],
+                    "sample_pilot_ids": ["c_ranged_ssr", "c_melee_ssr", "c_melee_sr"],
+                },
+            ),
+        ):
+            rows = match_recommended_characters(
+                _FakeA(),
+                "u_melee",
+                "Attack",
+                "1",
+                char_by_id,
+                affinity_pool=[],
+                board_affinity=board_aff,
+                cap=3,
+            )
+        ids = [r["id"] for r in rows]
+        self.assertNotIn("c_ranged_ssr", ids)
+        self.assertIn("c_melee_ssr", ids)
+        self.assertIn("c_melee_sr", ids)
+        self.assertEqual(ids[0], "c_melee_ssr")
+
+    def test_dual_attr_peak_accepts_either_specialty(self):
+        from unittest.mock import patch
+
+        from sp_investment_rank import match_recommended_characters
+
+        class _FakeA:
+            unit_info_map = {"u_dual": {"role": "1"}}
+            LANG_DATA = {"EN": {}}
+
+            @staticmethod
+            def normalize_id(x):
+                return str(x)
+
+            @staticmethod
+            def resolve_unit_recommend_character_id(uid, info=None):
+                return ""
+
+            @staticmethod
+            def _factions_for_playable_unit_ids(uids, lc):
+                return {"f"}
+
+        char_by_id = {
+            "c_r": {
+                "id": "c_r",
+                "name": "R",
+                "letter": "A",
+                "role": "Attack",
+                "specialty": "Ranged",
+            },
+            "c_m": {
+                "id": "c_m",
+                "name": "M",
+                "letter": "A",
+                "role": "Attack",
+                "specialty": "Melee",
+            },
+        }
+        board_aff = [
+            {
+                "id": "c_r",
+                "factions": frozenset({"f"}),
+                "pair_unit_ids": frozenset(),
+                "role": "Attack",
+            },
+            {
+                "id": "c_m",
+                "factions": frozenset({"f"}),
+                "pair_unit_ids": frozenset(),
+                "role": "Attack",
+            },
+        ]
+        with patch(
+            "sp_investment_rank.unit_peak_weapon_specialties",
+            return_value=frozenset({"Ranged", "Melee"}),
+        ), patch(
+            "sp_investment_rank.count_affinity_pilots_for_unit",
+            return_value=(2, {"pilot_ids": ["c_r", "c_m"]}),
+        ):
+            rows = match_recommended_characters(
+                _FakeA(),
+                "u_dual",
+                "Attack",
+                "1",
+                char_by_id,
+                affinity_pool=[],
+                board_affinity=board_aff,
+                cap=3,
+            )
+        self.assertEqual({r["id"] for r in rows}, {"c_r", "c_m"})
+
+    def test_defense_unit_skips_specialty(self):
+        from unittest.mock import patch
+
+        from sp_investment_rank import match_recommended_characters
+
+        class _FakeA:
+            unit_info_map = {"u_def": {"role": "2"}}
+            LANG_DATA = {"EN": {}}
+
+            @staticmethod
+            def normalize_id(x):
+                return str(x)
+
+            @staticmethod
+            def resolve_unit_recommend_character_id(uid, info=None):
+                return ""
+
+            @staticmethod
+            def _factions_for_playable_unit_ids(uids, lc):
+                return {"f"}
+
+        char_by_id = {
+            "c_ranged": {
+                "id": "c_ranged",
+                "name": "Ranged Def",
+                "letter": "S",
+                "role": "Defense",
+                "specialty": "Ranged",
+            },
+        }
+        board_aff = [
+            {
+                "id": "c_ranged",
+                "factions": frozenset({"f"}),
+                "pair_unit_ids": frozenset(),
+                "role": "Defense",
+            }
+        ]
+        with patch(
+            "sp_investment_rank.unit_peak_weapon_specialties",
+            return_value=frozenset({"Melee"}),
+        ), patch(
+            "sp_investment_rank.count_affinity_pilots_for_unit",
+            return_value=(1, {"pilot_ids": ["c_ranged"]}),
+        ):
+            rows = match_recommended_characters(
+                _FakeA(),
+                "u_def",
+                "Defense",
+                "2",
+                char_by_id,
+                affinity_pool=[],
+                board_affinity=board_aff,
+                cap=3,
+            )
+        self.assertEqual([r["id"] for r in rows], ["c_ranged"])
+
+    def test_official_mismatch_omitted_when_no_match(self):
+        from unittest.mock import patch
+
+        from sp_investment_rank import match_recommended_characters
+
+        class _FakeA:
+            unit_info_map = {"u_x": {"role": "1"}}
+            LANG_DATA = {"EN": {}}
+
+            @staticmethod
+            def normalize_id(x):
+                return str(x)
+
+            @staticmethod
+            def resolve_unit_recommend_character_id(uid, info=None):
+                return "c_official_ranged"
+
+            @staticmethod
+            def _factions_for_playable_unit_ids(uids, lc):
+                return set()
+
+        char_by_id = {
+            "c_official_ranged": {
+                "id": "c_official_ranged",
+                "name": "Official",
+                "letter": "S+",
+                "role": "Attack",
+                "specialty": "Ranged",
+            },
+        }
+        with patch(
+            "sp_investment_rank.unit_peak_weapon_specialties",
+            return_value=frozenset({"Melee"}),
+        ), patch(
+            "sp_investment_rank.count_affinity_pilots_for_unit",
+            return_value=(0, {"pilot_ids": []}),
+        ):
+            rows = match_recommended_characters(
+                _FakeA(),
+                "u_x",
+                "Attack",
+                "1",
+                char_by_id,
+                affinity_pool=[],
+                board_affinity=[],
+                cap=3,
+            )
+        self.assertEqual(rows, [])
+
+
 if __name__ == "__main__":
     unittest.main()

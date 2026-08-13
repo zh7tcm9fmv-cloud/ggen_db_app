@@ -5986,8 +5986,11 @@ def _lean_char_kit_lists(kit_items: list[dict] | None) -> tuple[list[dict], list
     return abilities, skills
 
 
-def unit_primary_specialty(A, uid: str, lc: str = "EN") -> str:
-    """Specialty of the unit's strongest non-MAP weapon (Ranged/Melee/Awaken)."""
+def unit_peak_weapon_specialties(A, uid: str, lc: str = "EN") -> frozenset[str]:
+    """
+    Specialty set of the unit's strongest non-MAP weapon (Ranged/Melee/Awaken).
+    Dual/triple AttackAttributeSetId weapons return every key on that peak weapon.
+    """
     ld = A.get_lang_data(lc) if hasattr(A, "get_lang_data") else A.LANG_DATA.get(lc, {})
     best_power = -1
     best_keys: list[str] = []
@@ -6016,17 +6019,76 @@ def unit_primary_specialty(A, uid: str, lc: str = "EN") -> str:
         levels = ws.get("levels", {})
         if isinstance(levels, dict):
             power = max(power, int((levels.get(5, {}) or {}).get("power", 0) or 0))
-        keys = list((getattr(A, "ATTACK_ATTR_SET_TYPE_KEYS", {}) or {}).get(str(wm.get("attack_attribute") or "0"), []) or [])
+        keys = list(
+            (getattr(A, "ATTACK_ATTR_SET_TYPE_KEYS", {}) or {}).get(
+                str(wm.get("attack_attribute") or "0"), []
+            )
+            or []
+        )
         if not keys:
             continue
         if power > best_power:
             best_power = power
             best_keys = keys
     canon = {"ranged": "Ranged", "melee": "Melee", "awaken": "Awaken"}
-    for k in best_keys:
-        if k in canon:
-            return canon[k]
+    out = frozenset(canon[k] for k in best_keys if k in canon)
+    return out or frozenset({"Ranged"})
+
+
+def unit_primary_specialty(A, uid: str, lc: str = "EN") -> str:
+    """Primary specialty of the unit's strongest non-MAP weapon (Ranged/Melee/Awaken)."""
+    specs = unit_peak_weapon_specialties(A, uid, lc)
+    for key in ("Ranged", "Melee", "Awaken"):
+        if key in specs:
+            return key
     return "Ranged"
+
+
+def _pilot_specialty_matches_unit_peak(
+    pilot_specialty: str, peak_specs: frozenset[str], *, unit_role: str
+) -> bool:
+    """Defense Type Units skip specialty; else pilot specialty must be in the peak set."""
+    if str(unit_role or "") == "Defense":
+        return True
+    spec = str(pilot_specialty or "").strip()
+    if not spec:
+        return False
+    return spec in (peak_specs or frozenset())
+
+
+def _character_affinity_hits_unit(
+    A, cid: str, uid: str, unit_factions: set, rules: dict | None = None
+) -> bool:
+    """True when Character has EX-pair or piloting-tag faction overlap with the Unit."""
+    rules = rules or load_rules()
+    cfg = rules.get("affinity_pilots") or {}
+    include_pairs = bool(cfg.get("include_ex_unit_pairs", True))
+    cid = A.normalize_id(cid) if hasattr(A, "normalize_id") else str(cid)
+    uid = A.normalize_id(uid) if hasattr(A, "normalize_id") else str(uid)
+    factions: set = set()
+    pair_uids: set = set()
+    try:
+        if hasattr(A, "_character_affinity_faction_set"):
+            factions = set(A._character_affinity_faction_set(cid) or set())
+        meta = (
+            A._scan_character_affinity_meta(cid)
+            if hasattr(A, "_scan_character_affinity_meta")
+            else {}
+        )
+        if meta:
+            factions.update(meta.get("tag_factions") or set())
+            pair_uids = {
+                A.normalize_id(u)
+                for u in (meta.get("pair_unit_ids") or [])
+                if u and A.normalize_id(u) not in ("", "0")
+            }
+    except Exception:
+        return False
+    if include_pairs and uid in pair_uids:
+        return True
+    if unit_factions and factions & unit_factions:
+        return True
+    return False
 
 
 def build_unit_recommend_index(A, unit_rows: list[dict], lc: str = "EN") -> dict:
@@ -6200,6 +6262,51 @@ def match_recommended_units(
     return rows[:24]
 
 
+def _board_character_affinity_entries(
+    A, char_by_id: dict, rules: dict | None = None
+) -> list[dict]:
+    """Lean affinity index for Characters already on the SPI board (any rarity)."""
+    rules = rules or load_rules()
+    rows: list[dict] = []
+    for cid, ent in (char_by_id or {}).items():
+        if not ent or ent.get("is_sd_linked"):
+            continue
+        cid = A.normalize_id(cid) if hasattr(A, "normalize_id") else str(cid)
+        if not cid or cid == "0":
+            continue
+        factions: set = set()
+        pair_uids: set = set()
+        try:
+            if hasattr(A, "_character_affinity_faction_set"):
+                factions = set(A._character_affinity_faction_set(cid) or set())
+            meta = (
+                A._scan_character_affinity_meta(cid)
+                if hasattr(A, "_scan_character_affinity_meta")
+                else {}
+            )
+            if meta:
+                factions.update(meta.get("tag_factions") or set())
+                pair_uids = {
+                    A.normalize_id(u)
+                    for u in (meta.get("pair_unit_ids") or [])
+                    if u and A.normalize_id(u) not in ("", "0")
+                }
+        except Exception:
+            factions = set()
+            pair_uids = set()
+        if not factions and not pair_uids:
+            continue
+        rows.append(
+            {
+                "id": cid,
+                "factions": frozenset(factions),
+                "pair_unit_ids": frozenset(pair_uids),
+                "role": ent.get("role") or "",
+            }
+        )
+    return rows
+
+
 def match_recommended_characters(
     A,
     uid: str,
@@ -6210,17 +6317,23 @@ def match_recommended_characters(
     lc: str = "EN",
     cap: int = 3,
     affinity_pool: list[dict] | None = None,
+    board_affinity: list[dict] | None = None,
 ) -> list[dict]:
     """
     Unit → Character recommendations (publish-time):
-    1) Official recommend Character when on the Character SPI board
-    2) Affinity-pool Characters already on that board (same role preferred), top `cap`
+    Official recommend (specialty-matched) then affinity Characters on the SPI board
+    whose specialty fits the unit's peak weapon (Defense Type Units skip specialty).
+    Cap `cap` (default 3); fill with SR/R board pilots when needed — never pad mismatches.
     """
     rules = rules or load_rules()
     uid = A.normalize_id(uid) if hasattr(A, "normalize_id") else str(uid)
     char_by_id = char_by_id or {}
     out: list[dict] = []
     seen: set[str] = set()
+    unit_role_s = str(unit_role or "")
+    peak_specs = unit_peak_weapon_specialties(A, uid, lc)
+    cfg = rules.get("affinity_pilots") or {}
+    include_pairs = bool(cfg.get("include_ex_unit_pairs", True))
 
     def _row_for(cid: str, reason: str) -> dict | None:
         cid = A.normalize_id(cid) if hasattr(A, "normalize_id") else str(cid)
@@ -6246,6 +6359,13 @@ def match_recommended_characters(
     except Exception:
         pass
 
+    def _specialty_ok(row: dict | None) -> bool:
+        if not row:
+            return False
+        return _pilot_specialty_matches_unit_peak(
+            row.get("specialty") or "", peak_specs, unit_role=unit_role_s
+        )
+
     try:
         rc = (
             A.resolve_unit_recommend_character_id(uid, info)
@@ -6256,21 +6376,54 @@ def match_recommended_characters(
         rc = ""
     if rc:
         official = _row_for(rc, "official")
-        if official:
+        if official and _specialty_ok(official):
             out.append(official)
             seen.add(official["id"])
 
+    unit_factions: set = set()
+    try:
+        if hasattr(A, "_factions_for_playable_unit_ids"):
+            unit_factions = set(A._factions_for_playable_unit_ids([uid], lc) or set())
+    except Exception:
+        unit_factions = set()
+
+    aff_ids: list[str] = []
+    aff_seen: set[str] = set()
     _n, meta = count_affinity_pilots_for_unit(
         A, uid, unit_role_id, rules=rules, lc=lc, pool=affinity_pool
     )
-    aff_rows: list[dict] = []
     for pid in meta.get("pilot_ids") or meta.get("sample_pilot_ids") or []:
+        if not pid or pid in aff_seen:
+            continue
+        aff_ids.append(str(pid))
+        aff_seen.add(str(pid))
+
+    board_rows = (
+        board_affinity
+        if board_affinity is not None
+        else _board_character_affinity_entries(A, char_by_id, rules)
+    )
+    for p in board_rows:
+        pid = str(p.get("id") or "")
+        if not pid or pid in aff_seen:
+            continue
+        hit = False
+        if include_pairs and uid in (p.get("pair_unit_ids") or ()):
+            hit = True
+        elif unit_factions and (p.get("factions") or frozenset()) & unit_factions:
+            hit = True
+        if hit:
+            aff_ids.append(pid)
+            aff_seen.add(pid)
+
+    aff_rows: list[dict] = []
+    for pid in aff_ids:
         if not pid or pid in seen:
             continue
         row = _row_for(pid, "affinity")
-        if row:
+        if row and _specialty_ok(row):
             aff_rows.append(row)
-    unit_role_s = str(unit_role or "")
+
     aff_rows.sort(
         key=lambda r: (
             0 if str(r.get("role") or "") == unit_role_s else 1,
@@ -6284,6 +6437,8 @@ def match_recommended_characters(
     for row in aff_rows:
         if len(out) >= cap:
             break
+        if row["id"] in seen:
+            continue
         out.append(row)
         seen.add(row["id"])
     return out[:cap]
@@ -6301,6 +6456,7 @@ def attach_recommended_characters_to_unit_rows(
     rules = rules or load_rules()
     char_by_id = {str(r.get("id")): r for r in (pilot_rows or []) if r.get("id")}
     pool = build_affinity_pilot_pool(A, rules, lc)
+    board_aff = _board_character_affinity_entries(A, char_by_id, rules)
     for r in unit_rows or []:
         if not isinstance(r, dict) or not r.get("id"):
             continue
@@ -6314,6 +6470,7 @@ def attach_recommended_characters_to_unit_rows(
             lc=lc,
             cap=cap,
             affinity_pool=pool,
+            board_affinity=board_aff,
         )
 
 
