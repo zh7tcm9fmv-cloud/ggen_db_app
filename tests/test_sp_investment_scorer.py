@@ -1699,6 +1699,29 @@ class TestSeriesAdvantageHelpers(unittest.TestCase):
         self.assertTrue(character_is_investment_eligible(A, "c_ssr", rules))
         self.assertFalse(character_is_investment_eligible(A, "c_ur", rules))
 
+    def test_unit_eligibility_drops_schedule_shell_and_ur(self):
+        from sp_investment_rank import unit_is_investment_eligible
+
+        class _FakeA:
+            unit_list_playable_ids = {"u_ok", "u_shell", "u_ur", "u_ult"}
+            unit_info_map = {
+                "u_ok": {"rarity": 4, "body_type": "1", "schedule_id": "0"},
+                "u_shell": {"rarity": 3, "body_type": "1", "schedule_id": "9999990001"},
+                "u_ur": {"rarity": 5, "body_type": "1", "is_ultimate": False},
+                "u_ult": {"rarity": 5, "body_type": "1", "is_ultimate": True},
+            }
+
+            @staticmethod
+            def normalize_id(x):
+                return str(x)
+
+        A = _FakeA()
+        rules = load_rules()
+        self.assertTrue(unit_is_investment_eligible(A, "u_ok", rules))
+        self.assertFalse(unit_is_investment_eligible(A, "u_shell", rules))
+        self.assertFalse(unit_is_investment_eligible(A, "u_ur", rules))
+        self.assertTrue(unit_is_investment_eligible(A, "u_ult", rules))
+
     def test_character_eligibility_drops_schedule_shell(self):
         from sp_investment_rank import character_is_investment_eligible
 

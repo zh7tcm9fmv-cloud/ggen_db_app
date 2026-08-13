@@ -1,0 +1,37 @@
+---
+description: Rebuild Investment Priority (/ip) after MasterData adds units/characters
+alwaysApply: true
+---
+
+# Investment Priority (`/ip`) — catalog coverage
+
+Published board: `data/published/sp_investment_v1.json` (static; snappy serve path).
+
+## Hard rule
+
+After importing new MasterData (new playable units/characters), **rebuild SPI before shipping** so `/ip` includes every investment-eligible kit:
+
+```text
+python scripts/build_sp_investment_rankings.py
+python scripts/check_sp_investment_coverage.py
+```
+
+Or with What's New baseline refresh:
+
+```text
+python scripts/refresh_whats_new_snapshot.py --rebuild-spi
+```
+
+Do not leave `/ip` on a stale published JSON after a catalog drop.
+
+## Eligibility (by design — not bugs)
+
+- Scores **all playable** units/characters the builder iterates (`unit_list_playable_ids` / `char_list_playable_ids`).
+- **Excluded by rules** (not SP Conversion targets): non-Ultimate **UR** units, **UR** characters, warships.
+- Ultimate units remain eligible.
+
+If the owner asks to put normal UR banner kits on `/ip`, that is a product/rules change (`exclude_ur_units` / `exclude_ur_characters`), not a coverage miss.
+
+## Coverage gate
+
+`scripts/check_sp_investment_coverage.py` (also runs at end of the build) must report **Coverage: OK**. Missing eligible SSR/SR/R ids after a master import = rebuild required (or a scorer exception to fix).

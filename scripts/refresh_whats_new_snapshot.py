@@ -15,6 +15,7 @@ Usage (from ggen_db_app):
   python scripts/refresh_whats_new_snapshot.py
   python scripts/refresh_whats_new_snapshot.py --second-latest
   python scripts/refresh_whats_new_snapshot.py --from-master-dir "C:/path/to/MasterData_2026-03-24"
+  python scripts/refresh_whats_new_snapshot.py --rebuild-spi
 
 If you already have whats_new_snapshot.json but no files under data/whats_new_history_snapshots/, use
   python scripts/backfill_whats_new_history.py --prior-master-dir "C:/path/to/older/MasterData_*"
@@ -61,6 +62,14 @@ def main():
         '--captured-at',
         metavar='YYYY-MM-DD',
         help='Optional captured_at stored in JSON (default: today UTC).',
+    )
+    parser.add_argument(
+        '--rebuild-spi',
+        action='store_true',
+        help=(
+            'After writing the What\'s New baseline, rebuild published Investment Priority '
+            '(/ip) so new units/characters are scored onto the boards.'
+        ),
     )
     args = parser.parse_args()
 
@@ -121,6 +130,20 @@ def main():
     print(f'Wrote {path}')
     print(f'  source: {src}')
     print(f'  units: {len(sn.get("units", []))}, characters: {len(sn.get("characters", []))}, option parts: {len(sn.get("option_parts", []))}')
+
+    if args.rebuild_spi:
+        print('Rebuilding Investment Priority (/ip) published board…')
+        # Re-exec in a fresh process so SPI build sees the same master already loaded
+        # via import app in this script, without double-binding Flask quirks.
+        import subprocess
+
+        rc = subprocess.call(
+            [sys.executable, os.path.join(_APP_DIR, 'scripts', 'build_sp_investment_rankings.py')],
+            cwd=_APP_DIR,
+        )
+        if rc != 0:
+            raise SystemExit(rc)
+        print('SPI rebuild finished.')
 
 
 if __name__ == '__main__':

@@ -6363,6 +6363,108 @@ def character_is_investment_eligible(
     return False
 
 
+def unit_is_investment_eligible(A, uid: str, rules: dict | None = None) -> bool:
+    """Same gates as score_unit() before feature extract (playable / warship / non-Ultimate UR)."""
+    rules = rules or load_rules()
+    uid = A.normalize_id(uid) if hasattr(A, "normalize_id") else str(uid)
+    if not uid or uid == "0":
+        return False
+    playable = getattr(A, "unit_list_playable_ids", None)
+    if playable is not None and uid not in playable:
+        return False
+    info = (getattr(A, "unit_info_map", None) or {}).get(uid) or {}
+    if not info:
+        return False
+    # ScheduleId 9999990001 = non-playable / stage-NPC shell (not obtainable in-game).
+    if str(info.get("schedule_id", "0") or "0") == "9999990001":
+        return False
+    if rules.get("exclude_warships", True) and str(info.get("body_type") or "1") == "2":
+        return False
+    if rules.get("exclude_ur_units", True):
+        try:
+            ri = int(info.get("rarity", 1) or 1)
+        except (TypeError, ValueError):
+            ri = 0
+        if ri >= 5 and not bool(info.get("is_ultimate", False)):
+            return False
+    return True
+
+
+def iter_eligible_unit_ids(A, rules: dict | None = None) -> list[str]:
+    rules = rules or load_rules()
+    playable = getattr(A, "unit_list_playable_ids", None) or []
+    out = [uid for uid in playable if unit_is_investment_eligible(A, uid, rules)]
+    out.sort()
+    return out
+
+
+def iter_eligible_character_ids(
+    A, rules: dict | None = None, unit_index: dict | None = None
+) -> list[str]:
+    rules = rules or load_rules()
+    playable = getattr(A, "char_list_playable_ids", None) or []
+    out = [
+        cid
+        for cid in playable
+        if character_is_investment_eligible(A, cid, rules, unit_index=unit_index)
+    ]
+    out.sort()
+    return out
+
+
+def published_board_ids(payload: dict, *, side: str, board: str = "sp") -> set[str]:
+    """Collect entity ids from a published SPI payload board."""
+    out: set[str] = set()
+    root = payload.get(side) if side in ("units", "characters") else None
+    if not isinstance(root, dict):
+        # Back-compat: top-level sp/ssp = units
+        if side == "units" and board in payload:
+            root = {board: payload.get(board)}
+        else:
+            return out
+    buckets = root.get(board) if board in root else root
+    if not isinstance(buckets, dict):
+        return out
+    for rows in buckets.values():
+        if not isinstance(rows, list):
+            continue
+        for row in rows:
+            rid = row.get("id") if isinstance(row, dict) else None
+            if rid is not None:
+                out.add(str(rid))
+    return out
+
+
+def coverage_gaps_vs_published(
+    A,
+    payload: dict,
+    rules: dict | None = None,
+    unit_index: dict | None = None,
+) -> dict:
+    """
+    Eligible playable catalog vs published /ip boards.
+    Non-Ultimate UR + warships are excluded by rules (not reported as gaps).
+    """
+    rules = rules or load_rules()
+    elig_u = set(iter_eligible_unit_ids(A, rules))
+    elig_c = set(iter_eligible_character_ids(A, rules, unit_index=unit_index))
+    pub_u = published_board_ids(payload, side="units", board="sp") | published_board_ids(
+        payload, side="units", board="ssp"
+    )
+    pub_c = published_board_ids(payload, side="characters", board="sp")
+    miss_u = sorted(elig_u - pub_u)
+    miss_c = sorted(elig_c - pub_c)
+    return {
+        "eligible_units": len(elig_u),
+        "eligible_characters": len(elig_c),
+        "published_units": len(pub_u),
+        "published_characters": len(pub_c),
+        "missing_units": miss_u,
+        "missing_characters": miss_c,
+        "ok": not miss_u and not miss_c,
+    }
+
+
 def extract_character_features(
     A,
     cid: str,

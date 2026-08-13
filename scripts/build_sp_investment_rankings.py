@@ -1,15 +1,23 @@
 """
-Build SP/SSP investment ranking JSON for /sp-list preview.
+Build SP/SSP investment ranking JSON for Investment Priority (/ip).
 
 Includes unit SP/SSP boards, pilot SP board, ER Expert filter metadata.
+Scores every investment-eligible playable unit/character from current master
+(non-Ultimate UR + warships excluded by rules — not SP Conversion targets).
 
-Run: python scripts/build_sp_investment_rankings.py
+After any MasterData import / What's New refresh, rebuild so new kits land on /ip:
+  python scripts/build_sp_investment_rankings.py
+  python scripts/refresh_whats_new_snapshot.py --rebuild-spi
+
+Coverage gate (eligible catalog vs published):
+  python scripts/check_sp_investment_coverage.py
 """
 from __future__ import annotations
 
 import json
 import os
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -295,6 +303,7 @@ def main():
     payload = {
         "version": int(rules.get("version", 1)) + 1,
         "lang": LC,
+        "built_at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "bucket_order": list(BUCKET_ORDER),
         "bucket_labels": rules.get("bucket_labels") or {},
         "er_expert_filters": er_filters,
@@ -329,6 +338,26 @@ def main():
     with open(pub_path, "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, separators=(",", ":"))
     print(f"Wrote {pub_path} ({pub_path.stat().st_size // 1024} KB)")
+
+    cov = SIR.coverage_gaps_vs_published(A, payload, rules=rules, unit_index=unit_index)
+    print(
+        "Coverage: eligible "
+        f"units={cov['eligible_units']} chars={cov['eligible_characters']} | "
+        f"published units={cov['published_units']} chars={cov['published_characters']}"
+    )
+    if not cov["ok"]:
+        mu = cov["missing_units"][:12]
+        mc = cov["missing_characters"][:12]
+        print(
+            f"  MISSING {len(cov['missing_units'])} units {mu}"
+            + ("…" if len(cov["missing_units"]) > 12 else "")
+        )
+        print(
+            f"  MISSING {len(cov['missing_characters'])} chars {mc}"
+            + ("…" if len(cov["missing_characters"]) > 12 else "")
+        )
+        raise SystemExit(2)
+    print("Coverage: OK (all investment-eligible playable ids are on /ip boards)")
 
 
 if __name__ == "__main__":
