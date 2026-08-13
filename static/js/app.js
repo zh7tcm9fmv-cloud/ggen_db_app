@@ -12381,10 +12381,13 @@ const offExp=((5000-atkCombined)*30)/100000;
 const defExp=((5000-defCombined)*3)/100000;
 const offenseComponent=(10000/100)/(EXP(offExp)+1);
 const defenseComponent=(-4000/100)/(EXP(defExp)+1);
-/** ⑦ Firered: RoundUp each correction slice before add (off/def components can be negative — ceil each × baseDamage separately). */
-const offenseCorrection=C(offenseComponent*baseDamage);
-const defenseCorrection=C(defenseComponent*baseDamage);
-const damageCorrection=(offenseComponent+defenseComponent)*baseDamage;
+/** ⑦ Round each correction slice away from 0 before add (ceil if ≥0, floor if <0).
+ *  Plain Math.ceil on a negative defense slice undershoots the cut (e.g. Graze Ein + Melee Boost → 218517 vs in-game 218515).
+ *  Float sum of both slices then one ceil matched some soft targets but misses hard-DEF cases. */
+const _dcRoundAway0=(x)=>x>=0?C(x):F(x);
+const offenseCorrection=_dcRoundAway0(offenseComponent*baseDamage);
+const defenseCorrection=_dcRoundAway0(defenseComponent*baseDamage);
+const damageCorrection=offenseCorrection+defenseCorrection;
 const isExWeapon=!!wpn.is_ex;
 const userDmgIncreasePct=S.dc.dmgIncrease||0;
 const userCritDmgUpPct=S.dc.critDmgUp||0;
