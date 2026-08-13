@@ -8140,24 +8140,47 @@ def augment_map_shooting_dual_line_for_occupied_area_2(scc, unit_id):
     return out, True
 
 
-# GP03 dual-line MAP: 2×2 landing band above the path (path tops out at y=4 in master data).
+# Legacy name kept for callers; end band is derived from effect/path top (not GP03-only).
 MAP_GP03_DASH_END_COORDS = ((0, 5), (1, 5), (0, 6), (1, 6))
 
 
+def map_dash_dual_end_coords_above_effect(mc, scc):
+    """2×2 landing / end use-point immediately above the effect (else path) top row.
+
+    OccupiedAreaId-2 dual-line dash MAPs share this layout (GP03 Dendrobium, 1705003100, …):
+    path+effect stop at some Y; the machine's 4 tiles land at Y+1 and Y+2 on columns 0 and 1.
+    """
+    ys = [int(c['y']) for c in (mc or []) if isinstance(c, dict) and c.get('y') is not None]
+    if not ys:
+        ys = [int(c['y']) for c in (scc or []) if isinstance(c, dict) and c.get('y') is not None]
+    if not ys:
+        return []
+    top = max(ys)
+    return [{'x': x, 'y': y} for y in (top + 1, top + 2) for x in (0, 1)]
+
+
+def append_map_dash_dual_end_cells(scc, end_coords):
+    """Merge 2×2 end tiles into shooting coords so grid bounds / step logic see them."""
+    if not scc or not end_coords:
+        return scc
+    out = [{'x': c['x'], 'y': c['y']} for c in scc]
+    seen = {(c['x'], c['y']) for c in out}
+    for c in end_coords:
+        nx, ny = int(c['x']), int(c['y'])
+        if (nx, ny) not in seen:
+            seen.add((nx, ny))
+            out.append({'x': nx, 'y': ny})
+    return out
+
+
 def append_gp03_map_dash_end_cells(scc, unit_id, map_dash_dual_wide):
-    """Append 2×2 end tiles (0,5)(1,5)(0,6)(1,6) for GP03 dual-line dash MAP."""
+    """Deprecated GP03-only helper; prefer map_dash_dual_end_coords_above_effect for all 2×2 dash."""
     if not map_dash_dual_wide or not scc:
         return scc
     uid = normalize_id(unit_id) if unit_id else '0'
     if uid not in ('1060000500', '1060000550'):
         return scc
-    out = [{'x': c['x'], 'y': c['y']} for c in scc]
-    seen = {(c['x'], c['y']) for c in out}
-    for nx, ny in MAP_GP03_DASH_END_COORDS:
-        if (nx, ny) not in seen:
-            seen.add((nx, ny))
-            out.append({'x': nx, 'y': ny})
-    return out
+    return append_map_dash_dual_end_cells(scc, [{'x': x, 'y': y} for x, y in MAP_GP03_DASH_END_COORDS])
 
 
 def create_weapon_text_map(d):
@@ -8486,20 +8509,23 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_
     # impact-relative and must not be widened for the unit's 2×2 footprint.
     mrt = normalize_id(wm.get('map_range_type') or '0', '0')
     if wts == '3':
-        if uidn == '1001002700':
+        scc, map_dash_dual_wide = augment_map_shooting_dual_line_for_occupied_area_2(scc, unit_id)
+        if map_dash_dual_wide:
+            # Dual-line dash: master effect already spans the path; do not +1-x widen.
+            # Landing 2×2 sits immediately above the effect top (class rule — not GP03 IDs).
+            mc = [{'x': c['x'], 'y': c['y']} for c in (ws.get('map_coords') or [])]
+            map_dash_dual_end_coords = map_dash_dual_end_coords_above_effect(mc, scc)
+            scc = append_map_dash_dual_end_cells(scc, map_dash_dual_end_coords)
+        elif uidn == '1001002700':
             mc = minkowski_map_coords_with_2x2_footprint([dict(c) for c in (ws.get('map_coords') or [])])
             map_single_pou = True
+            scc = augment_map_coords_for_occupied_area_2(scc, unit_id)
         elif mrt == '2':
             mc = [{'x': c['x'], 'y': c['y']} for c in (ws.get('map_coords') or [])]
-        else:
-            mc = augment_map_coords_for_occupied_area_2(mc, unit_id)
-        scc, map_dash_dual_wide = augment_map_shooting_dual_line_for_occupied_area_2(scc, unit_id)
-        if not map_dash_dual_wide:
             scc = augment_map_coords_for_occupied_area_2(scc, unit_id)
         else:
-            scc = append_gp03_map_dash_end_cells(scc, unit_id, map_dash_dual_wide)
-            if uidn in ('1060000500', '1060000550'):
-                map_dash_dual_end_coords = [{'x': x, 'y': y} for x, y in MAP_GP03_DASH_END_COORDS]
+            mc = augment_map_coords_for_occupied_area_2(mc, unit_id)
+            scc = augment_map_coords_for_occupied_area_2(scc, unit_id)
         isd = bool(mc and scc and len(mc) == len(scc) and {(c['x'], c['y']) for c in mc} == {(c['x'], c['y']) for c in scc})
         if map_dash_dual_wide:
             isd = True

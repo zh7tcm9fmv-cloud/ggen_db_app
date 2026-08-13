@@ -4734,7 +4734,7 @@ function renderMapGrid(weapon,unitData,opts){
   // CSS .map-pou-2x2-marker grows right+down in screen space (toward lower y); anchor at footprint top-left.
   const fpMrk=(isLarge&&mapSinglePou)?[{x:0,y:1}]:fpOcc;
   const mapDashDualWide=!!(weapon.map_dash_dual_wide);
-  const dashEndCells=(weapon.map_dash_dual_end_coords&&weapon.map_dash_dual_end_coords.length)?weapon.map_dash_dual_end_coords.map(_mxy).filter(Boolean):null;
+  let dashEndCells=(weapon.map_dash_dual_end_coords&&weapon.map_dash_dual_end_coords.length)?weapon.map_dash_dual_end_coords.map(_mxy).filter(Boolean):null;
 
   let t1=false,t2=false,t3=false;
   if(!hs)t1=true;
@@ -4750,10 +4750,16 @@ function renderMapGrid(weapon,unitData,opts){
 
   let sx=0,sy=0,ux=0,uy=0,ey=0,dashEndYDual=null;
   if(t3){
+    // 2×2 dual-line dash: landing use-point is a 2×2 band immediately above effect top (not on the path tip).
+    if(!dashEndCells&&mapDashDualWide&&ec.length){
+      const topE=Math.max(...ec.map(c=>c.y));
+      dashEndCells=[{x:0,y:topE+1},{x:1,y:topE+1},{x:0,y:topE+2},{x:1,y:topE+2}];
+    }
     let ac=ec.concat(sc);
+    if(dashEndCells&&dashEndCells.length)ac=ac.concat(dashEndCells);
     let my=Math.max(...ac.map(c=>c.y));
-    if(dashEndCells){
-      ey=my
+    if(dashEndCells&&dashEndCells.length){
+      ey=Math.max(...dashEndCells.map(c=>c.y));
     }else if(mapDashDualWide&&sc.length){
       dashEndYDual=Math.max(...sc.map(c=>c.y));
       ey=dashEndYDual
@@ -4775,7 +4781,9 @@ function renderMapGrid(weapon,unitData,opts){
   if(t2||t3){
     sc.forEach(c=>{if(c.x<mnx)mnx=c.x;if(c.x>mxx)mxx=c.x;if(c.y<mny)mny=c.y;if(c.y>mxy)mxy=c.y})
   }
-  if(t3&&!mapDashDualWide){
+  if(t3&&dashEndCells&&dashEndCells.length){
+    dashEndCells.forEach(c=>{if(c.x<mnx)mnx=c.x;if(c.x>mxx)mxx=c.x;if(c.y<mny)mny=c.y;if(c.y>mxy)mxy=c.y});
+  }else if(t3&&!mapDashDualWide){
     dashEndCols.forEach(dx=>{let c={x:dx,y:ey};if(c.x<mnx)mnx=c.x;if(c.x>mxx)mxx=c.x;if(c.y<mny)mny=c.y;if(c.y>mxy)mxy=c.y});
   }
 
