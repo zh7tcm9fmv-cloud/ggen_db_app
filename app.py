@@ -8058,6 +8058,25 @@ def minkowski_map_coords_with_2x2_footprint(coords):
     return out
 
 
+def map_coords_already_2x2_footprint_aware(coords):
+    """True when master x-extent is already centered on the 2×2 midline (min_x + max_x == 1).
+
+    OccupiedAreaId-2 MAP rings are sometimes authored around the footprint center (0.5, …)
+    instead of the pivot (0, 0). Widening those again shifts the pattern off-center.
+    """
+    if not coords or len(coords) < 2:
+        return False
+    xs = []
+    for c in coords:
+        try:
+            xs.append(int(c['x']))
+        except (KeyError, TypeError, ValueError):
+            continue
+    if len(xs) < 2:
+        return False
+    return (min(xs) + max(xs)) == 1
+
+
 def is_haro_map_unit(unit_id):
     """True for Haro family units (OccupiedAreaId 2 in m_unit)."""
     uid = normalize_id(unit_id, '0')
@@ -8069,7 +8088,10 @@ def is_haro_map_unit(unit_id):
 
 
 def augment_map_coords_for_occupied_area_2(coords, unit_id):
-    """Add tiles for 2×2 units (m_unit OccupiedAreaId 2): each row gets (max_x + 1, y) if missing."""
+    """Add tiles for 2×2 units (m_unit OccupiedAreaId 2): each row gets (max_x + 1, y) if missing.
+
+    Skip when master data is already footprint-aware (see map_coords_already_2x2_footprint_aware).
+    """
     if not coords:
         return coords
     uid = normalize_id(unit_id) if unit_id else '0'
@@ -8078,6 +8100,8 @@ def augment_map_coords_for_occupied_area_2(coords, unit_id):
     info = unit_info_map.get(uid) or {}
     if safe_int(info.get('occupied_area_id'), 1) != 2:
         return coords
+    if map_coords_already_2x2_footprint_aware(coords):
+        return [{'x': c['x'], 'y': c['y']} for c in coords]
     out = [{'x': c['x'], 'y': c['y']} for c in coords]
     seen = {(c['x'], c['y']) for c in out}
     by_y = {}
@@ -8457,10 +8481,15 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_
     map_dash_dual_end_coords = []
     map_single_pou = False
     uidn = normalize_id(unit_id) if unit_id else '0'
+    # MapWeaponRangeTypeIndex 2 = place effect at an impact tile; effect coords are
+    # impact-relative and must not be widened for the unit's 2×2 footprint.
+    mrt = normalize_id(wm.get('map_range_type') or '0', '0')
     if wts == '3':
         if uidn == '1001002700':
             mc = minkowski_map_coords_with_2x2_footprint([dict(c) for c in (ws.get('map_coords') or [])])
             map_single_pou = True
+        elif mrt == '2':
+            mc = [{'x': c['x'], 'y': c['y']} for c in (ws.get('map_coords') or [])]
         else:
             mc = augment_map_coords_for_occupied_area_2(mc, unit_id)
         scc, map_dash_dual_wide = augment_map_shooting_dual_line_for_occupied_area_2(scc, unit_id)
