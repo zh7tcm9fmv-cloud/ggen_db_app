@@ -4720,7 +4720,7 @@ function renderMapGrid(weapon,unitData,opts){
   opts=opts||{};
   const iconPreview=!!opts.iconPreview;
   const iconCompact=!!opts.compact;
-  // map_coords / shooting_coords from API. is_large → 2×2 nega tiles; map_single_pou → one Posi icon spanning 2×2 at (0,0) (Big Zam). Non-directional 2×2 uses UnitMarker_Moving per tile.
+  // map_coords / shooting_coords from API. is_large → 2×2 nega tiles (same as get_large_unit_cells: +x/+y from pivot). map_single_pou → one Posi icon spanning 2×2 anchored at top-left (0,1) (Big Zam). Non-directional 2×2 uses UnitMarker_Moving per tile.
   const _mxy=(c)=>{if(!c||typeof c!=='object')return null;const x=Number(c.x),y=Number(c.y);if(!Number.isFinite(x)||!Number.isFinite(y))return null;return{x,y}};
   let ec=(weapon.map_coords||[]).map(_mxy).filter(Boolean);
   let sc=(weapon.shooting_coords||[]).map(_mxy).filter(Boolean);
@@ -4729,8 +4729,10 @@ function renderMapGrid(weapon,unitData,opts){
 
   const isLarge=!!(unitData&&unitData.is_large);
   const mapSinglePou=!!(weapon.map_single_pou);
-  const fpOcc=isLarge?[{x:0,y:0},{x:1,y:0},{x:0,y:-1},{x:1,y:-1}]:[{x:0,y:0}];
-  const fpMrk=(isLarge&&mapSinglePou)?[{x:0,y:0}]:fpOcc;
+  // Match stage OccupiedAreaId 2: (0,0)(1,0)(0,1)(1,1). Old y-1 footprint put the use-point one row too low vs master rings centered on (0.5,0.5).
+  const fpOcc=isLarge?[{x:0,y:0},{x:1,y:0},{x:0,y:1},{x:1,y:1}]:[{x:0,y:0}];
+  // CSS .map-pou-2x2-marker grows right+down in screen space (toward lower y); anchor at footprint top-left.
+  const fpMrk=(isLarge&&mapSinglePou)?[{x:0,y:1}]:fpOcc;
   const mapDashDualWide=!!(weapon.map_dash_dual_wide);
   const dashEndCells=(weapon.map_dash_dual_end_coords&&weapon.map_dash_dual_end_coords.length)?weapon.map_dash_dual_end_coords.map(_mxy).filter(Boolean):null;
 

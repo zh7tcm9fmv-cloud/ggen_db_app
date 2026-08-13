@@ -59,9 +59,23 @@ class TestMap2x2Type2Range(unittest.TestCase):
         # Effect diamond stays pivot-centered (impact-relative)
         xs = [x for x, _ in got_ec]
         self.assertEqual(min(xs) + max(xs), 0)
-        # Shooting stays 2×2-midline centered
+        # Shooting stays 2×2-midline centered (matches use-point at (0,0)(1,0)(0,1)(1,1))
         sxs = [x for x, _ in got_sc]
+        sys_ = [y for _, y in got_sc]
         self.assertEqual(min(sxs) + max(sxs), 1)
+        self.assertAlmostEqual(sum(sxs) / len(sxs), 0.5, places=5)
+        self.assertAlmostEqual(sum(sys_) / len(sys_), 0.5, places=5)
+
+    def test_large_unit_cells_match_map_footprint_dxdy(self):
+        self.assertEqual(
+            set(self.app.MAP_FOOTPRINT_2X2_DXDY),
+            {(0, 0), (1, 0), (0, 1), (1, 1)},
+        )
+        cells = self.app.get_large_unit_cells(0, 0)
+        self.assertEqual(
+            {(c['x'], c['y']) for c in cells},
+            {(0, 0), (1, 0), (0, 1), (1, 1)},
+        )
 
 
 if __name__ == '__main__':

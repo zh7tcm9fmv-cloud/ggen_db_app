@@ -8040,7 +8040,8 @@ def create_weapon_status_map(d):
             lookup[sid] = {'range_min': int(item.get('RangeMin') or item.get('rangeMin') or 0), 'range_max': int(item.get('RangeMax') or item.get('rangeMax') or 0), 'power': int(item.get('Power') or item.get('power') or 0), 'en': int(item.get('En') or item.get('en') or 0), 'hit_rate': int(item.get('HitRate') or item.get('hitRate') or 0), 'critical_rate': int(item.get('CriticalRate') or item.get('criticalRate') or 0), 'override_correction_id': normalize_id(item.get('OverrideWeaponStatusChangePatternSetId') or item.get('overrideWeaponStatusChangePatternSetId')), 'trait_correction_id': normalize_id(item.get('OverrideWeaponTraitChangePatternSetId') or item.get('overrideWeaponTraitChangePatternSetId')), 'growth_pattern_id': normalize_id(item.get('WeaponLevelGrowthPatternSetId') or item.get('weaponLevelGrowthPatternSetId')), 'map_coords': co, 'shooting_coords': sc, 'is_dash': id2, 'map_can_use_after_move': bool(map_after), 'map_impact_point_max_select_count': max(0, impact_max)}
     return lookup
 
-MAP_FOOTPRINT_2X2_DXDY = ((0, 0), (1, 0), (0, -1), (1, -1))
+# Same as get_large_unit_cells / OccupiedAreaId 2 on stages: expand +x and +y from pivot.
+MAP_FOOTPRINT_2X2_DXDY = ((0, 0), (1, 0), (0, 1), (1, 1))
 
 
 def minkowski_map_coords_with_2x2_footprint(coords):
