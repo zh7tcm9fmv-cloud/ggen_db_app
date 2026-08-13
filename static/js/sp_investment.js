@@ -221,8 +221,8 @@
   let voteBusyKey = '';
   const voteInFlight = Object.create(null);
 
-  const SPI_VOTE_ICON_UP = '/static/images/UI/UI_Common_MapUI_Icon_CursorImportant.webp';
-  const SPI_VOTE_ICON_DOWN = '/static/images/UI/UI_Common_MapUI_Icon_CursorTaget.webp';
+  const SPI_VOTE_ICON_UP = '/static/images/UI/UI_Event_ML_Icon_Arrow_Blue.webp';
+  const SPI_VOTE_ICON_DOWN = '/static/images/UI/UI_Event_ML_Icon_Arrow_Red.webp';
 
   function voteTargetKey(kind, id, boardName) {
     const k = kind === 'character' ? 'character' : 'unit';
@@ -265,22 +265,22 @@
       // Corner icons on list cards — no nested <button> inside card button.
       return `<span class="spi-vote-corners" ${attrs}>
         <button type="button" class="spi-vote-corner spi-vote-up${upActive}" data-vote="up" title="${escAttr(t('vote_up'))}" aria-label="${escAttr(t('vote_up'))}" aria-pressed="${info.mine === 'up' ? 'true' : 'false'}">
-          <img src="${upSrc}" alt="" width="20" height="20" decoding="async" onerror="gameImageUrlFallback(this)">
+          <img src="${upSrc}" alt="" width="22" height="22" decoding="async" onerror="gameImageUrlFallback(this)">
           <span class="spi-vote-count">${esc(String(info.up))}</span>
         </button>
         <button type="button" class="spi-vote-corner spi-vote-down${downActive}" data-vote="down" title="${escAttr(t('vote_down'))}" aria-label="${escAttr(t('vote_down'))}" aria-pressed="${info.mine === 'down' ? 'true' : 'false'}">
-          <img src="${downSrc}" alt="" width="20" height="20" decoding="async" onerror="gameImageUrlFallback(this)">
+          <img src="${downSrc}" alt="" width="22" height="22" decoding="async" onerror="gameImageUrlFallback(this)">
           <span class="spi-vote-count">${esc(String(info.down))}</span>
         </button>
       </span>`;
     }
     return `<div class="spi-vote spi-vote--dossier" ${attrs}>
       <button type="button" class="spi-vote-btn spi-vote-up${upActive}" data-vote="up" title="${escAttr(t('vote_up'))}" aria-label="${escAttr(t('vote_up'))}" aria-pressed="${info.mine === 'up' ? 'true' : 'false'}">
-        <img src="${upSrc}" alt="" width="20" height="20" decoding="async" onerror="gameImageUrlFallback(this)">
+        <img src="${upSrc}" alt="" width="22" height="22" decoding="async" onerror="gameImageUrlFallback(this)">
         <span class="spi-vote-count">${esc(String(info.up))}</span>
       </button>
       <button type="button" class="spi-vote-btn spi-vote-down${downActive}" data-vote="down" title="${escAttr(t('vote_down'))}" aria-label="${escAttr(t('vote_down'))}" aria-pressed="${info.mine === 'down' ? 'true' : 'false'}">
-        <img src="${downSrc}" alt="" width="20" height="20" decoding="async" onerror="gameImageUrlFallback(this)">
+        <img src="${downSrc}" alt="" width="22" height="22" decoding="async" onerror="gameImageUrlFallback(this)">
         <span class="spi-vote-count">${esc(String(info.down))}</span>
       </button>
     </div>`;

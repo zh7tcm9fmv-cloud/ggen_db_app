@@ -797,8 +797,8 @@ html.spi-modal-open body.spi-page {
   right: 4px;
 }
 .spi-vote-corner img {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   object-fit: contain;
   display: block;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.75));
@@ -814,11 +814,22 @@ html.spi-modal-open body.spi-page {
 .spi-vote-corner:hover,
 .spi-vote-corner.is-active {
   opacity: 1;
-  background: rgba(0, 212, 255, 0.14);
-  box-shadow: 0 0 0 1px rgba(0, 212, 255, 0.45);
 }
-.spi-vote-corner.is-active .spi-vote-count {
-  color: var(--accent-cyan);
+.spi-vote-corner.spi-vote-up:hover,
+.spi-vote-corner.spi-vote-up.is-active {
+  background: rgba(74, 144, 217, 0.22);
+  box-shadow: 0 0 0 1px rgba(74, 144, 217, 0.55);
+}
+.spi-vote-corner.spi-vote-down:hover,
+.spi-vote-corner.spi-vote-down.is-active {
+  background: rgba(255, 71, 87, 0.18);
+  box-shadow: 0 0 0 1px rgba(255, 71, 87, 0.5);
+}
+.spi-vote-corner.spi-vote-up.is-active .spi-vote-count {
+  color: #7eb6ef;
+}
+.spi-vote-corner.spi-vote-down.is-active .spi-vote-count {
+  color: #ff8a95;
 }
 .spi-vote {
   display: flex;
@@ -846,8 +857,8 @@ html.spi-modal-open body.spi-page {
   touch-action: manipulation;
 }
 .spi-vote-btn img {
-  width: 18px;
-  height: 18px;
+  width: 22px;
+  height: 22px;
   object-fit: contain;
   display: block;
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.65));
@@ -858,11 +869,17 @@ html.spi-modal-open body.spi-page {
   font-variant-numeric: tabular-nums;
   min-width: 0.75rem;
 }
-.spi-vote-btn:hover,
-.spi-vote-btn.is-active {
-  border-color: rgba(0, 212, 255, 0.65);
-  background: rgba(0, 212, 255, 0.12);
-  box-shadow: 0 0 0 1px rgba(0, 212, 255, 0.28);
+.spi-vote-btn.spi-vote-up:hover,
+.spi-vote-btn.spi-vote-up.is-active {
+  border-color: rgba(74, 144, 217, 0.75);
+  background: rgba(74, 144, 217, 0.16);
+  box-shadow: 0 0 0 1px rgba(74, 144, 217, 0.35);
+}
+.spi-vote-btn.spi-vote-down:hover,
+.spi-vote-btn.spi-vote-down.is-active {
+  border-color: rgba(255, 71, 87, 0.7);
+  background: rgba(255, 71, 87, 0.14);
+  box-shadow: 0 0 0 1px rgba(255, 71, 87, 0.32);
 }
 .spi-dossier-head-text .spi-card-community {
   margin-top: 0.25rem;
