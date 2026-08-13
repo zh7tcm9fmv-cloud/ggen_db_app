@@ -3710,7 +3710,14 @@
     "ip_4ef92c3611b3bbb4012ba0a2651d61ab:character:1382100100:sp": "up",
     "ip_4ef92c3611b3bbb4012ba0a2651d61ab:character:1501000600:sp": "up",
     "ip_3fc91c94627ad9489c91d214c45db719:unit:1144000500:sp": "down",
-    "ip_5b42c32a02db084edd0ee74a2caef481:unit:1705005500:sp": "up"
+    "ip_5b42c32a02db084edd0ee74a2caef481:unit:1705005500:sp": "up",
+    "ip_b3423f96811281e55e371f84b2088383:character:1017000800:sp": "up",
+    "ip_b3423f96811281e55e371f84b2088383:character:1200000403:sp": "up",
+    "ip_b3423f96811281e55e371f84b2088383:character:1095003500:sp": "down",
+    "ip_b3423f96811281e55e371f84b2088383:character:1099000100:sp": "down",
+    "ip_b3423f96811281e55e371f84b2088383:character:1330002200:sp": "up",
+    "ip_b3423f96811281e55e371f84b2088383:character:1060001504:sp": "up",
+    "ip_b3423f96811281e55e371f84b2088383:character:1370004200:sp": "up"
   },
   "targets": {
     "unit:1155000700:sp": {
@@ -3878,7 +3885,7 @@
       "down": 2
     },
     "character:1060001504:sp": {
-      "up": 2,
+      "up": 3,
       "down": 0
     },
     "unit:1210001200:sp": {
@@ -4102,7 +4109,7 @@
       "down": 1
     },
     "character:1330002200:sp": {
-      "up": 5,
+      "up": 6,
       "down": 2
     },
     "unit:1400006400:sp": {
@@ -4338,7 +4345,7 @@
       "down": 1
     },
     "character:1370004200:sp": {
-      "up": 4,
+      "up": 5,
       "down": 0
     },
     "unit:1307000410:ssp": {
@@ -4490,7 +4497,7 @@
       "down": 3
     },
     "character:1200000403:sp": {
-      "up": 5,
+      "up": 6,
       "down": 0
     },
     "unit:1305000700:sp": {
@@ -4535,7 +4542,7 @@
     },
     "character:1095003500:sp": {
       "up": 4,
-      "down": 1
+      "down": 2
     },
     "unit:1330006510:ssp": {
       "up": 5,
@@ -5791,7 +5798,7 @@
     },
     "character:1099000100:sp": {
       "up": 4,
-      "down": 0
+      "down": 1
     },
     "unit:1200001010:ssp": {
       "up": 1,
@@ -6042,7 +6049,7 @@
       "down": 2
     },
     "character:1017000800:sp": {
-      "up": 6,
+      "up": 7,
       "down": 1
     },
     "unit:1017000610:sp": {
