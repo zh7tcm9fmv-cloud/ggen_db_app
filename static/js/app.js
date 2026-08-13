@@ -4729,10 +4729,6 @@ function renderMapGrid(weapon,unitData,opts){
 
   const isLarge=!!(unitData&&unitData.is_large);
   const mapSinglePou=!!(weapon.map_single_pou);
-  // Match stage OccupiedAreaId 2: (0,0)(1,0)(0,1)(1,1). Old y-1 footprint put the use-point one row too low vs master rings centered on (0.5,0.5).
-  const fpOcc=isLarge?[{x:0,y:0},{x:1,y:0},{x:0,y:1},{x:1,y:1}]:[{x:0,y:0}];
-  // CSS .map-pou-2x2-marker grows right+down in screen space (toward lower y); anchor at footprint top-left.
-  const fpMrk=(isLarge&&mapSinglePou)?[{x:0,y:1}]:fpOcc;
   const mapDashDualWide=!!(weapon.map_dash_dual_wide);
   let dashEndCells=(weapon.map_dash_dual_end_coords&&weapon.map_dash_dual_end_coords.length)?weapon.map_dash_dual_end_coords.map(_mxy).filter(Boolean):null;
 
@@ -4745,6 +4741,12 @@ function renderMapGrid(weapon,unitData,opts){
     if(md<=1&&!eto&&sc.length>1)t3=true;
     else t2=true
   }
+
+  // OccupiedAreaId 2 use-point: dash starts BELOW the path/effect (y-1), matching in-game Leveler/GP03.
+  // Non-dash (type2 rings, type1 AoE) uses stage footprint +y so the 2×2 centers on (0.5,0.5).
+  const fpOcc=isLarge?(t3?[{x:0,y:0},{x:1,y:0},{x:0,y:-1},{x:1,y:-1}]:[{x:0,y:0},{x:1,y:0},{x:0,y:1},{x:1,y:1}]):[{x:0,y:0}];
+  // CSS .map-pou-2x2-marker grows right+down in screen space (toward lower y); anchor at footprint top-left.
+  const fpMrk=(isLarge&&mapSinglePou)?(t3?[{x:0,y:0}]:[{x:0,y:1}]):fpOcc;
 
   const dashEndCols=(t3&&mapDashDualWide)?[0,1]:[0];
 

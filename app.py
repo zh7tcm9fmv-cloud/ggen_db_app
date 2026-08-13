@@ -8145,10 +8145,9 @@ MAP_GP03_DASH_END_COORDS = ((0, 5), (1, 5), (0, 6), (1, 6))
 
 
 def map_dash_dual_end_coords_above_effect(mc, scc):
-    """2×2 landing / end use-point immediately above the effect (else path) top row.
+    """2×2 landing / end use-point immediately above the (already footprint-expanded) effect top.
 
-    OccupiedAreaId-2 dual-line dash MAPs share this layout (GP03 Dendrobium, 1705003100, …):
-    path+effect stop at some Y; the machine's 4 tiles land at Y+1 and Y+2 on columns 0 and 1.
+    OccupiedAreaId-2 dual-line dash (Leveler / GP03): minkowski effect tops at Y; land at Y+1..Y+2 on x=0,1.
     """
     ys = [int(c['y']) for c in (mc or []) if isinstance(c, dict) and c.get('y') is not None]
     if not ys:
@@ -8511,9 +8510,9 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_
     if wts == '3':
         scc, map_dash_dual_wide = augment_map_shooting_dual_line_for_occupied_area_2(scc, unit_id)
         if map_dash_dual_wide:
-            # Dual-line dash: master effect already spans the path; do not +1-x widen.
-            # Landing 2×2 sits immediately above the effect top (class rule — not GP03 IDs).
-            mc = [{'x': c['x'], 'y': c['y']} for c in (ws.get('map_coords') or [])]
+            # In-game 2×2 dash: effect = minkowski(master, OccupiedAreaId-2 footprint) → e.g. 3×4 becomes 4×5.
+            # Landing 2×2 sits immediately above that expanded effect; start use-point is rendered below (client).
+            mc = minkowski_map_coords_with_2x2_footprint([dict(c) for c in (ws.get('map_coords') or [])])
             map_dash_dual_end_coords = map_dash_dual_end_coords_above_effect(mc, scc)
             scc = append_map_dash_dual_end_cells(scc, map_dash_dual_end_coords)
         elif uidn == '1001002700':
