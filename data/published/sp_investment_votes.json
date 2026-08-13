@@ -3830,6 +3830,7 @@
     "ip_56967b887ad2361009edd402b1c1641b:unit:1370005900:ssp": "up",
     "ip_5cd1d08c6eae0d7d37fdfc9b37ffd3a7:unit:1150000200:sp": "up",
     "ip_dc2403f13d5d9f6500126f666e8a9512:unit:1370005900:ssp": "up",
+    "ip_619f3373c2ab4be3a7ce6fc589307b06:unit:1211001210:ssp": "up",
     "ip_56967b887ad2361009edd402b1c1641b:unit:1200000810:ssp": "up"
   },
   "targets": {
@@ -6438,7 +6439,7 @@
       "down": 1
     },
     "unit:1211001210:ssp": {
-      "up": 10,
+      "up": 11,
       "down": 3
     },
     "unit:1155000200:sp": {
