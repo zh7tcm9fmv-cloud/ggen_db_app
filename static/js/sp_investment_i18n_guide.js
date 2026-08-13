@@ -9,7 +9,7 @@
   const GUIDE = {
     "EN": {
       "overrides": [
-        "Each score factor adds points; the total becomes a letter, then a bucket (BEYOND THE TIME / Recommended / Solid / Situational / Niche). Units: score 17+ earns letter S+ and BEYOND THE TIME. Characters: kit points stay absolute; within each Character Type, S+ ≈ top 3% and S ≈ top 8% (absolute A+ floor); A+ and below use role-relative point cutoffs.",
+        "Each score factor adds points; the total becomes a letter, then a bucket (BEYOND THE TIME / Recommended / Solid / Situational / Niche). Units: Attack/Support score 17+ earns S+ and BEYOND THE TIME. Defense Type Units need 18+ and must tank more than one hit (HP + Shield Defense / special DR / Unbreakable) plus Preemptive Strike or Support Defense coverage (unit SD kit or MOV 6). Characters: kit points stay absolute; within each Character Type, S+ ≈ top 3% and S ≈ top 8% (absolute A+ floor); A+ and below use role-relative point cutoffs.",
         "Filter by Tag or Eternal Road Expert stage to compare Units that actually fit the same restriction.",
         "This is a general investment ranking that can also help on Expert — not a dedicated Expert-clears ladder."
       ],
@@ -38,7 +38,7 @@
     },
     "JA": {
       "overrides": [
-        "各項目が加点され、合計がレターになり、さらに区分へ振り分けられます。キャラクターは役割内の上位約3%が S+、約8%が S（絶対 A+ 以上が条件）。A+ 以下は役割別の点数閾値です。",
+        "各項目が加点され、合計がレターになり、さらに区分へ振り分けられます。ユニットの攻撃型／支援型は 17点以上で S+（BEYOND THE TIME）。耐久型ユニットは 18点以上に加え、1撃以上耐える生存（HP＋シールド防御／特殊DR／脱出機能）と先制攻撃または支援防御のカバー（機体の支援防御キットまたは MOV 6）が必要です。キャラクターは役割内の上位約3%が S+、約8%が S（絶対 A+ 以上が条件）。A+ 以下は役割別の点数閾値です。",
         "タグやエターナルロード Expert ステージで絞り、同じ制限に合うユニット同士を比較してください。",
         "一般運用向けの投資ランキングで、Expert でも使えることがある、という位置づけです（特定 Expert 攻略専用ではありません）。"
       ],
@@ -65,7 +65,7 @@
     },
     "TW": {
       "overrides": [
-        "各項目加分後合計成字母，再對應分桶。角色在各類型內約前 3% 為 S+、約前 8% 為 S（須達絕對 A+）；A+ 以下用類型分數門檻。",
+        "各項目加分後合計成字母，再對應分桶。單位攻擊型／支援型 17 分以上為 S+（BEYOND THE TIME）。耐久型單位需 18 分以上，且能承受超過一擊（HP＋盾牌防禦／特殊減傷／逃生機能），並具備先發攻擊或支援防禦覆蓋（機體支援防禦套件或移動力 6）。角色在各類型內約前 3% 為 S+、約前 8% 為 S（須達絕對 A+）；A+ 以下用類型分數門檻。",
         "可用標籤或永恆之路 Expert 關卡篩選，比較真正符合同一限制的單位。",
         "這是偏一般投資用途的排名，也能偶爾用於 Expert — 不是專攻 Expert 通關的排行榜。"
       ],
@@ -92,7 +92,7 @@
     },
     "HK": {
       "overrides": [
-        "各項目加分後合計成字母，再對應分桶。角色喺各類型入面約前 3% 係 S+、約前 8% 係 S（要達絕對 A+）；A+ 以下用類型分數門檻。",
+        "各項目加分後合計成字母，再對應分桶。單位攻擊型／支援型 17 分以上係 S+（BEYOND THE TIME）。耐久型單位要 18 分以上，而且要頂得過一擊（HP＋盾牌防禦／特殊減傷／逃生機能），再加先發攻擊或支援防禦覆蓋（機體支援防禦套件或移動力 6）。角色喺各類型入面約前 3% 係 S+、約前 8% 係 S（要達絕對 A+）；A+ 以下用類型分數門檻。",
         "可用標籤或永恆之路 Expert 關卡篩選，比較真正符合同一限制嘅單位。",
         "呢個係偏一般投資用途嘅排名，都間中可以用喺 Expert — 唔係專攻 Expert 通關嘅排行榜。"
       ],
@@ -126,6 +126,7 @@
         "summary": "点合計がレターになり、さらに区分へ振り分けられます。プレイヤーは主に区分を見ます。",
         "when": {
           "S+ (score 17+)": "S+（17点以上）",
+          "S+ Defense Type": "S+ 耐久型",
           "S+ (score 23+)": "S+（23点以上）",
           "S": "S",
           "A+ or A": "A+ または A",
@@ -134,6 +135,8 @@
         },
         "result": {
           "BEYOND THE TIME": "BEYOND THE TIME",
+          "BEYOND THE TIME (Attack / Support)": "BEYOND THE TIME（攻撃型／支援型）",
+          "BEYOND THE TIME only at 18+ if the kit tanks more than one hit (HP + Shield Defense / special DR / Unbreakable) and has Preemptive Strike or Support Defense coverage (unit SD kit or MOV 6)": "18点以上かつ、1撃以上耐える生存（HP＋シールド防御／特殊DR／脱出機能）と先制攻撃または支援防御カバー（機体キットまたは MOV 6）がある場合のみ BEYOND THE TIME",
           "Recommended": "推奨",
           "Solid": "堅実",
           "Situational": "状況次第",
@@ -161,18 +164,20 @@
       },
       "role_focus_defense": {
         "title": "耐久型の優先事項",
-        "summary": "高 HP または DEF、シールド（約20%損傷無視）、支援防御カバー用の高 MOV、堅実な地形（宇宙＋地上または空中）、生存キット（損傷軽減／HP回復）、加えて良い弱体をいくつか。ATK は上振れのみ（≥9000）。特殊防御（Iフィールド／バリア／DR）は追加の存在ボーナスです。",
+        "summary": "高 HP または DEF、シールド防御（約20%損傷無視）、支援防御カバー用の高 MOV、堅実な地形（宇宙＋地上または空中）、生存キット（損傷軽減／HP回復）、加えて良い弱体をいくつか。ATK は上振れのみ（≥9000）。特殊防御（Iフィールド／バリア／DR）は追加の存在ボーナスです。BEYOND THE TIME には、1撃以上耐える生存と先制攻撃または支援防御カバーが追加で必要です。",
         "when": {
           "Primary": "主軸",
           "Secondary": "副次",
           "ATK upside": "ATK 上振れ",
-          "Special defense": "特殊防御"
+          "Special defense": "特殊防御",
+          "BEYOND THE TIME gate": "BEYOND THE TIME 条件"
         },
         "result": {
           "HP · DEF · shield · MOV · terrain · survivability abilities": "HP · DEF · シールド · MOV · 地形 · 生存アビリティ",
           "A few good pierce / DEF-down debuffs (R4+ kinds)": "良い貫通／DEFダウン弱体をいくつか（射程4+種）",
           "≥9000 mild bonus; below that, no penalty": "≥9000 で軽い加点；未満は減点なし",
-          "Presence bonus for DR / barrier / negation kits": "DR／バリア／無効化キットの存在ボーナス"
+          "Presence bonus for DR / barrier / negation kits": "DR／バリア／無効化キットの存在ボーナス",
+          "18+ points, HP that survives more than one hit, and Preemptive Strike or Support Defense coverage": "18点以上、1撃以上耐える HP、先制攻撃または支援防御カバー"
         }
       },
       "role_focus_support": {
@@ -918,6 +923,7 @@
         "summary": "點數合計對應字母，再對應分桶。玩家主要看分桶。",
         "when": {
           "S+ (score 17+)": "S+（17 分以上）",
+          "S+ Defense Type": "S+ 耐久型",
           "S+ (score 23+)": "S+（23 分以上）",
           "S": "S",
           "A+ or A": "A+ 或 A",
@@ -926,6 +932,8 @@
         },
         "result": {
           "BEYOND THE TIME": "BEYOND THE TIME",
+          "BEYOND THE TIME (Attack / Support)": "BEYOND THE TIME（攻擊型／支援型）",
+          "BEYOND THE TIME only at 18+ if the kit tanks more than one hit (HP + Shield Defense / special DR / Unbreakable) and has Preemptive Strike or Support Defense coverage (unit SD kit or MOV 6)": "需 18 分以上，且能承受超過一擊（HP＋盾牌防禦／特殊減傷／逃生機能），並具備先發攻擊或支援防禦覆蓋（機體套件或移動力 6）才進入 BEYOND THE TIME",
           "Recommended": "推薦",
           "Solid": "穩健",
           "Situational": "看場合",
@@ -952,18 +960,20 @@
       },
       "role_focus_defense": {
         "title": "耐久型優先事項",
-        "summary": "高 HP 或 DEF、盾（約忽略 20% 損傷）、支援防禦覆蓋用的高移動力、穩健地形（宇宙＋地上或空中）、生存套件（損傷減輕／HP 回復），外加幾個好用的弱化。ATK 僅計上振（≥9000）。特殊防禦（I力場／屏障／DR）為額外存在加分。",
+        "summary": "高 HP 或 DEF、盾牌防禦（約忽略 20% 損傷）、支援防禦覆蓋用的高移動力、穩健地形（宇宙＋地上或空中）、生存套件（損傷減輕／HP 回復），外加幾個好用的弱化。ATK 僅計上振（≥9000）。特殊防禦（I力場／屏障／DR）為額外存在加分。BEYOND THE TIME 另需能承受超過一擊，以及先發攻擊或支援防禦覆蓋。",
         "when": {
           "Primary": "主軸",
           "Secondary": "次要",
           "ATK upside": "ATK 上振",
-          "Special defense": "特殊防禦"
+          "Special defense": "特殊防禦",
+          "BEYOND THE TIME gate": "BEYOND THE TIME 條件"
         },
         "result": {
           "HP · DEF · shield · MOV · terrain · survivability abilities": "HP · DEF · 盾 · 移動力 · 地形 · 生存能力",
           "A few good pierce / DEF-down debuffs (R4+ kinds)": "幾個好用的貫穿／DEF 下降弱化（射程 4+ 種）",
           "≥9000 mild bonus; below that, no penalty": "≥9000 輕微加分；低於則不扣分",
-          "Presence bonus for DR / barrier / negation kits": "DR／屏障／無效化套件的存在加分"
+          "Presence bonus for DR / barrier / negation kits": "DR／屏障／無效化套件的存在加分",
+          "18+ points, HP that survives more than one hit, and Preemptive Strike or Support Defense coverage": "18 分以上、能承受超過一擊的 HP、先發攻擊或支援防禦覆蓋"
         }
       },
       "role_focus_support": {
@@ -1706,6 +1716,7 @@
         "summary": "點數合計對應字母，再對應分桶。玩家主要睇分桶。",
         "when": {
           "S+ (score 17+)": "S+（17 分以上）",
+          "S+ Defense Type": "S+ 耐久型",
           "S+ (score 23+)": "S+（23 分以上）",
           "S": "S",
           "A+ or A": "A+ 或 A",
@@ -1714,6 +1725,8 @@
         },
         "result": {
           "BEYOND THE TIME": "BEYOND THE TIME",
+          "BEYOND THE TIME (Attack / Support)": "BEYOND THE TIME（攻擊型／支援型）",
+          "BEYOND THE TIME only at 18+ if the kit tanks more than one hit (HP + Shield Defense / special DR / Unbreakable) and has Preemptive Strike or Support Defense coverage (unit SD kit or MOV 6)": "要 18 分以上，而且要頂得過一擊（HP＋盾牌防禦／特殊減傷／逃生機能），再加先發攻擊或支援防禦覆蓋（機體套件或移動力 6）先入 BEYOND THE TIME",
           "Recommended": "推薦",
           "Solid": "穩健",
           "Situational": "睇場合",
@@ -1740,18 +1753,20 @@
       },
       "role_focus_defense": {
         "title": "耐久型優先事項",
-        "summary": "高 HP 或 DEF、盾（約忽略 20% 損傷）、支援防禦覆蓋用嘅高移動力、穩健地形（宇宙＋地上或空中）、生存套件（損傷減輕／HP 回復），外加幾個好用嘅弱化。ATK 淨計上振（≥9000）。特殊防禦（I力場／屏障／DR）係額外存在加分。",
+        "summary": "高 HP 或 DEF、盾牌防禦（約忽略 20% 損傷）、支援防禦覆蓋用嘅高移動力、穩健地形（宇宙＋地上或空中）、生存套件（損傷減輕／HP 回復），外加幾個好用嘅弱化。ATK 淨計上振（≥9000）。特殊防禦（I力場／屏障／DR）係額外存在加分。BEYOND THE TIME 另外要頂得過一擊，同埋先發攻擊或支援防禦覆蓋。",
         "when": {
           "Primary": "主軸",
           "Secondary": "次要",
           "ATK upside": "ATK 上振",
-          "Special defense": "特殊防禦"
+          "Special defense": "特殊防禦",
+          "BEYOND THE TIME gate": "BEYOND THE TIME 條件"
         },
         "result": {
           "HP · DEF · shield · MOV · terrain · survivability abilities": "HP · DEF · 盾 · 移動力 · 地形 · 生存能力",
           "A few good pierce / DEF-down debuffs (R4+ kinds)": "幾個好用嘅貫穿／DEF 下降弱化（射程 4+ 種）",
           "≥9000 mild bonus; below that, no penalty": "≥9000 輕微加分；低過就唔扣分",
-          "Presence bonus for DR / barrier / negation kits": "DR／屏障／無效化套件的存在加分"
+          "Presence bonus for DR / barrier / negation kits": "DR／屏障／無效化套件的存在加分",
+          "18+ points, HP that survives more than one hit, and Preemptive Strike or Support Defense coverage": "18 分以上、頂得過一擊嘅 HP、先發攻擊或支援防禦覆蓋"
         }
       },
       "role_focus_support": {

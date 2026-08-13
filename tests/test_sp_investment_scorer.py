@@ -127,6 +127,57 @@ class TestSpInvestmentBands(unittest.TestCase):
         self.assertLessEqual(tip, 3)
         self.assertEqual(band_points(bands, 950), 3)
 
+    def test_defense_unit_splus_cutoff_is_18(self):
+        from sp_investment_rank import letter_for_total, letter_for_unit_total
+
+        self.assertEqual(
+            letter_for_total(self.rules, 17, cutoffs_key="letter_cutoffs", role="Attack"),
+            "S+",
+        )
+        self.assertEqual(
+            letter_for_total(self.rules, 17, cutoffs_key="letter_cutoffs", role="Defense"),
+            "S",
+        )
+        self.assertEqual(
+            letter_for_total(self.rules, 18, cutoffs_key="letter_cutoffs", role="Defense"),
+            "S+",
+        )
+        paper = {"hp": -1, "shield": 1, "special_defense": 0, "extra_life": 0, "preemptive": 1, "movement": 2}
+        self.assertEqual(
+            letter_for_unit_total(
+                self.rules, 19, role="Defense", has_sp=True, breakdown=paper
+            ),
+            "S",
+        )
+        tank = {"hp": 2, "shield": 1, "special_defense": 1, "extra_life": 0, "preemptive": 0, "movement": 2}
+        self.assertEqual(
+            letter_for_unit_total(
+                self.rules, 18, role="Defense", has_sp=True, breakdown=tank
+            ),
+            "S+",
+        )
+        no_edge = {"hp": 2, "shield": 1, "special_defense": 1, "extra_life": 0, "preemptive": 0, "movement": 0}
+        self.assertEqual(
+            letter_for_unit_total(
+                self.rules, 19, role="Defense", has_sp=True, breakdown=no_edge
+            ),
+            "S",
+        )
+        first_strike = {
+            "hp": 1,
+            "shield": 1,
+            "special_defense": 0,
+            "extra_life": 0,
+            "preemptive": 1,
+            "movement": 0,
+        }
+        self.assertEqual(
+            letter_for_unit_total(
+                self.rules, 18, role="Defense", has_sp=True, breakdown=first_strike
+            ),
+            "S+",
+        )
+
     def test_specialty_tip_capped_at_5(self):
         for stat in ("Ranged", "Melee", "Awaken"):
             for role, bands in (self.rules["pilot_stat_bands"].get(stat) or {}).items():

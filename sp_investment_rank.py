@@ -156,12 +156,17 @@ def letter_for_total(
     cutoffs_key: str = "letter_cutoffs",
     role: str | None = None,
 ) -> str:
-    """Map point total to letter. Optional role uses pilot_letter_cutoffs_by_role."""
+    """Map point total to letter. Optional role uses *_cutoffs_by_role tables."""
     rows = None
-    if role and cutoffs_key in ("pilot_letter_cutoffs", "ur_pilot_letter_cutoffs"):
-        by_role = rules.get("pilot_letter_cutoffs_by_role") or {}
-        role_key = role if role in ("Attack", "Defense", "Support") else None
-        if role_key:
+    role_key = role if role in ("Attack", "Defense", "Support") else None
+    if role_key:
+        if cutoffs_key in ("pilot_letter_cutoffs", "ur_pilot_letter_cutoffs"):
+            by_role = rules.get("pilot_letter_cutoffs_by_role") or {}
+            rows = by_role.get(role_key)
+        elif cutoffs_key in ("letter_cutoffs", "ur_letter_cutoffs"):
+            by_role = rules.get("letter_cutoffs_by_role") or {}
+            if cutoffs_key == "ur_letter_cutoffs":
+                by_role = rules.get("ur_letter_cutoffs_by_role") or by_role
             rows = by_role.get(role_key)
     if not rows:
         rows = rules.get(cutoffs_key) or rules.get("letter_cutoffs") or []
@@ -169,6 +174,81 @@ def letter_for_total(
         if total >= int(row["min"]):
             return str(row["letter"])
     return "E"
+
+
+def _unit_has_support_defense_kit(rules: dict, features: dict | None) -> bool:
+    feats = features or {}
+    if feats.get("has_unit_support_defense"):
+        return True
+    cfg = rules.get("defense_bbt_gate") or {}
+    wanted = {int(x) for x in (cfg.get("support_defense_trait_types") or (52, 87, 90))}
+    if not wanted:
+        return False
+    for eff in feats.get("ability_effects") or []:
+        try:
+            tti = int(eff.get("trait_type_index") or eff.get("TraitTypeIndex") or 0)
+        except (TypeError, ValueError):
+            continue
+        if tti in wanted:
+            return True
+    return False
+
+
+def defense_unit_bbt_eligible(
+    rules: dict,
+    breakdown: dict | None,
+    features: dict | None = None,
+) -> bool:
+    """Hard-stage bar for Defense Type S+ / BEYOND THE TIME.
+
+    Tank more than one hit, and bring Preemptive Strike or Support Defense coverage.
+    """
+    cfg = rules.get("defense_bbt_gate") or {}
+    if cfg.get("enabled") is False:
+        return True
+    bd = breakdown or {}
+    feats = features or {}
+    try:
+        hp = int(bd.get("hp") or 0)
+        shield = int(bd.get("shield") or 0)
+        spec = int(bd.get("special_defense") or 0)
+        extra_life = int(bd.get("extra_life") or 0)
+        pre = int(bd.get("preemptive") or 0)
+        mov = int(bd.get("movement") or 0)
+    except (TypeError, ValueError):
+        return False
+    min_hp = int(cfg.get("min_hp_points", 1) or 1)
+    high_hp = int(cfg.get("high_hp_points", 2) or 2)
+    min_mov = int(cfg.get("min_movement_points", 2) or 2)
+    tank = extra_life > 0 or hp >= high_hp or (
+        hp >= min_hp and (shield > 0 or spec >= 1)
+    )
+    advantage = (
+        pre > 0
+        or _unit_has_support_defense_kit(rules, feats)
+        or int(bd.get("unit_support_defense") or 0) > 0
+        or mov >= min_mov
+    )
+    return bool(tank and advantage)
+
+
+def letter_for_unit_total(
+    rules: dict,
+    total: int,
+    *,
+    role: str | None = None,
+    has_sp: bool = True,
+    breakdown: dict | None = None,
+    features: dict | None = None,
+) -> str:
+    key = "letter_cutoffs" if has_sp else "ur_letter_cutoffs"
+    letter = letter_for_total(
+        rules, int(total or 0), cutoffs_key=key, role=role if isinstance(role, str) else None
+    )
+    if str(role) == "Defense" and letter == "S+":
+        if not defense_unit_bbt_eligible(rules, breakdown, features):
+            return "S"
+    return letter
 
 
 _LETTER_RANK = {
@@ -232,9 +312,14 @@ def apply_community_adj_to_row(row: dict, adj: int, rules: dict | None = None) -
             rules, out["total"], cutoffs_key="pilot_letter_cutoffs", role=role
         )
     else:
-        has_sp = bool(out.get("has_sp"))
-        key = "letter_cutoffs" if has_sp else "ur_letter_cutoffs"
-        out["letter"] = letter_for_total(rules, out["total"], cutoffs_key=key, role=role)
+        out["letter"] = letter_for_unit_total(
+            rules,
+            out["total"],
+            role=role if isinstance(role, str) else None,
+            has_sp=bool(out.get("has_sp")),
+            breakdown=out.get("breakdown"),
+            features=out,
+        )
     out["bucket"] = bucket_for_letter(rules, out.get("letter") or "E")
     return out
 
@@ -2885,7 +2970,18 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
         breakdown["large_footprint"] = 0
 
     total = int(sum(int(v) for v in breakdown.values()))
-    letter = letter_for_total(rules, total)
+    if "has_sp" in features:
+        has_sp_flag = bool(features.get("has_sp"))
+    else:
+        has_sp_flag = str(mode or "sp") != "ur"
+    letter = letter_for_unit_total(
+        rules,
+        total,
+        role=role,
+        has_sp=has_sp_flag,
+        breakdown=breakdown,
+        features=features,
+    )
     bucket = bucket_for_letter(rules, letter)
     detail_lines: list[dict] = []
     for c in (meta.get("abilities") or {}).get("contributing") or []:
@@ -3613,6 +3709,19 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
         has_shield = False
 
     special_def_kinds = _special_defense_kinds(rules, ability_effects_full)
+    sd_wanted = {
+        int(x)
+        for x in ((rules.get("defense_bbt_gate") or {}).get("support_defense_trait_types") or (52, 87, 90))
+    }
+    has_unit_support_defense = False
+    for eff in ability_effects_full or []:
+        try:
+            tti = int(eff.get("trait_type_index") or eff.get("TraitTypeIndex") or 0)
+        except (TypeError, ValueError):
+            continue
+        if tti in sd_wanted:
+            has_unit_support_defense = True
+            break
     ur_dep, ur_dep_meta = _ur_recommend_pilot_dependence(A, uid, info, rules)
 
     is_large_footprint = int(info.get("occupied_area_id") or 1) == 2
@@ -3677,6 +3786,7 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
         "affinity_pilot_count": aff_n,
         "affinity_pilot_meta": aff_meta,
         "has_shield": has_shield,
+        "has_unit_support_defense": has_unit_support_defense,
         "special_defense_kinds": special_def_kinds,
         "ur_pilot_dependent": ur_dep,
         "ur_pilot_dependence_meta": ur_dep_meta,
@@ -3826,9 +3936,17 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "title": "Buckets from letters (Units)",
             "applies": ["units"],
             "objective": True,
-            "summary": "Point total maps to a letter, then to a bucket. Players mainly see buckets.",
+            "summary": "Point total maps to a letter, then to a bucket. Players mainly see buckets. Defense Type Units need a higher S+ bar and a hard-stage kit.",
             "rows": [
-                {"when": "S+ (score 17+)", "result": "BEYOND THE TIME"},
+                {"when": "S+ (score 17+)", "result": "BEYOND THE TIME (Attack / Support)"},
+                {
+                    "when": "S+ Defense Type",
+                    "result": (
+                        "BEYOND THE TIME only at 18+ if the kit tanks more than one hit "
+                        "(HP + Shield Defense / special DR / Unbreakable) and has Preemptive Strike "
+                        "or Support Defense coverage (unit SD kit or MOV 6)"
+                    ),
+                },
                 {"when": "S", "result": "Recommended"},
                 {"when": "A+ or A", "result": "Solid"},
                 {"when": "B+ or B", "result": "Situational"},
@@ -3880,12 +3998,16 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "title": "Defense priorities",
             "applies": ["units"],
             "objective": True,
-            "summary": "High HP or DEF, a shield (~20% damage neglect), high MOV for support-defense coverage, solid terrain (Space + Land or Atmos), survivability kits (damage reduction / HP restore), plus a few good debuffs. HP/DEF floors are mild (−1). ATK is upside only (≥9000). Special defenses (I-field / barrier / DR) are extra presence bonuses.",
+            "summary": "High HP or DEF, a shield (~20% damage neglect), high MOV for Support Defense coverage, solid terrain (Space + Land or Atmos), survivability kits (damage reduction / HP restore), plus a few good debuffs. HP/DEF floors are mild (−1). ATK is upside only (≥9000). Special defenses (I-field / barrier / DR) are extra presence bonuses. BEYOND THE TIME additionally requires tanking more than one hit and Preemptive Strike or Support Defense coverage — fat SSP kits without that edge stay Recommended.",
             "rows": [
                 {"when": "Primary", "result": "HP · DEF · shield · MOV · terrain · survivability abilities"},
                 {"when": "Secondary", "result": "A few good pierce / DEF-down debuffs (R4+ kinds)"},
                 {"when": "ATK upside", "result": "≥9000 mild bonus; below that, no penalty"},
                 {"when": "Special defense", "result": "Presence bonus for DR / barrier / negation kits"},
+                {
+                    "when": "BEYOND THE TIME gate",
+                    "result": "18+ points, HP that survives more than one hit, and Preemptive Strike or Support Defense coverage",
+                },
             ],
         }
     )

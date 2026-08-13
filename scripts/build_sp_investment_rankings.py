@@ -43,12 +43,20 @@ def _calibrate_letters_by_role(
     for row in rows:
         has_sp = bool(row.get("has_sp"))
         key = cutoffs_key if has_sp else (ur_key if rules.get(ur_key) else cutoffs_key)
-        role = None
+        role = row.get("role") if row.get("role") in ("Attack", "Defense", "Support") else None
         if key in ("pilot_letter_cutoffs", "ur_pilot_letter_cutoffs"):
-            role = row.get("role")
-        letter = SIR.letter_for_total(
-            rules, int(row.get("total") or 0), cutoffs_key=key, role=role
-        )
+            letter = SIR.letter_for_total(
+                rules, int(row.get("total") or 0), cutoffs_key=key, role=role
+            )
+        else:
+            letter = SIR.letter_for_unit_total(
+                rules,
+                int(row.get("total") or 0),
+                role=role,
+                has_sp=has_sp,
+                breakdown=row.get("breakdown"),
+                features=row,
+            )
         row["letter"] = letter
         row["bucket"] = SIR.bucket_for_letter(rules, letter)
         row["letter_cohort"] = "sp" if has_sp else "ur"
