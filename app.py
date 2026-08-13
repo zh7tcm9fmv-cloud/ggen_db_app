@@ -9387,6 +9387,8 @@ LIMITED_TIME_UNIT_IDS = frozenset({
     '1163000150',
     # Altron Gundam (EW) (EX): RecommendCharacterId 1219000501 (Chang Wufei (EW))
     '1219000650',
+    # SD linked Unit Assembly pickup (linked CharacterId 1705002900)
+    '1705002050',
 })
 
 
@@ -10598,6 +10600,19 @@ for _uid in list(unit_info_map.keys()):
         if _cid not in CHAR_RECOMMEND_UNIT_MAP:
             CHAR_RECOMMEND_UNIT_MAP[_cid] = _uid
 print(f"SD linked shortcuts: {len(LINKED_UNIT_CHARACTER_MAP)} from master, {sum(1 for u,i in unit_info_map.items() if _unit_has_sd_mechanism(i,u))} SD units total")
+
+# Limited-time Characters: SD Unit Assembly pickups often have RecommendCharacterId=0;
+# pull the linked Character so limited unit + pilot stay in sync.
+_lt_chars = set(LIMITED_TIME_CHARACTER_IDS)
+for _uid in LIMITED_TIME_UNIT_IDS:
+    _lc = LINKED_UNIT_CHARACTER_MAP.get(_uid)
+    if _lc:
+        _lt_chars.add(_lc)
+        continue
+    _rc = normalize_id((unit_info_map.get(_uid) or {}).get('recommend_character_id') or '0')
+    if _rc != '0':
+        _lt_chars.add(_rc)
+LIMITED_TIME_CHARACTER_IDS = frozenset(_lt_chars)
 
 # Master sometimes pairs units/pilots that were not given together in-game. Suppress those shortcuts.
 RECOMMEND_UNLINK_PAIRS = [
@@ -22042,7 +22057,7 @@ def _banner_timeline_supporter_item(sid, ld):
 def api_banner_timeline():
     """Gacha banner list with schedules, appeal art, and featured units/characters from master chains."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'banner_tl_v12_{lc}'
+    ck = f'banner_tl_v13_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=1800, convert_images=True)
@@ -22249,6 +22264,15 @@ def api_banner_timeline():
                     if ui and rut not in seen_u_set:
                         featured_units.append(ui)
                         seen_u_set.add(rut)
+                    # Linked-SD Unit Assembly pools often omit m_gasha_content_detail_unit_bonus_character;
+                    # featured Characters are the linked SD pilots.
+                    if dcid != '0' and not bonus_by_detail.get(dcid):
+                        linked_cid = LINKED_UNIT_CHARACTER_MAP.get(rut)
+                        if linked_cid and linked_cid not in seen_ch_set:
+                            ch_it = _banner_timeline_char_item(linked_cid, ld)
+                            if ch_it:
+                                featured_chars.append(ch_it)
+                                seen_ch_set.add(linked_cid)
 
         # Premium Unit Assembly pools have no m_gasha_pickup rows — use m_gasha LogoResourceId
         # (gasha_logo_*) for the timeline thumb instead of home-screen appeal art (gasha_*).
