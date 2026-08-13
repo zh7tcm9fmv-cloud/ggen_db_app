@@ -277,6 +277,9 @@ def main():
     SIR.attach_recommended_characters_to_unit_rows(A, sp_rows, pilot_rows, rules=rules, lc=LC)
     SIR.attach_recommended_characters_to_unit_rows(A, ssp_rows, pilot_rows, rules=rules, lc=LC)
 
+    print("Attaching SSP Conversion gains (display only)…")
+    SIR.attach_ssp_gains_to_unit_boards(sp_rows, ssp_rows)
+
     guide = SIR.scoring_guide_payload(rules)
     if not guide.get("intro"):
         guide["intro"] = (

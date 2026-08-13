@@ -536,6 +536,7 @@ window.__GGEN_VIDEO_PROXY__ = {{ (video_proxy_enabled if video_proxy_enabled is 
 window.__GGEN_GAME_IMAGES_USE_CDN__ = {{ (true if image_cdn else (game_images_use_cdn if game_images_use_cdn is defined else false)) | tojson }};
 window.__GGEN_APP_VERSION__ = {{ app_js_version | tojson }};
 window.__GGEN_KOFI_PAGE_URL__ = {{ (kofi_page_url if kofi_page_url is defined else 'https://ko-fi.com/E1E21WL8RV') | tojson }};
+window.__SPI_DECISION_UI__ = true;
 (function () {
   // Auto hard-reload when Railway deploys a new commit (iOS Safari has no hard-refresh).
   var boot = window.__GGEN_APP_VERSION__ || '';

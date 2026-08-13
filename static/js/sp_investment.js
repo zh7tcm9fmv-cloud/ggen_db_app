@@ -28,6 +28,16 @@
   const SPI_TAG_ICON_CHAR = '/static/images/UI/UI_Common_Icon_Category_Chara_Main.webp';
   const SPI_TAG_ICON_UNIT = '/static/images/UI/UI_Common_Icon_Category_MS_Main.webp';
   const SPI_SERIES_ALL_LOGO = '/static/images/Logo-Series/logo_l_series_0010.webp';
+  const SPI_CHIP_ICONS = {
+    map: '/static/images/WeaponIcon/UI_Common_WeaponIcon_map.webp',
+    preemptive: '/static/images/UI/UI_Common_Icon_PreemptiveAttack.webp',
+    chance_step: '/static/images/UI/UI_Common_Icon_ChanceStep.webp',
+    support_def: '/static/images/UI/UI_Common_BattleIcon_AssistDeffence_S.webp',
+    support_atk: '/static/images/UI/UI_Common_BattleIcon_AssistAtack_S.webp',
+    Ranged: '/static/images/WeaponIcon/UI_Common_TypeIcon_Ranged_S.webp',
+    Melee: '/static/images/UI/UI_Common_TypeIcon_Melee_S.webp',
+    Awaken: '/static/images/WeaponIcon/UI_Common_TypeIcon_Awaken_S.webp',
+  };
 
   const BREAKDOWN_META = {
     tags: {
@@ -159,8 +169,8 @@
     },
     movement: { label: 'Move', tip: 'MOV 5 is the modern baseline; 4 is below average. Defense still values high Move for support-defense coverage.' },
     movement_followup: {
-      label: 'Movement follow-up',
-      tip: 'After-move MAP and/or Chance Step-style follow-up movement (can stack, capped).',
+      label: 'After-move MAP / Chance Step',
+      tip: 'After-move MAP Weapon and/or Chance Step–style extra actions (not Increased MOV). Can stack, capped.',
     },
     weapon_range: {
       label: 'Weapon range',
@@ -192,8 +202,8 @@
       hideIfZero: true,
     },
     max_debuff: {
-      label: 'Debuff strength',
-      tip: 'Defense Type: lasting ATK Down % (how many more hits the tank can take). Support Type: lasting DEF Down % or instant pierce. Not scored for Attack.',
+      label: 'ATK Down / DEF Down',
+      tip: 'Defense Type: lasting ATK Down %. Support Type: lasting DEF Down % or instant pierce. Not scored for Attack.',
     },
     ranged: { label: 'Ranged', tip: 'Pilot Ranged after SP growth.' },
     melee: { label: 'Melee', tip: 'Pilot Melee after SP growth.' },
@@ -622,6 +632,10 @@
     return !!document.getElementById('panel-investment_priority');
   }
 
+  function decisionUiEnabled() {
+    return !!window.__SPI_DECISION_UI__;
+  }
+
   function spiRoot() {
     return document.getElementById('panel-investment_priority') || document.querySelector('.spi-shell') || document;
   }
@@ -1030,7 +1044,8 @@
   let payload = null;
   let entity = 'units';
   let board = 'sp';
-  let role = 'Attack';
+  let role = decisionUiEnabled() ? 'all' : 'Attack';
+  let _unitBoardIndex = null;
   let raritySel = new Set(['SSR']);
   let mapOnly = false;
   let hasSpOnly = true;
@@ -1225,24 +1240,94 @@
   }
 
   /** Base published row + Ultimate series Advantage when the active tag matches. */
+  function sdCharacterStageOk(row, sid) {
+    const filters = (payload && payload.er_expert_filters) || [];
+    const f = filters.find((x) => String(x.id) === String(sid));
+    if (!f) return true;
+    const tags = new Set((row.tags || []).map((t) => String(t).trim().toLowerCase()).filter(Boolean));
+    const series = new Set((row.series_ids || []).map((s) => String(s).replace(/^0+/, '') || '0'));
+    const matchRest = (rests) => {
+      if (!rests || !rests.length) return true;
+      return rests.some((r) => {
+        const kind = String((r && r.kind) || '');
+        const name = String((r && r.name) || '')
+          .trim()
+          .toLowerCase();
+        const rid = String((r && r.id) || '').replace(/^0+/, '') || '0';
+        if (kind === 'tag' && name && tags.has(name)) return true;
+        if (kind === 'series' && series.has(rid)) return true;
+        return false;
+      });
+    };
+    const charRest = f.character_restrictions || [];
+    const unitRest = f.unit_restrictions || [];
+    if (charRest.length) return matchRest(charRest);
+    if (unitRest.length) return matchRest(unitRest);
+    return true;
+  }
+
+  function pairedSdCharacterRow(row) {
+    const cid = String((row && (row.linked_character_id || row.id)) || '');
+    if (!cid || !payload) return null;
+    const buckets = ((payload.characters || {}).sp) || {};
+    let found = null;
+    Object.keys(buckets).forEach((bk) => {
+      (buckets[bk] || []).forEach((r) => {
+        if (r && String(r.id) === cid) found = r;
+      });
+    });
+    return found;
+  }
+
+  function gatedErExpertIds(row) {
+    const ids = Array.isArray(row && row.er_expert_ids) ? row.er_expert_ids.map(String) : [];
+    if (!row) return ids;
+    if (row.is_sd_linked) {
+      const uid = String(row.linked_unit_id || row.id || '');
+      const idx = unitBoardIndex();
+      const unit = idx.sp.get(uid) || idx.ssp.get(uid);
+      const allow = unit && Array.isArray(unit.er_expert_ids) ? new Set(unit.er_expert_ids.map(String)) : null;
+      return ids.filter((sid) => {
+        if (allow && !allow.has(sid)) return false;
+        return sdCharacterStageOk(row, sid);
+      });
+    }
+    if (row.is_sd) {
+      const ch = pairedSdCharacterRow(row);
+      if (!ch) return ids;
+      return ids.filter((sid) => sdCharacterStageOk(ch, sid));
+    }
+    return ids;
+  }
+
   function effectiveRow(row) {
     if (!row) return row;
     const adv = row.series_advantage;
     const apply = seriesAdvantageApplies(row) && Number((adv && adv.points) || 0) > 0;
-    if (!apply) {
-      return row._advantage_active ? { ...row, _advantage_active: false } : row;
+    let out = row;
+    if (apply) {
+      const total = Number(row.total || 0) + Number(adv.points || 0);
+      const cohort = row.letter_cohort || (row.has_sp ? 'sp' : 'ur');
+      const letter = letterFromTotal(total, cohort);
+      out = {
+        ...row,
+        total,
+        letter,
+        bucket: bucketFromLetter(letter),
+        _advantage_active: true,
+        _advantage_points: Number(adv.points || 0),
+      };
+    } else if (row._advantage_active) {
+      out = { ...row, _advantage_active: false };
     }
-    const total = Number(row.total || 0) + Number(adv.points || 0);
-    const cohort = row.letter_cohort || (row.has_sp ? 'sp' : 'ur');
-    const letter = letterFromTotal(total, cohort);
-    return {
-      ...row,
-      total,
-      letter,
-      bucket: bucketFromLetter(letter),
-      _advantage_active: true,
-      _advantage_points: Number(adv.points || 0),
-    };
+    if (decisionUiEnabled() && (out.is_sd_linked || out.is_sd)) {
+      const gated = gatedErExpertIds(out);
+      const prev = out.er_expert_ids || [];
+      const changed =
+        gated.length !== prev.length || gated.some((id, i) => String(id) !== String(prev[i]));
+      if (changed) out = { ...out, er_expert_ids: gated };
+    }
+    return out;
   }
 
   function rarityIconHtml(keys) {
@@ -1324,7 +1409,7 @@
   function passesFilters(row) {
     // Role 0 = NPC / story-only — never show on this guide.
     if (String(row.role_id || '') === '0') return false;
-    if ((row.role || '') !== role) return false;
+    if (role !== 'all' && (row.role || '') !== role) return false;
     if (!rarityOk(row)) return false;
     const ult = isUltimateRow(row);
     // Ultimate Units only when the ULT toggle is on (Units board).
@@ -1345,7 +1430,7 @@
       if (!spiCombineMatch(seriesFilters, (want) => ids.includes(String(want)), seriesCombine)) return false;
     }
     if (erFilters.length) {
-      const ids = (row.er_expert_ids || []).map(String);
+      const ids = gatedErExpertIds(row);
       if (!spiCombineMatch(erFilters, (want) => ids.includes(String(want)), erCombine)) return false;
     }
     if (entity === 'characters' && skillFilterIds.length) {
@@ -2247,6 +2332,7 @@
     if (titleEl) titleEl.textContent = guideTitle !== 'guide_title' ? guideTitle : t('scoring_title');
     $('#spiScoringIntro').textContent =
       guideIntro !== 'guide_intro' ? guideIntro : g.intro || t('scoring_loading');
+    renderChipSpend();
 
     const ovLines =
       guide && typeof guide.overrides === 'function' ? guide.overrides(lc) : g.overrides || [];
@@ -2264,7 +2350,7 @@
     const criteriaEl = $('#spiCriteria');
     if (criteriaEl) {
       const applyFilter = entity === 'characters' ? 'pilots' : 'units';
-      const roleFilter = entity === 'characters' ? null : role;
+      const roleFilter = entity === 'characters' || role === 'all' ? null : role;
       const visible = (g.criteria || []).filter((c) => {
         if (String(c.id || '') === 'not_scored') return false;
         const apps = c.applies || [];
@@ -2424,6 +2510,387 @@
     }
   }
 
+  function invalidateUnitBoardIndex() {
+    _unitBoardIndex = null;
+  }
+
+  function unitBoardIndex() {
+    if (_unitBoardIndex && _unitBoardIndex.payload === payload) return _unitBoardIndex;
+    const sp = new Map();
+    const ssp = new Map();
+    const units = (payload && payload.units) || {};
+    ['sp', 'ssp'].forEach((mode) => {
+      const dest = mode === 'ssp' ? ssp : sp;
+      const buckets = units[mode] || {};
+      Object.keys(buckets).forEach((bk) => {
+        (buckets[bk] || []).forEach((r) => {
+          if (r && r.id) dest.set(String(r.id), r);
+        });
+      });
+    });
+    _unitBoardIndex = { payload, sp, ssp };
+    return _unitBoardIndex;
+  }
+
+  function pairedBoardRow(row) {
+    if (!row || entity === 'characters') return null;
+    const idx = unitBoardIndex();
+    const other = board === 'ssp' ? idx.sp : idx.ssp;
+    return other.get(String(row.id)) || null;
+  }
+
+  function sspGainsForRow(row) {
+    if (!row || entity === 'characters') return [];
+    if (Array.isArray(row.ssp_gains) && row.ssp_gains.length) return row.ssp_gains;
+    const idx = unitBoardIndex();
+    const sp = idx.sp.get(String(row.id));
+    const ssp = idx.ssp.get(String(row.id));
+    if (!sp || !ssp) return [];
+    const bd = (r, k) => Number((r.breakdown || {})[k]) || 0;
+    const mov = (r) => Number((r.stats || {}).MOV) || 0;
+    const ids = (r) =>
+      new Set((r.abilities || []).map((a) => String((a && a.id) || '')).filter(Boolean));
+    const gains = [];
+    if (mov(ssp) > mov(sp)) gains.push({ kind: 'movement', from: mov(sp), to: mov(ssp) });
+    if (!sp.has_map && ssp.has_map) gains.push({ kind: 'map_new' });
+    else if (bd(ssp, 'map') > bd(sp, 'map')) gains.push({ kind: 'map_better' });
+    if (bd(ssp, 'weapon_range') > bd(sp, 'weapon_range')) gains.push({ kind: 'weapon_range' });
+    if (bd(ssp, 'weapon_power') > bd(sp, 'weapon_power')) gains.push({ kind: 'weapon_power' });
+    if (bd(ssp, 'terrain') > bd(sp, 'terrain')) gains.push({ kind: 'terrain' });
+    if (bd(ssp, 'preemptive') > bd(sp, 'preemptive')) gains.push({ kind: 'preemptive' });
+    if (bd(sp, 'max_tension_weapon') < 0 && bd(ssp, 'max_tension_weapon') >= 0) {
+      gains.push({ kind: 'max_tension_bypass' });
+    }
+    const spIds = ids(sp);
+    const newAbil = (ssp.abilities || []).filter((a) => a && a.id && !spIds.has(String(a.id)));
+    if (newAbil.length) {
+      gains.push({
+        kind: 'ability_new',
+        names: newAbil.map((a) => a.name).filter(Boolean).slice(0, 4),
+      });
+    } else if (bd(ssp, 'abilities') > bd(sp, 'abilities')) {
+      gains.push({ kind: 'abilities' });
+    }
+    return gains;
+  }
+
+  function _skillNameMatches(name, prefixes) {
+    const n = String(name || '')
+      .trim()
+      .toLowerCase()
+      .replace(/\u3000/g, ' ');
+    if (!n) return false;
+    const compact = n.replace(/\s+/g, '');
+    return prefixes.some((p) => n.startsWith(p) || compact.startsWith(p.replace(/\s+/g, '')));
+  }
+
+  function _kitItemNameMatches(name, re) {
+    return re.test(String(name || ''));
+  }
+
+  function combatIconCounts(row) {
+    const role = String((row && row.role) || '');
+    const isDef = /defense|耐久/i.test(role);
+    const isSup = /support|支援/i.test(role);
+    const csRe = /chance\s*step|チャンスステップ|額外行動/i;
+    const saRe = /support\s*attack|支援攻撃|支援攻擊/i;
+    const sdRe = /support\s*defense|支援防御|支援防禦|支援防衛/i;
+    let csPlus = 0;
+    let saPlus = 0;
+    let sdPlus = 0;
+    const items = []
+      .concat((row && row.abilities) || [])
+      .concat((row && row.skills) || []);
+    items.forEach((it) => {
+      const name = (it && it.name) || '';
+      if (_kitItemNameMatches(name, csRe)) csPlus += 1;
+      if (_kitItemNameMatches(name, saRe)) saPlus += 1;
+      if (_kitItemNameMatches(name, sdRe)) sdPlus += 1;
+    });
+    return {
+      cs: Math.min(2, 1 + (csPlus > 0 ? 1 : 0)),
+      sa: Math.min(5, Math.max(isSup ? 1 : 0, saPlus)),
+      sd: Math.min(5, Math.max(isDef ? 1 : 0, sdPlus)),
+    };
+  }
+
+  function kitHighlightChips(row) {
+    if (!row) return [];
+    const cap = 8;
+    const chips = [];
+    const add = (kind, extra) => {
+      if (chips.length >= cap) return;
+      if (chips.some((c) => c.kind === kind)) return;
+      chips.push(Object.assign({ kind }, extra || {}));
+    };
+    const isChar = String(row.entity || '') === 'character' || entity === 'characters';
+    const bd = row.breakdown || {};
+    if (!isChar) {
+      const mov = Number((row.stats || {}).MOV) || 0;
+      if (mov >= 6) add('mov6', { n: mov });
+      if (row.has_map) add('map', { icon: SPI_CHIP_ICONS.map, n: 1 });
+      // Text label (not MAP icon) — rare after-move MAP; naming must stay explicit.
+      if (row.has_after_move_map) add('after_move_map');
+      if (Number(bd.max_debuff) > 0) add('debuff', { role: String(row.role || '') });
+      if (Number(bd.preemptive) > 0) add('preemptive', { icon: SPI_CHIP_ICONS.preemptive, n: 1 });
+    } else {
+      const spec = String(row.specialty || '').trim();
+      const specIcon = SPI_CHIP_ICONS[spec];
+      if (spec) add('specialty', { value: spec, icon: specIcon || '', n: specIcon ? 1 : 0 });
+      const combat = combatIconCounts(row);
+      if (combat.cs >= 2) add('chance_step', { icon: SPI_CHIP_ICONS.chance_step, n: combat.cs });
+      if (combat.sd > 0) add('support_def', { icon: SPI_CHIP_ICONS.support_def, n: combat.sd });
+      if (combat.sa > 0) add('support_atk', { icon: SPI_CHIP_ICONS.support_atk, n: combat.sa });
+      (row.skills || []).forEach((sk) => {
+        const name = (sk && sk.name) || '';
+        const icon = (sk && sk.icon) || '';
+        if (_skillNameMatches(name, ['sway', 'スウェー', '搖擺閃避'])) add('sway', { icon, n: icon ? 1 : 0 });
+        if (_skillNameMatches(name, ['mp up', 'mpアップ', 'mp上升', 'mp提升'])) add('mp_up', { icon, n: icon ? 1 : 0 });
+      });
+    }
+    const erN = gatedErExpertIds(row).length;
+    if (erN) add('er', { n: erN });
+    return chips.slice(0, cap);
+  }
+
+  function highlightChipLabel(chip) {
+    if (!chip) return '';
+    switch (chip.kind) {
+      case 'mov6':
+        return t('why_mov6', { n: chip.n });
+      case 'map':
+        return t('why_map');
+      case 'er':
+        return t('why_er', { n: chip.n });
+      case 'debuff': {
+        const role = String(chip.role || '');
+        if (/defense|耐久/i.test(role)) return t('why_atk_down');
+        if (/support|支援/i.test(role)) return t('why_def_down');
+        return t('why_debuff');
+      }
+      case 'after_move_map':
+        return t('why_after_move_map');
+      case 'followup':
+        return t('why_after_move_map');
+      case 'preemptive':
+        return t('why_preemptive');
+      case 'sway':
+        return t('why_sway');
+      case 'mp_up':
+        return t('why_mp_up');
+      case 'chance_step':
+        return t('why_chance_step');
+      case 'support_def':
+        return t('why_support_def');
+      case 'support_atk':
+        return t('why_support_atk');
+      case 'combat':
+        return t('why_combat');
+      case 'specialty':
+        return chip.value || '';
+      default:
+        return chip.kind;
+    }
+  }
+
+  function isIconHighlightChip(chip) {
+    return !!(chip && chip.icon && Number(chip.n) > 0);
+  }
+
+  function highlightIconChipHtml(chip) {
+    const label = highlightChipLabel(chip);
+    const n = Math.max(0, Number(chip && chip.n) || 0);
+    const icon = chip && chip.icon;
+    const lg = chip.kind === 'preemptive' || chip.kind === 'map' ? ' spi-why-icon--lg' : '';
+    const imgs = Array.from({ length: Math.max(1, n) })
+      .map(
+        () =>
+          `<img class="spi-why-icon-img${lg}" src="${esc(imgUrl(icon))}" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback(this)">`
+      )
+      .join('');
+    return `<span class="spi-why-icon" title="${escAttr(label)}" aria-label="${escAttr(label)}">${imgs}</span>`;
+  }
+
+  function highlightTextChipHtml(chip) {
+    return `<span class="spi-why-chip">${esc(highlightChipLabel(chip))}</span>`;
+  }
+
+  function sspGainLabel(gain) {
+    if (!gain) return '';
+    switch (gain.kind) {
+      case 'movement':
+        return t('ssp_gain_movement', { from: gain.from, to: gain.to });
+      case 'map_new':
+        return t('ssp_gain_map_new');
+      case 'map_better':
+        return t('ssp_gain_map_better');
+      case 'weapon_range':
+        return t('ssp_gain_weapon_range');
+      case 'weapon_power':
+        return t('ssp_gain_weapon_power');
+      case 'terrain':
+        return t('ssp_gain_terrain');
+      case 'abilities':
+        return t('ssp_gain_abilities');
+      case 'ability_new':
+        return (gain.names || []).map((n) => t('ssp_gain_ability_new', { name: n })).join(' · ');
+      case 'max_tension_bypass':
+        return t('ssp_gain_max_tension_bypass');
+      case 'preemptive':
+        return t('ssp_gain_preemptive');
+      default:
+        return gain.kind;
+    }
+  }
+
+  function renderHighlightChips(row, extraClass) {
+    if (!decisionUiEnabled()) return '';
+    const chips = kitHighlightChips(row);
+    if (!chips.length) return '';
+    const icons = chips.filter(isIconHighlightChip);
+    const texts = chips.filter((c) => !isIconHighlightChip(c));
+    const iconRow = icons.length
+      ? `<div class="spi-why-icons">${icons.map((c) => highlightIconChipHtml(c)).join('')}</div>`
+      : '';
+    const textRow = texts.length
+      ? `<div class="spi-why-chips">${texts.map((c) => highlightTextChipHtml(c)).join('')}</div>`
+      : '';
+    return `<div class="spi-why-block${extraClass ? ` ${extraClass}` : ''}">${iconRow}${textRow}</div>`;
+  }
+
+  function renderBoardGains(row) {
+    if (!decisionUiEnabled() || entity === 'characters') return '';
+    if (board !== 'ssp') return '';
+    const gains = sspGainsForRow(row);
+    if (!gains.length) return '';
+    const items = gains.map((g) => `<li>${esc(sspGainLabel(g))}</li>`).join('');
+    return `<section class="spi-dossier-section spi-dossier-section--gains">
+      <h4 class="spi-dossier-h">${esc(t('ssp_gains_title'))}</h4>
+      <ul class="spi-gains-list">${items}</ul>
+    </section>`;
+  }
+
+  function renderDualLetter(row) {
+    if (!decisionUiEnabled() || entity === 'characters') return '';
+    const other = pairedBoardRow(row);
+    const otherLetter = (other && other.letter) || row.paired_letter || '';
+    if (!otherLetter) return '';
+    const otherBoard = board === 'ssp' ? 'sp' : 'ssp';
+    const labelKey = otherBoard === 'ssp' ? 'dual_letter_ssp' : 'dual_letter_sp';
+    return `<button type="button" class="spi-chip spi-chip-paired" data-spi-paired-board="${escAttr(otherBoard)}" title="${escAttr(t(labelKey, { letter: otherLetter }))}">${esc(t(labelKey, { letter: otherLetter }))}</button>`;
+  }
+
+  function erStageLabel(sid, row) {
+    const filters = (payload && payload.er_expert_filters) || [];
+    const hit = filters.find((f) => String(f.id) === String(sid));
+    if (!hit) return String(sid);
+    if (row && (row.is_sd_linked || row.is_sd)) {
+      return hit.unit_label || hit.label || hit.character_label || String(sid);
+    }
+    if (entity === 'characters') {
+      return hit.character_label || hit.label || hit.unit_label || String(sid);
+    }
+    return hit.unit_label || hit.label || hit.character_label || String(sid);
+  }
+
+  function renderErStages(row) {
+    if (!decisionUiEnabled()) return '';
+    const ids = gatedErExpertIds(row);
+    if (!ids.length) {
+      return `<section class="spi-dossier-section">
+        <h4 class="spi-dossier-h">${esc(t('er_stages_title'))}</h4>
+        <p class="spi-dossier-empty">${esc(t('er_stages_none'))}</p>
+      </section>`;
+    }
+    const lis = ids
+      .slice(0, 24)
+      .map((sid) => `<li>${esc(erStageLabel(sid, row))}</li>`)
+      .join('');
+    const more = ids.length > 24 ? `<li>… +${ids.length - 24}</li>` : '';
+    return `<section class="spi-dossier-section">
+      <h4 class="spi-dossier-h">${esc(t('er_stages_title'))} <span class="spi-dossier-h-sub">${ids.length}</span></h4>
+      <ul class="spi-er-stage-list">${lis}${more}</ul>
+    </section>`;
+  }
+
+  function renderRoleGroups(rows, kind) {
+    const order = ['Attack', 'Support', 'Defense'];
+    const groups = { Attack: [], Support: [], Defense: [] };
+    rows.forEach((r) => {
+      const rk = r.role || 'Attack';
+      if (!groups[rk]) groups[rk] = [];
+      groups[rk].push(r);
+    });
+    return order
+      .filter((rk) => (groups[rk] || []).length)
+      .map((rk) => {
+        const cards = (groups[rk] || []).map((r) => renderSpiCard(r, kind)).join('');
+        return `<div class="spi-role-group">
+          <h4 class="spi-role-group-h">${esc(tRole(rk))}</h4>
+          <div class="spi-cards">${cards}</div>
+        </div>`;
+      })
+      .join('');
+  }
+
+  function renderSpiCard(r, kind) {
+    const advNote = r._advantage_active
+      ? `<span class="spi-chip spi-chip-adv" title="${esc(t('adv_on', { n: r._advantage_points }))}">${esc(t('adv_chip', { n: r._advantage_points }))}</span>`
+      : '';
+    return `<div class="spi-card" role="button" tabindex="0" data-id="${esc(r.id)}">
+      ${renderVoteControls(r, kind, true)}
+      <div class="spi-card-thumb-wrap">${renderFramedThumb(r, kind)}</div>
+      <div class="spi-card-name">${esc(r.name || r.id)}</div>
+      <div class="spi-card-meta">
+        <span class="spi-chip letter ${letterClass(r.letter)}">${esc(r.letter || '?')}</span>
+        <span class="spi-chip score">${esc(r.total)} Pt</span>
+        ${advNote}
+      </div>
+      ${renderHighlightChips(r, 'spi-why-block--card')}
+      ${communityAdjLine(r, kind)}
+    </div>`;
+  }
+
+  function ensureDecisionUiChrome() {
+    if (!decisionUiEnabled()) return;
+    const seg = document.querySelector('.spi-role-seg');
+    if (seg && !seg.querySelector('[data-role="all"]')) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'role-filter-btn';
+      btn.setAttribute('data-role', 'all');
+      btn.setAttribute('data-i18n-role', 'all');
+      btn.title = tRole('all');
+      btn.innerHTML = `<span data-i18n-role="all">${esc(tRole('all'))}</span>`;
+      seg.insertBefore(btn, seg.firstChild);
+    }
+    const scoringBody = $('#spiScoringBody');
+    if (scoringBody && !$('#spiChipSpend')) {
+      const wrap = document.createElement('div');
+      wrap.id = 'spiChipSpend';
+      wrap.className = 'spi-chip-spend';
+      scoringBody.insertBefore(wrap, scoringBody.firstChild);
+    }
+  }
+
+  function renderChipSpend() {
+    const el = $('#spiChipSpend');
+    if (!el) return;
+    if (!decisionUiEnabled()) {
+      el.hidden = true;
+      return;
+    }
+    el.hidden = false;
+    el.innerHTML = `<h3 class="spi-scoring-subhead">${esc(t('chip_spend_title'))}</h3>
+      <ul class="spi-scoring-list">
+        <li>${esc(t('chip_spend_1'))}</li>
+        <li>${esc(t('chip_spend_2'))}</li>
+        <li>${esc(t('chip_spend_3'))}</li>
+        <li>${esc(t('chip_spend_4'))}</li>
+        <li>${esc(t('chip_spend_5'))}</li>
+      </ul>`;
+  }
+
   function render() {
     if (!payload) return;
     if (!resolveDom()) return;
@@ -2462,30 +2929,20 @@
     order.forEach((bk) => {
       const rows = byBucket[bk] || [];
       shown += rows.length;
-      const cards = rows
-        .map((r) => {
-          const advNote = r._advantage_active
-            ? `<span class="spi-chip spi-chip-adv" title="${esc(t('adv_on', { n: r._advantage_points }))}">${esc(t('adv_chip', { n: r._advantage_points }))}</span>`
-            : '';
-          return `<div class="spi-card" role="button" tabindex="0" data-id="${esc(r.id)}">
-            ${renderVoteControls(r, kind, true)}
-            <div class="spi-card-thumb-wrap">${renderFramedThumb(r, kind)}</div>
-            <div class="spi-card-name">${esc(r.name || r.id)}</div>
-            <div class="spi-card-meta">
-              <span class="spi-chip letter ${letterClass(r.letter)}">${esc(r.letter || '?')}</span>
-              <span class="spi-chip score">${esc(r.total)} Pt</span>
-              ${advNote}
-            </div>
-            ${communityAdjLine(r, kind)}
-          </div>`;
-        })
-        .join('');
+      const cards =
+        decisionUiEnabled() && role === 'all'
+          ? renderRoleGroups(rows, kind)
+          : rows.map((r) => renderSpiCard(r, kind)).join('');
       html += `<section class="spi-bucket">
         <div class="spi-bucket-head" data-bucket="${esc(bk)}">
           <h3>${esc(labels[bk] || tBucket(bk) || bk)}</h3>
           <span class="spi-bucket-count">${rows.length}</span>
         </div>
-        <div class="spi-cards">${cards || `<p class="spi-status">${esc(t('no_bucket'))}</p>`}</div>
+        ${
+          decisionUiEnabled() && role === 'all'
+            ? cards || `<p class="spi-status">${esc(t('no_bucket'))}</p>`
+            : `<div class="spi-cards">${cards || `<p class="spi-status">${esc(t('no_bucket'))}</p>`}</div>`
+        }
       </section>`;
     });
     grid.innerHTML = html;
@@ -2749,7 +3206,7 @@
 
   function resetFilters() {
     board = 'sp';
-    role = 'Attack';
+    role = decisionUiEnabled() ? 'all' : 'Attack';
     raritySel = defaultRaritySel();
     mapOnly = false;
     hasSpOnly = true;
@@ -2810,10 +3267,12 @@
         <div class="spi-dossier-badges">
           ${letterChip(row.letter)}
           <span class="spi-chip score">${esc(t('total_pt', { n: row.total }))}</span>
+          ${renderDualLetter(row)}
           ${cohort}
           ${urPilotBadge}
           ${advBadge}
         </div>
+        ${renderHighlightChips(row, 'spi-why-block--dossier')}
         ${communityAdjLine(row, kind)}
         ${renderVoteControls(row, kind, false)}
       </div>
@@ -2836,6 +3295,8 @@
     $('#spiModalBody').innerHTML = `
       ${header}
       ${specialtyBlock}
+      ${renderBoardGains(row)}
+      ${renderErStages(row)}
       ${scoreBlock}
       ${recBlock}
       <div class="spi-modal-actions">
@@ -2849,6 +3310,22 @@
       openDb.addEventListener('click', (e) => {
         e.preventDefault();
         openDbDetail(kind, row);
+      });
+    }
+    const pairedBtn = $('#spiModalBody').querySelector('[data-spi-paired-board]');
+    if (pairedBtn) {
+      pairedBtn.addEventListener('click', () => {
+        const next = pairedBtn.getAttribute('data-spi-paired-board') || 'sp';
+        board = next === 'ssp' ? 'ssp' : 'sp';
+        applyFilterDom();
+        fillAbilPanel();
+        fillSeriesPanel();
+        updateAbilFilterLabel();
+        updateSeriesFilterLabel();
+        render();
+        const idx = unitBoardIndex();
+        const nextRow = (board === 'ssp' ? idx.ssp : idx.sp).get(String(row.id));
+        if (nextRow) openModal(effectiveRow(nextRow));
       });
     }
     void loadEntityStatRanks(row, kind);
@@ -3087,16 +3564,18 @@
       if (!r.ok) throw new Error('HTTP ' + r.status);
       payload = await r.json();
       if (payload.error) throw new Error(payload.error);
+      invalidateUnitBoardIndex();
       _payloadLang = uiLang();
       const votes = await votesP;
       if (votes && typeof votes === 'object') {
         voteTallies = Object.assign(Object.create(null), votes.tallies || {});
         voteMine = Object.assign(Object.create(null), votes.mine || {});
       }
-      applyLangStatic();
-      fillFilterSelects();
-      renderScoringGuide();
-      render();
+    applyLangStatic();
+    applyFilterDom();
+    fillFilterSelects();
+    renderScoringGuide();
+    render();
     } catch (err) {
       statusEl.textContent = t('status_error');
       grid.innerHTML = '';
@@ -3107,6 +3586,8 @@
   async function boot() {
     if (!resolveDom()) return;
     applyLangStatic();
+    ensureDecisionUiChrome();
+    applyFilterDom();
     if (!_controlsBound) {
       bindControls();
       _controlsBound = true;

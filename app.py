@@ -109,6 +109,9 @@ def _app_js_bundle_version_tag():
         ('js', 'meta_synergy.js'),
         ('js', 'kofi_donate_promo.js'),
         ('js', 'kofi_supporter_wall.js'),
+        ('js', 'sp_investment.js'),
+        ('js', 'sp_investment_i18n.js'),
+        ('js', 'sp_investment_i18n_guide.js'),
         ('css', 'app_shell.css'),
         ('css', 'app_shell_bundle.min.css'),
         ('css', 'unit_best_pilots.css'),
@@ -118,6 +121,7 @@ def _app_js_bundle_version_tag():
         ('css', 'master_league.css'),
         ('css', 'kofi_donate_promo.css'),
         ('css', 'kofi_supporter_wall.css'),
+        ('css', 'sp_investment.css'),
     )
     # Include brand fonts so long-cache ?v= busts when an OTF/TTF is replaced.
     font_assets = (
@@ -15464,7 +15468,7 @@ def _sp_investment_is_preview_request():
     """Unlisted soft-launch URLs (/sp-list-preview) or explicit ?preview=1 API unlock."""
     path = (request.path or '').rstrip('/')
     low = path.lower()
-    if low.endswith('/sp-list-preview') or low.endswith('/sp-list-demo'):
+    if low.endswith('/sp-list-preview') or low.endswith('/sp-list-demo') or low.endswith('/ip-preview'):
         return True
     if str(request.args.get('preview') or '').strip() == '1':
         return True
@@ -15493,7 +15497,7 @@ def _sp_investment_character_is_sd_linked(cid):
     return False
 
 
-def _render_sp_investment_soft_launch(spi_preview=True):
+def _render_sp_investment_soft_launch(spi_preview=True, spi_decision_ui=False):
     """Shared soft-launch page (no nav link, noindex)."""
     ver = _app_js_bundle_version_tag()
     r = make_response(render_template(
@@ -15504,6 +15508,7 @@ def _render_sp_investment_soft_launch(spi_preview=True):
         app_js_version=ver,
         spi_preview=spi_preview,
         spi_soft_launch=True,
+        spi_decision_ui=spi_decision_ui,
     ))
     r.headers['Cache-Control'] = 'no-store'
     r.headers['X-Robots-Tag'] = 'noindex, nofollow'
@@ -15521,6 +15526,7 @@ def _render_sp_investment_public():
         app_js_version=ver,
         spi_preview=False,
         spi_soft_launch=False,
+        spi_decision_ui=True,
     ))
     r.headers['Cache-Control'] = 'public, max-age=300'
     return r
@@ -15559,7 +15565,14 @@ def sp_investment_ig_redirect():
 @app.route('/sp-list-demo')
 def sp_investment_preview_page():
     """Unlisted preview — works while SP_INVESTMENT_PUBLIC is off."""
-    return _render_sp_investment_soft_launch(spi_preview=True)
+    return _render_sp_investment_soft_launch(spi_preview=True, spi_decision_ui=True)
+
+
+@app.route('/ip-preview')
+@app.route('/IP-preview')
+def sp_investment_decision_preview_page():
+    """Legacy decision-UI preview path → live /ip."""
+    return redirect('/ip', code=301)
 
 
 def _sp_investment_attach_board(buckets, kind):
@@ -15588,11 +15601,17 @@ def _sp_investment_attach_board(buckets, kind):
                 row['is_sd'] = bool(_unit_has_sd_mechanism(unit_info_map.get(normalize_id(row['id'])), row['id']))
                 if row.get('is_sd'):
                     row['recommended_characters'] = []
+                    linked_cid = LINKED_UNIT_CHARACTER_MAP.get(normalize_id(row['id'])) or normalize_id(row['id'])
+                    if linked_cid and linked_cid != '0':
+                        row['linked_character_id'] = linked_cid
             if kind == 'character':
                 is_sd = bool(row.get('is_sd_linked')) or _sp_investment_character_is_sd_linked(row['id'])
                 row['is_sd_linked'] = is_sd
                 if is_sd:
                     row['recommended_units'] = []
+                    linked_uid = LINKED_CHARACTER_UNIT_MAP.get(normalize_id(row['id'])) or normalize_id(row['id'])
+                    if linked_uid and linked_uid != '0':
+                        row['linked_unit_id'] = linked_uid
             # Nested recommended MS thumbs (pilot detail panel)
             recs = row.get('recommended_units')
             if kind == 'character' and isinstance(recs, list) and recs:
@@ -16119,6 +16138,16 @@ def _sp_investment_prepare_payload(path):
     chars = payload.get('characters') or {}
     if chars:
         _sp_investment_attach_board(chars.get('sp'), 'character')
+    try:
+        import sp_investment_rank as _sir_sd
+        _sir_sd.apply_sd_er_pair_gate(
+            payload,
+            linked_char_to_unit=LINKED_CHARACTER_UNIT_MAP,
+            linked_unit_to_char=LINKED_UNIT_CHARACTER_MAP,
+        )
+        _sir_sd.stamp_unit_after_move_map_flags(payload)
+    except Exception:
+        pass
     if not payload.get('scoring_guide'):
         try:
             import sp_investment_rank as _sir
@@ -16162,7 +16191,7 @@ def api_sp_investment():
     votes_data = _spi_votes_load()
     votes_mtime = int(_SPI_VOTES_CACHE.get('mtime') or 0)
     payload = _spi_payload_with_community_votes(payload, votes_data)
-    ck = f"sp_investment_v1_lean_{lc}_{int(mtime)}_{votes_mtime}"
+    ck = f"sp_investment_v1_lean_sdgate_{lc}_{int(mtime)}_{votes_mtime}"
     resp = jsonify_cacheable(payload, ck, public=True, max_age=300, convert_images=False)
     # Gzip large board JSON when the client accepts it (Railway/edge may not compress JSON).
     if resp.status_code == 200:

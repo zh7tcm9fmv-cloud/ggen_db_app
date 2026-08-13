@@ -1506,7 +1506,7 @@ def effects_have_movement_followup(rules: dict, effects: list[dict] | None) -> b
         int(x) for x in ((rules.get("ability_structured") or {}).get("movement_types") or [])
     }
     if not move_types:
-        move_types = {19, 70, 80, 85, 107}
+        move_types = {19, 80, 85, 107}
     for eff in effects or []:
         if int(eff.get("trait_type_index") or 0) in move_types:
             return True
@@ -4022,6 +4022,7 @@ def score_unit(
             "MOV": feats.get("MOV"),
         },
         "peaks_with_ur_pilot": bool(feats.get("ur_pilot_dependent")),
+        "has_after_move_map": bool(feats.get("has_after_move_map")),
     }
     if feats.get("series_advantage"):
         row["series_advantage"] = feats.get("series_advantage")
@@ -4147,7 +4148,7 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
                 {"when": "Upside only", "result": "HP · SSP EN (no floor penalty)"},
                 {"when": "Soft secondary", "result": "Mobility / MOB (lower ceiling than ATK)"},
                 {"when": "Great extras", "result": "MAP presence / dash / coverage · special defense kits"},
-                {"when": "Not scored", "result": "DEF · Debuff kinds · Debuff strength · SP EN"},
+                {"when": "Not scored", "result": "DEF · Debuff kinds · ATK Down / DEF Down · SP EN"},
             ],
         }
     )
@@ -4178,7 +4179,7 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "objective": True,
             "summary": "Debuff weapon range should be at least 5 (lower is weaker), then variety and strength of debuffs, then high Mobility (MOB) / MOV. ATK and HP are mild upside only — no floor penalty for lower values.",
             "rows": [
-                {"when": "Primary", "result": "Weapon range ≥5 · R5+ debuff kinds · debuff strength · Mobility (MOB) · MOV"},
+                {"when": "Primary", "result": "Weapon range ≥5 · R5+ debuff kinds · DEF Down · Mobility (MOB) · MOV"},
                 {"when": "Secondary", "result": "ATK / weapon power / HP (mild upside, no floor penalty)"},
             ],
         }
@@ -6920,13 +6921,268 @@ def entity_matches_sortie_set(A, eid: str, set_id: str, kind: str, lc: str = "EN
     return True
 
 
-def entity_eligible_on_stage(A, eid: str, stage_id: str, kind: str = "unit", lc: str = "EN") -> bool:
+def _entity_eligible_on_stage_raw(
+    A, eid: str, stage_id: str, kind: str = "unit", lc: str = "EN"
+) -> bool:
     sm = A.stage_map.get(stage_id, {}) or {}
     sets = [sm.get("group1_set_id"), sm.get("group2_set_id")]
     sets = [s for s in sets if s and s != "0"]
     if not sets:
         return True
     return any(entity_matches_sortie_set(A, eid, s, kind, lc) for s in sets)
+
+
+def linked_sd_unit_id(A, cid: str) -> str | None:
+    """Paired MS id for an SD character, or None if the character is not SD-locked."""
+    cid = A.normalize_id(cid)
+    if not cid or cid == "0":
+        return None
+    linked = (getattr(A, "LINKED_CHARACTER_UNIT_MAP", None) or {}).get(cid)
+    if linked:
+        return A.normalize_id(linked)
+    fn = getattr(A, "_unit_has_sd_mechanism", None)
+    if callable(fn) and fn((getattr(A, "unit_info_map", None) or {}).get(cid), cid):
+        return cid
+    checker = getattr(A, "_sp_investment_character_is_sd_linked", None)
+    if callable(checker) and checker(cid):
+        return cid
+    return None
+
+
+def entity_eligible_on_stage(A, eid: str, stage_id: str, kind: str = "unit", lc: str = "EN") -> bool:
+    """Sortie gate for one Eternal Road stage.
+
+    SD characters are locked to their MS. Character-side “free for all” does not
+    let the pair into U.C. / Alternative / SEED (or other unit-tag) Expert
+    stages unless the character themselves has that tag.
+    """
+    if not _entity_eligible_on_stage_raw(A, eid, stage_id, kind, lc):
+        return False
+    if kind != "character":
+        return True
+    uid = linked_sd_unit_id(A, eid)
+    if not uid:
+        return True
+    if not _entity_eligible_on_stage_raw(A, uid, stage_id, "unit", lc):
+        return False
+    if _stage_has_character_restrictions(A, stage_id):
+        return True
+    return _sd_character_matches_unit_restriction_groups(A, eid, stage_id, lc)
+
+
+def _stage_has_character_restrictions(A, stage_id: str) -> bool:
+    sm = A.stage_map.get(stage_id, {}) or {}
+    for set_id in (sm.get("group1_set_id"), sm.get("group2_set_id")):
+        if not set_id or set_id == "0":
+            continue
+        for r in A.stage_sortie_set_content_map.get(set_id, []) or []:
+            if str(r.get("target_type_index") or "0") in ("2", "3"):
+                g = A.stage_sortie_group_content_map.get(r.get("group_id", "0"), []) or []
+                if g:
+                    return True
+    return False
+
+
+def _sd_character_matches_unit_restriction_groups(A, cid: str, stage_id: str, lc: str) -> bool:
+    """Free-for-all Expert: SD pilot must carry the unit tag/series themselves."""
+    sm = A.stage_map.get(stage_id, {}) or {}
+    saw_unit_gate = False
+    for set_id in (sm.get("group1_set_id"), sm.get("group2_set_id")):
+        if not set_id or set_id == "0":
+            continue
+        rows = A.stage_sortie_set_content_map.get(set_id, []) or []
+        unit_rows = [r for r in rows if str(r.get("target_type_index") or "0") in ("1", "3")]
+        if not unit_rows:
+            continue
+        saw_unit_gate = True
+        for r in unit_rows:
+            if not entity_matches_group(A, cid, r.get("group_id", "0"), kind="character", lc=lc):
+                return False
+    return True if saw_unit_gate else True
+
+
+def _sd_char_matches_filter_tags(row: dict, filt: dict) -> bool:
+    tags = {str(t).strip().lower() for t in (row.get("tags") or []) if t}
+    series = {str(s).strip().lstrip("0") or "0" for s in (row.get("series_ids") or []) if s}
+
+    def _match(rests: list) -> bool:
+        if not rests:
+            return True
+        for r in rests:
+            if not isinstance(r, dict):
+                continue
+            name = str(r.get("name") or "").strip().lower()
+            rid = str(r.get("id") or "").strip()
+            kind = str(r.get("kind") or "")
+            if kind == "tag" and name and name in tags:
+                return True
+            if kind == "series":
+                key = rid.lstrip("0") or "0"
+                if rid in (row.get("series_ids") or []) or key in series:
+                    return True
+        return False
+
+    char_rest = filt.get("character_restrictions") or []
+    unit_rest = filt.get("unit_restrictions") or []
+    if char_rest:
+        return _match(char_rest)
+    if unit_rest:
+        return _match(unit_rest)
+    return True
+
+
+def apply_sd_er_pair_gate(
+    payload: dict,
+    *,
+    linked_char_to_unit: dict | None = None,
+    linked_unit_to_char: dict | None = None,
+) -> None:
+    """Clamp SD-linked character er_expert_ids to stages the pair can actually enter.
+
+    1) Paired unit must be eligible (drops U.C. / Alternative / SEED free-for-all).
+    2) On character-free-for-all stages, the character must hold that unit tag
+       themselves (Command Gundam → Protagonist, not Specialized Unit).
+    """
+    if not isinstance(payload, dict):
+        return
+    linked = {str(k): str(v) for k, v in (linked_char_to_unit or {}).items() if k and v}
+    filters = {
+        str(f.get("id")): f
+        for f in (payload.get("er_expert_filters") or [])
+        if isinstance(f, dict) and f.get("id")
+    }
+    sd_unit_er: dict[str, set[str]] = {}
+    units = payload.get("units") or {}
+    for mode in ("sp", "ssp"):
+        buckets = units.get(mode) or {}
+        if not isinstance(buckets, dict):
+            continue
+        for rows in buckets.values():
+            for row in rows or []:
+                if not isinstance(row, dict) or not row.get("id"):
+                    continue
+                if not row.get("is_sd"):
+                    continue
+                uid = str(row["id"])
+                ids = {str(x) for x in (row.get("er_expert_ids") or [])}
+                sd_unit_er.setdefault(uid, set()).update(ids)
+
+    chars = (payload.get("characters") or {}).get("sp") or {}
+    if not isinstance(chars, dict):
+        return
+    for rows in chars.values():
+        for row in rows or []:
+            if not isinstance(row, dict) or not row.get("id"):
+                continue
+            cid = str(row["id"])
+            uid = str(row.get("linked_unit_id") or linked.get(cid) or "")
+            is_sd = bool(row.get("is_sd_linked")) or uid in sd_unit_er or cid in sd_unit_er
+            if not is_sd:
+                continue
+            if not uid:
+                uid = cid if cid in sd_unit_er else str(linked.get(cid) or "")
+            if not uid or uid not in sd_unit_er:
+                continue
+            allow = sd_unit_er[uid]
+            row["linked_unit_id"] = uid
+            kept = []
+            for sid in row.get("er_expert_ids") or []:
+                sid_s = str(sid)
+                if sid_s not in allow:
+                    continue
+                filt = filters.get(sid_s) or {}
+                if filters and not _sd_char_matches_filter_tags(row, filt):
+                    continue
+                kept.append(sid)
+            row["er_expert_ids"] = kept
+
+    chars_by_id: dict[str, dict] = {}
+    for rows in chars.values():
+        for row in rows or []:
+            if isinstance(row, dict) and row.get("id"):
+                chars_by_id[str(row["id"])] = row
+    rev = {str(v): str(k) for k, v in linked.items()}
+    for uk, ck in (linked_unit_to_char or {}).items():
+        if uk and ck:
+            rev.setdefault(str(uk), str(ck))
+    for mode in ("sp", "ssp"):
+        buckets = units.get(mode) or {}
+        if not isinstance(buckets, dict):
+            continue
+        for rows in buckets.values():
+            for row in rows or []:
+                if not isinstance(row, dict) or not row.get("is_sd") or not row.get("id"):
+                    continue
+                uid = str(row["id"])
+                cid = str(row.get("linked_character_id") or rev.get(uid) or uid)
+                ch = chars_by_id.get(cid)
+                if not ch or not filters:
+                    continue
+                row["linked_character_id"] = cid
+                row["er_expert_ids"] = [
+                    sid
+                    for sid in (row.get("er_expert_ids") or [])
+                    if _sd_char_matches_filter_tags(ch, filters.get(str(sid)) or {})
+                ]
+
+
+def unit_has_after_move_map(A, uid: str) -> bool:
+    """True when any unit MAP weapon can fire after moving."""
+    uid = A.normalize_id(uid) if uid else ""
+    if not uid or uid == "0":
+        return False
+    for wp in A.unit_weapon_map.get(uid, []) or []:
+        wid = A.normalize_id(wp.get("id") or wp.get("weapon_id") or "0")
+        if not wid or wid == "0":
+            continue
+        wm = A.weapon_info_map.get(wid) or {}
+        wt = str(wm.get("weapon_type") or wp.get("weapon_type") or "")
+        try:
+            if A.is_map_weapon_after_move_unit_weapon(uid, wid, wt):
+                return True
+        except Exception:
+            wsid = A.normalize_id(wm.get("weapon_status_id") or wid)
+            ws = A.weapon_status_map.get(wsid) or A.weapon_status_map.get(wid) or {}
+            if ws.get("map_can_use_after_move"):
+                return True
+    return False
+
+
+def stamp_unit_after_move_map_flags(payload) -> None:
+    """Fill has_after_move_map on published unit rows (API prepare / stale JSON)."""
+    if not isinstance(payload, dict):
+        return
+    try:
+        import app as A
+    except Exception:
+        return
+    if not getattr(A, "unit_weapon_map", None):
+        return
+    units_wrap = payload.get("units") if isinstance(payload.get("units"), dict) else {}
+    boards: list[dict] = []
+    if isinstance(units_wrap, dict):
+        for key in ("sp", "ssp"):
+            b = units_wrap.get(key)
+            if isinstance(b, dict):
+                boards.append(b)
+    for key in ("sp", "ssp"):
+        b = payload.get(key)
+        if isinstance(b, dict) and b not in boards:
+            boards.append(b)
+    for board in boards:
+        for bucket in board.values():
+            if not isinstance(bucket, list):
+                continue
+            for row in bucket:
+                if not isinstance(row, dict):
+                    continue
+                uid = str(row.get("id") or "")
+                if not uid:
+                    continue
+                try:
+                    row["has_after_move_map"] = bool(unit_has_after_move_map(A, uid))
+                except Exception:
+                    row["has_after_move_map"] = False
 
 
 def _lookup_series_display_name(snm: dict, tid: str) -> str | None:
@@ -7067,3 +7323,147 @@ def attach_er_expert_ids(A, row: dict, kind: str, expert_ids: list[str], lc: str
     row["er_expert_ids"] = [
         sid for sid in expert_ids if entity_eligible_on_stage(A, eid, sid, kind=kind, lc=lc)
     ]
+
+
+# --- Display-only decision aids (not score axes). Computed from published rows. ---
+
+_SWAY_NAME_PREFIXES = ("sway", "スウェー", "搖擺閃避")
+_MP_UP_NAME_PREFIXES = ("mp up", "mpアップ", "mp上升", "mp提升")
+
+
+def _kit_item_ids(items: list | None) -> set[str]:
+    out: set[str] = set()
+    for it in items or []:
+        if isinstance(it, dict) and it.get("id"):
+            out.add(str(it.get("id")))
+    return out
+
+
+def _bd_int(row: dict | None, key: str) -> int:
+    bd = (row or {}).get("breakdown") if isinstance(row, dict) else None
+    if not isinstance(bd, dict):
+        return 0
+    try:
+        return int(bd.get(key) or 0)
+    except (TypeError, ValueError):
+        return 0
+
+
+def _stat_int(row: dict | None, key: str) -> int:
+    stats = (row or {}).get("stats") if isinstance(row, dict) else None
+    if not isinstance(stats, dict):
+        return 0
+    try:
+        return int(stats.get(key) or 0)
+    except (TypeError, ValueError):
+        return 0
+
+
+def ssp_conversion_gains(sp_row: dict | None, ssp_row: dict | None) -> list[dict]:
+    """SSP vs SP kit deltas for dossier display. Not a scoring axis."""
+    if not isinstance(sp_row, dict) or not isinstance(ssp_row, dict):
+        return []
+    gains: list[dict] = []
+    sp_mov = _stat_int(sp_row, "MOV")
+    ssp_mov = _stat_int(ssp_row, "MOV")
+    if ssp_mov > sp_mov:
+        gains.append({"kind": "movement", "from": sp_mov, "to": ssp_mov})
+    if not sp_row.get("has_map") and ssp_row.get("has_map"):
+        gains.append({"kind": "map_new"})
+    elif _bd_int(ssp_row, "map") > _bd_int(sp_row, "map"):
+        gains.append({"kind": "map_better"})
+    if _bd_int(ssp_row, "weapon_range") > _bd_int(sp_row, "weapon_range"):
+        gains.append({"kind": "weapon_range"})
+    if _bd_int(ssp_row, "weapon_power") > _bd_int(sp_row, "weapon_power"):
+        gains.append({"kind": "weapon_power"})
+    if _bd_int(ssp_row, "terrain") > _bd_int(sp_row, "terrain"):
+        gains.append({"kind": "terrain"})
+    if _bd_int(ssp_row, "preemptive") > _bd_int(sp_row, "preemptive"):
+        gains.append({"kind": "preemptive"})
+    if _bd_int(sp_row, "max_tension_weapon") < 0 and _bd_int(ssp_row, "max_tension_weapon") >= 0:
+        gains.append({"kind": "max_tension_bypass"})
+    sp_ids = _kit_item_ids(sp_row.get("abilities"))
+    new_abil = [
+        it
+        for it in (ssp_row.get("abilities") or [])
+        if isinstance(it, dict) and str(it.get("id") or "") not in sp_ids
+    ]
+    if new_abil:
+        names = [str(it.get("name") or "").strip() for it in new_abil if str(it.get("name") or "").strip()]
+        gains.append({"kind": "ability_new", "names": names[:4]})
+    elif _bd_int(ssp_row, "abilities") > _bd_int(sp_row, "abilities"):
+        gains.append({"kind": "abilities"})
+    return gains
+
+
+def _skill_name_matches(name: str, prefixes: tuple[str, ...]) -> bool:
+    n = str(name or "").strip().lower().replace("　", " ")
+    if not n:
+        return False
+    compact = n.replace(" ", "")
+    for p in prefixes:
+        pl = p.lower()
+        if n.startswith(pl) or compact.startswith(pl.replace(" ", "")):
+            return True
+    return False
+
+
+def kit_highlight_chips(row: dict | None, *, cap: int = 4) -> list[dict]:
+    """2–4 kit flags from published row fields. Display only."""
+    if not isinstance(row, dict) or cap <= 0:
+        return []
+    chips: list[dict] = []
+    entity = str(row.get("entity") or "")
+    is_char = entity == "character"
+
+    def _add(kind: str, **extra) -> None:
+        if len(chips) >= cap:
+            return
+        if any(c.get("kind") == kind for c in chips):
+            return
+        chips.append({"kind": kind, **extra})
+
+    if not is_char:
+        if _stat_int(row, "MOV") >= 6:
+            _add("mov6", n=_stat_int(row, "MOV"))
+        if row.get("has_map"):
+            _add("map")
+        if row.get("has_after_move_map"):
+            _add("after_move_map")
+        if _bd_int(row, "max_debuff") > 0:
+            _add("debuff", role=str(row.get("role") or ""))
+        if _bd_int(row, "preemptive") > 0:
+            _add("preemptive")
+    else:
+        spec = str(row.get("specialty") or "").strip()
+        if spec:
+            _add("specialty", value=spec)
+        for sk in row.get("skills") or []:
+            if not isinstance(sk, dict):
+                continue
+            name = str(sk.get("name") or "")
+            if _skill_name_matches(name, _SWAY_NAME_PREFIXES):
+                _add("sway")
+            if _skill_name_matches(name, _MP_UP_NAME_PREFIXES):
+                _add("mp_up")
+        if _bd_int(row, "combat_actions") > 0:
+            _add("combat")
+    er_ids = row.get("er_expert_ids")
+    er_n = len(er_ids) if isinstance(er_ids, list) else 0
+    if er_n:
+        _add("er", n=er_n)
+    return chips[:cap]
+
+
+def attach_ssp_gains_to_unit_boards(sp_rows: list[dict], ssp_rows: list[dict]) -> None:
+    """Stamp ssp_gains + paired letter onto SP/SSP unit rows (build-time optional)."""
+    sp_by = {str(r.get("id")): r for r in sp_rows if isinstance(r, dict) and r.get("id")}
+    ssp_by = {str(r.get("id")): r for r in ssp_rows if isinstance(r, dict) and r.get("id")}
+    for uid, ssp in ssp_by.items():
+        sp = sp_by.get(uid)
+        gains = ssp_conversion_gains(sp, ssp)
+        ssp["ssp_gains"] = gains
+        if sp is not None:
+            sp["ssp_gains"] = gains
+            sp["paired_letter"] = ssp.get("letter") or ""
+            ssp["paired_letter"] = sp.get("letter") or ""

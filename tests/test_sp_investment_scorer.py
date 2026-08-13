@@ -2069,5 +2069,248 @@ class TestRecommendedCharactersSpecialty(unittest.TestCase):
         self.assertEqual(rows, [])
 
 
+class TestDecisionAids(unittest.TestCase):
+    def test_ssp_gains_mov_map_and_tension_bypass(self):
+        from sp_investment_rank import ssp_conversion_gains
+
+        sp = {
+            "has_map": False,
+            "stats": {"MOV": 5},
+            "breakdown": {
+                "map": 0,
+                "weapon_range": 1,
+                "weapon_power": 2,
+                "terrain": 0,
+                "max_tension_weapon": -1,
+                "preemptive": 0,
+                "abilities": 1,
+            },
+            "abilities": [{"id": "a1", "name": "Old"}],
+        }
+        ssp = {
+            "has_map": True,
+            "stats": {"MOV": 6},
+            "breakdown": {
+                "map": 3,
+                "weapon_range": 2,
+                "weapon_power": 4,
+                "terrain": 1,
+                "max_tension_weapon": 0,
+                "preemptive": 1,
+                "abilities": 2,
+            },
+            "abilities": [
+                {"id": "a1", "name": "Old"},
+                {"id": "a2", "name": "New Core"},
+            ],
+        }
+        kinds = [g["kind"] for g in ssp_conversion_gains(sp, ssp)]
+        self.assertIn("movement", kinds)
+        self.assertIn("map_new", kinds)
+        self.assertIn("weapon_range", kinds)
+        self.assertIn("weapon_power", kinds)
+        self.assertIn("terrain", kinds)
+        self.assertIn("preemptive", kinds)
+        self.assertIn("max_tension_bypass", kinds)
+        self.assertIn("ability_new", kinds)
+        mov = next(g for g in ssp_conversion_gains(sp, ssp) if g["kind"] == "movement")
+        self.assertEqual(mov["from"], 5)
+        self.assertEqual(mov["to"], 6)
+
+    def test_ssp_gains_empty_when_identical(self):
+        from sp_investment_rank import ssp_conversion_gains
+
+        row = {
+            "has_map": True,
+            "stats": {"MOV": 5},
+            "breakdown": {"map": 2, "weapon_range": 1},
+            "abilities": [{"id": "a1", "name": "X"}],
+        }
+        self.assertEqual(ssp_conversion_gains(row, dict(row)), [])
+
+    def test_kit_highlights_unit_and_character(self):
+        from sp_investment_rank import kit_highlight_chips
+
+        unit = {
+            "entity": "unit",
+            "has_map": True,
+            "stats": {"MOV": 6},
+            "breakdown": {"max_debuff": 2, "preemptive": 0},
+            "has_after_move_map": True,
+            "er_expert_ids": ["s1", "s2", "s3"],
+        }
+        kinds = [c["kind"] for c in kit_highlight_chips(unit)]
+        self.assertIn("mov6", kinds)
+        self.assertIn("map", kinds)
+        self.assertIn("after_move_map", kinds)
+        self.assertLessEqual(len(kinds), 4)
+        # ER is later after mov/map/after_move_map/debuff — still shown when there is room.
+        er_only = kit_highlight_chips(
+            {"entity": "unit", "stats": {"MOV": 5}, "er_expert_ids": ["s1", "s2"]}
+        )
+        self.assertIn("er", [c["kind"] for c in er_only])
+
+        char = {
+            "entity": "character",
+            "specialty": "Melee",
+            "skills": [{"id": "1", "name": "Sway LV 2"}, {"id": "2", "name": "MP Up LV 5"}],
+            "breakdown": {"combat_actions": 2},
+            "er_expert_ids": ["s1"],
+        }
+        ck = [c["kind"] for c in kit_highlight_chips(char)]
+        self.assertIn("specialty", ck)
+        self.assertIn("sway", ck)
+        self.assertIn("mp_up", ck)
+        self.assertLessEqual(len(ck), 4)
+
+    def test_kit_highlights_sway_ja_and_tw(self):
+        from sp_investment_rank import kit_highlight_chips
+
+        ja = {
+            "entity": "character",
+            "skills": [{"id": "1", "name": "スウェーLV1"}],
+        }
+        tw = {
+            "entity": "character",
+            "skills": [{"id": "1", "name": "搖擺閃避 LV3"}],
+        }
+        self.assertIn("sway", [c["kind"] for c in kit_highlight_chips(ja)])
+        self.assertIn("sway", [c["kind"] for c in kit_highlight_chips(tw)])
+
+    def test_increased_mov_is_not_movement_followup(self):
+        from sp_investment_rank import effects_have_movement_followup, load_rules
+
+        rules = load_rules()
+        # TraitType 70 = MovementChangeValue (Increased MOV) — not Chance Step / after-move MAP.
+        self.assertFalse(
+            effects_have_movement_followup(rules, [{"trait_type_index": 70}])
+        )
+        self.assertTrue(
+            effects_have_movement_followup(rules, [{"trait_type_index": 19}])
+        )
+        unit_mov = {
+            "entity": "unit",
+            "stats": {"MOV": 5},
+            "breakdown": {"movement_followup": 1},
+            "has_after_move_map": False,
+        }
+        from sp_investment_rank import kit_highlight_chips
+
+        kinds = [c["kind"] for c in kit_highlight_chips(unit_mov)]
+        self.assertNotIn("after_move_map", kinds)
+        self.assertNotIn("followup", kinds)
+
+    def test_sd_pair_gate_drops_character_free_for_all(self):
+        from sp_investment_rank import apply_sd_er_pair_gate
+
+        payload = {
+            "er_expert_filters": [
+                {
+                    "id": "90520001",
+                    "character_free_for_all": True,
+                    "unit_restrictions": [{"kind": "tag", "id": "1001", "name": "U.C. Series"}],
+                    "character_restrictions": [],
+                },
+                {
+                    "id": "90520003",
+                    "character_free_for_all": True,
+                    "unit_restrictions": [{"kind": "tag", "id": "1005", "name": "Protagonist"}],
+                    "character_restrictions": [],
+                },
+                {
+                    "id": "90520020",
+                    "character_free_for_all": True,
+                    "unit_restrictions": [{"kind": "tag", "id": "1007", "name": "Specialized Unit"}],
+                    "character_restrictions": [],
+                },
+            ],
+            "units": {
+                "sp": {
+                    "solid": [
+                        {
+                            "id": "1709000100",
+                            "is_sd": True,
+                            "er_expert_ids": ["90520003", "90520020"],
+                        }
+                    ]
+                }
+            },
+            "characters": {
+                "sp": {
+                    "solid": [
+                        {
+                            "id": "1709000100",
+                            "is_sd_linked": True,
+                            "tags": ["Protagonist", "SD Gundam", "Gundam Pilot"],
+                            "er_expert_ids": [
+                                "90520001",
+                                "90520003",
+                                "90520020",
+                            ],
+                        }
+                    ]
+                }
+            },
+        }
+        apply_sd_er_pair_gate(
+            payload, linked_char_to_unit={"1709000100": "1709000100"}
+        )
+        ids = payload["characters"]["sp"]["solid"][0]["er_expert_ids"]
+        self.assertEqual(ids, ["90520003"])
+        unit_ids = payload["units"]["sp"]["solid"][0]["er_expert_ids"]
+        self.assertEqual(unit_ids, ["90520003"])
+
+    def test_sd_pair_gate_uses_linked_unit_id(self):
+        from sp_investment_rank import apply_sd_er_pair_gate
+
+        payload = {
+            "er_expert_filters": [
+                {
+                    "id": "90520001",
+                    "character_restrictions": [],
+                    "unit_restrictions": [{"kind": "tag", "id": "1001", "name": "U.C. Series"}],
+                },
+                {
+                    "id": "90520003",
+                    "character_restrictions": [],
+                    "unit_restrictions": [{"kind": "tag", "id": "1005", "name": "Protagonist"}],
+                },
+                {
+                    "id": "90520027",
+                    "character_restrictions": [{"kind": "tag", "id": "1105", "name": "Gundam Pilot"}],
+                    "unit_restrictions": [{"kind": "tag", "id": "1003", "name": "Gundam"}],
+                },
+            ],
+            "units": {
+                "sp": {
+                    "solid": [
+                        {
+                            "id": "1705000400",
+                            "is_sd": True,
+                            "er_expert_ids": ["90520003", "90520027"],
+                        }
+                    ]
+                }
+            },
+            "characters": {
+                "sp": {
+                    "solid": [
+                        {
+                            "id": "1705001700",
+                            "is_sd_linked": True,
+                            "tags": ["Protagonist", "Gundam Pilot"],
+                            "er_expert_ids": ["90520001", "90520003", "90520027"],
+                        }
+                    ]
+                }
+            },
+        }
+        apply_sd_er_pair_gate(
+            payload, linked_char_to_unit={"1705001700": "1705000400"}
+        )
+        ids = payload["characters"]["sp"]["solid"][0]["er_expert_ids"]
+        self.assertEqual(ids, ["90520003", "90520027"])
+
+
 if __name__ == "__main__":
     unittest.main()

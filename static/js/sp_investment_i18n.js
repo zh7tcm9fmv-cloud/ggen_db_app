@@ -8,10 +8,10 @@
   'use strict';
 
   const ROLE = {
-    EN: { Attack: 'Attack Type', Defense: 'Defense Type', Support: 'Support Type' },
-    JA: { Attack: '攻撃型', Defense: '耐久型', Support: '支援型' },
-    TW: { Attack: '攻擊型', Defense: '耐久型', Support: '支援型' },
-    HK: { Attack: '攻擊型', Defense: '耐久型', Support: '支援型' },
+    EN: { Attack: 'Attack Type', Defense: 'Defense Type', Support: 'Support Type', all: 'All Types' },
+    JA: { Attack: '攻撃型', Defense: '耐久型', Support: '支援型', all: '全タイプ' },
+    TW: { Attack: '攻擊型', Defense: '耐久型', Support: '支援型', all: '全部類型' },
+    HK: { Attack: '攻擊型', Defense: '耐久型', Support: '支援型', all: '全部類型' },
   };
 
   const BUCKET = {
@@ -202,6 +202,53 @@
       applies_units: 'Units',
       applies_characters: 'Characters',
       lang_aria: 'Language',
+      decision_preview_banner:
+        'Local preview of chip-spend UI (SSP Conversion gains, kit flags, All Types grouping). Live /ip is unchanged until you confirm.',
+      chip_spend_title: 'How to spend chips',
+      chip_spend_1:
+        'If Eternal Road damage is the bottleneck, prefer Attack Type SP Conversion. After Attack Type is covered, Defense Type helps Support Defense coverage.',
+      chip_spend_2:
+        'Support Type is strongest when lasting DEF Down (or pierce) scores on the kit — same idea as the letter gates.',
+      chip_spend_3:
+        'Use Tag, Series, and Eternal Road Expert filters — kits that pass more stages reuse the same chips.',
+      chip_spend_4:
+        'SR kits can outrank SSR on this board. Saving chips is valid; favorite Units and Characters are valid.',
+      chip_spend_5:
+        'SSP Conversion requires SP Conversion first. Open the SSP Conversion board to see Custom Core unlocks.',
+      ssp_gains_title: 'SSP Conversion gains',
+      ssp_gains_none: 'No MOV / MAP Weapon / terrain / weapon / ability unlock vs SP Conversion on this kit.',
+      sp_gains_title: 'SP Conversion gains',
+      sp_gains_note:
+        'This board is the SP Conversion kit. Switch to SSP Conversion to see Custom Core unlocks (MOV, MAP Weapon, terrain, abilities).',
+      ssp_gain_movement: 'MOV {from} → {to}',
+      ssp_gain_map_new: 'MAP Weapon added',
+      ssp_gain_map_better: 'MAP Weapon improved',
+      ssp_gain_weapon_range: 'Weapon range improved',
+      ssp_gain_weapon_power: 'Weapon power improved',
+      ssp_gain_terrain: 'Terrain improved',
+      ssp_gain_abilities: 'Unit Ability improved',
+      ssp_gain_ability_new: '{name}',
+      ssp_gain_max_tension_bypass: 'Max Vigor weapon gate removed',
+      ssp_gain_preemptive: 'Preemptive Strike added',
+      why_mov6: 'MOV {n}',
+      why_map: 'MAP Weapon',
+      why_er: 'ER Expert ×{n}',
+      why_debuff: 'Debuff',
+      why_atk_down: 'ATK Down',
+      why_def_down: 'DEF Down',
+      why_after_move_map: 'After-move MAP',
+      why_followup: 'After-move MAP',
+      why_preemptive: 'Preemptive Strike',
+      why_sway: 'Sway',
+      why_mp_up: 'MP Up',
+      why_chance_step: 'Chance Step',
+      why_support_def: 'Support Defense',
+      why_support_atk: 'Support Attack',
+      why_combat: 'Chance Step / Support Attack / Support Defense',
+      dual_letter_sp: 'SP Conversion {letter}',
+      dual_letter_ssp: 'SSP Conversion {letter}',
+      er_stages_title: 'Eternal Road Expert',
+      er_stages_none: 'No Expert stages on this kit.',
     },
     JA: {
       page_title: '投資優先度 - GGen Eternal Database',
@@ -357,6 +404,53 @@
       applies_units: 'ユニット',
       applies_characters: 'キャラクター',
       lang_aria: '言語',
+      decision_preview_banner:
+        'チップ消費UIのローカルプレビュー（SSP化で得られるもの、キット目印、全タイプ表示）。公開中の /ip は確定まで変更しません。',
+      chip_spend_title: 'チップの使い方',
+      chip_spend_1:
+        'エターナルロードで火力が足りないなら攻撃型のSP化を優先。攻撃型が揃ったら、支援防御の範囲を広げる耐久型。',
+      chip_spend_2:
+        '支援型は、持続の防御力減少（または貫通）がスコアに乗るキット（レター基準と同じ考え方）が強いです。',
+      chip_spend_3:
+        'タグ・シリーズ・エターナルロード Expert のフィルタを使い、複数ステージで再利用できるキットを優先。',
+      chip_spend_4:
+        'このボードでは SR が SSR を上回ることがあります。温存も、好きなユニット／キャラクターへの使用も有効です。',
+      chip_spend_5:
+        'SSP化には先にSP化が必要です。カスタムコアで何が解放されるかは SSP化ボードで確認できます。',
+      ssp_gains_title: 'SSP化で得られるもの',
+      ssp_gains_none: 'このキットは SP化比で移動力／MAP兵器／地形適性／武装／アビリティの解放差がありません。',
+      sp_gains_title: 'SP化で得られるもの',
+      sp_gains_note:
+        'このボードは SP化後のキットです。カスタムコア解放（移動力・MAP兵器・地形適性・アビリティ）は SSP化ボードで確認できます。',
+      ssp_gain_movement: '移動力 {from} → {to}',
+      ssp_gain_map_new: 'MAP兵器が追加',
+      ssp_gain_map_better: 'MAP兵器が強化',
+      ssp_gain_weapon_range: '武装の射程が強化',
+      ssp_gain_weapon_power: '武装威力が強化',
+      ssp_gain_terrain: '地形適性が強化',
+      ssp_gain_abilities: 'ユニットアビリティが強化',
+      ssp_gain_ability_new: '{name}',
+      ssp_gain_max_tension_bypass: 'テンション超強気武装の条件が外れる',
+      ssp_gain_preemptive: '先制攻撃が追加',
+      why_mov6: '移動力 {n}',
+      why_map: 'MAP兵器',
+      why_er: 'ER Expert ×{n}',
+      why_debuff: '弱体',
+      why_atk_down: '攻撃力減少',
+      why_def_down: '防御力減少',
+      why_after_move_map: '移動後MAP兵器',
+      why_followup: '移動後MAP兵器',
+      why_preemptive: '先制攻撃',
+      why_sway: 'スウェー',
+      why_mp_up: 'MPアップ',
+      why_chance_step: 'チャンスステップ',
+      why_support_def: '支援防御',
+      why_support_atk: '支援攻撃',
+      why_combat: 'チャンスステップ／支援攻撃／支援防御',
+      dual_letter_sp: 'SP化 {letter}',
+      dual_letter_ssp: 'SSP化 {letter}',
+      er_stages_title: 'エターナルロード Expert',
+      er_stages_none: 'このキットが入れる Expert はありません。',
     },
     TW: {
       page_title: '投資優先度 - GGen Eternal Database',
@@ -510,6 +604,52 @@
       applies_units: '單位',
       applies_characters: '角色',
       lang_aria: '語言',
+      decision_preview_banner:
+        '晶片花費 UI 的本機預覽（SSP化獲得、套件標記、全部類型分組）。正式 /ip 在確認前不會改。',
+      chip_spend_title: '晶片怎麼花',
+      chip_spend_1:
+        '永恆之路火力不夠時優先攻擊型 SP化。攻擊型齊了再補耐久型，有助支援防禦覆蓋。',
+      chip_spend_2:
+        '支援型在持續防禦力減少（或貫穿）有計分的套件上最能發揮（與字母門檻同一思路）。',
+      chip_spend_3:
+        '用標籤、系列、永恆之路 Expert 篩選，優先能在多關重複使用的套件。',
+      chip_spend_4:
+        '本看板 SR 有機會勝過 SSR。保留晶片、或花在喜歡的單位／角色都有效。',
+      chip_spend_5:
+        'SSP化必須先 SP化。改裝核心解鎖內容請看 SSP化看板。',
+      ssp_gains_title: 'SSP化獲得',
+      ssp_gains_none: '此套件相對 SP化沒有移動力／MAP兵器／地形適性／武裝／能力解鎖差。',
+      sp_gains_title: 'SP化獲得',
+      sp_gains_note: '此看板為 SP化後套件。改裝核心解鎖（移動力、MAP兵器、地形適性、能力）請切換至 SSP化看板。',
+      ssp_gain_movement: '移動力 {from} → {to}',
+      ssp_gain_map_new: '新增 MAP兵器',
+      ssp_gain_map_better: 'MAP兵器強化',
+      ssp_gain_weapon_range: '武裝射程強化',
+      ssp_gain_weapon_power: '武裝威力強化',
+      ssp_gain_terrain: '地形適性強化',
+      ssp_gain_abilities: '單位能力強化',
+      ssp_gain_ability_new: '{name}',
+      ssp_gain_max_tension_bypass: '解除戰意超強勢武裝條件',
+      ssp_gain_preemptive: '新增先制攻擊',
+      why_mov6: '移動力 {n}',
+      why_map: 'MAP兵器',
+      why_er: 'ER Expert ×{n}',
+      why_debuff: '弱化',
+      why_atk_down: '攻擊力減少',
+      why_def_down: '防禦力減少',
+      why_after_move_map: '移動後MAP兵器',
+      why_followup: '移動後MAP兵器',
+      why_preemptive: '先制攻擊',
+      why_sway: '搖擺閃避',
+      why_mp_up: 'MP上升',
+      why_chance_step: '額外行動',
+      why_support_def: '支援防禦',
+      why_support_atk: '支援攻擊',
+      why_combat: '額外行動／支援攻擊／支援防禦',
+      dual_letter_sp: 'SP化 {letter}',
+      dual_letter_ssp: 'SSP化 {letter}',
+      er_stages_title: '永恆之路 Expert',
+      er_stages_none: '此套件沒有可出擊的 Expert。',
     },
     HK: {
       page_title: '投資優先度 - GGen Eternal Database',
@@ -663,6 +803,52 @@
       applies_units: '單位',
       applies_characters: '角色',
       lang_aria: '語言',
+      decision_preview_banner:
+        '晶片花費 UI 嘅本機預覽（SSP化獲得、套件標記、全部類型分組）。正式 /ip 確認前唔會改。',
+      chip_spend_title: '晶片點樣花',
+      chip_spend_1:
+        '永恆之路火力唔夠就優先攻擊型 SP化。攻擊型齊咗再補耐久型，有助支援防禦覆蓋。',
+      chip_spend_2:
+        '支援型喺持續防禦力減少（或貫穿）有計分嘅套件上最能發揮（同字母門檻同一思路）。',
+      chip_spend_3:
+        '用標籤、系列、永恆之路 Expert 篩選，優先可以喺多關重複使用嘅套件。',
+      chip_spend_4:
+        '呢個看板 SR 有機會贏 SSR。留晶片、或者花喺鍾意嘅單位／角色都有效。',
+      chip_spend_5:
+        'SSP化必須先 SP化。改裝核心解鎖內容請睇 SSP化看板。',
+      ssp_gains_title: 'SSP化獲得',
+      ssp_gains_none: '呢個套件相對 SP化冇移動力／MAP兵器／地形適性／武裝／能力解鎖差。',
+      sp_gains_title: 'SP化獲得',
+      sp_gains_note: '呢個看板係 SP化後套件。改裝核心解鎖（移動力、MAP兵器、地形適性、能力）請切去 SSP化看板。',
+      ssp_gain_movement: '移動力 {from} → {to}',
+      ssp_gain_map_new: '新增 MAP兵器',
+      ssp_gain_map_better: 'MAP兵器強化',
+      ssp_gain_weapon_range: '武裝射程強化',
+      ssp_gain_weapon_power: '武裝威力強化',
+      ssp_gain_terrain: '地形適性強化',
+      ssp_gain_abilities: '單位能力強化',
+      ssp_gain_ability_new: '{name}',
+      ssp_gain_max_tension_bypass: '解除戰意超強勢武裝條件',
+      ssp_gain_preemptive: '新增先制攻擊',
+      why_mov6: '移動力 {n}',
+      why_map: 'MAP兵器',
+      why_er: 'ER Expert ×{n}',
+      why_debuff: '弱化',
+      why_atk_down: '攻擊力減少',
+      why_def_down: '防禦力減少',
+      why_after_move_map: '移動後MAP兵器',
+      why_followup: '移動後MAP兵器',
+      why_preemptive: '先制攻擊',
+      why_sway: '搖擺閃避',
+      why_mp_up: 'MP上升',
+      why_chance_step: '額外行動',
+      why_support_def: '支援防禦',
+      why_support_atk: '支援攻擊',
+      why_combat: '額外行動／支援攻擊／支援防禦',
+      dual_letter_sp: 'SP化 {letter}',
+      dual_letter_ssp: 'SSP化 {letter}',
+      er_stages_title: '永恆之路 Expert',
+      er_stages_none: '呢個套件冇可出擊嘅 Expert。',
     },
   };
 
@@ -771,8 +957,8 @@
         tip: 'Filter only — does not change letter scores. Multi-select (OR): pick Development + Other to exclude Unit Assembly.',
       },
       movement_followup: {
-        label: 'Movement follow-up',
-        tip: 'After-move MAP Weapon and/or Chance Step-style follow-up movement (can stack, capped).',
+        label: 'After-move MAP / Chance Step',
+        tip: 'After-move MAP Weapon and/or Chance Step–style extra actions (not Increased MOV). Can stack, capped.',
       },
       weapon_power: {
         label: 'Weapon power',
@@ -795,8 +981,8 @@
         tip: 'Defense/Support Type only. Distinct useful debuff kinds by weapon range.',
       },
       max_debuff: {
-        label: 'Debuff strength',
-        tip: 'Defense Type: lasting ATK Down % (how many more hits the tank can take). Support Type: lasting DEF Down % or instant pierce. Not scored for Attack.',
+        label: 'ATK Down / DEF Down',
+        tip: 'Defense Type: lasting ATK Down %. Support Type: lasting DEF Down % or instant pierce. Not scored for Attack.',
       },
       stat_outlier: {
         label: 'Stat outlier',
@@ -909,8 +1095,8 @@
         tip: 'フィルタのみ — レターには影響しません。複数選択（OR）で開発ユニット＋その他を選ぶとガシャ獲得ユニットを除外できます。',
       },
       movement_followup: {
-        label: '追加行動・追撃移動',
-        tip: '移動後MAP兵器やチャンスステップ系の追撃移動（重複可・上限あり）。',
+        label: '移動後MAP／チャンスステップ',
+        tip: '移動後MAP兵器、またはチャンスステップ系の追加行動（移動力アップは含まない）。重複可・上限あり。',
       },
       weapon_power: {
         label: '武装威力',
@@ -933,8 +1119,8 @@
         tip: '耐久／支援型のみ。有用な弱体の種類を射程条件で数える。',
       },
       max_debuff: {
-        label: '弱体強度',
-        tip: '耐久型：持続の攻撃力減少％（被ダメージが下がるので耐久が増える）。支援型：持続の防御力減少％または即時貫通。攻撃型は採点外。',
+        label: '攻撃力減少／防御力減少',
+        tip: '耐久型：持続の攻撃力減少％。支援型：持続の防御力減少％または即時貫通。攻撃型は採点外。',
       },
       stat_outlier: {
         label: 'ステ突出',
@@ -1047,8 +1233,8 @@
         tip: '僅篩選 — 不影響字母分數。可複選（OR）：同時選開發單位與其他即可排除單位補給獲得單位。',
       },
       movement_followup: {
-        label: '追加行動／追擊移動',
-        tip: '移動後 MAP兵器 與／或額外行動類追擊移動（可疊加、有上限）。',
+        label: '移動後MAP／額外行動',
+        tip: '移動後 MAP兵器，與／或額外行動類追加行動（不含移動力上升）。可疊加、有上限。',
       },
       weapon_power: {
         label: '武裝威力',
@@ -1071,8 +1257,8 @@
         tip: '僅耐久／支援型。依射程條件計算有用弱化種類。',
       },
       max_debuff: {
-        label: '弱化強度',
-        tip: '耐久型：持續攻擊力減少％（敵攻擊力下降就能多扛幾下）。支援型：持續防禦力減少％或即時貫穿。攻擊型不計分。',
+        label: '攻擊力減少／防禦力減少',
+        tip: '耐久型：持續攻擊力減少％。支援型：持續防禦力減少％或即時貫穿。攻擊型不計分。',
       },
       stat_outlier: {
         label: '數值突出',

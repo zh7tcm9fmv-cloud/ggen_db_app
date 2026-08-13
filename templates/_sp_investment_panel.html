@@ -2,7 +2,11 @@
   {% if spi_preview or spi_soft_launch %}
   <div class="spi-preview-banner" role="status">
     <span class="spi-preview-banner-dot" aria-hidden="true"></span>
+    {% if spi_decision_ui is defined and spi_decision_ui %}
+    <span class="spi-preview-banner-text" data-i18n="decision_preview_banner">Local preview of chip-spend UI (SSP Conversion gains, kit flags, All Types grouping). Live /ip is unchanged until you confirm.</span>
+    {% else %}
     <span class="spi-preview-banner-text" data-i18n="preview_banner">Friends preview · live at /IP, not in the main nav yet. Tell us what looks wrong.</span>
+    {% endif %}
   </div>
   {% endif %}
   <header class="spi-hero">

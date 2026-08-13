@@ -752,6 +752,112 @@ html.spi-modal-open body.spi-page {
   align-items: center;
   justify-content: center;
 }
+.spi-why-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+  width: 100%;
+  align-items: center;
+}
+.spi-why-block--dossier {
+  align-items: flex-start;
+  margin: 0.35rem 0 0;
+}
+.spi-why-block--card {
+  min-height: 1.1rem;
+}
+.spi-why-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.28rem;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.spi-why-block--dossier .spi-why-icons {
+  justify-content: flex-start;
+}
+.spi-why-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.1rem;
+  padding: 0.18rem 0.28rem;
+  border-radius: 0.35rem;
+  background: rgba(8, 14, 22, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  line-height: 0;
+}
+.spi-why-icon-img {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  flex: 0 0 auto;
+  display: block;
+}
+.spi-why-icon-img.spi-why-icon--lg {
+  width: 20px;
+  height: 20px;
+}
+.spi-why-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.22rem;
+  justify-content: center;
+  width: 100%;
+}
+.spi-why-block--dossier .spi-why-chips {
+  justify-content: flex-start;
+}
+.spi-why-chip {
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+  padding: 0.12rem 0.32rem;
+  border-radius: 999px;
+  background: rgba(0, 212, 255, 0.08);
+  border: 1px solid rgba(0, 212, 255, 0.28);
+  color: var(--text-secondary);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.spi-chip-paired {
+  cursor: pointer;
+  font: inherit;
+  background: rgba(126, 182, 239, 0.12);
+  border: 1px solid rgba(126, 182, 239, 0.4);
+  color: #c5ddf8;
+}
+.spi-chip-paired:hover {
+  border-color: rgba(0, 212, 255, 0.55);
+}
+.spi-role-group {
+  margin: 0.35rem 0 0.85rem;
+}
+.spi-role-group-h {
+  margin: 0 0 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.spi-gains-list,
+.spi-er-stage-list {
+  margin: 0.35rem 0 0;
+  padding-left: 1.1rem;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+.spi-chip-spend {
+  margin: 0 0 1rem;
+}
+.spi-chip-spend .spi-scoring-subhead {
+  margin-top: 0;
+}
 .spi-card-community {
   margin: 0;
   font-size: 0.62rem;

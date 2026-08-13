@@ -55,7 +55,8 @@
     "v5.35: Defense Characters — Ranged/Melee/Awaken upside-only (cap +1); Defense/Reaction stay primary. Extra Support Defense +1 line scores +1. Support-role SD +1→+2, combat-actions cap 4. Defense Unit HP/DEF floors softened and +2 HP reachable. Drop dead Hard ER tag. Transform uses better HP/DEF/ATK from alt form (no Reborns allowlist). GN Field / Positron Reflector no longer name-excluded from ability score",
     "v5.36: Defense Type Units — S+ / BEYOND THE TIME needs 18+ and a hard-stage gate: tank more than one hit (HP + Shield Defense / special DR / Unbreakable) plus Preemptive Strike or Support Defense coverage (unit SD kit or MOV 6). Stops fat SSP kits flooding the top bucket without a real tank or intercept role",
     "v5.37: Defense Type debuff strength is lasting ATK Down (tank analog of Support DEF Down). Defense S+ also requires ATK Down Lv5+ (same idea as Support needing DEF Down). Support S+ needs DEF Down / pierce at Lv5+. Defense Character S+ needs a Defense or Reaction band. Series filters on /ig for Units and Characters",
-    "v5.38: Unit Recommended Characters match peak-weapon Ranged/Melee/Awaken (Defense Units exempt); fill to 3 with specialty-matched SR/R on the Character board — no wrong-stat SSR padding"
+    "v5.38: Unit Recommended Characters match peak-weapon Ranged/Melee/Awaken (Defense Units exempt); fill to 3 with specialty-matched SR/R on the Character board — no wrong-stat SSR padding",
+    "v5.39: movement_followup no longer treats MovementChangeValue (Increased MOV) as extra-move — only Chance Step / guaranteed CS / after-move MAP"
   ],
   "exclude_warships": true,
   "exclude_ur_units": true,
@@ -602,7 +603,6 @@
     ],
     "movement_types": [
       19,
-      70,
       80,
       85,
       107
@@ -2235,7 +2235,7 @@
     "cap": 2,
     "after_move_map_points": 1,
     "extra_move_points": 1,
-    "extra_move_regex": "(?i)chance\\s*step|extra\\s+move|boost\\s+mov|movement\\s+(?:up|\\+)|移動力|チャンスステップ"
+    "extra_move_regex": "(?i)chance\\s*step|extra\\s+move|guaranteed\\s+chance\\s*step|チャンスステップ|額外行動"
   },
   "map_coverage_points": [
     {

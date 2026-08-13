@@ -165,7 +165,7 @@
           "Mobility / MOB (lower ceiling than ATK)": "機動力（上限は攻撃力より低い）",
           "MOB (lower ceiling than ATK)": "機動力（上限は攻撃力より低い）",
           "MAP presence / dash / coverage · special defense kits": "MAP存在／ダッシュ／範囲 · 特殊防御キット",
-          "DEF · Debuff kinds · Debuff strength · SP EN": "防御力 · 弱体種 · 弱体強度 · SP EN"
+          "DEF · Debuff kinds · ATK Down / DEF Down · SP EN": "防御力 · 弱体種 · 攻撃力減少／防御力減少 · SP EN"
         }
       },
       "role_focus_defense": {
@@ -196,7 +196,7 @@
           "Secondary": "副次"
         },
         "result": {
-          "Weapon range ≥5 · R5+ debuff kinds · debuff strength · Mobility (MOB) · MOV": "武装射程≥5 · 射程5+弱体種 · 弱体強度 · 機動力 · 移動力",
+          "Weapon range ≥5 · R5+ debuff kinds · DEF Down · Mobility (MOB) · MOV": "武装射程≥5 · 射程5+弱体種 · 防御力減少 · 機動力 · 移動力",
           "ATK / weapon power / HP (mild upside, no floor penalty)": "攻撃力／武装威力／HP（軽い上振れ、床減点なし）"
         }
       },
@@ -609,7 +609,7 @@
       },
       "debuffs": {
         "title": "弱体（耐久型／支援型ユニット）",
-        "summary": "攻撃型はこれらの項目をスキップ。支援型の弱体強度は持続防御力減少％または即時貫通（≈10%→3 … 40%+→6）。耐久型の弱体強度は持続攻撃力減少％（被ダメージを下げ、耐えるヒット数を増やす）。耐久型は射程 ≥4 の異なる弱体種を数える（軽め；被ダメージ減は1種）。支援型は射程 ≥5 の種を数え、強度をより重視。支援型の BEYOND THE TIME には防御力減少／貫通 Lv5+ も必要。",
+        "summary": "攻撃型はこれらの項目をスキップ。支援型は持続の防御力減少％または即時貫通（≈10%→3 … 40%+→6）。耐久型は持続の攻撃力減少％（敵の攻撃力を下げ、耐えるヒット数を増やす）。耐久型は射程 ≥4 の異なる弱体種を数える（軽め；被ダメージ減は1種）。支援型は射程 ≥5 の種を数え、減少％をより重視。支援型の BEYOND THE TIME には防御力減少／貫通 Lv5+ も必要。",
         "when": {
           "Attack role": "攻撃型",
           "Defense: 0 / 1 / 2+ distinct R4+ debuff kinds": "耐久型：射程4+ の異なる弱体種 0／1／2+",
@@ -971,7 +971,7 @@
           "HP · SSP EN (no floor penalty)": "HP · SSP EN（無下限扣分）",
           "Mobility / MOB (lower ceiling than ATK)": "機動力（上限低於攻擊力）",
           "MAP presence / dash / coverage · special defense kits": "MAP 存在／衝刺／覆蓋 · 特殊防禦套件",
-          "DEF · Debuff kinds · Debuff strength · SP EN": "DEF · 弱化種類 · 弱化強度 · SP EN"
+          "DEF · Debuff kinds · ATK Down / DEF Down · SP EN": "DEF · 弱化種類 · 攻擊力減少／防禦力減少 · SP EN"
         }
       },
       "role_focus_defense": {
@@ -1002,7 +1002,7 @@
           "Secondary": "次要"
         },
         "result": {
-          "Weapon range ≥5 · R5+ debuff kinds · debuff strength · Mobility (MOB) · MOV": "武裝射程≥5 · 射程5+弱化種類 · 弱化強度 · 機動力 · 移動力",
+          "Weapon range ≥5 · R5+ debuff kinds · DEF Down · Mobility (MOB) · MOV": "武裝射程≥5 · 射程5+弱化種類 · 防禦力減少 · 機動力 · 移動力",
           "ATK / weapon power / HP (mild upside, no floor penalty)": "攻擊力／武裝威力／HP（輕微上振，無下限扣分）"
         }
       },
@@ -1412,7 +1412,7 @@
       },
       "debuffs": {
         "title": "弱化（耐久型／支援型單位）",
-        "summary": "攻擊型略過這些項目。支援型弱化強度用持續防禦力減少％或即時貫穿（≈10%→3 … 40%+→6）。耐久型弱化強度用持續攻擊力減少％（降低敵攻擊力以多扛幾下）。耐久型計算射程 ≥4 的不同弱化種類（較輕；受傷降低算一種）。支援型計算射程 ≥5 的種類，更看重強度。支援型 BEYOND THE TIME 另需防禦力減少／貫穿 Lv5+。",
+        "summary": "攻擊型略過這些項目。支援型用持續防禦力減少％或即時貫穿（≈10%→3 … 40%+→6）。耐久型用持續攻擊力減少％（降低敵攻擊力以多扛幾下）。耐久型計算射程 ≥4 的不同弱化種類（較輕；受傷降低算一種）。支援型計算射程 ≥5 的種類，更看重減少％。支援型 BEYOND THE TIME 另需防禦力減少／貫穿 Lv5+。",
         "when": {
           "Attack role": "攻擊型",
           "Defense: 0 / 1 / 2+ distinct R4+ debuff kinds": "耐久型：射程 4+ 不同弱化種類 0／1／2+",
@@ -1774,7 +1774,7 @@
           "HP · SSP EN (no floor penalty)": "HP · SSP EN（無下限扣分）",
           "Mobility / MOB (lower ceiling than ATK)": "機動力（上限低於攻擊力）",
           "MAP presence / dash / coverage · special defense kits": "MAP 存在／衝刺／覆蓋 · 特殊防禦套件",
-          "DEF · Debuff kinds · Debuff strength · SP EN": "DEF · 弱化種類 · 弱化強度 · SP EN"
+          "DEF · Debuff kinds · ATK Down / DEF Down · SP EN": "DEF · 弱化種類 · 攻擊力減少／防禦力減少 · SP EN"
         }
       },
       "role_focus_defense": {
@@ -1805,7 +1805,7 @@
           "Secondary": "次要"
         },
         "result": {
-          "Weapon range ≥5 · R5+ debuff kinds · debuff strength · Mobility (MOB) · MOV": "武裝射程≥5 · 射程5+弱化種類 · 弱化強度 · 機動力 · 移動力",
+          "Weapon range ≥5 · R5+ debuff kinds · DEF Down · Mobility (MOB) · MOV": "武裝射程≥5 · 射程5+弱化種類 · 防禦力減少 · 機動力 · 移動力",
           "ATK / weapon power / HP (mild upside, no floor penalty)": "攻擊力／武裝威力／HP（輕微上振，無下限扣分）"
         }
       },
@@ -2215,7 +2215,7 @@
       },
       "debuffs": {
         "title": "弱化（耐久型／支援型單位）",
-        "summary": "攻擊型略過呢啲項目。支援型弱化強度用持續防禦力減少％或即時貫穿（≈10%→3 … 40%+→6）。耐久型弱化強度用持續攻擊力減少％（降低敵攻擊力嚟多頂幾下）。耐久型計算射程 ≥4 嘅唔同弱化種類（較輕；受傷降低算一種）。支援型計算射程 ≥5 嘅種類，更睇重強度。支援型 BEYOND THE TIME 另外要防禦力減少／貫穿 Lv5+。",
+        "summary": "攻擊型略過呢啲項目。支援型用持續防禦力減少％或即時貫穿（≈10%→3 … 40%+→6）。耐久型用持續攻擊力減少％（降低敵攻擊力嚟多頂幾下）。耐久型計算射程 ≥4 嘅唔同弱化種類（較輕；受傷降低算一種）。支援型計算射程 ≥5 嘅種類，更睇重減少％。支援型 BEYOND THE TIME 另外要防禦力減少／貫穿 Lv5+。",
         "when": {
           "Attack role": "攻擊型",
           "Defense: 0 / 1 / 2+ distinct R4+ debuff kinds": "耐久型：射程 4+ 不同弱化種類 0／1／2+",

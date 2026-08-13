@@ -16,6 +16,7 @@
 window.__GGEN_IMAGE_CDN__ = {{ (image_cdn or '')|tojson }};
 window.__GGEN_GAME_IMAGES_USE_CDN__ = {{ (game_images_use_cdn if game_images_use_cdn is defined else true)|tojson }};
 window.__SPI_PREVIEW__ = {{ (spi_preview if spi_preview is defined else false)|tojson }};
+window.__SPI_DECISION_UI__ = {{ (spi_decision_ui if spi_decision_ui is defined else false)|tojson }};
 try {
   var _lg = localStorage.getItem('ggen_lang');
   if (_lg) {
