@@ -4755,7 +4755,8 @@
     "ip_ac51443e65b012ddeaffd228a0921a40:character:1400000101:sp": "up",
     "ip_ac51443e65b012ddeaffd228a0921a40:character:1501000301:sp": "up",
     "ip_ac51443e65b012ddeaffd228a0921a40:character:1095001800:sp": "up",
-    "ip_ac51443e65b012ddeaffd228a0921a40:character:1080000202:sp": "up"
+    "ip_ac51443e65b012ddeaffd228a0921a40:character:1080000202:sp": "up",
+    "ip_ac51443e65b012ddeaffd228a0921a40:character:1080001600:sp": "up"
   },
   "targets": {
     "unit:1155000700:sp": {
@@ -8795,7 +8796,7 @@
       "down": 0
     },
     "character:1080001600:sp": {
-      "up": 1,
+      "up": 2,
       "down": 0
     },
     "character:1125001700:sp": {
