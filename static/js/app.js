@@ -7715,12 +7715,12 @@ return!!(cd&&ud&&String(cd.id)===TB_QUBELEY_ZZ_PILOT_ID&&String(ud.id)===TB_PLUS
 function _scTextImpliesSquadBuff(txt){
 if(!txt)return false;
 if(/支援攻擊|支援攻撃|support attack/i.test(txt))return false;
-return/同部隊|部隊內|所屬部隊|自身所屬部隊|same squad|in the same squad|in your squad|for each (?:unit |)bearing.*squad|squad unit bearing|each squad unit|每有\d*架|上述「標籤」|上述标签|上記タグ/i.test(txt);
+return/同部隊|部隊內|所屬部隊|自身所屬部隊|same[-\s]?squad|in the same squad|in your squad|for each (?:unit |)bearing.*squad|squad unit bearing|each squad unit|每有\d*架|上述「標籤」|上述标签|上記タグ/i.test(txt);
 }
 /** True when ATK+DEF bonus stacks per qualifying squad unit (input 0–5 = count), not a single flat N% row. */
 function _scTraitLineImpliesPerSquadUnitFlatStack(raw){
 const s=String(raw||'');
-if(!/same squad|in the same squad|同部隊|部隊內/i.test(s))return false;
+if(!/same[-\s]?squad|in the same squad|同部隊|部隊內/i.test(s))return false;
 // "for each … bearing" stacks per qualifying unit; "for units bearing" is receiver scope only (flat N% aura).
 if(/for each (?:unit |)bearing|each unit bearing|for each squad unit bearing|each squad unit bearing|for each Unit bearing|各機体|各部隊|每有\d*架|每有1架/i.test(s))return true;
 return false;
@@ -7750,12 +7750,19 @@ m=t.match(/攻撃力が(\d+)%上昇（最大(\d+)%）/);
 if(m)return{kind:'stack_atk',per:+m[1],max:+m[2]};
 m=t.match(/自身攻擊力提升(\d+)%（最高(\d+)%）/);
 if(m)return{kind:'stack_atk',per:+m[1],max:+m[2]};
-m=t.match(/increases ATK and DEF by (\d+)%/i);
+/* Dual permanent ATK+DEF (e.g. Sandaime EX): +A% for [Condition 1], +B% for [Condition 2] — stack when both tags match. */
+{
+const dual=raw.match(/Increase\s+ATK\s+and\s+DEF\s+by\s+(\d+)\s*%[\s\S]*?\[Condition\s*1\][\s\S]*?increase\s+ATK\s+and\s+DEF\s+by\s+(\d+)\s*%[\s\S]*?\[Condition\s*2\]/i)
+||raw.match(/攻撃力と防御力(?:が|を)?(\d+)%[\s\S]*?【条件\s*1】[\s\S]*?攻撃力と防御力(?:が|を)?(\d+)%[\s\S]*?【条件\s*2】/)
+||raw.match(/攻擊力與防禦力提升(\d+)%[\s\S]*?【條件\s*1】[\s\S]*?攻擊力與防禦力提升(\d+)%[\s\S]*?【條件\s*2】/);
+if(dual)return{kind:'dual_flat_ad',flat1:+dual[1],flat2:+dual[2],perSquadUnit:false};
+}
+m=t.match(/increases? ATK and DEF by (\d+)%/i);
 if(m)return{kind:'flat_ad',flat:+m[1],perSquadUnit:_scTraitLineImpliesPerSquadUnitFlatStack(raw)};
 m=t.match(/gain increased ATK and DEF (\d+)%/i);
 if(m)return{kind:'flat_ad',flat:+m[1],perSquadUnit:_scTraitLineImpliesPerSquadUnitFlatStack(raw)};
 m=t.match(/increased ATK and DEF (\d+)%/i);
-if(m&&!/increases ATK and DEF by/i.test(t))return{kind:'flat_ad',flat:+m[1],perSquadUnit:_scTraitLineImpliesPerSquadUnitFlatStack(raw)};
+if(m&&!/increases? ATK and DEF by/i.test(t))return{kind:'flat_ad',flat:+m[1],perSquadUnit:_scTraitLineImpliesPerSquadUnitFlatStack(raw)};
 m=t.match(/(?:also\s+)?(?:grant|grants)\s+\+(\d+)%\s+ATK\s+and\s+DEF/i);
 if(m)return{kind:'flat_ad',flat:+m[1],perSquadUnit:_scTraitLineImpliesPerSquadUnitFlatStack(raw)};
 m=t.match(/\+(\d+)%\s+ATK\s+and\s+DEF/i);
@@ -7794,13 +7801,29 @@ if(G.length===1&&!((G[0].conditions||[]).length))return null;
 if(G.length===1)return{kind:'stack_atk',perUnit:parsed.per,max:parsed.max,pilotGroups:null,countGroup:G[0],affectsDef:false,inputCap:parsed.max};
 return null;
 }
+if(parsed.kind==='dual_flat_ad'){
+const g1=G.find(x=>/condition\s*1/i.test(String(x.label||'')))||G[0]||null;
+const g2=G.find(x=>/condition\s*2/i.test(String(x.label||'')))||G[1]||null;
+const f1=parsed.flat1|0,f2=parsed.flat2|0;
+const parts=[];
+if(g1&&((g1.conditions||[]).length))parts.push({flatPct:f1,recvGroup:g1});
+if(g2&&((g2.conditions||[]).length))parts.push({flatPct:f2,recvGroup:g2});
+/* API sometimes only ships Condition 1 — keep both % as a single flat_ad so manual/default still totals A+B. */
+if(parts.length<2){
+const flat=f1+f2;
+const g=g1||g2||null;
+if(g)return{kind:'flat_ad',flatPct:flat,pilotGroups:null,recvGroup:g,affectsDef:true,inputCap:flat,flatPerUnit:false};
+return{kind:'flat_ad',flatPct:flat,pilotGroups:null,recvGroup:null,affectsDef:true,inputCap:flat,flatPerUnit:false};
+}
+return{kind:'dual_flat_ad',parts,affectsDef:true,inputCap:f1+f2,flatPerUnit:false};
+}
 if(parsed.kind==='flat_ad'){
 const perU=!!parsed.perSquadUnit;
 const maxSlots=5;
 const cap=perU?maxSlots:parsed.flat;
 if(G.length>=2){
 const gPilot=G[0];
-const gRecv=G.find(x=>/target tags|boost target/i.test(String(x.label||'')))||G[1];
+const gRecv=G.find(x=>/target tags|boost target|condition\s*2/i.test(String(x.label||'')))||G[1];
 return{kind:'flat_ad',flatPct:parsed.flat,pilotGroups:[gPilot],recvGroup:gRecv,affectsDef:true,inputCap:cap,flatPerUnit:perU};
 }
 if(G.length===1)return{kind:'flat_ad',flatPct:parsed.flat,pilotGroups:[G[0]],recvGroup:G[0],affectsDef:true,inputCap:cap,flatPerUnit:perU};
@@ -7913,9 +7936,17 @@ if(!udC||udC._manual||!udR||udR._manual)return z;
 if(_scIsQubeleyExCombo(cdC,udC))return z;
 return _tbWithSlotDcStatModes(slCarrier,()=>{
 const b=_scFindSquadConditionBinding(cdC,udC);
-if(!b||b.kind!=='flat_ad'||b.flatPerUnit)return z;
+if(!b||b.flatPerUnit)return z;
 if(b.pilotGroups&&b.pilotGroups.length&&!_dcAbilityCondContextMeetsGroups(udC,cdC,b.pilotGroups))return z;
 const cdR=slReceiver.charData;
+if(b.kind==='dual_flat_ad'){
+let sum=0;
+(b.parts||[]).forEach(p=>{
+if(_dcSquadRecvGroupMet(udR,cdR,p.recvGroup))sum+=p.flatPct|0;
+});
+return{atk:sum,def:sum};
+}
+if(b.kind!=='flat_ad')return z;
 if(!_dcSquadRecvGroupMet(udR,cdR,b.recvGroup))return z;
 const p=b.flatPct|0;
 return{atk:p,def:p};
@@ -7954,6 +7985,13 @@ const eff=per*Math.min(5,Math.max(0,n));
 return{atk:eff,def:eff};
 }
 return{atk:b.flatPct|0,def:b.flatPct|0};
+}
+if(b.kind==='dual_flat_ad'){
+let sum=0;
+(b.parts||[]).forEach(p=>{
+if(_dcSquadRecvGroupMet(ud,cd,p.recvGroup))sum+=p.flatPct|0;
+});
+return{atk:sum,def:sum};
 }
 if(b.kind==='stack_atk'||b.kind==='dual_stack_atk'){
 /* Include this slot when it matches Condition 2 (e.g. Wing Series alone → 2%, full Wing squad → 10%). */
@@ -9496,6 +9534,7 @@ function _dcSquadCondInputCap(cd,ud){
 const b=_scFindSquadConditionBinding(cd,ud);
 if(!b)return 0;
 if(_dcPhenexUniqueSquadFlatAdBinding(cd,ud))return PHENEX_SQUAD_FLAT_AD_MAX_TOTAL_PCT;
+if(b.kind==='dual_flat_ad')return b.inputCap|0;
 return(b.inputCap!=null?b.inputCap:(b.kind==='flat_ad'?b.flatPct:b.max))|0;
 }
 function _dcDcCountUnitsMatchingCountGroup(cg){
@@ -9525,6 +9564,13 @@ const b=_scFindSquadConditionBinding(cd,ud);
 if(b&&(b.kind==='stack_atk'||b.kind==='dual_stack_atk')&&b.countGroup){
 /* e.g. 1210002400 Wing Series: alone on a Wing MS → 2%; five Wing MS → 10%. User can raise/lower the Squad conditions field. */
 return _dcStackSquadAtkDefaultPct(cd,ud,b);
+}
+if(b&&b.kind==='dual_flat_ad'){
+let sum=0;
+(b.parts||[]).forEach(p=>{
+if(_dcSquadRecvGroupMet(ud,cd,p.recvGroup))sum+=p.flatPct|0;
+});
+return sum;
 }
 if(b&&b.kind==='flat_ad'){
 const rg=b.recvGroup;
@@ -9573,6 +9619,46 @@ function toggleDcBigRangZeonSquadBuff(){
 const cb=document.getElementById('dcBigRangZeonSquadApply');
 setDcBigRangZeonSquadBuff(cb?!cb.checked:!S.dc.bigRangZeonSquadBuff);
 }
+function _dcEffectiveDualFlatAdPct(b,ud,cd,raw){
+if(!b||b.kind!=='dual_flat_ad')return 0;
+let sum=0;
+(b.parts||[]).forEach(p=>{
+if(_dcSquadRecvGroupMet(ud,cd,p.recvGroup))sum+=p.flatPct|0;
+});
+const cap=b.inputCap|0;
+const v=Math.min(Math.max(0,cap),Math.max(0,raw|0));
+if(sum<=0)return v;
+/* User field is the total aura % (default = matching sum). Scale down if they lower it. */
+if(v>=sum)return sum;
+return v;
+}
+/** Flat ATK+DEF auras from other Damage Calculator attacker slots (same idea as Team Builder cross-slot). */
+function _dcComputeExternalFlatAdSquadPctFromOtherSlots(){
+const recvUd=S.dc.atkUnitData,recvCd=S.dc.atkCharData;
+const z={atk:0,def:0};
+if(!recvUd||recvUd._manual||!S.dc.atkSlots)return z;
+const active=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);
+for(let i=0;i<DC_ATK_SLOT_COUNT;i++){
+if(i===active)continue;
+const sl=S.dc.atkSlots[i];
+const udC=sl&&sl.atkUnitData;
+const cdC=sl&&sl.atkCharData;
+if(!udC||udC._manual||!cdC||cdC._manual)continue;
+const b=_scFindSquadConditionBinding(cdC,udC);
+if(!b)continue;
+if(b.pilotGroups&&b.pilotGroups.length&&!_dcAbilityCondContextMeetsGroups(udC,cdC,b.pilotGroups))continue;
+if(b.kind==='dual_flat_ad'){
+(b.parts||[]).forEach(p=>{
+if(_dcSquadRecvGroupMet(recvUd,recvCd,p.recvGroup)){const v=p.flatPct|0;z.atk+=v;z.def+=v}
+});
+continue;
+}
+if(b.kind!=='flat_ad'||b.flatPerUnit)continue;
+if(!_dcSquadRecvGroupMet(recvUd,recvCd,b.recvGroup))continue;
+const p=b.flatPct|0;z.atk+=p;z.def+=p;
+}
+return z;
+}
 function _dcSyncSquadCondEffectiveFromState(){
 const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;
 S.dc.squadCondAtkPct=0;
@@ -9585,9 +9671,13 @@ const raw=Math.max(0,S.dc.squadCondPct|0);
 const b=_scFindSquadConditionBinding(cd,ud);
 if(b){
 if(b.pilotGroups&&b.pilotGroups.length&&!_dcAbilityCondContextMeetsGroups(ud,cd,b.pilotGroups)){
-/* fall through — still allow Big-Rang Zeon aura */
+/* fall through — still allow Big-Rang Zeon aura / external auras */
 }else{
-if(b.kind==='flat_ad'){
+if(b.kind==='dual_flat_ad'){
+const eff=_dcEffectiveDualFlatAdPct(b,ud,cd,raw);
+S.dc.squadCondAtkPct=eff;
+S.dc.squadCondDefPct=eff;
+}else if(b.kind==='flat_ad'){
 const rg=b.recvGroup;
 if(rg&&!_dcSquadRecvGroupMet(ud,cd,rg)){/* skip local */}
 else{
@@ -9605,9 +9695,20 @@ S.dc.squadCondDefPct=0;
 }
 }
 }else{
+/* Manual / receiver of another slot's ATK+DEF aura: apply the typed % to both ATK and DEF. */
 const v=Math.min(100,raw);
 S.dc.squadCondAtkPct=v;
-S.dc.squadCondDefPct=0;
+S.dc.squadCondDefPct=v;
+}
+const ext=_dcComputeExternalFlatAdSquadPctFromOtherSlots();
+if((ext.atk|0)>0||(ext.def|0)>0){
+if(b&&(b.kind==='flat_ad'||b.kind==='dual_flat_ad')){
+S.dc.squadCondAtkPct=(S.dc.squadCondAtkPct|0)+(ext.atk|0);
+S.dc.squadCondDefPct=(S.dc.squadCondDefPct|0)+(ext.def|0);
+}else if(!b||(b.kind!=='stack_atk'&&b.kind!=='dual_stack_atk'&&b.kind!=='flat_atk')){
+S.dc.squadCondAtkPct=Math.max(S.dc.squadCondAtkPct|0,ext.atk|0);
+S.dc.squadCondDefPct=Math.max(S.dc.squadCondDefPct|0,ext.def|0);
+}
 }
 if(_dcBigRangZeonSquadBuffActive()){
 S.dc.squadCondAtkPct=(S.dc.squadCondAtkPct|0)+BIG_RANG_ZEON_SQUAD_FLAT_AD_PCT;

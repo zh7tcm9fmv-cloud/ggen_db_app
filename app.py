@@ -8916,32 +8916,58 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
         if ac:
             active_pool.append({'idx': idx, 'conditions': ac})
     used_active_pool = set()
+    def _next_prose_trait_idx(start_idx):
+        """First following trait with its own display text (ends empty-text sibling run)."""
+        for j in range(start_idx + 1, len(trait_info)):
+            if (trait_info[j].get('display_text') or '').strip():
+                return j
+        return len(trait_info)
     def take_active_for_line(start_idx):
+        """Consume ActiveCondition tags for this prose line only.
+
+        Do not steal actives from later prose traits (e.g. Sandaime EX dual same-squad
+        ATK/DEF Cond1/Cond2 must keep Target tags Gundam+SD — not the next line's
+        \"when piloting … specified tags\" Owner active).
+        """
+        # Prefer ActiveCondition on the same trait row.
         for pi, p in enumerate(active_pool):
             if pi in used_active_pool:
                 continue
-            if p['idx'] >= start_idx:
+            if p['idx'] == start_idx:
                 used_active_pool.add(pi)
                 return list(p.get('conditions') or [])
+        # Else empty-text siblings before the next prose line only.
+        end = _next_prose_trait_idx(start_idx)
         for pi, p in enumerate(active_pool):
             if pi in used_active_pool:
                 continue
-            used_active_pool.add(pi)
-            return list(p.get('conditions') or [])
+            if start_idx < p['idx'] < end:
+                used_active_pool.add(pi)
+                return list(p.get('conditions') or [])
         return []
+    def collect_forward_placeholder_target_sets(from_idx):
+        """Distinct TargetCondition sets from following empty-text sibling traits (order preserved)."""
+        sets = []
+        seen = set()
+        for j in range(from_idx + 1, _next_prose_trait_idx(from_idx)):
+            tj = trait_info[j]
+            tgt = list(tj.get('target_conditions') or [])
+            if not tgt:
+                continue
+            sig = tuple(sorted((str(c.get('id') or ''), str(c.get('type') or '')) for c in tgt))
+            if sig in seen:
+                continue
+            seen.add(sig)
+            sets.append(tgt)
+        return sets
+
     def collect_forward_placeholder_targets(from_idx):
         """Sibling traits often carry TargetConditionSetId on effect rows while the prose lives on another row with dummy target (common dump pattern)."""
-        out = []; seen_sig = set()
-        for j in range(from_idx + 1, len(trait_info)):
-            tj = trait_info[j]
-            if (tj.get('display_text') or '').strip():
-                break
-            for c in (tj.get('target_conditions') or []):
-                sig = (str(c.get('id') or ''), str(c.get('name') or ''), str(c.get('type') or ''))
-                if sig in seen_sig:
-                    continue
-                seen_sig.add(sig); out.append(c)
+        out = []
+        for s in collect_forward_placeholder_target_sets(from_idx):
+            out.extend(s)
         return out
+
     carry_boost_for_next = []
     def _looks_conditional_text(info_row):
         txt = (str(info_row.get('en_text') or '') + ' ' + str(info_row.get('display_text') or '')).lower()
@@ -8965,20 +8991,48 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
         boost_conds = list(info.get('boost_conditions') or [])
         boost_used = False
         is_conditional_line = _looks_conditional_text(info)
+        own_tgt = list(info.get('target_conditions') or [])
+        forward_sets = collect_forward_placeholder_target_sets(idx) if (2 in nums) else []
         if nums:
-            forward_tgt = []
-            if 2 in nums and not (info.get('target_conditions') or []):
-                forward_tgt = collect_forward_placeholder_targets(idx)
-            forward_used = False
+            used_fwd = set()
             for n in nums:
                 conds_for_n = []
-                if (
-                    isinstance(n, int) and n >= 2 and forward_tgt
-                    and not forward_used
-                    and not (info.get('target_conditions') or [])
-                ):
-                    conds_for_n = list(forward_tgt)
-                    forward_used = True
+                if isinstance(n, int) and n == 1:
+                    # Dual same-squad receiver auras (e.g. Sandaime EX): Cond1/Cond2 are
+                    # TargetCondition tags on this row + empty siblings — not ActiveCondition
+                    # from a later \"when piloting\" line.
+                    _en = str(info.get('en_text') or '')
+                    _disp = str(info.get('display_text') or '')
+                    _dual_recv = (
+                        2 in nums
+                        and own_tgt
+                        and re.search(r'same[-\s]?squad|in the same squad|同部隊|部隊內|所屬部隊', _en + '\n' + _disp, re.I)
+                    )
+                    if _dual_recv:
+                        conds_for_n = list(own_tgt)
+                    else:
+                        conds_for_n = take_active_for_line(idx) or list(own_tgt)
+                elif isinstance(n, int) and n >= 2:
+                    # Prefer a forward target set that differs from Condition 1 / own target.
+                    own_sig = tuple(sorted((str(c.get('id') or ''), str(c.get('type') or '')) for c in own_tgt))
+                    for fi, fs in enumerate(forward_sets):
+                        if fi in used_fwd:
+                            continue
+                        sig = tuple(sorted((str(c.get('id') or ''), str(c.get('type') or '')) for c in fs))
+                        if own_sig and sig == own_sig:
+                            continue
+                        conds_for_n = list(fs)
+                        used_fwd.add(fi)
+                        break
+                    if not conds_for_n:
+                        for fi, fs in enumerate(forward_sets):
+                            if fi in used_fwd:
+                                continue
+                            conds_for_n = list(fs)
+                            used_fwd.add(fi)
+                            break
+                    if not conds_for_n and own_tgt and n == 2 and 1 not in nums:
+                        conds_for_n = list(own_tgt)
                 if not conds_for_n:
                     conds_for_n = take_active_for_line(idx)
                 if (not conds_for_n) and boost_conds and (not boost_used):
