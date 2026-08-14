@@ -4319,7 +4319,27 @@
     "ip_7a8b3c9a607fb813e02f0dc9a6c2634e:unit:1370005700:ssp": "down",
     "ip_7a8b3c9a607fb813e02f0dc9a6c2634e:unit:1430004800:ssp": "down",
     "ip_b39a33aaae3d03e077f7701402897568:unit:1150000200:ssp": "down",
-    "ip_7a8b3c9a607fb813e02f0dc9a6c2634e:unit:1330000100:ssp": "down"
+    "ip_7a8b3c9a607fb813e02f0dc9a6c2634e:unit:1330000100:ssp": "down",
+    "ip_7a8b3c9a607fb813e02f0dc9a6c2634e:character:1300001400:sp": "down",
+    "ip_b39a33aaae3d03e077f7701402897568:unit:1159001000:ssp": "down",
+    "ip_7a8b3c9a607fb813e02f0dc9a6c2634e:character:1125001400:sp": "up",
+    "ip_7a8b3c9a607fb813e02f0dc9a6c2634e:character:1001000101:sp": "up",
+    "ip_7a8b3c9a607fb813e02f0dc9a6c2634e:character:1370003702:sp": "up",
+    "ip_7a8b3c9a607fb813e02f0dc9a6c2634e:character:1219000500:sp": "up",
+    "ip_7a8b3c9a607fb813e02f0dc9a6c2634e:character:1300001600:sp": "down",
+    "ip_7a8b3c9a607fb813e02f0dc9a6c2634e:character:1300001500:sp": "down",
+    "ip_7a8b3c9a607fb813e02f0dc9a6c2634e:character:1210001600:sp": "up",
+    "ip_b39a33aaae3d03e077f7701402897568:unit:1085001010:ssp": "down",
+    "ip_7a8b3c9a607fb813e02f0dc9a6c2634e:character:1210000200:sp": "down",
+    "ip_7a8b3c9a607fb813e02f0dc9a6c2634e:character:1431001100:sp": "down",
+    "ip_7a8b3c9a607fb813e02f0dc9a6c2634e:character:1200000100:sp": "down",
+    "ip_7a8b3c9a607fb813e02f0dc9a6c2634e:character:1230001300:sp": "up",
+    "ip_7a8b3c9a607fb813e02f0dc9a6c2634e:character:1330000502:sp": "up",
+    "ip_7a8b3c9a607fb813e02f0dc9a6c2634e:character:1400002002:sp": "up",
+    "ip_7a8b3c9a607fb813e02f0dc9a6c2634e:character:1430005800:sp": "up",
+    "ip_7a8b3c9a607fb813e02f0dc9a6c2634e:character:1430000101:sp": "up",
+    "ip_7a8b3c9a607fb813e02f0dc9a6c2634e:character:1219000100:sp": "up",
+    "ip_7a8b3c9a607fb813e02f0dc9a6c2634e:character:1370000200:sp": "up"
   },
   "targets": {
     "unit:1155000700:sp": {
@@ -6472,7 +6492,7 @@
     },
     "unit:1085001010:ssp": {
       "up": 9,
-      "down": 4
+      "down": 5
     },
     "unit:1409000200:ssp": {
       "up": 2,
@@ -7063,12 +7083,12 @@
       "down": 1
     },
     "character:1210001600:sp": {
-      "up": 3,
+      "up": 4,
       "down": 1
     },
     "character:1431001100:sp": {
       "up": 1,
-      "down": 0
+      "down": 1
     },
     "character:1501000102:sp": {
       "up": 0,
@@ -7183,11 +7203,11 @@
       "down": 0
     },
     "character:1219000500:sp": {
-      "up": 3,
+      "up": 4,
       "down": 2
     },
     "character:1001000101:sp": {
-      "up": 3,
+      "up": 4,
       "down": 0
     },
     "character:1336000200:sp": {
@@ -7199,7 +7219,7 @@
       "down": 1
     },
     "character:1219000100:sp": {
-      "up": 2,
+      "up": 3,
       "down": 1
     },
     "unit:1211000500:ssp": {
@@ -7212,7 +7232,7 @@
     },
     "character:1200000100:sp": {
       "up": 2,
-      "down": 0
+      "down": 1
     },
     "unit:1133000200:ssp": {
       "up": 0,
@@ -7356,7 +7376,7 @@
     },
     "character:1210000200:sp": {
       "up": 2,
-      "down": 1
+      "down": 2
     },
     "unit:1400002200:ssp": {
       "up": 1,
@@ -7443,7 +7463,7 @@
       "down": 0
     },
     "character:1125001400:sp": {
-      "up": 2,
+      "up": 3,
       "down": 0
     },
     "character:1219000300:sp": {
@@ -7452,7 +7472,7 @@
     },
     "character:1300001400:sp": {
       "up": 3,
-      "down": 0
+      "down": 1
     },
     "character:1200000700:sp": {
       "up": 1,
@@ -7535,7 +7555,7 @@
       "down": 0
     },
     "character:1370003702:sp": {
-      "up": 4,
+      "up": 5,
       "down": 0
     },
     "unit:1085001010:sp": {
@@ -7556,7 +7576,7 @@
     },
     "unit:1159001000:ssp": {
       "up": 5,
-      "down": 1
+      "down": 2
     },
     "unit:1031002900:ssp": {
       "up": 4,
@@ -8219,7 +8239,7 @@
       "down": 1
     },
     "character:1430000101:sp": {
-      "up": 0,
+      "up": 1,
       "down": 1
     },
     "character:1705002700:sp": {
@@ -8319,6 +8339,34 @@
       "down": 1
     },
     "unit:1230005400:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1300001600:sp": {
+      "up": 0,
+      "down": 1
+    },
+    "character:1300001500:sp": {
+      "up": 0,
+      "down": 1
+    },
+    "character:1230001300:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1330000502:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1400002002:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1430005800:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1370000200:sp": {
       "up": 1,
       "down": 0
     }
