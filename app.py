@@ -22139,11 +22139,37 @@ def _banner_timeline_supporter_item(sid, ld):
     }
 
 
+# Featured Unit Assembly ticket pools share AppealBanner ResourceId gasha_2604300102.
+# From Premium Unit Assembly Ver.2 onward (2026-04-16 12:00 JST) use Ver.2 logo art instead.
+BT_FEATURED_UA_LEGACY_APPEAL_RESOURCE = 'gasha_2604300102'
+BT_FEATURED_UA_VER2_LOGO_RESOURCE = 'gasha_logo_2604300101'
+BT_FEATURED_UA_VER2_START_MS = 1776308400000  # 2026-04-16 12:00 JST
+
+
+def _bt_banner_thumb_should_use_ver2_logo(appeal_resource_id, start_ms):
+    """True when timeline thumb should use gasha_logo_2604300101 instead of legacy appeal art."""
+    if str(appeal_resource_id or '').strip() != BT_FEATURED_UA_LEGACY_APPEAL_RESOURCE:
+        return False
+    try:
+        sm = int(start_ms or 0)
+    except (TypeError, ValueError):
+        return False
+    if sm < BT_FEATURED_UA_VER2_START_MS:
+        return False
+    # Permanent shop rows (e.g. ScheduleId 0 → 2099) keep legacy shared art.
+    try:
+        if _jst_year_from_epoch_ms(sm) >= 2099:
+            return False
+    except Exception:
+        pass
+    return True
+
+
 @app.route('/api/banner_timeline')
 def api_banner_timeline():
     """Gacha banner list with schedules, appeal art, and featured units/characters from master chains."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'banner_tl_v13_{lc}'
+    ck = f'banner_tl_v14_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=1800, convert_images=True)
@@ -22362,7 +22388,15 @@ def api_banner_timeline():
 
         # Premium Unit Assembly pools have no m_gasha_pickup rows — use m_gasha LogoResourceId
         # (gasha_logo_*) for the timeline thumb instead of home-screen appeal art (gasha_*).
-        if logo_url and not featured_units and not featured_chars and not featured_supporters:
+        # Featured Unit Assembly ticket pools after 2026-04-16 still reference legacy appeal
+        # gasha_2604300102; show Premium Ver.2 logo art instead.
+        if _bt_banner_thumb_should_use_ver2_logo(appeal_resource_id, start_ms):
+            banner_url = (
+                f'/static/images/Gasha/{BT_FEATURED_UA_VER2_LOGO_RESOURCE}_{suffix}.webp'
+            )
+            if not logo_url:
+                logo_url = banner_url
+        elif logo_url and not featured_units and not featured_chars and not featured_supporters:
             banner_url = logo_url
 
         gms_id = safe_int(gx.get('GashaMovieSettingId') or gx.get('gashaMovieSettingId'), 0)
