@@ -10675,22 +10675,33 @@ const b0=F(Math.max(0,ent.base||0)),bon=F(Math.max(0,ent.bonus||0));
 if(b0>0&&bon>0){for(let p=0;p<=500;p++){if(F(b0*p/100)===bon)return p}}
 return 0;
 }
-/** Active pilot skill % on growth base: in-game uses floor on base×skill% (e.g. Ranged 713 +25% → +178, total 1033 not 1034). */
+/** Trait/passive % on pilot growth base (from API trait_pct or infer from floor(base×p/100)===bonus). */
+function _dcPilotPassivePctFromEntry(ent){
+const F=Math.floor;
+if(!ent)return 0;
+if(ent.trait_pct!=null&&Number.isFinite(ent.trait_pct))return Math.max(0,ent.trait_pct);
+if(ent.passive_pct!=null&&Number.isFinite(ent.passive_pct))return Math.max(0,ent.passive_pct);
+const b0=F(Math.max(0,ent.base||0)),bon=F(Math.max(0,ent.bonus||0));
+if(b0>0&&bon>0){for(let p=0;p<=500;p++){if(F(b0*p/100)===bon)return p}}
+return 0;
+}
+/** Skill-only % slice on growth base (Awaken floor-900 path). Main stat path uses one combined floor bucket in _dcPilotSkillAdjustedStat. */
 function _dcPilotActiveSkillPctBonus(base,pct){
 const b=Math.max(0,Number(base)||0);
 const p=Math.max(0,Number(pct)||0);
 if(b<=0||p<=0)return 0;
 return Math.floor(b*p/100);
 }
-/** Pilot skills: passive total (API — trait% on growth base) + floor(base×skill%/100) for active skills. Passive and skill % are computed separately, not one combined floor on (trait+skill). */
+/** Pilot active skill: one floor on base×(trait%+skill%) — Sandaime Ranged 664 +20%+20% → 929 (+265); not passiveTotal+floor(skill%) (928). Versal Melee 708 +25%+25% → 1062 either way. */
 function _dcPilotSkillAdjustedStat(stats,statName,pct){
+const F=Math.floor;
 const p=Math.max(0,Number(pct)||0);
 const ent=_dcFindStatEntry(stats,statName);
-if(!ent)return Math.floor(_dcFindStat(stats,statName)*(1+p/100));
+if(!ent)return F(_dcFindStat(stats,statName)*(100+p)/100);
 if(p<=0)return Math.round(Number(ent.total)||0);
-const base=Math.max(0,Number(ent.base)||0);
-const passiveTotal=Math.round(Number(ent.total)||0);
-return passiveTotal+_dcPilotActiveSkillPctBonus(base,p);
+const base=F(Math.max(0,Number(ent.base)||0));
+const passivePct=_dcPilotPassivePctFromEntry(ent);
+return F(base*(100+passivePct+p)/100);
 }
 /** When an MS sets pilot Awaken to 900 if below 900, use 900 + floor(base×skill%) instead of passiveTotal + floor(base×skill%). */
 function _dcPilotAwakenAdjustedForDc(stats,skPctAwaken){
@@ -11247,6 +11258,8 @@ return MX(0,tot-reduc);
 const DC_QUB_PLUS_ONE=false;
 /** Firered sheet: unitStatRatio = RoundUp((UnAtk/10)−(UnDef/10))/5000. Set false to use legacy floor−floor tenths (older Qubeley gold). */
 const DC_SHEET_UNIT_STAT_RATIO=true;
+/** ⑦ hybrid: combined float round-away when correction sum fraction ≥ this (Graze Ein ≪0.09 → per-slice; Sandaime vs Aerial 0.0945 → combined). */
+const DC_CORR_HYBRID_FLOAT_FRAC=0.09;
 /** In-game super for some totalCritMult=125% hits (e.g. Exia vs Throne) matches ceil((combined−trim)×1.3) with trim=floor(max(0,B−W)/1181), only when ⑧ is high enough; avoids changing older BD rows that still use trim=0. */
 const DC_CRIT125_TRIM_MIN_BATTLE_DAMAGE=356500;
 const DC_CRIT125_TRIM_DIV=1181;
@@ -12546,14 +12559,14 @@ const offenseComponent=(10000/100)/(EXP(offExp)+1);
 const defenseComponent=(-4000/100)/(EXP(defExp)+1);
 /** ⑦ Correction rounding (Firered ⑦ + in-game spot checks):
  *  - Hard-DEF (Graze Ein): sum fraction ≪ 1 → round each slice away from 0, then add.
- *  - Soft-DEF (Versal vs Xi, Nu, Wing Zero, Vidar): when float sum fraction ≥ 0.1, round away on combined float. */
+ *  - Soft-DEF (Versal vs Xi/Nu/Wing, Sandaime vs Aerial): when float sum fraction ≥ DC_CORR_HYBRID_FLOAT_FRAC (0.09), round away on combined float. */
 const _dcRoundAway0=(x)=>x>=0?C(x):F(x);
 const _offCorrRaw=offenseComponent*baseDamage;
 const _defCorrRaw=defenseComponent*baseDamage;
 const _corrSumRaw=_offCorrRaw+_defCorrRaw;
 const _corrSplit=_dcRoundAway0(_offCorrRaw)+_dcRoundAway0(_defCorrRaw);
 const _corrFrac=_corrSumRaw-F(_corrSumRaw);
-const damageCorrection=_corrFrac>=0.1?_dcRoundAway0(_corrSumRaw):_corrSplit;
+const damageCorrection=_corrFrac>=DC_CORR_HYBRID_FLOAT_FRAC?_dcRoundAway0(_corrSumRaw):_corrSplit;
 const offenseCorrection=_dcRoundAway0(_offCorrRaw);
 const defenseCorrection=_dcRoundAway0(_defCorrRaw);
 const isExWeapon=!!wpn.is_ex;

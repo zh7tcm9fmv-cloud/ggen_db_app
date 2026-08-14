@@ -685,14 +685,29 @@ def _pilot_active_skill_pct_bonus(base, pct):
     return math.floor(b * p / 100)
 
 
+def _pilot_passive_pct_from_grown(grown, passive_total):
+    b = max(0, int(grown or 0))
+    pt = max(0, int(passive_total or 0))
+    if b <= 0:
+        return 0
+    bon = pt - b
+    if bon <= 0:
+        return 0
+    for p in range(501):
+        if math.floor(b * p / 100) == bon:
+            return p
+    return 0
+
+
 def _pilot_skill_adjusted_stat(grown, totals, stat_name, pct):
-    """Mirror app.js _dcPilotSkillAdjustedStat: passive total + floor(base × skill%)."""
+    """Mirror app.js _dcPilotSkillAdjustedStat: floor on base×(trait%+skill%)."""
     p = max(0, int(pct or 0))
     passive_total = int(round(float(totals.get(stat_name, 0) or 0)))
     if p <= 0:
         return passive_total
     base = max(0, int(grown.get(stat_name, 0) or 0))
-    return passive_total + _pilot_active_skill_pct_bonus(base, p)
+    passive_pct = _pilot_passive_pct_from_grown(base, passive_total)
+    return math.floor(base * (100 + passive_pct + p) / 100)
 
 
 def _pilot_awaken_adjusted(grown, totals, uid, lc, stat_mode, pct):

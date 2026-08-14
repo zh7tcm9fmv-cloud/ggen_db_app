@@ -1,13 +1,15 @@
 """Regression: DC correction rounding (Firered ⑦ + in-game spot checks).
 
 Graze Ein (hard DEF): per-slice round-away — float-sum overshoots +2.
-Versal vs Xi (stage squad DEF): combined float round-away when sum fraction ≥ 0.1.
+Soft-DEF: combined float round-away when sum fraction ≥ HYBRID_FLOAT_FRAC (0.09).
 
 Run: python scripts/dc_correction_round_away_test.py
 """
 from __future__ import annotations
 
 import math
+
+HYBRID_FLOAT_FRAC = 0.09
 
 
 def C(x: float) -> int:
@@ -35,7 +37,7 @@ def damage_correction(off: float, deff: float, base: int, *, mode: str) -> int:
         return split
     if mode == "hybrid":
         frac = sum_raw - F(sum_raw)
-        return round_away_0(sum_raw) if frac >= 0.1 else split
+        return round_away_0(sum_raw) if frac >= HYBRID_FLOAT_FRAC else split
     raise ValueError(mode)
 
 
@@ -71,6 +73,9 @@ def main() -> None:
     xi = dict(unit_atk=17252, char_atk=885, unit_def=15478, char_def=738, wpn=9648, di=35, vigor=10)
     nu = dict(unit_atk=17252, char_atk=885, unit_def=20400, char_def=706, wpn=9648, di=35, vigor=10)
     wing = dict(unit_atk=17252, char_atk=885, unit_def=20343, char_def=696, wpn=9648, di=35, vigor=10)
+    sandaime_aerial = dict(
+        unit_atk=14577, char_atk=796, unit_def=17661, char_def=636, wpn=6720, di=15, vigor=0
+    )
 
     assert normal_dmg(**ge, mode="hybrid") == 218515
     assert normal_dmg(**ge, mode="float") == 218517
@@ -79,8 +84,10 @@ def main() -> None:
     assert normal_dmg(**xi, mode="away0") == 182302
     assert normal_dmg(**nu, mode="hybrid") == 136213
     assert normal_dmg(**wing, mode="hybrid") == 137807
+    assert normal_dmg(**sandaime_aerial, mode="hybrid") == 62454
+    assert normal_dmg(**sandaime_aerial, mode="away0") == 62452
 
-    print("dc_correction_round_away_test: OK (Graze 218515, Xi 182303, Nu/Wing/Vidar)")
+    print("dc_correction_round_away_test: OK (Graze 218515, Xi 182303, Sandaime Aerial 62454)")
 
 
 if __name__ == "__main__":
