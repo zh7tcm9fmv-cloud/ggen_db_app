@@ -4823,6 +4823,7 @@
     "ip_f7fb87f86c2376db46cb0ac747a766a5:unit:1230005300:sp": "up",
     "ip_f7fb87f86c2376db46cb0ac747a766a5:unit:1200005300:sp": "up",
     "ip_f7fb87f86c2376db46cb0ac747a766a5:unit:1013001200:sp": "up",
+    "ip_f7fb87f86c2376db46cb0ac747a766a5:unit:1330006700:sp": "up",
     "ip_8862844b4902e43029e692edec2100bf:unit:1379000100:sp": "down"
   },
   "targets": {
@@ -6003,7 +6004,7 @@
       "down": 2
     },
     "unit:1330006700:sp": {
-      "up": 10,
+      "up": 11,
       "down": 0
     },
     "unit:1230003000:sp": {
