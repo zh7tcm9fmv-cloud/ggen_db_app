@@ -2106,7 +2106,7 @@ def _ability_text_implies_pilot_gated_squad_stat(txt):
     return bool(re.search(
         r'increases ATK and DEF|increased ATK and DEF|gain increased ATK and DEF|'
         r'grant\s+\+\d+%\s+ATK\s+and\s+DEF|grants\s+\+\d+%\s+ATK\s+and\s+DEF|'
-        r'Increase ATK by|increase ATK by|same squad|in your squad|units in your squad|'
+        r'Increase ATK by|increase ATK by|same[-\s]squad|in your squad|units in your squad|'
         r'攻撃力と防御力|攻擊力與防禦力|同部隊|部隊內|所屬部隊|自身所屬部隊|'
         r'攻擊力提升\d+%.*防禦力提升|防禦力提升\d+%.*攻擊力提升|'
         r'攻撃力と防御力\d+%アップ|攻撃力.*防御力.*アップ',
@@ -2472,6 +2472,74 @@ def _collect_pilot_en_cost_reduction_pct(uid, ld, lc, stat_mode='normal'):
     return pct
 
 
+def _unit_matches_ability_condition_group(uid, lc, group):
+    """One condition group: unit_tags / group_tags OR within group; other sources AND (mirrors app.js _dcConditionGroupMatches)."""
+    if not group or not isinstance(group, dict):
+        return True
+    conds = group.get('conditions') or []
+    if not conds:
+        return True
+    tag_conds = [c for c in conds if str(c.get('source') or '') in ('unit_tags', 'group_tags')]
+    other = [c for c in conds if c not in tag_conds]
+    unit_tag_list = resolve_tags(unit_lin_map, normalize_id(uid), lc, 'unit')
+    unit_ids = {str(t.get('id', '')).strip() for t in unit_tag_list}
+    unit_names = {(t.get('name') or '').strip().lower() for t in unit_tag_list}
+
+    def _match_one(c):
+        if not isinstance(c, dict):
+            return False
+        src = str(c.get('source') or '')
+        cid = str(c.get('id', '')).strip()
+        cname = str(c.get('name') or '').strip().lower()
+        typ = str(c.get('type') or '')
+        if src in ('unit_tags', 'group_tags') or typ in ('unit', 'group'):
+            if cid and cid in unit_ids:
+                return True
+            if cname and cname in unit_names:
+                return True
+            return False
+        return True
+
+    tag_part = not tag_conds or any(_match_one(c) for c in tag_conds)
+    other_part = not other or all(_match_one(c) for c in other)
+    return tag_part and other_part
+
+
+def _char_detail_same_squad_ms_ad_pep_matches_unit(uid, lc, detail):
+    """True when a recommend-pilot trait detail grants same-squad MS ATK+DEF that this unit receives."""
+    if not isinstance(detail, dict):
+        return False
+    txt = detail.get('text') or ''
+    if not txt or not _blob_has_squad_unit_stat_context(txt):
+        return False
+    groups = detail.get('condition_groups') or []
+
+    def _group_by_label(n):
+        rx = re.compile(rf'condition\s*{n}', re.I)
+        for g in groups:
+            if isinstance(g, dict) and rx.search(str(g.get('label') or '')):
+                return g
+        return groups[n - 1] if len(groups) >= n else None
+
+    dual = re.search(
+        r'Increase\s+ATK\s+and\s+DEF\s+by\s+(\d+)\s*%[\s\S]*?\[Condition\s*1\][\s\S]*?'
+        r'increase\s+ATK\s+and\s+DEF\s+by\s+(\d+)\s*%[\s\S]*?\[Condition\s*2\]',
+        txt, re.I)
+    if dual:
+        for n, pct in ((1, int(dual.group(1))), (2, int(dual.group(2)))):
+            if pct <= 0:
+                continue
+            g = _group_by_label(n)
+            if g and _unit_matches_ability_condition_group(uid, lc, g):
+                return True
+        return False
+    if not re.search(r'increases?\s+ATK\s+and\s+DEF\s+by\s+\d+\s*%', txt, re.I):
+        return False
+    if not groups:
+        return True
+    return any(_unit_matches_ability_condition_group(uid, lc, g) for g in groups if isinstance(g, dict))
+
+
 def _unit_ability_text_implies_pilot_cond_passive(txt):
     """MS ability: pilot-character-gated squad stat buff (e.g. Phenex Narrative/Newtype → NT-D)."""
     if not txt or not isinstance(txt, str):
@@ -2544,6 +2612,9 @@ def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal'):
                 if _ability_text_implies_pilot_en_consumption(txt):
                     _PILOT_COND_PASSIVE_CACHE[cache_key] = True
                     return True
+            elif _char_detail_same_squad_ms_ad_pep_matches_unit(uid, lc, d2):
+                _PILOT_COND_PASSIVE_CACHE[cache_key] = True
+                return True
     for ad in _unit_ability_entries_for_weapon_range(uid, ld, lc, stat_mode):
         for d2 in ad.get('details', []) or []:
             txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
@@ -4382,7 +4453,7 @@ def _blob_has_squad_unit_stat_context(blob):
     if _trait_detail_blob_is_named_pilot_squad_ms(blob):
         return True
     bl = blob.lower()
-    if 'same squad' in bl or 'units bearing' in bl:
+    if re.search(r'same[-\s]squad', bl) or 'units bearing' in bl:
         return True
     if 'for each unit' in bl:
         return True
@@ -4417,7 +4488,7 @@ def _char_trait_line_is_squad_unit_effect(line, bab):
     # EN: "... for squad units piloted by …" — not contiguous with ' for units' check below.
     if 'squad units piloted' in tl or ('piloted by' in tl and 'squad' in tl):
         return True
-    if 'same squad' in tl or 'units bearing' in tl:
+    if re.search(r'same[-\s]squad', tl) or 'units bearing' in tl:
         return True
     if ' for units' in tl or ' allied units' in tl:
         return True
@@ -7822,6 +7893,9 @@ def extract_stat_percent_char(text, full_detail_text=None, char_id=None):
                 bonuses["Melee"] = bonuses.get("Melee", 0) + p
                 bonuses["Ranged"] = bonuses.get("Ranged", 0) + p
             elif u == "DEF":
+                ctx = full_detail_text if full_detail_text is not None else text
+                if _blob_has_squad_unit_stat_context(ctx):
+                    continue
                 bonuses["Defense"] = bonuses.get("Defense", 0) + p
             elif u == "RANGE":
                 bonuses["Ranged"] = bonuses.get("Ranged", 0) + p

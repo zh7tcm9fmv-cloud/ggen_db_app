@@ -3809,6 +3809,12 @@ z.atk+=b.flatPct|0;z.def+=b.flatPct|0;
 }else if(b.kind==='flat_atk'){
 if(b.recvGroup&&!_dcSquadRecvGroupMet(ud,cd,b.recvGroup))return z;
 z.atk+=b.flatPct|0;
+}else if(b.kind==='dual_flat_ad'){
+(b.parts||[]).forEach(p=>{
+if(p.recvGroup&&!_dcSquadRecvGroupMet(ud,cd,p.recvGroup))return;
+const v=p.flatPct|0;
+z.atk+=v;z.def+=v;
+});
 }else if(b.kind==='stack_atk'||b.kind==='dual_stack_atk'){
 const info=_detailPilotStackSliderInfo(ud);
 if(!info)return z;
@@ -9984,7 +9990,7 @@ const counterActive=(atkAfterCounter!==atkAfterPair);
 const supCntActive=(_dcEffectiveSupportCounterAtkPct()|0)>0;
 const advantageTagActive=(advAtkPct|0)>0&&S.dc.applyAdvantageEnemyTag!==false;
 const dEx=uEff.deltaExAtk|0;
-const atkExSub=exSq>0?`<div id="dcAtkUnitAtkExSub" class="stat-card-bonus" title="EX squad % delta within the same % bucket as the panel (round; same value used in damage ⑧).">+${fmtN(dEx)} · EX squad +${exSq}%</div>`:`<div id="dcAtkUnitAtkExSub" style="display:none" aria-hidden="true"></div>`;
+const atkExSub=exSq>0?`<div id="dcAtkUnitAtkExSub" class="stat-card-bonus" title="EX squad % delta within the same % bucket as the panel (ceil on MS Attack; same value used in damage ⑧).">+${fmtN(dEx)} · EX squad +${exSq}%</div>`:`<div id="dcAtkUnitAtkExSub" style="display:none" aria-hidden="true"></div>`;
 /* Inline (+N) matches in-game MS sheet: total − raw LB growth base (not core-with-unit-ability%). */
 const atkBonusInline=Math.max(0,atkShow-(uEff.advantageFlatGrowthAtk|0));
 const hpBonusIn=Math.max(0,hpS-(uEff.hpGrowthBase|0));
@@ -12335,7 +12341,16 @@ cb.disabled=false;
 _dcApplyAutoZeonForMatchingDefender(info.wt);
 cb.checked=S.dc.applyZeonEnemyTag!==false;
 }
-/** Breakdown +lines under MS HP/ATK/DEF/MOB: % bucket uses round (same as panel MS ATK). Supporter flats use a distinct color. */
+/** In-game MS growth % bucket: ceil on Attack/HP, floor on DEF/MOB/EN/Move (LB growth base is floored). */
+function _dcMsGrowthFromPct(base,pctSum,statName){
+const F=Math.floor,C=Math.ceil;
+const b=F(Math.max(0,Number(base)||0));
+const raw=b*(100+(Number(pctSum)||0))/100;
+const k=String(statName||'');
+if(k==='Attack'||k==='HP')return C(raw);
+return F(raw);
+}
+/** Breakdown +lines under MS HP/ATK/DEF/MOB: same per-stat rounding as panel totals. Supporter flats use a distinct color. */
 function _dcMsStatEnhancementLinesHtml(ctx,atkUnitStats){
 const F=Math.floor;
 const c=ctx||{};
@@ -12366,27 +12381,26 @@ let turnAtkPct=0;
 if(c.unitTurnBuffAtk&&c.atkUnitData&&!c.atkUnitData._manual)turnAtkPct=Math.max(0,_dcGetDetectedUnitTurnBuffPercents(c.atkUnitData).atkPct|0);
 const tAtk=turnAtkPct|0;
 function L(n,longT,cls){const v=Math.max(0,Math.floor(Number(n)||0));if(!v)return'';const isSupp=cls&&String(cls).indexOf('supporter-flat')>=0;const cName=cls?`stat-card-bonus ${cls}`:'stat-card-bonus';const style=isSupp?' style="color:var(--accent-orange)!important;text-shadow:0 0 8px rgba(255,149,0,.4)"':'';return`<div class="${cName}"${style} title="${escAttr(longT)}">+${fmtN(v)}</div>`}
-const coreHp=Math.round(hpBase*(100+pHp)/100);
-const pctHp=Math.round(hpBase*(100+pHp+(opPct.HP|0)+lp+sheetBuffPct)/100)-coreHp;
+const coreHp=_dcMsGrowthFromPct(hpBase,pHp,'HP');
+const pctHp=_dcMsGrowthFromPct(hpBase,pHp+(opPct.HP|0)+lp+sheetBuffPct,'HP')-coreHp;
 const hpHtml=L(pctHp,'Option part %, leader skill %, Master League / Grand Offensive (HP)')+L(opFlat.HP|0,'Option part flat HP')+L(hpSupport|0,'Supporter HP support','stat-card-bonus--supporter-flat');
 const scAtk=c.squadCondAtkPct|0;
 const scDef=c.squadCondDefPct|0;
 const supCnt=_dcEffectiveSupportCounterAtkPctFromCtx(c);
-const coreDef=Math.round(defBase*(100+pDef)/100);
-const pctDef=Math.round(defBase*(100+pDef+(opPct.Defense|0)+lp+sheetBuffPct+(scDef|0))/100)-coreDef;
+const coreDef=_dcMsGrowthFromPct(defBase,pDef,'Defense');
+const pctDef=_dcMsGrowthFromPct(defBase,pDef+(opPct.Defense|0)+lp+sheetBuffPct+(scDef|0),'Defense')-coreDef;
 const defHtml=L(pctDef,'Option part %, leader skill %, Master League / Grand Offensive (DEF)'+(scDef?' · Squad conditions':''))+L(opFlat.Defense|0,'Option part flat Defense');
-const coreMob=Math.round(mobBase*(100+pMob)/100);
-const pctMob=Math.round(mobBase*(100+pMob+(opPct.Mobility|0)+lp+sheetBuffPct)/100)-coreMob;
+const coreMob=_dcMsGrowthFromPct(mobBase,pMob,'Mobility');
+const pctMob=_dcMsGrowthFromPct(mobBase,pMob+(opPct.Mobility|0)+lp+sheetBuffPct,'Mobility')-coreMob;
 const mobHtml=L(pctMob,'Option part %, leader skill %, Master League / Grand Offensive (MOB)')+L(opFlat.Mobility|0,'Option part flat Mobility');
-const coreAtk=Math.round(atkBase*(100+pAtk)/100);
-const pctAtkNoEx=Math.round(atkBase*(100+pAtk+opAt+tAtk+sheetBuffPct+lp+(scAtk|0)+(supCnt|0))/100)-coreAtk;
+const coreAtk=_dcMsGrowthFromPct(atkBase,pAtk,'Attack');
+const pctAtkNoEx=_dcMsGrowthFromPct(atkBase,pAtk+opAt+tAtk+sheetBuffPct+lp+(scAtk|0)+(supCnt|0),'Attack')-coreAtk;
 const atkHtml=L(pctAtkNoEx,'Option part %, 1-turn MS ATK %, leader %, ML/GO, squad conditions, Support Attack/Counter % (EX squad % is on the EX line below)')+L(opFlat.Attack|0,'Option part flat Attack')+L(atkSupport|0,'Supporter ATK support','stat-card-bonus--supporter-flat');
 return{hpHtml,atkHtml,defHtml,mobHtml};
 }
-/** MS growth % buckets use round (half up). Versal LB1 10126 +15%+12%+5% squad + leader 36% + ATK+240 → 17252; Lacus 40% +260 → 17170 (ceil would be 17171). opts.useCeil: probe-only. */
-function _dcGetModifiedAttackerUnitStatsFromCtx(ctx,atkUnitStats,opts){
-const F=Math.floor,C=Math.ceil;
-const R=(opts&&opts.useCeil)?C:Math.round;
+/** MS growth % buckets: ceil Attack/HP, floor DEF/MOB/Move (in-game MS sheet). Versal LB1 +68% ATK +240 → 17252; Sandaime LB2 +53% ATK +240 → 14577. */
+function _dcGetModifiedAttackerUnitStatsFromCtx(ctx,atkUnitStats){
+const F=Math.floor;
 const c=ctx||{};
 const scAtk=c.squadCondAtkPct|0;
 const scDef=c.squadCondDefPct|0;
@@ -12416,24 +12430,24 @@ const pDef=_dcStatPassivePctFromEntry(defEnt);
 const pHp=_dcStatPassivePctFromEntry(hpEnt);
 const pMob=_dcStatPassivePctFromEntry(mobEnt);
 const pMove=_dcStatPassivePctFromEntry(moveEnt);
-let unitHp=R(hpBase*(100+pHp+(opPct.HP|0)+lp+sheetBuffPct)/100)+(opFlat.HP|0)+hpSupport;
-let unitDefVal=R(defBase*(100+pDef+(opPct.Defense|0)+lp+sheetBuffPct+(scDef|0))/100)+(opFlat.Defense|0);
-let unitMob=R(mobBase*(100+pMob+(opPct.Mobility|0)+lp+sheetBuffPct)/100)+(opFlat.Mobility|0);
+let unitHp=_dcMsGrowthFromPct(hpBase,pHp+(opPct.HP|0)+lp+sheetBuffPct,'HP')+(opFlat.HP|0)+hpSupport;
+let unitDefVal=_dcMsGrowthFromPct(defBase,pDef+(opPct.Defense|0)+lp+sheetBuffPct+(scDef|0),'Defense')+(opFlat.Defense|0);
+let unitMob=_dcMsGrowthFromPct(mobBase,pMob+(opPct.Mobility|0)+lp+sheetBuffPct,'Mobility')+(opFlat.Mobility|0);
 const mlMovePct=(c.masterLeagueBuff&&c.masterLeagueBuffMove!==false)?mlPct:0;
-let unitMove=R(moveBase*(100+pMove+(opPct.Move|0)+mlMovePct)/100)+(opFlat.Move|0);
+let unitMove=_dcMsGrowthFromPct(moveBase,pMove+(opPct.Move|0)+mlMovePct,'Move')+(opFlat.Move|0);
 const opAt=opPct.Attack||0;
 const exSq=_dcEffectiveExSquadAtkPctFromCtx(c);
 let turnAtkPct=0;
 if(c.unitTurnBuffAtk&&c.atkUnitData&&!c.atkUnitData._manual)turnAtkPct=Math.max(0,_dcGetDetectedUnitTurnBuffPercents(c.atkUnitData).atkPct|0);
 const tAtk=turnAtkPct|0;
-const unitAtkExSquadBase=R(atkBase*(100+pAtk+sheetBuffPct)/100);
-const unitDefExSquadBase=R(defBase*(100+pDef+sheetBuffPct)/100);
-const unitAtkGrowthAfterOptions=R(atkBase*(100+pAtk+opAt+tAtk+sheetBuffPct)/100);
+const unitAtkExSquadBase=_dcMsGrowthFromPct(atkBase,pAtk+sheetBuffPct,'Attack');
+const unitDefExSquadBase=_dcMsGrowthFromPct(defBase,pDef+sheetBuffPct,'Defense');
+const unitAtkGrowthAfterOptions=_dcMsGrowthFromPct(atkBase,pAtk+opAt+tAtk+sheetBuffPct,'Attack');
 const sumAtkPctNoEx=(pAtk+opAt+tAtk+sheetBuffPct+lp)|0;
 const sumAtkPctFull=sumAtkPctNoEx+(exSq|0)+(scAtk|0)+(supCnt|0);
-let unitAtk=R(atkBase*(100+sumAtkPctFull)/100)+(opFlat.Attack|0)+(atkSupport|0);
+let unitAtk=_dcMsGrowthFromPct(atkBase,sumAtkPctFull,'Attack')+(opFlat.Attack|0)+(atkSupport|0);
 let deltaExAtk=0;
-if((exSq|0)>0)deltaExAtk=R(atkBase*(100+sumAtkPctNoEx+exSq+(scAtk|0)+(supCnt|0))/100)-R(atkBase*(100+sumAtkPctNoEx+(scAtk|0)+(supCnt|0))/100);
+if((exSq|0)>0)deltaExAtk=_dcMsGrowthFromPct(atkBase,sumAtkPctNoEx+exSq+(scAtk|0)+(supCnt|0),'Attack')-_dcMsGrowthFromPct(atkBase,sumAtkPctNoEx+(scAtk|0)+(supCnt|0),'Attack');
 const hpDbCorePassive=F(hpBase*(100+pHp)/100);
 const defDbCorePassive=F(defBase*(100+pDef)/100);
 const mobDbCorePassive=F(mobBase*(100+pMob)/100);
