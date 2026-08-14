@@ -2249,7 +2249,12 @@ class TestDecisionAids(unittest.TestCase):
         self.assertNotIn("after_move_map", kinds)
         self.assertNotIn("followup", kinds)
 
-    def test_sd_pair_gate_drops_character_free_for_all(self):
+    def test_sd_pair_gate_clamps_character_to_unit_eligibility(self):
+        """SD pilot keeps free-for-all stages the MS can enter; drops the rest.
+
+        Command Gundam: Protagonist + Specialized Unit stay; U.C. drops because
+        the unit is not eligible. Unit ER list is never stripped by pilot tags.
+        """
         from sp_investment_rank import apply_sd_er_pair_gate
 
         payload = {
@@ -2305,9 +2310,9 @@ class TestDecisionAids(unittest.TestCase):
             payload, linked_char_to_unit={"1709000100": "1709000100"}
         )
         ids = payload["characters"]["sp"]["solid"][0]["er_expert_ids"]
-        self.assertEqual(ids, ["90520003"])
+        self.assertEqual(ids, ["90520003", "90520020"])
         unit_ids = payload["units"]["sp"]["solid"][0]["er_expert_ids"]
-        self.assertEqual(unit_ids, ["90520003"])
+        self.assertEqual(unit_ids, ["90520003", "90520020"])
 
     def test_sd_pair_gate_uses_linked_unit_id(self):
         from sp_investment_rank import apply_sd_er_pair_gate
@@ -2359,6 +2364,8 @@ class TestDecisionAids(unittest.TestCase):
         )
         ids = payload["characters"]["sp"]["solid"][0]["er_expert_ids"]
         self.assertEqual(ids, ["90520003", "90520027"])
+        unit_ids = payload["units"]["sp"]["solid"][0]["er_expert_ids"]
+        self.assertEqual(unit_ids, ["90520003", "90520027"])
 
 
 if __name__ == "__main__":

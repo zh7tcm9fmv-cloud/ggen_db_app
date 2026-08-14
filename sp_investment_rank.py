@@ -6981,9 +6981,10 @@ def linked_sd_unit_id(A, cid: str) -> str | None:
 def entity_eligible_on_stage(A, eid: str, stage_id: str, kind: str = "unit", lc: str = "EN") -> bool:
     """Sortie gate for one Eternal Road stage.
 
-    SD characters are locked to their MS. Character-side “free for all” does not
-    let the pair into U.C. / Alternative / SEED (or other unit-tag) Expert
-    stages unless the character themselves has that tag.
+    SD characters are locked to their MS: they only enter when the paired unit
+    also clears the stage. On character free-for-all Expert stages, unit
+    eligibility alone is enough — the pilot does not need to personally hold
+    the unit tag (Specialized Unit / Lightning-Fast / etc.).
     """
     if not _entity_eligible_on_stage_raw(A, eid, stage_id, kind, lc):
         return False
@@ -6992,72 +6993,7 @@ def entity_eligible_on_stage(A, eid: str, stage_id: str, kind: str = "unit", lc:
     uid = linked_sd_unit_id(A, eid)
     if not uid:
         return True
-    if not _entity_eligible_on_stage_raw(A, uid, stage_id, "unit", lc):
-        return False
-    if _stage_has_character_restrictions(A, stage_id):
-        return True
-    return _sd_character_matches_unit_restriction_groups(A, eid, stage_id, lc)
-
-
-def _stage_has_character_restrictions(A, stage_id: str) -> bool:
-    sm = A.stage_map.get(stage_id, {}) or {}
-    for set_id in (sm.get("group1_set_id"), sm.get("group2_set_id")):
-        if not set_id or set_id == "0":
-            continue
-        for r in A.stage_sortie_set_content_map.get(set_id, []) or []:
-            if str(r.get("target_type_index") or "0") in ("2", "3"):
-                g = A.stage_sortie_group_content_map.get(r.get("group_id", "0"), []) or []
-                if g:
-                    return True
-    return False
-
-
-def _sd_character_matches_unit_restriction_groups(A, cid: str, stage_id: str, lc: str) -> bool:
-    """Free-for-all Expert: SD pilot must carry the unit tag/series themselves."""
-    sm = A.stage_map.get(stage_id, {}) or {}
-    saw_unit_gate = False
-    for set_id in (sm.get("group1_set_id"), sm.get("group2_set_id")):
-        if not set_id or set_id == "0":
-            continue
-        rows = A.stage_sortie_set_content_map.get(set_id, []) or []
-        unit_rows = [r for r in rows if str(r.get("target_type_index") or "0") in ("1", "3")]
-        if not unit_rows:
-            continue
-        saw_unit_gate = True
-        for r in unit_rows:
-            if not entity_matches_group(A, cid, r.get("group_id", "0"), kind="character", lc=lc):
-                return False
-    return True if saw_unit_gate else True
-
-
-def _sd_char_matches_filter_tags(row: dict, filt: dict) -> bool:
-    tags = {str(t).strip().lower() for t in (row.get("tags") or []) if t}
-    series = {str(s).strip().lstrip("0") or "0" for s in (row.get("series_ids") or []) if s}
-
-    def _match(rests: list) -> bool:
-        if not rests:
-            return True
-        for r in rests:
-            if not isinstance(r, dict):
-                continue
-            name = str(r.get("name") or "").strip().lower()
-            rid = str(r.get("id") or "").strip()
-            kind = str(r.get("kind") or "")
-            if kind == "tag" and name and name in tags:
-                return True
-            if kind == "series":
-                key = rid.lstrip("0") or "0"
-                if rid in (row.get("series_ids") or []) or key in series:
-                    return True
-        return False
-
-    char_rest = filt.get("character_restrictions") or []
-    unit_rest = filt.get("unit_restrictions") or []
-    if char_rest:
-        return _match(char_rest)
-    if unit_rest:
-        return _match(unit_rest)
-    return True
+    return _entity_eligible_on_stage_raw(A, uid, stage_id, "unit", lc)
 
 
 def apply_sd_er_pair_gate(
@@ -7066,20 +7002,14 @@ def apply_sd_er_pair_gate(
     linked_char_to_unit: dict | None = None,
     linked_unit_to_char: dict | None = None,
 ) -> None:
-    """Clamp SD-linked character er_expert_ids to stages the pair can actually enter.
+    """Clamp SD-linked character er_expert_ids to stages the paired unit can enter.
 
-    1) Paired unit must be eligible (drops U.C. / Alternative / SEED free-for-all).
-    2) On character-free-for-all stages, the character must hold that unit tag
-       themselves (Command Gundam → Protagonist, not Specialized Unit).
+    Units keep their own eligibility. Characters may only keep stages that appear
+    on the linked unit (drops U.C. / Alternative / SEED when the MS cannot sortie).
     """
     if not isinstance(payload, dict):
         return
     linked = {str(k): str(v) for k, v in (linked_char_to_unit or {}).items() if k and v}
-    filters = {
-        str(f.get("id")): f
-        for f in (payload.get("er_expert_filters") or [])
-        if isinstance(f, dict) and f.get("id")
-    }
     sd_unit_er: dict[str, set[str]] = {}
     units = payload.get("units") or {}
     for mode in ("sp", "ssp"):
@@ -7114,22 +7044,10 @@ def apply_sd_er_pair_gate(
                 continue
             allow = sd_unit_er[uid]
             row["linked_unit_id"] = uid
-            kept = []
-            for sid in row.get("er_expert_ids") or []:
-                sid_s = str(sid)
-                if sid_s not in allow:
-                    continue
-                filt = filters.get(sid_s) or {}
-                if filters and not _sd_char_matches_filter_tags(row, filt):
-                    continue
-                kept.append(sid)
-            row["er_expert_ids"] = kept
+            row["er_expert_ids"] = [
+                sid for sid in (row.get("er_expert_ids") or []) if str(sid) in allow
+            ]
 
-    chars_by_id: dict[str, dict] = {}
-    for rows in chars.values():
-        for row in rows or []:
-            if isinstance(row, dict) and row.get("id"):
-                chars_by_id[str(row["id"])] = row
     rev = {str(v): str(k) for k, v in linked.items()}
     for uk, ck in (linked_unit_to_char or {}).items():
         if uk and ck:
@@ -7144,15 +7062,8 @@ def apply_sd_er_pair_gate(
                     continue
                 uid = str(row["id"])
                 cid = str(row.get("linked_character_id") or rev.get(uid) or uid)
-                ch = chars_by_id.get(cid)
-                if not ch or not filters:
-                    continue
-                row["linked_character_id"] = cid
-                row["er_expert_ids"] = [
-                    sid
-                    for sid in (row.get("er_expert_ids") or [])
-                    if _sd_char_matches_filter_tags(ch, filters.get(str(sid)) or {})
-                ]
+                if cid:
+                    row["linked_character_id"] = cid
 
 
 def unit_has_after_move_map(A, uid: str) -> bool:

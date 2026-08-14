@@ -1326,62 +1326,18 @@
   }
 
   /** Base published row + Ultimate series Advantage when the active tag matches. */
-  function sdCharacterStageOk(row, sid) {
-    const filters = (payload && payload.er_expert_filters) || [];
-    const f = filters.find((x) => String(x.id) === String(sid));
-    if (!f) return true;
-    const tags = new Set((row.tags || []).map((t) => String(t).trim().toLowerCase()).filter(Boolean));
-    const series = new Set((row.series_ids || []).map((s) => String(s).replace(/^0+/, '') || '0'));
-    const matchRest = (rests) => {
-      if (!rests || !rests.length) return true;
-      return rests.some((r) => {
-        const kind = String((r && r.kind) || '');
-        const name = String((r && r.name) || '')
-          .trim()
-          .toLowerCase();
-        const rid = String((r && r.id) || '').replace(/^0+/, '') || '0';
-        if (kind === 'tag' && name && tags.has(name)) return true;
-        if (kind === 'series' && series.has(rid)) return true;
-        return false;
-      });
-    };
-    const charRest = f.character_restrictions || [];
-    const unitRest = f.unit_restrictions || [];
-    if (charRest.length) return matchRest(charRest);
-    if (unitRest.length) return matchRest(unitRest);
-    return true;
-  }
-
-  function pairedSdCharacterRow(row) {
-    const cid = String((row && (row.linked_character_id || row.id)) || '');
-    if (!cid || !payload) return null;
-    const buckets = ((payload.characters || {}).sp) || {};
-    let found = null;
-    Object.keys(buckets).forEach((bk) => {
-      (buckets[bk] || []).forEach((r) => {
-        if (r && String(r.id) === cid) found = r;
-      });
-    });
-    return found;
-  }
-
   function gatedErExpertIds(row) {
     const ids = Array.isArray(row && row.er_expert_ids) ? row.er_expert_ids.map(String) : [];
     if (!row) return ids;
+    // SD units keep their own ER list. SD-linked characters may only keep stages
+    // the paired unit can enter (no extra “pilot must hold the unit tag” filter).
     if (row.is_sd_linked) {
       const uid = String(row.linked_unit_id || row.id || '');
       const idx = unitBoardIndex();
       const unit = idx.sp.get(uid) || idx.ssp.get(uid);
-      const allow = unit && Array.isArray(unit.er_expert_ids) ? new Set(unit.er_expert_ids.map(String)) : null;
-      return ids.filter((sid) => {
-        if (allow && !allow.has(sid)) return false;
-        return sdCharacterStageOk(row, sid);
-      });
-    }
-    if (row.is_sd) {
-      const ch = pairedSdCharacterRow(row);
-      if (!ch) return ids;
-      return ids.filter((sid) => sdCharacterStageOk(ch, sid));
+      if (!unit || !Array.isArray(unit.er_expert_ids)) return ids;
+      const allow = new Set(unit.er_expert_ids.map(String));
+      return ids.filter((sid) => allow.has(sid));
     }
     return ids;
   }
