@@ -6215,7 +6215,19 @@ function _dcCalculateDamageWithSlot(slotIdx){
 const slots=S.dc.atkSlots;if(!slots||!slots[slotIdx])return null;
 const slot=slots[slotIdx];if(!slot.atkUnitData||!slot.atkCharData)return null;
 const backup=_dcReadAttackerFromDc();
+const prevNoDom=!!S.dc._dcSlotCalcNoDom;
+S.dc._dcSlotCalcNoDom=true;
 _dcWriteAttackerToDc(slot,slotIdx);
+_dcDetectVigorCondAbilities(S.dc.atkUnitData);
+if(!(slot.atkCharData&&slot.atkCharData._manual)&&!(slot.atkUnitData&&slot.atkUnitData._manual)){
+/* Share load used to auto-CP against the active slot’s vigor (often Normal). Re-evaluate with this slot’s own vigor so EX pair ATK matches the open panel. */
+if(_dcShouldAutoCharCondPassive(slot.atkCharData,slot.atkUnitData,S.dc.mpLevel)){
+S.dc.charCondPassive=true;
+_dcSyncSuperchargedExTierForVigor();
+slot.charCondPassive=true;
+slot.dcSuperchargedExTier=S.dc.dcSuperchargedExTier|0;
+}
+}
 const wc=_dcCritDmgUpFromWeapon(S.dc.atkUnitData,S.dc.wpnIdx,S.dc.wpnLv);
 S.dc._wpnCritDmgUp=wc;
 if(!(slot.atkCharData&&slot.atkCharData._manual)){
@@ -6232,7 +6244,7 @@ S.dc.critDmgUp=Math.max(0,(S.dc.critDmgUp|0)-prevW+wc);
 S.dc._integratedWpnCritDmgUp=wc;
 let r=null;
 try{r=calculateDamage()}catch(e){console.error('calculateDamage slot',slotIdx,e)}
-_dcWriteAttackerToDc(backup);
+finally{S.dc._dcSlotCalcNoDom=prevNoDom;_dcWriteAttackerToDc(backup)}
 return r;
 }
 function setDcAttackerSlot(idx){
@@ -6993,7 +7005,7 @@ if(o.th!==undefined){const n=parseInt(o.th,10);if(!Number.isNaN(n)&&n>=0)slot._w
 if(o.ucp)slot.unitCondPassive=true;
 if(o.ccp)slot.charCondPassive=true;
 else if(slot.atkCharData&&slot.atkUnitData&&!slot.atkCharData._manual&&!slot.atkUnitData._manual){
-slot.charCondPassive=_dcShouldAutoCharCondPassive(slot.atkCharData,slot.atkUnitData);
+slot.charCondPassive=_dcShouldAutoCharCondPassive(slot.atkCharData,slot.atkUnitData,slot.mpLevel);
 }
 if(o.cex!==undefined){const n=parseInt(o.cex,10);if(!Number.isNaN(n)&&n>=0)slot.dcSuperchargedExTier=n}
 if(slot.atkCharData&&!slot.atkCharData._manual){const _xt=slot.atkCharData.ex_supercharged_tiers;if(_xt&&_xt.length>1)slot.dcSuperchargedExTier=Math.min(Math.max(0,slot.dcSuperchargedExTier|0),_xt.length-1);else slot.dcSuperchargedExTier=0}
@@ -9431,18 +9443,19 @@ if(cm&&cm[uid]!=null)return true;
 return false;
 }
 /** Default pilot CP on in DC when pairing matches (or when CP is not pair-gated) and vigor meets any CP gate. */
-function _dcShouldAutoCharCondPassive(cd,ud){
+function _dcShouldAutoCharCondPassive(cd,ud,mpOpt){
 if(!cd||!ud||cd._manual||ud._manual)return false;
 if(!_dcCharHasConditional(cd))return false;
+const mp=_dcNormMpLevel(mpOpt!=null&&mpOpt!==''?mpOpt:S.dc.mpLevel);
 /** Super vigor max-damage: Supercharged EX 1/2 applies on any MS (not Destiny-only). */
-if(_dcNormMpLevel(S.dc.mpLevel)==='super'&&cd.ex_supercharged_tiers&&cd.ex_supercharged_tiers.length>1)return true;
-if(_dcIsShinnAsukaCharacter(cd)&&_dcNormMpLevel(S.dc.mpLevel)==='super')return true;
+if(mp==='super'&&cd.ex_supercharged_tiers&&cd.ex_supercharged_tiers.length>1)return true;
+if(_dcIsShinnAsukaCharacter(cd)&&mp==='super')return true;
 if(_dcCharHasPairRequirement(cd)&&!_dcUnitCharPairMatch(cd,ud)){
-if(_dcNormMpLevel(S.dc.mpLevel)==='super'&&cd.ex_supercharged_tiers&&cd.ex_supercharged_tiers.length>1)return true;
+if(mp==='super'&&cd.ex_supercharged_tiers&&cd.ex_supercharged_tiers.length>1)return true;
 return false;
 }
 const vReq=_dcCharCpVigorRequirement(cd);
-if(vReq&&!_dcVigorAtLeast(S.dc.mpLevel,vReq))return false;
+if(vReq&&!_dcVigorAtLeast(mp,vReq))return false;
 return true;
 }
 /** Sync pilot CP from unit+character pairing. Call on pick / share load — not every render — so manual toggle can override until the pair changes. */
@@ -9614,9 +9627,11 @@ return true;
 }
 function _dcBigRangZeonSquadBuffActive(){
 if(!_dcShouldShowBigRangZeonSquadBuffToggle(S.dc.atkCharData,S.dc.atkUnitData))return false;
+if(!(S.dc&&S.dc._dcSlotCalcNoDom)){
 const wrap=document.getElementById('dcBigRangZeonSquadWrap');
 const cb=document.getElementById('dcBigRangZeonSquadApply');
 if(wrap&&wrap.style.display!=='none'&&cb)return!!cb.checked;
+}
 return!!S.dc.bigRangZeonSquadBuff;
 }
 function setDcBigRangZeonSquadBuff(on){
@@ -9833,16 +9848,17 @@ function _dcEffectiveExSquadAtkPct(){return _dcEffectiveExSquadAtkPctFromCtx(S.d
 function _dcEffectiveExSquadAtkPctFromCtx(ctx){
 const c=ctx||{};
 if(!_dcCharHasExSquadSynergyAbility(c.atkCharData,c.atkUnitData))return 0;
-const el=typeof document!=='undefined'?document.getElementById('dcExSquadAtkPct'):null;
-if(!el){
 if(c.exSquadAtkPctExplicitZero)return 0;
-return _scIsQubeleyExCombo(c.atkCharData,c.atkUnitData)?20:Math.min(20,Math.max(0,c.exSquadAtkPct|0));
-}
+if(!(S.dc&&S.dc._dcSlotCalcNoDom)){
+const el=typeof document!=='undefined'?document.getElementById('dcExSquadAtkPct'):null;
+if(el){
 const rawStr=String(el.value).trim();
 if(rawStr==='0')return 0;
 if(rawStr!==''){
 const raw=parseInt(rawStr,10);
 return Number.isFinite(raw)?Math.min(20,Math.max(0,raw)):0;
+}
+}
 }
 return _scIsQubeleyExCombo(c.atkCharData,c.atkUnitData)?20:Math.min(20,Math.max(0,c.exSquadAtkPct|0));
 }
