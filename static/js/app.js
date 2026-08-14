@@ -480,7 +480,7 @@ function suppTableHeaderLabel(i18nKey){const full=t(i18nKey);let mob='';if(S.lan
 function tTerrain(name){const m=TERRAIN_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tRole(name){const m=ROLE_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tRoleFilter(roleId){const m=ROLE_LABELS[S.lang]||ROLE_LABELS.EN;return m[roleId]||m['']}
-const S={lang:'EN',languages:[],currentTab:'characters',listView:{characters:'grid',units:'grid',supporters:'grid',stages:'grid',modifications:'grid'},characters:{page:1,sort:'rarity',dir:'desc',q:''},units:{page:1,sort:'rarity',dir:'desc',q:''},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc',source:'eternal',challengeSeries:'ALL'},modifications:{page:1,sort:'name',dir:'asc',q:'',effectFilter:'ALL'},_modEffectFilterIcons:null,ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,pilotConditionalPassiveActive:false,pilotCondCharData:null,_pilotCondCharFetchId:null,_pilotCondCharInflight:null,pilotCondStackCount:0,charSuperchargedExTier:0,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_tagModalMode:'tags',_seriesModalSid:'',_seriesModalName:'',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,stageMapReinforcementOnly:false,stageMapSpawnOrderVisible:false,stageMapBuffAreasVisible:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,cmpLbByUnit:{},cmpMobilePickMode:false,listCharSp:false,listUnitSp:false,listUnitSsp:false,listCharCond:false,listUnitCond:false,listUnitPilotCond:false,listSelectedUnitId:null,listCharSource:'ALL',listUnitSource:'ALL',listMsyUnitSource:'ALL',listCharLineage:[],listCharSeries:[],listCharSkills:[],listCharAbilities:[],listUnitLineage:[],listUnitSeries:[],listUnitAbilities:[],listMsyUnitSeries:[],listMsyUnitLineage:[],listUnitTerrain:[],listUnitWeaponDebuff:[],listUnitWeaponRange:[],listUnitWeaponRangeNonMap:[],listUnitWeaponRangeNonMapSspExOnly:false,listUnitMapWeaponRange:[],listUnitMechanism:[],listSuppLineage:[],browseCombCharLineage:'and',browseCombUnitLineage:'and',browseCombSuppLineage:'and',browseCombCharSeries:'or',browseCombUnitSeries:'or',browseCombMsyUnitSeries:'or',browseCombMsyUnitLineage:'and',browseCombCharSkill:'and',browseCombUnitAbil:'and',browseCombCharTrait:'and',browseCombTerrain:'and',browseCombWb:'and',browseCombWr:'and',browseCombWrNm:'and',browseCombMapWr:'and',browseCombMech:'and',listGridVariant:{characters:2,units:2},weaponDebuffPresentKeys:null,terrainPresentTokens:null,weaponRangeSspExPresent:null,weaponRangeNonMapPresent:null,mechanismPresentRows:null,lrCacheKey:null,lrCacheData:null,btCacheKey:null,btCacheData:null,btBannerSortDir:'desc',_browsePrimed:{},dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,defUnitData:null,defCharData:null,defLbTier:3,npcList:[],wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[],unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,dcSuperchargedExTier:0,masterLeagueBuff:false,grandOffensiveBuff:false,squadCondPct:0,squadCondAtkPct:0,squadCondDefPct:0,bigRangZeonSquadBuff:false,_applicableOptionRows:null,_applicableSupporterRows:null},tb:null,_dcPickerType:null,_dcPickerCache:[],_searchRecallObs:null,_suspendRarityItemChange:false,ranking:{mode:'units',viewMode:'list',sortChar:'Ranged',sortUnit:'HP',dirChar:'desc',dirUnit:'desc',pageChar:1,pageUnit:1},listRankCharSource:'ALL',listRankUnitSource:'ALL',listRankCharLineage:[],listRankCharSeries:[],listRankCharSkills:[],listRankCharAbilities:[],listRankUnitLineage:[],listRankUnitSeries:[],listRankUnitAbilities:[],listRankUnitTerrain:[],listRankUnitWeaponDebuff:[],listRankUnitWeaponRange:[],listRankUnitWeaponRangeNonMap:[],listRankUnitWeaponRangeNonMapSspExOnly:false,listRankUnitMapWeaponRange:[],listRankUnitMechanism:[],listRankCharSp:false,listRankCharCond:false,listRankUnitSp:false,listRankUnitSsp:false,listRankUnitCond:false,listRankUnitPilotCond:false,browseCombRankCharLineage:'and',browseCombRankUnitLineage:'and',browseCombRankCharSeries:'or',browseCombRankUnitSeries:'or',browseCombRankCharSkill:'and',browseCombRankUnitAbil:'and',browseCombRankCharTrait:'and',browseCombRankTerrain:'and',browseCombRankWb:'and',browseCombRankWr:'and',browseCombRankWrNm:'and',browseCombRankMapWr:'and',browseCombRankMech:'and'};
+const S={lang:'EN',languages:[],currentTab:'characters',listView:{characters:'grid',units:'grid',supporters:'grid',stages:'grid',modifications:'grid'},characters:{page:1,sort:'rarity',dir:'desc',q:''},units:{page:1,sort:'rarity',dir:'desc',q:''},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc',source:'eternal',challengeSeries:'ALL'},modifications:{page:1,sort:'name',dir:'asc',q:'',effectFilter:'ALL'},_modEffectFilterIcons:null,ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,pilotConditionalPassiveActive:false,pilotCondCharData:null,_pilotCondCharFetchId:null,_pilotCondCharInflight:null,pilotCondStackCount:0,charSuperchargedExTier:0,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_tagModalMode:'tags',_seriesModalSid:'',_seriesModalName:'',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,stageMapReinforcementOnly:false,stageMapSpawnOrderVisible:false,stageMapBuffAreasVisible:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,cmpLbByUnit:{},cmpMobilePickMode:false,listCharSp:false,listUnitSp:false,listUnitSsp:false,listCharCond:false,listUnitCond:false,listUnitPilotCond:false,listSelectedUnitId:null,listCharSource:'ALL',listUnitSource:'ALL',listMsyUnitSource:'ALL',listCharLineage:[],listCharSeries:[],listCharSkills:[],listCharAbilities:[],listUnitLineage:[],listUnitSeries:[],listUnitAbilities:[],listMsyUnitSeries:[],listMsyUnitLineage:[],listUnitTerrain:[],listUnitWeaponDebuff:[],listUnitWeaponRange:[],listUnitWeaponRangeNonMap:[],listUnitWeaponRangeNonMapSspExOnly:false,listUnitMapWeaponRange:[],listUnitMechanism:[],listSuppLineage:[],browseCombCharLineage:'and',browseCombUnitLineage:'and',browseCombSuppLineage:'and',browseCombCharSeries:'or',browseCombUnitSeries:'or',browseCombMsyUnitSeries:'or',browseCombMsyUnitLineage:'and',browseCombCharSkill:'and',browseCombUnitAbil:'and',browseCombCharTrait:'and',browseCombTerrain:'and',browseCombWb:'and',browseCombWr:'and',browseCombWrNm:'and',browseCombMapWr:'and',browseCombMech:'and',listGridVariant:{characters:2,units:2},weaponDebuffPresentKeys:null,terrainPresentTokens:null,weaponRangeSspExPresent:null,weaponRangeNonMapPresent:null,mechanismPresentRows:null,lrCacheKey:null,lrCacheData:null,btCacheKey:null,btCacheData:null,btBannerSortDir:'desc',_browsePrimed:{},dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,defUnitData:null,defCharData:null,defLbTier:3,npcList:[],wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[],unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,dcSuperchargedExTier:0,masterLeagueBuff:false,grandOffensiveBuff:false,squadCondPct:0,squadCondAtkPct:0,squadCondDefPct:0,bigRangZeonSquadBuff:false,defNpcMapBonusesOn:true,_applicableOptionRows:null,_applicableSupporterRows:null},tb:null,_dcPickerType:null,_dcPickerCache:[],_searchRecallObs:null,_suspendRarityItemChange:false,ranking:{mode:'units',viewMode:'list',sortChar:'Ranged',sortUnit:'HP',dirChar:'desc',dirUnit:'desc',pageChar:1,pageUnit:1},listRankCharSource:'ALL',listRankUnitSource:'ALL',listRankCharLineage:[],listRankCharSeries:[],listRankCharSkills:[],listRankCharAbilities:[],listRankUnitLineage:[],listRankUnitSeries:[],listRankUnitAbilities:[],listRankUnitTerrain:[],listRankUnitWeaponDebuff:[],listRankUnitWeaponRange:[],listRankUnitWeaponRangeNonMap:[],listRankUnitWeaponRangeNonMapSspExOnly:false,listRankUnitMapWeaponRange:[],listRankUnitMechanism:[],listRankCharSp:false,listRankCharCond:false,listRankUnitSp:false,listRankUnitSsp:false,listRankUnitCond:false,listRankUnitPilotCond:false,browseCombRankCharLineage:'and',browseCombRankUnitLineage:'and',browseCombRankCharSeries:'or',browseCombRankUnitSeries:'or',browseCombRankCharSkill:'and',browseCombRankUnitAbil:'and',browseCombRankCharTrait:'and',browseCombRankTerrain:'and',browseCombRankWb:'and',browseCombRankWr:'and',browseCombRankWrNm:'and',browseCombRankMapWr:'and',browseCombRankMech:'and'};
 window.S=S;
 function primeBrowseTabIfNeeded(tab){reloadBrowseTab(tab)}
 function reloadBrowseTab(tab){const browseTabs={characters:1,units:1,supporters:1,stages:1,modifications:1};if(!browseTabs[tab])return;if(tab==='characters')loadCharacters(S.characters.page||1);else if(tab==='units')loadUnits(S.units.page||1);else if(tab==='supporters')loadSupporters(S.supporters.page||1);else if(tab==='stages')loadStages(S.stages.page||1);else if(tab==='modifications')loadModifications(S.modifications.page||1)}
@@ -6265,7 +6265,7 @@ if(_dcSlotNeedsAutoFit(S.dc.atkSlots[S.dc.atkSlotIndex|0]))_dcScheduleAutoFitOpt
 function initDmgCalc(){
 S._dcAtkPresetBackup=null;S._dcAtkManualPackBackup=null;S._dcDefPresetNpcBackup=null;S._dcDefDbBackup=null;S._dcDefCustomPackBackup=null;
 S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;S.dc.lbTier=3;
-S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.bigRangZeonSquadBuff=false;S.dc.defNpcMapBonusesOn=false;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.applyZeonEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.dcSuperchargedExTier=0;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc.multiPctCompare=false;S.dc._dcAutoFitGen=0;S.dc._supportCntAtkPairSnapBySlot={};
+S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.bigRangZeonSquadBuff=false;S.dc.defNpcMapBonusesOn=true;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.applyZeonEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.dcSuperchargedExTier=0;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc.multiPctCompare=false;S.dc._dcAutoFitGen=0;S.dc._supportCntAtkPairSnapBySlot={};
 renderDcDefDbPicks();
 const _drp=document.getElementById('dcDefModePreset'),_drc=document.getElementById('dcDefModeCustom'),_ddb=document.getElementById('dcDefModeDatabase'),_dpw=document.getElementById('dcDefPresetWrap'),_dcw=document.getElementById('dcDefCustomWrap'),_ddbw=document.getElementById('dcDefDatabaseWrap');
 if(_drp)_drp.checked=true;if(_drc)_drc.checked=false;if(_ddb)_ddb.checked=false;if(_dpw)_dpw.style.display='';if(_dcw)_dcw.style.display='none';if(_ddbw)_ddbw.style.display='none';
@@ -7121,7 +7121,7 @@ if(D.dtph!==undefined){const el=document.getElementById('dcDtuPhysical');if(el)e
 if(D.dts!==undefined){const el=document.getElementById('dcDtuSpecial');if(el)el.value=String(D.dts)}
 if(D.def===1)setDcDefend(true);
 if(D.sh===1)setDcShield(true);
-if(D.nmb===0)S.dc.defNpcMapBonusesOn=false;else if(D.nmb===1)S.dc.defNpcMapBonusesOn=true;
+if(D.nmb===0)S.dc.defNpcMapBonusesOn=false;else S.dc.defNpcMapBonusesOn=true;
 const _dmbEl=document.getElementById('dcDefNpcMapBonusesOn');if(_dmbEl)_dmbEl.checked=S.dc.defNpcMapBonusesOn!==false;
 _dcUpdateDefNpcMapBonusesToggleUi();
 const _asl=S.dc.atkSlots[S.dc.atkSlotIndex|0];
@@ -9716,8 +9716,10 @@ S.dc.squadCondDefPct=(S.dc.squadCondDefPct|0)+BIG_RANG_ZEON_SQUAD_FLAT_AD_PCT;
 }
 }
 function _dcDefNpcMapBonusesEnabled(){return S.dc.defNpcMapBonusesOn!==false;}
-/** Map NPC unit: default stats match in-game map tiles (own + pilot + this NPC's squad lines only).
- *  Toggle on adds other map NPCs' squad-wide / all-units passives (stage-wide stack). */
+/** Map NPC MS stats for DC panel + damage (calculateDamage, hit rate, defender cards).
+ *  ON (default, matches in-game stage damage preview): API `stats_raw_npc_stage_squad_allies` per NPC —
+ *  stage-wide squad passives from other map enemies stacked (each defender gets its own total; not unit-specific).
+ *  OFF: `stats_raw` tile stats only (own + pilot + this NPC's lines). */
 function _dcDefNpcUnitMapStatsPair(u){
 const mapS=u&&u.stats_raw||{},mapB=u&&u.bonus_amounts||{};
 const stageS=u&&u.stats_raw_npc_stage_squad_allies,stageB=u&&u.bonus_amounts_npc_stage_squad_allies;
@@ -9937,10 +9939,10 @@ const sheetBuffOn=!!S.dc.masterLeagueBuff||!!S.dc.grandOffensiveBuff;
 const leaderOn=(uEff.leaderPct|0)>0;
 const hpSupportOn=(uEff.hpSupport|0)>0;
 const atkSupportOn=(uEff.atkSupport|0)>0;
-/* Main totals green when above raw LB base (leader / support flat / OP / ability %), matching in-game buffed sheet. */
+/* Main totals blue (has-bonus-val) when above raw LB base — same as defender Eternal cards. (+N) lines stay green. */
 function _dcMainStatBuffCls(cpPenOrBuff,bonusAboveRaw,extraOn){
 if(cpPenOrBuff==='dc-stat-val--penalized')return'dc-stat-val--penalized';
-if(cpPenOrBuff==='dc-stat-val--buffed'||extraOn||(bonusAboveRaw|0)>0||sheetBuffOn)return'dc-stat-val--buffed';
+if(cpPenOrBuff==='dc-stat-val--buffed'||extraOn||(bonusAboveRaw|0)>0||sheetBuffOn)return'has-bonus-val';
 return'';
 }
 const exSq=_dcEffectiveExSquadAtkPct();
@@ -9965,7 +9967,7 @@ const counterActive=(atkAfterCounter!==atkAfterPair);
 const supCntActive=(_dcEffectiveSupportCounterAtkPct()|0)>0;
 const advantageTagActive=(advAtkPct|0)>0&&S.dc.applyAdvantageEnemyTag!==false;
 const dEx=uEff.deltaExAtk|0;
-const atkExSub=exSq>0?`<div id="dcAtkUnitAtkExSub" class="stat-card-bonus" title="EX squad % delta within the same % bucket as the panel (floor; same value used in damage ⑧).">+${fmtN(dEx)} · EX squad +${exSq}%</div>`:`<div id="dcAtkUnitAtkExSub" style="display:none" aria-hidden="true"></div>`;
+const atkExSub=exSq>0?`<div id="dcAtkUnitAtkExSub" class="stat-card-bonus" title="EX squad % delta within the same % bucket as the panel (round; same value used in damage ⑧).">+${fmtN(dEx)} · EX squad +${exSq}%</div>`:`<div id="dcAtkUnitAtkExSub" style="display:none" aria-hidden="true"></div>`;
 /* Inline (+N) matches in-game MS sheet: total − raw LB growth base (not core-with-unit-ability%). */
 const atkBonusInline=Math.max(0,atkShow-(uEff.advantageFlatGrowthAtk|0));
 const hpBonusIn=Math.max(0,hpS-(uEff.hpGrowthBase|0));
@@ -10005,7 +10007,11 @@ unitTurnBuffHtml+=`<div style="font-size:10px;color:var(--text-muted);margin-top
 }
 const uGridBase=`stats-grid dc-atk-ers dc-stat-visual--${uMode} dc-stat-grid-4`;
 const uGridCls=sheetBuffOn?`${uGridBase} dc-stats-mini--ml-buff`:uGridBase;
-sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="${uGridCls}"><div class="stat-card${_uCpCell('HP')}"><div class="stat-card-label">HP</div><div class="stat-card-value"><span${spHp}>${fmtN(hpS)}</span>${hpInlineBonus}${_uCpBonusHtml('HP')}${msEnh.hpHtml}</div></div><div class="stat-card${_uCpCell('Attack')}"><div class="stat-card-label">${t('col_atk')}</div><div class="stat-card-value">${atkMainSpan}${_uCpBonusHtml('Attack')}${msEnh.atkHtml}${atkExSub}</div></div><div class="stat-card${_uCpCell('Defense')}"><div class="stat-card-label">${t('col_def')}</div><div class="stat-card-value"><span${spDefFinal}>${fmtN(defShowAdv)}</span>${defInlineBonus}${_uCpBonusHtml('Defense')}${msEnh.defHtml}</div></div><div class="stat-card${_uCpCell('Mobility')}"><div class="stat-card-label">${t('col_mob')}</div><div class="stat-card-value"><span${spMob}>${fmtN(mobS)}</span>${mobInlineBonus}${_uCpBonusHtml('Mobility')}${msEnh.mobHtml}</div></div></div>${unitModNote}${vigorCondNote}${unitTurnBuffHtml}`;
+const hpValBlue=spHpCls==='has-bonus-val'?' has-bonus-val':'';
+const atkValBlue=atkSpanClass==='has-bonus-val'?' has-bonus-val':'';
+const defValBlue=spDefCls==='has-bonus-val'?' has-bonus-val':'';
+const mobValBlue=spMobCls==='has-bonus-val'?' has-bonus-val':'';
+sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="${uGridCls}"><div class="stat-card${_uCpCell('HP')}"><div class="stat-card-label">HP</div><div class="stat-card-value${hpValBlue}"><span${spHp}>${fmtN(hpS)}</span>${hpInlineBonus}${_uCpBonusHtml('HP')}${msEnh.hpHtml}</div></div><div class="stat-card${_uCpCell('Attack')}"><div class="stat-card-label">${t('col_atk')}</div><div class="stat-card-value${atkValBlue}">${atkMainSpan}${_uCpBonusHtml('Attack')}${msEnh.atkHtml}${atkExSub}</div></div><div class="stat-card${_uCpCell('Defense')}"><div class="stat-card-label">${t('col_def')}</div><div class="stat-card-value${defValBlue}"><span${spDefFinal}>${fmtN(defShowAdv)}</span>${defInlineBonus}${_uCpBonusHtml('Defense')}${msEnh.defHtml}</div></div><div class="stat-card${_uCpCell('Mobility')}"><div class="stat-card-label">${t('col_mob')}</div><div class="stat-card-value${mobValBlue}"><span${spMob}>${fmtN(mobS)}</span>${mobInlineBonus}${_uCpBonusHtml('Mobility')}${msEnh.mobHtml}</div></div></div>${unitModNote}${vigorCondNote}${unitTurnBuffHtml}`;
 renderDcWeaponArea();
 _dcUpdateAdvantageEnemyTagUi();_dcUpdateZeonEnemyTagUi();
 _dcUpdateSupportCounterAtkUi();
@@ -10044,10 +10050,10 @@ if(exSq>0){
 sub.style.display='';
 sub.removeAttribute('aria-hidden');
 sub.className='stat-card-bonus';
-sub.title='floor(base×(100+passive%+OP%+turn%+leader%+EX%+ML)/100): delta from EX% in that sum.';
+sub.title='round(base×(100+passive%+OP%+turn%+leader%+EX%+ML)/100): delta from EX% in that sum.';
 sub.textContent=`+${fmtN(uEff.deltaExAtk|0)} · EX squad +${exSq}%`;
-main.classList.remove('dc-stat-val--penalized');
-main.classList.add('dc-stat-val--buffed');
+main.classList.remove('dc-stat-val--penalized','dc-stat-val--buffed');
+main.classList.add('has-bonus-val');
 main.title=cPct>0?'Includes EX squad ATK % and own ATK when countering (unit)':'Includes EX squad ATK %';
 }else if(cPct>0){
 sub.style.display='';
@@ -10055,8 +10061,8 @@ sub.removeAttribute('aria-hidden');
 sub.className='stat-card-bonus';
 sub.title='EX ability: MS Attack when countering';
 sub.textContent=`+${fmtN(atkMid-atkAfterPair)} · counter +${cPct}%`;
-main.classList.remove('dc-stat-val--penalized');
-main.classList.add('dc-stat-val--buffed');
+main.classList.remove('dc-stat-val--penalized','dc-stat-val--buffed');
+main.classList.add('has-bonus-val');
 main.title='Includes own ATK when countering (unit)';
 }else{
 sub.style.display='none';
@@ -10072,19 +10078,20 @@ const counterOn=atkAfterCounter!==atkAfterPair;
 const supOn=(_dcEffectiveSupportCounterAtkPct()|0)>0;
 const advOn=(advAtkPct|0)>0&&S.dc.applyAdvantageEnemyTag!==false&&atkMid!==atkAfterCounter;
 const sheetBuffMlGo=!!S.dc.masterLeagueBuff||!!S.dc.grandOffensiveBuff;
-const otherBuff=sheetBuffMlGo||leaderOn||pairOn||counterOn||supOn||advOn||unitTurnAtkOn;
+const otherBuff=sheetBuffMlGo||leaderOn||pairOn||counterOn||supOn||advOn||unitTurnAtkOn||atkBonusRe>0;
 const cpAtkPos=uCp&&b>a;
 const keepBuff=otherBuff||cpAtkPos;
+main.classList.remove('dc-stat-val--penalized','dc-stat-val--buffed','has-bonus-val');
 if(cpAtkNeg){
 main.classList.add('dc-stat-val--penalized');
-main.classList.remove('dc-stat-val--buffed');
 }else if(keepBuff){
-main.classList.add('dc-stat-val--buffed');
-main.classList.remove('dc-stat-val--penalized');
-}else{
-main.classList.remove('dc-stat-val--buffed');
-main.classList.remove('dc-stat-val--penalized');
+main.classList.add('has-bonus-val');
 }
+}
+const atkWrap=main.parentElement;
+if(atkWrap&&atkWrap.classList.contains('stat-card-value')){
+if(main.classList.contains('has-bonus-val'))atkWrap.classList.add('has-bonus-val');
+else atkWrap.classList.remove('has-bonus-val');
 }
 }
 function setDcUnitStatMode(mode){S.dc.unitStatMode=mode;if(S.dc.atkUnitData&&!S.dc.atkUnitData._manual){const b=_dcPickBestWeaponIndices(S.dc.atkUnitData);S.dc.wpnIdx=b.wpnIdx;S.dc.wpnLv=b.wpnLv}renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
@@ -10173,7 +10180,14 @@ function _cCpValBuff(nm){if(!cCp)return'';const a=Math.round(_dcFindStat(statsNo
 function _cCpBonusHtml(nm){if(!cCp)return'';const a=Math.round(_dcFindStat(statsNoCp,nm)||0),b=Math.round(_dcFindStat(stats,nm)||0);const d=b-a;if(d===0)return'';const tipUp='Conditional passive — extra growth stat vs off (pilot row; main number may include skills).';const tipDn='Conditional passive — stat change vs off (pilot row; main number may include skills).';if(d>0)return`<div class="stat-card-bonus" style="margin-top:2px" title="${escAttr(tipUp)}">(+${fmtN(d)})</div>`;return`<div class="stat-card-bonus stat-card-penalty" style="margin-top:2px" title="${escAttr(tipDn)}">(${fmtN(d)})</div>`}
 function _skillValBuff(nm){if(nm==='Defense'&&defPctSk>0)return'dc-stat-val--buffed';if(['Ranged','Melee','Awaken'].includes(nm)&&(skPct[nm]||0)>0)return'dc-stat-val--buffed';return''}
 function _charStatValCls(nm){const a=_cCpValBuff(nm),b=_skillValBuff(nm);return a&&b?a+' '+b:(a||b||'')}
-function _charStatValSpan(nm,val){const cls=_charStatValCls(nm);return`<span${cls?` class="${cls}"`:''}>${fmtN(val)}</span>`}
+function _charHasSheetBonus(nm,val){const ent=_dcFindStatEntry(stats,nm);if(!ent)return false;return Math.round(Number(val)||0)>Math.max(0,Number(ent.base)||0)}
+function _cBonusCard(nm,val){if(_cCpValBuff(nm)==='dc-stat-val--penalized')return'';return _charHasSheetBonus(nm,val)?' has-cond-bonus':''}
+function _charStatValSpan(nm,val){
+const penal=_cCpValBuff(nm)==='dc-stat-val--penalized'?'dc-stat-val--penalized':'';
+const blue=_charHasSheetBonus(nm,val)?'has-bonus-val':'';
+const use=[penal,blue].filter(Boolean).join(' ');
+return`<span${use?` class="${use}"`:''}>${fmtN(val)}</span>`;
+}
 function _dcCharPassiveBonusLine(nm,displayedTotal){
 const ent=_dcFindStatEntry(stats,nm);
 if(!ent)return'';
@@ -10189,7 +10203,7 @@ return`<div class="stat-card-bonus" title="${escAttr(tip)}">+${fmtN(bonusFromBas
 }
 const cVis=`stats-grid dc-atk-ers dc-stat-visual--${cMode} dc-stat-grid-5`;
 const bonLn=(nm,v)=>_dcCharPassiveBonusLine(nm,v);
-sa.innerHTML=(sa.innerHTML||'')+`<div class="dc-section-label" style="margin-top:8px">${t('dc_char_stats')}</div><div class="${cVis}"><div class="stat-card${_cCpCell('Ranged')}${_skillCell('Ranged')}"><div class="stat-card-label">${t('col_ranged')}</div><div class="stat-card-value">${_charStatValSpan('Ranged',r)}${bonLn('Ranged',r)}${_cCpBonusHtml('Ranged')}</div></div><div class="stat-card${_cCpCell('Melee')}${_skillCell('Melee')}"><div class="stat-card-label">${t('col_melee')}</div><div class="stat-card-value">${_charStatValSpan('Melee',m)}${bonLn('Melee',m)}${_cCpBonusHtml('Melee')}</div></div><div class="stat-card${_cCpCell('Awaken')}${_skillCell('Awaken')}"><div class="stat-card-label">${t('col_awaken')}</div><div class="stat-card-value">${_charStatValSpan('Awaken',a)}${bonLn('Awaken',a)}${_cCpBonusHtml('Awaken')}</div></div><div class="stat-card${_cCpCell('Defense')}${_skillCell('Defense')}"><div class="stat-card-label">${t('col_defense')}</div><div class="stat-card-value">${_charStatValSpan('Defense',d)}${bonLn('Defense',d)}${_cCpBonusHtml('Defense')}</div></div><div class="stat-card${_cCpCell('Reaction')}"><div class="stat-card-label">${t('col_reaction')}</div><div class="stat-card-value">${_charStatValSpan('Reaction',re)}${bonLn('Reaction',re)}${_cCpBonusHtml('Reaction')}</div></div></div>`;
+sa.innerHTML=(sa.innerHTML||'')+`<div class="dc-section-label" style="margin-top:8px">${t('dc_char_stats')}</div><div class="${cVis}"><div class="stat-card${_cCpCell('Ranged')}${_skillCell('Ranged')}${_cBonusCard('Ranged',r)}"><div class="stat-card-label">${t('col_ranged')}</div><div class="stat-card-value${_charHasSheetBonus('Ranged',r)?' has-bonus-val':''}">${_charStatValSpan('Ranged',r)}${bonLn('Ranged',r)}${_cCpBonusHtml('Ranged')}</div></div><div class="stat-card${_cCpCell('Melee')}${_skillCell('Melee')}${_cBonusCard('Melee',m)}"><div class="stat-card-label">${t('col_melee')}</div><div class="stat-card-value${_charHasSheetBonus('Melee',m)?' has-bonus-val':''}">${_charStatValSpan('Melee',m)}${bonLn('Melee',m)}${_cCpBonusHtml('Melee')}</div></div><div class="stat-card${_cCpCell('Awaken')}${_skillCell('Awaken')}${_cBonusCard('Awaken',a)}"><div class="stat-card-label">${t('col_awaken')}</div><div class="stat-card-value${_charHasSheetBonus('Awaken',a)?' has-bonus-val':''}">${_charStatValSpan('Awaken',a)}${bonLn('Awaken',a)}${_cCpBonusHtml('Awaken')}</div></div><div class="stat-card${_cCpCell('Defense')}${_skillCell('Defense')}${_cBonusCard('Defense',d)}"><div class="stat-card-label">${t('col_defense')}</div><div class="stat-card-value${_charHasSheetBonus('Defense',d)?' has-bonus-val':''}">${_charStatValSpan('Defense',d)}${bonLn('Defense',d)}${_cCpBonusHtml('Defense')}</div></div><div class="stat-card${_cCpCell('Reaction')}${_cBonusCard('Reaction',re)}"><div class="stat-card-label">${t('col_reaction')}</div><div class="stat-card-value${_charHasSheetBonus('Reaction',re)?' has-bonus-val':''}">${_charStatValSpan('Reaction',re)}${bonLn('Reaction',re)}${_cCpBonusHtml('Reaction')}</div></div></div>`;
 area.innerHTML+=_dcHtmlSheetBuffToggles();
 _dcRenderPilotBonuses(area,cd);
 _dcRenderPilotSkills(area,cd);
@@ -11565,8 +11579,10 @@ slSnap._pilotDmgCritExplicit=true;
 S.dc.atkSlots[si]=slSnap;
 }
 }
-if(_sqPanelChg&&S.dc.atkUnitData&&!S.dc.atkUnitData._manual)renderDcAtkUnit();
-else _dcRefreshDcUnitAtkExOnly();
+if(_sqPanelChg&&S.dc.atkUnitData&&!S.dc.atkUnitData._manual){
+renderDcAtkUnit();
+if(S.dc.atkCharData)renderDcAtkChar();
+}else _dcRefreshDcUnitAtkExOnly();
 renderDcResult();
 }
 function _dcRefreshAtkPanelsAfterMods(){
@@ -12302,7 +12318,7 @@ cb.disabled=false;
 _dcApplyAutoZeonForMatchingDefender(info.wt);
 cb.checked=S.dc.applyZeonEnemyTag!==false;
 }
-/** Breakdown +lines under MS HP/ATK/DEF/MOB: % bucket uses floor (same as panel MS ATK). Supporter flats use a distinct color. */
+/** Breakdown +lines under MS HP/ATK/DEF/MOB: % bucket uses round (same as panel MS ATK). Supporter flats use a distinct color. */
 function _dcMsStatEnhancementLinesHtml(ctx,atkUnitStats){
 const F=Math.floor;
 const c=ctx||{};
@@ -12333,27 +12349,27 @@ let turnAtkPct=0;
 if(c.unitTurnBuffAtk&&c.atkUnitData&&!c.atkUnitData._manual)turnAtkPct=Math.max(0,_dcGetDetectedUnitTurnBuffPercents(c.atkUnitData).atkPct|0);
 const tAtk=turnAtkPct|0;
 function L(n,longT,cls){const v=Math.max(0,Math.floor(Number(n)||0));if(!v)return'';const isSupp=cls&&String(cls).indexOf('supporter-flat')>=0;const cName=cls?`stat-card-bonus ${cls}`:'stat-card-bonus';const style=isSupp?' style="color:var(--accent-orange)!important;text-shadow:0 0 8px rgba(255,149,0,.4)"':'';return`<div class="${cName}"${style} title="${escAttr(longT)}">+${fmtN(v)}</div>`}
-const coreHp=F(hpBase*(100+pHp)/100);
-const pctHp=F(hpBase*(100+pHp+(opPct.HP|0)+lp+sheetBuffPct)/100)-coreHp;
+const coreHp=Math.round(hpBase*(100+pHp)/100);
+const pctHp=Math.round(hpBase*(100+pHp+(opPct.HP|0)+lp+sheetBuffPct)/100)-coreHp;
 const hpHtml=L(pctHp,'Option part %, leader skill %, Master League / Grand Offensive (HP)')+L(opFlat.HP|0,'Option part flat HP')+L(hpSupport|0,'Supporter HP support','stat-card-bonus--supporter-flat');
 const scAtk=c.squadCondAtkPct|0;
 const scDef=c.squadCondDefPct|0;
 const supCnt=_dcEffectiveSupportCounterAtkPctFromCtx(c);
-const coreDef=F(defBase*(100+pDef)/100);
-const pctDef=F(defBase*(100+pDef+(opPct.Defense|0)+lp+sheetBuffPct+(scDef|0))/100)-coreDef;
+const coreDef=Math.round(defBase*(100+pDef)/100);
+const pctDef=Math.round(defBase*(100+pDef+(opPct.Defense|0)+lp+sheetBuffPct+(scDef|0))/100)-coreDef;
 const defHtml=L(pctDef,'Option part %, leader skill %, Master League / Grand Offensive (DEF)'+(scDef?' · Squad conditions':''))+L(opFlat.Defense|0,'Option part flat Defense');
-const coreMob=F(mobBase*(100+pMob)/100);
-const pctMob=F(mobBase*(100+pMob+(opPct.Mobility|0)+lp+sheetBuffPct)/100)-coreMob;
+const coreMob=Math.round(mobBase*(100+pMob)/100);
+const pctMob=Math.round(mobBase*(100+pMob+(opPct.Mobility|0)+lp+sheetBuffPct)/100)-coreMob;
 const mobHtml=L(pctMob,'Option part %, leader skill %, Master League / Grand Offensive (MOB)')+L(opFlat.Mobility|0,'Option part flat Mobility');
-const coreAtk=F(atkBase*(100+pAtk)/100);
-const pctAtkNoEx=F(atkBase*(100+pAtk+opAt+tAtk+sheetBuffPct+lp+(scAtk|0)+(supCnt|0))/100)-coreAtk;
+const coreAtk=Math.round(atkBase*(100+pAtk)/100);
+const pctAtkNoEx=Math.round(atkBase*(100+pAtk+opAt+tAtk+sheetBuffPct+lp+(scAtk|0)+(supCnt|0))/100)-coreAtk;
 const atkHtml=L(pctAtkNoEx,'Option part %, 1-turn MS ATK %, leader %, ML/GO, squad conditions, Support Attack/Counter % (EX squad % is on the EX line below)')+L(opFlat.Attack|0,'Option part flat Attack')+L(atkSupport|0,'Supporter ATK support','stat-card-bonus--supporter-flat');
 return{hpHtml,atkHtml,defHtml,mobHtml};
 }
-/** MS growth % buckets use floor (integer %). In-game Versal LB1 10126 +15%+12%+Lacus LB2 40% + ATK support 260 → 17170 (not ceil 17171). opts.useCeil: probe-only. */
+/** MS growth % buckets use round (half up). Versal LB1 10126 +15%+12%+5% squad + leader 36% + ATK+240 → 17252; Lacus 40% +260 → 17170 (ceil would be 17171). opts.useCeil: probe-only. */
 function _dcGetModifiedAttackerUnitStatsFromCtx(ctx,atkUnitStats,opts){
 const F=Math.floor,C=Math.ceil;
-const R=(opts&&opts.useCeil)?C:F;
+const R=(opts&&opts.useCeil)?C:Math.round;
 const c=ctx||{};
 const scAtk=c.squadCondAtkPct|0;
 const scDef=c.squadCondDefPct|0;
