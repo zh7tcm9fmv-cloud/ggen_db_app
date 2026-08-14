@@ -6978,6 +6978,10 @@ if(o.cu!==undefined){const n=parseInt(o.cu,10);if(Number.isFinite(n)){slot.critD
 if(o.exa!==undefined){const n=parseInt(o.exa,10);if(Number.isFinite(n)){slot.exSquadAtkPct=Math.min(20,Math.max(0,n));slot.exSquadAtkPctExplicitZero=(n===0)}}else slot.exSquadAtkPctExplicitZero=false;
 if(o.sqc!==undefined){const n=parseInt(o.sqc,10);if(Number.isFinite(n))slot.squadCondPct=Math.max(0,n);else slot.squadCondPct=0}
 else if(!o.atkM)slot._dcSquadCondShareMissing=1;
+if(slot.squadCondPct===0&&slot.atkCharData&&slot.atkUnitData&&!slot.atkCharData._manual&&!slot.atkUnitData._manual){
+const _sqDef=_dcDefaultSquadCondPctForCdUd(slot.atkCharData,slot.atkUnitData);
+if(_sqDef>0)slot.squadCondPct=_sqDef;
+}
 if(o.td!==undefined){const n=parseInt(o.td,10);if(!Number.isNaN(n)&&n>=0)slot._wpnTraitDistPow=n}
 if(o.th!==undefined){const n=parseInt(o.th,10);if(!Number.isNaN(n)&&n>=0)slot._wpnTraitHpPow=n}
 if(o.ucp)slot.unitCondPassive=true;
@@ -9619,6 +9623,16 @@ function toggleDcBigRangZeonSquadBuff(){
 const cb=document.getElementById('dcBigRangZeonSquadApply');
 setDcBigRangZeonSquadBuff(cb?!cb.checked:!S.dc.bigRangZeonSquadBuff);
 }
+function _dcSelfMatchingSquadFlatAdPct(b,ud,cd){
+if(!b||!ud||ud._manual)return 0;
+if(b.kind==='dual_flat_ad'){
+let sum=0;
+(b.parts||[]).forEach(p=>{if(_dcSquadRecvGroupMet(ud,cd,p.recvGroup))sum+=p.flatPct|0});
+return sum;
+}
+if(b.kind==='flat_ad'&&!b.flatPerUnit&&_dcSquadRecvGroupMet(ud,cd,b.recvGroup))return b.flatPct|0;
+return 0;
+}
 function _dcEffectiveDualFlatAdPct(b,ud,cd,raw){
 if(!b||b.kind!=='dual_flat_ad')return 0;
 let sum=0;
@@ -9630,6 +9644,8 @@ const v=Math.min(Math.max(0,cap),Math.max(0,raw|0));
 if(sum<=0)return v;
 /* User field is the total aura % (default = matching sum). Scale down if they lower it. */
 if(v>=sum)return sum;
+/* Permanent dual-tag auras (e.g. Sandaime EX): unset/0 still buffs the carrier when their MS matches. */
+if(v===0)return sum;
 return v;
 }
 /** Flat ATK+DEF auras from other Damage Calculator attacker slots (same idea as Team Builder cross-slot). */
@@ -9682,7 +9698,8 @@ const rg=b.recvGroup;
 if(rg&&!_dcSquadRecvGroupMet(ud,cd,rg)){/* skip local */}
 else{
 const cap=_dcSquadCondInputCap(cd,ud);
-const v=Math.min(Math.max(0,cap),raw);
+let v=Math.min(Math.max(0,cap),raw);
+if(!b.flatPerUnit&&v===0){const selfFlat=_dcSelfMatchingSquadFlatAdPct(b,ud,cd);if(selfFlat>0)v=selfFlat}
 if(b.flatPerUnit){const per=b.flatPct|0;const eff=per*v;S.dc.squadCondAtkPct=eff;S.dc.squadCondDefPct=eff}
 else{S.dc.squadCondAtkPct=v;S.dc.squadCondDefPct=v}
 }
@@ -12513,13 +12530,18 @@ const offExp=((5000-atkCombined)*30)/100000;
 const defExp=((5000-defCombined)*3)/100000;
 const offenseComponent=(10000/100)/(EXP(offExp)+1);
 const defenseComponent=(-4000/100)/(EXP(defExp)+1);
-/** ⑦ Round each correction slice away from 0 before add (ceil if ≥0, floor if <0).
- *  Plain Math.ceil on a negative defense slice undershoots the cut (e.g. Graze Ein + Melee Boost → 218517 vs in-game 218515).
- *  Float sum of both slices then one ceil matched some soft targets but misses hard-DEF cases. */
+/** ⑦ Correction rounding (Firered ⑦ + in-game spot checks):
+ *  - Hard-DEF (Graze Ein): sum fraction ≪ 1 → round each slice away from 0, then add.
+ *  - Soft-DEF (Versal vs Xi, Nu, Wing Zero, Vidar): when float sum fraction ≥ 0.1, round away on combined float. */
 const _dcRoundAway0=(x)=>x>=0?C(x):F(x);
-const offenseCorrection=_dcRoundAway0(offenseComponent*baseDamage);
-const defenseCorrection=_dcRoundAway0(defenseComponent*baseDamage);
-const damageCorrection=offenseCorrection+defenseCorrection;
+const _offCorrRaw=offenseComponent*baseDamage;
+const _defCorrRaw=defenseComponent*baseDamage;
+const _corrSumRaw=_offCorrRaw+_defCorrRaw;
+const _corrSplit=_dcRoundAway0(_offCorrRaw)+_dcRoundAway0(_defCorrRaw);
+const _corrFrac=_corrSumRaw-F(_corrSumRaw);
+const damageCorrection=_corrFrac>=0.1?_dcRoundAway0(_corrSumRaw):_corrSplit;
+const offenseCorrection=_dcRoundAway0(_offCorrRaw);
+const defenseCorrection=_dcRoundAway0(_defCorrRaw);
 const isExWeapon=!!wpn.is_ex;
 const userDmgIncreasePct=S.dc.dmgIncrease||0;
 const userCritDmgUpPct=S.dc.critDmgUp||0;

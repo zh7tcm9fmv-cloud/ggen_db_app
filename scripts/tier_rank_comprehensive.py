@@ -586,9 +586,12 @@ def _sim_calc_normal_damage(
     def _away0(x: float) -> int:
         return C(x) if x >= 0 else F(x)
 
-    damage_correction = _away0(offense_component * base_damage) + _away0(
-        defense_component * base_damage
-    )
+    off_raw = offense_component * base_damage
+    def_raw = defense_component * base_damage
+    sum_raw = off_raw + def_raw
+    split = _away0(off_raw) + _away0(def_raw)
+    frac = sum_raw - F(sum_raw)
+    damage_correction = _away0(sum_raw) if frac >= 0.1 else split
     battle_damage = C((base_damage + damage_correction) * terrain_correction)
     scaled_normal = C(dmg_mult_pct * battle_damage / 100)
     normal_dmg = MX(0, C(battle_damage + scaled_normal))

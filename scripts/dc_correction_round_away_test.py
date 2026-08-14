@@ -1,7 +1,7 @@
-"""Regression: DC correction slices round away from 0 (Graze Ein +2 bug).
+"""Regression: DC correction rounding (Firered ⑦ + in-game spot checks).
 
-In-game Versal LB1 + UCP + Melee Boost + Super vs Graze Ein (90520024) → 218515.
-Float-sum then ceil overshoots to 218517. Both-Math.ceil also wrong on soft targets.
+Graze Ein (hard DEF): per-slice round-away — float-sum overshoots +2.
+Versal vs Xi (stage squad DEF): combined float round-away when sum fraction ≥ 0.1.
 
 Run: python scripts/dc_correction_round_away_test.py
 """
@@ -20,6 +20,23 @@ def F(x: float) -> int:
 
 def round_away_0(x: float) -> int:
     return C(x) if x >= 0 else F(x)
+
+
+def damage_correction(off: float, deff: float, base: int, *, mode: str) -> int:
+    off_raw = off * base
+    def_raw = deff * base
+    sum_raw = off_raw + def_raw
+    split = round_away_0(off_raw) + round_away_0(def_raw)
+    if mode == "float":
+        return round_away_0(sum_raw)
+    if mode == "both_ceil":
+        return C(off_raw) + C(def_raw)
+    if mode == "away0":
+        return split
+    if mode == "hybrid":
+        frac = sum_raw - F(sum_raw)
+        return round_away_0(sum_raw) if frac >= 0.1 else split
+    raise ValueError(mode)
 
 
 def normal_dmg(
@@ -43,30 +60,27 @@ def normal_dmg(
     def_c = C((unit_def + 2 * char_def) / 10)
     off = 100 / (EXP(((5000 - atk_c) * 30) / 100000) + 1)
     deff = -40 / (EXP(((5000 - def_c) * 3) / 100000) + 1)
-    if mode == "float":
-        corr = (off + deff) * base
-        battle = C(base + corr)
-    elif mode == "both_ceil":
-        battle = C(base + C(off * base) + C(deff * base))
-    elif mode == "away0":
-        battle = base + round_away_0(off * base) + round_away_0(deff * base)
-    else:
-        raise ValueError(mode)
+    corr = damage_correction(off, deff, base, mode=mode)
+    battle = C(base + corr)
     return MX(0, C(battle + C((di + vigor) * battle / 100)))
 
 
 def main() -> None:
-    # Graze Ein hard DEF, UCP unit ATK 18689, melee 1062, EX+20% WP, +35% dealt, Super
     ge = dict(unit_atk=18689, char_atk=1062, unit_def=20780, char_def=608, wpn=9648, di=35, vigor=30)
-    assert normal_dmg(**ge, mode="away0") == 218515, normal_dmg(**ge, mode="away0")
-    assert normal_dmg(**ge, mode="float") == 218517
-
-    # Prior soft-target check: Kimaris Vidar, no UCP/skill, High vigor → 238778
     kv = dict(unit_atk=17170, char_atk=885, unit_def=11494, char_def=602, wpn=9648, di=35, vigor=10)
-    assert normal_dmg(**kv, mode="away0") == 238778, normal_dmg(**kv, mode="away0")
-    assert normal_dmg(**kv, mode="float") == 238778
+    xi = dict(unit_atk=17252, char_atk=885, unit_def=15478, char_def=738, wpn=9648, di=35, vigor=10)
+    nu = dict(unit_atk=17252, char_atk=885, unit_def=20400, char_def=706, wpn=9648, di=35, vigor=10)
+    wing = dict(unit_atk=17252, char_atk=885, unit_def=20343, char_def=696, wpn=9648, di=35, vigor=10)
 
-    print("dc_correction_round_away_test: OK (Graze Ein 218515 + Vidar 238778)")
+    assert normal_dmg(**ge, mode="hybrid") == 218515
+    assert normal_dmg(**ge, mode="float") == 218517
+    assert normal_dmg(**kv, mode="hybrid") == 238778
+    assert normal_dmg(**xi, mode="hybrid") == 182303
+    assert normal_dmg(**xi, mode="away0") == 182302
+    assert normal_dmg(**nu, mode="hybrid") == 136213
+    assert normal_dmg(**wing, mode="hybrid") == 137807
+
+    print("dc_correction_round_away_test: OK (Graze 218515, Xi 182303, Nu/Wing/Vidar)")
 
 
 if __name__ == "__main__":
