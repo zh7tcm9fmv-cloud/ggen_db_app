@@ -16146,13 +16146,15 @@ def _sp_investment_prepare_payload(path):
             linked_unit_to_char=LINKED_UNIT_CHARACTER_MAP,
         )
         _sir_sd.stamp_unit_after_move_map_flags(payload)
+        _sir_sd.stamp_bbt_eligible_flags(payload)
     except Exception:
         pass
-    if not payload.get('scoring_guide'):
-        try:
-            import sp_investment_rank as _sir
-            payload['scoring_guide'] = _sir.scoring_guide_payload()
-        except Exception:
+    try:
+        import sp_investment_rank as _sir
+        # Always refresh guide so live clients get role cutoffs + BBT gate config.
+        payload['scoring_guide'] = _sir.scoring_guide_payload()
+    except Exception:
+        if not payload.get('scoring_guide'):
             payload['scoring_guide'] = {}
     # Convert CDN image URLs once so jsonify_cacheable can skip re-walking.
     payload = convert_image_urls(payload)

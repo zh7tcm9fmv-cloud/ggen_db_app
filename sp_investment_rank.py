@@ -347,6 +347,9 @@ def apply_community_adj_to_row(row: dict, adj: int, rules: dict | None = None) -
         out["letter"] = letter_for_total(
             rules, out["total"], cutoffs_key="pilot_letter_cutoffs", role=role
         )
+        if str(role) == "Defense" and out["letter"] == "S+":
+            if not defense_pilot_bbt_eligible(rules, out):
+                out["letter"] = "S"
     else:
         out["letter"] = letter_for_unit_total(
             rules,
@@ -4023,7 +4026,19 @@ def score_unit(
         },
         "peaks_with_ur_pilot": bool(feats.get("ur_pilot_dependent")),
         "has_after_move_map": bool(feats.get("has_after_move_map")),
+        "has_unit_support_defense": bool(feats.get("has_unit_support_defense")),
     }
+    role = str(feats.get("role") or "")
+    if role == "Defense":
+        row["bbt_eligible"] = bool(
+            defense_unit_bbt_eligible(rules, scored.get("breakdown"), feats)
+        )
+    elif role == "Support":
+        row["bbt_eligible"] = bool(
+            support_unit_bbt_eligible(rules, scored.get("breakdown"))
+        )
+    else:
+        row["bbt_eligible"] = True
     if feats.get("series_advantage"):
         row["series_advantage"] = feats.get("series_advantage")
     if feats.get("er_expert_ids") is not None:
@@ -5279,12 +5294,17 @@ def scoring_guide_payload(rules: dict | None = None) -> dict:
     guide["bucket_by_letter"] = rules.get("bucket_by_letter") or {}
     guide["letter_cutoffs"] = rules.get("letter_cutoffs") or []
     guide["ur_letter_cutoffs"] = rules.get("ur_letter_cutoffs") or []
+    guide["letter_cutoffs_by_role"] = rules.get("letter_cutoffs_by_role") or {}
+    guide["ur_letter_cutoffs_by_role"] = rules.get("ur_letter_cutoffs_by_role") or {}
     guide["pilot_letter_cutoffs"] = rules.get("pilot_letter_cutoffs") or rules.get(
         "letter_cutoffs"
     ) or []
     guide["pilot_letter_cutoffs_by_role"] = rules.get("pilot_letter_cutoffs_by_role") or {}
     guide["pilot_letter_hybrid"] = rules.get("pilot_letter_hybrid") or {}
     guide["ur_pilot_letter_cutoffs"] = rules.get("ur_pilot_letter_cutoffs") or []
+    guide["defense_bbt_gate"] = rules.get("defense_bbt_gate") or {}
+    guide["support_bbt_gate"] = rules.get("support_bbt_gate") or {}
+    guide["defense_pilot_bbt_gate"] = rules.get("defense_pilot_bbt_gate") or {}
     # Prefer nested guide version (e.g. 5.4) over top-level rules.version
     guide["version"] = (rules.get("scoring_guide") or {}).get("version") or rules.get(
         "version", 1
@@ -6881,6 +6901,15 @@ def score_character(
             "Reaction": feats.get("Reaction"),
         },
         "best_rec_ms_letter": feats.get("best_rec_ms_letter") or "",
+        "bbt_eligible": (
+            bool(
+                defense_pilot_bbt_eligible(
+                    rules, {"breakdown": scored.get("breakdown") or {}}
+                )
+            )
+            if str(feats.get("role") or "") == "Defense"
+            else True
+        ),
     }
     if feats.get("er_expert_ids") is not None:
         row["er_expert_ids"] = list(feats.get("er_expert_ids") or [])
@@ -7183,6 +7212,55 @@ def stamp_unit_after_move_map_flags(payload) -> None:
                     row["has_after_move_map"] = bool(unit_has_after_move_map(A, uid))
                 except Exception:
                     row["has_after_move_map"] = False
+
+
+def stamp_bbt_eligible_flags(payload, rules: dict | None = None) -> None:
+    """Stamp bbt_eligible so live vote reletter matches Defense/Support BBT gates."""
+    if not isinstance(payload, dict):
+        return
+    rules = rules or load_rules()
+    units_wrap = payload.get("units") if isinstance(payload.get("units"), dict) else {}
+    boards: list[dict] = []
+    if isinstance(units_wrap, dict):
+        for key in ("sp", "ssp"):
+            b = units_wrap.get(key)
+            if isinstance(b, dict):
+                boards.append(b)
+    for key in ("sp", "ssp"):
+        b = payload.get(key)
+        if isinstance(b, dict) and b not in boards:
+            boards.append(b)
+    for board in boards:
+        for bucket in board.values():
+            if not isinstance(bucket, list):
+                continue
+            for row in bucket:
+                if not isinstance(row, dict):
+                    continue
+                role = str(row.get("role") or "")
+                if role == "Defense":
+                    row["bbt_eligible"] = bool(
+                        defense_unit_bbt_eligible(rules, row.get("breakdown"), row)
+                    )
+                elif role == "Support":
+                    row["bbt_eligible"] = bool(
+                        support_unit_bbt_eligible(rules, row.get("breakdown"))
+                    )
+                else:
+                    row["bbt_eligible"] = True
+    chars = ((payload.get("characters") or {}).get("sp")) if isinstance(payload.get("characters"), dict) else None
+    if isinstance(chars, dict):
+        for bucket in chars.values():
+            if not isinstance(bucket, list):
+                continue
+            for row in bucket:
+                if not isinstance(row, dict):
+                    continue
+                role = str(row.get("role") or "")
+                if role == "Defense":
+                    row["bbt_eligible"] = bool(defense_pilot_bbt_eligible(rules, row))
+                else:
+                    row["bbt_eligible"] = True
 
 
 def _lookup_series_display_name(snm: dict, tid: str) -> str | None:

@@ -329,23 +329,105 @@
     }
   }
 
-  function letterFromTotalForKind(row, total, kind) {
-    const g = (payload && payload.scoring_guide) || {};
-    let cuts;
-    if (kind === 'character') {
-      cuts = g.pilot_letter_cutoffs || g.letter_cutoffs || [];
-    } else {
-      const cohort = row.letter_cohort || (row.has_sp ? 'sp' : 'ur');
-      cuts =
-        cohort === 'ur'
-          ? g.ur_letter_cutoffs || g.letter_cutoffs || []
-          : g.letter_cutoffs || [];
-    }
+  function letterFromCutoffs(cuts, total) {
     const n = Number(total) || 0;
-    for (let i = 0; i < (cuts || []).length; i++) {
-      if (n >= Number(cuts[i].min)) return String(cuts[i].letter || 'E');
+    const list = cuts || [];
+    for (let i = 0; i < list.length; i++) {
+      if (n >= Number(list[i].min)) return String(list[i].letter || 'E');
     }
     return 'E';
+  }
+
+  function guideCutoffsForUnit(row) {
+    const g = (payload && payload.scoring_guide) || {};
+    const role = String((row && row.role) || '');
+    const cohort = (row && row.letter_cohort) || ((row && row.has_sp) ? 'sp' : 'ur');
+    const byRole =
+      cohort === 'ur'
+        ? g.ur_letter_cutoffs_by_role || {}
+        : g.letter_cutoffs_by_role || {};
+    const roleCuts = role && byRole[role];
+    if (roleCuts && roleCuts.length) return roleCuts;
+    return cohort === 'ur'
+      ? g.ur_letter_cutoffs || g.letter_cutoffs || []
+      : g.letter_cutoffs || [];
+  }
+
+  function guideCutoffsForCharacter(row) {
+    const g = (payload && payload.scoring_guide) || {};
+    const role = String((row && row.role) || '');
+    const byRole = g.pilot_letter_cutoffs_by_role || {};
+    const roleCuts = role && byRole[role];
+    if (roleCuts && roleCuts.length) return roleCuts;
+    return g.pilot_letter_cutoffs || g.letter_cutoffs || [];
+  }
+
+  function defenseUnitBbtEligible(row) {
+    if (!row) return false;
+    if (typeof row.bbt_eligible === 'boolean') return row.bbt_eligible;
+    const g = (payload && payload.scoring_guide) || {};
+    const cfg = g.defense_bbt_gate || {};
+    if (cfg.enabled === false) return true;
+    const bd = row.breakdown || {};
+    const hp = Number(bd.hp) || 0;
+    const shield = Number(bd.shield) || 0;
+    const spec = Number(bd.special_defense) || 0;
+    const extraLife = Number(bd.extra_life) || 0;
+    const pre = Number(bd.preemptive) || 0;
+    const mov = Number(bd.movement) || 0;
+    const atkDn = Number(bd.max_debuff) || 0;
+    const minHp = Number(cfg.min_hp_points != null ? cfg.min_hp_points : 1) || 1;
+    const highHp = Number(cfg.high_hp_points != null ? cfg.high_hp_points : 2) || 2;
+    const minMov = Number(cfg.min_movement_points != null ? cfg.min_movement_points : 2) || 2;
+    const minAtkDn = Number(cfg.min_atk_down_points != null ? cfg.min_atk_down_points : 1) || 1;
+    const tank =
+      extraLife > 0 || hp >= highHp || (hp >= minHp && (shield > 0 || spec >= 1));
+    const advantage =
+      pre > 0 ||
+      !!row.has_unit_support_defense ||
+      Number(bd.unit_support_defense) > 0 ||
+      mov >= minMov;
+    return !!(tank && advantage && atkDn >= minAtkDn);
+  }
+
+  function supportUnitBbtEligible(row) {
+    if (!row) return false;
+    if (typeof row.bbt_eligible === 'boolean') return row.bbt_eligible;
+    const g = (payload && payload.scoring_guide) || {};
+    const cfg = g.support_bbt_gate || {};
+    if (cfg.enabled === false) return true;
+    const need = Number(cfg.min_max_debuff_points != null ? cfg.min_max_debuff_points : 1) || 1;
+    return (Number((row.breakdown || {}).max_debuff) || 0) >= need;
+  }
+
+  function defensePilotBbtEligible(row) {
+    if (!row) return false;
+    if (typeof row.bbt_eligible === 'boolean') return row.bbt_eligible;
+    const g = (payload && payload.scoring_guide) || {};
+    const cfg = g.defense_pilot_bbt_gate || {};
+    if (cfg.enabled === false) return true;
+    const bd = row.breakdown || {};
+    const need = Number(cfg.min_primary_stat_points != null ? cfg.min_primary_stat_points : 1) || 1;
+    return Math.max(Number(bd.defense) || 0, Number(bd.reaction) || 0) >= need;
+  }
+
+  function applyBbtLetterCap(row, letter, kind) {
+    const L = String(letter || 'E');
+    if (L !== 'S+') return L;
+    const role = String((row && row.role) || '');
+    if (kind === 'character') {
+      if (role === 'Defense' && !defensePilotBbtEligible(row)) return 'S';
+      return L;
+    }
+    if (role === 'Defense' && !defenseUnitBbtEligible(row)) return 'S';
+    if (role === 'Support' && !supportUnitBbtEligible(row)) return 'S';
+    return L;
+  }
+
+  function letterFromTotalForKind(row, total, kind) {
+    const cuts =
+      kind === 'character' ? guideCutoffsForCharacter(row) : guideCutoffsForUnit(row);
+    return applyBbtLetterCap(row, letterFromCutoffs(cuts, total), kind);
   }
 
   function clampCommunityAdj(up, down) {
@@ -1220,17 +1302,21 @@
     return false;
   }
 
-  function letterFromTotal(total, cohort) {
+  function letterFromTotal(total, cohort, row) {
     const g = (payload && payload.scoring_guide) || {};
-    const cuts =
+    const role = String((row && row.role) || '');
+    const byRole =
       cohort === 'ur'
-        ? g.ur_letter_cutoffs || g.letter_cutoffs || []
-        : g.letter_cutoffs || [];
-    const n = Number(total) || 0;
-    for (let i = 0; i < cuts.length; i++) {
-      if (n >= Number(cuts[i].min)) return String(cuts[i].letter || 'E');
-    }
-    return 'E';
+        ? g.ur_letter_cutoffs_by_role || {}
+        : g.letter_cutoffs_by_role || {};
+    const roleCuts = role && byRole[role];
+    const cuts =
+      roleCuts && roleCuts.length
+        ? roleCuts
+        : cohort === 'ur'
+          ? g.ur_letter_cutoffs || g.letter_cutoffs || []
+          : g.letter_cutoffs || [];
+    return applyBbtLetterCap(row, letterFromCutoffs(cuts, total), 'unit');
   }
 
   function bucketFromLetter(letter) {
@@ -1308,7 +1394,7 @@
     if (apply) {
       const total = Number(row.total || 0) + Number(adv.points || 0);
       const cohort = row.letter_cohort || (row.has_sp ? 'sp' : 'ur');
-      const letter = letterFromTotal(total, cohort);
+      const letter = letterFromTotal(total, cohort, row);
       out = {
         ...row,
         total,

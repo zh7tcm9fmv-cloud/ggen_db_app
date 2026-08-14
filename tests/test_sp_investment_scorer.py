@@ -195,6 +195,55 @@ class TestSpInvestmentBands(unittest.TestCase):
             ),
             "S",
         )
+
+    def test_community_adj_respects_defense_bbt_gate(self):
+        from sp_investment_rank import apply_community_adj_to_row
+
+        row = {
+            "id": "1378000110",
+            "entity": "unit",
+            "role": "Defense",
+            "has_sp": True,
+            "total": 21,
+            "total_objective": 21,
+            "letter": "S",
+            "bucket": "recommended",
+            "breakdown": {
+                "hp": 2,
+                "shield": 1,
+                "special_defense": 2,
+                "max_debuff": 1,
+            },
+            "bbt_eligible": False,
+        }
+        bumped = apply_community_adj_to_row(row, 2, self.rules)
+        self.assertEqual(bumped["total"], 23)
+        self.assertEqual(bumped["letter"], "S")
+        self.assertEqual(bumped["bucket"], "recommended")
+        ok = {
+            "id": "1431001310",
+            "entity": "unit",
+            "role": "Defense",
+            "has_sp": True,
+            "total": 18,
+            "total_objective": 18,
+            "letter": "S+",
+            "bucket": "priority",
+            "breakdown": {
+                "hp": 2,
+                "shield": 1,
+                "special_defense": 2,
+                "movement": 2,
+                "max_debuff": 1,
+            },
+        }
+        promoted = apply_community_adj_to_row(ok, 0, self.rules)
+        self.assertEqual(promoted["letter"], "S+")
+        self.assertEqual(promoted["bucket"], "priority")
+
+    def test_first_strike_defense_bbt(self):
+        from sp_investment_rank import letter_for_unit_total
+
         first_strike = {
             "hp": 1,
             "shield": 1,
