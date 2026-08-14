@@ -6216,7 +6216,9 @@ const slots=S.dc.atkSlots;if(!slots||!slots[slotIdx])return null;
 const slot=slots[slotIdx];if(!slot.atkUnitData||!slot.atkCharData)return null;
 const backup=_dcReadAttackerFromDc();
 const prevNoDom=!!S.dc._dcSlotCalcNoDom;
+const prevCalcIdx=S.dc._dcCalcSlotIndex;
 S.dc._dcSlotCalcNoDom=true;
+S.dc._dcCalcSlotIndex=slotIdx;
 _dcWriteAttackerToDc(slot,slotIdx);
 _dcDetectVigorCondAbilities(S.dc.atkUnitData);
 if(!(slot.atkCharData&&slot.atkCharData._manual)&&!(slot.atkUnitData&&slot.atkUnitData._manual)){
@@ -6244,7 +6246,11 @@ S.dc.critDmgUp=Math.max(0,(S.dc.critDmgUp|0)-prevW+wc);
 S.dc._integratedWpnCritDmgUp=wc;
 let r=null;
 try{r=calculateDamage()}catch(e){console.error('calculateDamage slot',slotIdx,e)}
-finally{S.dc._dcSlotCalcNoDom=prevNoDom;_dcWriteAttackerToDc(backup)}
+finally{
+S.dc._dcSlotCalcNoDom=prevNoDom;
+if(prevCalcIdx===undefined)delete S.dc._dcCalcSlotIndex;else S.dc._dcCalcSlotIndex=prevCalcIdx;
+_dcWriteAttackerToDc(backup);
+}
 return r;
 }
 function setDcAttackerSlot(idx){
@@ -9674,9 +9680,10 @@ function _dcComputeExternalFlatAdSquadPctFromOtherSlots(){
 const recvUd=S.dc.atkUnitData,recvCd=S.dc.atkCharData;
 const z={atk:0,def:0};
 if(!recvUd||recvUd._manual||!S.dc.atkSlots)return z;
-const active=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);
+/* Skip the unit being simulated — not whichever attacker pill is selected. Otherwise Sandaime’s squad aura only hits Versal while Versal’s tab is open. */
+const self=S.dc._dcCalcSlotIndex!=null?Math.min(Math.max(S.dc._dcCalcSlotIndex|0,0),DC_ATK_SLOT_COUNT-1):Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);
 for(let i=0;i<DC_ATK_SLOT_COUNT;i++){
-if(i===active)continue;
+if(i===self)continue;
 const sl=S.dc.atkSlots[i];
 const udC=sl&&sl.atkUnitData;
 const cdC=sl&&sl.atkCharData;
