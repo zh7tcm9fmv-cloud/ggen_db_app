@@ -9840,9 +9840,7 @@ sec.style.display=show?'':'none';
 if(lbl)lbl.textContent=t('dc_squad_buff_section');
 if(show)_dcRenderSquadBuffSourcesUi();
 else{
-const ap=document.getElementById('dcSquadBuffAppliedLine');
 const src=document.getElementById('dcSquadBuffSources');
-if(ap){ap.style.display='none';ap.textContent=''}
 if(src){src.style.display='none';src.innerHTML=''}
 }
 }
@@ -9944,6 +9942,23 @@ slotIdx:i
 }
 }
 if(_dcBigRangZeonSquadBuffActive()){
+let brAb='';
+if(S.dc.atkSlots){
+for(let i=0;i<DC_ATK_SLOT_COUNT;i++){
+const sl=S.dc.atkSlots[i];
+if(!_dcIsBigRangZeonSquadCarrierPair(sl&&sl.atkCharData,sl&&sl.atkUnitData))continue;
+const meta=_scFindSquadConditionBindingMeta(sl.atkCharData,sl.atkUnitData);
+if(meta&&meta.abilityName){brAb=meta.abilityName;break}
+if(sl.atkCharData&&Array.isArray(sl.atkCharData.abilities)){
+for(let a=0;a<sl.atkCharData.abilities.length;a++){
+const r=_dcResolveCharAbilityForMode(sl.atkCharData.abilities[a]);
+const nm=String((r&&(r.display_name||r.name))||'').trim();
+if(nm){brAb=nm;break}
+}
+}
+if(brAb)break;
+}
+}
 pushRow({
 scope:'bigrang',
 highlight:true,
@@ -9952,7 +9967,7 @@ atkPct:BIG_RANG_ZEON_SQUAD_FLAT_AD_PCT,
 defPct:BIG_RANG_ZEON_SQUAD_FLAT_AD_PCT,
 unitName:'',
 charName:'',
-abilityName:t('dc_bigrang_zeon_squad_chk'),
+abilityName:brAb||t('dc_squad_buff_ex_squad_label'),
 abilityTip:t('dc_bigrang_zeon_squad_tip')
 });
 }
@@ -9989,52 +10004,22 @@ abilityTip:abTip||blob||''
 return rows;
 }
 function _dcRenderSquadBuffSourcesUi(){
-const ap=document.getElementById('dcSquadBuffAppliedLine');
 const host=document.getElementById('dcSquadBuffSources');
-if(!ap||!host)return;
+if(!host)return;
 _dcSyncSquadCondEffectiveFromState();
-const rows=_dcCollectActiveSquadBuffSources();
-const totAtk=S.dc.squadCondAtkPct|0;
-const totDef=S.dc.squadCondDefPct|0;
-const exPct=_dcEffectiveExSquadAtkPct();
-if(totAtk>0||totDef>0||exPct>0){
-let applied='';
-if(totAtk>0&&totDef>0&&totAtk===totDef)applied=_dcFormatSquadAtkDefPctLabel(totAtk);
-else if(totAtk>0&&totDef>0)applied=t('dc_squad_buff_applied_split').replace('%atk',tStat('ATK','unit')).replace('%def',tStat('DEF','unit')).replace('%a',String(totAtk)).replace('%d',String(totDef));
-else if(totAtk>0)applied=_dcFormatSquadAtkOnlyPctLabel(totAtk);
-else if(totDef>0)applied=t('dc_squad_buff_def_pct').replace('%n',String(totDef)).replace('%def',tStat('DEF','unit'));
-if(exPct>0){
-const exBit=t('dc_squad_buff_ex_atk_pct').replace('%n',String(exPct)).replace('%atk',tStat('ATK','unit'));
-applied=applied?applied+' · '+exBit:exBit;
-}
-ap.style.display='';
-ap.innerHTML=`<span class="dc-squad-buff-applied-lbl">${esc(t('dc_squad_buff_applied'))}</span> <strong class="dc-squad-buff-applied-val">${esc(applied)}</strong>`;
-}else{
-ap.style.display='none';ap.innerHTML='';
-}
+const rows=_dcCollectActiveSquadBuffSources().filter(r=>!!String(r.abilityName||'').trim()||(r.atkPct|0)>0||(r.defPct|0)>0);
 if(!rows.length){
 host.style.display='none';
 host.innerHTML='';
 return;
 }
-const scopeLbl=(sc)=>{
-if(sc==='ally')return t('dc_squad_buff_from_ally');
-if(sc==='bigrang')return t('dc_squad_buff_from_squad');
-if(sc==='ex_squad')return t('dc_squad_buff_from_ex_squad');
-return t('dc_squad_buff_from_self');
-};
-let html=`<div class="dc-squad-buff-sources-head">${esc(t('dc_squad_buff_sources'))}</div>`;
+/* Same layout language as Passive Bonuses: effect % as main, character ability name as source. */
+let html='';
 rows.forEach(r=>{
 const pctLbl=(r.defPct|0)>0?_dcFormatSquadAtkDefPctLabel(r.atkPct):_dcFormatSquadAtkOnlyPctLabel(r.atkPct);
-const who=[r.charName,r.unitName].filter(Boolean).join(' · ');
-const ab=r.abilityName||'';
+const ab=String(r.abilityName||'').trim()||t('dc_squad_buff_ex_squad_label');
 const tip=r.abilityTip?escAttr(String(r.abilityTip).replace(/\s+/g,' ').trim()):'';
-const hi=r.highlight?' dc-squad-src--leader':'';
-html+=`<div class="dc-squad-src${hi}"${tip?` title="${tip}"`:''}>`;
-html+=`<div class="dc-squad-src-top"><span class="dc-squad-src-scope">${esc(scopeLbl(r.scope))}</span><span class="dc-squad-src-pct">${esc(pctLbl)}</span></div>`;
-if(who)html+=`<div class="dc-squad-src-who">${esc(who)}</div>`;
-if(ab)html+=`<div class="dc-squad-src-abil">${esc(ab)}</div>`;
-html+=`</div>`;
+html+=`<div class="dc-pilot-bonus-row dc-pilot-bonus--locked"${tip?` title="${tip}"`:''}><span class="dc-pilot-bonus-line"><span class="dc-pilot-bonus-main">${esc(pctLbl)}</span><span class="dc-pilot-bonus-detail">${esc(ab)}</span></span></div>`;
 });
 host.innerHTML=html;
 host.style.display='';
