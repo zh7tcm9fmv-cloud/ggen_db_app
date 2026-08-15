@@ -4899,7 +4899,14 @@
     "ip_38eea7191c4fb69acb8b3d87101ed07e:unit:1125001500:sp": "down",
     "ip_38eea7191c4fb69acb8b3d87101ed07e:unit:1400006400:sp": "down",
     "ip_1031b4a924b8ad3a52b1e31904620231:unit:1159001000:sp": "up",
-    "ip_12ecffff5e07e56cb2025d97654fc04b:unit:1211001210:ssp": "up"
+    "ip_12ecffff5e07e56cb2025d97654fc04b:unit:1211001210:ssp": "up",
+    "ip_5e016cebecd6f31c0a0a222c9d6bf4c8:unit:1370005700:ssp": "down",
+    "ip_5e016cebecd6f31c0a0a222c9d6bf4c8:unit:1330000100:ssp": "down",
+    "ip_5e016cebecd6f31c0a0a222c9d6bf4c8:unit:1430004800:ssp": "down",
+    "ip_5e016cebecd6f31c0a0a222c9d6bf4c8:unit:1219000100:ssp": "up",
+    "ip_5e016cebecd6f31c0a0a222c9d6bf4c8:unit:1370000370:ssp": "up",
+    "ip_5e016cebecd6f31c0a0a222c9d6bf4c8:unit:1115000400:ssp": "up",
+    "ip_5e016cebecd6f31c0a0a222c9d6bf4c8:unit:1210000300:ssp": "up"
   },
   "targets": {
     "unit:1155000700:sp": {
@@ -5016,7 +5023,7 @@
     },
     "unit:1330000100:ssp": {
       "up": 5,
-      "down": 2
+      "down": 3
     },
     "unit:1154000100:ssp": {
       "up": 6,
@@ -6915,7 +6922,7 @@
       "down": 1
     },
     "unit:1219000100:ssp": {
-      "up": 12,
+      "up": 13,
       "down": 5
     },
     "character:1304000200:sp": {
@@ -7100,7 +7107,7 @@
     },
     "unit:1430004800:ssp": {
       "up": 8,
-      "down": 1
+      "down": 2
     },
     "unit:1085001210:sp": {
       "up": 2,
@@ -7127,7 +7134,7 @@
       "down": 2
     },
     "unit:1210000300:ssp": {
-      "up": 8,
+      "up": 9,
       "down": 3
     },
     "unit:1300004300:ssp": {
@@ -7463,7 +7470,7 @@
       "down": 1
     },
     "unit:1370000370:ssp": {
-      "up": 11,
+      "up": 12,
       "down": 3
     },
     "unit:1230004300:ssp": {
@@ -8060,7 +8067,7 @@
     },
     "unit:1370005700:ssp": {
       "up": 22,
-      "down": 5
+      "down": 6
     },
     "unit:1007001160:sp": {
       "up": 36,
@@ -8547,7 +8554,7 @@
       "down": 1
     },
     "unit:1115000400:ssp": {
-      "up": 3,
+      "up": 4,
       "down": 0
     },
     "unit:1370000160:ssp": {
