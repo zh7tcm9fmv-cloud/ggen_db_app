@@ -9,7 +9,7 @@
   const GUIDE = {
     "EN": {
       "overrides": [
-        "Each score factor adds points; the total becomes a letter, then a bucket (BEYOND THE TIME / Recommended / Solid / Situational / Niche). Units: Attack score 17+ earns S+ and BEYOND THE TIME. Support Type Units need 17+ with lasting DEF Down / pierce at Lv5+ (30%+). Defense Type Units need 18+, lasting ATK Down at Lv5+ (30%+), tank more than one hit (HP + Shield Defense / special DR / Unbreakable), plus Preemptive Strike or Support Defense coverage (unit SD kit or MOV 6). Characters: kit points stay absolute; within each Character Type, S+ ≈ top 3% and S ≈ top 8% (absolute A+ floor); A+ and below use role-relative point cutoffs. Defense Type Characters also need a Defense or Reaction band for BEYOND THE TIME.",
+        "Each score factor adds points; the total becomes a letter, then a bucket (BEYOND THE TIME / Recommended / Solid / Situational / Niche). Units: Attack 18+, Defense 22+, Support 19+ earn S+ and BEYOND THE TIME (score-ordered). Defense Type still rewards lasting ATK Down, survivability, and Preemptive Strike / Support Defense coverage in the point sum. Support Type still rewards lasting DEF Down / pierce in the point sum. Characters: kit points stay absolute; within each Character Type, S+ ≈ top 3% and S ≈ top 8% (absolute A+ floor); A+ and below use role-relative point cutoffs. Defense Type Characters also need a Defense or Reaction band for BEYOND THE TIME.",
         "Filter by Series, Tag, or Eternal Road Expert stage to compare Units and Characters that actually fit the same restriction.",
         "This is a general investment ranking that can also help on Expert — not a dedicated Expert-clears ladder."
       ],
@@ -38,7 +38,7 @@
     },
     "JA": {
       "overrides": [
-        "各項目が加点され、合計がレターになり、さらに区分へ振り分けられます。ユニットの攻撃型は 17点以上で S+（BEYOND THE TIME）。支援型ユニットは 17点以上に加え持続防御力減少／貫通（Lv5／30%+）が必要です。耐久型ユニットは 18点以上に加え、持続攻撃力減少（Lv5／30%+）、1撃以上耐える生存（HP＋シールド防御／特殊DR／脱出機能）、先制攻撃または支援防御のカバー（機体の支援防御キットまたは MOV 6）が必要です。キャラクターは役割内の上位約3%が S+、約8%が S（絶対 A+ 以上が条件）。耐久型キャラクターの S+ は防御または反応が A+ 帯以上であることも条件です。A+ 以下は役割別の点数閾値です。",
+        "各項目が加点され、合計がレターになり、さらに区分へ振り分けられます。ユニットは攻撃型 18点以上・耐久型 22点以上・支援型 19点以上で S+（BEYOND THE TIME）。点数が高いほど上位です。耐久型は持続攻撃力減少・生存・先制／支援防御を点数で評価し、支援型は持続防御力減少／貫通を点数で評価します。キャラクターは役割内の上位約3%が S+、約8%が S（絶対 A+ 以上が条件）。耐久型キャラクターの S+ は防御または反応が A+ 帯以上であることも条件です。A+ 以下は役割別の点数閾値です。",
         "シリーズ・タグ・エターナルロード Expert ステージで絞り、同じ制限に合うユニット／キャラクター同士を比較してください。",
         "一般運用向けの投資ランキングで、Expert でも使えることがある、という位置づけです（特定 Expert 攻略専用ではありません）。"
       ],
@@ -65,7 +65,7 @@
     },
     "TW": {
       "overrides": [
-        "各項目加分後合計成字母，再對應分桶。單位攻擊型 17 分以上為 S+（BEYOND THE TIME）。支援型單位需 17 分以上且有持續防禦力減少／貫穿（Lv5／30%+）。耐久型單位需 18 分以上，且有持續攻擊力減少（Lv5／30%+）、能承受超過一擊（HP＋盾牌防禦／特殊減傷／逃生機能），並具備先發攻擊或支援防禦覆蓋（機體支援防禦套件或移動力 6）。角色在各類型內約前 3% 為 S+、約前 8% 為 S（須達絕對 A+）；耐久型角色另需防禦或反應達 A+ 帶。A+ 以下用類型分數門檻。",
+        "各項目加分後合計成字母，再對應分桶。單位攻擊型 18／耐久型 22／支援型 19 分以上為 S+（BEYOND THE TIME），分數越高越上位。耐久型仍以持續攻擊力減少、生存、先發／支援防禦計入分數；支援型仍以持續防禦力減少／貫穿計入分數。角色在各類型內約前 3% 為 S+、約前 8% 為 S（須達絕對 A+）；耐久型角色另需防禦或反應達 A+ 帶。A+ 以下用類型分數門檻。",
         "可用系列、標籤或永恆之路 Expert 關卡篩選，比較真正符合同一限制的單位與角色。",
         "這是偏一般投資用途的排名，也能偶爾用於 Expert — 不是專攻 Expert 通關的排行榜。"
       ],
@@ -92,7 +92,7 @@
     },
     "HK": {
       "overrides": [
-        "各項目加分後合計成字母，再對應分桶。單位攻擊型 17 分以上係 S+（BEYOND THE TIME）。支援型單位要 17 分以上而且有持續防禦力減少／貫穿（Lv5／30%+）。耐久型單位要 18 分以上，而且要有持續攻擊力減少（Lv5／30%+）、頂得過一擊（HP＋盾牌防禦／特殊減傷／逃生機能），再加先發攻擊或支援防禦覆蓋（機體支援防禦套件或移動力 6）。角色喺各類型入面約前 3% 係 S+、約前 8% 係 S（要達絕對 A+）；耐久型角色另外要防禦或反應達 A+ 帶。A+ 以下用類型分數門檻。",
+        "各項目加分後合計成字母，再對應分桶。單位攻擊型 18／耐久型 22／支援型 19 分以上係 S+（BEYOND THE TIME），分數越高越上位。耐久型仍然用持續攻擊力減少、生存、先發／支援防禦計分；支援型仍然用持續防禦力減少／貫穿計分。角色喺各類型入面約前 3% 係 S+、約前 8% 係 S（要達絕對 A+）；耐久型角色另外要防禦或反應達 A+ 帶。A+ 以下用類型分數門檻。",
         "可用系列、標籤或永恆之路 Expert 關卡篩選，比較真正符合同一限制嘅單位同角色。",
         "呢個係偏一般投資用途嘅排名，都間中可以用喺 Expert — 唔係專攻 Expert 通關嘅排行榜。"
       ],

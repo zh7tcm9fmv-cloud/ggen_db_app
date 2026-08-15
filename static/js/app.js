@@ -9034,11 +9034,12 @@ function renderSupporterPickerCell(r,th,pickIdAttr){
 const id=escAttr(String(r.id));
 const attr=pickIdAttr||'data-dc-pick-id';
 const thumb=renderListThumb(r,'supp',th,{pickerThumb:true});
-const tags=(r.skill_tag_data&&r.skill_tag_data.length)?`<div class="tb-picker-item-tags detail-tags-row">${renderSkillTags(r.skill_tag_data)}</div>`:'';
+const tags=(r.skill_tag_data&&r.skill_tag_data.length)?`<div class="tb-picker-supp-tags detail-tags-row">${renderSkillTags(r.skill_tag_data)}</div>`:'';
 const act=r.active_icon
-?`<div class="tb-picker-supp-active">${pictureRasterHtml(r.active_icon,{cls:'tb-picker-supp-active-ic',loading:'eager',decoding:'async',alt:'',extra:'style="width:36px;height:36px;object-fit:contain;display:block"',onerror:"this.style.display='none'",lazy:false})}</div>`
+?pictureRasterHtml(r.active_icon,{cls:'tb-picker-supp-active-ic',loading:'eager',decoding:'async',alt:'',extra:'style="width:22px;height:22px;object-fit:contain;display:block;flex-shrink:0"',onerror:"this.style.display='none'",lazy:false})
 :'';
-return`<div class="tb-picker-item tb-picker-item--rich" role="button" tabindex="0" ${attr}="${id}">${thumb}<div class="tb-picker-item-body"><span class="tb-picker-item-name">${esc(r.name||'')}</span>${tags}</div>${act}</div>`;
+const meta=(tags||act)?`<div class="tb-picker-supp-meta">${tags}${act}</div>`:'';
+return`<div class="tb-picker-item tb-picker-item--supp" role="button" tabindex="0" ${attr}="${id}">${thumb}<div class="tb-picker-supp-side"><span class="tb-picker-item-name">${esc(r.name||'')}</span>${meta}</div></div>`;
 }
 function _tbSortPickerEntityRows(rows,sortKey,sortDir){
 const sk=String(sortKey||'rarity').toLowerCase();
@@ -9274,7 +9275,7 @@ body.innerHTML=`<div class="tb-picker-option-list tb-picker-option-list--rich">$
 return;
 }else if(pType==='supporter'){
 cells=rows.map(r=>renderSupporterPickerCell(r,th,'data-tb-pick-id'));
-body.innerHTML=`<div class="tb-picker-grid tb-picker-grid--rich">${cells.join('')}</div>`;
+body.innerHTML=`<div class="tb-picker-grid">${cells.join('')}</div>`;
 return;
 }else{
 cells=rows.map(r=>tbRenderPickerItemCell(r,pType==='character'?'char':'unit',th));
@@ -12221,7 +12222,7 @@ if(!items.length){body.innerHTML='<div style="padding:20px;text-align:center;col
 const th=52;
 if(type==='supporter'){
 const cells=_tbSortPickerEntityRows(items).map(r=>renderSupporterPickerCell(r,th,'data-dc-pick-id')).join('');
-body.innerHTML=`<div class="tb-picker-grid tb-picker-grid--rich">${cells}</div>`;
+body.innerHTML=`<div class="tb-picker-grid">${cells}</div>`;
 return;
 }
 if(type==='option_parts'){
