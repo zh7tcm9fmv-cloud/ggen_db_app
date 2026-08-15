@@ -9034,11 +9034,24 @@ function renderSupporterPickerCell(r,th,pickIdAttr){
 const id=escAttr(String(r.id));
 const attr=pickIdAttr||'data-dc-pick-id';
 const thumb=renderListThumb(r,'supp',th,{pickerThumb:true});
-const tags=(r.skill_tag_data&&r.skill_tag_data.length)?`<div class="tb-picker-supp-tags detail-tags-row">${renderSkillTags(r.skill_tag_data)}</div>`:'';
+// Compact picker: one tag + ability icon (full tag rows overflow the 3-col cards).
+let tagHtml='';
+const std=r.skill_tag_data;
+if(std&&std.length){
+for(let si=0;si<std.length&&!tagHtml;si++){
+const tags=(std[si]&&std[si].tags)||[];
+if(!tags.length)continue;
+const tag=tags[0];
+const cn=tag.name||'',ct=tag.type||'';
+let li='/static/images/UI/UI_Common_Icon_Category_MS_Main.webp';
+if(ct==='character')li='/static/images/UI/UI_Common_Icon_Category_Chara_Main.webp';
+tagHtml=`<div class="tag-composite tb-picker-supp-tag" onclick="event.stopPropagation();openTagModal('${esc(cn)}','or')" title="${escAttr(cn)}"><div class="tag-part-icon">${pictureRasterHtml(li,{cls:'tag-icon-fg',loading:'eager',decoding:'async',alt:'',lazy:false})}</div><div class="tag-part-value">${esc(cn)}</div></div>`;
+}
+}
 const act=r.active_icon
-?pictureRasterHtml(r.active_icon,{cls:'tb-picker-supp-active-ic',loading:'eager',decoding:'async',alt:'',extra:'style="width:22px;height:22px;object-fit:contain;display:block;flex-shrink:0"',onerror:"this.style.display='none'",lazy:false})
+?pictureRasterHtml(r.active_icon,{cls:'tb-picker-supp-active-ic',loading:'eager',decoding:'async',alt:'',extra:'style="width:20px;height:20px;object-fit:contain;display:block;flex-shrink:0"',onerror:"this.style.display='none'",lazy:false})
 :'';
-const meta=(tags||act)?`<div class="tb-picker-supp-meta">${tags}${act}</div>`:'';
+const meta=(tagHtml||act)?`<div class="tb-picker-supp-meta">${tagHtml}${act}</div>`:'';
 return`<div class="tb-picker-item tb-picker-item--supp" role="button" tabindex="0" ${attr}="${id}">${thumb}<div class="tb-picker-supp-side"><span class="tb-picker-item-name">${esc(r.name||'')}</span>${meta}</div></div>`;
 }
 function _tbSortPickerEntityRows(rows,sortKey,sortDir){
