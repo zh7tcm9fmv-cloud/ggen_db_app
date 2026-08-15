@@ -1503,6 +1503,68 @@ def unit_weapon_debuff_filter_cache_fragment(expr):
     return ('w' + '__'.join(expr))[:220]
 
 
+UNIT_WEAPON_ATTR_FILTER_KEYS = frozenset({'physical', 'beam', 'special'})
+
+
+def parse_unit_weapon_attr_filter(val):
+    """Comma-separated Beam/Physical/Special keys; OR semantics (any selected attr on any non-MAP weapon)."""
+    if val is None:
+        return None
+    s = (val or '').strip()
+    if not s or s.upper() == 'ALL':
+        return None
+    out = []
+    seen = set()
+    for token in [p.strip().lower() for p in s.replace(';', ',').split(',') if p.strip()]:
+        if token not in UNIT_WEAPON_ATTR_FILTER_KEYS:
+            continue
+        if token not in seen:
+            seen.add(token)
+            out.append(token)
+    if not out:
+        return None
+    return tuple(out)
+
+
+def unit_weapon_attr_filter_cache_fragment(expr):
+    if expr is None:
+        return 'wa0'
+    return ('wa' + '__'.join(expr))[:120]
+
+
+def _unit_non_map_weapon_attr_keys(uid):
+    """frozenset of physical/beam/special present on any non-MAP weapon for this unit."""
+    keys = set()
+    for wp in unit_weapon_map.get(uid, []) or []:
+        wid = normalize_id(wp.get('id'))
+        wm = weapon_info_map.get(wid, {}) or {}
+        wt = str(wm.get('weapon_type', '1') or '1')
+        if wt == '3':
+            continue
+        ai = normalize_id(wm.get('attribute', '0'))
+        for k in WEAPON_ATTR_SET_TYPE_KEYS.get(ai, []) or []:
+            keys.add(str(k))
+    return frozenset(keys)
+
+
+def _build_unit_weapon_attr_keys_cache():
+    out = {}
+    for uid in unit_info_map.keys():
+        out[uid] = _unit_non_map_weapon_attr_keys(uid)
+    return out
+
+
+def unit_matches_weapon_attr_filter(uid, want_keys):
+    """OR: unit has at least one selected damage-type on a non-MAP weapon."""
+    if not want_keys:
+        return True
+    have = UNIT_WEAPON_ATTR_KEYS_CACHE.get(uid) or frozenset()
+    for k in want_keys:
+        if k in have:
+            return True
+    return False
+
+
 def parse_unit_weapon_range_filter(val):
     """Comma-separated target max-range tier values (1..6) for filters."""
     if val is None:
@@ -10658,6 +10720,7 @@ WEAPON_DEBUFF_KEYS_PRESENT_BY_LANG = _precompute_weapon_debuff_keys_present_by_l
 WEAPON_DEBUFF_KEYS_PRESENT_UNION = frozenset(
     k for fs in WEAPON_DEBUFF_KEYS_PRESENT_BY_LANG.values() for k in fs
 )
+UNIT_WEAPON_ATTR_KEYS_CACHE = _build_unit_weapon_attr_keys_cache()
 
 print("Database ready!")
 print("=" * 60)
@@ -20676,6 +20739,8 @@ def list_units():
     terrain_filter = parse_unit_terrain_filter(terrain_arg)
     weapon_debuff_arg = request.args.get('weapon_debuff', '').strip()
     weapon_debuff_filter = parse_unit_weapon_debuff_filter(weapon_debuff_arg)
+    weapon_attr_arg = request.args.get('weapon_attr', '').strip()
+    weapon_attr_filter = parse_unit_weapon_attr_filter(weapon_attr_arg)
     weapon_range_arg = request.args.get('weapon_range', '').strip()
     weapon_range_filter = parse_unit_weapon_range_filter(weapon_range_arg)
     weapon_range_non_map_arg = request.args.get('weapon_range_non_map', '').strip()
@@ -20692,6 +20757,7 @@ def list_units():
     ability_ck = ability_filter_cache_fragment(ability_filter)
     terrain_ck = unit_terrain_filter_cache_fragment(terrain_filter)
     weapon_debuff_ck = unit_weapon_debuff_filter_cache_fragment(weapon_debuff_filter)
+    weapon_attr_ck = unit_weapon_attr_filter_cache_fragment(weapon_attr_filter)
     weapon_range_ck = unit_weapon_range_filter_cache_fragment(weapon_range_filter)
     weapon_range_non_map_ck = unit_weapon_range_non_map_filter_cache_fragment(weapon_range_non_map_filter, weapon_range_non_map_ssp_ex)
     map_weapon_range_ck = map_weapon_range_filter_cache_fragment(map_weapon_range_filter)
@@ -20712,7 +20778,7 @@ def list_units():
     sbu_ck = 'sbd1' if want_stat_bounds_u else 'sbd0'
     rb_u_ck = 'rb1' if ranking_bulk_u else 'rb0'
     # ul55: list rows omit series/rarity_icon/is_limited_time/recommend_character (list UI unused).
-    ck = f"ul55_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul56_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
@@ -20757,6 +20823,9 @@ def list_units():
                 continue
         if ability_filter is not None:
             if not id_seek and not entity_matches_unit_abilities_filter(uid, ability_filter, _cbu['ability_combine']):
+                continue
+        if weapon_attr_filter is not None:
+            if not id_seek and not unit_matches_weapon_attr_filter(uid, weapon_attr_filter):
                 continue
         _shape_kw = dict(
             role_filter=role_filter,

@@ -2943,10 +2943,19 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     if outlier_pts:
         meta["stat_outlier"] = outlier_meta
 
-    sd_pts, sd_meta = score_special_defense(rules, features.get("special_defense_kinds") or [])
+    sd_pts, sd_meta = score_special_defense(
+        rules,
+        features.get("special_defense_kinds") or [],
+        has_ex_range_dr=bool(features.get("has_ex_range_damage_reduction")),
+    )
     breakdown["special_defense"] = sd_pts
-    if sd_pts or sd_meta.get("count"):
+    if sd_pts or sd_meta.get("count") or sd_meta.get("ex_range_dr"):
         meta["special_defense"] = sd_meta
+
+    wda_pts, wda_meta = score_weapon_damage_attr(rules, features)
+    breakdown["weapon_damage_attr"] = wda_pts
+    if wda_pts or wda_meta.get("special"):
+        meta["weapon_damage_attr"] = wda_meta
 
     ur_dep = bool(features.get("ur_pilot_dependent"))
     ur_pts, ur_meta = score_ur_pilot_dependence(rules, ur_dep)
@@ -3218,6 +3227,7 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
     best_weapon_id = ""
     best_weapon_wm: dict = {}
     best_attack_attr_count = 0
+    best_weapon_dmg_attr_keys: list[str] = []
     has_multi_weapon_attr = False
     max_weapon_attr_types = 0
     structured_keys: set[str] = set()
@@ -3305,10 +3315,11 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
         if mode == "ssp":
             mwid = A.normalize_id(wm.get("main_weapon_id", "0") or "0")
             for cid in (wid, mwid):
+                if not cid or cid == "0":
+                    continue
                 for enh in A.unit_ssp_weapon_enhance_map.get(cid) or []:
                     if str(enh.get("type")) == "4":
                         rx += int(enh.get("value", 0) or 0)
-                break
         levels = ws.get("levels", {})
         power = int(ws.get("power", 0) or 0)
         if isinstance(levels, dict):
@@ -3323,10 +3334,11 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
         if mode == "ssp":
             mwid = A.normalize_id(wm.get("main_weapon_id", "0") or "0")
             for cid in (wid, mwid):
+                if not cid or cid == "0":
+                    continue
                 for enh in A.unit_ssp_weapon_enhance_map.get(cid) or []:
                     if str(enh.get("type")) == "1":
                         ssp_power_enhance += int(enh.get("value", 0) or 0)
-                break
             power += ssp_power_enhance
         tension_max = str(wm.get("tension_type", "0") or "0") == "4"
         trait_lines: list[str] = []
@@ -3410,6 +3422,12 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
                 best_weapon_id = wid
                 best_weapon_wm = wm
                 best_attack_attr_count = attr_n
+                best_weapon_dmg_attr_keys = list(
+                    (getattr(A, "WEAPON_ATTR_SET_TYPE_KEYS", None) or {}).get(
+                        str(wm.get("attribute") or "0"), []
+                    )
+                    or []
+                )
             # Max Vigor penalty: "best damage needs Max Vigor to fire" (e.g. Twin
             # Satellite Cannon). SSP Custom Core (…90) is the unrestricted bypass —
             # do not let SSP type-1 power juice on a still-gated SP weapon beat that
@@ -3499,6 +3517,7 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
         "weapon_bonus_structured": weapon_bonus_structured,
         "best_weapon_trait_lines": best_weapon_trait_lines[:12],
         "best_attack_attr_count": best_attack_attr_count,
+        "best_weapon_dmg_attr_keys": list(best_weapon_dmg_attr_keys),
         "has_multi_weapon_attr": has_multi_weapon_attr,
         "max_weapon_attr_types": max_weapon_attr_types,
         "debuff_keys_source": debuff_source,
@@ -3557,7 +3576,28 @@ def _special_defense_kinds(rules: dict, ability_effects: list[dict] | None) -> l
     return [str(x) for x in sorted(found)]
 
 
-def score_special_defense(rules: dict, kinds: list[str] | None) -> tuple[int, dict]:
+def _ability_kit_has_ex_range_damage_reduction(ability_kit: list[dict] | None) -> bool:
+    """True for (Range Condition) Damage Reduction / 距離条件|距離條件 DR kits."""
+    for item in ability_kit or []:
+        name = str(item.get("name") or "")
+        blob = str(item.get("blob") or "")
+        hay = name + "\n" + blob
+        if re.search(r"Range\s+Condition", hay, re.I):
+            if re.search(r"Damage\s+Reduction|reduce\s+damage\s+taken", hay, re.I):
+                return True
+        if "距離条件" in hay or "距離條件" in hay:
+            if "ダメージ軽減" in hay or "損傷減輕" in hay or "Damage Reduction" in hay:
+                return True
+        if re.search(r"from\s+\d+\s+spaces?\s+or\s+more", hay, re.I) and re.search(
+            r"reduce\s+damage\s+taken|Damage\s+Reduction|ダメージ軽減|損傷減輕", hay, re.I
+        ):
+            return True
+    return False
+
+
+def score_special_defense(
+    rules: dict, kinds: list[str] | None, *, has_ex_range_dr: bool = False
+) -> tuple[int, dict]:
     cfg = rules.get("special_defense") or {}
     pts_tbl = cfg.get("points") or {}
     n = len(kinds or [])
@@ -3567,12 +3607,29 @@ def score_special_defense(rules: dict, kinds: list[str] | None) -> tuple[int, di
         pts = int(pts_tbl.get("1", 1) or 0)
     else:
         pts = int(pts_tbl.get("2_or_more", pts_tbl.get("2", 2)) or 0)
+    # Scoped premium: EX-range / distance-condition DR counts as at least 2 pts.
+    min_ex = int(cfg.get("ex_range_dr_min_points", 0) or 0)
+    if has_ex_range_dr and min_ex > pts:
+        pts = min_ex
     labels = cfg.get("kind_labels") or {}
     return pts, {
         "kinds": list(kinds or []),
         "labels": [labels.get(k, k) for k in (kinds or [])],
         "count": n,
+        "ex_range_dr": bool(has_ex_range_dr),
+        "ex_range_dr_min_points": min_ex if has_ex_range_dr else 0,
     }
+
+
+def score_weapon_damage_attr(rules: dict, features: dict) -> tuple[int, dict]:
+    """Prefer Special damage type on the strongest non-MAP gun (+1); Beam/Physical alone = 0."""
+    cfg = rules.get("weapon_damage_attr") or {}
+    if not cfg.get("enabled", True):
+        return 0, {"keys": [], "special": False}
+    keys = [str(k).lower() for k in (features.get("best_weapon_dmg_attr_keys") or []) if k]
+    has_special = "special" in keys
+    pts = int(cfg.get("special_points", 1) or 0) if has_special else int(cfg.get("other_points", 0) or 0)
+    return pts, {"keys": keys, "special": has_special, "points": pts}
 
 
 def score_stat_outlier(rules: dict, features: dict, role: str, mode: str) -> tuple[int, dict]:
@@ -3856,6 +3913,7 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
         has_shield = False
 
     special_def_kinds = _special_defense_kinds(rules, ability_effects_full)
+    has_ex_range_dr = _ability_kit_has_ex_range_damage_reduction(ability_kit)
     sd_wanted = {
         int(x)
         for x in ((rules.get("defense_bbt_gate") or {}).get("support_defense_trait_types") or (52, 87, 90))
@@ -3936,6 +3994,7 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
         "has_shield": has_shield,
         "has_unit_support_defense": has_unit_support_defense,
         "special_defense_kinds": special_def_kinds,
+        "has_ex_range_damage_reduction": has_ex_range_dr,
         "ur_pilot_dependent": ur_dep,
         "ur_pilot_dependence_meta": ur_dep_meta,
         "is_large_footprint": is_large_footprint,

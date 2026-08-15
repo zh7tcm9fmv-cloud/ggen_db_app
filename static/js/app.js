@@ -404,6 +404,11 @@ Object.assign(T.TW,{kofi_promo_kw_sneak:'獨家搶先看',kofi_promo_kw_bonus:'�
 Object.assign(T.HK,{kofi_promo_kw_sneak:'獨家搶先看',kofi_promo_kw_bonus:'額外內容',kofi_post_notice_aria:'Ko-fi 有新貼文',kofi_promo_notice_line:'我已新增紅色通知點，當有新的獨家內容時會顯示在 Ko-fi 按鈕上。',kofi_wall_title:'感謝 {n} 位新人類讓這個資料庫持續運作。',kofi_wall_join:'加入支持牆',kofi_wall_top:'最高支持者',kofi_wall_aria:'支持者'});
 Object.assign(T.JA,{kofi_promo_kw_sneak:'限定先行公開',kofi_promo_kw_bonus:'ボーナスコンテンツ',kofi_post_notice_aria:'Ko-fiに新しい投稿',kofi_promo_notice_line:'新しい限定コンテンツが公開されると、Ko-fiボタンに赤い通知が表示されます。',kofi_wall_title:'このデータベースを支えてくれている {n} 人のニュータイプに感謝します。',kofi_wall_join:'ウォールに参加',kofi_wall_top:'トップサポーター',kofi_wall_aria:'サポーター'});
 Object.assign(T.JP,{kofi_promo_kw_sneak:'限定先行公開',kofi_promo_kw_bonus:'ボーナスコンテンツ',kofi_post_notice_aria:'Ko-fiに新しい投稿',kofi_promo_notice_line:'新しい限定コンテンツが公開されると、Ko-fiボタンに赤い通知が表示されます。',kofi_wall_title:'このデータベースを支えてくれている {n} 人のニュータイプに感謝します。',kofi_wall_join:'ウォールに参加',kofi_wall_top:'トップサポーター',kofi_wall_aria:'サポーター'});
+Object.assign(T.EN,{tb_picker_sort:'Sort',tb_picker_weapon_attr:'Weapon'});
+Object.assign(T.TW,{tb_picker_sort:'排序',tb_picker_weapon_attr:'武裝'});
+Object.assign(T.HK,{tb_picker_sort:'排序',tb_picker_weapon_attr:'武裝'});
+Object.assign(T.JA,{tb_picker_sort:'並び替え',tb_picker_weapon_attr:'武装'});
+Object.assign(T.JP,{tb_picker_sort:T.JA.tb_picker_sort,tb_picker_weapon_attr:T.JA.tb_picker_weapon_attr});
 Object.assign(T.EN,{dc_bigrang_zeon_squad_chk:'Big-Rang EX (1009000550) + pilot 1009000100: +5% ATK/DEF (Zeon)',dc_bigrang_zeon_squad_tip:'When Big-Rang (EX) is piloted by its EX pilot in your squad, Zeon-tagged units gain +5% ATK and DEF (permanent). Toggle on in Damage Calculator when that pair is in the squad.',dc_squad_buff_applied:'Applied',dc_squad_buff_sources:'Sources',dc_squad_buff_from_self:'This attacker',dc_squad_buff_from_ally:'Other attacker',dc_squad_buff_from_squad:'Squad aura',dc_squad_buff_from_ex_squad:'EX squad ATK',dc_squad_buff_ex_squad_label:'EX squad ATK %',dc_squad_buff_ex_atk_pct:'EX %atk +%n%',dc_squad_buff_atk_def_pct:'%atk & %def +%n%',dc_squad_buff_atk_pct:'%atk +%n%',dc_squad_buff_def_pct:'%def +%n%',dc_squad_buff_applied_split:'%atk +%a% · %def +%d%'});
 Object.assign(T.TW,{dc_bigrang_zeon_squad_chk:'Big-Rang EX (1009000550) + 駕駛 1009000100：吉翁小隊 +5% 攻擊/防禦',dc_bigrang_zeon_squad_tip:'小隊中有 Big-Rang（EX）並由其 EX 駕駛員駕駛時，帶有吉翁標籤的機體永久 +5% 攻擊與防禦。傷害計算中若該組合在小隊內請開啟。',dc_squad_buff_applied:'套用中',dc_squad_buff_sources:'來源',dc_squad_buff_from_self:'此攻擊方',dc_squad_buff_from_ally:'另一攻擊方',dc_squad_buff_from_squad:'小隊光環',dc_squad_buff_from_ex_squad:'EX 小隊攻擊力',dc_squad_buff_ex_squad_label:'EX 小隊攻擊力 %',dc_squad_buff_ex_atk_pct:'EX %atk +%n%',dc_squad_buff_atk_def_pct:'%atk與%def +%n%',dc_squad_buff_atk_pct:'%atk +%n%',dc_squad_buff_def_pct:'%def +%n%',dc_squad_buff_applied_split:'%atk +%a% · %def +%d%'});
 Object.assign(T.HK,{dc_bigrang_zeon_squad_chk:'Big-Rang EX (1009000550) + 駕駛 1009000100：吉翁小隊 +5% 攻擊/防禦',dc_bigrang_zeon_squad_tip:'小隊中有 Big-Rang（EX）並由其 EX 駕駛員駕駛時，帶有吉翁標籤的機體永久 +5% 攻擊與防禦。傷害計算中若該組合在小隊內請開啟。',dc_squad_buff_applied:'套用中',dc_squad_buff_sources:'來源',dc_squad_buff_from_self:'此攻擊方',dc_squad_buff_from_ally:'另一攻擊方',dc_squad_buff_from_squad:'小隊光環',dc_squad_buff_from_ex_squad:'EX 小隊攻擊力',dc_squad_buff_ex_squad_label:'EX 小隊攻擊力 %',dc_squad_buff_ex_atk_pct:'EX %atk +%n%',dc_squad_buff_atk_def_pct:'%atk與%def +%n%',dc_squad_buff_atk_pct:'%atk +%n%',dc_squad_buff_def_pct:'%def +%n%',dc_squad_buff_applied_split:'%atk +%a% · %def +%d%'});
@@ -7232,9 +7237,12 @@ renderTeamBuilder();
 }
 function initTeamBuilder(){
 if(!S.tb){
-S.tb={squads:{1:{name:'',slots:Array.from({length:5},()=>_tbEmptySlot())},2:{name:'',slots:Array.from({length:5},()=>_tbEmptySlot())}},terrainType:'Space',supBySide:{1:{id:null,data:null,lbTier:3,level:100},2:{id:null,data:null,lbTier:3,level:100}},selectedKey:null,rearrange:null,picker:{type:null,slotKey:null,abort:null,gen:0,rows:[],opReplaceIdx:null},masterLeague:false,grandOffensive:false,_leaderApplyCache:{}};
+S.tb={squads:{1:{name:'',slots:Array.from({length:5},()=>_tbEmptySlot())},2:{name:'',slots:Array.from({length:5},()=>_tbEmptySlot())}},terrainType:'Space',supBySide:{1:{id:null,data:null,lbTier:3,level:100},2:{id:null,data:null,lbTier:3,level:100}},selectedKey:null,rearrange:null,picker:{type:null,slotKey:null,abort:null,gen:0,rows:[],opReplaceIdx:null},pickerSort:'rarity',pickerSortDir:'desc',pickerWeaponAttr:[],masterLeague:false,grandOffensive:false,_leaderApplyCache:{}};
 return;
 }
+if(S.tb.pickerSort==null)S.tb.pickerSort='rarity';
+if(S.tb.pickerSortDir==null)S.tb.pickerSortDir='desc';
+if(!Array.isArray(S.tb.pickerWeaponAttr))S.tb.pickerWeaponAttr=[];
 if(!S.tb.supBySide){
 const legId=S.tb.supporterId!=null?S.tb.supporterId:null;
 const legData=S.tb.supporterData||null;
@@ -8949,6 +8957,7 @@ ov.classList.add('active');ov.setAttribute('aria-hidden','false');
 if(type==='option'){
 const squ=_tbSquFromKey(slotKey);const sl=squ.slots[_tbIdxFromKey(slotKey)];
 if(!sl||!sl.unitId){body.innerHTML=`<div style="padding:16px;color:var(--text-muted)">${esc(t('dc_pick_unit'))}</div>`;return}
+_tbSyncPickerToolbar();
 body.innerHTML=`<div style="padding:12px;color:var(--text-muted)">…</div>`;
 try{
 const uq='&unit_id='+encodeURIComponent(sl.unitId);
@@ -8960,6 +8969,7 @@ return;
 }
 if(type==='supporter'){
 inp.placeholder=t('search_supporter')||'Search name, series, tags…';
+_tbSyncPickerToolbar();
 body.innerHTML=`<div style="padding:12px;color:var(--text-muted)">…</div>`;
 try{
 S.tb.picker.rows=await _tbFetchSupporterPickerRows('');
@@ -8969,6 +8979,7 @@ setTimeout(()=>inp.focus(),50);
 return;
 }
 inp.placeholder=type==='character'?t('search_char'):t('search_unit');
+_tbSyncPickerToolbar();
 const cached=(type==='unit'||type==='character')?_tbPickerCacheGet(type,slotKey):null;
 if(cached&&cached.length)S.tb.picker.rows=cached.slice();
 if(S.tb.picker.rows&&S.tb.picker.rows.length)filterTbPickerList();
@@ -9024,18 +9035,121 @@ const id=escAttr(String(r.id));
 const attr=pickIdAttr||'data-dc-pick-id';
 const thumb=renderListThumb(r,'supp',th,{pickerThumb:true});
 const tags=(r.skill_tag_data&&r.skill_tag_data.length)?`<div class="tb-picker-item-tags detail-tags-row">${renderSkillTags(r.skill_tag_data)}</div>`:'';
-return`<div class="tb-picker-item tb-picker-item--rich" role="button" tabindex="0" ${attr}="${id}">${thumb}<div class="tb-picker-item-body"><span class="tb-picker-item-name">${esc(r.name||'')}</span>${tags}</div></div>`;
+const act=r.active_icon
+?`<div class="tb-picker-supp-active">${pictureRasterHtml(r.active_icon,{cls:'tb-picker-supp-active-ic',loading:'eager',decoding:'async',alt:'',extra:'style="width:36px;height:36px;object-fit:contain;display:block"',onerror:"this.style.display='none'",lazy:false})}</div>`
+:'';
+return`<div class="tb-picker-item tb-picker-item--rich" role="button" tabindex="0" ${attr}="${id}">${thumb}<div class="tb-picker-item-body"><span class="tb-picker-item-name">${esc(r.name||'')}</span>${tags}</div>${act}</div>`;
 }
-function _tbSortPickerEntityRows(rows){
+function _tbSortPickerEntityRows(rows,sortKey,sortDir){
+const sk=String(sortKey||'rarity').toLowerCase();
+const dir=String(sortDir||'desc').toLowerCase()==='asc'?1:-1;
+const statKeys=new Set(['atk','def','mob','hp','en','mov']);
 return(rows||[]).slice().sort((a,b)=>{
+let cmp=0;
+if(sk==='name'){
+cmp=String(a.name||'').localeCompare(String(b.name||''),'en',{numeric:true,sensitivity:'base'});
+}else if(statKeys.has(sk)){
+const ka=sk==='atk'?'ATK':sk==='def'?'DEF':sk==='mob'?'MOB':sk==='hp'?'HP':sk==='en'?'EN':'MOV';
+const va=Number(a[ka]);const vb=Number(b[ka]);
+const na=Number.isFinite(va)?va:0;const nb=Number.isFinite(vb)?vb:0;
+cmp=na-nb;
+}else{
 const ra=Number(a.rarity_sort);const rb=Number(b.rarity_sort);
 const na=Number.isFinite(ra)?ra:4;const nb=Number.isFinite(rb)?rb:4;
-if(na!==nb)return na-nb;
+cmp=na-nb;
+}
+if(cmp)return cmp*dir;
 const sa=String(a.id??'');const sb=String(b.id??'');
 const ia=parseInt(sa,10);const ib=parseInt(sb,10);
 if(Number.isFinite(ia)&&Number.isFinite(ib)&&ia!==ib)return ia-ib;
 return sa.localeCompare(sb,'en',{numeric:true,sensitivity:'base'});
 });
+}
+function _tbPickerSortKey(){return String((S.tb&&S.tb.pickerSort)||'rarity')}
+function _tbPickerSortDir(){return String((S.tb&&S.tb.pickerSortDir)||'desc')}
+function _tbPickerWeaponAttrKeys(){
+const a=(S.tb&&S.tb.pickerWeaponAttr)||[];
+return Array.isArray(a)?a.map(String).filter(Boolean):[];
+}
+function _tbPickerWeaponAttrQuery(){
+const keys=_tbPickerWeaponAttrKeys();
+if(!keys.length)return'';
+return'&weapon_attr='+encodeURIComponent(keys.join(','));
+}
+function _tbWeaponAttrChipLabel(key){
+const k=String(key||'').toLowerCase();
+const lc=(S.lang||'EN').toUpperCase();
+if(k==='beam'){
+if(lc==='JA'||lc==='JP')return'ビーム';
+if(lc==='TW')return'光束';
+if(lc==='HK')return'鐳射';
+return'Beam';
+}
+if(k==='physical'){
+if(lc==='JA'||lc==='JP')return'物理';
+if(lc==='TW'||lc==='HK')return'物理';
+return'Physical';
+}
+if(k==='special'){
+if(lc==='JA'||lc==='JP')return'特殊';
+if(lc==='TW'||lc==='HK')return'特殊';
+return'Special';
+}
+return weaponAttrKeyLabel(k);
+}
+function _tbSyncPickerToolbar(){
+const head=document.querySelector('#tbPickerOverlay .tb-picker-head');
+if(!head)return;
+let bar=document.getElementById('tbPickerToolbar');
+const typ=S.tb&&S.tb.picker&&S.tb.picker.type;
+const show=typ==='unit';
+if(!show){
+if(bar)bar.style.display='none';
+return;
+}
+if(!bar){
+bar=document.createElement('div');
+bar.id='tbPickerToolbar';
+bar.className='tb-picker-toolbar';
+head.insertAdjacentElement('afterend',bar);
+}
+bar.style.display='';
+const sort=_tbPickerSortKey();
+const dir=_tbPickerSortDir();
+const attrs=_tbPickerWeaponAttrKeys();
+const sortOpts=[['rarity',t('col_rarity')||'Rarity'],['name',t('col_name')||'Name'],['atk',t('col_atk')||'ATK']];
+const sortHtml=sortOpts.map(([k,lab])=>`<button type="button" class="tb-picker-sort-btn${sort===k?' active':''}" data-tb-sort="${escAttr(k)}">${esc(lab)}${sort===k?(dir==='asc'?' ▲':' ▼'):''}</button>`).join('');
+const attrKeys=['physical','beam','special'];
+const attrHtml=attrKeys.map(k=>`<button type="button" class="tb-picker-attr-chip${attrs.includes(k)?' active':''}" data-tb-wattr="${escAttr(k)}">${esc(_tbWeaponAttrChipLabel(k))}</button>`).join('');
+bar.innerHTML=`<div class="tb-picker-toolbar-row"><span class="tb-picker-toolbar-lbl">${esc(t('tb_picker_sort')||'Sort')}</span><div class="tb-picker-sort-btns">${sortHtml}</div></div><div class="tb-picker-toolbar-row"><span class="tb-picker-toolbar-lbl">${esc(t('tb_picker_weapon_attr')||'Weapon')}</span><div class="tb-picker-attr-chips">${attrHtml}</div></div>`;
+if(!bar.dataset.tbWired){
+bar.dataset.tbWired='1';
+bar.addEventListener('click',function(ev){
+const sb=ev.target.closest('[data-tb-sort]');
+if(sb){
+const k=sb.getAttribute('data-tb-sort');
+initTeamBuilder();
+if(_tbPickerSortKey()===k)S.tb.pickerSortDir=_tbPickerSortDir()==='desc'?'asc':'desc';
+else{S.tb.pickerSort=k;S.tb.pickerSortDir=k==='name'?'asc':'desc'}
+tbInvalidateTbPickerUnitCache();
+_tbSyncPickerToolbar();
+_tbDoPickerSearch();
+return;
+}
+const ab=ev.target.closest('[data-tb-wattr]');
+if(ab){
+const k=ab.getAttribute('data-tb-wattr');
+initTeamBuilder();
+let cur=_tbPickerWeaponAttrKeys().slice();
+const i=cur.indexOf(k);
+if(i>=0)cur.splice(i,1);else cur.push(k);
+S.tb.pickerWeaponAttr=cur;
+tbInvalidateTbPickerUnitCache();
+_tbSyncPickerToolbar();
+_tbDoPickerSearch();
+}
+});
+}
 }
 function tbInvalidateTbPickerUnitCache(){if(S._tbPickerRowCache&&S._tbPickerRowCache.unitBySide)delete S._tbPickerRowCache.unitBySide}
 function _tbPickerCharCacheKey(){return'C|'+S.lang}
@@ -9044,7 +9158,9 @@ initTeamBuilder();
 const terr=S.tb.terrainType||'Space';
 const sup=S.tb.supBySide[side];
 const b=sup&&sup.id?String(sup.id):'';
-return'U|'+S.lang+'|'+terr+'|'+side+'|'+b;
+const sort=_tbPickerSortKey()+'|'+_tbPickerSortDir();
+const wa=_tbPickerWeaponAttrKeys().slice().sort().join(',');
+return'U|'+S.lang+'|'+terr+'|'+side+'|'+b+'|'+sort+'|wa:'+wa;
 }
 function _tbPickerCacheGet(type,slotKey){
 if(type!=='unit'&&type!=='character')return null;
@@ -9058,7 +9174,7 @@ return null;
 }
 function _tbPickerCachePut(type,slotKey,qU,rows){
 if(qU)return;
-const sorted=_tbSortPickerEntityRows(rows||[]);
+const sorted=_tbSortPickerEntityRows(rows||[],type==='unit'?_tbPickerSortKey():'rarity',type==='unit'?_tbPickerSortDir():'desc');
 S._tbPickerRowCache=S._tbPickerRowCache||{};
 if(type==='character'){S._tbPickerRowCache.character={key:_tbPickerCharCacheKey(),rows:sorted};return}
 if(type==='unit'){
@@ -9146,21 +9262,20 @@ if(pType==='option'&&S.tb.picker.slotKey!=null){
 const usedSsr=_tbCollectUsedSsrOptionPartIds(S.tb.picker.slotKey);
 rows=rows.filter(r=>r&&r.id!=null&&!(_tbOptionPartIsSsr(r)&&usedSsr.has(String(r.id))));
 }
-if(pType==='unit'||pType==='character'||pType==='option'||pType==='supporter')rows=_tbSortPickerEntityRows(rows);
+if(pType==='unit'||pType==='character'||pType==='option'||pType==='supporter'){
+rows=_tbSortPickerEntityRows(rows,pType==='unit'?_tbPickerSortKey():'rarity',pType==='unit'?_tbPickerSortDir():'desc');
+}
 if(!rows.length){body.innerHTML=`<div style="padding:16px;color:var(--text-muted)">${esc(t('search_spotlight_empty'))}</div>`;return}
 const th=52;
 let cells;
 if(pType==='option'){
-const RARITY_COLORS={'UR':'#fbbf24','SSR':'#f97316','SR':'#a78bfa','R':'#60a5fa','N':'#94a3b8'};
-cells=rows.map(r=>{
-const rc=RARITY_COLORS[r.rarity]||'#94a3b8';
-const meta=((r.details||'').trim()+(r.tags&&r.tags.length?(' · '+r.tags.map(tg=>tg.name).filter(Boolean).join(' · ')):''));
-return`<div class="tb-picker-item cmp-picker-item" role="button" tabindex="0" data-tb-pick-id="${escAttr(String(r.id))}" style="padding:8px 12px;cursor:pointer;width:100%;box-sizing:border-box;border-radius:8px;border:1px solid var(--border-color);background:var(--card-bg)"><div><div style="display:flex;align-items:center;gap:6px"><span style="color:${rc};font-weight:700;font-size:11px">${esc(r.rarity||'')}</span><span class="cmp-picker-item-name" style="font-size:13px">${esc(r.name)}</span></div>${meta?`<div style="font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.35">${esc(meta)}</div>`:''}</div></div>`;
-}).join('');
-body.innerHTML=`<div class="tb-picker-option-list">${cells}</div>`;
+cells=rows.map(r=>renderOptionPartPickerCell(r,th,'data-tb-pick-id')).join('');
+body.innerHTML=`<div class="tb-picker-option-list tb-picker-option-list--rich">${cells}</div>`;
 return;
 }else if(pType==='supporter'){
-cells=rows.map(r=>tbRenderPickerItemCell(r,'supp',th));
+cells=rows.map(r=>renderSupporterPickerCell(r,th,'data-tb-pick-id'));
+body.innerHTML=`<div class="tb-picker-grid tb-picker-grid--rich">${cells.join('')}</div>`;
+return;
 }else{
 cells=rows.map(r=>tbRenderPickerItemCell(r,pType==='character'?'char':'unit',th));
 }
@@ -9182,17 +9297,21 @@ const sup=S.tb.supBySide[side];
 if(sup&&sup.id)boostQ='&tb_boost_supporter='+encodeURIComponent(sup.id);
 }
 const ppTb=boostQ?'600':'100';
-const haveInstantList=!qU&&S.tb.picker.rows&&S.tb.picker.rows.length;
-if(!haveInstantList||qU)body.innerHTML=`<div style="padding:12px;color:var(--text-muted)">…</div>`;
+const sortKey=type==='unit'?_tbPickerSortKey():'rarity';
+const sortDir=type==='unit'?_tbPickerSortDir():'desc';
+const apiSort=sortKey==='atk'?'ATK':sortKey;
+const waQ=type==='unit'?_tbPickerWeaponAttrQuery():'';
+const haveInstantList=!qU&&!waQ&&S.tb.picker.rows&&S.tb.picker.rows.length&&sortKey==='rarity'&&sortDir==='desc';
+if(!haveInstantList||qU||waQ)body.innerHTML=`<div style="padding:12px;color:var(--text-muted)">…</div>`;
 try{
-const url=`${base}?lang=${S.lang}&page=1&per_page=${ppTb}&sort=rarity&dir=desc&q=${encodeURIComponent(qU)}&rarity=ALL${terr}${boostQ}`;
+const url=`${base}?lang=${S.lang}&page=1&per_page=${ppTb}&sort=${encodeURIComponent(apiSort)}&dir=${encodeURIComponent(sortDir)}&q=${encodeURIComponent(qU)}&rarity=ALL${terr}${boostQ}${waQ}`;
 const r=await fetch(url,{signal:ac.signal});
 const d=await r.json();
 if(myGen!==_tbPickerGen)return;
-S.tb.picker.rows=_tbSortPickerEntityRows(d.rows||[]);
-_tbPickerCachePut(type,S.tb.picker.slotKey,qU,S.tb.picker.rows);
+S.tb.picker.rows=_tbSortPickerEntityRows(d.rows||[],sortKey,sortDir);
+_tbPickerCachePut(type,S.tb.picker.slotKey,qU||waQ,S.tb.picker.rows);
 filterTbPickerList();
-}catch(e){if(e&&e.name==='AbortError')return;if(myGen!==_tbPickerGen)return;if(!haveInstantList||qU)body.innerHTML=`<div style="padding:16px">${esc(t('search_spotlight_empty'))}</div>`}
+}catch(e){if(e&&e.name==='AbortError')return;if(myGen!==_tbPickerGen)return;if(!haveInstantList||qU||waQ)body.innerHTML=`<div style="padding:16px">${esc(t('search_spotlight_empty'))}</div>`}
 }
 async function _tbAssignUnitDataToSlot(sl,d,sidStr){
 if(!sl||!d||d.error)return;
