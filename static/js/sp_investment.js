@@ -2387,7 +2387,13 @@
     const ov = $('#spiScoringOverrides');
     ov.innerHTML = (ovLines || []).map((line) => `<li>${esc(line)}</li>`).join('');
     const gaps = $('#spiScoringGaps');
-    gaps.innerHTML = (gapLines || []).map((line) => `<li>${esc(line)}</li>`).join('');
+    const gapsHeading = $('#spiGapsHeading');
+    const hasGaps = Array.isArray(gapLines) && gapLines.length > 0;
+    if (gaps) {
+      gaps.innerHTML = hasGaps ? gapLines.map((line) => `<li>${esc(line)}</li>`).join('') : '';
+      gaps.hidden = !hasGaps;
+    }
+    if (gapsHeading) gapsHeading.hidden = !hasGaps;
 
     const badgeObjective =
       guide && typeof guide.badgeObjective === 'function' ? guide.badgeObjective(lc) : 'Objective';

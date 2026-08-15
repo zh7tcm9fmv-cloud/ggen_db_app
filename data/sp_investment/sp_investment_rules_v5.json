@@ -2307,44 +2307,13 @@
   "scoring_guide": {
     "version": "5.42",
     "title": "How Investment Guide scoring works",
-    "intro": "Point-sum shortlist for SP Conversion / SSP Conversion investment on Units and Characters (Attack Type / Defense Type / Support Type). Units have separate SP and SSP boards; Characters use SP only. Criteria favor practical sortie tools (MAP Weapon, mobility follow-ups, weapon power) and a deep affinity Character pool over a single linked recommend. Minor Attack Type stats (HP, SSP EN) are upside-only — no floor punishment. Close letters still need a human look.",
+    "intro": "Point-sum shortlist for SP Conversion / SSP Conversion investment on Units and Characters (Attack Type / Defense Type / Support Type). Units have separate SP and SSP boards; Characters use SP only. Criteria favor practical sortie tools (MAP Weapon, mobility follow-ups, weapon power) and a deep affinity Character pool over a single linked recommend. Minor Attack Type stats (HP, SSP EN) are upside-only — no floor punishment.",
     "overrides": [
       "Each score factor adds points; the total becomes a letter, then a bucket (BEYOND THE TIME / Recommended / Solid / Situational / Niche). Units: Attack 18+, Defense 22+, Support 19+ earn S+ and BEYOND THE TIME (score-ordered — higher totals outrank lower). Defense Type still rewards lasting ATK Down, survivability, and Preemptive Strike / Support Defense coverage in the point sum. Support Type still rewards lasting DEF Down / pierce in the point sum. Characters: kit points stay absolute; within each Character Type, S+ is roughly the top 3% and S the top 8% (with an absolute A+ floor); A+ and below use role-relative point cutoffs. Defense Type Characters also need a Defense or Reaction band for BEYOND THE TIME.",
       "Filter by Series, Tag, or Eternal Road Expert stage to compare Units and Characters that actually fit the same restriction.",
       "This is a general investment ranking that can also help on Expert — not a dedicated Expert-clears ladder (kit quality should not collapse when one stage’s AI or stats shift)."
     ],
-    "gaps": [
-      "Non-Ultimate UR Units are omitted for now — their kits are too unique for the shared SP Conversion / SSP Conversion criteria.",
-      "Ultimate Units stay on the board. Their series Advantage: Unit Ability is withheld from the base score and only applied when a Tag filter matches that Advantage series.",
-      "Letter cutoffs use separate scales for SP Conversion targets vs Ultimate Units, so Ultimate kits do not lock out Recommended for chip investment.",
-      "Character Recommended Units points use this list’s Unit letters (SP / SSP best).",
-      "Strategic Tag weights use UR roster frequency, but Tags that already appear on Expert restrictions are skipped here — Expert access covers that value (avoids double-counting as Expert and Tag lists converge).",
-      "Affinity Character pool counts SSR+ Characters with piloting-Tag / EX-pair affinity for the Unit (not Supporter amp %).",
-      "Unit Recommended Characters: official recommend only when Ranged/Melee/Awaken matches the Unit’s strongest non-MAP weapon (Defense Type Units skip specialty); then affinity Characters already on this guide with the same specialty match, filling up to 3 with SR/R — never pad with wrong-stat SSRs.",
-      "Character Recommended Units use a portfolio: top 3 Units graded A / A+ / S / S+ (SP or SSP best) — A/A+ = +1, S/S+ = +2, cap +2. B+ and below do not score.",
-      "Character kits add flat Conditional Ability / Initial MP bonuses on top of TraitType points; active skills are role-weighted (damage / range / survivability / mobility over MP; EN Charge / Save EN = 0).",
-      "UR Characters are omitted from the Character board (not SP Conversion targets; there are no Ultimate Characters).",
-      "Transform scores only when the alternate form unlocks deployable Terrain Capability, higher MOV, longer range, higher weapon power, or adds a MAP Weapon. Combat stats use the better of base/alt HP·DEF·ATK when the alt form improves those.",
-      "Attack Type HP and SSP Attack Type EN are upside-only; Defense Type HP/DEF floors are mild (−1) and the +2 HP band starts at 120k so survivability can create rank. ATK stays upside-only. Special defenses (I-field / DR / barrier) are presence bonuses beyond the shield mechanism. Lasting ATK Down is Defense Type debuff strength (tank analog of Support DEF Down) and also counts as tank mitigation.",
-      "Support Type lasting DEF Down / pierce still scores in the point sum; MAP-padded kits without real debuff strength stay lower on total.",
-      "Defense Type Characters need a Defense or Reaction band for BEYOND THE TIME — kit-only Durability Characters stay Recommended.",
-      "Units whose recommend Character is UR / Ultimate take a mild −1 dependence tax (still usable with lower-rarity Characters).",
-      "Unit Expert access bands are compressed so a small eligibility gap (e.g. 4 vs 6 stages) is not a free letter tier.",
-      "Terrain Capability extras need full affinity circle (Lv≥3); triangle Space/Atmospheric is a mild penalty, not a strength.",
-      "Acquisition (Unit Assembly / Development / Other) is a filter only — it does not change letter scores. Multi-select Acquisition (OR) can exclude Unit Assembly by picking Development + Other.",
-      "Limited-time Unit Assembly Supporter leader Tags: +1 per matched Tag on the kit, cap +2 (integer points only).",
-      "Character letters are hybrid within Character Type: S+ ≈ top 3% and S ≈ top 8% by kit total (absolute A+ floor); A+ and below use role-relative point cutoffs. Specialty tip for Ranged/Melee/Awaken caps at +5 (Attack/Support). Defense Type Characters score Defense/Reaction first; Ranged/Melee/Awaken are upside-only (cap +1).",
-      "Support Type debuff-kind scoring uses base weapon range — SSP range enhance does not invent Range-5 credit for Range-4 kits.",
-      "Support Type weapon_bonus is capped at +1 (Higher-range style bonuses stay Attack-flavored).",
-      "Max Vigor −1 is for guns that require Max Vigor to fire and outpower every unrestricted option (Twin Satellite–class). On SSP, Custom Core (…90) is the bypass — SSP power enhance on a still-gated SP weapon does not re-apply that −1.",
-      "Multi damage-type (+2): any weapon (including MAP) whose WeaponAttribute combines Beam / Physical / Special. Not limited to Barbatos Lupus / Rex — those were an early allowlist placeholder.",
-      "Community votes nudge the displayed total by at most ±2 (IP-limited). Objective kit score remains primary; kits with no votes stay at 0 nudge.",
-      "Combat actions: first Support Defense +1 is Durability/Support identity (+2). A second distinct SD +1 family is extra +1 (3 SD). Support Attack +1 stays +2 on Support. Cap 4.",
-      "Transform combat stats: when the alt form raises HP, DEF, or ATK vs base, score the better of each (no unit-id allowlist).",
-      "GN Field / Positron Reflector score like other damage-reduction kits (no name exclude).",
-      "Multi combat specialty (+1): strongest attack uses 2+ of Ranged / Melee / Awaken (separate from damage type).",
-      "Close letters still need a human look."
-    ]
+    "gaps": []
   },
   "er_access_points": [
     {

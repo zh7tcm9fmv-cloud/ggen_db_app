@@ -13,28 +13,7 @@
         "Filter by Series, Tag, or Eternal Road Expert stage to compare Units and Characters that actually fit the same restriction.",
         "This is a general investment ranking that can also help on Expert — not a dedicated Expert-clears ladder."
       ],
-      "gaps": [
-        "Non-Ultimate UR Units are omitted for now — their kits are too unique for the shared SP Conversion / SSP Conversion criteria.",
-        "Ultimate Units stay on the board. Their series Advantage: Unit Ability is withheld from the base score and only applied when a Tag filter matches that Advantage series.",
-        "Letter cutoffs use separate scales for SP Conversion targets vs Ultimate Units, so Ultimate kits do not lock out Recommended for chip investment.",
-        "Character Recommended Units points use this list’s Unit letters (SP / SSP best).",
-        "Strategic Tag weights use UR roster frequency, but Tags that already appear on Expert restrictions are skipped here — Expert access covers that value.",
-        "Affinity Character pool counts SSR+ Characters with piloting-Tag / EX-pair affinity for the Unit (not Supporter amp %).",
-        "Character Recommended Units points only count Units graded A / A+ / S / S+ on this guide (SP or SSP best) — B+ and below do not score (top 3, cap +2).",
-        "Unit Expert access bands are compressed so a small eligibility gap is not a free letter tier.",
-        "Terrain Capability extras need full affinity circle (Lv≥3); triangle Space/Atmospheric is a mild penalty, not a strength.",
-        "Acquisition is filter-only; multi-select Acquisition (OR) can exclude Unit Assembly by picking Development + Other.",
-        "Limited-time Supporter leader Tags: +1 per matched kit Tag, cap +2.",
-        "Character letters are hybrid within Character Type: S+ ≈ top 3% / S ≈ top 8% (absolute A+ floor); specialty tip (Ranged/Melee/Awaken) caps at +5.",
-        "Support Type debuff kinds use base weapon range — SSP range enhance does not invent Range-5 credit for Range-4 kits.",
-        "Support Type weapon_bonus is capped at +1.",
-        "Multi damage-type (+2): any weapon (including MAP) combining Beam / Physical / Special — catalog-wide (replaces the old Lupus/Rex-only allowlist).",
-        "Community votes nudge the displayed total by at most ±2 (IP-limited). Objective kit score remains primary.",
-        "Transform scores only when the alternate form unlocks deployable Terrain Capability, higher MOV, longer range, higher weapon power, or adds a MAP Weapon.",
-        "Attack Type HP and SSP Attack Type EN are upside-only; Defense Type still taxes low HP/DEF. Special defenses (I-field / DR / barrier) are presence bonuses beyond the shield mechanism.",
-        "Units whose recommend Character is UR / Ultimate take a mild −1 dependence tax (still usable with lower-rarity Characters).",
-        "Close letters still need a human look."
-      ]
+      "gaps": []
     },
     "JA": {
       "overrides": [
@@ -42,26 +21,7 @@
         "シリーズ・タグ・エターナルロード Expert ステージで絞り、同じ制限に合うユニット／キャラクター同士を比較してください。",
         "一般運用向けの投資ランキングで、Expert でも使えることがある、という位置づけです（特定 Expert 攻略専用ではありません）。"
       ],
-      "gaps": [
-        "通常の UR ユニットは本ガイド対象外です — キットが固有すぎて共有の SP化／SSP化基準に載せにくいためです。",
-        "アルティメットユニットは掲載します。シリーズ Advantage アビリティは基礎点から外し、Advantage シリーズに一致するタグフィルタ時のみ加算します。",
-        "レター閾値は SP化対象のユニット／キャラクターとアルティメットで別表です。アルティメットがチップ投資先の「推奨」を独占しないようにしています。",
-        "キャラクターの推奨 MS 点は、本リストのユニットレター（SP／SSP の良い方）を使います。",
-        "戦略タグは UR 編成での出現頻度を使いますが、すでに Expert 制限に出ているタグはここでは加点しません（Expert 適性が担います）。",
-        "アフィニティ候補数は、その MS に搭乗タグ／EX ペア親和がある SSR+ キャラクターを数えます（サポーター増幅％ではありません）。",
-        "キャラクターの推奨 MS 点は、本ガイドで A／A+／S／S+（SP または SSP の良い方）のユニットのみ — B+ 以下は加点しません（上位3機・上限 +2）。",
-        "変形は、別形態が出撃可能地形・より高い MOV・より長い射程・より高い武装威力を解放するか、MAP兵器を追加する場合のみ加点します。",
-        "攻撃型の HP と SSP 攻撃型の EN は上振れのみ。耐久型は低 HP／DEF を減点します。特殊防御（Iフィールド／DR／バリア）はシールド機構を超える存在ボーナスです。",
-        "推奨キャラクターが UR／アルティメットのユニットは軽い −1 依存税（下位レアのキャラクターでも運用可）。",
-        "ユニットの Expert 適性帯は圧縮しており、わずかな出撃差だけではレターが飛びません。",
-        "地形適性の追加点は完全適性◯（Lv≥3）が必要。△の宇宙／空中は軽い減点であり強みとして扱いません。",
-        "入手元はフィルタのみ。複数選択（OR）で開発ユニット＋その他を選ぶとガシャ獲得ユニットを除外できます。",
-        "期間限定サポーターのリーダースキル対象タグはキット上1つにつき +1（上限 +2）。",
-        "キャラクターのレターは役割内ハイブリッド（上位約3%が S+、約8%が S。絶対 A+ 以上が条件）。特殊ステの上限は +5。",
-        "支援型の弱化種類は基礎武装射程で判定 — SSP の射程強化だけでは射程5扱いにはしません。",
-        "支援型の武装条件ボーナスは上限 +1。",
-        "レターが僅差のときは人の目での確認が必要です。"
-      ]
+      "gaps": []
     },
     "TW": {
       "overrides": [
@@ -69,26 +29,7 @@
         "可用系列、標籤或永恆之路 Expert 關卡篩選，比較真正符合同一限制的單位與角色。",
         "這是偏一般投資用途的排名，也能偶爾用於 Expert — 不是專攻 Expert 通關的排行榜。"
       ],
-      "gaps": [
-        "非終極的 UR 單位暫不列入本指南 — 套件過於獨特，難以套用共通的 SP化／SSP化條件。",
-        "終極單位仍會上榜。其系列 Advantage 能力不計入基礎分，僅在標籤篩選符合該 Advantage 系列時套用。",
-        "字母門檻對 SP化對象單位／角色與終極單位使用不同量表，避免終極單位擠掉籌碼投資目標的「推薦」。",
-        "角色推薦單位分數使用本清單的單位字母（取 SP／SSP 較佳者）。",
-        "戰略標籤依 UR 陣容出現頻率，但已出現在 Expert 限制中的標籤此處不加分（由 Expert 適性承擔）。",
-        "親和角色池計算對該單位具有駕駛標籤／EX 配對親和的 SSR+ 角色（不是支援人員增幅％）。",
-        "角色推薦單位分數只計算本指南評為 A／A+／S／S+ 的單位（取 SP 或 SSP 較佳）— B+ 以下不加分（前 3 機、上限 +2）。",
-        "變形僅在替換形態解鎖可出擊地形、更高移動力、更長射程、更高武裝威力，或新增 MAP兵器 時計分。",
-        "攻擊型 HP 與 SSP 攻擊型 EN 僅計上振；耐久型仍會對低 HP／DEF 扣分。特殊防禦（I力場／DR／屏障）是護盾機構以外的存在加分。",
-        "推薦角色為 UR／終極的單位有輕微 −1 依賴稅（仍可用較低稀有度角色）。",
-        "單位 Expert 適性分帶已壓縮，微小出擊差不會直接造成字母級差。",
-        "地形適性額外分需完全適性「圓」（Lv≥3）；「三角形」宇宙／空中為輕微扣分，不當作成優勢。",
-        "取得來源僅為篩選；可複選（OR）同時選開發單位與其他來排除單位補給獲得單位。",
-        "限定期間支援人員隊長技能標籤：套件上每個符合標籤 +1，上限 +2。",
-        "角色字母為類型內混合制：約前 3% S+、約前 8% S（須達絕對 A+）；特殊能力上限 +5。",
-        "支援型弱化種類以基礎武裝射程判定 — SSP 射程強化不會把射程 4 套件當成射程 5。",
-        "支援型武裝條件加成上限 +1。",
-        "字母接近時仍需人工再看一眼。"
-      ]
+      "gaps": []
     },
     "HK": {
       "overrides": [
@@ -96,26 +37,7 @@
         "可用系列、標籤或永恆之路 Expert 關卡篩選，比較真正符合同一限制嘅單位同角色。",
         "呢個係偏一般投資用途嘅排名，都間中可以用喺 Expert — 唔係專攻 Expert 通關嘅排行榜。"
       ],
-      "gaps": [
-        "非終極嘅 UR 單位暫時唔列入本指南 — 套件太獨特，難套用共通嘅 SP化／SSP化條件。",
-        "終極單位仍然會上榜。佢嘅系列 Advantage 能力唔計入基礎分，淨係標籤篩選符合嗰個 Advantage 系列先套用。",
-        "字母門檻對 SP化對象單位／角色同終極單位用唔同量表，避免終極單位搶晒籌碼投資目標嘅「推薦」。",
-        "角色推薦單位分數用本清單嘅單位字母（取 SP／SSP 較佳嗰邊）。",
-        "戰略標籤跟 UR 陣容出現頻率，但已經出現喺 Expert 限制入面嘅標籤呢度唔加分（由 Expert 適性承擔）。",
-        "親和角色池數對該單位有駕駛標籤／EX 配對親和嘅 SSR+ 角色（唔係支援人員增幅％）。",
-        "角色推薦單位分數淨計本指南評做 A／A+／S／S+ 嘅單位（取 SP 或 SSP 較佳）— B+ 或以下唔加分（前 3 機、上限 +2）。",
-        "變形淨係喺替換形態解鎖可出擊地形、更高移動力、更長射程、更高武裝威力，或者加咗 MAP兵器 先計分。",
-        "攻擊型 HP 同 SSP 攻擊型 EN 淨計上振；耐久型仍然會對低 HP／DEF 扣分。特殊防禦（I力場／DR／屏障）係護盾機構以外嘅存在加分。",
-        "推薦角色係 UR／終極嘅單位有輕微 −1 依賴稅（仍然可以用較低稀有度角色）。",
-        "單位 Expert 適性分帶已壓縮，細微出擊差唔會直接造成字母級差。",
-        "地形適性額外分要完全適性「圓」（Lv≥3）；「三角形」宇宙／空中係輕微扣分，唔當作成優勢。",
-        "取得來源淨係篩選；可以複選（OR）同時揀開發單位同其他嚟排除機體補給獲得單位。",
-        "限定期間支援人員隊長技能標籤：套件上每個符合標籤 +1，上限 +2。",
-        "角色字母係類型內混合制：約前 3% S+、約前 8% S（要達絕對 A+）；特殊能力上限 +5。",
-        "支援型弱化種類用基礎武裝射程判定 — SSP 射程強化唔會將射程 4 套件當射程 5。",
-        "支援型武裝條件加成上限 +1。",
-        "字母好接近嘅時候仍然要人眼再睇一次。"
-      ]
+      "gaps": []
     }
   };
 
