@@ -404,11 +404,11 @@ Object.assign(T.TW,{kofi_promo_kw_sneak:'獨家搶先看',kofi_promo_kw_bonus:'�
 Object.assign(T.HK,{kofi_promo_kw_sneak:'獨家搶先看',kofi_promo_kw_bonus:'額外內容',kofi_post_notice_aria:'Ko-fi 有新貼文',kofi_promo_notice_line:'我已新增紅色通知點，當有新的獨家內容時會顯示在 Ko-fi 按鈕上。',kofi_wall_title:'感謝 {n} 位新人類讓這個資料庫持續運作。',kofi_wall_join:'加入支持牆',kofi_wall_top:'最高支持者',kofi_wall_aria:'支持者'});
 Object.assign(T.JA,{kofi_promo_kw_sneak:'限定先行公開',kofi_promo_kw_bonus:'ボーナスコンテンツ',kofi_post_notice_aria:'Ko-fiに新しい投稿',kofi_promo_notice_line:'新しい限定コンテンツが公開されると、Ko-fiボタンに赤い通知が表示されます。',kofi_wall_title:'このデータベースを支えてくれている {n} 人のニュータイプに感謝します。',kofi_wall_join:'ウォールに参加',kofi_wall_top:'トップサポーター',kofi_wall_aria:'サポーター'});
 Object.assign(T.JP,{kofi_promo_kw_sneak:'限定先行公開',kofi_promo_kw_bonus:'ボーナスコンテンツ',kofi_post_notice_aria:'Ko-fiに新しい投稿',kofi_promo_notice_line:'新しい限定コンテンツが公開されると、Ko-fiボタンに赤い通知が表示されます。',kofi_wall_title:'このデータベースを支えてくれている {n} 人のニュータイプに感謝します。',kofi_wall_join:'ウォールに参加',kofi_wall_top:'トップサポーター',kofi_wall_aria:'サポーター'});
-Object.assign(T.EN,{dc_bigrang_zeon_squad_chk:'Big-Rang EX (1009000550) + pilot 1009000100: +5% ATK/DEF (Zeon)',dc_bigrang_zeon_squad_tip:'When Big-Rang (EX) is piloted by its EX pilot in your squad, Zeon-tagged units gain +5% ATK and DEF (permanent). Toggle on in Damage Calculator when that pair is in the squad.'});
-Object.assign(T.TW,{dc_bigrang_zeon_squad_chk:'Big-Rang EX (1009000550) + 駕駛 1009000100：吉翁小隊 +5% 攻擊/防禦',dc_bigrang_zeon_squad_tip:'小隊中有 Big-Rang（EX）並由其 EX 駕駛員駕駛時，帶有吉翁標籤的機體永久 +5% 攻擊與防禦。傷害計算中若該組合在小隊內請開啟。'});
-Object.assign(T.HK,{dc_bigrang_zeon_squad_chk:'Big-Rang EX (1009000550) + 駕駛 1009000100：吉翁小隊 +5% 攻擊/防禦',dc_bigrang_zeon_squad_tip:'小隊中有 Big-Rang（EX）並由其 EX 駕駛員駕駛時，帶有吉翁標籤的機體永久 +5% 攻擊與防禦。傷害計算中若該組合在小隊內請開啟。'});
-Object.assign(T.JA,{dc_bigrang_zeon_squad_chk:'ビッグランEX (1009000550) + パイロット1009000100：ジオン分隊 +5%攻撃/防御',dc_bigrang_zeon_squad_tip:'ビッグラン（EX）を専用パイロットが乗っているとき、ジオンタグの機体の攻撃力・防御力が永続+5%。その編成を想定する場合はON。'});
-Object.assign(T.JP,{dc_bigrang_zeon_squad_chk:T.JA.dc_bigrang_zeon_squad_chk,dc_bigrang_zeon_squad_tip:T.JA.dc_bigrang_zeon_squad_tip});
+Object.assign(T.EN,{dc_bigrang_zeon_squad_chk:'Big-Rang EX (1009000550) + pilot 1009000100: +5% ATK/DEF (Zeon)',dc_bigrang_zeon_squad_tip:'When Big-Rang (EX) is piloted by its EX pilot in your squad, Zeon-tagged units gain +5% ATK and DEF (permanent). Toggle on in Damage Calculator when that pair is in the squad.',dc_squad_buff_applied:'Applied',dc_squad_buff_sources:'Sources',dc_squad_buff_from_self:'This attacker',dc_squad_buff_from_ally:'Other attacker',dc_squad_buff_from_squad:'Squad aura',dc_squad_buff_from_ex_squad:'EX squad ATK',dc_squad_buff_ex_squad_label:'EX squad ATK %',dc_squad_buff_ex_atk_pct:'EX %atk +%n%',dc_squad_buff_atk_def_pct:'%atk & %def +%n%',dc_squad_buff_atk_pct:'%atk +%n%',dc_squad_buff_def_pct:'%def +%n%',dc_squad_buff_applied_split:'%atk +%a% · %def +%d%'});
+Object.assign(T.TW,{dc_bigrang_zeon_squad_chk:'Big-Rang EX (1009000550) + 駕駛 1009000100：吉翁小隊 +5% 攻擊/防禦',dc_bigrang_zeon_squad_tip:'小隊中有 Big-Rang（EX）並由其 EX 駕駛員駕駛時，帶有吉翁標籤的機體永久 +5% 攻擊與防禦。傷害計算中若該組合在小隊內請開啟。',dc_squad_buff_applied:'套用中',dc_squad_buff_sources:'來源',dc_squad_buff_from_self:'此攻擊方',dc_squad_buff_from_ally:'另一攻擊方',dc_squad_buff_from_squad:'小隊光環',dc_squad_buff_from_ex_squad:'EX 小隊攻擊力',dc_squad_buff_ex_squad_label:'EX 小隊攻擊力 %',dc_squad_buff_ex_atk_pct:'EX %atk +%n%',dc_squad_buff_atk_def_pct:'%atk與%def +%n%',dc_squad_buff_atk_pct:'%atk +%n%',dc_squad_buff_def_pct:'%def +%n%',dc_squad_buff_applied_split:'%atk +%a% · %def +%d%'});
+Object.assign(T.HK,{dc_bigrang_zeon_squad_chk:'Big-Rang EX (1009000550) + 駕駛 1009000100：吉翁小隊 +5% 攻擊/防禦',dc_bigrang_zeon_squad_tip:'小隊中有 Big-Rang（EX）並由其 EX 駕駛員駕駛時，帶有吉翁標籤的機體永久 +5% 攻擊與防禦。傷害計算中若該組合在小隊內請開啟。',dc_squad_buff_applied:'套用中',dc_squad_buff_sources:'來源',dc_squad_buff_from_self:'此攻擊方',dc_squad_buff_from_ally:'另一攻擊方',dc_squad_buff_from_squad:'小隊光環',dc_squad_buff_from_ex_squad:'EX 小隊攻擊力',dc_squad_buff_ex_squad_label:'EX 小隊攻擊力 %',dc_squad_buff_ex_atk_pct:'EX %atk +%n%',dc_squad_buff_atk_def_pct:'%atk與%def +%n%',dc_squad_buff_atk_pct:'%atk +%n%',dc_squad_buff_def_pct:'%def +%n%',dc_squad_buff_applied_split:'%atk +%a% · %def +%d%'});
+Object.assign(T.JA,{dc_bigrang_zeon_squad_chk:'ビッグランEX (1009000550) + パイロット1009000100：ジオン分隊 +5%攻撃/防御',dc_bigrang_zeon_squad_tip:'ビッグラン（EX）を専用パイロットが乗っているとき、ジオンタグの機体の攻撃力・防御力が永続+5%。その編成を想定する場合はON。',dc_squad_buff_applied:'適用中',dc_squad_buff_sources:'発動元',dc_squad_buff_from_self:'この攻撃側',dc_squad_buff_from_ally:'もう一方の攻撃側',dc_squad_buff_from_squad:'分隊オーラ',dc_squad_buff_from_ex_squad:'EX分隊攻撃力',dc_squad_buff_ex_squad_label:'EX分隊攻撃力 %',dc_squad_buff_ex_atk_pct:'EX %atk +%n%',dc_squad_buff_atk_def_pct:'%atk・%def +%n%',dc_squad_buff_atk_pct:'%atk +%n%',dc_squad_buff_def_pct:'%def +%n%',dc_squad_buff_applied_split:'%atk +%a% · %def +%d%'});
+Object.assign(T.JP,{dc_bigrang_zeon_squad_chk:T.JA.dc_bigrang_zeon_squad_chk,dc_bigrang_zeon_squad_tip:T.JA.dc_bigrang_zeon_squad_tip,dc_squad_buff_applied:T.JA.dc_squad_buff_applied,dc_squad_buff_sources:T.JA.dc_squad_buff_sources,dc_squad_buff_from_self:T.JA.dc_squad_buff_from_self,dc_squad_buff_from_ally:T.JA.dc_squad_buff_from_ally,dc_squad_buff_from_squad:T.JA.dc_squad_buff_from_squad,dc_squad_buff_from_ex_squad:T.JA.dc_squad_buff_from_ex_squad,dc_squad_buff_ex_squad_label:T.JA.dc_squad_buff_ex_squad_label,dc_squad_buff_ex_atk_pct:T.JA.dc_squad_buff_ex_atk_pct,dc_squad_buff_atk_def_pct:T.JA.dc_squad_buff_atk_def_pct,dc_squad_buff_atk_pct:T.JA.dc_squad_buff_atk_pct,dc_squad_buff_def_pct:T.JA.dc_squad_buff_def_pct,dc_squad_buff_applied_split:T.JA.dc_squad_buff_applied_split});
 Object.assign(T.EN,{supp_combat_power:'Combat Power',supp_gacha_quote:'Obtained Quote'});
 Object.assign(T.TW,{supp_combat_power:'戰力',supp_gacha_quote:'獲得台詞'});
 Object.assign(T.HK,{supp_combat_power:'戰力',supp_gacha_quote:'獲得台詞'});
@@ -7870,7 +7870,7 @@ return{kind:'flat_atk',flatPct:parsed.flat,pilotGroups:null,recvGroup:null,affec
 return null;
 }
 function _scWalkAbilityDetailsForSquad(cd,ud,visitor){
-function walkResolved(resolved){
+function walkResolved(resolved,entityKind){
 if(!resolved)return;
 const det=resolved.details||[];
 for(let i=0;i<det.length;i++){
@@ -7880,17 +7880,18 @@ if(!_scTextImpliesSquadBuff(tx))continue;
 const parsed=_scParseSquadLineStats(tx);
 if(!parsed)continue;
 const b=_scBuildBindingFromParsed(parsed,ln.condition_groups||[],tx);
-if(b)visitor(b,ln);
+if(b)visitor(b,ln,resolved,entityKind||'');
 }
 }
 if(cd&&!cd._manual&&Array.isArray(cd.abilities)){
-for(let a=0;a<cd.abilities.length;a++)walkResolved(_dcResolveCharAbilityForMode(cd.abilities[a]));
+for(let a=0;a<cd.abilities.length;a++)walkResolved(_dcResolveCharAbilityForMode(cd.abilities[a]),'char');
 }
 if(ud&&!ud._manual&&Array.isArray(ud.abilities)){
-for(let a=0;a<ud.abilities.length;a++)walkResolved(_dcResolveUnitAbilityForMode(ud.abilities[a]));
+for(let a=0;a<ud.abilities.length;a++)walkResolved(_dcResolveUnitAbilityForMode(ud.abilities[a]),'unit');
 }
 }
 const _scSquadBindingCache=new Map();
+const _scSquadBindingMetaCache=new Map();
 function _scSquadBindingCacheKey(cd,ud){
 const cid=cd&&!cd._manual?String(cd.id||''):'';
 const uid=ud&&!ud._manual?String(ud.id||''):'';
@@ -7900,11 +7901,29 @@ const cc=!!(S.dc&&S.dc.charCondPassive);
 const uc=!!(S.dc&&S.dc.unitCondPassive);
 return cid+'|'+uid+'|'+cm+'|'+um+'|'+(cc?'1':'0')+'|'+(uc?'1':'0');
 }
+function _scFindSquadConditionBindingMeta(cd,ud){
+const key=_scSquadBindingCacheKey(cd,ud);
+if(_scSquadBindingMetaCache.has(key))return _scSquadBindingMetaCache.get(key);
+let found=null;
+_scWalkAbilityDetailsForSquad(cd,ud,(b,ln,resolved,entityKind)=>{
+if(found)return;
+found={
+binding:b,
+abilityName:String((resolved&&(resolved.display_name||resolved.name))||'').trim(),
+abilityId:resolved&&resolved.id!=null?String(resolved.id):'',
+entityKind:entityKind||'',
+lineText:String((ln&&ln.text)||'')
+};
+});
+if(_scSquadBindingMetaCache.size>400)_scSquadBindingMetaCache.clear();
+_scSquadBindingMetaCache.set(key,found);
+return found;
+}
 function _scFindSquadConditionBinding(cd,ud){
 const key=_scSquadBindingCacheKey(cd,ud);
 if(_scSquadBindingCache.has(key))return _scSquadBindingCache.get(key);
-let found=null;
-_scWalkAbilityDetailsForSquad(cd,ud,(b)=>{if(!found)found=b});
+const meta=_scFindSquadConditionBindingMeta(cd,ud);
+const found=meta?meta.binding:null;
 if(_scSquadBindingCache.size>400)_scSquadBindingCache.clear();
 _scSquadBindingCache.set(key,found);
 return found;
@@ -7974,10 +7993,17 @@ if(_dcSquadRecvGroupMet(udR,cdR,p.recvGroup))sum+=p.flatPct|0;
 });
 return{atk:sum,def:sum};
 }
-if(b.kind!=='flat_ad')return z;
+if(b.kind==='flat_ad'){
 if(!_dcSquadRecvGroupMet(udR,cdR,b.recvGroup))return z;
 const p=b.flatPct|0;
 return{atk:p,def:p};
+}
+/* Tallgeese III EX-style: +N% ATK to same-squad series/tag units (ATK only). */
+if(b.kind==='flat_atk'){
+if(!_dcSquadRecvGroupMet(udR,cdR,b.recvGroup))return z;
+return{atk:b.flatPct|0,def:0};
+}
+return z;
 });
 }
 function _tbComputeExternalFlatAdSquadPctForSlot(sl,side){
@@ -8020,6 +8046,17 @@ let sum=0;
 if(_dcSquadRecvGroupMet(ud,cd,p.recvGroup))sum+=p.flatPct|0;
 });
 return{atk:sum,def:sum};
+}
+if(b.kind==='flat_atk'){
+const rg=b.recvGroup;
+if(rg&&!_dcSquadRecvGroupMet(ud,cd,rg))return z;
+if(b.flatPerUnit){
+if(!rg||!((rg.conditions||[]).length))return z;
+const n=_tbCountSquadUnitsMatchingGroup(side,rg);
+const per=b.flatPct|0;
+return{atk:per*Math.min(5,Math.max(0,n)),def:0};
+}
+return{atk:b.flatPct|0,def:0};
 }
 if(b.kind==='stack_atk'||b.kind==='dual_stack_atk'){
 /* Include this slot when it matches Condition 2 (e.g. Wing Series alone → 2%, full Wing squad → 10%). */
@@ -9675,7 +9712,7 @@ if(v>=sum)return sum;
 if(v===0)return sum;
 return v;
 }
-/** Flat ATK+DEF auras from other Damage Calculator attacker slots (same idea as Team Builder cross-slot). */
+/** Flat ATK / ATK+DEF auras from other Damage Calculator attacker slots (same idea as Team Builder cross-slot). */
 function _dcComputeExternalFlatAdSquadPctFromOtherSlots(){
 const recvUd=S.dc.atkUnitData,recvCd=S.dc.atkCharData;
 const z={atk:0,def:0};
@@ -9689,7 +9726,7 @@ const udC=sl&&sl.atkUnitData;
 const cdC=sl&&sl.atkCharData;
 if(!udC||udC._manual||!cdC||cdC._manual)continue;
 const b=_scFindSquadConditionBinding(cdC,udC);
-if(!b)continue;
+if(!b||b.flatPerUnit)continue;
 if(b.pilotGroups&&b.pilotGroups.length&&!_dcAbilityCondContextMeetsGroups(udC,cdC,b.pilotGroups))continue;
 if(b.kind==='dual_flat_ad'){
 (b.parts||[]).forEach(p=>{
@@ -9697,9 +9734,16 @@ if(_dcSquadRecvGroupMet(recvUd,recvCd,p.recvGroup)){const v=p.flatPct|0;z.atk+=v
 });
 continue;
 }
-if(b.kind!=='flat_ad'||b.flatPerUnit)continue;
+if(b.kind==='flat_ad'){
 if(!_dcSquadRecvGroupMet(recvUd,recvCd,b.recvGroup))continue;
 const p=b.flatPct|0;z.atk+=p;z.def+=p;
+continue;
+}
+/* Tallgeese III EX / similar: permanent +N% ATK to tagged/series squad units. */
+if(b.kind==='flat_atk'){
+if(!_dcSquadRecvGroupMet(recvUd,recvCd,b.recvGroup))continue;
+z.atk+=b.flatPct|0;
+}
 }
 return z;
 }
@@ -9707,8 +9751,25 @@ function _dcSyncSquadCondEffectiveFromState(){
 const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;
 S.dc.squadCondAtkPct=0;
 S.dc.squadCondDefPct=0;
-if(!ud||ud._manual||!cd||cd._manual||_scIsQubeleyExCombo(cd,ud)){
-if(_dcBigRangZeonSquadBuffActive()){S.dc.squadCondAtkPct=BIG_RANG_ZEON_SQUAD_FLAT_AD_PCT;S.dc.squadCondDefPct=BIG_RANG_ZEON_SQUAD_FLAT_AD_PCT}
+const applyExtAndBigRang=()=>{
+const ext=_dcComputeExternalFlatAdSquadPctFromOtherSlots();
+if((ext.atk|0)>0||(ext.def|0)>0){
+/* Always stack commander auras from other attacker slots onto local squad % (Wing stack + Tallgeese flat ATK, etc.). */
+S.dc.squadCondAtkPct=(S.dc.squadCondAtkPct|0)+(ext.atk|0);
+S.dc.squadCondDefPct=(S.dc.squadCondDefPct|0)+(ext.def|0);
+}
+if(_dcBigRangZeonSquadBuffActive()){
+S.dc.squadCondAtkPct=(S.dc.squadCondAtkPct|0)+BIG_RANG_ZEON_SQUAD_FLAT_AD_PCT;
+S.dc.squadCondDefPct=(S.dc.squadCondDefPct|0)+BIG_RANG_ZEON_SQUAD_FLAT_AD_PCT;
+}
+};
+if(!ud||ud._manual||!cd||cd._manual){
+applyExtAndBigRang();
+return;
+}
+if(_scIsQubeleyExCombo(cd,ud)){
+/* Qubeley EX uses EX squad ATK % for its own stack; still receive ATK/DEF auras from other attacker commanders. */
+applyExtAndBigRang();
 return;
 }
 const raw=Math.max(0,S.dc.squadCondPct|0);
@@ -9731,8 +9792,18 @@ if(!b.flatPerUnit&&v===0){const selfFlat=_dcSelfMatchingSquadFlatAdPct(b,ud,cd);
 if(b.flatPerUnit){const per=b.flatPct|0;const eff=per*v;S.dc.squadCondAtkPct=eff;S.dc.squadCondDefPct=eff}
 else{S.dc.squadCondAtkPct=v;S.dc.squadCondDefPct=v}
 }
+}else if(b.kind==='flat_atk'){
+const rg=b.recvGroup;
+if(!(rg&&!_dcSquadRecvGroupMet(ud,cd,rg))){
+const cap=_dcSquadCondInputCap(cd,ud);
+let v=Math.min(Math.max(0,cap),raw);
+if(!b.flatPerUnit&&v===0&&_dcSquadRecvGroupMet(ud,cd,rg))v=b.flatPct|0;
+if(b.flatPerUnit){const per=b.flatPct|0;v=per*v}
+S.dc.squadCondAtkPct=v;
+S.dc.squadCondDefPct=0;
+}
 }else{
-/* stack_atk / dual_stack / flat_atk: use the Squad conditions input (0–cap), not live DC slot counts */
+/* stack_atk / dual_stack: use the Squad conditions input (0–cap), not live DC slot counts */
 const cap=_dcSquadCondInputCap(cd,ud);
 const v=Math.min(Math.max(0,cap),raw);
 S.dc.squadCondAtkPct=v;
@@ -9740,25 +9811,12 @@ S.dc.squadCondDefPct=0;
 }
 }
 }else{
-/* Manual / receiver of another slot's ATK+DEF aura: apply the typed % to both ATK and DEF. */
+/* Manual typed % with no auto binding: ATK+DEF when used to model flat AD auras. */
 const v=Math.min(100,raw);
 S.dc.squadCondAtkPct=v;
 S.dc.squadCondDefPct=v;
 }
-const ext=_dcComputeExternalFlatAdSquadPctFromOtherSlots();
-if((ext.atk|0)>0||(ext.def|0)>0){
-if(b&&(b.kind==='flat_ad'||b.kind==='dual_flat_ad')){
-S.dc.squadCondAtkPct=(S.dc.squadCondAtkPct|0)+(ext.atk|0);
-S.dc.squadCondDefPct=(S.dc.squadCondDefPct|0)+(ext.def|0);
-}else if(!b||(b.kind!=='stack_atk'&&b.kind!=='dual_stack_atk'&&b.kind!=='flat_atk')){
-S.dc.squadCondAtkPct=Math.max(S.dc.squadCondAtkPct|0,ext.atk|0);
-S.dc.squadCondDefPct=Math.max(S.dc.squadCondDefPct|0,ext.def|0);
-}
-}
-if(_dcBigRangZeonSquadBuffActive()){
-S.dc.squadCondAtkPct=(S.dc.squadCondAtkPct|0)+BIG_RANG_ZEON_SQUAD_FLAT_AD_PCT;
-S.dc.squadCondDefPct=(S.dc.squadCondDefPct|0)+BIG_RANG_ZEON_SQUAD_FLAT_AD_PCT;
-}
+applyExtAndBigRang();
 }
 function _dcDefNpcMapBonusesEnabled(){return S.dc.defNpcMapBonusesOn!==false;}
 /** Map NPC MS stats for DC panel + damage (calculateDamage, hit rate, defender cards).
@@ -9780,6 +9838,206 @@ const ud=S.dc.atkUnitData,cd=S.dc.atkCharData;
 const show=!!(ud&&cd&&!ud._manual&&!cd._manual);
 sec.style.display=show?'':'none';
 if(lbl)lbl.textContent=t('dc_squad_buff_section');
+if(show)_dcRenderSquadBuffSourcesUi();
+else{
+const ap=document.getElementById('dcSquadBuffAppliedLine');
+const src=document.getElementById('dcSquadBuffSources');
+if(ap){ap.style.display='none';ap.textContent=''}
+if(src){src.style.display='none';src.innerHTML=''}
+}
+}
+function _dcFormatSquadAtkDefPctLabel(pct){
+const n=Math.max(0,pct|0);
+const atk=tStat('ATK','unit');
+const def=tStat('DEF','unit');
+return t('dc_squad_buff_atk_def_pct').replace('%n',String(n)).replace('%atk',atk).replace('%def',def);
+}
+function _dcFormatSquadAtkOnlyPctLabel(pct){
+const n=Math.max(0,pct|0);
+const atk=tStat('ATK','unit');
+return t('dc_squad_buff_atk_pct').replace('%n',String(n)).replace('%atk',atk);
+}
+/** Active attacker: list each applied squad-sheet source (self + other DC slots + Big-Rang). */
+function _dcCollectActiveSquadBuffSources(){
+const rows=[];
+const recvUd=S.dc.atkUnitData,recvCd=S.dc.atkCharData;
+if(!recvUd||recvUd._manual||!recvCd||recvCd._manual)return rows;
+const selfIdx=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);
+const pushRow=(o)=>rows.push(o);
+const metaSelf=_scFindSquadConditionBindingMeta(recvCd,recvUd);
+const bSelf=metaSelf&&metaSelf.binding;
+if(bSelf&&!(bSelf.pilotGroups&&bSelf.pilotGroups.length&&!_dcAbilityCondContextMeetsGroups(recvUd,recvCd,bSelf.pilotGroups))){
+const raw=Math.max(0,S.dc.squadCondPct|0);
+let atkPct=0,defPct=0,kind=bSelf.kind,highlight=false;
+if(bSelf.kind==='dual_flat_ad'){
+atkPct=defPct=_dcEffectiveDualFlatAdPct(bSelf,recvUd,recvCd,raw);
+highlight=true;
+}else if(bSelf.kind==='flat_ad'){
+const rg=bSelf.recvGroup;
+if(!(rg&&!_dcSquadRecvGroupMet(recvUd,recvCd,rg))){
+const cap=_dcSquadCondInputCap(recvCd,recvUd);
+let v=Math.min(Math.max(0,cap),raw);
+if(!bSelf.flatPerUnit&&v===0){const selfFlat=_dcSelfMatchingSquadFlatAdPct(bSelf,recvUd,recvCd);if(selfFlat>0)v=selfFlat}
+if(bSelf.flatPerUnit){const per=bSelf.flatPct|0;v=per*v}
+atkPct=v;defPct=v;highlight=!bSelf.flatPerUnit;
+}
+}else if(bSelf.kind==='flat_atk'){
+const rg=bSelf.recvGroup;
+if(!(rg&&!_dcSquadRecvGroupMet(recvUd,recvCd,rg))){
+const cap=_dcSquadCondInputCap(recvCd,recvUd);
+let v=Math.min(Math.max(0,cap),raw);
+if(!bSelf.flatPerUnit&&v===0)v=bSelf.flatPct|0;
+if(bSelf.flatPerUnit){const per=bSelf.flatPct|0;v=per*v}
+atkPct=v;defPct=0;highlight=!bSelf.flatPerUnit;
+}
+}else{
+const cap=_dcSquadCondInputCap(recvCd,recvUd);
+atkPct=Math.min(Math.max(0,cap),raw);
+defPct=0;
+}
+if(atkPct>0||defPct>0){
+pushRow({
+scope:'self',
+highlight,
+kind,
+atkPct,defPct,
+unitName:String(recvUd.name||''),
+charName:String(recvCd.name||''),
+abilityName:metaSelf.abilityName||'',
+abilityTip:metaSelf.lineText||''
+});
+}
+}
+if(S.dc.atkSlots){
+for(let i=0;i<DC_ATK_SLOT_COUNT;i++){
+if(i===selfIdx)continue;
+const sl=S.dc.atkSlots[i];
+const udC=sl&&sl.atkUnitData;
+const cdC=sl&&sl.atkCharData;
+if(!udC||udC._manual||!cdC||cdC._manual)continue;
+const meta=_scFindSquadConditionBindingMeta(cdC,udC);
+const b=meta&&meta.binding;
+if(!b)continue;
+if(b.pilotGroups&&b.pilotGroups.length&&!_dcAbilityCondContextMeetsGroups(udC,cdC,b.pilotGroups))continue;
+let atkPct=0,defPct=0;
+if(b.kind==='dual_flat_ad'){
+(b.parts||[]).forEach(p=>{
+if(_dcSquadRecvGroupMet(recvUd,recvCd,p.recvGroup)){const v=p.flatPct|0;atkPct+=v;defPct+=v}
+});
+}else if(b.kind==='flat_ad'&&!b.flatPerUnit){
+if(_dcSquadRecvGroupMet(recvUd,recvCd,b.recvGroup)){const p=b.flatPct|0;atkPct=p;defPct=p}
+}else if(b.kind==='flat_atk'&&!b.flatPerUnit){
+if(_dcSquadRecvGroupMet(recvUd,recvCd,b.recvGroup))atkPct=b.flatPct|0;
+}else continue;
+if(atkPct<=0&&defPct<=0)continue;
+pushRow({
+scope:'ally',
+highlight:true,
+kind:b.kind,
+atkPct,defPct,
+unitName:String(udC.name||''),
+charName:String(cdC.name||''),
+abilityName:(meta&&meta.abilityName)||'',
+abilityTip:(meta&&meta.lineText)||'',
+slotIdx:i
+});
+}
+}
+if(_dcBigRangZeonSquadBuffActive()){
+pushRow({
+scope:'bigrang',
+highlight:true,
+kind:'flat_ad',
+atkPct:BIG_RANG_ZEON_SQUAD_FLAT_AD_PCT,
+defPct:BIG_RANG_ZEON_SQUAD_FLAT_AD_PCT,
+unitName:'',
+charName:'',
+abilityName:t('dc_bigrang_zeon_squad_chk'),
+abilityTip:t('dc_bigrang_zeon_squad_tip')
+});
+}
+const exPct=_dcEffectiveExSquadAtkPct();
+if(exPct>0){
+let abName='';
+let abTip='';
+const blob=_dcCharExSquadSynergyAbilityBlob(recvCd);
+if(recvCd&&Array.isArray(recvCd.abilities)){
+for(let a=0;a<recvCd.abilities.length;a++){
+const r=_dcResolveCharAbilityForMode(recvCd.abilities[a]);
+if(!r)continue;
+const nm=String(r.display_name||r.name||'').trim();
+const det=(r.details||[]).map(d=>String((d&&d.text)||d||'')).join('\n');
+if(/\bIncrease ATK by \d+%/i.test(det)||/攻撃力が\d+%上昇/.test(det)||/自身攻擊力提升\d+%/.test(det)){
+if(/\bsquad\b/i.test(det)||/同部隊/.test(det)||_scIsQubeleyExCombo(recvCd,recvUd)){
+abName=nm;abTip=det;break;
+}
+}
+}
+}
+pushRow({
+scope:'ex_squad',
+highlight:true,
+kind:'ex_squad_atk',
+atkPct:exPct,
+defPct:0,
+unitName:String(recvUd.name||''),
+charName:String(recvCd.name||''),
+abilityName:abName||t('dc_squad_buff_ex_squad_label'),
+abilityTip:abTip||blob||''
+});
+}
+return rows;
+}
+function _dcRenderSquadBuffSourcesUi(){
+const ap=document.getElementById('dcSquadBuffAppliedLine');
+const host=document.getElementById('dcSquadBuffSources');
+if(!ap||!host)return;
+_dcSyncSquadCondEffectiveFromState();
+const rows=_dcCollectActiveSquadBuffSources();
+const totAtk=S.dc.squadCondAtkPct|0;
+const totDef=S.dc.squadCondDefPct|0;
+const exPct=_dcEffectiveExSquadAtkPct();
+if(totAtk>0||totDef>0||exPct>0){
+let applied='';
+if(totAtk>0&&totDef>0&&totAtk===totDef)applied=_dcFormatSquadAtkDefPctLabel(totAtk);
+else if(totAtk>0&&totDef>0)applied=t('dc_squad_buff_applied_split').replace('%atk',tStat('ATK','unit')).replace('%def',tStat('DEF','unit')).replace('%a',String(totAtk)).replace('%d',String(totDef));
+else if(totAtk>0)applied=_dcFormatSquadAtkOnlyPctLabel(totAtk);
+else if(totDef>0)applied=t('dc_squad_buff_def_pct').replace('%n',String(totDef)).replace('%def',tStat('DEF','unit'));
+if(exPct>0){
+const exBit=t('dc_squad_buff_ex_atk_pct').replace('%n',String(exPct)).replace('%atk',tStat('ATK','unit'));
+applied=applied?applied+' · '+exBit:exBit;
+}
+ap.style.display='';
+ap.innerHTML=`<span class="dc-squad-buff-applied-lbl">${esc(t('dc_squad_buff_applied'))}</span> <strong class="dc-squad-buff-applied-val">${esc(applied)}</strong>`;
+}else{
+ap.style.display='none';ap.innerHTML='';
+}
+if(!rows.length){
+host.style.display='none';
+host.innerHTML='';
+return;
+}
+const scopeLbl=(sc)=>{
+if(sc==='ally')return t('dc_squad_buff_from_ally');
+if(sc==='bigrang')return t('dc_squad_buff_from_squad');
+if(sc==='ex_squad')return t('dc_squad_buff_from_ex_squad');
+return t('dc_squad_buff_from_self');
+};
+let html=`<div class="dc-squad-buff-sources-head">${esc(t('dc_squad_buff_sources'))}</div>`;
+rows.forEach(r=>{
+const pctLbl=(r.defPct|0)>0?_dcFormatSquadAtkDefPctLabel(r.atkPct):_dcFormatSquadAtkOnlyPctLabel(r.atkPct);
+const who=[r.charName,r.unitName].filter(Boolean).join(' · ');
+const ab=r.abilityName||'';
+const tip=r.abilityTip?escAttr(String(r.abilityTip).replace(/\s+/g,' ').trim()):'';
+const hi=r.highlight?' dc-squad-src--leader':'';
+html+=`<div class="dc-squad-src${hi}"${tip?` title="${tip}"`:''}>`;
+html+=`<div class="dc-squad-src-top"><span class="dc-squad-src-scope">${esc(scopeLbl(r.scope))}</span><span class="dc-squad-src-pct">${esc(pctLbl)}</span></div>`;
+if(who)html+=`<div class="dc-squad-src-who">${esc(who)}</div>`;
+if(ab)html+=`<div class="dc-squad-src-abil">${esc(ab)}</div>`;
+html+=`</div>`;
+});
+host.innerHTML=html;
+host.style.display='';
 }
 function _dcUpdateDefNpcMapBonusesToggleUi(){
 const tw=document.getElementById('dcDefNpcMapBonusesWrap');
@@ -11610,6 +11868,7 @@ S.dc.squadCondPct=rawPct;
 }else S.dc.squadCondPct=0}
 {const wBr=document.getElementById('dcBigRangZeonSquadWrap');const cbBr=document.getElementById('dcBigRangZeonSquadApply');if(wBr&&wBr.style.display!=='none'&&cbBr)S.dc.bigRangZeonSquadBuff=!!cbBr.checked}
 _dcSyncSquadCondEffectiveFromState();
+_dcRenderSquadBuffSourcesUi();
 {const c=document.getElementById('dcDefNpcMapBonusesOn');if(c)S.dc.defNpcMapBonusesOn=!!c.checked}
 const _sqPanelChg=_prevScEffAtk!==(S.dc.squadCondAtkPct|0)||_prevScEffDef!==(S.dc.squadCondDefPct|0);
 {const c=document.getElementById('dcAtkCounterOwnAtk');if(c)S.dc.atkCounterOwnAtk=!!c.checked}
