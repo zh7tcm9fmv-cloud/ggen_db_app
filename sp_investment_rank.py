@@ -4157,25 +4157,14 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "title": "Buckets from letters (Units)",
             "applies": ["units"],
             "objective": True,
-            "summary": "Point total maps to a letter, then to a bucket. Players mainly see buckets. Defense Type Units need a higher S+ bar and a hard-stage kit. Support Type S+ needs lasting DEF Down.",
+            "summary": (
+                "Point total maps to a letter, then to a bucket. Players mainly see buckets. "
+                "Unit S+ / BEYOND THE TIME is score-ordered by type: Attack 18+, Defense 22+, Support 19+."
+            ),
             "rows": [
-                {"when": "S+ (score 17+)", "result": "BEYOND THE TIME (Attack)"},
-                {
-                    "when": "S+ Defense Type",
-                    "result": (
-                        "BEYOND THE TIME only at 18+ if the kit tanks more than one hit "
-                        "(HP + Shield Defense / special DR / Unbreakable), has lasting ATK Down at Lv5+ "
-                        "(30%+ — tank analog of Support DEF Down), and has Preemptive Strike "
-                        "or Support Defense coverage (unit SD kit or MOV 6)"
-                    ),
-                },
-                {
-                    "when": "S+ Support Type",
-                    "result": (
-                        "BEYOND THE TIME only at 17+ with lasting DEF Down / pierce at Lv5+ (30%+). "
-                        "MAP-only kits stay Recommended"
-                    ),
-                },
+                {"when": "S+ Attack Type (score 18+)", "result": "BEYOND THE TIME"},
+                {"when": "S+ Defense Type (score 22+)", "result": "BEYOND THE TIME"},
+                {"when": "S+ Support Type (score 19+)", "result": "BEYOND THE TIME"},
                 {"when": "S", "result": "Recommended"},
                 {"when": "A+ or A", "result": "Solid"},
                 {"when": "B+ or B", "result": "Situational"},
@@ -4561,6 +4550,32 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             }
         )
 
+    wda = rules.get("weapon_damage_attr") or {}
+    if wda.get("enabled", True):
+        criteria.append(
+            {
+                "id": "weapon_damage_attr",
+                "title": "Special damage type (units)",
+                "applies": ["units"],
+                "objective": True,
+                "summary": (
+                    "Strongest non-MAP weapon’s damage attribute (Beam / Physical / Special). "
+                    "Special (including duals that include Special) scores a preference bonus; "
+                    "Beam-only or Physical-only score 0. Stacks with Multi damage type."
+                ),
+                "rows": [
+                    {
+                        "when": "Strongest non-MAP includes Special",
+                        "result": _fmt_points(wda.get("special_points", 1)),
+                    },
+                    {
+                        "when": "Beam-only or Physical-only",
+                        "result": _fmt_points(wda.get("other_points", 0)),
+                    },
+                ],
+            }
+        )
+
     src_pts = rules.get("source_bucket_points") or {}
     criteria.append(
         {
@@ -4720,6 +4735,22 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
     sd_cfg = rules.get("special_defense") or {}
     if sd_cfg:
         sd_pts = sd_cfg.get("points") or {}
+        min_ex = int(sd_cfg.get("ex_range_dr_min_points", 0) or 0)
+        sd_rows = [
+            {"when": "No special defense traits", "result": _fmt_points(sd_pts.get("0", 0))},
+            {"when": "1 distinct special-defense trait", "result": _fmt_points(sd_pts.get("1", 1))},
+            {
+                "when": "2+ distinct special-defense traits",
+                "result": _fmt_points(sd_pts.get("2_or_more", 2)),
+            },
+        ]
+        if min_ex:
+            sd_rows.append(
+                {
+                    "when": "(Range Condition) Damage Reduction / distance-condition DR",
+                    "result": f"at least {_fmt_points(min_ex)} (floors special defense)",
+                }
+            )
         criteria.append(
             {
                 "id": "special_defense",
@@ -4730,15 +4761,13 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
                     "Presence bonus for ability-based mitigation beyond the shield mechanism "
                     "(damage taken down, defensive DR, negation, HP% barrier / I-field-style cut). "
                     "No missing penalty — Attack/Support glass cannons are not taxed."
+                    + (
+                        f" (Range Condition) Damage Reduction floors this axis at +{min_ex}."
+                        if min_ex
+                        else ""
+                    )
                 ),
-                "rows": [
-                    {"when": "No special defense traits", "result": _fmt_points(sd_pts.get("0", 0))},
-                    {"when": "1 distinct special-defense trait", "result": _fmt_points(sd_pts.get("1", 1))},
-                    {
-                        "when": "2+ distinct special-defense traits",
-                        "result": _fmt_points(sd_pts.get("2_or_more", 2)),
-                    },
-                ],
+                "rows": sd_rows,
             }
         )
 

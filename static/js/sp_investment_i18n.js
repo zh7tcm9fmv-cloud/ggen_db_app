@@ -976,6 +976,10 @@
         label: 'Multi damage type',
         tip: 'Any weapon (including MAP) combines Beam/Physical/Special damage types.',
       },
+      weapon_damage_attr: {
+        label: 'Special damage type',
+        tip: 'Strongest non-MAP weapon includes Special → +1. Beam-only or Physical-only → 0. Duals with Special count. Stacks with Multi damage type.',
+      },
       support_r4_debuffs: {
         label: 'Debuffs at range',
         tip: 'Defense/Support Type only. Distinct useful debuff kinds by weapon range.',
@@ -990,7 +994,7 @@
       },
       special_defense: {
         label: 'Special defense',
-        tip: 'Presence bonus for mitigation beyond the shield mechanism (damage taken down, barriers, negation).',
+        tip: 'Presence bonus for mitigation beyond the shield mechanism (damage taken down, barriers, negation). (Range Condition) Damage Reduction floors this at +2 even with a single kind.',
       },
       ranged: { label: 'Ranged', tip: 'Character Ranged after SP growth.' },
       melee: { label: 'Melee', tip: 'Character Melee after SP growth.' },
@@ -1114,6 +1118,10 @@
         label: '複合ダメージ属性',
         tip: '武装（MAP含む）がビーム／物理／特殊のうち2種以上を持つ。',
       },
+      weapon_damage_attr: {
+        label: '特殊ダメージ属性',
+        tip: '最強の非MAP武装が特殊属性を含むと +1。ビームのみ／物理のみは 0。特殊を含む複合も対象。複合ダメージ属性とは別枠で加算。',
+      },
       support_r4_debuffs: {
         label: '射程内弱体',
         tip: '耐久／支援型のみ。有用な弱体の種類を射程条件で数える。',
@@ -1128,7 +1136,7 @@
       },
       special_defense: {
         label: '特殊防御',
-        tip: 'シールド以外の軽減（被ダメージ減・バリア・無効化）の存在加点。',
+        tip: 'シールド以外の軽減（被ダメージ減・バリア・無効化）の存在加点。（距離条件）ダメージ軽減は種類が1つでも最低 +2。',
       },
       ranged: { label: '射撃値', tip: 'SP成長後の射撃値。' },
       melee: { label: '格闘値', tip: 'SP成長後の格闘値。' },
@@ -1252,6 +1260,10 @@
         label: '複合損傷屬性',
         tip: '武裝（含 MAP）具備光束／物理／特殊中兩種以上。',
       },
+      weapon_damage_attr: {
+        label: '特殊損傷屬性',
+        tip: '最強的非 MAP 武裝含特殊 → +1。僅光束或僅物理 → 0。含特殊的複合也計入。與複合損傷屬性分開加分。',
+      },
       support_r4_debuffs: {
         label: '射程內弱化',
         tip: '僅耐久／支援型。依射程條件計算有用弱化種類。',
@@ -1266,7 +1278,7 @@
       },
       special_defense: {
         label: '特殊防禦',
-        tip: '護盾以外的減傷（受傷降低、屏障、無效化）存在加分。',
+        tip: '護盾以外的減傷（受傷降低、屏障、無效化）存在加分。（距離條件）損傷減輕即使只有一種也至少 +2。',
       },
       ranged: { label: '射擊值', tip: 'SP 成長後射擊值。' },
       melee: { label: '格鬥值', tip: 'SP 成長後格鬥值。' },
@@ -1279,6 +1291,14 @@
     multi_weapon_attr: {
       label: '複合損傷屬性',
       tip: '武裝（含 MAP）具備鐳射／物理／特殊入面兩種或以上。',
+    },
+    weapon_damage_attr: {
+      label: '特殊損傷屬性',
+      tip: '最強嘅非 MAP 武裝含特殊 → +1。淨係鐳射或淨係物理 → 0。含特殊嘅複合都計。同複合損傷屬性分開加分。',
+    },
+    special_defense: {
+      label: '特殊防禦',
+      tip: '護盾以外嘅減傷（受傷降低、屏障、無效化）存在加分。（距離條件）損傷減輕就算得一種都至少 +2。',
     },
     er_access: {
       label: '永恆之路 Expert 適性',

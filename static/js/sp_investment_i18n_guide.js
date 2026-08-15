@@ -125,6 +125,9 @@
         "title": "レターからの区分",
         "summary": "点合計がレターになり、さらに区分へ振り分けられます。プレイヤーは主に区分を見ます。",
         "when": {
+          "S+ Attack Type (score 18+)": "S+ 攻撃型（18点以上）",
+          "S+ Defense Type (score 22+)": "S+ 耐久型（22点以上）",
+          "S+ Support Type (score 19+)": "S+ 支援型（19点以上）",
           "S+ (score 17+)": "S+（17点以上）",
           "S+ Defense Type": "S+ 耐久型",
           "S+ Support Type": "S+ 支援型",
@@ -396,6 +399,15 @@
         "when": {
           "≥2 damage types on any weapon (MAP counted)": "いずれかの武装がダメージ属性2種以上（MAP含む）",
           "≥2 damage types on any weapon": "いずれかの武装がダメージ属性2種以上"
+        },
+        "result": {}
+      },
+      "weapon_damage_attr": {
+        "title": "特殊ダメージ属性（ユニット）",
+        "summary": "最強の非MAP武装のダメージ属性。特殊（特殊を含む複合含む）は加点。ビームのみ／物理のみは0。複合ダメージ属性とは別枠。",
+        "when": {
+          "Strongest non-MAP includes Special": "最強の非MAPが特殊を含む",
+          "Beam-only or Physical-only": "ビームのみ／物理のみ"
         },
         "result": {}
       },
@@ -932,6 +944,9 @@
         "title": "由字母到分桶",
         "summary": "點數合計對應字母，再對應分桶。玩家主要看分桶。",
         "when": {
+          "S+ Attack Type (score 18+)": "S+ 攻擊型（18 分以上）",
+          "S+ Defense Type (score 22+)": "S+ 耐久型（22 分以上）",
+          "S+ Support Type (score 19+)": "S+ 支援型（19 分以上）",
           "S+ (score 17+)": "S+（17 分以上）",
           "S+ Defense Type": "S+ 耐久型",
           "S+ Support Type": "S+ 支援型",
@@ -1202,6 +1217,15 @@
         "when": {
           "≥2 damage types on any weapon (MAP counted)": "任一武裝具有 2 種以上損傷屬性（含 MAP）",
           "≥2 damage types on any weapon": "任一武裝具有 2 種以上損傷屬性"
+        },
+        "result": {}
+      },
+      "weapon_damage_attr": {
+        "title": "特殊損傷屬性（單位）",
+        "summary": "最強非 MAP 武裝的損傷屬性。特殊（含特殊的複合）加分；僅光束或僅物理為 0。與複合損傷屬性分開加分。",
+        "when": {
+          "Strongest non-MAP includes Special": "最強非 MAP 含特殊",
+          "Beam-only or Physical-only": "僅光束或僅物理"
         },
         "result": {}
       },
@@ -1735,6 +1759,9 @@
         "title": "由字母到分桶",
         "summary": "點數合計對應字母，再對應分桶。玩家主要睇分桶。",
         "when": {
+          "S+ Attack Type (score 18+)": "S+ 攻擊型（18 分以上）",
+          "S+ Defense Type (score 22+)": "S+ 耐久型（22 分以上）",
+          "S+ Support Type (score 19+)": "S+ 支援型（19 分以上）",
           "S+ (score 17+)": "S+（17 分以上）",
           "S+ Defense Type": "S+ 耐久型",
           "S+ Support Type": "S+ 支援型",
@@ -2005,6 +2032,15 @@
         "when": {
           "≥2 damage types on any weapon (MAP counted)": "任一武裝具有 2 種以上損傷屬性（含 MAP）",
           "≥2 damage types on any weapon": "任一武裝具有 2 種以上損傷屬性"
+        },
+        "result": {}
+      },
+      "weapon_damage_attr": {
+        "title": "特殊損傷屬性（單位）",
+        "summary": "最強非 MAP 武裝嘅損傷屬性。特殊（含特殊嘅複合）加分；淨係鐳射或淨係物理係 0。同複合損傷屬性分開加分。",
+        "when": {
+          "Strongest non-MAP includes Special": "最強非 MAP 含特殊",
+          "Beam-only or Physical-only": "淨係鐳射或淨係物理"
         },
         "result": {}
       },

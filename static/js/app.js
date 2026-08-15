@@ -9034,24 +9034,13 @@ function renderSupporterPickerCell(r,th,pickIdAttr){
 const id=escAttr(String(r.id));
 const attr=pickIdAttr||'data-dc-pick-id';
 const thumb=renderListThumb(r,'supp',th,{pickerThumb:true});
-// Compact picker: one tag + ability icon (full tag rows overflow the 3-col cards).
-let tagHtml='';
-const std=r.skill_tag_data;
-if(std&&std.length){
-for(let si=0;si<std.length&&!tagHtml;si++){
-const tags=(std[si]&&std[si].tags)||[];
-if(!tags.length)continue;
-const tag=tags[0];
-const cn=tag.name||'',ct=tag.type||'';
-let li='/static/images/UI/UI_Common_Icon_Category_MS_Main.webp';
-if(ct==='character')li='/static/images/UI/UI_Common_Icon_Category_Chara_Main.webp';
-tagHtml=`<div class="tag-composite tb-picker-supp-tag" onclick="event.stopPropagation();openTagModal('${esc(cn)}','or')" title="${escAttr(cn)}"><div class="tag-part-icon">${pictureRasterHtml(li,{cls:'tag-icon-fg',loading:'eager',decoding:'async',alt:'',lazy:false})}</div><div class="tag-part-value">${esc(cn)}</div></div>`;
-}
-}
+// Match Supporters browse: detail-tags-row + active skill icon (centered with tags).
+const tagsHtml=renderSkillTags(r.skill_tag_data)||'';
+const tags=tagsHtml?`<div class="detail-tags-row tb-picker-supp-tags">${tagsHtml}</div>`:'';
 const act=r.active_icon
-?pictureRasterHtml(r.active_icon,{cls:'tb-picker-supp-active-ic',loading:'eager',decoding:'async',alt:'',extra:'style="width:20px;height:20px;object-fit:contain;display:block;flex-shrink:0"',onerror:"this.style.display='none'",lazy:false})
+?`<div class="tb-picker-supp-active">${pictureRasterHtml(r.active_icon,{cls:'tb-picker-supp-active-ic',loading:'eager',decoding:'async',alt:'',lazy:false,onerror:"this.style.display='none'"})}</div>`
 :'';
-const meta=(tagHtml||act)?`<div class="tb-picker-supp-meta">${tagHtml}${act}</div>`:'';
+const meta=(tags||act)?`<div class="tb-picker-supp-meta">${tags}${act}</div>`:'';
 return`<div class="tb-picker-item tb-picker-item--supp" role="button" tabindex="0" ${attr}="${id}">${thumb}<div class="tb-picker-supp-side"><span class="tb-picker-item-name">${esc(r.name||'')}</span>${meta}</div></div>`;
 }
 function _tbSortPickerEntityRows(rows,sortKey,sortDir){

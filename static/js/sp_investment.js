@@ -160,7 +160,7 @@
     },
     special_defense: {
       label: 'Special defense',
-      tip: 'Presence bonus for ability mitigation beyond the shield mechanism (damage taken down, barriers, negation). No missing penalty.',
+      tip: 'Presence bonus for ability mitigation beyond the shield mechanism (damage taken down, barriers, negation). (Range Condition) Damage Reduction floors this at +2 even with a single kind. No missing penalty.',
       hideIfZero: true,
     },
     shield: {
@@ -191,6 +191,11 @@
     multi_weapon_attr: {
       label: 'Multi damage type',
       tip: 'Any weapon (including MAP) combines Beam/Physical/Special damage types (+2).',
+    },
+    weapon_damage_attr: {
+      label: 'Special damage type',
+      tip: 'Strongest non-MAP weapon includes Special damage type → +1. Beam-only or Physical-only → 0. Duals with Special count. Stacks with Multi damage type.',
+      hideIfZero: true,
     },
     community: {
       label: 'Community',
@@ -3077,7 +3082,7 @@
       const pts = Number(bd[k]) || 0;
       if (!pts) return;
       const meta = breakdownMetaFor(k);
-      out.push({ key: k, label: meta.label || k.replace(/_/g, ' '), tip: meta.tip || '', pts });
+      out.push({ key: k, label: meta.label || k.replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()), tip: meta.tip || '', pts });
     });
     out.sort((a, b) => Math.abs(b.pts) - Math.abs(a.pts) || a.label.localeCompare(b.label));
     return out;
