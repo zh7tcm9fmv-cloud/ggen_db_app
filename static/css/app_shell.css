@@ -2229,6 +2229,22 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 .dc-pilot-bonus-tag--incl{color:var(--text-muted);font-weight:600}
 .dc-stat-mini-bonus{font-size:11px;color:var(--accent-green);font-weight:700;margin-top:2px;line-height:1.1;font-variant-numeric:tabular-nums}
 .dc-pilot-bonus-list{display:flex;flex-direction:column;gap:6px;line-height:1.5}
+.dc-squad-buff-sources{display:flex;flex-direction:column;gap:8px}
+.dc-squad-buff-src{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:8px;border:1px solid var(--border-color);background:rgba(26,34,54,.55);box-sizing:border-box}
+.dc-squad-buff-src--hi{border-color:rgba(34,211,238,.32);background:rgba(34,211,238,.07)}
+.dc-squad-buff-src--ex{border-color:rgba(34,211,238,.55);background:rgba(34,211,238,.12);box-shadow:inset 0 0 0 1px rgba(34,211,238,.18)}
+.dc-squad-buff-src-icon{flex-shrink:0;width:44px;height:44px;position:relative}
+.dc-squad-buff-src-icon .ability-icon-stack{width:44px;height:44px;position:relative}
+.dc-squad-buff-src-icon .ability-icon-stack:not(.ability-icon-stack--ex) .ability-icon{width:44px;height:44px;object-fit:contain;display:block}
+.dc-squad-buff-src-icon .ability-icon-placeholder{width:44px;height:44px;font-size:16px;display:flex;align-items:center;justify-content:center}
+.dc-squad-buff-src-icon .strategy-hint-badge{width:14px;height:14px;right:-2px;top:-2px}
+.dc-squad-buff-src-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.dc-squad-buff-src-name{display:flex;align-items:center;flex-wrap:wrap;gap:6px;font-size:12px;font-weight:700;line-height:1.35;color:var(--text-primary)}
+.dc-squad-buff-src--ex .dc-squad-buff-src-name{color:#a5f3fc}
+.dc-squad-buff-ex-badge{display:inline-flex;align-items:center;padding:1px 6px;border-radius:4px;background:rgba(34,211,238,.18);color:var(--accent-cyan);font-size:10px;font-weight:800;letter-spacing:.02em;line-height:1.3}
+.dc-squad-buff-src-pct{font-size:12px;font-weight:700;color:var(--text-secondary);font-variant-numeric:tabular-nums}
+.dc-squad-buff-src--ex .dc-squad-buff-src-pct{color:#67e8f9}
+.dc-squad-buff-src-tip{font-size:11px;line-height:1.4;color:var(--text-muted);margin-top:2px}
 .dc-pilot-skill-desc{font-family:inherit;font-size:12px;font-weight:500;color:var(--text-muted)}
 .dc-def-mini--map-bonus{border:1px solid rgba(168,85,247,.35);border-radius:6px;padding:4px 2px;background:rgba(168,85,247,.06)}
 .dc-def-stat-num{font-variant-numeric:tabular-nums}

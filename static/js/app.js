@@ -7911,6 +7911,8 @@ found={
 binding:b,
 abilityName:String((resolved&&(resolved.display_name||resolved.name))||'').trim(),
 abilityId:resolved&&resolved.id!=null?String(resolved.id):'',
+ability:resolved||null,
+isEx:!!(resolved&&resolved.is_ex),
 entityKind:entityKind||'',
 lineText:String((ln&&ln.text)||'')
 };
@@ -9902,7 +9904,9 @@ atkPct,defPct,
 unitName:String(recvUd.name||''),
 charName:String(recvCd.name||''),
 abilityName:metaSelf.abilityName||'',
-abilityTip:metaSelf.lineText||''
+abilityTip:metaSelf.lineText||'',
+ability:metaSelf.ability||null,
+isEx:!!(metaSelf&&metaSelf.isEx)
 });
 }
 }
@@ -9937,23 +9941,38 @@ unitName:String(udC.name||''),
 charName:String(cdC.name||''),
 abilityName:(meta&&meta.abilityName)||'',
 abilityTip:(meta&&meta.lineText)||'',
+ability:meta&&meta.ability||null,
+isEx:!!(meta&&meta.isEx),
 slotIdx:i
 });
 }
 }
 if(_dcBigRangZeonSquadBuffActive()){
 let brAb='';
+let brAbility=null;
+let brIsEx=false;
 if(S.dc.atkSlots){
 for(let i=0;i<DC_ATK_SLOT_COUNT;i++){
 const sl=S.dc.atkSlots[i];
 if(!_dcIsBigRangZeonSquadCarrierPair(sl&&sl.atkCharData,sl&&sl.atkUnitData))continue;
 const meta=_scFindSquadConditionBindingMeta(sl.atkCharData,sl.atkUnitData);
-if(meta&&meta.abilityName){brAb=meta.abilityName;break}
+if(meta&&meta.abilityName){
+brAb=meta.abilityName;
+brAbility=meta.ability||null;
+brIsEx=!!meta.isEx;
+break;
+}
 if(sl.atkCharData&&Array.isArray(sl.atkCharData.abilities)){
+let pick=null;
 for(let a=0;a<sl.atkCharData.abilities.length;a++){
 const r=_dcResolveCharAbilityForMode(sl.atkCharData.abilities[a]);
-const nm=String((r&&(r.display_name||r.name))||'').trim();
-if(nm){brAb=nm;break}
+if(!r)continue;
+if(r.is_ex){pick=r;break}
+if(!pick)pick=r;
+}
+if(pick){
+const nm=String((pick.display_name||pick.name)||'').trim();
+if(nm){brAb=nm;brAbility=pick;brIsEx=!!pick.is_ex}
 }
 }
 if(brAb)break;
@@ -9968,13 +9987,16 @@ defPct:BIG_RANG_ZEON_SQUAD_FLAT_AD_PCT,
 unitName:'',
 charName:'',
 abilityName:brAb||t('dc_squad_buff_ex_squad_label'),
-abilityTip:t('dc_bigrang_zeon_squad_tip')
+abilityTip:t('dc_bigrang_zeon_squad_tip'),
+ability:brAbility,
+isEx:brIsEx||true
 });
 }
 const exPct=_dcEffectiveExSquadAtkPct();
 if(exPct>0){
 let abName='';
 let abTip='';
+let abObj=null;
 const blob=_dcCharExSquadSynergyAbilityBlob(recvCd);
 if(recvCd&&Array.isArray(recvCd.abilities)){
 for(let a=0;a<recvCd.abilities.length;a++){
@@ -9984,7 +10006,7 @@ const nm=String(r.display_name||r.name||'').trim();
 const det=(r.details||[]).map(d=>String((d&&d.text)||d||'')).join('\n');
 if(/\bIncrease ATK by \d+%/i.test(det)||/攻撃力が\d+%上昇/.test(det)||/自身攻擊力提升\d+%/.test(det)){
 if(/\bsquad\b/i.test(det)||/同部隊/.test(det)||_scIsQubeleyExCombo(recvCd,recvUd)){
-abName=nm;abTip=det;break;
+abName=nm;abTip=det;abObj=r;break;
 }
 }
 }
@@ -9998,7 +10020,9 @@ defPct:0,
 unitName:String(recvUd.name||''),
 charName:String(recvCd.name||''),
 abilityName:abName||t('dc_squad_buff_ex_squad_label'),
-abilityTip:abTip||blob||''
+abilityTip:abTip||blob||'',
+ability:abObj,
+isEx:!!(abObj&&abObj.is_ex)||true
 });
 }
 return rows;
@@ -10013,13 +10037,19 @@ host.style.display='none';
 host.innerHTML='';
 return;
 }
-/* Same layout language as Passive Bonuses: effect % as main, character ability name as source. */
 let html='';
 rows.forEach(r=>{
 const pctLbl=(r.defPct|0)>0?_dcFormatSquadAtkDefPctLabel(r.atkPct):_dcFormatSquadAtkOnlyPctLabel(r.atkPct);
 const ab=String(r.abilityName||'').trim()||t('dc_squad_buff_ex_squad_label');
-const tip=r.abilityTip?escAttr(String(r.abilityTip).replace(/\s+/g,' ').trim()):'';
-html+=`<div class="dc-pilot-bonus-row dc-pilot-bonus--locked"${tip?` title="${tip}"`:''}><span class="dc-pilot-bonus-line"><span class="dc-pilot-bonus-main">${esc(pctLbl)}</span><span class="dc-pilot-bonus-detail">${esc(ab)}</span></span></div>`;
+const tipRaw=r.abilityTip?String(r.abilityTip).replace(/\s+/g,' ').trim():'';
+const tip=tipRaw?escAttr(tipRaw):'';
+const isEx=!!(r.isEx||(r.ability&&r.ability.is_ex)||r.scope==='ex_squad'||r.scope==='bigrang');
+const hi=!!(r.highlight||isEx);
+const iconHtml=r.ability?`<div class="dc-squad-buff-src-icon">${renderAbilIcon(r.ability)}</div>`:'';
+const exBadge=isEx?'<span class="dc-squad-buff-ex-badge">EX</span>':'';
+const showTipBody=r.scope!=='bigrang'&&!!tipRaw;
+const tipLine=showTipBody?`<div class="dc-squad-buff-src-tip">${esc(tipRaw.length>140?tipRaw.slice(0,137)+'…':tipRaw)}</div>`:'';
+html+=`<div class="dc-squad-buff-src${hi?' dc-squad-buff-src--hi':''}${isEx?' dc-squad-buff-src--ex':''}"${tip?` title="${tip}"`:''}>${iconHtml}<div class="dc-squad-buff-src-body"><div class="dc-squad-buff-src-name">${esc(ab)}${exBadge}</div><div class="dc-squad-buff-src-pct">${esc(pctLbl)}</div>${tipLine}</div></div>`;
 });
 host.innerHTML=html;
 host.style.display='';
