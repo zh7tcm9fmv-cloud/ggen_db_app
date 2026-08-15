@@ -10648,6 +10648,8 @@ const t=String(s||'');
 if(!t.trim())return false;
 const low=t.toLowerCase();
 if(low.includes('support attack/counter'))return true;
+/* Official EN LV traits: "When executing a Support Attack or Counter, …" */
+if(/support\s+attack\s+or\s+counter\b/i.test(low))return true;
 if(/when executing a counter or support counter/i.test(low))return true;
 if(/support counter/i.test(low)&&/support attack/i.test(low))return true;
 if(/支援攻撃|支援反撃/.test(t))return true;
@@ -10670,12 +10672,11 @@ m=s.match(/攻擊力提升(\d+)%/);tryN(m);
 m=s.match(/攻擊力提昇(\d+)%/);tryN(m);
 return max;
 }
-function _dcParseMaxSupportCounterAtkPctFromChar(cd,ud){
-if(!cd||cd._manual)return 0;
-const unitRef=ud||S.dc.atkUnitData;
-let max=0;
-(cd.abilities||[]).forEach(ab=>{
-const r=_dcResolveCharAbilityForMode(ab);
+/** Sum Support Attack/Counter MS ATK % from one entity's abilities (max within each ability, then sum). */
+function _dcSumSupportCounterAtkPctFromAbilities(abilities,resolveFn,unitRef,cd,allowJoinedBlob){
+let total=0;
+(abilities||[]).forEach(ab=>{
+const r=resolveFn(ab);
 if(!r)return;
 let abMax=0;
 (r.details||[]).forEach(ln=>{
@@ -10686,13 +10687,38 @@ if(condGroups.length&&!_dcAbilityCondContextMeetsGroups(unitRef,cd,condGroups))r
 const p=_dcExtractSupportCounterAtkPctFromBlob(tx);
 if(p>abMax)abMax=p;
 });
-if(abMax<=0&&_dcCharIsSupportRole(cd)){
+if(abMax<=0&&allowJoinedBlob){
 const blob=(r.details||[]).map(d=>typeof d==='string'?d:(d&&d.text)||'').join('\n');
 if(_dcAbilityBlobMentionsSupportCounter(blob))abMax=_dcExtractSupportCounterAtkPctFromBlob(blob);
 }
-if(abMax>max)max=abMax;
+if(abMax>0)total+=abMax;
 });
-return max;
+return total;
+}
+/** Pilot + MS: Support Attack/Counter ATK % (stacks). Includes unit traits like "(When Supporting) Increased ATK". */
+function _dcParseMaxSupportCounterAtkPctFromChar(cd,ud){
+if((!cd||cd._manual)&&(!ud||ud._manual))return 0;
+const unitRef=ud||S.dc.atkUnitData;
+let total=0;
+if(cd&&!cd._manual){
+total+=_dcSumSupportCounterAtkPctFromAbilities(
+cd.abilities,
+_dcResolveCharAbilityForMode,
+unitRef,
+cd,
+_dcCharIsSupportRole(cd)
+);
+}
+if(unitRef&&!unitRef._manual){
+total+=_dcSumSupportCounterAtkPctFromAbilities(
+unitRef.abilities,
+_dcResolveUnitAbilityForMode,
+unitRef,
+cd&&!cd._manual?cd:null,
+false
+);
+}
+return total;
 }
 function _dcSupportCntEligiblePairSnap(cd,ud){
 if(!cd||cd._manual||!ud||ud._manual||String(ud.role_id)!=='3')return '';
@@ -12535,12 +12561,12 @@ if(!w||!tog)return;
 const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;
 const si=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);
 const snapMap=S.dc._supportCntAtkPairSnapBySlot=S.dc._supportCntAtkPairSnapBySlot||{};
-const rawPct=cd&&!cd._manual?_dcParseMaxSupportCounterAtkPctFromChar(cd,ud)|0:0;
+const rawPct=_dcParseMaxSupportCounterAtkPctFromChar(cd,ud)|0;
 S.dc._supportCounterAtkPct=rawPct;
-const pilotOk=rawPct>0;
+const pctOk=rawPct>0;
 const unitOk=!!(ud&&!ud._manual&&String(ud.role_id)==='3');
 const cid=cd&&!cd._manual?String(cd.id||''):'';
-if(!pilotOk||rawPct<=0){
+if(!pctOk||rawPct<=0){
 w.style.display='none';
 w.classList.remove('is-disabled');
 w.style.opacity='';
@@ -13286,7 +13312,7 @@ _dcCopyLinesWeaponTraitBonus(rr).forEach(x=>lines.push(x));
 if((rr.exSquadAtkPct|0)>0)lines.push(`EX squad ATK: +${rr.exSquadAtkPct}% (on growth after option-part ATK %; then supporter leader % on Attack)`);
 if((rr.squadCondAtkPct|0)>0||(rr.squadCondDefPct|0)>0)lines.push(`Squad conditions: +${rr.squadCondAtkPct|0}% MS ATK`+((rr.squadCondDefPct|0)>0?`, +${rr.squadCondDefPct|0}% MS DEF`:``)+` (same % bucket as other sheet ATK/DEF %)`+(S.dc.bigRangZeonSquadBuff?' · includes Big-Rang EX Zeon aura +5%':''));
 if((rr.counterOwnAtkPct|0)>0)lines.push(`Own ATK when countering: +${rr.counterOwnAtkPct}% (MS Attack; pilot EX ability toggle + checkbox)`);
-if((rr.supportCounterAtkPctApplied|0)>0)lines.push(`Support Attack/Counter: +${rr.supportCounterAtkPctApplied}% MS ATK (Support-role pilot passive; toggle in Attacker Parameters)`);
+if((rr.supportCounterAtkPctApplied|0)>0)lines.push(`Support Attack/Counter: +${rr.supportCounterAtkPctApplied}% MS ATK (Support Attack/Counter passives on pilot and/or MS; toggle in Attacker Parameters)`);
 if((rr.advantageTagAtkPct|0)>0)lines.push(`Advantage (enemy tag): +floor(${rr.advantageTagAtkPct}% × raw LB MS Attack base) when defender matches (flat add, not +% on total)`);
 lines.push(`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctN.toFixed(1)+'%)':''}`);
 lines.push(`${rr.isSuperVigor?t('dc_hp_remaining_super_crit'):t('dc_hp_remaining_crit')}: ${fmtN(hpRemC)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctC.toFixed(1)+'%)':''}`);
@@ -13312,7 +13338,7 @@ _dcCopyLinesWeaponTraitBonus(r).forEach(x=>lines.push(x));
 if((r.exSquadAtkPct|0)>0)lines.push(`EX squad ATK: +${r.exSquadAtkPct}% (on growth after option-part ATK %; then supporter leader % on Attack)`);
 if((r.squadCondAtkPct|0)>0||(r.squadCondDefPct|0)>0)lines.push(`Squad conditions: +${r.squadCondAtkPct|0}% MS ATK`+((r.squadCondDefPct|0)>0?`, +${r.squadCondDefPct|0}% MS DEF`:``)+` (same % bucket as other sheet ATK/DEF %)`+(S.dc.bigRangZeonSquadBuff?' · includes Big-Rang EX Zeon aura +5%':''));
 if((r.counterOwnAtkPct|0)>0)lines.push(`Own ATK when countering: +${r.counterOwnAtkPct}% (MS Attack; pilot EX ability toggle + checkbox)`);
-if((r.supportCounterAtkPctApplied|0)>0)lines.push(`Support Attack/Counter: +${r.supportCounterAtkPctApplied}% MS ATK (Support-role pilot passive; toggle in Attacker Parameters)`);
+if((r.supportCounterAtkPctApplied|0)>0)lines.push(`Support Attack/Counter: +${r.supportCounterAtkPctApplied}% MS ATK (Support Attack/Counter passives on pilot and/or MS; toggle in Attacker Parameters)`);
 if((r.advantageTagAtkPct|0)>0)lines.push(`Advantage (enemy tag): +floor(${r.advantageTagAtkPct}% × raw LB MS Attack base) when defender matches (flat add, not +% on total)`);
 lines.push(`HP Remaining (Normal): ${fmtN(hpRemN)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctN.toFixed(1)+'%)':''}`);
 lines.push(`${r.isSuperVigor?t('dc_hp_remaining_super_crit'):t('dc_hp_remaining_crit')}: ${fmtN(hpRemC)} / ${fmtN(npcHp)}${npcHp>0?' ('+pctC.toFixed(1)+'%)':''}`);
