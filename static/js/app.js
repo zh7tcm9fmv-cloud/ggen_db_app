@@ -2117,6 +2117,7 @@ const pathnameRaw=qMark>=0?pathOnly.slice(0,qMark):pathOnly;
 const pathname=(pathnameRaw||'/').replace(/\/+$/,'')||'/';
 const u=new URL(location.href);
 const sp=u.searchParams;
+sp.delete('_v');
 if(pathname!=='/cal'){sp.delete('d');sp.delete('dc')}
 if(pathname!=='/tb'){sp.delete('team')}
 const parsed=parseBrowseShortPath(pathname);
@@ -5980,12 +5981,29 @@ const ud=S.dc.atkUnitData;if(!ud||!ud.weapons)return null;
 const wpns=_dcNonMapWeapons(ud);const wpn=wpns[S.dc.wpnIdx];if(!wpn)return null;
 return _dcEffectiveWeaponPowerWithOptionParts(wpn,S.dc.wpnLv,S.dc.optionParts,ud);
 }
-/** Combat weapon power used by damage: weapon traits + option-part weapon Power %. */
+/** Combat weapon power used by damage: weapon traits + option-part weapon Power % stack additively on sheet PWR (in-game).
+ *  Versal Sword EX Lv5 8040 +20% dist +7% OP → floor(8040×127/100)=10210 — not multiply-after. */
 function _dcEffectiveWeaponPowerWithOptionParts(wpn,lvIdx,optionParts,atkUnitData){
-let pow=_dcComputedWeaponPowerForLevel(wpn,lvIdx);
-const opPct=_dcOptionPartWeaponPowerPct(optionParts||[],wpn,atkUnitData);
-if(opPct)pow=Math.floor(pow*(100+opPct)/100);
-return pow;
+const lvData=_dcWeaponLevelRow(wpn,lvIdx);
+const baseLv=lvData.power||0;
+const sspFlat=_dcDcIncludeSspWeaponEffects()?(wpn.ssp_power_bonus|0):0;
+const sheetPow=baseLv+sspFlat;
+const traitLv=(wpn&&wpn.levels&&wpn.levels.length)?Math.min(Math.max(0,lvIdx|0),wpn.levels.length-1):0;
+const wt=_dcParseWeaponTraits(wpn,traitLv);
+const traitDistPow=Math.min(100,(wt.distPowerMax||0)+(wt.distCoreMax||0));
+let hpPow=wt.hpPowerMax|0;
+let mpPow=wt.mpPowerMax|0;
+let enPow=wt.enPowerMax|0;
+const tagBonus=wt.enemyTagWpMaxBonus|0;
+if(tagBonus>0&&_dcEnemyTagWeaponBonusActive(wt)){
+if(hpPow>0)hpPow+=tagBonus;
+else if(mpPow>0)mpPow+=tagBonus;
+else if(enPow>0)enPow+=tagBonus;
+else hpPow+=tagBonus;
+}
+const opPct=_dcOptionPartWeaponPowerPct(optionParts||[],wpn,atkUnitData)|0;
+const traitScaling=hpPow+mpPow+enPow;
+return Math.floor(sheetPow*(100+traitDistPow+traitScaling+opPct)/100);
 }
 function _dcRefreshFinalWpnPowPlaceholder(){
 const el=document.getElementById('dcFinalWpnPow');if(!el)return;
@@ -11592,7 +11610,7 @@ const combatPow=_dcEffectiveWeaponPowerWithOptionParts(cw,S.dc.wpnLv,S.dc.option
 const powLabel=opWpnPct?`${fmtN(combatPow)} <span style="color:#4ade80;font-weight:600">(+${opWpnPct}% OP)</span>`:fmtN(combatPow);
 h+=`<div class="dc-wpn-info"><span>${t('dc_power')}: <span class="val" id="dcWpnSheetPow">${powLabel}</span></span><span>${t('dc_range')}: <span class="val">${rangeStr}</span></span><span>${t('dc_accuracy')}: <span class="val">${ld.accuracy}%</span></span><span>${t('dc_critical')}: <span class="val">${ld.critical}%</span></span><span>${t('dc_en_cost')}: <span class="val">${ld.en}</span></span><span>${t('wp_type')}: <span class="val" style="display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px"><span class="dc-wpn-atk-icons">${atkTypeIconsHtml}</span>${attrHtml}</span>${exBadge}</span></div>`;
 if(opWpnPct){
-h+=`<div style="margin-top:4px;font-size:11px;color:#4ade80">Option part weapon Power +${opWpnPct}% applied (sheet ${fmtN(sheetPow)} → combat ${fmtN(combatPow)}). Does not change MS ATK.</div>`;
+h+=`<div style="margin-top:4px;font-size:11px;color:#4ade80">Option part weapon Power +${opWpnPct}% (stacks with distance/HP/MP/EN % on sheet ${fmtN(sheetPow)} → ${fmtN(combatPow)}). Does not change MS ATK.</div>`;
 }
 const wt=_dcParseWeaponTraits(cw,S.dc.wpnLv);
 S.dc._wpnTraits=wt;
@@ -11639,7 +11657,7 @@ const combatPow=_dcEffectiveWeaponPowerWithOptionParts(cw,0,S.dc.optionParts,ud)
 const powLabel=opWpnPct?`${fmtN(combatPow)} <span style="color:#4ade80;font-weight:600">(+${opWpnPct}% OP)</span>`:fmtN(combatPow);
 h+=`<div class="dc-wpn-info"><span>${t('dc_power')}: <span class="val" id="dcWpnSheetPow">${powLabel}</span></span><span>${t('dc_range')}: <span class="val">${rangeStr}</span></span><span>${t('dc_accuracy')}: <span class="val">${ld.accuracy}%</span></span><span>${t('dc_critical')}: <span class="val">${ld.critical}%</span></span><span>${t('dc_en_cost')}: <span class="val">${ld.en}</span></span><span>${t('wp_type')}: <span class="val" style="display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px"><span class="dc-wpn-atk-icons">${atkTypeIconsHtml}</span>${attrHtml}</span>${exBadge}</span></div>`;
 if(opWpnPct){
-h+=`<div style="margin-top:4px;font-size:11px;color:#4ade80">Option part weapon Power +${opWpnPct}% applied (sheet ${fmtN(sheetPow)} → combat ${fmtN(combatPow)}). Does not change MS ATK.</div>`;
+h+=`<div style="margin-top:4px;font-size:11px;color:#4ade80">Option part weapon Power +${opWpnPct}% (stacks with distance/HP/MP/EN % on sheet ${fmtN(sheetPow)} → ${fmtN(combatPow)}). Does not change MS ATK.</div>`;
 }
 const wt=_dcParseWeaponTraits(cw,0);
 S.dc._wpnTraits=wt;

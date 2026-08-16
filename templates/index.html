@@ -552,14 +552,27 @@ window.__SPI_DECISION_UI__ = true;
         window.GgenUnitBestPilots.clearLocaleCaches();
       }
     } catch (_) {}
+    // Never put Date.now() in the address bar — it sticks forever and looks like garbage query junk.
     try {
       var u = new URL(window.location.href);
-      u.searchParams.set('_v', String(Date.now()));
-      window.location.replace(u.toString());
-    } catch (_) {
-      window.location.reload();
-    }
+      if (u.searchParams.has('_v')) {
+        u.searchParams.delete('_v');
+        window.history.replaceState(null, '', u.pathname + u.search + u.hash);
+      }
+    } catch (_) {}
+    try {
+      sessionStorage.setItem('ggen_deploy_reload', String(Date.now()));
+    } catch (_) {}
+    window.location.reload();
   }
+  // Strip leftover ?_v= from older hard-reload builds.
+  try {
+    var scrub = new URL(window.location.href);
+    if (scrub.searchParams.has('_v')) {
+      scrub.searchParams.delete('_v');
+      window.history.replaceState(null, '', scrub.pathname + scrub.search + scrub.hash);
+    }
+  } catch (_) {}
   function check() {
     if (checking || reloading || document.hidden) return;
     checking = true;
