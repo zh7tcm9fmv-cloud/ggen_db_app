@@ -5207,6 +5207,24 @@
     "ip_39ade6c074dbfdfbfb4ac703bedd649f:unit:1350000110:ssp": "up",
     "ip_39ade6c074dbfdfbfb4ac703bedd649f:character:1330001700:sp": "up",
     "ip_39ade6c074dbfdfbfb4ac703bedd649f:character:1300001600:sp": "up",
+    "ip_39ade6c074dbfdfbfb4ac703bedd649f:character:1501001901:sp": "up",
+    "ip_39ade6c074dbfdfbfb4ac703bedd649f:character:1031001500:sp": "up",
+    "ip_39ade6c074dbfdfbfb4ac703bedd649f:character:1300001500:sp": "up",
+    "ip_39ade6c074dbfdfbfb4ac703bedd649f:character:1501000400:sp": "up",
+    "ip_39ade6c074dbfdfbfb4ac703bedd649f:character:1330000502:sp": "up",
+    "ip_39ade6c074dbfdfbfb4ac703bedd649f:character:1336000101:sp": "up",
+    "ip_39ade6c074dbfdfbfb4ac703bedd649f:character:1230001300:sp": "up",
+    "ip_39ade6c074dbfdfbfb4ac703bedd649f:character:1430000101:sp": "up",
+    "ip_39ade6c074dbfdfbfb4ac703bedd649f:character:1304000200:sp": "up",
+    "ip_39ade6c074dbfdfbfb4ac703bedd649f:character:1400002500:sp": "up",
+    "ip_39ade6c074dbfdfbfb4ac703bedd649f:character:1501002900:sp": "up",
+    "ip_39ade6c074dbfdfbfb4ac703bedd649f:character:1162000300:sp": "up",
+    "ip_39ade6c074dbfdfbfb4ac703bedd649f:character:1009000200:sp": "up",
+    "ip_39ade6c074dbfdfbfb4ac703bedd649f:character:1330001803:sp": "up",
+    "ip_39ade6c074dbfdfbfb4ac703bedd649f:character:1125000101:sp": "up",
+    "ip_39ade6c074dbfdfbfb4ac703bedd649f:character:1210000300:sp": "up",
+    "ip_39ade6c074dbfdfbfb4ac703bedd649f:character:1300001800:sp": "up",
+    "ip_39ade6c074dbfdfbfb4ac703bedd649f:character:1055000300:sp": "up",
     "ip_9211dd1a6152b83dc9355fac42e19fbc:character:1001004800:sp": "down"
   },
   "targets": {
@@ -5935,7 +5953,7 @@
       "down": 0
     },
     "character:1009000200:sp": {
-      "up": 6,
+      "up": 7,
       "down": 0
     },
     "unit:1095000300:sp": {
@@ -6303,7 +6321,7 @@
       "down": 0
     },
     "character:1055000300:sp": {
-      "up": 1,
+      "up": 2,
       "down": 2
     },
     "unit:1430005310:ssp": {
@@ -6311,7 +6329,7 @@
       "down": 0
     },
     "character:1031001500:sp": {
-      "up": 2,
+      "up": 3,
       "down": 1
     },
     "character:1001000403:sp": {
@@ -6355,7 +6373,7 @@
       "down": 0
     },
     "character:1501001901:sp": {
-      "up": 2,
+      "up": 3,
       "down": 1
     },
     "unit:1085001110:sp": {
@@ -7227,7 +7245,7 @@
       "down": 5
     },
     "character:1304000200:sp": {
-      "up": 7,
+      "up": 8,
       "down": 10
     },
     "unit:1420004710:ssp": {
@@ -8299,7 +8317,7 @@
       "down": 2
     },
     "character:1125000101:sp": {
-      "up": 1,
+      "up": 2,
       "down": 0
     },
     "unit:1370000500:ssp": {
@@ -8419,7 +8437,7 @@
       "down": 1
     },
     "character:1336000101:sp": {
-      "up": 3,
+      "up": 4,
       "down": 0
     },
     "character:1370003702:sp": {
@@ -9103,7 +9121,7 @@
       "down": 2
     },
     "character:1430000101:sp": {
-      "up": 2,
+      "up": 3,
       "down": 1
     },
     "character:1705002700:sp": {
@@ -9211,15 +9229,15 @@
       "down": 1
     },
     "character:1300001500:sp": {
-      "up": 0,
+      "up": 1,
       "down": 1
     },
     "character:1230001300:sp": {
-      "up": 1,
+      "up": 2,
       "down": 0
     },
     "character:1330000502:sp": {
-      "up": 1,
+      "up": 2,
       "down": 0
     },
     "character:1400002002:sp": {
@@ -9235,7 +9253,7 @@
       "down": 0
     },
     "character:1501000400:sp": {
-      "up": 1,
+      "up": 2,
       "down": 0
     },
     "character:1162000103:sp": {
@@ -9259,7 +9277,7 @@
       "down": 0
     },
     "character:1501002900:sp": {
-      "up": 1,
+      "up": 2,
       "down": 0
     },
     "character:1095000101:sp": {
@@ -9399,7 +9417,7 @@
       "down": 1
     },
     "character:1400002500:sp": {
-      "up": 1,
+      "up": 2,
       "down": 0
     },
     "character:1230000400:sp": {
@@ -9579,7 +9597,7 @@
       "down": 0
     },
     "character:1300001800:sp": {
-      "up": 1,
+      "up": 2,
       "down": 0
     },
     "character:1400000101:sp": {
@@ -9719,6 +9737,18 @@
       "down": 0
     },
     "unit:1114001000:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1162000300:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1330001803:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1210000300:sp": {
       "up": 1,
       "down": 0
     }
