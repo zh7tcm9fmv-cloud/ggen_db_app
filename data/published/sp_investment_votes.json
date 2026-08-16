@@ -5230,6 +5230,7 @@
     "ip_39ade6c074dbfdfbfb4ac703bedd649f:character:1001000400:sp": "up",
     "ip_39ade6c074dbfdfbfb4ac703bedd649f:character:1370003702:sp": "up",
     "ip_39ade6c074dbfdfbfb4ac703bedd649f:character:1001000403:sp": "up",
+    "ip_38eea7191c4fb69acb8b3d87101ed07e:character:1013000101:sp": "up",
     "ip_9211dd1a6152b83dc9355fac42e19fbc:character:1001004800:sp": "down"
   },
   "targets": {
@@ -5766,7 +5767,7 @@
       "down": 1
     },
     "character:1013000101:sp": {
-      "up": 6,
+      "up": 7,
       "down": 6
     },
     "unit:1370008800:ssp": {
