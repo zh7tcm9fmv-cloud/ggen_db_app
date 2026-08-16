@@ -5050,7 +5050,14 @@
     "ip_aacea6e5edb9700c70cfb8dacfd8acf9:unit:1085001010:ssp": "up",
     "ip_4f0f2e82fba6ec2ce8b8271ce9bd6ee8:unit:1370005900:sp": "up",
     "ip_4f0f2e82fba6ec2ce8b8271ce9bd6ee8:unit:1007001160:sp": "up",
-    "ip_4f0f2e82fba6ec2ce8b8271ce9bd6ee8:unit:1211001210:ssp": "up"
+    "ip_4f0f2e82fba6ec2ce8b8271ce9bd6ee8:unit:1211001210:ssp": "up",
+    "ip_4f0f2e82fba6ec2ce8b8271ce9bd6ee8:unit:1007001160:ssp": "up",
+    "ip_4f0f2e82fba6ec2ce8b8271ce9bd6ee8:unit:1230005300:ssp": "up",
+    "ip_7b5e21b4736b0710c0ffe330d26add8f:unit:1501001600:sp": "up",
+    "ip_7b5e21b4736b0710c0ffe330d26add8f:unit:1501001900:sp": "up",
+    "ip_7b5e21b4736b0710c0ffe330d26add8f:unit:1501003400:sp": "up",
+    "ip_7b5e21b4736b0710c0ffe330d26add8f:unit:1501000160:sp": "up",
+    "ip_7b5e21b4736b0710c0ffe330d26add8f:unit:1501002000:sp": "up"
   },
   "targets": {
     "unit:1155000700:sp": {
@@ -5478,7 +5485,7 @@
       "down": 4
     },
     "unit:1501001900:sp": {
-      "up": 3,
+      "up": 4,
       "down": 3
     },
     "unit:1144000200:sp": {
@@ -6142,7 +6149,7 @@
       "down": 1
     },
     "unit:1501003400:sp": {
-      "up": 4,
+      "up": 5,
       "down": 0
     },
     "character:1055000300:sp": {
@@ -6302,7 +6309,7 @@
       "down": 1
     },
     "unit:1501000160:sp": {
-      "up": 2,
+      "up": 3,
       "down": 1
     },
     "unit:1330004910:ssp": {
@@ -6546,7 +6553,7 @@
       "down": 4
     },
     "unit:1230005300:ssp": {
-      "up": 12,
+      "up": 13,
       "down": 1
     },
     "unit:1430007800:ssp": {
@@ -7038,7 +7045,7 @@
       "down": 4
     },
     "unit:1501001600:sp": {
-      "up": 5,
+      "up": 6,
       "down": 1
     },
     "unit:1133000400:sp": {
@@ -7298,7 +7305,7 @@
       "down": 1
     },
     "unit:1501002000:sp": {
-      "up": 3,
+      "up": 4,
       "down": 0
     },
     "unit:1370000370:sp": {
@@ -8226,7 +8233,7 @@
       "down": 5
     },
     "unit:1007001160:ssp": {
-      "up": 34,
+      "up": 35,
       "down": 6
     },
     "unit:1144000500:ssp": {
