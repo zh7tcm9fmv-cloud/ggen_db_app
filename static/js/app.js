@@ -5978,7 +5978,14 @@ return Math.min(100,manual+wp);
 function _dcGetAutoWeaponPowerDisplay(){
 const ud=S.dc.atkUnitData;if(!ud||!ud.weapons)return null;
 const wpns=_dcNonMapWeapons(ud);const wpn=wpns[S.dc.wpnIdx];if(!wpn)return null;
-return _dcComputedWeaponPowerForLevel(wpn,S.dc.wpnLv);
+return _dcEffectiveWeaponPowerWithOptionParts(wpn,S.dc.wpnLv,S.dc.optionParts,ud);
+}
+/** Combat weapon power used by damage: weapon traits + option-part weapon Power %. */
+function _dcEffectiveWeaponPowerWithOptionParts(wpn,lvIdx,optionParts,atkUnitData){
+let pow=_dcComputedWeaponPowerForLevel(wpn,lvIdx);
+const opPct=_dcOptionPartWeaponPowerPct(optionParts||[],wpn,atkUnitData);
+if(opPct)pow=Math.floor(pow*(100+opPct)/100);
+return pow;
 }
 function _dcRefreshFinalWpnPowPlaceholder(){
 const el=document.getElementById('dcFinalWpnPow');if(!el)return;
@@ -11580,7 +11587,13 @@ const atkTypeIconsHtml=_dcWeaponAttackTypeIconsHtml(cw);
 const attrHtml=_dcWeaponAttributeDisplayHtml(cw);
 const exBadge=cw.is_ex?`<span style="margin-left:6px;padding:1px 6px;border-radius:4px;background:rgba(34,211,238,.15);color:var(--accent-cyan);font-size:10px;font-weight:700">EX</span>`:'';
 const sheetPow=_dcWpnSheetFlatPower(cw,S.dc.wpnLv);
-h+=`<div class="dc-wpn-info"><span>${t('dc_power')}: <span class="val" id="dcWpnSheetPow">${fmtN(sheetPow)}</span></span><span>${t('dc_range')}: <span class="val">${rangeStr}</span></span><span>${t('dc_accuracy')}: <span class="val">${ld.accuracy}%</span></span><span>${t('dc_critical')}: <span class="val">${ld.critical}%</span></span><span>${t('dc_en_cost')}: <span class="val">${ld.en}</span></span><span>${t('wp_type')}: <span class="val" style="display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px"><span class="dc-wpn-atk-icons">${atkTypeIconsHtml}</span>${attrHtml}</span>${exBadge}</span></div>`;
+const opWpnPct=_dcOptionPartWeaponPowerPct(S.dc.optionParts,cw,ud);
+const combatPow=_dcEffectiveWeaponPowerWithOptionParts(cw,S.dc.wpnLv,S.dc.optionParts,ud);
+const powLabel=opWpnPct?`${fmtN(combatPow)} <span style="color:#4ade80;font-weight:600">(+${opWpnPct}% OP)</span>`:fmtN(combatPow);
+h+=`<div class="dc-wpn-info"><span>${t('dc_power')}: <span class="val" id="dcWpnSheetPow">${powLabel}</span></span><span>${t('dc_range')}: <span class="val">${rangeStr}</span></span><span>${t('dc_accuracy')}: <span class="val">${ld.accuracy}%</span></span><span>${t('dc_critical')}: <span class="val">${ld.critical}%</span></span><span>${t('dc_en_cost')}: <span class="val">${ld.en}</span></span><span>${t('wp_type')}: <span class="val" style="display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px"><span class="dc-wpn-atk-icons">${atkTypeIconsHtml}</span>${attrHtml}</span>${exBadge}</span></div>`;
+if(opWpnPct){
+h+=`<div style="margin-top:4px;font-size:11px;color:#4ade80">Option part weapon Power +${opWpnPct}% applied (sheet ${fmtN(sheetPow)} → combat ${fmtN(combatPow)}). Does not change MS ATK.</div>`;
+}
 const wt=_dcParseWeaponTraits(cw,S.dc.wpnLv);
 S.dc._wpnTraits=wt;
 S.dc._wpnCritDmgUp=wt.critDmgUp|0;
@@ -11621,7 +11634,13 @@ const atkTypeIconsHtml=_dcWeaponAttackTypeIconsHtml(cw);
 const attrHtml=_dcWeaponAttributeDisplayHtml(cw);
 const exBadge=cw.is_ex?`<span style="margin-left:6px;padding:1px 6px;border-radius:4px;background:rgba(34,211,238,.15);color:var(--accent-cyan);font-size:10px;font-weight:700">EX</span>`:'';
 const sheetPow=_dcWpnSheetFlatPower(cw,0);
-h+=`<div class="dc-wpn-info"><span>${t('dc_power')}: <span class="val" id="dcWpnSheetPow">${fmtN(sheetPow)}</span></span><span>${t('dc_range')}: <span class="val">${rangeStr}</span></span><span>${t('dc_accuracy')}: <span class="val">${ld.accuracy}%</span></span><span>${t('dc_critical')}: <span class="val">${ld.critical}%</span></span><span>${t('dc_en_cost')}: <span class="val">${ld.en}</span></span><span>${t('wp_type')}: <span class="val" style="display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px"><span class="dc-wpn-atk-icons">${atkTypeIconsHtml}</span>${attrHtml}</span>${exBadge}</span></div>`;
+const opWpnPct=_dcOptionPartWeaponPowerPct(S.dc.optionParts,cw,ud);
+const combatPow=_dcEffectiveWeaponPowerWithOptionParts(cw,0,S.dc.optionParts,ud);
+const powLabel=opWpnPct?`${fmtN(combatPow)} <span style="color:#4ade80;font-weight:600">(+${opWpnPct}% OP)</span>`:fmtN(combatPow);
+h+=`<div class="dc-wpn-info"><span>${t('dc_power')}: <span class="val" id="dcWpnSheetPow">${powLabel}</span></span><span>${t('dc_range')}: <span class="val">${rangeStr}</span></span><span>${t('dc_accuracy')}: <span class="val">${ld.accuracy}%</span></span><span>${t('dc_critical')}: <span class="val">${ld.critical}%</span></span><span>${t('dc_en_cost')}: <span class="val">${ld.en}</span></span><span>${t('wp_type')}: <span class="val" style="display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px"><span class="dc-wpn-atk-icons">${atkTypeIconsHtml}</span>${attrHtml}</span>${exBadge}</span></div>`;
+if(opWpnPct){
+h+=`<div style="margin-top:4px;font-size:11px;color:#4ade80">Option part weapon Power +${opWpnPct}% applied (sheet ${fmtN(sheetPow)} → combat ${fmtN(combatPow)}). Does not change MS ATK.</div>`;
+}
 const wt=_dcParseWeaponTraits(cw,0);
 S.dc._wpnTraits=wt;
 S.dc._wpnCritDmgUp=wt.critDmgUp|0;
@@ -11808,6 +11827,33 @@ h+=`<div class="dc-section-label" style="margin-top:8px">${t('dc_char_stats')}</
 sArea.innerHTML=h;
 }
 
+function _dcOptionPartDetailsHtml(o){
+const raw=String(o&&o.details||'').trim();
+const effects=_dcOptionPartSimEffects(o);
+const needsClarify=/specified\s+tags?/i.test(raw)||/指定/.test(raw);
+if(!needsClarify||!effects.length){
+return raw?`<div style="font-size:11px;color:var(--text-muted);margin-top:2px;white-space:pre-wrap">${esc(raw)}</div>`:'';
+}
+const lines=[];
+effects.forEach(eff=>{
+if(!eff)return;
+if(eff.kind==='weapon_power_pct'){
+const attrs=(eff.weapon_attrs||[]).map(weaponAttrKeyLabel).join('/');
+let line=`Increase ${attrs||'weapon'} weapon Power by ${eff.value|0}%.`;
+const tags=(eff.cond_unit_tag_names||[]).filter(Boolean);
+if(tags.length&&_dcOpCondTargetIsOwner(eff.cond_target||''))line=`Increase ${attrs||'weapon'} weapon Power by ${eff.value|0}% when equipped to a Unit possessing: ${tags.join(', ')}.`;
+else if(tags.length&&_dcOpCondTargetIsCombat(eff.cond_target||''))line=`Increase ${attrs||'weapon'} weapon Power by ${eff.value|0}% when combating: ${tags.join(', ')}.`;
+lines.push(line);
+}else if(eff.kind==='stat_pct'&&eff.stat==='Attack'){
+const tags=(eff.cond_unit_tag_names||[]).filter(Boolean);
+if(tags.length&&_dcOpCondTargetIsCombat(eff.cond_target||''))lines.push(`Increase ATK by ${eff.value|0}% when combating: ${tags.join(', ')}.`);
+else if(tags.length&&_dcOpCondTargetIsOwner(eff.cond_target||''))lines.push(`Increase ATK by ${eff.value|0}% when equipped to a Unit possessing: ${tags.join(', ')}.`);
+else lines.push(`Increase ATK by ${eff.value|0}%.`);
+}
+});
+const text=lines.length?lines.join('\n'):raw;
+return text?`<div style="font-size:11px;color:var(--text-muted);margin-top:2px;white-space:pre-wrap">${esc(text)}</div>`:'';
+}
 function renderDcOptionParts(){
 const area=document.getElementById('dcAtkOptionArea');
 const hasAtk=!!(S.dc.atkUnit||(S.dc.atkUnitData&&S.dc.atkUnitData._manual));
@@ -11821,7 +11867,8 @@ const thumHtml=o.thum?`<img class="dc-thum dc-dc-mod-thumb" src="${imgUrl(o.thum
 const optTagLine=o.tags&&o.tags.length?`<div class="detail-tags-row" style="margin-top:4px;flex-wrap:wrap;">${o.tags.map(tg=>createTagHtml(tg,{defaultTarget:'unit'})).join('')}</div>`:'';
 const rmTitle=escAttr(t('tb_op_clear'));
 const trashSrc=imgUrlWebp(TB_TRASH_ICON);
-area.innerHTML=`<div class="dc-option-item dc-option-item--layout"><div class="dc-option-item-main">${thumHtml}<div class="dc-option-item-text" style="font-size:12px"><strong>${esc(o.name)}</strong>${optTagLine}${o.details?`<div style="font-size:11px;color:var(--text-muted);margin-top:2px">${esc(o.details)}</div>`:''}</div><div class="dc-option-item-actions"><button type="button" class="dc-picked-change" onclick="openDcPicker('option_parts')">${esc(t('dc_change'))}</button><button type="button" class="remove dc-op-remove-btn" onclick="removeDcOptionPart(0)" title="${rmTitle}" aria-label="${rmTitle}"><img src="${trashSrc}" alt="" loading="lazy" decoding="async"></button></div></div></div>`;
+const detHtml=_dcOptionPartDetailsHtml(o);
+area.innerHTML=`<div class="dc-option-item dc-option-item--layout"><div class="dc-option-item-main">${thumHtml}<div class="dc-option-item-text" style="font-size:12px"><strong>${esc(o.name)}</strong>${optTagLine}${detHtml}</div><div class="dc-option-item-actions"><button type="button" class="dc-picked-change" onclick="openDcPicker('option_parts')">${esc(t('dc_change'))}</button><button type="button" class="remove dc-op-remove-btn" onclick="removeDcOptionPart(0)" title="${rmTitle}" aria-label="${rmTitle}"><img src="${trashSrc}" alt="" loading="lazy" decoding="async"></button></div></div></div>`;
 }
 function renderDcSupporters(){
 const area=document.getElementById('dcAtkSupporterArea');
@@ -12081,6 +12128,7 @@ function _dcRefreshAtkPanelsAfterMods(){
 if(!S.dc.atkUnitData){onDcParamChange();return}
 renderDcAtkUnit();
 if(S.dc.atkCharData)renderDcAtkChar();
+if(S.dc.atkUnitData&&!S.dc.atkUnitData._manual)renderDcWeaponArea();
 onDcParamChange();
 }
 
@@ -13096,9 +13144,8 @@ unitDef=_dcApplyEnemyDefDebuffToDefenderUnitDef(defUnit,defDebuffPct,unitDef);
 const defDebuffFlatSubtract=defMsDefensePair-unitDef;
 
 const rawWpnPower=lvData.power;
-let computedWpnPow=_dcComputedWeaponPowerForLevel(wpn,S.dc.wpnLv);
 const opWpnPowPct=_dcOptionPartWeaponPowerPct(S.dc.optionParts,wpn,ud);
-if(opWpnPowPct)computedWpnPow=Math.floor(computedWpnPow*(100+opWpnPowPct)/100);
+const computedWpnPow=_dcEffectiveWeaponPowerWithOptionParts(wpn,S.dc.wpnLv,S.dc.optionParts,ud);
 const traitLvCalc=(wpn.levels&&wpn.levels.length)?Math.min(Math.max(0,S.dc.wpnLv|0),wpn.levels.length-1):0;
 const wtTraits=_dcParseWeaponTraits(wpn,traitLvCalc);
 const traitDistPow=Math.min(100,(wtTraits.distPowerMax||0)+(wtTraits.distCoreMax||0));

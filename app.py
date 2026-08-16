@@ -21127,7 +21127,7 @@ def list_option_parts():
             if u in unit_info_map:
                 for_unit = u
         uf = f"u{for_unit}" if for_unit else 'u0'
-        ck = f"op7_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}_{ef}_{uf}"
+        ck = f"op8_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}_{ef}_{uf}"
         cached = get_cached_response(ck)
         if cached:
             out = dict(cached)
@@ -21152,13 +21152,7 @@ def list_option_parts():
             name_lid = normalize_id(item.get('SortNameLanguageId') or item.get('sortNameLanguageId'))
             name = op_text_map.get(name_lid, '') if name_lid else ''
             if not name: name = f'Option Part {opid}'
-            trait_set_id = normalize_id(item.get('TraitSetId') or item.get('traitSetId'))
-            trait_ids = trait_set_traits_map.get(trait_set_id, [])
-            details_list = []
-            for tid in trait_ids:
-                tdata = trait_data_map.get(tid, {}); dlid = tdata.get('desc_lang_id', '')
-                if dlid: desc = ltm.get(dlid, ''); (desc and details_list.append(desc.strip()))
-            details = ' '.join(details_list) if details_list else ''
+            details = _build_option_part_details(item, lc, ld, '')
             sim_effects_base = _build_option_part_sim_effects(item, lc, ld, '')
             lineage_ids = option_parts_lineage_map.get(opid, [])
             base_tags = resolve_lineage_ids_to_tag_dicts(lineage_ids, ld, tt='unit')
@@ -21177,10 +21171,15 @@ def list_option_parts():
                     vname = (ld.get('lineage_lookup', {}) or {}).get(vnorm, '')
                     if vname and not any(normalize_id(t.get('id')) == vnorm for t in tags):
                         tags.append({'id': vnorm, 'name': vname, 'type': 'unit', 'source': 'variant'})
+                details_v = (
+                    _build_option_part_details(item, lc, ld, vnorm)
+                    if vnorm
+                    else details
+                )
                 tags_join = ', '.join(t['name'] for t in tags)
                 tags_str = ' '.join(t['name'] for t in tags)
                 if sq:
-                    searchable = f"{name} {details} {tags_str}".lower()
+                    searchable = f"{name} {details_v} {tags_str}".lower()
                     tag_blob = [tags_str.lower()] if tags_str else []
                     if not search_row_matches_query(sq, searchable, tag_blob, entity_id=opid):
                         continue
@@ -21189,7 +21188,7 @@ def list_option_parts():
                     if vnorm
                     else sim_effects_base
                 )
-                rows.append({'id': opid, 'name': name, 'details': details, 'sim_effects': sim_effects, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': icon, 'tags': tags, 'tags_join': tags_join, 'variant_tag_id': vnorm if vnorm != '0' else ''})
+                rows.append({'id': opid, 'name': name, 'details': details_v, 'sim_effects': sim_effects, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': icon, 'tags': tags, 'tags_join': tags_join, 'variant_tag_id': vnorm if vnorm != '0' else ''})
         rows = sort_rows(rows, sb, sd, {'name', 'rarity', 'details', 'tags'})
         total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
         start = (page - 1) * pp; pr = rows[start:start + pp]
