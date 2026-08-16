@@ -2504,12 +2504,6 @@
     const cuts = $('#spiLetterCutoffs');
     const labels = g.bucket_labels || payload.bucket_labels || {};
     const isPilot = entity === 'characters';
-    const spCuts = isPilot
-      ? g.pilot_letter_cutoffs || g.letter_cutoffs || []
-      : g.letter_cutoffs || [];
-    const urCuts = isPilot
-      ? g.ur_pilot_letter_cutoffs || []
-      : g.ur_letter_cutoffs || [];
     const fmtCuts = (rows, title) => {
       if (!rows || !rows.length) return '';
       const bits = rows
@@ -2517,13 +2511,41 @@
         .join('');
       return `<div class="spi-cutoff-group"><span class="spi-cutoff-group-label">${esc(title)}</span>${bits}</div>`;
     };
+    const roleOrder = ['Attack', 'Defense', 'Support'];
+    const roleLabel = (role) => tRole(role) || role;
+    let cutoffHtml = '';
+    if (isPilot) {
+      const byRole = g.pilot_letter_cutoffs_by_role || {};
+      const flat = g.pilot_letter_cutoffs || g.letter_cutoffs || [];
+      roleOrder.forEach((role) => {
+        const rows = byRole[role];
+        if (rows && rows.length) cutoffHtml += fmtCuts(rows, `${t('sp_grades') || 'SP grades'} · ${roleLabel(role)}`);
+      });
+      if (!cutoffHtml) cutoffHtml = fmtCuts(flat, t('sp_grades'));
+      const urPilot = g.ur_pilot_letter_cutoffs || [];
+      if (urPilot.length) cutoffHtml += fmtCuts(urPilot, t('ultimate_grades'));
+    } else {
+      const byRole = g.letter_cutoffs_by_role || {};
+      const urByRole = g.ur_letter_cutoffs_by_role || {};
+      roleOrder.forEach((role) => {
+        const rows = byRole[role];
+        if (rows && rows.length) cutoffHtml += fmtCuts(rows, `${t('sp_grades') || 'SP Conversion grades'} · ${roleLabel(role)}`);
+      });
+      if (!cutoffHtml) cutoffHtml = fmtCuts(g.letter_cutoffs || [], t('sp_grades'));
+      let urHtml = '';
+      roleOrder.forEach((role) => {
+        const rows = urByRole[role];
+        if (rows && rows.length) urHtml += fmtCuts(rows, `${t('ultimate_grades') || 'Ultimate Unit grades'} · ${roleLabel(role)}`);
+      });
+      if (!urHtml) urHtml = fmtCuts(g.ur_letter_cutoffs || [], t('ultimate_grades'));
+      cutoffHtml += urHtml;
+    }
     const bucketBits = BUCKET_ORDER.map((k) => {
       const label = labels[k] || tBucket(k);
       return `<span class="spi-letter-chip">${esc(label)}</span>`;
     }).join('');
     cuts.innerHTML =
-      fmtCuts(spCuts, t('sp_grades')) +
-      fmtCuts(urCuts, t('ultimate_grades')) +
+      cutoffHtml +
       `<div class="spi-cutoff-group"><span class="spi-cutoff-group-label">${esc(t('buckets_label'))}</span>${bucketBits}</div>`;
   }
 

@@ -7037,7 +7037,7 @@ try{
 const r=await fetch(`/api/option_parts?lang=${S.lang}&page=1&per_page=100&q=${encodeURIComponent(String(opId))}&unit_id=${encodeURIComponent(uidForOp)}`);
 const d=await r.json();
 const hit=(d.rows||[]).find(x=>String(x.id)===String(opId));
-if(hit)slot.optionParts=[{id:hit.id,name:hit.name,details:hit.details||'',thum:hit.thum||'',tags:hit.tags||[]}];
+if(hit)slot.optionParts=[_dcCompactOptionPartRow(hit)];
 }catch(_){}
 }
 const spId=o.sp;
@@ -8121,16 +8121,19 @@ return{hp:f.unitHp,atk:fatk,def:fdef,mob:f.unitMob,mov:f.unitMove};
 function _tbRarityRankOption(row){return{UR:4,SSR:3,SR:2,R:1}[row&&row.rarity]||0}
 function _tbRankOptionForAutoFill(sl,side,row,supForSlot){
 const rk=_tbUnitRoleKind(sl.unitData);
-const b=_dcParseOptionPartBonuses(row.details||'');
-const part={id:row.id,name:row.name||'',details:row.details||'',thum:row.thum||'',tags:row.tags||[]};
+const part=_dcCompactOptionPartRow(row)||{id:row.id,name:row.name||'',details:row.details||'',thum:row.thum||'',tags:row.tags||[],sim_effects:row.sim_effects||[]};
+const b=_dcAccumulateOptionPartSheetBonuses([part],sl.unitData);
 const z=_tbStatTotalsWithFullCtx(sl,side,[],supForSlot);
 const w=_tbStatTotalsWithFullCtx(sl,side,[part],supForSlot);
 const dAtk=z&&w?w.atk-z.atk:0;
 const dHp=z&&w?w.hp-z.hp:0;
 const dDef=z&&w?w.def-z.def:0;
-const atk12=b.Attack.pct===12;
-const hp12=b.HP.pct===12;
-const def12=b.Defense.pct===12;
+const wpPct=_dcOptionPartWeaponPowerPct([part],null,sl.unitData);
+// Prefer weapon-power OPs when sheet delta is tiny (Knight Sword / Black Dragon Staff).
+const dWpScore=wpPct|0;
+const atk12=b.opPct.Attack===12;
+const hp12=b.opPct.HP===12;
+const def12=b.opPct.Defense===12;
 const rid=parseInt(String(row.id),10)||0;
 const rb=_tbRarityRankOption(row);
 if(rk==='def'){
@@ -8140,10 +8143,10 @@ return[2,dHp+dDef,dDef,dHp,rb,rid];
 }
 if(rk==='sup'){
 if(atk12)return[4,dAtk,0,0,rb,rid];
-return[2,dAtk,0,0,rb,rid];
+return[2,dAtk+dWpScore,dWpScore,0,rb,rid];
 }
 if(atk12)return[4,dAtk,dHp,dDef,rb,rid];
-return[2,dAtk,dHp+dDef,dDef,rb,rid];
+return[2,dAtk+dWpScore,dHp+dDef,dDef,rb,rid];
 }
 function _tbCompareRankAuto(a,b){
 for(let i=0;i<Math.max(a.length,b.length);i++){
@@ -8186,16 +8189,17 @@ return{hp:f.unitHp,atk:fatk,def:fdef,mob:f.unitMob,mov:f.unitMove};
 }
 function _dcRankOptionForAutoFill(sl,row,supForSlot){
 const rk=_tbUnitRoleKind(sl.unitData);
-const b=_dcParseOptionPartBonuses(row.details||'');
-const part={id:row.id,name:row.name||'',details:row.details||'',thum:row.thum||'',tags:row.tags||[]};
+const part=_dcCompactOptionPartRow(row)||{id:row.id,name:row.name||'',details:row.details||'',thum:row.thum||'',tags:row.tags||[],sim_effects:row.sim_effects||[]};
+const b=_dcAccumulateOptionPartSheetBonuses([part],sl.unitData);
 const z=_dcStatTotalsForAutoRank(sl,[],supForSlot);
 const w=_dcStatTotalsForAutoRank(sl,[part],supForSlot);
 const dAtk=z&&w?w.atk-z.atk:0;
 const dHp=z&&w?w.hp-z.hp:0;
 const dDef=z&&w?w.def-z.def:0;
-const atk12=b.Attack.pct===12;
-const hp12=b.HP.pct===12;
-const def12=b.Defense.pct===12;
+const dWpScore=_dcOptionPartWeaponPowerPct([part],null,sl.unitData)|0;
+const atk12=b.opPct.Attack===12;
+const hp12=b.opPct.HP===12;
+const def12=b.opPct.Defense===12;
 const rid=parseInt(String(row.id),10)||0;
 const rb=_tbRarityRankOption(row);
 if(rk==='def'){
@@ -8205,10 +8209,10 @@ return[2,dHp+dDef,dDef,dHp,rb,rid];
 }
 if(rk==='sup'){
 if(atk12)return[4,dAtk,0,0,rb,rid];
-return[2,dAtk,0,0,rb,rid];
+return[2,dAtk+dWpScore,dWpScore,0,rb,rid];
 }
 if(atk12)return[4,dAtk,dHp,dDef,rb,rid];
-return[2,dAtk,dHp+dDef,dDef,rb,rid];
+return[2,dAtk+dWpScore,dHp+dDef,dDef,rb,rid];
 }
 function _dcDedupeSsrOptionPartsAcrossDcSlots(){
 if(!S.dc||!S.dc.atkSlots||!Array.isArray(S.dc.atkSlots))return;
@@ -8303,7 +8307,7 @@ const ra=_dcRankOptionForAutoFill(sl,row,supFor);
 if(!bestR||_tbCompareRankAuto(ra,bestR)>0){bestR=ra;bestOp=row}
 }
 if(!_dcAutoFitContextValid(fitGen,slotIdx,sl.unitId,sl.charId))return;
-if(bestOp)S.dc.optionParts=[{id:bestOp.id,name:bestOp.name,details:bestOp.details||'',thum:bestOp.thum||'',tags:bestOp.tags||[]}];
+if(bestOp)S.dc.optionParts=[_dcCompactOptionPartRow(bestOp)];
 else S.dc.optionParts=[];
 }catch(_){}
 finally{
@@ -9057,9 +9061,15 @@ const va=Number(a[ka]);const vb=Number(b[ka]);
 const na=Number.isFinite(va)?va:0;const nb=Number.isFinite(vb)?vb:0;
 cmp=na-nb;
 }else{
+// rarity_sort: 0=UR … 4=N — match API sort_rows (desc = UR first = ascending rarity_sort).
 const ra=Number(a.rarity_sort);const rb=Number(b.rarity_sort);
 const na=Number.isFinite(ra)?ra:4;const nb=Number.isFinite(rb)?rb:4;
 cmp=na-nb;
+if(cmp)return cmp*(-dir);
+const sa=String(a.id??'');const sb=String(b.id??'');
+const ia=parseInt(sa,10);const ib=parseInt(sb,10);
+if(Number.isFinite(ia)&&Number.isFinite(ib)&&ia!==ib)return ia-ib;
+return sa.localeCompare(sb,'en',{numeric:true,sensitivity:'base'});
 }
 if(cmp)return cmp*dir;
 const sa=String(a.id??'');const sb=String(b.id??'');
@@ -9363,17 +9373,18 @@ try{const d=await fetch(`/api/character/${encodeURIComponent(sid)}?lang=${S.lang
 const hit=rowsSnap.find(x=>String(x.id)===String(sid));
 if(hit){
 if(!sl.optionParts)sl.optionParts=[];
+const compact=_dcCompactOptionPartRow(hit)||hit;
 if(repIdx!=null&&repIdx>=0&&repIdx<sl.optionParts.length){
 const usedSsr=_tbCollectUsedSsrOptionPartIds(slotKey);
 (sl.optionParts||[]).forEach((pp,i)=>{if(i!==repIdx&&pp&&pp.id&&_tbOptionPartIsSsr(pp))usedSsr.add(String(pp.id))});
-if(_tbOptionPartIsSsr(hit)&&usedSsr.has(String(hit.id)))return;
-sl.optionParts[repIdx]=hit;
+if(_tbOptionPartIsSsr(compact)&&usedSsr.has(String(compact.id)))return;
+sl.optionParts[repIdx]=compact;
 }else{
 if(sl.optionParts.length>=5)return;
-if(sl.optionParts.some(p=>p&&String(p.id)===String(hit.id)))return;
+if(sl.optionParts.some(p=>p&&String(p.id)===String(compact.id)))return;
 const usedSsr=_tbCollectUsedSsrOptionPartIds(slotKey);
-if(_tbOptionPartIsSsr(hit)&&usedSsr.has(String(hit.id)))return;
-sl.optionParts=[hit];
+if(_tbOptionPartIsSsr(compact)&&usedSsr.has(String(compact.id)))return;
+sl.optionParts=[compact];
 }
 }
 }
@@ -11889,7 +11900,7 @@ if(hit)row=hit;
 if(row){
 const _opSlot=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);
 if(_dcOptionPartRowIsSsr(row)&&_dcDcOptionPartSsrDeniedForSlot(row.id,_opSlot))return;
-S.dc.optionParts=[{id:row.id,name:row.name,details:row.details||'',thum:row.thum||'',tags:row.tags||[]}];renderDcOptionParts();_dcSnapActiveAttackerToSlot();_dcRefreshAtkPanelsAfterMods()
+S.dc.optionParts=[_dcCompactOptionPartRow(row)];renderDcOptionParts();_dcSnapActiveAttackerToSlot();_dcRefreshAtkPanelsAfterMods()
 }
 }
 async function selectDcSupporter(id){
@@ -12426,6 +12437,129 @@ const twSing=new RegExp('(?:自身所屬部隊|自身)'+twStat+'(提升|減少)(
 while((m=twSing.exec(norm))!==null){const sign=m[2]==='減少'?-1:1;const v=parseInt(m[3],10)||0;const isPct=m[4]==='%';const k=twMap[m[1]];if(k)add(k,sign*v,isPct)}
 return bonuses;
 }
+function _dcCompactOptionPartRow(row){
+if(!row)return null;
+return{
+id:row.id,
+name:row.name,
+details:row.details||'',
+thum:row.thum||'',
+tags:row.tags||[],
+sim_effects:Array.isArray(row.sim_effects)?row.sim_effects:[],
+rarity:row.rarity||'',
+rarity_sort:row.rarity_sort
+};
+}
+function _dcOpCondTargetIsCombat(tt){
+const t=String(tt||'');
+return t==='AttackTarget'||t==='Enemy'||t==='EnemyUnit'||t==='EnemyCharacter';
+}
+function _dcOpCondTargetIsOwner(tt){
+const t=String(tt||'');
+return !t||t==='Owner'||t==='Self'||t==='Unit';
+}
+function _dcEntityTagIdSet(entity){
+const out=new Set();
+(entity&&entity.tags||[]).forEach(tg=>{const id=String(tg&&tg.id!=null?tg.id:'').trim();if(id&&id!=='0')out.add(id)});
+return out;
+}
+function _dcOpCondTagsMatchEntity(eff,entity){
+const ids=eff&&eff.cond_unit_tag_ids||[];
+if(!ids.length)return true;
+const have=_dcEntityTagIdSet(entity);
+if([...ids].some(id=>have.has(String(id))))return true;
+const names=(eff.cond_unit_tag_names||[]).map(_dcNormalizeTagToken).filter(Boolean);
+if(!names.length)return false;
+const tokens=new Set();
+(entity&&entity.tags||[]).forEach(tg=>{const n=_dcNormalizeTagToken(tg&&tg.name);if(n)tokens.add(n)});
+return names.some(n=>tokens.has(n)||[...tokens].some(t=>t.includes(n)||n.includes(t)));
+}
+function _dcOpCondTagsMatchNpc(eff,npc){
+const ids=eff&&eff.cond_unit_tag_ids||[];
+if(!ids.length)return true;
+const have=new Set();
+const u=npc&&npc.unit;const c=npc&&npc.character;
+_dcEntityTagIdSet(u).forEach(id=>have.add(id));
+_dcEntityTagIdSet(c).forEach(id=>have.add(id));
+if([...ids].some(id=>have.has(String(id))))return true;
+const names=(eff.cond_unit_tag_names||[]).map(_dcNormalizeTagToken).filter(Boolean);
+if(!names.length)return false;
+const tokens=_dcNpcTagTokenSet(npc);
+return names.some(n=>tokens.has(n)||[...tokens].some(t=>t.includes(n)||n.includes(t)));
+}
+function _dcOptionPartSimEffects(op){
+if(op&&Array.isArray(op.sim_effects)&&op.sim_effects.length)return op.sim_effects;
+return[];
+}
+/** Sheet ATK/HP/… from OPs: unconditional + Owner-gated only (AttackTarget ATK applied in damage). */
+function _dcAccumulateOptionPartSheetBonuses(optionParts,atkUnitData){
+const opFlat={Attack:0,HP:0,Defense:0,Mobility:0,Move:0,EN:0};
+const opPct={Attack:0,HP:0,Defense:0,Mobility:0,Move:0,EN:0};
+(optionParts||[]).forEach(op=>{
+const effects=_dcOptionPartSimEffects(op);
+if(effects.length){
+effects.forEach(eff=>{
+if(!eff||eff.kind!=='stat_pct')return;
+const st=eff.stat||'Attack';
+if(opPct[st]==null)return;
+const tt=eff.cond_target||'';
+if(_dcOpCondTargetIsCombat(tt))return;
+if(!_dcOpCondTargetIsOwner(tt))return;
+if((eff.cond_unit_tag_ids||[]).length&&!_dcOpCondTagsMatchEntity(eff,atkUnitData))return;
+opPct[st]+=(eff.value|0);
+});
+return;
+}
+// Legacy text path: strip combat-gated ATK lines so Bow does not always count +15%.
+let details=String(op&&op.details||'');
+details=details.replace(/(?:When combating enemies with specified tags[,.]?\s*)(?:increase|increases)\s+ATK\s+by\s*\d+%?/gi,'');
+details=details.replace(/(?:When combating enemies with:[^.]*[.])\s*(?:increase|increases)\s+ATK\s+by\s*\d+%?/gi,'');
+details=details.replace(/與擁有以下標籤的敵人戰鬥時：[^.。]*[.。]?\s*(?:攻擊力)?(?:提升)?\d+%?/g,'');
+const b=_dcParseOptionPartBonuses(details||'');
+['Attack','HP','Defense','Mobility','Move','EN'].forEach(k=>{opFlat[k]+=b[k].flat;opPct[k]+=b[k].pct});
+});
+return{opFlat,opPct};
+}
+function _dcOptionPartCombatAtkPct(optionParts,npc){
+let pct=0;
+(optionParts||[]).forEach(op=>{
+_dcOptionPartSimEffects(op).forEach(eff=>{
+if(!eff||eff.kind!=='stat_pct'||eff.stat!=='Attack')return;
+if(!_dcOpCondTargetIsCombat(eff.cond_target||''))return;
+if(!_dcOpCondTagsMatchNpc(eff,npc))return;
+pct+=(eff.value|0);
+});
+});
+return pct;
+}
+function _dcOptionPartWeaponPowerPct(optionParts,wpn,atkUnitData){
+let pct=0;
+const wKeys=wpn?new Set(_dcWeaponAttributeKeys(wpn||{})||[]):null;
+(optionParts||[]).forEach(op=>{
+_dcOptionPartSimEffects(op).forEach(eff=>{
+if(!eff||eff.kind!=='weapon_power_pct')return;
+const want=eff.weapon_attrs||[];
+if(wKeys&&want.length&&!want.some(k=>wKeys.has(String(k))))return;
+const tt=eff.cond_target||'';
+if(_dcOpCondTargetIsCombat(tt)){
+return;
+}
+if(!_dcOpCondTargetIsOwner(tt))return;
+if((eff.cond_unit_tag_ids||[]).length&&!_dcOpCondTagsMatchEntity(eff,atkUnitData))return;
+pct+=(eff.value|0);
+});
+if(!_dcOptionPartSimEffects(op).length){
+const d=String(op&&op.details||'');
+const phys=d.match(/Increase\s+physical\s+weapon\s+Power\s+by\s*(\d+)\s*%/i);
+const beam=d.match(/Increase\s+beam\s+weapon\s+Power\s+by\s*(\d+)\s*%/i);
+const spec=d.match(/Increase\s+special\s+weapon\s+Power\s+by\s*(\d+)\s*%/i);
+if(phys&&(!wKeys||wKeys.has('physical')))pct+=parseInt(phys[1],10)||0;
+if(beam&&(!wKeys||wKeys.has('beam')))pct+=parseInt(beam[1],10)||0;
+if(spec&&(!wKeys||wKeys.has('special')))pct+=parseInt(spec[1],10)||0;
+}
+});
+return pct;
+}
 function _dcLeaderPctFromLeaderSkillDesc(d){
 const s=String(d||'').normalize('NFKC');
 let m=s.match(/by\s+(\d+)\s*[%％]/i);
@@ -12815,9 +12949,9 @@ const c=ctx||{};
 const mlPct=c.masterLeagueBuff?50:0;
 const goPct=c.grandOffensiveBuff?100:0;
 const sheetBuffPct=mlPct+goPct;
-const opFlat={Attack:0,HP:0,Defense:0,Mobility:0,Move:0};
-const opPct={Attack:0,HP:0,Defense:0,Mobility:0,Move:0};
-(c.optionParts||[]).forEach(op=>{const b=_dcParseOptionPartBonuses(op.details);['Attack','HP','Defense','Mobility','Move'].forEach(k=>{opFlat[k]+=b[k].flat;opPct[k]+=b[k].pct})});
+const opAcc=_dcAccumulateOptionPartSheetBonuses(c.optionParts,c.atkUnitData);
+const opFlat=opAcc.opFlat;
+const opPct=opAcc.opPct;
 let hpSupport=0,atkSupport=0,leaderPct=0;
 (c.supporters||[]).forEach(s=>{hpSupport+=Number(s.hp_support)||0;atkSupport+=Number(s.atk_support)||0});
 leaderPct=_dcLeaderSkillPctAndFlags(c.supporters).pct;
@@ -12866,9 +13000,9 @@ const supCnt=_dcEffectiveSupportCounterAtkPctFromCtx(c);
 const mlPct=c.masterLeagueBuff?50:0;
 const goPct=c.grandOffensiveBuff?100:0;
 const sheetBuffPct=mlPct+goPct;
-const opFlat={Attack:0,HP:0,Defense:0,Mobility:0,Move:0};
-const opPct={Attack:0,HP:0,Defense:0,Mobility:0,Move:0};
-(c.optionParts||[]).forEach(op=>{const b=_dcParseOptionPartBonuses(op.details);['Attack','HP','Defense','Mobility','Move'].forEach(k=>{opFlat[k]+=b[k].flat;opPct[k]+=b[k].pct})});
+const opAcc=_dcAccumulateOptionPartSheetBonuses(c.optionParts,c.atkUnitData);
+const opFlat=opAcc.opFlat;
+const opPct=opAcc.opPct;
 let hpSupport=0,atkSupport=0,leaderPct=0;
 (c.supporters||[]).forEach(s=>{hpSupport+=Number(s.hp_support)||0;atkSupport+=Number(s.atk_support)||0});
 leaderPct=_dcLeaderSkillPctAndFlags(c.supporters).pct;
@@ -12943,6 +13077,8 @@ unitAtk=_dcApplyCounterOwnAtkToUnitAtk(unitAtk);
 const supportCounterAtkPctApplied=_dcEffectiveSupportCounterAtkPct();
 const advantageTagAtkPct=_dcAdvantageTagAtkPctFromAbilities(ud,npc);
 unitAtk=_dcApplyAdvantageTagAtkToUnitAtk(unitAtk,advantageTagAtkPct,uMod.advantageFlatGrowthAtk|0);
+const opCombatAtkPct=_dcOptionPartCombatAtkPct(S.dc.optionParts,npc);
+if(opCombatAtkPct)unitAtk=_dcApplyAdvantageTagAtkToUnitAtk(unitAtk,opCombatAtkPct,uMod.advantageFlatGrowthAtk|0);
 let charAtk=_dcGetCharAtkStatWithSkills(atkCharStats,wpn);
 
 const defUnit=npc.unit;const defChar=npc.character;
@@ -12960,7 +13096,9 @@ unitDef=_dcApplyEnemyDefDebuffToDefenderUnitDef(defUnit,defDebuffPct,unitDef);
 const defDebuffFlatSubtract=defMsDefensePair-unitDef;
 
 const rawWpnPower=lvData.power;
-const computedWpnPow=_dcComputedWeaponPowerForLevel(wpn,S.dc.wpnLv);
+let computedWpnPow=_dcComputedWeaponPowerForLevel(wpn,S.dc.wpnLv);
+const opWpnPowPct=_dcOptionPartWeaponPowerPct(S.dc.optionParts,wpn,ud);
+if(opWpnPowPct)computedWpnPow=Math.floor(computedWpnPow*(100+opWpnPowPct)/100);
 const traitLvCalc=(wpn.levels&&wpn.levels.length)?Math.min(Math.max(0,S.dc.wpnLv|0),wpn.levels.length-1):0;
 const wtTraits=_dcParseWeaponTraits(wpn,traitLvCalc);
 const traitDistPow=Math.min(100,(wtTraits.distPowerMax||0)+(wtTraits.distCoreMax||0));

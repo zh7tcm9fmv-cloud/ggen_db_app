@@ -6006,12 +6006,39 @@ def create_trait_data_map(d):
             'active_cond_id': normalize_id(item.get('ActiveConditionSetId') or item.get('activeConditionSetId') or item.get('ActiveConditionId')),
             'target_cond_id': normalize_id(item.get('TargetConditionSetId') or item.get('targetConditionSetId') or item.get('TargetConditionId')),
             'boost_cond_id': normalize_id(item.get('TraitBoostConditionSetId') or item.get('traitBoostConditionSetId')),
+            'target_weapon_condition_id': normalize_id(
+                item.get('TargetWeaponConditionId') or item.get('targetWeaponConditionId') or '0'
+            ),
             'trait_type_index': tti,
             'trait_type_key': game_enums.enum_key('TraitType', tti),
             'trait_type_label': game_enums.enum_label('TraitType', tti),
             'trait_value': safe_int(item.get('TraitValue') or item.get('traitValue'), 0),
         }
     return lookup
+
+
+def create_twc_weapon_attr_keys_map(d):
+    """TargetWeaponConditionId -> ['physical'|'beam'|'special', ...] (WeaponAttributeTypes 1/2/3)."""
+    out = {}
+    attr_int_to_key = {1: 'physical', 2: 'beam', 3: 'special'}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        cid = normalize_id(item.get('Id') or item.get('id'))
+        if not cid or cid == '0':
+            continue
+        keys = []
+        seen = set()
+        for part in str(item.get('WeaponAttributeTypes') or '').split(','):
+            part = part.strip()
+            if not part.isdigit():
+                continue
+            key = attr_int_to_key.get(int(part))
+            if key and key not in seen:
+                seen.add(key)
+                keys.append(key)
+        out[cid] = keys
+    return out
 
 def create_lang_text_map(d):
     lookup = {}
@@ -9276,6 +9303,7 @@ M_SERIES_ID_TO_LOGO_PAD = build_m_series_logo_pad_map(series_master_data)
 trait_cond_data_r = load_json(os.path.join(BASE_DIR, "m_trait_condition.json"))
 trait_boost_cond_data = load_json(os.path.join(BASE_DIR, "m_trait_boost_condition.json"))
 trait_logic_data = load_json(os.path.join(BASE_DIR, "m_trait.json"))
+trait_twc_weapon_data = load_json(os.path.join(BASE_DIR, "m_trait_condition_target_weapon.json"))
 ability_master = load_json(os.path.join(BASE_DIR, "m_ability.json"))
 trait_set_data = load_json(os.path.join(BASE_DIR, "m_trait_set.json"))
 trait_set_detail_master = load_json(os.path.join(BASE_DIR, "m_trait_set_detail.json"))
@@ -9414,6 +9442,8 @@ for _sit in extract_data_list(schedule_master_data):
 trait_set_traits_map = create_trait_set_to_traits_map(trait_set_data)
 trait_set_detail_resource_lookup = create_trait_set_detail_resource_lookup(trait_set_detail_master) if trait_set_detail_master else {}
 trait_data_map = create_trait_data_map(trait_logic_data)
+twc_weapon_attr_keys_map = create_twc_weapon_attr_keys_map(trait_twc_weapon_data) if trait_twc_weapon_data else {}
+twc_weapon_attr_keys_map = create_twc_weapon_attr_keys_map(trait_twc_weapon_data) if trait_twc_weapon_data else {}
 trait_condition_raw_map = create_trait_condition_raw_map(trait_cond_data_r)
 trait_condition_rows_by_set_id = {}
 for _tci in extract_data_list(trait_cond_data_r):
@@ -21097,7 +21127,7 @@ def list_option_parts():
             if u in unit_info_map:
                 for_unit = u
         uf = f"u{for_unit}" if for_unit else 'u0'
-        ck = f"op6_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}_{ef}_{uf}"
+        ck = f"op7_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}_{ef}_{uf}"
         cached = get_cached_response(ck)
         if cached:
             out = dict(cached)
@@ -21129,6 +21159,7 @@ def list_option_parts():
                 tdata = trait_data_map.get(tid, {}); dlid = tdata.get('desc_lang_id', '')
                 if dlid: desc = ltm.get(dlid, ''); (desc and details_list.append(desc.strip()))
             details = ' '.join(details_list) if details_list else ''
+            sim_effects_base = _build_option_part_sim_effects(item, lc, ld, '')
             lineage_ids = option_parts_lineage_map.get(opid, [])
             base_tags = resolve_lineage_ids_to_tag_dicts(lineage_ids, ld, tt='unit')
             base_tags = merge_option_part_tags_with_series(base_tags, item.get('SeriesId') or item.get('seriesId'), ld)
@@ -21153,7 +21184,12 @@ def list_option_parts():
                     tag_blob = [tags_str.lower()] if tags_str else []
                     if not search_row_matches_query(sq, searchable, tag_blob, entity_id=opid):
                         continue
-                rows.append({'id': opid, 'name': name, 'details': details, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': icon, 'tags': tags, 'tags_join': tags_join, 'variant_tag_id': vnorm if vnorm != '0' else ''})
+                sim_effects = (
+                    _build_option_part_sim_effects(item, lc, ld, vnorm)
+                    if vnorm
+                    else sim_effects_base
+                )
+                rows.append({'id': opid, 'name': name, 'details': details, 'sim_effects': sim_effects, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': icon, 'tags': tags, 'tags_join': tags_join, 'variant_tag_id': vnorm if vnorm != '0' else ''})
         rows = sort_rows(rows, sb, sd, {'name', 'rarity', 'details', 'tags'})
         total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
         start = (page - 1) * pp; pr = rows[start:start + pp]
@@ -21459,8 +21495,8 @@ def _option_part_conditional_phrase_likely_present(text):
         return False
     hints = (
         ' when ', ' if ', '[condition',
-        'when equipped',
-        '當', '装备', '裝備', '時', '条件',
+        'when equipped', 'when combating',
+        '當', '装备', '裝備', '時', '条件', '戦闘', '戰鬥',
     )
     return any(h in blob for h in hints)
 
@@ -21477,15 +21513,98 @@ def _option_part_desc_uses_placeholder_tag_phrase(text):
     )
 
 
-def _option_part_condition_line_from_tags(tags, lc):
+def _option_part_condition_line_from_tags(tags, lc, target_types=None):
     names = [str(t.get('name') or '').strip() for t in (tags or []) if str(t.get('name') or '').strip()]
     if not names:
         return ''
+    tts = {str(x or '').strip() for x in (target_types or []) if str(x or '').strip()}
+    combat = bool(tts & {'AttackTarget', 'Enemy', 'EnemyUnit', 'EnemyCharacter'})
+    joined = ', '.join(names)
+    if combat:
+        if lc in ('TW', 'HK'):
+            return f"與擁有以下標籤的敵人戰鬥時：{joined}"
+        if lc in ('JA', 'JP'):
+            return f"以下タグを持つ敵との戦闘時：{joined}"
+        return f"When combating enemies with: {joined}."
     if lc in ('TW', 'HK'):
-        return f"裝備於擁有以下標籤的單位時：{', '.join(names)}"
+        return f"裝備於擁有以下標籤的單位時：{joined}"
     if lc in ('JA', 'JP'):
-        return f"以下タグを持つユニット装備時：{', '.join(names)}"
-    return f"When equipped to a Unit possessing: {', '.join(names)}."
+        return f"以下タグを持つユニット装備時：{joined}"
+    return f"When equipped to a Unit possessing: {joined}."
+
+
+# TraitTypeIndex used by DC / Team Builder option-part combat math (sheet + weapon power).
+# Only combat-relevant OP types we apply in-sim today (expand when DR/crit OPs are wired).
+_OP_SIM_STAT_PCT_TTI = {
+    7: 'Attack',
+}
+_OP_SIM_WEAPON_POWER_TTI = 78
+
+
+def _build_option_part_sim_effects(item, lc, ld, variant_tag_id=''):
+    """Structured OP effects for damage sim (locale-independent)."""
+    llk = ld.get('lineage_lookup', {})
+    snm = ld.get('series_name_map', {})
+    opid = normalize_id(item.get('Id') or item.get('id'))
+    trait_set_id = normalize_id(item.get('TraitSetId') or item.get('traitSetId'))
+    trait_ids = trait_set_traits_map.get(trait_set_id, [])
+    out = []
+    for tid in trait_ids:
+        tdata = trait_data_map.get(tid, {}) or {}
+        tti = safe_int(tdata.get('trait_type_index'), 0)
+        val = safe_int(tdata.get('trait_value'), 0)
+        if not val:
+            continue
+        kind = None
+        stat = None
+        weapon_attrs = []
+        if tti in _OP_SIM_STAT_PCT_TTI:
+            kind = 'stat_pct'
+            stat = _OP_SIM_STAT_PCT_TTI[tti]
+        elif tti == _OP_SIM_WEAPON_POWER_TTI:
+            kind = 'weapon_power_pct'
+            twc = normalize_id(tdata.get('target_weapon_condition_id') or '0')
+            weapon_attrs = list(twc_weapon_attr_keys_map.get(twc) or [])
+        else:
+            continue
+        active_cid = tdata.get('active_cond_id', '0')
+        raw = trait_condition_raw_map.get(normalize_id(active_cid), {}) or {}
+        target_types = list(raw.get('target_types') or [])
+        cond_tags = resolve_condition_tags(active_cid, trait_condition_raw_map, llk, snm, lc)
+        cond_tags = _apply_option_part_condition_variant(opid, active_cid, cond_tags, variant_tag_id)
+        unit_tag_ids = []
+        unit_tag_names = []
+        seen_ids = set()
+        for tg in cond_tags:
+            if not isinstance(tg, dict):
+                continue
+            tid2 = normalize_id(tg.get('id'))
+            nm = str(tg.get('name') or '').strip()
+            if tid2 and tid2 != '0' and tid2 not in seen_ids:
+                seen_ids.add(tid2)
+                unit_tag_ids.append(tid2)
+            if nm:
+                unit_tag_names.append(nm)
+        # Prefer master UnitTags when resolve_condition_tags is empty.
+        if not unit_tag_ids:
+            for uid in raw.get('unit_tags') or []:
+                uid = normalize_id(uid)
+                if uid and uid != '0' and uid not in seen_ids:
+                    seen_ids.add(uid)
+                    unit_tag_ids.append(uid)
+                    nm = (llk.get(uid) or '').strip()
+                    if nm:
+                        unit_tag_names.append(nm)
+        out.append({
+            'kind': kind,
+            'stat': stat,
+            'value': val,
+            'weapon_attrs': weapon_attrs,
+            'cond_target': (target_types[0] if target_types else ''),
+            'cond_unit_tag_ids': unit_tag_ids,
+            'cond_unit_tag_names': unit_tag_names,
+        })
+    return out
 
 
 def _option_part_variant_tag_ids(opid):
@@ -21520,9 +21639,11 @@ def _build_option_part_details(item, lc, ld, variant_tag_id=''):
             continue
         lines.append(desc)
         active_cid = tdata.get('active_cond_id', '0')
+        raw = trait_condition_raw_map.get(normalize_id(active_cid), {}) or {}
+        target_types = list(raw.get('target_types') or [])
         cond_tags = resolve_condition_tags(active_cid, trait_condition_raw_map, llk, snm, lc)
         cond_tags = _apply_option_part_condition_variant(opid, active_cid, cond_tags, variant_tag_id)
-        cond_line = _option_part_condition_line_from_tags(cond_tags, lc)
+        cond_line = _option_part_condition_line_from_tags(cond_tags, lc, target_types=target_types)
         suppress_condition_line = normalize_id(opid) in ('400012', '400069')
         if (not suppress_condition_line) and cond_line and (
             (not _option_part_conditional_phrase_likely_present(desc))
@@ -21657,6 +21778,7 @@ def _option_part_detail_row(item, lc, variant_tag_id=''):
     if not name:
         name = f'Option Part {opid}'
     details = _build_option_part_details(item, lc, ld, variant_tag_id)
+    sim_effects = _build_option_part_sim_effects(item, lc, ld, variant_tag_id)
     lineage_ids = option_parts_lineage_map.get(opid, [])
     tags = resolve_lineage_ids_to_tag_dicts(lineage_ids, ld, tt='unit')
     tags = merge_option_part_tags_with_series(tags, item.get('SeriesId') or item.get('seriesId'), ld)
@@ -21677,6 +21799,7 @@ def _option_part_detail_row(item, lc, variant_tag_id=''):
         'id': opid,
         'name': name,
         'details': details,
+        'sim_effects': sim_effects,
         'rarity': RARITY_MAP.get(ri, 'N'),
         'rarity_id': ri,
         'rarity_sort': RARITY_SORT.get(ri, 4),
@@ -21703,7 +21826,7 @@ def get_option_part(option_part_id):
         row = _option_part_detail_row(item, lc, variant_tag_id=variant_tag_id)
         if not row:
             return jsonify({'error': 'Not found'}), 404
-        ck = f"op_{normalize_id(option_part_id)}_{lc}_v{variant_tag_id}"
+        ck = f"opd2_{normalize_id(option_part_id)}_{lc}_v{variant_tag_id}"
         return jsonify_cacheable(row, ck, private=True, max_age=3600, convert_images=True)
     except Exception as e:
         import traceback; traceback.print_exc()

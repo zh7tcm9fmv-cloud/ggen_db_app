@@ -535,7 +535,11 @@
     "mov_min_increase": 1,
     "range_min_increase": 1,
     "power_min_increase": 1,
-    "stat_override_keys": ["HP", "DEF", "ATK"],
+    "stat_override_keys": [
+      "HP",
+      "DEF",
+      "ATK"
+    ],
     "stat_override_min_increase": 1,
     "note": "Only score when alt form unlocks terrain, MOV, range, power, or MAP vs base form. Combat stats use the better of base/alt HP·DEF·ATK when the alt form actually improves those (catalog-wide; replaces Reborns allowlist)."
   },
@@ -1768,7 +1772,7 @@
   },
   "letter_cutoffs": [
     {
-      "min": 17,
+      "min": 18,
       "letter": "S+"
     },
     {
@@ -1806,7 +1810,7 @@
   ],
   "ur_letter_cutoffs": [
     {
-      "min": 17,
+      "min": 18,
       "letter": "S+"
     },
     {
@@ -2080,7 +2084,11 @@
     "high_hp_points": 2,
     "min_movement_points": 2,
     "min_atk_down_points": 1,
-    "support_defense_trait_types": [52, 87, 90],
+    "support_defense_trait_types": [
+      52,
+      87,
+      90
+    ],
     "note": "v5.42: disabled — Defense S+ is absolute score 22+ so BTT stays score-ordered (~3–5). Legacy tank/ATK Down/edge checks kept for reference only."
   },
   "support_bbt_gate": {
