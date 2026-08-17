@@ -5300,14 +5300,34 @@ def is_ex_ability(name):
 _api_cache = {}
 # Keep modest — stage/unit detail dicts are large; uncapped growth balloons RSS.
 _CACHE_MAX_SIZE = int(os.environ.get('API_CACHE_MAX_SIZE', '200') or '200')
+# First-paint browse keys must survive DC/TB floods (per-unit option_parts / supporter detail).
+_API_CACHE_PIN_PREFIXES = (
+    'cl33_',
+    'ul56_',
+    'stages14_',
+    'browse_filters_',
+)
+
+
+def _api_cache_key_pinned(cache_key):
+    k = str(cache_key or '')
+    return k.startswith(_API_CACHE_PIN_PREFIXES)
+
 
 def get_cached_response(cache_key):
     return _api_cache.get(cache_key)
 
 def set_cached_response(cache_key, data):
+    if cache_key in _api_cache:
+        _api_cache[cache_key] = data
+        return
     if len(_api_cache) >= _CACHE_MAX_SIZE:
-        for k in list(_api_cache.keys())[: max(20, _CACHE_MAX_SIZE // 5)]:
-            del _api_cache[k]
+        evict_n = max(20, _CACHE_MAX_SIZE // 5)
+        victims = [k for k in _api_cache if not _api_cache_key_pinned(k)]
+        if not victims:
+            victims = list(_api_cache.keys())
+        for k in victims[:evict_n]:
+            _api_cache.pop(k, None)
     _api_cache[cache_key] = data
 
 # HTTP ETag / browser cache for stable JSON APIs (O(1) tag from cache_key — no body hash).
@@ -21128,68 +21148,75 @@ def list_option_parts():
                 for_unit = u
         uf = f"u{for_unit}" if for_unit else 'u0'
         ck = f"op8_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}_{ef}_{uf}"
-        cached = get_cached_response(ck)
-        if cached:
-            out = dict(cached)
-            out['effect_filter_icons'] = get_option_part_effect_filter_icons(lc)
-            return jsonify_cacheable(out, ck, public=True, max_age=3600, convert_images=True)
+        # Per-unit pages must not occupy the shared 200-slot cache (DC/TB autofit floods it
+        # and evicts /api/characters). Cache the unfiltered row list once, then filter.
+        if not for_unit:
+            cached = get_cached_response(ck)
+            if cached:
+                out = dict(cached)
+                out['effect_filter_icons'] = get_option_part_effect_filter_icons(lc)
+                return jsonify_cacheable(out, ck, public=True, max_age=3600, convert_images=True)
         if not option_parts_data:
             return jsonify(convert_image_urls({
                 'rows': [], 'total': 0, 'page': 1, 'per_page': pp, 'total_pages': 1,
                 'sort': sb, 'dir': sd, 'rarity_filter': rf, 'effect_filter': ef,
                 'effect_filter_icons': get_option_part_effect_filter_icons(lc),
             }))
-        ld = get_lang_data(lc); op_text_map = ld.get('op_text_map', {}); ltm = ld.get('lang_text_map', {})
-        rows = []
-        for item in extract_data_list(option_parts_data):
-            if not isinstance(item, dict): continue
-            opid = str(item.get('Id') or item.get('id', 0))
-            if opid == '0': continue
-            if for_unit and not option_part_matches_unit(opid, for_unit, lc):
-                continue
-            ri = str(item.get('RarityTypeIndex') or 1)
-            if rf != 'ALL' and RARITY_MAP.get(ri, 'N') != rf: continue
-            name_lid = normalize_id(item.get('SortNameLanguageId') or item.get('sortNameLanguageId'))
-            name = op_text_map.get(name_lid, '') if name_lid else ''
-            if not name: name = f'Option Part {opid}'
-            details = _build_option_part_details(item, lc, ld, '')
-            sim_effects_base = _build_option_part_sim_effects(item, lc, ld, '')
-            lineage_ids = option_parts_lineage_map.get(opid, [])
-            base_tags = resolve_lineage_ids_to_tag_dicts(lineage_ids, ld, tt='unit')
-            base_tags = merge_option_part_tags_with_series(base_tags, item.get('SeriesId') or item.get('seriesId'), ld)
-            variant_ids = _option_part_variant_tag_ids(opid)
-            if not variant_ids:
-                variant_ids = ['']
-            if ef != 'ALL' and not option_part_matches_effect_filter(details, ef):
-                continue
-            res_id = str(item.get('ResourceId') or item.get('resourceId') or '').strip()
-            icon = f"/static/images/Option-Part (Modification)/Sprite/{res_id}.webp" if res_id else ''
-            for vid in variant_ids:
-                tags = list(base_tags)
-                vnorm = normalize_id(vid)
-                if vnorm:
-                    vname = (ld.get('lineage_lookup', {}) or {}).get(vnorm, '')
-                    if vname and not any(normalize_id(t.get('id')) == vnorm for t in tags):
-                        tags.append({'id': vnorm, 'name': vname, 'type': 'unit', 'source': 'variant'})
-                details_v = (
-                    _build_option_part_details(item, lc, ld, vnorm)
-                    if vnorm
-                    else details
-                )
-                tags_join = ', '.join(t['name'] for t in tags)
-                tags_str = ' '.join(t['name'] for t in tags)
-                if sq:
-                    searchable = f"{name} {details_v} {tags_str}".lower()
-                    tag_blob = [tags_str.lower()] if tags_str else []
-                    if not search_row_matches_query(sq, searchable, tag_blob, entity_id=opid):
-                        continue
-                sim_effects = (
-                    _build_option_part_sim_effects(item, lc, ld, vnorm)
-                    if vnorm
-                    else sim_effects_base
-                )
-                rows.append({'id': opid, 'name': name, 'details': details_v, 'sim_effects': sim_effects, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': icon, 'tags': tags, 'tags_join': tags_join, 'variant_tag_id': vnorm if vnorm != '0' else ''})
-        rows = sort_rows(rows, sb, sd, {'name', 'rarity', 'details', 'tags'})
+        all_ck = f"op8all_{lc}_{sb}_{sd}_{sq}_{rf}_{ef}"
+        rows = get_cached_response(all_ck)
+        if not isinstance(rows, list):
+            ld = get_lang_data(lc); op_text_map = ld.get('op_text_map', {}); ltm = ld.get('lang_text_map', {})
+            rows = []
+            for item in extract_data_list(option_parts_data):
+                if not isinstance(item, dict): continue
+                opid = str(item.get('Id') or item.get('id', 0))
+                if opid == '0': continue
+                ri = str(item.get('RarityTypeIndex') or 1)
+                if rf != 'ALL' and RARITY_MAP.get(ri, 'N') != rf: continue
+                name_lid = normalize_id(item.get('SortNameLanguageId') or item.get('sortNameLanguageId'))
+                name = op_text_map.get(name_lid, '') if name_lid else ''
+                if not name: name = f'Option Part {opid}'
+                details = _build_option_part_details(item, lc, ld, '')
+                sim_effects_base = _build_option_part_sim_effects(item, lc, ld, '')
+                lineage_ids = option_parts_lineage_map.get(opid, [])
+                base_tags = resolve_lineage_ids_to_tag_dicts(lineage_ids, ld, tt='unit')
+                base_tags = merge_option_part_tags_with_series(base_tags, item.get('SeriesId') or item.get('seriesId'), ld)
+                variant_ids = _option_part_variant_tag_ids(opid)
+                if not variant_ids:
+                    variant_ids = ['']
+                if ef != 'ALL' and not option_part_matches_effect_filter(details, ef):
+                    continue
+                res_id = str(item.get('ResourceId') or item.get('resourceId') or '').strip()
+                icon = f"/static/images/Option-Part (Modification)/Sprite/{res_id}.webp" if res_id else ''
+                for vid in variant_ids:
+                    tags = list(base_tags)
+                    vnorm = normalize_id(vid)
+                    if vnorm:
+                        vname = (ld.get('lineage_lookup', {}) or {}).get(vnorm, '')
+                        if vname and not any(normalize_id(t.get('id')) == vnorm for t in tags):
+                            tags.append({'id': vnorm, 'name': vname, 'type': 'unit', 'source': 'variant'})
+                    details_v = (
+                        _build_option_part_details(item, lc, ld, vnorm)
+                        if vnorm
+                        else details
+                    )
+                    tags_join = ', '.join(t['name'] for t in tags)
+                    tags_str = ' '.join(t['name'] for t in tags)
+                    if sq:
+                        searchable = f"{name} {details_v} {tags_str}".lower()
+                        tag_blob = [tags_str.lower()] if tags_str else []
+                        if not search_row_matches_query(sq, searchable, tag_blob, entity_id=opid):
+                            continue
+                    sim_effects = (
+                        _build_option_part_sim_effects(item, lc, ld, vnorm)
+                        if vnorm
+                        else sim_effects_base
+                    )
+                    rows.append({'id': opid, 'name': name, 'details': details_v, 'sim_effects': sim_effects, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': icon, 'tags': tags, 'tags_join': tags_join, 'variant_tag_id': vnorm if vnorm != '0' else ''})
+            rows = sort_rows(rows, sb, sd, {'name', 'rarity', 'details', 'tags'})
+            set_cached_response(all_ck, rows)
+        if for_unit:
+            rows = [r for r in rows if option_part_matches_unit(str(r.get('id') or ''), for_unit, lc)]
         total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
         start = (page - 1) * pp; pr = rows[start:start + pp]
         result = {
@@ -21197,7 +21224,8 @@ def list_option_parts():
             'sort': sb, 'dir': sd, 'rarity_filter': rf, 'effect_filter': ef,
             'effect_filter_icons': get_option_part_effect_filter_icons(lc),
         }
-        set_cached_response(ck, result)
+        if not for_unit:
+            set_cached_response(ck, result)
         return jsonify_cacheable(result, ck, public=True, max_age=3600, convert_images=True)
     except Exception as e:
         import traceback; traceback.print_exc(); return jsonify({'rows': [], 'total': 0, 'page': 1, 'per_page': 50, 'total_pages': 1}), 500
