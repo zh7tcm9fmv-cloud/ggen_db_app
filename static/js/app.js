@@ -11953,7 +11953,8 @@ return q;
 }
 async function selectDcOptionPart(id){
 let row=(S._dcPickerFullCache||[]).find(x=>String(x.id)===String(id));
-if(row&&(!row.details||!String(row.details).trim())){
+const needsOpRefresh=!row||!row.details||!String(row.details).trim()||!Array.isArray(row.sim_effects);
+if(needsOpRefresh){
 try{
 const uq=_dcOptionPartUnitQuery();
 const r=await fetch(`/api/option_parts?lang=${S.lang}&page=1&per_page=100&q=${encodeURIComponent(id)}${uq}`);
@@ -12524,20 +12525,44 @@ function _dcOpCondTargetIsOwner(tt){
 const t=String(tt||'');
 return !t||t==='Owner'||t==='Self'||t==='Unit';
 }
-function _dcEntityTagIdSet(entity){
+/** Owner/combat OP gates: lineage tags, series ids, and unit ids (Fierce Enemy Limiter OFF stores unit Id in UnitTags). */
+function _dcEntityCondIdSet(entity){
 const out=new Set();
-(entity&&entity.tags||[]).forEach(tg=>{const id=String(tg&&tg.id!=null?tg.id:'').trim();if(id&&id!=='0')out.add(id)});
+if(!entity)return out;
+const add=v=>{const id=String(v!=null?v:'').trim();if(id&&id!=='0')out.add(id)};
+add(entity.id);add(entity.main_unit_id);add(entity.unit_id);
+(entity.tags||[]).forEach(tg=>add(tg&&tg.id));
+(entity.series||[]).forEach(s=>add(s&&s.id));
 return out;
 }
+function _dcCondIdsMatchHave(wantIds,have){
+if(!wantIds||!wantIds.length)return true;
+if(!have||!have.size)return false;
+return [...wantIds].some(raw=>{
+const id=String(raw||'').trim();
+if(!id||id==='0')return false;
+if(have.has(id))return true;
+for(const h of have){
+if(!h||h==='0')continue;
+if(h===id)return true;
+if(h.length>=4&&id.length>=4&&(h.endsWith(id)||id.endsWith(h)))return true;
+}
+return false;
+});
+}
+function _dcEntityTagIdSet(entity){return _dcEntityCondIdSet(entity)}
 function _dcOpCondTagsMatchEntity(eff,entity){
 const ids=eff&&eff.cond_unit_tag_ids||[];
 if(!ids.length)return true;
-const have=_dcEntityTagIdSet(entity);
-if([...ids].some(id=>have.has(String(id))))return true;
+const have=_dcEntityCondIdSet(entity);
+if(_dcCondIdsMatchHave(ids,have))return true;
 const names=(eff.cond_unit_tag_names||[]).map(_dcNormalizeTagToken).filter(Boolean);
 if(!names.length)return false;
 const tokens=new Set();
 (entity&&entity.tags||[]).forEach(tg=>{const n=_dcNormalizeTagToken(tg&&tg.name);if(n)tokens.add(n)});
+(entity&&entity.series||[]).forEach(s=>{const n=_dcNormalizeTagToken(s&&s.name);if(n)tokens.add(n)});
+const en=_dcNormalizeTagToken(entity&&entity.name);
+if(en)tokens.add(en);
 return names.some(n=>tokens.has(n)||[...tokens].some(t=>t.includes(n)||n.includes(t)));
 }
 function _dcOpCondTagsMatchNpc(eff,npc){
@@ -12545,9 +12570,9 @@ const ids=eff&&eff.cond_unit_tag_ids||[];
 if(!ids.length)return true;
 const have=new Set();
 const u=npc&&npc.unit;const c=npc&&npc.character;
-_dcEntityTagIdSet(u).forEach(id=>have.add(id));
-_dcEntityTagIdSet(c).forEach(id=>have.add(id));
-if([...ids].some(id=>have.has(String(id))))return true;
+_dcEntityCondIdSet(u).forEach(id=>have.add(id));
+_dcEntityCondIdSet(c).forEach(id=>have.add(id));
+if(_dcCondIdsMatchHave(ids,have))return true;
 const names=(eff.cond_unit_tag_names||[]).map(_dcNormalizeTagToken).filter(Boolean);
 if(!names.length)return false;
 const tokens=_dcNpcTagTokenSet(npc);

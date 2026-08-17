@@ -8,10 +8,13 @@ alwaysApply: true
 When the owner reports a bug, wrong score, wrong filter, missing case, or “we missed X”:
 
 1. **Treat the cited ID/UI as a repro**, not the full scope. Find the underlying rule/heuristic and fix that.
-2. **Do not** ship ID-specific special cases (`if uid == "1370005900"`) unless master data is truly unique and there is no general signal.
-3. **Double-check breadth before calling it done:**
+2. **Worldwide / catalog-wide fix** — an example unit, OP, pilot, or stage is never a license to special-case that id. Fix every entity that shares the same master signal, code path, or condition shape.
+3. **Do not** ship ID-specific special cases (`if uid == "1370005900"`) unless master data is truly unique and there is no general signal.
+4. **Double-check breadth before calling it done:**
    - Scan the full catalog / same code path for other hits (same pattern, same field, same board).
    - Report counts: how many were wrong, how many still correctly fail, example names.
    - Prefer a one-off script or assertion over eyeballing one unit.
-4. **After the fix**, verify the original repro *and* at least one other affected case (or confirm the scan shows zero remaining false positives of that class).
-5. If a true one-off is unavoidable, say so explicitly and why a general rule cannot cover it.
+5. **After the fix**, verify the original repro *and* at least one other affected case (or confirm the scan shows zero remaining false positives of that class).
+6. If a true one-off is unavoidable, say so explicitly and why a general rule cannot cover it.
+
+Owner reminder (Aug 2026): “when I give you an example of a bug, check and make sure it is a worldwide fix and not a particular fix.”
