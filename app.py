@@ -5806,7 +5806,7 @@ _LANG_DISPLAY_FALLBACK_KEYS = (
     'supporter_leader_text_map', 'supporter_active_text_map',
     'stage_text_map', 'scenario_stage_text_map', 'scenario_stage_series_text_map', 'tower_event_text_map', 'tower_stage_group_text_map', 'tower_stage_text_map', 'special_event_stage_text_map', 'item_text_map', 'profile_title_text_map',
     'stage_master_text_map', 'stage_condition_text_map', 'map_stage_condition_text_map',
-    'weapon_text_map', 'op_text_map', 'mission_text_map',
+    'weapon_text_map', 'op_text_map', 'mission_text_map', 'binder_text_map',
 )
 
 
@@ -9574,6 +9574,7 @@ ssp_weap_effect_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_
 option_parts_data = load_json(os.path.join(BASE_DIR, "m_option_parts.json"))
 option_parts_lineage_data = load_json(os.path.join(BASE_DIR, "m_option_parts_lineage.json"))
 option_parts_acquisition_method_data = load_json(os.path.join(BASE_DIR, "m_option_parts_acquisition_method.json"))
+binder_data = load_json(os.path.join(BASE_DIR, "m_binder.json"))
 unit_acquisition_method_data = load_json(os.path.join(BASE_DIR, "m_unit_acquisition_method.json"))
 character_acquisition_method_data = load_json(os.path.join(BASE_DIR, "m_character_acquisition_method.json"))
 item_acquisition_method_data = load_json(os.path.join(BASE_DIR, "m_item_acquisition_method.json"))
@@ -9687,6 +9688,28 @@ for _rid, _rrow in (reward_map or {}).items():
     reward_set_rewards_map.setdefault(_sid, []).append(dict(_rrow, reward_id=_rid))
 for _sid, _arr in list(reward_set_rewards_map.items()):
     _arr.sort(key=lambda x: safe_int(x.get('reward_id'), 0))
+option_part_reward_set_ids_by_op = {}
+for _rid, _rrow in (reward_map or {}).items():
+    if normalize_id((_rrow or {}).get('reward_type_index')) != '8':
+        continue
+    _oid = normalize_id((_rrow or {}).get('target_id'))
+    _rsid = str(_rid)[:-2] if len(str(_rid)) > 2 else ''
+    if _oid == '0' or not _rsid:
+        continue
+    option_part_reward_set_ids_by_op.setdefault(_oid, []).append(_rsid)
+mission_rows_by_reward_set = {}
+for _mrow in extract_data_list(mission_data or []):
+    if not isinstance(_mrow, dict):
+        continue
+    _rsid = normalize_id(_mrow.get('RewardSetId') or _mrow.get('rewardSetId'))
+    if _rsid != '0':
+        mission_rows_by_reward_set.setdefault(_rsid, []).append(_mrow)
+scenario_stage_id_by_first_clear_set = {}
+for _ssid, _ssrow in (scenario_stage_map or {}).items():
+    scenario_stage_id_by_first_clear_set[f'20{_ssid}0000'] = _ssid
+    _fc = normalize_id((_ssrow or {}).get('scenario_only_first_clear_reward_set_id'))
+    if _fc != '0':
+        scenario_stage_id_by_first_clear_set[_fc] = _ssid
 option_part_reward_info_map = {}
 for _op in extract_data_list(option_parts_data):
     if not isinstance(_op, dict):
@@ -10034,6 +10057,17 @@ def _index_acq_rows(data, id_keys):
 unit_acquisition_by_id = _index_acq_rows(unit_acquisition_method_data, ('UnitId', 'unitId'))
 character_acquisition_by_id = _index_acq_rows(character_acquisition_method_data, ('CharacterId', 'characterId'))
 item_acquisition_by_id = _index_acq_rows(item_acquisition_method_data, ('ItemId', 'itemId'))
+option_parts_acquisition_by_id = _index_acq_rows(option_parts_acquisition_method_data, ('OptionPartsId', 'optionPartsId'))
+binder_map = {}
+for _brow in extract_data_list(binder_data or []):
+    if not isinstance(_brow, dict):
+        continue
+    _bid = normalize_id(_brow.get('Id') or _brow.get('id'))
+    if _bid == '0':
+        continue
+    binder_map[_bid] = {
+        'name_lang_id': normalize_id(_brow.get('NameLanguageId') or _brow.get('nameLanguageId')),
+    }
 
 unit_development_diagram_by_id = {}
 for _drow in extract_data_list(unit_development_diagram_data or []):
@@ -10420,6 +10454,7 @@ for lang_code, paths in LANG_PATHS.items():
     stage_master_lang_text = load_json(os.path.join(lang_dir, "m_stage.json"))
     mech_lang = load_json(os.path.join(lang_dir, "m_mechanism.json"))
     op_lang_data = load_json(os.path.join(lang_dir, "m_option_parts.json"))
+    binder_lang_text = load_json(os.path.join(lang_dir, "m_binder.json"))
     
     anm, adm = create_ability_maps(extract_data_list(trait_name_data), extract_data_list(trait_desc_data))
     ll = create_lineage_list(lineage_text); llk = create_lineage_lookup(lineage_text)
@@ -10439,6 +10474,7 @@ for lang_code, paths in LANG_PATHS.items():
     item_text_map = create_lang_text_map(item_lang_text) if item_lang_text else {}
     profile_title_text_map = create_lang_text_map(profile_title_lang_text) if profile_title_lang_text else {}
     mission_text_map = create_lang_text_map(mission_lang_text) if mission_lang_text else {}
+    binder_text_map = create_lang_text_map(binder_lang_text) if binder_lang_text else {}
     stage_master_text_map = create_lang_text_map(stage_master_lang_text) if stage_master_lang_text else {}
     stage_condition_text_map = {}
     for item in extract_data_list(stage_battle_condition_text_lang):
@@ -10555,7 +10591,7 @@ for lang_code, paths in LANG_PATHS.items():
                 si = normalize_id(item.get('Id') or item.get('id')); ri = normalize_id(item.get('ResourceId') or item.get('resourceId'))
                 if si != '0' and ri != '0': srm[si] = ri
     
-    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'unit_skill_name_fallback': unit_skill_name_fallback, 'unit_skill_desc_fallback': unit_skill_desc_fallback, 'unit_skill_trait_name_fallback': unit_skill_trait_name_fallback, 'unit_skill_trait_desc_fallback': unit_skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'scenario_stage_text_map': scenario_stage_text_map, 'scenario_stage_series_text_map': scenario_stage_series_text_map, 'tower_event_text_map': tower_event_text_map, 'tower_stage_group_text_map': tower_stage_group_text_map, 'tower_stage_text_map': tower_stage_text_map, 'special_event_stage_text_map': special_event_stage_text_map, 'item_text_map': item_text_map, 'profile_title_text_map': profile_title_text_map, 'mission_text_map': mission_text_map, 'stage_master_text_map': stage_master_text_map, 'stage_condition_text_map': stage_condition_text_map, 'map_stage_condition_text_map': map_stage_condition_text_map, 'stage_event_area_skill_name_map': stage_event_area_skill_name_map, 'stage_event_area_skill_desc_map': stage_event_area_skill_desc_map, 'weapon_text_map': wtm2, 'weapon_attr_type_labels': weapon_attr_type_labels, 'weapon_attack_type_labels': weapon_attack_type_labels, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map}
+    LANG_DATA[lang_code] = {'abil_name_map': anm, 'abil_desc_map': adm, 'lineage_list': ll, 'lineage_lookup': llk, 'series_name_map': snm, 'lang_text_map': ltm, 'char_id_map': cim, 'char_text_map': ctm, 'char_ser_map': csm, 'ser_set_map': ssm, 'series_list': sl, 'skill_text_map': stm, 'skill_trait_name_fallback': skill_trait_name_fallback, 'skill_trait_desc_fallback': skill_trait_desc_fallback, 'unit_skill_name_fallback': unit_skill_name_fallback, 'unit_skill_desc_fallback': unit_skill_desc_fallback, 'unit_skill_trait_name_fallback': unit_skill_trait_name_fallback, 'unit_skill_trait_desc_fallback': unit_skill_trait_desc_fallback, 'skill_resource_map': srm, 'unit_id_map': uim, 'unit_text_map': utm, 'supporter_id_map': supp_im, 'supporter_text_map': supp_tm, 'supporter_leader_text_map': supp_leader_tm, 'supporter_active_text_map': supp_active_tm, 'stage_text_map': stage_text_map, 'scenario_stage_text_map': scenario_stage_text_map, 'scenario_stage_series_text_map': scenario_stage_series_text_map, 'tower_event_text_map': tower_event_text_map, 'tower_stage_group_text_map': tower_stage_group_text_map, 'tower_stage_text_map': tower_stage_text_map, 'special_event_stage_text_map': special_event_stage_text_map, 'item_text_map': item_text_map, 'profile_title_text_map': profile_title_text_map, 'mission_text_map': mission_text_map, 'stage_master_text_map': stage_master_text_map, 'stage_condition_text_map': stage_condition_text_map, 'map_stage_condition_text_map': map_stage_condition_text_map, 'stage_event_area_skill_name_map': stage_event_area_skill_name_map, 'stage_event_area_skill_desc_map': stage_event_area_skill_desc_map, 'weapon_text_map': wtm2, 'weapon_attr_type_labels': weapon_attr_type_labels, 'weapon_attack_type_labels': weapon_attack_type_labels, 'weapon_trait_map': wtrm, 'weapon_capability_map': wcam, 'weapon_trait_detail_map': wtdm, 'mechanism_map': mech_map, 'op_text_map': op_text_map, 'binder_text_map': binder_text_map}
     if lang_code != DEFAULT_LANG:
         apply_en_lang_data_fallback(LANG_DATA[lang_code], LANG_DATA.get(DEFAULT_LANG))
     print(f"  {lang_code}: {len(ctm)} chars, {len(utm)} units")
@@ -21391,7 +21427,7 @@ _ACQ_TYPE_LABELS_EN = {
     '17': 'Invasion Event',
     '18': 'Character Scout',
     '19': 'Box Gacha',
-    '20': 'SD Story Event',
+    '20': 'Story Event (Carddass Event)',
     '21': 'Tower Event',
     '22': 'Invasion Event Challenge',
     '23': 'Panel Mission',
@@ -21412,15 +21448,16 @@ def _acq_type_label(typ, lc):
     if lc in ('TW', 'HK'):
         tw = {
             '3': '永恆之路', '6': '機體開發', '7': '扭蛋', '13': '主線關卡', '14': '商店',
-            '16': '劇情活動', '17': '侵襲活動', '18': '角色招募', '19': '箱型扭蛋',
-            '21': '塔活動', '26': '主線挑戰',
+            '16': '故事事件', '17': '侵襲活動', '18': '角色招募', '19': '箱型扭蛋',
+            '20': '故事事件（CARDDASS事件）', '21': '塔活動', '26': '主線挑戰',
         }
         return tw.get(str(typ), en)
     if lc in ('JA', 'JP'):
         ja = {
             '3': 'エターナルロード', '6': '機体開発', '7': 'ガシャ', '13': 'メインステージ',
             '14': 'ショップ', '16': 'ストーリーイベント', '17': '侵攻イベント',
-            '18': 'キャラクタースカウト', '19': 'ボックスガシャ', '21': 'タワーイベント',
+            '18': 'キャラクタースカウト', '19': 'ボックスガシャ',
+            '20': 'ストーリーイベント（カードダスイベント）', '21': 'タワーイベント',
             '26': 'メインステージチャレンジ',
         }
         return ja.get(str(typ), en)
@@ -21464,6 +21501,64 @@ def _resolve_development_diagram_name(diagram_id, lc):
     return name.replace('\n', ' ').strip()
 
 
+def _quoted_lang_span(text):
+    s = str(text or '')
+    m = re.search(r'「([^」]+)」', s)
+    if m:
+        return m.group(1).strip()
+    m = re.search(r'"([^"]+)"', s)
+    if m:
+        return m.group(1).strip()
+    return ''
+
+
+def _carddass_event_acq_label(lc):
+    # LANG m_function_tips_detail_set_content id 170700000000900007
+    return _acq_type_label('20', lc)
+
+
+def _resolve_binder_event_name(binder_id, ld):
+    bid = normalize_id(binder_id)
+    row = (binder_map or {}).get(bid) or {}
+    lid = normalize_id(row.get('name_lang_id'))
+    raw = ''
+    if lid != '0':
+        raw = str(((ld or {}).get('binder_text_map') or {}).get(lid) or '').strip()
+    quoted = _quoted_lang_span(raw)
+    return quoted or raw
+
+
+def _resolve_scenario_series_name(series_id, ld):
+    sid = normalize_id(series_id)
+    if sid == '0':
+        return ''
+    sm = (ld or {}).get('scenario_stage_series_text_map') or {}
+    lid = normalize_id(f'130200000000{sid.zfill(6)}')
+    return str(sm.get(lid) or '').strip()
+
+
+def _scenario_stage_acq_names(stage_id, ld):
+    sid = normalize_id(stage_id)
+    row = (scenario_stage_map or {}).get(sid) or {}
+    if not row:
+        return '', ''
+    st = resolve_scenario_stage_name(ld, row.get('title_name_lang_id', '0'), sid)
+    if not st or str(st).startswith('Unknown'):
+        st = ''
+    series = _resolve_scenario_series_name(row.get('scenario_stage_series_id'), ld)
+    return st, series
+
+
+def _format_story_event_named_line(label, series, stage):
+    if series and stage:
+        return f'{label}: {series} — {stage}'
+    if series:
+        return f'{label}: {series}'
+    if stage:
+        return f'{label}: {stage}'
+    return label
+
+
 def _format_acquisition_line(typ, tid, lc, ld):
     typ = str(typ or '0')
     tid = normalize_id(tid)
@@ -21493,6 +21588,14 @@ def _format_acquisition_line(typ, tid, lc, ld):
         if not st_name:
             st_name = str(st_map.get(tid) or '').strip()
         return f'{label}: {st_name}' if st_name else label
+    if typ in ('16', '20'):
+        st, series = _scenario_stage_acq_names(tid, ld)
+        named = _format_story_event_named_line(label, series, st)
+        if named != label:
+            return named
+        if tid and tid != '0':
+            return f'{label} ({tid})'
+        return label
     if tid and tid != '0':
         return f'{label} ({tid})'
     return label
@@ -21918,24 +22021,45 @@ def _option_part_acquisition_label(lc):
     return 'Acquisition method'
 
 
+def _infer_option_part_acquisition_from_rewards(opid, lc, ld):
+    """When m_option_parts_acquisition_method has no row, recover Story Event / Carddass sources from rewards."""
+    oid = normalize_id(opid)
+    methods = []
+    binder_types = {232, 233, 234}  # TotalBinderCount / NumberCount / Register
+    for rsid in option_part_reward_set_ids_by_op.get(oid) or []:
+        stage_id = (scenario_stage_id_by_first_clear_set or {}).get(rsid)
+        if stage_id:
+            st, series = _scenario_stage_acq_names(stage_id, ld)
+            methods.append(_format_story_event_named_line(_acq_type_label('16', lc), series, st))
+            continue
+        for m in mission_rows_by_reward_set.get(rsid) or []:
+            cond_id = normalize_id(m.get('GameEventConditionId') or m.get('gameEventConditionId'))
+            cond = (game_event_condition_map or {}).get(cond_id) or {}
+            ctype = safe_int(cond.get('GameEventConditionTypeIndex') or cond.get('gameEventConditionTypeIndex'), 0)
+            if ctype not in binder_types:
+                continue
+            binder_id = normalize_id(cond.get('TargetValue1') or cond.get('targetValue1'))
+            event_name = _resolve_binder_event_name(binder_id, ld)
+            if not event_name:
+                event_name = _quoted_lang_span(resolve_mission_title(ld, m))
+            label = _carddass_event_acq_label(lc)
+            methods.append(f'{label}: {event_name}' if event_name else label)
+    return methods
+
+
 def _build_option_part_acquisition_methods(opid, lc, ld, detail_text):
     methods = []
     oid = normalize_id(opid)
-    for row in extract_data_list(option_parts_acquisition_method_data or []):
-        if not isinstance(row, dict):
-            continue
-        rid = normalize_id(row.get('OptionPartsId') or row.get('optionPartsId'))
-        if rid != oid:
-            continue
+    for row in option_parts_acquisition_by_id.get(oid) or []:
         typ = normalize_id(row.get('AcquisitionMethodTypeIndex') or row.get('acquisitionMethodTypeIndex'))
         tid = normalize_id(row.get('TargetId') or row.get('targetId'))
+        if typ == '0':
+            continue
         if typ == '3':
             st_name = _find_eternal_stage_name(tid, ld)
             methods.append(f'Clear Eternal Road Expert Stage "{st_name}" reward' if st_name else 'Eternal Road')
         elif typ == '14':
             methods.append('G-Shop')
-        elif typ == '19':
-            methods.append('Story Event Reward')
         elif typ == '21':
             st_name = _find_tower_event_stage_name(tid, ld)
             methods.append(f'Clear Stage "{st_name}"' if st_name else 'Tower Event')
@@ -21945,6 +22069,12 @@ def _build_option_part_acquisition_methods(opid, lc, ld, detail_text):
                 methods.append(f'Clear Stage "Fierce Enemy Assault Vs. {enemy_name} (Challenge) Level 8"')
             else:
                 methods.append('Fierce Enemy Assault (Challenge) Level 8')
+        else:
+            line = _format_acquisition_line(typ, tid, lc, ld)
+            if line:
+                methods.append(line)
+    if not methods:
+        methods.extend(_infer_option_part_acquisition_from_rewards(oid, lc, ld))
     # Keep stable order while deduplicating.
     seen = set()
     out = []
