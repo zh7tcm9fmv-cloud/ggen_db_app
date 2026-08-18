@@ -1999,10 +1999,14 @@ def _collect_unit_cp_weapon_range_modifiers(uid, ld, lc, stat_mode):
             if not parts:
                 parts = [txt]
             cond_prefix = False
+            pending_vigor = ''
             for part in parts:
                 itc = _is_conditional_stat_text(part)
                 if itc and _unit_vigor_normal_baseline_stat_line(part):
                     itc = False
+                vpart = _vigor_threshold_key_from_text(part)
+                if vpart:
+                    pending_vigor = vpart
                 if itc and not _parse_weapon_max_range_increases_from_text(part):
                     cond_prefix = True
                 is_cond = itc or cond_prefix
@@ -2010,7 +2014,13 @@ def _collect_unit_cp_weapon_range_modifiers(uid, ld, lc, stat_mode):
                     ad, part, hc, ie, ability_cond or is_cond, di,
                 )
                 for types, inc in _parse_weapon_max_range_increases_from_text(part):
-                    mods.append({'type_keys': types, 'inc': inc, 'cp_eligible': cp_ok})
+                    req_vigor = _vigor_threshold_key_from_text(part) or pending_vigor
+                    mods.append({
+                        'type_keys': types,
+                        'inc': inc,
+                        'cp_eligible': cp_ok,
+                        'req_vigor': req_vigor,
+                    })
                 if itc:
                     cond_prefix = True
     _UNIT_WEAPON_RANGE_MOD_CACHE[cache_key] = mods
@@ -6060,14 +6070,110 @@ def create_twc_weapon_attr_keys_map(d):
         out[cid] = keys
     return out
 
+
+def create_twc_attack_type_keys_map(d):
+    """TargetWeaponConditionId -> ['ranged'|'melee'|'awaken', ...] (AttackAttributeTypes 1/2/3)."""
+    out = {}
+    attr_int_to_key = {1: 'ranged', 2: 'melee', 3: 'awaken'}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        cid = normalize_id(item.get('Id') or item.get('id'))
+        if not cid or cid == '0':
+            continue
+        keys = []
+        seen = set()
+        for part in str(item.get('AttackAttributeTypes') or '').split(','):
+            part = part.strip()
+            if not part.isdigit():
+                continue
+            key = attr_int_to_key.get(int(part))
+            if key and key not in seen:
+                seen.add(key)
+                keys.append(key)
+        out[cid] = keys
+    return out
+
+
+def create_trait_condition_weapon_filter_map(d):
+    """TraitConditionSetId -> {weapon_attrs, attack_types} from master condition rows."""
+    attr_label_to_key = {
+        'physical': 'physical', 'beam': 'beam', 'special': 'special',
+        'Physical': 'physical', 'Beam': 'beam', 'Special': 'special',
+    }
+    atk_label_to_key = {
+        'ranged': 'ranged', 'melee': 'melee', 'awaken': 'awaken',
+        'Ranged': 'ranged', 'Melee': 'melee', 'Awaken': 'awaken',
+    }
+    out = {}
+    for item in extract_data_list(d):
+        if not isinstance(item, dict):
+            continue
+        cid = normalize_id(item.get('TraitConditionSetId') or item.get('traitConditionSetId') or item.get('Id') or item.get('id'))
+        if not cid or cid == '0':
+            continue
+        wattrs = []
+        seen_a = set()
+        for part in str(item.get('WeaponAttributeTypes') or '').split(','):
+            part = part.strip()
+            key = attr_label_to_key.get(part)
+            if key and key not in seen_a:
+                seen_a.add(key)
+                wattrs.append(key)
+        atypes = []
+        seen_t = set()
+        for part in str(item.get('WeaponAttackAttributeTypes') or '').split(','):
+            part = part.strip()
+            key = atk_label_to_key.get(part)
+            if key and key not in seen_t:
+                seen_t.add(key)
+                atypes.append(key)
+        if wattrs or atypes:
+            out[cid] = {'weapon_attrs': wattrs, 'attack_types': atypes}
+    return out
+
+
+def _vigor_threshold_key_from_text(text):
+    """Minimum vigor tier key for CP lines (medium/high/max/super) from ability text."""
+    raw = str(text or '')
+    sl = raw.lower()
+    if re.search(r'\bvigor\s+is\s+supercharged\b', sl) or re.search(r'\bsupercharged(?:\s+ex)?\s+or\s+higher\b', sl):
+        return 'super'
+    if re.search(r'\bvigor\s+is\s+max\b', sl) or re.search(r'\bmax\s+or\s+higher\b', sl):
+        return 'max'
+    if re.search(r'\bvigor\s+is\s+high\b', sl) or re.search(r'\bhigh\s+or\s+higher\b', sl):
+        return 'high'
+    if 'テンションが「超一撃」以上' in raw or 'テンションが「超一擊」以上' in raw:
+        return 'super'
+    if 'テンションが「超強気」以上' in raw or 'テンションが「最大」以上' in raw:
+        return 'max'
+    if 'テンションが「強気」以上' in raw:
+        return 'high'
+    if '戰意(?:為|是)「超一擊」以上' in raw or '战意(?:为|是)「超一击」以上' in raw:
+        return 'super'
+    if '戰意(?:為|是)「超強勢」以上' in raw or '战意(?:为|是)「超强」以上' in raw:
+        return 'max'
+    if '戰意(?:為|是)「強勢」以上' in raw or '战意(?:为|是)「强势」以上' in raw:
+        return 'high'
+    return ''
+
+
+def _trait_active_weapon_filters(active_cid):
+    f = trait_condition_weapon_filter_map.get(normalize_id(active_cid), {}) or {}
+    return list(f.get('weapon_attrs') or []), list(f.get('attack_types') or [])
+
+
 def create_lang_text_map(d):
     lookup = {}
     for item in extract_data_list(d):
-        if not isinstance(item, dict): continue
+        if not isinstance(item, dict):
+            continue
         lid = normalize_id(item.get('id') or item.get('Id'))
         val = item.get('value') or item.get('Value') or item.get('description') or item.get('Description') or item.get('text') or item.get('Text') or item.get('name') or item.get('Name')
-        if lid != '0' and val: lookup[lid] = str(val).replace("\\n", "\n")
+        if lid != '0' and val:
+            lookup[lid] = str(val).replace("\\n", "\n")
     return lookup
+
 
 def create_trait_condition_raw_map(d, key_field=None):
     raw = {}
@@ -9463,7 +9569,8 @@ trait_set_traits_map = create_trait_set_to_traits_map(trait_set_data)
 trait_set_detail_resource_lookup = create_trait_set_detail_resource_lookup(trait_set_detail_master) if trait_set_detail_master else {}
 trait_data_map = create_trait_data_map(trait_logic_data)
 twc_weapon_attr_keys_map = create_twc_weapon_attr_keys_map(trait_twc_weapon_data) if trait_twc_weapon_data else {}
-twc_weapon_attr_keys_map = create_twc_weapon_attr_keys_map(trait_twc_weapon_data) if trait_twc_weapon_data else {}
+twc_attack_type_keys_map = create_twc_attack_type_keys_map(trait_twc_weapon_data) if trait_twc_weapon_data else {}
+trait_condition_weapon_filter_map = create_trait_condition_weapon_filter_map(trait_cond_data_r) if trait_cond_data_r else {}
 trait_condition_raw_map = create_trait_condition_raw_map(trait_cond_data_r)
 trait_condition_rows_by_set_id = {}
 for _tci in extract_data_list(trait_cond_data_r):
@@ -21566,6 +21673,7 @@ _OP_SIM_STAT_PCT_TTI = {
     7: 'Attack',
 }
 _OP_SIM_WEAPON_POWER_TTI = 78
+_OP_SIM_DMG_TAKEN_DOWN_TTI = 14
 
 
 def _build_option_part_sim_effects(item, lc, ld, variant_tag_id=''):
@@ -21585,6 +21693,7 @@ def _build_option_part_sim_effects(item, lc, ld, variant_tag_id=''):
         kind = None
         stat = None
         weapon_attrs = []
+        attack_types = []
         if tti in _OP_SIM_STAT_PCT_TTI:
             kind = 'stat_pct'
             stat = _OP_SIM_STAT_PCT_TTI[tti]
@@ -21592,6 +21701,11 @@ def _build_option_part_sim_effects(item, lc, ld, variant_tag_id=''):
             kind = 'weapon_power_pct'
             twc = normalize_id(tdata.get('target_weapon_condition_id') or '0')
             weapon_attrs = list(twc_weapon_attr_keys_map.get(twc) or [])
+            attack_types = list(twc_attack_type_keys_map.get(twc) or [])
+        elif tti == _OP_SIM_DMG_TAKEN_DOWN_TTI and val > 0:
+            kind = 'dmg_taken_down_pct'
+            active_cid = normalize_id(tdata.get('active_cond_id') or '0')
+            weapon_attrs, attack_types = _trait_active_weapon_filters(active_cid)
         else:
             continue
         active_cid = tdata.get('active_cond_id', '0')
@@ -21622,7 +21736,7 @@ def _build_option_part_sim_effects(item, lc, ld, variant_tag_id=''):
                     nm = (llk.get(uid) or '').strip()
                     if nm:
                         unit_tag_names.append(nm)
-        out.append({
+        row = {
             'kind': kind,
             'stat': stat,
             'value': val,
@@ -21630,7 +21744,13 @@ def _build_option_part_sim_effects(item, lc, ld, variant_tag_id=''):
             'cond_target': (target_types[0] if target_types else ''),
             'cond_unit_tag_ids': unit_tag_ids,
             'cond_unit_tag_names': unit_tag_names,
-        })
+        }
+        if kind == 'weapon_power_pct':
+            row['attack_types'] = list(attack_types or [])
+        elif kind == 'dmg_taken_down_pct':
+            row['attack_types'] = list(attack_types or [])
+            row['weapon_attrs'] = list(weapon_attrs or [])
+        out.append(row)
     return out
 
 
@@ -25864,7 +25984,11 @@ def get_unit(unit_id):
         _has_cond_weapon_range = _unit_has_cp_weapon_range(unit_id, ld, lc, stat_mode_arg)
         _has_pilot_cond = _unit_has_pilot_cond_passive(unit_id, ld, lc, stat_mode_arg)
         _cp_wpn_range_mods = [
-            {'types': sorted(mod.get('type_keys') or []), 'inc': int(mod.get('inc', 0) or 0)}
+            {
+                'types': sorted(mod.get('type_keys') or []),
+                'inc': int(mod.get('inc', 0) or 0),
+                **({'req_vigor': mod['req_vigor']} if mod.get('req_vigor') else {}),
+            }
             for mod in _collect_unit_cp_weapon_range_modifiers(unit_id, ld, lc, stat_mode_arg)
             if mod.get('cp_eligible')
         ]

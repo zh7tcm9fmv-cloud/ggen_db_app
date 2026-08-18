@@ -3137,18 +3137,40 @@ function renderCharacterExtraInfo(d){if(!d)return'';const s=d.detail_npc_context
 function renderSspMaterialsSectionHtml(d){const m=d&&d.ssp_materials;if(!m)return'';const unlock=Array.isArray(m.unlock)?m.unlock:[];const cores=Array.isArray(m.custom_core)?m.custom_core:[];if(!unlock.length&&!cores.length)return'';function rowHtml(it,extra){const ic=it&&it.icon?`<img src="${imgUrl(it.icon)}" alt="" loading="lazy" decoding="async" style="width:28px;height:28px;object-fit:contain;margin-right:8px" onerror="this.style.display='none'">`:'';const cnt=(it&&it.count!=null)?` ×${esc(String(it.count))}`:'';const ex=extra?` <span style="opacity:.75">${esc(extra)}</span>`:'';return`<div class="ability-detail mod-details-cell" style="margin:0;display:flex;align-items:center;flex-wrap:wrap">${ic}<span>${esc((it&&it.name)||'')}${cnt}</span>${ex}</div>`}let body='';if(unlock.length){body+=`<div class="ability-detail" style="margin:0 0 6px;opacity:.85">${esc(t('ssp_mat_unlock')||'SSP unlock')}</div>`+unlock.map(it=>rowHtml(it)).join('<div style="height:6px"></div>')}if(cores.length){if(body)body+='<div style="height:10px"></div>';body+=`<div class="ability-detail" style="margin:0 0 6px;opacity:.85">${esc(t('ssp_mat_custom_core')||'Custom Core materials')}</div>`+cores.map(c=>{const lv=c.level!=null?`Lv ${c.level}`:'';const rp=c.release_point?` · ${c.release_point} pt`:'';return rowHtml(c.material,lv+rp)}).join('<div style="height:6px"></div>')}return`<div class="detail-section"><div class="section-title">${esc(t('ssp_materials')||'SSP materials')}</div><div class="ability-item"><div class="ability-info">${body}</div></div></div>`}
 function fillDetailSspMaterials(type){const d=S.currentDetailData;const ssp=document.getElementById('detailSspMaterialsContainer');if(ssp)ssp.innerHTML=(type==='unit')?renderSspMaterialsSectionHtml(d):''}
 function renderCharShell(d){const isNpc=!!(d&&d.detail_npc_context);const metaCore=!isNpc?(`${d.rarity_icon?`<img class="detail-rarity-icon" src="${imgUrl(d.rarity_icon)}" alt="${d.rarity}" loading="eager" decoding="async" fetchpriority="high">`:`<span class="rarity-badge rarity-${d.rarity}">${d.rarity}</span>`}<span class="detail-role-label">${d.role_icon?`<img src="${imgUrl(d.role_icon)}" alt="${d.role}" loading="eager" decoding="async">`:''}${esc(tRole(d.role))}${d.acquisition_icon?`<img class="detail-meta-icon" src="${imgUrl(d.acquisition_icon)}" alt="" loading="eager" decoding="async">`:''}</span>`):'';const metaSp=d.has_sp?`<div style="display:flex;gap:6px;align-items:center;margin-left:8px;"><button id="spToggleBtnChar" class="sp-toggle-btn${S.spActive?' active':''}" onclick="toggleStatState('sp')"><img src="${imgUrl('/static/images/UI/UI_Common_Icon_Sp.webp')}" alt="SP" loading="lazy"></button></div>`:'';return`<div class="modal-top-label">${t('char_data')}</div><div class="modal-entity-id">ID: ${d.id}</div>${renderDetailBackStrip(d)}<div class="detail-header char-detail-header${d.detail_return?' char-detail-header--tight-top':''}"><div class="detail-portrait-stack"><div class="detail-portrait-wrap">${detailHeroPortraitHtml(d.portrait,{cls:'detail-portrait',alt:esc(d.name),placeholder:'👤',onerror:"detailHeroPortraitFallback(this,'char')"})}</div><div class="detail-rec-shortcut-wrap detail-rec-shortcut--mobile">${renderRecommendUnitCard(d)}</div></div><div class="detail-title-area char-detail-title-area"><div class="char-detail-head-row"><div class="char-detail-head-main"><div class="detail-name">${esc(d.name)}</div><div class="detail-meta${isNpc?' detail-meta--npc':''}">${metaCore}${metaSp}</div><div id="charExtraInfo"></div><div id="npcUnitCondTargets"></div>${renderLimitedTimeBanner(d,'character')}</div><div class="detail-rec-shortcut-wrap detail-rec-shortcut--desktop">${renderRecommendUnitCard(d)}</div></div>${renderSeries(d.series,'characters')}${renderTags(d.tags,{type:'character',id:d.id})}<div class="header-stats-wrapper"><div id="detailStatsWrapper"></div></div></div>${renderDetailRankToggleSlotHtml(d,'character')}</div><div class="detail-body"><div id="detailAbilitiesContainer"></div><div id="detailSkillsContainer"></div></div>`}
-function _detailUnitCpWeaponRangeBonus(wpn,unitData){
-if(!S.conditionalPassiveActive||!unitData||!Array.isArray(unitData.cp_weapon_range_mods))return 0;
+function _detailUnitCpWeaponRangeBonus(wpn,unitData,opts){
+if(!unitData||!Array.isArray(unitData.cp_weapon_range_mods))return 0;
+opts=opts||{};
+const cpOn=opts.assumeCondMet!=null?!!opts.assumeCondMet:(!!S.conditionalPassiveActive||!!(S.dc&&S.dc.unitCondPassive));
+const vigorOnly=!!unitData.has_cond_weapon_range&&!unitData.has_cond_stats;
+if(!cpOn&&!vigorOnly)return 0;
+if(!cpOn&&vigorOnly&&!_dcVigorAtLeast(S.dc?S.dc.mpLevel:S.mpLevel||'medium',S.dc?._vigorCondThreshold||_dcVigorThresholdFromUnit(unitData)||'max'))return 0;
 const wpnKeySet=new Set(_dcWeaponAttributeKeys(wpn));
+const curVigor=VIGOR_LEVEL_ORDER[_dcNormMpLevel(S.dc?S.dc.mpLevel:S.mpLevel||'medium')]||0;
 let bonus=0;
 (unitData.cp_weapon_range_mods||[]).forEach(mod=>{
 const types=mod.types||mod.type_keys||[];
 const inc=mod.inc|0;
 if(!inc)return;
-const ok=types.some(t=>{const tl=String(t).toLowerCase();return wpnKeySet.has(tl)});
-if(ok)bonus+=inc;
+if(types.length&&!types.some(t=>wpnKeySet.has(String(t).toLowerCase())))return;
+const req=mod.req_vigor||'';
+if(!cpOn&&req){
+const reqLv=VIGOR_LEVEL_ORDER[_dcNormMpLevel(req)]!==undefined?VIGOR_LEVEL_ORDER[_dcNormMpLevel(req)]:99;
+if(curVigor<reqLv)return;
+}
+bonus+=inc;
 });
 return bonus;
+}
+function _dcUnitCpRangeModsActive(){
+const ud=S.dc&&S.dc.atkUnitData;
+if(!ud||ud._manual)return false;
+if(ud.has_cond_weapon_range&&!ud.has_cond_stats)return _dcIsVigorCondActive()||!!S.dc.unitCondPassive;
+return !!S.dc.unitCondPassive;
+}
+function _dcUnitCpWeaponRangeBonusForDc(wpn){
+const ud=S.dc&&S.dc.atkUnitData;
+if(!ud||!_dcUnitCpRangeModsActive())return 0;
+return _detailUnitCpWeaponRangeBonus(wpn,ud,{assumeCondMet:true});
 }
 const UNIT_BEST_PILOT_REC_SLOT='<div class="unit-best-pilot-btn-slot unit-best-pilot-btn-slot--rec" data-unit-best-pilot-rec></div>';
 function wrapUnitRecShortcutForBestPilot(html){return html||''}
@@ -6428,10 +6450,15 @@ pushOne(ab.sp_replacement);
 return chunks.join('\n');
 }
 function _dcVigorThresholdFromUnit(ud){
-if(!ud||!ud.abilities)return null;
+if(!ud)return null;
 const V=['medium','high','max','super'];
 const rk=(x)=>V.indexOf(x);
 let thr=null;
+(Array.isArray(ud.cp_weapon_range_mods)?ud.cp_weapon_range_mods:[]).forEach(mod=>{
+const req=mod&&mod.req_vigor?String(mod.req_vigor).toLowerCase():'';
+if(req&&V.indexOf(req)>=0&&(thr===null||rk(req)>rk(thr)))thr=req;
+});
+if(!ud.abilities)return thr;
 (ud.abilities||[]).forEach(ab=>{
 const full=_dcVigorAbilityTextBlob(ab);
 let x=_dcVigorTierFromAbilityText(full);
@@ -9591,7 +9618,8 @@ return _dcVigorTierMax(S.dc._vigorCondThreshold,'max');
 /** When unit conditional stats are vigor-gated, sync passive from vigor (Max+). Call from setDcMp / unit pick only — not every render — so the toggle can override until vigor changes. */
 function _dcSyncUnitCondPassiveFromVigor(){
 const ud=S.dc.atkUnitData;
-if(!ud||ud._manual||!ud.has_cond_stats||!S.dc._vigorCondThreshold)return;
+if(!ud||ud._manual||!S.dc._vigorCondThreshold)return;
+if(!ud.has_cond_stats&&!ud.has_cond_weapon_range)return;
 const req=_dcUnitCpVigorRequirement();
 if(!req)return;
 S.dc.unitCondPassive=_dcVigorAtLeast(S.dc.mpLevel,req);
@@ -10378,7 +10406,7 @@ lbMenu+=`<button type="button" class="cmp-lb-opt${tt===tier?' is-active':''}" on
 lbBlock=`<div class="dc-lb-inline-wrap"><details id="dcLbTierDetails" class="cmp-lb-details dc-lb-tier-details"><summary class="cmp-lb-summary" title="${esc(t('cmp_lb'))}">${cmpLbPipsRow(cur[0],cur[1],cur[2])}</summary><div class="cmp-lb-menu" role="listbox" aria-label="${esc(t('cmp_lb'))}">${lbMenu}</div></details></div>`;
 }
 let unitCpToggle='';
-if(ud.has_cond_stats){
+if(ud.has_cond_stats||ud.has_cond_weapon_range){
 const vGated=!!S.dc._vigorCondThreshold;
 const vHint=vGated?` title="${escAttr('Default: on when Vigor is Max or Supercharged (or higher than text if ability requires Supercharged only). Changing vigor updates the default; you can still toggle for comparisons.')}"`:'';
 {const _cpL=t('conditional_passive');unitCpToggle=`<div class="dc-picked-controls"${vHint}><div class="conditional-toggle dc-dc-cond-toggle"><div class="toggle-clickable${S.dc.unitCondPassive?' active':''}" role="button" tabindex="0" title="${escAttr(_cpL)}" aria-label="${escAttr(_cpL)}" onclick="toggleDcUnitCondPassive()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDcUnitCondPassive()}"><span class="toggle-label toggle-label--cp-chip">${_dcCpChipSpanHtml(!!S.dc.unitCondPassive)}</span></div></div></div>`;}
@@ -10571,7 +10599,23 @@ if(main.classList.contains('has-bonus-val'))atkWrap.classList.add('has-bonus-val
 else atkWrap.classList.remove('has-bonus-val');
 }
 }
-function setDcUnitStatMode(mode){S.dc.unitStatMode=mode;if(S.dc.atkUnitData&&!S.dc.atkUnitData._manual){const b=_dcPickBestWeaponIndices(S.dc.atkUnitData);S.dc.wpnIdx=b.wpnIdx;S.dc.wpnLv=b.wpnLv}renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
+function setDcUnitStatMode(mode){
+S.dc.unitStatMode=mode;
+const uid=S.dc.atkUnit;
+if(uid&&S.dc.atkUnitData&&!S.dc.atkUnitData._manual){
+const b=_dcPickBestWeaponIndices(S.dc.atkUnitData);
+S.dc.wpnIdx=b.wpnIdx;S.dc.wpnLv=b.wpnLv;
+void fetch(`/api/unit/${encodeURIComponent(uid)}?lang=${encodeURIComponent(S.lang||'EN')}&stat_mode=${encodeURIComponent(mode)}`).then(r=>r.json()).then(ur=>{
+if(!ur||ur.error||String(S.dc.atkUnit)!==String(uid)||(S.dc.unitStatMode||'normal')!==mode)return;
+S.dc.atkUnitData=ur;
+S.dc._vigorCondThreshold=_dcVigorThresholdFromUnit(ur);
+_dcSyncUnitCondPassiveFromVigor();
+renderDcAtkUnit();renderDcAtkChar();onDcParamChange();
+}).catch(()=>{renderDcAtkUnit();renderDcAtkChar();onDcParamChange()});
+return;
+}
+renderDcAtkUnit();renderDcAtkChar();onDcParamChange();
+}
 function setDcCharStatMode(mode){
 S.dc.charStatMode=mode;
 if(S.dc.atkCharData&&S.dc.atkCharData.skills&&!S.dc.atkCharData._manual){
@@ -11335,21 +11379,34 @@ if(unitName.includes(reqUnit)||reqUnit.includes(unitBare)){
 mods.push({reqVigor:'super',wpnTypes,rangeInc});
 }
 }
+const reUnitVigorRange=/when\s+vigor\s+is\s+(\w+)\s+or\s+higher,?\s*increase\s+max\s+range\s+of\s+(.+?)\s+by\s+(\d+)/gi;
+while((m=reUnitVigorRange.exec(txt))!==null){
+mods.push({reqVigor:m[1].trim().toLowerCase(),wpnTypes:m[2].trim().toLowerCase(),rangeInc:parseInt(m[3],10)||0});
+}
 });
+if(S.dc.atkUnitData&&Array.isArray(S.dc.atkUnitData.abilities)){
+(S.dc.atkUnitData.abilities||[]).forEach(ab=>{
+const blob=_dcVigorAbilityTextBlob(ab);
+let m;
+const reUnitVigorRange=/when\s+vigor\s+is\s+(\w+)\s+or\s+higher,?\s*increase\s+max\s+range\s+of\s+(.+?)\s+by\s+(\d+)/gi;
+while((m=reUnitVigorRange.exec(blob))!==null){
+mods.push({reqVigor:m[1].trim().toLowerCase(),wpnTypes:m[2].trim().toLowerCase(),rangeInc:parseInt(m[3],10)||0});
+}
+});
+}
 return mods;
 }
 function _dcGetEffectiveRange(wpn){
 const mods=_dcParseRangeModifiers();
 let maxR=wpn.max_range||0;
 const curVigor=VIGOR_LEVEL_ORDER[_dcNormMpLevel(S.dc.mpLevel)]||0;
-const WPN_ATTR_TYPES={'1':'beam','2':'physical','3':'special','4':'beam','5':'beam','6':'physical','7':'beam'};
-const wpnKeySet=new Set(_dcWeaponAttributeKeys(wpn));
 mods.forEach(mod=>{
 const reqLv=VIGOR_LEVEL_ORDER[mod.reqVigor]!==undefined?VIGOR_LEVEL_ORDER[mod.reqVigor]:99;
 if(curVigor>=reqLv){
 if(_pilotRangeTypeKeysMatchWeapon(mod.wpnTypes,wpn))maxR+=mod.rangeInc;
 }
 });
+if(_dcUnitCpRangeModsActive())maxR+=_dcUnitCpWeaponRangeBonusForDc(wpn);
 return{min_range:wpn.min_range,max_range:maxR};
 }
 
@@ -11857,16 +11914,23 @@ effects.forEach(eff=>{
 if(!eff)return;
 if(eff.kind==='weapon_power_pct'){
 const attrs=(eff.weapon_attrs||[]).map(weaponAttrKeyLabel).join('/');
-let line=`Increase ${attrs||'weapon'} weapon Power by ${eff.value|0}%.`;
+const atkTypes=(eff.attack_types||[]).map(k=>DC_ATK_TYPE_LABEL_MAP[String(k).toLowerCase()]||String(k)).filter(Boolean);
+const wpnLabel=attrs||(atkTypes.length?atkTypes.join('/'):'weapon');
+let line=`Increase ${wpnLabel} weapon Power by ${eff.value|0}%.`;
 const tags=(eff.cond_unit_tag_names||[]).filter(Boolean);
-if(tags.length&&_dcOpCondTargetIsOwner(eff.cond_target||''))line=`Increase ${attrs||'weapon'} weapon Power by ${eff.value|0}% when equipped to a Unit possessing: ${tags.join(', ')}.`;
-else if(tags.length&&_dcOpCondTargetIsCombat(eff.cond_target||''))line=`Increase ${attrs||'weapon'} weapon Power by ${eff.value|0}% when combating: ${tags.join(', ')}.`;
+if(tags.length&&_dcOpCondTargetIsOwner(eff.cond_target||''))line=`Increase ${wpnLabel} weapon Power by ${eff.value|0}% when equipped to a Unit possessing: ${tags.join(', ')}.`;
+else if(tags.length&&_dcOpCondTargetIsCombat(eff.cond_target||''))line=`Increase ${wpnLabel} weapon Power by ${eff.value|0}% when combating: ${tags.join(', ')}.`;
 lines.push(line);
 }else if(eff.kind==='stat_pct'&&eff.stat==='Attack'){
 const tags=(eff.cond_unit_tag_names||[]).filter(Boolean);
 if(tags.length&&_dcOpCondTargetIsCombat(eff.cond_target||''))lines.push(`Increase ATK by ${eff.value|0}% when combating: ${tags.join(', ')}.`);
 else if(tags.length&&_dcOpCondTargetIsOwner(eff.cond_target||''))lines.push(`Increase ATK by ${eff.value|0}% when equipped to a Unit possessing: ${tags.join(', ')}.`);
 else lines.push(`Increase ATK by ${eff.value|0}%.`);
+}else if(eff.kind==='dmg_taken_down_pct'){
+const attrs=(eff.weapon_attrs||[]).map(weaponAttrKeyLabel).filter(Boolean);
+const atkTypes=(eff.attack_types||[]).map(k=>DC_ATK_TYPE_LABEL_MAP[String(k).toLowerCase()]||String(k)).filter(Boolean);
+const wpnLabel=attrs.length?attrs.join('/'):(atkTypes.length?atkTypes.join('/'):'');
+lines.push(wpnLabel?`When hit by ${wpnLabel} weapons, reduce damage taken by ${eff.value|0}%.`:`Reduce damage taken by ${eff.value|0}%.`);
 }
 });
 const text=lines.length?lines.join('\n'):raw;
@@ -12626,11 +12690,14 @@ return pct;
 function _dcOptionPartWeaponPowerPct(optionParts,wpn,atkUnitData){
 let pct=0;
 const wKeys=wpn?new Set(_dcWeaponAttributeKeys(wpn||{})||[]):null;
+const wAtkKeys=wpn?new Set(_dcWeaponAtkStatKeys(wpn).map(s=>String(s).toLowerCase())):null;
 (optionParts||[]).forEach(op=>{
 _dcOptionPartSimEffects(op).forEach(eff=>{
 if(!eff||eff.kind!=='weapon_power_pct')return;
 const want=eff.weapon_attrs||[];
 if(wKeys&&want.length&&!want.some(k=>wKeys.has(String(k))))return;
+const atkWant=(eff.attack_types||[]).map(k=>String(k).toLowerCase());
+if(wAtkKeys&&atkWant.length&&!atkWant.some(k=>wAtkKeys.has(k)))return;
 const tt=eff.cond_target||'';
 if(_dcOpCondTargetIsCombat(tt)){
 return;
@@ -12650,6 +12717,25 @@ if(spec&&(!wKeys||wKeys.has('special')))pct+=parseInt(spec[1],10)||0;
 }
 });
 return pct;
+}
+/** Defensive OP (trait type 14): reduce damage taken when hit by matching incoming weapon attrs/types. */
+function _dcOptionPartIncomingDmgTakenDownPct(optionParts,incomingWpn,wearerUnitData){
+let pct=0;
+if(!incomingWpn)return 0;
+const wKeys=new Set(_dcWeaponAttributeKeys(incomingWpn||{})||[]);
+const wAtkKeys=new Set(_dcWeaponAtkStatKeys(incomingWpn).map(s=>String(s).toLowerCase()));
+(optionParts||[]).forEach(op=>{
+_dcOptionPartSimEffects(op).forEach(eff=>{
+if(!eff||eff.kind!=='dmg_taken_down_pct')return;
+const wantAttrs=(eff.weapon_attrs||[]).map(k=>String(k).toLowerCase());
+const wantAtk=(eff.attack_types||[]).map(k=>String(k).toLowerCase());
+if(wantAttrs.length&&!wantAttrs.some(k=>wKeys.has(k)))return;
+if(wantAtk.length&&!wantAtk.some(k=>wAtkKeys.has(k)))return;
+if((eff.cond_unit_tag_ids||[]).length&&wearerUnitData&&!_dcOpCondTagsMatchEntity(eff,wearerUnitData))return;
+pct+=(eff.value|0);
+});
+});
+return Math.min(80,Math.max(0,pct));
 }
 function _dcLeaderPctFromLeaderSkillDesc(d){
 const s=String(d||'').normalize('NFKC');
@@ -13249,7 +13335,11 @@ const dmgTakenUpPct=_dcWeaponDtuSumPct(wpn);
 const dmgTakenUpTyped=dmgTakenUpPct||0;
 const dmgTakenUpGeneric=0;
 const dmgTakenDownPilotPct=S.dc.dmgTakenDownPilot||0;
-const dmgTakenDownUnitPct=S.dc.dmgTakenDownUnit||0;
+const opDefDtdFromAtk=_dcOptionPartIncomingDmgTakenDownPct(S.dc.optionParts,wpn,ud);
+const opDefDtdFromDef=_dcOptionPartIncomingDmgTakenDownPct(S.dc.defOptionParts||[],wpn,S.dc.defUnitData);
+const manualDefDtd=S.dc.dmgTakenDownUnit||0;
+const autoDefDtd=opDefDtdFromDef+opDefDtdFromAtk;
+const dmgTakenDownUnitPct=manualDefDtd>0?manualDefDtd:autoDefDtd;
 const takenDown=dmgTakenDownPilotPct+(isExWeapon?0:dmgTakenDownUnitPct);
 let battleDamage=C((baseDamage+damageCorrection)*terrainCorrection);
 
