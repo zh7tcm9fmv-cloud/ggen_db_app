@@ -6095,8 +6095,26 @@ def create_twc_attack_type_keys_map(d):
     return out
 
 
+def _trait_condition_weapon_range_gate_from_item(item):
+    """WeaponBase min/max range thresholds. 0 = unset (no constraint)."""
+    if not isinstance(item, dict):
+        return None
+    min_gte = safe_int(item.get('WeaponBaseMinRangeGteThreshold'), 0)
+    min_lte = safe_int(item.get('WeaponBaseMinRangeLteThreshold'), 0)
+    max_gte = safe_int(item.get('WeaponBaseMaxRangeGteThreshold'), 0)
+    max_lte = safe_int(item.get('WeaponBaseMaxRangeLteThreshold'), 0)
+    if not (min_gte or min_lte or max_gte or max_lte):
+        return None
+    return {
+        'min_gte': min_gte,
+        'min_lte': min_lte,
+        'max_gte': max_gte,
+        'max_lte': max_lte,
+    }
+
+
 def create_trait_condition_weapon_filter_map(d):
-    """TraitConditionSetId -> {weapon_attrs, attack_types} from master condition rows."""
+    """TraitConditionSetId -> {weapon_attrs, attack_types, weapon_range} from master condition rows."""
     attr_label_to_key = {
         'physical': 'physical', 'beam': 'beam', 'special': 'special',
         'Physical': 'physical', 'Beam': 'beam', 'Special': 'special',
@@ -6128,8 +6146,23 @@ def create_trait_condition_weapon_filter_map(d):
             if key and key not in seen_t:
                 seen_t.add(key)
                 atypes.append(key)
-        if wattrs or atypes:
-            out[cid] = {'weapon_attrs': wattrs, 'attack_types': atypes}
+        wrange = _trait_condition_weapon_range_gate_from_item(item)
+        if wattrs or atypes or wrange:
+            row = {'weapon_attrs': wattrs, 'attack_types': atypes}
+            if wrange:
+                row['weapon_range'] = wrange
+            prev = out.get(cid)
+            if prev:
+                if wrange and not prev.get('weapon_range'):
+                    prev['weapon_range'] = wrange
+                for k in wattrs:
+                    if k not in prev['weapon_attrs']:
+                        prev['weapon_attrs'].append(k)
+                for k in atypes:
+                    if k not in prev['attack_types']:
+                        prev['attack_types'].append(k)
+            else:
+                out[cid] = row
     return out
 
 
@@ -6161,6 +6194,12 @@ def _vigor_threshold_key_from_text(text):
 def _trait_active_weapon_filters(active_cid):
     f = trait_condition_weapon_filter_map.get(normalize_id(active_cid), {}) or {}
     return list(f.get('weapon_attrs') or []), list(f.get('attack_types') or [])
+
+
+def _trait_active_weapon_range_gate(active_cid):
+    f = trait_condition_weapon_filter_map.get(normalize_id(active_cid), {}) or {}
+    g = f.get('weapon_range')
+    return dict(g) if isinstance(g, dict) else None
 
 
 def create_lang_text_map(d):
@@ -21745,9 +21784,15 @@ def _build_option_part_sim_effects(item, lc, ld, variant_tag_id=''):
             'cond_unit_tag_ids': unit_tag_ids,
             'cond_unit_tag_names': unit_tag_names,
         }
+        wrange = _trait_active_weapon_range_gate(active_cid)
+        if wrange:
+            row['weapon_range'] = wrange
         if kind == 'weapon_power_pct':
             row['attack_types'] = list(attack_types or [])
         elif kind == 'dmg_taken_down_pct':
+            row['attack_types'] = list(attack_types or [])
+            row['weapon_attrs'] = list(weapon_attrs or [])
+        elif kind == 'stat_pct' and (attack_types or weapon_attrs):
             row['attack_types'] = list(attack_types or [])
             row['weapon_attrs'] = list(weapon_attrs or [])
         out.append(row)

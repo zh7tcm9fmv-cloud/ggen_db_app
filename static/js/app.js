@@ -8181,8 +8181,8 @@ const dAtk=z&&w?w.atk-z.atk:0;
 const dHp=z&&w?w.hp-z.hp:0;
 const dDef=z&&w?w.def-z.def:0;
 const wpPct=_dcOptionPartWeaponPowerPct([part],null,sl.unitData);
-// Prefer weapon-power OPs when sheet delta is tiny (Knight Sword / Black Dragon Staff).
-const dWpScore=wpPct|0;
+const gatedAtk=_dcOptionPartWeaponGatedAtkPct([part],null,sl.unitData)|0;
+const dWpScore=(wpPct|0)+gatedAtk;
 const atk12=b.opPct.Attack===12;
 const hp12=b.opPct.HP===12;
 const def12=b.opPct.Defense===12;
@@ -8248,7 +8248,7 @@ const w=_dcStatTotalsForAutoRank(sl,[part],supForSlot);
 const dAtk=z&&w?w.atk-z.atk:0;
 const dHp=z&&w?w.hp-z.hp:0;
 const dDef=z&&w?w.def-z.def:0;
-const dWpScore=_dcOptionPartWeaponPowerPct([part],null,sl.unitData)|0;
+const dWpScore=(_dcOptionPartWeaponPowerPct([part],null,sl.unitData)|0)+(_dcOptionPartWeaponGatedAtkPct([part],null,sl.unitData)|0);
 const atk12=b.opPct.Attack===12;
 const hp12=b.opPct.HP===12;
 const def12=b.opPct.Defense===12;
@@ -11923,9 +11923,11 @@ else if(tags.length&&_dcOpCondTargetIsCombat(eff.cond_target||''))line=`Increase
 lines.push(line);
 }else if(eff.kind==='stat_pct'&&eff.stat==='Attack'){
 const tags=(eff.cond_unit_tag_names||[]).filter(Boolean);
+const g=_dcOpEffectWeaponRangeGate(eff);
+const rangeNote=g&&(g.min_gte|0)===1&&(g.min_lte|0)===1&&(g.max_gte|0)===1&&(g.max_lte|0)===1?' when attacking with a 1-1 range weapon (excluding MAP)':'';
 if(tags.length&&_dcOpCondTargetIsCombat(eff.cond_target||''))lines.push(`Increase ATK by ${eff.value|0}% when combating: ${tags.join(', ')}.`);
 else if(tags.length&&_dcOpCondTargetIsOwner(eff.cond_target||''))lines.push(`Increase ATK by ${eff.value|0}% when equipped to a Unit possessing: ${tags.join(', ')}.`);
-else lines.push(`Increase ATK by ${eff.value|0}%.`);
+else lines.push(`Increase ATK by ${eff.value|0}%.${rangeNote}`);
 }else if(eff.kind==='dmg_taken_down_pct'){
 const attrs=(eff.weapon_attrs||[]).map(weaponAttrKeyLabel).filter(Boolean);
 const atkTypes=(eff.attack_types||[]).map(k=>DC_ATK_TYPE_LABEL_MAP[String(k).toLowerCase()]||String(k)).filter(Boolean);
@@ -12657,6 +12659,7 @@ effects.forEach(eff=>{
 if(!eff||eff.kind!=='stat_pct')return;
 const st=eff.stat||'Attack';
 if(opPct[st]==null)return;
+if(_dcOpEffectHasWeaponRangeGate(eff))return;
 const tt=eff.cond_target||'';
 if(_dcOpCondTargetIsCombat(tt))return;
 if(!_dcOpCondTargetIsOwner(tt))return;
@@ -12670,6 +12673,7 @@ let details=String(op&&op.details||'');
 details=details.replace(/(?:When combating enemies with specified tags[,.]?\s*)(?:increase|increases)\s+ATK\s+by\s*\d+%?/gi,'');
 details=details.replace(/(?:When combating enemies with:[^.]*[.])\s*(?:increase|increases)\s+ATK\s+by\s*\d+%?/gi,'');
 details=details.replace(/與擁有以下標籤的敵人戰鬥時：[^.。]*[.。]?\s*(?:攻擊力)?(?:提升)?\d+%?/g,'');
+details=details.replace(/When attacking with weapons with a [\d]+-[\d]+ range[\s\S]{0,120}?(?:increase|increases)\s+ATK\s+by\s*\d+%?/gi,'');
 const b=_dcParseOptionPartBonuses(details||'');
 ['Attack','HP','Defense','Mobility','Move','EN'].forEach(k=>{opFlat[k]+=b[k].flat;opPct[k]+=b[k].pct});
 });
@@ -12680,8 +12684,54 @@ let pct=0;
 (optionParts||[]).forEach(op=>{
 _dcOptionPartSimEffects(op).forEach(eff=>{
 if(!eff||eff.kind!=='stat_pct'||eff.stat!=='Attack')return;
+if(_dcOpEffectHasWeaponRangeGate(eff))return;
 if(!_dcOpCondTargetIsCombat(eff.cond_target||''))return;
 if(!_dcOpCondTagsMatchNpc(eff,npc))return;
+pct+=(eff.value|0);
+});
+});
+return pct;
+}
+function _dcOpEffectWeaponRangeGate(eff){
+const g=eff&&eff.weapon_range;
+if(!g||typeof g!=='object')return null;
+if((g.min_gte|0)||(g.min_lte|0)||(g.max_gte|0)||(g.max_lte|0))return g;
+return null;
+}
+function _dcOpEffectHasWeaponRangeGate(eff){return!!_dcOpEffectWeaponRangeGate(eff)}
+function _dcWeaponMatchesOpRangeGate(wpn,eff){
+if(!wpn)return false;
+if(weaponRowLooksMapWeapon(wpn))return false;
+const g=_dcOpEffectWeaponRangeGate(eff);
+if(!g)return true;
+const mn=Number(wpn.min_range);
+const mx=Number(wpn.max_range);
+if(!Number.isFinite(mn)||!Number.isFinite(mx))return false;
+if((g.min_gte|0)&&mn<(g.min_gte|0))return false;
+if((g.min_lte|0)&&mn>(g.min_lte|0))return false;
+if((g.max_gte|0)&&mx<(g.max_gte|0))return false;
+if((g.max_lte|0)&&mx>(g.max_lte|0))return false;
+return true;
+}
+function _dcUnitHasWeaponMatchingOpRangeGate(ud,eff){
+return((ud&&ud.weapons)||[]).some(w=>_dcWeaponMatchesOpRangeGate(w,eff));
+}
+/** Owner-gated ATK% that only applies when the attacking weapon matches a base-range gate (e.g. Dodanuki 1-1). */
+function _dcOptionPartWeaponGatedAtkPct(optionParts,wpn,atkUnitData){
+let pct=0;
+(optionParts||[]).forEach(op=>{
+_dcOptionPartSimEffects(op).forEach(eff=>{
+if(!eff||eff.kind!=='stat_pct'||eff.stat!=='Attack')return;
+if(!_dcOpEffectHasWeaponRangeGate(eff))return;
+const tt=eff.cond_target||'';
+if(_dcOpCondTargetIsCombat(tt))return;
+if(!_dcOpCondTargetIsOwner(tt))return;
+if((eff.cond_unit_tag_ids||[]).length&&!_dcOpCondTagsMatchEntity(eff,atkUnitData))return;
+if(wpn){
+if(!_dcWeaponMatchesOpRangeGate(wpn,eff))return;
+}else if(!_dcUnitHasWeaponMatchingOpRangeGate(atkUnitData,eff)){
+return;
+}
 pct+=(eff.value|0);
 });
 });
@@ -12698,6 +12748,7 @@ const want=eff.weapon_attrs||[];
 if(wKeys&&want.length&&!want.some(k=>wKeys.has(String(k))))return;
 const atkWant=(eff.attack_types||[]).map(k=>String(k).toLowerCase());
 if(wAtkKeys&&atkWant.length&&!atkWant.some(k=>wAtkKeys.has(k)))return;
+if(_dcOpEffectHasWeaponRangeGate(eff)&&wpn&&!_dcWeaponMatchesOpRangeGate(wpn,eff))return;
 const tt=eff.cond_target||'';
 if(_dcOpCondTargetIsCombat(tt)){
 return;
@@ -13256,6 +13307,8 @@ const advantageTagAtkPct=_dcAdvantageTagAtkPctFromAbilities(ud,npc);
 unitAtk=_dcApplyAdvantageTagAtkToUnitAtk(unitAtk,advantageTagAtkPct,uMod.advantageFlatGrowthAtk|0);
 const opCombatAtkPct=_dcOptionPartCombatAtkPct(S.dc.optionParts,npc);
 if(opCombatAtkPct)unitAtk=_dcApplyAdvantageTagAtkToUnitAtk(unitAtk,opCombatAtkPct,uMod.advantageFlatGrowthAtk|0);
+const opWpnAtkPct=_dcOptionPartWeaponGatedAtkPct(S.dc.optionParts,wpn,ud);
+if(opWpnAtkPct)unitAtk=_dcApplyAdvantageTagAtkToUnitAtk(unitAtk,opWpnAtkPct,uMod.advantageFlatGrowthAtk|0);
 let charAtk=_dcGetCharAtkStatWithSkills(atkCharStats,wpn);
 
 const defUnit=npc.unit;const defChar=npc.character;
