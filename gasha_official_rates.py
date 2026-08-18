@@ -4,9 +4,34 @@ from __future__ import annotations
 import json
 import os
 import re
+import urllib.error
+import urllib.request
 from functools import lru_cache
 
 _PCT_RE = re.compile(r'([0-9]+(?:\.[0-9]+)?)\s*%')
+OFFICIAL_GASHA_BASE = 'https://web.gl.eternal.channel.or.jp'
+_OFFICIAL_FETCH_HEADERS = {
+    'User-Agent': (
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) '
+        'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
+    ),
+    'Accept': 'application/json,*/*',
+    'Referer': f'{OFFICIAL_GASHA_BASE}/en/gasha/officialsite.html',
+}
+
+
+def official_gasha_detail_url(gasha_id, lc='EN') -> str:
+    """Public detail page (same path every banner; only gasha_id changes)."""
+    seg = {'JA': 'ja', 'JP': 'ja', 'EN': 'en', 'TW': 'tw', 'HK': 'hk'}.get(
+        (lc or 'EN').upper(), 'en'
+    )
+    gid = str(gasha_id or '').strip()
+    return f'{OFFICIAL_GASHA_BASE}/{seg}/gasha/detail.html?gasha_id={gid}'
+
+
+def official_proportion_api_url(gasha_id, lang_num: int) -> str:
+    gid = str(gasha_id or '').strip()
+    return f'{OFFICIAL_GASHA_BASE}/server_assets/api/gasha_proportion_{gid}_{lang_num}.json'
 
 
 def _cell_text(cell) -> str:
@@ -226,17 +251,61 @@ def load_official_gasha_list(lang_num: int):
         return []
 
 
-@lru_cache(maxsize=64)
-def load_official_proportion(gasha_id, lang_num: int):
+def _proportion_cache_path(gasha_id, lang_num: int) -> str:
     gid = str(gasha_id)
-    path = os.path.join(_official_gasha_dir(), f'gasha_proportion_{gid}_{lang_num}.json')
-    if not os.path.isfile(path):
+    return os.path.join(_official_gasha_dir(), f'gasha_proportion_{gid}_{lang_num}.json')
+
+
+def _read_proportion_file(path: str):
+    if not path or not os.path.isfile(path):
         return None
     try:
         with open(path, 'r', encoding='utf-8') as f:
             return json.load(f)
     except Exception:
         return None
+
+
+def fetch_official_proportion(gasha_id, lang_num: int, *, save=True):
+    """Pull proportion JSON from official CDN; optionally cache under data/published/official_gasha/."""
+    gid = str(gasha_id or '').strip()
+    if not gid or gid == '0':
+        return None
+    url = official_proportion_api_url(gid, lang_num)
+    try:
+        req = urllib.request.Request(url, headers=_OFFICIAL_FETCH_HEADERS)
+        with urllib.request.urlopen(req, timeout=45) as resp:
+            raw = resp.read()
+    except (urllib.error.HTTPError, urllib.error.URLError, OSError, TimeoutError):
+        return None
+    try:
+        payload = json.loads(raw.decode('utf-8'))
+    except Exception:
+        return None
+    if save:
+        out_dir = _official_gasha_dir()
+        try:
+            os.makedirs(out_dir, exist_ok=True)
+            path = _proportion_cache_path(gid, lang_num)
+            with open(path, 'wb') as f:
+                f.write(raw)
+        except OSError:
+            pass
+    return payload
+
+
+@lru_cache(maxsize=128)
+def load_official_proportion(gasha_id, lang_num: int):
+    gid = str(gasha_id)
+    path = _proportion_cache_path(gid, lang_num)
+    payload = _read_proportion_file(path)
+    if payload is not None:
+        return payload
+    payload = fetch_official_proportion(gid, lang_num, save=True)
+    if payload is not None:
+        load_official_proportion.cache_clear()
+        return payload
+    return None
 
 
 def drop_rates_for_gasha(gasha_id, lc='EN') -> dict | None:

@@ -1,68 +1,985 @@
 {
   "source": "https://web.gl.eternal.channel.or.jp",
   "langs": {
+    "EN": {
+      "lang_num": 2,
+      "banners": [
+        {
+          "gasha_id": 2504100101,
+          "name": "",
+          "file": "gasha_proportion_2504100101_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2504100101"
+        },
+        {
+          "gasha_id": 2504100201,
+          "name": "Re-Pullable! 1 UR Unit Guaranteed Unit Assembly",
+          "file": "gasha_proportion_2504100201_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2504100201"
+        },
+        {
+          "gasha_id": 2504100501,
+          "name": "SSR or Higher Unit Guaranteed Unit Assembly",
+          "file": "gasha_proportion_2504100501_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2504100501"
+        },
+        {
+          "gasha_id": 2504100502,
+          "name": "UR Unit Guaranteed Unit Assembly",
+          "file": "gasha_proportion_2504100502_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2504100502"
+        },
+        {
+          "gasha_id": 2504100503,
+          "name": "UR Supporter Guaranteed Unit Assembly",
+          "file": "gasha_proportion_2504100503_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2504100503"
+        },
+        {
+          "gasha_id": 2504100504,
+          "name": "SSR Unit Guaranteed Unit Assembly",
+          "file": "gasha_proportion_2504100504_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2504100504"
+        },
+        {
+          "gasha_id": 2505100301,
+          "name": "",
+          "file": "gasha_proportion_2505100301_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2505100301"
+        },
+        {
+          "gasha_id": 2505200401,
+          "name": "",
+          "file": "gasha_proportion_2505200401_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2505200401"
+        },
+        {
+          "gasha_id": 2505200501,
+          "name": "SSR or Higher Guaranteed Unit Assembly",
+          "file": "gasha_proportion_2505200501_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2505200501"
+        },
+        {
+          "gasha_id": 2505200502,
+          "name": "SR or Higher Guaranteed Unit Assembly",
+          "file": "gasha_proportion_2505200502_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2505200502"
+        },
+        {
+          "gasha_id": 2505400301,
+          "name": "",
+          "file": "gasha_proportion_2505400301_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2505400301"
+        },
+        {
+          "gasha_id": 2506100302,
+          "name": "",
+          "file": "gasha_proportion_2506100302_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2506100302"
+        },
+        {
+          "gasha_id": 2506200401,
+          "name": "",
+          "file": "gasha_proportion_2506200401_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2506200401"
+        },
+        {
+          "gasha_id": 2506300301,
+          "name": "",
+          "file": "gasha_proportion_2506300301_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2506300301"
+        },
+        {
+          "gasha_id": 2507100302,
+          "name": "",
+          "file": "gasha_proportion_2507100302_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2507100302"
+        },
+        {
+          "gasha_id": 2507200401,
+          "name": "",
+          "file": "gasha_proportion_2507200401_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2507200401"
+        },
+        {
+          "gasha_id": 2507300301,
+          "name": "",
+          "file": "gasha_proportion_2507300301_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2507300301"
+        },
+        {
+          "gasha_id": 2508100302,
+          "name": "",
+          "file": "gasha_proportion_2508100302_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2508100302"
+        },
+        {
+          "gasha_id": 2508200401,
+          "name": "",
+          "file": "gasha_proportion_2508200401_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2508200401"
+        },
+        {
+          "gasha_id": 2508300301,
+          "name": "",
+          "file": "gasha_proportion_2508300301_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2508300301"
+        },
+        {
+          "gasha_id": 2509200401,
+          "name": "",
+          "file": "gasha_proportion_2509200401_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2509200401"
+        },
+        {
+          "gasha_id": 2509300301,
+          "name": "",
+          "file": "gasha_proportion_2509300301_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2509300301"
+        },
+        {
+          "gasha_id": 2509600301,
+          "name": "",
+          "file": "gasha_proportion_2509600301_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2509600301"
+        },
+        {
+          "gasha_id": 2509600501,
+          "name": "",
+          "file": "gasha_proportion_2509600501_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2509600501"
+        },
+        {
+          "gasha_id": 2509600601,
+          "name": "",
+          "file": "gasha_proportion_2509600601_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2509600601"
+        },
+        {
+          "gasha_id": 2510300301,
+          "name": "",
+          "file": "gasha_proportion_2510300301_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2510300301"
+        },
+        {
+          "gasha_id": 2510300501,
+          "name": "",
+          "file": "gasha_proportion_2510300501_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2510300501"
+        },
+        {
+          "gasha_id": 2510700401,
+          "name": "",
+          "file": "gasha_proportion_2510700401_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2510700401"
+        },
+        {
+          "gasha_id": 2510800301,
+          "name": "",
+          "file": "gasha_proportion_2510800301_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2510800301"
+        },
+        {
+          "gasha_id": 2511100302,
+          "name": "",
+          "file": "gasha_proportion_2511100302_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2511100302"
+        },
+        {
+          "gasha_id": 2511100501,
+          "name": "",
+          "file": "gasha_proportion_2511100501_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2511100501"
+        },
+        {
+          "gasha_id": 2511300401,
+          "name": "",
+          "file": "gasha_proportion_2511300401_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2511300401"
+        },
+        {
+          "gasha_id": 2511400301,
+          "name": "",
+          "file": "gasha_proportion_2511400301_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2511400301"
+        },
+        {
+          "gasha_id": 2512100301,
+          "name": "",
+          "file": "gasha_proportion_2512100301_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2512100301"
+        },
+        {
+          "gasha_id": 2512100501,
+          "name": "",
+          "file": "gasha_proportion_2512100501_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2512100501"
+        },
+        {
+          "gasha_id": 2512300401,
+          "name": "",
+          "file": "gasha_proportion_2512300401_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2512300401"
+        },
+        {
+          "gasha_id": 2512300601,
+          "name": "",
+          "file": "gasha_proportion_2512300601_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2512300601"
+        },
+        {
+          "gasha_id": 2512400301,
+          "name": "",
+          "file": "gasha_proportion_2512400301_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2512400301"
+        },
+        {
+          "gasha_id": 2512400501,
+          "name": "",
+          "file": "gasha_proportion_2512400501_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2512400501"
+        },
+        {
+          "gasha_id": 2512400502,
+          "name": "",
+          "file": "gasha_proportion_2512400502_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2512400502"
+        },
+        {
+          "gasha_id": 2601200302,
+          "name": "",
+          "file": "gasha_proportion_2601200302_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2601200302"
+        },
+        {
+          "gasha_id": 2601200501,
+          "name": "",
+          "file": "gasha_proportion_2601200501_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2601200501"
+        },
+        {
+          "gasha_id": 2601400401,
+          "name": "",
+          "file": "gasha_proportion_2601400401_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2601400401"
+        },
+        {
+          "gasha_id": 2601500301,
+          "name": "",
+          "file": "gasha_proportion_2601500301_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2601500301"
+        },
+        {
+          "gasha_id": 2602200302,
+          "name": "",
+          "file": "gasha_proportion_2602200302_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2602200302"
+        },
+        {
+          "gasha_id": 2602200501,
+          "name": "",
+          "file": "gasha_proportion_2602200501_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2602200501"
+        },
+        {
+          "gasha_id": 2602200502,
+          "name": "",
+          "file": "gasha_proportion_2602200502_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2602200502"
+        },
+        {
+          "gasha_id": 2602200503,
+          "name": "",
+          "file": "gasha_proportion_2602200503_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2602200503"
+        },
+        {
+          "gasha_id": 2602300401,
+          "name": "",
+          "file": "gasha_proportion_2602300401_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2602300401"
+        },
+        {
+          "gasha_id": 2602400301,
+          "name": "",
+          "file": "gasha_proportion_2602400301_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2602400301"
+        },
+        {
+          "gasha_id": 2602400501,
+          "name": "",
+          "file": "gasha_proportion_2602400501_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2602400501"
+        },
+        {
+          "gasha_id": 2603200302,
+          "name": "",
+          "file": "gasha_proportion_2603200302_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2603200302"
+        },
+        {
+          "gasha_id": 2603200501,
+          "name": "",
+          "file": "gasha_proportion_2603200501_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2603200501"
+        },
+        {
+          "gasha_id": 2603500201,
+          "name": "",
+          "file": "gasha_proportion_2603500201_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2603500201"
+        },
+        {
+          "gasha_id": 2603500401,
+          "name": "",
+          "file": "gasha_proportion_2603500401_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2603500401"
+        },
+        {
+          "gasha_id": 2603600301,
+          "name": "",
+          "file": "gasha_proportion_2603600301_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2603600301"
+        },
+        {
+          "gasha_id": 2603600501,
+          "name": "",
+          "file": "gasha_proportion_2603600501_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2603600501"
+        },
+        {
+          "gasha_id": 2603600502,
+          "name": "",
+          "file": "gasha_proportion_2603600502_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2603600502"
+        },
+        {
+          "gasha_id": 2603600601,
+          "name": "",
+          "file": "gasha_proportion_2603600601_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2603600601"
+        },
+        {
+          "gasha_id": 2604300101,
+          "name": "Premium Unit Assembly Ver.2",
+          "file": "gasha_proportion_2604300101_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2604300101"
+        },
+        {
+          "gasha_id": 2604300302,
+          "name": "",
+          "file": "gasha_proportion_2604300302_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2604300302"
+        },
+        {
+          "gasha_id": 2604300501,
+          "name": "",
+          "file": "gasha_proportion_2604300501_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2604300501"
+        },
+        {
+          "gasha_id": 2604400401,
+          "name": "",
+          "file": "gasha_proportion_2604400401_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2604400401"
+        },
+        {
+          "gasha_id": 2604500301,
+          "name": "",
+          "file": "gasha_proportion_2604500301_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2604500301"
+        },
+        {
+          "gasha_id": 2605200301,
+          "name": "",
+          "file": "gasha_proportion_2605200301_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2605200301"
+        },
+        {
+          "gasha_id": 2605200501,
+          "name": "",
+          "file": "gasha_proportion_2605200501_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2605200501"
+        },
+        {
+          "gasha_id": 2605400403,
+          "name": "",
+          "file": "gasha_proportion_2605400403_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2605400403"
+        },
+        {
+          "gasha_id": 2605500301,
+          "name": "",
+          "file": "gasha_proportion_2605500301_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2605500301"
+        },
+        {
+          "gasha_id": 2605500501,
+          "name": "",
+          "file": "gasha_proportion_2605500501_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2605500501"
+        },
+        {
+          "gasha_id": 2606200302,
+          "name": "",
+          "file": "gasha_proportion_2606200302_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2606200302"
+        },
+        {
+          "gasha_id": 2606200501,
+          "name": "",
+          "file": "gasha_proportion_2606200501_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2606200501"
+        },
+        {
+          "gasha_id": 2606400403,
+          "name": "",
+          "file": "gasha_proportion_2606400403_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2606400403"
+        },
+        {
+          "gasha_id": 2606500301,
+          "name": "",
+          "file": "gasha_proportion_2606500301_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2606500301"
+        },
+        {
+          "gasha_id": 2606500501,
+          "name": "[9 Million DLs] 1 UR Unit Guaranteed 5-Pull Unit Assembly",
+          "file": "gasha_proportion_2606500501_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2606500501"
+        },
+        {
+          "gasha_id": 2606500502,
+          "name": "[9 Million DLs] 1 SSR or Higher Unit Guaranteed Unit Assembly",
+          "file": "gasha_proportion_2606500502_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2606500502"
+        },
+        {
+          "gasha_id": 2607300302,
+          "name": "",
+          "file": "gasha_proportion_2607300302_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2607300302"
+        },
+        {
+          "gasha_id": 2607300403,
+          "name": "",
+          "file": "gasha_proportion_2607300403_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2607300403"
+        },
+        {
+          "gasha_id": 2607300501,
+          "name": "Featured Unit Assembly (7/16/2026 JST)",
+          "file": "gasha_proportion_2607300501_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2607300501"
+        },
+        {
+          "gasha_id": 2607500301,
+          "name": "Featured Unit Assembly",
+          "file": "gasha_proportion_2607500301_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2607500301"
+        },
+        {
+          "gasha_id": 2608200301,
+          "name": "New Unit Featured Unit Assembly",
+          "file": "gasha_proportion_2608200301_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2608200301"
+        },
+        {
+          "gasha_id": 2608200501,
+          "name": "Featured Unit Assembly (8/13/2026 JST)",
+          "file": "gasha_proportion_2608200501_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2608200501"
+        }
+      ]
+    },
     "JA": {
       "lang_num": 1,
       "banners": [
         {
+          "gasha_id": 2504100101,
+          "name": "",
+          "file": "gasha_proportion_2504100101_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2504100101"
+        },
+        {
           "gasha_id": 2504100201,
           "name": "引き直し可能！URユニット1体確定ガシャ",
-          "file": "gasha_proportion_2504100201_1.json"
+          "file": "gasha_proportion_2504100201_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2504100201"
         },
         {
           "gasha_id": 2504100501,
           "name": "SSR以上ユニット確定ガシャ",
-          "file": "gasha_proportion_2504100501_1.json"
+          "file": "gasha_proportion_2504100501_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2504100501"
         },
         {
           "gasha_id": 2504100502,
           "name": "URユニット確定ガシャ",
-          "file": "gasha_proportion_2504100502_1.json"
+          "file": "gasha_proportion_2504100502_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2504100502"
         },
         {
           "gasha_id": 2504100503,
           "name": "URサポーター確定ガシャ",
-          "file": "gasha_proportion_2504100503_1.json"
+          "file": "gasha_proportion_2504100503_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2504100503"
         },
         {
           "gasha_id": 2504100504,
           "name": "SSRユニット確定ガシャ",
-          "file": "gasha_proportion_2504100504_1.json"
+          "file": "gasha_proportion_2504100504_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2504100504"
+        },
+        {
+          "gasha_id": 2505100301,
+          "name": "",
+          "file": "gasha_proportion_2505100301_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2505100301"
+        },
+        {
+          "gasha_id": 2505200401,
+          "name": "",
+          "file": "gasha_proportion_2505200401_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2505200401"
         },
         {
           "gasha_id": 2505200501,
           "name": "SSR以上確定ガシャ",
-          "file": "gasha_proportion_2505200501_1.json"
+          "file": "gasha_proportion_2505200501_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2505200501"
         },
         {
           "gasha_id": 2505200502,
           "name": "SR以上確定ガシャ",
-          "file": "gasha_proportion_2505200502_1.json"
+          "file": "gasha_proportion_2505200502_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2505200502"
+        },
+        {
+          "gasha_id": 2505400301,
+          "name": "",
+          "file": "gasha_proportion_2505400301_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2505400301"
+        },
+        {
+          "gasha_id": 2506100302,
+          "name": "",
+          "file": "gasha_proportion_2506100302_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2506100302"
+        },
+        {
+          "gasha_id": 2506200401,
+          "name": "",
+          "file": "gasha_proportion_2506200401_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2506200401"
+        },
+        {
+          "gasha_id": 2506300301,
+          "name": "",
+          "file": "gasha_proportion_2506300301_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2506300301"
+        },
+        {
+          "gasha_id": 2507100302,
+          "name": "",
+          "file": "gasha_proportion_2507100302_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2507100302"
+        },
+        {
+          "gasha_id": 2507200401,
+          "name": "",
+          "file": "gasha_proportion_2507200401_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2507200401"
+        },
+        {
+          "gasha_id": 2507300301,
+          "name": "",
+          "file": "gasha_proportion_2507300301_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2507300301"
+        },
+        {
+          "gasha_id": 2508100302,
+          "name": "",
+          "file": "gasha_proportion_2508100302_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2508100302"
+        },
+        {
+          "gasha_id": 2508200401,
+          "name": "",
+          "file": "gasha_proportion_2508200401_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2508200401"
+        },
+        {
+          "gasha_id": 2508300301,
+          "name": "",
+          "file": "gasha_proportion_2508300301_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2508300301"
+        },
+        {
+          "gasha_id": 2509200401,
+          "name": "",
+          "file": "gasha_proportion_2509200401_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2509200401"
+        },
+        {
+          "gasha_id": 2509300301,
+          "name": "",
+          "file": "gasha_proportion_2509300301_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2509300301"
+        },
+        {
+          "gasha_id": 2509600301,
+          "name": "",
+          "file": "gasha_proportion_2509600301_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2509600301"
+        },
+        {
+          "gasha_id": 2509600501,
+          "name": "",
+          "file": "gasha_proportion_2509600501_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2509600501"
+        },
+        {
+          "gasha_id": 2509600601,
+          "name": "",
+          "file": "gasha_proportion_2509600601_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2509600601"
+        },
+        {
+          "gasha_id": 2510300301,
+          "name": "",
+          "file": "gasha_proportion_2510300301_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2510300301"
+        },
+        {
+          "gasha_id": 2510300501,
+          "name": "",
+          "file": "gasha_proportion_2510300501_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2510300501"
+        },
+        {
+          "gasha_id": 2510700401,
+          "name": "",
+          "file": "gasha_proportion_2510700401_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2510700401"
+        },
+        {
+          "gasha_id": 2510800301,
+          "name": "",
+          "file": "gasha_proportion_2510800301_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2510800301"
+        },
+        {
+          "gasha_id": 2511100302,
+          "name": "",
+          "file": "gasha_proportion_2511100302_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2511100302"
+        },
+        {
+          "gasha_id": 2511100501,
+          "name": "",
+          "file": "gasha_proportion_2511100501_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2511100501"
+        },
+        {
+          "gasha_id": 2511300401,
+          "name": "",
+          "file": "gasha_proportion_2511300401_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2511300401"
+        },
+        {
+          "gasha_id": 2511400301,
+          "name": "",
+          "file": "gasha_proportion_2511400301_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2511400301"
+        },
+        {
+          "gasha_id": 2512100301,
+          "name": "",
+          "file": "gasha_proportion_2512100301_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2512100301"
+        },
+        {
+          "gasha_id": 2512100501,
+          "name": "",
+          "file": "gasha_proportion_2512100501_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2512100501"
+        },
+        {
+          "gasha_id": 2512300401,
+          "name": "",
+          "file": "gasha_proportion_2512300401_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2512300401"
+        },
+        {
+          "gasha_id": 2512300601,
+          "name": "",
+          "file": "gasha_proportion_2512300601_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2512300601"
+        },
+        {
+          "gasha_id": 2512400301,
+          "name": "",
+          "file": "gasha_proportion_2512400301_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2512400301"
+        },
+        {
+          "gasha_id": 2512400501,
+          "name": "",
+          "file": "gasha_proportion_2512400501_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2512400501"
+        },
+        {
+          "gasha_id": 2512400502,
+          "name": "",
+          "file": "gasha_proportion_2512400502_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2512400502"
+        },
+        {
+          "gasha_id": 2601200302,
+          "name": "",
+          "file": "gasha_proportion_2601200302_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2601200302"
+        },
+        {
+          "gasha_id": 2601200501,
+          "name": "",
+          "file": "gasha_proportion_2601200501_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2601200501"
+        },
+        {
+          "gasha_id": 2601400401,
+          "name": "",
+          "file": "gasha_proportion_2601400401_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2601400401"
+        },
+        {
+          "gasha_id": 2601500301,
+          "name": "",
+          "file": "gasha_proportion_2601500301_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2601500301"
+        },
+        {
+          "gasha_id": 2602200302,
+          "name": "",
+          "file": "gasha_proportion_2602200302_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2602200302"
+        },
+        {
+          "gasha_id": 2602200501,
+          "name": "",
+          "file": "gasha_proportion_2602200501_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2602200501"
+        },
+        {
+          "gasha_id": 2602200502,
+          "name": "",
+          "file": "gasha_proportion_2602200502_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2602200502"
+        },
+        {
+          "gasha_id": 2602200503,
+          "name": "",
+          "file": "gasha_proportion_2602200503_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2602200503"
+        },
+        {
+          "gasha_id": 2602300401,
+          "name": "",
+          "file": "gasha_proportion_2602300401_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2602300401"
+        },
+        {
+          "gasha_id": 2602400301,
+          "name": "",
+          "file": "gasha_proportion_2602400301_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2602400301"
+        },
+        {
+          "gasha_id": 2602400501,
+          "name": "",
+          "file": "gasha_proportion_2602400501_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2602400501"
+        },
+        {
+          "gasha_id": 2603200302,
+          "name": "",
+          "file": "gasha_proportion_2603200302_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2603200302"
+        },
+        {
+          "gasha_id": 2603200501,
+          "name": "",
+          "file": "gasha_proportion_2603200501_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2603200501"
+        },
+        {
+          "gasha_id": 2603500201,
+          "name": "",
+          "file": "gasha_proportion_2603500201_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2603500201"
+        },
+        {
+          "gasha_id": 2603500401,
+          "name": "",
+          "file": "gasha_proportion_2603500401_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2603500401"
+        },
+        {
+          "gasha_id": 2603600301,
+          "name": "",
+          "file": "gasha_proportion_2603600301_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2603600301"
+        },
+        {
+          "gasha_id": 2603600501,
+          "name": "",
+          "file": "gasha_proportion_2603600501_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2603600501"
+        },
+        {
+          "gasha_id": 2603600502,
+          "name": "",
+          "file": "gasha_proportion_2603600502_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2603600502"
+        },
+        {
+          "gasha_id": 2603600601,
+          "name": "",
+          "file": "gasha_proportion_2603600601_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2603600601"
         },
         {
           "gasha_id": 2604300101,
           "name": "プレミアムガシャVer.2",
-          "file": "gasha_proportion_2604300101_1.json"
+          "file": "gasha_proportion_2604300101_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2604300101"
+        },
+        {
+          "gasha_id": 2604300302,
+          "name": "",
+          "file": "gasha_proportion_2604300302_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2604300302"
+        },
+        {
+          "gasha_id": 2604300501,
+          "name": "",
+          "file": "gasha_proportion_2604300501_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2604300501"
+        },
+        {
+          "gasha_id": 2604400401,
+          "name": "",
+          "file": "gasha_proportion_2604400401_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2604400401"
+        },
+        {
+          "gasha_id": 2604500301,
+          "name": "",
+          "file": "gasha_proportion_2604500301_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2604500301"
+        },
+        {
+          "gasha_id": 2605200301,
+          "name": "",
+          "file": "gasha_proportion_2605200301_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2605200301"
+        },
+        {
+          "gasha_id": 2605200501,
+          "name": "",
+          "file": "gasha_proportion_2605200501_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2605200501"
+        },
+        {
+          "gasha_id": 2605400403,
+          "name": "",
+          "file": "gasha_proportion_2605400403_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2605400403"
+        },
+        {
+          "gasha_id": 2605500301,
+          "name": "",
+          "file": "gasha_proportion_2605500301_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2605500301"
+        },
+        {
+          "gasha_id": 2605500501,
+          "name": "",
+          "file": "gasha_proportion_2605500501_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2605500501"
+        },
+        {
+          "gasha_id": 2606200302,
+          "name": "",
+          "file": "gasha_proportion_2606200302_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2606200302"
+        },
+        {
+          "gasha_id": 2606200501,
+          "name": "",
+          "file": "gasha_proportion_2606200501_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2606200501"
+        },
+        {
+          "gasha_id": 2606400403,
+          "name": "",
+          "file": "gasha_proportion_2606400403_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2606400403"
+        },
+        {
+          "gasha_id": 2606500301,
+          "name": "",
+          "file": "gasha_proportion_2606500301_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2606500301"
         },
         {
           "gasha_id": 2606500501,
           "name": "[900万DL記念]URユニット1体確定5連ガシャ",
-          "file": "gasha_proportion_2606500501_1.json"
+          "file": "gasha_proportion_2606500501_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2606500501"
         },
         {
           "gasha_id": 2606500502,
           "name": "[900万DL記念]SSR以上ユニット1体確定ガシャ",
-          "file": "gasha_proportion_2606500502_1.json"
+          "file": "gasha_proportion_2606500502_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2606500502"
+        },
+        {
+          "gasha_id": 2607300302,
+          "name": "",
+          "file": "gasha_proportion_2607300302_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2607300302"
+        },
+        {
+          "gasha_id": 2607300403,
+          "name": "",
+          "file": "gasha_proportion_2607300403_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2607300403"
         },
         {
           "gasha_id": 2607300501,
           "name": "ピックアップガシャ(2026/7/16)",
-          "file": "gasha_proportion_2607300501_1.json"
+          "file": "gasha_proportion_2607300501_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2607300501"
         },
         {
           "gasha_id": 2607500301,
           "name": "ピックアップガシャ",
-          "file": "gasha_proportion_2607500301_1.json"
+          "file": "gasha_proportion_2607500301_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2607500301"
+        },
+        {
+          "gasha_id": 2608200301,
+          "name": "新ユニット追加！ピックアップガシャ",
+          "file": "gasha_proportion_2608200301_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2608200301"
+        },
+        {
+          "gasha_id": 2608200501,
+          "name": "ピックアップガシャ(2026/8/13)",
+          "file": "gasha_proportion_2608200501_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2608200501"
         }
       ]
     },
@@ -70,64 +987,490 @@
       "lang_num": 3,
       "banners": [
         {
+          "gasha_id": 2504100101,
+          "name": "",
+          "file": "gasha_proportion_2504100101_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2504100101"
+        },
+        {
           "gasha_id": 2504100201,
           "name": "可重新進行補給！保證獲得1架UR單位機體補給",
-          "file": "gasha_proportion_2504100201_3.json"
+          "file": "gasha_proportion_2504100201_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2504100201"
         },
         {
           "gasha_id": 2504100501,
           "name": "保證獲得SSR以上單位機體補給",
-          "file": "gasha_proportion_2504100501_3.json"
+          "file": "gasha_proportion_2504100501_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2504100501"
         },
         {
           "gasha_id": 2504100502,
           "name": "保證獲得UR單位機體補給",
-          "file": "gasha_proportion_2504100502_3.json"
+          "file": "gasha_proportion_2504100502_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2504100502"
         },
         {
           "gasha_id": 2504100503,
           "name": "保證獲得UR支援人員機體補給                                \t\t",
-          "file": "gasha_proportion_2504100503_3.json"
+          "file": "gasha_proportion_2504100503_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2504100503"
         },
         {
           "gasha_id": 2504100504,
           "name": "保證獲得SSR單位機體補給",
-          "file": "gasha_proportion_2504100504_3.json"
+          "file": "gasha_proportion_2504100504_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2504100504"
+        },
+        {
+          "gasha_id": 2505100301,
+          "name": "",
+          "file": "gasha_proportion_2505100301_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2505100301"
+        },
+        {
+          "gasha_id": 2505200401,
+          "name": "",
+          "file": "gasha_proportion_2505200401_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2505200401"
         },
         {
           "gasha_id": 2505200501,
           "name": "保證獲得SSR以上機體補給",
-          "file": "gasha_proportion_2505200501_3.json"
+          "file": "gasha_proportion_2505200501_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2505200501"
         },
         {
           "gasha_id": 2505200502,
           "name": "保證獲得SR以上機體補給",
-          "file": "gasha_proportion_2505200502_3.json"
+          "file": "gasha_proportion_2505200502_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2505200502"
+        },
+        {
+          "gasha_id": 2505400301,
+          "name": "",
+          "file": "gasha_proportion_2505400301_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2505400301"
+        },
+        {
+          "gasha_id": 2506100302,
+          "name": "",
+          "file": "gasha_proportion_2506100302_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2506100302"
+        },
+        {
+          "gasha_id": 2506200401,
+          "name": "",
+          "file": "gasha_proportion_2506200401_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2506200401"
+        },
+        {
+          "gasha_id": 2506300301,
+          "name": "",
+          "file": "gasha_proportion_2506300301_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2506300301"
+        },
+        {
+          "gasha_id": 2507100302,
+          "name": "",
+          "file": "gasha_proportion_2507100302_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2507100302"
+        },
+        {
+          "gasha_id": 2507200401,
+          "name": "",
+          "file": "gasha_proportion_2507200401_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2507200401"
+        },
+        {
+          "gasha_id": 2507300301,
+          "name": "",
+          "file": "gasha_proportion_2507300301_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2507300301"
+        },
+        {
+          "gasha_id": 2508100302,
+          "name": "",
+          "file": "gasha_proportion_2508100302_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2508100302"
+        },
+        {
+          "gasha_id": 2508200401,
+          "name": "",
+          "file": "gasha_proportion_2508200401_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2508200401"
+        },
+        {
+          "gasha_id": 2508300301,
+          "name": "",
+          "file": "gasha_proportion_2508300301_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2508300301"
+        },
+        {
+          "gasha_id": 2509200401,
+          "name": "",
+          "file": "gasha_proportion_2509200401_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2509200401"
+        },
+        {
+          "gasha_id": 2509300301,
+          "name": "",
+          "file": "gasha_proportion_2509300301_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2509300301"
+        },
+        {
+          "gasha_id": 2509600301,
+          "name": "",
+          "file": "gasha_proportion_2509600301_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2509600301"
+        },
+        {
+          "gasha_id": 2509600501,
+          "name": "",
+          "file": "gasha_proportion_2509600501_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2509600501"
+        },
+        {
+          "gasha_id": 2509600601,
+          "name": "",
+          "file": "gasha_proportion_2509600601_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2509600601"
+        },
+        {
+          "gasha_id": 2510300301,
+          "name": "",
+          "file": "gasha_proportion_2510300301_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2510300301"
+        },
+        {
+          "gasha_id": 2510300501,
+          "name": "",
+          "file": "gasha_proportion_2510300501_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2510300501"
+        },
+        {
+          "gasha_id": 2510700401,
+          "name": "",
+          "file": "gasha_proportion_2510700401_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2510700401"
+        },
+        {
+          "gasha_id": 2510800301,
+          "name": "",
+          "file": "gasha_proportion_2510800301_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2510800301"
+        },
+        {
+          "gasha_id": 2511100302,
+          "name": "",
+          "file": "gasha_proportion_2511100302_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2511100302"
+        },
+        {
+          "gasha_id": 2511100501,
+          "name": "",
+          "file": "gasha_proportion_2511100501_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2511100501"
+        },
+        {
+          "gasha_id": 2511300401,
+          "name": "",
+          "file": "gasha_proportion_2511300401_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2511300401"
+        },
+        {
+          "gasha_id": 2511400301,
+          "name": "",
+          "file": "gasha_proportion_2511400301_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2511400301"
+        },
+        {
+          "gasha_id": 2512100301,
+          "name": "",
+          "file": "gasha_proportion_2512100301_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2512100301"
+        },
+        {
+          "gasha_id": 2512100501,
+          "name": "",
+          "file": "gasha_proportion_2512100501_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2512100501"
+        },
+        {
+          "gasha_id": 2512300401,
+          "name": "",
+          "file": "gasha_proportion_2512300401_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2512300401"
+        },
+        {
+          "gasha_id": 2512300601,
+          "name": "",
+          "file": "gasha_proportion_2512300601_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2512300601"
+        },
+        {
+          "gasha_id": 2512400301,
+          "name": "",
+          "file": "gasha_proportion_2512400301_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2512400301"
+        },
+        {
+          "gasha_id": 2512400501,
+          "name": "",
+          "file": "gasha_proportion_2512400501_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2512400501"
+        },
+        {
+          "gasha_id": 2512400502,
+          "name": "",
+          "file": "gasha_proportion_2512400502_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2512400502"
+        },
+        {
+          "gasha_id": 2601200302,
+          "name": "",
+          "file": "gasha_proportion_2601200302_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2601200302"
+        },
+        {
+          "gasha_id": 2601200501,
+          "name": "",
+          "file": "gasha_proportion_2601200501_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2601200501"
+        },
+        {
+          "gasha_id": 2601400401,
+          "name": "",
+          "file": "gasha_proportion_2601400401_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2601400401"
+        },
+        {
+          "gasha_id": 2601500301,
+          "name": "",
+          "file": "gasha_proportion_2601500301_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2601500301"
+        },
+        {
+          "gasha_id": 2602200302,
+          "name": "",
+          "file": "gasha_proportion_2602200302_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2602200302"
+        },
+        {
+          "gasha_id": 2602200501,
+          "name": "",
+          "file": "gasha_proportion_2602200501_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2602200501"
+        },
+        {
+          "gasha_id": 2602200502,
+          "name": "",
+          "file": "gasha_proportion_2602200502_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2602200502"
+        },
+        {
+          "gasha_id": 2602200503,
+          "name": "",
+          "file": "gasha_proportion_2602200503_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2602200503"
+        },
+        {
+          "gasha_id": 2602300401,
+          "name": "",
+          "file": "gasha_proportion_2602300401_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2602300401"
+        },
+        {
+          "gasha_id": 2602400301,
+          "name": "",
+          "file": "gasha_proportion_2602400301_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2602400301"
+        },
+        {
+          "gasha_id": 2602400501,
+          "name": "",
+          "file": "gasha_proportion_2602400501_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2602400501"
+        },
+        {
+          "gasha_id": 2603200302,
+          "name": "",
+          "file": "gasha_proportion_2603200302_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2603200302"
+        },
+        {
+          "gasha_id": 2603200501,
+          "name": "",
+          "file": "gasha_proportion_2603200501_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2603200501"
+        },
+        {
+          "gasha_id": 2603500201,
+          "name": "",
+          "file": "gasha_proportion_2603500201_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2603500201"
+        },
+        {
+          "gasha_id": 2603500401,
+          "name": "",
+          "file": "gasha_proportion_2603500401_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2603500401"
+        },
+        {
+          "gasha_id": 2603600301,
+          "name": "",
+          "file": "gasha_proportion_2603600301_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2603600301"
+        },
+        {
+          "gasha_id": 2603600501,
+          "name": "",
+          "file": "gasha_proportion_2603600501_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2603600501"
+        },
+        {
+          "gasha_id": 2603600502,
+          "name": "",
+          "file": "gasha_proportion_2603600502_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2603600502"
+        },
+        {
+          "gasha_id": 2603600601,
+          "name": "",
+          "file": "gasha_proportion_2603600601_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2603600601"
         },
         {
           "gasha_id": 2604300101,
           "name": "高級機體補給Ver.2",
-          "file": "gasha_proportion_2604300101_3.json"
+          "file": "gasha_proportion_2604300101_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2604300101"
+        },
+        {
+          "gasha_id": 2604300302,
+          "name": "",
+          "file": "gasha_proportion_2604300302_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2604300302"
+        },
+        {
+          "gasha_id": 2604300501,
+          "name": "",
+          "file": "gasha_proportion_2604300501_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2604300501"
+        },
+        {
+          "gasha_id": 2604400401,
+          "name": "",
+          "file": "gasha_proportion_2604400401_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2604400401"
+        },
+        {
+          "gasha_id": 2604500301,
+          "name": "",
+          "file": "gasha_proportion_2604500301_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2604500301"
+        },
+        {
+          "gasha_id": 2605200301,
+          "name": "",
+          "file": "gasha_proportion_2605200301_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2605200301"
+        },
+        {
+          "gasha_id": 2605200501,
+          "name": "",
+          "file": "gasha_proportion_2605200501_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2605200501"
+        },
+        {
+          "gasha_id": 2605400403,
+          "name": "",
+          "file": "gasha_proportion_2605400403_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2605400403"
+        },
+        {
+          "gasha_id": 2605500301,
+          "name": "",
+          "file": "gasha_proportion_2605500301_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2605500301"
+        },
+        {
+          "gasha_id": 2605500501,
+          "name": "",
+          "file": "gasha_proportion_2605500501_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2605500501"
+        },
+        {
+          "gasha_id": 2606200302,
+          "name": "",
+          "file": "gasha_proportion_2606200302_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2606200302"
+        },
+        {
+          "gasha_id": 2606200501,
+          "name": "",
+          "file": "gasha_proportion_2606200501_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2606200501"
+        },
+        {
+          "gasha_id": 2606400403,
+          "name": "",
+          "file": "gasha_proportion_2606400403_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2606400403"
+        },
+        {
+          "gasha_id": 2606500301,
+          "name": "",
+          "file": "gasha_proportion_2606500301_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2606500301"
         },
         {
           "gasha_id": 2606500501,
           "name": "〔900萬次下載紀念〕保證獲得1架UR單位5連機體補給",
-          "file": "gasha_proportion_2606500501_3.json"
+          "file": "gasha_proportion_2606500501_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2606500501"
         },
         {
           "gasha_id": 2606500502,
           "name": "〔900萬次下載紀念〕保證獲得1架SSR以上單位機體補給",
-          "file": "gasha_proportion_2606500502_3.json"
+          "file": "gasha_proportion_2606500502_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2606500502"
+        },
+        {
+          "gasha_id": 2607300302,
+          "name": "",
+          "file": "gasha_proportion_2607300302_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2607300302"
+        },
+        {
+          "gasha_id": 2607300403,
+          "name": "",
+          "file": "gasha_proportion_2607300403_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2607300403"
         },
         {
           "gasha_id": 2607300501,
           "name": "精選機體補給（2026/7/16 JST）",
-          "file": "gasha_proportion_2607300501_3.json"
+          "file": "gasha_proportion_2607300501_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2607300501"
         },
         {
           "gasha_id": 2607500301,
           "name": "精選機體補給",
-          "file": "gasha_proportion_2607500301_3.json"
+          "file": "gasha_proportion_2607500301_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2607500301"
+        },
+        {
+          "gasha_id": 2608200301,
+          "name": "追加新單位！精選機體補給",
+          "file": "gasha_proportion_2608200301_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2608200301"
+        },
+        {
+          "gasha_id": 2608200501,
+          "name": "精選機體補給（2026/8/13 JST）",
+          "file": "gasha_proportion_2608200501_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2608200501"
         }
       ]
     },
@@ -135,64 +1478,490 @@
       "lang_num": 4,
       "banners": [
         {
+          "gasha_id": 2504100101,
+          "name": "",
+          "file": "gasha_proportion_2504100101_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2504100101"
+        },
+        {
           "gasha_id": 2504100201,
           "name": "可重新進行補給！保證獲得1架UR單位機體補給",
-          "file": "gasha_proportion_2504100201_4.json"
+          "file": "gasha_proportion_2504100201_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2504100201"
         },
         {
           "gasha_id": 2504100501,
           "name": "保證獲得SSR以上單位機體補給",
-          "file": "gasha_proportion_2504100501_4.json"
+          "file": "gasha_proportion_2504100501_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2504100501"
         },
         {
           "gasha_id": 2504100502,
           "name": "保證獲得UR單位機體補給",
-          "file": "gasha_proportion_2504100502_4.json"
+          "file": "gasha_proportion_2504100502_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2504100502"
         },
         {
           "gasha_id": 2504100503,
           "name": "保證獲得UR支援人員機體補給                                \t\t",
-          "file": "gasha_proportion_2504100503_4.json"
+          "file": "gasha_proportion_2504100503_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2504100503"
         },
         {
           "gasha_id": 2504100504,
           "name": "保證獲得SSR單位機體補給",
-          "file": "gasha_proportion_2504100504_4.json"
+          "file": "gasha_proportion_2504100504_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2504100504"
+        },
+        {
+          "gasha_id": 2505100301,
+          "name": "",
+          "file": "gasha_proportion_2505100301_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2505100301"
+        },
+        {
+          "gasha_id": 2505200401,
+          "name": "",
+          "file": "gasha_proportion_2505200401_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2505200401"
         },
         {
           "gasha_id": 2505200501,
           "name": "保證獲得SSR以上機體補給",
-          "file": "gasha_proportion_2505200501_4.json"
+          "file": "gasha_proportion_2505200501_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2505200501"
         },
         {
           "gasha_id": 2505200502,
           "name": "保證獲得SR以上機體補給",
-          "file": "gasha_proportion_2505200502_4.json"
+          "file": "gasha_proportion_2505200502_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2505200502"
+        },
+        {
+          "gasha_id": 2505400301,
+          "name": "",
+          "file": "gasha_proportion_2505400301_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2505400301"
+        },
+        {
+          "gasha_id": 2506100302,
+          "name": "",
+          "file": "gasha_proportion_2506100302_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2506100302"
+        },
+        {
+          "gasha_id": 2506200401,
+          "name": "",
+          "file": "gasha_proportion_2506200401_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2506200401"
+        },
+        {
+          "gasha_id": 2506300301,
+          "name": "",
+          "file": "gasha_proportion_2506300301_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2506300301"
+        },
+        {
+          "gasha_id": 2507100302,
+          "name": "",
+          "file": "gasha_proportion_2507100302_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2507100302"
+        },
+        {
+          "gasha_id": 2507200401,
+          "name": "",
+          "file": "gasha_proportion_2507200401_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2507200401"
+        },
+        {
+          "gasha_id": 2507300301,
+          "name": "",
+          "file": "gasha_proportion_2507300301_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2507300301"
+        },
+        {
+          "gasha_id": 2508100302,
+          "name": "",
+          "file": "gasha_proportion_2508100302_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2508100302"
+        },
+        {
+          "gasha_id": 2508200401,
+          "name": "",
+          "file": "gasha_proportion_2508200401_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2508200401"
+        },
+        {
+          "gasha_id": 2508300301,
+          "name": "",
+          "file": "gasha_proportion_2508300301_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2508300301"
+        },
+        {
+          "gasha_id": 2509200401,
+          "name": "",
+          "file": "gasha_proportion_2509200401_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2509200401"
+        },
+        {
+          "gasha_id": 2509300301,
+          "name": "",
+          "file": "gasha_proportion_2509300301_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2509300301"
+        },
+        {
+          "gasha_id": 2509600301,
+          "name": "",
+          "file": "gasha_proportion_2509600301_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2509600301"
+        },
+        {
+          "gasha_id": 2509600501,
+          "name": "",
+          "file": "gasha_proportion_2509600501_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2509600501"
+        },
+        {
+          "gasha_id": 2509600601,
+          "name": "",
+          "file": "gasha_proportion_2509600601_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2509600601"
+        },
+        {
+          "gasha_id": 2510300301,
+          "name": "",
+          "file": "gasha_proportion_2510300301_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2510300301"
+        },
+        {
+          "gasha_id": 2510300501,
+          "name": "",
+          "file": "gasha_proportion_2510300501_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2510300501"
+        },
+        {
+          "gasha_id": 2510700401,
+          "name": "",
+          "file": "gasha_proportion_2510700401_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2510700401"
+        },
+        {
+          "gasha_id": 2510800301,
+          "name": "",
+          "file": "gasha_proportion_2510800301_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2510800301"
+        },
+        {
+          "gasha_id": 2511100302,
+          "name": "",
+          "file": "gasha_proportion_2511100302_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2511100302"
+        },
+        {
+          "gasha_id": 2511100501,
+          "name": "",
+          "file": "gasha_proportion_2511100501_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2511100501"
+        },
+        {
+          "gasha_id": 2511300401,
+          "name": "",
+          "file": "gasha_proportion_2511300401_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2511300401"
+        },
+        {
+          "gasha_id": 2511400301,
+          "name": "",
+          "file": "gasha_proportion_2511400301_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2511400301"
+        },
+        {
+          "gasha_id": 2512100301,
+          "name": "",
+          "file": "gasha_proportion_2512100301_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2512100301"
+        },
+        {
+          "gasha_id": 2512100501,
+          "name": "",
+          "file": "gasha_proportion_2512100501_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2512100501"
+        },
+        {
+          "gasha_id": 2512300401,
+          "name": "",
+          "file": "gasha_proportion_2512300401_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2512300401"
+        },
+        {
+          "gasha_id": 2512300601,
+          "name": "",
+          "file": "gasha_proportion_2512300601_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2512300601"
+        },
+        {
+          "gasha_id": 2512400301,
+          "name": "",
+          "file": "gasha_proportion_2512400301_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2512400301"
+        },
+        {
+          "gasha_id": 2512400501,
+          "name": "",
+          "file": "gasha_proportion_2512400501_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2512400501"
+        },
+        {
+          "gasha_id": 2512400502,
+          "name": "",
+          "file": "gasha_proportion_2512400502_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2512400502"
+        },
+        {
+          "gasha_id": 2601200302,
+          "name": "",
+          "file": "gasha_proportion_2601200302_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2601200302"
+        },
+        {
+          "gasha_id": 2601200501,
+          "name": "",
+          "file": "gasha_proportion_2601200501_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2601200501"
+        },
+        {
+          "gasha_id": 2601400401,
+          "name": "",
+          "file": "gasha_proportion_2601400401_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2601400401"
+        },
+        {
+          "gasha_id": 2601500301,
+          "name": "",
+          "file": "gasha_proportion_2601500301_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2601500301"
+        },
+        {
+          "gasha_id": 2602200302,
+          "name": "",
+          "file": "gasha_proportion_2602200302_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2602200302"
+        },
+        {
+          "gasha_id": 2602200501,
+          "name": "",
+          "file": "gasha_proportion_2602200501_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2602200501"
+        },
+        {
+          "gasha_id": 2602200502,
+          "name": "",
+          "file": "gasha_proportion_2602200502_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2602200502"
+        },
+        {
+          "gasha_id": 2602200503,
+          "name": "",
+          "file": "gasha_proportion_2602200503_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2602200503"
+        },
+        {
+          "gasha_id": 2602300401,
+          "name": "",
+          "file": "gasha_proportion_2602300401_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2602300401"
+        },
+        {
+          "gasha_id": 2602400301,
+          "name": "",
+          "file": "gasha_proportion_2602400301_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2602400301"
+        },
+        {
+          "gasha_id": 2602400501,
+          "name": "",
+          "file": "gasha_proportion_2602400501_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2602400501"
+        },
+        {
+          "gasha_id": 2603200302,
+          "name": "",
+          "file": "gasha_proportion_2603200302_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2603200302"
+        },
+        {
+          "gasha_id": 2603200501,
+          "name": "",
+          "file": "gasha_proportion_2603200501_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2603200501"
+        },
+        {
+          "gasha_id": 2603500201,
+          "name": "",
+          "file": "gasha_proportion_2603500201_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2603500201"
+        },
+        {
+          "gasha_id": 2603500401,
+          "name": "",
+          "file": "gasha_proportion_2603500401_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2603500401"
+        },
+        {
+          "gasha_id": 2603600301,
+          "name": "",
+          "file": "gasha_proportion_2603600301_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2603600301"
+        },
+        {
+          "gasha_id": 2603600501,
+          "name": "",
+          "file": "gasha_proportion_2603600501_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2603600501"
+        },
+        {
+          "gasha_id": 2603600502,
+          "name": "",
+          "file": "gasha_proportion_2603600502_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2603600502"
+        },
+        {
+          "gasha_id": 2603600601,
+          "name": "",
+          "file": "gasha_proportion_2603600601_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2603600601"
         },
         {
           "gasha_id": 2604300101,
           "name": "高級機體補給Ver.2",
-          "file": "gasha_proportion_2604300101_4.json"
+          "file": "gasha_proportion_2604300101_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2604300101"
+        },
+        {
+          "gasha_id": 2604300302,
+          "name": "",
+          "file": "gasha_proportion_2604300302_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2604300302"
+        },
+        {
+          "gasha_id": 2604300501,
+          "name": "",
+          "file": "gasha_proportion_2604300501_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2604300501"
+        },
+        {
+          "gasha_id": 2604400401,
+          "name": "",
+          "file": "gasha_proportion_2604400401_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2604400401"
+        },
+        {
+          "gasha_id": 2604500301,
+          "name": "",
+          "file": "gasha_proportion_2604500301_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2604500301"
+        },
+        {
+          "gasha_id": 2605200301,
+          "name": "",
+          "file": "gasha_proportion_2605200301_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2605200301"
+        },
+        {
+          "gasha_id": 2605200501,
+          "name": "",
+          "file": "gasha_proportion_2605200501_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2605200501"
+        },
+        {
+          "gasha_id": 2605400403,
+          "name": "",
+          "file": "gasha_proportion_2605400403_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2605400403"
+        },
+        {
+          "gasha_id": 2605500301,
+          "name": "",
+          "file": "gasha_proportion_2605500301_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2605500301"
+        },
+        {
+          "gasha_id": 2605500501,
+          "name": "",
+          "file": "gasha_proportion_2605500501_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2605500501"
+        },
+        {
+          "gasha_id": 2606200302,
+          "name": "",
+          "file": "gasha_proportion_2606200302_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2606200302"
+        },
+        {
+          "gasha_id": 2606200501,
+          "name": "",
+          "file": "gasha_proportion_2606200501_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2606200501"
+        },
+        {
+          "gasha_id": 2606400403,
+          "name": "",
+          "file": "gasha_proportion_2606400403_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2606400403"
+        },
+        {
+          "gasha_id": 2606500301,
+          "name": "",
+          "file": "gasha_proportion_2606500301_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2606500301"
         },
         {
           "gasha_id": 2606500501,
           "name": "〔900萬次下載紀念〕保證獲得1架UR單位5連機體補給",
-          "file": "gasha_proportion_2606500501_4.json"
+          "file": "gasha_proportion_2606500501_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2606500501"
         },
         {
           "gasha_id": 2606500502,
           "name": "〔900萬次下載紀念〕保證獲得1架SSR以上單位機體補給",
-          "file": "gasha_proportion_2606500502_4.json"
+          "file": "gasha_proportion_2606500502_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2606500502"
+        },
+        {
+          "gasha_id": 2607300302,
+          "name": "",
+          "file": "gasha_proportion_2607300302_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2607300302"
+        },
+        {
+          "gasha_id": 2607300403,
+          "name": "",
+          "file": "gasha_proportion_2607300403_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2607300403"
         },
         {
           "gasha_id": 2607300501,
           "name": "精選機體補給（16/7/2026 JST）",
-          "file": "gasha_proportion_2607300501_4.json"
+          "file": "gasha_proportion_2607300501_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2607300501"
         },
         {
           "gasha_id": 2607500301,
           "name": "精選機體補給",
-          "file": "gasha_proportion_2607500301_4.json"
+          "file": "gasha_proportion_2607500301_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2607500301"
+        },
+        {
+          "gasha_id": 2608200301,
+          "name": "追加新單位！精選機體補給",
+          "file": "gasha_proportion_2608200301_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2608200301"
+        },
+        {
+          "gasha_id": 2608200501,
+          "name": "精選機體補給（13/8/2026 JST）",
+          "file": "gasha_proportion_2608200501_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2608200501"
         }
       ]
     }

@@ -1,0 +1,32 @@
+---
+description: Sync gacha drop % from official site after new MasterData banners
+alwaysApply: true
+---
+
+Published cache: `data/published/official_gasha/gasha_proportion_{gashaId}_{langNum}.json`.
+
+Official detail page (only `gasha_id` changes):
+
+```text
+https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id={GASHA_ID}
+```
+
+CDN API (what the app syncs):
+
+```text
+https://web.gl.eternal.channel.or.jp/server_assets/api/gasha_proportion_{gashaId}_{langNum}.json
+```
+
+## After a new banner in MasterData
+
+Run once — **no manual gasha_id** (script unions official `gasha_list` + all `m_gasha.json` ids):
+
+```text
+python scripts/sync_official_gasha_proportions.py
+```
+
+Commit new/updated files under `data/published/official_gasha/` before deploy.
+
+## Runtime
+
+`gasha_official_rates.load_official_proportion` lazy-fetches missing proportion JSON from the CDN on first `/api/banner_timeline` hit, then caches locally. Prefer the sync script before ship so production does not depend on live fetch.
