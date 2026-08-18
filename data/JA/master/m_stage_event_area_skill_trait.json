@@ -28,5 +28,25 @@
     "DescriptionLanguageId": 0,
     "BuffLabelColorTypeIndex": 0,
     "IsDisplayUpDown": false
+  },
+  {
+    "Id": 1030000005,
+    "TraitTypeIndex": 3,
+    "TraitValue": 2,
+    "ResourceId": "trait_10120700",
+    "NameLanguageId": 0,
+    "DescriptionLanguageId": 0,
+    "BuffLabelColorTypeIndex": 0,
+    "IsDisplayUpDown": false
+  },
+  {
+    "Id": 1030000006,
+    "TraitTypeIndex": 3,
+    "TraitValue": 4,
+    "ResourceId": "trait_10120700",
+    "NameLanguageId": 0,
+    "DescriptionLanguageId": 0,
+    "BuffLabelColorTypeIndex": 0,
+    "IsDisplayUpDown": false
   }
 ]

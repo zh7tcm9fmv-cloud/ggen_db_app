@@ -803,5 +803,45 @@
     "ConditionSetId": 99157050010206,
     "ConditionId": 9915705001020601,
     "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 99157050010301,
+    "ConditionId": 9915705001030101,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 99157050010302,
+    "ConditionId": 9915705001030201,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 99157050010303,
+    "ConditionId": 9915705001030301,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 99157050010304,
+    "ConditionId": 9915705001030401,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 99157050010305,
+    "ConditionId": 9915705001030501,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 99157050010306,
+    "ConditionId": 9915705001030601,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 99157050010307,
+    "ConditionId": 9915705001030701,
+    "SortOrder": 0
+  },
+  {
+    "ConditionSetId": 99157050010308,
+    "ConditionId": 9915705001030801,
+    "SortOrder": 0
   }
 ]

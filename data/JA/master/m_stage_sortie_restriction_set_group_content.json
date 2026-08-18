@@ -450,6 +450,24 @@
     "SlotIndex": 0
   },
   {
+    "StageSortieRestrictionSetGroupId": 270001,
+    "SortieRestrictionTypeIndex": 2,
+    "TargetId": 1055,
+    "SlotIndex": 0
+  },
+  {
+    "StageSortieRestrictionSetGroupId": 270001,
+    "SortieRestrictionTypeIndex": 4,
+    "TargetId": 1705000100,
+    "SlotIndex": 1
+  },
+  {
+    "StageSortieRestrictionSetGroupId": 270002,
+    "SortieRestrictionTypeIndex": 4,
+    "TargetId": 1705001900,
+    "SlotIndex": 1
+  },
+  {
     "StageSortieRestrictionSetGroupId": 900001,
     "SortieRestrictionTypeIndex": 1,
     "TargetId": 800,

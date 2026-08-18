@@ -5131,13 +5131,33 @@
   },
   {
     "Id": 173000001,
-    "NameLanguageId": 0,
+    "NameLanguageId": 300100000173000001,
     "ResourceId": "bgm_7300_0001",
     "IsPaid": false,
-    "ScheduleId": 0,
-    "SeriesId": 0,
+    "ScheduleId": 2608309901,
+    "SeriesId": 7300,
     "HasLyrics": false,
-    "SortOrder": 0
+    "SortOrder": 1730000010
+  },
+  {
+    "Id": 173000002,
+    "NameLanguageId": 300100000173000002,
+    "ResourceId": "bgm_7300_0002",
+    "IsPaid": false,
+    "ScheduleId": 2608309901,
+    "SeriesId": 7300,
+    "HasLyrics": false,
+    "SortOrder": 1730000020
+  },
+  {
+    "Id": 173000003,
+    "NameLanguageId": 300100000173000003,
+    "ResourceId": "bgm_7300_0003",
+    "IsPaid": false,
+    "ScheduleId": 2608309901,
+    "SeriesId": 7300,
+    "HasLyrics": false,
+    "SortOrder": 1730000030
   },
   {
     "Id": 176400001,
