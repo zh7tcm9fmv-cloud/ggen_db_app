@@ -22,5 +22,21 @@
     "ResourceId": "trait_10860400",
     "StageEventAreaSkillTraitSetId": 103000000301,
     "Duration": 0
+  },
+  {
+    "Id": 1030000005,
+    "NameLanguageId": 131100001030000005,
+    "DescriptionLanguageId": 131200001030000005,
+    "ResourceId": "trait_10120700",
+    "StageEventAreaSkillTraitSetId": 103000000501,
+    "Duration": 0
+  },
+  {
+    "Id": 1030000006,
+    "NameLanguageId": 131100001030000006,
+    "DescriptionLanguageId": 131200001030000006,
+    "ResourceId": "trait_10120700",
+    "StageEventAreaSkillTraitSetId": 103000000601,
+    "Duration": 0
   }
 ]

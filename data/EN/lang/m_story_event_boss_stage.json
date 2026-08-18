@@ -334,5 +334,29 @@
   {
     "id": 130100000070526003,
     "value": "VS. Giant Psycho Golem EXPERT"
+  },
+  {
+    "id": 130100000070535001,
+    "value": "VS. Sorceress Qubeley NORMAL"
+  },
+  {
+    "id": 130100000070535002,
+    "value": "VS. Sorceress Qubeley HARD"
+  },
+  {
+    "id": 130100000070535003,
+    "value": "VS. Sorceress Qubeley EXPERT"
+  },
+  {
+    "id": 130100000070536001,
+    "value": "VS. Theodante NORMAL"
+  },
+  {
+    "id": 130100000070536002,
+    "value": "VS. Theodante HARD"
+  },
+  {
+    "id": 130100000070536003,
+    "value": "VS. Theodante EXPERT"
   }
 ]

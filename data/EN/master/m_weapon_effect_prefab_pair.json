@@ -2034,6 +2034,12 @@
     "DamagedEffectId": "ef_mpd_0001_001_beamrifle"
   },
   {
+    "Id": 290173,
+    "WeaponEffectPrefabPairSetId": 290173,
+    "WeaponEffectId": "ef_mpa_0023_000_tentacle",
+    "DamagedEffectId": "ef_mpd_0023_000_tentacle"
+  },
+  {
     "Id": 290174,
     "WeaponEffectPrefabPairSetId": 290174,
     "WeaponEffectId": "ef_mpa_0023_000_hatchfullopen",
@@ -3294,10 +3300,22 @@
     "DamagedEffectId": "ef_mpd_0031_005_sabe3shots"
   },
   {
+    "Id": 410009,
+    "WeaponEffectPrefabPairSetId": 410009,
+    "WeaponEffectId": "ef_mpa_0031_005_gigasabe",
+    "DamagedEffectId": "ef_mpd_0031_005_gigasabe"
+  },
+  {
     "Id": 420006,
     "WeaponEffectPrefabPairSetId": 420006,
     "WeaponEffectId": "ef_mpa_0032_006_solar3shots",
     "DamagedEffectId": "ef_mpd_0032_006_solar3shots"
+  },
+  {
+    "Id": 420009,
+    "WeaponEffectPrefabPairSetId": 420009,
+    "WeaponEffectId": "ef_mpa_0032_000_gigasolar",
+    "DamagedEffectId": "ef_mpd_0032_000_gigasolar"
   },
   {
     "Id": 430004,
@@ -3328,6 +3346,12 @@
     "WeaponEffectPrefabPairSetId": 440010,
     "WeaponEffectId": "ef_mpa_0034_002_megaliphila",
     "DamagedEffectId": "ef_mpd_0034_002_megaliphila"
+  },
+  {
+    "Id": 440011,
+    "WeaponEffectPrefabPairSetId": 440011,
+    "WeaponEffectId": "ef_mpa_0034_002_megaliphila3shots",
+    "DamagedEffectId": "ef_mpd_0034_002_megaliphila3shots"
   },
   {
     "Id": 450001,

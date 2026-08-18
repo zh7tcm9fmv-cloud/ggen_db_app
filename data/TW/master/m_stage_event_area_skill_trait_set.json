@@ -10,5 +10,13 @@
   {
     "Id": 103000000301,
     "StageEventAreaSkillTraitId": 1030000003
+  },
+  {
+    "Id": 103000000501,
+    "StageEventAreaSkillTraitId": 1030000005
+  },
+  {
+    "Id": 103000000601,
+    "StageEventAreaSkillTraitId": 1030000006
   }
 ]

@@ -20504,6 +20504,30 @@
     "value": "Don't mock me!"
   },
   {
+    "id": 100701705002500001,
+    "value": "Grshaa!"
+  },
+  {
+    "id": 100701705002500002,
+    "value": "Grshaa!"
+  },
+  {
+    "id": 100701705002500003,
+    "value": "Groar!"
+  },
+  {
+    "id": 100701705002500004,
+    "value": "Groar!"
+  },
+  {
+    "id": 100701705002500005,
+    "value": "Vrowr!"
+  },
+  {
+    "id": 100701705002500006,
+    "value": "Vrowr!"
+  },
+  {
     "id": 100701705002600001,
     "value": "You are desperate!"
   },
@@ -20566,6 +20590,38 @@
   {
     "id": 100701705002700008,
     "value": "You're finished!"
+  },
+  {
+    "id": 100701705002800001,
+    "value": "Yaaah!"
+  },
+  {
+    "id": 100701705002800002,
+    "value": "Yaaah!"
+  },
+  {
+    "id": 100701705002800003,
+    "value": "How's this?!"
+  },
+  {
+    "id": 100701705002800004,
+    "value": "How's this?!"
+  },
+  {
+    "id": 100701705002800005,
+    "value": "Eat this!"
+  },
+  {
+    "id": 100701705002800006,
+    "value": "Eat this!"
+  },
+  {
+    "id": 100701705002800007,
+    "value": "You're open!"
+  },
+  {
+    "id": 100701705002800008,
+    "value": "You're open!"
   },
   {
     "id": 100701705002900001,
@@ -20726,6 +20782,214 @@
   {
     "id": 100701705003500008,
     "value": "I think not!"
+  },
+  {
+    "id": 100701705003601001,
+    "value": "I will finish you!"
+  },
+  {
+    "id": 100701705003601002,
+    "value": "I will finish you!"
+  },
+  {
+    "id": 100701705003601003,
+    "value": "The coup de grâce!"
+  },
+  {
+    "id": 100701705003601004,
+    "value": "The coup de grâce!"
+  },
+  {
+    "id": 100701705003601005,
+    "value": "To hell with you!"
+  },
+  {
+    "id": 100701705003601006,
+    "value": "To hell with you!"
+  },
+  {
+    "id": 100701705003601007,
+    "value": "I have no time for weaklings!"
+  },
+  {
+    "id": 100701705003601008,
+    "value": "I have no time for weaklings!"
+  },
+  {
+    "id": 100701705003701001,
+    "value": "Now, you're mine!"
+  },
+  {
+    "id": 100701705003701002,
+    "value": "Now, you're mine!"
+  },
+  {
+    "id": 100701705003701003,
+    "value": "Haaaaaah!"
+  },
+  {
+    "id": 100701705003701004,
+    "value": "Haaaaaah!"
+  },
+  {
+    "id": 100701705003701005,
+    "value": "Here I come!"
+  },
+  {
+    "id": 100701705003701006,
+    "value": "Here I come!"
+  },
+  {
+    "id": 100701705003701007,
+    "value": "Your time's up!"
+  },
+  {
+    "id": 100701705003701008,
+    "value": "Your time's up!"
+  },
+  {
+    "id": 100701705003801001,
+    "value": "Ngaaah!"
+  },
+  {
+    "id": 100701705003801002,
+    "value": "Ngaaah!"
+  },
+  {
+    "id": 100701705003801003,
+    "value": "Are you ready?!"
+  },
+  {
+    "id": 100701705003801004,
+    "value": "Are you ready?!"
+  },
+  {
+    "id": 100701705003801005,
+    "value": "Time to tidy up!"
+  },
+  {
+    "id": 100701705003801006,
+    "value": "Time to tidy up!"
+  },
+  {
+    "id": 100701705003801007,
+    "value": "Let's settle this now!"
+  },
+  {
+    "id": 100701705003801008,
+    "value": "Let's settle this now!"
+  },
+  {
+    "id": 100701705003801009,
+    "value": "Witness what true magic looks like!"
+  },
+  {
+    "id": 100701705003801010,
+    "value": "Witness what true magic looks like!"
+  },
+  {
+    "id": 100701705003801011,
+    "value": "Let's pin the enemy down! Funnels!"
+  },
+  {
+    "id": 100701705003801012,
+    "value": "Let's pin the enemy down! Funnels!"
+  },
+  {
+    "id": 100701705003900001,
+    "value": "What foolishness!"
+  },
+  {
+    "id": 100701705003900002,
+    "value": "What foolishness!"
+  },
+  {
+    "id": 100701705003900003,
+    "value": "Pathetic!"
+  },
+  {
+    "id": 100701705003900004,
+    "value": "Pathetic!"
+  },
+  {
+    "id": 100701705003900005,
+    "value": "Feeble indeed!"
+  },
+  {
+    "id": 100701705003900006,
+    "value": "Feeble indeed!"
+  },
+  {
+    "id": 100701705003900007,
+    "value": "Take this!"
+  },
+  {
+    "id": 100701705003900008,
+    "value": "Take this!"
+  },
+  {
+    "id": 100701705004000001,
+    "value": "Wahahah!"
+  },
+  {
+    "id": 100701705004000002,
+    "value": "Wahahah!"
+  },
+  {
+    "id": 100701705004000003,
+    "value": "You're mine!"
+  },
+  {
+    "id": 100701705004000004,
+    "value": "You're mine!"
+  },
+  {
+    "id": 100701705004000005,
+    "value": "Hmph!"
+  },
+  {
+    "id": 100701705004000006,
+    "value": "Hmph!"
+  },
+  {
+    "id": 100701705004000007,
+    "value": "You're slow!"
+  },
+  {
+    "id": 100701705004000008,
+    "value": "Hmph!"
+  },
+  {
+    "id": 100701705004100001,
+    "value": "Haaah!"
+  },
+  {
+    "id": 100701705004100002,
+    "value": "Haaah!"
+  },
+  {
+    "id": 100701705004100003,
+    "value": "Qube!!!"
+  },
+  {
+    "id": 100701705004100004,
+    "value": "Qube!!!"
+  },
+  {
+    "id": 100701705004100005,
+    "value": "Your fate is sealed!"
+  },
+  {
+    "id": 100701705004100006,
+    "value": "Your fate is sealed!"
+  },
+  {
+    "id": 100701705004100007,
+    "value": "Begone!"
+  },
+  {
+    "id": 100701705004100008,
+    "value": "Begone!"
   },
   {
     "id": 100701709000100001,

@@ -12,6 +12,14 @@
     "value": "Hyper Potion"
   },
   {
+    "id": 131100001030000005,
+    "value": "Mega Pack"
+  },
+  {
+    "id": 131100001030000006,
+    "value": "Mega Box"
+  },
+  {
     "id": 131200001030000001,
     "value": "HP Restoration (Low)"
   },
@@ -22,5 +30,13 @@
   {
     "id": 131200001030000003,
     "value": "HP Restoration (High)"
+  },
+  {
+    "id": 131200001030000005,
+    "value": "Increased MP (Low)"
+  },
+  {
+    "id": 131200001030000006,
+    "value": "Increased MP (Middle)"
   }
 ]

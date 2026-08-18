@@ -32816,6 +32816,46 @@
     "value": "YAAARGHHH!"
   },
   {
+    "id": 101000170500250001,
+    "value": "GROWRRR!"
+  },
+  {
+    "id": 101000170500250002,
+    "value": "GROARRR!"
+  },
+  {
+    "id": 101000170500250003,
+    "value": "GREEE!"
+  },
+  {
+    "id": 101000170500250004,
+    "value": "Grshaa!"
+  },
+  {
+    "id": 101000170500250005,
+    "value": "Groar!"
+  },
+  {
+    "id": 101000170500250006,
+    "value": "Vrowr!"
+  },
+  {
+    "id": 101000170500250007,
+    "value": "Gyar!"
+  },
+  {
+    "id": 101000170500250008,
+    "value": "Grwrrr!"
+  },
+  {
+    "id": 101000170500250009,
+    "value": "Woarrr!"
+  },
+  {
+    "id": 101000170500250010,
+    "value": "GYARRR!"
+  },
+  {
     "id": 101000170500260001,
     "value": "Behold my swordsmanship!"
   },
@@ -32910,6 +32950,54 @@
   {
     "id": 101000170500270012,
     "value": "No, how could I lose?!"
+  },
+  {
+    "id": 101000170500280001,
+    "value": "Here goes! Charge!"
+  },
+  {
+    "id": 101000170500280002,
+    "value": "The fight is on!"
+  },
+  {
+    "id": 101000170500280003,
+    "value": "I'll show you a soldier's grit!"
+  },
+  {
+    "id": 101000170500280004,
+    "value": "Let's bring them down!"
+  },
+  {
+    "id": 101000170500280005,
+    "value": "Yaaah!"
+  },
+  {
+    "id": 101000170500280006,
+    "value": "How's this?!"
+  },
+  {
+    "id": 101000170500280007,
+    "value": "Eat this!"
+  },
+  {
+    "id": 101000170500280008,
+    "value": "You're open!"
+  },
+  {
+    "id": 101000170500280009,
+    "value": "Argh!"
+  },
+  {
+    "id": 101000170500280010,
+    "value": "Dammit!"
+  },
+  {
+    "id": 101000170500280011,
+    "value": "Can't take anymore!"
+  },
+  {
+    "id": 101000170500280012,
+    "value": "R-Retreat!"
   },
   {
     "id": 101000170500290001,
@@ -33170,6 +33258,318 @@
   {
     "id": 101000170500350012,
     "value": "I cannot stop until I revive the giant!"
+  },
+  {
+    "id": 101000170500360101,
+    "value": "I, Swordsman Zeta, shall take you on!"
+  },
+  {
+    "id": 101000170500360102,
+    "value": "I have cast aside all vainglory!"
+  },
+  {
+    "id": 101000170500360103,
+    "value": "The wicked shall fall by my hand!"
+  },
+  {
+    "id": 101000170500360105,
+    "value": "I will finish you!"
+  },
+  {
+    "id": 101000170500360106,
+    "value": "The coup de grâce!"
+  },
+  {
+    "id": 101000170500360107,
+    "value": "To hell with you!"
+  },
+  {
+    "id": 101000170500360108,
+    "value": "I have no time for weaklings!"
+  },
+  {
+    "id": 101000170500360109,
+    "value": "Ngh! I'm not done yet!"
+  },
+  {
+    "id": 101000170500360110,
+    "value": "I have endured worse before!"
+  },
+  {
+    "id": 101000170500360111,
+    "value": "Bah, this is nothing!"
+  },
+  {
+    "id": 101000170500360112,
+    "value": "Rgh... I leave the rest to you!"
+  },
+  {
+    "id": 101000170500360113,
+    "value": "On my honor, I will defeat you!"
+  },
+  {
+    "id": 101000170500360114,
+    "value": "This is the strength of the Algas Knights!"
+  },
+  {
+    "id": 101000170500370101,
+    "value": "I'll scatter these weaklings to the wind!"
+  },
+  {
+    "id": 101000170500370102,
+    "value": "Always happy to oblige in a hand-to-hand fight!"
+  },
+  {
+    "id": 101000170500370103,
+    "value": "I think I've held back long enough!"
+  },
+  {
+    "id": 101000170500370104,
+    "value": "I'll slay you here and now! Let's do this!"
+  },
+  {
+    "id": 101000170500370105,
+    "value": "Now, you're mine!"
+  },
+  {
+    "id": 101000170500370106,
+    "value": "Haaaaaah!"
+  },
+  {
+    "id": 101000170500370107,
+    "value": "Here I come!"
+  },
+  {
+    "id": 101000170500370108,
+    "value": "Your time's up!"
+  },
+  {
+    "id": 101000170500370109,
+    "value": "Not bad!"
+  },
+  {
+    "id": 101000170500370110,
+    "value": "Woghhh!"
+  },
+  {
+    "id": 101000170500370111,
+    "value": "Such strength..."
+  },
+  {
+    "id": 101000170500370112,
+    "value": "Am I not strong enough?!"
+  },
+  {
+    "id": 101000170500370113,
+    "value": "Face my deadly blow!"
+  },
+  {
+    "id": 101000170500370114,
+    "value": "Victory is ours!"
+  },
+  {
+    "id": 101000170500380101,
+    "value": "My magic will sweep them away!"
+  },
+  {
+    "id": 101000170500380102,
+    "value": "You cannot hold me here!"
+  },
+  {
+    "id": 101000170500380103,
+    "value": "I'll take care of this one!"
+  },
+  {
+    "id": 101000170500380104,
+    "value": "Have a taste of my magic!"
+  },
+  {
+    "id": 101000170500380105,
+    "value": "Ngaaah!"
+  },
+  {
+    "id": 101000170500380106,
+    "value": "Are you ready?!"
+  },
+  {
+    "id": 101000170500380107,
+    "value": "Time to tidy up!"
+  },
+  {
+    "id": 101000170500380108,
+    "value": "Let's settle this now!"
+  },
+  {
+    "id": 101000170500380109,
+    "value": "Rghhh!"
+  },
+  {
+    "id": 101000170500380110,
+    "value": "This one is no pushover!"
+  },
+  {
+    "id": 101000170500380111,
+    "value": "Rgh! We shall fight to the bitter end!"
+  },
+  {
+    "id": 101000170500380112,
+    "value": "Not even my magic was enough!"
+  },
+  {
+    "id": 101000170500380113,
+    "value": "Witness what true magic looks like!"
+  },
+  {
+    "id": 101000170500380114,
+    "value": "Let's pin the enemy down! Funnels!"
+  },
+  {
+    "id": 101000170500380115,
+    "value": "Monsters! Vanish into the light!"
+  },
+  {
+    "id": 101000170500380116,
+    "value": "This is the power of my magic."
+  },
+  {
+    "id": 101000170500390001,
+    "value": "Grovel before my might!"
+  },
+  {
+    "id": 101000170500390002,
+    "value": "A school of small fry cannot hope to defeat me!"
+  },
+  {
+    "id": 101000170500390003,
+    "value": "You won't stay here for long!"
+  },
+  {
+    "id": 101000170500390004,
+    "value": "How weak! Weak! So weak!"
+  },
+  {
+    "id": 101000170500390005,
+    "value": "What foolishness!"
+  },
+  {
+    "id": 101000170500390006,
+    "value": "Pathetic!"
+  },
+  {
+    "id": 101000170500390007,
+    "value": "Feeble indeed!"
+  },
+  {
+    "id": 101000170500390008,
+    "value": "Take this!"
+  },
+  {
+    "id": 101000170500390009,
+    "value": "Argh!"
+  },
+  {
+    "id": 101000170500390010,
+    "value": "What?!"
+  },
+  {
+    "id": 101000170500390011,
+    "value": "Ngh! You'll regret that!"
+  },
+  {
+    "id": 101000170500390012,
+    "value": "It... It can't be!!!"
+  },
+  {
+    "id": 101000170500400001,
+    "value": "Think you can best me, do you?"
+  },
+  {
+    "id": 101000170500400002,
+    "value": "Buffoon! Meet your end!"
+  },
+  {
+    "id": 101000170500400003,
+    "value": "Heheh, can you withstand my blade?"
+  },
+  {
+    "id": 101000170500400005,
+    "value": "Wahahah!"
+  },
+  {
+    "id": 101000170500400006,
+    "value": "You're mine!"
+  },
+  {
+    "id": 101000170500400007,
+    "value": "Hmph!"
+  },
+  {
+    "id": 101000170500400008,
+    "value": "You're slow!"
+  },
+  {
+    "id": 101000170500400009,
+    "value": "Argh!"
+  },
+  {
+    "id": 101000170500400010,
+    "value": "What?!"
+  },
+  {
+    "id": 101000170500400011,
+    "value": "Hngh! You'll have to do better than that!"
+  },
+  {
+    "id": 101000170500400012,
+    "value": "Rgh! Not here—not now!"
+  },
+  {
+    "id": 101000170500410001,
+    "value": "Allow me to put you to rest!"
+  },
+  {
+    "id": 101000170500410002,
+    "value": "Hohohohoh!"
+  },
+  {
+    "id": 101000170500410003,
+    "value": "Be good and disappear at once!"
+  },
+  {
+    "id": 101000170500410004,
+    "value": "Let my magic be your doom!"
+  },
+  {
+    "id": 101000170500410005,
+    "value": "Haaah!"
+  },
+  {
+    "id": 101000170500410006,
+    "value": "Qube!!!"
+  },
+  {
+    "id": 101000170500410007,
+    "value": "Your fate is sealed!"
+  },
+  {
+    "id": 101000170500410008,
+    "value": "Begone!"
+  },
+  {
+    "id": 101000170500410009,
+    "value": "Ngh!"
+  },
+  {
+    "id": 101000170500410010,
+    "value": "Argh!"
+  },
+  {
+    "id": 101000170500410011,
+    "value": "Do not think you have won..."
+  },
+  {
+    "id": 101000170500410012,
+    "value": "How could my sorcery fail me?!"
   },
   {
     "id": 101000170900010001,

@@ -3424,12 +3424,20 @@
     "value": "Warrior Desert Dom"
   },
   {
+    "id": 100100001705002500,
+    "value": "Theodante"
+  },
+  {
     "id": 100100001705002600,
     "value": "Swordsman Gelgoog"
   },
   {
     "id": 100100001705002700,
     "value": "Warrior Rick Dom II"
+  },
+  {
+    "id": 100100001705002800,
+    "value": "Soldier Hizack"
   },
   {
     "id": 100100001705002900,
@@ -3454,6 +3462,42 @@
   {
     "id": 100100001705003500,
     "value": "Sorcerer Messala"
+  },
+  {
+    "id": 100100001705003600,
+    "value": "Swordsman Zeta Gundam"
+  },
+  {
+    "id": 100100001705003601,
+    "value": "Swordsman Zeta Gundam"
+  },
+  {
+    "id": 100100001705003700,
+    "value": "Fighter Double Zeta Gundam"
+  },
+  {
+    "id": 100100001705003701,
+    "value": "Fighter Double Zeta Gundam"
+  },
+  {
+    "id": 100100001705003800,
+    "value": "Wizard Nu Gundam"
+  },
+  {
+    "id": 100100001705003801,
+    "value": "Wizard Nu Gundam"
+  },
+  {
+    "id": 100100001705003900,
+    "value": "Fighter Dreissen"
+  },
+  {
+    "id": 100100001705004000,
+    "value": "Knight Bawoo"
+  },
+  {
+    "id": 100100001705004100,
+    "value": "Sorceress Qubeley"
   },
   {
     "id": 100100001709000100,
@@ -7612,12 +7656,20 @@
     "value": "A Zeon warrior who, accompanied by Warrior Desert Zaku, attacked Knight Gundam in the Hatte Desert.\nHe is clad in armor specially designed for desert warfare with excellent sand-proofing, and excels in exploiting the arid environment of the Hatte Desert during combat.\nHis special move is Desert Slash, a sword attack that cuts through the enemy."
   },
   {
+    "id": 100200001705002500,
+    "value": "The strongest monster in the Munzo Empire, born from the sorcery of Sieg Zeon.\nAfter defeating the Three Demons of Zeon, the Algas Knights reached King Conscon's throne room, only to witness the throne itself devour the king and princess and transform into a gigantic monster.\nDreaded as the Demon of Destruction, it possesses enough power to doom the world.\nIt was defeated when the three captains of the Algas Knights, each bearing a sacred treasure of Algas, launched a coordinated attack."
+  },
+  {
     "id": 100200001705002600,
     "value": "Swordsmen in the Munzo Empire's cavalry who charge through the battlefield atop Musais, their preferred horses.\nAs swordsmen, they are exceptionally skilled at striking from horseback with their Gelgoog lances and swords.\nVulnerable to magic, they were ultimately defeated in battle by the Algus Knights' mages."
   },
   {
     "id": 100200001705002700,
     "value": "Warriors in the service of the Munzo Empire.\nRenowned for their strength, they fought the Algas Knights' mages who infiltrated the Munzo Empire with long axes nearly three times their own height.\nSome of them fell under the spell of an evil power, their armor twisting into the green Evil Warrior Rick Dom II."
+  },
+  {
+    "id": 100200001705002800,
+    "value": "Zeon soldiers in the Munzo Empire.\nDue to their modest combat prowess, they defend Castle Munzo in a tight formation.\nThey stood against the Algas Knights who stormed the castle.\nTheir special move is Hizack Thrust, a spear-thrusting attack."
   },
   {
     "id": 100200001705002900,
@@ -7642,6 +7694,42 @@
   {
     "id": 100200001705003500,
     "value": "A Zeon sorcerer who conspired with Cleric M'Quve Katze to use the Colossus of Legend for their machinations.\nHe specializes in powerful light-based magic attacks, such as the spell Mobiliphila.\nHe stole a red crystal ball known as a Rufoi Star from Rasara in an attempt to destroy the Saddrac World by reviving the Colossus of Legend, Giant Psycho Golem.\nHis true identity is Monster Iron Messala, a secret known only to a handful, even within Zeon."
+  },
+  {
+    "id": 100200001705003600,
+    "value": "-"
+  },
+  {
+    "id": 100200001705003601,
+    "value": "A scion of the Gundam clan who commands the Algas Knights' cavalry.\nWielding the Zeta Great Sword and Shield of Flight, he fought the Munzo Empire as raid commander atop his horse, Argama—among the swiftest horses of the Noa region.\nBurdened by guilt over the Munzo Empire capturing his commander, he was determined to personally rescue Knight Alex.\nConsequently, his desire for quick success disrupted coordination with the rest of the Algas Knights, causing discord throughout the order.\nOnce peace returned to Algas, he traveled to the Lacroa Kingdom and set out with Knight Gundam to fight in the Moor Realm."
+  },
+  {
+    "id": 100200001705003700,
+    "value": "-"
+  },
+  {
+    "id": 100200001705003701,
+    "value": "The commander of the Algas Knights' warriors and a scion of the Gundam clan.\nA fighter gifted with Herculean strength, he believed that he could single-handedly rout the Munzo Empire.\nGuided by Knight Amuro, he began to value harmony within the Algas Knights and learned to fight efficiently.\nIn addition to his strength, Urna Shot—fired from his forehead—is a powerful special move.\nAfter obtaining the sacred treasures of Algas, he managed to defeat Theodante alongside Swordsman Zeta and Wizard Nu.\nAfter rescuing Knight Alex, he journeyed to the Lacroa Kingdom and set out to fight in the Moor Realm."
+  },
+  {
+    "id": 100200001705003800,
+    "value": "-"
+  },
+  {
+    "id": 100200001705003801,
+    "value": "The commander of the Algas Knights' mages and a scion of the Gundam clan who excels in magic.\nHe uses his staff to cast all manner of spells.\nHe is instantly recognizable by the Funnel Scales equipped on his back.\nHe can control them with magic, not only enabling attacks like Foehn Blast Sweep, but also defensive maneuvers and other tactics.\nHe can also fire the decorative piece on his helmet, a hidden weapon called the Knight Slugger.\nThe Guiding Harp led him from Lacroa Kingdom to Moor Realm, where a decisive battle awaited."
+  },
+  {
+    "id": 100200001705003900,
+    "value": "Commands the warriors of Munzo Empire's Three Demons of Zeon.\nHe led fighters renowned for their strength in an ambush against the Algas Knights when the order stormed Castle Munzo.\nWielding a bifurcated cutlass called the Drive Sword, he fought the Algas Knights' cavalry, but fell helplessly before the coordinated attack of Swordsmen Zeta and Re-GZ, and was dispossessed of his Dragon Shield."
+  },
+  {
+    "id": 100200001705004000,
+    "value": "Commands the cavalry of Munzo Empire's Three Demons of Zeon.\nProud to the point of arrogance, he always speaks condescendingly to his opponents, but also boasts the strength to match such confidence.\nHe masters special moves like the Cutting Gale, using blinding swordsmanship to cut down his enemies with razor-sharp gales.\nClad in red armor, he charges across the battlefield atop his trusted red steed, Gwanvan.\nHe fell before the coordinated attack of Wizard Nu Gundam and Priest Methuss."
+  },
+  {
+    "id": 100200001705004100,
+    "value": "Commands the mages of Munzo Empire's Three Demons of Zeon.\nAs the commander of mages who cast all manner of spells, she is a cunning strategist, managing to lure Knight Alex—the pride of the Algas Knights—into a trap.\nShe ambushed the Algas Knights within the corridors of Castle Munzo, but after enduring a relentless attack from the order, finally reveals her true, monstrous, form."
   },
   {
     "id": 100200001709000100,
@@ -11800,12 +11888,20 @@
     "value": "Warrior Desert Dom"
   },
   {
+    "id": 100300001705002500,
+    "value": "Theodante"
+  },
+  {
     "id": 100300001705002600,
     "value": "Swordsman Gelgoog"
   },
   {
     "id": 100300001705002700,
     "value": "Warrior Rick Dom II"
+  },
+  {
+    "id": 100300001705002800,
+    "value": "Soldier Hizack"
   },
   {
     "id": 100300001705002900,
@@ -11830,6 +11926,42 @@
   {
     "id": 100300001705003500,
     "value": "Sorcerer Messala"
+  },
+  {
+    "id": 100300001705003600,
+    "value": "Swordsman Zeta Gundam"
+  },
+  {
+    "id": 100300001705003601,
+    "value": "Swordsman Zeta Gundam"
+  },
+  {
+    "id": 100300001705003700,
+    "value": "Fighter Double Zeta Gundam"
+  },
+  {
+    "id": 100300001705003701,
+    "value": "Fighter Double Zeta Gundam"
+  },
+  {
+    "id": 100300001705003800,
+    "value": "Wizard Nu Gundam"
+  },
+  {
+    "id": 100300001705003801,
+    "value": "Wizard Nu Gundam"
+  },
+  {
+    "id": 100300001705003900,
+    "value": "Fighter Dreissen"
+  },
+  {
+    "id": 100300001705004000,
+    "value": "Knight Bawoo"
+  },
+  {
+    "id": 100300001705004100,
+    "value": "Sorceress Qubeley"
   },
   {
     "id": 100300001709000100,
@@ -15988,12 +16120,20 @@
     "value": "Warrior Desert Dom"
   },
   {
+    "id": 100400001705002500,
+    "value": "Theodante"
+  },
+  {
     "id": 100400001705002600,
     "value": "Swordsman Gelgoog"
   },
   {
     "id": 100400001705002700,
     "value": "Warrior Rick Dom II"
+  },
+  {
+    "id": 100400001705002800,
+    "value": "Soldier Hizack"
   },
   {
     "id": 100400001705002900,
@@ -16018,6 +16158,42 @@
   {
     "id": 100400001705003500,
     "value": "Sorcerer Messala"
+  },
+  {
+    "id": 100400001705003600,
+    "value": "Swordsman Zeta Gundam"
+  },
+  {
+    "id": 100400001705003601,
+    "value": "Swordsman Zeta Gundam"
+  },
+  {
+    "id": 100400001705003700,
+    "value": "Fighter Double Zeta Gundam"
+  },
+  {
+    "id": 100400001705003701,
+    "value": "Fighter Double Zeta Gundam"
+  },
+  {
+    "id": 100400001705003800,
+    "value": "Wizard Nu Gundam"
+  },
+  {
+    "id": 100400001705003801,
+    "value": "Wizard Nu Gundam"
+  },
+  {
+    "id": 100400001705003900,
+    "value": "Fighter Dreissen"
+  },
+  {
+    "id": 100400001705004000,
+    "value": "Knight Bawoo"
+  },
+  {
+    "id": 100400001705004100,
+    "value": "Sorceress Qubeley"
   },
   {
     "id": 100400001709000100,
@@ -18992,12 +19168,20 @@
     "value": "YAAARGHHH!"
   },
   {
+    "id": 101100001705002500,
+    "value": "GYARRR!"
+  },
+  {
     "id": 101100001705002600,
     "value": "I-I won't admit defeat! Never, you hear?!"
   },
   {
     "id": 101100001705002700,
     "value": "No, how could I lose?!"
+  },
+  {
+    "id": 101100001705002800,
+    "value": "R-Retreat!"
   },
   {
     "id": 101100001705002900,
@@ -19022,6 +19206,42 @@
   {
     "id": 101100001705003500,
     "value": "I cannot stop until I revive the giant!"
+  },
+  {
+    "id": 101100001705003600,
+    "value": "Rgh... I leave the rest to you!"
+  },
+  {
+    "id": 101100001705003601,
+    "value": "Rgh... I leave the rest to you!"
+  },
+  {
+    "id": 101100001705003700,
+    "value": "Am I not strong enough?!"
+  },
+  {
+    "id": 101100001705003701,
+    "value": "Am I not strong enough?!"
+  },
+  {
+    "id": 101100001705003800,
+    "value": "Not even my magic was enough!"
+  },
+  {
+    "id": 101100001705003801,
+    "value": "Not even my magic was enough!"
+  },
+  {
+    "id": 101100001705003900,
+    "value": "It... It can't be!!!"
+  },
+  {
+    "id": 101100001705004000,
+    "value": "Rgh! Not here—not now!"
+  },
+  {
+    "id": 101100001705004100,
+    "value": "How could my sorcery fail me?!"
   },
   {
     "id": 101100001709000100,
@@ -22604,12 +22824,20 @@
     "value": "Masashi Yamane"
   },
   {
+    "id": 101400001705002500,
+    "value": "Masayuki Fujibuchi"
+  },
+  {
     "id": 101400001705002600,
     "value": "Mitsuaki Hoshino"
   },
   {
     "id": 101400001705002700,
     "value": "Masayuki Oshita"
+  },
+  {
+    "id": 101400001705002800,
+    "value": "Yasutaka Tomioka"
   },
   {
     "id": 101400001705002900,
@@ -22634,6 +22862,42 @@
   {
     "id": 101400001705003500,
     "value": "Mitsuaki Hoshino"
+  },
+  {
+    "id": 101400001705003600,
+    "value": "Takuya Sato"
+  },
+  {
+    "id": 101400001705003601,
+    "value": "Takuya Sato"
+  },
+  {
+    "id": 101400001705003700,
+    "value": "Hinata Tadokoro"
+  },
+  {
+    "id": 101400001705003701,
+    "value": "Hinata Tadokoro"
+  },
+  {
+    "id": 101400001705003800,
+    "value": "Akifumi Endo"
+  },
+  {
+    "id": 101400001705003801,
+    "value": "Akifumi Endo"
+  },
+  {
+    "id": 101400001705003900,
+    "value": "Takurou Kitagawa"
+  },
+  {
+    "id": 101400001705004000,
+    "value": "Mitsuaki Hoshino"
+  },
+  {
+    "id": 101400001705004100,
+    "value": ""
   },
   {
     "id": 101400001709000100,

@@ -9264,6 +9264,22 @@
     "ScheduleId": 0
   },
   {
+    "CharacterId": 1705002500,
+    "SortOrder": 1,
+    "CharacterSkillId": 160050101,
+    "RequiredLevel": 1,
+    "SpCharacterSkillId": 160050101,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1705002500,
+    "SortOrder": 2,
+    "CharacterSkillId": 120090101,
+    "RequiredLevel": 30,
+    "SpCharacterSkillId": 120090101,
+    "ScheduleId": 0
+  },
+  {
     "CharacterId": 1705002600,
     "SortOrder": 1,
     "CharacterSkillId": 120090101,
@@ -9293,6 +9309,22 @@
     "CharacterSkillId": 0,
     "RequiredLevel": 30,
     "SpCharacterSkillId": 190150301,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1705002800,
+    "SortOrder": 1,
+    "CharacterSkillId": 190150201,
+    "RequiredLevel": 1,
+    "SpCharacterSkillId": 190150301,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1705002800,
+    "SortOrder": 2,
+    "CharacterSkillId": 0,
+    "RequiredLevel": 30,
+    "SpCharacterSkillId": 160050101,
     "ScheduleId": 0
   },
   {
@@ -9397,6 +9429,102 @@
     "CharacterSkillId": 0,
     "RequiredLevel": 30,
     "SpCharacterSkillId": 180160301,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1705003601,
+    "SortOrder": 1,
+    "CharacterSkillId": 160050101,
+    "RequiredLevel": 1,
+    "SpCharacterSkillId": 160050101,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1705003601,
+    "SortOrder": 2,
+    "CharacterSkillId": 310200101,
+    "RequiredLevel": 30,
+    "SpCharacterSkillId": 310200101,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1705003701,
+    "SortOrder": 1,
+    "CharacterSkillId": 190150301,
+    "RequiredLevel": 1,
+    "SpCharacterSkillId": 190150301,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1705003701,
+    "SortOrder": 2,
+    "CharacterSkillId": 130080301,
+    "RequiredLevel": 30,
+    "SpCharacterSkillId": 130080301,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1705003801,
+    "SortOrder": 1,
+    "CharacterSkillId": 180160301,
+    "RequiredLevel": 1,
+    "SpCharacterSkillId": 180160301,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1705003801,
+    "SortOrder": 2,
+    "CharacterSkillId": 130080301,
+    "RequiredLevel": 30,
+    "SpCharacterSkillId": 130080301,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1705003900,
+    "SortOrder": 1,
+    "CharacterSkillId": 260040201,
+    "RequiredLevel": 1,
+    "SpCharacterSkillId": 260040301,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1705003900,
+    "SortOrder": 2,
+    "CharacterSkillId": 0,
+    "RequiredLevel": 30,
+    "SpCharacterSkillId": 190150301,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1705004000,
+    "SortOrder": 1,
+    "CharacterSkillId": 160050101,
+    "RequiredLevel": 1,
+    "SpCharacterSkillId": 160050101,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1705004000,
+    "SortOrder": 2,
+    "CharacterSkillId": 0,
+    "RequiredLevel": 30,
+    "SpCharacterSkillId": 180160301,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1705004100,
+    "SortOrder": 1,
+    "CharacterSkillId": 180160201,
+    "RequiredLevel": 1,
+    "SpCharacterSkillId": 180160301,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1705004100,
+    "SortOrder": 2,
+    "CharacterSkillId": 0,
+    "RequiredLevel": 30,
+    "SpCharacterSkillId": 120090101,
     "ScheduleId": 0
   },
   {

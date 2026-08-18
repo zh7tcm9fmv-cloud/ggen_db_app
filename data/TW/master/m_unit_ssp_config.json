@@ -9288,6 +9288,30 @@
     "ScheduleId": 2511209901
   },
   {
+    "UnitId": 1705003600,
+    "UnitSspInitialReleaseSetId": 1705003600,
+    "UnitSspCustomCoreGroupId": 1705003600,
+    "UnitSspAddStatusId": 100018,
+    "UnitSspMaterialConsumeSetId": 1,
+    "ScheduleId": 2511209901
+  },
+  {
+    "UnitId": 1705003700,
+    "UnitSspInitialReleaseSetId": 1705003700,
+    "UnitSspCustomCoreGroupId": 1705003700,
+    "UnitSspAddStatusId": 100011,
+    "UnitSspMaterialConsumeSetId": 1,
+    "ScheduleId": 2511209901
+  },
+  {
+    "UnitId": 1705003800,
+    "UnitSspInitialReleaseSetId": 1705003800,
+    "UnitSspCustomCoreGroupId": 1705003800,
+    "UnitSspAddStatusId": 100003,
+    "UnitSspMaterialConsumeSetId": 1,
+    "ScheduleId": 2511209901
+  },
+  {
     "UnitId": 1705004310,
     "UnitSspInitialReleaseSetId": 0,
     "UnitSspCustomCoreGroupId": 1705004310,
@@ -9328,6 +9352,14 @@
     "ScheduleId": 2511209901
   },
   {
+    "UnitId": 1705004800,
+    "UnitSspInitialReleaseSetId": 0,
+    "UnitSspCustomCoreGroupId": 1705004800,
+    "UnitSspAddStatusId": 100017,
+    "UnitSspMaterialConsumeSetId": 1,
+    "ScheduleId": 2511209901
+  },
+  {
     "UnitId": 1705004910,
     "UnitSspInitialReleaseSetId": 1705004910,
     "UnitSspCustomCoreGroupId": 1705004910,
@@ -9340,6 +9372,38 @@
     "UnitSspInitialReleaseSetId": 1705005010,
     "UnitSspCustomCoreGroupId": 1705005010,
     "UnitSspAddStatusId": 100001,
+    "UnitSspMaterialConsumeSetId": 1,
+    "ScheduleId": 2511209901
+  },
+  {
+    "UnitId": 1705005100,
+    "UnitSspInitialReleaseSetId": 1705005100,
+    "UnitSspCustomCoreGroupId": 1705005100,
+    "UnitSspAddStatusId": 100012,
+    "UnitSspMaterialConsumeSetId": 1,
+    "ScheduleId": 2511209901
+  },
+  {
+    "UnitId": 1705005200,
+    "UnitSspInitialReleaseSetId": 0,
+    "UnitSspCustomCoreGroupId": 1705005200,
+    "UnitSspAddStatusId": 100015,
+    "UnitSspMaterialConsumeSetId": 1,
+    "ScheduleId": 2511209901
+  },
+  {
+    "UnitId": 1705005300,
+    "UnitSspInitialReleaseSetId": 0,
+    "UnitSspCustomCoreGroupId": 1705005300,
+    "UnitSspAddStatusId": 100002,
+    "UnitSspMaterialConsumeSetId": 1,
+    "ScheduleId": 2511209901
+  },
+  {
+    "UnitId": 1705005400,
+    "UnitSspInitialReleaseSetId": 0,
+    "UnitSspCustomCoreGroupId": 1705005400,
+    "UnitSspAddStatusId": 100012,
     "UnitSspMaterialConsumeSetId": 1,
     "ScheduleId": 2511209901
   },

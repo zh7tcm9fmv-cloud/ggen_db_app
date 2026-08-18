@@ -1987,5 +1987,14 @@
     "BattleSideAnotherEnemyBgmId": 173000001,
     "BattleSideSecretEnemyBgmId": 173000001,
     "BattleSideSecretAnotherEnemyBgmId": 173000001
+  },
+  {
+    "Id": 10222,
+    "BattleSideOwnBgmId": 173000002,
+    "BattleSideFriendBgmId": 173000002,
+    "BattleSideEnemyBgmId": 173000002,
+    "BattleSideAnotherEnemyBgmId": 173000002,
+    "BattleSideSecretEnemyBgmId": 173000002,
+    "BattleSideSecretAnotherEnemyBgmId": 173000002
   }
 ]

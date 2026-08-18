@@ -21457,7 +21457,7 @@
   },
   {
     "id": 120100170500070002,
-    "value": "Fan"
+    "value": "Funn"
   },
   {
     "id": 120100170500070090,
@@ -21692,6 +21692,70 @@
     "value": "Megafunn SSP"
   },
   {
+    "id": 120100170500330001,
+    "value": "Sword"
+  },
+  {
+    "id": 120100170500330002,
+    "value": "Sword Throw"
+  },
+  {
+    "id": 120100170500340001,
+    "value": "Double Hammer"
+  },
+  {
+    "id": 120100170500340002,
+    "value": "Deadly Blow"
+  },
+  {
+    "id": 120100170500350001,
+    "value": "Gigasolar"
+  },
+  {
+    "id": 120100170500350002,
+    "value": "Gigasabe"
+  },
+  {
+    "id": 120100170500360001,
+    "value": "Mow-Down"
+  },
+  {
+    "id": 120100170500360002,
+    "value": "Mega Attack"
+  },
+  {
+    "id": 120100170500360003,
+    "value": "Devastating Strike"
+  },
+  {
+    "id": 120100170500360090,
+    "value": "Mega Attack SSP"
+  },
+  {
+    "id": 120100170500370001,
+    "value": "Lethal Thrust"
+  },
+  {
+    "id": 120100170500370002,
+    "value": "Funn"
+  },
+  {
+    "id": 120100170500370090,
+    "value": "Funn SSP"
+  },
+  {
+    "id": 120100170500380001,
+    "value": "Bazoo"
+  },
+  {
+    "id": 120100170500380002,
+    "value": "Mobiliphila"
+  },
+  {
+    "id": 120100170500380090,
+    "value": "Bazoo SSP"
+  },
+  {
     "id": 120100170500431001,
     "value": "Melee"
   },
@@ -21744,6 +21808,26 @@
     "value": "Desert Slash SSP"
   },
   {
+    "id": 120100170500480001,
+    "value": "Tentacle Attack"
+  },
+  {
+    "id": 120100170500480002,
+    "value": "Mobiliphila"
+  },
+  {
+    "id": 120100170500480003,
+    "value": "Light Beam"
+  },
+  {
+    "id": 120100170500480004,
+    "value": "Black Mist"
+  },
+  {
+    "id": 120100170500480090,
+    "value": "Light Beam SSP"
+  },
+  {
     "id": 120100170500491001,
     "value": "Lance & Saber"
   },
@@ -21762,6 +21846,70 @@
   {
     "id": 120100170500501090,
     "value": "Battle Axe SSP"
+  },
+  {
+    "id": 120100170500510001,
+    "value": "Spear"
+  },
+  {
+    "id": 120100170500510090,
+    "value": "Spear SSP"
+  },
+  {
+    "id": 120100170500520001,
+    "value": "Sword"
+  },
+  {
+    "id": 120100170500520002,
+    "value": "Sword Throw"
+  },
+  {
+    "id": 120100170500520003,
+    "value": "Assault"
+  },
+  {
+    "id": 120100170500520004,
+    "value": "Zeta Wave Sword"
+  },
+  {
+    "id": 120100170500520090,
+    "value": "Assault SSP"
+  },
+  {
+    "id": 120100170500530001,
+    "value": "Double Hammer"
+  },
+  {
+    "id": 120100170500530002,
+    "value": "Deadly Blow"
+  },
+  {
+    "id": 120100170500530003,
+    "value": "Lion Axe"
+  },
+  {
+    "id": 120100170500530090,
+    "value": "Lion Axe SSP"
+  },
+  {
+    "id": 120100170500540001,
+    "value": "Gigasolar"
+  },
+  {
+    "id": 120100170500540002,
+    "value": "Gigasabe"
+  },
+  {
+    "id": 120100170500540003,
+    "value": "Gigafunn"
+  },
+  {
+    "id": 120100170500540004,
+    "value": "Megator"
+  },
+  {
+    "id": 120100170500540090,
+    "value": "Gigafunn SSP"
   },
   {
     "id": 120100170500550001,

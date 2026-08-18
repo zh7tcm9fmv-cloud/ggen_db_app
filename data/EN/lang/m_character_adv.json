@@ -4312,12 +4312,20 @@
     "value": "Warrior Desert Dom"
   },
   {
+    "id": 100400001705002500,
+    "value": "Theodante"
+  },
+  {
     "id": 100400001705002600,
     "value": "Swordsman Gelgoog"
   },
   {
     "id": 100400001705002700,
     "value": "Warrior Rick Dom II"
+  },
+  {
+    "id": 100400001705002800,
+    "value": "Soldier Hizack"
   },
   {
     "id": 100400001705002900,
@@ -4342,6 +4350,46 @@
   {
     "id": 100400001705003500,
     "value": "Sorcerer Messala"
+  },
+  {
+    "id": 100400001705003600,
+    "value": "Swordsman Zeta Gundam"
+  },
+  {
+    "id": 100400001705003601,
+    "value": "Swordsman Zeta Gundam"
+  },
+  {
+    "id": 100400001705003700,
+    "value": "Fighter Double Zeta Gundam"
+  },
+  {
+    "id": 100400001705003701,
+    "value": "Fighter Double Zeta Gundam"
+  },
+  {
+    "id": 100400001705003800,
+    "value": "Wizard Nu Gundam"
+  },
+  {
+    "id": 100400001705003801,
+    "value": "Wizard Nu Gundam"
+  },
+  {
+    "id": 100400001705003900,
+    "value": "Fighter Dreissen"
+  },
+  {
+    "id": 100400001705004000,
+    "value": "Knight Bawoo"
+  },
+  {
+    "id": 100400001705004100,
+    "value": "Sorceress Qubeley"
+  },
+  {
+    "id": 100400001705004300,
+    "value": "Knight Amuro"
   },
   {
     "id": 100400001709000100,
@@ -6016,6 +6064,14 @@
     "value": "Sorceress Lalah"
   },
   {
+    "id": 100400002705000009,
+    "value": "Prince Kamille"
+  },
+  {
+    "id": 100400002705000010,
+    "value": "King Conscon"
+  },
+  {
     "id": 100400002705000011,
     "value": "Sieg Zeon"
   },
@@ -6024,8 +6080,32 @@
     "value": "GM Henson"
   },
   {
+    "id": 100400002705000013,
+    "value": "King Blex"
+  },
+  {
+    "id": 100400002705000014,
+    "value": "Princess Yuiry"
+  },
+  {
+    "id": 100400002705000015,
+    "value": "Swordsman Zeta, Fighter Double Zeta, Wizard Nu"
+  },
+  {
+    "id": 100400002705000016,
+    "value": "Spirit Catl Wood"
+  },
+  {
     "id": 100400002705000017,
     "value": "Seer Sarasa"
+  },
+  {
+    "id": 100400002705000018,
+    "value": "Attendant Haman"
+  },
+  {
+    "id": 100400002705000019,
+    "value": "Monk GM Cannon"
   },
   {
     "id": 100400002850000100,

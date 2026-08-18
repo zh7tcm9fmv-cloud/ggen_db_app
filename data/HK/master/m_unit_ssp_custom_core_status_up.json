@@ -2910,6 +2910,16 @@
     "EffectValue": 1
   },
   {
+    "Id": 170500360002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 170500380002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
     "Id": 170500431002,
     "UnitStatusTypeIndex": 6,
     "EffectValue": 1
@@ -2925,12 +2935,27 @@
     "EffectValue": 1
   },
   {
+    "Id": 170500480002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
     "Id": 170500491002,
     "UnitStatusTypeIndex": 6,
     "EffectValue": 1
   },
   {
     "Id": 170500501002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 170500520002,
+    "UnitStatusTypeIndex": 6,
+    "EffectValue": 1
+  },
+  {
+    "Id": 170500530002,
     "UnitStatusTypeIndex": 6,
     "EffectValue": 1
   },

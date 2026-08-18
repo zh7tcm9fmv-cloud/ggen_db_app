@@ -18,6 +18,18 @@
     "MapStageObjectId": 9003
   },
   {
+    "Id": 900005,
+    "EventTypeIndex": 1,
+    "TargetId": 1030000005,
+    "MapStageObjectId": 9005
+  },
+  {
+    "Id": 900006,
+    "EventTypeIndex": 1,
+    "TargetId": 1030000006,
+    "MapStageObjectId": 9006
+  },
+  {
     "Id": 900008,
     "EventTypeIndex": 3,
     "TargetId": 99147052000001,
@@ -33,6 +45,24 @@
     "Id": 900010,
     "EventTypeIndex": 3,
     "TargetId": 99147052000003,
+    "MapStageObjectId": 9003
+  },
+  {
+    "Id": 900011,
+    "EventTypeIndex": 3,
+    "TargetId": 99147053000001,
+    "MapStageObjectId": 9001
+  },
+  {
+    "Id": 900012,
+    "EventTypeIndex": 3,
+    "TargetId": 99147053000002,
+    "MapStageObjectId": 9002
+  },
+  {
+    "Id": 900013,
+    "EventTypeIndex": 3,
+    "TargetId": 99147053000003,
     "MapStageObjectId": 9003
   }
 ]

@@ -14,5 +14,13 @@
     "QuoteLanguageId": 251100000020001501,
     "BgmId": 170500006,
     "BackgroundResourceId": "em_200015"
+  },
+  {
+    "Id": 20001601,
+    "EventId": 200016,
+    "StandUpResourceId": "cb_g7050c04300",
+    "QuoteLanguageId": 251100000020001601,
+    "BgmId": 170500011,
+    "BackgroundResourceId": "em_200016"
   }
 ]

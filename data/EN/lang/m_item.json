@@ -4880,6 +4880,18 @@
     "value": "SR Sorcerer Messala Limit Break Material"
   },
   {
+    "id": 150100171705003600,
+    "value": "SR Fighter Dreissen Limit Break Material"
+  },
+  {
+    "id": 150100171705003700,
+    "value": "SR Knight Bawoo Limit Break Material"
+  },
+  {
+    "id": 150100171705003800,
+    "value": "SR Sorceress Qubeley Limit Break Material"
+  },
+  {
     "id": 150100171705004310,
     "value": "SSR Giant Mud Golem Limit Break Material"
   },
@@ -4900,12 +4912,32 @@
     "value": "R Warrior Desert Dom Limit Break Material"
   },
   {
+    "id": 150100171705004800,
+    "value": "SSR Theodante Limit Break Material"
+  },
+  {
     "id": 150100171705004910,
     "value": "SR Swordsman Gelgoog Limit Break Material"
   },
   {
     "id": 150100171705005010,
     "value": "SR Warrior Rick Dom II Limit Break Material"
+  },
+  {
+    "id": 150100171705005100,
+    "value": "R Soldier Hizack Limit Break Material"
+  },
+  {
+    "id": 150100171705005200,
+    "value": "SSR Swordsman Zeta Gundam Limit Break Material"
+  },
+  {
+    "id": 150100171705005300,
+    "value": "SSR Fighter Double Zeta Gundam Limit Break Material"
+  },
+  {
+    "id": 150100171705005400,
+    "value": "SSR Wizard Nu Gundam Limit Break Material"
   },
   {
     "id": 150100171705005500,
@@ -6054,6 +6086,14 @@
   {
     "id": 150100222000150002,
     "value": "Carddass coins(Colossus of Legend)"
+  },
+  {
+    "id": 150100222000160001,
+    "value": "Boss Challenge Ticket(The Knights of Algas)"
+  },
+  {
+    "id": 150100222000160002,
+    "value": "Carddass coins(The Knights of Algas)"
   },
   {
     "id": 150100222100010001,
@@ -11212,6 +11252,18 @@
     "value": "An item used to perform Limit Break on SR Sorcerer Messala"
   },
   {
+    "id": 150200171705003600,
+    "value": "An item used to perform Limit Break on SR Fighter Dreissen"
+  },
+  {
+    "id": 150200171705003700,
+    "value": "An item used to perform Limit Break on SR Knight Bawoo"
+  },
+  {
+    "id": 150200171705003800,
+    "value": "An item used to perform Limit Break on SR Sorceress Qubeley"
+  },
+  {
     "id": 150200171705004310,
     "value": "An item used to perform Limit Break on SSR Giant Mud Golem"
   },
@@ -11232,12 +11284,32 @@
     "value": "An item used to perform Limit Break on R Warrior Desert Dom"
   },
   {
+    "id": 150200171705004800,
+    "value": "An item used to perform Limit Break on SSR Theodante"
+  },
+  {
     "id": 150200171705004910,
     "value": "An item used to perform Limit Break on SR Swordsman Gelgoog"
   },
   {
     "id": 150200171705005010,
     "value": "An item used to perform Limit Break on SR Warrior Rick Dom II"
+  },
+  {
+    "id": 150200171705005100,
+    "value": "An item used to perform Limit Break on R Soldier Hizack"
+  },
+  {
+    "id": 150200171705005200,
+    "value": "An item used to perform Limit Break on SSR Swordsman Zeta Gundam"
+  },
+  {
+    "id": 150200171705005300,
+    "value": "An item used to perform Limit Break on SSR Fighter Double Zeta Gundam"
+  },
+  {
+    "id": 150200171705005400,
+    "value": "An item used to perform Limit Break on SSR Wizard Nu Gundam"
   },
   {
     "id": 150200171705005500,
@@ -12386,6 +12458,14 @@
   {
     "id": 150200222000150002,
     "value": "A coin that can be obtained in the story event \"SD Gundam Side Story II: Colossus of Legend\".\nCan be used in the Carddass for \"SD Gundam Side Story II: Colossus of Legend\"."
+  },
+  {
+    "id": 150200222000160001,
+    "value": "A ticket needed to challenge the boss in story event \"SD Gundam Side Story III: The Knights of Algas\"."
+  },
+  {
+    "id": 150200222000160002,
+    "value": "A coin that can be obtained in the story event \"SD Gundam Side Story III: The Knights of Algas\".\nCan be used in the Carddass for \"SD Gundam Side Story III: The Knights of Algas\"."
   },
   {
     "id": 150200222100010001,

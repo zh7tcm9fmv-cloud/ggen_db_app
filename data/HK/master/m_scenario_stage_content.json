@@ -7580,6 +7580,111 @@
     "StageId": 70520901
   },
   {
+    "ScenarioStageId": 70530102,
+    "SortOrder": 1,
+    "StageId": 70530101
+  },
+  {
+    "ScenarioStageId": 70530102,
+    "SortOrder": 2,
+    "StageId": 70530102
+  },
+  {
+    "ScenarioStageId": 70530102,
+    "SortOrder": 3,
+    "StageId": 70530103
+  },
+  {
+    "ScenarioStageId": 70530202,
+    "SortOrder": 1,
+    "StageId": 70530201
+  },
+  {
+    "ScenarioStageId": 70530202,
+    "SortOrder": 2,
+    "StageId": 70530202
+  },
+  {
+    "ScenarioStageId": 70530304,
+    "SortOrder": 1,
+    "StageId": 70530301
+  },
+  {
+    "ScenarioStageId": 70530304,
+    "SortOrder": 2,
+    "StageId": 70530302
+  },
+  {
+    "ScenarioStageId": 70530304,
+    "SortOrder": 3,
+    "StageId": 70530303
+  },
+  {
+    "ScenarioStageId": 70530304,
+    "SortOrder": 4,
+    "StageId": 70530304
+  },
+  {
+    "ScenarioStageId": 70530304,
+    "SortOrder": 5,
+    "StageId": 70530305
+  },
+  {
+    "ScenarioStageId": 70530402,
+    "SortOrder": 1,
+    "StageId": 70530401
+  },
+  {
+    "ScenarioStageId": 70530402,
+    "SortOrder": 2,
+    "StageId": 70530402
+  },
+  {
+    "ScenarioStageId": 70530502,
+    "SortOrder": 1,
+    "StageId": 70530501
+  },
+  {
+    "ScenarioStageId": 70530502,
+    "SortOrder": 2,
+    "StageId": 70530502
+  },
+  {
+    "ScenarioStageId": 70530602,
+    "SortOrder": 1,
+    "StageId": 70530601
+  },
+  {
+    "ScenarioStageId": 70530602,
+    "SortOrder": 2,
+    "StageId": 70530602
+  },
+  {
+    "ScenarioStageId": 70530602,
+    "SortOrder": 3,
+    "StageId": 70530603
+  },
+  {
+    "ScenarioStageId": 70530701,
+    "SortOrder": 1,
+    "StageId": 70530701
+  },
+  {
+    "ScenarioStageId": 70530801,
+    "SortOrder": 1,
+    "StageId": 70530801
+  },
+  {
+    "ScenarioStageId": 70530901,
+    "SortOrder": 1,
+    "StageId": 70530901
+  },
+  {
+    "ScenarioStageId": 70531001,
+    "SortOrder": 1,
+    "StageId": 70531001
+  },
+  {
     "ScenarioStageId": 90800103,
     "SortOrder": 1,
     "StageId": 90800101

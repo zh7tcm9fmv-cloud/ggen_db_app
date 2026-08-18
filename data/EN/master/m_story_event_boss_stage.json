@@ -1090,5 +1090,83 @@
     "HpGaugeCount": 36,
     "StageNameLanguageId": 130100000070526003,
     "MaxFieldRewardCount": 0
+  },
+  {
+    "Id": 70535001,
+    "StoryEventId": 200016,
+    "StageId": 70535001,
+    "StoryEventBossDifficultyTypeIndex": 1,
+    "IsRareBoss": false,
+    "BossMapNpcId": 705305000102000001,
+    "ConsumeBossChallengePoint": 60,
+    "TurnCountLimit": 3,
+    "HpGaugeCount": 12,
+    "StageNameLanguageId": 130100000070535001,
+    "MaxFieldRewardCount": 0
+  },
+  {
+    "Id": 70535002,
+    "StoryEventId": 200016,
+    "StageId": 70535002,
+    "StoryEventBossDifficultyTypeIndex": 2,
+    "IsRareBoss": false,
+    "BossMapNpcId": 705305000202000001,
+    "ConsumeBossChallengePoint": 90,
+    "TurnCountLimit": 3,
+    "HpGaugeCount": 24,
+    "StageNameLanguageId": 130100000070535002,
+    "MaxFieldRewardCount": 0
+  },
+  {
+    "Id": 70535003,
+    "StoryEventId": 200016,
+    "StageId": 70535003,
+    "StoryEventBossDifficultyTypeIndex": 3,
+    "IsRareBoss": false,
+    "BossMapNpcId": 705305000302000001,
+    "ConsumeBossChallengePoint": 120,
+    "TurnCountLimit": 3,
+    "HpGaugeCount": 36,
+    "StageNameLanguageId": 130100000070535003,
+    "MaxFieldRewardCount": 0
+  },
+  {
+    "Id": 70536001,
+    "StoryEventId": 200016,
+    "StageId": 70536001,
+    "StoryEventBossDifficultyTypeIndex": 1,
+    "IsRareBoss": true,
+    "BossMapNpcId": 705306000102000004,
+    "ConsumeBossChallengePoint": 20,
+    "TurnCountLimit": 3,
+    "HpGaugeCount": 12,
+    "StageNameLanguageId": 130100000070536001,
+    "MaxFieldRewardCount": 0
+  },
+  {
+    "Id": 70536002,
+    "StoryEventId": 200016,
+    "StageId": 70536002,
+    "StoryEventBossDifficultyTypeIndex": 2,
+    "IsRareBoss": true,
+    "BossMapNpcId": 705306000202000004,
+    "ConsumeBossChallengePoint": 40,
+    "TurnCountLimit": 3,
+    "HpGaugeCount": 24,
+    "StageNameLanguageId": 130100000070536002,
+    "MaxFieldRewardCount": 0
+  },
+  {
+    "Id": 70536003,
+    "StoryEventId": 200016,
+    "StageId": 70536003,
+    "StoryEventBossDifficultyTypeIndex": 3,
+    "IsRareBoss": true,
+    "BossMapNpcId": 705306000302000004,
+    "ConsumeBossChallengePoint": 60,
+    "TurnCountLimit": 3,
+    "HpGaugeCount": 36,
+    "StageNameLanguageId": 130100000070536003,
+    "MaxFieldRewardCount": 0
   }
 ]

@@ -19,5 +19,12 @@
     "ScheduleId": 2608201302,
     "ResourceId": "se_banner_200004_2",
     "OverrideTypeIndex": 1
+  },
+  {
+    "EventBannerId": 200016,
+    "Priority": 26083001,
+    "ScheduleId": 2608301302,
+    "ResourceId": "se_banner_200004_2",
+    "OverrideTypeIndex": 1
   }
 ]

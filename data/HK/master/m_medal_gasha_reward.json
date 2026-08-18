@@ -28933,5 +28933,2462 @@
     "IsResetTarget": true,
     "MaxCount": 1,
     "RewardSetId": 15200015070042
+  },
+  {
+    "Id": 200016010002,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 2,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016010002
+  },
+  {
+    "Id": 200016010003,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 3,
+    "IsResetTarget": false,
+    "MaxCount": 1,
+    "RewardSetId": 15200016010003
+  },
+  {
+    "Id": 200016010004,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 4,
+    "IsResetTarget": false,
+    "MaxCount": 1,
+    "RewardSetId": 15200016010004
+  },
+  {
+    "Id": 200016010005,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 5,
+    "IsResetTarget": false,
+    "MaxCount": 1,
+    "RewardSetId": 15200016010005
+  },
+  {
+    "Id": 200016010007,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 7,
+    "IsResetTarget": false,
+    "MaxCount": 2,
+    "RewardSetId": 15200016010007
+  },
+  {
+    "Id": 200016010008,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 8,
+    "IsResetTarget": false,
+    "MaxCount": 2,
+    "RewardSetId": 15200016010008
+  },
+  {
+    "Id": 200016010009,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 9,
+    "IsResetTarget": false,
+    "MaxCount": 2,
+    "RewardSetId": 15200016010009
+  },
+  {
+    "Id": 200016010011,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 11,
+    "IsResetTarget": false,
+    "MaxCount": 2,
+    "RewardSetId": 15200016010011
+  },
+  {
+    "Id": 200016010012,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 12,
+    "IsResetTarget": false,
+    "MaxCount": 2,
+    "RewardSetId": 15200016010012
+  },
+  {
+    "Id": 200016010013,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 13,
+    "IsResetTarget": false,
+    "MaxCount": 2,
+    "RewardSetId": 15200016010013
+  },
+  {
+    "Id": 200016010014,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 14,
+    "IsResetTarget": false,
+    "MaxCount": 2,
+    "RewardSetId": 15200016010014
+  },
+  {
+    "Id": 200016010015,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 15,
+    "IsResetTarget": false,
+    "MaxCount": 2,
+    "RewardSetId": 15200016010015
+  },
+  {
+    "Id": 200016010016,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 16,
+    "IsResetTarget": false,
+    "MaxCount": 2,
+    "RewardSetId": 15200016010016
+  },
+  {
+    "Id": 200016010017,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 17,
+    "IsResetTarget": false,
+    "MaxCount": 2,
+    "RewardSetId": 15200016010017
+  },
+  {
+    "Id": 200016010018,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 18,
+    "IsResetTarget": false,
+    "MaxCount": 2,
+    "RewardSetId": 15200016010018
+  },
+  {
+    "Id": 200016010019,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 19,
+    "IsResetTarget": false,
+    "MaxCount": 2,
+    "RewardSetId": 15200016010019
+  },
+  {
+    "Id": 200016010020,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 20,
+    "IsResetTarget": false,
+    "MaxCount": 2,
+    "RewardSetId": 15200016010020
+  },
+  {
+    "Id": 200016010021,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 21,
+    "IsResetTarget": false,
+    "MaxCount": 2,
+    "RewardSetId": 15200016010021
+  },
+  {
+    "Id": 200016010022,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 22,
+    "IsResetTarget": false,
+    "MaxCount": 2,
+    "RewardSetId": 15200016010022
+  },
+  {
+    "Id": 200016010023,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 23,
+    "IsResetTarget": false,
+    "MaxCount": 2,
+    "RewardSetId": 15200016010023
+  },
+  {
+    "Id": 200016010024,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 24,
+    "IsResetTarget": false,
+    "MaxCount": 1,
+    "RewardSetId": 15200016010024
+  },
+  {
+    "Id": 200016010025,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 25,
+    "IsResetTarget": false,
+    "MaxCount": 2,
+    "RewardSetId": 15200016010025
+  },
+  {
+    "Id": 200016010026,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 26,
+    "IsResetTarget": false,
+    "MaxCount": 2,
+    "RewardSetId": 15200016010026
+  },
+  {
+    "Id": 200016010027,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 27,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016010027
+  },
+  {
+    "Id": 200016010028,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 28,
+    "IsResetTarget": false,
+    "MaxCount": 2,
+    "RewardSetId": 15200016010028
+  },
+  {
+    "Id": 200016010030,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 30,
+    "IsResetTarget": false,
+    "MaxCount": 2,
+    "RewardSetId": 15200016010030
+  },
+  {
+    "Id": 200016010031,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 31,
+    "IsResetTarget": false,
+    "MaxCount": 1,
+    "RewardSetId": 15200016010031
+  },
+  {
+    "Id": 200016010032,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 32,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016010032
+  },
+  {
+    "Id": 200016010033,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 33,
+    "IsResetTarget": false,
+    "MaxCount": 2,
+    "RewardSetId": 15200016010033
+  },
+  {
+    "Id": 200016010034,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 34,
+    "IsResetTarget": false,
+    "MaxCount": 2,
+    "RewardSetId": 15200016010034
+  },
+  {
+    "Id": 200016010035,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 35,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016010035
+  },
+  {
+    "Id": 200016010036,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 36,
+    "IsResetTarget": false,
+    "MaxCount": 2,
+    "RewardSetId": 15200016010036
+  },
+  {
+    "Id": 200016010037,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 37,
+    "IsResetTarget": false,
+    "MaxCount": 2,
+    "RewardSetId": 15200016010037
+  },
+  {
+    "Id": 200016010038,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 38,
+    "IsResetTarget": false,
+    "MaxCount": 1,
+    "RewardSetId": 15200016010038
+  },
+  {
+    "Id": 200016010039,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 39,
+    "IsResetTarget": false,
+    "MaxCount": 1,
+    "RewardSetId": 15200016010039
+  },
+  {
+    "Id": 200016010040,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 1,
+    "SortOrder": 40,
+    "IsResetTarget": false,
+    "MaxCount": 1,
+    "RewardSetId": 15200016010040
+  },
+  {
+    "Id": 200016020001,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 1,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016020001
+  },
+  {
+    "Id": 200016020003,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 3,
+    "IsResetTarget": false,
+    "MaxCount": 5,
+    "RewardSetId": 15200016020003
+  },
+  {
+    "Id": 200016020004,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 4,
+    "IsResetTarget": false,
+    "MaxCount": 5,
+    "RewardSetId": 15200016020004
+  },
+  {
+    "Id": 200016020005,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 5,
+    "IsResetTarget": false,
+    "MaxCount": 5,
+    "RewardSetId": 15200016020005
+  },
+  {
+    "Id": 200016020006,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 6,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016020006
+  },
+  {
+    "Id": 200016020007,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 7,
+    "IsResetTarget": false,
+    "MaxCount": 4,
+    "RewardSetId": 15200016020007
+  },
+  {
+    "Id": 200016020008,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 8,
+    "IsResetTarget": false,
+    "MaxCount": 4,
+    "RewardSetId": 15200016020008
+  },
+  {
+    "Id": 200016020009,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 9,
+    "IsResetTarget": false,
+    "MaxCount": 4,
+    "RewardSetId": 15200016020009
+  },
+  {
+    "Id": 200016020010,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 10,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016020010
+  },
+  {
+    "Id": 200016020011,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 11,
+    "IsResetTarget": false,
+    "MaxCount": 4,
+    "RewardSetId": 15200016020011
+  },
+  {
+    "Id": 200016020012,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 12,
+    "IsResetTarget": false,
+    "MaxCount": 4,
+    "RewardSetId": 15200016020012
+  },
+  {
+    "Id": 200016020013,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 13,
+    "IsResetTarget": false,
+    "MaxCount": 4,
+    "RewardSetId": 15200016020013
+  },
+  {
+    "Id": 200016020014,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 14,
+    "IsResetTarget": false,
+    "MaxCount": 4,
+    "RewardSetId": 15200016020014
+  },
+  {
+    "Id": 200016020015,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 15,
+    "IsResetTarget": false,
+    "MaxCount": 7,
+    "RewardSetId": 15200016020015
+  },
+  {
+    "Id": 200016020016,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 16,
+    "IsResetTarget": false,
+    "MaxCount": 7,
+    "RewardSetId": 15200016020016
+  },
+  {
+    "Id": 200016020017,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 17,
+    "IsResetTarget": false,
+    "MaxCount": 4,
+    "RewardSetId": 15200016020017
+  },
+  {
+    "Id": 200016020018,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 18,
+    "IsResetTarget": false,
+    "MaxCount": 4,
+    "RewardSetId": 15200016020018
+  },
+  {
+    "Id": 200016020019,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 19,
+    "IsResetTarget": false,
+    "MaxCount": 4,
+    "RewardSetId": 15200016020019
+  },
+  {
+    "Id": 200016020020,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 20,
+    "IsResetTarget": false,
+    "MaxCount": 4,
+    "RewardSetId": 15200016020020
+  },
+  {
+    "Id": 200016020021,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 21,
+    "IsResetTarget": false,
+    "MaxCount": 4,
+    "RewardSetId": 15200016020021
+  },
+  {
+    "Id": 200016020022,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 22,
+    "IsResetTarget": false,
+    "MaxCount": 4,
+    "RewardSetId": 15200016020022
+  },
+  {
+    "Id": 200016020023,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 23,
+    "IsResetTarget": false,
+    "MaxCount": 4,
+    "RewardSetId": 15200016020023
+  },
+  {
+    "Id": 200016020024,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 24,
+    "IsResetTarget": false,
+    "MaxCount": 5,
+    "RewardSetId": 15200016020024
+  },
+  {
+    "Id": 200016020025,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 25,
+    "IsResetTarget": false,
+    "MaxCount": 4,
+    "RewardSetId": 15200016020025
+  },
+  {
+    "Id": 200016020026,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 26,
+    "IsResetTarget": false,
+    "MaxCount": 4,
+    "RewardSetId": 15200016020026
+  },
+  {
+    "Id": 200016020027,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 27,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016020027
+  },
+  {
+    "Id": 200016020028,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 28,
+    "IsResetTarget": false,
+    "MaxCount": 4,
+    "RewardSetId": 15200016020028
+  },
+  {
+    "Id": 200016020030,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 30,
+    "IsResetTarget": false,
+    "MaxCount": 4,
+    "RewardSetId": 15200016020030
+  },
+  {
+    "Id": 200016020031,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 31,
+    "IsResetTarget": false,
+    "MaxCount": 4,
+    "RewardSetId": 15200016020031
+  },
+  {
+    "Id": 200016020032,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 32,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016020032
+  },
+  {
+    "Id": 200016020033,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 33,
+    "IsResetTarget": false,
+    "MaxCount": 7,
+    "RewardSetId": 15200016020033
+  },
+  {
+    "Id": 200016020034,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 34,
+    "IsResetTarget": false,
+    "MaxCount": 7,
+    "RewardSetId": 15200016020034
+  },
+  {
+    "Id": 200016020036,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 36,
+    "IsResetTarget": false,
+    "MaxCount": 4,
+    "RewardSetId": 15200016020036
+  },
+  {
+    "Id": 200016020037,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 37,
+    "IsResetTarget": false,
+    "MaxCount": 4,
+    "RewardSetId": 15200016020037
+  },
+  {
+    "Id": 200016020038,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 38,
+    "IsResetTarget": false,
+    "MaxCount": 5,
+    "RewardSetId": 15200016020038
+  },
+  {
+    "Id": 200016020039,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 39,
+    "IsResetTarget": false,
+    "MaxCount": 5,
+    "RewardSetId": 15200016020039
+  },
+  {
+    "Id": 200016020040,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 2,
+    "SortOrder": 40,
+    "IsResetTarget": false,
+    "MaxCount": 5,
+    "RewardSetId": 15200016020040
+  },
+  {
+    "Id": 200016030002,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 2,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016030002
+  },
+  {
+    "Id": 200016030003,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 3,
+    "IsResetTarget": false,
+    "MaxCount": 10,
+    "RewardSetId": 15200016030003
+  },
+  {
+    "Id": 200016030004,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 4,
+    "IsResetTarget": false,
+    "MaxCount": 10,
+    "RewardSetId": 15200016030004
+  },
+  {
+    "Id": 200016030005,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 5,
+    "IsResetTarget": false,
+    "MaxCount": 10,
+    "RewardSetId": 15200016030005
+  },
+  {
+    "Id": 200016030007,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 7,
+    "IsResetTarget": false,
+    "MaxCount": 9,
+    "RewardSetId": 15200016030007
+  },
+  {
+    "Id": 200016030008,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 8,
+    "IsResetTarget": false,
+    "MaxCount": 9,
+    "RewardSetId": 15200016030008
+  },
+  {
+    "Id": 200016030009,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 9,
+    "IsResetTarget": false,
+    "MaxCount": 9,
+    "RewardSetId": 15200016030009
+  },
+  {
+    "Id": 200016030011,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 11,
+    "IsResetTarget": false,
+    "MaxCount": 9,
+    "RewardSetId": 15200016030011
+  },
+  {
+    "Id": 200016030012,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 12,
+    "IsResetTarget": false,
+    "MaxCount": 9,
+    "RewardSetId": 15200016030012
+  },
+  {
+    "Id": 200016030013,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 13,
+    "IsResetTarget": false,
+    "MaxCount": 9,
+    "RewardSetId": 15200016030013
+  },
+  {
+    "Id": 200016030014,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 14,
+    "IsResetTarget": false,
+    "MaxCount": 9,
+    "RewardSetId": 15200016030014
+  },
+  {
+    "Id": 200016030015,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 15,
+    "IsResetTarget": false,
+    "MaxCount": 10,
+    "RewardSetId": 15200016030015
+  },
+  {
+    "Id": 200016030016,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 16,
+    "IsResetTarget": false,
+    "MaxCount": 10,
+    "RewardSetId": 15200016030016
+  },
+  {
+    "Id": 200016030017,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 17,
+    "IsResetTarget": false,
+    "MaxCount": 9,
+    "RewardSetId": 15200016030017
+  },
+  {
+    "Id": 200016030018,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 18,
+    "IsResetTarget": false,
+    "MaxCount": 9,
+    "RewardSetId": 15200016030018
+  },
+  {
+    "Id": 200016030019,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 19,
+    "IsResetTarget": false,
+    "MaxCount": 9,
+    "RewardSetId": 15200016030019
+  },
+  {
+    "Id": 200016030020,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 20,
+    "IsResetTarget": false,
+    "MaxCount": 9,
+    "RewardSetId": 15200016030020
+  },
+  {
+    "Id": 200016030021,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 21,
+    "IsResetTarget": false,
+    "MaxCount": 9,
+    "RewardSetId": 15200016030021
+  },
+  {
+    "Id": 200016030022,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 22,
+    "IsResetTarget": false,
+    "MaxCount": 9,
+    "RewardSetId": 15200016030022
+  },
+  {
+    "Id": 200016030023,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 23,
+    "IsResetTarget": false,
+    "MaxCount": 9,
+    "RewardSetId": 15200016030023
+  },
+  {
+    "Id": 200016030024,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 24,
+    "IsResetTarget": false,
+    "MaxCount": 10,
+    "RewardSetId": 15200016030024
+  },
+  {
+    "Id": 200016030025,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 25,
+    "IsResetTarget": false,
+    "MaxCount": 9,
+    "RewardSetId": 15200016030025
+  },
+  {
+    "Id": 200016030026,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 26,
+    "IsResetTarget": false,
+    "MaxCount": 9,
+    "RewardSetId": 15200016030026
+  },
+  {
+    "Id": 200016030027,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 27,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016030027
+  },
+  {
+    "Id": 200016030028,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 28,
+    "IsResetTarget": false,
+    "MaxCount": 9,
+    "RewardSetId": 15200016030028
+  },
+  {
+    "Id": 200016030029,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 29,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016030029
+  },
+  {
+    "Id": 200016030030,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 30,
+    "IsResetTarget": false,
+    "MaxCount": 9,
+    "RewardSetId": 15200016030030
+  },
+  {
+    "Id": 200016030031,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 31,
+    "IsResetTarget": false,
+    "MaxCount": 8,
+    "RewardSetId": 15200016030031
+  },
+  {
+    "Id": 200016030032,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 32,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016030032
+  },
+  {
+    "Id": 200016030033,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 33,
+    "IsResetTarget": false,
+    "MaxCount": 10,
+    "RewardSetId": 15200016030033
+  },
+  {
+    "Id": 200016030034,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 34,
+    "IsResetTarget": false,
+    "MaxCount": 10,
+    "RewardSetId": 15200016030034
+  },
+  {
+    "Id": 200016030035,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 35,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016030035
+  },
+  {
+    "Id": 200016030036,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 36,
+    "IsResetTarget": false,
+    "MaxCount": 9,
+    "RewardSetId": 15200016030036
+  },
+  {
+    "Id": 200016030037,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 37,
+    "IsResetTarget": false,
+    "MaxCount": 9,
+    "RewardSetId": 15200016030037
+  },
+  {
+    "Id": 200016030038,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 38,
+    "IsResetTarget": false,
+    "MaxCount": 10,
+    "RewardSetId": 15200016030038
+  },
+  {
+    "Id": 200016030039,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 39,
+    "IsResetTarget": false,
+    "MaxCount": 10,
+    "RewardSetId": 15200016030039
+  },
+  {
+    "Id": 200016030040,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 40,
+    "IsResetTarget": false,
+    "MaxCount": 10,
+    "RewardSetId": 15200016030040
+  },
+  {
+    "Id": 200016030042,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 3,
+    "SortOrder": 42,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016030042
+  },
+  {
+    "Id": 200016040001,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 1,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016040001
+  },
+  {
+    "Id": 200016040003,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 3,
+    "IsResetTarget": false,
+    "MaxCount": 15,
+    "RewardSetId": 15200016040003
+  },
+  {
+    "Id": 200016040004,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 4,
+    "IsResetTarget": false,
+    "MaxCount": 15,
+    "RewardSetId": 15200016040004
+  },
+  {
+    "Id": 200016040005,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 5,
+    "IsResetTarget": false,
+    "MaxCount": 15,
+    "RewardSetId": 15200016040005
+  },
+  {
+    "Id": 200016040006,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 6,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016040006
+  },
+  {
+    "Id": 200016040007,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 7,
+    "IsResetTarget": false,
+    "MaxCount": 16,
+    "RewardSetId": 15200016040007
+  },
+  {
+    "Id": 200016040008,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 8,
+    "IsResetTarget": false,
+    "MaxCount": 16,
+    "RewardSetId": 15200016040008
+  },
+  {
+    "Id": 200016040009,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 9,
+    "IsResetTarget": false,
+    "MaxCount": 16,
+    "RewardSetId": 15200016040009
+  },
+  {
+    "Id": 200016040011,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 11,
+    "IsResetTarget": false,
+    "MaxCount": 16,
+    "RewardSetId": 15200016040011
+  },
+  {
+    "Id": 200016040012,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 12,
+    "IsResetTarget": false,
+    "MaxCount": 16,
+    "RewardSetId": 15200016040012
+  },
+  {
+    "Id": 200016040013,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 13,
+    "IsResetTarget": false,
+    "MaxCount": 16,
+    "RewardSetId": 15200016040013
+  },
+  {
+    "Id": 200016040014,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 14,
+    "IsResetTarget": false,
+    "MaxCount": 16,
+    "RewardSetId": 15200016040014
+  },
+  {
+    "Id": 200016040015,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 15,
+    "IsResetTarget": false,
+    "MaxCount": 15,
+    "RewardSetId": 15200016040015
+  },
+  {
+    "Id": 200016040016,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 16,
+    "IsResetTarget": false,
+    "MaxCount": 15,
+    "RewardSetId": 15200016040016
+  },
+  {
+    "Id": 200016040017,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 17,
+    "IsResetTarget": false,
+    "MaxCount": 16,
+    "RewardSetId": 15200016040017
+  },
+  {
+    "Id": 200016040018,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 18,
+    "IsResetTarget": false,
+    "MaxCount": 16,
+    "RewardSetId": 15200016040018
+  },
+  {
+    "Id": 200016040019,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 19,
+    "IsResetTarget": false,
+    "MaxCount": 16,
+    "RewardSetId": 15200016040019
+  },
+  {
+    "Id": 200016040020,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 20,
+    "IsResetTarget": false,
+    "MaxCount": 16,
+    "RewardSetId": 15200016040020
+  },
+  {
+    "Id": 200016040021,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 21,
+    "IsResetTarget": false,
+    "MaxCount": 16,
+    "RewardSetId": 15200016040021
+  },
+  {
+    "Id": 200016040022,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 22,
+    "IsResetTarget": false,
+    "MaxCount": 16,
+    "RewardSetId": 15200016040022
+  },
+  {
+    "Id": 200016040023,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 23,
+    "IsResetTarget": false,
+    "MaxCount": 16,
+    "RewardSetId": 15200016040023
+  },
+  {
+    "Id": 200016040024,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 24,
+    "IsResetTarget": false,
+    "MaxCount": 15,
+    "RewardSetId": 15200016040024
+  },
+  {
+    "Id": 200016040025,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 25,
+    "IsResetTarget": false,
+    "MaxCount": 16,
+    "RewardSetId": 15200016040025
+  },
+  {
+    "Id": 200016040026,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 26,
+    "IsResetTarget": false,
+    "MaxCount": 16,
+    "RewardSetId": 15200016040026
+  },
+  {
+    "Id": 200016040027,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 27,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016040027
+  },
+  {
+    "Id": 200016040028,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 28,
+    "IsResetTarget": false,
+    "MaxCount": 16,
+    "RewardSetId": 15200016040028
+  },
+  {
+    "Id": 200016040029,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 29,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016040029
+  },
+  {
+    "Id": 200016040030,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 30,
+    "IsResetTarget": false,
+    "MaxCount": 16,
+    "RewardSetId": 15200016040030
+  },
+  {
+    "Id": 200016040031,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 31,
+    "IsResetTarget": false,
+    "MaxCount": 12,
+    "RewardSetId": 15200016040031
+  },
+  {
+    "Id": 200016040032,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 32,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016040032
+  },
+  {
+    "Id": 200016040033,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 33,
+    "IsResetTarget": false,
+    "MaxCount": 15,
+    "RewardSetId": 15200016040033
+  },
+  {
+    "Id": 200016040034,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 34,
+    "IsResetTarget": false,
+    "MaxCount": 15,
+    "RewardSetId": 15200016040034
+  },
+  {
+    "Id": 200016040036,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 36,
+    "IsResetTarget": false,
+    "MaxCount": 16,
+    "RewardSetId": 15200016040036
+  },
+  {
+    "Id": 200016040037,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 37,
+    "IsResetTarget": false,
+    "MaxCount": 16,
+    "RewardSetId": 15200016040037
+  },
+  {
+    "Id": 200016040038,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 38,
+    "IsResetTarget": false,
+    "MaxCount": 15,
+    "RewardSetId": 15200016040038
+  },
+  {
+    "Id": 200016040039,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 39,
+    "IsResetTarget": false,
+    "MaxCount": 15,
+    "RewardSetId": 15200016040039
+  },
+  {
+    "Id": 200016040040,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 40,
+    "IsResetTarget": false,
+    "MaxCount": 15,
+    "RewardSetId": 15200016040040
+  },
+  {
+    "Id": 200016040041,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 4,
+    "SortOrder": 41,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016040041
+  },
+  {
+    "Id": 200016050002,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 2,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016050002
+  },
+  {
+    "Id": 200016050003,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 3,
+    "IsResetTarget": false,
+    "MaxCount": 21,
+    "RewardSetId": 15200016050003
+  },
+  {
+    "Id": 200016050004,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 4,
+    "IsResetTarget": false,
+    "MaxCount": 21,
+    "RewardSetId": 15200016050004
+  },
+  {
+    "Id": 200016050005,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 5,
+    "IsResetTarget": false,
+    "MaxCount": 21,
+    "RewardSetId": 15200016050005
+  },
+  {
+    "Id": 200016050007,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 7,
+    "IsResetTarget": false,
+    "MaxCount": 27,
+    "RewardSetId": 15200016050007
+  },
+  {
+    "Id": 200016050008,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 8,
+    "IsResetTarget": false,
+    "MaxCount": 27,
+    "RewardSetId": 15200016050008
+  },
+  {
+    "Id": 200016050009,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 9,
+    "IsResetTarget": false,
+    "MaxCount": 27,
+    "RewardSetId": 15200016050009
+  },
+  {
+    "Id": 200016050010,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 10,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016050010
+  },
+  {
+    "Id": 200016050011,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 11,
+    "IsResetTarget": false,
+    "MaxCount": 27,
+    "RewardSetId": 15200016050011
+  },
+  {
+    "Id": 200016050012,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 12,
+    "IsResetTarget": false,
+    "MaxCount": 27,
+    "RewardSetId": 15200016050012
+  },
+  {
+    "Id": 200016050013,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 13,
+    "IsResetTarget": false,
+    "MaxCount": 27,
+    "RewardSetId": 15200016050013
+  },
+  {
+    "Id": 200016050014,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 14,
+    "IsResetTarget": false,
+    "MaxCount": 27,
+    "RewardSetId": 15200016050014
+  },
+  {
+    "Id": 200016050015,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 15,
+    "IsResetTarget": false,
+    "MaxCount": 22,
+    "RewardSetId": 15200016050015
+  },
+  {
+    "Id": 200016050016,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 16,
+    "IsResetTarget": false,
+    "MaxCount": 22,
+    "RewardSetId": 15200016050016
+  },
+  {
+    "Id": 200016050017,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 17,
+    "IsResetTarget": false,
+    "MaxCount": 27,
+    "RewardSetId": 15200016050017
+  },
+  {
+    "Id": 200016050018,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 18,
+    "IsResetTarget": false,
+    "MaxCount": 27,
+    "RewardSetId": 15200016050018
+  },
+  {
+    "Id": 200016050019,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 19,
+    "IsResetTarget": false,
+    "MaxCount": 27,
+    "RewardSetId": 15200016050019
+  },
+  {
+    "Id": 200016050020,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 20,
+    "IsResetTarget": false,
+    "MaxCount": 27,
+    "RewardSetId": 15200016050020
+  },
+  {
+    "Id": 200016050021,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 21,
+    "IsResetTarget": false,
+    "MaxCount": 27,
+    "RewardSetId": 15200016050021
+  },
+  {
+    "Id": 200016050022,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 22,
+    "IsResetTarget": false,
+    "MaxCount": 27,
+    "RewardSetId": 15200016050022
+  },
+  {
+    "Id": 200016050023,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 23,
+    "IsResetTarget": false,
+    "MaxCount": 27,
+    "RewardSetId": 15200016050023
+  },
+  {
+    "Id": 200016050024,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 24,
+    "IsResetTarget": false,
+    "MaxCount": 21,
+    "RewardSetId": 15200016050024
+  },
+  {
+    "Id": 200016050025,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 25,
+    "IsResetTarget": false,
+    "MaxCount": 27,
+    "RewardSetId": 15200016050025
+  },
+  {
+    "Id": 200016050026,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 26,
+    "IsResetTarget": false,
+    "MaxCount": 27,
+    "RewardSetId": 15200016050026
+  },
+  {
+    "Id": 200016050028,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 28,
+    "IsResetTarget": false,
+    "MaxCount": 27,
+    "RewardSetId": 15200016050028
+  },
+  {
+    "Id": 200016050029,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 29,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016050029
+  },
+  {
+    "Id": 200016050030,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 30,
+    "IsResetTarget": false,
+    "MaxCount": 27,
+    "RewardSetId": 15200016050030
+  },
+  {
+    "Id": 200016050031,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 31,
+    "IsResetTarget": false,
+    "MaxCount": 20,
+    "RewardSetId": 15200016050031
+  },
+  {
+    "Id": 200016050032,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 32,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016050032
+  },
+  {
+    "Id": 200016050033,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 33,
+    "IsResetTarget": false,
+    "MaxCount": 22,
+    "RewardSetId": 15200016050033
+  },
+  {
+    "Id": 200016050034,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 34,
+    "IsResetTarget": false,
+    "MaxCount": 22,
+    "RewardSetId": 15200016050034
+  },
+  {
+    "Id": 200016050035,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 35,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016050035
+  },
+  {
+    "Id": 200016050036,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 36,
+    "IsResetTarget": false,
+    "MaxCount": 27,
+    "RewardSetId": 15200016050036
+  },
+  {
+    "Id": 200016050037,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 37,
+    "IsResetTarget": false,
+    "MaxCount": 27,
+    "RewardSetId": 15200016050037
+  },
+  {
+    "Id": 200016050038,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 38,
+    "IsResetTarget": false,
+    "MaxCount": 21,
+    "RewardSetId": 15200016050038
+  },
+  {
+    "Id": 200016050039,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 39,
+    "IsResetTarget": false,
+    "MaxCount": 21,
+    "RewardSetId": 15200016050039
+  },
+  {
+    "Id": 200016050040,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 40,
+    "IsResetTarget": false,
+    "MaxCount": 21,
+    "RewardSetId": 15200016050040
+  },
+  {
+    "Id": 200016050043,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 43,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016050043
+  },
+  {
+    "Id": 200016050044,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 5,
+    "SortOrder": 44,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016050044
+  },
+  {
+    "Id": 200016060001,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 1,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016060001
+  },
+  {
+    "Id": 200016060003,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 3,
+    "IsResetTarget": false,
+    "MaxCount": 28,
+    "RewardSetId": 15200016060003
+  },
+  {
+    "Id": 200016060004,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 4,
+    "IsResetTarget": false,
+    "MaxCount": 28,
+    "RewardSetId": 15200016060004
+  },
+  {
+    "Id": 200016060005,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 5,
+    "IsResetTarget": false,
+    "MaxCount": 28,
+    "RewardSetId": 15200016060005
+  },
+  {
+    "Id": 200016060006,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 6,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016060006
+  },
+  {
+    "Id": 200016060007,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 7,
+    "IsResetTarget": false,
+    "MaxCount": 35,
+    "RewardSetId": 15200016060007
+  },
+  {
+    "Id": 200016060008,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 8,
+    "IsResetTarget": false,
+    "MaxCount": 35,
+    "RewardSetId": 15200016060008
+  },
+  {
+    "Id": 200016060009,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 9,
+    "IsResetTarget": false,
+    "MaxCount": 35,
+    "RewardSetId": 15200016060009
+  },
+  {
+    "Id": 200016060010,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 10,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016060010
+  },
+  {
+    "Id": 200016060011,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 11,
+    "IsResetTarget": false,
+    "MaxCount": 35,
+    "RewardSetId": 15200016060011
+  },
+  {
+    "Id": 200016060012,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 12,
+    "IsResetTarget": false,
+    "MaxCount": 35,
+    "RewardSetId": 15200016060012
+  },
+  {
+    "Id": 200016060013,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 13,
+    "IsResetTarget": false,
+    "MaxCount": 35,
+    "RewardSetId": 15200016060013
+  },
+  {
+    "Id": 200016060014,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 14,
+    "IsResetTarget": false,
+    "MaxCount": 35,
+    "RewardSetId": 15200016060014
+  },
+  {
+    "Id": 200016060015,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 15,
+    "IsResetTarget": false,
+    "MaxCount": 26,
+    "RewardSetId": 15200016060015
+  },
+  {
+    "Id": 200016060016,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 16,
+    "IsResetTarget": false,
+    "MaxCount": 26,
+    "RewardSetId": 15200016060016
+  },
+  {
+    "Id": 200016060017,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 17,
+    "IsResetTarget": false,
+    "MaxCount": 35,
+    "RewardSetId": 15200016060017
+  },
+  {
+    "Id": 200016060018,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 18,
+    "IsResetTarget": false,
+    "MaxCount": 35,
+    "RewardSetId": 15200016060018
+  },
+  {
+    "Id": 200016060019,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 19,
+    "IsResetTarget": false,
+    "MaxCount": 35,
+    "RewardSetId": 15200016060019
+  },
+  {
+    "Id": 200016060020,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 20,
+    "IsResetTarget": false,
+    "MaxCount": 35,
+    "RewardSetId": 15200016060020
+  },
+  {
+    "Id": 200016060021,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 21,
+    "IsResetTarget": false,
+    "MaxCount": 35,
+    "RewardSetId": 15200016060021
+  },
+  {
+    "Id": 200016060022,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 22,
+    "IsResetTarget": false,
+    "MaxCount": 35,
+    "RewardSetId": 15200016060022
+  },
+  {
+    "Id": 200016060023,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 23,
+    "IsResetTarget": false,
+    "MaxCount": 35,
+    "RewardSetId": 15200016060023
+  },
+  {
+    "Id": 200016060024,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 24,
+    "IsResetTarget": false,
+    "MaxCount": 28,
+    "RewardSetId": 15200016060024
+  },
+  {
+    "Id": 200016060025,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 25,
+    "IsResetTarget": false,
+    "MaxCount": 35,
+    "RewardSetId": 15200016060025
+  },
+  {
+    "Id": 200016060026,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 26,
+    "IsResetTarget": false,
+    "MaxCount": 35,
+    "RewardSetId": 15200016060026
+  },
+  {
+    "Id": 200016060028,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 28,
+    "IsResetTarget": false,
+    "MaxCount": 35,
+    "RewardSetId": 15200016060028
+  },
+  {
+    "Id": 200016060030,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 30,
+    "IsResetTarget": false,
+    "MaxCount": 35,
+    "RewardSetId": 15200016060030
+  },
+  {
+    "Id": 200016060031,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 31,
+    "IsResetTarget": false,
+    "MaxCount": 25,
+    "RewardSetId": 15200016060031
+  },
+  {
+    "Id": 200016060032,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 32,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016060032
+  },
+  {
+    "Id": 200016060033,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 33,
+    "IsResetTarget": false,
+    "MaxCount": 26,
+    "RewardSetId": 15200016060033
+  },
+  {
+    "Id": 200016060034,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 34,
+    "IsResetTarget": false,
+    "MaxCount": 26,
+    "RewardSetId": 15200016060034
+  },
+  {
+    "Id": 200016060035,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 35,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016060035
+  },
+  {
+    "Id": 200016060036,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 36,
+    "IsResetTarget": false,
+    "MaxCount": 35,
+    "RewardSetId": 15200016060036
+  },
+  {
+    "Id": 200016060037,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 37,
+    "IsResetTarget": false,
+    "MaxCount": 35,
+    "RewardSetId": 15200016060037
+  },
+  {
+    "Id": 200016060038,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 38,
+    "IsResetTarget": false,
+    "MaxCount": 28,
+    "RewardSetId": 15200016060038
+  },
+  {
+    "Id": 200016060039,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 39,
+    "IsResetTarget": false,
+    "MaxCount": 28,
+    "RewardSetId": 15200016060039
+  },
+  {
+    "Id": 200016060040,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 40,
+    "IsResetTarget": false,
+    "MaxCount": 28,
+    "RewardSetId": 15200016060040
+  },
+  {
+    "Id": 200016060041,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 41,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016060041
+  },
+  {
+    "Id": 200016060042,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 42,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016060042
+  },
+  {
+    "Id": 200016060043,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 43,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016060043
+  },
+  {
+    "Id": 200016060044,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 6,
+    "SortOrder": 44,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016060044
+  },
+  {
+    "Id": 200016070001,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 1,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016070001
+  },
+  {
+    "Id": 200016070002,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 2,
+    "IsResetTarget": true,
+    "MaxCount": 2,
+    "RewardSetId": 15200016070002
+  },
+  {
+    "Id": 200016070003,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 3,
+    "IsResetTarget": false,
+    "MaxCount": 25,
+    "RewardSetId": 15200016070003
+  },
+  {
+    "Id": 200016070004,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 4,
+    "IsResetTarget": false,
+    "MaxCount": 25,
+    "RewardSetId": 15200016070004
+  },
+  {
+    "Id": 200016070005,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 5,
+    "IsResetTarget": false,
+    "MaxCount": 25,
+    "RewardSetId": 15200016070005
+  },
+  {
+    "Id": 200016070006,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 6,
+    "IsResetTarget": true,
+    "MaxCount": 2,
+    "RewardSetId": 15200016070006
+  },
+  {
+    "Id": 200016070007,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 7,
+    "IsResetTarget": false,
+    "MaxCount": 40,
+    "RewardSetId": 15200016070007
+  },
+  {
+    "Id": 200016070008,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 8,
+    "IsResetTarget": false,
+    "MaxCount": 40,
+    "RewardSetId": 15200016070008
+  },
+  {
+    "Id": 200016070009,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 9,
+    "IsResetTarget": false,
+    "MaxCount": 40,
+    "RewardSetId": 15200016070009
+  },
+  {
+    "Id": 200016070010,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 10,
+    "IsResetTarget": true,
+    "MaxCount": 2,
+    "RewardSetId": 15200016070010
+  },
+  {
+    "Id": 200016070011,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 11,
+    "IsResetTarget": false,
+    "MaxCount": 40,
+    "RewardSetId": 15200016070011
+  },
+  {
+    "Id": 200016070012,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 12,
+    "IsResetTarget": false,
+    "MaxCount": 40,
+    "RewardSetId": 15200016070012
+  },
+  {
+    "Id": 200016070013,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 13,
+    "IsResetTarget": false,
+    "MaxCount": 40,
+    "RewardSetId": 15200016070013
+  },
+  {
+    "Id": 200016070014,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 14,
+    "IsResetTarget": false,
+    "MaxCount": 40,
+    "RewardSetId": 15200016070014
+  },
+  {
+    "Id": 200016070015,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 15,
+    "IsResetTarget": false,
+    "MaxCount": 25,
+    "RewardSetId": 15200016070015
+  },
+  {
+    "Id": 200016070016,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 16,
+    "IsResetTarget": false,
+    "MaxCount": 25,
+    "RewardSetId": 15200016070016
+  },
+  {
+    "Id": 200016070017,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 17,
+    "IsResetTarget": false,
+    "MaxCount": 40,
+    "RewardSetId": 15200016070017
+  },
+  {
+    "Id": 200016070018,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 18,
+    "IsResetTarget": false,
+    "MaxCount": 40,
+    "RewardSetId": 15200016070018
+  },
+  {
+    "Id": 200016070019,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 19,
+    "IsResetTarget": false,
+    "MaxCount": 40,
+    "RewardSetId": 15200016070019
+  },
+  {
+    "Id": 200016070020,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 20,
+    "IsResetTarget": false,
+    "MaxCount": 40,
+    "RewardSetId": 15200016070020
+  },
+  {
+    "Id": 200016070021,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 21,
+    "IsResetTarget": false,
+    "MaxCount": 40,
+    "RewardSetId": 15200016070021
+  },
+  {
+    "Id": 200016070022,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 22,
+    "IsResetTarget": false,
+    "MaxCount": 40,
+    "RewardSetId": 15200016070022
+  },
+  {
+    "Id": 200016070023,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 23,
+    "IsResetTarget": false,
+    "MaxCount": 40,
+    "RewardSetId": 15200016070023
+  },
+  {
+    "Id": 200016070024,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 24,
+    "IsResetTarget": false,
+    "MaxCount": 25,
+    "RewardSetId": 15200016070024
+  },
+  {
+    "Id": 200016070025,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 25,
+    "IsResetTarget": false,
+    "MaxCount": 40,
+    "RewardSetId": 15200016070025
+  },
+  {
+    "Id": 200016070026,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 26,
+    "IsResetTarget": false,
+    "MaxCount": 40,
+    "RewardSetId": 15200016070026
+  },
+  {
+    "Id": 200016070027,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 27,
+    "IsResetTarget": true,
+    "MaxCount": 2,
+    "RewardSetId": 15200016070027
+  },
+  {
+    "Id": 200016070028,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 28,
+    "IsResetTarget": false,
+    "MaxCount": 40,
+    "RewardSetId": 15200016070028
+  },
+  {
+    "Id": 200016070029,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 29,
+    "IsResetTarget": true,
+    "MaxCount": 2,
+    "RewardSetId": 15200016070029
+  },
+  {
+    "Id": 200016070030,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 30,
+    "IsResetTarget": false,
+    "MaxCount": 40,
+    "RewardSetId": 15200016070030
+  },
+  {
+    "Id": 200016070031,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 31,
+    "IsResetTarget": false,
+    "MaxCount": 15,
+    "RewardSetId": 15200016070031
+  },
+  {
+    "Id": 200016070032,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 32,
+    "IsResetTarget": true,
+    "MaxCount": 2,
+    "RewardSetId": 15200016070032
+  },
+  {
+    "Id": 200016070033,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 33,
+    "IsResetTarget": false,
+    "MaxCount": 25,
+    "RewardSetId": 15200016070033
+  },
+  {
+    "Id": 200016070034,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 34,
+    "IsResetTarget": false,
+    "MaxCount": 25,
+    "RewardSetId": 15200016070034
+  },
+  {
+    "Id": 200016070035,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 35,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016070035
+  },
+  {
+    "Id": 200016070036,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 36,
+    "IsResetTarget": false,
+    "MaxCount": 40,
+    "RewardSetId": 15200016070036
+  },
+  {
+    "Id": 200016070037,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 37,
+    "IsResetTarget": false,
+    "MaxCount": 40,
+    "RewardSetId": 15200016070037
+  },
+  {
+    "Id": 200016070038,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 38,
+    "IsResetTarget": false,
+    "MaxCount": 25,
+    "RewardSetId": 15200016070038
+  },
+  {
+    "Id": 200016070039,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 39,
+    "IsResetTarget": false,
+    "MaxCount": 25,
+    "RewardSetId": 15200016070039
+  },
+  {
+    "Id": 200016070040,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 40,
+    "IsResetTarget": false,
+    "MaxCount": 25,
+    "RewardSetId": 15200016070040
+  },
+  {
+    "Id": 200016070041,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 41,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016070041
+  },
+  {
+    "Id": 200016070042,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 42,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016070042
+  },
+  {
+    "Id": 200016070043,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 43,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016070043
+  },
+  {
+    "Id": 200016070044,
+    "MedalGashaId": 200016,
+    "PhaseNumber": 7,
+    "SortOrder": 44,
+    "IsResetTarget": true,
+    "MaxCount": 1,
+    "RewardSetId": 15200016070044
   }
 ]

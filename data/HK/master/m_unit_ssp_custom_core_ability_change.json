@@ -4445,6 +4445,21 @@
     "AfterAbilityId": 1000501
   },
   {
+    "Id": 170500360001,
+    "BeforeAbilityId": 1000101,
+    "AfterAbilityId": 1000102
+  },
+  {
+    "Id": 170500370001,
+    "BeforeAbilityId": 1000501,
+    "AfterAbilityId": 1000502
+  },
+  {
+    "Id": 170500380001,
+    "BeforeAbilityId": 1000301,
+    "AfterAbilityId": 1000302
+  },
+  {
     "Id": 170500440001,
     "BeforeAbilityId": 1000401,
     "AfterAbilityId": 1000402
@@ -4473,6 +4488,11 @@
     "Id": 170500501001,
     "BeforeAbilityId": 1000301,
     "AfterAbilityId": 1000302
+  },
+  {
+    "Id": 170500510001,
+    "BeforeAbilityId": 0,
+    "AfterAbilityId": 1000502
   },
   {
     "Id": 172800010001,

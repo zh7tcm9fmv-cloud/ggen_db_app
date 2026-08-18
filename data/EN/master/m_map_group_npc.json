@@ -3689,6 +3689,69 @@
     "NpcGroupName": "sd"
   },
   {
+    "MapGroupId": 705300800102000001,
+    "MapNpcId": 705300800102000001,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "geodante3"
+  },
+  {
+    "MapGroupId": 705300800102000001,
+    "MapNpcId": 705300800102000016,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "geodante3"
+  },
+  {
+    "MapGroupId": 705300900102000001,
+    "MapNpcId": 705300900102000001,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 705300900102000001,
+    "MapNpcId": 705300900102000002,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 705300900102000001,
+    "MapNpcId": 705300900102000003,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 705300900102000001,
+    "MapNpcId": 705300900102000004,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 705300900102000001,
+    "MapNpcId": 705300900102000005,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 705300900102000001,
+    "MapNpcId": 705300900102000006,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "<default>"
+  },
+  {
+    "MapGroupId": 705300900102000001,
+    "MapNpcId": 705300900102000007,
+    "GroupUnitTypeIndex": 3,
+    "SortOrder": 0,
+    "NpcGroupName": "<default>"
+  },
+  {
     "MapGroupId": 900000100402000005,
     "MapNpcId": 900000100402000001,
     "GroupUnitTypeIndex": 3,

@@ -13651,6 +13651,204 @@
     "TargetLimit": 0
   },
   {
+    "Id": 300980101,
+    "ResourceId": "trait_10150100",
+    "NameLanguageId": 140700000300980101,
+    "DescriptionLanguageId": 140800000300980101,
+    "WeaponTraitTypeIndex": 5,
+    "TargetValue": 0,
+    "ApplyRate": 100,
+    "ApplyConditionSetId": 1100005,
+    "TargetLimit": 0
+  },
+  {
+    "Id": 300980102,
+    "ResourceId": "trait_10010400",
+    "NameLanguageId": 140700000300980102,
+    "DescriptionLanguageId": 140800000300980102,
+    "WeaponTraitTypeIndex": 10,
+    "TargetValue": 10,
+    "ApplyRate": 100,
+    "ApplyConditionSetId": 1100005,
+    "TargetLimit": 5
+  },
+  {
+    "Id": 300980201,
+    "ResourceId": "trait_10150100",
+    "NameLanguageId": 140700000300980201,
+    "DescriptionLanguageId": 140800000300980201,
+    "WeaponTraitTypeIndex": 5,
+    "TargetValue": 0,
+    "ApplyRate": 100,
+    "ApplyConditionSetId": 1100005,
+    "TargetLimit": 0
+  },
+  {
+    "Id": 300980202,
+    "ResourceId": "trait_10010400",
+    "NameLanguageId": 140700000300980202,
+    "DescriptionLanguageId": 140800000300980202,
+    "WeaponTraitTypeIndex": 10,
+    "TargetValue": 20,
+    "ApplyRate": 100,
+    "ApplyConditionSetId": 1100005,
+    "TargetLimit": 10
+  },
+  {
+    "Id": 300980301,
+    "ResourceId": "trait_10150100",
+    "NameLanguageId": 140700000300980301,
+    "DescriptionLanguageId": 140800000300980301,
+    "WeaponTraitTypeIndex": 5,
+    "TargetValue": 0,
+    "ApplyRate": 100,
+    "ApplyConditionSetId": 1100005,
+    "TargetLimit": 0
+  },
+  {
+    "Id": 300980302,
+    "ResourceId": "trait_10010400",
+    "NameLanguageId": 140700000300980302,
+    "DescriptionLanguageId": 140800000300980302,
+    "WeaponTraitTypeIndex": 10,
+    "TargetValue": 30,
+    "ApplyRate": 100,
+    "ApplyConditionSetId": 1100005,
+    "TargetLimit": 15
+  },
+  {
+    "Id": 300980401,
+    "ResourceId": "trait_10150100",
+    "NameLanguageId": 140700000300980401,
+    "DescriptionLanguageId": 140800000300980401,
+    "WeaponTraitTypeIndex": 5,
+    "TargetValue": 0,
+    "ApplyRate": 100,
+    "ApplyConditionSetId": 1100005,
+    "TargetLimit": 0
+  },
+  {
+    "Id": 300980402,
+    "ResourceId": "trait_10010400",
+    "NameLanguageId": 140700000300980402,
+    "DescriptionLanguageId": 140800000300980402,
+    "WeaponTraitTypeIndex": 10,
+    "TargetValue": 40,
+    "ApplyRate": 100,
+    "ApplyConditionSetId": 1100005,
+    "TargetLimit": 20
+  },
+  {
+    "Id": 300980501,
+    "ResourceId": "trait_10150100",
+    "NameLanguageId": 140700000300980501,
+    "DescriptionLanguageId": 140800000300980501,
+    "WeaponTraitTypeIndex": 5,
+    "TargetValue": 0,
+    "ApplyRate": 100,
+    "ApplyConditionSetId": 1100005,
+    "TargetLimit": 0
+  },
+  {
+    "Id": 300980502,
+    "ResourceId": "trait_10010400",
+    "NameLanguageId": 140700000300980502,
+    "DescriptionLanguageId": 140800000300980502,
+    "WeaponTraitTypeIndex": 10,
+    "TargetValue": 50,
+    "ApplyRate": 100,
+    "ApplyConditionSetId": 1100005,
+    "TargetLimit": 25
+  },
+  {
+    "Id": 300980601,
+    "ResourceId": "trait_10150100",
+    "NameLanguageId": 140700000300980601,
+    "DescriptionLanguageId": 140800000300980601,
+    "WeaponTraitTypeIndex": 5,
+    "TargetValue": 0,
+    "ApplyRate": 100,
+    "ApplyConditionSetId": 1100005,
+    "TargetLimit": 0
+  },
+  {
+    "Id": 300980602,
+    "ResourceId": "trait_10010400",
+    "NameLanguageId": 140700000300980602,
+    "DescriptionLanguageId": 140800000300980602,
+    "WeaponTraitTypeIndex": 10,
+    "TargetValue": 60,
+    "ApplyRate": 100,
+    "ApplyConditionSetId": 1100005,
+    "TargetLimit": 30
+  },
+  {
+    "Id": 300980701,
+    "ResourceId": "trait_10150100",
+    "NameLanguageId": 140700000300980701,
+    "DescriptionLanguageId": 140800000300980701,
+    "WeaponTraitTypeIndex": 5,
+    "TargetValue": 0,
+    "ApplyRate": 100,
+    "ApplyConditionSetId": 1100005,
+    "TargetLimit": 0
+  },
+  {
+    "Id": 300980702,
+    "ResourceId": "trait_10010400",
+    "NameLanguageId": 140700000300980702,
+    "DescriptionLanguageId": 140800000300980702,
+    "WeaponTraitTypeIndex": 10,
+    "TargetValue": 70,
+    "ApplyRate": 100,
+    "ApplyConditionSetId": 1100005,
+    "TargetLimit": 35
+  },
+  {
+    "Id": 300980801,
+    "ResourceId": "trait_10150100",
+    "NameLanguageId": 140700000300980801,
+    "DescriptionLanguageId": 140800000300980801,
+    "WeaponTraitTypeIndex": 5,
+    "TargetValue": 0,
+    "ApplyRate": 100,
+    "ApplyConditionSetId": 1100005,
+    "TargetLimit": 0
+  },
+  {
+    "Id": 300980802,
+    "ResourceId": "trait_10010400",
+    "NameLanguageId": 140700000300980802,
+    "DescriptionLanguageId": 140800000300980802,
+    "WeaponTraitTypeIndex": 10,
+    "TargetValue": 80,
+    "ApplyRate": 100,
+    "ApplyConditionSetId": 1100005,
+    "TargetLimit": 40
+  },
+  {
+    "Id": 300980901,
+    "ResourceId": "trait_10150100",
+    "NameLanguageId": 140700000300980901,
+    "DescriptionLanguageId": 140800000300980901,
+    "WeaponTraitTypeIndex": 5,
+    "TargetValue": 0,
+    "ApplyRate": 100,
+    "ApplyConditionSetId": 1100005,
+    "TargetLimit": 0
+  },
+  {
+    "Id": 300980902,
+    "ResourceId": "trait_10010400",
+    "NameLanguageId": 140700000300980902,
+    "DescriptionLanguageId": 140800000300980902,
+    "WeaponTraitTypeIndex": 10,
+    "TargetValue": 90,
+    "ApplyRate": 100,
+    "ApplyConditionSetId": 1100005,
+    "TargetLimit": 45
+  },
+  {
     "Id": 300990101,
     "ResourceId": "trait_10320100",
     "NameLanguageId": 140700000300990101,
@@ -24002,6 +24200,17 @@
     "TargetLimit": 0
   },
   {
+    "Id": 700510500,
+    "ResourceId": "trait_10640200",
+    "NameLanguageId": 140700000700510500,
+    "DescriptionLanguageId": 140800000700510500,
+    "WeaponTraitTypeIndex": 12,
+    "TargetValue": 700510500,
+    "ApplyRate": 100,
+    "ApplyConditionSetId": 1100005,
+    "TargetLimit": 0
+  },
+  {
     "Id": 700511501,
     "ResourceId": "trait_10030100",
     "NameLanguageId": 140700000700511501,
@@ -24024,6 +24233,17 @@
     "TargetLimit": 0
   },
   {
+    "Id": 700520500,
+    "ResourceId": "trait_10600200",
+    "NameLanguageId": 140700000700520500,
+    "DescriptionLanguageId": 140800000700520500,
+    "WeaponTraitTypeIndex": 12,
+    "TargetValue": 700520500,
+    "ApplyRate": 100,
+    "ApplyConditionSetId": 1100005,
+    "TargetLimit": 0
+  },
+  {
     "Id": 700521501,
     "ResourceId": "trait_10030100",
     "NameLanguageId": 140700000700521501,
@@ -24041,6 +24261,39 @@
     "DescriptionLanguageId": 140800000700521502,
     "WeaponTraitTypeIndex": 12,
     "TargetValue": 700521500,
+    "ApplyRate": 100,
+    "ApplyConditionSetId": 1100005,
+    "TargetLimit": 0
+  },
+  {
+    "Id": 700530500,
+    "ResourceId": "trait_10680200",
+    "NameLanguageId": 140700000700530500,
+    "DescriptionLanguageId": 140800000700530500,
+    "WeaponTraitTypeIndex": 12,
+    "TargetValue": 700530500,
+    "ApplyRate": 100,
+    "ApplyConditionSetId": 1100005,
+    "TargetLimit": 0
+  },
+  {
+    "Id": 700550401,
+    "ResourceId": "trait_10020200",
+    "NameLanguageId": 140700000700550401,
+    "DescriptionLanguageId": 140800000700550401,
+    "WeaponTraitTypeIndex": 14,
+    "TargetValue": 40,
+    "ApplyRate": 100,
+    "ApplyConditionSetId": 1100005,
+    "TargetLimit": 0
+  },
+  {
+    "Id": 700570401,
+    "ResourceId": "trait_10270200",
+    "NameLanguageId": 140700000700570401,
+    "DescriptionLanguageId": 140800000700570401,
+    "WeaponTraitTypeIndex": 12,
+    "TargetValue": 700570401,
     "ApplyRate": 100,
     "ApplyConditionSetId": 1100005,
     "TargetLimit": 0

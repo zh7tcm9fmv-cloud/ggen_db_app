@@ -7,6 +7,69 @@
     "DisplayTypeIndex": 1
   },
   {
+    "MapNpcId": 705301000102000001,
+    "StrategyHintTypeIndex": 3,
+    "StrategyHintTargetValue": 5111004,
+    "AttentionResourceId": "strategy_hint_0002",
+    "DisplayTypeIndex": 0
+  },
+  {
+    "MapNpcId": 705301000102000002,
+    "StrategyHintTypeIndex": 1,
+    "StrategyHintTargetValue": 170500450001,
+    "AttentionResourceId": "strategy_hint_0000",
+    "DisplayTypeIndex": 0
+  },
+  {
+    "MapNpcId": 705301000102000003,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6101701,
+    "AttentionResourceId": "strategy_hint_0000",
+    "DisplayTypeIndex": 0
+  },
+  {
+    "MapNpcId": 705301000102000004,
+    "StrategyHintTypeIndex": 1,
+    "StrategyHintTargetValue": 170500491002,
+    "AttentionResourceId": "strategy_hint_0000",
+    "DisplayTypeIndex": 0
+  },
+  {
+    "MapNpcId": 705301000102000005,
+    "StrategyHintTypeIndex": 1,
+    "StrategyHintTargetValue": 170500450001,
+    "AttentionResourceId": "strategy_hint_0000",
+    "DisplayTypeIndex": 0
+  },
+  {
+    "MapNpcId": 705301000102000007,
+    "StrategyHintTypeIndex": 1,
+    "StrategyHintTargetValue": 170500450001,
+    "AttentionResourceId": "strategy_hint_0000",
+    "DisplayTypeIndex": 0
+  },
+  {
+    "MapNpcId": 705301000102000009,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6101701,
+    "AttentionResourceId": "strategy_hint_0000",
+    "DisplayTypeIndex": 0
+  },
+  {
+    "MapNpcId": 705301000102000011,
+    "StrategyHintTypeIndex": 4,
+    "StrategyHintTargetValue": 6101701,
+    "AttentionResourceId": "strategy_hint_0000",
+    "DisplayTypeIndex": 0
+  },
+  {
+    "MapNpcId": 705301000102000013,
+    "StrategyHintTypeIndex": 1,
+    "StrategyHintTargetValue": 170500491002,
+    "AttentionResourceId": "strategy_hint_0000",
+    "DisplayTypeIndex": 0
+  },
+  {
     "MapNpcId": 901100100102000001,
     "StrategyHintTypeIndex": 1,
     "StrategyHintTargetValue": 908000380005,

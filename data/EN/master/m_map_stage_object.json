@@ -10,5 +10,13 @@
   {
     "Id": 9003,
     "ResourceId": "ef_mpc_0087_03_item"
+  },
+  {
+    "Id": 9005,
+    "ResourceId": "ef_mpc_0087_01_item"
+  },
+  {
+    "Id": 9006,
+    "ResourceId": "ef_mpc_0087_01_item"
   }
 ]

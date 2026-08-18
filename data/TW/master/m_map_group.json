@@ -497,6 +497,20 @@
     "MapGroupTypeIndex": 2
   },
   {
+    "Id": 705300800102000001,
+    "MapStageId": 705300800102000000,
+    "GroupNumber": 0,
+    "TeamNumber": 1,
+    "MapGroupTypeIndex": 2
+  },
+  {
+    "Id": 705300900102000001,
+    "MapStageId": 705300900102000000,
+    "GroupNumber": 0,
+    "TeamNumber": 1,
+    "MapGroupTypeIndex": 2
+  },
+  {
     "Id": 900000100102000020,
     "MapStageId": 900000100102000000,
     "GroupNumber": 0,

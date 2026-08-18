@@ -76,6 +76,34 @@
     "value": "Dark Abyss"
   },
   {
+    "id": 250800070500101019,
+    "value": "Hut"
+  },
+  {
+    "id": 250800070500101020,
+    "value": "Castle Munzo"
+  },
+  {
+    "id": 250800070500101021,
+    "value": "Texas Town"
+  },
+  {
+    "id": 250800070500101022,
+    "value": "Cave of Guidance"
+  },
+  {
+    "id": 250800070500101023,
+    "value": "Algas Castle"
+  },
+  {
+    "id": 250800070500101024,
+    "value": "Jupitris Tower"
+  },
+  {
+    "id": 250800070500101025,
+    "value": "Musha Castle"
+  },
+  {
     "id": 250900070500101001,
     "value": "Lacroa Castle\nThis castle is the seat of King Revil, who rules over the Lacroa Kingdom.\nIt overlooks a large and bustling castle town where people live in peace.\nThat peace was shattered the day the star fell."
   },
@@ -148,6 +176,34 @@
     "value": "Dark Abyss\nA labyrinth said to contain  the Recall spell tome.\nThis spell banishes creatures summoned by enemies."
   },
   {
+    "id": 250900070500101019,
+    "value": "Hut\nKnight Amuro stumbled across this hut during his training journey.\nBrothers who fled the war in Munzo live here in seclusion."
+  },
+  {
+    "id": 250900070500101020,
+    "value": "Castle Munzo\nKing Conscon rules over the Munzo Empire from this castle.\nThis was once a peaceful nation, but somewhere in the past, conflict sparked and turned into all-out war with Algas.\nPrincess Yuiry is determined to put an end to the fighting."
+  },
+  {
+    "id": 250900070500101021,
+    "value": "Texas Town\nAn abandoned town, where nothing remains."
+  },
+  {
+    "id": 250900070500101022,
+    "value": "Cave of Guidance\nA cave system that connects to the Kingdom of Algas."
+  },
+  {
+    "id": 250900070500101023,
+    "value": "Algas Castle\nThe castle wherefrom King Blex rules over the Kingdom of Algas.\nThe nation is at war with the Munzo Empire.\nIts cavalry, warriors, and mages form the outstanding force known as the Algas Knights.\nHowever, since the capture of their leader, Knight Alex, by the Munzo Empire,\nthe knights have been in disarray, their organization in danger of collapse."
+  },
+  {
+    "id": 250900070500101024,
+    "value": "Jupitris Tower\nThis tower is infested with formidable monsters and littered with traps.\nSome rooms require a secret password to enter."
+  },
+  {
+    "id": 250900070500101025,
+    "value": "Brave warriors, if you can defeat me,\nthen my legendary sword shall be yours.\nCome! Let us do battle!"
+  },
+  {
     "id": 250900070500102002,
     "value": "Knight Gundam\nPick on someone your own size!"
   },
@@ -190,5 +246,21 @@
   {
     "id": 250900070500102015,
     "value": "Fairy GM Sniper Custom\nThere's an ancient tale told among fairies.\nIt's about the Bow and Arrow of Light."
+  },
+  {
+    "id": 250900070500102017,
+    "value": "Knight Amuro\nGundams, answer strength with technique, technique with magic, and magic with strength!"
+  },
+  {
+    "id": 250900070500102018,
+    "value": "Swordsman Zeta\nThe cavalry awaits your command!"
+  },
+  {
+    "id": 250900070500102019,
+    "value": "Fighter Double Zeta\nIf anyone can save the prince, it's the warriors!"
+  },
+  {
+    "id": 250900070500102020,
+    "value": "Wizard Nu\nEntrust this task to the mages!"
   }
 ]

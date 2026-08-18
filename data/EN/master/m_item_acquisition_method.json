@@ -960,6 +960,51 @@
     "TargetId": 70520901
   },
   {
+    "ItemId": 110126082001,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 70530102
+  },
+  {
+    "ItemId": 110126082001,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 70530202
+  },
+  {
+    "ItemId": 110126082001,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 70530304
+  },
+  {
+    "ItemId": 110126082001,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 70530402
+  },
+  {
+    "ItemId": 110126082001,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 70530502
+  },
+  {
+    "ItemId": 110126082001,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 70530602
+  },
+  {
+    "ItemId": 110126082001,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 70530701
+  },
+  {
+    "ItemId": 110126082001,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 70530801
+  },
+  {
+    "ItemId": 110126082001,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 70530901
+  },
+  {
     "ItemId": 120000000001,
     "AcquisitionMethodTypeIndex": 19,
     "TargetId": 200001
@@ -17918,6 +17963,51 @@
     "ItemId": 222000150001,
     "AcquisitionMethodTypeIndex": 16,
     "TargetId": 70520901
+  },
+  {
+    "ItemId": 222000160001,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 70530102
+  },
+  {
+    "ItemId": 222000160001,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 70530202
+  },
+  {
+    "ItemId": 222000160001,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 70530304
+  },
+  {
+    "ItemId": 222000160001,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 70530402
+  },
+  {
+    "ItemId": 222000160001,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 70530502
+  },
+  {
+    "ItemId": 222000160001,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 70530602
+  },
+  {
+    "ItemId": 222000160001,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 70530701
+  },
+  {
+    "ItemId": 222000160001,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 70530801
+  },
+  {
+    "ItemId": 222000160001,
+    "AcquisitionMethodTypeIndex": 16,
+    "TargetId": 70530901
   },
   {
     "ItemId": 222100010001,

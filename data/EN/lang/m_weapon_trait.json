@@ -3937,7 +3937,7 @@
   },
   {
     "id": 140700000300780102,
-    "value": "HP Absorption"
+    "value": "HP Absorption LV 1"
   },
   {
     "id": 140700000300780201,
@@ -3945,7 +3945,7 @@
   },
   {
     "id": 140700000300780202,
-    "value": "HP Absorption"
+    "value": "HP Absorption LV 2"
   },
   {
     "id": 140700000300780301,
@@ -3953,7 +3953,7 @@
   },
   {
     "id": 140700000300780302,
-    "value": "HP Absorption"
+    "value": "HP Absorption LV 3"
   },
   {
     "id": 140700000300780401,
@@ -3961,7 +3961,7 @@
   },
   {
     "id": 140700000300780402,
-    "value": "HP Absorption"
+    "value": "HP Absorption LV 4"
   },
   {
     "id": 140700000300780501,
@@ -3969,7 +3969,7 @@
   },
   {
     "id": 140700000300780502,
-    "value": "HP Absorption"
+    "value": "HP Absorption LV 5"
   },
   {
     "id": 140700000300780601,
@@ -3977,7 +3977,7 @@
   },
   {
     "id": 140700000300780602,
-    "value": "HP Absorption"
+    "value": "HP Absorption LV 6"
   },
   {
     "id": 140700000300780701,
@@ -3985,7 +3985,7 @@
   },
   {
     "id": 140700000300780702,
-    "value": "HP Absorption"
+    "value": "HP Absorption LV 7"
   },
   {
     "id": 140700000300780801,
@@ -3993,7 +3993,7 @@
   },
   {
     "id": 140700000300780802,
-    "value": "HP Absorption"
+    "value": "HP Absorption LV 8"
   },
   {
     "id": 140700000300780901,
@@ -4001,7 +4001,7 @@
   },
   {
     "id": 140700000300780902,
-    "value": "HP Absorption"
+    "value": "HP Absorption LV 9"
   },
   {
     "id": 140700000300790101,
@@ -4009,7 +4009,7 @@
   },
   {
     "id": 140700000300790102,
-    "value": "EN Absorption"
+    "value": "EN Absorption LV 1"
   },
   {
     "id": 140700000300790103,
@@ -4021,7 +4021,7 @@
   },
   {
     "id": 140700000300790202,
-    "value": "EN Absorption"
+    "value": "EN Absorption LV 2"
   },
   {
     "id": 140700000300790203,
@@ -4033,7 +4033,7 @@
   },
   {
     "id": 140700000300790302,
-    "value": "EN Absorption"
+    "value": "EN Absorption LV 3"
   },
   {
     "id": 140700000300790303,
@@ -4045,7 +4045,7 @@
   },
   {
     "id": 140700000300790402,
-    "value": "EN Absorption"
+    "value": "EN Absorption LV 4"
   },
   {
     "id": 140700000300790403,
@@ -4057,7 +4057,7 @@
   },
   {
     "id": 140700000300790502,
-    "value": "EN Absorption"
+    "value": "EN Absorption LV 5"
   },
   {
     "id": 140700000300790503,
@@ -4069,7 +4069,7 @@
   },
   {
     "id": 140700000300790602,
-    "value": "EN Absorption"
+    "value": "EN Absorption LV 6"
   },
   {
     "id": 140700000300790603,
@@ -4081,7 +4081,7 @@
   },
   {
     "id": 140700000300790702,
-    "value": "EN Absorption"
+    "value": "EN Absorption LV 7"
   },
   {
     "id": 140700000300790703,
@@ -4093,7 +4093,7 @@
   },
   {
     "id": 140700000300790802,
-    "value": "EN Absorption"
+    "value": "EN Absorption LV 8"
   },
   {
     "id": 140700000300790803,
@@ -4105,7 +4105,7 @@
   },
   {
     "id": 140700000300790902,
-    "value": "EN Absorption"
+    "value": "EN Absorption LV 9"
   },
   {
     "id": 140700000300790903,
@@ -4962,6 +4962,78 @@
   {
     "id": 140700000300970902,
     "value": "Increased Special Damage Effect Value Boost"
+  },
+  {
+    "id": 140700000300980101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300980102,
+    "value": "HP Absorption LV 1"
+  },
+  {
+    "id": 140700000300980201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300980202,
+    "value": "HP Absorption LV 2"
+  },
+  {
+    "id": 140700000300980301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300980302,
+    "value": "HP Absorption LV 3"
+  },
+  {
+    "id": 140700000300980401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300980402,
+    "value": "HP Absorption LV 4"
+  },
+  {
+    "id": 140700000300980501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300980502,
+    "value": "HP Absorption LV 5"
+  },
+  {
+    "id": 140700000300980601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300980602,
+    "value": "HP Absorption LV 6"
+  },
+  {
+    "id": 140700000300980701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300980702,
+    "value": "HP Absorption LV 7"
+  },
+  {
+    "id": 140700000300980801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300980802,
+    "value": "HP Absorption LV 8"
+  },
+  {
+    "id": 140700000300980901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000300980902,
+    "value": "HP Absorption LV 9"
   },
   {
     "id": 140700000300990101,
@@ -8728,6 +8800,10 @@
     "value": "(Vigor conditions)Piercing LV 5"
   },
   {
+    "id": 140700000700510500,
+    "value": "Increased Physical Damage [1 turn] "
+  },
+  {
     "id": 140700000700511501,
     "value": "Preemptive Strike"
   },
@@ -8736,12 +8812,28 @@
     "value": "Beam Weapon Power Down [1 turn] LV 15"
   },
   {
+    "id": 140700000700520500,
+    "value": "Increased Beam Damage [1 turn] "
+  },
+  {
     "id": 140700000700521501,
     "value": "Preemptive Strike"
   },
   {
     "id": 140700000700521502,
     "value": "Physical Weapon Power Down [1 turn] LV 15"
+  },
+  {
+    "id": 140700000700530500,
+    "value": "Increased Special Damage [1 turn] "
+  },
+  {
+    "id": 140700000700550401,
+    "value": "EN Damage"
+  },
+  {
+    "id": 140700000700570401,
+    "value": "MOV Down LV 4"
   },
   {
     "id": 140700000700660101,
@@ -13720,6 +13812,78 @@
     "value": "When engaging enemies that include Large Machine tag,\nadds 3% to the weapon effect value for Increased Special Damage taken."
   },
   {
+    "id": 140800000300980101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300980102,
+    "value": "Restores own HP equal to 10% of damage dealt\n(Recovery is capped at 5% of own Max HP)"
+  },
+  {
+    "id": 140800000300980201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300980202,
+    "value": "Restores own HP equal to 20% of damage dealt\n(Recovery is capped at 10% of own Max HP)"
+  },
+  {
+    "id": 140800000300980301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300980302,
+    "value": "Restores own HP equal to 30% of damage dealt\n(Recovery is capped at 15% of own Max HP)"
+  },
+  {
+    "id": 140800000300980401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300980402,
+    "value": "Restores own HP equal to 40% of damage dealt\n(Recovery is capped at 20% of own Max HP)"
+  },
+  {
+    "id": 140800000300980501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300980502,
+    "value": "Restores own HP equal to 50% of damage dealt\n(Recovery is capped at 25% of own Max HP)"
+  },
+  {
+    "id": 140800000300980601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300980602,
+    "value": "Restores own HP equal to 60% of damage dealt\n(Recovery is capped at 30% of own Max HP)"
+  },
+  {
+    "id": 140800000300980701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300980702,
+    "value": "Restores own HP equal to 70% of damage dealt\n(Recovery is capped at 35% of own Max HP)"
+  },
+  {
+    "id": 140800000300980801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300980802,
+    "value": "Restores own HP equal to 80% of damage dealt\n(Recovery is capped at 40% of own Max HP)"
+  },
+  {
+    "id": 140800000300980901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140800000300980902,
+    "value": "Restores own HP equal to 90% of damage dealt\n(Recovery is capped at 45% of own Max HP)"
+  },
+  {
     "id": 140800000300990101,
     "value": "Static Accuracy 90%"
   },
@@ -17484,6 +17648,10 @@
     "value": "When Vigor is Supercharged or higher,\nWhen this unit attacks, reduce enemy's DEF by 50% for this attack."
   },
   {
+    "id": 140800000700510500,
+    "value": "Inflict \"Damage Taken from Physical Weapons Up 100%\" on the enemy [1 turn]."
+  },
+  {
     "id": 140800000700511501,
     "value": "Preemptive Strike"
   },
@@ -17492,12 +17660,28 @@
     "value": "Inflict \"Decrease beam weapon Power by 80%\" on the enemy [1 turn]."
   },
   {
+    "id": 140800000700520500,
+    "value": "Inflict \"Damage Taken from Beam Weapons Up 100%\" on the enemy [1 turn]."
+  },
+  {
     "id": 140800000700521501,
     "value": "Preemptive Strike"
   },
   {
     "id": 140800000700521502,
     "value": "Inflict \"Decrease physical weapon Power by 80%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700530500,
+    "value": "Inflict \"Damage Taken from Special Weapons Up 100%\" on the enemy [1 turn]."
+  },
+  {
+    "id": 140800000700550401,
+    "value": "Deals damage to enemy's EN.\n(EN Damage is capped at 40% of enemy's Max EN)"
+  },
+  {
+    "id": 140800000700570401,
+    "value": "Inflict \"MOV Down by 4\" on the enemy."
   },
   {
     "id": 140800000700660101,
