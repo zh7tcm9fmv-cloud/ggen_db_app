@@ -9148,7 +9148,7 @@ def trait_text_implies_show_target_condition_tags(en_text, display_text):
     return False
 
 
-def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_map, trait_data_map, lang_text_map, en_lang_text_map, trait_condition_raw_map, lineage_lookup, series_name_map, ability_resource_map, abil_desc_map, sort_order=0, lang_code='EN', unit_id=None):
+def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_map, trait_data_map, lang_text_map, en_lang_text_map, trait_condition_raw_map, lineage_lookup, series_name_map, ability_resource_map, abil_desc_map, sort_order=0, lang_code='EN', unit_id=None, skip_icon=False):
     trait_set_id = normalize_id(abil_link_map.get(ab_id, ab_id))
     lookup_id = trait_set_id[:-2] if len(trait_set_id) > 2 else trait_set_id
     ab_name = resolve_ability_display_name_from_maps(ab_id, abil_name_map, abil_link_map) or 'Unknown'
@@ -9441,7 +9441,7 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
     _augment_bare_vigor_lines_next_to_supercharged(details, lang_code)
     details = _merge_same_tag_ability_details(details)
     res_id = coalesce_ability_resource_id(ab_id, trait_set_id)
-    icon_file = find_trait_icon(res_id) if res_id else None
+    icon_file = None if skip_icon else (find_trait_icon(res_id) if res_id else None)
     has_icon = bool(icon_file)
     ex_frame = is_ex_character_ability_frame(ab_name) or ability_details_imply_ex_piloting_ex_unit(details)
     # Trait list display_name only. Stats/compare CP toggles use JS `t('conditional_passive')`, not this field.

@@ -753,7 +753,7 @@ def _formula_char_atk_for_pair(cid, uid, lc, attack_attr, *, cp_on=True, active_
     )
 
 
-def _build_char_ac_for_lang(cid, lc):
+def _build_char_ac_for_lang(cid, lc, *, skip_icons=False):
     """Build character ability entries in the requested UI language (names/details/tags)."""
     A = _app()
     lc = (lc or A.CALC_LANG or 'EN').upper()
@@ -772,7 +772,7 @@ def _build_char_ac_for_lang(cid, lc):
             ldc['lang_text_map'], en_ldc.get('lang_text_map') or ldc['lang_text_map'],
             A.trait_condition_raw_map, ldc['lineage_lookup'],
             ldc['series_name_map'], A.ability_resource_map, ldc['abil_desc_map'],
-            sort_order=int(ab.get('SortOrder', 0)), lang_code=lc,
+            sort_order=int(ab.get('SortOrder', 0)), lang_code=lc, skip_icon=skip_icons,
         )
         if spid and spid not in ('0', 'None', bid):
             bab['sp_replacement'] = A.build_ability_entry(
@@ -780,7 +780,7 @@ def _build_char_ac_for_lang(cid, lc):
                 ldc['lang_text_map'], en_ldc.get('lang_text_map') or ldc['lang_text_map'],
                 A.trait_condition_raw_map, ldc['lineage_lookup'],
                 ldc['series_name_map'], A.ability_resource_map, ldc['abil_desc_map'],
-                sort_order=int(ab.get('SortOrder', 0)), lang_code=lc,
+                sort_order=int(ab.get('SortOrder', 0)), lang_code=lc, skip_icon=skip_icons,
             )
         return bab
 
@@ -790,7 +790,7 @@ def _build_char_ac_for_lang(cid, lc):
 def _build_char_ac_calc(cid, lc):
     """EN ability text for damage-formula parsing (CALC_LANG). `lc` kept for call-site compat."""
     del lc
-    return _build_char_ac_for_lang(cid, _app().CALC_LANG)
+    return _build_char_ac_for_lang(cid, _app().CALC_LANG, skip_icons=True)
 
 
 def _pair_ok_for_unit(uid, cid, trait_pair_unit_ids):
@@ -4699,6 +4699,28 @@ def _bsp_index_groups(cache_key, groups):
     return idx
 
 
+_CORRUPT_BSP_CACHE_PATHS = set()
+_CORRUPT_BSP_CACHE_LOCK = threading.Lock()
+
+
+def _quarantine_corrupt_bsp_cache(path):
+    """Rename a corrupt gzip catalog so we stop retrying it every Top 10 open."""
+    with _CORRUPT_BSP_CACHE_LOCK:
+        if path in _CORRUPT_BSP_CACHE_PATHS:
+            return
+        _CORRUPT_BSP_CACHE_PATHS.add(path)
+    if not os.path.isfile(path):
+        return
+    bad = path + '.corrupt'
+    try:
+        if os.path.isfile(bad):
+            os.remove(bad)
+        os.replace(path, bad)
+        print(f'BSP cache quarantined corrupt file: {path} -> {bad}')
+    except OSError as e:
+        print(f'BSP cache quarantine failed ({path}): {e}')
+
+
 def _load_bsp_published_cache(cache_key, *, use_memory=True, min_rules=None):
     """Published BSP rankings built from live /cal (reject legacy python-lite caches)."""
     global _BSP_PUBLISHED_MEMORY
@@ -4718,6 +4740,9 @@ def _load_bsp_published_cache(cache_key, *, use_memory=True, min_rules=None):
     ):
         if not os.path.isfile(path):
             continue
+        with _CORRUPT_BSP_CACHE_LOCK:
+            if path in _CORRUPT_BSP_CACHE_PATHS:
+                continue
         try:
             with gzip.open(path, 'rt', encoding='utf-8') as f:
                 data = json.load(f)
@@ -4749,6 +4774,9 @@ def _load_bsp_published_cache(cache_key, *, use_memory=True, min_rules=None):
             return out
         except Exception as e:
             print(f'BSP published cache load failed ({path}): {e}')
+            err = str(e).lower()
+            if 'decompress' in err or 'invalid block' in err or 'not a gzipped file' in err:
+                _quarantine_corrupt_bsp_cache(path)
     return None
 
 
@@ -5326,31 +5354,13 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
             and has_def_off
             and def_ver < int(_DEFENDER_BOARD_VERSION)
         )
-        if missing_off or missing_def:
-            try:
-                if missing_off:
-                    row_base = enrich_group_no_active_skills(
-                        row_base, lc, lite=False, rank_mode=rank_mode, def_tier=def_tier,
-                        force=True,
-                    )
-                if missing_def:
-                    row_base = enrich_group_defender_rankings(row_base, lc, force=True)
-                if isinstance(g, dict) and isinstance(row_base, dict):
-                    for k in (
-                        'rankings_no_active_skills', 'rankings_defender',
-                        'skills_off_board_version',
-                    ):
-                        if k in row_base:
-                            g[k] = row_base[k]
-                if missing_def:
-                    _invalidate_unit_best_pilot_api_cache(uid)
-                    _schedule_persist_bsp_group(uid, g)
-            except Exception as e:
-                print(f'best_synergy enrich failed ({uid}): {e}')
-        elif stale_off or stale_def:
+        refresh_off = missing_off or stale_off
+        refresh_def = missing_def or stale_def
+        if refresh_off or refresh_def:
+            # Never block Top 10 on live defender/skills-off sim — OOM/timeouts take down the worker.
             _schedule_bsp_board_refresh(
                 g, uid, lc, rank_mode=rank_mode, def_tier=def_tier,
-                refresh_off=stale_off, refresh_def=stale_def,
+                refresh_off=refresh_off, refresh_def=refresh_def,
             )
         if include_all_modes and isinstance(row_base.get('rankings'), dict):
             modes_out = {}
