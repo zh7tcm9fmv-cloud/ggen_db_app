@@ -12,10 +12,14 @@ Use --second-latest to set the baseline to the previous MasterData_* folder (e.g
 when you have two dated folders and the app points at the newest).
 
 Usage (from ggen_db_app):
-  python scripts/refresh_whats_new_snapshot.py
+  python scripts/refresh_whats_new_snapshot.py              # baseline + gacha + /ip (default)
+  python scripts/refresh_whats_new_snapshot.py --snapshot-only
   python scripts/refresh_whats_new_snapshot.py --second-latest
   python scripts/refresh_whats_new_snapshot.py --from-master-dir "C:/path/to/MasterData_2026-03-24"
-  python scripts/refresh_whats_new_snapshot.py --rebuild-spi
+  python scripts/refresh_whats_new_snapshot.py --rebuild-spi   # /ip only (legacy alias)
+
+Published caches only (no What's New baseline):
+  python scripts/refresh_published_after_master.py
 
 If you already have whats_new_snapshot.json but no files under data/whats_new_history_snapshots/, use
   python scripts/backfill_whats_new_history.py --prior-master-dir "C:/path/to/older/MasterData_*"
@@ -64,14 +68,24 @@ def main():
         help='Optional captured_at stored in JSON (default: today UTC).',
     )
     parser.add_argument(
+        '--snapshot-only',
+        action='store_true',
+        help='Only write whats_new_snapshot.json (skip gacha drop % + /ip rebuild).',
+    )
+    parser.add_argument(
+        '--publish',
+        action='store_true',
+        help='Force published cache refresh (default unless --snapshot-only).',
+    )
+    parser.add_argument(
         '--rebuild-spi',
         action='store_true',
-        help=(
-            'After writing the What\'s New baseline, rebuild published Investment Priority '
-            '(/ip) so new units/characters are scored onto the boards.'
-        ),
+        help='Legacy alias: rebuild /ip only (use --publish for gacha + /ip).',
     )
     args = parser.parse_args()
+
+    publish = not args.snapshot_only
+    spi_only = bool(args.rebuild_spi) and not args.publish
 
     import app as app_module
 
@@ -131,19 +145,18 @@ def main():
     print(f'  source: {src}')
     print(f'  units: {len(sn.get("units", []))}, characters: {len(sn.get("characters", []))}, option parts: {len(sn.get("option_parts", []))}')
 
-    if args.rebuild_spi:
-        print('Rebuilding Investment Priority (/ip) published board…')
-        # Re-exec in a fresh process so SPI build sees the same master already loaded
-        # via import app in this script, without double-binding Flask quirks.
+    if publish:
         import subprocess
 
-        rc = subprocess.call(
-            [sys.executable, os.path.join(_APP_DIR, 'scripts', 'build_sp_investment_rankings.py')],
-            cwd=_APP_DIR,
-        )
+        pub_script = os.path.join(_APP_DIR, 'scripts', 'refresh_published_after_master.py')
+        pub_cmd = [sys.executable, pub_script]
+        if spi_only:
+            pub_cmd.append('--skip-gasha')
+        print('Refreshing published caches (gacha drop % + /ip)…')
+        rc = subprocess.call(pub_cmd, cwd=_APP_DIR)
         if rc != 0:
             raise SystemExit(rc)
-        print('SPI rebuild finished.')
+        print('Published cache refresh finished.')
 
 
 if __name__ == '__main__':

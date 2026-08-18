@@ -9,17 +9,24 @@ Published board: `data/published/sp_investment_v1.json` (static; snappy serve pa
 
 ## Hard rule
 
-After importing new MasterData (new playable units/characters), **rebuild SPI before shipping** so `/ip` includes every investment-eligible kit:
+After importing new MasterData (new playable units/characters), **rebuild SPI before shipping** so `/ip` includes every investment-eligible kit.
+
+**Default post-import (What's New + gacha drop % + /ip):**
 
 ```text
-python scripts/build_sp_investment_rankings.py
-python scripts/check_sp_investment_coverage.py
+python scripts/refresh_whats_new_snapshot.py
 ```
 
-Or with What's New baseline refresh:
+**Published caches only** (no What's New baseline):
 
 ```text
-python scripts/refresh_whats_new_snapshot.py --rebuild-spi
+python scripts/refresh_published_after_master.py
+```
+
+What's New baseline only (skip published caches):
+
+```text
+python scripts/refresh_whats_new_snapshot.py --snapshot-only
 ```
 
 Do not leave `/ip` on a stale published JSON after a catalog drop.
@@ -34,4 +41,4 @@ If the owner asks to put normal UR banner kits on `/ip`, that is a product/rules
 
 ## Coverage gate
 
-`scripts/check_sp_investment_coverage.py` (also runs at end of the build) must report **Coverage: OK**. Missing eligible SSR/SR/R ids after a master import = rebuild required (or a scorer exception to fix).
+`scripts/check_sp_investment_coverage.py` (runs at end of `refresh_published_after_master.py`) must report **Coverage: OK**. Missing eligible SSR/SR/R ids after a master import = rebuild required (or a scorer exception to fix).

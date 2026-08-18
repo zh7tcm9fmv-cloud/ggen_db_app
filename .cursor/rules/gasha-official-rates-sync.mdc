@@ -3,6 +3,8 @@ description: Sync gacha drop % from official site after new MasterData banners
 alwaysApply: true
 ---
 
+# Gacha drop % (`/bt` banner timeline)
+
 Published cache: `data/published/official_gasha/gasha_proportion_{gashaId}_{langNum}.json`.
 
 Official detail page (only `gasha_id` changes):
@@ -19,11 +21,19 @@ https://web.gl.eternal.channel.or.jp/server_assets/api/gasha_proportion_{gashaId
 
 ## After a new banner in MasterData
 
-Run once — **no manual gasha_id** (script unions official `gasha_list` + all `m_gasha.json` ids):
+Runs automatically as part of the default post-import workflow:
 
 ```text
-python scripts/sync_official_gasha_proportions.py
+python scripts/refresh_whats_new_snapshot.py
 ```
+
+Or published caches only:
+
+```text
+python scripts/refresh_published_after_master.py
+```
+
+The sync script unions official `gasha_list` + all `m_gasha.json` ids — no manual gasha_id.
 
 Commit new/updated files under `data/published/official_gasha/` before deploy.
 

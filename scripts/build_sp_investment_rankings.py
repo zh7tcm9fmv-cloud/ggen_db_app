@@ -6,8 +6,8 @@ Scores every investment-eligible playable unit/character from current master
 (non-Ultimate UR + warships excluded by rules — not SP Conversion targets).
 
 After any MasterData import / What's New refresh, rebuild so new kits land on /ip:
-  python scripts/build_sp_investment_rankings.py
-  python scripts/refresh_whats_new_snapshot.py --rebuild-spi
+  python scripts/refresh_whats_new_snapshot.py
+  python scripts/refresh_published_after_master.py
 
 Coverage gate (eligible catalog vs published):
   python scripts/check_sp_investment_coverage.py
