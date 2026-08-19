@@ -2071,6 +2071,32 @@ if(tab==='rankUnits')return{sort:S.ranking.sortUnit,dir:S.ranking.dirUnit};
 if(tab==='rankCharacters')return{sort:S.ranking.sortChar,dir:S.ranking.dirChar};
 return{sort:'name',dir:'asc'};
 }
+function stageBrowseSortKey(row){
+if(!row)return 0;
+if(row.stage_sort_key!=null)return row.stage_sort_key;
+if(row._sn_sort!=null)return row._sn_sort;
+if(row.stage_category==='challenge_stage'){
+const series=Number(row.challenge_series_id)||0;
+const sn=Number(row.stage_number)||0;
+return series*100000+(row.challenge_is_hard?1000:0)+sn;
+}
+return Number(row.stage_number)||0;
+}
+function compareStageBrowseSortKeys(a,b){
+const ka=stageBrowseSortKey(a);
+const kb=stageBrowseSortKey(b);
+if(Array.isArray(ka)||Array.isArray(kb)){
+const aa=Array.isArray(ka)?ka:[ka];
+const bb=Array.isArray(kb)?kb:[kb];
+const len=Math.max(aa.length,bb.length);
+for(let i=0;i<len;i++){
+const d=(Number(aa[i])||0)-(Number(bb[i])||0);
+if(d)return d;
+}
+return 0;
+}
+return(Number(ka)||0)-(Number(kb)||0);
+}
 function instantBrowseSort(rows,tab){
 const s=instantBrowseSortState(tab);
 const key=s.sort||(tab==='stages'?'stage_number':'rarity');
@@ -2106,7 +2132,7 @@ const c=av.localeCompare(bv,'en',{sensitivity:'base'});
 if(c)return dir*c;
 }
 if(tab==='stages'&&(key==='stage_number'||!key)){
-const d=(Number(a._sn_sort!=null?a._sn_sort:a.stage_number)||0)-(Number(b._sn_sort!=null?b._sn_sort:b.stage_number)||0);
+const d=compareStageBrowseSortKeys(a,b);
 if(d)return dir*d;
 return String(a.id||'').localeCompare(String(b.id||''));
 }

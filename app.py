@@ -25128,7 +25128,12 @@ def list_stages():
         total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
         start = (page - 1) * pp; pr = rows[start:start + pp]
         _populate_stage_list_row_portraits(pr)
-        for _r in pr: _r.pop('_sn_sort', None)
+        for _r in pr:
+            sk = _r.get('_sn_sort')
+            if sk is not None:
+                # Client instant-browse must preserve server sort (challenge HARD lanes last).
+                _r['stage_sort_key'] = list(sk) if isinstance(sk, tuple) else sk
+            _r.pop('_sn_sort', None)
         result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp}
         if cat == 'challenge_stage':
             result['challenge_series_options'] = list_challenge_series_filter_options(lc)
