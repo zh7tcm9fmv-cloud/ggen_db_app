@@ -609,6 +609,15 @@
     if (state.rankMode === mode) return;
     state.rankMode = mode;
     syncMetricButtons();
+    var uid = state.unitId;
+    if (uid) {
+      var entry = getCachedEntry(uid);
+      if (entry && (!entry.modes || !entry.modes[mode])) {
+        void ensureModeBoard(uid, currentLang(), mode).then(function () {
+          if (state.rankMode === mode && state.open) renderActivePanel();
+        });
+      }
+    }
     renderActivePanel();
   }
 
@@ -1079,8 +1088,9 @@
     }
     if (pilot.dmg_dealt_pct != null && pilot.dmg_dealt_pct !== '') {
       // Match Damage Simulator "Damage Dealt" input / Passive Bonuses (passive only).
-      // Vigor shares the same ⑨ pool in calculateDamage but is not part of this field.
-      var passive = pilot.dmg_dealt_pct | 0;
+      var passive = pilot.dmg_dealt_passive_pct != null
+        ? (pilot.dmg_dealt_passive_pct | 0)
+        : (pilot.dmg_dealt_pct | 0);
       var dmgTpl = t('msy_dmg_dealt') || 'Damage Dealt: {n}%';
       var dmgLine = dmgTpl.replace('{n}', String(passive));
       var title = (t('msy_dmg_dealt_title') || 'Damage Dealt Up % (passive bonuses)')
@@ -1387,18 +1397,29 @@
     return dcEnginePromise;
   }
 
+  function clonePilotRow(p) {
+    if (!p || typeof p !== 'object') return p;
+    var row = Object.assign({}, p);
+    if (p.char && typeof p.char === 'object') row.char = Object.assign({}, p.char);
+    return row;
+  }
+
+  function clonePilotList(list) {
+    return (list || []).map(clonePilotRow);
+  }
+
   function boardFromPayload(payload, modeHint) {
     if (!payload || !payload.pilots || !payload.pilots.length || payload.pending) return null;
     var mode = modeHint || payload.rank_mode || 'super_crit';
     return {
-      pilots: sortPilotsByCalcDamage(payload.pilots, mode),
-      pilots_no_ur: sortPilotsByCalcDamage(payload.pilots_no_ur || [], mode),
-      pilots_no_shinn: sortPilotsByCalcDamage(payload.pilots_no_shinn || [], mode),
-      pilots_same_role: sortPilotsByCalcDamage(payload.pilots_same_role || [], mode),
-      pilots_support_role: sortPilotsByCalcDamage(payload.pilots_support_role || [], mode),
-      pilots_no_active_skills: sortPilotsByCalcDamage(payload.pilots_no_active_skills || [], mode),
-      pilots_defender: sortPilotsByDefenderScore(payload.pilots_defender || []),
-      pilots_defender_no_skills: sortPilotsByDefenderScore(payload.pilots_defender_no_skills || []),
+      pilots: sortPilotsByCalcDamage(clonePilotList(payload.pilots), mode),
+      pilots_no_ur: sortPilotsByCalcDamage(clonePilotList(payload.pilots_no_ur), mode),
+      pilots_no_shinn: sortPilotsByCalcDamage(clonePilotList(payload.pilots_no_shinn), mode),
+      pilots_same_role: sortPilotsByCalcDamage(clonePilotList(payload.pilots_same_role), mode),
+      pilots_support_role: sortPilotsByCalcDamage(clonePilotList(payload.pilots_support_role), mode),
+      pilots_no_active_skills: sortPilotsByCalcDamage(clonePilotList(payload.pilots_no_active_skills), mode),
+      pilots_defender: sortPilotsByDefenderScore(clonePilotList(payload.pilots_defender)),
+      pilots_defender_no_skills: sortPilotsByDefenderScore(clonePilotList(payload.pilots_defender_no_skills)),
       no_ur_partial: !!payload.no_ur_partial,
       no_shinn_partial: !!payload.no_shinn_partial,
       same_role_partial: !!payload.same_role_partial,
@@ -1462,19 +1483,60 @@
     return entryFromPayload(d.best_synergy_pilots);
   }
 
-  async function fetchPublishedPilots(unitId, lang) {
+  async function fetchPublishedPilots(unitId, lang, opts) {
+    opts = opts || {};
+    var mode = opts.rankMode || state.rankMode || 'super_crit';
+    var allModes = opts.allModes ? '1' : '0';
     var q = 'lang=' + encodeURIComponent(lang)
-      + '&lb_tier=3&def_tier=3&rank_mode=' + encodeURIComponent(state.rankMode || 'super_crit')
-      + '&top_pilots=10&all_modes=1'
+      + '&lb_tier=3&def_tier=3&rank_mode=' + encodeURIComponent(mode)
+      + '&top_pilots=10&all_modes=' + allModes
       + '&_v=' + encodeURIComponent(appVersion() || '0');
-    var res = await fetch('/api/unit/' + encodeURIComponent(unitId) + '/best_synergy_pilots?' + q, {
-      credentials: 'same-origin',
-      cache: 'no-store'
-    });
+    var fetchOpts = { credentials: 'same-origin', cache: 'no-store' };
+    if (opts.priority === 'high') fetchOpts.priority = 'high';
+    var res = await fetch('/api/unit/' + encodeURIComponent(unitId) + '/best_synergy_pilots?' + q, fetchOpts);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     var payload = await res.json();
     if (payload.error) throw new Error(payload.detail || payload.error);
     return entryFromPayload(payload);
+  }
+
+  async function ensureModeBoard(unitId, lang, mode) {
+    var entry = getCachedEntry(unitId);
+    if (!entry) return null;
+    if (entry.modes && entry.modes[mode]) return entry.modes[mode];
+    var fetched = await fetchPublishedPilots(unitId, lang, { rankMode: mode, allModes: false });
+    if (!fetched) return null;
+    if (fetched.modes && fetched.modes[mode]) {
+      if (!entry.modes) entry.modes = {};
+      entry.modes[mode] = fetched.modes[mode];
+      return entry.modes[mode];
+    }
+    var board = boardFromPayload({
+      pilots: fetched.pilots,
+      pilots_no_ur: fetched.pilots_no_ur,
+      pilots_no_shinn: fetched.pilots_no_shinn,
+      pilots_same_role: fetched.pilots_same_role,
+      pilots_support_role: fetched.pilots_support_role,
+      pilots_no_active_skills: fetched.pilots_no_active_skills,
+      pilots_defender: fetched.pilots_defender,
+      pilots_defender_no_skills: fetched.pilots_defender_no_skills,
+      no_ur_partial: fetched.no_ur_partial,
+      no_shinn_partial: fetched.no_shinn_partial,
+      same_role_partial: fetched.same_role_partial,
+      support_role_partial: fetched.support_role_partial,
+      no_active_skills_partial: fetched.no_active_skills_partial,
+      defender_partial: fetched.defender_partial,
+      defender_no_skills_partial: fetched.defender_no_skills_partial,
+      is_defense_unit: fetched.is_defense_unit,
+      source: fetched.source,
+      weapon_info: fetched.weapon_info,
+      rank_mode: mode
+    }, mode);
+    if (board) {
+      if (!entry.modes) entry.modes = {};
+      entry.modes[mode] = board;
+    }
+    return board;
   }
 
   async function warmPublishedPilots(unitId, pilots, lang) {
@@ -1661,7 +1723,10 @@
       if (state.inflight[ck]) {
         entry = await state.inflight[ck];
       } else {
-        entry = await fetchPublishedPilots(unitId, lang);
+        entry = await fetchPublishedPilots(unitId, lang, {
+          allModes: false,
+          priority: state.open ? 'high' : undefined
+        });
       }
       if (gen !== state.loadGen) return;
       if (!entry) {
@@ -1878,15 +1943,15 @@
     }
   }
 
-  /** Top-10 JSON is ~0.5MB — wait so unit portrait CDN wins the first bandwidth window. */
+  /** Top-10 JSON — defer slightly so detail portraits win, but start before panel open. */
   function scheduleDetailPrefetch(fn) {
     global.setTimeout(function () {
       if (typeof global.requestIdleCallback === 'function') {
-        global.requestIdleCallback(fn, { timeout: 2500 });
+        global.requestIdleCallback(fn, { timeout: 1200 });
       } else {
         fn();
       }
-    }, 1600);
+    }, 350);
   }
 
   function prefetchRankings(unitId) {
@@ -1895,7 +1960,7 @@
     if (getCachedEntry(uid) && getCachedEntry(uid).pilots && getCachedEntry(uid).pilots.length) return;
     if (state.inflight[ck]) return;
     var lang = currentLang();
-    var promise = fetchPublishedPilots(unitId, lang).then(function (entry) {
+    var promise = fetchPublishedPilots(unitId, lang, { allModes: false }).then(function (entry) {
       delete state.inflight[ck];
       if (!entry || !entry.pilots || !entry.pilots.length) return null;
       // Keep result even if user navigated away — next open of same unit is instant.

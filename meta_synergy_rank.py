@@ -11,6 +11,7 @@ import json
 import math
 import os
 import re
+import tempfile
 import threading
 import time
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
@@ -2022,6 +2023,13 @@ def _msy_published_path(cache_key):
     return os.path.join(_msy_app_root(), 'data', 'published', _msy_cache_basename(cache_key))
 
 
+def _msy_runtime_published_writes_enabled():
+    """Published BSP JSON is git-deployed; skip runtime rewrites on Railway."""
+    return not bool(
+        (os.environ.get('RAILWAY_ENVIRONMENT') or os.environ.get('RAILWAY_PROJECT_ID') or '').strip()
+    )
+
+
 def _msy_python_build_allowed():
     return os.environ.get('MSY_ALLOW_PYTHON_BUILD', '').strip().lower() in ('1', 'true', 'yes')
 
@@ -2133,6 +2141,44 @@ def _load_master_from_disk(cache_key, *, allow_legacy=False):
     return best
 
 
+_msy_path_write_locks = {}
+_msy_path_write_locks_guard = threading.Lock()
+
+
+def _msy_path_write_lock(path):
+    """One writer at a time per destination file (avoids shared .tmp races)."""
+    key = os.path.abspath(path)
+    with _msy_path_write_locks_guard:
+        lock = _msy_path_write_locks.get(key)
+        if lock is None:
+            lock = threading.Lock()
+            _msy_path_write_locks[key] = lock
+        return lock
+
+
+def _msy_gzip_json_atomic_write(path, payload):
+    """Write gzip JSON atomically using a unique temp file + per-path lock."""
+    dir_name = os.path.dirname(path) or '.'
+    os.makedirs(dir_name, exist_ok=True)
+    fd, tmp = tempfile.mkstemp(
+        suffix='.tmp',
+        prefix=f'{os.path.basename(path)}.',
+        dir=dir_name,
+    )
+    os.close(fd)
+    try:
+        with gzip.open(tmp, 'wt', encoding='utf-8') as f:
+            json.dump(payload, f, ensure_ascii=False, separators=(',', ':'))
+        with _msy_path_write_lock(path):
+            _atomic_replace_with_retry(tmp, path)
+    finally:
+        try:
+            if os.path.exists(tmp):
+                os.remove(tmp)
+        except OSError:
+            pass
+
+
 def _save_master_to_disk(cache_key, result):
     path = _msy_disk_path(cache_key)
     try:
@@ -2146,10 +2192,7 @@ def _save_master_to_disk(cache_key, result):
             payload['build_engine'] = result['build_engine']
         if result.get('bsp_rules_version'):
             payload['bsp_rules_version'] = result['bsp_rules_version']
-        tmp = path + '.tmp'
-        with gzip.open(tmp, 'wt', encoding='utf-8') as f:
-            json.dump(payload, f, ensure_ascii=False, separators=(',', ':'))
-        _atomic_replace_with_retry(tmp, path)
+        _msy_gzip_json_atomic_write(path, payload)
         print(f'MSY disk cache saved: {len(payload["groups"])} units ({path})')
     except Exception as e:
         print(f'MSY disk cache save failed ({path}): {e}')
@@ -2231,8 +2274,8 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
         if pep_atk_pct:
             unit_atk = math.floor(unit_atk * (100 + pep_atk_pct) / 100)
 
-    dmg_dealt, crit_up = _char_pilot_dmg_bonuses(cid, uid, lc, cp_on=cp_on)
-    dmg_dealt += skill_dmg
+    passive_dmg_dealt, crit_up = _char_pilot_dmg_bonuses(cid, uid, lc, cp_on=cp_on)
+    dmg_dealt = passive_dmg_dealt + skill_dmg
     crit_up += _unit_crit_dmg_up(uid, lc, cp_on=cp_on, stat_mode=stat_mode)
     crit_up += _weapon_crit_dmg_up(wpn, uid, lc, stat_mode)
 
@@ -2296,6 +2339,7 @@ def compute_pair_damage(uid, cid, lc='EN', *, lb_tier=3, vigor='super', def_tier
         'char_atk': char_atk,
         'formula_stat': formula_stat,
         'dmg_dealt_pct': int(dmg_dealt),
+        'dmg_dealt_passive_pct': int(passive_dmg_dealt),
         'vigor_dmg_pct': int(vp['dmg_bonus_pct']),
         'active_skills_on': bool(active_skills),
     }
@@ -2477,9 +2521,11 @@ def _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc):
                 'char_atk': d.get('char_atk', 0),
                 'formula_stat': d.get('formula_stat', ''),
                 'dmg_dealt_pct': d.get('dmg_dealt_pct', 0),
+                'dmg_dealt_passive_pct': d.get('dmg_dealt_passive_pct', d.get('dmg_dealt_pct', 0)),
                 'vigor_dmg_pct': d.get('vigor_dmg_pct', 0),
                 'vigor': vigor_key,
                 'active_skills': _msy_pilot_active_skills(cid, lc),
+                'active_skills_on': bool(d.get('active_skills_on', True)),
                 'score': sc,
             })
         rankings[mode] = {
@@ -3362,22 +3408,24 @@ def _backfill_pilot_formula_stats(g, lc, rank_mode='super_crit', kwargs=None):
         return g
     attr = str(unit_wpn.get('attr', '1'))
 
-    def _patch_pilot(pilot):
+    def _patch_pilot(pilot, *, active_skills=True):
         if not pilot:
             return
         cid = A.normalize_id((pilot.get('char') or {}).get('id'))
         if not cid:
             return
         cp_on = _passive_cp_on_from_kwargs(kwargs or {})
-        char_atk, formula_stat = _formula_char_atk_for_pair(cid, uid, lc, attr, cp_on=cp_on)
+        char_atk, formula_stat = _formula_char_atk_for_pair(
+            cid, uid, lc, attr, cp_on=cp_on, active_skills=active_skills,
+        )
         pilot['char_atk'] = char_atk
         pilot['formula_stat'] = formula_stat
 
-    def _patch_block(block):
+    def _patch_block(block, *, active_skills=True):
         if not block:
             return
         for pilot in block.get('pilots') or []:
-            _patch_pilot(pilot)
+            _patch_pilot(pilot, active_skills=active_skills)
 
     rank_mode = rank_mode or 'super_crit'
     for key in (
@@ -3388,6 +3436,9 @@ def _backfill_pilot_formula_stats(g, lc, rank_mode='super_crit', kwargs=None):
         rk = g.get(key)
         if isinstance(rk, dict):
             _patch_block(rk.get(rank_mode))
+    skills_off = g.get('rankings_no_active_skills')
+    if isinstance(skills_off, dict):
+        _patch_block(skills_off.get(rank_mode), active_skills=False)
     for tier_rk in (g.get('rankings_by_tier') or {}).values():
         if isinstance(tier_rk, dict):
             _patch_block(tier_rk.get(rank_mode))
@@ -4218,7 +4269,6 @@ def _atomic_replace_with_retry(tmp, path, *, attempts=8, delay_sec=0.35):
 def save_published_master_cache(cache_key, result, *, build_engine=None):
     """Write MSY master cache to data/published/ (for Railway deploy)."""
     path = _msy_published_path(cache_key)
-    os.makedirs(os.path.dirname(path), exist_ok=True)
     payload = {
         'version': _MSY_DISK_VERSION,
         'cache_key': list(cache_key),
@@ -4229,10 +4279,7 @@ def save_published_master_cache(cache_key, result, *, build_engine=None):
         payload['build_engine'] = build_engine
     if build_engine == _BSP_DC_BUILD_ENGINE:
         payload['bsp_rules_version'] = _BSP_DC_RULES_VERSION
-    tmp = path + '.tmp'
-    with gzip.open(tmp, 'wt', encoding='utf-8') as f:
-        json.dump(payload, f, ensure_ascii=False, separators=(',', ':'))
-    _atomic_replace_with_retry(tmp, path)
+    _msy_gzip_json_atomic_write(path, payload)
     print(f'MSY published cache saved: {len(payload["groups"])} units ({path})')
     return path
 
@@ -4603,6 +4650,18 @@ def _schedule_bsp_board_refresh(g, uid, lc, *, rank_mode='super_crit', def_tier=
 
 _bsp_persist_group_lock = threading.Lock()
 _bsp_persist_group_inflight = set()
+_bsp_catalog_persist_locks = {}
+_bsp_catalog_persist_guard = threading.Lock()
+
+
+def _bsp_catalog_persist_lock(cache_key):
+    key = tuple(cache_key) if isinstance(cache_key, (list, tuple)) else cache_key
+    with _bsp_catalog_persist_guard:
+        lock = _bsp_catalog_persist_locks.get(key)
+        if lock is None:
+            lock = threading.Lock()
+            _bsp_catalog_persist_locks[key] = lock
+        return lock
 
 
 def _persist_bsp_published_group(uid, g):
@@ -4612,46 +4671,50 @@ def _persist_bsp_published_group(uid, g):
         return False
     patched = False
     with _BSP_PUBLISHED_MEMORY_LOCK:
-        items = list(_BSP_PUBLISHED_MEMORY.items())
-    for ck_t, disk in items:
-        if not isinstance(disk, dict):
-            continue
-        groups = disk.get('groups') or []
-        if not groups:
-            continue
-        changed = False
-        for i, row in enumerate(groups):
-            rid = _app().normalize_id((row.get('unit') or {}).get('id'))
-            if rid != uid:
+        cache_keys = list(_BSP_PUBLISHED_MEMORY.keys())
+    overlay_keys = (
+        'rankings_defender', 'rankings_no_active_skills', 'skills_off_board_version',
+    )
+    for ck_t in cache_keys:
+        with _bsp_catalog_persist_lock(ck_t):
+            with _BSP_PUBLISHED_MEMORY_LOCK:
+                disk = _BSP_PUBLISHED_MEMORY.get(ck_t)
+            if not isinstance(disk, dict):
                 continue
-            # Preserve identity; overlay rebuilt boards onto the published row.
-            merged = dict(row)
-            for k in (
-                'rankings_defender', 'rankings_no_active_skills', 'skills_off_board_version',
-            ):
-                if k in g:
-                    merged[k] = g[k]
-            groups[i] = merged
-            changed = True
-            break
-        if not changed:
-            continue
-        disk = dict(disk)
-        disk['groups'] = groups
-        with _BSP_PUBLISHED_MEMORY_LOCK:
-            _BSP_PUBLISHED_MEMORY[ck_t] = disk
-        _bsp_index_groups(ck_t, groups)
-        try:
-            _save_master_to_disk(ck_t, disk)
-        except Exception as e:
-            print(f'BSP persist disk failed ({uid}): {e}')
-        try:
-            save_published_master_cache(
-                ck_t, disk, build_engine=disk.get('build_engine') or _BSP_DC_BUILD_ENGINE,
-            )
-        except Exception as e:
-            print(f'BSP persist published failed ({uid}): {e}')
-        patched = True
+            groups = list(disk.get('groups') or [])
+            if not groups:
+                continue
+            changed = False
+            for i, row in enumerate(groups):
+                rid = _app().normalize_id((row.get('unit') or {}).get('id'))
+                if rid != uid:
+                    continue
+                merged = dict(row)
+                for k in overlay_keys:
+                    if k in g:
+                        merged[k] = g[k]
+                groups[i] = merged
+                changed = True
+                break
+            if not changed:
+                continue
+            disk = dict(disk)
+            disk['groups'] = groups
+            with _BSP_PUBLISHED_MEMORY_LOCK:
+                _BSP_PUBLISHED_MEMORY[ck_t] = disk
+            _bsp_index_groups(ck_t, groups)
+            try:
+                _save_master_to_disk(ck_t, disk)
+            except Exception as e:
+                print(f'BSP persist disk failed ({uid}): {e}')
+            if _msy_runtime_published_writes_enabled():
+                try:
+                    save_published_master_cache(
+                        ck_t, disk, build_engine=disk.get('build_engine') or _BSP_DC_BUILD_ENGINE,
+                    )
+                except Exception as e:
+                    print(f'BSP persist published failed ({uid}): {e}')
+            patched = True
     return patched
 
 
@@ -4822,10 +4885,7 @@ def save_bsp_unit_warm_cache(uid, lc, kwargs, pilots):
         'unit_id': uid,
         'pilots': pilots,
     }
-    tmp = path + '.tmp'
-    with gzip.open(tmp, 'wt', encoding='utf-8') as f:
-        json.dump(payload, f, ensure_ascii=False, separators=(',', ':'))
-    _atomic_replace_with_retry(tmp, path)
+    _msy_gzip_json_atomic_write(path, payload)
     return path
 
 
@@ -5081,6 +5141,86 @@ def _bsp_copy_pilot_rows(rows):
     return out
 
 
+def _bsp_merge_live_damage(pilot, dmg, rank_mode):
+    """Overlay live calculator fields onto a pilot row."""
+    if not pilot or not dmg:
+        return pilot
+    mode = rank_mode or 'super_crit'
+    field = _BSP_MODE_DMG_FIELD.get(mode, 'super_crit_dmg')
+    normal = int(dmg.get('normal_dmg') or 0)
+    super_crit = int(dmg.get('super_crit_dmg') or 0)
+    crit_dmg = int(dmg.get('crit_dmg') or 0)
+    crit_rate = int(dmg.get('crit_rate') or 0)
+    gc = bool(dmg.get('guaranteed_crit'))
+    can_crit = gc or crit_rate > 0
+    peak = int(dmg.get('peak_dmg') or 0)
+    if not can_crit:
+        super_crit = normal
+        crit_dmg = normal
+        peak = normal
+    pilot['normal_dmg'] = normal
+    pilot['crit_dmg'] = crit_dmg
+    pilot['super_crit_dmg'] = super_crit
+    pilot['expected_dmg'] = int(dmg.get('expected_dmg') or 0)
+    pilot['peak_dmg'] = peak if can_crit else normal
+    pilot['guaranteed_crit'] = gc
+    pilot['crit_rate'] = crit_rate
+    sc = int(dmg.get(field) or 0) or (peak if can_crit else normal)
+    pilot['score'] = sc
+    pilot['char_atk'] = dmg.get('char_atk', pilot.get('char_atk'))
+    pilot['formula_stat'] = dmg.get('formula_stat', pilot.get('formula_stat'))
+    pilot['dmg_dealt_pct'] = int(dmg.get('dmg_dealt_pct') or 0)
+    pilot['dmg_dealt_passive_pct'] = int(
+        dmg.get('dmg_dealt_passive_pct', dmg.get('dmg_dealt_pct')) or 0
+    )
+    pilot['vigor_dmg_pct'] = int(dmg.get('vigor_dmg_pct') or 0)
+    pilot['active_skills_on'] = bool(dmg.get('active_skills_on'))
+    pilot['pair_ok'] = dmg.get('pair_ok', pilot.get('pair_ok'))
+    return pilot
+
+
+def _bsp_live_pair_damage(uid, cid, lc, def_tier, rank_mode, *, active_skills=True,
+                          cp_on=True, pep_on=True, cache=None):
+    vigor = _VIGOR_FOR_RANK_MODE.get(rank_mode or 'super_crit', 'super')
+    key = (uid, cid, lc, def_tier, vigor, active_skills, cp_on, pep_on)
+    if cache is not None and key in cache:
+        return cache[key]
+    dmg = compute_pair_damage(
+        uid, cid, lc, lb_tier=3, vigor=vigor, def_tier=def_tier,
+        cp_on=cp_on, pep_on=pep_on, active_skills=active_skills,
+    )
+    if cache is not None and dmg:
+        cache[key] = dmg
+    return dmg
+
+
+def _bsp_resync_pilot_rows(uid, rows, lc, def_tier, rank_mode, *, active_skills=True, cache=None):
+    """Recompute damage with correct PEP/skills flags (fixes stale variant boards)."""
+    if not rows:
+        return rows
+    A = _app()
+    uid = A.normalize_id(uid)
+    out = []
+    for p in rows:
+        if not isinstance(p, dict):
+            out.append(p)
+            continue
+        row = dict(p)
+        ch = row.get('char')
+        if isinstance(ch, dict):
+            row['char'] = dict(ch)
+        cid = A.normalize_id((row.get('char') or {}).get('id'))
+        if not cid:
+            out.append(row)
+            continue
+        dmg = _bsp_live_pair_damage(
+            uid, cid, lc, def_tier, rank_mode, active_skills=active_skills, cache=cache,
+        )
+        _bsp_merge_live_damage(row, dmg, rank_mode)
+        out.append(row)
+    return out
+
+
 def _bsp_relocalize_pilot_chars(pilots, lc):
     """Re-resolve pilot display names/roles for the request language (published cache is EN)."""
     for p in pilots or []:
@@ -5107,6 +5247,19 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
                          defender_partial=False, defender_no_skills_partial=False):
     mode = rank_mode or 'super_crit'
     store_n = int(_BSP_STORE_TOP_PILOTS)
+    resync_cache = {}
+
+    def _sync_skills_on(rows):
+        return _bsp_resync_pilot_rows(
+            uid, _bsp_copy_pilot_rows(rows), lc, def_tier, mode,
+            active_skills=True, cache=resync_cache,
+        )
+
+    def _sync_skills_off(rows):
+        return _bsp_resync_pilot_rows(
+            uid, _bsp_copy_pilot_rows(rows), lc, def_tier, mode,
+            active_skills=False, cache=resync_cache,
+        )
 
     def _rank(rows, limit=_BSP_UI_TOP_PILOTS, *, by_score=False):
         rows = _bsp_copy_pilot_rows(rows)
@@ -5131,35 +5284,43 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
         return out
 
     # Main UI list is top-10; variant boards keep store depth for combined filters.
-    store_pilots = _bsp_copy_pilot_rows(pilots)
+    store_pilots = _sync_skills_on(pilots)
     pilots = _rank(store_pilots, _BSP_UI_TOP_PILOTS)
     no_ur = _rank(
-        pilots_no_ur if pilots_no_ur is not None else _bsp_filter_pilots_client_side(
-            store_pilots, no_ur=True, no_shinn=True
+        _sync_skills_on(
+            pilots_no_ur if pilots_no_ur is not None else _bsp_filter_pilots_client_side(
+                store_pilots, no_ur=True, no_shinn=True
+            ),
         ),
         store_n,
     )
     no_shinn = _rank(
-        pilots_no_shinn if pilots_no_shinn is not None else _bsp_filter_pilots_client_side(
-            store_pilots, no_shinn=True
+        _sync_skills_on(
+            pilots_no_shinn if pilots_no_shinn is not None else _bsp_filter_pilots_client_side(
+                store_pilots, no_shinn=True
+            ),
         ),
         store_n,
     )
     same_role = _rank(
-        pilots_same_role if pilots_same_role is not None else _bsp_filter_pilots_client_side(
-            store_pilots, same_role=True, unit_id=uid
+        _sync_skills_on(
+            pilots_same_role if pilots_same_role is not None else _bsp_filter_pilots_client_side(
+                store_pilots, same_role=True, unit_id=uid
+            ),
         ),
         store_n,
     )
     support_role = _rank(
-        pilots_support_role if pilots_support_role is not None else (
-            _bsp_filter_pilots_client_side(store_pilots, support_role=True, unit_id=uid)
-            if _unit_is_attack_role(uid) else []
+        _sync_skills_on(
+            pilots_support_role if pilots_support_role is not None else (
+                _bsp_filter_pilots_client_side(store_pilots, support_role=True, unit_id=uid)
+                if _unit_is_attack_role(uid) else []
+            ),
         ),
         store_n,
     )
     # Keep store depth so No Shinn / role filters can promote ranks 11–20 into Top 10.
-    no_active = _rank(list(pilots_no_active_skills or []), store_n)
+    no_active = _rank(_sync_skills_off(list(pilots_no_active_skills or [])), store_n)
     defenders = _rank(list(pilots_defender or []), _BSP_UI_DEFENDER_TOP, by_score=True)
     defenders_off = _rank(
         list(pilots_defender_no_skills or []), _BSP_UI_DEFENDER_TOP, by_score=True,
