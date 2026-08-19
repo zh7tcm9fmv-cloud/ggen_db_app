@@ -446,65 +446,6 @@
     }, delay);
   }
 
-  function bindSwipeUpDismiss(panel) {
-    if (!panel) return;
-    var minDy = 52;
-    var startY = 0;
-    var startX = 0;
-    var tracking = false;
-    var dragging = false;
-    var pointerId = null;
-
-    function resetSwipeVisual() {
-      dragging = false;
-      panel.classList.remove('is-swipe-dismissing');
-      panel.style.transform = '';
-      panel.style.opacity = '';
-    }
-
-    panel.addEventListener('pointerdown', function (ev) {
-      if (ev.pointerType !== 'touch') return;
-      tracking = true;
-      dragging = false;
-      pointerId = ev.pointerId;
-      startY = ev.clientY;
-      startX = ev.clientX;
-    }, { passive: true });
-
-    panel.addEventListener('pointermove', function (ev) {
-      if (!tracking || ev.pointerId !== pointerId || ev.pointerType !== 'touch') return;
-      var dy = startY - ev.clientY;
-      var dx = Math.abs(ev.clientX - startX);
-      if (dy < 6 && dx < 6) return;
-      if (dy > 10 && dy > dx * 1.15) {
-        dragging = true;
-        panel.classList.add('is-swipe-dismissing');
-        var offset = Math.min(dy, 140);
-        panel.style.transform = 'translateY(' + (-offset) + 'px)';
-        panel.style.opacity = String(Math.max(0.25, 1 - offset / 180));
-      } else if (dx > dy && dx > 12) {
-        tracking = false;
-        resetSwipeVisual();
-      }
-    }, { passive: true });
-
-    function finishSwipe(ev) {
-      if (!tracking || ev.pointerId !== pointerId) return;
-      tracking = false;
-      var dy = startY - ev.clientY;
-      var dx = Math.abs(ev.clientX - startX);
-      if (dragging && dy >= minDy && dy > dx) {
-        resetSwipeVisual();
-        closeKofiDonatePromo(true);
-        return;
-      }
-      resetSwipeVisual();
-    }
-
-    panel.addEventListener('pointerup', finishSwipe, { passive: true });
-    panel.addEventListener('pointercancel', finishSwipe, { passive: true });
-  }
-
   function bindEvents() {
     var root = document.getElementById('kofiDonatePromo');
     if (!root) return;
@@ -523,7 +464,6 @@
       panel.addEventListener('touchstart', function () {
         panel.classList.add('is-close-visible');
       }, { passive: true });
-      bindSwipeUpDismiss(panel);
       panel.addEventListener('animationend', onPanelAnimationEnd);
       panel.addEventListener('webkitAnimationEnd', onPanelAnimationEnd);
     }

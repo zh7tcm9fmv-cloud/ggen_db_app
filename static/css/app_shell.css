@@ -134,6 +134,7 @@ html.media-video-pseudo-fs-lock,html.media-video-pseudo-fs-lock body{overflow:hi
 .whats-new-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(4px);z-index:560;display:none;align-items:center;justify-content:center;padding:16px}
 .whats-new-overlay.active{display:flex}
 .whats-new-card{background:var(--bg-modal);border:1px solid var(--border-color);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);max-width:min(1400px,98vw);width:100%;max-height:min(92vh,1200px);min-height:320px;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.whats-new-card.is-swipe-dismissing,.search-spotlight-card.is-swipe-dismissing,.tb-picker-dialog.is-swipe-dismissing,.tag-modal-content.is-swipe-dismissing,.cmp-modal.is-swipe-dismissing,.cmp-picker.is-swipe-dismissing,.modal-content.is-swipe-dismissing{transition:none;touch-action:none}
 .whats-new-card .modal-close{position:absolute;top:max(10px,env(safe-area-inset-top,0px));right:max(12px,env(safe-area-inset-right,0px));z-index:2}
 .whats-new-head{padding:18px 44px 14px 20px;border-bottom:1px solid var(--border-color);background:rgba(0,0,0,.25)}
 .whats-new-head h2{margin:0;font-size:22px;font-weight:700;color:var(--accent-cyan);display:flex;align-items:center;gap:10px}
