@@ -175,10 +175,6 @@
     background .15s ease,
     border-color .15s ease;
 }
-.kofi-donate-promo-panel.is-swipe-dismissing{
-  transition:none;
-  touch-action:none;
-}
 .kofi-donate-promo-bubble:hover .kofi-donate-promo-close,
 .kofi-donate-promo-bubble:focus-within .kofi-donate-promo-close,
 .kofi-donate-promo-panel.is-close-visible .kofi-donate-promo-bubble .kofi-donate-promo-close,

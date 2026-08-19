@@ -1,7 +1,7 @@
 /**
  * Ko-fi donate promo — speech bubble near #kofiHeaderLink with a random portrait.
  * Portrait: 90% sd_story_event_shop_gm (SD event); 10% random from images/Popup + original Maria.
- * Shows 2 minutes after page load. Snoozed for 24h after close (X), swipe up (touch), or Ko-fi header click
+ * Shows 2 minutes after page load. Snoozed for 24h after close (X) or Ko-fi header click
  * on the same page visit — a full reload clears the snooze.
  */
 (function (global) {
