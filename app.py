@@ -5312,8 +5312,8 @@ _api_cache = {}
 _CACHE_MAX_SIZE = int(os.environ.get('API_CACHE_MAX_SIZE', '200') or '200')
 # First-paint browse keys must survive DC/TB floods (per-unit option_parts / supporter detail).
 _API_CACHE_PIN_PREFIXES = (
-    'cl33_',
-    'ul56_',
+    'cl34_',
+    'ul57_',
     'stages14_',
     'browse_filters_',
 )
@@ -20825,8 +20825,8 @@ def list_characters():
     want_stat_bounds = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
     sb_ck = 'sbd1' if want_stat_bounds else 'sbd0'
     rb_ck = 'rb1' if ranking_bulk else 'rb0'
-    # cl33: list rows omit series/rarity_icon/is_limited_time (unused by browse/TB/ranking UI).
-    ck = f"cl33_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_lop{_cbc['lineage_combine']}_sop{_cbc['series_combine']}_skop{_cbc['skill_combine']}_abop{_cbc['trait_combine']}_gs{1 if grid_skills else 0}_{sb_ck}_{rb_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    # cl34: list rows include is_limited_time for client-side rarity filter (omit series/rarity_icon).
+    ck = f"cl34_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_lop{_cbc['lineage_combine']}_sop{_cbc['series_combine']}_skop{_cbc['skill_combine']}_abop{_cbc['trait_combine']}_gs{1 if grid_skills else 0}_{sb_ck}_{rb_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
@@ -20926,9 +20926,9 @@ def list_characters():
             base_src = totals
         thum = find_list_thumb(info.get('resource_ids', []), cid, 'images/portraits')
         acq = acq_route; acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
-        # Omit series / rarity_icon / is_limited_time — unused by browse/ranking/TB list UI
-        # (filters use /api/browse_filters; detail has its own payload).
-        row = {'id': cid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)}
+        # Omit series / rarity_icon — unused by browse/ranking/TB list UI.
+        # is_limited_time is on the row so Units/Characters can filter rarity locally.
+        row = {'id': cid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'is_limited_time': cid in LIMITED_TIME_CHARACTER_IDS, 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)}
         rows.append(row)
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','Ranged','Melee','Awaken','Defense','Reaction'})
     stat_bounds = list_rows_stat_bounds(rows, sb) if want_stat_bounds else None
@@ -21009,8 +21009,8 @@ def list_units():
     want_stat_bounds_u = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
     sbu_ck = 'sbd1' if want_stat_bounds_u else 'sbd0'
     rb_u_ck = 'rb1' if ranking_bulk_u else 'rb0'
-    # ul55: list rows omit series/rarity_icon/is_limited_time/recommend_character (list UI unused).
-    ck = f"ul56_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    # ul57: list rows include is_limited_time for client-side rarity filter (omit series/rarity_icon/recommend).
+    ck = f"ul57_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
@@ -21149,9 +21149,9 @@ def list_units():
         acq = acq_route; ai = ACQUISITION_ROUTE_ICONS.get(acq,''); si = []
         if ai: si.append(ai)
         thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
-        # Omit series / rarity_icon / is_limited_time / recommend_character — unused by
-        # browse/ranking/TB list UI (TB pilot fill uses /api/unit detail; filters use browse_filters).
-        urow = {'id': uid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'is_ultimate': bool(info.get('is_ultimate', False)), 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))}
+        # Omit series / rarity_icon / recommend_character — unused by browse/ranking/TB list UI.
+        # is_limited_time is on the row so Units can filter rarity locally (Soshage-style).
+        urow = {'id': uid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'is_ultimate': bool(info.get('is_ultimate', False)), 'is_limited_time': uid in LIMITED_TIME_UNIT_IDS, 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))}
         display_uid = uid
         if not id_seek:
             display_uid = _unit_browse_form_filter_display_id(
@@ -21317,7 +21317,12 @@ def get_option_part_effect_filter_icons(lc):
 def list_option_parts():
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
-        pp = min(100, max(10, int(request.args.get('per_page', 50)))); sb = request.args.get('sort', 'name'); sd = request.args.get('dir', 'asc')
+        ranking_bulk = request.args.get('ranking_bulk', '').strip().lower() in ('1', 'true', 'yes')
+        if ranking_bulk:
+            pp = min(50000, max(10, int(request.args.get('per_page', 50000))))
+        else:
+            pp = min(100, max(10, int(request.args.get('per_page', 50))))
+        sb = request.args.get('sort', 'name'); sd = request.args.get('dir', 'asc')
         sq = request.args.get('q', '').strip().lower(); rf = request.args.get('rarity', 'ALL').strip().upper()
         ef = request.args.get('effect', 'ALL').strip().upper()
         if ef not in OPTION_PART_EFFECT_FILTERS:
@@ -22181,7 +22186,12 @@ def get_profile_title(profile_title_id):
 def list_supporters():
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
-        pp = min(100, max(10, int(request.args.get('per_page', 50)))); sb = request.args.get('sort', 'rarity'); sd = request.args.get('dir', 'desc')
+        ranking_bulk = request.args.get('ranking_bulk', '').strip().lower() in ('1', 'true', 'yes')
+        if ranking_bulk:
+            pp = min(50000, max(10, int(request.args.get('per_page', 50000))))
+        else:
+            pp = min(100, max(10, int(request.args.get('per_page', 50))))
+        sb = request.args.get('sort', 'rarity'); sd = request.args.get('dir', 'desc')
         sq = request.args.get('q', '').strip().lower()
         rav = request.args.get('rarity', '').strip(); rarity_filter = parse_list_rarity_filter(rav); rk = rarity_filter_cache_fragment(rarity_filter)
         lineage_arg = request.args.get('lineage_id', '').strip()
@@ -24917,7 +24927,12 @@ def _populate_stage_list_row_portraits(page_rows):
 def list_stages():
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
-        pp = min(100, max(10, int(request.args.get('per_page', 50)))); sq = request.args.get('q', '').strip().lower()
+        ranking_bulk = request.args.get('ranking_bulk', '').strip().lower() in ('1', 'true', 'yes')
+        if ranking_bulk:
+            pp = min(50000, max(10, int(request.args.get('per_page', 50000))))
+        else:
+            pp = min(100, max(10, int(request.args.get('per_page', 50))))
+        sq = request.args.get('q', '').strip().lower()
         df = request.args.get('difficulty', 'ALL').lower(); sb = request.args.get('sort', 'stage_number'); sd = request.args.get('dir', 'asc')
         cat = (request.args.get('category') or 'eternal').strip().lower()
         tower_side = (request.args.get('tower_side') or 'ALL').strip().upper()
