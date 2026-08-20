@@ -1909,6 +1909,9 @@ def _unit_atk_max(uid, info, stat_mode, lc, cid, pair_ok, *, cp_on=True):
 
 _unit_weapon_cache = {}
 _char_pair_cache = {}
+# Shared by gunicorn worker threads / BSP background refresh. Dict FIFO eviction is not
+# atomic: two threads can pop(next(iter(cache))) the same key → KeyError.
+_bounded_cache_lock = threading.Lock()
 # Hard caps — unbounded pair cache can grow toward tens of GB under Meta Synergy / BSP traffic.
 _UNIT_WEAPON_CACHE_MAX = max(256, min(8192, int(os.environ.get('MSY_UNIT_WEAPON_CACHE_MAX', '2048') or '2048')))
 _CHAR_PAIR_CACHE_MAX = max(1024, min(200000, int(os.environ.get('MSY_CHAR_PAIR_CACHE_MAX', '50000') or '50000')))
@@ -2199,14 +2202,19 @@ def _save_master_to_disk(cache_key, result):
 
 
 def _cache_put_bounded(cache, key, value, max_size):
-    """Insert with simple FIFO eviction (dict insertion order)."""
-    if key in cache:
+    """Insert with simple FIFO eviction (dict insertion order). Thread-safe."""
+    with _bounded_cache_lock:
+        if key in cache:
+            cache[key] = value
+            return value
+        while len(cache) >= max_size:
+            try:
+                oldest = next(iter(cache))
+            except StopIteration:
+                break
+            cache.pop(oldest, None)
         cache[key] = value
         return value
-    while len(cache) >= max_size:
-        cache.pop(next(iter(cache)))
-    cache[key] = value
-    return value
 
 
 def _cached_best_ex_weapon(uid, stat_mode, lc):
@@ -4603,9 +4611,10 @@ def _invalidate_unit_best_pilot_api_cache(uid):
     uid = _app().normalize_id(uid)
     if not uid:
         return
-    dead = [k for k in _unit_best_pilot_api_cache if k and k[0] == uid]
-    for k in dead:
-        _unit_best_pilot_api_cache.pop(k, None)
+    with _bounded_cache_lock:
+        dead = [k for k in _unit_best_pilot_api_cache if k and k[0] == uid]
+        for k in dead:
+            _unit_best_pilot_api_cache.pop(k, None)
 
 
 def _schedule_bsp_board_refresh(g, uid, lc, *, rank_mode='super_crit', def_tier=3,
@@ -5555,9 +5564,7 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
                 'def_tier': def_tier,
                 'defender_note': _settings_note(def_tier),
             }
-    if len(_unit_best_pilot_api_cache) >= _UNIT_BEST_PILOT_API_CACHE_MAX:
-        _unit_best_pilot_api_cache.pop(next(iter(_unit_best_pilot_api_cache)))
-    _unit_best_pilot_api_cache[ck] = out
+    _cache_put_bounded(_unit_best_pilot_api_cache, ck, out, _UNIT_BEST_PILOT_API_CACHE_MAX)
     return out
 
 
@@ -5572,7 +5579,8 @@ def unit_best_synergy_pilots_warm_payload(unit_id, pilots, kwargs):
         return {'ok': False, 'error': 'empty_pilots'}
     path = save_bsp_unit_warm_cache(uid, lc, kwargs, pilots)
     ck = _unit_best_pilot_api_cache_key(uid, lc, kwargs)
-    _unit_best_pilot_api_cache.pop(ck, None)
+    with _bounded_cache_lock:
+        _unit_best_pilot_api_cache.pop(ck, None)
     return {'ok': True, 'unit_id': uid, 'path': path, 'pilot_count': len(pilots)}
 
 
