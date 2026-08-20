@@ -1,5 +1,6 @@
 /* Shared motion: spring switches, notice pulse rings, rubber-band sliders.
-   Keeps existing accent colors; animation/design only. */
+   Brand motion (Corporate): MD3-style ease-out entrances, snappy interactive feedback.
+   Aligned with LottieFiles motion-design-skill — transform/opacity only on hot paths. */
 
 :root{
   --ui-spring:cubic-bezier(0.34,1.56,0.64,1);
@@ -7,6 +8,30 @@
   --ui-spring-snap:.5s;
   --ui-notice-ring:rgba(255,71,87,.72);
   --ui-notice-ring-soft:rgba(255,149,0,.55);
+  /* Corporate motion identity — one easing family for 80% of UI */
+  --motion-ease-enter:cubic-bezier(0.05,0.7,0.1,1);
+  --motion-ease-exit:cubic-bezier(0.3,0,1,1);
+  --motion-ease-standard:cubic-bezier(0.2,0,0,1);
+  --motion-dur-quick:120ms;
+  --motion-dur-standard:220ms;
+  --motion-dur-modal:320ms;
+}
+
+/* —— Modal / dialog entrance (Premium/Corporate card: rise + fade, decelerate) —— */
+@keyframes ggen-modal-enter{
+  from{opacity:0;transform:translate3d(0,14px,0) scale(0.985)}
+  to{opacity:1;transform:translate3d(0,0,0) scale(1)}
+}
+@keyframes ggen-modal-enter-reduced{
+  from{opacity:0}
+  to{opacity:1}
+}
+.modal-content,
+.tag-modal-content,
+.cmp-modal,
+.cmp-picker,
+.dc-modal{
+  animation:ggen-modal-enter var(--motion-dur-modal) var(--motion-ease-enter) both!important;
 }
 
 /* —— Spring knobs (pill switches + ranking/DC compare switches) —— */
@@ -94,6 +119,13 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
 }
 
 @media (prefers-reduced-motion:reduce){
+  .modal-content,
+  .tag-modal-content,
+  .cmp-modal,
+  .cmp-picker,
+  .dc-modal{
+    animation:ggen-modal-enter-reduced 150ms ease both!important;
+  }
   .toggle-switch,
   .toggle-switch::after,
   .ranking-exp-switch-track,
