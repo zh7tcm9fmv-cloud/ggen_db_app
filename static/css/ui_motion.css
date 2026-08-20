@@ -15,6 +15,21 @@
   --motion-dur-quick:120ms;
   --motion-dur-standard:220ms;
   --motion-dur-modal:320ms;
+  --motion-interactive:border-color var(--motion-dur-quick) var(--motion-ease-standard),color var(--motion-dur-quick) var(--motion-ease-standard),background var(--motion-dur-quick) var(--motion-ease-standard),box-shadow var(--motion-dur-quick) var(--motion-ease-standard),transform var(--motion-dur-quick) var(--motion-ease-standard),opacity var(--motion-dur-quick) var(--motion-ease-standard);
+}
+
+/* —— What's New / feedback / AlipayHK overlays (Corporate entrance) —— */
+.whats-new-overlay{
+  transition:opacity var(--motion-dur-modal) var(--motion-ease-standard);
+}
+.whats-new-overlay .whats-new-card{
+  transform:translate3d(0,12px,0);
+  opacity:0;
+  transition:transform var(--motion-dur-modal) var(--motion-ease-enter),opacity var(--motion-dur-modal) var(--motion-ease-enter);
+}
+.whats-new-overlay.active .whats-new-card{
+  transform:translate3d(0,0,0);
+  opacity:1;
 }
 
 /* —— Modal / dialog entrance (Premium/Corporate card: rise + fade, decelerate) —— */
@@ -49,10 +64,38 @@
 }
 .ranking-exp-switch-thumb{
   transition:
-    left var(--ui-spring-dur) var(--ui-spring),
-    transform var(--ui-spring-dur) var(--ui-spring),
-    background .3s ease,
-    box-shadow .22s ease;
+    left var(--motion-dur-standard) var(--motion-ease-standard),
+    transform var(--motion-dur-standard) var(--motion-ease-standard),
+    background var(--motion-dur-quick) var(--motion-ease-standard),
+    box-shadow var(--motion-dur-quick) var(--motion-ease-standard)!important;
+}
+.ranking-exp-switch-track.active .ranking-exp-switch-thumb{
+  transform:none!important;
+}
+
+/* —— Chrome controls: replace transition:all with explicit properties —— */
+.nav-tab,
+.ranking-mode-btn,
+.ranking-exp-switch,
+.ranking-view-btn,
+.ranking-stat-pill,
+.whats-new-btn,
+.support-feedback-btn,
+.lang-option,
+.modal-close,
+.page-btn,
+.browse-filters-clear-btn,
+.stage-source-toggle-btn,
+.rarity-filter-btn,
+.role-filter-dd-btn,
+.view-toggle-btn,
+.search-recall-fab,
+.search-spotlight-close,
+.lr-load-more-btn,
+#panel-banner_timeline .bt-gacha-preview-btn,
+.wn-added-btn,
+.wn-change-card--link{
+  transition:var(--motion-interactive)!important;
 }
 
 /* —— Notification red-dot pulse rings —— */
@@ -119,6 +162,17 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
 }
 
 @media (prefers-reduced-motion:reduce){
+  .whats-new-overlay{
+    transition:opacity 150ms ease!important;
+  }
+  .whats-new-overlay .whats-new-card{
+    transform:none!important;
+    transition:opacity 150ms ease!important;
+  }
+  .whats-new-overlay.active .whats-new-card{
+    transform:none!important;
+    opacity:1!important;
+  }
   .modal-content,
   .tag-modal-content,
   .cmp-modal,
