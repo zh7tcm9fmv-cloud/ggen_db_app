@@ -31,7 +31,6 @@ _BOOT_HTML = """<!DOCTYPE html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="robots" content="noindex">
 <title>GGen DB — Starting</title>
 <style>
   :root { color-scheme: dark; }
@@ -99,6 +98,13 @@ _BOOT_HTML = """<!DOCTYPE html>
 """
 
 
+_PUBLIC_ORIGIN = (os.environ.get('PUBLIC_SITE_URL') or 'https://ggendb.up.railway.app').strip().rstrip('/')
+_BOOT_SITEMAP_PATHS = (
+    '/', '/ip', '/game-news', '/about', '/contact', '/privacy-policy',
+    '/c', '/u', '/s', '/st', '/cal', '/tb', '/tl', '/ml', '/rk', '/op', '/new', '/esim',
+)
+
+
 def _make_boot_app() -> Flask:
     boot = Flask('ggen_boot')
 
@@ -114,6 +120,36 @@ def _make_boot_app() -> Flask:
             payload['ok'] = False
             payload['error'] = _STATE['error']
         return jsonify(payload), 200
+
+    @boot.route('/robots.txt')
+    def robots():
+        body = (
+            'User-agent: *\n'
+            'Allow: /\n'
+            'Disallow: /api/\n'
+            'Disallow: /admin/\n'
+            f'Sitemap: {_PUBLIC_ORIGIN}/sitemap.xml\n'
+        )
+        resp = make_response(body)
+        resp.headers['Content-Type'] = 'text/plain; charset=utf-8'
+        resp.headers['Cache-Control'] = 'public, max-age=300'
+        return resp
+
+    @boot.route('/sitemap.xml')
+    def sitemap():
+        urls = ''.join(
+            f'<url><loc>{_PUBLIC_ORIGIN}{p}</loc><changefreq>daily</changefreq></url>'
+            for p in _BOOT_SITEMAP_PATHS
+        )
+        body = (
+            '<?xml version="1.0" encoding="UTF-8"?>'
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+            f'{urls}</urlset>'
+        )
+        resp = make_response(body)
+        resp.headers['Content-Type'] = 'application/xml; charset=utf-8'
+        resp.headers['Cache-Control'] = 'public, max-age=300'
+        return resp
 
     @boot.route('/', defaults={'path': ''})
     @boot.route('/<path:path>')
@@ -134,9 +170,11 @@ def _make_boot_app() -> Flask:
                 'retry_after': 2,
                 'phase': _STATE['phase'],
             }), 503
-        resp = make_response(_BOOT_HTML)
+        # 503 (not 200+noindex): Google retries later instead of excluding "/" forever.
+        resp = make_response(_BOOT_HTML, 503)
         resp.headers['Content-Type'] = 'text/html; charset=utf-8'
         resp.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate'
+        resp.headers['Retry-After'] = '30'
         return resp
 
     return boot

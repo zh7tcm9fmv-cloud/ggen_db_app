@@ -50,6 +50,29 @@ app = Flask(__name__)
 # Trust Railway / CDN client IP headers (required for IP-based vote ballots).
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
 
+_DEFAULT_PUBLIC_ORIGIN = 'https://ggendb.up.railway.app'
+
+
+def _public_site_origin():
+    """Stable https origin for canonical / sitemap / robots (not localhost)."""
+    env = (os.environ.get('PUBLIC_SITE_URL') or '').strip().rstrip('/')
+    if env:
+        return env
+    try:
+        root = (request.url_root or '').strip().rstrip('/')
+    except RuntimeError:
+        root = ''
+    if root and 'localhost' not in root and '127.0.0.1' not in root:
+        if root.startswith('http://'):
+            root = 'https://' + root[len('http://'):]
+        return root
+    return _DEFAULT_PUBLIC_ORIGIN
+
+
+@app.context_processor
+def _inject_public_origin():
+    return {'public_origin': _public_site_origin()}
+
 # Bust cache when static assets change OR when a new git commit is deployed.
 # IMPORTANT: compute at HTML render time, not only at process import — otherwise Flask
 # keeps serving the same ?v= after app.js edits until the server restarts, and browsers
@@ -26262,7 +26285,7 @@ def _not_found_page():
 
 @app.route('/robots.txt')
 def robots_txt():
-    base = (request.url_root or 'https://ggendb.up.railway.app/').rstrip('/')
+    base = _public_site_origin()
     body = (
         'User-agent: *\n'
         'Allow: /\n'
@@ -26278,14 +26301,16 @@ def robots_txt():
 
 @app.route('/sitemap.xml')
 def sitemap_xml():
-    base = (request.url_root or 'https://ggendb.up.railway.app/').rstrip('/')
+    base = _public_site_origin()
     # Prefer real public pages with distinct titles over SPA short-paths alone.
     paths = [
         '/', '/ip', '/game-news', '/about', '/contact', '/privacy-policy',
         '/c', '/u', '/s', '/st', '/cal', '/tb', '/tl', '/ml', '/rk', '/op', '/new', '/esim',
     ]
+    today = date.today().isoformat()
     urls = ''.join(
-        f'<url><loc>{base}{p}</loc><changefreq>daily</changefreq></url>'
+        f'<url><loc>{base}{p}</loc><lastmod>{today}</lastmod>'
+        f'<changefreq>daily</changefreq><priority>{"1.0" if p == "/" else "0.8"}</priority></url>'
         for p in paths
     )
     body = (

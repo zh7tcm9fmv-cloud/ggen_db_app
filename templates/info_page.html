@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{% block title %}GGen Eternal Database{% endblock %}</title>
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="{{ public_origin }}{{ request.path }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/content_notices.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile_layout.css') }}">
 {% block head_extra %}{% endblock %}

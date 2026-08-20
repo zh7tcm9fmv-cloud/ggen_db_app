@@ -4,6 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Investment Priority - GGen Eternal Database</title>
+{% if spi_soft_launch %}
+<meta name="robots" content="noindex, nofollow">
+{% else %}
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="{{ public_origin }}/ip">
+{% endif %}
 <link rel="preload" href="{{ url_for('static', filename='font/roboto_medium_numbers.ttf') }}?v={{ app_js_version }}" as="font" type="font/ttf" crossorigin>
 <style>
 @font-face{font-family:'RobotoMediumNumbers';src:url('{{ url_for('static', filename='font/roboto_medium_numbers.ttf') }}?v={{ app_js_version }}') format('truetype');font-weight:normal;font-style:normal;font-display:swap}
