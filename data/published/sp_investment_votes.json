@@ -6015,7 +6015,17 @@
     "ip_cac225a42c1faca7f843c78dfcb41c14:unit:1850003301:sp": "up",
     "ip_cac225a42c1faca7f843c78dfcb41c14:unit:1211000101:sp": "up",
     "ip_cac225a42c1faca7f843c78dfcb41c14:character:1230001300:sp": "up",
-    "ip_cac225a42c1faca7f843c78dfcb41c14:character:1230001100:sp": "up"
+    "ip_cac225a42c1faca7f843c78dfcb41c14:character:1230001100:sp": "up",
+    "ip_cac225a42c1faca7f843c78dfcb41c14:character:1155000100:sp": "up",
+    "ip_cac225a42c1faca7f843c78dfcb41c14:character:1159000100:sp": "up",
+    "ip_cac225a42c1faca7f843c78dfcb41c14:character:1162000300:sp": "up",
+    "ip_cac225a42c1faca7f843c78dfcb41c14:character:1162000500:sp": "up",
+    "ip_cac225a42c1faca7f843c78dfcb41c14:character:1162000800:sp": "up",
+    "ip_cac225a42c1faca7f843c78dfcb41c14:character:1155000400:sp": "up",
+    "ip_cac225a42c1faca7f843c78dfcb41c14:character:1162000501:sp": "up",
+    "ip_cac225a42c1faca7f843c78dfcb41c14:character:1162000103:sp": "up",
+    "ip_cac225a42c1faca7f843c78dfcb41c14:character:1162000600:sp": "up",
+    "ip_cac225a42c1faca7f843c78dfcb41c14:character:1144000101:sp": "up"
   },
   "targets": {
     "unit:1155000700:sp": {
@@ -6415,7 +6425,7 @@
       "down": 3
     },
     "character:1159000100:sp": {
-      "up": 3,
+      "up": 4,
       "down": 0
     },
     "unit:1150001360:sp": {
@@ -7407,7 +7417,7 @@
       "down": 0
     },
     "character:1162000500:sp": {
-      "up": 4,
+      "up": 5,
       "down": 5
     },
     "unit:1370011100:ssp": {
@@ -7799,7 +7809,7 @@
       "down": 0
     },
     "character:1155000100:sp": {
-      "up": 3,
+      "up": 4,
       "down": 3
     },
     "unit:1350000210:ssp": {
@@ -8807,7 +8817,7 @@
       "down": 0
     },
     "character:1162000501:sp": {
-      "up": 4,
+      "up": 5,
       "down": 0
     },
     "character:1021000800:sp": {
@@ -8819,7 +8829,7 @@
       "down": 0
     },
     "character:1144000101:sp": {
-      "up": 2,
+      "up": 3,
       "down": 2
     },
     "unit:1330000300:ssp": {
@@ -10047,7 +10057,7 @@
       "down": 0
     },
     "character:1162000103:sp": {
-      "up": 2,
+      "up": 3,
       "down": 0
     },
     "character:1080001600:sp": {
@@ -10223,7 +10233,7 @@
       "down": 0
     },
     "character:1162000600:sp": {
-      "up": 2,
+      "up": 3,
       "down": 0
     },
     "character:1162000900:sp": {
@@ -10531,7 +10541,7 @@
       "down": 0
     },
     "character:1162000300:sp": {
-      "up": 1,
+      "up": 2,
       "down": 0
     },
     "character:1330001803:sp": {
@@ -10955,6 +10965,14 @@
       "down": 0
     },
     "character:1230001100:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1162000800:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1155000400:sp": {
       "up": 1,
       "down": 0
     }
