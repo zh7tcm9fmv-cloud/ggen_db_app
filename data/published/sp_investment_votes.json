@@ -6038,6 +6038,7 @@
     "ip_5181880f2a9c73aad01c02ed02ef9ba6:unit:1211001210:ssp": "up",
     "ip_5181880f2a9c73aad01c02ed02ef9ba6:unit:1330006700:ssp": "up",
     "ip_5181880f2a9c73aad01c02ed02ef9ba6:unit:1150000410:ssp": "up",
+    "ip_eff9654818ac11e89a834da51fc3bebb:unit:1705005300:sp": "up",
     "ip_0bf15a8b71bc44c732b0faaf05c0ee04:unit:1370005900:sp": "up"
   },
   "targets": {
@@ -10634,7 +10635,7 @@
       "down": 0
     },
     "unit:1705005300:sp": {
-      "up": 4,
+      "up": 5,
       "down": 0
     },
     "unit:1705004800:sp": {
