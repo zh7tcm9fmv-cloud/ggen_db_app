@@ -6025,7 +6025,14 @@
     "ip_cac225a42c1faca7f843c78dfcb41c14:character:1162000501:sp": "up",
     "ip_cac225a42c1faca7f843c78dfcb41c14:character:1162000103:sp": "up",
     "ip_cac225a42c1faca7f843c78dfcb41c14:character:1162000600:sp": "up",
-    "ip_cac225a42c1faca7f843c78dfcb41c14:character:1144000101:sp": "up"
+    "ip_cac225a42c1faca7f843c78dfcb41c14:character:1144000101:sp": "up",
+    "ip_cac225a42c1faca7f843c78dfcb41c14:character:1125001400:sp": "up",
+    "ip_cac225a42c1faca7f843c78dfcb41c14:character:1144000200:sp": "up",
+    "ip_cac225a42c1faca7f843c78dfcb41c14:character:1125001300:sp": "up",
+    "ip_cac225a42c1faca7f843c78dfcb41c14:character:1125000300:sp": "up",
+    "ip_cac225a42c1faca7f843c78dfcb41c14:character:1125000101:sp": "up",
+    "ip_cac225a42c1faca7f843c78dfcb41c14:character:1125001100:sp": "up",
+    "ip_cac225a42c1faca7f843c78dfcb41c14:unit:1125004800:ssp": "up"
   },
   "targets": {
     "unit:1155000700:sp": {
@@ -6441,7 +6448,7 @@
       "down": 0
     },
     "character:1125001100:sp": {
-      "up": 4,
+      "up": 5,
       "down": 1
     },
     "unit:1230000200:ssp": {
@@ -8185,7 +8192,7 @@
       "down": 5
     },
     "character:1144000200:sp": {
-      "up": 4,
+      "up": 5,
       "down": 0
     },
     "character:1060000101:sp": {
@@ -8245,7 +8252,7 @@
       "down": 2
     },
     "unit:1125004800:ssp": {
-      "up": 9,
+      "up": 10,
       "down": 2
     },
     "character:1430002000:sp": {
@@ -9117,7 +9124,7 @@
       "down": 2
     },
     "character:1125000101:sp": {
-      "up": 2,
+      "up": 3,
       "down": 0
     },
     "unit:1370000500:ssp": {
@@ -9149,7 +9156,7 @@
       "down": 1
     },
     "character:1125001400:sp": {
-      "up": 3,
+      "up": 4,
       "down": 0
     },
     "character:1219000300:sp": {
@@ -10165,7 +10172,7 @@
       "down": 1
     },
     "character:1125000300:sp": {
-      "up": 2,
+      "up": 3,
       "down": 0
     },
     "character:1001000400:sp": {
@@ -10973,6 +10980,10 @@
       "down": 0
     },
     "character:1155000400:sp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1125001300:sp": {
       "up": 1,
       "down": 0
     }
