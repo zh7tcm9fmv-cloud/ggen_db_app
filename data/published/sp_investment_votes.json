@@ -6278,6 +6278,7 @@
     "ip_cac225a42c1faca7f843c78dfcb41c14:unit:1211000100:sp": "up",
     "ip_cac225a42c1faca7f843c78dfcb41c14:unit:1850003300:sp": "up",
     "ip_cac225a42c1faca7f843c78dfcb41c14:unit:1379000101:sp": "up",
+    "ip_6e3e0e2e7e20696a95122771ab186a72:unit:1370005900:ssp": "up",
     "ip_0bf15a8b71bc44c732b0faaf05c0ee04:unit:1370005900:sp": "up"
   },
   "targets": {
@@ -9430,7 +9431,7 @@
       "down": 6
     },
     "unit:1370005900:ssp": {
-      "up": 66,
+      "up": 67,
       "down": 8
     },
     "unit:1370005700:sp": {
