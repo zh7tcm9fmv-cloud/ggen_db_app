@@ -6236,6 +6236,7 @@
     "ip_d250cd1d04dd7303de0a3332e7c52aa1:character:1305001200:sp": "up",
     "ip_d250cd1d04dd7303de0a3332e7c52aa1:character:1200000504:sp": "up",
     "ip_59c5401948e38575339e6a700bd0e0dc:unit:1705003100:ssp": "up",
+    "ip_cac225a42c1faca7f843c78dfcb41c14:unit:1705004800:ssp": "up",
     "ip_0bf15a8b71bc44c732b0faaf05c0ee04:unit:1370005900:sp": "up"
   },
   "targets": {
@@ -11213,6 +11214,10 @@
     },
     "character:1305001200:sp": {
       "up": 2,
+      "down": 0
+    },
+    "unit:1705004800:ssp": {
+      "up": 1,
       "down": 0
     }
   }
