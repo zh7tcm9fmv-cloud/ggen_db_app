@@ -5013,7 +5013,6 @@
     "ip_f7fb87f86c2376db46cb0ac747a766a5:unit:1370005900:ssp": "up",
     "ip_f7fb87f86c2376db46cb0ac747a766a5:unit:1150000200:ssp": "up",
     "ip_f7fb87f86c2376db46cb0ac747a766a5:unit:1144000500:ssp": "up",
-    "ip_e47d50d75c4952eccdc25abb9265ed7a:unit:1370005900:sp": "up",
     "ip_e47d50d75c4952eccdc25abb9265ed7a:unit:1705003100:sp": "down",
     "ip_e47d50d75c4952eccdc25abb9265ed7a:unit:1370000370:sp": "up",
     "ip_e47d50d75c4952eccdc25abb9265ed7a:unit:1330000100:sp": "down",
@@ -6138,6 +6137,12 @@
     "ip_2b77943a61013b074bcc5a09ae2b784a:unit:1370005700:sp": "up",
     "ip_5556223b97898d5de6ec2a12bb9ae3e3:character:1001001901:sp": "up",
     "ip_931abe523aa0b12ea86800735de16dff:unit:1230003800:sp": "up",
+    "ip_e47d50d75c4952eccdc25abb9265ed7a:unit:1370005900:sp": "up",
+    "ip_e47d50d75c4952eccdc25abb9265ed7a:unit:1219000200:sp": "down",
+    "ip_e47d50d75c4952eccdc25abb9265ed7a:unit:1370011100:sp": "down",
+    "ip_e47d50d75c4952eccdc25abb9265ed7a:unit:1370011300:sp": "up",
+    "ip_e47d50d75c4952eccdc25abb9265ed7a:unit:1430003900:sp": "up",
+    "ip_e47d50d75c4952eccdc25abb9265ed7a:unit:1305000700:sp": "up",
     "ip_0bf15a8b71bc44c732b0faaf05c0ee04:unit:1370005900:sp": "up"
   },
   "targets": {
@@ -6691,7 +6696,7 @@
     },
     "unit:1219000200:sp": {
       "up": 3,
-      "down": 1
+      "down": 2
     },
     "character:1705003100:sp": {
       "up": 1,
@@ -6922,7 +6927,7 @@
       "down": 0
     },
     "unit:1305000700:sp": {
-      "up": 8,
+      "up": 9,
       "down": 1
     },
     "unit:1144000700:sp": {
@@ -7670,7 +7675,7 @@
       "down": 3
     },
     "unit:1370011300:sp": {
-      "up": 8,
+      "up": 9,
       "down": 9
     },
     "unit:1850002000:sp": {
@@ -7894,7 +7899,7 @@
       "down": 1
     },
     "unit:1430003900:sp": {
-      "up": 7,
+      "up": 8,
       "down": 1
     },
     "unit:1709000100:sp": {
@@ -8639,7 +8644,7 @@
     },
     "unit:1370011100:sp": {
       "up": 9,
-      "down": 2
+      "down": 3
     },
     "unit:1400004000:ssp": {
       "up": 3,
