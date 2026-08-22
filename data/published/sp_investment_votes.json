@@ -6143,6 +6143,7 @@
     "ip_e47d50d75c4952eccdc25abb9265ed7a:unit:1370011300:sp": "up",
     "ip_e47d50d75c4952eccdc25abb9265ed7a:unit:1430003900:sp": "up",
     "ip_e47d50d75c4952eccdc25abb9265ed7a:unit:1305000700:sp": "up",
+    "ip_a29936ccfbd74586ff9686fc6c324b40:unit:1370011100:ssp": "up",
     "ip_0bf15a8b71bc44c732b0faaf05c0ee04:unit:1370005900:sp": "up"
   },
   "targets": {
@@ -7539,7 +7540,7 @@
       "down": 5
     },
     "unit:1370011100:ssp": {
-      "up": 10,
+      "up": 11,
       "down": 8
     },
     "unit:1007000200:sp": {
