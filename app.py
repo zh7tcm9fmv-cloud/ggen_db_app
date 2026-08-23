@@ -5056,64 +5056,183 @@ def _vigor_gate_tier_rank(gate_text):
     return 0
 
 
-def _parse_vigor_tier_atk_pcts_from_trait_text(txt):
-    """Extract ATK % per vigor gate from a trait blob (EN / JA / TW)."""
+def _vigor_gate_is_or_higher(gate_text):
+    """True for 'Max or higher' / JA・TW 以上 — gate stays active at stronger vigor."""
+    g = (gate_text or '').lower()
+    raw = gate_text or ''
+    if 'or higher' in g or 'or above' in g:
+        return True
+    if '以上' in raw:
+        return True
+    return False
+
+
+def _vigor_gate_active_at_rank(gate_rank, or_higher, assumed_rank):
+    """Whether a vigor gate applies when the unit is at assumed_rank (CP-on sheet = Supercharged)."""
+    if gate_rank <= 0 or assumed_rank <= 0:
+        return False
+    if or_higher:
+        return assumed_rank >= gate_rank
+    return assumed_rank == gate_rank
+
+
+def _ability_title_is_vigor_condition(name):
+    """True for (Cnd: Vigor) / (Vigor conditions) and locale equivalents — tiered vigor passives."""
+    if not name:
+        return False
+    low = name.lower()
+    if '(cnd: vigor)' in low or '(vigor conditions)' in low:
+        return True
+    if any(m in name for m in (
+        '氣勢條件', '气势条件', 'テンション条件', '戦意條件', '戰意條件', '战意条件',
+        '（氣勢條件）', '（气势条件）', '（テンション条件）', '（戦意條件）', '（戰意條件）', '（战意条件）',
+    )):
+        return True
+    return False
+
+
+def _parse_vigor_tier_stat_pcts_from_trait_text(txt):
+    """Extract per-vigor-gate MS stat % from a trait blob (EN / JA / TW).
+
+    Returns list of (rank, or_higher, {stat: pct}) — pct is signed (DEF decrease is negative).
+
+    Gate wording matters at Supercharged (CP-on sheet):
+    - Exact \"When Vigor is Max,\" does NOT apply at Supercharged (Barbatos EX).
+    - \"Max or higher\" DOES apply at Supercharged and stacks with a Supercharged \"further\" line
+      (Versal Knight EX: +7% + further +8% = +15%).
+    """
     if not txt:
         return []
     t = txt.replace('\r', '')
     out = []
+
+    def _atk_from_chunk(chunk):
+        m2 = re.search(
+            r'(?:further|futher)?\s*(?:increase(?:s)?\s+)?(?:own\s+)?(?:squad\s+)?(?:ms\s+)?'
+            r'(?:atk|attack)\s+by\s+(\d+)%',
+            chunk, re.IGNORECASE)
+        return int(m2.group(1)) if m2 else None
+
+    def _def_from_chunk(chunk):
+        m2 = re.search(
+            r'(?:further|futher)?\s*(?:but\s+)?'
+            r'(?:decrease(?:s)?|reduce(?:s)?)\s+(?:own\s+)?'
+            r'(?:def|defense)\s+by\s+(\d+)%',
+            chunk, re.IGNORECASE)
+        return -int(m2.group(1)) if m2 else None
+
+    def _append_tier(gate, chunk, stats_extra=None):
+        rank = _vigor_gate_tier_rank(gate)
+        or_h = _vigor_gate_is_or_higher(gate)
+        stats = {}
+        atk = _atk_from_chunk(chunk)
+        if atk is not None:
+            stats['Attack'] = atk
+        de = _def_from_chunk(chunk)
+        if de is not None:
+            stats['Defense'] = de
+        m_both = re.search(
+            r'(?:increase(?:s)?\s+)?(?:own\s+)?(?:atk|attack)\s+and\s+(?:def|defense)\s+by\s+(\d+)%',
+            chunk, re.IGNORECASE)
+        if m_both:
+            p = int(m_both.group(1))
+            stats['Attack'] = p
+            stats['Defense'] = p
+        if stats_extra:
+            stats.update(stats_extra)
+        if stats:
+            out.append((rank, or_h, stats))
+
     for m in re.finditer(
             r'when\s+vigor\s+is\s+([^,\n]+?)(?:[,\n]|$)(.*?)(?=when\s+vigor\s+is|\Z)',
             t, re.IGNORECASE | re.DOTALL):
-        rank = _vigor_gate_tier_rank(m.group(1))
-        chunk = m.group(2)[:240]
-        m2 = re.search(
-            r'(?:increase(?:s)?\s+)?(?:own\s+)?(?:squad\s+)?(?:ms\s+)?atk\s+by\s+(\d+)%',
-            chunk, re.IGNORECASE)
-        if m2:
-            out.append((rank, int(m2.group(1))))
-    for m in re.finditer(r'テンションが「([^」]+)」[^。\n]*?(?:攻撃力|攻擊力)が(\d+)%上昇', t):
-        rank = _vigor_gate_tier_rank(m.group(1))
-        out.append((rank, int(m.group(2))))
-    for m in re.finditer(r'戰意為([^，,\n]+)[，,][^\n]*?(?:攻擊力|攻击力)(?:提升|上升)(\d+)%', t):
-        rank = _vigor_gate_tier_rank(m.group(1))
-        out.append((rank, int(m.group(2))))
+        _append_tier(m.group(1), m.group(2)[:320])
+
+    for m in re.finditer(
+            r'テンションが「([^」]+)」([^。\n]*)', t):
+        gate, chunk = m.group(1), m.group(0)
+        # 「超強気」以上 — 以上 may sit outside the quotes
+        gate_ext = gate
+        after = t[m.end():m.end() + 4]
+        if '以上' in after or '以上' in chunk:
+            gate_ext = gate + '以上'
+        stats = {}
+        m_atk = re.search(r'(?:攻撃力|攻擊力)が(\d+)%上昇', chunk)
+        if m_atk:
+            stats['Attack'] = int(m_atk.group(1))
+        m_def = re.search(r'(?:防御力|防禦力)が(\d+)%減少', chunk)
+        if m_def:
+            stats['Defense'] = -int(m_def.group(1))
+        m_def_up = re.search(r'(?:防御力|防禦力)が(\d+)%上昇', chunk)
+        if m_def_up and 'Defense' not in stats:
+            stats['Defense'] = int(m_def_up.group(1))
+        if stats:
+            out.append((_vigor_gate_tier_rank(gate_ext), _vigor_gate_is_or_higher(gate_ext), stats))
+
+    for m in re.finditer(
+            r'戰意為([^，,\n]+)[，,]([^\n]*)', t):
+        gate, chunk = m.group(1), m.group(0)
+        stats = {}
+        m_atk = re.search(r'(?:攻擊力|攻击力)(?:提升|上升)(\d+)%', chunk)
+        if m_atk:
+            stats['Attack'] = int(m_atk.group(1))
+        m_def = re.search(r'(?:防禦力|防御力)減少(\d+)%', chunk)
+        if m_def:
+            stats['Defense'] = -int(m_def.group(1))
+        m_def_up = re.search(r'(?:防禦力|防御力)(?:提升|上升)(\d+)%', chunk)
+        if m_def_up and 'Defense' not in stats:
+            stats['Defense'] = int(m_def_up.group(1))
+        if stats:
+            out.append((_vigor_gate_tier_rank(gate), _vigor_gate_is_or_higher(gate), stats))
+
     return out
 
 
-def _unit_adjust_vigor_condition_stat_buckets(ad, spb, spc):
-    """(Vigor conditions) ATK tiers stack in data but in-game only the highest met tier applies (CP on).
+def _parse_vigor_tier_atk_pcts_from_trait_text(txt):
+    """Backward-compatible ATK-only view of vigor tier parsing."""
+    return [(rank, stats['Attack']) for rank, _or_h, stats in _parse_vigor_tier_stat_pcts_from_trait_text(txt)
+            if 'Attack' in stats]
 
-    Sentence splitting can also mis-route a Max-tier line into the unconditional bucket; collapse any
-    summed vigor ATK % in spc to the top tier only."""
+
+def _unit_adjust_vigor_condition_stat_buckets(ad, spb, spc):
+    """Fix (Cnd: Vigor) multi-gate MS % after sentence-split summed every line into spc.
+
+    CP-on sheet assumes Supercharged vigor. Apply only gates active at that rank:
+    - Exact Max (Barbatos) → inactive at Supercharged; Supercharged line alone (+15% / -10%).
+    - Max or higher + Supercharged further (Versal) → both active (+7% + +8% = +15%).
+    """
     name = (ad.get('name') or '').strip()
-    if not name:
-        return
-    nl = name.lower()
-    if ('(vigor conditions)' not in nl and '氣勢條件' not in name and '气势条件' not in name
-            and 'テンション条件' not in name and '戦意條件' not in name and '战意条件' not in name):
+    if not _ability_title_is_vigor_condition(name):
         return
     chunks = []
     for d2 in ad.get('details', []) or []:
         if isinstance(d2, dict):
             chunks.append(d2.get('text') or '')
+        else:
+            chunks.append(str(d2 or ''))
     blob = '\n'.join(chunks)
-    tiers = _parse_vigor_tier_atk_pcts_from_trait_text(blob)
+    tiers = _parse_vigor_tier_stat_pcts_from_trait_text(blob)
     if len(tiers) < 2:
         return
-    by_rank = {}
-    for rank, pct in tiers:
-        by_rank[rank] = max(by_rank.get(rank, 0), pct)
-    tier_vals = sorted(set(by_rank.values()))
-    if len(tier_vals) < 2:
-        return
-    wrong = sum(tier_vals)
-    hi = max(tier_vals)
-    atk_key = 'Attack'
-    if spc.get(atk_key, 0) >= wrong:
-        spc[atk_key] = spc.get(atk_key, 0) - wrong + hi
-    elif spc.get(atk_key, 0) > hi:
-        spc[atk_key] = hi
+    assumed_rank = 4  # Supercharged — matches calculator CP-on / super vigor
+    # Per-stat: naive sum of all parsed tiers (what sentence split put in spc) vs gates active now.
+    by_stat_all = {}
+    by_stat_active = {}
+    for rank, or_h, stats in tiers:
+        active = _vigor_gate_active_at_rank(rank, or_h, assumed_rank)
+        for sk, pct in stats.items():
+            by_stat_all[sk] = by_stat_all.get(sk, 0) + pct
+            if active:
+                by_stat_active[sk] = by_stat_active.get(sk, 0) + pct
+    for sk, wrong in by_stat_all.items():
+        correct = by_stat_active.get(sk, 0)
+        if wrong == correct:
+            continue
+        cur = spc.get(sk, 0)
+        if (wrong > 0 and cur >= wrong) or (wrong < 0 and cur <= wrong):
+            spc[sk] = cur - wrong + correct
+        elif (wrong > 0 and cur > correct) or (wrong < 0 and cur < correct):
+            spc[sk] = correct
 
 
 def _extract_stat_percent_unit_cjk(text):
@@ -5162,6 +5281,18 @@ def _extract_stat_percent_unit(text, skip_conditional=True):
     bonuses = {}
     sn = r"(?:HP|Max HP|EN|Max EN|Attack|ATK|Defense|DEF|Mobility|MOB|Move|Movement)"
     if skip_conditional and _is_conditional_stat_text(text): return bonuses
+
+    def norm(name):
+        n = name.strip().title().replace("Max ", "")
+        if n == "Hp": n = "HP"
+        if n == "En": n = "EN"
+        if n == "Movement": n = "Move"
+        u = n.upper()
+        if u in ["ATK", "ATTACK"]: n = "Attack"
+        elif u == "DEF": n = "Defense"
+        elif u == "MOB": n = "Mobility"
+        return n
+
     # "Increase own ATK and Critical Damage by 10%." — generic ({sn}) pattern fails on second stat; handle explicitly (EN / TW / HK / JA).
     mcd = re.search(
         r"Increases? (?:own )?(?:squad )?(?:MS )?(?:Attack|ATK) and Critical Damage by (\d+)%",
@@ -5178,26 +5309,28 @@ def _extract_stat_percent_unit(text, skip_conditional=True):
         bonuses['Attack'] = bonuses.get('Attack', 0) + pct
         bonuses[UNIT_ABILITY_PASSIVE_CRIT_DMG_PCT_KEY] = bonuses.get(UNIT_ABILITY_PASSIVE_CRIT_DMG_PCT_KEY, 0) + pct
         return bonuses
-    m = re.search(fr"Increases? (?:own )?(?:squad )?({sn})(?: and ({sn}))? by (\d+)%", text, re.IGNORECASE)
+    m = re.search(
+        fr"(?:further|futher)?\s*Increases? (?:own )?(?:squad )?({sn})(?: and ({sn}))? by (\d+)%",
+        text, re.IGNORECASE)
     if m:
         pct = int(m.group(3))
         up_to = re.search(r'[\(\s]up to (\d+)%', text, re.IGNORECASE)
         if up_to: pct = max(pct, int(up_to.group(1)))
-        def norm(name):
-            n = name.strip().title().replace("Max ", "")
-            if n == "Hp": n = "HP"
-            if n == "En": n = "EN"
-            if n == "Movement": n = "Move"
-            u = n.upper()
-            if u in ["ATK", "ATTACK"]: n = "Attack"
-            elif u == "DEF": n = "Defense"
-            elif u == "MOB": n = "Mobility"
-            return n
         n1 = norm(m.group(1)); bonuses[n1] = bonuses.get(n1, 0) + pct
         if m.group(2): n2 = norm(m.group(2)); bonuses[n2] = bonuses.get(n2, 0) + pct
     else:
-        for k, v in _extract_stat_percent_unit_cjk(text).items():
-            bonuses[k] = bonuses.get(k, 0) + v
+        # EN DEF/ATK downs paired with vigor buffs: "but decrease DEF by 5%" / "futher decrease DEF by 10%".
+        md = re.search(
+            fr"(?:further|futher)?\s*(?:but\s+)?"
+            fr"(?:Decreases?|Reduces?) (?:own )?(?:squad )?({sn})(?: and ({sn}))? by (\d+)%",
+            text, re.IGNORECASE)
+        if md:
+            pct = int(md.group(3))
+            n1 = norm(md.group(1)); bonuses[n1] = bonuses.get(n1, 0) - pct
+            if md.group(2): n2 = norm(md.group(2)); bonuses[n2] = bonuses.get(n2, 0) - pct
+        else:
+            for k, v in _extract_stat_percent_unit_cjk(text).items():
+                bonuses[k] = bonuses.get(k, 0) + v
     return bonuses
 
 def _unit_enemy_specified_tags_clause_part(part):

@@ -11643,12 +11643,13 @@ const pp=s.passive_pct;
 const passivePct=(pp!=null&&pp!==''&&Number.isFinite(Number(pp)))?Number(pp):null;
 const baseOk=Number.isFinite(base);
 const totOk=Number.isFinite(total);
-const bonOk=Number.isFinite(bonus)&&bonus>0;
+/* Allow negative bonus (e.g. Cnd:Vigor DEF decrease) — do not require bonus>0. */
+const bonOk=Number.isFinite(bonus)&&bonus!==0;
 let b0=baseOk?base:(totOk&&bonOk?total-bonus:total);
 if(!Number.isFinite(b0))b0=totOk?total:0;
 return{name,total:totOk?total:0,bonus:bonOk?bonus:0,base:Number.isFinite(b0)?b0:0,trait_pct:traitPct,passive_pct:passivePct};
 }
-/** Passive % for unit sheet stats (API passive_pct or infer from floor(base×p/100)===bonus). */
+/** Passive % for unit sheet stats (API passive_pct or infer from floor(base×p/100)===bonus). Signed (DEF decrease OK). */
 function _dcStatPassivePctFromEntry(ent){
 const F=Math.floor;
 if(!ent)return 0;
@@ -11656,9 +11657,12 @@ if(ent.name==='Move'||ent.name==='MOV'||ent.name==='Movement'){
 if(ent.passive_pct!=null&&Number.isFinite(ent.passive_pct))return Math.max(0,ent.passive_pct);
 return 0;
 }
-if(ent.passive_pct!=null&&Number.isFinite(ent.passive_pct))return Math.max(0,ent.passive_pct);
-const b0=F(Math.max(0,ent.base||0)),bon=F(Math.max(0,ent.bonus||0));
-if(b0>0&&bon>0){for(let p=0;p<=500;p++){if(F(b0*p/100)===bon)return p}}
+if(ent.passive_pct!=null&&Number.isFinite(ent.passive_pct))return ent.passive_pct;
+const b0=F(Math.max(0,ent.base||0)),bon=F(Number(ent.bonus)||0);
+if(b0>0&&bon!==0){
+if(bon>0){for(let p=0;p<=500;p++){if(F(b0*p/100)===bon)return p}}
+else{for(let p=-1;p>=-100;p--){if(F(b0*p/100)===bon)return p}}
+}
 return 0;
 }
 /** Trait/passive % on pilot growth base (from API trait_pct or infer from floor(base×p/100)===bonus). */
