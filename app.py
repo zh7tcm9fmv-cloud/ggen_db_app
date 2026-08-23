@@ -19568,6 +19568,13 @@ def browse_filters_pool_signature(args, entity=None):
             args.get('lineage_id', '').strip(),
             normalize_filter_combine_op(args.get('lineage_op'), 'and'),
         ])
+    elif ent in ('option_parts', 'modifications'):
+        raw = '|'.join([
+            args.get('q', '').strip().lower(),
+            args.get('effect', 'ALL').strip().upper(),
+            args.get('lineage_id', '').strip(),
+            normalize_filter_combine_op(args.get('lineage_op'), 'and'),
+        ])
     else:
         parts = [
             args.get('q', '').strip().lower(),
@@ -20885,7 +20892,9 @@ def browse_filters():
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         entity = (request.args.get('entity') or '').strip().lower()
-        if entity not in ('characters', 'units', 'supporters'):
+        if entity in ('option_parts', 'modifications'):
+            entity = 'option_parts'
+        if entity not in ('characters', 'units', 'supporters', 'option_parts'):
             entity = 'characters'
         filter_mode = (request.args.get('filter_mode') or '').strip().lower()
         if entity == 'supporters':
@@ -20902,6 +20911,23 @@ def browse_filters():
                 lineages = lineages_for_supporter_browse_filtered(ld, lc, request.args)
             else:
                 lineages = lineages_for_supporter_browse(ld, lc)
+            result = {'lineages': lineages, 'series': [], 'skills': [], 'abilities': []}
+            set_cached_response(ck, result)
+            return jsonify(convert_image_urls(result))
+        if entity == 'option_parts':
+            if filter_mode == 'current':
+                sig = browse_filters_pool_signature(request.args, 'option_parts')
+                ck = f"browse_filters_v13_{lc}_{entity}_cur_{sig}"
+            else:
+                ck = f"browse_filters_v13_{lc}_{entity}"
+            cached = get_cached_response(ck)
+            if cached:
+                return jsonify(cached)
+            ld = get_lang_data(lc)
+            if filter_mode == 'current':
+                lineages = lineages_for_option_part_browse_filtered(ld, lc, request.args)
+            else:
+                lineages = lineages_for_option_part_browse(ld)
             result = {'lineages': lineages, 'series': [], 'skills': [], 'abilities': []}
             set_cached_response(ck, result)
             return jsonify(convert_image_urls(result))
@@ -21416,6 +21442,135 @@ def option_part_matches_effect_filter(details, effect_key):
     return want in keys
 
 
+def option_part_browse_tag_dicts(opid, item, ld):
+    """Tags shown on an option part row (lineage + SeriesId + variant tags) — same as list_option_parts."""
+    lineage_ids = option_parts_lineage_map.get(opid, [])
+    base_tags = resolve_lineage_ids_to_tag_dicts(lineage_ids, ld, tt='unit')
+    base_tags = merge_option_part_tags_with_series(base_tags, item.get('SeriesId') or item.get('seriesId'), ld)
+    tags = list(base_tags)
+    for vid in _option_part_variant_tag_ids(opid) or []:
+        vnorm = normalize_id(vid)
+        if not vnorm:
+            continue
+        vname = (ld.get('lineage_lookup', {}) or {}).get(vnorm, '')
+        if vname and not any(normalize_id(t.get('id')) == vnorm for t in tags):
+            tags.append({'id': vnorm, 'name': vname, 'type': 'unit', 'source': 'variant'})
+    return tags
+
+
+def option_part_browse_tag_ids(opid, item, ld):
+    out = []
+    seen = set()
+    for t in option_part_browse_tag_dicts(opid, item, ld):
+        tid = str(t.get('id') or '').strip()
+        if tid and tid != '0' and tid not in seen:
+            out.append(tid)
+            seen.add(tid)
+    return out
+
+
+def option_part_matches_lineage_filter(opid, item, ld, want_lid, combine='and'):
+    if want_lid is None:
+        return True
+    tag_ids = option_part_browse_tag_ids(opid, item, ld)
+    if isinstance(want_lid, str):
+        return _tag_id_list_matches_lineage_want(tag_ids, want_lid)
+    return apply_browse_combine_match(
+        want_lid,
+        lambda w: _tag_id_list_matches_lineage_want(tag_ids, w),
+        combine,
+    )
+
+
+def _lineage_browse_row_from_tag_id(tid, ld):
+    """Build one {id, name} picker row from a short/full tag or series id."""
+    tid = str(tid or '').strip()
+    if not tid or tid == '0':
+        return None
+    llk = ld.get('lineage_lookup', {}) or {}
+    ll = ld.get('lineage_list', []) or []
+    snm = ld.get('series_name_map', {}) or {}
+    nm = llk.get(tid) or snm.get(tid)
+    full_id = tid
+    if not nm:
+        for fid, val in ll:
+            fu = str(fid)
+            if len(tid) >= 4 and fu.endswith(tid):
+                full_id = fu
+                nm = val
+                break
+            if len(tid) < 4 and fu.endswith(tid.zfill(4)):
+                full_id = fu
+                nm = val
+                break
+    if not nm:
+        for k, v in snm.items():
+            if str(k).endswith(tid):
+                full_id = str(k)
+                nm = v
+                break
+    if not nm:
+        nm = tid
+    return {'id': full_id, 'name': nm}
+
+
+def lineages_for_option_part_browse(ld):
+    """All tags that appear on any option part."""
+    by_id = {}
+    for item in extract_data_list(option_parts_data):
+        if not isinstance(item, dict):
+            continue
+        opid = str(item.get('Id') or item.get('id') or '0')
+        if opid == '0':
+            continue
+        for tid in option_part_browse_tag_ids(opid, item, ld):
+            row = _lineage_browse_row_from_tag_id(tid, ld)
+            if not row:
+                continue
+            key = str(row['id'])
+            if key not in by_id:
+                by_id[key] = row
+    return sorted(by_id.values(), key=lambda x: x['name'].lower())
+
+
+def lineages_for_option_part_browse_filtered(ld, lc, args):
+    """Tags on option parts matching current list filters except lineage_id."""
+    sq = args.get('q', '').strip().lower()
+    ef = args.get('effect', 'ALL').strip().upper()
+    if ef not in OPTION_PART_EFFECT_FILTERS:
+        ef = 'ALL'
+    by_id = {}
+    for item in extract_data_list(option_parts_data):
+        if not isinstance(item, dict):
+            continue
+        opid = str(item.get('Id') or item.get('id') or '0')
+        if opid == '0':
+            continue
+        details = _build_option_part_details(item, lc, ld, '')
+        if ef != 'ALL' and not option_part_matches_effect_filter(details, ef):
+            continue
+        if sq:
+            name_lid = normalize_id(item.get('SortNameLanguageId') or item.get('sortNameLanguageId'))
+            op_text_map = ld.get('op_text_map', {})
+            name = op_text_map.get(name_lid, '') if name_lid else ''
+            if not name:
+                name = f'Option Part {opid}'
+            tags = option_part_browse_tag_dicts(opid, item, ld)
+            tags_str = ' '.join(t.get('name') or '' for t in tags)
+            searchable = f'{name} {details} {tags_str}'.lower()
+            tag_blob = [tags_str.lower()] if tags_str else []
+            if not search_row_matches_query(sq, searchable, tag_blob, entity_id=opid):
+                continue
+        for tid in option_part_browse_tag_ids(opid, item, ld):
+            row = _lineage_browse_row_from_tag_id(tid, ld)
+            if not row:
+                continue
+            key = str(row['id'])
+            if key not in by_id:
+                by_id[key] = row
+    return sorted(by_id.values(), key=lambda x: x['name'].lower())
+
+
 _effect_filter_icons_cache = {}
 
 
@@ -21483,6 +21638,9 @@ def list_option_parts():
         ef = request.args.get('effect', 'ALL').strip().upper()
         if ef not in OPTION_PART_EFFECT_FILTERS:
             ef = 'ALL'
+        lineage_filter = parse_list_lineage_filter(request.args.get('lineage_id', '').strip())
+        lineage_combine = normalize_filter_combine_op(request.args.get('lineage_op'), 'and')
+        lineage_ck = lineage_filter_cache_fragment(lineage_filter)
         for_unit = None
         u_arg = request.args.get('unit_id', '').strip()
         if u_arg:
@@ -21490,7 +21648,7 @@ def list_option_parts():
             if u in unit_info_map:
                 for_unit = u
         uf = f"u{for_unit}" if for_unit else 'u0'
-        ck = f"op8_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}_{ef}_{uf}"
+        ck = f"op9_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}_{ef}_{lineage_ck}_{lineage_combine}_{uf}"
         # Per-unit pages must not occupy the shared 200-slot cache (DC/TB autofit floods it
         # and evicts /api/characters). Cache the unfiltered row list once, then filter.
         if not for_unit:
@@ -21505,7 +21663,7 @@ def list_option_parts():
                 'sort': sb, 'dir': sd, 'rarity_filter': rf, 'effect_filter': ef,
                 'effect_filter_icons': get_option_part_effect_filter_icons(lc),
             }))
-        all_ck = f"op8all_{lc}_{sb}_{sd}_{sq}_{rf}_{ef}"
+        all_ck = f"op9all_{lc}_{sb}_{sd}_{sq}_{rf}_{ef}_{lineage_ck}_{lineage_combine}"
         rows = get_cached_response(all_ck)
         if not isinstance(rows, list):
             ld = get_lang_data(lc); op_text_map = ld.get('op_text_map', {}); ltm = ld.get('lang_text_map', {})
@@ -21528,6 +21686,10 @@ def list_option_parts():
                 if not variant_ids:
                     variant_ids = ['']
                 if ef != 'ALL' and not option_part_matches_effect_filter(details, ef):
+                    continue
+                if lineage_filter is not None and not option_part_matches_lineage_filter(
+                    opid, item, ld, lineage_filter, lineage_combine,
+                ):
                     continue
                 res_id = str(item.get('ResourceId') or item.get('resourceId') or '').strip()
                 icon = f"/static/images/Option-Part (Modification)/Sprite/{res_id}.webp" if res_id else ''
