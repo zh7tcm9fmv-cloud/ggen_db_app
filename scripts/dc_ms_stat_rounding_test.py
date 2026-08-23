@@ -1,6 +1,7 @@
 """Regression: MS growth % bucket rounding (ceil ATK/HP, floor DEF/MOB/EN/Move).
 
 Mirrors _dcMsGrowthFromPct in static/js/app.js.
+Also locks supporter ATK flat floor (Atra LV50/1★ → 191, not half-up 192).
 
 Run: python scripts/dc_ms_stat_rounding_test.py
 """
@@ -18,6 +19,10 @@ def ms_growth_from_pct(base: int | float, pct_sum: int | float, stat_name: str) 
     if stat_name in ("Attack", "HP"):
         return int(C(raw))
     return int(F(raw))
+
+
+def supporter_flat(base: int, rate: int) -> int:
+    return max(0, F(base * rate / 10000))
 
 
 def main() -> None:
@@ -44,11 +49,17 @@ def main() -> None:
     versal_atk = ms_growth_from_pct(10126, 15 + 12 + 5 + 36, "Attack") + 240
     assert versal_atk == 17252, versal_atk
 
+    # Barbatos Lupus Rex (EX) LB2 + Atra LV50/1★: floor support ATK 191 (not half-up 192)
+    assert supporter_flat(300, 6384) == 191
+    assert ms_growth_from_pct(10801, 15 + 12 + 36, "Attack") + 191 == 17797
+    assert ms_growth_from_pct(10801, 30 + 12 + 36, "Attack") + 191 == 19417
+    assert ms_growth_from_pct(8816, -10 + 36, "Defense") == 11108
+
     # Round (old bug) would undershoot ATK/HP and overshoot DEF/MOB on Sandaime
     assert int(round(9370 * 1.53)) + 240 == 14576
     assert int(round(8515 * 1.46)) == 12432
 
-    print("dc_ms_stat_rounding_test: OK (Sandaime LB2 + Versal LB1 ATK)")
+    print("dc_ms_stat_rounding_test: OK (ceil MS ATK + floor supporter flat)")
 
 
 if __name__ == "__main__":

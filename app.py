@@ -24958,9 +24958,10 @@ def get_supporter(supporter_id):
         lid = ld.get('supporter_id_map', {}).get(supporter_id, ""); cn = ld.get('supporter_text_map', {}).get(lid, "Unknown") if lid else "Unknown"
         base_hp = int(info.get('hp_add', 0)); base_atk = int(info.get('atk_add', 0))
         rate = supporter_growth_map.get((level, lb_tier), 10000)
-        # Flat HP/ATK support: half-up on (base * rate / 10000) matches in-game; plain floor was −1 vs client when the product is fractional.
-        hps = max(0, int(base_hp * rate / 10000 + 0.5))
-        atks = max(0, int(base_atk * rate / 10000 + 0.5))
+        # Flat HP/ATK support: floor(base * rate / 10000). Half-up was +1 vs in-game on fractional
+        # products (Atra LV50/1★ ATK 191.52 → 192); MS Attack % bucket stays ceil (Sandaime/Versal).
+        hps = max(0, math.floor(base_hp * rate / 10000))
+        atks = max(0, math.floor(base_atk * rate / 10000))
         ls = []
         for l in supporter_leader_map.get(supporter_id, []):
             if l.get('tier') != lb_tier: continue
