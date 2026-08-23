@@ -199,12 +199,15 @@ _STATIC_FONT_EXT = frozenset(('.woff2', '.woff', '.ttf', '.otf', '.eot'))
 
 
 @app.after_request
-def _apply_static_cache_headers(response):
-    if _STATIC_CACHE_MAX_AGE <= 0:
-        return response
+def _apply_seo_and_static_cache_headers(response):
     try:
         path = request.path or ''
     except RuntimeError:
+        return response
+    # APIs / unlock endpoints must never look indexable (Google still discovers linked POST URLs).
+    if path.startswith('/api/'):
+        response.headers.setdefault('X-Robots-Tag', 'noindex, nofollow')
+    if _STATIC_CACHE_MAX_AGE <= 0:
         return response
     if not path.startswith('/static/'):
         return response
@@ -15276,6 +15279,11 @@ def sort_rows(rows, sort_by, sort_dir, valid_sorts, default_sort='rarity'):
 # ═══════════════════════════════════════════════════════
 
 def _serve_index():
+    # Resolved at request time (see _page_canonical_path near SPA routing).
+    try:
+        page_canonical = _page_canonical_path()
+    except Exception:
+        page_canonical = '/'
     r = make_response(render_template(
         'index.html',
         image_cdn=IMAGE_CDN or '',
@@ -15289,6 +15297,7 @@ def _serve_index():
         app_js_version=_app_js_bundle_version_tag(),
         app_js_bundle=_app_js_served_bundle_name(),
         kofi_page_url=KOFI_PAGE_URL,
+        page_canonical=page_canonical,
     ))
     if INDEX_HTML_CACHE_CONTROL:
         r.headers['Cache-Control'] = INDEX_HTML_CACHE_CONTROL
@@ -15823,8 +15832,7 @@ def api_meta_synergy_rankings():
 @app.route('/msy/')
 def msy_tab_redirect():
     """Legacy MSY tab URL — rankings moved to per-unit detail."""
-    from flask import redirect
-    return redirect('/u', code=302)
+    return redirect('/u', code=301)
 
 
 @app.route('/api/unit/<unit_id>/best_synergy_pilots/bootstrap')
@@ -16111,13 +16119,7 @@ def _render_sp_investment_public():
     return r
 
 
-@app.route('/IP')
 @app.route('/ip')
-@app.route('/investment-priority')
-@app.route('/investment-guide')
-@app.route('/sp-list')
-@app.route('/en/sp-list')
-@app.route('/en/investment-guide')
 def sp_investment_page():
     """Investment Priority — SPA tab at /ip (same shell as main site)."""
     if not _sp_investment_public_enabled():
@@ -16133,11 +16135,24 @@ def sp_investment_page():
     return _serve_index()
 
 
+@app.route('/IP')
+@app.route('/investment-priority')
+@app.route('/investment-guide')
+@app.route('/sp-list')
+@app.route('/en/sp-list')
+@app.route('/en/investment-guide')
 @app.route('/IG')
 @app.route('/ig')
-def sp_investment_ig_redirect():
-    """Legacy soft-launch path → /ip."""
+def sp_investment_alias_redirect():
+    """Legacy / alternate Investment Priority URLs → canonical /ip."""
     return redirect('/ip', code=301)
+
+
+@app.route('/banners')
+@app.route('/banners/')
+def banners_alias_redirect():
+    """Legacy Unit Assembly short-path → canonical /tl."""
+    return redirect('/tl', code=301)
 
 
 @app.route('/sp-list-preview')
@@ -26546,6 +26561,18 @@ _SPA_TAB_PATHS = frozenset({
     'c', 'u', 's', 'new', 'tl', 'banners', 'st', 'esim', 'ml', 'cal', 'tb', 'op', 'pt', 'rk', 'msy', 'ip',
 })
 _SPA_DETAIL_PREFIXES = frozenset({'u', 'c', 's', 'op', 'pt', 'es'})
+# Alternate public URLs that should never be self-canonical (301 elsewhere or map here).
+_SPA_CANONICAL_ALIASES = {
+    '/banners': '/tl',
+    '/sp-list': '/ip',
+    '/investment-priority': '/ip',
+    '/investment-guide': '/ip',
+    '/en/sp-list': '/ip',
+    '/en/investment-guide': '/ip',
+    '/ip': '/ip',
+    '/ig': '/ip',
+    '/msy': '/u',
+}
 
 
 def _is_spa_client_path(path):
@@ -26558,6 +26585,28 @@ def _is_spa_client_path(path):
     if len(parts) == 2 and parts[0].lower() in _SPA_DETAIL_PREFIXES and parts[1]:
         return True
     return False
+
+
+def _page_canonical_path():
+    """Stable path for <link rel=canonical> / og:url on the SPA shell."""
+    path = (request.path or '/').replace('\\', '/')
+    if path != '/' and path.endswith('/'):
+        path = path.rstrip('/') or '/'
+    alias = _SPA_CANONICAL_ALIASES.get(path)
+    if alias:
+        return alias
+    if path == '/':
+        return '/'
+    rel = path.lstrip('/')
+    if _is_spa_client_path(rel):
+        # Prefer lowercase tab prefixes (/C → /c) without rewriting detail ids.
+        parts = [p for p in rel.split('/') if p]
+        if len(parts) == 1:
+            return '/' + parts[0].lower()
+        if len(parts) == 2:
+            return '/' + parts[0].lower() + '/' + parts[1]
+        return path
+    return '/'
 
 
 def _not_found_page():
@@ -26576,20 +26625,28 @@ def _not_found_page():
     r = make_response(html, 404)
     r.headers['Content-Type'] = 'text/html; charset=utf-8'
     r.headers['Cache-Control'] = 'no-store'
+    r.headers['X-Robots-Tag'] = 'noindex, nofollow'
     return r
+
+
+def _robots_txt_body(base):
+    return (
+        'User-agent: *\n'
+        'Allow: /\n'
+        'Disallow: /api/\n'
+        'Disallow: /admin/\n'
+        'Disallow: /static/font/\n'
+        'Disallow: /font/\n'
+        'Disallow: /sp-list-preview\n'
+        'Disallow: /sp-list-demo\n'
+        f'Sitemap: {base}/sitemap.xml\n'
+    )
 
 
 @app.route('/robots.txt')
 def robots_txt():
     base = _public_site_origin()
-    body = (
-        'User-agent: *\n'
-        'Allow: /\n'
-        'Disallow: /api/\n'
-        'Disallow: /admin/\n'
-        f'Sitemap: {base}/sitemap.xml\n'
-    )
-    r = make_response(body)
+    r = make_response(_robots_txt_body(base))
     r.headers['Content-Type'] = 'text/plain; charset=utf-8'
     r.headers['Cache-Control'] = 'public, max-age=3600'
     return r
@@ -26597,47 +26654,116 @@ def robots_txt():
 
 @app.route('/sitemap.xml')
 def sitemap_xml():
-    base = _public_site_origin()
-    # Prefer real public pages with distinct titles over SPA short-paths alone.
-    paths = [
-        '/', '/ip', '/game-news', '/about', '/contact', '/privacy-policy',
-        '/c', '/u', '/s', '/st', '/cal', '/tb', '/tl', '/ml', '/rk', '/op', '/new', '/esim',
-    ]
-    today = date.today().isoformat()
-    urls = ''.join(
-        f'<url><loc>{base}{p}</loc><lastmod>{today}</lastmod>'
-        f'<changefreq>daily</changefreq><priority>{"1.0" if p == "/" else "0.8"}</priority></url>'
-        for p in paths
-    )
-    body = (
-        '<?xml version="1.0" encoding="UTF-8"?>'
-        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
-        f'{urls}</urlset>'
-    )
-    r = make_response(body)
-    r.headers['Content-Type'] = 'application/xml; charset=utf-8'
-    r.headers['Cache-Control'] = 'public, max-age=3600'
-    return r
+    try:
+        base = _public_site_origin()
+        # Canonical public URLs only (aliases like /sp-list and /banners 301 elsewhere).
+        paths = [
+            '/', '/ip', '/game-news', '/about', '/contact', '/privacy-policy',
+            '/c', '/u', '/s', '/st', '/cal', '/tb', '/tl', '/ml', '/rk', '/op', '/new', '/esim',
+        ]
+        today = date.today().isoformat()
+        urls = ''.join(
+            f'<url><loc>{base}{p}</loc><lastmod>{today}</lastmod>'
+            f'<changefreq>daily</changefreq><priority>{"1.0" if p == "/" else "0.8"}</priority></url>'
+            for p in paths
+        )
+        body = (
+            '<?xml version="1.0" encoding="UTF-8"?>'
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
+            f'{urls}</urlset>'
+        )
+        r = make_response(body)
+        r.headers['Content-Type'] = 'application/xml; charset=utf-8'
+        r.headers['Cache-Control'] = 'public, max-age=3600'
+        return r
+    except Exception as e:
+        print(f'sitemap.xml failed: {e}')
+        r = make_response(
+            '<?xml version="1.0" encoding="UTF-8"?>'
+            '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>',
+            200,
+        )
+        r.headers['Content-Type'] = 'application/xml; charset=utf-8'
+        r.headers['Cache-Control'] = 'no-store'
+        return r
+
+
+@app.route('/static/font')
+@app.route('/static/font/')
+@app.route('/font')
+@app.route('/font/')
+def seo_block_font_directory_urls():
+    """Directory URLs are not real pages — return noindex 404 (GSC was listing these)."""
+    return _not_found_page()
+
+
+@app.errorhandler(404)
+def seo_not_found(err):
+    """Ensure Flask/Werkzeug default 404s (e.g. missing /static/…) carry noindex."""
+    path = ''
+    try:
+        path = request.path or ''
+    except RuntimeError:
+        pass
+    if path.startswith('/api/'):
+        r = make_response(jsonify({'error': 'Not found'}), 404)
+        r.headers['X-Robots-Tag'] = 'noindex, nofollow'
+        return r
+    return _not_found_page()
 
 
 @app.route('/<path:path>')
 def serve_spa(path):
     """Serve index.html only for known SPA short-paths; 404 everything else."""
+    # Normalize accidental trailing slash on tab URLs (/c/ → /c) so Google does not see duplicates.
+    if path.endswith('/'):
+        trimmed = path.rstrip('/')
+        if trimmed and _is_spa_client_path(trimmed) and '/' not in trimmed:
+            return redirect('/' + trimmed, code=301)
+        if trimmed and _is_spa_client_path(trimmed):
+            return redirect('/' + trimmed, code=301)
+
     if path.startswith('api/'):
-        return jsonify({'error': 'Not found'}), 404
+        # Catch-all would otherwise turn GET on POST-only unlock routes into a fake JSON 404
+        # (GSC listed /api/*/unlock). Prefer Method Not Allowed when another method exists
+        # on a real API endpoint (not this catch-all).
+        from werkzeug.exceptions import MethodNotAllowed, NotFound as WzNotFound
+        adapter = app.url_map.bind_to_environ(request.environ)
+        other_methods = []
+        for method in ('GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'):
+            if method == (request.method or 'GET'):
+                continue
+            try:
+                endpoint, _args = adapter.match('/' + path, method=method)
+            except MethodNotAllowed:
+                continue
+            except WzNotFound:
+                continue
+            except Exception:
+                continue
+            if endpoint and endpoint != 'serve_spa':
+                other_methods.append(method)
+        if other_methods:
+            allow = ', '.join(sorted(set(other_methods)))
+            r = make_response(jsonify({'error': 'method_not_allowed'}), 405)
+            r.headers['Allow'] = allow
+            r.headers['X-Robots-Tag'] = 'noindex, nofollow'
+            return r
+        r = make_response(jsonify({'error': 'Not found'}), 404)
+        r.headers['X-Robots-Tag'] = 'noindex, nofollow'
+        return r
     # Do not return index.html for static files (belt-and-suspenders if routing order differs).
     if path.startswith('static/'):
         rel = path[len('static/') :].replace('\\', '/')
-        if not rel or any(seg == '..' for seg in rel.split('/')):
-            return jsonify({'error': 'Not found'}), 404
+        if not rel or rel.endswith('/') or any(seg == '..' for seg in rel.split('/')):
+            return _not_found_page()
         try:
             return app.send_static_file(rel)
         except NotFound:
-            return jsonify({'error': 'Not found'}), 404
+            return _not_found_page()
     if not _is_spa_client_path(path):
         return _not_found_page()
     return _serve_index()
-
 # Browse caches + BSP catalog in background threads — do not block import / boot ready.
 _start_browse_cache_warmup()
 threading.Thread(

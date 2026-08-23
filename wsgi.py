@@ -99,10 +99,6 @@ _BOOT_HTML = """<!DOCTYPE html>
 
 
 _PUBLIC_ORIGIN = (os.environ.get('PUBLIC_SITE_URL') or 'https://ggendb.up.railway.app').strip().rstrip('/')
-_BOOT_SITEMAP_PATHS = (
-    '/', '/ip', '/game-news', '/about', '/contact', '/privacy-policy',
-    '/c', '/u', '/s', '/st', '/cal', '/tb', '/tl', '/ml', '/rk', '/op', '/new', '/esim',
-)
 
 
 def _make_boot_app() -> Flask:
@@ -128,6 +124,10 @@ def _make_boot_app() -> Flask:
             'Allow: /\n'
             'Disallow: /api/\n'
             'Disallow: /admin/\n'
+            'Disallow: /static/font/\n'
+            'Disallow: /font/\n'
+            'Disallow: /sp-list-preview\n'
+            'Disallow: /sp-list-demo\n'
             f'Sitemap: {_PUBLIC_ORIGIN}/sitemap.xml\n'
         )
         resp = make_response(body)
@@ -137,9 +137,13 @@ def _make_boot_app() -> Flask:
 
     @boot.route('/sitemap.xml')
     def sitemap():
+        paths = (
+            '/', '/ip', '/game-news', '/about', '/contact', '/privacy-policy',
+            '/c', '/u', '/s', '/st', '/cal', '/tb', '/tl', '/ml', '/rk', '/op', '/new', '/esim',
+        )
         urls = ''.join(
             f'<url><loc>{_PUBLIC_ORIGIN}{p}</loc><changefreq>daily</changefreq></url>'
-            for p in _BOOT_SITEMAP_PATHS
+            for p in paths
         )
         body = (
             '<?xml version="1.0" encoding="UTF-8"?>'
