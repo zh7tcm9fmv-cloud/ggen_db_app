@@ -235,8 +235,46 @@
     grid-column: 1 / -1;
   }
 
+  /* Tags + effect share a row (2+2); keep both inside their cells so long tag labels cannot cover Effect */
+  #panel-modifications .list-toolbar > .list-toolbar-left > .lineage-filter-wrap,
   #panel-modifications .list-toolbar > .list-toolbar-left > .mod-effect-wrap {
     grid-column: span 2;
+    width: auto;
+    min-width: 0;
+    max-width: 100%;
+    overflow: visible;
+    box-sizing: border-box;
+  }
+
+  #panel-modifications .list-toolbar > .list-toolbar-left > .lineage-filter-wrap > .rarity-filter-btn,
+  #panel-modifications .list-toolbar > .list-toolbar-left > .mod-effect-wrap > .mod-effect-filter-btn {
+    width: 100%;
+    max-width: 100% !important;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  #panel-modifications #modLineageFilterLabel,
+  #panel-modifications #modLineageFilterLabel .list-filter-btn-mini {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  #panel-modifications #modLineageFilterLabel .source-filter-btn-plain {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #panel-modifications #modEffectFilterLabel {
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
   }
 
   .list-grid-wrap {

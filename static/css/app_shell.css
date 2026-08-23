@@ -2569,6 +2569,7 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
     overflow:visible;
   }
   #panel-modifications .mod-effect-wrap:has(.filter-dropdown-panel),
+  #panel-modifications .lineage-filter-wrap:has(.filter-dropdown-panel),
   #panel-stages #stageDiffWrap:has(.filter-dropdown-panel){
     width:max-content;
     max-width:100%;
