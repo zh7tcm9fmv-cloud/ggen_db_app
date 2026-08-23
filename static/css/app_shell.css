@@ -2569,13 +2569,23 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
     overflow:visible;
   }
   #panel-modifications .mod-effect-wrap:has(.filter-dropdown-panel),
-  #panel-modifications .lineage-filter-wrap:has(.filter-dropdown-panel),
+  #panel-modifications .lineage-filter-wrap:has(.filter-dropdown-panel){
+    width:100%;
+    max-width:100%;
+    overflow:visible;
+    flex:0 0 auto;
+    align-self:stretch;
+  }
   #panel-stages #stageDiffWrap:has(.filter-dropdown-panel){
     width:max-content;
     max-width:100%;
     overflow:visible;
     flex:0 0 auto;
     align-self:flex-start;
+  }
+  #panel-modifications .mod-effect-wrap .mod-effect-filter-btn,
+  #panel-modifications .lineage-filter-wrap .rarity-filter-btn{
+    max-width:100%!important;
   }
   /* Supporter / Modifications / Stages toolbars need visible overflow when dropdown anchored */
   #panel-supporters .list-toolbar-left,

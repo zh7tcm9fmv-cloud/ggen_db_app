@@ -235,14 +235,14 @@
     grid-column: 1 / -1;
   }
 
-  /* Tags + effect share a row (2+2); keep both inside their cells so long tag labels cannot cover Effect */
+  /* Tags then Effect — stacked full-width rows; long multi-tag labels stay one line + ellipsis */
   #panel-modifications .list-toolbar > .list-toolbar-left > .lineage-filter-wrap,
   #panel-modifications .list-toolbar > .list-toolbar-left > .mod-effect-wrap {
-    grid-column: span 2;
-    width: auto;
+    grid-column: 1 / -1;
+    width: 100%;
     min-width: 0;
     max-width: 100%;
-    overflow: visible;
+    overflow: hidden;
     box-sizing: border-box;
   }
 
@@ -251,20 +251,37 @@
     width: 100%;
     max-width: 100% !important;
     min-width: 0;
+    min-height: 40px;
+    max-height: 40px;
     box-sizing: border-box;
+    flex-wrap: nowrap;
+    overflow: hidden;
   }
 
-  #panel-modifications #modLineageFilterLabel,
+  #panel-modifications #modLineageFilterLabel {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    flex-wrap: nowrap !important;
+  }
+
   #panel-modifications #modLineageFilterLabel .list-filter-btn-mini {
     display: inline-flex;
     align-items: center;
     gap: 4px;
+    flex: 1 1 auto;
     min-width: 0;
     max-width: 100%;
     overflow: hidden;
+    flex-wrap: nowrap;
   }
 
   #panel-modifications #modLineageFilterLabel .source-filter-btn-plain {
+    flex: 1 1 auto;
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -272,9 +289,11 @@
   }
 
   #panel-modifications #modEffectFilterLabel {
+    flex: 1 1 auto;
     min-width: 0;
     max-width: 100%;
     overflow: hidden;
+    flex-wrap: nowrap !important;
   }
 
   .list-grid-wrap {
