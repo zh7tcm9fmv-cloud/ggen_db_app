@@ -10899,16 +10899,78 @@ def _ability_has_sdc_counter_trait(aid):
     return False
 
 
+def _ability_sdc_condition_kind(aid):
+    """Classify Support Defense (Counter) as tag, series, both, or empty.
+
+    Uses the SDC trait's ActiveConditionSetId (UnitTags vs UnitSeries), not the
+    ability title — UR EX rows are named "EX Character Ability" even when they
+    are tag-gated (e.g. Suletta 2018601 / GUND-ARM).
+    """
+    aid = normalize_id(aid)
+    if not aid or aid in ('0', 'None'):
+        return ''
+    trait_set_id = normalize_id(abil_link_map.get(aid, aid))
+    lookup_id = trait_set_id[:-2] if len(trait_set_id) > 2 else trait_set_id
+    trait_ids = trait_set_traits_map.get(trait_set_id) or trait_set_traits_map.get(lookup_id) or []
+    has_tag = False
+    has_series = False
+    for tid in trait_ids:
+        t_data = trait_data_map.get(normalize_id(tid)) or {}
+        if safe_int(t_data.get('trait_type_index'), 0) != TRAIT_TYPE_SDC_EXTEND_TO_COUNTER:
+            continue
+        cid = normalize_id(t_data.get('active_cond_id') or '0')
+        if not cid or cid == '0':
+            continue
+        raw = trait_condition_raw_map.get(cid) or {}
+        if raw.get('unit_tags') or raw.get('char_tags') or raw.get('group_tags'):
+            has_tag = True
+        if raw.get('series') or raw.get('character_series'):
+            has_series = True
+    if has_tag and has_series:
+        return 'both'
+    if has_tag:
+        return 'tag'
+    if has_series:
+        return 'series'
+    return ''
+
+
+def _sdc_rep_score(name, rarity, want_kind):
+    nm = str(name or '').lower()
+    score = 0
+    if 'support defense' in nm and 'counter' in nm:
+        score += 4
+    elif '支援防禦' in nm and '反擊' in nm:
+        score += 4
+    elif '支援防御' in nm and ('反撃' in nm or 'カウンター' in nm):
+        score += 4
+    if want_kind == 'tag' and (
+        '(cond: tag)' in nm or '（条件：タグ）' in nm or '（條件：標籤）' in nm or '（條件：標簽）' in nm
+    ):
+        score += 3
+    elif want_kind == 'series' and (
+        '(cond: series)' in nm or '（条件：シリーズ）' in nm or '（條件：系列）' in nm
+    ):
+        score += 3
+    elif '(cond:' in nm or '（条件' in nm or '（條件' in nm:
+        score += 1
+    if str(rarity) == '4':
+        score += 1
+    return score
+
+
 def _precompute_sdc_data():
     """Find character ability IDs with Support Defense (Counter) effect.
 
     Primary: TraitType SupportDefenseExtendToCounter (locale-independent).
     Fallback: detail-text markers (EN/JA/TW/HK) + explicit EX ids.
-    Returns (set_of_ids, representative_non_ex_id) for browse collapse.
+    Split browse collapse into Cond Tag vs Cond Series representatives.
     """
     sdc_ids = set(SDC_EXPLICIT_ABILITY_IDS)
-    representative_id = ''
-    rep_score = -1
+    tag_ids = set()
+    series_ids = set()
+    tag_rep, series_rep = '', ''
+    tag_score, series_score = -1, -1
     ld = LANG_DATA.get(CALC_LANG, LANG_DATA.get(DEFAULT_LANG, {}))
     ldc = ld
     seen_aids = set()
@@ -10944,29 +11006,65 @@ def _precompute_sdc_data():
             ):
                 continue
             sdc_ids.add(aid)
+            kind = _ability_sdc_condition_kind(aid)
+            if kind in ('tag', 'both'):
+                tag_ids.add(aid)
+            if kind in ('series', 'both'):
+                series_ids.add(aid)
             if bab.get('is_ex'):
                 continue
-            # Prefer a Cond Tag/Series titled row so the collapsed browse label stays readable
-            # (UR EX uses generic "EX Character Ability").
-            nm = str(bab.get('name') or '').lower()
-            score = 0
-            if 'support defense' in nm and 'counter' in nm:
-                score += 4
-            elif '支援防禦' in nm and '反擊' in nm:
-                score += 4
-            elif '支援防御' in nm and ('反撃' in nm or 'カウンター' in nm):
-                score += 4
-            if '(cond:' in nm or '（条件' in nm or '（條件' in nm:
-                score += 2
-            if ri == '4':
-                score += 1
-            if score > rep_score:
-                rep_score = score
-                representative_id = aid
-    return sdc_ids, representative_id
+            nm = bab.get('name') or ''
+            if aid in tag_ids:
+                sc = _sdc_rep_score(nm, ri, 'tag')
+                if sc > tag_score:
+                    tag_score = sc
+                    tag_rep = aid
+            if aid in series_ids:
+                sc = _sdc_rep_score(nm, ri, 'series')
+                if sc > series_score:
+                    series_score = sc
+                    series_rep = aid
+    # EX-only buckets still need a browse id (prefer any non-empty member).
+    if not tag_rep and tag_ids:
+        tag_rep = sorted(tag_ids)[0]
+    if not series_rep and series_ids:
+        series_rep = sorted(series_ids)[0]
+    return sdc_ids, tag_ids, series_ids, tag_rep, series_rep
 
-SDC_ABILITY_IDS, SDC_REPRESENTATIVE_ID = _precompute_sdc_data()
-print(f"SDC abilities found: {len(SDC_ABILITY_IDS)}, representative: {SDC_REPRESENTATIVE_ID}")
+SDC_ABILITY_IDS, SDC_TAG_ABILITY_IDS, SDC_SERIES_ABILITY_IDS, SDC_TAG_REPRESENTATIVE_ID, SDC_SERIES_REPRESENTATIVE_ID = _precompute_sdc_data()
+print(
+    f"SDC abilities found: {len(SDC_ABILITY_IDS)} "
+    f"(tag {len(SDC_TAG_ABILITY_IDS)} rep={SDC_TAG_REPRESENTATIVE_ID}, "
+    f"series {len(SDC_SERIES_ABILITY_IDS)} rep={SDC_SERIES_REPRESENTATIVE_ID})"
+)
+
+
+def _sdc_filter_target_ids(want):
+    """Map browse filter id to the SDC ability bucket it represents."""
+    want = normalize_id(want)
+    if want == normalize_id(SDC_TAG_REPRESENTATIVE_ID):
+        return SDC_TAG_ABILITY_IDS
+    if want == normalize_id(SDC_SERIES_REPRESENTATIVE_ID):
+        return SDC_SERIES_ABILITY_IDS
+    return None
+
+
+def _append_sdc_browse_rep(seen, rep_id, ld, lc, ldc):
+    rep = normalize_id(rep_id)
+    if not rep or rep in seen:
+        return
+    try:
+        bab = build_ability_entry(
+            rep, ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map,
+            ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'],
+            ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=0, lang_code=lc,
+        )
+        n = (bab.get('name') or '').strip() or rep
+        icon = (bab.get('icon') or '').strip()
+    except Exception:
+        n = rep
+        icon = ''
+    seen[rep] = {'name': n, 'icon': icon}
 
 
 def _precompute_chance_step_ex_data():
@@ -19453,7 +19551,7 @@ def _char_has_ability_id(cid, ability_id):
         include_sp = _request_flag_true(request.args.get('sp'))
         include_conditional = _request_flag_true(request.args.get('cond'))
         return _char_matches_special_x2_filter(cid, want, include_sp=include_sp, include_conditional=include_conditional)
-    is_sdc = want in SDC_ABILITY_IDS
+    sdc_bucket = _sdc_filter_target_ids(want)
     for ab_row in extract_data_list(char_abil):
         if normalize_id(ab_row.get('CharacterId', '')) != cid:
             continue
@@ -19461,7 +19559,7 @@ def _char_has_ability_id(cid, ability_id):
             aid = normalize_id(ab_row.get(key) or '')
             if not aid:
                 continue
-            if is_sdc and aid in SDC_ABILITY_IDS:
+            if sdc_bucket is not None and aid in sdc_bucket:
                 return True
             if aid == want:
                 return True
@@ -20683,9 +20781,10 @@ def skills_for_character_browse_filtered(ld, lc, args):
 
 def abilities_for_character_browse(ld, lc):
     """Unique non-EX abilities across playable characters.
-    SDC abilities are collapsed into one representative entry."""
+    SDC abilities collapse into separate Cond Tag vs Cond Series representatives."""
     seen = {}
-    sdc_placed = False
+    sdc_tag_placed = False
+    sdc_series_placed = False
     ldc = get_calc_lang_data()
     for ab_row in extract_data_list(char_abil):
         cid = normalize_id(ab_row.get('CharacterId', ''))
@@ -20695,26 +20794,17 @@ def abilities_for_character_browse(ld, lc):
             aid = normalize_id(ab_row.get(key) or '')
             if not aid or aid in ('0', 'None') or aid in seen:
                 continue
+            if aid in SDC_TAG_ABILITY_IDS:
+                if not sdc_tag_placed:
+                    _append_sdc_browse_rep(seen, SDC_TAG_REPRESENTATIVE_ID, ld, lc, ldc)
+                    sdc_tag_placed = True
+                continue
+            if aid in SDC_SERIES_ABILITY_IDS:
+                if not sdc_series_placed:
+                    _append_sdc_browse_rep(seen, SDC_SERIES_REPRESENTATIVE_ID, ld, lc, ldc)
+                    sdc_series_placed = True
+                continue
             if aid in SDC_ABILITY_IDS:
-                if sdc_placed:
-                    continue
-                if SDC_REPRESENTATIVE_ID:
-                    rep = SDC_REPRESENTATIVE_ID
-                else:
-                    rep = aid
-                try:
-                    bab = build_ability_entry(
-                        rep, ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map,
-                        ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'],
-                        ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=0, lang_code=lc,
-                    )
-                    n = (bab.get('name') or '').strip() or rep
-                    icon = (bab.get('icon') or '').strip()
-                except Exception:
-                    n = rep
-                    icon = ''
-                seen[rep] = {'name': n, 'icon': icon}
-                sdc_placed = True
                 continue
             try:
                 bab = build_ability_entry(
@@ -20743,7 +20833,7 @@ def abilities_for_character_browse(ld, lc):
 
 def abilities_for_character_browse_filtered(ld, lc, args):
     """Abilities on characters matching current list filters (ability_id excluded).
-    SDC abilities are collapsed into one representative entry."""
+    SDC abilities collapse into separate Cond Tag vs Cond Series representatives."""
     sq = args.get('q', '').strip().lower()
     _qsc = parse_q_scope(args.get('q_scope'))
     role_filter = parse_list_role_filter(args.get('role', '').strip())
@@ -20758,7 +20848,8 @@ def abilities_for_character_browse_filtered(ld, lc, args):
     seen = {}
     passed_cids = set()
     failed_cids = set()
-    sdc_placed = False
+    sdc_tag_placed = False
+    sdc_series_placed = False
     chance_step_ex_present = False
     support_def_x2_present = False
     support_atk_x2_present = False
@@ -20794,23 +20885,17 @@ def abilities_for_character_browse_filtered(ld, lc, args):
                 continue
             if aid in CHANCE_STEP_EX_ABILITY_IDS:
                 chance_step_ex_present = True
+            if aid in SDC_TAG_ABILITY_IDS:
+                if not sdc_tag_placed:
+                    _append_sdc_browse_rep(seen, SDC_TAG_REPRESENTATIVE_ID, ld, lc, ldc)
+                    sdc_tag_placed = True
+                continue
+            if aid in SDC_SERIES_ABILITY_IDS:
+                if not sdc_series_placed:
+                    _append_sdc_browse_rep(seen, SDC_SERIES_REPRESENTATIVE_ID, ld, lc, ldc)
+                    sdc_series_placed = True
+                continue
             if aid in SDC_ABILITY_IDS:
-                if sdc_placed:
-                    continue
-                rep = SDC_REPRESENTATIVE_ID or aid
-                try:
-                    bab = build_ability_entry(
-                        rep, ld['abil_name_map'], abil_link_map, trait_set_traits_map, trait_data_map,
-                        ld['lang_text_map'], ldc['lang_text_map'], trait_condition_raw_map, ld['lineage_lookup'],
-                        ld['series_name_map'], ability_resource_map, ld['abil_desc_map'], sort_order=0, lang_code=lc,
-                    )
-                    n = (bab.get('name') or '').strip() or rep
-                    icon = (bab.get('icon') or '').strip()
-                except Exception:
-                    n = rep
-                    icon = ''
-                seen[rep] = {'name': n, 'icon': icon}
-                sdc_placed = True
                 continue
             try:
                 bab = build_ability_entry(
