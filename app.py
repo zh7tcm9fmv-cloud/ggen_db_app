@@ -10137,9 +10137,17 @@ def coalesce_ability_resource_id(ab_id, trait_set_id=''):
                 return hit
     return ''
 
-SDC_DETAIL_MARKER = "Can execute Support Defense when an enemy responds to an ally's attack with a counter during a fight."
+# TraitType.SupportDefenseExtendToCounter — master signal for Support Defense on enemy counter.
+TRAIT_TYPE_SDC_EXTEND_TO_COUNTER = 90
+# EN LANG uses "enemies responds … during a combat" (not "an enemy … during a fight").
+SDC_DETAIL_MARKER = "can execute Support Defense when enemies responds to an ally's attack with a counter during a combat."
 SDC_DETAIL_PHRASE_RE = re.compile(
-    r"\b(?:and\s+)?can\s+execute\s+support\s+defense\s+when\s+an\s+enemy\s+responds\s+to\s+an\s+ally['\u2019]?s\s+attack\s+with\s+a\s+counter",
+    r"(?:"
+    r"(?:and\s+)?can\s+execute\s+support\s+defense\s+when\s+(?:an\s+)?enem(?:y|ies)\s+responds?\s+to\s+an\s+ally['\u2019]?s\s+attack\s+with\s+a\s+counter"
+    r"|敵の反撃に対して支援防御に参加可能"
+    r"|受到敵方反擊時，?可(?:參與|進行)支援防禦"
+    r"|受到敌方反击时，?可(?:参与|进行)支援防御"
+    r")",
     re.IGNORECASE | re.DOTALL,
 )
 SDC_EXPLICIT_ABILITY_IDS = {'2018601'}
@@ -10867,21 +10875,40 @@ def _unit_ids_for_terrain_filter(uid, info):
 
 
 def _ability_detail_has_sdc_counter_effect(text):
-    """True when ability detail text grants Support Defense on enemy counter (EN phrasing)."""
+    """True when ability detail text grants Support Defense on enemy counter (EN/JA/TW/HK)."""
     if not text:
         return False
     blob = str(text)
-    if SDC_DETAIL_MARKER in blob:
+    if SDC_DETAIL_MARKER.lower() in blob.lower():
         return True
     return bool(SDC_DETAIL_PHRASE_RE.search(blob))
 
 
+def _ability_has_sdc_counter_trait(aid):
+    """True when ability's trait set includes TraitType SupportDefenseExtendToCounter."""
+    aid = normalize_id(aid)
+    if not aid or aid in ('0', 'None'):
+        return False
+    trait_set_id = normalize_id(abil_link_map.get(aid, aid))
+    lookup_id = trait_set_id[:-2] if len(trait_set_id) > 2 else trait_set_id
+    trait_ids = trait_set_traits_map.get(trait_set_id) or trait_set_traits_map.get(lookup_id) or []
+    for tid in trait_ids:
+        tti = safe_int((trait_data_map.get(normalize_id(tid)) or {}).get('trait_type_index'), 0)
+        if tti == TRAIT_TYPE_SDC_EXTEND_TO_COUNTER:
+            return True
+    return False
+
+
 def _precompute_sdc_data():
-    """Find all character ability IDs whose detail text contains the SDC marker.
-    Also includes any explicitly listed IDs (e.g. EX abilities with same content).
-    Returns (set_of_ids, representative_non_ex_id)."""
+    """Find character ability IDs with Support Defense (Counter) effect.
+
+    Primary: TraitType SupportDefenseExtendToCounter (locale-independent).
+    Fallback: detail-text markers (EN/JA/TW/HK) + explicit EX ids.
+    Returns (set_of_ids, representative_non_ex_id) for browse collapse.
+    """
     sdc_ids = set(SDC_EXPLICIT_ABILITY_IDS)
     representative_id = ''
+    rep_score = -1
     ld = LANG_DATA.get(CALC_LANG, LANG_DATA.get(DEFAULT_LANG, {}))
     ldc = ld
     seen_aids = set()
@@ -10906,15 +10933,36 @@ def _precompute_sdc_data():
                     ability_resource_map, ld['abil_desc_map'], sort_order=0, lang_code=CALC_LANG,
                 )
             except Exception:
-                continue
+                bab = {}
             detail_blob = ' '.join(
                 d.get('text', '') if isinstance(d, dict) else str(d)
-                for d in bab.get('details', [])
+                for d in (bab.get('details') or [])
             )
-            if _ability_detail_has_sdc_counter_effect(detail_blob):
-                sdc_ids.add(aid)
-                if not bab.get('is_ex') and ri == '4' and not representative_id:
-                    representative_id = aid
+            if not (
+                _ability_has_sdc_counter_trait(aid)
+                or _ability_detail_has_sdc_counter_effect(detail_blob)
+            ):
+                continue
+            sdc_ids.add(aid)
+            if bab.get('is_ex'):
+                continue
+            # Prefer a Cond Tag/Series titled row so the collapsed browse label stays readable
+            # (UR EX uses generic "EX Character Ability").
+            nm = str(bab.get('name') or '').lower()
+            score = 0
+            if 'support defense' in nm and 'counter' in nm:
+                score += 4
+            elif '支援防禦' in nm and '反擊' in nm:
+                score += 4
+            elif '支援防御' in nm and ('反撃' in nm or 'カウンター' in nm):
+                score += 4
+            if '(cond:' in nm or '（条件' in nm or '（條件' in nm:
+                score += 2
+            if ri == '4':
+                score += 1
+            if score > rep_score:
+                rep_score = score
+                representative_id = aid
     return sdc_ids, representative_id
 
 SDC_ABILITY_IDS, SDC_REPRESENTATIVE_ID = _precompute_sdc_data()
