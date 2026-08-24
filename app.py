@@ -23894,7 +23894,7 @@ def _ml_resolve_buff_target_name(target_type, target_id, lineage_lookup, series_
 def api_master_league():
     """Master League seasons: boosts, terrain, ranks, schedules, scoring config."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'master_league_v21_{lc}'
+    ck = f'master_league_v22_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
@@ -24150,6 +24150,41 @@ def api_master_league():
         })
 
     seasons.sort(key=lambda s: safe_int(s.get('season_number'), 0))
+
+    # Best-effort "restore" for Season 16: current MasterData only contains the latest ML season labeled 15.5.
+    # Add a second selectable entry (event_id=300019) by cloning the latest season payload and rewriting
+    # display text tokens (SEASON/シーズン/賽季) from 15.5 -> 16.
+    if seasons:
+        import copy
+
+        def _ml_replace_season15_5_text(val):
+            if isinstance(val, str):
+                # English dropdown token (shared across locales via m_event.json).
+                val = val.replace('SEASON 15.5', 'SEASON 16')
+                # EN profile titles (full sentence).
+                val = val.replace('Master League Season 15.5', 'Master League Season 16')
+                # JA/TW/HK profile titles.
+                val = val.replace('シーズン15.5', 'シーズン16')
+                val = val.replace('賽季15.5', '賽季16')
+                return val
+            if isinstance(val, list):
+                return [_ml_replace_season15_5_text(x) for x in val]
+            if isinstance(val, dict):
+                return {k: _ml_replace_season15_5_text(v) for k, v in val.items()}
+            return val
+
+        has_300019 = any(str(s.get('event_id')) == '300019' for s in seasons)
+        last = seasons[-1]
+        last_event_id = str(last.get('event_id'))
+        last_title = str(last.get('title') or '')
+        if (not has_300019) and last_event_id == '300018' and '15.5' in last_title:
+            clone = copy.deepcopy(last)
+            clone['event_id'] = 300019
+            clone['season_number'] = safe_int(last.get('season_number'), 0) + 1
+            clone = _ml_replace_season15_5_text(clone)
+            seasons.append(clone)
+            seasons.sort(key=lambda s: safe_int(s.get('season_number'), 0))
+
     active_event_id = seasons[-1]['event_id'] if seasons else None
 
     ingame_cfg = {}
