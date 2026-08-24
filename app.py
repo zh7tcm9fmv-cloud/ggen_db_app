@@ -24151,19 +24151,17 @@ def api_master_league():
 
     seasons.sort(key=lambda s: safe_int(s.get('season_number'), 0))
 
-    # Best-effort "restore" for Season 16: current MasterData only contains the latest ML season labeled 15.5.
-    # Add a second selectable entry (event_id=300019) by cloning the latest season payload and rewriting
-    # display text tokens (SEASON/シーズン/賽季) from 15.5 -> 16.
+    # Accurate dual-season restore:
+    # - Keep today's `EventId: 300018` (displayed as Season 15.5).
+    # - Add `event_id=300019` whose *contents* (schedule/buff/rank-group configuration) are taken
+    #   from `MasterData_2026-08-18`'s Season16 row (which is stored as `EventId: 300018` there).
+    # - We still rely on existing profile-title ids (tag=18) and then rewrite displayed text
+    #   tokens (15.5 -> 16) inside reward names/title text.
     if seasons:
-        import copy
-
         def _ml_replace_season15_5_text(val):
             if isinstance(val, str):
-                # English dropdown token (shared across locales via m_event.json).
                 val = val.replace('SEASON 15.5', 'SEASON 16')
-                # EN profile titles (full sentence).
                 val = val.replace('Master League Season 15.5', 'Master League Season 16')
-                # JA/TW/HK profile titles.
                 val = val.replace('シーズン15.5', 'シーズン16')
                 val = val.replace('賽季15.5', '賽季16')
                 return val
@@ -24174,16 +24172,143 @@ def api_master_league():
             return val
 
         has_300019 = any(str(s.get('event_id')) == '300019' for s in seasons)
-        last = seasons[-1]
-        last_event_id = str(last.get('event_id'))
-        last_title = str(last.get('title') or '')
-        if (not has_300019) and last_event_id == '300018' and '15.5' in last_title:
-            clone = copy.deepcopy(last)
-            clone['event_id'] = 300019
-            clone['season_number'] = safe_int(last.get('season_number'), 0) + 1
-            clone = _ml_replace_season15_5_text(clone)
-            seasons.append(clone)
-            seasons.sort(key=lambda s: safe_int(s.get('season_number'), 0))
+        if not has_300019:
+            last = seasons[-1]
+            last_event_id = str(last.get('event_id'))
+            last_title = str(last.get('title') or '')
+            # Only add the synthetic entry when today's newest season is actually the "15.5" one.
+            if last_event_id == '300018' and '15.5' in last_title:
+                # 2026-08-18 snapshot "Season16" configuration (stored as EventId=300018 in that snapshot).
+                # These values are applied to construct the new Season entry at event_id=300019.
+                event_id_src_for_profile_titles = 300018  # tag=18 → pid exists in current profile-title map
+                synthetic_event_id = 300019
+                title_lid_for_season16 = 250100000000300018
+
+                # Snapshot m_event (EventId=300018 in 2026-08-18) schedule ids.
+                sched_id = 2609301501
+                chall_sched_id = 2609301502
+                sched_key = normalize_id(sched_id)
+                chall_sched_key = normalize_id(chall_sched_id)
+
+                start_ms = schedule_start_ms_by_id.get(sched_key, 0) if sched_key != '0' else 0
+                end_ms = schedule_end_ms_by_id.get(sched_key, 0) if sched_key != '0' else 0
+                chall_start_ms = schedule_start_ms_by_id.get(chall_sched_key, 0) if chall_sched_key != '0' else 0
+                chall_end_ms = schedule_end_ms_by_id.get(chall_sched_key, 0) if chall_sched_key != '0' else 0
+
+                status = 'ended'
+                if start_ms and end_ms and start_ms <= now_ms < end_ms:
+                    status = 'active'
+                elif start_ms and now_ms < start_ms:
+                    status = 'upcoming'
+
+                # Snapshot m_league_event (EventId=300018 in 2026-08-18) config.
+                rank_gid = '1'
+                srgid = '18'
+                srgid_int = safe_int(srgid, 0)
+                buff_id = '300003'
+                buff_pct = buff_pct_by_id.get(normalize_id(buff_id), 0)
+
+                boost_tags_src_set = normalize_id(300018)  # LeagueBuffTargetSetId
+                boost_tags = buff_targets_by_set.get(boost_tags_src_set, [])
+
+                spark_banner = _ml_season_uses_spark_banner(safe_int(synthetic_event_id, 0) - 300001, status)
+                boost_portraits = (
+                    _ml_resolve_boost_portraits(boost_tags, lc, series_set_by_series_id)
+                    if spark_banner else []
+                )
+
+                motif_id = '300018'
+                stage_id = '90600101'
+
+                stage_row = stage_by_id.get(normalize_id(stage_id), {}) if isinstance(stage_by_id, dict) else {}
+                terrain_primary = resolve_stage_terrain_name(
+                    normalize_id(stage_row.get('StageTerrainTypeIndex') or stage_row.get('stageTerrainTypeIndex')), lc)
+                terrain_icons = _ml_stage_terrain_icons(stage_row)
+
+                chall_threshold = 150000
+                score_floor = max(150000, chall_threshold) if chall_threshold > 0 else 0
+
+                # Build rank tiers using snapshot rank-group (rank_gid), but use tag=18 for profile-title reward pids.
+                rank_tiers = []
+                for rt in rank_by_group.get(normalize_id(rank_gid), []):
+                    tier = dict(rt)
+                    rsid = tier.pop('reward_set_id', '0')
+                    tier['emblem_icon'] = _ml_emblem_icon_url(tier.get('rank_type_index'))
+                    base_rewards = _decorate_reward_rows(_resolve_reward_rows_from_set_id(rsid), lc) if rsid != '0' else []
+                    tier['rewards'] = _ml_compose_rank_tier_rewards(event_id_src_for_profile_titles, tier.get('rank_type_index'), base_rewards, lc)
+                    rank_tiers.append(tier)
+
+                # Build score milestones using snapshot season reward-group (srgid).
+                score_milestones = []
+                if score_floor > 0 and srgid_int:
+                    for sm in season_reward_by_group.get(srgid_int, []):
+                        if sm.get('rank_type_index') != 1:
+                            continue
+                        if sm.get('target_score', 0) < score_floor:
+                            continue
+                        rsid = sm.get('reward_set_id', '0')
+                        score_milestones.append({
+                            'target_score': sm['target_score'],
+                            'rewards': _decorate_reward_rows(_resolve_reward_rows_from_set_id(rsid), lc) if rsid != '0' else [],
+                        })
+                    score_milestones.sort(key=lambda x: safe_int(x.get('target_score'), 0), reverse=True)
+
+                # Motif images: use current motif master (motif_id matches), but keep config from snapshot.
+                motif = motif_by_id.get(normalize_id(motif_id)) if motif_id != '0' else None
+                motif_images = {}
+                if motif:
+                    for key, field in (
+                        ('logo', 'EventLogoResourceId'),
+                        ('top_background', 'TopBackgroundResourceId'),
+                        ('battle_background', 'BattleBackgroundResourceId'),
+                        ('stage_thumbnail', 'StageTopButtonImageResourceId'),
+                    ):
+                        rid = str((motif or {}).get(field) or (motif or {}).get(field[0].lower() + field[1:]) or '').strip()
+                        url = _ml_motif_image_path(key, rid, motif_id, lc)
+                        if url:
+                            motif_images[key] = url
+
+                season_num = safe_int(synthetic_event_id, 0) - 300001
+                title = event_title_map.get(normalize_id(title_lid_for_season16), '') or f'Season {season_num}'
+
+                season_16 = {
+                    'event_id': synthetic_event_id,
+                    'season_number': season_num,
+                    'title': title,
+                    'status': status,
+                    'schedule_id': normalize_id(sched_id),
+                    'start_ms': start_ms or None,
+                    'end_ms': end_ms or None,
+                    'start_label': format_start_datetime_jst(start_ms) if start_ms else '-',
+                    'end_label': format_start_datetime_jst(end_ms) if end_ms else '-',
+                    'challenge_start_ms': chall_start_ms or None,
+                    'challenge_end_ms': chall_end_ms or None,
+                    'challenge_start_label': format_start_datetime_jst(chall_start_ms) if chall_start_ms else '-',
+                    'challenge_end_label': format_start_datetime_jst(chall_end_ms) if chall_end_ms else '-',
+                    'buff_id': normalize_id(buff_id),
+                    'buff_percent': buff_pct,
+                    'boost_tags': boost_tags,
+                    'boost_portraits': boost_portraits,
+                    'stage_id': normalize_id(stage_id),
+                    'terrain_primary': terrain_primary,
+                    'terrain_icons': terrain_icons,
+                    'limit_turns': 5,
+                    'challenge_threshold': chall_threshold,
+                    'rank_group_id': normalize_id(rank_gid),
+                    'rank_tiers': rank_tiers,
+                    'score_milestones': score_milestones,
+                    'motif_id': motif_id if motif_id != '0' else None,
+                    'motif_images': motif_images,
+                    'spark_banner': spark_banner,
+                    'top_percentile_threshold': 200000,
+                    'is_skip_shop_reset': False,
+                }
+
+                # Rewrite displayed text tokens (15.5 -> 16) inside the constructed payload.
+                season_16 = _ml_replace_season15_5_text(season_16)
+
+                seasons.append(season_16)
+                seasons.sort(key=lambda s: safe_int(s.get('season_number'), 0))
 
     active_event_id = seasons[-1]['event_id'] if seasons else None
 
