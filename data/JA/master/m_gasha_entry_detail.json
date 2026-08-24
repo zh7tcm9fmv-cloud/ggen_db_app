@@ -2442,5 +2442,44 @@
     "IsShown": true,
     "BalloonTextLanguageId": 0,
     "FakeOnceRollCount": 0
+  },
+  {
+    "Id": 260840040301,
+    "ResourceId": "",
+    "GashaCurrencyTypeIndex": 3,
+    "TargetId": 0,
+    "RequiredCurrencyCount": 300,
+    "OnceRollCount": 1,
+    "LimitRollCountResetTypeIndex": 1,
+    "LimitCount": 0,
+    "IsShown": true,
+    "BalloonTextLanguageId": 0,
+    "FakeOnceRollCount": 0
+  },
+  {
+    "Id": 260840040302,
+    "ResourceId": "",
+    "GashaCurrencyTypeIndex": 3,
+    "TargetId": 0,
+    "RequiredCurrencyCount": 3000,
+    "OnceRollCount": 10,
+    "LimitRollCountResetTypeIndex": 1,
+    "LimitCount": 0,
+    "IsShown": true,
+    "BalloonTextLanguageId": 220400002504100101,
+    "FakeOnceRollCount": 0
+  },
+  {
+    "Id": 260840040303,
+    "ResourceId": "",
+    "GashaCurrencyTypeIndex": 4,
+    "TargetId": 0,
+    "RequiredCurrencyCount": 100,
+    "OnceRollCount": 1,
+    "LimitRollCountResetTypeIndex": 2,
+    "LimitCount": 1,
+    "IsShown": true,
+    "BalloonTextLanguageId": 0,
+    "FakeOnceRollCount": 0
   }
 ]

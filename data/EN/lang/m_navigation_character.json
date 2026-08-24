@@ -29,7 +29,7 @@
   },
   {
     "id": 101200000010000080,
-    "value": "Once you're ready, let's get this battle started!"
+    "value": "Once you're ready, let's get this combat started!"
   },
   {
     "id": 101200000010000090,
@@ -41,7 +41,7 @@
   },
   {
     "id": 101200000010000110,
-    "value": "The weapons you use in battle are selected\nautomatically, but you can switch to a\ndifferent one as long as it is within range."
+    "value": "The weapons you use in combat are selected\nautomatically, but you can switch to a\ndifferent one as long as it is within range."
   },
   {
     "id": 101200000010000120,
@@ -109,7 +109,7 @@
   },
   {
     "id": 101200000010000280,
-    "value": "Your skill has increased the damage dealt for the next fight!"
+    "value": "Your skill has increased the damage dealt for the next combat!"
   },
   {
     "id": 101200000010000290,
@@ -233,7 +233,7 @@
   },
   {
     "id": 101200000010000590,
-    "value": "It looks like you made a capture during the earlier battle."
+    "value": "It looks like you made a capture during the earlier combat."
   },
   {
     "id": 101200000010000600,

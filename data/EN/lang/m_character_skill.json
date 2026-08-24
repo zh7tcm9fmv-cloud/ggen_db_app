@@ -313,43 +313,43 @@
   },
   {
     "id": 140500000270130101,
-    "value": "Increased ACC and EVA LV 1"
+    "value": "Increased ACC & EVA LV 1"
   },
   {
     "id": 140500000270130201,
-    "value": "Increased ACC and EVA LV 2"
+    "value": "Increased ACC & EVA LV 2"
   },
   {
     "id": 140500000270130301,
-    "value": "Increased ACC and EVA LV 3"
+    "value": "Increased ACC & EVA LV 3"
   },
   {
     "id": 140500000270130401,
-    "value": "Increased ACC and EVA LV 4"
+    "value": "Increased ACC & EVA LV 4"
   },
   {
     "id": 140500000270130501,
-    "value": "Increased ACC and EVA LV 5"
+    "value": "Increased ACC & EVA LV 5"
   },
   {
     "id": 140500000280140101,
-    "value": "EN and HP Restoration LV 1"
+    "value": "HP & EN Restoration LV 1"
   },
   {
     "id": 140500000280140201,
-    "value": "EN and HP Restoration LV 2"
+    "value": "HP & EN Restoration LV 2"
   },
   {
     "id": 140500000280140301,
-    "value": "EN and HP Restoration LV 3"
+    "value": "HP & EN Restoration LV 3"
   },
   {
     "id": 140500000280140401,
-    "value": "EN and HP Restoration LV 4"
+    "value": "HP & EN Restoration LV 4"
   },
   {
     "id": 140500000280140501,
-    "value": "EN and HP Restoration LV 5"
+    "value": "HP & EN Restoration LV 5"
   },
   {
     "id": 140500000290180101,
@@ -553,23 +553,23 @@
   },
   {
     "id": 140600000001200901,
-    "value": "During the next fight after activating the effect,\nincrease max range of own weapons by 1."
+    "value": "During the next combat after activating the effect,\nincrease max range of weapons by 1."
   },
   {
     "id": 140600000001200902,
-    "value": "During the next fight after activating the effect,\nincrease max range of own weapons by 2."
+    "value": "During the next combat after activating the effect,\nincrease max range of weapons by 2."
   },
   {
     "id": 140600000001200903,
-    "value": "During the next fight after activating the effect,\nincrease max range of own weapons by 3."
+    "value": "During the next combat after activating the effect,\nincrease max range of weapons by 3."
   },
   {
     "id": 140600000001200904,
-    "value": "During the next fight after activating the effect,\nincrease max range of own weapons by 4."
+    "value": "During the next combat after activating the effect,\nincrease max range of weapons by 4."
   },
   {
     "id": 140600000001200905,
-    "value": "During the next fight after activating the effect,\nincrease max range of own weapons by 5."
+    "value": "During the next combat after activating the effect,\nincrease max range of weapons by 5."
   },
   {
     "id": 140600000001300801,
@@ -613,147 +613,147 @@
   },
   {
     "id": 140600000001700101,
-    "value": "Increase damage dealt to enemies by 5% [1 turn(s)]."
+    "value": "Increase damage dealt to enemies by 5% (1 turn(s))."
   },
   {
     "id": 140600000001700102,
-    "value": "Increase damage dealt to enemies by 10% [1 turn(s)]."
+    "value": "Increase damage dealt to enemies by 10% (1 turn(s))."
   },
   {
     "id": 140600000001700103,
-    "value": "Increase damage dealt to enemies by 15% [1 turn(s)]."
+    "value": "Increase damage dealt to enemies by 15% (1 turn(s))."
   },
   {
     "id": 140600000001700104,
-    "value": "Increase damage dealt to enemies by 20% [1 turn(s)]."
+    "value": "Increase damage dealt to enemies by 20% (1 turn(s))."
   },
   {
     "id": 140600000001700105,
-    "value": "Increase damage dealt to enemies by 25% [1 turn(s)]."
+    "value": "Increase damage dealt to enemies by 25% (1 turn(s))."
   },
   {
     "id": 140600000002101001,
-    "value": "Increase Critical Rate by 10% [1 turn]."
+    "value": "Increase Critical Rate by 10% (1 turn(s))."
   },
   {
     "id": 140600000002101002,
-    "value": "Increase Critical Rate by 20% [1 turn]."
+    "value": "Increase Critical Rate by 20% (1 turn(s))."
   },
   {
     "id": 140600000002101003,
-    "value": "Increase Critical Rate by 30% [1 turn]."
+    "value": "Increase Critical Rate by 30% (1 turn(s))."
   },
   {
     "id": 140600000002101004,
-    "value": "Increase Critical Rate by 40% [1 turn]."
+    "value": "Increase Critical Rate by 40% (1 turn(s))."
   },
   {
     "id": 140600000002101005,
-    "value": "Increase Critical Rate by 50% [1 turn]."
+    "value": "Increase Critical Rate by 50% (1 turn(s))."
   },
   {
     "id": 140600000002200201,
-    "value": "During the next fight after activating the effect, increase Accuracy by 100%."
+    "value": "During the next combat after activating the effect, increase Accuracy by 100%."
   },
   {
     "id": 140600000002200202,
-    "value": "During the next fight after activating the effect, increase Accuracy by 100%."
+    "value": "During the next combat after activating the effect, increase Accuracy by 100%."
   },
   {
     "id": 140600000002200203,
-    "value": "During the next fight after activating the effect, increase Accuracy by 100%."
+    "value": "During the next combat after activating the effect, increase Accuracy by 100%."
   },
   {
     "id": 140600000002200204,
-    "value": "During the next fight after activating the effect, increase Accuracy by 100%."
+    "value": "During the next combat after activating the effect, increase Accuracy by 100%."
   },
   {
     "id": 140600000002200205,
-    "value": "During the next fight after activating the effect, increase Accuracy by 100%."
+    "value": "During the next combat after activating the effect, increase Accuracy by 100%."
   },
   {
     "id": 140600000002300301,
-    "value": "During the next fight after activating the effect, increase Evasion by 100%."
+    "value": "During the next combat after activating the effect, increase Evasion by 100%."
   },
   {
     "id": 140600000002300302,
-    "value": "During the next fight after activating the effect, increase Evasion by 100%."
+    "value": "During the next combat after activating the effect, increase Evasion by 100%."
   },
   {
     "id": 140600000002300303,
-    "value": "During the next fight after activating the effect, increase Evasion by 100%."
+    "value": "During the next combat after activating the effect, increase Evasion by 100%."
   },
   {
     "id": 140600000002300304,
-    "value": "During the next fight after activating the effect, increase Evasion by 100%."
+    "value": "During the next combat after activating the effect, increase Evasion by 100%."
   },
   {
     "id": 140600000002300305,
-    "value": "During the next fight after activating the effect, increase Evasion by 100%."
+    "value": "During the next combat after activating the effect, increase Evasion by 100%."
   },
   {
     "id": 140600000002401101,
-    "value": "Reduce weapons EN consumption by 5% [1 turn(s)]."
+    "value": "Reduce weapons EN consumption by 5% (1 turn(s))."
   },
   {
     "id": 140600000002401102,
-    "value": "Reduce weapons EN consumption by 10% [1 turn(s)]."
+    "value": "Reduce weapons EN consumption by 10% (1 turn(s))."
   },
   {
     "id": 140600000002401103,
-    "value": "Reduce weapons EN consumption by 15% [1 turn(s)]."
+    "value": "Reduce weapons EN consumption by 15% (1 turn(s))."
   },
   {
     "id": 140600000002401104,
-    "value": "Reduce weapons EN consumption by 20% [1 turn(s)]."
+    "value": "Reduce weapons EN consumption by 20% (1 turn(s))."
   },
   {
     "id": 140600000002401105,
-    "value": "Reduce weapons EN consumption by 25% [1 turn(s)]."
+    "value": "Reduce weapons EN consumption by 25% (1 turn(s))."
   },
   {
     "id": 140600000002600401,
-    "value": "Reduce damage taken by 5% [1 turn(s)]."
+    "value": "Reduce damage taken by 5% (1 turn(s))."
   },
   {
     "id": 140600000002600402,
-    "value": "Reduce damage taken by 10% [1 turn(s)]."
+    "value": "Reduce damage taken by 10% (1 turn(s))."
   },
   {
     "id": 140600000002600403,
-    "value": "Reduce damage taken by 15% [1 turn(s)]."
+    "value": "Reduce damage taken by 15% (1 turn(s))."
   },
   {
     "id": 140600000002600404,
-    "value": "Reduce damage taken by 20% [1 turn(s)]."
+    "value": "Reduce damage taken by 20% (1 turn(s))."
   },
   {
     "id": 140600000002600405,
-    "value": "Reduce damage taken by 25% [1 turn(s)]."
+    "value": "Reduce damage taken by 25% (1 turn(s))."
   },
   {
     "id": 140600000009000100,
-    "value": "Characters piloting squad units within range\nIncrease MP by 12."
+    "value": "Characters piloting squad units within range\nincrease MP by 12."
   },
   {
     "id": 140600000009000101,
-    "value": "Characters piloting squad units within range\nWhen fighting, increase damage dealt to enemies by 200% [1turn]."
+    "value": "Characters piloting squad units within range\nWhen combating, increase damage dealt to enemies by 200% (1 turn(s))."
   },
   {
     "id": 140600000009000105,
-    "value": "Characters piloting squad units within range\nReduce damage taken by 50% [1turn]."
+    "value": "Characters piloting squad units within range\nreduce damage taken by 50% (1 turn(s))."
   },
   {
     "id": 140600000009000801,
-    "value": "Squad units within range\nRestore HP by 50%."
+    "value": "Squad units within range\nrestore HP by 50%."
   },
   {
     "id": 140600000130140101,
-    "value": "Characters piloting squad units within range\nIncrease MP by 3."
+    "value": "Characters piloting squad units within range\nincrease MP by 3."
   },
   {
     "id": 140600000130140201,
-    "value": "Characters piloting squad units within range\nIncrease MP by 4."
+    "value": "Characters piloting squad units within range\nincrease MP by 4."
   },
   {
     "id": 140600000130140301,
@@ -761,91 +761,91 @@
   },
   {
     "id": 140600000130140401,
-    "value": "Characters piloting squad units within range\nIncrease MP by 6."
+    "value": "Characters piloting squad units within range\nincrease MP by 6."
   },
   {
     "id": 140600000130140501,
-    "value": "Characters piloting squad units within range\nIncrease MP by 7."
+    "value": "Characters piloting squad units within range\nincrease MP by 7."
   },
   {
     "id": 140600000180160101,
-    "value": "Increase Ranged by 5% [1 turn]."
+    "value": "Increase Ranged by 5% (1 turn(s))."
   },
   {
     "id": 140600000180160201,
-    "value": "Increase Ranged by 10% [1 turn]."
+    "value": "Increase Ranged by 10% (1 turn(s))."
   },
   {
     "id": 140600000180160301,
-    "value": "Increase Ranged by 15% [1 turn]."
+    "value": "Increase Ranged by 15% (1 turn(s))."
   },
   {
     "id": 140600000180160401,
-    "value": "Increase Ranged by 20% [1 turn]."
+    "value": "Increase Ranged by 20% (1 turn(s))."
   },
   {
     "id": 140600000180160501,
-    "value": "Increase Ranged by 25% [1 turn]."
+    "value": "Increase Ranged by 25% (1 turn(s))."
   },
   {
     "id": 140600000190150101,
-    "value": "Increase Melee by 5% [1 turn]."
+    "value": "Increase Melee by 5% (1 turn(s))."
   },
   {
     "id": 140600000190150201,
-    "value": "Increase Melee by 10% [1 turn]."
+    "value": "Increase Melee by 10% (1 turn(s))."
   },
   {
     "id": 140600000190150301,
-    "value": "Increase Melee by 15% [1 turn]."
+    "value": "Increase Melee by 15% (1 turn(s))."
   },
   {
     "id": 140600000190150401,
-    "value": "Increase Melee by 20% [1 turn]."
+    "value": "Increase Melee by 20% (1 turn(s))."
   },
   {
     "id": 140600000190150501,
-    "value": "Increase Melee by 25% [1 turn]."
+    "value": "Increase Melee by 25% (1 turn(s))."
   },
   {
     "id": 140600000200170101,
-    "value": "Increase Awaken by 5% [1 turn]."
+    "value": "Increase Awaken by 5% (1 turn(s))."
   },
   {
     "id": 140600000200170201,
-    "value": "Increase Awaken by 10% [1 turn]."
+    "value": "Increase Awaken by 10% (1 turn(s))."
   },
   {
     "id": 140600000200170301,
-    "value": "Increase Awaken by 15% [1 turn]."
+    "value": "Increase Awaken by 15% (1 turn(s))."
   },
   {
     "id": 140600000200170401,
-    "value": "Increase Awaken by 20% [1 turn]."
+    "value": "Increase Awaken by 20% (1 turn(s))."
   },
   {
     "id": 140600000200170501,
-    "value": "Increase Awaken by 25% [1 turn]."
+    "value": "Increase Awaken by 25% (1 turn(s))."
   },
   {
     "id": 140600000270130101,
-    "value": "Increase own ACC and EVA by 15% [1 turn(s)]."
+    "value": "Increase own ACC and EVA by 15% (1 turn(s))."
   },
   {
     "id": 140600000270130201,
-    "value": "Increase own ACC and EVA by 20% [1 turn(s)]."
+    "value": "Increase own ACC and EVA by 20% (1 turn(s))."
   },
   {
     "id": 140600000270130301,
-    "value": "Increase own ACC and EVA by 25% [1 turn(s)]."
+    "value": "Increase own ACC and EVA by 25% (1 turn(s))."
   },
   {
     "id": 140600000270130401,
-    "value": "Increase own ACC and EVA by 30% [1 turn(s)]."
+    "value": "Increase own ACC and EVA by 30% (1 turn(s))."
   },
   {
     "id": 140600000270130501,
-    "value": "Increase own ACC and EVA by 35% [1 turn(s)]."
+    "value": "Increase own ACC and EVA by 35% (1 turn(s))."
   },
   {
     "id": 140600000280140101,
@@ -869,7 +869,7 @@
   },
   {
     "id": 140600000290180101,
-    "value": "Chance Step +1 time.\n*Any count increase granted by this skill will remain until used."
+    "value": "Chance Step +1 time(s).\n*Any count increase granted by this skill will remain until used."
   },
   {
     "id": 140600000290180201,
@@ -889,7 +889,7 @@
   },
   {
     "id": 140600000300190101,
-    "value": "Support Attack / Counter Support +1 time(s).\n*Any count increase granted by this skill will remain until used."
+    "value": "Support Attack/Counter +1 time(s).\n*Any count increase granted by this skill will remain until used."
   },
   {
     "id": 140600000300190201,
@@ -909,7 +909,7 @@
   },
   {
     "id": 140600000310200101,
-    "value": "Support Defense +1 time.\n*Any count increase granted by this skill will remain until used."
+    "value": "Support Defense +1 time(s).\n*Any count increase granted by this skill will remain until used."
   },
   {
     "id": 140600000310200201,
@@ -929,23 +929,23 @@
   },
   {
     "id": 140600000320210101,
-    "value": "Characters piloting squad units within range\nWhen fighting, increase damage dealt to enemies by 10% [1turn]."
+    "value": "Characters piloting squad units within range\nWhen combating, increase damage dealt to enemies by 10% (1 turn(s))."
   },
   {
     "id": 140600000320210201,
-    "value": "Increase damage allies within range deal to enemies by 12% [1 turn(s)]."
+    "value": "Increase damage allies within range deal to enemies by 12% (1 turn(s))."
   },
   {
     "id": 140600000320210301,
-    "value": "Characters piloting squad units within range\nWhen fighting, increase damage dealt to enemies by 15% [1turn]."
+    "value": "Characters piloting squad units within range\nWhen combating, increase damage dealt to enemies by 15% (1 turn(s))."
   },
   {
     "id": 140600000320210401,
-    "value": "Characters piloting squad units within range\nWhen fighting, increase damage dealt to enemies by 17% [1turn]."
+    "value": "Characters piloting squad units within range\nWhen combating, increase damage dealt to enemies by 17% (1 turn(s))."
   },
   {
     "id": 140600000320210501,
-    "value": "Characters piloting squad units within range\nWhen fighting, increase damage dealt to enemies by 20% [1turn]."
+    "value": "Characters piloting squad units within range\nWhen combating, increase damage dealt to enemies by 20% (1 turn(s))."
   },
   {
     "id": 140600000330220101,
@@ -961,27 +961,27 @@
   },
   {
     "id": 140600000340230201,
-    "value": "Characters piloting squad units within range\nReduce damage taken by 12% [1turn]."
+    "value": "Characters piloting squad units within range\nreduce damage taken by 12% (1 turn(s))."
   },
   {
     "id": 140600000350240101,
-    "value": "Allies in range:\nRestore HP by 10%"
+    "value": "Allies in range,\nrestore HP by 10%"
   },
   {
     "id": 140600000350240201,
-    "value": "Allies in range:\nRestore HP by 15%"
+    "value": "Allies in range,\nrestore HP by 15%"
   },
   {
     "id": 140600000350240301,
-    "value": "Allies in range:\nRestore HP by 20%"
+    "value": "Allies in range,\nrestore HP by 20%"
   },
   {
     "id": 140600000350240401,
-    "value": "Allies in range:\nRestore HP by 25%"
+    "value": "Allies in range,\nrestore HP by 25%"
   },
   {
     "id": 140600000350240501,
-    "value": "Allies in range:\nRestore HP by 30%"
+    "value": "Allies in range,\nrestore HP by 30%"
   },
   {
     "id": 140600000360250101,
@@ -1013,18 +1013,18 @@
   },
   {
     "id": 140600000990000008,
-    "value": "Grants \"ACC Up 100%\" to allies within range 10 time(s).\nChar Aznable also gain 3 use(s) of Support Attack / Counter.(Once per battle)\n*Any count increase granted by this skill will remain until used."
+    "value": "Grants \"ACC Up 100%\" to allies within range 10 time(s).\nChar Aznable also gain 3 use(s) of Support Attack / Counter. (Once per battle)\n*Any count increase granted by this skill will remain until used."
   },
   {
     "id": 140600000990000009,
-    "value": "Grants \"ACC Up 100%\" to allies within range 10 time(s).\nSupport-type characters also gain 3 use(s) of Support Attack / Counter.(Once per battle)\n*Any count increase granted by this skill will remain until used."
+    "value": "Grants \"ACC Up 100%\" to allies within range 10 time(s).\nSupport-type characters also gain 3 use(s) of Support Attack / Counter. (Once per battle)\n*Any count increase granted by this skill will remain until used."
   },
   {
     "id": 140600090000000006,
-    "value": "Transmission Conditions: Kai, Hayato, and Sayla are within range.\nIncreases Ranged, Melee, and Awaken of allies within range by 200% for 9 turn(s), and increases own Evasion by 100% 9 time(s)."
+    "value": "Transmission Conditions: Kai, Hayato, and Sayla are within range.\nIncrease Ranged, Melee, and Awaken of allies within range by 200% for 9 turn(s), and increases own Evasion by 100% 9 time(s)."
   },
   {
     "id": 140600090000000007,
-    "value": "Transmission Conditions: M'Quve is within range.\nGuest forces' M'Quve and durability-type characters within range gain 5 use(s) of Support Defense.(Once per battle)"
+    "value": "Transmission Conditions: M'Quve is within range.\nGuest forces' M'Quve and durability-type characters within range gain 5 use(s) of Support Defense. (Once per battle)"
   }
 ]

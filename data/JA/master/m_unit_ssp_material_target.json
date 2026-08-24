@@ -10,5 +10,11 @@
     "TargetIndex": 1,
     "TargetTypeIndex": 2,
     "TargetId": 70
+  },
+  {
+    "ItemId": 300000021055,
+    "TargetIndex": 1,
+    "TargetTypeIndex": 5,
+    "TargetId": 1055
   }
 ]

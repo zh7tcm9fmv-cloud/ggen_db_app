@@ -628,5 +628,25 @@
     "ResourceId": "gasha_2608200301",
     "ScheduleId": 2608201701,
     "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2608400101,
+    "TransitionId": 28002608400403,
+    "DestinationTypeIndex": 1,
+    "DestinationId": 2608400403,
+    "SortOrder": 993,
+    "ResourceId": "gasha_2608400403",
+    "ScheduleId": 2608401701,
+    "BannerResourceTypeIndex": 0
+  },
+  {
+    "Id": 2608400201,
+    "TransitionId": 37000000000000,
+    "DestinationTypeIndex": 0,
+    "DestinationId": 0,
+    "SortOrder": 1021,
+    "ResourceId": "ml_homeimg_info_300017",
+    "ScheduleId": 2608301502,
+    "BannerResourceTypeIndex": 2
   }
 ]

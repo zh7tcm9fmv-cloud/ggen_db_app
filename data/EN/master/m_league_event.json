@@ -324,21 +324,21 @@
   },
   {
     "EventId": 300018,
-    "LeagueRankGroupId": 1,
+    "LeagueRankGroupId": 4,
     "LeagueSeasonRewardGroupId": 18,
     "LeagueBuffTargetSetId": 300018,
     "LeagueIngameConfigGroupId": 1,
     "LeagueMatchingGroupId": 1,
-    "BuffId": 300003,
+    "BuffId": 300004,
     "SeasonStartAnimationColorTypeIndex": 1,
     "StageId": 90600101,
     "LimitTurnCount": 5,
     "LeagueStageInitialPositionGroupSetId": 1,
     "LeagueChallengeModeEntryScoreThreshold": 150000,
-    "LeagueChallengeModeMatchingGroupId": 2,
+    "LeagueChallengeModeMatchingGroupId": 3,
     "MotifId": 300018,
     "MotifTypeIndex": 2,
     "RankingTopPercentileDisplayScoreThreshold": 200000,
-    "IsSkipShopReset": false
+    "IsSkipShopReset": true
   }
 ]
