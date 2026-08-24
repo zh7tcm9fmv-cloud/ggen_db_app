@@ -474,7 +474,7 @@
         },
         {
           "gasha_id": 2607500301,
-          "name": "Featured Unit Assembly",
+          "name": "",
           "file": "gasha_proportion_2607500301_2.json",
           "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2607500301"
         },
@@ -489,6 +489,12 @@
           "name": "Featured Unit Assembly (8/13/2026 JST)",
           "file": "gasha_proportion_2608200501_2.json",
           "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2608200501"
+        },
+        {
+          "gasha_id": 2608400403,
+          "name": "Featured Unit Assembly",
+          "file": "gasha_proportion_2608400403_2.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/en/gasha/detail.html?gasha_id=2608400403"
         }
       ]
     },
@@ -965,7 +971,7 @@
         },
         {
           "gasha_id": 2607500301,
-          "name": "ピックアップガシャ",
+          "name": "",
           "file": "gasha_proportion_2607500301_1.json",
           "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2607500301"
         },
@@ -980,6 +986,12 @@
           "name": "ピックアップガシャ(2026/8/13)",
           "file": "gasha_proportion_2608200501_1.json",
           "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2608200501"
+        },
+        {
+          "gasha_id": 2608400403,
+          "name": "ピックアップガシャ",
+          "file": "gasha_proportion_2608400403_1.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/ja/gasha/detail.html?gasha_id=2608400403"
         }
       ]
     },
@@ -1456,7 +1468,7 @@
         },
         {
           "gasha_id": 2607500301,
-          "name": "精選機體補給",
+          "name": "",
           "file": "gasha_proportion_2607500301_3.json",
           "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2607500301"
         },
@@ -1471,6 +1483,12 @@
           "name": "精選機體補給（2026/8/13 JST）",
           "file": "gasha_proportion_2608200501_3.json",
           "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2608200501"
+        },
+        {
+          "gasha_id": 2608400403,
+          "name": "精選機體補給",
+          "file": "gasha_proportion_2608400403_3.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/tw/gasha/detail.html?gasha_id=2608400403"
         }
       ]
     },
@@ -1947,7 +1965,7 @@
         },
         {
           "gasha_id": 2607500301,
-          "name": "精選機體補給",
+          "name": "",
           "file": "gasha_proportion_2607500301_4.json",
           "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2607500301"
         },
@@ -1962,6 +1980,12 @@
           "name": "精選機體補給（13/8/2026 JST）",
           "file": "gasha_proportion_2608200501_4.json",
           "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2608200501"
+        },
+        {
+          "gasha_id": 2608400403,
+          "name": "精選機體補給",
+          "file": "gasha_proportion_2608400403_4.json",
+          "detail_url": "https://web.gl.eternal.channel.or.jp/hk/gasha/detail.html?gasha_id=2608400403"
         }
       ]
     }
