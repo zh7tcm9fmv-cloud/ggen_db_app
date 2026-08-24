@@ -16,6 +16,7 @@
 .ml-section-title,
 .ml-status-pill,
 .ml-meta-k,
+.ml-season-select-label,
 .ml-season-select {
   font-family: var(--font-body);
 }
@@ -44,6 +45,23 @@
   justify-content: center;
   gap: 6px;
   max-width: 100%;
+}
+.ml-season-select-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  min-width: 0;
+  max-width: 100%;
+}
+.ml-season-select-label {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  line-height: 1.2;
+  white-space: nowrap;
 }
 .ml-season-select {
   width: auto;

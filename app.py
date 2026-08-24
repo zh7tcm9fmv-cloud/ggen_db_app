@@ -23632,6 +23632,50 @@ def _ml_compose_rank_tier_rewards(event_id, rank_type_index, base_rewards, lc):
     return out
 
 
+# Season 16 (synthetic event_id 300019) rewards from MasterData_2026-08-18.
+# Current master reused the same RewardSetIds for Season 15.5 and overwrote item contents.
+_ML_SEASON16_REWARDS_FILE = os.path.join(
+    app_dir, 'data', 'published', 'ml_season16_rewards_from_2026-08-18.json')
+_ml_season16_reward_set_map_cache = None
+
+
+def _ml_season16_reward_set_map():
+    """RewardSetId → decorated-ready rows from the 2026-08-18 Season 16 snapshot."""
+    global _ml_season16_reward_set_map_cache
+    if _ml_season16_reward_set_map_cache is not None:
+        return _ml_season16_reward_set_map_cache
+    data = load_json(_ML_SEASON16_REWARDS_FILE) or {}
+    mmap = {}
+    for item in (data.get('rewards') or []):
+        if not isinstance(item, dict):
+            continue
+        rid = normalize_id(item.get('Id') or item.get('id'))
+        if rid == '0' or len(rid) <= 2:
+            continue
+        sid = rid[:-2]
+        mmap.setdefault(sid, []).append({
+            'reward_id': rid,
+            'reward_type_index': normalize_id(item.get('RewardTypeIndex') or item.get('rewardTypeIndex')),
+            'target_id': normalize_id(item.get('TargetId') or item.get('targetId')),
+            'count': safe_int(item.get('Count') or item.get('count'), 0),
+        })
+    for arr in mmap.values():
+        arr.sort(key=lambda x: safe_int(x.get('reward_id'), 0))
+    _ml_season16_reward_set_map_cache = mmap
+    return mmap
+
+
+def _resolve_reward_rows_for_ml_season16(reward_set_id):
+    """Prefer 08-18 snapshot rows for Season 16 sets; fall back to live master."""
+    rsid = normalize_id(reward_set_id)
+    if rsid == '0':
+        return []
+    ov = _ml_season16_reward_set_map().get(rsid)
+    if ov:
+        return list(ov)
+    return _resolve_reward_rows_from_set_id(rsid)
+
+
 def _ml_series_set_id(series_id):
     sid = normalize_id(series_id)
     if sid == '0':
@@ -23894,7 +23938,7 @@ def _ml_resolve_buff_target_name(target_type, target_id, lineage_lookup, series_
 def api_master_league():
     """Master League seasons: boosts, terrain, ranks, schedules, scoring config."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'master_league_v22_{lc}'
+    ck = f'master_league_v24_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
@@ -24153,10 +24197,11 @@ def api_master_league():
 
     # Accurate dual-season restore:
     # - Keep today's `EventId: 300018` (displayed as Season 15.5).
-    # - Add `event_id=300019` whose *contents* (schedule/buff/rank-group configuration) are taken
-    #   from `MasterData_2026-08-18`'s Season16 row (which is stored as `EventId: 300018` there).
-    # - We still rely on existing profile-title ids (tag=18) and then rewrite displayed text
-    #   tokens (15.5 -> 16) inside reward names/title text.
+    # - Add `event_id=300019` whose *contents* (schedule/buff/rank-group/rewards) are taken
+    #   from `MasterData_2026-08-18`'s Season16 row (stored as `EventId: 300018` there).
+    # - Rank/milestone RewardSetIds were reused by 15.5 and overwritten in live m_reward —
+    #   Season 16 resolves rows from data/published/ml_season16_rewards_from_2026-08-18.json.
+    # - Profile-title ids still use tag=18; rewrite displayed text tokens (15.5 -> 16).
     if seasons:
         def _ml_replace_season15_5_text(val):
             if isinstance(val, str):
@@ -24208,8 +24253,18 @@ def api_master_league():
                 buff_id = '300003'
                 buff_pct = buff_pct_by_id.get(normalize_id(buff_id), 0)
 
-                boost_tags_src_set = normalize_id(300018)  # LeagueBuffTargetSetId
-                boost_tags = buff_targets_by_set.get(boost_tags_src_set, [])
+                # Snapshot 2026-08-18 set 300018 was Unstoppable + Tenacious.
+                # Current master reused 300018 for Season 15.5 (SSR and Below / Ultimate).
+                boost_tags = []
+                for ttype, tid in ((2, 1084), (2, 1133)):
+                    tid_n = normalize_id(tid)
+                    boost_tags.append({
+                        'type_index': ttype,
+                        'target_id': tid_n,
+                        'name': _ml_resolve_buff_target_name(
+                            ttype, tid_n, lineage_lookup, series_id_to_name, lc),
+                        'tag_type': 'series' if ttype == 1 else 'lineage',
+                    })
 
                 spark_banner = _ml_season_uses_spark_banner(safe_int(synthetic_event_id, 0) - 300001, status)
                 boost_portraits = (
@@ -24228,17 +24283,21 @@ def api_master_league():
                 chall_threshold = 150000
                 score_floor = max(150000, chall_threshold) if chall_threshold > 0 else 0
 
-                # Build rank tiers using snapshot rank-group (rank_gid), but use tag=18 for profile-title reward pids.
+                # Rank tiers: snapshot rank-group 1; tag=18 profile titles; reward rows from 08-18 override.
                 rank_tiers = []
                 for rt in rank_by_group.get(normalize_id(rank_gid), []):
                     tier = dict(rt)
                     rsid = tier.pop('reward_set_id', '0')
                     tier['emblem_icon'] = _ml_emblem_icon_url(tier.get('rank_type_index'))
-                    base_rewards = _decorate_reward_rows(_resolve_reward_rows_from_set_id(rsid), lc) if rsid != '0' else []
-                    tier['rewards'] = _ml_compose_rank_tier_rewards(event_id_src_for_profile_titles, tier.get('rank_type_index'), base_rewards, lc)
+                    base_rewards = (
+                        _decorate_reward_rows(_resolve_reward_rows_for_ml_season16(rsid), lc)
+                        if rsid != '0' else []
+                    )
+                    tier['rewards'] = _ml_compose_rank_tier_rewards(
+                        event_id_src_for_profile_titles, tier.get('rank_type_index'), base_rewards, lc)
                     rank_tiers.append(tier)
 
-                # Build score milestones using snapshot season reward-group (srgid).
+                # Score milestones: group 18 thresholds from live master; item contents from 08-18 override.
                 score_milestones = []
                 if score_floor > 0 and srgid_int:
                     for sm in season_reward_by_group.get(srgid_int, []):
@@ -24249,7 +24308,10 @@ def api_master_league():
                         rsid = sm.get('reward_set_id', '0')
                         score_milestones.append({
                             'target_score': sm['target_score'],
-                            'rewards': _decorate_reward_rows(_resolve_reward_rows_from_set_id(rsid), lc) if rsid != '0' else [],
+                            'rewards': (
+                                _decorate_reward_rows(_resolve_reward_rows_for_ml_season16(rsid), lc)
+                                if rsid != '0' else []
+                            ),
                         })
                     score_milestones.sort(key=lambda x: safe_int(x.get('target_score'), 0), reverse=True)
 
