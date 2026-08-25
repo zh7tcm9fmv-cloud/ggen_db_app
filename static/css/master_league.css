@@ -9,6 +9,7 @@
   padding: 8px 0 40px;
   position: relative;
   z-index: 1;
+  overflow: visible;
 }
 .ml-boost-stage-label,
 .ml-boost-heading,
@@ -27,6 +28,9 @@
   align-items: center;
   gap: 8px 12px;
   margin-bottom: 10px;
+  position: relative;
+  z-index: 40;
+  overflow: visible;
 }
 .ml-toolbar-filters {
   grid-column: 1;
@@ -39,6 +43,9 @@
   gap: 8px;
   min-width: 0;
   max-width: 100%;
+  position: relative;
+  z-index: 2;
+  overflow: visible;
 }
 .ml-page-header > .ml-hero {
   grid-column: 2;
@@ -49,11 +56,15 @@
   align-items: center;
   padding: 0;
   min-width: 0;
+  position: relative;
+  z-index: 1;
 }
 .ml-status-pill {
   grid-column: 3;
   justify-self: end;
   align-self: center;
+  position: relative;
+  z-index: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -74,7 +85,14 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 2px;
+  position: relative;
+  z-index: 1;
+  overflow: visible;
   transition: opacity var(--motion-dur-quick, 120ms) var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1));
+}
+.ml-season-filter-wrap:has(.ml-season-filter-panel:not([hidden])),
+.ml-season-filter-wrap:has(.rarity-filter-panel:not([hidden])) {
+  z-index: 5;
 }
 .ml-season-filter-cat {
   font-size: 10px;
@@ -91,11 +109,14 @@
 .ml-season-filter-wrap.is-inactive {
   opacity: 0.45;
 }
-.ml-season-filter-wrap.is-inactive:hover {
-  opacity: 0.85;
+.ml-season-filter-wrap.is-inactive:hover,
+.ml-season-filter-wrap.is-inactive:has(.rarity-filter-panel:not([hidden])) {
+  opacity: 1;
 }
-.ml-season-filter-panel {
-  min-width: 100%;
+.ml-season-filter-panel,
+#panel-master_league .ml-season-filter-panel.rarity-filter-panel {
+  z-index: 200;
+  min-width: max(100%, 148px);
   max-height: min(320px, 50vh);
   overflow: auto;
   padding: 6px;
@@ -146,6 +167,11 @@
 }
 
 /* Page layout */
+.ml-root,
+.ml-page {
+  position: relative;
+  z-index: 0;
+}
 .ml-page {
   display: flex;
   flex-direction: column;
