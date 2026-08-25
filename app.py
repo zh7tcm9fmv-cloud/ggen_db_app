@@ -23632,15 +23632,20 @@ def _ml_compose_rank_tier_rewards(event_id, rank_type_index, base_rewards, lc):
     return out
 
 
-# Season 16 (synthetic event_id 300019) rewards from MasterData_2026-08-18.
-# Current master reused the same RewardSetIds for Season 15.5 and overwrote item contents.
+# TEMP FIX (Season 16 / synthetic event_id 300019):
+# Remove when live MasterData ships a real EventId 300019 for Season 16.
+# Until then: rewards come from MasterData_2026-08-18 (live m_reward reused the same
+# RewardSetIds for Season 15.5 and overwrote item contents).
+# See .cursor/rules/ml-season16-temp-restore.mdc — tell the owner when real 300019 lands.
 _ML_SEASON16_REWARDS_FILE = os.path.join(
     app_dir, 'data', 'published', 'ml_season16_rewards_from_2026-08-18.json')
+_ML_SEASON16_TEMP_EVENT_ID = '300019'
 _ml_season16_reward_set_map_cache = None
+_ml_season16_temp_retire_logged = False
 
 
 def _ml_season16_reward_set_map():
-    """RewardSetId → decorated-ready rows from the 2026-08-18 Season 16 snapshot."""
+    """TEMP FIX: RewardSetId → rows from the 2026-08-18 Season 16 snapshot."""
     global _ml_season16_reward_set_map_cache
     if _ml_season16_reward_set_map_cache is not None:
         return _ml_season16_reward_set_map_cache
@@ -23666,7 +23671,7 @@ def _ml_season16_reward_set_map():
 
 
 def _resolve_reward_rows_for_ml_season16(reward_set_id):
-    """Prefer 08-18 snapshot rows for Season 16 sets; fall back to live master."""
+    """TEMP FIX: Prefer 08-18 snapshot rows for Season 16 sets; fall back to live master."""
     rsid = normalize_id(reward_set_id)
     if rsid == '0':
         return []
@@ -23674,6 +23679,33 @@ def _resolve_reward_rows_for_ml_season16(reward_set_id):
     if ov:
         return list(ov)
     return _resolve_reward_rows_from_set_id(rsid)
+
+
+def _ml_live_has_real_season16_event(m_league_event, event_by_id):
+    """True when MasterData already defines EventId 300019 (temp restore must retire)."""
+    if isinstance(event_by_id, dict) and normalize_id(_ML_SEASON16_TEMP_EVENT_ID) in event_by_id:
+        return True
+    for row in extract_data_list(m_league_event):
+        if not isinstance(row, dict):
+            continue
+        if normalize_id(row.get('EventId') or row.get('eventId')) == _ML_SEASON16_TEMP_EVENT_ID:
+            return True
+    return False
+
+
+def _ml_log_season16_temp_retire_once():
+    global _ml_season16_temp_retire_logged
+    if _ml_season16_temp_retire_logged:
+        return
+    _ml_season16_temp_retire_logged = True
+    print(
+        'MASTER LEAGUE: live MasterData now has EventId 300019 — '
+        'TEMP Season 16 restore is obsolete. Tell the owner and remove: '
+        'synthetic 300019 builder in api_master_league, '
+        '_resolve_reward_rows_for_ml_season16 / ml_season16_rewards_from_2026-08-18.json, '
+        'and .cursor/rules/ml-season16-temp-restore.mdc.',
+        flush=True,
+    )
 
 
 def _ml_series_set_id(series_id):
@@ -24195,13 +24227,14 @@ def api_master_league():
 
     seasons.sort(key=lambda s: safe_int(s.get('season_number'), 0))
 
-    # Accurate dual-season restore:
-    # - Keep today's `EventId: 300018` (displayed as Season 15.5).
-    # - Add `event_id=300019` whose *contents* (schedule/buff/rank-group/rewards) are taken
-    #   from `MasterData_2026-08-18`'s Season16 row (stored as `EventId: 300018` there).
-    # - Rank/milestone RewardSetIds were reused by 15.5 and overwritten in live m_reward —
-    #   Season 16 resolves rows from data/published/ml_season16_rewards_from_2026-08-18.json.
+    # TEMP FIX — dual-season restore until live MasterData ships real EventId 300019:
+    # - Keep today's `EventId: 300018` (Season 15.5).
+    # - Synthesize `event_id=300019` from MasterData_2026-08-18 Season 16 (stored as 300018 there):
+    #   schedule/buff/rank-group + rewards via ml_season16_rewards_from_2026-08-18.json.
     # - Profile-title ids still use tag=18; rewrite displayed text tokens (15.5 -> 16).
+    # When real 300019 lands: skip this block, log, set season16_temp_restore_retire, tell owner.
+    season16_temp_restore = False
+    season16_temp_restore_retire = False
     if seasons:
         def _ml_replace_season15_5_text(val):
             if isinstance(val, str):
@@ -24216,17 +24249,20 @@ def api_master_league():
                 return {k: _ml_replace_season15_5_text(v) for k, v in val.items()}
             return val
 
-        has_300019 = any(str(s.get('event_id')) == '300019' for s in seasons)
-        if not has_300019:
+        live_has_real_300019 = _ml_live_has_real_season16_event(m_league_event, event_by_id)
+        has_300019 = any(str(s.get('event_id')) == _ML_SEASON16_TEMP_EVENT_ID for s in seasons)
+        if live_has_real_300019:
+            season16_temp_restore_retire = True
+            _ml_log_season16_temp_retire_once()
+        elif not has_300019:
             last = seasons[-1]
             last_event_id = str(last.get('event_id'))
             last_title = str(last.get('title') or '')
             # Only add the synthetic entry when today's newest season is actually the "15.5" one.
             if last_event_id == '300018' and '15.5' in last_title:
-                # 2026-08-18 snapshot "Season16" configuration (stored as EventId=300018 in that snapshot).
-                # These values are applied to construct the new Season entry at event_id=300019.
+                # TEMP: 2026-08-18 snapshot Season16 config → synthetic event_id=300019.
                 event_id_src_for_profile_titles = 300018  # tag=18 → pid exists in current profile-title map
-                synthetic_event_id = 300019
+                synthetic_event_id = int(_ML_SEASON16_TEMP_EVENT_ID)
                 title_lid_for_season16 = 250100000000300018
 
                 # Snapshot m_event (EventId=300018 in 2026-08-18) schedule ids.
@@ -24368,9 +24404,11 @@ def api_master_league():
 
                 # Rewrite displayed text tokens (15.5 -> 16) inside the constructed payload.
                 season_16 = _ml_replace_season15_5_text(season_16)
+                season_16['season16_temp_restore'] = True
 
                 seasons.append(season_16)
                 seasons.sort(key=lambda s: safe_int(s.get('season_number'), 0))
+                season16_temp_restore = True
 
     active_event_id = seasons[-1]['event_id'] if seasons else None
 
@@ -24415,6 +24453,9 @@ def api_master_league():
             'turn_bonuses': turn_bonuses,
             'rank_bonuses': rank_bonuses,
         },
+        # TEMP Season 16 flags — remove with the synthetic restore when real 300019 ships.
+        'season16_temp_restore': season16_temp_restore,
+        'season16_temp_restore_retire': season16_temp_restore_retire,
     }
     set_cached_response(ck, out)
     return jsonify_cacheable(out, ck, public=True, max_age=3600, convert_images=True)

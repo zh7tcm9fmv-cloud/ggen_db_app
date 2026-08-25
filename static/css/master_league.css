@@ -21,7 +21,7 @@
   font-family: var(--font-body);
 }
 
-/* Season picker + motif logo — one compact row, vertically centered */
+/* Season picker + motif logo — logo center, filter-select toolbar (same chrome as browse) */
 .ml-page-header {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
@@ -37,51 +37,91 @@
   align-self: center;
   display: flex;
   margin: 0;
-}
-.ml-toolbar-inner {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: center;
-  gap: 6px;
-  max-width: 100%;
-}
-.ml-season-select-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 2px;
   min-width: 0;
   max-width: 100%;
 }
+.ml-toolbar-inner {
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  max-width: 100%;
+}
+.ml-season-select-wrap {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
+  min-width: 0;
+  max-width: 100%;
+  transition: opacity var(--motion-dur-quick, 120ms) var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1));
+}
 .ml-season-select-label {
   font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
+  font-weight: 700;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
   color: var(--text-muted);
   line-height: 1.2;
   white-space: nowrap;
+  text-align: left;
 }
 .ml-season-select {
   width: auto;
-  max-width: min(100%, 280px);
+  max-width: min(100%, 200px);
   flex: 0 1 auto;
   min-width: 0;
-  padding: 8px 36px 8px 14px;
-  font-weight: 700;
+  min-height: 40px;
+  padding: 8px 12px;
+  font-weight: 600;
   font-size: 14px;
+  transition:
+    border-color var(--motion-dur-quick, 120ms) var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1)),
+    color var(--motion-dur-quick, 120ms) var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1)),
+    box-shadow var(--motion-dur-quick, 120ms) var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1)),
+    opacity var(--motion-dur-quick, 120ms) var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1));
+}
+.ml-season-select-wrap.is-active .ml-season-select-label {
+  color: var(--accent-cyan);
+}
+.ml-season-select-wrap.is-active .ml-season-select {
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+  box-shadow: 0 0 0 1px var(--accent-cyan);
+  opacity: 1;
+}
+.ml-season-select-wrap.is-inactive {
+  opacity: 0.42;
+}
+.ml-season-select-wrap.is-inactive .ml-season-select {
+  border-color: var(--border-color);
+  color: var(--text-muted);
+  box-shadow: none;
+}
+.ml-season-select-wrap.is-inactive:hover,
+.ml-season-select-wrap.is-inactive:focus-within {
+  opacity: 0.78;
+}
+.ml-season-select-wrap.is-inactive:hover .ml-season-select,
+.ml-season-select-wrap.is-inactive:focus-within .ml-season-select {
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
 }
 .ml-status-pill {
   display: inline-flex;
   align-items: center;
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.04em;
+  padding: 8px 12px;
+  min-height: 40px;
+  box-sizing: border-box;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   text-transform: uppercase;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 .ml-status-pill--active {
   background: rgba(34, 197, 94, 0.18);
@@ -647,9 +687,25 @@ button.ml-reward-chip {
     justify-self: end;
   }
   .ml-toolbar-inner {
-    flex-direction: column;
-    align-items: flex-end;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
     gap: 6px;
+  }
+  .ml-season-select-label {
+    font-size: 10px;
+  }
+  .ml-season-select {
+    max-width: min(100%, 148px);
+    min-height: 36px;
+    padding: 6px 10px;
+    font-size: 13px;
+  }
+  .ml-status-pill {
+    min-height: 36px;
+    padding: 6px 10px;
+    font-size: 11px;
   }
   .ml-page-header > .ml-hero {
     grid-column: 1;

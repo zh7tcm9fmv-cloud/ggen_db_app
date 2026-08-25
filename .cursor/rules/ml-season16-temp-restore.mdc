@@ -1,0 +1,33 @@
+---
+description: TEMP Master League Season 16 restore — alert owner when real EventId 300019 lands
+alwaysApply: true
+---
+
+# Master League Season 16 — TEMP restore (remove when real 300019 ships)
+
+## Why this exists
+
+Live MasterData currently ends at **EventId 300018 = Season 15.5**. The earlier **Season 16** config lived in `MasterData_2026-08-18` under EventId **300018** (schedules `2609301501`/`2609301502`, Unstoppable/Tenacious, rank group 1, reward group 18). That content was overwritten when 15.5 reused `300018`.
+
+**Temp site fix** (do not expand unless asked):
+
+- Synthetic season **`event_id=300019`** in `api_master_league` (`app.py`)
+- Reward rows from `data/published/ml_season16_rewards_from_2026-08-18.json`
+- API flags: `season16_temp_restore` / `season16_temp_restore_retire`
+- Client ML cache key bumped with that work (`*_v24` as of Aug 2026)
+
+## Hard rule for agents
+
+After any MasterData import / What’s New / browse of `m_league_event` / `m_event`:
+
+1. If **EventId `300019`** exists in live master (real Season 16 from Bandai), **tell the owner immediately** — they may miss it.
+2. Say the TEMP restore is obsolete and list what to delete/simplify:
+   - Synthetic `300019` builder + text rewrite in `api_master_league`
+   - `_resolve_reward_rows_for_ml_season16` / `_ml_season16_reward_set_map*` / `_ML_SEASON16_*`
+   - `data/published/ml_season16_rewards_from_2026-08-18.json`
+   - This rule file
+3. Do **not** leave the synthetic path active once real `300019` is present (code already skips synthesizing and sets `season16_temp_restore_retire`).
+
+## Not a bug if still on temp
+
+Until real `300019` appears, `/ml` showing both Season 15.5 (`300018`) and Season 16 (`300019` synthetic) with 08-18 rewards is intentional.

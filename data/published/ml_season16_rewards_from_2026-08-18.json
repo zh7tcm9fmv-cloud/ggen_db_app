@@ -1,4 +1,5 @@
 {
+  "note": "TEMP FIX for synthetic Master League Season 16 (event_id 300019). Delete when live MasterData ships real EventId 300019.",
   "source": "MasterData_2026-08-18",
   "league_season_reward_group_id": 18,
   "rank_group_id": 1,
