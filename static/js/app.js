@@ -2218,8 +2218,13 @@ if(!st||!st.rows)return false;
 if(instantBrowseQueryNeedsServer(q,tab))return false;
 const chipSig=instantBrowseChipSig(tab);
 const qn=String(q||'').trim();
+/* Prefix-narrow only when the *expanded* query still extends the previous expanded
+   query. Raw prefix (go→god, fat→fatb) is wrong: shortcuts rewrite the match text, so
+   intermediate keys drop the target before the alias fires. */
+const qnExp=(tab==='units'||tab==='rankUnits'||tab==='characters'||tab==='rankCharacters')?expandUnitSearchQuery(qn):qn;
+const lastExp=(tab==='units'||tab==='rankUnits'||tab==='characters'||tab==='rankCharacters')?expandUnitSearchQuery(st.lastQ||''):(st.lastQ||'');
 let pool;
-if(st.lastChipSig===chipSig&&st.lastQ!=null&&qn.indexOf(st.lastQ)===0&&Array.isArray(st.lastFiltered)){
+if(st.lastChipSig===chipSig&&st.lastQ!=null&&qnExp.indexOf(lastExp)===0&&Array.isArray(st.lastFiltered)){
 pool=qn===st.lastQ?st.lastFiltered:st.lastFiltered.filter(r=>instantBrowseRowMatch(r,qn,tab));
 }else{
 pool=instantBrowseChipPool(tab);
