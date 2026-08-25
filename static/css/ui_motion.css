@@ -209,6 +209,51 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
   opacity:1;
 }
 
+/* —— Spotlight border beam (beam.jakubantalik pattern, CSS-only, active overlay only) —— */
+@property --ggen-spotlight-beam-angle{
+  syntax:'<angle>';
+  initial-value:0deg;
+  inherits:false;
+}
+@keyframes ggen-spotlight-beam-spin{
+  to{--ggen-spotlight-beam-angle:360deg}
+}
+.search-spotlight-overlay.active .search-spotlight-card{
+  isolation:isolate;
+}
+.search-spotlight-overlay.active .search-spotlight-card::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  padding:1px;
+  box-sizing:border-box;
+  pointer-events:none;
+  z-index:4;
+  background:conic-gradient(
+    from var(--ggen-spotlight-beam-angle),
+    transparent 0%,
+    transparent 58%,
+    rgba(0,212,255,.12) 64%,
+    rgba(0,212,255,.55) 69%,
+    rgba(201,169,98,.7) 72%,
+    rgba(0,212,255,.55) 75%,
+    rgba(0,212,255,.12) 80%,
+    transparent 86%,
+    transparent 100%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite:exclude;
+  opacity:.9;
+  animation:ggen-spotlight-beam-spin 2.8s linear infinite;
+}
+
 @media (prefers-reduced-motion:reduce){
   .whats-new-overlay{
     transition:opacity 150ms ease!important;
@@ -278,5 +323,15 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
   .search-spotlight-glow,
   .search-spotlight-icon{
     animation:none!important;
+  }
+  .search-spotlight-overlay.active .search-spotlight-card::after{
+    animation:none!important;
+    background:linear-gradient(
+      135deg,
+      rgba(0,212,255,.35),
+      rgba(201,169,98,.25),
+      rgba(0,212,255,.35)
+    )!important;
+    opacity:.55!important;
   }
 }
