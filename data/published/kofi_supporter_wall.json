@@ -2,7 +2,7 @@
   "version": 1,
   "title": "Thank you to {n} Newtypes keeping this database alive.",
   "join_label": "Join the wall",
-  "count": 21,
+  "count": 24,
   "supporters": [
     {
       "name": "Phil",
@@ -65,7 +65,17 @@
       "crown": false
     },
     {
+      "name": "Ko-fi Supporter",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": false
+    },
+    {
       "name": "Ko-fi User",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": false
+    },
+    {
+      "name": "Unknown",
       "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
       "crown": false
     },
@@ -82,6 +92,11 @@
     {
       "name": "TheOtherMC",
       "thumb": "/static/images/KofiSupporters/theothermc.webp",
+      "crown": false
+    },
+    {
+      "name": "vuca",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
       "crown": false
     },
     {
