@@ -161,6 +161,54 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
   transition:transform var(--ui-spring-snap) var(--ui-spring);
 }
 
+/* —— Filter dropdown panels (shadcn quiet + Transitions origin rise) —— */
+@keyframes ggen-filter-panel-enter{
+  from{opacity:0;transform:translate3d(0,6px,0)}
+  to{opacity:1;transform:translate3d(0,0,0)}
+}
+@keyframes ggen-filter-panel-enter-reduced{
+  from{opacity:0}
+  to{opacity:1}
+}
+.rarity-filter-panel:not([hidden]),
+.role-filter-panel:not([hidden]),
+.source-filter-panel:not([hidden]),
+.filter-dropdown-panel:not([hidden]),
+.ml-season-filter-panel:not([hidden]){
+  animation:ggen-filter-panel-enter var(--motion-dur-standard) var(--motion-ease-enter) both;
+}
+.rarity-filter-row,
+.role-filter-row{
+  transition:background var(--motion-dur-quick) var(--motion-ease-standard),color var(--motion-dur-quick) var(--motion-ease-standard),box-shadow var(--motion-dur-quick) var(--motion-ease-standard);
+}
+
+/* —— Nav underline: GPU scaleX instead of width (Transitions pill cue, keep cyan bar) —— */
+.nav-tab::after{
+  width:80%!important;
+  transform:translateX(-50%) scaleX(0);
+  transform-origin:center bottom;
+  transition:transform var(--motion-dur-standard) var(--motion-ease-standard)!important;
+}
+.nav-tab:hover::after{
+  transform:translateX(-50%) scaleX(0.75);
+}
+.nav-tab.active::after{
+  transform:translateX(-50%) scaleX(1);
+}
+
+/* —— Search spotlight: same Corporate enter tokens as What's New / modals —— */
+.search-spotlight-backdrop{
+  transition:opacity var(--motion-dur-modal) var(--motion-ease-standard)!important;
+}
+.search-spotlight-card{
+  transform:translate3d(0,12px,0) scale(0.985)!important;
+  transition:transform var(--motion-dur-modal) var(--motion-ease-enter),opacity var(--motion-dur-modal) var(--motion-ease-enter)!important;
+}
+.search-spotlight-overlay.active .search-spotlight-card{
+  transform:translate3d(0,0,0) scale(1)!important;
+  opacity:1;
+}
+
 @media (prefers-reduced-motion:reduce){
   .whats-new-overlay{
     transition:opacity 150ms ease!important;
@@ -199,5 +247,36 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
   input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
     transform:none!important;
     transition:none!important;
+  }
+  /* Filter panels / nav underline / spotlight: opacity only */
+  .rarity-filter-panel:not([hidden]),
+  .role-filter-panel:not([hidden]),
+  .source-filter-panel:not([hidden]),
+  .filter-dropdown-panel:not([hidden]),
+  .ml-season-filter-panel:not([hidden]){
+    animation:ggen-filter-panel-enter-reduced 150ms ease both!important;
+  }
+  .nav-tab::after{
+    transition:opacity 150ms ease!important;
+    transform:translateX(-50%) scaleX(0)!important;
+  }
+  .nav-tab:hover::after,
+  .nav-tab.active::after{
+    transform:translateX(-50%) scaleX(1)!important;
+  }
+  .nav-tab:not(:hover):not(.active)::after{
+    opacity:0!important;
+  }
+  .search-spotlight-backdrop,
+  .search-spotlight-card{
+    transition:opacity 150ms ease!important;
+  }
+  .search-spotlight-card,
+  .search-spotlight-overlay.active .search-spotlight-card{
+    transform:none!important;
+  }
+  .search-spotlight-glow,
+  .search-spotlight-icon{
+    animation:none!important;
   }
 }
