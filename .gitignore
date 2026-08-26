@@ -48,8 +48,11 @@ data/persistent/*
 !data/persistent/banner_pool_votes.json.example
 
 # Published vote snapshot (committed; synced to GitHub on Railway — survives free-tier deploys)
+# Published game data caches (MSY / SPI / gasha / votes) — allow these; ignore tmp/logs above.
 !data/published/
 !data/published/banner_pool_votes.json
 !data/published/sp_investment_votes.json
 !data/published/tier_mockup_v2.json
 !data/published/msy_*.json.gz
+!data/published/bsp_shards/
+!data/published/bsp_shards/**/

@@ -5,6 +5,7 @@ active skills, super vigor, NPC DEF tiers.
 """
 from __future__ import annotations
 
+import gc
 import gzip
 import hashlib
 import json
@@ -14,6 +15,7 @@ import re
 import tempfile
 import threading
 import time
+from collections import OrderedDict
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor, as_completed
 from functools import lru_cache
 
@@ -1949,9 +1951,17 @@ _BSP_UI_DEFENDER_TOP = 10
 _BSP_STORE_DEFENDER_TOP = 10
 # Reserve Support-role seats so Supporters-only boards (and damage Supports on any MS) get real /cal.
 _BSP_SUPPORT_ROLE_RESERVE = max(16, min(40, int(os.environ.get('BSP_SUPPORT_ROLE_RESERVE', '28') or '28')))
-_BSP_PUBLISHED_MEMORY = {}  # cache_key -> payload (multi-key; do not clobber v16 with v15)
+_BSP_PUBLISHED_MEMORY = {}  # cache_key -> payload stub (groups omitted — see shards)
 _BSP_PUBLISHED_MEMORY_LOCK = threading.Lock()
-_BSP_PUBLISHED_INDEX = {}  # cache_key -> {uid: group}
+# uid presence map only (True). Full groups live on disk shards + LRU below.
+_BSP_PUBLISHED_INDEX = {}  # cache_key -> {uid: True}
+# Steady-state RAM: avoid holding the ~500MB published catalog. Serve units from
+# gzip shards with a small LRU (Top 10 stays snappy; Railway RSS stays low).
+_BSP_GROUP_LRU_MAX = max(16, min(256, int(os.environ.get('BSP_GROUP_LRU_MAX', '64') or '64')))
+_BSP_GROUP_LRU = OrderedDict()  # (cache_key_tuple, uid) -> group
+_BSP_GROUP_LRU_LOCK = threading.Lock()
+_BSP_SHARD_ENSURE_LOCKS = {}
+_BSP_SHARD_ENSURE_GUARD = threading.Lock()
 SHINN_EX_CHAR_ID = '1330000103'
 _MSY_BUILD_WORKERS = max(1, min(8, int(os.environ.get('MSY_BUILD_WORKERS', '6') or '6')))
 _MSY_USE_PROCESS_BUILD = os.environ.get('MSY_USE_PROCESS_BUILD', '').strip().lower() in ('1', 'true', 'yes')
@@ -2159,7 +2169,7 @@ def _msy_path_write_lock(path):
         return lock
 
 
-def _msy_gzip_json_atomic_write(path, payload):
+def _msy_gzip_json_atomic_write(path, payload, *, compresslevel=9):
     """Write gzip JSON atomically using a unique temp file + per-path lock."""
     dir_name = os.path.dirname(path) or '.'
     os.makedirs(dir_name, exist_ok=True)
@@ -2170,7 +2180,7 @@ def _msy_gzip_json_atomic_write(path, payload):
     )
     os.close(fd)
     try:
-        with gzip.open(tmp, 'wt', encoding='utf-8') as f:
+        with gzip.open(tmp, 'wt', encoding='utf-8', compresslevel=compresslevel) as f:
             json.dump(payload, f, ensure_ascii=False, separators=(',', ':'))
         with _msy_path_write_lock(path):
             _atomic_replace_with_retry(tmp, path)
@@ -4289,6 +4299,19 @@ def save_published_master_cache(cache_key, result, *, build_engine=None):
         payload['bsp_rules_version'] = _BSP_DC_RULES_VERSION
     _msy_gzip_json_atomic_write(path, payload)
     print(f'MSY published cache saved: {len(payload["groups"])} units ({path})')
+    if build_engine == _BSP_DC_BUILD_ENGINE and payload['groups']:
+        try:
+            # Prefer published tree so deploys can ship shards next to the monolith.
+            pub_shards = _bsp_shard_dir_candidates(cache_key)[1]
+            _bsp_write_shards_from_groups(
+                cache_key, payload['groups'],
+                source_path=path,
+                total_pilot_candidates=payload['total_pilot_candidates'],
+                bsp_rules_version=payload.get('bsp_rules_version') or _BSP_DC_RULES_VERSION,
+                shard_dir=pub_shards,
+            )
+        except Exception as e:
+            print(f'BSP shard write after publish failed: {e}')
     return path
 
 
@@ -4674,55 +4697,72 @@ def _bsp_catalog_persist_lock(cache_key):
 
 
 def _persist_bsp_published_group(uid, g):
-    """Write one updated group back into the in-memory + on-disk published BSP catalog."""
+    """Write one updated group into the unit shard (+ optional full catalog on non-Railway)."""
     uid = _app().normalize_id(uid)
     if not uid or not isinstance(g, dict):
         return False
     patched = False
-    with _BSP_PUBLISHED_MEMORY_LOCK:
-        cache_keys = list(_BSP_PUBLISHED_MEMORY.keys())
     overlay_keys = (
         'rankings_defender', 'rankings_no_active_skills', 'skills_off_board_version',
     )
+    with _BSP_PUBLISHED_MEMORY_LOCK:
+        cache_keys = list(_BSP_PUBLISHED_MEMORY.keys())
     for ck_t in cache_keys:
         with _bsp_catalog_persist_lock(ck_t):
             with _BSP_PUBLISHED_MEMORY_LOCK:
                 disk = _BSP_PUBLISHED_MEMORY.get(ck_t)
             if not isinstance(disk, dict):
                 continue
-            groups = list(disk.get('groups') or [])
-            if not groups:
+            idx = _BSP_PUBLISHED_INDEX.get(ck_t) or {}
+            if uid not in idx and not (disk.get('groups') or []):
                 continue
-            changed = False
-            for i, row in enumerate(groups):
-                rid = _app().normalize_id((row.get('unit') or {}).get('id'))
-                if rid != uid:
-                    continue
-                merged = dict(row)
-                for k in overlay_keys:
-                    if k in g:
-                        merged[k] = g[k]
-                groups[i] = merged
-                changed = True
-                break
-            if not changed:
+            shard_dir = disk.get('shard_dir') or ''
+            existing = _bsp_lru_get(ck_t, uid)
+            if existing is None and shard_dir:
+                existing = _bsp_read_unit_shard(shard_dir, uid)
+            if existing is None:
+                for row in disk.get('groups') or []:
+                    rid = _app().normalize_id((row.get('unit') or {}).get('id'))
+                    if rid == uid:
+                        existing = row
+                        break
+            if not isinstance(existing, dict):
                 continue
-            disk = dict(disk)
-            disk['groups'] = groups
-            with _BSP_PUBLISHED_MEMORY_LOCK:
-                _BSP_PUBLISHED_MEMORY[ck_t] = disk
-            _bsp_index_groups(ck_t, groups)
-            try:
-                _save_master_to_disk(ck_t, disk)
-            except Exception as e:
-                print(f'BSP persist disk failed ({uid}): {e}')
-            if _msy_runtime_published_writes_enabled():
+            merged = dict(existing)
+            for k in overlay_keys:
+                if k in g:
+                    merged[k] = g[k]
+            if shard_dir:
                 try:
-                    save_published_master_cache(
-                        ck_t, disk, build_engine=disk.get('build_engine') or _BSP_DC_BUILD_ENGINE,
-                    )
+                    _bsp_write_unit_shard(shard_dir, uid, merged)
                 except Exception as e:
-                    print(f'BSP persist published failed ({uid}): {e}')
+                    print(f'BSP persist shard failed ({uid}): {e}')
+            _bsp_lru_put(ck_t, uid, merged)
+            # Full-catalog rewrite only when builders keep groups in memory (local).
+            groups = list(disk.get('groups') or [])
+            if groups:
+                for i, row in enumerate(groups):
+                    rid = _app().normalize_id((row.get('unit') or {}).get('id'))
+                    if rid != uid:
+                        continue
+                    groups[i] = merged
+                    disk = dict(disk)
+                    disk['groups'] = groups
+                    with _BSP_PUBLISHED_MEMORY_LOCK:
+                        _BSP_PUBLISHED_MEMORY[ck_t] = disk
+                    try:
+                        _save_master_to_disk(ck_t, disk)
+                    except Exception as e:
+                        print(f'BSP persist disk failed ({uid}): {e}')
+                    if _msy_runtime_published_writes_enabled():
+                        try:
+                            save_published_master_cache(
+                                ck_t, disk,
+                                build_engine=disk.get('build_engine') or _BSP_DC_BUILD_ENGINE,
+                            )
+                        except Exception as e:
+                            print(f'BSP persist published failed ({uid}): {e}')
+                    break
             patched = True
     return patched
 
@@ -4761,14 +4801,248 @@ def _bsp_published_cache_key(lc, kwargs):
     )
 
 
-def _bsp_index_groups(cache_key, groups):
+def _bsp_shard_dirname(cache_key):
+    return _msy_cache_basename(cache_key).replace('.json.gz', '')
+
+
+def _bsp_shard_dir_candidates(cache_key):
+    """Published first (shipped with deploy), then persistent (runtime extract)."""
+    name = _bsp_shard_dirname(cache_key)
+    return (
+        os.path.join(_msy_app_root(), 'data', 'published', 'bsp_shards', name),
+        os.path.join(_msy_persistent_dir(), 'bsp_shards', name),
+    )
+
+
+def _bsp_runtime_shard_dir(cache_key):
+    """Writable extract target (Railway volume or local persistent)."""
+    return os.path.join(_msy_persistent_dir(), 'bsp_shards', _bsp_shard_dirname(cache_key))
+
+
+def _bsp_unit_shard_path(shard_dir, uid):
+    return os.path.join(shard_dir, f'{uid}.json.gz')
+
+
+def _bsp_shard_manifest_path(shard_dir):
+    return os.path.join(shard_dir, 'manifest.json')
+
+
+def _bsp_shard_ensure_lock(cache_key):
+    key = tuple(cache_key)
+    with _BSP_SHARD_ENSURE_GUARD:
+        lock = _BSP_SHARD_ENSURE_LOCKS.get(key)
+        if lock is None:
+            lock = threading.Lock()
+            _BSP_SHARD_ENSURE_LOCKS[key] = lock
+        return lock
+
+
+def _bsp_index_unit_ids(cache_key, unit_ids):
+    """Index unit presence only — do not retain full group blobs."""
     idx = {}
+    for uid in unit_ids or []:
+        uid = _app().normalize_id(uid)
+        if uid:
+            idx[uid] = True
+    _BSP_PUBLISHED_INDEX[tuple(cache_key)] = idx
+    return idx
+
+
+def _bsp_index_groups(cache_key, groups):
+    """Back-compat: index uids from group blobs without storing the blobs in the index."""
+    uids = []
     for g in groups or []:
         uid = _app().normalize_id((g.get('unit') or {}).get('id'))
         if uid:
-            idx[uid] = g
-    _BSP_PUBLISHED_INDEX[tuple(cache_key)] = idx
-    return idx
+            uids.append(uid)
+    return _bsp_index_unit_ids(cache_key, uids)
+
+
+def _bsp_lru_get(cache_key, uid):
+    key = (tuple(cache_key), str(uid))
+    with _BSP_GROUP_LRU_LOCK:
+        g = _BSP_GROUP_LRU.get(key)
+        if g is not None:
+            _BSP_GROUP_LRU.move_to_end(key)
+        return g
+
+
+def _bsp_lru_put(cache_key, uid, group):
+    if not isinstance(group, dict):
+        return
+    key = (tuple(cache_key), str(uid))
+    with _BSP_GROUP_LRU_LOCK:
+        _BSP_GROUP_LRU[key] = group
+        _BSP_GROUP_LRU.move_to_end(key)
+        while len(_BSP_GROUP_LRU) > _BSP_GROUP_LRU_MAX:
+            _BSP_GROUP_LRU.popitem(last=False)
+
+
+def _bsp_read_unit_shard(shard_dir, uid):
+    path = _bsp_unit_shard_path(shard_dir, uid)
+    if not os.path.isfile(path):
+        return None
+    try:
+        with gzip.open(path, 'rt', encoding='utf-8') as f:
+            data = json.load(f)
+        return data if isinstance(data, dict) else None
+    except Exception as e:
+        print(f'BSP unit shard read failed ({path}): {e}')
+        return None
+
+
+def _bsp_write_unit_shard(shard_dir, uid, group, *, atomic=True):
+    os.makedirs(shard_dir, exist_ok=True)
+    path = _bsp_unit_shard_path(shard_dir, uid)
+    # compresslevel=1: bulk extract of ~1300 units must finish quickly.
+    if atomic:
+        _msy_gzip_json_atomic_write(path, group, compresslevel=1)
+        return
+    with gzip.open(path, 'wt', encoding='utf-8', compresslevel=1) as f:
+        json.dump(group, f, ensure_ascii=False, separators=(',', ':'))
+
+
+def _bsp_read_shard_manifest(shard_dir):
+    path = _bsp_shard_manifest_path(shard_dir)
+    if not os.path.isfile(path):
+        return None
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except Exception:
+        return None
+
+
+def _bsp_find_ready_shard_dir(cache_key, source_path, min_rules):
+    for shard_dir in _bsp_shard_dir_candidates(cache_key):
+        manifest = _bsp_read_shard_manifest(shard_dir)
+        if not isinstance(manifest, dict):
+            continue
+        if tuple(manifest.get('cache_key') or ()) != tuple(cache_key):
+            continue
+        if manifest.get('build_engine') != _BSP_DC_BUILD_ENGINE:
+            continue
+        if int(manifest.get('bsp_rules_version') or 1) < int(min_rules):
+            continue
+        try:
+            st = os.stat(source_path)
+        except OSError:
+            continue
+        if int(manifest.get('source_mtime_ns') or 0) != int(getattr(st, 'st_mtime_ns', int(st.st_mtime * 1e9))):
+            continue
+        if int(manifest.get('source_size') or 0) != int(st.st_size):
+            continue
+        uids = manifest.get('unit_ids') or []
+        if len(uids) < 100:
+            continue
+        ok = True
+        for uid in uids[:5]:
+            if not os.path.isfile(_bsp_unit_shard_path(shard_dir, uid)):
+                ok = False
+                break
+        if ok:
+            return shard_dir, manifest
+    return None, None
+
+
+def _bsp_write_shards_from_groups(cache_key, groups, *, source_path, total_pilot_candidates,
+                                  bsp_rules_version, shard_dir=None):
+    """Materialize per-unit gzip shards so runtime can drop the full catalog from RAM."""
+    if shard_dir is None:
+        shard_dir = _bsp_runtime_shard_dir(cache_key)
+    os.makedirs(shard_dir, exist_ok=True)
+    unit_ids = []
+    A = _app()
+    rows = []
+    for g in groups or []:
+        uid = A.normalize_id((g.get('unit') or {}).get('id'))
+        if not uid:
+            continue
+        rows.append((uid, g))
+        unit_ids.append(uid)
+
+    def _write_one(item):
+        uid, g = item
+        _bsp_write_unit_shard(shard_dir, uid, g, atomic=False)
+        return uid
+
+    workers = max(2, min(8, (os.cpu_count() or 4)))
+    if len(rows) <= 8:
+        for item in rows:
+            _write_one(item)
+    else:
+        with ThreadPoolExecutor(max_workers=workers) as ex:
+            list(ex.map(_write_one, rows))
+    try:
+        st = os.stat(source_path)
+        mtime_ns = int(getattr(st, 'st_mtime_ns', int(st.st_mtime * 1e9)))
+        size = int(st.st_size)
+    except OSError:
+        mtime_ns, size = 0, 0
+    manifest = {
+        'cache_key': list(cache_key),
+        'build_engine': _BSP_DC_BUILD_ENGINE,
+        'bsp_rules_version': int(bsp_rules_version or _BSP_DC_RULES_VERSION),
+        'total_pilot_candidates': int(total_pilot_candidates or 0),
+        'unit_ids': unit_ids,
+        'unit_count': len(unit_ids),
+        'source_mtime_ns': mtime_ns,
+        'source_size': size,
+        'source_basename': os.path.basename(source_path),
+    }
+    man_path = _bsp_shard_manifest_path(shard_dir)
+    tmp = man_path + f'.{os.getpid()}.tmp'
+    try:
+        with open(tmp, 'w', encoding='utf-8') as f:
+            json.dump(manifest, f, ensure_ascii=False, separators=(',', ':'))
+        _atomic_replace_with_retry(tmp, man_path)
+    finally:
+        try:
+            if os.path.isfile(tmp):
+                os.remove(tmp)
+        except OSError:
+            pass
+    print(f'BSP shards ready: {len(unit_ids)} units ({shard_dir})')
+    return shard_dir, manifest
+
+
+def _bsp_memory_stub_from_shards(cache_key, shard_dir, manifest):
+    uids = list(manifest.get('unit_ids') or [])
+    _bsp_index_unit_ids(cache_key, uids)
+    return {
+        'groups': [],  # intentionally empty — units served from shards + LRU
+        'unit_ids': uids,
+        'unit_count': int(manifest.get('unit_count') or len(uids)),
+        'total_pilot_candidates': int(manifest.get('total_pilot_candidates') or 0),
+        'bsp_rules_version': int(manifest.get('bsp_rules_version') or 1),
+        'cache_key': tuple(manifest.get('cache_key') or cache_key),
+        'shard_dir': shard_dir,
+        'sharded': True,
+        'build_engine': _BSP_DC_BUILD_ENGINE,
+    }
+
+
+def _bsp_published_unit_count(disk):
+    if not disk:
+        return 0
+    n = int(disk.get('unit_count') or 0)
+    if n:
+        return n
+    uids = disk.get('unit_ids') or []
+    if uids:
+        return len(uids)
+    return len(disk.get('groups') or [])
+
+
+def _bsp_load_group_from_shards(cache_key, uid, shard_dir):
+    uid = _app().normalize_id(uid)
+    hit = _bsp_lru_get(cache_key, uid)
+    if hit is not None:
+        return hit
+    g = _bsp_read_unit_shard(shard_dir, uid)
+    if g is not None:
+        _bsp_lru_put(cache_key, uid, g)
+    return g
 
 
 _CORRUPT_BSP_CACHE_PATHS = set()
@@ -4793,18 +5067,26 @@ def _quarantine_corrupt_bsp_cache(path):
         print(f'BSP cache quarantine failed ({path}): {e}')
 
 
-def _load_bsp_published_cache(cache_key, *, use_memory=True, min_rules=None):
-    """Published BSP rankings built from live /cal (reject legacy python-lite caches)."""
+def _load_bsp_published_cache(cache_key, *, use_memory=True, min_rules=None, keep_groups=False):
+    """Published BSP rankings built from live /cal (reject legacy python-lite caches).
+
+    Default (keep_groups=False): ensure per-unit shards, keep only a metadata stub +
+    small group LRU in RAM. Build scripts pass keep_groups=True for full catalog edits.
+    """
     global _BSP_PUBLISHED_MEMORY
     if min_rules is None:
         # Serve any real /cal catalog (v15 rules=2+) while a newer rebuild is incomplete.
         # Never serve python-lite (those lack build_engine=calculateDamage).
         min_rules = 2
     ck_t = tuple(cache_key)
-    if use_memory:
+    if use_memory and not keep_groups:
         with _BSP_PUBLISHED_MEMORY_LOCK:
             hit = _BSP_PUBLISHED_MEMORY.get(ck_t)
-            if hit is not None:
+            if hit is not None and hit.get('sharded'):
+                return hit
+            # Rare: a keep_groups load left a full catalog in memory — still serve it,
+            # but prefer not to accumulate; callers should use shards.
+            if hit is not None and hit.get('groups'):
                 return hit
     for label, path in (
         ('persistent', _msy_disk_path(cache_key)),
@@ -4816,34 +5098,73 @@ def _load_bsp_published_cache(cache_key, *, use_memory=True, min_rules=None):
             if path in _CORRUPT_BSP_CACHE_PATHS:
                 continue
         try:
-            with gzip.open(path, 'rt', encoding='utf-8') as f:
-                data = json.load(f)
-            if data.get('build_engine') != _BSP_DC_BUILD_ENGINE:
-                continue
-            if int(data.get('bsp_rules_version') or 1) < int(min_rules):
-                continue
-            # Accept only the requested catalog key (latest tag).
-            file_key = tuple(data.get('cache_key') or ())
-            if file_key and file_key != tuple(cache_key):
-                continue
-            groups = data.get('groups')
-            if not groups:
-                continue
-            print(f'BSP {label} DC cache hit: {len(groups)} units ({path})')
-            out = {
-                'groups': groups,
-                'total_pilot_candidates': int(data.get('total_pilot_candidates') or 0),
-                'bsp_rules_version': int(data.get('bsp_rules_version') or 1),
-                'cache_key': file_key or tuple(cache_key),
-            }
-            _bsp_index_groups(out['cache_key'], groups)
-            if use_memory:
-                with _BSP_PUBLISHED_MEMORY_LOCK:
-                    _BSP_PUBLISHED_MEMORY[ck_t] = out
-                    # Also index under the file's own key so lookups stay consistent.
-                    if out['cache_key'] != ck_t:
-                        _BSP_PUBLISHED_MEMORY[out['cache_key']] = out
-            return out
+            with _bsp_shard_ensure_lock(ck_t):
+                if not keep_groups:
+                    shard_dir, manifest = _bsp_find_ready_shard_dir(ck_t, path, min_rules)
+                    if shard_dir and manifest:
+                        out = _bsp_memory_stub_from_shards(ck_t, shard_dir, manifest)
+                        if use_memory:
+                            with _BSP_PUBLISHED_MEMORY_LOCK:
+                                _BSP_PUBLISHED_MEMORY[ck_t] = out
+                                if out['cache_key'] != ck_t:
+                                    _BSP_PUBLISHED_MEMORY[out['cache_key']] = out
+                        print(
+                            f'BSP {label} sharded cache: {out["unit_count"]} units '
+                            f'({shard_dir})'
+                        )
+                        return out
+
+                with gzip.open(path, 'rt', encoding='utf-8') as f:
+                    data = json.load(f)
+                if data.get('build_engine') != _BSP_DC_BUILD_ENGINE:
+                    continue
+                if int(data.get('bsp_rules_version') or 1) < int(min_rules):
+                    continue
+                file_key = tuple(data.get('cache_key') or ())
+                if file_key and file_key != tuple(cache_key):
+                    continue
+                groups = data.get('groups')
+                if not groups:
+                    continue
+                print(f'BSP {label} DC cache hit: {len(groups)} units ({path})')
+                rules_v = int(data.get('bsp_rules_version') or 1)
+                total_pc = int(data.get('total_pilot_candidates') or 0)
+                file_ck = file_key or tuple(cache_key)
+
+                if keep_groups:
+                    out = {
+                        'groups': groups,
+                        'total_pilot_candidates': total_pc,
+                        'bsp_rules_version': rules_v,
+                        'cache_key': file_ck,
+                        'unit_count': len(groups),
+                        'sharded': False,
+                    }
+                    _bsp_index_groups(out['cache_key'], groups)
+                    if use_memory:
+                        with _BSP_PUBLISHED_MEMORY_LOCK:
+                            _BSP_PUBLISHED_MEMORY[ck_t] = out
+                            if out['cache_key'] != ck_t:
+                                _BSP_PUBLISHED_MEMORY[out['cache_key']] = out
+                    return out
+
+                shard_dir, manifest = _bsp_write_shards_from_groups(
+                    file_ck, groups,
+                    source_path=path,
+                    total_pilot_candidates=total_pc,
+                    bsp_rules_version=rules_v,
+                )
+                # Drop monolith from RAM before returning.
+                del groups
+                del data
+                gc.collect()
+                out = _bsp_memory_stub_from_shards(file_ck, shard_dir, manifest)
+                if use_memory:
+                    with _BSP_PUBLISHED_MEMORY_LOCK:
+                        _BSP_PUBLISHED_MEMORY[ck_t] = out
+                        if out['cache_key'] != ck_t:
+                            _BSP_PUBLISHED_MEMORY[out['cache_key']] = out
+                return out
         except Exception as e:
             print(f'BSP published cache load failed ({path}): {e}')
             err = str(e).lower()
@@ -4925,7 +5246,7 @@ def _bsp_group_variant_quality(g):
 def _lookup_bsp_published_group(uid, lc, kwargs):
     """O(1) unit lookup from the latest published BSP catalog only.
 
-    Older tag fallbacks are intentionally not loaded (memory). Published files are
+    Older tag fallbacks are intentionally not retained in RAM. Published files are
     EN-only; other langs use the EN catalog and re-localize names in
     `_bsp_pilots_response`.
     """
@@ -4938,23 +5259,35 @@ def _lookup_bsp_published_group(uid, lc, kwargs):
         en_kwargs['lc'] = 'EN'
         keys.append(_bsp_published_cache_key('EN', en_kwargs))
 
-    def _group_from(cache_key):
-        disk = _load_bsp_published_cache(cache_key, use_memory=True)
+    def _group_from(cache_key, *, retain=True):
+        disk = _load_bsp_published_cache(
+            cache_key, use_memory=retain, keep_groups=False,
+        )
         if not disk:
             return None, None
         ck = tuple(disk.get('cache_key') or cache_key)
         idx = _BSP_PUBLISHED_INDEX.get(ck)
         if idx is None:
-            idx = _bsp_index_groups(ck, disk.get('groups') or [])
-        return idx.get(uid), disk
+            idx = _bsp_index_unit_ids(ck, disk.get('unit_ids') or [])
+            if not idx and disk.get('groups'):
+                idx = _bsp_index_groups(ck, disk.get('groups') or [])
+        if uid not in idx:
+            return None, disk
+        if disk.get('sharded') and disk.get('shard_dir'):
+            return _bsp_load_group_from_shards(ck, uid, disk['shard_dir']), disk
+        for g in disk.get('groups') or []:
+            if _app().normalize_id((g.get('unit') or {}).get('id')) == uid:
+                return g, disk
+        return None, disk
 
     # Fast path: current published tag already has the unit — never scan legacy catalogs.
     for cache_key in keys:
-        g, disk = _group_from(cache_key)
+        g, disk = _group_from(cache_key, retain=True)
         if g:
             return g
 
     # Fallback: older tags (v19…) only when the unit is missing from the current catalog.
+    # Do not retain legacy catalogs in _BSP_PUBLISHED_MEMORY (memory spike).
     best = None
     best_score = -1
     for tag in _BSP_LEGACY_PUBLISHED_TAGS:
@@ -4968,12 +5301,12 @@ def _lookup_bsp_published_group(uid, lc, kwargs):
             None,
             None,
         )
-        g, disk = _group_from(cache_key)
+        g, disk = _group_from(cache_key, retain=True)
         if not g or not disk:
             continue
         score = (
             _bsp_group_variant_quality(g) * 1000
-            + min(len(disk.get('groups') or []), 2000)
+            + min(_bsp_published_unit_count(disk), 2000)
             + int(disk.get('bsp_rules_version') or 0) * 10
         )
         if score > best_score:
@@ -6353,6 +6686,17 @@ def _bsp_cached_unit_ids_from_groups(groups):
         if uid:
             out.add(uid)
     return out
+
+
+def _bsp_cached_unit_ids_from_disk(disk):
+    """Unit ids from a sharded stub or a full keep_groups payload."""
+    if not disk:
+        return set()
+    uids = disk.get('unit_ids') or []
+    if uids:
+        A = _app()
+        return {A.normalize_id(u) for u in uids if A.normalize_id(u)}
+    return _bsp_cached_unit_ids_from_groups(disk.get('groups') or [])
 
 
 def _bsp_incremental_rebuild_unit_ids(lc='EN', *, existing_groups=None, top_n=None):
@@ -7852,7 +8196,10 @@ def prewarm_default_rankings():
     bsp_key = _bsp_published_cache_key(lc, kwargs)
     bsp_disk = _load_bsp_published_cache(bsp_key)
     if bsp_disk:
-        print(f'BSP prewarm: loaded {len(bsp_disk.get("groups") or [])} units from v15 DC cache')
+        print(
+            f'BSP prewarm: loaded {_bsp_published_unit_count(bsp_disk)} units '
+            f'({"sharded" if bsp_disk.get("sharded") else "full"})'
+        )
     else:
         print('BSP prewarm: no v15 DC cache — run scripts/build_msy_rankings_dc.py')
 

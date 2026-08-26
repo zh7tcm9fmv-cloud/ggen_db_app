@@ -66,14 +66,7 @@ async def setup_page(page, base):
 
 def load_published_group(uid, lang='EN'):
     cache_key = msy._bsp_published_cache_key(lang, {'lb_tier': 3, 'top_pilots': 20})
-    disk = msy._load_bsp_published_cache(cache_key)
-    if not disk:
-        return None
-    uid = msy._app().normalize_id(uid)
-    for g in disk.get('groups') or []:
-        if msy._app().normalize_id((g.get('unit') or {}).get('id')) == uid:
-            return g
-    return None
+    return msy._lookup_bsp_published_group(uid, lang, {'lb_tier': 3, 'top_pilots': 20})
 
 
 def pilots_from_group(g, top_n=15):

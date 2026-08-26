@@ -17,7 +17,7 @@ def selected_unit_ids():
     A = msy._app()
     ck = msy._bsp_published_cache_key('EN', {'lb_tier': 3, 'top_pilots': 20})
     disk = msy._load_bsp_published_cache(ck) or {}
-    cached = msy._bsp_cached_unit_ids_from_groups(disk.get('groups') or [])
+    cached = msy._bsp_cached_unit_ids_from_disk(disk)
     rankable = [A.normalize_id(u) for u in msy._msy_rankable_unit_ids('EN')]
     new_ids = [u for u in rankable if u not in cached]
     ur_ids = []

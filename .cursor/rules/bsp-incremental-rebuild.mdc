@@ -37,3 +37,8 @@ Published BSP No UR / No Shinn / same-role lists must come from live `/cal` (`ca
   python scripts/build_msy_rankings_dc.py --force --loop --checkpoint 25
   ```
 - Do **not** pass `--incremental` for those.
+- After any published BSP catalog write, refresh deploy shards (keeps Railway RSS low):
+  ```text
+  python scripts/build_bsp_shards.py
+  ```
+  Commit `data/published/bsp_shards/` with the new `msy__v*_….json.gz` so production boots from shards instead of loading the ~500MB monolith into RAM.

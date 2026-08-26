@@ -233,7 +233,7 @@ def _load_existing_v15(lang, top_pilots, *, for_build=False, allow_stale_rules=F
             label = 'any rules' if allow_stale_rules else f'rules>={min_rules}'
             print(f'Build resume: {len(groups)} units ({label})')
         return cache_key, groups
-    disk = msy._load_bsp_published_cache(cache_key)
+    disk = msy._load_bsp_published_cache(cache_key, keep_groups=True)
     if disk and disk.get('groups'):
         return cache_key, list(disk['groups'])
     return cache_key, []

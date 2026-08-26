@@ -11272,9 +11272,11 @@ def _preload_bsp_published_cache_bg():
         import meta_synergy_rank as _msr_boot
         _ck_boot = _msr_boot._bsp_published_cache_key('EN', {'lb_tier': 3, 'top_pilots': 10})
         _disk = _msr_boot._load_bsp_published_cache(_ck_boot, use_memory=True)
-        if _disk and len(_disk.get('groups') or []) >= 1000:
+        _n = _msr_boot._bsp_published_unit_count(_disk) if _disk else 0
+        if _disk and _n >= 1000:
             _tag = (_ck_boot[0] if _ck_boot else '?')
-            print(f'BSP published cache preloaded: {len(_disk["groups"])} units ({_tag})')
+            _mode = 'sharded' if _disk.get('sharded') else 'full'
+            print(f'BSP published cache preloaded: {_n} units ({_tag}, {_mode})')
         else:
             print('BSP published cache preload: latest catalog missing or incomplete')
     except Exception as _bsp_boot_e:
@@ -15480,6 +15482,23 @@ def health_check():
         mem['msy_char_pair_cache'] = len(getattr(_msr_h, '_char_pair_cache', {}) or {})
         mem['msy_unit_weapon_cache'] = len(getattr(_msr_h, '_unit_weapon_cache', {}) or {})
         mem['bsp_published_memory_keys'] = len(getattr(_msr_h, '_BSP_PUBLISHED_MEMORY', {}) or {})
+        mem['bsp_group_lru'] = len(getattr(_msr_h, '_BSP_GROUP_LRU', {}) or {})
+        mem['bsp_group_lru_max'] = int(getattr(_msr_h, '_BSP_GROUP_LRU_MAX', 0) or 0)
+        _bsp_stub = None
+        try:
+            _lock = getattr(_msr_h, '_BSP_PUBLISHED_MEMORY_LOCK', None)
+            _mem = getattr(_msr_h, '_BSP_PUBLISHED_MEMORY', {}) or {}
+            if _lock is not None:
+                with _lock:
+                    _vals = list(_mem.values())
+            else:
+                _vals = list(_mem.values())
+            _bsp_stub = _vals[0] if _vals else None
+        except Exception:
+            _bsp_stub = None
+        if _bsp_stub:
+            mem['bsp_sharded'] = bool(_bsp_stub.get('sharded'))
+            mem['bsp_unit_count'] = int(_bsp_stub.get('unit_count') or 0)
     except Exception:
         pass
     mem['api_cache_keys'] = len(_api_cache)
