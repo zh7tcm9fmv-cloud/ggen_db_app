@@ -6456,63 +6456,38 @@ def merge_trait_condition_raw_maps(*maps):
                         out[sid][k].append(v)
     return out
 
-def _trait_condition_row_field_categories(item):
-    """Coarse field buckets for a single m_trait_condition row (tag / series / role / id)."""
-    ut, gt, ser, ct, tp, cser = trait_condition_item_field_vectors(item)
-    cats = set()
-    if ut or gt or ct:
-        cats.add('tag')
-    if ser or cser:
-        cats.add('series')
-    if tp:
-        cats.add('role')
-    if not isinstance(item, dict):
-        return cats
-    for key in ('UnitIds', 'unitIds', 'CharacterIds', 'characterIds'):
-        val = str(item.get(key) or '')
-        if val and val != '0':
-            cats.add('id')
-            break
-    return cats
+def _supporter_lb3_is_44pct_dual_tag(supporter_id, sort_order):
+    """True when this SortOrder skill at LB3 is a dual-tag 44% combo (e.g. Atra Alaya+IBO).
 
-
-def supporter_leader_skill_tag_separator(tcid, tags, sort_order=1, sibling_count=1):
-    """UI joiner between flattened leader-skill condition tags — locale-independent.
-
-    Replaces brittle EN '%'-string heuristics (``44%`` → and, ``36%`` → or) that flipped
-    Atra (1430000550) combo skills to ``or`` below LB3.
-
-    Rules (catalog-wide):
-    - <2 tags → default (no joiner)
-    - Single m_trait_condition row with multiple fields → ``and`` (+)
-    - Multi-row, same field category (e.g. two UnitSeries) → ``or``
-    - Multi-row, cross-field (series + tag):
-      - Paired with another skill at the same LB tier (combo / SortOrder≥2) → ``and``
-      - Sole skill at that tier (Neo Zeon-style) → ``or``
+    Used so lower LB tiers keep ``and`` (+) instead of flipping to ``or`` when the % text drops.
     """
-    if not tags or len(tags) < 2:
-        return 'default'
-    cond_id = normalize_id(tcid)
-    rows = trait_condition_rows_by_set_id.get(cond_id) if trait_condition_rows_by_set_id else None
-    if not rows:
-        # Flattened raw map only — multiple tag sources imply AND within one logical row.
+    sid = normalize_id(supporter_id)
+    ld = LANG_DATA.get('EN') or {}
+    want_sort = int(sort_order or 0)
+    for l in supporter_leader_map.get(sid, []):
+        if l.get('tier') != 3 or int(l.get('sort') or 0) != want_sort:
+            continue
+        desc = ld.get('supporter_leader_text_map', {}).get(l.get('desc_lang_id', ''), '')
+        if '44%' not in desc:
+            return False
+        tags = resolve_condition_tags(
+            l.get('trait_cond_id', '0'), trait_condition_raw_map,
+            ld.get('lineage_lookup', {}), ld.get('series_name_map', {}), 'EN',
+        )
+        return len(tags) >= 2
+    return False
+
+
+def supporter_leader_skill_tag_separator(supporter_id, skill_row, tags, desc):
+    """UI joiner between leader-skill condition tags.
+
+    Keeps the original EN %-heuristic (``44%`` → and, ``36%`` / multi-tag → or).
+    Only exception: dual-tag 44% combo skills stay ``and`` at every LB tier.
+    """
+    if _supporter_lb3_is_44pct_dual_tag(supporter_id, (skill_row or {}).get('sort')) and len(tags or []) >= 2:
         return 'and'
-    if len(rows) <= 1:
-        return 'and'
-    cat_sets = [_trait_condition_row_field_categories(r) for r in rows]
-    all_cats = set()
-    for c in cat_sets:
-        all_cats |= c
-    cross_field = len(all_cats) >= 2 and any(
-        cat_sets[i] != cat_sets[j]
-        for i in range(len(cat_sets))
-        for j in range(i + 1, len(cat_sets))
-    )
-    if not cross_field:
-        return 'or'
-    if int(sibling_count or 0) >= 2 or int(sort_order or 0) >= 2:
-        return 'and'
-    return 'or'
+    d = desc or ''
+    return 'and' if '44%' in d else ('or' if '36%' in d or len(tags or []) >= 2 else 'default')
 
 
 def resolve_condition_tags(cond_id, trait_condition_raw_map, lineage_lookup, series_name_map, lang_code='EN'):
@@ -22805,7 +22780,7 @@ def list_supporters():
         else:
             uf = f"u{for_unit}" if for_unit else 'u0'
             cf = f"c{for_char}" if for_char else 'c0'
-        ck = f"sl11_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lineage_ck}_lc{lineage_combine_supp}_{lr_schedule_cache_key_fragment()}_{uf}_{cf}"
+        ck = f"sl12_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lineage_ck}_lc{lineage_combine_supp}_{lr_schedule_cache_key_fragment()}_{uf}_{cf}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
@@ -22822,16 +22797,12 @@ def list_supporters():
                 if not id_seek and not supporter_matches_lineage_filter(sid, lineage_filter, ld, lc, lineage_combine_supp):
                     continue
             lsr = supporter_leader_map.get(sid, []); all_tags = []; descs = []; std = []
-            tier3 = [ls for ls in lsr if ls.get('tier') == 3]
-            sibling_count = len(tier3)
-            for ls in tier3:
+            for ls in lsr:
+                if ls.get('tier') != 3: continue
                 desc = ld.get('supporter_leader_text_map', {}).get(ls.get('desc_lang_id', ''), '')
                 tags = resolve_condition_tags(ls.get('trait_cond_id', '0'), trait_condition_raw_map, ld.get('lineage_lookup', {}), ld.get('series_name_map', {}), lc)
                 if desc: descs.append(desc)
-                sep = supporter_leader_skill_tag_separator(
-                    ls.get('trait_cond_id', '0'), tags,
-                    sort_order=ls.get('sort', 1), sibling_count=sibling_count,
-                )
+                sep = supporter_leader_skill_tag_separator(sid, ls, tags, desc)
                 if tags: std.append({'tags': tags, 'separator': sep})
                 for t in tags:
                     if not any(x['name'] == t['name'] for x in all_tags): all_tags.append(t)
@@ -25632,7 +25603,7 @@ def get_supporter(supporter_id):
         # supporter-addon #1 level cap by rarity
         max_level = supporter_max_level_for_rarity(ri)
         level = min(max_level, max(1, int(request.args.get('level', max_level))))
-        ck = f"s5_{supporter_id}_{lc}_{level}_{lb_tier}_{for_uid_key}_{for_cid_key}_{lr_schedule_cache_key_fragment()}"
+        ck = f"s6_{supporter_id}_{lc}_{level}_{lb_tier}_{for_uid_key}_{for_cid_key}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -25644,9 +25615,8 @@ def get_supporter(supporter_id):
         hps = max(0, math.floor(base_hp * rate / 10000))
         atks = max(0, math.floor(base_atk * rate / 10000))
         ls = []
-        tier_rows = [l for l in supporter_leader_map.get(supporter_id, []) if l.get('tier') == lb_tier]
-        sibling_count = len(tier_rows)
-        for l in tier_rows:
+        for l in supporter_leader_map.get(supporter_id, []):
+            if l.get('tier') != lb_tier: continue
             desc = ld.get('supporter_leader_text_map', {}).get(l.get('desc_lang_id', ''), '')
             tcid = normalize_id(l.get('trait_cond_id', '0'))
             raw_c = trait_condition_raw_map.get(str(tcid), {})
@@ -25656,9 +25626,7 @@ def get_supporter(supporter_id):
             else:
                 applies = True
             tags = resolve_condition_tags(tcid, trait_condition_raw_map, ld.get('lineage_lookup', {}), ld.get('series_name_map', {}), lc)
-            sep = supporter_leader_skill_tag_separator(
-                tcid, tags, sort_order=l.get('sort', 1), sibling_count=sibling_count,
-            )
+            sep = supporter_leader_skill_tag_separator(supporter_id, l, tags, desc)
             ls.append({'desc': desc, 'tags': tags, 'separator': sep, 'trait_cond_id': tcid, 'applies': applies, 'same_group': same_group})
         if for_uid_q and for_uid_key != '0':
             _resolve_supporter_leader_skill_applies(ls)
