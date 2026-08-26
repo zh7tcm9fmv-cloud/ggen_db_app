@@ -15,7 +15,9 @@
   --motion-dur-quick:120ms;
   --motion-dur-standard:220ms;
   --motion-dur-modal:320ms;
-  --motion-interactive:border-color var(--motion-dur-quick) var(--motion-ease-standard),color var(--motion-dur-quick) var(--motion-ease-standard),background var(--motion-dur-quick) var(--motion-ease-standard),box-shadow var(--motion-dur-quick) var(--motion-ease-standard),transform var(--motion-dur-quick) var(--motion-ease-standard),opacity var(--motion-dur-quick) var(--motion-ease-standard);
+  --motion-interactive:border-color var(--motion-dur-quick) var(--motion-ease-standard),color var(--motion-dur-quick) var(--motion-ease-standard),background var(--motion-dur-quick) var(--motion-ease-standard),background-color var(--motion-dur-quick) var(--motion-ease-standard),box-shadow var(--motion-dur-quick) var(--motion-ease-standard),transform var(--motion-dur-quick) var(--motion-ease-standard),opacity var(--motion-dur-quick) var(--motion-ease-standard),filter var(--motion-dur-quick) var(--motion-ease-standard);
+  /* Alias legacy token — never transition:all (paint-cost / surprise props) */
+  --transition:var(--motion-interactive);
 }
 
 /* —— What's New / feedback / AlipayHK overlays (Corporate entrance) —— */
@@ -131,10 +133,7 @@
   position:relative;
   z-index:1;
 }
-/* Soften the old scale pulse so rings carry the motion */
-.has-ui-notice .ui-notice-flare-img{
-  animation:ui-notice-flare-pulse-soft 2.4s ease-in-out infinite;
-}
+/* Rings carry the notice motion; image stays static (no scale loop) */
 @keyframes ui-notice-pulse-ring{
   0%{transform:scale(1);opacity:.55}
   100%{transform:scale(2.2);opacity:0}
@@ -282,8 +281,12 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
   .has-ui-notice .ui-notice-flare::before,
   .has-ui-notice .ui-notice-flare::after,
   .has-ui-notice>.ui-notice-flare::before,
-  .has-ui-notice>.ui-notice-flare::after,
-  .has-ui-notice .ui-notice-flare-img{
+  .has-ui-notice>.ui-notice-flare::after{
+    animation:none!important;
+  }
+  .ranking-dash-card.tier-1,
+  .ranking-dash-card.tier-2,
+  .ranking-dash-card.tier-3{
     animation:none!important;
   }
   input[type=range].ui-range::-webkit-slider-thumb,

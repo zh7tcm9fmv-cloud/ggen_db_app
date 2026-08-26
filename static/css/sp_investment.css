@@ -1082,7 +1082,10 @@ html.spi-modal-open body.spi-page {
 @media (prefers-reduced-motion: reduce) {
   .spi-chip.letter.letter-S-plus,
   .spi-chip.letter.letter-A-plus,
-  .spi-chip.letter.letter-B-plus {
+  .spi-chip.letter.letter-B-plus,
+  .spi-letter-chip.letter-S-plus,
+  .spi-letter-chip.letter-A-plus,
+  .spi-letter-chip.letter-B-plus {
     animation: none;
   }
   .spi-card:hover,
