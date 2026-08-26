@@ -15550,6 +15550,32 @@ def e_simulator_page():
     return _serve_index()
 
 
+@app.route('/gtower')
+@app.route('/gt')
+def stages_gtower_page():
+    return _serve_index()
+
+
+@app.route('/challenge')
+@app.route('/challenges')
+@app.route('/ch')
+def stages_challenge_page():
+    return _serve_index()
+
+
+@app.route('/go')
+@app.route('/score')
+@app.route('/score-attack')
+@app.route('/grand-offensive')
+def stages_grand_offensive_page():
+    return _serve_index()
+
+
+@app.route('/special')
+def stages_special_page():
+    return _serve_index()
+
+
 @app.route('/about')
 def about_page():
     r = make_response(render_template('about.html', image_cdn=IMAGE_CDN or '', game_images_use_cdn=GAME_IMAGES_USE_CDN))
@@ -26974,6 +27000,8 @@ def get_unit(unit_id):
 # Client history short-paths (must stay in sync with parseBrowseShortPath in static/js/app.js).
 _SPA_TAB_PATHS = frozenset({
     'c', 'u', 's', 'new', 'tl', 'banners', 'st', 'esim', 'ml', 'cal', 'tb', 'op', 'pt', 'rk', 'msy', 'ip',
+    # Stage category deep-links (Stages tab sources)
+    'gtower', 'gt', 'challenge', 'challenges', 'ch', 'go', 'score', 'score-attack', 'grand-offensive', 'special',
 })
 _SPA_DETAIL_PREFIXES = frozenset({'u', 'c', 's', 'op', 'pt', 'es'})
 # Alternate public URLs that should never be self-canonical (301 elsewhere or map here).
@@ -26987,6 +27015,12 @@ _SPA_CANONICAL_ALIASES = {
     '/ip': '/ip',
     '/ig': '/ip',
     '/msy': '/u',
+    '/gt': '/gtower',
+    '/ch': '/challenge',
+    '/challenges': '/challenge',
+    '/score': '/go',
+    '/score-attack': '/go',
+    '/grand-offensive': '/go',
 }
 
 
@@ -27074,7 +27108,8 @@ def sitemap_xml():
         # Canonical public URLs only (aliases like /sp-list and /banners 301 elsewhere).
         paths = [
             '/', '/ip', '/game-news', '/about', '/contact', '/privacy-policy',
-            '/c', '/u', '/s', '/st', '/cal', '/tb', '/tl', '/ml', '/rk', '/op', '/new', '/esim',
+            '/c', '/u', '/s', '/st', '/gtower', '/challenge', '/go', '/special',
+            '/cal', '/tb', '/tl', '/ml', '/rk', '/op', '/new', '/esim',
         ]
         today = date.today().isoformat()
         urls = ''.join(

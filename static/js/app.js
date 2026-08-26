@@ -1032,7 +1032,7 @@ function onRarityLtCheckboxChange(which,ev){onRarityFilterChange(which)}
 function onRarityLtRowClick(which,ev){if(ev){ev.preventDefault();ev.stopPropagation()}const p=rarityPrefix(which);const keys=rarityKeysFor(which);const boxes=keys.map(k=>document.getElementById(p+'Rarity'+k));const ltEl=document.getElementById(p+'RarityLT');keys.forEach((k,i)=>{if(boxes[i])boxes[i].checked=false});if(ltEl)ltEl.checked=true;onRarityFilterChange(which)}
 function onRarityLtRowKey(ev,which){if(ev.key!=='Enter'&&ev.key!==' ')return;ev.preventDefault();onRarityLtRowClick(which,ev)}
 function onRarityFilterChange(which){updateRarityFilterButtonLabel(which);if(which==='char'){const se=document.getElementById('charSkillFilterSearch'),grid=document.getElementById('charSkillGrid');if(se&&grid&&grid.dataset.populated)filterSkillDropdown('char',se.value||'');scheduleBrowseListReload('characters')}else if(which==='rankChar'){const se=document.getElementById('rankCharSkillFilterSearch'),grid=document.getElementById('rankCharSkillGrid');if(se&&grid&&grid.dataset.populated)filterSkillDropdown('rankChar',se.value||'');scheduleRankingListReload()}else if(which==='unit'){const se=document.getElementById('unitSkillFilterSearch'),grid=document.getElementById('unitSkillGrid');if(se&&grid&&grid.dataset.populated)filterSkillDropdown('unit',se.value||'');scheduleBrowseListReload('units')}else if(which==='rankUnit'){const se=document.getElementById('rankUnitSkillFilterSearch'),grid=document.getElementById('rankUnitSkillGrid');if(se&&grid&&grid.dataset.populated)filterSkillDropdown('rankUnit',se.value||'');scheduleRankingListReload()}else if(which==='msyUnit'){msyBrowseFilterApplied();if(window.GgenMetaSynergy&&typeof GgenMetaSynergy.scheduleReload==='function')GgenMetaSynergy.scheduleReload()}else scheduleBrowseListReload('supporters')}
-function switchTab(tab,opts){opts=opts||{};if(tab==='meta_synergy'){tab='units';}const _prevTab=S.currentTab;if(_prevTab==='meta_synergy'&&tab!=='meta_synergy'&&window.GgenMetaSynergy&&typeof GgenMetaSynergy.onTabHidden==='function')GgenMetaSynergy.onTabHidden();if(!opts.fromPopstate&&!opts.skipHistory){const _dm=document.getElementById('detailModal');if(_dm&&_dm.classList.contains('active'))closeModalDomOnly()}S.currentTab=tab;document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));document.querySelectorAll('.tab-panel').forEach(x=>x.classList.toggle('active',x.id===`panel-${tab}`));bindSearchRecallObserver();if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active')){const inp=document.getElementById('searchSpotlightInput'),real=getActiveSearchInput();if(inp&&real){inp.value=real.value;if(real.classList.contains('filter-input--organic'))syncBrowseSearchWidth(real.id)}const tl=document.getElementById('searchSpotlightTabLine');if(tl)tl.textContent=getTabNameForSpotlight();debounceSpotlightResults()}if(tab==='latest_release'){tryLoadLatestRelease()}else if(tab==='banner_timeline'){armScrollTopFabBaseline();loadBannerTimeline()}else if(tab==='master_league'){armScrollTopFabBaseline();loadMasterLeague()}else if(tab==='investment_priority'){armScrollTopFabBaseline();void loadInvestmentPriority()}else if(tab==='calculator'){if(/^\/op\/[^/]+\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');renderDcStageDropdown();_dcEnsureAttackerSlots();renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcDefStats();onDcParamChange()}else if(tab==='team_builder'){if(/^\/op\/[^/]+\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');initTeamBuilder();void tbRefreshSlottedUnitData().then(async()=>{await tbAutoFillEmptyOptionParts({skipRender:true});renderTeamBuilder();setTimeout(tbPrimePickerCaches,0)})}else if(tab==='ranking'){if(/^\/(?:u|c|s|es|op)\/[^/]+\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/rk');onRankingTabShown()}else if(tab==='meta_synergy'){if(/^\/(?:u|c|s|es|op|rk)\/[^/]+\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/msy');if(window.GgenMetaSynergy&&typeof GgenMetaSynergy.onTabShown==='function')GgenMetaSynergy.onTabShown()}else{if(tab!=='latest_release'&&/^\/new\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');if(tab!=='banner_timeline'&&/^\/banners\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');if(tab!=='master_league'&&/^\/ml\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');if(tab!=='investment_priority'&&/^\/ip\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');if(tab!=='stages'&&/^\/esim\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');if(tab!=='modifications'&&/^\/op\/[^/]+\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');if(tab!=='ranking'&&/^\/rk\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');if(tab!=='meta_synergy'&&/^\/msy\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');applyListViewVisibility(tab);if(!(opts.fromPopstate&&_prevTab===tab))reloadBrowseTab(tab);if(tab==='stages')syncStageSourceToolbar()}armScrollTopFabBaseline();updateScrollTopFabVisibility();_cmpSyncForTabChange(tab);if(!opts.skipHistory&&!S._historyApplyingPopstate&&_prevTab!==tab){let _tabPath=MAIN_TAB_PATH_SHORT[tab]||'/';if(tab==='stages'&&(S.stages.source||'eternal')==='e_simulator')_tabPath='/esim';pushHistoryToBrowsePath(_tabPath)}requestAnimationFrame(()=>{scrollActiveNavTabIntoView();syncNavTabsOverflowHints()});}
+function switchTab(tab,opts){opts=opts||{};if(tab==='meta_synergy'){tab='units';}const _prevTab=S.currentTab;if(_prevTab==='meta_synergy'&&tab!=='meta_synergy'&&window.GgenMetaSynergy&&typeof GgenMetaSynergy.onTabHidden==='function')GgenMetaSynergy.onTabHidden();if(!opts.fromPopstate&&!opts.skipHistory){const _dm=document.getElementById('detailModal');if(_dm&&_dm.classList.contains('active'))closeModalDomOnly()}S.currentTab=tab;document.querySelectorAll('.nav-tab').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));document.querySelectorAll('.tab-panel').forEach(x=>x.classList.toggle('active',x.id===`panel-${tab}`));bindSearchRecallObserver();if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active')){const inp=document.getElementById('searchSpotlightInput'),real=getActiveSearchInput();if(inp&&real){inp.value=real.value;if(real.classList.contains('filter-input--organic'))syncBrowseSearchWidth(real.id)}const tl=document.getElementById('searchSpotlightTabLine');if(tl)tl.textContent=getTabNameForSpotlight();debounceSpotlightResults()}if(tab==='latest_release'){tryLoadLatestRelease()}else if(tab==='banner_timeline'){armScrollTopFabBaseline();loadBannerTimeline()}else if(tab==='master_league'){armScrollTopFabBaseline();loadMasterLeague()}else if(tab==='investment_priority'){armScrollTopFabBaseline();void loadInvestmentPriority()}else if(tab==='calculator'){if(/^\/op\/[^/]+\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');renderDcStageDropdown();_dcEnsureAttackerSlots();renderDcAtkUnit();renderDcAtkChar();renderDcOptionParts();renderDcSupporters();renderDcDefStats();onDcParamChange()}else if(tab==='team_builder'){if(/^\/op\/[^/]+\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');initTeamBuilder();void tbRefreshSlottedUnitData().then(async()=>{await tbAutoFillEmptyOptionParts({skipRender:true});renderTeamBuilder();setTimeout(tbPrimePickerCaches,0)})}else if(tab==='ranking'){if(/^\/(?:u|c|s|es|op)\/[^/]+\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/rk');onRankingTabShown()}else if(tab==='meta_synergy'){if(/^\/(?:u|c|s|es|op|rk)\/[^/]+\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/msy');if(window.GgenMetaSynergy&&typeof GgenMetaSynergy.onTabShown==='function')GgenMetaSynergy.onTabShown()}else{if(tab!=='latest_release'&&/^\/new\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');if(tab!=='banner_timeline'&&/^\/banners\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');if(tab!=='master_league'&&/^\/ml\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');if(tab!=='investment_priority'&&/^\/ip\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');if(tab!=='stages'&&isStagesCategoryPath(location.pathname))replaceHistoryToBrowsePath('/');if(tab!=='modifications'&&/^\/op\/[^/]+\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');if(tab!=='ranking'&&/^\/rk\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');if(tab!=='meta_synergy'&&/^\/msy\/?$/.test(location.pathname))replaceHistoryToBrowsePath('/');applyListViewVisibility(tab);if(!(opts.fromPopstate&&_prevTab===tab))reloadBrowseTab(tab);if(tab==='stages')syncStageSourceToolbar()}armScrollTopFabBaseline();updateScrollTopFabVisibility();_cmpSyncForTabChange(tab);if(!opts.skipHistory&&!S._historyApplyingPopstate&&_prevTab!==tab){let _tabPath=MAIN_TAB_PATH_SHORT[tab]||'/';if(tab==='stages')_tabPath=stagesBrowsePathForSource(S.stages.source||'eternal');pushHistoryToBrowsePath(_tabPath)}requestAnimationFrame(()=>{scrollActiveNavTabIntoView();syncNavTabsOverflowHints()});}
 function updateSearchHintVisibility(inputId){const inp=document.getElementById(inputId);if(!inp)return;const wrap=inp.closest('.filter-input-wrap');if(!wrap)return;const has=!!inp.value.trim();wrap.classList.toggle('has-value',has);wrap.classList.remove('show-hint');if(has)wrap.classList.add('hint-suppressed');else wrap.classList.remove('hint-suppressed')}
 function clearFilterInput(inputId){const inp=document.getElementById(inputId);if(!inp)return;inp.value='';updateSearchHintVisibility(inputId);if(inp.classList.contains('filter-input--organic'))syncBrowseSearchWidth(inputId);const tabById={charFilter:'characters',unitFilter:'units',suppFilter:'supporters',stageFilter:'stages',modFilter:'modifications'};if(inputId==='rankCharFilter'||inputId==='rankUnitFilter')scheduleRankingListReload();else if(tabById[inputId])debounceLoad(tabById[inputId]);inp.focus()}
 function initSearchHints(){document.querySelectorAll('.filter-input-wrap').forEach(wrap=>{const inp=wrap.querySelector('.filter-input');if(!inp)return;if(!wrap.querySelector('.filter-input-clear')){const btn=document.createElement('button');btn.type='button';btn.className='filter-input-clear';btn.setAttribute('aria-label','Clear search');btn.title='Clear';btn.textContent='\u00d7';btn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();clearFilterInput(inp.id)});wrap.appendChild(btn)}function refresh(){updateSearchHintVisibility(inp.id);if(inp.classList.contains('filter-input--organic'))syncBrowseSearchWidth(inp.id)}inp.addEventListener('input',refresh);refresh()})}
@@ -2497,7 +2497,7 @@ function setStageTowerSide(side){if(side!=='E'&&side!=='W')return;const cur=(S.s
 
 function syncStageEsimSourceButton(){const b=document.getElementById('stageSourceEsimBtn');if(!b)return;const label=t('stage_source_esim')||'E Simulator';const logo=(window.ESimulator&&typeof ESimulator.getLogoUrl==='function')?ESimulator.getLogoUrl():'';const flare=b.querySelector('.ui-notice-flare');const src=logo?safeImgSrc(logo):'';if(src){b.title=label;b.setAttribute('aria-label',label);b.classList.add('stage-source-toggle-btn--esim-logo');b.innerHTML='<img class="stage-source-esim-logo" alt="'+escAttr(label)+'" src="'+escAttr(src)+'" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">'}else{b.classList.remove('stage-source-toggle-btn--esim-logo');b.textContent=label;b.title=label;b.setAttribute('aria-label',label)}if(flare)b.appendChild(flare);b.classList.add('ui-notice-anchor')}
 function syncStageSourceToolbar(){const src=S.stages.source||'eternal';const diff=document.getElementById('stageDiffWrap');const tower=ensureStageTowerFilterDom();const challengeSeries=ensureStageChallengeSeriesFilterDom();if(diff)diff.style.display=(src==='eternal')?'':'none';if(tower)tower.style.display=(src==='tower_stage')?'':'none';if(challengeSeries)challengeSeries.style.display=(src==='challenge_stage')?'':'none';fillStageChallengeSeriesPanel();updateStageChallengeSeriesFilterLabel();const bE=document.getElementById('stageSourceEternalBtn');const bC=document.getElementById('stageSourceChallengeBtn');const bT=document.getElementById('stageSourceTowerBtn');const bS=document.getElementById('stageSourceScoreBtn');const bP=document.getElementById('stageSourceSpecialBtn');const bEsim=document.getElementById('stageSourceEsimBtn');if(bE)bE.textContent=t('stage_source_eternal');if(bC)bC.textContent=t('stage_source_challenge');if(bT)bT.textContent=t('stage_source_tower');if(bS)bS.textContent=t('stage_source_score');if(bP)bP.textContent=t('stage_source_special');if(bEsim)syncStageEsimSourceButton();if(bE){bE.classList.toggle('active',src==='eternal');bE.setAttribute('aria-pressed',src==='eternal'?'true':'false')}if(bC){bC.classList.toggle('active',src==='challenge_stage');bC.setAttribute('aria-pressed',src==='challenge_stage'?'true':'false')}if(bT){bT.classList.toggle('active',src==='tower_stage');bT.setAttribute('aria-pressed',src==='tower_stage'?'true':'false')}if(bS){bS.classList.toggle('active',src==='score_attack');bS.setAttribute('aria-pressed',src==='score_attack'?'true':'false')}if(bP){bP.classList.toggle('active',src==='special_stage');bP.setAttribute('aria-pressed',src==='special_stage'?'true':'false')}if(bEsim){bEsim.classList.toggle('active',src==='e_simulator');bEsim.setAttribute('aria-pressed',src==='e_simulator'?'true':'false')}const side=(S.stages.towerSide==='W'||S.stages.towerSide==='E')?S.stages.towerSide:'E';S.stages.towerSide=side;const be=document.getElementById('stageTowerEastBtn');const bw=document.getElementById('stageTowerWestBtn');if(be){be.classList.toggle('active',side==='E');be.setAttribute('aria-pressed',side==='E'?'true':'false');const s=be.querySelector('span');if(s)s.textContent=_stageTowerLabelBySide('E')}if(bw){bw.classList.toggle('active',side==='W');bw.setAttribute('aria-pressed',side==='W'?'true':'false');const s=bw.querySelector('span');if(s)s.textContent=_stageTowerLabelBySide('W')}if(window.GgenContentNotices)GgenContentNotices.bootstrapPageVisitNotices()}
-function setStageBrowseSource(mode){if(mode!=='eternal'&&mode!=='tower_stage'&&mode!=='score_attack'&&mode!=='special_stage'&&mode!=='challenge_stage'&&mode!=='e_simulator')return;if((S.stages.source||'eternal')===mode){if(mode==='e_simulator')markEsimPageVisited();return}S.stages.source=mode;if(mode==='tower_stage'&&(S.stages.towerSide!=='E'&&S.stages.towerSide!=='W'))S.stages.towerSide='E';if(mode!=='challenge_stage')S.stages.challengeSeries='ALL';syncStageSourceToolbar();if(mode==='e_simulator'){markEsimPageVisited();void ensureESimulatorLoaded().then(es=>{if(es)es.load()});if(!S._historyApplyingPopstate){try{if(_historyPathNorm(location.pathname||'/')!=='/esim')pushHistoryToBrowsePath('/esim')}catch(_){}}return}if(window.ESimulator)ESimulator.hide();try{if(_historyPathNorm(location.pathname||'/')==='/esim')replaceHistoryToBrowsePath('/st')}catch(_){}scheduleBrowseListReload('stages')}
+function setStageBrowseSource(mode){if(mode!=='eternal'&&mode!=='tower_stage'&&mode!=='score_attack'&&mode!=='special_stage'&&mode!=='challenge_stage'&&mode!=='e_simulator')return;const path=stagesBrowsePathForSource(mode);if((S.stages.source||'eternal')===mode){if(mode==='e_simulator')markEsimPageVisited();if(!S._historyApplyingPopstate){try{if(_historyPathNorm(location.pathname||'/')!==path)replaceHistoryToBrowsePath(path)}catch(_){}}return}S.stages.source=mode;if(mode==='tower_stage'&&(S.stages.towerSide!=='E'&&S.stages.towerSide!=='W'))S.stages.towerSide='E';if(mode!=='challenge_stage')S.stages.challengeSeries='ALL';syncStageSourceToolbar();if(!S._historyApplyingPopstate){try{if(_historyPathNorm(location.pathname||'/')!==path)pushHistoryToBrowsePath(path)}catch(_){}}if(mode==='e_simulator'){markEsimPageVisited();void ensureESimulatorLoaded().then(es=>{if(es)es.load()});return}if(window.ESimulator)ESimulator.hide();scheduleBrowseListReload('stages')}
 function renderPag(pfx,data){const el=document.getElementById(`${pfx}Pagination`);if(!el)return;const{page,total_pages}=data;if(total_pages<=1){el.innerHTML='';return}let fn;if(pfx==='char')fn='loadCharacters';else if(pfx==='unit')fn='loadUnits';else if(pfx==='supp')fn='loadSupporters';else if(pfx==='mod')fn='loadModifications';else if(pfx==='rank')fn='loadRankingList';else fn='loadStages';let h='';h+=`<button class="page-btn ${page<=1?'disabled':''}" ${page>1?`onclick="${fn}(${page-1})"`:''}>◀</button>`;const mx=7;let sp=Math.max(1,page-Math.floor(mx/2));let ep=Math.min(total_pages,sp+mx-1);if(ep-sp<mx-1)sp=Math.max(1,ep-mx+1);if(sp>1){h+=`<button class="page-btn" onclick="${fn}(1)">1</button>`;if(sp>2)h+=`<span class="page-info">…</span>`}for(let i=sp;i<=ep;i++)h+=`<button class="page-btn ${i===page?'active':''}" onclick="${fn}(${i})">${i}</button>`;if(ep<total_pages){if(ep<total_pages-1)h+=`<span class="page-info">…</span>`;h+=`<button class="page-btn" onclick="${fn}(${total_pages})">${total_pages}</button>`}h+=`<button class="page-btn ${page>=total_pages?'disabled':''}" ${page<total_pages?`onclick="${fn}(${page+1})"`:''}>▶</button>`;el.innerHTML=h}
 function toggleStatState(type){if(type==='sp'){if(S.spActive){S.spActive=false}else{S.spActive=true;S.sspActive=false}}else if(type==='ssp'){if(S.sspActive){S.sspActive=false}else{S.sspActive=true;S.spActive=false}}const spBtn=document.getElementById('spToggleBtn');const spBtnChar=document.getElementById('spToggleBtnChar');const sspBtn=document.getElementById('sspToggleBtn');if(spBtn)spBtn.classList.toggle('active',S.spActive);if(spBtnChar)spBtnChar.classList.toggle('active',S.spActive);if(sspBtn)sspBtn.classList.toggle('active',S.sspActive);invalidateDetailRankingCachesForPerspectiveChange();updateDetailDynamicSections(S.currentDetailType)}
 function updateLbTier(val){S.currentLbTier=parseInt(val,10);document.querySelectorAll('.lb-icon-btn').forEach(b=>b.classList.remove('active'));const ab=document.querySelector(`.lb-icon-btn[data-val="${val}"]`);if(ab)ab.classList.add('active');syncUnitLbVideoUi();updateDetailDynamicSections(S.currentDetailType)}
@@ -2674,6 +2674,34 @@ function applyBrowseRouteFromLocation(opts){
 opts=opts||{};
 const parsed=parseBrowseShortPath(location.pathname);
 if(parsed&&parsed.kind==='latest_release'){closeModalDomOnly();switchTab('latest_release',{skipHistory:true,fromPopstate:!!opts.fromPopstate});tryLoadLatestRelease();return true}
+if(parsed&&parsed.kind==='stages_source'){
+closeModalDomOnly();
+const src=parsed.source||'eternal';
+const prev=S.stages.source||'eternal';
+S.stages.source=src;
+if(src==='tower_stage'&&S.stages.towerSide!=='E'&&S.stages.towerSide!=='W')S.stages.towerSide='E';
+if(src!=='challenge_stage')S.stages.challengeSeries='ALL';
+if(src==='e_simulator'){
+if(S.currentTab!=='stages')switchTab('stages',{skipHistory:true,fromPopstate:!!opts.fromPopstate});
+else{applyListViewVisibility('stages');bindSearchRecallObserver();updateScrollTopFabVisibility()}
+syncStageSourceToolbar();
+void ensureESimulatorLoaded().then(es=>{if(es)es.load()});
+markEsimPageVisited();
+return true;
+}
+if(window.ESimulator)ESimulator.hide();
+if(S.currentTab==='stages'){
+syncStageSourceToolbar();
+if(prev!==src)loadStages(1);
+applyListViewVisibility('stages');
+bindSearchRecallObserver();
+updateScrollTopFabVisibility();
+return true;
+}
+switchTab('stages',{skipHistory:true,fromPopstate:!!opts.fromPopstate});
+syncStageSourceToolbar();
+return true;
+}
 if(parsed&&parsed.kind==='e_simulator'){closeModalDomOnly();if((S.stages.source||'eternal')!=='e_simulator')S.stages.source='e_simulator';switchTab('stages',{skipHistory:true,fromPopstate:!!opts.fromPopstate});syncStageSourceToolbar();void ensureESimulatorLoaded().then(es=>{if(es)es.load()});markEsimPageVisited();return true}
 if(parsed&&parsed.kind==='main_tab'){closeModalDomOnly();if(parsed.tab==='stages'&&(S.stages.source||'')==='e_simulator'){S.stages.source='eternal';if(window.ESimulator)ESimulator.hide()}
 /* Closing a detail modal back to the same browse tab must not reload the list. */
@@ -2697,6 +2725,36 @@ try{applyBrowseRouteFromLocation({fromPopstate:true,skipHistory:true})}finally{S
 }
 const MAIN_TAB_URL_SHORT={stages:'ER',calculator:'DS',team_builder:'TB',modifications:'op'};
 const MAIN_TAB_PATH_SHORT={characters:'/c',units:'/u',supporters:'/s',latest_release:'/new',stages:'/st',master_league:'/ml',calculator:'/cal',team_builder:'/tb',modifications:'/op',banner_timeline:'/tl',ranking:'/rk',investment_priority:'/ip'};
+/** Stage category → shareable short path (keep in sync with parseBrowseShortPath + app.py _SPA_TAB_PATHS). */
+const STAGE_SOURCE_PATH={
+eternal:'/st',
+challenge_stage:'/challenge',
+tower_stage:'/gtower',
+score_attack:'/go',
+special_stage:'/special',
+e_simulator:'/esim'
+};
+const STAGE_PATH_TO_SOURCE={
+st:'eternal',
+challenge:'challenge_stage',
+challenges:'challenge_stage',
+ch:'challenge_stage',
+gtower:'tower_stage',
+gt:'tower_stage',
+go:'score_attack',
+'score-attack':'score_attack',
+score:'score_attack',
+'grand-offensive':'score_attack',
+special:'special_stage',
+esim:'e_simulator'
+};
+function stagesBrowsePathForSource(src){
+return STAGE_SOURCE_PATH[src]||STAGE_SOURCE_PATH.eternal;
+}
+function isStagesCategoryPath(pathname){
+const p=_historyPathNorm(pathname||location.pathname||'/').replace(/^\//,'');
+return Object.prototype.hasOwnProperty.call(STAGE_PATH_TO_SOURCE,String(p).toLowerCase());
+}
 function syncMainTabQueryParam(tab){
 try{
 const u=new URL(location.href);
@@ -2707,7 +2765,7 @@ history.replaceState(_historyBuildState(u.pathname+u.search+u.hash,{ggenNav:1,pa
 }
 function syncMainTabShortPath(tab,mode){
 let p=MAIN_TAB_PATH_SHORT[tab]||'/';
-if(tab==='stages'&&(S.stages.source||'eternal')==='e_simulator')p='/esim';
+if(tab==='stages')p=stagesBrowsePathForSource(S.stages.source||'eternal');
 if(mode==='push')pushHistoryToBrowsePath(p);
 else replaceHistoryToBrowsePath(p);
 }
@@ -2763,8 +2821,10 @@ if(seg.length===1&&seg[0]==='u')return{kind:'main_tab',tab:'units'};
 if(seg.length===1&&seg[0]==='s')return{kind:'main_tab',tab:'supporters'};
 if(seg.length===1&&seg[0]==='tl')return{kind:'main_tab',tab:'banner_timeline'};
 if(seg.length===1&&seg[0]==='banners')return{kind:'main_tab',tab:'banner_timeline'};
-if(seg.length===1&&seg[0]==='st')return{kind:'main_tab',tab:'stages'};
-if(seg.length===1&&seg[0]==='esim')return{kind:'e_simulator'};
+if(seg.length===1){
+const stageSrc=STAGE_PATH_TO_SOURCE[String(seg[0]||'').toLowerCase()];
+if(stageSrc)return{kind:'stages_source',source:stageSrc};
+}
 if(seg.length===1&&seg[0]==='ml')return{kind:'main_tab',tab:'master_league'};
 if(seg.length===1&&seg[0]==='ip')return{kind:'main_tab',tab:'investment_priority'};
 if(seg.length===1&&seg[0]==='cal')return{kind:'main_tab',tab:'calculator'};
@@ -3288,7 +3348,7 @@ return;
 }
 if(_historyIsDetailPath(location.pathname)||(history.state&&history.state.ggenDetail)){
 let browsePath=S.currentTab==='ranking'?'/rk':(MAIN_TAB_PATH_SHORT[S.currentTab]||'/');
-if(S.currentTab==='stages'&&(S.stages.source||'eternal')==='e_simulator')browsePath='/esim';
+if(S.currentTab==='stages')browsePath=stagesBrowsePathForSource(S.stages.source||'eternal');
 replaceHistoryToBrowsePath(browsePath);
 }
 }
