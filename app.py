@@ -6456,40 +6456,6 @@ def merge_trait_condition_raw_maps(*maps):
                         out[sid][k].append(v)
     return out
 
-def _supporter_lb3_is_44pct_dual_tag(supporter_id, sort_order):
-    """True when this SortOrder skill at LB3 is a dual-tag 44% combo (e.g. Atra Alaya+IBO).
-
-    Used so lower LB tiers keep ``and`` (+) instead of flipping to ``or`` when the % text drops.
-    """
-    sid = normalize_id(supporter_id)
-    ld = LANG_DATA.get('EN') or {}
-    want_sort = int(sort_order or 0)
-    for l in supporter_leader_map.get(sid, []):
-        if l.get('tier') != 3 or int(l.get('sort') or 0) != want_sort:
-            continue
-        desc = ld.get('supporter_leader_text_map', {}).get(l.get('desc_lang_id', ''), '')
-        if '44%' not in desc:
-            return False
-        tags = resolve_condition_tags(
-            l.get('trait_cond_id', '0'), trait_condition_raw_map,
-            ld.get('lineage_lookup', {}), ld.get('series_name_map', {}), 'EN',
-        )
-        return len(tags) >= 2
-    return False
-
-
-def supporter_leader_skill_tag_separator(supporter_id, skill_row, tags, desc):
-    """UI joiner between leader-skill condition tags.
-
-    Keeps the original EN %-heuristic (``44%`` → and, ``36%`` / multi-tag → or).
-    Only exception: dual-tag 44% combo skills stay ``and`` at every LB tier.
-    """
-    if _supporter_lb3_is_44pct_dual_tag(supporter_id, (skill_row or {}).get('sort')) and len(tags or []) >= 2:
-        return 'and'
-    d = desc or ''
-    return 'and' if '44%' in d else ('or' if '36%' in d or len(tags or []) >= 2 else 'default')
-
-
 def resolve_condition_tags(cond_id, trait_condition_raw_map, lineage_lookup, series_name_map, lang_code='EN'):
     if cond_id == '0': return []
     raw = trait_condition_raw_map.get(cond_id, {}); res = []; seen = set()
@@ -11292,6 +11258,36 @@ WEAPON_DEBUFF_KEYS_PRESENT_UNION = frozenset(
     k for fs in WEAPON_DEBUFF_KEYS_PRESENT_BY_LANG.values() for k in fs
 )
 UNIT_WEAPON_ATTR_KEYS_CACHE = _build_unit_weapon_attr_keys_cache()
+
+
+def _compute_supporter_dual_tag_44_cond_ids():
+    """TraitConditionSetIds for LB3 dual-tag 44% leader combos (UI joiner ``and`` / +).
+
+    Same condition ids are reused at lower LB with smaller % text; without this set those
+    rows flip to ``or`` under the EN %-heuristic. Browse (always LB3) needs no change.
+    """
+    ld = LANG_DATA.get('EN') or {}
+    text_map = ld.get('supporter_leader_text_map') or {}
+    llk = ld.get('lineage_lookup') or {}
+    snm = ld.get('series_name_map') or {}
+    out = set()
+    for lsr in supporter_leader_map.values():
+        for ls in lsr:
+            if ls.get('tier') != 3:
+                continue
+            desc = text_map.get(ls.get('desc_lang_id', ''), '')
+            if '44%' not in desc:
+                continue
+            tcid = normalize_id(ls.get('trait_cond_id', '0'))
+            if not tcid or tcid == '0':
+                continue
+            tags = resolve_condition_tags(tcid, trait_condition_raw_map, llk, snm, 'EN')
+            if len(tags) >= 2:
+                out.add(tcid)
+    return frozenset(out)
+
+
+SUPPORTER_DUAL_TAG_44_COND_IDS = _compute_supporter_dual_tag_44_cond_ids()
 
 print("Database ready!")
 print("=" * 60)
@@ -22780,7 +22776,7 @@ def list_supporters():
         else:
             uf = f"u{for_unit}" if for_unit else 'u0'
             cf = f"c{for_char}" if for_char else 'c0'
-        ck = f"sl12_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lineage_ck}_lc{lineage_combine_supp}_{lr_schedule_cache_key_fragment()}_{uf}_{cf}"
+        ck = f"sl10_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lineage_ck}_lc{lineage_combine_supp}_{lr_schedule_cache_key_fragment()}_{uf}_{cf}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
@@ -22802,7 +22798,7 @@ def list_supporters():
                 desc = ld.get('supporter_leader_text_map', {}).get(ls.get('desc_lang_id', ''), '')
                 tags = resolve_condition_tags(ls.get('trait_cond_id', '0'), trait_condition_raw_map, ld.get('lineage_lookup', {}), ld.get('series_name_map', {}), lc)
                 if desc: descs.append(desc)
-                sep = supporter_leader_skill_tag_separator(sid, ls, tags, desc)
+                sep = 'and' if '44%' in desc else ('or' if '36%' in desc or len(tags) >= 2 else 'default')
                 if tags: std.append({'tags': tags, 'separator': sep})
                 for t in tags:
                     if not any(x['name'] == t['name'] for x in all_tags): all_tags.append(t)
@@ -25603,7 +25599,7 @@ def get_supporter(supporter_id):
         # supporter-addon #1 level cap by rarity
         max_level = supporter_max_level_for_rarity(ri)
         level = min(max_level, max(1, int(request.args.get('level', max_level))))
-        ck = f"s6_{supporter_id}_{lc}_{level}_{lb_tier}_{for_uid_key}_{for_cid_key}_{lr_schedule_cache_key_fragment()}"
+        ck = f"s7_{supporter_id}_{lc}_{level}_{lb_tier}_{for_uid_key}_{for_cid_key}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -25626,7 +25622,11 @@ def get_supporter(supporter_id):
             else:
                 applies = True
             tags = resolve_condition_tags(tcid, trait_condition_raw_map, ld.get('lineage_lookup', {}), ld.get('series_name_map', {}), lc)
-            sep = supporter_leader_skill_tag_separator(supporter_id, l, tags, desc)
+            # Dual-tag 44% combos keep ``and`` at lower LB (same TraitConditionSetId, smaller %).
+            if tcid in SUPPORTER_DUAL_TAG_44_COND_IDS and len(tags) >= 2:
+                sep = 'and'
+            else:
+                sep = 'and' if '44%' in desc else ('or' if '36%' in desc or len(tags) >= 2 else 'default')
             ls.append({'desc': desc, 'tags': tags, 'separator': sep, 'trait_cond_id': tcid, 'applies': applies, 'same_group': same_group})
         if for_uid_q and for_uid_key != '0':
             _resolve_supporter_leader_skill_applies(ls)
