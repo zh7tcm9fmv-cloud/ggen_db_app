@@ -25599,7 +25599,7 @@ def get_supporter(supporter_id):
         # supporter-addon #1 level cap by rarity
         max_level = supporter_max_level_for_rarity(ri)
         level = min(max_level, max(1, int(request.args.get('level', max_level))))
-        ck = f"s7_{supporter_id}_{lc}_{level}_{lb_tier}_{for_uid_key}_{for_cid_key}_{lr_schedule_cache_key_fragment()}"
+        ck = f"s8_{supporter_id}_{lc}_{level}_{lb_tier}_{for_uid_key}_{for_cid_key}_{lr_schedule_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -25644,6 +25644,14 @@ def get_supporter(supporter_id):
         gacha_quote = ld.get('supporter_text_map', {}).get(gasha_lid, '') if gasha_lid != '0' else ''
         # supporter-addon #4 combat power contribution
         combat_power = supporter_combat_power_for(ri, lb_tier)
+        # TraitConditionSetIds that must stay ``and`` at every LB (dual-tag 44% combos).
+        _supp_conds = {
+            normalize_id(x.get('trait_cond_id', '0'))
+            for x in supporter_leader_map.get(supporter_id, [])
+        }
+        leader_and_trait_cond_ids = sorted(
+            c for c in _supp_conds if c and c != '0' and c in SUPPORTER_DUAL_TAG_44_COND_IDS
+        )
         result = {
             'id': supporter_id, 'name': cn, 'rarity': RARITY_MAP.get(ri, "Unknown"), 'rarity_id': ri,
             'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'hp_support': hps, 'atk_support': atks,
@@ -25652,6 +25660,7 @@ def get_supporter(supporter_id):
             'growth_rate_basis': rate, 'is_limited_time': supporter_id in LIMITED_TIME_SUPPORTER_IDS,
             'max_level': max_level, 'acquisition_route': acq, 'acquisition_icon': acq_icon or '',
             'gacha_obtained_quote': gacha_quote or '', 'combat_power': combat_power,
+            'leader_and_trait_cond_ids': leader_and_trait_cond_ids,
         }
         set_cached_response(ck, result)
         return jsonify_cacheable(result, ck, private=True, max_age=3600, convert_images=True)
