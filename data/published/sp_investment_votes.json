@@ -6450,7 +6450,14 @@
     "ip_38eea7191c4fb69acb8b3d87101ed07e:unit:1370006600:ssp": "down",
     "ip_38eea7191c4fb69acb8b3d87101ed07e:unit:1370000100:ssp": "down",
     "ip_38eea7191c4fb69acb8b3d87101ed07e:unit:1336000400:ssp": "up",
-    "ip_38eea7191c4fb69acb8b3d87101ed07e:unit:1211001210:ssp": "up"
+    "ip_38eea7191c4fb69acb8b3d87101ed07e:unit:1211001210:ssp": "up",
+    "ip_38eea7191c4fb69acb8b3d87101ed07e:unit:1095002500:ssp": "up",
+    "ip_38eea7191c4fb69acb8b3d87101ed07e:unit:1031001200:ssp": "down",
+    "ip_38eea7191c4fb69acb8b3d87101ed07e:unit:1080000100:ssp": "up",
+    "ip_38eea7191c4fb69acb8b3d87101ed07e:unit:1370010900:ssp": "up",
+    "ip_38eea7191c4fb69acb8b3d87101ed07e:unit:1370010800:ssp": "up",
+    "ip_38eea7191c4fb69acb8b3d87101ed07e:unit:1370009100:ssp": "up",
+    "ip_38eea7191c4fb69acb8b3d87101ed07e:unit:1150001360:ssp": "up"
   },
   "targets": {
     "unit:1155000700:sp": {
@@ -7386,7 +7393,7 @@
       "down": 3
     },
     "unit:1370010900:ssp": {
-      "up": 4,
+      "up": 5,
       "down": 3
     },
     "unit:1230004510:ssp": {
@@ -7870,7 +7877,7 @@
       "down": 4
     },
     "unit:1150001360:ssp": {
-      "up": 6,
+      "up": 7,
       "down": 3
     },
     "unit:1133000600:ssp": {
@@ -8126,7 +8133,7 @@
       "down": 4
     },
     "unit:1080000100:ssp": {
-      "up": 7,
+      "up": 8,
       "down": 1
     },
     "unit:1370008800:sp": {
@@ -8214,7 +8221,7 @@
       "down": 4
     },
     "unit:1370010800:ssp": {
-      "up": 5,
+      "up": 6,
       "down": 1
     },
     "unit:1060002110:sp": {
@@ -8298,7 +8305,7 @@
       "down": 2
     },
     "unit:1370009100:ssp": {
-      "up": 8,
+      "up": 9,
       "down": 1
     },
     "unit:1217000310:sp": {
@@ -8926,7 +8933,7 @@
       "down": 0
     },
     "unit:1095002500:ssp": {
-      "up": 4,
+      "up": 5,
       "down": 3
     },
     "unit:1017000510:ssp": {
@@ -9643,7 +9650,7 @@
     },
     "unit:1031001200:ssp": {
       "up": 1,
-      "down": 2
+      "down": 3
     },
     "unit:1085000910:ssp": {
       "up": 1,
