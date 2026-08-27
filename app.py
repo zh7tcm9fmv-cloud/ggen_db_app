@@ -4400,7 +4400,7 @@ def trait_title_implies_conditional_stat_bonuses(name):
     low = name.lower()
     en_markers = (
         '(battle conditions)', '(tag conditions)', '(series conditions)',
-        '(hp conditions)', '(vigor conditions)', '(cnd: vigor)', '(no. of battles conditions)',
+        '(hp conditions)', '(vigor conditions)', '(cnd: vigor)', '(cond: vigor)', '(no. of battles conditions)',
         '(when supporting)', '(map conditions)', '(ally conditions)',
         '(unit conditions)', '(unit condition)',
     )
@@ -5060,10 +5060,11 @@ def _vigor_gate_tier_rank(gate_text):
 
 
 def _vigor_gate_is_or_higher(gate_text):
-    """True for 'Max or higher' / JA・TW 以上 — gate stays active at stronger vigor."""
+    """True for 'Max or higher/greater/above' / JA・TW 以上 — gate stays active at stronger vigor."""
     g = (gate_text or '').lower()
     raw = gate_text or ''
-    if 'or higher' in g or 'or above' in g:
+    # EN official help often uses "or greater" (Barbatos EX Cond: Vigor, Aug 2026 wording).
+    if 'or higher' in g or 'or above' in g or 'or greater' in g:
         return True
     if '以上' in raw:
         return True
@@ -5080,11 +5081,12 @@ def _vigor_gate_active_at_rank(gate_rank, or_higher, assumed_rank):
 
 
 def _ability_title_is_vigor_condition(name):
-    """True for (Cnd: Vigor) / (Vigor conditions) and locale equivalents — tiered vigor passives."""
+    """True for (Cnd: Vigor) / (Cond: Vigor) / (Vigor conditions) and locale equivalents — tiered vigor passives."""
     if not name:
         return False
     low = name.lower()
-    if '(cnd: vigor)' in low or '(vigor conditions)' in low:
+    # Official EN trait_set_detail uses \"(Cond: Vigor)\"; older copy / UI shorthand used \"(Cnd: Vigor)\".
+    if '(cnd: vigor)' in low or '(cond: vigor)' in low or '(vigor conditions)' in low:
         return True
     if any(m in name for m in (
         '氣勢條件', '气势条件', 'テンション条件', '戦意條件', '戰意條件', '战意条件',
@@ -5100,9 +5102,9 @@ def _parse_vigor_tier_stat_pcts_from_trait_text(txt):
     Returns list of (rank, or_higher, {stat: pct}) — pct is signed (DEF decrease is negative).
 
     Gate wording matters at Supercharged (CP-on sheet):
-    - Exact \"When Vigor is Max,\" does NOT apply at Supercharged (Barbatos EX).
-    - \"Max or higher\" DOES apply at Supercharged and stacks with a Supercharged \"further\" line
-      (Versal Knight EX: +7% + further +8% = +15%).
+    - Exact \"When Vigor is Max,\" (no or-higher) does NOT apply at Supercharged.
+    - \"Max or higher/greater\" DOES apply at Supercharged and stacks with a Supercharged \"further\" line
+      (Barbatos / Versal: +7% + further +8% = +15%; DEF -5% + further -5% = -10%).
     """
     if not txt:
         return []
@@ -5201,8 +5203,8 @@ def _unit_adjust_vigor_condition_stat_buckets(ad, spb, spc):
     """Fix (Cnd: Vigor) multi-gate MS % after sentence-split summed every line into spc.
 
     CP-on sheet assumes Supercharged vigor. Apply only gates active at that rank:
-    - Exact Max (Barbatos) → inactive at Supercharged; Supercharged line alone (+15% / -10%).
-    - Max or higher + Supercharged further (Versal) → both active (+7% + +8% = +15%).
+    - Exact Max (no or-higher) → inactive at Supercharged; Supercharged line alone.
+    - Max or higher/greater + Supercharged further → both active (+7% + +8% = +15%).
     """
     name = (ad.get('name') or '').strip()
     if not _ability_title_is_vigor_condition(name):
@@ -9307,6 +9309,31 @@ def trait_text_implies_show_target_condition_tags(en_text, display_text):
     return False
 
 
+def _condition_list_has_scope_tags_for_prose(conds, en_text, display_text):
+    """True when resolved conditions already include the tag/series scope the prose refers to."""
+    blob = f"{en_text or ''}\n{display_text or ''}"
+    low = blob.lower()
+    want_series = (
+        'specified series' in low
+        or 'above series' in low
+        or 'シリーズ' in blob
+        or ('系列' in blob and ('上述' in blob or '指定' in blob))
+    )
+    want_tags = (
+        'specified tag' in low
+        or 'above tag' in low
+        or ('タグ' in blob and ('上記' in blob or '指定' in blob))
+        or (('標籤' in blob or '标签' in blob) and ('上述' in blob or '指定' in blob))
+    )
+    for c in conds or []:
+        src = str(c.get('source') or '')
+        if want_tags and src in ('unit_tags', 'group_tags', 'char_tags'):
+            return True
+        if want_series and src in ('series', 'character_series'):
+            return True
+    return False
+
+
 def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_map, trait_data_map, lang_text_map, en_lang_text_map, trait_condition_raw_map, lineage_lookup, series_name_map, ability_resource_map, abil_desc_map, sort_order=0, lang_code='EN', unit_id=None, skip_icon=False):
     trait_set_id = normalize_id(abil_link_map.get(ab_id, ab_id))
     lookup_id = trait_set_id[:-2] if len(trait_set_id) > 2 else trait_set_id
@@ -9454,6 +9481,36 @@ def build_ability_entry(ab_id, abil_name_map, abil_link_map, trait_set_traits_ma
         for s in collect_forward_placeholder_target_sets(from_idx):
             out.extend(s)
         return out
+
+    # Prose row says "specified/above tags" but TargetConditionSetId is structural (e.g. Owner/1000001),
+    # while empty-text sibling grant rows hold the real SameGroup tag scope (e.g. Lorelei EX Orb on 202230102/103).
+    for idx, info in enumerate(trait_info):
+        if not (info.get('display_text') or '').strip():
+            continue
+        en_t = info.get('en_text') or ''
+        disp_t = info.get('display_text') or ''
+        if not trait_text_implies_show_target_condition_tags(en_t, disp_t):
+            continue
+        if _condition_list_has_scope_tags_for_prose(info.get('target_conditions'), en_t, disp_t):
+            continue
+        if _condition_list_has_scope_tags_for_prose(info.get('conditions'), en_t, disp_t):
+            continue
+        fwd = collect_forward_placeholder_targets(idx)
+        if not fwd:
+            continue
+        if not _condition_list_has_scope_tags_for_prose(fwd, en_t, disp_t):
+            continue
+        info['target_conditions'] = list(fwd)
+        for c in fwd:
+            if c not in info['conditions']:
+                info['conditions'].append(c)
+        cgs = [
+            g for g in (info.get('condition_groups') or [])
+            if str(g.get('label') or '').strip().lower() != 'target tags'
+        ]
+        cgs.append({'label': 'Target Tags', 'conditions': list(fwd)})
+        info['condition_groups'] = cgs
+        _preserved_target_tag_groups[idx] = [{'label': 'Target Tags', 'conditions': list(fwd)}]
 
     carry_boost_for_next = []
     def _looks_conditional_text(info_row):
