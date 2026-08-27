@@ -628,5 +628,29 @@
     "LoginCount": 8,
     "IsHighlight": true,
     "RewardSetId": 14426081001008
+  },
+  {
+    "LoginBonusId": 426084001,
+    "LoginCount": 1,
+    "IsHighlight": false,
+    "RewardSetId": 14426084001001
+  },
+  {
+    "LoginBonusId": 426084001,
+    "LoginCount": 2,
+    "IsHighlight": false,
+    "RewardSetId": 14426084001002
+  },
+  {
+    "LoginBonusId": 426084001,
+    "LoginCount": 3,
+    "IsHighlight": false,
+    "RewardSetId": 14426084001003
+  },
+  {
+    "LoginBonusId": 426084001,
+    "LoginCount": 4,
+    "IsHighlight": true,
+    "RewardSetId": 14426084001004
   }
 ]

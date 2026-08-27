@@ -1,0 +1,40 @@
+---
+description: Never claim fixed until live/owner path verified; supporter LB soft-refresh + cache bust reference
+alwaysApply: true
+---
+
+# Verify live before saying “fixed”
+
+Owner lesson (Aug 2026 — supporter dual-tag `+` / LB flash): claiming “fixed” after a local Python scan or helper rewrite is **not enough**. The owner checks the **live page**. If live still shows the bug, the agent failed.
+
+## Hard rule
+
+Do **not** tell the owner a UI/API bug is fixed until you have checked the **same path they use**:
+
+1. **Production / live URL** when they are looking at Railway (`ggendb.up.railway.app`), **or** their local server if that is what they are testing — say which one you checked.
+2. The **actual response the browser gets** (detail fetch / LB switch), not only `import app` / unit-style scans.
+3. Whether the change is **committed + deployed** (and for JS: **`app.min.js` rebuilt** — production prefers `app.min.js` over `app.js`).
+
+If the fix is only in the working tree / uncommitted / not deployed: say **“fixed locally; not live yet”** — never “it’s fixed.”
+
+## Common false “fixed” traps (this site)
+
+| Trap | What happens | What to do |
+|------|----------------|------------|
+| API fixed, browser still wrong | `jsonify_cacheable` + `private, max-age=3600` serves **stale JSON** for the same URL | Bust with query (`&sv=…`), `cache: 'no-store'` on detail refresh, and/or client override from a server-sent id list |
+| Edited `app.js` only | Live still runs **old `app.min.js`** | `node scripts/minify_app_js.mjs` (or equivalent) before ship |
+| Server returns correct `separator` | Client **ignores** it / full re-render races | Trace `refresh*` → render; soft-patch DOM instead of replacing the whole shell |
+| Local scan green | Live workers / CDN / browser cache differ | Hit live `/api/...` **and** re-check the detail UI after deploy |
+
+## Supporter detail reference (good pattern)
+
+- **Dual-tag 44% combos** (`SUPPORTER_DUAL_TAG_44_COND_IDS` / `leader_and_trait_cond_ids`): keep UI joiner **`and` (`+`)** at every LB; do not flip to `or` when % text drops.
+- **LB / level refresh**: soft-update badges + `updateDetailDynamicSections` — **do not** `detailInner.innerHTML = renderSupporterShell(...)` (portrait flash / modal jerk).
+- Open at LB3 first still records sticky `and` cond ids; API field `leader_and_trait_cond_ids` makes the client force `+` even if a cached body says `or`.
+
+## Reply checklist before “fixed”
+
+- [ ] Live (or owner’s target) API payload checked for the repro IDs/tiers
+- [ ] UI path after LB/level change checked (or client force proven)
+- [ ] `app.min.js` rebuilt if `app.js` changed
+- [ ] Honest status: live vs local-only vs needs deploy

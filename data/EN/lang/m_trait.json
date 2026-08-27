@@ -2141,7 +2141,7 @@
   },
   {
     "id": 141200000101030201,
-    "value": "When Vigor is \"Max\",\nincrease ATK by 7%\nbut decrease DEF by 5%."
+    "value": "When Vigor is \"Max\" or greater,\nincrease ATK by 7%\nbut decrease DEF by 5%."
   },
   {
     "id": 141200000101030202,
@@ -2149,7 +2149,7 @@
   },
   {
     "id": 141200000101030203,
-    "value": "When Vigor is \"Supercharged\",\nfurther increase ATK by 15%\nbut further decrease DEF by 10%."
+    "value": "When Vigor is \"Supercharged\" or greater,\nfurther increase ATK by 8%\nbut further decrease DEF by 5%."
   },
   {
     "id": 141200000101030204,
@@ -2793,7 +2793,7 @@
   },
   {
     "id": 141200000101520102,
-    "value": "When Vigor is \"Supercharged\" or greater,\nincrease ATK by 5%."
+    "value": "When Vigor is \"Supercharged\" or greater,\nfurther increase ATK by 5%."
   },
   {
     "id": 141200000101520201,
@@ -2801,7 +2801,7 @@
   },
   {
     "id": 141200000101520202,
-    "value": "When Vigor is \"Supercharged\" or greater,\nincrease ATK by 10%."
+    "value": "When Vigor is \"Supercharged\" or greater,\nfurther increase ATK by 10%."
   },
   {
     "id": 141200000101520301,
@@ -2809,7 +2809,7 @@
   },
   {
     "id": 141200000101520302,
-    "value": "When Vigor is \"Supercharged\" or greater,\nincrease ATK by 15%."
+    "value": "When Vigor is \"Supercharged\" or greater,\nfurther increase ATK by 15%."
   },
   {
     "id": 141200000101520401,
@@ -2817,7 +2817,7 @@
   },
   {
     "id": 141200000101520402,
-    "value": "When Vigor is \"Supercharged\" or greater,\nincrease ATK by 20%."
+    "value": "When Vigor is \"Supercharged\" or greater,\nfurther increase ATK by 20%."
   },
   {
     "id": 141200000101520501,
@@ -2825,7 +2825,7 @@
   },
   {
     "id": 141200000101520502,
-    "value": "When Vigor is \"Supercharged\" or greater,\nincrease ATK by 25%."
+    "value": "When Vigor is \"Supercharged\" or greater,\nfurther increase ATK by 25%."
   },
   {
     "id": 141200000101540101,
@@ -8017,7 +8017,7 @@
   },
   {
     "id": 141200000202230104,
-    "value": "When piloting Gundam Astray Gold Frame Amatsu Mina (EX),\nunits in the same squad with specified tags\ngain increased ATK and DEF 5% (permanent).\n\nWhen piloting units with specified tags,\nreduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nreduce damage taken by 15%."
   },
   {
     "id": 141200000202230105,

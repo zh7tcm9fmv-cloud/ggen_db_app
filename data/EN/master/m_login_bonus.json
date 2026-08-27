@@ -208,5 +208,19 @@
     "TargetUserTypeIndex": 1,
     "ScheduleId": 2608102201,
     "PrefabResourceId": "llb_426081001"
+  },
+  {
+    "Id": 426084001,
+    "NameLanguageId": 0,
+    "BackgroundImageResourceId": "",
+    "LogoImageResourceId": "",
+    "SortOrderInSameVisualizationType": 1,
+    "VisualizationTypeIndex": 2,
+    "NavigationCharacterId": 0,
+    "NavigationCharacterSetId": 0,
+    "IsReceiveRepeatWhenReceiveLimit": false,
+    "TargetUserTypeIndex": 1,
+    "ScheduleId": 2608402201,
+    "PrefabResourceId": "llb_426084001"
   }
 ]
