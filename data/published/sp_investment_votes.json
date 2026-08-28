@@ -6660,6 +6660,7 @@
     "ip_8be6eb95f4ff72648f05f13e8e36e70c:unit:1150000100:ssp": "down",
     "ip_8be6eb95f4ff72648f05f13e8e36e70c:unit:1430004800:ssp": "down",
     "ip_8be6eb95f4ff72648f05f13e8e36e70c:unit:1219000100:ssp": "down",
+    "ip_71f60a61032816203f0ffd64922bc0fd:unit:1705005300:sp": "up",
     "ip_c31960a6dff82ee9a9c2ef4edebac7c7:unit:1705005300:ssp": "up"
   },
   "targets": {
@@ -11256,7 +11257,7 @@
       "down": 0
     },
     "unit:1705005300:sp": {
-      "up": 10,
+      "up": 11,
       "down": 0
     },
     "unit:1705004800:sp": {
