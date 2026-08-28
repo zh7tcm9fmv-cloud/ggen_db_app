@@ -6348,6 +6348,41 @@ parts.push(ab.name||'',ab.display_name||'');
 });
 return parts.join('\n').toLowerCase();
 }
+function _dcFindSuperchargedExAbilityDetail(cd){
+if(!cd||!Array.isArray(cd.abilities))return null;
+for(const ab of cd.abilities){
+if(!ab||!ab.is_ex)continue;
+const r=_dcResolveCharAbilityForMode(ab);
+if(!r)continue;
+for(const ln of r.details||[]){
+if(typeof ln!=='object'||!ln)continue;
+const tx=String(ln.text||'');
+if(/supercharged\s+ex|超一[擊撃]EX/i.test(tx)&&_dcSliceSuperchargedExTierSections(tx).length>=2)return ln;
+}
+}
+return null;
+}
+function _dcSuperchargedExConditionGroups(cd){
+const det=_dcFindSuperchargedExAbilityDetail(cd);
+if(!det)return[];
+const groups=det.condition_groups||[];
+if(groups.length)return groups;
+if(Array.isArray(det.conditions)&&det.conditions.length)return[{label:'Condition 1',conditions:det.conditions}];
+return[];
+}
+function _dcUnitMeetsSuperchargedExGate(cd,ud){
+if(!cd||!ud||cd._manual||ud._manual)return false;
+if(_dcIsShinnAsukaCharacter(cd))return true;
+const groups=_dcSuperchargedExConditionGroups(cd);
+if(!groups.length)return true;
+return _dcUnitMeetsAbilityConditionGroups(ud,groups);
+}
+function _dcSuperchargedExStatsEligible(cd,ud,mp,charCpOn){
+if(!charCpOn||!cd||!ud||cd._manual||ud._manual)return false;
+if(!cd.ex_supercharged_tiers||cd.ex_supercharged_tiers.length<2)return false;
+if(_dcNormMpLevel(mp)!=='super')return false;
+return _dcUnitMeetsSuperchargedExGate(cd,ud);
+}
 function _dcShouldAutoSuperchargedVigorOnCharCp(cd){
 if(!cd)return false;
 if(_dcIsShinnAsukaCharacter(cd))return true;
@@ -6886,6 +6921,10 @@ if(!(slot.atkCharData&&slot.atkCharData._manual)&&!(slot.atkUnitData&&slot.atkUn
 if(_dcShouldAutoCharCondPassive(slot.atkCharData,slot.atkUnitData,S.dc.mpLevel)){
 S.dc.charCondPassive=true;
 slot.charCondPassive=true;
+}else if(!(slot.atkCharData&&slot.atkCharData._manual)&&!(slot.atkUnitData&&slot.atkUnitData._manual)){
+S.dc.charCondPassive=false;
+slot.charCondPassive=false;
+slot.dcSuperchargedExTier=0;
 }
 }
 const wc=_dcCritDmgUpFromWeapon(S.dc.atkUnitData,S.dc.wpnIdx,S.dc.wpnLv);
@@ -7675,6 +7714,13 @@ if(o.ucp)slot.unitCondPassive=true;
 if(o.ccp)slot.charCondPassive=true;
 else if(slot.atkCharData&&slot.atkUnitData&&!slot.atkCharData._manual&&!slot.atkUnitData._manual){
 slot.charCondPassive=_dcShouldAutoCharCondPassive(slot.atkCharData,slot.atkUnitData,slot.mpLevel);
+}
+if(slot.atkCharData&&slot.atkUnitData&&!slot.atkCharData._manual&&!slot.atkUnitData._manual){
+if(!_dcShouldAutoCharCondPassive(slot.atkCharData,slot.atkUnitData,slot.mpLevel)){
+slot.charCondPassive=false;
+slot.dcSuperchargedExTier=0;
+slot._dcSuperchargedExManual=false;
+}
 }
 if(o.cex!==undefined){const n=parseInt(o.cex,10);if(!Number.isNaN(n)&&n>=0){slot.dcSuperchargedExTier=n;slot._dcSuperchargedExManual=true}}
 if(slot.atkCharData&&!slot.atkCharData._manual){const _xt=slot.atkCharData.ex_supercharged_tiers;if(_xt&&_xt.length>1)slot.dcSuperchargedExTier=Math.min(Math.max(0,slot.dcSuperchargedExTier|0),_xt.length-1);else{slot.dcSuperchargedExTier=0;slot._dcSuperchargedExManual=false}}
@@ -10284,13 +10330,12 @@ function _dcShouldAutoCharCondPassive(cd,ud,mpOpt){
 if(!cd||!ud||cd._manual||ud._manual)return false;
 if(!_dcCharHasConditional(cd))return false;
 const mp=_dcNormMpLevel(mpOpt!=null&&mpOpt!==''?mpOpt:S.dc.mpLevel);
-/** Super vigor max-damage: Supercharged EX 1/2 applies on any MS (not Destiny-only). */
-if(mp==='super'&&cd.ex_supercharged_tiers&&cd.ex_supercharged_tiers.length>1)return true;
 if(_dcIsShinnAsukaCharacter(cd)&&mp==='super')return true;
-if(_dcCharHasPairRequirement(cd)&&!_dcUnitCharPairMatch(cd,ud)){
-if(mp==='super'&&cd.ex_supercharged_tiers&&cd.ex_supercharged_tiers.length>1)return true;
-return false;
+if(cd.ex_supercharged_tiers&&cd.ex_supercharged_tiers.length>1){
+if(mp!=='super')return false;
+return _dcUnitMeetsSuperchargedExGate(cd,ud);
 }
+if(_dcCharHasPairRequirement(cd)&&!_dcUnitCharPairMatch(cd,ud))return false;
 const vReq=_dcCharCpVigorRequirement(cd);
 if(vReq&&!_dcVigorAtLeast(mp,vReq))return false;
 return true;
@@ -10317,7 +10362,7 @@ return DC_GUARANTEED_CRIT_RE.test(blob);
 if(Array.isArray(cd.abilities)&&cd.abilities.some(scanAb))return true;
 if(_dcNormMpLevel(S.dc.mpLevel)==='super'&&cd.ex_supercharged_tiers&&cd.ex_supercharged_tiers.length>1){
 const maxTi=cd.ex_supercharged_tiers.length-1;
-if((S.dc.dcSuperchargedExTier|0)>=maxTi&&_dcSuperchargedExTierHasGuaranteedCrit(cd,2))return true;
+if((S.dc.dcSuperchargedExTier|0)>=maxTi&&_dcSuperchargedExTierHasGuaranteedCrit(cd,2)&&_dcSuperchargedExStatsEligible(cd,S.dc.atkUnitData,S.dc.mpLevel,!!S.dc.charCondPassive))return true;
 }
 return false;
 }
@@ -10326,12 +10371,15 @@ const cd=S.dc.atkCharData;if(!cd)return[];
 const mode=S.dc.charStatMode||'normal';
 const cp=!!(_dcCharHasConditional(cd)&&charCpOn);
 const exTiers=cd.ex_supercharged_tiers;
-if(cp&&exTiers&&exTiers.length>1){
+const ud=S.dc.atkUnitData;
+const mp=S.dc.mpLevel;
+if(cp&&exTiers&&exTiers.length>1&&_dcSuperchargedExStatsEligible(cd,ud,mp,charCpOn)){
 const ti=Math.min(Math.max(0,S.dc.dcSuperchargedExTier|0),exTiers.length-1);
 const row=exTiers[ti]&&exTiers[ti].stats;
 if(row&&row.length)return row;
 }
 if(mode==='sp'&&_dcCharHasSpStats(cd))return cp?cd.sp_stats_with_ex:cd.sp_stats;
+if(cp&&exTiers&&exTiers.length>1&&!_dcSuperchargedExStatsEligible(cd,ud,mp,charCpOn))return cd.stats;
 return cp?cd.stats_with_ex:cd.stats;
 }
 function _dcGetCharStats(){
