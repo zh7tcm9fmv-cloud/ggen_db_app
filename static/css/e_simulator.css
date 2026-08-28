@@ -144,7 +144,7 @@
 .esim-doc-desc{margin:0 0 8px;font-size:14px;line-height:1.45;color:var(--text-primary);white-space:pre-wrap}
 .esim-doc-hint{margin:0;font-size:12px;line-height:1.4;color:var(--text-secondary)}
 
-.stage-source-toggle-btn--esim-logo{padding:6px 8px;display:inline-flex;align-items:center;justify-content:center;min-width:0;line-height:1}
+.stage-source-toggle-btn--esim-logo{padding:4px 10px;min-height:48px;min-width:104px;display:inline-flex;align-items:center;justify-content:center;line-height:1}
 
 /* Chronicle Size-L detail: same *_l icon as list, but art extrudes past report frame */
 .modal-content.stage-detail .detail-header{overflow:visible}
