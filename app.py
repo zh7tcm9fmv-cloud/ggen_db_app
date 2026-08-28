@@ -15459,6 +15459,48 @@ def _list_row_id_tiebreak(r):
         return (0, int(s))
     return (1, s.lower())
 
+
+def _option_part_id_num(r):
+    s = str(r.get('id', '')).strip()
+    if s.isdigit():
+        return int(s)
+    return 0
+
+
+def _option_part_row_tiebreak(r):
+    """In-game option-part list tiebreak: higher catalog Id first within the same rarity."""
+    return (0, -_option_part_id_num(r), str(r.get('variant_tag_id') or ''))
+
+
+def sort_option_part_rows(rows, sort_by, sort_dir, valid_sorts=None):
+    """Option parts: rarity tiers then descending master Id (matches in-game catalog order)."""
+    valid = valid_sorts or {'name', 'rarity', 'details', 'tags'}
+    if sort_by not in valid:
+        sort_by = 'rarity'
+    tie = _option_part_row_tiebreak
+    if sort_by == 'rarity':
+        if sort_dir == 'asc':
+            rows.sort(key=lambda r: (-r['rarity_sort'], tie(r)))
+        else:
+            rows.sort(key=lambda r: (r['rarity_sort'], tie(r)))
+    elif sort_by == 'name':
+        if sort_dir == 'asc':
+            rows.sort(key=lambda r: (r['rarity_sort'], r['name'].lower(), tie(r)))
+        else:
+            rows.sort(key=lambda r: (r['rarity_sort'], r['name'].lower(), tie(r)))
+            rows.sort(key=lambda r: r['name'].lower(), reverse=True)
+            rows.sort(key=lambda r: r['rarity_sort'])
+    elif sort_by in ('details', 'tags'):
+        def _str_key(r, rev=False):
+            field = 'tags_join' if sort_by == 'tags' else sort_by
+            s = (str(r.get(field, '') or '')).lower()
+            return (r['rarity_sort'], tuple(-ord(c) for c in s) if rev else s, tie(r))
+        if sort_dir == 'asc':
+            rows.sort(key=lambda r: _str_key(r, False))
+        else:
+            rows.sort(key=lambda r: _str_key(r, True))
+    return rows
+
 def list_rows_stat_bounds(rows, sort_by):
     """Min/max for a numeric list sort column (used by ranking bar)."""
     if not rows or sort_by not in LIST_STAT_SORT_PRIMARY:
@@ -21913,7 +21955,7 @@ def list_option_parts():
             pp = min(50000, max(10, int(request.args.get('per_page', 50000))))
         else:
             pp = min(100, max(10, int(request.args.get('per_page', 50))))
-        sb = request.args.get('sort', 'name'); sd = request.args.get('dir', 'asc')
+        sb = request.args.get('sort', 'rarity'); sd = request.args.get('dir', 'desc')
         sq = request.args.get('q', '').strip().lower()
         rav = request.args.get('rarity', '').strip()
         rarity_filter = parse_list_rarity_filter(rav)
@@ -22003,7 +22045,7 @@ def list_option_parts():
                         else sim_effects_base
                     )
                     rows.append({'id': opid, 'name': name, 'details': details_v, 'sim_effects': sim_effects, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': icon, 'tags': tags, 'tags_join': tags_join, 'variant_tag_id': vnorm if vnorm != '0' else ''})
-            rows = sort_rows(rows, sb, sd, {'name', 'rarity', 'details', 'tags'})
+            rows = sort_option_part_rows(rows, sb, sd, {'name', 'rarity', 'details', 'tags'})
             set_cached_response(all_ck, rows)
         if for_unit:
             rows = [r for r in rows if option_part_matches_unit(str(r.get('id') or ''), for_unit, lc)]
