@@ -6397,12 +6397,13 @@ if(sl.tier===tierNum&&DC_GUARANTEED_CRIT_RE.test(sl.chunk))return true;
 }
 return false;
 }
-function _dcSyncSuperchargedExTierForVigor(){
+function _dcSyncSuperchargedExTierForVigor(forceDefault){
 const cd=S.dc.atkCharData;
-if(!cd||!S.dc.charCondPassive){S.dc.dcSuperchargedExTier=0;return;}
+if(!cd||!S.dc.charCondPassive){S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;return;}
 const tiers=cd.ex_supercharged_tiers;
-if(!tiers||tiers.length<2){S.dc.dcSuperchargedExTier=0;return;}
-if(_dcNormMpLevel(S.dc.mpLevel)==='super')S.dc.dcSuperchargedExTier=tiers.length-1;
+if(!tiers||tiers.length<2){S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;return;}
+if(_dcNormMpLevel(S.dc.mpLevel)!=='super')return;
+if(forceDefault||!S.dc._dcSuperchargedExManual)S.dc.dcSuperchargedExTier=tiers.length-1;
 }
 function _dcAutoEnableMaxDamageSkills(){
 const cd=S.dc.atkCharData;
@@ -6701,7 +6702,7 @@ function _dcCreateEmptyAttackerSlot(){
 return JSON.parse(JSON.stringify({
 atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,
 lbTier:3,wpnIdx:0,wpnLv:0,
-unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,dcSuperchargedExTier:0,
+unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,dcSuperchargedExTier:0,_dcSuperchargedExManual:false,
 optionParts:[],supporters:[],
 _unitIsSD:false,
 _wpnTraitDistPow:0,_wpnTraitHpPow:0,_wpnTraits:{},
@@ -6720,7 +6721,7 @@ atkUnit:S.dc.atkUnit,atkChar:S.dc.atkChar,
 atkUnitData:S.dc.atkUnitData,atkCharData:S.dc.atkCharData,
 lbTier:S.dc.lbTier,wpnIdx:S.dc.wpnIdx,wpnLv:S.dc.wpnLv,
 unitStatMode:S.dc.unitStatMode||'normal',charStatMode:S.dc.charStatMode||'normal',
-unitCondPassive:!!S.dc.unitCondPassive,charCondPassive:!!S.dc.charCondPassive,dcSuperchargedExTier:Math.max(0,S.dc.dcSuperchargedExTier|0),
+unitCondPassive:!!S.dc.unitCondPassive,charCondPassive:!!S.dc.charCondPassive,dcSuperchargedExTier:Math.max(0,S.dc.dcSuperchargedExTier|0),_dcSuperchargedExManual:!!S.dc._dcSuperchargedExManual,
 optionParts:S.dc.optionParts||[],supporters:S.dc.supporters||[],
 _unitIsSD:!!S.dc._unitIsSD,
 _wpnTraitDistPow:S.dc._wpnTraitDistPow||0,_wpnTraitHpPow:S.dc._wpnTraitHpPow||0,
@@ -6749,7 +6750,7 @@ S.dc.atkUnit=slot.atkUnit;S.dc.atkChar=slot.atkChar;
 S.dc.atkUnitData=slot.atkUnitData;S.dc.atkCharData=slot.atkCharData;
 S.dc.lbTier=slot.lbTier;S.dc.wpnIdx=slot.wpnIdx;S.dc.wpnLv=slot.wpnLv;
 S.dc.unitStatMode=slot.unitStatMode||'normal';S.dc.charStatMode=slot.charStatMode||'normal';
-S.dc.unitCondPassive=!!slot.unitCondPassive;S.dc.charCondPassive=!!slot.charCondPassive;S.dc.dcSuperchargedExTier=Math.max(0,slot.dcSuperchargedExTier|0);
+S.dc.unitCondPassive=!!slot.unitCondPassive;S.dc.charCondPassive=!!slot.charCondPassive;S.dc.dcSuperchargedExTier=Math.max(0,slot.dcSuperchargedExTier|0);S.dc._dcSuperchargedExManual=!!slot._dcSuperchargedExManual;
 S.dc.optionParts=Array.isArray(slot.optionParts)?slot.optionParts:[];S.dc.supporters=Array.isArray(slot.supporters)?slot.supporters:[];
 S.dc._unitIsSD=!!slot._unitIsSD;
 S.dc._wpnTraitDistPow=slot._wpnTraitDistPow||0;S.dc._wpnTraitHpPow=slot._wpnTraitHpPow||0;
@@ -6883,9 +6884,7 @@ if(!(slot.atkCharData&&slot.atkCharData._manual)&&!(slot.atkUnitData&&slot.atkUn
 /* Share load used to auto-CP against the active slot’s vigor (often Normal). Re-evaluate with this slot’s own vigor so EX pair ATK matches the open panel. */
 if(_dcShouldAutoCharCondPassive(slot.atkCharData,slot.atkUnitData,S.dc.mpLevel)){
 S.dc.charCondPassive=true;
-_dcSyncSuperchargedExTierForVigor();
 slot.charCondPassive=true;
-slot.dcSuperchargedExTier=S.dc.dcSuperchargedExTier|0;
 }
 }
 const wc=_dcCritDmgUpFromWeapon(S.dc.atkUnitData,S.dc.wpnIdx,S.dc.wpnLv);
@@ -6947,7 +6946,7 @@ if(_dcSlotNeedsAutoFit(S.dc.atkSlots[S.dc.atkSlotIndex|0]))_dcScheduleAutoFitOpt
 function initDmgCalc(){
 S._dcAtkPresetBackup=null;S._dcAtkManualPackBackup=null;S._dcDefPresetNpcBackup=null;S._dcDefDbBackup=null;S._dcDefCustomPackBackup=null;
 S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;S.dc.lbTier=3;
-S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.bigRangZeonSquadBuff=false;S.dc.defNpcMapBonusesOn=true;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.applyZeonEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.dcSuperchargedExTier=0;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc.multiPctCompare=false;S.dc._dcAutoFitGen=0;S.dc._supportCntAtkPairSnapBySlot={};
+S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.bigRangZeonSquadBuff=false;S.dc.defNpcMapBonusesOn=true;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.applyZeonEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc.multiPctCompare=false;S.dc._dcAutoFitGen=0;S.dc._supportCntAtkPairSnapBySlot={};
 renderDcDefDbPicks();
 const _drp=document.getElementById('dcDefModePreset'),_drc=document.getElementById('dcDefModeCustom'),_ddb=document.getElementById('dcDefModeDatabase'),_dpw=document.getElementById('dcDefPresetWrap'),_dcw=document.getElementById('dcDefCustomWrap'),_ddbw=document.getElementById('dcDefDatabaseWrap');
 if(_drp)_drp.checked=true;if(_drc)_drc.checked=false;if(_ddb)_ddb.checked=false;if(_dpw)_dpw.style.display='';if(_dcw)_dcw.style.display='none';if(_ddbw)_ddbw.style.display='none';
@@ -7552,7 +7551,7 @@ if(sl._wpnTraitDistPow)o.td=sl._wpnTraitDistPow;
 if(sl._wpnTraitHpPow)o.th=sl._wpnTraitHpPow;
 if(sl.unitCondPassive)o.ucp=1;
 if(sl.charCondPassive)o.ccp=1;
-if((sl.dcSuperchargedExTier|0)>0)o.cex=sl.dcSuperchargedExTier|0;
+{const _xtPack=sl.atkCharData&&sl.atkCharData.ex_supercharged_tiers;if(_xtPack&&_xtPack.length>1&&sl.charCondPassive&&_dcNormMpLevel(sl.mpLevel)==='super'){const _maxEx=_xtPack.length-1;if(sl._dcSuperchargedExManual||(sl.dcSuperchargedExTier|0)!==_maxEx)o.cex=sl.dcSuperchargedExTier|0}}
 if(sl.atkCounterOwnAtk)o.acoa=1;
 if(sl.supportCounterAtk)o.sac=1;
 if(sl.unitTurnBuffAtk)o.uta=1;
@@ -7676,8 +7675,8 @@ if(o.ccp)slot.charCondPassive=true;
 else if(slot.atkCharData&&slot.atkUnitData&&!slot.atkCharData._manual&&!slot.atkUnitData._manual){
 slot.charCondPassive=_dcShouldAutoCharCondPassive(slot.atkCharData,slot.atkUnitData,slot.mpLevel);
 }
-if(o.cex!==undefined){const n=parseInt(o.cex,10);if(!Number.isNaN(n)&&n>=0)slot.dcSuperchargedExTier=n}
-if(slot.atkCharData&&!slot.atkCharData._manual){const _xt=slot.atkCharData.ex_supercharged_tiers;if(_xt&&_xt.length>1)slot.dcSuperchargedExTier=Math.min(Math.max(0,slot.dcSuperchargedExTier|0),_xt.length-1);else slot.dcSuperchargedExTier=0}
+if(o.cex!==undefined){const n=parseInt(o.cex,10);if(!Number.isNaN(n)&&n>=0){slot.dcSuperchargedExTier=n;slot._dcSuperchargedExManual=true}}
+if(slot.atkCharData&&!slot.atkCharData._manual){const _xt=slot.atkCharData.ex_supercharged_tiers;if(_xt&&_xt.length>1)slot.dcSuperchargedExTier=Math.min(Math.max(0,slot.dcSuperchargedExTier|0),_xt.length-1);else{slot.dcSuperchargedExTier=0;slot._dcSuperchargedExManual=false}}
 if(o.acoa)slot.atkCounterOwnAtk=true;
 if(o.sac)slot.supportCounterAtk=true;
 slot.supportCntPairSnap=_dcSupportCntEligiblePairSnap(slot.atkCharData,slot.atkUnitData)||null;
@@ -10300,8 +10299,8 @@ function _dcSyncCharCondPassiveFromPair(){
 const cd=S.dc.atkCharData,ud=S.dc.atkUnitData;
 if(!cd||!ud||cd._manual||ud._manual)return;
 S.dc.charCondPassive=_dcShouldAutoCharCondPassive(cd,ud);
-if(!S.dc.charCondPassive)S.dc.dcSuperchargedExTier=0;
-else _dcSyncSuperchargedExTierForVigor();
+if(!S.dc.charCondPassive){S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;}
+else _dcSyncSuperchargedExTierForVigor(true);
 }
 function _dcCharGuaranteedCritActive(){
 const cd=S.dc.atkCharData;
@@ -11249,8 +11248,8 @@ function setDcMasterLeagueBuff(on){S.dc.masterLeagueBuff=!!on;renderDcAtkUnit();
 function setDcGrandOffensiveBuff(on){S.dc.grandOffensiveBuff=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function toggleDcMasterLeagueBuff(){setDcMasterLeagueBuff(!S.dc.masterLeagueBuff)}
 function toggleDcGrandOffensiveBuff(){setDcGrandOffensiveBuff(!S.dc.grandOffensiveBuff)}
-function setDcCharCondPassive(on){S.dc.charCondPassive=!!on;if(!on)S.dc.dcSuperchargedExTier=0;else _dcSyncSuperchargedExTierForVigor();renderDcAtkUnit();renderDcAtkChar();if(S.dc.atkCharData&&!S.dc.atkCharData._manual){_dcAutoEnableMaxDamageSkills();_dcRecalcPilotBonuses(true)}const autoV=S.dc.atkCharData&&_dcShouldAutoSuperchargedVigorOnCharCp(S.dc.atkCharData);if(on&&autoV)setDcMp('super');else if(!on&&autoV)_dcAutoSetVigor();else onDcParamChange()}
-function setDcSuperchargedExTier(i){const cd=S.dc.atkCharData,arr=cd&&cd.ex_supercharged_tiers;if(!arr||arr.length<2)return;const n=arr.length;S.dc.dcSuperchargedExTier=Math.max(0,Math.min(Number(i)||0,n-1));renderDcAtkUnit();renderDcAtkChar();if(S.dc.atkCharData&&!S.dc.atkCharData._manual){_dcAutoEnableMaxDamageSkills();_dcRecalcPilotBonuses(true)}else onDcParamChange()}
+function setDcCharCondPassive(on){S.dc.charCondPassive=!!on;if(!on){S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false}else{S.dc._dcSuperchargedExManual=false;_dcSyncSuperchargedExTierForVigor(true)}renderDcAtkUnit();renderDcAtkChar();if(S.dc.atkCharData&&!S.dc.atkCharData._manual){_dcAutoEnableMaxDamageSkills();_dcRecalcPilotBonuses(true)}const autoV=S.dc.atkCharData&&_dcShouldAutoSuperchargedVigorOnCharCp(S.dc.atkCharData);if(on&&autoV)setDcMp('super');else if(!on&&autoV)_dcAutoSetVigor();else onDcParamChange()}
+function setDcSuperchargedExTier(i){const cd=S.dc.atkCharData,arr=cd&&cd.ex_supercharged_tiers;if(!arr||arr.length<2)return;const n=arr.length;S.dc.dcSuperchargedExTier=Math.max(0,Math.min(Number(i)||0,n-1));S.dc._dcSuperchargedExManual=true;renderDcAtkUnit();renderDcAtkChar();if(S.dc.atkCharData&&!S.dc.atkCharData._manual){_dcAutoEnableMaxDamageSkills();_dcRecalcPilotBonuses(true)}else onDcParamChange()}
 function toggleDcUnitCondPassive(){setDcUnitCondPassive(!S.dc.unitCondPassive)}
 function toggleDcCharCondPassive(){setDcCharCondPassive(!S.dc.charCondPassive)}
 
@@ -12708,7 +12707,7 @@ if(S.dc.atkUnitData&&(newKey!==prevKey||!!S.dc.unitCondPassive!==prevUcp))render
 if(ccpChanged)renderDcAtkChar();
 if(S.dc.atkUnitData)renderDcWeaponArea();
 if(_dcNormMpLevel(S.dc.mpLevel)==='super'){
-_dcSyncSuperchargedExTierForVigor();
+_dcSyncSuperchargedExTierForVigor(false);
 _dcAutoEnableMaxDamageSkills();
 if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);
 else onDcParamChange();
@@ -13045,10 +13044,10 @@ const rec=d.recommend_character;const isSD=d.body_type==='3';
 S.dc._unitIsSD=isSD;
 if(rec&&rec.id&&(!S.dc.atkCharData||S.dc.atkCharData.id!==rec.id)){
 try{const cr=await fetch(`/api/character/${rec.id}?lang=${S.lang}`);const cd=await cr.json();
-S.dc.atkChar=rec.id;S.dc.atkCharData=cd;S.dc.charStatMode='normal';S.dc.dcSuperchargedExTier=0;}catch(_){}
+S.dc.atkChar=rec.id;S.dc.atkCharData=cd;S.dc.charStatMode='normal';S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;}catch(_){}
 }
 }else{
-S.dc.atkChar=id;S.dc.atkCharData=d;S.dc.charStatMode='normal';S.dc.dcSuperchargedExTier=0;
+S.dc.atkChar=id;S.dc.atkCharData=d;S.dc.charStatMode='normal';S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;
 S.dc.optionParts=[];S.dc.supporters=[];
 }
 _dcSyncCharCondPassiveFromPair();
