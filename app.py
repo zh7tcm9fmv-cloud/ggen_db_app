@@ -21914,7 +21914,10 @@ def list_option_parts():
         else:
             pp = min(100, max(10, int(request.args.get('per_page', 50))))
         sb = request.args.get('sort', 'name'); sd = request.args.get('dir', 'asc')
-        sq = request.args.get('q', '').strip().lower(); rf = request.args.get('rarity', 'ALL').strip().upper()
+        sq = request.args.get('q', '').strip().lower()
+        rav = request.args.get('rarity', '').strip()
+        rarity_filter = parse_list_rarity_filter(rav)
+        rk = rarity_filter_cache_fragment(rarity_filter)
         ef = request.args.get('effect', 'ALL').strip().upper()
         if ef not in OPTION_PART_EFFECT_FILTERS:
             ef = 'ALL'
@@ -21928,7 +21931,7 @@ def list_option_parts():
             if u in unit_info_map:
                 for_unit = u
         uf = f"u{for_unit}" if for_unit else 'u0'
-        ck = f"op9_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rf}_{ef}_{lineage_ck}_{lineage_combine}_{uf}"
+        ck = f"op10_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{ef}_{lineage_ck}_{lineage_combine}_{uf}"
         # Per-unit pages must not occupy the shared 200-slot cache (DC/TB autofit floods it
         # and evicts /api/characters). Cache the unfiltered row list once, then filter.
         if not for_unit:
@@ -21940,10 +21943,10 @@ def list_option_parts():
         if not option_parts_data:
             return jsonify(convert_image_urls({
                 'rows': [], 'total': 0, 'page': 1, 'per_page': pp, 'total_pages': 1,
-                'sort': sb, 'dir': sd, 'rarity_filter': rf, 'effect_filter': ef,
+                'sort': sb, 'dir': sd, 'rarity_filter': rav, 'effect_filter': ef,
                 'effect_filter_icons': get_option_part_effect_filter_icons(lc),
             }))
-        all_ck = f"op9all_{lc}_{sb}_{sd}_{sq}_{rf}_{ef}_{lineage_ck}_{lineage_combine}"
+        all_ck = f"op10all_{lc}_{sb}_{sd}_{sq}_{rk}_{ef}_{lineage_ck}_{lineage_combine}"
         rows = get_cached_response(all_ck)
         if not isinstance(rows, list):
             ld = get_lang_data(lc); op_text_map = ld.get('op_text_map', {}); ltm = ld.get('lang_text_map', {})
@@ -21953,7 +21956,9 @@ def list_option_parts():
                 opid = str(item.get('Id') or item.get('id', 0))
                 if opid == '0': continue
                 ri = str(item.get('RarityTypeIndex') or 1)
-                if rf != 'ALL' and RARITY_MAP.get(ri, 'N') != rf: continue
+                letter = RARITY_MAP.get(ri, 'N')
+                if rarity_filter is not None and not row_matches_rarity_filter(rarity_filter, letter, False, False):
+                    continue
                 name_lid = normalize_id(item.get('SortNameLanguageId') or item.get('sortNameLanguageId'))
                 name = op_text_map.get(name_lid, '') if name_lid else ''
                 if not name: name = f'Option Part {opid}'
@@ -22006,7 +22011,7 @@ def list_option_parts():
         start = (page - 1) * pp; pr = rows[start:start + pp]
         result = {
             'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp,
-            'sort': sb, 'dir': sd, 'rarity_filter': rf, 'effect_filter': ef,
+            'sort': sb, 'dir': sd, 'rarity_filter': rav, 'effect_filter': ef,
             'effect_filter_icons': get_option_part_effect_filter_icons(lc),
         }
         if not for_unit:
