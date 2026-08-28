@@ -89,6 +89,21 @@
     ));
     appendFaces('ggenBrandFontBody',parts.join(''));
     injectedBodyFor=lang;
+    injectedNotoUi=true;
+  }
+
+  var injectedNotoUi=false;
+  /* Stage source bar: one Noto face for all locales (matches JP "Challenge" label look). */
+  function injectNotoForStageUi(){
+    if(injectedNotoUi||document.getElementById('ggenBrandFontBody')||document.getElementById('ggenNotoStageUi')){injectedNotoUi=true;return}
+    if(paused||detailOpen())return;
+    appendFaces('ggenNotoStageUi',face(
+      'Noto Sans JP',
+      fontUrl('NotoSansJP.ttf','NotoSansJP.ttf'),
+      'truetype',
+      '100 900'
+    ));
+    injectedNotoUi=true;
   }
 
   function clearTimers(){
@@ -103,14 +118,22 @@
       else injectBrand();
     }, paused||detailOpen()?2000:1200);
   }
-  function scheduleBody(){
+  function scheduleBody(delayMs){
     if(!needsBodyCjk(currentLang()))return;
     if(bodyTimer)clearTimeout(bodyTimer);
+    var wait=(typeof delayMs==='number')?delayMs:(paused||detailOpen()?5000:8000);
     bodyTimer=setTimeout(function(){
       bodyTimer=0;
       if(window.requestIdleCallback)requestIdleCallback(injectBody,{timeout:6000});
       else injectBody();
-    }, paused||detailOpen()?5000:8000);
+    }, wait);
+  }
+  function injectBodyNow(){
+    clearTimers();
+    injectedBodyFor='';
+    if(detailOpen()){paused=true;return}
+    if(window.requestIdleCallback)requestIdleCallback(injectBody,{timeout:300});
+    else injectBody();
   }
 
   function pause(){
@@ -124,12 +147,20 @@
   }
 
   function reinjectForLang(){
-    injectedBodyFor='';
-    var el=document.getElementById('ggenBrandFontBody');
-    if(el)el.remove();
+    clearTimers();
+    var lang=currentLang();
+    if(!needsBodyCjk(lang)){
+      injectedBodyFor=lang;
+      var el=document.getElementById('ggenBrandFontBody');
+      if(el)el.remove();
+      if(detailOpen()){paused=true;return}
+      if(!injectedBrand)scheduleBrand();
+      return;
+    }
     if(detailOpen()){paused=true;return}
     if(!injectedBrand)scheduleBrand();
-    scheduleBody();
+    /* User picked a CJK locale — inject now; cold boot still uses deferred scheduleBody(). */
+    injectBodyNow();
   }
 
   function boot(){
@@ -140,6 +171,7 @@
   else window.addEventListener('load',boot);
 
   window.__ggenInjectBrandFonts=reinjectForLang;
+  window.__ggenEnsureNotoForStageUi=injectNotoForStageUi;
   window.__ggenPauseBrandFonts=pause;
   window.__ggenResumeBrandFonts=resume;
 })();
