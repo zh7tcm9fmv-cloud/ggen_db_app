@@ -6718,7 +6718,8 @@
     "ip_c31960a6dff82ee9a9c2ef4edebac7c7:unit:1370005700:ssp": "up",
     "ip_c31960a6dff82ee9a9c2ef4edebac7c7:unit:1370000370:ssp": "up",
     "ip_c31960a6dff82ee9a9c2ef4edebac7c7:unit:1219000100:ssp": "up",
-    "ip_c31960a6dff82ee9a9c2ef4edebac7c7:unit:1705005400:ssp": "up"
+    "ip_c31960a6dff82ee9a9c2ef4edebac7c7:unit:1705005400:ssp": "up",
+    "ip_c31960a6dff82ee9a9c2ef4edebac7c7:unit:1730000100:ssp": "up"
   },
   "targets": {
     "unit:1155000700:sp": {
@@ -8410,7 +8411,7 @@
       "down": 0
     },
     "unit:1730000100:ssp": {
-      "up": 6,
+      "up": 7,
       "down": 3
     },
     "unit:1125000510:sp": {
