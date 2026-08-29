@@ -2,7 +2,7 @@
   "version": 1,
   "title": "Thank you to {n} Newtypes keeping this database alive.",
   "join_label": "Join the wall",
-  "count": 24,
+  "count": 25,
   "supporters": [
     {
       "name": "Phil",
@@ -121,6 +121,11 @@
     },
     {
       "name": "dundun456",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": false
+    },
+    {
+      "name": "Simon Wong",
       "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
       "crown": false
     }
