@@ -9790,6 +9790,8 @@ ssp_weap_effect_data = load_json(os.path.join(BASE_DIR, "m_unit_ssp_custom_core_
 option_parts_data = load_json(os.path.join(BASE_DIR, "m_option_parts.json"))
 option_parts_lineage_data = load_json(os.path.join(BASE_DIR, "m_option_parts_lineage.json"))
 option_parts_acquisition_method_data = load_json(os.path.join(BASE_DIR, "m_option_parts_acquisition_method.json"))
+invasion_event_stage_extend_data = load_json(os.path.join(BASE_DIR, "m_invasion_event_stage_extend.json"))
+invasion_event_stage_group_data = load_json(os.path.join(BASE_DIR, "m_invasion_event_stage_group.json"))
 binder_data = load_json(os.path.join(BASE_DIR, "m_binder.json"))
 unit_acquisition_method_data = load_json(os.path.join(BASE_DIR, "m_unit_acquisition_method.json"))
 character_acquisition_method_data = load_json(os.path.join(BASE_DIR, "m_character_acquisition_method.json"))
@@ -10282,6 +10284,33 @@ unit_acquisition_by_id = _index_acq_rows(unit_acquisition_method_data, ('UnitId'
 character_acquisition_by_id = _index_acq_rows(character_acquisition_method_data, ('CharacterId', 'characterId'))
 item_acquisition_by_id = _index_acq_rows(item_acquisition_method_data, ('ItemId', 'itemId'))
 option_parts_acquisition_by_id = _index_acq_rows(option_parts_acquisition_method_data, ('OptionPartsId', 'optionPartsId'))
+_invasion_stage_group_by_extend_id = {}
+for _ierow in extract_data_list(invasion_event_stage_extend_data or []):
+    if not isinstance(_ierow, dict):
+        continue
+    _iesid = normalize_id(_ierow.get('Id') or _ierow.get('id'))
+    _iegid = normalize_id(_ierow.get('InvasionEventStageGroupId') or _ierow.get('invasionEventStageGroupId'))
+    if _iesid != '0' and _iegid != '0':
+        _invasion_stage_group_by_extend_id[_iesid] = _iegid
+_invasion_group_unit_id_map = {}
+for _igrow in extract_data_list(invasion_event_stage_group_data or []):
+    if not isinstance(_igrow, dict):
+        continue
+    _igid = normalize_id(_igrow.get('Id') or _igrow.get('id'))
+    _iuid = normalize_id(_igrow.get('UnitId') or _igrow.get('unitId'))
+    if _igid != '0' and _iuid != '0':
+        _invasion_group_unit_id_map[_igid] = _iuid
+option_part_benefit_unit_by_op = {}
+for _opid, _acq_rows in (option_parts_acquisition_by_id or {}).items():
+    for _arow in _acq_rows or []:
+        if normalize_id((_arow or {}).get('AcquisitionMethodTypeIndex') or (_arow or {}).get('acquisitionMethodTypeIndex')) != '22':
+            continue
+        _stage_id = normalize_id((_arow or {}).get('TargetId') or (_arow or {}).get('targetId'))
+        _grp_id = _invasion_stage_group_by_extend_id.get(_stage_id, '0')
+        _ben_uid = _invasion_group_unit_id_map.get(_grp_id, '0')
+        if _ben_uid != '0':
+            option_part_benefit_unit_by_op[normalize_id(_opid)] = _ben_uid
+        break
 binder_map = {}
 for _brow in extract_data_list(binder_data or []):
     if not isinstance(_brow, dict):
@@ -22735,6 +22764,20 @@ def _build_option_part_acquisition_methods(opid, lc, ld, detail_text):
     return out
 
 
+def _resolve_option_part_benefit_unit(opid, lc, ld):
+    """Fierce Enemy Assault OPs: the exact unit that gains the mod (from invasion stage acq type 22)."""
+    uid = option_part_benefit_unit_by_op.get(normalize_id(opid), '0')
+    if uid == '0' or uid not in unit_info_map:
+        return None
+    uim = ld.get('unit_id_map') or {}
+    utm = ld.get('unit_text_map') or {}
+    ulid = uim.get(uid, '')
+    name = (utm.get(ulid, '') or '').strip() if ulid else ''
+    if not name:
+        name = uid
+    return {'id': uid, 'name': name, 'type': 'unit', 'source': 'fierce_enemy_assault'}
+
+
 def _option_part_detail_row(item, lc, variant_tag_id=''):
     """Single option part JSON (same shape as list rows) for detail API."""
     if not isinstance(item, dict):
@@ -22755,6 +22798,9 @@ def _option_part_detail_row(item, lc, variant_tag_id=''):
     tags = resolve_lineage_ids_to_tag_dicts(lineage_ids, ld, tt='unit')
     tags = merge_option_part_tags_with_series(tags, item.get('SeriesId') or item.get('seriesId'), ld)
     condition_tags = _collect_option_part_condition_tags(item, lc, ld, variant_tag_id)
+    benefit_unit = _resolve_option_part_benefit_unit(opid, lc, ld)
+    if benefit_unit:
+        condition_tags = []
     vtag = normalize_id(variant_tag_id)
     if vtag != '0':
         vname = (ld.get('lineage_lookup', {}) or {}).get(vtag, '')
@@ -22779,6 +22825,7 @@ def _option_part_detail_row(item, lc, variant_tag_id=''):
         'thum': icon,
         'tags': tags,
         'condition_tags': condition_tags,
+        'benefit_unit': benefit_unit,
         'tags_join': tags_join,
         'variant_tag_id': vtag if vtag != '0' else '',
         'acquisition_method_label': _option_part_acquisition_label(lc),
