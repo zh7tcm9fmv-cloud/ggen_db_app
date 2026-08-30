@@ -4216,7 +4216,8 @@ ROLE_ICON_MAP = {
 }
 # Substrings in trait/ability *names* from master data (not necessarily the same as on-screen UI copy).
 EX_ABILITY_PATTERNS = [
-    'ex character ability', 'ex ability', 'ex機體能力', 'ex角色能力', 'exキャラクターアビリティ',
+    'ex character ability', 'ex ability', 'ex機體能力', 'ex角色能力',
+    'exキャラクターアビリティ', 'exキャラアビリティ',
 ]
 
 
@@ -4597,9 +4598,12 @@ def _char_trait_line_is_squad_unit_effect(line, bab):
     return False
 
 def _clean_supercharged_ex_tier_label(lb):
-    s = (lb or '').strip().strip('"').strip("'")
-    s = re.sub(r'\s*\(?\s*1\s*turn\s*\)?\.?\s*$', '', s, flags=re.IGNORECASE)
-    return s.strip().strip('"').strip("'")
+    s = (lb or '').strip().strip('"').strip("'").strip('「').strip('」')
+    s = re.sub(r'\s*\(\s*1\s*turn(?:\(s\))?\s*\)\.?\s*$', '', s, flags=re.IGNORECASE)
+    s = re.sub(r'\s*[（(]\s*1\s*ターン\s*[)）]\s*$', '', s)
+    s = re.sub(r'\s*[（(]\s*1\s*回合\s*[)）]\s*$', '', s)
+    s = re.sub(r'"\s*$', '', s)
+    return s.strip().strip('"').strip("'").strip('「').strip('」')
 
 
 def _trait_line_is_supercharged_ex_section(text):
@@ -4610,12 +4614,39 @@ def _trait_line_is_supercharged_ex_section(text):
     return bool(re.search(r'(?:Supercharged\s+EX|超一[擊撃]EX)\s*[12]\b', text, re.IGNORECASE))
 
 
+def _slice_supercharged_ex_tier_section_line_is_reference(line):
+    """Skip \"When Supercharged EX N ends\" / 效果結束時 cross-references — not tier headers."""
+    if not line:
+        return False
+    return bool(re.search(r'(?:\bwhen\b|\bends\b|效果結束|効果終了)', line, re.IGNORECASE))
+
+
+def _slice_supercharged_ex_tier_match_line_bounds(blob, m):
+    """Line bounds for a tier-header match (match may include a leading newline from the regex)."""
+    anchor = m.start()
+    if anchor < len(blob) and blob[anchor] in '\n\r':
+        anchor += 1
+    line_start = blob.rfind('\n', 0, anchor) + 1
+    line_end = blob.find('\n', anchor)
+    if line_end == -1:
+        line_end = len(blob)
+    return line_start, line_end, anchor
+
+
 def _slice_supercharged_ex_tier_sections(blob):
     """Split EX trait text at Supercharged EX 1 / 2 (EN) or 超一擊/撃EX1 / 2 (ZH/JA) headers. Returns [(tier, label, chunk), ...]."""
     if not blob or not isinstance(blob, str):
         return []
-    rx = re.compile(r'(?:Supercharged\s+EX|超一[擊撃]EX)\s*([12])\b', re.IGNORECASE)
-    matches = list(rx.finditer(blob))
+    rx = re.compile(
+        r'(?:^|\n)\s*.*?(?:Supercharged\s+EX|超一[擊撃]EX)\s*([12])\b',
+        re.IGNORECASE | re.MULTILINE,
+    )
+    matches = []
+    for m in rx.finditer(blob):
+        line_start, line_end, _anchor = _slice_supercharged_ex_tier_match_line_bounds(blob, m)
+        if _slice_supercharged_ex_tier_section_line_is_reference(blob[line_start:line_end]):
+            continue
+        matches.append(m)
     if len(matches) < 2:
         return []
     out = []
@@ -4624,10 +4655,10 @@ def _slice_supercharged_ex_tier_sections(blob):
         start = m.start()
         end = matches[i + 1].start() if i + 1 < len(matches) else len(blob)
         chunk = blob[start:end]
-        line_end = blob.find('\n', m.start())
+        _ls, line_end, anchor = _slice_supercharged_ex_tier_match_line_bounds(blob, m)
         if line_end == -1 or line_end > end:
             line_end = min(m.end(), end)
-        label = blob[m.start():line_end].strip().strip('"').strip("'")
+        label = blob[anchor:line_end].strip().strip('"').strip("'")
         out.append((tier, label, chunk))
     return out
 
@@ -4646,11 +4677,41 @@ def _extract_supercharged_ex_tier_chunk_stat_pct(chunk, char_id, bab):
     return pct
 
 
-def collect_supercharged_ex_stat_tiers(ac, char_id):
-    """Per-tier EX % for abilities whose description contains Supercharged EX 1 and 2 (mutually exclusive in-game)."""
+def _ability_has_supercharged_ex_tier_sections(bab):
+    if bab.get('is_ex'):
+        return True
+    for d2 in bab.get('details', []) or []:
+        txt = (d2.get('text') or '').strip()
+        if txt and len(_slice_supercharged_ex_tier_sections(txt)) >= 2:
+            return True
+    return False
+
+
+def _apply_supercharged_ex_tier_slices(merged, slices, char_id, bab, *, labels_only=False):
+    for tier, label, chunk in slices:
+        if labels_only:
+            if tier not in merged:
+                continue
+            if label:
+                merged[tier]['label'] = label
+            continue
+        if tier not in merged:
+            merged[tier] = {'label': label or '', 'ex_pct': {s: 0 for s in CHAR_STAT_ORDER}}
+        add_pct = _extract_supercharged_ex_tier_chunk_stat_pct(chunk, char_id, bab)
+        for s in CHAR_STAT_ORDER:
+            merged[tier]['ex_pct'][s] += add_pct[s]
+        if label and len(label) > len(merged[tier]['label'] or ''):
+            merged[tier]['label'] = label
+
+
+def collect_supercharged_ex_stat_tiers(ac, char_id, ac_labels=None):
+    """Per-tier EX % for abilities whose description contains Supercharged EX 1 and 2 (mutually exclusive in-game).
+
+    Stat % is parsed from ``ac`` (calc/EN). Display labels come from ``ac_labels`` when provided (user locale).
+    """
     merged = {}
     for bab in ac:
-        if not bab.get('is_ex'):
+        if not _ability_has_supercharged_ex_tier_sections(bab):
             continue
         for d2 in bab.get('details', []) or []:
             txt = (d2.get('text') or '').strip()
@@ -4659,14 +4720,20 @@ def collect_supercharged_ex_stat_tiers(ac, char_id):
             slices = _slice_supercharged_ex_tier_sections(txt)
             if len(slices) < 2:
                 continue
-            for tier, label, chunk in slices:
-                add_pct = _extract_supercharged_ex_tier_chunk_stat_pct(chunk, char_id, bab)
-                if tier not in merged:
-                    merged[tier] = {'label': label or '', 'ex_pct': {s: 0 for s in CHAR_STAT_ORDER}}
-                for s in CHAR_STAT_ORDER:
-                    merged[tier]['ex_pct'][s] += add_pct[s]
-                if label and len(label) > len(merged[tier]['label'] or ''):
-                    merged[tier]['label'] = label
+            _apply_supercharged_ex_tier_slices(merged, slices, char_id, bab)
+    label_src = ac_labels if ac_labels is not None else ac
+    if label_src is not ac:
+        for bab in label_src:
+            if not _ability_has_supercharged_ex_tier_sections(bab):
+                continue
+            for d2 in bab.get('details', []) or []:
+                txt = (d2.get('text') or '').strip()
+                if not txt:
+                    continue
+                slices = _slice_supercharged_ex_tier_sections(txt)
+                if len(slices) < 2:
+                    continue
+                _apply_supercharged_ex_tier_slices(merged, slices, char_id, bab, labels_only=True)
     if len(merged) < 2:
         return []
     return [{'tier': t, 'label': _clean_supercharged_ex_tier_label(merged[t]['label']), 'ex_pct': dict(merged[t]['ex_pct'])} for t in sorted(merged.keys())]
@@ -26631,7 +26698,7 @@ def get_character(char_id):
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
         view_ranking = request.args.get('view', '').strip().lower() == 'ranking'
-        ck = f"c_{char_id}_{lc}_r13_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"c_{char_id}_{lc}_r14_{1 if view_ranking else 0}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -26687,7 +26754,7 @@ def get_character(char_id):
             stb = math.floor(sbv * (spbs_u[s] + spbs_c[s] + spes[s] + pair_pct_s) / 100) if sbv > 0 else 0
             tpct_s = spbs_u[s] + spbs_c[s] + spes[s] + pair_pct_s
             sswe.append({'name': s, 'base': sbv, 'total': sbv + stb, 'bonus': stb, 'trait_pct': tpct_s})
-        ex_supercharged_tiers = collect_supercharged_ex_stat_tiers(ac, char_id)
+        ex_supercharged_tiers = collect_supercharged_ex_stat_tiers(ac, char_id, ac_labels=abilities)
         ex_supercharged_tiers_payload = []
         if ex_supercharged_tiers:
             for et in ex_supercharged_tiers:
