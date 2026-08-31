@@ -2204,7 +2204,7 @@ def _ability_text_implies_pilot_gated_squad_stat(txt):
     return bool(re.search(
         r'increases ATK and DEF|increased ATK and DEF|gain increased ATK and DEF|'
         r'grant\s+\+\d+%\s+ATK\s+and\s+DEF|grants\s+\+\d+%\s+ATK\s+and\s+DEF|'
-        r'Increase ATK by|increase ATK by|same[-\s]squad|in your squad|units in your squad|'
+        r'increases? ATK by|Increase ATK by|increase ATK by|same[-\s]squad|in your squad|units in your squad|'
         r'攻撃力と防御力|攻擊力與防禦力|同部隊|部隊內|所屬部隊|自身所屬部隊|'
         r'攻擊力提升\d+%.*防禦力提升|防禦力提升\d+%.*攻擊力提升|'
         r'攻撃力と防御力\d+%アップ|攻撃力.*防御力.*アップ',
@@ -4401,7 +4401,9 @@ def trait_title_implies_conditional_stat_bonuses(name):
     low = name.lower()
     en_markers = (
         '(battle conditions)', '(tag conditions)', '(series conditions)',
-        '(hp conditions)', '(vigor conditions)', '(cnd: vigor)', '(cond: vigor)', '(no. of battles conditions)',
+        '(hp conditions)', '(cond: hp)', '(cnd: hp)',
+        '(vigor conditions)', '(cnd: vigor)', '(cond: vigor)', '(no. of battles conditions)',
+        '(cond: combat - count)', '(cnd: combat - count)', '(no. of combats conditions)',
         '(when supporting)', '(map conditions)', '(ally conditions)',
         '(unit conditions)', '(unit condition)',
     )
@@ -5066,18 +5068,20 @@ def _parse_hp_or_above_atk_tiers_from_trait_text(txt):
 
 
 def _unit_adjust_hp_condition_increased_atk_buckets(ad, spb, spc, added_b=0, added_c=0):
-    """(HP conditions) Increased ATK: only one HP-or-above tier applies in-game.
+    """(HP conditions) / (Cond: HP) Increased ATK: only one HP-or-above tier applies in-game.
 
     Parse tiers from this ability and rewrite *this ability's* ATK contribution (added_b/added_c).
     Do not inspect global spc — sibling traits (e.g. Advantage: Zeon +15% ATK) used to be mistaken for
     stacked HP tiers and double-counted into stats_no_cond (FA Gundam 1007001160: 30% instead of 20%).
 
-    At assumed full HP: spb gets the highest threshold %; multi-tier CP net uses weakest via spc."""
+    (Cond: HP) keeps all tiers in the CP bucket (detail HP-tier slider). Legacy (HP conditions) bakes
+    the highest tier into base stats at assumed full HP."""
     name = (ad.get('name') or '').strip()
     if not name:
         return
     nl = name.lower()
-    if ('(hp conditions)' not in nl and 'hp条件' not in name.lower()
+    strict_hp = _ability_title_is_cond_hp(name)
+    if not strict_hp and ('(hp conditions)' not in nl and 'hp条件' not in name.lower()
             and '體力條件' not in name and '体力条件' not in name):
         return
     if ('increased atk' not in nl and '攻撃力上昇' not in name
@@ -5094,22 +5098,100 @@ def _unit_adjust_hp_condition_increased_atk_buckets(ad, spb, spc, added_b=0, add
     by_th = {}
     for th, pct in tiers:
         by_th[th] = max(by_th.get(th, 0), pct)
-    uniq = sorted(by_th.items(), key=lambda x: -x[0])
-    hi_pct = uniq[0][1]
-    lo_pct = uniq[-1][1]
+    sorted_th = sorted(by_th.items(), key=lambda x: x[0])
+    running = 0
+    lo_cum = 0
+    hi_cum = 0
+    for th, pct in sorted_th:
+        running += pct
+        lo_cum = running if lo_cum == 0 else lo_cum
+        hi_cum = running
     atk_key = 'Attack'
     ab = int(added_b or 0)
     ac = int(added_c or 0)
     if ab == 0 and ac == 0:
         return
-    # Strip this ability's ATK%, then apply the correct full-HP / CP split.
     if ab:
         spb[atk_key] = spb.get(atk_key, 0) - ab
     if ac:
         spc[atk_key] = spc.get(atk_key, 0) - ac
-    spb[atk_key] = spb.get(atk_key, 0) + hi_pct
-    if len(uniq) > 1:
-        spc[atk_key] = spc.get(atk_key, 0) + (lo_pct - hi_pct)
+    if strict_hp:
+        spc[atk_key] = spc.get(atk_key, 0) + hi_cum
+        return
+    spb[atk_key] = spb.get(atk_key, 0) + hi_cum
+    if len(sorted_th) > 1 and lo_cum < hi_cum:
+        spc[atk_key] = spc.get(atk_key, 0) + (lo_cum - hi_cum)
+
+
+def _collect_unit_hp_atk_tiers_meta(ac):
+    """Expose cumulative HP-or-above ATK tiers for unit detail CP slider."""
+    best = None
+    for ab in ac or []:
+        name = (ab.get('name') or '').strip()
+        if not _ability_title_is_cond_hp(name):
+            continue
+        chunks = []
+        for d2 in ab.get('details', []) or []:
+            if isinstance(d2, dict):
+                chunks.append(d2.get('text') or '')
+        blob = '\n'.join(chunks)
+        raw = _parse_hp_or_above_atk_tiers_from_trait_text(blob)
+        if not raw:
+            continue
+        by_th = {}
+        for th, pct in raw:
+            by_th[th] = max(by_th.get(th, 0), pct)
+        running = 0
+        tiers = []
+        for th, pct in sorted(by_th.items(), key=lambda x: x[0]):
+            running += pct
+            tiers.append({'hp_pct': th, 'atk_pct': running})
+        if not tiers:
+            continue
+        cand = {
+            'tiers': tiers,
+            'ability_id': str(ab.get('id') or ''),
+            'ability_name': name,
+        }
+        if not best or tiers[-1]['atk_pct'] > best['tiers'][-1]['atk_pct']:
+            best = cand
+    return best
+
+
+def _collect_unit_combat_count_atk_meta(ac):
+    """Combat-count stack ATK (e.g. +4% per combat, up to 20%) for unit detail CP slider."""
+    for ab in ac or []:
+        name = (ab.get('name') or '').strip()
+        if not _ability_title_is_combat_count_cond(name):
+            continue
+        for d2 in ab.get('details', []) or []:
+            txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
+            if not txt:
+                continue
+            m = re.search(
+                r'increase own ATK by (\d+)%[\s\S]{0,80}?\(up to (\d+)%\)',
+                txt, re.IGNORECASE)
+            if not m:
+                m = re.search(
+                    r'自身(?:の)?攻撃力が(\d+)%上昇（最大(\d+)%）', txt)
+            if not m:
+                m = re.search(
+                    r'自身攻擊力提升(\d+)%（最高(\d+)%）', txt)
+            if not m:
+                continue
+            per = int(m.group(1))
+            mx = int(m.group(2))
+            if per <= 0 or mx <= 0:
+                continue
+            max_stacks = max(1, min(5, (mx + per - 1) // per))
+            return {
+                'per': per,
+                'max': mx,
+                'max_stacks': max_stacks,
+                'ability_id': str(ab.get('id') or ''),
+                'ability_name': name,
+            }
+    return None
 
 
 def _vigor_gate_tier_rank(gate_text):
@@ -5145,6 +5227,26 @@ def _vigor_gate_active_at_rank(gate_rank, or_higher, assumed_rank):
     if or_higher:
         return assumed_rank >= gate_rank
     return assumed_rank == gate_rank
+
+
+def _ability_title_is_cond_hp(name):
+    """(Cond: HP) / (Cnd: HP) — CP-gated HP tiers (detail slider); do not bake into assumed-full-HP base stats."""
+    if not name:
+        return False
+    low = name.lower()
+    return '(cond: hp)' in low or '(cnd: hp)' in low
+
+
+def _ability_title_is_combat_count_cond(name):
+    """(Cond: Combat - Count) combat-stack ATK traits."""
+    if not name:
+        return False
+    low = name.lower()
+    if '(cond: combat - count)' in low or '(cnd: combat - count)' in low:
+        return True
+    if '戦闘回数条件' in name or '战斗次数条件' in name or '戰鬥次數條件' in name:
+        return True
+    return False
 
 
 def _ability_title_is_vigor_condition(name):
@@ -10142,6 +10244,8 @@ LIMITED_TIME_UNIT_IDS = frozenset({
     '1219000650',
     # SD linked Unit Assembly pickup (linked CharacterId 1705002900)
     '1705002050',
+    # Full Armor Hyaku-Shiki Kai (EX) pickup: RecommendCharacterId 1080000203 (Quattro Bajeena)
+    '1115000350',
 })
 
 
@@ -26827,7 +26931,7 @@ def get_unit(unit_id):
         if stat_mode_arg not in ('normal', 'sp', 'ssp'):
             stat_mode_arg = 'normal'
         cond_for_ranking = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-        ck = f"u_{unit_id}_{lc}_ssp16_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"u_{unit_id}_{lc}_ssp17_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -26897,6 +27001,7 @@ def get_unit(unit_id):
             hc = any(cond for d2 in ad.get('details', []) for cond in d2.get('conditions', []))
             ie = ad.get('is_ex', False)
             ability_cond = ability_name_implies_unit_stat_conditional_bucket(ad)
+            strict_hp_cond = _ability_title_is_cond_hp(ad.get('name', ''))
             inx = unit_id == '1400000550' and any(kw in (ad.get('name', '') or '').lower() for kw in ['newtype', 'x-rounder', '新人類', 'x rounder'])
             atk_b0 = bd.get('Attack', 0); atk_c0 = cd.get('Attack', 0)
             for di, d2 in enumerate(ad.get('details', [])):
@@ -26908,7 +27013,7 @@ def get_unit(unit_id):
                 hp_high_gate_active = False
                 for part in parts:
                     itc = _is_conditional_stat_text(part)
-                    if itc and _unit_resource_threshold_assumed_active(part):
+                    if itc and _unit_resource_threshold_assumed_active(part) and not strict_hp_cond:
                         itc = False
                         hp_high_gate_active = True
                     elif itc:
@@ -27233,7 +27338,13 @@ def get_unit(unit_id):
                 or _pilot_en_red):
             _has_pilot_cond = True
         _is_sd_unit = _unit_has_sd_mechanism(info, unit_id)
+        _unit_hp_atk_tiers = _collect_unit_hp_atk_tiers_meta(ac)
+        _unit_combat_count_atk = _collect_unit_combat_count_atk_meta(ac)
         result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'has_cond_weapon_range': _has_cond_weapon_range, 'has_pilot_cond_passive': _has_pilot_cond, 'cp_weapon_range_mods': _cp_wpn_range_mods, 'pilot_weapon_effect_bonuses': _pilot_wpn_fx, 'pilot_tag_weapon_stat_bonuses': _pilot_tag_wpn, 'pilot_en_cost_reduction_pct': _pilot_en_red, 'weapon_en_cost_increase_pct': {'sp': en_cost_inc_b[0], 'ssp': en_cost_inc_sspb[0], 'sp_cond': en_cost_inc_c[0], 'ssp_cond': en_cost_inc_sspc[0]}, 'is_large': il, 'is_sd': _is_sd_unit, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id, 'gacha_pull_movie_id': _gacha_pull_movie_id}
+        if _unit_hp_atk_tiers:
+            result['unit_hp_atk_tiers'] = _unit_hp_atk_tiers
+        if _unit_combat_count_atk:
+            result['unit_combat_count_atk'] = _unit_combat_count_atk
         if not view_ranking:
             ssp_mats = _build_unit_ssp_materials(unit_id, lc)
             if ssp_mats:

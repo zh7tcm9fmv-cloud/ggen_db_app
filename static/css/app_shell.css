@@ -1510,6 +1510,10 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .detail-pilot-stack-row--enter{animation:detailPilotStackIn .24s ease-out both}
 .detail-pilot-stack-slider{flex:1;min-width:0;width:100%;height:4px;margin:0;accent-color:rgba(168,85,247,.9);cursor:pointer}
 .detail-pilot-stack-val{font-size:11px;font-weight:700;color:#c4b5fd;min-width:2.75em;text-align:right;flex-shrink:0;font-variant-numeric:tabular-nums;line-height:1}
+.detail-unit-cond-stack-row{width:min(100%,240px);margin-top:8px}
+.detail-unit-hp-tier-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.detail-unit-hp-tier-btn{font-size:11px;line-height:1.25;padding:6px 8px}
+.ability-item--unit-cond-active{box-shadow:inset 0 0 0 1px rgba(96,165,250,.75),0 0 12px rgba(59,130,246,.18)}
 @keyframes detailPilotStackIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
 .stat-card.has-cond-bonus--pilot{box-shadow:inset 0 0 0 1px rgba(168,85,247,.45)}
 .stat-card.has-cond-bonus--pilot .stat-card-value.has-bonus-val--pilot{color:#e9d5ff;text-shadow:0 0 10px rgba(192,132,252,.45)}
