@@ -3541,7 +3541,6 @@ updateDetailDynamicSections('stage');
 const finishRestore=()=>{
 if(modalScrollTop!=null&&!Number.isNaN(modalScrollTop))_setDetailModalScrollTop(modalScrollTop);
 if(returnNpcId)scrollToNpcDetailByNpcId(returnNpcId,'fromStageReturn');
-if(S.stageMapExpanded)setTimeout(()=>fitStageMapToUnits(true),100);
 S._stageDetailUiRestore=null;
 };
 requestAnimationFrame(()=>requestAnimationFrame(finishRestore));
@@ -5664,18 +5663,20 @@ function fitStageMapToUnits(centerAfter){
   const escapeOn=!!S.stageMapEscapeLayerVisible;
   const baseCell=50;
   const gap=(hasBg||escapeOn)?0:2;
-  const contPad=20*2; // map-grid-container padding
-  const gridPad=15*2; // map-grid padding
-  const extraPad=8;  // breathing room
+  const contPad=20*2;
+  const gridPad=((hasBg||escapeOn)?12:15)*2;
+  const extraPad=8;
   const bw=(win.maxX-win.minX+1),bh=(win.maxY-win.minY+1);
-  const availW=Math.max(80,c.clientWidth-(contPad+gridPad+extraPad));
-  const availH=Math.max(80,c.clientHeight-(contPad+gridPad+extraPad));
+  const measureEl=c.closest('.detail-section')||c.parentElement||c;
+  const measureW=Math.max(measureEl.clientWidth||0,c.clientWidth||0,320);
+  const viewportH=Math.min(window.innerHeight*0.82,820);
+  const measureH=Math.max(c.clientHeight||0,viewportH,240);
+  const availW=Math.max(80,measureW-(contPad+gridPad+extraPad));
+  const availH=Math.max(80,measureH-(contPad+gridPad+extraPad));
   const cellPxW=Math.floor((availW-((bw-1)*gap))/bw);
   const cellPxH=Math.floor((availH-((bh-1)*gap))/bh);
   const cellPx=Math.max(10,Math.min(cellPxW,cellPxH));
   const z=cellPx/baseCell;
-
-  // Slightly zoom out so edges aren't tight.
   S.stageMapZoom=Math.max(.4,Math.min(1.4,z*.98));
   if(S.currentDetailType==='stage'){
     document.getElementById('detailStageMapContainer').innerHTML=renderStageMapSection(S.currentDetailData);
