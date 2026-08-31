@@ -3805,17 +3805,21 @@ function renderSpConversionChipThumb(r,szOpt){const base=r&&r.sp_chip_base?Strin
 function renderLimitBreakMaterialThumb(r,szOpt){const base=r&&r.lb_thumb_base?String(r.lb_thumb_base):'';const unit=r&&r.lb_thumb_unit?String(r.lb_thumb_unit):'';const lim=r&&r.lb_thumb_limit_frame?String(r.lb_thumb_limit_frame):'';const bot=r&&r.lb_thumb_bottom_frame?String(r.lb_thumb_bottom_frame):'';if(!unit)return'';const overlayOnly=!!lim&&!bot;if(!overlayOnly&&(!base||!bot))return'';const sz=Number(szOpt)>0?Number(szOpt):54;const baseLayer=base?`<img src="${imgUrl(base)}" alt="" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;" onerror="gameImageUrlFallback(this)">`:'';const limLayer=lim?`<img src="${imgUrl(lim)}" alt="" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;display:block;pointer-events:none;" onerror="gameImageUrlFallback(this)">`:'';const unitStyle=overlayOnly?'position:absolute;left:11%;top:11%;width:78%;height:78%;object-fit:cover;display:block;border-radius:50%;':'position:absolute;left:9%;top:9%;width:82%;height:82%;object-fit:contain;display:block;';const botLayer=bot?`<img src="${imgUrl(bot)}" alt="" loading="lazy" decoding="async" style="position:absolute;left:0;right:0;bottom:-5px;width:100%;height:72%;object-fit:cover;display:block;" onerror="this.style.display='none'">`:'';return`<div class="lb-chip-thumb" style="width:${sz}px;height:${sz}px;position:relative;flex-shrink:0;overflow:hidden;border-radius:8px;background:rgba(255,255,255,0.04);border:1px solid var(--border-color);">${baseLayer}<img src="${imgUrl(unit)}" alt="${escAttr(r.name||'')}" loading="lazy" decoding="async" style="${unitStyle}" onerror="gameImageUrlFallback(this)">${limLayer}${botLayer}</div>`}
 function renderStageRewardRow(r){const meta=rewardRowDetailClickMeta(r);const{dataAttrs,clickAttrs}=rewardRowClickHandlerAttrs(meta);const clickable=!!meta;const rt=String(r.reward_type_index||'');const isProfileTitle=rt==='30';const spChipHtml=renderSpConversionChipThumb(r,54);const lbThumbHtml=renderLimitBreakMaterialThumb(r);const thumbHtml=(r.thumb_type==='char'&&r.thumb)?renderListThumb({thum:r.thumb,rarity:r.rarity||'N',role_icon:r.role_icon||'',acquisition_icon:r.acquisition_icon||''},'char',54):(r.thumb_type==='unit'&&r.thumb)?renderListThumb({thum:r.thumb,rarity:r.rarity||'N',role_icon:r.role_icon||'',acquisition_icon:r.acquisition_icon||''},'unit',54):(r.thumb_type==='option_part'&&r.thumb)?renderListThumb({thum:r.thumb,rarity:r.rarity||'N'},'unit',54,{pickerThumb:true}):(spChipHtml?spChipHtml:(lbThumbHtml?lbThumbHtml:(isProfileTitle&&r.icon)?`<div style="width:176px;height:62px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border:1px solid var(--border-color);border-radius:8px;flex-shrink:0;overflow:hidden;">${renderRewardItemIcon(r.icon,'max-width:170px;max-height:56px;object-fit:contain;display:block;')}</div>`:`<div style="width:54px;height:54px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border:1px solid var(--border-color);border-radius:8px;flex-shrink:0;overflow:hidden;">${r.icon?renderRewardItemIcon(r.icon,rewardPlainItemIconStyle(r.icon,54)):'<span style="font-size:12px;color:var(--text-muted)">ITEM</span>'}</div>`));return`<div class="ability-item${clickable?' detail-clickable-item':''}" style="display:flex;align-items:center;gap:10px;margin:0;${clickable?'cursor:pointer;':''}"${dataAttrs}${clickAttrs}>${thumbHtml}<div style="min-width:0;display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;"><div style="min-width:0;${isProfileTitle?'display:flex;align-items:center;gap:12px;':''}"><div style="font-size:13px;line-height:1.3;word-break:${isProfileTitle?'normal':'break-word'};">${esc(r.name||'')}</div>${r.description?`<div style="font-size:11px;opacity:.75;line-height:1.2;margin-top:2px;">${esc(r.description)}</div>`:''}</div><span class="stage-meta-badge" style="white-space:nowrap;">x${fmtN(r.count||0)}</span></div></div>`}
 function renderStageRewardGrid(rows){if(!rows||!rows.length)return`<div class="stage-condition-item">${esc(t('none'))}</div>`;return`<div class="stage-reward-grid">${rows.map(renderStageRewardRow).join('')}</div>`}
+function renderStageRewardDetailSection(titleKey,rows,showWhenEmpty){
+if(!showWhenEmpty&&(!rows||!rows.length))return'';
+return`<div class="detail-section"><div class="section-title">${esc(t(titleKey))}</div>${rows&&rows.length?renderStageRewardGrid(rows):`<div class="stage-condition-item">${esc(t('none'))}</div>`}</div>`;
+}
 function renderTowerRewardSection(d){
-  const first=Array.isArray(d.stage_rewards)?d.stage_rewards:(Array.isArray(d.tower_rewards)?d.tower_rewards:[]);
-  const prev=Array.isArray(d.stage_prev_cleared_rewards)?d.stage_prev_cleared_rewards:[];
-  const secret=Array.isArray(d.stage_secret_rewards)?d.stage_secret_rewards:[];
-  if(!first.length&&!prev.length&&!secret.length)return`<div class="detail-section"><div class="section-title">${esc(t('stage_first_clear_rewards'))}</div><div class="stage-condition-item">${esc(t('none'))}</div></div>`;
-  let html=`<div class="detail-section"><div class="section-title">${esc(t('stage_first_clear_rewards'))}</div>`;
-  html+=first.length?renderStageRewardGrid(first):`<div class="stage-condition-item">${esc(t('none'))}</div>`;
-  if(prev.length)html+=`<div class="stage-reward-subhead">${esc(t('stage_prev_cleared_rewards'))}</div>${renderStageRewardGrid(prev)}`;
-  if(secret.length)html+=`<div class="stage-reward-subhead">${esc(t('stage_secret_clear_rewards'))}</div>${renderStageRewardGrid(secret)}`;
-  html+=`</div>`;
-  return html;
+const first=Array.isArray(d.stage_rewards)?d.stage_rewards:(Array.isArray(d.tower_rewards)?d.tower_rewards:[]);
+const prev=Array.isArray(d.stage_prev_cleared_rewards)?d.stage_prev_cleared_rewards:[];
+const secret=Array.isArray(d.stage_secret_rewards)?d.stage_secret_rewards:[];
+if(!first.length&&!prev.length&&!secret.length)return renderStageRewardDetailSection('stage_first_clear_rewards',[],true);
+let html=`<div class="detail-section"><div class="section-title">${esc(t('stage_first_clear_rewards'))}</div>`;
+html+=first.length?renderStageRewardGrid(first):`<div class="stage-condition-item">${esc(t('none'))}</div>`;
+if(secret.length)html+=`<div class="stage-reward-subhead">${esc(t('stage_secret_clear_rewards'))}</div>${renderStageRewardGrid(secret)}`;
+html+=`</div>`;
+html+=renderStageRewardDetailSection('stage_prev_cleared_rewards',prev,false);
+return html;
 }
 function _stageNpcStepOrder(n){return Math.max(0,Number(n&&n.step_order)||0)}
 function _stageMapUnitByNpcId(pool,npcId){
@@ -7815,6 +7819,7 @@ if(_sqDef>0)slot.squadCondPct=_sqDef;
 if(o.td!==undefined){const n=parseInt(o.td,10);if(!Number.isNaN(n)&&n>=0)slot._wpnTraitDistPow=n}
 if(o.th!==undefined){const n=parseInt(o.th,10);if(!Number.isNaN(n)&&n>=0)slot._wpnTraitHpPow=n}
 if(o.ucp)slot.unitCondPassive=true;
+else if(!o.atkM&&slot.atkUnitData&&!slot.atkUnitData._manual)slot.unitCondPassive=_dcShouldAutoUnitCondPassive(slot.atkUnitData,slot.mpLevel);
 if(o.ccp)slot.charCondPassive=true;
 else if(slot.atkCharData&&slot.atkUnitData&&!slot.atkCharData._manual&&!slot.atkUnitData._manual){
 slot.charCondPassive=_dcShouldAutoCharCondPassive(slot.atkCharData,slot.atkUnitData,slot.mpLevel);
@@ -10371,10 +10376,31 @@ function _dcUnitCpVigorRequirement(){
 if(!S.dc._vigorCondThreshold)return null;
 return _dcVigorTierMax(S.dc._vigorCondThreshold,'max');
 }
-/** When unit conditional stats are vigor-gated, sync passive from vigor (Max+). Call from setDcMp / unit pick only — not every render — so the toggle can override until vigor changes. */
+/** Default unit CP on for HP-tier ATK (stats_with_cond max tier). Combat-count units stay off unless toggled or share ucp=1. Vigor-gated cond stats still sync below. */
+function _dcShouldAutoUnitCondPassive(ud,mpOpt){
+if(!ud||ud._manual)return false;
+const hp=ud.unit_hp_atk_tiers;
+if(!hp||!hp.tiers||!hp.tiers.length)return false;
+const thr=_dcVigorThresholdFromUnit(ud);
+if(thr||ud.has_cond_weapon_range){
+const prevUd=S.dc.atkUnitData;
+try{
+S.dc.atkUnitData=ud;
+const req=_dcUnitCpVigorRequirement();
+if(req&&!_dcVigorAtLeast(mpOpt!=null&&mpOpt!==''?mpOpt:S.dc.mpLevel,req))return false;
+}finally{S.dc.atkUnitData=prevUd}
+}
+return true;
+}
+/** When unit conditional stats are vigor-gated, sync CP from vigor (Max+). HP-tier units default on via _dcShouldAutoUnitCondPassive. */
 function _dcSyncUnitCondPassiveFromVigor(){
 const ud=S.dc.atkUnitData;
-if(!ud||ud._manual||!S.dc._vigorCondThreshold)return;
+if(!ud||ud._manual)return;
+if(_dcShouldAutoUnitCondPassive(ud)){
+S.dc.unitCondPassive=true;
+return;
+}
+if(!S.dc._vigorCondThreshold)return;
 if(!ud.has_cond_stats&&!ud.has_cond_weapon_range)return;
 const req=_dcUnitCpVigorRequirement();
 if(!req)return;
@@ -12271,11 +12297,15 @@ let m=txt.match(/Increase\s+Critical\s+Damage\s+by\s+(\d+)%/i);
 if(!m)m=txt.match(/[Ii]ncrease\s+(?:own\s+)?[Cc]ritical\s+[Dd]amage(?:\s+dealt)?\s+by\s+(\d+)%/i);
 if(!m&&zh)m=txt.match(/自身爆擊損傷提升(\d+)%/);
 if(m){traits.critDmgUp=Math.max(traits.critDmgUp,parseInt(m[1],10));return}
-m=txt.match(/(?:the\s+)?(?:closer|farther|further)\s+(?:you\s+are(?:\s+(?:to|from)\s+the\s+enemy)?|the\s+enemy\s+is).*?(?:greater|more)\s+weapon\s+power\s+increases?\s*\(\s*up\s+to\s+(\d+)%(?:\s+increase)?\s*\)/i);
+m=txt.match(/(?:the\s+)?(?:closer|farther|further)\s+enemies\s+are,?\s*the\s+(?:greater|more)\s+weapon\s+power\s+increases?\s*\(\s*up\s+to\s+(\d+)%(?:\s+increase)?\s*\)/i);
+if(m){const p=parseInt(m[1],10)||0;traits.distPowerMax=Math.max(traits.distPowerMax,p);noteHit(raw);}
+if(!m)m=txt.match(/(?:the\s+)?(?:closer|farther|further)\s+(?:you\s+are(?:\s+(?:to|from)\s+the\s+enemy)?|the\s+enemy\s+is).*?(?:greater|more)\s+weapon\s+power\s+increases?\s*\(\s*up\s+to\s+(\d+)%(?:\s+increase)?\s*\)/i);
 if(!m&&zh)m=txt.match(/距離敵方越(?:近|遠)，武裝POWER越為提升（最高提升(\d+)%）/);
 if(!m&&isJa){m=txt.match(/敵から(?:近い|遠い)ほど武装POWERが上昇[（(]最大(\d+)%上昇[）)]/);}
 if(m){const p=parseInt(m[1],10)||0;traits.distPowerMax=Math.max(traits.distPowerMax,p);noteHit(raw);}
-m=txt.match(/(?:the\s+)?(?:lower|higher)\s+(?:(?:this\s+unit'?s|your|own)\s+)?remaining\s+HP.*?(?:more|greater)\s+weapon\s+power\s+increases?\s*\(\s*up\s+to\s+(\d+)%(?:\s+increase)?\s*\)/i);
+m=txt.match(/(?:the\s+)?(?:lower|higher)\s+own\s+remaining\s+HP.*?(?:more|greater)\s+weapon\s+power\s+increases?\s*\(\s*up\s+to\s+(\d+)%(?:\s+increase)?\s*\)/i);
+if(m){const p=parseInt(m[1],10)||0;traits.hpPowerMax=Math.max(traits.hpPowerMax,p);noteHit(raw);}
+if(!m)m=txt.match(/(?:the\s+)?(?:lower|higher)\s+(?:(?:this\s+unit'?s|your|own)\s+)?remaining\s+HP.*?(?:more|greater)\s+weapon\s+power\s+increases?\s*\(\s*up\s+to\s+(\d+)%(?:\s+increase)?\s*\)/i);
 if(!m&&zh)m=txt.match(/自身剩餘HP越(?:高|低)，武裝POWER越為提升（最高提升(\d+)%）/);
 if(!m&&isJa)m=txt.match(/自身の残HPが(?:多い|少ない)ほど武装POWERが上昇（最大(\d+)%上昇）/);
 if(m){const p=parseInt(m[1],10)||0;traits.hpPowerMax=Math.max(traits.hpPowerMax,p);noteHit(raw);}
@@ -12437,7 +12467,7 @@ S.dc._wpnCritDmgUp=wt.critDmgUp|0;
 const distBase=wt.distPowerMax|0;
 const effDistMax=Math.min(100,distBase+(wt.distCoreMax|0));
 const coreExtra=Math.max(0,effDistMax-distBase);
-S.dc._wpnTraitDistPow=effDistMax;
+_dcApplyParsedWpnTraitPowToState(wt);
 const powHit=wt.powTraitHitSet;
 const hasPowScaling=effDistMax>0||(wt.hpPowerMax|0)>0||(wt.mpPowerMax|0)>0||(wt.enPowerMax|0)>0;
 if(hasPowScaling||wt.absoluteHit||wt.dmgReductionNull||(ld.traits&&ld.traits.length)||((cw.ssp_traits||[]).length)){
@@ -12483,7 +12513,7 @@ S.dc._wpnTraits=wt;
 S.dc._wpnCritDmgUp=wt.critDmgUp|0;
 const distBase=wt.distPowerMax|0;
 const effDistMax=Math.min(100,distBase+(wt.distCoreMax|0));
-S.dc._wpnTraitDistPow=effDistMax;
+_dcApplyParsedWpnTraitPowToState(wt);
 const powHit=wt.powTraitHitSet;
 const hasPowScaling=effDistMax>0||(wt.hpPowerMax|0)>0||(wt.mpPowerMax|0)>0||(wt.enPowerMax|0)>0;
 if(hasPowScaling||wt.absoluteHit||wt.dmgReductionNull||(ld.traits&&ld.traits.length)||((cw.ssp_traits||[]).length)){
@@ -12517,9 +12547,15 @@ const ci=document.getElementById('dcCritDmgUp');
 if(ci){ci.value=String(S.dc._wpnCritDmgUp|0);onDcParamChange();}
 }
 }
+function _dcApplyParsedWpnTraitPowToState(wt){
+if(!wt)return;
+const effD=Math.min(100,(wt.distPowerMax||0)+(wt.distCoreMax||0));
+S.dc._wpnTraitDistPow=effD>0?effD:0;
+S.dc._wpnTraitHpPow=(wt.hpPowerMax|0)>0?(wt.hpPowerMax|0):0;
+}
 function _dcApplyWpnTraitPow(){
 const ud=S.dc.atkUnitData;const wpns=ud?_dcNonMapWeapons(ud):[];const w=wpns[S.dc.wpnIdx];
-if(w){const wt=_dcParseWeaponTraits(w,S.dc.wpnLv);S.dc._wpnTraitDistPow=Math.min(100,(wt.distPowerMax||0)+(wt.distCoreMax||0))}
+if(w){const wt=_dcParseWeaponTraits(w,S.dc.wpnLv);_dcApplyParsedWpnTraitPowToState(wt);}
 onDcParamChange();
 }
 
@@ -12824,9 +12860,7 @@ const w=wpns[idx];
 S.dc.wpnIdx=idx;S.dc.wpnLv=w?_dcDefaultWpnLvIndex(w):0;
 const wt=w?_dcParseWeaponTraits(w,S.dc.wpnLv):{};
 S.dc._wpnCritDmgUp=wt.critDmgUp|0;
-const effD=Math.min(100,(wt.distPowerMax||0)+(wt.distCoreMax||0));
-S.dc._wpnTraitDistPow=effD>0?effD:0;
-S.dc._wpnTraitHpPow=0;
+_dcApplyParsedWpnTraitPowToState(wt);
 renderDcWeaponArea();
 if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(false);
 else onDcParamChange();
@@ -12837,9 +12871,7 @@ const ud=S.dc.atkUnitData;const wpns=ud?_dcNonMapWeapons(ud):[];const w=wpns[S.d
 if(w){
 const wt=_dcParseWeaponTraits(w,lv);
 S.dc._wpnCritDmgUp=wt.critDmgUp|0;
-const effD=Math.min(100,(wt.distPowerMax||0)+(wt.distCoreMax||0));
-S.dc._wpnTraitDistPow=effD>0?effD:0;
-S.dc._wpnTraitHpPow=0;
+_dcApplyParsedWpnTraitPowToState(wt);
 }
 renderDcWeaponArea();
 if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(false);
@@ -13190,9 +13222,11 @@ if(type==='unit'){
 S.dc.atkUnit=id;S.dc.atkUnitData=d;
 const _bw=_dcPickBestWeaponIndices(d);
 S.dc.wpnIdx=_bw.wpnIdx;S.dc.wpnLv=_bw.wpnLv;
-S.dc.unitStatMode='normal';S.dc.unitCondPassive=false;S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;
-S.dc.optionParts=[];S.dc.supporters=[];
+S.dc.unitStatMode='normal';S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;
 _dcDetectVigorCondAbilities(d);
+S.dc.unitCondPassive=_dcShouldAutoUnitCondPassive(d);
+_dcSyncUnitCondPassiveFromVigor();
+S.dc.optionParts=[];S.dc.supporters=[];
 const rec=d.recommend_character;const isSD=d.body_type==='3';
 S.dc._unitIsSD=isSD;
 if(rec&&rec.id&&(!S.dc.atkCharData||S.dc.atkCharData.id!==rec.id)){
@@ -13925,12 +13959,19 @@ cb.checked=S.dc.applyZeonEnemyTag!==false;
 }
 /** In-game MS growth % bucket: ceil on Attack/HP, floor on DEF/MOB/EN/Move (LB growth base is floored). */
 function _dcMsGrowthFromPct(base,pctSum,statName){
-const F=Math.floor,C=Math.ceil;
+const F=Math.floor;
 const b=F(Math.max(0,Number(base)||0));
-const raw=b*(100+(Number(pctSum)||0))/100;
+const p=F(Number(pctSum)||0);
+const num=b*(100+p);
+const q=F(num/100);
+const rem=((num%100)+100)%100;
 const k=String(statName||'');
-if(k==='Attack'||k==='HP')return C(raw);
-return F(raw);
+if(k==='Attack'||k==='HP'){
+if(rem===0)return q;
+if(rem>=80||rem===20)return q;
+return q+1;
+}
+return q;
 }
 /** Breakdown +lines under MS HP/ATK/DEF/MOB: same per-stat rounding as panel totals. Supporter flats use a distinct color. */
 function _dcMsStatEnhancementLinesHtml(ctx,atkUnitStats){
@@ -13980,7 +14021,7 @@ const pctAtkNoEx=_dcMsGrowthFromPct(atkBase,pAtk+opAt+tAtk+sheetBuffPct+lp+(scAt
 const atkHtml=L(pctAtkNoEx,'Option part %, 1-turn MS ATK %, leader %, ML/GO, squad conditions, Support Attack/Counter % (EX squad % is on the EX line below)')+L(opFlat.Attack|0,'Option part flat Attack')+L(atkSupport|0,'Supporter ATK support','stat-card-bonus--supporter-flat');
 return{hpHtml,atkHtml,defHtml,mobHtml};
 }
-/** MS growth % buckets: ceil Attack/HP, floor DEF/MOB/Move (in-game MS sheet). Versal LB1 +68% ATK +240 → 17252; Sandaime LB2 +53% ATK +240 → 14577. */
+/** MS growth % buckets: integer (base×(100+pct))/100 — floor when rem>=80 or rem===20, else ceil (ATK/HP); floor DEF/MOB/Move. Hyaku LB1 +72% ATK +390 → 17615; Versal +68% +240 → 17252; Sandaime LB2 +53% +240 → 14577. */
 function _dcGetModifiedAttackerUnitStatsFromCtx(ctx,atkUnitStats){
 const F=Math.floor;
 const c=ctx||{};

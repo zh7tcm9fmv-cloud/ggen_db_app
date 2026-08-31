@@ -15,10 +15,17 @@ F = math.floor
 
 def ms_growth_from_pct(base: int | float, pct_sum: int | float, stat_name: str) -> int:
     b = F(max(0, float(base)))
-    raw = b * (100 + float(pct_sum)) / 100
+    p = F(float(pct_sum))
+    num = int(b * (100 + p))
+    q = num // 100
+    rem = num % 100
     if stat_name in ("Attack", "HP"):
-        return int(C(raw))
-    return int(F(raw))
+        if rem == 0:
+            return q
+        if rem >= 80 or rem == 20:
+            return q
+        return q + 1
+    return q
 
 
 def supporter_flat(base: int, rate: int) -> int:
@@ -48,6 +55,16 @@ def main() -> None:
     # Versal LB1 +15% unit passive ATK +12% OP +5% squad +36% leader +240 ATK flat
     versal_atk = ms_growth_from_pct(10126, 15 + 12 + 5 + 36, "Attack") + 240
     assert versal_atk == 17252, versal_atk
+
+    # Full Armor Hyaku-Shiki Kai LB1 +15% ATK +12% OP +40% leader +5% squad +390 ATK flat (CP off — no combat stacks)
+    hyaku_atk = ms_growth_from_pct(10015, 15 + 12 + 40 + 5, "Attack") + 390
+    assert hyaku_atk == 17615, hyaku_atk
+
+    # D Gundam Third LB0 +20% HP-tier CP ATK +12% OP +25% leader +300 ATK flat; HP +5% +25% leader +2000 flat
+    dg_atk = ms_growth_from_pct(7580, 20 + 12 + 25, "Attack") + 300
+    assert dg_atk == 12201, dg_atk
+    dg_hp = ms_growth_from_pct(71806, 5 + 25, "HP") + 2000
+    assert dg_hp == 95347, dg_hp
 
     # Barbatos Lupus Rex (EX) LB2 + Atra LV50/1★: floor support ATK 191 (not half-up 192)
     assert supporter_flat(300, 6384) == 191
