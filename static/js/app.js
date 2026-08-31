@@ -437,11 +437,11 @@ STAT_NAME_MAP.JA={'Ranged':'射撃','Melee':'格闘','Awaken':'覚醒','Defense'
 TERRAIN_NAME_MAP.JA={'Space':'宇宙','Atmospheric':'空中','Ground':'地上','Sea':'水上','Underwater':'水中'};TERRAIN_NAME_MAP.JP=TERRAIN_NAME_MAP.JA;
 ROLE_NAME_MAP.JA={'Attack':'攻撃型','Defense':'耐久型','Support':'支援型'};ROLE_NAME_MAP.JP=ROLE_NAME_MAP.JA;
 ROLE_LABELS.JA={'':'全タイプ','1':'攻撃型のみ','2':'耐久型のみ','3':'支援型のみ'};ROLE_LABELS.JP=ROLE_LABELS.JA;
-Object.assign(T.EN,{stage_source_tower:'GTower',stage_source_challenge:'Challenge Main Stages',stage_source_esim:'E Simulator',stage_source_btn_eternal:'Eternal Road',stage_source_btn_challenge:'Challenge',stage_source_btn_tower:'GTower',stage_source_btn_score:'Score Attack',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_challenge_series_all:'All series',stage_challenge_series_msg:'MSG Series',stage_challenge_series_seed:'SEED Series',stage_challenge_hard_label:'HARD',stage_rewards:'Rewards',stage_first_clear_rewards:'First-Clear Rewards',stage_prev_cleared_rewards:'Previously Cleared Floor Rewards',stage_secret_clear_rewards:'Secret Battles',stage_missions:'Missions',esim_panel_stages:'Stages',esim_panel_progress:'Progress Rewards',esim_panel_complete:'Completion Rewards',esim_panel_event_wide:'Event-Wide Progress Rewards',esim_progress_story:'Story Progress Rewards',esim_progress_report:'Report Progress Rewards',esim_progress_mission:'Mission Progress Rewards',esim_type_stage:'Stage',esim_type_story:'Story',esim_type_report:'Report',esim_div_original:'Original',esim_div_turning_point:'Turning Point',esim_div_if:'What If',stage_capturable_units:'Capturable Units',stage_capturable_pickup:'Featured capture',detail_back_stage:'Back to stage',detail_nav_prev:'Previous entry',detail_nav_next:'Next entry',stage_map_escape:'Escape'});
-Object.assign(T.TW,{stage_source_tower:'世代之塔',stage_source_challenge:'主要關卡 CHALLENGE',stage_source_esim:'E模擬器',stage_source_btn_eternal:'永恆之路',stage_source_btn_challenge:'Challenge',stage_source_btn_tower:'世代之塔',stage_source_btn_score:'大規模攻略戰積分挑戰',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_challenge_series_all:'All series',stage_challenge_series_msg:'MSG Series',stage_challenge_series_seed:'SEED Series',stage_challenge_hard_label:'HARD',stage_rewards:'報酬',stage_first_clear_rewards:'首次報酬',stage_prev_cleared_rewards:'已完成的樓層報酬',stage_secret_clear_rewards:'隱藏戰鬥',stage_missions:'使命',esim_panel_stages:'關卡',esim_panel_progress:'進度報酬',esim_panel_complete:'完成報酬',esim_panel_event_wide:'事件整體進度報酬',esim_progress_story:'故事進度報酬',esim_progress_report:'報告進度報酬',esim_progress_mission:'使命進度報酬',esim_type_stage:'關卡',esim_type_story:'故事',esim_type_report:'報告',esim_div_original:'一般關卡',esim_div_turning_point:'轉捩點',esim_div_if:'IF',stage_capturable_units:'可捕獲單位',stage_capturable_pickup:'精選捕獲',detail_back_stage:'返回關卡',detail_nav_prev:'上一筆',detail_nav_next:'下一筆',stage_map_escape:'逃生'});
-Object.assign(T.HK,{stage_source_tower:'世代之塔',stage_source_challenge:'主要關卡 CHALLENGE',stage_source_esim:'E模擬器',stage_source_btn_eternal:'永恆之路',stage_source_btn_challenge:'Challenge',stage_source_btn_tower:'世代之塔',stage_source_btn_score:'大規模攻略戰積分挑戰',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_challenge_series_all:'All series',stage_challenge_series_msg:'MSG Series',stage_challenge_series_seed:'SEED Series',stage_challenge_hard_label:'HARD',stage_rewards:'報酬',stage_first_clear_rewards:'首次報酬',stage_prev_cleared_rewards:'已完成的樓層報酬',stage_secret_clear_rewards:'隱藏戰鬥',stage_missions:'使命',esim_panel_stages:'關卡',esim_panel_progress:'進度報酬',esim_panel_complete:'完成報酬',esim_panel_event_wide:'事件整體進度報酬',esim_progress_story:'故事進度報酬',esim_progress_report:'報告進度報酬',esim_progress_mission:'使命進度報酬',esim_type_stage:'關卡',esim_type_story:'故事',esim_type_report:'報告',esim_div_original:'一般關卡',esim_div_turning_point:'轉捩點',esim_div_if:'IF',stage_capturable_units:'可捕獲單位',stage_capturable_pickup:'精選捕獲',detail_back_stage:'返回關卡',detail_nav_prev:'上一筆',detail_nav_next:'下一筆',stage_map_escape:'逃生'});
-Object.assign(T.JA,{stage_source_tower:'ジェネレーションタワー',stage_source_challenge:'メインステージCHALLENGE',stage_source_esim:'Eシミュレーター',stage_source_btn_eternal:'エターナルロード',stage_source_btn_challenge:'Challenge',stage_source_btn_tower:'ジェネレーションタワー',stage_source_btn_score:'大規模攻略戦ステージデータ',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_challenge_series_all:'全シリーズ',stage_challenge_series_msg:'MSGシリーズ',stage_challenge_series_seed:'SEEDシリーズ',stage_challenge_hard_label:'HARD',stage_rewards:'報酬',stage_first_clear_rewards:'初回報酬',stage_prev_cleared_rewards:'クリア済みの階層報酬',stage_secret_clear_rewards:'シークレットバトル',stage_missions:'ミッション',esim_panel_stages:'ステージ',esim_panel_progress:'進捗報酬',esim_panel_complete:'コンプリート報酬',esim_panel_event_wide:'イベント全体進捗報酬',esim_progress_story:'ストーリー進捗報酬',esim_progress_report:'レポート進捗報酬',esim_progress_mission:'ミッション進捗報酬',esim_type_stage:'ステージ',esim_type_story:'ストーリー',esim_type_report:'レポート',esim_div_original:'通常ステージ',esim_div_turning_point:'ターニングポイント',esim_div_if:'IF',stage_capturable_units:'捕獲可能ユニット',stage_capturable_pickup:'注目捕獲',detail_back_stage:'ステージに戻る',detail_nav_prev:'前へ',detail_nav_next:'次へ',stage_map_escape:'脱出'});
-Object.assign(T.JP,{stage_source_tower:'ジェネレーションタワー',stage_source_challenge:'メインステージCHALLENGE',stage_source_esim:'Eシミュレーター',stage_source_btn_eternal:'エターナルロード',stage_source_btn_challenge:'Challenge',stage_source_btn_tower:'ジェネレーションタワー',stage_source_btn_score:'大規模攻略戦ステージデータ',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_challenge_series_all:'全シリーズ',stage_challenge_series_msg:'MSGシリーズ',stage_challenge_series_seed:'SEEDシリーズ',stage_challenge_hard_label:'HARD',stage_rewards:'報酬',stage_first_clear_rewards:'初回報酬',stage_prev_cleared_rewards:'クリア済みの階層報酬',stage_secret_clear_rewards:'シークレットバトル',stage_missions:'ミッション',esim_panel_stages:'ステージ',esim_panel_progress:'進捗報酬',esim_panel_complete:'コンプリート報酬',esim_panel_event_wide:'イベント全体進捗報酬',esim_progress_story:'ストーリー進捗報酬',esim_progress_report:'レポート進捗報酬',esim_progress_mission:'ミッション進捗報酬',esim_type_stage:'ステージ',esim_type_story:'ストーリー',esim_type_report:'レポート',esim_div_original:'通常ステージ',esim_div_turning_point:'ターニングポイント',esim_div_if:'IF',stage_capturable_units:'捕獲可能ユニット',stage_capturable_pickup:'注目捕獲',detail_back_stage:'ステージに戻る',detail_nav_prev:'前へ',detail_nav_next:'次へ',stage_map_escape:'脱出'});
+Object.assign(T.EN,{stage_source_tower:'GTower',stage_source_challenge:'Challenge Main Stages',stage_source_esim:'E Simulator',stage_source_btn_eternal:'Eternal Road',stage_source_btn_challenge:'Challenge',stage_source_btn_tower:'GTower',stage_source_btn_score:'Score Attack',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_challenge_series_all:'All series',stage_challenge_series_msg:'MSG Series',stage_challenge_series_seed:'SEED Series',stage_challenge_hard_label:'HARD',stage_rewards:'Rewards',stage_first_clear_rewards:'First-Clear Rewards',stage_prev_cleared_rewards:'Previously Cleared Floor Rewards',stage_secret_clear_rewards:'Secret Battles',stage_missions:'Missions',esim_panel_stages:'Stages',esim_panel_progress:'Progress Rewards',esim_panel_complete:'Completion Rewards',esim_panel_event_wide:'Event-Wide Progress Rewards',esim_progress_story:'Story Progress Rewards',esim_progress_report:'Report Progress Rewards',esim_progress_mission:'Mission Progress Rewards',esim_type_stage:'Stage',esim_type_story:'Story',esim_type_report:'Report',esim_div_original:'Original',esim_div_turning_point:'Turning Point',esim_div_if:'What If',stage_capturable_units:'Capturable Units',stage_capturable_pickup:'Featured capture',detail_back_stage:'Back to stage',detail_nav_prev:'Previous entry',detail_nav_next:'Next entry',stage_map_escape:'Escape',stage_map_escape_toggle:'Escape',stage_map_escape_stack_tt:'On-field unit + escape spawn share this tile',stage_map_escape_layer_tt:'Escape spawn (off map until parent is defeated)'});
+Object.assign(T.TW,{stage_source_tower:'世代之塔',stage_source_challenge:'主要關卡 CHALLENGE',stage_source_esim:'E模擬器',stage_source_btn_eternal:'永恆之路',stage_source_btn_challenge:'Challenge',stage_source_btn_tower:'世代之塔',stage_source_btn_score:'大規模攻略戰積分挑戰',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_challenge_series_all:'All series',stage_challenge_series_msg:'MSG Series',stage_challenge_series_seed:'SEED Series',stage_challenge_hard_label:'HARD',stage_rewards:'報酬',stage_first_clear_rewards:'首次報酬',stage_prev_cleared_rewards:'已完成的樓層報酬',stage_secret_clear_rewards:'隱藏戰鬥',stage_missions:'使命',esim_panel_stages:'關卡',esim_panel_progress:'進度報酬',esim_panel_complete:'完成報酬',esim_panel_event_wide:'事件整體進度報酬',esim_progress_story:'故事進度報酬',esim_progress_report:'報告進度報酬',esim_progress_mission:'使命進度報酬',esim_type_stage:'關卡',esim_type_story:'故事',esim_type_report:'報告',esim_div_original:'一般關卡',esim_div_turning_point:'轉捩點',esim_div_if:'IF',stage_capturable_units:'可捕獲單位',stage_capturable_pickup:'精選捕獲',detail_back_stage:'返回關卡',detail_nav_prev:'上一筆',detail_nav_next:'下一筆',stage_map_escape:'逃生',stage_map_escape_toggle:'逃生',stage_map_escape_stack_tt:'場上單位與逃生替換單位共用此格',stage_map_escape_layer_tt:'逃生替換單位（原單位被擊破前不會出現）'});
+Object.assign(T.HK,{stage_source_tower:'世代之塔',stage_source_challenge:'主要關卡 CHALLENGE',stage_source_esim:'E模擬器',stage_source_btn_eternal:'永恆之路',stage_source_btn_challenge:'Challenge',stage_source_btn_tower:'世代之塔',stage_source_btn_score:'大規模攻略戰積分挑戰',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_challenge_series_all:'All series',stage_challenge_series_msg:'MSG Series',stage_challenge_series_seed:'SEED Series',stage_challenge_hard_label:'HARD',stage_rewards:'報酬',stage_first_clear_rewards:'首次報酬',stage_prev_cleared_rewards:'已完成的樓層報酬',stage_secret_clear_rewards:'隱藏戰鬥',stage_missions:'使命',esim_panel_stages:'關卡',esim_panel_progress:'進度報酬',esim_panel_complete:'完成報酬',esim_panel_event_wide:'事件整體進度報酬',esim_progress_story:'故事進度報酬',esim_progress_report:'報告進度報酬',esim_progress_mission:'使命進度報酬',esim_type_stage:'關卡',esim_type_story:'故事',esim_type_report:'報告',esim_div_original:'一般關卡',esim_div_turning_point:'轉捩點',esim_div_if:'IF',stage_capturable_units:'可捕獲單位',stage_capturable_pickup:'精選捕獲',detail_back_stage:'返回關卡',detail_nav_prev:'上一筆',detail_nav_next:'下一筆',stage_map_escape:'逃生',stage_map_escape_toggle:'逃生',stage_map_escape_stack_tt:'場上單位與逃生替換單位共用此格',stage_map_escape_layer_tt:'逃生替換單位（原單位被擊破前不會出現）'});
+Object.assign(T.JA,{stage_source_tower:'ジェネレーションタワー',stage_source_challenge:'メインステージCHALLENGE',stage_source_esim:'Eシミュレーター',stage_source_btn_eternal:'エターナルロード',stage_source_btn_challenge:'Challenge',stage_source_btn_tower:'ジェネレーションタワー',stage_source_btn_score:'大規模攻略戦ステージデータ',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_challenge_series_all:'全シリーズ',stage_challenge_series_msg:'MSGシリーズ',stage_challenge_series_seed:'SEEDシリーズ',stage_challenge_hard_label:'HARD',stage_rewards:'報酬',stage_first_clear_rewards:'初回報酬',stage_prev_cleared_rewards:'クリア済みの階層報酬',stage_secret_clear_rewards:'シークレットバトル',stage_missions:'ミッション',esim_panel_stages:'ステージ',esim_panel_progress:'進捗報酬',esim_panel_complete:'コンプリート報酬',esim_panel_event_wide:'イベント全体進捗報酬',esim_progress_story:'ストーリー進捗報酬',esim_progress_report:'レポート進捗報酬',esim_progress_mission:'ミッション進捗報酬',esim_type_stage:'ステージ',esim_type_story:'ストーリー',esim_type_report:'レポート',esim_div_original:'通常ステージ',esim_div_turning_point:'ターニングポイント',esim_div_if:'IF',stage_capturable_units:'捕獲可能ユニット',stage_capturable_pickup:'注目捕獲',detail_back_stage:'ステージに戻る',detail_nav_prev:'前へ',detail_nav_next:'次へ',stage_map_escape:'脱出',stage_map_escape_toggle:'脱出',stage_map_escape_stack_tt:'配置ユニットと脱出後ユニットが同じマス',stage_map_escape_layer_tt:'脱出後ユニット（撃破まで未配置）'});
+Object.assign(T.JP,{stage_source_tower:'ジェネレーションタワー',stage_source_challenge:'メインステージCHALLENGE',stage_source_esim:'Eシミュレーター',stage_source_btn_eternal:'エターナルロード',stage_source_btn_challenge:'Challenge',stage_source_btn_tower:'ジェネレーションタワー',stage_source_btn_score:'大規模攻略戦ステージデータ',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_challenge_series_all:'全シリーズ',stage_challenge_series_msg:'MSGシリーズ',stage_challenge_series_seed:'SEEDシリーズ',stage_challenge_hard_label:'HARD',stage_rewards:'報酬',stage_first_clear_rewards:'初回報酬',stage_prev_cleared_rewards:'クリア済みの階層報酬',stage_secret_clear_rewards:'シークレットバトル',stage_missions:'ミッション',esim_panel_stages:'ステージ',esim_panel_progress:'進捗報酬',esim_panel_complete:'コンプリート報酬',esim_panel_event_wide:'イベント全体進捗報酬',esim_progress_story:'ストーリー進捗報酬',esim_progress_report:'レポート進捗報酬',esim_progress_mission:'ミッション進捗報酬',esim_type_stage:'ステージ',esim_type_story:'ストーリー',esim_type_report:'レポート',esim_div_original:'通常ステージ',esim_div_turning_point:'ターニングポイント',esim_div_if:'IF',stage_capturable_units:'捕獲可能ユニット',stage_capturable_pickup:'注目捕獲',detail_back_stage:'ステージに戻る',detail_nav_prev:'前へ',detail_nav_next:'次へ',stage_map_escape:'脱出',stage_map_escape_toggle:'脱出',stage_map_escape_stack_tt:'配置ユニットと脱出後ユニットが同じマス',stage_map_escape_layer_tt:'脱出後ユニット（撃破まで未配置）'});
 Object.assign(T.EN,{sortie_group:'Squad {}',stage_sortie_unit_restrictions:'Unit Sortie Restrictions',stage_sortie_char_restrictions:'Character Sortie Restrictions',stage_sortie_no_limit:'No Limit'});
 Object.assign(T.TW,{sortie_group:'小隊 {}',stage_sortie_unit_restrictions:'單位出擊限制',stage_sortie_char_restrictions:'角色出擊限制',stage_sortie_no_limit:'無限制'});
 Object.assign(T.HK,{sortie_group:'小隊 {}',stage_sortie_unit_restrictions:'單位出擊限制',stage_sortie_char_restrictions:'角色出擊限制',stage_sortie_no_limit:'無限制'});
@@ -3511,7 +3511,7 @@ S.currentLbTier=3;
 S.currentWeaponLevels={};
 S.detailRankingOverlay=false;
 if(ui)applyStageDetailUiState(ui);
-else{S.stageMapExpanded=false;S.stageMapAutoFit=true;S.stageMapZoom=1;S.stageMapReinforcementOnly=false;S.stageMapSpawnOrderVisible=false}
+else{S.stageMapExpanded=false;S.stageMapAutoFit=true;S.stageMapZoom=1;S.stageMapReinforcementOnly=false;S.stageMapEscapeLayerVisible=false;S.stageMapSpawnOrderVisible=false}
 S.listSelectedUnitId=null;
 syncUnitListDetailHighlight();
 S.currentDetailData=pay;
@@ -3840,6 +3840,19 @@ function _stageMapUnitByNpcId(pool,npcId){
   const id=String(npcId!=null?npcId:'');
   return(pool||[]).find(u=>String(u.npc_id)===id)||null;
 }
+function _stageNpcEscapeSpawnId(npcId){
+  const id=String(npcId!=null?npcId:'').trim();
+  if(!id)return '';
+  const pool=S.currentDetailData?.map_data?.units||[];
+  const mapU=_stageMapUnitByNpcId(pool,id);
+  if(mapU&&mapU.escape_spawn_npc_id)return String(mapU.escape_spawn_npc_id);
+  const row=(S.currentDetailData?.npc_details||[]).find(r=>String(r.npc_id)===id);
+  return row&&row.escape_spawn_npc_id?String(row.escape_spawn_npc_id):'';
+}
+function _stageNpcCanEscape(npcId){
+  const spawnId=_stageNpcEscapeSpawnId(npcId);
+  return!!spawnId&&!_stageEscapedNpcIdSet().has(String(npcId));
+}
 function _stageEscapedNpcIdSet(){
   const d=S.currentDetailData;
   if(!d||!Array.isArray(d._escapedNpcIds))return new Set();
@@ -3855,9 +3868,7 @@ function _stageMarkNpcEscaped(fromNpcId){
   _refreshStageMapAndNpcPanelsPreserveScroll();
 }
 function stageEscapeNpc(fromNpcId){
-  const pool=S.currentDetailData?.map_data?.units||[];
-  const u=_stageMapUnitByNpcId(pool,fromNpcId);
-  if(!u||!u.escape_spawn_npc_id||_stageEscapedNpcIdSet().has(String(fromNpcId)))return;
+  if(!_stageNpcEscapeSpawnId(fromNpcId)||_stageEscapedNpcIdSet().has(String(fromNpcId)))return;
   _stageMarkNpcEscaped(fromNpcId);
 }
 function _stageNpcCharacterByNpcId(npcId){
@@ -3873,7 +3884,7 @@ function _stageNpcSupportBadgeHtml(ch,variant){
   if(s.supportDefCount>0)parts.push({icon:'UI_Common_BattleIcon_AssistDeffence_S',count:s.supportDefCount,label:charExtraInfoLabel('def'),kind:'def'});
   if(!parts.length)return '';
   const cls=variant==='compact'?'stage-npc-support-badge':'map-unit-support-badge';
-  return parts.map((p,i)=>`<span class="${cls} ${cls}--${p.kind}${i>0?` ${cls}--stack-${i}`:''}" title="${escAttr(p.label)}"><img src="${imgUrlPreferCdn('/static/images/UI/'+p.icon+'.webp')}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'"><span class="${cls}-count">×${fmtN(p.count)}</span></span>`).join('');
+  return parts.map(p=>`<span class="${cls} ${cls}--${p.kind}" title="${escAttr(p.label)}"><img src="${imgUrlPreferCdn('/static/images/UI/'+p.icon+'.webp')}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'"><span class="${cls}-count">×${fmtN(p.count)}</span></span>`).join('');
 }
 function _stageNpcDetailRowVisible(n){
   if(!n)return false;
@@ -3883,7 +3894,11 @@ function _stageNpcDetailRowVisible(n){
   const escaped=_stageEscapedNpcIdSet();
   const nid=String(n.npc_id||'');
   if(n.escape_spawn_npc_id&&escaped.has(nid))return false;
-  if(n.escape_from_npc_id&&escaped.has(String(n.escape_from_npc_id)))return true;
+  if(n.escape_from_npc_id){
+    if(escaped.has(String(n.escape_from_npc_id)))return true;
+    if(S.stageMapEscapeLayerVisible)return true;
+    return false;
+  }
   if(String(n.side||'').toLowerCase()!=='enemy')return true;
   if(S.stageMapReinforcementOnly)return true;
   return!!n.is_initially_placed;
@@ -4784,8 +4799,12 @@ function _stageMapAnyEnemyInitiallyOnField(units){
   return(units||[]).some(u=>String(u.side||'').toLowerCase()==='enemy'&&!_stageMapEnemyMarkedAsOffMapInitially(u));
 }
 /** True when data marks this enemy as off-map reinforcement *and* the stage anchors at least one on-field enemy — otherwise isolated "all false" dumps show everyone. */
+function _stageMapUnitIsEscapeSpawn(u){
+  return!!(u&&u.escape_from_npc_id);
+}
 function _stageMapEnemyIsReinforcementSpawn(u, allUnits){
   if(!u)return false;
+  if(_stageMapUnitIsEscapeSpawn(u))return false;
   if(String(u.side||'').toLowerCase()!=='enemy')return false;
   if(!_stageMapEnemyMarkedAsOffMapInitially(u))return false;
   const pool=allUnits!==undefined&&allUnits!==null?allUnits:S.currentDetailData?.map_data?.units;
@@ -4795,6 +4814,10 @@ function _stageMapEnemyIsReinforcementSpawn(u, allUnits){
 function stageMapHasReinforcementEnemies(md){
   const arr=(md&&md.units)||[];
   return arr.some(u=>_stageMapEnemyIsReinforcementSpawn(u, arr))
+}
+function stageMapHasEscapeEnemies(md){
+  const arr=(md&&md.units)||[];
+  return arr.some(u=>!!(u&&u.escape_spawn_npc_id));
 }
 function _stageMapForEachEnemyCell(u,fn){
   if(!u||String(u.side||'').toLowerCase()!=='enemy')return;
@@ -4810,11 +4833,25 @@ function _stageMapEnemyStackKeys(allUnits){
     _stageMapForEachEnemyCell(u,k=>{
       if(!by[k])by[k]={ini:false,reinf:false};
       if(_stageMapEnemyIsReinforcementSpawn(u, allUnits))by[k].reinf=true;
-      else by[k].ini=true;
+      else if(String(u.side||'').toLowerCase()==='enemy'&&!_stageMapUnitIsEscapeSpawn(u))by[k].ini=true;
     })
   });
   const out=new Set();
   Object.keys(by).forEach(k=>{const b=by[k];if(b.ini&&b.reinf)out.add(k)});
+  return out;
+}
+function _stageMapEnemyEscapeStackKeys(allUnits){
+  const by={};
+  (allUnits||[]).forEach(u=>{
+    if(String(u.side||'').toLowerCase()!=='enemy')return;
+    _stageMapForEachEnemyCell(u,k=>{
+      if(!by[k])by[k]={ini:false,escape:false};
+      if(_stageMapUnitIsEscapeSpawn(u))by[k].escape=true;
+      else if(u.is_initially_placed!==false)by[k].ini=true;
+    })
+  });
+  const out=new Set();
+  Object.keys(by).forEach(k=>{const b=by[k];if(b.ini&&b.escape)out.add(k)});
   return out;
 }
 function renderStageMapSection(d){
@@ -4823,25 +4860,34 @@ function renderStageMapSection(d){
   const zp=Math.round((S.stageMapZoom||1)*100);
   const af=!!S.stageMapAutoFit;
   const hasReinf=stageMapHasReinforcementEnemies(md);
+  const hasEscape=stageMapHasEscapeEnemies(md);
   if(!hasReinf&&S.stageMapReinforcementOnly)S.stageMapReinforcementOnly=false;
+  if(!hasEscape&&S.stageMapEscapeLayerVisible)S.stageMapEscapeLayerVisible=false;
   const ro=!!S.stageMapReinforcementOnly;
+  const eo=!!S.stageMapEscapeLayerVisible;
   S.stageMapSpawnOrderVisible=false;
   const hasBuffAreas=!!(md.buff_areas&&Object.keys(md.buff_areas).length);
   if(S.stageMapBuffAreasVisible===undefined)S.stageMapBuffAreasVisible=true;
   const buffOn=S.stageMapBuffAreasVisible!==false;
   const reinfToggleLbl=t('stage_map_reinf_toggle');
+  const escapeToggleLbl=t('stage_map_escape_toggle');
   const buffToggleLbl=t('stage_map_buff_toggle');
   const reinfToggleHtml=hasReinf?`<label class="stage-map-reinf-toggle stage-map-map-toggle">
         <input type="checkbox" class="stage-map-reinf-toggle-input" ${ro?'checked':''} role="switch" aria-checked="${ro?'true':'false'}" aria-label="${escAttr(reinfToggleLbl)}" onchange="setStageMapReinforcementOnly(this.checked)">
         <span class="stage-map-reinf-slider" aria-hidden="true"></span>
         <span class="stage-map-reinf-text">${esc(reinfToggleLbl)}</span>
       </label>`:'';
+  const escapeToggleHtml=hasEscape?`<label class="stage-map-reinf-toggle stage-map-map-toggle stage-map-escape-toggle">
+        <input type="checkbox" class="stage-map-reinf-toggle-input" ${eo?'checked':''} role="switch" aria-checked="${eo?'true':'false'}" aria-label="${escAttr(escapeToggleLbl)}" onchange="setStageMapEscapeLayerVisible(this.checked)">
+        <span class="stage-map-reinf-slider stage-map-escape-slider" aria-hidden="true"></span>
+        <span class="stage-map-reinf-text">${esc(escapeToggleLbl)}</span>
+      </label>`:'';
   const buffToggleHtml=hasBuffAreas?`<label class="stage-map-reinf-toggle stage-map-map-toggle stage-map-buff-toggle">
         <input type="checkbox" class="stage-map-reinf-toggle-input" ${buffOn?'checked':''} role="switch" aria-checked="${buffOn?'true':'false'}" aria-label="${escAttr(buffToggleLbl)}" onchange="setStageMapBuffAreasVisible(this.checked)">
         <span class="stage-map-reinf-slider stage-map-buff-slider" aria-hidden="true"></span>
         <span class="stage-map-reinf-text">${esc(buffToggleLbl)}</span>
       </label>`:'';
-  const togglesRow=(reinfToggleHtml||buffToggleHtml)?`<div class="stage-map-controls-row stage-map-controls-row--toggles">${reinfToggleHtml}${buffToggleHtml}</div>`:'';
+  const togglesRow=(reinfToggleHtml||escapeToggleHtml||buffToggleHtml)?`<div class="stage-map-controls-row stage-map-controls-row--toggles">${reinfToggleHtml}${escapeToggleHtml}${buffToggleHtml}</div>`:'';
   const controls=S.stageMapExpanded?`<div class="stage-map-controls">${togglesRow}
     <div class="stage-map-controls-row stage-map-controls-row--viewport">
       <div class="stage-map-viewport-card">
@@ -5012,7 +5058,11 @@ if(side!=='enemy')return true;
 const escaped=_stageEscapedNpcIdSet();
 const nid=String(u.npc_id||'');
 if(u.escape_spawn_npc_id&&escaped.has(nid))return false;
-if(u.escape_from_npc_id&&escaped.has(String(u.escape_from_npc_id)))return true;
+if(u.escape_from_npc_id){
+  if(escaped.has(String(u.escape_from_npc_id)))return true;
+  if(S.stageMapEscapeLayerVisible)return true;
+  return false;
+}
 if(S.stageMapReinforcementOnly)return true;
 return!_stageMapEnemyIsReinforcementSpawn(u, allUnits!==undefined&&allUnits!==null?allUnits:S.currentDetailData?.map_data?.units)
 }
@@ -5110,6 +5160,7 @@ function renderStageMapGrid(md){
   const {occ,w,h}=_stageMapBuildOccupancyMap(md);
   const pool=md.units||[],units=pool.filter(u=>_stageMapUnitVisible(u,pool));
   const enemyStackKeys=_stageMapEnemyStackKeys(md.units||[]);
+  const enemyEscapeStackKeys=_stageMapEnemyEscapeStackKeys(md.units||[]);
   const win=_stageMapViewWindow(md);
   const vw=(win.maxX-win.minX+1),vh=(win.maxY-win.minY+1);
   const z=Math.max(.4,Math.min(1.4,Number(S.stageMapZoom||1)));
@@ -5125,8 +5176,11 @@ function renderStageMapGrid(md){
       const eventArea=!u?_stageMapHitEventAreaCell(md,x,y):null;
       const isPlayableTile=!u&&_stageMapHitPlayableCell(md,x,y);
       const isStackedEnemyTile=enemyStackKeys.has(ck);
+      const isStackedEscapeTile=enemyEscapeStackKeys.has(ck);
       const stackOrangeHighlight=S.stageMapReinforcementOnly&&u&&String(u.side||'').toLowerCase()==='enemy'&&isStackedEnemyTile;
+      const stackEscapeHighlight=S.stageMapEscapeLayerVisible&&u&&String(u.side||'').toLowerCase()==='enemy'&&isStackedEscapeTile;
       const reinfLayerShown=u&&String(u.side||'').toLowerCase()==='enemy'&&_stageMapEnemyIsReinforcementSpawn(u, pool);
+      const escapeLayerShown=u&&String(u.side||'').toLowerCase()==='enemy'&&_stageMapUnitIsEscapeSpawn(u);
       let cls=u?`${u.side||''} ${u.is_guest_ally?'ally-guest':''} ${u.is_friendly_force?'friendly-force':''} ${u.is_gimmick?'gimmick':''}`:'';
       const wshipMulti=_stageMapIsWarshipUnit(u)&&Array.isArray(u?.cells)&&u.cells.length>1;
       if(u&&u.is_large&&!wshipMulti)cls+=' large-fill';
@@ -5140,6 +5194,7 @@ function renderStageMapGrid(md){
         else cls+=' map-cell--buff-blue';
       }
       if(stackOrangeHighlight)cls+=' map-cell--enemy-stack-reinf-on';
+      if(stackEscapeHighlight)cls+=' map-cell--enemy-stack-escape-on';
       if(u&&u.is_story_event_boss)cls+=' map-cell--story-boss';
       if(u&&u.unit_id&&ucHlSet.has(String(u.unit_id)))cls+=' map-cell--unit-cond-cp-target';
       const showStepOrder=u&&_stageMapShowSpawnOrderForUnit(u,pool);
@@ -5156,7 +5211,9 @@ function renderStageMapGrid(md){
       if(showStepOrder)cellTitle+=` — ${_stageMapSpawnOrderLabel(_stageNpcStepOrder(u))}`;
       if(eventArea)cellTitle+=` — ${t('stage_map_event_area')!=='stage_map_event_area'?t('stage_map_event_area'):'Event area'}`;
       if(stackOrangeHighlight)cellTitle+=` — ${t('stage_map_stack_tt')}`;
+      if(stackEscapeHighlight)cellTitle+=` — ${t('stage_map_escape_stack_tt')}`;
       if(reinfLayerShown&&!isStackedEnemyTile)cellTitle+=` — ${t('stage_map_reinf_layer_tt')}`;
+      if(escapeLayerShown&&!isStackedEscapeTile)cellTitle+=` — ${t('stage_map_escape_layer_tt')}`;
       html+=`<div class="map-cell ${cls}${clickCls}${originCls}" title="${esc(cellTitle)}"${mapDataAttrs}>`;
       if(o&&o.origin){
         const sl=u.side==='enemy'?t('enemy'):u.side==='gimmick'?esc(u.name||'Gimmick'):t('ally');
@@ -5182,8 +5239,10 @@ function renderStageMapGrid(md){
         const mapArt=u.thum||u.portrait;
         const supCh=_stageNpcCharacterByNpcId(u.npc_id);
         const supBadge=_stageNpcSupportBadgeHtml(supCh,'map');
-        html+=`<div class="map-unit-dot ${u.side||''} ${largeCls}${fpCls} ${isAllyLoc?'ally-loc':''} ${guestCls} ${friendlyCls} ${gimmickCls}${hintPulse}"${fpStyle}>${mapArt?`<img class="map-unit-thumb" src="${imgUrl(mapArt)}" alt="" loading="lazy"${rotStyle} onerror="this.parentElement.innerHTML='${esc(sl)}'">`:`${esc(sl)}`}${supBadge}</div>`
-        if(u.escape_spawn_npc_id&&!_stageEscapedNpcIdSet().has(String(u.npc_id)))html+=`<button type="button" class="map-cell-escape-btn" onclick="event.stopPropagation();stageEscapeNpc('${escJs(String(u.npc_id))}')" title="${escAttr(t('stage_map_escape'))}">${esc(t('stage_map_escape'))}</button>`;
+        const thumbInner=mapArt?`<img class="map-unit-thumb" src="${imgUrl(mapArt)}" alt="" loading="lazy"${rotStyle} onerror="this.style.display='none';var s=this.closest('.map-unit-thumb-stack');if(s)s.classList.add('map-unit-thumb-stack--fallback')">`:`<span class="map-unit-thumb-fallback">${esc(sl)}</span>`;
+        const overlayHtml=supBadge?`<div class="map-unit-thumb-overlay">${supBadge}</div>`:'';
+        html+=`<div class="map-unit-dot ${u.side||''} ${largeCls}${fpCls} ${isAllyLoc?'ally-loc':''} ${guestCls} ${friendlyCls} ${gimmickCls}${hintPulse}"${fpStyle}><div class="map-unit-thumb-stack">${thumbInner}${overlayHtml}</div></div>`;
+        if(_stageNpcCanEscape(u.npc_id))html+=`<button type="button" class="map-cell-escape-btn" onclick="event.stopPropagation();stageEscapeNpc('${escJs(String(u.npc_id))}')" title="${escAttr(t('stage_map_escape'))}">${esc(t('stage_map_escape'))}</button>`;
         if(showStepOrder)html+=`<span class="map-cell-step-badge" aria-hidden="true">${fmtN(_stageNpcStepOrder(u))}</span>`
       }
       if(showBuffArea)html+=_stageMapBuffHoverPopoverHtml(buffArea);
@@ -5202,12 +5261,13 @@ const key=inner?String(inner.getAttribute('data-stage-npc-group')||''):'';
 if(key)npcGroupsOpen[key]=!!el.open;
 });
 const inn=document.getElementById('detailInner');
-return{mapExpanded:!!S.stageMapExpanded,reinforcementOnly:!!S.stageMapReinforcementOnly,buffAreasVisible:S.stageMapBuffAreasVisible!==false,mapZoom:Number(S.stageMapZoom)||1,mapAutoFit:S.stageMapAutoFit!==false,npcGroupsOpen,modalScrollTop:inn?inn.scrollTop:0};
+return{mapExpanded:!!S.stageMapExpanded,reinforcementOnly:!!S.stageMapReinforcementOnly,escapeLayerVisible:!!S.stageMapEscapeLayerVisible,buffAreasVisible:S.stageMapBuffAreasVisible!==false,mapZoom:Number(S.stageMapZoom)||1,mapAutoFit:S.stageMapAutoFit!==false,npcGroupsOpen,modalScrollTop:inn?inn.scrollTop:0};
 }
 function applyStageDetailUiState(ui){
 if(!ui)return;
 if(ui.mapExpanded!=null)S.stageMapExpanded=!!ui.mapExpanded;
 if(ui.reinforcementOnly!=null)S.stageMapReinforcementOnly=!!ui.reinforcementOnly;
+if(ui.escapeLayerVisible!=null)S.stageMapEscapeLayerVisible=!!ui.escapeLayerVisible;
 S.stageMapSpawnOrderVisible=false;
 if(ui.buffAreasVisible!=null)S.stageMapBuffAreasVisible=!!ui.buffAreasVisible;
 const z=Number(ui.mapZoom);
@@ -5251,6 +5311,10 @@ function _refreshStageMapAndNpcPanelsPreserveScroll(){
 function setStageMapReinforcementOnly(on){
   S.stageMapReinforcementOnly=!!on;
   if(!on)S.stageMapSpawnOrderVisible=false;
+  _refreshStageMapAndNpcPanelsPreserveScroll();
+}
+function setStageMapEscapeLayerVisible(on){
+  S.stageMapEscapeLayerVisible=!!on;
   _refreshStageMapAndNpcPanelsPreserveScroll();
 }
 function setStageMapSpawnOrderVisible(on){
@@ -5461,9 +5525,10 @@ const hint=String(hintUrl||'').trim();
 const hintSrc=hint?imgUrlWebp(imgUrlPreferCdn(hint)):'';
 const hintHtml=hintSrc?`<span class="stage-npc-thumb-hint stage-npc-thumb-hint--pulse"><img src="${hintSrc}" alt="" loading="lazy" onerror="this.parentElement.innerHTML=''"></span>`:'';
 const supBadge=kind==='unit'&&supportCh?_stageNpcSupportBadgeHtml(supportCh,'compact'):'';
+const overlayHtml=supBadge?`<div class="stage-npc-thumb-overlay">${supBadge}</div>`:'';
 const hitCls='stage-npc-thumb-hit'+(hintSrc?' stage-npc-thumb-hit--has-hint stage-npc-thumb-hit--pulse':'');
 const inner=src?`<img class="stage-npc-thumb-img" src="${imgUrl(src)}" alt="" loading="lazy" onerror="gameImageUrlFallback(this)">`:`<span class="stage-npc-thumb-ph">${ph}</span>`;
-return`<button type="button" class="${hitCls}" ${oc} title="${esc(label)}" ${has?'':'disabled'}>${hintHtml}${supBadge}${inner}</button>`}
+return`<button type="button" class="${hitCls}" ${oc} title="${esc(label)}" ${has?'':'disabled'}>${hintHtml}<span class="stage-npc-thumb-stack">${inner}${overlayHtml}</span></button>`}
 function renderStageNpcCompactTile(n,idx){
   const u=n.unit,ch=n.character;
   let lab=(u&&u.name)||(ch&&ch.name)||`NPC ${n.npc_id}`;
@@ -5481,7 +5546,7 @@ function renderStageNpcCompactTile(n,idx){
   const uHint=firstNpcStrategyHintIconFromUnit(u);
   const cHint=firstNpcStrategyHintIconFromCharacter(ch);
   const capBadges=badges.length?`<div class="stage-npc-compact-badges">${badges.join('')}</div>`:'';
-  const escapeBtn=mapU&&mapU.escape_spawn_npc_id&&!_stageEscapedNpcIdSet().has(String(npcKey))?`<button type="button" class="stage-npc-escape-btn" onclick="event.stopPropagation();stageEscapeNpc('${escJs(String(npcKey))}')" title="${escAttr(t('stage_map_escape'))}">${esc(t('stage_map_escape'))}</button>`:'';
+  const escapeBtn=_stageNpcCanEscape(npcKey)?`<button type="button" class="stage-npc-escape-btn" onclick="event.stopPropagation();stageEscapeNpc('${escJs(String(npcKey))}')" title="${escAttr(t('stage_map_escape'))}">${esc(t('stage_map_escape'))}</button>`:'';
   return`<div id="npc-detail-${idx}" class="stage-npc-compact-tile npc-card" data-npc-id="${escAttr(String(n.npc_id!=null?n.npc_id:''))}"><div class="stage-npc-compact-pair">${renderStageNpcCompactThumb((u&&(u.thum||u.portrait)),lab,'unit',uid,npcKey,uHint,ch)}${renderStageNpcCompactThumb((ch&&(ch.thum||ch.portrait)),lab,'character',chid,npcKey,cHint)}</div><div class="stage-npc-compact-caption" title="${esc(lab)}">${esc(lab)}</div>${escapeBtn}${capBadges}</div>`;
 }
 function npcDetailsGroupSection(sid,gk,title,rows,open){if(!rows||!rows.length)return'';const tiles=rows.map(r=>renderStageNpcCompactTile(r.n,r.idx)).join('');return`<details class="stage-npc-group" ${open?'open':''}><summary class="stage-npc-group-summary"><span class="stage-npc-summary-title">${esc(title)}</span><span class="stage-npc-count">(${rows.length})</span></summary><div class="stage-npc-compact-grid" data-stage-npc-group="${escAttr(sid+'_'+gk)}">${tiles}</div></details>`}
