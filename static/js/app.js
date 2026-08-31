@@ -4849,23 +4849,24 @@ function _stageMapEnemyStackKeys(allUnits){
   return out;
 }
 function _stageMapEnemyEscapeStackKeys(allUnits){
-  return new Set(_stageMapEscapeOverlapStacks(allUnits).keys());
-}
-function _stageMapEscapeLayerCandidates(pool){
-  if(!S.stageMapEscapeLayerVisible)return[];
-  const escaped=_stageEscapedNpcIdSet();
-  return(pool||[]).filter(u=>{
-    if(!_stageMapUnitIsEscapeSpawn(u))return false;
-    if(String(u.side||'').toLowerCase()!=='enemy')return false;
-    if(escaped.has(String(u.escape_from_npc_id)))return true;
-    return true;
+  const by={};
+  (allUnits||[]).forEach(u=>{
+    if(String(u.side||'').toLowerCase()!=='enemy')return;
+    _stageMapForEachEnemyCell(u,k=>{
+      if(!by[k])by[k]={ini:false,escape:false};
+      if(_stageMapUnitIsEscapeSpawn(u))by[k].escape=true;
+      else if(u.is_initially_placed!==false)by[k].ini=true;
+    })
   });
+  const out=new Set();
+  Object.keys(by).forEach(k=>{const b=by[k];if(b.ini&&b.escape)out.add(k)});
+  return out;
 }
 function _stageMapEscapeOverlapStacks(allUnits){
   if(!S.stageMapEscapeLayerVisible)return new Map();
   const pool=allUnits||[];
   const byCell={};
-  _stageMapEscapeLayerCandidates(pool).forEach(u=>{
+  (pool||[]).filter(u=>_stageMapUnitVisible(u,pool)&&_stageMapUnitIsEscapeSpawn(u)&&String(u.side||'').toLowerCase()==='enemy').forEach(u=>{
     _stageMapForEachEnemyCell(u,k=>{
       if(!byCell[k])byCell[k]=[];
       byCell[k].push(u);
@@ -4887,14 +4888,23 @@ function _stageMapEscapeOverlapStacks(allUnits){
   });
   return out;
 }
-function _stageMapEscapeUnitOverlapInfo(u,stacks){
-  if(!u||!stacks||!stacks.size)return null;
-  const nid=String(u.npc_id||'');
-  for(const st of stacks.values()){
-    const idx=(st.units||[]).findIndex(x=>String(x.npc_id)===nid);
-    if(idx>=0)return{cellKey:st.cellKey,slot:idx===0?'a':'b'};
-  }
-  return null;
+function _stageMapEscapeOverlapRoleByNpcId(stacks){
+  const roles={};
+  if(!stacks||!stacks.size)return roles;
+  if(!S.stageMapEscapeStackSwapped)S.stageMapEscapeStackSwapped={};
+  stacks.forEach(stack=>{
+    const swapped=!!S.stageMapEscapeStackSwapped[stack.cellKey];
+    const u0=stack.units[0],u1=stack.units[1];
+    if(!u0||!u1)return;
+    roles[String(u0.npc_id)]={cellKey:stack.cellKey,slot:'0',front:!swapped};
+    roles[String(u1.npc_id)]={cellKey:stack.cellKey,slot:'1',front:!!swapped};
+  });
+  return roles;
+}
+function _stageMapEscapeOverlapSwitchHtml(cellKey){
+  const switchLbl=t('unit_transform_title');
+  const tfIcon=imgUrl('/static/images/UI/UI_Common_BattleIcon_Transform.webp');
+  return `<button type="button" class="stage-map-escape-overlap-switch" onclick="event.stopPropagation();toggleStageMapEscapeStackSwap('${escJs(cellKey)}')" aria-label="${escAttr(switchLbl)}" title="${escAttr(switchLbl)}"><img src="${escAttr(tfIcon)}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'"></button>`;
 }
 function renderStageMapSection(d){
   const md=d.map_data||{};
@@ -5275,49 +5285,12 @@ function renderStageMapParentOverlay(parents,cellPx){
   });
   return `<div class="stage-map-parent-overlay"><span class="stage-map-parent-overlay-label">${esc(colLbl)}</span>${slots}</div>`;
 }
-function _stageMapEscapeUnitHideFromLayer(u,stacks){
-  if(!u||!stacks||!stacks.size)return false;
-  const oi=_stageMapEscapeUnitOverlapInfo(u,stacks);
-  if(!oi)return false;
-  const origin=_stageMapUnitOriginXY(u);
-  if(`${origin.x}_${origin.y}`!==oi.cellKey)return false;
-  const cellN=Array.isArray(u.cells)?u.cells.length:1;
-  const bbox=_stageMapFootprintBBox(u,999,999);
-  return cellN<=1&&!(bbox&&(bbox.fpw>1||bbox.fph>1));
-}
-function _stageMapEscapeSharedItemHtml(u,slot){
-  const di=u.npc_detail_index;
-  const hasDetail=di!=null&&di!==''&&!Number.isNaN(Number(di));
-  const clickCls=hasDetail||u.unit_id||u.npc_id?' stage-map-escape-shared-item--click npc-clickable':'';
-  const mapDataAttrs=(hasDetail||u.unit_id||u.npc_id)?`${hasDetail?` data-npc-map-detail="${Number(di)}"`:''}${(u.npc_id!=null&&String(u.npc_id)!=='')?` data-npc-map-npc-id="${escAttr(String(u.npc_id))}"`:''}${u.unit_id?` data-npc-map-unit-id="${escAttr(String(u.unit_id))}"`:''}`:'';
-  const sideCls=String(u.side||'enemy').toLowerCase();
-  const guestCls=u.is_guest_ally?'ally-guest':'';
-  const friendlyCls=u.is_friendly_force?'friendly-force':'';
-  const gimmickCls=u.is_gimmick?'gimmick':'';
-  const mapArt=u.thum||u.portrait;
-  const supCh=_stageNpcCharacterByNpcId(u.npc_id);
-  const supBadge=_stageNpcSupportBadgeHtml(supCh,'map');
-  const thumbInner=mapArt?`<img class="stage-map-escape-shared-thumb" src="${imgUrl(mapArt)}" alt="" loading="lazy" onerror="this.style.display='none'">`:`<span class="stage-map-escape-shared-ph">${esc(String(u.name||'?').slice(0,1))}</span>`;
-  const overlayHtml=supBadge?`<div class="stage-map-escape-shared-overlay">${supBadge}</div>`:'';
-  return `<div class="stage-map-escape-shared-item stage-map-escape-shared-item--${slot}${clickCls}"${mapDataAttrs} title="${escAttr(u.name||'')}"><div class="stage-map-escape-shared-thumb-stack ${sideCls} ${guestCls} ${friendlyCls} ${gimmickCls}">${thumbInner}</div>${overlayHtml}</div>`;
-}
-function _stageMapRenderEscapeSharedCellHtml(stack,box){
-  const cellKey=stack.cellKey;
-  const units=stack.units||[];
-  if(units.length<2||!box)return'';
-  if(!S.stageMapEscapeStackSwapped)S.stageMapEscapeStackSwapped={};
-  const swapped=!!S.stageMapEscapeStackSwapped[cellKey];
-  const swapCls=swapped?' swapped':'';
-  const switchLbl=t('unit_transform_title');
-  const tfIcon=imgUrl('/static/images/UI/UI_Common_BattleIcon_Transform.webp');
-  return `<div class="stage-map-escape-shared-cell${swapCls}" data-escape-stack-key="${escAttr(cellKey)}" style="left:${box.left}px;top:${box.top}px;width:${box.w}px;height:${box.h}px"><button type="button" class="stage-map-escape-shared-switch" onclick="event.stopPropagation();toggleStageMapEscapeStackSwap('${escJs(cellKey)}')" aria-label="${escAttr(switchLbl)}" title="${escAttr(switchLbl)}"><img src="${escAttr(tfIcon)}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'"></button>${_stageMapEscapeSharedItemHtml(units[0],'a')}${_stageMapEscapeSharedItemHtml(units[1],'b')}</div>`;
-}
 function _stageMapEscapeUnitsLayerHtml(pool,win,cellPx,gapPx,mapW,mapH){
   if(!S.stageMapEscapeLayerVisible)return'';
   const units=(pool||[]).filter(u=>_stageMapUnitVisible(u,pool)&&_stageMapUnitIsEscapeSpawn(u));
   if(!units.length)return'';
   const overlapStacks=_stageMapEscapeOverlapStacks(pool);
-  if(!S.stageMapEscapeStackSwapped)S.stageMapEscapeStackSwapped={};
+  const overlapRoles=_stageMapEscapeOverlapRoleByNpcId(overlapStacks);
   const sorted=units.slice().sort((a,b)=>{
     const ay=_stageMapUnitOriginXY(a).y,by=_stageMapUnitOriginXY(b).y;
     if(ay!==by)return ay-by;
@@ -5325,10 +5298,18 @@ function _stageMapEscapeUnitsLayerHtml(pool,win,cellPx,gapPx,mapW,mapH){
   });
   let items='';
   sorted.forEach(u=>{
-    if(_stageMapEscapeUnitHideFromLayer(u,overlapStacks))return;
     const box=_stageMapFootprintBoxPx(u,win,cellPx,gapPx,mapW,mapH);
     const origin=_stageMapUnitOriginXY(u);
-    const z=10+origin.y;
+    const zBase=10+origin.y;
+    const nid=String(u.npc_id||'');
+    const or=overlapRoles[nid];
+    let overlapCls='',stackAttrs='',switchHtml='',z=zBase;
+    if(or){
+      overlapCls=or.front?' stage-map-escape-unit--overlap stage-map-escape-unit--overlap-front':' stage-map-escape-unit--overlap stage-map-escape-unit--overlap-back';
+      stackAttrs=` data-escape-stack="${escAttr(or.cellKey)}" data-escape-stack-slot="${or.slot}" data-escape-z-base="${zBase}"`;
+      z=zBase+(or.front?50:0);
+      if(or.front)switchHtml=_stageMapEscapeOverlapSwitchHtml(or.cellKey);
+    }
     const di=u.npc_detail_index;
     const hasDetail=di!=null&&di!==''&&!Number.isNaN(Number(di));
     const clickCls=hasDetail||u.unit_id||u.npc_id?' stage-map-escape-unit--click npc-clickable':'';
@@ -5338,26 +5319,41 @@ function _stageMapEscapeUnitsLayerHtml(pool,win,cellPx,gapPx,mapW,mapH){
     const friendlyCls=u.is_friendly_force?'friendly-force':'';
     const gimmickCls=u.is_gimmick?'gimmick':'';
     const fpStyle=` style="left:0;top:0;width:100%;height:100%;inset:auto;"`;
-    items+=`<div class="stage-map-escape-unit ${sideCls}${clickCls}" style="left:${box.left}px;top:${box.top}px;width:${box.w}px;height:${box.h}px;z-index:${z}" aria-label="${escAttr(u.name||'')}"${mapDataAttrs}>${_stageMapRenderUnitDotHtml(u,{guestCls,friendlyCls,gimmickCls,largeCls:u.is_large?'large':'',fpCls:' map-unit-dot--footprint',fpStyle})}</div>`;
-  });
-  overlapStacks.forEach(stack=>{
-    const parts=stack.cellKey.split('_');
-    const x=Number(parts[0]),y=Number(parts[1]);
-    if(!Number.isFinite(x)||!Number.isFinite(y))return;
-    const box=_stageMapCellBoxPx(x,y,win,cellPx,gapPx);
-    items+=_stageMapRenderEscapeSharedCellHtml(stack,box);
+    items+=`<div class="stage-map-escape-unit ${sideCls}${clickCls}${overlapCls}" style="left:${box.left}px;top:${box.top}px;width:${box.w}px;height:${box.h}px;z-index:${z}" aria-label="${escAttr(u.name||'')}"${mapDataAttrs}${stackAttrs}>${switchHtml}${_stageMapRenderUnitDotHtml(u,{guestCls,friendlyCls,gimmickCls,largeCls:u.is_large?'large':'',fpCls:' map-unit-dot--footprint',fpStyle})}</div>`;
   });
   return `<div class="stage-map-escape-units-layer">${items}</div>`;
 }
-function _stageMapWireEscapeOverlapTouch(){
+function _stageMapWireEscapeOverlapUi(){
   const wrap=document.getElementById('stageMapGridWrap');
-  if(!wrap||wrap.dataset.escapeSharedTouchWired==='1')return;
-  wrap.dataset.escapeSharedTouchWired='1';
+  if(!wrap||wrap.dataset.escapeOverlapUiWired==='1')return;
+  wrap.dataset.escapeOverlapUiWired='1';
+  const showSwitchForStack=(key)=>{
+    if(!key)return;
+    wrap.querySelectorAll('.stage-map-escape-unit--overlap-show-switch').forEach(el=>el.classList.remove('stage-map-escape-unit--overlap-show-switch'));
+    wrap.querySelectorAll('.stage-map-escape-unit--overlap-front[data-escape-stack="'+String(key).replace(/\\/g,'\\\\').replace(/"/g,'\\"')+'"]').forEach(el=>el.classList.add('stage-map-escape-unit--overlap-show-switch'));
+  };
+  const hideSwitchForStack=(key)=>{
+    if(!key)return;
+    wrap.querySelectorAll('.stage-map-escape-unit[data-escape-stack="'+String(key).replace(/\\/g,'\\\\').replace(/"/g,'\\"')+'"].stage-map-escape-unit--overlap-show-switch').forEach(el=>el.classList.remove('stage-map-escape-unit--overlap-show-switch'));
+  };
+  wrap.addEventListener('mouseover',function(e){
+    const u=e.target&&e.target.closest&&e.target.closest('.stage-map-escape-unit[data-escape-stack]');
+    if(!u)return;
+    showSwitchForStack(u.getAttribute('data-escape-stack'));
+  });
+  wrap.addEventListener('mouseout',function(e){
+    const u=e.target&&e.target.closest&&e.target.closest('.stage-map-escape-unit[data-escape-stack]');
+    if(!u)return;
+    const key=u.getAttribute('data-escape-stack');
+    const rel=e.relatedTarget;
+    const still=rel&&rel.closest&&rel.closest('.stage-map-escape-unit[data-escape-stack="'+String(key).replace(/\\/g,'\\\\').replace(/"/g,'\\"')+'"]');
+    if(!still)hideSwitchForStack(key);
+  });
   wrap.addEventListener('touchstart',function(e){
-    const cell=e.target&&e.target.closest&&e.target.closest('.stage-map-escape-shared-cell');
-    if(!cell||e.target.closest('.stage-map-escape-shared-switch'))return;
-    wrap.querySelectorAll('.stage-map-escape-shared-cell--armed').forEach(el=>{if(el!==cell)el.classList.remove('stage-map-escape-shared-cell--armed')});
-    cell.classList.add('stage-map-escape-shared-cell--armed');
+    const u=e.target&&e.target.closest&&e.target.closest('.stage-map-escape-unit[data-escape-stack]');
+    if(!u||e.target.closest('.stage-map-escape-overlap-switch'))return;
+    wrap.querySelectorAll('.stage-map-escape-unit--overlap-show-switch').forEach(el=>{if(el!==u&&!u.contains(el))el.classList.remove('stage-map-escape-unit--overlap-show-switch')});
+    showSwitchForStack(u.getAttribute('data-escape-stack'));
   },{passive:true});
 }
 function _stageMapRenderUnitDotHtml(u,opts){
@@ -5479,8 +5475,8 @@ function renderStageMapGrid(md){
   const parentUnits=_stageMapEscapeParentUnits(pool);
   const parentOverlayHtml=renderStageMapParentOverlay(parentUnits,cellPx);
   const mapBlock=`<div class="stage-map-grid-wrap${escapeOn?' stage-map-grid-wrap--escape':''}">${parentOverlayHtml}${html}${escapeLayerHtml}</div>`;
-  if(escapeOn&&(parentOverlayHtml||escapeLayerHtml.includes('stage-map-escape-shared-cell'))){
-    setTimeout(_stageMapWireEscapeOverlapTouch,0);
+  if(escapeOn&&(parentOverlayHtml||escapeLayerHtml.includes('data-escape-stack'))){
+    setTimeout(_stageMapWireEscapeOverlapUi,0);
     return`<div class="stage-map-viewport stage-map-viewport--escape">${mapBlock}</div>`;
   }
   return mapBlock
@@ -5555,18 +5551,29 @@ function toggleStageMapEscapeStackSwap(cellKey){
   if(!S.stageMapEscapeStackSwapped)S.stageMapEscapeStackSwapped={};
   S.stageMapEscapeStackSwapped[cellKey]=!S.stageMapEscapeStackSwapped[cellKey];
   const gridWrap=document.getElementById('stageMapGridWrap');
-  const shared=gridWrap&&gridWrap.querySelector('.stage-map-escape-shared-cell[data-escape-stack-key="'+String(cellKey).replace(/\\/g,'\\\\').replace(/"/g,'\\"')+'"]');
-  if(shared){
-    shared.classList.toggle('swapped',!!S.stageMapEscapeStackSwapped[cellKey]);
+  const esc=String(cellKey).replace(/\\/g,'\\\\').replace(/"/g,'\\"');
+  const units=gridWrap?gridWrap.querySelectorAll('.stage-map-escape-unit[data-escape-stack="'+esc+'"]'):[];
+  if(!units.length){
+    const md=S.currentDetailData&&S.currentDetailData.map_data;
+    if(gridWrap&&md&&md.width>0&&md.height>0){
+      const sl=gridWrap.scrollLeft,st=gridWrap.scrollTop;
+      gridWrap.innerHTML=renderStageMapGrid(md);
+      gridWrap.scrollLeft=sl;gridWrap.scrollTop=st;
+    }
     return;
   }
-  const md=S.currentDetailData&&S.currentDetailData.map_data;
-  if(gridWrap&&md&&md.width>0&&md.height>0){
-    const sl=gridWrap.scrollLeft,st=gridWrap.scrollTop;
-    gridWrap.innerHTML=renderStageMapGrid(md);
-    gridWrap.scrollLeft=sl;gridWrap.scrollTop=st;
-    _stageMapWireEscapeOverlapTouch();
-  }
+  const swapped=!!S.stageMapEscapeStackSwapped[cellKey];
+  units.forEach(el=>{
+    const slot=el.getAttribute('data-escape-stack-slot');
+    const isFront=swapped?(slot==='1'):(slot==='0');
+    el.classList.toggle('stage-map-escape-unit--overlap-front',isFront);
+    el.classList.toggle('stage-map-escape-unit--overlap-back',!isFront);
+    const zBase=Number(el.getAttribute('data-escape-z-base'))||10;
+    el.style.zIndex=String(zBase+(isFront?50:0));
+    const btn=el.querySelector('.stage-map-escape-overlap-switch');
+    if(btn)btn.remove();
+    if(isFront)el.insertAdjacentHTML('afterbegin',_stageMapEscapeOverlapSwitchHtml(cellKey));
+  });
 }
 function setStageMapSpawnOrderVisible(on){
   S.stageMapSpawnOrderVisible=!!on;
@@ -6199,7 +6206,7 @@ const dm=document.getElementById('detailModal');
 if(!dm||dm.dataset.stageMapNpcWired==='1')return;
 dm.dataset.stageMapNpcWired='1';
 dm.addEventListener('click',function(e){
-const cell=e.target&&e.target.closest&&e.target.closest('#stageMapGridWrap .map-cell.npc-clickable, #stageMapGridWrap .stage-map-parent-slot.npc-clickable, #stageMapGridWrap .stage-map-escape-unit.npc-clickable, #stageMapGridWrap .stage-map-escape-shared-item.npc-clickable');
+const cell=e.target&&e.target.closest&&e.target.closest('#stageMapGridWrap .map-cell.npc-clickable, #stageMapGridWrap .stage-map-parent-slot.npc-clickable, #stageMapGridWrap .stage-map-escape-unit.npc-clickable');
 if(!cell)return;
 e.stopPropagation();
 let detailIdx=null;
@@ -6210,7 +6217,7 @@ if(!Number.isNaN(n))detailIdx=n;
 }
 const npcId=String(cell.getAttribute('data-npc-map-npc-id')||'').trim();
 const unitId=String(cell.getAttribute('data-npc-map-unit-id')||'').trim();
-const stackCell=cell.getAttribute('data-npc-map-stack-cell')==='1'||cell.getAttribute('data-npc-map-escape-stack-cell')==='1';
+const stackCell=cell.getAttribute('data-npc-map-stack-cell')==='1';
 const reinfUnit=cell.getAttribute('data-npc-map-reinf-unit')==='1';
 const flashVariant=(stackCell&&reinfUnit)?'stackReinf':undefined;
 onStageMapUnitClick(detailIdx,e,unitId,npcId,flashVariant);
