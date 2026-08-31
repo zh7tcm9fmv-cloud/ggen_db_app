@@ -5254,7 +5254,8 @@ function _stageMapEscapeDockUnits(pool){
   const escaped=_stageEscapedNpcIdSet();
   return(pool||[]).filter(u=>{
     if(!u||!u.escape_spawn_npc_id)return false;
-    if(String(u.side||'').toLowerCase()!=='enemy')return false;
+    const side=String(u.side||'').toLowerCase();
+    if(side!=='enemy'&&side!=='guest'&&side!=='friendly')return false;
     if(escaped.has(String(u.npc_id)))return false;
     return true;
   });
@@ -5269,7 +5270,9 @@ function renderStageMapEscapeDock(units,cellPx){
     const clickCls=hasDetail||u.unit_id||u.npc_id?' stage-map-escape-dock-item--click npc-clickable':'';
     const mapDataAttrs=(hasDetail||u.unit_id||u.npc_id)?`${hasDetail?` data-npc-map-detail="${Number(di)}"`:''}${(u.npc_id!=null&&String(u.npc_id)!=='')?` data-npc-map-npc-id="${escAttr(String(u.npc_id))}"`:''}${u.unit_id?` data-npc-map-unit-id="${escAttr(String(u.unit_id))}"`:''}`:'';
     const thumbInner=mapArt?`<img class="stage-map-escape-dock-thumb" src="${imgUrl(mapArt)}" alt="" loading="lazy" onerror="this.style.display='none'">`:`<span class="stage-map-escape-dock-ph">${esc(String(u.name||'?').slice(0,1))}</span>`;
-    return`<div class="stage-map-escape-dock-item${clickCls}" title="${escAttr(u.name||'')}"${mapDataAttrs}><div class="stage-map-escape-dock-thumb-stack enemy">${thumbInner}</div></div>`;
+    const sideCls=String(u.side||'enemy').toLowerCase();
+    const sideStackCls=sideCls==='guest'?'guest ally-guest':(sideCls==='friendly'?'friendly friendly-force':sideCls);
+    return`<div class="stage-map-escape-dock-item${clickCls}" title="${escAttr(u.name||'')}"${mapDataAttrs}><div class="stage-map-escape-dock-thumb-stack ${sideStackCls}">${thumbInner}</div></div>`;
   }).join('');
   return`<div class="stage-map-escape-dock" style="--cell:${size}px" aria-label="${escAttr((()=>{const v=t('stage_map_escape_dock');return v&&v!=='stage_map_escape_dock'?v:'Escaped units'})())}">${items}</div>`;
 }

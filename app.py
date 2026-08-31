@@ -13768,14 +13768,25 @@ def _map_npc_escape_name_base(name):
     return re.sub(r'[_]?\d+$', '', n, flags=re.I).lower()
 
 
-def pair_map_npc_escape_spawns(units, npc_rows):
-    """Link on-field enemies to off-map spawn replacements (death escape)."""
-    enemies = [u for u in (units or []) if str(u.get('side', '')).lower() == 'enemy']
-    if not enemies or not any(u.get('is_initially_placed', True) for u in enemies):
+def _map_npc_escape_is_sequel_name(parent_name, spawn_name):
+    """True when spawn NpcUniqueName is a numbered sequel of the parent name."""
+    p = str(parent_name or '').strip().lower()
+    s = str(spawn_name or '').strip().lower()
+    if not p or not s or p == s or p == '<default>' or s == '<default>':
+        return False
+    if _map_npc_escape_name_base(p) != _map_npc_escape_name_base(s):
+        return False
+    return s.startswith(p + '_') or (s.startswith(p) and len(s) > len(p))
+
+
+def _pair_map_npc_escape_spawns_for_side(side_units, meta):
+    """Pair placed on-map units with off-map death spawns for one battle side."""
+    if not side_units or not any(u.get('is_initially_placed', True) for u in side_units):
         return
-    meta = {normalize_id(r.get('id')): r for r in (npc_rows or [])}
-    placed = [u for u in enemies if u.get('is_initially_placed', True) and not u.get('escape_spawn_npc_id')]
-    unplaced = [u for u in enemies if not u.get('is_initially_placed', True) and not u.get('escape_from_npc_id')]
+    placed = [u for u in side_units if u.get('is_initially_placed', True) and not u.get('escape_spawn_npc_id')]
+    unplaced = [u for u in side_units if not u.get('is_initially_placed', True) and not u.get('escape_from_npc_id')]
+    if not placed or not unplaced:
+        return
     paired_parents = set()
     paired_spawns = set()
 
@@ -13831,11 +13842,25 @@ def pair_map_npc_escape_spawns(units, npc_rows):
             if str(sname).strip().lower() == str(pname).strip().lower():
                 continue
             sp_uid = normalize_id(sp.get('unit_id', '0'))
-            if par_uid != '0' and sp_uid == par_uid:
+            if par_uid != '0' and sp_uid == par_uid and not _map_npc_escape_is_sequel_name(pname, sname):
                 continue
             matches.append(sp)
         if len(matches) == 1:
             _link(par, matches[0])
+
+
+def pair_map_npc_escape_spawns(units, npc_rows):
+    """Link on-field NPCs to off-map spawn replacements (death escape)."""
+    if not units:
+        return
+    meta = {normalize_id(r.get('id')): r for r in (npc_rows or [])}
+    by_side = {}
+    for u in units:
+        side = str(u.get('side', '')).lower()
+        if side in ('enemy', 'guest', 'friendly'):
+            by_side.setdefault(side, []).append(u)
+    for side in ('enemy', 'guest', 'friendly'):
+        _pair_map_npc_escape_spawns_for_side(by_side.get(side, []), meta)
 
 
 def build_map_grid(w, h, u, buff_areas=None, playable_cells=None, playable_cell_count=0):
@@ -26566,7 +26591,7 @@ def get_stage(stage_id):
                         'ch' if is_challenge_stage else (
                             'ce' if is_chronicle_stage else 'er')))))
         # mstage18: chronicle/E-sim first-clear from node content FirstClearRewardSetId.
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage22"
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage23"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
