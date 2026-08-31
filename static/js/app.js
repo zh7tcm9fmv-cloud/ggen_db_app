@@ -4567,9 +4567,10 @@ return sr.map(s=>{
 if(s.name!=='Attack'&&s.name!=='Defense')return s;
 const pct=s.name==='Attack'?p.atk:p.def;
 if(!pct)return s;
-const base=s.total|0;
-const tot=F(base*(100+pct)/100);
-return Object.assign({},s,{total:tot,bonus:Math.max(0,tot-(s.base|0)),pilot_bonus:pct});
+const base=s.base|0;
+const passivePct=(s.passive_pct|0)+pct;
+const tot=F(base*(100+passivePct)/100);
+return Object.assign({},s,{total:tot,bonus:Math.max(0,tot-base),passive_pct:passivePct,pilot_bonus:pct});
 });
 }
 function _detailPilotRangeBonusForWeapon(wpn,ud){
@@ -4636,9 +4637,9 @@ if(S.spActive){sr=(cp&&d.sp_stats_with_ex)?d.sp_stats_with_ex:d.sp_stats;bs=d.sp
 else{sr=(cp&&d.stats_with_ex)?d.stats_with_ex:d.stats;bs=d.stats}
 }else{sr=(cp&&d.stats_with_ex)?d.stats_with_ex:d.stats;bs=d.stats}
 }
+sr=_detailApplyUnitCondAdjustRows(sr,bs,d,cp);
 let prePilotSr=null;
 if(type==='unit'&&S.pilotConditionalPassiveActive&&S.pilotCondCharData){prePilotSr=sr.map(s=>Object.assign({},s));sr=_detailApplyPilotStatBonusRows(sr,d)}
-sr=_detailApplyUnitCondAdjustRows(sr,bs,d,cp);
 let th='';
 if(hcf||(type==='unit'&&d.has_pilot_cond_passive)){th=`<div class="detail-cond-toggle-stack">`;
 if(hcf){const cplab=t('conditional_passive');const unitCombatStack=(type==='unit'&&d.unit_combat_count_atk)?_detailUnitCombatStackSliderHtml(d.unit_combat_count_atk):'';th+=`<div class="conditional-toggle detail-unit-cp-block"><div class="toggle-clickable ${S.conditionalPassiveActive?'active':''}" role="button" tabindex="0" onclick="toggleConditionalPassive(!S.conditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleConditionalPassive(!S.conditionalPassiveActive)}"><span class="toggle-control-slot"><span class="toggle-switch"></span></span><span class="toggle-label">${esc(cplab)}</span></div>${unitCombatStack?`<div class="detail-unit-cp-stack-slot">${unitCombatStack}</div>`:''}</div>`}

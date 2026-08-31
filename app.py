@@ -10146,6 +10146,49 @@ for _tev in (tower_event_map or {}).values():
     _sort = safe_int(_tev.get('sort_order'), 0)
     if _gid not in tower_event_group_sort_map or _sort < tower_event_group_sort_map[_gid]:
         tower_event_group_sort_map[_gid] = _sort
+
+# GTower: one canonical row per (side, floor) — lowest TowerEventStage id (original run).
+# EveryFirstClearRewardSetId lives on rerun rows; attach those rewards to the canonical stage only.
+TOWER_CANONICAL_STAGE_BY_SIDE_FLOOR = {}
+TOWER_EVERY_FIRST_CLEAR_REWARD_BY_SIDE_FLOOR = {}
+
+
+def _tower_side_from_tes(tes):
+    if not isinstance(tes, dict):
+        return 'ALL'
+    gid = normalize_id(tes.get('tower_event_stage_group_id'))
+    ginfo = (tower_event_stage_group_map or {}).get(gid, {})
+    rid = str(ginfo.get('resource_id') or '').lower() if isinstance(ginfo, dict) else ''
+    if 'tower_event_200' in rid:
+        return 'W'
+    if 'tower_event_100' in rid:
+        return 'E'
+    return 'ALL'
+
+
+def _build_tower_floor_index():
+    TOWER_CANONICAL_STAGE_BY_SIDE_FLOOR.clear()
+    TOWER_EVERY_FIRST_CLEAR_REWARD_BY_SIDE_FLOOR.clear()
+    for tid, tes in (tower_event_stage_map or {}).items():
+        if not isinstance(tes, dict):
+            continue
+        side = _tower_side_from_tes(tes)
+        floor = safe_int(tes.get('floor_count'), 0)
+        if side not in ('E', 'W') or floor <= 0:
+            continue
+        key = (side, floor)
+        tid_int = safe_int(tid, 0)
+        if tid_int:
+            prev = TOWER_CANONICAL_STAGE_BY_SIDE_FLOOR.get(key)
+            if not prev or tid_int < safe_int(prev, 0):
+                TOWER_CANONICAL_STAGE_BY_SIDE_FLOOR[key] = normalize_id(tid)
+        rs = normalize_id(tes.get('every_first_clear_reward_set_id'))
+        if rs != '0':
+            TOWER_EVERY_FIRST_CLEAR_REWARD_BY_SIDE_FLOOR[key] = rs
+
+
+_build_tower_floor_index()
+
 tower_event_stage_appeal_reward_map = {}
 for _row in extract_data_list(tower_event_stage_appeal_reward_data):
     if not isinstance(_row, dict):
@@ -13282,12 +13325,24 @@ def resolve_tower_appeal_rewards(stage_id, lc):
 
 
 def resolve_tower_prev_cleared_rewards(stage_id, lc):
-    """GTower rerun: rewards for players who already cleared this floor in a prior event."""
+    """GTower rerun: rewards for players who already cleared this floor in a prior event.
+
+    Shown on the canonical (original) stage row only; reward set id comes from any rerun
+    row for the same tower side + floor (EveryFirstClearRewardSetId on m_tower_event_stage).
+    """
     sid = normalize_id(stage_id)
     tes = (tower_event_stage_map or {}).get(sid, {})
     if not isinstance(tes, dict):
         return []
-    reward_set_id = normalize_id(tes.get('every_first_clear_reward_set_id'))
+    side = _tower_side_from_tes(tes)
+    floor = safe_int(tes.get('floor_count'), 0)
+    if side not in ('E', 'W') or floor <= 0:
+        return []
+    key = (side, floor)
+    canonical = TOWER_CANONICAL_STAGE_BY_SIDE_FLOOR.get(key)
+    if canonical != sid:
+        return []
+    reward_set_id = TOWER_EVERY_FIRST_CLEAR_REWARD_BY_SIDE_FLOOR.get(key, '0')
     if reward_set_id == '0':
         return []
     return _decorate_reward_rows(_resolve_reward_rows_from_set_id(reward_set_id), lc)
@@ -26098,7 +26153,7 @@ def list_stages():
         if cat not in ('eternal', 'score_attack', 'special_stage', 'tower_stage', 'challenge_stage'): cat = 'eternal'
         if cat != 'eternal':
             df = 'all'
-        ck = f"stages14_{cat}_{tower_side}_{challenge_series}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
+        ck = f"stages15_{cat}_{tower_side}_{challenge_series}_{lc}_{page}_{pp}_{sq}_{df}_{sb}_{sd}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -26221,23 +26276,11 @@ def list_stages():
                     '_portrait_duid': duid,
                     'content_locked': False, 'stage_category': 'tower_stage', 'tower_side': side,
                 })
-            dup_groups = {}
             for row in tower_rows:
-                key = str(row.get('name') or '').strip().lower()
-                if not key:
-                    continue
-                dup_groups.setdefault(key, []).append(row)
-            rerun_ids = set()
-            for _, grp in dup_groups.items():
-                if len(grp) <= 1:
-                    continue
-                rerun_row = max(grp, key=lambda x: safe_int(x.get('id'), 0))
-                rerun_ids.add(str(rerun_row.get('id') or ''))
-                nm = str(rerun_row.get('name') or '').strip()
-                if nm and 'rerun' not in nm.lower():
-                    rerun_row['name'] = f"{nm} (Rerun)"
-            for row in tower_rows:
-                if str(row.get('id') or '') in rerun_ids:
+                _side = row.get('tower_side')
+                _floor = safe_int(row.get('stage_number'), 0)
+                _canonical = TOWER_CANONICAL_STAGE_BY_SIDE_FLOOR.get((_side, _floor))
+                if _canonical and str(row.get('id') or '') != _canonical:
                     continue
                 if sq:
                     searchable = f"{row.get('id')} {row.get('name')} {row.get('stage_number')} {row.get('tower_side')}".lower()
@@ -26437,7 +26480,7 @@ def get_stage(stage_id):
                         'ch' if is_challenge_stage else (
                             'ce' if is_chronicle_stage else 'er')))))
         # mstage18: chronicle/E-sim first-clear from node content FirstClearRewardSetId.
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage19"
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage20"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
