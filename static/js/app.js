@@ -5098,10 +5098,13 @@ if(dir==='2')return 180;
 if(dir==='1')return 270;
 return 0;
 }
-function _stageMapBuildOccupancyMap(md){
+function _stageMapBuildOccupancyMap(md,opts){
+  opts=opts||{};
+  const skipIds=opts.skipOffsetEscapeSpawns||null;
   _normalizeStageMapUnitFootprints(md.units,md.width||0,md.height||0);
   const pool=md.units||[],w=md.width||24,h=md.height||28,units=pool.filter(u=>_stageMapUnitVisible(u,pool)),occ={};
   units.forEach(u=>{
+    if(skipIds&&skipIds.has(String(u.npc_id||'')))return;
     if(u.cells&&u.cells.length){
       let oc=null;
       if(u.map_origin&&u.map_origin.x!=null&&u.map_origin.y!=null){
@@ -5164,14 +5167,74 @@ function _stageMapUnitOriginXY(u){
   if(u.map_origin&&u.map_origin.x!=null&&u.map_origin.y!=null)return{x:Number(u.map_origin.x)+1,y:Number(u.map_origin.y)+1};
   return{x:Number(u.x||0)+1,y:Number(u.y||0)+1};
 }
-function _stageMapEscapeSpawnAnchorKeys(pool){
-  const keys=new Set();
-  if(!S.stageMapEscapeLayerVisible)return keys;
-  (pool||[]).filter(u=>_stageMapUnitVisible(u,pool)&&_stageMapUnitIsEscapeSpawn(u)).forEach(u=>{
-    const o=_stageMapUnitOriginXY(u);
-    keys.add(`${o.x}_${o.y}`);
+function _stageMapUnitCellKeySet(u){
+  const cells=u.cells&&u.cells.length?u.cells:[{x:u.x,y:u.y}];
+  const s=new Set();
+  cells.forEach(c=>{const cx=Number(c.x)+1,cy=Number(c.y)+1;if(Number.isFinite(cx)&&Number.isFinite(cy))s.add(`${cx}_${cy}`);});
+  return s;
+}
+function _stageMapEscapeSpawnCollisionGroups(pool){
+  if(!S.stageMapEscapeLayerVisible)return[];
+  const spawns=(pool||[]).filter(u=>_stageMapUnitVisible(u,pool)&&_stageMapUnitIsEscapeSpawn(u));
+  if(spawns.length<2)return[];
+  const parent=spawns.map((_,i)=>i);
+  const find=i=>{while(parent[i]!==i){parent[i]=parent[parent[i]];i=parent[i]}return i;};
+  const union=(a,b)=>{a=find(a);b=find(b);if(a!==b)parent[b]=a;};
+  for(let i=0;i<spawns.length;i++){
+    const ki=_stageMapUnitCellKeySet(spawns[i]);
+    for(let j=i+1;j<spawns.length;j++){
+      const kj=_stageMapUnitCellKeySet(spawns[j]);
+      let hit=false;
+      ki.forEach(k=>{if(kj.has(k))hit=true;});
+      if(hit)union(i,j);
+    }
+  }
+  const groups=new Map();
+  spawns.forEach((u,i)=>{const r=find(i);if(!groups.has(r))groups.set(r,[]);groups.get(r).push(u);});
+  return[...groups.values()].filter(g=>g.length>1);
+}
+function _stageMapEscapeFloatThumbBox(u,cellPx,gapPx,mapW,mapH){
+  const bbox=_stageMapFootprintBBox(u,mapW,mapH);
+  const wshipMulti=_stageMapIsWarshipUnit(u)&&Array.isArray(u?.cells)&&u.cells.length>1;
+  const multiFp=wshipMulti&&bbox&&(bbox.fpw>1||bbox.fph>1);
+  if(multiFp||u.is_large){
+    const fpw=bbox?bbox.fpw:1,fph=bbox?bbox.fph:1;
+    return{
+      w:fpw*cellPx+(fpw-1)*gapPx-4,
+      h:fph*cellPx+(fph-1)*gapPx-4,
+      largeCls:multiFp?'':'large',
+      fpCls:multiFp?' map-unit-dot--footprint':''
+    };
+  }
+  const sz=Math.max(16,cellPx-4);
+  return{w:sz,h:sz,largeCls:'',fpCls:''};
+}
+function _stageMapEscapeSpawnOffsetPlan(pool,cellPx,gapPx,mapW,mapH){
+  const groups=_stageMapEscapeSpawnCollisionGroups(pool);
+  const offsets={};
+  const anchorKeys=new Set();
+  groups.forEach(group=>{
+    const n=group.length;
+    const maxSpan=Math.max(...group.map(u=>{const b=_stageMapEscapeFloatThumbBox(u,cellPx,gapPx,mapW,mapH);return Math.max(b.w,b.h);}),cellPx);
+    const radius=Math.max(cellPx*0.95,maxSpan*0.55+cellPx*0.35);
+    group.forEach((u,i)=>{
+      const origin=_stageMapUnitOriginXY(u);
+      anchorKeys.add(`${origin.x}_${origin.y}`);
+      const box=_stageMapEscapeFloatThumbBox(u,cellPx,gapPx,mapW,mapH);
+      let dx,dy;
+      if(n===2){
+        const sign=i===0?-1:1;
+        dx=sign*radius;
+        dy=-radius*0.38;
+      }else{
+        const angle=(-Math.PI*0.85)+((Math.PI*0.7*i)/Math.max(1,n-1));
+        dx=Math.cos(angle)*radius;
+        dy=Math.sin(angle)*radius;
+      }
+      offsets[String(u.npc_id)]={anchorX:origin.x,anchorY:origin.y,dx,dy,box};
+    });
   });
-  return keys;
+  return{offsets,anchorKeys};
 }
 function _stageMapRenderUnitDotHtml(u,opts){
   opts=opts||{};
@@ -5193,6 +5256,32 @@ function _stageMapRenderUnitDotHtml(u,opts){
   const fpStyle=opts.fpStyle||'';
   return`<div class="map-unit-dot ${u.side||''} ${largeCls}${fpCls} ${isAllyLoc?'ally-loc':''} ${guestCls} ${friendlyCls} ${gimmickCls}${hintPulse}"${fpStyle}><div class="map-unit-thumb-stack">${thumbInner}</div>${overlayHtml}</div>`;
 }
+function _stageMapEscapeSpawnFloatLayerHtml(plan,win,cellPx,gapPx,pool,mapW,mapH){
+  const keys=Object.keys(plan.offsets||{});
+  if(!keys.length)return'';
+  const gridPad=15;
+  const stride=cellPx+gapPx;
+  const cellCenter=(ax,ay)=>{const col=ax-win.minX,row=win.maxY-ay;return{x:gridPad+col*stride+cellPx/2,y:gridPad+row*stride+cellPx/2};};
+  const cellTopLeft=(ax,ay)=>{const col=ax-win.minX,row=win.maxY-ay;return{x:gridPad+col*stride+2,y:gridPad+row*stride+2};};
+  let lines='',thumbs='';
+  keys.forEach(nid=>{
+    const o=plan.offsets[nid];
+    const u=_stageMapUnitByNpcId(pool,nid);
+    if(!u)return;
+    const box=o.box||_stageMapEscapeFloatThumbBox(u,cellPx,gapPx,mapW,mapH);
+    const ac=cellCenter(o.anchorX,o.anchorY);
+    const tl=cellTopLeft(o.anchorX,o.anchorY);
+    const tx=tl.x+box.w/2+o.dx,ty=tl.y+box.h/2+o.dy;
+    lines+=`<line x1="${tx.toFixed(1)}" y1="${ty.toFixed(1)}" x2="${ac.x.toFixed(1)}" y2="${ac.y.toFixed(1)}"/>`;
+    const di=u.npc_detail_index;
+    const hasDetail=di!=null&&di!==''&&!Number.isNaN(Number(di));
+    const mapDataAttrs=(hasDetail||u.unit_id||u.npc_id)?`${hasDetail?` data-npc-map-detail="${Number(di)}"`:''}${(u.npc_id!=null&&String(u.npc_id)!=='')?` data-npc-map-npc-id="${escAttr(String(u.npc_id))}"`:''}${u.unit_id?` data-npc-map-unit-id="${escAttr(String(u.unit_id))}"`:''}`:'';
+    const clickCls=(hasDetail||u.unit_id||u.npc_id)?' npc-clickable':'';
+    const dotHtml=_stageMapRenderUnitDotHtml(u,{noSupportBadge:false,largeCls:box.largeCls,fpCls:box.fpCls});
+    thumbs+=`<div class="map-escape-spawn-float${clickCls}" style="--cell:${cellPx}px;left:${(tx-box.w/2).toFixed(1)}px;top:${(ty-box.h/2).toFixed(1)}px;width:${box.w}px;height:${box.h}px" title="${escAttr(u.name||'')}"${mapDataAttrs}>${dotHtml}</div>`;
+  });
+  return`<div class="map-escape-spawn-float-layer">${lines?`<svg class="map-escape-spawn-leader-svg" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">${lines}</svg>`:''}${thumbs}</div>`;
+}
 function _stageMapEscapeDockUnits(pool){
   if(!S.stageMapEscapeLayerVisible)return[];
   const escaped=_stageEscapedNpcIdSet();
@@ -5204,9 +5293,12 @@ function _stageMapEscapeDockUnits(pool){
     return true;
   });
 }
-function renderStageMapEscapeDock(units,cellPx,variant){
+function renderStageMapEscapeDock(units,cellPx,variant,opts){
   if(!units||!units.length)return'';
+  opts=opts||{};
   const size=Math.max(16,Number(cellPx)||50);
+  const gapPx=_stageMapGridGapPx();
+  const mapW=opts.mapW||0,mapH=opts.mapH||0;
   const role=variant==='spawn'?'spawn':'parent';
   const dockCls='stage-map-escape-dock stage-map-escape-dock--'+role;
   const ariaFallback=role==='spawn'?'Escape spawns':'Escaped units';
@@ -5217,11 +5309,14 @@ function renderStageMapEscapeDock(units,cellPx,variant){
     const hasDetail=di!=null&&di!==''&&!Number.isNaN(Number(di));
     const clickCls=hasDetail||u.unit_id||u.npc_id?' stage-map-escape-dock-item--click npc-clickable':'';
     const mapDataAttrs=(hasDetail||u.unit_id||u.npc_id)?`${hasDetail?` data-npc-map-detail="${Number(di)}"`:''}${(u.npc_id!=null&&String(u.npc_id)!=='')?` data-npc-map-npc-id="${escAttr(String(u.npc_id))}"`:''}${u.unit_id?` data-npc-map-unit-id="${escAttr(String(u.unit_id))}"`:''}`:'';
+    const box=role==='spawn'&&mapW&&mapH?_stageMapEscapeFloatThumbBox(u,size,gapPx,mapW,mapH):{w:size,h:size,largeCls:'',fpCls:''};
     const thumbInner=mapArt?`<img class="stage-map-escape-dock-thumb" src="${imgUrl(mapArt)}" alt="" loading="lazy" onerror="this.style.display='none'">`:`<span class="stage-map-escape-dock-ph">${esc(String(u.name||'?').slice(0,1))}</span>`;
     const sideCls=String(u.side||'enemy').toLowerCase();
     const sideStackCls=sideCls==='guest'?'guest ally-guest':(sideCls==='friendly'?'friendly friendly-force':sideCls);
     const cap=`<span class="stage-map-escape-dock-caption" title="${escAttr(u.name||'')}">${esc(String(u.name||'').slice(0,14))}</span>`;
-    return`<div class="stage-map-escape-dock-item${clickCls}" title="${escAttr(u.name||'')}"${mapDataAttrs}><div class="stage-map-escape-dock-thumb-stack ${sideStackCls}">${thumbInner}</div>${cap}</div>`;
+    const stackStyle=role==='spawn'?` style="width:${box.w}px;height:${box.h}px;--cell:${size}px"`:'';
+    const largeInnerCls=box.largeCls?` ${box.largeCls}`:'';
+    return`<div class="stage-map-escape-dock-item${clickCls}" title="${escAttr(u.name||'')}"${mapDataAttrs}><div class="stage-map-escape-dock-thumb-stack ${sideStackCls}${largeInnerCls}"${stackStyle}>${thumbInner}</div>${cap}</div>`;
   }).join('');
   const labelHtml=`<div class="stage-map-escape-dock-label">${esc(ariaLbl)}</div>`;
   return`<div class="${dockCls}" style="--cell:${size}px" aria-label="${escAttr(ariaLbl)}">${labelHtml}${items}</div>`;
@@ -5240,8 +5335,10 @@ function renderStageMapGrid(md){
   const z=Math.max(.4,Math.min(1.4,Number(S.stageMapZoom||1)));
   const cellPx=Math.round(50*z);
   const gapPx=_stageMapGridGapPx();
-  const escapeSpawnAnchorKeys=_stageMapEscapeSpawnAnchorKeys(pool);
-  const {occ,w,h}=_stageMapBuildOccupancyMap(md);
+  const mapW=md.width||24,mapH=md.height||28;
+  const escapeOffsetPlan=S.stageMapEscapeLayerVisible?_stageMapEscapeSpawnOffsetPlan(pool,cellPx,gapPx,mapW,mapH):{offsets:{},anchorKeys:new Set()};
+  const skipOffsetIds=new Set(Object.keys(escapeOffsetPlan.offsets||{}));
+  const {occ,w,h}=_stageMapBuildOccupancyMap(md,{skipOffsetEscapeSpawns:skipOffsetIds});
   const units=pool.filter(u=>_stageMapUnitVisible(u,pool));
   const enemyStackKeys=_stageMapEnemyStackKeys(md.units||[]);
   const ucHlSet=new Set(getActiveNpcUnitConditionHighlightIds());
@@ -5264,7 +5361,7 @@ function renderStageMapGrid(md){
       if(u&&u.is_large&&!wshipMulti)cls+=' large-fill';
       if(isPlayableTile)cls+=' map-cell--playable';
       if(eventArea)cls+=' map-cell--event-area';
-      if(escapeSpawnAnchorKeys.has(ck))cls+=' map-cell--escape-spawn-anchor';
+      if(escapeOffsetPlan.anchorKeys&&escapeOffsetPlan.anchorKeys.has(ck))cls+=' map-cell--escape-spawn-anchor';
       if(escapeLayerShown&&o&&o.origin)cls+=' map-cell--escape-spawn';
       const showBuffArea=buffArea&&_stageMapBuffAreasShown();
       if(showBuffArea){
@@ -5317,11 +5414,14 @@ function renderStageMapGrid(md){
       html+=`</div>`
     }
   }
+  html+=_stageMapEscapeSpawnFloatLayerHtml(escapeOffsetPlan,win,cellPx,gapPx,pool,w,h);
   html+=`</div>`;
   const dockUnits=_stageMapEscapeDockUnits(pool);
   const parentDockHtml=renderStageMapEscapeDock(dockUnits,cellPx,'parent');
-  const barsHtml=parentDockHtml?`<div class="stage-map-escape-bars">${parentDockHtml}</div>`:'';
-  if(barsHtml)return`<div class="stage-map-viewport stage-map-viewport--escape">${barsHtml}${html}</div>`;
+  const spawnDockUnits=Object.keys(escapeOffsetPlan.offsets||{}).map(nid=>_stageMapUnitByNpcId(pool,nid)).filter(Boolean);
+  const spawnDockHtml=spawnDockUnits.length?renderStageMapEscapeDock(spawnDockUnits,cellPx,'spawn',{mapW:w,mapH:h}):'';
+  const barsHtml=(parentDockHtml||spawnDockHtml)?`<div class="stage-map-escape-bars">${parentDockHtml}${spawnDockHtml}</div>`:'';
+  if(barsHtml||skipOffsetIds.size)return`<div class="stage-map-viewport stage-map-viewport--escape">${barsHtml}${html}</div>`;
   return html
 }
 function captureStageDetailUiState(){
@@ -6011,7 +6111,7 @@ const dm=document.getElementById('detailModal');
 if(!dm||dm.dataset.stageMapNpcWired==='1')return;
 dm.dataset.stageMapNpcWired='1';
 dm.addEventListener('click',function(e){
-const cell=e.target&&e.target.closest&&e.target.closest('#stageMapGridWrap .map-cell.npc-clickable, #stageMapGridWrap .stage-map-escape-dock-item.npc-clickable');
+const cell=e.target&&e.target.closest&&e.target.closest('#stageMapGridWrap .map-cell.npc-clickable, #stageMapGridWrap .map-escape-spawn-float.npc-clickable, #stageMapGridWrap .stage-map-escape-dock-item.npc-clickable');
 if(!cell)return;
 e.stopPropagation();
 let detailIdx=null;
