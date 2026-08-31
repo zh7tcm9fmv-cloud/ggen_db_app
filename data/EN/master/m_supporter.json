@@ -255,6 +255,21 @@
     "AssetDownloadTimingTypeIndex": 3
   },
   {
+    "Id": 1080000650,
+    "NameLanguageId": 160100001080000650,
+    "DescriptionLanguageId": 0,
+    "SortNameLanguageId": 160300001080000650,
+    "RarityIndex": 5,
+    "MaxHpAdditionValue": 2000,
+    "MaxAttackAdditionValue": 300,
+    "ResourceId": "g0800s00600",
+    "LimitBreakItemId": 0,
+    "SupporterAcquisitionRouteTypeIndex": 1,
+    "GashaObtainedWordLanguageId": 160800001080000650,
+    "ScheduleId": 2608509901,
+    "AssetDownloadTimingTypeIndex": 3
+  },
+  {
     "Id": 1095000150,
     "NameLanguageId": 160100001095000150,
     "DescriptionLanguageId": 0,

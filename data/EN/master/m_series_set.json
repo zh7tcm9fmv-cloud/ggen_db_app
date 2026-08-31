@@ -1318,5 +1318,25 @@
     "SeriesSetId": 10830080008100950,
     "SeriesId": 950,
     "SortOrder": 4
+  },
+  {
+    "SeriesSetId": 11150110008000810,
+    "SeriesId": 800,
+    "SortOrder": 3
+  },
+  {
+    "SeriesSetId": 11150110008000810,
+    "SeriesId": 810,
+    "SortOrder": 4
+  },
+  {
+    "SeriesSetId": 11150110008000810,
+    "SeriesId": 1100,
+    "SortOrder": 2
+  },
+  {
+    "SeriesSetId": 11150110008000810,
+    "SeriesId": 1150,
+    "SortOrder": 1
   }
 ]

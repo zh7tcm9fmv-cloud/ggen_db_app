@@ -550,5 +550,11 @@
     "SortieRestrictionTypeIndex": 2,
     "TargetId": 1133,
     "SlotIndex": 0
+  },
+  {
+    "StageSortieRestrictionSetGroupId": 900015,
+    "SortieRestrictionTypeIndex": 2,
+    "TargetId": 1010,
+    "SlotIndex": 0
   }
 ]

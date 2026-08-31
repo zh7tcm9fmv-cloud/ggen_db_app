@@ -1960,6 +1960,14 @@
     "value": "Giant Bazooka SSP"
   },
   {
+    "id": 120100101700130001,
+    "value": "Explosion"
+  },
+  {
+    "id": 120100101700140001,
+    "value": "Explosion"
+  },
+  {
     "id": 120100102100010001,
     "value": "Beam Dagger"
   },
@@ -6096,6 +6104,26 @@
     "value": "Drill Gun SSP"
   },
   {
+    "id": 120100110100035001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100110100035002,
+    "value": "Buster Shot"
+  },
+  {
+    "id": 120100110100035003,
+    "value": "Bazooka"
+  },
+  {
+    "id": 120100110100035004,
+    "value": "G-Blast Knuckle EX"
+  },
+  {
+    "id": 120100110100035005,
+    "value": "G-Blast Knuckle"
+  },
+  {
     "id": 120100111000010001,
     "value": "Beam Saber"
   },
@@ -6578,6 +6606,46 @@
   {
     "id": 120100111500030090,
     "value": "Long Mega Buster SSP"
+  },
+  {
+    "id": 120100111500032001,
+    "value": "Beam Saber"
+  },
+  {
+    "id": 120100111500032002,
+    "value": "Beam Gatling Gun"
+  },
+  {
+    "id": 120100111500032003,
+    "value": "Beam Rifle"
+  },
+  {
+    "id": 120100111500032004,
+    "value": "Pulse Laser Cannon"
+  },
+  {
+    "id": 120100111500032005,
+    "value": "Pulse Laser Cannon"
+  },
+  {
+    "id": 120100111500035001,
+    "value": "Long Mega Buster"
+  },
+  {
+    "id": 120100111500035002,
+    "value": "Waist Missile Pod"
+  },
+  {
+    "id": 120100111500035003,
+    "value": "Beam Cannon"
+  },
+  {
+    "id": 120100111500035004,
+    "value": "Explosive Bolt EX"
+  },
+  {
+    "id": 120100111500035005,
+    "value": "Long Mega Buster"
   },
   {
     "id": 120100111500040001,
@@ -22530,6 +22598,26 @@
   {
     "id": 120100185000135004,
     "value": "Haro Drill Punch EX"
+  },
+  {
+    "id": 120100185000140001,
+    "value": "Machine Gun"
+  },
+  {
+    "id": 120100185000140002,
+    "value": "Large Wired Bit"
+  },
+  {
+    "id": 120100185000140003,
+    "value": "Twin Arm Beam Launcher"
+  },
+  {
+    "id": 120100185000140080,
+    "value": "Large Wired Bit"
+  },
+  {
+    "id": 120100185000140090,
+    "value": "Large Wired Bit SSP"
   },
   {
     "id": 120100185000150001,

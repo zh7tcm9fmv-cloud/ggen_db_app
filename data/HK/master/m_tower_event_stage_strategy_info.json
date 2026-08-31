@@ -317,7 +317,7 @@
     "CharacterId": 1300000101,
     "DescriptionLanguageId": 290200907001110103,
     "HighlightDescriptionLanguageId": 0,
-    "BattleSideTypeIndex": 3
+    "BattleSideTypeIndex": 2
   },
   {
     "StageId": 90700111,
@@ -327,7 +327,7 @@
     "CharacterId": 1300001801,
     "DescriptionLanguageId": 290200907001110201,
     "HighlightDescriptionLanguageId": 290300907001110201,
-    "BattleSideTypeIndex": 2
+    "BattleSideTypeIndex": 1
   },
   {
     "StageId": 90700111,
@@ -357,7 +357,7 @@
     "CharacterId": 2300000010,
     "DescriptionLanguageId": 290200907001110204,
     "HighlightDescriptionLanguageId": 290300907001110204,
-    "BattleSideTypeIndex": 7
+    "BattleSideTypeIndex": 2
   },
   {
     "StageId": 90700111,
@@ -394,10 +394,10 @@
     "TowerEventTabTypeIndex": 3,
     "SortOrder": 2,
     "UnitId": 1370004600,
-    "CharacterId": 2370000301,
+    "CharacterId": 0,
     "DescriptionLanguageId": 290200907001120202,
     "HighlightDescriptionLanguageId": 290300907001120202,
-    "BattleSideTypeIndex": 1
+    "BattleSideTypeIndex": 3
   },
   {
     "StageId": 90700113,
@@ -407,7 +407,7 @@
     "CharacterId": 1001001801,
     "DescriptionLanguageId": 290200907001130101,
     "HighlightDescriptionLanguageId": 290300907001130101,
-    "BattleSideTypeIndex": 1
+    "BattleSideTypeIndex": 2
   },
   {
     "StageId": 90700113,
@@ -437,7 +437,7 @@
     "CharacterId": 0,
     "DescriptionLanguageId": 290200907001130203,
     "HighlightDescriptionLanguageId": 290300907001130203,
-    "BattleSideTypeIndex": 2
+    "BattleSideTypeIndex": 7
   },
   {
     "StageId": 90700113,
@@ -447,7 +447,7 @@
     "CharacterId": 0,
     "DescriptionLanguageId": 290200907001130204,
     "HighlightDescriptionLanguageId": 290300907001130204,
-    "BattleSideTypeIndex": 2
+    "BattleSideTypeIndex": 7
   },
   {
     "StageId": 90700114,
@@ -487,7 +487,7 @@
     "CharacterId": 1200000600,
     "DescriptionLanguageId": 290200907001140202,
     "HighlightDescriptionLanguageId": 290300907001140202,
-    "BattleSideTypeIndex": 2
+    "BattleSideTypeIndex": 1
   },
   {
     "StageId": 90700114,
@@ -517,7 +517,7 @@
     "CharacterId": 2200000100,
     "DescriptionLanguageId": 290200907001140205,
     "HighlightDescriptionLanguageId": 290300907001140205,
-    "BattleSideTypeIndex": 7
+    "BattleSideTypeIndex": 2
   },
   {
     "StageId": 90700115,
@@ -604,7 +604,7 @@
     "TowerEventTabTypeIndex": 2,
     "SortOrder": 1,
     "UnitId": 1850000200,
-    "CharacterId": 1850000100,
+    "CharacterId": 0,
     "DescriptionLanguageId": 290200907001170101,
     "HighlightDescriptionLanguageId": 0,
     "BattleSideTypeIndex": 2
@@ -617,7 +617,7 @@
     "CharacterId": 0,
     "DescriptionLanguageId": 290200907001170201,
     "HighlightDescriptionLanguageId": 290300907001170201,
-    "BattleSideTypeIndex": 2
+    "BattleSideTypeIndex": 3
   },
   {
     "StageId": 90700117,

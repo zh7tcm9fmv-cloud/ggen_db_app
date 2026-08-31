@@ -25,11 +25,6 @@
     "TargetValue": 126055001
   },
   {
-    "Id": 26055003090102,
-    "GameEventMultiTargetValueGroupId": 260550030901,
-    "TargetValue": 126055002
-  },
-  {
     "Id": 26055003090103,
     "GameEventMultiTargetValueGroupId": 260550030901,
     "TargetValue": 126055003
@@ -38,11 +33,6 @@
     "Id": 26055003100101,
     "GameEventMultiTargetValueGroupId": 260550031001,
     "TargetValue": 126055001
-  },
-  {
-    "Id": 26055003100102,
-    "GameEventMultiTargetValueGroupId": 260550031001,
-    "TargetValue": 126055002
   },
   {
     "Id": 26055003100103,
@@ -55,11 +45,6 @@
     "TargetValue": 126062001
   },
   {
-    "Id": 26062003090102,
-    "GameEventMultiTargetValueGroupId": 260620030901,
-    "TargetValue": 126062002
-  },
-  {
     "Id": 26062003090103,
     "GameEventMultiTargetValueGroupId": 260620030901,
     "TargetValue": 126062003
@@ -68,11 +53,6 @@
     "Id": 26062003100101,
     "GameEventMultiTargetValueGroupId": 260620031001,
     "TargetValue": 126062001
-  },
-  {
-    "Id": 26062003100102,
-    "GameEventMultiTargetValueGroupId": 260620031001,
-    "TargetValue": 126062002
   },
   {
     "Id": 26062003100103,

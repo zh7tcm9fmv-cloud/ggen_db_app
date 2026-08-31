@@ -3358,5 +3358,165 @@
     "BuffRate": 200,
     "ReleaseConditionInvasionEventStageExtendId": 9023002216,
     "FirstClearRewardSetId": 20902300220020
+  },
+  {
+    "Id": 9023002301,
+    "InvasionEventStageGroupId": 90200023,
+    "Level": 1,
+    "BuffRate": 10,
+    "ReleaseConditionInvasionEventStageExtendId": 0,
+    "FirstClearRewardSetId": 20902300230001
+  },
+  {
+    "Id": 9023002302,
+    "InvasionEventStageGroupId": 90200023,
+    "Level": 2,
+    "BuffRate": 20,
+    "ReleaseConditionInvasionEventStageExtendId": 0,
+    "FirstClearRewardSetId": 20902300230002
+  },
+  {
+    "Id": 9023002303,
+    "InvasionEventStageGroupId": 90200023,
+    "Level": 3,
+    "BuffRate": 30,
+    "ReleaseConditionInvasionEventStageExtendId": 0,
+    "FirstClearRewardSetId": 20902300230003
+  },
+  {
+    "Id": 9023002304,
+    "InvasionEventStageGroupId": 90200023,
+    "Level": 4,
+    "BuffRate": 40,
+    "ReleaseConditionInvasionEventStageExtendId": 0,
+    "FirstClearRewardSetId": 20902300230004
+  },
+  {
+    "Id": 9023002305,
+    "InvasionEventStageGroupId": 90200023,
+    "Level": 5,
+    "BuffRate": 50,
+    "ReleaseConditionInvasionEventStageExtendId": 9023002304,
+    "FirstClearRewardSetId": 20902300230005
+  },
+  {
+    "Id": 9023002306,
+    "InvasionEventStageGroupId": 90200023,
+    "Level": 6,
+    "BuffRate": 60,
+    "ReleaseConditionInvasionEventStageExtendId": 9023002304,
+    "FirstClearRewardSetId": 20902300230006
+  },
+  {
+    "Id": 9023002307,
+    "InvasionEventStageGroupId": 90200023,
+    "Level": 7,
+    "BuffRate": 70,
+    "ReleaseConditionInvasionEventStageExtendId": 9023002304,
+    "FirstClearRewardSetId": 20902300230007
+  },
+  {
+    "Id": 9023002308,
+    "InvasionEventStageGroupId": 90200023,
+    "Level": 8,
+    "BuffRate": 80,
+    "ReleaseConditionInvasionEventStageExtendId": 9023002304,
+    "FirstClearRewardSetId": 20902300230008
+  },
+  {
+    "Id": 9023002309,
+    "InvasionEventStageGroupId": 90200023,
+    "Level": 9,
+    "BuffRate": 90,
+    "ReleaseConditionInvasionEventStageExtendId": 9023002308,
+    "FirstClearRewardSetId": 20902300230009
+  },
+  {
+    "Id": 9023002310,
+    "InvasionEventStageGroupId": 90200023,
+    "Level": 10,
+    "BuffRate": 100,
+    "ReleaseConditionInvasionEventStageExtendId": 9023002308,
+    "FirstClearRewardSetId": 20902300230010
+  },
+  {
+    "Id": 9023002311,
+    "InvasionEventStageGroupId": 90200023,
+    "Level": 11,
+    "BuffRate": 110,
+    "ReleaseConditionInvasionEventStageExtendId": 9023002308,
+    "FirstClearRewardSetId": 20902300230011
+  },
+  {
+    "Id": 9023002312,
+    "InvasionEventStageGroupId": 90200023,
+    "Level": 12,
+    "BuffRate": 120,
+    "ReleaseConditionInvasionEventStageExtendId": 9023002308,
+    "FirstClearRewardSetId": 20902300230012
+  },
+  {
+    "Id": 9023002313,
+    "InvasionEventStageGroupId": 90200023,
+    "Level": 13,
+    "BuffRate": 130,
+    "ReleaseConditionInvasionEventStageExtendId": 9023002312,
+    "FirstClearRewardSetId": 20902300230013
+  },
+  {
+    "Id": 9023002314,
+    "InvasionEventStageGroupId": 90200023,
+    "Level": 14,
+    "BuffRate": 140,
+    "ReleaseConditionInvasionEventStageExtendId": 9023002312,
+    "FirstClearRewardSetId": 20902300230014
+  },
+  {
+    "Id": 9023002315,
+    "InvasionEventStageGroupId": 90200023,
+    "Level": 15,
+    "BuffRate": 150,
+    "ReleaseConditionInvasionEventStageExtendId": 9023002312,
+    "FirstClearRewardSetId": 20902300230015
+  },
+  {
+    "Id": 9023002316,
+    "InvasionEventStageGroupId": 90200023,
+    "Level": 16,
+    "BuffRate": 160,
+    "ReleaseConditionInvasionEventStageExtendId": 9023002312,
+    "FirstClearRewardSetId": 20902300230016
+  },
+  {
+    "Id": 9023002317,
+    "InvasionEventStageGroupId": 90200023,
+    "Level": 17,
+    "BuffRate": 170,
+    "ReleaseConditionInvasionEventStageExtendId": 9023002316,
+    "FirstClearRewardSetId": 20902300230017
+  },
+  {
+    "Id": 9023002318,
+    "InvasionEventStageGroupId": 90200023,
+    "Level": 18,
+    "BuffRate": 180,
+    "ReleaseConditionInvasionEventStageExtendId": 9023002316,
+    "FirstClearRewardSetId": 20902300230018
+  },
+  {
+    "Id": 9023002319,
+    "InvasionEventStageGroupId": 90200023,
+    "Level": 19,
+    "BuffRate": 190,
+    "ReleaseConditionInvasionEventStageExtendId": 9023002316,
+    "FirstClearRewardSetId": 20902300230019
+  },
+  {
+    "Id": 9023002320,
+    "InvasionEventStageGroupId": 90200023,
+    "Level": 20,
+    "BuffRate": 200,
+    "ReleaseConditionInvasionEventStageExtendId": 9023002316,
+    "FirstClearRewardSetId": 20902300230020
   }
 ]

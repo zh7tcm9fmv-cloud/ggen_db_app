@@ -1692,6 +1692,10 @@
     "value": "When enemies attack with a physical or beam weapon,\nreduce damage taken by 30%."
   },
   {
+    "id": 141200000100750401,
+    "value": "When enemies attack with a physical or beam weapon,\nreduce damage taken by 40%."
+  },
+  {
     "id": 141200000100760201,
     "value": "When Vigor is \"Max\" or greater,\nincrease Mobility by 10%."
   },
@@ -3129,6 +3133,14 @@
   },
   {
     "id": 141200000101730502,
+    "value": ""
+  },
+  {
+    "id": 141200000101780201,
+    "value": "When HP is 50% or above,\nincrease ATK by 10%.\nWhen HP is 100% or above,\nfurther increase ATK by 10%."
+  },
+  {
+    "id": 141200000101780202,
     "value": ""
   },
   {
@@ -7084,6 +7096,10 @@
     "value": ""
   },
   {
+    "id": 141200000201310103,
+    "value": "When piloting units with specified tags,\nincrease own Critical Rate by 15%."
+  },
+  {
     "id": 141200000201320101,
     "value": "Support Attack/Counter +1 time(s)"
   },
@@ -7385,11 +7401,19 @@
   },
   {
     "id": 141200000201600102,
-    "value": "When piloting units with specified tags,\nreduce damage taken by 15%."
+    "value": "When piloting units with specified tags,\nincrease MP by 6,\nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%."
   },
   {
     "id": 141200000201600103,
     "value": "When piloting Full Armor ZZ Gundam (EX) \nand HP falls to 50% or below,\nrestore HP by 50% (once only)."
+  },
+  {
+    "id": 141200000201600104,
+    "value": ""
+  },
+  {
+    "id": 141200000201600105,
+    "value": ""
   },
   {
     "id": 141200000201610101,
@@ -8754,6 +8778,34 @@
   {
     "id": 141200000202850101,
     "value": "When piloting units with specified tags,\nChance Step will trigger 1 time(s) at the end of combat regardless of whether or not enemies have been defeated."
+  },
+  {
+    "id": 141200000202860101,
+    "value": "Chance Step +1 time(s)"
+  },
+  {
+    "id": 141200000202860102,
+    "value": "When piloting Full Armor Hyaku-Shiki Kai (EX),\nincreases ATK by 5% for units bearing the above tags in the same squad (permanent)."
+  },
+  {
+    "id": 141200000202860103,
+    "value": "Increase ATK by 5%."
+  },
+  {
+    "id": 141200000202860104,
+    "value": "When piloting units with specified tags,\nreduce damage taken by 15%."
+  },
+  {
+    "id": 141200000202870101,
+    "value": "Support Attack/Counter +1 time(s)."
+  },
+  {
+    "id": 141200000202870102,
+    "value": "When piloting units with the specified tags and series,\nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%."
+  },
+  {
+    "id": 141200000202870103,
+    "value": ""
   },
   {
     "id": 141200000300010101,
@@ -15064,6 +15116,26 @@
     "value": "Increase ATK by 12%."
   },
   {
+    "id": 141200000406950101,
+    "value": "Increase ATK by 12%."
+  },
+  {
+    "id": 141200000406960101,
+    "value": "Increase Max HP by 5%."
+  },
+  {
+    "id": 141200000406960102,
+    "value": "When equipped to NT-X,\nincrease Max HP by 2%."
+  },
+  {
+    "id": 141200000406970101,
+    "value": "Increase ATK by 8%."
+  },
+  {
+    "id": 141200000406970102,
+    "value": "When equipped to NT-X,\nincrease ATK by 2%."
+  },
+  {
     "id": 141200000510010101,
     "value": "Increase ATK by 10%."
   },
@@ -15370,6 +15442,86 @@
   {
     "id": 141200000510120501,
     "value": "Restore squad HP by 50% at the start of every turn."
+  },
+  {
+    "id": 141200000510130102,
+    "value": "The closer enemies are, the greater Weapon Power increases (up to 10%)."
+  },
+  {
+    "id": 141200000510130202,
+    "value": "The closer enemies are, the greater Weapon Power increases (up to 20%)."
+  },
+  {
+    "id": 141200000510130302,
+    "value": "The closer you are to enemies, the greater Weapon Power increases (up to 30%)."
+  },
+  {
+    "id": 141200000510130402,
+    "value": "The closer you are to enemies, the greater Weapon Power increases (up to 40%)."
+  },
+  {
+    "id": 141200000510130502,
+    "value": "The closer you are to enemies, the greater Weapon Power increases (up to 50%)."
+  },
+  {
+    "id": 141200000510130602,
+    "value": "The closer you are to enemies, the greater Weapon Power increases (up to 60%)."
+  },
+  {
+    "id": 141200000510130702,
+    "value": "The closer you are to enemies, the greater Weapon Power increases (up to 70%)."
+  },
+  {
+    "id": 141200000510130802,
+    "value": "The closer you are to enemies, the greater Weapon Power increases (up to 80%)."
+  },
+  {
+    "id": 141200000510130902,
+    "value": "The closer you are to enemies, the greater Weapon Power increases (up to 90%)."
+  },
+  {
+    "id": 141200000510131002,
+    "value": "The closer you are to enemies, the greater Weapon Power increases (up to 100%)."
+  },
+  {
+    "id": 141200000510140102,
+    "value": "The farther enemies are, the greater Weapon Power increases (up to 10%)."
+  },
+  {
+    "id": 141200000510140202,
+    "value": "The farther enemies are, the greater Weapon Power increases (up to 20%)."
+  },
+  {
+    "id": 141200000510140302,
+    "value": "The farther you are from enemies, the greater Weapon Power increases (up to 30%)."
+  },
+  {
+    "id": 141200000510140402,
+    "value": "The farther you are from enemies, the greater Weapon Power increases (up to 40%)."
+  },
+  {
+    "id": 141200000510140502,
+    "value": "The farther you are from enemies, the greater Weapon Power increases (up to 50%)."
+  },
+  {
+    "id": 141200000510140602,
+    "value": "The farther you are from enemies, the greater Weapon Power increases (up to 60%)."
+  },
+  {
+    "id": 141200000510140702,
+    "value": "The farther you are from enemies, the greater Weapon Power increases (up to 70%)."
+  },
+  {
+    "id": 141200000510140802,
+    "value": "The farther you are from enemies, the greater Weapon Power increases (up to 80%)."
+  },
+  {
+    "id": 141200000510140902,
+    "value": "The farther you are from enemies, the greater Weapon Power increases (up to 90%)."
+  },
+  {
+    "id": 141200000510141002,
+    "value": "The farther you are from enemies, the greater Weapon Power increases (up to 100%)."
   },
   {
     "id": 141200000510190101,
@@ -18936,6 +19088,14 @@
     "value": "Increase DEF by 100%."
   },
   {
+    "id": 141200000699100102,
+    "value": "Increase DEF by 300%\nfor squad units piloted by Anavel Gato (When piloting Gundam GP02A), and Earth Federation Soldier"
+  },
+  {
+    "id": 141200000699100103,
+    "value": "Increase DEF by 300%."
+  },
+  {
     "id": 141200000700010101,
     "value": "ATK Down 10%."
   },
@@ -19910,5 +20070,45 @@
   {
     "id": 141200000700570401,
     "value": "Decrease own MOV by4. (permanent)"
+  },
+  {
+    "id": 141200000700640101,
+    "value": "Increase own damage taken by 10%."
+  },
+  {
+    "id": 141200000700640201,
+    "value": "Increase own damage taken by 15%."
+  },
+  {
+    "id": 141200000700640301,
+    "value": "Increase own damage taken by 20%."
+  },
+  {
+    "id": 141200000700640401,
+    "value": "Increase own damage taken by 25%."
+  },
+  {
+    "id": 141200000700640501,
+    "value": "Increase own damage taken by 30%."
+  },
+  {
+    "id": 141200000700650101,
+    "value": "Reduce damage dealt to enemies by 10%."
+  },
+  {
+    "id": 141200000700650201,
+    "value": "Reduce damage dealt to enemies by 15%."
+  },
+  {
+    "id": 141200000700650301,
+    "value": "Reduce damage dealt to enemies by 20%."
+  },
+  {
+    "id": 141200000700650401,
+    "value": "Reduce damage dealt to enemies by 25%."
+  },
+  {
+    "id": 141200000700650501,
+    "value": "Reduce damage dealt to enemies by 30%."
   }
 ]

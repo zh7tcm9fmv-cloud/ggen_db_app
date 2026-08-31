@@ -120,6 +120,10 @@
     "CharacterId": 1099000100
   },
   {
+    "GashaContentDetailId": 11101000350,
+    "CharacterId": 1101000100
+  },
+  {
     "GashaContentDetailId": 11110000150,
     "CharacterId": 1110000100
   },
@@ -142,6 +146,10 @@
   {
     "GashaContentDetailId": 11114000450,
     "CharacterId": 1110000103
+  },
+  {
+    "GashaContentDetailId": 11115000350,
+    "CharacterId": 1080000203
   },
   {
     "GashaContentDetailId": 11125000250,

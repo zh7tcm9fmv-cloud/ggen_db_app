@@ -1648,6 +1648,10 @@
     "value": "SSR D Gundam First Limit Break Material"
   },
   {
+    "id": 150100171101000350,
+    "value": "UR D Gundam Third (EX) Limit Break Material"
+  },
+  {
     "id": 150100171110000100,
     "value": "SSR Nu Gundam Limit Break Material"
   },
@@ -1742,6 +1746,10 @@
   {
     "id": 150100171115000300,
     "value": "SSR Full Armor Hyaku-Shiki Kai Limit Break Material"
+  },
+  {
+    "id": 150100171115000350,
+    "value": "UR Full Armor Hyaku-Shiki Kai (EX) Limit Break Material"
   },
   {
     "id": 150100171115000400,
@@ -5036,6 +5044,10 @@
     "value": "UR Psycho Haro (EX) Limit Break Material"
   },
   {
+    "id": 150100171850001400,
+    "value": "SSR NT-X Limit Break Material"
+  },
+  {
     "id": 150100171850001500,
     "value": "SR Big-Zam Mass Production Type Limit Break Material"
   },
@@ -8024,6 +8036,10 @@
     "value": "An item used to perform Limit Break on SSR D Gundam First"
   },
   {
+    "id": 150200171101000350,
+    "value": "An item used to perform Limit Break on UR D Gundam Third (EX)"
+  },
+  {
     "id": 150200171110000100,
     "value": "An item used to perform Limit Break on SSR Nu Gundam"
   },
@@ -8118,6 +8134,10 @@
   {
     "id": 150200171115000300,
     "value": "An item used to perform Limit Break on SSR Full Armor Hyaku-Shiki Kai"
+  },
+  {
+    "id": 150200171115000350,
+    "value": "An item used to perform Limit Break on UR Full Armor Hyaku-Shiki Kai (EX)"
   },
   {
     "id": 150200171115000400,
@@ -11410,6 +11430,10 @@
   {
     "id": 150200171850001350,
     "value": "An item used to perform Limit Break on UR Psycho Haro (EX)"
+  },
+  {
+    "id": 150200171850001400,
+    "value": "An item used to perform Limit Break on SSR NT-X"
   },
   {
     "id": 150200171850001500,

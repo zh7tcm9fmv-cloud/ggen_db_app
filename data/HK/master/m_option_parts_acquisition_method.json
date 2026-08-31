@@ -650,6 +650,11 @@
     "TargetId": 9023002104
   },
   {
+    "OptionPartsId": 300236,
+    "AcquisitionMethodTypeIndex": 22,
+    "TargetId": 9023002304
+  },
+  {
     "OptionPartsId": 400001,
     "AcquisitionMethodTypeIndex": 3,
     "TargetId": 90520001
@@ -698,6 +703,11 @@
     "OptionPartsId": 400012,
     "AcquisitionMethodTypeIndex": 21,
     "TargetId": 11000210
+  },
+  {
+    "OptionPartsId": 400012,
+    "AcquisitionMethodTypeIndex": 21,
+    "TargetId": 11000510
   },
   {
     "OptionPartsId": 400013,
@@ -788,6 +798,11 @@
     "OptionPartsId": 400058,
     "AcquisitionMethodTypeIndex": 21,
     "TargetId": 11000216
+  },
+  {
+    "OptionPartsId": 400058,
+    "AcquisitionMethodTypeIndex": 21,
+    "TargetId": 11000516
   },
   {
     "OptionPartsId": 400059,
@@ -933,5 +948,15 @@
     "OptionPartsId": 400092,
     "AcquisitionMethodTypeIndex": 3,
     "TargetId": 90520031
+  },
+  {
+    "OptionPartsId": 400093,
+    "AcquisitionMethodTypeIndex": 3,
+    "TargetId": 90520023
+  },
+  {
+    "OptionPartsId": 400094,
+    "AcquisitionMethodTypeIndex": 22,
+    "TargetId": 9023002308
   }
 ]

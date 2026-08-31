@@ -1710,6 +1710,11 @@
     "UnitId": 1101000110
   },
   {
+    "UnitCollectionBookId": 10100003,
+    "DisplayPriority": 1101000350,
+    "UnitId": 1101000350
+  },
+  {
     "UnitCollectionBookId": 11000001,
     "DisplayPriority": 1,
     "UnitId": 1110000150
@@ -1843,6 +1848,11 @@
     "UnitCollectionBookId": 11500003,
     "DisplayPriority": 1,
     "UnitId": 1115000300
+  },
+  {
+    "UnitCollectionBookId": 11500003,
+    "DisplayPriority": 1115000350,
+    "UnitId": 1115000350
   },
   {
     "UnitCollectionBookId": 11500004,
@@ -6173,5 +6183,10 @@
     "UnitCollectionBookId": 85000023,
     "DisplayPriority": 1850002000,
     "UnitId": 1850002000
+  },
+  {
+    "UnitCollectionBookId": 85000024,
+    "DisplayPriority": 1850001400,
+    "UnitId": 1850001400
   }
 ]

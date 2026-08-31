@@ -1104,6 +1104,12 @@
     "AbbreviationLanguageId": 100400001080000202
   },
   {
+    "Id": 1080000203,
+    "MapToolId": "g0800c00203",
+    "ResourceId": "g0800c00203",
+    "AbbreviationLanguageId": 100400001080000203
+  },
+  {
     "Id": 1080000300,
     "MapToolId": "g0800c00300",
     "ResourceId": "g0800c00300",
@@ -1708,6 +1714,12 @@
     "MapToolId": "g0990c00100",
     "ResourceId": "g0990c00100",
     "AbbreviationLanguageId": 100400001099000100
+  },
+  {
+    "Id": 1101000100,
+    "MapToolId": "g1010c00100",
+    "ResourceId": "g1010c00100",
+    "AbbreviationLanguageId": 100400001101000100
   },
   {
     "Id": 1110000100,

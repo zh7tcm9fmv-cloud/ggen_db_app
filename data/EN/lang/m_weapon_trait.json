@@ -8836,6 +8836,126 @@
     "value": "MOV Down (permanent) LV 4"
   },
   {
+    "id": 140700000700640101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000700640102,
+    "value": "Increased Damage taken"
+  },
+  {
+    "id": 140700000700640103,
+    "value": "Self-Destruct"
+  },
+  {
+    "id": 140700000700640201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000700640202,
+    "value": "Increased Damage taken"
+  },
+  {
+    "id": 140700000700640203,
+    "value": "Self-Destruct"
+  },
+  {
+    "id": 140700000700640301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000700640302,
+    "value": "Increased Damage taken"
+  },
+  {
+    "id": 140700000700640303,
+    "value": "Self-Destruct"
+  },
+  {
+    "id": 140700000700640401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000700640402,
+    "value": "Increased Damage taken"
+  },
+  {
+    "id": 140700000700640403,
+    "value": "Self-Destruct"
+  },
+  {
+    "id": 140700000700640501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000700640502,
+    "value": "Increased Damage taken"
+  },
+  {
+    "id": 140700000700640503,
+    "value": "Self-Destruct"
+  },
+  {
+    "id": 140700000700650101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000700650102,
+    "value": "Decreased Damage Dealt"
+  },
+  {
+    "id": 140700000700650103,
+    "value": "Self-Destruct"
+  },
+  {
+    "id": 140700000700650201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000700650202,
+    "value": "Decreased Damage Dealt"
+  },
+  {
+    "id": 140700000700650203,
+    "value": "Self-Destruct"
+  },
+  {
+    "id": 140700000700650301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000700650302,
+    "value": "Decreased Damage Dealt"
+  },
+  {
+    "id": 140700000700650303,
+    "value": "Self-Destruct"
+  },
+  {
+    "id": 140700000700650401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000700650402,
+    "value": "Decreased Damage Dealt"
+  },
+  {
+    "id": 140700000700650403,
+    "value": "Self-Destruct"
+  },
+  {
+    "id": 140700000700650501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000700650502,
+    "value": "Decreased Damage Dealt"
+  },
+  {
+    "id": 140700000700650503,
+    "value": "Self-Destruct"
+  },
+  {
     "id": 140700000700660101,
     "value": "Decreased ATK (1 turn(s)) LV 1"
   },
@@ -17682,6 +17802,126 @@
   {
     "id": 140800000700570401,
     "value": "Inflict \"MOV Down by 4\" on enemies. (permanent)"
+  },
+  {
+    "id": 140800000700640101,
+    "value": "Absolute Hit\nInflict \"Reduce damage dealt by 10%\" and \"Increase damage taken by 10%\" on the enemy (can be duplicated).\nThis unit becomes unable to fight."
+  },
+  {
+    "id": 140800000700640102,
+    "value": ""
+  },
+  {
+    "id": 140800000700640103,
+    "value": ""
+  },
+  {
+    "id": 140800000700640201,
+    "value": "Absolute Hit\nInflict \"Reduce damage dealt by 15%\" and \"Increase damage taken by 15%\" on the enemy (can be duplicated).\nThis unit becomes unable to fight."
+  },
+  {
+    "id": 140800000700640202,
+    "value": ""
+  },
+  {
+    "id": 140800000700640203,
+    "value": ""
+  },
+  {
+    "id": 140800000700640301,
+    "value": "Absolute Hit\nInflict \"Reduce damage dealt by 20%\" and \"Increase damage taken by 20%\" on the enemy (can be duplicated).\nThis unit becomes unable to fight."
+  },
+  {
+    "id": 140800000700640302,
+    "value": ""
+  },
+  {
+    "id": 140800000700640303,
+    "value": ""
+  },
+  {
+    "id": 140800000700640401,
+    "value": "Absolute Hit\nInflict \"Reduce damage dealt by 25%\" and \"Increase damage taken by 25%\" on the enemy (can be duplicated).\nThis unit becomes unable to fight."
+  },
+  {
+    "id": 140800000700640402,
+    "value": ""
+  },
+  {
+    "id": 140800000700640403,
+    "value": ""
+  },
+  {
+    "id": 140800000700640501,
+    "value": "Absolute Hit\nInflict \"Reduce damage dealt by 30%\" and \"Increase damage taken by 30%\" on the enemy (can be duplicated).\nThis unit becomes unable to fight."
+  },
+  {
+    "id": 140800000700640502,
+    "value": ""
+  },
+  {
+    "id": 140800000700640503,
+    "value": ""
+  },
+  {
+    "id": 140800000700650101,
+    "value": "Absolute Hit\nInflict \"Reduce damage dealt by 10%\" on the enemy (can be duplicated).\nThis unit becomes unable to fight."
+  },
+  {
+    "id": 140800000700650102,
+    "value": ""
+  },
+  {
+    "id": 140800000700650103,
+    "value": ""
+  },
+  {
+    "id": 140800000700650201,
+    "value": "Absolute Hit\nInflict \"Reduce damage dealt by 15%\" on the enemy (can be duplicated).\nThis unit becomes unable to fight."
+  },
+  {
+    "id": 140800000700650202,
+    "value": ""
+  },
+  {
+    "id": 140800000700650203,
+    "value": ""
+  },
+  {
+    "id": 140800000700650301,
+    "value": "Absolute Hit\nInflict \"Reduce damage dealt by 20%\" on the enemy (can be duplicated).\nThis unit becomes unable to fight."
+  },
+  {
+    "id": 140800000700650302,
+    "value": ""
+  },
+  {
+    "id": 140800000700650303,
+    "value": ""
+  },
+  {
+    "id": 140800000700650401,
+    "value": "Absolute Hit\nInflict \"Reduce damage dealt by 25%\" on the enemy (can be duplicated).\nThis unit becomes unable to fight."
+  },
+  {
+    "id": 140800000700650402,
+    "value": ""
+  },
+  {
+    "id": 140800000700650403,
+    "value": ""
+  },
+  {
+    "id": 140800000700650501,
+    "value": "Absolute Hit\nInflict \"Reduce damage dealt by 30%\" on the enemy (can be duplicated).\nThis unit becomes unable to fight."
+  },
+  {
+    "id": 140800000700650502,
+    "value": ""
+  },
+  {
+    "id": 140800000700650503,
+    "value": ""
   },
   {
     "id": 140800000700660101,

@@ -2052,6 +2052,24 @@
     "DamagedEffectId": "ef_mpd_0000_000_cmnhit"
   },
   {
+    "Id": 290176,
+    "WeaponEffectPrefabPairSetId": 290176,
+    "WeaponEffectId": "ef_mpa_0023_002_bustershot",
+    "DamagedEffectId": "ef_mpd_0023_002_bustershot"
+  },
+  {
+    "Id": 290177,
+    "WeaponEffectPrefabPairSetId": 290177,
+    "WeaponEffectId": "ef_mpa_0023_006_twinbeamcannon",
+    "DamagedEffectId": "ef_mpd_0023_006_twinbeamcannon"
+  },
+  {
+    "Id": 290178,
+    "WeaponEffectPrefabPairSetId": 290178,
+    "WeaponEffectId": "ef_mpa_0023_000_missile_hyakushikikai",
+    "DamagedEffectId": "ef_mpd_0000_000_cmnexplosionhit"
+  },
+  {
     "Id": 310001,
     "WeaponEffectPrefabPairSetId": 310001,
     "WeaponEffectId": "ef_mpa_0029_001_funnelbeam",
@@ -2164,6 +2182,12 @@
     "WeaponEffectPrefabPairSetId": 310055,
     "WeaponEffectId": "ef_mpa_0029_001_funnelbeam_rafflesia",
     "DamagedEffectId": "ef_mpd_0029_001_funnelbeam"
+  },
+  {
+    "Id": 310056,
+    "WeaponEffectPrefabPairSetId": 310056,
+    "WeaponEffectId": "ef_mpa_0029_002_funnelbeam_netics",
+    "DamagedEffectId": "ef_mpd_0029_002_funnelbeam_netics"
   },
   {
     "Id": 320006,
@@ -3148,6 +3172,12 @@
     "WeaponEffectPrefabPairSetId": 350038,
     "WeaponEffectId": "ef_mpa_0025_001_funnel_rafflesia",
     "DamagedEffectId": "ef_mpd_0029_001_funnelbeam"
+  },
+  {
+    "Id": 350039,
+    "WeaponEffectPrefabPairSetId": 350039,
+    "WeaponEffectId": "ef_mpa_0025_002_funnel_netics",
+    "DamagedEffectId": "ef_mpd_0029_002_funnelbeam_netics"
   },
   {
     "Id": 360001,
@@ -4479,6 +4509,30 @@
     "Id": 900215,
     "WeaponEffectPrefabPairSetId": 900215,
     "WeaponEffectId": "ef_mpw_107_01_megatour",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900216,
+    "WeaponEffectPrefabPairSetId": 900216,
+    "WeaponEffectId": "ef_mpw_108_01_laser",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900217,
+    "WeaponEffectPrefabPairSetId": 900217,
+    "WeaponEffectId": "ef_mpw_061_08_tackle",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900218,
+    "WeaponEffectPrefabPairSetId": 900218,
+    "WeaponEffectId": "ef_mpw_080_14_funnel_netics",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
+    "Id": 900221,
+    "WeaponEffectPrefabPairSetId": 900221,
+    "WeaponEffectId": "ef_mpw_004_06_threelinemegabeam_hyakushikikai",
     "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
   },
   {
@@ -9070,6 +9124,138 @@
     "WeaponEffectPrefabPairSetId": 80080,
     "WeaponEffectId": "ef_mpa_1000_000_null",
     "DamagedEffectId": "ef_mpd_1000_000_null"
+  },
+  {
+    "Id": 8008101,
+    "WeaponEffectPrefabPairSetId": 80081,
+    "WeaponEffectId": "ef_mpa_1000_002_gatling_dgundamthird",
+    "DamagedEffectId": "ef_mpd_1000_002_gatling_dgundamthird"
+  },
+  {
+    "Id": 8008102,
+    "WeaponEffectPrefabPairSetId": 80081,
+    "WeaponEffectId": "ef_mpa_1000_000_cannon_dgundamthird",
+    "DamagedEffectId": "ef_mpd_1000_000_cannon_dgundamthird"
+  },
+  {
+    "Id": 8008103,
+    "WeaponEffectPrefabPairSetId": 80081,
+    "WeaponEffectId": "ef_mpa_1000_002_beamrifle_dgundamthird",
+    "DamagedEffectId": "ef_mpd_1000_002_beamrifle_dgundamthird"
+  },
+  {
+    "Id": 8008104,
+    "WeaponEffectPrefabPairSetId": 80081,
+    "WeaponEffectId": "ef_mpa_1000_002_beamsaber_dgundamthird_ex1",
+    "DamagedEffectId": "ef_mpd_1000_002_beamsaber_dgundamthird_ex1"
+  },
+  {
+    "Id": 8008105,
+    "WeaponEffectPrefabPairSetId": 80081,
+    "WeaponEffectId": "ef_mpa_1000_002_beamsaber_dgundamthird_ex2",
+    "DamagedEffectId": "ef_mpd_1000_002_beamsaber_dgundamthird_ex2"
+  },
+  {
+    "Id": 8008106,
+    "WeaponEffectPrefabPairSetId": 80081,
+    "WeaponEffectId": "ef_mpa_1000_000_missile_dgundamthird",
+    "DamagedEffectId": "ef_mpd_0000_000_cmnexplosionhit"
+  },
+  {
+    "Id": 8008107,
+    "WeaponEffectPrefabPairSetId": 80081,
+    "WeaponEffectId": "ef_mpa_1000_002_multiple_dgundamthird",
+    "DamagedEffectId": "ef_mpd_1000_002_multiple_dgundamthird"
+  },
+  {
+    "Id": 8008108,
+    "WeaponEffectPrefabPairSetId": 80081,
+    "WeaponEffectId": "ef_mpa_1000_000_kick_dgundamthird",
+    "DamagedEffectId": "ef_mpd_1000_000_kick_dgundamthird"
+  },
+  {
+    "Id": 8008109,
+    "WeaponEffectPrefabPairSetId": 80081,
+    "WeaponEffectId": "ef_mpa_1000_000_head_dgundamthird",
+    "DamagedEffectId": "ef_mpd_1000_000_head_dgundamthird"
+  },
+  {
+    "Id": 8008110,
+    "WeaponEffectPrefabPairSetId": 80081,
+    "WeaponEffectId": "ef_mpa_1000_000_dash_dgundamthird",
+    "DamagedEffectId": "ef_mpd_0000_000_null"
+  },
+  {
+    "Id": 8008111,
+    "WeaponEffectPrefabPairSetId": 80081,
+    "WeaponEffectId": "ef_mpa_1000_000_tackle_dgundamthird",
+    "DamagedEffectId": "ef_mpd_1000_000_tackle_dgundamthird"
+  },
+  {
+    "Id": 8008201,
+    "WeaponEffectPrefabPairSetId": 80082,
+    "WeaponEffectId": "ef_mpa_1000_000_shoulderbeam_hyakushikikai",
+    "DamagedEffectId": "ef_mpd_1000_000_shoulderbeam_hyakushikikai"
+  },
+  {
+    "Id": 8008202,
+    "WeaponEffectPrefabPairSetId": 80082,
+    "WeaponEffectId": "ef_mpa_1000_000_missile_hyakushikikai_ex1",
+    "DamagedEffectId": "ef_mpd_0000_000_cmnexplosionhit"
+  },
+  {
+    "Id": 8008203,
+    "WeaponEffectPrefabPairSetId": 80082,
+    "WeaponEffectId": "ef_mpa_1000_000_missile_hyakushikikai_ex2",
+    "DamagedEffectId": "ef_mpd_0000_000_cmnexplosionhit"
+  },
+  {
+    "Id": 8008204,
+    "WeaponEffectPrefabPairSetId": 80082,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_hyakushikika_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_hyakushikika_ex1"
+  },
+  {
+    "Id": 8008205,
+    "WeaponEffectPrefabPairSetId": 80082,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaber_hyakushikika_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaber_hyakushikika_ex2"
+  },
+  {
+    "Id": 8008206,
+    "WeaponEffectPrefabPairSetId": 80082,
+    "WeaponEffectId": "ef_mpa_1000_000_kick_hyakushikika",
+    "DamagedEffectId": "ef_mpd_1000_000_kick_hyakushikika"
+  },
+  {
+    "Id": 8008207,
+    "WeaponEffectPrefabPairSetId": 80082,
+    "WeaponEffectId": "ef_mpa_1000_000_beamsaberspark_hyakushikika",
+    "DamagedEffectId": "ef_mpd_1000_000_beamsaberspark_hyakushikika"
+  },
+  {
+    "Id": 8008208,
+    "WeaponEffectPrefabPairSetId": 80082,
+    "WeaponEffectId": "ef_mpa_1000_000_beambuster_hyakushikika",
+    "DamagedEffectId": "ef_mpd_1000_000_beambuster_hyakushikika"
+  },
+  {
+    "Id": 8008209,
+    "WeaponEffectPrefabPairSetId": 80082,
+    "WeaponEffectId": "ef_mpa_1000_000_sparkpunch_hyakushikika_ex1",
+    "DamagedEffectId": "ef_mpd_1000_000_sparkpunch_hyakushikika_ex1"
+  },
+  {
+    "Id": 8008210,
+    "WeaponEffectPrefabPairSetId": 80082,
+    "WeaponEffectId": "ef_mpa_1000_000_sparkpunch_hyakushikika_ex2",
+    "DamagedEffectId": "ef_mpd_1000_000_sparkpunch_hyakushikika_ex2"
+  },
+  {
+    "Id": 8008211,
+    "WeaponEffectPrefabPairSetId": 80082,
+    "WeaponEffectId": "ef_mpa_1000_000_finishbeam_hyakushikika",
+    "DamagedEffectId": "ef_mpd_1000_000_finishbeam_hyakushikika"
   },
   {
     "Id": 99999990,

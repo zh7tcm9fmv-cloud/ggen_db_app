@@ -1088,6 +1088,10 @@
     "value": "A work mobile suit manufactured by Monotone Mouse.\nIt was cobbled together with junk parts collected from scrapped mobile suits.\nAlthough it was intended for colony repair work, it repurposes a generator and movable frame from a top-of-the-line combat mobile suit, granting it exceptionally high performance for a civilian machine.\nBecause it is a civilian machine, it does not have any firearms.\nNevertheless, it can still engage in mobile suit combat by utilizing seven work tools, including a rivet gun, wired bombs, and a magnet anchor."
   },
   {
+    "id": 110200001101000350,
+    "value": "An all-purpose Federation Forces custom mobile suit.\nThis model, an improved version of the D Gundam Second developed by the engineering staff of Arahas, is specialized for combat.\nBeing a mobile suit developed from a design created by the Federation Forces' weapons development division, it was given an official model number.\nIts generator and thrusters have been made more powerful, and its armor is fully constructed from Gundarium alloy. In addition, its avionics, including the movable frame, have been replaced with the latest versions.\nAs a result, it shares only one third of its parts with the D Gundam First, enhanced to the point of effectively being a different machine.\nShortly after its completion, it was deployed in battle against Neo Zeon mobile suits and its whereabouts have been unknown since."
+  },
+  {
     "id": 110200001110000150,
     "value": "A prototype mobile suit for Newtypes, personally designed by Amuro Ray of One Year War fame.\nThis machine was designed based on generations of Gundam-type data and equipped with the best technology available at the time.\nIt has incredible responsiveness due to its partial use of psycho-frame, a revolutionary material that incorporates computer chips with basic psycommu functionality.\nOn its back are fin funnels, special Newtype weapons controlled through psycommu to unleash all-range attacks.\nCombining three or more fin funnels allows them to be used as a beam weapon-nullifying I-Field generator, and thus these high-performance weapons combine both attack and defense."
   },
@@ -4102,6 +4106,10 @@
   {
     "id": 110200001850001350,
     "value": "A gigantic weapon of destruction shrouded in complete mystery, just like the Haro.\nSince it is even more powerful than the Haro, already dreaded as the Round Devil, it has reached a level of strength that no one can ever hope to achieve, making it the ultimate machine and deserving of the title of \"Ultimate Weapon of Destruction.\"\nBut still, nobody knows what it really is..."
+  },
+  {
+    "id": 110200001850001400,
+    "value": "A development of the Federation Forces prototype Newtype mobile suit Alex.\nThis machine was developed by the Federation after the One Year War, to research the psycommu technology that had been seized from the former Principality of Zeon.\nIt was equipped with wired psycommu bits that enabled it to perform all-range attacks, and because these were wire-guided, they could be controlled to some extent even by non-Newtype pilots.\nHowever, as the Federation lacked the technology to miniaturize the psycommu system, it ended up becoming a super-heavy machine.\nSince the weapons testing data collected from this machine was later used to create the quasi-psycommu remote weapon known as the incom, it had a big effect on later MS development.\nThe development of this machine was spearheaded by the Augusta Laboratory, but was subsequently handed over to the Murasame Laboratory, which gave it the model number MRX-003."
   },
   {
     "id": 110200001850001500,

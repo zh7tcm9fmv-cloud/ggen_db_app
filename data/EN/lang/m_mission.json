@@ -2188,6 +2188,10 @@
     "value": "Clear EXPERT No.28: Lightning-Fast with only development units/other units."
   },
   {
+    "id": 180100200010002901,
+    "value": "Clear EXPERT No.29: Test Type with only development units/other units."
+  },
+  {
     "id": 180100200010100101,
     "value": "Clear EXPERT No.1 U.C. Series with 10 surviving units."
   },
@@ -2298,6 +2302,10 @@
   {
     "id": 180100200010102801,
     "value": "Clear EXPERT No.28: Lightning-Fast with 10 surviving units."
+  },
+  {
+    "id": 180100200010102901,
+    "value": "Clear EXPERT No.29: Test Type with 10 surviving units."
   },
   {
     "id": 180100200010200101,
@@ -12446,6 +12454,62 @@
   {
     "id": 180100260830035403,
     "value": "Acquire {0} \"SD Gundam Side Story III: The Knights of Algas\" No. 128 cards."
+  },
+  {
+    "id": 180100260850041101,
+    "value": "Clear the Fierce Enemy Assault: \"NT-X\" stage on NORMAL difficulty or higher 1 time(s)."
+  },
+  {
+    "id": 180100260850041102,
+    "value": "Clear the Fierce Enemy Assault: \"NT-X\" stage on NORMAL difficulty or higher 3 time(s)."
+  },
+  {
+    "id": 180100260850041103,
+    "value": "Clear the Fierce Enemy Assault: \"NT-X\" stage on NORMAL difficulty or higher 5 time(s)."
+  },
+  {
+    "id": 180100260850041201,
+    "value": "Clear the Fierce Enemy Assault: \"NT-X\" stage on HARD difficulty or higher 5 time(s)."
+  },
+  {
+    "id": 180100260850041301,
+    "value": "Clear the Fierce Enemy Assault: \"NT-X\" stage on EXPERT difficulty or higher 5 time(s)."
+  },
+  {
+    "id": 180100260850041302,
+    "value": "Clear the Fierce Enemy Assault: \"NT-X\" stage on EXPERT difficulty or higher 10 time(s)."
+  },
+  {
+    "id": 180100260850041303,
+    "value": "Clear the Fierce Enemy Assault: \"NT-X\" stage on EXPERT difficulty or higher 20 time(s)."
+  },
+  {
+    "id": 180100260850041304,
+    "value": "Clear the Fierce Enemy Assault: \"NT-X\" stage on EXPERT difficulty or higher 25 time(s)."
+  },
+  {
+    "id": 180100260850041305,
+    "value": "Clear the Fierce Enemy Assault: \"NT-X\" stage on EXPERT difficulty or higher 30 time(s)."
+  },
+  {
+    "id": 180100260850041306,
+    "value": "Clear the Fierce Enemy Assault: \"NT-X\" stage on EXPERT difficulty or higher 35 time(s)."
+  },
+  {
+    "id": 180100260850041307,
+    "value": "Clear the Fierce Enemy Assault: \"NT-X\" stage on EXPERT difficulty or higher 40 time(s)."
+  },
+  {
+    "id": 180100260850041401,
+    "value": "Clear the Fierce Enemy Assault: \"NT-X\" stage on NORMAL difficulty or higher 10 time(s)."
+  },
+  {
+    "id": 180100260850041501,
+    "value": "Clear the Fierce Enemy Assault: \"NT-X\" stage on HARD difficulty or higher 10 time(s)."
+  },
+  {
+    "id": 180100260850041601,
+    "value": "Clear the Fierce Enemy Assault: \"NT-X\" stage on EXPERT difficulty or higher 15 time(s)."
   },
   {
     "id": 180100300010200101,

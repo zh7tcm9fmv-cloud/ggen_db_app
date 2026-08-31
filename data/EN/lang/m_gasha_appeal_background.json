@@ -24,6 +24,10 @@
     "value": "Supporter Introduction"
   },
   {
+    "id": 220700000000000006,
+    "value": "Returning Limited-Time UR Unit!"
+  },
+  {
     "id": 220800021001000150,
     "value": "All stats increased by 25% for Mobile Suit Gundam series units! (except EN)"
   },
@@ -66,6 +70,10 @@
   {
     "id": 220800021080000550,
     "value": "All stats increase by 25% for units with the \"Psycommu\" tag! (EN excluded.)"
+  },
+  {
+    "id": 220800021080000650,
+    "value": "All stats receive a 25% boost under the \"Tenacious\" tag! (EN excluded.)"
   },
   {
     "id": 220800021095000150,
