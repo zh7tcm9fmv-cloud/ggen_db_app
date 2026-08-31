@@ -13814,47 +13814,23 @@ def _map_npc_escape_is_sequel_name(parent_name, spawn_name):
     return s.startswith(p + '_') or (s.startswith(p) and len(s) > len(p))
 
 
-def _pair_map_npc_escape_spawns_for_side(side_units, meta):
-    """Pair placed on-map units with off-map death spawns for one battle side."""
-    if not side_units or not any(u.get('is_initially_placed', True) for u in side_units):
+def _copy_escape_spawn_map_anchor(parent, spawn):
+    """Death-spawn rows in master data are often offset; show escape at parent footprint."""
+    if not parent or not spawn:
         return
-    placed = [u for u in side_units if u.get('is_initially_placed', True) and not u.get('escape_spawn_npc_id')]
-    unplaced = [u for u in side_units if not u.get('is_initially_placed', True) and not u.get('escape_from_npc_id')]
-    if not placed or not unplaced:
-        return
-    paired_parents = set()
-    paired_spawns = set()
+    for key in ('x', 'y', 'direction', 'is_large', 'occupied_area_id'):
+        if key in parent:
+            spawn[key] = parent[key]
+    cells = parent.get('cells')
+    if cells:
+        spawn['cells'] = [dict(c) for c in cells if isinstance(c, dict)]
+    origin = parent.get('map_origin')
+    if isinstance(origin, dict):
+        spawn['map_origin'] = dict(origin)
 
-    def _anchor_key(unit):
-        nid = normalize_id(unit.get('npc_id'))
-        row = meta.get(nid, {})
-        ax = row.get('x', unit.get('x', 0))
-        ay = row.get('y', unit.get('y', 0))
-        return (int(ax), int(ay))
 
-    def _link(parent, spawn):
-        pid = str(parent.get('npc_id', ''))
-        sid = str(spawn.get('npc_id', ''))
-        if not pid or not sid or pid in paired_parents or sid in paired_spawns:
-            return False
-        parent['escape_spawn_npc_id'] = sid
-        spawn['escape_from_npc_id'] = pid
-        paired_parents.add(pid)
-        paired_spawns.add(sid)
-        return True
-
-    # Pass 1: same map anchor tile (handles same-cell death spawns; ignore footprint overlap only).
-    spawn_by_anchor = {}
-    for sp in unplaced:
-        ak = _anchor_key(sp)
-        spawn_by_anchor.setdefault(ak, []).append(sp)
-    for par in placed:
-        if str(par.get('npc_id', '')) in paired_parents:
-            continue
-        cands = [s for s in spawn_by_anchor.get(_anchor_key(par), []) if str(s.get('npc_id', '')) not in paired_spawns]
-        if len(cands) == 1:
-            _link(par, cands[0])
-
+def _pair_map_npc_escape_spawns_by_name(placed, unplaced, meta, paired_parents, paired_spawns, link_fn):
+    """Name-sequel pairing for remaining placed parents and off-map spawns."""
     rem_placed = [u for u in placed if str(u.get('npc_id', '')) not in paired_parents]
     rem_unplaced = [u for u in unplaced if str(u.get('npc_id', '')) not in paired_spawns]
     for par in rem_placed:
@@ -13881,7 +13857,80 @@ def _pair_map_npc_escape_spawns_for_side(side_units, meta):
                 continue
             matches.append(sp)
         if len(matches) == 1:
-            _link(par, matches[0])
+            link_fn(par, matches[0])
+
+
+def _pair_map_npc_escape_spawns_for_side(side_units, meta):
+    """Pair placed on-map units with off-map death spawns for one battle side."""
+    if not side_units or not any(u.get('is_initially_placed', True) for u in side_units):
+        return
+    placed = [u for u in side_units if u.get('is_initially_placed', True) and not u.get('escape_spawn_npc_id')]
+    unplaced = [u for u in side_units if not u.get('is_initially_placed', True) and not u.get('escape_from_npc_id')]
+    if not placed or not unplaced:
+        return
+    paired_parents = set()
+    paired_spawns = set()
+
+    def _anchor_key(unit):
+        nid = normalize_id(unit.get('npc_id'))
+        row = meta.get(nid, {})
+        ax = row.get('x', unit.get('x', 0))
+        ay = row.get('y', unit.get('y', 0))
+        return (int(ax), int(ay))
+
+    def _link(parent, spawn):
+        pid = str(parent.get('npc_id', ''))
+        sid = str(spawn.get('npc_id', ''))
+        if not pid or not sid or pid in paired_parents or sid in paired_spawns:
+            return False
+        parent['escape_spawn_npc_id'] = sid
+        spawn['escape_from_npc_id'] = pid
+        _copy_escape_spawn_map_anchor(parent, spawn)
+        paired_parents.add(pid)
+        paired_spawns.add(sid)
+        return True
+
+    # Pass 1: same map anchor tile (handles same-cell death spawns; ignore footprint overlap only).
+    spawn_by_anchor = {}
+    for sp in unplaced:
+        ak = _anchor_key(sp)
+        spawn_by_anchor.setdefault(ak, []).append(sp)
+    for par in placed:
+        if str(par.get('npc_id', '')) in paired_parents:
+            continue
+        cands = [s for s in spawn_by_anchor.get(_anchor_key(par), []) if str(s.get('npc_id', '')) not in paired_spawns]
+        if len(cands) == 1:
+            _link(par, cands[0])
+
+    rem_placed = [u for u in placed if str(u.get('npc_id', '')) not in paired_parents]
+    rem_unplaced = [u for u in unplaced if str(u.get('npc_id', '')) not in paired_spawns]
+    _pair_map_npc_escape_spawns_by_name(rem_placed, rem_unplaced, meta, paired_parents, paired_spawns, _link)
+
+
+def _pair_map_npc_escape_spawns_cross_side(units, meta):
+    """Pair remaining parents with off-map spawns on other sides (e.g. enemy→friendly escape)."""
+    if not units:
+        return
+    placed = [u for u in units if u.get('is_initially_placed', True) and not u.get('escape_spawn_npc_id')]
+    unplaced = [u for u in units if not u.get('is_initially_placed', True) and not u.get('escape_from_npc_id')]
+    if not placed or not unplaced:
+        return
+    paired_parents = set()
+    paired_spawns = set()
+
+    def _link(parent, spawn):
+        pid = str(parent.get('npc_id', ''))
+        sid = str(spawn.get('npc_id', ''))
+        if not pid or not sid or pid in paired_parents or sid in paired_spawns:
+            return False
+        parent['escape_spawn_npc_id'] = sid
+        spawn['escape_from_npc_id'] = pid
+        _copy_escape_spawn_map_anchor(parent, spawn)
+        paired_parents.add(pid)
+        paired_spawns.add(sid)
+        return True
+
+    _pair_map_npc_escape_spawns_by_name(placed, unplaced, meta, paired_parents, paired_spawns, _link)
 
 
 def pair_map_npc_escape_spawns(units, npc_rows):
@@ -13896,6 +13945,7 @@ def pair_map_npc_escape_spawns(units, npc_rows):
             by_side.setdefault(side, []).append(u)
     for side in ('enemy', 'guest', 'friendly'):
         _pair_map_npc_escape_spawns_for_side(by_side.get(side, []), meta)
+    _pair_map_npc_escape_spawns_cross_side(units, meta)
 
 
 def build_map_grid(w, h, u, buff_areas=None, playable_cells=None, playable_cell_count=0):

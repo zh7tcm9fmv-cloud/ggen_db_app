@@ -3361,14 +3361,30 @@ async function _fetchBrowseNavPage(type,page){try{if(type==='character'){const u
 async function detailBrowseNavStep(delta){const st=_detailBrowseNavState();if(!st||!detailBrowseNavEligible())return;const idx=st.index+delta;if(idx>=0&&idx<st.ids.length){openDetail(st.type,st.ids[idx]);return}const crossPageOk=!(st.cacheKey&&String(st.cacheKey).startsWith('ranking:'));if(!crossPageOk)return;if(delta<0&&st.page>1){const d=await _fetchBrowseNavPage(st.type,st.page-1);if(!d||!d.rows||!d.rows.length)return;_updateBrowseNavCache(st.type,d,st.page-1);openDetail(st.type,String(d.rows[d.rows.length-1].id));return}if(delta>0&&st.page<st.total_pages){const d=await _fetchBrowseNavPage(st.type,st.page+1);if(!d||!d.rows||!d.rows.length)return;_updateBrowseNavCache(st.type,d,st.page+1);openDetail(st.type,String(d.rows[0].id))}}
 function syncDetailBrowseNavUi(){}
 function initDetailBrowseSwipe(){if(S._detailSwipeInit)return;S._detailSwipeInit=1;const m=document.getElementById('detailModal');if(!m)return;let x0=0,y0=0,tracking=false;m.addEventListener('touchstart',e=>{if(!m.classList.contains('active')||!detailBrowseNavEligible())return;if(!e.touches||e.touches.length!==1)return;x0=e.touches[0].clientX;y0=e.touches[0].clientY;tracking=true},{passive:true});m.addEventListener('touchend',e=>{if(!tracking)return;tracking=false;if(!m.classList.contains('active')||!detailBrowseNavEligible())return;const t=e.changedTouches&&e.changedTouches[0];if(!t)return;const dx=t.clientX-x0,dy=t.clientY-y0;if(Math.abs(dx)<52||Math.abs(dx)<Math.abs(dy)*1.25)return;void detailBrowseNavStep(dx<0?1:-1)},{passive:true})}
-function updateModalDetailChromeScroll(){
-const chrome=document.getElementById('modalDetailChrome');
+function _detailModalScrollTop(){
 const m=document.getElementById('detailModal');
 const mc=document.getElementById('modalContent');
-if(!chrome)return;
 let st=0;
-if(mc&&mc.scrollHeight>mc.clientHeight+1)st=Math.max(st,mc.scrollTop||0);
-if(m&&m.scrollHeight>m.clientHeight+1)st=Math.max(st,m.scrollTop||0);
+if(m)st=Math.max(st,m.scrollTop||0);
+if(mc)st=Math.max(st,mc.scrollTop||0);
+return st;
+}
+function _setDetailModalScrollTop(v){
+const top=Math.max(0,Number(v)||0);
+const m=document.getElementById('detailModal');
+const mc=document.getElementById('modalContent');
+if(m)m.scrollTop=top;
+if(mc)mc.scrollTop=top;
+}
+function resetDetailModalScroll(){_setDetailModalScrollTop(0);}
+function pinDetailModalScrollTop(top){
+_setDetailModalScrollTop(top!=null?top:0);
+requestAnimationFrame(()=>{_setDetailModalScrollTop(top!=null?top:0);updateModalDetailChromeScroll();});
+}
+function updateModalDetailChromeScroll(){
+const chrome=document.getElementById('modalDetailChrome');
+if(!chrome)return;
+const st=_detailModalScrollTop();
 chrome.classList.toggle('modal-detail-chrome--scrolled',st>8);
 }
 function initDetailModalChromeScroll(){
@@ -3424,7 +3440,7 @@ S._detailModalLayoutObs.observe(mc);
 }else adjustDetailModalLayout();
 requestAnimationFrame(adjustDetailModalLayout);
 }
-async function openDetail(type,id,opts){opts=opts||{};const skipHistory=!!opts.skipHistory||S._historyApplyingPopstate;if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active'))closeSearchSpotlight();const m=document.getElementById('detailModal'),mc=document.getElementById('modalContent'),inn=document.getElementById('detailInner');const detailWasActive=m.classList.contains('active');if(opts.returnStageSnapshot&&S.currentDetailType==='stage'&&S.currentDetailData&&!S.currentDetailData.content_locked){S._stageDetailUiRestore=captureStageDetailUiState();if(opts.stageNpcKey!=null&&String(opts.stageNpcKey).trim()!=='')S._stageDetailUiRestore.returnNpcId=String(opts.stageNpcKey).trim()}mc.className='modal-content';if(type==='profile_title')mc.classList.add('profile-title-detail','stage-detail');else mc.classList.add(type==='character'?'char-detail':(type==='unit'?'unit-detail':(type==='supporter'?'supporter-detail':(type==='option_part'?'option-part-detail':'stage-detail'))));m.classList.add('active');document.body.classList.add('detail-modal-open');try{if(typeof window.__ggenPauseBrandFonts==='function')window.__ggenPauseBrandFonts()}catch(_){}if(!detailWasActive)applyBackgroundScrollLock();updateScrollTopFabVisibility();inn.innerHTML='<div class="loading-overlay"><div class="spinner"></div></div>';syncModalDetailChrome();syncDetailBrowseNavUi();try{const d=await fetchDetailPayload(type,id,opts);if(type==='option_part'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderOptionPartShell(d);syncModalDetailChrome();if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}if(type==='profile_title'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;if(opts.returnStageSnapshot&&S.currentDetailType==='stage'&&S.currentDetailData&&!S.currentDetailData.content_locked){const snap=_cloneDetailJson(S.currentDetailData);if(S._stageDetailUiRestore)snap._detailUi=_cloneDetailJson(S._stageDetailUiRestore);d.detail_return={type:'stage',id:String(snap.id),payload:snap}}S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderProfileTitleShell(d);syncModalDetailChrome();if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}const _pu=type==='unit'&&!!opts.preserveUnitSpSsp;const _pcp=!!opts.preserveConditionalPassive||!!opts.unitConditionCpTarget;const _vr=!!opts.viewRanking;d.ranking_context=!!_vr;if(_vr){d.view_ranking=false}if(type==='character'||type==='unit')d.ranking_available=true;if(!_pu&&!_pcp){S.conditionalPassiveActive=false;S.pilotConditionalPassiveActive=false;S.pilotCondCharData=null;S._pilotCondCharFetchId=null;S._pilotCondCharInflight=null;S._pilotCondPrefetchUnitId=null;S.pilotCondStackCount=0;S.unitCondStackCount=0;S.unitHpAtkTierIndex=0;S.spActive=false;S.sspActive=false}S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.detailRankingOverlay=false;if(type==='stage'){S.stageMapAutoFit=true;S.stageMapZoom=1}if(!_pu){if(type==='character'){S.spActive=!!S.listCharSp;if(!_pcp)S.conditionalPassiveActive=!!S.listCharCond}else if(type==='unit'){if(S.listUnitSsp){S.sspActive=true;S.spActive=false}else if(S.listUnitSp){S.spActive=true;S.sspActive=false}else{S.spActive=false;S.sspActive=false}if(!_pcp){if(opts.viewRanking){S.conditionalPassiveActive=!!opts.listUnitCondPerspective;S.pilotConditionalPassiveActive=!!opts.listUnitPilotCondPerspective}else{S.conditionalPassiveActive=!!(d&&d.has_cond_stats)||!!S.listUnitCond;S.pilotConditionalPassiveActive=!!S.listUnitPilotCond}}}}if(_pcp)S.conditionalPassiveActive=true;if(!_pcp&&!opts.viewRanking&&type==='unit'&&d&&d.has_cond_stats)S.conditionalPassiveActive=true;if(opts.unitConditionCpTarget&&d)d.unit_condition_cp_target=true;if(opts.affinityHighlightUnitId&&d)d.affinity_highlight_unit_id=String(opts.affinityHighlightUnitId);if(opts.pilotCondHighlightUnitId&&d)d.pilot_cond_highlight_unit_id=String(opts.pilotCondHighlightUnitId);S.currentDetailData=d;S.currentDetailType=type;if(type==='character'&&S.conditionalPassiveActive&&d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1)S.charSuperchargedExTier=d.ex_supercharged_tiers.length-1;if(type==='supporter'){applySupporterLeaderSepSticky(d);S.currentSupporterLbTier=d.lb_tier??3;S.currentSupporterLevel=Math.max(1,Number(d.level)||Math.max(1,Number(d.max_level)||100))}if(type==='unit'){_detailInitUnitCondControls(d);S.listSelectedUnitId=String(opts.listUnitFocusId!=null?opts.listUnitFocusId:id);syncUnitListDetailHighlight()}if((type==='character'||type==='unit')&&d.portrait)void warmPathDetailImg(d.portrait);if(type==='character')inn.innerHTML=renderCharShell(d);else if(type==='unit'){if(d.weapons)d.weapons.forEach(w=>S.currentWeaponLevels[w.id]=5);inn.innerHTML=renderUnitShell(d)}else if(type==='supporter')inn.innerHTML=renderSupporterShell(d);else inn.innerHTML=(d.content_locked?renderEternalStageLockedPanel(d):renderStageShell(d));syncModalDetailChrome();if(type==='stage'&&!d.content_locked)wireRewardDetailClicks(inn);if(d&&d.ranking_available&&(type==='character'||type==='unit'))ensureDetailRankingToggleDom(type);if(!(type==='stage'&&d.content_locked)){updateDetailDynamicSections(type);if(type==='unit')queuePilotCondCharPrefetch(d);if(d&&d.ranking_available&&(type==='character'||type==='unit')){(function(_t,_i){setTimeout(function(){if(S.currentDetailType!==_t||!S.currentDetailData||String(S.currentDetailData.id)!==String(_i))return;void ensureDetailRankingStats(_t,_i).then(function(){if(S.currentDetailType===_t&&S.currentDetailData&&String(S.currentDetailData.id)===String(_i)){updateDetailDynamicSections(_t);adjustDetailModalLayout()}}).catch(function(){})},1800)})(type,id)}}if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi()}catch(e){const msg=String((e&&e.message)||e||'');const soft=!!(e&&(e.name==='AbortError'||e.name==='TypeError'))||/networkerror|failed to fetch|load failed|the operation was aborted|^network$/i.test(msg);if(!soft)console.error(e);inn.innerHTML=`<div class="empty-state" style="padding:60px 20px"><div class="empty-state-icon">⚠️</div><div class="empty-state-text">${esc(soft?'Could not load details. Check your connection and try again.':('Failed: '+msg))}</div></div>`;syncModalDetailChrome();syncDetailBrowseNavUi()}}
+async function openDetail(type,id,opts){opts=opts||{};const skipHistory=!!opts.skipHistory||S._historyApplyingPopstate;if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active'))closeSearchSpotlight();const m=document.getElementById('detailModal'),mc=document.getElementById('modalContent'),inn=document.getElementById('detailInner');const detailWasActive=m.classList.contains('active');if(opts.returnStageSnapshot&&S.currentDetailType==='stage'&&S.currentDetailData&&!S.currentDetailData.content_locked){S._stageDetailUiRestore=captureStageDetailUiState();if(opts.stageNpcKey!=null&&String(opts.stageNpcKey).trim()!=='')S._stageDetailUiRestore.returnNpcId=String(opts.stageNpcKey).trim()}mc.className='modal-content';if(type==='profile_title')mc.classList.add('profile-title-detail','stage-detail');else mc.classList.add(type==='character'?'char-detail':(type==='unit'?'unit-detail':(type==='supporter'?'supporter-detail':(type==='option_part'?'option-part-detail':'stage-detail'))));m.classList.add('active');document.body.classList.add('detail-modal-open');try{if(typeof window.__ggenPauseBrandFonts==='function')window.__ggenPauseBrandFonts()}catch(_){}if(!detailWasActive)applyBackgroundScrollLock();updateScrollTopFabVisibility();resetDetailModalScroll();inn.innerHTML='<div class="loading-overlay"><div class="spinner"></div></div>';syncModalDetailChrome();syncDetailBrowseNavUi();try{const d=await fetchDetailPayload(type,id,opts);if(type==='option_part'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderOptionPartShell(d);syncModalDetailChrome();pinDetailModalScrollTop(0);if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}if(type==='profile_title'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;if(opts.returnStageSnapshot&&S.currentDetailType==='stage'&&S.currentDetailData&&!S.currentDetailData.content_locked){const snap=_cloneDetailJson(S.currentDetailData);if(S._stageDetailUiRestore)snap._detailUi=_cloneDetailJson(S._stageDetailUiRestore);d.detail_return={type:'stage',id:String(snap.id),payload:snap}}S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderProfileTitleShell(d);syncModalDetailChrome();pinDetailModalScrollTop(0);if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}const _pu=type==='unit'&&!!opts.preserveUnitSpSsp;const _pcp=!!opts.preserveConditionalPassive||!!opts.unitConditionCpTarget;const _vr=!!opts.viewRanking;d.ranking_context=!!_vr;if(_vr){d.view_ranking=false}if(type==='character'||type==='unit')d.ranking_available=true;if(!_pu&&!_pcp){S.conditionalPassiveActive=false;S.pilotConditionalPassiveActive=false;S.pilotCondCharData=null;S._pilotCondCharFetchId=null;S._pilotCondCharInflight=null;S._pilotCondPrefetchUnitId=null;S.pilotCondStackCount=0;S.unitCondStackCount=0;S.unitHpAtkTierIndex=0;S.spActive=false;S.sspActive=false}S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.detailRankingOverlay=false;if(type==='stage'){S.stageMapAutoFit=true;S.stageMapZoom=1}if(!_pu){if(type==='character'){S.spActive=!!S.listCharSp;if(!_pcp)S.conditionalPassiveActive=!!S.listCharCond}else if(type==='unit'){if(S.listUnitSsp){S.sspActive=true;S.spActive=false}else if(S.listUnitSp){S.spActive=true;S.sspActive=false}else{S.spActive=false;S.sspActive=false}if(!_pcp){if(opts.viewRanking){S.conditionalPassiveActive=!!opts.listUnitCondPerspective;S.pilotConditionalPassiveActive=!!opts.listUnitPilotCondPerspective}else{S.conditionalPassiveActive=!!(d&&d.has_cond_stats)||!!S.listUnitCond;S.pilotConditionalPassiveActive=!!S.listUnitPilotCond}}}}if(_pcp)S.conditionalPassiveActive=true;if(!_pcp&&!opts.viewRanking&&type==='unit'&&d&&d.has_cond_stats)S.conditionalPassiveActive=true;if(opts.unitConditionCpTarget&&d)d.unit_condition_cp_target=true;if(opts.affinityHighlightUnitId&&d)d.affinity_highlight_unit_id=String(opts.affinityHighlightUnitId);if(opts.pilotCondHighlightUnitId&&d)d.pilot_cond_highlight_unit_id=String(opts.pilotCondHighlightUnitId);S.currentDetailData=d;S.currentDetailType=type;if(type==='character'&&S.conditionalPassiveActive&&d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1)S.charSuperchargedExTier=d.ex_supercharged_tiers.length-1;if(type==='supporter'){applySupporterLeaderSepSticky(d);S.currentSupporterLbTier=d.lb_tier??3;S.currentSupporterLevel=Math.max(1,Number(d.level)||Math.max(1,Number(d.max_level)||100))}if(type==='unit'){_detailInitUnitCondControls(d);S.listSelectedUnitId=String(opts.listUnitFocusId!=null?opts.listUnitFocusId:id);syncUnitListDetailHighlight()}if((type==='character'||type==='unit')&&d.portrait)void warmPathDetailImg(d.portrait);if(type==='character')inn.innerHTML=renderCharShell(d);else if(type==='unit'){if(d.weapons)d.weapons.forEach(w=>S.currentWeaponLevels[w.id]=5);inn.innerHTML=renderUnitShell(d)}else if(type==='supporter')inn.innerHTML=renderSupporterShell(d);else inn.innerHTML=(d.content_locked?renderEternalStageLockedPanel(d):renderStageShell(d));syncModalDetailChrome();if(type==='stage'&&!d.content_locked)wireRewardDetailClicks(inn);if(d&&d.ranking_available&&(type==='character'||type==='unit'))ensureDetailRankingToggleDom(type);if(!(type==='stage'&&d.content_locked)){updateDetailDynamicSections(type);if(type==='unit')queuePilotCondCharPrefetch(d);if(d&&d.ranking_available&&(type==='character'||type==='unit')){(function(_t,_i){setTimeout(function(){if(S.currentDetailType!==_t||!S.currentDetailData||String(S.currentDetailData.id)!==String(_i))return;void ensureDetailRankingStats(_t,_i).then(function(){if(S.currentDetailType===_t&&S.currentDetailData&&String(S.currentDetailData.id)===String(_i)){updateDetailDynamicSections(_t);adjustDetailModalLayout()}}).catch(function(){})},1800)})(type,id)}}pinDetailModalScrollTop(0);if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi()}catch(e){const msg=String((e&&e.message)||e||'');const soft=!!(e&&(e.name==='AbortError'||e.name==='TypeError'))||/networkerror|failed to fetch|load failed|the operation was aborted|^network$/i.test(msg);if(!soft)console.error(e);inn.innerHTML=`<div class="empty-state" style="padding:60px 20px"><div class="empty-state-icon">⚠️</div><div class="empty-state-text">${esc(soft?'Could not load details. Check your connection and try again.':('Failed: '+msg))}</div></div>`;syncModalDetailChrome();syncDetailBrowseNavUi()}}
 function closeModal(){
 const m=document.getElementById('detailModal');
 const wasOpen=!!(m&&m.classList.contains('active'));
@@ -3523,15 +3539,8 @@ syncModalDetailChrome();
 if(!pay.content_locked){
 updateDetailDynamicSections('stage');
 const finishRestore=()=>{
-if(modalScrollTop!=null&&!Number.isNaN(modalScrollTop))inn.scrollTop=Math.max(0,modalScrollTop);
-if(returnNpcId){
-const npcHost=document.getElementById('detailNpcContainer');
-if(npcHost&&inn){
-const top=npcHost.offsetTop-8;
-if(top>0)inn.scrollTop=top;
-}
-scrollToNpcDetailByNpcId(returnNpcId,'fromStageReturn');
-}
+if(modalScrollTop!=null&&!Number.isNaN(modalScrollTop))_setDetailModalScrollTop(modalScrollTop);
+if(returnNpcId)scrollToNpcDetailByNpcId(returnNpcId,'fromStageReturn');
 if(S.stageMapExpanded)setTimeout(()=>fitStageMapToUnits(true),100);
 S._stageDetailUiRestore=null;
 };
@@ -4906,14 +4915,14 @@ function _stageMapEscapeOverlapSwitchHtml(cellKey){
   const tfIcon=imgUrl('/static/images/UI/UI_Common_BattleIcon_Transform.webp');
   return `<button type="button" class="stage-map-escape-overlap-switch" onclick="event.stopPropagation();toggleStageMapEscapeStackSwap('${escJs(cellKey)}')" aria-label="${escAttr(switchLbl)}" title="${escAttr(switchLbl)}"><img src="${escAttr(tfIcon)}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'"></button>`;
 }
-function _stageMapRenderEscapeOverlapHostsHtml(stacks,win,cellPx,gapPx){
+function _stageMapRenderEscapeOverlapHostsHtml(stacks,win,cellPx,gapPx,gridPad){
   if(!stacks||!stacks.size)return'';
   let html='';
   stacks.forEach(stack=>{
     const parts=stack.cellKey.split('_');
     const x=Number(parts[0]),y=Number(parts[1]);
     if(!Number.isFinite(x)||!Number.isFinite(y))return;
-    const box=_stageMapCellBoxPx(x,y,win,cellPx,gapPx);
+    const box=_stageMapCellBoxPx(x,y,win,cellPx,gapPx,gridPad);
     const swapped=!!(S.stageMapEscapeStackSwapped&&S.stageMapEscapeStackSwapped[stack.cellKey]);
     const swapCls=swapped?' stage-map-escape-overlap-host--swapped':'';
     html+=`<div class="stage-map-escape-overlap-host${swapCls}" data-escape-stack="${escAttr(stack.cellKey)}" style="left:${box.left}px;top:${box.top}px;width:${box.w}px;height:${box.h}px">${_stageMapEscapeOverlapSwitchHtml(stack.cellKey)}</div>`;
@@ -5123,17 +5132,17 @@ return _stageMapViewWindowClassic(md)
 }
 function _stageMapUnitVisible(u, allUnits){
 if(!u)return false;
-const side=String(u.side||'').toLowerCase();
-if(side!=='enemy')return true;
 const escaped=_stageEscapedNpcIdSet();
 const nid=String(u.npc_id||'');
-  if(u.escape_spawn_npc_id&&escaped.has(nid))return false;
-  if(u.escape_spawn_npc_id&&S.stageMapEscapeLayerVisible)return false;
-  if(u.escape_from_npc_id){
-  if(escaped.has(String(u.escape_from_npc_id)))return true;
-  if(S.stageMapEscapeLayerVisible)return true;
-  return false;
+if(u.escape_spawn_npc_id&&escaped.has(nid))return false;
+if(u.escape_spawn_npc_id&&S.stageMapEscapeLayerVisible)return false;
+if(u.escape_from_npc_id){
+if(escaped.has(String(u.escape_from_npc_id)))return true;
+if(S.stageMapEscapeLayerVisible)return true;
+return false;
 }
+const side=String(u.side||'').toLowerCase();
+if(side!=='enemy')return true;
 if(S.stageMapReinforcementOnly)return true;
 return!_stageMapEnemyIsReinforcementSpawn(u, allUnits!==undefined&&allUnits!==null?allUnits:S.currentDetailData?.map_data?.units)
 }
@@ -5204,20 +5213,23 @@ if(Number.isFinite(oa)&&oa===2&&n<4)u.cells=[mk(0,0),mk(1,0),mk(0,1),mk(1,1)];
 });
 }
 function _stageMapGridGapPx(hasBg,escapeOn){return(hasBg||escapeOn)?0:2}
-function _stageMapCellBoxPx(x,y,win,cellPx,gapPx){
+function _stageMapGridPaddingPx(hasBg,escapeOn){return(hasBg||escapeOn)?12:15}
+function _stageMapCellBoxPx(x,y,win,cellPx,gapPx,paddingPx){
+  const pad=paddingPx!=null?paddingPx:15;
   const stride=cellPx+gapPx;
   const col=x-win.minX,row=win.maxY-y;
-  return{left:15+col*stride,top:15+row*stride,w:cellPx,h:cellPx,cx:15+col*stride+cellPx/2,cy:15+row*stride+cellPx/2};
+  return{left:pad+col*stride,top:pad+row*stride,w:cellPx,h:cellPx,cx:pad+col*stride+cellPx/2,cy:pad+row*stride+cellPx/2};
 }
-function _stageMapFootprintBoxPx(u,win,cellPx,gapPx,mapW,mapH){
+function _stageMapFootprintBoxPx(u,win,cellPx,gapPx,mapW,mapH,paddingPx){
+  const pad=paddingPx!=null?paddingPx:15;
   const bbox=_stageMapFootprintBBox(u,mapW,mapH);
   if(!bbox){
     const o=_stageMapUnitOriginXY(u);
-    return _stageMapCellBoxPx(o.x,o.y,win,cellPx,gapPx);
+    return _stageMapCellBoxPx(o.x,o.y,win,cellPx,gapPx,pad);
   }
   const stride=cellPx+gapPx;
-  const left=15+(bbox.mnx-win.minX)*stride;
-  const top=15+(win.maxY-bbox.mxy)*stride;
+  const left=pad+(bbox.mnx-win.minX)*stride;
+  const top=pad+(win.maxY-bbox.mxy)*stride;
   const w=bbox.fpw*cellPx+(bbox.fpw-1)*gapPx;
   const h=bbox.fph*cellPx+(bbox.fph-1)*gapPx;
   return{left,top,w,h,cx:left+w/2,cy:top+h/2};
@@ -5299,7 +5311,7 @@ function renderStageMapParentOverlay(parents,cellPx){
   });
   return `<div class="stage-map-parent-overlay"><span class="stage-map-parent-overlay-label">${esc(colLbl)}</span>${slots}</div>`;
 }
-function _stageMapEscapeUnitsLayerHtml(pool,win,cellPx,gapPx,mapW,mapH){
+function _stageMapEscapeUnitsLayerHtml(pool,win,cellPx,gapPx,mapW,mapH,gridPad){
   if(!S.stageMapEscapeLayerVisible)return'';
   const units=(pool||[]).filter(u=>_stageMapUnitVisible(u,pool)&&_stageMapUnitIsEscapeSpawn(u));
   if(!units.length)return'';
@@ -5312,7 +5324,7 @@ function _stageMapEscapeUnitsLayerHtml(pool,win,cellPx,gapPx,mapW,mapH){
   });
   let items='';
   sorted.forEach(u=>{
-    const box=_stageMapFootprintBoxPx(u,win,cellPx,gapPx,mapW,mapH);
+    const box=_stageMapFootprintBoxPx(u,win,cellPx,gapPx,mapW,mapH,gridPad);
     const origin=_stageMapUnitOriginXY(u);
     const zBase=10+origin.y;
     const nid=String(u.npc_id||'');
@@ -5334,7 +5346,7 @@ function _stageMapEscapeUnitsLayerHtml(pool,win,cellPx,gapPx,mapW,mapH){
     const fpStyle=` style="left:0;top:0;width:100%;height:100%;inset:auto;"`;
     items+=`<div class="stage-map-escape-unit ${sideCls}${clickCls}${overlapCls}" style="left:${box.left}px;top:${box.top}px;width:${box.w}px;height:${box.h}px;z-index:${z}" aria-label="${escAttr(u.name||'')}"${mapDataAttrs}${stackAttrs}>${_stageMapRenderUnitDotHtml(u,{guestCls,friendlyCls,gimmickCls,largeCls:u.is_large?'large':'',fpCls:' map-unit-dot--footprint',fpStyle})}</div>`;
   });
-  const overlapHosts=_stageMapRenderEscapeOverlapHostsHtml(overlapStacks,win,cellPx,gapPx);
+  const overlapHosts=_stageMapRenderEscapeOverlapHostsHtml(overlapStacks,win,cellPx,gapPx,gridPad);
   return `<div class="stage-map-escape-units-layer">${items}${overlapHosts}</div>`;
 }
 function _stageMapEscapeOverlapStackKeyFromTarget(t){
@@ -5425,6 +5437,7 @@ function renderStageMapGrid(md){
   const escapeOn=!!S.stageMapEscapeLayerVisible;
   const hasBg=!!(md.background&&String(md.background).trim());
   const gapPx=_stageMapGridGapPx(hasBg,escapeOn);
+  const gridPad=_stageMapGridPaddingPx(hasBg,escapeOn);
   const mapW=md.width||24,mapH=md.height||28;
   const {occ,w,h}=_stageMapBuildOccupancyMap(md);
   const units=pool.filter(u=>_stageMapUnitVisible(u,pool));
@@ -5504,7 +5517,7 @@ function renderStageMapGrid(md){
     }
   }
   html+=`</div>`;
-  const escapeLayerHtml=_stageMapEscapeUnitsLayerHtml(pool,win,cellPx,gapPx,mapW,mapH);
+  const escapeLayerHtml=_stageMapEscapeUnitsLayerHtml(pool,win,cellPx,gapPx,mapW,mapH,gridPad);
   const parentUnits=_stageMapEscapeParentUnits(pool);
   const parentOverlayHtml=renderStageMapParentOverlay(parentUnits,cellPx);
   const mapBlock=`<div class="stage-map-grid-wrap${escapeOn?' stage-map-grid-wrap--escape':''}">${parentOverlayHtml}${html}${escapeLayerHtml}</div>`;
@@ -5521,8 +5534,7 @@ const inner=el.querySelector('[data-stage-npc-group]');
 const key=inner?String(inner.getAttribute('data-stage-npc-group')||''):'';
 if(key)npcGroupsOpen[key]=!!el.open;
 });
-const inn=document.getElementById('detailInner');
-return{mapExpanded:!!S.stageMapExpanded,reinforcementOnly:!!S.stageMapReinforcementOnly,escapeLayerVisible:!!S.stageMapEscapeLayerVisible,escapeStackSwapped:S.stageMapEscapeStackSwapped?{...S.stageMapEscapeStackSwapped}:{},buffAreasVisible:S.stageMapBuffAreasVisible!==false,mapZoom:Number(S.stageMapZoom)||1,mapAutoFit:S.stageMapAutoFit!==false,npcGroupsOpen,modalScrollTop:inn?inn.scrollTop:0};
+return{mapExpanded:!!S.stageMapExpanded,reinforcementOnly:!!S.stageMapReinforcementOnly,escapeLayerVisible:!!S.stageMapEscapeLayerVisible,escapeStackSwapped:S.stageMapEscapeStackSwapped?{...S.stageMapEscapeStackSwapped}:{},buffAreasVisible:S.stageMapBuffAreasVisible!==false,mapZoom:Number(S.stageMapZoom)||1,mapAutoFit:S.stageMapAutoFit!==false,npcGroupsOpen,modalScrollTop:_detailModalScrollTop()};
 }
 function applyStageDetailUiState(ui){
 if(!ui)return;
