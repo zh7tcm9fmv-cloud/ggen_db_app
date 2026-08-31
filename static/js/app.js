@@ -4424,7 +4424,7 @@ S.unitHpAtkTierIndex=Math.max(0,Math.min(hp.tiers.length-1,Number(i)||0));
 invalidateDetailRankingCachesForPerspectiveChange();
 updateDetailDynamicSections('unit');
 }
-function _detailAbilityCombatStackSliderHtml(cc){
+function _detailUnitCombatStackSliderHtml(cc){
 if(!S.conditionalPassiveActive||!cc)return'';
 const max=Math.max(1,cc.max_stacks|0);
 const cur=Math.max(1,Math.min(max,S.unitCondStackCount|0||max));
@@ -4445,8 +4445,6 @@ function _detailAbilityCondControlHtml(ab,ud){
 if(!S.conditionalPassiveActive||!ud||!ab)return'';
 const aid=ab.id!=null?String(ab.id):'';
 const an=String(ab.name||'');
-const cc=ud.unit_combat_count_atk;
-if(cc&&(cc.ability_id&&String(cc.ability_id)===aid||cc.ability_name===an))return _detailAbilityCombatStackSliderHtml(cc);
 const hp=ud.unit_hp_atk_tiers;
 if(hp&&(hp.ability_id&&String(hp.ability_id)===aid||hp.ability_name===an))return _detailAbilityHpTierRowHtml(hp);
 return'';
@@ -4641,7 +4639,7 @@ if(type==='unit'&&S.pilotConditionalPassiveActive&&S.pilotCondCharData){prePilot
 sr=_detailApplyUnitCondAdjustRows(sr,bs,d,cp);
 let th='';
 if(hcf||(type==='unit'&&d.has_pilot_cond_passive)){th=`<div class="detail-cond-toggle-stack">`;
-if(hcf){const cplab=t('conditional_passive');th+=`<div class="conditional-toggle"><div class="toggle-clickable ${S.conditionalPassiveActive?'active':''}" role="button" tabindex="0" onclick="toggleConditionalPassive(!S.conditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleConditionalPassive(!S.conditionalPassiveActive)}"><span class="toggle-control-slot"><span class="toggle-switch"></span></span><span class="toggle-label">${esc(cplab)}</span></div></div>`}
+if(hcf){const cplab=t('conditional_passive');const unitCombatStack=(type==='unit'&&d.unit_combat_count_atk)?_detailUnitCombatStackSliderHtml(d.unit_combat_count_atk):'';th+=`<div class="conditional-toggle detail-unit-cp-block"><div class="toggle-clickable ${S.conditionalPassiveActive?'active':''}" role="button" tabindex="0" onclick="toggleConditionalPassive(!S.conditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleConditionalPassive(!S.conditionalPassiveActive)}"><span class="toggle-control-slot"><span class="toggle-switch"></span></span><span class="toggle-label">${esc(cplab)}</span></div>${unitCombatStack?`<div class="detail-unit-cp-stack-slot">${unitCombatStack}</div>`:''}</div>`}
 if(type==='unit'&&d.has_pilot_cond_passive){const pplab=t('pilot_exclusive_passive')||'Pilot Exclusive Passive';const stackHtml=_detailPilotStackSliderHtml(d);th+=`<div class="detail-pilot-ep-block"><div class="conditional-toggle detail-pilot-ep-toggle"><div class="toggle-clickable ${S.pilotConditionalPassiveActive?'active':''}" role="button" tabindex="0" title="${escAttr(pplab)}" aria-label="${escAttr(pplab)}" onclick="togglePilotConditionalPassive(!S.pilotConditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togglePilotConditionalPassive(!S.pilotConditionalPassiveActive)}"><span class="toggle-control-slot">${_detailPilotEpChipSpanHtml(!!S.pilotConditionalPassiveActive)}</span><div class="detail-pilot-ep-label-col"><span class="toggle-label">${esc(pplab)}</span>${stackHtml}</div></div></div></div>`}
 th+=`</div>`}
 let exRow='';

@@ -5,6 +5,28 @@ alwaysApply: true
 
 # Best Synergy Pilots (BSP) rebuild scope
 
+## Hard rule — after every MasterData import with new units
+
+New playable units are **not** in published Top 10 until BSP is rebuilt. After any catalog drop that adds units:
+
+1. Run incremental BSP (top 250 + all newly uncached rankable units — automatic when using `--incremental`):
+   ```text
+   python scripts/build_msy_rankings_dc.py --incremental --checkpoint 25 --loop
+   ```
+2. Refresh deploy shards:
+   ```text
+   python scripts/build_bsp_shards.py
+   ```
+3. Commit `data/published/msy__*.json.gz` and `data/published/bsp_shards/` before ship.
+
+Keep the local Flask app running for Playwright (`wsgi:application` or `python app.py`). Spot-check one new unit’s `/api/unit/{id}/best_synergy_pilots` returns `source: published_dc` (not `pending` / `client_dc`).
+
+Targeted rebuild for known new ids only (faster smoke):
+```text
+python scripts/build_msy_rankings_dc.py --incremental --force --checkpoint 5 --unit {id} --unit {id2}
+python scripts/build_bsp_shards.py
+```
+
 ## Never use python-lite / old fake variant lists
 Published BSP No UR / No Shinn / same-role lists must come from live `/cal` (`calculateDamage`) only.
 

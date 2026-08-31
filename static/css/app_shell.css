@@ -1510,6 +1510,9 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .detail-pilot-stack-row--enter{animation:detailPilotStackIn .24s ease-out both}
 .detail-pilot-stack-slider{flex:1;min-width:0;width:100%;height:4px;margin:0;accent-color:rgba(168,85,247,.9);cursor:pointer}
 .detail-pilot-stack-val{font-size:11px;font-weight:700;color:#c4b5fd;min-width:2.75em;text-align:right;flex-shrink:0;font-variant-numeric:tabular-nums;line-height:1}
+.detail-unit-cp-block{display:flex;flex-direction:column;align-items:flex-end;gap:6px;width:100%}
+.detail-unit-cp-stack-slot{align-self:stretch;width:100%;display:flex;justify-content:flex-end}
+.detail-unit-cp-stack-slot .detail-unit-cond-stack-row{width:min(100%,240px);margin-top:0}
 .detail-unit-cond-stack-row{width:min(100%,240px);margin-top:8px}
 .detail-unit-hp-tier-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .detail-unit-hp-tier-btn{font-size:11px;line-height:1.25;padding:6px 8px}

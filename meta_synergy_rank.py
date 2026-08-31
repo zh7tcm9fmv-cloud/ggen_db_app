@@ -1597,7 +1597,7 @@ def _parse_pep_squad_line_stats(txt):
     m = re.search(r'(?:also\s+)?(?:grant|grants)\s+\+(\d+)%\s+ATK\s+and\s+DEF', t, re.I)
     if m:
         return {'kind': 'flat_ad', 'flat': int(m.group(1) or 0)}
-    m = re.search(r'increase ATK by (\d+)%', t, re.I)
+    m = re.search(r'increases? ATK by (\d+)%', t, re.I)
     if m and not re.search(r'\(up to \d+%\)', t, re.I):
         return {'kind': 'flat_atk', 'flat': int(m.group(1) or 0)}
     m = re.search(r'攻撃力.*?(\d+)%', raw)

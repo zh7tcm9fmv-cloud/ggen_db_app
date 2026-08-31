@@ -11,11 +11,15 @@ Published board: `data/published/sp_investment_v1.json` (static; snappy serve pa
 
 After importing new MasterData (new playable units/characters), **rebuild SPI before shipping** so `/ip` includes every investment-eligible kit.
 
-**Default post-import (What's New + gacha drop % + /ip):**
+**Default post-import (What's New + gacha drop % + /ip + BSP for new units):**
 
 ```text
 python scripts/refresh_whats_new_snapshot.py
+python scripts/build_msy_rankings_dc.py --incremental --checkpoint 25 --loop
+python scripts/build_bsp_shards.py
 ```
+
+(Keep Flask running during the BSP step. See `.cursor/rules/bsp-incremental-rebuild.mdc`.)
 
 **Published caches only** (no What's New baseline):
 
