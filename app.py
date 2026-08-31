@@ -12647,6 +12647,13 @@ def resolve_stage_terrain_name(ti, lc='EN'):
     data = STAGE_TERRAIN_MAP.get(str(ti or '0'))
     return data.get(lc, data.get('EN', 'Unknown')) if data else get_ui_label(lc, 'terrain_unknown')
 
+def resolve_stage_terrain_icon(ti):
+    icon_key = {
+        '1': 'Space', '2': 'Atmospheric', '3': 'Ground', '4': 'Sea', '5': 'Underwater',
+    }.get(str(ti or '0'), '')
+    fn = TERRAIN_TYPE_ICON_MAP.get(icon_key, '')
+    return f'/static/images/Terrain/{fn}' if fn else ''
+
 # Eternal.Domain.Enums.StageDifficultyType — StageDifficultyTypeIndex in master JSON.
 STAGE_DIFFICULTY_TYPE = {
     0: {'enum': 'None', 'code': 'none', 'label_key': 'difficulty_none'},
@@ -26921,6 +26928,7 @@ def get_stage(stage_id):
             'portrait_large': chronicle_portrait_large,
             'recommended_cp': rec_cp,
             'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc),
+            'terrain_icon': resolve_stage_terrain_icon(sm.get('terrain_type_index', '0')),
             'victory_conditions': vc, 'defeat_conditions': dc,
             'branch_victory_conditions': bvc, 'map_meta': map_meta,
             'sortie_groups': sg, 'map_data': md, 'npc_details': nd, 'lang': lc,
