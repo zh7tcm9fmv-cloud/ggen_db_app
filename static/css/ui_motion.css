@@ -56,8 +56,11 @@
   transition:background .3s ease,border-color .3s ease,box-shadow .3s ease;
 }
 .toggle-switch::after{
+  transition:none;
+}
+.toggle-switch.ui-toggle-snap::after{
   transition:
-    left var(--ui-spring-dur) var(--ui-spring),
+    left var(--ui-spring-snap) var(--ui-spring),
     background .3s ease,
     box-shadow .3s ease;
 }
@@ -158,6 +161,13 @@ input[type=range].ui-range.ui-range-snap::-webkit-slider-thumb{
 }
 input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
   transition:transform var(--ui-spring-snap) var(--ui-spring);
+}
+
+/* —— Pill toggles (stage map + conditional switches) —— */
+.stage-map-reinf-slider.ui-toggle-snap::before,
+.toggle-switch.ui-toggle-snap::after{
+  transition-duration:var(--ui-spring-snap);
+  transition-timing-function:var(--ui-spring);
 }
 
 /* —— Filter dropdown panels (shadcn quiet + Transitions origin rise) —— */

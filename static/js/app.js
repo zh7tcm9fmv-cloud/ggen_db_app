@@ -4906,6 +4906,20 @@ function _stageMapEscapeOverlapSwitchHtml(cellKey){
   const tfIcon=imgUrl('/static/images/UI/UI_Common_BattleIcon_Transform.webp');
   return `<button type="button" class="stage-map-escape-overlap-switch" onclick="event.stopPropagation();toggleStageMapEscapeStackSwap('${escJs(cellKey)}')" aria-label="${escAttr(switchLbl)}" title="${escAttr(switchLbl)}"><img src="${escAttr(tfIcon)}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'"></button>`;
 }
+function _stageMapRenderEscapeOverlapHostsHtml(stacks,win,cellPx,gapPx){
+  if(!stacks||!stacks.size)return'';
+  let html='';
+  stacks.forEach(stack=>{
+    const parts=stack.cellKey.split('_');
+    const x=Number(parts[0]),y=Number(parts[1]);
+    if(!Number.isFinite(x)||!Number.isFinite(y))return;
+    const box=_stageMapCellBoxPx(x,y,win,cellPx,gapPx);
+    const swapped=!!(S.stageMapEscapeStackSwapped&&S.stageMapEscapeStackSwapped[stack.cellKey]);
+    const swapCls=swapped?' stage-map-escape-overlap-host--swapped':'';
+    html+=`<div class="stage-map-escape-overlap-host${swapCls}" data-escape-stack="${escAttr(stack.cellKey)}" style="left:${box.left}px;top:${box.top}px;width:${box.w}px;height:${box.h}px">${_stageMapEscapeOverlapSwitchHtml(stack.cellKey)}</div>`;
+  });
+  return html;
+}
 function renderStageMapSection(d){
   const md=d.map_data||{};
   if(md.width<=0||md.height<=0)return`<div class="detail-section"><div class="section-title">${t('sec_stage_map')}</div><div class="ability-item"><div class="ability-info"><div class="ability-detail">${t('none')}</div></div></div></div>`;
@@ -5303,12 +5317,11 @@ function _stageMapEscapeUnitsLayerHtml(pool,win,cellPx,gapPx,mapW,mapH){
     const zBase=10+origin.y;
     const nid=String(u.npc_id||'');
     const or=overlapRoles[nid];
-    let overlapCls='',stackAttrs='',switchHtml='',z=zBase;
+    let overlapCls='',stackAttrs='',z=zBase;
     if(or){
       overlapCls=or.front?' stage-map-escape-unit--overlap stage-map-escape-unit--overlap-front':' stage-map-escape-unit--overlap stage-map-escape-unit--overlap-back';
       stackAttrs=` data-escape-stack="${escAttr(or.cellKey)}" data-escape-stack-slot="${or.slot}" data-escape-z-base="${zBase}"`;
       z=zBase+(or.front?50:0);
-      if(or.front)switchHtml=_stageMapEscapeOverlapSwitchHtml(or.cellKey);
     }
     const di=u.npc_detail_index;
     const hasDetail=di!=null&&di!==''&&!Number.isNaN(Number(di));
@@ -5319,9 +5332,25 @@ function _stageMapEscapeUnitsLayerHtml(pool,win,cellPx,gapPx,mapW,mapH){
     const friendlyCls=u.is_friendly_force?'friendly-force':'';
     const gimmickCls=u.is_gimmick?'gimmick':'';
     const fpStyle=` style="left:0;top:0;width:100%;height:100%;inset:auto;"`;
-    items+=`<div class="stage-map-escape-unit ${sideCls}${clickCls}${overlapCls}" style="left:${box.left}px;top:${box.top}px;width:${box.w}px;height:${box.h}px;z-index:${z}" aria-label="${escAttr(u.name||'')}"${mapDataAttrs}${stackAttrs}>${switchHtml}${_stageMapRenderUnitDotHtml(u,{guestCls,friendlyCls,gimmickCls,largeCls:u.is_large?'large':'',fpCls:' map-unit-dot--footprint',fpStyle})}</div>`;
+    items+=`<div class="stage-map-escape-unit ${sideCls}${clickCls}${overlapCls}" style="left:${box.left}px;top:${box.top}px;width:${box.w}px;height:${box.h}px;z-index:${z}" aria-label="${escAttr(u.name||'')}"${mapDataAttrs}${stackAttrs}>${_stageMapRenderUnitDotHtml(u,{guestCls,friendlyCls,gimmickCls,largeCls:u.is_large?'large':'',fpCls:' map-unit-dot--footprint',fpStyle})}</div>`;
   });
-  return `<div class="stage-map-escape-units-layer">${items}</div>`;
+  const overlapHosts=_stageMapRenderEscapeOverlapHostsHtml(overlapStacks,win,cellPx,gapPx);
+  return `<div class="stage-map-escape-units-layer">${items}${overlapHosts}</div>`;
+}
+function _stageMapEscapeOverlapStackKeyFromTarget(t){
+  if(!t||!t.closest)return'';
+  const host=t.closest('.stage-map-escape-overlap-host[data-escape-stack]');
+  if(host)return host.getAttribute('data-escape-stack')||'';
+  const unit=t.closest('.stage-map-escape-unit[data-escape-stack]');
+  if(unit)return unit.getAttribute('data-escape-stack')||'';
+  return'';
+}
+function _stageMapEscapeOverlapSetHover(wrap,key,on){
+  if(!wrap||!key)return;
+  const esc=String(key).replace(/\\/g,'\\\\').replace(/"/g,'\\"');
+  wrap.querySelectorAll('.stage-map-escape-overlap-host[data-escape-stack="'+esc+'"],.stage-map-escape-unit[data-escape-stack="'+esc+'"]').forEach(el=>{
+    el.classList.toggle('stage-map-escape-overlap-stack-hover',!!on);
+  });
 }
 function _stageMapWireEscapeOverlapUi(){
   const wrap=document.getElementById('stageMapGridWrap');
@@ -5329,31 +5358,35 @@ function _stageMapWireEscapeOverlapUi(){
   wrap.dataset.escapeOverlapUiWired='1';
   const showSwitchForStack=(key)=>{
     if(!key)return;
-    wrap.querySelectorAll('.stage-map-escape-unit--overlap-show-switch').forEach(el=>el.classList.remove('stage-map-escape-unit--overlap-show-switch'));
-    wrap.querySelectorAll('.stage-map-escape-unit--overlap-front[data-escape-stack="'+String(key).replace(/\\/g,'\\\\').replace(/"/g,'\\"')+'"]').forEach(el=>el.classList.add('stage-map-escape-unit--overlap-show-switch'));
+    wrap.querySelectorAll('.stage-map-escape-overlap-host--show-switch').forEach(el=>el.classList.remove('stage-map-escape-overlap-host--show-switch'));
+    wrap.querySelectorAll('.stage-map-escape-overlap-host[data-escape-stack="'+String(key).replace(/\\/g,'\\\\').replace(/"/g,'\\"')+'"]').forEach(el=>el.classList.add('stage-map-escape-overlap-host--show-switch'));
   };
   const hideSwitchForStack=(key)=>{
     if(!key)return;
-    wrap.querySelectorAll('.stage-map-escape-unit[data-escape-stack="'+String(key).replace(/\\/g,'\\\\').replace(/"/g,'\\"')+'"].stage-map-escape-unit--overlap-show-switch').forEach(el=>el.classList.remove('stage-map-escape-unit--overlap-show-switch'));
+    wrap.querySelectorAll('.stage-map-escape-overlap-host[data-escape-stack="'+String(key).replace(/\\/g,'\\\\').replace(/"/g,'\\"')+'"].stage-map-escape-overlap-host--show-switch').forEach(el=>el.classList.remove('stage-map-escape-overlap-host--show-switch'));
   };
   wrap.addEventListener('mouseover',function(e){
-    const u=e.target&&e.target.closest&&e.target.closest('.stage-map-escape-unit[data-escape-stack]');
-    if(!u)return;
-    showSwitchForStack(u.getAttribute('data-escape-stack'));
+    const key=_stageMapEscapeOverlapStackKeyFromTarget(e.target);
+    if(!key)return;
+    _stageMapEscapeOverlapSetHover(wrap,key,true);
+    showSwitchForStack(key);
   });
   wrap.addEventListener('mouseout',function(e){
-    const u=e.target&&e.target.closest&&e.target.closest('.stage-map-escape-unit[data-escape-stack]');
-    if(!u)return;
-    const key=u.getAttribute('data-escape-stack');
+    const key=_stageMapEscapeOverlapStackKeyFromTarget(e.target);
+    if(!key)return;
     const rel=e.relatedTarget;
-    const still=rel&&rel.closest&&rel.closest('.stage-map-escape-unit[data-escape-stack="'+String(key).replace(/\\/g,'\\\\').replace(/"/g,'\\"')+'"]');
-    if(!still)hideSwitchForStack(key);
+    if(rel&&_stageMapEscapeOverlapStackKeyFromTarget(rel)===key)return;
+    _stageMapEscapeOverlapSetHover(wrap,key,false);
+    hideSwitchForStack(key);
   });
   wrap.addEventListener('touchstart',function(e){
-    const u=e.target&&e.target.closest&&e.target.closest('.stage-map-escape-unit[data-escape-stack]');
-    if(!u||e.target.closest('.stage-map-escape-overlap-switch'))return;
-    wrap.querySelectorAll('.stage-map-escape-unit--overlap-show-switch').forEach(el=>{if(el!==u&&!u.contains(el))el.classList.remove('stage-map-escape-unit--overlap-show-switch')});
-    showSwitchForStack(u.getAttribute('data-escape-stack'));
+    const key=_stageMapEscapeOverlapStackKeyFromTarget(e.target);
+    if(!key||e.target.closest('.stage-map-escape-overlap-switch'))return;
+    wrap.querySelectorAll('.stage-map-escape-overlap-host--show-switch').forEach(el=>{
+      if(el.getAttribute('data-escape-stack')!==key)el.classList.remove('stage-map-escape-overlap-host--show-switch');
+    });
+    _stageMapEscapeOverlapSetHover(wrap,key,true);
+    showSwitchForStack(key);
   },{passive:true});
 }
 function _stageMapRenderUnitDotHtml(u,opts){
@@ -5475,7 +5508,7 @@ function renderStageMapGrid(md){
   const parentUnits=_stageMapEscapeParentUnits(pool);
   const parentOverlayHtml=renderStageMapParentOverlay(parentUnits,cellPx);
   const mapBlock=`<div class="stage-map-grid-wrap${escapeOn?' stage-map-grid-wrap--escape':''}">${parentOverlayHtml}${html}${escapeLayerHtml}</div>`;
-  if(escapeOn&&(parentOverlayHtml||escapeLayerHtml.includes('data-escape-stack'))){
+  if(escapeOn&&(parentOverlayHtml||escapeLayerHtml.includes('stage-map-escape-overlap-host'))){
     setTimeout(_stageMapWireEscapeOverlapUi,0);
     return`<div class="stage-map-viewport stage-map-viewport--escape">${mapBlock}</div>`;
   }
@@ -5563,6 +5596,8 @@ function toggleStageMapEscapeStackSwap(cellKey){
     return;
   }
   const swapped=!!S.stageMapEscapeStackSwapped[cellKey];
+  const host=gridWrap?gridWrap.querySelector('.stage-map-escape-overlap-host[data-escape-stack="'+esc+'"]'):null;
+  if(host)host.classList.toggle('stage-map-escape-overlap-host--swapped',swapped);
   units.forEach(el=>{
     const slot=el.getAttribute('data-escape-stack-slot');
     const isFront=swapped?(slot==='1'):(slot==='0');
@@ -5570,9 +5605,6 @@ function toggleStageMapEscapeStackSwap(cellKey){
     el.classList.toggle('stage-map-escape-unit--overlap-back',!isFront);
     const zBase=Number(el.getAttribute('data-escape-z-base'))||10;
     el.style.zIndex=String(zBase+(isFront?50:0));
-    const btn=el.querySelector('.stage-map-escape-overlap-switch');
-    if(btn)btn.remove();
-    if(isFront)el.insertAdjacentHTML('afterbegin',_stageMapEscapeOverlapSwitchHtml(cellKey));
   });
 }
 function setStageMapSpawnOrderVisible(on){
