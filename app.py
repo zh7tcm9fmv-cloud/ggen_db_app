@@ -6992,6 +6992,8 @@ def create_eternal_stage_map(d):
             'display_unit_id': normalize_id(item.get('DisplayUnitId') or item.get('displayUnitId')),
             'stage_difficulty_type_index': safe_int(item.get('StageDifficultyTypeIndex') or item.get('stageDifficultyTypeIndex'), 1),
             'strategy_info_schedule_id': normalize_id(item.get('StrategyInfoScheduleId') or item.get('strategyInfoScheduleId') or '0'),
+            'map_bg_offset_x': safe_int(item.get('MapBgOffsetX') or item.get('mapBgOffsetX'), 0),
+            'map_bg_offset_y': safe_int(item.get('MapBgOffsetY') or item.get('mapBgOffsetY'), 0),
         }
     return lookup
 
@@ -7507,6 +7509,8 @@ def create_tower_event_stage_map(d):
             'floor_bromide_unit_id': normalize_id(item.get('FloorBromideUnitId') or item.get('floorBromideUnitId')),
             'first_clear_reward_set_id': normalize_id(item.get('FirstClearRewardSetId') or item.get('firstClearRewardSetId')),
             'every_first_clear_reward_set_id': normalize_id(item.get('EveryFirstClearRewardSetId') or item.get('everyFirstClearRewardSetId')),
+            'map_bg_offset_x': safe_int(item.get('MapBgOffsetX') or item.get('mapBgOffsetX'), 0),
+            'map_bg_offset_y': safe_int(item.get('MapBgOffsetY') or item.get('mapBgOffsetY'), 0),
         }
     return lookup
 
@@ -7792,7 +7796,12 @@ def create_map_master_lookup(d):
     for item in extract_data_list(d):
         if not isinstance(item, dict): continue
         mid = normalize_id(item.get('MapId') or item.get('Id') or item.get('id'))
-        if mid != '0': lk[mid] = {'width': safe_int(item.get('Width'), 0), 'height': safe_int(item.get('Height'), 0)}
+        if mid != '0':
+            lk[mid] = {
+                'width': safe_int(item.get('Width'), 0),
+                'height': safe_int(item.get('Height'), 0),
+                'background_asset': str(item.get('BackgroundAsset') or item.get('backgroundAsset') or '').strip(),
+            }
     return lk
 
 _MAP_CHIP_COORD_RE = re.compile(r'\((\d+),(\d+)\)')
@@ -13568,6 +13577,32 @@ def challenge_stage_thumb_url(thumbnail_resource_id):
     if not rid or rid == '0':
         return ''
     return f'/static/images/Stages/{rid}.png'
+
+
+def stage_map_background_url(background_asset):
+    """m_map.BackgroundAsset (map_bg_*) → lmb_map_bg_* minimap art under images/Stages."""
+    rid = str(background_asset or '').strip()
+    if not rid or rid == '0':
+        return ''
+    if rid.startswith('map_bg_'):
+        rid = 'lmb_' + rid
+    elif not rid.startswith('lmb_map_bg_'):
+        rid = 'lmb_map_bg_' + rid
+    return game_image_public_url(_game_images_webp_path('Stages', rid))
+
+
+def resolve_stage_map_bg_offsets(stage_id, *, is_tower_event_stage=False, is_score_attack=False,
+                                 is_special_event_stage=False, is_challenge_stage=False,
+                                 is_chronicle_stage=False):
+    """MapBgOffsetX/Y from eternal road or tower stage rows (0 when unset)."""
+    sid = normalize_id(stage_id)
+    if is_tower_event_stage:
+        row = (tower_event_stage_map or {}).get(sid, {})
+        return safe_int(row.get('map_bg_offset_x'), 0), safe_int(row.get('map_bg_offset_y'), 0)
+    if is_score_attack or is_special_event_stage or is_challenge_stage or is_chronicle_stage:
+        return 0, 0
+    row = (eternal_stage_map or {}).get(sid, {})
+    return safe_int(row.get('map_bg_offset_x'), 0), safe_int(row.get('map_bg_offset_y'), 0)
 
 def resolve_scenario_stage_name(ld, title_lang_id, stage_id):
     lid = normalize_id(title_lang_id)
@@ -26591,7 +26626,7 @@ def get_stage(stage_id):
                         'ch' if is_challenge_stage else (
                             'ce' if is_chronicle_stage else 'er')))))
         # mstage18: chronicle/E-sim first-clear from node content FirstClearRewardSetId.
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage23"
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage25"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -26707,7 +26742,18 @@ def get_stage(stage_id):
         mse = map_stage_lookup.get(stage_master_id)
         if mse:
             mid = mse.get('map_id', '0'); msid = mse.get('map_stage_id', '0')
-            mi = map_master_lookup.get(mid, {'width': 0, 'height': 0}); w = mi['width']; h = mi['height']
+            mi = map_master_lookup.get(mid, {'width': 0, 'height': 0, 'background_asset': ''})
+            w = mi['width']; h = mi['height']
+            map_bg_asset = str(mi.get('background_asset') or '').strip()
+            map_bg_url = stage_map_background_url(map_bg_asset)
+            map_bg_off_x, map_bg_off_y = resolve_stage_map_bg_offsets(
+                stage_id,
+                is_tower_event_stage=is_tower_event_stage,
+                is_score_attack=is_score_attack,
+                is_special_event_stage=is_special_event_stage,
+                is_challenge_stage=is_challenge_stage,
+                is_chronicle_stage=is_chronicle_stage,
+            )
             uom = []; nt = map_npc_by_map_stage.get(msid, [])
             _challenge_sid = stage_id if is_challenge_stage else None
             squad_tb, self_tb, squad_by_source_tb, pilot_char_ms_pct_tb = accumulate_npc_map_unit_stat_bonuses(
@@ -26913,7 +26959,14 @@ def get_stage(stage_id):
                 rtp = list(map_stage_reach_pin_areas_by_map_stage.get(normalize_id(msid), []) or [])
             md['reach_target_areas'] = rtp
             md['map_event_areas'] = list(map_stage_event_areas_by_map_stage.get(normalize_id(msid), []) or [])
+            if map_bg_url:
+                md['background'] = map_bg_url
+                md['background_asset'] = map_bg_asset
+                md['background_offset_x'] = map_bg_off_x
+                md['background_offset_y'] = map_bg_off_y
             map_meta = {'map_id': mid, 'map_stage_id': msid}
+            if map_bg_asset:
+                map_meta['background_asset'] = map_bg_asset
         stage_cat = (
             'score_attack' if is_score_attack else (
                 'special_stage' if is_special_event_stage else (

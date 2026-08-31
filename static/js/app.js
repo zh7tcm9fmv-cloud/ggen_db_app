@@ -5101,7 +5101,13 @@ return 0;
 function _stageMapBuildOccupancyMap(md){
   _normalizeStageMapUnitFootprints(md.units,md.width||0,md.height||0);
   const pool=md.units||[],w=md.width||24,h=md.height||28,units=pool.filter(u=>_stageMapUnitVisible(u,pool)),occ={};
-  units.forEach(u=>{
+  const sorted=units.slice().sort((a,b)=>{
+    const ao=_stageMapUnitOriginXY(a),bo=_stageMapUnitOriginXY(b);
+    if(ao.y!==bo.y)return ao.y-bo.y;
+    if(ao.x!==bo.x)return ao.x-bo.x;
+    return String(a.npc_id||'').localeCompare(String(b.npc_id||''));
+  });
+  sorted.forEach(u=>{
     if(u.cells&&u.cells.length){
       let oc=null;
       if(u.map_origin&&u.map_origin.x!=null&&u.map_origin.y!=null){
@@ -5140,6 +5146,99 @@ if(Number.isFinite(oa)&&oa===2&&n<4)u.cells=[mk(0,0),mk(1,0),mk(0,1),mk(1,1)];
 });
 }
 function _stageMapGridGapPx(){return 2}
+function _stageMapCellBoxPx(x,y,win,cellPx,gapPx){
+  const stride=cellPx+gapPx;
+  const col=x-win.minX,row=win.maxY-y;
+  return{left:15+col*stride,top:15+row*stride,w:cellPx,h:cellPx,cx:15+col*stride+cellPx/2,cy:15+row*stride+cellPx/2};
+}
+function _stageMapBgLayerHtml(md,win,cellPx,gapPx){
+  const bg=md&&md.background?String(md.background).trim():'';
+  if(!bg)return'';
+  const mapW=Number(md.width)||24,mapH=Number(md.height)||28;
+  const stride=cellPx+gapPx;
+  const fullW=mapW*cellPx+(mapW-1)*gapPx;
+  const fullH=mapH*cellPx+(mapH-1)*gapPx;
+  const offX=Number(md.background_offset_x)||0;
+  const offY=Number(md.background_offset_y)||0;
+  const left=15-(win.minX-1)*stride-offX;
+  const top=15-(mapH-win.maxY)*stride-offY;
+  const src=imgUrlWebp(imgUrlPreferCdn(bg));
+  return`<div class="stage-map-bg-layer" style="width:${fullW}px;height:${fullH}px;left:${left}px;top:${top}px;" aria-hidden="true"><img class="stage-map-bg-img" src="${escAttr(src)}" alt="" loading="lazy" decoding="async" onerror="this.closest('.stage-map-bg-layer')?.classList.add('stage-map-bg-layer--missing')"></div>`;
+}
+function _stageMapEscapeOverlapCellUnits(pool,win){
+  const cellUnits={};
+  (pool||[]).filter(u=>_stageMapUnitVisible(u,pool)&&_stageMapUnitIsEscapeSpawn(u)).forEach(u=>{
+    (u.cells&&u.cells.length?u.cells:[{x:u.x,y:u.y}]).forEach(c=>{
+      const cx=Number(c.x)+1,cy=Number(c.y)+1;
+      if(cx<win.minX||cx>win.maxX||cy<win.minY||cy>win.maxY)return;
+      const k=`${cx}_${cy}`;
+      if(!cellUnits[k])cellUnits[k]=[];
+      if(!cellUnits[k].some(x=>String(x.npc_id)===String(u.npc_id)))cellUnits[k].push(u);
+    });
+  });
+  return cellUnits;
+}
+function _stageMapEscapeFloatCardHtml(u,cellPx,mapW,mapH){
+  const di=u.npc_detail_index;
+  const hasDetail=di!=null&&di!==''&&!Number.isNaN(Number(di));
+  const clickCls=hasDetail||u.unit_id||u.npc_id?' stage-map-escape-float-card--click npc-clickable':'';
+  const mapDataAttrs=(hasDetail||u.unit_id||u.npc_id)?`${hasDetail?` data-npc-map-detail="${Number(di)}"`:''}${(u.npc_id!=null&&String(u.npc_id)!=='')?` data-npc-map-npc-id="${escAttr(String(u.npc_id))}"`:''}${u.unit_id?` data-npc-map-unit-id="${escAttr(String(u.unit_id))}"`:''}`:'';
+  const {multiFp,bbox}= _stageMapUnitMultiFootprint(u,mapW,mapH);
+  const fpw=bbox?bbox.fpw:1,fph=bbox?bbox.fph:1;
+  const gapPx=_stageMapGridGapPx();
+  const thumbW=Math.max(28,fpw*cellPx+(fpw-1)*gapPx-4);
+  const thumbH=Math.max(28,fph*cellPx+(fph-1)*gapPx-4);
+  const mapArt=u.thum||u.portrait;
+  const sideCls=String(u.side||'enemy').toLowerCase();
+  const sideStackCls=sideCls==='guest'?'guest ally-guest':(sideCls==='friendly'?'friendly friendly-force':sideCls);
+  const thumbInner=mapArt?`<img class="stage-map-escape-float-thumb" src="${imgUrl(mapArt)}" alt="" loading="lazy" onerror="this.style.display='none'">`:`<span class="stage-map-escape-float-ph">${esc(String(u.name||'?').slice(0,1))}</span>`;
+  return`<div class="stage-map-escape-float-card${clickCls}" style="--esc-thumb-w:${thumbW}px;--esc-thumb-h:${thumbH}px" aria-label="${escAttr(u.name||'')}"${mapDataAttrs}><div class="stage-map-escape-float-thumb-stack ${sideStackCls}${!multiFp&&u.is_large?' large':''}">${thumbInner}</div><span class="stage-map-escape-float-name">${esc(u.name||'')}</span></div>`;
+}
+function _stageMapEscapeOverlapLayerHtml(pool,win,cellPx,gapPx,mapW,mapH,vw,vh){
+  if(!S.stageMapEscapeLayerVisible)return'';
+  const cellUnits=_stageMapEscapeOverlapCellUnits(pool,win);
+  const overlapKeys=Object.keys(cellUnits).filter(k=>cellUnits[k].length>1);
+  if(!overlapKeys.length)return'';
+  const gapPx2=gapPx;
+  const gridW=vw*cellPx+(vw-1)*gapPx2+30;
+  const gridH=vh*cellPx+(vh-1)*gapPx2+30;
+  let groups='';
+  overlapKeys.forEach(k=>{
+    const units=cellUnits[k].slice().sort((a,b)=>{
+      const ay=_stageMapUnitOriginXY(a).y,by=_stageMapUnitOriginXY(b).y;
+      if(ay!==by)return ay-by;
+      return _stageMapUnitOriginXY(a).x-_stageMapUnitOriginXY(b).x;
+    });
+    const [x,y]=k.split('_').map(Number);
+    const box=_stageMapCellBoxPx(x,y,win,cellPx,gapPx2);
+    const cardGap=8;
+    let cardsW=0;
+    const cardWs=units.map(u=>{
+      const {bbox}= _stageMapUnitMultiFootprint(u,mapW,mapH);
+      const fpw=bbox?bbox.fpw:1;
+      const w=Math.max(28,fpw*cellPx+(fpw-1)*gapPx2-4);
+      cardsW+=w+cardGap;
+      return w;
+    });
+    cardsW=Math.max(box.w,cardsW-cardGap);
+    let cardX=box.cx-cardsW/2;
+    const cardsTop=box.top-62;
+    let lines='';
+    let cards='';
+    units.forEach((u,idx)=>{
+      const cardW=cardWs[idx];
+      const cardCx=cardX+cardW/2;
+      const cardCy=cardsTop+Math.min(28,cardW)/2+8;
+      const orig=_stageMapUnitOriginXY(u);
+      const ob=_stageMapCellBoxPx(orig.x,orig.y,win,cellPx,gapPx2);
+      lines+=`<line x1="${cardCx}" y1="${cardCy}" x2="${ob.cx}" y2="${ob.cy}"></line>`;
+      cards+=`<div class="stage-map-escape-float-slot" style="left:${cardX}px;top:${cardsTop}px;width:${cardW}px">${_stageMapEscapeFloatCardHtml(u,cellPx,mapW,mapH)}</div>`;
+      cardX+=cardW+cardGap;
+    });
+    groups+=`<div class="stage-map-escape-overlap-group"><svg class="stage-map-escape-overlap-lines" width="${gridW}" height="${gridH}" viewBox="0 0 ${gridW} ${gridH}" aria-hidden="true">${lines}</svg><div class="stage-map-escape-overlap-zone" style="left:${box.left}px;top:${box.top}px;width:${box.w}px;height:${box.h}px"><span class="stage-map-escape-overlap-badge" aria-hidden="true">${units.length}</span></div><div class="stage-map-escape-overlap-cards">${cards}</div></div>`;
+  });
+  return`<div class="stage-map-escape-overlap-layer">${groups}</div>`;
+}
 function _stageMapFootprintBBox(u,mapW,mapH){
 if(!u)return null;
 const cells=u.cells&&u.cells.length?u.cells:[{x:u.x,y:u.y}];
@@ -5178,21 +5277,21 @@ function _stageMapEscapeParentUnits(pool){
     return side==='enemy'||side==='guest'||side==='friendly';
   });
 }
-function renderStageMapParentRail(parents,win,cellPx,gapPx,mapW,mapH){
+function renderStageMapParentDockTop(parents,cellPx,gapPx,mapW,mapH){
   if(!parents||!parents.length)return'';
-  const vh=win.maxY-win.minY+1;
   const colLblRaw=t('stage_map_escape_dock');
   const colLbl=colLblRaw!=='stage_map_escape_dock'?colLblRaw:'Original units';
+  const sorted=parents.slice().sort((a,b)=>{
+    const ay=_stageMapUnitOriginXY(a).y,by=_stageMapUnitOriginXY(b).y;
+    if(ay!==by)return by-ay;
+    return _stageMapUnitOriginXY(a).x-_stageMapUnitOriginXY(b).x;
+  });
   let slots='';
-  parents.forEach(u=>{
-    const origin=_stageMapUnitOriginXY(u);
-    if(origin.y<win.minY||origin.y>win.maxY)return;
-    const row=win.maxY-origin.y+1;
+  sorted.forEach(u=>{
     const {multiFp,bbox}= _stageMapUnitMultiFootprint(u,mapW,mapH);
-    const span=bbox?bbox.fph:1;
     const fpw=bbox?bbox.fpw:1,fph=bbox?bbox.fph:1;
-    const thumbW=Math.max(16,fpw*cellPx+(fpw-1)*gapPx-4);
-    const thumbH=Math.max(16,fph*cellPx+(fph-1)*gapPx-4);
+    const thumbW=Math.max(28,fpw*cellPx+(fpw-1)*gapPx-4);
+    const thumbH=Math.max(28,fph*cellPx+(fph-1)*gapPx-4);
     const di=u.npc_detail_index;
     const hasDetail=di!=null&&di!==''&&!Number.isNaN(Number(di));
     const clickCls=hasDetail||u.unit_id||u.npc_id?' stage-map-parent-slot--click npc-clickable':'';
@@ -5203,10 +5302,9 @@ function renderStageMapParentRail(parents,win,cellPx,gapPx,mapW,mapH){
     const thumbInner=mapArt?`<img class="stage-map-parent-thumb" src="${imgUrl(mapArt)}" alt="" loading="lazy" onerror="this.style.display='none'">`:`<span class="stage-map-parent-ph">${esc(String(u.name||'?').slice(0,1))}</span>`;
     const largeInnerCls=!multiFp&&u.is_large?' large':'';
     const nameLbl=`<span class="stage-map-parent-name">${esc(u.name||'')}</span>`;
-    slots+=`<div class="stage-map-parent-slot${clickCls}" style="grid-row:${row}/span ${span};--parent-thumb-w:${thumbW}px;--parent-thumb-h:${thumbH}px" aria-label="${escAttr(u.name||'')}"${mapDataAttrs}><div class="stage-map-parent-thumb-stack ${sideStackCls}${largeInnerCls}">${thumbInner}</div>${nameLbl}</div>`;
+    slots+=`<div class="stage-map-parent-slot${clickCls}" style="--parent-thumb-w:${thumbW}px;--parent-thumb-h:${thumbH}px" aria-label="${escAttr(u.name||'')}"${mapDataAttrs}><div class="stage-map-parent-thumb-stack ${sideStackCls}${largeInnerCls}">${thumbInner}</div>${nameLbl}</div>`;
   });
-  if(!slots)return'';
-  return `<div class="stage-map-parent-rail-wrap"><div class="stage-map-parent-rail-head">${esc(colLbl)}</div><div class="stage-map-parent-rail" style="--cell:${cellPx}px;grid-template-rows:repeat(${vh},var(--cell))">${slots}</div></div>`;
+  return `<div class="stage-map-parent-dock-wrap"><div class="stage-map-parent-dock-head">${esc(colLbl)}</div><div class="stage-map-parent-dock">${slots}</div></div>`;
 }
 function _stageMapRenderUnitDotHtml(u,opts){
   opts=opts||{};
@@ -5249,7 +5347,12 @@ function renderStageMapGrid(md){
   const ucHlSet=new Set(getActiveNpcUnitConditionHighlightIds());
   const win=_stageMapViewWindow(md);
   const vw=(win.maxX-win.minX+1),vh=(win.maxY-win.minY+1);
-  let html=`<div class="map-grid" style="--cell:${cellPx}px;grid-template-columns:repeat(${vw},var(--cell));">`;
+  const escapeOn=!!S.stageMapEscapeLayerVisible;
+  const overlapCellUnits=escapeOn?_stageMapEscapeOverlapCellUnits(pool,win):{};
+  const overlapKeys=new Set(Object.keys(overlapCellUnits).filter(k=>overlapCellUnits[k].length>1));
+  const hasBg=!!(md.background&&String(md.background).trim());
+  const bgHtml=hasBg?_stageMapBgLayerHtml(md,win,cellPx,gapPx):'';
+  let html=`<div class="map-grid${hasBg?' map-grid--has-bg':''}${escapeOn?' map-grid--escape':''}" style="--cell:${cellPx}px;grid-template-columns:repeat(${vw},var(--cell));">${bgHtml}`;
   for(let y=win.maxY;y>=win.minY;y--){
     for(let x=win.minX;x<=win.maxX;x++){
       const o=occ[`${x}_${y}`],u=o?o.unit:null;
@@ -5267,6 +5370,7 @@ function renderStageMapGrid(md){
       if(isPlayableTile)cls+=' map-cell--playable';
       if(eventArea)cls+=' map-cell--event-area';
       if(escapeLayerShown&&o&&o.origin)cls+=' map-cell--escape-spawn';
+      if(overlapKeys.has(ck))cls+=' map-cell--escape-overlap';
       const showBuffArea=buffArea&&_stageMapBuffAreasShown();
       if(showBuffArea){
         cls+=' map-cell--buff-area';
@@ -5319,10 +5423,12 @@ function renderStageMapGrid(md){
     }
   }
   html+=`</div>`;
+  const overlapHtml=_stageMapEscapeOverlapLayerHtml(pool,win,cellPx,gapPx,mapW,mapH,vw,vh);
+  const mapBlock=`<div class="stage-map-grid-wrap">${html}${overlapHtml}</div>`;
   const parentUnits=_stageMapEscapeParentUnits(pool);
-  const parentRailHtml=renderStageMapParentRail(parentUnits,win,cellPx,gapPx,mapW,mapH);
-  if(parentRailHtml)return`<div class="stage-map-viewport stage-map-viewport--escape"><div class="stage-map-grid-row">${html}${parentRailHtml}</div></div>`;
-  return html
+  const parentDockHtml=renderStageMapParentDockTop(parentUnits,cellPx,gapPx,mapW,mapH);
+  if(parentDockHtml)return`<div class="stage-map-viewport stage-map-viewport--escape">${parentDockHtml}${mapBlock}</div>`;
+  return mapBlock
 }
 function captureStageDetailUiState(){
 const npcGroupsOpen={};
@@ -6011,7 +6117,7 @@ const dm=document.getElementById('detailModal');
 if(!dm||dm.dataset.stageMapNpcWired==='1')return;
 dm.dataset.stageMapNpcWired='1';
 dm.addEventListener('click',function(e){
-const cell=e.target&&e.target.closest&&e.target.closest('#stageMapGridWrap .map-cell.npc-clickable, #stageMapGridWrap .stage-map-parent-slot.npc-clickable');
+const cell=e.target&&e.target.closest&&e.target.closest('#stageMapGridWrap .map-cell.npc-clickable, #stageMapGridWrap .stage-map-parent-slot.npc-clickable, #stageMapGridWrap .stage-map-escape-float-card.npc-clickable');
 if(!cell)return;
 e.stopPropagation();
 let detailIdx=null;
