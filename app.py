@@ -13752,6 +13752,85 @@ def resolve_stage_conditions(sid, lc):
         victory = cleaned
     return victory, defeat, branch
 
+
+def _map_npc_escape_name_base(name):
+    """Normalize NpcUniqueName for death-spawn pairing (gato→gato2, uraki→Uraki_02)."""
+    n = str(name or '').strip()
+    if not n or n.lower() == '<default>':
+        return ''
+    return re.sub(r'[_]?\d+$', '', n, flags=re.I).lower()
+
+
+def pair_map_npc_escape_spawns(units, npc_rows):
+    """Link on-field enemies to off-map spawn replacements (death escape)."""
+    enemies = [u for u in (units or []) if str(u.get('side', '')).lower() == 'enemy']
+    if not enemies or not any(u.get('is_initially_placed', True) for u in enemies):
+        return
+    meta = {normalize_id(r.get('id')): r for r in (npc_rows or [])}
+    placed = [u for u in enemies if u.get('is_initially_placed', True) and not u.get('escape_spawn_npc_id')]
+    unplaced = [u for u in enemies if not u.get('is_initially_placed', True) and not u.get('escape_from_npc_id')]
+    paired_parents = set()
+    paired_spawns = set()
+
+    def _anchor_key(unit):
+        nid = normalize_id(unit.get('npc_id'))
+        row = meta.get(nid, {})
+        ax = row.get('x', unit.get('x', 0))
+        ay = row.get('y', unit.get('y', 0))
+        return (int(ax), int(ay))
+
+    def _link(parent, spawn):
+        pid = str(parent.get('npc_id', ''))
+        sid = str(spawn.get('npc_id', ''))
+        if not pid or not sid or pid in paired_parents or sid in paired_spawns:
+            return False
+        parent['escape_spawn_npc_id'] = sid
+        spawn['escape_from_npc_id'] = pid
+        paired_parents.add(pid)
+        paired_spawns.add(sid)
+        return True
+
+    # Pass 1: same map anchor tile (handles same-cell death spawns; ignore footprint overlap only).
+    spawn_by_anchor = {}
+    for sp in unplaced:
+        ak = _anchor_key(sp)
+        spawn_by_anchor.setdefault(ak, []).append(sp)
+    for par in placed:
+        if str(par.get('npc_id', '')) in paired_parents:
+            continue
+        cands = [s for s in spawn_by_anchor.get(_anchor_key(par), []) if str(s.get('npc_id', '')) not in paired_spawns]
+        if len(cands) == 1:
+            _link(par, cands[0])
+
+    rem_placed = [u for u in placed if str(u.get('npc_id', '')) not in paired_parents]
+    rem_unplaced = [u for u in unplaced if str(u.get('npc_id', '')) not in paired_spawns]
+    for par in rem_placed:
+        pid = str(par.get('npc_id', ''))
+        prow = meta.get(normalize_id(pid), {})
+        pname = prow.get('NpcUniqueName') or prow.get('npc_unique_name') or ''
+        pbase = _map_npc_escape_name_base(pname)
+        if not pbase:
+            continue
+        par_uid = normalize_id(par.get('unit_id', '0'))
+        matches = []
+        for sp in rem_unplaced:
+            sid = str(sp.get('npc_id', ''))
+            if sid in paired_spawns:
+                continue
+            srow = meta.get(normalize_id(sid), {})
+            sname = srow.get('NpcUniqueName') or srow.get('npc_unique_name') or ''
+            if _map_npc_escape_name_base(sname) != pbase:
+                continue
+            if str(sname).strip().lower() == str(pname).strip().lower():
+                continue
+            sp_uid = normalize_id(sp.get('unit_id', '0'))
+            if par_uid != '0' and sp_uid == par_uid:
+                continue
+            matches.append(sp)
+        if len(matches) == 1:
+            _link(par, matches[0])
+
+
 def build_map_grid(w, h, u, buff_areas=None, playable_cells=None, playable_cell_count=0):
     md = {'width': w, 'height': h, 'units': u}
     if buff_areas:
@@ -26480,7 +26559,7 @@ def get_stage(stage_id):
                         'ch' if is_challenge_stage else (
                             'ce' if is_chronicle_stage else 'er')))))
         # mstage18: chronicle/E-sim first-clear from node content FirstClearRewardSetId.
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage20"
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage21"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -26720,6 +26799,15 @@ def get_stage(stage_id):
                 if story_boss:
                     nd_row['is_story_event_boss'] = True
                 uom.append(me); nd.append(nd_row)
+            pair_map_npc_escape_spawns(uom, nt)
+            for row in nd:
+                hit = next((u for u in uom if str(u.get('npc_id', '')) == str(row.get('npc_id', ''))), None)
+                if not hit:
+                    continue
+                if hit.get('escape_spawn_npc_id'):
+                    row['escape_spawn_npc_id'] = hit['escape_spawn_npc_id']
+                if hit.get('escape_from_npc_id'):
+                    row['escape_from_npc_id'] = hit['escape_from_npc_id']
             for ally in build_ally_positions(msid):
                 uom.append({'npc_id': f"ally_g{ally['group_no']}_s{ally['slot']}", 'name': f"{get_ui_label(lc, 'sortie_group').format(ally['group_no'])} #{ally['slot']}", 'portrait': '/static/images/Stages/UI_GTower_Minimap_Icon_OwnArmy.webp', 'x': ally['x'], 'y': ally['y'], 'direction': ally.get('direction', '0'), 'is_large': False, 'side': 'ally', 'cells': [{'x': ally['x'], 'y': ally['y']}]})
             buff_sources = []

@@ -60,11 +60,15 @@ def main() -> None:
     hyaku_atk = ms_growth_from_pct(10015, 15 + 12 + 40 + 5, "Attack") + 390
     assert hyaku_atk == 17615, hyaku_atk
 
-    # D Gundam Third LB0 +20% HP-tier CP ATK +12% OP +25% leader +300 ATK flat; HP +5% +25% leader +2000 flat
-    dg_atk = ms_growth_from_pct(7580, 20 + 12 + 25, "Attack") + 300
-    assert dg_atk == 12201, dg_atk
+    # D Gundam Third LB0 +20% HP-tier CP ATK +12% OP +25% leader +2% SameGroup ATK/DEF +300 ATK flat
+    dg_atk = ms_growth_from_pct(7580, 20 + 12 + 25 + 2, "Attack") + 300
+    assert dg_atk == 12352, dg_atk
+    dg_def = ms_growth_from_pct(6535, 25 + 2, "Defense")
+    assert dg_def == 8299, dg_def
     dg_hp = ms_growth_from_pct(71806, 5 + 25, "HP") + 2000
     assert dg_hp == 95347, dg_hp
+    dg_mob = ms_growth_from_pct(7192, 25, "Mobility")
+    assert dg_mob == 8990, dg_mob
 
     # Barbatos Lupus Rex (EX) LB2 + Atra LV50/1★: floor support ATK 191 (not half-up 192)
     assert supporter_flat(300, 6384) == 191

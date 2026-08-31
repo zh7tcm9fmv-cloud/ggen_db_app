@@ -1431,6 +1431,15 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .stage-mission-reward-cell .ability-item{height:100%}
 .map-cell.map-cell--unit-origin{position:relative}
 .map-cell-step-badge{position:absolute;top:2px;left:2px;z-index:6;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:linear-gradient(180deg,#f97316,#ea580c);color:#fff;font-size:11px;font-weight:800;line-height:18px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.45);pointer-events:none}
+.map-cell-escape-btn{position:absolute;bottom:2px;left:50%;transform:translateX(-50%);z-index:7;padding:2px 6px;border:1px solid rgba(251,191,36,.65);border-radius:6px;background:rgba(20,16,8,.92);color:#fde68a;font-size:9px;font-weight:800;line-height:1.2;cursor:pointer;white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.5);touch-action:manipulation}
+.map-cell-escape-btn:hover{border-color:#fbbf24;color:#fff;background:rgba(40,32,12,.96)}
+.map-unit-dot.enemy,.map-unit-dot.guest,.map-unit-dot.friendly,.map-unit-dot.gimmick{overflow:visible}
+.map-unit-support-badge,.stage-npc-support-badge{position:absolute;top:1px;right:1px;z-index:5;display:inline-flex;align-items:center;gap:1px;padding:1px 3px 1px 2px;border-radius:6px;background:rgba(8,12,22,.88);border:1px solid rgba(255,255,255,.18);pointer-events:none;line-height:1;box-shadow:0 1px 3px rgba(0,0,0,.55)}
+.map-unit-support-badge img,.stage-npc-support-badge img{width:12px;height:12px;object-fit:contain;display:block}
+.map-unit-support-badge-count,.stage-npc-support-badge-count{font-size:9px;font-weight:800;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.85)}
+.map-unit-support-badge--stack-1,.stage-npc-support-badge--stack-1{top:auto;bottom:1px}
+.stage-npc-escape-btn{display:block;width:100%;margin-top:6px;padding:4px 8px;border:1px solid rgba(251,191,36,.55);border-radius:6px;background:rgba(251,191,36,.1);color:#fde68a;font-size:10px;font-weight:800;cursor:pointer;touch-action:manipulation}
+.stage-npc-escape-btn:hover{border-color:#fbbf24;background:rgba(251,191,36,.18);color:#fff}
 .stage-map-reinf-step-hint{margin:0 0 10px;padding:8px 12px;font-size:12px;line-height:1.4;color:var(--text-secondary);background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.25);border-radius:var(--radius-sm)}
 .stage-npc-compact-badges{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:6px}
 .stage-npc-meta-badge{font-size:10px;font-weight:700;padding:2px 6px;border-radius:6px;background:rgba(255,255,255,.06);color:var(--text-secondary);border:1px solid var(--border-color)}
@@ -1858,6 +1867,7 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 .dc-pick-btn:hover{border-color:var(--accent-cyan);color:var(--accent-cyan)}
 .dc-picked{display:flex;align-items:center;gap:12px;padding:8px;background:rgba(0,0,0,.2);border-radius:var(--radius-sm);border:1px solid var(--border-color)}
 .dc-picked img.dc-thum{width:48px;height:48px;border-radius:6px;object-fit:contain;background:var(--bg-input)}
+.dc-picked .list-thumb-composite--picker{flex-shrink:0}
 .dc-picked-info{flex:1;min-width:0}
 .dc-picked-name{font-size:14px;font-weight:700;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .dc-picked-badges{display:flex;gap:4px;align-items:center;margin-top:2px}
@@ -2134,6 +2144,7 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 #dcDefDbUnitSlot .dc-picked>.dc-unit-lb-stat-cluster .cmp-lb-details.dc-lb-tier-details{width:100%!important;min-width:0;max-width:100%}
 #dcDefDbUnitSlot .dc-picked>.dc-unit-lb-stat-cluster .cmp-lb-summary{width:100%;box-sizing:border-box;justify-content:center}
 #dcAtkUnitArea .dc-picked{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-rows:auto auto;align-items:start;column-gap:12px;row-gap:8px}
+#dcAtkUnitArea .dc-picked>.list-thumb-composite--picker{grid-column:1;grid-row:1}
 #dcAtkUnitArea .dc-picked>.dc-thum{grid-column:1;grid-row:1}
 #dcAtkUnitArea .dc-picked>.dc-picked-info{grid-column:2;grid-row:1;min-width:0}
 #dcAtkUnitArea .dc-picked>.dc-picked-change{grid-column:3;grid-row:1;align-self:start}
@@ -2144,6 +2155,7 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 #dcAtkUnitArea .dc-picked>.dc-atk-unit-below-portrait .cmp-lb-details.dc-lb-tier-details{width:100%!important;min-width:0;max-width:100%}
 #dcAtkUnitArea .dc-picked>.dc-atk-unit-below-portrait .cmp-lb-summary{width:100%;box-sizing:border-box;justify-content:center}
 #dcAtkCharArea .dc-picked{display:grid;grid-template-columns:auto minmax(0,1fr) auto;grid-template-rows:auto auto;align-items:start;column-gap:12px;row-gap:8px}
+#dcAtkCharArea .dc-picked>.list-thumb-composite--picker{grid-column:1;grid-row:1}
 #dcAtkCharArea .dc-picked>.dc-thum{grid-column:1;grid-row:1}
 #dcAtkCharArea .dc-picked>.dc-picked-info{grid-column:2;grid-row:1;min-width:0}
 #dcAtkCharArea .dc-picked>.dc-picked-change{grid-column:3;grid-row:1;align-self:start}

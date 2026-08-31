@@ -429,19 +429,19 @@ dc_def_npc_map_bonuses:'NPC分隊バフ',dc_def_npc_map_bonuses_tip:'オフに�
 Object.assign(T.TW,{npc_unit_cond_targets:'條件被動 — 加成對象單位',npc_unit_cond_target_short:'加成單位'});
 Object.assign(T.HK,{npc_unit_cond_targets:'條件被動 — 加成對象單位',npc_unit_cond_target_short:'加成單位'});
 Object.assign(T.JA,{npc_unit_cond_targets:'条件付きパッシブ — 対象ユニット',npc_unit_cond_target_short:'対象ユニット'});
-Object.assign(T.EN,{dc_support_counter_title:'Support Attack/Counter — MS ATK %',dc_support_counter_tip:'Support-type attacker MS plus this pilot: optional MS ATK % during Support Attack/Counter. Parsed from pilot ability text.',dc_support_counter_desc:'When executing Support Attack/Counter — +{pct}% MS ATK',dc_support_counter_tip_disabled:'This pilot\'s ATK boost applies only when piloting a Support-type (role) mobile suit. Pick a Support-class attacker unit to enable the bonus in damage math (turns On automatically when the pairing becomes eligible).',dc_support_counter_tip_enabled:'Support-type MS + this pilot: MS ATK % while executing Support Attack/Counter. Auto-On when you pair with a Support-role unit; turn Off to compare without the bonus.',dc_support_counter_pilot_note:'Support-role pilot: +{pct}% MS ATK when executing Support Attack/Counter on a <strong>Support-type (role)</strong> attacker MS. With other unit roles the pilot can still use Support Attack mechanics, but this ATK&nbsp;% does not apply—Attacker Parameters shows the toggle dimmed until the attacker MS is Support-class.',dc_support_counter_battle_stat:'Support Attack/Counter MS ATK'});
-Object.assign(T.TW,{dc_support_counter_title:'支援攻擊／反擊 — 機體攻擊力 %',dc_support_counter_tip:'支援型攻擊機與此駕駛員：執行支援攻擊／反擊時可選的機體攻擊力 %。數值由駕駛員能力文字解析。',dc_support_counter_desc:'執行支援攻擊／反擊時 — 機體攻擊力 +{pct}%',dc_support_counter_tip_disabled:'此駕駛員的攻擊力加成僅在搭乘支援型（角色）機體時生效。請選擇支援型攻擊機以納入損傷計算（符合條件時會自動開啟）。',dc_support_counter_tip_enabled:'支援型機體＋此駕駛員：執行支援攻擊／反擊時的機體攻擊力 %。與支援型機體配對時自動開啟；關閉可比較無加成時的損傷。',dc_support_counter_pilot_note:'支援型駕駛員：對<strong>支援型（角色）</strong>攻擊機執行支援攻擊／反擊時，機體攻擊力 +{pct}%。其他機體類型仍可使用支援攻擊機制，但此攻擊力&nbsp;% 不適用—請在攻擊方參數選擇支援型攻擊機以啟用（未符合時切換為灰色）。',dc_support_counter_battle_stat:'支援攻擊／反擊 機體攻擊力'});
-Object.assign(T.HK,{dc_support_counter_title:'支援攻擊／反擊 — 機體攻擊力 %',dc_support_counter_tip:'支援型攻擊機與此駕駛員：執行支援攻擊／反擊時可選的機體攻擊力 %。數值由駕駛員能力文字解析。',dc_support_counter_desc:'執行支援攻擊／反擊時 — 機體攻擊力 +{pct}%',dc_support_counter_tip_disabled:'此駕駛員的攻擊力加成僅在搭乘支援型（角色）機體時生效。請選擇支援型攻擊機以納入損傷計算（符合條件時會自動開啟）。',dc_support_counter_tip_enabled:'支援型機體＋此駕駛員：執行支援攻擊／反擊時的機體攻擊力 %。與支援型機體配對時自動開啟；關閉可比較無加成時的損傷。',dc_support_counter_pilot_note:'支援型駕駛員：對<strong>支援型（角色）</strong>攻擊機執行支援攻擊／反擊時，機體攻擊力 +{pct}%。其他機體類型仍可使用支援攻擊機制，但此攻擊力&nbsp;% 不適用—請在攻擊方參數選擇支援型攻擊機以啟用（未符合時切換為灰色）。',dc_support_counter_battle_stat:'支援攻擊／反擊 機體攻擊力'});
-Object.assign(T.JA,{dc_support_counter_title:'支援攻撃・支援反撃 — 機体攻撃力 %',dc_support_counter_tip:'支援型の攻撃機とこのパイロット：支援攻撃・支援反撃実行時の任意の機体攻撃力％。パイロット能力文から解析。',dc_support_counter_desc:'支援攻撃・支援反撃実行時 — 攻撃力 +{pct}%',dc_support_counter_tip_disabled:'このパイロットの攻撃力上昇は、支援型（ロール）の機体搭乗時のみ有効です。支援型攻撃機を選ぶとダメージ計算に反映されます（条件を満たすと自動でON）。',dc_support_counter_tip_enabled:'支援型機体＋このパイロット：支援攻撃・支援反撃中の機体攻撃力％。支援型機体と組み合わせると自動ON。OFFにするとボーナスなしのダメージと比較できます。',dc_support_counter_pilot_note:'支援型パイロット：<strong>支援型（ロール）</strong>の攻撃機で支援攻撃・支援反撃を実行した場合、ユニット攻撃力 +{pct}%。他タイプの機体でも支援攻撃は使えますが、この攻撃力&nbsp;% は反映されません—攻撃側パラメータで支援型攻撃機を選ぶと有効になります（未対応時はトグルが灰色）。',dc_support_counter_battle_stat:'支援攻撃・支援反撃 機体攻撃力'});
+Object.assign(T.EN,{dc_support_counter_title:'Support Attack/Counter — MS ATK %',dc_support_counter_tip:'Support-type attacker MS plus this pilot: optional MS ATK % during Support Attack/Counter. Parsed from pilot ability text.',dc_support_counter_desc:'When executing Support Attack/Counter — +{pct}% MS ATK',dc_support_counter_tip_disabled:'This pilot\'s ATK boost applies only when piloting a Support-type (role) mobile suit. Pick a Support-class attacker unit to enable the bonus in damage math.',dc_support_counter_tip_enabled:'Support-type MS + this pilot: MS ATK % while executing Support Attack/Counter. Off by default (matches normal/main attack preview). Turn On to include the bonus.',dc_support_counter_pilot_note:'Support-role pilot: +{pct}% MS ATK when executing Support Attack/Counter on a <strong>Support-type (role)</strong> attacker MS. With other unit roles the pilot can still use Support Attack mechanics, but this ATK&nbsp;% does not apply—Attacker Parameters shows the toggle dimmed until the attacker MS is Support-class.',dc_support_counter_battle_stat:'Support Attack/Counter MS ATK'});
+Object.assign(T.TW,{dc_support_counter_title:'支援攻擊／反擊 — 機體攻擊力 %',dc_support_counter_tip:'支援型攻擊機與此駕駛員：執行支援攻擊／反擊時可選的機體攻擊力 %。數值由駕駛員能力文字解析。',dc_support_counter_desc:'執行支援攻擊／反擊時 — 機體攻擊力 +{pct}%',dc_support_counter_tip_disabled:'此駕駛員的攻擊力加成僅在搭乘支援型（角色）機體時生效。請選擇支援型攻擊機以納入損傷計算。',dc_support_counter_tip_enabled:'支援型機體＋此駕駛員：執行支援攻擊／反擊時的機體攻擊力 %。預設關閉（符合一般／主動攻擊預覽）。開啟後才納入加成。',dc_support_counter_pilot_note:'支援型駕駛員：對<strong>支援型（角色）</strong>攻擊機執行支援攻擊／反擊時，機體攻擊力 +{pct}%。其他機體類型仍可使用支援攻擊機制，但此攻擊力&nbsp;% 不適用—請在攻擊方參數選擇支援型攻擊機以啟用（未符合時切換為灰色）。',dc_support_counter_battle_stat:'支援攻擊／反擊 機體攻擊力'});
+Object.assign(T.HK,{dc_support_counter_title:'支援攻擊／反擊 — 機體攻擊力 %',dc_support_counter_tip:'支援型攻擊機與此駕駛員：執行支援攻擊／反擊時可選的機體攻擊力 %。數值由駕駛員能力文字解析。',dc_support_counter_desc:'執行支援攻擊／反擊時 — 機體攻擊力 +{pct}%',dc_support_counter_tip_disabled:'此駕駛員的攻擊力加成僅在搭乘支援型（角色）機體時生效。請選擇支援型攻擊機以納入損傷計算。',dc_support_counter_tip_enabled:'支援型機體＋此駕駛員：執行支援攻擊／反擊時的機體攻擊力 %。預設關閉（符合一般／主動攻擊預覽）。開啟後才納入加成。',dc_support_counter_pilot_note:'支援型駕駛員：對<strong>支援型（角色）</strong>攻擊機執行支援攻擊／反擊時，機體攻擊力 +{pct}%。其他機體類型仍可使用支援攻擊機制，但此攻擊力&nbsp;% 不適用—請在攻擊方參數選擇支援型攻擊機以啟用（未符合時切換為灰色）。',dc_support_counter_battle_stat:'支援攻擊／反擊 機體攻擊力'});
+Object.assign(T.JA,{dc_support_counter_title:'支援攻撃・支援反撃 — 機体攻撃力 %',dc_support_counter_tip:'支援型の攻撃機とこのパイロット：支援攻撃・支援反撃実行時の任意の機体攻撃力％。パイロット能力文から解析。',dc_support_counter_desc:'支援攻撃・支援反撃実行時 — 攻撃力 +{pct}%',dc_support_counter_tip_disabled:'このパイロットの攻撃力上昇は、支援型（ロール）の機体搭乗時のみ有効です。支援型攻撃機を選ぶとダメージ計算に反映できます。',dc_support_counter_tip_enabled:'支援型機体＋このパイロット：支援攻撃・支援反撃中の機体攻撃力％。通常はOFF（通常攻撃プレビューに合わせる）。ONでボーナスを反映。',dc_support_counter_pilot_note:'支援型パイロット：<strong>支援型（ロール）</strong>の攻撃機で支援攻撃・支援反撃を実行した場合、ユニット攻撃力 +{pct}%。他タイプの機体でも支援攻撃は使えますが、この攻撃力&nbsp;% は反映されません—攻撃側パラメータで支援型攻撃機を選ぶと有効になります（未対応時はトグルが灰色）。',dc_support_counter_battle_stat:'支援攻撃・支援反撃 機体攻撃力'});
 STAT_NAME_MAP.JA={'Ranged':'射撃','Melee':'格闘','Awaken':'覚醒','Defense':'防御力','Reaction':'反応','HP':'HP','EN':'EN','Attack':'攻撃力','ATK':'攻撃力','DEF':'防御力','MOB':'機動力','Mobility':'機動力','Move':'移動力'};STAT_NAME_MAP.JP=STAT_NAME_MAP.JA;
 TERRAIN_NAME_MAP.JA={'Space':'宇宙','Atmospheric':'空中','Ground':'地上','Sea':'水上','Underwater':'水中'};TERRAIN_NAME_MAP.JP=TERRAIN_NAME_MAP.JA;
 ROLE_NAME_MAP.JA={'Attack':'攻撃型','Defense':'耐久型','Support':'支援型'};ROLE_NAME_MAP.JP=ROLE_NAME_MAP.JA;
 ROLE_LABELS.JA={'':'全タイプ','1':'攻撃型のみ','2':'耐久型のみ','3':'支援型のみ'};ROLE_LABELS.JP=ROLE_LABELS.JA;
-Object.assign(T.EN,{stage_source_tower:'GTower',stage_source_challenge:'Challenge Main Stages',stage_source_esim:'E Simulator',stage_source_btn_eternal:'Eternal Road',stage_source_btn_challenge:'Challenge',stage_source_btn_tower:'GTower',stage_source_btn_score:'Score Attack',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_challenge_series_all:'All series',stage_challenge_series_msg:'MSG Series',stage_challenge_series_seed:'SEED Series',stage_challenge_hard_label:'HARD',stage_rewards:'Rewards',stage_first_clear_rewards:'First-Clear Rewards',stage_prev_cleared_rewards:'Previously Cleared Floor Rewards',stage_secret_clear_rewards:'Secret Battles',stage_missions:'Missions',esim_panel_stages:'Stages',esim_panel_progress:'Progress Rewards',esim_panel_complete:'Completion Rewards',esim_panel_event_wide:'Event-Wide Progress Rewards',esim_progress_story:'Story Progress Rewards',esim_progress_report:'Report Progress Rewards',esim_progress_mission:'Mission Progress Rewards',esim_type_stage:'Stage',esim_type_story:'Story',esim_type_report:'Report',esim_div_original:'Original',esim_div_turning_point:'Turning Point',esim_div_if:'What If',stage_capturable_units:'Capturable Units',stage_capturable_pickup:'Featured capture',detail_back_stage:'Back to stage',detail_nav_prev:'Previous entry',detail_nav_next:'Next entry'});
-Object.assign(T.TW,{stage_source_tower:'世代之塔',stage_source_challenge:'主要關卡 CHALLENGE',stage_source_esim:'E模擬器',stage_source_btn_eternal:'永恆之路',stage_source_btn_challenge:'Challenge',stage_source_btn_tower:'世代之塔',stage_source_btn_score:'大規模攻略戰積分挑戰',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_challenge_series_all:'All series',stage_challenge_series_msg:'MSG Series',stage_challenge_series_seed:'SEED Series',stage_challenge_hard_label:'HARD',stage_rewards:'報酬',stage_first_clear_rewards:'首次報酬',stage_prev_cleared_rewards:'已完成的樓層報酬',stage_secret_clear_rewards:'隱藏戰鬥',stage_missions:'使命',esim_panel_stages:'關卡',esim_panel_progress:'進度報酬',esim_panel_complete:'完成報酬',esim_panel_event_wide:'事件整體進度報酬',esim_progress_story:'故事進度報酬',esim_progress_report:'報告進度報酬',esim_progress_mission:'使命進度報酬',esim_type_stage:'關卡',esim_type_story:'故事',esim_type_report:'報告',esim_div_original:'一般關卡',esim_div_turning_point:'轉捩點',esim_div_if:'IF',stage_capturable_units:'可捕獲單位',stage_capturable_pickup:'精選捕獲',detail_back_stage:'返回關卡',detail_nav_prev:'上一筆',detail_nav_next:'下一筆'});
-Object.assign(T.HK,{stage_source_tower:'世代之塔',stage_source_challenge:'主要關卡 CHALLENGE',stage_source_esim:'E模擬器',stage_source_btn_eternal:'永恆之路',stage_source_btn_challenge:'Challenge',stage_source_btn_tower:'世代之塔',stage_source_btn_score:'大規模攻略戰積分挑戰',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_challenge_series_all:'All series',stage_challenge_series_msg:'MSG Series',stage_challenge_series_seed:'SEED Series',stage_challenge_hard_label:'HARD',stage_rewards:'報酬',stage_first_clear_rewards:'首次報酬',stage_prev_cleared_rewards:'已完成的樓層報酬',stage_secret_clear_rewards:'隱藏戰鬥',stage_missions:'使命',esim_panel_stages:'關卡',esim_panel_progress:'進度報酬',esim_panel_complete:'完成報酬',esim_panel_event_wide:'事件整體進度報酬',esim_progress_story:'故事進度報酬',esim_progress_report:'報告進度報酬',esim_progress_mission:'使命進度報酬',esim_type_stage:'關卡',esim_type_story:'故事',esim_type_report:'報告',esim_div_original:'一般關卡',esim_div_turning_point:'轉捩點',esim_div_if:'IF',stage_capturable_units:'可捕獲單位',stage_capturable_pickup:'精選捕獲',detail_back_stage:'返回關卡',detail_nav_prev:'上一筆',detail_nav_next:'下一筆'});
-Object.assign(T.JA,{stage_source_tower:'ジェネレーションタワー',stage_source_challenge:'メインステージCHALLENGE',stage_source_esim:'Eシミュレーター',stage_source_btn_eternal:'エターナルロード',stage_source_btn_challenge:'Challenge',stage_source_btn_tower:'ジェネレーションタワー',stage_source_btn_score:'大規模攻略戦ステージデータ',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_challenge_series_all:'全シリーズ',stage_challenge_series_msg:'MSGシリーズ',stage_challenge_series_seed:'SEEDシリーズ',stage_challenge_hard_label:'HARD',stage_rewards:'報酬',stage_first_clear_rewards:'初回報酬',stage_prev_cleared_rewards:'クリア済みの階層報酬',stage_secret_clear_rewards:'シークレットバトル',stage_missions:'ミッション',esim_panel_stages:'ステージ',esim_panel_progress:'進捗報酬',esim_panel_complete:'コンプリート報酬',esim_panel_event_wide:'イベント全体進捗報酬',esim_progress_story:'ストーリー進捗報酬',esim_progress_report:'レポート進捗報酬',esim_progress_mission:'ミッション進捗報酬',esim_type_stage:'ステージ',esim_type_story:'ストーリー',esim_type_report:'レポート',esim_div_original:'通常ステージ',esim_div_turning_point:'ターニングポイント',esim_div_if:'IF',stage_capturable_units:'捕獲可能ユニット',stage_capturable_pickup:'注目捕獲',detail_back_stage:'ステージに戻る',detail_nav_prev:'前へ',detail_nav_next:'次へ'});
-Object.assign(T.JP,{stage_source_tower:'ジェネレーションタワー',stage_source_challenge:'メインステージCHALLENGE',stage_source_esim:'Eシミュレーター',stage_source_btn_eternal:'エターナルロード',stage_source_btn_challenge:'Challenge',stage_source_btn_tower:'ジェネレーションタワー',stage_source_btn_score:'大規模攻略戦ステージデータ',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_challenge_series_all:'全シリーズ',stage_challenge_series_msg:'MSGシリーズ',stage_challenge_series_seed:'SEEDシリーズ',stage_challenge_hard_label:'HARD',stage_rewards:'報酬',stage_first_clear_rewards:'初回報酬',stage_prev_cleared_rewards:'クリア済みの階層報酬',stage_secret_clear_rewards:'シークレットバトル',stage_missions:'ミッション',esim_panel_stages:'ステージ',esim_panel_progress:'進捗報酬',esim_panel_complete:'コンプリート報酬',esim_panel_event_wide:'イベント全体進捗報酬',esim_progress_story:'ストーリー進捗報酬',esim_progress_report:'レポート進捗報酬',esim_progress_mission:'ミッション進捗報酬',esim_type_stage:'ステージ',esim_type_story:'ストーリー',esim_type_report:'レポート',esim_div_original:'通常ステージ',esim_div_turning_point:'ターニングポイント',esim_div_if:'IF',stage_capturable_units:'捕獲可能ユニット',stage_capturable_pickup:'注目捕獲',detail_back_stage:'ステージに戻る',detail_nav_prev:'前へ',detail_nav_next:'次へ'});
+Object.assign(T.EN,{stage_source_tower:'GTower',stage_source_challenge:'Challenge Main Stages',stage_source_esim:'E Simulator',stage_source_btn_eternal:'Eternal Road',stage_source_btn_challenge:'Challenge',stage_source_btn_tower:'GTower',stage_source_btn_score:'Score Attack',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_challenge_series_all:'All series',stage_challenge_series_msg:'MSG Series',stage_challenge_series_seed:'SEED Series',stage_challenge_hard_label:'HARD',stage_rewards:'Rewards',stage_first_clear_rewards:'First-Clear Rewards',stage_prev_cleared_rewards:'Previously Cleared Floor Rewards',stage_secret_clear_rewards:'Secret Battles',stage_missions:'Missions',esim_panel_stages:'Stages',esim_panel_progress:'Progress Rewards',esim_panel_complete:'Completion Rewards',esim_panel_event_wide:'Event-Wide Progress Rewards',esim_progress_story:'Story Progress Rewards',esim_progress_report:'Report Progress Rewards',esim_progress_mission:'Mission Progress Rewards',esim_type_stage:'Stage',esim_type_story:'Story',esim_type_report:'Report',esim_div_original:'Original',esim_div_turning_point:'Turning Point',esim_div_if:'What If',stage_capturable_units:'Capturable Units',stage_capturable_pickup:'Featured capture',detail_back_stage:'Back to stage',detail_nav_prev:'Previous entry',detail_nav_next:'Next entry',stage_map_escape:'Escape'});
+Object.assign(T.TW,{stage_source_tower:'世代之塔',stage_source_challenge:'主要關卡 CHALLENGE',stage_source_esim:'E模擬器',stage_source_btn_eternal:'永恆之路',stage_source_btn_challenge:'Challenge',stage_source_btn_tower:'世代之塔',stage_source_btn_score:'大規模攻略戰積分挑戰',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_challenge_series_all:'All series',stage_challenge_series_msg:'MSG Series',stage_challenge_series_seed:'SEED Series',stage_challenge_hard_label:'HARD',stage_rewards:'報酬',stage_first_clear_rewards:'首次報酬',stage_prev_cleared_rewards:'已完成的樓層報酬',stage_secret_clear_rewards:'隱藏戰鬥',stage_missions:'使命',esim_panel_stages:'關卡',esim_panel_progress:'進度報酬',esim_panel_complete:'完成報酬',esim_panel_event_wide:'事件整體進度報酬',esim_progress_story:'故事進度報酬',esim_progress_report:'報告進度報酬',esim_progress_mission:'使命進度報酬',esim_type_stage:'關卡',esim_type_story:'故事',esim_type_report:'報告',esim_div_original:'一般關卡',esim_div_turning_point:'轉捩點',esim_div_if:'IF',stage_capturable_units:'可捕獲單位',stage_capturable_pickup:'精選捕獲',detail_back_stage:'返回關卡',detail_nav_prev:'上一筆',detail_nav_next:'下一筆',stage_map_escape:'逃生'});
+Object.assign(T.HK,{stage_source_tower:'世代之塔',stage_source_challenge:'主要關卡 CHALLENGE',stage_source_esim:'E模擬器',stage_source_btn_eternal:'永恆之路',stage_source_btn_challenge:'Challenge',stage_source_btn_tower:'世代之塔',stage_source_btn_score:'大規模攻略戰積分挑戰',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_challenge_series_all:'All series',stage_challenge_series_msg:'MSG Series',stage_challenge_series_seed:'SEED Series',stage_challenge_hard_label:'HARD',stage_rewards:'報酬',stage_first_clear_rewards:'首次報酬',stage_prev_cleared_rewards:'已完成的樓層報酬',stage_secret_clear_rewards:'隱藏戰鬥',stage_missions:'使命',esim_panel_stages:'關卡',esim_panel_progress:'進度報酬',esim_panel_complete:'完成報酬',esim_panel_event_wide:'事件整體進度報酬',esim_progress_story:'故事進度報酬',esim_progress_report:'報告進度報酬',esim_progress_mission:'使命進度報酬',esim_type_stage:'關卡',esim_type_story:'故事',esim_type_report:'報告',esim_div_original:'一般關卡',esim_div_turning_point:'轉捩點',esim_div_if:'IF',stage_capturable_units:'可捕獲單位',stage_capturable_pickup:'精選捕獲',detail_back_stage:'返回關卡',detail_nav_prev:'上一筆',detail_nav_next:'下一筆',stage_map_escape:'逃生'});
+Object.assign(T.JA,{stage_source_tower:'ジェネレーションタワー',stage_source_challenge:'メインステージCHALLENGE',stage_source_esim:'Eシミュレーター',stage_source_btn_eternal:'エターナルロード',stage_source_btn_challenge:'Challenge',stage_source_btn_tower:'ジェネレーションタワー',stage_source_btn_score:'大規模攻略戦ステージデータ',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_challenge_series_all:'全シリーズ',stage_challenge_series_msg:'MSGシリーズ',stage_challenge_series_seed:'SEEDシリーズ',stage_challenge_hard_label:'HARD',stage_rewards:'報酬',stage_first_clear_rewards:'初回報酬',stage_prev_cleared_rewards:'クリア済みの階層報酬',stage_secret_clear_rewards:'シークレットバトル',stage_missions:'ミッション',esim_panel_stages:'ステージ',esim_panel_progress:'進捗報酬',esim_panel_complete:'コンプリート報酬',esim_panel_event_wide:'イベント全体進捗報酬',esim_progress_story:'ストーリー進捗報酬',esim_progress_report:'レポート進捗報酬',esim_progress_mission:'ミッション進捗報酬',esim_type_stage:'ステージ',esim_type_story:'ストーリー',esim_type_report:'レポート',esim_div_original:'通常ステージ',esim_div_turning_point:'ターニングポイント',esim_div_if:'IF',stage_capturable_units:'捕獲可能ユニット',stage_capturable_pickup:'注目捕獲',detail_back_stage:'ステージに戻る',detail_nav_prev:'前へ',detail_nav_next:'次へ',stage_map_escape:'脱出'});
+Object.assign(T.JP,{stage_source_tower:'ジェネレーションタワー',stage_source_challenge:'メインステージCHALLENGE',stage_source_esim:'Eシミュレーター',stage_source_btn_eternal:'エターナルロード',stage_source_btn_challenge:'Challenge',stage_source_btn_tower:'ジェネレーションタワー',stage_source_btn_score:'大規模攻略戦ステージデータ',stage_tower_e:'GTower E',stage_tower_w:'GTower W',stage_challenge_series_all:'全シリーズ',stage_challenge_series_msg:'MSGシリーズ',stage_challenge_series_seed:'SEEDシリーズ',stage_challenge_hard_label:'HARD',stage_rewards:'報酬',stage_first_clear_rewards:'初回報酬',stage_prev_cleared_rewards:'クリア済みの階層報酬',stage_secret_clear_rewards:'シークレットバトル',stage_missions:'ミッション',esim_panel_stages:'ステージ',esim_panel_progress:'進捗報酬',esim_panel_complete:'コンプリート報酬',esim_panel_event_wide:'イベント全体進捗報酬',esim_progress_story:'ストーリー進捗報酬',esim_progress_report:'レポート進捗報酬',esim_progress_mission:'ミッション進捗報酬',esim_type_stage:'ステージ',esim_type_story:'ストーリー',esim_type_report:'レポート',esim_div_original:'通常ステージ',esim_div_turning_point:'ターニングポイント',esim_div_if:'IF',stage_capturable_units:'捕獲可能ユニット',stage_capturable_pickup:'注目捕獲',detail_back_stage:'ステージに戻る',detail_nav_prev:'前へ',detail_nav_next:'次へ',stage_map_escape:'脱出'});
 Object.assign(T.EN,{sortie_group:'Squad {}',stage_sortie_unit_restrictions:'Unit Sortie Restrictions',stage_sortie_char_restrictions:'Character Sortie Restrictions',stage_sortie_no_limit:'No Limit'});
 Object.assign(T.TW,{sortie_group:'小隊 {}',stage_sortie_unit_restrictions:'單位出擊限制',stage_sortie_char_restrictions:'角色出擊限制',stage_sortie_no_limit:'無限制'});
 Object.assign(T.HK,{sortie_group:'小隊 {}',stage_sortie_unit_restrictions:'單位出擊限制',stage_sortie_char_restrictions:'角色出擊限制',stage_sortie_no_limit:'無限制'});
@@ -3422,7 +3422,7 @@ S._detailModalLayoutObs.observe(mc);
 }else adjustDetailModalLayout();
 requestAnimationFrame(adjustDetailModalLayout);
 }
-async function openDetail(type,id,opts){opts=opts||{};const skipHistory=!!opts.skipHistory||S._historyApplyingPopstate;if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active'))closeSearchSpotlight();const m=document.getElementById('detailModal'),mc=document.getElementById('modalContent'),inn=document.getElementById('detailInner');const detailWasActive=m.classList.contains('active');if(opts.returnStageSnapshot&&S.currentDetailType==='stage'&&S.currentDetailData&&!S.currentDetailData.content_locked)S._stageDetailUiRestore=captureStageDetailUiState();mc.className='modal-content';if(type==='profile_title')mc.classList.add('profile-title-detail','stage-detail');else mc.classList.add(type==='character'?'char-detail':(type==='unit'?'unit-detail':(type==='supporter'?'supporter-detail':(type==='option_part'?'option-part-detail':'stage-detail'))));m.classList.add('active');document.body.classList.add('detail-modal-open');try{if(typeof window.__ggenPauseBrandFonts==='function')window.__ggenPauseBrandFonts()}catch(_){}if(!detailWasActive)applyBackgroundScrollLock();updateScrollTopFabVisibility();inn.innerHTML='<div class="loading-overlay"><div class="spinner"></div></div>';syncModalDetailChrome();syncDetailBrowseNavUi();try{const d=await fetchDetailPayload(type,id,opts);if(type==='option_part'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderOptionPartShell(d);syncModalDetailChrome();if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}if(type==='profile_title'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;if(opts.returnStageSnapshot&&S.currentDetailType==='stage'&&S.currentDetailData&&!S.currentDetailData.content_locked){const snap=_cloneDetailJson(S.currentDetailData);if(S._stageDetailUiRestore)snap._detailUi=_cloneDetailJson(S._stageDetailUiRestore);d.detail_return={type:'stage',id:String(snap.id),payload:snap}}S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderProfileTitleShell(d);syncModalDetailChrome();if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}const _pu=type==='unit'&&!!opts.preserveUnitSpSsp;const _pcp=!!opts.preserveConditionalPassive||!!opts.unitConditionCpTarget;const _vr=!!opts.viewRanking;d.ranking_context=!!_vr;if(_vr){d.view_ranking=false}if(type==='character'||type==='unit')d.ranking_available=true;if(!_pu&&!_pcp){S.conditionalPassiveActive=false;S.pilotConditionalPassiveActive=false;S.pilotCondCharData=null;S._pilotCondCharFetchId=null;S._pilotCondCharInflight=null;S._pilotCondPrefetchUnitId=null;S.pilotCondStackCount=0;S.unitCondStackCount=0;S.unitHpAtkTierIndex=0;S.spActive=false;S.sspActive=false}S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.detailRankingOverlay=false;if(type==='stage'){S.stageMapAutoFit=true;S.stageMapZoom=1}if(!_pu){if(type==='character'){S.spActive=!!S.listCharSp;if(!_pcp)S.conditionalPassiveActive=!!S.listCharCond}else if(type==='unit'){if(S.listUnitSsp){S.sspActive=true;S.spActive=false}else if(S.listUnitSp){S.spActive=true;S.sspActive=false}else{S.spActive=false;S.sspActive=false}if(!_pcp){if(opts.viewRanking){S.conditionalPassiveActive=!!opts.listUnitCondPerspective;S.pilotConditionalPassiveActive=!!opts.listUnitPilotCondPerspective}else{S.conditionalPassiveActive=!!(d&&d.has_cond_stats)||!!S.listUnitCond;S.pilotConditionalPassiveActive=!!S.listUnitPilotCond}}}}if(_pcp)S.conditionalPassiveActive=true;if(!_pcp&&!opts.viewRanking&&type==='unit'&&d&&d.has_cond_stats)S.conditionalPassiveActive=true;if(opts.unitConditionCpTarget&&d)d.unit_condition_cp_target=true;if(opts.affinityHighlightUnitId&&d)d.affinity_highlight_unit_id=String(opts.affinityHighlightUnitId);if(opts.pilotCondHighlightUnitId&&d)d.pilot_cond_highlight_unit_id=String(opts.pilotCondHighlightUnitId);S.currentDetailData=d;S.currentDetailType=type;if(type==='character'&&S.conditionalPassiveActive&&d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1)S.charSuperchargedExTier=d.ex_supercharged_tiers.length-1;if(type==='supporter'){applySupporterLeaderSepSticky(d);S.currentSupporterLbTier=d.lb_tier??3;S.currentSupporterLevel=Math.max(1,Number(d.level)||Math.max(1,Number(d.max_level)||100))}if(type==='unit'){_detailInitUnitCondControls(d);S.listSelectedUnitId=String(opts.listUnitFocusId!=null?opts.listUnitFocusId:id);syncUnitListDetailHighlight()}if((type==='character'||type==='unit')&&d.portrait)void warmPathDetailImg(d.portrait);if(type==='character')inn.innerHTML=renderCharShell(d);else if(type==='unit'){if(d.weapons)d.weapons.forEach(w=>S.currentWeaponLevels[w.id]=5);inn.innerHTML=renderUnitShell(d)}else if(type==='supporter')inn.innerHTML=renderSupporterShell(d);else inn.innerHTML=(d.content_locked?renderEternalStageLockedPanel(d):renderStageShell(d));syncModalDetailChrome();if(type==='stage'&&!d.content_locked)wireRewardDetailClicks(inn);if(d&&d.ranking_available&&(type==='character'||type==='unit'))ensureDetailRankingToggleDom(type);if(!(type==='stage'&&d.content_locked)){updateDetailDynamicSections(type);if(type==='unit')queuePilotCondCharPrefetch(d);if(d&&d.ranking_available&&(type==='character'||type==='unit')){(function(_t,_i){setTimeout(function(){if(S.currentDetailType!==_t||!S.currentDetailData||String(S.currentDetailData.id)!==String(_i))return;void ensureDetailRankingStats(_t,_i).then(function(){if(S.currentDetailType===_t&&S.currentDetailData&&String(S.currentDetailData.id)===String(_i)){updateDetailDynamicSections(_t);adjustDetailModalLayout()}}).catch(function(){})},1800)})(type,id)}}if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi()}catch(e){const msg=String((e&&e.message)||e||'');const soft=!!(e&&(e.name==='AbortError'||e.name==='TypeError'))||/networkerror|failed to fetch|load failed|the operation was aborted|^network$/i.test(msg);if(!soft)console.error(e);inn.innerHTML=`<div class="empty-state" style="padding:60px 20px"><div class="empty-state-icon">⚠️</div><div class="empty-state-text">${esc(soft?'Could not load details. Check your connection and try again.':('Failed: '+msg))}</div></div>`;syncModalDetailChrome();syncDetailBrowseNavUi()}}
+async function openDetail(type,id,opts){opts=opts||{};const skipHistory=!!opts.skipHistory||S._historyApplyingPopstate;if(document.getElementById('searchSpotlightOverlay')&&document.getElementById('searchSpotlightOverlay').classList.contains('active'))closeSearchSpotlight();const m=document.getElementById('detailModal'),mc=document.getElementById('modalContent'),inn=document.getElementById('detailInner');const detailWasActive=m.classList.contains('active');if(opts.returnStageSnapshot&&S.currentDetailType==='stage'&&S.currentDetailData&&!S.currentDetailData.content_locked){S._stageDetailUiRestore=captureStageDetailUiState();if(opts.stageNpcKey!=null&&String(opts.stageNpcKey).trim()!=='')S._stageDetailUiRestore.returnNpcId=String(opts.stageNpcKey).trim()}mc.className='modal-content';if(type==='profile_title')mc.classList.add('profile-title-detail','stage-detail');else mc.classList.add(type==='character'?'char-detail':(type==='unit'?'unit-detail':(type==='supporter'?'supporter-detail':(type==='option_part'?'option-part-detail':'stage-detail'))));m.classList.add('active');document.body.classList.add('detail-modal-open');try{if(typeof window.__ggenPauseBrandFonts==='function')window.__ggenPauseBrandFonts()}catch(_){}if(!detailWasActive)applyBackgroundScrollLock();updateScrollTopFabVisibility();inn.innerHTML='<div class="loading-overlay"><div class="spinner"></div></div>';syncModalDetailChrome();syncDetailBrowseNavUi();try{const d=await fetchDetailPayload(type,id,opts);if(type==='option_part'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderOptionPartShell(d);syncModalDetailChrome();if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}if(type==='profile_title'){S.conditionalPassiveActive=false;S.spActive=false;S.sspActive=false;S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;if(opts.returnStageSnapshot&&S.currentDetailType==='stage'&&S.currentDetailData&&!S.currentDetailData.content_locked){const snap=_cloneDetailJson(S.currentDetailData);if(S._stageDetailUiRestore)snap._detailUi=_cloneDetailJson(S._stageDetailUiRestore);d.detail_return={type:'stage',id:String(snap.id),payload:snap}}S.currentDetailData=d;S.currentDetailType=type;inn.innerHTML=renderProfileTitleShell(d);syncModalDetailChrome();if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi();return}const _pu=type==='unit'&&!!opts.preserveUnitSpSsp;const _pcp=!!opts.preserveConditionalPassive||!!opts.unitConditionCpTarget;const _vr=!!opts.viewRanking;d.ranking_context=!!_vr;if(_vr){d.view_ranking=false}if(type==='character'||type==='unit')d.ranking_available=true;if(!_pu&&!_pcp){S.conditionalPassiveActive=false;S.pilotConditionalPassiveActive=false;S.pilotCondCharData=null;S._pilotCondCharFetchId=null;S._pilotCondCharInflight=null;S._pilotCondPrefetchUnitId=null;S.pilotCondStackCount=0;S.unitCondStackCount=0;S.unitHpAtkTierIndex=0;S.spActive=false;S.sspActive=false}S.charSuperchargedExTier=0;S.currentLbTier=3;S.currentWeaponLevels={};S.stageMapExpanded=false;S.detailRankingOverlay=false;if(type==='stage'){S.stageMapAutoFit=true;S.stageMapZoom=1}if(!_pu){if(type==='character'){S.spActive=!!S.listCharSp;if(!_pcp)S.conditionalPassiveActive=!!S.listCharCond}else if(type==='unit'){if(S.listUnitSsp){S.sspActive=true;S.spActive=false}else if(S.listUnitSp){S.spActive=true;S.sspActive=false}else{S.spActive=false;S.sspActive=false}if(!_pcp){if(opts.viewRanking){S.conditionalPassiveActive=!!opts.listUnitCondPerspective;S.pilotConditionalPassiveActive=!!opts.listUnitPilotCondPerspective}else{S.conditionalPassiveActive=!!(d&&d.has_cond_stats)||!!S.listUnitCond;S.pilotConditionalPassiveActive=!!S.listUnitPilotCond}}}}if(_pcp)S.conditionalPassiveActive=true;if(!_pcp&&!opts.viewRanking&&type==='unit'&&d&&d.has_cond_stats)S.conditionalPassiveActive=true;if(opts.unitConditionCpTarget&&d)d.unit_condition_cp_target=true;if(opts.affinityHighlightUnitId&&d)d.affinity_highlight_unit_id=String(opts.affinityHighlightUnitId);if(opts.pilotCondHighlightUnitId&&d)d.pilot_cond_highlight_unit_id=String(opts.pilotCondHighlightUnitId);S.currentDetailData=d;S.currentDetailType=type;if(type==='character'&&S.conditionalPassiveActive&&d.ex_supercharged_tiers&&d.ex_supercharged_tiers.length>1)S.charSuperchargedExTier=d.ex_supercharged_tiers.length-1;if(type==='supporter'){applySupporterLeaderSepSticky(d);S.currentSupporterLbTier=d.lb_tier??3;S.currentSupporterLevel=Math.max(1,Number(d.level)||Math.max(1,Number(d.max_level)||100))}if(type==='unit'){_detailInitUnitCondControls(d);S.listSelectedUnitId=String(opts.listUnitFocusId!=null?opts.listUnitFocusId:id);syncUnitListDetailHighlight()}if((type==='character'||type==='unit')&&d.portrait)void warmPathDetailImg(d.portrait);if(type==='character')inn.innerHTML=renderCharShell(d);else if(type==='unit'){if(d.weapons)d.weapons.forEach(w=>S.currentWeaponLevels[w.id]=5);inn.innerHTML=renderUnitShell(d)}else if(type==='supporter')inn.innerHTML=renderSupporterShell(d);else inn.innerHTML=(d.content_locked?renderEternalStageLockedPanel(d):renderStageShell(d));syncModalDetailChrome();if(type==='stage'&&!d.content_locked)wireRewardDetailClicks(inn);if(d&&d.ranking_available&&(type==='character'||type==='unit'))ensureDetailRankingToggleDom(type);if(!(type==='stage'&&d.content_locked)){updateDetailDynamicSections(type);if(type==='unit')queuePilotCondCharPrefetch(d);if(d&&d.ranking_available&&(type==='character'||type==='unit')){(function(_t,_i){setTimeout(function(){if(S.currentDetailType!==_t||!S.currentDetailData||String(S.currentDetailData.id)!==String(_i))return;void ensureDetailRankingStats(_t,_i).then(function(){if(S.currentDetailType===_t&&S.currentDetailData&&String(S.currentDetailData.id)===String(_i)){updateDetailDynamicSections(_t);adjustDetailModalLayout()}}).catch(function(){})},1800)})(type,id)}}if(!skipHistory)_syncDetailBrowseHistory(type,id,detailWasActive,skipHistory);syncDetailBrowseNavUi()}catch(e){const msg=String((e&&e.message)||e||'');const soft=!!(e&&(e.name==='AbortError'||e.name==='TypeError'))||/networkerror|failed to fetch|load failed|the operation was aborted|^network$/i.test(msg);if(!soft)console.error(e);inn.innerHTML=`<div class="empty-state" style="padding:60px 20px"><div class="empty-state-icon">⚠️</div><div class="empty-state-text">${esc(soft?'Could not load details. Check your connection and try again.':('Failed: '+msg))}</div></div>`;syncModalDetailChrome();syncDetailBrowseNavUi()}}
 function closeModal(){
 const m=document.getElementById('detailModal');
 const wasOpen=!!(m&&m.classList.contains('active'));
@@ -3495,6 +3495,8 @@ const mc=document.getElementById('modalContent');
 const inn=document.getElementById('detailInner');
 if(!mc||!inn)return;
 const ui=S._stageDetailUiRestore||pay._detailUi;
+const returnNpcId=ui&&ui.returnNpcId?String(ui.returnNpcId).trim():'';
+const modalScrollTop=ui&&ui.modalScrollTop!=null?Number(ui.modalScrollTop):null;
 mc.className='modal-content stage-detail';
 S.conditionalPassiveActive=false;
 S.pilotConditionalPassiveActive=false;
@@ -3518,9 +3520,21 @@ inn.innerHTML=pay.content_locked?renderEternalStageLockedPanel(pay):renderStageS
 syncModalDetailChrome();
 if(!pay.content_locked){
 updateDetailDynamicSections('stage');
-S._stageDetailUiRestore=null;
-if(S.stageMapExpanded)setTimeout(()=>fitStageMapToUnits(true),100);
+const finishRestore=()=>{
+if(modalScrollTop!=null&&!Number.isNaN(modalScrollTop))inn.scrollTop=Math.max(0,modalScrollTop);
+if(returnNpcId){
+const npcHost=document.getElementById('detailNpcContainer');
+if(npcHost&&inn){
+const top=npcHost.offsetTop-8;
+if(top>0)inn.scrollTop=top;
 }
+scrollToNpcDetailByNpcId(returnNpcId,'fromStageReturn');
+}
+if(S.stageMapExpanded)setTimeout(()=>fitStageMapToUnits(true),100);
+S._stageDetailUiRestore=null;
+};
+requestAnimationFrame(()=>requestAnimationFrame(finishRestore));
+}else S._stageDetailUiRestore=null;
 }
 function renderDetailBackStrip(d){
 const r=d&&d.detail_return;
@@ -3825,6 +3839,54 @@ function _stageNpcStepOrder(n){return Math.max(0,Number(n&&n.step_order)||0)}
 function _stageMapUnitByNpcId(pool,npcId){
   const id=String(npcId!=null?npcId:'');
   return(pool||[]).find(u=>String(u.npc_id)===id)||null;
+}
+function _stageEscapedNpcIdSet(){
+  const d=S.currentDetailData;
+  if(!d||!Array.isArray(d._escapedNpcIds))return new Set();
+  return new Set(d._escapedNpcIds.map(x=>String(x)));
+}
+function _stageMarkNpcEscaped(fromNpcId){
+  const d=S.currentDetailData;
+  if(!d)return;
+  const id=String(fromNpcId!=null?fromNpcId:'').trim();
+  if(!id)return;
+  if(!Array.isArray(d._escapedNpcIds))d._escapedNpcIds=[];
+  if(!d._escapedNpcIds.includes(id))d._escapedNpcIds.push(id);
+  _refreshStageMapAndNpcPanelsPreserveScroll();
+}
+function stageEscapeNpc(fromNpcId){
+  const pool=S.currentDetailData?.map_data?.units||[];
+  const u=_stageMapUnitByNpcId(pool,fromNpcId);
+  if(!u||!u.escape_spawn_npc_id||_stageEscapedNpcIdSet().has(String(fromNpcId)))return;
+  _stageMarkNpcEscaped(fromNpcId);
+}
+function _stageNpcCharacterByNpcId(npcId){
+  const rows=S.currentDetailData?.npc_details||[];
+  const row=rows.find(r=>String(r.npc_id)===String(npcId));
+  return row&&row.character?row.character:null;
+}
+function _stageNpcSupportBadgeHtml(ch,variant){
+  if(!ch)return '';
+  const s=getNpcCharacterChanceSupportState(ch);
+  const parts=[];
+  if(s.supportAtkCount>0)parts.push({icon:'UI_Common_BattleIcon_AssistAtack_S',count:s.supportAtkCount,label:charExtraInfoLabel('atk'),kind:'atk'});
+  if(s.supportDefCount>0)parts.push({icon:'UI_Common_BattleIcon_AssistDeffence_S',count:s.supportDefCount,label:charExtraInfoLabel('def'),kind:'def'});
+  if(!parts.length)return '';
+  const cls=variant==='compact'?'stage-npc-support-badge':'map-unit-support-badge';
+  return parts.map((p,i)=>`<span class="${cls} ${cls}--${p.kind}${i>0?` ${cls}--stack-${i}`:''}" title="${escAttr(p.label)}"><img src="${imgUrlPreferCdn('/static/images/UI/'+p.icon+'.webp')}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'"><span class="${cls}-count">×${fmtN(p.count)}</span></span>`).join('');
+}
+function _stageNpcDetailRowVisible(n){
+  if(!n)return false;
+  const pool=S.currentDetailData?.map_data?.units||[];
+  const mapU=_stageMapUnitByNpcId(pool,n.npc_id);
+  if(mapU)return _stageMapUnitVisible(mapU,pool);
+  const escaped=_stageEscapedNpcIdSet();
+  const nid=String(n.npc_id||'');
+  if(n.escape_spawn_npc_id&&escaped.has(nid))return false;
+  if(n.escape_from_npc_id&&escaped.has(String(n.escape_from_npc_id)))return true;
+  if(String(n.side||'').toLowerCase()!=='enemy')return true;
+  if(S.stageMapReinforcementOnly)return true;
+  return!!n.is_initially_placed;
 }
 function _stageMapShowSpawnOrderForUnit(u,pool){
   if(!S.stageMapSpawnOrderVisible||!u)return false;
@@ -4947,6 +5009,10 @@ function _stageMapUnitVisible(u, allUnits){
 if(!u)return false;
 const side=String(u.side||'').toLowerCase();
 if(side!=='enemy')return true;
+const escaped=_stageEscapedNpcIdSet();
+const nid=String(u.npc_id||'');
+if(u.escape_spawn_npc_id&&escaped.has(nid))return false;
+if(u.escape_from_npc_id&&escaped.has(String(u.escape_from_npc_id)))return true;
 if(S.stageMapReinforcementOnly)return true;
 return!_stageMapEnemyIsReinforcementSpawn(u, allUnits!==undefined&&allUnits!==null?allUnits:S.currentDetailData?.map_data?.units)
 }
@@ -5114,7 +5180,10 @@ function renderStageMapGrid(md){
         const largeCls=u.is_large&&!multiFp?'large':'';
         const hintPulse=u.has_strategy_hint?' npc-strategy-hint-pulse':'';
         const mapArt=u.thum||u.portrait;
-        html+=`<div class="map-unit-dot ${u.side||''} ${largeCls}${fpCls} ${isAllyLoc?'ally-loc':''} ${guestCls} ${friendlyCls} ${gimmickCls}${hintPulse}"${fpStyle}>${mapArt?`<img class="map-unit-thumb" src="${imgUrl(mapArt)}" alt="" loading="lazy"${rotStyle} onerror="this.parentElement.innerHTML='${esc(sl)}'">`:`${esc(sl)}`}</div>`
+        const supCh=_stageNpcCharacterByNpcId(u.npc_id);
+        const supBadge=_stageNpcSupportBadgeHtml(supCh,'map');
+        html+=`<div class="map-unit-dot ${u.side||''} ${largeCls}${fpCls} ${isAllyLoc?'ally-loc':''} ${guestCls} ${friendlyCls} ${gimmickCls}${hintPulse}"${fpStyle}>${mapArt?`<img class="map-unit-thumb" src="${imgUrl(mapArt)}" alt="" loading="lazy"${rotStyle} onerror="this.parentElement.innerHTML='${esc(sl)}'">`:`${esc(sl)}`}${supBadge}</div>`
+        if(u.escape_spawn_npc_id&&!_stageEscapedNpcIdSet().has(String(u.npc_id)))html+=`<button type="button" class="map-cell-escape-btn" onclick="event.stopPropagation();stageEscapeNpc('${escJs(String(u.npc_id))}')" title="${escAttr(t('stage_map_escape'))}">${esc(t('stage_map_escape'))}</button>`;
         if(showStepOrder)html+=`<span class="map-cell-step-badge" aria-hidden="true">${fmtN(_stageNpcStepOrder(u))}</span>`
       }
       if(showBuffArea)html+=_stageMapBuffHoverPopoverHtml(buffArea);
@@ -5132,7 +5201,8 @@ const inner=el.querySelector('[data-stage-npc-group]');
 const key=inner?String(inner.getAttribute('data-stage-npc-group')||''):'';
 if(key)npcGroupsOpen[key]=!!el.open;
 });
-return{mapExpanded:!!S.stageMapExpanded,reinforcementOnly:!!S.stageMapReinforcementOnly,buffAreasVisible:S.stageMapBuffAreasVisible!==false,mapZoom:Number(S.stageMapZoom)||1,mapAutoFit:S.stageMapAutoFit!==false,npcGroupsOpen};
+const inn=document.getElementById('detailInner');
+return{mapExpanded:!!S.stageMapExpanded,reinforcementOnly:!!S.stageMapReinforcementOnly,buffAreasVisible:S.stageMapBuffAreasVisible!==false,mapZoom:Number(S.stageMapZoom)||1,mapAutoFit:S.stageMapAutoFit!==false,npcGroupsOpen,modalScrollTop:inn?inn.scrollTop:0};
 }
 function applyStageDetailUiState(ui){
 if(!ui)return;
@@ -5382,7 +5452,7 @@ for(let i=0;i<(ch.abilities||[]).length;i++){const ab=ch.abilities[i];if(ab&&ab.
 for(let j=0;j<(ch.skills||[]).length;j++){const sk=ch.skills[j];if(sk&&sk.strategy_hint_icon)return String(sk.strategy_hint_icon)}
 return'';
 }
-function renderStageNpcCompactThumb(src,label,kind,id,npcId,hintUrl){
+function renderStageNpcCompactThumb(src,label,kind,id,npcId,hintUrl,supportCh){
 const raw=id!=null?String(id).trim():'';
 const has=!!raw&&raw!=='0';
 const nid=String(npcId!=null?npcId:'');
@@ -5390,9 +5460,10 @@ const oc=has?` onclick="event.stopPropagation();openStageNpcEntityDetail('${escJ
 const hint=String(hintUrl||'').trim();
 const hintSrc=hint?imgUrlWebp(imgUrlPreferCdn(hint)):'';
 const hintHtml=hintSrc?`<span class="stage-npc-thumb-hint stage-npc-thumb-hint--pulse"><img src="${hintSrc}" alt="" loading="lazy" onerror="this.parentElement.innerHTML=''"></span>`:'';
+const supBadge=kind==='unit'&&supportCh?_stageNpcSupportBadgeHtml(supportCh,'compact'):'';
 const hitCls='stage-npc-thumb-hit'+(hintSrc?' stage-npc-thumb-hit--has-hint stage-npc-thumb-hit--pulse':'');
 const inner=src?`<img class="stage-npc-thumb-img" src="${imgUrl(src)}" alt="" loading="lazy" onerror="gameImageUrlFallback(this)">`:`<span class="stage-npc-thumb-ph">${ph}</span>`;
-return`<button type="button" class="${hitCls}" ${oc} title="${esc(label)}" ${has?'':'disabled'}>${hintHtml}${inner}</button>`}
+return`<button type="button" class="${hitCls}" ${oc} title="${esc(label)}" ${has?'':'disabled'}>${hintHtml}${supBadge}${inner}</button>`}
 function renderStageNpcCompactTile(n,idx){
   const u=n.unit,ch=n.character;
   let lab=(u&&u.name)||(ch&&ch.name)||`NPC ${n.npc_id}`;
@@ -5400,7 +5471,7 @@ function renderStageNpcCompactTile(n,idx){
   const npcKey=n.npc_id;
   const pool=S.currentDetailData?.map_data?.units||[];
   const mapU=_stageMapUnitByNpcId(pool,npcKey);
-  const pseudoU=mapU||{side:n.side,is_initially_placed:n.is_initially_placed,step_order:n.step_order};
+  const pseudoU=mapU||{side:n.side,is_initially_placed:n.is_initially_placed,step_order:n.step_order,escape_spawn_npc_id:n.escape_spawn_npc_id,escape_from_npc_id:n.escape_from_npc_id,npc_id:n.npc_id};
   const showStep=_stageMapShowSpawnOrderForUnit(pseudoU,pool);
   const badges=[];
   if(showStep)badges.push(`<span class="stage-npc-meta-badge stage-npc-meta-badge--step">${esc(_stageMapSpawnOrderLabel(_stageNpcStepOrder(n)))}</span>`);
@@ -5410,10 +5481,11 @@ function renderStageNpcCompactTile(n,idx){
   const uHint=firstNpcStrategyHintIconFromUnit(u);
   const cHint=firstNpcStrategyHintIconFromCharacter(ch);
   const capBadges=badges.length?`<div class="stage-npc-compact-badges">${badges.join('')}</div>`:'';
-  return`<div id="npc-detail-${idx}" class="stage-npc-compact-tile npc-card" data-npc-id="${escAttr(String(n.npc_id!=null?n.npc_id:''))}"><div class="stage-npc-compact-pair">${renderStageNpcCompactThumb((u&&(u.thum||u.portrait)),lab,'unit',uid,npcKey,uHint)}${renderStageNpcCompactThumb((ch&&(ch.thum||ch.portrait)),lab,'character',chid,npcKey,cHint)}</div><div class="stage-npc-compact-caption" title="${esc(lab)}">${esc(lab)}</div>${capBadges}</div>`;
+  const escapeBtn=mapU&&mapU.escape_spawn_npc_id&&!_stageEscapedNpcIdSet().has(String(npcKey))?`<button type="button" class="stage-npc-escape-btn" onclick="event.stopPropagation();stageEscapeNpc('${escJs(String(npcKey))}')" title="${escAttr(t('stage_map_escape'))}">${esc(t('stage_map_escape'))}</button>`:'';
+  return`<div id="npc-detail-${idx}" class="stage-npc-compact-tile npc-card" data-npc-id="${escAttr(String(n.npc_id!=null?n.npc_id:''))}"><div class="stage-npc-compact-pair">${renderStageNpcCompactThumb((u&&(u.thum||u.portrait)),lab,'unit',uid,npcKey,uHint,ch)}${renderStageNpcCompactThumb((ch&&(ch.thum||ch.portrait)),lab,'character',chid,npcKey,cHint)}</div><div class="stage-npc-compact-caption" title="${esc(lab)}">${esc(lab)}</div>${escapeBtn}${capBadges}</div>`;
 }
 function npcDetailsGroupSection(sid,gk,title,rows,open){if(!rows||!rows.length)return'';const tiles=rows.map(r=>renderStageNpcCompactTile(r.n,r.idx)).join('');return`<details class="stage-npc-group" ${open?'open':''}><summary class="stage-npc-group-summary"><span class="stage-npc-summary-title">${esc(title)}</span><span class="stage-npc-count">(${rows.length})</span></summary><div class="stage-npc-compact-grid" data-stage-npc-group="${escAttr(sid+'_'+gk)}">${tiles}</div></details>`}
-function renderNpcDetails(list,stageId,ui){if(!list||!list.length)return`<div class="detail-section"><div class="section-title">${t('sec_npc_details')}</div><div class="ability-item"><div class="ability-info"><div class="ability-detail">${t('none')}</div></div></div></div>`;const sid=String(stageId!=null?stageId:'').replace(/[^a-zA-Z0-9_-]/g,'_')||'stage';const indexed=(list||[]).map((n,i)=>({n,idx:i}));const guests=indexed.filter(o=>o.n.side==='guest');const friendly=indexed.filter(o=>o.n.side==='friendly');const enemies=indexed.filter(o=>o.n.side==='enemy');const guestOpen=stageNpcGroupOpenFromUi(ui,sid,'guest',true);const friendlyOpen=stageNpcGroupOpenFromUi(ui,sid,'friendly',!guests.length);const enemyOpen=stageNpcGroupOpenFromUi(ui,sid,'enemy',!guests.length&&!friendly.length);const body=npcDetailsGroupSection(sid,'guest',t('stage_npc_guest_tab'),guests,guestOpen)+npcDetailsGroupSection(sid,'friendly',t('stage_npc_friendly_forces_tab'),friendly,friendlyOpen)+npcDetailsGroupSection(sid,'enemy',t('stage_npc_enemy_tab'),enemies,enemyOpen);return`<div class="detail-section"><div class="section-title">${t('sec_npc_details')}</div>${body}</div>`}
+function renderNpcDetails(list,stageId,ui){if(!list||!list.length)return`<div class="detail-section"><div class="section-title">${t('sec_npc_details')}</div><div class="ability-item"><div class="ability-info"><div class="ability-detail">${t('none')}</div></div></div></div>`;const sid=String(stageId!=null?stageId:'').replace(/[^a-zA-Z0-9_-]/g,'_')||'stage';const indexed=(list||[]).map((n,i)=>({n,idx:i})).filter(o=>_stageNpcDetailRowVisible(o.n));const guests=indexed.filter(o=>o.n.side==='guest');const friendly=indexed.filter(o=>o.n.side==='friendly');const enemies=indexed.filter(o=>o.n.side==='enemy');const guestOpen=stageNpcGroupOpenFromUi(ui,sid,'guest',true);const friendlyOpen=stageNpcGroupOpenFromUi(ui,sid,'friendly',!guests.length);const enemyOpen=stageNpcGroupOpenFromUi(ui,sid,'enemy',!guests.length&&!friendly.length);const body=npcDetailsGroupSection(sid,'guest',t('stage_npc_guest_tab'),guests,guestOpen)+npcDetailsGroupSection(sid,'friendly',t('stage_npc_friendly_forces_tab'),friendly,friendlyOpen)+npcDetailsGroupSection(sid,'enemy',t('stage_npc_enemy_tab'),enemies,enemyOpen);return`<div class="detail-section"><div class="section-title">${t('sec_npc_details')}</div>${body}</div>`}
 function renderSeries(s,listTab){if(!s||!s.length)return'';const clk=listTab==='characters'||listTab==='units';const tip=esc(t('search_series_click'));return`<div class="detail-series-row">${s.map(x=>{const rawId=x.id!=null?String(x.id).trim():'';if(!clk){if(x.icon)return`<img class="series-icon-img" src="${imgUrl(x.icon)}" alt="${esc(x.name)}" title="${esc(x.name)}" loading="lazy" onerror="this.outerHTML='<span class=\\'series-text-fallback\\'>${esc(x.name)}</span>'">`;return`<span class="series-text-fallback" title="${esc(x.name)}">${esc(x.name)}</span>`}if(!rawId){if(x.icon)return`<img class="series-icon-img" src="${imgUrl(x.icon)}" alt="${esc(x.name)}" title="${esc(x.name)}" loading="lazy" onerror="this.outerHTML='<span class=\\'series-text-fallback\\'>${esc(x.name)}</span>'">`;return`<span class="series-text-fallback">${esc(x.name)}</span>`}const inner=x.icon?`<img class="series-icon-img series-icon-clickable" src="${imgUrl(x.icon)}" alt="${esc(x.name)}" loading="lazy" onerror="this.style.display='none';var fb=this.nextElementSibling;if(fb)fb.style.display='inline-flex'"><span class="series-text-fallback series-icon-clickable" style="display:none">${esc(x.name)}</span>`:`<span class="series-text-fallback series-icon-clickable">${esc(x.name)}</span>`;return`<button type="button" class="series-icon-hitbox" data-series-id="${escAttr(rawId)}" data-list-tab="${escAttr(listTab)}" data-series-name="${escAttr(x.name||'')}" title="${tip}" aria-label="${tip}">${inner}</button>`}).join('')}</div>`}
 
 function createTagHtml(tag,opts){const o=opts||{};const tn=typeof tag==='string'?tag:(tag.name||'');const tt=typeof tag==='string'?'':(tag.type||'');const tid=typeof tag==='string'?'':(tag.id||'');const preferred=(o.defaultTarget==='unit'||o.defaultTarget==='character')?o.defaultTarget:'';const forceTagModal=!!o.force_tag_modal;let li='';if(tt==='character')li='/static/images/UI/UI_Common_Icon_Category_Chara_Main.webp';else li='/static/images/UI/UI_Common_Icon_Category_MS_Main.webp';let onClick=`openTagModal('${escJs(tn)}','or'${preferred?`,'${preferred}'`:''})`;if(tt==='series'&&tid&&!forceTagModal){const tab=(preferred==='character')?'characters':'units';onClick=`openSeriesModal('${escJs(tid)}','${tab}','${escJs(tn)}')`}const dataUnit=tt==='unit'&&tid&&String(tid).length>=9?` data-cond-unit-id="${escAttr(String(tid))}"`:'';return`<div class="tag-composite"${dataUnit} onclick="event.stopPropagation();${onClick}" title="Click to view"><div class="tag-part-icon">${li?`<img class="tag-icon-fg" src="${imgUrl(li)}" alt="" loading="lazy" onerror="this.style.display='none'">`:''}</div><div class="tag-part-value">${esc(tn)}</div></div>`}
@@ -8924,7 +8996,7 @@ else supporters=[supEnt.data];
 }
 const sqP=_tbComputeSquadConditionSheetPcts(sl,side);
 const fullCtx={masterLeagueBuff:!!S.tb.masterLeague,grandOffensiveBuff:!!S.tb.grandOffensive,masterLeagueBuffMove:false,optionParts:optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:_tbEffectiveExSquadAtkPctForTb(sl,side),squadCondAtkPct:sqP.atk|0,squadCondDefPct:sqP.def|0};
-const f=_dcGetModifiedAttackerUnitStatsFromCtx(fullCtx,stats);
+const f=_dcGetModifiedAttackerUnitStatsFromCtx(fullCtx,stats,true);
 let fatk=f.unitAtk,fdef=f.unitDefVal;
 const prf=_tbPilotPairUnitAtkDef(sl.charData,ud,!!sl.charCondPassive,fatk,fdef);
 fatk=prf.unitAtk;fdef=prf.unitDefVal;
@@ -8993,7 +9065,7 @@ const stats=td?td[statKey]||td.stats_no_cond:[];
 let supporters=[];
 if(supporterObj&&!supporterObj.error)supporters=[supporterObj];
 const fullCtx={masterLeagueBuff:!!S.dc.masterLeagueBuff,grandOffensiveBuff:!!S.dc.grandOffensiveBuff,masterLeagueBuffMove:false,optionParts:optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:_dcEffectiveExSquadAtkPct(),squadCondAtkPct:S.dc.squadCondAtkPct|0,squadCondDefPct:S.dc.squadCondDefPct|0};
-const f=_dcGetModifiedAttackerUnitStatsFromCtx(fullCtx,stats);
+const f=_dcGetModifiedAttackerUnitStatsFromCtx(fullCtx,stats,true);
 let fatk=f.unitAtk,fdef=f.unitDefVal;
 const prf=_tbPilotPairUnitAtkDef(sl.charData,ud,!!sl.charCondPassive,fatk,fdef);
 fatk=prf.unitAtk;fdef=prf.unitDefVal;
@@ -9150,8 +9222,8 @@ else supporters=[supEnt.data];
 const sqP=_tbComputeSquadConditionSheetPcts(sl,side);
 const fullCtx={masterLeagueBuff:!!S.tb.masterLeague,grandOffensiveBuff:!!S.tb.grandOffensive,masterLeagueBuffMove:false,optionParts:sl.optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:_tbEffectiveExSquadAtkPctForTb(sl,side),squadCondAtkPct:sqP.atk|0,squadCondDefPct:sqP.def|0};
 const baseCtx={masterLeagueBuff:false,grandOffensiveBuff:false,masterLeagueBuffMove:false,optionParts:[],supporters:[],unitTurnBuffAtk:false,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:0,squadCondAtkPct:0,squadCondDefPct:0};
-const b=_dcGetModifiedAttackerUnitStatsFromCtx(baseCtx,stats);
-const f=_dcGetModifiedAttackerUnitStatsFromCtx(fullCtx,stats);
+const b=_dcGetModifiedAttackerUnitStatsFromCtx(baseCtx,stats,true);
+const f=_dcGetModifiedAttackerUnitStatsFromCtx(fullCtx,stats,true);
 let batk=b.unitAtk,bdef=b.unitDefVal;
 const prb=_tbPilotPairUnitAtkDef(sl.charData,ud,!!sl.charCondPassive,batk,bdef);
 batk=prb.unitAtk;bdef=prb.unitDefVal;
@@ -11178,7 +11250,6 @@ const lb=ud.lb_data;const maxTier=lb?lb.length-1:0;const tier=Math.min(S.dc.lbTi
 const statKey=_dcGetUnitStatKey();
 const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
 const stats=td?td[statKey]||td.stats_no_cond:[];
-const thum=ud.thum||ud.portrait||'';
 let lbBlock='';
 if(lb&&lb.length>1&&!ud.is_ultimate){
 const cur=cmpLbPipsAtTier(tier);
@@ -11205,12 +11276,12 @@ unitStatModeHtml=`<div class="dc-lb-row dc-unit-stat-mode-row" style="display:fl
 }
 const lbStatCluster=(lbBlock||unitStatModeHtml)?`<div class="dc-unit-lb-stat-cluster">${lbBlock}${unitStatModeHtml}</div>`:'';
 const atkBelowPortrait=(unitCpToggle||lbStatCluster)?`<div class="dc-atk-unit-below-portrait">${unitCpToggle}${lbStatCluster}</div>`:'';
-area.innerHTML=`<div class="dc-picked"><img class="dc-thum" src="${imgUrl(thum)}" alt="" onerror="this.style.display='none'"><div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div class="dc-picked-badges">${ud.rarity_icon?`<img src="${imgUrl(ud.rarity_icon)}">`:''}${ud.role_icon?`<img src="${imgUrl(ud.role_icon)}">`:''}</div></div>${atkBelowPortrait}<button type="button" class="dc-picked-change" onclick="openDcPicker('unit')">${t('dc_change')}</button></div>`;
+area.innerHTML=`<div class="dc-picked">${_dcPickedEntityThumbHtml(ud,'unit',52)}<div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div class="dc-picked-badges">${ud.rarity_icon?`<img src="${imgUrl(ud.rarity_icon)}">`:''}${ud.role_icon?`<img src="${imgUrl(ud.role_icon)}">`:''}</div></div>${atkBelowPortrait}<button type="button" class="dc-picked-change" onclick="openDcPicker('unit')">${t('dc_change')}</button></div>`;
 _dcUpdateExSquadAtkGroupVisibility();
 _dcUpdateSquadConditionGroupVisibility();
 _dcSyncSquadCondEffectiveFromState();
 const sa=document.getElementById('dcAtkStatsArea');
-const uEff=_dcGetModifiedAttackerUnitStats(stats);
+const uEff=_dcGetModifiedAttackerUnitStatsForPanel(stats);
 const msEnh=_dcMsStatEnhancementLinesHtml(S.dc,stats);
 const atkS=uEff.unitAtk,defS=uEff.unitDefVal,mobS=uEff.unitMob,hpS=uEff.unitHp;
 const uMode=S.dc.unitStatMode||'normal';
@@ -11314,7 +11385,7 @@ const lb=ud.lb_data;const maxTier=lb?lb.length-1:0;const tier=Math.min(S.dc.lbTi
 const statKey=_dcGetUnitStatKey();
 const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
 const stats=td?td[statKey]||td.stats_no_cond:[];
-const uEff=_dcGetModifiedAttackerUnitStats(stats);
+const uEff=_dcGetModifiedAttackerUnitStatsForPanel(stats);
 const atkS=uEff.unitAtk;
 const exSq=_dcEffectiveExSquadAtkPct();
 const atkAfterPair=_dcPilotPairUnitAtkDefPct(atkS,uEff.unitDefVal).unitAtk;
@@ -11448,7 +11519,6 @@ return;
 }
 S.dc._pilotSkills=_dcPilotSkillsVisibleForDc(cd)||[];
 const stats=_dcGetCharStats();
-const thum=cd.thum||cd.portrait||'';
 const changeBtn=isSD?`<span class="dc-picked-change dc-picked-change--static" style="font-size:11px;color:var(--text-muted);padding:4px 8px">Locked</span>`:`<button type="button" class="dc-picked-change" onclick="openDcPicker('character')">${t('dc_change')}</button>`;
 let charCpToggle='';
 if(_dcCharHasConditional(cd)){
@@ -11468,7 +11538,7 @@ const cModeRow=S.dc.charStatMode||'normal';
 charStatModeHtml=`<div class="dc-lb-row dc-char-stat-mode-row"><button type="button" class="dc-lb-btn${cModeRow==='normal'?' active':''}" onclick="setDcCharStatMode('normal')">Normal</button><button type="button" class="dc-lb-btn${cModeRow==='sp'?' active':''}" onclick="setDcCharStatMode('sp')">SP</button></div>`;
 }
 const charBelowPortrait=(charCpToggle||charStatModeHtml)?`<div class="dc-atk-char-below-portrait">${charCpToggle}${charStatModeHtml}</div>`:'';
-area.innerHTML=`<div class="dc-atk-char-wrap"><div class="dc-picked"><img class="dc-thum" src="${imgUrl(thum)}" alt="" onerror="this.style.display='none'"><div class="dc-picked-info"><div class="dc-picked-name">${esc(cd.name)}</div><div class="dc-picked-badges">${cd.rarity_icon?`<img src="${imgUrl(cd.rarity_icon)}">`:''}${cd.role_icon?`<img src="${imgUrl(cd.role_icon)}">`:''}</div></div>${charBelowPortrait}${changeBtn}</div>${charExTierRow}</div>`;
+area.innerHTML=`<div class="dc-atk-char-wrap"><div class="dc-picked">${_dcPickedEntityThumbHtml(cd,'char',52)}<div class="dc-picked-info"><div class="dc-picked-name">${esc(cd.name)}</div><div class="dc-picked-badges">${cd.rarity_icon?`<img src="${imgUrl(cd.rarity_icon)}">`:''}${cd.role_icon?`<img src="${imgUrl(cd.role_icon)}">`:''}</div></div>${charBelowPortrait}${changeBtn}</div>${charExTierRow}</div>`;
 const statsNoCp=_dcGetCharStatsForCp(false);
 const skPct=_dcGetActiveSkillStatPct();
 const skB=_dcGetActiveSkillBonuses();
@@ -11722,7 +11792,7 @@ if(stored>0)return stored;
 return _dcParseMaxSupportCounterAtkPctFromChar(cd,ud)|0;
 }
 function _dcEffectiveSupportCounterAtkPct(){return _dcEffectiveSupportCounterAtkPctFromCtx(S.dc);}
-/** Legacy post-multiply path — support-counter % now stacks in the same growth % bucket as OP/leader/squad (matches in-game unit panel). */
+/** Legacy post-multiply path — support-counter % is combat-only (see _dcGetModifiedAttackerUnitStatsFromCtx forPanel). */
 function _dcApplySupportCounterAtkToUnitAtk(unitAtk){return unitAtk;}
 
 function _dcParsePilotAbilBonuses(cd){
@@ -12387,6 +12457,20 @@ const lv=_dcWeaponLevelRow(wpn,lvIdx);
 const base=lv.power|0;
 return base+(_dcDcIncludeSspWeaponEffects()?(wpn.ssp_power_bonus|0):0);
 }
+/** Sheet PWR in weapon panel: base value; green → combat when trait/OP % applies (damage still uses combat). */
+function _dcWpnPowDisplayHtml(sheetPow,combatPow){
+const sheet=sheetPow|0;
+const combat=combatPow|0;
+if(combat<=sheet)return fmtN(sheet);
+const tip=escAttr(t('dc_wpn_trait_max_applied'));
+return`${fmtN(sheet)} <span class="dc-wpn-pow-boost" style="color:#4ade80;font-weight:600" title="${tip}">→ ${fmtN(combat)}</span>`;
+}
+function _dcPickedEntityThumbHtml(row,kind,sz){
+if(!row)return'';
+const size=sz||52;
+const type=kind==='unit'?'unit':'char';
+return renderListThumb({thum:row.thum||row.portrait,rarity:row.rarity||'N',role_icon:row.role_icon||'',acquisition_icon:row.acquisition_icon||'',is_ultimate:row.is_ultimate},type,size,{pickerThumb:true});
+}
 function _dcBestLevelIndexForWeapon(wpn){
 if(!wpn||!wpn.levels||!wpn.levels.length)return 0;
 let bestPow=-1,bestJ=0,bestRaw=-1;
@@ -12456,10 +12540,12 @@ const exBadge=cw.is_ex?`<span style="margin-left:6px;padding:1px 6px;border-radi
 const sheetPow=_dcWpnSheetFlatPower(cw,S.dc.wpnLv);
 const opWpnPct=_dcOptionPartWeaponPowerPct(S.dc.optionParts,cw,ud);
 const combatPow=_dcEffectiveWeaponPowerWithOptionParts(cw,S.dc.wpnLv,S.dc.optionParts,ud);
-const powLabel=opWpnPct?`${fmtN(combatPow)} <span style="color:#4ade80;font-weight:600">(+${opWpnPct}% OP)</span>`:fmtN(combatPow);
+const powLabel=_dcWpnPowDisplayHtml(sheetPow,combatPow);
 h+=`<div class="dc-wpn-info"><span>${t('dc_power')}: <span class="val" id="dcWpnSheetPow">${powLabel}</span></span><span>${t('dc_range')}: <span class="val">${rangeStr}</span></span><span>${t('dc_accuracy')}: <span class="val">${ld.accuracy}%</span></span><span>${t('dc_critical')}: <span class="val">${ld.critical}%</span></span><span>${t('dc_en_cost')}: <span class="val">${ld.en}</span></span><span>${t('wp_type')}: <span class="val" style="display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px"><span class="dc-wpn-atk-icons">${atkTypeIconsHtml}</span>${attrHtml}</span>${exBadge}</span></div>`;
 if(opWpnPct){
 h+=`<div style="margin-top:4px;font-size:11px;color:#4ade80">Option part weapon Power +${opWpnPct}% (stacks with distance/HP/MP/EN % on sheet ${fmtN(sheetPow)} → ${fmtN(combatPow)}). Does not change MS ATK.</div>`;
+}else if(combatPow>sheetPow){
+h+=`<div style="margin-top:4px;font-size:11px;color:#4ade80">${esc(t('dc_wpn_trait_effects'))}: ${fmtN(sheetPow)} → ${fmtN(combatPow)} (${esc(t('dc_wpn_trait_max_applied'))})</div>`;
 }
 const wt=_dcParseWeaponTraits(cw,S.dc.wpnLv);
 S.dc._wpnTraits=wt;
@@ -12503,10 +12589,12 @@ const exBadge=cw.is_ex?`<span style="margin-left:6px;padding:1px 6px;border-radi
 const sheetPow=_dcWpnSheetFlatPower(cw,0);
 const opWpnPct=_dcOptionPartWeaponPowerPct(S.dc.optionParts,cw,ud);
 const combatPow=_dcEffectiveWeaponPowerWithOptionParts(cw,0,S.dc.optionParts,ud);
-const powLabel=opWpnPct?`${fmtN(combatPow)} <span style="color:#4ade80;font-weight:600">(+${opWpnPct}% OP)</span>`:fmtN(combatPow);
+const powLabel=_dcWpnPowDisplayHtml(sheetPow,combatPow);
 h+=`<div class="dc-wpn-info"><span>${t('dc_power')}: <span class="val" id="dcWpnSheetPow">${powLabel}</span></span><span>${t('dc_range')}: <span class="val">${rangeStr}</span></span><span>${t('dc_accuracy')}: <span class="val">${ld.accuracy}%</span></span><span>${t('dc_critical')}: <span class="val">${ld.critical}%</span></span><span>${t('dc_en_cost')}: <span class="val">${ld.en}</span></span><span>${t('wp_type')}: <span class="val" style="display:inline-flex;align-items:center;flex-wrap:wrap;gap:4px"><span class="dc-wpn-atk-icons">${atkTypeIconsHtml}</span>${attrHtml}</span>${exBadge}</span></div>`;
 if(opWpnPct){
 h+=`<div style="margin-top:4px;font-size:11px;color:#4ade80">Option part weapon Power +${opWpnPct}% (stacks with distance/HP/MP/EN % on sheet ${fmtN(sheetPow)} → ${fmtN(combatPow)}). Does not change MS ATK.</div>`;
+}else if(combatPow>sheetPow){
+h+=`<div style="margin-top:4px;font-size:11px;color:#4ade80">${esc(t('dc_wpn_trait_effects'))}: ${fmtN(sheetPow)} → ${fmtN(combatPow)} (${esc(t('dc_wpn_trait_max_applied'))})</div>`;
 }
 const wt=_dcParseWeaponTraits(cw,0);
 S.dc._wpnTraits=wt;
@@ -12761,7 +12849,7 @@ area.innerHTML=`<button type="button" class="dc-pick-btn" onclick="openDcPicker(
 return;
 }
 const s=S.dc.supporters[0];const i=0;
-const lvl=s._dcLevel||100;const lbt=s._dcLbTier!==undefined?s._dcLbTier:3;
+const lvl=s._dcLevel||100;const lbt=_dcDefaultSupporterLbTier(s);
 const thumHtml=(s.portrait||s.thum)?`<img class="dc-thum dc-dc-mod-thumb" src="${imgUrl(s.portrait||s.thum)}" alt="" onerror="this.style.display='none'">`:'';
 const lsHtml=(s.leader_skills||[]).map(ls=>{
 const desc=ls.desc||'';
@@ -12833,17 +12921,22 @@ if(_dcOptionPartRowIsSsr(row)&&_dcDcOptionPartSsrDeniedForSlot(row.id,_opSlot))r
 S.dc.optionParts=[_dcCompactOptionPartRow(row)];renderDcOptionParts();_dcSnapActiveAttackerToSlot();_dcRefreshAtkPanelsAfterMods()
 }
 }
+function _dcDefaultSupporterLbTier(s){
+if(s&&s._dcLbTier!==undefined)return s._dcLbTier|0;
+return 0;
+}
 async function selectDcSupporter(id){
 try{
 const cq=_dcForSupporterContextQuery();
-const rd=await fetch(`/api/supporter/${id}?lang=${S.lang}&level=100&lb_tier=3${cq}`).then(r=>r.json());
-if(rd&&!rd.error){rd._dcLevel=100;rd._dcLbTier=3;S.dc.supporters=[rd];renderDcSupporters();_dcSnapActiveAttackerToSlot();_dcRefreshAtkPanelsAfterMods()}
+const lb=_dcDefaultSupporterLbTier(S.dc.supporters[0]);
+const rd=await fetch(`/api/supporter/${id}?lang=${S.lang}&level=100&lb_tier=${lb}${cq}`).then(r=>r.json());
+if(rd&&!rd.error){rd._dcLevel=100;rd._dcLbTier=lb;S.dc.supporters=[rd];renderDcSupporters();_dcSnapActiveAttackerToSlot();_dcRefreshAtkPanelsAfterMods()}
 }catch(e){}
 }
 async function updateDcSupporterLv(idx,val){
 const s=S.dc.supporters[idx];if(!s)return;
 const lv=Math.min(100,Math.max(1,parseInt(val)||100));
-const lb=s._dcLbTier!==undefined?s._dcLbTier:3;
+const lb=_dcDefaultSupporterLbTier(s);
 try{const r=await fetch(`/api/supporter/${s.id}?lang=${S.lang}&level=${lv}&lb_tier=${lb}${_dcForSupporterContextQuery()}`);const d=await r.json();if(d&&!d.error){Object.assign(s,d);s._dcLevel=lv;s._dcLbTier=lb;renderDcSupporters();_dcSnapActiveAttackerToSlot();_dcRefreshAtkPanelsAfterMods()}}catch(e){}
 }
 async function updateDcSupporterLb(idx,tier){
@@ -13596,18 +13689,23 @@ m=s.match(/能力值(\d+)\s*[%％]/);
 if(m)return parseInt(m[1],10)||0;
 return 0;
 }
+/** Leader % on HP/MOB/Move; SameGroup leaders add +2% ATK/DEF when the unit matches (Bright Tenacious → D Gundam: 25% HP/MOB, 27% ATK/DEF). */
 function _dcLeaderSkillPctAndFlags(supporters){
 let pct=0;
+let sameGroupAdBonusPct=0;
 (supporters||[]).forEach(s=>{
 let best=0;
+let bestSameGroup=false;
 (s.leader_skills||[]).forEach(ls=>{
 if(ls.applies===false)return;
 const v=_dcLeaderPctFromLeaderSkillDesc(ls.desc||'');
-if(v>best)best=v;
+if(v>best){best=v;bestSameGroup=!!ls.same_group}
+else if(v===best&&ls.same_group)bestSameGroup=true;
 });
 pct+=best;
+if(best>0&&bestSameGroup)sameGroupAdBonusPct=2;
 });
-return{pct};
+return{pct,sameGroupAdBonusPct};
 }
 /** EX squad ATK % applies to the MS growth Attack line after option-part Attack % (if any), not raw LB alone — not MS ability Attack bonuses. Supporter leader % on Attack applies after EX on that growth line. */
 function _dcApplyExSquadToUnitAtk(unitAtkFull,unitAtkExBase,exPct){
@@ -13880,8 +13978,8 @@ w.style.opacity='';
 w.classList.remove('is-disabled');
 const kNow=`${cid}|${String(ud.id||'')}|${rawPct}`;
 const prev=snapMap[si]!=null?String(snapMap[si]):null;
-if(prev!==kNow)S.dc.supportCounterAtk=true;
 snapMap[si]=kNow;
+if(prev!==null&&prev!==kNow)S.dc.supportCounterAtk=false;
 tog.tabIndex=0;
 _dcApplySupportCounterLang(rawPct);
 if(lbl){
@@ -13985,8 +14083,9 @@ const opFlat=opAcc.opFlat;
 const opPct=opAcc.opPct;
 let hpSupport=0,atkSupport=0,leaderPct=0;
 (c.supporters||[]).forEach(s=>{hpSupport+=Number(s.hp_support)||0;atkSupport+=Number(s.atk_support)||0});
-leaderPct=_dcLeaderSkillPctAndFlags(c.supporters).pct;
-const lp=leaderPct|0;
+const _lf=_dcLeaderSkillPctAndFlags(c.supporters);
+const lp=_lf.pct|0;
+const lpAd=_lf.sameGroupAdBonusPct|0;
 const atkEnt=_dcFindStatEntry(atkUnitStats,'Attack');
 const defEnt=_dcFindStatEntry(atkUnitStats,'Defense');
 const hpEnt=_dcFindStatEntry(atkUnitStats,'HP');
@@ -14009,25 +14108,24 @@ const pctHp=_dcMsGrowthFromPct(hpBase,pHp+(opPct.HP|0)+lp+sheetBuffPct,'HP')-cor
 const hpHtml=L(pctHp,'Option part %, leader skill %, Master League / Grand Offensive (HP)')+L(opFlat.HP|0,'Option part flat HP')+L(hpSupport|0,'Supporter HP support','stat-card-bonus--supporter-flat');
 const scAtk=c.squadCondAtkPct|0;
 const scDef=c.squadCondDefPct|0;
-const supCnt=_dcEffectiveSupportCounterAtkPctFromCtx(c);
 const coreDef=_dcMsGrowthFromPct(defBase,pDef,'Defense');
-const pctDef=_dcMsGrowthFromPct(defBase,pDef+(opPct.Defense|0)+lp+sheetBuffPct+(scDef|0),'Defense')-coreDef;
-const defHtml=L(pctDef,'Option part %, leader skill %, Master League / Grand Offensive (DEF)'+(scDef?' · Squad conditions':''))+L(opFlat.Defense|0,'Option part flat Defense');
+const pctDef=_dcMsGrowthFromPct(defBase,pDef+(opPct.Defense|0)+lp+lpAd+sheetBuffPct+(scDef|0),'Defense')-coreDef;
+const defHtml=L(pctDef,'Option part %, leader skill %, SameGroup +2% ATK/DEF, Master League / Grand Offensive (DEF)'+(scDef?' · Squad conditions':''))+L(opFlat.Defense|0,'Option part flat Defense');
 const coreMob=_dcMsGrowthFromPct(mobBase,pMob,'Mobility');
 const pctMob=_dcMsGrowthFromPct(mobBase,pMob+(opPct.Mobility|0)+lp+sheetBuffPct,'Mobility')-coreMob;
 const mobHtml=L(pctMob,'Option part %, leader skill %, Master League / Grand Offensive (MOB)')+L(opFlat.Mobility|0,'Option part flat Mobility');
 const coreAtk=_dcMsGrowthFromPct(atkBase,pAtk,'Attack');
-const pctAtkNoEx=_dcMsGrowthFromPct(atkBase,pAtk+opAt+tAtk+sheetBuffPct+lp+(scAtk|0)+(supCnt|0),'Attack')-coreAtk;
-const atkHtml=L(pctAtkNoEx,'Option part %, 1-turn MS ATK %, leader %, ML/GO, squad conditions, Support Attack/Counter % (EX squad % is on the EX line below)')+L(opFlat.Attack|0,'Option part flat Attack')+L(atkSupport|0,'Supporter ATK support','stat-card-bonus--supporter-flat');
+const pctAtkNoEx=_dcMsGrowthFromPct(atkBase,pAtk+opAt+tAtk+sheetBuffPct+lp+lpAd+(scAtk|0),'Attack')-coreAtk;
+const atkHtml=L(pctAtkNoEx,'Option part %, 1-turn MS ATK %, leader %, SameGroup +2% ATK/DEF, ML/GO, squad conditions (EX squad % is on the EX line below; Support Attack/Counter % is combat-only)')+L(opFlat.Attack|0,'Option part flat Attack')+L(atkSupport|0,'Supporter ATK support','stat-card-bonus--supporter-flat');
 return{hpHtml,atkHtml,defHtml,mobHtml};
 }
-/** MS growth % buckets: integer (base×(100+pct))/100 — floor when rem>=80 or rem===20, else ceil (ATK/HP); floor DEF/MOB/Move. Hyaku LB1 +72% ATK +390 → 17615; Versal +68% +240 → 17252; Sandaime LB2 +53% +240 → 14577. */
-function _dcGetModifiedAttackerUnitStatsFromCtx(ctx,atkUnitStats){
+/** MS growth % buckets: integer (base×(100+pct))/100 — floor when rem>=80 or rem===20, else ceil (ATK/HP); floor DEF/MOB/Move. Hyaku LB1 +72% ATK +390 → 17615; Versal +68% +240 → 17252; Sandaime LB2 +53% +240 → 14577; D Gundam +59% ATK panel / +77% combat with Support Attack toggle. */
+function _dcGetModifiedAttackerUnitStatsFromCtx(ctx,atkUnitStats,forPanel){
 const F=Math.floor;
 const c=ctx||{};
 const scAtk=c.squadCondAtkPct|0;
 const scDef=c.squadCondDefPct|0;
-const supCnt=_dcEffectiveSupportCounterAtkPctFromCtx(c);
+const supCnt=forPanel?0:_dcEffectiveSupportCounterAtkPctFromCtx(c);
 const mlPct=c.masterLeagueBuff?50:0;
 const goPct=c.grandOffensiveBuff?100:0;
 const sheetBuffPct=mlPct+goPct;
@@ -14036,8 +14134,10 @@ const opFlat=opAcc.opFlat;
 const opPct=opAcc.opPct;
 let hpSupport=0,atkSupport=0,leaderPct=0;
 (c.supporters||[]).forEach(s=>{hpSupport+=Number(s.hp_support)||0;atkSupport+=Number(s.atk_support)||0});
-leaderPct=_dcLeaderSkillPctAndFlags(c.supporters).pct;
+const _lf=_dcLeaderSkillPctAndFlags(c.supporters);
+leaderPct=_lf.pct|0;
 const lp=leaderPct|0;
+const lpAd=_lf.sameGroupAdBonusPct|0;
 const atkEnt=_dcFindStatEntry(atkUnitStats,'Attack');
 const defEnt=_dcFindStatEntry(atkUnitStats,'Defense');
 const hpEnt=_dcFindStatEntry(atkUnitStats,'HP');
@@ -14054,7 +14154,7 @@ const pHp=_dcStatPassivePctFromEntry(hpEnt);
 const pMob=_dcStatPassivePctFromEntry(mobEnt);
 const pMove=_dcStatPassivePctFromEntry(moveEnt);
 let unitHp=_dcMsGrowthFromPct(hpBase,pHp+(opPct.HP|0)+lp+sheetBuffPct,'HP')+(opFlat.HP|0)+hpSupport;
-let unitDefVal=_dcMsGrowthFromPct(defBase,pDef+(opPct.Defense|0)+lp+sheetBuffPct+(scDef|0),'Defense')+(opFlat.Defense|0);
+let unitDefVal=_dcMsGrowthFromPct(defBase,pDef+(opPct.Defense|0)+lp+lpAd+sheetBuffPct+(scDef|0),'Defense')+(opFlat.Defense|0);
 let unitMob=_dcMsGrowthFromPct(mobBase,pMob+(opPct.Mobility|0)+lp+sheetBuffPct,'Mobility')+(opFlat.Mobility|0);
 const mlMovePct=(c.masterLeagueBuff&&c.masterLeagueBuffMove!==false)?mlPct:0;
 let unitMove=_dcMsGrowthFromPct(moveBase,pMove+(opPct.Move|0)+mlMovePct,'Move')+(opFlat.Move|0);
@@ -14066,7 +14166,7 @@ const tAtk=turnAtkPct|0;
 const unitAtkExSquadBase=_dcMsGrowthFromPct(atkBase,pAtk+sheetBuffPct,'Attack');
 const unitDefExSquadBase=_dcMsGrowthFromPct(defBase,pDef+sheetBuffPct,'Defense');
 const unitAtkGrowthAfterOptions=_dcMsGrowthFromPct(atkBase,pAtk+opAt+tAtk+sheetBuffPct,'Attack');
-const sumAtkPctNoEx=(pAtk+opAt+tAtk+sheetBuffPct+lp)|0;
+const sumAtkPctNoEx=(pAtk+opAt+tAtk+sheetBuffPct+lp+lpAd)|0;
 const sumAtkPctFull=sumAtkPctNoEx+(exSq|0)+(scAtk|0)+(supCnt|0);
 let unitAtk=_dcMsGrowthFromPct(atkBase,sumAtkPctFull,'Attack')+(opFlat.Attack|0)+(atkSupport|0);
 let deltaExAtk=0;
@@ -14075,9 +14175,10 @@ const hpDbCorePassive=F(hpBase*(100+pHp)/100);
 const defDbCorePassive=F(defBase*(100+pDef)/100);
 const mobDbCorePassive=F(mobBase*(100+pMob)/100);
 const atkDbCorePassive=F(atkBase*(100+pAtk)/100);
-return{unitAtk,unitHp,unitDefVal,unitMob,unitMove,atkSupport,hpSupport,leaderPct,supportCounterPct:supCnt|0,unitAtkExSquadBase,unitAtkGrowthAfterOptions,unitDefExSquadBase,deltaExAtk,advantageFlatGrowthAtk:atkBase,advantageFlatGrowthDef:defBase,hpGrowthBase:hpBase,mobGrowthBase:mobBase,hpDbCorePassive,defDbCorePassive,mobDbCorePassive,atkDbCorePassive};
+return{unitAtk,unitHp,unitDefVal,unitMob,unitMove,atkSupport,hpSupport,leaderPct,leaderSameGroupAdBonusPct:lpAd|0,supportCounterPct:supCnt|0,unitAtkExSquadBase,unitAtkGrowthAfterOptions,unitDefExSquadBase,deltaExAtk,advantageFlatGrowthAtk:atkBase,advantageFlatGrowthDef:defBase,hpGrowthBase:hpBase,mobGrowthBase:mobBase,hpDbCorePassive,defDbCorePassive,mobDbCorePassive,atkDbCorePassive};
 }
-function _dcGetModifiedAttackerUnitStats(atkUnitStats){return _dcGetModifiedAttackerUnitStatsFromCtx(S.dc,atkUnitStats);}
+function _dcGetModifiedAttackerUnitStatsForPanel(atkUnitStats){return _dcGetModifiedAttackerUnitStatsFromCtx(S.dc,atkUnitStats,true);}
+function _dcGetModifiedAttackerUnitStats(atkUnitStats){return _dcGetModifiedAttackerUnitStatsFromCtx(S.dc,atkUnitStats,false);}
 function _dcPilotAtkStatLabelForWeapon(wpn){
 const k=_dcWeaponAtkStatKeys(wpn||{});
 const u=[...new Set(k)];
@@ -14099,7 +14200,7 @@ if(!wpns.length)return null;
 const wpn=wpns[S.dc.wpnIdx];if(!wpn)return null;
 const lvData=_dcWeaponLevelRow(wpn,S.dc.wpnLv);
 
-const uMod=_dcGetModifiedAttackerUnitStatsFromCtx(S.dc,atkUnitStats);
+const uMod=_dcGetModifiedAttackerUnitStatsFromCtx(S.dc,atkUnitStats,false);
 let unitAtk=uMod.unitAtk,unitHp=uMod.unitHp,unitDefVal=uMod.unitDefVal,unitMob=uMod.unitMob,unitMove=uMod.unitMove;
 const pairUd=_dcPilotPairUnitAtkDefPct(unitAtk,unitDefVal);
 unitAtk=pairUd.unitAtk;unitDefVal=pairUd.unitDefVal;
