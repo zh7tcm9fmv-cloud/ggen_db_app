@@ -3894,6 +3894,7 @@ function _stageNpcDetailRowVisible(n){
   const escaped=_stageEscapedNpcIdSet();
   const nid=String(n.npc_id||'');
   if(n.escape_spawn_npc_id&&escaped.has(nid))return false;
+  if(n.escape_spawn_npc_id&&S.stageMapEscapeLayerVisible)return false;
   if(n.escape_from_npc_id){
     if(escaped.has(String(n.escape_from_npc_id)))return true;
     if(S.stageMapEscapeLayerVisible)return true;
@@ -4904,7 +4905,10 @@ function renderStageMapSection(d){
       </div>
     </div>
   </div>`:'';
-return`<div class="detail-section"><div class="section-title">${t('sec_stage_map')}</div><button class="toggle-map-btn" onclick="toggleStageMap()"><span>${S.stageMapExpanded?t('hide_stage_map'):t('view_stage_map')}</span></button>${controls}<div id="stageMapGridWrap" class="map-grid-container ${S.stageMapExpanded?'active':''}">${renderStageMapGrid(md)}</div></div>`
+  const mapBody=renderStageMapGrid(md);
+  const hasDock=!!S.stageMapEscapeLayerVisible&&stageMapHasEscapeEnemies(md);
+  const wrapCls='map-grid-container'+(S.stageMapExpanded?' active':'')+(hasDock?' has-escape-dock':'');
+return`<div class="detail-section"><div class="section-title">${t('sec_stage_map')}</div><button class="toggle-map-btn" onclick="toggleStageMap()"><span>${S.stageMapExpanded?t('hide_stage_map'):t('view_stage_map')}</span></button>${controls}<div id="stageMapGridWrap" class="${wrapCls}">${mapBody}</div></div>`
 }
 
 function _stageMapHitReachTargetCell(md,x,y){
@@ -5057,8 +5061,9 @@ const side=String(u.side||'').toLowerCase();
 if(side!=='enemy')return true;
 const escaped=_stageEscapedNpcIdSet();
 const nid=String(u.npc_id||'');
-if(u.escape_spawn_npc_id&&escaped.has(nid))return false;
-if(u.escape_from_npc_id){
+  if(u.escape_spawn_npc_id&&escaped.has(nid))return false;
+  if(u.escape_spawn_npc_id&&S.stageMapEscapeLayerVisible)return false;
+  if(u.escape_from_npc_id){
   if(escaped.has(String(u.escape_from_npc_id)))return true;
   if(S.stageMapEscapeLayerVisible)return true;
   return false;
@@ -5146,6 +5151,33 @@ function _stageMapBuffAreaAt(md,x,y){
 }
 function _stageMapBuffAreasShown(){
   return S.stageMapBuffAreasVisible!==false;
+}
+function _stageMapEscapeDockUnits(pool){
+  if(!S.stageMapEscapeLayerVisible)return[];
+  const escaped=_stageEscapedNpcIdSet();
+  return(pool||[]).filter(u=>{
+    if(!u||!u.escape_spawn_npc_id)return false;
+    if(String(u.side||'').toLowerCase()!=='enemy')return false;
+    if(escaped.has(String(u.npc_id)))return false;
+    return true;
+  });
+}
+function renderStageMapEscapeDock(units,cellPx){
+  if(!units||!units.length)return'';
+  const size=Math.max(16,Number(cellPx)||50);
+  const items=units.map(u=>{
+    const mapArt=u.thum||u.portrait;
+    const supCh=_stageNpcCharacterByNpcId(u.npc_id);
+    const supBadge=_stageNpcSupportBadgeHtml(supCh,'map');
+    const di=u.npc_detail_index;
+    const hasDetail=di!=null&&di!==''&&!Number.isNaN(Number(di));
+    const clickCls=hasDetail||u.unit_id||u.npc_id?' stage-map-escape-dock-item--click npc-clickable':'';
+    const mapDataAttrs=(hasDetail||u.unit_id||u.npc_id)?`${hasDetail?` data-npc-map-detail="${Number(di)}"`:''}${(u.npc_id!=null&&String(u.npc_id)!=='')?` data-npc-map-npc-id="${escAttr(String(u.npc_id))}"`:''}${u.unit_id?` data-npc-map-unit-id="${escAttr(String(u.unit_id))}"`:''}`:'';
+    const thumbInner=mapArt?`<img class="stage-map-escape-dock-thumb" src="${imgUrl(mapArt)}" alt="" loading="lazy" onerror="this.style.display='none'">`:`<span class="stage-map-escape-dock-ph">${esc(String(u.name||'?').slice(0,1))}</span>`;
+    const overlayHtml=supBadge?`<div class="map-unit-thumb-overlay">${supBadge}</div>`:'';
+    return`<div class="stage-map-escape-dock-item${clickCls}" title="${escAttr(u.name||'')}"${mapDataAttrs}><div class="stage-map-escape-dock-thumb-stack enemy">${thumbInner}${overlayHtml}</div></div>`;
+  }).join('');
+  return`<div class="stage-map-escape-dock" style="--cell:${size}px" aria-label="${escAttr((()=>{const v=t('stage_map_escape_dock');return v&&v!=='stage_map_escape_dock'?v:'Escaped units'})())}">${items}</div>`;
 }
 function _stageMapBuffHoverPopoverHtml(buffArea){
   if(!buffArea)return '';
@@ -5241,8 +5273,7 @@ function renderStageMapGrid(md){
         const supBadge=_stageNpcSupportBadgeHtml(supCh,'map');
         const thumbInner=mapArt?`<img class="map-unit-thumb" src="${imgUrl(mapArt)}" alt="" loading="lazy"${rotStyle} onerror="this.style.display='none';var s=this.closest('.map-unit-thumb-stack');if(s)s.classList.add('map-unit-thumb-stack--fallback')">`:`<span class="map-unit-thumb-fallback">${esc(sl)}</span>`;
         const overlayHtml=supBadge?`<div class="map-unit-thumb-overlay">${supBadge}</div>`:'';
-        html+=`<div class="map-unit-dot ${u.side||''} ${largeCls}${fpCls} ${isAllyLoc?'ally-loc':''} ${guestCls} ${friendlyCls} ${gimmickCls}${hintPulse}"${fpStyle}><div class="map-unit-thumb-stack">${thumbInner}${overlayHtml}</div></div>`;
-        if(_stageNpcCanEscape(u.npc_id))html+=`<button type="button" class="map-cell-escape-btn" onclick="event.stopPropagation();stageEscapeNpc('${escJs(String(u.npc_id))}')" title="${escAttr(t('stage_map_escape'))}">${esc(t('stage_map_escape'))}</button>`;
+        html+=`<div class="map-unit-dot ${u.side||''} ${largeCls}${fpCls} ${isAllyLoc?'ally-loc':''} ${guestCls} ${friendlyCls} ${gimmickCls}${hintPulse}"${fpStyle}><div class="map-unit-thumb-stack">${thumbInner}</div>${overlayHtml}</div>`;
         if(showStepOrder)html+=`<span class="map-cell-step-badge" aria-hidden="true">${fmtN(_stageNpcStepOrder(u))}</span>`
       }
       if(showBuffArea)html+=_stageMapBuffHoverPopoverHtml(buffArea);
@@ -5251,6 +5282,9 @@ function renderStageMapGrid(md){
     }
   }
   html+=`</div>`;
+  const dockUnits=_stageMapEscapeDockUnits(pool);
+  const dockHtml=renderStageMapEscapeDock(dockUnits,cellPx);
+  if(dockHtml)return`<div class="stage-map-viewport">${html}${dockHtml}</div>`;
   return html
 }
 function captureStageDetailUiState(){
@@ -5527,8 +5561,8 @@ const hintHtml=hintSrc?`<span class="stage-npc-thumb-hint stage-npc-thumb-hint--
 const supBadge=kind==='unit'&&supportCh?_stageNpcSupportBadgeHtml(supportCh,'compact'):'';
 const overlayHtml=supBadge?`<div class="stage-npc-thumb-overlay">${supBadge}</div>`:'';
 const hitCls='stage-npc-thumb-hit'+(hintSrc?' stage-npc-thumb-hit--has-hint stage-npc-thumb-hit--pulse':'');
-const inner=src?`<img class="stage-npc-thumb-img" src="${imgUrl(src)}" alt="" loading="lazy" onerror="gameImageUrlFallback(this)">`:`<span class="stage-npc-thumb-ph">${ph}</span>`;
-return`<button type="button" class="${hitCls}" ${oc} title="${esc(label)}" ${has?'':'disabled'}>${hintHtml}<span class="stage-npc-thumb-stack">${inner}${overlayHtml}</span></button>`}
+  const inner=src?`<img class="stage-npc-thumb-img" src="${imgUrl(src)}" alt="" loading="lazy" onerror="gameImageUrlFallback(this)">`:`<span class="stage-npc-thumb-ph">${ph}</span>`;
+  return`<button type="button" class="${hitCls}" ${oc} title="${esc(label)}" ${has?'':'disabled'}>${hintHtml}<span class="stage-npc-thumb-stack">${inner}</span>${overlayHtml}</button>`}
 function renderStageNpcCompactTile(n,idx){
   const u=n.unit,ch=n.character;
   let lab=(u&&u.name)||(ch&&ch.name)||`NPC ${n.npc_id}`;
