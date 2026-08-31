@@ -4849,38 +4849,57 @@ function _stageMapEnemyStackKeys(allUnits){
   return out;
 }
 function _stageMapEnemyEscapeStackKeys(allUnits){
-  const pairs=_stageMapEscapeStackPairs(allUnits);
-  return new Set(pairs.keys());
+  return new Set(_stageMapEscapeOverlapStacks(allUnits).keys());
 }
-function _stageMapEscapeStackPairs(allUnits){
+function _stageMapEscapeLayerCandidates(pool){
+  if(!S.stageMapEscapeLayerVisible)return[];
+  const escaped=_stageEscapedNpcIdSet();
+  return(pool||[]).filter(u=>{
+    if(!_stageMapUnitIsEscapeSpawn(u))return false;
+    if(String(u.side||'').toLowerCase()!=='enemy')return false;
+    if(escaped.has(String(u.escape_from_npc_id)))return true;
+    return true;
+  });
+}
+function _stageMapEscapeOverlapStacks(allUnits){
+  if(!S.stageMapEscapeLayerVisible)return new Map();
   const pool=allUnits||[];
+  const byCell={};
+  _stageMapEscapeLayerCandidates(pool).forEach(u=>{
+    _stageMapForEachEnemyCell(u,k=>{
+      if(!byCell[k])byCell[k]=[];
+      byCell[k].push(u);
+    });
+  });
+  const out=new Map();
   const byNpc={};
   pool.forEach(u=>{if(u&&u.npc_id!=null)byNpc[String(u.npc_id)]=u});
-  const out=new Map();
-  pool.forEach(parent=>{
-    if(!parent||!parent.escape_spawn_npc_id)return;
-    if(String(parent.side||'').toLowerCase()!=='enemy')return;
-    const child=byNpc[String(parent.escape_spawn_npc_id)];
-    if(!child||!_stageMapUnitIsEscapeSpawn(child))return;
-    const parentCells=new Set(),childCells=new Set();
-    _stageMapForEachEnemyCell(parent,k=>parentCells.add(k));
-    _stageMapForEachEnemyCell(child,k=>childCells.add(k));
-    parentCells.forEach(k=>{
-      if(childCells.has(k))out.set(k,{cellKey:k,iniUnit:parent,escapeUnit:child});
-    });
+  Object.keys(byCell).forEach(k=>{
+    const seen=new Set(),escUniq=[];
+    byCell[k].forEach(u=>{const id=String(u.npc_id);if(!seen.has(id)){seen.add(id);escUniq.push(u)}});
+    for(let i=0;i<escUniq.length;i++){
+      const esc=escUniq[i];
+      const parent=byNpc[String(esc.escape_from_npc_id||'')];
+      if(!parent||!parent.escape_spawn_npc_id||String(parent.escape_spawn_npc_id)!==String(esc.npc_id))continue;
+      const parentCells=new Set();
+      _stageMapForEachEnemyCell(parent,ck=>parentCells.add(ck));
+      if(parentCells.has(k)){out.set(k,{cellKey:k,units:[parent,esc],parentPreview:true});return}
+    }
+    if(escUniq.length>=2)out.set(k,{cellKey:k,units:escUniq.slice(0,2)});
   });
   return out;
 }
-function _stageMapParentSharesCellWithEscapeSpawn(parent,allUnits){
-  if(!parent||!parent.escape_spawn_npc_id)return false;
-  const pairs=_stageMapEscapeStackPairs(allUnits);
-  for(const p of pairs.values()){if(p.iniUnit===parent)return true}
-  return false;
-}
-function _stageMapEscapeSpawnInSharedStack(spawn,allUnits){
-  if(!spawn||!spawn.escape_from_npc_id)return false;
-  const pairs=_stageMapEscapeStackPairs(allUnits);
-  for(const p of pairs.values()){if(p.escapeUnit===spawn)return true}
+function _stageMapEscapeSpawnInOverlapStack(spawn,allUnits){
+  if(!spawn||!_stageMapUnitIsEscapeSpawn(spawn))return false;
+  const stacks=_stageMapEscapeOverlapStacks(allUnits);
+  for(const st of stacks.values()){
+    if(!st.units.some(u=>u===spawn))continue;
+    const cellN=Array.isArray(spawn.cells)?spawn.cells.length:1;
+    if(cellN>1)return false;
+    const bbox=_stageMapFootprintBBox(spawn,999,999);
+    if(bbox&&(bbox.fpw>1||bbox.fph>1))return false;
+    return true;
+  }
   return false;
 }
 function renderStageMapSection(d){
@@ -5090,16 +5109,13 @@ const side=String(u.side||'').toLowerCase();
 if(side!=='enemy')return true;
 const escaped=_stageEscapedNpcIdSet();
 const nid=String(u.npc_id||'');
+const pool=allUnits!==undefined&&allUnits!==null?allUnits:S.currentDetailData?.map_data?.units;
   if(u.escape_spawn_npc_id&&escaped.has(nid))return false;
-  const pool=allUnits!==undefined&&allUnits!==null?allUnits:S.currentDetailData?.map_data?.units;
-  if(u.escape_spawn_npc_id&&S.stageMapEscapeLayerVisible){
-    if(_stageMapParentSharesCellWithEscapeSpawn(u,pool))return true;
-    return false;
-  }
+  if(u.escape_spawn_npc_id&&S.stageMapEscapeLayerVisible)return false;
   if(u.escape_from_npc_id){
   if(escaped.has(String(u.escape_from_npc_id)))return true;
   if(S.stageMapEscapeLayerVisible){
-    if(_stageMapEscapeSpawnInSharedStack(u,pool))return false;
+    if(_stageMapEscapeSpawnInOverlapStack(u,pool))return false;
     return true;
   }
   return false;
@@ -5239,11 +5255,8 @@ function _stageMapUnitMultiFootprint(u,mapW,mapH){
 }
 function _stageMapEscapeParentUnits(pool){
   if(!S.stageMapEscapeLayerVisible)return[];
-  const onMapParents=new Set();
-  _stageMapEscapeStackPairs(pool).forEach(p=>{if(p.iniUnit)onMapParents.add(p.iniUnit)});
   return(pool||[]).filter(u=>{
     if(!u||!u.escape_spawn_npc_id)return false;
-    if(onMapParents.has(u))return false;
     const side=String(u.side||'').toLowerCase();
     return side==='enemy'||side==='guest'||side==='friendly';
   });
@@ -5299,7 +5312,8 @@ function _stageMapEscapeUnitsLayerHtml(pool,win,cellPx,gapPx,mapW,mapH){
   });
   return `<div class="stage-map-escape-units-layer">${items}</div>`;
 }
-function _stageMapEscapeSharedItemHtml(u,slot){
+function _stageMapEscapeSharedItemHtml(u,slot,opts){
+  opts=opts||{};
   const di=u.npc_detail_index;
   const hasDetail=di!=null&&di!==''&&!Number.isNaN(Number(di));
   const clickCls=hasDetail||u.unit_id||u.npc_id?' stage-map-escape-shared-item--click npc-clickable':'';
@@ -5308,14 +5322,18 @@ function _stageMapEscapeSharedItemHtml(u,slot){
   const guestCls=u.is_guest_ally?'ally-guest':'';
   const friendlyCls=u.is_friendly_force?'friendly-force':'';
   const gimmickCls=u.is_gimmick?'gimmick':'';
+  const previewCls=opts.preview?' stage-map-escape-shared-item--preview':'';
   const mapArt=u.thum||u.portrait;
   const supCh=_stageNpcCharacterByNpcId(u.npc_id);
   const supBadge=_stageNpcSupportBadgeHtml(supCh,'map');
   const thumbInner=mapArt?`<img class="stage-map-escape-shared-thumb" src="${imgUrl(mapArt)}" alt="" loading="lazy" onerror="this.style.display='none'">`:`<span class="stage-map-escape-shared-ph">${esc(String(u.name||'?').slice(0,1))}</span>`;
   const overlayHtml=supBadge?`<div class="stage-map-escape-shared-overlay">${supBadge}</div>`:'';
-  return `<div class="stage-map-escape-shared-item stage-map-escape-shared-item--${slot}${clickCls}"${mapDataAttrs} title="${escAttr(u.name||'')}"><div class="stage-map-escape-shared-thumb-stack ${sideCls} ${guestCls} ${friendlyCls} ${gimmickCls}">${thumbInner}</div>${overlayHtml}</div>`;
+  return `<div class="stage-map-escape-shared-item stage-map-escape-shared-item--${slot}${previewCls}${clickCls}"${mapDataAttrs} title="${escAttr(u.name||'')}"><div class="stage-map-escape-shared-thumb-stack ${sideCls} ${guestCls} ${friendlyCls} ${gimmickCls}">${thumbInner}</div>${overlayHtml}</div>`;
 }
-function _stageMapRenderEscapeSharedStackHtml(iniUnit,escapeUnit,cellKey,box){
+function _stageMapRenderEscapeSharedStackHtml(stack,box){
+  const cellKey=stack.cellKey;
+  const units=stack.units||[];
+  if(units.length<2)return'';
   if(!S.stageMapEscapeStackSwapped)S.stageMapEscapeStackSwapped={};
   const swapped=!!S.stageMapEscapeStackSwapped[cellKey];
   const swapCls=swapped?' stage-map-escape-shared--swapped':'';
@@ -5323,19 +5341,31 @@ function _stageMapRenderEscapeSharedStackHtml(iniUnit,escapeUnit,cellKey,box){
   const stackTt=t('stage_map_escape_stack_tt');
   const tfIcon=imgUrl('/static/images/UI/UI_Common_BattleIcon_Transform.webp');
   const posStyle=box?` style="left:${box.left}px;top:${box.top}px;width:${box.w}px;height:${box.h}px"`:'';
-  return `<div class="stage-map-escape-shared${swapCls}" data-escape-stack-key="${escAttr(cellKey)}" title="${escAttr(stackTt)}"${posStyle}><button type="button" class="stage-map-escape-shared-switch" onclick="event.stopPropagation();toggleStageMapEscapeStackSwap('${escJs(cellKey)}')" aria-label="${escAttr(switchLbl)}" title="${escAttr(switchLbl)}"><img src="${escAttr(tfIcon)}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'"></button>${_stageMapEscapeSharedItemHtml(iniUnit,'a')}${_stageMapEscapeSharedItemHtml(escapeUnit,'b')}</div>`;
+  const previewA=!!stack.parentPreview;
+  return `<div class="stage-map-escape-shared${swapCls}" data-escape-stack-key="${escAttr(cellKey)}" title="${escAttr(stackTt)}"${posStyle}><button type="button" class="stage-map-escape-shared-switch" onclick="event.stopPropagation();toggleStageMapEscapeStackSwap('${escJs(cellKey)}')" aria-label="${escAttr(switchLbl)}" title="${escAttr(switchLbl)}"><img src="${escAttr(tfIcon)}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'"></button>${_stageMapEscapeSharedItemHtml(units[0],'a',{preview:previewA})}${_stageMapEscapeSharedItemHtml(units[1],'b')}</div>`;
 }
-function _stageMapEscapeSharedLayerHtml(pairs,win,cellPx,gapPx){
-  if(!pairs||!pairs.size)return'';
+function _stageMapEscapeSharedLayerHtml(stacks,win,cellPx,gapPx){
+  if(!stacks||!stacks.size)return'';
   let items='';
-  pairs.forEach((pair,cellKey)=>{
-    const parts=cellKey.split('_');
+  stacks.forEach(stack=>{
+    const parts=stack.cellKey.split('_');
     const x=Number(parts[0]),y=Number(parts[1]);
     if(!Number.isFinite(x)||!Number.isFinite(y))return;
     const box=_stageMapCellBoxPx(x,y,win,cellPx,gapPx);
-    items+=_stageMapRenderEscapeSharedStackHtml(pair.iniUnit,pair.escapeUnit,cellKey,box);
+    items+=_stageMapRenderEscapeSharedStackHtml(stack,box);
   });
   return `<div class="stage-map-escape-shared-layer">${items}</div>`;
+}
+function _stageMapWireEscapeSharedTouch(){
+  const wrap=document.getElementById('stageMapGridWrap');
+  if(!wrap||wrap.dataset.escapeSharedTouchWired==='1')return;
+  wrap.dataset.escapeSharedTouchWired='1';
+  wrap.addEventListener('touchstart',function(e){
+    const stack=e.target&&e.target.closest&&e.target.closest('.stage-map-escape-shared');
+    if(!stack||e.target.closest('.stage-map-escape-shared-switch'))return;
+    wrap.querySelectorAll('.stage-map-escape-shared--armed').forEach(el=>{if(el!==stack)el.classList.remove('stage-map-escape-shared--armed')});
+    stack.classList.add('stage-map-escape-shared--armed');
+  },{passive:true});
 }
 function _stageMapRenderUnitDotHtml(u,opts){
   opts=opts||{};
@@ -5377,7 +5407,7 @@ function renderStageMapGrid(md){
   const {occ,w,h}=_stageMapBuildOccupancyMap(md);
   const units=pool.filter(u=>_stageMapUnitVisible(u,pool));
   const enemyStackKeys=_stageMapEnemyStackKeys(md.units||[]);
-  const escapeStackPairs=escapeOn?_stageMapEscapeStackPairs(pool):null;
+  const escapeOverlapStacks=escapeOn?_stageMapEscapeOverlapStacks(pool):null;
   const ucHlSet=new Set(getActiveNpcUnitConditionHighlightIds());
   const win=_stageMapViewWindow(md);
   const vw=(win.maxX-win.minX+1),vh=(win.maxY-win.minY+1);
@@ -5391,8 +5421,6 @@ function renderStageMapGrid(md){
       const eventArea=!u?_stageMapHitEventAreaCell(md,x,y):null;
       const isPlayableTile=!u&&_stageMapHitPlayableCell(md,x,y);
       const isStackedEnemyTile=enemyStackKeys.has(ck);
-      const escapeStackPair=escapeStackPairs?escapeStackPairs.get(ck):null;
-      const stackEscapeHighlight=!!(escapeOn&&escapeStackPair);
       const stackOrangeHighlight=S.stageMapReinforcementOnly&&u&&String(u.side||'').toLowerCase()==='enemy'&&isStackedEnemyTile;
       const reinfLayerShown=u&&String(u.side||'').toLowerCase()==='enemy'&&_stageMapEnemyIsReinforcementSpawn(u, pool);
       const escapeLayerShown=u&&_stageMapUnitIsEscapeSpawn(u);
@@ -5411,7 +5439,6 @@ function renderStageMapGrid(md){
         else cls+=' map-cell--buff-blue';
       }
       if(stackOrangeHighlight)cls+=' map-cell--enemy-stack-reinf-on';
-      if(stackEscapeHighlight)cls+=' map-cell--enemy-stack-escape-on map-cell--escape-shared-cell';
       if(u&&u.is_story_event_boss)cls+=' map-cell--story-boss';
       if(u&&u.unit_id&&ucHlSet.has(String(u.unit_id)))cls+=' map-cell--unit-cond-cp-target';
       const showStepOrder=u&&_stageMapShowSpawnOrderForUnit(u,pool);
@@ -5428,14 +5455,12 @@ function renderStageMapGrid(md){
       if(showStepOrder)cellTitle+=` — ${_stageMapSpawnOrderLabel(_stageNpcStepOrder(u))}`;
       if(eventArea)cellTitle+=` — ${t('stage_map_event_area')!=='stage_map_event_area'?t('stage_map_event_area'):'Event area'}`;
       if(stackOrangeHighlight)cellTitle+=` — ${t('stage_map_stack_tt')}`;
-      if(stackEscapeHighlight)cellTitle+=` — ${t('stage_map_escape_stack_tt')}`;
       if(reinfLayerShown&&!isStackedEnemyTile)cellTitle+=` — ${t('stage_map_reinf_layer_tt')}`;
       if(escapeLayerShown)cellTitle+=` — ${t('stage_map_escape_layer_tt')}`;
       const originZStyle=(escapeLayerShown&&o&&o.origin&&renderInCell)?` style="z-index:${4+y}"`:'';
       const cellTitleAttr=S.stageMapEscapeLayerVisible?'':` title="${esc(cellTitle)}"`;
       html+=`<div class="map-cell ${cls}${clickCls}${originCls}"${cellTitleAttr}${originZStyle}${mapDataAttrs}>`;
       if(o&&o.origin&&renderInCell){
-        if(!escapeStackPair){
         const isAllyLoc=(u.side==='ally')&&((!u.is_guest_ally&&(String(u.portrait||'').includes('UI_GTower_Minimap_Icon_OwnArmy.webp')||String(u.npc_id||'').startsWith('ally_g')))||(u.is_guest_ally&&String(u.portrait||'').includes('UI_GTower_Minimap_Icon_GuestArmy.webp')))||(u.side==='guest'&&u.is_guest_ally&&String(u.portrait||'').includes('UI_GTower_Minimap_Icon_GuestArmy.webp'))||(u.side==='friendly'&&u.is_friendly_force&&String(u.portrait||'').includes('UI_GTower_Minimap_Icon_FriendlyArmy.webp'));
         const guestCls=u.is_guest_ally?'ally-guest':'';
         const friendlyCls=u.is_friendly_force?'friendly-force':'';
@@ -5450,7 +5475,6 @@ function renderStageMapGrid(md){
         const fpCls=multiFp?' map-unit-dot--footprint':'';
         const largeCls=u.is_large&&!multiFp?'large':'';
         html+=_stageMapRenderUnitDotHtml(u,{isAllyLoc,guestCls,friendlyCls,gimmickCls,largeCls,fpCls,fpStyle});
-        }
         if(showStepOrder)html+=`<span class="map-cell-step-badge" aria-hidden="true">${fmtN(_stageNpcStepOrder(u))}</span>`
       }
       if(showBuffArea)html+=_stageMapBuffHoverPopoverHtml(buffArea);
@@ -5460,11 +5484,14 @@ function renderStageMapGrid(md){
   }
   html+=`</div>`;
   const escapeLayerHtml=_stageMapEscapeUnitsLayerHtml(pool,win,cellPx,gapPx,mapW,mapH);
-  const escapeSharedLayerHtml=escapeStackPairs?_stageMapEscapeSharedLayerHtml(escapeStackPairs,win,cellPx,gapPx):'';
+  const escapeSharedLayerHtml=escapeOverlapStacks?_stageMapEscapeSharedLayerHtml(escapeOverlapStacks,win,cellPx,gapPx):'';
   const parentUnits=_stageMapEscapeParentUnits(pool);
   const parentOverlayHtml=renderStageMapParentOverlay(parentUnits,cellPx);
   const mapBlock=`<div class="stage-map-grid-wrap${escapeOn?' stage-map-grid-wrap--escape':''}">${parentOverlayHtml}${html}${escapeLayerHtml}${escapeSharedLayerHtml}</div>`;
-  if(escapeOn&&parentOverlayHtml)return`<div class="stage-map-viewport stage-map-viewport--escape">${mapBlock}</div>`;
+  if(escapeOn&&(parentOverlayHtml||escapeSharedLayerHtml)){
+    setTimeout(_stageMapWireEscapeSharedTouch,0);
+    return`<div class="stage-map-viewport stage-map-viewport--escape">${mapBlock}</div>`;
+  }
   return mapBlock
 }
 function captureStageDetailUiState(){
@@ -5542,6 +5569,7 @@ function toggleStageMapEscapeStackSwap(cellKey){
     const sl=gridWrap.scrollLeft,st=gridWrap.scrollTop;
     gridWrap.innerHTML=renderStageMapGrid(md);
     gridWrap.scrollLeft=sl;gridWrap.scrollTop=st;
+    _stageMapWireEscapeSharedTouch();
   }
 }
 function setStageMapSpawnOrderVisible(on){
