@@ -5146,7 +5146,8 @@ def _collect_unit_hp_atk_tiers_meta(ac):
         for th, pct in sorted(by_th.items(), key=lambda x: x[0]):
             running += pct
             tiers.append({'hp_pct': th, 'atk_pct': running})
-        if not tiers:
+        if len(tiers) < 2:
+            # Single HP-or-above tier: CP on/off is enough (no tier picker in ability card).
             continue
         cand = {
             'tiers': tiers,
@@ -13277,6 +13278,18 @@ def resolve_tower_appeal_rewards(stage_id, lc):
     if not isinstance(tes, dict):
         return []
     reward_set_id = normalize_id(tes.get('first_clear_reward_set_id'))
+    return _decorate_reward_rows(_resolve_reward_rows_from_set_id(reward_set_id), lc)
+
+
+def resolve_tower_prev_cleared_rewards(stage_id, lc):
+    """GTower rerun: rewards for players who already cleared this floor in a prior event."""
+    sid = normalize_id(stage_id)
+    tes = (tower_event_stage_map or {}).get(sid, {})
+    if not isinstance(tes, dict):
+        return []
+    reward_set_id = normalize_id(tes.get('every_first_clear_reward_set_id'))
+    if reward_set_id == '0':
+        return []
     return _decorate_reward_rows(_resolve_reward_rows_from_set_id(reward_set_id), lc)
 
 
@@ -26424,7 +26437,7 @@ def get_stage(stage_id):
                         'ch' if is_challenge_stage else (
                             'ce' if is_chronicle_stage else 'er')))))
         # mstage18: chronicle/E-sim first-clear from node content FirstClearRewardSetId.
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage18"
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage19"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -26782,6 +26795,8 @@ def get_stage(stage_id):
             'sortie_groups': sg, 'map_data': md, 'npc_details': nd, 'lang': lc,
             'stage_category': stage_cat, 'stage_master_id': stage_master_id,
             'stage_rewards': stage_rewards,
+            'stage_prev_cleared_rewards': (
+                resolve_tower_prev_cleared_rewards(stage_id, lc) if is_tower_event_stage else []),
             'stage_secret_rewards': resolve_stage_secret_clear_rewards(stage_master_id, lc),
             'tower_rewards': stage_rewards if is_tower_event_stage else [], 'tower_side': tower_side,
             'has_capturable_units': len(capturable_units) > 0,
@@ -26931,7 +26946,7 @@ def get_unit(unit_id):
         if stat_mode_arg not in ('normal', 'sp', 'ssp'):
             stat_mode_arg = 'normal'
         cond_for_ranking = request.args.get('cond', '').strip().lower() in ('1', 'true', 'yes')
-        ck = f"u_{unit_id}_{lc}_ssp17_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+        ck = f"u_{unit_id}_{lc}_ssp18_{stat_mode_arg}_{1 if cond_for_ranking else 0}_{1 if view_ranking else 0}_bp3_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
