@@ -4872,35 +4872,29 @@ function _stageMapEscapeOverlapStacks(allUnits){
     });
   });
   const out=new Map();
-  const byNpc={};
-  pool.forEach(u=>{if(u&&u.npc_id!=null)byNpc[String(u.npc_id)]=u});
   Object.keys(byCell).forEach(k=>{
     const seen=new Set(),escUniq=[];
     byCell[k].forEach(u=>{const id=String(u.npc_id);if(!seen.has(id)){seen.add(id);escUniq.push(u)}});
-    for(let i=0;i<escUniq.length;i++){
-      const esc=escUniq[i];
-      const parent=byNpc[String(esc.escape_from_npc_id||'')];
-      if(!parent||!parent.escape_spawn_npc_id||String(parent.escape_spawn_npc_id)!==String(esc.npc_id))continue;
-      const parentCells=new Set();
-      _stageMapForEachEnemyCell(parent,ck=>parentCells.add(ck));
-      if(parentCells.has(k)){out.set(k,{cellKey:k,units:[parent,esc],parentPreview:true});return}
+    if(escUniq.length>=2){
+      escUniq.sort((a,b)=>{
+        const ac=Array.isArray(a.cells)?a.cells.length:1;
+        const bc=Array.isArray(b.cells)?b.cells.length:1;
+        if(ac!==bc)return ac-bc;
+        return String(a.npc_id||'').localeCompare(String(b.npc_id||''));
+      });
+      out.set(k,{cellKey:k,units:escUniq.slice(0,2)});
     }
-    if(escUniq.length>=2)out.set(k,{cellKey:k,units:escUniq.slice(0,2)});
   });
   return out;
 }
-function _stageMapEscapeSpawnInOverlapStack(spawn,allUnits){
-  if(!spawn||!_stageMapUnitIsEscapeSpawn(spawn))return false;
-  const stacks=_stageMapEscapeOverlapStacks(allUnits);
+function _stageMapEscapeUnitOverlapInfo(u,stacks){
+  if(!u||!stacks||!stacks.size)return null;
+  const nid=String(u.npc_id||'');
   for(const st of stacks.values()){
-    if(!st.units.some(u=>u===spawn))continue;
-    const cellN=Array.isArray(spawn.cells)?spawn.cells.length:1;
-    if(cellN>1)return false;
-    const bbox=_stageMapFootprintBBox(spawn,999,999);
-    if(bbox&&(bbox.fpw>1||bbox.fph>1))return false;
-    return true;
+    const idx=(st.units||[]).findIndex(x=>String(x.npc_id)===nid);
+    if(idx>=0)return{cellKey:st.cellKey,slot:idx===0?'a':'b'};
   }
-  return false;
+  return null;
 }
 function renderStageMapSection(d){
   const md=d.map_data||{};
@@ -5109,15 +5103,11 @@ const side=String(u.side||'').toLowerCase();
 if(side!=='enemy')return true;
 const escaped=_stageEscapedNpcIdSet();
 const nid=String(u.npc_id||'');
-const pool=allUnits!==undefined&&allUnits!==null?allUnits:S.currentDetailData?.map_data?.units;
   if(u.escape_spawn_npc_id&&escaped.has(nid))return false;
   if(u.escape_spawn_npc_id&&S.stageMapEscapeLayerVisible)return false;
   if(u.escape_from_npc_id){
   if(escaped.has(String(u.escape_from_npc_id)))return true;
-  if(S.stageMapEscapeLayerVisible){
-    if(_stageMapEscapeSpawnInOverlapStack(u,pool))return false;
-    return true;
-  }
+  if(S.stageMapEscapeLayerVisible)return true;
   return false;
 }
 if(S.stageMapReinforcementOnly)return true;
@@ -5289,6 +5279,8 @@ function _stageMapEscapeUnitsLayerHtml(pool,win,cellPx,gapPx,mapW,mapH){
   if(!S.stageMapEscapeLayerVisible)return'';
   const units=(pool||[]).filter(u=>_stageMapUnitVisible(u,pool)&&_stageMapUnitIsEscapeSpawn(u));
   if(!units.length)return'';
+  const overlapStacks=_stageMapEscapeOverlapStacks(pool);
+  if(!S.stageMapEscapeStackSwapped)S.stageMapEscapeStackSwapped={};
   const sorted=units.slice().sort((a,b)=>{
     const ay=_stageMapUnitOriginXY(a).y,by=_stageMapUnitOriginXY(b).y;
     if(ay!==by)return ay-by;
@@ -5298,7 +5290,15 @@ function _stageMapEscapeUnitsLayerHtml(pool,win,cellPx,gapPx,mapW,mapH){
   sorted.forEach(u=>{
     const box=_stageMapFootprintBoxPx(u,win,cellPx,gapPx,mapW,mapH);
     const origin=_stageMapUnitOriginXY(u);
-    const z=10+origin.y;
+    let z=10+origin.y;
+    const oi=_stageMapEscapeUnitOverlapInfo(u,overlapStacks);
+    let overlapCls='';
+    if(oi){
+      const swapped=!!S.stageMapEscapeStackSwapped[oi.cellKey];
+      overlapCls=` stage-map-escape-unit--overlap stage-map-escape-unit--overlap-${oi.slot}`+(swapped?' stage-map-escape-unit--overlap-swapped':'');
+      const onTop=(oi.slot==='a'&&!swapped)||(oi.slot==='b'&&swapped);
+      if(onTop)z+=3;
+    }
     const di=u.npc_detail_index;
     const hasDetail=di!=null&&di!==''&&!Number.isNaN(Number(di));
     const clickCls=hasDetail||u.unit_id||u.npc_id?' stage-map-escape-unit--click npc-clickable':'';
@@ -5308,63 +5308,30 @@ function _stageMapEscapeUnitsLayerHtml(pool,win,cellPx,gapPx,mapW,mapH){
     const friendlyCls=u.is_friendly_force?'friendly-force':'';
     const gimmickCls=u.is_gimmick?'gimmick':'';
     const fpStyle=` style="left:0;top:0;width:100%;height:100%;inset:auto;"`;
-    items+=`<div class="stage-map-escape-unit ${sideCls}${clickCls}" style="left:${box.left}px;top:${box.top}px;width:${box.w}px;height:${box.h}px;z-index:${z}" aria-label="${escAttr(u.name||'')}"${mapDataAttrs}>${_stageMapRenderUnitDotHtml(u,{guestCls,friendlyCls,gimmickCls,largeCls:u.is_large?'large':'',fpCls:' map-unit-dot--footprint',fpStyle})}</div>`;
+    items+=`<div class="stage-map-escape-unit ${sideCls}${overlapCls}${clickCls}" style="left:${box.left}px;top:${box.top}px;width:${box.w}px;height:${box.h}px;z-index:${z}" aria-label="${escAttr(u.name||'')}"${mapDataAttrs}${oi?` data-escape-overlap-key="${escAttr(oi.cellKey)}" data-escape-overlap-slot="${oi.slot}"`:''}>${_stageMapRenderUnitDotHtml(u,{guestCls,friendlyCls,gimmickCls,largeCls:u.is_large?'large':'',fpCls:' map-unit-dot--footprint',fpStyle})}</div>`;
   });
+  if(overlapStacks.size){
+    const switchLbl=t('unit_transform_title');
+    const tfIcon=imgUrl('/static/images/UI/UI_Common_BattleIcon_Transform.webp');
+    overlapStacks.forEach(stack=>{
+      const parts=stack.cellKey.split('_');
+      const x=Number(parts[0]),y=Number(parts[1]);
+      if(!Number.isFinite(x)||!Number.isFinite(y))return;
+      const box=_stageMapCellBoxPx(x,y,win,cellPx,gapPx);
+      items+=`<div class="stage-map-escape-overlap-switch-host" data-escape-overlap-key="${escAttr(stack.cellKey)}" style="left:${box.left}px;top:${box.top}px;width:${box.w}px;height:${box.h}px"><button type="button" class="stage-map-escape-overlap-switch" onclick="event.stopPropagation();toggleStageMapEscapeStackSwap('${escJs(stack.cellKey)}')" aria-label="${escAttr(switchLbl)}" title="${escAttr(switchLbl)}"><img src="${escAttr(tfIcon)}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'"></button></div>`;
+    });
+  }
   return `<div class="stage-map-escape-units-layer">${items}</div>`;
 }
-function _stageMapEscapeSharedItemHtml(u,slot,opts){
-  opts=opts||{};
-  const di=u.npc_detail_index;
-  const hasDetail=di!=null&&di!==''&&!Number.isNaN(Number(di));
-  const clickCls=hasDetail||u.unit_id||u.npc_id?' stage-map-escape-shared-item--click npc-clickable':'';
-  const mapDataAttrs=(hasDetail||u.unit_id||u.npc_id)?`${hasDetail?` data-npc-map-detail="${Number(di)}"`:''}${(u.npc_id!=null&&String(u.npc_id)!=='')?` data-npc-map-npc-id="${escAttr(String(u.npc_id))}"`:''}${u.unit_id?` data-npc-map-unit-id="${escAttr(String(u.unit_id))}"`:''} data-npc-map-escape-stack-cell="1"`:``;
-  const sideCls=String(u.side||'enemy').toLowerCase();
-  const guestCls=u.is_guest_ally?'ally-guest':'';
-  const friendlyCls=u.is_friendly_force?'friendly-force':'';
-  const gimmickCls=u.is_gimmick?'gimmick':'';
-  const previewCls=opts.preview?' stage-map-escape-shared-item--preview':'';
-  const mapArt=u.thum||u.portrait;
-  const supCh=_stageNpcCharacterByNpcId(u.npc_id);
-  const supBadge=_stageNpcSupportBadgeHtml(supCh,'map');
-  const thumbInner=mapArt?`<img class="stage-map-escape-shared-thumb" src="${imgUrl(mapArt)}" alt="" loading="lazy" onerror="this.style.display='none'">`:`<span class="stage-map-escape-shared-ph">${esc(String(u.name||'?').slice(0,1))}</span>`;
-  const overlayHtml=supBadge?`<div class="stage-map-escape-shared-overlay">${supBadge}</div>`:'';
-  return `<div class="stage-map-escape-shared-item stage-map-escape-shared-item--${slot}${previewCls}${clickCls}"${mapDataAttrs} title="${escAttr(u.name||'')}"><div class="stage-map-escape-shared-thumb-stack ${sideCls} ${guestCls} ${friendlyCls} ${gimmickCls}">${thumbInner}</div>${overlayHtml}</div>`;
-}
-function _stageMapRenderEscapeSharedStackHtml(stack,box){
-  const cellKey=stack.cellKey;
-  const units=stack.units||[];
-  if(units.length<2)return'';
-  if(!S.stageMapEscapeStackSwapped)S.stageMapEscapeStackSwapped={};
-  const swapped=!!S.stageMapEscapeStackSwapped[cellKey];
-  const swapCls=swapped?' stage-map-escape-shared--swapped':'';
-  const switchLbl=t('unit_transform_title');
-  const stackTt=t('stage_map_escape_stack_tt');
-  const tfIcon=imgUrl('/static/images/UI/UI_Common_BattleIcon_Transform.webp');
-  const posStyle=box?` style="left:${box.left}px;top:${box.top}px;width:${box.w}px;height:${box.h}px"`:'';
-  const previewA=!!stack.parentPreview;
-  return `<div class="stage-map-escape-shared${swapCls}" data-escape-stack-key="${escAttr(cellKey)}" title="${escAttr(stackTt)}"${posStyle}><button type="button" class="stage-map-escape-shared-switch" onclick="event.stopPropagation();toggleStageMapEscapeStackSwap('${escJs(cellKey)}')" aria-label="${escAttr(switchLbl)}" title="${escAttr(switchLbl)}"><img src="${escAttr(tfIcon)}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'"></button>${_stageMapEscapeSharedItemHtml(units[0],'a',{preview:previewA})}${_stageMapEscapeSharedItemHtml(units[1],'b')}</div>`;
-}
-function _stageMapEscapeSharedLayerHtml(stacks,win,cellPx,gapPx){
-  if(!stacks||!stacks.size)return'';
-  let items='';
-  stacks.forEach(stack=>{
-    const parts=stack.cellKey.split('_');
-    const x=Number(parts[0]),y=Number(parts[1]);
-    if(!Number.isFinite(x)||!Number.isFinite(y))return;
-    const box=_stageMapCellBoxPx(x,y,win,cellPx,gapPx);
-    items+=_stageMapRenderEscapeSharedStackHtml(stack,box);
-  });
-  return `<div class="stage-map-escape-shared-layer">${items}</div>`;
-}
-function _stageMapWireEscapeSharedTouch(){
+function _stageMapWireEscapeOverlapTouch(){
   const wrap=document.getElementById('stageMapGridWrap');
-  if(!wrap||wrap.dataset.escapeSharedTouchWired==='1')return;
-  wrap.dataset.escapeSharedTouchWired='1';
+  if(!wrap||wrap.dataset.escapeOverlapTouchWired==='1')return;
+  wrap.dataset.escapeOverlapTouchWired='1';
   wrap.addEventListener('touchstart',function(e){
-    const stack=e.target&&e.target.closest&&e.target.closest('.stage-map-escape-shared');
-    if(!stack||e.target.closest('.stage-map-escape-shared-switch'))return;
-    wrap.querySelectorAll('.stage-map-escape-shared--armed').forEach(el=>{if(el!==stack)el.classList.remove('stage-map-escape-shared--armed')});
-    stack.classList.add('stage-map-escape-shared--armed');
+    const host=e.target&&e.target.closest&&e.target.closest('.stage-map-escape-overlap-switch-host');
+    if(!host||e.target.closest('.stage-map-escape-overlap-switch'))return;
+    wrap.querySelectorAll('.stage-map-escape-overlap-switch-host--armed').forEach(el=>{if(el!==host)el.classList.remove('stage-map-escape-overlap-switch-host--armed')});
+    host.classList.add('stage-map-escape-overlap-switch-host--armed');
   },{passive:true});
 }
 function _stageMapRenderUnitDotHtml(u,opts){
@@ -5407,7 +5374,6 @@ function renderStageMapGrid(md){
   const {occ,w,h}=_stageMapBuildOccupancyMap(md);
   const units=pool.filter(u=>_stageMapUnitVisible(u,pool));
   const enemyStackKeys=_stageMapEnemyStackKeys(md.units||[]);
-  const escapeOverlapStacks=escapeOn?_stageMapEscapeOverlapStacks(pool):null;
   const ucHlSet=new Set(getActiveNpcUnitConditionHighlightIds());
   const win=_stageMapViewWindow(md);
   const vw=(win.maxX-win.minX+1),vh=(win.maxY-win.minY+1);
@@ -5484,12 +5450,11 @@ function renderStageMapGrid(md){
   }
   html+=`</div>`;
   const escapeLayerHtml=_stageMapEscapeUnitsLayerHtml(pool,win,cellPx,gapPx,mapW,mapH);
-  const escapeSharedLayerHtml=escapeOverlapStacks?_stageMapEscapeSharedLayerHtml(escapeOverlapStacks,win,cellPx,gapPx):'';
   const parentUnits=_stageMapEscapeParentUnits(pool);
   const parentOverlayHtml=renderStageMapParentOverlay(parentUnits,cellPx);
-  const mapBlock=`<div class="stage-map-grid-wrap${escapeOn?' stage-map-grid-wrap--escape':''}">${parentOverlayHtml}${html}${escapeLayerHtml}${escapeSharedLayerHtml}</div>`;
-  if(escapeOn&&(parentOverlayHtml||escapeSharedLayerHtml)){
-    setTimeout(_stageMapWireEscapeSharedTouch,0);
+  const mapBlock=`<div class="stage-map-grid-wrap${escapeOn?' stage-map-grid-wrap--escape':''}">${parentOverlayHtml}${html}${escapeLayerHtml}</div>`;
+  if(escapeOn&&(parentOverlayHtml||escapeLayerHtml.includes('stage-map-escape-overlap-switch-host'))){
+    setTimeout(_stageMapWireEscapeOverlapTouch,0);
     return`<div class="stage-map-viewport stage-map-viewport--escape">${mapBlock}</div>`;
   }
   return mapBlock
@@ -5569,7 +5534,7 @@ function toggleStageMapEscapeStackSwap(cellKey){
     const sl=gridWrap.scrollLeft,st=gridWrap.scrollTop;
     gridWrap.innerHTML=renderStageMapGrid(md);
     gridWrap.scrollLeft=sl;gridWrap.scrollTop=st;
-    _stageMapWireEscapeSharedTouch();
+    _stageMapWireEscapeOverlapTouch();
   }
 }
 function setStageMapSpawnOrderVisible(on){
@@ -6176,8 +6141,16 @@ return true;
 }
 function onStageMapUnitClick(detailIdx, ev, unitId, npcId, flashVariant){
 if(ev)ev.stopPropagation();
-const fv = flashVariant === 'stackReinf' ? 'stackReinf' : 'mapJump';
+const uid=unitId!=null&&String(unitId).trim()!==''&&String(unitId).trim()!=='0'?String(unitId).trim():'';
 const nid=npcId!=null&&String(npcId).trim()!==''?String(npcId).trim():'';
+if(S.currentDetailType==='stage'&&S.currentDetailData){
+if(uid){openStageNpcUnitByUnitId(uid);return}
+if(nid){
+const hit=_resolveStageNpcRow(nid);
+if(hit&&hit.row&&hit.row.unit&&hit.row.unit.id){openStageNpcEntityDetail('unit',String(hit.row.unit.id),nid);return}
+}
+}
+const fv = flashVariant === 'stackReinf' ? 'stackReinf' : 'mapJump';
 if(detailIdx!=null&&detailIdx!=='null'&&String(detailIdx).trim()!==''){
 const i=parseInt(detailIdx,10);
 if(!Number.isNaN(i)){
@@ -6195,7 +6168,7 @@ const dm=document.getElementById('detailModal');
 if(!dm||dm.dataset.stageMapNpcWired==='1')return;
 dm.dataset.stageMapNpcWired='1';
 dm.addEventListener('click',function(e){
-const cell=e.target&&e.target.closest&&e.target.closest('#stageMapGridWrap .map-cell.npc-clickable, #stageMapGridWrap .stage-map-parent-slot.npc-clickable, #stageMapGridWrap .stage-map-escape-unit.npc-clickable, #stageMapGridWrap .stage-map-escape-shared-item.npc-clickable');
+const cell=e.target&&e.target.closest&&e.target.closest('#stageMapGridWrap .map-cell.npc-clickable, #stageMapGridWrap .stage-map-parent-slot.npc-clickable, #stageMapGridWrap .stage-map-escape-unit.npc-clickable');
 if(!cell)return;
 e.stopPropagation();
 let detailIdx=null;
