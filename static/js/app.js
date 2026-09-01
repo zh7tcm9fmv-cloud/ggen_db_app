@@ -57,6 +57,12 @@ function imgUrl(path) {
         else out = gamePath;
     }
     if (_isBlockedMediaUrl(out)) out = '';
+    if (out && (out.indexOf('#') >= 0 || out.indexOf(' ') >= 0)) {
+        const q = out.indexOf('?');
+        const pathPart = q >= 0 ? out.slice(0, q) : out;
+        const queryPart = q >= 0 ? out.slice(q) : '';
+        out = pathPart.replace(/ /g, '%20').replace(/#/g, '%23') + queryPart;
+    }
     if (_imgUrlCache.size >= _imgUrlCacheMax) {
         const k = _imgUrlCache.keys().next().value;
         _imgUrlCache.delete(k);
@@ -70,10 +76,10 @@ function imgUrlPreferCdn(path) {
 }
 function imgUrlWebp(path) {
     if (!path) return '';
-    const base = String(path).split(/[?#]/)[0];
-    if (/\.webp$/i.test(base)) return imgUrl(path);
     const u = imgUrl(path);
     if (!u) return '';
+    const pathOnly = u.split('?')[0];
+    if (/\.webp$/i.test(pathOnly)) return u;
     return u.replace(/\.(png|jpg|jpeg)(\?|$)/i, '.webp$2');
 }
 /** Resolved http(s)/same-origin media URL, or '' — never emit empty/blocked src into the DOM. */
@@ -5410,10 +5416,10 @@ function _stageMapWireEscapeOverlapUi(){
   },{passive:true});
 }
 const STAGE_MAP_MAP_WEAPON_ICONS={
-  wideArea:'/static/images/Stages/UI_Battle_MapUI_Icon_MapWeapon_WideArea #1946370.webp',
-  impactWhite:'/static/images/Stages/UI_Battle_MapUI_Icon_ImpactRange_White #156405.webp',
-  impactYellow:'/static/images/Stages/UI_Battle_MapUI_Icon_ImpactRange_Yellow #156743.webp',
-  impactPoint:'/static/images/Stages/UI_Battle_MapUI_Icon_ImpactRange_Point #156328.webp'
+  wideArea:'/static/images/Stages/UI_Battle_MapUI_Icon_MapWeapon_WideArea.webp',
+  impactWhite:'/static/images/Stages/UI_Battle_MapUI_Icon_ImpactRange_White.webp',
+  impactYellow:'/static/images/Stages/UI_Battle_MapUI_Icon_ImpactRange_Yellow.webp',
+  impactPoint:'/static/images/Stages/UI_Battle_MapUI_Icon_ImpactRange_Point.webp'
 };
 function _stageMapNpcMapWeapon(u){
   if(!u)return null;
@@ -5467,50 +5473,55 @@ function _stageMapMapWeaponWorldCells(u,weapon){
     const ix=pivot.x+impOff.x,iy=pivot.y+impOff.y;
     ec.forEach(c=>{
       const r=_stageMapRotateWeaponCoord(c.x,c.y,dir);
-      effect.add(`${ix+r.x}_${iy+r.y}`);
+      effect.add(`${ix+r.x}|${iy+r.y}`);
     });
     return{kind,effect,impact:{x:ix,y:iy}};
   }
   ec.forEach(c=>{
     const r=_stageMapRotateWeaponCoord(c.x,c.y,dir);
-    effect.add(`${pivot.x+r.x}_${pivot.y+r.y}`);
+    effect.add(`${pivot.x+r.x}|${pivot.y+r.y}`);
   });
   return{kind,effect,impact:null};
 }
-function _stageMapMapWeaponLayerHtml(pool,win,cellPx,gapPx,gridPad,mapW,mapH){
-  if(!_stageMapMapWeaponLayerShown())return'';
+function _stageMapBuildMapWeaponCellOverlays(pool,mapW,mapH){
+  const effect={};
+  const impact=new Set();
+  if(!_stageMapMapWeaponLayerShown())return{effect,impact};
   const units=(pool||[]).filter(u=>_stageMapUnitVisible(u,pool)&&_stageMapNpcMapWeapon(u));
-  if(!units.length)return'';
-  const wideSrc=imgUrlWebp(imgUrlPreferCdn(STAGE_MAP_MAP_WEAPON_ICONS.wideArea));
-  const whiteSrc=imgUrlWebp(imgUrlPreferCdn(STAGE_MAP_MAP_WEAPON_ICONS.impactWhite));
-  const yellowSrc=imgUrlWebp(imgUrlPreferCdn(STAGE_MAP_MAP_WEAPON_ICONS.impactYellow));
-  const pointSrc=imgUrlWebp(imgUrlPreferCdn(STAGE_MAP_MAP_WEAPON_ICONS.impactPoint));
-  const imgErr=' onerror="this.style.display=\'none\'"';
-  let html='<div class="stage-map-map-weapon-layer" aria-hidden="true">';
   units.forEach(u=>{
     const weapon=_stageMapNpcMapWeapon(u);
     if(!weapon)return;
-    const {kind,effect,impact}=_stageMapMapWeaponWorldCells(u,weapon);
-    effect.forEach(key=>{
-      const parts=key.split('_');
+    const {kind,effect:effCells,impact:imp}=_stageMapMapWeaponWorldCells(u,weapon);
+    effCells.forEach(key=>{
+      const parts=String(key).split('|');
       const wx=Number(parts[0]),wy=Number(parts[1]);
       if(!Number.isFinite(wx)||!Number.isFinite(wy))return;
       const cx=wx+1,cy=wy+1;
       if(cx<1||cy<1||cx>mapW||cy>mapH)return;
-      const box=_stageMapCellBoxPx(cx,cy,win,cellPx,gapPx,gridPad);
-      const icSrc=kind==='impact'?whiteSrc:wideSrc;
-      const icCls=kind==='impact'?'stage-map-map-weapon-ic stage-map-map-weapon-ic--impact':'stage-map-map-weapon-ic stage-map-map-weapon-ic--wide';
-      html+=`<div class="stage-map-map-weapon-cell" style="left:${box.left}px;top:${box.top}px;width:${box.w}px;height:${box.h}px"><img class="${icCls}" src="${escAttr(icSrc)}" alt="" loading="lazy" decoding="async"${imgErr}></div>`;
+      effect[`${cx}_${cy}`]=kind;
     });
-    if(impact&&kind==='impact'){
-      const cx=impact.x+1,cy=impact.y+1;
-      if(cx>=1&&cy>=1&&cx<=mapW&&cy<=mapH){
-        const box=_stageMapCellBoxPx(cx,cy,win,cellPx,gapPx,gridPad);
-        html+=`<div class="stage-map-map-weapon-impact" style="left:${box.left}px;top:${box.top}px;width:${box.w}px;height:${box.h}px"><img class="stage-map-map-weapon-impact-point" src="${escAttr(pointSrc)}" alt="" loading="lazy" decoding="async"${imgErr}><img class="stage-map-map-weapon-impact-yellow" src="${escAttr(yellowSrc)}" alt="" loading="lazy" decoding="async"${imgErr}></div>`;
-      }
+    if(imp&&kind==='impact'){
+      const cx=imp.x+1,cy=imp.y+1;
+      if(cx>=1&&cy>=1&&cx<=mapW&&cy<=mapH)impact.add(`${cx}_${cy}`);
     }
   });
-  html+='</div>';
+  return{effect,impact};
+}
+function _stageMapMapWeaponCellOverlayHtml(cellKey,mwOverlays){
+  if(!mwOverlays||!_stageMapMapWeaponLayerShown())return'';
+  const kind=mwOverlays.effect[cellKey];
+  const isImpactPt=mwOverlays.impact.has(cellKey);
+  if(!kind&&!isImpactPt)return'';
+  const mkErr=' onerror="gameImageUrlFallback(this)"';
+  let html='';
+  if(kind==='impact'&&!isImpactPt){
+    html+=`<img class="stage-map-cell-map-weapon-ic stage-map-cell-map-weapon-ic--impact"${imgSrcAttr(STAGE_MAP_MAP_WEAPON_ICONS.impactWhite)} alt="" loading="lazy" decoding="async"${mkErr}>`;
+  }else if(kind==='dash'){
+    html+=`<img class="stage-map-cell-map-weapon-ic stage-map-cell-map-weapon-ic--wide"${imgSrcAttr(STAGE_MAP_MAP_WEAPON_ICONS.wideArea)} alt="" loading="lazy" decoding="async"${mkErr}>`;
+  }
+  if(isImpactPt){
+    html+=`<div class="stage-map-cell-map-weapon-impact" aria-hidden="true"><img class="stage-map-cell-map-weapon-impact-point"${imgSrcAttr(STAGE_MAP_MAP_WEAPON_ICONS.impactPoint)} alt="" loading="lazy" decoding="async"${mkErr}><img class="stage-map-cell-map-weapon-impact-yellow"${imgSrcAttr(STAGE_MAP_MAP_WEAPON_ICONS.impactYellow)} alt="" loading="lazy" decoding="async"${mkErr}></div>`;
+  }
   return html;
 }
 function _stageMapRenderUnitDotHtml(u,opts){
@@ -5557,8 +5568,9 @@ function renderStageMapGrid(md){
   const ucHlSet=new Set(getActiveNpcUnitConditionHighlightIds());
   const win=_stageMapViewWindow(md);
   const vw=(win.maxX-win.minX+1),vh=(win.maxY-win.minY+1);
+  const mwOverlays=_stageMapBuildMapWeaponCellOverlays(pool,mapW,mapH);
   const bgStyle=hasBg?_stageMapBgStyleAttr(md,win,cellPx,gapPx):'';
-  let html=`<div class="map-grid${hasBg?' map-grid--has-bg':''}${escapeOn?' map-grid--escape':''}" style="--cell:${cellPx}px;--map-gap:${gapPx}px;gap:var(--map-gap);grid-template-columns:repeat(${vw},var(--cell));${bgStyle}">`;
+  let html=`<div class="map-grid${hasBg?' map-grid--has-bg':''}${escapeOn?' map-grid--escape':''}${_stageMapMapWeaponLayerShown()?' map-grid--map-weapon':''}" style="--cell:${cellPx}px;--map-gap:${gapPx}px;gap:var(--map-gap);grid-template-columns:repeat(${vw},var(--cell));${bgStyle}">`;
   for(let y=win.maxY;y>=win.minY;y--){
     for(let x=win.minX;x<=win.maxX;x++){
       const o=occ[`${x}_${y}`],u=o?o.unit:null;
@@ -5624,16 +5636,16 @@ function renderStageMapGrid(md){
         if(showStepOrder)html+=`<span class="map-cell-step-badge" aria-hidden="true">${fmtN(_stageNpcStepOrder(u))}</span>`
       }
       if(showBuffArea)html+=_stageMapBuffHoverPopoverHtml(buffArea);
+      if(_stageMapMapWeaponLayerShown())html+=_stageMapMapWeaponCellOverlayHtml(ck,mwOverlays);
       if(_stageMapHitReachTargetCell(md,x,y))html+=`<img class="map-stage-reach-flag-icon" src="${imgUrlPreferCdn('/static/images/UI/UI_Common_Icon_Flag.webp')}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">`
       html+=`</div>`
     }
   }
   html+=`</div>`;
   const escapeLayerHtml=_stageMapEscapeUnitsLayerHtml(pool,win,cellPx,gapPx,mapW,mapH,gridPad);
-  const mapWeaponLayerHtml=_stageMapMapWeaponLayerHtml(pool,win,cellPx,gapPx,gridPad,mapW,mapH);
   const parentUnits=_stageMapEscapeParentUnits(pool);
   const parentOverlayHtml=renderStageMapParentOverlay(parentUnits,cellPx);
-  const mapBlock=`<div class="stage-map-grid-wrap${escapeOn?' stage-map-grid-wrap--escape':''}">${parentOverlayHtml}${html}${mapWeaponLayerHtml}${escapeLayerHtml}</div>`;
+  const mapBlock=`<div class="stage-map-grid-wrap${escapeOn?' stage-map-grid-wrap--escape':''}">${parentOverlayHtml}${html}${escapeLayerHtml}</div>`;
   if(escapeOn&&(parentOverlayHtml||escapeLayerHtml.includes('stage-map-escape-overlap-host'))){
     setTimeout(_stageMapWireEscapeOverlapUi,0);
     return`<div class="stage-map-viewport stage-map-viewport--escape">${mapBlock}</div>`;
@@ -5747,11 +5759,7 @@ function setStageMapBuffAreasVisible(on){
 }
 function setStageMapMapWeaponVisible(on){
   S.stageMapMapWeaponVisible=!!on;
-  if(S.currentDetailType==='stage'&&S.stageMapExpanded){
-    const gridWrap=document.getElementById('stageMapGridWrap');
-    const md=S.currentDetailData&&S.currentDetailData.map_data;
-    if(gridWrap&&md&&md.width>0&&md.height>0)gridWrap.innerHTML=renderStageMapGrid(md)
-  }
+  _refreshStageMapAndNpcPanelsPreserveScroll();
 }
 function _stageMapBounds(){
   const md=S.currentDetailData?.map_data||{};
