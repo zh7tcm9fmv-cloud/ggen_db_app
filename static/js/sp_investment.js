@@ -1421,7 +1421,7 @@
     return payload[board] || {};
   }
 
-  /** Browse-parity name shortcuts (SF / IJ / God / FATB / Devil). */
+  /** Browse-parity name shortcuts (SF / IJ / God / FATB / Devil / Spiegel). */
   function expandSpiSearchQuery(q) {
     let s = String(q || '').trim();
     if (!s) return '';
@@ -1429,6 +1429,8 @@
     s = s.replace(/\bfatb\b/gi, 'full armor gundam thunderbolt');
     s = s.replace(/\bsf\b/gi, 'strike freedom');
     s = s.replace(/\bgod\b/gi, 'burning gundam');
+    s = s.replace(/\bdevil\b/gi, 'dark gundam');
+    s = s.replace(/\bspiegel\b/gi, 'shadow gundam');
     s = s.replace(/\bij\b/gi, 'infinite justice');
     return s.trim();
   }

@@ -1010,12 +1010,24 @@ SERIES_ID_AFTER_WAR_GUNDAM_X = '2300'
 UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID = {
     '1200003900': ' god',
     '1200003950': ' god',
+    '1200001100': ' spiegel',
+    '1200002210': ' devil',
+    '1200002300': ' devil',
+    '1200005300': ' devil',
 }
 
 # A search box query that is only the token "dx" (DX ≡ Double X) returns exactly these roster rows; locale-agnostic.
 DOUBLE_X_DX_TOKEN_UNIT_IDS = frozenset({'1230003800', '1230003850', '1230005300'})
 # Query "00" only: these unit rows only (by id), not every title in m_series 3700 — keeps browse aligned with name/id intent.
 UNIT_SEARCH_SHORTHAND_00_UNIT_IDS = frozenset({'1370006200', '1370005700', '1370005900', '1370005950'})
+# ScheduleId 9999990001 = stage/NPC shell rows in master (not obtainable in-game).
+SCHEDULE_ID_NONPLAYABLE_SHELL = '9999990001'
+# Browse shorthand: list every ScheduleId 9999990001 shell row (characters tab / units tab).
+NPC123_SEARCH_TOKEN = 'npc123'
+
+
+def entity_is_nonplayable_schedule_shell(schedule_id):
+    return normalize_id(schedule_id or '0') == SCHEDULE_ID_NONPLAYABLE_SHELL
 
 def jst_three_month_window_start_ms():
     """First instant of JST calendar month = (current month − 2), i.e. current + 2 prior months."""
@@ -10366,7 +10378,17 @@ def _build_char_list_playable_ids():
     return s
 
 
-char_list_playable_ids = _build_char_list_playable_ids()
+_char_ability_playable_ids = _build_char_list_playable_ids()
+char_schedule_shell_ids = frozenset(
+    cid for cid in _char_ability_playable_ids
+    if entity_is_nonplayable_schedule_shell(char_info_map.get(cid, {}).get('schedule_id', '0'))
+)
+char_list_playable_ids = _char_ability_playable_ids - char_schedule_shell_ids
+
+unit_schedule_shell_ids = frozenset(
+    uid for uid, info in unit_info_map.items()
+    if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'))
+)
 weapon_info_map = create_weapon_master_map(weapon_master); weapon_status_map = create_weapon_status_map(weapon_status_data)
 weapon_correction_map = create_weapon_correction_map(weapon_correction_data)
 growth_pattern_map = create_growth_pattern_map(weapon_growth_data)
@@ -11222,6 +11244,7 @@ def _unit_transform_alt_search_match(uid, sq, ld, lc, q_scope='name_id'):
     return search_row_matches_query(
         sq, ss, ser_names_lower, ser_list, entity_id=uid,
         primary=(q_scope in ('primary', 'name_id')),
+        schedule_shell_kind='unit',
     )
 
 
@@ -15831,8 +15854,10 @@ SEARCH_QUERY_SHORTCUTS_EXACT = {
     'sf': 'strike freedom',
     'ij': 'infinite justice',
     'god': 'burning gundam',
+    'devil': 'dark gundam',
     'devil gundam': 'dark gundam',
     'devilgundam': 'dark gundam',
+    'spiegel': 'shadow gundam',
 }
 
 
@@ -15891,6 +15916,44 @@ def _search_query_is_dx_token_only(pq):
     if len(pos) != 1:
         return False
     return (pos[0] or '').strip().lower() == 'dx'
+
+
+def _search_query_is_npc123_token_only(pq):
+    """True when the query is only npc123 (schedule-shell roster shorthand)."""
+    if not pq or pq.get('negative') or pq.get('series') or pq.get('series_ids'):
+        return False
+    pos = pq.get('positive') or []
+    if len(pos) != 1:
+        return False
+    return (pos[0] or '').strip().lower() == NPC123_SEARCH_TOKEN
+
+
+def search_query_is_npc123_list_seek(sq):
+    if not sq or not str(sq).strip():
+        return False
+    return _search_query_is_npc123_token_only(parse_search_query(sq))
+
+
+def character_npc123_shell_seek(sq, cid):
+    return search_query_is_npc123_list_seek(sq) and normalize_id(cid) in char_schedule_shell_ids
+
+
+def unit_npc123_shell_seek(sq, uid):
+    return search_query_is_npc123_list_seek(sq) and normalize_id(uid) in unit_schedule_shell_ids
+
+
+def entity_privileged_npc_browse_seek(sq, eid, kind, *, id_seek=None):
+    """ID seek with NPC password, or npc123 schedule-shell list seek."""
+    eid = normalize_id(eid)
+    if id_seek is None:
+        id_seek = bool(sq and search_query_matches_entity_id(sq, eid))
+    if id_seek and npc_password_unlocked():
+        return True
+    if kind == 'character':
+        return character_npc123_shell_seek(sq, eid)
+    if kind == 'unit':
+        return unit_npc123_shell_seek(sq, eid)
+    return False
 
 
 def _search_fold(s):
@@ -15994,7 +16057,7 @@ def _search_term_matches_in_text(term, haystack_lower, *, primary=False):
     return _search_substring_in_haystack(t, haystack_lower)
 
 
-def search_row_matches_query(sq, haystack_lower, series_names_lower_list, ser_list=None, entity_id=None, primary=False):
+def search_row_matches_query(sq, haystack_lower, series_names_lower_list, ser_list=None, entity_id=None, primary=False, schedule_shell_kind=None):
     """AND: all positive terms match haystack; none of negative; each series term matches some series name (or combined tags string).
     series_names_lower_list: list of strings (per-series names, or one element = full tag blob for mods). None = entity type has no series data → series: terms never match.
     ser_list: optional resolved series dicts [{id, name, icon}, ...] for exact series_id: filters.
@@ -16021,6 +16084,17 @@ def search_row_matches_query(sq, haystack_lower, series_names_lower_list, ser_li
             and eid_n in UNIT_SEARCH_SHORTHAND_00_UNIT_IDS
         ):
             pass
+        elif _search_query_is_npc123_token_only(pq):
+            if not eid_n:
+                return False
+            if schedule_shell_kind == 'character':
+                if eid_n not in char_schedule_shell_ids:
+                    return False
+            elif schedule_shell_kind == 'unit':
+                if eid_n not in unit_schedule_shell_ids:
+                    return False
+            elif eid_n not in char_schedule_shell_ids and eid_n not in unit_schedule_shell_ids:
+                return False
         else:
             for p in pq['positive']:
                 for sub in _positive_segment_subterms(p):
@@ -17524,7 +17598,7 @@ def _spi_entity_is_nonplayable_shell(eid, kind):
         info = char_info_map.get(eid) or {}
     else:
         info = unit_info_map.get(eid) or {}
-    return normalize_id(info.get('schedule_id', '0')) == '9999990001'
+    return entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'))
 
 
 def _sp_investment_drop_nonplayable_rows(payload):
@@ -20603,36 +20677,40 @@ def character_passes_browse_pool_filters(
     ri = info.get('rarity', '1')
     role_id = info.get('role', '0')
     id_seek = bool(sq and search_query_matches_entity_id(sq, cid))
-    if role_id == '0' and not (id_seek and npc_password_unlocked()):
+    priv_seek = entity_privileged_npc_browse_seek(sq, cid, 'character', id_seek=id_seek)
+    npc123_list = search_query_is_npc123_list_seek(sq)
+    if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')) and not priv_seek:
+        return False
+    if role_id == '0' and not priv_seek:
         return False
     if role_filter is not None:
         if not role_filter:
             return False
-        if not id_seek and role_id not in role_filter:
+        if not (id_seek or npc123_list) and role_id not in role_filter:
             return False
     if rarity_filter is not None:
         if not rarity_filter:
             return False
-        if not id_seek:
+        if not (id_seek or npc123_list):
             letter = RARITY_MAP.get(str(ri), 'N')
             lim = cid in LIMITED_TIME_CHARACTER_IDS
             if not row_matches_rarity_filter(rarity_filter, letter, lim):
                 return False
     acq_route = str(info.get('acquisition_route', '0'))
     if source_filter is not None:
-        if not id_seek and not entity_matches_source_category(acq_route, role_id, source_filter):
+        if not (id_seek or npc123_list) and not entity_matches_source_category(acq_route, role_id, source_filter):
             return False
     if apply_lineage and lineage_filter is not None:
-        if not id_seek and not entity_matches_lineage(char_lin_map, cid, lineage_filter, lineage_combine):
+        if not (id_seek or npc123_list) and not entity_matches_lineage(char_lin_map, cid, lineage_filter, lineage_combine):
             return False
     if apply_series and series_filter is not None:
-        if not id_seek and not entity_matches_series(ld.get('char_ser_map', {}).get(cid, ''), series_filter, lc, series_combine):
+        if not (id_seek or npc123_list) and not entity_matches_series(ld.get('char_ser_map', {}).get(cid, ''), series_filter, lc, series_combine):
             return False
     if apply_skill and skill_filter is not None:
-        if not id_seek and not entity_matches_char_skills(cid, skill_filter, skill_combine):
+        if not (id_seek or npc123_list) and not entity_matches_char_skills(cid, skill_filter, skill_combine):
             return False
     if apply_ability and ability_filter is not None:
-        if not id_seek and not entity_matches_char_abilities(cid, ability_filter, trait_combine):
+        if not (id_seek or npc123_list) and not entity_matches_char_abilities(cid, ability_filter, trait_combine):
             return False
     lid = ld['char_id_map'].get(cid, '')
     name = ld['char_text_map'].get(lid, '') if lid else ''
@@ -20640,9 +20718,9 @@ def character_passes_browse_pool_filters(
         name = f'Unknown ({cid})'
     ser_list = resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)
     ser_names_lower = series_names_lower_for_search(ser_list)
-    if cid not in char_list_playable_ids and not id_seek:
+    if cid not in char_list_playable_ids and not priv_seek:
         return False
-    if not id_seek and not browse_entity_has_resolved_lineage_tags(char_lin_map, cid, lc, 'character'):
+    if not priv_seek and not browse_entity_has_resolved_lineage_tags(char_lin_map, cid, lc, 'character'):
         return False
     if sq:
         search_chunks = []
@@ -20677,7 +20755,7 @@ def character_passes_browse_pool_filters(
                 + ' '
                 + ' '.join(search_chunks)
             ).strip().lower()
-        if not search_row_matches_query(sq, ss, ser_names_lower, ser_list, entity_id=cid, primary=(q_scope in ('primary', 'name_id'))):
+        if not search_row_matches_query(sq, ss, ser_names_lower, ser_list, entity_id=cid, primary=(q_scope in ('primary', 'name_id')), schedule_shell_kind='character'):
             return False
     return True
 
@@ -21144,14 +21222,18 @@ def unit_passes_browse_pool_filters(
     id_seek = bool(sq and search_query_matches_entity_id(sq, uid))
     alt_seek = bool(sq and _unit_transform_alt_search_match(uid, sq, ld, lc, q_scope))
     direct_seek = id_seek or alt_seek
-    if role_id == '0' and not (id_seek and npc_password_unlocked()):
+    shell123_seek = unit_npc123_shell_seek(sq, uid)
+    priv_seek = (direct_seek and npc_password_unlocked()) or shell123_seek
+    npc123_list = search_query_is_npc123_list_seek(sq)
+    wide_seek = direct_seek or shell123_seek
+    if role_id == '0' and not priv_seek:
         return False
-    if not unit_has_ms_ability_content(uid) and not (id_seek and npc_password_unlocked()):
+    if not unit_has_ms_ability_content(uid) and not priv_seek:
         return False
     _muid = normalize_id(info.get('main_unit_id', uid))
     if _muid == '0':
         _muid = uid
-    if uid != _muid and not direct_seek:
+    if uid != _muid and not wide_seek:
         return False
     _shape_kw = dict(
         role_filter=role_filter,
@@ -21168,7 +21250,7 @@ def unit_passes_browse_pool_filters(
         pilot_cond_active=pilot_cond_active,
     )
     _debuff = weapon_debuff_filter if apply_weapon_debuff else None
-    if not direct_seek and not unit_matches_browse_form_filters(
+    if not wide_seek and not unit_matches_browse_form_filters(
             uid, info, ld, lc, stat_mode,
             weapon_debuff_filter=_debuff, weapon_debuff_combine=weapon_debuff_combine,
             **_shape_kw):
@@ -21176,7 +21258,7 @@ def unit_passes_browse_pool_filters(
     if rarity_filter is not None:
         if not rarity_filter:
             return False
-        if not direct_seek:
+        if not (direct_seek or npc123_list):
             letter = RARITY_MAP.get(str(ri), 'N')
             lim = uid in LIMITED_TIME_UNIT_IDS
             if not row_matches_rarity_filter(
@@ -21185,16 +21267,16 @@ def unit_passes_browse_pool_filters(
                 return False
     acq_route = str(info.get('acquisition_route', '0'))
     if source_filter is not None:
-        if not direct_seek and not entity_matches_source_category(acq_route, role_id, source_filter):
+        if not (direct_seek or npc123_list) and not entity_matches_source_category(acq_route, role_id, source_filter):
             return False
     if apply_lineage and lineage_filter is not None:
-        if not direct_seek and not entity_matches_lineage(unit_lin_map, uid, lineage_filter, lineage_combine):
+        if not (direct_seek or npc123_list) and not entity_matches_lineage(unit_lin_map, uid, lineage_filter, lineage_combine):
             return False
     if apply_series and series_filter is not None:
-        if not direct_seek and not entity_matches_series(unit_ser_map.get(uid, ''), series_filter, lc, series_combine):
+        if not (direct_seek or npc123_list) and not entity_matches_series(unit_ser_map.get(uid, ''), series_filter, lc, series_combine):
             return False
     if apply_ability and ability_filter is not None:
-        if not direct_seek and not entity_matches_unit_abilities_filter(uid, ability_filter, ability_combine):
+        if not (direct_seek or npc123_list) and not entity_matches_unit_abilities_filter(uid, ability_filter, ability_combine):
             return False
     lid = ld['unit_id_map'].get(uid, '')
     name = ld['unit_text_map'].get(lid, '') if lid else ''
@@ -21202,9 +21284,9 @@ def unit_passes_browse_pool_filters(
         name = f'Unknown ({uid})'
     ser_list = resolve_series(unit_ser_map.get(uid, ''), lc)
     ser_names_lower = series_names_lower_for_search(ser_list)
-    if uid not in unit_list_playable_ids and not id_seek:
+    if uid not in unit_list_playable_ids and not priv_seek:
         return False
-    if not id_seek and not browse_entity_has_resolved_lineage_tags(unit_lin_map, uid, lc, 'unit'):
+    if not priv_seek and not browse_entity_has_resolved_lineage_tags(unit_lin_map, uid, lc, 'unit'):
         return False
     if sq:
         search_chunks = []
@@ -21247,7 +21329,7 @@ def unit_passes_browse_pool_filters(
                 + ' '.join(search_chunks)
             ).strip()
         ss = (ss + UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID.get(uid, '')).strip().lower()
-        if not search_row_matches_query(sq, ss, ser_names_lower, ser_list, entity_id=uid, primary=(q_scope in ('primary', 'name_id'))):
+        if not search_row_matches_query(sq, ss, ser_names_lower, ser_list, entity_id=uid, primary=(q_scope in ('primary', 'name_id')), schedule_shell_kind='unit'):
             return False
     return True
 
@@ -21957,45 +22039,49 @@ def list_characters():
             continue
         ri = info.get('rarity','1'); role_id = info.get('role','0')
         id_seek = bool(sq and search_query_matches_entity_id(sq, cid))
+        priv_seek = entity_privileged_npc_browse_seek(sq, cid, 'character', id_seek=id_seek)
+        npc123_list = search_query_is_npc123_list_seek(sq)
+        if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')) and not priv_seek:
+            continue
         # Role 0 = no combat role (NPC / story); reveal only with id search + unlocked password session.
-        if role_id == '0' and not (id_seek and npc_password_unlocked()):
+        if role_id == '0' and not priv_seek:
             continue
         if role_filter is not None:
             if not role_filter:
                 continue
-            if not id_seek and role_id not in role_filter:
+            if not (id_seek or npc123_list) and role_id not in role_filter:
                 continue
         if rarity_filter is not None:
             if not rarity_filter:
                 continue
-            if not id_seek:
+            if not (id_seek or npc123_list):
                 letter = RARITY_MAP.get(str(ri), 'N')
                 lim = cid in LIMITED_TIME_CHARACTER_IDS
                 if not row_matches_rarity_filter(rarity_filter, letter, lim):
                     continue
         acq_route = str(info.get('acquisition_route', '0'))
         if source_filter is not None:
-            if not id_seek and not entity_matches_source_category(acq_route, role_id, source_filter):
+            if not (id_seek or npc123_list) and not entity_matches_source_category(acq_route, role_id, source_filter):
                 continue
         if lineage_filter is not None:
-            if not id_seek and not entity_matches_lineage(char_lin_map, cid, lineage_filter, _cbc['lineage_combine']):
+            if not (id_seek or npc123_list) and not entity_matches_lineage(char_lin_map, cid, lineage_filter, _cbc['lineage_combine']):
                 continue
         if series_filter is not None:
-            if not id_seek and not entity_matches_series(ld.get('char_ser_map', {}).get(cid, ''), series_filter, lc, _cbc['series_combine']):
+            if not (id_seek or npc123_list) and not entity_matches_series(ld.get('char_ser_map', {}).get(cid, ''), series_filter, lc, _cbc['series_combine']):
                 continue
         if skill_filter is not None:
-            if not id_seek and not entity_matches_char_skills(cid, skill_filter, _cbc['skill_combine']):
+            if not (id_seek or npc123_list) and not entity_matches_char_skills(cid, skill_filter, _cbc['skill_combine']):
                 continue
         if ability_filter is not None:
-            if not id_seek and not entity_matches_char_abilities(cid, ability_filter, _cbc['trait_combine']):
+            if not (id_seek or npc123_list) and not entity_matches_char_abilities(cid, ability_filter, _cbc['trait_combine']):
                 continue
         lid = ld['char_id_map'].get(cid, ''); name = ld['char_text_map'].get(lid, '') if lid else ''
         if not name: name = f"Unknown ({cid})"
         ser_list = resolve_series(ld.get('char_ser_map', {}).get(cid, ''), lc)
         ser_names_lower = series_names_lower_for_search(ser_list)
-        if cid not in char_list_playable_ids and not id_seek:
+        if cid not in char_list_playable_ids and not priv_seek:
             continue
-        if not id_seek and not browse_entity_has_resolved_lineage_tags(char_lin_map, cid, lc, 'character'):
+        if not priv_seek and not browse_entity_has_resolved_lineage_tags(char_lin_map, cid, lc, 'character'):
             continue
         if sq:
             search_chunks = []
@@ -22030,7 +22116,7 @@ def list_characters():
                     + ' '
                     + ' '.join(search_chunks)
                 ).strip().lower()
-            if not search_row_matches_query(sq, ss, ser_names_lower, ser_list, entity_id=cid, primary=(q_scope in ('primary', 'name_id'))):
+            if not search_row_matches_query(sq, ss, ser_names_lower, ser_list, entity_id=cid, primary=(q_scope in ('primary', 'name_id')), schedule_shell_kind='character'):
                 continue
         # Match get_character: only rarities 1–4 have SP growth / SP ability column; UR (5) always uses non-SP stats.
         has_sp_char = int(str(ri)) <= 4
@@ -22047,7 +22133,7 @@ def list_characters():
         acq = acq_route; acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
         # Omit series / rarity_icon — unused by browse/ranking/TB list UI.
         # is_limited_time is on the row so Units/Characters can filter rarity locally.
-        row = {'id': cid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'is_limited_time': cid in LIMITED_TIME_CHARACTER_IDS, 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)}
+        row = {'id': cid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'is_limited_time': cid in LIMITED_TIME_CHARACTER_IDS, 'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')), 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)}
         rows.append(row)
     rows = sort_rows(rows, sb, sd, {'name','role','rarity','Ranged','Melee','Awaken','Defense','Reaction'})
     stat_bounds = list_rows_stat_bounds(rows, sb) if want_stat_bounds else None
@@ -22145,19 +22231,23 @@ def list_units():
         id_seek = bool(sq and search_query_matches_entity_id(sq, uid))
         alt_seek = bool(sq and _unit_transform_alt_search_match(uid, sq, ld, lc, q_scope))
         direct_seek = id_seek or alt_seek
-        if role_id == '0' and not (id_seek and npc_password_unlocked()):
+        shell123_seek = unit_npc123_shell_seek(sq, uid)
+        priv_seek = (direct_seek and npc_password_unlocked()) or shell123_seek
+        npc123_list = search_query_is_npc123_list_seek(sq)
+        wide_seek = direct_seek or shell123_seek
+        if role_id == '0' and not priv_seek:
             continue
-        if not unit_has_ms_ability_content(uid) and not (id_seek and npc_password_unlocked()):
+        if not unit_has_ms_ability_content(uid) and not priv_seek:
             continue
         _muid = normalize_id(info.get('main_unit_id', uid))
         if _muid == '0':
             _muid = uid
-        if uid != _muid and not direct_seek:
+        if uid != _muid and not wide_seek:
             continue
         if rarity_filter is not None:
             if not rarity_filter:
                 continue
-            if not direct_seek:
+            if not (direct_seek or npc123_list):
                 letter = RARITY_MAP.get(str(ri), 'N')
                 lim = uid in LIMITED_TIME_UNIT_IDS
                 if not row_matches_rarity_filter(
@@ -22166,19 +22256,19 @@ def list_units():
                     continue
         acq_route = str(info.get('acquisition_route', '0'))
         if source_filter is not None:
-            if not direct_seek and not entity_matches_source_category(acq_route, role_id, source_filter):
+            if not (direct_seek or npc123_list) and not entity_matches_source_category(acq_route, role_id, source_filter):
                 continue
         if lineage_filter is not None:
-            if not direct_seek and not entity_matches_lineage(unit_lin_map, uid, lineage_filter, _cbu['lineage_combine']):
+            if not (direct_seek or npc123_list) and not entity_matches_lineage(unit_lin_map, uid, lineage_filter, _cbu['lineage_combine']):
                 continue
         if series_filter is not None:
-            if not direct_seek and not entity_matches_series(unit_ser_map.get(uid, ''), series_filter, lc, _cbu['series_combine']):
+            if not (direct_seek or npc123_list) and not entity_matches_series(unit_ser_map.get(uid, ''), series_filter, lc, _cbu['series_combine']):
                 continue
         if ability_filter is not None:
-            if not direct_seek and not entity_matches_unit_abilities_filter(uid, ability_filter, _cbu['ability_combine']):
+            if not (direct_seek or npc123_list) and not entity_matches_unit_abilities_filter(uid, ability_filter, _cbu['ability_combine']):
                 continue
         if weapon_attr_filter is not None:
-            if not direct_seek and not unit_matches_weapon_attr_filter(uid, weapon_attr_filter):
+            if not (direct_seek or npc123_list) and not unit_matches_weapon_attr_filter(uid, weapon_attr_filter):
                 continue
         _shape_kw = dict(
             role_filter=role_filter,
@@ -22194,7 +22284,7 @@ def list_units():
             cond_active=cond_list,
             pilot_cond_active=pilot_cond_list,
         )
-        if not direct_seek and not unit_matches_browse_form_filters(
+        if not wide_seek and not unit_matches_browse_form_filters(
                 uid, info, ld, lc, stat_mode,
                 weapon_debuff_filter=weapon_debuff_filter,
                 weapon_debuff_combine=_cbu['weapon_debuff_combine'],
@@ -22206,9 +22296,9 @@ def list_units():
             name = f'Unknown ({uid})'
         ser_list = resolve_series(unit_ser_map.get(uid, ''), lc)
         ser_names_lower = series_names_lower_for_search(ser_list)
-        if uid not in unit_list_playable_ids and not id_seek:
+        if uid not in unit_list_playable_ids and not priv_seek:
             continue
-        if not id_seek and not browse_entity_has_resolved_lineage_tags(unit_lin_map, uid, lc, 'unit'):
+        if not priv_seek and not browse_entity_has_resolved_lineage_tags(unit_lin_map, uid, lc, 'unit'):
             continue
         if sq:
             search_chunks = []
@@ -22251,11 +22341,11 @@ def list_units():
                     + ' '.join(search_chunks)
                 ).strip()
             ss = (ss + (UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID.get(uid, ''))).strip().lower()
-            if not search_row_matches_query(sq, ss, ser_names_lower, ser_list, entity_id=uid, primary=(q_scope in ('primary', 'name_id'))):
+            if not search_row_matches_query(sq, ss, ser_names_lower, ser_list, entity_id=uid, primary=(q_scope in ('primary', 'name_id')), schedule_shell_kind='unit'):
                 continue
         mechanism_union |= set(UNIT_MECHANISM_MIDS_CACHE.get(uid, ()))
         if mechanism_filter:
-            if not direct_seek and not unit_matches_mechanism_filter(info, mechanism_filter, uid, combine=mechanism_combine):
+            if not wide_seek and not unit_matches_mechanism_filter(info, mechanism_filter, uid, combine=mechanism_combine):
                 continue
         ue = UNIT_BROWSE_LIST_ROW_CACHE.get(uid)
         if ue:
@@ -22272,9 +22362,9 @@ def list_units():
         thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
         # Omit series / rarity_icon / recommend_character — unused by browse/ranking/TB list UI.
         # is_limited_time is on the row so Units can filter rarity locally (Soshage-style).
-        urow = {'id': uid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'is_ultimate': bool(info.get('is_ultimate', False)), 'is_limited_time': uid in LIMITED_TIME_UNIT_IDS, 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))}
+        urow = {'id': uid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'is_ultimate': bool(info.get('is_ultimate', False)), 'is_limited_time': uid in LIMITED_TIME_UNIT_IDS, 'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')), 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))}
         display_uid = uid
-        if not direct_seek:
+        if not wide_seek:
             display_uid = _unit_browse_form_filter_display_id(
                 uid, info, ld, lc, stat_mode,
                 weapon_debuff_filter=weapon_debuff_filter,
@@ -27005,7 +27095,8 @@ def get_character(char_id):
         if not info: return jsonify({'error': f'Character {char_id} not found'}), 404
         if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
             return jsonify({'error': f'Character {char_id} not found'}), 404
-        if str(info.get('role', '0')) == '0' and not npc_password_unlocked():
+        is_shell = entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'))
+        if str(info.get('role', '0')) == '0' and not npc_password_unlocked() and not is_shell:
             return jsonify({'error': f'Character {char_id} not found'}), 404
         ri = info.get('rarity','1'); lid = ld['char_id_map'].get(char_id, ""); cn = ld['char_text_map'].get(lid, "Unknown") if lid else "Unknown"
         raw = char_stat_map.get(char_id, {}); has_sp = int(ri) <= 4
@@ -27107,7 +27198,7 @@ def get_character(char_id):
             has_conditional_passive = has_ex_slot_only
         else:
             has_conditional_passive = has_ex_stats
-        result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'acquisition_icon': acq_icon or '', 'stats': stats, 'stats_with_ex': stats_with_ex, 'ex_supercharged_tiers': ex_supercharged_tiers_payload, 'has_ex_stats': has_ex_stats, 'has_conditional_passive': has_conditional_passive, 'has_sp': has_sp, 'sp_stats': sp_stats, 'sp_stats_with_ex': sp_stats_with_ex, 'pair_unit_stat_mod': pair_mod, 'pair_unit_counter_atk_mod': counter_atk_mod, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'recommend_unit': recommend_unit, 'is_limited_time': char_id in LIMITED_TIME_CHARACTER_IDS}
+        result = {'id': char_id, 'name': cn, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'acquisition_icon': acq_icon or '', 'stats': stats, 'stats_with_ex': stats_with_ex, 'ex_supercharged_tiers': ex_supercharged_tiers_payload, 'has_ex_stats': has_ex_stats, 'has_conditional_passive': has_conditional_passive, 'has_sp': has_sp, 'sp_stats': sp_stats, 'sp_stats_with_ex': sp_stats_with_ex, 'pair_unit_stat_mod': pair_mod, 'pair_unit_counter_atk_mod': counter_atk_mod, 'tags': resolve_tags(char_lin_map, char_id, lc, 'character'), 'series': resolve_series(ld['char_ser_map'].get(char_id, ''), lc), 'abilities': abilities, 'skills': skills, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'recommend_unit': recommend_unit, 'is_limited_time': char_id in LIMITED_TIME_CHARACTER_IDS, 'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'))}
         if view_ranking:
             result['abilities'] = []
             result['skills'] = []
@@ -27134,9 +27225,10 @@ def get_unit(unit_id):
         if not info: return jsonify({'error': f'Unit {unit_id} not found'}), 404
         if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
             return jsonify({'error': f'Unit {unit_id} not found'}), 404
-        if str(info.get('role', '0')) == '0' and not npc_password_unlocked():
+        is_shell = entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'))
+        if str(info.get('role', '0')) == '0' and not npc_password_unlocked() and not is_shell:
             return jsonify({'error': f'Unit {unit_id} not found'}), 404
-        if not unit_has_ms_ability_content(unit_id) and not npc_password_unlocked():
+        if not unit_has_ms_ability_content(unit_id) and not npc_password_unlocked() and not is_shell:
             return jsonify({'error': f'Unit {unit_id} not found'}), 404
         ri = info.get('rarity','1'); lid = ld['unit_id_map'].get(unit_id, ""); un = ld['unit_text_map'].get(lid, "Unknown") if lid else "Unknown"
         raw = unit_stat_map.get(unit_id, {}); fs = {}
@@ -27535,7 +27627,7 @@ def get_unit(unit_id):
         _is_sd_unit = _unit_has_sd_mechanism(info, unit_id)
         _unit_hp_atk_tiers = _collect_unit_hp_atk_tiers_meta(ac)
         _unit_combat_count_atk = _collect_unit_combat_count_atk_meta(ac)
-        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'has_cond_weapon_range': _has_cond_weapon_range, 'has_pilot_cond_passive': _has_pilot_cond, 'cp_weapon_range_mods': _cp_wpn_range_mods, 'pilot_weapon_effect_bonuses': _pilot_wpn_fx, 'pilot_tag_weapon_stat_bonuses': _pilot_tag_wpn, 'pilot_en_cost_reduction_pct': _pilot_en_red, 'weapon_en_cost_increase_pct': {'sp': en_cost_inc_b[0], 'ssp': en_cost_inc_sspb[0], 'sp_cond': en_cost_inc_c[0], 'ssp_cond': en_cost_inc_sspc[0]}, 'is_large': il, 'occupied_area_id': safe_int(info.get('occupied_area_id'), 1), 'is_sd': _is_sd_unit, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id, 'gacha_pull_movie_id': _gacha_pull_movie_id}
+        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'has_cond_weapon_range': _has_cond_weapon_range, 'has_pilot_cond_passive': _has_pilot_cond, 'cp_weapon_range_mods': _cp_wpn_range_mods, 'pilot_weapon_effect_bonuses': _pilot_wpn_fx, 'pilot_tag_weapon_stat_bonuses': _pilot_tag_wpn, 'pilot_en_cost_reduction_pct': _pilot_en_red, 'weapon_en_cost_increase_pct': {'sp': en_cost_inc_b[0], 'ssp': en_cost_inc_sspb[0], 'sp_cond': en_cost_inc_c[0], 'ssp_cond': en_cost_inc_sspc[0]}, 'is_large': il, 'occupied_area_id': safe_int(info.get('occupied_area_id'), 1), 'is_sd': _is_sd_unit, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'is_schedule_shell': is_shell, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id, 'gacha_pull_movie_id': _gacha_pull_movie_id}
         if _unit_hp_atk_tiers:
             result['unit_hp_atk_tiers'] = _unit_hp_atk_tiers
         if _unit_combat_count_atk:
