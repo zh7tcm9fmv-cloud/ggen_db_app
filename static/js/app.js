@@ -5447,11 +5447,11 @@ function _stageMapRotateWeaponCoord(dx,dy,dir){
 }
 function _stageMapClassifyMapWeapon(weapon){
   const ec=weapon?.map_coords||[],sc=weapon?.shooting_coords||[];
-  if(!sc.length)return'around';
-  if(weapon.is_dash||weapon.map_dash_dual_wide)return'dash';
-  const mrt=String(weapon.map_range_type||'0');
-  if(mrt==='4')return'dash';
+  const mrt=String(weapon?.map_range_type||'0');
   if(mrt==='2')return'impact';
+  if(mrt==='1')return'around';
+  if(weapon.is_dash||weapon.map_dash_dual_wide||mrt==='4')return'dash';
+  if(!sc.length)return'around';
   let md=Math.min(...sc.map(c=>Math.abs(Number(c.x)||0)+Math.abs(Number(c.y)||0)));
   const atOrigin=ec.some(c=>Number(c.x)===0&&Number(c.y)===0);
   if(md<=1&&!atOrigin&&sc.length>1)return'dash';
@@ -5514,13 +5514,13 @@ function _stageMapMapWeaponCellOverlayHtml(cellKey,mwOverlays){
   if(!kind&&!isImpactPt)return'';
   const mkErr=' onerror="gameImageUrlFallback(this)"';
   let html='';
-  if(kind==='impact'&&!isImpactPt){
-    html+=`<img class="stage-map-cell-map-weapon-ic stage-map-cell-map-weapon-ic--impact"${imgSrcAttr(STAGE_MAP_MAP_WEAPON_ICONS.impactWhite)} alt="" loading="lazy" decoding="async"${mkErr}>`;
-  }else if(kind==='dash'){
-    html+=`<img class="stage-map-cell-map-weapon-ic stage-map-cell-map-weapon-ic--wide"${imgSrcAttr(STAGE_MAP_MAP_WEAPON_ICONS.wideArea)} alt="" loading="lazy" decoding="async"${mkErr}>`;
+  if(kind==='impact'){
+    html+=`<div class="stage-map-cell-map-weapon-shell"><img class="stage-map-cell-map-weapon-ic stage-map-cell-map-weapon-ic--impact"${imgSrcAttr(STAGE_MAP_MAP_WEAPON_ICONS.impactWhite)} alt="" loading="lazy" decoding="async"${mkErr}></div>`;
+  }else if(kind==='dash'||kind==='around'){
+    html+=`<div class="stage-map-cell-map-weapon-shell"><img class="stage-map-cell-map-weapon-ic stage-map-cell-map-weapon-ic--wide"${imgSrcAttr(STAGE_MAP_MAP_WEAPON_ICONS.wideArea)} alt="" loading="lazy" decoding="async"${mkErr}></div>`;
   }
   if(isImpactPt){
-    html+=`<div class="stage-map-cell-map-weapon-impact" aria-hidden="true"><img class="stage-map-cell-map-weapon-impact-point"${imgSrcAttr(STAGE_MAP_MAP_WEAPON_ICONS.impactPoint)} alt="" loading="lazy" decoding="async"${mkErr}><img class="stage-map-cell-map-weapon-impact-yellow"${imgSrcAttr(STAGE_MAP_MAP_WEAPON_ICONS.impactYellow)} alt="" loading="lazy" decoding="async"${mkErr}></div>`;
+    html+=`<div class="stage-map-cell-map-weapon-shell stage-map-cell-map-weapon-shell--impact" aria-hidden="true"><div class="stage-map-cell-map-weapon-impact"><img class="stage-map-cell-map-weapon-impact-point"${imgSrcAttr(STAGE_MAP_MAP_WEAPON_ICONS.impactPoint)} alt="" loading="lazy" decoding="async"${mkErr}><img class="stage-map-cell-map-weapon-impact-yellow"${imgSrcAttr(STAGE_MAP_MAP_WEAPON_ICONS.impactYellow)} alt="" loading="lazy" decoding="async"${mkErr}></div></div>`;
   }
   return html;
 }
@@ -5599,6 +5599,8 @@ function renderStageMapGrid(md){
       if(stackOrangeHighlight)cls+=' map-cell--enemy-stack-reinf-on';
       if(u&&u.is_story_event_boss)cls+=' map-cell--story-boss';
       if(u&&u.unit_id&&ucHlSet.has(String(u.unit_id)))cls+=' map-cell--unit-cond-cp-target';
+      const hasMapWeaponCell=_stageMapMapWeaponLayerShown()&&(!!mwOverlays.effect[ck]||mwOverlays.impact.has(ck));
+      if(hasMapWeaponCell)cls+=' map-cell--map-weapon-range';
       const showStepOrder=u&&_stageMapShowSpawnOrderForUnit(u,pool);
       const originCls=(o&&o.origin&&renderInCell)?' map-cell--unit-origin':'';
       const di=u?.npc_detail_index;
@@ -5618,6 +5620,7 @@ function renderStageMapGrid(md){
       const originZStyle=(escapeLayerShown&&o&&o.origin&&renderInCell)?` style="z-index:${4+y}"`:'';
       const cellTitleAttr=S.stageMapEscapeLayerVisible?'':` title="${esc(cellTitle)}"`;
       html+=`<div class="map-cell ${cls}${clickCls}${originCls}"${cellTitleAttr}${originZStyle}${mapDataAttrs}>`;
+      if(hasMapWeaponCell)html+=_stageMapMapWeaponCellOverlayHtml(ck,mwOverlays);
       if(o&&o.origin&&renderInCell){
         const isAllyLoc=(u.side==='ally')&&((!u.is_guest_ally&&(String(u.portrait||'').includes('UI_GTower_Minimap_Icon_OwnArmy.webp')||String(u.npc_id||'').startsWith('ally_g')))||(u.is_guest_ally&&String(u.portrait||'').includes('UI_GTower_Minimap_Icon_GuestArmy.webp')))||(u.side==='guest'&&u.is_guest_ally&&String(u.portrait||'').includes('UI_GTower_Minimap_Icon_GuestArmy.webp'))||(u.side==='friendly'&&u.is_friendly_force&&String(u.portrait||'').includes('UI_GTower_Minimap_Icon_FriendlyArmy.webp'));
         const guestCls=u.is_guest_ally?'ally-guest':'';
@@ -5636,7 +5639,6 @@ function renderStageMapGrid(md){
         if(showStepOrder)html+=`<span class="map-cell-step-badge" aria-hidden="true">${fmtN(_stageNpcStepOrder(u))}</span>`
       }
       if(showBuffArea)html+=_stageMapBuffHoverPopoverHtml(buffArea);
-      if(_stageMapMapWeaponLayerShown())html+=_stageMapMapWeaponCellOverlayHtml(ck,mwOverlays);
       if(_stageMapHitReachTargetCell(md,x,y))html+=`<img class="map-stage-reach-flag-icon" src="${imgUrlPreferCdn('/static/images/UI/UI_Common_Icon_Flag.webp')}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">`
       html+=`</div>`
     }
@@ -7425,7 +7427,7 @@ function _dcCreateEmptyAttackerSlot(){
 return JSON.parse(JSON.stringify({
 atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,
 lbTier:3,wpnIdx:0,wpnLv:0,
-unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,dcSuperchargedExTier:0,_dcSuperchargedExManual:false,
+unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,unitCondStackCount:0,unitHpAtkTierIndex:0,dcSuperchargedExTier:0,_dcSuperchargedExManual:false,
 optionParts:[],supporters:[],
 _unitIsSD:false,
 _wpnTraitDistPow:0,_wpnTraitHpPow:0,_wpnTraits:{},
@@ -7444,7 +7446,7 @@ atkUnit:S.dc.atkUnit,atkChar:S.dc.atkChar,
 atkUnitData:S.dc.atkUnitData,atkCharData:S.dc.atkCharData,
 lbTier:S.dc.lbTier,wpnIdx:S.dc.wpnIdx,wpnLv:S.dc.wpnLv,
 unitStatMode:S.dc.unitStatMode||'normal',charStatMode:S.dc.charStatMode||'normal',
-unitCondPassive:!!S.dc.unitCondPassive,charCondPassive:!!S.dc.charCondPassive,dcSuperchargedExTier:Math.max(0,S.dc.dcSuperchargedExTier|0),_dcSuperchargedExManual:!!S.dc._dcSuperchargedExManual,
+unitCondPassive:!!S.dc.unitCondPassive,charCondPassive:!!S.dc.charCondPassive,unitCondStackCount:Math.max(0,S.dc.unitCondStackCount|0),unitHpAtkTierIndex:Math.max(0,S.dc.unitHpAtkTierIndex|0),dcSuperchargedExTier:Math.max(0,S.dc.dcSuperchargedExTier|0),_dcSuperchargedExManual:!!S.dc._dcSuperchargedExManual,
 optionParts:S.dc.optionParts||[],supporters:S.dc.supporters||[],
 _unitIsSD:!!S.dc._unitIsSD,
 _wpnTraitDistPow:S.dc._wpnTraitDistPow||0,_wpnTraitHpPow:S.dc._wpnTraitHpPow||0,
@@ -7473,7 +7475,7 @@ S.dc.atkUnit=slot.atkUnit;S.dc.atkChar=slot.atkChar;
 S.dc.atkUnitData=slot.atkUnitData;S.dc.atkCharData=slot.atkCharData;
 S.dc.lbTier=slot.lbTier;S.dc.wpnIdx=slot.wpnIdx;S.dc.wpnLv=slot.wpnLv;
 S.dc.unitStatMode=slot.unitStatMode||'normal';S.dc.charStatMode=slot.charStatMode||'normal';
-S.dc.unitCondPassive=!!slot.unitCondPassive;S.dc.charCondPassive=!!slot.charCondPassive;S.dc.dcSuperchargedExTier=Math.max(0,slot.dcSuperchargedExTier|0);S.dc._dcSuperchargedExManual=!!slot._dcSuperchargedExManual;
+S.dc.unitCondPassive=!!slot.unitCondPassive;S.dc.charCondPassive=!!slot.charCondPassive;S.dc.unitCondStackCount=Math.max(0,slot.unitCondStackCount|0);S.dc.unitHpAtkTierIndex=Math.max(0,slot.unitHpAtkTierIndex|0);S.dc.dcSuperchargedExTier=Math.max(0,slot.dcSuperchargedExTier|0);S.dc._dcSuperchargedExManual=!!slot._dcSuperchargedExManual;
 S.dc.optionParts=Array.isArray(slot.optionParts)?slot.optionParts:[];S.dc.supporters=Array.isArray(slot.supporters)?slot.supporters:[];
 S.dc._unitIsSD=!!slot._unitIsSD;
 S.dc._wpnTraitDistPow=slot._wpnTraitDistPow||0;S.dc._wpnTraitHpPow=slot._wpnTraitHpPow||0;
@@ -7673,7 +7675,7 @@ if(_dcSlotNeedsAutoFit(S.dc.atkSlots[S.dc.atkSlotIndex|0]))_dcScheduleAutoFitOpt
 function initDmgCalc(){
 S._dcAtkPresetBackup=null;S._dcAtkManualPackBackup=null;S._dcDefPresetNpcBackup=null;S._dcDefDbBackup=null;S._dcDefCustomPackBackup=null;
 S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;S.dc.lbTier=3;
-S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.bigRangZeonSquadBuff=false;S.dc.defNpcMapBonusesOn=true;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.applyZeonEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc.multiPctCompare=false;S.dc._dcAutoFitGen=0;S.dc._supportCntAtkPairSnapBySlot={};
+S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.bigRangZeonSquadBuff=false;S.dc.defNpcMapBonusesOn=true;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.applyZeonEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.unitCondStackCount=0;S.dc.unitHpAtkTierIndex=0;S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc.multiPctCompare=false;S.dc._dcAutoFitGen=0;S.dc._supportCntAtkPairSnapBySlot={};
 renderDcDefDbPicks();
 const _drp=document.getElementById('dcDefModePreset'),_drc=document.getElementById('dcDefModeCustom'),_ddb=document.getElementById('dcDefModeDatabase'),_dpw=document.getElementById('dcDefPresetWrap'),_dcw=document.getElementById('dcDefCustomWrap'),_ddbw=document.getElementById('dcDefDatabaseWrap');
 if(_drp)_drp.checked=true;if(_drc)_drc.checked=false;if(_ddb)_ddb.checked=false;if(_dpw)_dpw.style.display='';if(_dcw)_dcw.style.display='none';if(_ddbw)_ddbw.style.display='none';
@@ -10963,6 +10965,54 @@ function _dcUnitCpVigorRequirement(){
 if(!S.dc._vigorCondThreshold)return null;
 return _dcVigorTierMax(S.dc._vigorCondThreshold,'max');
 }
+function _dcInitUnitCondControls(ud){
+if(!ud)return;
+S.dc.unitCondStackCount=0;
+S.dc.unitHpAtkTierIndex=0;
+const hp=ud.unit_hp_atk_tiers;
+if(hp&&hp.tiers&&hp.tiers.length)S.dc.unitHpAtkTierIndex=hp.tiers.length-1;
+const cc=ud.unit_combat_count_atk;
+if(cc&&cc.max_stacks)S.dc.unitCondStackCount=cc.max_stacks|0;
+}
+function setDcUnitCondStackCount(n){
+const ud=S.dc.atkUnitData;
+const cc=ud&&ud.unit_combat_count_atk;
+if(!cc)return;
+S.dc.unitCondStackCount=Math.max(1,Math.min(cc.max_stacks|0,Number(n)||0));
+renderDcAtkUnit();renderDcAtkChar();onDcParamChange();
+}
+function _dcUnitCombatStackSliderHtml(cc){
+if(!S.dc.unitCondPassive||!cc)return'';
+const max=Math.max(1,cc.max_stacks|0);
+const cur=Math.max(1,Math.min(max,S.dc.unitCondStackCount|0||max));
+const pct=Math.min(cc.max|0,cc.per*cur);
+const stackLab=t('unit_combat_stack_label')||'Combat stack level';
+return`<div class="detail-pilot-stack-row is-open detail-unit-cond-stack-row dc-unit-cond-stack-row" onclick="event.stopPropagation()"><input type="range" class="detail-pilot-stack-slider" min="1" max="${max}" step="1" value="${cur}" aria-valuemin="1" aria-valuemax="${max}" aria-valuenow="${cur}" aria-label="${escAttr(stackLab)}" oninput="setDcUnitCondStackCount(this.value)"><span class="detail-pilot-stack-val">+${pct}%</span></div>`;
+}
+function _dcApplyUnitCondStatAdjustments(stats,statsNoCond,ud,cpOn){
+if(!cpOn||!ud||!stats||!stats.length)return stats;
+const cc=ud.unit_combat_count_atk;
+const hp=ud.unit_hp_atk_tiers;
+if(!cc&&!(hp&&hp.tiers&&hp.tiers.length>1))return stats;
+const atkNo=(statsNoCond||[]).find(s=>s.name==='Attack');
+const atkRow=stats.find(s=>s.name==='Attack');
+if(!atkNo||!atkRow)return stats;
+const base=atkNo.base|0;
+let passivePct=atkNo.passive_pct|0;
+if(cc&&cc.per>0){
+const max=Math.max(1,cc.max_stacks|0);
+const n=Math.max(1,Math.min(max,S.dc.unitCondStackCount|0||max));
+passivePct=(atkNo.passive_pct|0)+cc.per*n;
+}else if(hp&&hp.tiers&&hp.tiers.length>1){
+const ti=Math.min(Math.max(0,S.dc.unitHpAtkTierIndex|0),hp.tiers.length-1);
+passivePct=(atkNo.passive_pct|0)+(hp.tiers[ti].atk_pct|0);
+}else return stats;
+const tot=Math.floor(base*(100+passivePct)/100);
+return stats.map(s=>{
+if(s.name!=='Attack')return s;
+return Object.assign({},s,{total:tot,bonus:Math.max(0,tot-base),passive_pct:passivePct});
+});
+}
 /** Default unit CP on for HP-tier ATK (stats_with_cond max tier). Combat-count units stay off unless toggled or share ucp=1. Vigor-gated cond stats still sync below. */
 function _dcShouldAutoUnitCondPassive(ud,mpOpt){
 if(!ud||ud._manual)return false;
@@ -11765,8 +11815,11 @@ return;
 _dcDetectVigorCondAbilities(ud);
 const lb=ud.lb_data;const maxTier=lb?lb.length-1:0;const tier=Math.min(S.dc.lbTier,maxTier);
 const statKey=_dcGetUnitStatKey();
+const statKeyNo=_dcGetUnitStatKeyForCp(false);
 const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
-const stats=td?td[statKey]||td.stats_no_cond:[];
+let stats=td?td[statKey]||td.stats_no_cond:[];
+const statsNoCpBase=td?td[statKeyNo]||td.stats_no_cond:[];
+stats=_dcApplyUnitCondStatAdjustments(stats,statsNoCpBase,ud,!!S.dc.unitCondPassive);
 let lbBlock='';
 if(lb&&lb.length>1&&!ud.is_ultimate){
 const cur=cmpLbPipsAtTier(tier);
@@ -11783,6 +11836,7 @@ const vGated=!!S.dc._vigorCondThreshold;
 const vHint=vGated?` title="${escAttr('Default: on when Vigor is Max or Supercharged (or higher than text if ability requires Supercharged only). Changing vigor updates the default; you can still toggle for comparisons.')}"`:'';
 {const _cpL=t('conditional_passive');unitCpToggle=`<div class="dc-picked-controls"${vHint}><div class="conditional-toggle dc-dc-cond-toggle"><div class="toggle-clickable${S.dc.unitCondPassive?' active':''}" role="button" tabindex="0" title="${escAttr(_cpL)}" aria-label="${escAttr(_cpL)}" onclick="toggleDcUnitCondPassive()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDcUnitCondPassive()}"><span class="toggle-label toggle-label--cp-chip">${_dcCpChipSpanHtml(!!S.dc.unitCondPassive)}</span></div></div></div>`;}
 }
+const unitCondStackHtml=(S.dc.unitCondPassive&&ud.unit_combat_count_atk)?_dcUnitCombatStackSliderHtml(ud.unit_combat_count_atk):'';
 const hasSp=ud.has_sp!==undefined?ud.has_sp:(parseInt(ud.rarity_id||'5')<=4);
 let unitStatModeHtml='';
 const uModeRow=S.dc.unitStatMode||'normal';
@@ -11792,7 +11846,7 @@ if(spModeBtns||tfBtn){
 unitStatModeHtml=`<div class="dc-lb-row dc-unit-stat-mode-row" style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">${spModeBtns||''}${tfBtn||''}</div>`;
 }
 const lbStatCluster=(lbBlock||unitStatModeHtml)?`<div class="dc-unit-lb-stat-cluster">${lbBlock}${unitStatModeHtml}</div>`:'';
-const atkBelowPortrait=(unitCpToggle||lbStatCluster)?`<div class="dc-atk-unit-below-portrait">${unitCpToggle}${lbStatCluster}</div>`:'';
+const atkBelowPortrait=(unitCpToggle||unitCondStackHtml||lbStatCluster)?`<div class="dc-atk-unit-below-portrait">${unitCpToggle}${unitCondStackHtml}${lbStatCluster}</div>`:'';
 area.innerHTML=`<div class="dc-picked">${_dcPickedEntityThumbHtml(ud,'unit',52)}<div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div class="dc-picked-badges">${ud.rarity_icon?`<img src="${imgUrl(ud.rarity_icon)}">`:''}${ud.role_icon?`<img src="${imgUrl(ud.role_icon)}">`:''}</div></div>${atkBelowPortrait}<button type="button" class="dc-picked-change" onclick="openDcPicker('unit')">${t('dc_change')}</button></div>`;
 _dcUpdateExSquadAtkGroupVisibility();
 _dcUpdateSquadConditionGroupVisibility();
@@ -11803,8 +11857,8 @@ const msEnh=_dcMsStatEnhancementLinesHtml(S.dc,stats);
 const atkS=uEff.unitAtk,defS=uEff.unitDefVal,mobS=uEff.unitMob,hpS=uEff.unitHp;
 const uMode=S.dc.unitStatMode||'normal';
 const uCp=!!(ud.has_cond_stats&&S.dc.unitCondPassive);
-let statsNoCp=stats;
-if(ud.has_cond_stats&&td){
+let statsNoCp=statsNoCpBase;
+if(ud.has_cond_stats&&td&&!ud.unit_combat_count_atk&&!(ud.unit_hp_atk_tiers&&ud.unit_hp_atk_tiers.tiers&&ud.unit_hp_atk_tiers.tiers.length>1)){
 const kn=_dcGetUnitStatKeyForCp(false);
 statsNoCp=td[kn]||stats;
 }
@@ -11999,7 +12053,7 @@ if(S.dc._activeSkills)Object.keys(S.dc._activeSkills).forEach(k=>{if(!visIds.has
 renderDcAtkUnit();renderDcAtkChar();
 if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);else onDcParamChange();
 }
-function setDcUnitCondPassive(on){S.dc.unitCondPassive=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
+function setDcUnitCondPassive(on){S.dc.unitCondPassive=!!on;if(!on){S.dc.unitCondStackCount=0;S.dc.unitHpAtkTierIndex=0}else if(S.dc.atkUnitData)_dcInitUnitCondControls(S.dc.atkUnitData);renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function setDcUnitTurnBuffAtk(on){S.dc.unitTurnBuffAtk=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function setDcUnitTurnBuffDef(on){S.dc.unitTurnBuffDef=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function _dcHtmlSheetBuffToggles(){
@@ -13839,6 +13893,7 @@ S.dc.unitStatMode='normal';S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false
 _dcDetectVigorCondAbilities(d);
 S.dc.unitCondPassive=_dcShouldAutoUnitCondPassive(d);
 _dcSyncUnitCondPassiveFromVigor();
+if(S.dc.unitCondPassive)_dcInitUnitCondControls(d);else{S.dc.unitCondStackCount=0;S.dc.unitHpAtkTierIndex=0;}
 S.dc.optionParts=[];S.dc.supporters=[];
 const rec=d.recommend_character;const isSD=d.body_type==='3';
 S.dc._unitIsSD=isSD;
@@ -14764,8 +14819,11 @@ const ud=S.dc.atkUnitData,cd=S.dc.atkCharData,npc=S.dc.defNpc;
 if(!ud||!cd||!npc)return null;
 const lb=ud.lb_data;const maxTier=lb?lb.length-1:0;const tier=Math.min(S.dc.lbTier,maxTier);
 const statKey=_dcGetUnitStatKey();
+const statKeyNo=_dcGetUnitStatKeyForCp(false);
 const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
-const atkUnitStats=td?(td[statKey]||td.stats_no_cond):[];
+let atkUnitStats=td?(td[statKey]||td.stats_no_cond):[];
+const statsNoCp=td?(td[statKeyNo]||td.stats_no_cond):[];
+atkUnitStats=_dcApplyUnitCondStatAdjustments(atkUnitStats,statsNoCp,ud,!!S.dc.unitCondPassive);
 const atkCharStats=_dcGetCharStats();
 const wpns=_dcNonMapWeapons(ud);
 if(!wpns.length)return null;
