@@ -9182,9 +9182,8 @@ def resolve_weapon_stats(wm, wsm, wcm, wtm, wcam, gpm, wtcm, wtdm, wid='', lang_
     if wts == '3':
         scc, map_dash_dual_wide = augment_map_shooting_dual_line_for_occupied_area_2(scc, unit_id)
         if map_dash_dual_wide:
-            # In-game 2×2 dash: effect = minkowski(master, OccupiedAreaId-2 footprint) → e.g. 3×4 becomes 4×5.
-            # Landing 2×2 sits immediately above that expanded effect; start use-point is rendered below (client).
-            mc = minkowski_map_coords_with_2x2_footprint([dict(c) for c in (ws.get('map_coords') or [])])
+            # In-game 2×2 dual-line dash: widen effect +x per row only (3×4 → 4×4), not full minkowski (+y → 4×5).
+            mc = augment_map_coords_for_occupied_area_2([dict(c) for c in (ws.get('map_coords') or [])], unit_id)
             map_dash_dual_end_coords = map_dash_dual_end_coords_above_effect(mc, scc)
             scc = append_map_dash_dual_end_cells(scc, map_dash_dual_end_coords)
         elif uidn == '1001002700':
@@ -13814,21 +13813,6 @@ def _map_npc_escape_is_sequel_name(parent_name, spawn_name):
     return s.startswith(p + '_') or (s.startswith(p) and len(s) > len(p))
 
 
-def _copy_escape_spawn_map_anchor(parent, spawn):
-    """Death-spawn rows in master data are often offset; show escape at parent footprint."""
-    if not parent or not spawn:
-        return
-    for key in ('x', 'y', 'direction', 'is_large', 'occupied_area_id'):
-        if key in parent:
-            spawn[key] = parent[key]
-    cells = parent.get('cells')
-    if cells:
-        spawn['cells'] = [dict(c) for c in cells if isinstance(c, dict)]
-    origin = parent.get('map_origin')
-    if isinstance(origin, dict):
-        spawn['map_origin'] = dict(origin)
-
-
 def _pair_map_npc_escape_spawns_by_name(placed, unplaced, meta, paired_parents, paired_spawns, link_fn):
     """Name-sequel pairing for remaining placed parents and off-map spawns."""
     rem_placed = [u for u in placed if str(u.get('npc_id', '')) not in paired_parents]
@@ -13885,7 +13869,6 @@ def _pair_map_npc_escape_spawns_for_side(side_units, meta):
             return False
         parent['escape_spawn_npc_id'] = sid
         spawn['escape_from_npc_id'] = pid
-        _copy_escape_spawn_map_anchor(parent, spawn)
         paired_parents.add(pid)
         paired_spawns.add(sid)
         return True
@@ -13925,7 +13908,6 @@ def _pair_map_npc_escape_spawns_cross_side(units, meta):
             return False
         parent['escape_spawn_npc_id'] = sid
         spawn['escape_from_npc_id'] = pid
-        _copy_escape_spawn_map_anchor(parent, spawn)
         paired_parents.add(pid)
         paired_spawns.add(sid)
         return True
@@ -26661,6 +26643,20 @@ def get_stage(stage_id):
                 if npc_oaid >= 3 and len(me['cells']) > 1:
                     me['map_origin'] = get_map_unit_icon_origin(me['cells'], npc.get('direction'))
                 me['npc_detail_index'] = len(nd)
+                if up and up.get('weapons'):
+                    _map_wpn = next((w for w in up['weapons'] if w.get('is_map')), None)
+                    if _map_wpn:
+                        me['map_weapon'] = {
+                            'id': _map_wpn.get('id'),
+                            'name': _map_wpn.get('name'),
+                            'map_range_type': _map_wpn.get('map_range_type'),
+                            'map_coords': _map_wpn.get('map_coords'),
+                            'shooting_coords': _map_wpn.get('shooting_coords'),
+                            'is_dash': _map_wpn.get('is_dash'),
+                            'map_dash_dual_wide': _map_wpn.get('map_dash_dual_wide'),
+                            'max_range': _map_wpn.get('max_range'),
+                            'min_range': _map_wpn.get('min_range'),
+                        }
                 nd_row = {'npc_id': nid, 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'is_initially_placed': bool(npc.get('is_initially_placed', True)), 'step_order': step_ord, 'unit': up, 'character': cp}
                 if story_boss:
                     nd_row['is_story_event_boss'] = True

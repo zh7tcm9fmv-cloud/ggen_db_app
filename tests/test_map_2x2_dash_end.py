@@ -2,8 +2,8 @@
 
 In-game layout (OccupiedAreaId 2):
   start 2×2 at y=-1..0 (cols 0..1)
-  effect = minkowski(master 3×4) → 4×5 (x=-1..2, y=1..5)
-  end 2×2 immediately above effect (y=6..7, cols 0..1)
+  effect = x-only widen (master 3×4) → 4×4 (x=-1..2, y=1..4)
+  end 2×2 immediately above effect (y=5..6, cols 0..1)
 """
 
 import importlib
@@ -22,23 +22,23 @@ class TestMap2x2DashEnd(unittest.TestCase):
         os.environ.setdefault('GGEN_SKIP_WARMUP', '1')
         cls.app = importlib.import_module('app')
 
-    def test_minkowski_expands_3x4_to_4x5(self):
+    def test_dual_dash_x_only_widen_3x4_to_4x4(self):
         raw = [
             {'x': x, 'y': y}
             for y in (1, 2, 3, 4)
             for x in (-1, 0, 1)
         ]
-        out = self.app.minkowski_map_coords_with_2x2_footprint(raw)
+        out = self.app.augment_map_coords_for_occupied_area_2(raw, '1060000500')
         got = {(c['x'], c['y']) for c in out}
-        expect = {(x, y) for y in (1, 2, 3, 4, 5) for x in (-1, 0, 1, 2)}
+        expect = {(x, y) for y in (1, 2, 3, 4) for x in (-1, 0, 1, 2)}
         self.assertEqual(got, expect)
 
     def test_end_coords_above_expanded_effect(self):
-        mc = [{'x': x, 'y': y} for y in (1, 2, 3, 4, 5) for x in (-1, 0, 1, 2)]
+        mc = [{'x': x, 'y': y} for y in (1, 2, 3, 4) for x in (-1, 0, 1, 2)]
         end = self.app.map_dash_dual_end_coords_above_effect(mc, [])
         self.assertEqual(
             {(c['x'], c['y']) for c in end},
-            {(0, 6), (1, 6), (0, 7), (1, 7)},
+            {(0, 5), (1, 5), (0, 6), (1, 6)},
         )
 
     def _assert_dual_dash_ingame(self, uid, wid):
@@ -48,10 +48,10 @@ class TestMap2x2DashEnd(unittest.TestCase):
         self.assertTrue(w.get('map_dash_dual_wide'))
         self.assertTrue(w.get('is_dash'))
         got_ec = {(c['x'], c['y']) for c in (w.get('map_coords') or [])}
-        expect_ec = {(x, y) for y in (1, 2, 3, 4, 5) for x in (-1, 0, 1, 2)}
+        expect_ec = {(x, y) for y in (1, 2, 3, 4) for x in (-1, 0, 1, 2)}
         self.assertEqual(got_ec, expect_ec)
         end = {(c['x'], c['y']) for c in (w.get('map_dash_dual_end_coords') or [])}
-        self.assertEqual(end, {(0, 6), (1, 6), (0, 7), (1, 7)})
+        self.assertEqual(end, {(0, 5), (1, 5), (0, 6), (1, 6)})
         self.assertEqual(min(y for _, y in end), max(y for _, y in got_ec) + 1)
 
     def test_1705003100_matches_ingame_leveler(self):

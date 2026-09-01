@@ -4943,9 +4943,13 @@ function renderStageMapSection(d){
   const hasBuffAreas=!!(md.buff_areas&&Object.keys(md.buff_areas).length);
   if(S.stageMapBuffAreasVisible===undefined)S.stageMapBuffAreasVisible=true;
   const buffOn=S.stageMapBuffAreasVisible!==false;
+  const hasMapWeapon=stageMapHasMapWeaponNpcs(md);
+  if(!hasMapWeapon&&S.stageMapMapWeaponVisible)S.stageMapMapWeaponVisible=false;
+  const mapWeaponOn=!!S.stageMapMapWeaponVisible;
   const reinfToggleLbl=t('stage_map_reinf_toggle');
   const escapeToggleLbl=t('stage_map_escape_toggle');
   const buffToggleLbl=t('stage_map_buff_toggle');
+  const mapWeaponToggleLbl=t('view_effect_range');
   const reinfToggleHtml=hasReinf?`<label class="stage-map-reinf-toggle stage-map-map-toggle">
         <input type="checkbox" class="stage-map-reinf-toggle-input" ${ro?'checked':''} role="switch" aria-checked="${ro?'true':'false'}" aria-label="${escAttr(reinfToggleLbl)}" onchange="setStageMapReinforcementOnly(this.checked)">
         <span class="stage-map-reinf-slider" aria-hidden="true"></span>
@@ -4962,7 +4966,12 @@ function renderStageMapSection(d){
         <span class="stage-map-reinf-slider stage-map-buff-slider" aria-hidden="true"></span>
         <span class="stage-map-reinf-text">${esc(buffToggleLbl)}</span>
       </label>`:'';
-  const togglesRow=(reinfToggleHtml||escapeToggleHtml||buffToggleHtml)?`<div class="stage-map-controls-row stage-map-controls-row--toggles">${reinfToggleHtml}${escapeToggleHtml}${buffToggleHtml}</div>`:'';
+  const mapWeaponToggleHtml=hasMapWeapon?`<label class="stage-map-reinf-toggle stage-map-map-toggle stage-map-map-weapon-toggle">
+        <input type="checkbox" class="stage-map-reinf-toggle-input" ${mapWeaponOn?'checked':''} role="switch" aria-checked="${mapWeaponOn?'true':'false'}" aria-label="${escAttr(mapWeaponToggleLbl)}" onchange="setStageMapMapWeaponVisible(this.checked)">
+        <span class="stage-map-reinf-slider stage-map-map-weapon-slider" aria-hidden="true"></span>
+        <span class="stage-map-reinf-text">${esc(mapWeaponToggleLbl)}</span>
+      </label>`:'';
+  const togglesRow=(reinfToggleHtml||escapeToggleHtml||buffToggleHtml||mapWeaponToggleHtml)?`<div class="stage-map-controls-row stage-map-controls-row--toggles">${reinfToggleHtml}${escapeToggleHtml}${buffToggleHtml}${mapWeaponToggleHtml}</div>`:'';
   const controls=S.stageMapExpanded?`<div class="stage-map-controls">${togglesRow}
     <div class="stage-map-controls-row stage-map-controls-row--viewport">
       <div class="stage-map-viewport-card">
@@ -5400,6 +5409,110 @@ function _stageMapWireEscapeOverlapUi(){
     showSwitchForStack(key);
   },{passive:true});
 }
+const STAGE_MAP_MAP_WEAPON_ICONS={
+  wideArea:'/static/images/Stages/UI_Battle_MapUI_Icon_MapWeapon_WideArea #1946370.webp',
+  impactWhite:'/static/images/Stages/UI_Battle_MapUI_Icon_ImpactRange_White #156405.webp',
+  impactYellow:'/static/images/Stages/UI_Battle_MapUI_Icon_ImpactRange_Yellow #156743.webp',
+  impactPoint:'/static/images/Stages/UI_Battle_MapUI_Icon_ImpactRange_Point #156328.webp'
+};
+function _stageMapNpcMapWeapon(u){
+  if(!u)return null;
+  if(u.map_weapon&&u.map_weapon.map_coords&&u.map_weapon.map_coords.length)return u.map_weapon;
+  const idx=Number(u.npc_detail_index);
+  if(!Number.isFinite(idx))return null;
+  const nd=(S.currentDetailData?.npc_details||[])[idx];
+  const weapons=nd?.unit?.weapons||[];
+  return weapons.find(w=>w&&w.is_map&&w.map_coords&&w.map_coords.length)||null;
+}
+function stageMapHasMapWeaponNpcs(md){
+  const pool=md?.units||[];
+  return pool.some(u=>_stageMapUnitVisible(u,pool)&&!!_stageMapNpcMapWeapon(u));
+}
+function _stageMapMapWeaponLayerShown(){
+  return!!S.stageMapMapWeaponVisible;
+}
+function _stageMapRotateWeaponCoord(dx,dy,dir){
+  const x=Number(dx)||0,y=Number(dy)||0;
+  const d=String(dir||'1');
+  if(d==='3')return{x:y,y:-x};
+  if(d==='2')return{x:-y,y:x};
+  if(d==='4')return{x:x,y:-y};
+  return{x,y};
+}
+function _stageMapClassifyMapWeapon(weapon){
+  const ec=weapon?.map_coords||[],sc=weapon?.shooting_coords||[];
+  if(!sc.length)return'around';
+  if(weapon.is_dash||weapon.map_dash_dual_wide)return'dash';
+  const mrt=String(weapon.map_range_type||'0');
+  if(mrt==='4')return'dash';
+  if(mrt==='2')return'impact';
+  let md=Math.min(...sc.map(c=>Math.abs(Number(c.x)||0)+Math.abs(Number(c.y)||0)));
+  const atOrigin=ec.some(c=>Number(c.x)===0&&Number(c.y)===0);
+  if(md<=1&&!atOrigin&&sc.length>1)return'dash';
+  return'impact';
+}
+function _stageMapWeaponPivot0(u){
+  return{x:Number(u?.x)||0,y:Number(u?.y)||0};
+}
+function _stageMapMapWeaponWorldCells(u,weapon){
+  const kind=_stageMapClassifyMapWeapon(weapon);
+  const dir=String(u?.direction||'1');
+  const pivot=_stageMapWeaponPivot0(u);
+  const _mxy=(c)=>{if(!c||typeof c!=='object')return null;const x=Number(c.x),y=Number(c.y);if(!Number.isFinite(x)||!Number.isFinite(y))return null;return{x,y}};
+  const ec=(weapon.map_coords||[]).map(_mxy).filter(Boolean);
+  const effect=new Set(),impact=null;
+  if(kind==='impact'){
+    const range=Math.max(Number(weapon.max_range)||0,Number(weapon.min_range)||0,4);
+    const impOff=_stageMapRotateWeaponCoord(0,range,dir);
+    const ix=pivot.x+impOff.x,iy=pivot.y+impOff.y;
+    ec.forEach(c=>{
+      const r=_stageMapRotateWeaponCoord(c.x,c.y,dir);
+      effect.add(`${ix+r.x}_${iy+r.y}`);
+    });
+    return{kind,effect,impact:{x:ix,y:iy}};
+  }
+  ec.forEach(c=>{
+    const r=_stageMapRotateWeaponCoord(c.x,c.y,dir);
+    effect.add(`${pivot.x+r.x}_${pivot.y+r.y}`);
+  });
+  return{kind,effect,impact:null};
+}
+function _stageMapMapWeaponLayerHtml(pool,win,cellPx,gapPx,gridPad,mapW,mapH){
+  if(!_stageMapMapWeaponLayerShown())return'';
+  const units=(pool||[]).filter(u=>_stageMapUnitVisible(u,pool)&&_stageMapNpcMapWeapon(u));
+  if(!units.length)return'';
+  const wideSrc=imgUrlWebp(imgUrlPreferCdn(STAGE_MAP_MAP_WEAPON_ICONS.wideArea));
+  const whiteSrc=imgUrlWebp(imgUrlPreferCdn(STAGE_MAP_MAP_WEAPON_ICONS.impactWhite));
+  const yellowSrc=imgUrlWebp(imgUrlPreferCdn(STAGE_MAP_MAP_WEAPON_ICONS.impactYellow));
+  const pointSrc=imgUrlWebp(imgUrlPreferCdn(STAGE_MAP_MAP_WEAPON_ICONS.impactPoint));
+  const imgErr=' onerror="this.style.display=\'none\'"';
+  let html='<div class="stage-map-map-weapon-layer" aria-hidden="true">';
+  units.forEach(u=>{
+    const weapon=_stageMapNpcMapWeapon(u);
+    if(!weapon)return;
+    const {kind,effect,impact}=_stageMapMapWeaponWorldCells(u,weapon);
+    effect.forEach(key=>{
+      const parts=key.split('_');
+      const wx=Number(parts[0]),wy=Number(parts[1]);
+      if(!Number.isFinite(wx)||!Number.isFinite(wy))return;
+      const cx=wx+1,cy=wy+1;
+      if(cx<1||cy<1||cx>mapW||cy>mapH)return;
+      const box=_stageMapCellBoxPx(cx,cy,win,cellPx,gapPx,gridPad);
+      const icSrc=kind==='impact'?whiteSrc:wideSrc;
+      const icCls=kind==='impact'?'stage-map-map-weapon-ic stage-map-map-weapon-ic--impact':'stage-map-map-weapon-ic stage-map-map-weapon-ic--wide';
+      html+=`<div class="stage-map-map-weapon-cell" style="left:${box.left}px;top:${box.top}px;width:${box.w}px;height:${box.h}px"><img class="${icCls}" src="${escAttr(icSrc)}" alt="" loading="lazy" decoding="async"${imgErr}></div>`;
+    });
+    if(impact&&kind==='impact'){
+      const cx=impact.x+1,cy=impact.y+1;
+      if(cx>=1&&cy>=1&&cx<=mapW&&cy<=mapH){
+        const box=_stageMapCellBoxPx(cx,cy,win,cellPx,gapPx,gridPad);
+        html+=`<div class="stage-map-map-weapon-impact" style="left:${box.left}px;top:${box.top}px;width:${box.w}px;height:${box.h}px"><img class="stage-map-map-weapon-impact-point" src="${escAttr(pointSrc)}" alt="" loading="lazy" decoding="async"${imgErr}><img class="stage-map-map-weapon-impact-yellow" src="${escAttr(yellowSrc)}" alt="" loading="lazy" decoding="async"${imgErr}></div>`;
+      }
+    }
+  });
+  html+='</div>';
+  return html;
+}
 function _stageMapRenderUnitDotHtml(u,opts){
   opts=opts||{};
   const sl=u.side==='enemy'?t('enemy'):u.side==='gimmick'?esc(u.name||'Gimmick'):t('ally');
@@ -5517,9 +5630,10 @@ function renderStageMapGrid(md){
   }
   html+=`</div>`;
   const escapeLayerHtml=_stageMapEscapeUnitsLayerHtml(pool,win,cellPx,gapPx,mapW,mapH,gridPad);
+  const mapWeaponLayerHtml=_stageMapMapWeaponLayerHtml(pool,win,cellPx,gapPx,gridPad,mapW,mapH);
   const parentUnits=_stageMapEscapeParentUnits(pool);
   const parentOverlayHtml=renderStageMapParentOverlay(parentUnits,cellPx);
-  const mapBlock=`<div class="stage-map-grid-wrap${escapeOn?' stage-map-grid-wrap--escape':''}">${parentOverlayHtml}${html}${escapeLayerHtml}</div>`;
+  const mapBlock=`<div class="stage-map-grid-wrap${escapeOn?' stage-map-grid-wrap--escape':''}">${parentOverlayHtml}${html}${mapWeaponLayerHtml}${escapeLayerHtml}</div>`;
   if(escapeOn&&(parentOverlayHtml||escapeLayerHtml.includes('stage-map-escape-overlap-host'))){
     setTimeout(_stageMapWireEscapeOverlapUi,0);
     return`<div class="stage-map-viewport stage-map-viewport--escape">${mapBlock}</div>`;
@@ -5533,7 +5647,7 @@ const inner=el.querySelector('[data-stage-npc-group]');
 const key=inner?String(inner.getAttribute('data-stage-npc-group')||''):'';
 if(key)npcGroupsOpen[key]=!!el.open;
 });
-return{mapExpanded:!!S.stageMapExpanded,reinforcementOnly:!!S.stageMapReinforcementOnly,escapeLayerVisible:!!S.stageMapEscapeLayerVisible,escapeStackSwapped:S.stageMapEscapeStackSwapped?{...S.stageMapEscapeStackSwapped}:{},buffAreasVisible:S.stageMapBuffAreasVisible!==false,mapZoom:Number(S.stageMapZoom)||1,mapAutoFit:S.stageMapAutoFit!==false,npcGroupsOpen,modalScrollTop:_detailModalScrollTop()};
+return{mapExpanded:!!S.stageMapExpanded,reinforcementOnly:!!S.stageMapReinforcementOnly,escapeLayerVisible:!!S.stageMapEscapeLayerVisible,escapeStackSwapped:S.stageMapEscapeStackSwapped?{...S.stageMapEscapeStackSwapped}:{},buffAreasVisible:S.stageMapBuffAreasVisible!==false,mapWeaponVisible:!!S.stageMapMapWeaponVisible,mapZoom:Number(S.stageMapZoom)||1,mapAutoFit:S.stageMapAutoFit!==false,npcGroupsOpen,modalScrollTop:_detailModalScrollTop()};
 }
 function applyStageDetailUiState(ui){
 if(!ui)return;
@@ -5543,6 +5657,7 @@ if(ui.escapeLayerVisible!=null)S.stageMapEscapeLayerVisible=!!ui.escapeLayerVisi
 if(ui.escapeStackSwapped&&typeof ui.escapeStackSwapped==='object')S.stageMapEscapeStackSwapped={...ui.escapeStackSwapped};
 S.stageMapSpawnOrderVisible=false;
 if(ui.buffAreasVisible!=null)S.stageMapBuffAreasVisible=!!ui.buffAreasVisible;
+if(ui.mapWeaponVisible!=null)S.stageMapMapWeaponVisible=!!ui.mapWeaponVisible;
 const z=Number(ui.mapZoom);
 if(!Number.isNaN(z))S.stageMapZoom=Math.max(0.25,Math.min(4,z));
 if(ui.mapAutoFit!=null)S.stageMapAutoFit=!!ui.mapAutoFit;
@@ -5624,6 +5739,14 @@ function setStageMapSpawnOrderVisible(on){
 }
 function setStageMapBuffAreasVisible(on){
   S.stageMapBuffAreasVisible=!!on;
+  if(S.currentDetailType==='stage'&&S.stageMapExpanded){
+    const gridWrap=document.getElementById('stageMapGridWrap');
+    const md=S.currentDetailData&&S.currentDetailData.map_data;
+    if(gridWrap&&md&&md.width>0&&md.height>0)gridWrap.innerHTML=renderStageMapGrid(md)
+  }
+}
+function setStageMapMapWeaponVisible(on){
+  S.stageMapMapWeaponVisible=!!on;
   if(S.currentDetailType==='stage'&&S.stageMapExpanded){
     const gridWrap=document.getElementById('stageMapGridWrap');
     const md=S.currentDetailData&&S.currentDetailData.map_data;
