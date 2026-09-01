@@ -119,11 +119,12 @@ if not os.environ.get('PLAYWRIGHT_BROWSERS_PATH') or 'cursor-sandbox-cache' in o
 import meta_synergy_rank as msy
 
 EVAL_VIA_MSY_DC_JS = """
-async ({ unitId, pilotIds, defTiers, lang }) => {
+async ({ unitId, pilotIds, defTiers, lang, skillsOn }) => {
   return await MsyDcEngine.evalUnit(unitId, pilotIds, defTiers, {
     lang: lang,
     cpOn: true,
     pepOn: true,
+    skillsOn: skillsOn !== false,
   });
 }
 """
@@ -384,10 +385,8 @@ async def _recover_dc_page(page, base, *, pilot_ids=None, lang='EN', soft_first=
         await _setup_dc_page(page, base, pilot_ids=pilot_ids, lang=lang, install_routes=True)
 
 
-async def _build_one_unit(page, base, uid, lang, pilot_ids, exclude, top_pilots, def_tiers, def_tier_payload):
-    candidates = msy.dc_candidate_pilots_for_unit(uid, pilot_ids, exclude, lang, bsp=True)
-    if not candidates:
-        return None
+async def _eval_unit_raw(page, base, uid, lang, candidates, def_tier_payload, *,
+                         skills_on=True, pilot_ids=None):
     last_err = None
     for attempt in range(3):
         try:
@@ -398,9 +397,10 @@ async def _build_one_unit(page, base, uid, lang, pilot_ids, exclude, top_pilots,
                     'pilotIds': candidates,
                     'defTiers': def_tier_payload,
                     'lang': lang,
+                    'skillsOn': bool(skills_on),
                 },
             )
-            break
+            return raw
         except Exception as e:
             last_err = e
             print(f'  retry {uid} attempt {attempt + 1}/3: {e}', flush=True)
@@ -412,15 +412,13 @@ async def _build_one_unit(page, base, uid, lang, pilot_ids, exclude, top_pilots,
                 except Exception as setup_err:
                     print(f'  tab re-setup failed: {setup_err}', flush=True)
                 await asyncio.sleep(2 * (attempt + 1))
-    else:
-        print(f'  skip {uid}: {last_err}')
-        return None
+    print(f'  skip {uid}: {last_err}')
+    return None
+
+
+def _dc_raw_to_pairs(raw, def_tier_payload, def_tiers):
     if not raw or raw.get('error') or not raw.get('byTier'):
-        err = (raw and raw.get('error')) or 'empty result'
-        print(f'  skip {uid}: {err}')
-        if _is_permanent_skip_error(err):
-            _add_permanent_skip(uid, err)
-        return None
+        return None, (raw and raw.get('error')) or 'empty result'
     by_tier = {}
     for tier_key, pairs in (raw.get('byTier') or {}).items():
         py_pairs = []
@@ -442,14 +440,52 @@ async def _build_one_unit(page, base, uid, lang, pilot_ids, exclude, top_pilots,
         if py_pairs:
             by_tier[int(tier_key)] = py_pairs
     if not by_tier:
+        return None, 'empty result'
+    return by_tier, None
+
+
+async def _build_one_unit(page, base, uid, lang, pilot_ids, exclude, top_pilots, def_tiers, def_tier_payload,
+                          *, skills_off_dc=False, skills_off_only=False, existing_group=None):
+    candidates = msy.dc_candidate_pilots_for_unit(uid, pilot_ids, exclude, lang, bsp=True)
+    if not candidates:
         return None
+    by_tier = None
+    if not skills_off_only:
+        raw = await _eval_unit_raw(
+            page, base, uid, lang, candidates, def_tier_payload,
+            skills_on=True, pilot_ids=pilot_ids,
+        )
+        by_tier, err = _dc_raw_to_pairs(raw, def_tier_payload, def_tiers)
+        if not by_tier:
+            print(f'  skip {uid}: {err}')
+            if _is_permanent_skip_error(err):
+                _add_permanent_skip(uid, err)
+            return None
+    by_tier_off = None
+    if skills_off_dc:
+        raw_off = await _eval_unit_raw(
+            page, base, uid, lang, candidates, def_tier_payload,
+            skills_on=False, pilot_ids=pilot_ids,
+        )
+        by_tier_off, err_off = _dc_raw_to_pairs(raw_off, def_tier_payload, def_tiers)
+        if not by_tier_off:
+            print(f'  skills-off skip {uid}: {err_off}')
+    if skills_off_only:
+        if not existing_group or not by_tier_off:
+            return None
+        g = msy.attach_dc_skills_off_rankings(
+            existing_group, by_tier_off, pilot_ids, exclude, lang, top_pilots,
+        )
+        return g
     return msy.assemble_unit_group_from_dc(
         uid, by_tier, pilot_ids, lang, top_pilots, exclude,
+        pairs_by_tier_no_skills=by_tier_off,
     )
 
 
 async def build_units(base, lang, unit_ids, pilot_ids, exclude, top_pilots, def_tiers, *,
-                      limit=None, on_checkpoint=None, workers=1):
+                      limit=None, on_checkpoint=None, workers=1,
+                      skills_off_dc=False, skills_off_only=False, existing_by_uid=None):
     workers = max(1, int(workers or 1))
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True, args=list(_CHROMIUM_BUILD_ARGS))
@@ -476,6 +512,8 @@ async def build_units(base, lang, unit_ids, pilot_ids, exclude, top_pilots, def_
             nonlocal done
             g = await _build_one_unit(
                 page, base, uid, lang, pilot_ids, exclude, top_pilots, def_tiers, def_tier_payload,
+                skills_off_dc=skills_off_dc, skills_off_only=skills_off_only,
+                existing_group=(existing_by_uid or {}).get(msy._app().normalize_id(uid)),
             )
             async with lock:
                 done += 1
@@ -487,7 +525,7 @@ async def build_units(base, lang, unit_ids, pilot_ids, exclude, top_pilots, def_
                         f'[{done}/{len(ids)}] {g["unit"].get("name")} '
                         f'#1 {top.get("char", {}).get("name")} {peak:,}'
                     )
-                if on_checkpoint and groups and done % 25 == 0:
+                if on_checkpoint and groups and (skills_off_only or done % 25 == 0):
                     on_checkpoint(list(groups))
                 if done % 20 == 0:
                     elapsed = time.perf_counter() - t0
@@ -548,7 +586,24 @@ def main():
     )
     ap.add_argument('--out', default='', help='Optional JSON debug output path')
     ap.add_argument('--loop', action='store_true', help='Auto-restart on crash until complete')
+    ap.add_argument(
+        '--skills-off-dc',
+        action='store_true',
+        help='Fill No Skills Top 10 from live /cal with skills off (not python formula).',
+    )
+    ap.add_argument(
+        '--skills-off-only',
+        action='store_true',
+        help='Only rebuild the No Skills board; keep existing skills-on /cal rows.',
+    )
+    ap.add_argument(
+        '--latest-new',
+        action='store_true',
+        help='Newest mobile suits: uncached first, else highest playable MS ids (skips warships).',
+    )
     args = ap.parse_args()
+    if args.skills_off_only:
+        args.skills_off_dc = True
 
     workers = _resolve_workers(args.workers)
     _print_build_preflight(args.base, workers)
@@ -600,6 +655,12 @@ def main():
             child.extend(sum([['--unit', u] for u in args.unit], []))
             if args.unit_role:
                 child.extend(['--unit-role', str(args.unit_role)])
+            if args.skills_off_dc:
+                child.append('--skills-off-dc')
+            if args.skills_off_only:
+                child.append('--skills-off-only')
+            if args.latest_new:
+                child.append('--latest-new')
             rc = os.spawnv(os.P_WAIT, sys.executable, child)
             if rc == 0:
                 cache_key = msy._bsp_published_cache_key(
@@ -681,10 +742,16 @@ def main():
     top_pilots = int(args.top_pilots) or int(msy._BSP_STORE_TOP_PILOTS)
     role_want = str(args.unit_role or '').strip()
     cache_key, existing_groups = _load_existing_v15(
-        lang, top_pilots, for_build=True, allow_stale_rules=bool(args.incremental),
+        lang, top_pilots, for_build=True,
+        allow_stale_rules=bool(args.incremental or args.skills_off_only),
     )
+    existing_by_uid = {
+        msy._app().normalize_id((g.get('unit') or {}).get('id')): g
+        for g in existing_groups
+        if (g.get('unit') or {}).get('id')
+    }
     # Avoid wiping full catalog when --force is used with explicit --unit ids.
-    if args.force and not args.incremental:
+    if args.force and not args.incremental and not args.skills_off_only:
         if args.unit:
             drop = {msy._app().normalize_id(u) for u in args.unit}
             existing_groups = [
@@ -713,6 +780,29 @@ def main():
     if args.unit:
         unit_ids = [msy._app().normalize_id(u) for u in args.unit]
         scope_label = 'explicit'
+    elif args.latest_new:
+        A = msy._app()
+        rankable = [A.normalize_id(u) for u in msy._msy_rankable_unit_ids(lang)]
+
+        def _is_mobile_suit(uid):
+            info = A.unit_info_map.get(uid) or {}
+            return str(info.get('body_type') or '1') != '2'
+
+        rankable_ms = [u for u in rankable if _is_mobile_suit(u)]
+        cached = {
+            A.normalize_id((g.get('unit') or {}).get('id'))
+            for g in existing_groups
+        }
+        # skills-off-only patches existing groups — skip uncached (incl. warships
+        # that sort to the top of raw id lists).
+        n_latest = 12
+        if args.skills_off_only:
+            unit_ids = sorted((u for u in rankable_ms if u in cached), reverse=True)[:n_latest]
+        else:
+            new_ids = [u for u in rankable_ms if u not in cached]
+            unit_ids = new_ids or sorted(rankable_ms, reverse=True)[:n_latest]
+        scope_label = f'latest-new n={len(unit_ids)}'
+        print('Latest units:', ', '.join(unit_ids))
     elif args.incremental:
         unit_ids, meta = msy._bsp_incremental_rebuild_unit_ids(
             lang,
@@ -744,16 +834,32 @@ def main():
 
     if args.resume:
         # Formula incremental rebuilds re-sim top-N even when cached, unless --resume.
-        unit_ids = [
-            u for u in unit_ids
-            if msy._app().normalize_id(u) not in done
-            and msy._app().normalize_id(u) not in permanent_skips
-        ]
-        print(
-            f'Resume: {len(done)} units cached, {len(permanent_skips)} permanent skips, '
-            f'{len(unit_ids)} remaining'
-        )
-    elif args.incremental and not args.unit:
+        if args.skills_off_only:
+            done_off = {
+                uid for uid, g in existing_by_uid.items()
+                if str((g or {}).get('skills_off_build_engine') or '') == msy._BSP_DC_BUILD_ENGINE
+                and ((g.get('rankings_no_active_skills') or {}).get('super_crit') or {}).get('pilots')
+            }
+            unit_ids = [
+                u for u in unit_ids
+                if msy._app().normalize_id(u) not in done_off
+                and msy._app().normalize_id(u) not in permanent_skips
+            ]
+            print(
+                f'Resume skills-off DC: {len(done_off)} already live /cal, '
+                f'{len(permanent_skips)} permanent skips, {len(unit_ids)} remaining'
+            )
+        else:
+            unit_ids = [
+                u for u in unit_ids
+                if msy._app().normalize_id(u) not in done
+                and msy._app().normalize_id(u) not in permanent_skips
+            ]
+            print(
+                f'Resume: {len(done)} units cached, {len(permanent_skips)} permanent skips, '
+                f'{len(unit_ids)} remaining'
+            )
+    elif args.incremental and not args.unit and not args.skills_off_only:
         # Default incremental: re-rank selected units; drop them from merge base first
         # so stale formula rows are replaced, then merge keeps untouched long-tail.
         rebuild = {msy._app().normalize_id(u) for u in unit_ids}
@@ -773,6 +879,7 @@ def main():
     print(
         f'BSP DC build ({scope_label}): {len(unit_ids)} units, '
         f'base={args.base}, store_top={top_pilots}, workers={workers}, '
+        f'skills_off_dc={bool(args.skills_off_dc)} skills_off_only={bool(args.skills_off_only)}, '
         f'pool=bsp (~{msy._BSP_PILOT_CAP} pilots/unit, nonUR reserve {msy._BSP_NON_UR_RESERVE})'
     )
 
@@ -789,11 +896,33 @@ def main():
         args.base, lang, unit_ids, pilot_ids, exclude, top_pilots, def_tiers,
         limit=limit, on_checkpoint=on_checkpoint if checkpoint else None,
         workers=workers,
+        skills_off_dc=bool(args.skills_off_dc),
+        skills_off_only=bool(args.skills_off_only),
+        existing_by_uid=existing_by_uid,
     ))
     merged = _merge_groups(existing_groups, new_groups)
     print(f'Built {len(new_groups)} new groups ({len(merged)} total) in {time.perf_counter() - t0:.0f}s')
 
-    if args.unit and len(args.unit) == 1 and merged:
+    if (args.skills_off_dc or args.skills_off_only) and merged:
+        merged_by = {
+            msy._app().normalize_id((x.get('unit') or {}).get('id')): x
+            for x in merged
+        }
+        for uid in unit_ids[:20]:
+            g = merged_by.get(msy._app().normalize_id(uid))
+            if not g:
+                continue
+            off = ((g.get('rankings_no_active_skills') or {}).get('super_crit') or {}).get('pilots') or []
+            src = g.get('skills_off_build_engine') or 'python'
+            un = (g.get('unit') or {}).get('name') or uid
+            print(f'  No Skills ({src}) {un}:')
+            for p in off[:10]:
+                ch = p.get('char') or {}
+                print(
+                    f'    #{p.get("rank")} {ch.get("name")} '
+                    f'sc={p.get("super_crit_dmg")} skills={p.get("active_skills_on")}'
+                )
+    elif args.unit and len(args.unit) == 1 and merged:
         g = next(
             (x for x in merged if msy._app().normalize_id((x.get('unit') or {}).get('id'))
              == msy._app().normalize_id(args.unit[0])),

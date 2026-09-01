@@ -229,7 +229,8 @@
       char_atk: r.charAtk | 0,
       formula_stat: formulaStatKeyForPair(wpn),
       dmg_dealt_pct: r.userDmgIncreasePct | 0,
-      vigor_dmg_pct: r.vigorDmgBonusPct | 0
+      vigor_dmg_pct: r.vigorDmgBonusPct | 0,
+      active_skills_on: skillsOn !== false
     };
     if (vigor === 'high') row.normal_dmg = normalDmg;
     else if (vigor === 'max') row.crit_dmg = rankCrit;

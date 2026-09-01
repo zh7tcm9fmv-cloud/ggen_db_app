@@ -2509,9 +2509,10 @@ def _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc):
         top = scored[: max(1, int(top_pilots or 10))]
         pilots_out = []
         for i, (sc, cid, d) in enumerate(top):
-            gc = bool(d.get('guaranteed_crit')) or _char_guaranteed_crit(
-                cid, lc, vigor=vigor_key, cp_on=True,
-            )
+            if 'guaranteed_crit' in d:
+                gc = bool(d.get('guaranteed_crit'))
+            else:
+                gc = _char_guaranteed_crit(cid, lc, vigor=vigor_key, cp_on=True)
             crit_rate = 100 if gc else int(d.get('crit_rate') or 0)
             can_crit = gc or crit_rate > 0
             normal = int(d.get('normal_dmg') or 0)
@@ -2542,7 +2543,10 @@ def _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc):
                 'dmg_dealt_passive_pct': d.get('dmg_dealt_passive_pct', d.get('dmg_dealt_pct', 0)),
                 'vigor_dmg_pct': d.get('vigor_dmg_pct', 0),
                 'vigor': vigor_key,
-                'active_skills': _msy_pilot_active_skills(cid, lc),
+                'active_skills': (
+                    _msy_pilot_active_skills(cid, lc)
+                    if d.get('active_skills_on', True) else []
+                ),
                 'active_skills_on': bool(d.get('active_skills_on', True)),
                 'score': sc,
             })
@@ -4107,8 +4111,43 @@ def _build_single_unit_group(uid, pilot_ids, lc, lb_tier, vigor, def_tier, exclu
     return out
 
 
+def attach_dc_skills_off_rankings(g, pairs_by_tier, pilot_ids, exclude, lc, top_pilots):
+    """Replace No Skills board with live /cal pairs (skillsOn=false)."""
+    if not g or not pairs_by_tier:
+        return g
+    A = _app()
+    uid = A.normalize_id((g.get('unit') or {}).get('id'))
+    if not uid:
+        return g
+    active_pilots = _eligible_pilots_for_unit(uid, pilot_ids, exclude)
+    active_set = set(active_pilots)
+    store_top = max(int(top_pilots or 10), _BSP_STORE_TOP_PILOTS)
+    dt = 3 if 3 in pairs_by_tier or '3' in pairs_by_tier else None
+    if dt is None:
+        dt = next(iter(pairs_by_tier))
+    raw = pairs_by_tier.get(int(dt)) or pairs_by_tier.get(str(dt)) or []
+    pairs = [
+        (cid, bv) for cid, bv in raw
+        if A.normalize_id(cid) in active_set and bv
+    ]
+    if not pairs:
+        return g
+    rk = _rankings_from_multi_vigor_pairs(pairs, store_top, lc)
+    if not rk:
+        return g
+    for block in (rk or {}).values():
+        for p in block.get('pilots') or []:
+            p['active_skills'] = []
+            p['active_skills_on'] = False
+    out = dict(g)
+    out['rankings_no_active_skills'] = rk
+    out['skills_off_board_version'] = _SKILLS_OFF_BOARD_VERSION
+    out['skills_off_build_engine'] = _BSP_DC_BUILD_ENGINE
+    return out
+
+
 def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, exclude, metric='super_crit',
-                                pairs_by_tier_no_cp=None, same_role_only=False):
+                                pairs_by_tier_no_cp=None, same_role_only=False, pairs_by_tier_no_skills=None):
     """Build one MSY unit group from Damage Simulator pair results."""
     A = _app()
     uid = A.normalize_id(uid)
@@ -4253,12 +4292,20 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
         out['rankings_support_role_by_tier'] = rankings_support_role_by_tier
         out['rankings_no_gc_by_tier'] = rankings_no_gc_by_tier
         out['rankings_no_cp_by_tier'] = rankings_no_cp_by_tier
-    # Skills-off + defender boards (python fair pool; matches DC when skills disabled).
+    # Skills-off: live /cal when provided; otherwise python fair-pool (not /cal).
     try:
-        out = enrich_group_skills_off_and_defender(
-            out, lc, lite=False, def_tier=3,
-            pilot_ids=pilot_ids, exclude=exclude,
-        )
+        if pairs_by_tier_no_skills:
+            out = attach_dc_skills_off_rankings(
+                out, pairs_by_tier_no_skills, pilot_ids, exclude, lc, top_pilots,
+            )
+            out = enrich_group_defender_rankings(
+                out, lc, pilot_ids=pilot_ids, exclude=exclude,
+            )
+        else:
+            out = enrich_group_skills_off_and_defender(
+                out, lc, lite=False, def_tier=3,
+                pilot_ids=pilot_ids, exclude=exclude,
+            )
     except Exception as e:
         print(f'BSP enrich skills-off/defender failed ({uid}): {e}')
     return out
@@ -4302,7 +4349,8 @@ def save_published_master_cache(cache_key, result, *, build_engine=None):
     if build_engine == _BSP_DC_BUILD_ENGINE and payload['groups']:
         try:
             # Prefer published tree so deploys can ship shards next to the monolith.
-            pub_shards = _bsp_shard_dir_candidates(cache_key)[1]
+            # candidates[0] = data/published/bsp_shards, [1] = persistent extract.
+            pub_shards = _bsp_shard_dir_candidates(cache_key)[0]
             _bsp_write_shards_from_groups(
                 cache_key, payload['groups'],
                 source_path=path,
@@ -4664,7 +4712,7 @@ def _schedule_bsp_board_refresh(g, uid, lc, *, rank_mode='super_crit', def_tier=
             if isinstance(g, dict) and isinstance(row, dict):
                 for k in (
                     'rankings_no_active_skills', 'rankings_defender',
-                    'skills_off_board_version',
+                    'skills_off_board_version', 'skills_off_build_engine',
                 ):
                     if k in row:
                         g[k] = row[k]
@@ -4704,6 +4752,7 @@ def _persist_bsp_published_group(uid, g):
     patched = False
     overlay_keys = (
         'rankings_defender', 'rankings_no_active_skills', 'skills_off_board_version',
+        'skills_off_build_engine',
     )
     with _BSP_PUBLISHED_MEMORY_LOCK:
         cache_keys = list(_BSP_PUBLISHED_MEMORY.keys())
@@ -5847,8 +5896,9 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
         )
         off_ver = int(row_base.get('skills_off_board_version') or 0)
         def_ver = int((row_base.get('rankings_defender') or {}).get('board_version') or 0)
+        dc_off = str(row_base.get('skills_off_build_engine') or '') == _BSP_DC_BUILD_ENGINE
         missing_off = not has_off
-        stale_off = has_off and off_ver < int(_SKILLS_OFF_BOARD_VERSION)
+        stale_off = (not dc_off) and has_off and off_ver < int(_SKILLS_OFF_BOARD_VERSION)
         is_def_role = _unit_is_defense_role(uid)
         missing_def = is_def_role and (not has_def_on or not has_def_off)
         stale_def = (

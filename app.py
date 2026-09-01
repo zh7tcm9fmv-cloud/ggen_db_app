@@ -269,7 +269,15 @@ def _env_strip_quotes(val):
     return s
 
 
-IMAGE_CDN = os.environ.get('IMAGE_CDN', '').rstrip('/')
+# Game images: prefer jsDelivr CDN (same repo as FONT_CDN) when unset — stage lmb_map_bg_* live there, not in app/static.
+_DEFAULT_IMAGE_CDN = 'https://cdn.jsdelivr.net/gh/zh7tcm9fmv-cloud/ggen_db_images@main'
+_image_cdn_env = _env_strip_quotes(os.environ.get('IMAGE_CDN'))
+if _image_cdn_env is None or _image_cdn_env == '':
+    IMAGE_CDN = _DEFAULT_IMAGE_CDN
+elif _image_cdn_env.lower() in ('0', 'false', 'off', 'no'):
+    IMAGE_CDN = ''
+else:
+    IMAGE_CDN = _image_cdn_env.rstrip('/')
 # Brand fonts: prefer jsDelivr (week-long cache) over GitHub Pages (max-age=600 → re-download loop).
 # Keeps multi-MB OTFs off Railway egress. Override with FONT_CDN=0 to force same-origin /static/font/.
 _DEFAULT_FONT_CDN = 'https://cdn.jsdelivr.net/gh/zh7tcm9fmv-cloud/ggen_db_images@main'
@@ -13794,6 +13802,30 @@ def resolve_stage_conditions(sid, lc):
     return victory, defeat, branch
 
 
+_NPC_PILOT_ESCAPE_ABILITY_RESOURCE = 'trait_10770100'
+
+
+def _ability_id_is_pilot_escape(aid):
+    """NPC 'Escape' (6109001/6109002) — LANG ability name Escape / 脱出, not unit Mechanisms."""
+    aid_n = normalize_id(aid)
+    if not aid_n or aid_n == '0':
+        return False
+    if aid_n.startswith('610900'):
+        return True
+    ri = str(ability_resource_map.get(aid_n) or '').strip().lower()
+    return ri == _NPC_PILOT_ESCAPE_ABILITY_RESOURCE
+
+
+def _npc_ability_set_has_pilot_escape(asid):
+    asid_n = normalize_id(asid)
+    if not asid_n or asid_n == '0':
+        return False
+    for e in map_npc_character_ability_set_lookup.get(asid_n, []) or []:
+        if _ability_id_is_pilot_escape((e or {}).get('id')):
+            return True
+    return False
+
+
 def _map_npc_escape_name_base(name):
     """Normalize NpcUniqueName for death-spawn pairing (gato→gato2, uraki→Uraki_02)."""
     n = str(name or '').strip()
@@ -13887,7 +13919,38 @@ def _pair_map_npc_escape_spawns_for_side(side_units, meta):
 
     rem_placed = [u for u in placed if str(u.get('npc_id', '')) not in paired_parents]
     rem_unplaced = [u for u in unplaced if str(u.get('npc_id', '')) not in paired_spawns]
+    _pair_map_npc_escape_spawns_by_pilot(rem_placed, rem_unplaced, paired_parents, paired_spawns, _link)
+    rem_placed = [u for u in placed if str(u.get('npc_id', '')) not in paired_parents]
+    rem_unplaced = [u for u in unplaced if str(u.get('npc_id', '')) not in paired_spawns]
     _pair_map_npc_escape_spawns_by_name(rem_placed, rem_unplaced, meta, paired_parents, paired_spawns, _link)
+
+
+def _pair_map_npc_escape_spawns_by_pilot(placed, unplaced, paired_parents, paired_spawns, link_fn):
+    """Pair on-map NPCs whose pilot has Escape with off-map same-character replacements."""
+    rem_placed = [u for u in placed if str(u.get('npc_id', '')) not in paired_parents]
+    rem_unplaced = [u for u in unplaced if str(u.get('npc_id', '')) not in paired_spawns]
+    ranked = []
+    for par in rem_placed:
+        if not par.get('pilot_has_escape'):
+            continue
+        cid = normalize_id(par.get('character_id'))
+        if not cid or cid == '0':
+            continue
+        px = int(par.get('x') or 0)
+        py = int(par.get('y') or 0)
+        pid = str(par.get('npc_id', ''))
+        for sp in rem_unplaced:
+            if sp.get('pilot_has_escape'):
+                continue
+            if normalize_id(sp.get('character_id')) != cid:
+                continue
+            sid = str(sp.get('npc_id', ''))
+            sx = int(sp.get('x') or 0)
+            sy = int(sp.get('y') or 0)
+            ranked.append((abs(px - sx) + abs(py - sy), pid, sid, par, sp))
+    ranked.sort(key=lambda t: (t[0], t[1], t[2]))
+    for _dist, _pid, _sid, par, sp in ranked:
+        link_fn(par, sp)
 
 
 def _pair_map_npc_escape_spawns_cross_side(units, meta):
@@ -13912,7 +13975,10 @@ def _pair_map_npc_escape_spawns_cross_side(units, meta):
         paired_spawns.add(sid)
         return True
 
-    _pair_map_npc_escape_spawns_by_name(placed, unplaced, meta, paired_parents, paired_spawns, _link)
+    _pair_map_npc_escape_spawns_by_pilot(placed, unplaced, paired_parents, paired_spawns, _link)
+    rem_placed = [u for u in placed if str(u.get('npc_id', '')) not in paired_parents]
+    rem_unplaced = [u for u in unplaced if str(u.get('npc_id', '')) not in paired_spawns]
+    _pair_map_npc_escape_spawns_by_name(rem_placed, rem_unplaced, meta, paired_parents, paired_spawns, _link)
 
 
 def pair_map_npc_escape_spawns(units, npc_rows):
@@ -15601,7 +15667,7 @@ def get_npc_unit_display(uid, usr, lc):
     p = find_portrait(info.get('resource_ids', []), uid, 'images/unit_portraits')
     th = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
     oaid = safe_int(info.get('occupied_area_id'), 1)
-    return {'id': uid, 'name': un, 'portrait': p or '', 'thum': th or p or '', 'rarity': RARITY_MAP.get(info.get('rarity', '1'), 'N'), 'rarity_icon': RARITY_ICON_MAP.get(info.get('rarity', '1'), ''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_icon': ROLE_ICON_MAP.get(info.get('role', '0'), ''), 'stats_raw': usr, 'occupied_area_id': oaid, 'tags': resolve_tags(unit_lin_map, uid, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(uid, ''), lc)}
+    return {'id': uid, 'name': un, 'portrait': p or '', 'thum': th or p or '', 'rarity': RARITY_MAP.get(info.get('rarity', '1'), 'N'), 'rarity_icon': RARITY_ICON_MAP.get(info.get('rarity', '1'), ''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_icon': ROLE_ICON_MAP.get(info.get('role', '0'), ''), 'stats_raw': usr, 'occupied_area_id': oaid, 'is_large': oaid == 2, 'tags': resolve_tags(unit_lin_map, uid, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(uid, ''), lc)}
 
 def get_npc_character_display(cid, csr, lc):
     ld = get_lang_data(lc); info = char_info_map.get(cid, {}); lid = ld.get('char_id_map', {}).get(cid, '')
@@ -26630,6 +26696,12 @@ def get_stage(stage_id):
                 step_ord = safe_int(npc.get('step_order'), 0)
                 story_boss = bool(npc.get('is_story_event_boss'))
                 me = {'npc_id': nid, 'name': dn, 'portrait': guest_icon or friendly_icon or dp, 'thum': '' if (guest_icon or friendly_icon) else ((up or {}).get('thum') or ''), 'x': npc.get('x', 0), 'y': npc.get('y', 0), 'direction': normalize_id(npc.get('direction', '1'), '1'), 'is_large': il, 'side': side, 'is_guest_ally': is_guest, 'is_friendly_force': is_friendly_force, 'is_initially_placed': bool(npc.get('is_initially_placed', True)), 'has_strategy_hint': has_h, 'step_order': step_ord}
+                if ce:
+                    _cid_map = normalize_id(ce.get('character_id', '0'))
+                    if _cid_map != '0':
+                        me['character_id'] = _cid_map
+                    if _npc_ability_set_has_pilot_escape(ce.get('ability_set_id', '0')):
+                        me['pilot_has_escape'] = True
                 if story_boss:
                     me['is_story_event_boss'] = True
                 if ue:
@@ -27356,7 +27428,7 @@ def get_unit(unit_id):
         _is_sd_unit = _unit_has_sd_mechanism(info, unit_id)
         _unit_hp_atk_tiers = _collect_unit_hp_atk_tiers_meta(ac)
         _unit_combat_count_atk = _collect_unit_combat_count_atk_meta(ac)
-        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'has_cond_weapon_range': _has_cond_weapon_range, 'has_pilot_cond_passive': _has_pilot_cond, 'cp_weapon_range_mods': _cp_wpn_range_mods, 'pilot_weapon_effect_bonuses': _pilot_wpn_fx, 'pilot_tag_weapon_stat_bonuses': _pilot_tag_wpn, 'pilot_en_cost_reduction_pct': _pilot_en_red, 'weapon_en_cost_increase_pct': {'sp': en_cost_inc_b[0], 'ssp': en_cost_inc_sspb[0], 'sp_cond': en_cost_inc_c[0], 'ssp_cond': en_cost_inc_sspc[0]}, 'is_large': il, 'is_sd': _is_sd_unit, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id, 'gacha_pull_movie_id': _gacha_pull_movie_id}
+        result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'has_cond_weapon_range': _has_cond_weapon_range, 'has_pilot_cond_passive': _has_pilot_cond, 'cp_weapon_range_mods': _cp_wpn_range_mods, 'pilot_weapon_effect_bonuses': _pilot_wpn_fx, 'pilot_tag_weapon_stat_bonuses': _pilot_tag_wpn, 'pilot_en_cost_reduction_pct': _pilot_en_red, 'weapon_en_cost_increase_pct': {'sp': en_cost_inc_b[0], 'ssp': en_cost_inc_sspb[0], 'sp_cond': en_cost_inc_c[0], 'ssp_cond': en_cost_inc_sspc[0]}, 'is_large': il, 'occupied_area_id': safe_int(info.get('occupied_area_id'), 1), 'is_sd': _is_sd_unit, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id, 'gacha_pull_movie_id': _gacha_pull_movie_id}
         if _unit_hp_atk_tiers:
             result['unit_hp_atk_tiers'] = _unit_hp_atk_tiers
         if _unit_combat_count_atk:

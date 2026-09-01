@@ -2483,7 +2483,7 @@ function renderCharGridStats(data){const grid=document.getElementById('charGrid'
 function renderCharGridSkills(data){const grid=document.getElementById('charGrid'),th=gridListThumbSize(),cmpLbl=escAttr(t('cmp_compare'));grid.innerHTML=data.rows.map((r,idx)=>{const strip=renderCharGridSkillStrip(r.grid_skills||[],3);return`<div class="list-grid-card list-grid-card--cmp list-grid-card--skills list-grid-card--char-skills-v2" data-detail-type="character" data-detail-id="${escAttr(String(r.id))}" onclick="openDetail('character','${r.id}')"><div class="list-grid-card-main-row"><div class="list-grid-card-char-col"><div class="list-grid-card-thumb">${renderListThumb(r,'char',th,{eager:idx<BROWSE_THUMB_EAGER_COUNT})}</div><div class="list-grid-card-body"><div class="list-grid-card-name">${esc(r.name)}</div></div><div class="list-grid-card-skills-hr">${strip}</div></div></div><div class="list-grid-cmp-wrap" onclick="event.stopPropagation()" title="${cmpLbl}"><span class="list-grid-cmp-inner"><input type="checkbox" class="cmp-cb cmp-cb-grid" data-cmp-id="${escAttr(String(r.id))}" aria-label="${cmpLbl}"></span></div></div>`}).join('');wireGridCompareCheckboxes('charGrid','character')}
 function renderCharT(data){const tb=document.getElementById('charBody'),em=document.getElementById('charEmpty');if(!data.rows||!data.rows.length){tb.innerHTML='';const g=document.getElementById('charGrid');if(g)g.innerHTML='';em.style.display='block';return}em.style.display='none';if(getListViewMode('characters')==='grid'){tb.innerHTML='';renderCharGrid(data)}else{const g=document.getElementById('charGrid');if(g)g.innerHTML='';renderCharTable(data)}_updateBrowseNavCache('character',data,S.characters.page||1)}
 function unitMapWeaponPreviewActive(){const debKey=S.currentTab==='ranking'&&S.ranking&&S.ranking.mode==='units'?'listRankUnitWeaponDebuff':'listUnitWeaponDebuff';const mwrKey=unitMapWeaponRangeStateKey();let deb=Array.isArray(S[debKey])?S[debKey]:[];let mwr=Array.isArray(S[mwrKey])?S[mwrKey]:[];return deb.includes('map_weapon')||mwr.length>0}
-function renderUnitMapPreviewBlock(p,r){if(!p)return '';const weapon={map_coords:p.map_coords||[],shooting_coords:p.shooting_coords||[],is_dash:!!p.is_dash,map_single_pou:!!p.map_single_pou,map_dash_dual_wide:!!p.map_dash_dual_wide,map_dash_dual_end_coords:p.map_dash_dual_end_coords||[]};const unitData=p.is_large?{is_large:true,id:r.id,main_unit_id:r.id}:null;const grid=renderMapGrid(weapon,unitData,{iconPreview:true,compact:true});const ammoVal=p.ammo!=null&&p.ammo!==''?Number(p.ammo):null;const ammo=(ammoVal!=null&&!Number.isNaN(ammoVal))?`<span class="unit-map-preview-ammo"><span class="unit-map-preview-ammo-label">${esc(t('unit_map_preview_ammo'))}</span><span class="unit-map-preview-ammo-val">${esc(String(ammoVal))}</span></span>`:'';return `<div class="unit-map-preview unit-map-preview--reveal">${grid}${ammo}</div>`}
+function renderUnitMapPreviewBlock(p,r){if(!p)return '';const weapon={map_coords:p.map_coords||[],shooting_coords:p.shooting_coords||[],is_dash:!!p.is_dash,map_single_pou:!!p.map_single_pou,map_dash_dual_wide:!!p.map_dash_dual_wide,map_dash_dual_end_coords:p.map_dash_dual_end_coords||[]};const unitData={is_large:!!(p.is_large||p.map_dash_dual_wide||Number(p.occupied_area_id)===2),id:r.id,main_unit_id:r.id};const grid=renderMapGrid(weapon,unitData,{iconPreview:true,compact:true});const ammoVal=p.ammo!=null&&p.ammo!==''?Number(p.ammo):null;const ammo=(ammoVal!=null&&!Number.isNaN(ammoVal))?`<span class="unit-map-preview-ammo"><span class="unit-map-preview-ammo-label">${esc(t('unit_map_preview_ammo'))}</span><span class="unit-map-preview-ammo-val">${esc(String(ammoVal))}</span></span>`:'';return `<div class="unit-map-preview unit-map-preview--reveal">${grid}${ammo}</div>`}
 function renderUnitMapPreviewHtml(r){if(!unitMapWeaponPreviewActive())return '';const previews=(r&&Array.isArray(r.map_weapon_previews)&&r.map_weapon_previews.length)?r.map_weapon_previews:(r&&r.map_weapon_preview?[r.map_weapon_preview]:[]);if(!previews.length)return '';if(previews.length===1)return renderUnitMapPreviewBlock(previews[0],r);return `<div class="unit-map-preview-stack">${previews.map(p=>renderUnitMapPreviewBlock(p,r)).join('')}</div>`}
 function renderUnitTable(data){const thSz=tableListThumbSize();browseKeyedReplace(document.getElementById('unitBody'),data.rows,(r,idx)=>`<tr data-detail-type="unit" data-detail-id="${escAttr(String(r.id))}" onclick="openDetail('unit','${r.id}')"><td class="col-thum">${renderListThumb(r,'unit',thSz,{eager:idx<BROWSE_THUMB_EAGER_COUNT})}</td><td class="col-name"><div class="name-cell"><span class="name-text">${esc(r.name)}</span><span class="name-special-icons">${(r.special_icons||[]).filter(ic=>ic&&!String(ic).includes('Source')).map(ic=>pictureRasterHtml(ic,{cls:'name-special-icon',loading:'lazy',alt:'',onerror:"this.style.display='none'",lazy:false})).join('')}</span></div>${renderUnitMapPreviewHtml(r)}</td><td class="col-stat"><span class="stat-value">${fmtN(r.HP)}</span></td><td class="col-stat"><span class="stat-value">${fmtN(r.EN)}</span></td><td class="col-stat"><span class="stat-value">${fmtN(r.ATK)}</span></td><td class="col-stat"><span class="stat-value">${fmtN(r.DEF)}</span></td><td class="col-stat"><span class="stat-value">${fmtN(r.MOB)}</span></td><td class="col-stat"><span class="stat-value">${fmtN(r.MOV)}</span></td></tr>`)}
 function renderUnitGrid(data){if(getListGridVariant('units')===2)return renderUnitGridSkills(data);return renderUnitGridStats(data)}
@@ -3117,7 +3117,7 @@ d.has_conditional_passive=!!(_npcAbilityListHasConditionalDetails(d.abilities)||
 return d;
 }
 if(type==='unit'){
-if(emb){if(emb.name!=null&&String(emb.name).trim())d.name=emb.name;if(emb.portrait!=null&&emb.portrait!=='')d.portrait=emb.portrait;if(emb.thum!==undefined)d.thum=emb.thum!=null&&emb.thum!==''?emb.thum:d.thum;if(emb.rarity)d.rarity=emb.rarity;if(emb.role)d.role=emb.role;if(emb.role_id!==undefined)d.role_id=emb.role_id;if(emb.rarity_icon!==undefined)d.rarity_icon=emb.rarity_icon;if(emb.role_icon!==undefined)d.role_icon=emb.role_icon;if(Array.isArray(emb.tags))d.tags=_cloneDetailJson(emb.tags);if(emb.series!==undefined)d.series=_cloneDetailJson(emb.series);if(emb.acquisition_route!==undefined)d.acquisition_route=emb.acquisition_route;if(emb.acquisition_icon!==undefined)d.acquisition_icon=emb.acquisition_icon;if(emb.model!==undefined)d.model=emb.model;if(emb.is_ultimate!==undefined)d.is_ultimate=emb.is_ultimate}
+if(emb){if(emb.name!=null&&String(emb.name).trim())d.name=emb.name;if(emb.portrait!=null&&emb.portrait!=='')d.portrait=emb.portrait;if(emb.thum!==undefined)d.thum=emb.thum!=null&&emb.thum!==''?emb.thum:d.thum;if(emb.rarity)d.rarity=emb.rarity;if(emb.role)d.role=emb.role;if(emb.role_id!==undefined)d.role_id=emb.role_id;if(emb.rarity_icon!==undefined)d.rarity_icon=emb.rarity_icon;if(emb.role_icon!==undefined)d.role_icon=emb.role_icon;if(Array.isArray(emb.tags))d.tags=_cloneDetailJson(emb.tags);if(emb.series!==undefined)d.series=_cloneDetailJson(emb.series);if(emb.acquisition_route!==undefined)d.acquisition_route=emb.acquisition_route;if(emb.acquisition_icon!==undefined)d.acquisition_icon=emb.acquisition_icon;if(emb.model!==undefined)d.model=emb.model;if(emb.is_ultimate!==undefined)d.is_ultimate=emb.is_ultimate;if(emb.is_large!==undefined)d.is_large=!!emb.is_large;if(emb.occupied_area_id!==undefined)d.occupied_area_id=emb.occupied_area_id;if(!d.is_large&&Number(d.occupied_area_id)===2)d.is_large=true}
 if(Array.isArray(emb.abilities))d.abilities=_filterDetailEntityRows(emb.abilities);else d.abilities=[];
 if(Array.isArray(emb.skills))d.skills=_filterDetailEntityRows(emb.skills);else d.skills=[];
 if(Array.isArray(emb.weapons))d.weapons=emb.weapons.filter(w=>w&&typeof w==='object');else d.weapons=[];
@@ -3970,7 +3970,12 @@ function stageTerrainMetaBadgeHtml(d){
   const ic=d.terrain_icon?`<img class="stage-meta-terrain-ic" src="${imgUrl(d.terrain_icon)}" alt="" loading="lazy" decoding="async" onerror="this.style.display='none'">`:'';
   return`<span class="stage-meta-badge stage-meta-badge--terrain">${t('terrain')}: ${ic}${esc(d.terrain||'')}</span>`;
 }
-function renderStageShell(d){const isSs=d.stage_category==='special_stage';const isTs=d.stage_category==='tower_stage';const isSa=d.stage_category==='score_attack';const isCh=d.stage_category==='challenge_stage';const isCe=d.stage_category==='chronicle';const isEr=d.stage_category==='eternal';const isChHard=isCh&&!!d.challenge_is_hard;const isErExpert=isEr&&String(d.difficulty_code||'')==='expert';const showStageMissions=isChHard||isErExpert;const showDiff=!(isSs||isTs||isSa||isCh||isCe);const diffBadge=showDiff?`<span class="stage-diff-badge stage-diff-${esc(d.difficulty_code||'unknown')}">${esc(d.difficulty_name||'-')}</span>`:'';const hardBadge=isChHard?`<span class="stage-diff-badge stage-diff-hard">${esc(t('stage_challenge_hard_label'))}</span>`:'';const seriesBadge=isCh&&d.challenge_series_name?`<span class="stage-meta-badge">${esc(d.challenge_series_name)}</span>`:'';const nameLine=(isSs||isTs||isCe)?`<div class="detail-name">${esc(d.name)}</div>`:isChHard?`<div class="detail-name"><b>${esc(t('stage_challenge_hard_label'))}</b> <b>${esc(t('col_stage_no'))} ${fmtN(d.stage_number)}</b> ${esc(d.name)}</div>`:`<div class="detail-name"><b>${esc(t('col_stage_no'))} ${fmtN(d.stage_number)}</b> ${esc(d.name)}</div>`;const portWrapW=isCe?260:240;const portBg=isCe&&d.portrait_bg?d.portrait_bg:'';const portLarge=!!(isCe&&d.portrait_large);const portInner=d.portrait?imgTag(d.portrait,{cls:portLarge?'stage-portrait stage-portrait--overlay':'stage-portrait',alt:esc(d.name),webp:true,onerror:"this.style.opacity='0.2'"}):`<div class="detail-portrait-placeholder" style="width:${portWrapW}px;aspect-ratio:1/1;font-size:70px">🗺️</div>`;const portHtml=portBg?`<div class="stage-portrait-stack${portLarge?' stage-portrait-stack--large':''}"><img class="stage-portrait-bg" src="${imgUrl(portBg)}" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)"><div class="stage-portrait-fg">${portInner}</div></div>`:portInner;const branchConds=(d.branch_victory_conditions&&d.branch_victory_conditions.length)?d.branch_victory_conditions:null;const condCols=branchConds?'1fr 1fr 1fr':'1fr 1fr';const branchBox=branchConds?`<div class="stage-condition-box"><div class="stage-condition-title branch">${t('branch_victory_conditions')}</div>${branchConds.map(x=>`<div class="stage-condition-item">${esc(x)}</div>`).join('')}</div>`:'';return`<div class="modal-top-label">${t('stage_data')}</div><div class="modal-entity-id">ID: ${d.id}</div><div class="detail-header"><div class="detail-portrait-wrap" style="width:${portWrapW}px">${portHtml}</div><div class="detail-title-area">${nameLine}<div class="detail-meta">${diffBadge}${hardBadge}${seriesBadge}<span class="stage-meta-badge">${t('recommended_cp')}: ${fmtN(d.recommended_cp)}</span>${stageTerrainMetaBadgeHtml(d)}</div><div class="stage-condition-grid" style="display:grid;grid-template-columns:${condCols};gap:12px;margin-top:8px"><div class="stage-condition-box"><div class="stage-condition-title victory">${t('victory_conditions')}</div>${(d.victory_conditions&&d.victory_conditions.length)?d.victory_conditions.map(x=>`<div class="stage-condition-item">${esc(x)}</div>`).join(''):`<div class="stage-condition-item">${t('none')}</div>`}</div>${branchBox}<div class="stage-condition-box"><div class="stage-condition-title defeat">${t('defeat_conditions')}</div>${(d.defeat_conditions&&d.defeat_conditions.length)?d.defeat_conditions.map(x=>`<div class="stage-condition-item">${esc(x)}</div>`).join(''):`<div class="stage-condition-item">${t('none')}</div>`}</div></div></div></div><div class="detail-body">${renderStageCapturableSection(d)}${renderTowerRewardSection(d)}${showStageMissions?renderStageMissionsSection(d):''}<div id="detailStageRestrictionsContainer"></div><div id="detailStageMapContainer"></div><div id="detailNpcContainer"></div></div>`}
+function stageConditionTitleIconHtml(kind){
+  const src=kind==='defeat'?'/static/images/UI/UI_Common_MapUI_Icon_CursorImportant.webp':'/static/images/UI/UI_Common_MapUI_Icon_CursorTaget.webp';
+  const a=imgSrcAttr(src);
+  return a?`<img class="stage-condition-title-ic" alt="" decoding="async" loading="lazy"${a} onerror="gameImageUrlFallback(this)">`:'';
+}
+function renderStageShell(d){const isSs=d.stage_category==='special_stage';const isTs=d.stage_category==='tower_stage';const isSa=d.stage_category==='score_attack';const isCh=d.stage_category==='challenge_stage';const isCe=d.stage_category==='chronicle';const isEr=d.stage_category==='eternal';const isChHard=isCh&&!!d.challenge_is_hard;const isErExpert=isEr&&String(d.difficulty_code||'')==='expert';const showStageMissions=isChHard||isErExpert;const showDiff=!(isSs||isTs||isSa||isCh||isCe);const diffBadge=showDiff?`<span class="stage-diff-badge stage-diff-${esc(d.difficulty_code||'unknown')}">${esc(d.difficulty_name||'-')}</span>`:'';const hardBadge=isChHard?`<span class="stage-diff-badge stage-diff-hard">${esc(t('stage_challenge_hard_label'))}</span>`:'';const seriesBadge=isCh&&d.challenge_series_name?`<span class="stage-meta-badge">${esc(d.challenge_series_name)}</span>`:'';const nameLine=(isSs||isTs||isCe)?`<div class="detail-name">${esc(d.name)}</div>`:isChHard?`<div class="detail-name"><b>${esc(t('stage_challenge_hard_label'))}</b> <b>${esc(t('col_stage_no'))} ${fmtN(d.stage_number)}</b> ${esc(d.name)}</div>`:`<div class="detail-name"><b>${esc(t('col_stage_no'))} ${fmtN(d.stage_number)}</b> ${esc(d.name)}</div>`;const portWrapW=isCe?260:240;const portBg=isCe&&d.portrait_bg?d.portrait_bg:'';const portLarge=!!(isCe&&d.portrait_large);const portInner=d.portrait?imgTag(d.portrait,{cls:portLarge?'stage-portrait stage-portrait--overlay':'stage-portrait',alt:esc(d.name),webp:true,onerror:"this.style.opacity='0.2'"}):`<div class="detail-portrait-placeholder" style="width:${portWrapW}px;aspect-ratio:1/1;font-size:70px">🗺️</div>`;const portHtml=portBg?`<div class="stage-portrait-stack${portLarge?' stage-portrait-stack--large':''}"><img class="stage-portrait-bg" src="${imgUrl(portBg)}" alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback&&gameImageUrlFallback(this)"><div class="stage-portrait-fg">${portInner}</div></div>`:portInner;const branchConds=(d.branch_victory_conditions&&d.branch_victory_conditions.length)?d.branch_victory_conditions:null;const condCols=branchConds?'1fr 1fr 1fr':'1fr 1fr';const branchBox=branchConds?`<div class="stage-condition-box"><div class="stage-condition-title branch">${t('branch_victory_conditions')}</div>${branchConds.map(x=>`<div class="stage-condition-item">${esc(x)}</div>`).join('')}</div>`:'';return`<div class="modal-top-label">${t('stage_data')}</div><div class="modal-entity-id">ID: ${d.id}</div><div class="detail-header"><div class="detail-portrait-wrap" style="width:${portWrapW}px">${portHtml}</div><div class="detail-title-area">${nameLine}<div class="detail-meta">${diffBadge}${hardBadge}${seriesBadge}<span class="stage-meta-badge">${t('recommended_cp')}: ${fmtN(d.recommended_cp)}</span>${stageTerrainMetaBadgeHtml(d)}</div><div class="stage-condition-grid" style="display:grid;grid-template-columns:${condCols};gap:12px;margin-top:8px"><div class="stage-condition-box"><div class="stage-condition-title victory">${stageConditionTitleIconHtml('victory')}${t('victory_conditions')}</div>${(d.victory_conditions&&d.victory_conditions.length)?d.victory_conditions.map(x=>`<div class="stage-condition-item">${esc(x)}</div>`).join(''):`<div class="stage-condition-item">${t('none')}</div>`}</div>${branchBox}<div class="stage-condition-box"><div class="stage-condition-title defeat">${stageConditionTitleIconHtml('defeat')}${t('defeat_conditions')}</div>${(d.defeat_conditions&&d.defeat_conditions.length)?d.defeat_conditions.map(x=>`<div class="stage-condition-item">${esc(x)}</div>`).join(''):`<div class="stage-condition-item">${t('none')}</div>`}</div></div></div></div><div class="detail-body">${renderStageCapturableSection(d)}${renderTowerRewardSection(d)}${showStageMissions?renderStageMissionsSection(d):''}<div id="detailStageRestrictionsContainer"></div><div id="detailStageMapContainer"></div><div id="detailNpcContainer"></div></div>`}
 function renderProfileTitleShell(d){const name=esc(d&&d.name?d.name:'Profile Title');const img=(d&&d.image)?`<img src="${imgUrl(d.image)}" alt="${name}" loading="lazy" decoding="async" style="display:block;max-width:100%;height:auto;object-fit:contain;" onerror="this.style.display='none'">`:'<div class="empty-state-text">No image</div>';return`<div class="modal-top-label">Profile Title</div>${renderDetailBackStrip(d)}<div class="detail-body profile-title-detail-body"><div class="detail-section"><div class="section-title">${name}</div><div class="stage-condition-box" style="padding:18px;display:flex;justify-content:center;align-items:center;overflow:auto;">${img}</div></div></div>`}
 function renderOptionPartShell(d){
 const thumb=d.thum?imgTag(d.thum,{cls:'detail-portrait mod-detail-portrait',webp:true,alt:esc(d.name||''),onerror:"this.outerHTML='<div class=\\'detail-portrait-placeholder\\'>⚙</div>'"}) :'<div class="detail-portrait-placeholder">⚙</div>';
@@ -4975,6 +4980,7 @@ function renderStageMapSection(d){
   const mapWeaponToggleHtml=hasMapWeapon?`<label class="stage-map-reinf-toggle stage-map-map-toggle stage-map-map-weapon-toggle">
         <input type="checkbox" class="stage-map-reinf-toggle-input" ${mapWeaponOn?'checked':''} role="switch" aria-checked="${mapWeaponOn?'true':'false'}" aria-label="${escAttr(mapWeaponToggleLbl)}" onchange="setStageMapMapWeaponVisible(this.checked)">
         <span class="stage-map-reinf-slider stage-map-map-weapon-slider" aria-hidden="true"></span>
+        <span class="stage-map-map-weapon-ic-wrap" aria-hidden="true"><img class="stage-map-map-weapon-toggle-ic"${imgSrcAttr(STAGE_MAP_MAP_WEAPON_ICONS.wideArea)} alt="" loading="lazy" decoding="async" onerror="gameImageUrlFallback(this)"></span>
         <span class="stage-map-reinf-text">${esc(mapWeaponToggleLbl)}</span>
       </label>`:'';
   const togglesRow=(reinfToggleHtml||escapeToggleHtml||buffToggleHtml||mapWeaponToggleHtml)?`<div class="stage-map-controls-row stage-map-controls-row--toggles">${reinfToggleHtml}${escapeToggleHtml}${buffToggleHtml}${mapWeaponToggleHtml}</div>`:'';
@@ -5260,7 +5266,8 @@ function _stageMapBgStyleAttr(md,win,cellPx,gapPx){
   const posX=-((win.minX-1)*stride)-offX;
   const posY=-((mapH-win.maxY)*stride)-offY;
   const url=imgUrlWebp(imgUrlPreferCdn(bg));
-  return` background-image:url("${escAttr(url)}");background-size:${fullW}px ${fullH}px;background-position:${posX}px ${posY}px;background-repeat:no-repeat;`;
+  // &quot; so url("...") does not terminate the parent style="..." attribute.
+  return` background-image:url(&quot;${escAttr(url)}&quot;);background-size:${fullW}px ${fullH}px;background-position:${posX}px ${posY}px;background-repeat:no-repeat;`;
 }
 function _stageMapFootprintBBox(u,mapW,mapH){
 if(!u)return null;
@@ -5421,6 +5428,9 @@ const STAGE_MAP_MAP_WEAPON_ICONS={
   impactYellow:'/static/images/Stages/UI_Battle_MapUI_Icon_ImpactRange_Yellow.webp',
   impactPoint:'/static/images/Stages/UI_Battle_MapUI_Icon_ImpactRange_Point.webp'
 };
+function _stageMapUnitIsEnemySide(u){
+  return String(u&&u.side||'').toLowerCase()==='enemy';
+}
 function _stageMapNpcMapWeapon(u){
   if(!u)return null;
   if(u.map_weapon&&u.map_weapon.map_coords&&u.map_weapon.map_coords.length)return u.map_weapon;
@@ -5432,7 +5442,7 @@ function _stageMapNpcMapWeapon(u){
 }
 function stageMapHasMapWeaponNpcs(md){
   const pool=md?.units||[];
-  return pool.some(u=>_stageMapUnitVisible(u,pool)&&!!_stageMapNpcMapWeapon(u));
+  return pool.some(u=>_stageMapUnitIsEnemySide(u)&&_stageMapUnitVisible(u,pool)&&!!_stageMapNpcMapWeapon(u));
 }
 function _stageMapMapWeaponLayerShown(){
   return!!S.stageMapMapWeaponVisible;
@@ -5444,6 +5454,43 @@ function _stageMapRotateWeaponCoord(dx,dy,dir){
   if(d==='2')return{x:-y,y:x};
   if(d==='4')return{x:x,y:-y};
   return{x,y};
+}
+function _stageMapCardinalDirToward(fromX,fromY,toX,toY){
+  const dx=(Number(toX)||0)-(Number(fromX)||0);
+  const dy=(Number(toY)||0)-(Number(fromY)||0);
+  if(!dx&&!dy)return'1';
+  if(Math.abs(dx)>Math.abs(dy))return dx>0?'3':'2';
+  return dy>0?'1':'4';
+}
+function _stageMapAllySquadAimTargets(pool){
+  const groups={};
+  (pool||[]).forEach(a=>{
+    if(String(a?.side||'').toLowerCase()!=='ally')return;
+    const m=String(a.npc_id||'').match(/^ally_g(\d+)/i);
+    const key=m?`g${m[1]}`:`p${Number(a.x)||0}_${Number(a.y)||0}`;
+    if(!groups[key])groups[key]={sx:0,sy:0,n:0};
+    groups[key].sx+=Number(a.x)||0;
+    groups[key].sy+=Number(a.y)||0;
+    groups[key].n+=1;
+  });
+  return Object.values(groups).filter(g=>g.n>0).map(g=>({x:g.sx/g.n,y:g.sy/g.n}));
+}
+function _stageMapWeaponAimDir(u,weapon,pool){
+  const stored=String(u?.direction||'1');
+  const side=String(u?.side||'').toLowerCase();
+  if(side!=='enemy')return stored;
+  const mrt=String(weapon?.map_range_type||'0');
+  if(mrt==='1'||mrt==='5'||mrt==='6')return stored;
+  const targets=_stageMapAllySquadAimTargets(pool);
+  if(!targets.length)return stored;
+  const px=Number(u?.x)||0,py=Number(u?.y)||0;
+  let best=null,bestD=Infinity;
+  targets.forEach(t=>{
+    const d=(t.x-px)*(t.x-px)+(t.y-py)*(t.y-py);
+    if(d<bestD){bestD=d;best=t}
+  });
+  if(!best)return stored;
+  return _stageMapCardinalDirToward(px,py,best.x,best.y);
 }
 function _stageMapClassifyMapWeapon(weapon){
   const ec=weapon?.map_coords||[],sc=weapon?.shooting_coords||[];
@@ -5460,67 +5507,131 @@ function _stageMapClassifyMapWeapon(weapon){
 function _stageMapWeaponPivot0(u){
   return{x:Number(u?.x)||0,y:Number(u?.y)||0};
 }
-function _stageMapMapWeaponWorldCells(u,weapon){
+function _stageMapWeaponCoordXY(c){
+  if(!c||typeof c!=='object')return null;
+  const x=Number(c.x),y=Number(c.y);
+  if(!Number.isFinite(x)||!Number.isFinite(y))return null;
+  return{x,y};
+}
+function _stageMapDashEffectRelCoords(weapon){
+  const ec=(weapon?.map_coords||[]).map(_stageMapWeaponCoordXY).filter(Boolean);
+  if(!ec.length)return ec;
+  const mrt=String(weapon?.map_range_type||'0');
+  const isDash=!!(weapon?.is_dash||weapon?.map_dash_dual_wide||mrt==='4');
+  if(!isDash)return ec;
+  const byY={};
+  ec.forEach(c=>{byY[c.y]=(byY[c.y]||0)+1});
+  const fullRows=Object.keys(byY).map(Number).filter(y=>byY[y]>=4).sort((a,b)=>a-b);
+  if(!fullRows.length)return ec;
+  let pick=fullRows;
+  if(weapon?.map_dash_dual_wide||mrt==='4'){
+    if(fullRows.length>4){
+      let found=null;
+      for(let i=0;i<=fullRows.length-4;i++){
+        const chunk=fullRows.slice(i,i+4);
+        if(chunk[3]-chunk[0]===3){found=chunk;break;}
+      }
+      pick=found||fullRows.slice(0,4);
+    }else if(fullRows.length<4){
+      return ec.filter(c=>fullRows.includes(c.y));
+    }
+    const allow=new Set(pick);
+    return ec.filter(c=>allow.has(c.y));
+  }
+  return ec.filter(c=>byY[c.y]>=4);
+}
+function _stageMapImpactSelectionRel(weapon){
+  const sc=(weapon?.shooting_coords||[]).map(_stageMapWeaponCoordXY).filter(Boolean);
+  if(!sc.length)return{x:0,y:0};
+  const topY=Math.max(...sc.map(c=>c.y));
+  const topCells=sc.filter(c=>c.y===topY);
+  topCells.sort((a,b)=>Math.abs(a.x)-Math.abs(b.x)||a.x-b.x);
+  return{x:topCells[0].x,y:topCells[0].y};
+}
+function _stageMapMapWeaponWorldCells(u,weapon,pool){
   const kind=_stageMapClassifyMapWeapon(weapon);
-  const dir=String(u?.direction||'1');
+  const dir=_stageMapWeaponAimDir(u,weapon,pool);
   const pivot=_stageMapWeaponPivot0(u);
-  const _mxy=(c)=>{if(!c||typeof c!=='object')return null;const x=Number(c.x),y=Number(c.y);if(!Number.isFinite(x)||!Number.isFinite(y))return null;return{x,y}};
-  const ec=(weapon.map_coords||[]).map(_mxy).filter(Boolean);
-  const effect=new Set(),impact=null;
+  const sc=(weapon.shooting_coords||[]).map(_stageMapWeaponCoordXY).filter(Boolean);
+  const ec=_stageMapDashEffectRelCoords(weapon);
+  const range=new Set(),effect=new Set();
+  let selection=null;
   if(kind==='impact'){
-    const range=Math.max(Number(weapon.max_range)||0,Number(weapon.min_range)||0,4);
-    const impOff=_stageMapRotateWeaponCoord(0,range,dir);
-    const ix=pivot.x+impOff.x,iy=pivot.y+impOff.y;
-    ec.forEach(c=>{
+    const sel=_stageMapImpactSelectionRel(weapon);
+    const selOff=_stageMapRotateWeaponCoord(sel.x,sel.y,dir);
+    const ix=pivot.x+selOff.x,iy=pivot.y+selOff.y;
+    selection={x:ix,y:iy};
+    sc.forEach(c=>{
+      const r=_stageMapRotateWeaponCoord(c.x,c.y,dir);
+      range.add(`${pivot.x+r.x}|${pivot.y+r.y}`);
+    });
+    (weapon.map_coords||[]).map(_stageMapWeaponCoordXY).filter(Boolean).forEach(c=>{
       const r=_stageMapRotateWeaponCoord(c.x,c.y,dir);
       effect.add(`${ix+r.x}|${iy+r.y}`);
     });
-    return{kind,effect,impact:{x:ix,y:iy}};
+    return{kind,range,effect,selection};
   }
   ec.forEach(c=>{
     const r=_stageMapRotateWeaponCoord(c.x,c.y,dir);
     effect.add(`${pivot.x+r.x}|${pivot.y+r.y}`);
   });
-  return{kind,effect,impact:null};
+  return{kind,range,effect,selection:null};
+}
+function _stageMapWeaponCellFlagsEmpty(){return{white:false,wide:false,impact:false}}
+function _stageMapMergeWeaponCellFlags(cells,cellKey,patch){
+  if(!patch||(!patch.white&&!patch.wide&&!patch.impact))return;
+  const cur=cells[cellKey]||_stageMapWeaponCellFlagsEmpty();
+  cells[cellKey]={white:!!(cur.white||patch.white),wide:!!(cur.wide||patch.wide),impact:!!(cur.impact||patch.impact)};
 }
 function _stageMapBuildMapWeaponCellOverlays(pool,mapW,mapH){
-  const effect={};
-  const impact=new Set();
-  if(!_stageMapMapWeaponLayerShown())return{effect,impact};
-  const units=(pool||[]).filter(u=>_stageMapUnitVisible(u,pool)&&_stageMapNpcMapWeapon(u));
+  const cells={};
+  if(!_stageMapMapWeaponLayerShown())return{cells};
+  const units=(pool||[]).filter(u=>_stageMapUnitIsEnemySide(u)&&_stageMapUnitVisible(u,pool)&&_stageMapNpcMapWeapon(u));
+  const markWorld=(key,patch)=>{
+    const parts=String(key).split('|');
+    const wx=Number(parts[0]),wy=Number(parts[1]);
+    if(!Number.isFinite(wx)||!Number.isFinite(wy))return;
+    const cx=wx+1,cy=wy+1;
+    if(cx<1||cy<1||cx>mapW||cy>mapH)return;
+    _stageMapMergeWeaponCellFlags(cells,`${cx}_${cy}`,patch);
+  };
   units.forEach(u=>{
     const weapon=_stageMapNpcMapWeapon(u);
     if(!weapon)return;
-    const {kind,effect:effCells,impact:imp}=_stageMapMapWeaponWorldCells(u,weapon);
-    effCells.forEach(key=>{
-      const parts=String(key).split('|');
-      const wx=Number(parts[0]),wy=Number(parts[1]);
-      if(!Number.isFinite(wx)||!Number.isFinite(wy))return;
-      const cx=wx+1,cy=wy+1;
-      if(cx<1||cy<1||cx>mapW||cy>mapH)return;
-      effect[`${cx}_${cy}`]=kind;
-    });
-    if(imp&&kind==='impact'){
-      const cx=imp.x+1,cy=imp.y+1;
-      if(cx>=1&&cy>=1&&cx<=mapW&&cy<=mapH)impact.add(`${cx}_${cy}`);
+    const {kind,range,effect,selection}=_stageMapMapWeaponWorldCells(u,weapon,pool);
+    if(kind==='impact'){
+      const selKey=selection?`${selection.x}|${selection.y}`:'';
+      range.forEach(key=>{
+        if(key===selKey)return;
+        markWorld(key,{white:true});
+      });
+      effect.forEach(key=>markWorld(key,{wide:true}));
+      if(selection)markWorld(selKey,{wide:true,impact:true});
+      return;
     }
+    effect.forEach(key=>markWorld(key,{wide:true}));
   });
-  return{effect,impact};
+  return{cells};
 }
 function _stageMapMapWeaponCellOverlayHtml(cellKey,mwOverlays){
   if(!mwOverlays||!_stageMapMapWeaponLayerShown())return'';
-  const kind=mwOverlays.effect[cellKey];
-  const isImpactPt=mwOverlays.impact.has(cellKey);
-  if(!kind&&!isImpactPt)return'';
+  const flags=mwOverlays.cells&&mwOverlays.cells[cellKey];
+  if(!flags||(!flags.white&&!flags.wide&&!flags.impact))return'';
   const mkErr=' onerror="gameImageUrlFallback(this)"';
+  const wideStyle=' style="width:92%;height:92%;max-width:92%;max-height:92%;object-fit:contain"';
+  const whiteStyle=' style="width:auto;height:auto;max-width:28%;max-height:48%;object-fit:contain;object-position:center"';
+  const yellowStyle=' style="width:auto;height:90%;max-width:36%;object-fit:contain;object-position:center;transform:translateY(-30%)"';
+  const pointStyle=' style="width:22%;height:22%;max-width:22%;max-height:22%;object-fit:contain"';
   let html='';
-  if(kind==='impact'){
-    html+=`<div class="stage-map-cell-map-weapon-shell"><img class="stage-map-cell-map-weapon-ic stage-map-cell-map-weapon-ic--impact"${imgSrcAttr(STAGE_MAP_MAP_WEAPON_ICONS.impactWhite)} alt="" loading="lazy" decoding="async"${mkErr}></div>`;
-  }else if(kind==='dash'||kind==='around'){
-    html+=`<div class="stage-map-cell-map-weapon-shell"><img class="stage-map-cell-map-weapon-ic stage-map-cell-map-weapon-ic--wide"${imgSrcAttr(STAGE_MAP_MAP_WEAPON_ICONS.wideArea)} alt="" loading="lazy" decoding="async"${mkErr}></div>`;
+  if(flags.wide){
+    html+=`<span class="map-cell-marker-shell stage-map-cell-map-weapon-shell stage-map-cell-map-weapon-shell--wide" aria-hidden="true"><img class="stage-map-cell-map-weapon-ic stage-map-cell-map-weapon-ic--wide"${wideStyle}${imgSrcAttr(STAGE_MAP_MAP_WEAPON_ICONS.wideArea)} alt="" loading="lazy" decoding="async"${mkErr}></span>`;
   }
-  if(isImpactPt){
-    html+=`<div class="stage-map-cell-map-weapon-shell stage-map-cell-map-weapon-shell--impact" aria-hidden="true"><div class="stage-map-cell-map-weapon-impact"><img class="stage-map-cell-map-weapon-impact-point"${imgSrcAttr(STAGE_MAP_MAP_WEAPON_ICONS.impactPoint)} alt="" loading="lazy" decoding="async"${mkErr}><img class="stage-map-cell-map-weapon-impact-yellow"${imgSrcAttr(STAGE_MAP_MAP_WEAPON_ICONS.impactYellow)} alt="" loading="lazy" decoding="async"${mkErr}></div></div>`;
+  if(flags.white&&!flags.impact){
+    html+=`<span class="map-cell-marker-shell stage-map-cell-map-weapon-shell stage-map-cell-map-weapon-shell--white" aria-hidden="true"><img class="stage-map-cell-map-weapon-ic stage-map-cell-map-weapon-ic--impact-white"${whiteStyle}${imgSrcAttr(STAGE_MAP_MAP_WEAPON_ICONS.impactWhite)} alt="" loading="lazy" decoding="async"${mkErr}></span>`;
+  }
+  if(flags.impact){
+    html+=`<span class="map-cell-marker-shell stage-map-cell-map-weapon-shell stage-map-cell-map-weapon-shell--point" aria-hidden="true"><img class="stage-map-cell-map-weapon-ic stage-map-cell-map-weapon-ic--impact-point"${pointStyle}${imgSrcAttr(STAGE_MAP_MAP_WEAPON_ICONS.impactPoint)} alt="" loading="lazy" decoding="async"${mkErr}></span>`;
+    html+=`<span class="map-cell-marker-shell stage-map-cell-map-weapon-shell stage-map-cell-map-weapon-shell--yellow" aria-hidden="true"><img class="stage-map-cell-map-weapon-ic stage-map-cell-map-weapon-ic--impact-yellow"${yellowStyle}${imgSrcAttr(STAGE_MAP_MAP_WEAPON_ICONS.impactYellow)} alt="" loading="lazy" decoding="async"${mkErr}></span>`;
   }
   return html;
 }
@@ -5599,8 +5710,8 @@ function renderStageMapGrid(md){
       if(stackOrangeHighlight)cls+=' map-cell--enemy-stack-reinf-on';
       if(u&&u.is_story_event_boss)cls+=' map-cell--story-boss';
       if(u&&u.unit_id&&ucHlSet.has(String(u.unit_id)))cls+=' map-cell--unit-cond-cp-target';
-      const hasMapWeaponCell=_stageMapMapWeaponLayerShown()&&(!!mwOverlays.effect[ck]||mwOverlays.impact.has(ck));
-      if(hasMapWeaponCell)cls+=' map-cell--map-weapon-range';
+      const hasMapWeaponCell=_stageMapMapWeaponLayerShown()&&!!(mwOverlays.cells&&mwOverlays.cells[ck]&&(mwOverlays.cells[ck].white||mwOverlays.cells[ck].wide||mwOverlays.cells[ck].impact));
+      if(hasMapWeaponCell)cls+=' map-cell--map-weapon-range'+(mwOverlays.cells[ck].impact?' map-cell--map-weapon-impact':'');
       const showStepOrder=u&&_stageMapShowSpawnOrderForUnit(u,pool);
       const originCls=(o&&o.origin&&renderInCell)?' map-cell--unit-origin':'';
       const di=u?.npc_detail_index;
@@ -6049,10 +6160,19 @@ function renderMapGrid(weapon,unitData,opts){
   let hs=sc.length>0;
   if(!ec.length)return'<div style="color:var(--text-muted);font-size:12px;text-align:center;margin-top:8px;">No data.</div>';
 
-  const isLarge=!!(unitData&&unitData.is_large);
   const mapSinglePou=!!(weapon.map_single_pou);
   const mapDashDualWide=!!(weapon.map_dash_dual_wide);
+  const isLarge=!!(mapDashDualWide||(unitData&&(unitData.is_large||Number(unitData.occupied_area_id)===2)));
   let dashEndCells=(weapon.map_dash_dual_end_coords&&weapon.map_dash_dual_end_coords.length)?weapon.map_dash_dual_end_coords.map(_mxy).filter(Boolean):null;
+  if(mapDashDualWide||String(weapon.map_range_type||'')==='4'){
+    const filtered=_stageMapDashEffectRelCoords(weapon);
+    if(filtered&&filtered.length)ec=filtered;
+    if(ec.length&&(mapDashDualWide||isLarge)){
+      const topE=Math.max(...ec.map(c=>c.y));
+      dashEndCells=[{x:0,y:topE+1},{x:1,y:topE+1},{x:0,y:topE+2},{x:1,y:topE+2}];
+      sc=sc.filter(c=>c.y<=topE);
+    }
+  }
 
   let t1=false,t2=false,t3=false;
   if(!hs)t1=true;
@@ -6224,12 +6344,12 @@ function renderMapGrid(weapon,unitData,opts){
         }else if(ieb){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Moving.webp');
           if(iem)mh=`<span class=\"map-cell-marker-shell\" aria-hidden=\"true\"><img src=\"${mapUseMovingWebp}\" alt=\"\"${mapMkErr}></span>`
-        }else if(ie||isp){
+        }else if(ie||(isp&&!mapDashDualWide)){
           bi=imgUrl('/static/images/UI/Sprite/UI_Common_Dialog_Block_Posi.webp')
         }
 
         // Dash path step markers: center column, or both columns for 2×2 dual-line MAP.
-        if(isp&&!iocc&&!ieb&&(mapDashDualWide?(cx===0||cx===1):cx===0)){
+        if(isp&&!iocc&&!ieb&&(mapDashDualWide?((cx===0||cx===1)&&ie):cx===0)){
           oh=`<span class=\"map-cell-marker-shell map-cell-marker-shell--step\" aria-hidden=\"true\"><img class=\"map-cell-step-marker\" src=\"${step}\" alt=\"\"${mapMkErr}></span>`
         }
       }else if(t2){
@@ -10989,6 +11109,14 @@ const pct=Math.min(cc.max|0,cc.per*cur);
 const stackLab=t('unit_combat_stack_label')||'Combat stack level';
 return`<div class="detail-pilot-stack-row is-open detail-unit-cond-stack-row dc-unit-cond-stack-row" onclick="event.stopPropagation()"><input type="range" class="detail-pilot-stack-slider" min="1" max="${max}" step="1" value="${cur}" aria-valuemin="1" aria-valuemax="${max}" aria-valuenow="${cur}" aria-label="${escAttr(stackLab)}" oninput="setDcUnitCondStackCount(this.value)"><span class="detail-pilot-stack-val">+${pct}%</span></div>`;
 }
+function _dcUnitCombatStackPassiveBonusRowHtml(cc){
+if(!S.dc.unitCondPassive||!cc)return'';
+const slider=_dcUnitCombatStackSliderHtml(cc);
+if(!slider)return'';
+const mainLab=`MS Attack +${cc.per|0}% per combat`;
+const detail=cc.ability_name?String(cc.ability_name):'';
+return`<div class="dc-pilot-bonus-row dc-pilot-bonus-row--unit-combat-stack" onclick="event.stopPropagation()"><span class="dc-pilot-bonus-line"><span class="dc-pilot-bonus-main">${esc(mainLab)} <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--incl">(Included in unit stats)</span></span>${detail?`<span class="dc-pilot-bonus-detail">${esc(detail)}</span>`:''}</span>${slider}</div>`;
+}
 function _dcApplyUnitCondStatAdjustments(stats,statsNoCond,ud,cpOn){
 if(!cpOn||!ud||!stats||!stats.length)return stats;
 const cc=ud.unit_combat_count_atk;
@@ -11836,7 +11964,6 @@ const vGated=!!S.dc._vigorCondThreshold;
 const vHint=vGated?` title="${escAttr('Default: on when Vigor is Max or Supercharged (or higher than text if ability requires Supercharged only). Changing vigor updates the default; you can still toggle for comparisons.')}"`:'';
 {const _cpL=t('conditional_passive');unitCpToggle=`<div class="dc-picked-controls"${vHint}><div class="conditional-toggle dc-dc-cond-toggle"><div class="toggle-clickable${S.dc.unitCondPassive?' active':''}" role="button" tabindex="0" title="${escAttr(_cpL)}" aria-label="${escAttr(_cpL)}" onclick="toggleDcUnitCondPassive()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDcUnitCondPassive()}"><span class="toggle-label toggle-label--cp-chip">${_dcCpChipSpanHtml(!!S.dc.unitCondPassive)}</span></div></div></div>`;}
 }
-const unitCondStackHtml=(S.dc.unitCondPassive&&ud.unit_combat_count_atk)?_dcUnitCombatStackSliderHtml(ud.unit_combat_count_atk):'';
 const hasSp=ud.has_sp!==undefined?ud.has_sp:(parseInt(ud.rarity_id||'5')<=4);
 let unitStatModeHtml='';
 const uModeRow=S.dc.unitStatMode||'normal';
@@ -11846,7 +11973,7 @@ if(spModeBtns||tfBtn){
 unitStatModeHtml=`<div class="dc-lb-row dc-unit-stat-mode-row" style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">${spModeBtns||''}${tfBtn||''}</div>`;
 }
 const lbStatCluster=(lbBlock||unitStatModeHtml)?`<div class="dc-unit-lb-stat-cluster">${lbBlock}${unitStatModeHtml}</div>`:'';
-const atkBelowPortrait=(unitCpToggle||unitCondStackHtml||lbStatCluster)?`<div class="dc-atk-unit-below-portrait">${unitCpToggle}${unitCondStackHtml}${lbStatCluster}</div>`:'';
+const atkBelowPortrait=(unitCpToggle||lbStatCluster)?`<div class="dc-atk-unit-below-portrait">${unitCpToggle}${lbStatCluster}</div>`:'';
 area.innerHTML=`<div class="dc-picked">${_dcPickedEntityThumbHtml(ud,'unit',52)}<div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div class="dc-picked-badges">${ud.rarity_icon?`<img src="${imgUrl(ud.rarity_icon)}">`:''}${ud.role_icon?`<img src="${imgUrl(ud.role_icon)}">`:''}</div></div>${atkBelowPortrait}<button type="button" class="dc-picked-change" onclick="openDcPicker('unit')">${t('dc_change')}</button></div>`;
 _dcUpdateExSquadAtkGroupVisibility();
 _dcUpdateSquadConditionGroupVisibility();
@@ -12455,7 +12582,9 @@ return true;
 function _dcRenderPilotBonuses(area,cd){
 const b=_dcParsePilotAbilBonuses(cd);
 S.dc._pilotBonuses=b;
-if(!b.items.length)return;
+const ud=S.dc.atkUnitData;
+const combatStackHtml=(ud&&ud.unit_combat_count_atk)?_dcUnitCombatStackPassiveBonusRowHtml(ud.unit_combat_count_atk):'';
+if(!b.items.length&&!combatStackHtml)return;
 let h=`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Passive Bonuses</div><div class="dc-pilot-bonus-list">`;
 b.items.forEach((it,i)=>{
 const condTag=it.cond?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--cond">${it.attackRoleOnly?'(Attack-role pilots only)':'(Conditional)'}</span>`:it.autoMet?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--match">(Tag Matched)</span>`:'';
@@ -12483,6 +12612,7 @@ const checked=!it.cond;
 const rowOff=!!it.cond;
 h+=`<label class="dc-pilot-bonus-row${rowOff?' dc-pilot-bonus--off':''}"><input type="checkbox" id="${togId}" ${checked?'checked':''} onchange="_dcRecalcPilotBonuses(true)"><span class="dc-pilot-bonus-line"><span class="dc-pilot-bonus-main">${esc(it.label)}${condTag}</span><span class="dc-pilot-bonus-detail">${esc(it.name)}</span></span></label>`;
 });
+if(combatStackHtml)h+=combatStackHtml;
 h+=`</div>`;
 area.innerHTML+=h;
 }
