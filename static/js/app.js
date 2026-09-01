@@ -1882,7 +1882,7 @@ const BROWSE_LIST_RELOAD_MS=300;
 const BROWSE_DROPDOWN_FILTER_MS=100;
 const BROWSE_SEARCH_DEBOUNCE_MS=80;
 const _browseReloadTid={characters:'_brRLCharacters',units:'_brRLUnits',supporters:'_brRLSupporters',stages:'_brRLStages',modifications:'_brRLModifications'};
-const _instantBrowse={units:{key:'',rows:null,inflight:null,gen:0},characters:{key:'',rows:null,inflight:null,gen:0},rankUnits:{key:'',rows:null,inflight:null,gen:0},rankCharacters:{key:'',rows:null,inflight:null,gen:0},supporters:{key:'',rows:null,inflight:null,gen:0},stages:{key:'',rows:null,inflight:null,gen:0},modifications:{key:'',rows:null,inflight:null,gen:0}};
+const _instantBrowse={units:{key:'',rows:null,altRows:null,inflight:null,gen:0},characters:{key:'',rows:null,altRows:null,inflight:null,gen:0},rankUnits:{key:'',rows:null,altRows:null,inflight:null,gen:0},rankCharacters:{key:'',rows:null,altRows:null,inflight:null,gen:0},supporters:{key:'',rows:null,altRows:null,inflight:null,gen:0},stages:{key:'',rows:null,altRows:null,inflight:null,gen:0},modifications:{key:'',rows:null,altRows:null,inflight:null,gen:0}};
 const INSTANT_BROWSE_ULT_STARS={SSR:1,UR:1};
 const INSTANT_BROWSE_RARITY_LETTERS={UR:1,SSR:1,SR:1,R:1,N:1};
 function instantBrowseAllTabs(){return['units','characters','rankUnits','rankCharacters','supporters','stages','modifications']}
@@ -1967,7 +1967,8 @@ r._hayFold=instantBrowseFold(r._hay);
 }
 return rows;
 }
-function instantBrowseQueryNeedsServer(q,tab){const s=String(q||'').trim();if(!s)return false;if(/(?:^|[,;])\s*series(?:_id)?\s*:/i.test(s))return true;if(tab==='units'||tab==='rankUnits'){const only=s.replace(/[,;]/g,' ').trim().toLowerCase();if(only==='dx'||only==='00')return true}return false}
+function instantBrowseQueryNeedsServer(q,tab){const s=String(q||'').trim();if(!s)return false;if(/(?:^|[,;])\s*series(?:_id)?\s*:/i.test(s))return true;if(tab==='units'||tab==='rankUnits'){const only=s.replace(/[,;]/g,' ').trim().toLowerCase();if(only==='dx'||only==='00')return true;const st=_instantBrowse[tab];const altReady=st&&st.altRows&&st.altRows.length;if(!altReady&&/\s/.test(s.replace(/[,;]/g,' ').trim()))return true}return false}
+function instantBrowseSearchPool(tab,qn){const base=instantBrowseChipPool(tab);const q=String(qn||'').trim();const st=_instantBrowse[tab];if(!q||!st||!st.altRows||!st.altRows.length)return base;return base.concat(st.altRows)}
 function instantBrowseExpandPositiveSegment(sl){const s=String(sl||'').trim().toLowerCase();const map={fatb:'full armor gundam thunderbolt',sf:'strike freedom',ij:'infinite justice',god:'burning gundam','devil gundam':'dark gundam',devilgundam:'dark gundam'};return map[s]||sl}function instantBrowseParseQuery(sq){const positive=[],negative=[];if(!sq||!String(sq).trim())return{positive,negative};String(sq).split(/[,;]/).forEach(raw=>{let seg=String(raw||'').replace(/\uFF1A/g,':').replace(/\u3000/g,' ').trim();if(!seg)return;const sl=seg.toLowerCase();if(sl.charAt(0)==='-'&&sl.length>1){negative.push(sl.slice(1).trim());return}positive.push(instantBrowseExpandPositiveSegment(sl))});return{positive,negative}}
 function instantBrowseFold(s){return String(s||'').toLowerCase().replace(/[\s\-_]+/g,'').replace(/vjnana/g,'vijnana')}
 function _instantBrowseAlnumCode(c){return(c>=48&&c<=57)||(c>=97&&c<=122)}
@@ -2246,7 +2247,7 @@ let pool;
 if(st.lastChipSig===chipSig&&st.lastQ!=null&&qnExp.indexOf(lastExp)===0&&Array.isArray(st.lastFiltered)){
 pool=qn===st.lastQ?st.lastFiltered:st.lastFiltered.filter(r=>instantBrowseRowMatch(r,qn,tab));
 }else{
-pool=instantBrowseChipPool(tab);
+pool=instantBrowseSearchPool(tab,qn);
 if(qn)pool=pool.filter(r=>instantBrowseRowMatch(r,qn,tab));
 }
 st.lastChipSig=chipSig;
@@ -2293,6 +2294,7 @@ if(gen!==st.gen)return;
 if(!r.ok||!r.data||!Array.isArray(r.data.rows)||!r.data.rows.length)return;
 st.key=url;
 st.rows=instantBrowseIngest(r.data.rows,tab);
+st.altRows=instantBrowseIngest(r.data.transform_alt_browse_rows||[],tab);
 st.lastQ=null;st.lastFiltered=null;st.lastChipSig=null;
 if(r.data.challenge_series_options||r.data.effect_filter_icons){
 st.meta=Object.assign({},st.meta||{});

@@ -2941,7 +2941,8 @@ def _inbound_normal_damage(bully, defender_unit_atk_unused, defender_unit_def, d
 
 
 def _rankings_no_active_skills_for_unit(uid, pilot_ids, exclude, lc, top_pilots, *,
-                                         def_tier=3, lb_tier=3, lite=False, rank_mode='super_crit'):
+                                         def_tier=3, lb_tier=3, lite=False, rank_mode='super_crit',
+                                         active_filter=None):
     """Fair skills-off Top N from full BSP candidate pool (not skills-on Top 10)."""
     A = _app()
     uid = A.normalize_id(uid)
@@ -2950,6 +2951,8 @@ def _rankings_no_active_skills_for_unit(uid, pilot_ids, exclude, lc, top_pilots,
     if not unit_wpn:
         return {}
     active = _eligible_pilots_for_unit(uid, pilot_ids, exclude)
+    if active_filter:
+        active = [cid for cid in active if active_filter(cid)]
     if not active:
         return {}
     candidates = _bsp_candidate_pilots_for_unit(
@@ -3001,6 +3004,21 @@ def enrich_group_no_active_skills(g, lc='EN', *, top_pilots=None, def_tier=3, li
         return g
     out = dict(g)
     out['rankings_no_active_skills'] = built
+    if _unit_is_attack_role(uid):
+        support_built = _rankings_no_active_skills_for_unit(
+            uid, pilots, excl, lc, top_pilots or _BSP_STORE_TOP_PILOTS,
+            def_tier=def_tier, lite=lite, rank_mode=rank_mode,
+            active_filter=lambda cid: _char_role(cid) == _SUPPORT_ROLE_ID,
+        )
+        if support_built:
+            out['rankings_no_active_skills_support_role'] = support_built
+    same_built = _rankings_no_active_skills_for_unit(
+        uid, pilots, excl, lc, top_pilots or _BSP_STORE_TOP_PILOTS,
+        def_tier=def_tier, lite=lite, rank_mode=rank_mode,
+        active_filter=lambda cid: _pilot_role_matches_unit(uid, cid),
+    )
+    if same_built:
+        out['rankings_no_active_skills_same_role'] = same_built
     out['skills_off_board_version'] = _SKILLS_OFF_BOARD_VERSION
     return out
 
@@ -5632,6 +5650,8 @@ def _bsp_relocalize_pilot_chars(pilots, lc):
 def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs,
                          pilots_no_ur=None, pilots_no_shinn=None, pilots_same_role=None,
                          pilots_support_role=None, pilots_no_active_skills=None,
+                         pilots_same_role_no_active_skills=None,
+                         pilots_support_role_no_active_skills=None,
                          pilots_defender=None, pilots_defender_no_skills=None,
                          no_ur_partial=False, no_shinn_partial=False, same_role_partial=False,
                          support_role_partial=False, no_active_skills_partial=False,
@@ -5712,6 +5732,20 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
     )
     # Keep store depth so No Shinn / role filters can promote ranks 11–20 into Top 10.
     no_active = _rank(_sync_skills_off(list(pilots_no_active_skills or [])), store_n)
+    support_role_off = _rank(
+        _sync_skills_off(list(pilots_support_role_no_active_skills or [])),
+        store_n,
+    )
+    if not support_role_off and pilots_support_role:
+        support_role_off = _rank(_sync_skills_off(list(pilots_support_role or [])), store_n)
+    same_role_off = _rank(
+        _sync_skills_off(list(pilots_same_role_no_active_skills or [])),
+        store_n,
+    )
+    if not same_role_off and pilots_same_role:
+        same_role_off = _rank(_sync_skills_off(list(pilots_same_role or [])), store_n)
+    no_ur_off = _rank(_sync_skills_off(list(pilots_no_ur or [])), store_n) if pilots_no_ur else []
+    no_shinn_off = _rank(_sync_skills_off(list(pilots_no_shinn or [])), store_n) if pilots_no_shinn else []
     defenders = _rank(list(pilots_defender or []), _BSP_UI_DEFENDER_TOP, by_score=True)
     defenders_off = _rank(
         list(pilots_defender_no_skills or []), _BSP_UI_DEFENDER_TOP, by_score=True,
@@ -5726,6 +5760,10 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
     _bsp_relocalize_pilot_chars(same_role, lc)
     _bsp_relocalize_pilot_chars(support_role, lc)
     _bsp_relocalize_pilot_chars(no_active, lc)
+    _bsp_relocalize_pilot_chars(support_role_off, lc)
+    _bsp_relocalize_pilot_chars(same_role_off, lc)
+    _bsp_relocalize_pilot_chars(no_ur_off, lc)
+    _bsp_relocalize_pilot_chars(no_shinn_off, lc)
     _bsp_relocalize_pilot_chars(defenders, lc)
     _bsp_relocalize_pilot_chars(defenders_off, lc)
     _bsp_patch_guaranteed_crit_flags(pilots, lc, rank_mode=mode)
@@ -5734,6 +5772,10 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
     _bsp_patch_guaranteed_crit_flags(same_role, lc, rank_mode=mode)
     _bsp_patch_guaranteed_crit_flags(support_role, lc, rank_mode=mode)
     _bsp_patch_guaranteed_crit_flags(no_active, lc, rank_mode=mode, allow_skill_crit=False)
+    _bsp_patch_guaranteed_crit_flags(support_role_off, lc, rank_mode=mode, allow_skill_crit=False)
+    _bsp_patch_guaranteed_crit_flags(same_role_off, lc, rank_mode=mode, allow_skill_crit=False)
+    _bsp_patch_guaranteed_crit_flags(no_ur_off, lc, rank_mode=mode, allow_skill_crit=False)
+    _bsp_patch_guaranteed_crit_flags(no_shinn_off, lc, rank_mode=mode, allow_skill_crit=False)
     # Re-rank after sanitize (0% crit peak clamp can change order).
     pilots = _rank(pilots, _BSP_UI_TOP_PILOTS)
     no_ur = _rank(no_ur, store_n)
@@ -5741,6 +5783,10 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
     same_role = _rank(same_role, store_n)
     support_role = _rank(support_role, store_n)
     no_active = _rank(no_active, store_n)
+    support_role_off = _rank(support_role_off, store_n)
+    same_role_off = _rank(same_role_off, store_n)
+    no_ur_off = _rank(no_ur_off, store_n)
+    no_shinn_off = _rank(no_shinn_off, store_n)
     top_dmg = _bsp_pilot_sort_damage(pilots[0], mode) if pilots else 0
     wi = _weapon_info_for_msy(uid, lc)
     return {
@@ -5752,6 +5798,10 @@ def _bsp_pilots_response(uid, pilots, *, source, def_tier, rank_mode, lc, kwargs
         'pilots_same_role': same_role,
         'pilots_support_role': support_role,
         'pilots_no_active_skills': no_active,
+        'pilots_support_role_no_active_skills': support_role_off,
+        'pilots_same_role_no_active_skills': same_role_off,
+        'pilots_no_ur_no_active_skills': no_ur_off,
+        'pilots_no_shinn_no_active_skills': no_shinn_off,
         'pilots_defender': defenders,
         'pilots_defender_no_skills': defenders_off,
         'no_ur_partial': bool(no_ur_partial) or len(no_ur) < _BSP_UI_TOP_PILOTS,
@@ -5848,6 +5898,18 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
             g_row.get('rankings_no_active_skills') or row.get('rankings_no_active_skills'),
             mode, fallback_pilots=[],
         )
+        pilots_support_off, _support_off_partial = _bsp_dc_variant_pilots(
+            g_row.get('rankings_no_active_skills_support_role')
+            or row.get('rankings_no_active_skills_support_role'),
+            mode, fallback_pilots=[],
+        )
+        pilots_same_off, _same_off_partial = _bsp_dc_variant_pilots(
+            g_row.get('rankings_no_active_skills_same_role')
+            or row.get('rankings_no_active_skills_same_role'),
+            mode, fallback_pilots=[],
+        )
+        if not _unit_is_attack_role(uid):
+            pilots_support_off, _support_off_partial = [], False
         def_block = (g_row.get('rankings_defender') or row.get('rankings_defender') or {})
         pilots_defender = list((def_block.get('defender') or {}).get('pilots') or [])
         pilots_defender_off = list(
@@ -5865,6 +5927,8 @@ def unit_best_synergy_pilots_payload(unit_id, kwargs):
             pilots_same_role=pilots_same_role,
             pilots_support_role=pilots_support_role,
             pilots_no_active_skills=pilots_no_active,
+            pilots_support_role_no_active_skills=pilots_support_off,
+            pilots_same_role_no_active_skills=pilots_same_off,
             pilots_defender=pilots_defender,
             pilots_defender_no_skills=pilots_defender_off,
             no_ur_partial=no_ur_partial,

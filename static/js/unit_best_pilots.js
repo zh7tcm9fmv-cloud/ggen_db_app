@@ -712,17 +712,80 @@
       };
     }
 
-    // Skills-off: dedicated fair-pool board (store depth ≥20 so No Shinn can fill Top 10).
+    // Skills-off: dedicated fair-pool boards (store depth ≥20). Combined filters must
+    // use the matching skills-off variant board — not filter the open pool (Support
+    // pilots rarely appear in the generic skills-off top 20).
     if (!state.skillsOn) {
       var off = board.pilots_no_active_skills || [];
       var noUrOff = !!state.excludeUr;
       var noShinnOff = noUrOff || (!!state.excludeShinn && shinnFilterRelevant());
       var sameOff = isSameRoleMode();
       var supportOff = isSupportRoleMode();
-      var filteredOff = filterPilotsLocal(off, noUrOff, noShinnOff, sameOff, supportOff);
+      var rows = off;
+      var partial = off.length < 10;
+
+      function takeOff(list, markPartial) {
+        rows = list || [];
+        partial = !!markPartial;
+      }
+
+      if (supportOff && noUrOff) {
+        if (board.pilots_support_role_no_active_skills && board.pilots_support_role_no_active_skills.length) {
+          takeOff(filterPilotsLocal(board.pilots_support_role_no_active_skills, true, true, false, false), !!board.support_role_partial);
+        } else if (board.pilots_no_ur_no_active_skills && board.pilots_no_ur_no_active_skills.length) {
+          takeOff(filterPilotsLocal(board.pilots_no_ur_no_active_skills, false, false, false, true), !!board.no_ur_partial);
+        } else if (board.pilots_support_role && board.pilots_support_role.length) {
+          takeOff(filterPilotsLocal(board.pilots_support_role, true, true, false, false), true);
+        } else {
+          takeOff(filterPilotsLocal(off, true, true, false, true), true);
+        }
+      } else if (supportOff) {
+        if (board.pilots_support_role_no_active_skills && board.pilots_support_role_no_active_skills.length) {
+          takeOff(board.pilots_support_role_no_active_skills, !!board.support_role_partial && board.pilots_support_role_no_active_skills.length < 10);
+        } else if (board.pilots_support_role && board.pilots_support_role.length) {
+          takeOff(board.pilots_support_role, true);
+        } else {
+          takeOff(filterPilotsLocal(off, false, false, false, true), true);
+        }
+      } else if (sameOff && noUrOff) {
+        if (board.pilots_same_role_no_active_skills && board.pilots_same_role_no_active_skills.length) {
+          takeOff(filterPilotsLocal(board.pilots_same_role_no_active_skills, true, true, false, false), !!board.same_role_partial);
+        } else if (board.pilots_no_ur_no_active_skills && board.pilots_no_ur_no_active_skills.length) {
+          takeOff(filterPilotsLocal(board.pilots_no_ur_no_active_skills, false, false, true, false), !!board.no_ur_partial);
+        } else {
+          takeOff(filterPilotsLocal(off, true, true, true, false), true);
+        }
+      } else if (sameOff && noShinnOff) {
+        if (board.pilots_same_role_no_active_skills && board.pilots_same_role_no_active_skills.length) {
+          takeOff(filterPilotsLocal(board.pilots_same_role_no_active_skills, false, true, false, false), !!board.same_role_partial);
+        } else if (board.pilots_no_shinn_no_active_skills && board.pilots_no_shinn_no_active_skills.length) {
+          takeOff(filterPilotsLocal(board.pilots_no_shinn_no_active_skills, false, false, true, false), !!board.no_shinn_partial);
+        } else {
+          takeOff(filterPilotsLocal(off, false, true, true, false), true);
+        }
+      } else if (sameOff) {
+        if (board.pilots_same_role_no_active_skills && board.pilots_same_role_no_active_skills.length) {
+          takeOff(board.pilots_same_role_no_active_skills, !!board.same_role_partial && board.pilots_same_role_no_active_skills.length < 10);
+        } else {
+          takeOff(filterPilotsLocal(off, false, false, true, false), true);
+        }
+      } else if (noUrOff) {
+        if (board.pilots_no_ur_no_active_skills && board.pilots_no_ur_no_active_skills.length) {
+          takeOff(board.pilots_no_ur_no_active_skills, !!board.no_ur_partial && board.pilots_no_ur_no_active_skills.length < 10);
+        } else {
+          takeOff(filterPilotsLocal(off, true, true, false, false), true);
+        }
+      } else if (noShinnOff) {
+        if (board.pilots_no_shinn_no_active_skills && board.pilots_no_shinn_no_active_skills.length) {
+          takeOff(board.pilots_no_shinn_no_active_skills, !!board.no_shinn_partial && board.pilots_no_shinn_no_active_skills.length < 10);
+        } else {
+          takeOff(filterPilotsLocal(off, false, true, false, false), true);
+        }
+      }
+
       return {
-        pilots: sortPilotsByCalcDamage(filteredOff, mode).slice(0, 10),
-        partial: filteredOff.length < 10,
+        pilots: sortPilotsByCalcDamage(rows, mode).slice(0, 10),
+        partial: partial || rows.length < 10,
         skillsOff: true
       };
     }
@@ -1418,6 +1481,10 @@
       pilots_same_role: sortPilotsByCalcDamage(clonePilotList(payload.pilots_same_role), mode),
       pilots_support_role: sortPilotsByCalcDamage(clonePilotList(payload.pilots_support_role), mode),
       pilots_no_active_skills: sortPilotsByCalcDamage(clonePilotList(payload.pilots_no_active_skills), mode),
+      pilots_support_role_no_active_skills: sortPilotsByCalcDamage(clonePilotList(payload.pilots_support_role_no_active_skills), mode),
+      pilots_same_role_no_active_skills: sortPilotsByCalcDamage(clonePilotList(payload.pilots_same_role_no_active_skills), mode),
+      pilots_no_ur_no_active_skills: sortPilotsByCalcDamage(clonePilotList(payload.pilots_no_ur_no_active_skills), mode),
+      pilots_no_shinn_no_active_skills: sortPilotsByCalcDamage(clonePilotList(payload.pilots_no_shinn_no_active_skills), mode),
       pilots_defender: sortPilotsByDefenderScore(clonePilotList(payload.pilots_defender)),
       pilots_defender_no_skills: sortPilotsByDefenderScore(clonePilotList(payload.pilots_defender_no_skills)),
       no_ur_partial: !!payload.no_ur_partial,
@@ -1462,6 +1529,10 @@
       pilots_same_role: primary.pilots_same_role,
       pilots_support_role: primary.pilots_support_role,
       pilots_no_active_skills: primary.pilots_no_active_skills,
+      pilots_support_role_no_active_skills: primary.pilots_support_role_no_active_skills,
+      pilots_same_role_no_active_skills: primary.pilots_same_role_no_active_skills,
+      pilots_no_ur_no_active_skills: primary.pilots_no_ur_no_active_skills,
+      pilots_no_shinn_no_active_skills: primary.pilots_no_shinn_no_active_skills,
       pilots_defender: defenders,
       pilots_defender_no_skills: defendersOff,
       no_ur_partial: primary.no_ur_partial,
@@ -1651,6 +1722,10 @@
       pilots_same_role: primary.pilots_same_role,
       pilots_support_role: primary.pilots_support_role,
       pilots_no_active_skills: primary.pilots_no_active_skills,
+      pilots_support_role_no_active_skills: primary.pilots_support_role_no_active_skills,
+      pilots_same_role_no_active_skills: primary.pilots_same_role_no_active_skills,
+      pilots_no_ur_no_active_skills: primary.pilots_no_ur_no_active_skills,
+      pilots_no_shinn_no_active_skills: primary.pilots_no_shinn_no_active_skills,
       pilots_defender: primary.pilots_defender,
       pilots_defender_no_skills: primary.pilots_defender_no_skills,
       no_ur_partial: primary.no_ur_partial,

@@ -11225,6 +11225,65 @@ def _unit_transform_alt_search_match(uid, sq, ld, lc, q_scope='name_id'):
     )
 
 
+def _build_transform_alt_browse_rows(ld, lc, stat_mode='normal', cond_list=None):
+    """Compact browse rows for transform alternates — instant-search index only (not default list)."""
+    cond_list = cond_list or []
+    out = []
+    for uid, info in unit_info_map.items():
+        if not _unit_is_transform_alternate(uid):
+            continue
+        if uid not in unit_list_playable_ids:
+            continue
+        if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+            continue
+        if not browse_entity_has_resolved_lineage_tags(unit_lin_map, uid, lc, 'unit'):
+            continue
+        role_id = info.get('role', '0')
+        if role_id == '0':
+            continue
+        ri = info.get('rarity', '1')
+        lid = ld['unit_id_map'].get(uid, '')
+        name = ld['unit_text_map'].get(lid, '') if lid else ''
+        if not name:
+            name = f'Unknown ({uid})'
+        acq_route = str(info.get('acquisition_route', '0'))
+        ai = ACQUISITION_ROUTE_ICONS.get(acq_route, '')
+        si = [ai] if ai else []
+        thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
+        ue = UNIT_BROWSE_LIST_ROW_CACHE.get(uid)
+        if ue:
+            fs = ue['nc'] if stat_mode == 'normal' and not cond_list else (
+                _unit_lb_row_to_api(ue['lb'], stat_mode if stat_mode != 'normal' else 'normal', cond_list)
+                if ue.get('lb') else ue['nc']
+            )
+        else:
+            fs = {'Attack': 0, 'Defense': 0, 'Mobility': 0, 'HP': 0, 'EN': 0, 'Move': 0}
+        out.append({
+            'id': uid,
+            'name': name,
+            'role': resolve_role_label(role_id, lc),
+            'role_id': role_id,
+            'role_sort': ROLE_SORT.get(role_id, 3),
+            'role_icon': ROLE_ICON_MAP.get(role_id, ''),
+            'rarity': RARITY_MAP.get(ri, 'N'),
+            'rarity_id': ri,
+            'rarity_sort': RARITY_SORT.get(ri, 4),
+            'special_icons': si,
+            'thum': thum or '',
+            'acquisition_icon': ai or '',
+            'is_ultimate': bool(info.get('is_ultimate', False)),
+            'is_limited_time': uid in LIMITED_TIME_UNIT_IDS,
+            'is_transform_alternate': True,
+            'ATK': fs.get('Attack', fs.get('ATK', 0)),
+            'DEF': fs.get('Defense', fs.get('DEF', 0)),
+            'MOB': fs.get('Mobility', fs.get('MOB', 0)),
+            'HP': fs.get('HP', 0),
+            'EN': fs.get('EN', 0),
+            'MOV': fs.get('Move', fs.get('MOV', 0)),
+        })
+    return out
+
+
 def _unit_ids_for_terrain_filter(uid, info):
     """Main unit row plus transform alternates when evaluating terrain browse filters."""
     mid = normalize_id(info.get('main_unit_id', uid))
@@ -22266,6 +22325,8 @@ def list_units():
     _wbp = sorted(WEAPON_DEBUFF_KEYS_PRESENT_UNION)
     _mech_rows = mechanism_list_filter_rows_from_ids(mechanism_union, ld)
     result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg, 'weapon_range': weapon_range_arg, 'weapon_range_non_map': weapon_range_non_map_arg, 'map_weapon_range': map_weapon_range_arg, 'weapon_debuff_present_keys': _wbp, 'terrain_present_tokens': sorted(UNIT_TERRAIN_FILTER_TOKENS_PRESENT), 'weapon_range_ssp_ex_present': sorted(WEAPON_RANGE_SSP_EX_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_present': sorted(WEAPON_RANGE_SSP_EX_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_present': sorted(WEAPON_RANGE_NON_MAP_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_present': sorted(WEAPON_RANGE_NON_MAP_SSP_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_present': sorted(WEAPON_RANGE_ALL_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_cond_present': sorted(WEAPON_RANGE_NON_MAP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_cond_present': sorted(WEAPON_RANGE_ALL_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_cond_present': sorted(WEAPON_RANGE_SSP_EX_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_pilot_cond_present': sorted(WEAPON_RANGE_ALL_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_full_cond_present': sorted(WEAPON_RANGE_ALL_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_FULL_COND_VALUES_PRESENT, key=int), 'mechanism': mechanism_arg, 'mechanism_present': _mech_rows, 'stat_bounds': stat_bounds}
+    if not sq:
+        result['transform_alt_browse_rows'] = _build_transform_alt_browse_rows(ld, lc, stat_mode, cond_list)
     set_cached_response(ck, result)
     return jsonify_cacheable(result, ck, public=True, max_age=3600, convert_images=True)
 
