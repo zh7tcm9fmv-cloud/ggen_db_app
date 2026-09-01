@@ -2252,7 +2252,7 @@ if(qn)pool=pool.filter(r=>instantBrowseRowMatch(r,qn,tab));
 st.lastChipSig=chipSig;
 st.lastQ=qn;
 st.lastFiltered=pool;
-if(!pool.length&&isLikelyIdQuery(qn)&&(tab==='units'||tab==='characters'||tab==='rankUnits'||tab==='rankCharacters'))return false;
+if(!pool.length&&qn&&(tab==='units'||tab==='rankUnits'||((tab==='characters'||tab==='rankCharacters')&&isLikelyIdQuery(qn))))return false;
 const sorted=instantBrowseSort(pool,tab);
 const pp=instantBrowsePerPage(tab);
 const total=sorted.length;
@@ -6785,6 +6785,26 @@ document.getElementById('cmpLegend').innerHTML=S.compareData.map((d,i)=>
 function getCmpLbTierForUnit(uid){const v=S.cmpLbByUnit[uid];return v===undefined?3:Math.min(3,Math.max(0,parseInt(v,10)||0))}
 function updateCmpLbForUnit(uid,val){S.cmpLbByUnit[uid]=Math.min(3,Math.max(0,parseInt(val,10)||0));renderCompareHeader();renderCompareDynamic()}
 function pickCmpLbTier(uid,tier){updateCmpLbForUnit(uid,tier)}
+async function cmpSwapTransformUnit(cardIndex){
+const d=S.compareData&&S.compareData[cardIndex];
+if(!d||!d.transform_partner_id||S.compareType!=='unit')return;
+const pid=String(d.transform_partner_id);
+if(S.compareData.some((x,i)=>i!==cardIndex&&String(x.id)===pid))return;
+const oldId=String(d.id);
+const lb=getCmpLbTierForUnit(oldId);
+try{
+const r=await fetch(`/api/unit/${pid}?lang=${S.lang}`);
+if(!r.ok)return;
+const nd=await r.json();
+const listEntry=S.compareList[cardIndex]||{};
+S.compareList[cardIndex]={id:pid,type:'unit',name:nd.name,thum:nd.thum||nd.portrait||listEntry.thum||''};
+S.compareData[cardIndex]=nd;
+delete S.cmpLbByUnit[oldId];
+delete S.cmpLbByUnit[String(oldId)];
+if(S.cmpLbByUnit[pid]===undefined)S.cmpLbByUnit[pid]=lb;
+renderCompareContent();
+}catch(_){}
+}
 function renderCompareHeader(){
 const ct=S.compareType;
 let html=S.compareData.map((d,i)=>{
@@ -6794,8 +6814,9 @@ const tid=getCmpLbTierForUnit(d.id);
 const cur=cmpLbPipsAtTier(tid);
 const lbMenu=[0,1,2,3].map(t=>{const p=cmpLbPipsAtTier(t);return`<button type="button" class="cmp-lb-opt${tid===t?' is-active':''}" onclick="pickCmpLbTier('${escJs(d.id)}',${t})" role="option" aria-selected="${tid===t}">${cmpLbPipsRow(p[0],p[1],p[2])}<span class="cmp-lb-opt-num">${t}</span></button>`}).join('');
 const lbDrop=ct==='unit'&&!d.is_ultimate?`<div class="cmp-card-lb"><span class="cmp-card-lb-label">${t('cmp_lb')}</span><details class="cmp-lb-details"><summary class="cmp-lb-summary" title="${esc(t('cmp_lb'))}">${cmpLbPipsRow(cur[0],cur[1],cur[2])}</summary><div class="cmp-lb-menu" role="listbox" aria-label="${esc(t('cmp_lb'))}">${lbMenu}</div></details></div>`:'';
+const tfBtn=ct==='unit'&&d.transform_partner_id?`<button type="button" class="cmp-card-transform sp-toggle-btn${d.is_transform_alternate?' active':''}" title="${escAttr(t('unit_transform_title'))}" aria-label="${escAttr(t('unit_transform_title'))}" onclick="cmpSwapTransformUnit(${i})"><img src="${imgUrl('/static/images/UI/UI_Common_BattleIcon_Transform.webp')}" alt="" loading="lazy" onerror="this.style.display='none'"></button>`:'';
 return`<div class="cmp-card" style="border-top:3px solid ${CMP_COLORS[i]}">
-<div class="cmp-card-thum-wrap">${thumHtml}</div><div class="cmp-card-name">${esc(d.name)}</div>${lbDrop}
+<div class="cmp-card-thum-wrap">${thumHtml}</div><div class="cmp-card-name">${esc(d.name)}</div>${tfBtn}${lbDrop}
 <button class="cmp-card-remove" onclick="removeFromCompare('${d.id}')">${t('cmp_remove')}</button></div>`
 }).join('');
 if(S.compareData.length<3){

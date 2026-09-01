@@ -11183,6 +11183,48 @@ unit_transform_partner_map = build_unit_transform_partner_map()
 unit_transform_family_map = build_unit_transform_family_map()
 
 
+def _unit_is_transform_alternate(uid):
+    uid = normalize_id(uid)
+    info = unit_info_map.get(uid)
+    if not info:
+        return False
+    mid = normalize_id(info.get('main_unit_id', uid))
+    if mid == '0':
+        mid = uid
+    return uid != mid and _unit_qualifies_as_transform_partner(uid)
+
+
+def _unit_transform_alt_search_match(uid, sq, ld, lc, q_scope='name_id'):
+    """True when sq explicitly matches this transform alternate by display name or id."""
+    if not sq or not _unit_is_transform_alternate(uid):
+        return False
+    if search_query_matches_entity_id(sq, uid):
+        return True
+    lid = ld['unit_id_map'].get(uid, '')
+    name = ld['unit_text_map'].get(lid, '') if lid else ''
+    if not name:
+        name = f'Unknown ({uid})'
+    ser_list = resolve_series(unit_ser_map.get(uid, ''), lc)
+    ser_names_lower = series_names_lower_for_search(ser_list)
+    if q_scope == 'name_id':
+        ss = f'{name} {uid}'.strip()
+    else:
+        alias_h = ' '.join(series_alias_tokens_for_haystack(ser_list))
+        ss = (
+            f'{name} {uid} '
+            + ' '.join([t['name'] for t in resolve_tags(unit_lin_map, uid, lc, 'unit')])
+            + ' '
+            + ' '.join([s['name'] for s in ser_list])
+            + ' '
+            + alias_h
+        ).strip()
+    ss = (ss + UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID.get(uid, '')).strip().lower()
+    return search_row_matches_query(
+        sq, ss, ser_names_lower, ser_list, entity_id=uid,
+        primary=(q_scope in ('primary', 'name_id')),
+    )
+
+
 def _unit_ids_for_terrain_filter(uid, info):
     """Main unit row plus transform alternates when evaluating terrain browse filters."""
     mid = normalize_id(info.get('main_unit_id', uid))
@@ -21041,6 +21083,8 @@ def unit_passes_browse_pool_filters(
     ri = info.get('rarity', '1')
     role_id = info.get('role', '0')
     id_seek = bool(sq and search_query_matches_entity_id(sq, uid))
+    alt_seek = bool(sq and _unit_transform_alt_search_match(uid, sq, ld, lc, q_scope))
+    direct_seek = id_seek or alt_seek
     if role_id == '0' and not (id_seek and npc_password_unlocked()):
         return False
     if not unit_has_ms_ability_content(uid) and not (id_seek and npc_password_unlocked()):
@@ -21048,7 +21092,7 @@ def unit_passes_browse_pool_filters(
     _muid = normalize_id(info.get('main_unit_id', uid))
     if _muid == '0':
         _muid = uid
-    if uid != _muid and not id_seek:
+    if uid != _muid and not direct_seek:
         return False
     _shape_kw = dict(
         role_filter=role_filter,
@@ -21065,7 +21109,7 @@ def unit_passes_browse_pool_filters(
         pilot_cond_active=pilot_cond_active,
     )
     _debuff = weapon_debuff_filter if apply_weapon_debuff else None
-    if not id_seek and not unit_matches_browse_form_filters(
+    if not direct_seek and not unit_matches_browse_form_filters(
             uid, info, ld, lc, stat_mode,
             weapon_debuff_filter=_debuff, weapon_debuff_combine=weapon_debuff_combine,
             **_shape_kw):
@@ -21073,7 +21117,7 @@ def unit_passes_browse_pool_filters(
     if rarity_filter is not None:
         if not rarity_filter:
             return False
-        if not id_seek:
+        if not direct_seek:
             letter = RARITY_MAP.get(str(ri), 'N')
             lim = uid in LIMITED_TIME_UNIT_IDS
             if not row_matches_rarity_filter(
@@ -21082,16 +21126,16 @@ def unit_passes_browse_pool_filters(
                 return False
     acq_route = str(info.get('acquisition_route', '0'))
     if source_filter is not None:
-        if not id_seek and not entity_matches_source_category(acq_route, role_id, source_filter):
+        if not direct_seek and not entity_matches_source_category(acq_route, role_id, source_filter):
             return False
     if apply_lineage and lineage_filter is not None:
-        if not id_seek and not entity_matches_lineage(unit_lin_map, uid, lineage_filter, lineage_combine):
+        if not direct_seek and not entity_matches_lineage(unit_lin_map, uid, lineage_filter, lineage_combine):
             return False
     if apply_series and series_filter is not None:
-        if not id_seek and not entity_matches_series(unit_ser_map.get(uid, ''), series_filter, lc, series_combine):
+        if not direct_seek and not entity_matches_series(unit_ser_map.get(uid, ''), series_filter, lc, series_combine):
             return False
     if apply_ability and ability_filter is not None:
-        if not id_seek and not entity_matches_unit_abilities_filter(uid, ability_filter, ability_combine):
+        if not direct_seek and not entity_matches_unit_abilities_filter(uid, ability_filter, ability_combine):
             return False
     lid = ld['unit_id_map'].get(uid, '')
     name = ld['unit_text_map'].get(lid, '') if lid else ''
@@ -22040,6 +22084,8 @@ def list_units():
             continue
         ri = info.get('rarity','1'); role_id = info.get('role','0')
         id_seek = bool(sq and search_query_matches_entity_id(sq, uid))
+        alt_seek = bool(sq and _unit_transform_alt_search_match(uid, sq, ld, lc, q_scope))
+        direct_seek = id_seek or alt_seek
         if role_id == '0' and not (id_seek and npc_password_unlocked()):
             continue
         if not unit_has_ms_ability_content(uid) and not (id_seek and npc_password_unlocked()):
@@ -22047,12 +22093,12 @@ def list_units():
         _muid = normalize_id(info.get('main_unit_id', uid))
         if _muid == '0':
             _muid = uid
-        if uid != _muid and not id_seek:
+        if uid != _muid and not direct_seek:
             continue
         if rarity_filter is not None:
             if not rarity_filter:
                 continue
-            if not id_seek:
+            if not direct_seek:
                 letter = RARITY_MAP.get(str(ri), 'N')
                 lim = uid in LIMITED_TIME_UNIT_IDS
                 if not row_matches_rarity_filter(
@@ -22061,19 +22107,19 @@ def list_units():
                     continue
         acq_route = str(info.get('acquisition_route', '0'))
         if source_filter is not None:
-            if not id_seek and not entity_matches_source_category(acq_route, role_id, source_filter):
+            if not direct_seek and not entity_matches_source_category(acq_route, role_id, source_filter):
                 continue
         if lineage_filter is not None:
-            if not id_seek and not entity_matches_lineage(unit_lin_map, uid, lineage_filter, _cbu['lineage_combine']):
+            if not direct_seek and not entity_matches_lineage(unit_lin_map, uid, lineage_filter, _cbu['lineage_combine']):
                 continue
         if series_filter is not None:
-            if not id_seek and not entity_matches_series(unit_ser_map.get(uid, ''), series_filter, lc, _cbu['series_combine']):
+            if not direct_seek and not entity_matches_series(unit_ser_map.get(uid, ''), series_filter, lc, _cbu['series_combine']):
                 continue
         if ability_filter is not None:
-            if not id_seek and not entity_matches_unit_abilities_filter(uid, ability_filter, _cbu['ability_combine']):
+            if not direct_seek and not entity_matches_unit_abilities_filter(uid, ability_filter, _cbu['ability_combine']):
                 continue
         if weapon_attr_filter is not None:
-            if not id_seek and not unit_matches_weapon_attr_filter(uid, weapon_attr_filter):
+            if not direct_seek and not unit_matches_weapon_attr_filter(uid, weapon_attr_filter):
                 continue
         _shape_kw = dict(
             role_filter=role_filter,
@@ -22089,7 +22135,7 @@ def list_units():
             cond_active=cond_list,
             pilot_cond_active=pilot_cond_list,
         )
-        if not id_seek and not unit_matches_browse_form_filters(
+        if not direct_seek and not unit_matches_browse_form_filters(
                 uid, info, ld, lc, stat_mode,
                 weapon_debuff_filter=weapon_debuff_filter,
                 weapon_debuff_combine=_cbu['weapon_debuff_combine'],
@@ -22150,7 +22196,7 @@ def list_units():
                 continue
         mechanism_union |= set(UNIT_MECHANISM_MIDS_CACHE.get(uid, ()))
         if mechanism_filter:
-            if not id_seek and not unit_matches_mechanism_filter(info, mechanism_filter, uid, combine=mechanism_combine):
+            if not direct_seek and not unit_matches_mechanism_filter(info, mechanism_filter, uid, combine=mechanism_combine):
                 continue
         ue = UNIT_BROWSE_LIST_ROW_CACHE.get(uid)
         if ue:
@@ -22169,7 +22215,7 @@ def list_units():
         # is_limited_time is on the row so Units can filter rarity locally (Soshage-style).
         urow = {'id': uid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'special_icons': si, 'thum': thum or '', 'acquisition_icon': ai or '', 'is_ultimate': bool(info.get('is_ultimate', False)), 'is_limited_time': uid in LIMITED_TIME_UNIT_IDS, 'ATK': fs.get('Attack', fs.get('ATK', 0)), 'DEF': fs.get('Defense', fs.get('DEF', 0)), 'MOB': fs.get('Mobility', fs.get('MOB', 0)), 'HP': fs.get('HP', 0), 'EN': fs.get('EN', 0), 'MOV': fs.get('Move', fs.get('MOV', 0))}
         display_uid = uid
-        if not id_seek:
+        if not direct_seek:
             display_uid = _unit_browse_form_filter_display_id(
                 uid, info, ld, lc, stat_mode,
                 weapon_debuff_filter=weapon_debuff_filter,
@@ -22182,7 +22228,7 @@ def list_units():
             (weapon_debuff_filter and 'map_weapon' in weapon_debuff_filter)
             or map_weapon_range_filter is not None
         )
-        if _map_preview_active and not id_seek:
+        if _map_preview_active and not direct_seek:
             _prev_uid = normalize_id(display_uid)
             _map_prevs = build_unit_browse_map_weapon_previews(
                 _prev_uid, stat_mode, ld, lc, map_weapon_range_filter,
