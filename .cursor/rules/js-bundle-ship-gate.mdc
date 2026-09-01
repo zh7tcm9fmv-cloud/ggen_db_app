@@ -1,0 +1,50 @@
+---
+description: Mandatory pre-ship gate for app.js — never ship a broken browse bundle again
+alwaysApply: true
+---
+
+# JS bundle ship gate (`app.js` / `app.min.js`)
+
+Owner lesson (**Sep 2026 — production outage**): a greedy regex rewrite **deleted** `renderUnitT`, `renderSuppT`, `renderModT`, and related list renderers. `node --check` still passed (syntax OK); **live site was blank** (`renderUnitT is not defined`, then `TB_TRASH_ICON` TDZ cascade). Users were affected before the owner caught it.
+
+## Hard rule — before saying “done”, “ready”, or “fixed” for any change touching `static/js/app.js`
+
+Run **all** of this in order and fix failures **before** replying:
+
+```text
+node --check static/js/app.js
+node scripts/minify_app_js.mjs
+node scripts/verify_app_js_bundle.mjs
+```
+
+If any step fails: **stop**. Do not tell the owner to deploy. Do not say the site will work.
+
+## What `verify_app_js_bundle.mjs` enforces
+
+- `app.js` parses (same as `--check`, but explicit in the gate script)
+- Critical **function declarations** still exist (`renderUnitT`, `renderCharT`, `renderSuppT`, `renderModT`, `openDetail`, `applyLang`, `tbApplyLangStatic`, unit grid helpers, etc.)
+- `TB_TRASH_ICON` const still declared (late-init cascade symptom when bundle aborts mid-file)
+- `app.min.js` exists, is **newer than** `app.js`, and still contains key symbols (production serves min bundle)
+
+Extend `REQUIRED_FUNCTIONS` in the script when adding new top-level browse/boot entrypoints — not ad-hoc one-offs in agent replies.
+
+## Forbidden edit patterns on `app.js`
+
+| Pattern | Why |
+|--------|-----|
+| `re.sub(..., flags=re.DOTALL)` / greedy regex spanning `function …` | Deleted whole render blocks in Sep 2026 |
+| One-off Python “patch” scripts without immediate `verify_app_js_bundle.mjs` | Same failure mode |
+| Editing only `app.js` and skipping minify | Live runs `app.min.js` |
+| “Syntax check passed” as the only verification | Missing declarations are **not** syntax errors |
+
+**Preferred:** surgical `StrReplace` with unique context, or restore a known-good block from git and re-apply a minimal diff.
+
+## Reply checklist (JS UI changes)
+
+- [ ] `node scripts/verify_app_js_bundle.mjs` — exit 0
+- [ ] If owner tests Railway: **fixed locally; not live yet** until they deploy (see `verify-live-before-fixed.mdc`)
+- [ ] Mention verify script ran in the reply when JS shipped
+
+## Incident reference
+
+Broken deploy: `npc123` commit removed unit/supp/mod list renderers; owner console: `renderUnitT is not defined` @ `app.min.js`, then `TB_TRASH_ICON` before initialization in `tbApplyLangStatic`.
