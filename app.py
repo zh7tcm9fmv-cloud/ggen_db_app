@@ -1020,9 +1020,17 @@ UNIT_SEARCH_HAYSTACK_EXTRA_BY_ID = {
 DOUBLE_X_DX_TOKEN_UNIT_IDS = frozenset({'1230003800', '1230003850', '1230005300'})
 # Query "00" only: these unit rows only (by id), not every title in m_series 3700 — keeps browse aligned with name/id intent.
 UNIT_SEARCH_SHORTHAND_00_UNIT_IDS = frozenset({'1370006200', '1370005700', '1370005900', '1370005950'})
+# Single-token unit nicknames (exact query only) → roster rows; prevents substring/id-fragment bleed (e.g. spiegel → spi → Spinner Rodi).
+UNIT_SEARCH_NICKNAME_TOKEN_UNIT_IDS = {
+    'spiegel': frozenset({'1200001100'}),
+    'god': frozenset({'1200003900', '1200003950'}),
+    'devil': frozenset({'1200002210', '1200002300', '1200005300'}),
+    'devil gundam': frozenset({'1200002210', '1200002300', '1200005300'}),
+    'devilgundam': frozenset({'1200002210', '1200002300', '1200005300'}),
+}
 # ScheduleId 9999990001 = stage/NPC shell rows in master (not obtainable in-game).
 SCHEDULE_ID_NONPLAYABLE_SHELL = '9999990001'
-# Browse shorthand: list every ScheduleId 9999990001 shell row (characters tab / units tab).
+# Browse shorthand: list every ScheduleId 9999990001 shell row (characters / units / supporters / modifications).
 NPC123_SEARCH_TOKEN = 'npc123'
 
 
@@ -10389,6 +10397,21 @@ unit_schedule_shell_ids = frozenset(
     uid for uid, info in unit_info_map.items()
     if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'))
 )
+
+supporter_schedule_shell_ids = frozenset(
+    sid for sid, info in supporter_info_map.items()
+    if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'))
+)
+
+option_part_schedule_shell_ids = frozenset(
+    normalize_id(item.get('Id') or item.get('id'))
+    for item in extract_data_list(option_parts_data or [])
+    if isinstance(item, dict)
+    and entity_is_nonplayable_schedule_shell(
+        normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0')
+    )
+)
+
 weapon_info_map = create_weapon_master_map(weapon_master); weapon_status_map = create_weapon_status_map(weapon_status_data)
 weapon_correction_map = create_weapon_correction_map(weapon_correction_data)
 growth_pattern_map = create_growth_pattern_map(weapon_growth_data)
@@ -15908,6 +15931,32 @@ def _positive_segment_subterms(term):
     return parts if parts else [term]
 
 
+def _search_query_single_positive_token_raw(sq):
+    """Single browse positive segment (lowercased), before nickname expansion; None if not exactly one token."""
+    if not sq or not str(sq).strip():
+        return None
+    segments = [t.strip() for t in re.split(r'[,;]', str(sq).strip()) if t.strip()]
+    if len(segments) != 1:
+        return None
+    seg = unicodedata.normalize('NFKC', segments[0]).replace('\uff1a', ':').replace('\u3000', ' ').strip()
+    sl = seg.lower()
+    if sl.startswith('-'):
+        return None
+    if re.match(r'(?i)^series_id\s*:', seg.strip()):
+        return None
+    if re.match(r'(?i)^series\s*:', seg.strip()):
+        return None
+    return sl
+
+
+def search_query_nickname_token_unit_ids(sq):
+    """When sq is exactly one nickname token, return allowed unit ids; else None."""
+    token = _search_query_single_positive_token_raw(sq)
+    if not token:
+        return None
+    return UNIT_SEARCH_NICKNAME_TOKEN_UNIT_IDS.get(token)
+
+
 def _search_query_is_dx_token_only(pq):
     """True if the query is only the positive token dx/DX (no series_id, series name, or negative segments)."""
     if not pq or pq.get('negative') or pq.get('series') or pq.get('series_ids'):
@@ -15942,6 +15991,14 @@ def unit_npc123_shell_seek(sq, uid):
     return search_query_is_npc123_list_seek(sq) and normalize_id(uid) in unit_schedule_shell_ids
 
 
+def supporter_npc123_shell_seek(sq, sid):
+    return search_query_is_npc123_list_seek(sq) and normalize_id(sid) in supporter_schedule_shell_ids
+
+
+def option_part_npc123_shell_seek(sq, opid):
+    return search_query_is_npc123_list_seek(sq) and normalize_id(opid) in option_part_schedule_shell_ids
+
+
 def entity_privileged_npc_browse_seek(sq, eid, kind, *, id_seek=None):
     """ID seek with NPC password, or npc123 schedule-shell list seek."""
     eid = normalize_id(eid)
@@ -15953,6 +16010,10 @@ def entity_privileged_npc_browse_seek(sq, eid, kind, *, id_seek=None):
         return character_npc123_shell_seek(sq, eid)
     if kind == 'unit':
         return unit_npc123_shell_seek(sq, eid)
+    if kind == 'supporter':
+        return supporter_npc123_shell_seek(sq, eid)
+    if kind == 'option_part':
+        return option_part_npc123_shell_seek(sq, eid)
     return False
 
 
@@ -16084,6 +16145,9 @@ def search_row_matches_query(sq, haystack_lower, series_names_lower_list, ser_li
             and eid_n in UNIT_SEARCH_SHORTHAND_00_UNIT_IDS
         ):
             pass
+        elif (nick_ids := search_query_nickname_token_unit_ids(sq)) is not None:
+            if not eid_n or eid_n not in nick_ids:
+                return False
         elif _search_query_is_npc123_token_only(pq):
             if not eid_n:
                 return False
@@ -16093,7 +16157,18 @@ def search_row_matches_query(sq, haystack_lower, series_names_lower_list, ser_li
             elif schedule_shell_kind == 'unit':
                 if eid_n not in unit_schedule_shell_ids:
                     return False
-            elif eid_n not in char_schedule_shell_ids and eid_n not in unit_schedule_shell_ids:
+            elif schedule_shell_kind == 'supporter':
+                if eid_n not in supporter_schedule_shell_ids:
+                    return False
+            elif schedule_shell_kind == 'option_part':
+                if eid_n not in option_part_schedule_shell_ids:
+                    return False
+            elif (
+                eid_n not in char_schedule_shell_ids
+                and eid_n not in unit_schedule_shell_ids
+                and eid_n not in supporter_schedule_shell_ids
+                and eid_n not in option_part_schedule_shell_ids
+            ):
                 return False
         else:
             for p in pq['positive']:
@@ -22702,14 +22777,22 @@ def list_option_parts():
         if not isinstance(rows, list):
             ld = get_lang_data(lc); op_text_map = ld.get('op_text_map', {}); ltm = ld.get('lang_text_map', {})
             rows = []
+            npc123_list = search_query_is_npc123_list_seek(sq)
             for item in extract_data_list(option_parts_data):
                 if not isinstance(item, dict): continue
                 opid = str(item.get('Id') or item.get('id', 0))
                 if opid == '0': continue
+                sched = normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0')
+                is_shell = entity_is_nonplayable_schedule_shell(sched)
+                id_seek = bool(sq and search_query_matches_entity_id(sq, opid))
+                priv_seek = entity_privileged_npc_browse_seek(sq, opid, 'option_part', id_seek=id_seek)
+                if is_shell and not priv_seek:
+                    continue
                 ri = str(item.get('RarityTypeIndex') or 1)
                 letter = RARITY_MAP.get(ri, 'N')
-                if rarity_filter is not None and not row_matches_rarity_filter(rarity_filter, letter, False, False):
-                    continue
+                if rarity_filter is not None and not (id_seek or npc123_list):
+                    if not row_matches_rarity_filter(rarity_filter, letter, False, False):
+                        continue
                 name_lid = normalize_id(item.get('SortNameLanguageId') or item.get('sortNameLanguageId'))
                 name = op_text_map.get(name_lid, '') if name_lid else ''
                 if not name: name = f'Option Part {opid}'
@@ -22721,9 +22804,9 @@ def list_option_parts():
                 variant_ids = _option_part_variant_tag_ids(opid)
                 if not variant_ids:
                     variant_ids = ['']
-                if ef != 'ALL' and not option_part_matches_effect_filter(details, ef):
+                if ef != 'ALL' and not (id_seek or npc123_list) and not option_part_matches_effect_filter(details, ef):
                     continue
-                if lineage_filter is not None and not option_part_matches_lineage_filter(
+                if lineage_filter is not None and not (id_seek or npc123_list) and not option_part_matches_lineage_filter(
                     opid, item, ld, lineage_filter, lineage_combine,
                 ):
                     continue
@@ -22746,14 +22829,14 @@ def list_option_parts():
                     if sq:
                         searchable = f"{name} {details_v} {tags_str}".lower()
                         tag_blob = [tags_str.lower()] if tags_str else []
-                        if not search_row_matches_query(sq, searchable, tag_blob, entity_id=opid):
+                        if not search_row_matches_query(sq, searchable, tag_blob, entity_id=opid, schedule_shell_kind='option_part'):
                             continue
                     sim_effects = (
                         _build_option_part_sim_effects(item, lc, ld, vnorm)
                         if vnorm
                         else sim_effects_base
                     )
-                    rows.append({'id': opid, 'name': name, 'details': details_v, 'sim_effects': sim_effects, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': icon, 'tags': tags, 'tags_join': tags_join, 'variant_tag_id': vnorm if vnorm != '0' else ''})
+                    rows.append({'id': opid, 'name': name, 'details': details_v, 'sim_effects': sim_effects, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': icon, 'tags': tags, 'tags_join': tags_join, 'variant_tag_id': vnorm if vnorm != '0' else '', 'is_schedule_shell': is_shell})
             rows = sort_option_part_rows(rows, sb, sd, {'name', 'rarity', 'details', 'tags'})
             set_cached_response(all_ck, rows)
         if for_unit:
@@ -23489,6 +23572,7 @@ def _option_part_detail_row(item, lc, variant_tag_id=''):
     tags_join = ', '.join(t['name'] for t in tags)
     res_id = str(item.get('ResourceId') or item.get('resourceId') or '').strip()
     icon = f"/static/images/Option-Part (Modification)/Sprite/{res_id}.webp" if res_id else ''
+    sched = normalize_id(item.get('ScheduleId') or item.get('scheduleId'), '0')
     acquisition_methods = _build_option_part_acquisition_methods(opid, lc, ld, details)
     # OP fix: all Haro option parts use this acquisition method label.
     if 'haro' in (name or '').lower():
@@ -23511,6 +23595,7 @@ def _option_part_detail_row(item, lc, variant_tag_id=''):
         'acquisition_method_label': _option_part_acquisition_label(lc),
         'acquisition_methods': acquisition_methods,
         'lang': lc,
+        'is_schedule_shell': entity_is_nonplayable_schedule_shell(sched),
     }
 
 
@@ -23612,6 +23697,7 @@ def list_supporters():
         if cached:
             return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
         ld = get_lang_data(lc); rows = []
+        npc123_list = search_query_is_npc123_list_seek(sq)
         for sid, info in supporter_info_map.items():
             if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
                 continue
@@ -23620,8 +23706,11 @@ def list_supporters():
             if not name: continue
             lim = nsid in LIMITED_TIME_SUPPORTER_IDS
             id_seek = bool(sq and search_query_matches_entity_id(sq, sid))
+            priv_seek = entity_privileged_npc_browse_seek(sq, sid, 'supporter', id_seek=id_seek)
+            if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')) and not priv_seek:
+                continue
             if lineage_filter is not None:
-                if not id_seek and not supporter_matches_lineage_filter(sid, lineage_filter, ld, lc, lineage_combine_supp):
+                if not id_seek and not npc123_list and not supporter_matches_lineage_filter(sid, lineage_filter, ld, lc, lineage_combine_supp):
                     continue
             lsr = supporter_leader_map.get(sid, []); all_tags = []; descs = []; std = []
             for ls in lsr:
@@ -23636,7 +23725,7 @@ def list_supporters():
             sts = ", ".join([t['name'] for t in all_tags]); cb = "\n".join(descs)
             searchable_lower = f"{name} {sts}".lower().strip()
             ser_names_lower = [t['name'].lower() for t in all_tags if t.get('name')]
-            sq_matches = search_row_matches_query(sq, searchable_lower, ser_names_lower, entity_id=sid) if sq else True
+            sq_matches = search_row_matches_query(sq, searchable_lower, ser_names_lower, entity_id=sid, schedule_shell_kind='supporter') if sq else True
             if uids:
                 if not id_seek:
                     applies_any = False
@@ -23655,8 +23744,9 @@ def list_supporters():
                 if not rarity_filter:
                     continue
                 letter = RARITY_MAP.get(str(ri), 'N')
-                if not row_matches_rarity_filter(rarity_filter, letter, lim):
-                    continue
+                if not (id_seek or npc123_list):
+                    if not row_matches_rarity_filter(rarity_filter, letter, lim):
+                        continue
             if sq and not sq_matches:
                 continue
             thum = find_supporter_portrait(info.get('resource_id'), sid)
@@ -23668,7 +23758,7 @@ def list_supporters():
             # supporter-addon #2 acquisition route on browse list
             acq = info.get('acquisition_route', '0')
             acq_icon = ACQUISITION_ROUTE_ICONS.get(acq, '')
-            rows.append({'id': sid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': thum or '', 'skill_tag_data': std, 'series_tag': sts, 'boost': cb, 'active_icon': aic, 'is_limited_time': lim, 'acquisition_route': acq, 'acquisition_icon': acq_icon or ''})
+            rows.append({'id': sid, 'name': name, 'rarity': RARITY_MAP.get(ri, 'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri, 4), 'rarity_icon': RARITY_ICON_MAP.get(ri, ''), 'thum': thum or '', 'skill_tag_data': std, 'series_tag': sts, 'boost': cb, 'active_icon': aic, 'is_limited_time': lim, 'acquisition_route': acq, 'acquisition_icon': acq_icon or '', 'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0'))})
         rows = sort_rows(rows, sb, sd, {'name', 'rarity', 'series_tag', 'boost'})
         total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
         start = (page - 1) * pp; pr = rows[start:start + pp]
@@ -26230,6 +26320,7 @@ def get_supporter(supporter_id):
             'max_level': max_level, 'acquisition_route': acq, 'acquisition_icon': acq_icon or '',
             'gacha_obtained_quote': gacha_quote or '', 'combat_power': combat_power,
             'leader_and_trait_cond_ids': leader_and_trait_cond_ids,
+            'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')),
         }
         set_cached_response(ck, result)
         return jsonify_cacheable(result, ck, private=True, max_age=3600, convert_images=True)
