@@ -1,6 +1,6 @@
 /**
  * Ko-fi donate promo — speech bubble near #kofiHeaderLink with a random portrait.
- * Portrait: 90% sd_story_event_shop_gm (SD event); 10% random from images/Popup + original Maria.
+ * Portrait: uniform random from images/Popup + original Maria.
  * Shows 2 minutes after page load. Snoozed for 24h after close (X) or Ko-fi header click
  * on the same page visit — a full reload clears the snooze.
  */
@@ -17,7 +17,6 @@
     'ggen_kofi_promo_snooze_until',
   ];
   var MARIA_IMG = '/static/images/UI/UI_TacticalTraining_Logo_maria.webp';
-  var PROMO_FAVORED_IMG = '/static/images/Popup/sd_story_event_shop_gm.webp';
   /** Keep in sync with image_index.json → "images/Popup". */
   var PROMO_POPUP_FILES = [
     'sd_story_event_shop_gm.webp',
@@ -94,13 +93,11 @@
   }
 
   function pickPromoPortraitPath() {
-    // 90% SD event shop art; 10% uniform from Popup pool + original Maria.
-    if (Math.random() < 0.9) return PROMO_FAVORED_IMG;
     var pool = PROMO_POPUP_FILES.map(function (name) {
       return '/static/images/Popup/' + name;
     });
     pool.push(MARIA_IMG);
-    return pool[Math.floor(Math.random() * pool.length)] || PROMO_FAVORED_IMG;
+    return pool[Math.floor(Math.random() * pool.length)] || MARIA_IMG;
   }
 
   function applyPromoPortrait() {
