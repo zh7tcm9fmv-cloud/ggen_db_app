@@ -26519,20 +26519,30 @@ def list_stages():
                 })
         elif cat == 'special_stage':
             for sid, ses in (special_event_stage_map or {}).items():
-                if stage_is_password_gated(sid) and not password_gated_stage_content_visible(sid):
-                    continue
+                vis = password_gated_stage_content_visible(sid)
+                locked = stage_is_password_gated(sid) and not vis
                 sname = resolve_special_event_stage_name(ld, ses.get('stage_name_lang_id', '0'), sid)
                 pri = safe_int(ses.get('priority'), 0)
                 grp = safe_int(ses.get('special_event_group_id'), 0)
                 if sq:
-                    searchable = f"{sid} {sname} {pri}".lower()
+                    searchable = (f"{sid} {sname} {pri}" if not locked else str(sid)).lower()
                     if not search_row_matches_query(sq, searchable, None, entity_id=sid): continue
+                sn_sort = (grp, pri, safe_int(sid, 0))
+                if locked:
+                    rows.append({
+                        '_sn_sort': sn_sort,
+                        'id': sid, 'stage_number': None, 'name': '',
+                        'recommended_cp': None, 'terrain': '',
+                        'difficulty_code': '', 'difficulty_name': '', 'portrait': '',
+                        'content_locked': True, 'stage_category': 'special_stage',
+                    })
+                    continue
                 sm = stage_map.get(sid, {})
                 mmeta = map_stage_meta_by_stage_id.get(sid, {}) if map_stage_meta_by_stage_id else {}
                 dti = safe_int(mmeta.get('stage_difficulty_type_index'), 1)
                 diff = get_stage_difficulty_by_type_index(dti, lc)
                 rows.append({
-                    '_sn_sort': (grp, pri, safe_int(sid, 0)),
+                    '_sn_sort': sn_sort,
                     'id': sid, 'stage_number': pri, 'name': sname,
                     'recommended_cp': sm.get('recommended_cp', 0),
                     'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc),
