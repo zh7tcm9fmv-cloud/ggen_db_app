@@ -24141,6 +24141,37 @@ def api_latest_release():
     return jsonify(convert_image_urls(result))
 
 
+def resolve_m_schedule_release_fields(schedule_id):
+    """Start/end/duration labels for m_schedule.ScheduleId (epoch ms → JST display)."""
+    sched = normalize_id(schedule_id, '0')
+    start_label = end_label = duration_label = '-'
+    start_ms = end_ms = None
+    if sched not in ('0', '9999990001'):
+        sm = schedule_start_ms_by_id.get(sched, 0)
+        em = schedule_end_ms_by_id.get(sched, 0)
+        if sm > 0:
+            start_ms = sm
+            start_label = format_start_datetime_jst(sm) or '-'
+        if em > 0:
+            end_ms = em
+            end_label = format_start_datetime_jst(em) or '-'
+        if sm > 0 and em > 0 and em >= sm:
+            if _jst_year_from_epoch_ms(em) == 2099:
+                duration_label = '-'
+            else:
+                duration_label = format_banner_duration_ms(em - sm)
+        elif sm > 0 and (em <= 0 or em < sm):
+            duration_label = ''
+    return {
+        'schedule_id': sched,
+        'start_ms': start_ms,
+        'end_ms': end_ms,
+        'start_label': start_label,
+        'end_label': end_label,
+        'duration_label': duration_label,
+    }
+
+
 def format_banner_duration_ms(delta_ms):
     """Human-readable duration from a non-negative millisecond delta."""
     if delta_ms is None:
@@ -26750,7 +26781,7 @@ def get_stage(stage_id):
                         'ch' if is_challenge_stage else (
                             'ce' if is_chronicle_stage else 'er')))))
         # mstage18: chronicle/E-sim first-clear from node content FirstClearRewardSetId.
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage25"
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage26"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -27143,6 +27174,7 @@ def get_stage(stage_id):
             and safe_int(est.get('stage_difficulty_type_index'), 1) == 3
         )
         _show_stage_missions = _ch_hard or _er_expert
+        _sched_release = resolve_m_schedule_release_fields(sm.get('schedule_id', '0'))
         result = {
             'content_locked': False, 'id': stage_id, 'stage_number': sn, 'name': sname,
             'difficulty_code': diff['code'], 'difficulty_name': diff['name'], 'portrait': portrait,
@@ -27151,6 +27183,12 @@ def get_stage(stage_id):
             'recommended_cp': rec_cp,
             'terrain': resolve_stage_terrain_name(sm.get('terrain_type_index', '0'), lc),
             'terrain_icon': resolve_stage_terrain_icon(sm.get('terrain_type_index', '0')),
+            'schedule_id': _sched_release['schedule_id'],
+            'start_ms': _sched_release['start_ms'],
+            'end_ms': _sched_release['end_ms'],
+            'start_label': _sched_release['start_label'],
+            'end_label': _sched_release['end_label'],
+            'duration_label': _sched_release['duration_label'],
             'victory_conditions': vc, 'defeat_conditions': dc,
             'branch_victory_conditions': bvc, 'map_meta': map_meta,
             'sortie_groups': sg, 'map_data': md, 'npc_details': nd, 'lang': lc,
