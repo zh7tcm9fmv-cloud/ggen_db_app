@@ -2916,7 +2916,7 @@
       : '';
     return `<div class="spi-card" role="button" tabindex="0" data-id="${esc(r.id)}">
       ${renderVoteControls(r, kind, true)}
-      <div class="spi-card-thumb-wrap">${renderFramedThumb(r, kind)}</div>
+      <div class="spi-card-thumb-wrap" role="link" tabindex="0" data-spi-open-db-thumb="${esc(kind)}:${esc(r.id)}" title="${escAttr(t('open_in_db'))}">${renderFramedThumb(r, kind)}</div>
       <div class="spi-card-name">${esc(r.name || r.id)}</div>
       <div class="spi-card-meta">
         <span class="spi-chip letter ${letterClass(r.letter)}">${esc(r.letter || '?')}</span>
@@ -3182,8 +3182,11 @@
     const cards = units
       .map((u) => {
         const thumb = renderFramedThumb(u, 'unit');
-        return `<a class="spi-rec-card" href="/u/${encodeURIComponent(u.id)}" target="_blank" rel="noopener">
-          ${thumb}
+        const openAttrs = isEmbedded()
+          ? ` href="/u/${encodeURIComponent(u.id)}" data-spi-open-db-rec="unit:${escAttr(u.id)}"`
+          : ` href="/u/${encodeURIComponent(u.id)}" target="_blank" rel="noopener"`;
+        return `<a class="spi-rec-card"${openAttrs} title="${escAttr(t('open_in_db'))}">
+          <div class="spi-rec-thumb">${thumb}</div>
           <div class="spi-rec-meta">
             <span class="spi-rec-name">${esc(u.name || u.id)}</span>
             <span class="spi-chip letter ${letterClass(u.letter)}">${esc(u.letter || '?')}</span>
@@ -3222,8 +3225,11 @@
         const specChip = c.specialty
           ? `<span class="spi-chip">${esc(c.specialty)}</span>`
           : '';
-        return `<a class="spi-rec-card" href="/c/${encodeURIComponent(c.id)}" target="_blank" rel="noopener">
-          ${thumb}
+        const openAttrs = isEmbedded()
+          ? ` href="/c/${encodeURIComponent(c.id)}" data-spi-open-db-rec="character:${escAttr(c.id)}"`
+          : ` href="/c/${encodeURIComponent(c.id)}" target="_blank" rel="noopener"`;
+        return `<a class="spi-rec-card"${openAttrs} title="${escAttr(t('open_in_db'))}">
+          <div class="spi-rec-thumb">${thumb}</div>
           <div class="spi-rec-meta">
             <span class="spi-rec-name">${esc(c.name || c.id)}</span>
             <span class="spi-chip letter ${letterClass(c.letter)}">${esc(c.letter || '?')}</span>${specChip}
@@ -3337,7 +3343,7 @@
         : '';
 
     const header = `<div class="spi-dossier-head">
-      <div class="spi-dossier-thumb">${renderFramedThumb(row, kind)}</div>
+      <div class="spi-dossier-thumb" role="link" tabindex="0" data-spi-open-db-thumb="${esc(kind)}:${esc(row.id)}" title="${escAttr(t('open_in_db'))}">${renderFramedThumb(row, kind)}</div>
       <div class="spi-dossier-head-text">
         <h3 class="spi-modal-title" id="spiModalTitle">${esc(row.name || row.id)}</h3>
         <p class="spi-modal-sub">${esc(tRole(row.role) || row.role)}${isPilot && row.specialty ? ` · ${esc(row.specialty)}` : ''} · ${esc((row.mode || board) || '').toUpperCase()}</p>
@@ -3389,6 +3395,31 @@
         openDbDetail(kind, row);
       });
     }
+    const openDbThumb = $('#spiModalBody').querySelector('[data-spi-open-db-thumb]');
+    if (openDbThumb) {
+      const goDb = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        openDbDetail(kind, row);
+      };
+      openDbThumb.addEventListener('click', goDb);
+      openDbThumb.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') goDb(e);
+      });
+    }
+    $('#spiModalBody').querySelectorAll('[data-spi-open-db-rec]').forEach((el) => {
+      el.addEventListener('click', (e) => {
+        if (!isEmbedded()) return;
+        e.preventDefault();
+        e.stopPropagation();
+        const raw = el.getAttribute('data-spi-open-db-rec') || '';
+        const colon = raw.indexOf(':');
+        const k = colon >= 0 ? raw.slice(0, colon) : 'unit';
+        const id = colon >= 0 ? raw.slice(colon + 1) : raw;
+        const recRow = rowById.get(String(id)) || { id };
+        openDbDetail(k === 'character' ? 'character' : 'unit', recRow);
+      });
+    });
     const pairedBtn = $('#spiModalBody').querySelector('[data-spi-paired-board]');
     if (pairedBtn) {
       pairedBtn.addEventListener('click', () => {
@@ -3547,6 +3578,18 @@
         );
         return;
       }
+      const thumbOpen = e.target.closest('[data-spi-open-db-thumb]');
+      if (thumbOpen) {
+        e.preventDefault();
+        e.stopPropagation();
+        const raw = thumbOpen.getAttribute('data-spi-open-db-thumb') || '';
+        const colon = raw.indexOf(':');
+        const k = colon >= 0 ? raw.slice(0, colon) : (entity === 'characters' ? 'character' : 'unit');
+        const id = colon >= 0 ? raw.slice(colon + 1) : raw;
+        const row = rowById.get(String(id));
+        if (row) openDbDetail(k === 'character' ? 'character' : 'unit', row);
+        return;
+      }
       const card = e.target.closest('.spi-card');
       if (!card) return;
       openModal(rowById.get(String(card.dataset.id)));
@@ -3554,6 +3597,13 @@
     grid.addEventListener('keydown', (e) => {
       if (e.key !== 'Enter' && e.key !== ' ') return;
       if (e.target.closest('.spi-vote-btn, .spi-vote-corner')) return;
+      const thumbOpen = e.target.closest('[data-spi-open-db-thumb]');
+      if (thumbOpen && e.target === thumbOpen) {
+        e.preventDefault();
+        e.stopPropagation();
+        thumbOpen.click();
+        return;
+      }
       const card = e.target.closest('.spi-card');
       if (!card || e.target !== card) return;
       e.preventDefault();

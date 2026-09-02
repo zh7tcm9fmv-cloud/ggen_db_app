@@ -59,7 +59,10 @@
     "v5.39: movement_followup no longer treats MovementChangeValue (Increased MOV) as extra-move — only Chance Step / guaranteed CS / after-move MAP",
     "v5.40 preview: Range Condition Damage Reduction min +2 on special_defense; Special damage-type preference +1 on strongest non-MAP gun; SSP range enhance applies for wid and main_weapon_id",
     "v5.41: Attack Type Unit S+ / BEYOND THE TIME raised to 18+ (was 17+); Defense stays 18+; Support stays 17+",
-    "v5.42: Defense/Support Unit S+ is score-ordered again (BBT kit gates off) — Defense 22+, Support 19+ — so higher totals cannot sit in Recommended under lower-point BTT; target ~3–5 BTT per SSP role"
+    "v5.42: Defense/Support Unit S+ is score-ordered again (BBT kit gates off) — Defense 22+, Support 19+ — so higher totals cannot sit in Recommended under lower-point BTT; target ~3–5 BTT per SSP role",
+    "v5.43: Attack ATK bands use Cond: HP (full HP) AttackChangeRate as effective ATK (sheet × (1+%)); Cond: HP joins HP/Counter soft-cap on ability ATK% so it is not double-counted as a full-time kit",
+    "v5.44: Attack ATK bands stretch after Cond: HP effective ATK — 12400→+2, 13200→+3, 14000→+4 (cap) — so Cond: HP 20% kits outrank Cond: HP 10% at the same sheet ATK instead of all topping out at +3",
+    "v5.45: Cond: HP ATK bands use database SP/SSP Attack with_cond (unit detail totals) — drop sheet×(1+%) which double-counted other ATK%"
   ],
   "exclude_warships": true,
   "exclude_ur_units": true,
@@ -591,7 +594,7 @@
       62,
       94
     ],
-    "conditional_unreliable_name_regex": "(?i)\\(HP\\s*conditions\\)|\\(Action:\\s*Counter\\)|low\\s*hp|HP条件|反撃時|カウンター",
+    "conditional_unreliable_name_regex": "(?i)\\(Cond:\\s*HP\\)|\\(HP\\s*conditions\\)|\\(Action:\\s*Counter\\)|low\\s*hp|HP条件|反撃時|カウンター",
     "zero_types": [
       100,
       101,
@@ -1177,12 +1180,16 @@
           "points": 2
         },
         {
-          "max_exclusive": 12800,
+          "max_exclusive": 13200,
           "points": 3
         },
         {
+          "max_exclusive": 14000,
+          "points": 4
+        },
+        {
           "max_exclusive": null,
-          "points": 3
+          "points": 4
         }
       ],
       "Defense": [
@@ -2313,7 +2320,7 @@
   },
   "transform_stat_override_unit_ids": [],
   "scoring_guide": {
-    "version": "5.42",
+    "version": "5.45",
     "title": "How Investment Guide scoring works",
     "intro": "Point-sum shortlist for SP Conversion / SSP Conversion investment on Units and Characters (Attack Type / Defense Type / Support Type). Units have separate SP and SSP boards; Characters use SP only. Criteria favor practical sortie tools (MAP Weapon, mobility follow-ups, weapon power) and a deep affinity Character pool over a single linked recommend. Minor Attack Type stats (HP, SSP EN) are upside-only — no floor punishment.",
     "overrides": [

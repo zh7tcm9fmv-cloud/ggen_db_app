@@ -71,6 +71,63 @@ def band_points(bands: list, value: float | int) -> int:
     return 0
 
 
+# Cond: HP / HP条件 = full-HP gate in masters (EN: "When HP is full, increase own ATK…").
+_COND_HP_ATK_NAME_RE = re.compile(
+    r"(?i)\(Cond:\s*HP\)|\(HP\s*conditions?\)|HP条件"
+)
+
+
+def cond_hp_atk_rate_pct(ability_effects: list[dict] | None) -> int:
+    """Best Cond: HP AttackChangeRate % (TraitType 7) from unit ability effects."""
+    best = 0
+    for eff in ability_effects or []:
+        if int(eff.get("trait_type_index") or 0) != 7:
+            continue
+        if not eff.get("has_active_cond"):
+            continue
+        name = str(eff.get("ability_name") or "")
+        if not _COND_HP_ATK_NAME_RE.search(name):
+            continue
+        try:
+            best = max(best, abs(int(eff.get("trait_value") or 0)))
+        except (TypeError, ValueError):
+            continue
+    return int(best or 0)
+
+
+def effective_atk_for_bands(features: dict) -> tuple[float, dict]:
+    """
+    Attack ATK banding: when Cond: HP is present, use database SP/SSP Attack with
+    conditions on (`_unit_lb_row_to_api(..., include_conditional=True)` → ATK_with_cond).
+    Do not re-multiply sheet ATK by Cond: HP % — that double-counts other ATK% already
+    baked into no_cond / with_cond totals.
+    """
+    try:
+        sheet = float(features.get("ATK") or 0)
+    except (TypeError, ValueError):
+        sheet = 0.0
+    try:
+        with_cond = float(features.get("ATK_with_cond") or 0)
+    except (TypeError, ValueError):
+        with_cond = 0.0
+    pct = 0
+    try:
+        pct = int(features.get("cond_hp_atk_pct") or 0)
+    except (TypeError, ValueError):
+        pct = 0
+    if pct <= 0:
+        pct = cond_hp_atk_rate_pct(features.get("ability_effects"))
+    if pct > 0 and with_cond > 0:
+        return with_cond, {
+            "sheet_atk": int(sheet),
+            "cond_hp_atk_pct": pct,
+            "db_with_cond_atk": int(with_cond),
+            "effective_atk": int(with_cond),
+            "source": "unit_lb_with_cond",
+        }
+    return sheet, {}
+
+
 def tag_count_points(rules: dict, n: int) -> int:
     n = int(n or 0)
     for row in rules.get("tag_points") or []:
@@ -2928,6 +2985,12 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
 
     for key, feat_key in (("HP", "HP"), ("ATK", "ATK"), ("DEF", "DEF"), ("MOB", "MOB")):
         bands = ((rules.get("stat_bands") or {}).get(key) or {}).get(role) or []
+        if key == "ATK":
+            atk_val, atk_meta = effective_atk_for_bands(features)
+            breakdown["atk"] = band_points(bands, atk_val)
+            if atk_meta:
+                meta["atk_band_effective"] = atk_meta
+            continue
         breakdown[key.lower()] = band_points(bands, features.get(feat_key) or 0)
 
     # EN: SSP Attack upside-only (SP and non-Attack stay 0 unless bands say otherwise)
@@ -3831,11 +3894,14 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
     use_mode = mode
     if not has_sp and mode == "sp":
         use_mode = "ssp" if ri >= 5 else "normal"
+    api_mode = use_mode if use_mode in ("sp", "ssp", "normal") else "sp"
     try:
         block = A._unit_max_lb_stat_block(uid, info, A.unit_stat_map.get(uid, {}), ldc)
-        stats = A._unit_lb_row_to_api(block, use_mode if use_mode in ("sp", "ssp", "normal") else "sp", False) or {}
+        stats = A._unit_lb_row_to_api(block, api_mode, False) or {}
+        stats_cond = A._unit_lb_row_to_api(block, api_mode, True) or {}
     except Exception:
         stats = {}
+        stats_cond = {}
 
     # Transform: use better HP/DEF/ATK from alt form when it actually improves those stats.
     override_ids = set(str(x) for x in (rules.get("transform_stat_override_unit_ids") or []))
@@ -3864,9 +3930,25 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
     use_alt_stats = transform_alt_improves_combat_stats(stats, alt_stats, rules)
     if not use_alt_stats and uid in override_ids and alt_stats:
         use_alt_stats = True
+    atk_with_cond = int((stats_cond or {}).get("ATK") or 0)
     if use_alt_stats and alt_stats:
         stats = merge_better_combat_stats(stats, alt_stats, rules)
         transform_meta["used_alt_combat_stats"] = True
+        # Match combat-stat merge for Cond: HP banding — DB with_cond ATK from alt form.
+        try:
+            alt_id = str((transform_meta or {}).get("alt_id") or partner or "")
+            alt_info = A.unit_info_map.get(alt_id, {}) or {}
+            if alt_id and alt_info:
+                alt_block = A._unit_max_lb_stat_block(
+                    alt_id, alt_info, A.unit_stat_map.get(alt_id, {}), ldc
+                )
+                alt_cond = A._unit_lb_row_to_api(alt_block, api_mode, True) or {}
+                alt_atk_c = int(alt_cond.get("ATK") or 0)
+                if alt_atk_c > atk_with_cond:
+                    atk_with_cond = alt_atk_c
+                    transform_meta["used_alt_atk_with_cond"] = True
+        except Exception:
+            pass
 
     tags = []
     try:
@@ -3985,6 +4067,8 @@ def extract_unit_features(A, uid: str, mode: str = "sp", lc: str = "EN", rules: 
         "transform_meta": transform_meta,
         "ability_blobs": ability_blobs,
         "ability_effects": ability_effects,
+        "cond_hp_atk_pct": cond_hp_atk_rate_pct(ability_effects_full),
+        "ATK_with_cond": int(atk_with_cond or 0),
         "ability_kit": ability_kit,
         "series_advantage": series_advantage,
         "has_linked_pilot": has_linked,
@@ -4078,7 +4162,13 @@ def score_unit(
         "stats": {
             "HP": feats.get("HP"),
             "EN": feats.get("EN"),
-            "ATK": feats.get("ATK"),
+            # Cond: HP kits: show DB with_cond Attack (same value used for ATK bands).
+            "ATK": (
+                feats.get("ATK_with_cond")
+                if int(feats.get("cond_hp_atk_pct") or 0) > 0
+                and int(feats.get("ATK_with_cond") or 0) > 0
+                else feats.get("ATK")
+            ),
             "DEF": feats.get("DEF"),
             "MOB": feats.get("MOB"),
             "MOV": feats.get("MOV"),
@@ -4205,9 +4295,9 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "title": "Attack priorities",
             "applies": ["units"],
             "objective": True,
-            "summary": "Damage ceiling first (ATK + weapon power), then MOV/MAP. HP and SSP EN are upside-only — high is a bonus, low is not punished. Mobility (MOB — Evasion) is a soft secondary.",
+            "summary": "Damage ceiling first (ATK + weapon power), then MOV/MAP. ATK bands use database SP/SSP Attack with Cond: HP on (unit detail with_cond), not sheet×%. HP and SSP EN are upside-only — high is a bonus, low is not punished. Mobility (MOB — Evasion) is a soft secondary.",
             "rows": [
-                {"when": "Primary", "result": "ATK · weapon power · MOV"},
+                {"when": "Primary", "result": "ATK (DB with Cond: HP) · weapon power · MOV"},
                 {"when": "Upside only", "result": "HP · SSP EN (no floor penalty)"},
                 {"when": "Soft secondary", "result": "Mobility / MOB (lower ceiling than ATK)"},
                 {"when": "Great extras", "result": "MAP presence / dash / coverage · special defense kits"},
@@ -4857,6 +4947,9 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
         if role_name == "Attack":
             stat_summary = (
                 "Attack favors ATK ceiling over Mobility (MOB — Evasion). "
+                "When Cond: HP is present, ATK bands use the database SP/SSP Attack total "
+                "with conditions on (same as unit detail with_cond) — not sheet × Cond: HP %. "
+                "Top bands stretch to +4 so Cond: HP 20% kits outrank Cond: HP 10% at similar sheet ATK. "
                 "HP is upside-only (no floor penalty). DEF not scored. "
                 "EN scores on the SSP board only (upside-only). MOB soft-capped."
             )
@@ -5075,14 +5168,15 @@ def build_public_criteria(rules: dict | None = None) -> list[dict]:
             "summary": (
                 "Scored from ability and skill effect data in the game masters. "
                 "Permanent DEF/HP/MOV with no condition scores 0; Attack Type gets light credit for unconditional ATK%. "
-                "HP- or Counter-gated ATK is soft-capped. Advantage: series abilities do not score here. "
+                "Cond: HP / Counter-gated ATK% is soft-capped on the ability axis; Cond: HP kits use database with_cond Attack for ATK stat bands. "
+                "Advantage: series abilities do not score here. "
                 "Strong % effects use size bands (for example damage dealt 10/20/30%+). "
                 f"Unit Ability score caps at +3; Character kit caps at +{int(rules.get('pilot_kit_cap', 14))}."
             ),
             "rows": [
                 {"when": "Role-relevant combat effects", "result": "Points by effect (+ size bands)"},
                 {"when": "Permanent flat/rate stats, no condition", "result": "0 (Attack unconditional ATK% +1)"},
-                {"when": "HP / Counter gated ATK%", "result": "Soft-capped"},
+                {"when": "HP / Counter gated ATK%", "result": "Soft-capped on abilities; Cond: HP ATK bands use DB with_cond"},
                 {"when": "Advantage: series ability", "result": "0 here (in-series / tag filter only)"},
                 {"when": "MAP ammo effects", "result": "0 here (counted under MAP)"},
                 {"when": "Physical/beam weapon range-down on hit", "result": "Rare debuff +1"},
