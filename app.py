@@ -250,6 +250,8 @@ ETERNAL_STAGE_LOCK_RESPECT_LR_UNLOCK = _eslr not in ('0', 'false', 'no', 'off')
 # Eternal Road: schedule lock uses m_stage.json ScheduleId → m_schedule.json StartDatetime (epoch ms; same master values as Latest Release / JST display).
 # Before that start time, the stage is gated. Set ETERNAL_STAGE_PASSWORD so users can unlock early for the session after entering the password.
 ETERNAL_STAGE_PASSWORD = (os.environ.get('ETERNAL_STAGE_PASSWORD') or '').strip()
+# Special/event stages omitted from browse until ETERNAL_STAGE_PASSWORD (or LR unlock when enabled).
+PASSWORD_GATED_STAGE_IDS = frozenset({'99000102'})
 # NPC visibility lock (separate from Latest Release): set NPC_VIEW_PASSWORD to require unlock before NPC rows/details are shown.
 NPC_VIEW_PASSWORD = (os.environ.get('NPC_VIEW_PASSWORD') or '').strip()
 # JP mode lock (separate): set JP_MODE_PASSWORD to require unlock before using JP/JA language mode.
@@ -23865,6 +23867,21 @@ def eternal_stage_content_visible(stage_id, est):
     return False
 
 
+def stage_is_password_gated(stage_id):
+    return normalize_id(stage_id) in PASSWORD_GATED_STAGE_IDS
+
+
+def password_gated_stage_content_visible(stage_id):
+    """True when a password-gated stage may show full detail / appear in browse."""
+    if not stage_is_password_gated(stage_id):
+        return True
+    if ETERNAL_STAGE_PASSWORD and session.get('eternal_stages_unlocked') is True:
+        return True
+    if ETERNAL_STAGE_LOCK_RESPECT_LR_UNLOCK and LATEST_RELEASE_PASSWORD and session.get('lr_unlocked') is True:
+        return True
+    return False
+
+
 def eternal_stage_session_cache_key_fragment():
     """Vary list/detail caches when eternal stage password session toggles."""
     if not ETERNAL_STAGE_PASSWORD:
@@ -24146,10 +24163,12 @@ def resolve_m_schedule_release_fields(schedule_id):
     sched = normalize_id(schedule_id, '0')
     start_label = end_label = duration_label = '-'
     start_ms = end_ms = None
+    has_schedule_release = False
     if sched not in ('0', '9999990001'):
         sm = schedule_start_ms_by_id.get(sched, 0)
         em = schedule_end_ms_by_id.get(sched, 0)
         if sm > 0:
+            has_schedule_release = True
             start_ms = sm
             start_label = format_start_datetime_jst(sm) or '-'
         if em > 0:
@@ -24157,7 +24176,7 @@ def resolve_m_schedule_release_fields(schedule_id):
             end_label = format_start_datetime_jst(em) or '-'
         if sm > 0 and em > 0 and em >= sm:
             if _jst_year_from_epoch_ms(em) == 2099:
-                duration_label = '-'
+                duration_label = ''
             else:
                 duration_label = format_banner_duration_ms(em - sm)
         elif sm > 0 and (em <= 0 or em < sm):
@@ -24169,6 +24188,7 @@ def resolve_m_schedule_release_fields(schedule_id):
         'start_label': start_label,
         'end_label': end_label,
         'duration_label': duration_label,
+        'has_schedule_release': has_schedule_release,
     }
 
 
@@ -26499,6 +26519,8 @@ def list_stages():
                 })
         elif cat == 'special_stage':
             for sid, ses in (special_event_stage_map or {}).items():
+                if stage_is_password_gated(sid) and not password_gated_stage_content_visible(sid):
+                    continue
                 sname = resolve_special_event_stage_name(ld, ses.get('stage_name_lang_id', '0'), sid)
                 pri = safe_int(ses.get('priority'), 0)
                 grp = safe_int(ses.get('special_event_group_id'), 0)
@@ -26728,7 +26750,7 @@ def get_stage(stage_id):
                 'display_unit_id': '0',
                 'stage_difficulty_type_index': safe_int(mmeta.get('stage_difficulty_type_index'), 1),
             }
-            vis = True
+            vis = password_gated_stage_content_visible(stage_id)
         elif is_tower_event_stage:
             stage_master_id = normalize_id(tes.get('stage_id'))
             mmeta = map_stage_meta_by_stage_id.get(stage_master_id, {}) if map_stage_meta_by_stage_id else {}
@@ -26781,7 +26803,7 @@ def get_stage(stage_id):
                         'ch' if is_challenge_stage else (
                             'ce' if is_chronicle_stage else 'er')))))
         # mstage18: chronicle/E-sim first-clear from node content FirstClearRewardSetId.
-        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage26"
+        ck = f"stage_{stage_id}_{stage_master_id}_{lc}_{lr_schedule_cache_key_fragment()}{eternal_stage_list_cache_time_fragment()}_{eternal_stage_session_cache_key_fragment()}_esv{'1' if vis else '0'}_{ck_cat}_mstage27"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, private=True, max_age=3600, convert_images=True)
@@ -27189,6 +27211,7 @@ def get_stage(stage_id):
             'start_label': _sched_release['start_label'],
             'end_label': _sched_release['end_label'],
             'duration_label': _sched_release['duration_label'],
+            'has_schedule_release': _sched_release['has_schedule_release'],
             'victory_conditions': vc, 'defeat_conditions': dc,
             'branch_victory_conditions': bvc, 'map_meta': map_meta,
             'sortie_groups': sg, 'map_data': md, 'npc_details': nd, 'lang': lc,
