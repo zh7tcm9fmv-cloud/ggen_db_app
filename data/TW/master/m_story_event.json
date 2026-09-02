@@ -402,9 +402,9 @@
     "CarddassThumbnailResourceId": "",
     "StoryMemoryBgResourceId": "story_event_top_bg_200011",
     "StageSelectBackgroundEffectResourceId": "story_event_stage_select_effect_200011",
-    "TopBgmResourceId": "bgm_0130_0008",
-    "StageSelectBgmResourceId": "bgm_0130_0002",
-    "BossBattleBgmResourceId": "bgm_0130_0006"
+    "TopBgmResourceId": "bgm_0000_0142",
+    "StageSelectBgmResourceId": "bgm_0000_0143",
+    "BossBattleBgmResourceId": "bgm_0000_0144"
   },
   {
     "Id": 200012,
@@ -439,9 +439,9 @@
     "CarddassThumbnailResourceId": "",
     "StoryMemoryBgResourceId": "story_event_top_bg_200012",
     "StageSelectBackgroundEffectResourceId": "story_event_stage_select_effect_200012",
-    "TopBgmResourceId": "bgm_0330_0002",
-    "StageSelectBgmResourceId": "bgm_0330_0001",
-    "BossBattleBgmResourceId": "bgm_0330_0006"
+    "TopBgmResourceId": "bgm_0000_0142",
+    "StageSelectBgmResourceId": "bgm_0000_0143",
+    "BossBattleBgmResourceId": "bgm_0000_0144"
   },
   {
     "Id": 200013,

@@ -16350,6 +16350,21 @@
     "AiAttackDecisionTypeIndex": 0
   },
   {
+    "MapStageId": 990000101502000000,
+    "MapNpcAiTypeIndex": 1,
+    "MapNpcAiPresetId": 0,
+    "AiAttackConditionTypeIndex": 0,
+    "AiAttackConditionParameterValue": "",
+    "AiAttackRuleTypeIndex": 1,
+    "AiAttackRuleParameterTypeIndex": 0,
+    "AiAttackRuleParameterValue": "",
+    "AiCounterRuleTypeIndex": 1,
+    "AiSupportActionRuleTypeIndex": 0,
+    "AiSupportActionRuleParameterValue": "",
+    "AiUseSkillTypeIndex": 1,
+    "AiAttackDecisionTypeIndex": 0
+  },
+  {
     "MapStageId": 999900100102000000,
     "MapNpcAiTypeIndex": 1,
     "MapNpcAiPresetId": 0,

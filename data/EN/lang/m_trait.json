@@ -19048,6 +19048,22 @@
     "value": "When HP is 0% or below,\nrestore own HP by 5%. (1 time(s))."
   },
   {
+    "id": 141200000612410101,
+    "value": "Increase DEF by 100%."
+  },
+  {
+    "id": 141200000612420101,
+    "value": "Increase DEF by 100%\nfor squad units piloted by Ramba Ral."
+  },
+  {
+    "id": 141200000612430101,
+    "value": "Increase DEF by 100%\nfor squad units piloted by Ramba Ral."
+  },
+  {
+    "id": 141200000612440101,
+    "value": "Increase DEF by 100%\nfor squad units piloted by Ramba Ral."
+  },
+  {
     "id": 141200000699000101,
     "value": "Increase ATK by 100%\nfor squad units piloted by McGillis Fareed"
   },

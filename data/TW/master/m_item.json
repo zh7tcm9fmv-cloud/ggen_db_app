@@ -21882,6 +21882,20 @@
     "IsPrecious": false
   },
   {
+    "Id": 240000021137,
+    "ResourceId": "spm_0004",
+    "ItemTypeIndex": 23,
+    "RarityTypeIndex": 5,
+    "NameLanguageId": 150100240000021137,
+    "DescriptionLanguageId": 150200240000021137,
+    "MaxCapacity": 9999,
+    "ScheduleId": 2609102401,
+    "EffectValue": 0,
+    "IsHiddenIfEmpty": false,
+    "SortOrder": 120021137,
+    "IsPrecious": false
+  },
+  {
     "Id": 240000022100,
     "ResourceId": "",
     "ItemTypeIndex": 31,

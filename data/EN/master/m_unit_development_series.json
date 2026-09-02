@@ -14,10 +14,10 @@
     "DefaultBackgroundResourceId": "",
     "CompleteBackgroundResourceId": "",
     "LogoResourceId": "series_0130",
-    "IsVisibleTop": false,
+    "IsVisibleTop": true,
     "ScenarioStageSeriesId": 130,
-    "ScheduleId": 2603209901,
-    "SeriesId": 0
+    "ScheduleId": 2609109901,
+    "SeriesId": 130
   },
   {
     "Id": 170,
@@ -54,10 +54,10 @@
     "DefaultBackgroundResourceId": "",
     "CompleteBackgroundResourceId": "",
     "LogoResourceId": "series_0330",
-    "IsVisibleTop": false,
+    "IsVisibleTop": true,
     "ScenarioStageSeriesId": 330,
-    "ScheduleId": 2605209901,
-    "SeriesId": 0
+    "ScheduleId": 2609109902,
+    "SeriesId": 330
   },
   {
     "Id": 600,

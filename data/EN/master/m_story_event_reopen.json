@@ -33,5 +33,15 @@
     "StoryEventId": 200010,
     "ScheduleId": 2607109903,
     "DailyBossSkipCountLimit": 0
+  },
+  {
+    "StoryEventId": 200011,
+    "ScheduleId": 2609109901,
+    "DailyBossSkipCountLimit": 0
+  },
+  {
+    "StoryEventId": 200012,
+    "ScheduleId": 2609109902,
+    "DailyBossSkipCountLimit": 0
   }
 ]

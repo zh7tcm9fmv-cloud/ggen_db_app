@@ -26,5 +26,13 @@
   {
     "StoryEventId": 200010,
     "Count": 1100
+  },
+  {
+    "StoryEventId": 200011,
+    "Count": 1150
+  },
+  {
+    "StoryEventId": 200012,
+    "Count": 1100
   }
 ]

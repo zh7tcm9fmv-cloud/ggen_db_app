@@ -6248,6 +6248,10 @@
     "value": "ZAFT-Tag SP Conversion Chips"
   },
   {
+    "id": 150100240000021137,
+    "value": "Gouf-Tag SP Conversion Chips"
+  },
+  {
     "id": 150100240000022100,
     "value": "Mobile Suit Gundam Wing Series SP Conversion Badge"
   },
@@ -12633,6 +12637,10 @@
   },
   {
     "id": 150200240000021021,
+    "value": "Usable on non-UR units bearing the above tag.\nAn SP conversion item that boosts stats and raises Max Level to 100."
+  },
+  {
+    "id": 150200240000021137,
     "value": "Usable on non-UR units bearing the above tag.\nAn SP conversion item that boosts stats and raises Max Level to 100."
   },
   {

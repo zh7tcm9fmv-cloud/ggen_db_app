@@ -52,6 +52,10 @@
     "value": "Gundam Ace: 25th Anniversary Special Stage"
   },
   {
+    "id": 130100000099000115,
+    "value": "Gouf Day"
+  },
+  {
     "id": 310200000099000101,
     "value": "September 2nd is Gouf Day!\nA special stage that can only be attempted during the event."
   },
@@ -102,5 +106,9 @@
   {
     "id": 310200000099000114,
     "value": "You can obtain Stage Challenge Tickets needed to play by using Promo Codes."
+  },
+  {
+    "id": 310200000099000115,
+    "value": "September 2nd is Gouf Day!\nA special stage that can only be attempted during the event."
   }
 ]

@@ -1773,7 +1773,7 @@
   },
   {
     "id": 140100000101220101,
-    "value": "(Cond: Vigor) Physical Weapons Max Range Up LV 1"
+    "value": "(Cond: Vigor) Physical Weapon Max Range Up LV 1"
   },
   {
     "id": 140100000101230100,
@@ -14350,6 +14350,22 @@
   {
     "id": 140100000612390101,
     "value": "(Cond: HP) HP Restoration (Single Unit)"
+  },
+  {
+    "id": 140100000612410101,
+    "value": "Increased DEF"
+  },
+  {
+    "id": 140100000612420101,
+    "value": "(Cond: Character) Increased DEF"
+  },
+  {
+    "id": 140100000612430101,
+    "value": "(Cond: Character) Increased DEF"
+  },
+  {
+    "id": 140100000612440101,
+    "value": "(Cond: Character) Increased DEF"
   },
   {
     "id": 140100000699000101,
