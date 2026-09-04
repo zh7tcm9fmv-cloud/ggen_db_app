@@ -8592,6 +8592,21 @@
     "ip_20dbaf40a8b93855648da591a889f9b6:character:1330000502:sp": "up",
     "ip_20dbaf40a8b93855648da591a889f9b6:character:1210001600:sp": "up",
     "ip_20dbaf40a8b93855648da591a889f9b6:character:1230001300:sp": "up",
+    "ip_20dbaf40a8b93855648da591a889f9b6:unit:1300004200:ssp": "up",
+    "ip_20dbaf40a8b93855648da591a889f9b6:unit:1370007000:ssp": "up",
+    "ip_20dbaf40a8b93855648da591a889f9b6:unit:1370006600:ssp": "up",
+    "ip_20dbaf40a8b93855648da591a889f9b6:unit:1370000100:ssp": "up",
+    "ip_20dbaf40a8b93855648da591a889f9b6:unit:1200000300:ssp": "up",
+    "ip_20dbaf40a8b93855648da591a889f9b6:unit:1300004400:ssp": "up",
+    "ip_20dbaf40a8b93855648da591a889f9b6:unit:1330001200:ssp": "up",
+    "ip_20dbaf40a8b93855648da591a889f9b6:unit:1370001500:ssp": "up",
+    "ip_20dbaf40a8b93855648da591a889f9b6:unit:1330001400:ssp": "up",
+    "ip_20dbaf40a8b93855648da591a889f9b6:unit:1336000400:ssp": "up",
+    "ip_20dbaf40a8b93855648da591a889f9b6:unit:1095004500:ssp": "up",
+    "ip_20dbaf40a8b93855648da591a889f9b6:unit:1125000100:ssp": "up",
+    "ip_20dbaf40a8b93855648da591a889f9b6:unit:1095000100:ssp": "up",
+    "ip_20dbaf40a8b93855648da591a889f9b6:unit:1009000700:ssp": "up",
+    "ip_20dbaf40a8b93855648da591a889f9b6:unit:1095000300:ssp": "up",
     "ip_c22cd314a3ffd5b82f17b61a1167e418:unit:1370005900:ssp": "up",
     "ip_38eea7191c4fb69acb8b3d87101ed07e:unit:1850002360:sp": "up"
   },
@@ -9681,7 +9696,7 @@
       "down": 1
     },
     "unit:1095000300:ssp": {
-      "up": 8,
+      "up": 9,
       "down": 2
     },
     "unit:1501003400:sp": {
@@ -11413,7 +11428,7 @@
       "down": 1
     },
     "unit:1300004400:ssp": {
-      "up": 5,
+      "up": 6,
       "down": 0
     },
     "character:1001005000:sp": {
@@ -11517,7 +11532,7 @@
       "down": 0
     },
     "unit:1095000100:ssp": {
-      "up": 2,
+      "up": 3,
       "down": 1
     },
     "character:1370000201:sp": {
@@ -11557,7 +11572,7 @@
       "down": 1
     },
     "unit:1330001200:ssp": {
-      "up": 3,
+      "up": 4,
       "down": 0
     },
     "character:1430002603:sp": {
@@ -11873,7 +11888,7 @@
       "down": 0
     },
     "unit:1009000700:ssp": {
-      "up": 8,
+      "up": 9,
       "down": 0
     },
     "unit:1001002800:ssp": {
@@ -12229,7 +12244,7 @@
       "down": 2
     },
     "unit:1300004200:ssp": {
-      "up": 6,
+      "up": 7,
       "down": 2
     },
     "unit:1125000200:ssp": {
@@ -12997,7 +13012,7 @@
       "down": 0
     },
     "unit:1125000100:ssp": {
-      "up": 3,
+      "up": 4,
       "down": 0
     },
     "unit:1110001000:ssp": {
@@ -13141,19 +13156,19 @@
       "down": 1
     },
     "unit:1200000300:ssp": {
-      "up": 2,
+      "up": 3,
       "down": 0
     },
     "unit:1330001400:ssp": {
-      "up": 2,
+      "up": 3,
       "down": 0
     },
     "unit:1370006600:ssp": {
-      "up": 2,
+      "up": 3,
       "down": 1
     },
     "unit:1370001500:ssp": {
-      "up": 2,
+      "up": 3,
       "down": 0
     },
     "unit:1370001400:ssp": {
@@ -13165,7 +13180,7 @@
       "down": 0
     },
     "unit:1370000100:ssp": {
-      "up": 3,
+      "up": 4,
       "down": 2
     },
     "unit:1430000800:ssp": {
@@ -13265,7 +13280,7 @@
       "down": 0
     },
     "unit:1336000400:ssp": {
-      "up": 3,
+      "up": 4,
       "down": 0
     },
     "unit:1200005100:ssp": {
@@ -13633,7 +13648,7 @@
       "down": 0
     },
     "unit:1370007000:ssp": {
-      "up": 3,
+      "up": 4,
       "down": 0
     },
     "unit:1095002910:sp": {
@@ -13645,7 +13660,7 @@
       "down": 0
     },
     "unit:1095004500:ssp": {
-      "up": 2,
+      "up": 3,
       "down": 0
     },
     "unit:1162001600:sp": {
