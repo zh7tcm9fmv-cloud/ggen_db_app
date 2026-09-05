@@ -6313,10 +6313,8 @@
     "ip_6a4aa6988940359b896100d7b3c5a430:unit:1850002000:sp": "up",
     "ip_65b6aa1cedca31b2dd975e5ec87d7060:unit:1095004500:sp": "up",
     "ip_77701acb956538dd009184ec25c63d2e:unit:1370005900:sp": "down",
-    "ip_77701acb956538dd009184ec25c63d2e:unit:1144000500:sp": "up",
     "ip_77701acb956538dd009184ec25c63d2e:unit:1007001160:sp": "down",
     "ip_77701acb956538dd009184ec25c63d2e:unit:1230005300:sp": "up",
-    "ip_77701acb956538dd009184ec25c63d2e:unit:1330006700:sp": "up",
     "ip_77701acb956538dd009184ec25c63d2e:unit:1031001300:sp": "down",
     "ip_77701acb956538dd009184ec25c63d2e:unit:1219000600:sp": "up",
     "ip_77701acb956538dd009184ec25c63d2e:unit:1155000400:sp": "down",
@@ -8653,6 +8651,12 @@
     "ip_33b15c48ecc194a0e987ef3d127c0936:unit:1031002900:ssp": "up",
     "ip_87d72fbc643e76c9904051e80d121865:unit:1370005900:sp": "up",
     "ip_30648487f0ba794e8baf77b75d1464e0:unit:1125004800:sp": "up",
+    "ip_77701acb956538dd009184ec25c63d2e:unit:1850001400:sp": "down",
+    "ip_77701acb956538dd009184ec25c63d2e:unit:1370011100:sp": "down",
+    "ip_77701acb956538dd009184ec25c63d2e:unit:1430003400:sp": "down",
+    "ip_77701acb956538dd009184ec25c63d2e:unit:1370008800:sp": "down",
+    "ip_77701acb956538dd009184ec25c63d2e:unit:1144000500:sp": "up",
+    "ip_77701acb956538dd009184ec25c63d2e:unit:1330006700:sp": "up",
     "ip_c22cd314a3ffd5b82f17b61a1167e418:unit:1370005900:ssp": "up",
     "ip_38eea7191c4fb69acb8b3d87101ed07e:unit:1850002360:sp": "up"
   },
@@ -10335,7 +10339,7 @@
     },
     "unit:1370008800:sp": {
       "up": 24,
-      "down": 9
+      "down": 10
     },
     "character:1370000202:sp": {
       "up": 4,
@@ -10787,7 +10791,7 @@
     },
     "unit:1430003400:sp": {
       "up": 26,
-      "down": 5
+      "down": 6
     },
     "unit:1085000210:ssp": {
       "up": 3,
@@ -11155,7 +11159,7 @@
     },
     "unit:1370011100:sp": {
       "up": 14,
-      "down": 9
+      "down": 10
     },
     "unit:1400004000:ssp": {
       "up": 3,
@@ -14367,7 +14371,7 @@
     },
     "unit:1850001400:sp": {
       "up": 11,
-      "down": 3
+      "down": 4
     },
     "unit:1850001400:ssp": {
       "up": 13,
