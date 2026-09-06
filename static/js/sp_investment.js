@@ -1142,7 +1142,8 @@
   let mapOnly = false;
   let hasSpOnly = true;
   let showUlt = false;
-  let spiCpActive = false;
+  // /ip rates characters at full potential (affinity / Cond met) — same as CP on.
+  let spiCpActive = true;
   let _spiDbSelectedId = '';
   let sourceFilters = [];
   let sourceCombine = 'or';
@@ -2759,17 +2760,16 @@
   }
 
   function spiCharacterChanceSupportState(row, condOn) {
-    const payload = { role: row && row.role, abilities: (row && row.abilities) || [] };
-    if (typeof getCharacterChanceSupportState === 'function') {
-      return getCharacterChanceSupportState(payload, condOn);
-    }
+    // Count from slim ability DETAIL text on the SPI row (same +1 rules as character
+    // detail). Do not call app.js getCharacterChanceSupportState — that path expects
+    // full detail condition_groups and can miss Cond Series SA +1 on lean /ip payloads.
     let chanceUn = 0;
     let chanceCond = 0;
     let defUn = 0;
     let defCond = 0;
     let atkUn = 0;
     let atkCond = 0;
-    (payload.abilities || []).forEach((ab) => {
+    ((row && row.abilities) || []).forEach((ab) => {
       const ds = Array.isArray(ab && ab.details) ? ab.details : [];
       ds.forEach((detail) => {
         let text = '';

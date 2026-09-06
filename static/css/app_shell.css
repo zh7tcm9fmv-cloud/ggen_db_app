@@ -2449,7 +2449,8 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 .dc-stat-mini-bonus{font-size:11px;color:var(--accent-green);font-weight:700;margin-top:2px;line-height:1.1;font-variant-numeric:tabular-nums}
 .dc-pilot-bonus-list{display:flex;flex-direction:column;gap:6px;line-height:1.5}
 .dc-pilot-bonus-row--unit-combat-stack{flex-direction:column;align-items:stretch;gap:6px;cursor:default;pointer-events:auto;padding-left:2px}
-.dc-pilot-bonus-row--unit-combat-stack .dc-unit-cond-stack-row{width:100%;max-width:100%;margin-top:0}
+.dc-pilot-bonus-row--unit-combat-stack .dc-unit-cond-stack-row,
+.dc-pilot-bonus-row--unit-combat-stack .dc-unit-hp-tier-row{width:min(100%,140px);max-width:140px;margin-top:0;justify-content:flex-start}
 .dc-squad-buff-sources{display:flex;flex-direction:column;gap:8px}
 .dc-squad-buff-src{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:8px;border:1px solid var(--border-color);background:rgba(26,34,54,.55);box-sizing:border-box;font-family:inherit;font-size:12px;line-height:1.45;color:var(--text-primary)}
 .dc-squad-buff-src--hi{border-color:rgba(34,211,238,.32);background:rgba(34,211,238,.07)}
@@ -2668,7 +2669,7 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 #unitBody tr.list-detail-active:hover td{background:var(--bg-card-hover)!important}
 .list-grid-card-thumb{width:100%;display:flex;justify-content:center;align-items:center;min-height:0}
 .list-grid-card-thumb .list-thumb-composite{margin:0 auto}
-#modGrid .list-grid-card--mod .list-grid-card-thumb{width:auto;max-width:48px;flex:0 0 auto}
+#modGrid .list-grid-card--mod .list-grid-card-thumb{width:auto;max-width:60px;flex:0 0 auto}
 .list-grid-card-body{width:100%;min-width:0;display:flex;flex-direction:column;gap:6px}
 .list-grid-card-name{font-size:14px;font-weight:700;color:var(--text-primary);line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .list-grid-card-stats{font-size:12px;color:var(--text-secondary);line-height:1.45;word-break:break-word}

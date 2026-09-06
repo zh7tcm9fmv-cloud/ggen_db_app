@@ -487,7 +487,7 @@ function tableStatMobLabel(statKey){const k=String(statKey||'');if(S.lang==='TW'
 function unitTableStatHeaderLabel(k){const key=String(k||'');if(S.lang==='TW'||S.lang==='HK'||S.lang==='JA'||S.lang==='JP'){const m={HP:'HP',EN:'EN',ATK:'攻',DEF:'守',MOB:'機',MOV:'移'};return m[key]||key}return t('col_'+key.toLowerCase())}
 function tableListThumbSize(){try{if(typeof matchMedia!=='undefined'&&matchMedia('(max-width:1024px)').matches)return 48}catch(_){}return 72}
 function gridListThumbSize(){try{if(browseListUsesMobileTableChrome())return 64}catch(_){}return 108}
-function modBrowseThumbSize(isGrid){try{if(typeof matchMedia!=='undefined'&&matchMedia('(max-width:1024px)').matches)return 40}catch(_){}return isGrid?48:40}
+function modBrowseThumbSize(isGrid){try{if(typeof matchMedia!=='undefined'&&matchMedia('(max-width:1024px)').matches)return 50}catch(_){}return isGrid?60:50}
 function stageNoLabel(row){
 const cat=row&&row.stage_category;
 const src=String((S.stages&&S.stages.source)||'eternal');
@@ -11270,6 +11270,18 @@ const mainLab=`MS Attack +${cc.per|0}% per combat`;
 const detail=cc.ability_name?String(cc.ability_name):'';
 return`<div class="dc-pilot-bonus-row dc-pilot-bonus-row--unit-combat-stack" onclick="event.stopPropagation()"><span class="dc-pilot-bonus-line"><span class="dc-pilot-bonus-main">${esc(mainLab)} <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--incl">(Included in unit stats)</span></span>${detail?`<span class="dc-pilot-bonus-detail">${esc(detail)}</span>`:''}</span>${slider}</div>`;
 }
+function _dcUnitHpAtkPassiveBonusRowHtml(hp){
+if(!S.dc.unitCondPassive||!hp||!hp.tiers||hp.tiers.length<2)return'';
+const slider=_dcUnitHpAtkSliderHtml(hp);
+if(!slider)return'';
+const mainLab=t('unit_hp_atk_tier_label')||'HP ATK tier';
+const detail=hp.ability_name?String(hp.ability_name):'';
+return`<div class="dc-pilot-bonus-row dc-pilot-bonus-row--unit-combat-stack" onclick="event.stopPropagation()"><span class="dc-pilot-bonus-line"><span class="dc-pilot-bonus-main">${esc(mainLab)} <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--incl">(Included in unit stats)</span></span>${detail?`<span class="dc-pilot-bonus-detail">${esc(detail)}</span>`:''}</span>${slider}</div>`;
+}
+function _dcUnitCondPassiveBonusRowsHtml(ud){
+if(!ud||!S.dc.unitCondPassive)return'';
+return _dcUnitCombatStackPassiveBonusRowHtml(ud.unit_combat_count_atk)+_dcUnitHpAtkPassiveBonusRowHtml(ud.unit_hp_atk_tiers);
+}
 function _dcApplyUnitCondStatAdjustments(stats,statsNoCond,ud,cpOn){
 if(!cpOn||!ud||!stats||!stats.length)return stats;
 const cc=ud.unit_combat_count_atk;
@@ -12115,7 +12127,7 @@ let unitCpToggle='';
 if(ud.has_cond_stats||ud.has_cond_weapon_range){
 const vGated=!!S.dc._vigorCondThreshold;
 const vHint=vGated?` title="${escAttr('Default: on when Vigor is Max or Supercharged (or higher than text if ability requires Supercharged only). Changing vigor updates the default; you can still toggle for comparisons.')}"`:'';
-{const _cpL=t('conditional_passive');const unitCondSliders=_dcUnitCombatStackSliderHtml(ud.unit_combat_count_atk)+_dcUnitHpAtkSliderHtml(ud.unit_hp_atk_tiers);unitCpToggle=`<div class="dc-picked-controls"${vHint}><div class="conditional-toggle dc-dc-cond-toggle"><div class="toggle-clickable${S.dc.unitCondPassive?' active':''}" role="button" tabindex="0" title="${escAttr(_cpL)}" aria-label="${escAttr(_cpL)}" onclick="toggleDcUnitCondPassive()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDcUnitCondPassive()}"><span class="toggle-label toggle-label--cp-chip">${_dcCpChipSpanHtml(!!S.dc.unitCondPassive)}</span></div></div>${unitCondSliders}</div>`;}
+{const _cpL=t('conditional_passive');unitCpToggle=`<div class="dc-picked-controls"${vHint}><div class="conditional-toggle dc-dc-cond-toggle"><div class="toggle-clickable${S.dc.unitCondPassive?' active':''}" role="button" tabindex="0" title="${escAttr(_cpL)}" aria-label="${escAttr(_cpL)}" onclick="toggleDcUnitCondPassive()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDcUnitCondPassive()}"><span class="toggle-label toggle-label--cp-chip">${_dcCpChipSpanHtml(!!S.dc.unitCondPassive)}</span></div></div></div>`;}
 }
 const hasSp=ud.has_sp!==undefined?ud.has_sp:(parseInt(ud.rarity_id||'5')<=4);
 let unitStatModeHtml='';
@@ -12223,6 +12235,10 @@ const atkValBlue=atkSpanClass==='has-bonus-val'?' has-bonus-val':'';
 const defValBlue=spDefCls==='has-bonus-val'?' has-bonus-val':'';
 const mobValBlue=spMobCls==='has-bonus-val'?' has-bonus-val':'';
 sa.innerHTML=`<div class="dc-section-label">${t('dc_unit_stats')}</div><div class="${uGridCls}"><div class="stat-card${_uCpCell('HP')}"><div class="stat-card-label">HP</div><div class="stat-card-value${hpValBlue}"><span${spHp}>${fmtN(hpS)}</span>${hpInlineBonus}${_uCpBonusHtml('HP')}${msEnh.hpHtml}</div></div><div class="stat-card${_uCpCell('Attack')}"><div class="stat-card-label">${t('col_atk')}</div><div class="stat-card-value${atkValBlue}">${atkMainSpan}${_uCpBonusHtml('Attack')}${msEnh.atkHtml}${atkExSub}</div></div><div class="stat-card${_uCpCell('Defense')}"><div class="stat-card-label">${t('col_def')}</div><div class="stat-card-value${defValBlue}"><span${spDefFinal}>${fmtN(defShowAdv)}</span>${defInlineBonus}${_uCpBonusHtml('Defense')}${msEnh.defHtml}</div></div><div class="stat-card${_uCpCell('Mobility')}"><div class="stat-card-label">${t('col_mob')}</div><div class="stat-card-value${mobValBlue}"><span${spMob}>${fmtN(mobS)}</span>${mobInlineBonus}${_uCpBonusHtml('Mobility')}${msEnh.mobHtml}</div></div></div>${unitModNote}${vigorCondNote}${unitTurnBuffHtml}`;
+if(!S.dc.atkCharData){
+const unitCondHtml=_dcUnitCondPassiveBonusRowsHtml(ud);
+if(unitCondHtml)sa.innerHTML+=`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Passive Bonuses</div><div class="dc-pilot-bonus-list">${unitCondHtml}</div>`;
+}
 renderDcWeaponArea();
 _dcUpdateAdvantageEnemyTagUi();_dcUpdateZeonEnemyTagUi();
 _dcUpdateSupportCounterAtkUi();
@@ -12738,7 +12754,9 @@ return true;
 function _dcRenderPilotBonuses(area,cd){
 const b=_dcParsePilotAbilBonuses(cd);
 S.dc._pilotBonuses=b;
-if(!b.items.length)return;
+const ud=S.dc.atkUnitData;
+const unitCondHtml=_dcUnitCondPassiveBonusRowsHtml(ud);
+if(!b.items.length&&!unitCondHtml)return;
 let h=`<div class="dc-section-label" style="margin-top:10px;color:var(--accent-cyan)">Passive Bonuses</div><div class="dc-pilot-bonus-list">`;
 b.items.forEach((it,i)=>{
 const condTag=it.cond?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--cond">${it.attackRoleOnly?'(Attack-role pilots only)':'(Conditional)'}</span>`:it.autoMet?` <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--match">(Tag Matched)</span>`:'';
@@ -12766,6 +12784,7 @@ const checked=!it.cond;
 const rowOff=!!it.cond;
 h+=`<label class="dc-pilot-bonus-row${rowOff?' dc-pilot-bonus--off':''}"><input type="checkbox" id="${togId}" ${checked?'checked':''} onchange="_dcRecalcPilotBonuses(true)"><span class="dc-pilot-bonus-line"><span class="dc-pilot-bonus-main">${esc(it.label)}${condTag}</span><span class="dc-pilot-bonus-detail">${esc(it.name)}</span></span></label>`;
 });
+if(unitCondHtml)h+=unitCondHtml;
 h+=`</div>`;
 area.innerHTML+=h;
 }
