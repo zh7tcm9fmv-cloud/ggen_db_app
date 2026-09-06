@@ -1610,6 +1610,11 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .map-unit-support-badge,.stage-npc-support-badge{position:relative;display:inline-flex;align-items:center;gap:1px;padding:0 2px 0 1px;border-radius:5px;background:rgba(8,12,22,.9);border:1px solid rgba(255,255,255,.2);pointer-events:none;line-height:1;box-shadow:0 1px 3px rgba(0,0,0,.55);flex-shrink:0}
 .map-unit-support-badge img,.stage-npc-support-badge img{width:10px;height:10px;object-fit:contain;display:block}
 .map-unit-support-badge-count,.stage-npc-support-badge-count{font-size:8px;font-weight:800;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.85)}
+.map-unit-pilot-face{display:inline-flex;width:18px;height:18px;border-radius:4px;overflow:hidden;border:1px solid rgba(255,255,255,.45);box-shadow:0 1px 3px rgba(0,0,0,.55);background:rgba(8,12,22,.9);flex-shrink:0}
+.map-unit-pilot-face img{width:100%;height:100%;object-fit:cover;display:block}
+.map-cell.map-cell--npc-locate-flash{outline:2px solid #fbbf24;box-shadow:0 0 0 3px rgba(251,191,36,.45),inset 0 0 12px rgba(251,191,36,.25);z-index:12;animation:stage-map-npc-locate-pulse 1.6s ease-out 1}
+@keyframes stage-map-npc-locate-pulse{0%{outline-color:#fde68a;box-shadow:0 0 0 6px rgba(251,191,36,.55),inset 0 0 14px rgba(251,191,36,.35)}100%{outline-color:#fbbf24;box-shadow:0 0 0 2px rgba(251,191,36,.2),inset 0 0 8px rgba(251,191,36,.12)}}
+.stage-npc-compact-tile{cursor:pointer}
 .stage-npc-support-badge img{width:12px;height:12px}
 .stage-npc-support-badge-count{font-size:9px}
 .stage-npc-escape-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:6px;padding:7px 10px;border:1px solid var(--border-color);border-radius:8px;background:rgba(26,34,54,.92);color:var(--text-secondary);font-size:10px;font-weight:700;line-height:1.2;cursor:pointer;touch-action:manipulation;transition:var(--transition)}

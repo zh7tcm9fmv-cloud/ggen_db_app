@@ -3411,8 +3411,6 @@
     if (cpBtn) {
       cpBtn.classList.toggle('active', spiCpActive);
       cpBtn.setAttribute('aria-pressed', spiCpActive ? 'true' : 'false');
-      const chip = cpBtn.querySelector('.spi-cp-chip');
-      if (chip) chip.classList.toggle('active', spiCpActive);
     }
     updateRarityFilterLabel();
     const map = $('#spiMapOnly');

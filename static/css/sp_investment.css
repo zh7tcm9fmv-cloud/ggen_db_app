@@ -854,15 +854,12 @@ html.spi-modal-open body.spi-page {
   object-fit: contain;
   flex-shrink: 0;
 }
-.spi-cp-toggle {
-  min-width: 48px;
-  padding: 4px 6px;
+.spi-cp-seg {
+  display: inline-flex;
+  align-items: center;
 }
-.spi-cp-toggle .list-cond-toggle {
-  pointer-events: none;
-  height: 28px;
-  width: 40px;
-  margin: 0;
+.spi-cp-seg .list-cond-toggle {
+  flex-shrink: 0;
 }
 .spi-gains-list,
 .spi-er-stage-list {
