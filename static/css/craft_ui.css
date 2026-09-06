@@ -385,6 +385,40 @@
   display: block;
 }
 
+/* Option parts — square item art centered inside rarity plate (no edge bleed) */
+.list-thumb-composite--mod.list-thumb-has-frame {
+  --thumb-portrait-inset-top: 8%;
+  --thumb-portrait-inset-side: 8%;
+  --thumb-portrait-inset-bottom: 10%;
+  --thumb-frame-nudge-y: 0px;
+}
+.list-thumb-composite--mod.list-thumb-has-frame .list-thumb-portrait-wrap {
+  top: var(--thumb-portrait-inset-top);
+  left: var(--thumb-portrait-inset-side);
+  right: var(--thumb-portrait-inset-side);
+  bottom: var(--thumb-portrait-inset-bottom);
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-sizing: border-box;
+  -webkit-mask-image: var(--thumb-inner-mask, url("/static/images/UI/UI_Common_Tmb_Square_UR_Base.webp"));
+  mask-image: var(--thumb-inner-mask, url("/static/images/UI/UI_Common_Tmb_Square_UR_Base.webp"));
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+.list-thumb-composite--mod.list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait {
+  width: auto;
+  height: auto;
+  max-width: 86%;
+  max-height: 86%;
+  object-fit: contain;
+  object-position: center center;
+}
+
 @media (max-width: 768px) {
   .list-thumb-composite.list-thumb-has-frame:not(.list-thumb-composite--picker) .list-thumb-portrait-wrap,
   .cmp-card-thum-wrap .list-thumb-composite.list-thumb-has-frame:not(.list-thumb-composite--picker) .list-thumb-portrait-wrap {

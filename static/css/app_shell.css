@@ -1106,6 +1106,43 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .list-thumb-has-frame .list-thumb-portrait-wrap{top:8px;left:8px;right:8px;bottom:10px;align-items:center;justify-content:center}
 .list-thumb-portrait-wrap .list-thumb-portrait{width:auto;height:auto;max-width:100%;max-height:100%;object-fit:contain;object-position:center calc(50% + var(--portrait-optical-y));flex-shrink:1;display:block}
 .list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait{max-width:94%;max-height:94%}
+/* Option parts: icon fully inside rarity plate, centered (same inset family as char/unit frames). */
+.list-thumb-composite--mod.list-thumb-has-frame{
+  --thumb-portrait-inset-top:8%;
+  --thumb-portrait-inset-side:8%;
+  --thumb-portrait-inset-bottom:10%;
+  --thumb-frame-nudge-y:0px;
+  overflow:hidden;
+}
+.list-thumb-composite--mod.list-thumb-has-frame .list-thumb-portrait-wrap{
+  top:var(--thumb-portrait-inset-top);
+  left:var(--thumb-portrait-inset-side);
+  right:var(--thumb-portrait-inset-side);
+  bottom:var(--thumb-portrait-inset-bottom);
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  box-sizing:border-box;
+  -webkit-mask-image:var(--thumb-inner-mask,url("/static/images/UI/UI_Common_Tmb_Square_UR_Base.webp"));
+  mask-image:var(--thumb-inner-mask,url("/static/images/UI/UI_Common_Tmb_Square_UR_Base.webp"));
+  -webkit-mask-size:100% 100%;
+  mask-size:100% 100%;
+  -webkit-mask-repeat:no-repeat;
+  mask-repeat:no-repeat;
+  -webkit-mask-position:center;
+  mask-position:center;
+}
+.list-thumb-composite--mod .list-thumb-portrait-wrap .list-thumb-portrait,
+.list-thumb-composite--mod.list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait{
+  width:auto;
+  height:auto;
+  max-width:86%;
+  max-height:86%;
+  object-fit:contain;
+  object-position:center center;
+  flex-shrink:1;
+  display:block;
+}
 .list-thumb-portrait-wrap .list-thumb-placeholder{width:100%;height:100%;object-fit:contain;background:var(--bg-input);display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:28px}
 .list-thumb-icons{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:3;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:2px}
 .list-thumb-icon-wrap{display:flex;align-items:center;justify-content:center;width:20px;height:20px;flex-shrink:0;overflow:hidden}
