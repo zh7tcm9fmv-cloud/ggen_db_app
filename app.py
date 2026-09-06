@@ -17253,6 +17253,73 @@ def sp_investment_decision_preview_page():
     return redirect('/ip', code=301)
 
 
+_SPI_SLIM_ABILITY_DETAILS_CACHE = {}
+
+
+def _spi_slim_ability_details(ab_id, lc='EN'):
+    """Ability detail text + conditional flag for /ip SA/SD chips (character-detail rules)."""
+    ab_id = normalize_id(ab_id)
+    if not ab_id or ab_id == '0':
+        return []
+    lc = _spi_norm_lang(lc)
+    bucket = _SPI_SLIM_ABILITY_DETAILS_CACHE.setdefault(lc, {})
+    if ab_id in bucket:
+        return bucket[ab_id]
+    ld = get_lang_data(lc) or {}
+    slim = []
+    try:
+        from sp_investment_rank import slim_ability_details_for_spi
+        bab = build_ability_entry(
+            ab_id,
+            ld.get('abil_name_map') or {},
+            abil_link_map,
+            trait_set_traits_map,
+            trait_data_map,
+            ld.get('lang_text_map') or {},
+            ld.get('lang_text_map') or {},
+            trait_condition_raw_map,
+            ld.get('lineage_lookup') or {},
+            ld.get('series_name_map') or {},
+            ability_resource_map,
+            ld.get('abil_desc_map') or {},
+            sort_order=0,
+            lang_code=lc,
+            skip_icon=True,
+        ) or {}
+        slim = slim_ability_details_for_spi(bab.get('details'))
+    except Exception:
+        slim = []
+    bucket[ab_id] = slim
+    return slim
+
+
+def _spi_stamp_char_ability_details(buckets, lc='EN'):
+    """Attach slim ability details so /ip SA/SD icons match the character page."""
+    if not isinstance(buckets, dict):
+        return
+    for rows in buckets.values():
+        if not isinstance(rows, list):
+            continue
+        for row in rows:
+            if not isinstance(row, dict):
+                continue
+            abs_ = row.get('abilities')
+            if not isinstance(abs_, list):
+                continue
+            new_abs = []
+            for ab in abs_:
+                if not isinstance(ab, dict):
+                    continue
+                item = dict(ab)
+                aid = normalize_id(item.get('id'))
+                if aid and aid != '0':
+                    dets = _spi_slim_ability_details(aid, lc)
+                    if dets:
+                        item['details'] = dets
+                new_abs.append(item)
+            row['abilities'] = new_abs
+
+
 def _sp_investment_attach_board(buckets, kind):
     """Attach thumbs/icons/names for unit or character investment rows."""
     if not isinstance(buckets, dict):
@@ -17326,6 +17393,8 @@ def _sp_investment_attach_board(buckets, kind):
                         rc['acquisition_icon'] = ACQUISITION_ROUTE_ICONS.get(acq, '')
                     if not rc.get('role_icon'):
                         rc.update(_tier_mockup_row_icons(rc, 'character'))
+    if kind == 'character':
+        _spi_stamp_char_ability_details(buckets, 'EN')
 
 
 _SPI_API_PAYLOAD_CACHE = {
@@ -17512,6 +17581,10 @@ def _spi_localize_char_kit_list(items, kind, lc):
                     row['icon'] = sk.get('icon')
             if nm:
                 row['name'] = nm
+            if kind == 'ability':
+                dets = _spi_slim_ability_details(eid, lc)
+                if dets:
+                    row['details'] = dets
         except Exception:
             pass
         out.append(row)
@@ -17871,7 +17944,7 @@ def api_sp_investment():
     votes_data = _spi_votes_load()
     votes_mtime = int(_SPI_VOTES_CACHE.get('mtime') or 0)
     payload = _spi_payload_with_community_votes(payload, votes_data)
-    ck = f"sp_investment_v1_lean_sdgate_{lc}_{int(mtime)}_{votes_mtime}"
+    ck = f"sp_investment_v1_lean_sdgate_abil_details_{lc}_{int(mtime)}_{votes_mtime}"
     resp = jsonify_cacheable(payload, ck, public=True, max_age=300, convert_images=False)
     # Gzip large board JSON when the client accepts it (Railway/edge may not compress JSON).
     if resp.status_code == 200:

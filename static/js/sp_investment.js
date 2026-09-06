@@ -38,6 +38,11 @@
     Melee: '/static/images/UI/UI_Common_TypeIcon_Melee_S.webp',
     Awaken: '/static/images/WeaponIcon/UI_Common_TypeIcon_Awaken_S.webp',
   };
+  const SPI_ROLE_ICONS = {
+    Attack: '/static/images/UI/UI_Common_TypeIcon_Attack_M.webp',
+    Defense: '/static/images/UI/UI_Common_TypeIcon_Defense_M.webp',
+    Support: '/static/images/UI/UI_Common_TypeIcon_Support_M.webp',
+  };
 
   const BREAKDOWN_META = {
     tags: {
@@ -1137,6 +1142,8 @@
   let mapOnly = false;
   let hasSpOnly = true;
   let showUlt = false;
+  let spiCpActive = false;
+  let _spiDbSelectedId = '';
   let sourceFilters = [];
   let sourceCombine = 'or';
   let tagFilters = [];
@@ -2580,6 +2587,8 @@
       }
       skillFilterIds = [];
     }
+    const cpSeg = document.querySelector('.spi-cp-seg');
+    if (cpSeg) cpSeg.style.display = entity === 'characters' ? '' : 'none';
     // Unit Ability / Character Abilities filter is available on both boards.
     if (abilWrap) {
       abilWrap.hidden = false;
@@ -2661,34 +2670,157 @@
     return prefixes.some((p) => n.startsWith(p) || compact.startsWith(p.replace(/\s+/g, '')));
   }
 
-  function _kitItemNameMatches(name, re) {
-    return re.test(String(name || ''));
+  function _spiAbilitiesHaveDetails(row) {
+    return ((row && row.abilities) || []).some(
+      (ab) => ab && Array.isArray(ab.details) && ab.details.length
+    );
+  }
+
+  function _spiCountCharActionPlusOne(txt, kind) {
+    const s = String(txt || '');
+    const pick = (arr) =>
+      arr.reduce((n, re) => {
+        const m = s.match(re);
+        return n + (m ? m.length : 0);
+      }, 0);
+    if (kind === 'chance') {
+      return pick([
+        /chance\s*step[\s\S]{0,24}[+＋]\s*1(?!\d)/gi,
+        /チャンスステップ[\s\S]{0,24}[+＋]\s*1(?!\d)/g,
+        /額外行動[\s\S]{0,24}[+＋]\s*1(?!\d)/g,
+      ]);
+    }
+    if (kind === 'def') {
+      return pick([
+        /support\s*defen[cs]e[\s\S]{0,24}[+＋]\s*1(?!\d)/gi,
+        /支援防[禦御][\s\S]{0,24}[+＋]\s*1(?!\d)/g,
+      ]);
+    }
+    return pick([
+      /support\s*attack\s*\/\s*counter[\s\S]{0,24}[+＋]\s*1(?!\d)/gi,
+      /支援攻擊\s*[／/]\s*反擊[\s\S]{0,24}[+＋]\s*1(?!\d)/g,
+      /支援攻撃\s*[／/]\s*反撃[\s\S]{0,24}[+＋]\s*1(?!\d)/g,
+    ]);
+  }
+
+  function _spiSupportAtkBonusFromDetailText(tx) {
+    if (typeof _supportAtkBonusFromAbilityDetailText === 'function') {
+      return _supportAtkBonusFromAbilityDetailText(tx);
+    }
+    let sum = 0;
+    const s = String(tx || '');
+    const patterns = [
+      /Support\s+Attack\s*\/\s*Counter[\s\S]{0,200}?[+\uFF0B]\s*(\d+)/gi,
+      /Support\s+Attack(?!\s*\/\s*Counter)[\s\S]{0,160}?[+\uFF0B]\s*(\d+)/gi,
+      /「支援攻[撃擊][/／]反[擊撃]」[+\uFF0B]\s*(\d+)回/g,
+      /「支援攻[撃擊][/／]反[擊撃]」[+\uFF0B]\s*(\d+)次/g,
+    ];
+    patterns.forEach((re) => {
+      re.lastIndex = 0;
+      let m;
+      while ((m = re.exec(s))) {
+        const v = parseInt(m[1], 10);
+        if (!isNaN(v)) sum += v;
+      }
+    });
+    return Math.max(_spiCountCharActionPlusOne(tx, 'atk'), sum);
+  }
+
+  function _spiSupportDefBonusFromDetailText(tx) {
+    if (typeof _supportDefBonusFromAbilityDetailText === 'function') {
+      return _supportDefBonusFromAbilityDetailText(tx);
+    }
+    let best = 0;
+    const s = String(tx || '');
+    const patterns = [
+      /Support\s+Defense(?:\s*\([^)]*\))?[\s\S]{0,200}?[+\uFF0B]\s*(\d+)/gi,
+      /Support\s+Defense\s*[+\uFF0B]\s*(\d+)\s*time/gi,
+      /「支援防御」[+\uFF0B]\s*(\d+)回/g,
+      /「支援防禦」[+\uFF0B]\s*(\d+)次/g,
+    ];
+    patterns.forEach((re) => {
+      re.lastIndex = 0;
+      let m;
+      while ((m = re.exec(s))) {
+        const v = parseInt(m[1], 10);
+        if (!isNaN(v)) best = Math.max(best, v);
+      }
+    });
+    return Math.max(_spiCountCharActionPlusOne(tx, 'def'), best);
+  }
+
+  function _spiDetailIsConditional(detail) {
+    if (!detail || typeof detail !== 'object') return false;
+    if (detail.conditional) return true;
+    if (Array.isArray(detail.conditions) && detail.conditions.length) return true;
+    return (Array.isArray(detail.condition_groups) ? detail.condition_groups : []).some(
+      (g) => g && Array.isArray(g.conditions) && g.conditions.length
+    );
+  }
+
+  function spiCharacterChanceSupportState(row, condOn) {
+    const payload = { role: row && row.role, abilities: (row && row.abilities) || [] };
+    if (typeof getCharacterChanceSupportState === 'function') {
+      return getCharacterChanceSupportState(payload, condOn);
+    }
+    let chanceUn = 0;
+    let chanceCond = 0;
+    let defUn = 0;
+    let defCond = 0;
+    let atkUn = 0;
+    let atkCond = 0;
+    (payload.abilities || []).forEach((ab) => {
+      const ds = Array.isArray(ab && ab.details) ? ab.details : [];
+      ds.forEach((detail) => {
+        let text = '';
+        let isCond = false;
+        if (typeof detail === 'string') {
+          text = detail;
+        } else if (detail && typeof detail === 'object') {
+          text = String(detail.text || '');
+          isCond = _spiDetailIsConditional(detail);
+        }
+        const c = _spiCountCharActionPlusOne(text, 'chance');
+        const df = _spiSupportDefBonusFromDetailText(text);
+        const ak = _spiSupportAtkBonusFromDetailText(text);
+        if (isCond) {
+          chanceCond += c;
+          defCond += df;
+          atkCond += ak;
+        } else {
+          chanceUn += c;
+          defUn += df;
+          atkUn += ak;
+        }
+      });
+    });
+    const on = !!condOn;
+    const chanceBonus = chanceUn + (on ? chanceCond : 0);
+    const defBonus = defUn + (on ? defCond : 0);
+    const atkBonus = atkUn + (on ? atkCond : 0);
+    const role = String((row && row.role) || '').toLowerCase();
+    const hasBaseDef = role === 'defense' || role.includes('defense');
+    const hasBaseAtk = role === 'support' || role.includes('support');
+    return {
+      chanceCount: Math.max(1, Math.min(2, 1 + (chanceBonus > 0 ? 1 : 0))),
+      supportDefCount: Math.max(0, Math.min(5, Math.max(hasBaseDef ? 1 : 0, defBonus))),
+      supportAtkCount: Math.max(0, Math.min(5, Math.max(hasBaseAtk ? 1 : 0, atkBonus))),
+    };
   }
 
   function combatIconCounts(row) {
-    const role = String((row && row.role) || '');
-    const isDef = /defense|耐久/i.test(role);
-    const isSup = /support|支援/i.test(role);
-    const csRe = /chance\s*step|チャンスステップ|額外行動/i;
-    const saRe = /support\s*attack|支援攻撃|支援攻擊/i;
-    const sdRe = /support\s*defense|支援防御|支援防禦|支援防衛/i;
-    let csPlus = 0;
-    let saPlus = 0;
-    let sdPlus = 0;
-    const items = []
-      .concat((row && row.abilities) || [])
-      .concat((row && row.skills) || []);
-    items.forEach((it) => {
-      const name = (it && it.name) || '';
-      if (_kitItemNameMatches(name, csRe)) csPlus += 1;
-      if (_kitItemNameMatches(name, saRe)) saPlus += 1;
-      if (_kitItemNameMatches(name, sdRe)) sdPlus += 1;
-    });
-    return {
-      cs: Math.min(2, 1 + (csPlus > 0 ? 1 : 0)),
-      sa: Math.min(5, Math.max(isSup ? 1 : 0, saPlus)),
-      sd: Math.min(5, Math.max(isDef ? 1 : 0, sdPlus)),
-    };
+    const isChar = String((row && row.entity) || '') === 'character' || entity === 'characters';
+    if (!isChar) return { cs: 0, sa: 0, sd: 0 };
+    if (!_spiAbilitiesHaveDetails(row)) {
+      const role = String((row && row.role) || '').toLowerCase();
+      return {
+        cs: 1,
+        sa: role === 'support' || role.includes('support') ? 1 : 0,
+        sd: role === 'defense' || role.includes('defense') ? 1 : 0,
+      };
+    }
+    const s = spiCharacterChanceSupportState(row, spiCpActive);
+    return { cs: s.chanceCount, sa: s.supportAtkCount, sd: s.supportDefCount };
   }
 
   function kitHighlightChips(row) {
@@ -2714,16 +2846,16 @@
       const spec = String(row.specialty || '').trim();
       const specIcon = SPI_CHIP_ICONS[spec];
       if (spec) add('specialty', { value: spec, icon: specIcon || '', n: specIcon ? 1 : 0 });
-      const combat = combatIconCounts(row);
-      if (combat.cs >= 2) add('chance_step', { icon: SPI_CHIP_ICONS.chance_step, n: combat.cs });
-      if (combat.sd > 0) add('support_def', { icon: SPI_CHIP_ICONS.support_def, n: combat.sd });
-      if (combat.sa > 0) add('support_atk', { icon: SPI_CHIP_ICONS.support_atk, n: combat.sa });
       (row.skills || []).forEach((sk) => {
         const name = (sk && sk.name) || '';
         const icon = (sk && sk.icon) || '';
         if (_skillNameMatches(name, ['sway', 'スウェー', '搖擺閃避'])) add('sway', { icon, n: icon ? 1 : 0 });
         if (_skillNameMatches(name, ['mp up', 'mpアップ', 'mp上升', 'mp提升'])) add('mp_up', { icon, n: icon ? 1 : 0 });
       });
+      const combat = combatIconCounts(row);
+      if (combat.cs >= 2) add('chance_step', { icon: SPI_CHIP_ICONS.chance_step, n: combat.cs });
+      if (combat.sd > 0) add('support_def', { icon: SPI_CHIP_ICONS.support_def, n: combat.sd });
+      if (combat.sa > 0) add('support_atk', { icon: SPI_CHIP_ICONS.support_atk, n: combat.sa });
     }
     const erN = gatedErExpertIds(row).length;
     if (erN) add('er', { n: erN });
@@ -2902,8 +3034,11 @@
       .filter((rk) => (groups[rk] || []).length)
       .map((rk) => {
         const cards = (groups[rk] || []).map((r) => renderSpiCard(r, kind)).join('');
+        const ic = SPI_ROLE_ICONS[rk]
+          ? `<img class="spi-role-group-ic" src="${esc(imgUrl(SPI_ROLE_ICONS[rk]))}" alt="" width="18" height="18" loading="lazy" decoding="async">`
+          : '';
         return `<div class="spi-role-group">
-          <h4 class="spi-role-group-h">${esc(tRole(rk))}</h4>
+          <h4 class="spi-role-group-h">${ic}<span>${esc(tRole(rk))}</span></h4>
           <div class="spi-cards">${cards}</div>
         </div>`;
       })
@@ -2914,7 +3049,8 @@
     const advNote = r._advantage_active
       ? `<span class="spi-chip spi-chip-adv" title="${esc(t('adv_on', { n: r._advantage_points }))}">${esc(t('adv_chip', { n: r._advantage_points }))}</span>`
       : '';
-    return `<div class="spi-card" role="button" tabindex="0" data-id="${esc(r.id)}">
+    const selected = _spiDbSelectedId && String(_spiDbSelectedId) === String(r.id) ? ' is-db-selected' : '';
+    return `<div class="spi-card${selected}" role="button" tabindex="0" data-id="${esc(r.id)}">
       ${renderVoteControls(r, kind, true)}
       <div class="spi-card-thumb-wrap" role="link" tabindex="0" data-spi-open-db-thumb="${esc(kind)}:${esc(r.id)}" title="${escAttr(t('open_in_db'))}">${renderFramedThumb(r, kind)}</div>
       <div class="spi-card-name">${esc(r.name || r.id)}</div>
@@ -3271,6 +3407,13 @@
       ultBtn.classList.toggle('active', showUlt);
       ultBtn.setAttribute('aria-pressed', showUlt ? 'true' : 'false');
     }
+    const cpBtn = $('#spiCpToggle');
+    if (cpBtn) {
+      cpBtn.classList.toggle('active', spiCpActive);
+      cpBtn.setAttribute('aria-pressed', spiCpActive ? 'true' : 'false');
+      const chip = cpBtn.querySelector('.spi-cp-chip');
+      if (chip) chip.classList.toggle('active', spiCpActive);
+    }
     updateRarityFilterLabel();
     const map = $('#spiMapOnly');
     if (map) map.checked = mapOnly;
@@ -3439,8 +3582,20 @@
     void loadEntityStatRanks(row, kind);
   }
 
+  function markSpiDbSelected(id) {
+    _spiDbSelectedId = id ? String(id) : '';
+    document.querySelectorAll('.spi-card.is-db-selected').forEach((el) => {
+      el.classList.remove('is-db-selected');
+    });
+    if (!_spiDbSelectedId) return;
+    document.querySelectorAll(`.spi-card[data-id="${_spiDbSelectedId}"]`).forEach((el) => {
+      el.classList.add('is-db-selected');
+    });
+  }
+
   function openDbDetail(kind, row) {
     if (!row || !isEmbedded()) return;
+    markSpiDbSelected(row.id);
     _spiRestoreRow = row;
     _spiOpeningDetail = true;
     closeModal();
@@ -3451,6 +3606,7 @@
   }
 
   function onAppDetailClosed() {
+    markSpiDbSelected('');
     if (!_spiRestoreRow) return;
     const row = _spiRestoreRow;
     _spiRestoreRow = null;
@@ -3503,6 +3659,14 @@
     if (ultToggle) {
       ultToggle.addEventListener('click', () => {
         showUlt = !showUlt;
+        applyFilterDom();
+        render();
+      });
+    }
+    const cpToggle = $('#spiCpToggle');
+    if (cpToggle) {
+      cpToggle.addEventListener('click', () => {
+        spiCpActive = !spiCpActive;
         applyFilterDom();
         render();
       });

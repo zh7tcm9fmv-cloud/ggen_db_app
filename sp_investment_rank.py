@@ -2130,14 +2130,34 @@ def _score_pilot_ability_flat(
     }
 
 
-_COMBAT_ACTION_NAME_CS = re.compile(
-    r"(?i)chance\s*step|チャンスステップ|額外行動"
+# Same ability-DETAIL +1 regexes as character extra-info / browse x2 filters.
+# Never count from ability titles: "Support Defense (Counter)" is not +1 SD.
+_SPI_SUPPORT_DEF_PLUS_ONE_RE = re.compile(
+    r"(support\s*defen[cs]e[\s\S]{0,24}[+＋]\s*1(?!\d))|(支援防[禦御][\s\S]{0,24}[+＋]\s*1(?!\d))",
+    re.IGNORECASE,
 )
-_COMBAT_ACTION_NAME_SA = re.compile(
-    r"(?i)support\s*attack|支援攻撃|支援攻擊"
+_SPI_SUPPORT_ATK_PLUS_ONE_RE = re.compile(
+    r"(support\s*attack\s*[/／]\s*counter[\s\S]{0,24}[+＋]\s*1(?!\d))"
+    r"|(支援攻擊\s*[/／]\s*反擊[\s\S]{0,24}[+＋]\s*1(?!\d))"
+    r"|(支援攻撃\s*[/／]\s*反撃[\s\S]{0,24}[+＋]\s*1(?!\d))",
+    re.IGNORECASE,
 )
-_COMBAT_ACTION_NAME_SD = re.compile(
-    r"(?i)support\s*defense|支援防御|支援防禦|支援防衛"
+_SPI_CHANCE_STEP_PLUS_ONE_REGEXES = (
+    re.compile(r"chance\s*step[\s\S]{0,24}[+＋]\s*1(?!\d)", re.IGNORECASE),
+    re.compile(r"チャンスステップ[\s\S]{0,24}[+＋]\s*1(?!\d)"),
+    re.compile(r"額外行動[\s\S]{0,24}[+＋]\s*1(?!\d)"),
+)
+_SPI_SUPPORT_ATK_NUMERIC_RES = (
+    re.compile(r"Support\s+Attack\s*/\s*Counter[\s\S]{0,200}?[+\uFF0B]\s*(\d+)", re.IGNORECASE),
+    re.compile(r"Support\s+Attack(?!\s*/\s*Counter)[\s\S]{0,160}?[+\uFF0B]\s*(\d+)", re.IGNORECASE),
+    re.compile(r"「支援攻[撃擊][/／]反[擊撃]」[+\uFF0B]\s*(\d+)回"),
+    re.compile(r"「支援攻[撃擊][/／]反[擊撃]」[+\uFF0B]\s*(\d+)次"),
+)
+_SPI_SUPPORT_DEF_NUMERIC_RES = (
+    re.compile(r"Support\s+Defense(?:\s*\([^)]*\))?[\s\S]{0,200}?[+\uFF0B]\s*(\d+)", re.IGNORECASE),
+    re.compile(r"Support\s+Defense\s*[+\uFF0B]\s*(\d+)\s*time", re.IGNORECASE),
+    re.compile(r"「支援防御」[+\uFF0B]\s*(\d+)回"),
+    re.compile(r"「支援防禦」[+\uFF0B]\s*(\d+)次"),
 )
 
 
@@ -2151,12 +2171,120 @@ def _combat_action_family_name(name: str, aid: str) -> str:
     return fam.lower() or str(aid)
 
 
-def detect_pilot_combat_action_flags(A, cid: str, lc: str = "EN") -> dict:
-    """Detect Chance Step / Support Attack / Support Defense +1 economy from master data.
+def slim_ability_details_for_spi(details) -> list[dict]:
+    """Keep detail text + whether the line is conditional (character-detail CP split)."""
+    out: list[dict] = []
+    for d in details or []:
+        if isinstance(d, str):
+            t = d.strip()
+            if t:
+                out.append({"text": t, "conditions": []})
+            continue
+        if not isinstance(d, dict):
+            continue
+        t = str(d.get("text") or "").strip()
+        if not t:
+            continue
+        has_cond = bool(d.get("conditions")) or any(
+            isinstance(g, dict) and g.get("conditions")
+            for g in (d.get("condition_groups") or [])
+        )
+        out.append({"text": t, "conditions": [{}] if has_cond else []})
+    return out
 
-    Prefers the same ability-detail regexes as browse x2 filters when available;
-    falls back to ability display names. Counts distinct ability families so a
-    second SD +1 line can score as extra (3 SD). Not derived from clear videos.
+
+def _spi_detail_is_conditional(detail) -> bool:
+    if isinstance(detail, str) or not isinstance(detail, dict):
+        return False
+    if detail.get("conditions"):
+        return True
+    return any(
+        isinstance(g, dict) and g.get("conditions")
+        for g in (detail.get("condition_groups") or [])
+    )
+
+
+def _spi_support_atk_bonus_from_text(tx: str) -> int:
+    s = str(tx or "")
+    plus_one = len(_SPI_SUPPORT_ATK_PLUS_ONE_RE.findall(s))
+    numeric = 0
+    for rx in _SPI_SUPPORT_ATK_NUMERIC_RES:
+        for m in rx.finditer(s):
+            try:
+                numeric += int(m.group(1))
+            except (TypeError, ValueError):
+                pass
+    return max(plus_one, numeric)
+
+
+def _spi_support_def_bonus_from_text(tx: str) -> int:
+    s = str(tx or "")
+    plus_one = len(_SPI_SUPPORT_DEF_PLUS_ONE_RE.findall(s))
+    best = 0
+    for rx in _SPI_SUPPORT_DEF_NUMERIC_RES:
+        for m in rx.finditer(s):
+            try:
+                best = max(best, int(m.group(1)))
+            except (TypeError, ValueError):
+                pass
+    return max(plus_one, best)
+
+
+def _spi_chance_bonus_from_text(tx: str) -> int:
+    s = str(tx or "")
+    return sum(len(rx.findall(s)) for rx in _SPI_CHANCE_STEP_PLUS_ONE_REGEXES)
+
+
+def character_chance_support_counts(role, abilities, cond_on: bool = False) -> dict:
+    """Same SA/SD/CS rules as character-detail extra-info icons.
+
+    Counts +N from ability DETAIL text (not titles). Counter-enable prose with
+    no +1 does not add Support Defense. Conditional +1 applies only when cond_on.
+    Role floor: Defense → at least 1 SD, Support → at least 1 SA.
+    """
+    chance_un = chance_cond = def_un = def_cond = atk_un = atk_cond = 0
+    for ab in abilities or []:
+        if not isinstance(ab, dict):
+            continue
+        for d in ab.get("details") or []:
+            if isinstance(d, str):
+                text, is_cond = d, False
+            elif isinstance(d, dict):
+                text = str(d.get("text") or "")
+                is_cond = _spi_detail_is_conditional(d)
+            else:
+                continue
+            c = _spi_chance_bonus_from_text(text)
+            df = _spi_support_def_bonus_from_text(text)
+            ak = _spi_support_atk_bonus_from_text(text)
+            if is_cond:
+                chance_cond += c
+                def_cond += df
+                atk_cond += ak
+            else:
+                chance_un += c
+                def_un += df
+                atk_un += ak
+    cond_on = bool(cond_on)
+    chance_bonus = chance_un + (chance_cond if cond_on else 0)
+    def_bonus = def_un + (def_cond if cond_on else 0)
+    atk_bonus = atk_un + (atk_cond if cond_on else 0)
+    role_l = str(role or "").lower()
+    has_base_def = "defense" in role_l
+    has_base_atk = "support" in role_l
+    return {
+        "cs": max(1, min(2, 1 + (1 if chance_bonus > 0 else 0))),
+        "sa": max(0, min(5, max(1 if has_base_atk else 0, atk_bonus))),
+        "sd": max(0, min(5, max(1 if has_base_def else 0, def_bonus))),
+    }
+
+
+def detect_pilot_combat_action_flags(A, cid: str, lc: str = "EN") -> dict:
+    """Detect CS / SA / SD +1 economy from ability DETAIL text (character-detail rules).
+
+    Titles such as Support Defense (Counter) do not add SD unless the detail
+    text grants Support Defense +1. Uses the same effective ability as the SPI
+    kit (SP id when present). Extra distinct SD +1 families can score as 3 SD.
     """
     flags = {
         "chance_step_plus": False,
@@ -2170,16 +2298,8 @@ def detect_pilot_combat_action_flags(A, cid: str, lc: str = "EN") -> dict:
     cs_id = getattr(A, "CHANCE_STEP_EX_FILTER_ID", "chance_step_ex")
     if callable(matcher):
         try:
-            # include_conditional: tag/series-gated +1 still grants the economy in restricted ER
             if matcher(cid, cs_id, include_sp=True, include_conditional=True):
                 flags["chance_step_plus"] = True
-        except Exception:
-            pass
-        try:
-            if cid in getattr(A, "SUPPORT_ATK_X2_CHARACTER_IDS", set()):
-                flags["support_attack_plus"] = True
-            if cid in getattr(A, "SUPPORT_DEF_X2_CHARACTER_IDS", set()):
-                flags["support_defense_plus"] = True
         except Exception:
             pass
 
@@ -2196,34 +2316,72 @@ def detect_pilot_combat_action_flags(A, cid: str, lc: str = "EN") -> dict:
     sa_fams: set[str] = set()
     sd_fams: set[str] = set()
     seen_aids: set[str] = set()
+    ld = {}
+    try:
+        get_ld = getattr(A, "get_lang_data", None)
+        if callable(get_ld):
+            ld = get_ld(lc) or {}
+        if not ld:
+            ld = (getattr(A, "LANG_DATA", None) or {}).get(lc) or {}
+    except Exception:
+        ld = {}
+    build = getattr(A, "build_ability_entry", None)
     for ab in rows:
-        for key in ("AbilityId", "SpAbilityId", "spAbilityId"):
-            aid = A.normalize_id(ab.get(key) or "0")
-            if not aid or aid in ("0", "None") or aid in seen_aids:
-                continue
-            seen_aids.add(aid)
-            name = _ability_display_name(A, aid, lc) or ""
-            fam = _combat_action_family_name(name, aid)
-            if aid in cs_aids or _COMBAT_ACTION_NAME_CS.search(name):
-                flags["chance_step_plus"] = True
-                cs_fams.add(fam)
-            if _COMBAT_ACTION_NAME_SA.search(name):
-                flags["support_attack_plus"] = True
-                sa_fams.add(fam)
-            if _COMBAT_ACTION_NAME_SD.search(name):
-                flags["support_defense_plus"] = True
-                sd_fams.add(fam)
+        bid = A.normalize_id(ab.get("AbilityId") or "0")
+        spid = A.normalize_id(ab.get("SpAbilityId") or ab.get("spAbilityId") or "0")
+        aid = spid if spid and spid not in ("0", "None", bid) else bid
+        if not aid or aid in ("0", "None") or aid in seen_aids:
+            continue
+        seen_aids.add(aid)
+        name = ""
+        details = []
+        if callable(build):
             try:
-                for eff in _effects_from_trait_ids(A, _trait_set_ids_for_ability(A, aid)):
-                    tti = int(eff.get("trait_type_index") or 0)
-                    if tti == 52:
-                        flags["support_defense_plus"] = True
-                        sd_fams.add(fam)
-                    elif tti == 51:
-                        flags["support_attack_plus"] = True
-                        sa_fams.add(fam)
+                entry = build(
+                    str(aid),
+                    ld.get("abil_name_map", {}),
+                    A.abil_link_map,
+                    A.trait_set_traits_map,
+                    A.trait_data_map,
+                    ld.get("lang_text_map", {}),
+                    ld.get("lang_text_map", {}),
+                    A.trait_condition_raw_map,
+                    ld.get("lineage_lookup", {}),
+                    ld.get("series_name_map", {}),
+                    A.ability_resource_map,
+                    ld.get("abil_desc_map", {}),
+                    sort_order=0,
+                    lang_code=lc,
+                    skip_icon=True,
+                ) or {}
+                name = str(entry.get("name") or "")
+                details = entry.get("details") or []
             except Exception:
-                pass
+                entry = {}
+                name = _ability_display_name(A, aid, lc) or ""
+                details = []
+        else:
+            name = _ability_display_name(A, aid, lc) or ""
+        fam = _combat_action_family_name(name, aid)
+        if aid in cs_aids:
+            flags["chance_step_plus"] = True
+            cs_fams.add(fam)
+        blob_parts = []
+        for d in details:
+            if isinstance(d, dict):
+                blob_parts.append(str(d.get("text") or ""))
+            else:
+                blob_parts.append(str(d or ""))
+        blob = "\n".join(blob_parts)
+        if _spi_chance_bonus_from_text(blob) > 0:
+            flags["chance_step_plus"] = True
+            cs_fams.add(fam)
+        if _spi_support_atk_bonus_from_text(blob) > 0:
+            flags["support_attack_plus"] = True
+            sa_fams.add(fam)
+        if _spi_support_def_bonus_from_text(blob) > 0:
+            flags["support_defense_plus"] = True
+            sd_fams.add(fam)
     flags["chance_step_plus_count"] = max(
         len(cs_fams), 1 if flags["chance_step_plus"] else 0
     )
@@ -6108,6 +6266,7 @@ def _char_kit_items(A, cid: str, lc: str, ldc: dict) -> tuple[list[dict], int, l
                 "name": name,
                 "icon": str(entry.get("icon") or ""),
                 "blob": blob,
+                "details": slim_ability_details_for_spi(entry.get("details")),
                 "is_affinity": is_aff,
                 "required_tag_ids": t_ids,
                 "required_series_ids": s_ids,
@@ -6168,7 +6327,7 @@ def _char_kit_items(A, cid: str, lc: str, ldc: dict) -> tuple[list[dict], int, l
 
 
 def _lean_char_kit_lists(kit_items: list[dict] | None) -> tuple[list[dict], list[dict]]:
-    """Public SPI kit chips: id + name + icon (no effect blobs)."""
+    """Public SPI kit chips: id + name + icon + slim ability details for SA/SD icons."""
     abilities: list[dict] = []
     skills: list[dict] = []
     for it in kit_items or []:
@@ -6185,6 +6344,9 @@ def _lean_char_kit_lists(kit_items: list[dict] | None) -> tuple[list[dict], list
         if it.get("kind") == "skill":
             skills.append(lean)
         else:
+            dets = it.get("details")
+            if dets:
+                lean["details"] = dets
             abilities.append(lean)
     return abilities, skills
 

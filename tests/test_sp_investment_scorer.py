@@ -6,6 +6,7 @@ import unittest
 from sp_investment_rank import (
     band_points,
     bucket_for_letter,
+    character_chance_support_counts,
     clear_rules_cache,
     detect_weapon_bonus_type,
     er_access_points,
@@ -1638,6 +1639,41 @@ class TestSpInvestmentBands(unittest.TestCase):
         )
         # Support SA+2 + SD+2 = 4, cap 4
         self.assertEqual(sup_sd, 4)
+
+    def test_character_chance_support_counts_match_detail_page(self):
+        """SA/SD chips follow ability DETAIL +1 text, not titles (Christina / Sid class)."""
+        christina = [
+            {
+                "details": [
+                    {"text": "Support Defense +1 time(s).", "conditions": []},
+                    {
+                        "text": "When piloting a Defense Type unit and executing Support Defense, increase DEF by 15%.",
+                        "conditions": [{}],
+                    },
+                ]
+            },
+            {
+                "details": [
+                    {
+                        "text": "This character can execute Support Defense when enemies responds to an ally's attack with a counter.",
+                        "conditions": [{}],
+                    }
+                ]
+            },
+        ]
+        off = character_chance_support_counts("Defense", christina, False)
+        on = character_chance_support_counts("Defense", christina, True)
+        self.assertEqual(off["sd"], 1)
+        self.assertEqual(on["sd"], 1)
+        self.assertEqual(off["sa"], 0)
+        self.assertEqual(on["sa"], 0)
+
+        sid = [
+            {"details": [{"text": "Support Attack/Counter +1 time(s).", "conditions": []}]},
+            {"details": [{"text": "Support Attack/Counter +1 time(s).", "conditions": [{}]}]},
+        ]
+        self.assertEqual(character_chance_support_counts("Support", sid, False)["sa"], 1)
+        self.assertEqual(character_chance_support_counts("Support", sid, True)["sa"], 2)
 
     def test_transform_better_combat_stats(self):
         from sp_investment_rank import (

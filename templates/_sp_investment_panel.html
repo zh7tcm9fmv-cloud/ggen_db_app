@@ -79,6 +79,11 @@
             <img class="filter-inline-icon role-filter-chip spi-board-icon spi-ult-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_Icon_ULT.webp{% else %}/static/images/UI/UI_Common_Icon_ULT.webp{% endif %}" alt="" width="28" height="18" loading="lazy" decoding="async">
           </button>
         </div>
+        <div class="spi-seg spi-cp-seg" role="group" data-i18n-aria="cp_toggle_aria">
+          <button type="button" class="role-filter-btn spi-cp-toggle" id="spiCpToggle" aria-pressed="false" data-i18n-title="cp_toggle_title" title="Conditional Passive" data-i18n-aria="cp_toggle_aria" aria-label="Conditional Passive">
+            <span class="list-cond-toggle spi-cp-chip" aria-hidden="true"><span class="cp-word-pad"><span class="cp-wide"><span class="cp-wide-c">C</span><span>P</span></span></span></span>
+          </button>
+        </div>
         <div class="spi-seg spi-role-seg" role="group" aria-label="Role" data-i18n-aria="role_aria">
           <button type="button" class="role-filter-btn active" data-role="Attack" title="Attack Type">
             <img class="filter-inline-icon role-filter-chip" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_TypeIcon_Attack_M.webp{% else %}/static/images/UI/UI_Common_TypeIcon_Attack_M.webp{% endif %}" alt=""> <span data-i18n-role="Attack">Attack</span>
