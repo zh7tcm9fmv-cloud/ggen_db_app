@@ -3192,6 +3192,10 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 .tb-slot-stat-mode-btn{font-size:8px;line-height:1;padding:3px 5px;border-radius:5px;border:1px solid rgba(148,163,184,.35);background:rgba(0,0,0,.35);color:var(--text);cursor:pointer;min-width:0}
 .tb-slot-stat-mode-btn.is-active{border-color:rgba(34,211,238,.65);background:rgba(34,211,238,.12);color:var(--accent-cyan);font-weight:600}
 .tb-slot-stat-mode-btn:hover{border-color:rgba(148,163,184,.55)}
+.tb-slot-cp-row{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;align-items:center;width:100%;margin-top:3px}
+.tb-slot-cp-btn{appearance:none;border:0;background:transparent;padding:0;margin:0;cursor:pointer;line-height:0;border-radius:4px}
+.tb-slot-cp-btn:hover{filter:brightness(1.12)}
+.tb-slot-cp-btn .dc-dc-cp-chip,.tb-slot-cp-btn .list-cond-toggle{pointer-events:none}
 .tb-supp-lb-icons{display:inline-flex;flex-wrap:wrap;gap:3px;align-items:center}
 .tb-supp-lb-ic{display:inline-flex;align-items:center;justify-content:center;padding:2px 3px;border-radius:6px;border:1px solid transparent;background:rgba(0,0,0,.42);cursor:pointer;line-height:0}
 .tb-supp-lb-ic:hover{background:rgba(0,0,0,.58)}

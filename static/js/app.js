@@ -9133,7 +9133,7 @@ const TB_FORMS_KEY='ggen_tb_forms';
 const TB_TRASH_ICON='/static/images/UI/UI_Common_BtnIcon_Trash.webp';
 const TB_LEADER_ICON='/static/images/UI/UI_Organization_Icon_SupporterLeader_Posi.webp';
 const TB_LONG_PORTRAIT_FACE_IDS=new Set(['1370000150']);
-function _tbEmptySlot(){return{unitId:null,unitData:null,charId:null,charData:null,optionParts:[],lbTier:3,unitStatMode:'normal',unitCondPassive:false,charCondPassive:false,unitTurnBuffAtk:false,unitTurnBuffDef:false,exSquadAtkPct:0}}
+function _tbEmptySlot(){return{unitId:null,unitData:null,charId:null,charData:null,optionParts:[],lbTier:3,unitStatMode:'normal',unitCondPassive:false,charCondPassive:false,unitCondStackCount:0,unitHpAtkTierIndex:0,unitTurnBuffAtk:false,unitTurnBuffDef:false,exSquadAtkPct:0}}
 function _tbTerrainItems(){return['Space','Atmospheric','Ground','Sea','Underwater']}
 function tbClearSupporter(side){
 initTeamBuilder();
@@ -9179,6 +9179,18 @@ if(w.slots.length===5)continue;
 const next=w.slots.slice(0,5);
 while(next.length<5)next.push(_tbEmptySlot());
 w.slots=next;
+}
+/* One-shot: legacy TB slots never auto-enabled CP like Damage Calculator. */
+if(!S.tb._cpAutoApplied){
+S.tb._cpAutoApplied=1;
+for(const side of[1,2]){
+const w=S.tb.squads&&S.tb.squads[side];
+if(!w||!w.slots)continue;
+for(let i=0;i<5;i++){
+const sl=w.slots[i];
+if(sl&&sl.unitData)_tbSyncSlotCondPassives(sl);
+}
+}
 }
 delete S.tb.activeSquad;
 }
@@ -9524,6 +9536,42 @@ if(sl&&String(sl.unitId)===uid)sl.unitData=d;
 }catch(_){}
 }));
 }
+function _tbInitSlotUnitCondControls(sl){
+if(!sl||!sl.unitData){if(sl){sl.unitCondStackCount=0;sl.unitHpAtkTierIndex=0}return}
+const ud=sl.unitData;
+sl.unitCondStackCount=0;
+sl.unitHpAtkTierIndex=0;
+const hp=ud.unit_hp_atk_tiers;
+if(hp&&hp.tiers&&hp.tiers.length)sl.unitHpAtkTierIndex=hp.tiers.length-1;
+const cc=ud.unit_combat_count_atk;
+if(cc&&cc.max_stacks)sl.unitCondStackCount=cc.max_stacks|0;
+}
+/** Match Damage Calculator: auto-on unit/pilot Conditional Passive when gates pass (pair EX, HP-tier, etc.). */
+function _tbSyncSlotCondPassives(sl){
+if(!sl)return;
+const ud=sl.unitData;
+const cd=sl.charData;
+if(!ud||ud._manual){sl.unitCondPassive=false;sl.unitCondStackCount=0;sl.unitHpAtkTierIndex=0}
+else{
+sl.unitCondPassive=_dcShouldAutoUnitCondPassive(ud,'medium');
+if(sl.unitCondPassive)_tbInitSlotUnitCondControls(sl);
+else{sl.unitCondStackCount=0;sl.unitHpAtkTierIndex=0}
+}
+if(!cd||cd._manual||!ud||ud._manual)sl.charCondPassive=false;
+else sl.charCondPassive=_dcShouldAutoCharCondPassive(cd,ud,'medium');
+}
+function _tbApplySlotUnitCondStatAdjustments(stats,statsNoCond,sl){
+if(!sl||!sl.unitCondPassive||!sl.unitData)return stats;
+return _tbWithSlotDcStatModes(sl,()=>_dcApplyUnitCondStatAdjustments(stats,statsNoCond,sl.unitData,true));
+}
+function _tbSlotStatsRows(sl,ud,statKey){
+const lb=ud.lb_data;const maxTier=lb?lb.length-1:0;const tier=Math.min(sl.lbTier|0,maxTier);
+const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
+const statsRaw=td?td[statKey]||td.stats_no_cond:[];
+const noCondKey=String(statKey||'').replace(/_with_cond$/,'_no_cond');
+const statsNo=td?td[noCondKey]||td.stats_no_cond||statsRaw:statsRaw;
+return _tbApplySlotUnitCondStatAdjustments(statsRaw,statsNo,sl);
+}
 function _tbGetUnitStatKey(ud,slot){
 if(!ud)return'stats_no_cond';
 const hasSp=ud.has_sp!==undefined?ud.has_sp:(parseInt(ud.rarity_id||'5')<=4);
@@ -9859,14 +9907,17 @@ _scSquadBindingCache.set(key,found);
 return found;
 }
 function _tbWithSlotDcStatModes(sl,fn){
-const um=S.dc.unitStatMode,cm=S.dc.charStatMode;
+const um=S.dc.unitStatMode,cm=S.dc.charStatMode,uc=S.dc.unitCondPassive,cc=S.dc.charCondPassive,usc=S.dc.unitCondStackCount,uhp=S.dc.unitHpAtkTierIndex;
 try{
 S.dc.unitStatMode=(sl&&sl.unitStatMode)||'normal';
 S.dc.charStatMode=(sl&&sl.charStatMode)||'normal';
+S.dc.unitCondPassive=!!(sl&&sl.unitCondPassive);
+S.dc.charCondPassive=!!(sl&&sl.charCondPassive);
+S.dc.unitCondStackCount=Math.max(0,(sl&&sl.unitCondStackCount)|0);
+S.dc.unitHpAtkTierIndex=Math.max(0,(sl&&sl.unitHpAtkTierIndex)|0);
 return fn();
 }finally{
-S.dc.unitStatMode=um;
-S.dc.charStatMode=cm;
+S.dc.unitStatMode=um;S.dc.charStatMode=cm;S.dc.unitCondPassive=uc;S.dc.charCondPassive=cc;S.dc.unitCondStackCount=usc;S.dc.unitHpAtkTierIndex=uhp;
 }
 }
 function _tbCountSquadUnitsMatchingGroup(side,group){
@@ -10000,13 +10051,37 @@ return z;
 function _tbComputeSquadConditionSheetPcts(sl,side){
 const loc=_tbLocalSquadConditionSheetPcts(sl,side);
 const ext=_tbComputeExternalFlatAdSquadPctForSlot(sl,side);
-let atk=(loc.atk|0)+(ext.atk|0),def=(loc.def|0)+(ext.def|0);
+const br=_tbBigRangExtraAdForSlot(sl,side);
+let atk=(loc.atk|0)+(ext.atk|0)+(br.atk|0),def=(loc.def|0)+(ext.def|0)+(br.def|0);
+/* Cap Phenex stacks only — do not clip other same-value ATK+DEF auras (Sandaime, etc.). */
 const phenN=_tbPhenexUniqueEligibleCarrierCountForReceiver(sl,side);
-if(phenN>0&&atk===def){
-atk=Math.min(PHENEX_SQUAD_FLAT_AD_MAX_TOTAL_PCT,atk);
-def=Math.min(PHENEX_SQUAD_FLAT_AD_MAX_TOTAL_PCT,def);
+if(phenN>0){
+const phenUncapped=PHENEX_SQUAD_FLAT_AD_PER_STACK_PCT*phenN;
+const phenWant=Math.min(PHENEX_SQUAD_FLAT_AD_MAX_TOTAL_PCT,phenUncapped);
+const over=phenUncapped-phenWant;
+if(over>0){atk-=over;def-=over}
 }
 return{atk,def};
+}
+/** Big-Rang EX Zeon aura when carrier is in this TB side and binding did not already apply via external walk. */
+function _tbBigRangExtraAdForSlot(sl,side){
+const z={atk:0,def:0};
+const ud=sl&&sl.unitData;
+if(!ud||ud._manual||!_dcUnitHasZeonLineageTag(ud))return z;
+if(_dcIsBigRangZeonSquadCarrierPair(sl.charData,ud))return z;
+const squ=S.tb.squads[side|0];
+if(!squ)return z;
+let hasCarrier=false,bindingApplied=false;
+for(let i=0;i<5;i++){
+const car=squ.slots[i];
+if(!car||car===sl)continue;
+if(!_dcIsBigRangZeonSquadCarrierPair(car.charData,car.unitData))continue;
+hasCarrier=true;
+const patch=_tbCarrierFlatAdAuraSheetPct(car,sl,side);
+if((patch.atk|0)>0||(patch.def|0)>0)bindingApplied=true;
+}
+if(hasCarrier&&!bindingApplied)return{atk:BIG_RANG_ZEON_SQUAD_FLAT_AD_PCT,def:BIG_RANG_ZEON_SQUAD_FLAT_AD_PCT};
+return z;
 }
 function _tbUnitAllowsSpSsp(ud){
 if(!ud||ud._manual)return false;
@@ -10018,10 +10093,8 @@ return parseInt(ud.rarity_id||'5',10)<=4;
 function _tbStatTotalsWithFullCtx(sl,side,optionParts,supForSlot){
 if(!sl||!sl.unitData)return null;
 const ud=sl.unitData;
-const lb=ud.lb_data;const maxTier=lb?lb.length-1:0;const tier=Math.min(sl.lbTier|0,maxTier);
 const statKey=_tbGetUnitStatKey(ud,sl);
-const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
-const stats=td?td[statKey]||td.stats_no_cond:[];
+const stats=_tbSlotStatsRows(sl,ud,statKey);
 const supEnt=S.tb.supBySide[side];
 let supporters=[];
 if(supForSlot&&!supForSlot.error)supporters=[supForSlot];
@@ -10030,7 +10103,8 @@ if(supForSlot===null)supporters=[_tbSupporterForStatsNoLeader(supEnt.data)];
 else supporters=[supEnt.data];
 }
 const sqP=_tbComputeSquadConditionSheetPcts(sl,side);
-const fullCtx={masterLeagueBuff:!!S.tb.masterLeague,grandOffensiveBuff:!!S.tb.grandOffensive,masterLeagueBuffMove:false,optionParts:optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:_tbEffectiveExSquadAtkPctForTb(sl,side),squadCondAtkPct:sqP.atk|0,squadCondDefPct:sqP.def|0};
+const mlOn=!!S.tb.masterLeague;
+const fullCtx={masterLeagueBuff:mlOn,grandOffensiveBuff:!!S.tb.grandOffensive,masterLeagueBuffMove:mlOn,optionParts:optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:_tbEffectiveExSquadAtkPctForTb(sl,side),squadCondAtkPct:sqP.atk|0,squadCondDefPct:sqP.def|0};
 const f=_dcGetModifiedAttackerUnitStatsFromCtx(fullCtx,stats,true);
 let fatk=f.unitAtk,fdef=f.unitDefVal;
 const prf=_tbPilotPairUnitAtkDef(sl.charData,ud,!!sl.charCondPassive,fatk,fdef);
@@ -10251,10 +10325,8 @@ function _tbBuildSlotStatEff(sl,side,supForSlot){
 if(!sl||!sl.unitData)return null;
 const ud=sl.unitData;
 const terrState=_tbSlotTerrainState(sl);
-const lb=ud.lb_data;const maxTier=lb?lb.length-1:0;const tier=Math.min(sl.lbTier|0,maxTier);
 const statKey=_tbGetUnitStatKey(ud,sl);
-const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
-const stats=td?td[statKey]||td.stats_no_cond:[];
+const stats=_tbSlotStatsRows(sl,ud,statKey);
 const supEnt=S.tb.supBySide[side];
 let supporters=[];
 if(supForSlot&&!supForSlot.error)supporters=[supForSlot];
@@ -10263,7 +10335,8 @@ if(supForSlot===null)supporters=[_tbSupporterForStatsNoLeader(supEnt.data)];
 else supporters=[supEnt.data];
 }
 const sqP=_tbComputeSquadConditionSheetPcts(sl,side);
-const fullCtx={masterLeagueBuff:!!S.tb.masterLeague,grandOffensiveBuff:!!S.tb.grandOffensive,masterLeagueBuffMove:false,optionParts:sl.optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:_tbEffectiveExSquadAtkPctForTb(sl,side),squadCondAtkPct:sqP.atk|0,squadCondDefPct:sqP.def|0};
+const mlOn=!!S.tb.masterLeague;
+const fullCtx={masterLeagueBuff:mlOn,grandOffensiveBuff:!!S.tb.grandOffensive,masterLeagueBuffMove:mlOn,optionParts:sl.optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:_tbEffectiveExSquadAtkPctForTb(sl,side),squadCondAtkPct:sqP.atk|0,squadCondDefPct:sqP.def|0};
 const baseCtx={masterLeagueBuff:false,grandOffensiveBuff:false,masterLeagueBuffMove:false,optionParts:[],supporters:[],unitTurnBuffAtk:false,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:0,squadCondAtkPct:0,squadCondDefPct:0};
 const b=_dcGetModifiedAttackerUnitStatsFromCtx(baseCtx,stats,true);
 const f=_dcGetModifiedAttackerUnitStatsFromCtx(fullCtx,stats,true);
@@ -10278,7 +10351,10 @@ fdef=_tbApplyUnitTurnBuffDefToMsDef(fdef,ud,!!sl.unitTurnBuffDef);
 const fullMovRaw=Math.max(0,Math.round(Number(f.unitMove)||0));
 let movShown=fullMovRaw;
 if(terrState.movePenalty)movShown=_tbApplyTerrainMovePenalty(fullMovRaw);
-return{ud,hp:f.unitHp,atk:fatk,def:fdef,mob:f.unitMob,mov:movShown,dHp:f.unitHp-b.unitHp,dAtk:fatk-batk,dDef:fdef-bdef,dMob:f.unitMob-b.unitMob,dMov:movShown-Math.max(0,Math.round(Number(b.unitMove)||0)),blocked:!!terrState.blocked,terrainSymbol:terrState.symbol||'-'};
+const baseMovRaw=Math.max(0,Math.round(Number(b.unitMove)||0));
+let baseMovShown=baseMovRaw;
+if(terrState.movePenalty)baseMovShown=_tbApplyTerrainMovePenalty(baseMovRaw);
+return{ud,hp:f.unitHp,atk:fatk,def:fdef,mob:f.unitMob,mov:movShown,dHp:f.unitHp-b.unitHp,dAtk:fatk-batk,dDef:fdef-bdef,dMob:f.unitMob-b.unitMob,dMov:movShown-baseMovShown,blocked:!!terrState.blocked,terrainSymbol:terrState.symbol||'-'};
 }
 function _tbTerrainQuery(){initTeamBuilder();const tt=S.tb.terrainType||'Space';return'&terrain='+encodeURIComponent(tt+':2+')}
 function tbFillTerrainSelects(){
@@ -10342,7 +10418,7 @@ S.tb.selectedKey=key;
 const sl=_tbSquFromKey(key).slots[_tbIdxFromKey(key)];
 const rc=sl.unitData&&sl.unitData.recommend_character;
 if(!rc||!rc.id)return;
-try{const d=await fetch(`/api/character/${encodeURIComponent(rc.id)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){sl.charId=String(rc.id);sl.charData=d}}catch(_){}
+try{const d=await fetch(`/api/character/${encodeURIComponent(rc.id)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){sl.charId=String(rc.id);sl.charData=d;_tbSyncSlotCondPassives(sl)}}catch(_){}
 renderTeamBuilder();
 }
 function tbSetSlotLbTier(key,tier,ev){
@@ -10514,12 +10590,52 @@ return`<div class="tb-slot-lb-outside" onclick="event.stopPropagation()"><detail
 }
 function _tbSlotStatModeHtml(key,sl){
 const ud=sl.unitData;
-if(!ud||ud._manual||!_tbUnitAllowsSpSsp(ud))return'';
+if(!ud||ud._manual)return'';
+const parts=[];
+if(_tbUnitAllowsSpSsp(ud)){
 const m=sl.unitStatMode||'normal';
 const labN=escAttr(t('tb_stat_normal')||'Normal');
 const labSp=escAttr(t('tb_stat_sp')||'SP');
 const labSsp=escAttr(t('tb_stat_ssp')||'SSP');
-return`<div class="tb-slot-stat-mode" onclick="event.stopPropagation()"><button type="button" class="tb-slot-stat-mode-btn${m==='normal'?' is-active':''}" title="${labN}" aria-label="${labN}" onclick="tbSetSlotUnitStatMode(${key},'normal',event)">${esc(t('tb_stat_normal')||'Normal')}</button><button type="button" class="tb-slot-stat-mode-btn${m==='sp'?' is-active':''}" title="${labSp}" aria-label="${labSp}" onclick="tbSetSlotUnitStatMode(${key},'sp',event)">${esc(t('tb_stat_sp')||'SP')}</button><button type="button" class="tb-slot-stat-mode-btn${m==='ssp'?' is-active':''}" title="${labSsp}" aria-label="${labSsp}" onclick="tbSetSlotUnitStatMode(${key},'ssp',event)">${esc(t('tb_stat_ssp')||'SSP')}</button></div>`;
+parts.push(`<div class="tb-slot-stat-mode" onclick="event.stopPropagation()"><button type="button" class="tb-slot-stat-mode-btn${m==='normal'?' is-active':''}" title="${labN}" aria-label="${labN}" onclick="tbSetSlotUnitStatMode(${key},'normal',event)">${esc(t('tb_stat_normal')||'Normal')}</button><button type="button" class="tb-slot-stat-mode-btn${m==='sp'?' is-active':''}" title="${labSp}" aria-label="${labSp}" onclick="tbSetSlotUnitStatMode(${key},'sp',event)">${esc(t('tb_stat_sp')||'SP')}</button><button type="button" class="tb-slot-stat-mode-btn${m==='ssp'?' is-active':''}" title="${labSsp}" aria-label="${labSsp}" onclick="tbSetSlotUnitStatMode(${key},'ssp',event)">${esc(t('tb_stat_ssp')||'SSP')}</button></div>`);
+}
+const cpBits=_tbSlotCpToggleHtml(key,sl);
+if(cpBits)parts.push(cpBits);
+return parts.join('');
+}
+function _tbSlotCpToggleHtml(key,sl){
+const ud=sl.unitData,cd=sl.charData;
+const showU=!!(ud&&!ud._manual&&ud.has_cond_stats);
+const showC=!!(cd&&!cd._manual&&ud&&!ud._manual&&_dcCharHasConditional(cd));
+if(!showU&&!showC)return'';
+const _cpL=escAttr(t('conditional_passive')||'CP');
+let h=`<div class="tb-slot-cp-row" onclick="event.stopPropagation()">`;
+if(showU){
+h+=`<button type="button" class="tb-slot-cp-btn${sl.unitCondPassive?' is-active':''}" title="${_cpL}" aria-label="${_cpL}" aria-pressed="${sl.unitCondPassive?'true':'false'}" onclick="tbToggleSlotUnitCondPassive(${key},event)">${_dcCpChipSpanHtml(!!sl.unitCondPassive)}</button>`;
+}
+if(showC){
+h+=`<button type="button" class="tb-slot-cp-btn${sl.charCondPassive?' is-active':''}" title="${_cpL}" aria-label="${_cpL}" aria-pressed="${sl.charCondPassive?'true':'false'}" onclick="tbToggleSlotCharCondPassive(${key},event)">${_dcCpChipSpanHtml(!!sl.charCondPassive)}</button>`;
+}
+h+=`</div>`;
+return h;
+}
+function tbToggleSlotUnitCondPassive(key,ev){
+if(ev){ev.preventDefault();ev.stopPropagation()}
+initTeamBuilder();
+const sl=_tbSquFromKey(key).slots[_tbIdxFromKey(key)];
+if(!sl||!sl.unitData||!sl.unitData.has_cond_stats)return;
+sl.unitCondPassive=!sl.unitCondPassive;
+if(sl.unitCondPassive)_tbInitSlotUnitCondControls(sl);
+else{sl.unitCondStackCount=0;sl.unitHpAtkTierIndex=0}
+renderTeamBuilder();
+}
+function tbToggleSlotCharCondPassive(key,ev){
+if(ev){ev.preventDefault();ev.stopPropagation()}
+initTeamBuilder();
+const sl=_tbSquFromKey(key).slots[_tbIdxFromKey(key)];
+if(!sl||!sl.charData||!_dcCharHasConditional(sl.charData))return;
+sl.charCondPassive=!sl.charCondPassive;
+renderTeamBuilder();
 }
 function _tbSlotOpOutsideHtml(key,sl){
 if(!sl.unitData)return'';
@@ -11266,6 +11382,7 @@ const cd=await fetch(`/api/character/${encodeURIComponent(rc.id)}?lang=${S.lang}
 if(!cd.error){sl.charId=String(rc.id);sl.charData=cd}
 }catch(_){}
 }
+_tbSyncSlotCondPassives(sl);
 }
 async function pickTbItem(id){
 const sid=String(id==null?'':id).trim();
@@ -11296,7 +11413,7 @@ await _tbAssignUnitDataToSlot(sl,d,sid);
 await tbAutoFillEmptyOptionParts({skipRender:true});
 }catch(_){}
 }else if(type==='character'){
-try{const d=await fetch(`/api/character/${encodeURIComponent(sid)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){sl.charId=sid;sl.charData=d}}catch(_){}
+try{const d=await fetch(`/api/character/${encodeURIComponent(sid)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){sl.charId=sid;sl.charData=d;_tbSyncSlotCondPassives(sl)}}catch(_){}
 }else if(type==='option'){
 const hit=rowsSnap.find(x=>String(x.id)===String(sid));
 if(hit){
@@ -11375,10 +11492,10 @@ const squ=S.tb.rearrange.draft[sa];
 const ia=_tbIdxFromKey(a),ib=_tbIdxFromKey(b);
 const slotA=squ.slots[ia],slotB=squ.slots[ib];
 if(p==='unit'){
-const ua={unitId:slotA.unitId,unitData:slotA.unitData,optionParts:slotA.optionParts||[],lbTier:slotA.lbTier|0,unitStatMode:slotA.unitStatMode||'normal',unitCondPassive:!!slotA.unitCondPassive,unitTurnBuffAtk:!!slotA.unitTurnBuffAtk,unitTurnBuffDef:!!slotA.unitTurnBuffDef,exSquadAtkPct:slotA.exSquadAtkPct|0};
-const ub={unitId:slotB.unitId,unitData:slotB.unitData,optionParts:slotB.optionParts||[],lbTier:slotB.lbTier|0,unitStatMode:slotB.unitStatMode||'normal',unitCondPassive:!!slotB.unitCondPassive,unitTurnBuffAtk:!!slotB.unitTurnBuffAtk,unitTurnBuffDef:!!slotB.unitTurnBuffDef,exSquadAtkPct:slotB.exSquadAtkPct|0};
-slotA.unitId=ub.unitId;slotA.unitData=ub.unitData;slotA.optionParts=ub.optionParts;slotA.lbTier=ub.lbTier;slotA.unitStatMode=ub.unitStatMode;slotA.unitCondPassive=ub.unitCondPassive;slotA.unitTurnBuffAtk=ub.unitTurnBuffAtk;slotA.unitTurnBuffDef=ub.unitTurnBuffDef;slotA.exSquadAtkPct=ub.exSquadAtkPct;
-slotB.unitId=ua.unitId;slotB.unitData=ua.unitData;slotB.optionParts=ua.optionParts;slotB.lbTier=ua.lbTier;slotB.unitStatMode=ua.unitStatMode;slotB.unitCondPassive=ua.unitCondPassive;slotB.unitTurnBuffAtk=ua.unitTurnBuffAtk;slotB.unitTurnBuffDef=ua.unitTurnBuffDef;slotB.exSquadAtkPct=ua.exSquadAtkPct;
+const ua={unitId:slotA.unitId,unitData:slotA.unitData,optionParts:slotA.optionParts||[],lbTier:slotA.lbTier|0,unitStatMode:slotA.unitStatMode||'normal',unitCondPassive:!!slotA.unitCondPassive,unitCondStackCount:slotA.unitCondStackCount|0,unitHpAtkTierIndex:slotA.unitHpAtkTierIndex|0,unitTurnBuffAtk:!!slotA.unitTurnBuffAtk,unitTurnBuffDef:!!slotA.unitTurnBuffDef,exSquadAtkPct:slotA.exSquadAtkPct|0};
+const ub={unitId:slotB.unitId,unitData:slotB.unitData,optionParts:slotB.optionParts||[],lbTier:slotB.lbTier|0,unitStatMode:slotB.unitStatMode||'normal',unitCondPassive:!!slotB.unitCondPassive,unitCondStackCount:slotB.unitCondStackCount|0,unitHpAtkTierIndex:slotB.unitHpAtkTierIndex|0,unitTurnBuffAtk:!!slotB.unitTurnBuffAtk,unitTurnBuffDef:!!slotB.unitTurnBuffDef,exSquadAtkPct:slotB.exSquadAtkPct|0};
+slotA.unitId=ub.unitId;slotA.unitData=ub.unitData;slotA.optionParts=ub.optionParts;slotA.lbTier=ub.lbTier;slotA.unitStatMode=ub.unitStatMode;slotA.unitCondPassive=ub.unitCondPassive;slotA.unitCondStackCount=ub.unitCondStackCount;slotA.unitHpAtkTierIndex=ub.unitHpAtkTierIndex;slotA.unitTurnBuffAtk=ub.unitTurnBuffAtk;slotA.unitTurnBuffDef=ub.unitTurnBuffDef;slotA.exSquadAtkPct=ub.exSquadAtkPct;
+slotB.unitId=ua.unitId;slotB.unitData=ua.unitData;slotB.optionParts=ua.optionParts;slotB.lbTier=ua.lbTier;slotB.unitStatMode=ua.unitStatMode;slotB.unitCondPassive=ua.unitCondPassive;slotB.unitCondStackCount=ua.unitCondStackCount;slotB.unitHpAtkTierIndex=ua.unitHpAtkTierIndex;slotB.unitTurnBuffAtk=ua.unitTurnBuffAtk;slotB.unitTurnBuffDef=ua.unitTurnBuffDef;slotB.exSquadAtkPct=ua.exSquadAtkPct;
 }else{
 const ca={charId:slotA.charId,charData:slotA.charData,charCondPassive:!!slotA.charCondPassive};
 const cb={charId:slotB.charId,charData:slotB.charData,charCondPassive:!!slotB.charCondPassive};
