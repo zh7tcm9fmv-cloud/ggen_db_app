@@ -1115,13 +1115,18 @@
     var cell = 72;
     var gap = 6;
     var pad = 36;
-    var headerExtra = perfect ? 48 : complete ? 28 : 0;
-    var headerH = (state.type === 'supporters' ? 268 : 308) + headerExtra;
+    var playerName = currentUsername();
+    var pctTop = pad + (playerName ? 86 : 78);
+    var ownedY = pctTop + 62;
+    if (perfect) ownedY = Math.max(ownedY, pad + 142);
+    var subY = ownedY + 20;
+    var subH = 44;
+    var headerH = subY + subH + 16;
     var rowsN = Math.max(1, Math.ceil((rows.length || 1) / cols));
     var gridW = cols * cell + (cols - 1) * gap;
     var gridH = rowsN * cell + (rowsN - 1) * gap;
     var W = gridW + pad * 2;
-    var H = headerH + gridH + pad + 56;
+    var H = headerH + gridH + pad + 40;
     var scale = 2;
     var canvas = document.createElement('canvas');
     canvas.width = W * scale;
@@ -1172,7 +1177,6 @@
     ctx.font = 'bold 22px sans-serif';
     ctx.fillText(t('report_title'), textX, pad + 2);
 
-    var playerName = currentUsername();
     ctx.fillStyle = '#8494ae';
     ctx.font = '11px sans-serif';
     ctx.fillText(t('brand_line'), textX, pad + 30);
@@ -1193,18 +1197,18 @@
     var pctStr = String(st.pct);
     ctx.fillStyle = perfect ? '#ffe566' : complete ? '#ffd700' : '#f1f5f9';
     ctx.font = 'bold 64px sans-serif';
-    ctx.fillText(pctStr, pad, pad + 78);
+    ctx.fillText(pctStr, pad, pctTop);
     var pctW = ctx.measureText(pctStr).width;
     ctx.fillStyle = perfect ? '#ffd700' : complete ? '#7af0ff' : '#00d4ff';
     ctx.font = 'bold 22px sans-serif';
-    ctx.fillText('%', pad + pctW + 4, pad + 106);
+    ctx.fillText('%', pad + pctW + 4, pctTop + 28);
 
     if (complete) {
       var badge = perfect ? t('complete_max') : t('complete');
       ctx.font = 'bold 11px sans-serif';
       var bw = Math.max(perfect ? 118 : 72, ctx.measureText(badge).width + 22);
       var bx = pad + pctW + 28;
-      var by = pad + 92;
+      var by = pctTop + 14;
       var badgeGrad = ctx.createLinearGradient(bx, by, bx + bw, by);
       if (perfect) {
         badgeGrad.addColorStop(0, '#fff4c2');
@@ -1234,7 +1238,7 @@
         ctx.font = 'bold 10px sans-serif';
         var sbw = Math.max(140, ctx.measureText(subBadge).width + 18);
         var sbx = bx;
-        var sby = by + 28;
+        var sby = by + 26;
         drawRoundRect(ctx, sbx, sby, sbw, 18, 9);
         ctx.fillStyle = 'rgba(15,23,42,0.92)';
         ctx.fill();
@@ -1253,7 +1257,7 @@
     ctx.fillText(
       t('owned_line', { owned: st.owned, total: st.total, lb: st.lbTotal, lbMax: st.lbMax }),
       pad,
-      pad + 156
+      ownedY
     );
 
     var subStats = [
@@ -1268,25 +1272,24 @@
       );
     }
     var subW = gridW / subStats.length;
-    var subYOff = perfect ? 48 : complete ? 28 : 0;
     subStats.forEach(function (item, i) {
       var x = pad + i * subW;
-      var y = pad + (state.type === 'supporters' ? 186 : 196) + subYOff;
+      var y = subY;
       ctx.fillStyle = '#0f172a';
-      ctx.fillRect(x, y, subW - 4, 48);
+      ctx.fillRect(x, y, subW - 4, subH);
       ctx.strokeStyle = perfect
         ? 'rgba(255,215,0,0.5)'
         : complete
           ? 'rgba(255,215,0,0.28)'
           : '#1e293b';
-      ctx.strokeRect(x, y, subW - 4, 48);
+      ctx.strokeRect(x, y, subW - 4, subH);
       ctx.fillStyle = perfect && i === 0 ? '#ffd700' : '#00d4ff';
       ctx.font = 'bold 14px sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText(item.v, x + (subW - 4) / 2, y + 8);
+      ctx.fillText(item.v, x + (subW - 4) / 2, y + 7);
       ctx.fillStyle = '#64748b';
       ctx.font = '10px sans-serif';
-      ctx.fillText(item.l, x + (subW - 4) / 2, y + 28);
+      ctx.fillText(item.l, x + (subW - 4) / 2, y + 26);
       ctx.textAlign = 'left';
     });
 
@@ -1423,7 +1426,14 @@
     ctx.font = '12px sans-serif';
     var foot = siteUrl().replace(/^https?:\/\//, '');
     var fw = ctx.measureText(foot).width;
-    ctx.fillText(foot, W - pad - fw, footY + 12);
+    var langIcon = await loadImage(imgUrl('/static/images/UI/UI_Common_MenuIcon_Language.webp'));
+    var footIcon = 14;
+    var footGap = 5;
+    var footTextX = W - pad - fw;
+    if (langIcon) {
+      ctx.drawImage(langIcon, footTextX - footIcon - footGap, footY + 10, footIcon, footIcon);
+    }
+    ctx.fillText(foot, footTextX, footY + 12);
 
     return canvas;
   }
