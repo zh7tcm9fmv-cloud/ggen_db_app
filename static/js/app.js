@@ -2143,7 +2143,9 @@ function instantBrowseWithBlankQ(inputId,fn){const el=document.getElementById(in
 function instantBrowseNormalizeCatalogUrl(raw){
 try{
 const url=new URL(raw,location.origin);
-['q','rarity','role','sort','dir','stat_bounds','difficulty'].forEach(k=>url.searchParams.delete(k));
+/* sort/dir/sort_chain are applied client-side (incl. priority-lock bands). Keep them out of
+   the catalog cache key so each lock/unlock stays on the warmed pool instead of re-fetching. */
+['q','rarity','role','sort','dir','sort_chain','stat_bounds','difficulty'].forEach(k=>url.searchParams.delete(k));
 url.searchParams.set('page','1');
 url.searchParams.set('per_page','5000');
 url.searchParams.set('ranking_bulk','1');
