@@ -129,9 +129,9 @@
       brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
       owned_line: 'Possessed {owned} / {total} · Limit Break {lb} / {lbMax}',
       share_body:
-        'GGEN ETERNAL DATABASE — Collections Report\n· UR {type} possession {pct}% ({owned}/{total} {noun})\n· Limit Break {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
+        'GGEN ETERNAL DATABASE — Collections Report\n· UR Units {u_pct}% ({u_owned}/{u_total}) · LB {u_lb}/{u_lbMax}\n· UR Supporters {s_pct}% ({s_owned}/{s_total}) · LB {s_lb}/{s_lbMax}\nTrack yours + join the anonymous census so community charts grow:\n{url}\n#GundamEternal #ジージェネエターナル',
       share_body_named:
-        'GGEN ETERNAL DATABASE — Collections Report\n{name}\n· UR {type} possession {pct}% ({owned}/{total} {noun})\n· Limit Break {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
+        'GGEN ETERNAL DATABASE — Collections Report\n{name}\n· UR Units {u_pct}% ({u_owned}/{u_total}) · LB {u_lb}/{u_lbMax}\n· UR Supporters {s_pct}% ({s_owned}/{s_total}) · LB {s_lb}/{s_lbMax}\nTrack yours + join the anonymous census so community charts grow:\n{url}\n#GundamEternal #ジージェネエターナル',
       noun_units: 'units',
       noun_supporters: 'supporters',
       unowned: 'Not possessed',
@@ -239,9 +239,9 @@
       brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
       owned_line: '所持 {owned} / {total} · 限界突破 {lb} / {lbMax}',
       share_body:
-        'GGEN ETERNAL DATABASE — コレクションレポート\n· UR {type} 所持率 {pct}%（{owned}/{total}{noun}）\n· 限界突破 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
+        'GGEN ETERNAL DATABASE — コレクションレポート\n· URユニット 所持率 {u_pct}%（{u_owned}/{u_total}）· 限界突破 {u_lb}/{u_lbMax}\n· UR支援 所持率 {s_pct}%（{s_owned}/{s_total}）· 限界突破 {s_lb}/{s_lbMax}\nあなたも記録＆匿名センサスに参加してグラフを豊かに：\n{url}\n#GundamEternal #ジージェネエターナル',
       share_body_named:
-        'GGEN ETERNAL DATABASE — コレクションレポート\n{name}\n· UR {type} 所持率 {pct}%（{owned}/{total}{noun}）\n· 限界突破 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
+        'GGEN ETERNAL DATABASE — コレクションレポート\n{name}\n· URユニット 所持率 {u_pct}%（{u_owned}/{u_total}）· 限界突破 {u_lb}/{u_lbMax}\n· UR支援 所持率 {s_pct}%（{s_owned}/{s_total}）· 限界突破 {s_lb}/{s_lbMax}\nあなたも記録＆匿名センサスに参加してグラフを豊かに：\n{url}\n#GundamEternal #ジージェネエターナル',
       noun_units: '機',
       noun_supporters: '体',
       unowned: '未所持',
@@ -349,9 +349,9 @@
       brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
       owned_line: '持有 {owned} / {total} · 突破界限 {lb} / {lbMax}',
       share_body:
-        'GGEN ETERNAL DATABASE — 收藏報告\n· UR {type} 持有率 {pct}%（{owned}/{total}{noun}）\n· 突破界限 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
+        'GGEN ETERNAL DATABASE — 收藏報告\n· UR 單位 持有率 {u_pct}%（{u_owned}/{u_total}）· 突破界限 {u_lb}/{u_lbMax}\n· UR 支援人員 持有率 {s_pct}%（{s_owned}/{s_total}）· 突破界限 {s_lb}/{s_lbMax}\n一起追蹤收藏，並加入匿名普查豐富社群圖表：\n{url}\n#GundamEternal #ジージェネエターナル',
       share_body_named:
-        'GGEN ETERNAL DATABASE — 收藏報告\n{name}\n· UR {type} 持有率 {pct}%（{owned}/{total}{noun}）\n· 突破界限 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
+        'GGEN ETERNAL DATABASE — 收藏報告\n{name}\n· UR 單位 持有率 {u_pct}%（{u_owned}/{u_total}）· 突破界限 {u_lb}/{u_lbMax}\n· UR 支援人員 持有率 {s_pct}%（{s_owned}/{s_total}）· 突破界限 {s_lb}/{s_lbMax}\n一起追蹤收藏，並加入匿名普查豐富社群圖表：\n{url}\n#GundamEternal #ジージェネエターナル',
       noun_units: '機',
       noun_supporters: '個',
       unowned: '未持有',
@@ -458,9 +458,9 @@
       brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
       owned_line: '持有 {owned} / {total} · 突破界限 {lb} / {lbMax}',
       share_body:
-        'GGEN ETERNAL DATABASE — 收藏報告\n· UR {type} 持有率 {pct}%（{owned}/{total}{noun}）\n· 突破界限 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
+        'GGEN ETERNAL DATABASE — 收藏報告\n· UR 單位 持有率 {u_pct}%（{u_owned}/{u_total}）· 突破界限 {u_lb}/{u_lbMax}\n· UR 支援人員 持有率 {s_pct}%（{s_owned}/{s_total}）· 突破界限 {s_lb}/{s_lbMax}\n一起追蹤收藏，並加入匿名普查豐富社群圖表：\n{url}\n#GundamEternal #ジージェネエターナル',
       share_body_named:
-        'GGEN ETERNAL DATABASE — 收藏報告\n{name}\n· UR {type} 持有率 {pct}%（{owned}/{total}{noun}）\n· 突破界限 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
+        'GGEN ETERNAL DATABASE — 收藏報告\n{name}\n· UR 單位 持有率 {u_pct}%（{u_owned}/{u_total}）· 突破界限 {u_lb}/{u_lbMax}\n· UR 支援人員 持有率 {s_pct}%（{s_owned}/{s_total}）· 突破界限 {s_lb}/{s_lbMax}\n一起追蹤收藏，並加入匿名普查豐富社群圖表：\n{url}\n#GundamEternal #ジージェネエターナル',
       noun_units: '機',
       noun_supporters: '個',
       unowned: '未持有',
@@ -2716,16 +2716,21 @@
       }
       return;
     }
+    var uSt = computeStats(state.catalog.units || []);
+    var sSt = computeStats(state.catalog.supporters || []);
     var st = computeStats(activeList());
     var text = t('share_body_named', {
       name: name,
-      type: typeTitle(),
-      pct: st.pct,
-      owned: st.owned,
-      total: st.total,
-      noun: state.type === 'supporters' ? t('noun_supporters') : t('noun_units'),
-      lb: st.lbTotal,
-      lbMax: st.lbMax,
+      u_pct: uSt.pct,
+      u_owned: uSt.owned,
+      u_total: uSt.total,
+      u_lb: uSt.lbTotal,
+      u_lbMax: uSt.lbMax,
+      s_pct: sSt.pct,
+      s_owned: sSt.owned,
+      s_total: sSt.total,
+      s_lb: sSt.lbTotal,
+      s_lbMax: sSt.lbMax,
       url: siteUrl()
     });
     var status = document.getElementById('colStatus');
