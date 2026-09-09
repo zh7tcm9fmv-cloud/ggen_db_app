@@ -40,6 +40,7 @@
 }
 .collections-sub{
   margin:6px 0 0;max-width:62ch;font-size:13px;line-height:1.45;color:var(--text-secondary);
+  white-space:pre-line;
 }
 
 .collections-main{max-width:1600px;margin:0 auto;padding:16px 20px 40px}
@@ -301,6 +302,90 @@
   display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:flex-start;gap:8px 10px;
   margin:0 0 12px;
 }
+.collections-code-row{
+  display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px 10px;
+  width:100%;margin-top:2px;
+}
+.collections-code-field{
+  display:flex;flex-direction:column;gap:4px;
+  font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.03em;
+  flex:0 1 168px;min-width:120px;max-width:200px;
+}
+.collections-code-field input{
+  width:100%;padding:8px 10px;border-radius:var(--radius-sm);
+  border:1px solid var(--border-color);background:var(--bg-input);color:var(--text-primary);
+  font:inherit;font-size:13px;font-weight:700;letter-spacing:.08em;
+}
+.collections-code-field input:focus{
+  outline:none;border-color:var(--accent-cyan);box-shadow:0 0 0 2px rgba(0,212,255,.18);
+}
+.collections-btn--code{
+  border-color:rgba(125,211,252,.45);color:#7dd3fc;
+}
+.collections-saves{
+  width:100%;margin-top:8px;padding-top:10px;
+  border-top:1px solid rgba(125,211,252,.14);
+}
+.collections-saves-summary{
+  list-style:none;cursor:pointer;user-select:none;
+  display:flex;align-items:center;gap:8px;
+  margin:0;padding:2px 0;
+  font-size:13px;font-weight:800;letter-spacing:.01em;
+  color:var(--text-muted);
+}
+.collections-saves-summary::-webkit-details-marker{display:none}
+.collections-saves-summary::before{
+  content:'▸';display:inline-block;font-size:11px;line-height:1;
+  color:var(--accent-cyan);transition:transform .15s ease;
+}
+.collections-saves[open] .collections-saves-summary::before{transform:rotate(90deg)}
+.collections-saves-summary:hover{color:var(--text-primary)}
+.collections-saves-body{margin-top:10px}
+.collections-share-save{
+  display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px 10px;
+  width:100%;margin-top:4px;padding:10px 10px 8px;
+  border:1px solid rgba(125,211,252,.22);border-radius:var(--radius-sm);
+  background:rgba(0,212,255,.06);
+}
+.collections-share-save[hidden]{display:none!important}
+.collections-share-save-name,
+.collections-share-save-slot{
+  display:flex;flex-direction:column;gap:4px;
+  font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.03em;
+}
+.collections-share-save-name{flex:1 1 180px;min-width:min(180px,90vw)}
+.collections-share-save-slot{flex:0 1 160px}
+.collections-share-save input,
+.collections-share-save select{
+  padding:8px 10px;border-radius:var(--radius-sm);
+  border:1px solid var(--border-color);background:var(--bg-input);color:var(--text-primary);
+  font:inherit;font-size:13px;font-weight:600;
+}
+.collections-share-save input:focus,
+.collections-share-save select:focus{
+  outline:none;border-color:var(--accent-cyan);box-shadow:0 0 0 2px rgba(0,212,255,.18);
+}
+.collections-save-row{
+  display:flex;flex-wrap:wrap;align-items:stretch;gap:8px;margin-bottom:8px;
+}
+.collections-save-row .collections-save-idx{
+  flex:0 0 auto;align-self:center;font-size:12px;font-weight:800;color:var(--text-muted);min-width:1.5em;
+}
+.collections-save-row input[type=text]{
+  flex:1 1 160px;min-width:0;max-width:100%;
+  padding:7px 10px;border-radius:var(--radius-sm);
+  border:1px solid var(--border-color);background:var(--bg-input);color:var(--text-primary);
+  font:inherit;font-size:13px;font-weight:600;
+}
+.collections-save-row input[type=text]:focus{
+  outline:none;border-color:var(--accent-cyan);box-shadow:0 0 0 2px rgba(0,212,255,.18);
+}
+.collections-save-row .collections-btn{flex-shrink:0;font-size:12px;padding:7px 12px}
+.collections-save-code{
+  align-self:center;font-size:11px;font-weight:800;letter-spacing:.06em;
+  color:var(--accent-cyan);font-variant-numeric:tabular-nums;
+  max-width:7.5em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
 .collections-username{
   display:flex;flex-direction:column;gap:4px;
   font-size:11px;font-weight:700;color:var(--text-muted);letter-spacing:.03em;
@@ -358,9 +443,21 @@
 }
 .col-card:hover{border-color:rgba(0,212,255,.45);background:var(--bg-card-hover)}
 .col-card:focus-visible{outline:2px solid rgba(0,212,255,.55);outline-offset:2px}
-.col-card.is-unowned{opacity:.55;filter:grayscale(.35)}
-.col-card.is-unowned:hover{opacity:.85;filter:grayscale(.1)}
-.col-card.lb-0{border-color:#3a4d63}
+/* Unowned: much darker so LB0 (full bright) is easy to spot */
+.col-card.is-unowned{
+  opacity:.3;
+  filter:grayscale(.65) brightness(.45);
+}
+.col-card.is-unowned .col-card-name{color:var(--text-muted)}
+.col-card.is-unowned:hover{
+  opacity:.52;
+  filter:grayscale(.35) brightness(.7);
+}
+.col-card.lb-0{
+  opacity:1;filter:none;
+  border-color:#7dd3fc;
+  box-shadow:0 0 0 1px rgba(125,211,252,.35),inset 0 0 0 1px rgba(125,211,252,.12);
+}
 .col-card.lb-1{border-color:rgba(74,144,217,.65);box-shadow:0 0 0 1px rgba(74,144,217,.2)}
 .col-card.lb-2{border-color:rgba(46,213,115,.55);box-shadow:0 0 0 1px rgba(46,213,115,.18)}
 .col-card.lb-3{border-color:rgba(255,215,0,.7);box-shadow:0 0 0 1px rgba(255,215,0,.22),0 0 16px rgba(255,215,0,.08)}
@@ -422,10 +519,133 @@
 }
 .collections-foot p{margin:0;max-width:70ch;line-height:1.45}
 
+.collections-hp{
+  position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;
+  opacity:0!important;pointer-events:none!important;overflow:hidden!important;
+}
+.collections-census{
+  margin:28px 0 12px;padding:16px 14px 18px;
+  border:1px solid var(--border-color);border-radius:var(--radius);
+  background:rgba(10,14,20,.55);
+}
+.collections-census-head h2{
+  margin:0 0 10px;font-size:16px;font-weight:800;letter-spacing:.02em;color:var(--text-primary);
+}
+.collections-census-form{
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-bottom:14px;
+}
+.collections-census-optin{
+  display:inline-flex;align-items:flex-start;gap:8px;
+  font-size:13px;font-weight:600;color:var(--text-primary);cursor:pointer;max-width:min(520px,96vw);
+}
+.collections-census-optin input{margin-top:2px;accent-color:var(--accent-cyan)}
+.collections-census-meta{
+  margin:0;flex:1 1 100%;font-size:12px;color:var(--text-muted);min-height:1.2em;
+}
+.collections-census-charts{
+  display:grid;grid-template-columns:1fr;gap:14px;
+}
+.collections-census-panel--depth{max-width:min(420px,100%)}
+.collections-census-panel--kits{min-width:0;overflow:visible}
+.collections-census-own{overflow:visible}
+.collections-census-vhist{
+  display:grid;grid-template-columns:28px minmax(0,1fr);gap:6px;align-items:stretch;
+  min-height:168px;overflow:visible;
+}
+.collections-census-vhist-yaxis{
+  display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;
+  padding:2px 0 28px;font-size:10px;font-weight:800;color:var(--text-muted);
+  font-variant-numeric:tabular-nums;line-height:1;
+}
+.collections-census-vhist-scroll{
+  overflow:visible;min-width:0;
+}
+.collections-census-vhist-bars{
+  display:flex;align-items:flex-end;gap:1px;min-height:150px;width:100%;
+  padding:2px 0 0;overflow:visible;
+}
+.collections-census-vhist-col{
+  flex:1 1 0;min-width:0;width:auto;position:relative;z-index:1;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+}
+.collections-census-vhist-col:hover{z-index:8}
+.collections-census-vhist-barwrap{
+  width:100%;height:120px;display:flex;align-items:flex-end;justify-content:center;
+  border-bottom:1px solid rgba(125,211,252,.25);
+  background:linear-gradient(to top,rgba(0,212,255,.04),transparent 70%);
+}
+.collections-census-vhist-bar{
+  width:78%;min-width:2px;max-width:14px;min-height:0;border-radius:2px 2px 1px 1px;
+  transition:height .35s ease, filter .15s ease;
+}
+.collections-census-vhist-col:hover .collections-census-vhist-bar{
+  filter:brightness(1.12);
+}
+.collections-census-vhist-thumb{
+  width:100%;aspect-ratio:1;max-width:100%;border-radius:3px;overflow:hidden;
+  border:1px solid rgba(125,211,252,.22);background:#0b1220;
+  transform-origin:center bottom;
+  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  will-change:transform;
+}
+.collections-census-vhist-thumb img{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+.collections-census-vhist-col:hover .collections-census-vhist-thumb{
+  transform:scale(3.1);
+  border-color:rgba(255,215,0,.75);
+  box-shadow:0 8px 22px rgba(0,0,0,.55),0 0 0 1px rgba(168,85,247,.45);
+}
+.collections-census-vhist-val{display:none}
+.collections-census-panel{
+  min-width:0;padding:12px 12px 10px;
+  border:1px solid rgba(125,211,252,.18);border-radius:var(--radius-sm);
+  background:rgba(0,0,0,.18);
+}
+.collections-census-panel h3{
+  margin:0 0 4px;font-size:13px;font-weight:800;letter-spacing:.01em;
+  color:var(--text-muted);
+}
+.collections-census-hint{
+  margin:0 0 10px;font-size:11px;line-height:1.35;color:var(--text-muted);opacity:.9;
+}
+.collections-census-hist-row,
+.collections-census-own-row{
+  display:grid;grid-template-columns:56px minmax(0,1fr) 44px;gap:8px;align-items:center;
+  margin:5px 0;
+}
+.collections-census-own-row{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) 52px}
+.collections-census-hist-lab,
+.collections-census-own-lab{
+  font-size:11px;font-weight:700;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.collections-census-own-lab{color:var(--text-primary)}
+.collections-census-bar{
+  height:10px;border-radius:4px;overflow:hidden;
+  background:rgba(0,212,255,.12);
+}
+.collections-census-bar>i{
+  display:block;height:100%;width:0%;
+  background:linear-gradient(90deg,#00d4ff,#38bdf8);
+  transition:width .35s ease;
+}
+.collections-census-own-row .collections-census-bar>i{
+  background:linear-gradient(90deg,#fbbf24,#f59e0b);
+}
+.collections-census-count{
+  font-size:11px;font-weight:800;color:var(--text-primary);text-align:right;font-variant-numeric:tabular-nums;
+}
+.collections-census-empty{
+  margin:8px 0 4px;font-size:12px;color:var(--text-muted);
+}
+
 @media(prefers-reduced-motion:reduce){
   .collections-gauge-bar>i,.col-card{transition:none}
   .collections-hud.is-complete .collections-gauge-bar>i,
   .collections-hud.is-perfect .collections-gauge-bar>i,
   .collections-gauge.is-complete-pop{animation:none}
   .collections-hud.is-perfect .collections-gauge-pct{filter:none}
+  .collections-census-vhist-thumb,
+  .collections-census-vhist-bar{transition:none}
+  .collections-census-vhist-col:hover .collections-census-vhist-thumb{transform:scale(2.4)}
 }

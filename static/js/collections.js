@@ -3,6 +3,8 @@
 
   var STORAGE_KEY = 'ggen_collections_v1';
   var USERNAME_KEY = 'ggen_collections_username';
+  var SAVES_KEY = 'ggen_collections_saves_v1';
+  var SAVE_SLOT_COUNT = 5;
   var LANG_STORAGE_KEY = 'ggen_lang';
   var MAX_LB = 3; /* unowned = -1, owned LB0..LB3 */
   var EAGER_THUMB_COUNT = 16;
@@ -62,7 +64,7 @@
       back: '← Database',
       eyebrow: 'UR possession tracker',
       title: 'Collections',
-      sub: 'Track UR unit and supporter possession. Tap a portrait to cycle not possessed → Limit Break 0 → Limit Break 3. Possessing a unit covers its character.',
+      sub: 'Track UR unit and supporter possession\nTap a portrait to cycle not possessed → Limit Break 0 → Limit Break 3.\nPossessing a unit covers its character',
       lang: 'Lang',
       units: 'Units',
       supporters: 'Supporters',
@@ -77,6 +79,23 @@
       reset_all: 'Reset All',
       save_image: 'Save as image',
       share_x: 'Share on X',
+      share_code: 'Share code',
+      share_code_ph: 'Paste code to import…',
+      copy_share_code: 'Generate share code',
+      import_share_code: 'Import',
+      share_code_copied: 'Share code copied — name it to save a slot (optional).',
+      share_code_fail: 'Could not create share code.\n{err}',
+      share_import_ok: 'Imported {n} entries.',
+      share_import_fail: 'Invalid or unknown share code.',
+      share_import_confirm: 'Replace this browser’s Collections progress with the imported code?',
+      share_save_name: 'Name this collection',
+      share_save_slot: 'Save to slot',
+      share_save_confirm: 'Save',
+      share_save_skip: 'Not now',
+      share_save_ok: 'Saved “{name}” to slot {i} · code {code}',
+      share_save_need_name: 'Enter a collection name to save.',
+      slot_empty: 'empty',
+      slot_label: '{i}. {name}',
       username: 'Player name',
       username_ph: 'Your in-game name',
       share_need_name: 'Enter your player name to include it on X.',
@@ -115,14 +134,47 @@
         'GGEN ETERNAL DATABASE — Collections Report\n{name}\n· UR {type} possession {pct}% ({owned}/{total} {noun})\n· Limit Break {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
       noun_units: 'units',
       noun_supporters: 'supporters',
-      unowned: 'Not possessed'
+      unowned: 'Not possessed',
+      census_title: 'Community census',
+      census_blurb:
+        'Opt-in anonymous stats. Choose a unique display name. Graphs never show names.',
+      census_optin: 'Include my Collections in the anonymous census',
+      census_submit: 'Submit / update census',
+      census_hist_title: 'Player collection depth',
+      census_own_title: 'Most collected {type}',
+      census_hist_hint:
+        'Each bar = how many players are in that collection-% range. Not possessed = 0 · Max Limit Break = 4.',
+      census_own_hint:
+        'Sorted least → most collected (left → right). Height = total possession points in the census (not possessed = 0 · Max Limit Break = 4). Hover a bar to enlarge its thumb.',
+      census_own_tip: '{pts} pts · {owned} have it · avg {avg} / 4',
+      census_y_owned: 'Pts',
+      census_need_optin: 'Check the opt-in box to contribute.',
+      census_need_name: 'Enter a display name first (unique across contributors).',
+      census_ok: 'Census saved as “{name}” · {n} snapshots.',
+      census_updated: 'Census updated for “{name}” · {n} snapshots.',
+      census_name_taken: 'That display name is already used. Pick another.',
+      census_fail: 'Census submit failed.\n{err}',
+      census_empty: 'No opt-in snapshots yet — be the first.',
+      census_meta: '{n} anonymous snapshots · board: {board}',
+      census_loading: 'Loading census…',
+      saves_title: 'Saved Collections',
+      save_slot_ph: 'Collection name',
+      save_slot: 'Save',
+      load_slot: 'Load',
+      clear_slot: 'Clear',
+      save_slot_ok: 'Saved “{name}”.',
+      load_slot_ok: 'Loaded “{name}” ({n} entries).',
+      load_slot_empty: 'That slot is empty.',
+      load_slot_confirm: 'Replace this browser’s current Collections with “{name}”?',
+      clear_slot_ok: 'Cleared slot {i}.',
+      default_save_name: 'Collection {i}'
     },
     JA: {
       page_title: 'コレクション — GGen Eternal Database',
       back: '← データベース',
       eyebrow: 'UR所持率トラッカー',
       title: 'コレクション',
-      sub: 'URユニット／サポーターの所持を記録。タップで未所持 → 限界突破0 → 限界突破3。ユニット所持はキャラクター所持も含みます。',
+      sub: 'URユニット／サポーターの所持を記録\nタップで未所持 → 限界突破0 → 限界突破3。\nユニット所持はキャラクター所持も含みます',
       lang: '言語',
       units: 'ユニット',
       supporters: 'サポーター',
@@ -137,6 +189,23 @@
       reset_all: 'すべてリセット',
       save_image: '画像で保存',
       share_x: 'Xでシェア',
+      share_code: '共有コード',
+      share_code_ph: 'コードを貼り付けてインポート…',
+      copy_share_code: '共有コードを生成',
+      import_share_code: 'インポート',
+      share_code_copied: '共有コードをコピーしました — 名前を付けてスロットに保存できます。',
+      share_code_fail: '共有コードを作成できませんでした。\n{err}',
+      share_import_ok: '{n}件をインポートしました。',
+      share_import_fail: '無効または不明な共有コードです。',
+      share_import_confirm: 'このブラウザのコレクション記録をインポート内容で置き換えますか？',
+      share_save_name: 'コレクション名',
+      share_save_slot: '保存スロット',
+      share_save_confirm: '保存',
+      share_save_skip: 'いまはしない',
+      share_save_ok: '「{name}」をスロット {i} に保存 · コード {code}',
+      share_save_need_name: '保存するにはコレクション名を入力してください。',
+      slot_empty: '空き',
+      slot_label: '{i}. {name}',
       username: 'プレイヤー名',
       username_ph: 'ゲーム内のプレイヤー名',
       share_need_name: 'Xに含めるプレイヤー名を入力してください。',
@@ -175,14 +244,47 @@
         'GGEN ETERNAL DATABASE — コレクションレポート\n{name}\n· UR {type} 所持率 {pct}%（{owned}/{total}{noun}）\n· 限界突破 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
       noun_units: '機',
       noun_supporters: '体',
-      unowned: '未所持'
+      unowned: '未所持',
+      census_title: 'コミュニティセンサス',
+      census_blurb:
+        '任意参加の匿名統計です。表示名は一意。グラフに名前は出ません。',
+      census_optin: '自分のコレクションを匿名センサスに含める',
+      census_submit: 'センサスを送信／更新',
+      census_hist_title: 'プレイヤーのコレクション深度',
+      census_own_title: '所持が多い{type}',
+      census_hist_hint:
+        '各棒＝その所持％帯にいる人数。未所持=0・限界突破MAX=4。',
+      census_own_hint:
+        '所持ポイントが少ない順（左→右）。高さ＝センサス内の合計所持ポイント（未所持=0・限界突破MAX=4）。棒にホバーでサムネ拡大。',
+      census_own_tip: '{pts}pt · 所持 {owned}人 · 平均 {avg} / 4',
+      census_y_owned: 'Pt',
+      census_need_optin: '参加するにはチェックを入れてください。',
+      census_need_name: '先に表示名を入力してください（他者と重複不可）。',
+      census_ok: '「{name}」としてセンサスを保存しました · {n}件。',
+      census_updated: '「{name}」のセンサスを更新しました · {n}件。',
+      census_name_taken: 'その表示名は使用中です。別の名前を選んでください。',
+      census_fail: 'センサス送信に失敗しました。\n{err}',
+      census_empty: 'まだ任意参加のスナップショットがありません。',
+      census_meta: '匿名スナップショット {n}件 · 対象: {board}',
+      census_loading: 'センサス読み込み中…',
+      saves_title: '保存したコレクション',
+      save_slot_ph: 'コレクション名',
+      save_slot: '保存',
+      load_slot: '読込',
+      clear_slot: 'クリア',
+      save_slot_ok: '「{name}」を保存しました。',
+      load_slot_ok: '「{name}」を読み込みました（{n}件）。',
+      load_slot_empty: 'このスロットは空です。',
+      load_slot_confirm: '現在のコレクションを「{name}」で置き換えますか？',
+      clear_slot_ok: 'スロット {i} をクリアしました。',
+      default_save_name: 'コレクション {i}'
     },
     TW: {
       page_title: '收藏 — GGen Eternal Database',
       back: '← 資料庫',
       eyebrow: 'UR 持有率追蹤',
       title: '收藏',
-      sub: '記錄 UR 單位與支援人員持有狀態。點選肖像可循環：未持有 → 突破界限 0 → 突破界限 3。持有單位即視為持有角色。',
+      sub: '記錄 UR 單位與支援人員持有狀態\n點選肖像可循環：未持有 → 突破界限 0 → 突破界限 3。\n持有單位即視為持有角色',
       lang: '語言',
       units: '單位',
       supporters: '支援人員',
@@ -197,6 +299,23 @@
       reset_all: '全部重設',
       save_image: '儲存圖片',
       share_x: '分享至 X',
+      share_code: '分享代碼',
+      share_code_ph: '貼上代碼以匯入…',
+      copy_share_code: '產生分享代碼',
+      import_share_code: '匯入',
+      share_code_copied: '已複製分享代碼 — 可命名後存入欄位（選用）。',
+      share_code_fail: '無法建立分享代碼。\n{err}',
+      share_import_ok: '已匯入 {n} 筆。',
+      share_import_fail: '無效或未知的分享代碼。',
+      share_import_confirm: '要用匯入的代碼取代此瀏覽器的收藏進度嗎？',
+      share_save_name: '為此收藏命名',
+      share_save_slot: '存入欄位',
+      share_save_confirm: '儲存',
+      share_save_skip: '暫時不要',
+      share_save_ok: '已將「{name}」存入欄位 {i} · 代碼 {code}',
+      share_save_need_name: '請輸入收藏名稱後再儲存。',
+      slot_empty: '空',
+      slot_label: '{i}. {name}',
       username: '玩家名稱',
       username_ph: '遊戲內的玩家名稱',
       share_need_name: '請輸入要一併分享到 X 的玩家名稱。',
@@ -235,14 +354,46 @@
         'GGEN ETERNAL DATABASE — 收藏報告\n{name}\n· UR {type} 持有率 {pct}%（{owned}/{total}{noun}）\n· 突破界限 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
       noun_units: '機',
       noun_supporters: '個',
-      unowned: '未持有'
+      unowned: '未持有',
+      census_title: '社群普查',
+      census_blurb: '自願加入的匿名統計。顯示名稱須唯一。圖表不顯示名稱。',
+      census_optin: '將我的收藏納入匿名普查',
+      census_submit: '送出／更新普查',
+      census_hist_title: '玩家收藏深度',
+      census_own_title: '最多持有{type}',
+      census_hist_hint:
+        '每根長條＝落在該持有％區間的人數。未持有=0・突破界限 MAX=4。',
+      census_own_hint:
+        '依持有點數由低到高（左→右）。高度＝普查內合計持有點數（未持有=0・突破界限 MAX=4）。懸停長條可放大縮圖。',
+      census_own_tip: '{pts} 點 · 持有 {owned} 人 · 平均 {avg} / 4',
+      census_y_owned: '點',
+      census_need_optin: '請先勾選同意納入普查。',
+      census_need_name: '請先輸入顯示名稱（不可與其他人重複）。',
+      census_ok: '已以「{name}」儲存普查 · {n} 筆快照。',
+      census_updated: '已更新「{name}」的普查 · {n} 筆快照。',
+      census_name_taken: '此顯示名稱已被使用，請換一個。',
+      census_fail: '普查送出失敗。\n{err}',
+      census_empty: '尚無自願快照 — 歡迎成為第一位。',
+      census_meta: '{n} 筆匿名快照 · 板面: {board}',
+      census_loading: '正在載入普查…',
+      saves_title: '已儲存的收藏',
+      save_slot_ph: '收藏名稱',
+      save_slot: '儲存',
+      load_slot: '讀取',
+      clear_slot: '清除',
+      save_slot_ok: '已儲存「{name}」。',
+      load_slot_ok: '已讀取「{name}」（{n} 筆）。',
+      load_slot_empty: '此欄位是空的。',
+      load_slot_confirm: '要用「{name}」取代目前的收藏嗎？',
+      clear_slot_ok: '已清除欄位 {i}。',
+      default_save_name: '收藏 {i}'
     },
     HK: {
       page_title: '收藏 — GGen Eternal Database',
       back: '← 資料庫',
       eyebrow: 'UR 持有率追蹤',
       title: '收藏',
-      sub: '記錄 UR 單位與支援人員持有狀態。點選肖像可循環：未持有 → 突破界限 0 → 突破界限 3。持有單位即視為持有角色。',
+      sub: '記錄 UR 單位與支援人員持有狀態\n點選肖像可循環：未持有 → 突破界限 0 → 突破界限 3。\n持有單位即視為持有角色',
       lang: '語言',
       units: '單位',
       supporters: '支援人員',
@@ -257,6 +408,23 @@
       reset_all: '全部重設',
       save_image: '儲存圖片',
       share_x: '分享至 X',
+      share_code: '分享代碼',
+      share_code_ph: '貼上代碼以匯入…',
+      copy_share_code: '產生分享代碼',
+      import_share_code: '匯入',
+      share_code_copied: '已複製分享代碼 — 可命名後存入欄位（選用）。',
+      share_code_fail: '無法建立分享代碼。\n{err}',
+      share_import_ok: '已匯入 {n} 筆。',
+      share_import_fail: '無效或未知的分享代碼。',
+      share_import_confirm: '要用匯入的代碼取代此瀏覽器的收藏進度嗎？',
+      share_save_name: '為此收藏命名',
+      share_save_slot: '存入欄位',
+      share_save_confirm: '儲存',
+      share_save_skip: '暫時不要',
+      share_save_ok: '已將「{name}」存入欄位 {i} · 代碼 {code}',
+      share_save_need_name: '請輸入收藏名稱後再儲存。',
+      slot_empty: '空',
+      slot_label: '{i}. {name}',
       username: '玩家名稱',
       username_ph: '遊戲內的玩家名稱',
       share_need_name: '請輸入要一併分享到 X 的玩家名稱。',
@@ -295,7 +463,39 @@
         'GGEN ETERNAL DATABASE — 收藏報告\n{name}\n· UR {type} 持有率 {pct}%（{owned}/{total}{noun}）\n· 突破界限 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
       noun_units: '機',
       noun_supporters: '個',
-      unowned: '未持有'
+      unowned: '未持有',
+      census_title: '社群普查',
+      census_blurb: '自願加入的匿名統計。顯示名稱須唯一。圖表不顯示名稱。',
+      census_optin: '將我的收藏納入匿名普查',
+      census_submit: '送出／更新普查',
+      census_hist_title: '玩家收藏深度',
+      census_own_title: '最多持有{type}',
+      census_hist_hint:
+        '每根長條＝落在該持有％區間的人數。未持有=0・突破界限 MAX=4。',
+      census_own_hint:
+        '依持有點數由低到高（左→右）。高度＝普查內合計持有點數（未持有=0・突破界限 MAX=4）。懸停長條可放大縮圖。',
+      census_own_tip: '{pts} 點 · 持有 {owned} 人 · 平均 {avg} / 4',
+      census_y_owned: '點',
+      census_need_optin: '請先勾選同意納入普查。',
+      census_need_name: '請先輸入顯示名稱（不可與其他人重複）。',
+      census_ok: '已以「{name}」儲存普查 · {n} 筆快照。',
+      census_updated: '已更新「{name}」的普查 · {n} 筆快照。',
+      census_name_taken: '此顯示名稱已被使用，請換一個。',
+      census_fail: '普查送出失敗。\n{err}',
+      census_empty: '尚無自願快照 — 歡迎成為第一位。',
+      census_meta: '{n} 筆匿名快照 · 板面: {board}',
+      census_loading: '正在載入普查…',
+      saves_title: '已儲存的收藏',
+      save_slot_ph: '收藏名稱',
+      save_slot: '儲存',
+      load_slot: '讀取',
+      clear_slot: '清除',
+      save_slot_ok: '已儲存「{name}」。',
+      load_slot_ok: '已讀取「{name}」（{n} 筆）。',
+      load_slot_empty: '此欄位是空的。',
+      load_slot_confirm: '要用「{name}」取代目前的收藏嗎？',
+      clear_slot_ok: '已清除欄位 {i}。',
+      default_save_name: '收藏 {i}'
     }
   };
 
@@ -325,7 +525,8 @@
     q: '',
     catalog: { units: [], supporters: [] },
     owned: loadOwned(),
-    busy: false
+    busy: false,
+    pendingShare: null
   };
 
   function normLang(lc) {
@@ -518,6 +719,30 @@
     setText('colSaveImage', t('save_image'));
     setText('colShareX', t('share_x'));
     setText('colUsernameLabel', t('username'));
+    setText('colShareCodeLabel', t('share_code'));
+    setText('colCopyShareCode', t('copy_share_code'));
+    setText('colImportShareCode', t('import_share_code'));
+    setText('colCensusTitle', t('census_title'));
+    setText('colCensusOptInLbl', t('census_optin'));
+    setText('colCensusSubmit', t('census_submit'));
+    setText('colCensusHistTitle', t('census_hist_title'));
+    setText('colCensusOwnTitle', t('census_own_title', { type: typeTitle() }));
+    setText('colCensusHistHint', t('census_hist_hint'));
+    setText('colCensusOwnHint', t('census_own_hint'));
+    setText('colSavesTitle', t('saves_title'));
+    setText('colShareSaveNameLbl', t('share_save_name'));
+    setText('colShareSaveSlotLbl', t('share_save_slot'));
+    setText('colShareSaveConfirm', t('share_save_confirm'));
+    setText('colShareSaveSkip', t('share_save_skip'));
+    var shareSaveName = document.getElementById('colShareSaveName');
+    if (shareSaveName) shareSaveName.placeholder = t('save_slot_ph');
+    renderSaveSlots();
+    refreshShareSaveSlotOptions();
+    var codeInput = document.getElementById('colShareCode');
+    if (codeInput) {
+      codeInput.placeholder = t('share_code_ph');
+      codeInput.setAttribute('aria-label', t('share_code'));
+    }
     var nameInput = document.getElementById('colUsername');
     if (nameInput) {
       nameInput.placeholder = t('username_ph');
@@ -918,6 +1143,7 @@
     }
     state.busy = false;
     refresh();
+    loadCensusStats();
   }
 
   function preloadChromeAssets() {
@@ -948,6 +1174,7 @@
         });
         state.type = btn.getAttribute('data-type') || 'units';
         refresh();
+        loadCensusStats();
       });
     });
     document.querySelectorAll('#colRoleTabs button').forEach(function (btn) {
@@ -1051,6 +1278,29 @@
         saveAsImage(saveBtn);
       });
     }
+
+    var copyCodeBtn = document.getElementById('colCopyShareCode');
+    if (copyCodeBtn) {
+      copyCodeBtn.addEventListener('click', function () {
+        copyShareCode(copyCodeBtn);
+      });
+    }
+    var importCodeBtn = document.getElementById('colImportShareCode');
+    if (importCodeBtn) {
+      importCodeBtn.addEventListener('click', function () {
+        importShareCode();
+      });
+    }
+    var codeInputEl = document.getElementById('colShareCode');
+    if (codeInputEl) {
+      codeInputEl.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Enter') {
+          ev.preventDefault();
+          importShareCode();
+        }
+      });
+    }
+
     var shareBtn = document.getElementById('colShareX');
     if (shareBtn) {
       shareBtn.addEventListener('click', function () {
@@ -1079,6 +1329,9 @@
         if (ev.target === modal) closePreviewModal();
       });
     }
+    wireCensusUi();
+    wireSaveSlots();
+    renderSaveSlots();
   }
 
   function siteUrl() {
@@ -1356,8 +1609,17 @@
           ctx.beginPath();
           ctx.rect(x + insetX, y + insetY, cell - insetX * 2, cell - insetY * 2);
           ctx.clip();
-          ctx.globalAlpha = lb < 0 ? 0.45 : 1;
+          if (lb < 0) {
+            try {
+              ctx.filter = 'grayscale(0.65) brightness(0.45)';
+            } catch (_) {}
+            ctx.globalAlpha = 0.85;
+          } else {
+            ctx.globalAlpha = 1;
+          }
           ctx.drawImage(im, x + insetX, y + insetY, cell - insetX * 2, cell - insetY * 2);
+          ctx.filter = 'none';
+          ctx.globalAlpha = 1;
           ctx.restore();
         }
         if (suppLrImg) {
@@ -1384,8 +1646,17 @@
           ctx.beginPath();
           ctx.rect(x + padIn, y + padIn, cell - padIn * 2, cell - padIn * 2 - 2);
           ctx.clip();
-          ctx.globalAlpha = lb < 0 ? 0.45 : 1;
+          if (lb < 0) {
+            try {
+              ctx.filter = 'grayscale(0.65) brightness(0.45)';
+            } catch (_) {}
+            ctx.globalAlpha = 0.85;
+          } else {
+            ctx.globalAlpha = 1;
+          }
           ctx.drawImage(im, x + padIn, y + padIn, cell - padIn * 2, cell - padIn * 2 - 2);
+          ctx.filter = 'none';
+          ctx.globalAlpha = 1;
           ctx.restore();
         }
         if (unitFrameImg) ctx.drawImage(unitFrameImg, x, y, cell, cell);
@@ -1589,6 +1860,847 @@
     }
   }
 
+
+  function ownedBagsForShare() {
+    function clean(bag) {
+      var out = {};
+      Object.keys(bag || {}).forEach(function (id) {
+        var lb = bag[id] | 0;
+        if (lb >= 0 && lb <= MAX_LB) out[String(id)] = lb;
+      });
+      return out;
+    }
+    return {
+      v: 1,
+      u: clean(state.owned.units),
+      s: clean(state.owned.supporters),
+      n: currentUsername() || undefined
+    };
+  }
+
+  function readSaveSlots() {
+    try {
+      var a = JSON.parse(localStorage.getItem(SAVES_KEY) || 'null');
+      if (!Array.isArray(a) || a.length < SAVE_SLOT_COUNT) throw 0;
+      return a.slice(0, SAVE_SLOT_COUNT).map(function (x, i) {
+        return {
+          name: String((x && x.name) || '').trim() || t('default_save_name', { i: i + 1 }),
+          data: x && x.data && typeof x.data === 'object' ? x.data : null,
+          code: x && x.code ? String(x.code) : ''
+        };
+      });
+    } catch (_) {
+      return Array.from({ length: SAVE_SLOT_COUNT }, function (_, i) {
+        return { name: t('default_save_name', { i: i + 1 }), data: null, code: '' };
+      });
+    }
+  }
+
+  function writeSaveSlots(arr) {
+    try {
+      localStorage.setItem(SAVES_KEY, JSON.stringify(arr));
+    } catch (_) {}
+  }
+
+  function renderSaveSlots() {
+    var host = document.getElementById('colSavesList');
+    if (!host) return;
+    var slots = readSaveSlots();
+    host.innerHTML = slots
+      .map(function (slot, i) {
+        var codeNote =
+          slot.data && slot.code
+            ? '<span class="collections-save-code" title="' +
+              esc(String(slot.code)) +
+              '">' +
+              esc(String(slot.code)) +
+              '</span>'
+            : '';
+        return (
+          '<div class="collections-save-row" data-slot="' +
+          i +
+          '">' +
+          '<span class="collections-save-idx">' +
+          (i + 1) +
+          '.</span>' +
+          '<input type="text" maxlength="80" value="' +
+          esc(slot.name) +
+          '" data-save-name="' +
+          i +
+          '" placeholder="' +
+          esc(t('save_slot_ph')) +
+          '" aria-label="' +
+          esc(t('save_slot_ph')) +
+          '">' +
+          codeNote +
+          '<button type="button" class="collections-btn" data-save-clear="' +
+          i +
+          '">' +
+          esc(t('clear_slot')) +
+          '</button>' +
+          '<button type="button" class="collections-btn" data-save-load="' +
+          i +
+          '">' +
+          esc(t('load_slot')) +
+          '</button>' +
+          '</div>'
+        );
+      })
+      .join('');
+  }
+
+  function refreshShareSaveSlotOptions(preferredIdx) {
+    var sel = document.getElementById('colShareSaveSlot');
+    if (!sel) return;
+    var slots = readSaveSlots();
+    var pick = preferredIdx;
+    if (pick == null || pick < 0 || pick >= SAVE_SLOT_COUNT) {
+      pick = 0;
+      for (var i = 0; i < slots.length; i++) {
+        if (!slots[i].data) {
+          pick = i;
+          break;
+        }
+      }
+    }
+    sel.innerHTML = slots
+      .map(function (slot, i) {
+        var label = t('slot_label', {
+          i: i + 1,
+          name: slot.data ? slot.name : t('slot_empty')
+        });
+        return (
+          '<option value="' +
+          i +
+          '"' +
+          (i === pick ? ' selected' : '') +
+          '>' +
+          esc(label) +
+          '</option>'
+        );
+      })
+      .join('');
+  }
+
+  function hideShareSavePrompt() {
+    state.pendingShare = null;
+    var panel = document.getElementById('colShareSavePrompt');
+    if (panel) panel.hidden = true;
+  }
+
+  function showShareSavePrompt(code, payload) {
+    state.pendingShare = { code: code, payload: payload };
+    var panel = document.getElementById('colShareSavePrompt');
+    var nameInput = document.getElementById('colShareSaveName');
+    if (nameInput) {
+      nameInput.value =
+        (payload && payload.n) || currentUsername() || nameInput.value || '';
+    }
+    refreshShareSaveSlotOptions();
+    if (panel) {
+      panel.hidden = false;
+      if (nameInput) {
+        nameInput.focus();
+        nameInput.select();
+      }
+    }
+  }
+
+  function confirmShareSave() {
+    var pending = state.pendingShare;
+    if (!pending || !pending.payload) return;
+    var nameInput = document.getElementById('colShareSaveName');
+    var sel = document.getElementById('colShareSaveSlot');
+    var name = nameInput ? String(nameInput.value || '').trim() : '';
+    if (!name) {
+      var statusNeed = document.getElementById('colStatus');
+      if (statusNeed) statusNeed.textContent = t('share_save_need_name');
+      if (nameInput) nameInput.focus();
+      return;
+    }
+    var idx = sel ? parseInt(sel.value, 10) : 0;
+    if (!(idx >= 0 && idx < SAVE_SLOT_COUNT)) idx = 0;
+    var slots = readSaveSlots();
+    slots[idx] = {
+      name: name,
+      data: {
+        v: 1,
+        u: pending.payload.u || {},
+        s: pending.payload.s || {}
+      },
+      code: pending.code || ''
+    };
+    writeSaveSlots(slots);
+    renderSaveSlots();
+    var saves = document.getElementById('colSaves');
+    if (saves) saves.open = true;
+    hideShareSavePrompt();
+    var status = document.getElementById('colStatus');
+    if (status) {
+      status.textContent = t('share_save_ok', {
+        name: name,
+        i: idx + 1,
+        code: pending.code || ''
+      });
+    }
+  }
+
+  function persistSaveSlotName(i, name) {
+    var slots = readSaveSlots();
+    if (!slots[i]) return;
+    slots[i].name = String(name || '').trim() || t('default_save_name', { i: i + 1 });
+    writeSaveSlots(slots);
+  }
+
+  function saveCollectionSlot(i) {
+    var slots = readSaveSlots();
+    if (!slots[i]) return;
+    var input = document.querySelector('[data-save-name="' + i + '"]');
+    var name =
+      (input && String(input.value || '').trim()) ||
+      slots[i].name ||
+      t('default_save_name', { i: i + 1 });
+    var payload = ownedBagsForShare();
+    slots[i] = {
+      name: name,
+      data: { v: 1, u: payload.u || {}, s: payload.s || {} },
+      code: slots[i].code || ''
+    };
+    writeSaveSlots(slots);
+    renderSaveSlots();
+    var status = document.getElementById('colStatus');
+    if (status) status.textContent = t('save_slot_ok', { name: name });
+  }
+
+  function loadCollectionSlot(i) {
+    var slots = readSaveSlots();
+    var slot = slots[i];
+    if (!slot || !slot.data) {
+      var statusEmpty = document.getElementById('colStatus');
+      if (statusEmpty) statusEmpty.textContent = t('load_slot_empty');
+      return;
+    }
+    var name = slot.name || t('default_save_name', { i: i + 1 });
+    if (!window.confirm(t('load_slot_confirm', { name: name }))) return;
+    var payload = { v: 1, u: slot.data.u || {}, s: slot.data.s || {} };
+    var n = countOwnedInPayload(payload);
+    state.owned = {
+      units: Object.assign({}, payload.u || {}),
+      supporters: Object.assign({}, payload.s || {})
+    };
+    saveOwned();
+    refresh();
+    if (slot.code) {
+      var codeInput = document.getElementById('colShareCode');
+      if (codeInput) codeInput.value = slot.code;
+    }
+    var status = document.getElementById('colStatus');
+    if (status) status.textContent = t('load_slot_ok', { name: name, n: n });
+  }
+
+  function clearCollectionSlot(i) {
+    var slots = readSaveSlots();
+    if (!slots[i]) return;
+    var input = document.querySelector('[data-save-name="' + i + '"]');
+    var name =
+      (input && String(input.value || '').trim()) ||
+      slots[i].name ||
+      t('default_save_name', { i: i + 1 });
+    slots[i] = { name: name, data: null, code: '' };
+    writeSaveSlots(slots);
+    renderSaveSlots();
+    refreshShareSaveSlotOptions();
+    var status = document.getElementById('colStatus');
+    if (status) status.textContent = t('clear_slot_ok', { i: i + 1 });
+  }
+
+  function wireSaveSlots() {
+    var host = document.getElementById('colSavesList');
+    if (!host || host._colSavesWired) return;
+    host._colSavesWired = true;
+    host.addEventListener('click', function (ev) {
+      var tEl = ev.target;
+      if (!tEl || !tEl.getAttribute) return;
+      var wi = tEl.getAttribute('data-save-write');
+      var li = tEl.getAttribute('data-save-load');
+      var ci = tEl.getAttribute('data-save-clear');
+      if (wi != null) saveCollectionSlot(parseInt(wi, 10));
+      else if (li != null) loadCollectionSlot(parseInt(li, 10));
+      else if (ci != null) clearCollectionSlot(parseInt(ci, 10));
+    });
+    host.addEventListener('change', function (ev) {
+      var tEl = ev.target;
+      if (!tEl || !tEl.getAttribute) return;
+      var ni = tEl.getAttribute('data-save-name');
+      if (ni != null) persistSaveSlotName(parseInt(ni, 10), tEl.value);
+    });
+    var confirmBtn = document.getElementById('colShareSaveConfirm');
+    if (confirmBtn) {
+      confirmBtn.addEventListener('click', function () {
+        confirmShareSave();
+      });
+    }
+    var skipBtn = document.getElementById('colShareSaveSkip');
+    if (skipBtn) {
+      skipBtn.addEventListener('click', function () {
+        hideShareSavePrompt();
+      });
+    }
+    var nameEl = document.getElementById('colShareSaveName');
+    if (nameEl) {
+      nameEl.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Enter') {
+          ev.preventDefault();
+          confirmShareSave();
+        }
+      });
+    }
+  }
+
+  function countOwnedInPayload(payload) {
+    if (!payload) return 0;
+    return Object.keys(payload.u || {}).length + Object.keys(payload.s || {}).length;
+  }
+
+  function applySharePayload(payload) {
+    if (!payload || payload.v !== 1) return 0;
+    var n = countOwnedInPayload(payload);
+    if (!n) return 0;
+    if (!window.confirm(t('share_import_confirm'))) return -1;
+    state.owned = {
+      units: Object.assign({}, payload.u || {}),
+      supporters: Object.assign({}, payload.s || {})
+    };
+    saveOwned();
+    if (payload.n) saveUsername(payload.n);
+    refresh();
+    return n;
+  }
+
+  function encodeLongShareCodeC1(payload) {
+    var json = JSON.stringify({
+      v: 1,
+      u: payload.u || {},
+      s: payload.s || {},
+      n: payload.n || undefined
+    });
+    var b64 =
+      typeof btoa === 'function'
+        ? btoa(unescape(encodeURIComponent(json)))
+            .replace(/\+/g, '-')
+            .replace(/\//g, '_')
+            .replace(/=+$/, '')
+        : '';
+    return b64 ? 'C1.' + b64 : '';
+  }
+
+  function bytesToB64url(u8) {
+    var bin = '';
+    var chunk = 0x8000;
+    for (var i = 0; i < u8.length; i += chunk) {
+      bin += String.fromCharCode.apply(null, u8.subarray(i, i + chunk));
+    }
+    return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+
+  function b64urlToBytes(b64url) {
+    var b64 = String(b64url || '').replace(/-/g, '+').replace(/_/g, '/');
+    while (b64.length % 4) b64 += '=';
+    var bin = atob(b64);
+    var out = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+
+  async function encodeLongShareCode(payload) {
+    var json = JSON.stringify({
+      v: 1,
+      u: payload.u || {},
+      s: payload.s || {},
+      n: payload.n || undefined
+    });
+    try {
+      if (typeof CompressionStream !== 'undefined' && typeof TextEncoder !== 'undefined') {
+        var enc = new TextEncoder().encode(json);
+        var stream = new Blob([enc]).stream().pipeThrough(new CompressionStream('deflate-raw'));
+        var buf = await new Response(stream).arrayBuffer();
+        var b64 = bytesToB64url(new Uint8Array(buf));
+        if (b64) {
+          var c2 = 'C2.' + b64;
+          var c1 = encodeLongShareCodeC1(payload);
+          // Prefer shorter of C2/C1 when both exist.
+          if (!c1 || c2.length <= c1.length) return c2;
+          return c1;
+        }
+      }
+    } catch (_) {}
+    return encodeLongShareCodeC1(payload);
+  }
+
+  async function decodeLongShareCode(raw) {
+    var s = String(raw || '')
+      .replace(/^[\s"']+|[\s"']+$/g, '')
+      .replace(/\s+/g, '');
+    try {
+      if (s.indexOf('C2.') === 0 && typeof DecompressionStream !== 'undefined') {
+        var packed = b64urlToBytes(s.slice(3));
+        var stream = new Blob([packed]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+        var text = await new Response(stream).text();
+        var o2 = JSON.parse(text);
+        if (!o2 || o2.v !== 1) return null;
+        return { v: 1, u: o2.u || {}, s: o2.s || {}, n: o2.n };
+      }
+      if (s.indexOf('C1.') !== 0) return null;
+      var b64 = s.slice(3).replace(/-/g, '+').replace(/_/g, '/');
+      while (b64.length % 4) b64 += '=';
+      var bin = atob(b64);
+      var json;
+      try {
+        json = decodeURIComponent(escape(bin));
+      } catch (_) {
+        json = bin;
+      }
+      var o = JSON.parse(json);
+      if (!o || o.v !== 1) return null;
+      return { v: 1, u: o.u || {}, s: o.s || {}, n: o.n };
+    } catch (_) {
+      return null;
+    }
+  }
+
+  function normalizeShortCode(raw) {
+    return String(raw || '')
+      .trim()
+      .toUpperCase()
+      .replace(/[^0-9A-Z]/g, '')
+      .replace(/O/g, '0')
+      .replace(/[IL]/g, '1');
+  }
+
+  async function mintShortShareCode(payload) {
+    var res = await fetch('/api/collections/share', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'same-origin',
+      body: JSON.stringify({ payload: payload })
+    });
+    var data = await res.json().catch(function () {
+      return null;
+    });
+    if (!res.ok || !data || !data.code) {
+      throw new Error((data && (data.error || data.detail)) || 'HTTP ' + res.status);
+    }
+    return String(data.code);
+  }
+
+  async function fetchShortSharePayload(code) {
+    var res = await fetch('/api/collections/share/' + encodeURIComponent(code), {
+      credentials: 'same-origin'
+    });
+    var data = await res.json().catch(function () {
+      return null;
+    });
+    if (!res.ok || !data || !data.payload) return null;
+    return data.payload;
+  }
+
+  async function copyShareCode(btn) {
+    var status = document.getElementById('colStatus');
+    var original = btn ? btn.textContent : '';
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = t('generating');
+    }
+    try {
+      var payload = ownedBagsForShare();
+      if (!countOwnedInPayload(payload)) {
+        if (status) status.textContent = t('share_import_fail');
+        return;
+      }
+      var code = '';
+      try {
+        code = await mintShortShareCode(payload);
+      } catch (err) {
+        code = await encodeLongShareCode(payload);
+        if (!code) throw err;
+      }
+      var input = document.getElementById('colShareCode');
+      if (input) input.value = code;
+      try {
+        await navigator.clipboard.writeText(code);
+      } catch (_) {}
+      if (status) status.textContent = t('share_code_copied');
+      try {
+        var u = new URL(location.href);
+        u.searchParams.set('code', code);
+        history.replaceState(null, '', u.pathname + u.search + u.hash);
+      } catch (_) {}
+      showShareSavePrompt(code, payload);
+    } catch (err) {
+      if (status) {
+        status.textContent = t('share_code_fail', {
+          err: (err && err.message) || String(err || 'error')
+        });
+      }
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = original || t('copy_share_code');
+      }
+    }
+  }
+
+  async function importShareCode() {
+    var status = document.getElementById('colStatus');
+    var input = document.getElementById('colShareCode');
+    var raw = input ? input.value : '';
+    var payload = await decodeLongShareCode(raw);
+    if (!payload) {
+      var short = normalizeShortCode(raw);
+      if (short.length === 6 || short.length === 8) {
+        payload = await fetchShortSharePayload(short);
+      }
+    }
+    if (!payload) {
+      if (status) status.textContent = t('share_import_fail');
+      return;
+    }
+    var n = applySharePayload(payload);
+    if (n < 0) return;
+    if (n === 0) {
+      if (status) status.textContent = t('share_import_fail');
+      return;
+    }
+    if (status) status.textContent = t('share_import_ok', { n: n });
+  }
+
+  async function maybeImportShareCodeFromUrl() {
+    try {
+      var u = new URL(location.href);
+      var code = u.searchParams.get('code') || u.searchParams.get('c') || '';
+      if (!code) return;
+      var input = document.getElementById('colShareCode');
+      if (input) input.value = code;
+      await importShareCode();
+    } catch (_) {}
+  }
+
+  function censusClientKey() {
+    var key = '';
+    try {
+      key = localStorage.getItem('ggen_collections_census_ck') || '';
+    } catch (_) {}
+    if (key && key.length >= 16 && key.length <= 64) return key;
+    try {
+      if (window.crypto && typeof crypto.randomUUID === 'function') {
+        key = 'ck_' + crypto.randomUUID().replace(/-/g, '');
+      } else {
+        key = 'ck_' + String(Date.now()) + '_' + Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+      }
+      localStorage.setItem('ggen_collections_census_ck', key);
+    } catch (_) {}
+    return key;
+  }
+
+  function loadCensusOptIn() {
+    try {
+      return localStorage.getItem('ggen_collections_census_optin') === '1';
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function saveCensusOptIn(on) {
+    try {
+      localStorage.setItem('ggen_collections_census_optin', on ? '1' : '0');
+    } catch (_) {}
+  }
+
+  function catalogNameById(id) {
+    var list = activeList();
+    for (var i = 0; i < list.length; i++) {
+      if (String(list[i].id) === String(id)) return list[i].name || String(id);
+    }
+    var units = state.catalog.units || [];
+    for (var u = 0; u < units.length; u++) {
+      if (String(units[u].id) === String(id)) return units[u].name || String(id);
+    }
+    var supps = state.catalog.supporters || [];
+    for (var s = 0; s < supps.length; s++) {
+      if (String(supps[s].id) === String(id)) return supps[s].name || String(id);
+    }
+    return String(id);
+  }
+
+  function renderCensusHist(rows, snapshots) {
+    var host = document.getElementById('colCensusHist');
+    if (!host) return;
+    var max = 1;
+    (rows || []).forEach(function (r) {
+      if ((r.count | 0) > max) max = r.count | 0;
+    });
+    if (!(snapshots > 0)) {
+      host.innerHTML = '<p class="collections-census-empty">' + esc(t('census_empty')) + '</p>';
+      return;
+    }
+    host.innerHTML = (rows || [])
+      .map(function (r) {
+        var pct = Math.max(0, Math.min(100, Math.round(((r.count | 0) / max) * 100)));
+        return (
+          '<div class="collections-census-hist-row">' +
+          '<span class="collections-census-hist-lab">' +
+          esc(String(r.lo) + '–' + String(r.hi) + '%') +
+          '</span>' +
+          '<div class="collections-census-bar"><i style="width:' +
+          pct +
+          '%"></i></div>' +
+          '<span class="collections-census-count">' +
+          esc(String(r.count | 0)) +
+          '</span></div>'
+        );
+      })
+      .join('');
+  }
+
+  function catalogRowById(id) {
+    var sid = String(id);
+    var lists = [activeList(), state.catalog.units || [], state.catalog.supporters || []];
+    for (var L = 0; L < lists.length; L++) {
+      var list = lists[L];
+      for (var i = 0; i < list.length; i++) {
+        if (String(list[i].id) === sid) return list[i];
+      }
+    }
+    return null;
+  }
+
+  function censusRankColor(t) {
+    /* t=0 highest (UR gold→magenta→violet), t=1 least (muted slate) */
+    var stops = [
+      [255, 215, 0],
+      [190, 24, 93],
+      [168, 85, 247],
+      [29, 78, 216],
+      [71, 85, 105]
+    ];
+    var x = Math.max(0, Math.min(1, Number(t) || 0));
+    var scaled = x * (stops.length - 1);
+    var i = Math.floor(scaled);
+    var f = scaled - i;
+    if (i >= stops.length - 1) {
+      var last = stops[stops.length - 1];
+      return 'rgb(' + last[0] + ',' + last[1] + ',' + last[2] + ')';
+    }
+    var a = stops[i];
+    var b = stops[i + 1];
+    var r = Math.round(a[0] + (b[0] - a[0]) * f);
+    var g = Math.round(a[1] + (b[1] - a[1]) * f);
+    var bl = Math.round(a[2] + (b[2] - a[2]) * f);
+    return 'rgb(' + r + ',' + g + ',' + bl + ')';
+  }
+
+  function renderCensusOwn(rows, snapshots) {
+    var host = document.getElementById('colCensusOwn');
+    if (!host) return;
+    var list = (rows || []).slice();
+    if (!(snapshots > 0) || !list.length) {
+      host.innerHTML = '<p class="collections-census-empty">' + esc(t('census_empty')) + '</p>';
+      return;
+    }
+    list.sort(function (a, b) {
+      var ac = a.copies | 0;
+      var bc = b.copies | 0;
+      if (ac !== bc) return ac - bc;
+      var ao = a.owned | 0;
+      var bo = b.owned | 0;
+      if (ao !== bo) return ao - bo;
+      return String(a.id).localeCompare(String(b.id));
+    });
+    var maxPts = 1;
+    list.forEach(function (r) {
+      var c = r.copies | 0;
+      if (c > maxPts) maxPts = c;
+    });
+    var yTop = maxPts;
+    var yMid = Math.round(maxPts / 2);
+    var n = list.length;
+    var cols = list
+      .map(function (r, idx) {
+        var owned = r.owned | 0;
+        var pts = r.copies | 0;
+        var avg = Number(r.avg_copies != null ? r.avg_copies : 0) || 0;
+        var h = Math.max(0, Math.min(100, Math.round((pts / maxPts) * 100)));
+        var rankT = n <= 1 ? 0 : (n - 1 - idx) / (n - 1);
+        var color = censusRankColor(rankT);
+        var tip = t('census_own_tip', {
+          pts: pts,
+          owned: owned,
+          avg: avg.toFixed(2)
+        });
+        var row = catalogRowById(r.id);
+        var name = (row && row.name) || catalogNameById(r.id);
+        var thum = row && row.thum ? imgUrl(row.thum) : '';
+        var img = thum
+          ? '<img src="' +
+            esc(thum) +
+            '" alt="' +
+            esc(name) +
+            '" loading="lazy" decoding="async">'
+          : '';
+        return (
+          '<div class="collections-census-vhist-col" title="' +
+          esc(name + ' · ' + tip) +
+          '">' +
+          '<div class="collections-census-vhist-barwrap">' +
+          '<div class="collections-census-vhist-bar" style="height:' +
+          h +
+          '%;background:' +
+          color +
+          ';box-shadow:0 0 0 1px rgba(255,255,255,.12)"></div></div>' +
+          '<div class="collections-census-vhist-thumb">' +
+          img +
+          '</div>' +
+          '<span class="collections-census-vhist-val">' +
+          esc(String(pts)) +
+          '</span></div>'
+        );
+      })
+      .join('');
+    host.innerHTML =
+      '<div class="collections-census-vhist">' +
+      '<div class="collections-census-vhist-yaxis" aria-hidden="true">' +
+      '<span>' +
+      esc(String(yTop)) +
+      '</span><span>' +
+      esc(String(yMid)) +
+      '</span><span>0</span></div>' +
+      '<div class="collections-census-vhist-scroll">' +
+      '<div class="collections-census-vhist-bars">' +
+      cols +
+      '</div></div></div>';
+    var ownTitle = document.getElementById('colCensusOwnTitle');
+    if (ownTitle) ownTitle.textContent = t('census_own_title', { type: typeTitle() });
+    host.setAttribute('aria-label', t('census_own_title', { type: typeTitle() }));
+  }
+
+  async function loadCensusStats() {
+    var meta = document.getElementById('colCensusMeta');
+    if (meta) meta.textContent = t('census_loading');
+    try {
+      var board = state.type === 'supporters' ? 'supporters' : 'units';
+      var res = await fetch('/api/collections/census/stats?board=' + encodeURIComponent(board) + '&top=24', {
+        credentials: 'same-origin',
+        cache: 'no-store'
+      });
+      var data = await res.json().catch(function () {
+        return null;
+      });
+      if (!res.ok || !data) throw new Error('HTTP ' + res.status);
+      renderCensusHist(data.possession_hist || [], data.snapshots | 0);
+      renderCensusOwn(data.kit_owned_hist || data.most_owned || [], data.snapshots | 0);
+      if (meta) {
+        meta.textContent = t('census_meta', {
+          n: data.snapshots | 0,
+          board: board === 'supporters' ? t('supporters') : t('units')
+        });
+      }
+    } catch (_) {
+      renderCensusHist([], 0);
+      renderCensusOwn([], 0);
+      if (meta) meta.textContent = t('census_empty');
+    }
+  }
+
+  async function submitCensus(btn) {
+    var meta = document.getElementById('colCensusMeta');
+    var opt = document.getElementById('colCensusOptIn');
+    if (!opt || !opt.checked) {
+      if (meta) meta.textContent = t('census_need_optin');
+      return;
+    }
+    var name = currentUsername();
+    if (!name || name.length < 2) {
+      if (meta) meta.textContent = t('census_need_name');
+      var input = document.getElementById('colUsername');
+      if (input) {
+        input.focus();
+        input.classList.add('is-need-name');
+        setTimeout(function () {
+          input.classList.remove('is-need-name');
+        }, 1200);
+      }
+      return;
+    }
+    var hp = document.getElementById('colCensusHp');
+    var original = btn ? btn.textContent : '';
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = t('generating');
+    }
+    try {
+      var payload = ownedBagsForShare();
+      payload.n = name;
+      var res = await fetch('/api/collections/census', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({
+          client_key: censusClientKey(),
+          name: name,
+          payload: payload,
+          website: hp ? hp.value : ''
+        })
+      });
+      var data = await res.json().catch(function () {
+        return null;
+      });
+      if (res.status === 409) {
+        if (meta) meta.textContent = t('census_name_taken');
+        return;
+      }
+      if (!res.ok || !data || !data.ok) {
+        throw new Error((data && data.error) || 'HTTP ' + res.status);
+      }
+      if (meta) {
+        meta.textContent = t(data.updated ? 'census_updated' : 'census_ok', {
+          name: data.name || name,
+          n: data.snapshots | 0
+        });
+      }
+      await loadCensusStats();
+    } catch (err) {
+      if (meta) {
+        meta.textContent = t('census_fail', {
+          err: (err && err.message) || String(err || 'error')
+        });
+      }
+    } finally {
+      if (btn) {
+        var still = document.getElementById('colCensusOptIn');
+        btn.disabled = !(still && still.checked);
+        btn.textContent = original || t('census_submit');
+      }
+    }
+  }
+
+  function wireCensusUi() {
+    var opt = document.getElementById('colCensusOptIn');
+    var btn = document.getElementById('colCensusSubmit');
+    if (opt) {
+      opt.checked = loadCensusOptIn();
+      if (btn) btn.disabled = !opt.checked;
+      opt.addEventListener('change', function () {
+        saveCensusOptIn(!!opt.checked);
+        if (btn) btn.disabled = !opt.checked;
+      });
+    }
+    if (btn) {
+      btn.addEventListener('click', function () {
+        submitCensus(btn);
+      });
+    }
+  }
+
   async function shareOnX(btn) {
     var name = currentUsername();
     if (!name) {
@@ -1664,5 +2776,9 @@
   state.lang = normLang(state.lang);
   applyUiLang();
   bind();
-  loadCatalog();
+  loadCatalog().then(function () {
+    return maybeImportShareCodeFromUrl();
+  }).then(function () {
+    return loadCensusStats();
+  });
 })();

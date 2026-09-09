@@ -1532,6 +1532,7 @@ UNIT_WEAPON_DEBUFF_FILTER_KEYS = frozenset({
     'absolute_hit',
     'map_weapon',
     'enemy_def_atk',
+    'multi_dmg',
 })
 
 def parse_unit_weapon_debuff_filter(val):
@@ -1608,6 +1609,18 @@ def _build_unit_weapon_attr_keys_cache():
     for uid in unit_info_map.keys():
         out[uid] = _unit_non_map_weapon_attr_keys(uid)
     return out
+
+
+def _unit_has_multi_damage_type_weapon(uid):
+    """True if any weapon (incl. MAP) has 2+ of Beam/Physical/Special on the same attack."""
+    uid = normalize_id(uid)
+    for wp in unit_weapon_map.get(uid, []) or []:
+        wid = normalize_id(wp.get('id'))
+        wm = weapon_info_map.get(wid, {}) or {}
+        ai = normalize_id(wm.get('attribute', '0'))
+        if len(WEAPON_ATTR_SET_TYPE_KEYS.get(ai) or []) >= 2:
+            return True
+    return False
 
 
 def unit_matches_weapon_attr_filter(uid, want_keys):
@@ -2555,6 +2568,43 @@ def _ability_text_implies_pilot_en_consumption(txt):
         txt, re.I))
 
 
+def _ability_id_has_guaranteed_chance_step_trait(aid):
+    """TraitTypeIndex 80 GuaranteedChanceStep / 85 GuaranteedChanceStepWeaponUsedOnly."""
+    aid = normalize_id(aid)
+    if not aid or aid in ('0', 'None'):
+        return False
+    link = abil_link_map.get(aid)
+    if isinstance(link, str):
+        tsid = normalize_id(link)
+    elif isinstance(link, dict):
+        tsid = normalize_id(link.get('TraitSetId') or link.get('traitSetId') or '')
+    else:
+        tsid = '0'
+    if not tsid or tsid == '0':
+        return False
+    for tid in trait_set_traits_map.get(tsid) or []:
+        tti = safe_int((trait_data_map.get(normalize_id(tid)) or {}).get('trait_type_index'), 0)
+        if tti in (80, 85):
+            return True
+    return False
+
+
+def _ability_text_implies_pilot_guaranteed_chance_step(txt):
+    """LANG prose for Guaranteed / force-activate Chance Step (Mao EX, Blue Destiny EX, …)."""
+    if not txt or not isinstance(txt, str):
+        return False
+    return bool(re.search(
+        r'chance\s*step\s+will\s+trigger|'
+        r'force[- ]?activate\s+chance\s*step|'
+        r'guaranteed\s+chance\s*step|'
+        r'敵を撃破しなくてもチャンスステップを発動|'
+        r'無条件チャンスステップ|'
+        r'オートチャンスステップ|'
+        r'即使未擊敗敵人仍會發動額外行動|'
+        r'無條件額外行動',
+        txt, re.I))
+
+
 def _extract_en_consumption_reduction_pct(txt):
     s = str(txt or '')
     out = 0
@@ -2681,7 +2731,8 @@ def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal'):
     """UR recommend pilot grants detail-card-visible PEP for this unit.
 
     Eligible: ATK/DEF/squad stats, weapon ACC/Crit, weapon range, weapon-effect
-    additives, weapon EN cost. Not eligible: tag-affinity damage dealt/taken only
+    additives, weapon EN cost, Guaranteed Chance Step (force-activate CS) when
+    piloting this unit. Not eligible: tag-affinity damage dealt/taken only
     (those never appear on the unit detail card).
     """
     uid = normalize_id(uid)
@@ -2740,6 +2791,13 @@ def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal'):
                 if _ability_text_implies_pilot_en_consumption(txt):
                     _PILOT_COND_PASSIVE_CACHE[cache_key] = True
                     return True
+                if _ability_text_implies_pilot_guaranteed_chance_step(txt):
+                    _PILOT_COND_PASSIVE_CACHE[cache_key] = True
+                    return True
+                aid_chk = normalize_id((ad.get('id') if isinstance(ad, dict) else '') or '')
+                if aid_chk and _ability_id_has_guaranteed_chance_step_trait(aid_chk):
+                    _PILOT_COND_PASSIVE_CACHE[cache_key] = True
+                    return True
             elif _char_detail_same_squad_ms_ad_pep_matches_unit(uid, lc, d2):
                 _PILOT_COND_PASSIVE_CACHE[cache_key] = True
                 return True
@@ -2747,6 +2805,16 @@ def _unit_has_pilot_cond_passive(uid, ld, lc, stat_mode='normal'):
         for d2 in ad.get('details', []) or []:
             txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
             if _unit_ability_text_implies_pilot_cond_passive(txt):
+                _PILOT_COND_PASSIVE_CACHE[cache_key] = True
+                return True
+    # Recommend UR EX with Guaranteed CS trait even when detail text split misses the CS line.
+    for ad in _char_ability_entries_for_pilot_cond(rc, ld, lc, stat_mode):
+        aid_chk = normalize_id((ad.get('id') if isinstance(ad, dict) else '') or '')
+        if not aid_chk or not _ability_id_has_guaranteed_chance_step_trait(aid_chk):
+            continue
+        for d2 in ad.get('details', []) or []:
+            txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
+            if re.search(r'when\s+piloting|搭乘|搭乗', str(txt or ''), re.I) and _pilot_text_targets_unit(uid, ld, txt):
                 _PILOT_COND_PASSIVE_CACHE[cache_key] = True
                 return True
     _PILOT_COND_PASSIVE_CACHE[cache_key] = False
@@ -3224,6 +3292,8 @@ def collect_unit_weapon_trait_only_debuff_keys(uid, ld, lc, stat_mode='normal'):
         if wt == '3' and _map_weapon_eligible_for_browse(wid, wt, stat_mode):
             acc.add('map_weapon')
             break
+    if _unit_has_multi_damage_type_weapon(uid):
+        acc.add('multi_dmg')
     return frozenset(acc)
 
 
@@ -10491,6 +10561,10 @@ SDC_EXPLICIT_ABILITY_IDS = {'2018601'}
 CHANCE_STEP_EX_FILTER_ID = 'chance_step_ex'
 CHANCE_STEP_EX_FILTER_NAME = 'Chance Step x2'
 CHANCE_STEP_PLUS_ONE_RE = re.compile(r'chance\s*step\s*\+\s*1(?!\d)', re.IGNORECASE)
+# Official LANG: EN Guaranteed Chance Step · JA 無条件チャンスステップ · TW/HK 無條件額外行動
+GUARANTEED_CHANCE_STEP_FILTER_ID = 'guaranteed_chance_step'
+GUARANTEED_CHANCE_STEP_FILTER_NAME = 'Guaranteed Chance Step'
+GUARANTEED_CHANCE_STEP_TRAIT_TYPES = frozenset({80, 85})
 SUPPORT_DEF_X2_FILTER_ID = 'support_def_x2'
 SUPPORT_DEF_X2_FILTER_NAME = 'Support Defense x2'
 SUPPORT_ATK_X2_FILTER_ID = 'support_atk_x2'
@@ -10502,6 +10576,16 @@ CHANCE_STEP_PLUS_ONE_REGEXES = (
     re.compile(r'チャンスステップ[\s\S]{0,24}[+＋]\s*1(?!\d)'),
     re.compile(r'額外行動[\s\S]{0,24}[+＋]\s*1(?!\d)'),
 )
+GUARANTEED_CHANCE_STEP_TEXT_RES = (
+    re.compile(r'chance\s*step\s+will\s+trigger', re.IGNORECASE),
+    re.compile(r'force[- ]?activate\s+chance\s*step', re.IGNORECASE),
+    re.compile(r'guaranteed\s+chance\s*step', re.IGNORECASE),
+    re.compile(r'敵を撃破しなくてもチャンスステップを発動'),
+    re.compile(r'無条件チャンスステップ'),
+    re.compile(r'オートチャンスステップ'),
+    re.compile(r'即使未擊敗敵人仍會發動額外行動'),
+    re.compile(r'無條件額外行動'),
+)
 
 
 def _char_special_x2_filter_names(lc):
@@ -10510,17 +10594,20 @@ def _char_special_x2_filter_names(lc):
     if lang in ('TW', 'HK'):
         return {
             CHANCE_STEP_EX_FILTER_ID: '額外行動 x2',
+            GUARANTEED_CHANCE_STEP_FILTER_ID: '無條件額外行動',
             SUPPORT_DEF_X2_FILTER_ID: '支援防禦 x2',
             SUPPORT_ATK_X2_FILTER_ID: '支援攻擊 x2',
         }
     if lang == 'JA':
         return {
             CHANCE_STEP_EX_FILTER_ID: 'チャンスステップ x2',
+            GUARANTEED_CHANCE_STEP_FILTER_ID: '無条件チャンスステップ',
             SUPPORT_DEF_X2_FILTER_ID: '支援防御 x2',
             SUPPORT_ATK_X2_FILTER_ID: '支援攻撃 x2',
         }
     return {
         CHANCE_STEP_EX_FILTER_ID: CHANCE_STEP_EX_FILTER_NAME,
+        GUARANTEED_CHANCE_STEP_FILTER_ID: GUARANTEED_CHANCE_STEP_FILTER_NAME,
         SUPPORT_DEF_X2_FILTER_ID: SUPPORT_DEF_X2_FILTER_NAME,
         SUPPORT_ATK_X2_FILTER_ID: SUPPORT_ATK_X2_FILTER_NAME,
     }
@@ -11576,6 +11663,62 @@ CHANCE_STEP_EX_ABILITY_IDS, CHANCE_STEP_EX_ICON = _precompute_chance_step_ex_dat
 print(f"Chance Step EX abilities found: {len(CHANCE_STEP_EX_ABILITY_IDS)}")
 
 
+def _precompute_guaranteed_chance_step_data():
+    """Character abilities with Guaranteed Chance Step (TraitType 80/85 or LANG prose)."""
+    ids = set()
+    icon = ''
+    ld = LANG_DATA.get(CALC_LANG, LANG_DATA.get(DEFAULT_LANG, {}))
+    ldc = ld
+    seen_aids = set()
+    for ab_row in extract_data_list(char_abil):
+        cid = normalize_id(ab_row.get('CharacterId', ''))
+        if not cid or cid not in char_list_playable_ids:
+            continue
+        for key in ('AbilityId', 'SpAbilityId', 'spAbilityId'):
+            aid = normalize_id(ab_row.get(key) or '')
+            if not aid or aid in ('0', 'None') or aid in seen_aids:
+                continue
+            seen_aids.add(aid)
+            hit = _ability_id_has_guaranteed_chance_step_trait(aid)
+            if not hit:
+                try:
+                    bab = build_ability_entry(
+                        aid, ld['abil_name_map'], abil_link_map, trait_set_traits_map,
+                        trait_data_map, ld['lang_text_map'], ldc['lang_text_map'],
+                        trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'],
+                        ability_resource_map, ld['abil_desc_map'], sort_order=0, lang_code=CALC_LANG,
+                    )
+                except Exception:
+                    continue
+                detail_blob = ' '.join(
+                    d.get('text', '') if isinstance(d, dict) else str(d)
+                    for d in bab.get('details', [])
+                )
+                hit = _ability_text_implies_pilot_guaranteed_chance_step(detail_blob or '')
+                if hit and not icon:
+                    icon = (bab.get('icon') or '').strip()
+            if hit:
+                ids.add(aid)
+                if not icon:
+                    try:
+                        bab2 = build_ability_entry(
+                            aid, ld['abil_name_map'], abil_link_map, trait_set_traits_map,
+                            trait_data_map, ld['lang_text_map'], ldc['lang_text_map'],
+                            trait_condition_raw_map, ld['lineage_lookup'], ld['series_name_map'],
+                            ability_resource_map, ld['abil_desc_map'], sort_order=0, lang_code=CALC_LANG,
+                        )
+                        icon = (bab2.get('icon') or '').strip()
+                    except Exception:
+                        pass
+    if not icon:
+        icon = CHANCE_STEP_EX_ICON
+    return ids, icon
+
+
+GUARANTEED_CHANCE_STEP_ABILITY_IDS, GUARANTEED_CHANCE_STEP_ICON = _precompute_guaranteed_chance_step_data()
+print(f"Guaranteed Chance Step abilities found: {len(GUARANTEED_CHANCE_STEP_ABILITY_IDS)}")
+
+
 def _precompute_support_x2_character_sets():
     """Characters that effectively reach 2 support actions by role + '+1 time' ability lines."""
     ld = LANG_DATA.get(CALC_LANG, LANG_DATA.get(DEFAULT_LANG, {}))
@@ -11684,6 +11827,16 @@ def _char_matches_special_x2_filter(cid, want, include_sp=False, include_conditi
     atk_hits = sum(atk_by_family.values())
     if want == CHANCE_STEP_EX_FILTER_ID:
         return chance_hits >= 1
+    if want == GUARANTEED_CHANCE_STEP_FILTER_ID:
+        for ab_row in extract_data_list(char_abil):
+            if normalize_id(ab_row.get('CharacterId', '')) != cid:
+                continue
+            keys = ('AbilityId', 'SpAbilityId', 'spAbilityId') if include_sp else ('AbilityId',)
+            for key in keys:
+                aid = normalize_id(ab_row.get(key) or '')
+                if aid and aid in GUARANTEED_CHANCE_STEP_ABILITY_IDS:
+                    return True
+        return False
     if want == SUPPORT_DEF_X2_FILTER_ID:
         return def_hits >= 2
     if want == SUPPORT_ATK_X2_FILTER_ID:
@@ -17250,6 +17403,543 @@ def collections_short():
     return redirect('/collections', code=301)
 
 
+
+
+_COLLECTIONS_SHARE_ALPHABET = '0123456789ABCDEFGHJKMNPQRSTVWXYZ'
+_COLLECTIONS_SHARE_CODE_LEN = 6
+_COLLECTIONS_SHARE_MAX_ENTRIES = 8000
+_COLLECTIONS_SHARE_MAX_IDS = 600
+_collections_share_cache = {'mtime': None, 'data': None}
+
+
+def _collections_share_file_path():
+    vol = (os.environ.get('GGEN_PERSISTENT_DIR') or os.environ.get('RAILWAY_VOLUME_MOUNT_PATH') or '').strip()
+    if vol:
+        return os.path.join(vol, 'collections_share_v1.json')
+    return os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'persistent', 'collections_share_v1.json')
+
+
+def _collections_share_empty():
+    return {'v': 1, 'codes': {}, 'by_ip': {}}
+
+
+def _collections_share_load():
+    path = _collections_share_file_path()
+    cached = _collections_share_cache
+    try:
+        mtime = os.path.getmtime(path)
+    except OSError:
+        mtime = None
+    if cached['data'] is not None and cached['mtime'] == mtime:
+        return cached['data']
+    data = _collections_share_empty()
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            raw = json.load(f)
+        if isinstance(raw, dict) and isinstance(raw.get('codes'), dict):
+            by_ip = raw.get('by_ip') if isinstance(raw.get('by_ip'), dict) else {}
+            data = {'v': 1, 'codes': raw['codes'], 'by_ip': by_ip}
+    except FileNotFoundError:
+        pass
+    except Exception as e:
+        print(f'collections_share: load failed: {e}')
+    cached['data'] = data
+    cached['mtime'] = mtime
+    return data
+
+
+def _collections_share_save(data):
+    path = _collections_share_file_path()
+    try:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        tmp = path + '.tmp'
+        with open(tmp, 'w', encoding='utf-8') as f:
+            json.dump(
+                {
+                    'v': 1,
+                    'codes': data.get('codes') or {},
+                    'by_ip': data.get('by_ip') or {},
+                },
+                f,
+                ensure_ascii=False,
+                separators=(',', ':'),
+            )
+        os.replace(tmp, path)
+        try:
+            _collections_share_cache['mtime'] = os.path.getmtime(path)
+        except OSError:
+            _collections_share_cache['mtime'] = None
+        _collections_share_cache['data'] = data
+        return True
+    except Exception as e:
+        print(f'collections_share: save failed: {e}')
+        return False
+
+
+def _collections_share_normalize_bag(bag):
+    out = {}
+    if not isinstance(bag, dict):
+        return out
+    for k, v in bag.items():
+        kid = normalize_id(k)
+        if not kid or kid == '0':
+            continue
+        try:
+            lb = int(v)
+        except (TypeError, ValueError):
+            continue
+        if lb < 0 or lb > 3:
+            continue
+        out[kid] = lb
+        if len(out) >= _COLLECTIONS_SHARE_MAX_IDS:
+            break
+    return out
+
+
+def _collections_share_normalize_payload(raw):
+    if not isinstance(raw, dict):
+        return None
+    units = _collections_share_normalize_bag(raw.get('u') or raw.get('units') or {})
+    supporters = _collections_share_normalize_bag(raw.get('s') or raw.get('supporters') or {})
+    if not units and not supporters:
+        return None
+    name = str(raw.get('n') or raw.get('name') or '').strip()[:32]
+    out = {'v': 1, 'u': units, 's': supporters}
+    if name:
+        out['n'] = name
+    return out
+
+
+def _collections_share_mint_code(existing):
+    import secrets
+    for _ in range(64):
+        n = secrets.randbits(_COLLECTIONS_SHARE_CODE_LEN * 5)
+        chars = []
+        for _i in range(_COLLECTIONS_SHARE_CODE_LEN):
+            chars.append(_COLLECTIONS_SHARE_ALPHABET[n & 31])
+            n >>= 5
+        code = ''.join(chars)
+        if code not in existing:
+            return code
+    raise RuntimeError('share code mint failed')
+
+
+def _collections_share_prune(codes, by_ip=None):
+    if len(codes) <= _COLLECTIONS_SHARE_MAX_ENTRIES:
+        return codes
+    items = sorted(
+        codes.items(),
+        key=lambda kv: int((kv[1] or {}).get('ts') or 0),
+    )
+    drop = len(codes) - _COLLECTIONS_SHARE_MAX_ENTRIES
+    dropped = set()
+    for k, _ in items[:drop]:
+        codes.pop(k, None)
+        dropped.add(k)
+    if by_ip and dropped:
+        for sid, code in list(by_ip.items()):
+            if code in dropped:
+                by_ip.pop(sid, None)
+    return codes
+
+
+def _collections_share_submitter_id():
+    try:
+        return _site_feedback_submitter_id() or _bt_vote_voter_id()
+    except Exception:
+        return ''
+
+
+@app.route('/api/collections/share', methods=['POST'])
+def api_collections_share_create():
+    """Mint/update a short Collections share code — one active code per client IP."""
+    body = request.get_json(silent=True) or {}
+    payload = _collections_share_normalize_payload(body.get('payload') or body)
+    if not payload:
+        return jsonify({'error': 'invalid_payload'}), 400
+    submitter_id = str(_collections_share_submitter_id() or '').strip()
+    data = _collections_share_load()
+    codes = data.setdefault('codes', {})
+    by_ip = data.setdefault('by_ip', {})
+    import time as _time
+    now = int(_time.time())
+
+    # Same IP → keep their existing code and overwrite the snapshot (stable Discord links).
+    if submitter_id:
+        existing_code = str(by_ip.get(submitter_id) or '').strip().upper()
+        if existing_code and existing_code in codes and isinstance(codes.get(existing_code), dict):
+            codes[existing_code] = {'p': payload, 'ts': now, 'sid': submitter_id}
+            by_ip[submitter_id] = existing_code
+            if not _collections_share_save(data):
+                return jsonify({'error': 'save_failed'}), 500
+            return jsonify({'code': existing_code, 'reused': True, 'updated': True})
+
+    try:
+        code = _collections_share_mint_code(codes)
+    except Exception as e:
+        return jsonify({'error': 'mint_failed', 'detail': str(e)}), 500
+    codes[code] = {'p': payload, 'ts': now, 'sid': submitter_id}
+    if submitter_id:
+        by_ip[submitter_id] = code
+    _collections_share_prune(codes, by_ip)
+    if not _collections_share_save(data):
+        return jsonify({'error': 'save_failed'}), 500
+    return jsonify({'code': code, 'reused': False, 'updated': False})
+
+
+@app.route('/api/collections/share/<code>')
+def api_collections_share_get(code):
+    """Resolve a short Collections share code to possession payload."""
+    raw = str(code or '').strip().upper().replace('-', '').replace(' ', '')
+    # Crockford: map ambiguous glyphs
+    raw = raw.replace('O', '0').replace('I', '1').replace('L', '1')
+    # Accept 6 (current) and legacy 8-char mints.
+    if len(raw) not in (6, 8) or any(c not in _COLLECTIONS_SHARE_ALPHABET for c in raw):
+        return jsonify({'error': 'invalid_code'}), 400
+    data = _collections_share_load()
+    row = (data.get('codes') or {}).get(raw)
+    if not isinstance(row, dict) or not row.get('p'):
+        return jsonify({'error': 'not_found'}), 404
+    payload = _collections_share_normalize_payload(row.get('p'))
+    if not payload:
+        return jsonify({'error': 'not_found'}), 404
+    return jsonify({'code': raw, 'payload': payload})
+
+
+
+
+# --- Collections census (opt-in anonymous possession stats) ---
+_COLLECTIONS_CENSUS_MAX_ENTRIES = 5000
+_COLLECTIONS_CENSUS_RATE_LIMIT_SEC = 30
+_collections_census_cache = {'mtime': None, 'data': None}
+_collections_census_recent = {}
+
+
+def _collections_census_file_path():
+    vol = (os.environ.get('GGEN_PERSISTENT_DIR') or os.environ.get('RAILWAY_VOLUME_MOUNT_PATH') or '').strip()
+    if vol:
+        return os.path.join(vol, 'collections_census_v1.json')
+    return os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'persistent', 'collections_census_v1.json')
+
+
+def _collections_census_jsonl_path():
+    vol = (os.environ.get('GGEN_PERSISTENT_DIR') or os.environ.get('RAILWAY_VOLUME_MOUNT_PATH') or '').strip()
+    if vol:
+        return os.path.join(vol, 'collections_census.jsonl')
+    return os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'persistent', 'collections_census.jsonl')
+
+
+def _collections_census_empty():
+    return {'v': 1, 'entries': {}}
+
+
+def _collections_census_load():
+    path = _collections_census_file_path()
+    cached = _collections_census_cache
+    try:
+        mtime = os.path.getmtime(path)
+    except OSError:
+        mtime = None
+    if cached['data'] is not None and cached['mtime'] == mtime:
+        return cached['data']
+    data = _collections_census_empty()
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            raw = json.load(f)
+        if isinstance(raw, dict) and isinstance(raw.get('entries'), dict):
+            data = {'v': 1, 'entries': raw['entries']}
+    except FileNotFoundError:
+        pass
+    except Exception as e:
+        print(f'collections_census: load failed: {e}')
+    cached['data'] = data
+    cached['mtime'] = mtime
+    return data
+
+
+def _collections_census_save(data):
+    path = _collections_census_file_path()
+    try:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        tmp = path + '.tmp'
+        with open(tmp, 'w', encoding='utf-8') as f:
+            json.dump({'v': 1, 'entries': data.get('entries') or {}}, f, ensure_ascii=False, separators=(',', ':'))
+        os.replace(tmp, path)
+        try:
+            _collections_census_cache['mtime'] = os.path.getmtime(path)
+        except OSError:
+            _collections_census_cache['mtime'] = None
+        _collections_census_cache['data'] = data
+        return True
+    except Exception as e:
+        print(f'collections_census: save failed: {e}')
+        return False
+
+
+def _collections_census_append_jsonl(entry):
+    """Feedback-style append-only archive for the owner."""
+    path = _collections_census_jsonl_path()
+    try:
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, 'a', encoding='utf-8') as f:
+            f.write(json.dumps(entry, ensure_ascii=False, separators=(',', ':')) + '\n')
+    except Exception as e:
+        print(f'collections_census: jsonl append failed: {e}')
+
+
+def _collections_census_name_key(name):
+    s = re.sub(r'\s+', ' ', str(name or '').strip().lower())
+    return s[:32]
+
+
+def _collections_census_client_key(raw):
+    s = re.sub(r'[^a-zA-Z0-9_-]', '', str(raw or '').strip())
+    if len(s) < 16 or len(s) > 64:
+        return None
+    return s
+
+
+def _collections_census_rate_limited(submitter_id):
+    if not submitter_id:
+        return False
+    now = int(time.time())
+    stale = now - (_COLLECTIONS_CENSUS_RATE_LIMIT_SEC * 8)
+    for k, ts in list(_collections_census_recent.items()):
+        if ts < stale:
+            del _collections_census_recent[k]
+    last = _collections_census_recent.get(submitter_id, 0)
+    return (now - last) < _COLLECTIONS_CENSUS_RATE_LIMIT_SEC
+
+
+def _collections_census_prune(entries):
+    if len(entries) <= _COLLECTIONS_CENSUS_MAX_ENTRIES:
+        return entries
+    items = sorted(entries.items(), key=lambda kv: int((kv[1] or {}).get('ts') or 0))
+    drop = len(entries) - _COLLECTIONS_CENSUS_MAX_ENTRIES
+    for k, _ in items[:drop]:
+        entries.pop(k, None)
+    return entries
+
+
+def _collections_census_build_stats(entries, *, board='units', top_n=40):
+    """Aggregate opt-in snapshots — no display names in unit rates.
+
+    Possession depth uses copy points: LB0=1 … LB3=4 (max Limit Break = 4 copies).
+    """
+    board = 'supporters' if str(board).lower() in ('supporters', 's', 'supp') else 'units'
+    bag_key = 's' if board == 'supporters' else 'u'
+    copies_per_max = 4  # LB0..LB3 → 1..4 copies
+    catalog_ids = []
+    if board == 'supporters':
+        for sid, info in (supporter_info_map or {}).items():
+            info = info or {}
+            try:
+                if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+                    continue
+                if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')):
+                    continue
+            except Exception:
+                pass
+            if RARITY_MAP.get(str(info.get('rarity', '1')), 'N') != 'UR':
+                continue
+            catalog_ids.append(normalize_id(sid))
+    else:
+        for uid in unit_list_playable_ids:
+            info = unit_info_map.get(uid) or {}
+            try:
+                if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+                    continue
+                if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')):
+                    continue
+            except Exception:
+                pass
+            if bool(info.get('is_ultimate', False)):
+                continue
+            try:
+                if _unit_is_transform_alternate(uid):
+                    continue
+            except Exception:
+                pass
+            if RARITY_MAP.get(str(info.get('rarity', '1')), 'N') != 'UR':
+                continue
+            catalog_ids.append(normalize_id(uid))
+
+    n_snap = 0
+    hist = [0] * 10  # copy-fill % buckets 0-10 … 90-100
+    owned_count = {}
+    copy_sum = {}  # sum of (lb+1) across snapshots
+    lb_sum = {}
+    for _ck, row in (entries or {}).items():
+        if not isinstance(row, dict):
+            continue
+        bag = row.get(bag_key) if isinstance(row.get(bag_key), dict) else {}
+        total = len(catalog_ids) if catalog_ids else max(1, len(bag))
+        max_copies = float(total * copies_per_max)
+        copies = 0
+        for iid, lb in bag.items():
+            try:
+                lv = int(lb)
+            except (TypeError, ValueError):
+                continue
+            if lv < 0 or lv > 3:
+                continue
+            pts = lv + 1  # LB0→1 … LB3→4
+            copies += pts
+            iid = normalize_id(iid)
+            owned_count[iid] = owned_count.get(iid, 0) + 1
+            copy_sum[iid] = copy_sum.get(iid, 0) + pts
+            lb_sum[iid] = lb_sum.get(iid, 0) + lv
+        # Snapshot copy-fill vs full catalog at Max Limit Break
+        pct = int(round((copies / max_copies) * 100.0)) if max_copies else 0
+        pct = max(0, min(100, pct))
+        bucket = 9 if pct >= 100 else (pct // 10)
+        hist[bucket] += 1
+        n_snap += 1
+
+    hist_rows = []
+    for i, c in enumerate(hist):
+        lo = i * 10
+        hi = 100 if i == 9 else (i + 1) * 10
+        hist_rows.append({'lo': lo, 'hi': hi, 'count': int(c)})
+
+    unit_rows = []
+    id_set = set(catalog_ids) | set(owned_count.keys())
+    for iid in id_set:
+        oc = int(owned_count.get(iid, 0))
+        cps = int(copy_sum.get(iid, 0))
+        if n_snap <= 0:
+            own_pct = 0.0
+            copy_pct = 0.0
+            avg_lb = 0.0
+            avg_copies = 0.0
+        else:
+            own_pct = round(100.0 * oc / float(n_snap), 1)
+            # Full census Max LB for this id = n_snap * 4 copy-points
+            copy_pct = round(100.0 * cps / float(n_snap * copies_per_max), 1)
+            avg_lb = round((lb_sum.get(iid, 0) / float(oc)), 2) if oc else 0.0
+            avg_copies = round(cps / float(n_snap), 2)
+        unit_rows.append({
+            'id': iid,
+            'owned': oc,
+            'copies': cps,
+            'snapshots': n_snap,
+            'own_pct': own_pct,
+            'copy_pct': copy_pct,
+            'avg_lb': avg_lb,
+            'avg_copies': avg_copies,
+        })
+    # Lead with copy fill (LB depth), then unique owners
+    unit_rows.sort(key=lambda r: (-r['copy_pct'], -r['own_pct'], -r['owned'], r['id']))
+    by_id = {r['id']: r for r in unit_rows}
+    # Full-board histogram series (catalog order) for vertical thumb chart
+    kit_hist = []
+    for iid in catalog_ids:
+        row = by_id.get(iid) or {
+            'id': iid,
+            'owned': 0,
+            'copies': 0,
+            'snapshots': n_snap,
+            'own_pct': 0.0,
+            'copy_pct': 0.0,
+            'avg_lb': 0.0,
+            'avg_copies': 0.0,
+        }
+        kit_hist.append(row)
+    if n_snap <= 0:
+        most = []
+        scarcest = []
+        kit_hist = []
+    else:
+        most = unit_rows[: max(1, int(top_n))]
+        scarcest = sorted(
+            [r for r in unit_rows if r['snapshots'] > 0],
+            key=lambda r: (r['copy_pct'], r['own_pct'], r['owned'], r['id']),
+        )[: max(1, int(top_n))]
+    return {
+        'board': board,
+        'snapshots': n_snap,
+        'catalog_size': len(catalog_ids),
+        'copies_per_max': copies_per_max,
+        'possession_hist': hist_rows,
+        'hist_mode': 'copy_fill',
+        'kit_owned_hist': kit_hist,
+        'most_owned': most,
+        'least_owned': scarcest,
+    }
+
+
+@app.route('/api/collections/census', methods=['POST'])
+def api_collections_census_submit():
+    """Opt-in Collections census upsert. Unique per browser client_key; display name chosen by user."""
+    body = request.get_json(silent=True) or {}
+    # Honeypot (same idea as feedback)
+    if str(body.get('website') or '').strip():
+        return jsonify({'ok': True, 'ignored': True})
+    payload = _collections_share_normalize_payload(body.get('payload') or body)
+    if not payload:
+        return jsonify({'error': 'invalid_payload'}), 400
+    name = str(payload.get('n') or body.get('name') or '').strip()[:32]
+    if len(name) < 2:
+        return jsonify({'error': 'name_required'}), 400
+    name_key = _collections_census_name_key(name)
+    if not name_key:
+        return jsonify({'error': 'name_required'}), 400
+    client_key = _collections_census_client_key(body.get('client_key'))
+    if not client_key:
+        return jsonify({'error': 'client_key_required'}), 400
+    submitter_id = _site_feedback_submitter_id() or _bt_vote_voter_id()
+    data = _collections_census_load()
+    entries = data.setdefault('entries', {})
+    existing = entries.get(client_key)
+    # Name uniqueness across other browsers
+    for ck, row in entries.items():
+        if ck == client_key or not isinstance(row, dict):
+            continue
+        if _collections_census_name_key(row.get('name')) == name_key:
+            return jsonify({'error': 'name_taken'}), 409
+    is_update = isinstance(existing, dict)
+    if (not is_update) and _collections_census_rate_limited(submitter_id or client_key):
+        return jsonify({'error': 'rate_limited'}), 429
+    now = int(time.time())
+    row = {
+        'name': name,
+        'u': payload.get('u') or {},
+        's': payload.get('s') or {},
+        'ts': now,
+        'submitter_id': submitter_id or '',
+    }
+    entries[client_key] = row
+    _collections_census_prune(entries)
+    if not _collections_census_save(data):
+        return jsonify({'error': 'save_failed'}), 500
+    _collections_census_recent[submitter_id or client_key] = now
+    _collections_census_append_jsonl({
+        'ts': now,
+        'client_key': client_key,
+        'submitter_id': submitter_id or '',
+        'name': name,
+        'u_n': len(row['u']),
+        's_n': len(row['s']),
+        'action': 'update' if is_update else 'create',
+    })
+    return jsonify({'ok': True, 'updated': is_update, 'name': name, 'snapshots': len(entries)})
+
+
+@app.route('/api/collections/census/stats')
+def api_collections_census_stats():
+    """Public aggregates for Collections census graphs (no contributor names)."""
+    board = request.args.get('board', 'units')
+    try:
+        top_n = max(5, min(80, int(request.args.get('top') or 40)))
+    except (TypeError, ValueError):
+        top_n = 40
+    data = _collections_census_load()
+    stats = _collections_census_build_stats(data.get('entries') or {}, board=board, top_n=top_n)
+    # Optional contributor count only
+    stats['contributors'] = int(stats.get('snapshots') or 0)
+    return jsonify_cacheable(stats, f"col_census_stats_v1_{stats['board']}_{top_n}_{stats['snapshots']}", public=True, max_age=60)
+
+
 @app.route('/api/collections/catalog')
 def api_collections_catalog():
     """Slim UR catalog for /collections (Units + Supporters; no ULT / transform alts)."""
@@ -20696,10 +21386,20 @@ def _char_has_ability_id(cid, ability_id):
     want = normalize_id(ability_id)
     if not want:
         return False
-    if want in (CHANCE_STEP_EX_FILTER_ID, SUPPORT_DEF_X2_FILTER_ID, SUPPORT_ATK_X2_FILTER_ID):
+    if want in (
+        CHANCE_STEP_EX_FILTER_ID,
+        GUARANTEED_CHANCE_STEP_FILTER_ID,
+        SUPPORT_DEF_X2_FILTER_ID,
+        SUPPORT_ATK_X2_FILTER_ID,
+    ):
         include_sp = _request_flag_true(request.args.get('sp'))
         include_conditional = _request_flag_true(request.args.get('cond'))
-        return _char_matches_special_x2_filter(cid, want, include_sp=include_sp, include_conditional=include_conditional)
+        # Guaranteed CS is almost always unit/tag-gated — always include conditional details.
+        if want == GUARANTEED_CHANCE_STEP_FILTER_ID:
+            include_conditional = True
+        return _char_matches_special_x2_filter(
+            cid, want, include_sp=include_sp, include_conditional=include_conditional
+        )
     sdc_bucket = _sdc_filter_target_ids(want)
     for ab_row in extract_data_list(char_abil):
         if normalize_id(ab_row.get('CharacterId', '')) != cid:
@@ -21988,6 +22688,11 @@ def abilities_for_character_browse(ld, lc):
     _x2n = _char_special_x2_filter_names(lc)
     if CHANCE_STEP_EX_ABILITY_IDS:
         seen[CHANCE_STEP_EX_FILTER_ID] = {'name': _x2n[CHANCE_STEP_EX_FILTER_ID], 'icon': CHANCE_STEP_EX_ICON}
+    if GUARANTEED_CHANCE_STEP_ABILITY_IDS:
+        seen[GUARANTEED_CHANCE_STEP_FILTER_ID] = {
+            'name': _x2n[GUARANTEED_CHANCE_STEP_FILTER_ID],
+            'icon': GUARANTEED_CHANCE_STEP_ICON or CHANCE_STEP_EX_ICON,
+        }
     if SUPPORT_DEF_X2_CHARACTER_IDS:
         seen[SUPPORT_DEF_X2_FILTER_ID] = {'name': _x2n[SUPPORT_DEF_X2_FILTER_ID], 'icon': '/static/images/UI/UI_Common_BattleIcon_AssistDeffence_S.webp'}
     if SUPPORT_ATK_X2_CHARACTER_IDS:
@@ -22015,6 +22720,7 @@ def abilities_for_character_browse_filtered(ld, lc, args):
     sdc_tag_placed = False
     sdc_series_placed = False
     chance_step_ex_present = False
+    guaranteed_chance_step_present = False
     support_def_x2_present = False
     support_atk_x2_present = False
     for ab_row in extract_data_list(char_abil):
@@ -22046,9 +22752,13 @@ def abilities_for_character_browse_filtered(ld, lc, args):
             if not aid or aid in ('0', 'None') or aid in seen:
                 if aid in CHANCE_STEP_EX_ABILITY_IDS:
                     chance_step_ex_present = True
+                if aid in GUARANTEED_CHANCE_STEP_ABILITY_IDS:
+                    guaranteed_chance_step_present = True
                 continue
             if aid in CHANCE_STEP_EX_ABILITY_IDS:
                 chance_step_ex_present = True
+            if aid in GUARANTEED_CHANCE_STEP_ABILITY_IDS:
+                guaranteed_chance_step_present = True
             if aid in SDC_TAG_ABILITY_IDS:
                 if not sdc_tag_placed:
                     _append_sdc_browse_rep(seen, SDC_TAG_REPRESENTATIVE_ID, ld, lc, ldc)
@@ -22079,6 +22789,11 @@ def abilities_for_character_browse_filtered(ld, lc, args):
     _x2n = _char_special_x2_filter_names(lc)
     if chance_step_ex_present:
         seen[CHANCE_STEP_EX_FILTER_ID] = {'name': _x2n[CHANCE_STEP_EX_FILTER_ID], 'icon': CHANCE_STEP_EX_ICON}
+    if guaranteed_chance_step_present:
+        seen[GUARANTEED_CHANCE_STEP_FILTER_ID] = {
+            'name': _x2n[GUARANTEED_CHANCE_STEP_FILTER_ID],
+            'icon': GUARANTEED_CHANCE_STEP_ICON or CHANCE_STEP_EX_ICON,
+        }
     if support_def_x2_present:
         seen[SUPPORT_DEF_X2_FILTER_ID] = {'name': _x2n[SUPPORT_DEF_X2_FILTER_ID], 'icon': '/static/images/UI/UI_Common_BattleIcon_AssistDeffence_S.webp'}
     if support_atk_x2_present:

@@ -747,6 +747,27 @@ class TestSpInvestmentBands(unittest.TestCase):
         self.assertEqual(none["breakdown"]["dual_attack_attr"], 0)
         self.assertEqual(dual["breakdown"]["dual_attack_attr"], 1)
 
+    def test_attack_weapon_range_uses_best_gun_not_kit_max(self):
+        """Attack SPI range from strongest gun — Lupus filler R5 must not erase Limiter OFF R3 −1."""
+        import app as A
+        from sp_investment_rank import extract_unit_features, score_features
+
+        if "1430003600" not in (A.unit_weapon_map or {}):
+            self.skipTest("master data not loaded")
+        lupus = extract_unit_features(A, "1430003600", mode="ssp", lc="EN", rules=self.rules)
+        rex = extract_unit_features(A, "1430003400", mode="ssp", lc="EN", rules=self.rules)
+        self.assertIsNotNone(lupus)
+        self.assertIsNotNone(rex)
+        self.assertGreaterEqual(int(lupus.get("weapon_range") or 0), int(lupus.get("best_weapon_range") or 0))
+        self.assertEqual(int(lupus.get("best_weapon_range") or 0), 3)
+        self.assertEqual(int(rex.get("best_weapon_range") or 0), 3)
+        ls = score_features(lupus, self.rules, mode="ssp")
+        rs = score_features(rex, self.rules, mode="ssp")
+        self.assertEqual(ls["breakdown"]["weapon_range"], -1)
+        self.assertEqual(rs["breakdown"]["weapon_range"], -1)
+        # Rex SSP MOV 6 (+1) vs Lupus higher power — Lupus must not win purely on padded kit range.
+        self.assertLessEqual(ls["total"] - rs["total"], 2)
+
     def test_multi_weapon_attr_replaces_lupus_allowlist(self):
         none = score_features(_minimal_features(has_multi_weapon_attr=False, max_weapon_attr_types=1), self.rules)
         multi = score_features(_minimal_features(has_multi_weapon_attr=True, max_weapon_attr_types=2), self.rules)

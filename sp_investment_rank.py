@@ -2230,9 +2230,26 @@ def _spi_support_def_bonus_from_text(tx: str) -> int:
     return max(plus_one, best)
 
 
+_SPI_GUARANTEED_CHANCE_STEP_REGEXES = (
+    re.compile(r"chance\s*step\s+will\s+trigger", re.IGNORECASE),
+    re.compile(r"force[- ]?activate\s+chance\s*step", re.IGNORECASE),
+    re.compile(r"guaranteed\s+chance\s*step", re.IGNORECASE),
+    re.compile(r"敵を撃破しなくてもチャンスステップを発動"),
+    re.compile(r"無条件チャンスステップ"),
+    re.compile(r"オートチャンスステップ"),
+    re.compile(r"即使未擊敗敵人仍會發動額外行動"),
+    re.compile(r"無條件額外行動"),
+)
+
+
 def _spi_chance_bonus_from_text(tx: str) -> int:
     s = str(tx or "")
-    return sum(len(rx.findall(s)) for rx in _SPI_CHANCE_STEP_PLUS_ONE_REGEXES)
+    n = sum(len(rx.findall(s)) for rx in _SPI_CHANCE_STEP_PLUS_ONE_REGEXES)
+    if n:
+        return n
+    if any(rx.search(s) for rx in _SPI_GUARANTEED_CHANCE_STEP_REGEXES):
+        return 1
+    return 0
 
 
 def character_chance_support_counts(role, abilities, cond_on: bool = False) -> dict:
@@ -3202,7 +3219,11 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
         if mf_meta.get("heuristic"):
             meta["heuristic_keys"].append("movement_followup")
 
-    wr = int(features.get("weapon_range") or 0)
+    wr_kit = int(features.get("weapon_range") or 0)
+    wr_best = int(features.get("best_weapon_range") or 0) or wr_kit
+    # Support: kit-max reach for debuffs. Attack/Defense: score the strongest gun's range
+    # so a short Limiter OFF best attack is not padded by a longer filler (Lupus vs Rex).
+    wr = wr_kit if role == "Support" else wr_best
     wr_key = str(max(1, min(6, wr))) if wr else "1"
     breakdown["weapon_range"] = lookup_role_table(rules.get("weapon_range") or {}, role, wr_key, 0)
     power_bands = weapon_power_bands_for_mode(rules, mode, role)
@@ -3229,7 +3250,7 @@ def score_features(features: dict, rules: dict | None = None, mode: str = "sp") 
     ignore_hi_rng = int(
         ((rules.get("maxweapon_bonus") or {}).get("ignore_higher_range_when_max_range_lte", 0) or 0)
     )
-    if bonus_type == 4 and wr <= ignore_hi_rng:
+    if bonus_type == 4 and wr_kit <= ignore_hi_rng:
         bonus_type = 0
         bonus_pts = 0
     cap_by_role = ((rules.get("maxweapon_bonus") or {}).get("cap_by_role") or {})
@@ -3447,6 +3468,7 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
     best_weapon_trait_lines: list[str] = []
     best_weapon_id = ""
     best_weapon_wm: dict = {}
+    best_weapon_range = 0
     best_attack_attr_count = 0
     best_weapon_dmg_attr_keys: list[str] = []
     has_multi_weapon_attr = False
@@ -3642,6 +3664,7 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
                 best_weapon_trait_lines = list(trait_lines)
                 best_weapon_id = wid
                 best_weapon_wm = wm
+                best_weapon_range = rx
                 best_attack_attr_count = attr_n
                 best_weapon_dmg_attr_keys = list(
                     (getattr(A, "WEAPON_ATTR_SET_TYPE_KEYS", None) or {}).get(
@@ -3718,7 +3741,10 @@ def _weapon_features(A, uid: str, ld: dict, lc: str, mode: str, rules: dict) -> 
         weapon_bonus_structured = False
 
     return {
+        # Kit-wide max range (Support debuff reach / higher-range bonus gate).
         "weapon_range": max_range,
+        # Range of the highest-power non-MAP gun — Attack/Defense score this.
+        "best_weapon_range": best_weapon_range or max_range,
         "weapon_power": max_power,
         "map_ammo": map_ammo,
         "map_coverage_cells": map_coverage_cells,
