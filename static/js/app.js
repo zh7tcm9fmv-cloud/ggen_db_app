@@ -420,6 +420,12 @@ Object.assign(T.TW,{tb_picker_sort:'排序',tb_picker_weapon_attr:'武裝'});
 Object.assign(T.HK,{tb_picker_sort:'排序',tb_picker_weapon_attr:'武裝'});
 Object.assign(T.JA,{tb_picker_sort:'並び替え',tb_picker_weapon_attr:'武装'});
 Object.assign(T.JP,{tb_picker_sort:T.JA.tb_picker_sort,tb_picker_weapon_attr:T.JA.tb_picker_weapon_attr});
+Object.assign(T.EN,{sort_priority_hint:'Right-click / long-press to lock: each lock before the last keeps top 20% of that stat (cascade), last lock sorts the remaining. Left-click a lock to flip asc/desc; unlocked column clears locks',sort_priority_n:'Priority {n}',sort_priority_band:'· {pct}% {chain}'});
+Object.assign(T.JA,{sort_priority_hint:'右クリック／長押しで優先度固定：最後以外は各ステ上位20%を順に絞り、最後のロックでソート。ロック列左クリックで昇降順、未ロックで解除',sort_priority_n:'優先度 {n}',sort_priority_band:'· {pct}% {chain}'});
+Object.assign(T.TW,{sort_priority_hint:'右鍵／長按鎖定：最後一欄以外依序各取前20%縮小範圍，最後一鎖用來排序。左鍵點鎖定欄切換升降、點未鎖定清除',sort_priority_n:'優先 {n}',sort_priority_band:'· {pct}% {chain}'});
+Object.assign(T.HK,{sort_priority_hint:'右鍵／長按鎖定：最後一欄以外依序各取前20%收窄，最後一鎖用嚟排序。左鍵撳鎖定欄切換升降、撳未鎖定清除',sort_priority_n:'優先 {n}',sort_priority_band:'· {pct}% {chain}'});
+Object.assign(T.JP,{sort_priority_hint:T.JA.sort_priority_hint,sort_priority_n:T.JA.sort_priority_n,sort_priority_band:T.JA.sort_priority_band});
+
 Object.assign(T.EN,{dc_bigrang_zeon_squad_chk:'Big-Rang EX (1009000550) + pilot 1009000100: +5% ATK/DEF (Zeon)',dc_bigrang_zeon_squad_tip:'When Big-Rang (EX) is piloted by its EX pilot in your squad, Zeon-tagged units gain +5% ATK and DEF (permanent). Toggle on in Damage Calculator when that pair is in the squad.',dc_squad_buff_applied:'Applied',dc_squad_buff_sources:'Sources',dc_squad_buff_from_self:'This attacker',dc_squad_buff_from_ally:'Other attacker',dc_squad_buff_from_squad:'Squad aura',dc_squad_buff_from_ex_squad:'EX squad ATK',dc_squad_buff_ex_squad_label:'EX squad ATK %',dc_squad_buff_ex_atk_pct:'EX %atk +%n%',dc_squad_buff_atk_def_pct:'%atk & %def +%n%',dc_squad_buff_atk_pct:'%atk +%n%',dc_squad_buff_def_pct:'%def +%n%',dc_squad_buff_applied_split:'%atk +%a% · %def +%d%'});
 Object.assign(T.TW,{dc_bigrang_zeon_squad_chk:'Big-Rang EX (1009000550) + 駕駛 1009000100：吉翁小隊 +5% 攻擊/防禦',dc_bigrang_zeon_squad_tip:'小隊中有 Big-Rang（EX）並由其 EX 駕駛員駕駛時，帶有吉翁標籤的機體永久 +5% 攻擊與防禦。傷害計算中若該組合在小隊內請開啟。',dc_squad_buff_applied:'套用中',dc_squad_buff_sources:'來源',dc_squad_buff_from_self:'此攻擊方',dc_squad_buff_from_ally:'另一攻擊方',dc_squad_buff_from_squad:'小隊光環',dc_squad_buff_from_ex_squad:'EX 小隊攻擊力',dc_squad_buff_ex_squad_label:'EX 小隊攻擊力 %',dc_squad_buff_ex_atk_pct:'EX %atk +%n%',dc_squad_buff_atk_def_pct:'%atk與%def +%n%',dc_squad_buff_atk_pct:'%atk +%n%',dc_squad_buff_def_pct:'%def +%n%',dc_squad_buff_applied_split:'%atk +%a% · %def +%d%'});
 Object.assign(T.HK,{dc_bigrang_zeon_squad_chk:'Big-Rang EX (1009000550) + 駕駛 1009000100：吉翁小隊 +5% 攻擊/防禦',dc_bigrang_zeon_squad_tip:'小隊中有 Big-Rang（EX）並由其 EX 駕駛員駕駛時，帶有吉翁標籤的機體永久 +5% 攻擊與防禦。傷害計算中若該組合在小隊內請開啟。',dc_squad_buff_applied:'套用中',dc_squad_buff_sources:'來源',dc_squad_buff_from_self:'此攻擊方',dc_squad_buff_from_ally:'另一攻擊方',dc_squad_buff_from_squad:'小隊光環',dc_squad_buff_from_ex_squad:'EX 小隊攻擊力',dc_squad_buff_ex_squad_label:'EX 小隊攻擊力 %',dc_squad_buff_ex_atk_pct:'EX %atk +%n%',dc_squad_buff_atk_def_pct:'%atk與%def +%n%',dc_squad_buff_atk_pct:'%atk +%n%',dc_squad_buff_def_pct:'%def +%n%',dc_squad_buff_applied_split:'%atk +%a% · %def +%d%'});
@@ -505,7 +511,7 @@ function suppTableHeaderLabel(i18nKey){const full=t(i18nKey);let mob='';if(S.lan
 function tTerrain(name){const m=TERRAIN_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tRole(name){const m=ROLE_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tRoleFilter(roleId){const m=ROLE_LABELS[S.lang]||ROLE_LABELS.EN;return m[roleId]||m['']}
-const S={lang:'EN',languages:[],currentTab:'characters',listView:{characters:'grid',units:'grid',supporters:'grid',stages:'grid',modifications:'grid'},characters:{page:1,sort:'rarity',dir:'desc',q:''},units:{page:1,sort:'rarity',dir:'desc',q:''},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc',source:'eternal',challengeSeries:'ALL'},modifications:{page:1,sort:'rarity',dir:'desc',q:'',effectFilter:'ALL'},_modEffectFilterIcons:null,ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,pilotConditionalPassiveActive:false,pilotCondCharData:null,_pilotCondCharFetchId:null,_pilotCondCharInflight:null,pilotCondStackCount:0,unitCondStackCount:0,unitHpAtkTierIndex:0,charSuperchargedExTier:0,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_tagModalMode:'tags',_seriesModalSid:'',_seriesModalName:'',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,stageMapReinforcementOnly:false,stageMapSpawnOrderVisible:false,stageMapBuffAreasVisible:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,cmpCpActive:false,cmpPepActive:false,cmpPepCharById:{},cmpLbByUnit:{},cmpMobilePickMode:false,listCharSp:false,listUnitSp:false,listUnitSsp:false,listCharCond:false,listUnitCond:false,listUnitPilotCond:false,listSelectedUnitId:null,listCharSource:'ALL',listUnitSource:'ALL',listMsyUnitSource:'ALL',listCharLineage:[],listCharSeries:[],listCharSkills:[],listCharAbilities:[],listUnitLineage:[],listUnitSeries:[],listUnitAbilities:[],listMsyUnitSeries:[],listMsyUnitLineage:[],listUnitTerrain:[],listUnitWeaponDebuff:[],listUnitWeaponRange:[],listUnitWeaponRangeNonMap:[],listUnitWeaponRangeNonMapSspExOnly:false,listUnitMapWeapon:false,listUnitMapWeaponRange:[],listUnitMechanism:[],listSuppLineage:[],listModLineage:[],browseCombCharLineage:'and',browseCombUnitLineage:'and',browseCombSuppLineage:'and',browseCombModLineage:'and',browseCombCharSeries:'or',browseCombUnitSeries:'or',browseCombMsyUnitSeries:'or',browseCombMsyUnitLineage:'and',browseCombCharSkill:'and',browseCombUnitAbil:'and',browseCombCharTrait:'and',browseCombTerrain:'and',browseCombWb:'and',browseCombWr:'and',browseCombWrNm:'and',browseCombMapWr:'and',browseCombMech:'and',listGridVariant:{characters:2,units:2},weaponDebuffPresentKeys:null,terrainPresentTokens:null,weaponRangeSspExPresent:null,weaponRangeNonMapPresent:null,mechanismPresentRows:null,lrCacheKey:null,lrCacheData:null,btCacheKey:null,btCacheData:null,btBannerSortDir:'desc',_browsePrimed:{},dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,defUnitData:null,defCharData:null,defLbTier:3,npcList:[],wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[],unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,dcSuperchargedExTier:0,masterLeagueBuff:false,grandOffensiveBuff:false,squadCondPct:0,squadCondAtkPct:0,squadCondDefPct:0,bigRangZeonSquadBuff:false,defNpcMapBonusesOn:true,_applicableOptionRows:null,_applicableSupporterRows:null},tb:null,_dcPickerType:null,_dcPickerCache:[],_searchRecallObs:null,_suspendRarityItemChange:false,ranking:{mode:'units',viewMode:'list',sortChar:'Ranged',sortUnit:'HP',dirChar:'desc',dirUnit:'desc',pageChar:1,pageUnit:1},listRankCharSource:'ALL',listRankUnitSource:'ALL',listRankCharLineage:[],listRankCharSeries:[],listRankCharSkills:[],listRankCharAbilities:[],listRankUnitLineage:[],listRankUnitSeries:[],listRankUnitAbilities:[],listRankUnitTerrain:[],listRankUnitWeaponDebuff:[],listRankUnitWeaponRange:[],listRankUnitWeaponRangeNonMap:[],listRankUnitWeaponRangeNonMapSspExOnly:false,listRankUnitMapWeapon:false,listRankUnitMapWeaponRange:[],listRankUnitMechanism:[],listRankCharSp:false,listRankCharCond:false,listRankUnitSp:false,listRankUnitSsp:false,listRankUnitCond:false,listRankUnitPilotCond:false,browseCombRankCharLineage:'and',browseCombRankUnitLineage:'and',browseCombRankCharSeries:'or',browseCombRankUnitSeries:'or',browseCombRankCharSkill:'and',browseCombRankUnitAbil:'and',browseCombRankCharTrait:'and',browseCombRankTerrain:'and',browseCombRankWb:'and',browseCombRankWr:'and',browseCombRankWrNm:'and',browseCombRankMapWr:'and',browseCombRankMech:'and'};
+const S={lang:'EN',languages:[],currentTab:'characters',listView:{characters:'grid',units:'grid',supporters:'grid',stages:'grid',modifications:'grid'},characters:{page:1,sort:'rarity',dir:'desc',q:'',sortPriority:[]},units:{page:1,sort:'rarity',dir:'desc',q:'',sortPriority:[]},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc',source:'eternal',challengeSeries:'ALL'},modifications:{page:1,sort:'rarity',dir:'desc',q:'',effectFilter:'ALL'},_modEffectFilterIcons:null,ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,pilotConditionalPassiveActive:false,pilotCondCharData:null,_pilotCondCharFetchId:null,_pilotCondCharInflight:null,pilotCondStackCount:0,unitCondStackCount:0,unitHpAtkTierIndex:0,charSuperchargedExTier:0,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_tagModalMode:'tags',_seriesModalSid:'',_seriesModalName:'',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,stageMapReinforcementOnly:false,stageMapSpawnOrderVisible:false,stageMapBuffAreasVisible:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,cmpCpActive:false,cmpPepActive:false,cmpPepCharById:{},cmpLbByUnit:{},cmpMobilePickMode:false,listCharSp:false,listUnitSp:false,listUnitSsp:false,listCharCond:false,listUnitCond:false,listUnitPilotCond:false,listSelectedUnitId:null,listCharSource:'ALL',listUnitSource:'ALL',listMsyUnitSource:'ALL',listCharLineage:[],listCharSeries:[],listCharSkills:[],listCharAbilities:[],listUnitLineage:[],listUnitSeries:[],listUnitAbilities:[],listMsyUnitSeries:[],listMsyUnitLineage:[],listUnitTerrain:[],listUnitWeaponDebuff:[],listUnitWeaponRange:[],listUnitWeaponRangeNonMap:[],listUnitWeaponRangeNonMapSspExOnly:false,listUnitMapWeapon:false,listUnitMapWeaponRange:[],listUnitMechanism:[],listSuppLineage:[],listModLineage:[],browseCombCharLineage:'and',browseCombUnitLineage:'and',browseCombSuppLineage:'and',browseCombModLineage:'and',browseCombCharSeries:'or',browseCombUnitSeries:'or',browseCombMsyUnitSeries:'or',browseCombMsyUnitLineage:'and',browseCombCharSkill:'and',browseCombUnitAbil:'and',browseCombCharTrait:'and',browseCombTerrain:'and',browseCombWb:'and',browseCombWr:'and',browseCombWrNm:'and',browseCombMapWr:'and',browseCombMech:'and',listGridVariant:{characters:2,units:2},weaponDebuffPresentKeys:null,terrainPresentTokens:null,weaponRangeSspExPresent:null,weaponRangeNonMapPresent:null,mechanismPresentRows:null,lrCacheKey:null,lrCacheData:null,btCacheKey:null,btCacheData:null,btBannerSortDir:'desc',_browsePrimed:{},dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,defUnitData:null,defCharData:null,defLbTier:3,npcList:[],wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[],unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,dcSuperchargedExTier:0,masterLeagueBuff:false,grandOffensiveBuff:false,squadCondPct:0,squadCondAtkPct:0,squadCondDefPct:0,bigRangZeonSquadBuff:false,defNpcMapBonusesOn:true,_applicableOptionRows:null,_applicableSupporterRows:null},tb:null,_dcPickerType:null,_dcPickerCache:[],_searchRecallObs:null,_suspendRarityItemChange:false,ranking:{mode:'units',viewMode:'list',sortChar:'Ranged',sortUnit:'HP',dirChar:'desc',dirUnit:'desc',pageChar:1,pageUnit:1},listRankCharSource:'ALL',listRankUnitSource:'ALL',listRankCharLineage:[],listRankCharSeries:[],listRankCharSkills:[],listRankCharAbilities:[],listRankUnitLineage:[],listRankUnitSeries:[],listRankUnitAbilities:[],listRankUnitTerrain:[],listRankUnitWeaponDebuff:[],listRankUnitWeaponRange:[],listRankUnitWeaponRangeNonMap:[],listRankUnitWeaponRangeNonMapSspExOnly:false,listRankUnitMapWeapon:false,listRankUnitMapWeaponRange:[],listRankUnitMechanism:[],listRankCharSp:false,listRankCharCond:false,listRankUnitSp:false,listRankUnitSsp:false,listRankUnitCond:false,listRankUnitPilotCond:false,browseCombRankCharLineage:'and',browseCombRankUnitLineage:'and',browseCombRankCharSeries:'or',browseCombRankUnitSeries:'or',browseCombRankCharSkill:'and',browseCombRankUnitAbil:'and',browseCombRankCharTrait:'and',browseCombRankTerrain:'and',browseCombRankWb:'and',browseCombRankWr:'and',browseCombRankWrNm:'and',browseCombRankMapWr:'and',browseCombRankMech:'and'};
 window.S=S;
 function primeBrowseTabIfNeeded(tab){reloadBrowseTab(tab)}
 function reloadBrowseTab(tab){const browseTabs={characters:1,units:1,supporters:1,stages:1,modifications:1};if(!browseTabs[tab])return;if(tab==='characters')loadCharacters(S.characters.page||1);else if(tab==='units')loadUnits(S.units.page||1);else if(tab==='supporters')loadSupporters(S.supporters.page||1);else if(tab==='stages')loadStages(S.stages.page||1);else if(tab==='modifications')loadModifications(S.modifications.page||1)}
@@ -544,6 +550,181 @@ function scheduleDeferredContentBootstraps(force){
 function markBrowseFirstPaintForNotices(){scheduleDeferredContentBootstraps(false);scheduleBrowseFiltersMetaWarmup()}
 const RANK_SORT_KEYS_CHAR=['Ranged','Melee','Awaken','Defense','Reaction'];
 const RANK_SORT_KEYS_UNIT=['HP','EN','ATK','DEF','MOB'];
+/* Explicit multi-key sort: right-click / long-press stat headers to lock priority ¹ ² ³… */
+const SORT_PRIORITY_ICON='/static/images/UI/mw_red_target2.webp';
+const SORT_PRIORITY_SUP=['¹','²','³','⁴','⁵','⁶'];
+const SORT_PRIORITY_KEYS_UNIT=['HP','EN','ATK','DEF','MOB','MOV'];
+const SORT_PRIORITY_KEYS_CHAR=['Ranged','Melee','Awaken','Defense','Reaction'];
+const SORT_PRIORITY_BAND_FRAC=0.2;
+function browseSortState(type){
+if(type==='characters')return S.characters;
+if(type==='units')return S.units;
+return null;
+}
+function browseSortPriority(type){
+const s=browseSortState(type);
+if(!s)return[];
+if(!Array.isArray(s.sortPriority))s.sortPriority=[];
+return s.sortPriority;
+}
+function browseSortPriorityAllowed(type,key){
+const k=String(key||'');
+if(type==='units')return SORT_PRIORITY_KEYS_UNIT.indexOf(k)>=0;
+if(type==='characters')return SORT_PRIORITY_KEYS_CHAR.indexOf(k)>=0;
+return false;
+}
+function browseSortChainQuery(type){
+const pri=browseSortPriority(type);
+if(!pri.length)return'';
+return'&sort_chain='+encodeURIComponent(pri.join(','));
+}
+function sortPriorityBadgeHtml(type,key){
+const pri=browseSortPriority(type);
+const idx=pri.indexOf(key);
+if(idx<0)return'';
+const n=SORT_PRIORITY_SUP[idx]||String(idx+1);
+const tip=String(t('sort_priority_n')||'').replace('{n}',String(idx+1));
+return`<span class="sort-priority-lock" title="${escAttr(tip)}"><img class="sort-priority-ic" src="${imgUrl(SORT_PRIORITY_ICON)}" alt="" width="16" height="16" loading="lazy" decoding="async"><sup class="sort-priority-exp">${n}</sup></span>`;
+}
+function browseStatThHtml(type,key,labelInner,titleText){
+const s=browseSortState(type);
+const pri=browseSortPriority(type);
+const locked=pri.indexOf(key)>=0;
+/* With 2+ locks, arrow marks the last lock (in-band sort key). */
+const activeSortKey=pri.length>=2?pri[pri.length-1]:(s&&s.sort);
+const active=!!s&&activeSortKey===key;
+const arrow=active?(s.dir==='desc'?'▼':'▲'):'▼';
+const tip=titleText||'';
+const hint=t('sort_priority_hint');
+const fullTip=tip?(tip+' — '+hint):hint;
+return`<th class="col-stat${active?' sort-active':''}${locked?' sort-priority-on':''}" data-browse-type="${escAttr(type)}" data-sort-key="${escAttr(key)}" title="${escAttr(fullTip)}" onclick="sortCol('${escJs(type)}','${escJs(key)}')">${labelInner}${sortPriorityBadgeHtml(type,key)} <span class="sort-arrow">${arrow}</span></th>`;
+}
+function syncSortPriorityPrimary(type){
+const s=browseSortState(type);
+if(!s)return;
+const pri=browseSortPriority(type);
+if(pri.length>=2)s.sort=pri[pri.length-1];
+else if(pri.length===1)s.sort=pri[0];
+}
+function toggleSortPriority(type,key){
+if(!browseSortPriorityAllowed(type,key))return;
+const s=browseSortState(type);
+if(!s)return;
+const pri=browseSortPriority(type);
+const idx=pri.indexOf(key);
+if(idx>=0)pri.splice(idx,1);
+else pri.push(key);
+s.sortPriority=pri.slice();
+if(pri.length){
+syncSortPriorityPrimary(type);
+if(s.dir!=='asc'&&s.dir!=='desc')s.dir='desc';
+}
+buildTableHeaders();
+if(type==='characters')loadCharacters(1);
+else if(type==='units')loadUnits(1);
+}
+function bindSortPriorityHeaderGestures(){
+if(S._sortPriorityGesturesBound)return;
+S._sortPriorityGesturesBound=1;
+let holdTimer=null;
+let holdFired=false;
+let suppressClickUntil=0;
+const clearHold=()=>{if(holdTimer){clearTimeout(holdTimer);holdTimer=null}};
+const onContext=(e)=>{
+const th=e.target&&e.target.closest?e.target.closest('th.col-stat[data-sort-key]'):null;
+if(!th)return;
+const type=th.getAttribute('data-browse-type');
+const key=th.getAttribute('data-sort-key');
+if(!type||!key)return;
+e.preventDefault();
+toggleSortPriority(type,key);
+};
+const onPointerDown=(e)=>{
+if(e.pointerType==='mouse'&&e.button!==0)return;
+const th=e.target&&e.target.closest?e.target.closest('th.col-stat[data-sort-key]'):null;
+if(!th)return;
+holdFired=false;
+clearHold();
+holdTimer=setTimeout(()=>{
+holdFired=true;
+suppressClickUntil=Date.now()+500;
+const type=th.getAttribute('data-browse-type');
+const key=th.getAttribute('data-sort-key');
+if(type&&key)toggleSortPriority(type,key);
+},480);
+};
+const onPointerUp=()=>{clearHold()};
+const onClickCapture=(e)=>{
+if(Date.now()>suppressClickUntil)return;
+const th=e.target&&e.target.closest?e.target.closest('th.col-stat[data-sort-key]'):null;
+if(!th)return;
+e.preventDefault();
+e.stopPropagation();
+};
+document.addEventListener('contextmenu',onContext);
+document.addEventListener('pointerdown',onPointerDown,{passive:true});
+document.addEventListener('pointerup',onPointerUp,{passive:true});
+document.addEventListener('pointercancel',clearHold,{passive:true});
+document.addEventListener('pointermove',(e)=>{if(holdTimer&&(Math.abs(e.movementX)+Math.abs(e.movementY)>8))clearHold()},{passive:true});
+document.addEventListener('click',onClickCapture,true);
+}
+function listSortCompareByPriority(a,b,keys,dir){
+const list=keys&&keys.length?keys:[];
+for(let i=0;i<list.length;i++){
+const d=(Number(a[list[i]])||0)-(Number(b[list[i]])||0);
+if(d)return dir*d;
+}
+return 0;
+}
+function listStatNum(v){const n=Number(v);return Number.isFinite(n)?n:0}
+function filterRowsPriorityStatBand(rows,bandKey,dirSign,frac){
+if(!rows||!rows.length||!bandKey)return{rows:rows||[],meta:null};
+const f=frac==null?SORT_PRIORITY_BAND_FRAC:frac;
+const descending=dirSign<0;
+const vals=rows.map(r=>listStatNum(r[bandKey]));
+const ordered=vals.slice().sort((a,b)=>descending?b-a:a-b);
+const k=Math.max(1,Math.ceil(ordered.length*f));
+const thr=ordered[k-1];
+const kept=rows.filter(r=>{
+const v=listStatNum(r[bandKey]);
+return descending?v>=thr:v<=thr;
+});
+return{rows:kept,meta:{band_key:bandKey,band_frac:f,band_threshold:thr,band_pool:rows.length,band_kept:kept.length,band_dir:descending?'top':'bottom'}};
+}
+function applySortPriorityBandFilter(rows,pri,dirSign){
+if(!pri||pri.length<2)return{rows:rows||[],meta:null};
+const pool0=(rows||[]).length;
+let work=rows||[];
+const steps=[];
+const bandKeys=pri.slice(0,-1);
+for(let i=0;i<bandKeys.length;i++){
+const r=filterRowsPriorityStatBand(work,bandKeys[i],dirSign,SORT_PRIORITY_BAND_FRAC);
+work=r.rows;
+if(r.meta)steps.push(r.meta);
+}
+const sortKey=pri[pri.length-1];
+return{rows:work,meta:{band_frac:SORT_PRIORITY_BAND_FRAC,band_key:pri[0],band_keys:bandKeys.slice(),sort_key:sortKey,sort_keys:[sortKey],band_pool:pool0,band_kept:work.length,band_dir:dirSign<0?'top':'bottom',steps}};
+}
+function sortPriorityChainForCompare(pri){
+if(!pri||!pri.length)return[];
+if(pri.length<2)return pri.slice();
+/* Last lock sorts; earlier band keys as tie-breaks (nearest first). */
+return[pri[pri.length-1]].concat(pri.slice(0,-1).reverse());
+}
+function browseToolbarCountHtml(which,total,band){
+const countKey=which==='unit'?'count_unit':which==='char'?'count_char':which==='supp'?'count_supporter':which==='stage'?'count_stage':'count_mod';
+let html=`<span class="result-count-num">${total}</span> ${t(countKey)}`;
+if(band&&(band.band_keys||band.band_key)&&(band.sort_key||(band.sort_keys&&band.sort_keys.length))){
+const pct=Math.round((Number(band.band_frac)||SORT_PRIORITY_BAND_FRAC)*100);
+const parts=(Array.isArray(band.band_keys)&&band.band_keys.length?band.band_keys.slice():[band.band_key]).filter(Boolean);
+const sk=band.sort_key||(band.sort_keys&&band.sort_keys[0])||'';
+if(sk)parts.push(sk);
+const chain=parts.join(' → ');
+const note=String(t('sort_priority_band')||'').replace('{pct}',String(pct)).replace('{chain}',chain).replace('{key1}',String(parts[0]||'')).replace('{key2}',String(sk||''));
+html+=` <span class="sort-priority-band-note">${esc(note)}</span>`;
+}
+return html;
+}
 function rankingSortKeys(){return S.ranking.mode==='characters'?RANK_SORT_KEYS_CHAR:RANK_SORT_KEYS_UNIT}
 function syncRankingFiltersFromBrowse(){S.listRankCharSource=S.listCharSource;S.listRankCharLineage=(S.listCharLineage||[]).slice();S.listRankCharSeries=(S.listCharSeries||[]).slice();S.listRankCharSkills=(S.listCharSkills||[]).slice();S.listRankCharAbilities=(S.listCharAbilities||[]).slice();S.listRankCharSp=!!S.listCharSp;S.listRankCharCond=!!S.listCharCond;S.browseCombRankCharLineage=S.browseCombCharLineage;S.browseCombRankCharSeries=S.browseCombCharSeries;S.browseCombRankCharSkill=S.browseCombCharSkill;S.browseCombRankCharTrait=S.browseCombCharTrait;const cf=document.getElementById('charFilter'),rf=document.getElementById('rankCharFilter');if(cf&&rf){rf.value=cf.value;syncBrowseSearchWidth('rankCharFilter')}S.listRankUnitSource=S.listUnitSource;S.listRankUnitLineage=(S.listUnitLineage||[]).slice();S.listRankUnitSeries=(S.listUnitSeries||[]).slice();S.listRankUnitAbilities=(S.listUnitAbilities||[]).slice();S.listRankUnitTerrain=(S.listUnitTerrain||[]).slice();S.listRankUnitWeaponDebuff=(S.listUnitWeaponDebuff||[]).slice();S.listRankUnitWeaponRange=(S.listUnitWeaponRange||[]).slice();S.listRankUnitWeaponRangeNonMap=(S.listUnitWeaponRangeNonMap||[]).slice();S.listRankUnitWeaponRangeNonMapSspExOnly=!!S.listUnitWeaponRangeNonMapSspExOnly;S.listRankUnitMapWeapon=!!S.listUnitMapWeapon;S.listRankUnitMapWeaponRange=(S.listUnitMapWeaponRange||[]).slice();S.listRankUnitMechanism=(S.listUnitMechanism||[]).slice();S.listRankUnitSp=!!S.listUnitSp;S.listRankUnitSsp=!!S.listUnitSsp;S.listRankUnitCond=!!S.listUnitCond;S.listRankUnitPilotCond=!!S.listUnitPilotCond;S.browseCombRankUnitLineage=S.browseCombUnitLineage;S.browseCombRankUnitSeries=S.browseCombUnitSeries;S.browseCombRankUnitAbil=S.browseCombUnitAbil;S.browseCombRankTerrain=S.browseCombTerrain;S.browseCombRankWb=S.browseCombWb;S.browseCombRankWr=S.browseCombWr;S.browseCombRankWrNm=S.browseCombWrNm;S.browseCombRankMapWr=S.browseCombMapWr;S.browseCombRankMech=S.browseCombMech;const uf=document.getElementById('unitFilter'),ruf=document.getElementById('rankUnitFilter');if(uf&&ruf){ruf.value=uf.value;syncBrowseSearchWidth('rankUnitFilter')}}
 function isRankingEntity(which){return which==='rankChar'||which==='rankUnit'}
@@ -1053,8 +1234,8 @@ function showBrowseLoadError(pfx,msg){showLoad(pfx,false);const em=document.getE
 function browseListJsonCacheSet(url,d){if(!d||typeof d.total!=='number')return;_browseListJsonCache.set(url,d);while(_browseListJsonCache.size>BROWSE_LIST_JSON_CACHE_MAX){const k=_browseListJsonCache.keys().next().value;_browseListJsonCache.delete(k)}}
 function browseListJsonCacheClearPrefix(pfx){for(const k of _browseListJsonCache.keys()){if(String(k).startsWith(pfx))_browseListJsonCache.delete(k)}_fetchJsonEtagCacheClearPrefix(pfx);if(String(pfx).indexOf('/api/units')>=0){instantBrowseInvalidate('units');instantBrowseInvalidate('rankUnits')}if(String(pfx).indexOf('/api/characters')>=0){instantBrowseInvalidate('characters');instantBrowseInvalidate('rankCharacters')}if(String(pfx).indexOf('/api/supporters')>=0)instantBrowseInvalidate('supporters');if(String(pfx).indexOf('/api/stages')>=0)instantBrowseInvalidate('stages');if(String(pfx).indexOf('/api/option_parts')>=0)instantBrowseInvalidate('modifications')}
 function buildStagesListUrl(p,pp){const s=S.stages;const dfSel=s.difficultyFilter==='ALL'?'':s.difficultyFilter;const src=s.source||'eternal';const cat=src==='score_attack'?'score_attack':src==='special_stage'?'special_stage':src==='tower_stage'?'tower_stage':src==='challenge_stage'?'challenge_stage':'eternal';const df=(cat==='eternal')?dfSel:'';const ts=(s.towerSide==='E'||s.towerSide==='W')?s.towerSide:'ALL';const cs=challengeSeriesValidId(s.challengeSeries)&&s.challengeSeries!=='ALL'?s.challengeSeries:'ALL';return`/api/stages?lang=${S.lang}&page=${p}&per_page=${pp}&q=${encodeURIComponent(s.q)}&difficulty=${encodeURIComponent(df)}&sort=${s.sort}&dir=${s.dir}&category=${encodeURIComponent(cat)}&tower_side=${encodeURIComponent(ts)}&challenge_series=${encodeURIComponent(cs)}`}
-function buildCharactersListUrl(p,pp,sp,cond){const s=S.characters;const q=document.getElementById('charFilter').value.trim();const roleQ=getRoleQuerySuffix('char');const rq=getRarityQuerySuffix('char');const stQ=listStatQChar(!!sp,!!cond);const srcQ=getSourceQuerySuffix('char');const linQ=getLineageQuerySuffix('char');const linOp=getLineageOpSuffix('char');const serQ=getSeriesQuerySuffix('char');const serOp=getSeriesOpSuffix('char');const skillQ=getSkillOrAbilityQuerySuffix('char');const skOp=getCharSkillOpSuffix();const abilQ=getAbilityQuerySuffix('char');const traitOp=getCharTraitAbilityOpSuffix();const gsQ=getListViewMode('characters')==='grid'&&getListGridVariant('characters')===2?'&grid_skills=1':'';return`/api/characters?lang=${S.lang}&page=${p}&per_page=${pp}&sort=${s.sort}&dir=${s.dir}&q=${encodeURIComponent(q)}${roleQ}${rq}${stQ}${srcQ}${linQ}${linOp}${serQ}${serOp}${skillQ}${skOp}${abilQ}${traitOp}${gsQ}`}
-function buildUnitsListApiUrl(p,pp,sp,ssp,cond,pilotCond){const s=S.units;const qRaw=document.getElementById('unitFilter').value.trim();const qApi=expandUnitSearchQuery(qRaw);const roleQ=getRoleQuerySuffix('unit');const rq=getRarityQuerySuffix('unit');const stQ=listStatQUnit(!!sp,!!ssp,!!cond,!!pilotCond);const srcQ=getSourceQuerySuffix('unit');const terrQ=getUnitTerrainQuerySuffix();const terrOp=getTerrainOpSuffix();const debQ=getUnitWeaponDebuffQuerySuffix();const debOp=getWeaponDebuffOpSuffix();const wrQ=getUnitWeaponRangeQuerySuffix();const wrOp=getWeaponRangeOpSuffix();const wrnmQ=getUnitWeaponRangeNonMapQuerySuffix();const wrnmOp=getWeaponRangeNonMapOpSuffix();const wrnmSex=S.listUnitWeaponRangeNonMapSspExOnly?'&weapon_range_non_map_ssp_ex=1':'';const mwrQ=getUnitMapWeaponRangeQuerySuffix();const mwrOp=getMapWeaponRangeOpSuffix();const mechQ=getUnitMechanismQuerySuffix();const mechOp=getMechanismOpSuffix();const linQ=getLineageQuerySuffix('unit');const linOp=getLineageOpSuffix('unit');const serQ=getSeriesQuerySuffix('unit');const serOp=getSeriesOpSuffix('unit');const abQ=getSkillOrAbilityQuerySuffix('unit');const abOp=getUnitBrowseAbilityOpSuffix();const gsU=getListViewMode('units')==='grid'&&getListGridVariant('units')===2?'&grid_skills=1':'';return`/api/units?lang=${S.lang}&page=${p}&per_page=${pp}&sort=${s.sort}&dir=${s.dir}&q=${encodeURIComponent(qApi)}${roleQ}${rq}${stQ}${srcQ}${terrQ}${terrOp}${debQ}${debOp}${wrQ}${wrOp}${wrnmQ}${wrnmOp}${wrnmSex}${mwrQ}${mwrOp}${mechQ}${mechOp}${linQ}${linOp}${serQ}${serOp}${abQ}${abOp}${gsU}`}
+function buildCharactersListUrl(p,pp,sp,cond){const s=S.characters;const q=document.getElementById('charFilter').value.trim();const roleQ=getRoleQuerySuffix('char');const rq=getRarityQuerySuffix('char');const stQ=listStatQChar(!!sp,!!cond);const srcQ=getSourceQuerySuffix('char');const linQ=getLineageQuerySuffix('char');const linOp=getLineageOpSuffix('char');const serQ=getSeriesQuerySuffix('char');const serOp=getSeriesOpSuffix('char');const skillQ=getSkillOrAbilityQuerySuffix('char');const skOp=getCharSkillOpSuffix();const abilQ=getAbilityQuerySuffix('char');const traitOp=getCharTraitAbilityOpSuffix();const gsQ=getListViewMode('characters')==='grid'&&getListGridVariant('characters')===2?'&grid_skills=1':'';const chainQ=browseSortChainQuery('characters');return`/api/characters?lang=${S.lang}&page=${p}&per_page=${pp}&sort=${s.sort}&dir=${s.dir}&q=${encodeURIComponent(q)}${roleQ}${rq}${stQ}${srcQ}${linQ}${linOp}${serQ}${serOp}${skillQ}${skOp}${abilQ}${traitOp}${gsQ}${chainQ}`}
+function buildUnitsListApiUrl(p,pp,sp,ssp,cond,pilotCond){const s=S.units;const qRaw=document.getElementById('unitFilter').value.trim();const qApi=expandUnitSearchQuery(qRaw);const roleQ=getRoleQuerySuffix('unit');const rq=getRarityQuerySuffix('unit');const stQ=listStatQUnit(!!sp,!!ssp,!!cond,!!pilotCond);const srcQ=getSourceQuerySuffix('unit');const terrQ=getUnitTerrainQuerySuffix();const terrOp=getTerrainOpSuffix();const debQ=getUnitWeaponDebuffQuerySuffix();const debOp=getWeaponDebuffOpSuffix();const wrQ=getUnitWeaponRangeQuerySuffix();const wrOp=getWeaponRangeOpSuffix();const wrnmQ=getUnitWeaponRangeNonMapQuerySuffix();const wrnmOp=getWeaponRangeNonMapOpSuffix();const wrnmSex=S.listUnitWeaponRangeNonMapSspExOnly?'&weapon_range_non_map_ssp_ex=1':'';const mwrQ=getUnitMapWeaponRangeQuerySuffix();const mwrOp=getMapWeaponRangeOpSuffix();const mechQ=getUnitMechanismQuerySuffix();const mechOp=getMechanismOpSuffix();const linQ=getLineageQuerySuffix('unit');const linOp=getLineageOpSuffix('unit');const serQ=getSeriesQuerySuffix('unit');const serOp=getSeriesOpSuffix('unit');const abQ=getSkillOrAbilityQuerySuffix('unit');const abOp=getUnitBrowseAbilityOpSuffix();const gsU=getListViewMode('units')==='grid'&&getListGridVariant('units')===2?'&grid_skills=1':'';const chainQ=browseSortChainQuery('units');return`/api/units?lang=${S.lang}&page=${p}&per_page=${pp}&sort=${s.sort}&dir=${s.dir}&q=${encodeURIComponent(qApi)}${roleQ}${rq}${stQ}${srcQ}${terrQ}${terrOp}${debQ}${debOp}${wrQ}${wrOp}${wrnmQ}${wrnmOp}${wrnmSex}${mwrQ}${mwrOp}${mechQ}${mechOp}${linQ}${linOp}${serQ}${serOp}${abQ}${abOp}${gsU}${chainQ}`}
 function loadPersistedListView(){const def={characters:'grid',units:'grid',supporters:'grid',stages:'grid',modifications:'grid'};try{const s=localStorage.getItem('ggen_list_view');if(s){const o=JSON.parse(s);Object.keys(def).forEach(k=>{if(o[k]==='grid'||o[k]==='table')def[k]=o[k]})}}catch(e){}S.listView=def}
 function persistListView(){try{localStorage.setItem('ggen_list_view',JSON.stringify(S.listView))}catch(e){}}
 function getListViewMode(tab){if(tab==='stages')return'grid';return(S.listView&&S.listView[tab])||'grid'}
@@ -2216,6 +2397,14 @@ if(d)return dir*d;
 return String(a.id||'').localeCompare(String(b.id||''));
 }
 if(numeric[field]){
+const priTab=tab==='units'?'units':tab==='characters'?'characters':tab==='rankUnits'?'units':tab==='rankCharacters'?'characters':'';
+const pri=priTab?browseSortPriority(priTab):[];
+if(pri.length){
+const chain=sortPriorityChainForCompare(pri);
+const chainCmp=listSortCompareByPriority(a,b,chain,dir);
+if(chainCmp)return chainCmp;
+return idTie(a,b);
+}
 const d=(Number(a[field])||0)-(Number(b[field])||0);
 if(d)return dir*d;
 }else{
@@ -2262,8 +2451,8 @@ n++;if(v<mn)mn=v;if(v>mx)mx=v;
 return n?{min:mn,max:mx}:null;
 }
 function instantBrowsePaint(tab,payload,qn,pg){
-if(tab==='units'){S.units.page=pg;S.units.q=qn;renderUnitT(payload);renderPag('unit',payload);setBrowseToolbarCount('unit',`<span class="result-count-num">${payload.total}</span> ${t('count_unit')}`);showLoad('unit',false);return}
-if(tab==='characters'){S.characters.page=pg;S.characters.q=qn;renderCharT(payload);renderPag('char',payload);setBrowseToolbarCount('char',`<span class="result-count-num">${payload.total}</span> ${t('count_char')}`);showLoad('char',false);return}
+if(tab==='units'){S.units.page=pg;S.units.q=qn;renderUnitT(payload);renderPag('unit',payload);setBrowseToolbarCount('unit',browseToolbarCountHtml('unit',payload.total,payload.sort_priority_band));showLoad('unit',false);return}
+if(tab==='characters'){S.characters.page=pg;S.characters.q=qn;renderCharT(payload);renderPag('char',payload);setBrowseToolbarCount('char',browseToolbarCountHtml('char',payload.total,payload.sort_priority_band));showLoad('char',false);return}
 if(tab==='supporters'){S.supporters.page=pg;S.supporters.q=qn;renderSuppT(payload);renderPag('supp',payload);setBrowseToolbarCount('supp',`<span class="result-count-num">${payload.total}</span> ${t('count_supporter')}`);showLoad('supp',false);return}
 if(tab==='stages'){S.stages.page=pg;S.stages.q=qn;const stg=_instantBrowse.stages;if(stg&&stg.meta&&stg.meta.challenge_series_options&&!payload.challenge_series_options)payload.challenge_series_options=stg.meta.challenge_series_options;applyStageListMeta(payload);renderStageT(payload);renderPag('stage',payload);setBrowseToolbarCount('stage',`<span class="result-count-num">${payload.total}</span> ${t('count_stage')}`);showLoad('stage',false);markBrowseFirstPaintForNotices();return}
 if(tab==='modifications'){S.modifications.page=pg;S.modifications.q=qn;const mod=_instantBrowse.modifications;if(mod&&mod.meta&&mod.meta.effect_filter_icons&&!payload.effect_filter_icons)payload.effect_filter_icons=mod.meta.effect_filter_icons;if(payload.effect_filter_icons)S._modEffectFilterIcons=payload.effect_filter_icons;renderModT(payload);renderPag('mod',payload);setBrowseToolbarCount('mod',`<span class="result-count-num">${payload.total}</span> ${t('count_mod')}`);updateModEffectFilterLabel();applyModEffectDropdownIcons();showLoad('mod',false);markBrowseFirstPaintForNotices();return}
@@ -2307,13 +2496,24 @@ st.lastChipSig=chipSig;
 st.lastQ=qn;
 st.lastFiltered=pool;
 if(!pool.length&&qn&&(tab==='units'||tab==='rankUnits'||((tab==='characters'||tab==='rankCharacters'||tab==='supporters'||tab==='modifications')&&isLikelyIdQuery(qn))))return false;
-const sorted=instantBrowseSort(pool,tab);
+let work=pool;
+let bandMeta=null;
+if(tab==='units'||tab==='characters'||tab==='rankUnits'||tab==='rankCharacters'){
+const priTab=tab==='units'||tab==='rankUnits'?'units':'characters';
+const pri=browseSortPriority(priTab);
+const s=instantBrowseSortState(tab);
+const dirSign=s.dir==='asc'?1:-1;
+const banded=applySortPriorityBandFilter(pool,pri,dirSign);
+work=banded.rows;
+bandMeta=banded.meta;
+}
+const sorted=instantBrowseSort(work,tab);
 const pp=instantBrowsePerPage(tab);
 const total=sorted.length;
 const tp=Math.max(1,Math.ceil(total/Math.max(1,pp)));
 const pg=Math.min(Math.max(1,Number(page)||1),tp);
 const rows=sorted.slice((pg-1)*pp,pg*pp);
-const payload={rows,total,page:pg,per_page:pp,total_pages:tp,_sorted:sorted};
+const payload={rows,total,page:pg,per_page:pp,total_pages:tp,_sorted:sorted,sort_priority_band:bandMeta};
 instantBrowsePaint(tab,payload,qn,pg);
 markBrowseFirstPaintForNotices();afterListLoadIfSpotlightOpen();return true;
 }
@@ -2477,14 +2677,27 @@ const iconsWrap=icons?`<div class="list-thumb-icons">${icons}</div>`:'';
 const pk=o.pickerThumb?' tb-supp-tb-composite--picker':'';
 return`<div class="tb-supp-tb-composite${pk}" style="width:${sz}px;height:${sz}px"><div class="tb-supp-tb-back">${baseInner}</div><div class="list-thumb-portrait-wrap tb-supp-tb-portrait-wrap">${portrait}</div>${frL}${frR}${frT}${frB}${iconsWrap}</div>`;
 }
-function buildTableHeaders(){const cs=S.characters,us=S.units,ss=S.supporters;const _csl=k=>`<span class="th-full">${t('col_'+k.toLowerCase())}</span><span class="th-mob">${tableStatMobLabel(k)}</span>`;const _usl=k=>{const full=t('col_'+k.toLowerCase());const mob=unitTableStatHeaderLabel(k);return mob===full?full:`<span class="th-full">${full}</span><span class="th-mob">${mob}</span>`};const _spl=suppTableHeaderLabel;document.getElementById('charThead').innerHTML=`<tr><th class="col-thum" style="cursor:default"></th><th class="col-name ${cs.sort==='name'?'sort-active':''}" onclick="sortCol('characters','name')">${t('col_name')} <span class="sort-arrow">${cs.sort==='name'?(cs.dir==='desc'?'▼':'▲'):'▲'}</span></th><th class="col-stat ${cs.sort==='Ranged'?'sort-active':''}" title="${esc(t('col_ranged'))}" onclick="sortCol('characters','Ranged')">${_csl('Ranged')} <span class="sort-arrow">${cs.sort==='Ranged'?(cs.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${cs.sort==='Melee'?'sort-active':''}" title="${esc(t('col_melee'))}" onclick="sortCol('characters','Melee')">${_csl('Melee')} <span class="sort-arrow">${cs.sort==='Melee'?(cs.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${cs.sort==='Awaken'?'sort-active':''}" title="${esc(t('col_awaken'))}" onclick="sortCol('characters','Awaken')">${_csl('Awaken')} <span class="sort-arrow">${cs.sort==='Awaken'?(cs.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${cs.sort==='Defense'?'sort-active':''}" title="${esc(t('col_defense'))}" onclick="sortCol('characters','Defense')">${_csl('Defense')} <span class="sort-arrow">${cs.sort==='Defense'?(cs.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${cs.sort==='Reaction'?'sort-active':''}" title="${esc(t('col_reaction'))}" onclick="sortCol('characters','Reaction')">${_csl('Reaction')} <span class="sort-arrow">${cs.sort==='Reaction'?(cs.dir==='desc'?'▼':'▲'):'▼'}</span></th></tr>`;document.getElementById('unitThead').innerHTML=`<tr><th class="col-thum" style="cursor:default"></th><th class="col-name ${us.sort==='name'?'sort-active':''}" onclick="sortCol('units','name')">${t('col_name')} <span class="sort-arrow">${us.sort==='name'?(us.dir==='desc'?'▼':'▲'):'▲'}</span></th><th class="col-stat ${us.sort==='HP'?'sort-active':''}" title="${esc(t('col_hp'))}" onclick="sortCol('units','HP')">${_usl('HP')} <span class="sort-arrow">${us.sort==='HP'?(us.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${us.sort==='EN'?'sort-active':''}" title="${esc(t('col_en'))}" onclick="sortCol('units','EN')">${_usl('EN')} <span class="sort-arrow">${us.sort==='EN'?(us.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${us.sort==='ATK'?'sort-active':''}" title="${esc(t('col_atk'))}" onclick="sortCol('units','ATK')">${_usl('ATK')} <span class="sort-arrow">${us.sort==='ATK'?(us.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${us.sort==='DEF'?'sort-active':''}" title="${esc(t('col_def'))}" onclick="sortCol('units','DEF')">${_usl('DEF')} <span class="sort-arrow">${us.sort==='DEF'?(us.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${us.sort==='MOB'?'sort-active':''}" title="${esc(t('col_mob'))}" onclick="sortCol('units','MOB')">${_usl('MOB')} <span class="sort-arrow">${us.sort==='MOB'?(us.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-stat ${us.sort==='MOV'?'sort-active':''}" title="${esc(t('col_mov'))}" onclick="sortCol('units','MOV')">${_usl('MOV')} <span class="sort-arrow">${us.sort==='MOV'?(us.dir==='desc'?'▼':'▲'):'▼'}</span></th></tr>`;document.getElementById('suppThead').innerHTML=`<tr><th class="col-thum" style="cursor:default"></th><th class="col-name ${ss.sort==='name'?'sort-active':''}" onclick="sortCol('supporters','name')">${t('col_name')} <span class="sort-arrow">${ss.sort==='name'?(ss.dir==='desc'?'▼':'▲'):'▲'}</span></th><th class="col-tag ${ss.sort==='series_tag'?'sort-active':''}" title="${esc(t('col_series_tag'))}" onclick="sortCol('supporters','series_tag')">${_spl('col_series_tag')} <span class="sort-arrow">${ss.sort==='series_tag'?(ss.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-boost ${ss.sort==='boost'?'sort-active':''}" title="${esc(t('col_boost'))}" onclick="sortCol('supporters','boost')">${_spl('col_boost')} <span class="sort-arrow">${ss.sort==='boost'?(ss.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-skill" style="cursor:default" title="${esc(t('sec_active_skills'))}">${_spl('sec_active_skills')}</th></tr>`;const st=S.stages;const ms=S.modifications;document.getElementById('modThead').innerHTML=`<tr><th class="col-thum" style="cursor:default;width:48px"></th><th class="col-name ${ms.sort==='name'?'sort-active':''}" onclick="sortColMod('name')">${t('col_name')} <span class="sort-arrow">${ms.sort==='name'?(ms.dir==='desc'?'▼':'▲'):'▲'}</span></th><th class="col-tag ${ms.sort==='tags'?'sort-active':''}" onclick="sortColMod('tags')">${t('col_series_tag')} <span class="sort-arrow">${ms.sort==='tags'?(ms.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-details ${ms.sort==='details'?'sort-active':''}" onclick="sortColMod('details')">${t('col_details')} <span class="sort-arrow">${ms.sort==='details'?(ms.dir==='desc'?'▼':'▲'):'▲'}</span></th></tr>`;document.getElementById('stageThead').innerHTML=`<tr><th class="col-thum" style="cursor:default"></th><th class="col-diff" style="cursor:default">${t('col_stage_diff')}</th><th class="col-number ${st.sort==='stage_number'?'sort-active':''}" onclick="sortColStage('stage_number')">${stageNoLabel({stage_category:(S.stages.source==='eternal'||!S.stages.source)?'eternal':S.stages.source})} <span class="sort-arrow">${st.sort==='stage_number'?(st.dir==='desc'?'▼':'▲'):'▲'}</span></th><th class="col-name" style="cursor:default">${t('col_name')}</th><th class="col-cp" style="cursor:default">${t('col_stage_cp')}</th><th class="col-terrain" style="cursor:default">${t('col_stage_terrain')}</th></tr>`}
+function buildTableHeaders(){
+const cs=S.characters,us=S.units,ss=S.supporters;
+const _csl=k=>`<span class="th-full">${t('col_'+k.toLowerCase())}</span><span class="th-mob">${tableStatMobLabel(k)}</span>`;
+const _usl=k=>{const full=t('col_'+k.toLowerCase());const mob=unitTableStatHeaderLabel(k);return mob===full?full:`<span class="th-full">${full}</span><span class="th-mob">${mob}</span>`};
+const _spl=suppTableHeaderLabel;
+document.getElementById('charThead').innerHTML=`<tr><th class="col-thum" style="cursor:default"></th><th class="col-name ${cs.sort==='name'?'sort-active':''}" onclick="sortCol('characters','name')">${t('col_name')} <span class="sort-arrow">${cs.sort==='name'?(cs.dir==='desc'?'▼':'▲'):'▲'}</span></th>${browseStatThHtml('characters','Ranged',_csl('Ranged'),t('col_ranged'))}${browseStatThHtml('characters','Melee',_csl('Melee'),t('col_melee'))}${browseStatThHtml('characters','Awaken',_csl('Awaken'),t('col_awaken'))}${browseStatThHtml('characters','Defense',_csl('Defense'),t('col_defense'))}${browseStatThHtml('characters','Reaction',_csl('Reaction'),t('col_reaction'))}</tr>`;
+document.getElementById('unitThead').innerHTML=`<tr><th class="col-thum" style="cursor:default"></th><th class="col-name ${us.sort==='name'?'sort-active':''}" onclick="sortCol('units','name')">${t('col_name')} <span class="sort-arrow">${us.sort==='name'?(us.dir==='desc'?'▼':'▲'):'▲'}</span></th>${browseStatThHtml('units','HP',_usl('HP'),t('col_hp'))}${browseStatThHtml('units','EN',_usl('EN'),t('col_en'))}${browseStatThHtml('units','ATK',_usl('ATK'),t('col_atk'))}${browseStatThHtml('units','DEF',_usl('DEF'),t('col_def'))}${browseStatThHtml('units','MOB',_usl('MOB'),t('col_mob'))}${browseStatThHtml('units','MOV',_usl('MOV'),t('col_mov'))}</tr>`;
+document.getElementById('suppThead').innerHTML=`<tr><th class="col-thum" style="cursor:default"></th><th class="col-name ${ss.sort==='name'?'sort-active':''}" onclick="sortCol('supporters','name')">${t('col_name')} <span class="sort-arrow">${ss.sort==='name'?(ss.dir==='desc'?'▼':'▲'):'▲'}</span></th><th class="col-tag ${ss.sort==='series_tag'?'sort-active':''}" title="${esc(t('col_series_tag'))}" onclick="sortCol('supporters','series_tag')">${_spl('col_series_tag')} <span class="sort-arrow">${ss.sort==='series_tag'?(ss.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-boost ${ss.sort==='boost'?'sort-active':''}" title="${esc(t('col_boost'))}" onclick="sortCol('supporters','boost')">${_spl('col_boost')} <span class="sort-arrow">${ss.sort==='boost'?(ss.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-skill" style="cursor:default" title="${esc(t('sec_active_skills'))}">${_spl('sec_active_skills')}</th></tr>`;
+const st=S.stages;const ms=S.modifications;
+document.getElementById('modThead').innerHTML=`<tr><th class="col-thum" style="cursor:default;width:48px"></th><th class="col-name ${ms.sort==='name'?'sort-active':''}" onclick="sortColMod('name')">${t('col_name')} <span class="sort-arrow">${ms.sort==='name'?(ms.dir==='desc'?'▼':'▲'):'▲'}</span></th><th class="col-tag ${ms.sort==='tags'?'sort-active':''}" onclick="sortColMod('tags')">${t('col_series_tag')} <span class="sort-arrow">${ms.sort==='tags'?(ms.dir==='desc'?'▼':'▲'):'▼'}</span></th><th class="col-details ${ms.sort==='details'?'sort-active':''}" onclick="sortColMod('details')">${t('col_details')} <span class="sort-arrow">${ms.sort==='details'?(ms.dir==='desc'?'▼':'▲'):'▲'}</span></th></tr>`;
+document.getElementById('stageThead').innerHTML=`<tr><th class="col-thum" style="cursor:default"></th><th class="col-diff" style="cursor:default">${t('col_stage_diff')}</th><th class="col-number ${st.sort==='stage_number'?'sort-active':''}" onclick="sortColStage('stage_number')">${stageNoLabel({stage_category:(S.stages.source==='eternal'||!S.stages.source)?'eternal':S.stages.source})} <span class="sort-arrow">${st.sort==='stage_number'?(st.dir==='desc'?'▼':'▲'):'▲'}</span></th><th class="col-name" style="cursor:default">${t('col_name')}</th><th class="col-cp" style="cursor:default">${t('col_stage_cp')}</th><th class="col-terrain" style="cursor:default">${t('col_stage_terrain')}</th></tr>`;
+bindSortPriorityHeaderGestures();
+}
+
 const DEFAULT_BROWSE_LIST_PER_PAGE=50;
 function getBrowseListPerPage(which){const id=which==='char'?'charPerPage':which==='unit'?'unitPerPage':which==='supp'?'suppPerPage':which==='stage'?'stagePerPage':which==='mod'?'modPerPage':'unitPerPage';const el=document.getElementById(id);if(!el)return DEFAULT_BROWSE_LIST_PER_PAGE;const v=parseInt(String(el.value||'').trim(),10);return Number.isFinite(v)&&v>0?v:DEFAULT_BROWSE_LIST_PER_PAGE}
 function setBrowseToolbarCount(which,html){const ids={char:'charToolbarCount',unit:'unitToolbarCount',supp:'suppToolbarCount',stage:'stageToolbarCount',mod:'modToolbarCount'};const el=document.getElementById(ids[which]||'');if(el)el.innerHTML=html||''}
 function syncBrowseSearchWidth(id){const inp=document.getElementById(id);if(!inp||!inp.classList.contains('filter-input--organic'))return;if(inp.closest('.browse-toolbar-leading')){inp.style.width='';return}if(typeof CSS!=='undefined'&&CSS.supports&&CSS.supports('field-sizing','content')){inp.style.width='';return}const wrap=inp.closest('.filter-input-wrap--organic');if(!wrap)return;const sizer=wrap.querySelector('.filter-input-sizer');if(!sizer)return;const ph=inp.getAttribute('placeholder')||'';const val=inp.value.length?inp.value:ph;sizer.textContent=val.length?val:'\u00a0';const w=Math.max(sizer.scrollWidth||0,Math.ceil(sizer.getBoundingClientRect().width));const cs=getComputedStyle(inp);const maxStr=cs.maxWidth;const maxPx=maxStr&&maxStr!=='none'?parseFloat(maxStr):Math.min(window.innerWidth*0.96,96*16);const minPx=parseFloat(cs.minWidth)||0;const next=Math.min(Math.max(Math.ceil(w+2),minPx),maxPx);inp.style.width=next+'px'}
 function syncBrowseSearchWidths(){syncBrowseSearchWidth('charFilter');syncBrowseSearchWidth('unitFilter');syncBrowseSearchWidth('rankCharFilter');syncBrowseSearchWidth('rankUnitFilter')}
-async function loadCharacters(p=1,opts={}){S._charListLoadGen=(S._charListLoadGen|0)+1;const gen=S._charListLoadGen;const s=S.characters;s.page=p;s.q=document.getElementById('charFilter').value.trim();if(!opts.skipInstant&&instantBrowseReady('characters')&&!instantBrowseQueryNeedsServer(s.q,'characters')&&instantBrowseApply('characters',p,s.q)){scheduleInstantBrowseWarm('characters');return}const pp=opts.perPage!=null?opts.perPage:getBrowseListPerPage('char');const url=buildCharactersListUrl(p,pp,S.listCharSp,S.listCharCond);const cached=browseListJsonCacheGet(url);if(cached){try{if(gen!==S._charListLoadGen)return;if(await maybeUnlockNpcView(s.q,cached)){loadCharacters(p,opts);return}if(gen!==S._charListLoadGen)return;renderCharT(cached);renderPag('char',cached);setBrowseToolbarCount('char',`<span class="result-count-num">${cached.total}</span> ${t('count_char')}`);prefetchBrowseTabsAfterCharacters();markBrowseFirstPaintForNotices();scheduleInstantBrowseWarm('characters')}catch(e){document.getElementById('charBody').innerHTML='';const _cg=document.getElementById('charGrid');if(_cg)_cg.innerHTML='';document.getElementById('charEmpty').style.display='block';setBrowseToolbarCount('char','')}requestAnimationFrame(()=>syncBrowseSearchWidths());afterListLoadIfSpotlightOpen();return}showLoad('char',true);setBrowseToolbarCount('char','<span style="color:var(--text-muted)">\u2026</span>');try{const r=await fetchJsonWithWarmupRetry(url);if(gen!==S._charListLoadGen)return;if(!r.ok||!r.data||typeof r.data.total!=='number'){showBrowseLoadError('char',t('empty_char'));return}const d=r.data;if(gen!==S._charListLoadGen)return;if(await maybeUnlockNpcView(s.q,d)){loadCharacters(p,opts);return}if(gen!==S._charListLoadGen)return;browseListJsonCacheSet(url,d);renderCharT(d);renderPag('char',d);setBrowseToolbarCount('char',`<span class="result-count-num">${d.total}</span> ${t('count_char')}`);prefetchBrowseTabsAfterCharacters();markBrowseFirstPaintForNotices();scheduleInstantBrowseWarm('characters')}catch(e){showBrowseLoadError('char',String(e&&e.message||e))}finally{if(gen===S._charListLoadGen){showLoad('char',false);requestAnimationFrame(()=>syncBrowseSearchWidths());afterListLoadIfSpotlightOpen()}}}
-async function loadUnits(p=1,opts={}){S._unitListLoadGen=(S._unitListLoadGen|0)+1;const gen=S._unitListLoadGen;const refetchDepth=Number(opts._filterRefetchDepth||0);syncUnitListSspForWeaponEffectFilters();syncUnitListSspForWeaponRangeNonMapSspExOnly();const s=S.units;s.page=p;s.q=document.getElementById('unitFilter').value.trim();if(!opts.skipInstant&&instantBrowseReady('units')&&!instantBrowseQueryNeedsServer(s.q,'units')&&instantBrowseApply('units',p,s.q)){scheduleInstantBrowseWarm('units');return}const pp=opts.perPage!=null?opts.perPage:getBrowseListPerPage('unit');const url=buildUnitsListApiUrl(p,pp,S.listUnitSp,S.listUnitSsp,S.listUnitCond,S.listUnitPilotCond);const cached=browseListJsonCacheGet(url);if(cached){try{if(gen!==S._unitListLoadGen)return;if(await maybeUnlockNpcView(s.q,cached)){loadUnits(p,opts);return}if(gen!==S._unitListLoadGen)return;const fpCh=refetchDepth<2&&applyUnitFilterPresentFromApi(cached);if(fpCh){await loadUnits(p,{...opts,_filterRefetchDepth:refetchDepth+1});return}renderUnitT(cached);renderPag('unit',cached);setBrowseToolbarCount('unit',`<span class="result-count-num">${cached.total}</span> ${t('count_unit')}`);markBrowseFirstPaintForNotices();scheduleInstantBrowseWarm('units')}catch(e){document.getElementById('unitBody').innerHTML='';const _ug=document.getElementById('unitGrid');if(_ug)_ug.innerHTML='';document.getElementById('unitEmpty').style.display='block';setBrowseToolbarCount('unit','')}requestAnimationFrame(()=>syncBrowseSearchWidths());afterListLoadIfSpotlightOpen();return}showLoad('unit',true);setBrowseToolbarCount('unit','<span style="color:var(--text-muted)">\u2026</span>');try{const r=await fetchJsonWithWarmupRetry(url);if(gen!==S._unitListLoadGen)return;if(!r.ok||!r.data||typeof r.data.total!=='number'){showBrowseLoadError('unit',t('empty_unit'));return}const d=r.data;if(await maybeUnlockNpcView(s.q,d)){loadUnits(p,opts);return}if(gen!==S._unitListLoadGen)return;const fpCh=refetchDepth<2&&applyUnitFilterPresentFromApi(d);if(fpCh){await loadUnits(p,{...opts,_filterRefetchDepth:refetchDepth+1});return}browseListJsonCacheSet(url,d);renderUnitT(d);renderPag('unit',d);setBrowseToolbarCount('unit',`<span class="result-count-num">${d.total}</span> ${t('count_unit')}`);markBrowseFirstPaintForNotices();scheduleInstantBrowseWarm('units')}catch(e){showBrowseLoadError('unit',String(e&&e.message||e))}finally{if(gen===S._unitListLoadGen){showLoad('unit',false);requestAnimationFrame(()=>syncBrowseSearchWidths());afterListLoadIfSpotlightOpen()}}}
+async function loadCharacters(p=1,opts={}){S._charListLoadGen=(S._charListLoadGen|0)+1;const gen=S._charListLoadGen;const s=S.characters;s.page=p;s.q=document.getElementById('charFilter').value.trim();if(!opts.skipInstant&&instantBrowseReady('characters')&&!instantBrowseQueryNeedsServer(s.q,'characters')&&instantBrowseApply('characters',p,s.q)){scheduleInstantBrowseWarm('characters');return}const pp=opts.perPage!=null?opts.perPage:getBrowseListPerPage('char');const url=buildCharactersListUrl(p,pp,S.listCharSp,S.listCharCond);const cached=browseListJsonCacheGet(url);if(cached){try{if(gen!==S._charListLoadGen)return;if(await maybeUnlockNpcView(s.q,cached)){loadCharacters(p,opts);return}if(gen!==S._charListLoadGen)return;renderCharT(cached);renderPag('char',cached);setBrowseToolbarCount('char',browseToolbarCountHtml('char',cached.total,cached.sort_priority_band));prefetchBrowseTabsAfterCharacters();markBrowseFirstPaintForNotices();scheduleInstantBrowseWarm('characters')}catch(e){document.getElementById('charBody').innerHTML='';const _cg=document.getElementById('charGrid');if(_cg)_cg.innerHTML='';document.getElementById('charEmpty').style.display='block';setBrowseToolbarCount('char','')}requestAnimationFrame(()=>syncBrowseSearchWidths());afterListLoadIfSpotlightOpen();return}showLoad('char',true);setBrowseToolbarCount('char','<span style="color:var(--text-muted)">\u2026</span>');try{const r=await fetchJsonWithWarmupRetry(url);if(gen!==S._charListLoadGen)return;if(!r.ok||!r.data||typeof r.data.total!=='number'){showBrowseLoadError('char',t('empty_char'));return}const d=r.data;if(gen!==S._charListLoadGen)return;if(await maybeUnlockNpcView(s.q,d)){loadCharacters(p,opts);return}if(gen!==S._charListLoadGen)return;browseListJsonCacheSet(url,d);renderCharT(d);renderPag('char',d);setBrowseToolbarCount('char',browseToolbarCountHtml('char',d.total,d.sort_priority_band));prefetchBrowseTabsAfterCharacters();markBrowseFirstPaintForNotices();scheduleInstantBrowseWarm('characters')}catch(e){showBrowseLoadError('char',String(e&&e.message||e))}finally{if(gen===S._charListLoadGen){showLoad('char',false);requestAnimationFrame(()=>syncBrowseSearchWidths());afterListLoadIfSpotlightOpen()}}}
+async function loadUnits(p=1,opts={}){S._unitListLoadGen=(S._unitListLoadGen|0)+1;const gen=S._unitListLoadGen;const refetchDepth=Number(opts._filterRefetchDepth||0);syncUnitListSspForWeaponEffectFilters();syncUnitListSspForWeaponRangeNonMapSspExOnly();const s=S.units;s.page=p;s.q=document.getElementById('unitFilter').value.trim();if(!opts.skipInstant&&instantBrowseReady('units')&&!instantBrowseQueryNeedsServer(s.q,'units')&&instantBrowseApply('units',p,s.q)){scheduleInstantBrowseWarm('units');return}const pp=opts.perPage!=null?opts.perPage:getBrowseListPerPage('unit');const url=buildUnitsListApiUrl(p,pp,S.listUnitSp,S.listUnitSsp,S.listUnitCond,S.listUnitPilotCond);const cached=browseListJsonCacheGet(url);if(cached){try{if(gen!==S._unitListLoadGen)return;if(await maybeUnlockNpcView(s.q,cached)){loadUnits(p,opts);return}if(gen!==S._unitListLoadGen)return;const fpCh=refetchDepth<2&&applyUnitFilterPresentFromApi(cached);if(fpCh){await loadUnits(p,{...opts,_filterRefetchDepth:refetchDepth+1});return}renderUnitT(cached);renderPag('unit',cached);setBrowseToolbarCount('unit',browseToolbarCountHtml('unit',cached.total,cached.sort_priority_band));markBrowseFirstPaintForNotices();scheduleInstantBrowseWarm('units')}catch(e){document.getElementById('unitBody').innerHTML='';const _ug=document.getElementById('unitGrid');if(_ug)_ug.innerHTML='';document.getElementById('unitEmpty').style.display='block';setBrowseToolbarCount('unit','')}requestAnimationFrame(()=>syncBrowseSearchWidths());afterListLoadIfSpotlightOpen();return}showLoad('unit',true);setBrowseToolbarCount('unit','<span style="color:var(--text-muted)">\u2026</span>');try{const r=await fetchJsonWithWarmupRetry(url);if(gen!==S._unitListLoadGen)return;if(!r.ok||!r.data||typeof r.data.total!=='number'){showBrowseLoadError('unit',t('empty_unit'));return}const d=r.data;if(await maybeUnlockNpcView(s.q,d)){loadUnits(p,opts);return}if(gen!==S._unitListLoadGen)return;const fpCh=refetchDepth<2&&applyUnitFilterPresentFromApi(d);if(fpCh){await loadUnits(p,{...opts,_filterRefetchDepth:refetchDepth+1});return}browseListJsonCacheSet(url,d);renderUnitT(d);renderPag('unit',d);setBrowseToolbarCount('unit',browseToolbarCountHtml('unit',d.total,d.sort_priority_band));markBrowseFirstPaintForNotices();scheduleInstantBrowseWarm('units')}catch(e){showBrowseLoadError('unit',String(e&&e.message||e))}finally{if(gen===S._unitListLoadGen){showLoad('unit',false);requestAnimationFrame(()=>syncBrowseSearchWidths());afterListLoadIfSpotlightOpen()}}}
 async function loadSupporters(p=1){const s=S.supporters;s.page=p;s.q=document.getElementById('suppFilter').value.trim();if(instantBrowseReady('supporters')&&!instantBrowseQueryNeedsServer(s.q,'supporters')&&instantBrowseApply('supporters',p,s.q)){scheduleInstantBrowseWarm('supporters');return}const pp=document.getElementById('suppPerPage').value;const rq=getRarityQuerySuffix('supp');const linQ=getLineageQuerySuffix('supp');const linOp=getLineageOpSuffix('supp');const url=`/api/supporters?lang=${S.lang}&page=${p}&per_page=${pp}&sort=${s.sort}&dir=${s.dir}&q=${encodeURIComponent(s.q)}${rq}${linQ}${linOp}`;showLoad('supp',true);setBrowseToolbarCount('supp','<span style="color:var(--text-muted)">\u2026</span>');try{const r=await fetchBrowseJson(url);if(!r.ok||!r.data||typeof r.data.total!=='number'){showBrowseLoadError('supp',t('empty_supporter'));return}const d=r.data;renderSuppT(d);renderPag('supp',d);setBrowseToolbarCount('supp',`<span class="result-count-num">${d.total}</span> ${t('count_supporter')}`);scheduleInstantBrowseWarm('supporters')}catch(e){showBrowseLoadError('supp',String(e&&e.message||e))}finally{showLoad('supp',false);afterListLoadIfSpotlightOpen()}}
 function applyStageListMeta(d){if(d&&Array.isArray(d.challenge_series_options)&&d.challenge_series_options.length){S._challengeSeriesOptions=d.challenge_series_options;normalizeChallengeSeriesFilter();updateStageChallengeSeriesFilterLabel()}}
 async function loadStages(p=1){const s=S.stages;if((s.source||'eternal')==='e_simulator'){syncStageSourceToolbar();await ensureESimulatorLoaded();if(window.ESimulator)return ESimulator.load();}if(window.ESimulator)ESimulator.hide();s.page=p;s.q=document.getElementById('stageFilter').value.trim();if(instantBrowseReady('stages')&&!instantBrowseQueryNeedsServer(s.q,'stages')&&instantBrowseApply('stages',p,s.q)){scheduleInstantBrowseWarm('stages');return}const pp=document.getElementById('stagePerPage').value;const url=buildStagesListUrl(p,pp);const cached=browseListJsonCacheGet(url);if(cached){try{applyStageListMeta(cached);renderStageT(cached);renderPag('stage',cached);setBrowseToolbarCount('stage',`<span class="result-count-num">${cached.total}</span> ${t('count_stage')}`);markBrowseFirstPaintForNotices();scheduleInstantBrowseWarm('stages')}catch(e){document.getElementById('stageBody').innerHTML='';const _stg=document.getElementById('stageGrid');if(_stg)_stg.innerHTML='';document.getElementById('stageEmpty').style.display='block';setBrowseToolbarCount('stage','')}afterListLoadIfSpotlightOpen();return}showLoad('stage',true);setBrowseToolbarCount('stage','<span style="color:var(--text-muted)">\u2026</span>');try{const r=await fetchBrowseJson(url);if(!r.ok||!r.data||typeof r.data.total!=='number'){showBrowseLoadError('stage',t('empty_stage'));return}const d=r.data;applyStageListMeta(d);browseListJsonCacheSet(url,d);renderStageT(d);renderPag('stage',d);setBrowseToolbarCount('stage',`<span class="result-count-num">${d.total}</span> ${t('count_stage')}`);markBrowseFirstPaintForNotices();scheduleInstantBrowseWarm('stages')}catch(e){showBrowseLoadError('stage',String(e&&e.message||e))}finally{showLoad('stage',false);afterListLoadIfSpotlightOpen()}}
@@ -2562,7 +2775,7 @@ function openStageFromBrowse(stageId,ev){if(ev){ev.preventDefault();ev.stopPropa
 function renderStageTable(data){const rows=data.rows||[];browseKeyedReplace(document.getElementById('stageBody'),rows,(r,idx)=>{const locked=!!r.content_locked;const isSa=r.stage_category==='score_attack';const isSs=r.stage_category==='special_stage';const isTs=r.stage_category==='tower_stage';const isCh=r.stage_category==='challenge_stage';const isChHard=isCh&&!!r.challenge_is_hard;const diffCell=locked?`<span class="stat-value er-stage-redacted-cell">—</span>`:isChHard?`<span class="stage-diff-badge stage-diff-hard">${esc(t('stage_challenge_hard_label'))}</span>`:(isSa||isSs||isTs||isCh)?'<span class="stat-value"></span>':`<span class="stage-diff-badge stage-diff-${esc(r.difficulty_code||'unknown')}">${esc(r.difficulty_name||'-')}</span>`;const numCell=locked?`<span class="stat-value er-stage-redacted-cell">—</span>`:(isSs||isTs)?'<span class="stat-value"></span>':`<span class="stat-value">${fmtN(r.stage_number)}</span>`;const capMark='';const nameCell=locked?`<span class="name-text er-stage-redacted-cell">${esc(t('er_stage_redacted_row'))}</span>`:`<span class="name-text">${capMark}${esc(r.name)}</span>`;const cpDisp=locked?'—':fmtN(r.recommended_cp);const terDisp=locked?'—':esc(r.terrain);return`<tr data-detail-type="stage" data-detail-id="${escAttr(String(r.id))}" onclick="openStageFromBrowse('${escJs(String(r.id))}',event)"><td class="col-thum"><div class="stage-thum-wrap">${renderStageBrowseThumb(r,{variant:'compact',eager:idx<12})}</div></td><td class="col-diff">${diffCell}</td><td class="col-number">${numCell}</td><td class="col-name"><div class="name-cell">${nameCell}</div></td><td class="col-cp"><span class="stat-value">${cpDisp}</span></td><td class="col-terrain"><span class="stat-value">${terDisp}</span></td></tr>`},browseStageRowPaintSig)}
 function renderStageGrid(data){const grid=document.getElementById('stageGrid');const rows=data.rows||[];browseKeyedReplace(grid,rows,(r,idx)=>{const locked=!!r.content_locked;const cpPart=locked?'—':fmtN(r.recommended_cp);const terPart=stageBrowseTerrainLabel(r.terrain,locked);const sid=escJs(String(r.id));return`<div class="list-grid-card list-grid-card--stage${locked?' list-grid-card--locked':''}" data-detail-type="stage" data-detail-id="${escAttr(String(r.id))}" onclick="openStageFromBrowse('${sid}',event)"><div class="list-grid-card-thumb">${renderStageBrowseThumb(r,{variant:'grid',eager:idx<12})}</div><div class="list-grid-card-body"><div class="list-grid-card-stats">${t('col_stage_cp')} ${cpPart} · ${terPart}</div></div></div>`},browseStageRowPaintSig)}
 function renderStageT(data){const tb=document.getElementById('stageBody'),em=document.getElementById('stageEmpty');if(!data.rows||!data.rows.length){tb.innerHTML='';const g=document.getElementById('stageGrid');if(g)g.innerHTML='';em.style.display='block';return}em.style.display='none';if(getListViewMode('stages')==='grid'){tb.innerHTML='';renderStageGrid(data)}else{const g=document.getElementById('stageGrid');if(g)g.innerHTML='';renderStageTable(data)}}
-function sortCol(type,key){let s;if(type==='characters')s=S.characters;else if(type==='units')s=S.units;else s=S.supporters;if(s.sort===key){s.dir=s.dir==='desc'?'asc':'desc'}else{s.sort=key;s.dir=key==='name'?'asc':'desc'}buildTableHeaders();if(type==='characters')loadCharacters(1);else if(type==='units')loadUnits(1);else loadSupporters(1)}
+function sortCol(type,key){let s;if(type==='characters')s=S.characters;else if(type==='units')s=S.units;else s=S.supporters;if(type==='characters'||type==='units'){const pri=browseSortPriority(type);const locked=pri.indexOf(key)>=0;if(pri.length&&locked){/* Keep locks: flip dir; clicking a non-last lock promotes it to the sort slot (end). */if(pri.length>=2){const i=pri.indexOf(key);if(i>=0&&i<pri.length-1){pri.splice(i,1);pri.push(key);s.sortPriority=pri.slice()}syncSortPriorityPrimary(type)}else{s.sort=pri[0]}s.dir=s.dir==='desc'?'asc':'desc';buildTableHeaders();if(type==='characters')loadCharacters(1);else loadUnits(1);return}s.sortPriority=[]}if(s.sort===key){s.dir=s.dir==='desc'?'asc':'desc'}else{s.sort=key;s.dir=key==='name'?'asc':'desc'}buildTableHeaders();if(type==='characters')loadCharacters(1);else if(type==='units')loadUnits(1);else loadSupporters(1)}
 function sortColStage(key){const s=S.stages;if(s.sort===key){s.dir=s.dir==='desc'?'asc':'desc'}else{s.sort=key;s.dir='asc'}buildTableHeaders();loadStages(1)}
 function sortColMod(key){const s=S.modifications;if(s.sort===key){s.dir=s.dir==='desc'?'asc':'desc'}else{s.sort=key;s.dir='asc'}buildTableHeaders();loadModifications(1)}
 function updateStageDifficultyFilterButtons(){const df=S.stages.difficultyFilter;const label=document.getElementById('stageDiffFilterLabel');const btn=document.getElementById('stageDiffFilterBtn');if(!label||!btn)return;if(df==='ALL'){label.innerHTML=`<span class="stage-diff-btn-plain">${esc(t('filter_diff_all'))}</span>`;btn.classList.remove('active')}else{const cls=df==='normal'?'diff-pill-normal':df==='hard'?'diff-pill-hard':'diff-pill-expert';const txt=eternalRoadDifficultyEnglishLabel(df);label.innerHTML=`<span class="stage-diff-filter-tag diff-pill ${cls}">${esc(txt)}</span>`;btn.classList.add('active')}}
@@ -11131,15 +11344,25 @@ function _tbSortPickerEntityRows(rows,sortKey,sortDir){
 const sk=String(sortKey||'rarity').toLowerCase();
 const dir=String(sortDir||'desc').toLowerCase()==='asc'?1:-1;
 const statKeys=new Set(['atk','def','mob','hp','en','mov']);
-return(rows||[]).slice().sort((a,b)=>{
+let work=(rows||[]).slice();
+let cmpKeys=null;
+if(statKeys.has(sk)){
+const ka=sk==='atk'?'ATK':sk==='def'?'DEF':sk==='mob'?'MOB':sk==='hp'?'HP':sk==='en'?'EN':'MOV';
+const pri=browseSortPriority('units');
+const keys=pri.length?pri:[ka];
+if(pri.length>=2){
+const banded=applySortPriorityBandFilter(work,pri,dir);
+work=banded.rows;
+}
+cmpKeys=sortPriorityChainForCompare(keys);
+}
+return work.sort((a,b)=>{
 let cmp=0;
 if(sk==='name'){
 cmp=String(a.name||'').localeCompare(String(b.name||''),'en',{numeric:true,sensitivity:'base'});
-}else if(statKeys.has(sk)){
-const ka=sk==='atk'?'ATK':sk==='def'?'DEF':sk==='mob'?'MOB':sk==='hp'?'HP':sk==='en'?'EN':'MOV';
-const va=Number(a[ka]);const vb=Number(b[ka]);
-const na=Number.isFinite(va)?va:0;const nb=Number.isFinite(vb)?vb:0;
-cmp=na-nb;
+}else if(cmpKeys){
+cmp=listSortCompareByPriority(a,b,cmpKeys,dir);
+if(cmp)return cmp;
 }else{
 // rarity_sort: 0=UR … 4=N — match API sort_rows (desc = UR first = ascending rarity_sort).
 const ra=Number(a.rarity_sort);const rb=Number(b.rarity_sort);

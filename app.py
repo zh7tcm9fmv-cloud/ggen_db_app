@@ -4009,6 +4009,8 @@ UNIT_ABILITY_PASSIVE_CRIT_DMG_PCT_KEY = '__crit_dmg_pct__'
 LIST_STAT_SORT_PRIMARY = frozenset(
     ['Ranged', 'Melee', 'Awaken', 'Defense', 'Reaction', 'HP', 'EN', 'ATK', 'DEF', 'MOB', 'MOV']
 )
+# Priority-lock mode with 2+ keys: keep top (or bottom, if asc) fraction by ¹, then sort by ²+.
+LIST_SORT_PRIORITY_BAND_FRAC = 0.20
 
 TERRAIN_TYPE_ICON_MAP = {
     'Space': 'UI_Common_TerrainIcon_Space.webp',
@@ -16402,6 +16404,128 @@ def _list_row_id_tiebreak(r):
     return (1, s.lower())
 
 
+def _list_stat_num(v):
+    try:
+        return float(v) if v is not None else 0.0
+    except (TypeError, ValueError):
+        return 0.0
+
+
+def _list_stat_sort_key(r, sort_by, sort_dir, chain=None):
+    """Primary stat, optional explicit multi-key chain (same dir), then id.
+
+    `chain` is an ordered list of LIST_STAT_SORT_PRIMARY keys from the client
+    (priority locks). When omitted, only `sort_by` + id — no silent secondary.
+    """
+    sign = -1.0 if sort_dir == 'desc' else 1.0
+    keys = []
+    if chain:
+        for k in chain:
+            if k in LIST_STAT_SORT_PRIMARY and k not in keys:
+                keys.append(k)
+    if sort_by in LIST_STAT_SORT_PRIMARY and sort_by not in keys:
+        keys.insert(0, sort_by)
+    if not keys:
+        keys = [sort_by]
+    parts = [sign * _list_stat_num(r.get(k)) for k in keys]
+    parts.append(_list_row_id_tiebreak(r))
+    return tuple(parts)
+
+
+def _parse_list_sort_chain(raw, valid_sorts):
+    """Parse ?sort_chain=HP,DEF,ATK into ordered unique primary-stat keys."""
+    if not raw:
+        return None
+    out = []
+    for part in str(raw).split(','):
+        k = str(part or '').strip()
+        if not k or k not in valid_sorts or k not in LIST_STAT_SORT_PRIMARY:
+            continue
+        if k not in out:
+            out.append(k)
+    return out or None
+
+
+def _list_stat_band_threshold(values, fraction, descending):
+    """Inclusive cutoff for top/bottom `fraction` of values (same dir as list sort)."""
+    if not values:
+        return None
+    frac = float(fraction) if fraction is not None else LIST_SORT_PRIORITY_BAND_FRAC
+    frac = min(1.0, max(0.01, frac))
+    vs = sorted(values, reverse=bool(descending))
+    k = max(1, int(math.ceil(len(vs) * frac)))
+    return vs[k - 1]
+
+
+def filter_rows_priority_stat_band(rows, band_key, sort_dir, fraction=None):
+    """Keep rows in the top (desc) / bottom (asc) band for `band_key`.
+
+    Returns (filtered_rows, meta_dict_or_None).
+    """
+    if not rows or not band_key or band_key not in LIST_STAT_SORT_PRIMARY:
+        return rows, None
+    frac = LIST_SORT_PRIORITY_BAND_FRAC if fraction is None else fraction
+    descending = sort_dir != 'asc'
+    vals = [_list_stat_num(r.get(band_key)) for r in rows]
+    thr = _list_stat_band_threshold(vals, frac, descending)
+    if thr is None:
+        return rows, None
+    if descending:
+        kept = [r for r in rows if _list_stat_num(r.get(band_key)) >= thr]
+    else:
+        kept = [r for r in rows if _list_stat_num(r.get(band_key)) <= thr]
+    meta = {
+        'band_key': band_key,
+        'band_frac': float(frac),
+        'band_threshold': thr,
+        'band_pool': len(rows),
+        'band_kept': len(kept),
+        'band_dir': 'top' if descending else 'bottom',
+    }
+    return kept, meta
+
+
+def sort_rows_with_priority_band(rows, sort_by, sort_dir, valid_sorts, default_sort='rarity', sort_chain=None):
+    """Sort list rows; with 2+ priority locks, cascade 30% bands then sort by last lock.
+
+    ¹..(n-1) each keep top/bottom band of the current pool; last key sorts that pool.
+    Returns (rows, sort_priority_band_meta_or_None).
+    """
+    chain = list(sort_chain) if sort_chain else None
+    band_meta = None
+    work = rows
+    if (
+        chain
+        and len(chain) >= 2
+        and sort_by in LIST_STAT_SORT_PRIMARY
+        and sort_by in valid_sorts
+    ):
+        pool0 = len(rows)
+        steps = []
+        work = rows
+        for band_key in chain[:-1]:
+            work, step = filter_rows_priority_stat_band(work, band_key, sort_dir)
+            if step:
+                steps.append(step)
+        sort_key = chain[-1]
+        # Sort by last lock; earlier locks as tie-breaks (reverse of cascade order).
+        chain_eff = [sort_key] + list(reversed(chain[:-1]))
+        sort_rows(work, sort_key, sort_dir, valid_sorts, default_sort, sort_chain=chain_eff)
+        band_meta = {
+            'band_frac': float(LIST_SORT_PRIORITY_BAND_FRAC),
+            'band_key': chain[0],
+            'band_keys': list(chain[:-1]),
+            'sort_key': sort_key,
+            'sort_keys': [sort_key],
+            'band_pool': pool0,
+            'band_kept': len(work),
+            'band_dir': 'top' if sort_dir != 'asc' else 'bottom',
+            'steps': steps,
+        }
+        return work, band_meta
+    sort_rows(work, sort_by, sort_dir, valid_sorts, default_sort, sort_chain=chain)
+    return work, band_meta
+
 def _option_part_id_num(r):
     s = str(r.get('id', '')).strip()
     if s.isdigit():
@@ -16459,18 +16583,10 @@ def list_rows_stat_bounds(rows, sort_by):
     return {'key': sort_by, 'min': min(nums), 'max': max(nums)}
 
 
-def sort_rows(rows, sort_by, sort_dir, valid_sorts, default_sort='rarity'):
+def sort_rows(rows, sort_by, sort_dir, valid_sorts, default_sort='rarity', sort_chain=None):
     if sort_by not in valid_sorts: sort_by = default_sort
     if sort_by in LIST_STAT_SORT_PRIMARY and sort_by in valid_sorts:
-        def _num(v):
-            try:
-                return float(v) if v is not None else 0.0
-            except (TypeError, ValueError):
-                return 0.0
-        if sort_dir == 'desc':
-            rows.sort(key=lambda r: (-_num(r.get(sort_by)), _list_row_id_tiebreak(r)))
-        else:
-            rows.sort(key=lambda r: (_num(r.get(sort_by)), _list_row_id_tiebreak(r)))
+        rows.sort(key=lambda r: _list_stat_sort_key(r, sort_by, sort_dir, chain=sort_chain))
         return rows
     if sort_by == 'rarity':
         if sort_dir == 'asc': rows.sort(key=lambda r: (-r['rarity_sort'], _list_row_id_tiebreak(r)))
@@ -23517,6 +23633,9 @@ def list_characters():
     else:
         pp = min(100, max(10, int(request.args.get('per_page', 50))))
     sb = request.args.get('sort', 'rarity'); sd = request.args.get('dir', 'desc')
+    _char_valid_sorts = {'name', 'role', 'rarity', 'Ranged', 'Melee', 'Awaken', 'Defense', 'Reaction'}
+    sort_chain = _parse_list_sort_chain(request.args.get('sort_chain', ''), _char_valid_sorts)
+    sort_chain_ck = ','.join(sort_chain) if sort_chain else '-'
     sq = request.args.get('q', '').strip().lower()
     q_scope = parse_q_scope(request.args.get('q_scope'))
     scope_ck = browse_q_scope_cache_letter(q_scope)
@@ -23545,7 +23664,7 @@ def list_characters():
     sb_ck = 'sbd1' if want_stat_bounds else 'sbd0'
     rb_ck = 'rb1' if ranking_bulk else 'rb0'
     # cl34: list rows include is_limited_time for client-side rarity filter (omit series/rarity_icon).
-    ck = f"cl34_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_lop{_cbc['lineage_combine']}_sop{_cbc['series_combine']}_skop{_cbc['skill_combine']}_abop{_cbc['trait_combine']}_gs{1 if grid_skills else 0}_{sb_ck}_{rb_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"cl36_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_sp{1 if sp_list else 0}_c{1 if cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{skill_ck}_{ability_ck}_lop{_cbc['lineage_combine']}_sop{_cbc['series_combine']}_skop{_cbc['skill_combine']}_abop{_cbc['trait_combine']}_gs{1 if grid_skills else 0}_{sb_ck}_{rb_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
@@ -23653,7 +23772,13 @@ def list_characters():
         # is_limited_time is on the row so Units/Characters can filter rarity locally.
         row = {'id': cid, 'name': name, 'role': resolve_role_label(role_id, lc), 'role_id': role_id, 'role_sort': ROLE_SORT.get(role_id,3), 'role_icon': ROLE_ICON_MAP.get(role_id,''), 'rarity': RARITY_MAP.get(ri,'N'), 'rarity_id': ri, 'rarity_sort': RARITY_SORT.get(ri,4), 'thum': thum or '', 'acquisition_icon': acq_icon or '', 'is_limited_time': cid in LIMITED_TIME_CHARACTER_IDS, 'is_schedule_shell': entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')), 'Ranged': totals.get('Ranged', 0), 'Melee': totals.get('Melee', 0), 'Awaken': totals.get('Awaken', 0), 'Defense': totals.get('Defense', 0), 'Reaction': totals.get('Reaction', 0), 'Ranged_base': base_src.get('Ranged', 0), 'Melee_base': base_src.get('Melee', 0), 'Awaken_base': base_src.get('Awaken', 0), 'Defense_base': base_src.get('Defense', 0), 'Reaction_base': base_src.get('Reaction', 0)}
         rows.append(row)
-    rows = sort_rows(rows, sb, sd, {'name','role','rarity','Ranged','Melee','Awaken','Defense','Reaction'})
+    rows, sort_priority_band = sort_rows_with_priority_band(
+        rows,
+        sb,
+        sd,
+        _char_valid_sorts,
+        sort_chain=sort_chain,
+    )
     stat_bounds = list_rows_stat_bounds(rows, sb) if want_stat_bounds else None
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
     start = (page - 1) * pp; pr = rows[start:start + pp]
@@ -23663,7 +23788,7 @@ def list_characters():
             _ri = row.get('rarity_id', '1')
             _hsp = int(str(_ri)) <= 4
             row['grid_skills'] = collect_character_grid_skills(_cid, ld, use_sp=bool(sp_list and _hsp))
-    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'skill_filter': skill_arg, 'stat_bounds': stat_bounds}
+    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'skill_filter': skill_arg, 'stat_bounds': stat_bounds, 'sort_priority_band': sort_priority_band}
     set_cached_response(ck, result)
     return jsonify_cacheable(result, ck, public=True, max_age=3600, convert_images=True)
 
@@ -23672,6 +23797,9 @@ def list_characters():
 def list_units():
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG)); page = max(1, int(request.args.get('page', 1)))
     sb = request.args.get('sort', 'rarity'); sd = request.args.get('dir', 'desc')
+    _unit_valid_sorts = {'name', 'role', 'rarity', 'ATK', 'DEF', 'MOB', 'HP', 'EN', 'MOV'}
+    sort_chain = _parse_list_sort_chain(request.args.get('sort_chain', ''), _unit_valid_sorts)
+    sort_chain_ck = ','.join(sort_chain) if sort_chain else '-'
     sq = request.args.get('q', '').strip().lower()
     q_scope = parse_q_scope(request.args.get('q_scope'))
     scope_ck = browse_q_scope_cache_letter(q_scope)
@@ -23733,7 +23861,7 @@ def list_units():
     sbu_ck = 'sbd1' if want_stat_bounds_u else 'sbd0'
     rb_u_ck = 'rb1' if ranking_bulk_u else 'rb0'
     # ul57: list rows include is_limited_time for client-side rarity filter (omit series/rarity_icon/recommend).
-    ck = f"ul57_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    ck = f"ul59_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
@@ -23906,6 +24034,7 @@ def list_units():
                 urow['map_weapon_previews'] = _map_prevs
                 urow['map_weapon_preview'] = _map_prevs[0]
         rows.append(urow)
+    sort_priority_band = None
     if tb_boost:
         def _tb_unit_leader_boosted(row):
             uid = normalize_id(row.get('id'))
@@ -23924,7 +24053,13 @@ def list_units():
             rows = [r for r in rows if _tb_unit_leader_boosted(r)]
             rows.sort(key=_tb_rarity_name_key)
     else:
-        rows = sort_rows(rows, sb, sd, {'name', 'role', 'rarity', 'ATK', 'DEF', 'MOB', 'HP', 'EN', 'MOV'})
+        rows, sort_priority_band = sort_rows_with_priority_band(
+            rows,
+            sb,
+            sd,
+            _unit_valid_sorts,
+            sort_chain=sort_chain,
+        )
     stat_bounds = list_rows_stat_bounds(rows, sb) if want_stat_bounds_u else None
     total = len(rows); tp = max(1, math.ceil(total / pp)); page = min(page, tp)
     start = (page - 1) * pp; pr = rows[start:start + pp]
@@ -23934,7 +24069,7 @@ def list_units():
             urow['grid_abilities'] = collect_unit_grid_abilities(_uid, ld, ldc, lc, stat_mode)
     _wbp = sorted(WEAPON_DEBUFF_KEYS_PRESENT_UNION)
     _mech_rows = mechanism_list_filter_rows_from_ids(mechanism_union, ld)
-    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg, 'weapon_range': weapon_range_arg, 'weapon_range_non_map': weapon_range_non_map_arg, 'map_weapon_range': map_weapon_range_arg, 'weapon_debuff_present_keys': _wbp, 'terrain_present_tokens': sorted(UNIT_TERRAIN_FILTER_TOKENS_PRESENT), 'weapon_range_ssp_ex_present': sorted(WEAPON_RANGE_SSP_EX_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_present': sorted(WEAPON_RANGE_SSP_EX_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_present': sorted(WEAPON_RANGE_NON_MAP_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_present': sorted(WEAPON_RANGE_NON_MAP_SSP_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_present': sorted(WEAPON_RANGE_ALL_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_cond_present': sorted(WEAPON_RANGE_NON_MAP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_cond_present': sorted(WEAPON_RANGE_ALL_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_cond_present': sorted(WEAPON_RANGE_SSP_EX_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_pilot_cond_present': sorted(WEAPON_RANGE_ALL_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_full_cond_present': sorted(WEAPON_RANGE_ALL_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_FULL_COND_VALUES_PRESENT, key=int), 'mechanism': mechanism_arg, 'mechanism_present': _mech_rows, 'stat_bounds': stat_bounds}
+    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg, 'weapon_range': weapon_range_arg, 'weapon_range_non_map': weapon_range_non_map_arg, 'map_weapon_range': map_weapon_range_arg, 'weapon_debuff_present_keys': _wbp, 'terrain_present_tokens': sorted(UNIT_TERRAIN_FILTER_TOKENS_PRESENT), 'weapon_range_ssp_ex_present': sorted(WEAPON_RANGE_SSP_EX_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_present': sorted(WEAPON_RANGE_SSP_EX_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_present': sorted(WEAPON_RANGE_NON_MAP_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_present': sorted(WEAPON_RANGE_NON_MAP_SSP_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_present': sorted(WEAPON_RANGE_ALL_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_cond_present': sorted(WEAPON_RANGE_NON_MAP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_cond_present': sorted(WEAPON_RANGE_ALL_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_cond_present': sorted(WEAPON_RANGE_SSP_EX_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_pilot_cond_present': sorted(WEAPON_RANGE_ALL_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_full_cond_present': sorted(WEAPON_RANGE_ALL_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_FULL_COND_VALUES_PRESENT, key=int), 'mechanism': mechanism_arg, 'mechanism_present': _mech_rows, 'stat_bounds': stat_bounds, 'sort_priority_band': sort_priority_band}
     if not sq:
         result['transform_alt_browse_rows'] = _build_transform_alt_browse_rows(ld, lc, stat_mode, cond_list)
     set_cached_response(ck, result)

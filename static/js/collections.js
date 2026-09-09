@@ -60,10 +60,10 @@
    */
   var COL_T = {
     EN: {
-      page_title: 'Collections — GGen Eternal Database',
+      page_title: 'Hangar Collection — GGen Eternal Database',
       back: '← Database',
-      eyebrow: 'UR possession tracker',
-      title: 'Collections',
+      eyebrow: 'UR Acquisition Review',
+      title: 'Hangar Collection',
       sub: 'Track UR unit and supporter possession\nTap a portrait to cycle not possessed → Limit Break 0 → Limit Break 3.\nPossessing a unit covers its character',
       lang: 'Lang',
       units: 'Units',
@@ -145,7 +145,7 @@
       census_hist_hint:
         'Each bar = how many players whose Possession % (owned ÷ catalog) falls in that range — same as the Possession gauge. Units and Supporters each have their own chart (switch tabs).',
       census_own_hint:
-        'Sorted least → most collected (left → right). Height = total possession points in the census (not possessed = 0 · Max Limit Break = 4). Hover a bar to enlarge its thumb.',
+        'Sorted least → most collected (left → right). Height = total possession points in the census (not possessed = 0 · Max Limit Break = 4). Hover a bar (or long-press on mobile) for kit details.',
       census_own_tip: '{pts} pts · {owned} have it · avg {avg} / 4',
       census_y_owned: 'Pts',
       census_need_optin: 'Check the opt-in box to contribute.',
@@ -170,10 +170,10 @@
       default_save_name: 'Collection {i}'
     },
     JA: {
-      page_title: 'コレクション — GGen Eternal Database',
+      page_title: '格納庫コレクション — GGen Eternal Database',
       back: '← データベース',
-      eyebrow: 'UR所持率トラッカー',
-      title: 'コレクション',
+      eyebrow: 'UR取得進捗',
+      title: '格納庫コレクション',
       sub: 'URユニット／サポーターの所持を記録\nタップで未所持 → 限界突破0 → 限界突破3。\nユニット所持はキャラクター所持も含みます',
       lang: '言語',
       units: 'ユニット',
@@ -255,7 +255,7 @@
       census_hist_hint:
         '各棒＝その所持％（所持数÷カタログ）帯にいる人数。上部の所持率ゲージと同じ基準。ユニット／支援はタブ切替で別集計。',
       census_own_hint:
-        '所持ポイントが少ない順（左→右）。高さ＝センサス内の合計所持ポイント（未所持=0・限界突破MAX=4）。棒にホバーでサムネ拡大。',
+        '所持ポイントが少ない順（左→右）。高さ＝センサス内の合計所持ポイント（未所持=0・限界突破MAX=4）。棒にホバー（スマホは長押し）で詳細表示。',
       census_own_tip: '{pts}pt · 所持 {owned}人 · 平均 {avg} / 4',
       census_y_owned: 'Pt',
       census_need_optin: '参加するにはチェックを入れてください。',
@@ -280,10 +280,10 @@
       default_save_name: 'コレクション {i}'
     },
     TW: {
-      page_title: '收藏 — GGen Eternal Database',
+      page_title: '格納庫收藏 — GGen Eternal Database',
       back: '← 資料庫',
-      eyebrow: 'UR 持有率追蹤',
-      title: '收藏',
+      eyebrow: 'UR獲取進度',
+      title: '格納庫收藏',
       sub: '記錄 UR 單位與支援人員持有狀態\n點選肖像可循環：未持有 → 突破界限 0 → 突破界限 3。\n持有單位即視為持有角色',
       lang: '語言',
       units: '單位',
@@ -364,7 +364,7 @@
       census_hist_hint:
         '每根長條＝持有率％（持有數÷目錄）落在該區間的人數——與上方持有率量表相同。單位／支援人員請切換分頁分別查看。',
       census_own_hint:
-        '依持有點數由低到高（左→右）。高度＝普查內合計持有點數（未持有=0・突破界限 MAX=4）。懸停長條可放大縮圖。',
+        '依持有點數由低到高（左→右）。高度＝普查內合計持有點數（未持有=0・突破界限 MAX=4）。懸停長條（手機長按）可查看詳情。',
       census_own_tip: '{pts} 點 · 持有 {owned} 人 · 平均 {avg} / 4',
       census_y_owned: '點',
       census_need_optin: '請先勾選同意納入普查。',
@@ -389,10 +389,10 @@
       default_save_name: '收藏 {i}'
     },
     HK: {
-      page_title: '收藏 — GGen Eternal Database',
+      page_title: '格納庫收藏 — GGen Eternal Database',
       back: '← 資料庫',
-      eyebrow: 'UR 持有率追蹤',
-      title: '收藏',
+      eyebrow: 'UR獲取進度',
+      title: '格納庫收藏',
       sub: '記錄 UR 單位與支援人員持有狀態\n點選肖像可循環：未持有 → 突破界限 0 → 突破界限 3。\n持有單位即視為持有角色',
       lang: '語言',
       units: '單位',
@@ -473,7 +473,7 @@
       census_hist_hint:
         '每根長條＝持有率％（持有數÷目錄）落在該區間的人數——與上方持有率量表相同。單位／支援人員請切換分頁分別查看。',
       census_own_hint:
-        '依持有點數由低到高（左→右）。高度＝普查內合計持有點數（未持有=0・突破界限 MAX=4）。懸停長條可放大縮圖。',
+        '依持有點數由低到高（左→右）。高度＝普查內合計持有點數（未持有=0・突破界限 MAX=4）。懸停長條（手機長按）可查看詳情。',
       census_own_tip: '{pts} 點 · 持有 {owned} 人 · 平均 {avg} / 4',
       census_y_owned: '點',
       census_need_optin: '請先勾選同意納入普查。',
@@ -2551,6 +2551,16 @@
           esc(name + ' · ' + tip) +
           '">' +
           '<div class="collections-census-vhist-barwrap">' +
+          '<div class="collections-census-vhist-detail" aria-hidden="true">' +
+          '<div class="collections-census-vhist-detail-thumb">' +
+          img +
+          '</div>' +
+          '<div class="collections-census-vhist-detail-name">' +
+          esc(name) +
+          '</div>' +
+          '<div class="collections-census-vhist-detail-meta">' +
+          esc(tip) +
+          '</div></div>' +
           '<div class="collections-census-vhist-bar" style="height:' +
           h +
           '%;background:' +
@@ -2580,6 +2590,57 @@
     var ownTitle = document.getElementById('colCensusOwnTitle');
     if (ownTitle) ownTitle.textContent = t('census_own_title', { type: typeTitle() });
     host.setAttribute('aria-label', t('census_own_title', { type: typeTitle() }));
+    bindCensusOwnBarHold(host);
+  }
+
+  function bindCensusOwnBarHold(host) {
+    if (!host || host._censusHoldBound) return;
+    host._censusHoldBound = 1;
+    var holdTimer = null;
+    var holdCol = null;
+    var clearHold = function () {
+      if (holdTimer) {
+        clearTimeout(holdTimer);
+        holdTimer = null;
+      }
+      if (holdCol) {
+        holdCol.classList.remove('is-hold');
+        holdCol = null;
+      }
+      host.querySelectorAll('.collections-census-vhist-col.is-hold').forEach(function (el) {
+        el.classList.remove('is-hold');
+      });
+    };
+    host.addEventListener(
+      'pointerdown',
+      function (e) {
+        var col = e.target && e.target.closest ? e.target.closest('.collections-census-vhist-col') : null;
+        if (!col || !host.contains(col)) return;
+        if (e.pointerType === 'mouse' && e.button !== 0) return;
+        clearHold();
+        holdTimer = setTimeout(function () {
+          holdTimer = null;
+          holdCol = col;
+          col.classList.add('is-hold');
+        }, 420);
+      },
+      { passive: true }
+    );
+    host.addEventListener('pointerup', clearHold, { passive: true });
+    host.addEventListener('pointercancel', clearHold, { passive: true });
+    host.addEventListener(
+      'pointermove',
+      function (e) {
+        if (!holdTimer) return;
+        if (Math.abs(e.movementX || 0) + Math.abs(e.movementY || 0) > 10) clearHold();
+      },
+      { passive: true }
+    );
+    host.addEventListener('contextmenu', function (e) {
+      if (e.target && e.target.closest && e.target.closest('.collections-census-vhist-col')) {
+        e.preventDefault();
+      }
+    });
   }
 
   async function loadCensusStats() {

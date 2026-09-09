@@ -558,15 +558,15 @@
   display:grid;grid-template-columns:1fr;gap:14px;
 }
 .collections-census-panel--depth{max-width:min(420px,100%)}
-.collections-census-panel--kits{min-width:0;overflow-x:auto;max-width:100%}
-.collections-census-own{overflow-x:auto;max-width:100%;min-width:0}
+.collections-census-panel--kits{min-width:0;overflow-x:auto;max-width:100%;overflow-y:visible;padding-top:4px}
+.collections-census-own{overflow-x:auto;max-width:100%;min-width:0;overflow-y:visible}
 .collections-census-vhist{
   display:grid;grid-template-columns:28px minmax(0,1fr);gap:6px;align-items:stretch;
   min-height:168px;overflow:visible;
 }
 .collections-census-vhist-yaxis{
   display:flex;flex-direction:column;justify-content:space-between;align-items:flex-end;
-  padding:2px 0 28px;font-size:10px;font-weight:800;color:var(--text-muted);
+  padding:78px 0 28px;font-size:10px;font-weight:800;color:var(--text-muted);
   font-variant-numeric:tabular-nums;line-height:1;
 }
 .collections-census-vhist-scroll{
@@ -574,39 +574,75 @@
 }
 .collections-census-vhist-bars{
   display:flex;align-items:flex-end;gap:1px;min-height:150px;width:100%;
-  padding:2px 0 0;overflow:visible;
+  padding:78px 8px 0;overflow:visible;box-sizing:border-box;
 }
 .collections-census-vhist-col{
   flex:1 1 0;min-width:0;width:auto;position:relative;z-index:1;
   display:flex;flex-direction:column;align-items:center;gap:3px;
 }
-.collections-census-vhist-col:hover{z-index:8}
+.collections-census-vhist-col:hover,
+.collections-census-vhist-col.is-hold{z-index:12}
 .collections-census-vhist-barwrap{
-  width:100%;height:120px;display:flex;align-items:flex-end;justify-content:center;
+  position:relative;width:100%;height:120px;display:flex;align-items:flex-end;justify-content:center;
   border-bottom:1px solid rgba(125,211,252,.25);
   background:linear-gradient(to top,rgba(0,212,255,.04),transparent 70%);
 }
 .collections-census-vhist-bar{
   width:78%;min-width:2px;max-width:14px;min-height:0;border-radius:2px 2px 1px 1px;
-  transition:height .35s ease, filter .15s ease;
+  transition:height var(--motion-dur-standard,220ms) var(--motion-ease-standard,cubic-bezier(.2,0,0,1)), filter var(--motion-dur-quick,120ms) var(--motion-ease-standard,cubic-bezier(.2,0,0,1));
+  touch-action:manipulation;
 }
-.collections-census-vhist-col:hover .collections-census-vhist-bar{
+.collections-census-vhist-col:hover .collections-census-vhist-bar,
+.collections-census-vhist-col.is-hold .collections-census-vhist-bar{
   filter:brightness(1.12);
+}
+.collections-census-vhist-detail{
+  position:absolute;left:50%;bottom:100%;z-index:14;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  width:max-content;max-width:min(140px,42vw);
+  margin-bottom:8px;padding:6px 7px 5px;
+  border-radius:8px;border:1px solid rgba(255,215,0,.55);
+  background:rgba(8,12,22,.96);
+  box-shadow:0 10px 28px rgba(0,0,0,.55),0 0 0 1px rgba(168,85,247,.35);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transform:translateX(-50%) translateY(6px) scale(.92);
+  transform-origin:center bottom;
+  transition:opacity var(--motion-dur-quick,120ms) var(--motion-ease-standard,cubic-bezier(.2,0,0,1)),
+    transform var(--motion-dur-quick,120ms) var(--motion-ease-standard,cubic-bezier(.2,0,0,1)),
+    visibility 0s linear 120ms;
+}
+.collections-census-vhist-col:hover .collections-census-vhist-detail,
+.collections-census-vhist-col.is-hold .collections-census-vhist-detail{
+  opacity:1;visibility:visible;pointer-events:none;
+  transform:translateX(-50%) translateY(0) scale(1);
+  transition-delay:0s;
+}
+.collections-census-vhist-detail-thumb{
+  width:56px;height:56px;border-radius:6px;overflow:hidden;flex:0 0 auto;
+  border:1px solid rgba(125,211,252,.35);background:#0b1220;
+}
+.collections-census-vhist-detail-thumb img{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+.collections-census-vhist-detail-name{
+  font-size:10px;font-weight:800;line-height:1.2;color:var(--text-primary);
+  text-align:center;max-width:126px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.collections-census-vhist-detail-meta{
+  font-size:9px;font-weight:700;line-height:1.25;color:var(--text-muted);
+  text-align:center;max-width:126px;white-space:normal;
 }
 .collections-census-vhist-thumb{
   width:100%;aspect-ratio:1;max-width:100%;border-radius:3px;overflow:hidden;
   border:1px solid rgba(125,211,252,.22);background:#0b1220;
-  transform-origin:center bottom;
-  transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-  will-change:transform;
 }
 .collections-census-vhist-thumb img{
   width:100%;height:100%;object-fit:cover;display:block;
 }
-.collections-census-vhist-col:hover .collections-census-vhist-thumb{
-  transform:scale(3.1);
-  border-color:rgba(255,215,0,.75);
-  box-shadow:0 8px 22px rgba(0,0,0,.55),0 0 0 1px rgba(168,85,247,.45);
+.collections-census-vhist-col:hover .collections-census-vhist-thumb,
+.collections-census-vhist-col.is-hold .collections-census-vhist-thumb{
+  border-color:rgba(255,215,0,.55);
 }
 .collections-census-vhist-val{display:none}
 .collections-census-panel{
@@ -671,7 +707,8 @@
   .collections-username input{min-width:0;width:100%;max-width:100%}
   .collections-code-field{flex:1 1 100%;max-width:100%}
   .collections-census{padding:12px 10px 14px;margin:20px 0 10px}
-  .collections-census-vhist-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .collections-census-vhist-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;overflow-y:visible}
+  .collections-census-vhist-detail-thumb{width:52px;height:52px}
 }
 
 @media(prefers-reduced-motion:reduce){
@@ -680,7 +717,10 @@
   .collections-hud.is-perfect .collections-gauge-bar>i,
   .collections-gauge.is-complete-pop{animation:none}
   .collections-hud.is-perfect .collections-gauge-pct{filter:none}
-  .collections-census-vhist-thumb,
+  .collections-census-vhist-detail,
   .collections-census-vhist-bar{transition:none}
-  .collections-census-vhist-col:hover .collections-census-vhist-thumb{transform:scale(2.4)}
+  .collections-census-vhist-col:hover .collections-census-vhist-detail,
+  .collections-census-vhist-col.is-hold .collections-census-vhist-detail{
+    transform:translateX(-50%) translateY(0) scale(1);
+  }
 }

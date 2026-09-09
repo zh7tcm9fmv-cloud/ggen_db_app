@@ -1073,6 +1073,18 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .list-toolbar>.list-view-area{flex:1 1 100%;min-width:0}
 .data-table thead th:hover{color:var(--accent-cyan)}.data-table thead th.sort-active{color:var(--accent-cyan)}
 .sort-arrow{margin-left:4px;font-size:12px;opacity:0.4}.sort-active .sort-arrow{opacity:1}
+.sort-priority-lock{
+  display:inline-flex;align-items:center;gap:0;margin-left:3px;vertical-align:middle;
+  position:relative;top:-1px;
+}
+.sort-priority-ic{width:16px;height:16px;object-fit:contain;display:inline-block;filter:drop-shadow(0 0 2px rgba(255,71,87,.55))}
+.sort-priority-exp{
+  font-size:14px;font-weight:800;line-height:1;color:var(--accent-red);
+  margin-left:1px;font-variant-numeric:tabular-nums;
+}
+.data-table thead th.sort-priority-on{color:#ffb4b4}
+.data-table thead th.sort-priority-on.sort-active{color:var(--accent-cyan)}
+.sort-priority-band-note{color:var(--text-muted);font-weight:500;margin-left:.35em;white-space:nowrap}
 .data-table tbody tr{transition:var(--transition);cursor:pointer}.data-table tbody tr:hover{background:var(--bg-card-hover)}.data-table tbody td{border-bottom:1px solid rgba(42,54,84,0.3)}
 .data-table tbody td{padding:8px 6px;vertical-align:middle;overflow:hidden}
 .data-table tbody td.col-thum{overflow:visible;text-align:center}

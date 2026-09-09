@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Collections — GGen Eternal Database</title>
+<title>Hangar Collection — GGen Eternal Database</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/app_shell.css') }}?v={{ app_js_version }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/collections.css') }}?v={{ app_js_version }}">
 {% if image_cdn %}
@@ -21,8 +21,8 @@ window.__GGEN_GAME_IMAGES_USE_CDN__={{ game_images_use_cdn|tojson }};
 <header class="collections-top">
   <div class="collections-top-inner">
     <div class="collections-brand">
-      <div class="collections-eyebrow" id="colEyebrow">UR possession tracker</div>
-      <h1 id="colTitle">Collections</h1>
+      <div class="collections-eyebrow" id="colEyebrow">UR Acquisition Review</div>
+      <h1 id="colTitle">Hangar Collection</h1>
       <p class="collections-sub" id="colSub">Track UR unit and supporter possession
 Tap a portrait to cycle not possessed → Limit Break 0 → Limit Break 3.
 Possessing a unit covers its character</p>
@@ -148,7 +148,7 @@ Possessing a unit covers its character</p>
       </div>
       <div class="collections-census-panel collections-census-panel--kits">
         <h3 id="colCensusOwnTitle">Most collected Units</h3>
-        <p class="collections-census-hint" id="colCensusOwnHint">Sorted least → most collected (left → right). Height = total possession points in the census (not possessed = 0 · Max Limit Break = 4). Hover a bar to enlarge its thumb.</p>
+        <p class="collections-census-hint" id="colCensusOwnHint">Sorted least → most collected (left → right). Height = total possession points in the census (not possessed = 0 · Max Limit Break = 4). Hover a bar (or long-press on mobile) for kit details.</p>
         <div class="collections-census-own" id="colCensusOwn" role="img" aria-label="Most collected units"></div>
       </div>
     </div>
