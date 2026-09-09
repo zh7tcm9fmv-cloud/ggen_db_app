@@ -420,10 +420,10 @@ Object.assign(T.TW,{tb_picker_sort:'排序',tb_picker_weapon_attr:'武裝'});
 Object.assign(T.HK,{tb_picker_sort:'排序',tb_picker_weapon_attr:'武裝'});
 Object.assign(T.JA,{tb_picker_sort:'並び替え',tb_picker_weapon_attr:'武装'});
 Object.assign(T.JP,{tb_picker_sort:T.JA.tb_picker_sort,tb_picker_weapon_attr:T.JA.tb_picker_weapon_attr});
-Object.assign(T.EN,{sort_priority_hint:'Right-click / long-press to lock: each lock before the last keeps top 20% of that stat (cascade), last lock sorts the remaining. Left-click a lock to flip asc/desc; unlocked column clears locks',sort_priority_n:'Priority {n}',sort_priority_band:'· {pct}% {chain}'});
-Object.assign(T.JA,{sort_priority_hint:'右クリック／長押しで優先度固定：最後以外は各ステ上位20%を順に絞り、最後のロックでソート。ロック列左クリックで昇降順、未ロックで解除',sort_priority_n:'優先度 {n}',sort_priority_band:'· {pct}% {chain}'});
-Object.assign(T.TW,{sort_priority_hint:'右鍵／長按鎖定：最後一欄以外依序各取前20%縮小範圍，最後一鎖用來排序。左鍵點鎖定欄切換升降、點未鎖定清除',sort_priority_n:'優先 {n}',sort_priority_band:'· {pct}% {chain}'});
-Object.assign(T.HK,{sort_priority_hint:'右鍵／長按鎖定：最後一欄以外依序各取前20%收窄，最後一鎖用嚟排序。左鍵撳鎖定欄切換升降、撳未鎖定清除',sort_priority_n:'優先 {n}',sort_priority_band:'· {pct}% {chain}'});
+Object.assign(T.EN,{sort_priority_hint:'Right-click (desktop) or double-tap (mobile) a stat to lock: each lock before the last keeps top 20% of that stat (cascade), last lock sorts the remaining. Left-click / single-tap a lock to flip asc/desc; unlocked column clears locks',sort_priority_n:'Priority {n}',sort_priority_band:'· {pct}% {chain}'});
+Object.assign(T.JA,{sort_priority_hint:'右クリック（PC）／ダブルタップ（スマホ）で優先度固定：最後以外は各ステ上位20%を順に絞り、最後のロックでソート。ロック列をタップ／クリックで昇降順、未ロックで解除',sort_priority_n:'優先度 {n}',sort_priority_band:'· {pct}% {chain}'});
+Object.assign(T.TW,{sort_priority_hint:'右鍵（電腦）／連點兩下（手機）鎖定：最後一欄以外依序各取前20%縮小範圍，最後一鎖用來排序。點鎖定欄切換升降、點未鎖定清除',sort_priority_n:'優先 {n}',sort_priority_band:'· {pct}% {chain}'});
+Object.assign(T.HK,{sort_priority_hint:'右鍵（電腦）／連撳兩下（手機）鎖定：最後一欄以外依序各取前20%收窄，最後一鎖用嚟排序。撳鎖定欄切換升降、撳未鎖定清除',sort_priority_n:'優先 {n}',sort_priority_band:'· {pct}% {chain}'});
 Object.assign(T.JP,{sort_priority_hint:T.JA.sort_priority_hint,sort_priority_n:T.JA.sort_priority_n,sort_priority_band:T.JA.sort_priority_band});
 
 Object.assign(T.EN,{dc_bigrang_zeon_squad_chk:'Big-Rang EX (1009000550) + pilot 1009000100: +5% ATK/DEF (Zeon)',dc_bigrang_zeon_squad_tip:'When Big-Rang (EX) is piloted by its EX pilot in your squad, Zeon-tagged units gain +5% ATK and DEF (permanent). Toggle on in Damage Calculator when that pair is in the squad.',dc_squad_buff_applied:'Applied',dc_squad_buff_sources:'Sources',dc_squad_buff_from_self:'This attacker',dc_squad_buff_from_ally:'Other attacker',dc_squad_buff_from_squad:'Squad aura',dc_squad_buff_from_ex_squad:'EX squad ATK',dc_squad_buff_ex_squad_label:'EX squad ATK %',dc_squad_buff_ex_atk_pct:'EX %atk +%n%',dc_squad_buff_atk_def_pct:'%atk & %def +%n%',dc_squad_buff_atk_pct:'%atk +%n%',dc_squad_buff_def_pct:'%def +%n%',dc_squad_buff_applied_split:'%atk +%a% · %def +%d%'});
@@ -550,9 +550,9 @@ function scheduleDeferredContentBootstraps(force){
 function markBrowseFirstPaintForNotices(){scheduleDeferredContentBootstraps(false);scheduleBrowseFiltersMetaWarmup()}
 const RANK_SORT_KEYS_CHAR=['Ranged','Melee','Awaken','Defense','Reaction'];
 const RANK_SORT_KEYS_UNIT=['HP','EN','ATK','DEF','MOB'];
-/* Explicit multi-key sort: right-click / long-press stat headers to lock priority ¹ ² ³… */
+/* Explicit multi-key sort: right-click / double-tap stat headers to lock priority 1 2 3… */
 const SORT_PRIORITY_ICON='/static/images/UI/mw_red_target2.webp';
-const SORT_PRIORITY_SUP=['¹','²','³','⁴','⁵','⁶'];
+const SORT_PRIORITY_SUP=['1','2','3','4','5','6'];
 const SORT_PRIORITY_KEYS_UNIT=['HP','EN','ATK','DEF','MOB','MOV'];
 const SORT_PRIORITY_KEYS_CHAR=['Ranged','Melee','Awaken','Defense','Reaction'];
 const SORT_PRIORITY_BAND_FRAC=0.2;
@@ -584,7 +584,7 @@ const idx=pri.indexOf(key);
 if(idx<0)return'';
 const n=SORT_PRIORITY_SUP[idx]||String(idx+1);
 const tip=String(t('sort_priority_n')||'').replace('{n}',String(idx+1));
-return`<span class="sort-priority-lock" title="${escAttr(tip)}"><img class="sort-priority-ic" src="${imgUrl(SORT_PRIORITY_ICON)}" alt="" width="16" height="16" loading="lazy" decoding="async"><sup class="sort-priority-exp">${n}</sup></span>`;
+return`<span class="sort-priority-lock" title="${escAttr(tip)}"><img class="sort-priority-ic" src="${imgUrl(SORT_PRIORITY_ICON)}" alt="" width="18" height="18" loading="lazy" decoding="async"><span class="sort-priority-exp" aria-hidden="true">${n}</span></span>`;
 }
 function browseStatThHtml(type,key,labelInner,titleText){
 const s=browseSortState(type);
@@ -626,10 +626,12 @@ else if(type==='units')loadUnits(1);
 function bindSortPriorityHeaderGestures(){
 if(S._sortPriorityGesturesBound)return;
 S._sortPriorityGesturesBound=1;
-let holdTimer=null;
-let holdFired=false;
-let suppressClickUntil=0;
-const clearHold=()=>{if(holdTimer){clearTimeout(holdTimer);holdTimer=null}};
+let lastPtr='mouse';
+let lastTapT=0;
+let lastTapType='';
+let lastTapKey='';
+let pendingSort=null;
+const clearPendingSort=()=>{if(pendingSort){clearTimeout(pendingSort);pendingSort=null}};
 const onContext=(e)=>{
 const th=e.target&&e.target.closest?e.target.closest('th.col-stat[data-sort-key]'):null;
 if(!th)return;
@@ -637,35 +639,46 @@ const type=th.getAttribute('data-browse-type');
 const key=th.getAttribute('data-sort-key');
 if(!type||!key)return;
 e.preventDefault();
+clearPendingSort();
 toggleSortPriority(type,key);
 };
 const onPointerDown=(e)=>{
-if(e.pointerType==='mouse'&&e.button!==0)return;
 const th=e.target&&e.target.closest?e.target.closest('th.col-stat[data-sort-key]'):null;
 if(!th)return;
-holdFired=false;
-clearHold();
-holdTimer=setTimeout(()=>{
-holdFired=true;
-suppressClickUntil=Date.now()+500;
+lastPtr=e.pointerType||'mouse';
+};
+const onClickCapture=(e)=>{
+const th=e.target&&e.target.closest?e.target.closest('th.col-stat[data-sort-key]'):null;
+if(!th)return;
 const type=th.getAttribute('data-browse-type');
 const key=th.getAttribute('data-sort-key');
-if(type&&key)toggleSortPriority(type,key);
-},480);
-};
-const onPointerUp=()=>{clearHold()};
-const onClickCapture=(e)=>{
-if(Date.now()>suppressClickUntil)return;
-const th=e.target&&e.target.closest?e.target.closest('th.col-stat[data-sort-key]'):null;
-if(!th)return;
+if(!type||!key)return;
+/* Desktop mouse: leave inline onclick + contextmenu alone */
+if(lastPtr==='mouse')return;
+/* Touch / pen: double-tap locks; single-tap sorts (delayed so double-tap can cancel) */
 e.preventDefault();
-e.stopPropagation();
+e.stopImmediatePropagation();
+const now=Date.now();
+if(now-lastTapT<380&&lastTapType===type&&lastTapKey===key){
+clearPendingSort();
+lastTapT=0;
+lastTapType='';
+lastTapKey='';
+toggleSortPriority(type,key);
+return;
+}
+lastTapT=now;
+lastTapType=type;
+lastTapKey=key;
+clearPendingSort();
+pendingSort=setTimeout(()=>{
+pendingSort=null;
+lastTapT=0;
+sortCol(type,key);
+},320);
 };
 document.addEventListener('contextmenu',onContext);
 document.addEventListener('pointerdown',onPointerDown,{passive:true});
-document.addEventListener('pointerup',onPointerUp,{passive:true});
-document.addEventListener('pointercancel',clearHold,{passive:true});
-document.addEventListener('pointermove',(e)=>{if(holdTimer&&(Math.abs(e.movementX)+Math.abs(e.movementY)>8))clearHold()},{passive:true});
 document.addEventListener('click',onClickCapture,true);
 }
 function listSortCompareByPriority(a,b,keys,dir){
