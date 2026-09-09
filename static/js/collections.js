@@ -2547,9 +2547,7 @@
             '" loading="lazy" decoding="async">'
           : '';
         return (
-          '<div class="collections-census-vhist-col" title="' +
-          esc(name + ' · ' + tip) +
-          '">' +
+          '<div class="collections-census-vhist-col">' +
           '<div class="collections-census-vhist-barwrap">' +
           '<div class="collections-census-vhist-detail" aria-hidden="true">' +
           '<div class="collections-census-vhist-detail-thumb">' +
