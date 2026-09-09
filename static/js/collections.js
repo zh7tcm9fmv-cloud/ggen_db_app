@@ -103,11 +103,11 @@
       foot: 'UR units exclude Ultimate and transform alternates. Progress is saved in this browser only.',
       report_title: 'Collections Report',
       brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
-      owned_line: 'Possessed {owned} / {total} · Avg Limit Break {avg}',
+      owned_line: 'Possessed {owned} / {total} · Limit Break {lb} / {lbMax}',
       share_body:
-        'GGEN ETERNAL DATABASE — Collections Report\nUR {type} possession {pct}% ({owned}/{total} {noun}) · Avg Limit Break {avg}\n#GundamEternal #ジージェネエターナル\n{url}',
+        'GGEN ETERNAL DATABASE — Collections Report\nUR {type} possession {pct}% ({owned}/{total} {noun}) · Limit Break {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
       share_body_named:
-        'GGEN ETERNAL DATABASE — Collections Report\n{name} · UR {type} possession {pct}% ({owned}/{total} {noun}) · Avg Limit Break {avg}\n#GundamEternal #ジージェネエターナル\n{url}',
+        'GGEN ETERNAL DATABASE — Collections Report\n{name} · UR {type} possession {pct}% ({owned}/{total} {noun}) · Limit Break {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
       noun_units: 'units',
       noun_supporters: 'supporters',
       unowned: 'Not possessed'
@@ -158,11 +158,11 @@
       foot: 'URユニットはULT・変形形態を除外。記録はこのブラウザのみ。',
       report_title: 'コレクションレポート',
       brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
-      owned_line: '所持 {owned} / {total} · 平均限界突破 {avg}',
+      owned_line: '所持 {owned} / {total} · 限界突破 {lb} / {lbMax}',
       share_body:
-        'GGEN ETERNAL DATABASE — コレクションレポート\nUR {type} 所持率 {pct}%（{owned}/{total}{noun}）平均限界突破 {avg}\n#GundamEternal #ジージェネエターナル\n{url}',
+        'GGEN ETERNAL DATABASE — コレクションレポート\nUR {type} 所持率 {pct}%（{owned}/{total}{noun}）限界突破 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
       share_body_named:
-        'GGEN ETERNAL DATABASE — コレクションレポート\n{name} · UR {type} 所持率 {pct}%（{owned}/{total}{noun}）平均限界突破 {avg}\n#GundamEternal #ジージェネエターナル\n{url}',
+        'GGEN ETERNAL DATABASE — コレクションレポート\n{name} · UR {type} 所持率 {pct}%（{owned}/{total}{noun}）限界突破 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
       noun_units: '機',
       noun_supporters: '体',
       unowned: '未所持'
@@ -213,11 +213,11 @@
       foot: 'UR 單位不含終極單位與變形形態。進度僅保存在此瀏覽器。',
       report_title: '收藏報告',
       brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
-      owned_line: '持有 {owned} / {total} · 平均突破界限 {avg}',
+      owned_line: '持有 {owned} / {total} · 突破界限 {lb} / {lbMax}',
       share_body:
-        'GGEN ETERNAL DATABASE — 收藏報告\nUR {type} 持有率 {pct}%（{owned}/{total}{noun}）平均突破界限 {avg}\n#GundamEternal #ジージェネエターナル\n{url}',
+        'GGEN ETERNAL DATABASE — 收藏報告\nUR {type} 持有率 {pct}%（{owned}/{total}{noun}）突破界限 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
       share_body_named:
-        'GGEN ETERNAL DATABASE — 收藏報告\n{name} · UR {type} 持有率 {pct}%（{owned}/{total}{noun}）平均突破界限 {avg}\n#GundamEternal #ジージェネエターナル\n{url}',
+        'GGEN ETERNAL DATABASE — 收藏報告\n{name} · UR {type} 持有率 {pct}%（{owned}/{total}{noun}）突破界限 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
       noun_units: '機',
       noun_supporters: '個',
       unowned: '未持有'
@@ -268,11 +268,11 @@
       foot: 'UR 單位不含終極單位與變形形態。進度僅保存在此瀏覽器。',
       report_title: '收藏報告',
       brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
-      owned_line: '持有 {owned} / {total} · 平均突破界限 {avg}',
+      owned_line: '持有 {owned} / {total} · 突破界限 {lb} / {lbMax}',
       share_body:
-        'GGEN ETERNAL DATABASE — 收藏報告\nUR {type} 持有率 {pct}%（{owned}/{total}{noun}）平均突破界限 {avg}\n#GundamEternal #ジージェネエターナル\n{url}',
+        'GGEN ETERNAL DATABASE — 收藏報告\nUR {type} 持有率 {pct}%（{owned}/{total}{noun}）突破界限 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
       share_body_named:
-        'GGEN ETERNAL DATABASE — 收藏報告\n{name} · UR {type} 持有率 {pct}%（{owned}/{total}{noun}）平均突破界限 {avg}\n#GundamEternal #ジージェネエターナル\n{url}',
+        'GGEN ETERNAL DATABASE — 收藏報告\n{name} · UR {type} 持有率 {pct}%（{owned}/{total}{noun}）突破界限 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
       noun_units: '機',
       noun_supporters: '個',
       unowned: '未持有'
@@ -437,7 +437,7 @@
       }
     });
     var pct = total ? Math.round((owned / total) * 1000) / 10 : 0;
-    var avgLb = owned ? Math.round((lbSum / owned) * 10) / 10 : 0;
+    var lbMax = total * MAX_LB;
     return {
       total: total,
       owned: owned,
@@ -446,7 +446,8 @@
       limOwned: limOwned,
       byRole: byRole,
       pct: pct,
-      avgLb: avgLb
+      lbTotal: lbSum,
+      lbMax: lbMax
     };
   }
 
@@ -1250,7 +1251,7 @@
     ctx.fillStyle = '#94a3b8';
     ctx.font = '15px sans-serif';
     ctx.fillText(
-      t('owned_line', { owned: st.owned, total: st.total, avg: st.avgLb }),
+      t('owned_line', { owned: st.owned, total: st.total, lb: st.lbTotal, lbMax: st.lbMax }),
       pad,
       pad + 156
     );
@@ -1522,7 +1523,8 @@
       owned: st.owned,
       total: st.total,
       noun: state.type === 'supporters' ? t('noun_supporters') : t('noun_units'),
-      avg: st.avgLb,
+      lb: st.lbTotal,
+      lbMax: st.lbMax,
       url: siteUrl()
     });
     var intent = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text);
