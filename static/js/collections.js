@@ -143,7 +143,7 @@
       census_hist_title: 'Player collection depth',
       census_own_title: 'Most collected {type}',
       census_hist_hint:
-        'Each bar = how many players are in that collection-% range. Not possessed = 0 · Max Limit Break = 4.',
+        'Each bar = how many players whose Possession % (owned ÷ catalog) falls in that range — same as the Possession gauge. Units and Supporters each have their own chart (switch tabs).',
       census_own_hint:
         'Sorted least → most collected (left → right). Height = total possession points in the census (not possessed = 0 · Max Limit Break = 4). Hover a bar to enlarge its thumb.',
       census_own_tip: '{pts} pts · {owned} have it · avg {avg} / 4',
@@ -253,7 +253,7 @@
       census_hist_title: 'プレイヤーのコレクション深度',
       census_own_title: '所持が多い{type}',
       census_hist_hint:
-        '各棒＝その所持％帯にいる人数。未所持=0・限界突破MAX=4。',
+        '各棒＝その所持％（所持数÷カタログ）帯にいる人数。上部の所持率ゲージと同じ基準。ユニット／支援はタブ切替で別集計。',
       census_own_hint:
         '所持ポイントが少ない順（左→右）。高さ＝センサス内の合計所持ポイント（未所持=0・限界突破MAX=4）。棒にホバーでサムネ拡大。',
       census_own_tip: '{pts}pt · 所持 {owned}人 · 平均 {avg} / 4',
@@ -362,7 +362,7 @@
       census_hist_title: '玩家收藏深度',
       census_own_title: '最多持有{type}',
       census_hist_hint:
-        '每根長條＝落在該持有％區間的人數。未持有=0・突破界限 MAX=4。',
+        '每根長條＝持有率％（持有數÷目錄）落在該區間的人數——與上方持有率量表相同。單位／支援人員請切換分頁分別查看。',
       census_own_hint:
         '依持有點數由低到高（左→右）。高度＝普查內合計持有點數（未持有=0・突破界限 MAX=4）。懸停長條可放大縮圖。',
       census_own_tip: '{pts} 點 · 持有 {owned} 人 · 平均 {avg} / 4',
@@ -471,7 +471,7 @@
       census_hist_title: '玩家收藏深度',
       census_own_title: '最多持有{type}',
       census_hist_hint:
-        '每根長條＝落在該持有％區間的人數。未持有=0・突破界限 MAX=4。',
+        '每根長條＝持有率％（持有數÷目錄）落在該區間的人數——與上方持有率量表相同。單位／支援人員請切換分頁分別查看。',
       census_own_hint:
         '依持有點數由低到高（左→右）。高度＝普查內合計持有點數（未持有=0・突破界限 MAX=4）。懸停長條可放大縮圖。',
       census_own_tip: '{pts} 點 · 持有 {owned} 人 · 平均 {avg} / 4',

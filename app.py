@@ -17413,17 +17413,31 @@ _collections_share_cache = {'mtime': None, 'data': None}
 
 
 def _collections_share_file_path():
-    vol = (os.environ.get('GGEN_PERSISTENT_DIR') or os.environ.get('RAILWAY_VOLUME_MOUNT_PATH') or '').strip()
-    if vol:
-        return os.path.join(vol, 'collections_share_v1.json')
+    """Runtime share store — no Railway volume. Durable via GitHub (votes branch)."""
+    custom = (os.environ.get('GGEN_COLLECTIONS_SHARE_PATH') or '').strip()
+    if custom:
+        return os.path.abspath(custom)
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'persistent', 'collections_share_v1.json')
+
+
+_PUBLISHED_COLLECTIONS_SHARE_FILE = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), 'data', 'published', 'collections_share_v1.json'
+)
+_COLLECTIONS_SHARE_GITHUB_SHA = None
+_COLLECTIONS_SHARE_HYDRATE_LOCK = threading.Lock()
+_COLLECTIONS_SHARE_HYDRATED = False
+_COLLECTIONS_SHARE_LAST_REMOTE_PULL = 0.0
+_COLLECTIONS_SHARE_GITHUB_PUSH_LOCK = threading.Lock()
+_COLLECTIONS_SHARE_DEBOUNCE_TIMER = None
+_COLLECTIONS_SHARE_DEBOUNCE_LOCK = threading.Lock()
+_COLLECTIONS_SHARE_SHUTDOWN_SYNC_DONE = False
 
 
 def _collections_share_empty():
     return {'v': 1, 'codes': {}, 'by_ip': {}}
 
 
-def _collections_share_load():
+def _collections_share_load(*, hydrate=True):
     path = _collections_share_file_path()
     cached = _collections_share_cache
     try:
@@ -17431,45 +17445,52 @@ def _collections_share_load():
     except OSError:
         mtime = None
     if cached['data'] is not None and cached['mtime'] == mtime:
-        return cached['data']
-    data = _collections_share_empty()
-    try:
-        with open(path, 'r', encoding='utf-8') as f:
-            raw = json.load(f)
-        if isinstance(raw, dict) and isinstance(raw.get('codes'), dict):
-            by_ip = raw.get('by_ip') if isinstance(raw.get('by_ip'), dict) else {}
-            data = {'v': 1, 'codes': raw['codes'], 'by_ip': by_ip}
-    except FileNotFoundError:
-        pass
-    except Exception as e:
-        print(f'collections_share: load failed: {e}')
-    cached['data'] = data
-    cached['mtime'] = mtime
+        data = cached['data']
+    else:
+        data = _collections_share_empty()
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                raw = json.load(f)
+            if isinstance(raw, dict) and isinstance(raw.get('codes'), dict):
+                by_ip = raw.get('by_ip') if isinstance(raw.get('by_ip'), dict) else {}
+                data = {'v': 1, 'codes': raw['codes'], 'by_ip': by_ip}
+        except FileNotFoundError:
+            pass
+        except Exception as e:
+            print(f'collections_share: load failed: {e}')
+        cached['data'] = data
+        cached['mtime'] = mtime
+    if hydrate and not (data.get('codes') or {}):
+        try:
+            _collections_share_hydrate_from_remote(force=False)
+            cached = _collections_share_cache
+            if cached['data'] is not None:
+                return cached['data']
+        except Exception as e:
+            print(f'collections_share: hydrate failed: {e}')
     return data
 
 
-def _collections_share_save(data):
+def _collections_share_save(data, *, sync_github=True):
     path = _collections_share_file_path()
     try:
         os.makedirs(os.path.dirname(path), exist_ok=True)
         tmp = path + '.tmp'
+        payload = {
+            'v': 1,
+            'codes': data.get('codes') or {},
+            'by_ip': data.get('by_ip') or {},
+        }
         with open(tmp, 'w', encoding='utf-8') as f:
-            json.dump(
-                {
-                    'v': 1,
-                    'codes': data.get('codes') or {},
-                    'by_ip': data.get('by_ip') or {},
-                },
-                f,
-                ensure_ascii=False,
-                separators=(',', ':'),
-            )
+            json.dump(payload, f, ensure_ascii=False, separators=(',', ':'))
         os.replace(tmp, path)
         try:
             _collections_share_cache['mtime'] = os.path.getmtime(path)
         except OSError:
             _collections_share_cache['mtime'] = None
-        _collections_share_cache['data'] = data
+        _collections_share_cache['data'] = payload
+        if sync_github:
+            _collections_share_after_save(payload)
         return True
     except Exception as e:
         print(f'collections_share: save failed: {e}')
@@ -17599,6 +17620,14 @@ def api_collections_share_get(code):
     data = _collections_share_load()
     row = (data.get('codes') or {}).get(raw)
     if not isinstance(row, dict) or not row.get('p'):
+        # Cold disk after redeploy — force remote hydrate once
+        try:
+            _collections_share_hydrate_from_remote(force=True)
+            data = _collections_share_load(hydrate=False)
+            row = (data.get('codes') or {}).get(raw)
+        except Exception:
+            pass
+    if not isinstance(row, dict) or not row.get('p'):
         return jsonify({'error': 'not_found'}), 404
     payload = _collections_share_normalize_payload(row.get('p'))
     if not payload:
@@ -17616,24 +17645,39 @@ _collections_census_recent = {}
 
 
 def _collections_census_file_path():
-    vol = (os.environ.get('GGEN_PERSISTENT_DIR') or os.environ.get('RAILWAY_VOLUME_MOUNT_PATH') or '').strip()
-    if vol:
-        return os.path.join(vol, 'collections_census_v1.json')
+    """Runtime census store — no Railway volume. Durable via GitHub (votes branch)."""
+    custom = (os.environ.get('GGEN_COLLECTIONS_CENSUS_PATH') or '').strip()
+    if custom:
+        return os.path.abspath(custom)
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'persistent', 'collections_census_v1.json')
 
 
 def _collections_census_jsonl_path():
-    vol = (os.environ.get('GGEN_PERSISTENT_DIR') or os.environ.get('RAILWAY_VOLUME_MOUNT_PATH') or '').strip()
-    if vol:
-        return os.path.join(vol, 'collections_census.jsonl')
+    """Append-only local archive (feedback-style). Ephemeral on Railway; GitHub JSON is durable."""
+    custom = (os.environ.get('GGEN_COLLECTIONS_CENSUS_JSONL_PATH') or '').strip()
+    if custom:
+        return os.path.abspath(custom)
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'persistent', 'collections_census.jsonl')
+
+
+_PUBLISHED_COLLECTIONS_CENSUS_FILE = os.path.join(
+    os.path.dirname(os.path.abspath(__file__)), 'data', 'published', 'collections_census_v1.json'
+)
+_COLLECTIONS_CENSUS_GITHUB_SHA = None
+_COLLECTIONS_CENSUS_HYDRATE_LOCK = threading.Lock()
+_COLLECTIONS_CENSUS_HYDRATED = False
+_COLLECTIONS_CENSUS_LAST_REMOTE_PULL = 0.0
+_COLLECTIONS_CENSUS_GITHUB_PUSH_LOCK = threading.Lock()
+_COLLECTIONS_CENSUS_DEBOUNCE_TIMER = None
+_COLLECTIONS_CENSUS_DEBOUNCE_LOCK = threading.Lock()
+_COLLECTIONS_CENSUS_SHUTDOWN_SYNC_DONE = False
 
 
 def _collections_census_empty():
     return {'v': 1, 'entries': {}}
 
 
-def _collections_census_load():
+def _collections_census_load(*, hydrate=True):
     path = _collections_census_file_path()
     cached = _collections_census_cache
     try:
@@ -17641,35 +17685,47 @@ def _collections_census_load():
     except OSError:
         mtime = None
     if cached['data'] is not None and cached['mtime'] == mtime:
-        return cached['data']
-    data = _collections_census_empty()
-    try:
-        with open(path, 'r', encoding='utf-8') as f:
-            raw = json.load(f)
-        if isinstance(raw, dict) and isinstance(raw.get('entries'), dict):
-            data = {'v': 1, 'entries': raw['entries']}
-    except FileNotFoundError:
-        pass
-    except Exception as e:
-        print(f'collections_census: load failed: {e}')
-    cached['data'] = data
-    cached['mtime'] = mtime
+        data = cached['data']
+    else:
+        data = _collections_census_empty()
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                raw = json.load(f)
+            if isinstance(raw, dict) and isinstance(raw.get('entries'), dict):
+                data = {'v': 1, 'entries': raw['entries']}
+        except FileNotFoundError:
+            pass
+        except Exception as e:
+            print(f'collections_census: load failed: {e}')
+        cached['data'] = data
+        cached['mtime'] = mtime
+    if hydrate and not (data.get('entries') or {}):
+        try:
+            _collections_census_hydrate_from_remote(force=False)
+            cached = _collections_census_cache
+            if cached['data'] is not None:
+                return cached['data']
+        except Exception as e:
+            print(f'collections_census: hydrate failed: {e}')
     return data
 
 
-def _collections_census_save(data):
+def _collections_census_save(data, *, sync_github=True):
     path = _collections_census_file_path()
     try:
         os.makedirs(os.path.dirname(path), exist_ok=True)
         tmp = path + '.tmp'
+        payload = {'v': 1, 'entries': data.get('entries') or {}}
         with open(tmp, 'w', encoding='utf-8') as f:
-            json.dump({'v': 1, 'entries': data.get('entries') or {}}, f, ensure_ascii=False, separators=(',', ':'))
+            json.dump(payload, f, ensure_ascii=False, separators=(',', ':'))
         os.replace(tmp, path)
         try:
             _collections_census_cache['mtime'] = os.path.getmtime(path)
         except OSError:
             _collections_census_cache['mtime'] = None
-        _collections_census_cache['data'] = data
+        _collections_census_cache['data'] = payload
+        if sync_github:
+            _collections_census_after_save(payload)
         return True
     except Exception as e:
         print(f'collections_census: save failed: {e}')
@@ -17724,7 +17780,8 @@ def _collections_census_prune(entries):
 def _collections_census_build_stats(entries, *, board='units', top_n=40):
     """Aggregate opt-in snapshots — no display names in unit rates.
 
-    Possession depth uses copy points: LB0=1 … LB3=4 (max Limit Break = 4 copies).
+    Player collection depth = unique possession % (owned kits ÷ catalog), same as HUD.
+    Kit chart still uses copy points: LB0=1 … LB3=4.
     """
     board = 'supporters' if str(board).lower() in ('supporters', 's', 'supp') else 'units'
     bag_key = 's' if board == 'supporters' else 'u'
@@ -17764,8 +17821,9 @@ def _collections_census_build_stats(entries, *, board='units', top_n=40):
                 continue
             catalog_ids.append(normalize_id(uid))
 
+    catalog_set = set(catalog_ids)
     n_snap = 0
-    hist = [0] * 10  # copy-fill % buckets 0-10 … 90-100
+    hist = [0] * 10  # unique possession % buckets 0-10 … 90-100
     owned_count = {}
     copy_sum = {}  # sum of (lb+1) across snapshots
     lb_sum = {}
@@ -17774,8 +17832,7 @@ def _collections_census_build_stats(entries, *, board='units', top_n=40):
             continue
         bag = row.get(bag_key) if isinstance(row.get(bag_key), dict) else {}
         total = len(catalog_ids) if catalog_ids else max(1, len(bag))
-        max_copies = float(total * copies_per_max)
-        copies = 0
+        owned_n = 0
         for iid, lb in bag.items():
             try:
                 lv = int(lb)
@@ -17784,13 +17841,15 @@ def _collections_census_build_stats(entries, *, board='units', top_n=40):
             if lv < 0 or lv > 3:
                 continue
             pts = lv + 1  # LB0→1 … LB3→4
-            copies += pts
             iid = normalize_id(iid)
+            if catalog_set and iid not in catalog_set:
+                continue
+            owned_n += 1
             owned_count[iid] = owned_count.get(iid, 0) + 1
             copy_sum[iid] = copy_sum.get(iid, 0) + pts
             lb_sum[iid] = lb_sum.get(iid, 0) + lv
-        # Snapshot copy-fill vs full catalog at Max Limit Break
-        pct = int(round((copies / max_copies) * 100.0)) if max_copies else 0
+        # Snapshot unique possession % vs catalog (matches HUD Possession gauge)
+        pct = int(round((owned_n / float(total)) * 100.0)) if total else 0
         pct = max(0, min(100, pct))
         bucket = 9 if pct >= 100 else (pct // 10)
         hist[bucket] += 1
@@ -17861,11 +17920,459 @@ def _collections_census_build_stats(entries, *, board='units', top_n=40):
         'catalog_size': len(catalog_ids),
         'copies_per_max': copies_per_max,
         'possession_hist': hist_rows,
-        'hist_mode': 'copy_fill',
+        'hist_mode': 'unique_possession',
         'kit_owned_hist': kit_hist,
         'most_owned': most,
         'least_owned': scarcest,
     }
+
+
+def _collections_github_cfg(path_env, default_path):
+    """Reuse banner-votes GitHub token/repo/branch; file path differs."""
+    try:
+        cfg = _banner_pool_votes_github_config()
+    except NameError:
+        return None
+    if not cfg:
+        return None
+    token, repo, _banner_path, branch = cfg
+    path = (os.environ.get(path_env) or default_path).strip().lstrip('/')
+    return token, repo, path, branch
+
+
+def _collections_github_sync_mode():
+    raw = (os.environ.get('GGEN_COLLECTIONS_SYNC_MODE') or '').strip().lower()
+    if raw in ('off', 'none', 'false', '0', 'never'):
+        return 'off'
+    if raw in ('vote', 'each', 'always', 'every', 'submit'):
+        return 'vote'
+    if raw in ('shutdown', 'deploy', 'exit', 'stop', 'on', 'true', '1'):
+        return 'shutdown'
+    try:
+        return _banner_pool_votes_sync_mode()
+    except NameError:
+        return 'shutdown'
+
+
+def _collections_github_fetch(path_env, default_path, sha_attr):
+    cfg = _collections_github_cfg(path_env, default_path)
+    if not cfg:
+        return None
+    token, repo, path, branch = cfg
+    url = f'https://api.github.com/repos/{repo}/contents/{quote(path)}?ref={quote(branch)}'
+    headers = _banner_pool_votes_github_api_headers(token)
+    try:
+        req = Request(url, headers=headers, method='GET')
+        with urlopen(req, timeout=12) as resp:
+            meta = json.loads(resp.read().decode('utf-8'))
+        if not isinstance(meta, dict) or meta.get('encoding') != 'base64':
+            return None
+        content = base64.b64decode(meta.get('content', '').replace('\n', '')).decode('utf-8')
+        data = json.loads(content)
+        globals()[sha_attr] = meta.get('sha')
+        return data if isinstance(data, dict) else None
+    except HTTPError as e:
+        if e.code == 404:
+            print(f'collections: {path} not on {branch} yet (first save pending)')
+        else:
+            print(f'collections: GitHub fetch failed ({path}): {e}')
+        return None
+    except (URLError, OSError, json.JSONDecodeError, ValueError, NameError) as e:
+        print(f'collections: GitHub fetch failed ({default_path}): {e}')
+        return None
+
+
+def _collections_github_push(data, path_env, default_path, sha_attr, message, *, retries=2):
+    cfg = _collections_github_cfg(path_env, default_path)
+    if not cfg:
+        return False
+    token, repo, path, branch = cfg
+    try:
+        _banner_pool_votes_ensure_github_branch()
+    except NameError:
+        pass
+    url = f'https://api.github.com/repos/{repo}/contents/{quote(path)}'
+    payload = json.dumps(data, ensure_ascii=False, indent=2).encode('utf-8') + b'\n'
+    headers = {
+        **_banner_pool_votes_github_api_headers(token),
+        'Content-Type': 'application/json',
+    }
+    lock = (
+        _COLLECTIONS_CENSUS_GITHUB_PUSH_LOCK
+        if 'census' in default_path
+        else _COLLECTIONS_SHARE_GITHUB_PUSH_LOCK
+    )
+    with lock:
+        for attempt in range(retries + 1):
+            sha = globals().get(sha_attr)
+            if attempt and not sha:
+                _collections_github_fetch(path_env, default_path, sha_attr)
+                sha = globals().get(sha_attr)
+            body = {
+                'message': message,
+                'content': base64.b64encode(payload).decode('ascii'),
+                'branch': branch,
+            }
+            if sha:
+                body['sha'] = sha
+            try:
+                req = Request(url, data=json.dumps(body).encode('utf-8'), headers=headers, method='PUT')
+                with urlopen(req, timeout=20) as resp:
+                    meta = json.loads(resp.read().decode('utf-8'))
+                content = meta.get('content') if isinstance(meta, dict) else None
+                if isinstance(content, dict) and content.get('sha'):
+                    globals()[sha_attr] = content['sha']
+                print(f'collections: GitHub snapshot ({message.split(":")[0]}, {path})')
+                return True
+            except HTTPError as e:
+                if e.code in (404, 422) and attempt < retries:
+                    globals()[sha_attr] = None
+                    try:
+                        if _banner_pool_votes_ensure_github_branch():
+                            continue
+                    except NameError:
+                        pass
+                    continue
+                if e.code == 409 and attempt < retries:
+                    globals()[sha_attr] = None
+                    _collections_github_fetch(path_env, default_path, sha_attr)
+                    continue
+                print(f'collections: GitHub push failed ({path}): {e}')
+                return False
+            except (URLError, OSError, json.JSONDecodeError, NameError) as e:
+                print(f'collections: GitHub push failed ({path}): {e}')
+                return False
+    return False
+
+
+def _collections_bundled_json(path):
+    try:
+        if os.path.isfile(path):
+            with open(path, 'r', encoding='utf-8') as f:
+                raw = json.load(f)
+            return raw if isinstance(raw, dict) else None
+    except (OSError, json.JSONDecodeError):
+        pass
+    return None
+
+
+def _collections_census_merge_entries(*snaps):
+    entries = {}
+    by_name = {}
+    for snap in snaps:
+        if not isinstance(snap, dict):
+            continue
+        for ck, row in (snap.get('entries') or {}).items():
+            if not isinstance(row, dict):
+                continue
+            ck = str(ck or '').strip()
+            if len(ck) < 16:
+                continue
+            prev = entries.get(ck)
+            ts = int(row.get('ts') or 0)
+            if prev is None or ts >= int(prev.get('ts') or 0):
+                entries[ck] = {
+                    'name': str(row.get('name') or '')[:32],
+                    'u': row.get('u') if isinstance(row.get('u'), dict) else {},
+                    's': row.get('s') if isinstance(row.get('s'), dict) else {},
+                    'ts': ts,
+                    'submitter_id': str(row.get('submitter_id') or ''),
+                }
+    # Drop older rows that collide on display name
+    for ck, row in list(entries.items()):
+        nk = _collections_census_name_key(row.get('name'))
+        if not nk:
+            continue
+        other = by_name.get(nk)
+        if other is None:
+            by_name[nk] = ck
+            continue
+        a = entries.get(other) or {}
+        if int(row.get('ts') or 0) >= int(a.get('ts') or 0):
+            entries.pop(other, None)
+            by_name[nk] = ck
+        else:
+            entries.pop(ck, None)
+    return {'v': 1, 'entries': entries}
+
+
+def _collections_share_merge_snaps(*snaps):
+    codes = {}
+    by_ip = {}
+    for snap in snaps:
+        if not isinstance(snap, dict):
+            continue
+        for code, row in (snap.get('codes') or {}).items():
+            if not isinstance(row, dict) or not row.get('p'):
+                continue
+            code = str(code or '').strip().upper()
+            prev = codes.get(code)
+            ts = int(row.get('ts') or 0)
+            if prev is None or ts >= int(prev.get('ts') or 0):
+                codes[code] = {
+                    'p': row.get('p'),
+                    'ts': ts,
+                    'sid': str(row.get('sid') or ''),
+                }
+        for sid, code in (snap.get('by_ip') or {}).items():
+            sid = str(sid or '').strip()
+            code = str(code or '').strip().upper()
+            if not sid or not code:
+                continue
+            # Prefer mapping that still exists in merged codes
+            if code in codes:
+                by_ip[sid] = code
+    return {'v': 1, 'codes': codes, 'by_ip': by_ip}
+
+
+def _collections_census_hydrate_from_remote(*, force=False):
+    global _COLLECTIONS_CENSUS_HYDRATED, _COLLECTIONS_CENSUS_LAST_REMOTE_PULL
+    with _COLLECTIONS_CENSUS_HYDRATE_LOCK:
+        now = time.time()
+        if (
+            not force
+            and _COLLECTIONS_CENSUS_HYDRATED
+            and (now - _COLLECTIONS_CENSUS_LAST_REMOTE_PULL) < 120.0
+        ):
+            return
+        path = _collections_census_file_path()
+        local = None
+        if os.path.isfile(path):
+            try:
+                with open(path, 'r', encoding='utf-8') as f:
+                    local = json.load(f)
+            except (OSError, json.JSONDecodeError):
+                local = None
+        remote = None
+        if _collections_github_sync_mode() != 'off':
+            remote = _collections_github_fetch(
+                'GGEN_COLLECTIONS_CENSUS_GITHUB_PATH',
+                'data/published/collections_census_v1.json',
+                '_COLLECTIONS_CENSUS_GITHUB_SHA',
+            )
+        bundled = _collections_bundled_json(_PUBLISHED_COLLECTIONS_CENSUS_FILE)
+        merged = _collections_census_merge_entries(local, remote, bundled)
+        local_n = len((local or {}).get('entries') or {})
+        merged_n = len(merged.get('entries') or {})
+        if merged_n > local_n or (force and merged_n and merged_n != local_n):
+            _collections_census_save(merged, sync_github=False)
+            print(f'collections_census: hydrated entries={merged_n} (local was {local_n})')
+        _COLLECTIONS_CENSUS_LAST_REMOTE_PULL = now
+        _COLLECTIONS_CENSUS_HYDRATED = True
+
+
+def _collections_share_hydrate_from_remote(*, force=False):
+    global _COLLECTIONS_SHARE_HYDRATED, _COLLECTIONS_SHARE_LAST_REMOTE_PULL
+    with _COLLECTIONS_SHARE_HYDRATE_LOCK:
+        now = time.time()
+        if (
+            not force
+            and _COLLECTIONS_SHARE_HYDRATED
+            and (now - _COLLECTIONS_SHARE_LAST_REMOTE_PULL) < 120.0
+        ):
+            return
+        path = _collections_share_file_path()
+        local = None
+        if os.path.isfile(path):
+            try:
+                with open(path, 'r', encoding='utf-8') as f:
+                    local = json.load(f)
+            except (OSError, json.JSONDecodeError):
+                local = None
+        remote = None
+        if _collections_github_sync_mode() != 'off':
+            remote = _collections_github_fetch(
+                'GGEN_COLLECTIONS_SHARE_GITHUB_PATH',
+                'data/published/collections_share_v1.json',
+                '_COLLECTIONS_SHARE_GITHUB_SHA',
+            )
+        bundled = _collections_bundled_json(_PUBLISHED_COLLECTIONS_SHARE_FILE)
+        merged = _collections_share_merge_snaps(local, remote, bundled)
+        local_n = len((local or {}).get('codes') or {})
+        merged_n = len(merged.get('codes') or {})
+        if merged_n > local_n or (force and merged_n and merged_n != local_n):
+            _collections_share_save(merged, sync_github=False)
+            print(f'collections_share: hydrated codes={merged_n} (local was {local_n})')
+        _COLLECTIONS_SHARE_LAST_REMOTE_PULL = now
+        _COLLECTIONS_SHARE_HYDRATED = True
+
+
+def _collections_census_push_from_disk(*, reason='manual', force=False):
+    path = _collections_census_file_path()
+    if not os.path.isfile(path):
+        return False
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return False
+    if not isinstance(data, dict):
+        return False
+    if not force and not (data.get('entries') or {}):
+        return False
+    ok = _collections_github_push(
+        {'v': 1, 'entries': data.get('entries') or {}},
+        'GGEN_COLLECTIONS_CENSUS_GITHUB_PATH',
+        'data/published/collections_census_v1.json',
+        '_COLLECTIONS_CENSUS_GITHUB_SHA',
+        f'chore: snapshot collections census ({reason})',
+    )
+    return ok
+
+
+def _collections_share_push_from_disk(*, reason='manual', force=False):
+    path = _collections_share_file_path()
+    if not os.path.isfile(path):
+        return False
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return False
+    if not isinstance(data, dict):
+        return False
+    if not force and not (data.get('codes') or {}):
+        return False
+    return _collections_github_push(
+        {
+            'v': 1,
+            'codes': data.get('codes') or {},
+            'by_ip': data.get('by_ip') or {},
+        },
+        'GGEN_COLLECTIONS_SHARE_GITHUB_PATH',
+        'data/published/collections_share_v1.json',
+        '_COLLECTIONS_SHARE_GITHUB_SHA',
+        f'chore: snapshot collections share ({reason})',
+    )
+
+
+def _collections_census_schedule_debounced_push():
+    global _COLLECTIONS_CENSUS_DEBOUNCE_TIMER
+    mode = _collections_github_sync_mode()
+    if mode == 'off' or not _collections_github_cfg(
+        'GGEN_COLLECTIONS_CENSUS_GITHUB_PATH', 'data/published/collections_census_v1.json'
+    ):
+        return
+    if mode == 'vote':
+        threading.Thread(
+            target=lambda: _collections_census_push_from_disk(reason='submit', force=True),
+            daemon=True,
+        ).start()
+        return
+
+    def _run():
+        _collections_census_push_from_disk(reason='debounced', force=True)
+
+    with _COLLECTIONS_CENSUS_DEBOUNCE_LOCK:
+        if _COLLECTIONS_CENSUS_DEBOUNCE_TIMER:
+            _COLLECTIONS_CENSUS_DEBOUNCE_TIMER.cancel()
+        try:
+            delay = float(_BANNER_VOTES_PUSH_DEBOUNCE_SEC)
+        except (NameError, TypeError, ValueError):
+            delay = 45.0
+        _COLLECTIONS_CENSUS_DEBOUNCE_TIMER = threading.Timer(delay, _run)
+        _COLLECTIONS_CENSUS_DEBOUNCE_TIMER.daemon = True
+        _COLLECTIONS_CENSUS_DEBOUNCE_TIMER.start()
+
+
+def _collections_share_schedule_debounced_push():
+    global _COLLECTIONS_SHARE_DEBOUNCE_TIMER
+    mode = _collections_github_sync_mode()
+    if mode == 'off' or not _collections_github_cfg(
+        'GGEN_COLLECTIONS_SHARE_GITHUB_PATH', 'data/published/collections_share_v1.json'
+    ):
+        return
+    if mode == 'vote':
+        threading.Thread(
+            target=lambda: _collections_share_push_from_disk(reason='submit', force=True),
+            daemon=True,
+        ).start()
+        return
+
+    def _run():
+        _collections_share_push_from_disk(reason='debounced', force=True)
+
+    with _COLLECTIONS_SHARE_DEBOUNCE_LOCK:
+        if _COLLECTIONS_SHARE_DEBOUNCE_TIMER:
+            _COLLECTIONS_SHARE_DEBOUNCE_TIMER.cancel()
+        try:
+            delay = float(_BANNER_VOTES_PUSH_DEBOUNCE_SEC)
+        except (NameError, TypeError, ValueError):
+            delay = 45.0
+        _COLLECTIONS_SHARE_DEBOUNCE_TIMER = threading.Timer(delay, _run)
+        _COLLECTIONS_SHARE_DEBOUNCE_TIMER.daemon = True
+        _COLLECTIONS_SHARE_DEBOUNCE_TIMER.start()
+
+
+def _collections_census_after_save(_data):
+    _collections_census_schedule_debounced_push()
+
+
+def _collections_share_after_save(_data):
+    _collections_share_schedule_debounced_push()
+
+
+def _collections_census_flush_to_github(reason='shutdown', *, force=False):
+    global _COLLECTIONS_CENSUS_SHUTDOWN_SYNC_DONE
+    if _COLLECTIONS_CENSUS_SHUTDOWN_SYNC_DONE and not force:
+        return
+    if _collections_github_sync_mode() == 'off':
+        return
+    with _COLLECTIONS_CENSUS_DEBOUNCE_LOCK:
+        if _COLLECTIONS_CENSUS_DEBOUNCE_TIMER:
+            _COLLECTIONS_CENSUS_DEBOUNCE_TIMER.cancel()
+    ok = _collections_census_push_from_disk(reason=reason, force=True)
+    if ok:
+        _COLLECTIONS_CENSUS_SHUTDOWN_SYNC_DONE = True
+    return ok
+
+
+def _collections_share_flush_to_github(reason='shutdown', *, force=False):
+    global _COLLECTIONS_SHARE_SHUTDOWN_SYNC_DONE
+    if _COLLECTIONS_SHARE_SHUTDOWN_SYNC_DONE and not force:
+        return
+    if _collections_github_sync_mode() == 'off':
+        return
+    with _COLLECTIONS_SHARE_DEBOUNCE_LOCK:
+        if _COLLECTIONS_SHARE_DEBOUNCE_TIMER:
+            _COLLECTIONS_SHARE_DEBOUNCE_TIMER.cancel()
+    ok = _collections_share_push_from_disk(reason=reason, force=True)
+    if ok:
+        _COLLECTIONS_SHARE_SHUTDOWN_SYNC_DONE = True
+    return ok
+
+
+def _collections_persistence_boot():
+    """Hydrate census + share from GitHub / bundled published seeds (no Railway volume)."""
+    try:
+        _collections_census_hydrate_from_remote(force=True)
+    except Exception as e:
+        print(f'collections_census: boot hydrate failed: {e}')
+    try:
+        _collections_share_hydrate_from_remote(force=True)
+    except Exception as e:
+        print(f'collections_share: boot hydrate failed: {e}')
+    cfg = _collections_github_cfg(
+        'GGEN_COLLECTIONS_CENSUS_GITHUB_PATH', 'data/published/collections_census_v1.json'
+    )
+    on_rail = False
+    try:
+        on_rail = bool(_banner_pool_votes_on_railway())
+    except NameError:
+        on_rail = bool((os.environ.get('RAILWAY_ENVIRONMENT') or '').strip())
+    print(
+        'collections_persist:',
+        f'census={_collections_census_file_path()}',
+        f'share={_collections_share_file_path()}',
+        f'github={"on" if cfg else "off"}',
+        f'sync_mode={_collections_github_sync_mode()}',
+        f'railway={"yes" if on_rail else "no"}',
+    )
+    if on_rail and not cfg and _collections_github_sync_mode() != 'off':
+        print(
+            'collections_persist: WARNING — set GGEN_BANNER_VOTES_GITHUB_TOKEN '
+            '(same as banner/SPI votes) so census/share survive redeploys without a volume.'
+        )
 
 
 @app.route('/api/collections/census', methods=['POST'])
@@ -17913,11 +18420,14 @@ def api_collections_census_submit():
     if not _collections_census_save(data):
         return jsonify({'error': 'save_failed'}), 500
     _collections_census_recent[submitter_id or client_key] = now
+    # Feedback-style append-only log (full possession bags)
     _collections_census_append_jsonl({
         'ts': now,
         'client_key': client_key,
         'submitter_id': submitter_id or '',
         'name': name,
+        'u': row['u'],
+        's': row['s'],
         'u_n': len(row['u']),
         's_n': len(row['s']),
         'action': 'update' if is_update else 'create',
@@ -17937,7 +18447,7 @@ def api_collections_census_stats():
     stats = _collections_census_build_stats(data.get('entries') or {}, board=board, top_n=top_n)
     # Optional contributor count only
     stats['contributors'] = int(stats.get('snapshots') or 0)
-    return jsonify_cacheable(stats, f"col_census_stats_v1_{stats['board']}_{top_n}_{stats['snapshots']}", public=True, max_age=60)
+    return jsonify_cacheable(stats, f"col_census_stats_v2_{stats['board']}_{top_n}_{stats['snapshots']}", public=True, max_age=60)
 
 
 @app.route('/api/collections/catalog')
@@ -26822,7 +27332,8 @@ def _banner_pool_votes_register_shutdown_sync():
         return
     banner_on = _banner_pool_votes_sync_mode() == 'shutdown'
     spi_on = _spi_votes_sync_mode() == 'shutdown'
-    if not banner_on and not spi_on:
+    col_on = _collections_github_sync_mode() == 'shutdown'
+    if not banner_on and not spi_on and not col_on:
         return
     _BANNER_VOTES_SHUTDOWN_REGISTERED = True
 
@@ -26831,6 +27342,9 @@ def _banner_pool_votes_register_shutdown_sync():
             _banner_pool_votes_flush_to_github(f'signal:{signum}', force=True)
         if spi_on:
             _spi_votes_flush_to_github(f'signal:{signum}', force=True)
+        if col_on:
+            _collections_census_flush_to_github(f'signal:{signum}', force=True)
+            _collections_share_flush_to_github(f'signal:{signum}', force=True)
 
     try:
         signal.signal(signal.SIGTERM, _term)
@@ -26963,6 +27477,7 @@ _banner_pool_votes_hydrate_from_remote(force=True)
 _banner_pool_votes_register_shutdown_sync()
 _banner_pool_votes_storage_warning()
 _spi_votes_boot()
+_collections_persistence_boot()
 _cfg = _banner_pool_votes_github_config()
 print(
     'banner_pool_votes:',
