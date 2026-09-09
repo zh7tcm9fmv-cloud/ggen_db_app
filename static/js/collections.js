@@ -3,7 +3,9 @@
 
   var STORAGE_KEY = 'ggen_collections_v1';
   var USERNAME_KEY = 'ggen_collections_username';
+  var LANG_STORAGE_KEY = 'ggen_lang';
   var MAX_LB = 3; /* unowned = -1, owned LB0..LB3 */
+  var EAGER_THUMB_COUNT = 16;
 
   var LB_ICONS = {
     None: '/static/images/UI/UI_Common_Icon_Grade_M_None.webp',
@@ -287,7 +289,17 @@
   var USE_CDN = window.__GGEN_GAME_IMAGES_USE_CDN__ !== false && !!IMAGE_CDN;
 
   var state = {
-    lang: localStorage.getItem('ggen_collections_lang') || 'EN',
+    lang: (function () {
+      try {
+        return (
+          localStorage.getItem('ggen_collections_lang') ||
+          localStorage.getItem(LANG_STORAGE_KEY) ||
+          'EN'
+        );
+      } catch (e) {
+        return 'EN';
+      }
+    })(),
     type: 'units',
     role: 'ALL',
     q: '',
@@ -453,7 +465,6 @@
     setText('colEyebrow', t('eyebrow'));
     setText('colTitle', t('title'));
     setText('colSub', t('sub'));
-    setText('colLangLabel', t('lang'));
     setText('colTabUnitsLbl', t('units'));
     setText('colTabSupportersLbl', t('supporters'));
     var unitTab = document.getElementById('colTabUnits');
@@ -492,13 +503,62 @@
       nameInput.setAttribute('aria-label', t('username'));
       if (!nameInput.value) nameInput.value = loadUsername();
     }
+    syncLangUi();
     setText('colDownloadLink', t('download'));
     setText('colClosePreview', t('close'));
     setText('colFoot', t('foot'));
     var prevMsg = document.getElementById('colPreviewMsg');
     if (prevMsg) prevMsg.textContent = t('preview_msg');
-    var langSel = document.getElementById('colLang');
-    if (langSel) langSel.value = state.lang;
+  }
+
+  function syncLangUi() {
+    var label = document.getElementById('colLangLabel');
+    if (label) label.textContent = state.lang;
+    document.querySelectorAll('#colLangDropdown .lang-option').forEach(function (opt) {
+      var on = opt.getAttribute('data-lang') === state.lang;
+      opt.classList.toggle('selected', on);
+      opt.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+  }
+
+  function closeLangDropdown() {
+    var dd = document.getElementById('colLangDropdown');
+    var btn = document.getElementById('colLangBtn');
+    if (dd) {
+      dd.classList.remove('active');
+      dd.hidden = true;
+    }
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+  }
+
+  function toggleLangDropdown() {
+    var dd = document.getElementById('colLangDropdown');
+    var btn = document.getElementById('colLangBtn');
+    if (!dd) return;
+    var open = !dd.classList.contains('active');
+    if (open) {
+      dd.hidden = false;
+      dd.classList.add('active');
+      if (btn) btn.setAttribute('aria-expanded', 'true');
+    } else {
+      closeLangDropdown();
+    }
+  }
+
+  function setLang(next) {
+    var lc = normLang(next);
+    if (lc === state.lang) {
+      closeLangDropdown();
+      return;
+    }
+    state.lang = lc;
+    try {
+      localStorage.setItem('ggen_collections_lang', state.lang);
+      localStorage.setItem(LANG_STORAGE_KEY, state.lang);
+    } catch (e) {}
+    closeLangDropdown();
+    applyUiLang();
+    loadCatalog();
   }
 
   var wasComplete = false;
@@ -616,13 +676,20 @@
     return 'UR';
   }
 
-  function thumbHtml(row) {
+  function thumbHtml(row, idx) {
     var r = rarityKey(row);
     var thum = imgUrl(row.thum || '');
+    var eager = typeof idx === 'number' && idx < EAGER_THUMB_COUNT;
+    var loadAttr = eager
+      ? 'loading="eager" decoding="async" fetchpriority="high"'
+      : 'loading="lazy" decoding="async"';
+    var chromeLoad = 'loading="lazy" decoding="async"';
     var portrait = thum
       ? '<img class="list-thumb-portrait" src="' +
         esc(thum) +
-        '" alt="" loading="lazy" decoding="async">'
+        '" alt="" ' +
+        loadAttr +
+        '>'
       : '<div class="list-thumb-placeholder" style="display:flex"></div>';
 
     if (state.type === 'supporters') {
@@ -631,22 +698,32 @@
         '<div class="tb-supp-tb-composite col-card-thumb-inner">' +
         '<div class="tb-supp-tb-back"><img class="list-thumb-base" src="' +
         esc(imgUrl(TB_SUPPORTER_TB_BASE)) +
-        '" alt="" loading="lazy" decoding="async"></div>' +
+        '" alt="" ' +
+        chromeLoad +
+        '></div>' +
         '<div class="list-thumb-portrait-wrap tb-supp-tb-portrait-wrap">' +
         portrait +
         '</div>' +
         '<img class="tb-supp-tb-side tb-supp-tb-side--left" src="' +
         esc(imgUrl(fr.lr)) +
-        '" alt="" loading="lazy" decoding="async">' +
+        '" alt="" ' +
+        chromeLoad +
+        '>' +
         '<img class="tb-supp-tb-side tb-supp-tb-side--right" src="' +
         esc(imgUrl(fr.lr)) +
-        '" alt="" loading="lazy" decoding="async">' +
+        '" alt="" ' +
+        chromeLoad +
+        '>' +
         '<img class="tb-supp-tb-end tb-supp-tb-top" src="' +
         esc(imgUrl(fr.tb)) +
-        '" alt="" loading="lazy" decoding="async">' +
+        '" alt="" ' +
+        chromeLoad +
+        '>' +
         '<img class="tb-supp-tb-end tb-supp-tb-bottom" src="' +
         esc(imgUrl(fr.tb)) +
-        '" alt="" loading="lazy" decoding="async">' +
+        '" alt="" ' +
+        chromeLoad +
+        '>' +
         '</div>'
       );
     }
@@ -662,13 +739,17 @@
       '\')">' +
       '<div class="list-thumb-back"><img class="list-thumb-base" src="' +
       esc(baseU) +
-      '" alt="" loading="lazy" decoding="async"></div>' +
+      '" alt="" ' +
+      chromeLoad +
+      '></div>' +
       '<div class="list-thumb-portrait-wrap">' +
       portrait +
       '</div>' +
       '<img class="list-thumb-frame" src="' +
       esc(frameU) +
-      '" alt="" loading="lazy" decoding="async">' +
+      '" alt="" ' +
+      chromeLoad +
+      '>' +
       '</div>'
     );
   }
@@ -691,7 +772,7 @@
       return;
     }
     grid.innerHTML = rows
-      .map(function (row) {
+      .map(function (row, idx) {
         var lb = getLb(row.id);
         var cls = lb < 0 ? 'is-unowned' : 'lb-' + lb;
         var lim = row.is_limited_time
@@ -717,7 +798,7 @@
           '">' +
           '<div class="col-card-thumb">' +
           lim +
-          thumbHtml(row) +
+          thumbHtml(row, idx) +
           lbIconsHtml(lb) +
           '</div>' +
           '<div class="col-card-name">' +
@@ -729,8 +810,36 @@
       .join('');
   }
 
-  function refresh() {
+  function patchCard(id) {
+    var card = document.querySelector('#colGrid .col-card[data-id="' + String(id).replace(/"/g, '') + '"]');
+    if (!card) return false;
+    var lb = getLb(id);
+    card.classList.remove('is-unowned', 'lb-0', 'lb-1', 'lb-2', 'lb-3');
+    card.classList.add(lb < 0 ? 'is-unowned' : 'lb-' + lb);
+    var nameEl = card.querySelector('.col-card-name');
+    var name = nameEl ? nameEl.textContent : '';
+    card.title = name + ' · ' + lbTitle(lb);
+    var thumb = card.querySelector('.col-card-thumb');
+    if (thumb) {
+      var icons = thumb.querySelector('.col-card-lb-icons');
+      var next = lbIconsHtml(lb);
+      if (icons) {
+        if (next) icons.outerHTML = next;
+        else icons.remove();
+      } else if (next) {
+        thumb.insertAdjacentHTML('beforeend', next);
+      }
+    }
+    return true;
+  }
+
+  function refresh(opts) {
+    opts = opts || {};
     renderStats();
+    if (opts.patchId && patchCard(opts.patchId)) {
+      syncRoleTabsVisibility();
+      return;
+    }
     renderGrid();
     syncRoleTabsVisibility();
   }
@@ -742,9 +851,26 @@
   }
 
   async function fetchJson(url) {
-    var r = await fetch(url, { credentials: 'same-origin', cache: 'no-store' });
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    return r.json();
+    var attempt = 0;
+    while (attempt < 8) {
+      attempt++;
+      var r = await fetch(url, { credentials: 'same-origin' });
+      if (r.status === 503) {
+        var body = null;
+        try {
+          body = await r.json();
+        } catch (e) {}
+        if (body && (body.error === 'warming_up' || body.status === 'warming_up')) {
+          await new Promise(function (res) {
+            setTimeout(res, Math.min(2500, 200 * attempt));
+          });
+          continue;
+        }
+      }
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      return r.json();
+    }
+    throw new Error('HTTP 503');
   }
 
   async function loadCatalog() {
@@ -764,12 +890,32 @@
           supporters: state.catalog.supporters.length
         });
       }
+      preloadChromeAssets();
     } catch (err) {
       if (status) status.textContent = t('load_fail', { err: err.message || err });
       state.catalog = { units: [], supporters: [] };
     }
     state.busy = false;
     refresh();
+  }
+
+  function preloadChromeAssets() {
+    var urls = [
+      imgUrl(RARITY_BASE_MAP.UR),
+      imgUrl(RARITY_FRAME_MAP.UR),
+      imgUrl(TB_SUPPORTER_TB_BASE),
+      imgUrl(SUPPORTER_TB_FRAME_MAP.UR.lr),
+      imgUrl(SUPPORTER_TB_FRAME_MAP.UR.tb),
+      imgUrl(LB_ICONS.None),
+      imgUrl(LB_ICONS.Neutral),
+      imgUrl(LB_ICONS.Max)
+    ];
+    urls.forEach(function (u) {
+      if (!u) return;
+      var im = new Image();
+      im.decoding = 'async';
+      im.src = u;
+    });
   }
 
   function bind() {
@@ -803,23 +949,31 @@
         }, 120);
       });
     }
-    var langSel = document.getElementById('colLang');
-    if (langSel) {
-      langSel.addEventListener('change', function () {
-        state.lang = normLang(langSel.value || 'EN');
-        localStorage.setItem('ggen_collections_lang', state.lang);
-        applyUiLang();
-        loadCatalog();
+    var langBtn = document.getElementById('colLangBtn');
+    if (langBtn) {
+      langBtn.addEventListener('click', function (ev) {
+        ev.stopPropagation();
+        toggleLangDropdown();
       });
     }
+    document.querySelectorAll('#colLangDropdown .lang-option').forEach(function (opt) {
+      opt.addEventListener('click', function (ev) {
+        ev.stopPropagation();
+        setLang(opt.getAttribute('data-lang'));
+      });
+    });
+    document.addEventListener('click', function (ev) {
+      if (!ev.target.closest('.lang-selector')) closeLangDropdown();
+    });
 
     var grid = document.getElementById('colGrid');
     if (grid) {
       grid.addEventListener('click', function (ev) {
         var card = ev.target.closest('.col-card');
         if (!card) return;
-        cycleLb(card.getAttribute('data-id'));
-        refresh();
+        var id = card.getAttribute('data-id');
+        cycleLb(id);
+        refresh({ patchId: id });
       });
     }
 
