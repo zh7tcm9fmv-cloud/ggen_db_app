@@ -1588,6 +1588,14 @@
     var suppTbImg = await loadImage(imgUrl(suppFr.tb));
     var isSupp = state.type === 'supporters';
 
+    /* Match .col-card.is-unowned: opacity .3 + grayscale(.65) brightness(.45) on the whole cell */
+    var UNOWNED_FILTER = 'grayscale(0.65) brightness(0.45)';
+    var UNOWNED_ALPHA = 0.3;
+    var cellCanvas = document.createElement('canvas');
+    cellCanvas.width = cell;
+    cellCanvas.height = cell;
+    var cctx = cellCanvas.getContext('2d');
+
     var gridY = headerH;
     rows.forEach(function (row, i) {
       var col = i % cols;
@@ -1596,79 +1604,61 @@
       var y = gridY + rowIdx * (cell + gap);
       var lb = getLb(row.id);
       var im = thumbs[i];
+      var owned = lb >= 0;
 
-      ctx.fillStyle = '#0b1220';
-      ctx.fillRect(x, y, cell, cell);
+      cctx.clearRect(0, 0, cell, cell);
+      cctx.fillStyle = '#0b1220';
+      cctx.fillRect(0, 0, cell, cell);
 
       if (isSupp) {
-        if (suppBaseImg) ctx.drawImage(suppBaseImg, x, y, cell, cell);
+        if (suppBaseImg) cctx.drawImage(suppBaseImg, 0, 0, cell, cell);
         if (im) {
           var insetX = cell * 0.14;
           var insetY = cell * 0.085;
-          ctx.save();
-          ctx.beginPath();
-          ctx.rect(x + insetX, y + insetY, cell - insetX * 2, cell - insetY * 2);
-          ctx.clip();
-          if (lb < 0) {
-            try {
-              ctx.filter = 'grayscale(0.65) brightness(0.45)';
-            } catch (_) {}
-            ctx.globalAlpha = 0.85;
-          } else {
-            ctx.globalAlpha = 1;
-          }
-          ctx.drawImage(im, x + insetX, y + insetY, cell - insetX * 2, cell - insetY * 2);
-          ctx.filter = 'none';
-          ctx.globalAlpha = 1;
-          ctx.restore();
+          cctx.save();
+          cctx.beginPath();
+          cctx.rect(insetX, insetY, cell - insetX * 2, cell - insetY * 2);
+          cctx.clip();
+          cctx.drawImage(im, insetX, insetY, cell - insetX * 2, cell - insetY * 2);
+          cctx.restore();
         }
         if (suppLrImg) {
           var sideW = cell * 0.27;
-          ctx.drawImage(suppLrImg, x, y, sideW, cell);
-          ctx.save();
-          ctx.translate(x + cell, y);
-          ctx.scale(-1, 1);
-          ctx.drawImage(suppLrImg, 0, 0, sideW, cell);
-          ctx.restore();
+          cctx.drawImage(suppLrImg, 0, 0, sideW, cell);
+          cctx.save();
+          cctx.translate(cell, 0);
+          cctx.scale(-1, 1);
+          cctx.drawImage(suppLrImg, 0, 0, sideW, cell);
+          cctx.restore();
         }
         if (suppTbImg) {
           var endH = cell * 0.085;
           var endW = cell * 0.88;
-          var endX = x + (cell - endW) / 2;
-          ctx.drawImage(suppTbImg, endX, y, endW, endH);
-          ctx.drawImage(suppTbImg, endX, y + cell - endH, endW, endH);
+          var endX = (cell - endW) / 2;
+          cctx.drawImage(suppTbImg, endX, 0, endW, endH);
+          cctx.drawImage(suppTbImg, endX, cell - endH, endW, endH);
         }
       } else {
-        if (unitBaseImg) ctx.drawImage(unitBaseImg, x, y, cell, cell);
+        if (unitBaseImg) cctx.drawImage(unitBaseImg, 0, 0, cell, cell);
         if (im) {
           var padIn = cell * 0.1;
-          ctx.save();
-          ctx.beginPath();
-          ctx.rect(x + padIn, y + padIn, cell - padIn * 2, cell - padIn * 2 - 2);
-          ctx.clip();
-          if (lb < 0) {
-            try {
-              ctx.filter = 'grayscale(0.65) brightness(0.45)';
-            } catch (_) {}
-            ctx.globalAlpha = 0.85;
-          } else {
-            ctx.globalAlpha = 1;
-          }
-          ctx.drawImage(im, x + padIn, y + padIn, cell - padIn * 2, cell - padIn * 2 - 2);
-          ctx.filter = 'none';
-          ctx.globalAlpha = 1;
-          ctx.restore();
+          cctx.save();
+          cctx.beginPath();
+          cctx.rect(padIn, padIn, cell - padIn * 2, cell - padIn * 2 - 2);
+          cctx.clip();
+          cctx.drawImage(im, padIn, padIn, cell - padIn * 2, cell - padIn * 2 - 2);
+          cctx.restore();
         }
-        if (unitFrameImg) ctx.drawImage(unitFrameImg, x, y, cell, cell);
+        if (unitFrameImg) cctx.drawImage(unitFrameImg, 0, 0, cell, cell);
       }
 
-      ctx.strokeStyle = lbBorderColor(lb);
-      ctx.lineWidth = lb >= 3 ? 2.5 : 1.5;
-      drawRoundRect(ctx, x + 0.5, y + 0.5, cell - 1, cell - 1, 6);
-      ctx.stroke();
+      cctx.strokeStyle = lbBorderColor(lb);
+      cctx.lineWidth = lb >= 3 ? 2.5 : 1.5;
+      drawRoundRect(cctx, 0.5, 0.5, cell - 1, cell - 1, 6);
+      cctx.stroke();
 
       if (row.is_limited_time) {
-        var limGrad = ctx.createLinearGradient(x, y, x + cell, y);
+        var limGrad = cctx.createLinearGradient(0, 0, cell, 0);
         if (isSupp) {
           limGrad.addColorStop(0, '#0e7490');
           limGrad.addColorStop(0.45, '#155e75');
@@ -1678,13 +1668,14 @@
           limGrad.addColorStop(0.55, '#a855f7');
           limGrad.addColorStop(1, '#1d4ed8');
         }
-        ctx.fillStyle = limGrad;
-        ctx.fillRect(x, y, cell, 14);
-        ctx.fillStyle = '#fff';
-        ctx.font = 'bold 8px sans-serif';
-        ctx.textAlign = 'center';
-        ctx.fillText(limitedWord(), x + cell / 2, y + 3);
-        ctx.textAlign = 'left';
+        cctx.fillStyle = limGrad;
+        cctx.fillRect(0, 0, cell, 14);
+        cctx.fillStyle = '#fff';
+        cctx.font = 'bold 8px sans-serif';
+        cctx.textAlign = 'center';
+        cctx.textBaseline = 'top';
+        cctx.fillText(limitedWord(), cell / 2, 3);
+        cctx.textAlign = 'left';
       }
 
       if (lb >= 1) {
@@ -1697,14 +1688,22 @@
         var iw = 12;
         var gapI = 1;
         var totalW = slots.length * iw + (slots.length - 1) * gapI;
-        var sx0 = x + (cell - totalW) / 2;
-        var sy = y + cell - 16;
-        ctx.fillStyle = 'rgba(10,14,23,0.88)';
-        ctx.fillRect(sx0 - 3, sy - 2, totalW + 6, iw + 4);
+        var sx0 = (cell - totalW) / 2;
+        var sy = cell - 16;
         slots.forEach(function (ic, si) {
-          if (ic) ctx.drawImage(ic, sx0 + si * (iw + gapI), sy, iw, iw);
+          if (ic) cctx.drawImage(ic, sx0 + si * (iw + gapI), sy, iw, iw);
         });
       }
+
+      ctx.save();
+      if (!owned) {
+        try {
+          ctx.filter = UNOWNED_FILTER;
+        } catch (_) {}
+        ctx.globalAlpha = UNOWNED_ALPHA;
+      }
+      ctx.drawImage(cellCanvas, x, y);
+      ctx.restore();
     });
 
     var footY = gridY + gridH + 18;
