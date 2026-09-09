@@ -80,6 +80,11 @@
       username: 'Player name',
       username_ph: 'Your in-game name',
       share_need_name: 'Enter your player name to include it on X.',
+      share_paste_hint: 'Image copied — paste it into your X post (Ctrl+V / ⌘V).',
+      share_attach_hint: 'Image downloaded — attach it to your X post.',
+      share_done: 'Shared.',
+      share_fail: 'Could not share.\n{err}',
+      share_cancel: 'Share cancelled.',
       possession: 'Possession',
       complete: 'COMPLETE',
       complete_max: 'MAX LIMIT BREAK',
@@ -105,9 +110,9 @@
       brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
       owned_line: 'Possessed {owned} / {total} · Limit Break {lb} / {lbMax}',
       share_body:
-        'GGEN ETERNAL DATABASE — Collections Report\nUR {type} possession {pct}% ({owned}/{total} {noun}) · Limit Break {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
+        'GGEN ETERNAL DATABASE — Collections Report\n· UR {type} possession {pct}% ({owned}/{total} {noun})\n· Limit Break {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
       share_body_named:
-        'GGEN ETERNAL DATABASE — Collections Report\n{name} · UR {type} possession {pct}% ({owned}/{total} {noun}) · Limit Break {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
+        'GGEN ETERNAL DATABASE — Collections Report\n{name}\n· UR {type} possession {pct}% ({owned}/{total} {noun})\n· Limit Break {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
       noun_units: 'units',
       noun_supporters: 'supporters',
       unowned: 'Not possessed'
@@ -135,6 +140,11 @@
       username: 'プレイヤー名',
       username_ph: 'ゲーム内のプレイヤー名',
       share_need_name: 'Xに含めるプレイヤー名を入力してください。',
+      share_paste_hint: '画像をコピーしました。Xの投稿に貼り付けてください（Ctrl+V / ⌘V）。',
+      share_attach_hint: '画像をダウンロードしました。Xの投稿に添付してください。',
+      share_done: 'シェアしました。',
+      share_fail: 'シェアできませんでした。\n{err}',
+      share_cancel: 'シェアをキャンセルしました。',
       possession: '所持率',
       complete: 'コンプリート',
       complete_max: '限界突破コンプリート',
@@ -160,9 +170,9 @@
       brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
       owned_line: '所持 {owned} / {total} · 限界突破 {lb} / {lbMax}',
       share_body:
-        'GGEN ETERNAL DATABASE — コレクションレポート\nUR {type} 所持率 {pct}%（{owned}/{total}{noun}）限界突破 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
+        'GGEN ETERNAL DATABASE — コレクションレポート\n· UR {type} 所持率 {pct}%（{owned}/{total}{noun}）\n· 限界突破 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
       share_body_named:
-        'GGEN ETERNAL DATABASE — コレクションレポート\n{name} · UR {type} 所持率 {pct}%（{owned}/{total}{noun}）限界突破 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
+        'GGEN ETERNAL DATABASE — コレクションレポート\n{name}\n· UR {type} 所持率 {pct}%（{owned}/{total}{noun}）\n· 限界突破 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
       noun_units: '機',
       noun_supporters: '体',
       unowned: '未所持'
@@ -190,6 +200,11 @@
       username: '玩家名稱',
       username_ph: '遊戲內的玩家名稱',
       share_need_name: '請輸入要一併分享到 X 的玩家名稱。',
+      share_paste_hint: '已複製圖片 — 請貼到 X 貼文（Ctrl+V / ⌘V）。',
+      share_attach_hint: '已下載圖片 — 請附加到 X 貼文。',
+      share_done: '已分享。',
+      share_fail: '無法分享。\n{err}',
+      share_cancel: '已取消分享。',
       possession: '持有率',
       complete: '全收集',
       complete_max: '突破界限全滿',
@@ -215,9 +230,9 @@
       brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
       owned_line: '持有 {owned} / {total} · 突破界限 {lb} / {lbMax}',
       share_body:
-        'GGEN ETERNAL DATABASE — 收藏報告\nUR {type} 持有率 {pct}%（{owned}/{total}{noun}）突破界限 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
+        'GGEN ETERNAL DATABASE — 收藏報告\n· UR {type} 持有率 {pct}%（{owned}/{total}{noun}）\n· 突破界限 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
       share_body_named:
-        'GGEN ETERNAL DATABASE — 收藏報告\n{name} · UR {type} 持有率 {pct}%（{owned}/{total}{noun}）突破界限 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
+        'GGEN ETERNAL DATABASE — 收藏報告\n{name}\n· UR {type} 持有率 {pct}%（{owned}/{total}{noun}）\n· 突破界限 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
       noun_units: '機',
       noun_supporters: '個',
       unowned: '未持有'
@@ -245,6 +260,11 @@
       username: '玩家名稱',
       username_ph: '遊戲內的玩家名稱',
       share_need_name: '請輸入要一併分享到 X 的玩家名稱。',
+      share_paste_hint: '已複製圖片 — 請貼到 X 貼文（Ctrl+V / ⌘V）。',
+      share_attach_hint: '已下載圖片 — 請附加到 X 貼文。',
+      share_done: '已分享。',
+      share_fail: '無法分享。\n{err}',
+      share_cancel: '已取消分享。',
       possession: '持有率',
       complete: '全收集',
       complete_max: '突破界限全滿',
@@ -270,9 +290,9 @@
       brand_line: 'GGEN ETERNAL DATABASE  ·  SD Gundam G Generation',
       owned_line: '持有 {owned} / {total} · 突破界限 {lb} / {lbMax}',
       share_body:
-        'GGEN ETERNAL DATABASE — 收藏報告\nUR {type} 持有率 {pct}%（{owned}/{total}{noun}）突破界限 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
+        'GGEN ETERNAL DATABASE — 收藏報告\n· UR {type} 持有率 {pct}%（{owned}/{total}{noun}）\n· 突破界限 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
       share_body_named:
-        'GGEN ETERNAL DATABASE — 收藏報告\n{name} · UR {type} 持有率 {pct}%（{owned}/{total}{noun}）突破界限 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
+        'GGEN ETERNAL DATABASE — 收藏報告\n{name}\n· UR {type} 持有率 {pct}%（{owned}/{total}{noun}）\n· 突破界限 {lb}/{lbMax}\n#GundamEternal #ジージェネエターナル\n{url}',
       noun_units: '機',
       noun_supporters: '個',
       unowned: '未持有'
@@ -1034,7 +1054,7 @@
     var shareBtn = document.getElementById('colShareX');
     if (shareBtn) {
       shareBtn.addEventListener('click', function () {
-        shareOnX();
+        shareOnX(shareBtn);
       });
     }
     var nameInput = document.getElementById('colUsername');
@@ -1425,13 +1445,13 @@
     ctx.fillStyle = '#00d4ff';
     ctx.font = '12px sans-serif';
     var foot = siteUrl().replace(/^https?:\/\//, '');
-    var fw = ctx.measureText(foot).width;
     var langIcon = await loadImage(imgUrl('/static/images/UI/UI_Common_MenuIcon_Language.webp'));
     var footIcon = 14;
     var footGap = 5;
-    var footTextX = W - pad - fw;
+    var footTextX = pad;
     if (langIcon) {
-      ctx.drawImage(langIcon, footTextX - footIcon - footGap, footY + 10, footIcon, footIcon);
+      ctx.drawImage(langIcon, pad, footY + 10, footIcon, footIcon);
+      footTextX = pad + footIcon + footGap;
     }
     ctx.fillText(foot, footTextX, footY + 12);
 
@@ -1510,12 +1530,71 @@
     return saveUsername(input ? input.value : loadUsername());
   }
 
-  function shareOnX() {
+  function canvasToPngBlob(canvas) {
+    return new Promise(function (resolve, reject) {
+      try {
+        canvas.toBlob(
+          function (blob) {
+            if (blob) resolve(blob);
+            else reject(new Error('toBlob failed'));
+          },
+          'image/png'
+        );
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  function downloadBlob(blob, fileName) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    a.rel = 'noopener';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function () {
+      URL.revokeObjectURL(url);
+    }, 2500);
+  }
+
+  async function tryShareWithImage(text, file) {
+    if (!navigator.share || typeof navigator.canShare !== 'function') return false;
+    var payloads = [
+      { files: [file], text: text, title: t('report_title') },
+      { files: [file], text: text },
+      { files: [file] }
+    ];
+    for (var i = 0; i < payloads.length; i++) {
+      try {
+        if (!navigator.canShare(payloads[i])) continue;
+        await navigator.share(payloads[i]);
+        return true;
+      } catch (err) {
+        if (err && err.name === 'AbortError') throw err;
+      }
+    }
+    return false;
+  }
+
+  async function tryCopyImage(blob) {
+    if (!navigator.clipboard || typeof ClipboardItem === 'undefined') return false;
+    try {
+      await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  async function shareOnX(btn) {
     var name = currentUsername();
     if (!name) {
       var input = document.getElementById('colUsername');
-      var status = document.getElementById('colStatus');
-      if (status) status.textContent = t('share_need_name');
+      var statusNeed = document.getElementById('colStatus');
+      if (statusNeed) statusNeed.textContent = t('share_need_name');
       if (input) {
         input.focus();
         input.classList.add('is-need-name');
@@ -1537,8 +1616,49 @@
       lbMax: st.lbMax,
       url: siteUrl()
     });
-    var intent = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text);
-    window.open(intent, '_blank', 'noopener,noreferrer');
+    var status = document.getElementById('colStatus');
+    var original = btn ? btn.textContent : '';
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = t('generating');
+    }
+    try {
+      var canvas = await generateShareImage();
+      var blob = await canvasToPngBlob(canvas);
+      var fileName =
+        'ggendb-collections-report-' + state.type + '-' + st.pct + 'pct.png';
+      var file = new File([blob], fileName, { type: 'image/png' });
+
+      try {
+        if (await tryShareWithImage(text, file)) {
+          if (status) status.textContent = t('share_done');
+          return;
+        }
+      } catch (shareErr) {
+        if (shareErr && shareErr.name === 'AbortError') {
+          if (status) status.textContent = t('share_cancel');
+          return;
+        }
+      }
+
+      var copied = await tryCopyImage(blob);
+      if (!copied) downloadBlob(blob, fileName);
+
+      var intent = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(text);
+      window.open(intent, '_blank', 'noopener,noreferrer');
+      if (status) status.textContent = copied ? t('share_paste_hint') : t('share_attach_hint');
+    } catch (err) {
+      if (status) {
+        status.textContent = t('share_fail', {
+          err: (err && err.message) || String(err || 'error')
+        });
+      }
+    } finally {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = original || t('share_x');
+      }
+    }
   }
 
   state.lang = normLang(state.lang);
