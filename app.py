@@ -10744,6 +10744,7 @@ def unit_has_ms_ability_content(uid):
 UNIT_IDS_HIDDEN_FROM_UNIT_BROWSE = frozenset({normalize_id('1307000400')})
 unit_list_playable_ids = {u for u in (set(unit_abil_map.keys()) | set(unit_weapon_map.keys())) if unit_has_ms_ability_content(u)}
 unit_list_playable_ids -= UNIT_IDS_HIDDEN_FROM_UNIT_BROWSE
+unit_list_playable_ids -= unit_schedule_shell_ids
 
 
 def unit_qualifies_for_unit_tag_series_modals(uid, lc):
@@ -16002,11 +16003,14 @@ def option_part_npc123_shell_seek(sq, opid):
 
 
 def entity_privileged_npc_browse_seek(sq, eid, kind, *, id_seek=None):
-    """ID seek with NPC password, or npc123 schedule-shell list seek."""
+    """Exact full-id seek with NPC password, or npc123 schedule-shell list seek.
+
+    Fragment id matches (4+ digits) and transform-alt name hits must not surface
+    NPC / unscheduled shells — only the full id or npc123.
+    """
     eid = normalize_id(eid)
-    if id_seek is None:
-        id_seek = bool(sq and search_query_matches_entity_id(sq, eid))
-    if id_seek and npc_password_unlocked():
+    exact = bool(sq and search_query_matches_entity_id_exact(sq, eid))
+    if exact and npc_password_unlocked():
         return True
     if kind == 'character':
         return character_npc123_shell_seek(sq, eid)
@@ -16214,6 +16218,27 @@ def search_query_matches_entity_id(sq, eid):
     if not had_digit_term:
         return False
     return True
+
+
+def search_query_matches_entity_id_exact(sq, eid):
+    """True when every positive digit segment equals the full entity id (no 4+ digit fragments)."""
+    if not sq or not str(sq).strip():
+        return False
+    eid = normalize_id(eid)
+    pq = parse_search_query(sq)
+    terms = pq['positive']
+    if not terms:
+        return False
+    had_digit_term = False
+    for tr in terms:
+        q_digits = ''.join(c for c in tr if c.isdigit())
+        if not q_digits:
+            continue
+        had_digit_term = True
+        if q_digits != eid:
+            return False
+    return had_digit_term
+
 
 def _list_row_id_tiebreak(r):
     """Secondary list sort key after rarity / stats: numeric id when possible."""
@@ -21373,9 +21398,11 @@ def unit_passes_browse_pool_filters(
     alt_seek = bool(sq and _unit_transform_alt_search_match(uid, sq, ld, lc, q_scope))
     direct_seek = id_seek or alt_seek
     shell123_seek = unit_npc123_shell_seek(sq, uid)
-    priv_seek = (direct_seek and npc_password_unlocked()) or shell123_seek
+    priv_seek = entity_privileged_npc_browse_seek(sq, uid, 'unit')
     npc123_list = search_query_is_npc123_list_seek(sq)
     wide_seek = direct_seek or shell123_seek
+    if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')) and not priv_seek:
+        return False
     if role_id == '0' and not priv_seek:
         return False
     if not unit_has_ms_ability_content(uid) and not priv_seek:
@@ -21669,14 +21696,17 @@ def supporter_passes_browse_pool_filters(sid, info, ld, lc, sq, rarity_filter, l
         return False
     lim = nsid in LIMITED_TIME_SUPPORTER_IDS
     id_seek = bool(sq and search_query_matches_entity_id(sq, sid))
+    priv_seek = entity_privileged_npc_browse_seek(sq, sid, 'supporter')
+    if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')) and not priv_seek:
+        return False
     if apply_lineage and lineage_filter is not None:
-        if not id_seek and not supporter_matches_lineage_filter(sid, lineage_filter, ld, lc, lineage_combine):
+        if not id_seek and not search_query_is_npc123_list_seek(sq) and not supporter_matches_lineage_filter(sid, lineage_filter, ld, lc, lineage_combine):
             return False
     if rarity_filter is not None:
         if not rarity_filter:
             return False
         letter = RARITY_MAP.get(str(ri), 'N')
-        if not row_matches_rarity_filter(rarity_filter, letter, lim):
+        if not (id_seek or search_query_is_npc123_list_seek(sq) or priv_seek) and not row_matches_rarity_filter(rarity_filter, letter, lim):
             return False
     lsr = supporter_leader_map.get(sid, [])
     all_tags = []
@@ -21704,7 +21734,7 @@ def supporter_passes_browse_pool_filters(sid, info, ld, lc, sq, rarity_filter, l
     if sq:
         searchable = f'{name} {sid} {sts} {cb} {ask_str}'.lower()
         ser_names_lower = [t['name'].lower() for t in all_tags if t.get('name')]
-        if not search_row_matches_query(sq, searchable, ser_names_lower, entity_id=sid):
+        if not search_row_matches_query(sq, searchable, ser_names_lower, entity_id=sid, schedule_shell_kind='supporter'):
             return False
     return True
 
@@ -22382,9 +22412,11 @@ def list_units():
         alt_seek = bool(sq and _unit_transform_alt_search_match(uid, sq, ld, lc, q_scope))
         direct_seek = id_seek or alt_seek
         shell123_seek = unit_npc123_shell_seek(sq, uid)
-        priv_seek = (direct_seek and npc_password_unlocked()) or shell123_seek
+        priv_seek = entity_privileged_npc_browse_seek(sq, uid, 'unit')
         npc123_list = search_query_is_npc123_list_seek(sq)
         wide_seek = direct_seek or shell123_seek
+        if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')) and not priv_seek:
+            continue
         if role_id == '0' and not priv_seek:
             continue
         if not unit_has_ms_ability_content(uid) and not priv_seek:
@@ -23767,7 +23799,7 @@ def list_supporters():
         else:
             uf = f"u{for_unit}" if for_unit else 'u0'
             cf = f"c{for_char}" if for_char else 'c0'
-        ck = f"sl10_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lineage_ck}_lc{lineage_combine_supp}_{lr_schedule_cache_key_fragment()}_{uf}_{cf}"
+        ck = f"sl10_{lc}_{page}_{pp}_{sb}_{sd}_{sq}_{rk}_{lineage_ck}_lc{lineage_combine_supp}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}_{uf}_{cf}"
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
