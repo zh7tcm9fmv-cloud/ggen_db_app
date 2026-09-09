@@ -17228,6 +17228,119 @@ def _render_sp_investment_public():
     return r
 
 
+@app.route('/collections')
+@app.route('/collections/')
+def collections_page():
+    """UR possession / Limit Break tracker (Units + Supporters; localStorage progress)."""
+    ver = _app_js_bundle_version_tag()
+    r = make_response(render_template(
+        'collections.html',
+        image_cdn=IMAGE_CDN or '',
+        game_images_use_cdn=GAME_IMAGES_USE_CDN,
+        app_js_version=ver,
+    ))
+    r.headers['Cache-Control'] = 'public, max-age=300'
+    return r
+
+
+@app.route('/col')
+@app.route('/col/')
+def collections_short():
+    """Short path → canonical /collections."""
+    return redirect('/collections', code=301)
+
+
+@app.route('/api/collections/catalog')
+def api_collections_catalog():
+    """Slim UR catalog for /collections (Units + Supporters; no ULT / transform alts)."""
+    lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+    ck = f'collections_ur_v2_{lc}_{lr_schedule_cache_key_fragment()}'
+    cached = get_cached_response(ck)
+    if cached:
+        return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
+    warming = _browse_list_warming_guard('unit')
+    if warming:
+        return warming
+    ld = get_lang_data(lc) or {}
+
+    units = []
+    for uid in unit_list_playable_ids:
+        info = unit_info_map.get(uid) or {}
+        if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+            continue
+        if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')):
+            continue
+        if bool(info.get('is_ultimate', False)):
+            continue
+        if _unit_is_transform_alternate(uid):
+            continue
+        ri = info.get('rarity', '1')
+        if RARITY_MAP.get(str(ri), 'N') != 'UR':
+            continue
+        if not browse_entity_has_resolved_lineage_tags(unit_lin_map, uid, lc, 'unit'):
+            continue
+        role_id = info.get('role', '0')
+        if role_id == '0':
+            continue
+        lid = ld.get('unit_id_map', {}).get(uid, '')
+        name = ld.get('unit_text_map', {}).get(lid, '') if lid else ''
+        if not name:
+            name = f'Unknown ({uid})'
+        thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
+        units.append({
+            'id': uid,
+            'name': name,
+            'role_id': role_id,
+            'role': resolve_role_label(role_id, lc),
+            'role_icon': ROLE_ICON_MAP.get(role_id, ''),
+            'thum': thum or '',
+            'is_limited_time': uid in LIMITED_TIME_UNIT_IDS,
+            'rarity': 'UR',
+            'rarity_id': ri,
+            'rarity_sort': RARITY_SORT.get(ri, 4),
+        })
+    # Same default as browse lists: rarity desc, then numeric id.
+    units = sort_rows(units, 'rarity', 'desc', {'name', 'role', 'rarity'})
+
+    supporters = []
+    for sid, info in supporter_info_map.items():
+        if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+            continue
+        if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')):
+            continue
+        ri = info.get('rarity', '1')
+        if RARITY_MAP.get(str(ri), 'N') != 'UR':
+            continue
+        lid = ld.get('supporter_id_map', {}).get(sid, '')
+        name = ld.get('supporter_text_map', {}).get(lid, '') if lid else ''
+        if not name:
+            continue
+        thum = find_supporter_portrait(info.get('resource_id'), sid)
+        supporters.append({
+            'id': sid,
+            'name': name,
+            'role_id': '',
+            'role': '',
+            'role_icon': '',
+            'thum': thum or '',
+            'is_limited_time': normalize_id(sid) in LIMITED_TIME_SUPPORTER_IDS,
+            'rarity': 'UR',
+            'rarity_id': ri,
+            'rarity_sort': RARITY_SORT.get(ri, 4),
+        })
+    supporters = sort_rows(supporters, 'rarity', 'desc', {'name', 'rarity'})
+
+    result = {
+        'units': units,
+        'supporters': supporters,
+        'lang': lc,
+        'scope': 'UR',
+        'exclude': ['ULT', 'transform_alternate', 'characters'],
+    }
+    set_cached_response(ck, result)
+    return jsonify_cacheable(result, ck, public=True, max_age=3600, convert_images=True)
+
+
 @app.route('/ip')
 def sp_investment_page():
     """Investment Priority — SPA tab at /ip (same shell as main site)."""
@@ -28033,7 +28146,7 @@ def sitemap_xml():
         base = _public_site_origin()
         # Canonical public URLs only (aliases like /sp-list and /banners 301 elsewhere).
         paths = [
-            '/', '/ip', '/game-news', '/about', '/contact', '/privacy-policy',
+            '/', '/ip', '/collections', '/game-news', '/about', '/contact', '/privacy-policy',
             '/c', '/u', '/s', '/st', '/gtower', '/challenge', '/go', '/special',
             '/cal', '/tb', '/tl', '/ml', '/rk', '/op', '/new', '/esim',
         ]
