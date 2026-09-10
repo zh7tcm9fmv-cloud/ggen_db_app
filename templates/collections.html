@@ -48,6 +48,7 @@ window.__ggenLoadGtm=function(){
 <link rel="preconnect" href="{{ image_cdn }}" crossorigin>
 <link rel="dns-prefetch" href="{{ image_cdn }}">
 {% endif %}
+{% include '_defer_brand_fonts.html' %}
 <script>
 window.__GGEN_IMAGE_CDN__={{ (image_cdn or '')|tojson }};
 window.__GGEN_GAME_IMAGES_USE_CDN__={{ game_images_use_cdn|tojson }};
@@ -66,7 +67,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="collections-eyebrow" id="colEyebrow">UR Acquisition Review</div>
       <h1 id="colTitle">Hangar Collection</h1>
       <p class="collections-sub" id="colSub">Track UR unit and supporter possession
-Tap a portrait to cycle not possessed → Limit Break 0 → Limit Break 3.
+Tap a portrait to cycle not possessed → Limit Break 0 → MAX Limit Break.
 Possessing a unit covers its character</p>
     </div>
     <div class="collections-header-aside">
@@ -89,10 +90,33 @@ Possessing a unit covers its character</p>
 <main class="collections-main">
   <section class="collections-hud" id="colHud" aria-label="Possession summary">
     <div class="collections-gauge" id="colGauge">
-      <div class="collections-gauge-pct" id="colPct">0<span>%</span></div>
-      <div class="collections-gauge-label" id="colPctLabel">Possession</div>
-      <div class="collections-complete-badge" id="colCompleteBadge" hidden></div>
-      <div class="collections-gauge-bar" aria-hidden="true"><i id="colPctBar"></i></div>
+      <div class="collections-gauge-head">
+        <div class="collections-gauge-pct" id="colPct">0<span>%</span></div>
+        <div class="collections-gauge-label" id="colPctLabel">Possession</div>
+        <div class="collections-complete-badge" id="colCompleteBadge" hidden></div>
+      </div>
+      <div class="collections-gauge-emblem" aria-hidden="true">
+        <div class="collections-gauge-emblem-glow"></div>
+        <svg class="collections-gauge-ring" viewBox="0 0 80 80" width="132" height="132">
+          <defs>
+            <linearGradient id="colRingGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#7af0ff"/>
+              <stop offset="55%" stop-color="#00d4ff"/>
+              <stop offset="100%" stop-color="#4a90d9"/>
+            </linearGradient>
+            <linearGradient id="colRingGradGold" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#fff4c2"/>
+              <stop offset="45%" stop-color="#ffd700"/>
+              <stop offset="100%" stop-color="#00d4ff"/>
+            </linearGradient>
+          </defs>
+          <circle class="collections-gauge-ring-track" cx="40" cy="40" r="34" pathLength="100"/>
+          <circle class="collections-gauge-ring-fill" id="colPctRing" cx="40" cy="40" r="34" pathLength="100"/>
+        </svg>
+        <span class="collections-gauge-type-stack" id="colGaugeTypeStack">
+          <img class="collections-gauge-type-ic" id="colGaugeTypeIc" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Gallery_Motif_MS.webp{% else %}/static/images/UI/UI_Gallery_Motif_MS.webp{% endif %}" alt="" width="108" height="108" decoding="async">
+        </span>
+      </div>
     </div>
     <div class="collections-stat-strip" id="colStatStrip">
       <!-- filled by JS -->
@@ -137,7 +161,7 @@ Possessing a unit covers its character</p>
       <input type="text" id="colUsername" maxlength="32" autocomplete="nickname" spellcheck="false" placeholder="Your in-game name">
     </label>
     <button type="button" class="collections-btn collections-btn--save" id="colSaveImage">Save as image</button>
-    <button type="button" class="collections-btn collections-btn--share" id="colShareX">Share on X</button>
+    <button type="button" class="collections-btn collections-btn--share" id="colShareX" aria-label="Share on X">Share on <svg class="collections-x-logo" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></button>
     <div class="collections-code-row">
       <label class="collections-code-field">
         <span id="colShareCodeLabel">Share code</span>
@@ -166,7 +190,15 @@ Possessing a unit covers its character</p>
     </details>
   </div>
 
-  <p class="collections-status" id="colStatus" aria-live="polite">Loading catalog…</p>
+  <div class="collections-status-row">
+    <span class="t-success-check" id="colSuccessCheck" data-state="out" aria-hidden="true">
+      <svg viewBox="0 0 48 48" fill="none" width="22" height="22" aria-hidden="true">
+        <circle cx="24" cy="24" r="20" stroke="currentColor" stroke-width="3" opacity=".28"/>
+        <path d="M14 24.5 L21 31.5 L34 16.5" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+    <p class="collections-status" id="colStatus" aria-live="polite">Loading catalog…</p>
+  </div>
   <div class="collections-grid" id="colGrid" aria-busy="true"></div>
 
   <section class="collections-census" id="colCensus" aria-labelledby="colCensusTitle">

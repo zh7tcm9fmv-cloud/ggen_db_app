@@ -64,21 +64,21 @@
       back: '← Database',
       eyebrow: 'UR Acquisition Review',
       title: 'Hangar Collection',
-      sub: 'Track UR unit and supporter possession\nTap a portrait to cycle not possessed → Limit Break 0 → Limit Break 3.\nPossessing a unit covers its character',
+      sub: 'Track UR unit and supporter possession\nTap a portrait to cycle not possessed → Limit Break 0 → MAX Limit Break.\nPossessing a unit covers its character',
       lang: 'Lang',
       units: 'Units',
       supporters: 'Supporters',
       role_all: 'All',
-      role_attack: 'Attack',
-      role_support: 'Support',
-      role_durability: 'Durability',
+      role_attack: 'Attack Type',
+      role_support: 'Support Type',
+      role_durability: 'Durability Type',
       search_ph: 'Search name or ID…',
       select_lb0: 'Select All (LB0)',
       select_max: 'Select All (Max LB)',
       select_limited: 'Select All Limited (LB0)',
       reset_all: 'Reset All',
       save_image: 'Save as image',
-      share_x: 'Share on X',
+      share_x: 'Share on {x}',
       share_code: 'Share code',
       share_code_ph: 'Paste code to import…',
       copy_share_code: 'Generate share code',
@@ -110,8 +110,7 @@
       owned: 'Possessed',
       max_lb: 'Max Limit Break',
       report_max_lb: 'Max Limit Break',
-      limited_owned: 'Limited possessed',
-      role_owned: '{role} possessed',
+      role_owned: '{role}',
       limited: 'Limited',
       loading: 'Loading UR catalog…',
       load_fail: 'Catalog load failed — is the Flask app running? ({err})',
@@ -174,7 +173,7 @@
       back: '← データベース',
       eyebrow: 'UR取得進捗',
       title: '格納庫コレクション',
-      sub: 'URユニット／サポーターの所持を記録\nタップで未所持 → 限界突破0 → 限界突破3。\nユニット所持はキャラクター所持も含みます',
+      sub: 'URユニット／サポーターの所持を記録\nタップで未所持 → 限界突破0 → 限界突破MAX。\nユニット所持はキャラクター所持も含みます',
       lang: '言語',
       units: 'ユニット',
       supporters: 'サポーター',
@@ -188,7 +187,7 @@
       select_limited: '期間限定をすべて選択（LB0）',
       reset_all: 'すべてリセット',
       save_image: '画像で保存',
-      share_x: 'Xでシェア',
+      share_x: '{x}でシェア',
       share_code: '共有コード',
       share_code_ph: 'コードを貼り付けてインポート…',
       copy_share_code: '共有コードを生成',
@@ -220,8 +219,7 @@
       owned: '所持',
       max_lb: '限界突破MAX',
       report_max_lb: '限界突破MAX',
-      limited_owned: '期間限定所持',
-      role_owned: '{role}所持',
+      role_owned: '{role}',
       limited: '期間限定',
       loading: 'URカタログを読み込み中…',
       load_fail: 'カタログの読み込みに失敗しました（Flask起動を確認）: {err}',
@@ -284,7 +282,7 @@
       back: '← 資料庫',
       eyebrow: 'UR獲取進度',
       title: '格納庫收藏',
-      sub: '記錄 UR 單位與支援人員持有狀態\n點選肖像可循環：未持有 → 突破界限 0 → 突破界限 3。\n持有單位即視為持有角色',
+      sub: '記錄 UR 單位與支援人員持有狀態\n點選肖像可循環：未持有 → 突破界限 0 → 突破界限 MAX。\n持有單位即視為持有角色',
       lang: '語言',
       units: '單位',
       supporters: '支援人員',
@@ -298,10 +296,10 @@
       select_limited: '全選期間限定（LB0）',
       reset_all: '全部重設',
       save_image: '儲存圖片',
-      share_x: '分享至 X',
+      share_x: '分享至 {x}',
       share_code: '分享代碼',
       share_code_ph: '貼上代碼以匯入…',
-      copy_share_code: '產生分享代碼',
+      copy_share_code: '生成分享代碼',
       import_share_code: '引用代碼',
       share_code_copied: '已複製分享代碼 — 可命名後存入欄位（選用）。',
       share_code_fail: '無法建立分享代碼。\n{err}',
@@ -330,8 +328,7 @@
       owned: '持有',
       max_lb: '突破界限 MAX',
       report_max_lb: '突破界限 MAX',
-      limited_owned: '期間限定持有',
-      role_owned: '{role}持有',
+      role_owned: '{role}',
       limited: '期間限定',
       loading: '正在載入 UR 目錄…',
       load_fail: '目錄載入失敗 — 請確認 Flask 是否運行（{err}）',
@@ -393,7 +390,7 @@
       back: '← 資料庫',
       eyebrow: 'UR獲取進度',
       title: '格納庫收藏',
-      sub: '記錄 UR 單位與支援人員持有狀態\n點選肖像可循環：未持有 → 突破界限 0 → 突破界限 3。\n持有單位即視為持有角色',
+      sub: '記錄 UR 單位與支援人員持有狀態\n點選肖像可循環：未持有 → 突破界限 0 → 突破界限 MAX。\n持有單位即視為持有角色',
       lang: '語言',
       units: '單位',
       supporters: '支援人員',
@@ -407,10 +404,10 @@
       select_limited: '全選期間限定（LB0）',
       reset_all: '全部重設',
       save_image: '儲存圖片',
-      share_x: '分享至 X',
+      share_x: '分享至 {x}',
       share_code: '分享代碼',
       share_code_ph: '貼上代碼以匯入…',
-      copy_share_code: '產生分享代碼',
+      copy_share_code: '生成分享代碼',
       import_share_code: '引用代碼',
       share_code_copied: '已複製分享代碼 — 可命名後存入欄位（選用）。',
       share_code_fail: '無法建立分享代碼。\n{err}',
@@ -439,8 +436,7 @@
       owned: '持有',
       max_lb: '突破界限 MAX',
       report_max_lb: '突破界限 MAX',
-      limited_owned: '期間限定持有',
-      role_owned: '{role}持有',
+      role_owned: '{role}',
       limited: '期間限定',
       loading: '正在載入 UR 目錄…',
       load_fail: '目錄載入失敗 — 請確認 Flask 是否運行（{err}）',
@@ -677,11 +673,43 @@
     if (el) el.textContent = text;
   }
 
+  /* Official X logo path (X Corp brand mark; viewBox 0 0 24 24). */
+  var X_LOGO_SVG =
+    '<svg class="collections-x-logo" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false">' +
+    '<path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>' +
+    '</svg>';
+
+  function shareXAriaLabel() {
+    return String(t('share_x') || '').replace(/\{x\}/g, 'X');
+  }
+
+  function shareXLabelHtml() {
+    var raw = String(t('share_x') || '');
+    var parts = raw.split('{x}');
+    if (parts.length === 1) return esc(raw);
+    var html = '';
+    for (var i = 0; i < parts.length; i++) {
+      html += esc(parts[i]);
+      if (i < parts.length - 1) html += X_LOGO_SVG;
+    }
+    return html;
+  }
+
+  function applyShareXBtnLabel(btn) {
+    var el = btn || document.getElementById('colShareX');
+    if (!el) return;
+    el.innerHTML = shareXLabelHtml();
+    el.setAttribute('aria-label', shareXAriaLabel());
+  }
+
   function applyUiLang() {
     state.lang = normLang(state.lang);
     document.documentElement.setAttribute('data-ui-lang', state.lang);
     document.documentElement.lang =
       state.lang === 'JA' ? 'ja' : state.lang === 'TW' ? 'zh-Hant-TW' : state.lang === 'HK' ? 'zh-Hant-HK' : 'en';
+    try {
+      if (typeof window.__ggenInjectBrandFonts === 'function') window.__ggenInjectBrandFonts();
+    } catch (e) {}
     document.title = t('page_title');
     setText('colBack', t('back'));
     setText('colEyebrow', t('eyebrow'));
@@ -717,7 +745,7 @@
     setText('colSelectLimited', t('select_limited'));
     setText('colClearAll', t('reset_all'));
     setText('colSaveImage', t('save_image'));
-    setText('colShareX', t('share_x'));
+    applyShareXBtnLabel();
     setText('colUsernameLabel', t('username'));
     setText('colShareCodeLabel', t('share_code'));
     setText('colCopyShareCode', t('copy_share_code'));
@@ -807,14 +835,314 @@
     loadCatalog();
   }
 
+  var SHARE_SCENE_BGS = [
+    '/static/images/Background/obg_012_garage.webp',
+    '/static/images/Background/obg_021_office.webp'
+  ];
+
+  function pickShareSceneBg() {
+    return SHARE_SCENE_BGS[(Math.random() * SHARE_SCENE_BGS.length) | 0];
+  }
+
+  function drawShareHeaderSceneArt(ctx, img, W, artH) {
+    if (!img || !img.width || !img.height || artH <= 0) return;
+    var destW = W;
+    var destH = artH;
+    var destX = 0;
+    var destY = 0;
+    var ir = img.width / img.height;
+    var dr = destW / destH;
+    var sx, sy, sw, sh;
+    if (ir > dr) {
+      sh = img.height;
+      sw = sh * dr;
+      sx = (img.width - sw) * 0.5;
+      sy = 0;
+    } else {
+      sw = img.width;
+      sh = sw / dr;
+      sx = 0;
+      sy = Math.max(0, (img.height - sh) * 0.25);
+    }
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(destX, destY, destW, destH);
+    ctx.clip();
+    ctx.globalAlpha = 0.5;
+    ctx.drawImage(img, sx, sy, sw, sh, destX, destY, destW, destH);
+    ctx.globalAlpha = 1;
+    /* Even navy wash so text/gauge stay readable */
+    ctx.fillStyle = 'rgba(10,14,23,0.48)';
+    ctx.fillRect(destX, destY, destW, destH);
+    var bottom = ctx.createLinearGradient(destX, destY + destH * 0.4, destX, destY + destH);
+    bottom.addColorStop(0, 'rgba(10,14,23,0)');
+    bottom.addColorStop(0.55, 'rgba(10,14,23,0.35)');
+    bottom.addColorStop(1, 'rgba(10,14,23,0.95)');
+    ctx.fillStyle = bottom;
+    ctx.fillRect(destX, destY, destW, destH);
+    ctx.restore();
+  }
+
+  var TYPE_ICON_UNIT_FILL = '/static/images/UI/UI_Gallery_Motif_MS.webp';
+  var TYPE_ICON_SUPP_FILL = '/static/images/UI/wsc_g0010w00100.webp';
+  var STAT_ICON_OWNED = '/static/images/UI/Ui_Secret_Clear_Icon.webp';
+  var STAT_ICON_LB_MAX = '/static/images/UI/UI_Common_Icon_Grade_M_Max.webp';
+  var ROLE_ICON = {
+    '1': '/static/images/UI/UI_Common_TypeIcon_Attack_M.webp',
+    '3': '/static/images/UI/UI_Common_TypeIcon_Support_M.webp',
+    '2': '/static/images/UI/UI_Common_TypeIcon_Defense_M.webp'
+  };
+
   var wasComplete = false;
   var wasPerfect = false;
+  var lastPctKey = '';
+  var successCheckTimer = null;
+  var reelBlurRaf = 0;
+
+  function prefersReducedMotion() {
+    try {
+      return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function flashSuccessCheck() {
+    var el = document.getElementById('colSuccessCheck');
+    if (!el) return;
+    if (prefersReducedMotion()) {
+      el.setAttribute('data-state', 'in');
+      clearTimeout(successCheckTimer);
+      successCheckTimer = setTimeout(function () {
+        el.setAttribute('data-state', 'out');
+      }, 1400);
+      return;
+    }
+    el.setAttribute('data-state', 'out');
+    var path = el.querySelector('path');
+    if (path) {
+      path.style.animation = 'none';
+      void path.offsetWidth;
+      path.style.animation = '';
+    }
+    void el.offsetWidth;
+    el.setAttribute('data-state', 'in');
+    clearTimeout(successCheckTimer);
+    successCheckTimer = setTimeout(function () {
+      el.setAttribute('data-state', 'out');
+    }, 2000);
+  }
+
+  function pctDisplayKey(pct) {
+    var whole = Math.floor(pct);
+    var frac = Math.round((pct - whole) * 10);
+    return String(whole) + (frac ? '.' + frac : '');
+  }
+
+  function buildPctReelHtml(text, animate) {
+    var reduce = prefersReducedMotion();
+    var doSpin = !!animate && !reduce;
+    var html = '<span class="t-reel" aria-label="' + esc(text) + '%">';
+    var col = 0;
+    for (var i = 0; i < text.length; i++) {
+      var ch = text.charAt(i);
+      if (ch === '.') {
+        html += '<span class="t-reel-punct">.</span>';
+        continue;
+      }
+      var digit = parseInt(ch, 10);
+      if (!Number.isFinite(digit)) continue;
+      var spins = doSpin ? 2 + (col % 2) : 0;
+      var fid = 'colReelBlur' + col;
+      var cells = '';
+      var copies = spins + 1;
+      var c;
+      var d;
+      for (c = 0; c < copies; c++) {
+        for (d = 0; d < 10; d++) {
+          cells += '<span class="t-reel-digit">' + d + '</span>';
+        }
+      }
+      html +=
+        '<span class="t-reel-col">' +
+        '<svg class="t-reel-svg-defs" aria-hidden="true" focusable="false">' +
+        '<defs><filter id="' +
+        fid +
+        '" x="-20%" y="-20%" width="140%" height="140%">' +
+        '<feGaussianBlur class="t-reel-fe" in="SourceGraphic" stdDeviation="0 0"/>' +
+        '</filter></defs></svg>' +
+        '<span class="t-reel-strip" data-spins="' +
+        spins +
+        '" data-digit="' +
+        digit +
+        '" style="filter:url(#' +
+        fid +
+        ')">' +
+        cells +
+        '</span></span>';
+      col++;
+    }
+    html += '<span class="t-digit t-digit--pct">%</span></span>';
+    return html;
+  }
+
+  function runPctReelSpin(pctEl) {
+    if (!pctEl || prefersReducedMotion()) {
+      if (pctEl) {
+        var strips0 = pctEl.querySelectorAll('.t-reel-strip');
+        for (var s0 = 0; s0 < strips0.length; s0++) {
+          var dig0 = parseInt(strips0[s0].getAttribute('data-digit') || '0', 10);
+          strips0[s0].style.transition = 'none';
+          strips0[s0].style.transform = 'translateY(-' + dig0 + 'em)';
+        }
+      }
+      return;
+    }
+    if (reelBlurRaf) {
+      cancelAnimationFrame(reelBlurRaf);
+      reelBlurRaf = 0;
+    }
+    var cols = pctEl.querySelectorAll('.t-reel-col');
+    var cs = getComputedStyle(pctEl);
+    var durMs = parseFloat(cs.getPropertyValue('--reel-dur')) || 980;
+    if (durMs < 50) durMs = 980;
+    var staggerMs = parseFloat(cs.getPropertyValue('--reel-stagger')) || 75;
+    var blurMax = parseFloat(cs.getPropertyValue('--reel-spin-blur')) || 2.5;
+    var ease = (cs.getPropertyValue('--reel-ease') || 'cubic-bezier(0.16, 1, 0.3, 1)').trim();
+    var jobs = [];
+    for (var i = 0; i < cols.length; i++) {
+      var strip = cols[i].querySelector('.t-reel-strip');
+      var fe = cols[i].querySelector('.t-reel-fe');
+      if (!strip) continue;
+      var spins = parseInt(strip.getAttribute('data-spins') || '0', 10) || 0;
+      var digit = parseInt(strip.getAttribute('data-digit') || '0', 10) || 0;
+      var delay = i * staggerMs;
+      var target = spins * 10 + digit;
+      strip.style.transition = 'none';
+      strip.style.transform = 'translateY(0)';
+      if (fe) fe.setAttribute('stdDeviation', '0 ' + blurMax);
+      jobs.push({ strip: strip, fe: fe, target: target, delay: delay });
+    }
+    void pctEl.offsetWidth;
+    var t0 = performance.now();
+    for (var j = 0; j < jobs.length; j++) {
+      var job = jobs[j];
+      job.strip.style.transition =
+        'transform ' + durMs + 'ms ' + ease + ' ' + job.delay + 'ms';
+      job.strip.style.transform = 'translateY(-' + job.target + 'em)';
+    }
+    function tick(now) {
+      var any = false;
+      for (var k = 0; k < jobs.length; k++) {
+        var jb = jobs[k];
+        if (!jb.fe) continue;
+        var start = t0 + jb.delay;
+        var end = start + durMs;
+        if (now < start) {
+          jb.fe.setAttribute('stdDeviation', '0 ' + blurMax);
+          any = true;
+          continue;
+        }
+        if (now >= end) {
+          jb.fe.setAttribute('stdDeviation', '0 0');
+          continue;
+        }
+        var t = (now - start) / durMs;
+        var blur = blurMax * (1 - t) * (1 - t);
+        jb.fe.setAttribute('stdDeviation', '0 ' + blur.toFixed(2));
+        any = true;
+      }
+      if (any) reelBlurRaf = requestAnimationFrame(tick);
+      else reelBlurRaf = 0;
+    }
+    reelBlurRaf = requestAnimationFrame(tick);
+  }
+
+  function setGaugeRing(pct) {
+    var ring = document.getElementById('colPctRing');
+    if (!ring) return;
+    var p = Math.max(0, Math.min(100, Number(pct) || 0));
+    var apply = function () {
+      ring.style.strokeDashoffset = String(100 - p);
+    };
+    if (ring.style.strokeDashoffset === '' || ring.style.strokeDashoffset === '100') {
+      ring.style.strokeDashoffset = '100';
+      requestAnimationFrame(apply);
+    } else {
+      apply();
+    }
+  }
+
+  function syncGaugeTypeIcon() {
+    var ic = document.getElementById('colGaugeTypeIc');
+    var gauge = document.getElementById('colGauge');
+    var isSupp = state.type === 'supporters';
+    if (gauge) gauge.setAttribute('data-type', isSupp ? 'supporters' : 'units');
+    var fillUrl = imgUrl(isSupp ? TYPE_ICON_SUPP_FILL : TYPE_ICON_UNIT_FILL);
+    if (ic && ic.getAttribute('src') !== fillUrl) ic.setAttribute('src', fillUrl);
+  }
+
+  function statLeadHtml(kind, roleId) {
+    if (kind === 'owned') {
+      return (
+        '<img class="collections-stat-k-ic collections-stat-k-ic--lg" src="' +
+        esc(imgUrl(STAT_ICON_OWNED)) +
+        '" alt="" width="18" height="18" loading="lazy" decoding="async">'
+      );
+    }
+    if (kind === 'max_lb') {
+      var star =
+        '<img src="' +
+        esc(imgUrl(STAT_ICON_LB_MAX)) +
+        '" alt="" width="14" height="14" loading="lazy" decoding="async">';
+      return '<span class="collections-stat-stars" aria-hidden="true">' + star + star + star + '</span>';
+    }
+    if (kind === 'limited') {
+      return (
+        '<span class="collections-stat-lim-banner" aria-hidden="true"><span>' +
+        esc(limitedWord()) +
+        '</span></span>'
+      );
+    }
+    if (kind === 'role') {
+      var path = ROLE_ICON[String(roleId)] || '';
+      if (!path) return '';
+      return (
+        '<img class="collections-stat-k-ic" src="' +
+        esc(imgUrl(path)) +
+        '" alt="" width="16" height="16" loading="lazy" decoding="async">'
+      );
+    }
+    return '';
+  }
+
+  function waveLoaderHtml() {
+    var bars = '';
+    for (var i = 0; i < 12; i++) {
+      bars += '<i class="collections-wave-bar" style="--i:' + i + '"></i>';
+    }
+    return (
+      '<div class="collections-wave-loader" role="status" aria-live="polite">' +
+      '<div class="collections-wave-track" aria-hidden="true">' +
+      bars +
+      '<span class="collections-wave-ball"></span>' +
+      '</div>' +
+      '<span class="collections-wave-caption">' +
+      esc(t('loading')) +
+      '</span>' +
+      '</div>'
+    );
+  }
+
+  function statBarPct(num, den) {
+    if (!den || den <= 0) return 0;
+    return Math.max(0, Math.min(100, (100 * num) / den));
+  }
 
   function renderStats() {
     var rows = activeList();
     var st = computeStats(rows);
     var pctEl = document.getElementById('colPct');
-    var bar = document.getElementById('colPctBar');
     var label = document.getElementById('colPctLabel');
     var badge = document.getElementById('colCompleteBadge');
     var hud = document.getElementById('colHud');
@@ -822,12 +1150,20 @@
     var complete = st.total > 0 && st.owned >= st.total;
     var perfect = complete && st.maxed >= st.total;
 
+    syncGaugeTypeIcon();
+
     if (pctEl) {
-      var whole = Math.floor(st.pct);
-      var frac = Math.round((st.pct - whole) * 10);
-      pctEl.innerHTML = whole + (frac ? '.' + frac : '') + '<span>%</span>';
+      var key = pctDisplayKey(st.pct);
+      var changed = key !== lastPctKey;
+      if (changed || !pctEl.querySelector('.t-reel')) {
+        pctEl.innerHTML = buildPctReelHtml(key, changed || lastPctKey === '');
+        lastPctKey = key;
+        requestAnimationFrame(function () {
+          runPctReelSpin(pctEl);
+        });
+      }
     }
-    if (bar) bar.style.width = Math.min(100, st.pct) + '%';
+    setGaugeRing(st.pct);
     if (label) label.textContent = t('possession') + ' · ' + typeTitle();
     if (badge) {
       badge.hidden = !complete;
@@ -853,9 +1189,27 @@
     var strip = document.getElementById('colStatStrip');
     if (!strip) return;
     var cells = [
-      { k: t('owned'), v: st.owned + '<em> / ' + st.total + '</em>', cls: 'collections-stat--accent' },
-      { k: t('max_lb'), v: st.maxed + '<em> / ' + st.total + '</em>', cls: 'collections-stat--gold' },
-      { k: t('limited_owned'), v: st.limOwned + '<em> / ' + st.limTotal + '</em>', cls: 'collections-stat--orange' }
+      {
+        k: t('owned'),
+        v: st.owned + '<em> / ' + st.total + '</em>',
+        cls: 'collections-stat--accent',
+        pct: statBarPct(st.owned, st.total),
+        lead: 'owned'
+      },
+      {
+        k: t('max_lb'),
+        v: st.maxed + '<em> / ' + st.total + '</em>',
+        cls: 'collections-stat--gold',
+        pct: statBarPct(st.maxed, st.total),
+        lead: 'max_lb'
+      },
+      {
+        k: t('owned'),
+        v: st.limOwned + '<em> / ' + st.limTotal + '</em>',
+        cls: 'collections-stat--orange',
+        pct: statBarPct(st.limOwned, st.limTotal),
+        lead: 'limited'
+      }
     ];
     if (state.type !== 'supporters') {
       ['1', '3', '2'].forEach(function (rid) {
@@ -863,7 +1217,10 @@
         cells.push({
           k: t('role_owned', { role: roleLabel(rid) }),
           v: b.o + '<em> / ' + b.t + '</em>',
-          cls: ''
+          cls: '',
+          pct: statBarPct(b.o, b.t),
+          lead: 'role',
+          roleId: rid
         });
       });
     }
@@ -873,13 +1230,21 @@
           '<div class="collections-stat ' +
           c.cls +
           '"><div class="collections-stat-k">' +
+          statLeadHtml(c.lead, c.roleId) +
+          '<span class="collections-stat-k-txt">' +
           esc(c.k) +
-          '</div><div class="collections-stat-v">' +
+          '</span></div><div class="collections-stat-v">' +
           c.v +
-          '</div></div>'
+          '</div><div class="collections-stat-bar" aria-hidden="true"><i style="width:0%"></i></div></div>'
         );
       })
       .join('');
+    requestAnimationFrame(function () {
+      var fills = strip.querySelectorAll('.collections-stat-bar>i');
+      for (var i = 0; i < fills.length; i++) {
+        fills[i].style.width = (cells[i] && cells[i].pct != null ? cells[i].pct : 0) + '%';
+      }
+    });
   }
 
   function typeTitle() {
@@ -1121,7 +1486,12 @@
 
   async function loadCatalog() {
     var status = document.getElementById('colStatus');
+    var grid = document.getElementById('colGrid');
     if (status) status.textContent = t('loading');
+    if (grid) {
+      grid.setAttribute('aria-busy', 'true');
+      grid.innerHTML = waveLoaderHtml();
+    }
     state.busy = true;
     var lang = encodeURIComponent(state.lang);
     try {
@@ -1135,6 +1505,7 @@
           units: state.catalog.units.length,
           supporters: state.catalog.supporters.length
         });
+        flashSuccessCheck();
       }
       preloadChromeAssets();
     } catch (err) {
@@ -1342,12 +1713,15 @@
     }
   }
 
+  var _imgCache = Object.create(null);
+
   function loadImage(src) {
-    return new Promise(function (resolve) {
-      if (!src) {
-        resolve(null);
-        return;
-      }
+    if (!src) return Promise.resolve(null);
+    var key = String(src);
+    if (Object.prototype.hasOwnProperty.call(_imgCache, key)) {
+      return _imgCache[key];
+    }
+    _imgCache[key] = new Promise(function (resolve) {
       var img = new Image();
       img.crossOrigin = 'anonymous';
       img.onload = function () {
@@ -1356,8 +1730,36 @@
       img.onerror = function () {
         resolve(null);
       };
-      img.src = src;
+      img.src = key;
     });
+    return _imgCache[key];
+  }
+
+  function prefetchShareAssets() {
+    var paths = SHARE_SCENE_BGS.concat([
+      '/static/images/UI/IMG_Common_Logo_ETERNALBASE.webp',
+      TYPE_ICON_UNIT_FILL,
+      TYPE_ICON_SUPP_FILL,
+      STAT_ICON_OWNED,
+      STAT_ICON_LB_MAX,
+      ROLE_ICON['1'],
+      ROLE_ICON['3'],
+      ROLE_ICON['2'],
+      LB_ICONS.None,
+      LB_ICONS.Neutral,
+      LB_ICONS.Max,
+      RARITY_BASE_MAP.UR,
+      RARITY_FRAME_MAP.UR,
+      TB_SUPPORTER_TB_BASE,
+      SUPPORTER_TB_FRAME_MAP.UR.lr,
+      SUPPORTER_TB_FRAME_MAP.UR.tb,
+      '/static/images/UI/UI_Common_MenuIcon_Language.webp'
+    ]);
+    for (var i = 0; i < paths.length; i++) {
+      try {
+        loadImage(imgUrl(paths[i]));
+      } catch (_) {}
+    }
   }
 
   function lbBorderColor(lb) {
@@ -1379,6 +1781,212 @@
     ctx.closePath();
   }
 
+  function isCjkUiLang() {
+    var L = String(state.lang || '').toUpperCase();
+    return L === 'JA' || L === 'JP' || L === 'TW' || L === 'HK';
+  }
+
+  /** Canvas text: always bold for CJK; slightly larger for readability. */
+  function uiCanvasFont(sizePx, weight) {
+    var w = weight || 'bold';
+    var px = Number(sizePx) || 14;
+    if (isCjkUiLang()) px = Math.round(px * 1.12);
+    var fam = isCjkUiLang()
+      ? '"Noto Sans JP","ShinGoPr6DeBold","UDShinGoStdTCMed","Microsoft JhengHei","Yu Gothic UI","Yu Gothic","PingFang TC",sans-serif'
+      : 'sans-serif';
+    return w + ' ' + px + 'px ' + fam;
+  }
+
+  /** Match HUD gauge: ring + type icon with drop-shadow, icon slightly over ring. */
+  function drawPossessionEmblem(ctx, cx, cy, size, pct, complete, perfect, iconImg) {
+    var outer = size / 2;
+    var trackR = outer * 0.82;
+    var stroke = Math.max(5, size * 0.055);
+    var p = Math.max(0, Math.min(100, Number(pct) || 0)) / 100;
+
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(cx, cy, trackR * 0.72, 0, Math.PI * 2);
+    var soft = ctx.createRadialGradient(cx, cy, 4, cx, cy, trackR);
+    soft.addColorStop(0, complete ? 'rgba(255,215,0,0.16)' : 'rgba(0,212,255,0.14)');
+    soft.addColorStop(0.55, complete ? 'rgba(255,215,0,0.04)' : 'rgba(0,212,255,0.04)');
+    soft.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = soft;
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, trackR, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+    ctx.lineWidth = stroke;
+    ctx.stroke();
+
+    if (p > 0) {
+      var start = -Math.PI / 2;
+      var end = start + Math.PI * 2 * p;
+      var grad = ctx.createLinearGradient(cx - outer, cy - outer, cx + outer, cy + outer);
+      if (perfect || complete) {
+        grad.addColorStop(0, '#fff4c2');
+        grad.addColorStop(0.45, '#ffd700');
+        grad.addColorStop(1, '#00d4ff');
+      } else {
+        grad.addColorStop(0, '#7af0ff');
+        grad.addColorStop(0.55, '#00d4ff');
+        grad.addColorStop(1, '#4a90d9');
+      }
+      ctx.beginPath();
+      ctx.arc(cx, cy, trackR, start, end);
+      ctx.strokeStyle = grad;
+      ctx.lineWidth = perfect ? stroke + 1 : stroke;
+      ctx.lineCap = 'round';
+      ctx.shadowColor = complete ? 'rgba(255,215,0,0.35)' : 'rgba(0,212,255,0.35)';
+      ctx.shadowBlur = 10;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+    }
+
+    if (iconImg) {
+      var innerClear = (trackR - stroke * 0.5) * 2;
+      var iconS = innerClear * 1.08;
+      var ix = cx - iconS / 2;
+      var iy = cy - iconS / 2;
+      ctx.shadowColor = 'rgba(0,0,0,0.55)';
+      ctx.shadowBlur = 16;
+      ctx.shadowOffsetX = 0;
+      ctx.shadowOffsetY = 5;
+      ctx.drawImage(iconImg, ix, iy, iconS, iconS);
+      ctx.shadowColor = 'transparent';
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetY = 0;
+    }
+    ctx.restore();
+  }
+
+  /** Match HUD `.collections-stat` cards on the share/save canvas. */
+  function drawShareStatCard(ctx, x, y, w, h, card, imgs, complete, perfect) {
+    var padX = 10;
+    var tone = card.tone || 'neutral';
+    var numColor =
+      tone === 'accent'
+        ? '#00d4ff'
+        : tone === 'gold'
+          ? '#ffd700'
+          : tone === 'orange'
+            ? '#ff9500'
+            : '#f0f2f7';
+    var border =
+      perfect
+        ? 'rgba(255,215,0,0.5)'
+        : complete
+          ? 'rgba(255,215,0,0.28)'
+          : 'rgba(30,41,59,0.95)';
+
+    drawRoundRect(ctx, x, y, w, h, 10);
+    ctx.fillStyle = '#141c2b';
+    ctx.fill();
+    ctx.strokeStyle = border;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    var leadX = x + padX;
+    var leadY = y + 10;
+    var labelX = leadX;
+    if (card.lead === 'owned' && imgs.owned) {
+      ctx.drawImage(imgs.owned, leadX, leadY - 1, 16, 16);
+      labelX = leadX + 20;
+    } else if (card.lead === 'max_lb' && imgs.maxLb) {
+      var si;
+      for (si = 0; si < 3; si++) {
+        ctx.drawImage(imgs.maxLb, leadX + si * 13, leadY, 13, 13);
+      }
+      labelX = leadX + 3 * 13 + 4;
+    } else if (card.lead === 'limited') {
+      var lim = limitedWord();
+      ctx.font = uiCanvasFont(9, 'bold');
+      var limW = Math.min(78, Math.max(44, ctx.measureText(lim).width + 12));
+      var limH = 15;
+      var limGrad = ctx.createLinearGradient(leadX, leadY, leadX + limW, leadY);
+      limGrad.addColorStop(0, '#be185d');
+      limGrad.addColorStop(0.55, '#a855f7');
+      limGrad.addColorStop(1, '#1d4ed8');
+      drawRoundRect(ctx, leadX, leadY - 1, limW, limH, 3);
+      ctx.fillStyle = limGrad;
+      ctx.fill();
+      ctx.fillStyle = '#ffffff';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(lim, leadX + limW / 2, leadY - 1 + limH / 2 + 0.5);
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      labelX = leadX + limW + 6;
+    } else if (card.lead === 'role') {
+      var roleImg =
+        card.roleId === '1'
+          ? imgs.role1
+          : card.roleId === '3'
+            ? imgs.role3
+            : imgs.role2;
+      if (roleImg) {
+        ctx.drawImage(roleImg, leadX, leadY - 1, 15, 15);
+        labelX = leadX + 19;
+      }
+    }
+
+    ctx.fillStyle = '#8494ae';
+    ctx.font = uiCanvasFont(11, 'bold');
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    var labelMax = w - (labelX - x) - padX;
+    var label = String(card.label || '');
+    while (label.length > 1 && ctx.measureText(label).width > labelMax) {
+      label = label.slice(0, -1);
+    }
+    if (label !== String(card.label || '') && label.length > 1) {
+      label = label.slice(0, -1) + '…';
+    }
+    ctx.fillText(label, labelX, leadY + 1);
+
+    var nStr = String(card.n);
+    var dStr = ' / ' + card.d;
+    ctx.font = uiCanvasFont(20, 'bold');
+    ctx.fillStyle = numColor;
+    ctx.fillText(nStr, x + padX, y + 32);
+    var nW = ctx.measureText(nStr).width;
+    ctx.font = uiCanvasFont(14, 'bold');
+    ctx.fillStyle = '#8494ae';
+    ctx.fillText(dStr, x + padX + nW, y + 36);
+
+    var barY = y + h - 16;
+    var barH = 7;
+    var barW = w - padX * 2;
+    drawRoundRect(ctx, x + padX, barY, barW, barH, 4);
+    ctx.fillStyle = 'rgba(0,0,0,0.4)';
+    ctx.fill();
+
+    var fillW = Math.max(0, Math.min(barW, (barW * (Number(card.pct) || 0)) / 100));
+    if (fillW > 0.5) {
+      var barGrad = ctx.createLinearGradient(x + padX, barY, x + padX + barW, barY);
+      if (tone === 'accent') {
+        barGrad.addColorStop(0, 'rgba(0,180,220,0.55)');
+        barGrad.addColorStop(0.6, '#00d4ff');
+        barGrad.addColorStop(1, '#7af0ff');
+      } else if (tone === 'gold') {
+        barGrad.addColorStop(0, 'rgba(184,149,74,0.7)');
+        barGrad.addColorStop(0.55, '#ffd700');
+        barGrad.addColorStop(1, '#ffe08a');
+      } else if (tone === 'orange') {
+        barGrad.addColorStop(0, 'rgba(255,120,40,0.55)');
+        barGrad.addColorStop(0.6, '#ff9500');
+        barGrad.addColorStop(1, '#ffc078');
+      } else {
+        barGrad.addColorStop(0, 'rgba(176,190,210,0.55)');
+        barGrad.addColorStop(1, 'rgba(240,242,247,0.92)');
+      }
+      drawRoundRect(ctx, x + padX, barY, fillW, barH, 4);
+      ctx.fillStyle = barGrad;
+      ctx.fill();
+    }
+  }
+
   async function generateShareImage() {
     var rows = activeList();
     var st = computeStats(rows);
@@ -1390,11 +1998,18 @@
     var pad = 36;
     var playerName = currentUsername();
     var pctTop = pad + (playerName ? 86 : 78);
-    var ownedY = pctTop + 62;
-    if (perfect) ownedY = Math.max(ownedY, pad + 142);
+    var emblemSize = 120;
+    var emblemTop = pctTop + 70;
+    var ownedY = emblemTop + emblemSize + 18;
+    if (perfect) ownedY = Math.max(ownedY, emblemTop + emblemSize + 18);
     var subY = ownedY + 20;
-    var subH = 44;
-    var headerH = subY + subH + 16;
+    var cardColsLayout = 3;
+    var cardRowsLayout = state.type !== 'supporters' ? 2 : 1;
+    var cardGapLayout = 8;
+    var cardHLayout = 78;
+    var subBlockH =
+      cardRowsLayout * cardHLayout + (cardRowsLayout - 1) * cardGapLayout;
+    var headerH = subY + subBlockH + 16;
     var rowsN = Math.max(1, Math.ceil((rows.length || 1) / cols));
     var gridW = cols * cell + (cols - 1) * gap;
     var gridH = rowsN * cell + (rowsN - 1) * gap;
@@ -1438,7 +2053,59 @@
       ctx.strokeRect(0.5, 0.5, W - 1, H - 1);
     }
 
-    var logo = await loadImage(imgUrl('/static/images/UI/IMG_Common_Logo_ETERNALBASE.webp'));
+    var scenePick = pickShareSceneBg();
+    var typeIconPath =
+      state.type === 'supporters' ? TYPE_ICON_SUPP_FILL : TYPE_ICON_UNIT_FILL;
+    var suppFr = SUPPORTER_TB_FRAME_MAP.UR;
+    var isSupp = state.type === 'supporters';
+
+    var packed = await Promise.all([
+      loadImage(imgUrl(scenePick)),
+      loadImage(imgUrl('/static/images/UI/IMG_Common_Logo_ETERNALBASE.webp')),
+      loadImage(imgUrl(typeIconPath)),
+      loadImage(imgUrl(STAT_ICON_OWNED)),
+      loadImage(imgUrl(STAT_ICON_LB_MAX)),
+      loadImage(imgUrl(ROLE_ICON['1'])),
+      loadImage(imgUrl(ROLE_ICON['3'])),
+      loadImage(imgUrl(ROLE_ICON['2'])),
+      loadImage(imgUrl(LB_ICONS.None)),
+      loadImage(imgUrl(LB_ICONS.Neutral)),
+      loadImage(imgUrl(LB_ICONS.Max)),
+      loadImage(imgUrl(RARITY_BASE_MAP.UR)),
+      loadImage(imgUrl(RARITY_FRAME_MAP.UR)),
+      loadImage(imgUrl(TB_SUPPORTER_TB_BASE)),
+      loadImage(imgUrl(suppFr.lr)),
+      loadImage(imgUrl(suppFr.tb)),
+      loadImage(imgUrl('/static/images/UI/UI_Common_MenuIcon_Language.webp')),
+      Promise.all(
+        rows.map(function (row) {
+          return loadImage(imgUrl(row.thum || ''));
+        })
+      )
+    ]);
+    var sceneArt = packed[0];
+    var logo = packed[1];
+    var typeIconImg = packed[2];
+    var shareStatImgs = {
+      owned: packed[3],
+      maxLb: packed[4],
+      role1: packed[5],
+      role3: packed[6],
+      role2: packed[7]
+    };
+    var iconNone = packed[8];
+    var iconNeutral = packed[9];
+    var iconMax = packed[10];
+    var unitBaseImg = packed[11];
+    var unitFrameImg = packed[12];
+    var suppBaseImg = packed[13];
+    var suppLrImg = packed[14];
+    var suppTbImg = packed[15];
+    var langIcon = packed[16];
+    var thumbs = packed[17];
+
+    drawShareHeaderSceneArt(ctx, sceneArt, W, Math.max(120, subY - 6));
+
     var logoSize = 52;
     var textX = pad + (logo ? logoSize + 14 : 0);
     if (logo) {
@@ -1447,38 +2114,38 @@
 
     ctx.textBaseline = 'top';
     ctx.fillStyle = '#f0f2f7';
-    ctx.font = 'bold 22px sans-serif';
+    ctx.font = uiCanvasFont(22, 'bold');
     ctx.fillText(t('report_title'), textX, pad + 2);
 
     ctx.fillStyle = '#8494ae';
-    ctx.font = '11px sans-serif';
+    ctx.font = uiCanvasFont(11, 'bold');
     ctx.fillText(t('brand_line'), textX, pad + 30);
 
     if (playerName) {
       ctx.fillStyle = '#ffd700';
-      ctx.font = 'bold 14px sans-serif';
+      ctx.font = uiCanvasFont(14, 'bold');
       ctx.fillText(playerName, textX, pad + 46);
       ctx.fillStyle = '#00d4ff';
-      ctx.font = 'bold 13px sans-serif';
+      ctx.font = uiCanvasFont(13, 'bold');
       ctx.fillText('UR ' + typeTitle(), textX, pad + 66);
     } else {
       ctx.fillStyle = '#00d4ff';
-      ctx.font = 'bold 13px sans-serif';
+      ctx.font = uiCanvasFont(13, 'bold');
       ctx.fillText('UR ' + typeTitle(), textX, pad + 48);
     }
 
-    var pctStr = String(st.pct);
+    var pctStr = pctDisplayKey(st.pct);
     ctx.fillStyle = perfect ? '#ffe566' : complete ? '#ffd700' : '#f1f5f9';
-    ctx.font = 'bold 64px sans-serif';
+    ctx.font = uiCanvasFont(64, 'bold');
     ctx.fillText(pctStr, pad, pctTop);
     var pctW = ctx.measureText(pctStr).width;
     ctx.fillStyle = perfect ? '#ffd700' : complete ? '#7af0ff' : '#00d4ff';
-    ctx.font = 'bold 22px sans-serif';
+    ctx.font = uiCanvasFont(22, 'bold');
     ctx.fillText('%', pad + pctW + 4, pctTop + 28);
 
     if (complete) {
       var badge = perfect ? t('complete_max') : t('complete');
-      ctx.font = 'bold 11px sans-serif';
+      ctx.font = uiCanvasFont(11, 'bold');
       var bw = Math.max(perfect ? 118 : 72, ctx.measureText(badge).width + 22);
       var bx = pad + pctW + 28;
       var by = pctTop + 14;
@@ -1508,7 +2175,7 @@
 
       if (perfect) {
         var subBadge = t('complete') + ' · ' + t('report_max_lb');
-        ctx.font = 'bold 10px sans-serif';
+        ctx.font = uiCanvasFont(10, 'bold');
         var sbw = Math.max(140, ctx.measureText(subBadge).width + 18);
         var sbx = bx;
         var sby = by + 26;
@@ -1525,68 +2192,79 @@
       }
     }
 
+    drawPossessionEmblem(
+      ctx,
+      pad + emblemSize / 2,
+      emblemTop + emblemSize / 2,
+      emblemSize,
+      st.pct,
+      complete,
+      perfect,
+      typeIconImg
+    );
+
     ctx.fillStyle = '#94a3b8';
-    ctx.font = '15px sans-serif';
+    ctx.font = uiCanvasFont(15, 'bold');
     ctx.fillText(
       t('owned_line', { owned: st.owned, total: st.total, lb: st.lbTotal, lbMax: st.lbMax }),
       pad,
       ownedY
     );
 
-    var subStats = [
-      { v: st.maxed + ' / ' + st.total, l: t('report_max_lb') },
-      { v: st.limOwned + ' / ' + st.limTotal, l: t('limited') }
+    var shareStatCards = [
+      {
+        label: t('owned'),
+        n: st.owned,
+        d: st.total,
+        pct: statBarPct(st.owned, st.total),
+        tone: 'accent',
+        lead: 'owned'
+      },
+      {
+        label: t('max_lb'),
+        n: st.maxed,
+        d: st.total,
+        pct: statBarPct(st.maxed, st.total),
+        tone: 'gold',
+        lead: 'max_lb'
+      },
+      {
+        label: t('owned'),
+        n: st.limOwned,
+        d: st.limTotal,
+        pct: statBarPct(st.limOwned, st.limTotal),
+        tone: 'orange',
+        lead: 'limited'
+      }
     ];
     if (state.type !== 'supporters') {
-      subStats.push(
-        { v: st.byRole['1'].o + ' / ' + st.byRole['1'].t, l: t('role_attack') },
-        { v: st.byRole['3'].o + ' / ' + st.byRole['3'].t, l: t('role_support') },
-        { v: st.byRole['2'].o + ' / ' + st.byRole['2'].t, l: t('role_durability') }
-      );
+      ['1', '3', '2'].forEach(function (rid) {
+        var b = st.byRole[rid];
+        shareStatCards.push({
+          label: t('role_owned', { role: roleLabel(rid) }),
+          n: b.o,
+          d: b.t,
+          pct: statBarPct(b.o, b.t),
+          tone: 'neutral',
+          lead: 'role',
+          roleId: rid
+        });
+      });
     }
-    var subW = gridW / subStats.length;
-    subStats.forEach(function (item, i) {
-      var x = pad + i * subW;
-      var y = subY;
-      ctx.fillStyle = '#0f172a';
-      ctx.fillRect(x, y, subW - 4, subH);
-      ctx.strokeStyle = perfect
-        ? 'rgba(255,215,0,0.5)'
-        : complete
-          ? 'rgba(255,215,0,0.28)'
-          : '#1e293b';
-      ctx.strokeRect(x, y, subW - 4, subH);
-      ctx.fillStyle = perfect && i === 0 ? '#ffd700' : '#00d4ff';
-      ctx.font = 'bold 14px sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(item.v, x + (subW - 4) / 2, y + 7);
-      ctx.fillStyle = '#64748b';
-      ctx.font = '10px sans-serif';
-      ctx.fillText(item.l, x + (subW - 4) / 2, y + 26);
-      ctx.textAlign = 'left';
-    });
 
-    var thumbs = await Promise.all(
-      rows.map(function (row) {
-        return loadImage(imgUrl(row.thum || ''));
-      })
-    );
-    var lbIconImgs = await Promise.all([
-      loadImage(imgUrl(LB_ICONS.None)),
-      loadImage(imgUrl(LB_ICONS.Neutral)),
-      loadImage(imgUrl(LB_ICONS.Max))
-    ]);
-    var iconNone = lbIconImgs[0];
-    var iconNeutral = lbIconImgs[1];
-    var iconMax = lbIconImgs[2];
-
-    var unitBaseImg = await loadImage(imgUrl(RARITY_BASE_MAP.UR));
-    var unitFrameImg = await loadImage(imgUrl(RARITY_FRAME_MAP.UR));
-    var suppBaseImg = await loadImage(imgUrl(TB_SUPPORTER_TB_BASE));
-    var suppFr = SUPPORTER_TB_FRAME_MAP.UR;
-    var suppLrImg = await loadImage(imgUrl(suppFr.lr));
-    var suppTbImg = await loadImage(imgUrl(suppFr.tb));
-    var isSupp = state.type === 'supporters';
+    var cardCols = 3;
+    var cardRows = Math.ceil(shareStatCards.length / cardCols);
+    var cardGap = 8;
+    var cardW = (gridW - cardGap * (cardCols - 1)) / cardCols;
+    var cardH = 78;
+    for (var sci = 0; sci < shareStatCards.length; sci++) {
+      var sc = shareStatCards[sci];
+      var scCol = sci % cardCols;
+      var scRow = Math.floor(sci / cardCols);
+      var scx = pad + scCol * (cardW + cardGap);
+      var scy = subY + scRow * (cardH + cardGap);
+      drawShareStatCard(ctx, scx, scy, cardW, cardH, sc, shareStatImgs, complete, perfect);
+    }
 
     /* Match .col-card.is-unowned: opacity .3 + grayscale(.65) brightness(.45) on the whole cell */
     var UNOWNED_FILTER = 'grayscale(0.65) brightness(0.45)';
@@ -1671,7 +2349,7 @@
         cctx.fillStyle = limGrad;
         cctx.fillRect(0, 0, cell, 14);
         cctx.fillStyle = '#fff';
-        cctx.font = 'bold 8px sans-serif';
+        cctx.font = uiCanvasFont(8, 'bold');
         cctx.textAlign = 'center';
         cctx.textBaseline = 'top';
         cctx.fillText(limitedWord(), cell / 2, 3);
@@ -1713,9 +2391,8 @@
     ctx.lineTo(W - pad, footY);
     ctx.stroke();
     ctx.fillStyle = '#00d4ff';
-    ctx.font = '12px sans-serif';
+    ctx.font = uiCanvasFont(12, 'bold');
     var foot = siteUrl().replace(/^https?:\/\//, '');
-    var langIcon = await loadImage(imgUrl('/static/images/UI/UI_Common_MenuIcon_Language.webp'));
     var footIcon = 14;
     var footGap = 5;
     var footTextX = pad;
@@ -2371,6 +3048,7 @@
       return;
     }
     if (status) status.textContent = t('share_import_ok', { n: n });
+    flashSuccessCheck();
   }
 
   async function maybeImportShareCodeFromUrl() {
@@ -2792,7 +3470,6 @@
       url: siteUrl()
     });
     var status = document.getElementById('colStatus');
-    var original = btn ? btn.textContent : '';
     if (btn) {
       btn.disabled = true;
       btn.textContent = t('generating');
@@ -2831,7 +3508,7 @@
     } finally {
       if (btn) {
         btn.disabled = false;
-        btn.textContent = original || t('share_x');
+        applyShareXBtnLabel(btn);
       }
     }
   }
@@ -2842,6 +3519,17 @@
   loadCatalog().then(function () {
     return maybeImportShareCodeFromUrl();
   }).then(function () {
+    try {
+      if (window.requestIdleCallback) {
+        requestIdleCallback(function () {
+          prefetchShareAssets();
+        }, { timeout: 2500 });
+      } else {
+        setTimeout(prefetchShareAssets, 500);
+      }
+    } catch (_) {
+      setTimeout(prefetchShareAssets, 500);
+    }
     return loadCensusStats();
   });
 })();

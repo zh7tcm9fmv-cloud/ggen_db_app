@@ -74,9 +74,11 @@ def _inject_public_origin():
     origin = _public_site_origin()
     # Absolute same-origin PNG so Facebook/Discord crawlers do not fall back to
     # large in-page images (e.g. Alipay QR) when og:image is missing.
+    # Query bump forces Meta to refetch when the file/content changes (their CDN
+    # caches by exact image URL — same path keeps the old Alipay/other thumb).
     return {
         'public_origin': origin,
-        'og_image_url': origin + '/static/og/site-logo.png',
+        'og_image_url': origin + '/static/og/site-logo.png?v=20260910',
     }
 
 # Bust cache when static assets change OR when a new git commit is deployed.
@@ -17513,6 +17515,7 @@ def collections_page():
         image_cdn=IMAGE_CDN or '',
         game_images_use_cdn=GAME_IMAGES_USE_CDN,
         app_js_version=ver,
+        font_cdn=FONT_CDN or '',
     ))
     r.headers['Cache-Control'] = 'public, max-age=300'
     return r
