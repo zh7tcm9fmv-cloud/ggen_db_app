@@ -112,6 +112,9 @@
       report_max_lb: 'Max Limit Break',
       role_owned: '{role}',
       limited: 'Limited',
+      skill_hp: 'HP Restoration',
+      skill_en: 'EN Restoration',
+      skill_hybrid: 'Hybrid',
       loading: 'Loading UR catalog…',
       load_fail: 'Catalog load failed — is the Flask app running? ({err})',
       loaded: 'Loaded {units} units · {supporters} supporters',
@@ -221,6 +224,9 @@
       report_max_lb: '限界突破MAX',
       role_owned: '{role}',
       limited: '期間限定',
+      skill_hp: 'HP回復',
+      skill_en: 'EN回復',
+      skill_hybrid: 'Hybrid',
       loading: 'URカタログを読み込み中…',
       load_fail: 'カタログの読み込みに失敗しました（Flask起動を確認）: {err}',
       loaded: '読込 {units} ユニット · {supporters} サポーター',
@@ -330,6 +336,9 @@
       report_max_lb: '突破界限 MAX',
       role_owned: '{role}',
       limited: '期間限定',
+      skill_hp: 'HP恢復',
+      skill_en: 'EN恢復',
+      skill_hybrid: 'Hybrid',
       loading: '正在載入 UR 目錄…',
       load_fail: '目錄載入失敗 — 請確認 Flask 是否運行（{err}）',
       loaded: '已載入 {units} 單位 · {supporters} 支援人員',
@@ -438,6 +447,9 @@
       report_max_lb: '突破界限 MAX',
       role_owned: '{role}',
       limited: '期間限定',
+      skill_hp: 'HP恢復',
+      skill_en: 'EN恢復',
+      skill_hybrid: 'Hybrid',
       loading: '正在載入 UR 目錄…',
       load_fail: '目錄載入失敗 — 請確認 Flask 是否運行（{err}）',
       loaded: '已載入 {units} 單位 · {supporters} 支援人員',
@@ -635,6 +647,11 @@
     var limOwned = 0;
     var lbSum = 0;
     var byRole = { '1': { t: 0, o: 0 }, '2': { t: 0, o: 0 }, '3': { t: 0, o: 0 } };
+    var bySkill = {
+      hp: { t: 0, o: 0 },
+      en: { t: 0, o: 0 },
+      hybrid: { t: 0, o: 0 }
+    };
     rows.forEach(function (row) {
       var lb = getLb(row.id);
       var isOwned = lb >= 0;
@@ -652,6 +669,11 @@
         byRole[rid].t++;
         if (isOwned) byRole[rid].o++;
       }
+      var sk = String(row.skill_kind || '');
+      if (bySkill[sk]) {
+        bySkill[sk].t++;
+        if (isOwned) bySkill[sk].o++;
+      }
     });
     var pct = total ? Math.round((owned / total) * 1000) / 10 : 0;
     var lbMax = total * MAX_LB;
@@ -662,6 +684,7 @@
       limTotal: limTotal,
       limOwned: limOwned,
       byRole: byRole,
+      bySkill: bySkill,
       pct: pct,
       lbTotal: lbSum,
       lbMax: lbMax
@@ -887,6 +910,9 @@
   var TYPE_ICON_SUPP_FILL = '/static/images/UI/wsc_g0010w00100.webp';
   var STAT_ICON_OWNED = '/static/images/UI/Ui_Secret_Clear_Icon.webp';
   var STAT_ICON_LB_MAX = '/static/images/UI/UI_Common_Icon_Grade_M_Max.webp';
+  var SKILL_ICON_HP = '/static/images/Trait/trait_10010401.webp';
+  var SKILL_ICON_EN = '/static/images/Trait/trait_10020501.webp';
+  var SKILL_ICON_HYBRID = '/static/images/Trait/trait_10780401.webp';
   var ROLE_ICON = {
     '1': '/static/images/UI/UI_Common_TypeIcon_Attack_M.webp',
     '3': '/static/images/UI/UI_Common_TypeIcon_Support_M.webp',
@@ -1113,6 +1139,22 @@
         '" alt="" width="16" height="16" loading="lazy" decoding="async">'
       );
     }
+    if (kind === 'skill') {
+      var skillPath =
+        roleId === 'hp'
+          ? SKILL_ICON_HP
+          : roleId === 'en'
+            ? SKILL_ICON_EN
+            : roleId === 'hybrid'
+              ? SKILL_ICON_HYBRID
+              : '';
+      if (!skillPath) return '';
+      return (
+        '<img class="collections-stat-k-ic" src="' +
+        esc(imgUrl(skillPath)) +
+        '" alt="" width="16" height="16" loading="lazy" decoding="async">'
+      );
+    }
     return '';
   }
 
@@ -1221,6 +1263,22 @@
           pct: statBarPct(b.o, b.t),
           lead: 'role',
           roleId: rid
+        });
+      });
+    } else {
+      [
+        { id: 'hp', key: 'skill_hp' },
+        { id: 'en', key: 'skill_en' },
+        { id: 'hybrid', key: 'skill_hybrid' }
+      ].forEach(function (sk) {
+        var b = st.bySkill[sk.id] || { t: 0, o: 0 };
+        cells.push({
+          k: t(sk.key),
+          v: b.o + '<em> / ' + b.t + '</em>',
+          cls: '',
+          pct: statBarPct(b.o, b.t),
+          lead: 'skill',
+          roleId: sk.id
         });
       });
     }
@@ -1745,6 +1803,9 @@
       ROLE_ICON['1'],
       ROLE_ICON['3'],
       ROLE_ICON['2'],
+      SKILL_ICON_HP,
+      SKILL_ICON_EN,
+      SKILL_ICON_HYBRID,
       LB_ICONS.None,
       LB_ICONS.Neutral,
       LB_ICONS.Max,
@@ -1929,6 +1990,17 @@
         ctx.drawImage(roleImg, leadX, leadY - 1, 15, 15);
         labelX = leadX + 19;
       }
+    } else if (card.lead === 'skill') {
+      var skillImg =
+        card.roleId === 'hp'
+          ? imgs.skillHp
+          : card.roleId === 'en'
+            ? imgs.skillEn
+            : imgs.skillHybrid;
+      if (skillImg) {
+        ctx.drawImage(skillImg, leadX, leadY - 1, 15, 15);
+        labelX = leadX + 19;
+      }
     }
 
     ctx.fillStyle = '#8494ae';
@@ -2004,7 +2076,7 @@
     if (perfect) ownedY = Math.max(ownedY, emblemTop + emblemSize + 18);
     var subY = ownedY + 20;
     var cardColsLayout = 3;
-    var cardRowsLayout = state.type !== 'supporters' ? 2 : 1;
+    var cardRowsLayout = 2;
     var cardGapLayout = 8;
     var cardHLayout = 78;
     var subBlockH =
@@ -2068,6 +2140,9 @@
       loadImage(imgUrl(ROLE_ICON['1'])),
       loadImage(imgUrl(ROLE_ICON['3'])),
       loadImage(imgUrl(ROLE_ICON['2'])),
+      loadImage(imgUrl(SKILL_ICON_HP)),
+      loadImage(imgUrl(SKILL_ICON_EN)),
+      loadImage(imgUrl(SKILL_ICON_HYBRID)),
       loadImage(imgUrl(LB_ICONS.None)),
       loadImage(imgUrl(LB_ICONS.Neutral)),
       loadImage(imgUrl(LB_ICONS.Max)),
@@ -2091,18 +2166,21 @@
       maxLb: packed[4],
       role1: packed[5],
       role3: packed[6],
-      role2: packed[7]
+      role2: packed[7],
+      skillHp: packed[8],
+      skillEn: packed[9],
+      skillHybrid: packed[10]
     };
-    var iconNone = packed[8];
-    var iconNeutral = packed[9];
-    var iconMax = packed[10];
-    var unitBaseImg = packed[11];
-    var unitFrameImg = packed[12];
-    var suppBaseImg = packed[13];
-    var suppLrImg = packed[14];
-    var suppTbImg = packed[15];
-    var langIcon = packed[16];
-    var thumbs = packed[17];
+    var iconNone = packed[11];
+    var iconNeutral = packed[12];
+    var iconMax = packed[13];
+    var unitBaseImg = packed[14];
+    var unitFrameImg = packed[15];
+    var suppBaseImg = packed[16];
+    var suppLrImg = packed[17];
+    var suppTbImg = packed[18];
+    var langIcon = packed[19];
+    var thumbs = packed[20];
 
     drawShareHeaderSceneArt(ctx, sceneArt, W, Math.max(120, subY - 6));
 
@@ -2248,6 +2326,23 @@
           tone: 'neutral',
           lead: 'role',
           roleId: rid
+        });
+      });
+    } else {
+      [
+        { id: 'hp', key: 'skill_hp' },
+        { id: 'en', key: 'skill_en' },
+        { id: 'hybrid', key: 'skill_hybrid' }
+      ].forEach(function (sk) {
+        var b = st.bySkill[sk.id] || { t: 0, o: 0 };
+        shareStatCards.push({
+          label: t(sk.key),
+          n: b.o,
+          d: b.t,
+          pct: statBarPct(b.o, b.t),
+          tone: 'neutral',
+          lead: 'skill',
+          roleId: sk.id
         });
       });
     }

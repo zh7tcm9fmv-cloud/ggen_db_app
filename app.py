@@ -6942,6 +6942,108 @@ def create_supporter_active_skill_map(d):
         lookup.setdefault(sp, []).append({'name_lang_id': normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId')), 'desc_lang_id': normalize_id(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId')), 'resource_id': str(item.get('ResourceId') or item.get('resourceId') or '')})
     return lookup
 
+
+# Supporter active-skill recovery buckets (collections HUD). TraitTypeIndex from
+# SupporterActiveSkillTraitType: 3=HpRecoveryRate, 4=EnRecoveryRate, 8=DamageRateReduction.
+SUPPORTER_SKILL_KIND_HP = 'hp'
+SUPPORTER_SKILL_KIND_EN = 'en'
+SUPPORTER_SKILL_KIND_HYBRID = 'hybrid'
+SUPPORTER_SKILL_KIND_ICONS = {
+    SUPPORTER_SKILL_KIND_HP: 'trait_10010401',
+    SUPPORTER_SKILL_KIND_EN: 'trait_10020501',
+    SUPPORTER_SKILL_KIND_HYBRID: 'trait_10780401',
+}
+
+
+def create_supporter_active_recovery_lookup(
+    active_skill_data,
+    trait_content_set_data,
+    trait_content_data,
+    trait_data,
+):
+    """Map supporter id -> {skill_kind, active_icon} from active-skill trait chain.
+
+    skill_kind: 'hp' | 'en' | 'hybrid' (HP+EN or HP+Damage Reduction). Independent of LB.
+    """
+    traits = {}
+    for item in extract_data_list(trait_data):
+        if not isinstance(item, dict):
+            continue
+        tid = normalize_id(item.get('Id') or item.get('id'))
+        if tid == '0':
+            continue
+        traits[tid] = safe_int(item.get('TraitTypeIndex') or item.get('traitTypeIndex'), 0)
+
+    contents = {}
+    for item in extract_data_list(trait_content_data):
+        if not isinstance(item, dict):
+            continue
+        cid = normalize_id(item.get('Id') or item.get('id'))
+        if cid == '0':
+            continue
+        contents[cid] = normalize_id(
+            item.get('SupporterActiveSkillTraitId') or item.get('supporterActiveSkillTraitId')
+        )
+
+    set_to_contents = {}
+    for item in extract_data_list(trait_content_set_data):
+        if not isinstance(item, dict):
+            continue
+        sid = normalize_id(
+            item.get('SupporterActiveSkillTraitContentSetId')
+            or item.get('supporterActiveSkillTraitContentSetId')
+        )
+        cid = normalize_id(
+            item.get('SupporterActiveSkillTraitContentId')
+            or item.get('supporterActiveSkillTraitContentId')
+        )
+        if sid == '0' or cid == '0':
+            continue
+        set_to_contents.setdefault(sid, []).append(cid)
+
+    def _kind_for_types(type_set):
+        if type_set == {3}:
+            return SUPPORTER_SKILL_KIND_HP
+        if type_set == {4}:
+            return SUPPORTER_SKILL_KIND_EN
+        if 3 in type_set and (4 in type_set or 8 in type_set):
+            return SUPPORTER_SKILL_KIND_HYBRID
+        return ''
+
+    set_kind = {}
+    for set_id, cids in set_to_contents.items():
+        types = set()
+        for cid in cids:
+            tid = contents.get(cid, '0')
+            tti = traits.get(tid, 0)
+            if tti:
+                types.add(tti)
+        kind = _kind_for_types(types)
+        if kind:
+            set_kind[set_id] = kind
+
+    lookup = {}
+    for item in extract_data_list(active_skill_data):
+        if not isinstance(item, dict):
+            continue
+        # Active skill Id matches supporter Id for current catalog.
+        sid = normalize_id(item.get('Id') or item.get('id'))
+        if sid == '0':
+            continue
+        set_id = normalize_id(
+            item.get('SupporterActiveSkillTraitContentSetId')
+            or item.get('supporterActiveSkillTraitContentSetId')
+        )
+        kind = set_kind.get(set_id, '')
+        if not kind:
+            continue
+        icon_res = SUPPORTER_SKILL_KIND_ICONS.get(kind, '')
+        icf = find_trait_icon(icon_res) if icon_res else None
+        icon = f'/static/images/Trait/{icf}' if icf else ''
+        lookup[sid] = {'skill_kind': kind, 'active_icon': icon}
+    return lookup
+
+
 def create_stage_map(d):
     lookup = {}
     for item in extract_data_list(d):
@@ -9999,6 +10101,13 @@ supporter_master = load_json(os.path.join(BASE_DIR, "m_supporter.json"))
 supporter_growth_data = load_json(os.path.join(BASE_DIR, "m_supporter_growth.json"))
 supporter_leader_data = load_json(os.path.join(BASE_DIR, "m_supporter_leader_skill_content.json"))
 supporter_active_data = load_json(os.path.join(BASE_DIR, "m_supporter_active_skill.json"))
+supporter_active_trait_data = load_json(os.path.join(BASE_DIR, "m_supporter_active_skill_trait.json"))
+supporter_active_trait_content_data = load_json(
+    os.path.join(BASE_DIR, "m_supporter_active_skill_trait_content.json")
+)
+supporter_active_trait_content_set_data = load_json(
+    os.path.join(BASE_DIR, "m_supporter_active_skill_trait_content_set.json")
+)
 # supporter-addon #1 #4
 supporter_level_limit_data = load_json(os.path.join(BASE_DIR, "m_supporter_level_limit.json"))
 supporter_combat_power_data = load_json(os.path.join(BASE_DIR, "m_supporter_combat_power.json"))
@@ -10133,6 +10242,19 @@ supporter_info_map = create_supporter_info_map(supporter_master) if supporter_ma
 supporter_growth_map = create_supporter_growth_map(supporter_growth_data) if supporter_growth_data else {}
 supporter_leader_map = create_supporter_leader_skill_map(supporter_leader_data) if supporter_leader_data else {}
 supporter_active_map = create_supporter_active_skill_map(supporter_active_data) if supporter_active_data else {}
+supporter_active_recovery_map = (
+    create_supporter_active_recovery_lookup(
+        supporter_active_data,
+        supporter_active_trait_content_set_data,
+        supporter_active_trait_content_data,
+        supporter_active_trait_data,
+    )
+    if supporter_active_data
+    and supporter_active_trait_content_set_data
+    and supporter_active_trait_content_data
+    and supporter_active_trait_data
+    else {}
+)
 supporter_max_level_map = create_supporter_max_level_map(supporter_level_limit_data) if supporter_level_limit_data else {}
 supporter_combat_power_map = create_supporter_combat_power_map(supporter_combat_power_data) if supporter_combat_power_data else {}
 stage_map = create_stage_map(stage_master_data) if stage_master_data else {}
@@ -18579,7 +18701,7 @@ def api_collections_census_stats():
 def api_collections_catalog():
     """Slim UR catalog for /collections (Units + Supporters; no ULT / transform alts)."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'collections_ur_v2_{lc}_{lr_schedule_cache_key_fragment()}'
+    ck = f'collections_ur_v3_{lc}_{lr_schedule_cache_key_fragment()}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
@@ -18641,6 +18763,7 @@ def api_collections_catalog():
         if not name:
             continue
         thum = find_supporter_portrait(info.get('resource_id'), sid)
+        rec = supporter_active_recovery_map.get(normalize_id(sid)) or {}
         supporters.append({
             'id': sid,
             'name': name,
@@ -18652,6 +18775,8 @@ def api_collections_catalog():
             'rarity': 'UR',
             'rarity_id': ri,
             'rarity_sort': RARITY_SORT.get(ri, 4),
+            'skill_kind': rec.get('skill_kind') or '',
+            'active_icon': rec.get('active_icon') or '',
         })
     supporters = sort_rows(supporters, 'rarity', 'desc', {'name', 'rarity'})
 
