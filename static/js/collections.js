@@ -1949,22 +1949,22 @@
     ctx.stroke();
 
     var leadX = x + padX;
-    var leadY = y + 10;
+    var leadY = y + 12;
     var labelX = leadX;
     if (card.lead === 'owned' && imgs.owned) {
-      ctx.drawImage(imgs.owned, leadX, leadY - 1, 16, 16);
-      labelX = leadX + 20;
+      ctx.drawImage(imgs.owned, leadX, leadY - 1, 18, 18);
+      labelX = leadX + 22;
     } else if (card.lead === 'max_lb' && imgs.maxLb) {
       var si;
       for (si = 0; si < 3; si++) {
-        ctx.drawImage(imgs.maxLb, leadX + si * 13, leadY, 13, 13);
+        ctx.drawImage(imgs.maxLb, leadX + si * 15, leadY, 15, 15);
       }
-      labelX = leadX + 3 * 13 + 4;
+      labelX = leadX + 3 * 15 + 5;
     } else if (card.lead === 'limited') {
       var lim = limitedWord();
-      ctx.font = uiCanvasFont(9, 'bold');
-      var limW = Math.min(78, Math.max(44, ctx.measureText(lim).width + 12));
-      var limH = 15;
+      ctx.font = uiCanvasFont(11, 'bold');
+      var limW = Math.min(96, Math.max(52, ctx.measureText(lim).width + 14));
+      var limH = 17;
       var limGrad = ctx.createLinearGradient(leadX, leadY, leadX + limW, leadY);
       limGrad.addColorStop(0, '#be185d');
       limGrad.addColorStop(0.55, '#a855f7');
@@ -1987,8 +1987,8 @@
             ? imgs.role3
             : imgs.role2;
       if (roleImg) {
-        ctx.drawImage(roleImg, leadX, leadY - 1, 15, 15);
-        labelX = leadX + 19;
+        ctx.drawImage(roleImg, leadX, leadY - 1, 17, 17);
+        labelX = leadX + 22;
       }
     } else if (card.lead === 'skill') {
       var skillImg =
@@ -1998,13 +1998,13 @@
             ? imgs.skillEn
             : imgs.skillHybrid;
       if (skillImg) {
-        ctx.drawImage(skillImg, leadX, leadY - 1, 15, 15);
-        labelX = leadX + 19;
+        ctx.drawImage(skillImg, leadX, leadY - 1, 17, 17);
+        labelX = leadX + 22;
       }
     }
 
     ctx.fillStyle = '#8494ae';
-    ctx.font = uiCanvasFont(11, 'bold');
+    ctx.font = uiCanvasFont(13, 'bold');
     ctx.textAlign = 'left';
     ctx.textBaseline = 'top';
     var labelMax = w - (labelX - x) - padX;
@@ -2019,16 +2019,16 @@
 
     var nStr = String(card.n);
     var dStr = ' / ' + card.d;
-    ctx.font = uiCanvasFont(20, 'bold');
+    ctx.font = uiCanvasFont(24, 'bold');
     ctx.fillStyle = numColor;
-    ctx.fillText(nStr, x + padX, y + 32);
+    ctx.fillText(nStr, x + padX, y + 38);
     var nW = ctx.measureText(nStr).width;
-    ctx.font = uiCanvasFont(14, 'bold');
+    ctx.font = uiCanvasFont(16, 'bold');
     ctx.fillStyle = '#8494ae';
-    ctx.fillText(dStr, x + padX + nW, y + 36);
+    ctx.fillText(dStr, x + padX + nW, y + 44);
 
-    var barY = y + h - 16;
-    var barH = 7;
+    var barY = y + h - 18;
+    var barH = 8;
     var barW = w - padX * 2;
     drawRoundRect(ctx, x + padX, barY, barW, barH, 4);
     ctx.fillStyle = 'rgba(0,0,0,0.4)';
@@ -2064,34 +2064,39 @@
     var st = computeStats(rows);
     var complete = st.total > 0 && st.owned >= st.total;
     var perfect = complete && st.maxed >= st.total;
-    var cols = Math.min(10, Math.max(6, Math.ceil(Math.sqrt(rows.length || 1))));
-    var cell = 72;
-    var gap = 6;
-    var pad = 36;
+    var cols = Math.min(8, Math.max(5, Math.ceil(Math.sqrt(rows.length || 1))));
+    var cell = 104;
+    var gap = 10;
+    var pad = 44;
     var playerName = currentUsername();
-    var pctTop = pad + (playerName ? 86 : 78);
-    var emblemSize = 120;
-    var emblemTop = pctTop + 70;
-    var ownedY = emblemTop + emblemSize + 18;
-    if (perfect) ownedY = Math.max(ownedY, emblemTop + emblemSize + 18);
-    var subY = ownedY + 20;
+    var pctTop = pad + (playerName ? 96 : 86);
+    var emblemSize = 148;
+    var emblemTop = pctTop + 78;
+    var ownedY = emblemTop + emblemSize + 22;
+    if (perfect) ownedY = Math.max(ownedY, emblemTop + emblemSize + 22);
+    var subY = ownedY + 24;
     var cardColsLayout = 3;
     var cardRowsLayout = 2;
-    var cardGapLayout = 8;
-    var cardHLayout = 78;
+    var cardGapLayout = 10;
+    var cardHLayout = 96;
     var subBlockH =
       cardRowsLayout * cardHLayout + (cardRowsLayout - 1) * cardGapLayout;
-    var headerH = subY + subBlockH + 16;
+    var headerH = subY + subBlockH + 20;
     var rowsN = Math.max(1, Math.ceil((rows.length || 1) / cols));
     var gridW = cols * cell + (cols - 1) * gap;
     var gridH = rowsN * cell + (rowsN - 1) * gap;
     var W = gridW + pad * 2;
-    var H = headerH + gridH + pad + 40;
-    var scale = 2;
+    var H = headerH + gridH + pad + 48;
+    /* 3× CSS layout → crisp PNG on phone; was 2× with smaller cells (hard to read). */
+    var scale = 3;
     var canvas = document.createElement('canvas');
     canvas.width = W * scale;
     canvas.height = H * scale;
     var ctx = canvas.getContext('2d');
+    if (ctx.imageSmoothingEnabled != null) ctx.imageSmoothingEnabled = true;
+    try {
+      ctx.imageSmoothingQuality = 'high';
+    } catch (_) {}
     ctx.scale(scale, scale);
 
     var bg = ctx.createLinearGradient(0, 0, W, H);
@@ -2184,49 +2189,49 @@
 
     drawShareHeaderSceneArt(ctx, sceneArt, W, Math.max(120, subY - 6));
 
-    var logoSize = 52;
-    var textX = pad + (logo ? logoSize + 14 : 0);
+    var logoSize = 64;
+    var textX = pad + (logo ? logoSize + 16 : 0);
     if (logo) {
       ctx.drawImage(logo, pad, pad, logoSize, logoSize);
     }
 
     ctx.textBaseline = 'top';
     ctx.fillStyle = '#f0f2f7';
-    ctx.font = uiCanvasFont(22, 'bold');
+    ctx.font = uiCanvasFont(26, 'bold');
     ctx.fillText(t('report_title'), textX, pad + 2);
 
     ctx.fillStyle = '#8494ae';
-    ctx.font = uiCanvasFont(11, 'bold');
-    ctx.fillText(t('brand_line'), textX, pad + 30);
+    ctx.font = uiCanvasFont(13, 'bold');
+    ctx.fillText(t('brand_line'), textX, pad + 34);
 
     if (playerName) {
       ctx.fillStyle = '#ffd700';
-      ctx.font = uiCanvasFont(14, 'bold');
-      ctx.fillText(playerName, textX, pad + 46);
+      ctx.font = uiCanvasFont(16, 'bold');
+      ctx.fillText(playerName, textX, pad + 54);
       ctx.fillStyle = '#00d4ff';
-      ctx.font = uiCanvasFont(13, 'bold');
-      ctx.fillText('UR ' + typeTitle(), textX, pad + 66);
+      ctx.font = uiCanvasFont(15, 'bold');
+      ctx.fillText('UR ' + typeTitle(), textX, pad + 76);
     } else {
       ctx.fillStyle = '#00d4ff';
-      ctx.font = uiCanvasFont(13, 'bold');
-      ctx.fillText('UR ' + typeTitle(), textX, pad + 48);
+      ctx.font = uiCanvasFont(15, 'bold');
+      ctx.fillText('UR ' + typeTitle(), textX, pad + 56);
     }
 
     var pctStr = pctDisplayKey(st.pct);
     ctx.fillStyle = perfect ? '#ffe566' : complete ? '#ffd700' : '#f1f5f9';
-    ctx.font = uiCanvasFont(64, 'bold');
+    ctx.font = uiCanvasFont(76, 'bold');
     ctx.fillText(pctStr, pad, pctTop);
     var pctW = ctx.measureText(pctStr).width;
     ctx.fillStyle = perfect ? '#ffd700' : complete ? '#7af0ff' : '#00d4ff';
-    ctx.font = uiCanvasFont(22, 'bold');
-    ctx.fillText('%', pad + pctW + 4, pctTop + 28);
+    ctx.font = uiCanvasFont(26, 'bold');
+    ctx.fillText('%', pad + pctW + 6, pctTop + 32);
 
     if (complete) {
       var badge = perfect ? t('complete_max') : t('complete');
-      ctx.font = uiCanvasFont(11, 'bold');
-      var bw = Math.max(perfect ? 118 : 72, ctx.measureText(badge).width + 22);
-      var bx = pad + pctW + 28;
-      var by = pctTop + 14;
+      ctx.font = uiCanvasFont(13, 'bold');
+      var bw = Math.max(perfect ? 140 : 84, ctx.measureText(badge).width + 26);
+      var bx = pad + pctW + 32;
+      var by = pctTop + 16;
       var badgeGrad = ctx.createLinearGradient(bx, by, bx + bw, by);
       if (perfect) {
         badgeGrad.addColorStop(0, '#fff4c2');
@@ -2238,7 +2243,7 @@
         badgeGrad.addColorStop(0.45, '#ffd700');
         badgeGrad.addColorStop(1, '#00d4ff');
       }
-      drawRoundRect(ctx, bx, by, bw, 22, 11);
+      drawRoundRect(ctx, bx, by, bw, 26, 13);
       ctx.fillStyle = badgeGrad;
       ctx.fill();
       if (perfect) {
@@ -2248,16 +2253,16 @@
       }
       ctx.fillStyle = '#1a1400';
       ctx.textAlign = 'center';
-      ctx.fillText(badge, bx + bw / 2, by + 5);
+      ctx.fillText(badge, bx + bw / 2, by + 6);
       ctx.textAlign = 'left';
 
       if (perfect) {
         var subBadge = t('complete') + ' · ' + t('report_max_lb');
-        ctx.font = uiCanvasFont(10, 'bold');
-        var sbw = Math.max(140, ctx.measureText(subBadge).width + 18);
+        ctx.font = uiCanvasFont(12, 'bold');
+        var sbw = Math.max(160, ctx.measureText(subBadge).width + 20);
         var sbx = bx;
-        var sby = by + 26;
-        drawRoundRect(ctx, sbx, sby, sbw, 18, 9);
+        var sby = by + 30;
+        drawRoundRect(ctx, sbx, sby, sbw, 20, 10);
         ctx.fillStyle = 'rgba(15,23,42,0.92)';
         ctx.fill();
         ctx.strokeStyle = 'rgba(255,215,0,0.55)';
@@ -2282,7 +2287,7 @@
     );
 
     ctx.fillStyle = '#94a3b8';
-    ctx.font = uiCanvasFont(15, 'bold');
+    ctx.font = uiCanvasFont(17, 'bold');
     ctx.fillText(
       t('owned_line', { owned: st.owned, total: st.total, lb: st.lbTotal, lbMax: st.lbMax }),
       pad,
@@ -2349,9 +2354,9 @@
 
     var cardCols = 3;
     var cardRows = Math.ceil(shareStatCards.length / cardCols);
-    var cardGap = 8;
+    var cardGap = 10;
     var cardW = (gridW - cardGap * (cardCols - 1)) / cardCols;
-    var cardH = 78;
+    var cardH = 96;
     for (var sci = 0; sci < shareStatCards.length; sci++) {
       var sc = shareStatCards[sci];
       var scCol = sci % cardCols;
@@ -2442,12 +2447,12 @@
           limGrad.addColorStop(1, '#1d4ed8');
         }
         cctx.fillStyle = limGrad;
-        cctx.fillRect(0, 0, cell, 14);
+        cctx.fillRect(0, 0, cell, 18);
         cctx.fillStyle = '#fff';
-        cctx.font = uiCanvasFont(8, 'bold');
+        cctx.font = uiCanvasFont(11, 'bold');
         cctx.textAlign = 'center';
         cctx.textBaseline = 'top';
-        cctx.fillText(limitedWord(), cell / 2, 3);
+        cctx.fillText(limitedWord(), cell / 2, 4);
         cctx.textAlign = 'left';
       }
 
@@ -2458,11 +2463,11 @@
             : lb === 2
               ? [iconNeutral, iconNeutral, iconNone]
               : [iconMax, iconMax, iconMax];
-        var iw = 12;
-        var gapI = 1;
+        var iw = 16;
+        var gapI = 2;
         var totalW = slots.length * iw + (slots.length - 1) * gapI;
         var sx0 = (cell - totalW) / 2;
-        var sy = cell - 16;
+        var sy = cell - 22;
         slots.forEach(function (ic, si) {
           if (ic) cctx.drawImage(ic, sx0 + si * (iw + gapI), sy, iw, iw);
         });
@@ -2479,23 +2484,23 @@
       ctx.restore();
     });
 
-    var footY = gridY + gridH + 18;
+    var footY = gridY + gridH + 22;
     ctx.strokeStyle = '#1e293b';
     ctx.beginPath();
     ctx.moveTo(pad, footY);
     ctx.lineTo(W - pad, footY);
     ctx.stroke();
     ctx.fillStyle = '#00d4ff';
-    ctx.font = uiCanvasFont(12, 'bold');
+    ctx.font = uiCanvasFont(14, 'bold');
     var foot = siteUrl().replace(/^https?:\/\//, '');
-    var footIcon = 14;
-    var footGap = 5;
+    var footIcon = 16;
+    var footGap = 6;
     var footTextX = pad;
     if (langIcon) {
-      ctx.drawImage(langIcon, pad, footY + 10, footIcon, footIcon);
+      ctx.drawImage(langIcon, pad, footY + 12, footIcon, footIcon);
       footTextX = pad + footIcon + footGap;
     }
-    ctx.fillText(foot, footTextX, footY + 12);
+    ctx.fillText(foot, footTextX, footY + 14);
 
     return canvas;
   }
