@@ -10140,6 +10140,9 @@ tower_event_stage_appeal_reward_data = load_json(os.path.join(BASE_DIR, "m_tower
 reward_data = load_json(os.path.join(BASE_DIR, "m_reward.json"))
 item_data = load_json(os.path.join(BASE_DIR, "m_item.json"))
 unit_specialize_material_target_data = load_json(os.path.join(BASE_DIR, "m_unit_specialize_material_target.json"))
+character_specialize_material_target_data = load_json(
+    os.path.join(BASE_DIR, "m_character_specialize_material_target.json")
+)
 stage_master_data = load_json(os.path.join(BASE_DIR, "m_stage.json"))
 stage_drop_data = load_json(os.path.join(BASE_DIR, "m_stage_drop.json"))
 stage_drop_content_data = load_json(os.path.join(BASE_DIR, "m_stage_drop_content.json"))
@@ -10306,6 +10309,11 @@ item_info_map = create_item_info_map(item_data) if item_data else {}
 unit_specialize_material_target_map = (
     create_unit_specialize_material_target_map(unit_specialize_material_target_data)
     if unit_specialize_material_target_data else {}
+)
+# Same schema as unit specialize targets (ItemId → TargetTypeIndex / TargetId).
+character_specialize_material_target_map = (
+    create_unit_specialize_material_target_map(character_specialize_material_target_data)
+    if character_specialize_material_target_data else {}
 )
 profile_title_info_map = create_profile_title_info_map(profile_title_data) if profile_title_data else {}
 reward_set_rewards_map = {}
@@ -13553,6 +13561,41 @@ def _resolve_unit_thumb_for_specialize_material_item(item_id):
     uinfo = (unit_info_map or {}).get(uid, {})
     return find_list_thumb(uinfo.get('resource_ids', []), uid, 'images/unit_portraits') or ''
 
+def _resolve_character_id_for_specialize_material_item(item_id):
+    """Character-target SP badges (blank ResourceId) via m_character_specialize_material_target.
+
+    TargetTypeIndex 1 = character (same numeric as unit specialize type 1, different table).
+    """
+    info = (character_specialize_material_target_map or {}).get(normalize_id(item_id), {})
+    if not info:
+        return ''
+    if normalize_id(info.get('target_type_index')) != '1':
+        return ''
+    cid = normalize_id(info.get('target_id'))
+    return cid if cid != '0' else ''
+
+def _resolve_character_thumb_for_specialize_material_item(item_id):
+    cid = _resolve_character_id_for_specialize_material_item(item_id)
+    if not cid:
+        return ''
+    cinfo = (char_info_map or {}).get(cid, {})
+    return find_list_thumb(cinfo.get('resource_ids', []), cid, 'images/portraits') or ''
+
+def _resolve_character_sp_badge_layers(item_id):
+    """Character SP Conversion Badge with blank ResourceId → Sp_Chara plate + char thum.
+
+    Same layers as series badges (24000002XXXX), but center art is the targeted character
+    portrait instead of logo_l_series_XXXX (e.g. Chara Soon SP Conversion Badge).
+    """
+    thum = _resolve_character_thumb_for_specialize_material_item(item_id)
+    if not thum:
+        return '', '', ''
+    return (
+        game_image_public_url(_SP_SERIES_BADGE_BG),
+        game_image_public_url(thum),
+        game_image_public_url(_SP_SERIES_BADGE_FRAME),
+    )
+
 def _resolve_unit_thumb_for_limit_break_material_item(item_id):
     uid = (limit_break_item_unit_map or {}).get(normalize_id(item_id), '')
     if not uid:
@@ -13737,10 +13780,18 @@ def _decorate_reward_rows(rows, lc):
                         if not reward_icon:
                             reward_icon = sp_base
                     else:
-                        sp_unit = _resolve_unit_thumb_for_specialize_material_item(tid)
-                        if sp_unit:
-                            sp_chip_frame = _SP_CHIP_FRAME
-                            sp_chip_unit = sp_unit
+                        char_base, char_thum, char_frame = _resolve_character_sp_badge_layers(tid)
+                        if char_base and char_thum and char_frame:
+                            sp_chip_base = char_base
+                            sp_chip_unit = char_thum
+                            sp_chip_frame = char_frame
+                            if not reward_icon:
+                                reward_icon = char_base
+                        else:
+                            sp_unit = _resolve_unit_thumb_for_specialize_material_item(tid)
+                            if sp_unit:
+                                sp_chip_frame = _SP_CHIP_FRAME
+                                sp_chip_unit = sp_unit
             if lb_thumb:
                 if lb_use_limit_overlay:
                     lb_frames = {'base': '', 'bottom_frame': ''}

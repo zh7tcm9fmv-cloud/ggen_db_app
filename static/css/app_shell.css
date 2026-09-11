@@ -1653,9 +1653,23 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .map-cell.map-cell--event-area{background:repeating-linear-gradient(-45deg,rgba(99,102,241,.12),rgba(99,102,241,.12) 6px,rgba(99,102,241,.22) 6px,rgba(99,102,241,.22) 12px);outline:1px dashed rgba(129,140,248,.65)}
 .stage-reward-subhead{margin:12px 0 8px;font-size:12px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.04em}
 .stage-reward-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
-.stage-missions-grid{align-items:stretch}
-.stage-mission-reward-cell{display:flex;flex-direction:column;gap:8px;min-width:0}
-.stage-mission-reward-title{font-size:12px;font-weight:600;line-height:1.4;color:var(--text-secondary)}
+/* Challenge/ER missions: center the card row so 2–3 missions don’t hug the left edge. */
+.stage-missions-grid{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  align-items:stretch;
+  gap:10px;
+}
+.stage-mission-reward-cell{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  min-width:0;
+  flex:1 1 260px;
+  max-width:min(380px,100%);
+}
+.stage-mission-reward-title{font-size:12px;font-weight:600;line-height:1.4;color:var(--text-secondary);text-align:center}
 .stage-mission-reward-cell .ability-item{height:100%}
 .map-cell.map-cell--unit-origin{position:relative;overflow:visible;z-index:4}
 .map-cell-step-badge{position:absolute;top:2px;left:2px;z-index:6;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:linear-gradient(180deg,#f97316,#ea580c);color:#fff;font-size:11px;font-weight:800;line-height:18px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.45);pointer-events:none}

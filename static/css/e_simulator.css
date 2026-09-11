@@ -92,6 +92,10 @@
 .esim-chip-logo--sp{
   left:8%;top:30%;width:84%;height:40%;padding:0;z-index:3;
 }
+.esim-chip-thumb--sp-chara-face .esim-chip-logo,
+.esim-chip-logo--chara-face{
+  left:10%;top:12%;width:80%;height:76%;object-fit:cover;object-position:center top;padding:0;z-index:3;
+}
 /* Sp_Bg 124x142 at (2,2) on Sp_Frame 135x146 — keep native plate geometry. */
 .esim-chip-thumb--sp .esim-chip-plate{
   position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);

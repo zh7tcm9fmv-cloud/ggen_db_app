@@ -206,12 +206,21 @@
         );
       }
       if (isSeriesLogo) {
+        var isLogoMark = /Logo-Series|logo_l_series/i.test(unit);
         var thumbCls = isSeriesSp
           ? (isSpChara ? 'esim-chip-thumb--sp esim-chip-thumb--sp-chara' : 'esim-chip-thumb--sp')
           : 'esim-chip-thumb--ssp';
+        if (isSpChara && !isLogoMark) {
+          thumbCls += ' esim-chip-thumb--sp-chara-face';
+        }
         if (base) layers += chipLayer('esim-chip-base', base);
         if (frame) layers += chipLayer('esim-chip-frame', frame);
-        layers += chipLayer('esim-chip-logo' + (isSeriesSp ? ' esim-chip-logo--sp' : ''), unit);
+        layers += chipLayer(
+          'esim-chip-logo' +
+            (isSeriesSp ? ' esim-chip-logo--sp' : '') +
+            (isSpChara && !isLogoMark ? ' esim-chip-logo--chara-face' : ''),
+          unit
+        );
         if (isSeriesSp && !isSpChara) {
           layers = '<div class="esim-chip-plate">' + layers + '</div>';
         }
