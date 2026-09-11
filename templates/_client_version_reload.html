@@ -1,0 +1,69 @@
+{# Auto hard-reload when Railway deploys a new commit (iOS Safari has no hard-refresh). #}
+<script>
+window.__GGEN_APP_VERSION__ = {{ (app_js_version if app_js_version is defined else '') | tojson }};
+(function () {
+  var boot = window.__GGEN_APP_VERSION__ || '';
+  if (!boot) return;
+  var checking = false;
+  var reloading = false;
+  function scrubReloadParams() {
+    try {
+      var u = new URL(window.location.href);
+      var changed = false;
+      ['_v', '_ggen_reload'].forEach(function (k) {
+        if (u.searchParams.has(k)) {
+          u.searchParams.delete(k);
+          changed = true;
+        }
+      });
+      if (changed) {
+        window.history.replaceState(null, '', u.pathname + u.search + u.hash);
+      }
+    } catch (_) {}
+  }
+  scrubReloadParams();
+  function hardReload() {
+    if (reloading) return;
+    try {
+      var last = Number(sessionStorage.getItem('ggen_deploy_reload') || 0);
+      if (last && Date.now() - last < 10000) return;
+    } catch (_) {}
+    reloading = true;
+    try {
+      if (window.GgenUnitBestPilots && typeof window.GgenUnitBestPilots.clearLocaleCaches === 'function') {
+        window.GgenUnitBestPilots.clearLocaleCaches();
+      }
+    } catch (_) {}
+    try {
+      sessionStorage.setItem('ggen_deploy_reload', String(Date.now()));
+    } catch (_) {}
+    // Bust document HTTP cache (standalone pages may use max-age HTML).
+    try {
+      var u = new URL(window.location.href);
+      u.searchParams.delete('_v');
+      u.searchParams.set('_ggen_reload', String(Date.now()));
+      window.location.replace(u.pathname + u.search + u.hash);
+      return;
+    } catch (_) {}
+    window.location.reload();
+  }
+  function check() {
+    if (checking || reloading || document.hidden) return;
+    checking = true;
+    fetch('/api/client_version?_=' + Date.now(), { cache: 'no-store', credentials: 'same-origin' })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (d) {
+        if (d && d.v && d.v !== boot) hardReload();
+      })
+      .catch(function () {})
+      .finally(function () { checking = false; });
+  }
+  window.addEventListener('pageshow', check);
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) check();
+  });
+  window.addEventListener('focus', check);
+  setTimeout(check, 12000);
+  setInterval(check, 120000);
+})();
+</script>

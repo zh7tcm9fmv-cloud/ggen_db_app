@@ -79,6 +79,9 @@ def _inject_public_origin():
     return {
         'public_origin': origin,
         'og_image_url': origin + '/static/og/site-logo.png?v=20260910',
+        # Available on every template so deploy auto-reload + ?v= cache-bust work
+        # without each route having to pass app_js_version explicitly.
+        'app_js_version': _app_js_bundle_version_tag(),
     }
 
 # Bust cache when static assets change OR when a new git commit is deployed.

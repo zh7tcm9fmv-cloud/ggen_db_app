@@ -545,66 +545,10 @@ window.__GGEN_VIDEO_HASH_SUFFIX__ = '{{ video_hash_suffix | default("", true) }}
 window.__GGEN_VIDEO_UNIT_SUBDIR__ = '{{ video_unit_subdir | default("unit", true) }}';
 window.__GGEN_VIDEO_PROXY__ = {{ (video_proxy_enabled if video_proxy_enabled is defined else false)|tojson }};
 window.__GGEN_GAME_IMAGES_USE_CDN__ = {{ (true if image_cdn else (game_images_use_cdn if game_images_use_cdn is defined else false)) | tojson }};
-window.__GGEN_APP_VERSION__ = {{ app_js_version | tojson }};
 window.__GGEN_KOFI_PAGE_URL__ = {{ (kofi_page_url if kofi_page_url is defined else 'https://ko-fi.com/E1E21WL8RV') | tojson }};
 window.__SPI_DECISION_UI__ = true;
-(function () {
-  // Auto hard-reload when Railway deploys a new commit (iOS Safari has no hard-refresh).
-  var boot = window.__GGEN_APP_VERSION__ || '';
-  if (!boot) return;
-  var checking = false;
-  var reloading = false;
-  function hardReload() {
-    if (reloading) return;
-    reloading = true;
-    try {
-      if (window.GgenUnitBestPilots && typeof window.GgenUnitBestPilots.clearLocaleCaches === 'function') {
-        window.GgenUnitBestPilots.clearLocaleCaches();
-      }
-    } catch (_) {}
-    // Never put Date.now() in the address bar — it sticks forever and looks like garbage query junk.
-    try {
-      var u = new URL(window.location.href);
-      if (u.searchParams.has('_v')) {
-        u.searchParams.delete('_v');
-        window.history.replaceState(null, '', u.pathname + u.search + u.hash);
-      }
-    } catch (_) {}
-    try {
-      sessionStorage.setItem('ggen_deploy_reload', String(Date.now()));
-    } catch (_) {}
-    window.location.reload();
-  }
-  // Strip leftover ?_v= from older hard-reload builds.
-  try {
-    var scrub = new URL(window.location.href);
-    if (scrub.searchParams.has('_v')) {
-      scrub.searchParams.delete('_v');
-      window.history.replaceState(null, '', scrub.pathname + scrub.search + scrub.hash);
-    }
-  } catch (_) {}
-  function check() {
-    if (checking || reloading || document.hidden) return;
-    checking = true;
-    fetch('/api/client_version?_=' + Date.now(), { cache: 'no-store', credentials: 'same-origin' })
-      .then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (d) {
-        if (d && d.v && d.v !== boot) hardReload();
-      })
-      .catch(function () {})
-      .finally(function () { checking = false; });
-  }
-  // BFCache / app-switch restore (common on iOS)
-  window.addEventListener('pageshow', check);
-  document.addEventListener('visibilitychange', function () {
-    if (!document.hidden) check();
-  });
-  window.addEventListener('focus', check);
-  // After browse first paint — avoid competing with /api/characters on cold start
-  setTimeout(check, 12000);
-  setInterval(check, 120000);
-})();
 </script>
+{% include '_client_version_reload.html' %}
 <script>
 window.__GGEN_LAZY__=(function(){
   var v={{ app_js_version | tojson }};
