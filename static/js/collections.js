@@ -61,11 +61,15 @@
   var COL_T = {
     EN: {
       page_title: 'Hangar Collection — GGen Eternal Database',
-      back: '← Database',
       eyebrow: 'UR Acquisition Review',
       title: 'Hangar Collection',
       sub: 'Track UR unit and supporter possession\nTap a portrait to cycle not possessed → Limit Break 0 → MAX Limit Break.\nPossessing a unit covers its character',
       lang: 'Lang',
+      support_alipay: 'Support on AlipayHK',
+      support_kofi: 'Support on Ko-fi',
+      alipay_modal_title: 'AlipayHK',
+      alipay_modal_hint: 'Scan the QR code with AlipayHK to pay HK$50.00.',
+      alipay_close: 'Close',
       units: 'Units',
       supporters: 'Supporters',
       role_all: 'All',
@@ -173,11 +177,15 @@
     },
     JA: {
       page_title: '格納庫コレクション — GGen Eternal Database',
-      back: '← データベース',
       eyebrow: 'UR取得進捗',
       title: '格納庫コレクション',
       sub: 'URユニット／サポーターの所持を記録\nタップで未所持 → 限界突破0 → 限界突破MAX。\nユニット所持はキャラクター所持も含みます',
       lang: '言語',
+      support_alipay: 'AlipayHKで支援',
+      support_kofi: 'Ko-fiで支援',
+      alipay_modal_title: 'AlipayHK',
+      alipay_modal_hint: 'AlipayHKアプリでQRコードを読み取り、HK$50.00をお支払いください。',
+      alipay_close: '閉じる',
       units: 'ユニット',
       supporters: 'サポーター',
       role_all: 'すべて',
@@ -285,11 +293,15 @@
     },
     TW: {
       page_title: '格納庫收藏 — GGen Eternal Database',
-      back: '← 資料庫',
       eyebrow: 'UR獲取進度',
       title: '格納庫收藏',
       sub: '記錄 UR 單位與支援人員持有狀態\n點選肖像可循環：未持有 → 突破界限 0 → 突破界限 MAX。\n持有單位即視為持有角色',
       lang: '語言',
+      support_alipay: '以 AlipayHK 支持',
+      support_kofi: '在 Ko-fi 支持',
+      alipay_modal_title: 'AlipayHK',
+      alipay_modal_hint: '請使用 AlipayHK 掃描二維碼付款（港幣 50.00 元）。',
+      alipay_close: '關閉',
       units: '單位',
       supporters: '支援人員',
       role_all: '全部',
@@ -396,11 +408,15 @@
     },
     HK: {
       page_title: '格納庫收藏 — GGen Eternal Database',
-      back: '← 資料庫',
       eyebrow: 'UR獲取進度',
       title: '格納庫收藏',
       sub: '記錄 UR 單位與支援人員持有狀態\n點選肖像可循環：未持有 → 突破界限 0 → 突破界限 MAX。\n持有單位即視為持有角色',
       lang: '語言',
+      support_alipay: '以 AlipayHK 支持',
+      support_kofi: '在 Ko-fi 支持',
+      alipay_modal_title: 'AlipayHK',
+      alipay_modal_hint: '請使用 AlipayHK 掃描二維碼付款（港幣 50.00 元）。',
+      alipay_close: '關閉',
       units: '單位',
       supporters: '支援人員',
       role_all: '全部',
@@ -734,10 +750,19 @@
       if (typeof window.__ggenInjectBrandFonts === 'function') window.__ggenInjectBrandFonts();
     } catch (e) {}
     document.title = t('page_title');
-    setText('colBack', t('back'));
     setText('colEyebrow', t('eyebrow'));
     setText('colTitle', t('title'));
     setText('colSub', t('sub'));
+    setText('alipayhkHeaderLabel', t('support_alipay'));
+    setText('kofiHeaderLabel', t('support_kofi'));
+    setText('alipayhkModalTitle', t('alipay_modal_title'));
+    setText('alipayhkModalHint', t('alipay_modal_hint'));
+    var alipayClose = document.getElementById('alipayhkModalCloseBtn');
+    if (alipayClose) alipayClose.setAttribute('aria-label', t('alipay_close'));
+    var alipayBtn = document.getElementById('alipayhkHeaderBtn');
+    if (alipayBtn) alipayBtn.setAttribute('aria-label', t('support_alipay'));
+    var kofiLink = document.getElementById('kofiHeaderLink');
+    if (kofiLink) kofiLink.setAttribute('aria-label', t('support_kofi'));
     setText('colTabUnitsLbl', t('units'));
     setText('colTabSupportersLbl', t('supporters'));
     var unitTab = document.getElementById('colTabUnits');
@@ -841,6 +866,24 @@
       closeLangDropdown();
     }
   }
+
+  function openAlipayhkModal() {
+    var ov = document.getElementById('alipayhkOverlay');
+    if (!ov) return;
+    closeLangDropdown();
+    ov.classList.add('active');
+    ov.setAttribute('aria-hidden', 'false');
+  }
+
+  function closeAlipayhkModal() {
+    var ov = document.getElementById('alipayhkOverlay');
+    if (!ov || !ov.classList.contains('active')) return;
+    ov.classList.remove('active');
+    ov.setAttribute('aria-hidden', 'true');
+  }
+
+  window.openAlipayhkModal = openAlipayhkModal;
+  window.closeAlipayhkModal = closeAlipayhkModal;
 
   function setLang(next) {
     var lc = normLang(next);
