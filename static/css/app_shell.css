@@ -1652,7 +1652,59 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .map-cell.enemy.map-cell--story-boss{box-shadow:inset 0 0 0 2px rgba(244,114,182,.9),0 0 12px rgba(236,72,153,.4)}
 .map-cell.map-cell--event-area{background:repeating-linear-gradient(-45deg,rgba(99,102,241,.12),rgba(99,102,241,.12) 6px,rgba(99,102,241,.22) 6px,rgba(99,102,241,.22) 12px);outline:1px dashed rgba(129,140,248,.65)}
 .stage-reward-subhead{margin:12px 0 8px;font-size:12px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.04em}
-.stage-reward-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.stage-reward-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:10px;
+  align-items:start;
+}
+/* Compact reward chips — don’t inherit tall ability-card padding / stretch gaps. */
+.stage-reward-grid>.ability-item{
+  padding:10px 12px;
+  margin:0;
+  min-height:0;
+  height:auto;
+  align-self:start;
+  box-sizing:border-box;
+}
+.stage-reward-grid>.ability-item>.stage-reward-row-body{
+  flex:1;
+  min-width:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+/* Stage reward / capturable / missions: fill the rarity plate like Latest Release (no letterbox gaps). */
+.list-thumb-composite--fill.list-thumb-has-frame .list-thumb-portrait-wrap,
+.stage-reward-grid .list-thumb-has-frame .list-thumb-portrait-wrap,
+.stage-missions-grid .list-thumb-has-frame .list-thumb-portrait-wrap,
+.stage-capturable-grid .list-thumb-has-frame .list-thumb-portrait-wrap{
+  top:5px;left:5px;right:5px;bottom:5px;
+  align-items:stretch;
+  justify-content:stretch;
+}
+.list-thumb-composite--fill .list-thumb-portrait-wrap .list-thumb-portrait,
+.stage-reward-grid .list-thumb-portrait-wrap .list-thumb-portrait,
+.stage-missions-grid .list-thumb-portrait-wrap .list-thumb-portrait,
+.stage-capturable-grid .list-thumb-portrait-wrap .list-thumb-portrait{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  max-width:none;
+  max-height:none;
+  object-fit:cover;
+  object-position:center top;
+  flex:none;
+}
+.list-thumb-composite--fill.list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait,
+.stage-reward-grid .list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait,
+.stage-missions-grid .list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait,
+.stage-capturable-grid .list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait{
+  max-width:none;
+  max-height:none;
+}
 /* Challenge/ER missions: center the card row so 2–3 missions don’t hug the left edge. */
 .stage-missions-grid{
   display:flex;
@@ -1670,7 +1722,20 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   max-width:min(380px,100%);
 }
 .stage-mission-reward-title{font-size:12px;font-weight:600;line-height:1.4;color:var(--text-secondary);text-align:center}
-.stage-mission-reward-cell .ability-item{height:100%}
+.stage-mission-reward-cell .ability-item{
+  height:auto;
+  padding:10px 12px;
+  margin:0;
+  min-height:0;
+}
+.stage-mission-reward-cell .stage-reward-row-body{
+  flex:1;
+  min-width:0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
 .map-cell.map-cell--unit-origin{position:relative;overflow:visible;z-index:4}
 .map-cell-step-badge{position:absolute;top:2px;left:2px;z-index:6;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:linear-gradient(180deg,#f97316,#ea580c);color:#fff;font-size:11px;font-weight:800;line-height:18px;text-align:center;box-shadow:0 1px 4px rgba(0,0,0,.45);pointer-events:none}
 .map-unit-dot.enemy,.map-unit-dot.guest,.map-unit-dot.friendly,.map-unit-dot.gimmick{overflow:visible}

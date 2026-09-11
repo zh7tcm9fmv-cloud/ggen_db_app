@@ -13706,7 +13706,9 @@ def _decorate_reward_rows(rows, lc):
         elif rt == '2':
             c = get_npc_character_display(tid, {}, lc)
             reward_name = str(c.get('name') or f"Character {tid}")
-            reward_icon = str(c.get('portrait') or '')
+            # List/reward chips need Trait/thum (same as Latest Release / browse), not full cb_ bust —
+            # full portraits letterbox inside the rarity frame on stage-reward thumbs.
+            reward_icon = str(c.get('thum') or c.get('portrait') or '')
             cinfo = char_info_map.get(tid, {})
             cri = normalize_id(cinfo.get('rarity', '1'))
             crole = normalize_id(cinfo.get('role', '0'))
@@ -13780,18 +13782,20 @@ def _decorate_reward_rows(rows, lc):
                         if not reward_icon:
                             reward_icon = sp_base
                     else:
-                        char_base, char_thum, char_frame = _resolve_character_sp_badge_layers(tid)
-                        if char_base and char_thum and char_frame:
-                            sp_chip_base = char_base
-                            sp_chip_unit = char_thum
-                            sp_chip_frame = char_frame
-                            if not reward_icon:
-                                reward_icon = char_base
-                        else:
-                            sp_unit = _resolve_unit_thumb_for_specialize_material_item(tid)
-                            if sp_unit:
-                                sp_chip_frame = _SP_CHIP_FRAME
-                                sp_chip_unit = sp_unit
+                        # Prefer baked spm_* ResourceId; composite only when master art is blank.
+                        if not rid_item:
+                            char_base, char_thum, char_frame = _resolve_character_sp_badge_layers(tid)
+                            if char_base and char_thum and char_frame:
+                                sp_chip_base = char_base
+                                sp_chip_unit = char_thum
+                                sp_chip_frame = char_frame
+                                if not reward_icon:
+                                    reward_icon = char_base
+                            else:
+                                sp_unit = _resolve_unit_thumb_for_specialize_material_item(tid)
+                                if sp_unit:
+                                    sp_chip_frame = _SP_CHIP_FRAME
+                                    sp_chip_unit = sp_unit
             if lb_thumb:
                 if lb_use_limit_overlay:
                     lb_frames = {'base': '', 'bottom_frame': ''}
