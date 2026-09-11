@@ -1617,11 +1617,11 @@
   },
   {
     "id": 141200000100720101,
-    "value": "When HP is 75% or below,\nincrease own ATK by 3%."
+    "value": "When HP is 75% or below,\nincrease own ATK by 5%."
   },
   {
     "id": 141200000100720201,
-    "value": "When HP is 75% or below,\nincrease own ATK by 5%."
+    "value": "When HP is 75% or below,\nincrease own ATK by 7%."
   },
   {
     "id": 141200000100720301,
@@ -1629,11 +1629,11 @@
   },
   {
     "id": 141200000100720401,
-    "value": "When HP is 75% or below,\nincrease own ATK by 15%."
+    "value": "When HP is 75% or below,\nincrease own ATK by 12%."
   },
   {
     "id": 141200000100720501,
-    "value": "When HP is 75% or below,\nincrease own ATK by 20%."
+    "value": "When HP is 75% or below,\nincrease own ATK by 15%."
   },
   {
     "id": 141200000100730101,
@@ -8409,7 +8409,7 @@
   },
   {
     "id": 141200000202540102,
-    "value": "When piloting Halphas Gundam (EX),\nweapons gain the “Reduce MP by 1 on hit (enemy)” effect."
+    "value": "When piloting Halphas Gundam (EX),\nweapons gain the “Decrease enemy MP by 1 on hit” effect."
   },
   {
     "id": 141200000202540103,

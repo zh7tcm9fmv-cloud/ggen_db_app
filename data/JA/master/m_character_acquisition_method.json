@@ -8210,6 +8210,11 @@
     "TargetId": 1095002900
   },
   {
+    "CharacterId": 1095002901,
+    "AcquisitionMethodTypeIndex": 26,
+    "TargetId": 9500204
+  },
+  {
     "CharacterId": 1095003200,
     "AcquisitionMethodTypeIndex": 18,
     "TargetId": 1095003200

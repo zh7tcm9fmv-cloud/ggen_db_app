@@ -672,6 +672,82 @@
     "value": "Get <color=#4C81F8>Unit</color> EXP x1.5 (from the \"Mobile Suit Gundam F91\" series)"
   },
   {
+    "id": 250200000126092001,
+    "value": "AP consumption is reduced by 50% in the stages of the \"Mobile Suit Gundam\" series"
+  },
+  {
+    "id": 250200000126092002,
+    "value": "AP consumption is reduced by 50% in the stages of the \"Mobile Suit Z Gundam: A New Translation\" series"
+  },
+  {
+    "id": 250200000126092003,
+    "value": "AP consumption is reduced by 50% in the stages of the \"Mobile Suit Gundam ZZ\" series"
+  },
+  {
+    "id": 250200000126092004,
+    "value": "AP consumption is reduced by 50% in the stages of the \"Mobile Suit Gundam: Char's Counterattack\" series"
+  },
+  {
+    "id": 250200000126092005,
+    "value": "AP consumption is reduced by 50% in the stages of the \"Mobile Suit Gundam Unicorn\" series"
+  },
+  {
+    "id": 250200000126092006,
+    "value": "AP consumption is reduced by 50% in the stages of the \"Mobile Suit Gundam Narrative\" series"
+  },
+  {
+    "id": 250200000126092007,
+    "value": "AP consumption is reduced by 50% in the stages of the \"Mobile Suit Gundam HATHAWAY\" series"
+  },
+  {
+    "id": 250200000126092008,
+    "value": "AP consumption is reduced by 50% in the stages of the \"Mobile Suit Gundam F91\" series"
+  },
+  {
+    "id": 250200000126092009,
+    "value": "AP consumption is reduced by 50% in the stages of the \"Mobile Suit Gundam SEED\" series"
+  },
+  {
+    "id": 250200000126092010,
+    "value": "AP consumption is reduced by 50% in the stages of the \"Mobile Suit Gundam SEED Recollection\" series"
+  },
+  {
+    "id": 250200000126092011,
+    "value": "AP consumption is reduced by 50% in the stages of the \"Mobile Suit Gundam SEED Destiny\" series"
+  },
+  {
+    "id": 250200000126092012,
+    "value": "AP consumption is reduced by 50% in the stages of the \"After War Gundam X\" series"
+  },
+  {
+    "id": 250200000126092013,
+    "value": "AP consumption is reduced by 50% in the stages of the \"Mobile Suit Gundam Iron-Blooded Orphans\" series"
+  },
+  {
+    "id": 250200000126092014,
+    "value": "AP consumption is reduced by 50% in the stages of the \"Mobile Suit Gundam Wing\" series"
+  },
+  {
+    "id": 250200000126092015,
+    "value": "AP consumption is reduced by 50% in the stages of the \"Mobile Suit Gundam Wing Endless Waltz\" series"
+  },
+  {
+    "id": 250200000126092016,
+    "value": "AP consumption is reduced by 50% in the stages of the \"Mobile Suit Gundam the Witch from Mercury\" series"
+  },
+  {
+    "id": 250200000126092017,
+    "value": "AP consumption is reduced by 50% in the stages of the \"Mobile Fighter G Gundam\" series"
+  },
+  {
+    "id": 250200000126092018,
+    "value": "AP consumption is reduced by 50% in the stages of the \"Mobile Suit Gundam 00\" series"
+  },
+  {
+    "id": 250200000126092019,
+    "value": "AP consumption is reduced by 50% in the stages of the \"Mobile Suit Gundam AGE\" series"
+  },
+  {
     "id": 250200000425105001,
     "value": "Upgrade Stages (Capital) Challenge Limit 1Up"
   },

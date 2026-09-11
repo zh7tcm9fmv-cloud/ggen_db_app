@@ -1,0 +1,152 @@
+[
+  {
+    "Id": 90474237,
+    "MissionGroupId": 21002001,
+    "GameEventConditionId": 310021000501
+  },
+  {
+    "Id": 309191054,
+    "MissionGroupId": 30001901,
+    "GameEventConditionId": 300010200901
+  },
+  {
+    "Id": 454393152,
+    "MissionGroupId": 30002001,
+    "GameEventConditionId": 300010401201
+  },
+  {
+    "Id": 459564615,
+    "MissionGroupId": 21001901,
+    "GameEventConditionId": 310021000301
+  },
+  {
+    "Id": 472855136,
+    "MissionGroupId": 9501901,
+    "GameEventConditionId": 310009500201
+  },
+  {
+    "Id": 671410988,
+    "MissionGroupId": 101501,
+    "GameEventConditionId": 300010200101
+  },
+  {
+    "Id": 893564539,
+    "MissionGroupId": 9502001,
+    "GameEventConditionId": 310009500301
+  },
+  {
+    "Id": 1033582213,
+    "MissionGroupId": 101601,
+    "GameEventConditionId": 300010200301
+  },
+  {
+    "Id": 1148501481,
+    "MissionGroupId": 9502101,
+    "GameEventConditionId": 310009500601
+  },
+  {
+    "Id": 1266734247,
+    "MissionGroupId": 30002001,
+    "GameEventConditionId": 300010201101
+  },
+  {
+    "Id": 1293773645,
+    "MissionGroupId": 8101601,
+    "GameEventConditionId": 310008100201
+  },
+  {
+    "Id": 1373635590,
+    "MissionGroupId": 8101701,
+    "GameEventConditionId": 310008100401
+  },
+  {
+    "Id": 1421454318,
+    "MissionGroupId": 101701,
+    "GameEventConditionId": 300010200501
+  },
+  {
+    "Id": 1589966665,
+    "MissionGroupId": 30001901,
+    "GameEventConditionId": 300010301001
+  },
+  {
+    "Id": 2022296257,
+    "MissionGroupId": 30001801,
+    "GameEventConditionId": 300010200802
+  },
+  {
+    "Id": 2228034988,
+    "MissionGroupId": 21002001,
+    "GameEventConditionId": 310021000601
+  },
+  {
+    "Id": 2307941245,
+    "MissionGroupId": 30001801,
+    "GameEventConditionId": 300010200701
+  },
+  {
+    "Id": 2378828678,
+    "MissionGroupId": 8101801,
+    "GameEventConditionId": 310008100501
+  },
+  {
+    "Id": 2597125366,
+    "MissionGroupId": 21001901,
+    "GameEventConditionId": 310021000401
+  },
+  {
+    "Id": 2630833576,
+    "MissionGroupId": 21001801,
+    "GameEventConditionId": 310021000101
+  },
+  {
+    "Id": 2651050033,
+    "MissionGroupId": 9501901,
+    "GameEventConditionId": 310009500101
+  },
+  {
+    "Id": 2716306925,
+    "MissionGroupId": 101601,
+    "GameEventConditionId": 300010300401
+  },
+  {
+    "Id": 2828817533,
+    "MissionGroupId": 101501,
+    "GameEventConditionId": 300010200201
+  },
+  {
+    "Id": 2878420386,
+    "MissionGroupId": 9502001,
+    "GameEventConditionId": 310009500401
+  },
+  {
+    "Id": 2937689322,
+    "MissionGroupId": 101701,
+    "GameEventConditionId": 300010300601
+  },
+  {
+    "Id": 3431334396,
+    "MissionGroupId": 8101601,
+    "GameEventConditionId": 310008100101
+  },
+  {
+    "Id": 3541431499,
+    "MissionGroupId": 8101801,
+    "GameEventConditionId": 310008100601
+  },
+  {
+    "Id": 3551830487,
+    "MissionGroupId": 8101701,
+    "GameEventConditionId": 310008100301
+  },
+  {
+    "Id": 3822946040,
+    "MissionGroupId": 9502101,
+    "GameEventConditionId": 310009500501
+  },
+  {
+    "Id": 4251356313,
+    "MissionGroupId": 21001801,
+    "GameEventConditionId": 310021000201
+  }
+]

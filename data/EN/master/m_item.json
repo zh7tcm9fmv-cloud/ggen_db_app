@@ -5390,6 +5390,20 @@
     "IsPrecious": false
   },
   {
+    "Id": 171095003460,
+    "ResourceId": "",
+    "ItemTypeIndex": 3,
+    "RarityTypeIndex": 4,
+    "NameLanguageId": 150100171095003460,
+    "DescriptionLanguageId": 150200171095003460,
+    "MaxCapacity": 9999,
+    "ScheduleId": 2609209901,
+    "EffectValue": 0,
+    "IsHiddenIfEmpty": false,
+    "SortOrder": 120999900,
+    "IsPrecious": false
+  },
+  {
     "Id": 171095003500,
     "ResourceId": "",
     "ItemTypeIndex": 3,
@@ -21588,6 +21602,20 @@
     "IsPrecious": false
   },
   {
+    "Id": 240000010950,
+    "ResourceId": "",
+    "ItemTypeIndex": 23,
+    "RarityTypeIndex": 5,
+    "NameLanguageId": 150100240000010950,
+    "DescriptionLanguageId": 150200240000010950,
+    "MaxCapacity": 9999,
+    "ScheduleId": 2609203301,
+    "EffectValue": 0,
+    "IsHiddenIfEmpty": false,
+    "SortOrder": 120010950,
+    "IsPrecious": false
+  },
+  {
     "Id": 240000011112,
     "ResourceId": "spm_0004",
     "ItemTypeIndex": 23,
@@ -21826,6 +21854,20 @@
     "IsPrecious": false
   },
   {
+    "Id": 240000020950,
+    "ResourceId": "",
+    "ItemTypeIndex": 31,
+    "RarityTypeIndex": 5,
+    "NameLanguageId": 150100240000020950,
+    "DescriptionLanguageId": 150200240000020950,
+    "MaxCapacity": 9999,
+    "ScheduleId": 2609203301,
+    "EffectValue": 0,
+    "IsHiddenIfEmpty": false,
+    "SortOrder": 120030950,
+    "IsPrecious": false
+  },
+  {
     "Id": 240000021002,
     "ResourceId": "spm_0004",
     "ItemTypeIndex": 23,
@@ -21952,6 +21994,20 @@
     "IsPrecious": false
   },
   {
+    "Id": 241095003460,
+    "ResourceId": "",
+    "ItemTypeIndex": 23,
+    "RarityTypeIndex": 5,
+    "NameLanguageId": 150100241095003460,
+    "DescriptionLanguageId": 150200241095003460,
+    "MaxCapacity": 9999,
+    "ScheduleId": 2609203301,
+    "EffectValue": 0,
+    "IsHiddenIfEmpty": false,
+    "SortOrder": 120050950,
+    "IsPrecious": false
+  },
+  {
     "Id": 241210001160,
     "ResourceId": "",
     "ItemTypeIndex": 23,
@@ -22047,6 +22103,20 @@
     "EffectValue": 0,
     "IsHiddenIfEmpty": false,
     "SortOrder": 120060800,
+    "IsPrecious": false
+  },
+  {
+    "Id": 251095002901,
+    "ResourceId": "",
+    "ItemTypeIndex": 31,
+    "RarityTypeIndex": 5,
+    "NameLanguageId": 150100251095002901,
+    "DescriptionLanguageId": 150200251095002901,
+    "MaxCapacity": 9999,
+    "ScheduleId": 2609203301,
+    "EffectValue": 0,
+    "IsHiddenIfEmpty": false,
+    "SortOrder": 120060950,
     "IsPrecious": false
   },
   {
@@ -22162,6 +22232,34 @@
     "IsPrecious": false
   },
   {
+    "Id": 270001095001,
+    "ResourceId": "hbm_map_bg_0188_01",
+    "ItemTypeIndex": 40,
+    "RarityTypeIndex": 4,
+    "NameLanguageId": 150100270001095001,
+    "DescriptionLanguageId": 150200270001095001,
+    "MaxCapacity": 1,
+    "ScheduleId": 2609203301,
+    "EffectValue": 0,
+    "IsHiddenIfEmpty": false,
+    "SortOrder": 0,
+    "IsPrecious": false
+  },
+  {
+    "Id": 270001095015,
+    "ResourceId": "hbm_map_bg_0199_01",
+    "ItemTypeIndex": 40,
+    "RarityTypeIndex": 4,
+    "NameLanguageId": 150100270001095015,
+    "DescriptionLanguageId": 150200270001095015,
+    "MaxCapacity": 1,
+    "ScheduleId": 2609203301,
+    "EffectValue": 0,
+    "IsHiddenIfEmpty": false,
+    "SortOrder": 0,
+    "IsPrecious": false
+  },
+  {
     "Id": 270001210012,
     "ResourceId": "hbm_map_bg_0105_01",
     "ItemTypeIndex": 40,
@@ -22254,6 +22352,20 @@
     "DescriptionLanguageId": 150200280208100001,
     "MaxCapacity": 1,
     "ScheduleId": 2606301801,
+    "EffectValue": 0,
+    "IsHiddenIfEmpty": false,
+    "SortOrder": 0,
+    "IsPrecious": false
+  },
+  {
+    "Id": 280209500001,
+    "ResourceId": "sha_i_280209500001",
+    "ItemTypeIndex": 36,
+    "RarityTypeIndex": 4,
+    "NameLanguageId": 150100280209500001,
+    "DescriptionLanguageId": 150200280209500001,
+    "MaxCapacity": 1,
+    "ScheduleId": 2609203301,
     "EffectValue": 0,
     "IsHiddenIfEmpty": false,
     "SortOrder": 0,

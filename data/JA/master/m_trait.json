@@ -7256,7 +7256,7 @@
   {
     "Id": 100720101,
     "TraitTypeIndex": 7,
-    "TraitValue": 3,
+    "TraitValue": 5,
     "DescriptionLanguageId": 141200000100720101,
     "ActionTimingTypeIndex": 0,
     "Limit": 0,
@@ -7274,7 +7274,7 @@
   {
     "Id": 100720201,
     "TraitTypeIndex": 7,
-    "TraitValue": 5,
+    "TraitValue": 7,
     "DescriptionLanguageId": 141200000100720201,
     "ActionTimingTypeIndex": 0,
     "Limit": 0,
@@ -7310,7 +7310,7 @@
   {
     "Id": 100720401,
     "TraitTypeIndex": 7,
-    "TraitValue": 15,
+    "TraitValue": 12,
     "DescriptionLanguageId": 141200000100720401,
     "ActionTimingTypeIndex": 0,
     "Limit": 0,
@@ -7328,7 +7328,7 @@
   {
     "Id": 100720501,
     "TraitTypeIndex": 7,
-    "TraitValue": 20,
+    "TraitValue": 15,
     "DescriptionLanguageId": 141200000100720501,
     "ActionTimingTypeIndex": 0,
     "Limit": 0,

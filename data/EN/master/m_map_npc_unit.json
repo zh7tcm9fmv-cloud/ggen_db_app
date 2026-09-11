@@ -340797,7 +340797,7 @@
     "Movement": 4,
     "SfsUnitId": 0,
     "MapNpcUnitAbilitySetId": 0,
-    "MapNpcUnitWeaponSetId": 10000001001000201
+    "MapNpcUnitWeaponSetId": 10000001001000301
   },
   {
     "MapNpcId": 990000101502000003,
@@ -340813,7 +340813,7 @@
     "Movement": 4,
     "SfsUnitId": 0,
     "MapNpcUnitAbilitySetId": 0,
-    "MapNpcUnitWeaponSetId": 10000001001000301
+    "MapNpcUnitWeaponSetId": 10000001001000201
   },
   {
     "MapNpcId": 990000101502000004,

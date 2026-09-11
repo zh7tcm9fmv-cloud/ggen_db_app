@@ -4530,6 +4530,12 @@
     "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
   },
   {
+    "Id": 900219,
+    "WeaponEffectPrefabPairSetId": 900219,
+    "WeaponEffectId": "ef_mpw_095_02_multilockon_quinmantha",
+    "DamagedEffectId": "ef_mpd_0026_01_mapweapon"
+  },
+  {
     "Id": 900221,
     "WeaponEffectPrefabPairSetId": 900221,
     "WeaponEffectId": "ef_mpw_004_06_threelinemegabeam_hyakushikikai",

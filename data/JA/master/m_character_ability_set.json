@@ -4842,25 +4842,33 @@
   {
     "CharacterId": 1095002901,
     "SortOrder": 1,
-    "AbilityId": 2005002,
+    "AbilityId": 2012903,
     "RequiredLevel": 1,
-    "SpAbilityId": 0,
+    "SpAbilityId": 2012903,
     "ScheduleId": 0
   },
   {
     "CharacterId": 1095002901,
     "SortOrder": 2,
-    "AbilityId": 2002302,
+    "AbilityId": 2002303,
     "RequiredLevel": 10,
-    "SpAbilityId": 0,
+    "SpAbilityId": 2002303,
     "ScheduleId": 0
   },
   {
     "CharacterId": 1095002901,
     "SortOrder": 3,
-    "AbilityId": 2005901,
+    "AbilityId": 2016101,
     "RequiredLevel": 45,
-    "SpAbilityId": 0,
+    "SpAbilityId": 2016101,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1095002901,
+    "SortOrder": 4,
+    "AbilityId": 2000301,
+    "RequiredLevel": 80,
+    "SpAbilityId": 2000301,
     "ScheduleId": 0
   },
   {

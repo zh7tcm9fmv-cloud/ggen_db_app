@@ -13780,6 +13780,26 @@
     "WeaponQuoteCategory": ""
   },
   {
+    "Id": 1095002901009,
+    "CharacterCutInSetId": 1095002901,
+    "PlayTimingTypeIndex": 1,
+    "PlayPriority": 0,
+    "ResourceId": "H0101",
+    "QuoteLanguageId": 100701095002901009,
+    "OverrideCutInMilliseconds": 0,
+    "WeaponQuoteCategory": "D：汎用サイコミュ"
+  },
+  {
+    "Id": 1095002901010,
+    "CharacterCutInSetId": 1095002901,
+    "PlayTimingTypeIndex": 6,
+    "PlayPriority": 0,
+    "ResourceId": "H0101",
+    "QuoteLanguageId": 100701095002901010,
+    "OverrideCutInMilliseconds": 0,
+    "WeaponQuoteCategory": "D：汎用サイコミュ"
+  },
+  {
     "Id": 1095003000001,
     "CharacterCutInSetId": 1095003000,
     "PlayTimingTypeIndex": 1,

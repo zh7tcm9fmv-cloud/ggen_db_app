@@ -3286,6 +3286,11 @@
   },
   {
     "UnitBattleMovieId": "g0950u03400",
+    "WeaponBattleMovieId": "3",
+    "BattleMovieReadIdx": 3093
+  },
+  {
+    "UnitBattleMovieId": "g0950u03400",
     "WeaponBattleMovieId": "4",
     "BattleMovieReadIdx": 410
   },

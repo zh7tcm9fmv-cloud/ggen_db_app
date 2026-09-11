@@ -7,6 +7,7 @@
     "MemoryResourceId": "lite_scenario_event_memory_230001",
     "TopResourceId": "lite_scenario_event_top_230001",
     "TopBgLogoResourceId1": "lite_scenario_event_top_title_logo_230001",
-    "BgmResourceId": ""
+    "BgmResourceId": "",
+    "Unknown_Col_8": false
   }
 ]

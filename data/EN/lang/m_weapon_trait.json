@@ -11893,39 +11893,39 @@
   },
   {
     "id": 140800000300570101,
-    "value": "Decrease MP by 1."
+    "value": "Decrease enemy MP by 1 on hit."
   },
   {
     "id": 140800000300570201,
-    "value": "Decrease MP by 2."
+    "value": "Decrease enemy MP by 2 on hit."
   },
   {
     "id": 140800000300570301,
-    "value": "Decrease MP by 3."
+    "value": "Decrease enemy MP by 3 on hit."
   },
   {
     "id": 140800000300570401,
-    "value": "Decrease MP by 4."
+    "value": "Decrease enemy MP by 4 on hit."
   },
   {
     "id": 140800000300570501,
-    "value": "Decrease MP by 5."
+    "value": "Decrease enemy MP by 5 on hit."
   },
   {
     "id": 140800000300570601,
-    "value": "Decrease MP by 6."
+    "value": "Decrease enemy MP by 6 on hit."
   },
   {
     "id": 140800000300570701,
-    "value": "Decrease MP by 7."
+    "value": "Decrease enemy MP by 7 on hit."
   },
   {
     "id": 140800000300570801,
-    "value": "Decrease MP by 8."
+    "value": "Decrease enemy MP by 8 on hit."
   },
   {
     "id": 140800000300570901,
-    "value": "Decrease MP by 9."
+    "value": "Decrease enemy MP by 9 on hit."
   },
   {
     "id": 140800000300590101,
@@ -11933,7 +11933,7 @@
   },
   {
     "id": 140800000300590102,
-    "value": "Reduce MP by 1 on hit enemy"
+    "value": "Decrease enemy MP by 1 on hit."
   },
   {
     "id": 140800000300590103,
@@ -11945,7 +11945,7 @@
   },
   {
     "id": 140800000300590202,
-    "value": "Reduce MP by 1 on hit enemy"
+    "value": "Decrease enemy MP by 1 on hit."
   },
   {
     "id": 140800000300590203,
@@ -11957,7 +11957,7 @@
   },
   {
     "id": 140800000300590302,
-    "value": "Reduce MP by 1 on hit enemy"
+    "value": "Decrease enemy MP by 1 on hit."
   },
   {
     "id": 140800000300590303,
@@ -11969,7 +11969,7 @@
   },
   {
     "id": 140800000300590402,
-    "value": "Reduce MP by 1 on hit enemy"
+    "value": "Decrease enemy MP by 1 on hit."
   },
   {
     "id": 140800000300590403,
@@ -11981,7 +11981,7 @@
   },
   {
     "id": 140800000300590502,
-    "value": "Reduce MP by 1 on hit enemy"
+    "value": "Decrease enemy MP by 1 on hit."
   },
   {
     "id": 140800000300590503,
@@ -11993,7 +11993,7 @@
   },
   {
     "id": 140800000300590602,
-    "value": "Reduce MP by 1 on hit enemy"
+    "value": "Decrease enemy MP by 1 on hit."
   },
   {
     "id": 140800000300590603,
@@ -12005,7 +12005,7 @@
   },
   {
     "id": 140800000300590702,
-    "value": "Reduce MP by 1 on hit enemy"
+    "value": "Decrease enemy MP by 1 on hit."
   },
   {
     "id": 140800000300590703,
@@ -12017,7 +12017,7 @@
   },
   {
     "id": 140800000300590802,
-    "value": "Reduce MP by 1 on hit enemy"
+    "value": "Decrease enemy MP by 1 on hit."
   },
   {
     "id": 140800000300590803,
@@ -12029,7 +12029,7 @@
   },
   {
     "id": 140800000300590902,
-    "value": "Reduce MP by 1 on hit enemy"
+    "value": "Decrease enemy MP by 1 on hit."
   },
   {
     "id": 140800000300590903,
@@ -12257,7 +12257,7 @@
   },
   {
     "id": 140800000300640102,
-    "value": "Decrease MP by 1."
+    "value": "Decrease enemy MP by 1 on hit."
   },
   {
     "id": 140800000300640201,
@@ -12265,7 +12265,7 @@
   },
   {
     "id": 140800000300640202,
-    "value": "Decrease MP by 1."
+    "value": "Decrease enemy MP by 1 on hit."
   },
   {
     "id": 140800000300640301,
@@ -12273,7 +12273,7 @@
   },
   {
     "id": 140800000300640302,
-    "value": "Decrease MP by 1."
+    "value": "Decrease enemy MP by 1 on hit."
   },
   {
     "id": 140800000300640401,
@@ -12281,7 +12281,7 @@
   },
   {
     "id": 140800000300640402,
-    "value": "Decrease MP by 1."
+    "value": "Decrease enemy MP by 1 on hit."
   },
   {
     "id": 140800000300640501,
@@ -12289,7 +12289,7 @@
   },
   {
     "id": 140800000300640502,
-    "value": "Decrease MP by 1."
+    "value": "Decrease enemy MP by 1 on hit."
   },
   {
     "id": 140800000300640601,
@@ -12297,7 +12297,7 @@
   },
   {
     "id": 140800000300640602,
-    "value": "Decrease MP by 1."
+    "value": "Decrease enemy MP by 1 on hit."
   },
   {
     "id": 140800000300640701,
@@ -12305,7 +12305,7 @@
   },
   {
     "id": 140800000300640702,
-    "value": "Decrease MP by 1."
+    "value": "Decrease enemy MP by 1 on hit."
   },
   {
     "id": 140800000300640801,
@@ -12313,7 +12313,7 @@
   },
   {
     "id": 140800000300640802,
-    "value": "Decrease MP by 1."
+    "value": "Decrease enemy MP by 1 on hit."
   },
   {
     "id": 140800000300640901,
@@ -12321,7 +12321,7 @@
   },
   {
     "id": 140800000300640902,
-    "value": "Decrease MP by 1."
+    "value": "Decrease enemy MP by 1 on hit."
   },
   {
     "id": 140800000300650101,

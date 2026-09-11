@@ -2570,8 +2570,16 @@
   {
     "CharacterId": 1095002901,
     "SortOrder": 1,
-    "CharacterSkillId": 160050101,
+    "CharacterSkillId": 130080301,
     "RequiredLevel": 1,
+    "SpCharacterSkillId": 0,
+    "ScheduleId": 0
+  },
+  {
+    "CharacterId": 1095002901,
+    "SortOrder": 2,
+    "CharacterSkillId": 160050101,
+    "RequiredLevel": 30,
     "SpCharacterSkillId": 0,
     "ScheduleId": 0
   },

@@ -3,12 +3,16 @@
     "GashaId": 2603600301,
     "GashaContentDetailId": 11219000150,
     "AttackMovieResourceId": "gasha_additional_attack_g2190u00250",
-    "GashaContainerDestroyAnimationTypeIndex": 3
+    "GashaContainerDestroyAnimationTypeIndex": 3,
+    "Unknown_Col_4": "",
+    "Unknown_Col_5": 0
   },
   {
     "GashaId": 2603600301,
     "GashaContentDetailId": 11370005950,
     "AttackMovieResourceId": "gasha_additional_attack_g3700u05950",
-    "GashaContainerDestroyAnimationTypeIndex": 3
+    "GashaContainerDestroyAnimationTypeIndex": 3,
+    "Unknown_Col_4": "",
+    "Unknown_Col_5": 0
   }
 ]
