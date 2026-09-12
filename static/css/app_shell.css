@@ -528,10 +528,11 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
 .whats-new-btn .ui-notice-flare{top:-5px;right:0;width:20px;height:20px}
 .site-footer-links a .ui-notice-flare{top:-2px;right:0;width:18px;height:18px}
 .nav-tabs-edge-hint{display:none}
-@media(max-width:768px){
-.nav-tabs-edge-hint{position:absolute;top:0;bottom:0;z-index:3;display:flex;align-items:center;width:52px;border:none;cursor:pointer;color:var(--text-muted);opacity:0;pointer-events:none;transition:opacity .18s ease}
-.nav-tabs-edge-hint--right{right:0;justify-content:flex-end;padding:0 8px 0 22px;background:linear-gradient(90deg,transparent 0%,rgba(8,12,24,.72) 42%,rgba(8,12,24,.94) 100%)}
-.nav-tabs-edge-hint--left{left:0;justify-content:flex-start;padding:0 22px 0 8px;background:linear-gradient(270deg,transparent 0%,rgba(8,12,24,.72) 42%,rgba(8,12,24,.94) 100%)}
+/* Edge scroll cues — all widths. Foldables / tablets often sit >768px but still overflow
+   when Special Design forces nowrap; gating hints to mobile left those viewports clipped. */
+.nav-tabs-edge-hint{position:absolute;top:0;bottom:0;z-index:3;display:flex;align-items:center;width:56px;border:none;cursor:pointer;color:var(--text-secondary);opacity:0;pointer-events:none;transition:opacity .18s ease}
+.nav-tabs-edge-hint--right{right:0;justify-content:flex-end;padding:0 max(10px,env(safe-area-inset-right,0px)) 0 24px;background:linear-gradient(90deg,transparent 0%,rgba(8,12,24,.78) 38%,rgba(8,12,24,.96) 100%)}
+.nav-tabs-edge-hint--left{left:0;justify-content:flex-start;padding:0 24px 0 max(10px,env(safe-area-inset-left,0px));background:linear-gradient(270deg,transparent 0%,rgba(8,12,24,.78) 38%,rgba(8,12,24,.96) 100%)}
 .nav-tabs-shell--scroll-right .nav-tabs-edge-hint--right:not([hidden]){opacity:1;pointer-events:auto}
 .nav-tabs-shell--scroll-left .nav-tabs-edge-hint--left:not([hidden]){opacity:1;pointer-events:auto}
 .nav-tabs-edge-flare-wrap{position:relative;width:26px;height:26px;flex-shrink:0;display:none}
@@ -541,10 +542,14 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
 .nav-tabs-shell--hidden-notice-right .nav-tabs-edge-hint--right .nav-tabs-edge-flare-wrap.has-ui-notice>.ui-notice-flare{display:block}
 .nav-tabs-shell--hidden-notice-left .nav-tabs-edge-hint--left .nav-tabs-edge-flare-wrap.has-ui-notice{display:block}
 .nav-tabs-shell--hidden-notice-left .nav-tabs-edge-hint--left .nav-tabs-edge-flare-wrap.has-ui-notice>.ui-notice-flare{display:block}
-.nav-tabs-edge-chevron{font-size:20px;font-weight:700;line-height:1;opacity:.75;flex-shrink:0}
+.nav-tabs-edge-chevron{font-size:22px;font-weight:700;line-height:1;opacity:.9;flex-shrink:0;text-shadow:0 0 8px rgba(0,0,0,.85)}
+.nav-tabs-shell--scroll-right .nav-tabs-edge-hint--right .nav-tabs-edge-chevron,
+.nav-tabs-shell--scroll-left .nav-tabs-edge-hint--left .nav-tabs-edge-chevron{color:var(--accent-cyan);opacity:1}
 .nav-tabs-shell--hidden-notice-right .nav-tabs-edge-hint--right .nav-tabs-edge-chevron{color:var(--accent-cyan);opacity:1}
 .nav-tabs-shell--hidden-notice-left .nav-tabs-edge-hint--left .nav-tabs-edge-chevron{color:var(--accent-cyan);opacity:1}
-}
+/* Keep last tabs out from under the fade / device safe edge */
+.nav-tabs-shell--scroll-right .nav-tabs{scroll-padding-inline-end:56px;padding-right:max(24px,calc(16px + env(safe-area-inset-right,0px)))}
+.nav-tabs-shell--scroll-left .nav-tabs{scroll-padding-inline-start:56px;padding-left:max(24px,calc(16px + env(safe-area-inset-left,0px)))}
 .bt-vote-mode-anchor .ui-notice-flare{top:-7px;right:-7px}
 .stage-source-toggle-btn.ui-notice-anchor{position:relative;overflow:visible}
 .stage-source-toggle-btn .ui-notice-flare{top:-6px;right:-6px;width:18px;height:18px}

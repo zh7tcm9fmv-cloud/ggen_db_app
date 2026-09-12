@@ -155,8 +155,8 @@ html.ggen-15 .app-header .brand-sub{
   opacity:.85;
 }
 
-/* Nav — single-row horizontal scroll; scrollbar hidden.
-   Keep below .header-inner so locale dropdown covers tab icons. */
+/* Nav — prefer wrap on foldable / tablet widths so tabs are not clipped;
+   wide desktop keeps single-row scroll with edge cues. */
 html.ggen-15 #navTabsShell{
   position:relative;
   z-index:1;
@@ -169,20 +169,29 @@ html.ggen-15 #navTabsShell{
   border-bottom:1px solid rgba(42,54,84,.45);
 }
 html.ggen-15 #navTabs{
-  flex-wrap:nowrap;
-  overflow-x:auto;
-  overflow-y:hidden;
-  -webkit-overflow-scrolling:touch;
-  overscroll-behavior-x:contain;
-  touch-action:pan-x;
-  scrollbar-width:none;
-  -ms-overflow-style:none;
+  flex-wrap:wrap;
+  overflow-x:visible;
+  overflow-y:visible;
   min-width:0;
   width:100%;
   max-width:100%;
   box-sizing:border-box;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
 }
-html.ggen-15 #navTabs::-webkit-scrollbar{display:none;width:0;height:0}
+@media(min-width:1101px){
+  html.ggen-15 #navTabs{
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    overflow-y:hidden;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-x:contain;
+    touch-action:pan-x;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+  }
+  html.ggen-15 #navTabs::-webkit-scrollbar{display:none;width:0;height:0}
+}
 html.ggen-15 #navTabs .nav-tab,
 html.ggen-15 .nav-tab{
   font-family:var(--font-teko);
@@ -193,23 +202,27 @@ html.ggen-15 .nav-tab{
 }
 html.ggen-15 #navTabsShell .nav-tabs-edge-hint{
   position:absolute;top:0;bottom:0;z-index:3;
-  display:flex;align-items:center;width:52px;border:none;cursor:pointer;
-  color:var(--text-muted);opacity:0;pointer-events:none;
+  display:flex;align-items:center;width:56px;border:none;cursor:pointer;
+  color:var(--text-secondary);opacity:0;pointer-events:none;
   transition:opacity .18s ease;
 }
 html.ggen-15 #navTabsShell .nav-tabs-edge-hint--right{
-  right:0;justify-content:flex-end;padding:0 8px 0 22px;
-  background:linear-gradient(90deg,transparent 0%,rgba(8,12,24,.72) 42%,rgba(8,12,24,.94) 100%);
+  right:0;justify-content:flex-end;padding:0 max(10px,env(safe-area-inset-right,0px)) 0 24px;
+  background:linear-gradient(90deg,transparent 0%,rgba(8,12,24,.78) 38%,rgba(8,12,24,.96) 100%);
 }
 html.ggen-15 #navTabsShell .nav-tabs-edge-hint--left{
-  left:0;justify-content:flex-start;padding:0 22px 0 8px;
-  background:linear-gradient(270deg,transparent 0%,rgba(8,12,24,.72) 42%,rgba(8,12,24,.94) 100%);
+  left:0;justify-content:flex-start;padding:0 24px 0 max(10px,env(safe-area-inset-left,0px));
+  background:linear-gradient(270deg,transparent 0%,rgba(8,12,24,.78) 38%,rgba(8,12,24,.96) 100%);
 }
 html.ggen-15 #navTabsShell.nav-tabs-shell--scroll-right .nav-tabs-edge-hint--right:not([hidden]){
   opacity:1;pointer-events:auto;
 }
 html.ggen-15 #navTabsShell.nav-tabs-shell--scroll-left .nav-tabs-edge-hint--left:not([hidden]){
   opacity:1;pointer-events:auto;
+}
+html.ggen-15 #navTabsShell.nav-tabs-shell--scroll-right .nav-tabs-edge-chevron,
+html.ggen-15 #navTabsShell.nav-tabs-shell--scroll-left .nav-tabs-edge-chevron{
+  color:#7af0ff;opacity:1;font-size:22px;
 }
 
 html.ggen-15 .lang-btn,
