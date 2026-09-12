@@ -24,24 +24,20 @@ html.ggen-15[data-ui-lang="HK"]{
   --font-brand:"Teko",var(--font-body);
 }
 
-/* Header toggle — desktop: centered in the mid plate (fills empty band);
-   narrow: tuck next to support / lang */
+/* Header toggle — sit just after brand / emblem (not mid-centered) */
 .header-15-slot{
   display:inline-flex;
-  flex:1 1 auto;
+  flex:0 0 auto;
   min-width:0;
-  justify-content:center;
-  align-items:stretch;
+  justify-content:flex-start;
+  align-items:center;
   gap:8px;
-  margin:0 8px 0 12px;
+  margin:0 12px 0 4px;
   /* Empty flex gutter must not steal clicks from lang / support */
   pointer-events:none;
 }
 .header-15-slot .header-15-toggle{
   pointer-events:auto;
-}
-@media(max-width:900px){
-  .header-15-slot{justify-content:flex-end}
 }
 .header-15-toggle{
   appearance:none;border:1px solid rgba(0,217,255,.55);
@@ -78,7 +74,8 @@ html.ggen-15 .app-header{
   backdrop-filter:blur(10px) saturate(1.05);
   -webkit-backdrop-filter:blur(10px) saturate(1.05);
 }
-/* header-inner — no plate/chamfer; hex wash only. Stack ABOVE #navTabsShell. */
+/* header-inner — no plate/chamfer; hex wash only. Stack ABOVE #navTabsShell.
+   Brand + design toggles pack left; support/lang pushed right. */
 html.ggen-15 .app-header .header-inner{
   position:relative;
   z-index:5;
@@ -86,6 +83,7 @@ html.ggen-15 .app-header .header-inner{
   overflow:visible;
   margin:0 auto;
   max-width:1600px;
+  justify-content:flex-start;
   background:transparent;
   border:none;
   box-shadow:none;
@@ -113,6 +111,7 @@ html.ggen-15 .app-header .header-controls{
   position:relative;
   z-index:30;
   flex-shrink:0;
+  margin-left:auto;
 }
 html.ggen-15 .app-header .lang-selector{
   position:relative;
