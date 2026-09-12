@@ -24,15 +24,20 @@ html.ggen-15[data-ui-lang="HK"]{
   --font-brand:"Teko",var(--font-body);
 }
 
-/* Header toggle — always available */
+/* Header toggle — right-aligned next to support / lang controls */
 .header-15-slot{
   display:inline-flex;
   flex:1 1 auto;
   min-width:0;
-  justify-content:center;
+  justify-content:flex-end;
   align-items:stretch;
   gap:8px;
-  margin:0 8px;
+  margin:0 8px 0 12px;
+  /* Empty flex gutter must not steal clicks from lang / support */
+  pointer-events:none;
+}
+.header-15-slot .header-15-toggle{
+  pointer-events:auto;
 }
 .header-15-toggle{
   appearance:none;border:1px solid rgba(0,217,255,.55);
@@ -61,13 +66,24 @@ html.ggen-15[data-ui-lang="HK"]{
   mix-blend-mode:screen;
 }
 
-/* header-inner — chamfer + quiet hex/glow */
+/* header-inner — decorative plate only; keep overflow visible so lang menu works.
+   Nav lives inside .app-header after this plate — plate must stack ABOVE #navTabsShell
+   or tab icons paint through the open locale dropdown. */
 html.ggen-15 .app-header .header-inner{
   position:relative;
+  z-index:5;
   isolation:isolate;
-  overflow:hidden;
+  overflow:visible;
   border:1px solid rgba(0,217,255,.5);
   box-shadow:0 0 0 1px rgba(0,0,0,.35),inset 0 0 24px rgba(0,217,255,.06);
+  background:linear-gradient(180deg,#0d1828 0%,#08111c 100%);
+}
+/* Chamfer + glow/hex live on a non-interactive underlay (does not clip dropdowns) */
+html.ggen-15 .app-header .header-inner::after{
+  content:"";
+  position:absolute;inset:0;
+  z-index:0;
+  pointer-events:none;
   clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);
   background:
     radial-gradient(90% 140% at 12% 30%,rgba(0,217,255,.14),transparent 52%),
@@ -87,9 +103,24 @@ html.ggen-15 .app-header .header-inner::before{
   /* Softer mid-band so brand/toggles stay clear; edges keep more hex contrast */
   -webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.7) 0%,rgba(0,0,0,.22) 30%,rgba(0,0,0,.16) 70%,rgba(0,0,0,.62) 100%);
   mask-image:linear-gradient(90deg,rgba(0,0,0,.7) 0%,rgba(0,0,0,.22) 30%,rgba(0,0,0,.16) 70%,rgba(0,0,0,.62) 100%);
+  clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);
 }
 html.ggen-15 .app-header .header-inner > *{
   position:relative;z-index:1;
+}
+html.ggen-15 .app-header .header-controls{
+  position:relative;
+  z-index:30;
+  flex-shrink:0;
+}
+html.ggen-15 .app-header .lang-selector{
+  position:relative;
+  z-index:40;
+}
+html.ggen-15 .app-header .lang-dropdown{
+  z-index:300;
+  background:var(--bg-card);
+  isolation:isolate;
 }
 html.ggen-15 .app-header .brand-text{
   font-family:var(--font-teko);
@@ -111,8 +142,11 @@ html.ggen-15 .app-header .brand-sub{
   opacity:.85;
 }
 
-/* Nav — single-row horizontal scroll; scrollbar hidden */
+/* Nav — single-row horizontal scroll; scrollbar hidden.
+   Keep below .header-inner so locale dropdown covers tab icons. */
 html.ggen-15 #navTabsShell{
+  position:relative;
+  z-index:1;
   overflow:visible;
   width:100%;
   max-width:100%;
@@ -385,7 +419,8 @@ html.ggen-15 .main-content .bt-feat-label{
   .header-15-slot{margin:0 4px;gap:6px}
   .header-15-toggle--special img{height:28px;max-width:min(140px,42vw)}
   .header-15-toggle{font-size:13px;padding:4px 12px;min-height:40px}
-  html.ggen-15 .app-header .header-inner{
+  html.ggen-15 .app-header .header-inner::before,
+  html.ggen-15 .app-header .header-inner::after{
     clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
   }
   html.ggen-15 .app-header .brand-title-row::before{
