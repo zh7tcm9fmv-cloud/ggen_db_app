@@ -24,12 +24,13 @@ html.ggen-15[data-ui-lang="HK"]{
   --font-brand:"Teko",var(--font-body);
 }
 
-/* Header toggle — right-aligned next to support / lang controls */
+/* Header toggle — desktop: centered in the mid plate (fills empty band);
+   narrow: tuck next to support / lang */
 .header-15-slot{
   display:inline-flex;
   flex:1 1 auto;
   min-width:0;
-  justify-content:flex-end;
+  justify-content:center;
   align-items:stretch;
   gap:8px;
   margin:0 8px 0 12px;
@@ -38,6 +39,9 @@ html.ggen-15[data-ui-lang="HK"]{
 }
 .header-15-slot .header-15-toggle{
   pointer-events:auto;
+}
+@media(max-width:900px){
+  .header-15-slot{justify-content:flex-end}
 }
 .header-15-toggle{
   appearance:none;border:1px solid rgba(0,217,255,.55);
@@ -66,47 +70,44 @@ html.ggen-15[data-ui-lang="HK"]{
   mix-blend-mode:screen;
 }
 
-/* header-inner — decorative plate only; keep overflow visible so lang menu works.
-   Nav lives inside .app-header after this plate — plate must stack ABOVE #navTabsShell
-   or tab icons paint through the open locale dropdown. */
+/* Soft full-bleed header — blends into page; quiet hex, no chamfer plate. */
+html.ggen-15 .app-header{
+  background:linear-gradient(180deg,rgba(10,14,23,.92) 0%,rgba(10,14,23,.78) 70%,rgba(10,14,23,.2) 100%);
+  border-bottom:none;
+  box-shadow:none;
+  backdrop-filter:blur(10px) saturate(1.05);
+  -webkit-backdrop-filter:blur(10px) saturate(1.05);
+}
+/* header-inner — no plate/chamfer; hex wash only. Stack ABOVE #navTabsShell. */
 html.ggen-15 .app-header .header-inner{
   position:relative;
   z-index:5;
   isolation:isolate;
   overflow:visible;
-  border:1px solid rgba(0,217,255,.5);
-  box-shadow:0 0 0 1px rgba(0,0,0,.35),inset 0 0 24px rgba(0,217,255,.06);
-  background:linear-gradient(180deg,#0d1828 0%,#08111c 100%);
+  margin:0 auto;
+  max-width:1600px;
+  background:transparent;
+  border:none;
+  box-shadow:none;
 }
-/* Chamfer + glow/hex live on a non-interactive underlay (does not clip dropdowns) */
 html.ggen-15 .app-header .header-inner::after{
-  content:"";
-  position:absolute;inset:0;
-  z-index:0;
-  pointer-events:none;
-  clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);
-  background:
-    radial-gradient(90% 140% at 12% 30%,rgba(0,217,255,.14),transparent 52%),
-    radial-gradient(70% 100% at 92% 10%,rgba(0,140,255,.1),transparent 48%),
-    linear-gradient(180deg,#0d1828 0%,#08111c 100%);
+  display:none;
 }
+/* Quiet pointy-top hex — dim, blends into background */
 html.ggen-15 .app-header .header-inner::before{
   content:"";
   position:absolute;inset:0;
-  z-index:0;
+  z-index:1;
   pointer-events:none;
-  opacity:.32;
-  /* Pointy-top hex honeycomb (1.5 Special Site mark) — soft background, readable contrast */
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24.249' height='42' viewBox='0 0 24.249 42'%3E%3Cg fill='none' stroke-linejoin='round'%3E%3Cg stroke='%2300d9ff' stroke-width='2' opacity='.2'%3E%3Cpath d='M12.124 0L24.249 7v14L12.124 28 0 21V7z'/%3E%3Cpath d='M0 21L12.124 28v14L0 49l-12.124-7V28z'/%3E%3Cpath d='M24.249 21L36.373 28v14L24.249 49 12.124 42V28z'/%3E%3C/g%3E%3Cg stroke='%237af0ff' stroke-width='.75' opacity='.62'%3E%3Cpath d='M12.124 0L24.249 7v14L12.124 28 0 21V7z'/%3E%3Cpath d='M0 21L12.124 28v14L0 49l-12.124-7V28z'/%3E%3Cpath d='M24.249 21L36.373 28v14L24.249 49 12.124 42V28z'/%3E%3C/g%3E%3C/g%3E%3Cg fill='%23b8f7ff'%3E%3Ccircle cx='12.1' cy='2.1' r='.45' opacity='.55'/%3E%3Ccircle cx='19.9' cy='7.7' r='.32' opacity='.35'/%3E%3Ccircle cx='4.4' cy='26.6' r='.35' opacity='.42'/%3E%3C/g%3E%3C/svg%3E");
-  background-size:38px 66px;
+  opacity:.22;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24.249' height='42' viewBox='0 0 24.249 42'%3E%3Cg fill='none' stroke-linejoin='round'%3E%3Cg stroke='%2300d9ff' stroke-width='1.5' opacity='.22'%3E%3Cpath d='M12.124 0L24.249 7v14L12.124 28 0 21V7z'/%3E%3Cpath d='M0 21L12.124 28v14L0 49l-12.124-7V28z'/%3E%3Cpath d='M24.249 21L36.373 28v14L24.249 49 12.124 42V28z'/%3E%3C/g%3E%3Cg stroke='%237af0ff' stroke-width='.6' opacity='.4'%3E%3Cpath d='M12.124 0L24.249 7v14L12.124 28 0 21V7z'/%3E%3Cpath d='M0 21L12.124 28v14L0 49l-12.124-7V28z'/%3E%3Cpath d='M24.249 21L36.373 28v14L24.249 49 12.124 42V28z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-size:36px 62px;
   background-repeat:repeat;
-  /* Softer mid-band so brand/toggles stay clear; edges keep more hex contrast */
-  -webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.7) 0%,rgba(0,0,0,.22) 30%,rgba(0,0,0,.16) 70%,rgba(0,0,0,.62) 100%);
-  mask-image:linear-gradient(90deg,rgba(0,0,0,.7) 0%,rgba(0,0,0,.22) 30%,rgba(0,0,0,.16) 70%,rgba(0,0,0,.62) 100%);
-  clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);
+  -webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,.7) 35%,rgba(0,0,0,.55) 65%,rgba(0,0,0,.35) 100%);
+  mask-image:linear-gradient(90deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,.7) 35%,rgba(0,0,0,.55) 65%,rgba(0,0,0,.35) 100%);
 }
 html.ggen-15 .app-header .header-inner > *{
-  position:relative;z-index:1;
+  position:relative;z-index:2;
 }
 html.ggen-15 .app-header .header-controls{
   position:relative;
@@ -151,6 +152,9 @@ html.ggen-15 #navTabsShell{
   width:100%;
   max-width:100%;
   min-width:0;
+  margin-top:0;
+  background:linear-gradient(180deg,rgba(10,14,23,.25) 0%,transparent 100%);
+  border-bottom:1px solid rgba(42,54,84,.45);
 }
 html.ggen-15 #navTabs{
   flex-wrap:nowrap;
@@ -419,10 +423,6 @@ html.ggen-15 .main-content .bt-feat-label{
   .header-15-slot{margin:0 4px;gap:6px}
   .header-15-toggle--special img{height:28px;max-width:min(140px,42vw)}
   .header-15-toggle{font-size:13px;padding:4px 12px;min-height:40px}
-  html.ggen-15 .app-header .header-inner::before,
-  html.ggen-15 .app-header .header-inner::after{
-    clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
-  }
   html.ggen-15 .app-header .brand-title-row::before{
     width:92px;
     height:50px;
