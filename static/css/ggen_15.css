@@ -1,0 +1,403 @@
+/* 1.5 Anniversary Special Design — site chrome (Teko + chamfer).
+   Scoped to html.ggen-15. CSS-only; no GSAP. */
+
+html.ggen-15{
+  --g15-cyan:0 217 255;
+  --g15-blue:0 140 255;
+  --font-body:"Teko",'RobotoMediumNumbers',-apple-system,BlinkMacSystemFont,'Segoe UI','Yu Gothic UI','Yu Gothic','Meiryo',sans-serif;
+  --font-tag-ui:var(--font-body);
+  --font-brand:"Teko",var(--font-body);
+  --font-teko:var(--font-body);
+  --g15-chamfer:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
+  --g15-chamfer-sm:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);
+}
+html.ggen-15[data-ui-lang="JA"],
+html.ggen-15[data-ui-lang="JP"]{
+  --font-body:"Teko",'Noto Sans JP','ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --font-tag-ui:var(--font-body);
+  --font-brand:"Teko",var(--font-body);
+}
+html.ggen-15[data-ui-lang="TW"],
+html.ggen-15[data-ui-lang="HK"]{
+  --font-body:"Teko",'Noto Sans JP','UDShinGoStdTCMed','RobotoMediumNumbers','ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,'PingFang TC','Microsoft JhengHei UI','Microsoft JhengHei',sans-serif;
+  --font-tag-ui:var(--font-body);
+  --font-brand:"Teko",var(--font-body);
+}
+
+/* Header toggle — always available */
+.header-15-slot{
+  display:inline-flex;
+  flex:1 1 auto;
+  min-width:0;
+  justify-content:center;
+  align-items:stretch;
+  gap:8px;
+  margin:0 8px;
+}
+.header-15-toggle{
+  appearance:none;border:1px solid rgba(0,217,255,.55);
+  background:rgba(0,217,255,.1);color:#7af0ff;
+  font-family:var(--font-teko),Teko,sans-serif;
+  font-size:16px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  box-sizing:border-box;
+  min-height:48px;
+  padding:6px 18px;
+  cursor:pointer;line-height:1;
+  clip-path:var(--g15-chamfer-sm,polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px));
+  transition:background .2s cubic-bezier(.2,0,0,1),border-color .2s cubic-bezier(.2,0,0,1),color .2s cubic-bezier(.2,0,0,1);
+}
+.header-15-toggle:hover{background:rgba(0,217,255,.2);color:#fff}
+.header-15-toggle.is-active{
+  background:linear-gradient(95deg,rgba(0,217,255,.35),rgba(0,140,255,.25));
+  border-color:#00d9ff;color:#fff;
+}
+.header-15-toggle--special{padding:6px 10px;line-height:0}
+.header-15-toggle--special img{
+  display:block;height:36px;width:auto;max-width:min(200px,36vw);
+  object-fit:contain;object-position:center;
+  mix-blend-mode:screen;
+}
+
+/* header-inner — chamfer + quiet hex/glow */
+html.ggen-15 .app-header .header-inner{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  border:1px solid rgba(0,217,255,.5);
+  box-shadow:0 0 0 1px rgba(0,0,0,.35),inset 0 0 24px rgba(0,217,255,.06);
+  clip-path:polygon(12px 0,100% 0,100% calc(100% - 12px),calc(100% - 12px) 100%,0 100%,0 12px);
+  background:
+    radial-gradient(90% 140% at 12% 30%,rgba(0,217,255,.14),transparent 52%),
+    radial-gradient(70% 100% at 92% 10%,rgba(0,140,255,.1),transparent 48%),
+    linear-gradient(180deg,#0d1828 0%,#08111c 100%);
+}
+html.ggen-15 .app-header .header-inner::before{
+  content:"";
+  position:absolute;inset:0;
+  z-index:0;
+  pointer-events:none;
+  opacity:.32;
+  /* Pointy-top hex honeycomb (1.5 Special Site mark) — soft background, readable contrast */
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24.249' height='42' viewBox='0 0 24.249 42'%3E%3Cg fill='none' stroke-linejoin='round'%3E%3Cg stroke='%2300d9ff' stroke-width='2' opacity='.2'%3E%3Cpath d='M12.124 0L24.249 7v14L12.124 28 0 21V7z'/%3E%3Cpath d='M0 21L12.124 28v14L0 49l-12.124-7V28z'/%3E%3Cpath d='M24.249 21L36.373 28v14L24.249 49 12.124 42V28z'/%3E%3C/g%3E%3Cg stroke='%237af0ff' stroke-width='.75' opacity='.62'%3E%3Cpath d='M12.124 0L24.249 7v14L12.124 28 0 21V7z'/%3E%3Cpath d='M0 21L12.124 28v14L0 49l-12.124-7V28z'/%3E%3Cpath d='M24.249 21L36.373 28v14L24.249 49 12.124 42V28z'/%3E%3C/g%3E%3C/g%3E%3Cg fill='%23b8f7ff'%3E%3Ccircle cx='12.1' cy='2.1' r='.45' opacity='.55'/%3E%3Ccircle cx='19.9' cy='7.7' r='.32' opacity='.35'/%3E%3Ccircle cx='4.4' cy='26.6' r='.35' opacity='.42'/%3E%3C/g%3E%3C/svg%3E");
+  background-size:38px 66px;
+  background-repeat:repeat;
+  /* Softer mid-band so brand/toggles stay clear; edges keep more hex contrast */
+  -webkit-mask-image:linear-gradient(90deg,rgba(0,0,0,.7) 0%,rgba(0,0,0,.22) 30%,rgba(0,0,0,.16) 70%,rgba(0,0,0,.62) 100%);
+  mask-image:linear-gradient(90deg,rgba(0,0,0,.7) 0%,rgba(0,0,0,.22) 30%,rgba(0,0,0,.16) 70%,rgba(0,0,0,.62) 100%);
+}
+html.ggen-15 .app-header .header-inner > *{
+  position:relative;z-index:1;
+}
+html.ggen-15 .app-header .brand-text{
+  font-family:var(--font-teko);
+  font-weight:600;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  text-shadow:0 0 18px rgba(0,217,255,.28);
+}
+/* Brand emblem behind title — larger under Special Design (classic is 78×42) */
+html.ggen-15 .app-header .brand-title-row::before{
+  width:108px;
+  height:58px;
+  opacity:.82;
+  transform:translate(calc(-50% + var(--brand-emblem-optical-x)),-56%);
+}
+html.ggen-15 .app-header .brand-sub{
+  letter-spacing:.08em;
+  color:rgb(122,240,255);
+  opacity:.85;
+}
+
+/* Nav — single-row horizontal scroll; scrollbar hidden */
+html.ggen-15 #navTabsShell{
+  overflow:visible;
+  width:100%;
+  max-width:100%;
+  min-width:0;
+}
+html.ggen-15 #navTabs{
+  flex-wrap:nowrap;
+  overflow-x:auto;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-x:contain;
+  touch-action:pan-x;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+  min-width:0;
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box;
+}
+html.ggen-15 #navTabs::-webkit-scrollbar{display:none;width:0;height:0}
+html.ggen-15 #navTabs .nav-tab,
+html.ggen-15 .nav-tab{
+  font-family:var(--font-body);
+  font-weight:600;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  flex-shrink:0;
+}
+html.ggen-15 #navTabsShell .nav-tabs-edge-hint{
+  position:absolute;top:0;bottom:0;z-index:3;
+  display:flex;align-items:center;width:52px;border:none;cursor:pointer;
+  color:var(--text-muted);opacity:0;pointer-events:none;
+  transition:opacity .18s ease;
+}
+html.ggen-15 #navTabsShell .nav-tabs-edge-hint--right{
+  right:0;justify-content:flex-end;padding:0 8px 0 22px;
+  background:linear-gradient(90deg,transparent 0%,rgba(8,12,24,.72) 42%,rgba(8,12,24,.94) 100%);
+}
+html.ggen-15 #navTabsShell .nav-tabs-edge-hint--left{
+  left:0;justify-content:flex-start;padding:0 22px 0 8px;
+  background:linear-gradient(270deg,transparent 0%,rgba(8,12,24,.72) 42%,rgba(8,12,24,.94) 100%);
+}
+html.ggen-15 #navTabsShell.nav-tabs-shell--scroll-right .nav-tabs-edge-hint--right:not([hidden]){
+  opacity:1;pointer-events:auto;
+}
+html.ggen-15 #navTabsShell.nav-tabs-shell--scroll-left .nav-tabs-edge-hint--left:not([hidden]){
+  opacity:1;pointer-events:auto;
+}
+
+html.ggen-15 .lang-btn,
+html.ggen-15 .kofi-header-link,
+html.ggen-15 .alipayhk-header-btn,
+html.ggen-15 .header-controls,
+html.ggen-15 .main-content,
+html.ggen-15 #detailModal,
+html.ggen-15 .search-spotlight-overlay{
+  font-family:var(--font-body);
+}
+
+/* Browse panels — filters / cards / tables (all tabs) */
+html.ggen-15 .main-content .rarity-filter-btn,
+html.ggen-15 .main-content .role-filter-dd-btn,
+html.ggen-15 .main-content .browse-filters-clear-btn,
+html.ggen-15 .main-content .list-view-toggle,
+html.ggen-15 .main-content .page-btn,
+html.ggen-15 .main-content .role-filter-btn,
+html.ggen-15 .main-content .source-filter-btn{
+  border-radius:0 !important;
+  font-family:var(--font-teko);
+  font-weight:600;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  clip-path:var(--g15-chamfer-sm);
+  border-color:rgba(0,217,255,.4);
+}
+html.ggen-15 .main-content .rarity-filter-btn,
+html.ggen-15 .main-content .role-filter-dd-btn{
+  font-size:15px;
+  background:
+    radial-gradient(120% 80% at 0% 0%,rgba(0,217,255,.08),transparent 55%),
+    var(--bg-input);
+}
+html.ggen-15 .main-content .rarity-filter-btn:hover,
+html.ggen-15 .main-content .role-filter-dd-btn:hover,
+html.ggen-15 .main-content .browse-filters-clear-btn:hover{
+  border-color:#00d9ff;
+  color:#fff;
+}
+html.ggen-15 .main-content .filter-input,
+html.ggen-15 .main-content input[type=search],
+html.ggen-15 .main-content select{
+  border-radius:0 !important;
+  font-family:var(--font-teko);
+  letter-spacing:.04em;
+  clip-path:var(--g15-chamfer-sm);
+  border-color:rgba(0,217,255,.35);
+}
+html.ggen-15 .main-content .list-toolbar-count,
+html.ggen-15 .main-content .browse-toolbar-label,
+html.ggen-15 .main-content .section-title,
+html.ggen-15 .main-content label,
+html.ggen-15 .main-content .pager-info{
+  font-family:var(--font-teko);
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+html.ggen-15 .main-content .list-grid-card{
+  border-radius:0 !important;
+  clip-path:var(--g15-chamfer);
+  border:1px solid rgba(0,217,255,.42) !important;
+  background:
+    radial-gradient(120% 80% at 0% 0%,rgba(0,217,255,.07),transparent 55%),
+    rgba(9,20,39,.94) !important;
+  box-shadow:none !important;
+}
+html.ggen-15 .main-content .list-grid-card:hover{
+  border-color:#00d9ff !important;
+  background:
+    radial-gradient(120% 80% at 0% 0%,rgba(0,217,255,.12),transparent 55%),
+    rgba(12,24,44,.96) !important;
+  box-shadow:none !important;
+}
+html.ggen-15 .main-content .list-grid-card.list-detail-active,
+html.ggen-15 .main-content .list-grid-card.list-detail-active:hover{
+  border-color:#00d9ff !important;
+  background:
+    radial-gradient(120% 80% at 0% 0%,rgba(0,217,255,.14),transparent 55%),
+    rgba(12,24,44,.98) !important;
+}
+html.ggen-15 .main-content .list-grid-card:focus-visible{
+  outline:2px solid rgba(0,217,255,.7);
+  outline-offset:3px;
+}
+html.ggen-15 .main-content .list-grid-card-name,
+html.ggen-15 .main-content .list-grid-card-stats,
+html.ggen-15 .main-content .list-grid-stat-l{
+  font-family:var(--font-teko);
+  font-weight:600;
+  letter-spacing:.04em;
+}
+html.ggen-15 .main-content .list-grid-card-name{text-transform:uppercase}
+html.ggen-15 .main-content .data-table,
+html.ggen-15 .main-content .data-table th,
+html.ggen-15 .main-content .data-table td{
+  font-family:var(--font-teko);
+  letter-spacing:.03em;
+}
+html.ggen-15 .main-content .data-table th{
+  text-transform:uppercase;
+  font-weight:600;
+  letter-spacing:.06em;
+}
+
+/* Detail modals (all entity types) */
+html.ggen-15 #detailModal .modal-content{
+  position:relative;
+  font-family:var(--font-body);
+  border-radius:0 !important;
+  border:1px solid rgba(0,217,255,.45);
+  box-shadow:0 0 0 1px rgba(0,0,0,.4),0 0 40px rgba(0,217,255,.08);
+  background:
+    radial-gradient(80% 50% at 8% 0%,rgba(0,217,255,.08),transparent 50%),
+    var(--bg-modal,var(--bg-card,#0a1422));
+}
+html.ggen-15 #detailModal .modal-content .detail-title,
+html.ggen-15 #detailModal .modal-content .section-title,
+html.ggen-15 #detailModal .modal-content .modal-top-label,
+html.ggen-15 #detailModal .modal-content .modal-entity-id,
+html.ggen-15 #detailModal .modal-content .stat-label,
+html.ggen-15 #detailModal .modal-content .lb-label,
+html.ggen-15 #detailModal .modal-content .detail-role-label,
+html.ggen-15 #detailModal .modal-content .toggle-map-btn,
+html.ggen-15 #detailModal .modal-content .detail-tab,
+html.ggen-15 #detailModal .modal-content .lb-icon-btn,
+html.ggen-15 #detailModal .modal-content .page-btn,
+html.ggen-15 #detailModal .modal-content button:not(.close-btn){
+  font-family:var(--font-teko);
+  letter-spacing:.05em;
+}
+html.ggen-15 #detailModal .modal-content .detail-title,
+html.ggen-15 #detailModal .modal-content .section-title,
+html.ggen-15 #detailModal .modal-content .modal-top-label{
+  text-transform:uppercase;
+  font-weight:600;
+}
+html.ggen-15 #detailModal .modal-content .section-title{
+  color:rgb(0,140,255);
+  text-shadow:0 0 16px rgba(0,217,255,.2);
+}
+html.ggen-15 #detailModal .modal-content .detail-section,
+html.ggen-15 #detailModal .modal-content .stat-block,
+html.ggen-15 #detailModal .modal-content .weapon-card,
+html.ggen-15 #detailModal .modal-content .ability-card,
+html.ggen-15 #detailModal .modal-content .skill-card{
+  border-radius:0 !important;
+  clip-path:var(--g15-chamfer-sm);
+  border-color:rgba(0,217,255,.28);
+}
+
+/* Investment Priority + Banner Timeline / Latest Release cards */
+html.ggen-15 .spi-card,
+html.ggen-15 .lr-card,
+html.ggen-15 .bt-lr-tile,
+html.ggen-15 .bt-vote-extra-thumb,
+html.ggen-15 .main-content .spi-card,
+html.ggen-15 .main-content .lr-card,
+html.ggen-15 .main-content .bt-lr-tile,
+html.ggen-15 .main-content .bt-vote-extra-thumb{
+  border-radius:0 !important;
+  clip-path:var(--g15-chamfer);
+}
+html.ggen-15 .spi-card,
+html.ggen-15 .main-content .spi-card{
+  border:1px solid rgba(0,217,255,.4);
+  background:
+    radial-gradient(120% 80% at 0% 0%,rgba(0,217,255,.07),transparent 55%),
+    var(--bg-card);
+  box-shadow:none;
+}
+html.ggen-15 .spi-card:hover,
+html.ggen-15 .spi-card.is-db-selected,
+html.ggen-15 .main-content .spi-card:hover,
+html.ggen-15 .main-content .spi-card.is-db-selected{
+  border-color:#00d9ff;
+  background:
+    radial-gradient(120% 80% at 0% 0%,rgba(0,217,255,.12),transparent 55%),
+    var(--bg-card-hover);
+}
+html.ggen-15 .spi-card-name,
+html.ggen-15 .lr-card-name,
+html.ggen-15 .main-content .spi-card-name,
+html.ggen-15 .main-content .lr-card-name{
+  font-family:var(--font-teko);
+  letter-spacing:.04em;
+  text-transform:uppercase;
+}
+html.ggen-15 .lr-card:not(.bt-lr-tile--limited),
+html.ggen-15 .main-content .lr-card:not(.bt-lr-tile--limited){
+  border:1px solid rgba(0,217,255,.4);
+  background:
+    radial-gradient(120% 80% at 0% 0%,rgba(0,217,255,.07),transparent 55%),
+    var(--bg-card);
+  box-shadow:none;
+}
+html.ggen-15 .lr-card:not(.bt-lr-tile--limited):hover,
+html.ggen-15 .main-content .lr-card:not(.bt-lr-tile--limited):hover{
+  border-color:#00d9ff;
+  background:
+    radial-gradient(120% 80% at 0% 0%,rgba(0,217,255,.12),transparent 55%),
+    var(--bg-card-hover);
+}
+/* Limited tiles keep gradient border chrome; chamfer clip only */
+html.ggen-15 .lr-card.bt-lr-tile--limited,
+html.ggen-15 .main-content .lr-card.bt-lr-tile--limited{
+  border-radius:0 !important;
+}
+html.ggen-15 .spi-bucket-head h3,
+html.ggen-15 .spi-role-label,
+html.ggen-15 .bt-feat-label,
+html.ggen-15 .main-content .spi-bucket-head h3,
+html.ggen-15 .main-content .spi-role-label,
+html.ggen-15 .main-content .bt-feat-label{
+  font-family:var(--font-teko);
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+@media(max-width:768px){
+  .header-15-slot{margin:0 4px;gap:6px}
+  .header-15-toggle--special img{height:28px;max-width:min(140px,42vw)}
+  .header-15-toggle{font-size:13px;padding:4px 12px;min-height:40px}
+  html.ggen-15 .app-header .header-inner{
+    clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
+  }
+  html.ggen-15 .app-header .brand-title-row::before{
+    width:92px;
+    height:50px;
+  }
+  html.ggen-15 .main-content .rarity-filter-btn,
+  html.ggen-15 .main-content .role-filter-dd-btn{
+    font-size:13px;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  .header-15-toggle{transition:none}
+}

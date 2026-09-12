@@ -59,6 +59,7 @@ window.__ggenLoadGtm=function(){
 <link rel="stylesheet" href="{{ url_for('static', filename='css/content_notices.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/mobile_layout.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/craft_ui.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ggen_15.css') }}?v={{ app_js_version }}">
 <meta name="theme-color" content="#0a0e17">
 <meta name="apple-mobile-web-app-title" content="GGen Eternal Database">
 {% if image_cdn %}<link rel="preconnect" href="{{ image_cdn }}" crossorigin>{% endif %}
@@ -206,6 +207,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <header class="app-header">
 <div class="header-inner">
 <a class="header-brand" href="/"><div class="brand-logo"><img id="brandLogoImg" alt="GGen Eternal Database" width="42" height="42" fetchpriority="high" decoding="async" src="{% if image_cdn and game_images_use_cdn %}{{ image_cdn }}/images/UI/IMG_Common_Logo_ETERNALBASE.webp{% else %}/static/images/UI/IMG_Common_Logo_ETERNALBASE.webp{% endif %}" onerror="this.parentElement.innerHTML='<div style=\'font-size:25px;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center;width:100%;height:100%\'>GG</div>'"></div><div class="brand-copy"><div class="brand-title-row"><h1 class="brand-text"><span class="brand-word brand-word-ggen brand-frame-1">GGEN</span> <span class="brand-word brand-frame-2">ETERNAL</span> <span class="brand-word brand-word-db brand-frame-3">DATABASE</span></h1></div><div class="brand-sub">SD Gundam G Generation</div></div></a>
+<div class="header-15-slot" id="header15Slot" aria-label="1.5 Anniversary design"><button type="button" class="header-15-toggle header-15-toggle--special is-active" id="ggen15On" data-design="15" aria-label="Special Design"><img id="ggen15OnImg" src="/static/images/UI/collections_15_special_design_EN.webp" alt="" width="200" height="36" decoding="async" loading="lazy"></button><button type="button" class="header-15-toggle" id="ggen15Off" data-design="classic">Classic</button></div>
 <div class="header-controls"><div class="header-lang-col"><div class="header-lang-kofi-row"><div class="header-support-btns"><button type="button" class="alipayhk-header-btn" id="alipayhkHeaderBtn" onclick="openAlipayhkModal()"><img class="alipayhk-header-ic" src="/static/support/alipayhk_header_icon.png" alt="" width="18" height="18" loading="lazy" decoding="async" onerror="this.style.display='none'"><span id="alipayhkHeaderLabel">Support on AlipayHK</span></button><a class="kofi-header-link ui-notice-anchor" id="kofiHeaderLink" href="https://ko-fi.com/E1E21WL8RV" target="_blank" rel="noopener noreferrer"><img class="kofi-header-ic" src="https://storage.ko-fi.com/cdn/cup-border.png" alt="" width="18" height="18" loading="lazy" decoding="async" onerror="this.style.display='none'"><span id="kofiHeaderLabel">Support on Ko-fi</span></a></div><div class="lang-selector"><button type="button" class="lang-btn" id="langBtn" onclick="toggleLangDropdown()"><span id="langLabel">EN</span><span class="lang-btn-caret" aria-hidden="true">▾</span></button><div class="lang-dropdown" id="langDropdown"></div></div></div></div></div>
 </div>
 </header>
@@ -248,8 +250,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <script>
 window.__GGEN_IMAGE_CDN__ = '{{ image_cdn }}';
 window.__GGEN_GAME_IMAGES_USE_CDN__ = {{ (game_images_use_cdn if game_images_use_cdn is defined else false) | tojson }};
+(function(){
+  try{
+    var q=new URLSearchParams(location.search||'');
+    var forced=q.get('design')||q.get('mock');
+    var stored=localStorage.getItem('ggen_design_15')||'';
+    var on=forced==='15'?true:forced==='classic'?false:(stored==='0'?false:true);
+    window.__GGEN_DESIGN_15__=!!on;
+    document.documentElement.classList.add(on?'ggen-15':'ggen-classic');
+  }catch(_){}
+})();
 </script>
 {% include '_client_version_reload.html' %}
+<script src="{{ url_for('static', filename='js/ggen_15.js') }}?v={{ app_js_version }}" defer></script>
 <script src="{{ url_for('static', filename='js/content_notices.js') }}?v={{ app_js_version }}" defer></script>
 <script src="{{ url_for('static', filename='js/game_news.js') }}?v={{ app_js_version }}" defer></script>
 </body>

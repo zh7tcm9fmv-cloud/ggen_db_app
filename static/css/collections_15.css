@@ -1,0 +1,272 @@
+/* Collections “1.5 page” Special Design — Teko on promo headlines.
+   Body/nav/brand stay on site fonts (FOTK / Roboto / locale CJK).
+   Full ub_g art lives in save-as-image, not the live grid.
+   Reference: https://1-5anniv-gget.ggame.jp/en/ */
+
+.collections-page.collections-15{
+  --g15-cyan:0 217 255;
+  --g15-blue:0 140 255;
+  --g15-yellow:255 212 0;
+  --g15-gray:136 136 136;
+  --accent-cyan:rgb(var(--g15-cyan));
+  --accent-blue:rgb(var(--g15-blue));
+  --accent-gold:rgb(var(--g15-yellow));
+  --font-teko:"Teko",system-ui,sans-serif;
+  background:
+    radial-gradient(120% 70% at 50% -10%,rgba(0,217,255,.12),transparent 55%),
+    radial-gradient(80% 50% at 100% 20%,rgba(0,140,255,.08),transparent 50%),
+    var(--bg-primary);
+}
+
+.collections-15-banner{
+  display:none;
+}
+.collections-page.collections-15 .collections-15-banner,
+.collections-page.collections-classic .collections-15-banner{
+  display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;
+  margin:0 0 14px;padding:10px 12px;
+  border:1px solid rgba(0,217,255,.45);
+  background:
+    linear-gradient(95deg,rgba(0,217,255,.12),rgba(0,140,255,.06) 55%,transparent),
+    rgba(9,20,39,.92);
+  clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));
+  box-shadow:0 0 0 1px rgba(0,0,0,.35);
+}
+.collections-15-banner-kicker{
+  font-family:var(--font-teko),Teko,sans-serif;
+  font-size:18px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;
+  color:rgb(0 217 255);line-height:1;
+}
+.collections-15-banner-copy{
+  flex:1 1 220px;margin:0;font-size:12px;line-height:1.4;color:var(--text-secondary);
+}
+.collections-15-banner-actions{display:inline-flex;align-items:center;gap:8px;flex:0 0 auto}
+.collections-15-toggle{
+  appearance:none;border:1px solid rgba(0,217,255,.55);
+  background:rgba(0,217,255,.1);color:#7af0ff;
+  font-family:var(--font-teko),Teko,sans-serif;
+  font-size:15px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  padding:6px 12px;cursor:pointer;
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
+  transition:background .2s cubic-bezier(.2,0,0,1),border-color .2s cubic-bezier(.2,0,0,1),color .2s cubic-bezier(.2,0,0,1),box-shadow .2s cubic-bezier(.2,0,0,1);
+}
+.collections-15-toggle:hover{background:rgba(0,217,255,.2);color:#fff}
+.collections-15-toggle.is-active{
+  background:linear-gradient(95deg,rgba(0,217,255,.35),rgba(0,140,255,.25));
+  border-color:#00d9ff;color:#fff;
+}
+/* Special Design mark — same 1.5 chamfer chrome as Classic, scaled up */
+.collections-15-toggle--special{
+  padding:8px 14px;
+  line-height:0;
+  /* Keep Classic clip-path / fill language */
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
+  background:rgba(0,217,255,.1);
+  overflow:hidden;
+}
+.collections-15-toggle--special:hover{
+  background:rgba(0,217,255,.2);
+}
+.collections-15-toggle--special.is-active{
+  background:linear-gradient(95deg,rgba(0,217,255,.35),rgba(0,140,255,.25));
+  border-color:#00d9ff;
+  box-shadow:none;
+}
+.collections-15-toggle--special img{
+  display:block;
+  height:42px; /* Classic ~35px tall; this stays proportionally larger */
+  width:auto;
+  max-width:min(260px,55vw);
+  object-fit:contain;
+  object-position:center;
+  /* Drop baked black plate onto cyan chamfer fill */
+  mix-blend-mode:screen;
+}
+
+/* Promo headlines only — rest of page keeps site --font-body / --font-brand */
+.collections-page.collections-15 .collections-eyebrow{
+  font-family:var(--font-teko);
+  font-size:16px;font-weight:500;letter-spacing:.14em;
+  color:rgb(var(--g15-blue));
+}
+.collections-page.collections-15 .collections-intro h1{
+  font-family:var(--font-teko);
+  font-size:clamp(34px,5vw,52px);font-weight:600;letter-spacing:.04em;
+  text-transform:uppercase;line-height:.95;
+  color:#fff;
+  text-shadow:0 0 24px rgba(0,217,255,.25);
+}
+.collections-page.collections-15 .collections-sub{
+  max-width:54ch;color:rgb(var(--g15-gray));
+}
+.collections-page.collections-15 .collections-census-head h2{
+  font-family:var(--font-teko);
+  letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  font-size:clamp(26px,3vw,36px);color:rgb(var(--g15-blue));
+}
+
+/* HUD stat labels — same Teko display language as toolbar */
+.collections-page.collections-15 .collections-stat-k{
+  font-family:var(--font-teko);
+  font-size:13px;font-weight:500;letter-spacing:.08em;
+}
+.collections-page.collections-15 .collections-stat--split .collections-stat-k{
+  font-size:12px;letter-spacing:.06em;
+}
+.collections-page.collections-15 .collections-stat-v{
+  font-family:var(--font-teko);
+  font-weight:600;letter-spacing:.02em;
+  font-size:clamp(22px,2.4vw,28px);
+}
+.collections-page.collections-15 .collections-stat--split .collections-stat-v{
+  font-size:clamp(18px,2vw,22px);
+}
+
+.collections-page.collections-15 .collections-intro{
+  position:relative;padding-bottom:14px;margin-bottom:18px;
+}
+.collections-page.collections-15 .collections-intro::after{
+  content:"";display:block;margin-top:14px;height:2px;width:min(420px,100%);
+  background:
+    linear-gradient(90deg,rgb(var(--g15-cyan)),rgb(var(--g15-blue)) 40%,transparent);
+  clip-path:polygon(0 0,100% 0,calc(100% - 10px) 100%,0 100%);
+}
+
+/* Chamfer chrome on HUD panels — site fonts unchanged */
+.collections-page.collections-15 .collections-gauge,
+.collections-page.collections-15 .collections-stat,
+.collections-page.collections-15 .collections-toolbar,
+.collections-page.collections-15 .collections-share-bar,
+.collections-page.collections-15 .collections-census-panel{
+  border-radius:0;
+  clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px));
+  border-color:rgba(0,217,255,.28);
+  background:
+    radial-gradient(120% 80% at 10% 0%,rgba(0,217,255,.08),transparent 55%),
+    rgba(9,20,39,.92);
+}
+.collections-page.collections-15 .collections-gauge::before,
+.collections-page.collections-15 .collections-gauge::after{
+  border-color:rgba(0,217,255,.75);
+}
+.collections-page.collections-15 .collections-gauge-label{
+  font-family:var(--font-teko);
+  font-size:14px;font-weight:500;letter-spacing:.1em;
+  color:rgb(var(--g15-gray));
+}
+.collections-page.collections-15 .collections-gauge-pct{
+  font-family:var(--font-teko);
+  font-weight:600;letter-spacing:.02em;
+}
+
+/* Toolbar controls — 1.5 chamfer CTAs (Teko labels; icons unchanged) */
+.collections-page.collections-15 .collections-type-tabs button,
+.collections-page.collections-15 .collections-role-tabs button,
+.collections-page.collections-15 .collections-btn{
+  border-radius:0;
+  font-family:var(--font-teko);
+  letter-spacing:.06em;text-transform:uppercase;font-weight:600;
+  clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);
+}
+.collections-page.collections-15 .collections-type-tabs button,
+.collections-page.collections-15 .collections-role-tabs button:not(.collections-role-icon-btn){
+  font-size:14px;padding:8px 14px;
+}
+.collections-page.collections-15 .collections-btn{
+  font-size:13px;padding:8px 12px;
+}
+.collections-page.collections-15 .collections-toolbar-actions input[type=search],
+.collections-page.collections-15 .collections-username input,
+.collections-page.collections-15 .collections-code-field input,
+.collections-page.collections-15 .collections-share-save-name input,
+.collections-page.collections-15 .collections-share-save-slot select{
+  border-radius:0;
+  clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);
+}
+.collections-page.collections-15 .collections-type-tabs button.is-active,
+.collections-page.collections-15 .collections-role-tabs button.is-active{
+  background:linear-gradient(95deg,rgba(0,217,255,.28),rgba(0,140,255,.18));
+  border-color:#00d9ff;color:#fff;
+}
+.collections-page.collections-15 .collections-type-tabs button:hover,
+.collections-page.collections-15 .collections-role-tabs button:hover,
+.collections-page.collections-15 .collections-btn:hover{
+  border-color:rgba(0,217,255,.55);color:#fff;
+}
+
+/* Unit / supporter cards — same HUD chamfer as toolbar CTAs (light thumbs kept) */
+.collections-page.collections-15 .col-card{
+  border-radius:0;
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
+  border:1px solid rgba(0,217,255,.4);
+  background:
+    radial-gradient(120% 80% at 0% 0%,rgba(0,217,255,.07),transparent 55%),
+    rgba(9,20,39,.92);
+  box-shadow:none;
+  padding:8px 8px 10px;
+}
+.collections-page.collections-15 .col-card:hover{
+  border-color:#00d9ff;
+  background:
+    radial-gradient(120% 80% at 0% 0%,rgba(0,217,255,.12),transparent 55%),
+    rgba(12,24,44,.96);
+  filter:brightness(1.04);
+}
+.collections-page.collections-15 .col-card.is-unowned{
+  opacity:.22;
+  filter:grayscale(.78) brightness(.32);
+  border-color:rgba(0,217,255,.16);
+  background:rgba(6,10,18,.92);
+}
+.collections-page.collections-15 .col-card.is-unowned:hover{
+  opacity:.4;
+  filter:grayscale(.55) brightness(.48);
+  border-color:rgba(0,217,255,.28);
+}
+.collections-page.collections-15 .col-card:focus-visible{
+  outline:2px solid rgba(0,217,255,.7);
+  outline-offset:3px;
+}
+.collections-page.collections-15 .col-card.lb-0{
+  border-color:#7af0ff;
+  box-shadow:0 0 0 1px rgba(0,217,255,.25);
+}
+.collections-page.collections-15 .col-card.lb-1{
+  border-color:rgba(74,144,217,.75);
+}
+.collections-page.collections-15 .col-card.lb-2{
+  border-color:rgba(46,213,115,.65);
+}
+.collections-page.collections-15 .col-card.lb-3{
+  border-color:rgba(255,215,0,.75);
+  box-shadow:0 0 0 1px rgba(255,215,0,.2),0 0 14px rgba(255,215,0,.1);
+}
+.collections-page.collections-15 .col-card-thumb,
+.collections-page.collections-15 .col-card-thumb-inner{
+  border-radius:0;
+}
+.collections-page.collections-15 .col-card-lim{
+  border-radius:0;
+}
+.collections-page.collections-15 .col-card-name{
+  font-family:var(--font-teko);
+  font-size:13px;font-weight:500;letter-spacing:.04em;
+  text-transform:uppercase;line-height:1.15;
+  color:#d7dee8;
+}
+
+@keyframes g15-blink{
+  0%,100%{opacity:1}
+  40%{opacity:.45}
+  55%{opacity:1}
+  70%{opacity:.55}
+  85%{opacity:1}
+}
+.collections-page.collections-15 .collections-btn--save:hover,
+.collections-page.collections-15 .collections-btn--share:hover{
+  animation:g15-blink .45s steps(2,end) 1;
+}
+@media (prefers-reduced-motion:reduce){
+  .collections-page.collections-15 .collections-btn--save:hover,
+  .collections-page.collections-15 .collections-btn--share:hover{animation:none}
+}

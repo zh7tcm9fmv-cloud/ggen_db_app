@@ -52,6 +52,7 @@ window.__ggenLoadGtm=function(){
 @font-face{font-family:'RobotoMediumNumbers';src:url('{{ url_for('static', filename='font/roboto_medium_numbers.ttf') }}?v={{ app_js_version }}') format('truetype');font-weight:normal;font-style:normal;font-display:swap}
 </style>
 <link rel="stylesheet" href="{{ url_for('static', filename='css/app_shell_bundle.min.css') }}?v={{ app_js_version }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ggen_15.css') }}?v={{ app_js_version }}">
 {% include '_defer_brand_fonts.html' %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/sp_investment.css') }}?v={{ app_js_version }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/kofi_supporter_wall.css') }}?v={{ app_js_version }}">
@@ -68,6 +69,16 @@ try {
     document.documentElement.setAttribute('lang', _htmlLang);
   }
 } catch (e) {}
+(function(){
+  try{
+    var q=new URLSearchParams(location.search||'');
+    var forced=q.get('design')||q.get('mock');
+    var stored=localStorage.getItem('ggen_design_15')||localStorage.getItem('ggen_units_mock15')||'';
+    var on=forced==='15'?true:forced==='classic'?false:(stored==='0'?false:true);
+    window.__GGEN_DESIGN_15__=!!on;
+    document.documentElement.classList.add(on?'ggen-15':'ggen-classic');
+  }catch(_){}
+})();
 </script>
 </head>
 <body class="spi-page">
@@ -94,6 +105,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="brand-sub" data-i18n="brand_sub">Investment Priority</div>
       </div>
     </a>
+    <div class="header-15-slot" id="header15Slot" aria-label="1.5 Anniversary design">
+      <button type="button" class="header-15-toggle header-15-toggle--special is-active" id="ggen15On" data-design="15" aria-label="Special Design">
+        <img id="ggen15OnImg" src="/static/images/UI/collections_15_special_design_EN.webp" alt="" width="200" height="36" decoding="async" loading="lazy">
+      </button>
+      <button type="button" class="header-15-toggle" id="ggen15Off" data-design="classic">Classic</button>
+    </div>
     <div class="spi-header-actions">
       <div class="spi-lang" role="group" data-i18n-aria="lang_aria" aria-label="Language">
         <button type="button" class="spi-lang-btn" data-lang="EN" title="EN">EN</button>
@@ -109,6 +126,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <main>
 {% include '_sp_investment_panel.html' %}
 </main>
+<script src="{{ url_for('static', filename='js/ggen_15.js') }}?v={{ app_js_version }}" defer></script>
 <script src="{{ url_for('static', filename='js/sp_investment_i18n.js') }}?v={{ app_js_version }}" defer></script>
 <script src="{{ url_for('static', filename='js/sp_investment_i18n_guide.js') }}?v={{ app_js_version }}" defer></script>
 <script src="{{ url_for('static', filename='js/sp_investment.js') }}?v={{ app_js_version }}" defer></script>

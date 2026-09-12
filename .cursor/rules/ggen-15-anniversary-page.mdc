@@ -1,0 +1,57 @@
+---
+description: Official GGET “1.5 page” design reference (1-5anniv-gget.ggame.jp). Use when owner says “1.5 page” or asks to mimic anniversary-site UI.
+alwaysApply: true
+---
+
+# “1.5 page” = official anniversary site
+
+Canonical URL: https://1-5anniv-gget.ggame.jp/en/  
+Locales: `/jp/` `/en/` `/sc/` `/hk/` `/tw/` `/kr/`
+
+When the owner says **“1.5 page”**, this is the reference — study / mimic from here, not from gget.ggame.jp main marketing site.
+
+## What it is
+
+Bandai Namco **campaign microsite** (not the game client UI): splash → scroll story → campaign modules → store CTA. Built as a Vite/Rolldown ES module app with **GSAP + ScrollTrigger**, WebP art, SVG sprite HUD frames, `clip-path` chamfers.
+
+## Design tokens (steal carefully)
+
+| Token | Value | Notes |
+|---|---|---|
+| Primary cyan | `rgb(0, 217, 255)` ≈ `#00D9FF` | Matches our `--accent-cyan` / `#00d4ff` family |
+| Secondary blue | `rgb(0, 140, 255)` | Deep accent / titles |
+| Pink / orange / yellow | `#FF00E5` / `#FF9D00` / `#FFD400` | Event flourishes |
+| Display type | **Teko** | Section/EN display |
+| Body type | **Noto Sans** (+ JP/SC/HK/TC/KR) | Per-locale |
+| Breakpoint | **~821px** (SP / PC) | Desktop artboard **1440**, mobile **375** |
+| Frames | SVG chamfer corners + `clip-path: polygon(...)` | Beveled cards, buttons, photo frames |
+
+## Page architecture (live EN, Sep 2026)
+
+1. **Splash / cover** (`l-cover`) — looping muted video + grid autoplay, emblem/anniversary marks  
+2. **Visual countdown hero** (`l-visual-count-down`) — clipped media bg, SCROLL cue, campaign lead  
+3. **Locus / journey** (`l-locus-of-the-post-six-month`) — scroll-triggered character/line timeline (“since 1st anniv”)  
+4. **Comeback login bonus** (`l-comeback-login-bonus`) — dark-blue section title, period block, reward cards  
+5. **And more + Download now** — store badges, legal, copyright  
+
+JP may ship extra modules first (e.g. `l-game-media-interview`). CSS already contains **future** modules (history units, mini-game, UR unit frames, video modal) — treat as upcoming content, not missing bugs.
+
+## Motion / interaction language
+
+- Splash gate (`window._status.onSplash` / `splashCut`) then scroll unlock  
+- GSAP title flicker / blink (`data-Interaction-blink`, `data-animation-title`)  
+- ScrollTrigger once-enter for section timelines (`data-animation-item` / `timeline`)  
+- Menu: slide-in drawer + language + social; header logo/anniversary hide on scroll  
+- Soft easing (`power3`, custom `title-ease`), short opacity strobes — cinematic, not UI-busy  
+
+## Mimic feasibility for ggen_db_app
+
+**Good fits (when owner asks):** chamfer/corner-bracket frames, cyan↔gold accent pairing, section divider rules with triangle endcaps, Teko-like *display only* on promo surfaces, clipped hero media, blink/flicker micro-motion on CTAs, responsive `picture` 1x/2x WebP.
+
+**Poor fits / do not copy wholesale:** full GSAP splash gate on database browse, Noto font swap (our fonts are locked), campaign microsite full-bleed video hero on `/`, mini-game / ScrollTrigger story pages inside the DB app, OneTrust/GTM stack.
+
+**Rule of thumb:** borrow **HUD chrome + motion taste** for promotional / collections / What’s New surfaces; keep browse/detail/TB on our existing shell performance bar.
+
+## Agent habit
+
+If a task says “like the 1.5 page”, re-open this URL (or cached study notes) before inventing a generic “gacha landing” look.

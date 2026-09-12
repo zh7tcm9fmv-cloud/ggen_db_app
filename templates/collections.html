@@ -44,10 +44,27 @@ window.__ggenLoadGtm=function(){
 <!-- End Google Tag Manager -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/app_shell.css') }}?v={{ app_js_version }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/collections.css') }}?v={{ app_js_version }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ggen_15.css') }}?v={{ app_js_version }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/collections_15.css') }}?v={{ app_js_version }}">
 {% if image_cdn %}
 <link rel="preconnect" href="{{ image_cdn }}" crossorigin>
 <link rel="dns-prefetch" href="{{ image_cdn }}">
 {% endif %}
+<script>
+/* 1.5 Special Design — early preference (shared with main app) */
+(function(){
+  var q=new URLSearchParams(location.search||'');
+  var forced=q.get('design')||q.get('mock');
+  var stored='';
+  try{stored=localStorage.getItem('ggen_design_15')||localStorage.getItem('ggen_collections_mock15')||''}catch(_){}
+  var on=forced==='15'?true:forced==='classic'?false:(stored==='0'?false:true);
+  window.__GGEN_DESIGN_15__=!!on;
+  window.__GGEN_COLLECTIONS_MOCK15__=!!on;
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link id="ggen15Fonts" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&display=swap" media="print" onload="this.media='all'">
 {% include '_defer_brand_fonts.html' %}
 <script>
 window.__GGEN_IMAGE_CDN__={{ (image_cdn or '')|tojson }};
@@ -55,6 +72,18 @@ window.__GGEN_GAME_IMAGES_USE_CDN__={{ game_images_use_cdn|tojson }};
 </script>
 </head>
 <body class="app-shell collections-page">
+<script>
+(function(){
+  var on=!!window.__GGEN_DESIGN_15__;
+  document.documentElement.classList.add(on?'ggen-15':'ggen-classic');
+  document.body.classList.add(on?'collections-15':'collections-classic');
+  var link=document.getElementById('ggen15Fonts');
+  if(link){
+    if(on){link.media='all'}
+    else{link.disabled=true;link.removeAttribute('onload')}
+  }
+})();
+</script>
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJB85F92"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -70,6 +99,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="brand-sub">SD Gundam G Generation</div>
       </div>
     </a>
+    <div class="header-15-slot" id="header15Slot" aria-label="1.5 Anniversary design">
+      <button type="button" class="header-15-toggle header-15-toggle--special is-active" id="ggen15On" data-design="15" aria-label="Special Design">
+        <img id="ggen15OnImg" src="/static/images/UI/collections_15_special_design_EN.webp" alt="" width="200" height="36" decoding="async" loading="lazy">
+      </button>
+      <button type="button" class="header-15-toggle" id="ggen15Off" data-design="classic">Classic</button>
+    </div>
     <div class="header-controls">
       <div class="header-lang-col">
         <div class="header-lang-kofi-row">
@@ -290,6 +325,7 @@ Possessing a unit covers its character</p>
   </div>
 </div>
 
+<script src="{{ url_for('static', filename='js/ggen_15.js') }}?v={{ app_js_version }}" defer></script>
 <script src="{{ url_for('static', filename='js/collections.js') }}?v={{ app_js_version }}" defer></script>
 {% include '_client_version_reload.html' %}
 </body>

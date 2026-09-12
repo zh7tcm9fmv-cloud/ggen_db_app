@@ -174,7 +174,9 @@
       load_slot_empty: 'That slot is empty.',
       load_slot_confirm: 'Replace this browser’s current Collections with “{name}”?',
       clear_slot_ok: 'Cleared slot {i}.',
-      default_save_name: 'Collection {i}'
+      default_save_name: 'Collection {i}',
+      special_design: 'Special Design',
+      classic: 'Classic'
     },
     JA: {
       page_title: '格納庫コレクション — GGen Eternal Database',
@@ -291,7 +293,9 @@
       load_slot_empty: 'このスロットは空です。',
       load_slot_confirm: '現在のコレクションを「{name}」で置き換えますか？',
       clear_slot_ok: 'スロット {i} をクリアしました。',
-      default_save_name: 'コレクション {i}'
+      default_save_name: 'コレクション {i}',
+      special_design: '特設デザイン',
+      classic: 'Classic'
     },
     TW: {
       page_title: '格納庫收藏 — GGen Eternal Database',
@@ -407,7 +411,9 @@
       load_slot_empty: '此欄位是空的。',
       load_slot_confirm: '要用「{name}」取代目前的收藏嗎？',
       clear_slot_ok: '已清除欄位 {i}。',
-      default_save_name: '收藏 {i}'
+      default_save_name: '收藏 {i}',
+      special_design: '特設設計',
+      classic: 'Classic'
     },
     HK: {
       page_title: '格納庫收藏 — GGen Eternal Database',
@@ -523,7 +529,10 @@
       load_slot_empty: '此欄位是空的。',
       load_slot_confirm: '要用「{name}」取代目前的收藏嗎？',
       clear_slot_ok: '已清除欄位 {i}。',
-      default_save_name: '收藏 {i}'
+      default_save_name: '收藏 {i}',
+      /* Same TW wording as official Traditional Chinese anniversary mark (特設網站 → 特設設計) */
+      special_design: '特設設計',
+      classic: 'Classic'
     }
   };
 
@@ -835,6 +844,29 @@
     setText('colFoot', t('foot'));
     var prevMsg = document.getElementById('colPreviewMsg');
     if (prevMsg) prevMsg.textContent = t('preview_msg');
+    syncSpecialDesignIcon();
+  }
+
+  /** Locale WebP for Special Design mark — same-origin (custom asset, not on game CDN). */
+  function specialDesignIconSrc() {
+    var L = String(state.lang || 'EN').toUpperCase();
+    if (L === 'JP') L = 'JA';
+    if (L !== 'EN' && L !== 'JA' && L !== 'TW' && L !== 'HK') L = 'EN';
+    return '/static/images/UI/collections_15_special_design_' + L + '.webp';
+  }
+
+  function syncSpecialDesignIcon() {
+    var label = t('special_design');
+    var img = document.getElementById('ggen15OnImg');
+    var onBtn = document.getElementById('ggen15On');
+    var src = specialDesignIconSrc();
+    if (img) {
+      img.src = src;
+      img.alt = label;
+    }
+    if (onBtn) onBtn.setAttribute('aria-label', label);
+    var offBtn = document.getElementById('ggen15Off');
+    if (offBtn) offBtn.textContent = t('classic');
   }
 
   function syncLangUi() {
@@ -1911,6 +1943,15 @@
         loadImage(imgUrl(paths[i]));
       } catch (_) {}
     }
+    /* Warm list thumbs for export — same assets as live grid (already CDN-cached). */
+    try {
+      var rows = activeList();
+      var lim = Math.min(rows.length, 64);
+      for (var ti = 0; ti < lim; ti++) {
+        var u = rows[ti] && (rows[ti].thum || rows[ti].art);
+        if (u) loadImage(imgUrl(u));
+      }
+    } catch (_) {}
   }
 
   function lbBorderColor(lb) {
@@ -1937,15 +1978,148 @@
     return L === 'JA' || L === 'JP' || L === 'TW' || L === 'HK';
   }
 
-  /** Canvas text: always bold for CJK; slightly larger for readability. */
+  var GGEN_TEKO_FAM = 'GgenTeko';
+
+  /** Canvas text: self-hosted GgenTeko (1.5 display) for Latin; site CJK for JA/TW/HK. */
   function uiCanvasFont(sizePx, weight) {
-    var w = weight || 'bold';
     var px = Number(sizePx) || 14;
-    if (isCjkUiLang()) px = Math.round(px * 1.12);
-    var fam = isCjkUiLang()
-      ? '"Noto Sans JP","ShinGoPr6DeBold","UDShinGoStdTCMed","Microsoft JhengHei","Yu Gothic UI","Yu Gothic","PingFang TC",sans-serif'
-      : 'sans-serif';
-    return w + ' ' + px + 'px ' + fam;
+    if (isCjkUiLang()) {
+      px = Math.round(px * 1.12);
+      var w = weight || 'bold';
+      var fam =
+        '"Noto Sans JP","ShinGoPr6DeBold","UDShinGoStdTCMed","Microsoft JhengHei","Yu Gothic UI","Yu Gothic","PingFang TC",sans-serif';
+      return w + ' ' + px + 'px ' + fam;
+    }
+    var tw = weight;
+    if (!tw || tw === 'bold' || tw === '700') tw = '600';
+    if (tw === 'normal' || tw === '400') tw = '500';
+    return tw + ' ' + px + 'px "' + GGEN_TEKO_FAM + '", Teko, sans-serif';
+  }
+
+  /**
+   * Load Teko via FontFace under a unique family name so canvas never silently
+   * falls back when Google Fonts CSS is print/disabled or unfinished.
+   */
+  async function ensureTekoForCanvas() {
+    if (window.__ggenTekoCanvasOk) return true;
+    if (typeof FontFace === 'undefined' || !document.fonts) return false;
+    try {
+      var faces = [
+        new FontFace(GGEN_TEKO_FAM, "url('/static/font/Teko-SemiBold.ttf') format('truetype')", {
+          style: 'normal',
+          weight: '500'
+        }),
+        new FontFace(GGEN_TEKO_FAM, "url('/static/font/Teko-SemiBold.ttf') format('truetype')", {
+          style: 'normal',
+          weight: '600'
+        }),
+        new FontFace(GGEN_TEKO_FAM, "url('/static/font/Teko-Bold.ttf') format('truetype')", {
+          style: 'normal',
+          weight: '700'
+        })
+      ];
+      var loaded = await Promise.all(
+        faces.map(function (f) {
+          return f.load();
+        })
+      );
+      loaded.forEach(function (f) {
+        document.fonts.add(f);
+      });
+      await Promise.all([
+        document.fonts.load('600 13px "' + GGEN_TEKO_FAM + '"'),
+        document.fonts.load('600 16px "' + GGEN_TEKO_FAM + '"'),
+        document.fonts.load('600 26px "' + GGEN_TEKO_FAM + '"'),
+        document.fonts.load('600 32px "' + GGEN_TEKO_FAM + '"'),
+        document.fonts.load('700 32px "' + GGEN_TEKO_FAM + '"')
+      ]);
+      /* Width probe — Teko is much narrower than system sans for the same string */
+      var probe = document.createElement('canvas').getContext('2d');
+      probe.font = '600 32px "' + GGEN_TEKO_FAM + '", monospace';
+      var wTeko = probe.measureText('COLLECTIONS').width;
+      probe.font = '600 32px Arial, sans-serif';
+      var wArial = probe.measureText('COLLECTIONS').width;
+      window.__ggenTekoCanvasOk = wTeko > 0 && Math.abs(wTeko - wArial) > 8;
+      return !!window.__ggenTekoCanvasOk;
+    } catch (_) {
+      window.__ggenTekoCanvasOk = false;
+      return false;
+    }
+  }
+
+  function art15ChamferPath(c, x, y, w, h) {
+    var cut = Math.min(w, h) * 0.1;
+    c.beginPath();
+    c.moveTo(x + cut, y);
+    c.lineTo(x + w, y);
+    c.lineTo(x + w, y + h - cut);
+    c.lineTo(x + w - cut, y + h);
+    c.lineTo(x, y + h);
+    c.lineTo(x, y + cut);
+    c.closePath();
+  }
+
+  /** Procedural 1.5 anniversary cell backdrop (subtle hex + cyan wash). */
+  function buildArt15CellBg(w, h) {
+    var tile = document.createElement('canvas');
+    tile.width = Math.max(1, Math.ceil(w));
+    tile.height = Math.max(1, Math.ceil(h));
+    var g = tile.getContext('2d');
+    g.fillStyle = '#060910';
+    g.fillRect(0, 0, w, h);
+
+    var glow = g.createRadialGradient(
+      w * 0.35,
+      h * 0.4,
+      2,
+      w * 0.4,
+      h * 0.48,
+      Math.max(w, h) * 0.7
+    );
+    glow.addColorStop(0, 'rgba(0,217,255,0.1)');
+    glow.addColorStop(0.5, 'rgba(0,140,255,0.035)');
+    glow.addColorStop(1, 'rgba(0,0,0,0)');
+    g.fillStyle = glow;
+    g.fillRect(0, 0, w, h);
+
+    var r = Math.min(w, h) * 0.13;
+    var dx = r * Math.sqrt(3);
+    var dy = r * 1.5;
+    g.lineWidth = Math.max(0.6, r * 0.045);
+    var row = 0;
+    for (var cy = -r; cy < h + r; cy += dy, row++) {
+      var ox = (row % 2) * (dx * 0.5);
+      for (var cx = -r + ox; cx < w + r; cx += dx) {
+        var dist = Math.hypot(cx - w * 0.35, cy - h * 0.45) / Math.max(w, h);
+        var a = Math.max(0.04, 0.16 - dist * 0.22);
+        g.strokeStyle = 'rgba(0,217,255,' + a.toFixed(3) + ')';
+        g.beginPath();
+        for (var i = 0; i < 6; i++) {
+          var ang = (Math.PI / 3) * i - Math.PI / 6;
+          var px = cx + r * Math.cos(ang);
+          var py = cy + r * Math.sin(ang);
+          if (i === 0) g.moveTo(px, py);
+          else g.lineTo(px, py);
+        }
+        g.closePath();
+        g.stroke();
+      }
+    }
+
+    /* Tiny flecks — keep quiet so art stays primary */
+    g.fillStyle = 'rgba(122,240,255,0.35)';
+    var sparks = [
+      [0.16, 0.2, 0.7],
+      [0.78, 0.16, 0.55],
+      [0.88, 0.58, 0.6]
+    ];
+    for (var s = 0; s < sparks.length; s++) {
+      g.beginPath();
+      g.arc(sparks[s][0] * w, sparks[s][1] * h, sparks[s][2], 0, Math.PI * 2);
+      g.fill();
+    }
+
+    return tile;
   }
 
   /** Match HUD gauge: ring + type icon with drop-shadow, icon slightly over ring. */
@@ -2243,26 +2417,27 @@
       labelX = leadX + 3 * 13 + 4;
     }
     ctx.fillStyle = '#8494ae';
-    ctx.font = uiCanvasFont(11, 'bold');
+    ctx.font = uiCanvasFont(12, '600');
     ctx.textAlign = 'left';
     ctx.textBaseline = 'top';
     var labelMax = w - (labelX - x) - padX;
     var label = String(half.label || '');
+    if (!isCjkUiLang()) label = label.toUpperCase();
     while (label.length > 1 && ctx.measureText(label).width > labelMax) {
       label = label.slice(0, -1);
     }
-    if (label !== String(half.label || '') && label.length > 1) {
+    if (label !== String(half.label || '').toUpperCase() && label.length > 1 && !isCjkUiLang()) {
       label = label.slice(0, -1) + '…';
     }
     ctx.fillText(label, labelX, leadY + 1);
 
     var nStr = String(half.n);
     var dStr = ' / ' + half.d;
-    ctx.font = uiCanvasFont(20, 'bold');
+    ctx.font = uiCanvasFont(22, '600');
     ctx.fillStyle = numColor;
     ctx.fillText(nStr, x + padX, y + 38);
     var nW = ctx.measureText(nStr).width;
-    ctx.font = uiCanvasFont(14, 'bold');
+    ctx.font = uiCanvasFont(14, '600');
     ctx.fillStyle = '#8494ae';
     ctx.fillText(dStr, x + padX + nW, y + 43);
 
@@ -2290,8 +2465,16 @@
     drawRoundRect(ctx, x, y, w, h, 10);
     ctx.fillStyle = '#141c2b';
     ctx.fill();
-    ctx.strokeStyle = border;
+    /* 1.5 cyan edge on stat cards */
+    ctx.strokeStyle = perfect
+      ? 'rgba(255,215,0,0.5)'
+      : complete
+        ? 'rgba(255,215,0,0.28)'
+        : 'rgba(0,217,255,0.45)';
     ctx.lineWidth = 1;
+    ctx.stroke();
+    art15ChamferPath(ctx, x + 1, y + 1, w - 2, h - 2);
+    ctx.strokeStyle = perfect ? 'rgba(255,215,0,0.25)' : 'rgba(0,217,255,0.2)';
     ctx.stroke();
 
     if (card.splitRight) {
@@ -2379,26 +2562,27 @@
     }
 
     ctx.fillStyle = '#8494ae';
-    ctx.font = uiCanvasFont(13, 'bold');
+    ctx.font = uiCanvasFont(13, '600');
     ctx.textAlign = 'left';
     ctx.textBaseline = 'top';
     var labelMax = w - (labelX - x) - padX;
     var label = String(card.label || '');
+    if (!isCjkUiLang()) label = label.toUpperCase();
     while (label.length > 1 && ctx.measureText(label).width > labelMax) {
       label = label.slice(0, -1);
     }
-    if (label !== String(card.label || '') && label.length > 1) {
+    if (label.length > 1 && ctx.measureText(label).width > labelMax) {
       label = label.slice(0, -1) + '…';
     }
     ctx.fillText(label, labelX, leadY + 1);
 
     var nStr = String(card.n);
     var dStr = ' / ' + card.d;
-    ctx.font = uiCanvasFont(24, 'bold');
+    ctx.font = uiCanvasFont(24, '600');
     ctx.fillStyle = numColor;
     ctx.fillText(nStr, x + padX, y + 38);
     var nW = ctx.measureText(nStr).width;
-    ctx.font = uiCanvasFont(16, 'bold');
+    ctx.font = uiCanvasFont(16, '600');
     ctx.fillStyle = '#8494ae';
     ctx.fillText(dStr, x + padX + nW, y + 44);
 
@@ -2410,13 +2594,16 @@
     var st = computeStats(rows);
     var complete = st.total > 0 && st.owned >= st.total;
     var perfect = complete && st.maxed >= st.total;
-    var cols = Math.min(8, Math.max(5, Math.ceil(Math.sqrt(rows.length || 1))));
-    var cell = 104;
-    var gap = 10;
+    var cols = Math.min(6, Math.max(4, Math.ceil(Math.sqrt((rows.length || 1) * 0.7))));
+    /* 1.5 page landscape cells — chamfer + cover art (no UR base/frame) */
+    var cellW = 148;
+    var cellH = Math.round((cellW * 504) / 900);
+    var gapX = 12;
+    var gapY = 30;
     var pad = 44;
     var playerName = currentUsername();
-    var titleBottom = pad + (playerName ? 100 : 88);
-    var gridW = cols * cell + (cols - 1) * gap;
+    var titleBottom = pad + (playerName ? 110 : 96);
+    var gridW = cols * cellW + (cols - 1) * gapX;
     var W = gridW + pad * 2;
     /* Ring top-aligned with header pad (cuts empty air above). */
     var emblemSize = Math.round(Math.min(236, Math.max(196, W * 0.32)));
@@ -2431,8 +2618,18 @@
           "@font-face{font-family:'RobotoMediumNumbers';src:url('/static/font/roboto_medium_numbers.ttf') format('truetype');font-weight:normal;font-style:normal;font-display:swap}";
         document.head.appendChild(faceStEarly);
       }
+      await ensureTekoForCanvas();
       if (document.fonts && document.fonts.load) {
         await document.fonts.load('800 42px RobotoMediumNumbers');
+        if (isCjkUiLang()) {
+          try {
+            await Promise.all([
+              document.fonts.load('bold 14px "ShinGoPr6DeBold"'),
+              document.fonts.load('bold 16px "UDShinGoStdTCMed"'),
+              document.fonts.load('bold 26px "ShinGoPr6DeBold"')
+            ]);
+          } catch (_) {}
+        }
       }
     } catch (_) {}
 
@@ -2450,10 +2647,10 @@
       cardRowsLayout * cardHLayout + (cardRowsLayout - 1) * cardGapLayout;
     var headerH = subY + subBlockH + 20;
     var rowsN = Math.max(1, Math.ceil((rows.length || 1) / cols));
-    var gridH = rowsN * cell + (rowsN - 1) * gap;
+    var gridH = rowsN * cellH + (rowsN - 1) * gapY;
     var H = headerH + gridH + pad + 48;
-    /* 3× CSS layout → crisp PNG on phone; was 2× with smaller cells (hard to read). */
-    var scale = 3;
+    /* 2× layout — crisp enough; 3× + full-art was the main save lag */
+    var scale = 2;
     var canvas = document.createElement('canvas');
     canvas.width = W * scale;
     canvas.height = H * scale;
@@ -2526,7 +2723,7 @@
       loadImage(imgUrl('/static/images/UI/UI_Common_MenuIcon_Language.webp')),
       Promise.all(
         rows.map(function (row) {
-          return loadImage(imgUrl(row.thum || ''));
+          return loadImage(imgUrl(row.art || row.thum || ''));
         })
       )
     ]);
@@ -2565,24 +2762,25 @@
 
     ctx.textBaseline = 'top';
     ctx.fillStyle = '#f0f2f7';
-    ctx.font = uiCanvasFont(26, 'bold');
-    ctx.fillText(t('report_title'), textX, pad + 2);
+    var titleStr = isCjkUiLang() ? t('report_title') : String(t('report_title') || '').toUpperCase();
+    ctx.font = uiCanvasFont(32, '600');
+    ctx.fillText(titleStr, textX, pad + 2);
 
-    ctx.fillStyle = '#8494ae';
-    ctx.font = uiCanvasFont(13, 'bold');
-    ctx.fillText(t('brand_line'), textX, pad + 34);
+    ctx.fillStyle = '#7af0ff';
+    ctx.font = uiCanvasFont(14, '600');
+    ctx.fillText(t('brand_line'), textX, pad + 38);
 
     if (playerName) {
       ctx.fillStyle = '#ffd700';
-      ctx.font = uiCanvasFont(16, 'bold');
-      ctx.fillText(playerName, textX, pad + 54);
-      ctx.fillStyle = '#00d4ff';
-      ctx.font = uiCanvasFont(15, 'bold');
-      ctx.fillText('UR ' + typeTitle(), textX, pad + 76);
+      ctx.font = uiCanvasFont(18, '600');
+      ctx.fillText(playerName, textX, pad + 58);
+      ctx.fillStyle = '#00d9ff';
+      ctx.font = uiCanvasFont(16, '600');
+      ctx.fillText('UR ' + typeTitle(), textX, pad + 80);
     } else {
-      ctx.fillStyle = '#00d4ff';
-      ctx.font = uiCanvasFont(15, 'bold');
-      ctx.fillText('UR ' + typeTitle(), textX, pad + 56);
+      ctx.fillStyle = '#00d9ff';
+      ctx.font = uiCanvasFont(16, '600');
+      ctx.fillText('UR ' + typeTitle(), textX, pad + 58);
     }
 
     drawSharePossessionHead(ctx, pad, pctPanelY, pctStr, complete, perfect);
@@ -2677,77 +2875,119 @@
       drawShareStatCard(ctx, scx, scy, cardW, cardH, sc, shareStatImgs, complete, perfect);
     }
 
-    /* Match .col-card.is-unowned: opacity .3 + grayscale(.65) brightness(.45) on the whole cell */
-    var UNOWNED_FILTER = 'grayscale(0.65) brightness(0.45)';
-    var UNOWNED_ALPHA = 0.3;
-    var cellCanvas = document.createElement('canvas');
-    cellCanvas.width = cell;
-    cellCanvas.height = cell;
-    var cctx = cellCanvas.getContext('2d');
-
+    /* 1.5 page cells: hex glow bg + cover art + chamfer brackets */
+    var UNOWNED_ALPHA = 0.22;
+    var UNOWNED_VEIL = 'rgba(2,6,14,0.62)';
     var gridY = headerH;
-    rows.forEach(function (row, i) {
+    var drawBatch = 20;
+    var cellBgTile = buildArt15CellBg(cellW, cellH);
+
+    function drawCoverArt15(c, img, dx, dy, dw, dh) {
+      if (!img) return;
+      var iw = img.naturalWidth || img.width || 0;
+      var ih = img.naturalHeight || img.height || 0;
+      if (!iw || !ih) return;
+      var sc = Math.max(dw / iw, dh / ih);
+      var sw = dw / sc;
+      var sh = dh / sc;
+      var sx = (iw - sw) / 2;
+      var sy = Math.max(0, (ih - sh) * 0.28);
+      c.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh);
+    }
+
+    for (var i = 0; i < rows.length; i++) {
+      if (i > 0 && i % drawBatch === 0) {
+        await new Promise(function (r) {
+          if (typeof requestAnimationFrame === 'function') requestAnimationFrame(function () {
+            r();
+          });
+          else setTimeout(r, 0);
+        });
+      }
+      var row = rows[i];
       var col = i % cols;
       var rowIdx = Math.floor(i / cols);
-      var x = pad + col * (cell + gap);
-      var y = gridY + rowIdx * (cell + gap);
+      var x = pad + col * (cellW + gapX);
+      var y = gridY + rowIdx * (cellH + gapY);
       var lb = getLb(row.id);
       var im = thumbs[i];
       var owned = lb >= 0;
+      var accent = !owned ? 'rgba(90,110,140,0.55)' : lb >= 3 ? '#ffd700' : '#00d9ff';
 
-      cctx.clearRect(0, 0, cell, cell);
-      cctx.fillStyle = '#0b1220';
-      cctx.fillRect(0, 0, cell, cell);
-
-      if (isSupp) {
-        if (suppBaseImg) cctx.drawImage(suppBaseImg, 0, 0, cell, cell);
-        if (im) {
-          var insetX = cell * 0.14;
-          var insetY = cell * 0.085;
-          cctx.save();
-          cctx.beginPath();
-          cctx.rect(insetX, insetY, cell - insetX * 2, cell - insetY * 2);
-          cctx.clip();
-          cctx.drawImage(im, insetX, insetY, cell - insetX * 2, cell - insetY * 2);
-          cctx.restore();
-        }
-        if (suppLrImg) {
-          var sideW = cell * 0.27;
-          cctx.drawImage(suppLrImg, 0, 0, sideW, cell);
-          cctx.save();
-          cctx.translate(cell, 0);
-          cctx.scale(-1, 1);
-          cctx.drawImage(suppLrImg, 0, 0, sideW, cell);
-          cctx.restore();
-        }
-        if (suppTbImg) {
-          var endH = cell * 0.085;
-          var endW = cell * 0.88;
-          var endX = (cell - endW) / 2;
-          cctx.drawImage(suppTbImg, endX, 0, endW, endH);
-          cctx.drawImage(suppTbImg, endX, cell - endH, endW, endH);
-        }
-      } else {
-        if (unitBaseImg) cctx.drawImage(unitBaseImg, 0, 0, cell, cell);
-        if (im) {
-          var padIn = cell * 0.1;
-          cctx.save();
-          cctx.beginPath();
-          cctx.rect(padIn, padIn, cell - padIn * 2, cell - padIn * 2 - 2);
-          cctx.clip();
-          cctx.drawImage(im, padIn, padIn, cell - padIn * 2, cell - padIn * 2 - 2);
-          cctx.restore();
-        }
-        if (unitFrameImg) cctx.drawImage(unitFrameImg, 0, 0, cell, cell);
+      ctx.save();
+      if (!owned) {
+        ctx.filter = 'grayscale(0.72) brightness(0.38)';
+        ctx.globalAlpha = UNOWNED_ALPHA;
       }
 
-      cctx.strokeStyle = lbBorderColor(lb);
-      cctx.lineWidth = lb >= 3 ? 2.5 : 1.5;
-      drawRoundRect(cctx, 0.5, 0.5, cell - 1, cell - 1, 6);
-      cctx.stroke();
+      ctx.save();
+      art15ChamferPath(ctx, x, y, cellW, cellH);
+      ctx.clip();
+      /* Quiet 1.5 plate under art — never compete with the unit */
+      ctx.drawImage(cellBgTile, x, y, cellW, cellH);
+      if (im) {
+        drawCoverArt15(ctx, im, x, y, cellW, cellH);
+        if (owned) {
+          /* Owned only: whisper of hex through the portrait */
+          ctx.save();
+          ctx.globalCompositeOperation = 'source-atop';
+          ctx.globalAlpha = 0.1;
+          ctx.drawImage(cellBgTile, x, y, cellW, cellH);
+          ctx.restore();
+        } else {
+          /* Unowned: heavy dark veil so owned cells pop */
+          ctx.fillStyle = UNOWNED_VEIL;
+          ctx.fillRect(x, y, cellW, cellH);
+        }
+      } else if (!owned) {
+        ctx.fillStyle = UNOWNED_VEIL;
+        ctx.fillRect(x, y, cellW, cellH);
+      }
+      ctx.restore();
+
+      ctx.filter = 'none';
+      ctx.globalAlpha = 1;
+      art15ChamferPath(ctx, x + 0.5, y + 0.5, cellW - 1, cellH - 1);
+      ctx.strokeStyle = accent;
+      ctx.lineWidth = lb >= 3 ? 2.5 : 1.75;
+      ctx.stroke();
+
+      var bw = cellW * 0.18;
+      var bh = cellH * 0.2;
+      ctx.strokeStyle = accent;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(x + 2, y + bh);
+      ctx.lineTo(x + 2, y + cellH * 0.12 + 2);
+      ctx.lineTo(x + bw, y + 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(x + cellW - bw, y + 2);
+      ctx.lineTo(x + cellW - 2, y + 2);
+      ctx.lineTo(x + cellW - 2, y + bh);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(x + 2, y + cellH - bh);
+      ctx.lineTo(x + 2, y + cellH - 2);
+      ctx.lineTo(x + bw, y + cellH - 2);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(x + cellW - bw, y + cellH - 2);
+      ctx.lineTo(x + cellW - 2, y + cellH - cellH * 0.12 - 2);
+      ctx.lineTo(x + cellW - 2, y + cellH - bh);
+      ctx.stroke();
+      ctx.restore();
 
       if (row.is_limited_time) {
-        var limGrad = cctx.createLinearGradient(0, 0, cell, 0);
+        var limLabel = limitedWord().toUpperCase();
+        ctx.font = uiCanvasFont(11, '600');
+        var limTw = Math.ceil(ctx.measureText(limLabel).width);
+        var limPadX = 7;
+        var limW = Math.min(cellW * 0.55, limTw + limPadX * 2);
+        var limH = 14;
+        var limX = x + 8;
+        var limY = y + 6;
+        var limGrad = ctx.createLinearGradient(limX, limY, limX + limW, limY);
         if (isSupp) {
           limGrad.addColorStop(0, '#0e7490');
           limGrad.addColorStop(0.45, '#155e75');
@@ -2757,14 +2997,17 @@
           limGrad.addColorStop(0.55, '#a855f7');
           limGrad.addColorStop(1, '#1d4ed8');
         }
-        cctx.fillStyle = limGrad;
-        cctx.fillRect(0, 0, cell, 18);
-        cctx.fillStyle = '#fff';
-        cctx.font = uiCanvasFont(11, 'bold');
-        cctx.textAlign = 'center';
-        cctx.textBaseline = 'top';
-        cctx.fillText(limitedWord(), cell / 2, 4);
-        cctx.textAlign = 'left';
+        ctx.save();
+        if (!owned) ctx.globalAlpha = UNOWNED_ALPHA;
+        drawRoundRect(ctx, limX, limY, limW, limH, 3);
+        ctx.fillStyle = limGrad;
+        ctx.fill();
+        ctx.fillStyle = '#fff';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.font = uiCanvasFont(11, '600');
+        ctx.fillText(limLabel, limX + limW / 2, limY + limH / 2 + 0.5);
+        ctx.restore();
       }
 
       if (lb >= 1) {
@@ -2774,26 +3017,19 @@
             : lb === 2
               ? [iconNeutral, iconNeutral, iconNone]
               : [iconMax, iconMax, iconMax];
-        var iw = 16;
-        var gapI = 2;
+        var iw = 20;
+        var gapI = 3;
         var totalW = slots.length * iw + (slots.length - 1) * gapI;
-        var sx0 = (cell - totalW) / 2;
-        var sy = cell - 22;
-        slots.forEach(function (ic, si) {
-          if (ic) cctx.drawImage(ic, sx0 + si * (iw + gapI), sy, iw, iw);
-        });
+        var sx0 = x + (cellW - totalW) / 2;
+        var sy = y + cellH - Math.round(iw * 0.4);
+        ctx.save();
+        if (!owned) ctx.globalAlpha = UNOWNED_ALPHA;
+        for (var si = 0; si < slots.length; si++) {
+          if (slots[si]) ctx.drawImage(slots[si], sx0 + si * (iw + gapI), sy, iw, iw);
+        }
+        ctx.restore();
       }
-
-      ctx.save();
-      if (!owned) {
-        try {
-          ctx.filter = UNOWNED_FILTER;
-        } catch (_) {}
-        ctx.globalAlpha = UNOWNED_ALPHA;
-      }
-      ctx.drawImage(cellCanvas, x, y);
-      ctx.restore();
-    });
+    }
 
     var footY = gridY + gridH + 22;
     ctx.strokeStyle = '#1e293b';
@@ -2827,15 +3063,26 @@
       btn.disabled = true;
       btn.textContent = t('generating');
     }
+    var objectUrl = '';
     try {
       var canvas = await generateShareImage();
-      var dataUrl = canvas.toDataURL('image/png');
+      /* toBlob is async — avoids long main-thread freeze of toDataURL on tall reports */
+      var blob = await canvasToPngBlob(canvas);
+      objectUrl = URL.createObjectURL(blob);
       var img = document.getElementById('colPreviewImg');
       var link = document.getElementById('colDownloadLink');
       var modal = document.getElementById('colPreviewModal');
-      if (img) img.src = dataUrl;
+      if (img) {
+        if (img.dataset && img.dataset.objectUrl) {
+          try {
+            URL.revokeObjectURL(img.dataset.objectUrl);
+          } catch (_) {}
+        }
+        img.src = objectUrl;
+        if (img.dataset) img.dataset.objectUrl = objectUrl;
+      }
       if (link) {
-        link.href = dataUrl;
+        link.href = objectUrl;
         link.download =
           'ggendb-collections-report-' +
           state.type +
@@ -2851,6 +3098,11 @@
         } catch (_) {}
       }
     } catch (err) {
+      if (objectUrl) {
+        try {
+          URL.revokeObjectURL(objectUrl);
+        } catch (_) {}
+      }
       window.alert(t('save_fail', { err: err && err.message ? err.message : err }));
     } finally {
       if (btn) {

@@ -146,6 +146,8 @@ def _app_js_bundle_version_tag():
         ('js', 'sp_investment.js'),
         ('js', 'sp_investment_i18n.js'),
         ('js', 'sp_investment_i18n_guide.js'),
+        ('js', 'collections.js'),
+        ('js', 'ggen_15.js'),
         ('css', 'app_shell.css'),
         ('css', 'app_shell_bundle.min.css'),
         ('css', 'unit_best_pilots.css'),
@@ -156,11 +158,16 @@ def _app_js_bundle_version_tag():
         ('css', 'kofi_donate_promo.css'),
         ('css', 'kofi_supporter_wall.css'),
         ('css', 'sp_investment.css'),
+        ('css', 'collections.css'),
+        ('css', 'collections_15.css'),
+        ('css', 'ggen_15.css'),
     )
     # Include brand fonts so long-cache ?v= busts when an OTF/TTF is replaced.
     font_assets = (
         'font/roboto_medium_numbers.ttf',
         'font/FOTK-YoonGothic780_JP-brand.woff2',
+        'font/Teko-SemiBold.ttf',
+        'font/Teko-Bold.ttf',
     )
     parts = []
     git_rev = _app_git_revision()
@@ -18759,7 +18766,7 @@ def api_collections_census_stats():
 def api_collections_catalog():
     """Slim UR catalog for /collections (Units + Supporters; no ULT / transform alts)."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'collections_ur_v3_{lc}_{lr_schedule_cache_key_fragment()}'
+    ck = f'collections_ur_v4_{lc}_{lr_schedule_cache_key_fragment()}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
@@ -18792,6 +18799,7 @@ def api_collections_catalog():
         if not name:
             name = f'Unknown ({uid})'
         thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
+        art = find_portrait(info.get('resource_ids', []), uid, 'images/unit_portraits') or thum
         units.append({
             'id': uid,
             'name': name,
@@ -18799,6 +18807,7 @@ def api_collections_catalog():
             'role': resolve_role_label(role_id, lc),
             'role_icon': ROLE_ICON_MAP.get(role_id, ''),
             'thum': thum or '',
+            'art': art or '',
             'is_limited_time': uid in LIMITED_TIME_UNIT_IDS,
             'rarity': 'UR',
             'rarity_id': ri,
@@ -18821,6 +18830,7 @@ def api_collections_catalog():
         if not name:
             continue
         thum = find_supporter_portrait(info.get('resource_id'), sid)
+        art = find_supporter_full_portrait(info.get('resource_id')) or thum
         rec = supporter_active_recovery_map.get(normalize_id(sid)) or {}
         supporters.append({
             'id': sid,
@@ -18829,6 +18839,7 @@ def api_collections_catalog():
             'role': '',
             'role_icon': '',
             'thum': thum or '',
+            'art': art or '',
             'is_limited_time': normalize_id(sid) in LIMITED_TIME_SUPPORTER_IDS,
             'rarity': 'UR',
             'rarity_id': ri,
