@@ -11067,7 +11067,8 @@
     "ip_04818670976cb032be132bc060a9af2d:unit:1144000400:sp": "up",
     "ip_04818670976cb032be132bc060a9af2d:unit:1211001210:sp": "up",
     "ip_04818670976cb032be132bc060a9af2d:unit:1431001310:sp": "up",
-    "ip_206424607ec83f1223dd91da28d3e7ea:unit:1085000110:sp": "up"
+    "ip_206424607ec83f1223dd91da28d3e7ea:unit:1085000110:sp": "up",
+    "ip_32d8e1dba17ebfe5fffaec98bd0354f1:unit:1230005300:ssp": "up"
   },
   "targets": {
     "unit:1155000700:sp": {
@@ -12563,7 +12564,7 @@
       "down": 5
     },
     "unit:1230005300:ssp": {
-      "up": 35,
+      "up": 36,
       "down": 1
     },
     "unit:1430007800:ssp": {
