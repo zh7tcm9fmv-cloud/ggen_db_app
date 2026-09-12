@@ -67,11 +67,19 @@ html.ggen-15[data-ui-lang="HK"]{
   background:linear-gradient(95deg,rgba(0,217,255,.35),rgba(0,140,255,.25));
   border-color:#00d9ff;color:#fff;
 }
-.header-15-toggle--special{padding:6px 10px;line-height:0}
+.header-15-toggle--special{
+  padding:4px 8px;
+  line-height:0;
+  /* Contain badge glow so it cannot paint over brand / Classic */
+  overflow:hidden;
+  isolation:isolate;
+  max-width:min(220px,40vw);
+}
 .header-15-toggle--special img{
-  display:block;height:36px;width:auto;max-width:min(200px,36vw);
+  display:block;height:36px;width:auto;max-width:100%;
   object-fit:contain;object-position:center;
-  mix-blend-mode:screen;
+  /* screen blend washed the cyan glow across the brand title on mobile */
+  mix-blend-mode:normal;
 }
 
 /* Soft full-bleed header — blends into page; quiet hex, no chamfer plate. */
@@ -422,9 +430,37 @@ html.ggen-15 .main-content .bt-feat-label{
 }
 
 @media(max-width:768px){
-  .header-15-slot{margin:0 4px;gap:6px}
-  .header-15-toggle--special img{height:28px;max-width:min(140px,42vw)}
-  .header-15-toggle{font-size:13px;padding:4px 12px;min-height:40px}
+  .header-15-slot{
+    margin:0 2px;
+    gap:4px;
+    flex:0 1 auto;
+    max-width:min(168px,46vw);
+  }
+  .header-15-toggle--special{
+    padding:2px 4px;
+    min-height:36px;
+    max-width:min(112px,32vw);
+  }
+  .header-15-toggle--special img{
+    height:22px;
+    max-width:100%;
+  }
+  .header-15-toggle{
+    font-size:12px;
+    padding:4px 10px;
+    min-height:36px;
+  }
+  /* Keep brand readable above any residual badge fringe */
+  .app-header .header-inner:has(.header-15-slot) .header-brand{
+    position:relative;
+    z-index:3;
+    flex:1 1 0;
+    min-width:0;
+  }
+  .app-header .header-inner:has(.header-15-slot) .header-15-slot{
+    position:relative;
+    z-index:2;
+  }
   html.ggen-15 .app-header .brand-title-row::before{
     width:92px;
     height:50px;
@@ -433,6 +469,14 @@ html.ggen-15 .main-content .bt-feat-label{
   html.ggen-15 .main-content .role-filter-dd-btn{
     font-size:13px;
   }
+}
+
+@media(max-width:420px){
+  /* Phone: compact badge — leave room for brand + Classic + support */
+  .header-15-slot{max-width:min(132px,40vw)}
+  .header-15-toggle--special{max-width:min(88px,28vw);min-height:32px;padding:2px 3px}
+  .header-15-toggle--special img{height:18px}
+  .header-15-toggle{font-size:11px;padding:3px 8px;min-height:32px;letter-spacing:.04em}
 }
 
 @media(prefers-reduced-motion:reduce){
