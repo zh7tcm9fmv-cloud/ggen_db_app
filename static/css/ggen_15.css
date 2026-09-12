@@ -130,12 +130,12 @@ html.ggen-15 .app-header .brand-text{
   text-transform:uppercase;
   text-shadow:0 0 18px rgba(0,217,255,.28);
 }
-/* Brand emblem behind title — larger under Special Design (classic is 78×42) */
+/* Brand emblem behind title — larger under Special Design; Y nudged down for Teko metrics */
 html.ggen-15 .app-header .brand-title-row::before{
   width:108px;
   height:58px;
   opacity:.82;
-  transform:translate(calc(-50% + var(--brand-emblem-optical-x)),-56%);
+  transform:translate(calc(-50% + var(--brand-emblem-optical-x)),-42%);
 }
 html.ggen-15 .app-header .brand-sub{
   letter-spacing:.08em;
