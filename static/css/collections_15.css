@@ -79,8 +79,13 @@
   max-width:min(260px,55vw);
   object-fit:contain;
   object-position:center;
-  /* Drop baked black plate onto cyan chamfer fill */
-  mix-blend-mode:screen;
+  mix-blend-mode:normal;
+}
+@media(max-width:768px){
+  .collections-15-toggle--special img{
+    height:28px;
+    max-width:min(180px,55vw);
+  }
 }
 
 /* Promo headlines only — rest of page keeps site --font-body / --font-brand */

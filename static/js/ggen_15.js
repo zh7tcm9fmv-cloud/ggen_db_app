@@ -89,14 +89,17 @@
   function syncSpecialIcon() {
     var img = document.getElementById('ggen15OnImg');
     var btn = document.getElementById('ggen15On');
+    var fallback = document.getElementById('ggen15OnText');
     var L = langCode();
     var src = '/static/images/UI/collections_15_special_design_' + L + '.webp';
     var label =
       L === 'JA' ? '特設デザイン' : L === 'TW' || L === 'HK' ? '特別設計' : 'Special Design';
+    var shortLabel = L === 'JA' ? '1.5' : L === 'TW' || L === 'HK' ? '特別' : '1.5';
     if (img) {
       img.src = src;
       img.alt = label;
     }
+    if (fallback) fallback.textContent = shortLabel;
     if (btn) btn.setAttribute('aria-label', label);
   }
 

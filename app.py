@@ -17704,7 +17704,8 @@ def collections_page():
         app_js_version=ver,
         font_cdn=FONT_CDN or '',
     ))
-    r.headers['Cache-Control'] = 'public, max-age=300'
+    # Short HTML cache so Special Design CSS/JS deploys are not stuck on phones
+    r.headers['Cache-Control'] = 'public, max-age=60, must-revalidate'
     return r
 
 

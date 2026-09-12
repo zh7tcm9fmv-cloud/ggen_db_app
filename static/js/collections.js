@@ -856,13 +856,18 @@
 
   function syncSpecialDesignIcon() {
     var label = t('special_design');
+    var L = String(state.lang || 'EN').toUpperCase();
+    if (L === 'JP') L = 'JA';
+    var shortLabel = L === 'TW' || L === 'HK' ? '特別' : '1.5';
     var img = document.getElementById('ggen15OnImg');
     var onBtn = document.getElementById('ggen15On');
+    var fallback = document.getElementById('ggen15OnText');
     var src = specialDesignIconSrc();
     if (img) {
       img.src = src;
       img.alt = label;
     }
+    if (fallback) fallback.textContent = shortLabel;
     if (onBtn) onBtn.setAttribute('aria-label', label);
     var offBtn = document.getElementById('ggen15Off');
     if (offBtn) offBtn.textContent = t('classic');

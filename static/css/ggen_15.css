@@ -430,36 +430,50 @@ html.ggen-15 .main-content .bt-feat-label{
 }
 
 @media(max-width:768px){
-  .header-15-slot{
-    margin:0 2px;
-    gap:4px;
-    flex:0 1 auto;
-    max-width:min(168px,46vw);
+  /* Brand + support on row 1; Special/Classic on full-width row 2 — stops badge covering title */
+  .app-header .header-inner:has(.header-15-slot){
+    flex-wrap:wrap;
+    align-items:center;
+    row-gap:6px;
   }
-  .header-15-toggle--special{
-    padding:2px 4px;
-    min-height:36px;
-    max-width:min(112px,32vw);
-  }
-  .header-15-toggle--special img{
-    height:22px;
-    max-width:100%;
-  }
-  .header-15-toggle{
-    font-size:12px;
-    padding:4px 10px;
-    min-height:36px;
-  }
-  /* Keep brand readable above any residual badge fringe */
   .app-header .header-inner:has(.header-15-slot) .header-brand{
     position:relative;
     z-index:3;
     flex:1 1 0;
     min-width:0;
+    max-width:calc(100% - 8px);
   }
-  .app-header .header-inner:has(.header-15-slot) .header-15-slot{
-    position:relative;
-    z-index:2;
+  .app-header .header-inner:has(.header-15-slot) .header-controls{
+    order:2;
+    margin-left:auto;
+    flex:0 1 auto;
+  }
+  .header-15-slot{
+    order:3;
+    flex:1 1 100%;
+    width:100%;
+    max-width:100%;
+    margin:0;
+    gap:8px;
+    justify-content:flex-start;
+  }
+  .header-15-toggle--special{
+    padding:3px 6px;
+    min-height:36px;
+    max-width:min(200px,62vw);
+    overflow:hidden;
+    isolation:isolate;
+  }
+  .header-15-toggle--special img{
+    height:26px !important;
+    width:auto !important;
+    max-width:100% !important;
+    mix-blend-mode:normal !important;
+  }
+  .header-15-toggle{
+    font-size:12px;
+    padding:4px 12px;
+    min-height:36px;
   }
   html.ggen-15 .app-header .brand-title-row::before{
     width:92px;
@@ -472,12 +486,28 @@ html.ggen-15 .main-content .bt-feat-label{
 }
 
 @media(max-width:420px){
-  /* Phone: compact badge — leave room for brand + Classic + support */
-  .header-15-slot{max-width:min(132px,40vw)}
-  .header-15-toggle--special{max-width:min(88px,28vw);min-height:32px;padding:2px 3px}
-  .header-15-toggle--special img{height:18px}
-  .header-15-toggle{font-size:11px;padding:3px 8px;min-height:32px;letter-spacing:.04em}
+  /* Prefer compact text mark — badge art glow is too wide for phones */
+  .header-15-toggle--special{
+    max-width:none;
+    min-width:72px;
+    padding:4px 12px;
+    line-height:1;
+  }
+  .header-15-toggle--special img{display:none !important}
+  .header-15-toggle--special .header-15-special-fallback{
+    display:inline !important;
+    font-family:var(--font-teko),Teko,sans-serif;
+    font-size:14px;
+    font-weight:600;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:inherit;
+  }
+  .header-15-toggle{font-size:11px;padding:3px 10px;min-height:32px;letter-spacing:.04em}
 }
+
+/* Desktop/tablet: fallback text hidden when img shows */
+.header-15-special-fallback{display:none}
 
 @media(prefers-reduced-motion:reduce){
   .header-15-toggle{transition:none}
