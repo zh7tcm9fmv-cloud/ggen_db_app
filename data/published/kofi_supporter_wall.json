@@ -2,16 +2,16 @@
   "version": 1,
   "title": "Thank you to {n} Newtypes keeping this database alive.",
   "join_label": "Join the wall",
-  "count": 27,
+  "count": 29,
   "supporters": [
-    {
-      "name": "Phil",
-      "thumb": "/static/images/KofiSupporters/phil.webp",
-      "crown": true
-    },
     {
       "name": "Fire Red",
       "thumb": "/static/images/KofiSupporters/fire_red.webp",
+      "crown": true
+    },
+    {
+      "name": "Phil",
+      "thumb": "/static/images/KofiSupporters/phil.webp",
       "crown": false
     },
     {
@@ -50,11 +50,6 @@
       "crown": false
     },
     {
-      "name": "A俊",
-      "thumb": "/static/images/KofiSupporters/ajun.webp",
-      "crown": false
-    },
-    {
       "name": "大漢Erection",
       "thumb": "/static/images/KofiSupporters/dahan_erection.webp",
       "crown": false
@@ -65,17 +60,22 @@
       "crown": false
     },
     {
-      "name": "Ko-fi Supporter",
+      "name": "A俊",
+      "thumb": "/static/images/KofiSupporters/ajun.webp",
+      "crown": false
+    },
+    {
+      "name": "Gdge Sdssfsf",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": false
+    },
+    {
+      "name": "Jaime Lai",
       "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
       "crown": false
     },
     {
       "name": "Ko-fi User",
-      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
-      "crown": false
-    },
-    {
-      "name": "Unknown",
       "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
       "crown": false
     },
@@ -95,12 +95,27 @@
       "crown": false
     },
     {
-      "name": "vuca",
+      "name": "ymca",
       "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
       "crown": false
     },
     {
-      "name": "ymca",
+      "name": "老狗司機",
+      "thumb": "/static/images/KofiSupporters/laogou_siji.webp",
+      "crown": false
+    },
+    {
+      "name": "Ko-fi Supporter",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": false
+    },
+    {
+      "name": "Unknown",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": false
+    },
+    {
+      "name": "vuca",
       "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
       "crown": false
     },
@@ -112,11 +127,6 @@
     {
       "name": "剎那",
       "thumb": "/static/images/KofiSupporters/setsuna.webp",
-      "crown": false
-    },
-    {
-      "name": "老狗司機",
-      "thumb": "/static/images/KofiSupporters/laogou_siji.webp",
       "crown": false
     },
     {

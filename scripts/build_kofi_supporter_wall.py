@@ -24,7 +24,18 @@ ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = ROOT / "data" / "kofi" / "raw"
 PUB_PATH = ROOT / "data" / "published" / "kofi_supporter_wall.json"
 FALLBACK_THUMB = "/static/images/UI/UI_Home_Menu_Icon_Shop.webp"
-CROWN_NAME = "Phil"
+CROWN_NAME = None  # crown = highest total after sort (not a fixed name)
+
+# When Ko-fi Supporters CSV lags behind payments, bump known totals here.
+TOTAL_OVERRIDES = {
+    "fire red": 60.0,  # CSV 30 + 2026-09-12 donations (~+30)
+}
+
+# People present on payments but not yet in Supporters export
+EXTRA_SUPPORTERS = [
+    {"name": "Gdge Sdssfsf", "total": 5.0, "kinds": ["one_time"]},
+    {"name": "Jaime Lai", "total": 5.0, "kinds": ["one_time"]},
+]
 
 # Display name (casefold) -> WebP filename under images/KofiSupporters/ (CDN + image_index)
 THUMB_FILES = {
@@ -101,9 +112,8 @@ def load_merged(supporters_csv: Path, subscribers_csv: Path) -> list[dict]:
                         "subscriber_active": active,
                     }
 
-    # Prefer canonical casing for known custom-thumb names + Phil
-    preferred = {k: k.title() if k == "phil" else None for k in ()}
-    preferred = {CROWN_NAME.casefold(): CROWN_NAME}
+    # Prefer canonical casing for known custom-thumb names
+    preferred = {}
     for disp, _fn in THUMB_FILES.items():
         # recover original casing from keys that match casefold of known names
         for key, row in merged.items():
@@ -124,8 +134,19 @@ def load_merged(supporters_csv: Path, subscribers_csv: Path) -> list[dict]:
             row["name"] = "剎那"
         elif key == "戳戳":
             row["name"] = "戳戳"
-        elif key == CROWN_NAME.casefold():
-            row["name"] = CROWN_NAME
+
+    for key, amt in TOTAL_OVERRIDES.items():
+        if key in merged and float(amt) > float(merged[key]["total"]):
+            merged[key]["total"] = float(amt)
+
+    for extra in EXTRA_SUPPORTERS:
+        ek = extra["name"].casefold()
+        if ek not in merged:
+            merged[ek] = {
+                "name": extra["name"],
+                "total": float(extra.get("total") or 0),
+                "kinds": list(extra.get("kinds") or ["one_time"]),
+            }
 
     people = sorted(merged.values(), key=lambda x: (-float(x["total"]), x["name"].casefold()))
     return people
@@ -141,13 +162,14 @@ def thumb_for(name: str) -> str:
 
 def build(supporters_csv: Path, subscribers_csv: Path) -> dict:
     people = load_merged(supporters_csv, subscribers_csv)
-    crown_key = CROWN_NAME.casefold()
-    if crown_key not in {p["name"].casefold() for p in people} and people:
-        crown_key = people[0]["name"].casefold()
+    # Crown = current top total (first after sort)
+    crown_key = people[0]["name"].casefold() if people else ""
 
     supporters = []
+    seen = set()
     for p in people:
         key = p["name"].casefold()
+        seen.add(key)
         supporters.append(
             {
                 "name": p["name"],
@@ -155,6 +177,28 @@ def build(supporters_csv: Path, subscribers_csv: Path) -> dict:
                 "crown": key == crown_key,
             }
         )
+
+    # Keep prior wall members missing from this CSV export (stale/partial downloads).
+    if PUB_PATH.is_file():
+        try:
+            prev = json.loads(PUB_PATH.read_text(encoding="utf-8"))
+        except Exception:
+            prev = {}
+        for s in prev.get("supporters") or []:
+            name = (s.get("name") or "").strip()
+            if not name:
+                continue
+            key = name.casefold()
+            if key in seen:
+                continue
+            seen.add(key)
+            supporters.append(
+                {
+                    "name": name,
+                    "thumb": s.get("thumb") or thumb_for(name),
+                    "crown": False,
+                }
+            )
 
     return {
         "version": 1,

@@ -19,4 +19,5 @@ Raw CSVs are copied to `data/kofi/raw/` (gitignored — they contain emails).
 
 Place files under `static/images/KofiSupporters/` and map display names in
 `scripts/build_kofi_supporter_wall.py` → `THUMB_FILES`.
-Everyone else uses `UI_Home_Menu_Icon_Shop`. Crown goes to **Phil** (top donor).
+Everyone else uses `UI_Home_Menu_Icon_Shop`. Crown goes to the **top total** donor.
+If the Supporters CSV lags payments, bump totals in `TOTAL_OVERRIDES` / add names in `EXTRA_SUPPORTERS`.
