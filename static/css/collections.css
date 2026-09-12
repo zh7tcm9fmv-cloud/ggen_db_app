@@ -34,7 +34,7 @@
 .collections-hud{
   display:grid;
   grid-template-columns:minmax(168px,220px) minmax(0,1fr);
-  gap:12px;align-items:stretch;margin-bottom:14px;
+  gap:12px;align-items:start;margin-bottom:14px;
 }
 @media(max-width:820px){
   .collections-hud{grid-template-columns:1fr}
@@ -46,10 +46,10 @@
     var(--bg-card);
   border:1px solid var(--border-color);
   border-radius:var(--radius-md);
-  padding:12px 12px 12px;
+  padding:10px 12px 12px;
   box-shadow:var(--shadow-surface);
-  display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;gap:6px;
-  width:100%;height:100%;box-sizing:border-box;min-height:0;
+  display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;gap:4px;
+  width:100%;height:auto;box-sizing:border-box;min-height:0;
 }
 .collections-gauge::before,.collections-gauge::after{
   content:"";position:absolute;width:12px;height:12px;border:2px solid rgba(0,212,255,.55);pointer-events:none;z-index:2;
@@ -77,12 +77,12 @@
 }
 .collections-complete-badge[hidden]{display:none !important}
 
-/* Mid emblem: circular possession ring + Units/Supporters icon */
+/* Mid emblem: circular possession ring + Units/Supporters icon — top-packed, no stretch gap */
 .collections-gauge-emblem{
   position:relative;z-index:1;
-  flex:1 1 auto;min-height:136px;
+  flex:0 0 auto;min-height:0;
   display:flex;align-items:center;justify-content:center;
-  margin:4px 0 8px;
+  margin:2px 0 0;
 }
 .collections-gauge-emblem-glow{
   position:absolute;width:114px;height:114px;border-radius:50%;pointer-events:none;
@@ -341,6 +341,21 @@
   color:var(--text-primary);
 }
 .collections-stat-v em{font-style:normal;color:var(--text-muted);font-weight:600;font-size:.72em}
+.collections-stat--split{
+  padding:10px 8px 10px;
+}
+.collections-stat-split{
+  display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:stretch;min-width:0;height:100%;
+}
+.collections-stat-half{
+  min-width:0;display:flex;flex-direction:column;justify-content:center;
+  padding:0 8px;box-sizing:border-box;
+}
+.collections-stat-half + .collections-stat-half{
+  border-left:1px solid rgba(132,148,174,.28);
+}
+.collections-stat--split .collections-stat-v{font-size:clamp(15px,1.7vw,18px);margin-top:4px}
+.collections-stat--split .collections-stat-k{font-size:10px;gap:4px}
 .collections-stat--accent{--col-stat-bar:linear-gradient(90deg,rgba(0,180,220,.55),var(--accent-cyan) 60%,#7af0ff)}
 .collections-stat--gold{--col-stat-bar:linear-gradient(90deg,rgba(184,149,74,.7),var(--accent-gold) 55%,#ffe08a)}
 .collections-stat--orange{--col-stat-bar:linear-gradient(90deg,rgba(255,120,40,.55),var(--accent-orange) 60%,#ffc078)}

@@ -114,6 +114,7 @@
       owned: 'Possessed',
       max_lb: 'Max Limit Break',
       report_max_lb: 'Max Limit Break',
+      lb_progress: 'Limit Break',
       role_owned: '{role}',
       limited: 'Limited',
       skill_hp: 'HP Restoration',
@@ -230,6 +231,7 @@
       owned: '所持',
       max_lb: '限界突破MAX',
       report_max_lb: '限界突破MAX',
+      lb_progress: '限界突破',
       role_owned: '{role}',
       limited: '期間限定',
       skill_hp: 'HP回復',
@@ -346,6 +348,7 @@
       owned: '持有',
       max_lb: '突破界限 MAX',
       report_max_lb: '突破界限 MAX',
+      lb_progress: '突破界限',
       role_owned: '{role}',
       limited: '期間限定',
       skill_hp: 'HP恢復',
@@ -461,6 +464,7 @@
       owned: '持有',
       max_lb: '突破界限 MAX',
       report_max_lb: '突破界限 MAX',
+      lb_progress: '突破界限',
       role_owned: '{role}',
       limited: '期間限定',
       skill_hp: 'HP恢復',
@@ -1166,6 +1170,13 @@
         '" alt="" width="14" height="14" loading="lazy" decoding="async">';
       return '<span class="collections-stat-stars" aria-hidden="true">' + star + star + star + '</span>';
     }
+    if (kind === 'lb_progress') {
+      var lbStar =
+        '<img src="' +
+        esc(imgUrl(LB_ICONS.Neutral)) +
+        '" alt="" width="14" height="14" loading="lazy" decoding="async">';
+      return '<span class="collections-stat-stars" aria-hidden="true">' + lbStar + lbStar + lbStar + '</span>';
+    }
     if (kind === 'limited') {
       return (
         '<span class="collections-stat-lim-banner" aria-hidden="true"><span>' +
@@ -1284,9 +1295,15 @@
       {
         k: t('max_lb'),
         v: st.maxed + '<em> / ' + st.total + '</em>',
-        cls: 'collections-stat--gold',
+        cls: 'collections-stat--gold collections-stat--split',
         pct: statBarPct(st.maxed, st.total),
-        lead: 'max_lb'
+        lead: 'max_lb',
+        splitRight: {
+          k: t('lb_progress'),
+          v: st.lbTotal + '<em> / ' + st.lbMax + '</em>',
+          pct: statBarPct(st.lbTotal, st.lbMax),
+          lead: 'lb_progress'
+        }
       },
       {
         k: t('owned'),
@@ -1327,6 +1344,32 @@
     }
     strip.innerHTML = cells
       .map(function (c) {
+        if (c.splitRight) {
+          return (
+            '<div class="collections-stat ' +
+            c.cls +
+            '"><div class="collections-stat-split">' +
+            '<div class="collections-stat-half"><div class="collections-stat-k">' +
+            statLeadHtml(c.lead, c.roleId) +
+            '<span class="collections-stat-k-txt">' +
+            esc(c.k) +
+            '</span></div><div class="collections-stat-v">' +
+            c.v +
+            '</div><div class="collections-stat-bar" aria-hidden="true"><i style="width:0%" data-pct="' +
+            (c.pct != null ? c.pct : 0) +
+            '"></i></div></div>' +
+            '<div class="collections-stat-half"><div class="collections-stat-k">' +
+            statLeadHtml(c.splitRight.lead, c.splitRight.roleId) +
+            '<span class="collections-stat-k-txt">' +
+            esc(c.splitRight.k) +
+            '</span></div><div class="collections-stat-v">' +
+            c.splitRight.v +
+            '</div><div class="collections-stat-bar" aria-hidden="true"><i style="width:0%" data-pct="' +
+            (c.splitRight.pct != null ? c.splitRight.pct : 0) +
+            '"></i></div></div>' +
+            '</div></div>'
+          );
+        }
         return (
           '<div class="collections-stat ' +
           c.cls +
@@ -1336,14 +1379,18 @@
           esc(c.k) +
           '</span></div><div class="collections-stat-v">' +
           c.v +
-          '</div><div class="collections-stat-bar" aria-hidden="true"><i style="width:0%"></i></div></div>'
+          '</div><div class="collections-stat-bar" aria-hidden="true"><i style="width:0%" data-pct="' +
+          (c.pct != null ? c.pct : 0) +
+          '"></i></div></div>'
         );
       })
       .join('');
     requestAnimationFrame(function () {
       var fills = strip.querySelectorAll('.collections-stat-bar>i');
       for (var i = 0; i < fills.length; i++) {
-        fills[i].style.width = (cells[i] && cells[i].pct != null ? cells[i].pct : 0) + '%';
+        var el = fills[i];
+        var pctAttr = el.getAttribute('data-pct');
+        el.style.width = (pctAttr != null ? pctAttr : 0) + '%';
       }
     });
   }
@@ -1950,14 +1997,24 @@
 
     if (iconImg) {
       var innerClear = (trackR - stroke * 0.5) * 2;
-      var iconS = innerClear * 1.08;
-      var ix = cx - iconS / 2;
-      var iy = cy - iconS / 2;
+      var iconBox = innerClear * 1.02;
+      var iw = iconImg.naturalWidth || iconImg.width || iconBox;
+      var ih = iconImg.naturalHeight || iconImg.height || iconBox;
+      if (!iw || !ih) {
+        iw = iconBox;
+        ih = iconBox;
+      }
+      /* object-fit: contain — never squash non-square motif art */
+      var fit = Math.min(iconBox / iw, iconBox / ih);
+      var dw = iw * fit;
+      var dh = ih * fit;
+      var ix = cx - dw / 2;
+      var iy = cy - dh / 2;
       ctx.shadowColor = 'rgba(0,0,0,0.55)';
       ctx.shadowBlur = 16;
       ctx.shadowOffsetX = 0;
       ctx.shadowOffsetY = 5;
-      ctx.drawImage(iconImg, ix, iy, iconS, iconS);
+      ctx.drawImage(iconImg, ix, iy, dw, dh);
       ctx.shadowColor = 'transparent';
       ctx.shadowBlur = 0;
       ctx.shadowOffsetY = 0;
@@ -1965,7 +2022,253 @@
     ctx.restore();
   }
 
+  /** Share-image possession head — mirrors live `.collections-gauge-head` (tight to content). */
+  function pctShareFont(sizePx, weight) {
+    var w = weight || '800';
+    var px = Number(sizePx) || 42;
+    return w + ' ' + px + 'px "RobotoMediumNumbers","Roboto",system-ui,sans-serif';
+  }
+
+  function measureSharePossessionHead(ctx, pctStr, complete, perfect) {
+    var padX = 12;
+    var padY = 10;
+    var gap = 4;
+    var numSize = 42;
+    var pctSize = Math.round(numSize * 0.48);
+    var labelSize = 12;
+    var h = padY;
+    ctx.font = pctShareFont(numSize, '800');
+    var numW = ctx.measureText(pctStr).width;
+    ctx.font = pctShareFont(pctSize, '800');
+    var pctW = ctx.measureText('%').width;
+    var row1W = numW + 2 + pctW;
+    h += numSize + gap;
+    ctx.font = uiCanvasFont(labelSize, 'bold');
+    var label = (t('possession') + ' · ' + typeTitle()).toUpperCase();
+    var labelW = ctx.measureText(label).width;
+    h += labelSize + 6;
+    var badgeW = 0;
+    if (complete) {
+      ctx.font = uiCanvasFont(10, 'bold');
+      var badge = perfect ? t('complete_max') : t('complete');
+      badgeW = Math.max(perfect ? 118 : 72, ctx.measureText(badge).width + 20);
+      h += 18 + 4;
+      if (perfect) {
+        var subBadge = t('complete') + ' · ' + t('report_max_lb');
+        badgeW = Math.max(badgeW, Math.max(140, ctx.measureText(subBadge).width + 16));
+        h += 16 + 2;
+      }
+    }
+    return {
+      w: Math.max(row1W, labelW, badgeW) + padX * 2,
+      h: h + padY - 2
+    };
+  }
+
+  /**
+   * Draw compact Possession % block like the live HUD head.
+   * Returns { w, h } of the painted content box.
+   */
+  function drawSharePossessionHead(ctx, x, y, pctStr, complete, perfect) {
+    var padX = 12;
+    var padY = 10;
+    var gap = 4;
+    var numSize = 42;
+    var pctSize = Math.round(numSize * 0.48);
+    var labelSize = 12;
+    var box = measureSharePossessionHead(ctx, pctStr, complete, perfect);
+    var contentW = box.w;
+    var contentH = box.h;
+
+    var border =
+      perfect
+        ? 'rgba(255,215,0,0.45)'
+        : complete
+          ? 'rgba(255,215,0,0.28)'
+          : 'rgba(42,54,84,0.95)';
+
+    drawRoundRect(ctx, x, y, contentW, contentH, 10);
+    ctx.fillStyle = '#1a2236';
+    ctx.fill();
+    var soft = ctx.createRadialGradient(
+      x + contentW * 0.35,
+      y + contentH,
+      4,
+      x + contentW * 0.35,
+      y + contentH,
+      contentH * 1.2
+    );
+    soft.addColorStop(0, complete ? 'rgba(255,215,0,0.08)' : 'rgba(0,212,255,0.07)');
+    soft.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = soft;
+    ctx.fill();
+    ctx.strokeStyle = border;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+
+    /* Corner brackets — live .collections-gauge::before/::after */
+    ctx.strokeStyle = complete ? 'rgba(255,215,0,0.55)' : 'rgba(0,212,255,0.55)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x + 6, y + 16);
+    ctx.lineTo(x + 6, y + 6);
+    ctx.lineTo(x + 16, y + 6);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(x + contentW - 16, y + 6);
+    ctx.lineTo(x + contentW - 6, y + 6);
+    ctx.lineTo(x + contentW - 6, y + 16);
+    ctx.stroke();
+
+    var cursorY = y + padY;
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+
+    var numColor = perfect ? '#ffe566' : complete ? '#ffd700' : '#f0f2f7';
+    var pctColor = perfect ? '#ffd700' : complete ? '#7af0ff' : '#00d4ff';
+    ctx.fillStyle = numColor;
+    ctx.font = pctShareFont(numSize, '800');
+    ctx.fillText(pctStr, x + padX, cursorY);
+    var numW = ctx.measureText(pctStr).width;
+    ctx.fillStyle = pctColor;
+    ctx.font = pctShareFont(pctSize, '800');
+    ctx.fillText('%', x + padX + numW + 2, cursorY + Math.round(numSize * 0.42));
+    cursorY += numSize + gap;
+
+    ctx.fillStyle = '#8494ae';
+    ctx.font = uiCanvasFont(labelSize, 'bold');
+    var label = (t('possession') + ' · ' + typeTitle()).toUpperCase();
+    ctx.fillText(label, x + padX, cursorY);
+    cursorY += labelSize + 6;
+
+    if (complete) {
+      var badge = perfect ? t('complete_max') : t('complete');
+      ctx.font = uiCanvasFont(10, 'bold');
+      var badgeW = Math.max(perfect ? 118 : 72, ctx.measureText(badge).width + 20);
+      var badgeH = 18;
+      var bx = x + padX;
+      var by = cursorY;
+      var badgeGrad = ctx.createLinearGradient(bx, by, bx + badgeW, by);
+      if (perfect) {
+        badgeGrad.addColorStop(0, '#fff4c2');
+        badgeGrad.addColorStop(0.35, '#ffd700');
+        badgeGrad.addColorStop(0.7, '#f0a500');
+        badgeGrad.addColorStop(1, '#7af0ff');
+      } else {
+        badgeGrad.addColorStop(0, '#ffe08a');
+        badgeGrad.addColorStop(0.45, '#ffd700');
+        badgeGrad.addColorStop(1, '#00d4ff');
+      }
+      drawRoundRect(ctx, bx, by, badgeW, badgeH, 999);
+      ctx.fillStyle = badgeGrad;
+      ctx.fill();
+      ctx.strokeStyle = 'rgba(255,215,0,0.65)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      ctx.fillStyle = '#1a1400';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(badge, bx + badgeW / 2, by + badgeH / 2 + 0.5);
+      ctx.textAlign = 'left';
+      ctx.textBaseline = 'top';
+      cursorY += badgeH + 4;
+
+      if (perfect) {
+        var subBadge = t('complete') + ' · ' + t('report_max_lb');
+        ctx.font = uiCanvasFont(10, 'bold');
+        var sbw = Math.max(140, ctx.measureText(subBadge).width + 16);
+        var sbh = 16;
+        drawRoundRect(ctx, bx, cursorY, sbw, sbh, 8);
+        ctx.fillStyle = 'rgba(15,23,42,0.92)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(255,215,0,0.55)';
+        ctx.stroke();
+        ctx.fillStyle = '#ffd700';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(subBadge, bx + sbw / 2, cursorY + sbh / 2);
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+      }
+    }
+
+    return box;
+  }
+
   /** Match HUD `.collections-stat` cards on the share/save canvas. */
+  function drawShareStatBar(ctx, x, barY, barW, barH, pct, tone) {
+    drawRoundRect(ctx, x, barY, barW, barH, 4);
+    ctx.fillStyle = 'rgba(0,0,0,0.4)';
+    ctx.fill();
+    var fillW = Math.max(0, Math.min(barW, (barW * (Number(pct) || 0)) / 100));
+    if (fillW <= 0.5) return;
+    var barGrad = ctx.createLinearGradient(x, barY, x + barW, barY);
+    if (tone === 'accent') {
+      barGrad.addColorStop(0, 'rgba(0,180,220,0.55)');
+      barGrad.addColorStop(0.6, '#00d4ff');
+      barGrad.addColorStop(1, '#7af0ff');
+    } else if (tone === 'gold') {
+      barGrad.addColorStop(0, 'rgba(184,149,74,0.7)');
+      barGrad.addColorStop(0.55, '#ffd700');
+      barGrad.addColorStop(1, '#ffe08a');
+    } else if (tone === 'orange') {
+      barGrad.addColorStop(0, 'rgba(255,120,40,0.55)');
+      barGrad.addColorStop(0.6, '#ff9500');
+      barGrad.addColorStop(1, '#ffc078');
+    } else {
+      barGrad.addColorStop(0, 'rgba(176,190,210,0.55)');
+      barGrad.addColorStop(1, 'rgba(240,242,247,0.92)');
+    }
+    drawRoundRect(ctx, x, barY, fillW, barH, 4);
+    ctx.fillStyle = barGrad;
+    ctx.fill();
+  }
+
+  function drawShareStatHalf(ctx, x, y, w, h, half, imgs, numColor, tone) {
+    var padX = 8;
+    var leadX = x + padX;
+    var leadY = y + 12;
+    var labelX = leadX;
+    var si;
+    if (half.lead === 'max_lb' && imgs.maxLb) {
+      for (si = 0; si < 3; si++) {
+        ctx.drawImage(imgs.maxLb, leadX + si * 13, leadY, 13, 13);
+      }
+      labelX = leadX + 3 * 13 + 4;
+    } else if (half.lead === 'lb_progress' && (imgs.lbNeutral || imgs.maxLb)) {
+      var neu = imgs.lbNeutral || imgs.maxLb;
+      for (si = 0; si < 3; si++) {
+        ctx.drawImage(neu, leadX + si * 13, leadY, 13, 13);
+      }
+      labelX = leadX + 3 * 13 + 4;
+    }
+    ctx.fillStyle = '#8494ae';
+    ctx.font = uiCanvasFont(11, 'bold');
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    var labelMax = w - (labelX - x) - padX;
+    var label = String(half.label || '');
+    while (label.length > 1 && ctx.measureText(label).width > labelMax) {
+      label = label.slice(0, -1);
+    }
+    if (label !== String(half.label || '') && label.length > 1) {
+      label = label.slice(0, -1) + '…';
+    }
+    ctx.fillText(label, labelX, leadY + 1);
+
+    var nStr = String(half.n);
+    var dStr = ' / ' + half.d;
+    ctx.font = uiCanvasFont(20, 'bold');
+    ctx.fillStyle = numColor;
+    ctx.fillText(nStr, x + padX, y + 38);
+    var nW = ctx.measureText(nStr).width;
+    ctx.font = uiCanvasFont(14, 'bold');
+    ctx.fillStyle = '#8494ae';
+    ctx.fillText(dStr, x + padX + nW, y + 43);
+
+    drawShareStatBar(ctx, x + padX, y + h - 18, w - padX * 2, 8, half.pct, tone);
+  }
+
   function drawShareStatCard(ctx, x, y, w, h, card, imgs, complete, perfect) {
     var padX = 10;
     var tone = card.tone || 'neutral';
@@ -1990,6 +2293,35 @@
     ctx.strokeStyle = border;
     ctx.lineWidth = 1;
     ctx.stroke();
+
+    if (card.splitRight) {
+      var halfW = w / 2;
+      drawShareStatHalf(
+        ctx,
+        x,
+        y,
+        halfW,
+        h,
+        {
+          label: card.label,
+          n: card.n,
+          d: card.d,
+          pct: card.pct,
+          lead: card.lead
+        },
+        imgs,
+        numColor,
+        tone
+      );
+      ctx.beginPath();
+      ctx.moveTo(x + halfW, y + 10);
+      ctx.lineTo(x + halfW, y + h - 10);
+      ctx.strokeStyle = 'rgba(132,148,174,0.28)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+      drawShareStatHalf(ctx, x + halfW, y, halfW, h, card.splitRight, imgs, numColor, tone);
+      return;
+    }
 
     var leadX = x + padX;
     var leadY = y + 12;
@@ -2070,36 +2402,7 @@
     ctx.fillStyle = '#8494ae';
     ctx.fillText(dStr, x + padX + nW, y + 44);
 
-    var barY = y + h - 18;
-    var barH = 8;
-    var barW = w - padX * 2;
-    drawRoundRect(ctx, x + padX, barY, barW, barH, 4);
-    ctx.fillStyle = 'rgba(0,0,0,0.4)';
-    ctx.fill();
-
-    var fillW = Math.max(0, Math.min(barW, (barW * (Number(card.pct) || 0)) / 100));
-    if (fillW > 0.5) {
-      var barGrad = ctx.createLinearGradient(x + padX, barY, x + padX + barW, barY);
-      if (tone === 'accent') {
-        barGrad.addColorStop(0, 'rgba(0,180,220,0.55)');
-        barGrad.addColorStop(0.6, '#00d4ff');
-        barGrad.addColorStop(1, '#7af0ff');
-      } else if (tone === 'gold') {
-        barGrad.addColorStop(0, 'rgba(184,149,74,0.7)');
-        barGrad.addColorStop(0.55, '#ffd700');
-        barGrad.addColorStop(1, '#ffe08a');
-      } else if (tone === 'orange') {
-        barGrad.addColorStop(0, 'rgba(255,120,40,0.55)');
-        barGrad.addColorStop(0.6, '#ff9500');
-        barGrad.addColorStop(1, '#ffc078');
-      } else {
-        barGrad.addColorStop(0, 'rgba(176,190,210,0.55)');
-        barGrad.addColorStop(1, 'rgba(240,242,247,0.92)');
-      }
-      drawRoundRect(ctx, x + padX, barY, fillW, barH, 4);
-      ctx.fillStyle = barGrad;
-      ctx.fill();
-    }
+    drawShareStatBar(ctx, x + padX, y + h - 18, w - padX * 2, 8, card.pct, tone);
   }
 
   async function generateShareImage() {
@@ -2112,12 +2415,33 @@
     var gap = 10;
     var pad = 44;
     var playerName = currentUsername();
-    var pctTop = pad + (playerName ? 96 : 86);
-    var emblemSize = 148;
-    var emblemTop = pctTop + 78;
-    var ownedY = emblemTop + emblemSize + 22;
-    if (perfect) ownedY = Math.max(ownedY, emblemTop + emblemSize + 22);
-    var subY = ownedY + 24;
+    var titleBottom = pad + (playerName ? 100 : 88);
+    var gridW = cols * cell + (cols - 1) * gap;
+    var W = gridW + pad * 2;
+    /* Ring top-aligned with header pad (cuts empty air above). */
+    var emblemSize = Math.round(Math.min(236, Math.max(196, W * 0.32)));
+    var emblemTop = pad;
+    var pctStr = pctDisplayKey(st.pct);
+
+    try {
+      if (!document.getElementById('ggenRobotoNumsFace')) {
+        var faceStEarly = document.createElement('style');
+        faceStEarly.id = 'ggenRobotoNumsFace';
+        faceStEarly.textContent =
+          "@font-face{font-family:'RobotoMediumNumbers';src:url('/static/font/roboto_medium_numbers.ttf') format('truetype');font-weight:normal;font-style:normal;font-display:swap}";
+        document.head.appendChild(faceStEarly);
+      }
+      if (document.fonts && document.fonts.load) {
+        await document.fonts.load('800 42px RobotoMediumNumbers');
+      }
+    } catch (_) {}
+
+    /* Compact possession head — sized to content like live .collections-gauge-head */
+    var mctx = document.createElement('canvas').getContext('2d');
+    var pctBox = measureSharePossessionHead(mctx, pctStr, complete, perfect);
+    var pctPanelY = titleBottom + 6;
+    var gaugeRowBottom = Math.max(pctPanelY + pctBox.h, emblemTop + emblemSize);
+    var subY = gaugeRowBottom + 16;
     var cardColsLayout = 3;
     var cardRowsLayout = 2;
     var cardGapLayout = 10;
@@ -2126,9 +2450,7 @@
       cardRowsLayout * cardHLayout + (cardRowsLayout - 1) * cardGapLayout;
     var headerH = subY + subBlockH + 20;
     var rowsN = Math.max(1, Math.ceil((rows.length || 1) / cols));
-    var gridW = cols * cell + (cols - 1) * gap;
     var gridH = rowsN * cell + (rowsN - 1) * gap;
-    var W = gridW + pad * 2;
     var H = headerH + gridH + pad + 48;
     /* 3× CSS layout → crisp PNG on phone; was 2× with smaller cells (hard to read). */
     var scale = 3;
@@ -2149,7 +2471,9 @@
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, W, H);
     if (complete) {
-      var glow = ctx.createRadialGradient(pad + 90, pad + 110, 8, pad + 90, pad + 110, perfect ? 280 : 220);
+      var glowCx = W - pad - emblemSize / 2;
+      var glowCy = emblemTop + emblemSize / 2;
+      var glow = ctx.createRadialGradient(glowCx, glowCy, 8, glowCx, glowCy, perfect ? 300 : 240);
       glow.addColorStop(0, perfect ? 'rgba(255,215,0,0.22)' : 'rgba(255,215,0,0.14)');
       glow.addColorStop(0.45, perfect ? 'rgba(255,180,40,0.1)' : 'rgba(0,212,255,0.06)');
       glow.addColorStop(1, 'rgba(0,0,0,0)');
@@ -2217,7 +2541,8 @@
       role2: packed[7],
       skillHp: packed[8],
       skillEn: packed[9],
-      skillHybrid: packed[10]
+      skillHybrid: packed[10],
+      lbNeutral: packed[12]
     };
     var iconNone = packed[11];
     var iconNeutral = packed[12];
@@ -2260,81 +2585,17 @@
       ctx.fillText('UR ' + typeTitle(), textX, pad + 56);
     }
 
-    var pctStr = pctDisplayKey(st.pct);
-    ctx.fillStyle = perfect ? '#ffe566' : complete ? '#ffd700' : '#f1f5f9';
-    ctx.font = uiCanvasFont(76, 'bold');
-    ctx.fillText(pctStr, pad, pctTop);
-    var pctW = ctx.measureText(pctStr).width;
-    ctx.fillStyle = perfect ? '#ffd700' : complete ? '#7af0ff' : '#00d4ff';
-    ctx.font = uiCanvasFont(26, 'bold');
-    ctx.fillText('%', pad + pctW + 6, pctTop + 32);
-
-    if (complete) {
-      var badge = perfect ? t('complete_max') : t('complete');
-      ctx.font = uiCanvasFont(13, 'bold');
-      var bw = Math.max(perfect ? 140 : 84, ctx.measureText(badge).width + 26);
-      var bx = pad + pctW + 32;
-      var by = pctTop + 16;
-      var badgeGrad = ctx.createLinearGradient(bx, by, bx + bw, by);
-      if (perfect) {
-        badgeGrad.addColorStop(0, '#fff4c2');
-        badgeGrad.addColorStop(0.35, '#ffd700');
-        badgeGrad.addColorStop(0.7, '#f0a500');
-        badgeGrad.addColorStop(1, '#7af0ff');
-      } else {
-        badgeGrad.addColorStop(0, '#ffe08a');
-        badgeGrad.addColorStop(0.45, '#ffd700');
-        badgeGrad.addColorStop(1, '#00d4ff');
-      }
-      drawRoundRect(ctx, bx, by, bw, 26, 13);
-      ctx.fillStyle = badgeGrad;
-      ctx.fill();
-      if (perfect) {
-        ctx.strokeStyle = 'rgba(255,255,255,0.45)';
-        ctx.lineWidth = 1;
-        ctx.stroke();
-      }
-      ctx.fillStyle = '#1a1400';
-      ctx.textAlign = 'center';
-      ctx.fillText(badge, bx + bw / 2, by + 6);
-      ctx.textAlign = 'left';
-
-      if (perfect) {
-        var subBadge = t('complete') + ' · ' + t('report_max_lb');
-        ctx.font = uiCanvasFont(12, 'bold');
-        var sbw = Math.max(160, ctx.measureText(subBadge).width + 20);
-        var sbx = bx;
-        var sby = by + 30;
-        drawRoundRect(ctx, sbx, sby, sbw, 20, 10);
-        ctx.fillStyle = 'rgba(15,23,42,0.92)';
-        ctx.fill();
-        ctx.strokeStyle = 'rgba(255,215,0,0.55)';
-        ctx.lineWidth = 1;
-        ctx.stroke();
-        ctx.fillStyle = '#ffd700';
-        ctx.textAlign = 'center';
-        ctx.fillText(subBadge, sbx + sbw / 2, sby + 4);
-        ctx.textAlign = 'left';
-      }
-    }
+    drawSharePossessionHead(ctx, pad, pctPanelY, pctStr, complete, perfect);
 
     drawPossessionEmblem(
       ctx,
-      pad + emblemSize / 2,
+      W - pad - emblemSize / 2,
       emblemTop + emblemSize / 2,
       emblemSize,
       st.pct,
       complete,
       perfect,
       typeIconImg
-    );
-
-    ctx.fillStyle = '#94a3b8';
-    ctx.font = uiCanvasFont(17, 'bold');
-    ctx.fillText(
-      t('owned_line', { owned: st.owned, total: st.total, lb: st.lbTotal, lbMax: st.lbMax }),
-      pad,
-      ownedY
     );
 
     var shareStatCards = [
@@ -2352,7 +2613,14 @@
         d: st.total,
         pct: statBarPct(st.maxed, st.total),
         tone: 'gold',
-        lead: 'max_lb'
+        lead: 'max_lb',
+        splitRight: {
+          label: t('lb_progress'),
+          n: st.lbTotal,
+          d: st.lbMax,
+          pct: statBarPct(st.lbTotal, st.lbMax),
+          lead: 'lb_progress'
+        }
       },
       {
         label: t('owned'),
