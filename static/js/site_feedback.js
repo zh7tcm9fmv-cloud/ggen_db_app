@@ -68,6 +68,11 @@
     feedback_q8_team_prompt: 'How often do you use the Team Builder?',
     feedback_q8_lo: 'Never',
     feedback_q8_hi: 'Very often',
+    feedback_design_label: 'Which look do you prefer?',
+    feedback_design_prompt: 'Pick the site design you prefer using.',
+    feedback_design_special: '1.5 Anniversary Special Design',
+    feedback_design_classic: 'Classic',
+    feedback_err_design: 'Please choose Special Design or Classic.',
     feedback_device_label: 'Which device(s) did you use?',
     feedback_device_prompt: 'Select all that apply. Desktop/PC only skips the mobile experience question.',
     feedback_device_desktop: 'Desktop/PC',
@@ -229,6 +234,33 @@
       + '</section>';
   }
 
+  function preferredDesignMode() {
+    try {
+      if (global.__GGEN_DESIGN_15__ === true) return '15';
+      if (global.__GGEN_DESIGN_15__ === false) return 'classic';
+      var stored = localStorage.getItem('ggen_design_15');
+      if (stored === '0') return 'classic';
+      if (stored === '1') return '15';
+    } catch (e) {}
+    return '';
+  }
+
+  function designSectionHtml(lang) {
+    var pref = preferredDesignMode();
+    var specialChecked = pref === '15' ? ' checked' : '';
+    var classicChecked = pref === 'classic' ? ' checked' : '';
+    return ''
+      + '<section class="site-feedback-block site-feedback-block--design" data-fb-field="design_mode">'
+      + '<div class="site-feedback-q-num"></div>'
+      + '<h3 class="site-feedback-q-title">' + esc(trKey('feedback_design_label', lang)) + '</h3>'
+      + '<p class="site-feedback-q-prompt">' + esc(trKey('feedback_design_prompt', lang)) + '</p>'
+      + '<div class="site-feedback-device-row" role="radiogroup" aria-label="' + esc(trKey('feedback_design_label', lang)) + '">'
+      + '<label class="site-feedback-device-opt"><input type="radio" name="fb_design_mode" value="15"' + specialChecked + '> ' + esc(trKey('feedback_design_special', lang)) + '</label>'
+      + '<label class="site-feedback-device-opt"><input type="radio" name="fb_design_mode" value="classic"' + classicChecked + '> ' + esc(trKey('feedback_design_classic', lang)) + '</label>'
+      + '</div>'
+      + '</section>';
+  }
+
   function clearMobileExperienceAnswers(form) {
     if (!form) return;
     form.querySelectorAll('input[name="fb_mobile_experience"]').forEach(function (el) {
@@ -268,6 +300,12 @@
           n += 1;
           var toolNum = tool.querySelector('.site-feedback-q-num');
           if (toolNum) toolNum.textContent = n;
+        }
+        var design = form.querySelector('.site-feedback-block[data-fb-field="design_mode"]');
+        if (design) {
+          n += 1;
+          var designNum = design.querySelector('.site-feedback-q-num');
+          if (designNum) designNum.textContent = n;
         }
       }
     }
@@ -337,14 +375,15 @@
       h += ratingBlockHtml(RATING_FIELDS[i], i + 1, lang);
       if (RATING_FIELDS[i].key === 'functionality') {
         h += toolUsageSectionHtml(8, lang);
+        h += designSectionHtml(lang);
       }
     }
     h += '<section class="site-feedback-block site-feedback-block--open" data-fb-open="feedback_liked_label">'
-      + '<h3 class="site-feedback-q-title">9. ' + esc(L('feedback_liked_label')) + '</h3>'
+      + '<h3 class="site-feedback-q-title">10. ' + esc(L('feedback_liked_label')) + '</h3>'
       + '<textarea class="site-feedback-textarea" name="fb_liked" rows="4" maxlength="4000" placeholder=""></textarea>'
       + '</section>';
     h += '<section class="site-feedback-block site-feedback-block--open" data-fb-open="feedback_improve_label">'
-      + '<h3 class="site-feedback-q-title">10. ' + esc(L('feedback_improve_label')) + '</h3>'
+      + '<h3 class="site-feedback-q-title">11. ' + esc(L('feedback_improve_label')) + '</h3>'
       + '<p class="site-feedback-q-prompt">' + esc(L('feedback_improve_prompt')) + '</p>'
       + '<textarea class="site-feedback-textarea" name="fb_improve" rows="4" maxlength="4000" placeholder=""></textarea>'
       + '</section>';
@@ -372,9 +411,12 @@
     form.querySelectorAll('input[name="fb_device"]:checked').forEach(function (el) {
       devices.push(el.value);
     });
+    var designSel = form.querySelector('input[name="fb_design_mode"]:checked');
+    var designMode = designSel ? String(designSel.value || '') : '';
     return {
       ratings: ratings,
       devices: devices,
+      design_mode: designMode,
       liked: (form.querySelector('[name="fb_liked"]') || {}).value || '',
       improve: (form.querySelector('[name="fb_improve"]') || {}).value || '',
       website: (form.querySelector('[name="fb_website"]') || {}).value || '',
@@ -463,6 +505,10 @@
       if (payload.website) return;
       if (!payload.devices.length) {
         setMessage(form, tr('feedback_err_devices'), false);
+        return;
+      }
+      if (payload.design_mode !== '15' && payload.design_mode !== 'classic') {
+        setMessage(form, tr('feedback_err_design'), false);
         return;
       }
       if (!allRatingsPresent(payload.ratings, payload.devices)) {

@@ -412,7 +412,7 @@
       load_slot_confirm: '要用「{name}」取代目前的收藏嗎？',
       clear_slot_ok: '已清除欄位 {i}。',
       default_save_name: '收藏 {i}',
-      special_design: '特設設計',
+      special_design: '特別設計',
       classic: 'Classic'
     },
     HK: {
@@ -530,8 +530,7 @@
       load_slot_confirm: '要用「{name}」取代目前的收藏嗎？',
       clear_slot_ok: '已清除欄位 {i}。',
       default_save_name: '收藏 {i}',
-      /* Same TW wording as official Traditional Chinese anniversary mark (特設網站 → 特設設計) */
-      special_design: '特設設計',
+      special_design: '特別設計',
       classic: 'Classic'
     }
   };

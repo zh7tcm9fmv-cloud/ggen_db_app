@@ -7,7 +7,7 @@
   --g15-cyan:0 217 255;
   --g15-blue:0 140 255;
   --g15-yellow:255 212 0;
-  --g15-gray:136 136 136;
+  --g15-gray:200 210 225;
   --accent-cyan:rgb(var(--g15-cyan));
   --accent-blue:rgb(var(--g15-blue));
   --accent-gold:rgb(var(--g15-yellow));
@@ -97,7 +97,13 @@
   text-shadow:0 0 24px rgba(0,217,255,.25);
 }
 .collections-page.collections-15 .collections-sub{
-  max-width:54ch;color:rgb(var(--g15-gray));
+  max-width:54ch;
+  font-family:var(--font-body);
+  font-size:14px;
+  line-height:1.55;
+  font-weight:500;
+  letter-spacing:.01em;
+  color:rgb(var(--g15-gray));
 }
 .collections-page.collections-15 .collections-census-head h2{
   font-family:var(--font-teko);

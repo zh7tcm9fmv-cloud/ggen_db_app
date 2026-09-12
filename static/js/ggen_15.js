@@ -92,7 +92,7 @@
     var L = langCode();
     var src = '/static/images/UI/collections_15_special_design_' + L + '.webp';
     var label =
-      L === 'JA' ? '特設デザイン' : L === 'TW' || L === 'HK' ? '特設設計' : 'Special Design';
+      L === 'JA' ? '特設デザイン' : L === 'TW' || L === 'HK' ? '特別設計' : 'Special Design';
     if (img) {
       img.src = src;
       img.alt = label;

@@ -20591,6 +20591,7 @@ _SITE_FEEDBACK_RATING_KEYS = (
     'page_speed', 'mobile_experience', 'functionality', 'damage_sim_usage', 'team_builder_usage',
 )
 _SITE_FEEDBACK_DEVICES = frozenset({'desktop', 'mobile', 'tablet'})
+_SITE_FEEDBACK_DESIGN_MODES = frozenset({'15', 'classic'})
 _SITE_FEEDBACK_RATE_LIMIT_SEC = 3600
 _site_feedback_recent_by_ip = {}
 
@@ -20652,6 +20653,7 @@ def _site_feedback_entry_for_remote(entry):
         'lang': entry.get('lang') or '',
         'page_url': entry.get('page_url') or '',
         'devices': ','.join(entry.get('devices') or []),
+        'design_mode': entry.get('design_mode') or '',
         'liked': entry.get('liked') or '',
         'improve': entry.get('improve') or '',
         'ua': entry.get('ua') or '',
@@ -20750,6 +20752,9 @@ def api_site_feedback_submit():
             devices.append(ds)
     if not devices:
         return jsonify({'error': 'devices_required'}), 400
+    design_mode = str(body.get('design_mode') or '').strip().lower()
+    if design_mode not in _SITE_FEEDBACK_DESIGN_MODES:
+        return jsonify({'error': 'design_mode_required'}), 400
     desktop_only = (
         'desktop' in devices
         and 'mobile' not in devices
@@ -20779,6 +20784,7 @@ def api_site_feedback_submit():
         'page_url': page_url,
         'ratings': ratings,
         'devices': devices,
+        'design_mode': design_mode,
         'liked': liked,
         'improve': improve,
         'ua': (request.headers.get('User-Agent') or '')[:300],

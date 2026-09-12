@@ -13,9 +13,10 @@
  *   Q8  Tool usage (two ratings in one section):
  *       Damage Simulator     → damage_sim_usage
  *       Team Builder         → team_builder_usage
+ *   Q9  Design preference    → design_mode (15 | classic)
  *   —   Devices (checkboxes) → devices
- *   Q9  What you liked       → liked
- *   Q10 New features         → improve (title + free-text detail)
+ *   Q10 What you liked       → liked
+ *   Q11 New features         → improve (title + free-text detail)
  *
  * Setup:
  * 1. Create a Google Sheet (e.g. "GGen site feedback").
@@ -52,6 +53,7 @@ var HEADERS = [
   'What you liked',
   'What to improve',
   'User agent',
+  'Design preference',
 ];
 
 function doPost(e) {
@@ -81,6 +83,7 @@ function doPost(e) {
       payload.liked || '',
       payload.improve || '',
       payload.ua || '',
+      payload.design_mode || '',
     ]);
     return jsonResponse({ ok: true });
   } catch (err) {
@@ -105,10 +108,18 @@ function rating_(value, legacyFallback) {
 }
 
 function ensureHeaders_(sheet) {
-  if (sheet.getLastRow() > 0) {
+  if (sheet.getLastRow() === 0) {
+    writeHeaders_(sheet);
     return;
   }
-  writeHeaders_(sheet);
+  // Extend header row when new columns are appended at the end
+  var lastCol = Math.max(sheet.getLastColumn(), 1);
+  var existing = sheet.getRange(1, 1, 1, lastCol).getValues()[0];
+  if (existing.length < HEADERS.length) {
+    sheet.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]);
+    sheet.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold');
+    sheet.setFrozenRows(1);
+  }
 }
 
 function writeHeaders_(sheet) {
