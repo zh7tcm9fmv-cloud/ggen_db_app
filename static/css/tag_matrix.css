@@ -85,15 +85,18 @@ html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
   }
   .tm-head-role-label{display:none}
   .tm-head-role img{width:16px;height:16px}
-  /* Compact landscape nudge — never block the board */
+  /* Compact landscape nudge — art + copy centered as one group in the HUD */
   .tm-rotate-hint:not([hidden]){
-    flex-direction:row;flex-wrap:wrap;gap:6px 10px;
-    margin:0 0 4px;padding:6px 8px;
+    flex-direction:row;flex-wrap:nowrap;align-items:center;justify-content:center;
+    gap:8px 12px;
+    margin:0 0 4px;padding:8px 12px;
   }
-  .tm-rotate-art{width:64px;height:42px;flex:0 0 auto;overflow:visible}
-  .tm-rotate-phone{width:34px}
+  .tm-rotate-art{width:56px;height:44px;flex:0 0 auto;overflow:visible;margin-inline:0}
+  .tm-rotate-phone{width:34px;transform:translateX(4px) rotate(-90deg)}
   .tm-rotate-arrow{width:22px}
-  .tm-rotate-copy{font-size:11px;text-align:left;flex:1 1 10em}
+  .tm-rotate-copy{
+    font-size:11px;text-align:left;flex:0 1 auto;max-width:16em;margin:0;
+  }
 }
 
 .tm-toolbar{
