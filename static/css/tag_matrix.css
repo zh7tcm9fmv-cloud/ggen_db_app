@@ -92,7 +92,7 @@ html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
     margin:0 0 4px;padding:8px 12px;
   }
   .tm-rotate-art{width:56px;height:44px;flex:0 0 auto;overflow:visible;margin-inline:0}
-  .tm-rotate-phone{width:34px;transform:translateX(4px) rotate(-90deg)}
+  .tm-rotate-phone{width:34px}
   .tm-rotate-arrow{width:22px}
   .tm-rotate-copy{
     font-size:11px;text-align:left;flex:0 1 auto;max-width:16em;margin:0;
@@ -172,24 +172,26 @@ body.tm-squad-mode .tm-tile[data-kind="unit"]{outline:1px dashed transparent}
 .tm-rotate-hint:not([hidden]){display:flex}
 .tm-rotate-art{
   position:relative;
-  /* Footprint for landscape phone + centered arrow — must fit rotated HUD */
+  /* Landscape footprint for the −90° phone + arrow stacked on the same center */
   width:72px;height:48px;
-  display:flex;align-items:center;justify-content:center;
+  display:grid;
+  place-items:center;
   overflow:visible;
   flex:0 0 auto;
   margin-inline:auto;
 }
 .tm-rotate-phone{
+  grid-area:1 / 1;
   width:42px;height:auto;display:block;
-  /* Portrait asset on its side; translate is pre-rotate (screen-space nudge) */
-  transform:translateX(5px) rotate(-90deg);
+  /* Portrait asset on its side — no translateX (that threw the arrow off-center) */
+  transform:rotate(-90deg);
   transform-origin:center center;
   filter:drop-shadow(0 4px 12px rgba(0,0,0,.45));
 }
 .tm-rotate-arrow{
-  position:absolute;left:50%;top:50%;
+  grid-area:1 / 1;
   width:28px;height:auto;display:block;z-index:1;
-  transform:translate(-50%,-50%);
+  /* Grid centers on the phone; animate opacity/scale only so centering stays */
   opacity:.95;
   filter:drop-shadow(0 1px 3px rgba(0,0,0,.65));
   animation:tm-rotate-nudge 1.6s var(--motion-ease,cubic-bezier(0.2,0,0,1)) infinite;
@@ -200,8 +202,8 @@ body.tm-squad-mode .tm-tile[data-kind="unit"]{outline:1px dashed transparent}
   color:var(--text-primary,#e2e8f0);text-align:center;max-width:28em;
 }
 @keyframes tm-rotate-nudge{
-  0%,100%{opacity:.7;transform:translate(-50%,-50%) scale(1)}
-  50%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}
+  0%,100%{opacity:.7;transform:scale(1)}
+  50%{opacity:1;transform:scale(1.08)}
 }
 @media (prefers-reduced-motion:reduce){
   .tm-rotate-arrow{animation:none!important}
