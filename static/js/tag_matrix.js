@@ -154,7 +154,11 @@
       exclusiveLabelShort: 'EXC',
       foot: '/tm · /api/tag_matrix',
       status: '{n} tags · {u} units · {s} supporters',
-      statusFocus: 'Focus {k} · {n} tags · Esc clears · right-click to multi-select',
+      statusFocus: 'Focus {k} · {n} tags · Esc / Clear · right-click or Select to multi-select',
+      statusFocusTouch: 'Focus {k} · {n} tags · tap units to add · Clear to exit',
+      select: 'Select',
+      deselect: 'Deselect',
+      clearFocus: 'Clear',
       loading: 'Loading…',
       err: 'Load failed.',
       empty: '—',
@@ -213,7 +217,11 @@
       exclusiveLabelShort: '互斥',
       foot: '/tm · /api/tag_matrix',
       status: '{n} タグ · ユニット {u} · サポーター {s}',
-      statusFocus: 'フォーカス {k} · {n} タグ · Escで解除 · 右クリックで複数選択',
+      statusFocus: 'フォーカス {k} · {n} タグ · Esc / Clear · 右クリックまたは Select で複数選択',
+      statusFocusTouch: 'フォーカス {k} · {n} タグ · ユニットをタップで追加 · Clear で解除',
+      select: 'Select',
+      deselect: 'Deselect',
+      clearFocus: 'Clear',
       loading: '読み込み中…',
       err: '失敗',
       empty: '—',
@@ -271,7 +279,11 @@
       exclusiveLabelShort: '互斥',
       foot: '/tm · /api/tag_matrix',
       status: '{n} 標籤 · 單位 {u} · 支援人員 {s}',
-      statusFocus: '焦點 {k} · {n} 標籤 · Esc 清除 · 右鍵多選',
+      statusFocus: '焦點 {k} · {n} 標籤 · Esc / Clear · 右鍵或 Select 多選',
+      statusFocusTouch: '焦點 {k} · {n} 標籤 · 點單位加入 · Clear 結束',
+      select: 'Select',
+      deselect: 'Deselect',
+      clearFocus: 'Clear',
       loading: '載入中…',
       err: '載入失敗',
       empty: '—',
@@ -329,7 +341,11 @@
       exclusiveLabelShort: '互斥',
       foot: '/tm · /api/tag_matrix',
       status: '{n} 標籤 · 單位 {u} · 支援人員 {s}',
-      statusFocus: '焦點 {k} · {n} 標籤 · Esc 清除 · 右鍵多選',
+      statusFocus: '焦點 {k} · {n} 標籤 · Esc / Clear · 右鍵或 Select 多選',
+      statusFocusTouch: '焦點 {k} · {n} 標籤 · 點單位加入 · Clear 結束',
+      select: 'Select',
+      deselect: 'Deselect',
+      clearFocus: 'Clear',
       loading: '載入中…',
       err: '載入失敗',
       empty: '—',
@@ -569,7 +585,7 @@
     );
   }
 
-  function hoverCardInnerHtml(item, kind) {
+  function hoverCardInnerHtml(item, kind, tagId) {
     var limBar = item.is_limited_time ? limitedBadgeHtml(kind) : '';
     /* Popup: keep rarity frame; omit acquisition icon */
     var thumb = framedThumbHtml(item, kind, 56, { eager: true, skipAcqIcon: true });
@@ -599,6 +615,22 @@
         metaBits.push(tags.slice(0, 4).join(item.skill_tag_data && item.skill_tag_data[0] && item.skill_tag_data[0].separator === 'and' ? ' + ' : ' / '));
       }
     }
+    var selectBtn = '';
+    if (kind === 'unit') {
+      var on = isSelected(item.id);
+      selectBtn =
+        '<button type="button" class="tm-hover-select' +
+        (on ? ' is-on' : '') +
+        '" data-tm-select="' +
+        escAttr(String(item.id || '')) +
+        '" data-tm-tag="' +
+        escAttr(tagId != null ? String(tagId) : '') +
+        '"><img src="' +
+        escAttr(cdnPath(on ? selectTargetForUnit(item.id) : SELECT_TARGET_BLUE)) +
+        '" alt=""><span>' +
+        esc(on ? t('deselect') : t('select')) +
+        '</span></button>';
+    }
     return (
       '<div class="tm-hover-thumb">' +
       limBar +
@@ -610,7 +642,8 @@
       skills +
       (metaBits.length
         ? '<div class="tm-hover-meta">' + metaBits.join(' · ') + '</div>'
-        : '')
+        : '') +
+      selectBtn
     );
   }
 
@@ -1102,9 +1135,25 @@
     var st = document.getElementById('tmStatus');
     if (st) {
       if (focusOn) {
-        st.textContent = t('statusFocus')
-          .replace('{k}', String(selectedCount()))
-          .replace('{n}', String(c.tags));
+        var focusTpl = isTouchUi() ? t('statusFocusTouch') : t('statusFocus');
+        st.innerHTML =
+          '<span class="tm-status-text">' +
+          esc(
+            focusTpl
+              .replace('{k}', String(selectedCount()))
+              .replace('{n}', String(c.tags))
+          ) +
+          '</span><button type="button" class="tm-focus-clear" id="tmFocusClear">' +
+          esc(t('clearFocus')) +
+          '</button>';
+        var clearBtn = document.getElementById('tmFocusClear');
+        if (clearBtn && !clearBtn._tmBound) {
+          clearBtn._tmBound = 1;
+          clearBtn.addEventListener('click', function (ev) {
+            ev.preventDefault();
+            clearSelection();
+          });
+        }
       } else {
         st.textContent = t('status')
           .replace('{n}', String(c.tags))
@@ -1142,14 +1191,31 @@
   }
 
   function ensureHoverPortal() {
-    if (hoverPortalEl && hoverPortalEl.isConnected) return hoverPortalEl;
+    if (hoverPortalEl && hoverPortalEl.isConnected) {
+      bindHoverSelect(hoverPortalEl);
+      return hoverPortalEl;
+    }
     hoverPortalEl = document.createElement('div');
     hoverPortalEl.className = 'tm-hover-card tm-hover-card--portal';
     hoverPortalEl.setAttribute('role', 'tooltip');
     hoverPortalEl.setAttribute('aria-hidden', 'true');
     hoverPortalEl.hidden = true;
     document.body.appendChild(hoverPortalEl);
+    bindHoverSelect(hoverPortalEl);
     return hoverPortalEl;
+  }
+
+  function bindHoverSelect(portal) {
+    if (!portal || portal._tmSelectBound) return;
+    portal._tmSelectBound = 1;
+    portal.addEventListener('click', function (ev) {
+      var btn = ev.target.closest('[data-tm-select]');
+      if (!btn || !portal.contains(btn)) return;
+      ev.preventDefault();
+      ev.stopPropagation();
+      toggleSelect(btn.getAttribute('data-tm-select'), btn.getAttribute('data-tm-tag'));
+      hideHoverPortal();
+    });
   }
 
   function hideHoverPortal() {
@@ -1195,10 +1261,15 @@
     var item = key ? itemByKey[key] : null;
     if (!item) return;
     var kind = tile.getAttribute('data-kind') === 'supporter' ? 'supporter' : 'unit';
+    var row = tile.closest('.tm-row');
+    var tagId = row && row.getAttribute('data-tag-id');
     var card = ensureHoverPortal();
     if (hoverPortalKey !== key) {
-      card.innerHTML = hoverCardInnerHtml(item, kind);
+      card.innerHTML = hoverCardInnerHtml(item, kind, tagId);
       hoverPortalKey = key;
+    } else if (kind === 'unit') {
+      /* Refresh Select state if same tile reopened after toggle */
+      card.innerHTML = hoverCardInnerHtml(item, kind, tagId);
     }
     document.querySelectorAll('.tm-hover-placed').forEach(function (prev) {
       if (prev !== tile) {
@@ -1256,14 +1327,37 @@
         },
         true
       );
-      /* Mobile: first tap shows detail popup; second tap on same tile follows link */
+      /* Mobile:
+         - First pick: tap opens popup → Select (no long-press; hold is used elsewhere)
+         - While focusing: tap unit toggles select; tap again on open popup follows link */
       board.addEventListener(
         'click',
         function (ev) {
           if (!isTouchUi()) return;
+          if (ev.target.closest && ev.target.closest('[data-tm-select]')) return;
           var tile = ev.target.closest('.tm-tile');
           if (!tile || !board.contains(tile)) return;
+          var kind = tile.getAttribute('data-kind');
           var key = tile.getAttribute('data-item-key') || '';
+          if (
+            kind === 'unit' &&
+            selectedCount() > 0 &&
+            !(
+              tile.classList.contains('tm-hover-placed') &&
+              hoverPortalKey === key &&
+              hoverPortalEl &&
+              hoverPortalEl.classList.contains('tm-hover-card--open')
+            )
+          ) {
+            ev.preventDefault();
+            var row = tile.closest('.tm-row');
+            toggleSelect(
+              tile.getAttribute('data-id'),
+              row && row.getAttribute('data-tag-id')
+            );
+            hideHoverPortal();
+            return;
+          }
           if (
             tile.classList.contains('tm-hover-placed') &&
             hoverPortalKey === key &&
