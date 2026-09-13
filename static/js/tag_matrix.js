@@ -74,8 +74,6 @@
   var SELECT_TARGET_RED = '/static/images/UI/mw_red_target1_outer.webp';
   var ROTATE_PHONE = '/static/images/UI/UI_Gallery_Comics_Navi_Smartphone.webp';
   var ROTATE_ARROW = '/static/images/UI/UI_Gallery_Comics_RotationArrow_Active.webp';
-  /* Default “All” = majors only (exclude Other-Series for faster first paint). */
-  var MAJOR_GROUPS = { four: 1, six: 1, new: 1, other: 1 };
   var RARITY_FILTER_ICONS = {
     UR: '/static/images/Rarity/UI_Common_RarityIcon_UR.webp',
     SSR: '/static/images/Rarity/UI_Common_RarityIcon_SSR.webp',
