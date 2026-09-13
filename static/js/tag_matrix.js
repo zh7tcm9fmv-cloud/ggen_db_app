@@ -72,6 +72,19 @@
   var ULT_ICON = '/static/images/UI/UI_Common_Icon_ULT.webp';
   var SELECT_TARGET_BLUE = '/static/images/UI/mw_blue_target1_outer.webp';
   var SELECT_TARGET_RED = '/static/images/UI/mw_red_target1_outer.webp';
+  var RARITY_FILTER_ICONS = {
+    UR: '/static/images/Rarity/UI_Common_RarityIcon_UR.webp',
+    SSR: '/static/images/Rarity/UI_Common_RarityIcon_SSR.webp',
+    SR: '/static/images/Rarity/UI_Common_RarityIcon_SR.webp',
+    R: '/static/images/Rarity/UI_Common_RarityIcon_R.webp',
+    N: '/static/images/Rarity/UI_Common_RarityIcon_N.webp'
+  };
+  var RARITY_PRESET_ICONS = {
+    ALL: ['UR', 'SSR', 'SR', 'R', 'N'],
+    UR: ['UR'],
+    'SSR+': ['UR', 'SSR'],
+    'SSR-': ['SSR', 'SR', 'R', 'N']
+  };
   var SKILL_KIND_ORDER = ['hp', 'en', 'hybrid', ''];
 
   var state = {
@@ -80,10 +93,10 @@
     role: 'ALL',
     rarity: 'UR',
     exclusive: true,
-    showSupports: true,
     search: '',
     selectedIds: {},
-    /* Tag row of the first right-click — later picks match against this, not any shared tag. */
+    /* First right-click unit + its tag — Object.keys order is NOT click order for numeric ids. */
+    anchorUnitId: null,
     anchorTagId: null
   };
 
@@ -95,7 +108,7 @@
       tabCollections: 'Collections',
       eyebrow: 'Major Tags · live',
       title: 'Tag Matrix',
-      sub: 'Four / Six / New Major lineage — supporters × units by role.',
+      sub: 'See which supporters and units share each Four/Six/New Major tag—filter by role and rarity, then right-click units to find kits that fit the same support pool.',
       note: 'Community taxonomy over mutually exclusive m_lineage IDs (LANG names).',
       filters: 'Filters',
       group: 'Tag group',
@@ -108,6 +121,7 @@
       other: 'Other',
       ur: 'UR',
       ssrPlus: 'SSR+',
+      ssrMinus: 'SSR-',
       exclusive: 'Exclusive rails',
       supports: 'Supporters',
       searchPh: 'Find tag (shippu, 疾風…)',
@@ -149,7 +163,7 @@
       tabCollections: 'コレクション',
       eyebrow: '系統タグ · ライブ',
       title: 'タグ対応表',
-      sub: '四大／六大／新系統 — サポーター × ロール別ユニット。',
+      sub: '四大／六大／新系統タグごとに対応サポーターとロール別ユニットを一覧。右クリックで複数選択し、共通サポーターを確認。',
       note: '互斥な m_lineage ID のコミュニティ分類（LANG名称）。',
       filters: '絞り込み',
       group: '区分',
@@ -158,10 +172,11 @@
       all: 'すべて',
       four: '四大',
       six: '六大',
-      new: '新系統',
+      new: '新しいタグ',
       other: '他',
       ur: 'UR',
       ssrPlus: 'SSR+',
+      ssrMinus: 'SSR-',
       exclusive: '互斥強調',
       supports: 'サポーター',
       searchPh: 'タグ検索（疾風…）',
@@ -169,7 +184,7 @@
       noMatch: '一致するタグがありません。',
       legFour: '四大',
       legSix: '六大',
-      legNew: '新系統',
+      legNew: '新しいタグ',
       headSupp: 'サポーター',
       headTag: 'タグ',
       headAtk: '攻撃型',
@@ -203,7 +218,7 @@
       tabCollections: '收藏',
       eyebrow: '系統標籤 · 即時',
       title: '標籤對照表',
-      sub: '四大／六大／新系統 — 支援人員 × 角色單位。',
+      sub: '依四大／六大／新標籤查看對應支援人員與各角色單位；右鍵多選單位可找出共用支援池的組合。',
       note: '互斥 m_lineage ID 社群分類（LANG名稱）。',
       filters: '篩選',
       group: '分組',
@@ -212,10 +227,11 @@
       all: '全部',
       four: '四大',
       six: '六大',
-      new: '新系統',
+      new: '新標籤',
       other: '其他',
       ur: 'UR',
       ssrPlus: 'SSR+',
+      ssrMinus: 'SSR-',
       exclusive: '強調互斥',
       supports: '支援人員',
       searchPh: '搜尋標籤（疾風、shippu…）',
@@ -223,7 +239,7 @@
       noMatch: '沒有符合的標籤。',
       legFour: '四大',
       legSix: '六大',
-      legNew: '新系統',
+      legNew: '新標籤',
       headSupp: '支援人員',
       headTag: '標籤',
       headAtk: '攻擊型',
@@ -257,7 +273,7 @@
       tabCollections: '收藏',
       eyebrow: '系統標籤 · 即時',
       title: '標籤對照表',
-      sub: '四大／六大／新系統 — 支援人員 × 角色單位。',
+      sub: '依四大／六大／新標籤查看對應支援人員與各角色單位；右鍵多選單位可找出共用支援池的組合。',
       note: '互斥 m_lineage ID 社群分類（LANG名稱）。',
       filters: '篩選',
       group: '分組',
@@ -266,10 +282,11 @@
       all: '全部',
       four: '四大',
       six: '六大',
-      new: '新系統',
+      new: '新標籤',
       other: '其他',
       ur: 'UR',
       ssrPlus: 'SSR+',
+      ssrMinus: 'SSR-',
       exclusive: '強調互斥',
       supports: '支援人員',
       searchPh: '搜尋標籤（疾風、shippu…）',
@@ -277,7 +294,7 @@
       noMatch: '沒有符合的標籤。',
       legFour: '四大',
       legSix: '六大',
-      legNew: '新系統',
+      legNew: '新標籤',
       headSupp: '支援人員',
       headTag: '標籤',
       headAtk: '攻擊型',
@@ -365,6 +382,9 @@
     var letter = String((r && r.rarity) || '').toUpperCase();
     if (state.rarity === 'UR') return letter === 'UR';
     if (state.rarity === 'SSR+') return letter === 'UR' || letter === 'SSR';
+    if (state.rarity === 'SSR-') {
+      return letter === 'SSR' || letter === 'SR' || letter === 'R' || letter === 'N';
+    }
     return true;
   }
   function filterList(list) {
@@ -576,9 +596,13 @@
     if (!id) return;
     if (state.selectedIds[id]) {
       delete state.selectedIds[id];
-      if (!selectedCount()) state.anchorTagId = null;
+      if (!selectedCount()) {
+        state.anchorTagId = null;
+        state.anchorUnitId = null;
+      }
     } else {
       if (!selectedCount()) {
+        state.anchorUnitId = id;
         state.anchorTagId = tagId != null && tagId !== '' ? String(tagId) : null;
       }
       state.selectedIds[id] = 1;
@@ -590,6 +614,7 @@
     if (!selectedCount()) return;
     state.selectedIds = {};
     state.anchorTagId = null;
+    state.anchorUnitId = null;
     renderBoard();
   }
 
@@ -597,7 +622,7 @@
     if (!selectedCount()) return false;
     var roles = ['1', '2', '3'];
     for (var i = 0; i < roles.length; i++) {
-      var list = filterList((row.units && row.units[roles[i]]) || []);
+      var list = (row.units && row.units[roles[i]]) || [];
       for (var j = 0; j < list.length; j++) {
         if (isSelected(list[j].id)) return true;
       }
@@ -610,7 +635,8 @@
     if (!unitId) return false;
     var roles = ['1', '2', '3'];
     for (var i = 0; i < roles.length; i++) {
-      var list = filterList((row.units && row.units[roles[i]]) || []);
+      /* Raw catalog — rarity filter must not hide shared-supporter matches. */
+      var list = (row.units && row.units[roles[i]]) || [];
       for (var j = 0; j < list.length; j++) {
         if (String(list[j].id) === unitId) return true;
       }
@@ -628,34 +654,25 @@
     return true;
   }
 
-  function firstSelectedId() {
-    var ids = Object.keys(state.selectedIds);
-    return ids.length ? ids[0] : '';
-  }
-
-  /*
-    Blue = first pick, or unit appears on the anchor tag (where first was clicked).
-    Red = later pick that is NOT on that tag.
-    (Do not use “any shared lineage tag” — multi-tag kits made everything stay blue.)
-  */
-  function unitMatchesFirstSelected(unitId) {
-    var first = firstSelectedId();
-    unitId = String(unitId || '');
-    if (!first || !unitId || unitId === first) return true;
-    var anchor = state.anchorTagId;
-    if (!anchor) return false;
+  /* Some tag row (anywhere in catalog) contains every selected unit → shared supporters. */
+  function selectionSharesSupporters() {
+    if (selectedCount() <= 1) return true;
     for (var i = 0; i < rows.length; i++) {
-      if (String(rows[i].id) !== anchor) continue;
-      return rowHasUnitId(rows[i], unitId);
+      if (rowHasAllSelectedUnits(rows[i])) return true;
     }
     return false;
   }
 
+  /*
+    Blue = sole pick, or multi-select that still shares at least one supporter row.
+    Red = later picks when no tag row holds every selected unit (diverging supporters).
+  */
   function selectTargetForUnit(unitId) {
-    if (selectedCount() > 1 && !unitMatchesFirstSelected(unitId)) {
-      return SELECT_TARGET_RED;
-    }
-    return SELECT_TARGET_BLUE;
+    unitId = String(unitId || '');
+    if (selectedCount() <= 1) return SELECT_TARGET_BLUE;
+    if (selectionSharesSupporters()) return SELECT_TARGET_BLUE;
+    if (unitId && unitId === String(state.anchorUnitId || '')) return SELECT_TARGET_BLUE;
+    return SELECT_TARGET_RED;
   }
 
   function unitCellHtml(item, focusOn) {
@@ -757,15 +774,7 @@
     var html = '';
     html += '<div class="tm-head-rail" role="columnheader"></div>';
     html +=
-      '<div class="tm-head-supp" role="columnheader">' +
-      esc(t('headSupp')) +
-      '<span class="tm-head-supp-sub">' +
-      esc(t('kindHpShort')) +
-      ' · ' +
-      esc(t('kindEnShort')) +
-      ' · ' +
-      esc(t('kindHybridShort')) +
-      '</span></div>';
+      '<div class="tm-head-supp" role="columnheader">' + esc(t('headSupp')) + '</div>';
     html += '<div class="tm-head-tag" role="columnheader">' + esc(t('headTag')) + '</div>';
     html +=
       '<div class="tm-head-role tm-head-role--1" role="columnheader"><img src="' +
@@ -1026,8 +1035,8 @@
 
   function syncPageFlags() {
     var page = document.body;
-    page.classList.toggle('tm-exclusive-on', !!state.exclusive);
-    page.classList.toggle('tm-hide-supports', !state.showSupports);
+    page.classList.add('tm-exclusive-on');
+    page.classList.remove('tm-hide-supports');
     var on = !!window.__GGEN_DESIGN_15__;
     page.classList.toggle('tm-15', on);
     page.classList.toggle('tm-classic', !on);
@@ -1051,11 +1060,6 @@
       ['tmChipNew', 'new'],
       ['tmChipOther', 'other'],
       ['tmRoleAll', 'all'],
-      ['tmRarityAll', 'all'],
-      ['tmRarityUr', 'ur'],
-      ['tmRaritySsr', 'ssrPlus'],
-      ['tmExclusiveLbl', 'exclusive'],
-      ['tmSupportsLbl', 'supports'],
       ['tmLegFour', 'legFour'],
       ['tmLegSix', 'legSix'],
       ['tmLegNew', 'legNew'],
@@ -1081,6 +1085,18 @@
     if (roleNav) roleNav.setAttribute('aria-label', t('role'));
     var rarityNav = document.getElementById('tmRarityTabs');
     if (rarityNav) rarityNav.setAttribute('aria-label', t('rarity'));
+    [
+      ['tmRarityAll', 'all'],
+      ['tmRarityUr', 'ur'],
+      ['tmRaritySsr', 'ssrPlus'],
+      ['tmRaritySsrMinus', 'ssrMinus']
+    ].forEach(function (pair) {
+      var el = document.getElementById(pair[0]);
+      if (!el) return;
+      var label = t(pair[1]);
+      el.title = label;
+      el.setAttribute('aria-label', label);
+    });
     var toolbar = document.querySelector('.tm-toolbar');
     if (toolbar) toolbar.setAttribute('aria-label', t('filters'));
     [
@@ -1098,6 +1114,8 @@
     try {
       document.title = pageTitle;
     } catch (_) {}
+    fillRarityChipIcons();
+    syncRarityActive();
   }
 
   function syncHtmlLang(L) {
@@ -1105,6 +1123,27 @@
     var code = map[L] || 'en';
     document.documentElement.setAttribute('lang', code);
     document.documentElement.setAttribute('data-ui-lang', L);
+  }
+
+  function rarityIconsHtml(keys) {
+    return (keys || [])
+      .map(function (k) {
+        var src = RARITY_FILTER_ICONS[k];
+        if (!src) return '';
+        return (
+          '<img class="filter-inline-icon rarity-filter-chip" src="' +
+          escAttr(cdnPath(src)) +
+          '" alt="" role="presentation">'
+        );
+      })
+      .join('');
+  }
+
+  function fillRarityChipIcons() {
+    document.querySelectorAll('#tmRarityTabs [data-icons]').forEach(function (el) {
+      var key = el.getAttribute('data-icons');
+      el.innerHTML = rarityIconsHtml(RARITY_PRESET_ICONS[key] || []);
+    });
   }
 
   function syncRarityActive() {
@@ -1151,6 +1190,11 @@
       localStorage.setItem(STORAGE_LANG, L);
     } catch (_) {}
     syncHtmlLang(L);
+    try {
+      if (typeof window.__ggenInjectBrandFonts === 'function') {
+        window.__ggenInjectBrandFonts();
+      }
+    } catch (_) {}
     var lbl = document.getElementById('tmLangLabel');
     if (lbl) lbl.textContent = L;
     applyCopy();
@@ -1176,23 +1220,30 @@
     var btn = document.getElementById('tmLangBtn');
     var dd = document.getElementById('tmLangDropdown');
     if (!btn || !dd) return;
-    btn.addEventListener('click', function () {
-      var open = dd.hasAttribute('hidden');
-      if (open) dd.removeAttribute('hidden');
-      else dd.setAttribute('hidden', '');
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    function closeDd() {
+      dd.classList.remove('active');
+      dd.setAttribute('hidden', '');
+      btn.setAttribute('aria-expanded', 'false');
+    }
+    function openDd() {
+      dd.classList.add('active');
+      dd.removeAttribute('hidden');
+      btn.setAttribute('aria-expanded', 'true');
+    }
+    btn.addEventListener('click', function (ev) {
+      ev.stopPropagation();
+      if (dd.classList.contains('active')) closeDd();
+      else openDd();
     });
     dd.addEventListener('click', function (ev) {
       var opt = ev.target.closest('[data-lang]');
       if (!opt) return;
       setLang(opt.getAttribute('data-lang'));
-      dd.setAttribute('hidden', '');
-      btn.setAttribute('aria-expanded', 'false');
+      closeDd();
     });
     document.addEventListener('click', function (ev) {
       if (ev.target.closest('.lang-selector')) return;
-      dd.setAttribute('hidden', '');
-      btn.setAttribute('aria-expanded', 'false');
+      closeDd();
     });
   }
 
@@ -1211,6 +1262,11 @@
   function init() {
     state.lang = readLang();
     syncHtmlLang(state.lang);
+    try {
+      if (typeof window.__ggenInjectBrandFonts === 'function') {
+        window.__ggenInjectBrandFonts();
+      }
+    } catch (_) {}
     var lbl = document.getElementById('tmLangLabel');
     if (lbl) lbl.textContent = state.lang;
     applyCopy();
@@ -1226,26 +1282,12 @@
     });
     bindChips(document.getElementById('tmRarityTabs'), 'data-rarity', function (r) {
       state.rarity = r || 'ALL';
+      syncRarityActive();
       renderBoard();
     });
+    fillRarityChipIcons();
     syncRarityActive();
 
-    var excl = document.getElementById('tmExclusiveOnly');
-    if (excl) {
-      excl.checked = state.exclusive;
-      excl.addEventListener('change', function () {
-        state.exclusive = !!excl.checked;
-        syncPageFlags();
-      });
-    }
-    var supp = document.getElementById('tmShowSupports');
-    if (supp) {
-      supp.checked = state.showSupports;
-      supp.addEventListener('change', function () {
-        state.showSupports = !!supp.checked;
-        syncPageFlags();
-      });
-    }
     var search = document.getElementById('tmSearch');
     if (search) {
       search.addEventListener('input', function () {

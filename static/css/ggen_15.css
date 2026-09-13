@@ -6,6 +6,8 @@ html.ggen-15{
   --g15-cyan:0 217 255;
   --g15-blue:0 140 255;
   --font-teko:"Teko",'RobotoMediumNumbers',-apple-system,BlinkMacSystemFont,'Segoe UI','Yu Gothic UI','Yu Gothic','Meiryo',sans-serif;
+  /* EN HUD chrome = Teko; CJK locales override --font-hud to game display faces */
+  --font-hud:var(--font-teko),Teko,sans-serif;
   --font-brand:"Teko",var(--font-body);
   --g15-chamfer:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
   --g15-chamfer-sm:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);
@@ -16,11 +18,15 @@ html.ggen-15{
 html.ggen-15[data-ui-lang="JA"],
 html.ggen-15[data-ui-lang="JP"]{
   --font-teko:"Teko",'Noto Sans JP','ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  /* 1.5 CJK chrome: ShinGo first (classic keeps Noto-first --font-body) */
+  --font-hud:'ShinGoPr6DeBold','Noto Sans JP','RobotoMediumNumbers',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   --font-brand:"Teko",var(--font-body);
 }
 html.ggen-15[data-ui-lang="TW"],
 html.ggen-15[data-ui-lang="HK"]{
   --font-teko:"Teko",'Noto Sans JP','UDShinGoStdTCMed','RobotoMediumNumbers','ShinGoPr6DeBold',-apple-system,BlinkMacSystemFont,'PingFang TC','Microsoft JhengHei UI','Microsoft JhengHei',sans-serif;
+  /* 1.5 CJK chrome: UDShinGo first (classic keeps Noto-first --font-body) */
+  --font-hud:'UDShinGoStdTCMed','Noto Sans JP','ShinGoPr6DeBold','RobotoMediumNumbers',-apple-system,BlinkMacSystemFont,'PingFang TC','Microsoft JhengHei UI','Microsoft JhengHei',sans-serif;
   --font-brand:"Teko",var(--font-body);
 }
 
@@ -244,10 +250,11 @@ html.ggen-15 .tm-browse-shortcut{
 }
 html.ggen-15 .tm-browse-shortcut{
   font-family:var(--font-teko),Teko,sans-serif;
-  font-size:13px;font-weight:600;letter-spacing:.1em;
+  font-size:14px;font-weight:600;letter-spacing:.1em;
   border-color:rgba(0,217,255,.35);
   background:linear-gradient(95deg,rgba(0,217,255,.12),rgba(0,140,255,.06));
   color:#7af0ff;
+  box-shadow:none;
 }
 html.ggen-15 .tm-browse-shortcut:hover,
 html.ggen-15 .tm-browse-shortcut:focus-visible{
@@ -258,9 +265,9 @@ html.ggen-15[data-ui-lang="JA"] .tm-browse-shortcut-label,
 html.ggen-15[data-ui-lang="TW"] .tm-browse-shortcut-label,
 html.ggen-15[data-ui-lang="HK"] .tm-browse-shortcut-label,
 html.ggen-15[data-ui-lang="JP"] .tm-browse-shortcut-label{
-  font-family:var(--font-body);
+  font-family:var(--font-hud);
   text-transform:none;
-  letter-spacing:0;
+  letter-spacing:.02em;
   font-weight:700;
   font-size:12px;
 }

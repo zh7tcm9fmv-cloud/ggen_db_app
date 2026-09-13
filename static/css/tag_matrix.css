@@ -12,7 +12,7 @@
   --tm-thumb:30px;
   --tm-gap:2px;
   /* Reference: thin supports + tag, MOST width to Atk/Sup/Dur so icons stay 1–2 lines */
-  --tm-rail-w:14px;
+  --tm-rail-w:16px;
   --tm-cols:var(--tm-rail-w) minmax(110px,140px) minmax(90px,120px) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);
   /* Body rows sit beside a shared group rail — no per-row rail column */
   --tm-cols-body:minmax(110px,140px) minmax(90px,120px) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);
@@ -22,10 +22,23 @@
   display:flex;
   flex-direction:column;
 }
+/* CJK Exclusive rail needs room for 互斥 glyphs */
+html[data-ui-lang="JA"] .tm-page,
+html[data-ui-lang="JP"] .tm-page,
+html[data-ui-lang="TW"] .tm-page,
+html[data-ui-lang="HK"] .tm-page{
+  --tm-rail-w:22px;
+}
 .tm-page.tm-hide-supports{
-  --tm-rail-w:12px;
+  --tm-rail-w:14px;
   --tm-cols:var(--tm-rail-w) minmax(84px,108px) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);
   --tm-cols-body:minmax(84px,108px) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);
+}
+html[data-ui-lang="JA"] .tm-page.tm-hide-supports,
+html[data-ui-lang="JP"] .tm-page.tm-hide-supports,
+html[data-ui-lang="TW"] .tm-page.tm-hide-supports,
+html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
+  --tm-rail-w:20px;
 }
 
 .tm-main{
@@ -66,6 +79,18 @@
 .tm-role-btn{padding:2px 4px;display:inline-flex;align-items:center;justify-content:center}
 .tm-role-btn img{display:block;width:16px;height:16px}
 .tm-filter-block--toggles{flex-direction:row;flex-wrap:wrap;align-items:center;gap:4px 8px}
+.tm-rarity-row{align-items:center}
+.tm-rarity-btn{
+  padding:2px 4px;display:inline-flex;align-items:center;justify-content:center;
+  line-height:0;min-height:0;
+}
+.tm-rarity-btn-icons{
+  display:inline-flex;align-items:center;gap:1px;line-height:0;
+}
+.tm-rarity-btn .filter-inline-icon.rarity-filter-chip,
+.tm-rarity-btn img{
+  display:block;height:16px;width:auto;object-fit:contain;
+}
 .tm-toggle{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--text-secondary,#cbd5e1);cursor:pointer;user-select:none}
 .tm-toggle input{accent-color:#00d4ff}
 .tm-search{
@@ -113,11 +138,8 @@
 }
 .tm-head-rail{grid-column:1}
 .tm-head-supp{
-  grid-column:2;flex-direction:column;align-items:flex-start;justify-content:center;
-  gap:1px;color:#86efac;text-transform:none;
-}
-.tm-head-supp-sub{
-  font-size:9px;font-weight:600;color:#a7f3d0;letter-spacing:.02em;opacity:.9;
+  grid-column:2;align-items:center;justify-content:flex-start;
+  color:#86efac;text-transform:none;
 }
 .tm-head-tag{grid-column:3}
 .tm-page.tm-hide-supports .tm-head-supp{display:none}
@@ -197,19 +219,32 @@
   justify-content:space-evenly;
   padding:6px 0;
   box-sizing:border-box;
-  font-size:9px;
-  font-weight:700;
+  font-size:11px;
+  font-weight:800;
   letter-spacing:0;
   color:#fff;
   user-select:none;
   overflow:hidden;
   line-height:1;
+  text-shadow:0 1px 1px rgba(0,0,0,.85),0 0 1px rgba(0,0,0,.9);
+  -webkit-font-smoothing:antialiased;
 }
 .tm-rail-group-ch{
   display:block;
   flex:0 0 auto;
   text-align:center;
   text-transform:uppercase;
+  font-weight:inherit;
+  font-size:inherit;
+  line-height:1.05;
+}
+html[data-ui-lang="JA"] .tm-rail-group-ch,
+html[data-ui-lang="JP"] .tm-rail-group-ch,
+html[data-ui-lang="TW"] .tm-rail-group-ch,
+html[data-ui-lang="HK"] .tm-rail-group-ch{
+  text-transform:none;
+  font-size:13px;
+  font-weight:800;
 }
 .tm-rail-group--four .tm-rail-group-bar{background:var(--tm-four)}
 .tm-rail-group--six .tm-rail-group-bar{background:var(--tm-six)}

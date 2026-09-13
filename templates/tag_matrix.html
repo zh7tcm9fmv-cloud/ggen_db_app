@@ -4,9 +4,44 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Tag Matrix — GGen Eternal Database</title>
-<meta name="description" content="Major Tags matrix — Four / Six / New Major lineage groups with supporter affinity.">
+<meta name="description" content="See which supporters and units share each Four/Six/New Major lineage tag—filter by role and rarity, then right-click units to find kits that fit the same support pool.">
 <link rel="canonical" href="{{ public_origin }}/tm">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ public_origin }}/tm">
+<meta property="og:site_name" content="GGen Eternal Database">
+<meta property="og:title" content="Tag Matrix — GGen Eternal Database">
+<meta property="og:description" content="See which supporters and units share each Four/Six/New Major lineage tag—filter by role and rarity, then right-click units to find kits that fit the same support pool.">
+<meta property="og:image" content="{{ og_image_url }}">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:image:alt" content="GGen Eternal Database">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="{{ og_image_url }}">
 <link rel="icon" type="image/webp" href="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp{% else %}/static/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp{% endif %}">
+<!-- Google Tag Manager (after first paint) -->
+<script>
+window.dataLayer=window.dataLayer||[];
+window.__ggenLoadGtm=function(){
+  if(window.__ggenGtmStarted)return;
+  window.__ggenGtmStarted=1;
+  (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-NJB85F92');
+};
+(function(){
+  function go(){try{window.__ggenLoadGtm()}catch(_){}}
+  function schedule(){
+    if(window.requestIdleCallback)requestIdleCallback(go,{timeout:2500});
+    else setTimeout(go,1);
+  }
+  if(document.readyState==='complete')schedule();
+  else window.addEventListener('load',schedule);
+})();
+</script>
+<!-- End Google Tag Manager -->
 <link rel="stylesheet" href="{{ url_for('static', filename='css/app_shell.css') }}?v={{ app_js_version }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/ggen_15.css') }}?v={{ app_js_version }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='css/tag_matrix.css') }}?v={{ app_js_version }}">
@@ -44,6 +79,10 @@ window.__GGEN_GAME_IMAGES_USE_CDN__={{ game_images_use_cdn|tojson }};
   if(link){ if(on){link.media='all'} else{link.disabled=true;link.removeAttribute('onload')} }
 })();
 </script>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NJB85F92"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 <div class="bg-pattern" aria-hidden="true"></div>
 
 <header class="app-header">
@@ -122,23 +161,24 @@ window.__GGEN_GAME_IMAGES_USE_CDN__={{ game_images_use_cdn|tojson }};
         </button>
       </nav>
     </div>
-    <div class="tm-filter-block">
+    <div class="tm-filter-block tm-filter-block--rarity">
       <span class="tm-filter-label" id="tmRarityLbl">Rarity</span>
-      <nav class="tm-chip-row" id="tmRarityTabs" role="tablist" aria-label="Rarity">
-        <button type="button" class="tm-chip" data-rarity="ALL" role="tab" aria-selected="false" id="tmRarityAll">All</button>
-        <button type="button" class="tm-chip is-active" data-rarity="UR" role="tab" aria-selected="true" id="tmRarityUr">UR</button>
-        <button type="button" class="tm-chip" data-rarity="SSR+" role="tab" aria-selected="false" id="tmRaritySsr">SSR+</button>
+      <nav class="tm-chip-row tm-rarity-row" id="tmRarityTabs" role="tablist" aria-label="Rarity">
+        <button type="button" class="tm-chip tm-rarity-btn" data-rarity="ALL" role="tab" aria-selected="false" id="tmRarityAll" title="All">
+          <span class="tm-rarity-btn-icons" data-icons="ALL"></span>
+        </button>
+        <button type="button" class="tm-chip tm-rarity-btn is-active" data-rarity="UR" role="tab" aria-selected="true" id="tmRarityUr" title="UR">
+          <span class="tm-rarity-btn-icons" data-icons="UR"></span>
+        </button>
+        <button type="button" class="tm-chip tm-rarity-btn" data-rarity="SSR+" role="tab" aria-selected="false" id="tmRaritySsr" title="SSR+">
+          <span class="tm-rarity-btn-icons" data-icons="SSR+"></span>
+        </button>
+        <button type="button" class="tm-chip tm-rarity-btn" data-rarity="SSR-" role="tab" aria-selected="false" id="tmRaritySsrMinus" title="SSR-">
+          <span class="tm-rarity-btn-icons" data-icons="SSR-"></span>
+        </button>
       </nav>
     </div>
     <div class="tm-filter-block tm-filter-block--toggles">
-      <label class="tm-toggle">
-        <input type="checkbox" id="tmExclusiveOnly" checked>
-        <span id="tmExclusiveLbl">Highlight exclusive groups</span>
-      </label>
-      <label class="tm-toggle">
-        <input type="checkbox" id="tmShowSupports" checked>
-        <span id="tmSupportsLbl">Show support personnel</span>
-      </label>
       <input type="search" id="tmSearch" class="tm-search" placeholder="Find tag (shippu, 疾風…)" aria-label="Filter tag rows" title="Filters tag rows only">
       <span class="tm-search-hint" id="tmSearchHint">Filters tag rows only — not unit names.</span>
     </div>
