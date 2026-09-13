@@ -838,6 +838,37 @@
     document.body.classList.toggle('tm-ur-only', state.rarity === 'UR');
   }
 
+  /*
+    Role columns share leftover width proportional to densest row counts.
+    Fixed rail / supports / tag; no horizontal overflow.
+  */
+  function syncBoardColumnWidths(visible) {
+    var page = document.querySelector('.tm-page') || document.body;
+    var maxAtk = 0;
+    var maxRoleSup = 0;
+    var maxDur = 0;
+    var maxSupp = 0;
+    for (var i = 0; i < visible.length; i++) {
+      var row = visible[i];
+      maxAtk = Math.max(maxAtk, filterList((row.units && row.units['1']) || []).length);
+      maxRoleSup = Math.max(
+        maxRoleSup,
+        filterList((row.units && row.units['3']) || []).length
+      );
+      maxDur = Math.max(maxDur, filterList((row.units && row.units['2']) || []).length);
+      maxSupp = Math.max(maxSupp, filterList(row.supports || []).length);
+    }
+    /* At least 1fr so empty roles still leave a slim column */
+    page.style.setProperty('--tm-fr-atk', Math.max(1, maxAtk) + 'fr');
+    page.style.setProperty('--tm-fr-role-sup', Math.max(1, maxRoleSup) + 'fr');
+    page.style.setProperty('--tm-fr-dur', Math.max(1, maxDur) + 'fr');
+    /* Supports: prefer content, hard-cap so the board never spills */
+    var suppSlot = 48;
+    var suppW = Math.min(120, Math.max(52, (Math.min(maxSupp, 3) || 1) * suppSlot));
+    page.style.setProperty('--tm-w-supp', suppW + 'px');
+    page.style.setProperty('--tm-w-tag', state.lang === 'EN' ? '100px' : '112px');
+  }
+
   function renderBoard() {
     var board = document.getElementById('tmBoard');
     var head = document.getElementById('tmStickyHead');
@@ -847,9 +878,6 @@
     if (state.role !== 'ALL') board.classList.add('tm-role-filter-' + state.role);
     document.body.classList.toggle('tm-focus-on', selectedCount() > 0);
 
-    if (head) head.innerHTML = buildHeadHtml();
-
-    var excl = t('exclusiveLabel');
     var focusOn = selectedCount() > 0;
     var visible = [];
     rows.forEach(function (row) {
@@ -858,6 +886,11 @@
       if (focusOn && !rowHit) return;
       visible.push(row);
     });
+    syncBoardColumnWidths(visible);
+
+    if (head) head.innerHTML = buildHeadHtml();
+
+    var excl = t('exclusiveLabel');
 
     function renderRowInner(row, alt) {
       var rowHit = focusOn && rowHasSelectedUnit(row);
@@ -940,13 +973,17 @@
     if (!c.tags && state.search.trim()) {
       html +=
         '<div class="tm-empty-board" role="status">' + esc(t('noMatch')) + '</div>';
-    } else if (focusOn && !html) {
+    } else     if (focusOn && !html) {
       html +=
         '<div class="tm-empty-board" role="status">' + esc(t('noMatch')) + '</div>';
     }
 
+    document.querySelectorAll('body > .tm-hover-card').forEach(function (orphan) {
+      orphan.remove();
+    });
     board.innerHTML = html;
     bindBoardInteractions(board);
+    fitExclusiveRails();
     var st = document.getElementById('tmStatus');
     if (st) {
       if (focusOn) {
@@ -963,28 +1000,69 @@
     syncPageFlags();
   }
 
-  function placeHoverCard(tile, wrap) {
-    if (!tile || !wrap) return;
+  function fitExclusiveRails() {
+    requestAnimationFrame(function () {
+      document.querySelectorAll('.tm-rail-group-bar').forEach(function (bar) {
+        var chars = bar.querySelectorAll('.tm-rail-group-ch');
+        var n = chars.length;
+        if (!n) return;
+        var h = bar.clientHeight;
+        if (h < 8) return;
+        var avail = Math.max(0, h - 4);
+        /* Fit full Exclusive / 互斥 into the rail height — never expand the row */
+        var fs = Math.max(5, Math.min(n <= 2 ? 14 : 11, Math.floor(avail / n)));
+        bar.style.fontSize = fs + 'px';
+        bar.style.justifyContent =
+          n * fs > avail * 0.88 ? 'space-between' : 'space-evenly';
+      });
+    });
+  }
+
+  function clearHoverPlacement(tile) {
+    if (!tile) return;
+    tile.classList.remove(
+      'tm-hover-below',
+      'tm-hover-left',
+      'tm-hover-right',
+      'tm-hover-placed'
+    );
+    var card = tile.querySelector('.tm-hover-card');
+    if (!card && tile._tmHoverCard) card = tile._tmHoverCard;
+    if (card) {
+      card.classList.remove('tm-hover-card--open');
+      card.style.left = '';
+      card.style.top = '';
+      if (card.parentNode === document.body && tile._tmHoverHome) {
+        tile._tmHoverHome.appendChild(card);
+      }
+    }
+    tile._tmHoverCard = null;
+    tile._tmHoverHome = null;
+  }
+
+  function placeHoverCard(tile) {
+    if (!tile) return;
     var card = tile.querySelector('.tm-hover-card');
     if (!card) return;
-    tile.classList.remove('tm-hover-below', 'tm-hover-left', 'tm-hover-right', 'tm-hover-placed');
+    clearHoverPlacement(tile);
+    /* Portal to body — matrix / units overflow must not clip detail popups */
+    tile._tmHoverHome = card.parentNode;
+    tile._tmHoverCard = card;
+    document.body.appendChild(card);
     var tr = tile.getBoundingClientRect();
-    var wr = wrap.getBoundingClientRect();
-    var cw = 150;
-    var ch = 120;
-    /* Prefer below when near top sticky head / above when room */
-    var spaceAbove = tr.top - wr.top;
-    var spaceBelow = wr.bottom - tr.bottom;
-    if (spaceAbove < ch + 10 && spaceBelow >= spaceAbove) {
-      tile.classList.add('tm-hover-below');
-    } else if (spaceAbove < ch + 10) {
-      tile.classList.add('tm-hover-below');
-    }
-    var centerLeft = tr.left + tr.width / 2 - cw / 2;
-    var centerRight = centerLeft + cw;
-    if (centerLeft < wr.left + 4) tile.classList.add('tm-hover-right');
-    else if (centerRight > wr.right - 4) tile.classList.add('tm-hover-left');
+    var cw = card.offsetWidth || 150;
+    var ch = card.offsetHeight || 120;
+    var gap = 6;
+    var preferBelow = tr.top < ch + 24;
+    var top = preferBelow ? tr.bottom + gap : tr.top - ch - gap;
+    var left = tr.left + tr.width / 2 - cw / 2;
+    left = Math.max(4, Math.min(left, window.innerWidth - cw - 4));
+    top = Math.max(4, Math.min(top, window.innerHeight - ch - 4));
+    card.style.left = Math.round(left) + 'px';
+    card.style.top = Math.round(top) + 'px';
+    if (preferBelow) tile.classList.add('tm-hover-below');
     tile.classList.add('tm-hover-placed');
+    card.classList.add('tm-hover-card--open');
   }
 
   function bindBoardInteractions(board) {
@@ -997,7 +1075,7 @@
         function (ev) {
           var tile = ev.target.closest('.tm-tile');
           if (!tile || !board.contains(tile)) return;
-          placeHoverCard(tile, wrap);
+          placeHoverCard(tile);
         },
         true
       );
@@ -1008,15 +1086,33 @@
           if (!tile || !board.contains(tile)) return;
           var to = ev.relatedTarget;
           if (to && tile.contains(to)) return;
-          tile.classList.remove(
-            'tm-hover-below',
-            'tm-hover-left',
-            'tm-hover-right',
-            'tm-hover-placed'
-          );
+          clearHoverPlacement(tile);
         },
         true
       );
+      if (wrap && !wrap._tmScrollHover) {
+        wrap._tmScrollHover = 1;
+        wrap.addEventListener(
+          'scroll',
+          function () {
+            board.querySelectorAll('.tm-hover-placed').forEach(clearHoverPlacement);
+          },
+          { passive: true }
+        );
+      }
+      if (!window._tmHoverResize) {
+        window._tmHoverResize = 1;
+        window.addEventListener(
+          'resize',
+          function () {
+            fitExclusiveRails();
+            document
+              .querySelectorAll('.tm-hover-placed')
+              .forEach(clearHoverPlacement);
+          },
+          { passive: true }
+        );
+      }
     }
     if (!board._tmSelectBound) {
       board._tmSelectBound = 1;

@@ -1,4 +1,4 @@
-/* Tag Matrix — reference chart density: wide role columns, frozen head, wrap in cell */
+/* Tag Matrix — content-sized role columns, site-aligned page width */
 
 .tm-page{
   --tm-four:#e8782a;
@@ -11,16 +11,21 @@
   --tm-border:rgba(148,163,184,.2);
   --tm-thumb:30px;
   --tm-gap:2px;
-  /* Reference: thin supports + tag, MOST width to Atk/Sup/Dur so icons stay 1–2 lines */
   --tm-rail-w:16px;
-  --tm-cols:var(--tm-rail-w) minmax(110px,140px) minmax(90px,120px) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);
-  /* Body rows sit beside a shared group rail — no per-row rail column */
-  --tm-cols-body:minmax(110px,140px) minmax(90px,120px) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);
+  /* Supports/tag fixed; role cols use fr weights from JS (unit counts) */
+  --tm-w-supp:72px;
+  --tm-w-tag:100px;
+  --tm-fr-atk:1fr;
+  --tm-fr-role-sup:1fr;
+  --tm-fr-dur:1fr;
+  --tm-cols:var(--tm-rail-w) var(--tm-w-supp) var(--tm-w-tag) minmax(0,var(--tm-fr-atk)) minmax(0,var(--tm-fr-role-sup)) minmax(0,var(--tm-fr-dur));
+  --tm-cols-body:var(--tm-w-supp) var(--tm-w-tag) minmax(0,var(--tm-fr-atk)) minmax(0,var(--tm-fr-role-sup)) minmax(0,var(--tm-fr-dur));
   --motion-quick:100ms;
   --motion-ease:cubic-bezier(.2,0,0,1);
   min-height:100vh;
   display:flex;
   flex-direction:column;
+  overflow-x:hidden;
 }
 /* CJK Exclusive rail needs room for 互斥 glyphs */
 html[data-ui-lang="JA"] .tm-page,
@@ -31,8 +36,8 @@ html[data-ui-lang="HK"] .tm-page{
 }
 .tm-page.tm-hide-supports{
   --tm-rail-w:14px;
-  --tm-cols:var(--tm-rail-w) minmax(84px,108px) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);
-  --tm-cols-body:minmax(84px,108px) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);
+  --tm-cols:var(--tm-rail-w) var(--tm-w-tag) minmax(0,var(--tm-fr-atk)) minmax(0,var(--tm-fr-role-sup)) minmax(0,var(--tm-fr-dur));
+  --tm-cols-body:var(--tm-w-tag) minmax(0,var(--tm-fr-atk)) minmax(0,var(--tm-fr-role-sup)) minmax(0,var(--tm-fr-dur));
 }
 html[data-ui-lang="JA"] .tm-page.tm-hide-supports,
 html[data-ui-lang="JP"] .tm-page.tm-hide-supports,
@@ -43,20 +48,27 @@ html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
 
 .tm-main{
   width:100%;
-  max-width:100%;
-  margin:0;
-  padding:2px 4px 4px;
+  max-width:1600px;
+  margin:0 auto;
+  padding:12px 20px 28px;
   flex:1;
   display:flex;
   flex-direction:column;
+  align-items:stretch;
   min-height:0;
+  min-width:0;
   box-sizing:border-box;
+  overflow-x:hidden;
 }
 
 .tm-intro{display:none} /* reclaim vertical space — title is in the nav tab */
 .tm-legend{display:none}
 .tm-foot{display:none}
 .tm-status{margin:2px 0 0;font-size:9px;color:var(--text-muted,#94a3b8);flex:0 0 auto;line-height:1.2}
+
+@media (max-width:768px){
+  .tm-main{padding:10px 12px 20px}
+}
 
 .tm-toolbar{
   display:flex;flex-wrap:wrap;gap:3px 6px;align-items:flex-end;
@@ -109,6 +121,9 @@ html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
 .tm-matrix{
   flex:1 1 auto;
   min-height:0;
+  width:100%;
+  max-width:100%;
+  min-width:0;
   display:flex;
   flex-direction:column;
   border:1px solid var(--tm-border);
@@ -156,6 +171,7 @@ html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
 .tm-board-wrap{
   flex:1 1 auto;
   min-height:0;
+  min-width:0;
   overflow-x:hidden;
   overflow-y:auto;
   -webkit-overflow-scrolling:touch;
@@ -169,6 +185,7 @@ html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
 .tm-board{
   display:block;
   width:100%;
+  min-width:0;
   height:auto !important;
   min-height:0 !important;
   max-height:none !important;
@@ -209,17 +226,20 @@ html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
   width:100%;
   min-width:0;
 }
+/* Height follows unit rows only — never grow from letter stack (EXCLUSIVE gap bug) */
 .tm-rail-group-bar{
   flex:0 0 var(--tm-rail-w);
   width:var(--tm-rail-w);
+  align-self:stretch;
+  min-height:0;
   position:relative;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:space-evenly;
-  padding:6px 0;
+  padding:2px 0;
   box-sizing:border-box;
-  font-size:11px;
+  font-size:9px;
   font-weight:800;
   letter-spacing:0;
   color:#fff;
@@ -236,14 +256,14 @@ html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
   text-transform:uppercase;
   font-weight:inherit;
   font-size:inherit;
-  line-height:1.05;
+  line-height:1;
+  max-height:1em;
 }
 html[data-ui-lang="JA"] .tm-rail-group-ch,
 html[data-ui-lang="JP"] .tm-rail-group-ch,
 html[data-ui-lang="TW"] .tm-rail-group-ch,
 html[data-ui-lang="HK"] .tm-rail-group-ch{
   text-transform:none;
-  font-size:13px;
   font-weight:800;
 }
 .tm-rail-group--four .tm-rail-group-bar{background:var(--tm-four)}
@@ -253,6 +273,7 @@ html[data-ui-lang="HK"] .tm-rail-group-ch{
 .tm-page:not(.tm-exclusive-on) .tm-rail-group-bar{opacity:.35}
 .tm-rail-group-rows{
   flex:1 1 auto;
+  width:auto;
   min-width:0;
   display:flex;
   flex-direction:column;
@@ -269,6 +290,10 @@ html[data-ui-lang="HK"] .tm-rail-group-ch{
   justify-content:center;
   text-align:center;
   padding:3px 5px;
+  min-width:0;
+  max-width:100%;
+  box-sizing:border-box;
+  overflow:hidden;
 }
 .tm-tag-name{
   display:block;
@@ -303,6 +328,9 @@ html[data-ui-lang="HK"] .tm-rail-group-ch{
   justify-content:center;
   background:rgba(134,239,172,.06);
   min-width:0;
+  max-width:100%;
+  box-sizing:border-box;
+  overflow:hidden;
 }
 .tm-supp--empty{min-height:calc(var(--tm-thumb) + 4px)}
 .tm-supp--hit{box-shadow:inset 0 0 0 1px rgba(56,189,248,.45)}
@@ -314,7 +342,9 @@ html[data-ui-lang="HK"] .tm-rail-group-ch{
 
 .tm-units{
   min-width:0;
+  max-width:100%;
   box-sizing:border-box;
+  overflow:hidden;
 }
 .tm-units--1{background:var(--tm-attack)}
 .tm-units--3{background:var(--tm-support)}
@@ -399,7 +429,7 @@ html[data-ui-lang="HK"] .tm-rail-group-ch{
 }
 
 .tm-hover-card{
-  position:absolute !important;left:50%;bottom:calc(100% + 6px);z-index:40;
+  position:fixed !important;left:0;top:0;z-index:200;
   display:flex;flex-direction:column;align-items:center;gap:4px;
   width:max-content;max-width:min(160px,70vw);
   padding:8px 8px 6px;
@@ -407,23 +437,17 @@ html[data-ui-lang="HK"] .tm-rail-group-ch{
   background:rgba(8,12,22,.97);
   box-shadow:0 10px 28px rgba(0,0,0,.55),0 0 0 1px rgba(168,85,247,.35);
   opacity:0;visibility:hidden;pointer-events:none;
-  transform:translateX(-50%) scale(.96);
-  transform-origin:center bottom;
+  transform:scale(.96);
+  transform-origin:center center;
   transition:opacity var(--motion-quick) var(--motion-ease),visibility 0s linear 80ms;
 }
+.tm-hover-card.tm-hover-card--open,
 .tm-tile.tm-hover-placed:hover .tm-hover-card,
 .tm-tile.tm-hover-placed:focus-within .tm-hover-card{
   opacity:1;visibility:visible;
-  transform:translateX(-50%) scale(1);
+  transform:scale(1);
   transition-delay:0s;
 }
-.tm-tile.tm-hover-below .tm-hover-card{bottom:auto;top:calc(100% + 6px);transform-origin:center top}
-.tm-tile.tm-hover-left .tm-hover-card{left:auto;right:0;transform:translateX(0) scale(.96);transform-origin:right bottom}
-.tm-tile.tm-hover-left.tm-hover-placed:hover .tm-hover-card,
-.tm-tile.tm-hover-left.tm-hover-placed:focus-within .tm-hover-card{transform:translateX(0) scale(1)}
-.tm-tile.tm-hover-right .tm-hover-card{left:0;right:auto;transform:translateX(0) scale(.96);transform-origin:left bottom}
-.tm-tile.tm-hover-right.tm-hover-placed:hover .tm-hover-card,
-.tm-tile.tm-hover-right.tm-hover-placed:focus-within .tm-hover-card{transform:translateX(0) scale(1)}
 
 .tm-hover-thumb{line-height:0}
 .tm-hover-thumb .tm-ft{width:56px!important;height:56px!important}

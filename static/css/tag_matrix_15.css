@@ -148,7 +148,7 @@ html.ggen-15[data-ui-lang="JP"] .tm-tag-name{
 }
 html.ggen-15 .tm-rail-group-bar{
   font-family:var(--font-teko),Teko,sans-serif;
-  font-size:12px;
+  font-size:10px;
   font-weight:800;
 }
 html.ggen-15[data-ui-lang="JA"] .tm-rail-group-bar,
@@ -162,7 +162,6 @@ html.ggen-15[data-ui-lang="JP"] .tm-rail-group-ch{
   font-family:var(--font-hud);
   text-transform:none;
   font-weight:800;
-  font-size:13px;
 }
 /* No row enter stagger — it delayed paint and felt like empty gaps */
 html.ggen-15 .tm-row > *{animation:none!important}
