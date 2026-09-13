@@ -485,7 +485,7 @@
         '" onerror="this.style.visibility=\'hidden\'">'
       : '';
     var limRibbon =
-      item.is_limited_time && !opts.skipLimBadge ? limitedBadgeHtml(kind) : '';
+      item.is_limited_time && opts.showLimBadge ? limitedBadgeHtml(kind) : '';
     var icons = '';
     if (!isSupp && item.is_ultimate) {
       icons +=
@@ -570,9 +570,8 @@
 
   function hoverCardInnerHtml(item, kind) {
     var limBar = item.is_limited_time ? limitedBadgeHtml(kind) : '';
-    var thumb = framedThumbHtml(item, kind, 56, { skipLimBadge: true, eager: true });
+    var thumb = framedThumbHtml(item, kind, 56, { eager: true });
     var metaBits = [];
-    if (item.rarity) metaBits.push(esc(item.rarity));
     if (item.is_ultimate) metaBits.push('ULT');
     var skills = '';
     if (kind === 'supporter') {
