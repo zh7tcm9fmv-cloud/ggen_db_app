@@ -100,6 +100,14 @@
     anchorTagId: null
   };
 
+  /* In-memory payload + O(1) hover lookup (avoid baking hover HTML into every tile). */
+  var matrixPayload = null;
+  var itemByKey = Object.create(null);
+  var searchDebounceTimer = null;
+  var hoverPortalEl = null;
+  var hoverPortalKey = null;
+  var EAGER_THUMB_BUDGET = 24;
+
   var I18N = {
     EN: {
       nav: 'Tag Matrix',
@@ -442,6 +450,9 @@
     if (!RARITY_BASE[rarity]) rarity = 'N';
     var isSupp = kind === 'supporter';
     var sz = size || 33;
+    var eager = !!opts.eager;
+    var loadAttr = eager ? 'eager' : 'lazy';
+    var prioAttr = eager ? ' fetchpriority="high"' : '';
     var href =
       kind === 'supporter'
         ? '/s/' + encodeURIComponent(item.id)
@@ -450,7 +461,11 @@
     var portrait = src
       ? '<img class="tm-ft-portrait" src="' +
         escAttr(src) +
-        '" alt="" loading="lazy" decoding="async" width="' +
+        '" alt="" loading="' +
+        loadAttr +
+        '" decoding="async"' +
+        prioAttr +
+        ' width="' +
         sz +
         '" height="' +
         sz +
@@ -540,9 +555,9 @@
     );
   }
 
-  function hoverCardHtml(item, kind) {
+  function hoverCardInnerHtml(item, kind) {
     var limBar = item.is_limited_time ? limitedBadgeHtml(kind) : '';
-    var thumb = framedThumbHtml(item, kind, 56, { skipLimBadge: true });
+    var thumb = framedThumbHtml(item, kind, 56, { skipLimBadge: true, eager: true });
     var metaBits = [];
     if (item.rarity) metaBits.push(esc(item.rarity));
     if (item.is_ultimate) metaBits.push('ULT');
@@ -587,7 +602,6 @@
       if (uStrip) skills = '<div class="tm-hover-skills">' + uStrip + '</div>';
     }
     return (
-      '<div class="tm-hover-card" aria-hidden="true">' +
       '<div class="tm-hover-thumb">' +
       limBar +
       thumb +
@@ -598,9 +612,28 @@
       skills +
       (metaBits.length
         ? '<div class="tm-hover-meta">' + metaBits.join(' · ') + '</div>'
-        : '') +
-      '</div>'
+        : '')
     );
+  }
+
+  function rebuildItemIndex() {
+    itemByKey = Object.create(null);
+    rows.forEach(function (row) {
+      ['1', '2', '3'].forEach(function (r) {
+        ((row.units && row.units[r]) || []).forEach(function (u) {
+          if (u && u.id != null) itemByKey['u:' + u.id] = u;
+        });
+      });
+      (row.supports || []).forEach(function (s) {
+        if (s && s.id != null) itemByKey['s:' + s.id] = s;
+      });
+    });
+  }
+
+  function takeEager(budget) {
+    if (!budget || budget.n <= 0) return false;
+    budget.n--;
+    return true;
   }
 
   function selectedCount() {
@@ -695,7 +728,7 @@
     return SELECT_TARGET_RED;
   }
 
-  function unitCellHtml(item, focusOn) {
+  function unitCellHtml(item, focusOn, eager) {
     var id = String(item.id || '');
     var sel = isSelected(id);
     var cls = 'tm-tile';
@@ -711,15 +744,16 @@
       cls +
       '" data-kind="unit" data-id="' +
       escAttr(id) +
+      '" data-item-key="u:' +
+      escAttr(id) +
       '">' +
-      framedThumbHtml(item, 'unit') +
+      framedThumbHtml(item, 'unit', 33, { eager: !!eager }) +
       target +
-      hoverCardHtml(item, 'unit') +
       '</span>'
     );
   }
 
-  function suppCellHtml(item, focusOn, suppHit) {
+  function suppCellHtml(item, focusOn, suppHit, eager) {
     var kind = resolveSkillKind(item);
     var cls = 'tm-tile tm-tile--supp';
     if (focusOn && suppHit) cls += ' tm-tile--supp-hit';
@@ -734,24 +768,26 @@
         escAttr(kindLabel(kind)) +
         '">'
       : '';
+    var sid = String(item.id || '');
     return (
       '<span class="' +
       cls +
       '" data-kind="supporter" data-skill-kind="' +
       escAttr(kind) +
       '" data-id="' +
-      escAttr(item.id || '') +
+      escAttr(sid) +
+      '" data-item-key="s:' +
+      escAttr(sid) +
       '">' +
       '<span class="tm-supp-stack">' +
-      framedThumbHtml(item, 'supporter') +
+      framedThumbHtml(item, 'supporter', 33, { eager: !!eager }) +
       badge +
       '</span>' +
-      hoverCardHtml(item, 'supporter') +
       '</span>'
     );
   }
 
-  function supportsCellHtml(list, focusOn, suppHit) {
+  function supportsCellHtml(list, focusOn, suppHit, eagerBudget) {
     var items = filterList(list).slice().sort(function (a, b) {
       var ka = SKILL_KIND_ORDER.indexOf(resolveSkillKind(a));
       var kb = SKILL_KIND_ORDER.indexOf(resolveSkillKind(b));
@@ -769,25 +805,30 @@
       '" role="cell"><div class="tm-chip-strip tm-chip-strip--supp">' +
       items
         .map(function (it) {
-          return suppCellHtml(it, focusOn, suppHit);
+          return suppCellHtml(it, focusOn, suppHit, takeEager(eagerBudget));
         })
         .join('') +
       '</div></div>'
     );
   }
 
-  function unitsHtml(list, focusOn) {
+  function unitsHtml(list, focusOn, eagerBudget) {
     var items = filterList(list);
     if (!items.length) return '';
     return (
       '<div class="tm-chip-strip">' +
       items
         .map(function (it) {
-          return unitCellHtml(it, focusOn);
+          return unitCellHtml(it, focusOn, takeEager(eagerBudget));
         })
         .join('') +
       '</div>'
     );
+  }
+
+  function roleUnitsHtml(row, roleKey, focusOn, eagerBudget) {
+    if (state.role !== 'ALL' && state.role !== roleKey) return '';
+    return unitsHtml(row.units && row.units[roleKey], focusOn, eagerBudget);
   }
 
   function buildHeadHtml() {
@@ -876,14 +917,21 @@
     var maxRoleSup = 0;
     var maxDur = 0;
     var maxSupp = 0;
+    var role = state.role;
     for (var i = 0; i < visible.length; i++) {
       var row = visible[i];
-      maxAtk = Math.max(maxAtk, filterList((row.units && row.units['1']) || []).length);
-      maxRoleSup = Math.max(
-        maxRoleSup,
-        filterList((row.units && row.units['3']) || []).length
-      );
-      maxDur = Math.max(maxDur, filterList((row.units && row.units['2']) || []).length);
+      if (role === 'ALL' || role === '1') {
+        maxAtk = Math.max(maxAtk, filterList((row.units && row.units['1']) || []).length);
+      }
+      if (role === 'ALL' || role === '3') {
+        maxRoleSup = Math.max(
+          maxRoleSup,
+          filterList((row.units && row.units['3']) || []).length
+        );
+      }
+      if (role === 'ALL' || role === '2') {
+        maxDur = Math.max(maxDur, filterList((row.units && row.units['2']) || []).length);
+      }
       maxSupp = Math.max(maxSupp, filterList(row.supports || []).length);
     }
     /* At least 1fr so empty roles still leave a slim column */
@@ -919,6 +967,7 @@
     if (head) head.innerHTML = buildHeadHtml();
 
     var excl = t('exclusiveLabel');
+    var eagerBudget = { n: EAGER_THUMB_BUDGET };
 
     function renderRowInner(row, alt) {
       var rowHit = focusOn && rowHasSelectedUnit(row);
@@ -933,22 +982,22 @@
         '" data-tag-id="' +
         escAttr(row.id) +
         '">';
-      h += supportsCellHtml(row.supports, focusOn, suppHit);
+      h += supportsCellHtml(row.supports, focusOn, suppHit, eagerBudget);
       h +=
         '<div class="tm-tag-cell" role="cell"><span class="tm-tag-name">' +
         esc(row.name || row.id) +
         '</span></div>';
       h +=
         '<div class="tm-units tm-units--1" role="cell">' +
-        unitsHtml(row.units && row.units['1'], focusOn) +
+        roleUnitsHtml(row, '1', focusOn, eagerBudget) +
         '</div>';
       h +=
         '<div class="tm-units tm-units--3" role="cell">' +
-        unitsHtml(row.units && row.units['3'], focusOn) +
+        roleUnitsHtml(row, '3', focusOn, eagerBudget) +
         '</div>';
       h +=
         '<div class="tm-units tm-units--2" role="cell">' +
-        unitsHtml(row.units && row.units['2'], focusOn) +
+        roleUnitsHtml(row, '2', focusOn, eagerBudget) +
         '</div>';
       h += '</div>';
       return h;
@@ -1006,9 +1055,7 @@
         '<div class="tm-empty-board" role="status">' + esc(t('noMatch')) + '</div>';
     }
 
-    document.querySelectorAll('body > .tm-hover-card').forEach(function (orphan) {
-      orphan.remove();
-    });
+    hideHoverPortal();
     board.innerHTML = html;
     bindBoardInteractions(board);
     fitExclusiveRails();
@@ -1046,37 +1093,76 @@
     });
   }
 
+  function ensureHoverPortal() {
+    if (hoverPortalEl && hoverPortalEl.isConnected) return hoverPortalEl;
+    hoverPortalEl = document.createElement('div');
+    hoverPortalEl.className = 'tm-hover-card tm-hover-card--portal';
+    hoverPortalEl.setAttribute('role', 'tooltip');
+    hoverPortalEl.setAttribute('aria-hidden', 'true');
+    hoverPortalEl.hidden = true;
+    document.body.appendChild(hoverPortalEl);
+    return hoverPortalEl;
+  }
+
+  function hideHoverPortal() {
+    if (!hoverPortalEl) return;
+    hoverPortalEl.classList.remove('tm-hover-card--open');
+    hoverPortalEl.hidden = true;
+    hoverPortalEl.style.left = '';
+    hoverPortalEl.style.top = '';
+    document.querySelectorAll('.tm-hover-placed').forEach(function (tile) {
+      tile.classList.remove(
+        'tm-hover-below',
+        'tm-hover-left',
+        'tm-hover-right',
+        'tm-hover-placed'
+      );
+      tile._tmHoverCard = null;
+    });
+  }
+
   function clearHoverPlacement(tile) {
-    if (!tile) return;
+    if (!tile) {
+      hideHoverPortal();
+      return;
+    }
     tile.classList.remove(
       'tm-hover-below',
       'tm-hover-left',
       'tm-hover-right',
       'tm-hover-placed'
     );
-    var card = tile.querySelector('.tm-hover-card');
-    if (!card && tile._tmHoverCard) card = tile._tmHoverCard;
-    if (card) {
-      card.classList.remove('tm-hover-card--open');
-      card.style.left = '';
-      card.style.top = '';
-      if (card.parentNode === document.body && tile._tmHoverHome) {
-        tile._tmHoverHome.appendChild(card);
-      }
-    }
     tile._tmHoverCard = null;
-    tile._tmHoverHome = null;
+    if (hoverPortalEl) {
+      hoverPortalEl.classList.remove('tm-hover-card--open');
+      hoverPortalEl.hidden = true;
+    }
   }
 
   function placeHoverCard(tile) {
     if (!tile) return;
-    var card = tile.querySelector('.tm-hover-card');
-    if (!card) return;
-    clearHoverPlacement(tile);
-    /* Portal to body — matrix / units overflow must not clip detail popups */
-    tile._tmHoverHome = card.parentNode;
+    var key = tile.getAttribute('data-item-key') || '';
+    var item = key ? itemByKey[key] : null;
+    if (!item) return;
+    var kind = tile.getAttribute('data-kind') === 'supporter' ? 'supporter' : 'unit';
+    var card = ensureHoverPortal();
+    if (hoverPortalKey !== key) {
+      card.innerHTML = hoverCardInnerHtml(item, kind);
+      hoverPortalKey = key;
+    }
+    document.querySelectorAll('.tm-hover-placed').forEach(function (prev) {
+      if (prev !== tile) {
+        prev.classList.remove(
+          'tm-hover-below',
+          'tm-hover-left',
+          'tm-hover-right',
+          'tm-hover-placed'
+        );
+        prev._tmHoverCard = null;
+      }
+    });
     tile._tmHoverCard = card;
-    document.body.appendChild(card);
+    card.hidden = false;
     var tr = tile.getBoundingClientRect();
     var cw = card.offsetWidth || 150;
     var ch = card.offsetHeight || 120;
@@ -1113,7 +1199,7 @@
           var tile = ev.target.closest('.tm-tile');
           if (!tile || !board.contains(tile)) return;
           var to = ev.relatedTarget;
-          if (to && tile.contains(to)) return;
+          if (to && (tile.contains(to) || (hoverPortalEl && hoverPortalEl.contains(to)))) return;
           clearHoverPlacement(tile);
         },
         true
@@ -1123,7 +1209,7 @@
         wrap.addEventListener(
           'scroll',
           function () {
-            board.querySelectorAll('.tm-hover-placed').forEach(clearHoverPlacement);
+            hideHoverPortal();
           },
           { passive: true }
         );
@@ -1134,9 +1220,7 @@
           'resize',
           function () {
             fitExclusiveRails();
-            document
-              .querySelectorAll('.tm-hover-placed')
-              .forEach(clearHoverPlacement);
+            hideHoverPortal();
           },
           { passive: true }
         );
@@ -1286,21 +1370,29 @@
     var st = document.getElementById('tmStatus');
     if (st) st.textContent = t('loading');
     var lang = state.lang;
-    /* Always refetch — skill_kind columns must not reuse stale in-memory board */
+    if (cacheByLang[lang] && cacheByLang[lang].length) {
+      rows = cacheByLang[lang];
+      rebuildItemIndex();
+      renderBoard();
+      /* Soft refresh in background so HTTP 304 / CDN cache can win */
+    }
     try {
       var res = await fetch(
-        '/api/tag_matrix?lang=' + encodeURIComponent(lang) + '&sv=5',
-        { credentials: 'same-origin', cache: 'no-store' }
+        '/api/tag_matrix?lang=' + encodeURIComponent(lang) + '&sv=6',
+        { credentials: 'same-origin' }
       );
       if (!res.ok) throw new Error('HTTP ' + res.status);
       var data = await res.json();
       if (seq !== loadSeq) return;
       rows = Array.isArray(data.rows) ? data.rows : [];
       cacheByLang[lang] = rows;
+      matrixPayload = data;
+      rebuildItemIndex();
       renderBoard();
     } catch (e) {
       if (seq !== loadSeq) return;
       rows = cacheByLang[lang] || [];
+      rebuildItemIndex();
       if (st) st.textContent = t('err');
       renderBoard();
     }
@@ -1417,7 +1509,11 @@
     if (search) {
       search.addEventListener('input', function () {
         state.search = search.value || '';
-        renderBoard();
+        if (searchDebounceTimer) clearTimeout(searchDebounceTimer);
+        searchDebounceTimer = setTimeout(function () {
+          searchDebounceTimer = null;
+          renderBoard();
+        }, 120);
       });
     }
 

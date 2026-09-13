@@ -5770,6 +5770,8 @@ _API_CACHE_PIN_PREFIXES = (
     'ul57_',
     'stages14_',
     'browse_filters_',
+    'tag_matrix_v5_',
+    'tag_matrix_v6_',
 )
 
 
@@ -17879,7 +17881,7 @@ def _tag_matrix_playable_supporter_iter(ld, lc):
         yield sid, info, name, tag_ids, resolved
 
 
-def _tag_matrix_discover_extra_rows(ld, lc):
+def _tag_matrix_discover_extra_rows(ld, lc, playable=None):
     """
     Discover official series + leftover lineage tags from supporters not covered by
     Four/Six/New/Other major lineage rows — feeds “Other - Series” and expanded Other.
@@ -17888,15 +17890,16 @@ def _tag_matrix_discover_extra_rows(ld, lc):
     extra_other = set()
     major = _TAG_MATRIX_WANT
     series_lin = _TAG_MATRIX_SERIES_LINEAGE_SET
-    for _sid, _info, _name, tag_ids, resolved in _tag_matrix_playable_supporter_iter(ld, lc):
+    src = playable if playable is not None else _tag_matrix_playable_supporter_iter(ld, lc)
+    for _sid, _info, _name, tag_ids, resolved in src:
         hit_major = any(_tag_id_list_matches_lineage_want(tag_ids, w) for w in major)
         for t in resolved:
             tid = normalize_id(t.get('id'))
             if not tid or tid == '0':
                 continue
             tt = str(t.get('type') or '')
-            src = str(t.get('source') or '')
-            if tt == 'series' or src in ('series', 'character_series'):
+            src_kind = str(t.get('source') or '')
+            if tt == 'series' or src_kind in ('series', 'character_series'):
                 series_ids.add(tid)
             elif not hit_major and tt in ('unit', 'character', 'group'):
                 if tid not in major and tid not in series_lin:
@@ -17912,21 +17915,22 @@ def _tag_matrix_discover_extra_rows(ld, lc):
 
 
 def _tag_matrix_entity_card(eid, name, rarity_id, thum, acq, role_icon='', **extra):
+    """Lean board card — omit unused browse fields to keep /api/tag_matrix small."""
     card = {
         'id': eid,
         'name': name,
         'rarity': RARITY_MAP.get(rarity_id, 'N'),
         'rarity_sort': RARITY_SORT.get(rarity_id, 4),
         'thum': thum or '',
-        'acquisition_route': acq,
-        'acquisition_icon': ACQUISITION_ROUTE_ICONS.get(acq, '') or '',
-        'role_icon': role_icon or '',
     }
+    ai = ACQUISITION_ROUTE_ICONS.get(acq, '') or ''
+    if ai:
+        card['acquisition_icon'] = ai
     card.update(extra)
     return card
 
 
-def _tag_matrix_build_supporter_card(sid, info, name, ld, lc):
+def _tag_matrix_build_supporter_card(sid, info, name, ld, lc, resolved_tags=None):
     ri = info.get('rarity', '1')
     thum = find_supporter_portrait(info.get('resource_id'), sid)
     nsid = normalize_id(sid)
@@ -17940,20 +17944,37 @@ def _tag_matrix_build_supporter_card(sid, info, name, ld, lc):
             if icf:
                 active_icon = f'/static/images/Trait/{icf}'
     std = []
-    for ls in supporter_leader_map.get(sid, []) or []:
-        if ls.get('tier') != 3:
-            continue
-        desc = ld.get('supporter_leader_text_map', {}).get(ls.get('desc_lang_id', ''), '')
-        tags = resolve_condition_tags(
-            ls.get('trait_cond_id', '0'),
-            trait_condition_raw_map,
-            ld.get('lineage_lookup', {}),
-            ld.get('series_name_map', {}),
-            lc,
-        )
+    # Prefer already-resolved tier-3 tags from discovery pass (avoid double resolve)
+    if resolved_tags is not None:
+        tags = resolved_tags
+        desc = ''
+        for ls in supporter_leader_map.get(sid, []) or []:
+            if ls.get('tier') != 3:
+                continue
+            desc = ld.get('supporter_leader_text_map', {}).get(ls.get('desc_lang_id', ''), '')
+            break
         sep = 'and' if '44%' in desc else ('or' if '36%' in desc or len(tags) >= 2 else 'default')
         if tags:
-            std.append({'tags': tags, 'separator': sep, 'desc': desc})
+            lean = [{'id': t.get('id'), 'name': t.get('name')} for t in tags if t.get('name')]
+            if lean:
+                std.append({'tags': lean, 'separator': sep})
+    else:
+        for ls in supporter_leader_map.get(sid, []) or []:
+            if ls.get('tier') != 3:
+                continue
+            desc = ld.get('supporter_leader_text_map', {}).get(ls.get('desc_lang_id', ''), '')
+            tags = resolve_condition_tags(
+                ls.get('trait_cond_id', '0'),
+                trait_condition_raw_map,
+                ld.get('lineage_lookup', {}),
+                ld.get('series_name_map', {}),
+                lc,
+            )
+            sep = 'and' if '44%' in desc else ('or' if '36%' in desc or len(tags) >= 2 else 'default')
+            if tags:
+                lean = [{'id': t.get('id'), 'name': t.get('name')} for t in tags if t.get('name')]
+                if lean:
+                    std.append({'tags': lean, 'separator': sep})
     return _tag_matrix_entity_card(
         sid, name, ri, thum, info.get('acquisition_route', '0'),
         skill_kind=skill_kind,
@@ -17968,10 +17989,10 @@ def api_tag_matrix():
     """One-shot board for /tm: major + Other-Series rows × supports + units by role."""
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-        ck = f'tag_matrix_v5_{lc}_{lr_schedule_cache_key_fragment()}'
+        ck = f'tag_matrix_v6_{lc}_{lr_schedule_cache_key_fragment()}'
         cached = get_cached_response(ck)
         if cached:
-            return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
+            return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=False)
         ld = get_lang_data(lc)
         buckets = {}
         row_order = []  # bucket keys in display order
@@ -18009,7 +18030,10 @@ def api_tag_matrix():
         for group, lid in _TAG_MATRIX_SPEC:
             _add_lineage_bucket(group, lid)
 
-        discovered_series, discovered_other = _tag_matrix_discover_extra_rows(ld, lc)
+        playable_supports = list(_tag_matrix_playable_supporter_iter(ld, lc))
+        discovered_series, discovered_other = _tag_matrix_discover_extra_rows(
+            ld, lc, playable=playable_supports
+        )
         for lid in _TAG_MATRIX_SERIES_LINEAGE:
             _add_lineage_bucket('series', lid)
         for sid in discovered_series:
@@ -18022,7 +18046,8 @@ def api_tag_matrix():
         lineage_want = {buckets[k]['raw_id'] for k in lineage_keys}
         series_want = {buckets[k]['raw_id'] for k in series_keys}
 
-        # Units — lineage tags + official series affinity
+        # Units — lineage tags + official series affinity (resolve series set once per unit)
+        ssm = ld.get('ser_set_map', {}) or {}
         for uid, info in unit_info_map.items():
             if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
                 continue
@@ -18044,11 +18069,13 @@ def api_tag_matrix():
                 if str(x).strip() and str(x).strip() != '0'
             ]
             hit_lin = [x for x in lids if x in lineage_want]
-            hit_ser = []
             ser_set = unit_ser_map.get(uid, '')
-            for sid in series_want:
-                if entity_matches_series(ser_set, sid, lc):
-                    hit_ser.append(sid)
+            unit_sids = {
+                normalize_id(x)
+                for x in (ssm.get(ser_set) or [])
+                if normalize_id(x) and normalize_id(x) != '0'
+            }
+            hit_ser = [sid for sid in series_want if sid in unit_sids]
             if not hit_lin and not hit_ser:
                 continue
             name_lid = ld.get('unit_id_map', {}).get(uid, '')
@@ -18060,7 +18087,7 @@ def api_tag_matrix():
             acq = info.get('acquisition_route', '0')
             is_ult = bool(info.get('is_ultimate', False))
             card = _tag_matrix_entity_card(
-                uid, name, ri, thum, acq, ROLE_ICON_MAP.get(ri2, ''),
+                uid, name, ri, thum, acq,
                 is_ultimate=is_ult,
                 is_limited_time=uid in LIMITED_TIME_UNIT_IDS,
             )
@@ -18069,8 +18096,8 @@ def api_tag_matrix():
             for sid in hit_ser:
                 buckets[_tag_matrix_series_row_key(sid)]['units'][ri2].append(card)
 
-        # Supporters — major / series-lineage / official series / leftover other
-        for sid, info, name, tag_ids, _resolved in _tag_matrix_playable_supporter_iter(ld, lc):
+        # Supporters — reuse the same resolved list from discovery
+        for sid, info, name, tag_ids, resolved in playable_supports:
             hit_keys = []
             for lid in lineage_want:
                 if _tag_id_list_matches_lineage_want(tag_ids, lid):
@@ -18080,7 +18107,9 @@ def api_tag_matrix():
                     hit_keys.append(_tag_matrix_series_row_key(ser_id))
             if not hit_keys:
                 continue
-            card = _tag_matrix_build_supporter_card(sid, info, name, ld, lc)
+            card = _tag_matrix_build_supporter_card(
+                sid, info, name, ld, lc, resolved_tags=resolved
+            )
             for key in hit_keys:
                 if key in buckets:
                     buckets[key]['supports'].append(card)
@@ -18108,8 +18137,10 @@ def api_tag_matrix():
             rows.append(row)
 
         payload = {'lang': lc, 'rows': rows}
+        # Convert CDN URLs once at cache write — 304 path must not deep-copy again
+        payload = convert_image_urls(payload)
         set_cached_response(ck, payload)
-        return jsonify_cacheable(payload, ck, public=True, max_age=3600, convert_images=True)
+        return jsonify_cacheable(payload, ck, public=True, max_age=3600, convert_images=False)
     except Exception as e:
         import traceback
         traceback.print_exc()
