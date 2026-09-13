@@ -72,6 +72,10 @@
   var ULT_ICON = '/static/images/UI/UI_Common_Icon_ULT.webp';
   var SELECT_TARGET_BLUE = '/static/images/UI/mw_blue_target1_outer.webp';
   var SELECT_TARGET_RED = '/static/images/UI/mw_red_target1_outer.webp';
+  var ROTATE_PHONE = '/static/images/UI/UI_Gallery_Comics_Navi_Smartphone.webp';
+  var ROTATE_ARROW = '/static/images/UI/UI_Gallery_Comics_RotationArrow_Active.webp';
+  /* Default “All” = majors only (exclude Other-Series for faster first paint). */
+  var MAJOR_GROUPS = { four: 1, six: 1, new: 1, other: 1 };
   var RARITY_FILTER_ICONS = {
     UR: '/static/images/Rarity/UI_Common_RarityIcon_UR.webp',
     SSR: '/static/images/Rarity/UI_Common_RarityIcon_SSR.webp',
@@ -163,7 +167,10 @@
       kindEnShort: 'EN',
       kindHybridShort: 'Hybrid',
       kindOther: 'Other',
-      limited: 'Limited'
+      limited: 'Limited',
+      /* Config help uses “screen orientation” / 画面の向き / 畫面方向 */
+      rotateHint: 'Rotate to landscape for a clearer Tag Matrix.',
+      rotateHintAria: 'Screen orientation — landscape recommended'
     },
     JA: {
       nav: 'タグ対応表',
@@ -219,7 +226,9 @@
       kindEnShort: 'EN',
       kindHybridShort: '回復',
       kindOther: '他',
-      limited: '期間限定'
+      limited: '期間限定',
+      rotateHint: 'Rotate to landscape for a clearer Tag Matrix.',
+      rotateHintAria: '画面の向き — landscape recommended'
     },
     TW: {
       nav: '標籤對照表',
@@ -275,7 +284,9 @@
       kindEnShort: 'EN',
       kindHybridShort: '恢復',
       kindOther: '其他',
-      limited: '期間限定'
+      limited: '期間限定',
+      rotateHint: 'Rotate to landscape for a clearer Tag Matrix.',
+      rotateHintAria: '畫面方向 — landscape recommended'
     },
     HK: {
       nav: '標籤對照表',
@@ -331,7 +342,9 @@
       kindEnShort: 'EN',
       kindHybridShort: '恢復',
       kindOther: '其他',
-      limited: '期間限定'
+      limited: '期間限定',
+      rotateHint: 'Rotate to landscape for a clearer Tag Matrix.',
+      rotateHintAria: '畫面方向 — landscape recommended'
     }
   };
 
@@ -878,7 +891,12 @@
   }
 
   function rowMatches(row) {
-    if (state.group !== 'all' && row.group !== state.group) return false;
+    var g = String(row.group || '');
+    if (state.group === 'all') {
+      if (!MAJOR_GROUPS[g]) return false;
+    } else if (state.group !== g) {
+      return false;
+    }
     var q = state.search.trim().toLowerCase();
     if (!q) return true;
     return rowSearchBlob(row).indexOf(q) >= 0;
@@ -1093,6 +1111,14 @@
     });
   }
 
+  function isTouchUi() {
+    try {
+      return window.matchMedia('(hover: none), (pointer: coarse)').matches;
+    } catch (_) {
+      return 'ontouchstart' in window;
+    }
+  }
+
   function ensureHoverPortal() {
     if (hoverPortalEl && hoverPortalEl.isConnected) return hoverPortalEl;
     hoverPortalEl = document.createElement('div');
@@ -1110,6 +1136,7 @@
     hoverPortalEl.hidden = true;
     hoverPortalEl.style.left = '';
     hoverPortalEl.style.top = '';
+    hoverPortalKey = null;
     document.querySelectorAll('.tm-hover-placed').forEach(function (tile) {
       tile.classList.remove(
         'tm-hover-below',
@@ -1137,6 +1164,7 @@
       hoverPortalEl.classList.remove('tm-hover-card--open');
       hoverPortalEl.hidden = true;
     }
+    hoverPortalKey = null;
   }
 
   function placeHoverCard(tile) {
@@ -1187,6 +1215,7 @@
       board.addEventListener(
         'pointerenter',
         function (ev) {
+          if (isTouchUi()) return;
           var tile = ev.target.closest('.tm-tile');
           if (!tile || !board.contains(tile)) return;
           placeHoverCard(tile);
@@ -1196,11 +1225,33 @@
       board.addEventListener(
         'pointerleave',
         function (ev) {
+          if (isTouchUi()) return;
           var tile = ev.target.closest('.tm-tile');
           if (!tile || !board.contains(tile)) return;
           var to = ev.relatedTarget;
           if (to && (tile.contains(to) || (hoverPortalEl && hoverPortalEl.contains(to)))) return;
           clearHoverPlacement(tile);
+        },
+        true
+      );
+      /* Mobile: first tap shows detail popup; second tap on same tile follows link */
+      board.addEventListener(
+        'click',
+        function (ev) {
+          if (!isTouchUi()) return;
+          var tile = ev.target.closest('.tm-tile');
+          if (!tile || !board.contains(tile)) return;
+          var key = tile.getAttribute('data-item-key') || '';
+          if (
+            tile.classList.contains('tm-hover-placed') &&
+            hoverPortalKey === key &&
+            hoverPortalEl &&
+            hoverPortalEl.classList.contains('tm-hover-card--open')
+          ) {
+            return;
+          }
+          ev.preventDefault();
+          placeHoverCard(tile);
         },
         true
       );
@@ -1221,8 +1272,32 @@
           function () {
             fitExclusiveRails();
             hideHoverPortal();
+            syncRotateHint();
           },
           { passive: true }
+        );
+        window.addEventListener(
+          'orientationchange',
+          function () {
+            hideHoverPortal();
+            syncRotateHint();
+          },
+          { passive: true }
+        );
+      }
+      if (!window._tmTouchDismissHover) {
+        window._tmTouchDismissHover = 1;
+        document.addEventListener(
+          'pointerdown',
+          function (ev) {
+            if (!isTouchUi()) return;
+            if (!hoverPortalEl || hoverPortalEl.hidden) return;
+            var t = ev.target;
+            if (t.closest && t.closest('.tm-tile')) return;
+            if (hoverPortalEl.contains(t)) return;
+            hideHoverPortal();
+          },
+          true
         );
       }
     }
@@ -1250,6 +1325,24 @@
     page.classList.toggle('tm-classic', !on);
   }
 
+  function syncRotateHint() {
+    var el = document.getElementById('tmRotateHint');
+    if (!el) return;
+    var narrow = false;
+    var portrait = false;
+    try {
+      narrow = window.matchMedia('(max-width: 900px)').matches;
+      portrait = window.matchMedia('(orientation: portrait)').matches;
+    } catch (_) {
+      narrow = window.innerWidth <= 900;
+      portrait = window.innerHeight >= window.innerWidth;
+    }
+    var show = narrow && portrait;
+    el.hidden = !show;
+    el.setAttribute('aria-hidden', show ? 'false' : 'true');
+    document.body.classList.toggle('tm-portrait-hint', show);
+  }
+
   function applyCopy() {
     var map = [
       ['tmNavLabel', 'nav'],
@@ -1272,11 +1365,19 @@
       ['tmLegFour', 'legFour'],
       ['tmLegSix', 'legSix'],
       ['tmLegNew', 'legNew'],
-      ['tmFoot', 'foot']
+      ['tmFoot', 'foot'],
+      ['tmRotateCopy', 'rotateHint']
     ];
     map.forEach(function (pair) {
       var el = document.getElementById(pair[0]);
       if (el) el.textContent = t(pair[1]);
+    });
+    var rot = document.getElementById('tmRotateHint');
+    if (rot) rot.setAttribute('aria-label', t('rotateHintAria'));
+    var phone = document.querySelector('.tm-rotate-phone');
+    if (phone) phone.src = cdnPath(ROTATE_PHONE);
+    document.querySelectorAll('.tm-rotate-arrow').forEach(function (img) {
+      img.src = cdnPath(ROTATE_ARROW);
     });
     var search = document.getElementById('tmSearch');
     if (search) {
@@ -1519,8 +1620,12 @@
 
     patchGgen15BodyClass();
     applyCopy();
+    syncRotateHint();
     document.addEventListener('keydown', function (ev) {
-      if (ev.key === 'Escape') clearSelection();
+      if (ev.key === 'Escape') {
+        hideHoverPortal();
+        clearSelection();
+      }
     });
     loadMatrix();
   }
