@@ -148,6 +148,7 @@ def _app_js_bundle_version_tag():
         ('js', 'sp_investment_i18n_guide.js'),
         ('js', 'collections.js'),
         ('js', 'ggen_15.js'),
+        ('js', 'tag_matrix.js'),
         ('css', 'app_shell.css'),
         ('css', 'app_shell_bundle.min.css'),
         ('css', 'unit_best_pilots.css'),
@@ -161,6 +162,8 @@ def _app_js_bundle_version_tag():
         ('css', 'collections.css'),
         ('css', 'collections_15.css'),
         ('css', 'ggen_15.css'),
+        ('css', 'tag_matrix.css'),
+        ('css', 'tag_matrix_15.css'),
     )
     # Include brand fonts so long-cache ?v= busts when an OTF/TTF is replaced.
     font_assets = (
@@ -17716,6 +17719,230 @@ def collections_short():
     return redirect('/collections', code=301)
 
 
+@app.route('/tag-matrix')
+@app.route('/tag-matrix/')
+@app.route('/tm')
+@app.route('/tm/')
+def tag_matrix_page():
+    """Tag Matrix board — Four/Six/New Major lineage × supporters × units by role."""
+    ver = _app_js_bundle_version_tag()
+    r = make_response(render_template(
+        'tag_matrix.html',
+        image_cdn=IMAGE_CDN or '',
+        game_images_use_cdn=GAME_IMAGES_USE_CDN,
+        app_js_version=ver,
+        font_cdn=FONT_CDN or '',
+        public_origin=_public_site_origin(),
+    ))
+    r.headers['Cache-Control'] = 'public, max-age=300'
+    return r
+
+
+# Community “四大/六大/新系統” lineage short IDs (not an official master category).
+# Order matches the common reference chart (TW/HK wording groups).
+_TAG_MATRIX_SPEC = (
+    # Four Major — exclusive among SR+ (community rule)
+    ('four', '1081'),  # Lightning-Fast / 電光石火
+    ('four', '1083'),  # Tough as Nails / 堅牢
+    ('four', '1082'),  # One-Shot Killer / 一擊必殺
+    ('four', '1084'),  # Unstoppable / 突破力
+    # Six Major — exclusive among SSR+
+    ('six', '1007'),   # Specialized Unit / 專用機
+    ('six', '1010'),   # Test Type / 試作機
+    ('six', '1067'),   # Large Machine / 大型機
+    ('six', '1091'),   # Ace Unit / 王牌機
+    ('six', '1092'),   # Commander Type / 指揮官機
+    ('six', '1094'),   # Newtype Machine / 新人類專用機
+    # New Major — Shippujinrai / Tenacious
+    ('new', '1132'),
+    ('new', '1133'),
+    # Other notable (not exclusive “X大”)
+    ('other', '1011'),  # Psycommu / 腦波傳導
+    ('other', '1006'),  # Rival / 勁敵
+    ('other', '1004'),  # Mono-Eye / 單眼
+)
+_TAG_MATRIX_WANT = frozenset(lid for _, lid in _TAG_MATRIX_SPEC)
+
+
+def _tag_matrix_lineage_name(ld, short_id):
+    """Localized lineage display name for a short m_lineage Id."""
+    sid = str(short_id).strip()
+    llk = ld.get('lineage_lookup', {}) or {}
+    name = llk.get(sid)
+    if name:
+        return name
+    for fid, val in (ld.get('lineage_list') or []):
+        fs = str(fid)
+        if fs == sid or (len(sid) >= 4 and fs.endswith(sid)):
+            return val
+    return sid
+
+
+def _tag_matrix_names_all_locales(short_id):
+    """EN/JA/TW/HK names for tag search (romanization + CJK)."""
+    out = {}
+    for lc in ('EN', 'JA', 'TW', 'HK'):
+        try:
+            ld = get_lang_data(lc)
+        except Exception:
+            continue
+        out[lc] = _tag_matrix_lineage_name(ld, short_id)
+    return out
+
+
+def _tag_matrix_entity_card(eid, name, rarity_id, thum, acq, role_icon='', **extra):
+    card = {
+        'id': eid,
+        'name': name,
+        'rarity': RARITY_MAP.get(rarity_id, 'N'),
+        'rarity_sort': RARITY_SORT.get(rarity_id, 4),
+        'thum': thum or '',
+        'acquisition_route': acq,
+        'acquisition_icon': ACQUISITION_ROUTE_ICONS.get(acq, '') or '',
+        'role_icon': role_icon or '',
+    }
+    card.update(extra)
+    return card
+
+
+@app.route('/api/tag_matrix')
+def api_tag_matrix():
+    """One-shot board for /tm: major lineage rows × supports + units by role."""
+    try:
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+        ck = f'tag_matrix_v4_{lc}_{lr_schedule_cache_key_fragment()}'
+        cached = get_cached_response(ck)
+        if cached:
+            return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
+        ld = get_lang_data(lc)
+        buckets = {}
+        for group, lid in _TAG_MATRIX_SPEC:
+            names_all = _tag_matrix_names_all_locales(lid)
+            buckets[lid] = {
+                'id': lid,
+                'group': group,
+                'name': names_all.get(lc) or _tag_matrix_lineage_name(ld, lid),
+                'names': names_all,
+                'supports': [],
+                'units': {'1': [], '2': [], '3': []},
+            }
+
+        # Units — one pass over playable MS (skip warships / transform alts)
+        for uid, info in unit_info_map.items():
+            if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+                continue
+            if str(info.get('body_type', '1')) == '2':
+                continue
+            ri2 = str(info.get('role', '0'))
+            if ri2 not in ('1', '2', '3'):
+                continue
+            _muid = normalize_id(info.get('main_unit_id', uid))
+            if _muid == '0':
+                _muid = uid
+            if uid != _muid:
+                continue
+            if not unit_qualifies_for_unit_tag_series_modals(uid, lc):
+                continue
+            lids = [str(x).strip() for x in (unit_lin_map.get(uid) or []) if str(x).strip() and str(x).strip() != '0']
+            hit = [x for x in lids if x in _TAG_MATRIX_WANT]
+            if not hit:
+                continue
+            name_lid = ld.get('unit_id_map', {}).get(uid, '')
+            name = ld.get('unit_text_map', {}).get(name_lid, '') if name_lid else ''
+            if not name:
+                continue
+            ri = info.get('rarity', '1')
+            thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
+            acq = info.get('acquisition_route', '0')
+            is_ult = bool(info.get('is_ultimate', False))
+            card = _tag_matrix_entity_card(
+                uid, name, ri, thum, acq, ROLE_ICON_MAP.get(ri2, ''),
+                is_ultimate=is_ult,
+                is_limited_time=uid in LIMITED_TIME_UNIT_IDS,
+            )
+            for lid in hit:
+                buckets[lid]['units'][ri2].append(card)
+
+        # Supporters — leader-skill tag affinity (tier 3) + active skill kind
+        for sid, info in supporter_info_map.items():
+            if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+                continue
+            if entity_is_nonplayable_schedule_shell(info.get('schedule_id', '0')):
+                continue
+            name_lid = ld.get('supporter_id_map', {}).get(sid, '')
+            name = ld.get('supporter_text_map', {}).get(name_lid, '') if name_lid else ''
+            if not name:
+                continue
+            tag_ids = supporter_leader_tag_ids(sid, ld, lc)
+            hit = []
+            for want in _TAG_MATRIX_WANT:
+                if _tag_id_list_matches_lineage_want(tag_ids, want):
+                    hit.append(want)
+            if not hit:
+                continue
+            ri = info.get('rarity', '1')
+            thum = find_supporter_portrait(info.get('resource_id'), sid)
+            nsid = normalize_id(sid)
+            rec = supporter_active_recovery_map.get(nsid) or {}
+            skill_kind = rec.get('skill_kind') or ''
+            active_icon = rec.get('active_icon') or ''
+            if not active_icon:
+                ask = supporter_active_map.get(sid, [])
+                if ask:
+                    icf = find_trait_icon(ask[0].get('resource_id', ''))
+                    if icf:
+                        active_icon = f'/static/images/Trait/{icf}'
+            # Tier-3 leader tags for hover (same shape as browse skill_tag_data)
+            std = []
+            lsr = supporter_leader_map.get(sid, [])
+            for ls in lsr:
+                if ls.get('tier') != 3:
+                    continue
+                desc = ld.get('supporter_leader_text_map', {}).get(ls.get('desc_lang_id', ''), '')
+                tags = resolve_condition_tags(
+                    ls.get('trait_cond_id', '0'),
+                    trait_condition_raw_map,
+                    ld.get('lineage_lookup', {}),
+                    ld.get('series_name_map', {}),
+                    lc,
+                )
+                sep = 'and' if '44%' in desc else ('or' if '36%' in desc or len(tags) >= 2 else 'default')
+                if tags:
+                    std.append({'tags': tags, 'separator': sep, 'desc': desc})
+            card = _tag_matrix_entity_card(
+                sid, name, ri, thum, info.get('acquisition_route', '0'),
+                skill_kind=skill_kind,
+                active_icon=active_icon,
+                skill_tag_data=std,
+                is_limited_time=nsid in LIMITED_TIME_SUPPORTER_IDS,
+            )
+            for lid in hit:
+                buckets[lid]['supports'].append(card)
+
+        _skill_kind_rank = {'hp': 0, 'en': 1, 'hybrid': 2, '': 3}
+
+        def _supp_sort_key(x):
+            return (
+                _skill_kind_rank.get(str(x.get('skill_kind') or ''), 9),
+                x.get('rarity_sort', 99),
+                safe_int(x.get('id'), 0),
+            )
+
+        rows = []
+        for group, lid in _TAG_MATRIX_SPEC:
+            row = buckets[lid]
+            row['supports'].sort(key=_supp_sort_key)
+            for r in ('1', '2', '3'):
+                row['units'][r].sort(key=lambda x: (x.get('rarity_sort', 99), safe_int(x.get('id'), 0)))
+            rows.append(row)
+
+        payload = {'lang': lc, 'rows': rows}
+        set_cached_response(ck, payload)
+        return jsonify_cacheable(payload, ck, public=True, max_age=3600, convert_images=True)
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e), 'rows': []}), 500
 
 
 _COLLECTIONS_SHARE_ALPHABET = '0123456789ABCDEFGHJKMNPQRSTVWXYZ'
@@ -29721,7 +29948,7 @@ def sitemap_xml():
         base = _public_site_origin()
         # Canonical public URLs only (aliases like /sp-list and /banners 301 elsewhere).
         paths = [
-            '/', '/ip', '/collections', '/game-news', '/about', '/contact', '/privacy-policy',
+            '/', '/ip', '/collections', '/game-news', '/tm', '/about', '/contact', '/privacy-policy',
             '/c', '/u', '/s', '/st', '/gtower', '/challenge', '/go', '/special',
             '/cal', '/tb', '/tl', '/ml', '/rk', '/op', '/new', '/esim',
         ]

@@ -1,0 +1,141 @@
+/* Tag Matrix — 1.5 Special Design overlay (html.ggen-15 / body.tm-15) */
+
+html.ggen-15 .tm-page,
+body.tm-15{
+  --tm-four:#ff9d00;
+  --tm-six:#00d9ff;
+  --tm-new:#ff00e5;
+  --tm-other:#64748b;
+}
+
+html.ggen-15 .tm-intro h1,
+html.ggen-15 .tm-eyebrow{
+  font-family:var(--font-teko),Teko,sans-serif;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+html.ggen-15 .tm-toolbar{
+  border:none;
+  border-radius:0;
+  clip-path:var(--g15-chamfer,polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px));
+  background:
+    linear-gradient(135deg,rgba(0,217,255,.08),rgba(0,140,255,.04)),
+    rgba(8,18,36,.88);
+  box-shadow:
+    inset 0 0 0 1px rgba(0,217,255,.35),
+    0 0 24px rgba(0,217,255,.06);
+  padding:4px 8px;
+}
+/* Toolbar — Teko HUD like Collections 1.5 (labels + chips + toggles) */
+html.ggen-15 .tm-filter-label{
+  font-family:var(--font-teko),Teko,sans-serif;
+  font-size:11px;font-weight:500;letter-spacing:.12em;
+  text-transform:uppercase;color:#7af0ff;
+}
+html.ggen-15 .tm-chip,
+html.ggen-15 .tm-role-btn,
+html.ggen-15 .tm-toggle,
+html.ggen-15 .tm-search{
+  font-family:var(--font-teko),Teko,sans-serif;
+  letter-spacing:.06em;text-transform:uppercase;font-weight:600;
+  border-radius:0;
+  clip-path:polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px);
+}
+html.ggen-15 .tm-chip{
+  font-size:13px;padding:4px 10px;
+}
+html.ggen-15 .tm-chip.is-active,
+html.ggen-15 .tm-role-btn.is-active{
+  background:linear-gradient(95deg,rgba(0,217,255,.28),rgba(0,140,255,.18));
+  border-color:#00d9ff;color:#fff;
+}
+html.ggen-15 .tm-toggle{
+  font-size:12px;letter-spacing:.05em;color:#cbd5e1;
+}
+html.ggen-15 .tm-search{
+  font-size:12px;letter-spacing:.04em;text-transform:none;font-weight:500;
+}
+html.ggen-15[data-ui-lang="JA"] .tm-chip,
+html.ggen-15[data-ui-lang="TW"] .tm-chip,
+html.ggen-15[data-ui-lang="HK"] .tm-chip,
+html.ggen-15[data-ui-lang="JP"] .tm-chip,
+html.ggen-15[data-ui-lang="JA"] .tm-toggle,
+html.ggen-15[data-ui-lang="TW"] .tm-toggle,
+html.ggen-15[data-ui-lang="HK"] .tm-toggle,
+html.ggen-15[data-ui-lang="JP"] .tm-toggle,
+html.ggen-15[data-ui-lang="JA"] .tm-filter-label,
+html.ggen-15[data-ui-lang="TW"] .tm-filter-label,
+html.ggen-15[data-ui-lang="HK"] .tm-filter-label,
+html.ggen-15[data-ui-lang="JP"] .tm-filter-label,
+html.ggen-15[data-ui-lang="JA"] .tm-search,
+html.ggen-15[data-ui-lang="TW"] .tm-search,
+html.ggen-15[data-ui-lang="HK"] .tm-search,
+html.ggen-15[data-ui-lang="JP"] .tm-search{
+  font-family:var(--font-body);
+  text-transform:none;
+  letter-spacing:0;
+  font-weight:600;
+}
+html.ggen-15 .tm-matrix{
+  border-radius:0;
+  clip-path:var(--g15-chamfer,polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px));
+  border:none;
+  box-shadow:inset 0 0 0 1px rgba(0,217,255,.28);
+}
+html.ggen-15 .tm-board-wrap{
+  border-radius:0;
+  border:none;
+  box-shadow:none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24.249' height='42' viewBox='0 0 24.249 42'%3E%3Cg fill='none' stroke='%2300d9ff' stroke-width='1' opacity='.07'%3E%3Cpath d='M12.124 0L24.249 7v14L12.124 28 0 21V7z'/%3E%3C/g%3E%3C/svg%3E"),
+    rgba(4,12,28,.72);
+  background-size:24px 42px;
+}
+html.ggen-15 .tm-sticky-head > *{
+  background:rgba(4,18,40,.97);
+  color:#7af0ff;
+  font-family:var(--font-teko),Teko,sans-serif;
+  font-size:12px;
+  letter-spacing:.08em;
+  border-bottom-color:rgba(0,217,255,.35);
+  padding:4px 3px;
+}
+html.ggen-15 .tm-head-supp{color:#86efac}
+html.ggen-15 .tm-head-role--1{
+  background:linear-gradient(180deg,rgba(255,80,80,.22),rgba(4,18,40,.97));
+}
+html.ggen-15 .tm-head-role--3{
+  background:linear-gradient(180deg,rgba(255,212,0,.2),rgba(4,18,40,.97));
+}
+html.ggen-15 .tm-head-role--2{
+  background:linear-gradient(180deg,rgba(0,217,255,.22),rgba(4,18,40,.97));
+}
+html.ggen-15 .tm-tag-name{
+  font-family:var(--font-teko),Teko,sans-serif;
+  font-size:13px;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  color:#fff;
+}
+html.ggen-15[data-ui-lang="JA"] .tm-tag-name,
+html.ggen-15[data-ui-lang="TW"] .tm-tag-name,
+html.ggen-15[data-ui-lang="HK"] .tm-tag-name,
+html.ggen-15[data-ui-lang="JP"] .tm-tag-name{
+  font-family:var(--font-body);
+  text-transform:none;
+  letter-spacing:0;
+  font-size:11px;
+}
+html.ggen-15 .tm-rail-group-bar{
+  font-family:var(--font-teko),Teko,sans-serif;
+  font-size:11px;
+}
+html.ggen-15[data-ui-lang="JA"] .tm-rail-group-ch,
+html.ggen-15[data-ui-lang="TW"] .tm-rail-group-ch,
+html.ggen-15[data-ui-lang="HK"] .tm-rail-group-ch,
+html.ggen-15[data-ui-lang="JP"] .tm-rail-group-ch{
+  font-family:var(--font-body);
+  text-transform:none;
+}
+/* No row enter stagger — it delayed paint and felt like empty gaps */
+html.ggen-15 .tm-row > *{animation:none!important}

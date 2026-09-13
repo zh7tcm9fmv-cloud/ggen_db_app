@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" data-ui-lang="EN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tag Matrix — GGen Eternal Database</title>
+<meta name="description" content="Major Tags matrix — Four / Six / New Major lineage groups with supporter affinity.">
+<link rel="canonical" href="{{ public_origin }}/tm">
+<link rel="icon" type="image/webp" href="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp{% else %}/static/images/UI/UI_Gallery_Comics_Logo_Eternalbase.webp{% endif %}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/app_shell.css') }}?v={{ app_js_version }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/ggen_15.css') }}?v={{ app_js_version }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tag_matrix.css') }}?v={{ app_js_version }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/tag_matrix_15.css') }}?v={{ app_js_version }}">
+{% if image_cdn %}
+<link rel="preconnect" href="{{ image_cdn }}" crossorigin>
+<link rel="dns-prefetch" href="{{ image_cdn }}">
+{% endif %}
+<script>
+(function(){
+  var q=new URLSearchParams(location.search||'');
+  var forced=q.get('design')||q.get('mock');
+  var stored='';
+  try{stored=localStorage.getItem('ggen_design_15')||''}catch(_){}
+  var on=forced==='15'?true:forced==='classic'?false:(stored==='0'?false:true);
+  window.__GGEN_DESIGN_15__=!!on;
+})();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link id="ggen15Fonts" rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&display=swap" media="print" onload="this.media='all'">
+{% include '_defer_brand_fonts.html' %}
+<script>
+window.__GGEN_IMAGE_CDN__={{ (image_cdn or '')|tojson }};
+window.__GGEN_GAME_IMAGES_USE_CDN__={{ game_images_use_cdn|tojson }};
+</script>
+</head>
+<body class="app-shell tm-page">
+<script>
+(function(){
+  var on=!!window.__GGEN_DESIGN_15__;
+  document.documentElement.classList.add(on?'ggen-15':'ggen-classic');
+  document.body.classList.add(on?'tm-15':'tm-classic');
+  var link=document.getElementById('ggen15Fonts');
+  if(link){ if(on){link.media='all'} else{link.disabled=true;link.removeAttribute('onload')} }
+})();
+</script>
+<div class="bg-pattern" aria-hidden="true"></div>
+
+<header class="app-header">
+  <div class="header-inner">
+    <a class="header-brand" href="/">
+      <div class="brand-logo"><img id="brandLogoImg" alt="GGen Eternal Database" width="42" height="42" fetchpriority="high" decoding="async" src="{% if image_cdn %}{{ image_cdn }}/images/UI/IMG_Common_Logo_ETERNALBASE.webp{% else %}/static/images/UI/IMG_Common_Logo_ETERNALBASE.webp{% endif %}" onerror="this.parentElement.innerHTML='<div style=\'font-size:25px;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center;width:100%;height:100%\'>GG</div>'"></div>
+      <div class="brand-copy">
+        <div class="brand-title-row"><h1 class="brand-text"><span class="brand-word brand-word-ggen brand-frame-1">GGEN</span> <span class="brand-word brand-frame-2">ETERNAL</span> <span class="brand-word brand-word-db brand-frame-3">DATABASE</span></h1></div>
+        <div class="brand-sub">SD Gundam G Generation</div>
+      </div>
+    </a>
+    <div class="header-15-slot" id="header15Slot" aria-label="1.5 Anniversary design">
+      <button type="button" class="header-15-toggle header-15-toggle--special is-active" id="ggen15On" data-design="15" aria-label="Special Design">
+        <img id="ggen15OnImg" src="/static/images/UI/collections_15_special_design_EN.webp" alt="" height="36" decoding="async" loading="lazy">
+        <span class="header-15-special-fallback" id="ggen15OnText">1.5</span>
+      </button>
+      <button type="button" class="header-15-toggle" id="ggen15Off" data-design="classic">Classic</button>
+    </div>
+    <div class="header-controls">
+      <div class="header-lang-col">
+        <div class="lang-selector">
+          <button type="button" class="lang-btn" id="tmLangBtn" aria-haspopup="listbox" aria-expanded="false" aria-label="Language">
+            <span id="tmLangLabel">EN</span><span class="lang-btn-caret" aria-hidden="true">▾</span>
+          </button>
+          <div class="lang-dropdown" id="tmLangDropdown" role="listbox" hidden>
+            <div class="lang-option" role="option" data-lang="EN">EN</div>
+            <div class="lang-option" role="option" data-lang="TW">TW</div>
+            <div class="lang-option" role="option" data-lang="HK">HK</div>
+            <div class="lang-option" role="option" data-lang="JA">JA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="nav-tabs-shell" id="navTabsShell">
+    <div class="nav-tabs" id="navTabs" aria-label="Section">
+      <a class="nav-tab" href="/u"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_Icon_Bromide_MS.webp{% else %}/static/images/UI/UI_Common_Icon_Bromide_MS.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label" id="tmNavUnits">Units</span></a>
+      <a class="nav-tab" href="/s"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_Icon_Category_Supporter_Main.webp{% else %}/static/images/UI/UI_Common_Icon_Category_Supporter_Main.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label" id="tmNavSupporters">Supporters</span></a>
+      <span class="nav-tab active" aria-current="page"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/Sprite/UI_Common_Label_Tag_Text.webp{% else %}/static/images/UI/Sprite/UI_Common_Label_Tag_Text.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label" id="tmNavLabel">Tag Matrix</span></span>
+      <a class="nav-tab" href="/collections"><img class="nav-tab-icon" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_BtnIcon_Lock_posi.webp{% else %}/static/images/UI/UI_Common_BtnIcon_Lock_posi.webp{% endif %}" alt="" width="24" height="24" loading="lazy" decoding="async"><span class="nav-tab-label" id="tmNavCollections">Collections</span></a>
+    </div>
+  </div>
+</header>
+
+<main class="tm-main">
+  <header class="tm-intro">
+    <div class="tm-eyebrow" id="tmEyebrow">Mockup · Study board</div>
+    <h1 id="tmTitle">Tag Matrix</h1>
+    <p class="tm-sub" id="tmSub">Community “Four Major / Six Major” lineage groups — support affinity × units by role.</p>
+    <p class="tm-note" id="tmNote">Official never defines 四大/六大 — player taxonomy over mutually exclusive <code>m_lineage</code> IDs. Names below use LANG wording.</p>
+  </header>
+
+  <section class="tm-toolbar" aria-label="Filters">
+    <div class="tm-filter-block">
+      <span class="tm-filter-label" id="tmGroupLbl">Tag group</span>
+      <nav class="tm-chip-row" id="tmGroupTabs" role="tablist" aria-label="Tag group">
+        <button type="button" class="tm-chip is-active" data-group="all" role="tab" aria-selected="true">All</button>
+        <button type="button" class="tm-chip" data-group="four" role="tab" aria-selected="false" id="tmChipFour">Four Major</button>
+        <button type="button" class="tm-chip" data-group="six" role="tab" aria-selected="false" id="tmChipSix">Six Major</button>
+        <button type="button" class="tm-chip" data-group="new" role="tab" aria-selected="false" id="tmChipNew">New Major</button>
+        <button type="button" class="tm-chip" data-group="other" role="tab" aria-selected="false" id="tmChipOther">Other</button>
+      </nav>
+    </div>
+    <div class="tm-filter-block">
+      <span class="tm-filter-label" id="tmRoleLbl">Unit role</span>
+      <nav class="tm-role-row" id="tmRoleTabs" role="tablist" aria-label="Role">
+        <button type="button" class="tm-chip is-active" data-role="ALL" role="tab" aria-selected="true" id="tmRoleAll">All</button>
+        <button type="button" class="tm-role-btn" data-role="1" title="Attack" aria-label="Attack">
+          <img src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_TypeIcon_Attack_M.webp{% else %}/static/images/UI/UI_Common_TypeIcon_Attack_M.webp{% endif %}" alt="" width="22" height="22">
+        </button>
+        <button type="button" class="tm-role-btn" data-role="3" title="Support" aria-label="Support">
+          <img src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_TypeIcon_Support_M.webp{% else %}/static/images/UI/UI_Common_TypeIcon_Support_M.webp{% endif %}" alt="" width="22" height="22">
+        </button>
+        <button type="button" class="tm-role-btn" data-role="2" title="Durability" aria-label="Durability">
+          <img src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Common_TypeIcon_Defense_M.webp{% else %}/static/images/UI/UI_Common_TypeIcon_Defense_M.webp{% endif %}" alt="" width="20" height="20">
+        </button>
+      </nav>
+    </div>
+    <div class="tm-filter-block">
+      <span class="tm-filter-label" id="tmRarityLbl">Rarity</span>
+      <nav class="tm-chip-row" id="tmRarityTabs" role="tablist" aria-label="Rarity">
+        <button type="button" class="tm-chip" data-rarity="ALL" role="tab" aria-selected="false" id="tmRarityAll">All</button>
+        <button type="button" class="tm-chip is-active" data-rarity="UR" role="tab" aria-selected="true" id="tmRarityUr">UR</button>
+        <button type="button" class="tm-chip" data-rarity="SSR+" role="tab" aria-selected="false" id="tmRaritySsr">SSR+</button>
+      </nav>
+    </div>
+    <div class="tm-filter-block tm-filter-block--toggles">
+      <label class="tm-toggle">
+        <input type="checkbox" id="tmExclusiveOnly" checked>
+        <span id="tmExclusiveLbl">Highlight exclusive groups</span>
+      </label>
+      <label class="tm-toggle">
+        <input type="checkbox" id="tmShowSupports" checked>
+        <span id="tmSupportsLbl">Show support personnel</span>
+      </label>
+      <input type="search" id="tmSearch" class="tm-search" placeholder="Find tag (shippu, 疾風…)" aria-label="Filter tag rows" title="Filters tag rows only">
+      <span class="tm-search-hint" id="tmSearchHint">Filters tag rows only — not unit names.</span>
+    </div>
+  </section>
+
+  <div class="tm-legend" id="tmLegend" aria-label="Legend">
+    <span class="tm-legend-item"><span class="tm-rail-swatch tm-rail-swatch--four"></span><span id="tmLegFour">Four Major · exclusive among SR+</span></span>
+    <span class="tm-legend-item"><span class="tm-rail-swatch tm-rail-swatch--six"></span><span id="tmLegSix">Six Major · exclusive among SSR+</span></span>
+    <span class="tm-legend-item"><span class="tm-rail-swatch tm-rail-swatch--new"></span><span id="tmLegNew">New Major · Shippujinrai / Tenacious</span></span>
+  </div>
+
+  <div class="tm-matrix">
+    <div class="tm-sticky-head" id="tmStickyHead" role="row"></div>
+    <div class="tm-board-wrap">
+      <div class="tm-board" id="tmBoard" role="table" aria-label="Tag matrix"></div>
+    </div>
+  </div>
+
+  <p class="tm-status" id="tmStatus" aria-live="polite"></p>
+</main>
+
+<footer class="tm-foot">
+  <p id="tmFoot">/tm · Tag Matrix</p>
+</footer>
+
+<script>
+window.__TM_CDN__={{ (image_cdn or '')|tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/ggen_15.js') }}?v={{ app_js_version }}" defer></script>
+<script src="{{ url_for('static', filename='js/tag_matrix.js') }}?v={{ app_js_version }}" defer></script>
+{% include '_client_version_reload.html' %}
+</body>
+</html>

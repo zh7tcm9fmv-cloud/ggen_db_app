@@ -238,6 +238,32 @@ html.ggen-15 .main-content .rarity-filter-btn,
 html.ggen-15 .main-content .role-filter-dd-btn,
 html.ggen-15 .main-content .browse-filters-clear-btn,
 html.ggen-15 .main-content .list-view-toggle,
+html.ggen-15 .tm-browse-shortcut{
+  border-radius:0;
+  clip-path:polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px);
+}
+html.ggen-15 .tm-browse-shortcut{
+  font-family:var(--font-teko),Teko,sans-serif;
+  font-size:13px;font-weight:600;letter-spacing:.1em;
+  border-color:rgba(0,217,255,.35);
+  background:linear-gradient(95deg,rgba(0,217,255,.12),rgba(0,140,255,.06));
+  color:#7af0ff;
+}
+html.ggen-15 .tm-browse-shortcut:hover,
+html.ggen-15 .tm-browse-shortcut:focus-visible{
+  border-color:#00d9ff;color:#fff;
+  background:linear-gradient(95deg,rgba(0,217,255,.28),rgba(0,140,255,.16));
+}
+html.ggen-15[data-ui-lang="JA"] .tm-browse-shortcut-label,
+html.ggen-15[data-ui-lang="TW"] .tm-browse-shortcut-label,
+html.ggen-15[data-ui-lang="HK"] .tm-browse-shortcut-label,
+html.ggen-15[data-ui-lang="JP"] .tm-browse-shortcut-label{
+  font-family:var(--font-body);
+  text-transform:none;
+  letter-spacing:0;
+  font-weight:700;
+  font-size:12px;
+}
 html.ggen-15 .main-content .page-btn,
 html.ggen-15 .main-content .role-filter-btn,
 html.ggen-15 .main-content .source-filter-btn{
