@@ -155,11 +155,12 @@ html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
   display:flex;align-items:center;justify-content:center;
   overflow:visible;
   flex:0 0 auto;
+  margin-inline:auto;
 }
 .tm-rotate-phone{
   width:42px;height:auto;display:block;
-  /* Portrait asset laid on its side */
-  transform:rotate(-90deg);
+  /* Portrait asset on its side; translate is pre-rotate (screen-space nudge) */
+  transform:translateX(5px) rotate(-90deg);
   transform-origin:center center;
   filter:drop-shadow(0 4px 12px rgba(0,0,0,.45));
 }
