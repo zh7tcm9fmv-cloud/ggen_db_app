@@ -77,9 +77,19 @@ html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
   padding-right:20px;
   box-sizing:border-box;
 }
+@media (max-width:1100px){
+  /* Mobile / tablet: classic full-width wrap (1.5 keeps Teko via ggen_15.css) */
+  .tm-page .nav-tabs{
+    width:100%;
+    max-width:100%;
+  }
+}
 .tm-page.tm-classic .nav-tabs{
   width:max-content;
   max-width:100%;
+}
+@media (max-width:1100px){
+  .tm-page.tm-classic .nav-tabs{width:100%}
 }
 
 .tm-intro{display:none} /* reclaim vertical space — title is in the nav tab */
@@ -101,8 +111,8 @@ html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
     flex-direction:row;flex-wrap:wrap;gap:6px 10px;
     margin:0 0 4px;padding:6px 8px;
   }
-  .tm-rotate-art{width:56px;height:40px;flex:0 0 auto}
-  .tm-rotate-phone{width:36px}
+  .tm-rotate-art{width:64px;height:42px;flex:0 0 auto;overflow:visible}
+  .tm-rotate-phone{width:34px}
   .tm-rotate-arrow{width:22px}
   .tm-rotate-copy{font-size:11px;text-align:left;flex:1 1 10em}
 }
@@ -156,17 +166,22 @@ html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
   margin:0 0 8px;padding:10px 12px;
   border:1px solid rgba(0,212,255,.35);border-radius:8px;
   background:rgba(8,14,28,.88);
+  overflow:visible;
 }
 .tm-rotate-hint:not([hidden]){display:flex}
 .tm-rotate-art{
   position:relative;
-  width:72px;height:52px;
+  /* Footprint for landscape phone + centered arrow — must fit rotated HUD */
+  width:72px;height:48px;
   display:flex;align-items:center;justify-content:center;
+  overflow:visible;
+  flex:0 0 auto;
 }
 .tm-rotate-phone{
-  width:48px;height:auto;display:block;
-  /* Asset is portrait — lay it on its side for landscape cue */
-  transform:rotate(90deg);
+  width:42px;height:auto;display:block;
+  /* Portrait asset laid on its side */
+  transform:rotate(-90deg);
+  transform-origin:center center;
   filter:drop-shadow(0 4px 12px rgba(0,0,0,.45));
 }
 .tm-rotate-arrow{
@@ -176,6 +191,7 @@ html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
   opacity:.95;
   filter:drop-shadow(0 1px 3px rgba(0,0,0,.65));
   animation:tm-rotate-nudge 1.6s var(--motion-ease,cubic-bezier(0.2,0,0,1)) infinite;
+  pointer-events:none;
 }
 .tm-rotate-copy{
   margin:0;font-size:12px;font-weight:700;line-height:1.35;
