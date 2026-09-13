@@ -89,6 +89,21 @@ html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
 
 @media (max-width:768px){
   .tm-main{padding:10px 12px 20px}
+  /* Portrait / narrow: icon-only role headers — keep matrix readable */
+  .tm-head-role{
+    justify-content:center;
+    padding-left:2px;padding-right:2px;
+  }
+  .tm-head-role-label{display:none}
+  .tm-head-role img{width:16px;height:16px}
+  /* Compact landscape nudge — never block the board */
+  .tm-rotate-hint:not([hidden]){
+    flex-direction:row;flex-wrap:wrap;gap:6px 10px;
+    margin:0 0 4px;padding:6px 8px;
+  }
+  .tm-rotate-phone{width:36px}
+  .tm-rotate-arrow{width:22px}
+  .tm-rotate-copy{font-size:11px;text-align:left;flex:1 1 10em}
 }
 
 .tm-toolbar{

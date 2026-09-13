@@ -569,9 +569,9 @@
 
   function hoverCardInnerHtml(item, kind) {
     var limBar = item.is_limited_time ? limitedBadgeHtml(kind) : '';
+    /* Thumb already carries ULT / acq icons — do not repeat text or duplicate ULT strip */
     var thumb = framedThumbHtml(item, kind, 56, { eager: true });
     var metaBits = [];
-    if (item.is_ultimate) metaBits.push('ULT');
     var skills = '';
     if (kind === 'supporter') {
       var sk = resolveSkillKind(item);
@@ -596,21 +596,11 @@
       if (tags.length) {
         metaBits.push(tags.slice(0, 4).join(item.skill_tag_data && item.skill_tag_data[0] && item.skill_tag_data[0].separator === 'and' ? ' + ' : ' / '));
       }
-    } else {
-      var uStrip = '';
-      if (item.is_ultimate) {
-        uStrip +=
-          '<span class="tm-hover-skill"><img src="' +
-          escAttr(cdnPath(ULT_ICON)) +
-          '" alt="ULT"></span>';
-      }
-      if (item.acquisition_icon) {
-        uStrip +=
-          '<span class="tm-hover-skill"><img src="' +
-          escAttr(cdnPath(item.acquisition_icon)) +
-          '" alt=""></span>';
-      }
-      if (uStrip) skills = '<div class="tm-hover-skills">' + uStrip + '</div>';
+    } else if (item.acquisition_icon) {
+      skills =
+        '<div class="tm-hover-skills"><span class="tm-hover-skill"><img src="' +
+        escAttr(cdnPath(item.acquisition_icon)) +
+        '" alt=""></span></div>';
     }
     return (
       '<div class="tm-hover-thumb">' +
@@ -849,23 +839,35 @@
       '<div class="tm-head-supp" role="columnheader">' + esc(t('headSupp')) + '</div>';
     html += '<div class="tm-head-tag" role="columnheader">' + esc(t('headTag')) + '</div>';
     html +=
-      '<div class="tm-head-role tm-head-role--1" role="columnheader"><img src="' +
+      '<div class="tm-head-role tm-head-role--1" role="columnheader" title="' +
+      escAttr(t('headAtk')) +
+      '" aria-label="' +
+      escAttr(t('headAtk')) +
+      '"><img src="' +
       roleIcon(1) +
-      '" alt="">' +
+      '" alt=""><span class="tm-head-role-label">' +
       esc(t('headAtk')) +
-      '</div>';
+      '</span></div>';
     html +=
-      '<div class="tm-head-role tm-head-role--3" role="columnheader"><img src="' +
+      '<div class="tm-head-role tm-head-role--3" role="columnheader" title="' +
+      escAttr(t('headSup')) +
+      '" aria-label="' +
+      escAttr(t('headSup')) +
+      '"><img src="' +
       roleIcon(3) +
-      '" alt="">' +
+      '" alt=""><span class="tm-head-role-label">' +
       esc(t('headSup')) +
-      '</div>';
+      '</span></div>';
     html +=
-      '<div class="tm-head-role tm-head-role--2" role="columnheader"><img src="' +
+      '<div class="tm-head-role tm-head-role--2" role="columnheader" title="' +
+      escAttr(t('headDur')) +
+      '" aria-label="' +
+      escAttr(t('headDur')) +
+      '"><img src="' +
       roleIcon(2) +
-      '" alt="">' +
+      '" alt=""><span class="tm-head-role-label">' +
       esc(t('headDur')) +
-      '</div>';
+      '</span></div>';
     return html;
   }
 
