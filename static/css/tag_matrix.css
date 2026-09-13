@@ -62,34 +62,13 @@ html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
   overflow-x:hidden;
 }
 
-/* Match header-inner / tm-main column — nav must not full-bleed past content */
+/* Nav shell width matches header column; tab row layout comes from classic shell CSS */
 .tm-page .nav-tabs-shell{
   max-width:1600px;
   margin-left:auto;
   margin-right:auto;
   width:100%;
   box-sizing:border-box;
-}
-.tm-page .nav-tabs{
-  width:max-content;
-  max-width:100%;
-  padding-left:20px;
-  padding-right:20px;
-  box-sizing:border-box;
-}
-@media (max-width:1100px){
-  /* Mobile / tablet: classic full-width wrap (1.5 keeps Teko via ggen_15.css) */
-  .tm-page .nav-tabs{
-    width:100%;
-    max-width:100%;
-  }
-}
-.tm-page.tm-classic .nav-tabs{
-  width:max-content;
-  max-width:100%;
-}
-@media (max-width:1100px){
-  .tm-page.tm-classic .nav-tabs{width:100%}
 }
 
 .tm-intro{display:none} /* reclaim vertical space — title is in the nav tab */
