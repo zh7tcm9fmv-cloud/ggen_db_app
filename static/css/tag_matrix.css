@@ -595,7 +595,6 @@ html[data-ui-lang="HK"] .tm-rail-group-ch{
 }
 .tm-focus-clear:hover{border-color:rgba(0,212,255,.5);color:#fff}
 
-.tm-status{margin:2px 0 0;font-size:9px;color:var(--text-muted,#94a3b8);flex:0 0 auto}
 .tm-foot{display:none}
 
 @media (prefers-reduced-motion:reduce){
