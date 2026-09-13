@@ -10,7 +10,7 @@
   --tm-support:rgba(234,179,8,.1);
   --tm-durability:rgba(59,130,246,.1);
   --tm-border:rgba(148,163,184,.2);
-  --tm-thumb:33px;
+  --tm-thumb:38px;
   --tm-gap:2px;
   --tm-rail-w:16px;
   /* Supports/tag fixed; role cols use fr weights from JS (unit counts) */
@@ -101,6 +101,7 @@ html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
     flex-direction:row;flex-wrap:wrap;gap:6px 10px;
     margin:0 0 4px;padding:6px 8px;
   }
+  .tm-rotate-art{width:56px;height:40px;flex:0 0 auto}
   .tm-rotate-phone{width:36px}
   .tm-rotate-arrow{width:22px}
   .tm-rotate-copy{font-size:11px;text-align:left;flex:1 1 10em}
@@ -158,35 +159,34 @@ html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
 }
 .tm-rotate-hint:not([hidden]){display:flex}
 .tm-rotate-art{
-  display:flex;align-items:center;justify-content:center;gap:10px;
+  position:relative;
+  width:72px;height:52px;
+  display:flex;align-items:center;justify-content:center;
 }
 .tm-rotate-phone{
-  width:64px;height:auto;display:block;
+  width:48px;height:auto;display:block;
+  /* Asset is portrait — lay it on its side for landscape cue */
+  transform:rotate(90deg);
   filter:drop-shadow(0 4px 12px rgba(0,0,0,.45));
 }
 .tm-rotate-arrow{
-  width:40px;height:auto;display:block;opacity:.95;
+  position:absolute;left:50%;top:50%;
+  width:28px;height:auto;display:block;z-index:1;
+  transform:translate(-50%,-50%);
+  opacity:.95;
+  filter:drop-shadow(0 1px 3px rgba(0,0,0,.65));
   animation:tm-rotate-nudge 1.6s var(--motion-ease,cubic-bezier(0.2,0,0,1)) infinite;
 }
-.tm-rotate-arrow--l{transform:scaleX(-1)}
-.tm-rotate-arrow--r{animation-delay:.2s}
 .tm-rotate-copy{
   margin:0;font-size:12px;font-weight:700;line-height:1.35;
   color:var(--text-primary,#e2e8f0);text-align:center;max-width:28em;
 }
 @keyframes tm-rotate-nudge{
-  0%,100%{opacity:.7;transform:translateY(0)}
-  50%{opacity:1;transform:translateY(-3px)}
-}
-.tm-rotate-arrow--l{
-  animation-name:tm-rotate-nudge-flip;
-}
-@keyframes tm-rotate-nudge-flip{
-  0%,100%{opacity:.7;transform:scaleX(-1) translateY(0)}
-  50%{opacity:1;transform:scaleX(-1) translateY(-3px)}
+  0%,100%{opacity:.7;transform:translate(-50%,-50%) scale(1)}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}
 }
 @media (prefers-reduced-motion:reduce){
-  .tm-rotate-arrow,.tm-rotate-arrow--l{animation:none!important}
+  .tm-rotate-arrow{animation:none!important}
 }
 
 .tm-legend{

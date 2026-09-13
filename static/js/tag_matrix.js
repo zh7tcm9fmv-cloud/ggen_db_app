@@ -168,7 +168,7 @@
       kindOther: 'Other',
       limited: 'Limited',
       /* Config help uses “screen orientation” / 画面の向き / 畫面方向 */
-      rotateHint: 'Rotate to landscape for a clearer Tag Matrix.',
+      rotateHint: 'Rotate to landscape for a better viewing',
       rotateHintAria: 'Screen orientation — landscape recommended'
     },
     JA: {
@@ -226,7 +226,7 @@
       kindHybridShort: '回復',
       kindOther: '他',
       limited: '期間限定',
-      rotateHint: 'Rotate to landscape for a clearer Tag Matrix.',
+      rotateHint: 'Rotate to landscape for a better viewing',
       rotateHintAria: '画面の向き — landscape recommended'
     },
     TW: {
@@ -284,7 +284,7 @@
       kindHybridShort: '恢復',
       kindOther: '其他',
       limited: '期間限定',
-      rotateHint: 'Rotate to landscape for a clearer Tag Matrix.',
+      rotateHint: 'Rotate to landscape for a better viewing',
       rotateHintAria: '畫面方向 — landscape recommended'
     },
     HK: {
@@ -342,7 +342,7 @@
       kindHybridShort: '恢復',
       kindOther: '其他',
       limited: '期間限定',
-      rotateHint: 'Rotate to landscape for a clearer Tag Matrix.',
+      rotateHint: 'Rotate to landscape for a better viewing',
       rotateHintAria: '畫面方向 — landscape recommended'
     }
   };
@@ -445,6 +445,8 @@
     return cols;
   }
 
+  var BOARD_THUMB_PX = 38; /* was 33; +15% for tap targets */
+
   function limitedBadgeHtml(kind) {
     var cls = kind === 'supporter' ? 'tm-lim--supp' : 'tm-lim--unit';
     return (
@@ -461,7 +463,7 @@
     var rarity = String(item.rarity || 'N').toUpperCase();
     if (!RARITY_BASE[rarity]) rarity = 'N';
     var isSupp = kind === 'supporter';
-    var sz = size || 33;
+    var sz = size || BOARD_THUMB_PX;
     var eager = !!opts.eager;
     var loadAttr = eager ? 'eager' : 'lazy';
     var prioAttr = eager ? ' fetchpriority="high"' : '';
@@ -490,9 +492,9 @@
       icons +=
         '<span class="tm-ft-ic"><img src="' +
         escAttr(cdnPath(ULT_ICON)) +
-        '" alt="ULT" loading="lazy"></span>';
+        '" alt="" loading="lazy"></span>';
     }
-    if (item.acquisition_icon) {
+    if (item.acquisition_icon && !opts.skipAcqIcon) {
       icons +=
         '<span class="tm-ft-ic"><img src="' +
         escAttr(cdnPath(item.acquisition_icon)) +
@@ -569,8 +571,8 @@
 
   function hoverCardInnerHtml(item, kind) {
     var limBar = item.is_limited_time ? limitedBadgeHtml(kind) : '';
-    /* Thumb already carries ULT / acq icons — do not repeat text or duplicate ULT strip */
-    var thumb = framedThumbHtml(item, kind, 56, { eager: true });
+    /* Popup: keep rarity frame; omit acquisition icon */
+    var thumb = framedThumbHtml(item, kind, 56, { eager: true, skipAcqIcon: true });
     var metaBits = [];
     var skills = '';
     if (kind === 'supporter') {
@@ -596,11 +598,6 @@
       if (tags.length) {
         metaBits.push(tags.slice(0, 4).join(item.skill_tag_data && item.skill_tag_data[0] && item.skill_tag_data[0].separator === 'and' ? ' + ' : ' / '));
       }
-    } else if (item.acquisition_icon) {
-      skills =
-        '<div class="tm-hover-skills"><span class="tm-hover-skill"><img src="' +
-        escAttr(cdnPath(item.acquisition_icon)) +
-        '" alt=""></span></div>';
     }
     return (
       '<div class="tm-hover-thumb">' +
@@ -748,7 +745,7 @@
       '" data-item-key="u:' +
       escAttr(id) +
       '">' +
-      framedThumbHtml(item, 'unit', 33, { eager: !!eager }) +
+      framedThumbHtml(item, 'unit', BOARD_THUMB_PX, { eager: !!eager }) +
       target +
       '</span>'
     );
@@ -781,7 +778,7 @@
       escAttr(sid) +
       '">' +
       '<span class="tm-supp-stack">' +
-      framedThumbHtml(item, 'supporter', 33, { eager: !!eager }) +
+      framedThumbHtml(item, 'supporter', BOARD_THUMB_PX, { eager: !!eager }) +
       badge +
       '</span>' +
       '</span>'
