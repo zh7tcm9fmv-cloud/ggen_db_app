@@ -100,7 +100,9 @@
     selectedIds: {},
     /* First right-click unit + its tag — Object.keys order is NOT click order for numeric ids. */
     anchorUnitId: null,
-    anchorTagId: null
+    anchorTagId: null,
+    /* Mobile only: toolbar Squad toggle → tap units to multi-select (desktop keeps right-click). */
+    squadMode: false
   };
 
   /* In-memory payload + O(1) hover lookup (avoid baking hover HTML into every tile). */
@@ -154,10 +156,10 @@
       exclusiveLabelShort: 'EXC',
       foot: '/tm · /api/tag_matrix',
       status: '{n} tags · {u} units · {s} supporters',
-      statusFocus: 'Focus {k} · {n} tags · Esc / Clear · right-click or Select to multi-select',
-      statusFocusTouch: 'Focus {k} · {n} tags · tap units to add · Clear to exit',
-      select: 'Select',
-      deselect: 'Deselect',
+      statusFocus: 'Focus {k} · {n} tags · Esc / Clear · right-click units to multi-select',
+      statusFocusTouch: 'Squad · {k} selected · {n} tags · tap units · Clear to exit',
+      statusSquadIdle: 'Squad on · tap units to multi-select · Clear / Esc to exit',
+      squad: 'Squad',
       clearFocus: 'Clear',
       loading: 'Loading…',
       err: 'Load failed.',
@@ -217,10 +219,10 @@
       exclusiveLabelShort: '互斥',
       foot: '/tm · /api/tag_matrix',
       status: '{n} タグ · ユニット {u} · サポーター {s}',
-      statusFocus: 'フォーカス {k} · {n} タグ · Esc / Clear · 右クリックまたは Select で複数選択',
-      statusFocusTouch: 'フォーカス {k} · {n} タグ · ユニットをタップで追加 · Clear で解除',
-      select: 'Select',
-      deselect: 'Deselect',
+      statusFocus: 'フォーカス {k} · {n} タグ · Esc / Clear · 右クリックで複数選択',
+      statusFocusTouch: '分隊 · {k} 選択 · {n} タグ · タップで追加 · Clear で解除',
+      statusSquadIdle: '分隊オン · ユニットをタップで複数選択 · Clear / Esc で解除',
+      squad: '分隊',
       clearFocus: 'Clear',
       loading: '読み込み中…',
       err: '失敗',
@@ -279,10 +281,10 @@
       exclusiveLabelShort: '互斥',
       foot: '/tm · /api/tag_matrix',
       status: '{n} 標籤 · 單位 {u} · 支援人員 {s}',
-      statusFocus: '焦點 {k} · {n} 標籤 · Esc / Clear · 右鍵或 Select 多選',
-      statusFocusTouch: '焦點 {k} · {n} 標籤 · 點單位加入 · Clear 結束',
-      select: 'Select',
-      deselect: 'Deselect',
+      statusFocus: '焦點 {k} · {n} 標籤 · Esc / Clear · 右鍵多選',
+      statusFocusTouch: '小隊 · 已選 {k} · {n} 標籤 · 點單位加入 · Clear 結束',
+      statusSquadIdle: '小隊開啟 · 點單位多選 · Clear / Esc 結束',
+      squad: '小隊',
       clearFocus: 'Clear',
       loading: '載入中…',
       err: '載入失敗',
@@ -341,10 +343,10 @@
       exclusiveLabelShort: '互斥',
       foot: '/tm · /api/tag_matrix',
       status: '{n} 標籤 · 單位 {u} · 支援人員 {s}',
-      statusFocus: '焦點 {k} · {n} 標籤 · Esc / Clear · 右鍵或 Select 多選',
-      statusFocusTouch: '焦點 {k} · {n} 標籤 · 點單位加入 · Clear 結束',
-      select: 'Select',
-      deselect: 'Deselect',
+      statusFocus: '焦點 {k} · {n} 標籤 · Esc / Clear · 右鍵多選',
+      statusFocusTouch: '小隊 · 已選 {k} · {n} 標籤 · 點單位加入 · Clear 結束',
+      statusSquadIdle: '小隊開啟 · 點單位多選 · Clear / Esc 結束',
+      squad: '小隊',
       clearFocus: 'Clear',
       loading: '載入中…',
       err: '載入失敗',
@@ -520,7 +522,7 @@
     var hit =
       '<a class="tm-ft-hit" href="' +
       escAttr(href) +
-      '" target="_blank" rel="noopener" aria-label="' +
+      '" aria-label="' +
       escAttr(item.name || '') +
       '"></a>';
 
@@ -615,22 +617,6 @@
         metaBits.push(tags.slice(0, 4).join(item.skill_tag_data && item.skill_tag_data[0] && item.skill_tag_data[0].separator === 'and' ? ' + ' : ' / '));
       }
     }
-    var selectBtn = '';
-    if (kind === 'unit') {
-      var on = isSelected(item.id);
-      selectBtn =
-        '<button type="button" class="tm-hover-select' +
-        (on ? ' is-on' : '') +
-        '" data-tm-select="' +
-        escAttr(String(item.id || '')) +
-        '" data-tm-tag="' +
-        escAttr(tagId != null ? String(tagId) : '') +
-        '"><img src="' +
-        escAttr(cdnPath(on ? selectTargetForUnit(item.id) : SELECT_TARGET_BLUE)) +
-        '" alt=""><span>' +
-        esc(on ? t('deselect') : t('select')) +
-        '</span></button>';
-    }
     return (
       '<div class="tm-hover-thumb">' +
       limBar +
@@ -642,8 +628,7 @@
       skills +
       (metaBits.length
         ? '<div class="tm-hover-meta">' + metaBits.join(' · ') + '</div>'
-        : '') +
-      selectBtn
+        : '')
     );
   }
 
@@ -695,11 +680,59 @@
   }
 
   function clearSelection() {
-    if (!selectedCount()) return;
+    if (!selectedCount()) {
+      syncStatusOnly();
+      return;
+    }
     state.selectedIds = {};
     state.anchorTagId = null;
     state.anchorUnitId = null;
     renderBoard();
+  }
+
+  function setSquadMode(on) {
+    state.squadMode = !!on;
+    if (!state.squadMode) {
+      state.selectedIds = {};
+      state.anchorUnitId = null;
+      state.anchorTagId = null;
+    }
+    syncSquadUi();
+    renderBoard();
+  }
+
+  function syncSquadUi() {
+    var btn = document.getElementById('tmSquadToggle');
+    if (btn) {
+      btn.classList.toggle('is-active', !!state.squadMode);
+      btn.setAttribute('aria-pressed', state.squadMode ? 'true' : 'false');
+      btn.title = t('squad');
+    }
+    var lab = document.getElementById('tmSquadLabel');
+    if (lab) lab.textContent = t('squad');
+    var lbl = document.getElementById('tmSquadLbl');
+    if (lbl) lbl.textContent = t('squad');
+    document.body.classList.toggle('tm-squad-mode', !!state.squadMode && isTouchUi());
+  }
+
+  function syncStatusOnly() {
+    var st = document.getElementById('tmStatus');
+    if (!st || selectedCount()) return;
+    if (state.squadMode && isTouchUi()) {
+      st.innerHTML =
+        '<span class="tm-status-text">' +
+        esc(t('statusSquadIdle')) +
+        '</span><button type="button" class="tm-focus-clear" id="tmFocusClear">' +
+        esc(t('clearFocus')) +
+        '</button>';
+      var clearIdle = document.getElementById('tmFocusClear');
+      if (clearIdle) {
+        clearIdle.addEventListener('click', function (ev) {
+          ev.preventDefault();
+          setSquadMode(false);
+        });
+      }
+    }
   }
 
   function rowHasSelectedUnit(row) {
@@ -1154,6 +1187,21 @@
             clearSelection();
           });
         }
+      } else if (state.squadMode && isTouchUi()) {
+        st.innerHTML =
+          '<span class="tm-status-text">' +
+          esc(t('statusSquadIdle')) +
+          '</span><button type="button" class="tm-focus-clear" id="tmFocusClear">' +
+          esc(t('clearFocus')) +
+          '</button>';
+        var clearIdle = document.getElementById('tmFocusClear');
+        if (clearIdle && !clearIdle._tmBound) {
+          clearIdle._tmBound = 1;
+          clearIdle.addEventListener('click', function (ev) {
+            ev.preventDefault();
+            setSquadMode(false);
+          });
+        }
       } else {
         st.textContent = t('status')
           .replace('{n}', String(c.tags))
@@ -1162,6 +1210,7 @@
       }
     }
     syncPageFlags();
+    syncSquadUi();
   }
 
   function fitExclusiveRails() {
@@ -1191,31 +1240,14 @@
   }
 
   function ensureHoverPortal() {
-    if (hoverPortalEl && hoverPortalEl.isConnected) {
-      bindHoverSelect(hoverPortalEl);
-      return hoverPortalEl;
-    }
+    if (hoverPortalEl && hoverPortalEl.isConnected) return hoverPortalEl;
     hoverPortalEl = document.createElement('div');
     hoverPortalEl.className = 'tm-hover-card tm-hover-card--portal';
     hoverPortalEl.setAttribute('role', 'tooltip');
     hoverPortalEl.setAttribute('aria-hidden', 'true');
     hoverPortalEl.hidden = true;
     document.body.appendChild(hoverPortalEl);
-    bindHoverSelect(hoverPortalEl);
     return hoverPortalEl;
-  }
-
-  function bindHoverSelect(portal) {
-    if (!portal || portal._tmSelectBound) return;
-    portal._tmSelectBound = 1;
-    portal.addEventListener('click', function (ev) {
-      var btn = ev.target.closest('[data-tm-select]');
-      if (!btn || !portal.contains(btn)) return;
-      ev.preventDefault();
-      ev.stopPropagation();
-      toggleSelect(btn.getAttribute('data-tm-select'), btn.getAttribute('data-tm-tag'));
-      hideHoverPortal();
-    });
   }
 
   function hideHoverPortal() {
@@ -1267,9 +1299,6 @@
     if (hoverPortalKey !== key) {
       card.innerHTML = hoverCardInnerHtml(item, kind, tagId);
       hoverPortalKey = key;
-    } else if (kind === 'unit') {
-      /* Refresh Select state if same tile reopened after toggle */
-      card.innerHTML = hoverCardInnerHtml(item, kind, tagId);
     }
     document.querySelectorAll('.tm-hover-placed').forEach(function (prev) {
       if (prev !== tile) {
@@ -1328,27 +1357,16 @@
         true
       );
       /* Mobile:
-         - First pick: tap opens popup → Select (no long-press; hold is used elsewhere)
-         - While focusing: tap unit toggles select; tap again on open popup follows link */
+         - Squad mode: tap unit toggles selection (toolbar toggle)
+         - Otherwise: let .tm-ft-hit navigate same-tab → SPA detail overlay; Back returns to /tm */
       board.addEventListener(
         'click',
         function (ev) {
           if (!isTouchUi()) return;
-          if (ev.target.closest && ev.target.closest('[data-tm-select]')) return;
           var tile = ev.target.closest('.tm-tile');
           if (!tile || !board.contains(tile)) return;
           var kind = tile.getAttribute('data-kind');
-          var key = tile.getAttribute('data-item-key') || '';
-          if (
-            kind === 'unit' &&
-            selectedCount() > 0 &&
-            !(
-              tile.classList.contains('tm-hover-placed') &&
-              hoverPortalKey === key &&
-              hoverPortalEl &&
-              hoverPortalEl.classList.contains('tm-hover-card--open')
-            )
-          ) {
+          if (kind === 'unit' && state.squadMode) {
             ev.preventDefault();
             var row = tile.closest('.tm-row');
             toggleSelect(
@@ -1358,16 +1376,7 @@
             hideHoverPortal();
             return;
           }
-          if (
-            tile.classList.contains('tm-hover-placed') &&
-            hoverPortalKey === key &&
-            hoverPortalEl &&
-            hoverPortalEl.classList.contains('tm-hover-card--open')
-          ) {
-            return;
-          }
-          ev.preventDefault();
-          placeHoverCard(tile);
+          /* Allow default navigation on .tm-ft-hit (same-tab /u or /s). */
         },
         true
       );
@@ -1461,10 +1470,6 @@
 
   function applyCopy() {
     var map = [
-      ['tmNavLabel', 'nav'],
-      ['tmNavUnits', 'tabUnits'],
-      ['tmNavSupporters', 'tabSupporters'],
-      ['tmNavCollections', 'tabCollections'],
       ['tmEyebrow', 'eyebrow'],
       ['tmTitle', 'title'],
       ['tmSub', 'sub'],
@@ -1488,6 +1493,7 @@
       var el = document.getElementById(pair[0]);
       if (el) el.textContent = t(pair[1]);
     });
+    syncSquadUi();
     var rot = document.getElementById('tmRotateHint');
     if (rot) rot.setAttribute('aria-label', t('rotateHintAria'));
     var phone = document.querySelector('.tm-rotate-phone');
@@ -1727,6 +1733,16 @@
     fillRarityChipIcons();
     syncRarityActive();
 
+    var squadBtn = document.getElementById('tmSquadToggle');
+    if (squadBtn && !squadBtn._tmBound) {
+      squadBtn._tmBound = 1;
+      squadBtn.addEventListener('click', function (ev) {
+        ev.preventDefault();
+        setSquadMode(!state.squadMode);
+      });
+    }
+    syncSquadUi();
+
     var search = document.getElementById('tmSearch');
     if (search) {
       search.addEventListener('input', function () {
@@ -1745,7 +1761,8 @@
     document.addEventListener('keydown', function (ev) {
       if (ev.key === 'Escape') {
         hideHoverPortal();
-        clearSelection();
+        if (state.squadMode && !selectedCount()) setSquadMode(false);
+        else clearSelection();
       }
     });
     loadMatrix();
