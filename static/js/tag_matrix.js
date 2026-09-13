@@ -93,7 +93,8 @@
 
   var state = {
     lang: 'EN',
-    group: 'all',
+    /* Multi-select — default majors only (no Other-Series). */
+    groups: { four: 1, six: 1, new: 1, other: 1 },
     role: 'ALL',
     rarity: 'UR',
     exclusive: true,
@@ -891,14 +892,39 @@
 
   function rowMatches(row) {
     var g = String(row.group || '');
-    if (state.group === 'all') {
-      if (!MAJOR_GROUPS[g]) return false;
-    } else if (state.group !== g) {
-      return false;
-    }
+    if (!state.groups[g]) return false;
     var q = state.search.trim().toLowerCase();
     if (!q) return true;
     return rowSearchBlob(row).indexOf(q) >= 0;
+  }
+
+  function syncGroupActive() {
+    var root = document.getElementById('tmGroupTabs');
+    if (!root) return;
+    root.querySelectorAll('[data-group]').forEach(function (el) {
+      var g = el.getAttribute('data-group');
+      var on = !!state.groups[g];
+      el.classList.toggle('is-active', on);
+      el.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+
+  function toggleGroup(g) {
+    g = String(g || '');
+    if (!g || g === 'all') return;
+    if (state.groups[g]) {
+      var left = 0;
+      Object.keys(state.groups).forEach(function (k) {
+        if (state.groups[k]) left++;
+      });
+      /* Keep at least one group on */
+      if (left <= 1) return;
+      delete state.groups[g];
+    } else {
+      state.groups[g] = 1;
+    }
+    syncGroupActive();
+    renderBoard();
   }
 
   function countVisible() {
@@ -1386,10 +1412,9 @@
     }
     var hint = document.getElementById('tmSearchHint');
     if (hint) hint.textContent = t('searchHint');
-    var allChip = document.querySelector('#tmGroupTabs [data-group="all"]');
-    if (allChip) allChip.textContent = t('all');
     var groupNav = document.getElementById('tmGroupTabs');
     if (groupNav) groupNav.setAttribute('aria-label', t('group'));
+    syncGroupActive();
     var roleNav = document.getElementById('tmRoleTabs');
     if (roleNav) roleNav.setAttribute('aria-label', t('role'));
     var rarityNav = document.getElementById('tmRarityTabs');
@@ -1589,10 +1614,16 @@
     applyCopy();
 
     bindLang();
-    bindChips(document.getElementById('tmGroupTabs'), 'data-group', function (g) {
-      state.group = g || 'all';
-      renderBoard();
-    });
+    var groupTabs = document.getElementById('tmGroupTabs');
+    if (groupTabs && !groupTabs._tmGroupBound) {
+      groupTabs._tmGroupBound = 1;
+      groupTabs.addEventListener('click', function (ev) {
+        var btn = ev.target.closest('[data-group]');
+        if (!btn || !groupTabs.contains(btn)) return;
+        toggleGroup(btn.getAttribute('data-group'));
+      });
+    }
+    syncGroupActive();
     bindChips(document.getElementById('tmRoleTabs'), 'data-role', function (r) {
       state.role = r || 'ALL';
       renderBoard();

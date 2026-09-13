@@ -138,13 +138,12 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <section class="tm-toolbar" aria-label="Filters">
     <div class="tm-filter-block">
       <span class="tm-filter-label" id="tmGroupLbl">Tag group</span>
-      <nav class="tm-chip-row" id="tmGroupTabs" role="tablist" aria-label="Tag group">
-        <button type="button" class="tm-chip is-active" data-group="all" role="tab" aria-selected="true">All</button>
-        <button type="button" class="tm-chip" data-group="four" role="tab" aria-selected="false" id="tmChipFour">Four Major</button>
-        <button type="button" class="tm-chip" data-group="six" role="tab" aria-selected="false" id="tmChipSix">Six Major</button>
-        <button type="button" class="tm-chip" data-group="new" role="tab" aria-selected="false" id="tmChipNew">New Major</button>
-        <button type="button" class="tm-chip" data-group="other" role="tab" aria-selected="false" id="tmChipOther">Other</button>
-        <button type="button" class="tm-chip" data-group="series" role="tab" aria-selected="false" id="tmChipSeries">Other - Series</button>
+      <nav class="tm-chip-row" id="tmGroupTabs" role="group" aria-label="Tag group">
+        <button type="button" class="tm-chip is-active" data-group="four" aria-pressed="true" id="tmChipFour">Four</button>
+        <button type="button" class="tm-chip is-active" data-group="six" aria-pressed="true" id="tmChipSix">Six</button>
+        <button type="button" class="tm-chip is-active" data-group="new" aria-pressed="true" id="tmChipNew">New</button>
+        <button type="button" class="tm-chip is-active" data-group="other" aria-pressed="true" id="tmChipOther">Other</button>
+        <button type="button" class="tm-chip" data-group="series" aria-pressed="false" id="tmChipSeries">Other - Series</button>
       </nav>
     </div>
     <div class="tm-filter-block">
