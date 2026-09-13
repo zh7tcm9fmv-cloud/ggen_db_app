@@ -119,6 +119,7 @@
       six: 'Six',
       new: 'New',
       other: 'Other',
+      series: 'Other - Series',
       ur: 'UR',
       ssrPlus: 'SSR+',
       ssrMinus: 'SSR-',
@@ -132,9 +133,9 @@
       legNew: 'New Major',
       headSupp: 'Supporters',
       headTag: 'Tag',
-      headAtk: 'Attack',
-      headSup: 'Support',
-      headDur: 'Durability',
+      headAtk: 'Attack Type',
+      headSup: 'Support Type',
+      headDur: 'Durability Type',
       roleAtk: 'Attack Type',
       roleSup: 'Support Type',
       roleDur: 'Durability Type',
@@ -174,6 +175,7 @@
       six: '六大',
       new: '新しいタグ',
       other: '他',
+      series: '他・シリーズ',
       ur: 'UR',
       ssrPlus: 'SSR+',
       ssrMinus: 'SSR-',
@@ -209,7 +211,7 @@
       kindEnShort: 'EN',
       kindHybridShort: '回復',
       kindOther: '他',
-      limited: '限定'
+      limited: '期間限定'
     },
     TW: {
       nav: '標籤對照表',
@@ -229,6 +231,7 @@
       six: '六大',
       new: '新標籤',
       other: '其他',
+      series: '其他・系列',
       ur: 'UR',
       ssrPlus: 'SSR+',
       ssrMinus: 'SSR-',
@@ -264,7 +267,7 @@
       kindEnShort: 'EN',
       kindHybridShort: '恢復',
       kindOther: '其他',
-      limited: '限定'
+      limited: '期間限定'
     },
     HK: {
       nav: '標籤對照表',
@@ -284,6 +287,7 @@
       six: '六大',
       new: '新標籤',
       other: '其他',
+      series: '其他・系列',
       ur: 'UR',
       ssrPlus: 'SSR+',
       ssrMinus: 'SSR-',
@@ -319,7 +323,7 @@
       kindEnShort: 'EN',
       kindHybridShort: '恢復',
       kindOther: '其他',
-      limited: '限定'
+      limited: '期間限定'
     }
   };
 
@@ -421,11 +425,23 @@
     return cols;
   }
 
-  function framedThumbHtml(item, kind, size) {
+  function limitedBadgeHtml(kind) {
+    var cls = kind === 'supporter' ? 'tm-lim--supp' : 'tm-lim--unit';
+    return (
+      '<div class="tm-lim ' +
+      cls +
+      '" aria-hidden="true"><span class="tm-lim-inner">' +
+      esc(t('limited')) +
+      '</span></div>'
+    );
+  }
+
+  function framedThumbHtml(item, kind, size, opts) {
+    opts = opts || {};
     var rarity = String(item.rarity || 'N').toUpperCase();
     if (!RARITY_BASE[rarity]) rarity = 'N';
     var isSupp = kind === 'supporter';
-    var sz = size || 30;
+    var sz = size || 33;
     var href =
       kind === 'supporter'
         ? '/s/' + encodeURIComponent(item.id)
@@ -440,7 +456,8 @@
         sz +
         '" onerror="this.style.visibility=\'hidden\'">'
       : '';
-    var lim = item.is_limited_time ? ' tm-ft--limited' : '';
+    var limRibbon =
+      item.is_limited_time && !opts.skipLimBadge ? limitedBadgeHtml(kind) : '';
     var icons = '';
     if (!isSupp && item.is_ultimate) {
       icons +=
@@ -466,12 +483,13 @@
       var fr = SUPP_TB_FRAME[rarity] || SUPP_TB_FRAME.N;
       return (
         '<span class="tm-ft tm-ft--supp tm-ft--tb' +
-        lim +
+        (item.is_limited_time ? ' tm-ft--limited' : '') +
         '" style="width:' +
         sz +
         'px;height:' +
         sz +
         'px">' +
+        limRibbon +
         '<img class="tm-ft-base" src="' +
         escAttr(cdnPath(TB_SUPP_BASE)) +
         '" alt="" loading="lazy" decoding="async">' +
@@ -500,12 +518,13 @@
     var frame = cdnPath(RARITY_FRAME[rarity] || RARITY_FRAME.N);
     return (
       '<span class="tm-ft tm-ft--unit tm-ft--framed' +
-      lim +
+      (item.is_limited_time ? ' tm-ft--limited' : '') +
       '" style="width:' +
       sz +
       'px;height:' +
       sz +
       'px">' +
+      limRibbon +
       '<img class="tm-ft-base" src="' +
       escAttr(base) +
       '" alt="" loading="lazy" decoding="async">' +
@@ -522,10 +541,10 @@
   }
 
   function hoverCardHtml(item, kind) {
-    var thumb = framedThumbHtml(item, kind, 56);
+    var limBar = item.is_limited_time ? limitedBadgeHtml(kind) : '';
+    var thumb = framedThumbHtml(item, kind, 56, { skipLimBadge: true });
     var metaBits = [];
     if (item.rarity) metaBits.push(esc(item.rarity));
-    if (item.is_limited_time) metaBits.push(esc(t('limited')));
     if (item.is_ultimate) metaBits.push('ULT');
     var skills = '';
     if (kind === 'supporter') {
@@ -570,6 +589,7 @@
     return (
       '<div class="tm-hover-card" aria-hidden="true">' +
       '<div class="tm-hover-thumb">' +
+      limBar +
       thumb +
       '</div>' +
       '<div class="tm-hover-name">' +
@@ -692,7 +712,7 @@
       '" data-kind="unit" data-id="' +
       escAttr(id) +
       '">' +
-      framedThumbHtml(item, 'unit', 30) +
+      framedThumbHtml(item, 'unit') +
       target +
       hoverCardHtml(item, 'unit') +
       '</span>'
@@ -723,7 +743,7 @@
       escAttr(item.id || '') +
       '">' +
       '<span class="tm-supp-stack">' +
-      framedThumbHtml(item, 'supporter', 30) +
+      framedThumbHtml(item, 'supporter') +
       badge +
       '</span>' +
       hoverCardHtml(item, 'supporter') +
@@ -798,13 +818,21 @@
   }
 
   function rowSearchBlob(row) {
-    var parts = [String(row.id || ''), String(row.name || '')];
+    var parts = [
+      String(row.id || ''),
+      String(row.raw_id || ''),
+      String(row.name || '')
+    ];
     var names = row.names || {};
     ['EN', 'JA', 'TW', 'HK'].forEach(function (lc) {
       if (names[lc]) parts.push(String(names[lc]));
     });
     var aliases = TAG_SEARCH_ALIASES[String(row.id)] || [];
     for (var i = 0; i < aliases.length; i++) parts.push(aliases[i]);
+    if (row.raw_id) {
+      var rawAliases = TAG_SEARCH_ALIASES[String(row.raw_id)] || [];
+      for (var j = 0; j < rawAliases.length; j++) parts.push(rawAliases[j]);
+    }
     return parts.join(' ').toLowerCase();
   }
 
@@ -939,8 +967,8 @@
           block.push(visible[i]);
         }
       }
-      var labelRaw = g === 'other' ? '·' : excl;
-      var title = g === 'other' ? '' : escAttr(excl);
+      var labelRaw = g === 'other' || g === 'series' ? '·' : excl;
+      var title = g === 'other' || g === 'series' ? '' : escAttr(excl);
       var labelHtml = Array.from(String(labelRaw))
         .map(function (ch) {
           return '<span class="tm-rail-group-ch">' + esc(ch) + '</span>';
@@ -1155,6 +1183,7 @@
       ['tmChipSix', 'six'],
       ['tmChipNew', 'new'],
       ['tmChipOther', 'other'],
+      ['tmChipSeries', 'series'],
       ['tmRoleAll', 'all'],
       ['tmLegFour', 'legFour'],
       ['tmLegSix', 'legSix'],
@@ -1260,7 +1289,7 @@
     /* Always refetch — skill_kind columns must not reuse stale in-memory board */
     try {
       var res = await fetch(
-        '/api/tag_matrix?lang=' + encodeURIComponent(lang) + '&sv=4',
+        '/api/tag_matrix?lang=' + encodeURIComponent(lang) + '&sv=5',
         { credentials: 'same-origin', cache: 'no-store' }
       );
       if (!res.ok) throw new Error('HTTP ' + res.status);

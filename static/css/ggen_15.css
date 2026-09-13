@@ -161,16 +161,18 @@ html.ggen-15 .app-header .brand-sub{
   opacity:.85;
 }
 
-/* Nav — prefer wrap on foldable / tablet widths so tabs are not clipped;
-   wide desktop keeps single-row scroll with edge cues. */
+/* Nav — same content column as header-inner (max 1600); tabs hug content on desktop
+   so the row does not stretch full-bleed past the last tab. Wide tab sets still scroll. */
 html.ggen-15 #navTabsShell{
   position:relative;
   z-index:1;
   overflow:visible;
   width:100%;
-  max-width:100%;
+  max-width:1600px;
   min-width:0;
+  margin:0 auto;
   margin-top:0;
+  box-sizing:border-box;
   background:linear-gradient(180deg,rgba(10,14,23,.25) 0%,transparent 100%);
   border-bottom:1px solid rgba(42,54,84,.45);
 }
@@ -179,11 +181,11 @@ html.ggen-15 #navTabs{
   overflow-x:visible;
   overflow-y:visible;
   min-width:0;
-  width:100%;
+  width:max-content;
   max-width:100%;
   box-sizing:border-box;
-  padding-left:max(16px,env(safe-area-inset-left,0px));
-  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-left:max(20px,env(safe-area-inset-left,0px));
+  padding-right:max(20px,env(safe-area-inset-right,0px));
 }
 @media(min-width:1101px){
   html.ggen-15 #navTabs{
