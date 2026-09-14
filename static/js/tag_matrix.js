@@ -1179,7 +1179,8 @@
     var suppSlot = 48;
     var suppW = Math.min(120, Math.max(52, (Math.min(maxSupp, 3) || 1) * suppSlot));
     page.style.setProperty('--tm-w-supp', suppW + 'px');
-    page.style.setProperty('--tm-w-tag', state.lang === 'EN' ? '100px' : '112px');
+    /* Tight tag column — leave leftover width for unit role columns */
+    page.style.setProperty('--tm-w-tag', state.lang === 'EN' ? '76px' : '84px');
   }
 
   function renderBoard() {
@@ -1287,6 +1288,7 @@
     syncSquadUi();
     syncSelectionUi();
     syncPageFlags();
+    syncFixedChrome();
   }
 
   function fitExclusiveRails() {
@@ -1527,6 +1529,23 @@
     page.classList.toggle('tm-classic', !on);
   }
 
+  /* Landscape uses position:fixed on .app-header — pad .tm-main by measured height. */
+  function syncFixedChrome() {
+    var header = document.querySelector('body.tm-page > .app-header');
+    if (!header) header = document.querySelector('.app-header');
+    if (!header) return;
+    var h = Math.ceil(header.getBoundingClientRect().height);
+    if (!h || h < 40) return;
+    /* Never let chrome claim more than ~38% of a short landscape viewport. */
+    var vh = window.innerHeight || 0;
+    if (vh > 0) {
+      var cap = Math.max(72, Math.floor(vh * 0.38));
+      if (h > cap) h = cap;
+    }
+    document.documentElement.style.setProperty('--tm-fixed-chrome-h', h + 'px');
+    document.body.style.setProperty('--tm-fixed-chrome-h', h + 'px');
+  }
+
   function syncRotateHint() {
     var el = document.getElementById('tmRotateHint');
     if (!el) return;
@@ -1543,6 +1562,7 @@
     el.hidden = !show;
     el.setAttribute('aria-hidden', show ? 'false' : 'true');
     document.body.classList.toggle('tm-portrait-hint', show);
+    syncFixedChrome();
   }
 
   function applyCopy() {
@@ -1735,16 +1755,19 @@
   function bindLang() {
     var btn = document.getElementById('tmLangBtn');
     var dd = document.getElementById('tmLangDropdown');
-    if (!btn || !dd) return;
+    if (!btn || !dd || btn._tmLangBound) return;
+    btn._tmLangBound = 1;
     function closeDd() {
       dd.classList.remove('active');
       dd.setAttribute('hidden', '');
       btn.setAttribute('aria-expanded', 'false');
+      document.body.classList.remove('tm-lang-open');
     }
     function openDd() {
       dd.classList.add('active');
       dd.removeAttribute('hidden');
       btn.setAttribute('aria-expanded', 'true');
+      document.body.classList.add('tm-lang-open');
     }
     btn.addEventListener('click', function (ev) {
       ev.stopPropagation();
@@ -1844,6 +1867,30 @@
     patchGgen15BodyClass();
     applyCopy();
     syncRotateHint();
+    syncFixedChrome();
+    if (!window._tmChromeResize) {
+      window._tmChromeResize = 1;
+      window.addEventListener(
+        'resize',
+        function () {
+          syncFixedChrome();
+        },
+        { passive: true }
+      );
+      window.addEventListener(
+        'orientationchange',
+        function () {
+          setTimeout(syncFixedChrome, 50);
+          setTimeout(syncFixedChrome, 250);
+        },
+        { passive: true }
+      );
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(function () {
+          syncFixedChrome();
+        }).catch(function () {});
+      }
+    }
     document.addEventListener('keydown', function (ev) {
       if (ev.key === 'Escape') {
         hideHoverPortal();
@@ -1851,7 +1898,11 @@
         else clearSelection();
       }
     });
-    loadMatrix();
+    Promise.resolve(loadMatrix()).then(function () {
+      syncFixedChrome();
+    }).catch(function () {
+      syncFixedChrome();
+    });
   }
 
   if (document.readyState === 'loading') {

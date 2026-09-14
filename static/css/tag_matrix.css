@@ -15,7 +15,7 @@
   --tm-rail-w:16px;
   /* Supports/tag fixed; role cols use fr weights from JS (unit counts) */
   --tm-w-supp:72px;
-  --tm-w-tag:100px;
+  --tm-w-tag:76px;
   --tm-fr-atk:1fr;
   --tm-fr-role-sup:1fr;
   --tm-fr-dur:1fr;
@@ -23,17 +23,33 @@
   --tm-cols-body:var(--tm-w-supp) var(--tm-w-tag) minmax(0,var(--tm-fr-atk)) minmax(0,var(--tm-fr-role-sup)) minmax(0,var(--tm-fr-dur));
   --motion-quick:100ms;
   --motion-ease:cubic-bezier(.2,0,0,1);
-  min-height:100vh;
-  min-height:100dvh;
-  display:flex;
-  flex-direction:column;
-  /* clip (not hidden) — overflow-x:hidden can force overflow-y:auto and clip the wrapped 1.5 header row */
-  overflow-x:clip;
+  --tm-fixed-chrome-h:96px;
+  display:flex !important;
+  flex-direction:column !important;
   max-width:100%;
 }
-/* Keep header + 1.5 Special Design slot from being flex-shrunk / clipped on mobile */
+/*
+  Tag Matrix is body.tm-page. App shell / iOS rules set body{min-height:…} which
+  can beat max-height and let the DOCUMENT scroll — nav tabs leave the viewport
+  in landscape. Force a locked viewport shell; board-wrap is the only scroller.
+*/
+html:has(body.tm-page){
+  height:100dvh !important;
+  max-height:100dvh !important;
+  min-height:0 !important;
+  overflow:hidden !important;
+}
+body.tm-page{
+  height:100dvh !important;
+  max-height:100dvh !important;
+  min-height:0 !important;
+  overflow:hidden !important;
+  overscroll-behavior:none;
+}
 .tm-page > .app-header{
   flex:0 0 auto;
+  position:relative;
+  z-index:300;
   overflow:visible;
 }
 .tm-page > .app-header .header-inner{
@@ -41,6 +57,52 @@
 }
 .tm-page > .app-header .header-15-slot{
   flex-shrink:0;
+}
+.tm-page > .tm-main{
+  flex:1 1 auto;
+  min-height:0 !important;
+  overflow:hidden;
+}
+/* Lang open: keep normal absolute dropdown, just lift stacking + stop chrome clip */
+body.tm-page.tm-lang-open > .app-header{
+  z-index:500;
+  overflow:visible;
+}
+body.tm-page.tm-lang-open > .app-header .header-inner{
+  overflow:visible !important;
+}
+body.tm-page.tm-lang-open .header-controls,
+body.tm-page.tm-lang-open .lang-selector{
+  position:relative;
+  z-index:520;
+}
+body.tm-page.tm-lang-open #tmLangDropdown,
+body.tm-page.tm-lang-open .lang-dropdown.active{
+  z-index:530 !important;
+}
+
+/*
+  Landscape pin only — same brand / 1.5 / nav-tabs look as portrait.
+  Do not restyle tabs, sizes, or 1.5 plate here (that broke cohesiveness).
+*/
+@media (orientation: landscape){
+  body.tm-page > .app-header{
+    position:fixed !important;
+    top:0;
+    left:0;
+    right:0;
+    width:100%;
+    max-width:100%;
+    box-sizing:border-box;
+    z-index:400;
+    margin:0;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-left:env(safe-area-inset-left,0px);
+    padding-right:env(safe-area-inset-right,0px);
+  }
+  body.tm-page > .tm-main{
+    margin-top:var(--tm-fixed-chrome-h);
+  }
 }
 /* CJK Exclusive rail needs room for 互斥 glyphs */
 html[data-ui-lang="JA"] .tm-page,
@@ -90,65 +152,148 @@ html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
 .tm-foot{display:none}
 .tm-status{margin:2px 0 0;font-size:9px;color:var(--text-muted,#94a3b8);flex:0 0 auto;line-height:1.2;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
 
-@media (max-width:768px){
+@media (max-width:768px), (orientation:landscape) and (max-height:520px){
   .tm-main{padding:10px 12px 20px}
-  /* Force 1.5 Special Design onto its own row under brand (don't rely only on :has) */
-  .tm-page > .app-header .header-inner{
-    flex-wrap:wrap;
+  /*
+    Save vertical space: one header row + one scrolling nav-tab row.
+    TM does not load mobile_layout.css — app_shell defaults .nav-tabs to flex-wrap.
+    Same for 1.5 and classic (no Special Design second row).
+  */
+  body.tm-page > .app-header .header-inner,
+  html.ggen-15 body.tm-page > .app-header .header-inner,
+  html.ggen-15 body.tm-page .app-header .header-inner:has(.header-15-slot),
+  body.tm-page .app-header .header-inner:has(.header-15-slot){
+    display:flex;
+    flex-wrap:nowrap !important;
     align-items:center;
-    row-gap:6px;
+    gap:8px;
+    padding:8px 12px;
+    overflow-x:auto;
+    overflow-y:hidden;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    row-gap:0;
   }
-  .tm-page > .app-header .header-15-slot{
+  body.tm-page > .app-header .header-inner::-webkit-scrollbar{display:none}
+  body.tm-page > .app-header .header-brand{
+    flex:0 1 auto;
+    min-width:0;
+    max-width:none;
+  }
+  body.tm-page > .app-header .brand-logo{
+    width:32px;
+    height:32px;
+  }
+  body.tm-page > .app-header .brand-text{
+    font-size:clamp(10px,2vw + 5px,13px);
+  }
+  body.tm-page > .app-header .brand-sub{
+    display:none;
+  }
+  body.tm-page > .app-header .header-15-slot,
+  html.ggen-15 body.tm-page .header-15-slot,
+  body.tm-page .header-15-slot{
     display:inline-flex !important;
     visibility:visible !important;
     opacity:1 !important;
-    flex:1 1 100%;
-    width:100%;
-    max-width:100%;
+    flex:0 0 auto !important;
+    width:auto !important;
+    max-width:none !important;
     min-width:0;
-    order:3;
+    order:0 !important;
     margin:0;
-    gap:8px;
+    gap:6px;
     justify-content:flex-start;
   }
-  .tm-page > .app-header .header-controls{
-    order:2;
+  body.tm-page > .app-header .header-controls{
+    order:0 !important;
     margin-left:auto;
+    flex:0 0 auto;
   }
-  .tm-page > .app-header .header-15-toggle--special img{
+  body.tm-page > .app-header .header-15-toggle{
+    min-height:32px;
+    padding:3px 10px;
+    font-size:12px;
+  }
+  body.tm-page > .app-header .header-15-toggle--special{
+    max-width:min(160px,42vw);
+    min-height:32px;
+    padding:3px 6px;
+  }
+  body.tm-page > .app-header .header-15-toggle--special img{
     display:block !important;
-    height:24px !important;
+    height:22px !important;
     width:auto !important;
     max-width:100% !important;
   }
-  /* Portrait / narrow: icon-only role headers — keep matrix readable */
-  .tm-head-role{
-    justify-content:center;
-    padding-left:2px;padding-right:2px;
+  body.tm-page .nav-tabs-shell,
+  body.tm-page #navTabsShell{
+    min-height:44px;
+    overflow:visible;
+    width:100%;
+    max-width:100%;
   }
+  body.tm-page .nav-tabs,
+  body.tm-page #navTabs{
+    display:flex !important;
+    flex-wrap:nowrap !important;
+    align-items:stretch;
+    justify-content:flex-start;
+    width:100%;
+    max-width:100%;
+    min-width:0;
+    box-sizing:border-box;
+    overflow-x:auto !important;
+    overflow-y:hidden;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+    gap:0;
+    padding:4px 12px 0;
+  }
+  body.tm-page .nav-tabs::-webkit-scrollbar,
+  body.tm-page #navTabs::-webkit-scrollbar{display:none}
+  body.tm-page .nav-tab{
+    flex:0 0 auto !important;
+    flex-shrink:0 !important;
+    padding:10px 12px !important;
+    font-size:13px !important;
+    min-height:44px;
+    white-space:nowrap;
+  }
+  body.tm-page .nav-tab .nav-tab-icon,
+  body.tm-page .nav-tab .nav-tab-icon--svg{
+    width:22px !important;
+    height:22px !important;
+    margin-right:6px;
+  }
+  /* Role header labels hidden on phone; centering applied after base .tm-head-role rule */
   .tm-head-role-label{display:none}
   .tm-head-role img{width:16px;height:16px}
   /* Compact landscape nudge — art + wording as one centered cluster in the HUD */
   .tm-rotate-hint:not([hidden]){
     flex-direction:row;flex-wrap:nowrap;align-items:center;justify-content:center;
     gap:16px;
-    margin:0 0 4px;padding:10px 12px;
-    overflow:hidden;
+    margin:0 0 6px;padding:12px 12px;
+    /* Do not use overflow-x:hidden — it forces overflow-y:auto and creates a scroller */
+    overflow:visible;
+    min-height:52px;
+    box-sizing:border-box;
   }
   .tm-rotate-art{
     position:relative;
-    width:40px;height:28px;flex:0 0 40px;
+    width:48px;height:44px;flex:0 0 48px;
     overflow:visible;margin:0;
   }
   .tm-rotate-phone{
     position:absolute;left:50%;top:50%;
-    width:26px;height:auto;max-width:none;
+    width:30px;height:auto;max-width:none;
     transform:translate(-50%,-50%) rotate(-90deg);
     transform-origin:center center;
   }
   .tm-rotate-arrow{
     position:absolute;left:50%;top:50%;
-    width:16px;height:auto;max-height:16px;
+    width:18px;height:auto;max-height:18px;
     transform:translate(-50%,-50%);
     animation:tm-rotate-nudge-m 1.6s var(--motion-ease,cubic-bezier(0.2,0,0,1)) infinite;
   }
@@ -236,15 +381,15 @@ body.tm-squad-mode .tm-tile[data-kind="unit"]{outline:1px dashed transparent}
 .tm-rotate-hint{
   display:none;
   flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:center;gap:16px 18px;
-  margin:0 0 8px;padding:10px 14px;
+  margin:0 0 8px;padding:12px 14px;
   border:1px solid rgba(0,212,255,.35);border-radius:8px;
   background:rgba(8,14,28,.88);
-  overflow:hidden;
+  overflow:visible;
 }
 .tm-rotate-hint:not([hidden]){display:flex}
 .tm-rotate-art{
   position:relative;
-  width:56px;height:40px;
+  width:56px;height:48px;
   flex:0 0 56px;
   overflow:visible;
   margin:0;
@@ -318,10 +463,18 @@ body.tm-squad-mode .tm-tile[data-kind="unit"]{outline:1px dashed transparent}
 }
 .tm-head-rail{grid-column:1}
 .tm-head-supp{
-  grid-column:2;align-items:center;justify-content:flex-start;
+  grid-column:2;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
   color:#86efac;text-transform:none;
 }
-.tm-head-tag{grid-column:3}
+.tm-head-tag{
+  grid-column:3;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
 .tm-page.tm-hide-supports .tm-head-supp{display:none}
 .tm-page.tm-hide-supports .tm-head-tag{grid-column:2}
 .tm-head-role{justify-content:flex-start}
@@ -332,6 +485,16 @@ body.tm-squad-mode .tm-tile[data-kind="unit"]{outline:1px dashed transparent}
 .tm-page.tm-hide-supports .tm-head-role--1{grid-column:3}
 .tm-page.tm-hide-supports .tm-head-role--3{grid-column:4}
 .tm-page.tm-hide-supports .tm-head-role--2{grid-column:5}
+/* Portrait / phone: role icons alone — center in the column header box */
+@media (max-width:768px) and (orientation:portrait),
+       (orientation:landscape) and (max-height:520px){
+  .tm-sticky-head .tm-head-role{
+    justify-content:center;
+    align-items:center;
+    padding-left:2px;
+    padding-right:2px;
+  }
+}
 
 .tm-board-wrap{
   flex:1 1 auto;
@@ -460,7 +623,7 @@ html[data-ui-lang="HK"] .tm-rail-group-ch{
   align-items:center;
   justify-content:center;
   text-align:center;
-  padding:3px 5px;
+  padding:3px 3px;
   min-width:0;
   max-width:100%;
   box-sizing:border-box;
@@ -468,7 +631,7 @@ html[data-ui-lang="HK"] .tm-rail-group-ch{
 }
 .tm-tag-name{
   display:block;
-  font-size:12px;font-weight:700;color:var(--text-primary,#e2e8f0);line-height:1.15;
+  font-size:11px;font-weight:700;color:var(--text-primary,#e2e8f0);line-height:1.15;
   overflow-wrap:anywhere;
 }
 
