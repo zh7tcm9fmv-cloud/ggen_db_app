@@ -10426,7 +10426,7 @@ else supporters=[supEnt.data];
 }
 const sqP=_tbComputeSquadConditionSheetPcts(sl,side);
 const mlOn=!!S.tb.masterLeague;
-const fullCtx={masterLeagueBuff:mlOn,grandOffensiveBuff:!!S.tb.grandOffensive,masterLeagueBuffMove:true,optionParts:optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:_tbEffectiveExSquadAtkPctForTb(sl,side),squadCondAtkPct:sqP.atk|0,squadCondDefPct:sqP.def|0};
+const fullCtx={masterLeagueBuff:mlOn,grandOffensiveBuff:!!S.tb.grandOffensive,optionParts:optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:_tbEffectiveExSquadAtkPctForTb(sl,side),squadCondAtkPct:sqP.atk|0,squadCondDefPct:sqP.def|0};
 const f=_dcGetModifiedAttackerUnitStatsFromCtx(fullCtx,stats,true);
 let fatk=f.unitAtk,fdef=f.unitDefVal;
 const prf=_tbPilotPairUnitAtkDef(sl.charData,ud,!!sl.charCondPassive,fatk,fdef);
@@ -10495,7 +10495,7 @@ const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
 const stats=td?td[statKey]||td.stats_no_cond:[];
 let supporters=[];
 if(supporterObj&&!supporterObj.error)supporters=[supporterObj];
-const fullCtx={masterLeagueBuff:!!S.dc.masterLeagueBuff,grandOffensiveBuff:!!S.dc.grandOffensiveBuff,masterLeagueBuffMove:false,optionParts:optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:_dcEffectiveExSquadAtkPct(),squadCondAtkPct:S.dc.squadCondAtkPct|0,squadCondDefPct:S.dc.squadCondDefPct|0};
+const fullCtx={masterLeagueBuff:!!S.dc.masterLeagueBuff,grandOffensiveBuff:!!S.dc.grandOffensiveBuff,optionParts:optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:_dcEffectiveExSquadAtkPct(),squadCondAtkPct:S.dc.squadCondAtkPct|0,squadCondDefPct:S.dc.squadCondDefPct|0};
 const f=_dcGetModifiedAttackerUnitStatsFromCtx(fullCtx,stats,true);
 let fatk=f.unitAtk,fdef=f.unitDefVal;
 const prf=_tbPilotPairUnitAtkDef(sl.charData,ud,!!sl.charCondPassive,fatk,fdef);
@@ -10658,8 +10658,8 @@ else supporters=[supEnt.data];
 }
 const sqP=_tbComputeSquadConditionSheetPcts(sl,side);
 const mlOn=!!S.tb.masterLeague;
-const fullCtx={masterLeagueBuff:mlOn,grandOffensiveBuff:!!S.tb.grandOffensive,masterLeagueBuffMove:true,optionParts:sl.optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:_tbEffectiveExSquadAtkPctForTb(sl,side),squadCondAtkPct:sqP.atk|0,squadCondDefPct:sqP.def|0};
-const baseCtx={masterLeagueBuff:false,grandOffensiveBuff:false,masterLeagueBuffMove:false,optionParts:[],supporters:[],unitTurnBuffAtk:false,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:0,squadCondAtkPct:0,squadCondDefPct:0};
+const fullCtx={masterLeagueBuff:mlOn,grandOffensiveBuff:!!S.tb.grandOffensive,optionParts:sl.optionParts||[],supporters,unitTurnBuffAtk:!!sl.unitTurnBuffAtk,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:_tbEffectiveExSquadAtkPctForTb(sl,side),squadCondAtkPct:sqP.atk|0,squadCondDefPct:sqP.def|0};
+const baseCtx={masterLeagueBuff:false,grandOffensiveBuff:false,optionParts:[],supporters:[],unitTurnBuffAtk:false,atkUnitData:ud,atkCharData:sl.charData||null,exSquadAtkPct:0,squadCondAtkPct:0,squadCondDefPct:0};
 const b=_dcGetModifiedAttackerUnitStatsFromCtx(baseCtx,stats,true);
 const f=_dcGetModifiedAttackerUnitStatsFromCtx(fullCtx,stats,true);
 let batk=b.unitAtk,bdef=b.unitDefVal;
@@ -15304,7 +15304,7 @@ m=s.match(/能力值(\d+)\s*[%％]/);
 if(m)return parseInt(m[1],10)||0;
 return 0;
 }
-/** Leader % on HP/MOB/Move; SameGroup leaders add +2% ATK/DEF when the unit matches (Bright Tenacious → D Gundam: 25% HP/MOB, 27% ATK/DEF). */
+/** Leader % on HP/MOB (not EN/Move — game never buffs Move from leaders/ML/GO/OP). SameGroup leaders add +2% ATK/DEF when the unit matches. */
 function _dcLeaderSkillPctAndFlags(supporters){
 let pct=0;
 let sameGroupAdBonusPct=0;
@@ -15781,17 +15781,10 @@ const defHtml=L(pctDef,'Option part %, leader skill %, SameGroup +2% ATK/DEF, Ma
 const coreMob=_dcMsGrowthFromPct(mobBase,pMob,'Mobility');
 const pctMob=_dcMsGrowthFromPct(mobBase,pMob+(opPct.Mobility|0)+lp+sheetBuffPct,'Mobility')-coreMob;
 const mobHtml=L(pctMob,'Option part %, leader skill %, Master League / Grand Offensive (MOB)')+L(opFlat.Mobility|0,'Option part flat Mobility');
-const moveEnt=_dcFindStatEntry(atkUnitStats,'Move')||_dcFindStatEntry(atkUnitStats,'MOV')||_dcFindStatEntry(atkUnitStats,'Movement');
-const moveBase=F(Math.max(0,moveEnt?moveEnt.base:0));
-const pMove=_dcStatPassivePctFromEntry(moveEnt);
-const sheetMovePct=c.masterLeagueBuffMove?(mlPct+goPct):0;
-const coreMov=_dcMsGrowthFromPct(moveBase,pMove,'Move');
-const pctMov=_dcMsGrowthFromPct(moveBase,pMove+(opPct.Move|0)+lp+sheetMovePct,'Move')-coreMov;
-const movHtml=L(pctMov,'Option part %, leader skill %'+(sheetMovePct?', Master League / Grand Offensive (MOV)':''))+L(opFlat.Move|0,'Option part flat Move');
 const coreAtk=_dcMsGrowthFromPct(atkBase,pAtk,'Attack');
 const pctAtkNoEx=_dcMsGrowthFromPct(atkBase,pAtk+opAt+tAtk+sheetBuffPct+lp+lpAd+(scAtk|0),'Attack')-coreAtk;
 const atkHtml=L(pctAtkNoEx,'Option part %, 1-turn MS ATK %, leader %, SameGroup +2% ATK/DEF, ML/GO, squad conditions (EX squad % is on the EX line below; Support Attack/Counter % is combat-only)')+L(opFlat.Attack|0,'Option part flat Attack')+L(atkSupport|0,'Supporter ATK support','stat-card-bonus--supporter-flat');
-return{hpHtml,atkHtml,defHtml,mobHtml,movHtml};
+return{hpHtml,atkHtml,defHtml,mobHtml};
 }
 /** MS growth % buckets: integer (base×(100+pct))/100 — floor when rem>=80 or rem===20, else ceil (ATK/HP); floor DEF/MOB/Move. Hyaku LB1 +72% ATK +390 → 17615; Versal +68% +240 → 17252; Sandaime LB2 +53% +240 → 14577; D Gundam +59% ATK panel / +77% combat with Support Attack toggle. */
 function _dcGetModifiedAttackerUnitStatsFromCtx(ctx,atkUnitStats,forPanel){
@@ -15830,9 +15823,8 @@ const pMove=_dcStatPassivePctFromEntry(moveEnt);
 let unitHp=_dcMsGrowthFromPct(hpBase,pHp+(opPct.HP|0)+lp+sheetBuffPct,'HP')+(opFlat.HP|0)+hpSupport;
 let unitDefVal=_dcMsGrowthFromPct(defBase,pDef+(opPct.Defense|0)+lp+lpAd+sheetBuffPct+(scDef|0),'Defense')+(opFlat.Defense|0);
 let unitMob=_dcMsGrowthFromPct(mobBase,pMob+(opPct.Mobility|0)+lp+sheetBuffPct,'Mobility')+(opFlat.Mobility|0);
-/* Move: leader % always (see _dcLeaderSkillPctAndFlags). ML/GO only when masterLeagueBuffMove (TB on; DC off). */
-const sheetMovePct=c.masterLeagueBuffMove?(mlPct+goPct):0;
-let unitMove=_dcMsGrowthFromPct(moveBase,pMove+(opPct.Move|0)+lp+sheetMovePct,'Move')+(opFlat.Move|0);
+/* Move is never sheet-buffed (no ML/GO/leader/OP) — only unit base + own passive %. */
+let unitMove=_dcMsGrowthFromPct(moveBase,pMove,'Move');
 const opAt=opPct.Attack||0;
 const exSq=_dcEffectiveExSquadAtkPctFromCtx(c);
 let turnAtkPct=0;
