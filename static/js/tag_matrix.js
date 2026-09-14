@@ -983,7 +983,9 @@
   }
 
   function supportsCellHtml(list, eagerBudget) {
-    var items = filterList(list).slice().sort(function (a, b) {
+    /* Rarity filter is for units only — SR/R supports (e.g. Protagonist 1850000360)
+       must stay visible when browsing UR kits, or Squad highlight has nothing to paint. */
+    var items = (list || []).slice().sort(function (a, b) {
       var ka = SKILL_KIND_ORDER.indexOf(resolveSkillKind(a));
       var kb = SKILL_KIND_ORDER.indexOf(resolveSkillKind(b));
       if (ka < 0) ka = 99;
@@ -1128,7 +1130,7 @@
       if (!rowMatches(row)) return;
       if (focusOn && !rowHasSelectedUnit(row)) return;
       tags++;
-      supports += filterList(row.supports).length;
+      supports += (row.supports || []).length;
       ['1', '2', '3'].forEach(function (r) {
         if (state.role !== 'ALL' && state.role !== r) return;
         units += filterList((row.units && row.units[r]) || []).length;
@@ -1167,7 +1169,7 @@
       if (role === 'ALL' || role === '2') {
         maxDur = Math.max(maxDur, filterList((row.units && row.units['2']) || []).length);
       }
-      maxSupp = Math.max(maxSupp, filterList(row.supports || []).length);
+      maxSupp = Math.max(maxSupp, (row.supports || []).length);
     }
     /* At least 1fr so empty roles still leave a slim column */
     page.style.setProperty('--tm-fr-atk', Math.max(1, maxAtk) + 'fr');
