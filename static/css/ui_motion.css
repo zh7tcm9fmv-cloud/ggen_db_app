@@ -263,7 +263,37 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
   animation:ggen-spotlight-beam-spin 2.8s linear infinite;
 }
 
+/* Browse: auto-hide #navTabsShell on scroll-down; brand header stays.
+   Height collapses instantly (avoids scroll-anchoring fights); opacity fades.
+   Tag Matrix (/tm) has its own board-scroll chrome hide in tag_matrix.css. */
+body:not(.tm-page) #navTabsShell{
+  overflow:hidden;
+  opacity:1;
+  transform:translateY(0);
+  transition:
+    opacity 180ms var(--motion-ease-standard,cubic-bezier(.2,0,0,1)),
+    transform 180ms var(--motion-ease-standard,cubic-bezier(.2,0,0,1));
+}
+body:not(.tm-page).nav-tabs-collapsed #navTabsShell{
+  max-height:0 !important;
+  min-height:0 !important;
+  height:0 !important;
+  opacity:0;
+  border-bottom-width:0 !important;
+  border-color:transparent !important;
+  transform:translateY(-6px);
+  pointer-events:none;
+  margin:0 !important;
+  padding:0 !important;
+}
+
 @media (prefers-reduced-motion:reduce){
+  body:not(.tm-page) #navTabsShell{
+    transition:none !important;
+  }
+  body:not(.tm-page).nav-tabs-collapsed #navTabsShell{
+    transform:none !important;
+  }
   .whats-new-overlay{
     transition:opacity 150ms ease!important;
   }

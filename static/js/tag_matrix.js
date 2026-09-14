@@ -1529,21 +1529,96 @@
     page.classList.toggle('tm-classic', !on);
   }
 
-  /* Landscape uses position:fixed on .app-header — pad .tm-main by measured height. */
+  /* Kept for resize hooks; chrome is in-flow again (no fixed landscape pad). */
   function syncFixedChrome() {
-    var header = document.querySelector('body.tm-page > .app-header');
-    if (!header) header = document.querySelector('.app-header');
-    if (!header) return;
-    var h = Math.ceil(header.getBoundingClientRect().height);
-    if (!h || h < 40) return;
-    /* Never let chrome claim more than ~38% of a short landscape viewport. */
-    var vh = window.innerHeight || 0;
-    if (vh > 0) {
-      var cap = Math.max(72, Math.floor(vh * 0.38));
-      if (h > cap) h = cap;
+    /* no-op — landscape no longer uses --tm-fixed-chrome-h margin */
+  }
+
+  /*
+    Auto-hide Tag Matrix chrome (nav tabs + filters) while scrolling the board.
+    Brand header stays. Reveal only near top or after a strong upward swipe.
+    Works for both portrait and landscape (board-wrap is the scroller).
+  */
+  function setFiltersCollapsed(collapsed) {
+    document.body.classList.toggle('tm-filters-collapsed', !!collapsed);
+  }
+
+  function filtersHaveFocus() {
+    var toolbar = document.querySelector('.tm-toolbar');
+    if (!toolbar) return false;
+    var ae = document.activeElement;
+    return !!(ae && toolbar.contains(ae));
+  }
+
+  function bindFiltersAutoHide() {
+    var wrap = document.querySelector('.tm-board-wrap');
+    if (!wrap || wrap._tmFiltersAutoHide) return;
+    wrap._tmFiltersAutoHide = 1;
+
+    var lastY = wrap.scrollTop || 0;
+    var upAccum = 0;
+    var ignoreUntil = 0;
+    var HIDE_AFTER = 10;
+    var REVEAL_UP = 400; /* match /u aggressiveness */
+    var TOP_SHOW = 12;
+
+    function setCollapsed(collapsed) {
+      var want = !!collapsed;
+      if (document.body.classList.contains('tm-filters-collapsed') === want) return;
+      setFiltersCollapsed(want);
+      ignoreUntil = Date.now() + 320;
     }
-    document.documentElement.style.setProperty('--tm-fixed-chrome-h', h + 'px');
-    document.body.style.setProperty('--tm-fixed-chrome-h', h + 'px');
+
+    function onScroll() {
+      var y = wrap.scrollTop || 0;
+      if (y <= TOP_SHOW) {
+        upAccum = 0;
+        lastY = y;
+        setCollapsed(false);
+        return;
+      }
+      if (Date.now() < ignoreUntil) {
+        lastY = y;
+        return;
+      }
+      var dy = y - lastY;
+      lastY = y;
+
+      if (filtersHaveFocus()) {
+        upAccum = 0;
+        setCollapsed(false);
+        return;
+      }
+
+      if (dy > 0) {
+        upAccum = 0;
+        if (dy >= HIDE_AFTER || y > TOP_SHOW + 24) {
+          setCollapsed(true);
+        }
+        return;
+      }
+      if (dy < 0) {
+        upAccum += -dy;
+        if (upAccum >= REVEAL_UP) {
+          upAccum = 0;
+          setCollapsed(false);
+        }
+      }
+    }
+
+    wrap.addEventListener('scroll', onScroll, { passive: true });
+
+    var toolbar = document.querySelector('.tm-toolbar');
+    if (toolbar && !toolbar._tmFiltersFocus) {
+      toolbar._tmFiltersFocus = 1;
+      toolbar.addEventListener(
+        'focusin',
+        function () {
+          setCollapsed(false);
+        },
+        true
+      );
+    }
   }
 
   function syncRotateHint() {
@@ -1868,6 +1943,7 @@
     applyCopy();
     syncRotateHint();
     syncFixedChrome();
+    bindFiltersAutoHide();
     if (!window._tmChromeResize) {
       window._tmChromeResize = 1;
       window.addEventListener(
@@ -1880,6 +1956,7 @@
       window.addEventListener(
         'orientationchange',
         function () {
+          setFiltersCollapsed(false);
           setTimeout(syncFixedChrome, 50);
           setTimeout(syncFixedChrome, 250);
         },

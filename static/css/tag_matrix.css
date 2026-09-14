@@ -44,7 +44,6 @@ body.tm-page{
   max-height:100dvh !important;
   min-height:0 !important;
   overflow:hidden !important;
-  overscroll-behavior:none;
 }
 .tm-page > .app-header{
   flex:0 0 auto;
@@ -62,6 +61,8 @@ body.tm-page{
   flex:1 1 auto;
   min-height:0 !important;
   overflow:hidden;
+  display:flex;
+  flex-direction:column;
 }
 /* Lang open: keep normal absolute dropdown, just lift stacking + stop chrome clip */
 body.tm-page.tm-lang-open > .app-header{
@@ -82,26 +83,22 @@ body.tm-page.tm-lang-open .lang-dropdown.active{
 }
 
 /*
-  Landscape pin only — same brand / 1.5 / nav-tabs look as portrait.
-  Do not restyle tabs, sizes, or 1.5 plate here (that broke cohesiveness).
+  Landscape: keep header IN FLOW (not position:fixed).
+  Fixed + body overflow:hidden made touch pan feel broken — users swipe the
+  page (can't move) instead of the board. Flex shell already pins chrome;
+  only .tm-board-wrap scrolls.
 */
-@media (orientation: landscape){
-  body.tm-page > .app-header{
-    position:fixed !important;
-    top:0;
-    left:0;
-    right:0;
-    width:100%;
-    max-width:100%;
-    box-sizing:border-box;
-    z-index:400;
-    margin:0;
-    padding-top:env(safe-area-inset-top,0px);
-    padding-left:env(safe-area-inset-left,0px);
-    padding-right:env(safe-area-inset-right,0px);
-  }
+@media (orientation: landscape) and (max-height:520px){
   body.tm-page > .tm-main{
-    margin-top:var(--tm-fixed-chrome-h);
+    padding-top:6px;
+    padding-bottom:8px;
+  }
+  body.tm-page .tm-toolbar{
+    margin-bottom:2px;
+    padding:2px 4px;
+  }
+  body.tm-page .tm-status{
+    margin-top:0;
   }
 }
 /* CJK Exclusive rail needs room for 互斥 glyphs */
@@ -147,6 +144,102 @@ html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
   box-sizing:border-box;
 }
 
+/*
+  /tm ALWAYS: single-row nav (horizontal scroll) — portrait + landscape + desktop.
+  TM does not load mobile_layout.css; app_shell defaults .nav-tabs to flex-wrap.
+  Also defeat ggen_15 mobile header wrap (Special Design row 2).
+*/
+body.tm-page > .app-header .header-inner,
+html.ggen-15 body.tm-page > .app-header .header-inner,
+html.ggen-15 body.tm-page .app-header .header-inner:has(.header-15-slot),
+body.tm-page .app-header .header-inner:has(.header-15-slot){
+  display:flex !important;
+  flex-wrap:nowrap !important;
+  align-items:center;
+  row-gap:0 !important;
+}
+body.tm-page > .app-header .header-15-slot,
+html.ggen-15 body.tm-page .header-15-slot,
+body.tm-page .header-15-slot{
+  display:inline-flex !important;
+  visibility:visible !important;
+  opacity:1 !important;
+  flex:0 0 auto !important;
+  width:auto !important;
+  max-width:none !important;
+  min-width:0;
+  order:0 !important;
+  margin:0;
+  gap:6px;
+  justify-content:flex-start;
+}
+body.tm-page > .app-header .header-controls{
+  order:0 !important;
+  margin-left:auto;
+  flex:0 0 auto;
+}
+body.tm-page .nav-tabs-shell,
+body.tm-page #navTabsShell{
+  min-height:44px;
+  overflow:hidden; /* allow auto-hide collapse; tabs themselves still scroll-x */
+  width:100%;
+  max-width:100%;
+  opacity:1;
+  transform:translateY(0);
+  transition:
+    opacity 180ms var(--motion-ease,cubic-bezier(.2,0,0,1)),
+    transform 180ms var(--motion-ease,cubic-bezier(.2,0,0,1));
+}
+body.tm-page .nav-tabs,
+body.tm-page #navTabs{
+  display:flex !important;
+  flex-wrap:nowrap !important;
+  align-items:stretch;
+  justify-content:flex-start;
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  box-sizing:border-box;
+  overflow-x:auto !important;
+  overflow-y:hidden !important;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  -ms-overflow-style:none;
+  gap:0;
+  padding:4px 12px 0;
+}
+body.tm-page .nav-tabs::-webkit-scrollbar,
+body.tm-page #navTabs::-webkit-scrollbar{display:none}
+body.tm-page .nav-tab{
+  flex:0 0 auto !important;
+  flex-shrink:0 !important;
+  white-space:nowrap;
+}
+/* Board scroll: collapse nav tabs + filters; brand header stays */
+body.tm-page.tm-filters-collapsed #navTabsShell,
+body.tm-page.tm-filters-collapsed .nav-tabs-shell{
+  max-height:0 !important;
+  min-height:0 !important;
+  height:0 !important;
+  opacity:0;
+  border-bottom-width:0 !important;
+  border-color:transparent !important;
+  transform:translateY(-6px);
+  pointer-events:none;
+  margin:0 !important;
+  padding:0 !important;
+}
+@media (prefers-reduced-motion:reduce){
+  body.tm-page #navTabsShell,
+  body.tm-page .nav-tabs-shell{
+    transition:none !important;
+  }
+  body.tm-page.tm-filters-collapsed #navTabsShell,
+  body.tm-page.tm-filters-collapsed .nav-tabs-shell{
+    transform:none !important;
+  }
+}
+
 .tm-intro{display:none} /* reclaim vertical space — title is in the nav tab */
 .tm-legend{display:none}
 .tm-foot{display:none}
@@ -154,25 +247,17 @@ html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
 
 @media (max-width:768px), (orientation:landscape) and (max-height:520px){
   .tm-main{padding:10px 12px 20px}
-  /*
-    Save vertical space: one header row + one scrolling nav-tab row.
-    TM does not load mobile_layout.css — app_shell defaults .nav-tabs to flex-wrap.
-    Same for 1.5 and classic (no Special Design second row).
-  */
+  /* Compact chrome sizing — single-row layout is always-on above */
   body.tm-page > .app-header .header-inner,
   html.ggen-15 body.tm-page > .app-header .header-inner,
   html.ggen-15 body.tm-page .app-header .header-inner:has(.header-15-slot),
   body.tm-page .app-header .header-inner:has(.header-15-slot){
-    display:flex;
-    flex-wrap:nowrap !important;
-    align-items:center;
     gap:8px;
     padding:8px 12px;
     overflow-x:auto;
     overflow-y:hidden;
     -webkit-overflow-scrolling:touch;
     scrollbar-width:none;
-    row-gap:0;
   }
   body.tm-page > .app-header .header-inner::-webkit-scrollbar{display:none}
   body.tm-page > .app-header .header-brand{
@@ -199,26 +284,6 @@ html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
   body.tm-page > .app-header .brand-sub{
     display:none;
   }
-  body.tm-page > .app-header .header-15-slot,
-  html.ggen-15 body.tm-page .header-15-slot,
-  body.tm-page .header-15-slot{
-    display:inline-flex !important;
-    visibility:visible !important;
-    opacity:1 !important;
-    flex:0 0 auto !important;
-    width:auto !important;
-    max-width:none !important;
-    min-width:0;
-    order:0 !important;
-    margin:0;
-    gap:6px;
-    justify-content:flex-start;
-  }
-  body.tm-page > .app-header .header-controls{
-    order:0 !important;
-    margin-left:auto;
-    flex:0 0 auto;
-  }
   body.tm-page > .app-header .header-15-toggle{
     min-height:32px;
     padding:3px 10px;
@@ -235,40 +300,10 @@ html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
     width:auto !important;
     max-width:100% !important;
   }
-  body.tm-page .nav-tabs-shell,
-  body.tm-page #navTabsShell{
-    min-height:44px;
-    overflow:visible;
-    width:100%;
-    max-width:100%;
-  }
-  body.tm-page .nav-tabs,
-  body.tm-page #navTabs{
-    display:flex !important;
-    flex-wrap:nowrap !important;
-    align-items:stretch;
-    justify-content:flex-start;
-    width:100%;
-    max-width:100%;
-    min-width:0;
-    box-sizing:border-box;
-    overflow-x:auto !important;
-    overflow-y:hidden;
-    -webkit-overflow-scrolling:touch;
-    scrollbar-width:none;
-    -ms-overflow-style:none;
-    gap:0;
-    padding:4px 12px 0;
-  }
-  body.tm-page .nav-tabs::-webkit-scrollbar,
-  body.tm-page #navTabs::-webkit-scrollbar{display:none}
   body.tm-page .nav-tab{
-    flex:0 0 auto !important;
-    flex-shrink:0 !important;
     padding:10px 12px !important;
     font-size:13px !important;
     min-height:44px;
-    white-space:nowrap;
   }
   body.tm-page .nav-tab .nav-tab-icon,
   body.tm-page .nav-tab .nav-tab-icon--svg{
@@ -321,6 +356,38 @@ html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
   margin:0 0 2px;padding:3px 5px;
   border:1px solid var(--tm-border);border-radius:5px;
   background:rgba(15,23,42,.55);flex:0 0 auto;
+  max-height:220px;
+  opacity:1;
+  transform:translateY(0);
+  overflow:hidden;
+  transition:
+    max-height 220ms var(--motion-ease,cubic-bezier(.2,0,0,1)),
+    opacity 180ms var(--motion-ease,cubic-bezier(.2,0,0,1)),
+    transform 220ms var(--motion-ease,cubic-bezier(.2,0,0,1)),
+    margin 220ms var(--motion-ease,cubic-bezier(.2,0,0,1)),
+    padding 220ms var(--motion-ease,cubic-bezier(.2,0,0,1)),
+    border-color 180ms var(--motion-ease,cubic-bezier(.2,0,0,1));
+}
+/* Board scroll-down: collapse filters; header stays. Reveal on strong scroll-up. */
+body.tm-filters-collapsed .tm-toolbar{
+  max-height:0 !important;
+  height:0 !important;
+  min-height:0 !important;
+  opacity:0;
+  margin:0 !important;
+  padding:0 !important;
+  border:none !important;
+  transform:translateY(-8px);
+  pointer-events:none;
+  overflow:hidden;
+}
+@media (prefers-reduced-motion:reduce){
+  .tm-toolbar{
+    transition:none;
+  }
+  body.tm-filters-collapsed .tm-toolbar{
+    transform:none;
+  }
 }
 .tm-filter-block{display:flex;flex-direction:column;gap:2px;min-width:0}
 .tm-filter-label{font-size:8px;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted,#94a3b8)}
@@ -510,8 +577,10 @@ body.tm-squad-mode .tm-tile[data-kind="unit"]{outline:1px dashed transparent}
   min-height:0;
   min-width:0;
   overflow-x:hidden;
-  overflow-y:auto;
+  overflow-y:scroll; /* scroll (not auto) — more reliable touch pan on iOS/Android */
   -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+  touch-action:pan-y;
 }
 
 /*
