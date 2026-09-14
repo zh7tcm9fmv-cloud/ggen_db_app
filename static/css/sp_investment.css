@@ -1834,6 +1834,70 @@ html.spi-modal-open body.spi-page {
     width: 100%;
     justify-content: space-between;
   }
+
+  /*
+    Mobile portrait: SPI filter panels sit in a 2-col grid. Absolute left:0 + ~92vw
+    width makes right-column menus (Source / Tag / Series / Ability / ER…) hang off
+    the viewport and get clipped. Match browse: pin open panels as safe-area sheets.
+    /ip is the main SPA tab (no body.spi-page) — also cover standalone soft-launch.
+  */
+  .spi-toolbar,
+  .spi-toolbar .list-toolbar-left--browse,
+  .spi-filter-row,
+  .spi-filter-row--secondary,
+  .spi-filter-row--secondary .rarity-filter-wrap,
+  #panel-investment_priority .spi-toolbar,
+  #panel-investment_priority .spi-filter-row--secondary .rarity-filter-wrap {
+    overflow: visible !important;
+  }
+  .spi-toolbar .rarity-filter-panel:not([hidden]),
+  .spi-toolbar .filter-dropdown-panel:not([hidden]),
+  .spi-toolbar .spi-dd-panel--tall:not([hidden]),
+  .spi-toolbar #spiSourceFilterPanel:not([hidden]),
+  #panel-investment_priority .spi-toolbar .rarity-filter-panel:not([hidden]),
+  #panel-investment_priority .spi-toolbar .filter-dropdown-panel:not([hidden]) {
+    position: fixed !important;
+    left: max(8px, env(safe-area-inset-left, 0px)) !important;
+    right: max(8px, env(safe-area-inset-right, 0px)) !important;
+    top: max(8px, env(safe-area-inset-top, 0px)) !important;
+    bottom: auto !important;
+    transform: none !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: auto !important;
+    max-height: min(
+      92vh,
+      calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 24px)
+    ) !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: max(12px, env(safe-area-inset-bottom, 0px)) !important;
+    z-index: 260 !important;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.65);
+    border-radius: var(--radius-md);
+  }
+  .spi-toolbar .spi-dd-panel--tall .spi-dd-scroll,
+  .spi-toolbar .spi-dd-panel--tall .filter-panel-scroll-inner {
+    max-height: min(56vh, 360px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .spi-toolbar .filter-panel-clear-wrap,
+  .spi-toolbar .spi-dd-footer {
+    flex-shrink: 0;
+    position: sticky;
+    bottom: 0;
+    z-index: 4;
+    background: var(--bg-card);
+    padding-bottom: max(10px, calc(8px + env(safe-area-inset-bottom, 0px)));
+  }
+
   .spi-modal {
     padding: max(0.35rem, env(safe-area-inset-top, 0px)) 0.4rem max(0.35rem, env(safe-area-inset-bottom, 0px));
   }
