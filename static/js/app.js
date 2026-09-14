@@ -10875,12 +10875,12 @@ const uid=String(sl.unitId);
 const slotK=_tbKey(o.si,o.col);
 let rows=cache[uid];
 if(!rows){
-rows=await _dcFetchAllListRows('/api/option_parts','rarity=ALL&effect=ALL&unit_id='+encodeURIComponent(uid));
+rows=await _tbEnsureOpRowsForUnit(uid);
 cache[uid]=rows;
 }
 const supForSlot=supByKey[slotK];
 let best=null,bestR=null;
-for(let i=0;i<rows.length;i++){
+for(let i=0;i<(rows||[]).length;i++){
 const row=rows[i];
 const id=String(row.id);
 if(used.has(id))continue;
@@ -11377,6 +11377,22 @@ ev.preventDefault();
 const id=item.getAttribute('data-tb-pick-id');
 if(id!=null&&id!=='')pickTbItem(id);
 });
+body.addEventListener('pointerenter',function(ev){
+const item=ev.target&&ev.target.closest&&ev.target.closest('.tb-picker-item');
+if(!item)return;
+const id=item.getAttribute('data-tb-pick-id');
+if(id==null||id==='')return;
+const typ=S.tb&&S.tb.picker&&S.tb.picker.type;
+if(typ==='unit'){
+scheduleDetailPrefetchFromIntent('unit',id);
+_tbPrefetchOpRowsForUnit(id);
+fetchDetailPayload('unit',id,{}).then(d=>{
+const rc=d&&d.recommend_character;
+if(rc&&rc.id)fetchDetailPayload('character',String(rc.id),{}).catch(()=>{});
+}).catch(()=>{});
+}else if(typ==='character')scheduleDetailPrefetchFromIntent('character',id);
+else if(typ==='supporter')scheduleDetailPrefetchFromIntent('supporter',id);
+},true);
 }
 function tbRenderPickerItemCell(r,t,th){return renderEntityPickerItemCell(r,t,th,'data-tb-pick-id')}
 function renderEntityPickerItemCell(r,t,th,pickIdAttr){
@@ -11702,19 +11718,49 @@ _tbPickerCachePut(type,S.tb.picker.slotKey,qU||waQ,S.tb.picker.rows);
 filterTbPickerList();
 }catch(e){if(e&&e.name==='AbortError')return;if(myGen!==_tbPickerGen)return;if(!haveInstantList||qU||waQ)body.innerHTML=`<div style="padding:16px">${esc(t('search_spotlight_empty'))}</div>`}
 }
-async function _tbAssignUnitDataToSlot(sl,d,sidStr){
+function _tbApplyUnitPayloadToSlot(sl,d,sidStr){
 if(!sl||!d||d.error)return;
 sl.unitId=String(sidStr!=null?sidStr:d.id);sl.unitData=d;sl.optionParts=[];
 if(!_tbUnitAllowsSpSsp(d))sl.unitStatMode='normal';
 sl.charId=null;sl.charData=null;
+_tbSyncSlotCondPassives(sl);
+}
+async function _tbFetchRecommendCharForSlot(sl,d){
+if(!sl||!d)return;
 const rc=d.recommend_character;
-if(rc&&rc.id){
+if(!rc||!rc.id)return;
 try{
-const cd=await fetch(`/api/character/${encodeURIComponent(rc.id)}?lang=${S.lang}`).then(r=>r.json());
-if(!cd.error){sl.charId=String(rc.id);sl.charData=cd}
+const cd=await fetchDetailPayload('character',String(rc.id),{});
+if(cd&&!cd.error){sl.charId=String(rc.id);sl.charData=cd;_tbSyncSlotCondPassives(sl)}
 }catch(_){}
 }
-_tbSyncSlotCondPassives(sl);
+function _tbPrefetchOpRowsForUnit(uid){
+const id=String(uid||'').trim();
+if(!id||typeof S==='undefined'||!S.tb)return;
+const cache=S.tb._tbOpAllRowsByUnit||(S.tb._tbOpAllRowsByUnit={});
+if(cache[id])return;
+const inflight=S.tb._tbOpPrefetchInflight||(S.tb._tbOpPrefetchInflight={});
+if(inflight[id])return;
+inflight[id]=_dcFetchAllListRows('/api/option_parts','rarity=ALL&effect=ALL&unit_id='+encodeURIComponent(id)).then(rows=>{
+cache[id]=rows||[];
+}).catch(()=>{}).finally(()=>{delete inflight[id]});
+}
+async function _tbEnsureOpRowsForUnit(uid){
+const id=String(uid||'').trim();
+if(!id)return[];
+const cache=S.tb._tbOpAllRowsByUnit||(S.tb._tbOpAllRowsByUnit={});
+if(cache[id])return cache[id];
+_tbPrefetchOpRowsForUnit(id);
+const inflight=S.tb._tbOpPrefetchInflight||{};
+if(inflight[id]){try{await inflight[id]}catch(_){}}
+if(cache[id])return cache[id];
+const rows=await _dcFetchAllListRows('/api/option_parts','rarity=ALL&effect=ALL&unit_id='+encodeURIComponent(id));
+cache[id]=rows||[];
+return cache[id];
+}
+async function _tbAssignUnitDataToSlot(sl,d,sidStr){
+_tbApplyUnitPayloadToSlot(sl,d,sidStr);
+await _tbFetchRecommendCharForSlot(sl,d);
 }
 async function pickTbItem(id){
 const sid=String(id==null?'':id).trim();
@@ -11739,13 +11785,16 @@ if(slotKey==null)return;
 if(!sid)return;
 const squ=_tbSquFromKey(slotKey);const sl=squ.slots[_tbIdxFromKey(slotKey)];
 if(type==='unit'){
+_tbPrefetchOpRowsForUnit(sid);
 try{
-const d=await fetch(`/api/unit/${encodeURIComponent(sid)}?lang=${S.lang}`).then(r=>r.json());
+const d=await fetchDetailPayload('unit',sid,{});
+if(d&&!d.error){
 await _tbAssignUnitDataToSlot(sl,d,sid);
 await tbAutoFillEmptyOptionParts({skipRender:true});
+}
 }catch(_){}
 }else if(type==='character'){
-try{const d=await fetch(`/api/character/${encodeURIComponent(sid)}?lang=${S.lang}`).then(r=>r.json());if(!d.error){sl.charId=sid;sl.charData=d;_tbSyncSlotCondPassives(sl)}}catch(_){}
+try{const d=await fetchDetailPayload('character',sid,{});if(d&&!d.error){sl.charId=sid;sl.charData=d;_tbSyncSlotCondPassives(sl)}}catch(_){}
 }else if(type==='option'){
 const hit=rowsSnap.find(x=>String(x.id)===String(sid));
 if(hit){
