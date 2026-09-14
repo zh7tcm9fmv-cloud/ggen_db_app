@@ -108,6 +108,7 @@
   /* In-memory payload + O(1) hover lookup (avoid baking hover HTML into every tile). */
   var matrixPayload = null;
   var itemByKey = Object.create(null);
+  var rowByTagId = Object.create(null);
   var searchDebounceTimer = null;
   var hoverPortalEl = null;
   var hoverPortalKey = null;
@@ -634,7 +635,9 @@
 
   function rebuildItemIndex() {
     itemByKey = Object.create(null);
+    rowByTagId = Object.create(null);
     rows.forEach(function (row) {
+      if (row && row.id != null) rowByTagId[String(row.id)] = row;
       ['1', '2', '3'].forEach(function (r) {
         ((row.units && row.units[r]) || []).forEach(function (u) {
           if (u && u.id != null) itemByKey['u:' + u.id] = u;
@@ -676,18 +679,20 @@
       }
       state.selectedIds[id] = 1;
     }
-    renderBoard();
+    hideHoverPortal();
+    syncSelectionUi();
   }
 
   function clearSelection() {
     if (!selectedCount()) {
-      syncStatusOnly();
+      syncStatusBar();
       return;
     }
     state.selectedIds = {};
     state.anchorTagId = null;
     state.anchorUnitId = null;
-    renderBoard();
+    hideHoverPortal();
+    syncSelectionUi();
   }
 
   function setSquadMode(on) {
@@ -698,7 +703,8 @@
       state.anchorTagId = null;
     }
     syncSquadUi();
-    renderBoard();
+    hideHoverPortal();
+    syncSelectionUi();
   }
 
   function syncSquadUi() {
@@ -712,13 +718,113 @@
     if (lab) lab.textContent = t('squad');
     var lbl = document.getElementById('tmSquadLbl');
     if (lbl) lbl.textContent = t('squad');
+    var clearBtn = document.getElementById('tmSquadClear');
+    if (clearBtn) {
+      clearBtn.textContent = t('clearFocus');
+      clearBtn.title = t('clearFocus') + ' (Esc)';
+      clearBtn.setAttribute('aria-label', t('clearFocus'));
+    }
     document.body.classList.toggle('tm-squad-mode', !!state.squadMode && isTouchUi());
   }
 
-  function syncStatusOnly() {
+  function rowDataByTagId(tagId) {
+    return rowByTagId[String(tagId || '')] || null;
+  }
+
+  function patchUnitSelectTarget(tile, on, sharesCached) {
+    var img = tile.querySelector('.tm-select-target');
+    if (!on) {
+      if (img) img.remove();
+      return;
+    }
+    var src = cdnPath(selectTargetForUnit(tile.getAttribute('data-id'), sharesCached));
+    if (!img) {
+      img = document.createElement('img');
+      img.className = 'tm-select-target';
+      img.alt = '';
+      img.setAttribute('aria-hidden', 'true');
+      tile.appendChild(img);
+    }
+    if (img.getAttribute('src') !== src) img.src = src;
+  }
+
+  /* Soft-update focus/selection classes — avoid full board HTML rebuild on each tap. */
+  function syncSelectionUi() {
+    var board = document.getElementById('tmBoard');
+    var focusOn = selectedCount() > 0;
+    document.body.classList.toggle('tm-focus-on', focusOn);
+    if (!board) {
+      syncStatusBar();
+      return;
+    }
+
+    var shares = focusOn ? selectionSharesSupporters() : true;
+
+    board.querySelectorAll('.tm-row').forEach(function (rowEl) {
+      var tagId = rowEl.getAttribute('data-tag-id');
+      var row = rowDataByTagId(tagId);
+      var rowHit = focusOn && row && rowHasSelectedUnit(row);
+      var suppHit = focusOn && row && rowHasAllSelectedUnits(row);
+      rowEl.classList.toggle('tm-row--hit', !!rowHit);
+      rowEl.classList.toggle('tm-row--supp-shared', !!suppHit);
+      rowEl.classList.toggle('tm-row--focus-out', focusOn && !rowHit);
+
+      var suppCell = rowEl.querySelector('.tm-supp');
+      if (suppCell) {
+        suppCell.classList.toggle('tm-supp--hit', !!suppHit);
+      }
+
+      rowEl.querySelectorAll('.tm-tile[data-kind="unit"]').forEach(function (tile) {
+        var id = tile.getAttribute('data-id');
+        var sel = focusOn && isSelected(id);
+        tile.classList.toggle('tm-tile--selected', !!sel);
+        tile.classList.toggle('tm-tile--dim', focusOn && !sel);
+        patchUnitSelectTarget(tile, !!sel, shares);
+      });
+
+      rowEl.querySelectorAll('.tm-tile[data-kind="supporter"]').forEach(function (tile) {
+        tile.classList.toggle('tm-tile--supp-hit', !!suppHit);
+        tile.classList.toggle('tm-tile--dim', focusOn && !suppHit);
+      });
+    });
+
+    board.querySelectorAll('.tm-rail-group').forEach(function (group) {
+      var any = false;
+      group.querySelectorAll('.tm-row').forEach(function (r) {
+        if (!r.classList.contains('tm-row--focus-out')) any = true;
+      });
+      group.classList.toggle('tm-rail-group--focus-out', focusOn && !any);
+    });
+
+    syncStatusBar();
+    fitExclusiveRails();
+  }
+
+  function syncStatusBar() {
     var st = document.getElementById('tmStatus');
-    if (!st || selectedCount()) return;
-    if (state.squadMode && isTouchUi()) {
+    if (!st) return;
+    var focusOn = selectedCount() > 0;
+    var c = countVisible();
+    if (focusOn) {
+      var focusTpl = isTouchUi() ? t('statusFocusTouch') : t('statusFocus');
+      st.innerHTML =
+        '<span class="tm-status-text">' +
+        esc(
+          focusTpl
+            .replace('{k}', String(selectedCount()))
+            .replace('{n}', String(c.tags))
+        ) +
+        '</span><button type="button" class="tm-focus-clear" id="tmFocusClear">' +
+        esc(t('clearFocus')) +
+        '</button>';
+      var clearBtn = document.getElementById('tmFocusClear');
+      if (clearBtn) {
+        clearBtn.addEventListener('click', function (ev) {
+          ev.preventDefault();
+          clearSelection();
+        });
+      }
+    } else if (state.squadMode && isTouchUi()) {
       st.innerHTML =
         '<span class="tm-status-text">' +
         esc(t('statusSquadIdle')) +
@@ -732,6 +838,11 @@
           setSquadMode(false);
         });
       }
+    } else {
+      st.textContent = t('status')
+        .replace('{n}', String(c.tags))
+        .replace('{u}', String(c.units))
+        .replace('{s}', String(c.supports));
     }
   }
 
@@ -784,44 +895,31 @@
     Blue = sole pick, or multi-select that still shares at least one supporter row.
     Red = later picks when no tag row holds every selected unit (diverging supporters).
   */
-  function selectTargetForUnit(unitId) {
+  function selectTargetForUnit(unitId, sharesCached) {
     unitId = String(unitId || '');
     if (selectedCount() <= 1) return SELECT_TARGET_BLUE;
-    if (selectionSharesSupporters()) return SELECT_TARGET_BLUE;
+    var shares =
+      sharesCached != null ? !!sharesCached : selectionSharesSupporters();
+    if (shares) return SELECT_TARGET_BLUE;
     if (unitId && unitId === String(state.anchorUnitId || '')) return SELECT_TARGET_BLUE;
     return SELECT_TARGET_RED;
   }
 
-  function unitCellHtml(item, focusOn, eager) {
+  function unitCellHtml(item, eager) {
     var id = String(item.id || '');
-    var sel = isSelected(id);
-    var cls = 'tm-tile';
-    if (sel) cls += ' tm-tile--selected';
-    else if (focusOn) cls += ' tm-tile--dim';
-    var target = sel
-      ? '<img class="tm-select-target" src="' +
-        escAttr(cdnPath(selectTargetForUnit(id))) +
-        '" alt="" aria-hidden="true">'
-      : '';
     return (
-      '<span class="' +
-      cls +
-      '" data-kind="unit" data-id="' +
+      '<span class="tm-tile" data-kind="unit" data-id="' +
       escAttr(id) +
       '" data-item-key="u:' +
       escAttr(id) +
       '">' +
       framedThumbHtml(item, 'unit', BOARD_THUMB_PX, { eager: !!eager }) +
-      target +
       '</span>'
     );
   }
 
-  function suppCellHtml(item, focusOn, suppHit, eager) {
+  function suppCellHtml(item, eager) {
     var kind = resolveSkillKind(item);
-    var cls = 'tm-tile tm-tile--supp';
-    if (focusOn && suppHit) cls += ' tm-tile--supp-hit';
-    else if (focusOn) cls += ' tm-tile--dim';
     var kindIc = kind && SKILL_KIND_ICON[kind] ? SKILL_KIND_ICON[kind] : '';
     var badge = kindIc
       ? '<img class="tm-supp-kind-badge" src="' +
@@ -834,9 +932,7 @@
       : '';
     var sid = String(item.id || '');
     return (
-      '<span class="' +
-      cls +
-      '" data-kind="supporter" data-skill-kind="' +
+      '<span class="tm-tile tm-tile--supp" data-kind="supporter" data-skill-kind="' +
       escAttr(kind) +
       '" data-id="' +
       escAttr(sid) +
@@ -851,7 +947,7 @@
     );
   }
 
-  function supportsCellHtml(list, focusOn, suppHit, eagerBudget) {
+  function supportsCellHtml(list, eagerBudget) {
     var items = filterList(list).slice().sort(function (a, b) {
       var ka = SKILL_KIND_ORDER.indexOf(resolveSkillKind(a));
       var kb = SKILL_KIND_ORDER.indexOf(resolveSkillKind(b));
@@ -864,35 +960,33 @@
       return '<div class="tm-supp tm-supp--empty" role="cell"></div>';
     }
     return (
-      '<div class="tm-supp' +
-      (focusOn && suppHit ? ' tm-supp--hit' : '') +
-      '" role="cell"><div class="tm-chip-strip tm-chip-strip--supp">' +
+      '<div class="tm-supp" role="cell"><div class="tm-chip-strip tm-chip-strip--supp">' +
       items
         .map(function (it) {
-          return suppCellHtml(it, focusOn, suppHit, takeEager(eagerBudget));
+          return suppCellHtml(it, takeEager(eagerBudget));
         })
         .join('') +
       '</div></div>'
     );
   }
 
-  function unitsHtml(list, focusOn, eagerBudget) {
+  function unitsHtml(list, eagerBudget) {
     var items = filterList(list);
     if (!items.length) return '';
     return (
       '<div class="tm-chip-strip">' +
       items
         .map(function (it) {
-          return unitCellHtml(it, focusOn, takeEager(eagerBudget));
+          return unitCellHtml(it, takeEager(eagerBudget));
         })
         .join('') +
       '</div>'
     );
   }
 
-  function roleUnitsHtml(row, roleKey, focusOn, eagerBudget) {
+  function roleUnitsHtml(row, roleKey, eagerBudget) {
     if (state.role !== 'ALL' && state.role !== roleKey) return '';
-    return unitsHtml(row.units && row.units[roleKey], focusOn, eagerBudget);
+    return unitsHtml(row.units && row.units[roleKey], eagerBudget);
   }
 
   function buildHeadHtml() {
@@ -1058,14 +1152,11 @@
     syncDensityClass();
     board.className = 'tm-board';
     if (state.role !== 'ALL') board.classList.add('tm-role-filter-' + state.role);
-    document.body.classList.toggle('tm-focus-on', selectedCount() > 0);
 
-    var focusOn = selectedCount() > 0;
+    /* Keep all filter-matching rows in the DOM; focus only hides via syncSelectionUi. */
     var visible = [];
     rows.forEach(function (row) {
       if (!rowMatches(row)) return;
-      var rowHit = focusOn && rowHasSelectedUnit(row);
-      if (focusOn && !rowHit) return;
       visible.push(row);
     });
     syncBoardColumnWidths(visible);
@@ -1076,34 +1167,30 @@
     var eagerBudget = { n: EAGER_THUMB_BUDGET };
 
     function renderRowInner(row, alt) {
-      var rowHit = focusOn && rowHasSelectedUnit(row);
-      var suppHit = focusOn && rowHasAllSelectedUnits(row);
       var h =
         '<div class="tm-row tm-row--no-rail' +
         (alt ? ' tm-row--alt' : '') +
-        (rowHit ? ' tm-row--hit' : '') +
-        (suppHit ? ' tm-row--supp-shared' : '') +
         '" role="row" data-group="' +
         escAttr(row.group) +
         '" data-tag-id="' +
         escAttr(row.id) +
         '">';
-      h += supportsCellHtml(row.supports, focusOn, suppHit, eagerBudget);
+      h += supportsCellHtml(row.supports, eagerBudget);
       h +=
         '<div class="tm-tag-cell" role="cell"><span class="tm-tag-name">' +
         esc(row.name || row.id) +
         '</span></div>';
       h +=
         '<div class="tm-units tm-units--1" role="cell">' +
-        roleUnitsHtml(row, '1', focusOn, eagerBudget) +
+        roleUnitsHtml(row, '1', eagerBudget) +
         '</div>';
       h +=
         '<div class="tm-units tm-units--3" role="cell">' +
-        roleUnitsHtml(row, '3', focusOn, eagerBudget) +
+        roleUnitsHtml(row, '3', eagerBudget) +
         '</div>';
       h +=
         '<div class="tm-units tm-units--2" role="cell">' +
-        roleUnitsHtml(row, '2', focusOn, eagerBudget) +
+        roleUnitsHtml(row, '2', eagerBudget) +
         '</div>';
       h += '</div>';
       return h;
@@ -1152,11 +1239,7 @@
       i++;
     }
 
-    var c = countVisible();
-    if (!c.tags && state.search.trim()) {
-      html +=
-        '<div class="tm-empty-board" role="status">' + esc(t('noMatch')) + '</div>';
-    } else     if (focusOn && !html) {
+    if (!visible.length) {
       html +=
         '<div class="tm-empty-board" role="status">' + esc(t('noMatch')) + '</div>';
     }
@@ -1164,53 +1247,9 @@
     hideHoverPortal();
     board.innerHTML = html;
     bindBoardInteractions(board);
-    fitExclusiveRails();
-    var st = document.getElementById('tmStatus');
-    if (st) {
-      if (focusOn) {
-        var focusTpl = isTouchUi() ? t('statusFocusTouch') : t('statusFocus');
-        st.innerHTML =
-          '<span class="tm-status-text">' +
-          esc(
-            focusTpl
-              .replace('{k}', String(selectedCount()))
-              .replace('{n}', String(c.tags))
-          ) +
-          '</span><button type="button" class="tm-focus-clear" id="tmFocusClear">' +
-          esc(t('clearFocus')) +
-          '</button>';
-        var clearBtn = document.getElementById('tmFocusClear');
-        if (clearBtn && !clearBtn._tmBound) {
-          clearBtn._tmBound = 1;
-          clearBtn.addEventListener('click', function (ev) {
-            ev.preventDefault();
-            clearSelection();
-          });
-        }
-      } else if (state.squadMode && isTouchUi()) {
-        st.innerHTML =
-          '<span class="tm-status-text">' +
-          esc(t('statusSquadIdle')) +
-          '</span><button type="button" class="tm-focus-clear" id="tmFocusClear">' +
-          esc(t('clearFocus')) +
-          '</button>';
-        var clearIdle = document.getElementById('tmFocusClear');
-        if (clearIdle && !clearIdle._tmBound) {
-          clearIdle._tmBound = 1;
-          clearIdle.addEventListener('click', function (ev) {
-            ev.preventDefault();
-            setSquadMode(false);
-          });
-        }
-      } else {
-        st.textContent = t('status')
-          .replace('{n}', String(c.tags))
-          .replace('{u}', String(c.units))
-          .replace('{s}', String(c.supports));
-      }
-    }
-    syncPageFlags();
     syncSquadUi();
+    syncSelectionUi();
+    syncPageFlags();
   }
 
   function fitExclusiveRails() {
@@ -1222,11 +1261,12 @@
         var h = bar.clientHeight;
         if (h < 8) return;
         var avail = Math.max(0, h - 4);
-        /* Fit full Exclusive / 互斥 into the rail height — never expand the row */
-        var fs = Math.max(5, Math.min(n <= 2 ? 14 : 11, Math.floor(avail / n)));
+        /* Full EXCLUSIVE / 互斥 — compact stack centered on tall Four/Six rails (no stretch) */
+        var maxFs = n <= 2 ? 14 : n >= 9 ? 11 : 12;
+        var fs = Math.max(6, Math.min(maxFs, Math.floor(avail / n)));
         bar.style.fontSize = fs + 'px';
-        bar.style.justifyContent =
-          n * fs > avail * 0.88 ? 'space-between' : 'space-evenly';
+        bar.style.justifyContent = 'center';
+        bar.style.gap = n > 1 ? '1px' : '0';
       });
     });
   }
@@ -1739,6 +1779,15 @@
       squadBtn.addEventListener('click', function (ev) {
         ev.preventDefault();
         setSquadMode(!state.squadMode);
+      });
+    }
+    var squadClear = document.getElementById('tmSquadClear');
+    if (squadClear && !squadClear._tmBound) {
+      squadClear._tmBound = 1;
+      squadClear.addEventListener('click', function (ev) {
+        ev.preventDefault();
+        if (selectedCount()) clearSelection();
+        else setSquadMode(false);
       });
     }
     syncSquadUi();

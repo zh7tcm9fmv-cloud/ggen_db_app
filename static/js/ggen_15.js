@@ -95,12 +95,24 @@
     var label =
       L === 'JA' ? '特設デザイン' : L === 'TW' || L === 'HK' ? '特別設計' : 'Special Design';
     var shortLabel = L === 'JA' ? '1.5' : L === 'TW' || L === 'HK' ? '特別' : '1.5';
-    if (img) {
-      img.src = src;
-      img.alt = label;
-    }
     if (fallback) fallback.textContent = shortLabel;
-    if (btn) btn.setAttribute('aria-label', label);
+    if (btn) {
+      btn.setAttribute('aria-label', label);
+      btn.classList.remove('is-img-failed');
+    }
+    if (img) {
+      img.alt = label;
+      img.onerror = function () {
+        if (btn) btn.classList.add('is-img-failed');
+      };
+      img.onload = function () {
+        if (btn) btn.classList.remove('is-img-failed');
+      };
+      if (img.getAttribute('src') !== src) img.src = src;
+      else if (img.complete && img.naturalWidth === 0 && btn) {
+        btn.classList.add('is-img-failed');
+      }
+    }
   }
 
   function applyChrome() {
@@ -109,6 +121,11 @@
     document.documentElement.classList.toggle('ggen-classic', !on);
     document.body.classList.toggle('collections-15', on);
     document.body.classList.toggle('collections-classic', !on);
+    /* Tag Matrix / other standalone hosts */
+    if (document.body.classList.contains('tm-page')) {
+      document.body.classList.toggle('tm-15', on);
+      document.body.classList.toggle('tm-classic', !on);
+    }
     ensureTekoLink(on);
     var onBtn = document.getElementById('ggen15On');
     var offBtn = document.getElementById('ggen15Off');

@@ -35,7 +35,7 @@ html.ggen-15[data-ui-lang="HK"]{
 .header-15-slot{
   display:inline-flex;
   flex:0 0 auto;
-  min-width:0;
+  min-width:min-content;
   justify-content:flex-start;
   align-items:center;
   gap:8px;
@@ -503,15 +503,25 @@ html.ggen-15 .main-content .bt-feat-label{
 }
 
 @media(max-width:420px){
-  /* Prefer compact text mark — badge art glow is too wide for phones */
+  /* Keep the Special Design badge art visible on phones (fallback text is backup only) */
   .header-15-toggle--special{
-    max-width:none;
-    min-width:72px;
-    padding:4px 12px;
-    line-height:1;
+    max-width:min(168px,72vw);
+    min-width:0;
+    padding:3px 6px;
+    min-height:34px;
+    line-height:0;
+    overflow:hidden;
   }
-  .header-15-toggle--special img{display:none !important}
+  .header-15-toggle--special img{
+    display:block !important;
+    height:24px !important;
+    width:auto !important;
+    max-width:100% !important;
+  }
   .header-15-toggle--special .header-15-special-fallback{
+    display:none !important;
+  }
+  .header-15-toggle--special.is-img-failed .header-15-special-fallback{
     display:inline !important;
     font-family:var(--font-teko),Teko,sans-serif;
     font-size:14px;
@@ -519,7 +529,9 @@ html.ggen-15 .main-content .bt-feat-label{
     letter-spacing:.08em;
     text-transform:uppercase;
     color:inherit;
+    line-height:1;
   }
+  .header-15-toggle--special.is-img-failed img{display:none !important}
   .header-15-toggle{font-size:11px;padding:3px 10px;min-height:32px;letter-spacing:.04em}
 }
 

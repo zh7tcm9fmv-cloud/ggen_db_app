@@ -192,10 +192,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div class="tm-filter-block tm-filter-block--squad tm-squad-only">
       <span class="tm-filter-label" id="tmSquadLbl">Squad</span>
-      <button type="button" class="tm-chip tm-squad-btn" id="tmSquadToggle" aria-pressed="false" title="Squad">
-        <img class="tm-squad-ic" src="{% if image_cdn %}{{ image_cdn }}/images/UI/mw_blue_target1_outer.webp{% else %}/static/images/UI/mw_blue_target1_outer.webp{% endif %}" alt="" width="18" height="18" decoding="async">
-        <span id="tmSquadLabel">Squad</span>
-      </button>
+      <div class="tm-squad-actions">
+        <button type="button" class="tm-chip tm-squad-btn" id="tmSquadToggle" aria-pressed="false" title="Squad">
+          <img class="tm-squad-ic" src="{% if image_cdn %}{{ image_cdn }}/images/UI/mw_blue_target1_outer.webp{% else %}/static/images/UI/mw_blue_target1_outer.webp{% endif %}" alt="" width="18" height="18" decoding="async">
+          <span id="tmSquadLabel">Squad</span>
+        </button>
+        <button type="button" class="tm-chip tm-squad-clear" id="tmSquadClear" title="Clear (Esc)">Clear</button>
+      </div>
     </div>
     <div class="tm-filter-block tm-filter-block--toggles">
       <input type="search" id="tmSearch" class="tm-search" placeholder="Find tag (shippu, 疾風…)" aria-label="Filter tag rows" title="Filters tag rows only">
