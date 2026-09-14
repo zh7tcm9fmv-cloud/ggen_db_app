@@ -187,6 +187,15 @@ html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
   body.tm-page > .app-header .brand-text{
     font-size:clamp(10px,2vw + 5px,13px);
   }
+  /* Brand panel emblem — match classic mobile scale (1.5 desktop 108×58 is too large here) */
+  body.tm-page .brand-title-row::before,
+  html.ggen-15 body.tm-page .brand-title-row::before,
+  html.ggen-15 body.tm-page .app-header .brand-title-row::before{
+    width:64px !important;
+    height:34px !important;
+    opacity:.72 !important;
+    transform:translate(calc(-50% + var(--brand-emblem-optical-x, 0px)),-52%) !important;
+  }
   body.tm-page > .app-header .brand-sub{
     display:none;
   }

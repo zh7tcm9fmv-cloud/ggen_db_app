@@ -493,12 +493,25 @@ html.ggen-15 .main-content .bt-feat-label{
     min-height:36px;
   }
   html.ggen-15 .app-header .brand-title-row::before{
-    width:92px;
-    height:50px;
+    /* Keep emblem proportional to compact mobile title — not desktop 108×58 */
+    width:70px;
+    height:38px;
+    opacity:.75;
+    transform:translate(calc(-50% + var(--brand-emblem-optical-x)),-50%);
   }
   html.ggen-15 .main-content .rarity-filter-btn,
   html.ggen-15 .main-content .role-filter-dd-btn{
     font-size:13px;
+  }
+}
+
+/* Phone landscape (width often >768): keep emblem at mobile scale */
+@media (orientation:landscape) and (max-height:520px){
+  html.ggen-15 .app-header .brand-title-row::before{
+    width:64px;
+    height:34px;
+    opacity:.75;
+    transform:translate(calc(-50% + var(--brand-emblem-optical-x)),-50%);
   }
 }
 
@@ -517,6 +530,10 @@ html.ggen-15 .main-content .bt-feat-label{
     height:24px !important;
     width:auto !important;
     max-width:100% !important;
+  }
+  html.ggen-15 .app-header .brand-title-row::before{
+    width:58px;
+    height:30px;
   }
   .header-15-toggle--special .header-15-special-fallback{
     display:none !important;
