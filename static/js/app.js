@@ -3055,6 +3055,15 @@ if(!bp)return;
 if(detailWasActive)replaceHistoryToBrowsePath(bp,{ggenDetail:1});
 else{pushHistoryToBrowsePath(bp,{ggenDetail:1});S._historyModalPushed=true}
 }
+/** Same-origin standalone pages (e.g. /tm) that deep-link into /u|/s|/c/:id. Closing detail should history.back() there. */
+function _markDetailCloseBackToStandaloneReferrer(){
+try{
+const ref=document.referrer;if(!ref)return;
+const u=new URL(ref);if(u.origin!==location.origin)return;
+const rp=(u.pathname||'/').replace(/\/+$/,'')||'/';
+if(rp==='/tm')S._historyModalPushed=true;
+}catch(_){}
+}
 function _historyIsDetailPath(path){return/^\/(?:u|c|s|es|op|pt)\/[^/]+\/?$/.test(_historyPathNorm(path||location.pathname))}
 function closeModalDomOnly(){
 const m=document.getElementById('detailModal');
@@ -3129,11 +3138,12 @@ return true;
 }
 if(parsed&&parsed.kind==='e_simulator'){closeModalDomOnly();if((S.stages.source||'eternal')!=='e_simulator')S.stages.source='e_simulator';switchTab('stages',{skipHistory:true,fromPopstate:!!opts.fromPopstate});syncStageSourceToolbar();void ensureESimulatorLoaded().then(es=>{if(es)es.load()});markEsimPageVisited();return true}
 if(parsed&&parsed.kind==='main_tab'){closeModalDomOnly();if(parsed.tab==='stages'&&(S.stages.source||'')==='e_simulator'){S.stages.source='eternal';if(window.ESimulator)ESimulator.hide()}
-/* Closing a detail modal back to the same browse tab must not reload the list. */
-if(S.currentTab===parsed.tab){applyListViewVisibility(parsed.tab);bindSearchRecallObserver();updateScrollTopFabVisibility();return true}
+/* Closing a detail modal back to the same browse tab must not reload the list.
+   Cold load of /c (default tab already characters) still needs a first paint. */
+if(S.currentTab===parsed.tab){applyListViewVisibility(parsed.tab);bindSearchRecallObserver();updateScrollTopFabVisibility();const browseTabs={characters:1,units:1,supporters:1,stages:1,modifications:1};if(browseTabs[parsed.tab]&&!(S._browsePrimed&&S._browsePrimed[parsed.tab])){if(!S._browsePrimed)S._browsePrimed={};S._browsePrimed[parsed.tab]=1;primeBrowseTabIfNeeded(parsed.tab)}return true}
 switchTab(parsed.tab,{skipHistory:true,fromPopstate:!!opts.fromPopstate});return true}
-if(parsed&&parsed.kind==='option_part'){switchTab('modifications',{skipHistory:true,fromPopstate:!!opts.fromPopstate});openDetail('option_part',parsed.id,{skipHistory:true});if(!opts.fromPopstate)try{window.scrollTo(0,0)}catch(_){}return true}
-if(parsed&&parsed.kind==='detail'){const t=parsed.type,id=parsed.id;switchTab(_detailTabForType(t),{skipHistory:true,fromPopstate:!!opts.fromPopstate});openDetail(t,id,{skipHistory:true});return true}
+if(parsed&&parsed.kind==='option_part'){switchTab('modifications',{skipHistory:true,fromPopstate:!!opts.fromPopstate});if(!opts.fromPopstate)_markDetailCloseBackToStandaloneReferrer();openDetail('option_part',parsed.id,{skipHistory:true});if(!opts.fromPopstate)try{window.scrollTo(0,0)}catch(_){}return true}
+if(parsed&&parsed.kind==='detail'){const t=parsed.type,id=parsed.id;switchTab(_detailTabForType(t),{skipHistory:true,fromPopstate:!!opts.fromPopstate});/* Cold /u|/s|/c/:id from standalone /tm — close/Esc must history.back() to Tag Matrix, not replace to /u|/s. */if(!opts.fromPopstate)_markDetailCloseBackToStandaloneReferrer();openDetail(t,id,{skipHistory:true});return true}
 if(!parsed){closeModalDomOnly();if(S.currentTab!=='characters')switchTab('characters',{skipHistory:true,fromPopstate:!!opts.fromPopstate})}
 return false;
 }
