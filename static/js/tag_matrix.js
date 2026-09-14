@@ -758,21 +758,16 @@
       return;
     }
 
-    var shares = focusOn ? selectionSharesSupporters() : true;
+    var sharedIds = focusOn ? sharedSupporterIds() : null;
+    var shares = focusOn ? Object.keys(sharedIds || {}).length > 0 : true;
 
     board.querySelectorAll('.tm-row').forEach(function (rowEl) {
       var tagId = rowEl.getAttribute('data-tag-id');
       var row = rowDataByTagId(tagId);
       var rowHit = focusOn && row && rowHasSelectedUnit(row);
-      var suppHit = focusOn && row && rowHasAllSelectedUnits(row);
+      var rowShared = false;
       rowEl.classList.toggle('tm-row--hit', !!rowHit);
-      rowEl.classList.toggle('tm-row--supp-shared', !!suppHit);
       rowEl.classList.toggle('tm-row--focus-out', focusOn && !rowHit);
-
-      var suppCell = rowEl.querySelector('.tm-supp');
-      if (suppCell) {
-        suppCell.classList.toggle('tm-supp--hit', !!suppHit);
-      }
 
       rowEl.querySelectorAll('.tm-tile[data-kind="unit"]').forEach(function (tile) {
         var id = tile.getAttribute('data-id');
@@ -783,9 +778,18 @@
       });
 
       rowEl.querySelectorAll('.tm-tile[data-kind="supporter"]').forEach(function (tile) {
-        tile.classList.toggle('tm-tile--supp-hit', !!suppHit);
-        tile.classList.toggle('tm-tile--dim', focusOn && !suppHit);
+        var sid = tile.getAttribute('data-id');
+        var hit = focusOn && sharedIds && sid && !!sharedIds[String(sid)];
+        if (hit) rowShared = true;
+        tile.classList.toggle('tm-tile--supp-hit', !!hit);
+        tile.classList.toggle('tm-tile--dim', focusOn && !hit);
       });
+
+      rowEl.classList.toggle('tm-row--supp-shared', !!rowShared);
+      var suppCell = rowEl.querySelector('.tm-supp');
+      if (suppCell) {
+        suppCell.classList.toggle('tm-supp--hit', !!rowShared);
+      }
     });
 
     board.querySelectorAll('.tm-rail-group').forEach(function (group) {
@@ -872,28 +876,59 @@
     return false;
   }
 
-  /* True when this tag row lists every currently selected unit. */
-  function rowHasAllSelectedUnits(row) {
-    var ids = Object.keys(state.selectedIds);
-    if (!ids.length) return false;
-    for (var i = 0; i < ids.length; i++) {
-      if (!rowHasUnitId(row, ids[i])) return false;
+  function supporterIdsOnRow(row) {
+    var out = Object.create(null);
+    var list = (row && row.supports) || [];
+    for (var i = 0; i < list.length; i++) {
+      var sid = list[i] && list[i].id != null ? String(list[i].id) : '';
+      if (sid) out[sid] = 1;
     }
-    return true;
+    return out;
   }
 
-  /* Some tag row (anywhere in catalog) contains every selected unit → shared supporters. */
-  function selectionSharesSupporters() {
-    if (selectedCount() <= 1) return true;
+  /* Union of supporters on every catalog tag row that lists this unit. */
+  function supporterPoolForUnit(unitId) {
+    unitId = String(unitId || '');
+    var out = Object.create(null);
+    if (!unitId) return out;
     for (var i = 0; i < rows.length; i++) {
-      if (rowHasAllSelectedUnits(rows[i])) return true;
+      var row = rows[i];
+      if (!rowHasUnitId(row, unitId)) continue;
+      var pool = supporterIdsOnRow(row);
+      Object.keys(pool).forEach(function (sid) {
+        out[sid] = 1;
+      });
     }
-    return false;
+    return out;
   }
 
   /*
-    Blue = sole pick, or multi-select that still shares at least one supporter row.
-    Red = later picks when no tag row holds every selected unit (diverging supporters).
+    Supporters shared by the whole squad: intersection of each pick’s tag-row
+    support pools. Works across Tag Groups (Four/Six/New/Other) — not only when
+    one tag row lists every selected unit.
+  */
+  function sharedSupporterIds() {
+    var ids = Object.keys(state.selectedIds);
+    if (!ids.length) return Object.create(null);
+    var shared = supporterPoolForUnit(ids[0]);
+    for (var i = 1; i < ids.length; i++) {
+      var next = supporterPoolForUnit(ids[i]);
+      Object.keys(shared).forEach(function (sid) {
+        if (!next[sid]) delete shared[sid];
+      });
+    }
+    return shared;
+  }
+
+  /* Squad shares supports when the intersection above is non-empty. */
+  function selectionSharesSupporters() {
+    if (selectedCount() <= 1) return true;
+    return Object.keys(sharedSupporterIds()).length > 0;
+  }
+
+  /*
+    Blue = sole pick, or multi-select with ≥1 shared supporter (any Tag Group).
+    Red = later picks when support pools diverge (no common supporter).
   */
   function selectTargetForUnit(unitId, sharesCached) {
     unitId = String(unitId || '');
