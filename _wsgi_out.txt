@@ -1,0 +1,43 @@
+wsgi: background import of app starting…
+Loaded image index with 26 folders
+  Image CDN: https://cdn.jsdelivr.net/gh/zh7tcm9fmv-cloud/ggen_db_images@main/images/* (WebP preferred)
+  Font CDN: https://cdn.jsdelivr.net/gh/zh7tcm9fmv-cloud/ggen_db_images@main/font/* (brand OTFs off Railway egress)
+  Video proxy: off — browsers hit VIDEO_CDN directly
+  Video CDN: https://raw.githubusercontent.com/zh7tcm9fmv-cloud/ggen_db_videos/main/gacha/*.mp4, https://raw.githubusercontent.com/zh7tcm9fmv-cloud/ggen_db_videos/main/unit/*.mp4
+Running in LOCAL mode
+EN - BASE_DIR: C:\Users\Mikew0911\Desktop\GGen_Database\MasterData_2026-09-11
+EN - LANG_DIR: C:\Users\Mikew0911\Desktop\GGen_Database\Lang_MasterData_2026-09-11
+TW - BASE_DIR: C:\Users\Mikew0911\Desktop\GGen_TW\MasterData_2026-09-02
+TW - LANG_DIR: C:\Users\Mikew0911\Desktop\GGen_TW\Lang_MasterData_2026-09-11
+HK - BASE_DIR: C:\Users\Mikew0911\Desktop\GGen_HK\MasterData_2026-09-02
+HK - LANG_DIR: C:\Users\Mikew0911\Desktop\GGen_HK\Lang_MasterData_2026-09-11
+JA - BASE_DIR: C:\Users\Mikew0911\Desktop\GGen_JA\MasterData_2026-09-11
+JA - LANG_DIR: C:\Users\Mikew0911\Desktop\GGen_JA\Lang_MasterData_2026-09-11
+============================================================
+Loading database...
+Series icons mapped: 105
+Unit portraits: 1520 found, 6 missing
+SSP terrain audit: 263 units WITH terrain enhancement (type 4), 947 without
+  1150000100: has_terrain_enhancement=False (expected False)
+  1300004300: has_terrain_enhancement=True (expected True - has type 4 in 130000430002)
+Loading EN...
+  EN: 5597 chars, 6592 units
+Loading TW...
+  TW: 5597 chars, 6592 units
+Loading HK...
+  HK: 5597 chars, 6592 units
+Loading JA...
+  JA: 5597 chars, 6592 units
+SDC abilities found: 6 (tag 4 rep=2020701, series 2 rep=2020101)
+Chance Step EX abilities found: 11
+Guaranteed Chance Step abilities found: 4
+Support Defense x2 characters: 166
+Support Attack x2 characters: 197
+Database ready!
+============================================================
+SD linked shortcuts: 52 from master, 46 SD units total
+spi_votes: path=C:\Users\Mikew0911\Desktop\ggen_db_app\data\persistent\sp_investment_votes.json published=C:\Users\Mikew0911\Desktop\ggen_db_app\data\published\sp_investment_votes.json github=off github_branch=- sync_mode=off railway=no
+collections_persist: census=C:\Users\Mikew0911\Desktop\ggen_db_app\data\persistent\collections_census_v1.json share=C:\Users\Mikew0911\Desktop\ggen_db_app\data\persistent\collections_share_v1.json github=off sync_mode=off railway=no
+banner_pool_votes: path=C:\Users\Mikew0911\Desktop\ggen_db_app\data\persistent\banner_pool_votes.json published=C:\Users\Mikew0911\Desktop\ggen_db_app\data\published\banner_pool_votes.json github=off github_branch=- sync_mode=off import_url=off railway=no
+site_feedback: sheets=off volume=off local_path=C:\Users\Mikew0911\Desktop\ggen_db_app\data\persistent\site_feedback.jsonl railway=no
+wsgi: app ready in 9.6s

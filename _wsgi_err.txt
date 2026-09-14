@@ -1,0 +1,47 @@
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5055
+ * Running on http://192.168.1.8:5055
+Press CTRL+C to quit
+127.0.0.1 - - [14/Sep/2026 15:15:54] "GET /health HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:15] "GET /health HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:17] "GET /api/master_league?lang=EN HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:17] "GET /api/master_league?lang=EN HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:17] "GET /api/master_league?lang=EN&event_id=300010 HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:17] "GET /api/master_league?lang=EN&event_id=300010 HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:36] "GET /ml HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:36] "GET /static/css/ggen_15.css?v=3c0d473ca45c79da HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:36] "GET /static/font/roboto_medium_numbers.ttf?v=3c0d473ca45c79da HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:36] "GET /static/css/app_shell_bundle.min.css?v=3c0d473ca45c79da HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:36] "GET /static/js/app.min.js?v=3c0d473ca45c79da HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:36] "GET /static/js/ui_motion.js?v=3c0d473ca45c79da HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:36] "GET /static/js/ggen_15.js?v=3c0d473ca45c79da HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:37] "GET /static/images/UI/brand-emblem-panel.webp HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:37] "GET /static/images/Background/obg_022_office.webp HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:37] "GET /static/images/UI/collections_15_special_design_EN.webp HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:37] "GET /static/support/alipayhk_header_icon.png HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:37] "GET /static/support/alipayhk_qr.png HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:37] "GET /api/languages HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:37] "GET /api/master_league?lang=EN HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:37] "GET /static/css/master_league.css?v=3c0d473ca45c79da HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:37] "GET /static/images/Background/obg_013_garage.webp HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:37] "GET /api/client_version?_=1789370197255 HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:37] "GET /static/css/kofi_supporter_wall.css?v=3c0d473ca45c79da HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:37] "GET /static/css/site_feedback.css?v=3c0d473ca45c79da HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:37] "GET /static/js/kofi_donate_promo.js?v=3c0d473ca45c79da HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:37] "GET /static/js/site_feedback.js?v=5 HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:37] "GET /static/css/kofi_donate_promo.css?v=3c0d473ca45c79da HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:37] "GET /static/js/feedback_i18n.js?v=5 HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:37] "GET /static/js/kofi_supporter_wall.js?v=3c0d473ca45c79da HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:16:37] "GET /api/master_league?lang=EN&event_id=300010 HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:18:32] "GET /api/client_version?_=1789370312743 HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:18:32] "GET /tm?_ggen_reload=1789370312880 HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:18:32] "GET /static/css/app_shell.css?v=3c0d473ca45c79da HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:18:32] "GET /static/css/ggen_15.css?v=3c0d473ca45c79da&tm=chrome3 HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:18:32] "GET /static/css/tag_matrix.css?v=3c0d473ca45c79da&tm=chrome3 HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:18:32] "GET /static/css/tag_matrix_15.css?v=3c0d473ca45c79da HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:18:33] "GET /static/js/ggen_15.js?v=3c0d473ca45c79da HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:18:33] "GET /static/js/tag_matrix.js?v=3c0d473ca45c79da&tm=chrome3 HTTP/1.1" 200 -
+127.0.0.1 - - [14/Sep/2026 15:18:33] "GET /static/images/UI/collections_15_special_design_EN.webp HTTP/1.1" 304 -
+127.0.0.1 - - [14/Sep/2026 15:18:33] "GET /static/images/UI/brand-emblem-panel.webp HTTP/1.1" 304 -
+127.0.0.1 - - [14/Sep/2026 15:18:33] "GET /api/client_version?_=1789370313172 HTTP/1.1" 200 -

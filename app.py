@@ -27157,12 +27157,25 @@ def _ml_resolve_buff_target_name(target_type, target_id, lineage_lookup, series_
 
 @app.route('/api/master_league')
 def api_master_league():
-    """Master League seasons: boosts, terrain, ranks, schedules, scoring config."""
+    """Master League seasons: boosts, terrain, ranks, schedules, scoring config.
+
+    List payload omits heavy reward rows for ended seasons (rewards_omitted).
+    Pass event_id=… to force-include that season's full rewards (lazy detail).
+    """
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'master_league_v25_{lc}'
-    cached = get_cached_response(ck)
-    if cached:
-        return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
+    force_event_id = normalize_id(request.args.get('event_id') or '')
+    if force_event_id == '0':
+        force_event_id = ''
+    ck = f'master_league_v26_{lc}'
+    if force_event_id:
+        ck_detail = f'{ck}_ev_{force_event_id}'
+        cached_detail = get_cached_response(ck_detail)
+        if cached_detail:
+            return jsonify_cacheable(cached_detail, ck_detail, public=True, max_age=3600, convert_images=True)
+    else:
+        cached = get_cached_response(ck)
+        if cached:
+            return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
 
     ld = get_lang_data(lc)
     lineage_lookup = (ld or {}).get('lineage_lookup') or {}
@@ -27296,11 +27309,60 @@ def api_master_league():
             motif_by_id[mid] = mx
 
     now_ms = int(datetime.now(timezone.utc).timestamp() * 1000)
+    league_event_rows = [lx for lx in extract_data_list(m_league_event) if isinstance(lx, dict)]
+
+    # Pass 1: status only — decide which seasons need full reward payloads (keeps /ml open snappy).
+    season_status_meta = []
+    for lx in league_event_rows:
+        event_id = normalize_id(lx.get('EventId') or lx.get('eventId'))
+        if event_id == '0':
+            continue
+        season_num = safe_int(event_id, 0) - 300001
+        ev = event_by_id.get(event_id, {})
+        sched_id = normalize_id(ev.get('ScheduleId') or ev.get('scheduleId') or '0')
+        start_ms = schedule_start_ms_by_id.get(sched_id, 0) if sched_id != '0' else 0
+        end_ms = schedule_end_ms_by_id.get(sched_id, 0) if sched_id != '0' else 0
+        status = 'ended'
+        if start_ms and end_ms and start_ms <= now_ms < end_ms:
+            status = 'active'
+        elif start_ms and now_ms < start_ms:
+            status = 'upcoming'
+        season_status_meta.append({
+            'event_id': event_id,
+            'season_number': season_num,
+            'status': status,
+        })
+
+    def _ml_pick_default_event_id(meta_rows):
+        if not meta_rows:
+            return None
+        for row in meta_rows:
+            if row.get('status') == 'active':
+                return row['event_id']
+        ups = [row for row in meta_rows if row.get('status') == 'upcoming']
+        if ups:
+            ups.sort(key=lambda r: safe_int(r.get('season_number'), 0))
+            return ups[0]['event_id']
+        ended = [row for row in meta_rows if row.get('status') == 'ended']
+        if ended:
+            ended.sort(key=lambda r: safe_int(r.get('season_number'), 0))
+            return ended[-1]['event_id']
+        return meta_rows[-1]['event_id']
+
+    default_event_id = _ml_pick_default_event_id(season_status_meta)
+    if force_event_id:
+        full_reward_ids = {force_event_id}
+    else:
+        full_reward_ids = {
+            row['event_id'] for row in season_status_meta
+            if row.get('status') in ('active', 'upcoming')
+        }
+        if default_event_id:
+            full_reward_ids.add(default_event_id)
+
     seasons = []
 
-    for lx in extract_data_list(m_league_event):
-        if not isinstance(lx, dict):
-            continue
+    for lx in league_event_rows:
         event_id = normalize_id(lx.get('EventId') or lx.get('eventId'))
         if event_id == '0':
             continue
@@ -27321,6 +27383,8 @@ def api_master_league():
             status = 'active'
         elif start_ms and now_ms < start_ms:
             status = 'upcoming'
+
+        include_rewards = event_id in full_reward_ids
 
         buff_id = normalize_id(lx.get('BuffId') or lx.get('buffId') or '0')
         buff_pct = buff_pct_by_id.get(buff_id, 0)
@@ -27344,16 +27408,19 @@ def api_master_league():
             tier = dict(rt)
             rsid = tier.pop('reward_set_id', '0')
             tier['emblem_icon'] = _ml_emblem_icon_url(tier.get('rank_type_index'))
-            base_rewards = _decorate_reward_rows(_resolve_reward_rows_from_set_id(rsid), lc) if rsid != '0' else []
-            tier['rewards'] = _ml_compose_rank_tier_rewards(
-                event_id, tier.get('rank_type_index'), base_rewards, lc)
+            if include_rewards:
+                base_rewards = _decorate_reward_rows(_resolve_reward_rows_from_set_id(rsid), lc) if rsid != '0' else []
+                tier['rewards'] = _ml_compose_rank_tier_rewards(
+                    event_id, tier.get('rank_type_index'), base_rewards, lc)
+            else:
+                tier['rewards'] = []
             rank_tiers.append(tier)
 
         srgid = safe_int(lx.get('LeagueSeasonRewardGroupId') or lx.get('leagueSeasonRewardGroupId'), 0)
         chall_threshold = safe_int(lx.get('LeagueChallengeModeEntryScoreThreshold') or lx.get('leagueChallengeModeEntryScoreThreshold'), 0)
         score_floor = max(150000, chall_threshold) if chall_threshold > 0 else 0
         score_milestones = []
-        if score_floor > 0 and srgid > 0:
+        if include_rewards and score_floor > 0 and srgid > 0:
             for sm in season_reward_by_group.get(srgid, []):
                 if sm.get('rank_type_index') != 1:
                     continue
@@ -27407,6 +27474,7 @@ def api_master_league():
             'rank_group_id': rank_gid,
             'rank_tiers': rank_tiers,
             'score_milestones': score_milestones,
+            'rewards_omitted': (not include_rewards),
             'motif_id': motif_id if motif_id != '0' else None,
             'motif_images': motif_images,
             'spark_banner': spark_banner,
@@ -27416,7 +27484,7 @@ def api_master_league():
 
     seasons.sort(key=lambda s: safe_int(s.get('season_number'), 0))
 
-    active_event_id = seasons[-1]['event_id'] if seasons else None
+    active_event_id = default_event_id or (seasons[-1]['event_id'] if seasons else None)
 
     ingame_cfg = {}
     for row in extract_data_list(m_ingame):
@@ -27460,6 +27528,14 @@ def api_master_league():
             'rank_bonuses': rank_bonuses,
         },
     }
+    if force_event_id:
+        season = next((s for s in seasons if str(s.get('event_id')) == str(force_event_id)), None)
+        if not season:
+            return jsonify({'error': 'not_found', 'event_id': force_event_id}), 404
+        detail = {'lang': lc, 'event_id': force_event_id, 'season': season}
+        ck_detail = f'{ck}_ev_{force_event_id}'
+        set_cached_response(ck_detail, detail)
+        return jsonify_cacheable(detail, ck_detail, public=True, max_age=3600, convert_images=True)
     set_cached_response(ck, out)
     return jsonify_cacheable(out, ck, public=True, max_age=3600, convert_images=True)
 
