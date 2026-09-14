@@ -751,12 +751,23 @@
   /* Soft-update focus/selection classes — avoid full board HTML rebuild on each tap. */
   function syncSelectionUi() {
     var board = document.getElementById('tmBoard');
+    var wrap = document.querySelector('.tm-board-wrap');
     var focusOn = selectedCount() > 0;
     document.body.classList.toggle('tm-focus-on', focusOn);
     if (!board) {
       syncStatusBar();
       return;
     }
+
+    /* Keep viewport anchored on a selected tile / hit row while rows hide/show. */
+    var anchor =
+      board.querySelector('.tm-tile--selected') ||
+      board.querySelector('.tm-row--hit');
+    var anchorPad = null;
+    if (wrap && anchor) {
+      anchorPad = anchor.getBoundingClientRect().top - wrap.getBoundingClientRect().top;
+    }
+    var prevTop = wrap ? wrap.scrollTop : 0;
 
     var sharedIds = focusOn ? sharedSupporterIds() : null;
     var shares = focusOn ? Object.keys(sharedIds || {}).length > 0 : true;
@@ -802,6 +813,28 @@
 
     syncStatusBar();
     fitExclusiveRails();
+
+    requestAnimationFrame(function () {
+      if (!wrap) return;
+      var still =
+        (anchor && anchor.isConnected && board.contains(anchor)
+          ? anchor
+          : null) ||
+        board.querySelector('.tm-tile--selected') ||
+        board.querySelector('.tm-row--hit');
+      if (still && anchorPad != null) {
+        var nextPad = still.getBoundingClientRect().top - wrap.getBoundingClientRect().top;
+        wrap.scrollTop = Math.max(0, wrap.scrollTop + (nextPad - anchorPad));
+      } else {
+        wrap.scrollTop = prevTop;
+      }
+      /* Short focused boards: collapse chrome once so the list can actually pan. */
+      if (focusOn && wrap.scrollHeight <= wrap.clientHeight + 24) {
+        setFiltersCollapsed(true);
+      } else if (!focusOn) {
+        setFiltersCollapsed(false);
+      }
+    });
   }
 
   function syncStatusBar() {
@@ -1562,6 +1595,10 @@
     var REVEAL_UP = 400; /* match /u aggressiveness */
     var TOP_SHOW = 12;
 
+    function boardCanScroll() {
+      return wrap.scrollHeight > wrap.clientHeight + 24;
+    }
+
     function setCollapsed(collapsed) {
       var want = !!collapsed;
       if (document.body.classList.contains('tm-filters-collapsed') === want) return;
@@ -1571,10 +1608,16 @@
 
     function onScroll() {
       var y = wrap.scrollTop || 0;
+      var canScroll = boardCanScroll();
       if (y <= TOP_SHOW) {
         upAccum = 0;
         lastY = y;
-        setCollapsed(false);
+        /*
+          Expand chrome only when the board still overflows after expand.
+          Otherwise focus-mode (few rows) loops: collapse → content fits →
+          scrollTop clamped to 0 → expand → overflows → bounce forever.
+        */
+        if (canScroll) setCollapsed(false);
         return;
       }
       if (Date.now() < ignoreUntil) {
@@ -1601,7 +1644,7 @@
         upAccum += -dy;
         if (upAccum >= REVEAL_UP) {
           upAccum = 0;
-          setCollapsed(false);
+          if (canScroll) setCollapsed(false);
         }
       }
     }
