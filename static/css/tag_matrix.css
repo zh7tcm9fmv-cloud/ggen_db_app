@@ -145,43 +145,13 @@ html[data-ui-lang="HK"] .tm-page.tm-hide-supports{
 }
 
 /*
-  /tm ALWAYS: single-row nav (horizontal scroll) — portrait + landscape + desktop.
-  TM does not load mobile_layout.css; app_shell defaults .nav-tabs to flex-wrap.
-  Also defeat ggen_15 mobile header wrap (Special Design row 2).
+  Nav tabs: match main browse (/c /u) — desktop wraps (full list), mobile = one-row scroll.
+  TM does not load mobile_layout.css; mirror that breakpoint here.
 */
-body.tm-page > .app-header .header-inner,
-html.ggen-15 body.tm-page > .app-header .header-inner,
-html.ggen-15 body.tm-page .app-header .header-inner:has(.header-15-slot),
-body.tm-page .app-header .header-inner:has(.header-15-slot){
-  display:flex !important;
-  flex-wrap:nowrap !important;
-  align-items:center;
-  row-gap:0 !important;
-}
-body.tm-page > .app-header .header-15-slot,
-html.ggen-15 body.tm-page .header-15-slot,
-body.tm-page .header-15-slot{
-  display:inline-flex !important;
-  visibility:visible !important;
-  opacity:1 !important;
-  flex:0 0 auto !important;
-  width:auto !important;
-  max-width:none !important;
-  min-width:0;
-  order:0 !important;
-  margin:0;
-  gap:6px;
-  justify-content:flex-start;
-}
-body.tm-page > .app-header .header-controls{
-  order:0 !important;
-  margin-left:auto;
-  flex:0 0 auto;
-}
 body.tm-page .nav-tabs-shell,
 body.tm-page #navTabsShell{
   min-height:44px;
-  overflow:hidden; /* allow auto-hide collapse; tabs themselves still scroll-x */
+  overflow:hidden; /* allow auto-hide collapse; tabs themselves still scroll-x on mobile */
   width:100%;
   max-width:100%;
   opacity:1;
@@ -192,28 +162,50 @@ body.tm-page #navTabsShell{
 }
 body.tm-page .nav-tabs,
 body.tm-page #navTabs{
-  display:flex !important;
-  flex-wrap:nowrap !important;
+  display:flex;
+  flex-wrap:wrap;
   align-items:stretch;
   justify-content:flex-start;
   width:100%;
   max-width:100%;
   min-width:0;
   box-sizing:border-box;
-  overflow-x:auto !important;
-  overflow-y:hidden !important;
-  -webkit-overflow-scrolling:touch;
-  scrollbar-width:none;
-  -ms-overflow-style:none;
+  overflow-x:visible;
+  overflow-y:visible;
   gap:0;
-  padding:4px 12px 0;
+  padding:0 24px;
 }
-body.tm-page .nav-tabs::-webkit-scrollbar,
-body.tm-page #navTabs::-webkit-scrollbar{display:none}
 body.tm-page .nav-tab{
-  flex:0 0 auto !important;
-  flex-shrink:0 !important;
+  flex:0 1 auto;
   white-space:nowrap;
+}
+@media (max-width:768px), (orientation:landscape) and (max-height:520px){
+  body.tm-page .nav-tabs,
+  body.tm-page #navTabs{
+    flex-wrap:nowrap !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-x:contain;
+    touch-action:pan-x;
+    scroll-behavior:auto;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+    padding:6px 12px 0;
+    justify-content:flex-start;
+  }
+  body.tm-page .nav-tabs::-webkit-scrollbar,
+  body.tm-page #navTabs::-webkit-scrollbar{display:none}
+  body.tm-page .nav-tab{
+    flex:0 0 auto !important;
+    flex-shrink:0 !important;
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  body.tm-page .nav-tabs,
+  body.tm-page #navTabs{
+    scroll-behavior:auto;
+  }
 }
 /* Board scroll: collapse nav tabs + filters; brand header stays */
 body.tm-page.tm-filters-collapsed #navTabsShell,
@@ -247,7 +239,7 @@ body.tm-page.tm-filters-collapsed .nav-tabs-shell{
 
 @media (max-width:768px), (orientation:landscape) and (max-height:520px){
   .tm-main{padding:10px 12px 20px}
-  /* Compact chrome sizing — single-row layout is always-on above */
+  /* Compact brand chrome on narrow / short viewports (nav wrap vs scroll is separate @768) */
   body.tm-page > .app-header .header-inner,
   html.ggen-15 body.tm-page > .app-header .header-inner,
   html.ggen-15 body.tm-page .app-header .header-inner:has(.header-15-slot),
@@ -579,8 +571,11 @@ body.tm-squad-mode .tm-tile[data-kind="unit"]{outline:1px dashed transparent}
   overflow-x:hidden;
   overflow-y:scroll; /* scroll (not auto) — more reliable touch pan on iOS/Android */
   -webkit-overflow-scrolling:touch;
-  overscroll-behavior:contain;
+  overscroll-behavior-y:contain;
+  overscroll-behavior-x:none;
   touch-action:pan-y;
+  /* JS momentum owns wheel smoothness; keep auto so continuous wheel isn’t delayed */
+  scroll-behavior:auto;
 }
 
 /*

@@ -117,6 +117,9 @@
     overflow-x: auto;
     overflow-y: visible;
     -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x;
+    scroll-behavior: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
     padding: 6px var(--mobile-page-gutter) 0;
@@ -708,5 +711,53 @@
     padding-right: max(var(--mobile-page-gutter, 16px), var(--safe-right));
     padding-bottom: max(3rem, calc(var(--mobile-page-gutter, 16px) + var(--safe-bottom)));
     box-sizing: border-box;
+  }
+}
+
+/*
+  Phone landscape (wide but short): keep nav as one scrolling row — same as portrait mobile.
+  Does not force the rest of the mobile layout onto desktop monitors in landscape.
+*/
+@media (orientation: landscape) and (max-height: 520px) {
+  .nav-tabs-shell {
+    overflow: visible;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .nav-tabs {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x;
+    scroll-behavior: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 6px max(12px, env(safe-area-inset-left, 0px)) 0 max(12px, env(safe-area-inset-right, 0px));
+    gap: 0;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start;
+  }
+
+  .nav-tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav-tab {
+    flex: 0 0 auto;
+    flex-shrink: 0;
+    min-height: 44px;
+    overflow: visible;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-tabs {
+    scroll-behavior: auto;
   }
 }

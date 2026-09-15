@@ -117,6 +117,21 @@
   var I18N = {
     EN: {
       nav: 'Tag Matrix',
+      navChar: 'Characters',
+      navUnit: 'Units',
+      navSupp: 'Supporters',
+      navRanking: 'Ranking',
+      navMod: 'Modifications',
+      navStage: 'Stages',
+      navMasterLeague: 'Master League',
+      navCalc: 'Damage Simulator',
+      navTb: 'Team Builder',
+      navLatest: 'Latest Release',
+      navBanner: 'Unit Assembly',
+      navInvestment: 'Investment Priority',
+      navCollections: 'Collections',
+      navGameNews: 'Game News',
+      navSection: 'Section',
       tabUnits: 'Units',
       tabSupporters: 'Supporters',
       tabCollections: 'Collections',
@@ -140,7 +155,7 @@
       exclusive: 'Exclusive rails',
       supports: 'Supporters',
       searchPh: 'Find tag (shippu, 疾風…)',
-      searchHint: 'Filters tag rows only — not unit names. Matches any locale name / id / alias.',
+      searchHint: 'Filters tag rows only — not unit names. Browse-style match: any locale / id / alias; spaces & commas = AND; -term excludes.',
       noMatch: 'No tags match that search.',
       legFour: 'Four Major',
       legSix: 'Six Major',
@@ -180,6 +195,21 @@
     },
     JA: {
       nav: 'タグ対応表',
+      navChar: 'キャラクター',
+      navUnit: 'ユニット',
+      navSupp: 'サポーター',
+      navRanking: 'ランキング',
+      navMod: 'オプションパーツ',
+      navStage: 'ステージ',
+      navMasterLeague: 'マスターリーグ',
+      navCalc: 'ダメージシミュレーター',
+      navTb: 'チーム編成',
+      navLatest: '最新登場',
+      navBanner: 'ピックアップガシャ',
+      navInvestment: '投資優先度',
+      navCollections: 'コレクション',
+      navGameNews: 'ゲームニュース',
+      navSection: 'セクション',
       tabUnits: 'ユニット',
       tabSupporters: 'サポーター',
       tabCollections: 'コレクション',
@@ -203,7 +233,7 @@
       exclusive: '互斥強調',
       supports: 'サポーター',
       searchPh: 'タグ検索（疾風…）',
-      searchHint: 'タグ行のみ絞り込み（ユニット名ではない）。全言語名／ID／別名。',
+      searchHint: 'タグ行のみ絞り込み（ユニット名ではない）。全言語名／ID／別名。空白・カンマはAND、先頭-で除外。',
       noMatch: '一致するタグがありません。',
       legFour: '四大',
       legSix: '六大',
@@ -242,6 +272,21 @@
     },
     TW: {
       nav: '標籤對照表',
+      navChar: '角色',
+      navUnit: '單位',
+      navSupp: '支援人員',
+      navRanking: '排行',
+      navMod: '選擇性零件',
+      navStage: '關卡',
+      navMasterLeague: '大師聯盟',
+      navCalc: '損傷模擬器',
+      navTb: '隊伍編成',
+      navLatest: '最新登場',
+      navBanner: '機體補給',
+      navInvestment: '投資優先度',
+      navCollections: '收藏',
+      navGameNews: '遊戲公告',
+      navSection: '區塊',
       tabUnits: '單位',
       tabSupporters: '支援人員',
       tabCollections: '收藏',
@@ -265,7 +310,7 @@
       exclusive: '強調互斥',
       supports: '支援人員',
       searchPh: '搜尋標籤（疾風、shippu…）',
-      searchHint: '只篩選標籤列，不是單位名稱。可用各語名稱／ID／別名。',
+      searchHint: '只篩選標籤列，不是單位名稱。可用各語名稱／ID／別名；空白與逗號為 AND；-關鍵字排除。',
       noMatch: '沒有符合的標籤。',
       legFour: '四大',
       legSix: '六大',
@@ -304,6 +349,21 @@
     },
     HK: {
       nav: '標籤對照表',
+      navChar: '角色',
+      navUnit: '單位',
+      navSupp: '支援人員',
+      navRanking: '排行',
+      navMod: '選擇性零件',
+      navStage: '關卡',
+      navMasterLeague: '大師聯盟',
+      navCalc: '損傷模擬器',
+      navTb: '隊伍編成',
+      navLatest: '最新登場',
+      navBanner: '機體補給',
+      navInvestment: '投資優先度',
+      navCollections: '收藏',
+      navGameNews: '遊戲公告',
+      navSection: '區塊',
       tabUnits: '單位',
       tabSupporters: '支援人員',
       tabCollections: '收藏',
@@ -327,7 +387,7 @@
       exclusive: '強調互斥',
       supports: '支援人員',
       searchPh: '搜尋標籤（疾風、shippu…）',
-      searchHint: '只篩選標籤列，不是單位名稱。可用各語名稱／ID／別名。',
+      searchHint: '只篩選標籤列，不是單位名稱。可用各語名稱／ID／別名；空白與逗號為 AND；-關鍵字排除。',
       noMatch: '沒有符合的標籤。',
       legFour: '四大',
       legSix: '六大',
@@ -679,8 +739,7 @@
       }
       state.selectedIds[id] = 1;
     }
-    hideHoverPortal();
-    syncSelectionUi();
+    afterSelectionChange();
   }
 
   function clearSelection() {
@@ -691,8 +750,7 @@
     state.selectedIds = {};
     state.anchorTagId = null;
     state.anchorUnitId = null;
-    hideHoverPortal();
-    syncSelectionUi();
+    afterSelectionChange();
   }
 
   function setSquadMode(on) {
@@ -703,8 +761,7 @@
       state.anchorTagId = null;
     }
     syncSquadUi();
-    hideHoverPortal();
-    syncSelectionUi();
+    afterSelectionChange();
   }
 
   function syncSquadUi() {
@@ -1117,12 +1174,133 @@
     return parts.join(' ').toLowerCase();
   }
 
-  function rowMatches(row) {
-    var g = String(row.group || '');
-    if (!state.groups[g]) return false;
-    var q = state.search.trim().toLowerCase();
+  /* Match browse instant search: fold / word-start / multi-term AND / -exclude */
+  function tmSearchFold(s) {
+    return String(s || '')
+      .toLowerCase()
+      .replace(/[\s\-_]+/g, '');
+  }
+  function tmAlnumCode(c) {
+    return (c >= 48 && c <= 57) || (c >= 97 && c <= 122);
+  }
+  function tmParseQuery(sq) {
+    var positive = [];
+    var negative = [];
+    if (!sq || !String(sq).trim()) return { positive: positive, negative: negative };
+    var rawQ = String(sq);
+    try {
+      rawQ = rawQ.normalize('NFKC');
+    } catch (_) {}
+    rawQ.split(/[,;]/).forEach(function (raw) {
+      var seg = String(raw || '')
+        .replace(/\uFF1A/g, ':')
+        .replace(/\u3000/g, ' ')
+        .trim();
+      if (!seg) return;
+      var sl = seg.toLowerCase();
+      if (sl.charAt(0) === '-' && sl.length > 1) {
+        negative.push(sl.slice(1).trim());
+        return;
+      }
+      positive.push(sl);
+    });
+    return { positive: positive, negative: negative };
+  }
+  function tmTermInHay(term, hay, hayFold) {
+    if (!term) return true;
+    var t = String(term).toLowerCase();
+    if (!t) return true;
+    var ascii = /^[a-z0-9._+]+$/.test(t);
+    if (ascii) {
+      if (t.length === 1) {
+        var i1 = hay.indexOf(t);
+        while (i1 >= 0) {
+          if (i1 === 0 || !tmAlnumCode(hay.charCodeAt(i1 - 1))) return true;
+          i1 = hay.indexOf(t, i1 + 1);
+        }
+        return false;
+      }
+      if (t.length === 2 && !/^\d+$/.test(t)) {
+        var i2 = hay.indexOf(t);
+        while (i2 >= 0) {
+          var after = i2 + t.length;
+          var nextOk = after >= hay.length || !tmAlnumCode(hay.charCodeAt(after));
+          if ((i2 === 0 || !tmAlnumCode(hay.charCodeAt(i2 - 1))) && nextOk) return true;
+          i2 = hay.indexOf(t, i2 + 1);
+        }
+      } else if (/^\d+$/.test(t) && t.length >= 4) {
+        if (hay.indexOf(t) >= 0) return true;
+      } else {
+        var i3 = hay.indexOf(t);
+        while (i3 >= 0) {
+          if (i3 === 0 || !tmAlnumCode(hay.charCodeAt(i3 - 1))) return true;
+          i3 = hay.indexOf(t, i3 + 1);
+        }
+      }
+      var tfA = tmSearchFold(t);
+      if (tfA.length >= 2 && hayFold && hayFold.indexOf(tfA) >= 0) return true;
+      return t.length >= 2 && hay.indexOf(t) >= 0;
+    }
+    if (hay.indexOf(t) >= 0) return true;
+    var tf = tmSearchFold(t);
+    return tf.length >= 2 && hayFold && hayFold.indexOf(tf) >= 0;
+  }
+  function tmIdDigitsMatch(term, row) {
+    var digits = String(term || '').replace(/\D/g, '');
+    if (!digits || digits.length < 4) return false;
+    var id = String(row.id || '');
+    var raw = String(row.raw_id || '');
+    return (
+      digits === id ||
+      digits === raw ||
+      (id && id.indexOf(digits) >= 0) ||
+      (raw && raw.indexOf(digits) >= 0)
+    );
+  }
+
+  function rowGroupOk(row) {
+    return !!state.groups[String(row.group || '')];
+  }
+
+  function rowSearchOk(row) {
+    var q = String(state.search || '').trim();
     if (!q) return true;
-    return rowSearchBlob(row).indexOf(q) >= 0;
+    var pq = tmParseQuery(q);
+    if (!pq.positive.length && !pq.negative.length) return true;
+    var hay = rowSearchBlob(row);
+    var hayFold = tmSearchFold(hay);
+    var pi;
+    for (pi = 0; pi < pq.positive.length; pi++) {
+      var parts = pq.positive[pi].split(/\s+/).filter(Boolean);
+      var pj;
+      for (pj = 0; pj < parts.length; pj++) {
+        var part = parts[pj];
+        if (tmIdDigitsMatch(part, row)) continue;
+        if (!tmTermInHay(part, hay, hayFold)) return false;
+      }
+    }
+    for (pi = 0; pi < pq.negative.length; pi++) {
+      var neg = pq.negative[pi];
+      if (tmIdDigitsMatch(neg, row) || tmTermInHay(neg, hay, hayFold)) return false;
+    }
+    return true;
+  }
+
+  function rowMatches(row) {
+    if (!rowGroupOk(row)) return false;
+    /*
+      Squad pick while searching: also surface every enabled-group tag that
+      lists a selected unit (not only tags matching the search string).
+    */
+    if (selectedCount() > 0 && rowHasSelectedUnit(row)) return true;
+    return rowSearchOk(row);
+  }
+
+  function afterSelectionChange() {
+    hideHoverPortal();
+    /* Search narrows the DOM; selecting a unit must rebuild so its other tags appear. */
+    if (String(state.search || '').trim()) renderBoard();
+    else syncSelectionUi();
   }
 
   function syncGroupActive() {
@@ -1583,6 +1761,168 @@
     return !!(ae && toolbar.contains(ae));
   }
 
+  /*
+    Smooth vertical board scrolling + forward wheel/touch from chrome
+    (toolbar, sticky head, margins, brand header) onto .tm-board-wrap.
+    Nav tab strip stays horizontal-only (excluded).
+  */
+  function bindBoardVerticalScroll() {
+    var wrap = document.querySelector('.tm-board-wrap');
+    var main = document.querySelector('.tm-main');
+    if (!wrap || wrap._tmVertScroll) return;
+    wrap._tmVertScroll = 1;
+
+    var reduceMotion = false;
+    try {
+      reduceMotion =
+        window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    } catch (_) {}
+
+    var mom = 0;
+    var raf = 0;
+
+    function maxScroll() {
+      return Math.max(0, wrap.scrollHeight - wrap.clientHeight);
+    }
+
+    function tick() {
+      raf = 0;
+      if (!mom) return;
+      var max = maxScroll();
+      if (max <= 2) {
+        mom = 0;
+        return;
+      }
+      wrap.scrollTop = Math.max(0, Math.min(max, wrap.scrollTop + mom));
+      mom *= 0.88;
+      if (Math.abs(mom) < 0.45) {
+        mom = 0;
+        return;
+      }
+      raf = requestAnimationFrame(tick);
+    }
+
+    function kick(dy) {
+      if (!dy) return;
+      var max = maxScroll();
+      if (max <= 2) return false;
+      if (reduceMotion) {
+        wrap.scrollTop = Math.max(0, Math.min(max, wrap.scrollTop + dy));
+        return true;
+      }
+      mom += dy * 0.7;
+      mom = Math.max(-80, Math.min(80, mom));
+      if (!raf) raf = requestAnimationFrame(tick);
+      return true;
+    }
+
+    function isNavStrip(el) {
+      return !!(el && el.closest && el.closest('#navTabs, .nav-tabs, .nav-tabs-shell, .nav-tabs-edge-hint'));
+    }
+
+    function isEditable(el) {
+      return !!(
+        el &&
+        el.closest &&
+        el.closest('input, textarea, select, [contenteditable="true"], .lang-dropdown')
+      );
+    }
+
+    function shouldOwnVerticalWheel(ev) {
+      if (!document.body.classList.contains('tm-page')) return false;
+      if (isEditable(ev.target)) return false;
+      if (isNavStrip(ev.target)) return false;
+      var dy = ev.deltaY;
+      var dx = ev.deltaX;
+      if (!dy && !dx) return false;
+      /* Trackpads often report both; only claim clearly-vertical intent */
+      if (Math.abs(dx) > Math.abs(dy) * 1.15) return false;
+      return !!dy;
+    }
+
+    document.addEventListener(
+      'wheel',
+      function (ev) {
+        if (!shouldOwnVerticalWheel(ev)) return;
+        if (!kick(ev.deltaY)) return;
+        ev.preventDefault();
+      },
+      { passive: false, capture: true }
+    );
+
+    /* Touch pan on toolbar / sticky head / margins → board (board itself stays native) */
+    var touch = null;
+    function touchOnBoard(el) {
+      return !!(el && el.closest && el.closest('.tm-board-wrap'));
+    }
+    function touchBlocked(el) {
+      if (!el || !el.closest) return true;
+      if (isNavStrip(el)) return true;
+      if (isEditable(el)) return true;
+      if (el.closest('button, a, .tm-chip, .tm-role-btn, .tm-rarity-btn, .tm-squad-btn')) return true;
+      if (el.closest('.app-header .header-controls, .header-15-slot')) return true;
+      return false;
+    }
+
+    document.addEventListener(
+      'touchstart',
+      function (ev) {
+        if (!document.body.classList.contains('tm-page')) return;
+        if (ev.touches.length !== 1) {
+          touch = null;
+          return;
+        }
+        var tEl = ev.target;
+        if (touchOnBoard(tEl) || touchBlocked(tEl)) {
+          touch = null;
+          return;
+        }
+        if (maxScroll() <= 2) {
+          touch = null;
+          return;
+        }
+        var t = ev.touches[0];
+        touch = { y: t.clientY, top: wrap.scrollTop };
+      },
+      { passive: true, capture: true }
+    );
+
+    document.addEventListener(
+      'touchmove',
+      function (ev) {
+        if (!touch || ev.touches.length !== 1) return;
+        var t = ev.touches[0];
+        var dy = touch.y - t.clientY;
+        if (Math.abs(dy) < 2) return;
+        var max = maxScroll();
+        wrap.scrollTop = Math.max(0, Math.min(max, touch.top + dy));
+        ev.preventDefault();
+      },
+      { passive: false, capture: true }
+    );
+
+    document.addEventListener(
+      'touchend',
+      function () {
+        touch = null;
+      },
+      { passive: true, capture: true }
+    );
+    document.addEventListener(
+      'touchcancel',
+      function () {
+        touch = null;
+      },
+      { passive: true, capture: true }
+    );
+
+    /* Keep main chrome from becoming a competing scrollport */
+    if (main) {
+      main.style.touchAction = 'pan-y';
+    }
+  }
+
   function bindFiltersAutoHide() {
     var wrap = document.querySelector('.tm-board-wrap');
     if (!wrap || wrap._tmFiltersAutoHide) return;
@@ -1683,6 +2023,34 @@
     syncFixedChrome();
   }
 
+  function applyNavTabLabels() {
+    var map = {
+      '/c': 'navChar',
+      '/u': 'navUnit',
+      '/s': 'navSupp',
+      '/rk': 'navRanking',
+      '/op': 'navMod',
+      '/st': 'navStage',
+      '/ml': 'navMasterLeague',
+      '/cal': 'navCalc',
+      '/tb': 'navTb',
+      '/new': 'navLatest',
+      '/tl': 'navBanner',
+      '/ip': 'navInvestment',
+      '/collections': 'navCollections',
+      '/game-news': 'navGameNews'
+    };
+    document.querySelectorAll('#navTabs a.nav-tab[href]').forEach(function (a) {
+      var path = String(a.getAttribute('href') || '').split('?')[0].replace(/\/+$/, '') || '/';
+      var key = map[path];
+      if (!key) return;
+      var lab = a.querySelector('.nav-tab-label');
+      if (lab) lab.textContent = t(key);
+    });
+    var tabs = document.getElementById('navTabs');
+    if (tabs) tabs.setAttribute('aria-label', t('navSection'));
+  }
+
   function applyCopy() {
     var map = [
       ['tmEyebrow', 'eyebrow'],
@@ -1708,6 +2076,7 @@
       var el = document.getElementById(pair[0]);
       if (el) el.textContent = t(pair[1]);
     });
+    applyNavTabLabels();
     syncSquadUi();
     var rot = document.getElementById('tmRotateHint');
     if (rot) rot.setAttribute('aria-label', t('rotateHintAria'));
@@ -1987,6 +2356,7 @@
     syncRotateHint();
     syncFixedChrome();
     bindFiltersAutoHide();
+    bindBoardVerticalScroll();
     if (!window._tmChromeResize) {
       window._tmChromeResize = 1;
       window.addEventListener(

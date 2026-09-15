@@ -145,10 +145,10 @@
     var nav = document.getElementById('navTabs');
     if (!nav || nav.dataset.g15Wheel === '1') return;
     nav.dataset.g15Wheel = '1';
+    /* Direct 1:1 wheel → scrollLeft (no momentum clamp — pace must track gesture speed) */
     nav.addEventListener(
       'wheel',
       function (ev) {
-        if (!designOn()) return;
         var dx = ev.deltaX;
         var dy = ev.deltaY;
         if (Math.abs(dx) < Math.abs(dy)) dx = dy;
