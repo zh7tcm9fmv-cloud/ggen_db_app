@@ -674,11 +674,11 @@
     var limTotal = 0;
     var limOwned = 0;
     var lbSum = 0;
-    var byRole = { '1': { t: 0, o: 0 }, '2': { t: 0, o: 0 }, '3': { t: 0, o: 0 } };
+    var byRole = { '1': { t: 0, o: 0, m: 0 }, '2': { t: 0, o: 0, m: 0 }, '3': { t: 0, o: 0, m: 0 } };
     var bySkill = {
-      hp: { t: 0, o: 0 },
-      en: { t: 0, o: 0 },
-      hybrid: { t: 0, o: 0 }
+      hp: { t: 0, o: 0, m: 0 },
+      en: { t: 0, o: 0, m: 0 },
+      hybrid: { t: 0, o: 0, m: 0 }
     };
     rows.forEach(function (row) {
       var lb = getLb(row.id);
@@ -696,11 +696,13 @@
       if (byRole[rid]) {
         byRole[rid].t++;
         if (isOwned) byRole[rid].o++;
+        if (lb >= MAX_LB) byRole[rid].m++;
       }
       var sk = String(row.skill_kind || '');
       if (bySkill[sk]) {
         bySkill[sk].t++;
         if (isOwned) bySkill[sk].o++;
+        if (lb >= MAX_LB) bySkill[sk].m++;
       }
     });
     var pct = total ? Math.round((owned / total) * 1000) / 10 : 0;
@@ -1001,6 +1003,452 @@
     '3': '/static/images/UI/UI_Common_TypeIcon_Support_M.webp',
     '2': '/static/images/UI/UI_Common_TypeIcon_Defense_M.webp'
   };
+  /* Attack crimson / Support lemon / Durability blue — keep warm pair separable under glow */
+  var DONUT_ROLE_COLORS = {
+    '1': '#dc2626',
+    '3': '#fde047',
+    '2': '#3b82f6'
+  };
+  var DONUT_SKILL_COLORS = {
+    hp: '#34d399',
+    en: '#facc15',
+    hybrid: '#a855f7'
+  };
+  var _liveDonutHits = [];
+  var _donutHoverBound = false;
+
+  function donutBucketsFromStats(st) {
+    if (state.type === 'supporters') {
+      return [
+        {
+          id: 'hp',
+          label: t('skill_hp'),
+          value: (st.bySkill.hp && st.bySkill.hp.o) || 0,
+          maxed: (st.bySkill.hp && st.bySkill.hp.m) || 0,
+          total: (st.bySkill.hp && st.bySkill.hp.t) || 0,
+          color: DONUT_SKILL_COLORS.hp
+        },
+        {
+          id: 'en',
+          label: t('skill_en'),
+          value: (st.bySkill.en && st.bySkill.en.o) || 0,
+          maxed: (st.bySkill.en && st.bySkill.en.m) || 0,
+          total: (st.bySkill.en && st.bySkill.en.t) || 0,
+          color: DONUT_SKILL_COLORS.en
+        },
+        {
+          id: 'hybrid',
+          label: t('skill_hybrid'),
+          value: (st.bySkill.hybrid && st.bySkill.hybrid.o) || 0,
+          maxed: (st.bySkill.hybrid && st.bySkill.hybrid.m) || 0,
+          total: (st.bySkill.hybrid && st.bySkill.hybrid.t) || 0,
+          color: DONUT_SKILL_COLORS.hybrid
+        }
+      ];
+    }
+    return ['1', '3', '2'].map(function (rid) {
+      var b = st.byRole[rid] || { o: 0, m: 0, t: 0 };
+      return {
+        id: rid,
+        label: roleLabel(rid),
+        value: b.o || 0,
+        maxed: b.m || 0,
+        total: b.t || 0,
+        color: DONUT_ROLE_COLORS[rid] || '#00d4ff'
+      };
+    });
+  }
+
+  function donutHexToRgb(hex) {
+    var h = String(hex || '').replace('#', '');
+    if (h.length === 3) {
+      h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2];
+    }
+    if (h.length !== 6) return { r: 0, g: 212, b: 255 };
+    return {
+      r: parseInt(h.slice(0, 2), 16),
+      g: parseInt(h.slice(2, 4), 16),
+      b: parseInt(h.slice(4, 6), 16)
+    };
+  }
+
+  function donutHexToRgba(hex, alpha) {
+    var c = donutHexToRgb(hex);
+    return 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',' + alpha + ')';
+  }
+
+  function donutMaxLbPct(b) {
+    var owned = Number(b && b.value) || 0;
+    var maxed = Number(b && b.maxed) || 0;
+    if (owned <= 0) return 0;
+    return Math.round((1000 * maxed) / owned) / 10;
+  }
+
+  function donutBucketTipText(b) {
+    var tot = Number(b.total) || 0;
+    var owned = Number(b.value) || 0;
+    var maxed = Number(b.maxed) || 0;
+    var pct = donutMaxLbPct(b);
+    return (
+      String(b.label || '') +
+      ' ' +
+      owned +
+      (tot ? ' / ' + tot : '') +
+      ' · ' +
+      t('max_lb') +
+      ' ' +
+      maxed +
+      (owned ? ' (' + pct + '%)' : '')
+    );
+  }
+
+  function donutBucketTipHtml(b) {
+    var tot = Number(b.total) || 0;
+    var owned = Number(b.value) || 0;
+    var maxed = Number(b.maxed) || 0;
+    var pct = donutMaxLbPct(b);
+    var meta =
+      owned +
+      (tot ? ' / ' + tot : '') +
+      ' · ' +
+      t('max_lb') +
+      ' ' +
+      maxed +
+      (owned ? ' · ' + pct + '%' : '');
+    return (
+      '<div class="collections-donut-tip-name">' +
+      esc(String(b.label || '')) +
+      '</div>' +
+      '<div class="collections-donut-tip-meta">' +
+      esc(meta) +
+      '</div>'
+    );
+  }
+
+  /**
+   * Amicro-style rounded donut.
+   * Slice angle = catalog share. Owned = solid bright bar.
+   * Owned = solid bright bar (no Max LB overlay on the ring).
+   */
+  function drawRoundedRoleDonut(ctx, cx, cy, size, buckets, opts) {
+    opts = opts || {};
+    var outer = size / 2;
+    var trackR = outer * 0.82;
+    var stroke = opts.stroke != null ? opts.stroke : Math.max(7, size * 0.085);
+    var gapRad = opts.gap != null ? opts.gap : 0.14;
+    var complete = !!opts.complete;
+    var perfect = !!opts.perfect;
+    var iconImg = opts.iconImg || null;
+    var hits = [];
+
+    ctx.save();
+    /* Keep hole clean behind the type motif — no gold wash */
+    ctx.beginPath();
+    ctx.arc(cx, cy, trackR * 0.62, 0, Math.PI * 2);
+    var soft = ctx.createRadialGradient(cx, cy, 4, cx, cy, trackR);
+    soft.addColorStop(0, 'rgba(0,212,255,0.05)');
+    soft.addColorStop(0.55, 'rgba(0,212,255,0.015)');
+    soft.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = soft;
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, trackR, 0, Math.PI * 2);
+    ctx.strokeStyle = perfect
+      ? 'rgba(255,215,0,0.2)'
+      : complete
+        ? 'rgba(122,240,255,0.18)'
+        : 'rgba(255,255,255,0.1)';
+    ctx.lineWidth = stroke;
+    ctx.stroke();
+
+    if (complete || perfect) {
+      ctx.beginPath();
+      ctx.arc(cx, cy, trackR + stroke * 0.55, 0, Math.PI * 2);
+      ctx.strokeStyle = perfect ? 'rgba(255,228,140,0.32)' : 'rgba(122,240,255,0.26)';
+      ctx.lineWidth = perfect ? 1.35 : 1.1;
+      ctx.stroke();
+    }
+
+    var list = (buckets || []).filter(function (b) {
+      return b && (Number(b.total) > 0 || Number(b.value) > 0);
+    });
+    var catalogSum = 0;
+    for (var i = 0; i < list.length; i++) {
+      catalogSum += Math.max(Number(list[i].total) || 0, Number(list[i].value) || 0);
+    }
+
+    if (catalogSum > 0) {
+      var start = -Math.PI / 2;
+      for (var j = 0; j < list.length; j++) {
+        var b = list[j];
+        var tot = Math.max(Number(b.total) || 0, Number(b.value) || 0);
+        var owned = Math.min(tot, Number(b.value) || 0);
+        var sweep = (tot / catalogSum) * Math.PI * 2;
+        var g = list.length === 1 ? gapRad * 0.55 : gapRad;
+        var a0 = start + g * 0.5;
+        var a1 = start + sweep - g * 0.5;
+        var span = a1 - a0;
+        if (span > 0.02) {
+          var baseColor = b.color || '#00d4ff';
+          /* Catalog slot — quiet track */
+          ctx.beginPath();
+          ctx.arc(cx, cy, trackR, a0, a1);
+          ctx.strokeStyle = donutHexToRgba(baseColor, 0.14);
+          ctx.lineWidth = stroke;
+          ctx.lineCap = 'round';
+          ctx.shadowBlur = 0;
+          ctx.stroke();
+
+          if (owned > 0 && tot > 0) {
+            var ownFrac = owned / tot;
+            var aOwn = a0 + span * ownFrac;
+            if (aOwn > a0 + 0.015) {
+              /* Possession — bright clear solid bar */
+              ctx.beginPath();
+              ctx.arc(cx, cy, trackR, a0, aOwn);
+              ctx.strokeStyle = donutHexToRgba(baseColor, 0.92);
+              ctx.lineWidth = stroke;
+              ctx.lineCap = 'round';
+              ctx.shadowBlur = 0;
+              ctx.stroke();
+
+            }
+          }
+
+          hits.push({
+            a0: a0,
+            a1: a1,
+            r: trackR,
+            stroke: stroke + 2,
+            tip: donutBucketTipText(b),
+            tipHtml: donutBucketTipHtml(b),
+            color: baseColor,
+            bucket: b
+          });
+        }
+        start += sweep;
+      }
+    }
+
+    if (perfect) {
+      ctx.beginPath();
+      ctx.arc(cx, cy, trackR + stroke * 0.55, 0, Math.PI * 2);
+      ctx.strokeStyle = 'rgba(255,228,140,0.28)';
+      ctx.lineWidth = 1.2;
+      ctx.shadowBlur = 0;
+      ctx.stroke();
+    }
+
+    if (iconImg) {
+      var innerClear = (trackR - stroke * 0.55) * 2;
+      var iconBox = innerClear * 0.92;
+      var iw = iconImg.naturalWidth || iconImg.width || iconBox;
+      var ih = iconImg.naturalHeight || iconImg.height || iconBox;
+      if (!iw || !ih) {
+        iw = iconBox;
+        ih = iconBox;
+      }
+      var fit = Math.min(iconBox / iw, iconBox / ih);
+      var dw = iw * fit;
+      var dh = ih * fit;
+      ctx.shadowColor = 'rgba(0,0,0,0.55)';
+      ctx.shadowBlur = 14;
+      ctx.shadowOffsetY = 4;
+      ctx.drawImage(iconImg, cx - dw / 2, cy - dh / 2, dw, dh);
+      ctx.shadowColor = 'transparent';
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetY = 0;
+    }
+    ctx.restore();
+    return hits;
+  }
+
+  function donutAriaSummary(buckets) {
+    return (buckets || []).map(donutBucketTipText).join('; ');
+  }
+
+  function ensureDonutTipEl() {
+    var tip = document.getElementById('colDonutTip');
+    if (tip) return tip;
+    tip = document.createElement('div');
+    tip.id = 'colDonutTip';
+    tip.className = 'collections-donut-tip';
+    tip.hidden = true;
+    tip.setAttribute('role', 'tooltip');
+    var host = document.getElementById('colGauge') || document.body;
+    host.appendChild(tip);
+    return tip;
+  }
+
+  function hideDonutTip() {
+    var tip = document.getElementById('colDonutTip');
+    if (tip) {
+      tip.hidden = true;
+      tip.classList.remove('is-open');
+      tip.innerHTML = '';
+    }
+    var canvas = document.getElementById('colRoleDonut');
+    if (canvas) canvas.style.cursor = '';
+  }
+
+  function showDonutTip(hit, clientX, clientY) {
+    if (!hit) {
+      hideDonutTip();
+      return;
+    }
+    var tip = ensureDonutTipEl();
+    var gauge = document.getElementById('colGauge');
+    var canvas = document.getElementById('colRoleDonut');
+    if (canvas) canvas.style.cursor = 'pointer';
+    tip.hidden = false;
+    tip.classList.add('is-open');
+    tip.innerHTML = hit.tipHtml || esc(hit.tip || '');
+    if (gauge && clientX != null) {
+      var gRect = gauge.getBoundingClientRect();
+      var tipW = tip.offsetWidth || 148;
+      var tipH = tip.offsetHeight || 72;
+      var left = clientX - gRect.left - tipW / 2;
+      var top = clientY - gRect.top - tipH - 12;
+      if (left < 8) left = 8;
+      if (left + tipW > gRect.width - 8) left = Math.max(8, gRect.width - tipW - 8);
+      if (top < 8) top = clientY - gRect.top + 16;
+      tip.style.left = Math.round(left) + 'px';
+      tip.style.top = Math.round(top) + 'px';
+    }
+  }
+
+  function hitTestDonutSlice(x, y, cssSize) {
+    var cx = cssSize / 2;
+    var cy = cssSize / 2;
+    var dx = x - cx;
+    var dy = y - cy;
+    var dist = Math.sqrt(dx * dx + dy * dy);
+    var ang = Math.atan2(dy, dx);
+    var hits = _liveDonutHits || [];
+    for (var i = 0; i < hits.length; i++) {
+      var h = hits[i];
+      var half = (h.stroke || 9) * 0.7;
+      if (dist < h.r - half || dist > h.r + half) continue;
+      var a0 = h.a0;
+      var a1 = h.a1;
+      var a = ang;
+      while (a < a0) a += Math.PI * 2;
+      while (a > a0 + Math.PI * 2) a -= Math.PI * 2;
+      if (a >= a0 && a <= a1) return h;
+    }
+    return null;
+  }
+
+  function bindDonutHover(canvas, cssSize) {
+    if (!canvas || _donutHoverBound) return;
+    _donutHoverBound = true;
+    var pinned = null;
+    canvas.addEventListener('mousemove', function (ev) {
+      if (ev.pointerType === 'touch') return;
+      var rect = canvas.getBoundingClientRect();
+      var x = ((ev.clientX - rect.left) / rect.width) * cssSize;
+      var y = ((ev.clientY - rect.top) / rect.height) * cssSize;
+      var hit = hitTestDonutSlice(x, y, cssSize);
+      pinned = null;
+      if (!hit) {
+        hideDonutTip();
+        return;
+      }
+      showDonutTip(hit, ev.clientX, ev.clientY);
+    });
+    canvas.addEventListener('mouseleave', function () {
+      if (!pinned) hideDonutTip();
+    });
+    canvas.addEventListener('click', function (ev) {
+      var rect = canvas.getBoundingClientRect();
+      var x = ((ev.clientX - rect.left) / rect.width) * cssSize;
+      var y = ((ev.clientY - rect.top) / rect.height) * cssSize;
+      var hit = hitTestDonutSlice(x, y, cssSize);
+      if (!hit) {
+        pinned = null;
+        hideDonutTip();
+        return;
+      }
+      pinned = hit;
+      showDonutTip(hit, ev.clientX, ev.clientY);
+    });
+  }
+
+  /** Full labels for share PNG — no truncation. */
+  function drawShareDonutLegend(ctx, x, y, buckets) {
+    var lbShort = t('max_lb');
+    var rowH = 18;
+    var list = buckets || [];
+    ctx.save();
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'middle';
+    for (var i = 0; i < list.length; i++) {
+      var b = list[i];
+      var cy = y + i * rowH + rowH / 2;
+      var owned = b.value | 0;
+      var tot = b.total | 0;
+      var maxed = b.maxed | 0;
+      var pct = donutMaxLbPct(b);
+      ctx.beginPath();
+      ctx.arc(x + 5, cy, 4, 0, Math.PI * 2);
+      ctx.fillStyle = b.color || '#00d4ff';
+      ctx.fill();
+      ctx.fillStyle = '#f0f2f7';
+      ctx.font = uiCanvasFont(13, '600');
+      var line =
+        String(b.label || '') +
+        ' ' +
+        owned +
+        (tot ? ' / ' + tot : '') +
+        ' · ' +
+        lbShort +
+        ' ' +
+        maxed +
+        (owned ? ' (' + pct + '%)' : '');
+      ctx.fillText(line, x + 14, cy);
+    }
+    ctx.restore();
+    return list.length * rowH;
+  }
+
+  function paintLiveRoleDonut(st) {
+    var canvas = document.getElementById('colRoleDonut');
+    if (!canvas) return;
+    var buckets = donutBucketsFromStats(st);
+    var complete = st.total > 0 && st.owned >= st.total;
+    var perfect = complete && st.maxed >= st.total;
+    var dpr = window.devicePixelRatio || 1;
+    var css = 132;
+    canvas.width = css * dpr;
+    canvas.height = css * dpr;
+    canvas.style.width = css + 'px';
+    canvas.style.height = css + 'px';
+    var ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, css, css);
+    var ic = document.getElementById('colGaugeTypeIc');
+    if (ic && !ic.complete) {
+      ic.onload = function () {
+        paintLiveRoleDonut(computeStats(activeList()));
+      };
+    }
+    _liveDonutHits = drawRoundedRoleDonut(ctx, css / 2, css / 2, css, buckets, {
+      complete: complete,
+      perfect: perfect,
+      iconImg: ic && ic.complete ? ic : null,
+      stroke: 9,
+      gap: 0.16
+    });
+    canvas.setAttribute('aria-label', donutAriaSummary(buckets));
+    bindDonutHover(canvas, css);
+    hideDonutTip();
+    var leg = document.getElementById('colDonutLegend');
+    if (leg) {
+      leg.innerHTML = '';
+      leg.hidden = true;
+    }
+  }
 
   var wasComplete = false;
   var wasPerfect = false;
@@ -1295,7 +1743,6 @@
         });
       }
     }
-    setGaugeRing(st.pct);
     if (label) label.textContent = t('possession') + ' · ' + typeTitle();
     if (badge) {
       badge.hidden = !complete;
@@ -1317,6 +1764,8 @@
     }
     wasComplete = complete;
     wasPerfect = perfect;
+
+    paintLiveRoleDonut(st);
 
     var strip = document.getElementById('colStatStrip');
     if (!strip) return;
@@ -1354,8 +1803,8 @@
         var b = st.byRole[rid];
         cells.push({
           k: t('role_owned', { role: roleLabel(rid) }),
-          v: b.o + '<em> / ' + b.t + '</em>',
-          cls: '',
+          v: b.o + '<em> / ' + b.t + '</em><span class="collections-stat-sub"> · ' + esc(t('max_lb')) + ' ' + (b.m || 0) + '</span>',
+          cls: 'collections-stat--role-' + rid,
           pct: statBarPct(b.o, b.t),
           lead: 'role',
           roleId: rid
@@ -1367,11 +1816,11 @@
         { id: 'en', key: 'skill_en' },
         { id: 'hybrid', key: 'skill_hybrid' }
       ].forEach(function (sk) {
-        var b = st.bySkill[sk.id] || { t: 0, o: 0 };
+        var b = st.bySkill[sk.id] || { t: 0, o: 0, m: 0 };
         cells.push({
           k: t(sk.key),
-          v: b.o + '<em> / ' + b.t + '</em>',
-          cls: '',
+          v: b.o + '<em> / ' + b.t + '</em><span class="collections-stat-sub"> · ' + esc(t('max_lb')) + ' ' + (b.m || 0) + '</span>',
+          cls: 'collections-stat--skill-' + sk.id,
           pct: statBarPct(b.o, b.t),
           lead: 'skill',
           roleId: sk.id
@@ -1994,9 +2443,11 @@
         '"Noto Sans JP","ShinGoPr6DeBold","UDShinGoStdTCMed","Microsoft JhengHei","Yu Gothic UI","Yu Gothic","PingFang TC",sans-serif';
       return w + ' ' + px + 'px ' + fam;
     }
-    var tw = weight;
-    if (!tw || tw === 'bold' || tw === '700') tw = '600';
-    if (tw === 'normal' || tw === '400') tw = '500';
+    var tw = String(weight || '600');
+    if (tw === 'bold' || tw === '700' || tw === '800' || tw === '900') tw = '700';
+    else if (tw === 'normal' || tw === '400') tw = '500';
+    else if (tw === '600' || tw === '500') tw = tw;
+    else tw = '600';
     return tw + ' ' + px + 'px "' + GGEN_TEKO_FAM + '", Teko, sans-serif';
   }
 
@@ -2035,7 +2486,10 @@
         document.fonts.load('600 16px "' + GGEN_TEKO_FAM + '"'),
         document.fonts.load('600 26px "' + GGEN_TEKO_FAM + '"'),
         document.fonts.load('600 32px "' + GGEN_TEKO_FAM + '"'),
-        document.fonts.load('700 32px "' + GGEN_TEKO_FAM + '"')
+        document.fonts.load('600 42px "' + GGEN_TEKO_FAM + '"'),
+        document.fonts.load('700 20px "' + GGEN_TEKO_FAM + '"'),
+        document.fonts.load('700 32px "' + GGEN_TEKO_FAM + '"'),
+        document.fonts.load('700 42px "' + GGEN_TEKO_FAM + '"')
       ]);
       /* Width probe — Teko is much narrower than system sans for the same string */
       var probe = document.createElement('canvas').getContext('2d');
@@ -2200,11 +2654,9 @@
     ctx.restore();
   }
 
-  /** Share-image possession head — mirrors live `.collections-gauge-head` (tight to content). */
+  /** Share-image possession % — same Teko / CJK stack as live HUD (not Roboto). */
   function pctShareFont(sizePx, weight) {
-    var w = weight || '800';
-    var px = Number(sizePx) || 42;
-    return w + ' ' + px + 'px "RobotoMediumNumbers","Roboto",system-ui,sans-serif';
+    return uiCanvasFont(sizePx, weight || '700');
   }
 
   function measureSharePossessionHead(ctx, pctStr, complete, perfect) {
@@ -2393,6 +2845,30 @@
       barGrad.addColorStop(0, 'rgba(255,120,40,0.55)');
       barGrad.addColorStop(0.6, '#ff9500');
       barGrad.addColorStop(1, '#ffc078');
+    } else if (tone === 'role-1') {
+      barGrad.addColorStop(0, 'rgba(185,28,28,0.65)');
+      barGrad.addColorStop(0.55, '#dc2626');
+      barGrad.addColorStop(1, '#f87171');
+    } else if (tone === 'role-3') {
+      barGrad.addColorStop(0, 'rgba(202,138,4,0.7)');
+      barGrad.addColorStop(0.55, '#fde047');
+      barGrad.addColorStop(1, '#fef08a');
+    } else if (tone === 'role-2') {
+      barGrad.addColorStop(0, 'rgba(37,99,235,0.65)');
+      barGrad.addColorStop(0.55, '#3b82f6');
+      barGrad.addColorStop(1, '#93c5fd');
+    } else if (tone === 'skill-hp') {
+      barGrad.addColorStop(0, 'rgba(16,185,129,0.55)');
+      barGrad.addColorStop(0.55, '#34d399');
+      barGrad.addColorStop(1, '#6ee7b7');
+    } else if (tone === 'skill-en') {
+      barGrad.addColorStop(0, 'rgba(202,138,4,0.7)');
+      barGrad.addColorStop(0.55, '#facc15');
+      barGrad.addColorStop(1, '#fef08a');
+    } else if (tone === 'skill-hybrid') {
+      barGrad.addColorStop(0, 'rgba(147,51,234,0.55)');
+      barGrad.addColorStop(0.55, '#a855f7');
+      barGrad.addColorStop(1, '#d8b4fe');
     } else {
       barGrad.addColorStop(0, 'rgba(176,190,210,0.55)');
       barGrad.addColorStop(1, 'rgba(240,242,247,0.92)');
@@ -2458,7 +2934,19 @@
           ? '#ffd700'
           : tone === 'orange'
             ? '#ff9500'
-            : '#f0f2f7';
+            : tone === 'role-1'
+              ? '#f87171'
+              : tone === 'role-3'
+                ? '#fde047'
+                : tone === 'role-2'
+                  ? '#93c5fd'
+                  : tone === 'skill-hp'
+                    ? '#6ee7b7'
+                    : tone === 'skill-en'
+                      ? '#fde047'
+                      : tone === 'skill-hybrid'
+                        ? '#d8b4fe'
+                        : '#f0f2f7';
     var border =
       perfect
         ? 'rgba(255,215,0,0.5)'
@@ -2589,6 +3077,12 @@
     ctx.font = uiCanvasFont(16, '600');
     ctx.fillStyle = '#8494ae';
     ctx.fillText(dStr, x + padX + nW, y + 44);
+    if (card.maxed != null) {
+      var maxNote = t('max_lb') + ' ' + (card.maxed | 0);
+      ctx.font = uiCanvasFont(11, '600');
+      ctx.fillStyle = 'rgba(132,148,174,0.95)';
+      ctx.fillText(maxNote, x + padX, y + 62);
+    }
 
     drawShareStatBar(ctx, x + padX, y + h - 18, w - padX * 2, 8, card.pct, tone);
   }
@@ -2615,22 +3109,20 @@
     var pctStr = pctDisplayKey(st.pct);
 
     try {
-      if (!document.getElementById('ggenRobotoNumsFace')) {
-        var faceStEarly = document.createElement('style');
-        faceStEarly.id = 'ggenRobotoNumsFace';
-        faceStEarly.textContent =
-          "@font-face{font-family:'RobotoMediumNumbers';src:url('/static/font/roboto_medium_numbers.ttf') format('truetype');font-weight:normal;font-style:normal;font-display:swap}";
-        document.head.appendChild(faceStEarly);
-      }
       await ensureTekoForCanvas();
       if (document.fonts && document.fonts.load) {
-        await document.fonts.load('800 42px RobotoMediumNumbers');
+        await Promise.all([
+          document.fonts.load('700 42px "' + GGEN_TEKO_FAM + '"'),
+          document.fonts.load('700 20px "' + GGEN_TEKO_FAM + '"'),
+          document.fonts.load('600 32px "' + GGEN_TEKO_FAM + '"')
+        ]);
         if (isCjkUiLang()) {
           try {
             await Promise.all([
               document.fonts.load('bold 14px "ShinGoPr6DeBold"'),
               document.fonts.load('bold 16px "UDShinGoStdTCMed"'),
-              document.fonts.load('bold 26px "ShinGoPr6DeBold"')
+              document.fonts.load('bold 26px "ShinGoPr6DeBold"'),
+              document.fonts.load('bold 42px "ShinGoPr6DeBold"')
             ]);
           } catch (_) {}
         }
@@ -2641,7 +3133,11 @@
     var mctx = document.createElement('canvas').getContext('2d');
     var pctBox = measureSharePossessionHead(mctx, pctStr, complete, perfect);
     var pctPanelY = titleBottom + 6;
-    var gaugeRowBottom = Math.max(pctPanelY + pctBox.h, emblemTop + emblemSize);
+    var legendBlockH = 3 * 18 + 12;
+    var gaugeRowBottom = Math.max(
+      pctPanelY + pctBox.h,
+      emblemTop + emblemSize + legendBlockH
+    );
     var subY = gaugeRowBottom + 16;
     var cardColsLayout = 3;
     var cardRowsLayout = 2;
@@ -2789,16 +3285,24 @@
 
     drawSharePossessionHead(ctx, pad, pctPanelY, pctStr, complete, perfect);
 
-    drawPossessionEmblem(
+    var shareBuckets = donutBucketsFromStats(st);
+    drawRoundedRoleDonut(
       ctx,
       W - pad - emblemSize / 2,
       emblemTop + emblemSize / 2,
       emblemSize,
-      st.pct,
-      complete,
-      perfect,
-      typeIconImg
+      shareBuckets,
+      {
+        complete: complete,
+        perfect: perfect,
+        iconImg: typeIconImg,
+        stroke: Math.max(8, emblemSize * 0.08),
+        gap: 0.16
+      }
     );
+    var legendX = W - pad - emblemSize;
+    var legendY = emblemTop + emblemSize + 10;
+    drawShareDonutLegend(ctx, legendX, legendY, shareBuckets);
 
     var shareStatCards = [
       {
@@ -2841,9 +3345,10 @@
           n: b.o,
           d: b.t,
           pct: statBarPct(b.o, b.t),
-          tone: 'neutral',
+          tone: 'role-' + rid,
           lead: 'role',
-          roleId: rid
+          roleId: rid,
+          maxed: b.m || 0
         });
       });
     } else {
@@ -2852,15 +3357,16 @@
         { id: 'en', key: 'skill_en' },
         { id: 'hybrid', key: 'skill_hybrid' }
       ].forEach(function (sk) {
-        var b = st.bySkill[sk.id] || { t: 0, o: 0 };
+        var b = st.bySkill[sk.id] || { t: 0, o: 0, m: 0 };
         shareStatCards.push({
           label: t(sk.key),
           n: b.o,
           d: b.t,
           pct: statBarPct(b.o, b.t),
-          tone: 'neutral',
+          tone: 'skill-' + sk.id,
           lead: 'skill',
-          roleId: sk.id
+          roleId: sk.id,
+          maxed: b.m || 0
         });
       });
     }

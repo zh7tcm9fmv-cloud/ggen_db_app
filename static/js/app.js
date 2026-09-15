@@ -7180,8 +7180,9 @@ onStageMapUnitClick(detailIdx,e,unitId,npcId,flashVariant);
 }
 function fmtN(n){return n!=null?Number(n).toLocaleString():'0'}
 
-const CMP_COLORS=['#e67e22','#2ecc71','#e74c3c'];
-const CMP_COLORS_ALPHA=['rgba(230,126,34,.25)','rgba(46,204,113,.25)','rgba(231,76,60,.25)'];
+/* Cyan / violet / lime — avoid adjacent warm hues (old orange+red were hard to tell apart). */
+const CMP_COLORS=['#00d4ff','#c084fc','#22c55e'];
+const CMP_COLORS_ALPHA=['rgba(0,212,255,.28)','rgba(192,132,252,.28)','rgba(34,197,94,.28)'];
 
 function toggleCompare(type,id,name,thum,ev){
 if(ev){ev.stopPropagation();ev.preventDefault()}
@@ -7587,6 +7588,13 @@ html+='</tbody></table>';
 document.getElementById('cmpStats').innerHTML=html
 }
 
+function _cmpRadarPoly(ctx,pts){
+if(pts.length<3)return;
+ctx.moveTo(pts[0].x,pts[0].y);
+for(let i=1;i<pts.length;i++)ctx.lineTo(pts[i].x,pts[i].y);
+ctx.closePath();
+}
+
 function drawRadarChart(){
 const canvas=document.getElementById('cmpRadarCanvas');
 if(!canvas)return;
@@ -7595,7 +7603,7 @@ const dpr=window.devicePixelRatio||1;
 const W=420,H=380;
 canvas.width=W*dpr;canvas.height=H*dpr;
 canvas.style.width=W+'px';canvas.style.height=H+'px';
-ctx.scale(dpr,dpr);
+ctx.setTransform(dpr,0,0,dpr,0,0);
 ctx.clearRect(0,0,W,H);
 const allStats=getCompareStats();
 if(!allStats.length||!allStats[0].length)return;
@@ -7604,50 +7612,65 @@ const n=labels.length;
 const cx=W/2,cy=H/2-10,R=130;
 const angleOff=-Math.PI/2;
 const angles=labels.map((_,i)=>angleOff+(2*Math.PI*i)/n);
-for(let ring=1;ring<=5;ring++){
-const r=R*ring/5;
-ctx.beginPath();
-for(let i=0;i<n;i++){
-const x=cx+r*Math.cos(angles[i]),y=cy+r*Math.sin(angles[i]);
-i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)
+function ringPts(r){
+return angles.map(a=>({x:cx+r*Math.cos(a),y:cy+r*Math.sin(a)}));
 }
-ctx.closePath();
-ctx.strokeStyle='rgba(255,255,255,.12)';ctx.lineWidth=1;ctx.stroke()
+/* Soft backdrop wash */
+const wash=ctx.createRadialGradient(cx,cy,8,cx,cy,R+28);
+wash.addColorStop(0,'rgba(0,212,255,.07)');
+wash.addColorStop(.55,'rgba(0,212,255,.02)');
+wash.addColorStop(1,'rgba(0,0,0,0)');
+ctx.beginPath();ctx.arc(cx,cy,R+20,0,Math.PI*2);ctx.fillStyle=wash;ctx.fill();
+for(let ring=5;ring>=1;ring--){
+const r=R*ring/5;
+const pts=ringPts(r);
+ctx.beginPath();
+_cmpRadarPoly(ctx,pts);
+ctx.strokeStyle=ring===5?'rgba(0,212,255,.22)':'rgba(255,255,255,.10)';
+ctx.lineWidth=ring===5?1.6:1;
+ctx.lineJoin='miter';ctx.lineCap='butt';
+ctx.stroke();
+if(ring%2===0){
+ctx.fillStyle='rgba(0,212,255,.025)';
+ctx.fill();
+}
 }
 for(let i=0;i<n;i++){
 ctx.beginPath();ctx.moveTo(cx,cy);
 ctx.lineTo(cx+R*Math.cos(angles[i]),cy+R*Math.sin(angles[i]));
-ctx.strokeStyle='rgba(255,255,255,.08)';ctx.lineWidth=1;ctx.stroke()
+ctx.strokeStyle='rgba(255,255,255,.08)';ctx.lineWidth=1;ctx.stroke();
 }
 const maxVals=labels.map((_,si)=>Math.max(...allStats.map(s=>s[si]?s[si].value:0))||1);
 allStats.forEach((stats,di)=>{
-ctx.beginPath();
-stats.forEach((s,si)=>{
+const pts=stats.map((s,si)=>{
 const norm=Math.min(s.value/maxVals[si],1);
-const r2=R*Math.max(norm,0.03);
-const x=cx+r2*Math.cos(angles[si]),y=cy+r2*Math.sin(angles[si]);
-si===0?ctx.moveTo(x,y):ctx.lineTo(x,y)
+const r2=R*Math.max(norm,0.04);
+return{x:cx+r2*Math.cos(angles[si]),y:cy+r2*Math.sin(angles[si])};
 });
-ctx.closePath();
+ctx.beginPath();
+_cmpRadarPoly(ctx,pts);
 ctx.fillStyle=CMP_COLORS_ALPHA[di];ctx.fill();
-ctx.strokeStyle=CMP_COLORS[di];ctx.lineWidth=2;ctx.stroke()
+ctx.strokeStyle=CMP_COLORS[di];ctx.lineWidth=2.2;ctx.lineJoin='miter';ctx.lineCap='butt';
+ctx.shadowColor=CMP_COLORS[di];ctx.shadowBlur=6;ctx.stroke();ctx.shadowBlur=0;
 });
 allStats.forEach((stats,di)=>{
 stats.forEach((s,si)=>{
 const norm=Math.min(s.value/maxVals[si],1);
-const r2=R*Math.max(norm,0.03);
+const r2=R*Math.max(norm,0.04);
 const x=cx+r2*Math.cos(angles[si]),y=cy+r2*Math.sin(angles[si]);
-ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);
-ctx.fillStyle=CMP_COLORS[di];ctx.fill()
-})
+ctx.beginPath();ctx.arc(x,y,3.8,0,Math.PI*2);
+ctx.fillStyle=CMP_COLORS[di];ctx.fill();
+ctx.beginPath();ctx.arc(x,y,1.8,0,Math.PI*2);
+ctx.fillStyle='rgba(255,255,255,.85)';ctx.fill();
+});
 });
 ctx.textAlign='center';ctx.textBaseline='middle';
 ctx.font='bold 13px ShinGoPr6DeBold,sans-serif';ctx.fillStyle='#c8cdd8';
 labels.forEach((lbl,i)=>{
-const lr=R+22;
+const lr=R+24;
 const x=cx+lr*Math.cos(angles[i]),y=cy+lr*Math.sin(angles[i]);
-ctx.fillText(lbl,x,y)
-})
+ctx.fillText(lbl,x,y);
+});
 }
 
 function renderCompareTerrain(){

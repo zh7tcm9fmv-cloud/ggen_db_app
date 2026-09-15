@@ -2164,8 +2164,9 @@ html.cmp-bar-open:has(#cmpFloat.visible) .main-content{padding-bottom:calc(56px 
 .cmp-add-slot-text{font-size:13px;font-weight:600}
 .cmp-section{padding:0 24px 20px}
 .cmp-section-title{font-size:16px;font-weight:800;color:var(--accent-gold);margin-bottom:14px;padding-bottom:6px;border-bottom:1px solid rgba(255,255,255,.08)}
-.cmp-radar-wrap{display:flex;justify-content:center;padding:10px 24px 20px}
-.cmp-radar-wrap canvas{max-width:100%}
+.cmp-radar-wrap{display:flex;justify-content:center;padding:10px 24px 20px;position:relative}
+.cmp-radar-wrap::before{content:'';position:absolute;inset:8px 18%;border-radius:50%;background:radial-gradient(circle,rgba(0,212,255,.08) 0%,transparent 68%);pointer-events:none;z-index:0}
+.cmp-radar-wrap canvas{max-width:100%;position:relative;z-index:1;filter:drop-shadow(0 0 12px rgba(0,212,255,.12))}
 .cmp-stat-table{width:100%;border-collapse:collapse;table-layout:fixed}
 .cmp-stat-table th,.cmp-stat-table td{padding:8px 6px;text-align:center;border-bottom:1px solid rgba(255,255,255,.08);font-size:14px;vertical-align:middle}
 .cmp-stat-table th:first-child,.cmp-stat-table td:first-child{text-align:right;color:var(--text-secondary);font-weight:700;width:96px;max-width:96px;box-sizing:border-box}
