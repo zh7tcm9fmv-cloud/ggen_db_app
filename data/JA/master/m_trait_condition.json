@@ -34,7 +34,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000002,
@@ -71,7 +71,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000003,
@@ -108,7 +108,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000004,
@@ -145,7 +145,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000005,
@@ -182,7 +182,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000006,
@@ -219,7 +219,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000007,
@@ -256,7 +256,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000008,
@@ -293,7 +293,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000009,
@@ -330,7 +330,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000010,
@@ -367,7 +367,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000011,
@@ -404,7 +404,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000012,
@@ -441,7 +441,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000013,
@@ -478,7 +478,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000014,
@@ -515,7 +515,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000015,
@@ -552,7 +552,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000016,
@@ -589,7 +589,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000017,
@@ -626,7 +626,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000018,
@@ -663,7 +663,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000019,
@@ -700,7 +700,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000020,
@@ -737,7 +737,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000021,
@@ -774,7 +774,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000022,
@@ -811,7 +811,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000023,
@@ -848,7 +848,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000024,
@@ -885,7 +885,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000025,
@@ -922,7 +922,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000026,
@@ -959,7 +959,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000027,
@@ -996,7 +996,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000028,
@@ -1033,7 +1033,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000029,
@@ -1070,7 +1070,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000030,
@@ -1107,7 +1107,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000031,
@@ -1144,7 +1144,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000032,
@@ -1181,7 +1181,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000033,
@@ -1218,7 +1218,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000034,
@@ -1255,7 +1255,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000035,
@@ -1292,7 +1292,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000036,
@@ -1329,7 +1329,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000037,
@@ -1366,7 +1366,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000038,
@@ -1403,7 +1403,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000039,
@@ -1440,7 +1440,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000040,
@@ -1477,7 +1477,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000041,
@@ -1514,7 +1514,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000042,
@@ -1551,7 +1551,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000043,
@@ -1588,7 +1588,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000044,
@@ -1625,7 +1625,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000045,
@@ -1662,7 +1662,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000046,
@@ -1699,7 +1699,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000047,
@@ -1736,7 +1736,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000048,
@@ -1773,7 +1773,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000049,
@@ -1810,7 +1810,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000050,
@@ -1847,7 +1847,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000051,
@@ -1884,7 +1884,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000052,
@@ -1921,7 +1921,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000053,
@@ -1958,7 +1958,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000054,
@@ -1995,7 +1995,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000055,
@@ -2032,7 +2032,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000056,
@@ -2069,7 +2069,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000057,
@@ -2106,7 +2106,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000058,
@@ -2143,7 +2143,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000059,
@@ -2180,7 +2180,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000060,
@@ -2217,7 +2217,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000061,
@@ -2254,7 +2254,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000062,
@@ -2291,7 +2291,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000063,
@@ -2328,7 +2328,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000064,
@@ -2365,7 +2365,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000065,
@@ -2402,7 +2402,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000066,
@@ -2439,7 +2439,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000067,
@@ -2476,7 +2476,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000068,
@@ -2513,7 +2513,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000069,
@@ -2550,7 +2550,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000070,
@@ -2587,7 +2587,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000071,
@@ -2624,7 +2624,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000072,
@@ -2661,7 +2661,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000073,
@@ -2698,7 +2698,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000074,
@@ -2735,7 +2735,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000075,
@@ -2772,7 +2772,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000076,
@@ -2809,7 +2809,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000077,
@@ -2846,7 +2846,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000078,
@@ -2883,7 +2883,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000079,
@@ -2920,7 +2920,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000080,
@@ -2957,7 +2957,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000081,
@@ -2994,7 +2994,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000082,
@@ -3031,7 +3031,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000083,
@@ -3068,7 +3068,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000084,
@@ -3105,7 +3105,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000085,
@@ -3142,7 +3142,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000086,
@@ -3179,7 +3179,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000087,
@@ -3216,7 +3216,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000088,
@@ -3253,7 +3253,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000089,
@@ -3290,7 +3290,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000090,
@@ -3327,7 +3327,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000091,
@@ -3364,7 +3364,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000092,
@@ -3401,7 +3401,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000093,
@@ -3438,7 +3438,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000094,
@@ -3475,7 +3475,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000095,
@@ -3512,7 +3512,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000096,
@@ -3549,7 +3549,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000097,
@@ -3586,7 +3586,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000098,
@@ -3623,7 +3623,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000099,
@@ -3660,7 +3660,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000100,
@@ -3697,7 +3697,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000101,
@@ -3734,7 +3734,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000102,
@@ -3771,7 +3771,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000103,
@@ -3808,7 +3808,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000104,
@@ -3845,7 +3845,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000105,
@@ -3882,7 +3882,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000106,
@@ -3919,7 +3919,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000107,
@@ -3956,7 +3956,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000108,
@@ -3993,7 +3993,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000109,
@@ -4030,7 +4030,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000110,
@@ -4067,7 +4067,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000111,
@@ -4104,7 +4104,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000112,
@@ -4141,7 +4141,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000113,
@@ -4178,7 +4178,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000114,
@@ -4215,7 +4215,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000115,
@@ -4252,7 +4252,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000116,
@@ -4289,7 +4289,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000117,
@@ -4326,7 +4326,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000118,
@@ -4363,7 +4363,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000119,
@@ -4400,7 +4400,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000120,
@@ -4437,7 +4437,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000121,
@@ -4474,7 +4474,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000122,
@@ -4511,7 +4511,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000123,
@@ -4548,7 +4548,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000124,
@@ -4585,7 +4585,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000125,
@@ -4622,7 +4622,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000126,
@@ -4659,7 +4659,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000127,
@@ -4696,7 +4696,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000128,
@@ -4733,7 +4733,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000129,
@@ -4770,7 +4770,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000130,
@@ -4807,7 +4807,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000131,
@@ -4844,7 +4844,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000132,
@@ -4881,7 +4881,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000133,
@@ -4918,7 +4918,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000134,
@@ -4955,7 +4955,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000135,
@@ -4992,7 +4992,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000136,
@@ -5029,7 +5029,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000137,
@@ -5066,7 +5066,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000138,
@@ -5103,7 +5103,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000139,
@@ -5140,7 +5140,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000140,
@@ -5177,7 +5177,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000141,
@@ -5214,7 +5214,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000142,
@@ -5251,7 +5251,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000143,
@@ -5288,7 +5288,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000144,
@@ -5325,7 +5325,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000145,
@@ -5362,7 +5362,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000147,
@@ -5399,7 +5399,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000148,
@@ -5436,7 +5436,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000149,
@@ -5473,7 +5473,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000150,
@@ -5510,7 +5510,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000151,
@@ -5547,7 +5547,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000153,
@@ -5584,7 +5584,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000154,
@@ -5621,7 +5621,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000155,
@@ -5658,7 +5658,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000156,
@@ -5695,7 +5695,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000157,
@@ -5732,7 +5732,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000158,
@@ -5769,7 +5769,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000159,
@@ -5806,7 +5806,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000160,
@@ -5843,7 +5843,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000161,
@@ -5880,7 +5880,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000162,
@@ -5917,7 +5917,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000163,
@@ -5954,7 +5954,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000164,
@@ -5991,7 +5991,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000165,
@@ -6028,7 +6028,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000166,
@@ -6065,7 +6065,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000167,
@@ -6102,7 +6102,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000168,
@@ -6139,7 +6139,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000169,
@@ -6176,7 +6176,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000170,
@@ -6213,7 +6213,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000171,
@@ -6250,7 +6250,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000172,
@@ -6287,7 +6287,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000173,
@@ -6324,7 +6324,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000174,
@@ -6361,7 +6361,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000175,
@@ -6398,7 +6398,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000176,
@@ -6435,7 +6435,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000177,
@@ -6472,7 +6472,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000178,
@@ -6509,7 +6509,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000179,
@@ -6546,7 +6546,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000180,
@@ -6583,7 +6583,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000181,
@@ -6620,7 +6620,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000182,
@@ -6657,7 +6657,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000183,
@@ -6694,7 +6694,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000184,
@@ -6731,7 +6731,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000185,
@@ -6768,7 +6768,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000186,
@@ -6805,7 +6805,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000187,
@@ -6842,7 +6842,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000188,
@@ -6879,7 +6879,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000189,
@@ -6916,7 +6916,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000190,
@@ -6953,7 +6953,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000191,
@@ -6990,7 +6990,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000192,
@@ -7027,7 +7027,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000193,
@@ -7064,7 +7064,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000194,
@@ -7101,7 +7101,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000195,
@@ -7138,7 +7138,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000196,
@@ -7175,7 +7175,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000197,
@@ -7212,7 +7212,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000198,
@@ -7249,7 +7249,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000199,
@@ -7286,7 +7286,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000200,
@@ -7323,7 +7323,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000201,
@@ -7360,7 +7360,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000202,
@@ -7397,7 +7397,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000203,
@@ -7434,7 +7434,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000204,
@@ -7471,7 +7471,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000205,
@@ -7508,7 +7508,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000206,
@@ -7545,7 +7545,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000207,
@@ -7582,7 +7582,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000208,
@@ -7619,7 +7619,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000209,
@@ -7656,7 +7656,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000210,
@@ -7693,7 +7693,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000211,
@@ -7730,7 +7730,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000212,
@@ -7767,7 +7767,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000213,
@@ -7804,7 +7804,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000214,
@@ -7841,7 +7841,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000215,
@@ -7878,7 +7878,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000216,
@@ -7915,7 +7915,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000217,
@@ -7952,7 +7952,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000218,
@@ -7989,7 +7989,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000219,
@@ -8026,7 +8026,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000220,
@@ -8063,7 +8063,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000221,
@@ -8100,7 +8100,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000222,
@@ -8137,7 +8137,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000223,
@@ -8174,7 +8174,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000224,
@@ -8211,7 +8211,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000225,
@@ -8248,7 +8248,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000226,
@@ -8285,7 +8285,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000227,
@@ -8322,7 +8322,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000228,
@@ -8359,7 +8359,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000229,
@@ -8396,7 +8396,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000230,
@@ -8433,7 +8433,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000231,
@@ -8470,7 +8470,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000232,
@@ -8507,7 +8507,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000233,
@@ -8544,7 +8544,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000234,
@@ -8581,7 +8581,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000235,
@@ -8618,7 +8618,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000236,
@@ -8655,7 +8655,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000237,
@@ -8692,7 +8692,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000238,
@@ -8729,7 +8729,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000239,
@@ -8766,7 +8766,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000240,
@@ -8803,7 +8803,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000241,
@@ -8840,7 +8840,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000242,
@@ -8877,7 +8877,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000243,
@@ -8914,7 +8914,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000244,
@@ -8951,7 +8951,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000245,
@@ -8988,7 +8988,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000246,
@@ -9025,7 +9025,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000247,
@@ -9062,7 +9062,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000248,
@@ -9099,7 +9099,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000249,
@@ -9136,7 +9136,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000250,
@@ -9173,7 +9173,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000251,
@@ -9210,7 +9210,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000252,
@@ -9247,7 +9247,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000253,
@@ -9284,7 +9284,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000254,
@@ -9321,7 +9321,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000255,
@@ -9358,7 +9358,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000256,
@@ -9395,7 +9395,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000257,
@@ -9432,7 +9432,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000258,
@@ -9469,7 +9469,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000259,
@@ -9506,7 +9506,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000260,
@@ -9543,7 +9543,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000261,
@@ -9580,7 +9580,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000262,
@@ -9617,7 +9617,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000263,
@@ -9654,7 +9654,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000264,
@@ -9691,7 +9691,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000265,
@@ -9728,7 +9728,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000266,
@@ -9765,7 +9765,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000270,
@@ -9802,7 +9802,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000271,
@@ -9839,7 +9839,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000272,
@@ -9876,7 +9876,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000273,
@@ -9913,7 +9913,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000274,
@@ -9950,7 +9950,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000275,
@@ -9987,7 +9987,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000276,
@@ -10024,7 +10024,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000278,
@@ -10061,7 +10061,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000279,
@@ -10098,7 +10098,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000280,
@@ -10135,7 +10135,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000281,
@@ -10172,7 +10172,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000282,
@@ -10209,7 +10209,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000283,
@@ -10246,7 +10246,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000284,
@@ -10283,7 +10283,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000285,
@@ -10320,7 +10320,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000286,
@@ -10357,7 +10357,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000287,
@@ -10394,7 +10394,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000288,
@@ -10431,7 +10431,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000289,
@@ -10468,7 +10468,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000290,
@@ -10505,7 +10505,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000291,
@@ -10542,7 +10542,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000292,
@@ -10579,7 +10579,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000293,
@@ -10616,7 +10616,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000294,
@@ -10653,7 +10653,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000295,
@@ -10690,7 +10690,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000297,
@@ -10727,7 +10727,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000298,
@@ -10764,7 +10764,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000299,
@@ -10801,7 +10801,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000300,
@@ -10838,7 +10838,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000301,
@@ -10875,7 +10875,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000302,
@@ -10912,7 +10912,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000303,
@@ -10949,7 +10949,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000304,
@@ -10986,7 +10986,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000305,
@@ -11023,7 +11023,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000306,
@@ -11060,7 +11060,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000307,
@@ -11097,7 +11097,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000308,
@@ -11134,7 +11134,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000309,
@@ -11171,7 +11171,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000310,
@@ -11208,7 +11208,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000311,
@@ -11245,7 +11245,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000312,
@@ -11282,7 +11282,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000313,
@@ -11319,7 +11319,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000314,
@@ -11356,7 +11356,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000316,
@@ -11393,7 +11393,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000317,
@@ -11430,7 +11430,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000318,
@@ -11467,7 +11467,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000319,
@@ -11504,7 +11504,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000320,
@@ -11541,7 +11541,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000321,
@@ -11578,7 +11578,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000322,
@@ -11615,7 +11615,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000323,
@@ -11652,7 +11652,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000324,
@@ -11689,7 +11689,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000325,
@@ -11726,7 +11726,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000326,
@@ -11763,7 +11763,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000327,
@@ -11800,7 +11800,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000328,
@@ -11837,7 +11837,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000329,
@@ -11874,7 +11874,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000330,
@@ -11911,7 +11911,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000332,
@@ -11948,7 +11948,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000333,
@@ -11985,7 +11985,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000334,
@@ -12022,7 +12022,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000336,
@@ -12059,7 +12059,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000337,
@@ -12096,7 +12096,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000338,
@@ -12133,7 +12133,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000339,
@@ -12170,7 +12170,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000340,
@@ -12207,7 +12207,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000341,
@@ -12244,7 +12244,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000342,
@@ -12281,7 +12281,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000343,
@@ -12318,7 +12318,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000345,
@@ -12355,7 +12355,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000346,
@@ -12392,7 +12392,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000347,
@@ -12429,7 +12429,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000348,
@@ -12466,7 +12466,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000349,
@@ -12503,7 +12503,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000350,
@@ -12540,7 +12540,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000351,
@@ -12577,7 +12577,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000352,
@@ -12614,7 +12614,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000353,
@@ -12651,7 +12651,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000354,
@@ -12688,7 +12688,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000355,
@@ -12725,7 +12725,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000356,
@@ -12762,7 +12762,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000357,
@@ -12799,7 +12799,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000358,
@@ -12836,7 +12836,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000359,
@@ -12873,7 +12873,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000360,
@@ -12910,7 +12910,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000362,
@@ -12947,7 +12947,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000363,
@@ -12984,7 +12984,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000364,
@@ -13021,7 +13021,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000365,
@@ -13058,7 +13058,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000366,
@@ -13095,7 +13095,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000367,
@@ -13132,7 +13132,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000370,
@@ -13169,7 +13169,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000371,
@@ -13206,7 +13206,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000372,
@@ -13243,7 +13243,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000375,
@@ -13280,7 +13280,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000376,
@@ -13317,7 +13317,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000377,
@@ -13354,7 +13354,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000378,
@@ -13391,7 +13391,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000379,
@@ -13428,7 +13428,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000380,
@@ -13465,7 +13465,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000381,
@@ -13502,7 +13502,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000382,
@@ -13539,7 +13539,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000383,
@@ -13576,7 +13576,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000384,
@@ -13613,7 +13613,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000385,
@@ -13650,7 +13650,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000386,
@@ -13687,7 +13687,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000387,
@@ -13724,7 +13724,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000388,
@@ -13761,7 +13761,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000389,
@@ -13798,7 +13798,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000390,
@@ -13835,7 +13835,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000391,
@@ -13872,7 +13872,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000394,
@@ -13909,7 +13909,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000395,
@@ -13946,7 +13946,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000396,
@@ -13983,7 +13983,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000397,
@@ -14020,7 +14020,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000398,
@@ -14057,7 +14057,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000399,
@@ -14094,7 +14094,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000400,
@@ -14131,7 +14131,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000401,
@@ -14168,7 +14168,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000402,
@@ -14205,7 +14205,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000403,
@@ -14242,7 +14242,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000404,
@@ -14279,7 +14279,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000405,
@@ -14316,7 +14316,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000406,
@@ -14353,7 +14353,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000407,
@@ -14390,7 +14390,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000408,
@@ -14427,7 +14427,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000409,
@@ -14464,7 +14464,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000410,
@@ -14501,7 +14501,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000411,
@@ -14538,7 +14538,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000412,
@@ -14575,7 +14575,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000413,
@@ -14612,7 +14612,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000414,
@@ -14649,7 +14649,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000415,
@@ -14686,7 +14686,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000416,
@@ -14723,7 +14723,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000417,
@@ -14760,7 +14760,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000418,
@@ -14797,7 +14797,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000419,
@@ -14834,7 +14834,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000420,
@@ -14871,7 +14871,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000421,
@@ -14908,7 +14908,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000422,
@@ -14945,7 +14945,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000423,
@@ -14982,7 +14982,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000424,
@@ -15019,7 +15019,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000425,
@@ -15056,7 +15056,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000426,
@@ -15093,7 +15093,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000427,
@@ -15130,7 +15130,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000428,
@@ -15167,7 +15167,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000429,
@@ -15204,7 +15204,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000431,
@@ -15241,7 +15241,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000432,
@@ -15278,7 +15278,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000433,
@@ -15315,7 +15315,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000434,
@@ -15352,7 +15352,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000435,
@@ -15389,7 +15389,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000436,
@@ -15426,7 +15426,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000437,
@@ -15463,7 +15463,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000438,
@@ -15500,7 +15500,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000439,
@@ -15537,7 +15537,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000440,
@@ -15574,7 +15574,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000441,
@@ -15611,7 +15611,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000442,
@@ -15648,7 +15648,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000443,
@@ -15685,7 +15685,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000444,
@@ -15722,7 +15722,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000445,
@@ -15759,7 +15759,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000446,
@@ -15796,7 +15796,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000447,
@@ -15833,7 +15833,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000448,
@@ -15870,7 +15870,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000450,
@@ -15907,7 +15907,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000451,
@@ -15944,7 +15944,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000452,
@@ -15981,7 +15981,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000453,
@@ -16018,7 +16018,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000454,
@@ -16055,7 +16055,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000455,
@@ -16092,7 +16092,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000456,
@@ -16129,7 +16129,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000457,
@@ -16166,7 +16166,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000458,
@@ -16203,7 +16203,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000459,
@@ -16240,7 +16240,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000460,
@@ -16277,7 +16277,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000462,
@@ -16314,7 +16314,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000463,
@@ -16351,7 +16351,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000464,
@@ -16388,7 +16388,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000465,
@@ -16425,7 +16425,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000466,
@@ -16462,7 +16462,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000470,
@@ -16499,7 +16499,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000471,
@@ -16536,7 +16536,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000472,
@@ -16573,7 +16573,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000473,
@@ -16610,7 +16610,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000474,
@@ -16647,7 +16647,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000475,
@@ -16684,7 +16684,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000476,
@@ -16721,7 +16721,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000477,
@@ -16758,7 +16758,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000478,
@@ -16795,7 +16795,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000479,
@@ -16832,7 +16832,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000480,
@@ -16869,7 +16869,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000481,
@@ -16906,7 +16906,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000484,
@@ -16943,7 +16943,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000485,
@@ -16980,7 +16980,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000486,
@@ -17017,7 +17017,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000487,
@@ -17054,7 +17054,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000488,
@@ -17091,7 +17091,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000490,
@@ -17128,7 +17128,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000491,
@@ -17165,7 +17165,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000492,
@@ -17202,7 +17202,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000493,
@@ -17239,7 +17239,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000494,
@@ -17276,7 +17276,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000495,
@@ -17313,7 +17313,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000496,
@@ -17350,7 +17350,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000497,
@@ -17387,7 +17387,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000498,
@@ -17424,7 +17424,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000499,
@@ -17461,7 +17461,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000500,
@@ -17498,7 +17498,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000501,
@@ -17535,7 +17535,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000502,
@@ -17572,7 +17572,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000503,
@@ -17609,7 +17609,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000504,
@@ -17646,7 +17646,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000505,
@@ -17683,7 +17683,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000506,
@@ -17720,7 +17720,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000507,
@@ -17757,7 +17757,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000508,
@@ -17794,7 +17794,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000509,
@@ -17831,7 +17831,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000510,
@@ -17868,7 +17868,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000511,
@@ -17905,7 +17905,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000512,
@@ -17942,7 +17942,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000513,
@@ -17979,7 +17979,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000514,
@@ -18016,7 +18016,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000515,
@@ -18053,7 +18053,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000516,
@@ -18090,7 +18090,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000517,
@@ -18127,7 +18127,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000518,
@@ -18164,7 +18164,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000519,
@@ -18201,7 +18201,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000521,
@@ -18238,7 +18238,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000522,
@@ -18275,7 +18275,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000523,
@@ -18312,7 +18312,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000524,
@@ -18349,7 +18349,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000528,
@@ -18386,7 +18386,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000529,
@@ -18423,7 +18423,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000530,
@@ -18460,7 +18460,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000531,
@@ -18497,7 +18497,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000532,
@@ -18534,7 +18534,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000533,
@@ -18571,7 +18571,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000535,
@@ -18608,7 +18608,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000536,
@@ -18645,7 +18645,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000537,
@@ -18682,7 +18682,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000538,
@@ -18719,7 +18719,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000539,
@@ -18756,7 +18756,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000540,
@@ -18793,7 +18793,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000541,
@@ -18830,7 +18830,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000542,
@@ -18867,7 +18867,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000544,
@@ -18904,7 +18904,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000545,
@@ -18941,7 +18941,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000546,
@@ -18978,7 +18978,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000547,
@@ -19015,7 +19015,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000548,
@@ -19052,7 +19052,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000549,
@@ -19089,7 +19089,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000550,
@@ -19126,7 +19126,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000551,
@@ -19163,7 +19163,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000552,
@@ -19200,7 +19200,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000553,
@@ -19237,7 +19237,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000554,
@@ -19274,7 +19274,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000555,
@@ -19311,7 +19311,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000556,
@@ -19348,7 +19348,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000557,
@@ -19385,7 +19385,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000558,
@@ -19422,7 +19422,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000559,
@@ -19459,7 +19459,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000560,
@@ -19496,7 +19496,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000561,
@@ -19533,7 +19533,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000562,
@@ -19570,7 +19570,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000563,
@@ -19607,7 +19607,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000564,
@@ -19644,7 +19644,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000565,
@@ -19681,7 +19681,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000566,
@@ -19718,7 +19718,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000567,
@@ -19755,7 +19755,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000568,
@@ -19792,7 +19792,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000569,
@@ -19829,7 +19829,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000570,
@@ -19866,7 +19866,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000571,
@@ -19903,7 +19903,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000572,
@@ -19940,7 +19940,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000573,
@@ -19977,7 +19977,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000574,
@@ -20014,7 +20014,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000575,
@@ -20051,7 +20051,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000576,
@@ -20088,7 +20088,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000577,
@@ -20125,7 +20125,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000578,
@@ -20162,7 +20162,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000579,
@@ -20199,7 +20199,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000580,
@@ -20236,7 +20236,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000581,
@@ -20273,7 +20273,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000582,
@@ -20310,7 +20310,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000583,
@@ -20347,7 +20347,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000584,
@@ -20384,7 +20384,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000585,
@@ -20421,7 +20421,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000586,
@@ -20458,7 +20458,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000587,
@@ -20495,7 +20495,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000588,
@@ -20532,7 +20532,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000589,
@@ -20569,7 +20569,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000590,
@@ -20606,7 +20606,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000591,
@@ -20643,7 +20643,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000592,
@@ -20680,7 +20680,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000593,
@@ -20717,7 +20717,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000594,
@@ -20754,7 +20754,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000595,
@@ -20791,7 +20791,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000596,
@@ -20828,7 +20828,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000597,
@@ -20865,7 +20865,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000598,
@@ -20902,7 +20902,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000599,
@@ -20939,7 +20939,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000600,
@@ -20976,7 +20976,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000601,
@@ -21013,7 +21013,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000602,
@@ -21050,7 +21050,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000603,
@@ -21087,7 +21087,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000604,
@@ -21124,7 +21124,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000605,
@@ -21161,7 +21161,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000606,
@@ -21198,7 +21198,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000607,
@@ -21235,7 +21235,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000608,
@@ -21272,7 +21272,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000609,
@@ -21309,7 +21309,7 @@
     "WeaponBaseMinRangeLteThreshold": 1,
     "WeaponBaseMaxRangeGteThreshold": 1,
     "WeaponBaseMaxRangeLteThreshold": 1,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000610,
@@ -21346,7 +21346,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000611,
@@ -21383,7 +21383,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000612,
@@ -21420,7 +21420,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000613,
@@ -21457,7 +21457,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000614,
@@ -21494,7 +21494,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000615,
@@ -21531,7 +21531,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000616,
@@ -21568,7 +21568,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000617,
@@ -21605,7 +21605,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000618,
@@ -21642,7 +21642,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000619,
@@ -21679,7 +21679,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000620,
@@ -21716,7 +21716,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000621,
@@ -21753,7 +21753,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000622,
@@ -21790,7 +21790,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000623,
@@ -21827,7 +21827,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000624,
@@ -21864,7 +21864,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000628,
@@ -21901,7 +21901,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000634,
@@ -21938,7 +21938,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000635,
@@ -21975,7 +21975,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1000639,
@@ -22012,7 +22012,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1100001,
@@ -22049,7 +22049,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1100002,
@@ -22086,7 +22086,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1100003,
@@ -22123,7 +22123,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1100004,
@@ -22160,7 +22160,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1100005,
@@ -22197,7 +22197,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1100006,
@@ -22234,7 +22234,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1100007,
@@ -22271,7 +22271,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1100008,
@@ -22308,7 +22308,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1100009,
@@ -22345,7 +22345,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1100010,
@@ -22382,7 +22382,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1100011,
@@ -22419,7 +22419,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1100012,
@@ -22456,7 +22456,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1100013,
@@ -22493,7 +22493,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1100014,
@@ -22530,7 +22530,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1100015,
@@ -22567,7 +22567,7 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   },
   {
     "Id": 1100016,
@@ -22604,6 +22604,6 @@
     "WeaponBaseMinRangeLteThreshold": 0,
     "WeaponBaseMaxRangeGteThreshold": 0,
     "WeaponBaseMaxRangeLteThreshold": 0,
-    "Unknown_Col_34": false
+    "IsIncorrectOrAllowed": false
   }
 ]

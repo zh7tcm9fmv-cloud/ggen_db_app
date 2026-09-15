@@ -440,6 +440,11 @@
     "TargetValue": 100202
   },
   {
+    "Id": 1800122609250101,
+    "ConditionTypeIndex": 1,
+    "TargetValue": 100202
+  },
+  {
     "Id": 1910000001002201,
     "ConditionTypeIndex": 2,
     "TargetValue": 20

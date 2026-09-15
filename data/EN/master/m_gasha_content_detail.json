@@ -5,7 +5,7 @@
     "RewardTargetId": 1001000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11001000410,
@@ -13,7 +13,7 @@
     "RewardTargetId": 1001000410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11001000610,
@@ -21,7 +21,7 @@
     "RewardTargetId": 1001000610,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11001000710,
@@ -29,7 +29,7 @@
     "RewardTargetId": 1001000710,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11001000810,
@@ -37,7 +37,7 @@
     "RewardTargetId": 1001000810,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11001000910,
@@ -45,7 +45,7 @@
     "RewardTargetId": 1001000910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11001001110,
@@ -53,7 +53,7 @@
     "RewardTargetId": 1001001110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11001001610,
@@ -61,7 +61,7 @@
     "RewardTargetId": 1001001610,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11001002110,
@@ -69,7 +69,7 @@
     "RewardTargetId": 1001002110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11001003050,
@@ -77,7 +77,7 @@
     "RewardTargetId": 1001003050,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11001003110,
@@ -85,7 +85,7 @@
     "RewardTargetId": 1001003110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11001003410,
@@ -93,7 +93,7 @@
     "RewardTargetId": 1001003410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11001003710,
@@ -101,7 +101,7 @@
     "RewardTargetId": 1001003710,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11003000110,
@@ -109,7 +109,7 @@
     "RewardTargetId": 1003000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11003000250,
@@ -117,7 +117,7 @@
     "RewardTargetId": 1003000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11003000310,
@@ -125,7 +125,7 @@
     "RewardTargetId": 1003000310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11005000110,
@@ -133,7 +133,7 @@
     "RewardTargetId": 1005000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11005000210,
@@ -141,7 +141,7 @@
     "RewardTargetId": 1005000210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11007000310,
@@ -149,7 +149,7 @@
     "RewardTargetId": 1007000310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11007000410,
@@ -157,7 +157,7 @@
     "RewardTargetId": 1007000410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11007000510,
@@ -165,7 +165,7 @@
     "RewardTargetId": 1007000510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11007000710,
@@ -173,7 +173,7 @@
     "RewardTargetId": 1007000710,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11008000110,
@@ -181,7 +181,7 @@
     "RewardTargetId": 1008000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11008000210,
@@ -189,7 +189,7 @@
     "RewardTargetId": 1008000210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11009000110,
@@ -197,7 +197,7 @@
     "RewardTargetId": 1009000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11009000210,
@@ -205,7 +205,7 @@
     "RewardTargetId": 1009000210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11009000310,
@@ -213,7 +213,7 @@
     "RewardTargetId": 1009000310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11009000410,
@@ -221,7 +221,7 @@
     "RewardTargetId": 1009000410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11009000510,
@@ -229,7 +229,7 @@
     "RewardTargetId": 1009000510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11009000550,
@@ -237,7 +237,7 @@
     "RewardTargetId": 1009000550,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11009000610,
@@ -245,7 +245,7 @@
     "RewardTargetId": 1009000610,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11009000710,
@@ -253,7 +253,7 @@
     "RewardTargetId": 1009000710,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11009000810,
@@ -261,7 +261,7 @@
     "RewardTargetId": 1009000810,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11011000110,
@@ -269,7 +269,7 @@
     "RewardTargetId": 1011000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11012000110,
@@ -277,7 +277,7 @@
     "RewardTargetId": 1012000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11013000110,
@@ -285,7 +285,7 @@
     "RewardTargetId": 1013000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11013000210,
@@ -293,7 +293,7 @@
     "RewardTargetId": 1013000210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11013000350,
@@ -301,7 +301,7 @@
     "RewardTargetId": 1013000350,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11013000510,
@@ -309,7 +309,7 @@
     "RewardTargetId": 1013000510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11013000610,
@@ -317,7 +317,7 @@
     "RewardTargetId": 1013000610,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11013000710,
@@ -325,7 +325,7 @@
     "RewardTargetId": 1013000710,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11013000850,
@@ -333,7 +333,7 @@
     "RewardTargetId": 1013000850,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11013001410,
@@ -341,7 +341,7 @@
     "RewardTargetId": 1013001410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11013001510,
@@ -349,7 +349,7 @@
     "RewardTargetId": 1013001510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11017000110,
@@ -357,7 +357,7 @@
     "RewardTargetId": 1017000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11017000310,
@@ -365,7 +365,7 @@
     "RewardTargetId": 1017000310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11017000410,
@@ -373,7 +373,7 @@
     "RewardTargetId": 1017000410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11017000510,
@@ -381,7 +381,7 @@
     "RewardTargetId": 1017000510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11017000610,
@@ -389,7 +389,7 @@
     "RewardTargetId": 1017000610,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11017000950,
@@ -397,7 +397,7 @@
     "RewardTargetId": 1017000950,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11017001210,
@@ -405,7 +405,7 @@
     "RewardTargetId": 1017001210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11021000110,
@@ -413,7 +413,7 @@
     "RewardTargetId": 1021000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11021000210,
@@ -421,7 +421,7 @@
     "RewardTargetId": 1021000210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11022000150,
@@ -429,7 +429,7 @@
     "RewardTargetId": 1022000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11022000210,
@@ -437,7 +437,7 @@
     "RewardTargetId": 1022000210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11023000110,
@@ -445,7 +445,7 @@
     "RewardTargetId": 1023000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11026000110,
@@ -453,7 +453,7 @@
     "RewardTargetId": 1026000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11029000210,
@@ -461,7 +461,7 @@
     "RewardTargetId": 1029000210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11029002110,
@@ -469,7 +469,7 @@
     "RewardTargetId": 1029002110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11031000150,
@@ -477,7 +477,7 @@
     "RewardTargetId": 1031000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11031000350,
@@ -485,7 +485,7 @@
     "RewardTargetId": 1031000350,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11031001250,
@@ -493,7 +493,7 @@
     "RewardTargetId": 1031001250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11044000410,
@@ -501,7 +501,7 @@
     "RewardTargetId": 1044000410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11055000610,
@@ -509,7 +509,7 @@
     "RewardTargetId": 1055000610,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11060000350,
@@ -517,7 +517,7 @@
     "RewardTargetId": 1060000350,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11060000550,
@@ -525,7 +525,7 @@
     "RewardTargetId": 1060000550,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11060001410,
@@ -533,7 +533,7 @@
     "RewardTargetId": 1060001410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11060001850,
@@ -541,7 +541,7 @@
     "RewardTargetId": 1060001850,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11060002010,
@@ -549,7 +549,7 @@
     "RewardTargetId": 1060002010,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11060002110,
@@ -557,7 +557,7 @@
     "RewardTargetId": 1060002110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11063000110,
@@ -565,7 +565,7 @@
     "RewardTargetId": 1063000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11067000110,
@@ -573,7 +573,7 @@
     "RewardTargetId": 1067000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11068000150,
@@ -581,7 +581,7 @@
     "RewardTargetId": 1068000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11069000150,
@@ -589,7 +589,7 @@
     "RewardTargetId": 1069000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11069000210,
@@ -597,7 +597,7 @@
     "RewardTargetId": 1069000210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11070000110,
@@ -605,7 +605,7 @@
     "RewardTargetId": 1070000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11070000210,
@@ -613,7 +613,7 @@
     "RewardTargetId": 1070000210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11070000310,
@@ -621,7 +621,7 @@
     "RewardTargetId": 1070000310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11070000510,
@@ -629,7 +629,7 @@
     "RewardTargetId": 1070000510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11080000150,
@@ -637,7 +637,7 @@
     "RewardTargetId": 1080000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11080001110,
@@ -645,7 +645,7 @@
     "RewardTargetId": 1080001110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11080001310,
@@ -653,7 +653,7 @@
     "RewardTargetId": 1080001310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11080001410,
@@ -661,7 +661,7 @@
     "RewardTargetId": 1080001410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11080001510,
@@ -669,7 +669,7 @@
     "RewardTargetId": 1080001510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11080001610,
@@ -677,7 +677,7 @@
     "RewardTargetId": 1080001610,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11080001710,
@@ -685,7 +685,7 @@
     "RewardTargetId": 1080001710,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11080001810,
@@ -693,7 +693,7 @@
     "RewardTargetId": 1080001810,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11080001910,
@@ -701,7 +701,7 @@
     "RewardTargetId": 1080001910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11080002010,
@@ -709,7 +709,7 @@
     "RewardTargetId": 1080002010,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11080003250,
@@ -717,7 +717,7 @@
     "RewardTargetId": 1080003250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11080003310,
@@ -725,7 +725,7 @@
     "RewardTargetId": 1080003310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11081000110,
@@ -733,7 +733,7 @@
     "RewardTargetId": 1081000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11082000110,
@@ -741,7 +741,7 @@
     "RewardTargetId": 1082000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11083000310,
@@ -749,7 +749,7 @@
     "RewardTargetId": 1083000310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11083000510,
@@ -757,7 +757,7 @@
     "RewardTargetId": 1083000510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11083000610,
@@ -765,7 +765,7 @@
     "RewardTargetId": 1083000610,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11084000110,
@@ -773,7 +773,7 @@
     "RewardTargetId": 1084000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11085000110,
@@ -781,7 +781,7 @@
     "RewardTargetId": 1085000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11085000310,
@@ -789,7 +789,7 @@
     "RewardTargetId": 1085000310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11085000450,
@@ -797,7 +797,7 @@
     "RewardTargetId": 1085000450,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11085000910,
@@ -805,7 +805,7 @@
     "RewardTargetId": 1085000910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11085001010,
@@ -813,7 +813,7 @@
     "RewardTargetId": 1085001010,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11085001110,
@@ -821,7 +821,7 @@
     "RewardTargetId": 1085001110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11085001210,
@@ -829,7 +829,7 @@
     "RewardTargetId": 1085001210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11085001310,
@@ -837,7 +837,7 @@
     "RewardTargetId": 1085001310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11085001710,
@@ -845,7 +845,7 @@
     "RewardTargetId": 1085001710,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11085001810,
@@ -853,7 +853,7 @@
     "RewardTargetId": 1085001810,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11085001910,
@@ -861,7 +861,7 @@
     "RewardTargetId": 1085001910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11095000350,
@@ -869,7 +869,7 @@
     "RewardTargetId": 1095000350,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11095000410,
@@ -877,7 +877,7 @@
     "RewardTargetId": 1095000410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11095000510,
@@ -885,7 +885,7 @@
     "RewardTargetId": 1095000510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11095000910,
@@ -893,7 +893,7 @@
     "RewardTargetId": 1095000910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11095001010,
@@ -901,7 +901,7 @@
     "RewardTargetId": 1095001010,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11095001510,
@@ -909,7 +909,7 @@
     "RewardTargetId": 1095001510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11095002550,
@@ -917,7 +917,7 @@
     "RewardTargetId": 1095002550,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11095002910,
@@ -925,7 +925,7 @@
     "RewardTargetId": 1095002910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11095003110,
@@ -933,7 +933,7 @@
     "RewardTargetId": 1095003110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11095003510,
@@ -941,7 +941,7 @@
     "RewardTargetId": 1095003510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11095003810,
@@ -949,7 +949,7 @@
     "RewardTargetId": 1095003810,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11095003910,
@@ -957,7 +957,7 @@
     "RewardTargetId": 1095003910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11095004010,
@@ -965,7 +965,7 @@
     "RewardTargetId": 1095004010,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11095004110,
@@ -973,7 +973,7 @@
     "RewardTargetId": 1095004110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11095004410,
@@ -981,7 +981,7 @@
     "RewardTargetId": 1095004410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11098000110,
@@ -989,7 +989,7 @@
     "RewardTargetId": 1098000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11098000210,
@@ -997,7 +997,7 @@
     "RewardTargetId": 1098000210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11098000310,
@@ -1005,7 +1005,7 @@
     "RewardTargetId": 1098000310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11098000510,
@@ -1013,7 +1013,7 @@
     "RewardTargetId": 1098000510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11098000610,
@@ -1021,7 +1021,7 @@
     "RewardTargetId": 1098000610,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11099000110,
@@ -1029,7 +1029,7 @@
     "RewardTargetId": 1099000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11099000210,
@@ -1037,7 +1037,7 @@
     "RewardTargetId": 1099000210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11101000110,
@@ -1045,7 +1045,7 @@
     "RewardTargetId": 1101000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11101000350,
@@ -1053,7 +1053,7 @@
     "RewardTargetId": 1101000350,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11110000150,
@@ -1061,7 +1061,7 @@
     "RewardTargetId": 1110000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11110000550,
@@ -1069,7 +1069,7 @@
     "RewardTargetId": 1110000550,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11110000810,
@@ -1077,7 +1077,7 @@
     "RewardTargetId": 1110000810,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11114000150,
@@ -1085,7 +1085,7 @@
     "RewardTargetId": 1114000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11114000250,
@@ -1093,7 +1093,7 @@
     "RewardTargetId": 1114000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11114000450,
@@ -1101,7 +1101,7 @@
     "RewardTargetId": 1114000450,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11115000350,
@@ -1109,7 +1109,7 @@
     "RewardTargetId": 1115000350,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11125000250,
@@ -1117,7 +1117,7 @@
     "RewardTargetId": 1125000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11125000510,
@@ -1125,7 +1125,7 @@
     "RewardTargetId": 1125000510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11125001150,
@@ -1133,7 +1133,7 @@
     "RewardTargetId": 1125001150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11125001250,
@@ -1141,7 +1141,7 @@
     "RewardTargetId": 1125001250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11125001450,
@@ -1149,7 +1149,7 @@
     "RewardTargetId": 1125001450,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11125003310,
@@ -1157,7 +1157,7 @@
     "RewardTargetId": 1125003310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11125005110,
@@ -1165,7 +1165,7 @@
     "RewardTargetId": 1125005110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11133001310,
@@ -1173,7 +1173,7 @@
     "RewardTargetId": 1133001310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11133001410,
@@ -1181,7 +1181,7 @@
     "RewardTargetId": 1133001410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11144000150,
@@ -1189,7 +1189,7 @@
     "RewardTargetId": 1144000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11144000550,
@@ -1197,7 +1197,7 @@
     "RewardTargetId": 1144000550,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11144001110,
@@ -1205,7 +1205,7 @@
     "RewardTargetId": 1144001110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11150000150,
@@ -1213,7 +1213,7 @@
     "RewardTargetId": 1150000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11150000250,
@@ -1221,7 +1221,7 @@
     "RewardTargetId": 1150000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11150000410,
@@ -1229,7 +1229,7 @@
     "RewardTargetId": 1150000410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11155000110,
@@ -1237,7 +1237,7 @@
     "RewardTargetId": 1155000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11155000250,
@@ -1245,7 +1245,7 @@
     "RewardTargetId": 1155000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11155000610,
@@ -1253,7 +1253,7 @@
     "RewardTargetId": 1155000610,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11159000110,
@@ -1261,7 +1261,7 @@
     "RewardTargetId": 1159000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11162000150,
@@ -1269,7 +1269,7 @@
     "RewardTargetId": 1162000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11162001010,
@@ -1277,7 +1277,7 @@
     "RewardTargetId": 1162001010,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11162001310,
@@ -1285,7 +1285,7 @@
     "RewardTargetId": 1162001310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11162001510,
@@ -1293,7 +1293,7 @@
     "RewardTargetId": 1162001510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11163000150,
@@ -1301,7 +1301,7 @@
     "RewardTargetId": 1163000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11166000250,
@@ -1309,7 +1309,7 @@
     "RewardTargetId": 1166000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11166000510,
@@ -1317,7 +1317,7 @@
     "RewardTargetId": 1166000510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11175000110,
@@ -1325,7 +1325,7 @@
     "RewardTargetId": 1175000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11175000410,
@@ -1333,7 +1333,7 @@
     "RewardTargetId": 1175000410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11175000510,
@@ -1341,7 +1341,7 @@
     "RewardTargetId": 1175000510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11175000910,
@@ -1349,7 +1349,7 @@
     "RewardTargetId": 1175000910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11200000410,
@@ -1357,7 +1357,7 @@
     "RewardTargetId": 1200000410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11200000610,
@@ -1365,7 +1365,7 @@
     "RewardTargetId": 1200000610,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11200000810,
@@ -1373,7 +1373,7 @@
     "RewardTargetId": 1200000810,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11200001010,
@@ -1381,7 +1381,7 @@
     "RewardTargetId": 1200001010,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11200001350,
@@ -1389,7 +1389,7 @@
     "RewardTargetId": 1200001350,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11200001710,
@@ -1397,7 +1397,7 @@
     "RewardTargetId": 1200001710,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11200002210,
@@ -1405,7 +1405,7 @@
     "RewardTargetId": 1200002210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11200003310,
@@ -1413,7 +1413,7 @@
     "RewardTargetId": 1200003310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11200003410,
@@ -1421,7 +1421,7 @@
     "RewardTargetId": 1200003410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11200003510,
@@ -1429,7 +1429,7 @@
     "RewardTargetId": 1200003510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11200003950,
@@ -1437,7 +1437,7 @@
     "RewardTargetId": 1200003950,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11210001310,
@@ -1445,7 +1445,7 @@
     "RewardTargetId": 1210001310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11210001410,
@@ -1453,7 +1453,7 @@
     "RewardTargetId": 1210001410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11210001510,
@@ -1461,7 +1461,7 @@
     "RewardTargetId": 1210001510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11210001610,
@@ -1469,7 +1469,7 @@
     "RewardTargetId": 1210001610,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11210001710,
@@ -1477,7 +1477,7 @@
     "RewardTargetId": 1210001710,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11210001810,
@@ -1485,7 +1485,7 @@
     "RewardTargetId": 1210001810,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11210002010,
@@ -1493,7 +1493,7 @@
     "RewardTargetId": 1210002010,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11210003110,
@@ -1501,7 +1501,7 @@
     "RewardTargetId": 1210003110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11211001210,
@@ -1509,7 +1509,7 @@
     "RewardTargetId": 1211001210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11217000110,
@@ -1517,7 +1517,7 @@
     "RewardTargetId": 1217000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11217000310,
@@ -1525,7 +1525,7 @@
     "RewardTargetId": 1217000310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11217000510,
@@ -1533,7 +1533,7 @@
     "RewardTargetId": 1217000510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11219000150,
@@ -1541,7 +1541,7 @@
     "RewardTargetId": 1219000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11219000250,
@@ -1549,7 +1549,7 @@
     "RewardTargetId": 1219000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11219000350,
@@ -1557,7 +1557,7 @@
     "RewardTargetId": 1219000350,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11219000450,
@@ -1565,7 +1565,7 @@
     "RewardTargetId": 1219000450,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11219000650,
@@ -1573,7 +1573,7 @@
     "RewardTargetId": 1219000650,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11230001210,
@@ -1581,7 +1581,7 @@
     "RewardTargetId": 1230001210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11230001310,
@@ -1589,7 +1589,7 @@
     "RewardTargetId": 1230001310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11230001410,
@@ -1597,7 +1597,7 @@
     "RewardTargetId": 1230001410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11230001710,
@@ -1605,7 +1605,7 @@
     "RewardTargetId": 1230001710,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11230001810,
@@ -1613,7 +1613,7 @@
     "RewardTargetId": 1230001810,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11230001910,
@@ -1621,7 +1621,7 @@
     "RewardTargetId": 1230001910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11230002110,
@@ -1629,7 +1629,7 @@
     "RewardTargetId": 1230002110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11230002310,
@@ -1637,7 +1637,7 @@
     "RewardTargetId": 1230002310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11230002610,
@@ -1645,7 +1645,7 @@
     "RewardTargetId": 1230002610,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11230002910,
@@ -1653,7 +1653,7 @@
     "RewardTargetId": 1230002910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11230003510,
@@ -1661,7 +1661,7 @@
     "RewardTargetId": 1230003510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11230003850,
@@ -1669,7 +1669,7 @@
     "RewardTargetId": 1230003850,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11230003950,
@@ -1677,7 +1677,7 @@
     "RewardTargetId": 1230003950,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11230004510,
@@ -1685,7 +1685,7 @@
     "RewardTargetId": 1230004510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11230004910,
@@ -1693,7 +1693,7 @@
     "RewardTargetId": 1230004910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11230005510,
@@ -1701,7 +1701,7 @@
     "RewardTargetId": 1230005510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11230005610,
@@ -1709,7 +1709,7 @@
     "RewardTargetId": 1230005610,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11240000110,
@@ -1717,7 +1717,7 @@
     "RewardTargetId": 1240000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11240001010,
@@ -1725,7 +1725,7 @@
     "RewardTargetId": 1240001010,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11240001110,
@@ -1733,7 +1733,7 @@
     "RewardTargetId": 1240001110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11300001710,
@@ -1741,7 +1741,7 @@
     "RewardTargetId": 1300001710,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11300002110,
@@ -1749,7 +1749,7 @@
     "RewardTargetId": 1300002110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11300002210,
@@ -1757,7 +1757,7 @@
     "RewardTargetId": 1300002210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11300002310,
@@ -1765,7 +1765,7 @@
     "RewardTargetId": 1300002310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11300002410,
@@ -1773,7 +1773,7 @@
     "RewardTargetId": 1300002410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11300002810,
@@ -1781,7 +1781,7 @@
     "RewardTargetId": 1300002810,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11300003210,
@@ -1789,7 +1789,7 @@
     "RewardTargetId": 1300003210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11300003910,
@@ -1797,7 +1797,7 @@
     "RewardTargetId": 1300003910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11300004250,
@@ -1805,7 +1805,7 @@
     "RewardTargetId": 1300004250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11300004450,
@@ -1813,7 +1813,7 @@
     "RewardTargetId": 1300004450,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11300004650,
@@ -1821,7 +1821,7 @@
     "RewardTargetId": 1300004650,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11304000110,
@@ -1829,7 +1829,7 @@
     "RewardTargetId": 1304000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11304001210,
@@ -1837,7 +1837,7 @@
     "RewardTargetId": 1304001210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11305000350,
@@ -1845,7 +1845,7 @@
     "RewardTargetId": 1305000350,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11305000610,
@@ -1853,7 +1853,7 @@
     "RewardTargetId": 1305000610,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11305000810,
@@ -1861,7 +1861,7 @@
     "RewardTargetId": 1305000810,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11306000110,
@@ -1869,7 +1869,7 @@
     "RewardTargetId": 1306000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11306000310,
@@ -1877,7 +1877,7 @@
     "RewardTargetId": 1306000310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11307000110,
@@ -1885,7 +1885,7 @@
     "RewardTargetId": 1307000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11307000210,
@@ -1893,7 +1893,7 @@
     "RewardTargetId": 1307000210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11307000310,
@@ -1901,7 +1901,7 @@
     "RewardTargetId": 1307000310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11307000410,
@@ -1909,7 +1909,7 @@
     "RewardTargetId": 1307000410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11308000710,
@@ -1917,7 +1917,7 @@
     "RewardTargetId": 1308000710,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11330000150,
@@ -1925,7 +1925,7 @@
     "RewardTargetId": 1330000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11330000350,
@@ -1933,7 +1933,7 @@
     "RewardTargetId": 1330000350,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11330000750,
@@ -1941,7 +1941,7 @@
     "RewardTargetId": 1330000750,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11330002850,
@@ -1949,7 +1949,7 @@
     "RewardTargetId": 1330002850,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11330003110,
@@ -1957,7 +1957,7 @@
     "RewardTargetId": 1330003110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11330003210,
@@ -1965,7 +1965,7 @@
     "RewardTargetId": 1330003210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11330003610,
@@ -1973,7 +1973,7 @@
     "RewardTargetId": 1330003610,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11330003710,
@@ -1981,7 +1981,7 @@
     "RewardTargetId": 1330003710,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11330004910,
@@ -1989,7 +1989,7 @@
     "RewardTargetId": 1330004910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11330005310,
@@ -1997,7 +1997,7 @@
     "RewardTargetId": 1330005310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11330005710,
@@ -2005,7 +2005,7 @@
     "RewardTargetId": 1330005710,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11330006010,
@@ -2013,7 +2013,7 @@
     "RewardTargetId": 1330006010,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11330006110,
@@ -2021,7 +2021,7 @@
     "RewardTargetId": 1330006110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11330006510,
@@ -2029,7 +2029,7 @@
     "RewardTargetId": 1330006510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11336000150,
@@ -2037,7 +2037,7 @@
     "RewardTargetId": 1336000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11339000150,
@@ -2045,7 +2045,7 @@
     "RewardTargetId": 1339000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11350000110,
@@ -2053,7 +2053,7 @@
     "RewardTargetId": 1350000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370000150,
@@ -2061,7 +2061,7 @@
     "RewardTargetId": 1370000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370001710,
@@ -2069,7 +2069,7 @@
     "RewardTargetId": 1370001710,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370001810,
@@ -2077,7 +2077,7 @@
     "RewardTargetId": 1370001810,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370002310,
@@ -2085,7 +2085,7 @@
     "RewardTargetId": 1370002310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370002410,
@@ -2093,7 +2093,7 @@
     "RewardTargetId": 1370002410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370002510,
@@ -2101,7 +2101,7 @@
     "RewardTargetId": 1370002510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370002710,
@@ -2109,7 +2109,7 @@
     "RewardTargetId": 1370002710,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370002810,
@@ -2117,7 +2117,7 @@
     "RewardTargetId": 1370002810,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370003110,
@@ -2125,7 +2125,7 @@
     "RewardTargetId": 1370003110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370003610,
@@ -2133,7 +2133,7 @@
     "RewardTargetId": 1370003610,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370003710,
@@ -2141,7 +2141,7 @@
     "RewardTargetId": 1370003710,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370003810,
@@ -2149,7 +2149,7 @@
     "RewardTargetId": 1370003810,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370003910,
@@ -2157,7 +2157,7 @@
     "RewardTargetId": 1370003910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370004010,
@@ -2165,7 +2165,7 @@
     "RewardTargetId": 1370004010,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370004110,
@@ -2173,7 +2173,7 @@
     "RewardTargetId": 1370004110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370004910,
@@ -2181,7 +2181,7 @@
     "RewardTargetId": 1370004910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370005010,
@@ -2189,7 +2189,7 @@
     "RewardTargetId": 1370005010,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370005210,
@@ -2197,7 +2197,7 @@
     "RewardTargetId": 1370005210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370005410,
@@ -2205,7 +2205,7 @@
     "RewardTargetId": 1370005410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370005950,
@@ -2213,7 +2213,7 @@
     "RewardTargetId": 1370005950,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370007410,
@@ -2221,7 +2221,7 @@
     "RewardTargetId": 1370007410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370007510,
@@ -2229,7 +2229,7 @@
     "RewardTargetId": 1370007510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370007610,
@@ -2237,7 +2237,7 @@
     "RewardTargetId": 1370007610,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370009710,
@@ -2245,7 +2245,7 @@
     "RewardTargetId": 1370009710,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370009810,
@@ -2253,7 +2253,7 @@
     "RewardTargetId": 1370009810,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370010410,
@@ -2261,7 +2261,7 @@
     "RewardTargetId": 1370010410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11370010610,
@@ -2269,7 +2269,7 @@
     "RewardTargetId": 1370010610,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11375000210,
@@ -2277,7 +2277,7 @@
     "RewardTargetId": 1375000210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11375000310,
@@ -2285,7 +2285,7 @@
     "RewardTargetId": 1375000310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11375000410,
@@ -2293,7 +2293,7 @@
     "RewardTargetId": 1375000410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11378000110,
@@ -2301,7 +2301,7 @@
     "RewardTargetId": 1378000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11379000510,
@@ -2309,7 +2309,7 @@
     "RewardTargetId": 1379000510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11379000610,
@@ -2317,7 +2317,7 @@
     "RewardTargetId": 1379000610,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11400000110,
@@ -2325,7 +2325,7 @@
     "RewardTargetId": 1400000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11400000150,
@@ -2333,7 +2333,7 @@
     "RewardTargetId": 1400000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11400000550,
@@ -2341,7 +2341,7 @@
     "RewardTargetId": 1400000550,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11400001710,
@@ -2349,7 +2349,7 @@
     "RewardTargetId": 1400001710,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11400002810,
@@ -2357,7 +2357,7 @@
     "RewardTargetId": 1400002810,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11400002910,
@@ -2365,7 +2365,7 @@
     "RewardTargetId": 1400002910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11400003010,
@@ -2373,7 +2373,7 @@
     "RewardTargetId": 1400003010,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11400003110,
@@ -2381,7 +2381,7 @@
     "RewardTargetId": 1400003110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11400003310,
@@ -2389,7 +2389,7 @@
     "RewardTargetId": 1400003310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11400003810,
@@ -2397,7 +2397,7 @@
     "RewardTargetId": 1400003810,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11400004210,
@@ -2405,7 +2405,7 @@
     "RewardTargetId": 1400004210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11400007310,
@@ -2413,7 +2413,7 @@
     "RewardTargetId": 1400007310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11400008110,
@@ -2421,7 +2421,7 @@
     "RewardTargetId": 1400008110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11401000110,
@@ -2429,7 +2429,7 @@
     "RewardTargetId": 1401000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11408000110,
@@ -2437,7 +2437,7 @@
     "RewardTargetId": 1408000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11408000410,
@@ -2445,7 +2445,7 @@
     "RewardTargetId": 1408000410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11420000110,
@@ -2453,7 +2453,7 @@
     "RewardTargetId": 1420000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11420001810,
@@ -2461,7 +2461,7 @@
     "RewardTargetId": 1420001810,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11420001910,
@@ -2469,7 +2469,7 @@
     "RewardTargetId": 1420001910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11420004710,
@@ -2477,7 +2477,7 @@
     "RewardTargetId": 1420004710,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11420004910,
@@ -2485,7 +2485,7 @@
     "RewardTargetId": 1420004910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11420005310,
@@ -2493,7 +2493,7 @@
     "RewardTargetId": 1420005310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11420005710,
@@ -2501,7 +2501,7 @@
     "RewardTargetId": 1420005710,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11420005810,
@@ -2509,7 +2509,7 @@
     "RewardTargetId": 1420005810,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11420005910,
@@ -2517,7 +2517,7 @@
     "RewardTargetId": 1420005910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11430000350,
@@ -2525,7 +2525,7 @@
     "RewardTargetId": 1430000350,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11430001110,
@@ -2533,7 +2533,7 @@
     "RewardTargetId": 1430001110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11430001410,
@@ -2541,7 +2541,7 @@
     "RewardTargetId": 1430001410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11430001610,
@@ -2549,7 +2549,7 @@
     "RewardTargetId": 1430001610,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11430001810,
@@ -2557,7 +2557,7 @@
     "RewardTargetId": 1430001810,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11430002210,
@@ -2565,7 +2565,7 @@
     "RewardTargetId": 1430002210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11430002310,
@@ -2573,7 +2573,7 @@
     "RewardTargetId": 1430002310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11430002910,
@@ -2581,7 +2581,7 @@
     "RewardTargetId": 1430002910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11430003110,
@@ -2589,7 +2589,7 @@
     "RewardTargetId": 1430003110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11430003310,
@@ -2597,7 +2597,7 @@
     "RewardTargetId": 1430003310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11430003450,
@@ -2605,7 +2605,7 @@
     "RewardTargetId": 1430003450,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11430004110,
@@ -2613,7 +2613,7 @@
     "RewardTargetId": 1430004110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11430004850,
@@ -2621,7 +2621,7 @@
     "RewardTargetId": 1430004850,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11430004910,
@@ -2629,7 +2629,7 @@
     "RewardTargetId": 1430004910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11430005010,
@@ -2637,7 +2637,7 @@
     "RewardTargetId": 1430005010,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11430005310,
@@ -2645,7 +2645,7 @@
     "RewardTargetId": 1430005310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11430005410,
@@ -2653,7 +2653,7 @@
     "RewardTargetId": 1430005410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11430005610,
@@ -2661,7 +2661,7 @@
     "RewardTargetId": 1430005610,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11430005710,
@@ -2669,7 +2669,7 @@
     "RewardTargetId": 1430005710,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11430005910,
@@ -2677,7 +2677,7 @@
     "RewardTargetId": 1430005910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11430006010,
@@ -2685,7 +2685,7 @@
     "RewardTargetId": 1430006010,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11430006210,
@@ -2693,7 +2693,7 @@
     "RewardTargetId": 1430006210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11430007610,
@@ -2701,7 +2701,7 @@
     "RewardTargetId": 1430007610,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11431000110,
@@ -2709,7 +2709,7 @@
     "RewardTargetId": 1431000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11431000410,
@@ -2717,7 +2717,7 @@
     "RewardTargetId": 1431000410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11431000550,
@@ -2725,7 +2725,7 @@
     "RewardTargetId": 1431000550,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11431001310,
@@ -2733,7 +2733,7 @@
     "RewardTargetId": 1431001310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11431001710,
@@ -2741,7 +2741,7 @@
     "RewardTargetId": 1431001710,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11431001810,
@@ -2749,7 +2749,7 @@
     "RewardTargetId": 1431001810,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11431001910,
@@ -2757,7 +2757,7 @@
     "RewardTargetId": 1431001910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11501000150,
@@ -2765,7 +2765,7 @@
     "RewardTargetId": 1501000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11501001010,
@@ -2773,7 +2773,7 @@
     "RewardTargetId": 1501001010,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11501001650,
@@ -2781,7 +2781,7 @@
     "RewardTargetId": 1501001650,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11501001710,
@@ -2789,7 +2789,7 @@
     "RewardTargetId": 1501001710,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11501002250,
@@ -2797,7 +2797,7 @@
     "RewardTargetId": 1501002250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11501002450,
@@ -2805,7 +2805,7 @@
     "RewardTargetId": 1501002450,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11501002550,
@@ -2813,7 +2813,7 @@
     "RewardTargetId": 1501002550,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11501003010,
@@ -2821,7 +2821,7 @@
     "RewardTargetId": 1501003010,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11501003310,
@@ -2829,7 +2829,7 @@
     "RewardTargetId": 1501003310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11501003450,
@@ -2837,7 +2837,7 @@
     "RewardTargetId": 1501003450,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11501003910,
@@ -2845,7 +2845,7 @@
     "RewardTargetId": 1501003910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11600000110,
@@ -2853,7 +2853,7 @@
     "RewardTargetId": 1600000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11600000210,
@@ -2861,7 +2861,7 @@
     "RewardTargetId": 1600000210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11604000150,
@@ -2869,7 +2869,7 @@
     "RewardTargetId": 1604000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11650000110,
@@ -2877,7 +2877,7 @@
     "RewardTargetId": 1650000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11700000250,
@@ -2885,7 +2885,7 @@
     "RewardTargetId": 1700000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11705000550,
@@ -2893,7 +2893,7 @@
     "RewardTargetId": 1705000550,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11705001500,
@@ -2901,7 +2901,7 @@
     "RewardTargetId": 1705001500,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11705001510,
@@ -2909,7 +2909,7 @@
     "RewardTargetId": 1705001510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11705002050,
@@ -2917,7 +2917,7 @@
     "RewardTargetId": 1705002050,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11705003010,
@@ -2925,7 +2925,7 @@
     "RewardTargetId": 1705003010,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11705004310,
@@ -2933,7 +2933,7 @@
     "RewardTargetId": 1705004310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11705004910,
@@ -2941,7 +2941,7 @@
     "RewardTargetId": 1705004910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11705005010,
@@ -2949,7 +2949,7 @@
     "RewardTargetId": 1705005010,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11725000150,
@@ -2957,7 +2957,7 @@
     "RewardTargetId": 1725000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11750000110,
@@ -2965,7 +2965,7 @@
     "RewardTargetId": 1750000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11760000110,
@@ -2973,7 +2973,7 @@
     "RewardTargetId": 1760000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11763000110,
@@ -2981,7 +2981,7 @@
     "RewardTargetId": 1763000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11764000110,
@@ -2989,7 +2989,7 @@
     "RewardTargetId": 1764000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11764000310,
@@ -2997,7 +2997,7 @@
     "RewardTargetId": 1764000310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11771000110,
@@ -3005,7 +3005,7 @@
     "RewardTargetId": 1771000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11771000210,
@@ -3013,7 +3013,7 @@
     "RewardTargetId": 1771000210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11779000110,
@@ -3021,7 +3021,7 @@
     "RewardTargetId": 1779000110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11850000250,
@@ -3029,7 +3029,7 @@
     "RewardTargetId": 1850000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11850000310,
@@ -3037,7 +3037,7 @@
     "RewardTargetId": 1850000310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11850000610,
@@ -3045,7 +3045,7 @@
     "RewardTargetId": 1850000610,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11850000650,
@@ -3053,7 +3053,7 @@
     "RewardTargetId": 1850000650,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11850001210,
@@ -3061,7 +3061,7 @@
     "RewardTargetId": 1850001210,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11850001350,
@@ -3069,7 +3069,7 @@
     "RewardTargetId": 1850001350,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11850001650,
@@ -3077,7 +3077,7 @@
     "RewardTargetId": 1850001650,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11850002110,
@@ -3085,7 +3085,7 @@
     "RewardTargetId": 1850002110,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11850002410,
@@ -3093,7 +3093,7 @@
     "RewardTargetId": 1850002410,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11850002510,
@@ -3101,7 +3101,7 @@
     "RewardTargetId": 1850002510,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11850002910,
@@ -3109,7 +3109,7 @@
     "RewardTargetId": 1850002910,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11850003010,
@@ -3117,7 +3117,7 @@
     "RewardTargetId": 1850003010,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 11850005310,
@@ -3125,7 +3125,7 @@
     "RewardTargetId": 1850005310,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21001000150,
@@ -3133,7 +3133,7 @@
     "RewardTargetId": 1001000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21001000250,
@@ -3141,7 +3141,7 @@
     "RewardTargetId": 1001000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21001000450,
@@ -3149,7 +3149,7 @@
     "RewardTargetId": 1001000450,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21001000550,
@@ -3157,7 +3157,7 @@
     "RewardTargetId": 1001000550,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21001000650,
@@ -3165,7 +3165,7 @@
     "RewardTargetId": 1001000650,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21001000750,
@@ -3173,7 +3173,7 @@
     "RewardTargetId": 1001000750,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21013000150,
@@ -3181,7 +3181,7 @@
     "RewardTargetId": 1013000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21022000150,
@@ -3189,7 +3189,7 @@
     "RewardTargetId": 1022000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21031000150,
@@ -3197,7 +3197,7 @@
     "RewardTargetId": 1031000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21031000250,
@@ -3205,7 +3205,7 @@
     "RewardTargetId": 1031000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21060000150,
@@ -3213,7 +3213,7 @@
     "RewardTargetId": 1060000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21060000250,
@@ -3221,7 +3221,7 @@
     "RewardTargetId": 1060000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21080000150,
@@ -3229,7 +3229,7 @@
     "RewardTargetId": 1080000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21080000250,
@@ -3237,7 +3237,7 @@
     "RewardTargetId": 1080000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21080000450,
@@ -3245,7 +3245,7 @@
     "RewardTargetId": 1080000450,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21080000550,
@@ -3253,7 +3253,7 @@
     "RewardTargetId": 1080000550,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21080000650,
@@ -3261,7 +3261,7 @@
     "RewardTargetId": 1080000650,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21095000150,
@@ -3269,7 +3269,7 @@
     "RewardTargetId": 1095000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21095000250,
@@ -3277,7 +3277,7 @@
     "RewardTargetId": 1095000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21095000350,
@@ -3285,7 +3285,7 @@
     "RewardTargetId": 1095000350,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21095000450,
@@ -3293,7 +3293,7 @@
     "RewardTargetId": 1095000450,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21110000150,
@@ -3301,7 +3301,7 @@
     "RewardTargetId": 1110000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21110000250,
@@ -3309,7 +3309,7 @@
     "RewardTargetId": 1110000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21110000350,
@@ -3317,7 +3317,7 @@
     "RewardTargetId": 1110000350,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21125000150,
@@ -3325,7 +3325,7 @@
     "RewardTargetId": 1125000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21125000250,
@@ -3333,7 +3333,7 @@
     "RewardTargetId": 1125000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21125000350,
@@ -3341,7 +3341,7 @@
     "RewardTargetId": 1125000350,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21125000450,
@@ -3349,7 +3349,7 @@
     "RewardTargetId": 1125000450,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21144000150,
@@ -3357,7 +3357,7 @@
     "RewardTargetId": 1144000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21150000150,
@@ -3365,7 +3365,7 @@
     "RewardTargetId": 1150000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21162000150,
@@ -3373,7 +3373,7 @@
     "RewardTargetId": 1162000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21162000250,
@@ -3381,7 +3381,7 @@
     "RewardTargetId": 1162000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21200000150,
@@ -3389,7 +3389,7 @@
     "RewardTargetId": 1200000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21200000250,
@@ -3397,7 +3397,7 @@
     "RewardTargetId": 1200000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21200000350,
@@ -3405,7 +3405,7 @@
     "RewardTargetId": 1200000350,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21210000150,
@@ -3413,7 +3413,7 @@
     "RewardTargetId": 1210000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21210000250,
@@ -3421,7 +3421,7 @@
     "RewardTargetId": 1210000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21210000350,
@@ -3429,7 +3429,7 @@
     "RewardTargetId": 1210000350,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21210000550,
@@ -3437,7 +3437,7 @@
     "RewardTargetId": 1210000550,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21230000150,
@@ -3445,7 +3445,7 @@
     "RewardTargetId": 1230000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21230000250,
@@ -3453,7 +3453,7 @@
     "RewardTargetId": 1230000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21230000350,
@@ -3461,7 +3461,7 @@
     "RewardTargetId": 1230000350,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21300000150,
@@ -3469,7 +3469,7 @@
     "RewardTargetId": 1300000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21300000250,
@@ -3477,7 +3477,7 @@
     "RewardTargetId": 1300000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21300000350,
@@ -3485,7 +3485,7 @@
     "RewardTargetId": 1300000350,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21300000450,
@@ -3493,7 +3493,7 @@
     "RewardTargetId": 1300000450,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21300000550,
@@ -3501,7 +3501,7 @@
     "RewardTargetId": 1300000550,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21300000650,
@@ -3509,7 +3509,7 @@
     "RewardTargetId": 1300000650,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21305000150,
@@ -3517,7 +3517,7 @@
     "RewardTargetId": 1305000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21305000250,
@@ -3525,7 +3525,7 @@
     "RewardTargetId": 1305000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21305000350,
@@ -3533,7 +3533,7 @@
     "RewardTargetId": 1305000350,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21330000150,
@@ -3541,7 +3541,7 @@
     "RewardTargetId": 1330000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21330000250,
@@ -3549,7 +3549,7 @@
     "RewardTargetId": 1330000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21330000450,
@@ -3557,7 +3557,7 @@
     "RewardTargetId": 1330000450,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21336000150,
@@ -3565,7 +3565,7 @@
     "RewardTargetId": 1336000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21370000150,
@@ -3573,7 +3573,7 @@
     "RewardTargetId": 1370000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21370000250,
@@ -3581,7 +3581,7 @@
     "RewardTargetId": 1370000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21370000450,
@@ -3589,7 +3589,7 @@
     "RewardTargetId": 1370000450,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21370000550,
@@ -3597,7 +3597,7 @@
     "RewardTargetId": 1370000550,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21400000150,
@@ -3605,7 +3605,7 @@
     "RewardTargetId": 1400000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21400000250,
@@ -3613,7 +3613,7 @@
     "RewardTargetId": 1400000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21430000150,
@@ -3621,7 +3621,7 @@
     "RewardTargetId": 1430000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21430000250,
@@ -3629,7 +3629,7 @@
     "RewardTargetId": 1430000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21430000350,
@@ -3637,7 +3637,7 @@
     "RewardTargetId": 1430000350,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21430000450,
@@ -3645,7 +3645,7 @@
     "RewardTargetId": 1430000450,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21430000550,
@@ -3653,7 +3653,7 @@
     "RewardTargetId": 1430000550,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21431000150,
@@ -3661,7 +3661,7 @@
     "RewardTargetId": 1431000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21501000150,
@@ -3669,7 +3669,7 @@
     "RewardTargetId": 1501000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21501000250,
@@ -3677,7 +3677,7 @@
     "RewardTargetId": 1501000250,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21501000450,
@@ -3685,7 +3685,7 @@
     "RewardTargetId": 1501000450,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21501000550,
@@ -3693,7 +3693,7 @@
     "RewardTargetId": 1501000550,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21705000150,
@@ -3701,7 +3701,7 @@
     "RewardTargetId": 1705000150,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   },
   {
     "Id": 21705000350,
@@ -3709,6 +3709,6 @@
     "RewardTargetId": 1705000350,
     "LimitBreakStep": 0,
     "Level": 1,
-    "Unknown_Col_5": false
+    "IsLimitedTime": false
   }
 ]
