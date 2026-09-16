@@ -11449,7 +11449,17 @@
     "ip_3f509e957d473abba901bc8151c6460f:unit:1007001160:ssp": "up",
     "ip_3f509e957d473abba901bc8151c6460f:unit:1150000200:ssp": "up",
     "ip_3f509e957d473abba901bc8151c6460f:unit:1705005300:ssp": "up",
-    "ip_774f7b052b71177b3850433406c8a543:unit:1370005900:ssp": "up"
+    "ip_774f7b052b71177b3850433406c8a543:unit:1370005900:ssp": "up",
+    "ip_a8454efc9f29e2df44efad64cdbd1591:character:1162000501:sp": "up",
+    "ip_a8454efc9f29e2df44efad64cdbd1591:character:1080000100:sp": "up",
+    "ip_a8454efc9f29e2df44efad64cdbd1591:character:1080001600:sp": "up",
+    "ip_a8454efc9f29e2df44efad64cdbd1591:character:1330001803:sp": "up",
+    "ip_a8454efc9f29e2df44efad64cdbd1591:character:1017000401:sp": "up",
+    "ip_a8454efc9f29e2df44efad64cdbd1591:character:1370000300:sp": "up",
+    "ip_a8454efc9f29e2df44efad64cdbd1591:character:1110000201:sp": "up",
+    "ip_a8454efc9f29e2df44efad64cdbd1591:character:1370002600:sp": "up",
+    "ip_a8454efc9f29e2df44efad64cdbd1591:character:1144000101:sp": "up",
+    "ip_a8454efc9f29e2df44efad64cdbd1591:character:1370005300:sp": "up"
   },
   "targets": {
     "unit:1155000700:sp": {
@@ -14241,7 +14251,7 @@
       "down": 0
     },
     "character:1162000501:sp": {
-      "up": 5,
+      "up": 6,
       "down": 0
     },
     "character:1021000800:sp": {
@@ -14253,7 +14263,7 @@
       "down": 1
     },
     "character:1144000101:sp": {
-      "up": 3,
+      "up": 4,
       "down": 2
     },
     "unit:1330000300:ssp": {
@@ -14557,7 +14567,7 @@
       "down": 0
     },
     "character:1370000300:sp": {
-      "up": 2,
+      "up": 3,
       "down": 1
     },
     "unit:1125004700:ssp": {
@@ -15481,7 +15491,7 @@
       "down": 0
     },
     "character:1080001600:sp": {
-      "up": 3,
+      "up": 4,
       "down": 0
     },
     "character:1125001700:sp": {
@@ -15489,7 +15499,7 @@
       "down": 1
     },
     "character:1080000100:sp": {
-      "up": 2,
+      "up": 3,
       "down": 0
     },
     "character:1330001700:sp": {
@@ -15669,11 +15679,11 @@
       "down": 1
     },
     "character:1017000401:sp": {
-      "up": 1,
+      "up": 2,
       "down": 1
     },
     "character:1370002600:sp": {
-      "up": 1,
+      "up": 2,
       "down": 0
     },
     "character:1200000600:sp": {
@@ -15777,7 +15787,7 @@
       "down": 1
     },
     "character:1370005300:sp": {
-      "up": 0,
+      "up": 1,
       "down": 1
     },
     "character:1430000602:sp": {
@@ -15785,7 +15795,7 @@
       "down": 3
     },
     "character:1110000201:sp": {
-      "up": 1,
+      "up": 2,
       "down": 0
     },
     "character:1400002300:sp": {
@@ -15965,7 +15975,7 @@
       "down": 1
     },
     "character:1330001803:sp": {
-      "up": 2,
+      "up": 3,
       "down": 0
     },
     "character:1210000300:sp": {
