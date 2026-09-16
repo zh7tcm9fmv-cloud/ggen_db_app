@@ -2680,39 +2680,40 @@
     return uiCanvasFont(sizePx, weight || '700');
   }
 
-  function measureSharePossessionHead(ctx, pctStr, complete, perfect) {
-    var padX = 12;
-    var padY = 10;
-    var gap = 4;
-    var numSize = 42;
-    var pctSize = Math.round(numSize * 0.48);
-    var labelSize = 12;
+  function measureSharePossessionHead(ctx, pctStr, complete, perfect, numSizeOpt) {
+    var padX = 14;
+    var padY = 12;
+    var gap = 6;
+    var numSize = numSizeOpt || 58;
+    var pctSize = Math.round(numSize * 0.5);
+    var labelSize = 13;
     var h = padY;
     ctx.font = pctShareFont(numSize, '800');
     var numW = ctx.measureText(pctStr).width;
     ctx.font = pctShareFont(pctSize, '800');
     var pctW = ctx.measureText('%').width;
-    var row1W = numW + 2 + pctW;
+    var row1W = numW + 3 + pctW;
     h += numSize + gap;
     ctx.font = uiCanvasFont(labelSize, 'bold');
     var label = (t('possession') + ' · ' + typeTitle()).toUpperCase();
     var labelW = ctx.measureText(label).width;
-    h += labelSize + 6;
+    h += labelSize + 8;
     var badgeW = 0;
     if (complete) {
-      ctx.font = uiCanvasFont(10, 'bold');
+      ctx.font = uiCanvasFont(11, 'bold');
       var badge = perfect ? t('complete_max') : t('complete');
-      badgeW = Math.max(perfect ? 118 : 72, ctx.measureText(badge).width + 20);
-      h += 18 + 4;
+      badgeW = Math.max(perfect ? 128 : 80, ctx.measureText(badge).width + 22);
+      h += 20 + 4;
       if (perfect) {
         var subBadge = t('complete') + ' · ' + t('report_max_lb');
-        badgeW = Math.max(badgeW, Math.max(140, ctx.measureText(subBadge).width + 16));
-        h += 16 + 2;
+        badgeW = Math.max(badgeW, Math.max(150, ctx.measureText(subBadge).width + 18));
+        h += 17 + 2;
       }
     }
     return {
       w: Math.max(row1W, labelW, badgeW) + padX * 2,
-      h: h + padY - 2
+      h: h + padY - 2,
+      numSize: numSize
     };
   }
 
@@ -2720,14 +2721,14 @@
    * Draw compact Possession % block like the live HUD head.
    * Returns { w, h } of the painted content box.
    */
-  function drawSharePossessionHead(ctx, x, y, pctStr, complete, perfect) {
-    var padX = 12;
-    var padY = 10;
-    var gap = 4;
-    var numSize = 42;
-    var pctSize = Math.round(numSize * 0.48);
-    var labelSize = 12;
-    var box = measureSharePossessionHead(ctx, pctStr, complete, perfect);
+  function drawSharePossessionHead(ctx, x, y, pctStr, complete, perfect, numSizeOpt) {
+    var padX = 14;
+    var padY = 12;
+    var gap = 6;
+    var numSize = numSizeOpt || 58;
+    var pctSize = Math.round(numSize * 0.5);
+    var labelSize = 13;
+    var box = measureSharePossessionHead(ctx, pctStr, complete, perfect, numSize);
     var contentW = box.w;
     var contentH = box.h;
 
@@ -3133,6 +3134,7 @@
       await ensureTekoForCanvas();
       if (document.fonts && document.fonts.load) {
         await Promise.all([
+          document.fonts.load('700 58px "' + GGEN_TEKO_FAM + '"'),
           document.fonts.load('700 42px "' + GGEN_TEKO_FAM + '"'),
           document.fonts.load('700 20px "' + GGEN_TEKO_FAM + '"'),
           document.fonts.load('600 32px "' + GGEN_TEKO_FAM + '"')
@@ -3143,16 +3145,18 @@
               document.fonts.load('bold 14px "ShinGoPr6DeBold"'),
               document.fonts.load('bold 16px "UDShinGoStdTCMed"'),
               document.fonts.load('bold 26px "ShinGoPr6DeBold"'),
-              document.fonts.load('bold 42px "ShinGoPr6DeBold"')
+              document.fonts.load('bold 42px "ShinGoPr6DeBold"'),
+              document.fonts.load('bold 58px "ShinGoPr6DeBold"')
             ]);
           } catch (_) {}
         }
       }
     } catch (_) {}
 
-    /* Compact possession head — sized to content like live .collections-gauge-head */
+    /* Compact possession head — sized vs donut so % reads at similar visual weight */
+    var sharePctNumSize = Math.round(Math.min(64, Math.max(54, emblemSize * 0.28)));
     var mctx = document.createElement('canvas').getContext('2d');
-    var pctBox = measureSharePossessionHead(mctx, pctStr, complete, perfect);
+    var pctBox = measureSharePossessionHead(mctx, pctStr, complete, perfect, sharePctNumSize);
     var pctPanelY = titleBottom + 6;
     var legendBlockH = 3 * 18 + 12;
     var gaugeRowBottom = Math.max(
@@ -3306,7 +3310,7 @@
       ctx.fillText('UR ' + typeTitle(), textX, pad + 58);
     }
 
-    drawSharePossessionHead(ctx, pad, pctPanelY, pctStr, complete, perfect);
+    drawSharePossessionHead(ctx, pad, pctPanelY, pctStr, complete, perfect, sharePctNumSize);
 
     var shareBuckets = donutBucketsFromStats(st);
     drawRoundedRoleDonut(

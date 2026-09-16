@@ -2479,12 +2479,21 @@ def _extract_pilot_weapon_stat_pct_from_text(txt):
     m = re.search(r'Increases?\s+(?:own\s+)?(?:Critical|CRIT)\s+by\s+(\d+)\s*%', s, re.I)
     if m:
         out['crit'] = max(out['crit'], int(m.group(1) or 0))
+    # EN: "increase own Critical Rate by 15%" / "and increase Critical Rate by 15%"
+    m = re.search(
+        r'Increases?\s+(?:own\s+)?Critical\s+Rate\s+by\s+(\d+)\s*%',
+        s, re.I)
+    if m:
+        out['crit'] = max(out['crit'], int(m.group(1) or 0))
     m = re.search(r'Increases?\s+own\s+critical rate by\s+(\d+)\s*%', s, re.I)
     if m:
         out['crit'] = max(out['crit'], int(m.group(1) or 0))
     m = re.search(r'自身の命中率と回避率が(\d+)%上昇', s)
     if m:
         out['acc'] = max(out['acc'], int(m.group(1) or 0))
+    m = re.search(r'自身のクリティカル率が(\d+)%上昇', s)
+    if m:
+        out['crit'] = max(out['crit'], int(m.group(1) or 0))
     m = re.search(r'自身命中率(?:及|和)閃避率提升(\d+)%', s)
     if m:
         out['acc'] = max(out['acc'], int(m.group(1) or 0))
@@ -3523,10 +3532,12 @@ _WEAPON_DEBUFF_AUTO_PEP_KEYS_CACHE = None
 
 
 def weapon_debuff_auto_pep_keys():
-    """Weapon-effect keys that only match some units after PEP (pilot_cond=1).
+    """Weapon-effect keys that should auto-arm list PEP when selected.
 
-    Used to auto-arm PEP in the browse UI — Critical only when PEP unlocks
-    Crit>0 on weapons that otherwise stay at 0 (not whenever Critical is checked).
+    Critical (`crit`): any kit whose recommend UR pilot grants tag-affinity
+    Critical Rate % (e.g. Kamille / Psycommu +15%). Most of those kits already
+    have base Crit>0 on a weapon, so a 0→>0-only scan misses them — but PEP must
+    still turn on so weapon Crit% reflects the pilot bonus in list+detail.
     """
     global _WEAPON_DEBUFF_AUTO_PEP_KEYS_CACHE
     if _WEAPON_DEBUFF_AUTO_PEP_KEYS_CACHE is not None:
@@ -3542,11 +3553,16 @@ def weapon_debuff_auto_pep_keys():
         info = unit_info_map.get(normalize_id(uid)) or {}
         for fid in _unit_ids_for_terrain_filter(uid, info):
             for sm in ('normal', 'sp', 'ssp'):
-                if unit_has_weapon_critical_gt_zero(
-                        fid, ld, lc, sm, pilot_cond_active=False):
-                    continue
-                if unit_has_weapon_critical_gt_zero(
-                        fid, ld, lc, sm, pilot_cond_active=True):
+                pep = _collect_pilot_tag_weapon_stat_bonuses(fid, ld, lc, sm) or {}
+                if int(pep.get('crit') or 0) > 0:
+                    acc.add('crit')
+                    break
+                if (
+                    not unit_has_weapon_critical_gt_zero(
+                        fid, ld, lc, sm, pilot_cond_active=False)
+                    and unit_has_weapon_critical_gt_zero(
+                        fid, ld, lc, sm, pilot_cond_active=True)
+                ):
                     acc.add('crit')
                     break
             if 'crit' in acc:
@@ -18909,40 +18925,111 @@ def _collections_github_api_json(method, url, token, body=None, *, timeout=45, s
     return json.loads(raw) if raw else {}
 
 
-def _collections_github_fetch_blob_bytes(token, repo, blob_sha):
-    """Fetch blob bytes via Git Data API (works for files >1MB, up to 100MB)."""
-    url = f'https://api.github.com/repos/{repo}/git/blobs/{quote(blob_sha)}'
-    meta = _collections_github_api_json('GET', url, token, timeout=60, step='get-blob')
-    if not isinstance(meta, dict):
-        return None
-    enc = (meta.get('encoding') or '').lower()
-    content = meta.get('content') or ''
-    if enc == 'base64':
-        return base64.b64decode(content.replace('\n', ''))
-    if enc == 'utf-8':
-        return content.encode('utf-8')
+def _collections_github_branch_tip_sha(token, repo, branch):
+    """Resolve branch tip commit SHA (singular ref, then plural fallback)."""
+    branch_q = quote(branch, safe='')
+    urls = (
+        f'https://api.github.com/repos/{repo}/git/ref/heads/{branch_q}',
+        f'https://api.github.com/repos/{repo}/git/refs/heads/{branch_q}',
+    )
+    last_err = None
+    for i, url in enumerate(urls):
+        step = 'get-ref' if i == 0 else 'get-ref-plural'
+        try:
+            meta = _collections_github_api_json('GET', url, token, timeout=20, step=step)
+        except RuntimeError as e:
+            last_err = e
+            if 'HTTP 404' in str(e):
+                continue
+            raise
+        if isinstance(meta, list):
+            meta = meta[0] if meta else {}
+        if not isinstance(meta, dict):
+            continue
+        sha = str((meta.get('object') or {}).get('sha') or '').strip()
+        if sha:
+            return sha
+    if last_err:
+        raise last_err
     return None
+
+
+# Contents API hard-fails around 1MB — collections must NOT rely on it long-term.
+# Kept only as an unused helper / emergency; push always uses Git Data (below).
+_COLLECTIONS_CONTENTS_API_MAX_BYTES = 900_000
+
+
+def _collections_github_push_via_contents(token, repo, path, branch, payload_bytes, message, sha_attr):
+    """Contents PUT — fine for tiny files; hard-fails past ~1MB (do not use for share growth)."""
+    url = f'https://api.github.com/repos/{repo}/contents/{quote(path)}'
+    headers = {
+        **_banner_pool_votes_github_api_headers(token),
+        'Content-Type': 'application/json',
+    }
+    remote_sha = globals().get(sha_attr) or None
+    if not remote_sha:
+        remote_sha, _ = _collections_github_resolve_blob_sha(token, repo, path, branch)
+    body = {
+        'message': message,
+        'content': base64.b64encode(payload_bytes).decode('ascii'),
+        'branch': branch,
+    }
+    if remote_sha:
+        body['sha'] = remote_sha
+    for attempt in range(3):
+        try:
+            req = Request(url, data=json.dumps(body).encode('utf-8'), headers=headers, method='PUT')
+            with urlopen(req, timeout=45) as resp:
+                meta = json.loads(resp.read().decode('utf-8'))
+            content = meta.get('content') if isinstance(meta, dict) else None
+            if isinstance(content, dict) and content.get('sha'):
+                globals()[sha_attr] = content['sha']
+            print(f'collections: GitHub snapshot ({message.split(":")[0]}, {path}) via contents')
+            return True
+        except HTTPError as e:
+            err_body = _collections_github_http_error_body(e)
+            if e.code == 422 and ('too large' in err_body.lower() or '1 MB' in err_body or '1MB' in err_body):
+                raise RuntimeError(f'contents-too-large: HTTP 422 {err_body}') from None
+            if e.code in (404, 409, 422) and attempt < 2:
+                globals()[sha_attr] = None
+                fresh, _ = _collections_github_resolve_blob_sha(token, repo, path, branch)
+                if fresh:
+                    body['sha'] = fresh
+                elif 'sha' in body:
+                    del body['sha']
+                try:
+                    _banner_pool_votes_ensure_github_branch()
+                except NameError:
+                    pass
+                continue
+            raise RuntimeError(f'contents-put: HTTP {e.code} [{url}] {err_body}') from None
+    return False
 
 
 def _collections_github_push_via_git_data(token, repo, path, branch, payload_bytes, message, sha_attr):
     """Create/update a file via Git Data API — bypasses Contents API 1MB limit.
 
-    Required once collections_share_v1.json on banner-votes-data exceeds ~1MB;
-    Contents API PUT then returns HTTP 422 Unprocessable Entity forever.
+    Git Data supports blobs up to ~100MB. Retention is _COLLECTIONS_SHARE_MAX_ENTRIES
+    and _COLLECTIONS_GITHUB_PUSH_MAX_BYTES — not GitHub Contents.
 
-    Note: GET uses singular `/git/ref/...`; PATCH/update must use plural `/git/refs/...`
-    (GitHub returns 404 for PATCH on the singular path).
+    Critical: UPDATE ref MUST use plural `/git/refs/heads/...`.
+    PATCH on singular `/git/ref/heads/...` returns HTTP 404 Not Found (GitHub quirk).
     """
     branch_q = quote(branch, safe='')
-    # GET reference — singular path is documented + used elsewhere in this app.
-    get_ref_url = f'https://api.github.com/repos/{repo}/git/ref/heads/{branch_q}'
-    # UPDATE reference — must be plural `/git/refs/` or GitHub returns 404.
+    # NEVER use singular /git/ref/ for PATCH — confirmed 404 on public GitHub.
     patch_ref_url = f'https://api.github.com/repos/{repo}/git/refs/heads/{branch_q}'
+    if '/git/ref/heads/' in patch_ref_url and '/git/refs/heads/' not in patch_ref_url:
+        raise RuntimeError('internal: refusing singular /git/ref/ PATCH (GitHub 404)')
 
-    ref = _collections_github_api_json('GET', get_ref_url, token, timeout=20, step='get-ref')
-    commit_sha = ((ref.get('object') or {}) if isinstance(ref, dict) else {}).get('sha')
+    commit_sha = _collections_github_branch_tip_sha(token, repo, branch)
     if not commit_sha:
-        raise RuntimeError(f'missing commit sha for {branch}')
+        try:
+            _banner_pool_votes_ensure_github_branch()
+        except NameError:
+            pass
+        commit_sha = _collections_github_branch_tip_sha(token, repo, branch)
+    if not commit_sha:
+        raise RuntimeError(f'missing commit sha for {branch} (ref not found)')
 
     commit_url = f'https://api.github.com/repos/{repo}/git/commits/{quote(commit_sha)}'
     commit = _collections_github_api_json('GET', commit_url, token, timeout=20, step='get-commit')
@@ -18950,7 +19037,6 @@ def _collections_github_push_via_git_data(token, repo, path, branch, payload_byt
     if not base_tree:
         raise RuntimeError(f'missing tree sha for commit {commit_sha[:12]}')
 
-    # Prefer utf-8 body (smaller request than base64) for JSON snapshots.
     try:
         text_payload = payload_bytes.decode('utf-8')
         blob_body = {'content': text_payload, 'encoding': 'utf-8'}
@@ -18972,7 +19058,6 @@ def _collections_github_push_via_git_data(token, repo, path, branch, payload_byt
     if not blob_sha:
         raise RuntimeError('git blob create returned no sha')
 
-    # Skip commit if remote blob is already identical.
     remote_sha, _remote_sz = _collections_github_resolve_blob_sha(token, repo, path, branch)
     if remote_sha and remote_sha == blob_sha:
         globals()[sha_attr] = blob_sha
@@ -19010,17 +19095,90 @@ def _collections_github_push_via_git_data(token, repo, path, branch, payload_byt
     if not new_commit_sha:
         raise RuntimeError('git commit create returned no sha')
 
-    _collections_github_api_json(
-        'PATCH',
-        patch_ref_url,
-        token,
-        {'sha': new_commit_sha, 'force': False},
-        timeout=20,
-        step='update-ref',
-    )
+    try:
+        _collections_github_api_json(
+            'PATCH',
+            patch_ref_url,
+            token,
+            {'sha': new_commit_sha, 'force': False},
+            timeout=20,
+            step='update-ref',
+        )
+    except RuntimeError as e:
+        # Fast-forward race after banner/spi shutdown push — signal caller to retry.
+        if 'HTTP 422' in str(e) or 'HTTP 409' in str(e):
+            tip2 = _collections_github_branch_tip_sha(token, repo, branch)
+            if tip2 and tip2 != commit_sha:
+                raise RuntimeError(f'update-ref-stale: {e}; retry tip={tip2[:12]}') from None
+        raise
+
     globals()[sha_attr] = blob_sha
     print(f'collections: GitHub snapshot ({message.split(":")[0]}, {path}) via git-data')
     return True
+
+
+def _collections_github_push(data, path_env, default_path, sha_attr, message, *, retries=4):
+    """Push collections census/share via Git Data only (future-proof past Contents 1MB).
+
+    Banner/SPI stay on Contents PUT (small files). Collections grow — share already
+    hit ~1.07MB once — so always use Git Data (plural `/git/refs/` PATCH) up to the
+    soft 40MB / 8000-code retention caps. Never route through Contents (no 422 spam).
+    """
+    cfg = _collections_github_cfg(path_env, default_path)
+    if not cfg:
+        return False
+    token, repo, path, branch = cfg
+    try:
+        if not _banner_pool_votes_ensure_github_branch():
+            print(f'collections: GitHub branch missing/unavailable ({branch}) — skip push ({path})')
+            return False
+    except NameError:
+        pass
+    if 'collections_share' in path or 'share_v1' in path:
+        _fitted, payload = _collections_share_fit_github_payload(data if isinstance(data, dict) else {})
+    else:
+        payload = _collections_github_compact_bytes(data)
+    lock = (
+        _COLLECTIONS_CENSUS_GITHUB_PUSH_LOCK
+        if 'census' in default_path
+        else _COLLECTIONS_SHARE_GITHUB_PUSH_LOCK
+    )
+    # Shutdown races: banner/SPI Contents PUTs move the branch tip while we build a commit.
+    max_attempts = max(2, int(retries) if retries else 4)
+    with lock:
+        remote_sha, _remote_size = _collections_github_resolve_blob_sha(token, repo, path, branch)
+        if remote_sha:
+            globals()[sha_attr] = remote_sha
+        for attempt in range(max_attempts):
+            try:
+                return _collections_github_push_via_git_data(
+                    token, repo, path, branch, payload, message, sha_attr
+                )
+            except (HTTPError, URLError, OSError, json.JSONDecodeError, RuntimeError, NameError, ValueError) as e:
+                msg = str(e)
+                if attempt < max_attempts - 1 and (
+                    'update-ref-stale' in msg or 'HTTP 409' in msg or 'HTTP 422' in msg
+                ):
+                    # Quiet retry — tip moved by sibling shutdown snapshot; not an error.
+                    continue
+                print(f'collections: GitHub git-data push failed ({path}): {e}')
+                return False
+    return False
+
+
+def _collections_github_fetch_blob_bytes(token, repo, blob_sha):
+    """Fetch blob bytes via Git Data API (works for files >1MB, up to 100MB)."""
+    url = f'https://api.github.com/repos/{repo}/git/blobs/{quote(blob_sha)}'
+    meta = _collections_github_api_json('GET', url, token, timeout=60, step='get-blob')
+    if not isinstance(meta, dict):
+        return None
+    enc = (meta.get('encoding') or '').lower()
+    content = meta.get('content') or ''
+    if enc == 'base64':
+        return base64.b64decode(content.replace('\n', ''))
+    if enc == 'utf-8':
+        return content.encode('utf-8')
+    return None
 
 
 def _collections_github_fetch(path_env, default_path, sha_attr):
@@ -19042,7 +19200,7 @@ def _collections_github_fetch(path_env, default_path, sha_attr):
                 return None
             print(f'collections: fetched {path} via git-data ({size_hint or len(raw)} bytes)')
             return _parse_json_bytes(raw)
-        except (HTTPError, URLError, OSError, json.JSONDecodeError, ValueError, NameError) as e:
+        except (HTTPError, URLError, OSError, json.JSONDecodeError, ValueError, NameError, RuntimeError) as e:
             print(f'collections: Git Data blob fetch failed ({path}): {e}')
             return None
 
@@ -19085,41 +19243,6 @@ def _collections_github_fetch(path_env, default_path, sha_attr):
     except (URLError, OSError, json.JSONDecodeError, ValueError, NameError) as e:
         print(f'collections: GitHub fetch failed ({default_path}): {e}')
         return None
-
-
-def _collections_github_push(data, path_env, default_path, sha_attr, message, *, retries=4):
-    """Push collections census/share via Git Data API (no Contents API 1MB ceiling)."""
-    del retries  # reserved; git-data path does its own conflict handling
-    cfg = _collections_github_cfg(path_env, default_path)
-    if not cfg:
-        return False
-    token, repo, path, branch = cfg
-    try:
-        _banner_pool_votes_ensure_github_branch()
-    except NameError:
-        pass
-    if 'collections_share' in path or 'share_v1' in path:
-        _fitted, payload = _collections_share_fit_github_payload(data if isinstance(data, dict) else {})
-    else:
-        payload = _collections_github_compact_bytes(data)
-    lock = (
-        _COLLECTIONS_CENSUS_GITHUB_PUSH_LOCK
-        if 'census' in default_path
-        else _COLLECTIONS_SHARE_GITHUB_PUSH_LOCK
-    )
-    with lock:
-        remote_sha, _remote_size = _collections_github_resolve_blob_sha(token, repo, path, branch)
-        if remote_sha:
-            globals()[sha_attr] = remote_sha
-        # Always Git Data — Contents API hard-fails past ~1MB (share already hit 422).
-        # Retention limit is _COLLECTIONS_SHARE_MAX_ENTRIES (8000), not GitHub.
-        try:
-            return _collections_github_push_via_git_data(
-                token, repo, path, branch, payload, message, sha_attr
-            )
-        except (HTTPError, URLError, OSError, json.JSONDecodeError, RuntimeError, NameError, ValueError) as e:
-            print(f'collections: GitHub git-data push failed ({path}): {e}')
-            return False
 
 
 def _collections_bundled_json(path):
@@ -24834,8 +24957,8 @@ def list_units():
     want_stat_bounds_u = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
     sbu_ck = 'sbd1' if want_stat_bounds_u else 'sbd0'
     rb_u_ck = 'rb1' if ranking_bulk_u else 'rb0'
-    # ul61: weapon_debuff_auto_pep_keys (Critical auto-PEP only when PEP unlocks Crit>0).
-    ck = f"ul61_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    # ul62: auto-PEP crit when pilot grants Crit% (tag affinity), not only Crit 0→>0.
+    ck = f"ul62_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
