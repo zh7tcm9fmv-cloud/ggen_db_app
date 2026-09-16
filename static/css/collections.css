@@ -383,16 +383,10 @@
 .collections-stat-lim-banner{
   flex:0 0 auto;
   display:inline-flex;align-items:center;justify-content:center;
-  max-width:5.8em;padding:2px 6px 3px;
-  border-radius:4px 4px 0 0;
-  background:linear-gradient(95deg,#be185d 0%,#a855f7 55%,#1d4ed8 100%);
-  box-shadow:0 1px 6px rgba(0,0,0,.35);
+  max-width:7.5em;padding:0;background:transparent;box-shadow:none;
 }
-.collections-stat-lim-banner>span{
-  font-size:8px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;
-  color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.85);line-height:1.1;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
+.collections-stat-lim-banner .limited-ur-badge--chip{width:92px}
+.collections-stat-lim-banner .limited-ur-badge-text{font-size:8px;letter-spacing:.06em;text-transform:uppercase}
 .collections-stat-v{
   margin-top:6px;font-size:clamp(18px,2.1vw,22px);font-weight:800;font-variant-numeric:tabular-nums;line-height:1.15;
   color:var(--text-primary);
@@ -855,22 +849,22 @@
 }
 .col-card-lim{
   position:absolute;left:0;right:0;top:0;z-index:5;
-  width:100%;margin:0;padding:5px 4px 6px;box-sizing:border-box;
+  width:100%;margin:0;padding:3px 4px;box-sizing:border-box;
   text-align:center;border-radius:8px 8px 0 0;
-  box-shadow:0 2px 10px rgba(0,0,0,.4);
+  box-shadow:none;background:transparent!important;
   pointer-events:none;
+  display:flex;align-items:center;justify-content:center;
 }
-.col-card--lt-unit .col-card-lim{
-  background:linear-gradient(95deg,#be185d 0%,#a855f7 55%,#1d4ed8 100%);
-}
+.col-card--lt-unit .col-card-lim,
 .col-card--lt-supporter .col-card-lim{
-  background:linear-gradient(95deg,#0e7490 0%,#155e75 45%,#b8954a 100%);
+  background:transparent!important;
 }
-.col-card-lim .bt-limited-topbar-inner{
-  display:block;font-size:9px;font-weight:900;letter-spacing:.1em;
+.col-card-lim .limited-ur-badge{width:100%;max-width:100%}
+.col-card-lim .limited-ur-badge-text{
+  font-size:8px;font-weight:900;letter-spacing:.08em;
   text-transform:uppercase;color:#fff;
-  text-shadow:0 1px 2px rgba(0,0,0,.88);line-height:1.1;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 2px;
+  text-shadow:0 1px 2px rgba(0,0,0,.95),0 2px 6px rgba(0,0,0,.85),0 0 3px rgba(0,0,0,.9),0 0 8px rgba(0,0,0,.55);
+  line-height:1.1;
 }
 /* Grade icons — bottom-center of thumb, may extrude; name sits below with gap */
 .col-card-lb-icons{

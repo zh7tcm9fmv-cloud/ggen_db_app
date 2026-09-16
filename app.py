@@ -1548,6 +1548,7 @@ UNIT_WEAPON_DEBUFF_FILTER_KEYS = frozenset({
     'wp_phys', 'wp_beam', 'wp_spec',
     'range_beam', 'range_phys',
     'range_6',
+    'crit',
     'mp_1',
     'preemptive',
     'absolute_hit',
@@ -2400,7 +2401,9 @@ def _recommend_ur_pilot_id_for_unit(uid):
         return '0'
     rc = normalize_id(info.get('recommend_character_id') or '0')
     if rc == '0':
-        rc = MANUAL_UNIT_RECOMMEND_CHARACTER_MAP.get(uid, '0')
+        # Manual map is filled later at import; tolerate early callers.
+        _mmap = globals().get('MANUAL_UNIT_RECOMMEND_CHARACTER_MAP') or {}
+        rc = _mmap.get(uid, '0') if isinstance(_mmap, dict) else '0'
     if rc == '0' or rc not in char_info_map:
         return '0'
     if RARITY_MAP.get(char_info_map[rc].get('rarity', '1')) != 'UR':
@@ -3467,11 +3470,100 @@ def collect_unit_weapon_range_debuff_keys(
     return frozenset()
 
 
+def unit_has_weapon_critical_gt_zero(
+        uid, ld, lc, stat_mode='normal', pilot_cond_active=False):
+    """True if any weapon has Critical > 0 (base) or after PEP tag-affinity Crit bonus."""
+    sm = (stat_mode or 'normal').strip().lower()
+    if sm not in ('normal', 'sp', 'ssp'):
+        sm = 'normal'
+    uid = normalize_id(uid)
+    pep_crit = 0
+    if pilot_cond_active:
+        pep_crit = int(
+            (_collect_pilot_tag_weapon_stat_bonuses(uid, ld, lc, sm) or {}).get('crit') or 0
+        )
+    wtm = ld.get('weapon_trait_map', {}) or {}
+    wcm = ld.get('weapon_capability_map', {}) or {}
+    wtdm = ld.get('weapon_trait_detail_map', {}) or {}
+    for wp in unit_weapon_map.get(uid, []) or []:
+        wid = normalize_id(wp.get('id'))
+        if not wid or wid == '0':
+            continue
+        wm = weapon_info_map.get(wid, {}) or {}
+        # SSP-only custom-core weapons appear under ssp mode (same as other weapon filters).
+        if sm != 'ssp':
+            wsn = str(wid)
+            if wsn.endswith('80') or wsn.endswith('90'):
+                continue
+        ws = resolve_weapon_stats(
+            wm, weapon_status_map, weapon_correction_map,
+            wtm, wcm, growth_pattern_map, weapon_trait_change_map, wtdm,
+            wid=wid, lang_code=lc, unit_id=uid,
+        )
+        base = int(ws.get('critical', 0) or 0)
+        if base <= 0:
+            levels = ws.get('levels') or []
+            if levels:
+                base = int((levels[-1] or {}).get('critical', 0) or 0)
+        if base + pep_crit > 0:
+            return True
+    return False
+
+
+def collect_unit_weapon_crit_debuff_keys(
+        uid, ld, lc, stat_mode='normal', pilot_cond_active=False):
+    """Critical-rate weapon filter key (base CriticalRate and/or PEP Crit %)."""
+    if unit_has_weapon_critical_gt_zero(
+            uid, ld, lc, stat_mode=stat_mode, pilot_cond_active=pilot_cond_active):
+        return frozenset({'crit'})
+    return frozenset()
+
+
+_WEAPON_DEBUFF_AUTO_PEP_KEYS_CACHE = None
+
+
+def weapon_debuff_auto_pep_keys():
+    """Weapon-effect keys that only match some units after PEP (pilot_cond=1).
+
+    Used to auto-arm PEP in the browse UI — Critical only when PEP unlocks
+    Crit>0 on weapons that otherwise stay at 0 (not whenever Critical is checked).
+    """
+    global _WEAPON_DEBUFF_AUTO_PEP_KEYS_CACHE
+    if _WEAPON_DEBUFF_AUTO_PEP_KEYS_CACHE is not None:
+        return _WEAPON_DEBUFF_AUTO_PEP_KEYS_CACHE
+    acc = set()
+    ld = LANG_DATA.get('EN') or next(iter(LANG_DATA.values()), None)
+    lc = 'EN' if LANG_DATA.get('EN') else next(iter(LANG_DATA.keys()), 'EN')
+    if not ld:
+        _WEAPON_DEBUFF_AUTO_PEP_KEYS_CACHE = frozenset()
+        return _WEAPON_DEBUFF_AUTO_PEP_KEYS_CACHE
+    playable = unit_list_playable_ids or frozenset(unit_info_map.keys())
+    for uid in playable:
+        info = unit_info_map.get(normalize_id(uid)) or {}
+        for fid in _unit_ids_for_terrain_filter(uid, info):
+            for sm in ('normal', 'sp', 'ssp'):
+                if unit_has_weapon_critical_gt_zero(
+                        fid, ld, lc, sm, pilot_cond_active=False):
+                    continue
+                if unit_has_weapon_critical_gt_zero(
+                        fid, ld, lc, sm, pilot_cond_active=True):
+                    acc.add('crit')
+                    break
+            if 'crit' in acc:
+                break
+        if 'crit' in acc:
+            break
+    _WEAPON_DEBUFF_AUTO_PEP_KEYS_CACHE = frozenset(acc)
+    return _WEAPON_DEBUFF_AUTO_PEP_KEYS_CACHE
+
+
 def collect_unit_weapon_debuff_keys(uid, ld, lc, stat_mode='normal', cond_active=False, pilot_cond_active=False):
     ld_f, lc_f = _lang_data_for_weapon_debuff_filter(ld, lc)
     acc = set(collect_unit_weapon_trait_only_debuff_keys(uid, ld_f, lc_f, stat_mode=stat_mode))
     acc |= set(collect_unit_weapon_range_debuff_keys(
         uid, ld_f, lc_f, stat_mode, cond_active=cond_active, pilot_cond_active=pilot_cond_active))
+    acc |= set(collect_unit_weapon_crit_debuff_keys(
+        uid, ld_f, lc_f, stat_mode, pilot_cond_active=pilot_cond_active))
     return frozenset(acc)
 
 
@@ -3497,7 +3589,9 @@ def _unit_form_weapon_debuff_keys(
         trait_dk = collect_unit_weapon_trait_only_debuff_keys(fid, ld_f, lc_f, stat_mode=sm)
     range_dk = collect_unit_weapon_range_debuff_keys(
         fid, ld_f, lc_f, sm, cond_active=cond_active, pilot_cond_active=pilot_cond_active)
-    keys = frozenset(set(trait_dk) | set(range_dk))
+    crit_dk = collect_unit_weapon_crit_debuff_keys(
+        fid, ld_f, lc_f, sm, pilot_cond_active=pilot_cond_active)
+    keys = frozenset(set(trait_dk) | set(range_dk) | set(crit_dk))
     _memo[fid] = keys
     return keys
 
@@ -12008,6 +12102,11 @@ def _precompute_weapon_debuff_keys_present_by_lang():
             acc |= set(collect_unit_weapon_trait_only_debuff_keys(uid, ld_en, 'EN'))
             for sm in ('normal', 'sp', 'ssp'):
                 acc |= set(collect_unit_weapon_range_debuff_keys(uid, ld_en, 'EN', sm))
+                # Base Critical only here — PEP Crit helpers need late-defined tag parsers.
+                acc |= set(collect_unit_weapon_crit_debuff_keys(
+                    uid, ld_en, 'EN', sm, pilot_cond_active=False))
+        # Always list Critical: some kits only gain Crit% with PEP (pilot_cond=1 at filter time).
+        acc.add('crit')
         fs = frozenset(acc)
         for lc in ('EN', 'TW', 'HK', 'JA'):
             if LANG_DATA.get(lc):
@@ -12022,16 +12121,14 @@ def _precompute_weapon_debuff_keys_present_by_lang():
             acc |= set(collect_unit_weapon_trait_only_debuff_keys(uid, ld, lc))
             for sm in ('normal', 'sp', 'ssp'):
                 acc |= set(collect_unit_weapon_range_debuff_keys(uid, ld, lc, sm))
+                acc |= set(collect_unit_weapon_crit_debuff_keys(
+                    uid, ld, lc, sm, pilot_cond_active=False))
+        acc.add('crit')
         out[lc] = frozenset(acc)
     return out
 
 
-WEAPON_DEBUFF_KEYS_PRESENT_BY_LANG = _precompute_weapon_debuff_keys_present_by_lang()
-# Union across locales so the debuff dropdown lists the same categories in EN / TW / JP (trait
-# wording differs by language; per-lang sets alone would hide most options in JA).
-WEAPON_DEBUFF_KEYS_PRESENT_UNION = frozenset(
-    k for fs in WEAPON_DEBUFF_KEYS_PRESENT_BY_LANG.values() for k in fs
-)
+# Present-key precompute (incl. PEP Crit) runs after MANUAL_UNIT_RECOMMEND_CHARACTER_MAP is filled.
 UNIT_WEAPON_ATTR_KEYS_CACHE = _build_unit_weapon_attr_keys_cache()
 
 
@@ -12194,6 +12291,13 @@ for _uid in list(unit_info_map.keys()):
         if _cid not in CHAR_RECOMMEND_UNIT_MAP:
             CHAR_RECOMMEND_UNIT_MAP[_cid] = _uid
 print(f"SD linked shortcuts: {len(LINKED_UNIT_CHARACTER_MAP)} from master, {sum(1 for u,i in unit_info_map.items() if _unit_has_sd_mechanism(i,u))} SD units total")
+
+WEAPON_DEBUFF_KEYS_PRESENT_BY_LANG = _precompute_weapon_debuff_keys_present_by_lang()
+# Union across locales so the debuff dropdown lists the same categories in EN / TW / JP (trait
+# wording differs by language; per-lang sets alone would hide most options in JA).
+WEAPON_DEBUFF_KEYS_PRESENT_UNION = frozenset(
+    k for fs in WEAPON_DEBUFF_KEYS_PRESENT_BY_LANG.values() for k in fs
+)
 
 # Limited-time Characters: SD Unit Assembly pickups often have RecommendCharacterId=0;
 # pull the linked Character so limited unit + pilot stay in sync.
@@ -18788,22 +18892,27 @@ def _collections_share_fit_github_payload(data):
     return payload, raw
 
 
-def _collections_github_api_json(method, url, token, body=None, *, timeout=45):
+def _collections_github_api_json(method, url, token, body=None, *, timeout=45, step=''):
     headers = dict(_banner_pool_votes_github_api_headers(token))
     data = None
     if body is not None:
         headers['Content-Type'] = 'application/json'
         data = json.dumps(body).encode('utf-8')
     req = Request(url, data=data, headers=headers, method=method)
-    with urlopen(req, timeout=timeout) as resp:
-        raw = resp.read().decode('utf-8')
+    try:
+        with urlopen(req, timeout=timeout) as resp:
+            raw = resp.read().decode('utf-8')
+    except HTTPError as e:
+        err_body = _collections_github_http_error_body(e)
+        label = f'{step}: ' if step else ''
+        raise RuntimeError(f'{label}HTTP {e.code} [{method} {url}] {err_body}') from None
     return json.loads(raw) if raw else {}
 
 
 def _collections_github_fetch_blob_bytes(token, repo, blob_sha):
     """Fetch blob bytes via Git Data API (works for files >1MB, up to 100MB)."""
     url = f'https://api.github.com/repos/{repo}/git/blobs/{quote(blob_sha)}'
-    meta = _collections_github_api_json('GET', url, token, timeout=60)
+    meta = _collections_github_api_json('GET', url, token, timeout=60, step='get-blob')
     if not isinstance(meta, dict):
         return None
     enc = (meta.get('encoding') or '').lower()
@@ -18820,28 +18929,44 @@ def _collections_github_push_via_git_data(token, repo, path, branch, payload_byt
 
     Required once collections_share_v1.json on banner-votes-data exceeds ~1MB;
     Contents API PUT then returns HTTP 422 Unprocessable Entity forever.
+
+    Note: GET uses singular `/git/ref/...`; PATCH/update must use plural `/git/refs/...`
+    (GitHub returns 404 for PATCH on the singular path).
     """
-    ref_url = f'https://api.github.com/repos/{repo}/git/ref/heads/{quote(branch, safe="")}'
-    ref = _collections_github_api_json('GET', ref_url, token, timeout=20)
+    branch_q = quote(branch, safe='')
+    # GET reference — singular path is documented + used elsewhere in this app.
+    get_ref_url = f'https://api.github.com/repos/{repo}/git/ref/heads/{branch_q}'
+    # UPDATE reference — must be plural `/git/refs/` or GitHub returns 404.
+    patch_ref_url = f'https://api.github.com/repos/{repo}/git/refs/heads/{branch_q}'
+
+    ref = _collections_github_api_json('GET', get_ref_url, token, timeout=20, step='get-ref')
     commit_sha = ((ref.get('object') or {}) if isinstance(ref, dict) else {}).get('sha')
     if not commit_sha:
         raise RuntimeError(f'missing commit sha for {branch}')
 
     commit_url = f'https://api.github.com/repos/{repo}/git/commits/{quote(commit_sha)}'
-    commit = _collections_github_api_json('GET', commit_url, token, timeout=20)
+    commit = _collections_github_api_json('GET', commit_url, token, timeout=20, step='get-commit')
     base_tree = ((commit.get('tree') or {}) if isinstance(commit, dict) else {}).get('sha')
     if not base_tree:
         raise RuntimeError(f'missing tree sha for commit {commit_sha[:12]}')
+
+    # Prefer utf-8 body (smaller request than base64) for JSON snapshots.
+    try:
+        text_payload = payload_bytes.decode('utf-8')
+        blob_body = {'content': text_payload, 'encoding': 'utf-8'}
+    except UnicodeDecodeError:
+        blob_body = {
+            'content': base64.b64encode(payload_bytes).decode('ascii'),
+            'encoding': 'base64',
+        }
 
     blob = _collections_github_api_json(
         'POST',
         f'https://api.github.com/repos/{repo}/git/blobs',
         token,
-        {
-            'content': base64.b64encode(payload_bytes).decode('ascii'),
-            'encoding': 'base64',
-        },
-        timeout=60,
+        blob_body,
+        timeout=90,
+        step='create-blob',
     )
     blob_sha = blob.get('sha') if isinstance(blob, dict) else None
     if not blob_sha:
@@ -18863,6 +18988,7 @@ def _collections_github_push_via_git_data(token, repo, path, branch, payload_byt
             'tree': [{'path': path, 'mode': '100644', 'type': 'blob', 'sha': blob_sha}],
         },
         timeout=45,
+        step='create-tree',
     )
     tree_sha = tree.get('sha') if isinstance(tree, dict) else None
     if not tree_sha:
@@ -18878,6 +19004,7 @@ def _collections_github_push_via_git_data(token, repo, path, branch, payload_byt
             'parents': [commit_sha],
         },
         timeout=45,
+        step='create-commit',
     )
     new_commit_sha = new_commit.get('sha') if isinstance(new_commit, dict) else None
     if not new_commit_sha:
@@ -18885,10 +19012,11 @@ def _collections_github_push_via_git_data(token, repo, path, branch, payload_byt
 
     _collections_github_api_json(
         'PATCH',
-        ref_url,
+        patch_ref_url,
         token,
         {'sha': new_commit_sha, 'force': False},
         timeout=20,
+        step='update-ref',
     )
     globals()[sha_attr] = blob_sha
     print(f'collections: GitHub snapshot ({message.split(":")[0]}, {path}) via git-data')
@@ -18989,11 +19117,7 @@ def _collections_github_push(data, path_env, default_path, sha_attr, message, *,
             return _collections_github_push_via_git_data(
                 token, repo, path, branch, payload, message, sha_attr
             )
-        except HTTPError as e:
-            err_body = _collections_github_http_error_body(e)
-            print(f'collections: GitHub git-data push failed ({path}): {e} {err_body}')
-            return False
-        except (URLError, OSError, json.JSONDecodeError, RuntimeError, NameError, ValueError) as e:
+        except (HTTPError, URLError, OSError, json.JSONDecodeError, RuntimeError, NameError, ValueError) as e:
             print(f'collections: GitHub git-data push failed ({path}): {e}')
             return False
 
@@ -24710,8 +24834,8 @@ def list_units():
     want_stat_bounds_u = request.args.get('stat_bounds', '').strip().lower() in ('1', 'true', 'yes')
     sbu_ck = 'sbd1' if want_stat_bounds_u else 'sbd0'
     rb_u_ck = 'rb1' if ranking_bulk_u else 'rb0'
-    # ul57: list rows include is_limited_time for client-side rarity filter (omit series/rarity_icon/recommend).
-    ck = f"ul59_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
+    # ul61: weapon_debuff_auto_pep_keys (Critical auto-PEP only when PEP unlocks Crit>0).
+    ck = f"ul61_{lc}_{page}_{pp}_{sb}_{sd}_{sort_chain_ck}_{sq}_{scope_ck}_{role_ck}_{rk}_{stat_mode}_c{1 if cond_list else 0}_pc{1 if pilot_cond_list else 0}_{source_ck}_{lineage_ck}_{series_ck}_{ability_ck}_{terrain_ck}_{weapon_debuff_ck}_{weapon_attr_ck}_{weapon_range_ck}_{weapon_range_non_map_ck}_{map_weapon_range_ck}_{mechanism_ck}_lop{_cbu['lineage_combine']}_sop{_cbu['series_combine']}_aop{_cbu['ability_combine']}_top{_cbu['terrain_combine']}_wop{_cbu['weapon_debuff_combine']}_wrop{_cbu['weapon_range_combine']}_wrnmop{_cbu['weapon_range_non_map_combine']}_mwrop{_cbu['map_weapon_range_combine']}_mop{mechanism_combine}_gs{1 if grid_skills_u else 0}_{tb_boost_ck}_{sbu_ck}_{rb_u_ck}_{lr_schedule_cache_key_fragment()}_{npc_view_cache_key_fragment()}"
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=True)
@@ -24918,8 +25042,9 @@ def list_units():
             _uid = urow['id']
             urow['grid_abilities'] = collect_unit_grid_abilities(_uid, ld, ldc, lc, stat_mode)
     _wbp = sorted(WEAPON_DEBUFF_KEYS_PRESENT_UNION)
+    _wb_auto_pep = sorted(weapon_debuff_auto_pep_keys())
     _mech_rows = mechanism_list_filter_rows_from_ids(mechanism_union, ld)
-    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg, 'weapon_range': weapon_range_arg, 'weapon_range_non_map': weapon_range_non_map_arg, 'map_weapon_range': map_weapon_range_arg, 'weapon_debuff_present_keys': _wbp, 'terrain_present_tokens': sorted(UNIT_TERRAIN_FILTER_TOKENS_PRESENT), 'weapon_range_ssp_ex_present': sorted(WEAPON_RANGE_SSP_EX_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_present': sorted(WEAPON_RANGE_SSP_EX_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_present': sorted(WEAPON_RANGE_NON_MAP_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_present': sorted(WEAPON_RANGE_NON_MAP_SSP_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_present': sorted(WEAPON_RANGE_ALL_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_cond_present': sorted(WEAPON_RANGE_NON_MAP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_cond_present': sorted(WEAPON_RANGE_ALL_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_cond_present': sorted(WEAPON_RANGE_SSP_EX_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_pilot_cond_present': sorted(WEAPON_RANGE_ALL_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_full_cond_present': sorted(WEAPON_RANGE_ALL_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_FULL_COND_VALUES_PRESENT, key=int), 'mechanism': mechanism_arg, 'mechanism_present': _mech_rows, 'stat_bounds': stat_bounds, 'sort_priority_band': sort_priority_band}
+    result = {'rows': pr, 'total': total, 'page': page, 'per_page': pp, 'total_pages': tp, 'sort': sb, 'dir': sd, 'role_filter': role_arg, 'rarity_filter': rav, 'source_filter': source_arg, 'lineage_filter': lineage_arg, 'series_filter': series_arg, 'ability_filter': ability_arg, 'terrain_filter': terrain_arg, 'weapon_debuff': weapon_debuff_arg, 'weapon_range': weapon_range_arg, 'weapon_range_non_map': weapon_range_non_map_arg, 'map_weapon_range': map_weapon_range_arg, 'weapon_debuff_present_keys': _wbp, 'weapon_debuff_auto_pep_keys': _wb_auto_pep, 'terrain_present_tokens': sorted(UNIT_TERRAIN_FILTER_TOKENS_PRESENT), 'weapon_range_ssp_ex_present': sorted(WEAPON_RANGE_SSP_EX_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_present': sorted(WEAPON_RANGE_SSP_EX_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_present': sorted(WEAPON_RANGE_NON_MAP_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_present': sorted(WEAPON_RANGE_NON_MAP_SSP_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_present': sorted(WEAPON_RANGE_ALL_SSP_VALUES_PRESENT, key=int), 'weapon_range_non_map_cond_present': sorted(WEAPON_RANGE_NON_MAP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_cond_present': sorted(WEAPON_RANGE_ALL_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_cond_present': sorted(WEAPON_RANGE_SSP_EX_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_pilot_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_pilot_cond_present': sorted(WEAPON_RANGE_ALL_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_pilot_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_PILOT_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_non_map_ssp_full_cond_present': sorted(WEAPON_RANGE_NON_MAP_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_all_ssp_full_cond_present': sorted(WEAPON_RANGE_ALL_SSP_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_FULL_COND_VALUES_PRESENT, key=int), 'weapon_range_ssp_ex_ssp_full_cond_present': sorted(WEAPON_RANGE_SSP_EX_SSP_FULL_COND_VALUES_PRESENT, key=int), 'mechanism': mechanism_arg, 'mechanism_present': _mech_rows, 'stat_bounds': stat_bounds, 'sort_priority_band': sort_priority_band}
     if not sq:
         result['transform_alt_browse_rows'] = _build_transform_alt_browse_rows(ld, lc, stat_mode, cond_list)
     set_cached_response(ck, result)

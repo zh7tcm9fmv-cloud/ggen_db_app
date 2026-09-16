@@ -600,6 +600,27 @@
     return p;
   }
 
+  var LIMITED_UR_LABEL_BASE = '/static/images/UI/UI_Gasha_Label_UR_Base.webp';
+
+  function limitedUrBadgeHtml(label, size) {
+    var lbl = String(label || '');
+    var sz = size || 'tile';
+    var src = imgUrl(LIMITED_UR_LABEL_BASE);
+    return (
+      '<span class="limited-ur-badge limited-ur-badge--' +
+      esc(sz) +
+      '" role="img" aria-label="' +
+      esc(lbl) +
+      '">' +
+      '<img class="limited-ur-badge-base" src="' +
+      esc(src) +
+      '" alt="" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">' +
+      '<span class="limited-ur-badge-text">' +
+      esc(lbl) +
+      '</span></span>'
+    );
+  }
+
   function loadOwned() {
     try {
       var raw = localStorage.getItem(STORAGE_KEY);
@@ -1663,9 +1684,9 @@
     }
     if (kind === 'limited') {
       return (
-        '<span class="collections-stat-lim-banner" aria-hidden="true"><span>' +
-        esc(limitedWord()) +
-        '</span></span>'
+        '<span class="collections-stat-lim-banner" aria-hidden="true">' +
+        limitedUrBadgeHtml(limitedWord(), 'chip') +
+        '</span>'
       );
     }
     if (kind === 'role') {
@@ -2020,9 +2041,9 @@
         var lb = getLb(row.id);
         var cls = lb < 0 ? 'is-unowned' : 'lb-' + lb;
         var lim = row.is_limited_time
-          ? '<div class="bt-limited-topbar col-card-lim" aria-hidden="true"><span class="bt-limited-topbar-inner">' +
-            esc(limitedWord()) +
-            '</span></div>'
+          ? '<div class="bt-limited-topbar col-card-lim" aria-hidden="true">' +
+            limitedUrBadgeHtml(limitedWord(), 'tile') +
+            '</div>'
           : '';
         var ltCls = row.is_limited_time
           ? state.type === 'supporters'
@@ -3221,6 +3242,7 @@
       loadImage(imgUrl(suppFr.lr)),
       loadImage(imgUrl(suppFr.tb)),
       loadImage(imgUrl('/static/images/UI/UI_Common_MenuIcon_Language.webp')),
+      loadImage(imgUrl(LIMITED_UR_LABEL_BASE)),
       Promise.all(
         rows.map(function (row) {
           return loadImage(imgUrl(row.art || row.thum || ''));
@@ -3250,7 +3272,8 @@
     var suppLrImg = packed[17];
     var suppTbImg = packed[18];
     var langIcon = packed[19];
-    var thumbs = packed[20];
+    var limLabelImg = packed[20];
+    var thumbs = packed[21];
 
     drawShareHeaderSceneArt(ctx, sceneArt, W, Math.max(120, subY - 6));
 
@@ -3490,33 +3513,30 @@
 
       if (row.is_limited_time) {
         var limLabel = limitedWord().toUpperCase();
-        ctx.font = uiCanvasFont(11, '600');
-        var limTw = Math.ceil(ctx.measureText(limLabel).width);
-        var limPadX = 7;
-        var limW = Math.min(cellW * 0.55, limTw + limPadX * 2);
-        var limH = 14;
-        var limX = x + 8;
-        var limY = y + 6;
-        var limGrad = ctx.createLinearGradient(limX, limY, limX + limW, limY);
-        if (isSupp) {
-          limGrad.addColorStop(0, '#0e7490');
-          limGrad.addColorStop(0.45, '#155e75');
-          limGrad.addColorStop(1, '#b8954a');
-        } else {
-          limGrad.addColorStop(0, '#be185d');
-          limGrad.addColorStop(0.55, '#a855f7');
-          limGrad.addColorStop(1, '#1d4ed8');
-        }
+        var limW = Math.min(cellW * 0.72, 118);
+        var limH = limW * (88 / 282);
+        var limX = x + (cellW - limW) / 2;
+        var limY = y + 5;
         ctx.save();
         if (!owned) ctx.globalAlpha = UNOWNED_ALPHA;
-        drawRoundRect(ctx, limX, limY, limW, limH, 3);
-        ctx.fillStyle = limGrad;
-        ctx.fill();
+        if (limLabelImg) {
+          ctx.drawImage(limLabelImg, limX, limY, limW, limH);
+        } else {
+          drawRoundRect(ctx, limX, limY, limW, limH, 3);
+          ctx.fillStyle = '#5b21b6';
+          ctx.fill();
+        }
         ctx.fillStyle = '#fff';
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.font = uiCanvasFont(11, '600');
+        ctx.font = uiCanvasFont(Math.max(9, Math.round(limH * 0.42)), '700');
+        ctx.shadowColor = 'rgba(0,0,0,0.95)';
+        ctx.shadowBlur = 6;
+        ctx.shadowOffsetX = 0;
+        ctx.shadowOffsetY = 2;
         ctx.fillText(limLabel, limX + limW / 2, limY + limH / 2 + 0.5);
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetY = 0;
         ctx.restore();
       }
 
