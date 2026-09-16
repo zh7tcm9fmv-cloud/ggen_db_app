@@ -82,7 +82,7 @@ def main():
     parser.add_argument(
         '--snapshot-only',
         action='store_true',
-        help='Only write whats_new_snapshot.json (skip gacha drop % + /ip rebuild).',
+        help='Only write whats_new_snapshot.json (skip gacha drop %% + /ip rebuild).',
     )
     parser.add_argument(
         '--publish',
