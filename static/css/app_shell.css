@@ -1757,6 +1757,33 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
   max-width:none;
   max-height:none;
 }
+/* Option parts in stage grids: show full item art inside the rarity plate (not cover-crop). */
+.stage-reward-grid .list-thumb-composite--mod.list-thumb-has-frame .list-thumb-portrait-wrap,
+.stage-missions-grid .list-thumb-composite--mod.list-thumb-has-frame .list-thumb-portrait-wrap,
+.stage-capturable-grid .list-thumb-composite--mod.list-thumb-has-frame .list-thumb-portrait-wrap{
+  top:var(--thumb-portrait-inset-top,8%);
+  left:var(--thumb-portrait-inset-side,8%);
+  right:var(--thumb-portrait-inset-side,8%);
+  bottom:var(--thumb-portrait-inset-bottom,10%);
+  align-items:center;
+  justify-content:center;
+}
+.stage-reward-grid .list-thumb-composite--mod .list-thumb-portrait-wrap .list-thumb-portrait,
+.stage-reward-grid .list-thumb-composite--mod.list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait,
+.stage-missions-grid .list-thumb-composite--mod .list-thumb-portrait-wrap .list-thumb-portrait,
+.stage-missions-grid .list-thumb-composite--mod.list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait,
+.stage-capturable-grid .list-thumb-composite--mod .list-thumb-portrait-wrap .list-thumb-portrait,
+.stage-capturable-grid .list-thumb-composite--mod.list-thumb-has-frame .list-thumb-portrait-wrap .list-thumb-portrait{
+  position:static;
+  inset:auto;
+  width:auto;
+  height:auto;
+  max-width:86%;
+  max-height:86%;
+  object-fit:contain;
+  object-position:center center;
+  flex:none;
+}
 /* Challenge/ER missions: center the card row so 2–3 missions don’t hug the left edge. */
 .stage-missions-grid{
   display:flex;
