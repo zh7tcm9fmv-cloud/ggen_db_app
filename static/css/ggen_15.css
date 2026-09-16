@@ -219,6 +219,12 @@ html.ggen-15 .tm-browse-shortcut{
   border-radius:0;
   clip-path:polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px);
 }
+/* clip-path eats edge borders; paint the active ring inside so the right side stays visible. */
+html.ggen-15 .main-content .rarity-filter-btn.active,
+html.ggen-15 .main-content .role-filter-dd-btn.active{
+  border-color:transparent;
+  box-shadow:inset 0 0 0 1px var(--accent-cyan);
+}
 html.ggen-15 .tm-browse-shortcut{
   font-family:var(--font-teko),Teko,sans-serif;
   font-size:14px;font-weight:600;letter-spacing:.1em;

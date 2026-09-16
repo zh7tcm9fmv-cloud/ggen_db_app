@@ -11,7 +11,7 @@ try:
 except ImportError:
     pass
 
-from flask import Flask, render_template, jsonify, request, make_response, session, redirect, Response, stream_with_context, abort
+from flask import Flask, render_template, jsonify, request, make_response, session, redirect, Response, stream_with_context, abort, send_from_directory
 from werkzeug.exceptions import NotFound
 from werkzeug.middleware.proxy_fix import ProxyFix
 import json
@@ -228,6 +228,38 @@ def _apply_seo_and_static_cache_headers(response):
     # APIs / unlock endpoints must never look indexable (Google still discovers linked POST URLs).
     if path.startswith('/api/'):
         response.headers.setdefault('X-Robots-Tag', 'noindex, nofollow')
+    # Gzip large JSON/JS/CSS when the client accepts it (Railway often leaves these uncompressed).
+    # Same pixels/features — only smaller wire size. Skip 304 / already-encoded / tiny bodies.
+    try:
+        if (
+            response.status_code == 200
+            and 'Content-Encoding' not in response.headers
+            and 'gzip' in (request.headers.get('Accept-Encoding') or '').lower()
+        ):
+            ctype = (response.headers.get('Content-Type') or '').split(';')[0].strip().lower()
+            if ctype in (
+                'application/json',
+                'text/json',
+                'application/javascript',
+                'text/javascript',
+                'text/css',
+            ):
+                # send_file / static uses direct_passthrough; must disable to compress.
+                if getattr(response, 'direct_passthrough', False):
+                    response.direct_passthrough = False
+                raw = response.get_data()
+                if raw and len(raw) > 4096:
+                    import gzip as _gzip
+                    compressed = _gzip.compress(raw, compresslevel=5)
+                    if len(compressed) < len(raw) * 0.92:
+                        response.set_data(compressed)
+                        response.headers['Content-Encoding'] = 'gzip'
+                        response.headers['Content-Length'] = str(len(compressed))
+                        vary = response.headers.get('Vary') or ''
+                        if 'Accept-Encoding' not in vary:
+                            response.headers['Vary'] = (vary + ', Accept-Encoding').lstrip(', ').strip()
+    except Exception:
+        pass
     if _STATIC_CACHE_MAX_AGE <= 0:
         return response
     if not path.startswith('/static/'):
@@ -555,6 +587,21 @@ if VIDEO_CDN:
 STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
 # (mtime, merged filenames) per folder under static/images/* — invalidated when that folder changes
 _MERGED_IMAGE_FOLDER_CACHE = {}
+
+
+@app.route('/static/images/<path:filename>')
+def static_game_images_cdn_offload(filename):
+    """Offload CSS/hardcoded /static/images/* to IMAGE_CDN (same asset; Railway stops paying image bytes)."""
+    if IMAGE_CDN and GAME_IMAGES_USE_CDN and not _is_blocked_media_url(IMAGE_CDN):
+        dest = IMAGE_CDN.rstrip('/') + '/images/' + filename
+        qs = request.query_string.decode('utf-8', 'ignore') if request.query_string else ''
+        if qs:
+            dest = dest + '?' + qs
+        resp = redirect(dest, code=302)
+        # Short-lived so flipping GAME_IMAGES_USE_CDN takes effect quickly.
+        resp.headers['Cache-Control'] = 'public, max-age=300'
+        return resp
+    return send_from_directory(os.path.join(STATIC_ROOT, 'images'), filename)
 
 
 def _list_disk_image_files(rel_path):

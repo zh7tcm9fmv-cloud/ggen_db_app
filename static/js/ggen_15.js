@@ -91,7 +91,13 @@
     var btn = document.getElementById('ggen15On');
     var fallback = document.getElementById('ggen15OnText');
     var L = langCode();
-    var src = '/static/images/UI/collections_15_special_design_' + L + '.webp';
+    var path = '/static/images/UI/collections_15_special_design_' + L + '.webp';
+    var src = path;
+    try {
+      var cdn = String(window.__GGEN_IMAGE_CDN__ || '').replace(/\/+$/, '');
+      var useCdn = window.__GGEN_GAME_IMAGES_USE_CDN__ !== false && !!cdn;
+      if (useCdn) src = cdn + '/images/' + path.substring('/static/images/'.length);
+    } catch (_) {}
     var label =
       L === 'JA' ? '特設デザイン' : L === 'TW' || L === 'HK' ? '特別設計' : 'Special Design';
     var shortLabel = L === 'JA' ? '1.5' : L === 'TW' || L === 'HK' ? '特別' : '1.5';
