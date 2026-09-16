@@ -482,9 +482,13 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
 .modal-content.char-detail .char-detail-head-main .detail-role-label{justify-content:center}
 .modal-content.char-detail .detail-series-row{justify-content:flex-start}
 .modal-content.char-detail .char-detail-title-area > .detail-limited-banner-wrap,
-.modal-content.unit-detail .unit-detail-title-area > .detail-limited-banner-wrap{display:flex;justify-content:flex-start;align-self:flex-start;width:100%;max-width:100%;overflow:hidden}
+.modal-content.unit-detail .unit-detail-title-area > .detail-limited-banner-wrap,
+.modal-content.char-detail .char-detail-head-main .detail-limited-banner-wrap,
+.modal-content.unit-detail .unit-detail-head-main .detail-limited-banner-wrap{display:flex;justify-content:flex-start;align-self:flex-start;width:100%;max-width:100%;overflow:visible}
 .modal-content.char-detail .char-detail-title-area > .detail-limited-banner-wrap .limited-ur-badge,
-.modal-content.unit-detail .unit-detail-title-area > .detail-limited-banner-wrap .limited-ur-badge{max-width:calc(100% - 8px)}
+.modal-content.unit-detail .unit-detail-title-area > .detail-limited-banner-wrap .limited-ur-badge,
+.modal-content.char-detail .char-detail-head-main .detail-limited-banner-wrap .limited-ur-badge,
+.modal-content.unit-detail .unit-detail-head-main .detail-limited-banner-wrap .limited-ur-badge{max-width:calc(100% - 8px)}
 }
 @media(max-width:768px) and (max-height:760px){
 .modal-content.char-detail{overflow-x:hidden;overflow-y:auto}
@@ -1274,18 +1278,27 @@ button.search-spotlight-row:focus-visible{outline:2px solid rgba(0,212,255,.5);o
 .detail-portrait-placeholder{width:100%;max-width:300px;height:400px;border-radius:var(--radius-md);border:2px solid var(--border-color);background:rgba(13,19,33,0.8);display:flex;align-items:center;justify-content:center;color:var(--text-muted);font-size:80px}
 .detail-title-area{flex:1;min-width:0;display:flex;flex-direction:column;z-index:10;overflow:hidden}.modal-content.unit-detail .detail-header,.modal-content.char-detail .detail-header{overflow:visible}.unit-detail-title-area,.char-detail-title-area{overflow:visible}.unit-detail-head-row,.char-detail-head-row{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:16px;width:100%}.unit-detail-head-main,.char-detail-head-main{flex:1;min-width:min(100%,200px)}
 /* Official Limited UR gacha label (UI_Gasha_Label_UR_Base) + localized text overlay */
-.limited-ur-badge{display:inline-grid;place-items:center;position:relative;vertical-align:middle;line-height:0;max-width:100%}
+.limited-ur-badge{display:inline-grid;place-items:center;position:relative;vertical-align:middle;line-height:0;max-width:100%;overflow:visible}
 .limited-ur-badge-base{display:block;width:100%;height:auto;grid-area:1/1;pointer-events:none;user-select:none}
-.limited-ur-badge-text{grid-area:1/1;z-index:1;display:block;max-width:78%;padding:0 6%;box-sizing:border-box;font-family:inherit;font-weight:800;letter-spacing:.04em;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.95),0 2px 6px rgba(0,0,0,.85),0 0 3px rgba(0,0,0,.9),0 0 8px rgba(0,0,0,.55);text-align:center;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none}
-.limited-ur-badge--detail{width:min(200px,72vw)}
-.limited-ur-badge--detail .limited-ur-badge-text{font-size:clamp(11px,2.9vw,14px)}
+.limited-ur-badge-text{grid-area:1/1;z-index:1;display:block;max-width:78%;padding:0 6%;box-sizing:border-box;font-family:inherit;font-weight:800;letter-spacing:.04em;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,.95),0 2px 6px rgba(0,0,0,.85),0 0 3px rgba(0,0,0,.9),0 0 8px rgba(0,0,0,.55);text-align:center;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+.limited-ur-badge--detail{width:min(200px,72vw);overflow:visible}
+/* Detail banner: iOS Safari clips glyph ink + text-shadow when overflow:hidden + tight line-height sit on the plate. */
+.limited-ur-badge--detail .limited-ur-badge-text{
+  max-width:70%;
+  padding:0 7%;
+  font-size:clamp(10px,2.55vw,13px);
+  line-height:1;
+  overflow:visible;
+  text-overflow:clip;
+  text-shadow:0 1px 2px rgba(0,0,0,.95),0 1px 4px rgba(0,0,0,.75);
+}
 .limited-ur-badge--chip{width:118px}
 .limited-ur-badge--chip .limited-ur-badge-text{font-size:11px;font-weight:800;letter-spacing:.05em}
 .limited-ur-badge--toolbar{width:96px}
 .limited-ur-badge--toolbar .limited-ur-badge-text{font-size:9px;letter-spacing:.04em}
 .limited-ur-badge--tile{width:100%;max-width:100%}
 .limited-ur-badge--tile .limited-ur-badge-text{font-size:9px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
-.detail-limited-banner-wrap{margin-top:10px;margin-bottom:4px;display:inline-block;width:fit-content;max-width:100%}
+.detail-limited-banner-wrap{margin-top:10px;margin-bottom:4px;display:inline-block;width:fit-content;max-width:100%;overflow:visible}
 .detail-rec-link-card .detail-rec-limited-wrap{margin-top:4px;width:100%;display:flex;justify-content:center;align-items:center}
 .detail-rec-link-card .detail-rec-limited-wrap .detail-limited-banner-wrap{margin:0 auto;display:flex;justify-content:center;align-items:center;width:100%;max-width:100%}
 .detail-rec-link-card .detail-rec-limited-wrap .limited-ur-badge--detail{width:min(132px,90%);margin:0 auto}
