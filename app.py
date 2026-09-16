@@ -18697,6 +18697,204 @@ def _collections_github_sync_mode():
         return 'shutdown'
 
 
+def _collections_github_http_error_body(err):
+    try:
+        return err.read().decode('utf-8', errors='replace')[:500]
+    except Exception:
+        return ''
+
+
+def _collections_github_resolve_blob_sha(token, repo, path, branch):
+    """Return (sha, size) without requiring full file download.
+
+    Contents API refuses to return *content* for blobs >1MB; directory listing still
+    returns each file's git blob sha — required to update an existing large file.
+    """
+    headers = _banner_pool_votes_github_api_headers(token)
+    # 1) Direct contents GET (works for small files; also yields sha when content is present)
+    file_url = f'https://api.github.com/repos/{repo}/contents/{quote(path)}?ref={quote(branch)}'
+    try:
+        req = Request(file_url, headers=headers, method='GET')
+        with urlopen(req, timeout=20) as resp:
+            meta = json.loads(resp.read().decode('utf-8'))
+        if isinstance(meta, dict) and meta.get('sha'):
+            return str(meta['sha']), int(meta.get('size') or 0)
+    except HTTPError as e:
+        body = _collections_github_http_error_body(e)
+        # Too-large blob: fall through to parent listing
+        if e.code not in (403, 422) and e.code != 404:
+            print(f'collections: GitHub sha resolve failed ({path}): {e} {body}')
+            return None, 0
+        if e.code == 404:
+            return None, 0
+    except (URLError, OSError, json.JSONDecodeError, ValueError, NameError) as e:
+        print(f'collections: GitHub sha resolve failed ({path}): {e}')
+        return None, 0
+
+    parent = path.rsplit('/', 1)[0] if '/' in path else ''
+    name = path.rsplit('/', 1)[-1]
+    if not parent:
+        return None, 0
+    dir_url = f'https://api.github.com/repos/{repo}/contents/{quote(parent)}?ref={quote(branch)}'
+    try:
+        req = Request(dir_url, headers=headers, method='GET')
+        with urlopen(req, timeout=20) as resp:
+            listing = json.loads(resp.read().decode('utf-8'))
+        if not isinstance(listing, list):
+            return None, 0
+        for ent in listing:
+            if isinstance(ent, dict) and ent.get('name') == name and ent.get('sha'):
+                return str(ent['sha']), int(ent.get('size') or 0)
+    except (HTTPError, URLError, OSError, json.JSONDecodeError, ValueError, NameError) as e:
+        print(f'collections: GitHub dir listing failed ({parent}): {e}')
+    return None, 0
+
+
+# Soft safety valve only — real retention is _COLLECTIONS_SHARE_MAX_ENTRIES (8000).
+# Git Data API allows up to 100MB; keep headroom under that.
+_COLLECTIONS_GITHUB_PUSH_MAX_BYTES = 40_000_000
+
+
+def _collections_github_compact_bytes(data):
+    return json.dumps(data, ensure_ascii=False, separators=(',', ':')).encode('utf-8') + b'\n'
+
+
+def _collections_share_fit_github_payload(data):
+    """Drop oldest share codes until compact JSON stays under the soft cap."""
+    codes = dict(data.get('codes') or {})
+    by_ip = dict(data.get('by_ip') or {})
+    payload = {'v': 1, 'codes': codes, 'by_ip': by_ip}
+    raw = _collections_github_compact_bytes(payload)
+    if len(raw) <= _COLLECTIONS_GITHUB_PUSH_MAX_BYTES:
+        return payload, raw
+    items = sorted(codes.items(), key=lambda kv: int((kv[1] or {}).get('ts') or 0))
+    while items and len(raw) > _COLLECTIONS_GITHUB_PUSH_MAX_BYTES:
+        drop_n = max(1, len(items) // 8)
+        dropped = set()
+        for k, _ in items[:drop_n]:
+            codes.pop(k, None)
+            dropped.add(k)
+        items = items[drop_n:]
+        if dropped:
+            for sid, code in list(by_ip.items()):
+                if code in dropped:
+                    by_ip.pop(sid, None)
+        payload = {'v': 1, 'codes': codes, 'by_ip': by_ip}
+        raw = _collections_github_compact_bytes(payload)
+    print(
+        f'collections: share GitHub payload trimmed to {len(codes)} codes '
+        f'({len(raw)} bytes) for sync size cap'
+    )
+    return payload, raw
+
+
+def _collections_github_api_json(method, url, token, body=None, *, timeout=45):
+    headers = dict(_banner_pool_votes_github_api_headers(token))
+    data = None
+    if body is not None:
+        headers['Content-Type'] = 'application/json'
+        data = json.dumps(body).encode('utf-8')
+    req = Request(url, data=data, headers=headers, method=method)
+    with urlopen(req, timeout=timeout) as resp:
+        raw = resp.read().decode('utf-8')
+    return json.loads(raw) if raw else {}
+
+
+def _collections_github_fetch_blob_bytes(token, repo, blob_sha):
+    """Fetch blob bytes via Git Data API (works for files >1MB, up to 100MB)."""
+    url = f'https://api.github.com/repos/{repo}/git/blobs/{quote(blob_sha)}'
+    meta = _collections_github_api_json('GET', url, token, timeout=60)
+    if not isinstance(meta, dict):
+        return None
+    enc = (meta.get('encoding') or '').lower()
+    content = meta.get('content') or ''
+    if enc == 'base64':
+        return base64.b64decode(content.replace('\n', ''))
+    if enc == 'utf-8':
+        return content.encode('utf-8')
+    return None
+
+
+def _collections_github_push_via_git_data(token, repo, path, branch, payload_bytes, message, sha_attr):
+    """Create/update a file via Git Data API — bypasses Contents API 1MB limit.
+
+    Required once collections_share_v1.json on banner-votes-data exceeds ~1MB;
+    Contents API PUT then returns HTTP 422 Unprocessable Entity forever.
+    """
+    ref_url = f'https://api.github.com/repos/{repo}/git/ref/heads/{quote(branch, safe="")}'
+    ref = _collections_github_api_json('GET', ref_url, token, timeout=20)
+    commit_sha = ((ref.get('object') or {}) if isinstance(ref, dict) else {}).get('sha')
+    if not commit_sha:
+        raise RuntimeError(f'missing commit sha for {branch}')
+
+    commit_url = f'https://api.github.com/repos/{repo}/git/commits/{quote(commit_sha)}'
+    commit = _collections_github_api_json('GET', commit_url, token, timeout=20)
+    base_tree = ((commit.get('tree') or {}) if isinstance(commit, dict) else {}).get('sha')
+    if not base_tree:
+        raise RuntimeError(f'missing tree sha for commit {commit_sha[:12]}')
+
+    blob = _collections_github_api_json(
+        'POST',
+        f'https://api.github.com/repos/{repo}/git/blobs',
+        token,
+        {
+            'content': base64.b64encode(payload_bytes).decode('ascii'),
+            'encoding': 'base64',
+        },
+        timeout=60,
+    )
+    blob_sha = blob.get('sha') if isinstance(blob, dict) else None
+    if not blob_sha:
+        raise RuntimeError('git blob create returned no sha')
+
+    # Skip commit if remote blob is already identical.
+    remote_sha, _remote_sz = _collections_github_resolve_blob_sha(token, repo, path, branch)
+    if remote_sha and remote_sha == blob_sha:
+        globals()[sha_attr] = blob_sha
+        print(f'collections: GitHub snapshot unchanged ({path})')
+        return True
+
+    tree = _collections_github_api_json(
+        'POST',
+        f'https://api.github.com/repos/{repo}/git/trees',
+        token,
+        {
+            'base_tree': base_tree,
+            'tree': [{'path': path, 'mode': '100644', 'type': 'blob', 'sha': blob_sha}],
+        },
+        timeout=45,
+    )
+    tree_sha = tree.get('sha') if isinstance(tree, dict) else None
+    if not tree_sha:
+        raise RuntimeError('git tree create returned no sha')
+
+    new_commit = _collections_github_api_json(
+        'POST',
+        f'https://api.github.com/repos/{repo}/git/commits',
+        token,
+        {
+            'message': message,
+            'tree': tree_sha,
+            'parents': [commit_sha],
+        },
+        timeout=45,
+    )
+    new_commit_sha = new_commit.get('sha') if isinstance(new_commit, dict) else None
+    if not new_commit_sha:
+        raise RuntimeError('git commit create returned no sha')
+
+    _collections_github_api_json(
+        'PATCH',
+        ref_url,
+        token,
+        {'sha': new_commit_sha, 'force': False},
+        timeout=20,
+    )
+    globals()[sha_attr] = blob_sha
+    print(f'collections: GitHub snapshot ({message.split(":")[0]}, {path}) via git-data')
+    return True
+
+
 def _collections_github_fetch(path_env, default_path, sha_attr):
     cfg = _collections_github_cfg(path_env, default_path)
     if not cfg:
@@ -18704,28 +18902,66 @@ def _collections_github_fetch(path_env, default_path, sha_attr):
     token, repo, path, branch = cfg
     url = f'https://api.github.com/repos/{repo}/contents/{quote(path)}?ref={quote(branch)}'
     headers = _banner_pool_votes_github_api_headers(token)
+
+    def _parse_json_bytes(raw_bytes):
+        data = json.loads(raw_bytes.decode('utf-8'))
+        return data if isinstance(data, dict) else None
+
+    def _fetch_via_git_data(blob_sha, size_hint=0):
+        try:
+            raw = _collections_github_fetch_blob_bytes(token, repo, blob_sha)
+            if raw is None:
+                return None
+            print(f'collections: fetched {path} via git-data ({size_hint or len(raw)} bytes)')
+            return _parse_json_bytes(raw)
+        except (HTTPError, URLError, OSError, json.JSONDecodeError, ValueError, NameError) as e:
+            print(f'collections: Git Data blob fetch failed ({path}): {e}')
+            return None
+
     try:
         req = Request(url, headers=headers, method='GET')
-        with urlopen(req, timeout=12) as resp:
+        with urlopen(req, timeout=20) as resp:
             meta = json.loads(resp.read().decode('utf-8'))
-        if not isinstance(meta, dict) or meta.get('encoding') != 'base64':
+        if not isinstance(meta, dict):
+            return None
+        if meta.get('sha'):
+            globals()[sha_attr] = meta.get('sha')
+        size = int(meta.get('size') or 0)
+        # Large blobs: Contents API omits content / errors — use Git Data.
+        if meta.get('encoding') != 'base64' or not meta.get('content') or size > 1_000_000:
+            sha = meta.get('sha')
+            if not sha:
+                sha, size = _collections_github_resolve_blob_sha(token, repo, path, branch)
+                if sha:
+                    globals()[sha_attr] = sha
+            if sha:
+                return _fetch_via_git_data(sha, size)
             return None
         content = base64.b64decode(meta.get('content', '').replace('\n', '')).decode('utf-8')
         data = json.loads(content)
-        globals()[sha_attr] = meta.get('sha')
         return data if isinstance(data, dict) else None
     except HTTPError as e:
+        body = _collections_github_http_error_body(e)
         if e.code == 404:
             print(f'collections: {path} not on {branch} yet (first save pending)')
-        else:
-            print(f'collections: GitHub fetch failed ({path}): {e}')
+            globals()[sha_attr] = None
+            return None
+        # 403/422 "too large" — resolve sha via dir listing, then Git Data blob.
+        if e.code in (403, 422) and ('1 MB' in body or 'too large' in body.lower() or 'too_large' in body.lower()):
+            sha, size = _collections_github_resolve_blob_sha(token, repo, path, branch)
+            if sha:
+                globals()[sha_attr] = sha
+                return _fetch_via_git_data(sha, size)
+        print(f'collections: GitHub fetch failed ({path}): {e} {body}')
         return None
     except (URLError, OSError, json.JSONDecodeError, ValueError, NameError) as e:
         print(f'collections: GitHub fetch failed ({default_path}): {e}')
         return None
 
 
-def _collections_github_push(data, path_env, default_path, sha_attr, message, *, retries=2):
+def _collections_github_push(data, path_env, default_path, sha_attr, message, *, retries=4):
+    """Push collections census/share via Git Data API (no Contents API 1MB ceiling)."""
+    del retries  # reserved; git-data path does its own conflict handling
     cfg = _collections_github_cfg(path_env, default_path)
     if not cfg:
         return False
@@ -18734,58 +18970,32 @@ def _collections_github_push(data, path_env, default_path, sha_attr, message, *,
         _banner_pool_votes_ensure_github_branch()
     except NameError:
         pass
-    url = f'https://api.github.com/repos/{repo}/contents/{quote(path)}'
-    payload = json.dumps(data, ensure_ascii=False, indent=2).encode('utf-8') + b'\n'
-    headers = {
-        **_banner_pool_votes_github_api_headers(token),
-        'Content-Type': 'application/json',
-    }
+    if 'collections_share' in path or 'share_v1' in path:
+        _fitted, payload = _collections_share_fit_github_payload(data if isinstance(data, dict) else {})
+    else:
+        payload = _collections_github_compact_bytes(data)
     lock = (
         _COLLECTIONS_CENSUS_GITHUB_PUSH_LOCK
         if 'census' in default_path
         else _COLLECTIONS_SHARE_GITHUB_PUSH_LOCK
     )
     with lock:
-        for attempt in range(retries + 1):
-            sha = globals().get(sha_attr)
-            if attempt and not sha:
-                _collections_github_fetch(path_env, default_path, sha_attr)
-                sha = globals().get(sha_attr)
-            body = {
-                'message': message,
-                'content': base64.b64encode(payload).decode('ascii'),
-                'branch': branch,
-            }
-            if sha:
-                body['sha'] = sha
-            try:
-                req = Request(url, data=json.dumps(body).encode('utf-8'), headers=headers, method='PUT')
-                with urlopen(req, timeout=20) as resp:
-                    meta = json.loads(resp.read().decode('utf-8'))
-                content = meta.get('content') if isinstance(meta, dict) else None
-                if isinstance(content, dict) and content.get('sha'):
-                    globals()[sha_attr] = content['sha']
-                print(f'collections: GitHub snapshot ({message.split(":")[0]}, {path})')
-                return True
-            except HTTPError as e:
-                if e.code in (404, 422) and attempt < retries:
-                    globals()[sha_attr] = None
-                    try:
-                        if _banner_pool_votes_ensure_github_branch():
-                            continue
-                    except NameError:
-                        pass
-                    continue
-                if e.code == 409 and attempt < retries:
-                    globals()[sha_attr] = None
-                    _collections_github_fetch(path_env, default_path, sha_attr)
-                    continue
-                print(f'collections: GitHub push failed ({path}): {e}')
-                return False
-            except (URLError, OSError, json.JSONDecodeError, NameError) as e:
-                print(f'collections: GitHub push failed ({path}): {e}')
-                return False
-    return False
+        remote_sha, _remote_size = _collections_github_resolve_blob_sha(token, repo, path, branch)
+        if remote_sha:
+            globals()[sha_attr] = remote_sha
+        # Always Git Data — Contents API hard-fails past ~1MB (share already hit 422).
+        # Retention limit is _COLLECTIONS_SHARE_MAX_ENTRIES (8000), not GitHub.
+        try:
+            return _collections_github_push_via_git_data(
+                token, repo, path, branch, payload, message, sha_attr
+            )
+        except HTTPError as e:
+            err_body = _collections_github_http_error_body(e)
+            print(f'collections: GitHub git-data push failed ({path}): {e} {err_body}')
+            return False
+        except (URLError, OSError, json.JSONDecodeError, RuntimeError, NameError, ValueError) as e:
+            print(f'collections: GitHub git-data push failed ({path}): {e}')
+            return False
 
 
 def _collections_bundled_json(path):
