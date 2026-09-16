@@ -558,8 +558,19 @@ html.ggen-15 .main-content .bt-feat-label{
   .header-15-toggle{font-size:11px;padding:3px 10px;min-height:32px;letter-spacing:.04em}
 }
 
-/* Desktop/tablet: fallback text hidden when img shows */
+/* Desktop/tablet: fallback text hidden when img shows; clean swap if img 404s */
 .header-15-special-fallback{display:none}
+.header-15-toggle--special.is-img-failed img{display:none !important}
+.header-15-toggle--special.is-img-failed .header-15-special-fallback{
+  display:inline;
+  font-family:var(--font-teko),Teko,sans-serif;
+  font-size:15px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:inherit;
+  line-height:1;
+}
 
 @media(prefers-reduced-motion:reduce){
   .header-15-toggle{transition:none}

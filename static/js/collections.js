@@ -869,12 +869,12 @@
     syncSpecialDesignIcon();
   }
 
-  /** Locale WebP for Special Design mark — same-origin (custom asset, not on game CDN). */
+  /** Locale WebP for Special Design mark — IMAGE_CDN when enabled (same as other UI art). */
   function specialDesignIconSrc() {
     var L = String(state.lang || 'EN').toUpperCase();
     if (L === 'JP') L = 'JA';
     if (L !== 'EN' && L !== 'JA' && L !== 'TW' && L !== 'HK') L = 'EN';
-    return '/static/images/UI/collections_15_special_design_' + L + '.webp';
+    return imgUrl('/static/images/UI/collections_15_special_design_' + L + '.webp');
   }
 
   function syncSpecialDesignIcon() {
@@ -888,7 +888,7 @@
     var src = specialDesignIconSrc();
     if (img) {
       img.src = src;
-      img.alt = label;
+      img.alt = '';
     }
     if (fallback) fallback.textContent = shortLabel;
     if (onBtn) onBtn.setAttribute('aria-label', label);

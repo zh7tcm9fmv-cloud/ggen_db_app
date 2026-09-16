@@ -107,7 +107,7 @@
       btn.classList.remove('is-img-failed');
     }
     if (img) {
-      img.alt = label;
+      img.alt = '';
       img.onerror = function () {
         if (btn) btn.classList.add('is-img-failed');
       };
