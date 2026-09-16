@@ -21,6 +21,13 @@ New playable units are **not** in published Top 10 until BSP is rebuilt. After a
 
 Keep the local Flask app running for Playwright (`wsgi:application` or `python app.py`). Spot-check one new unit’s `/api/unit/{id}/best_synergy_pilots` returns `source: published_dc` (not `pending` / `client_dc`).
 
+Latest/uncached units only (post-import; skips SD + warships; then shards):
+```text
+python scripts/rebuild_bsp_latest_units.py
+python scripts/rebuild_bsp_latest_units.py --dry-run
+python scripts/rebuild_bsp_latest_units.py --unit {id}
+```
+
 Targeted rebuild for known new ids only (faster smoke):
 ```text
 python scripts/build_msy_rankings_dc.py --incremental --force --checkpoint 5 --unit {id} --unit {id2}

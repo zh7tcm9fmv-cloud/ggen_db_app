@@ -33,6 +33,13 @@ def main():
         print('Failed to load published BSP catalog')
         return 1
     pub_dir = msy._bsp_shard_dir_candidates(ck)[0]
+    # Stage then swap: importing the app preloads published shards, and on Windows
+    # concurrent overwrite of those open paths raises OSError EINVAL.
+    import shutil
+
+    stage_dir = pub_dir + '.staging'
+    if os.path.isdir(stage_dir):
+        shutil.rmtree(stage_dir)
     t0 = time.perf_counter()
     shard_dir, manifest = msy._bsp_write_shards_from_groups(
         ck,
@@ -40,11 +47,19 @@ def main():
         source_path=path,
         total_pilot_candidates=disk.get('total_pilot_candidates') or 0,
         bsp_rules_version=disk.get('bsp_rules_version') or msy._BSP_DC_RULES_VERSION,
-        shard_dir=pub_dir,
+        shard_dir=stage_dir,
     )
+    bak_dir = pub_dir + '.bak'
+    if os.path.isdir(bak_dir):
+        shutil.rmtree(bak_dir)
+    if os.path.isdir(pub_dir):
+        os.rename(pub_dir, bak_dir)
+    os.rename(stage_dir, pub_dir)
+    if os.path.isdir(bak_dir):
+        shutil.rmtree(bak_dir, ignore_errors=True)
     print(
         f'Done: {manifest.get("unit_count")} units in {round(time.perf_counter() - t0, 1)}s '
-        f'-> {shard_dir}'
+        f'-> {pub_dir}'
     )
     return 0
 
