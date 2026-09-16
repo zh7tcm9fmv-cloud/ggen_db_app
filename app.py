@@ -217,6 +217,21 @@ _STATIC_CACHEABLE_EXT = frozenset(
 )
 _STATIC_CACHE_MAX_AGE = int(os.environ.get('STATIC_CACHE_MAX_AGE', '31536000') or '0')
 _STATIC_FONT_EXT = frozenset(('.woff2', '.woff', '.ttf', '.otf', '.eot'))
+# Rewritten CSS body cache: (path, etag_or_len, cdn_prefix) -> utf-8 bytes
+_CSS_CDN_REWRITE_CACHE = {}
+
+
+def _rewrite_css_static_image_urls_to_cdn(css_text, cdn_images_prefix):
+    """Point url(/static/images/...) at IMAGE_CDN so browsers skip Railway 302 hops."""
+    if not css_text or not cdn_images_prefix or '/static/images/' not in css_text:
+        return css_text
+    p = cdn_images_prefix
+    out = css_text.replace("url('/static/images/", f"url('{p}")
+    out = out.replace('url("/static/images/', f'url("{p}')
+    out = out.replace('url(/static/images/', f'url({p}')
+    # CSS escapes occasionally used in minified bundles
+    out = out.replace("url(\\ '/static/images/", f"url('{p}")
+    return out
 
 
 @app.after_request
@@ -228,6 +243,42 @@ def _apply_seo_and_static_cache_headers(response):
     # APIs / unlock endpoints must never look indexable (Google still discovers linked POST URLs).
     if path.startswith('/api/'):
         response.headers.setdefault('X-Robots-Tag', 'noindex, nofollow')
+    # CSS: rewrite /static/images → IMAGE_CDN before gzip (direct CDN fetch; no Railway image bytes/RTT).
+    try:
+        if (
+            response.status_code == 200
+            and IMAGE_CDN
+            and GAME_IMAGES_USE_CDN
+            and not _is_blocked_media_url(IMAGE_CDN)
+            and 'Content-Encoding' not in response.headers
+            and path.startswith('/static/')
+            and path.endswith('.css')
+        ):
+            ctype = (response.headers.get('Content-Type') or '').split(';')[0].strip().lower()
+            if ctype in ('text/css', 'application/css', ''):
+                if getattr(response, 'direct_passthrough', False):
+                    response.direct_passthrough = False
+                cdn_prefix = IMAGE_CDN.rstrip('/') + '/images/'
+                etag = response.headers.get('ETag') or ''
+                clen = response.headers.get('Content-Length') or ''
+                cache_key = (path, etag, clen, cdn_prefix)
+                cached = _CSS_CDN_REWRITE_CACHE.get(cache_key)
+                if cached is not None:
+                    response.set_data(cached)
+                    response.headers['Content-Length'] = str(len(cached))
+                else:
+                    raw = response.get_data(as_text=True)
+                    if raw and '/static/images/' in raw:
+                        rewritten = _rewrite_css_static_image_urls_to_cdn(raw, cdn_prefix)
+                        if rewritten != raw:
+                            data = rewritten.encode('utf-8')
+                            response.set_data(data)
+                            response.headers['Content-Length'] = str(len(data))
+                            if len(_CSS_CDN_REWRITE_CACHE) > 64:
+                                _CSS_CDN_REWRITE_CACHE.clear()
+                            _CSS_CDN_REWRITE_CACHE[cache_key] = data
+    except Exception:
+        pass
     # Gzip large JSON/JS/CSS when the client accepts it (Railway often leaves these uncompressed).
     # Same pixels/features — only smaller wire size. Skip 304 / already-encoded / tiny bodies.
     try:

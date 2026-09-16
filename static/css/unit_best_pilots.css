@@ -212,6 +212,30 @@
   font-weight: 600;
 }
 
+.unit-best-pilot-panel-vigor {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 1px;
+  color: #c8d6e8;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.02em;
+}
+
+.unit-best-pilot-panel-vigor-ic {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  flex-shrink: 0;
+  display: block;
+  filter: drop-shadow(0 0 4px rgba(0, 212, 255, 0.35));
+}
+
+.unit-best-pilot-panel-vigor-txt {
+  line-height: 1.2;
+}
+
 .unit-best-pilot-board-mode {
   display: inline-flex;
   align-items: center;

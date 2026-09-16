@@ -10,6 +10,12 @@
     crit: 'crit_dmg',
     normal: 'normal_dmg'
   };
+  /* Rank metric → sim vigor (same as /msy RANK_MODES). */
+  var RANK_MODE_VIGOR = {
+    super_crit: { key: 'super', labelKey: 'dc_vigor_super', icon: '/static/images/UI/UI_Tention_Up_03.webp' },
+    crit: { key: 'max', labelKey: 'dc_vigor_max', icon: '/static/images/UI/UI_Tention_Up_01.webp' },
+    normal: { key: 'high', labelKey: 'dc_vigor_high', icon: '/static/images/UI/UI_Tention_Up_02.webp' }
+  };
   var RANK_MODE_LABEL = {
     super_crit: 'msy_metric_super_crit',
     crit: 'msy_metric_crit',
@@ -419,6 +425,7 @@
     if (state.boardKind === next) return;
     state.boardKind = next;
     syncFilterButtons();
+    syncPanelSubtitle();
     renderActivePanel();
   }
 
@@ -465,6 +472,23 @@
     })[mode] || mode;
   }
 
+  function vigorForRankMode(mode) {
+    /* Defender board always sims Super vigor (same as tip copy). */
+    if (isDefenderBoard()) {
+      return RANK_MODE_VIGOR.super_crit;
+    }
+    return RANK_MODE_VIGOR[mode] || RANK_MODE_VIGOR.normal;
+  }
+
+  function vigorLabel(mode) {
+    var v = vigorForRankMode(mode);
+    return t(v.labelKey) || ({
+      super: 'Supercharged',
+      max: 'Max',
+      high: 'High'
+    })[v.key] || v.key;
+  }
+
   function fmtDef(n) {
     var v = Number(n);
     if (!isFinite(v)) return '—';
@@ -495,6 +519,13 @@
       var wline = pow ? (String(wi.name) + ': ' + pow) : String(wi.name);
       html += '<span class="unit-best-pilot-panel-weapon">' + esc(wline) + '</span>';
     }
+    var vigor = vigorForRankMode(state.rankMode || 'normal');
+    var vigorTxt = (t('msy_status_vigor') || 'Vigor: {v}').replace('{v}', vigorLabel(state.rankMode || 'normal'));
+    var vigorIcon = typeof global.imgUrl === 'function' ? global.imgUrl(vigor.icon) : vigor.icon;
+    html += '<span class="unit-best-pilot-panel-vigor" title="' + escAttr(vigorTxt) + '">'
+      + '<img class="unit-best-pilot-panel-vigor-ic" src="' + escAttr(vigorIcon) + '" alt="" width="18" height="18" loading="lazy" decoding="async" onerror="this.style.display=\'none\'">'
+      + '<span class="unit-best-pilot-panel-vigor-txt">' + esc(vigorTxt) + '</span>'
+      + '</span>';
     return html;
   }
 
@@ -609,6 +640,7 @@
     if (state.rankMode === mode) return;
     state.rankMode = mode;
     syncMetricButtons();
+    syncPanelSubtitle();
     var uid = state.unitId;
     if (uid) {
       var entry = getCachedEntry(uid);
