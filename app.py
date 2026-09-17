@@ -4735,6 +4735,7 @@ def trait_title_implies_conditional_stat_bonuses(name):
         '(hp conditions)', '(cond: hp)', '(cnd: hp)',
         '(vigor conditions)', '(cnd: vigor)', '(cond: vigor)', '(no. of battles conditions)',
         '(cond: combat - count)', '(cnd: combat - count)', '(no. of combats conditions)',
+        '(cond: combat)', '(cnd: combat)',
         '(cond: damage taken)', '(cnd: damage taken)',
         '(when supporting)', '(map conditions)', '(ally conditions)',
         '(unit conditions)', '(unit condition)',
@@ -5807,15 +5808,22 @@ def _extract_stat_percent_unit_cjk(text):
         v = int(m.group(3))
         if m.group(5) == '減少':
             v = -v
+        has_pct = bool(m.group(4))
         for gi in (1, 2):
             k = ja_map.get(m.group(gi))
+            # Flat MOV ("移動力が1上昇") is handled by _extract_stat_flat_move — skip without %.
+            if k == 'Move' and not has_pct:
+                continue
             if k:
                 bonuses[k] = bonuses.get(k, 0) + v
     for m in re.finditer(r'(?:自部隊の|自身の)' + ja_one + r'が(\d+)(%?)(上昇|減少)', text):
         v = int(m.group(2))
         if m.group(4) == '減少':
             v = -v
+        has_pct = bool(m.group(3))
         k = ja_map.get(m.group(1))
+        if k == 'Move' and not has_pct:
+            continue
         if k:
             bonuses[k] = bonuses.get(k, 0) + v
     tw_map = {'最大HP': 'HP', '最大EN': 'EN', '攻擊力': 'Attack', '防禦力': 'Defense', '機動力': 'Mobility', '移動力': 'Move'}
@@ -5824,15 +5832,21 @@ def _extract_stat_percent_unit_cjk(text):
         v = int(m.group(4))
         if m.group(3) == '減少':
             v = -v
+        has_pct = bool(m.group(5))
         for gi in (1, 2):
             k = tw_map.get(m.group(gi))
+            if k == 'Move' and not has_pct:
+                continue
             if k:
                 bonuses[k] = bonuses.get(k, 0) + v
     for m in re.finditer(r'(?:自身所屬部隊|自身)' + tw_one + r'(提升|減少)(\d+)(%?)', text):
         v = int(m.group(3))
         if m.group(2) == '減少':
             v = -v
+        has_pct = bool(m.group(4))
         k = tw_map.get(m.group(1))
+        if k == 'Move' and not has_pct:
+            continue
         if k:
             bonuses[k] = bonuses.get(k, 0) + v
     return bonuses
@@ -5870,6 +5884,16 @@ def _extract_stat_percent_unit(text, skip_conditional=True):
         bonuses['Attack'] = bonuses.get('Attack', 0) + pct
         bonuses[UNIT_ABILITY_PASSIVE_CRIT_DMG_PCT_KEY] = bonuses.get(UNIT_ABILITY_PASSIVE_CRIT_DMG_PCT_KEY, 0) + pct
         return bonuses
+    # Different percentages on one line: "Increase ATK by 10% and DEF by 30%".
+    m_dual = re.search(
+        fr"(?:further|futher)?\s*Increases?\s+(?:own\s+)?(?:squad\s+)?({sn})\s+by\s+(\d+)\s*%\s+"
+        fr"and\s+(?:own\s+)?(?:squad\s+)?({sn})\s+by\s+(\d+)\s*%",
+        text, re.IGNORECASE)
+    if m_dual:
+        for gi, pi in ((1, 2), (3, 4)):
+            n = norm(m_dual.group(gi))
+            bonuses[n] = bonuses.get(n, 0) + int(m_dual.group(pi))
+        return bonuses
     m = re.search(
         fr"(?:further|futher)?\s*Increases? (?:own )?(?:squad )?({sn})(?: and ({sn}))? by (\d+)%",
         text, re.IGNORECASE)
@@ -5892,6 +5916,13 @@ def _extract_stat_percent_unit(text, skip_conditional=True):
         else:
             for k, v in _extract_stat_percent_unit_cjk(text).items():
                 bonuses[k] = bonuses.get(k, 0) + v
+    # Newline-split continuation after "increase ATK by 10%": "and DEF by 30%".
+    m_and = re.search(
+        fr"^\s*and\s+(?:own\s+)?(?:squad\s+)?({sn})\s+by\s+(\d+)\s*%",
+        text.strip(), re.IGNORECASE)
+    if m_and:
+        n1 = norm(m_and.group(1))
+        bonuses[n1] = bonuses.get(n1, 0) + int(m_and.group(2))
     return bonuses
 
 def _unit_enemy_specified_tags_clause_part(part):
@@ -5924,10 +5955,24 @@ def _unit_enemy_tag_equal_atk_def_boost(part_stats, prev_enemy_tag_clause):
     return atk is not None and de is not None and atk == de
 
 def _extract_stat_flat_move(text, skip_conditional=True):
-    """Extract flat Move/MOV/Movement bonus (e.g. 'Increase own MOV by 1' or 'by1')."""
+    """Extract flat Move/MOV/Movement bonus (e.g. 'Increase own MOV by 1', 'and MOV by 1')."""
     if skip_conditional and _is_conditional_stat_text(text): return 0
-    m = re.search(r"Increases?\s+(?:own\s+)?(?:squad\s+)?(?:Move|Movement|MOV)\s+by\s*(\d+)(?!%)", text, re.IGNORECASE)
-    return int(m.group(1)) if m else 0
+    tl = (text or '').strip()
+    # EN: full line or newline continuation after ATK% ("and MOV by 1").
+    m = re.search(
+        r"(?:Increases?\s+(?:own\s+)?(?:squad\s+)?|and\s+)(?:Move|Movement|MOV)\s+by\s*(\d+)(?!%)",
+        tl, re.IGNORECASE)
+    if m:
+        return int(m.group(1))
+    # JA flat (no %): 自身の移動力が1上昇 — percent extractor skips Move without %.
+    m = re.search(r"(?:自部隊の|自身の)?移動力が(\d+)(?!%)上昇", tl)
+    if m:
+        return int(m.group(1))
+    # TW/HK flat (no %): 自身移動力提升1
+    m = re.search(r"(?:自身所屬部隊|自身)?移動力提升(\d+)(?!%)", tl)
+    if m:
+        return int(m.group(1))
+    return 0
 
 def _extract_weapon_stat_percent_unit(text, skip_conditional=True):
     """Parse passive % bonuses that apply to weapon display (ACC, Critical, Power)."""
