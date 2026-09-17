@@ -3,12 +3,14 @@
 
 Runs (in order):
   1. Official gacha drop-rate JSON → data/published/official_gasha/
-  2. Investment Priority (/ip) board → data/published/sp_investment_v1.json
-  3. Coverage gate (eligible catalog vs published /ip)
+  2. Ko-fi promo Popup avatars → static/js/kofi_donate_promo.js
+  3. Investment Priority (/ip) board → data/published/sp_investment_v1.json
+  4. Coverage gate (eligible catalog vs published /ip)
 
 Usage (from ggen_db_app):
   python scripts/refresh_published_after_master.py
   python scripts/refresh_published_after_master.py --skip-gasha
+  python scripts/refresh_published_after_master.py --skip-popup
   python scripts/refresh_published_after_master.py --skip-spi
 
 Typical full post-import workflow (What's New baseline + published caches):
@@ -39,8 +41,13 @@ def main() -> int:
     except Exception:
         pass
 
-    ap = argparse.ArgumentParser(description='Rebuild /ip + gacha drop % published caches.')
+    ap = argparse.ArgumentParser(description='Rebuild /ip + gacha drop % + Ko-fi Popup promo list.')
     ap.add_argument('--skip-gasha', action='store_true', help='Skip official gasha proportion sync.')
+    ap.add_argument(
+        '--skip-popup',
+        action='store_true',
+        help='Skip Ko-fi promo Popup avatar sync (kofi_donate_promo.js).',
+    )
     ap.add_argument('--skip-spi', action='store_true', help='Skip Investment Priority (/ip) rebuild.')
     ap.add_argument('--skip-coverage', action='store_true', help='Skip SPI coverage check.')
     args = ap.parse_args()
@@ -54,6 +61,15 @@ def main() -> int:
         )
         if rc != 0:
             print('Gasha sync failed.', file=sys.stderr)
+            return rc
+
+    if not args.skip_popup:
+        rc = _run_step(
+            'Sync Ko-fi promo Popup avatars',
+            'sync_kofi_promo_popup_avatars.py',
+        )
+        if rc != 0:
+            print('Popup avatar sync failed.', file=sys.stderr)
             return rc
 
     if not args.skip_spi:

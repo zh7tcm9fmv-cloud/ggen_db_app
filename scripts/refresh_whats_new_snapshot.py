@@ -16,12 +16,15 @@ Usage (from ggen_db_app):
       # DEFAULT one-shot post-import:
       #   1) What's New baseline (whats_new_snapshot.json + history archive)
       #   2) Official gacha drop % → data/published/official_gasha/
-      #   3) Investment Priority (/ip) → data/published/sp_investment_v1.json
-      #   4) /ip coverage gate
+      #   3) Ko-fi promo Popup avatars → static/js/kofi_donate_promo.js
+      #   4) Investment Priority (/ip) → data/published/sp_investment_v1.json
+      #   5) /ip coverage gate
   python scripts/refresh_whats_new_snapshot.py --snapshot-only
-      # Baseline only (skip gacha + /ip)
+      # Baseline only (skip gacha + Popup promo + /ip)
   python scripts/refresh_whats_new_snapshot.py --rebuild-spi
-      # /ip only (skip gacha sync; still writes baseline first)
+      # /ip only (skip gacha + Popup promo; still writes baseline first)
+  python scripts/refresh_whats_new_snapshot.py --skip-popup
+      # After baseline: gacha + /ip, skip Ko-fi Popup avatar sync
   python scripts/refresh_whats_new_snapshot.py --second-latest
   python scripts/refresh_whats_new_snapshot.py --from-master-dir "C:/path/to/MasterData_2026-03-24"
 
@@ -60,8 +63,8 @@ def _nth_latest_master_dir(root, prefix, n):
 def main():
     parser = argparse.ArgumentParser(
         description=(
-            'Write Whats New baseline, then (by default) refresh published gacha drop % '
-            'and Investment Priority (/ip).'
+            'Write Whats New baseline, then (by default) refresh published gacha drop %, '
+            'Ko-fi Popup promo avatars, and Investment Priority (/ip).'
         ),
     )
     parser.add_argument(
@@ -82,7 +85,7 @@ def main():
     parser.add_argument(
         '--snapshot-only',
         action='store_true',
-        help='Only write whats_new_snapshot.json (skip gacha drop %% + /ip rebuild).',
+        help='Only write whats_new_snapshot.json (skip gacha drop %% + Popup promo + /ip rebuild).',
     )
     parser.add_argument(
         '--publish',
@@ -92,24 +95,32 @@ def main():
     parser.add_argument(
         '--rebuild-spi',
         action='store_true',
-        help='Rebuild /ip only after baseline (skip gacha sync). Default already rebuilds /ip.',
+        help='Rebuild /ip only after baseline (skip gacha + Popup promo). Default already rebuilds /ip.',
     )
     parser.add_argument(
         '--skip-spi',
         action='store_true',
-        help='After baseline, refresh gacha drop %% only (skip /ip rebuild).',
+        help='After baseline, refresh gacha drop %% + Popup promo (skip /ip rebuild).',
+    )
+    parser.add_argument(
+        '--skip-popup',
+        action='store_true',
+        help='After baseline, skip Ko-fi promo Popup avatar sync.',
     )
     args = parser.parse_args()
 
-    if args.snapshot_only and (args.rebuild_spi or args.skip_spi or args.publish):
-        parser.error('--snapshot-only cannot be combined with --publish / --rebuild-spi / --skip-spi')
+    if args.snapshot_only and (args.rebuild_spi or args.skip_spi or args.publish or args.skip_popup):
+        parser.error(
+            '--snapshot-only cannot be combined with --publish / --rebuild-spi / --skip-spi / --skip-popup'
+        )
     if args.rebuild_spi and args.skip_spi:
         parser.error('Use only one of --rebuild-spi or --skip-spi')
 
     publish = not args.snapshot_only
-    # --rebuild-spi → /ip only; --skip-spi → gacha only; else both (default one-shot).
+    # --rebuild-spi → /ip only; --skip-spi → gacha + popup; else all (default one-shot).
     skip_gasha = bool(args.rebuild_spi)
     skip_spi = bool(args.skip_spi)
+    skip_popup = bool(args.rebuild_spi) or bool(args.skip_popup)
 
     import app as app_module
 
@@ -179,6 +190,10 @@ def main():
             pub_cmd.append('--skip-gasha')
         else:
             steps.append('gacha drop %')
+        if skip_popup:
+            pub_cmd.append('--skip-popup')
+        else:
+            steps.append('Ko-fi Popup avatars')
         if skip_spi:
             pub_cmd.append('--skip-spi')
         else:

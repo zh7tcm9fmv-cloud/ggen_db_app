@@ -8642,7 +8642,7 @@ if(_dcSlotNeedsAutoFit(S.dc.atkSlots[S.dc.atkSlotIndex|0]))_dcScheduleAutoFitOpt
 function initDmgCalc(){
 S._dcAtkPresetBackup=null;S._dcAtkManualPackBackup=null;S._dcDefPresetNpcBackup=null;S._dcDefDbBackup=null;S._dcDefCustomPackBackup=null;
 S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;S.dc.lbTier=3;
-S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.bigRangZeonSquadBuff=false;S.dc.defNpcMapBonusesOn=true;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.applyZeonEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.unitCondStackCount=0;S.dc.unitHpAtkTierIndex=0;S.dc.unitDamageTakenDefStacks=0;S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;S.dc.optionParts=[];S.dc.supporters=[];S.dc.defOptionParts=[];S.dc.defSupporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc.multiPctCompare=false;S.dc._dcAutoFitGen=0;S.dc._supportCntAtkPairSnapBySlot={};
+S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.defUnitCondPassive=false;S.dc.defCharCondPassive=false;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.bigRangZeonSquadBuff=false;S.dc.defNpcMapBonusesOn=true;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.applyZeonEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.unitCondStackCount=0;S.dc.unitHpAtkTierIndex=0;S.dc.unitDamageTakenDefStacks=0;S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;S.dc.optionParts=[];S.dc.supporters=[];S.dc.defOptionParts=[];S.dc.defSupporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc.multiPctCompare=false;S.dc._dcAutoFitGen=0;S.dc._supportCntAtkPairSnapBySlot={};
 renderDcDefDbPicks();
 const _drp=document.getElementById('dcDefModePreset'),_drc=document.getElementById('dcDefModeCustom'),_ddb=document.getElementById('dcDefModeDatabase'),_dpw=document.getElementById('dcDefPresetWrap'),_dcw=document.getElementById('dcDefCustomWrap'),_ddbw=document.getElementById('dcDefDatabaseWrap');
 if(_drp)_drp.checked=true;if(_drc)_drc.checked=false;if(_ddb)_ddb.checked=false;if(_dpw)_dpw.style.display='';if(_dcw)_dcw.style.display='none';if(_ddbw)_ddbw.style.display='none';
@@ -8915,9 +8915,13 @@ const maxT=lb&&lb.length?lb.length-1:0;
 const tier=Math.min(Math.max(0,S.dc.defLbTier|0),maxT);
 S.dc.defLbTier=tier;
 const row=lb&&lb[tier]?lb[tier]:null;
-const ustats=row?row.stats_no_cond:(Array.isArray(ud.stats)?ud.stats:null);
+const uCp=!!(ud.has_cond_stats&&S.dc.defUnitCondPassive);
+const uKey=uCp?'stats_with_cond':'stats_no_cond';
+const ustats=row?(row[uKey]||row.stats_no_cond):(Array.isArray(ud.stats)?ud.stats:null);
 const {stats_raw:ur,bonus_amounts:ub}=_dcStatPairFromApiList(ustats);
-const {stats_raw:cr,bonus_amounts:cb}=_dcStatPairFromApiList(cd.stats);
+const cCp=!!(_dcCharHasConditional(cd)&&S.dc.defCharCondPassive);
+const cstats=(cCp&&cd.stats_with_ex)?cd.stats_with_ex:cd.stats;
+const {stats_raw:cr,bonus_amounts:cb}=_dcStatPairFromApiList(cstats);
 S.dc.defNpc={
 npc_id:'__db__',
 _fromDatabase:true,
@@ -8990,15 +8994,27 @@ lbMenu+=`<button type="button" class="cmp-lb-opt${tt===tier?' is-active':''}" on
 }
 lbBlock=`<div class="dc-lb-inline-wrap"><details id="dcDefLbTierDetails" class="cmp-lb-details dc-lb-tier-details"><summary class="cmp-lb-summary" title="${esc(t('cmp_lb'))}">${cmpLbPipsRow(cur[0],cur[1],cur[2])}</summary><div class="cmp-lb-menu" role="listbox" aria-label="${esc(t('cmp_lb'))}">${lbMenu}</div></details></div>`;
 }
+let unitCpToggle='';
+if(ud.has_cond_stats||ud.has_cond_weapon_range){
+const _cpL=t('conditional_passive');
+unitCpToggle=`<div class="dc-picked-controls"><div class="conditional-toggle dc-dc-cond-toggle"><div class="toggle-clickable${S.dc.defUnitCondPassive?' active':''}" role="button" tabindex="0" title="${escAttr(_cpL)}" aria-label="${escAttr(_cpL)}" onclick="toggleDcDefUnitCondPassive()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDcDefUnitCondPassive()}"><span class="toggle-label toggle-label--cp-chip">${_dcCpChipSpanHtml(!!S.dc.defUnitCondPassive)}</span></div></div></div>`;
+}
 const lbStatCluster=lbBlock?`<div class="dc-unit-lb-stat-cluster">${lbBlock}</div>`:'';
-uEl.innerHTML=`<div class="dc-picked"><img class="dc-thum" src="${imgUrl(ud.thum||ud.portrait||'')}" alt="" onerror="this.style.display='none'"><div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div class="dc-picked-badges">${ud.rarity_icon?`<img src="${imgUrl(ud.rarity_icon)}">`:''}${ud.role_icon?`<img src="${imgUrl(ud.role_icon)}">`:''}</div></div>${lbStatCluster}<button type="button" class="dc-picked-change" onclick="openDcPicker('def_unit')">${t('dc_change')}</button></div>`;
+const belowPortrait=(unitCpToggle||lbStatCluster)?`<div class="dc-atk-unit-below-portrait">${unitCpToggle}${lbStatCluster}</div>`:'';
+uEl.innerHTML=`<div class="dc-picked">${_dcPickedEntityThumbHtml(ud,'unit',52)}<div class="dc-picked-info"><div class="dc-picked-name">${esc(ud.name)}</div><div class="dc-picked-badges">${ud.rarity_icon?`<img src="${imgUrl(ud.rarity_icon)}">`:''}${ud.role_icon?`<img src="${imgUrl(ud.role_icon)}">`:''}</div></div>${belowPortrait}<button type="button" class="dc-picked-change" onclick="openDcPicker('def_unit')">${t('dc_change')}</button></div>`;
 }else{
 uEl.innerHTML=`<button type="button" class="dc-pick-btn" onclick="openDcPicker('def_unit')">${t('dc_pick_unit')}</button>`;
 }
 if(cd&&!cd.error){
-const chBtn=isSD?'':`<button type="button" class="dc-picked-change" onclick="openDcPicker('def_character')">${t('dc_change')}</button>`;
+const chBtn=isSD?`<span class="dc-picked-change dc-picked-change--static" style="font-size:11px;color:var(--text-muted);padding:4px 8px">Locked</span>`:`<button type="button" class="dc-picked-change" onclick="openDcPicker('def_character')">${t('dc_change')}</button>`;
+let charCpToggle='';
+if(_dcCharHasConditional(cd)){
+const _cpl=t('conditional_passive');
+charCpToggle=`<div class="dc-picked-controls"><div class="conditional-toggle dc-dc-cond-toggle"><div class="toggle-clickable${S.dc.defCharCondPassive?' active':''}" role="button" tabindex="0" title="${escAttr(_cpl)}" aria-label="${escAttr(_cpl)}" onclick="toggleDcDefCharCondPassive()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleDcDefCharCondPassive()}"><span class="toggle-label toggle-label--cp-chip">${_dcCpChipSpanHtml(!!S.dc.defCharCondPassive)}</span></div></div></div>`;
+}
+const charBelowPortrait=charCpToggle?`<div class="dc-atk-char-below-portrait">${charCpToggle}</div>`:'';
 const sdNote=isSD?`<div style="font-size:10px;color:var(--text-muted);margin-top:4px">SD — paired pilot from unit</div>`:'';
-cEl.innerHTML=`<div class="dc-picked"><img class="dc-thum" src="${imgUrl(cd.thum||cd.portrait||'')}" alt="" onerror="this.style.display='none'"><div class="dc-picked-info"><div class="dc-picked-name">${esc(cd.name)}</div></div>${sdNote}${chBtn}</div>`;
+cEl.innerHTML=`<div class="dc-atk-char-wrap"><div class="dc-picked">${_dcPickedEntityThumbHtml(cd,'char',52)}<div class="dc-picked-info"><div class="dc-picked-name">${esc(cd.name)}</div><div class="dc-picked-badges">${cd.rarity_icon?`<img src="${imgUrl(cd.rarity_icon)}">`:''}${cd.role_icon?`<img src="${imgUrl(cd.role_icon)}">`:''}</div>${sdNote}</div>${charBelowPortrait}${chBtn}</div></div>`;
 }else if(isSD){
 cEl.innerHTML='<div style="font-size:11px;color:var(--text-muted)">Select an SD unit to load its pilot.</div>';
 }else{
@@ -9007,6 +9023,18 @@ cEl.innerHTML=`<button type="button" class="dc-pick-btn" onclick="openDcPicker('
 renderDcDefOptionParts();
 renderDcDefSupporters();
 }
+function setDcDefUnitCondPassive(on){
+S.dc.defUnitCondPassive=!!on;
+if((S.dc.defTargetMode||'preset')==='database'&&S.dc.defUnitData&&S.dc.defCharData&&!S.dc.defUnitData.error&&!S.dc.defCharData.error)_dcSyncDefNpcFromDatabase();
+else{renderDcDefDbPicks();onDcParamChange()}
+}
+function toggleDcDefUnitCondPassive(){setDcDefUnitCondPassive(!S.dc.defUnitCondPassive)}
+function setDcDefCharCondPassive(on){
+S.dc.defCharCondPassive=!!on;
+if((S.dc.defTargetMode||'preset')==='database'&&S.dc.defUnitData&&S.dc.defCharData&&!S.dc.defUnitData.error&&!S.dc.defCharData.error)_dcSyncDefNpcFromDatabase();
+else{renderDcDefDbPicks();onDcParamChange()}
+}
+function toggleDcDefCharCondPassive(){setDcDefCharCondPassive(!S.dc.defCharCondPassive)}
 function setDcDefLbTier(t){
 let tt=Math.min(3,Math.max(0,t|0));
 const ud=S.dc.defUnitData;
@@ -9459,7 +9487,7 @@ if(custom)custom.checked=false;
 if(database)database.checked=true;
 if(pw)pw.style.display='none';
 if(cw)cw.style.display='none';
-if(dbw)dbw.style.display='block';
+if(dbw)dbw.style.display='';
 const uid=String(obj.defU),cid=String(obj.defC);
 try{
 const[ur,cr]=await Promise.all([
@@ -15016,7 +15044,9 @@ const lb=ud.lb_data;
 const maxT=lb&&lb.length?lb.length-1:0;
 const tier=Math.min(Math.max(0,S.dc.defLbTier|0),maxT);
 const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
-const defUnitStats=td?(td.stats_no_cond||td.stats||[]):[];
+const uCp=!!(ud.has_cond_stats&&S.dc.defUnitCondPassive);
+const uKey=uCp?'stats_with_cond':'stats_no_cond';
+const defUnitStats=td?(td[uKey]||td.stats_no_cond||td.stats||[]):[];
 const ctx={optionParts:S.dc.defOptionParts||[],supporters:S.dc.defSupporters||[],atkUnitData:ud};
 return _dcGetModifiedAttackerUnitStatsFromCtx(ctx,defUnitStats,false);
 }
@@ -15335,12 +15365,12 @@ const body=document.getElementById('dcPickerBody');
 const type=S._dcPickerType;
 if(!items.length){body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted)">No results</div>';return}
 const th=52;
-if(type==='supporter'){
+if(type==='supporter'||type==='def_supporter'){
 const cells=_tbSortPickerEntityRows(items).map(r=>renderSupporterPickerCell(r,th,'data-dc-pick-id')).join('');
 body.innerHTML=`<div class="tb-picker-grid">${cells}</div>`;
 return;
 }
-if(type==='option_parts'){
+if(type==='option_parts'||type==='def_option_parts'){
 const cells=_tbSortPickerEntityRows(items).map(r=>renderOptionPartPickerCell(r,th,'data-dc-pick-id')).join('');
 body.innerHTML=`<div class="tb-picker-option-list tb-picker-option-list--rich">${cells}</div>`;
 return;
@@ -15368,7 +15398,7 @@ try{
 if(type==='def_unit'){
 const r=await fetch(`/api/unit/${encodeURIComponent(id)}?lang=${S.lang}`);const d=await r.json();
 if(d.error)return;
-S.dc.defUnitData=d;S.dc.defOptionParts=[];S.dc.defSupporters=[];
+S.dc.defUnitData=d;S.dc.defOptionParts=[];S.dc.defSupporters=[];S.dc.defUnitCondPassive=false;S.dc.defCharCondPassive=false;
 const rec=d.recommend_character;const isSD=String(d.body_type||'')==='3';
 if(rec&&rec.id){
 if(isSD){
@@ -15385,7 +15415,7 @@ const ud=S.dc.defUnitData;
 if(ud&&String(ud.body_type||'')==='3')return;
 const r=await fetch(`/api/character/${encodeURIComponent(id)}?lang=${S.lang}`);const d=await r.json();
 if(d.error)return;
-S.dc.defCharData=d;
+S.dc.defCharData=d;S.dc.defCharCondPassive=false;
 _dcSyncDefNpcFromDatabase();
 return;
 }

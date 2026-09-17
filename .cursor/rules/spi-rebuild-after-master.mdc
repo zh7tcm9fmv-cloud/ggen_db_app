@@ -11,7 +11,7 @@ Published board: `data/published/sp_investment_v1.json` (static; snappy serve pa
 
 After importing new MasterData (new playable units/characters), **rebuild SPI before shipping** so `/ip` includes every investment-eligible kit.
 
-**Default post-import (What's New + gacha drop % + /ip + BSP for new units):**
+**Default post-import (What's New + gacha drop % + Ko-fi Popup avatars + /ip + BSP for new units):**
 
 ```text
 python scripts/refresh_whats_new_snapshot.py
@@ -20,6 +20,8 @@ python scripts/build_bsp_shards.py
 ```
 
 (Keep Flask running during the BSP step. See `.cursor/rules/bsp-incremental-rebuild.mdc`.)
+
+Popup avatars: `refresh_whats_new_snapshot.py` / `refresh_published_after_master.py` also run `sync_kofi_promo_popup_avatars.py` (keeps `PROMO_POPUP_FILES` in `kofi_donate_promo.js` aligned with `images/Popup` WebPs). Deploy app after that JS change; push `ggen_db_images` separately for CDN.
 
 **Published caches only** (no What's New baseline):
 
