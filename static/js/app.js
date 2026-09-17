@@ -8642,7 +8642,7 @@ if(_dcSlotNeedsAutoFit(S.dc.atkSlots[S.dc.atkSlotIndex|0]))_dcScheduleAutoFitOpt
 function initDmgCalc(){
 S._dcAtkPresetBackup=null;S._dcAtkManualPackBackup=null;S._dcDefPresetNpcBackup=null;S._dcDefDbBackup=null;S._dcDefCustomPackBackup=null;
 S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;S.dc.lbTier=3;
-S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.bigRangZeonSquadBuff=false;S.dc.defNpcMapBonusesOn=true;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.applyZeonEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.unitCondStackCount=0;S.dc.unitHpAtkTierIndex=0;S.dc.unitDamageTakenDefStacks=0;S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc.multiPctCompare=false;S.dc._dcAutoFitGen=0;S.dc._supportCntAtkPairSnapBySlot={};
+S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.bigRangZeonSquadBuff=false;S.dc.defNpcMapBonusesOn=true;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.applyZeonEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.unitCondStackCount=0;S.dc.unitHpAtkTierIndex=0;S.dc.unitDamageTakenDefStacks=0;S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;S.dc.optionParts=[];S.dc.supporters=[];S.dc.defOptionParts=[];S.dc.defSupporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc.multiPctCompare=false;S.dc._dcAutoFitGen=0;S.dc._supportCntAtkPairSnapBySlot={};
 renderDcDefDbPicks();
 const _drp=document.getElementById('dcDefModePreset'),_drc=document.getElementById('dcDefModeCustom'),_ddb=document.getElementById('dcDefModeDatabase'),_dpw=document.getElementById('dcDefPresetWrap'),_dcw=document.getElementById('dcDefCustomWrap'),_ddbw=document.getElementById('dcDefDatabaseWrap');
 if(_drp)_drp.checked=true;if(_drc)_drc.checked=false;if(_ddb)_ddb.checked=false;if(_dpw)_dpw.style.display='';if(_dcw)_dcw.style.display='none';if(_ddbw)_ddbw.style.display='none';
@@ -8966,6 +8966,8 @@ tags:cd.tags||[]
 }
 };
 renderDcDefDbPicks();
+renderDcDefOptionParts();
+renderDcDefSupporters();
 renderDcDefStats();
 onDcParamChange();
 }
@@ -9002,6 +9004,8 @@ cEl.innerHTML='<div style="font-size:11px;color:var(--text-muted)">Select an SD 
 }else{
 cEl.innerHTML=`<button type="button" class="dc-pick-btn" onclick="openDcPicker('def_character')">${t('dc_pick_char')}</button>`;
 }
+renderDcDefOptionParts();
+renderDcDefSupporters();
 }
 function setDcDefLbTier(t){
 let tt=Math.min(3,Math.max(0,t|0));
@@ -9018,7 +9022,7 @@ if(prev==='preset'&&S.dc.defNpc)
 try{S._dcDefPresetNpcBackup=JSON.parse(JSON.stringify(S.dc.defNpc))}catch(_){S._dcDefPresetNpcBackup=S.dc.defNpc}
 if(prev==='database'&&S.dc.defUnitData&&S.dc.defCharData&&!S.dc.defUnitData.error&&!S.dc.defCharData.error&&!S.dc.defUnitData._manual){
 try{
-S._dcDefDbBackup={defLbTier:S.dc.defLbTier|0,unitData:JSON.parse(JSON.stringify(S.dc.defUnitData)),charData:JSON.parse(JSON.stringify(S.dc.defCharData))}
+S._dcDefDbBackup={defLbTier:S.dc.defLbTier|0,unitData:JSON.parse(JSON.stringify(S.dc.defUnitData)),charData:JSON.parse(JSON.stringify(S.dc.defCharData)),defOptionParts:JSON.parse(JSON.stringify(S.dc.defOptionParts||[])),defSupporters:JSON.parse(JSON.stringify(S.dc.defSupporters||[]))}
 }catch(_){S._dcDefDbBackup=null}
 }
 if(prev==='custom')
@@ -9037,7 +9041,7 @@ if(pw)pw.style.display=mode==='preset'?'':'none';
 if(cw)cw.style.display=mode==='custom'?'':'none';
 if(dbw)dbw.style.display=mode==='database'?'':'none';
 if(mode==='custom'){
-S.dc.defUnitData=null;S.dc.defCharData=null;
+S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defOptionParts=[];S.dc.defSupporters=[];
 if(S._dcDefCustomPackBackup)_dcFillManualDefDomFromPack(S._dcDefCustomPackBackup);
 S.dc.defNpc=_dcBuildManualDefNpcFromDom();
 renderDcDefStats();
@@ -9047,13 +9051,18 @@ if(S._dcDefDbBackup&&S._dcDefDbBackup.unitData&&S._dcDefDbBackup.charData){
 S.dc.defUnitData=S._dcDefDbBackup.unitData;
 S.dc.defCharData=S._dcDefDbBackup.charData;
 S.dc.defLbTier=S._dcDefDbBackup.defLbTier|0;
+S.dc.defOptionParts=Array.isArray(S._dcDefDbBackup.defOptionParts)?S._dcDefDbBackup.defOptionParts:[];
+S.dc.defSupporters=Array.isArray(S._dcDefDbBackup.defSupporters)?S._dcDefDbBackup.defSupporters:[];
 _dcSyncDefNpcFromDatabase();
-}else if(S.dc.defUnitData&&S.dc.defCharData&&!S.dc.defUnitData.error&&!S.dc.defCharData.error)_dcSyncDefNpcFromDatabase();
-else{S.dc.defNpc=null;renderDcDefDbPicks();renderDcDefStats();onDcParamChange();return}
+}else if(S.dc.defUnitData&&S.dc.defCharData&&!S.dc.defUnitData.error&&!S.dc.defCharData.error){
+if(!Array.isArray(S.dc.defOptionParts))S.dc.defOptionParts=[];
+if(!Array.isArray(S.dc.defSupporters))S.dc.defSupporters=[];
+_dcSyncDefNpcFromDatabase();
+}else{S.dc.defNpc=null;S.dc.defOptionParts=[];S.dc.defSupporters=[];renderDcDefDbPicks();renderDcDefStats();onDcParamChange();return}
 renderDcDefStats();
 onDcParamChange();
 }else{
-S.dc.defUnitData=null;S.dc.defCharData=null;
+S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defOptionParts=[];S.dc.defSupporters=[];
 if(S._dcDefPresetNpcBackup){
 try{S.dc.defNpc=JSON.parse(JSON.stringify(S._dcDefPresetNpcBackup))}catch(_){S.dc.defNpc=S._dcDefPresetNpcBackup}
 const sel=document.getElementById('dcNpcSelect');
@@ -9298,6 +9307,14 @@ out.defDb=1;
 out.defU=String(S.dc.defUnitData.id);
 out.defC=String(S.dc.defCharData.id);
 if((S.dc.defLbTier|0)!==3)out.defLT=S.dc.defLbTier|0;
+const _dop=(S.dc.defOptionParts&&S.dc.defOptionParts[0]);
+if(_dop&&_dop.id!=null)out.defOp=String(_dop.id);
+const _dsp=(S.dc.defSupporters&&S.dc.defSupporters[0]);
+if(_dsp&&_dsp.id!=null){
+out.defSp=String(_dsp.id);
+if((_dsp._dcLevel||100)!==100)out.defSpl=_dsp._dcLevel|0;
+if((_dsp._dcLbTier!==undefined?_dsp._dcLbTier:0)!==0)out.defSpb=_dsp._dcLbTier|0;
+}
 }
 if(_dtm==='custom'){out.defM=1;out.defC=_dcDefManualStatsToPack()}
 return out;
@@ -9449,9 +9466,29 @@ const[ur,cr]=await Promise.all([
 fetch(`/api/unit/${encodeURIComponent(uid)}?lang=${S.lang}`).then(r=>r.json()),
 fetch(`/api/character/${encodeURIComponent(cid)}?lang=${S.lang}`).then(r=>r.json())
 ]);
-if(!ur.error&&!cr.error){S.dc.defUnitData=ur;S.dc.defCharData=cr;_dcSyncDefNpcFromDatabase();}
-else{S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defNpc=null;renderDcDefDbPicks();renderDcDefStats();}
-}catch(_){S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defNpc=null;renderDcDefDbPicks();renderDcDefStats();}
+if(!ur.error&&!cr.error){
+S.dc.defUnitData=ur;S.dc.defCharData=cr;
+S.dc.defOptionParts=[];S.dc.defSupporters=[];
+if(obj.defOp){
+try{
+const rOp=await fetch(`/api/option_parts?lang=${S.lang}&page=1&per_page=100&q=${encodeURIComponent(String(obj.defOp))}&unit_id=${encodeURIComponent(uid)}`);
+const dOp=await rOp.json();
+const hit=(dOp.rows||[]).find(x=>String(x.id)===String(obj.defOp));
+if(hit)S.dc.defOptionParts=[_dcCompactOptionPartRow(hit)];
+}catch(_){}
+}
+if(obj.defSp){
+try{
+const lv=Math.min(100,Math.max(1,parseInt(obj.defSpl!==undefined?obj.defSpl:100,10)||100));
+const lb=Math.min(3,Math.max(0,parseInt(obj.defSpb!==undefined?obj.defSpb:0,10)||0));
+const cq='&for_unit_id='+encodeURIComponent(uid)+'&for_char_id='+encodeURIComponent(cid);
+const rd=await fetch(`/api/supporter/${obj.defSp}?lang=${S.lang}&level=${lv}&lb_tier=${lb}${cq}`).then(r=>r.json());
+if(rd&&!rd.error){rd._dcLevel=lv;rd._dcLbTier=lb;S.dc.defSupporters=[rd]}
+}catch(_){}
+}
+_dcSyncDefNpcFromDatabase();
+}else{S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defNpc=null;S.dc.defOptionParts=[];S.dc.defSupporters=[];renderDcDefDbPicks();renderDcDefStats();}
+}catch(_){S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defNpc=null;S.dc.defOptionParts=[];S.dc.defSupporters=[];renderDcDefDbPicks();renderDcDefStats();}
 }else if(obj.defM===1&&obj.defC){
 S.dc.defTargetMode='custom';
 S.dc.defUnitData=null;S.dc.defCharData=null;
@@ -14869,6 +14906,121 @@ try{const r=await fetch(`/api/supporter/${s.id}?lang=${S.lang}&level=${lv}&lb_ti
 }
 function removeDcOptionPart(i){S.dc.optionParts.splice(i,1);renderDcOptionParts();_dcSnapActiveAttackerToSlot();_dcRefreshAtkPanelsAfterMods()}
 function removeDcSupporter(i){S.dc.supporters.splice(i,1);renderDcSupporters();_dcSnapActiveAttackerToSlot();_dcRefreshAtkPanelsAfterMods()}
+
+function _dcDefHasDatabaseUnit(){
+return!!(S.dc.defUnitData&&!S.dc.defUnitData.error&&!S.dc.defUnitData._manual&&(S.dc.defTargetMode||'preset')==='database');
+}
+function _dcDefOptionPartUnitQuery(){
+const ud=S.dc.defUnitData;
+if(!_dcDefHasDatabaseUnit()||!ud.id)return'';
+return'&unit_id='+encodeURIComponent(String(ud.id));
+}
+function _dcDefSupporterUnitCharQuery(){
+let q=_dcDefOptionPartUnitQuery();
+const cd=S.dc.defCharData;
+if(cd&&!cd.error&&!cd._manual&&cd.id)q+='&character_id='+encodeURIComponent(String(cd.id));
+return q;
+}
+function _dcDefForSupporterContextQuery(){
+const ud=S.dc.defUnitData,cd=S.dc.defCharData;
+let q='';
+if(ud&&!ud._manual&&!ud.error&&ud.id)q+='&for_unit_id='+encodeURIComponent(String(ud.id));
+if(cd&&!cd._manual&&!cd.error&&cd.id)q+='&for_char_id='+encodeURIComponent(String(cd.id));
+return q;
+}
+function renderDcDefOptionParts(){
+const area=document.getElementById('dcDefOptionArea');
+if(!area)return;
+if(!_dcDefHasDatabaseUnit()){area.innerHTML='<div style="font-size:11px;color:var(--text-muted)">Select a defender unit first.</div>';return}
+if(!(S.dc.defOptionParts&&S.dc.defOptionParts.length)){
+area.innerHTML=`<button type="button" class="dc-pick-btn" onclick="openDcPicker('def_option_parts')">Select option part</button>`;
+return;
+}
+const o=S.dc.defOptionParts[0];
+const thumHtml=o.thum?`<img class="dc-thum dc-dc-mod-thumb" src="${imgUrl(o.thum)}" alt="" onerror="this.style.display='none'">`:'';
+const optTagLine=o.tags&&o.tags.length?`<div class="detail-tags-row" style="margin-top:4px;flex-wrap:wrap;">${o.tags.map(tg=>createTagHtml(tg,{defaultTarget:'unit'})).join('')}</div>`:'';
+const rmTitle=escAttr(t('tb_op_clear'));
+const trashSrc=imgUrlWebp(TB_TRASH_ICON);
+const detHtml=_dcOptionPartDetailsHtml(o);
+area.innerHTML=`<div class="dc-option-item dc-option-item--layout"><div class="dc-option-item-main">${thumHtml}<div class="dc-option-item-text" style="font-size:12px"><strong>${esc(o.name)}</strong>${optTagLine}${detHtml}</div><div class="dc-option-item-actions"><button type="button" class="dc-picked-change" onclick="openDcPicker('def_option_parts')">${esc(t('dc_change'))}</button><button type="button" class="remove dc-op-remove-btn" onclick="removeDcDefOptionPart(0)" title="${rmTitle}" aria-label="${rmTitle}"><img src="${trashSrc}" alt="" loading="lazy" decoding="async"></button></div></div></div>`;
+}
+function renderDcDefSupporters(){
+const area=document.getElementById('dcDefSupporterArea');
+if(!area)return;
+if(!_dcDefHasDatabaseUnit()){area.innerHTML='<div style="font-size:11px;color:var(--text-muted)">Select a defender unit first.</div>';return}
+if(!(S.dc.defSupporters&&S.dc.defSupporters.length)){
+area.innerHTML=`<button type="button" class="dc-pick-btn" onclick="openDcPicker('def_supporter')">Select supporter</button>`;
+return;
+}
+const s=S.dc.defSupporters[0];
+const lvl=s._dcLevel||100;const lbt=_dcDefaultSupporterLbTier(s);
+const thumHtml=(s.portrait||s.thum)?`<img class="dc-thum dc-dc-mod-thumb" src="${imgUrl(s.portrait||s.thum)}" alt="" onerror="this.style.display='none'">`:'';
+const lsHtml=(s.leader_skills||[]).map(ls=>{
+const desc=ls.desc||'';
+const tags=(ls.tags||[]).map(tg=>tg.name||'').filter(Boolean);
+const sep=ls.separator==='and'?' & ':' / ';
+const tagStr=tags.length?tags.join(sep):'';
+return`<div style="font-size:11px;margin-top:2px">${tagStr?`<span style="display:inline-block;padding:1px 5px;border-radius:3px;background:rgba(251,191,36,.15);color:#fbbf24;font-size:10px;margin-bottom:2px">${esc(tagStr)}</span><br>`:''}<span style="color:var(--text-muted)">${esc(desc)}</span></div>`;
+}).join('');
+const rmTitle=escAttr(t('tb_clear_supporter')||t('tb_op_clear')||'Clear');
+const trashSrc=imgUrlWebp(TB_TRASH_ICON);
+area.innerHTML=`<div class="dc-supporter-item dc-supporter-item--layout"><div class="dc-supporter-item-main">${thumHtml}<div class="dc-supporter-item-text" style="font-size:12px"><strong>${esc(s.name)}</strong> <span style="color:var(--text-muted);font-size:11px">(${esc(s.rarity||'')})</span></div><div class="dc-supporter-item-actions"><button type="button" class="dc-picked-change" onclick="openDcPicker('def_supporter')">${esc(t('dc_change'))}</button><button type="button" class="dc-supp-remove-btn" onclick="removeDcDefSupporter(0)" title="${rmTitle}" aria-label="${rmTitle}"><img src="${trashSrc}" alt="" loading="lazy" decoding="async"></button></div></div>${lsHtml}<div class="dc-supporter-ctrl-row"><span style="font-size:11px;color:var(--text-muted)">Lv</span><input type="number" class="dc-input-sm dc-supporter-lv-input" value="${lvl}" min="1" max="100" onchange="updateDcDefSupporterLv(0,this.value)"><div class="lb-btn-group dc-supporter-lb-group">${[0,1,2,3].map(tt=>{const p=cmpLbPipsAtTier(tt);return`<button type="button" class="lb-icon-btn${tt===lbt?' active':''}" onclick="updateDcDefSupporterLb(0,${tt})" title="${tt}">${cmpLbPipsRow(p[0],p[1],p[2])}</button>`;}).join('')}</div></div><div style="font-size:11px;color:var(--accent-cyan);margin-top:2px">HP+${fmtN(s.hp_support||0)} ATK+${fmtN(s.atk_support||0)}</div></div>`;
+}
+async function selectDcDefOptionPart(id){
+let row=(S._dcPickerFullCache||[]).find(x=>String(x.id)===String(id));
+const needsOpRefresh=!row||!row.details||!String(row.details).trim()||!Array.isArray(row.sim_effects);
+if(needsOpRefresh){
+try{
+const uq=_dcDefOptionPartUnitQuery();
+const r=await fetch(`/api/option_parts?lang=${S.lang}&page=1&per_page=100&q=${encodeURIComponent(id)}${uq}`);
+const d=await r.json();
+const hit=(d.rows||[]).find(x=>String(x.id)===String(id));
+if(hit)row=hit;
+}catch(e){}
+}
+if(row){
+S.dc.defOptionParts=[_dcCompactOptionPartRow(row)];
+renderDcDefOptionParts();
+onDcParamChange();
+}
+}
+async function selectDcDefSupporter(id){
+try{
+const cq=_dcDefForSupporterContextQuery();
+const lb=_dcDefaultSupporterLbTier(S.dc.defSupporters&&S.dc.defSupporters[0]);
+const rd=await fetch(`/api/supporter/${id}?lang=${S.lang}&level=100&lb_tier=${lb}${cq}`).then(r=>r.json());
+if(rd&&!rd.error){rd._dcLevel=100;rd._dcLbTier=lb;S.dc.defSupporters=[rd];renderDcDefSupporters();onDcParamChange()}
+}catch(e){}
+}
+async function updateDcDefSupporterLv(idx,val){
+const s=S.dc.defSupporters&&S.dc.defSupporters[idx];if(!s)return;
+const lv=Math.min(100,Math.max(1,parseInt(val)||100));
+const lb=_dcDefaultSupporterLbTier(s);
+try{const r=await fetch(`/api/supporter/${s.id}?lang=${S.lang}&level=${lv}&lb_tier=${lb}${_dcDefForSupporterContextQuery()}`);const d=await r.json();if(d&&!d.error){Object.assign(s,d);s._dcLevel=lv;s._dcLbTier=lb;renderDcDefSupporters();onDcParamChange()}}catch(e){}
+}
+async function updateDcDefSupporterLb(idx,tier){
+const s=S.dc.defSupporters&&S.dc.defSupporters[idx];if(!s)return;
+const lv=s._dcLevel||100;
+try{const r=await fetch(`/api/supporter/${s.id}?lang=${S.lang}&level=${lv}&lb_tier=${tier}${_dcDefForSupporterContextQuery()}`);const d=await r.json();if(d&&!d.error){Object.assign(s,d);s._dcLevel=lv;s._dcLbTier=tier;renderDcDefSupporters();onDcParamChange()}}catch(e){}
+}
+function removeDcDefOptionPart(i){if(!S.dc.defOptionParts)S.dc.defOptionParts=[];S.dc.defOptionParts.splice(i,1);renderDcDefOptionParts();onDcParamChange()}
+function removeDcDefSupporter(i){if(!S.dc.defSupporters)S.dc.defSupporters=[];S.dc.defSupporters.splice(i,1);renderDcDefSupporters();onDcParamChange()}
+/** Apply defender OP/supporter sheet bonuses (DEF/HP/MOB) via the same growth path as attacker. */
+function _dcDefModifiedUnitStatsFromMods(){
+if(!_dcDefHasDatabaseUnit())return null;
+const hasOp=!!(S.dc.defOptionParts&&S.dc.defOptionParts.length);
+const hasSp=!!(S.dc.defSupporters&&S.dc.defSupporters.length);
+if(!hasOp&&!hasSp)return null;
+const ud=S.dc.defUnitData;
+const lb=ud.lb_data;
+const maxT=lb&&lb.length?lb.length-1:0;
+const tier=Math.min(Math.max(0,S.dc.defLbTier|0),maxT);
+const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
+const defUnitStats=td?(td.stats_no_cond||td.stats||[]):[];
+const ctx={optionParts:S.dc.defOptionParts||[],supporters:S.dc.defSupporters||[],atkUnitData:ud};
+return _dcGetModifiedAttackerUnitStatsFromCtx(ctx,defUnitStats,false);
+}
+
 function setDcLbTier(tier){S.dc.lbTier=tier;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function setDcWeapon(idx){
 const ud=S.dc.atkUnitData;const wpns=ud?_dcNonMapWeapons(ud):[];
@@ -15040,19 +15192,26 @@ overlay.classList.add('active');
 const inp=document.getElementById('dcPickerSearch');
 const body=document.getElementById('dcPickerBody');
 inp.value='';
-if(type==='option_parts'||type==='supporter'){
-inp.placeholder=type==='supporter'?(t('search_supporter')||'Search name, series, tags…'):'Search by name or keyword…';
+if(type==='option_parts'||type==='supporter'||type==='def_option_parts'||type==='def_supporter'){
+inp.placeholder=(type==='supporter'||type==='def_supporter')?(t('search_supporter')||'Search name, series, tags…'):'Search by name or keyword…';
 body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">Loading applicable items…</div>';
 const hasAtk=!!(S.dc.atkUnit||(S.dc.atkUnitData&&S.dc.atkUnitData._manual));
+const hasDef=_dcDefHasDatabaseUnit();
 if(type==='option_parts'&&!hasAtk){body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">Select an attacker unit first.</div>';setTimeout(()=>inp.focus(),50);return}
 if(type==='supporter'&&!hasAtk){body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">Select an attacker unit first.</div>';setTimeout(()=>inp.focus(),50);return}
+if(type==='def_option_parts'&&!hasDef){body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">Select a defender unit first.</div>';setTimeout(()=>inp.focus(),50);return}
+if(type==='def_supporter'&&!hasDef){body.innerHTML='<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:13px">Select a defender unit first.</div>';setTimeout(()=>inp.focus(),50);return}
 try{
-if(type==='option_parts'){
-const _opAll=await _dcFetchAllListRows('/api/option_parts','rarity=ALL&effect=ALL'+_dcOptionPartUnitQuery());
+if(type==='option_parts'||type==='def_option_parts'){
+const _opAll=await _dcFetchAllListRows('/api/option_parts','rarity=ALL&effect=ALL'+(type==='def_option_parts'?_dcDefOptionPartUnitQuery():_dcOptionPartUnitQuery()));
+if(type==='def_option_parts'){
+S._dcPickerFullCache=_opAll;
+}else{
 const _opSi=Math.min(Math.max(S.dc.atkSlotIndex|0,0),DC_ATK_SLOT_COUNT-1);
 S._dcPickerFullCache=_opAll.filter(r=>!_dcOptionPartRowIsSsr(r)||!_dcDcOptionPartSsrDeniedForSlot(r.id,_opSi));
+}
 }else{
-S._dcPickerFullCache=await _dcFetchAllListRows('/api/supporters','rarity=ALL'+_dcSupporterUnitCharQuery());
+S._dcPickerFullCache=await _dcFetchAllListRows('/api/supporters','rarity=ALL'+((type==='def_supporter')?_dcDefSupporterUnitCharQuery():_dcSupporterUnitCharQuery()));
 }
 S._dcPickerCache=S._dcPickerFullCache||[];
 }catch(e){S._dcPickerFullCache=[];S._dcPickerCache=[]}
@@ -15073,7 +15232,7 @@ clearTimeout(_dcPickerDebounce);
 _dcPickerDebounce=setTimeout(()=>{
 _dcPickerDebounce=null;
 const t=S._dcPickerType;
-if(t==='option_parts'||t==='supporter')_dcFilterDcPickerClientSide();
+if(t==='option_parts'||t==='supporter'||t==='def_option_parts'||t==='def_supporter')_dcFilterDcPickerClientSide();
 else _dcDoPickerSearch();
 },55);
 }
@@ -15107,7 +15266,7 @@ const qRaw=String(document.getElementById('dcPickerSearch').value||'').trim();
 const pool=S._dcPickerFullCache||[];
 const t=S._dcPickerType;
 _dcPickerSearchGen++;
-if(t==='supporter'){
+if(t==='supporter'||t==='def_supporter'){
 if(!qRaw){
 S._dcPickerCache=_tbSortPickerEntityRows(pool);
 renderDcPickerList();
@@ -15146,7 +15305,7 @@ async function _dcDoPickerSearch(){
 const q=document.getElementById('dcPickerSearch').value.trim();
 const body=document.getElementById('dcPickerBody');
 const type=S._dcPickerType;
-if(type==='option_parts'||type==='supporter'){_dcFilterDcPickerClientSide();return}
+if(type==='option_parts'||type==='supporter'||type==='def_option_parts'||type==='def_supporter'){_dcFilterDcPickerClientSide();return}
 if(_dcPickerSearchAbort){try{_dcPickerSearchAbort.abort()}catch(_){}_dcPickerSearchAbort=null}
 if(q.length<2){
 _dcPickerSearchGen++;
@@ -15209,7 +15368,7 @@ try{
 if(type==='def_unit'){
 const r=await fetch(`/api/unit/${encodeURIComponent(id)}?lang=${S.lang}`);const d=await r.json();
 if(d.error)return;
-S.dc.defUnitData=d;
+S.dc.defUnitData=d;S.dc.defOptionParts=[];S.dc.defSupporters=[];
 const rec=d.recommend_character;const isSD=String(d.body_type||'')==='3';
 if(rec&&rec.id){
 if(isSD){
@@ -15232,6 +15391,8 @@ return;
 }
 if(type==='option_parts'){await selectDcOptionPart(id);return}
 if(type==='supporter'){await selectDcSupporter(id);return}
+if(type==='def_option_parts'){await selectDcDefOptionPart(id);return}
+if(type==='def_supporter'){await selectDcDefSupporter(id);return}
 const url=type==='character'?`/api/character/${encodeURIComponent(id)}?lang=${S.lang}`:`/api/unit/${encodeURIComponent(id)}?lang=${S.lang}`;
 const r=await fetch(url);const d=await r.json();
 if(type==='unit'){
@@ -16212,6 +16373,13 @@ const defMsStatsRawDefense=Math.max(0,Number(defUnit&&defUnit.stats_raw&&defUnit
 const defMsBonusDefense=Math.max(0,Number(defUnit&&defUnit.bonus_amounts&&defUnit.bonus_amounts.Defense)||0);
 let unitDef=defMsDefensePair;
 let charDef=Math.max(0,Number(cs.Defense)||0);
+let defModHp=null,defModMob=null;
+const _defMod=_dcDefModifiedUnitStatsFromMods();
+if(_defMod){
+unitDef=Math.max(0,_defMod.unitDefVal|0);
+defModHp=Math.max(0,_defMod.unitHp|0);
+defModMob=Math.max(0,_defMod.unitMob|0);
+}
 let defDebuffPct=_dcManualPlusWeaponDefDebuffPct(wpn,S.dc.wpnLv);
 if(defDebuffPct>0){
 unitDef=_dcApplyEnemyDefDebuffToDefenderUnitDef(defUnit,defDebuffPct,unitDef);
@@ -16307,12 +16475,12 @@ let critDmg=MX(0,C(critPreVigor*(critCorrectionPct+100)/100-1e-9));
 
 const effRange=_dcGetEffectiveRange(wpn);
 const inRange=dist>=effRange.min_range&&dist<=effRange.max_range;
-const npcHp=defUnit?Math.max(0,Number(us.HP)||0):0;
+const npcHp=defModHp!=null?defModHp:(defUnit?Math.max(0,Number(us.HP)||0):0);
 const accuracy=lvData.accuracy;
 const critical=lvData.critical;
 
 const atkCharReaction=_dcFindStat(atkCharStats,'Reaction');
-const defUnitMob=defUnit?Math.max(0,Number(us.Mobility)||0):0;
+const defUnitMob=defModMob!=null?defModMob:(defUnit?Math.max(0,Number(us.Mobility)||0):0);
 const defCharReaction=defChar?Math.max(0,Number(cs.Reaction)||0):0;
 const accDownPct=0,mobDownPct=0;
 const accResult=wtTraits.absoluteHit?{finalHitRate:100,mobDiff:0,reaDiff:0,mobCorrection:0,baseHit:10000,rawHit:100,absoluteHit:true}:calculateAccuracy(unitMob,charAtk,atkCharReaction,defUnitMob,defCharReaction,accuracy,{mobDownPct,accDownPct});
@@ -16568,11 +16736,13 @@ function _dcRenderBattleStatsDefender(npc,r){
 if(!npc)return'';
 const u=npc.unit,ch=npc.character;
 const us=u?_dcDefNpcUnitMapStatsPair(u).stats:{};
-const uDefRaw=u?(us.Defense||0):0;
+let uDefRaw=u?(us.Defense||0):0;
+let hp=u?(us.HP||0):0;
+const _bsDefMod=_dcDefModifiedUnitStatsFromMods();
+if(_bsDefMod){uDefRaw=Math.max(0,_bsDefMod.unitDefVal|0);hp=Math.max(0,_bsDefMod.unitHp|0)}
 const deb=r.defDebuffPct|0;
 const uDefEff=deb>0?_dcApplyEnemyDefDebuffToDefenderUnitDef(u,deb,uDefRaw):uDefRaw;
 const cDef=ch?(ch.stats_raw?.Defense||0):0;
-const hp=u?(us.HP||0):0;
 let h='<div class="dc-battle-stats-section"><h3>Defender</h3>';
 h+=_dcBattleStatsRow('Unit DEF',fmtN(uDefEff)+(deb>0?` (${deb}% debuff)`:''));
 h+=_dcBattleStatsRow('Pilot DEF',fmtN(cDef));
