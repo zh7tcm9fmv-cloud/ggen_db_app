@@ -630,6 +630,18 @@
     "IsDefender": true
   },
   {
+    "TraitId": 101320301,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 101320302,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
     "TraitId": 101360101,
     "IsHitOnly": true,
     "IsAttacker": false,
@@ -4225,6 +4237,36 @@
   },
   {
     "TraitId": 202870103,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 202900102,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 202900103,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 202910102,
+    "IsHitOnly": true,
+    "IsAttacker": true,
+    "IsDefender": false
+  },
+  {
+    "TraitId": 202910103,
+    "IsHitOnly": true,
+    "IsAttacker": false,
+    "IsDefender": true
+  },
+  {
+    "TraitId": 202920101,
     "IsHitOnly": true,
     "IsAttacker": false,
     "IsDefender": true

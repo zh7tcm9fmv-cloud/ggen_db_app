@@ -10780,6 +10780,11 @@
     "BattleMovieReadIdx": 2469
   },
   {
+    "UnitBattleMovieId": "g3700u10150",
+    "WeaponBattleMovieId": "50",
+    "BattleMovieReadIdx": 2886
+  },
+  {
     "UnitBattleMovieId": "g3700u10300",
     "WeaponBattleMovieId": "3",
     "BattleMovieReadIdx": 2470
@@ -10925,6 +10930,21 @@
     "BattleMovieReadIdx": 2498
   },
   {
+    "UnitBattleMovieId": "g3750u00100",
+    "WeaponBattleMovieId": "2",
+    "BattleMovieReadIdx": 2887
+  },
+  {
+    "UnitBattleMovieId": "g3750u00100",
+    "WeaponBattleMovieId": "3",
+    "BattleMovieReadIdx": 2888
+  },
+  {
+    "UnitBattleMovieId": "g3750u00100",
+    "WeaponBattleMovieId": "4",
+    "BattleMovieReadIdx": 2889
+  },
+  {
     "UnitBattleMovieId": "g3750u00200",
     "WeaponBattleMovieId": "1",
     "BattleMovieReadIdx": 1000
@@ -10953,6 +10973,251 @@
     "UnitBattleMovieId": "g3750u00400",
     "WeaponBattleMovieId": "2",
     "BattleMovieReadIdx": 1005
+  },
+  {
+    "UnitBattleMovieId": "g3750u00600",
+    "WeaponBattleMovieId": "1",
+    "BattleMovieReadIdx": 2890
+  },
+  {
+    "UnitBattleMovieId": "g3750u00600",
+    "WeaponBattleMovieId": "2",
+    "BattleMovieReadIdx": 2891
+  },
+  {
+    "UnitBattleMovieId": "g3750u00700",
+    "WeaponBattleMovieId": "1",
+    "BattleMovieReadIdx": 2892
+  },
+  {
+    "UnitBattleMovieId": "g3750u00700",
+    "WeaponBattleMovieId": "2",
+    "BattleMovieReadIdx": 2893
+  },
+  {
+    "UnitBattleMovieId": "g3750u00800",
+    "WeaponBattleMovieId": "1",
+    "BattleMovieReadIdx": 2894
+  },
+  {
+    "UnitBattleMovieId": "g3750u01500",
+    "WeaponBattleMovieId": "1",
+    "BattleMovieReadIdx": 2895
+  },
+  {
+    "UnitBattleMovieId": "g3750u01500",
+    "WeaponBattleMovieId": "2",
+    "BattleMovieReadIdx": 2896
+  },
+  {
+    "UnitBattleMovieId": "g3750u01500",
+    "WeaponBattleMovieId": "3",
+    "BattleMovieReadIdx": 2897
+  },
+  {
+    "UnitBattleMovieId": "g3750u01550",
+    "WeaponBattleMovieId": "50",
+    "BattleMovieReadIdx": 2898
+  },
+  {
+    "UnitBattleMovieId": "g3760u00100",
+    "WeaponBattleMovieId": "3",
+    "BattleMovieReadIdx": 2899
+  },
+  {
+    "UnitBattleMovieId": "g3760u00100",
+    "WeaponBattleMovieId": "4",
+    "BattleMovieReadIdx": 2900
+  },
+  {
+    "UnitBattleMovieId": "g3760u00100",
+    "WeaponBattleMovieId": "5",
+    "BattleMovieReadIdx": 2901
+  },
+  {
+    "UnitBattleMovieId": "g3760u00100",
+    "WeaponBattleMovieId": "7",
+    "BattleMovieReadIdx": 2902
+  },
+  {
+    "UnitBattleMovieId": "g3760u00300",
+    "WeaponBattleMovieId": "3",
+    "BattleMovieReadIdx": 2903
+  },
+  {
+    "UnitBattleMovieId": "g3760u00300",
+    "WeaponBattleMovieId": "4",
+    "BattleMovieReadIdx": 2904
+  },
+  {
+    "UnitBattleMovieId": "g3760u00300",
+    "WeaponBattleMovieId": "6",
+    "BattleMovieReadIdx": 2905
+  },
+  {
+    "UnitBattleMovieId": "g3760u00300",
+    "WeaponBattleMovieId": "7",
+    "BattleMovieReadIdx": 2906
+  },
+  {
+    "UnitBattleMovieId": "g3760u00400",
+    "WeaponBattleMovieId": "1",
+    "BattleMovieReadIdx": 2907
+  },
+  {
+    "UnitBattleMovieId": "g3760u00400",
+    "WeaponBattleMovieId": "2",
+    "BattleMovieReadIdx": 2908
+  },
+  {
+    "UnitBattleMovieId": "g3760u00400",
+    "WeaponBattleMovieId": "4",
+    "BattleMovieReadIdx": 2909
+  },
+  {
+    "UnitBattleMovieId": "g3760u00500",
+    "WeaponBattleMovieId": "1",
+    "BattleMovieReadIdx": 2910
+  },
+  {
+    "UnitBattleMovieId": "g3760u00500",
+    "WeaponBattleMovieId": "2",
+    "BattleMovieReadIdx": 2911
+  },
+  {
+    "UnitBattleMovieId": "g3760u00500",
+    "WeaponBattleMovieId": "3",
+    "BattleMovieReadIdx": 2912
+  },
+  {
+    "UnitBattleMovieId": "g3760u00600",
+    "WeaponBattleMovieId": "2",
+    "BattleMovieReadIdx": 2913
+  },
+  {
+    "UnitBattleMovieId": "g3760u00600",
+    "WeaponBattleMovieId": "3",
+    "BattleMovieReadIdx": 2914
+  },
+  {
+    "UnitBattleMovieId": "g3760u00700",
+    "WeaponBattleMovieId": "2",
+    "BattleMovieReadIdx": 2915
+  },
+  {
+    "UnitBattleMovieId": "g3760u00700",
+    "WeaponBattleMovieId": "3",
+    "BattleMovieReadIdx": 2916
+  },
+  {
+    "UnitBattleMovieId": "g3760u00700",
+    "WeaponBattleMovieId": "4",
+    "BattleMovieReadIdx": 2917
+  },
+  {
+    "UnitBattleMovieId": "g3760u00800",
+    "WeaponBattleMovieId": "2",
+    "BattleMovieReadIdx": 2918
+  },
+  {
+    "UnitBattleMovieId": "g3760u00800",
+    "WeaponBattleMovieId": "3",
+    "BattleMovieReadIdx": 2919
+  },
+  {
+    "UnitBattleMovieId": "g3760u00800",
+    "WeaponBattleMovieId": "5",
+    "BattleMovieReadIdx": 2920
+  },
+  {
+    "UnitBattleMovieId": "g3760u00900",
+    "WeaponBattleMovieId": "2",
+    "BattleMovieReadIdx": 2921
+  },
+  {
+    "UnitBattleMovieId": "g3760u00900",
+    "WeaponBattleMovieId": "3",
+    "BattleMovieReadIdx": 2922
+  },
+  {
+    "UnitBattleMovieId": "g3760u00900",
+    "WeaponBattleMovieId": "4",
+    "BattleMovieReadIdx": 2923
+  },
+  {
+    "UnitBattleMovieId": "g3760u01000",
+    "WeaponBattleMovieId": "2",
+    "BattleMovieReadIdx": 2924
+  },
+  {
+    "UnitBattleMovieId": "g3760u01000",
+    "WeaponBattleMovieId": "3",
+    "BattleMovieReadIdx": 2925
+  },
+  {
+    "UnitBattleMovieId": "g3760u01000",
+    "WeaponBattleMovieId": "4",
+    "BattleMovieReadIdx": 2926
+  },
+  {
+    "UnitBattleMovieId": "g3760u01100",
+    "WeaponBattleMovieId": "1",
+    "BattleMovieReadIdx": 2927
+  },
+  {
+    "UnitBattleMovieId": "g3760u01100",
+    "WeaponBattleMovieId": "2",
+    "BattleMovieReadIdx": 2928
+  },
+  {
+    "UnitBattleMovieId": "g3760u01200",
+    "WeaponBattleMovieId": "1",
+    "BattleMovieReadIdx": 2929
+  },
+  {
+    "UnitBattleMovieId": "g3760u01200",
+    "WeaponBattleMovieId": "2",
+    "BattleMovieReadIdx": 2930
+  },
+  {
+    "UnitBattleMovieId": "g3760u01200",
+    "WeaponBattleMovieId": "3",
+    "BattleMovieReadIdx": 2931
+  },
+  {
+    "UnitBattleMovieId": "g3760u01300",
+    "WeaponBattleMovieId": "2",
+    "BattleMovieReadIdx": 2932
+  },
+  {
+    "UnitBattleMovieId": "g3760u01300",
+    "WeaponBattleMovieId": "3",
+    "BattleMovieReadIdx": 2933
+  },
+  {
+    "UnitBattleMovieId": "g3760u01400",
+    "WeaponBattleMovieId": "1",
+    "BattleMovieReadIdx": 2934
+  },
+  {
+    "UnitBattleMovieId": "g3760u01400",
+    "WeaponBattleMovieId": "2",
+    "BattleMovieReadIdx": 2935
+  },
+  {
+    "UnitBattleMovieId": "g3760u01500",
+    "WeaponBattleMovieId": "1",
+    "BattleMovieReadIdx": 2936
+  },
+  {
+    "UnitBattleMovieId": "g3760u01500",
+    "WeaponBattleMovieId": "2",
+    "BattleMovieReadIdx": 2937
+  },
+  {
+    "UnitBattleMovieId": "g3760u01500",
+    "WeaponBattleMovieId": "3",
+    "BattleMovieReadIdx": 2938
   },
   {
     "UnitBattleMovieId": "g3780u00100",
@@ -11053,6 +11318,21 @@
     "UnitBattleMovieId": "g3790u01900",
     "WeaponBattleMovieId": "4",
     "BattleMovieReadIdx": 2508
+  },
+  {
+    "UnitBattleMovieId": "g3790u02000",
+    "WeaponBattleMovieId": "11",
+    "BattleMovieReadIdx": 2509
+  },
+  {
+    "UnitBattleMovieId": "g3790u02000",
+    "WeaponBattleMovieId": "3",
+    "BattleMovieReadIdx": 2510
+  },
+  {
+    "UnitBattleMovieId": "g3790u02000",
+    "WeaponBattleMovieId": "8",
+    "BattleMovieReadIdx": 2511
   },
   {
     "UnitBattleMovieId": "g4000u00100",

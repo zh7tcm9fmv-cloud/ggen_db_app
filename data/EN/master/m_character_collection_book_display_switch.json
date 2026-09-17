@@ -1980,6 +1980,11 @@
     "CharacterId": 1370003601
   },
   {
+    "CharacterCollectionBookId": 37000015,
+    "DisplayPriority": 1370003602,
+    "CharacterId": 1370003602
+  },
+  {
     "CharacterCollectionBookId": 37000016,
     "DisplayPriority": 1370003701,
     "CharacterId": 1370003701
@@ -2025,6 +2030,11 @@
     "CharacterId": 1370004500
   },
   {
+    "CharacterCollectionBookId": 37000024,
+    "DisplayPriority": 1370004501,
+    "CharacterId": 1370004501
+  },
+  {
     "CharacterCollectionBookId": 37000025,
     "DisplayPriority": 1370004400,
     "CharacterId": 1370004400
@@ -2055,6 +2065,11 @@
     "CharacterId": 1370004001
   },
   {
+    "CharacterCollectionBookId": 37000030,
+    "DisplayPriority": 1370004001,
+    "CharacterId": 1370004000
+  },
+  {
     "CharacterCollectionBookId": 37000031,
     "DisplayPriority": 1370004200,
     "CharacterId": 1370004200
@@ -2078,6 +2093,51 @@
     "CharacterCollectionBookId": 37500002,
     "DisplayPriority": 1,
     "CharacterId": 1375000300
+  },
+  {
+    "CharacterCollectionBookId": 37600001,
+    "DisplayPriority": 1376000100,
+    "CharacterId": 1376000100
+  },
+  {
+    "CharacterCollectionBookId": 37600001,
+    "DisplayPriority": 1376000102,
+    "CharacterId": 1376000102
+  },
+  {
+    "CharacterCollectionBookId": 37600002,
+    "DisplayPriority": 1376000200,
+    "CharacterId": 1376000200
+  },
+  {
+    "CharacterCollectionBookId": 37600003,
+    "DisplayPriority": 1376000301,
+    "CharacterId": 1376000301
+  },
+  {
+    "CharacterCollectionBookId": 37600004,
+    "DisplayPriority": 1376000400,
+    "CharacterId": 1376000400
+  },
+  {
+    "CharacterCollectionBookId": 37600005,
+    "DisplayPriority": 1376000500,
+    "CharacterId": 1376000500
+  },
+  {
+    "CharacterCollectionBookId": 37600006,
+    "DisplayPriority": 1376000600,
+    "CharacterId": 1376000600
+  },
+  {
+    "CharacterCollectionBookId": 37600007,
+    "DisplayPriority": 1376000700,
+    "CharacterId": 1376000700
+  },
+  {
+    "CharacterCollectionBookId": 37600008,
+    "DisplayPriority": 1376001400,
+    "CharacterId": 1376001400
   },
   {
     "CharacterCollectionBookId": 37800001,
