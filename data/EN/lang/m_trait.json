@@ -1901,23 +1901,23 @@
   },
   {
     "id": 141200000100860101,
-    "value": "When enemies attack from 4 space(s) or more,\nreduce damage taken by 10%."
+    "value": "When enemies attack from 4 or more spaces away,\nreduce damage taken by 10%."
   },
   {
     "id": 141200000100860201,
-    "value": "When enemies attack from 4 space(s) or more,\nreduce damage taken by 20%."
+    "value": "When enemies attack from 4 or more spaces away,\nreduce damage taken by 20%."
   },
   {
     "id": 141200000100860301,
-    "value": "When enemies attack from 4 space(s) or more,\nreduce damage taken by 30%."
+    "value": "When enemies attack from 4 or more spaces away,\nreduce damage taken by 30%."
   },
   {
     "id": 141200000100860401,
-    "value": "When enemies attack from 4 space(s) or more,\nreduce damage taken by 40%."
+    "value": "When enemies attack from 4 or more spaces away,\nreduce damage taken by 40%."
   },
   {
     "id": 141200000100860501,
-    "value": "When enemies attack from 4 space(s) or more,\nreduce damage taken by 50%."
+    "value": "When enemies attack from 4 or more spaces away,\nreduce damage taken by 50%."
   },
   {
     "id": 141200000100870201,
@@ -3136,8 +3136,36 @@
     "value": ""
   },
   {
+    "id": 141200000101740201,
+    "value": "When attacking,\nincrease ATK by 7%\nand DEF by 20%.\n*Excluding Counter, Support Attack, and Counter Support."
+  },
+  {
+    "id": 141200000101740202,
+    "value": ""
+  },
+  {
+    "id": 141200000101740301,
+    "value": "When attacking,\nincrease ATK by 10%\nand DEF by 30%.\n*Excluding Counter, Support Attack, and Counter Support."
+  },
+  {
+    "id": 141200000101740302,
+    "value": ""
+  },
+  {
+    "id": 141200000101750301,
+    "value": "When Vigor is \"Supercharged\" or greater,\nincrease ATK by 10%\nand MOV by 1."
+  },
+  {
+    "id": 141200000101750302,
+    "value": ""
+  },
+  {
+    "id": 141200000101760101,
+    "value": "When attacking an enemy one tile away,\nincrease own ATK by 20%."
+  },
+  {
     "id": 141200000101780201,
-    "value": "When HP is 50% or above,\nincrease ATK by 10%.\nWhen HP is 100% or above,\nfurther increase ATK by 10%."
+    "value": "When HP is 50% or above,\nincrease ATK by 10%.\nWhen HP  is full,\nfurther increase ATK by 10%."
   },
   {
     "id": 141200000101780202,
@@ -8257,7 +8285,7 @@
   },
   {
     "id": 141200000202440104,
-    "value": "When own Vigor is \"Supercharged\",\nand piloting unit with the specified tag and series:\n\"Supercharged EX 1 (Setsuna F. Seiei)\" (1 turn(s)).\nIncrease own Melee and Reaction by 20%.\nReduce own damage taken by 5%.\nApply MP Lock to self.\n\nWhen effect ends:\n\"Supercharged EX 2 (Setsuna F. Seiei)\" (1 turn(s)).\nIncrease own Melee and Reaction by 50%.\nReduce own damage taken by 15%.\nApply MP Lock to self.\n\nWhen effect ends,\ndecrease own MP by 12."
+    "value": "When Vigor is \"Supercharged\",\nand piloting unit with the specified tag and series:\n\"Supercharged EX 1 (Setsuna F. Seiei)\" (1 turn(s)).\nIncrease own Melee and Reaction by 20%.\nReduce own damage taken by 5%.\nApply MP Lock to self.\n\nWhen \"Supercharged EX 1 (Setsuna F. Seiei)\" ends:\n\"Supercharged EX 2 (Setsuna F. Seiei)\" (1 turn(s)).\nIncrease own Melee and Reaction by 50%.\nReduce own damage taken by 15%.\nApply MP Lock to self.\n\nWhen \"Supercharged EX 2(Setsuna F. Seiei)\" ends,\ndecrease own MP by 12."
   },
   {
     "id": 141200000202440105,
@@ -8806,6 +8834,46 @@
   {
     "id": 141200000202870103,
     "value": ""
+  },
+  {
+    "id": 141200000202880101,
+    "value": "When piloting units from specified series,\nChance Step +1 time(s)"
+  },
+  {
+    "id": 141200000202900101,
+    "value": "When there is an enemy unit with the specified tags at the start of battle,\nincrease own MP by 6."
+  },
+  {
+    "id": 141200000202900102,
+    "value": "When piloting units from specified series,\nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%."
+  },
+  {
+    "id": 141200000202900103,
+    "value": ""
+  },
+  {
+    "id": 141200000202910101,
+    "value": "When piloting units with specified tags,\nincrease damage dealt to enemies by 15%\nand reduce damage taken by 15%.\nWhen piloting units with specified tags and enemies respond to an ally's attack with a counter,\nexecute Support Defense."
+  },
+  {
+    "id": 141200000202910102,
+    "value": ""
+  },
+  {
+    "id": 141200000202910103,
+    "value": ""
+  },
+  {
+    "id": 141200000202920101,
+    "value": "When piloting units with the specified tags, Vigor is High or greater, and own HP becomes 0%,\nrestore own HP by 3%. (Once)"
+  },
+  {
+    "id": 141200000202920102,
+    "value": ""
+  },
+  {
+    "id": 141200000202940101,
+    "value": "When piloting units with specified tags from specified series,\nSupport Defense +1 time(s)"
   },
   {
     "id": 141200000300010101,
@@ -9781,6 +9849,18 @@
   },
   {
     "id": 141200000300420301,
+    "value": "DEF Down {0}%"
+  },
+  {
+    "id": 141200000300420401,
+    "value": "DEF Down {0}%"
+  },
+  {
+    "id": 141200000300420501,
+    "value": "DEF Down {0}%"
+  },
+  {
+    "id": 141200000300420601,
     "value": "DEF Down {0}%"
   },
   {
@@ -15136,6 +15216,14 @@
     "value": "When equipped to NT-X,\nincrease ATK by 2%."
   },
   {
+    "id": 141200000407140101,
+    "value": "Increase Max HP by 8%."
+  },
+  {
+    "id": 141200000407150101,
+    "value": "Increase ATK by 8%."
+  },
+  {
     "id": 141200000510010101,
     "value": "Increase ATK by 10%."
   },
@@ -19062,6 +19150,26 @@
   {
     "id": 141200000612440101,
     "value": "Increase DEF by 100%\nfor squad units piloted by Ramba Ral."
+  },
+  {
+    "id": 141200000612450101,
+    "value": "Force your squad's Fon Spaak to activate all Chance Steps, and get 1 Guaranteed Chance Step."
+  },
+  {
+    "id": 141200000612460101,
+    "value": "When Innovade Soldier in your squad is destroyed,\nincrease own ATK by 5%."
+  },
+  {
+    "id": 141200000612460102,
+    "value": "Increase ATK by 5%."
+  },
+  {
+    "id": 141200000612490101,
+    "value": "Increase DEF by 300%\nfor squad units piloted by Fon Spaak."
+  },
+  {
+    "id": 141200000612500101,
+    "value": "Increase DEF by 300%."
   },
   {
     "id": 141200000699000101,

@@ -12,6 +12,10 @@
     "value": "The Bringer of Pure Light"
   },
   {
+    "id": 240110200017000002,
+    "value": "Fereshte"
+  },
+  {
     "id": 240111001000000001,
     "value": "Gundam Rising"
   },
@@ -706,6 +710,14 @@
   {
     "id": 240210200016000001,
     "value": "SD Gundam Side Story III: The Knights of Algas"
+  },
+  {
+    "id": 240210200017000001,
+    "value": "Mobile Suit Gundam 00F"
+  },
+  {
+    "id": 240210200017000002,
+    "value": "Fereshte"
   },
   {
     "id": 240210210003000001,
@@ -1448,6 +1460,14 @@
     "value": "Clear \"VS. Sorceress Qubeley EXPERT\" from the story event \"SD Gundam Side Story III: The Knights of Algas\"."
   },
   {
+    "id": 240310200017000001,
+    "value": "Clear \"VS. Black Sefer Rasiel EXPERT\" from the story event \"Mobile Suit Gundam 00F\"."
+  },
+  {
+    "id": 240310200017000002,
+    "value": "Clear \"[Special] Total War: Hard-4\" from the story event Mobile Suit Gundam 00F with only Mobile Suit Gundam 00F-series or Celestial Being-tagged mobile suits in your formation."
+  },
+  {
     "id": 240310210001000001,
     "value": "Clear [Area3] Area Boss Stage of \"Map Event Vol.1.\""
   },
@@ -2140,6 +2160,42 @@
     "value": "Master League Season 16 - Gundam Fight: Master League Top Score 200000 Reward"
   },
   {
+    "id": 240310300020000001,
+    "value": "Master League Season 17 - Gundam Fight: Gold League Reward"
+  },
+  {
+    "id": 240310300020000002,
+    "value": "Master League Season 17 - Gundam Fight: Platinum League Reward"
+  },
+  {
+    "id": 240310300020000003,
+    "value": "Master League Season 17 - Gundam Fight: Diamond League Reward"
+  },
+  {
+    "id": 240310300020000004,
+    "value": "Master League Season 17 - Gundam Fight: Master League Reward"
+  },
+  {
+    "id": 240310300020000005,
+    "value": "Master League Season 17 - Gundam Fight: Master League Top Score 160000 Reward"
+  },
+  {
+    "id": 240310300020000006,
+    "value": "Master League Season 17 - Gundam Fight: Master League Top Score 170000 Reward"
+  },
+  {
+    "id": 240310300020000007,
+    "value": "Master League Season 17 - Gundam Fight: Master League Top Score 180000 Reward"
+  },
+  {
+    "id": 240310300020000008,
+    "value": "Master League Season 17 - Gundam Fight: Master League Top Score 190000 Reward"
+  },
+  {
+    "id": 240310300020000009,
+    "value": "Master League Season 17 - Gundam Fight: Master League Top Score 200000 Reward"
+  },
+  {
     "id": 240311001000000001,
     "value": "Clear all main stages (excl. HARD difficulty) from the series \"Mobile Suit Gundam\"."
   },
@@ -2649,11 +2705,11 @@
   },
   {
     "id": 240316905200080001,
-    "value": "Clear EXPERT No.22: Mobile Suit Gundam Wing from Mercury with only units with the Operation Meteor tag."
+    "value": "Clear EXPERT No.22: Mobile Suit Gundam Wing with only units with the Operation Meteor tag."
   },
   {
     "id": 240316905200140001,
-    "value": "Clear EXPERT No.23: Mobile Suit Gundam 00 from Mercury with only units with the Celestial Being tag."
+    "value": "Clear EXPERT No.23: Mobile Suit Gundam 00 with only units with the Celestial Being tag."
   },
   {
     "id": 240316905200150001,
@@ -2681,7 +2737,7 @@
   },
   {
     "id": 240316905200280001,
-    "value": "Clear EXPERT No.25: Mobile Suit Gundam Narrative from Mercury with only units with the NT-D tag."
+    "value": "Clear EXPERT No.25: Mobile Suit Gundam Narrative with only units with the NT-D tag."
   },
   {
     "id": 290500000090700120,

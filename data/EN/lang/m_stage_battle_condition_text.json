@@ -4856,6 +4856,166 @@
     "value": "All of your units are defeated."
   },
   {
+    "id": 130300003760010301,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300003760010304,
+    "value": "Guest force Fon Spaak Defeated."
+  },
+  {
+    "id": 130300003760020401,
+    "value": "Defeat Ali al-Saachez."
+  },
+  {
+    "id": 130300003760020404,
+    "value": "All of your units are defeated.\nFon Spaak and Guest force defeated."
+  },
+  {
+    "id": 130300003760030301,
+    "value": "Defeat all third forces."
+  },
+  {
+    "id": 130300003760030302,
+    "value": "Defeat at least 1 third force."
+  },
+  {
+    "id": 130300003760030304,
+    "value": "All of your units are defeated.\nGuest force Fon Spaak defeated."
+  },
+  {
+    "id": 130300003760030305,
+    "value": "All of your units are defeated.\nGuest force Fon Spaak defeated."
+  },
+  {
+    "id": 130300003760040401,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300003760040404,
+    "value": "All of your units are defeated.\nGuest force Fon Spaak defeated."
+  },
+  {
+    "id": 130300003760050501,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300003760050502,
+    "value": "Defeat all enemy units.\nGuest force Rien reaches the target area."
+  },
+  {
+    "id": 130300003760050504,
+    "value": "All of your units are defeated.\nFon Spaak and Guest force defeated."
+  },
+  {
+    "id": 130300003760050505,
+    "value": "All of your units are defeated.\nFon Spaak and Guest force defeated."
+  },
+  {
+    "id": 130300003760060401,
+    "value": "Defeat all enemy units.\nFriendly force ASTEROID reaches the target area."
+  },
+  {
+    "id": 130300003760060402,
+    "value": "Defeat third force Hixar Fermi."
+  },
+  {
+    "id": 130300003760060404,
+    "value": "All of your units are defeated. / Defeat all Friendly force ASTEROID.\nDefeat Fon Spaak."
+  },
+  {
+    "id": 130300003760060405,
+    "value": "All of your units are defeated. / Defeat all Friendly force ASTEROID.\nFon Spaak and Guest force defeated."
+  },
+  {
+    "id": 130300003760070301,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300003760070304,
+    "value": "All of your units are defeated.\nFon Spaak and Guest force defeated."
+  },
+  {
+    "id": 130300003760080101,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300003760080104,
+    "value": "All of your units are defeated."
+  },
+  {
+    "id": 130300003760090101,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300003760090104,
+    "value": "All of your units are defeated."
+  },
+  {
+    "id": 130300003760100101,
+    "value": "Defeat all enemy units."
+  },
+  {
+    "id": 130300003760100104,
+    "value": "All of your units are defeated."
+  },
+  {
+    "id": 130300003760110101,
+    "value": "Defeat Fon Spaak."
+  },
+  {
+    "id": 130300003760110104,
+    "value": "Penetrate the enemy force Fon Spaak Defense Area.\nAll of your units are Defeated."
+  },
+  {
+    "id": 130300003760500101,
+    "value": "Defeat Hixar Fermi."
+  },
+  {
+    "id": 130300003760500104,
+    "value": "All of your units are defeated.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300003760500201,
+    "value": "Defeat Hixar Fermi."
+  },
+  {
+    "id": 130300003760500204,
+    "value": "All of your units are defeated.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300003760500301,
+    "value": "Defeat Hixar Fermi."
+  },
+  {
+    "id": 130300003760500304,
+    "value": "All of your units are defeated.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300003760600101,
+    "value": "Defeat Fon Spaak."
+  },
+  {
+    "id": 130300003760600104,
+    "value": "All of your units are defeated.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300003760600201,
+    "value": "Defeat Fon Spaak."
+  },
+  {
+    "id": 130300003760600204,
+    "value": "All of your units are defeated.\nLimit: 3 turns."
+  },
+  {
+    "id": 130300003760600301,
+    "value": "Defeat Fon Spaak."
+  },
+  {
+    "id": 130300003760600304,
+    "value": "All of your units are defeated.\nLimit: 3 turns."
+  },
+  {
     "id": 130300004000010401,
     "value": "Defeat Gafran."
   },

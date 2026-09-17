@@ -14492,6 +14492,54 @@
     "value": "Time to die!"
   },
   {
+    "id": 100701370003602001,
+    "value": "Take this!"
+  },
+  {
+    "id": 100701370003602002,
+    "value": "Take this!"
+  },
+  {
+    "id": 100701370003602003,
+    "value": "Time to die!"
+  },
+  {
+    "id": 100701370003602004,
+    "value": "Time to die!"
+  },
+  {
+    "id": 100701370003602005,
+    "value": "Rest in peace."
+  },
+  {
+    "id": 100701370003602006,
+    "value": "Rest in peace."
+  },
+  {
+    "id": 100701370003602007,
+    "value": "Dumbass!"
+  },
+  {
+    "id": 100701370003602008,
+    "value": "Dumbass!"
+  },
+  {
+    "id": 100701370003602009,
+    "value": "Nothing up my sleeves, and... Bam!"
+  },
+  {
+    "id": 100701370003602010,
+    "value": "Nothing up my sleeves, and... Bam!"
+  },
+  {
+    "id": 100701370003602011,
+    "value": "Heheh! Fangs!!"
+  },
+  {
+    "id": 100701370003602012,
+    "value": "Heheh! Fangs!!"
+  },
+  {
     "id": 100701370003700001,
     "value": "I'll destroy you!"
   },
@@ -15322,6 +15370,406 @@
   {
     "id": 100701375000300010,
     "value": "Time to move in! Attack!"
+  },
+  {
+    "id": 100701376000100001,
+    "value": "Blow away and disappear!"
+  },
+  {
+    "id": 100701376000100002,
+    "value": "Blow away and disappear!"
+  },
+  {
+    "id": 100701376000100003,
+    "value": "I'll crush you!"
+  },
+  {
+    "id": 100701376000100004,
+    "value": "I'll crush you!"
+  },
+  {
+    "id": 100701376000100005,
+    "value": "Outta my way!"
+  },
+  {
+    "id": 100701376000100006,
+    "value": "Outta my way!"
+  },
+  {
+    "id": 100701376000100007,
+    "value": "Ora-ora-ora!"
+  },
+  {
+    "id": 100701376000100008,
+    "value": "Ora-ora-ora!"
+  },
+  {
+    "id": 100701376000100009,
+    "value": "You can never be too careful."
+  },
+  {
+    "id": 100701376000100010,
+    "value": "You can never be too careful."
+  },
+  {
+    "id": 100701376000100011,
+    "value": "Best to play it safe! Funnels!"
+  },
+  {
+    "id": 100701376000100012,
+    "value": "Best to play it safe! Funnels!"
+  },
+  {
+    "id": 100701376000100013,
+    "value": "Try to escape! Fangs!"
+  },
+  {
+    "id": 100701376000100014,
+    "value": "Try to escape! Fangs!"
+  },
+  {
+    "id": 100701376000103001,
+    "value": "...!"
+  },
+  {
+    "id": 100701376000103002,
+    "value": "...!"
+  },
+  {
+    "id": 100701376000103003,
+    "value": "...!"
+  },
+  {
+    "id": 100701376000103004,
+    "value": "...!"
+  },
+  {
+    "id": 100701376000103005,
+    "value": "...!"
+  },
+  {
+    "id": 100701376000103006,
+    "value": "...!"
+  },
+  {
+    "id": 100701376000103007,
+    "value": "...!"
+  },
+  {
+    "id": 100701376000103008,
+    "value": "...!"
+  },
+  {
+    "id": 100701376000200001,
+    "value": "Hit them!"
+  },
+  {
+    "id": 100701376000200002,
+    "value": "Hit them!"
+  },
+  {
+    "id": 100701376000200003,
+    "value": "I'll do this!"
+  },
+  {
+    "id": 100701376000200004,
+    "value": "I'll do this!"
+  },
+  {
+    "id": 100701376000200005,
+    "value": "Go down!"
+  },
+  {
+    "id": 100701376000200006,
+    "value": "Go down!"
+  },
+  {
+    "id": 100701376000200007,
+    "value": "Breaking through the enemy formation!"
+  },
+  {
+    "id": 100701376000200008,
+    "value": "Breaking through the enemy formation!"
+  },
+  {
+    "id": 100701376000200009,
+    "value": "I see it... There!"
+  },
+  {
+    "id": 100701376000200010,
+    "value": "I see it... There!"
+  },
+  {
+    "id": 100701376000200011,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701376000200012,
+    "value": "Funnels!"
+  },
+  {
+    "id": 100701376000200013,
+    "value": "Come on, Fangs!"
+  },
+  {
+    "id": 100701376000200014,
+    "value": "Come on, Fangs!"
+  },
+  {
+    "id": 100701376000301001,
+    "value": "I'll get you!"
+  },
+  {
+    "id": 100701376000301002,
+    "value": "I'll get you!"
+  },
+  {
+    "id": 100701376000301003,
+    "value": "Try this!"
+  },
+  {
+    "id": 100701376000301004,
+    "value": "Try this!"
+  },
+  {
+    "id": 100701376000301005,
+    "value": "Nice try!"
+  },
+  {
+    "id": 100701376000301006,
+    "value": "Nice try!"
+  },
+  {
+    "id": 100701376000301007,
+    "value": "Stop right there!"
+  },
+  {
+    "id": 100701376000301008,
+    "value": "Stop right there!"
+  },
+  {
+    "id": 100701376000301009,
+    "value": "My eye sees everything!"
+  },
+  {
+    "id": 100701376000301010,
+    "value": "My eye sees everything!"
+  },
+  {
+    "id": 100701376000301011,
+    "value": "I'll use the Funnels!"
+  },
+  {
+    "id": 100701376000301012,
+    "value": "I'll use the Funnels!"
+  },
+  {
+    "id": 100701376000301013,
+    "value": "Go, Fang!"
+  },
+  {
+    "id": 100701376000301014,
+    "value": "Go, Fang!"
+  },
+  {
+    "id": 100701376000400001,
+    "value": "Bye bye, now!"
+  },
+  {
+    "id": 100701376000400002,
+    "value": "Bye bye, now!"
+  },
+  {
+    "id": 100701376000400003,
+    "value": "Oh, you poor thing!"
+  },
+  {
+    "id": 100701376000400004,
+    "value": "Oh, you poor thing!"
+  },
+  {
+    "id": 100701376000400005,
+    "value": "Sayonara!"
+  },
+  {
+    "id": 100701376000400006,
+    "value": "Sayonara!"
+  },
+  {
+    "id": 100701376000400007,
+    "value": "Hah! What a dope!"
+  },
+  {
+    "id": 100701376000400008,
+    "value": "Hah! What a dope!"
+  },
+  {
+    "id": 100701376000400009,
+    "value": "Hayana'll take you down!"
+  },
+  {
+    "id": 100701376000400010,
+    "value": "Hayana'll take you down!"
+  },
+  {
+    "id": 100701376000400011,
+    "value": "My Funnels'll get you!"
+  },
+  {
+    "id": 100701376000400012,
+    "value": "My Funnels'll get you!"
+  },
+  {
+    "id": 100701376000400013,
+    "value": "Tee-hee! Die by my Fangs!"
+  },
+  {
+    "id": 100701376000400014,
+    "value": "Tee-hee! Die by my Fangs!"
+  },
+  {
+    "id": 100701376000500001,
+    "value": "Eat this!"
+  },
+  {
+    "id": 100701376000500002,
+    "value": "Eat this!"
+  },
+  {
+    "id": 100701376000500003,
+    "value": "Haaah!"
+  },
+  {
+    "id": 100701376000500004,
+    "value": "Haaah!"
+  },
+  {
+    "id": 100701376000500005,
+    "value": "Now!"
+  },
+  {
+    "id": 100701376000500006,
+    "value": "Now!"
+  },
+  {
+    "id": 100701376000500007,
+    "value": "Try again!"
+  },
+  {
+    "id": 100701376000500008,
+    "value": "Try again!"
+  },
+  {
+    "id": 100701376000600001,
+    "value": "I'm going to break through!"
+  },
+  {
+    "id": 100701376000600002,
+    "value": "I'm going to break through!"
+  },
+  {
+    "id": 100701376000600003,
+    "value": "Haaah!"
+  },
+  {
+    "id": 100701376000600004,
+    "value": "Haaah!"
+  },
+  {
+    "id": 100701376000600005,
+    "value": "There!"
+  },
+  {
+    "id": 100701376000600006,
+    "value": "There!"
+  },
+  {
+    "id": 100701376000600007,
+    "value": "I won't miss!"
+  },
+  {
+    "id": 100701376000600008,
+    "value": "I won't miss!"
+  },
+  {
+    "id": 100701376000700001,
+    "value": "Way too slow!"
+  },
+  {
+    "id": 100701376000700002,
+    "value": "Way too slow!"
+  },
+  {
+    "id": 100701376000700003,
+    "value": "Too bad for you!"
+  },
+  {
+    "id": 100701376000700004,
+    "value": "Too bad for you!"
+  },
+  {
+    "id": 100701376000700005,
+    "value": "Haaah!"
+  },
+  {
+    "id": 100701376000700006,
+    "value": "Haaah!"
+  },
+  {
+    "id": 100701376000700007,
+    "value": "I'll get you!"
+  },
+  {
+    "id": 100701376000700008,
+    "value": "I'll get you!"
+  },
+  {
+    "id": 100701376001400001,
+    "value": "Down you go!"
+  },
+  {
+    "id": 100701376001400002,
+    "value": "Down you go!"
+  },
+  {
+    "id": 100701376001400003,
+    "value": "Outta the way!"
+  },
+  {
+    "id": 100701376001400004,
+    "value": "Outta the way!"
+  },
+  {
+    "id": 100701376001400005,
+    "value": "Fall, already!"
+  },
+  {
+    "id": 100701376001400006,
+    "value": "Fall, already!"
+  },
+  {
+    "id": 100701376001400007,
+    "value": "Let's do it to it!"
+  },
+  {
+    "id": 100701376001400008,
+    "value": "Let's do it to it!"
+  },
+  {
+    "id": 100701376001400009,
+    "value": "It's about time I got serious, too!"
+  },
+  {
+    "id": 100701376001400010,
+    "value": "It's about time I got serious, too!"
+  },
+  {
+    "id": 100701376001400011,
+    "value": "Go, Fangs!"
+  },
+  {
+    "id": 100701376001400012,
+    "value": "Go, Fangs!"
   },
   {
     "id": 100701378000100001,

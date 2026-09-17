@@ -304,6 +304,10 @@
     "value": "Mobile Suit Gundam 00P"
   },
   {
+    "id": 200100000000003760,
+    "value": "Mobile Suit Gundam 00F"
+  },
+  {
     "id": 200100000000003780,
     "value": "Mobile Suit Gundam 00I"
   },
@@ -721,7 +725,11 @@
   },
   {
     "id": 200200000000003750,
-    "value": "Gundams, independently developed mobile weapons.\nCelestial Being, which owns them, has spent a long time developing them.\nSome, sympathetic to the ideas of the genius scientist Aeolia Schenberg, sacrifice their youth to the development of Gundams.\nSome dispute the scouting of the Gundam Meisters who will pilot Gundams in preparation for full-scale armed interventions.\nThis is the story of the second-generation Gundam Meisters, and it covers the events preceding the appearance of Celestial Being."
+    "value": "Gundams—mobile weapons independently developed over the course of many years by Celestial Being.\nThose sympathetic to the ideals of the genius scientist Aeolia Schenberg devoted their youths to the development of these Gundams,\nwhile others threw themselves into their roles as recruited Gundam Meisters—Gundam pilots—for the purposes of real, armed intervention.\nThis is the story of the second-generation Gundam Meisters and the events taking place before Celestial Being's public manifestation."
+  },
+  {
+    "id": 200200000000003760,
+    "value": "The year is 2307 A.D.\nThe private military organization Celestial Being has suddenly become known to the public.\nTheir campaigns of armed intervention are aided by their specialized support organization Fereshte.\nActing on the principle of unending devotion to Celestial Being, Fereshte performs everything from investigating areas of conflict where Gundams are to be deployed to dealing with witnesses and other relevant parties in the aftermath of each mission.\nFor these purposes, they utilize their own Gundams powered by solar reactors.\nHowever, one of the Gundam Meisters, Fon Spaak—a former terrorist whose thinking deviates from common sense—doesn't sympathize with the organization's ideals.\nBy his own terms, he accelerates Celestial Being's advancement toward changing the world."
   },
   {
     "id": 200200000000003780,
@@ -729,7 +737,7 @@
   },
   {
     "id": 200200000000003790,
-    "value": "Celestial Being is a private military organization that suddenly appeared in the world. They own mobile weapons called Gundams, which they use to intervene in disputes in an effort to end war.\nHowever, the world is divided between Celestial Being and the three nations that oppose them.\nThis story reveals the history of the wars and mobile weapons underlying this era of upheaval from the perspective of the Mobile Suit-development historical researcher Robert Spacey."
+    "value": "The private military organization Celestial Being has suddenly become known to the public.\nUsing the mobile weapons called Gundams, their campaign to end all wars by way of armed intervention inspires the opposition of three nations.\nThis is the turbulent history of mobile suits and war in an era of upheaval from the perspective of the mobile suit development historian Robert Spacey."
   },
   {
     "id": 200200000000003821,
@@ -1142,6 +1150,10 @@
   {
     "id": 200300000000003750,
     "value": "Mobile Suit Gundam 00P"
+  },
+  {
+    "id": 200300000000003760,
+    "value": "Mobile Suit Gundam 00F"
   },
   {
     "id": 200300000000003780,

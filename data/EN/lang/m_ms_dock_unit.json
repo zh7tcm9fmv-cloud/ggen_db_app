@@ -188,6 +188,10 @@
     "value": "Reborns Gundam"
   },
   {
+    "id": 110100001376000100,
+    "value": "Gundam Astraea Type-F"
+  },
+  {
     "id": 110100001400000100,
     "value": "Gundam AGE-1 Normal"
   },
@@ -410,6 +414,10 @@
   {
     "id": 110200001370011100,
     "value": "A generic transforming Mobile Suit belonging to the Innovators.\nIt is capable of activating a Trans-Am System thanks to Anew Returner's stolen intel, and it also integrates a Twin Drive System that synchronizes two pseudo solar reactors to give it output on par with that of the 00 Raiser.\nIt carries multiple dangerous armaments, including a Large GN Beam Saber, a GN Buster Rifle that hooks directly to the pseudo solar reactor in its elbow to fire out a powerful particle beam, and the remote-controlled GN Fin Fangs.\nIts transformation mechanism allows it to transform from the all-rounder Gundam mode to a cannon mode that specializes in long-range fire.\nIt was fielded in the final battle against Celestial Being, where it fought a hard battle against Setsuna F. Seiei's 00 Raiser."
+  },
+  {
+    "id": 110200001376000100,
+    "value": "A modified Gundam Astraea.\nBuilt from a fifteen-year-old Gundam Astraea to be used by the support organization Fereshte after Celestial Being began its campaigns of armed intervention.\nIts capabilities rival those of the most cutting-edge Gundam models as its parts were modified using third-generation development data.\nIt is capable of utilizing the Trans-Am System.\nTo conceal its Gundam identity, the unit is equipped with a Sensor Mask to cover its face, and its surface paint was changed to red."
   },
   {
     "id": 110200001400000100,

@@ -4784,6 +4784,30 @@
     "value": "Increased Physical Damage Effect Value Boost"
   },
   {
+    "id": 140700000300950101,
+    "value": "Physical Weapon Power Down [1 turn(s)]. LV 1"
+  },
+  {
+    "id": 140700000300950102,
+    "value": "Preemptive Strike"
+  },
+  {
+    "id": 140700000300950201,
+    "value": "Physical Weapon Power Down [1 turn(s)]. LV 2"
+  },
+  {
+    "id": 140700000300950202,
+    "value": "Preemptive Strike"
+  },
+  {
+    "id": 140700000300950301,
+    "value": "Physical Weapon Power Down [1 turn(s)]. LV 3"
+  },
+  {
+    "id": 140700000300950302,
+    "value": "Preemptive Strike"
+  },
+  {
     "id": 140700000300960101,
     "value": "Absolute Hit"
   },
@@ -5178,6 +5202,114 @@
   {
     "id": 140700000300990904,
     "value": "Increased Critical Rate LV 9"
+  },
+  {
+    "id": 140700000301010101,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301010102,
+    "value": "Piercing LV 1"
+  },
+  {
+    "id": 140700000301010103,
+    "value": "Piercing"
+  },
+  {
+    "id": 140700000301010201,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301010202,
+    "value": "Piercing LV 2"
+  },
+  {
+    "id": 140700000301010203,
+    "value": "Piercing"
+  },
+  {
+    "id": 140700000301010301,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301010302,
+    "value": "Piercing LV 3"
+  },
+  {
+    "id": 140700000301010303,
+    "value": "Piercing"
+  },
+  {
+    "id": 140700000301010401,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301010402,
+    "value": "Piercing LV 4"
+  },
+  {
+    "id": 140700000301010403,
+    "value": "Piercing"
+  },
+  {
+    "id": 140700000301010501,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301010502,
+    "value": "Piercing LV 5"
+  },
+  {
+    "id": 140700000301010503,
+    "value": "Piercing"
+  },
+  {
+    "id": 140700000301010601,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301010602,
+    "value": "Piercing LV 6"
+  },
+  {
+    "id": 140700000301010603,
+    "value": "Piercing"
+  },
+  {
+    "id": 140700000301010701,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301010702,
+    "value": "Piercing LV 7"
+  },
+  {
+    "id": 140700000301010703,
+    "value": "Piercing"
+  },
+  {
+    "id": 140700000301010801,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301010802,
+    "value": "Piercing LV 8"
+  },
+  {
+    "id": 140700000301010803,
+    "value": "Piercing"
+  },
+  {
+    "id": 140700000301010901,
+    "value": "Absolute Hit"
+  },
+  {
+    "id": 140700000301010902,
+    "value": "Piercing LV 9"
+  },
+  {
+    "id": 140700000301010903,
+    "value": "Piercing"
   },
   {
     "id": 140700000310010101,
@@ -13752,6 +13884,30 @@
     "value": "When combating enemies that include EFSF (U.C.) tag,\nadds 3% to the weapon effect value for Increased Physical Damage."
   },
   {
+    "id": 140800000300950101,
+    "value": "Inflict \"Decrease physical weapon Power by 10%\" on the enemy (1 turn(s))."
+  },
+  {
+    "id": 140800000300950102,
+    "value": "Preemptive Strike"
+  },
+  {
+    "id": 140800000300950201,
+    "value": "Inflict \"Decrease physical weapon Power by 15%\" on the enemy (1 turn(s))."
+  },
+  {
+    "id": 140800000300950202,
+    "value": "Preemptive Strike"
+  },
+  {
+    "id": 140800000300950301,
+    "value": "Inflict \"Decrease physical weapon Power by 20%\" on the enemy (1 turn(s))."
+  },
+  {
+    "id": 140800000300950302,
+    "value": "Preemptive Strike"
+  },
+  {
     "id": 140800000300960101,
     "value": "Absolute Hit"
   },
@@ -14146,6 +14302,114 @@
   {
     "id": 140800000300990904,
     "value": ""
+  },
+  {
+    "id": 140800000301010101,
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction"
+  },
+  {
+    "id": 140800000301010102,
+    "value": "When this unit attacks, reduce enemy's DEF by 2% for this attack."
+  },
+  {
+    "id": 140800000301010103,
+    "value": "When this unit attacks enemies with the Gundam tag,\nreduce enemy's DEF by an additional 15% for this attack."
+  },
+  {
+    "id": 140800000301010201,
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction"
+  },
+  {
+    "id": 140800000301010202,
+    "value": "When this unit attacks, reduce enemy's DEF by 5% for this attack."
+  },
+  {
+    "id": 140800000301010203,
+    "value": "When this unit attacks enemies with the Gundam tag,\nreduce enemy's DEF by an additional 15% for this attack."
+  },
+  {
+    "id": 140800000301010301,
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction"
+  },
+  {
+    "id": 140800000301010302,
+    "value": "When this unit attacks, reduce enemy's DEF by 10% for this attack."
+  },
+  {
+    "id": 140800000301010303,
+    "value": "When this unit attacks enemies with the Gundam tag,\nreduce enemy's DEF by an additional 15% for this attack."
+  },
+  {
+    "id": 140800000301010401,
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction"
+  },
+  {
+    "id": 140800000301010402,
+    "value": "When this unit attacks, reduce enemy's DEF by 15% for this attack."
+  },
+  {
+    "id": 140800000301010403,
+    "value": "When this unit attacks enemies with the Gundam tag,\nreduce enemy's DEF by an additional 15% for this attack."
+  },
+  {
+    "id": 140800000301010501,
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction"
+  },
+  {
+    "id": 140800000301010502,
+    "value": "When this unit attacks, reduce enemy's DEF by 20% for this attack."
+  },
+  {
+    "id": 140800000301010503,
+    "value": "When this unit attacks enemies with the Gundam tag,\nreduce enemy's DEF by an additional 15% for this attack."
+  },
+  {
+    "id": 140800000301010601,
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction"
+  },
+  {
+    "id": 140800000301010602,
+    "value": "When this unit attacks, reduce enemy's DEF by 25% for this attack."
+  },
+  {
+    "id": 140800000301010603,
+    "value": "When this unit attacks enemies with the Gundam tag,\nreduce enemy's DEF by an additional 15% for this attack."
+  },
+  {
+    "id": 140800000301010701,
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction"
+  },
+  {
+    "id": 140800000301010702,
+    "value": "When this unit attacks, reduce enemy's DEF by 30% for this attack."
+  },
+  {
+    "id": 140800000301010703,
+    "value": "When this unit attacks enemies with the Gundam tag,\nreduce enemy's DEF by an additional 15% for this attack."
+  },
+  {
+    "id": 140800000301010801,
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction"
+  },
+  {
+    "id": 140800000301010802,
+    "value": "When this unit attacks, reduce enemy's DEF by 35% for this attack."
+  },
+  {
+    "id": 140800000301010803,
+    "value": "When this unit attacks enemies with the Gundam tag,\nreduce enemy's DEF by an additional 15% for this attack."
+  },
+  {
+    "id": 140800000301010901,
+    "value": "Absolute Hit\nIgnore weapon attribute damage reduction"
+  },
+  {
+    "id": 140800000301010902,
+    "value": "When this unit attacks, reduce enemy's DEF by 40% for this attack."
+  },
+  {
+    "id": 140800000301010903,
+    "value": "When this unit attacks enemies with the Gundam tag,\nreduce enemy's DEF by an additional 15% for this attack."
   },
   {
     "id": 140800000310010101,

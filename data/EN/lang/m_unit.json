@@ -4520,6 +4520,10 @@
     "value": "GN-X III (E.S.F. Type)"
   },
   {
+    "id": 110100001370008610,
+    "value": "GN-X III (E.S.F. Type)"
+  },
+  {
     "id": 110100001370008700,
     "value": "Gundam Exia Repair II"
   },
@@ -4588,6 +4592,10 @@
     "value": "Susanowo"
   },
   {
+    "id": 110100001370010150,
+    "value": "Susanowo (EX)"
+  },
+  {
     "id": 110100001370010300,
     "value": "Arche Gundam"
   },
@@ -4648,6 +4656,10 @@
     "value": "Pillar Fragment (Large)"
   },
   {
+    "id": 110100001375000100,
+    "value": "Gundam Astraea"
+  },
+  {
     "id": 110100001375000210,
     "value": "Gundam Rasiel"
   },
@@ -4656,8 +4668,84 @@
     "value": "Tieren Kyitwo"
   },
   {
+    "id": 110100001375000400,
+    "value": "Gundam Plutone"
+  },
+  {
     "id": 110100001375000410,
     "value": "Gundam Plutone"
+  },
+  {
+    "id": 110100001375000600,
+    "value": "Gundam Sadalsuud"
+  },
+  {
+    "id": 110100001375000700,
+    "value": "Gundam Abulhool"
+  },
+  {
+    "id": 110100001375000800,
+    "value": "Gundam Abulhool [Flight Mode]"
+  },
+  {
+    "id": 110100001375001550,
+    "value": "Gundam Avalanche Astraea Type-F' (EX)"
+  },
+  {
+    "id": 110100001376000100,
+    "value": "Gundam Astraea Type-F"
+  },
+  {
+    "id": 110100001376000300,
+    "value": "Gundam Astraea Type-F2"
+  },
+  {
+    "id": 110100001376000400,
+    "value": "Gundam Sadalsuud Type-F"
+  },
+  {
+    "id": 110100001376000500,
+    "value": "Gundam Abulhool Type-F"
+  },
+  {
+    "id": 110100001376000600,
+    "value": "Gundam Abulhool Type-F [Flight Mode]"
+  },
+  {
+    "id": 110100001376000700,
+    "value": "GN-X II"
+  },
+  {
+    "id": 110100001376000800,
+    "value": "GN-X II Cannon"
+  },
+  {
+    "id": 110100001376000900,
+    "value": "GN-X II Sword"
+  },
+  {
+    "id": 110100001376001000,
+    "value": "Black Astraea"
+  },
+  {
+    "id": 110100001376001100,
+    "value": "Black Sadalsuud"
+  },
+  {
+    "id": 110100001376001200,
+    "value": "Black Abulhool"
+  },
+  {
+    "id": 110100001376001300,
+    "value": "Black Abulhool Flight Mode"
+  },
+  {
+    "id": 110100001376001400,
+    "value": "Black Plutone"
+  },
+  {
+    "id": 110100001376001500,
+    "value": "Black Sefer Rasiel"
   },
   {
     "id": 110100001378000110,
@@ -4692,6 +4780,10 @@
     "value": "0 Gundam Full Armor"
   },
   {
+    "id": 110100001379000500,
+    "value": "Advanced GN-X"
+  },
+  {
     "id": 110100001379000510,
     "value": "Advanced GN-X"
   },
@@ -4702,6 +4794,10 @@
   {
     "id": 110100001379001900,
     "value": "GRM Gundam"
+  },
+  {
+    "id": 110100001379002010,
+    "value": "Jagd Arche Gundam"
   },
   {
     "id": 110100001400000100,
@@ -6250,6 +6346,14 @@
   {
     "id": 110100001850005310,
     "value": "Neue Ziel II"
+  },
+  {
+    "id": 110100001999000100,
+    "value": "ASTEROID"
+  },
+  {
+    "id": 110100001999000200,
+    "value": "Missile"
   },
   {
     "id": 110100002001000100,
@@ -10816,6 +10920,10 @@
     "value": "An upgraded version of the Masurao used by A-LAWS pilot Mr.Bushido.\nThough considered complete, the Masurao has undergone further improvements, and is now reborn as the Susanowo.\nIt carries forward the Masurao's close-combat emphasis, using two GN Blades named Shiranui and Unryu that resemble solid katanas.\nThe Susanowo is also equipped with the experimental Tri-Punisher, which uses beams emitted from its abdomen and shoulders to form a massive fireball.\nIt fought the 00 Raiser near Eclipse, a colony in the L5 sector, with both pilots activating Trans-Am in a duel to the death."
   },
   {
+    "id": 110200001370010150,
+    "value": "An upgraded version of the Masurao used by A-LAWS pilot Mr.Bushido.\nThough considered complete, the Masurao has undergone further improvements, and is now reborn as the Susanowo.\nIt carries forward the Masurao's close-combat emphasis, using two GN Blades named Shiranui and Unryu that resemble solid katanas.\nThe Susanowo is also equipped with the experimental Tri-Punisher, which uses beams emitted from its abdomen and shoulders to form a massive fireball.\nIt fought the 00 Raiser near Eclipse, a colony in the L5 sector, with both pilots activating Trans-Am in a duel to the death."
+  },
+  {
     "id": 110200001370010300,
     "value": "A pseudo solar reactor-equipped Mobile Suit belonging to the Innovators.\nThis unit was developed by Ribbons Almark based on the design data for Gundam Throne Zwei.\nIt is the personal machine of Ali al-Saachez, a mercenary working with the Innovators.\nIt is the final Throne series version fielded in battle, and while it inherits the base model's distinguishing features, the introduction of cutting-edge technology vastly improves its performance so much so that it could be considered a completely different machine.\nIt also has improved weaponry such as the 10 specialized GN Fangs which al-Saachez freely controls remotely."
   },
@@ -10868,6 +10976,10 @@
     "value": "-"
   },
   {
+    "id": 110200001375000100,
+    "value": "A second-generation Gundam developed by Celestial Being as a test model for the deployment of Gundams into real combat.\nBeing primarily developed to test external weaponry, it possesses the same all-around capabilities of the 0 Gundam—the base model for all Gundams—and served as the test model for the third-generation model Gundam Exia.\nOn top of the standard equipment GN Beam Rifle, it wields a Proto GN Sword—the base model for the Exia's GN Sword—and a GN Launcher—the base model for the Gundam Virtue's GN Bazooka.\nAfter live combat testing, the weapon designs were carried over to their third-generation versions and data for the model was used as a base for building the Exia."
+  },
+  {
     "id": 110200001375000200,
     "value": "A third generation Gundam named after an angel whose name means \"God is my mystery.\"\nIts model number has been classified, and only a few within the organization responsible for its development know anything about it.\nIt was created as a \"battlefield observer\" and operates in places where collecting data directly would prove infeasible for Veda, such as the battlefield."
   },
@@ -10878,6 +10990,78 @@
   {
     "id": 110200001375000400,
     "value": "A second generation Gundam developed by Celestial Being as a test machine for deploying Gundams into live combat.\nThe test bed for the third generation Gundam Nadleeh and Gundam Virtue, it is the test for equipping a Gundam with a GN Field.\nHowever, regulating the GN Particles needed to expand the field beyond the unit proved too difficult.\nInstead, the unit uses the existing GN composite armor, which generates a field within the armor plating.\nThe tests also led to the development of the Core Fighter System to allow recovery of the Gundam Meister and GN Drive in emergency situations."
+  },
+  {
+    "id": 110200001375000600,
+    "value": "A second-generation Gundam developed by Celestial Being as a test model for the deployment of Gundams into real combat.\nAs a test model for the third-generation mobile suit Gundam Dynames, it was built with E-Sensors affixed to various locations across its entire frame and equipped with a Sensor Shield to maximize its reconnaissance capabilities.\nAs it was also designed for aquatic operations, it stands out for its resistance to water pressure.\nAlthough it is equipped with a Revolver Bazooka for testing its targeting system, it wasn't meant to engage in real combat, which explains its poor offensive and defensive capabilities.\nData collected from its testing were used to develop third-generation Gundams, beginning with the Dynames."
+  },
+  {
+    "id": 110200001375000700,
+    "value": "A second-generation Gundam developed by Celestial Being as a test model for the deployment of Gundams into real combat.\nAs a test model for the third-generation mobile suit Gundam Kyrios, it possesses a flight mode for aerial combat.\nAs a specialized aerial combat unit, the appearance of its flight mode doesn't differ from that of a regular military aircraft, but its mobile suit mode appears remarkably different from the typical humanoid design.\nTo conceal its Gundam identity, its leg thrusters can be switched between GN Verniers and hydrogen plasma jets when desired.\nIts standard armaments, such as its GN Vulcans, are rather weak, but on its rear, it can be equipped with whatever external equipment is deemed necessary for its mission."
+  },
+  {
+    "id": 110200001375000800,
+    "value": "-"
+  },
+  {
+    "id": 110200001375001550,
+    "value": "An Astraea forcibly modified with Avalanche and Dash gear meant for Exia.\nIn this form, the mobile suit is capable of high-speed movement.\nThe Dash units on the legs feature built-in beam sabers."
+  },
+  {
+    "id": 110200001376000100,
+    "value": "A modified Gundam Astraea.\nBuilt from a fifteen-year-old Gundam Astraea to be used by the support organization Fereshte after Celestial Being began its campaigns of armed intervention.\nIts capabilities rival those of the most cutting-edge Gundam models as its parts were modified using third-generation development data.\nIt is capable of utilizing the Trans-Am System.\nTo conceal its Gundam identity, the unit is equipped with a Sensor Mask to cover its face, and its surface paint was changed to red."
+  },
+  {
+    "id": 110200001376000300,
+    "value": "A modified Gundam Astraea Type-F.\nThis Type-F was enhanced with spare parts of Gundam Exia after Celestial Being was destroyed in their final battle against the UN forces. The unit is sometimes referred to as Type-F Custom.\nFifteen years after its initial completion, it has received a new antenna for its head part, along with other changes to and replacements of old and worn parts.\nThe unit is further equipped with general enhancements such as its ability to perform GN Reflection—the manipulation of GN Particles, released by the Trans-Am System, to reflect enemy beam-particle attacks."
+  },
+  {
+    "id": 110200001376000400,
+    "value": "A modified Gundam Sadalsuud.\nIt was built from a fifteen-year-old Gundam Sadalsuud to be used by the support organization Fereshte after Celestial Being began its campaigns of armed intervention.\nIts sensors were enhanced, and it has received a color change.\nFurther, the Sensor Shields serving as its shoulder parts were upgraded with thruster capabilities.\nAfter Celestial Being was destroyed in its final battle against the UN forces, the unit was upgraded with the ability to generate a GN Field. However, effective use of this capability requires tremendous skill given the extremely limited range at which the field can be generated."
+  },
+  {
+    "id": 110200001376000500,
+    "value": "A modified Gundam Abulhool.\nThis unit was used by the support organization Fereshte after Celestial Being began its campaigns of armed intervention.\nThe only modification performed on it was a new paint job changing its color to stealth black. Other than that, its capabilities are largely the same as they were fifteen years ago."
+  },
+  {
+    "id": 110200001376000600,
+    "value": "-"
+  },
+  {
+    "id": 110200001376000700,
+    "value": "A general-purpose mobile suit and the primary model used by the UN forces.\nBased on the GN-X, it carries a pseudo solar reactor.\nHowever, the GN Particle controllers set on its shoulders and sides have been made smaller than those of its predecessor.\nAlso, data collected from the Gundam Throne model was referenced to give it the ability to mount option parts onto the hardpoints of its shoulders, further improving the model's versatility.\nThis model was used in the battle at the missile base in Africa, where it fought against the anti-UN allied Gundam Astraea Type-F2."
+  },
+  {
+    "id": 110200001376000800,
+    "value": "A GN-X II modified to fight wielding a cannon.\nIts head part was replaced to hold a targeting camera, and a GN Cannon was attached to its right shoulder hardpoint, greatly improving its long-range offensive capabilities.\nIts firing power can be further improved by attaching a GN Cannon onto its left shoulder hardpoint.\nThis model was used in the battle at the missile base in Africa, where it fought against the anti-UN allied Gundam Astraea Type-F2."
+  },
+  {
+    "id": 110200001376000900,
+    "value": "A GN-X II modified for close-quarters combat.\nA large GN Buster Sword is attached to its left shoulder hardpoint.\nThe GN Buster Sword's blade can generate a GN Field to be used as a shield, greatly improving the unit's offensive and defensive capabilities in close-quarters combat.\nThis model was used in the battle at the missile base in Africa, where it fought against the anti-UN allied Gundam Astraea Type-F2."
+  },
+  {
+    "id": 110200001376001000,
+    "value": "A duplicate of the Gundam Astraea Type-F.\nIt was manufactured by the Innovades using data stored in Veda.\nIts performance capabilities are similar to the original, but it uses a pseudo solar reactor as its power source and is colored black.\nIt was used by the Innovades in trying to prevent Fon Spaak from reaching Veda's Moon Terminal."
+  },
+  {
+    "id": 110200001376001100,
+    "value": "A duplicate of the Gundam Sadalsuud Type-F.\nIt was manufactured by the Innovades using data stored in Veda.\nIts performance capabilities are similar to the original, but it uses a pseudo solar reactor as its power source and is colored black.\nIt was used by the Innovades in trying to prevent Fon Spaak from reaching Veda's Moon Terminal."
+  },
+  {
+    "id": 110200001376001200,
+    "value": "A duplicate of the Gundam Abulhool Type-F.\nIt was manufactured by the Innovades using data stored in Veda.\nIts performance capabilities are similar to the original, but it uses a pseudo solar reactor as its power source and is colored black.\nIt was used by the Innovades in trying to prevent Fon Spaak from reaching Veda's Moon Terminal."
+  },
+  {
+    "id": 110200001376001300,
+    "value": "-"
+  },
+  {
+    "id": 110200001376001400,
+    "value": "A duplicate of the Gundam Plutone.\nIt was manufactured by the Innovades using data stored in Veda.\nIts performance capabilities are similar to the original, but it uses a pseudo solar reactor as its power source and can project a GN Field, which was previously incomplete.\nIt has also been colored black.\nIt was used by Bring Stabity of the Innovades to aid Fon Spaak in his terrorist attack on the solar power generation system."
+  },
+  {
+    "id": 110200001376001500,
+    "value": "An enhanced Black Rasiel that was combined with a Black GN Sefer.\nLike the original's first form, the core block on its back is connected to a solar reactor, giving it immense thrusting power, and it can use GN Proto Bits.\nIt was used by a clone of Hixar Fermi to defend Veda's Moon Terminal against the original Hixar.\nAdditional Bits were added for increased firepower."
   },
   {
     "id": 110200001378000100,
@@ -10913,7 +11097,7 @@
   },
   {
     "id": 110200001379000500,
-    "value": "A customized GN-X.\nBased on feedback from the battlefield, the later productions of the GN-X were updated.\nDefense Rods were attached to the shoulder hardpoints, and Verniers were added to the legs.\nThe weapon loadout was also improved; including upgrading the GN-X's standard rifle into the Advanced GN Beam Rifle and adding the prototype Proto GN Lance that would be used by the GN-X III.\nThe unit can also be further tuned to allow the pilot's maximum potential.\nThe model achieved great results in active duty, but never made up more than 3% of all GN-X units produced.\nIt was primarily used by the UN's ace pilots.\nCombat data from these units was used in the development of the next generation main forces, the GN-X II."
+    "value": "A customized GN-X.\nBased on feedback from the battlefield, Defense Rods were attached to its two shoulder hardpoints and Verniers were added to its leg parts during the latter half of its production life.\nIts weapon loadout was also improved, including the addition of an Advanced GN Beam Rifle—a customized version of the GN-X's standard rifle—and a GN Lance Prototype, which would later be used by the GN-X III.\nEach unit can be fine-tuned to aid in drawing out its pilot's maximum potential, resulting in its incredible track record on the battlefield. However, its production rate never reached more than 3% of all GN-X units produced, restricting its use mainly to the best of the UN force's pilots.\nCombat data collected from these units were used to develop the GN-X II."
   },
   {
     "id": 110200001379000600,
@@ -10922,6 +11106,10 @@
   {
     "id": 110200001379001900,
     "value": "The prototype for the Innovator forces.\nThis model would be the prototype for many of the Mobile Suits used by the Innovators, starting with the Gadessa.\nIt was designed based on Gundam blueprints found in Veda.\nInfluences from the Gundam Plutone are especially pronounced, such as the introduction of the Core Fighter system.\nSeveral of its weapons would also be developed and used by later models.\nThe prototype GN Mega Launcher was completed and used by the Gadessa, while the GN Shield was developed into the GN Field used by the Garozzo.\nBecause the Innovator forces became part of the A-LAWS, these units would fight against Celestial Being.\nAs a result, its successors became the GNZ series and had a different design from the Gundams."
+  },
+  {
+    "id": 110200001379002000,
+    "value": "An Arche Gundam with an alternative loadout.\nAs a heavy unit designed to take on large groups of enemies on its own, it is equipped with weapons designed for use by the three units of the Throne Series.\nIts primary tactic is to break up enemy formations and isolate individual units with its GN Stealth Field; bombard them from afar with its GN Launcher; then finally pick off the isolated enemy units one by one, effectively combining each individual role of the three Throne units into one.\nHowever, its heavy weight reduces its mobility dramatically, restricting it to crowd-control fighting against large forces."
   },
   {
     "id": 110200001400000100,
@@ -12298,6 +12486,14 @@
   {
     "id": 110200001850005300,
     "value": "Developed by Axis as a successor to the massive space attack mobile armor Neue Ziel, this machine is equipped with a psycommu system and painted in the red personal colors of Char Aznable, the \"Red Comet.\"\nLike the Neue Ziel, it has high-output thrusters and powerful powerful beam weapons all over its body, and is equipped with I-Field generators that protect it from beam attacks.\nIts fighting strength remains overwhelming, but its greatest feature is the ability to perform all-range attacks, using Newtype psycho-waves to remotely control its funnels via a psycommu system.\nThus, while the Neue Ziel can be used even by Oldtypes, this version was completed as a Newtype machine.\nUnfortunately, when development of this machine started at the beginning of the Gryps Conflict, Char had already left Axis to join the AEUG.\nTogether with its immense production cost, this rendered the project pointless."
+  },
+  {
+    "id": 110200001999000100,
+    "value": "-"
+  },
+  {
+    "id": 110200001999000200,
+    "value": "-"
   },
   {
     "id": 110200002001000100,
@@ -17344,6 +17540,10 @@
     "value": "GN-X III (E.S.F. Type)"
   },
   {
+    "id": 110300001370008610,
+    "value": "GN-X III (E.S.F. Type)"
+  },
+  {
     "id": 110300001370008700,
     "value": "Gundam Exia Repair II"
   },
@@ -17412,6 +17612,10 @@
     "value": "Susanowo"
   },
   {
+    "id": 110300001370010150,
+    "value": "Susanowo (EX)"
+  },
+  {
     "id": 110300001370010300,
     "value": "Arche Gundam"
   },
@@ -17472,6 +17676,10 @@
     "value": "Pillar Fragment (Large)"
   },
   {
+    "id": 110300001375000100,
+    "value": "Gundam Astraea"
+  },
+  {
     "id": 110300001375000210,
     "value": "Gundam Rasiel"
   },
@@ -17480,8 +17688,84 @@
     "value": "Tieren Kyitwo"
   },
   {
+    "id": 110300001375000400,
+    "value": "Gundam Plutone"
+  },
+  {
     "id": 110300001375000410,
     "value": "Gundam Plutone"
+  },
+  {
+    "id": 110300001375000600,
+    "value": "Gundam Sadalsuud"
+  },
+  {
+    "id": 110300001375000700,
+    "value": "Gundam Abulhool"
+  },
+  {
+    "id": 110300001375000800,
+    "value": "Gundam Abulhool [Flight Mode]"
+  },
+  {
+    "id": 110300001375001550,
+    "value": "Gundam Avalanche Astraea Type-F' (EX)"
+  },
+  {
+    "id": 110300001376000100,
+    "value": "Gundam Astraea Type-F"
+  },
+  {
+    "id": 110300001376000300,
+    "value": "Gundam Astraea Type-F2"
+  },
+  {
+    "id": 110300001376000400,
+    "value": "Gundam Sadalsuud Type-F"
+  },
+  {
+    "id": 110300001376000500,
+    "value": "Gundam Abulhool Type-F"
+  },
+  {
+    "id": 110300001376000600,
+    "value": "Gundam Abulhool Type-F Flight Mode"
+  },
+  {
+    "id": 110300001376000700,
+    "value": "GN-X II"
+  },
+  {
+    "id": 110300001376000800,
+    "value": "GN-X II Cannon"
+  },
+  {
+    "id": 110300001376000900,
+    "value": "GN-X II Sword"
+  },
+  {
+    "id": 110300001376001000,
+    "value": "Black Astraea"
+  },
+  {
+    "id": 110300001376001100,
+    "value": "Black Sadalsuud"
+  },
+  {
+    "id": 110300001376001200,
+    "value": "Black Abulhool"
+  },
+  {
+    "id": 110300001376001300,
+    "value": "Black Abulhool Flight Mode"
+  },
+  {
+    "id": 110300001376001400,
+    "value": "Black Plutone"
+  },
+  {
+    "id": 110300001376001500,
+    "value": "Black Sefer Rasiel"
   },
   {
     "id": 110300001378000110,
@@ -17516,6 +17800,10 @@
     "value": "0 Gundam Full Armor"
   },
   {
+    "id": 110300001379000500,
+    "value": "Advanced GN-X"
+  },
+  {
     "id": 110300001379000510,
     "value": "Advanced GN-X"
   },
@@ -17526,6 +17814,10 @@
   {
     "id": 110300001379001900,
     "value": "GRM Gundam"
+  },
+  {
+    "id": 110300001379002010,
+    "value": "Jagd Arche Gundam"
   },
   {
     "id": 110300001400000100,
@@ -19074,6 +19366,14 @@
   {
     "id": 110300001850005310,
     "value": "Neue Ziel II"
+  },
+  {
+    "id": 110300001999000100,
+    "value": "ASTEROID"
+  },
+  {
+    "id": 110300001999000200,
+    "value": "Missile"
   },
   {
     "id": 110300002001000100,
@@ -24120,6 +24420,10 @@
     "value": "GN-X III (E.S.F. Type)"
   },
   {
+    "id": 110400001370008610,
+    "value": "GN-X III (E.S.F. Type)"
+  },
+  {
     "id": 110400001370008700,
     "value": "Gundam Exia Repair II"
   },
@@ -24188,6 +24492,10 @@
     "value": "Susanowo"
   },
   {
+    "id": 110400001370010150,
+    "value": "Susanowo (EX)"
+  },
+  {
     "id": 110400001370010300,
     "value": "Arche Gundam"
   },
@@ -24248,6 +24556,10 @@
     "value": "Pillar Fragment (Large)"
   },
   {
+    "id": 110400001375000100,
+    "value": "Gundam Astraea"
+  },
+  {
     "id": 110400001375000210,
     "value": "Gundam Rasiel"
   },
@@ -24256,8 +24568,84 @@
     "value": "Tieren Kyitwo"
   },
   {
+    "id": 110400001375000400,
+    "value": "Gundam Plutone"
+  },
+  {
     "id": 110400001375000410,
     "value": "Gundam Plutone"
+  },
+  {
+    "id": 110400001375000600,
+    "value": "Gundam Sadalsuud"
+  },
+  {
+    "id": 110400001375000700,
+    "value": "Gundam Abulhool"
+  },
+  {
+    "id": 110400001375000800,
+    "value": "Gundam Abulhool [Flight Mode]"
+  },
+  {
+    "id": 110400001375001550,
+    "value": "Gundam Avalanche Astraea Type-F' (EX)"
+  },
+  {
+    "id": 110400001376000100,
+    "value": "Gundam Astraea Type-F"
+  },
+  {
+    "id": 110400001376000300,
+    "value": "Gundam Astraea Type-F2"
+  },
+  {
+    "id": 110400001376000400,
+    "value": "Gundam Sadalsuud Type-F"
+  },
+  {
+    "id": 110400001376000500,
+    "value": "Gundam Abulhool Type-F"
+  },
+  {
+    "id": 110400001376000600,
+    "value": "Gundam Abulhool Type-F [Flight Mode]"
+  },
+  {
+    "id": 110400001376000700,
+    "value": "GN-X II"
+  },
+  {
+    "id": 110400001376000800,
+    "value": "GN-X II Cannon"
+  },
+  {
+    "id": 110400001376000900,
+    "value": "GN-X II Sword"
+  },
+  {
+    "id": 110400001376001000,
+    "value": "Black Astraea"
+  },
+  {
+    "id": 110400001376001100,
+    "value": "Black Sadalsuud"
+  },
+  {
+    "id": 110400001376001200,
+    "value": "Black Abulhool"
+  },
+  {
+    "id": 110400001376001300,
+    "value": "Black Abulhool Flight Mode"
+  },
+  {
+    "id": 110400001376001400,
+    "value": "Black Plutone"
+  },
+  {
+    "id": 110400001376001500,
+    "value": "Black Sefer Rasiel"
   },
   {
     "id": 110400001378000110,
@@ -24292,6 +24680,10 @@
     "value": "0 Gundam Full Armor"
   },
   {
+    "id": 110400001379000500,
+    "value": "Advanced GN-X"
+  },
+  {
     "id": 110400001379000510,
     "value": "Advanced GN-X"
   },
@@ -24302,6 +24694,10 @@
   {
     "id": 110400001379001900,
     "value": "GRM Gundam"
+  },
+  {
+    "id": 110400001379002010,
+    "value": "Jagd Arche Gundam"
   },
   {
     "id": 110400001400000100,
@@ -25850,6 +26246,14 @@
   {
     "id": 110400001850005310,
     "value": "Neue Ziel II"
+  },
+  {
+    "id": 110400001999000100,
+    "value": "ASTEROID"
+  },
+  {
+    "id": 110400001999000200,
+    "value": "Missile"
   },
   {
     "id": 110400002001000100,

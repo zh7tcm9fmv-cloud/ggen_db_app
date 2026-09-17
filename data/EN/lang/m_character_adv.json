@@ -2852,6 +2852,10 @@
     "value": "Nena Trinity"
   },
   {
+    "id": 100400001370001800,
+    "value": "Haro"
+  },
+  {
     "id": 100400001370001900,
     "value": "Alejandro Corner"
   },
@@ -2932,11 +2936,19 @@
     "value": "Ribbons Almark"
   },
   {
+    "id": 100400001370003503,
+    "value": "？？？"
+  },
+  {
     "id": 100400001370003600,
     "value": "Ali al-Saachez"
   },
   {
     "id": 100400001370003601,
+    "value": "Ali al-Saachez"
+  },
+  {
+    "id": 100400001370003602,
     "value": "Ali al-Saachez"
   },
   {
@@ -3122,6 +3134,86 @@
   {
     "id": 100400001375000300,
     "value": "Grave Violento"
+  },
+  {
+    "id": 100400001376000100,
+    "value": "Fon Spaak"
+  },
+  {
+    "id": 100400001376000101,
+    "value": "Fon Spaak"
+  },
+  {
+    "id": 100400001376000102,
+    "value": "Fon Spaak"
+  },
+  {
+    "id": 100400001376000103,
+    "value": "Fon Spaak"
+  },
+  {
+    "id": 100400001376000104,
+    "value": "Fon Spaak"
+  },
+  {
+    "id": 100400001376000200,
+    "value": "Chall Acustica"
+  },
+  {
+    "id": 100400001376000300,
+    "value": "Hixar Fermi"
+  },
+  {
+    "id": 100400001376000301,
+    "value": "Hixar Fermi"
+  },
+  {
+    "id": 100400001376000400,
+    "value": "Hayana"
+  },
+  {
+    "id": 100400001376000500,
+    "value": "Jasmy Laurel"
+  },
+  {
+    "id": 100400001376000600,
+    "value": "Rien"
+  },
+  {
+    "id": 100400001376000700,
+    "value": "Olife"
+  },
+  {
+    "id": 100400001376000800,
+    "value": "Eco Calore"
+  },
+  {
+    "id": 100400001376000900,
+    "value": "Grave Violento"
+  },
+  {
+    "id": 100400001376001000,
+    "value": "Sherilyn Hyde"
+  },
+  {
+    "id": 100400001376001100,
+    "value": "Hanayo"
+  },
+  {
+    "id": 100400001376001101,
+    "value": "Hanayo"
+  },
+  {
+    "id": 100400001376001200,
+    "value": "Aber Rindt"
+  },
+  {
+    "id": 100400001376001300,
+    "value": "Bring Stabity"
+  },
+  {
+    "id": 100400001376001400,
+    "value": "Hixar Fermi"
   },
   {
     "id": 100400001378000100,
@@ -5584,12 +5676,20 @@
     "value": "Katharon Soldier"
   },
   {
+    "id": 100400002370000200,
+    "value": "UN Soldier"
+  },
+  {
     "id": 100400002370000300,
     "value": "UN Soldier"
   },
   {
     "id": 100400002370000301,
     "value": "AEU Soldier"
+  },
+  {
+    "id": 100400002370000400,
+    "value": "UN Soldier"
   },
   {
     "id": 100400002370000500,
@@ -5642,6 +5742,14 @@
   {
     "id": 100400002370001800,
     "value": "Katharon Soldier"
+  },
+  {
+    "id": 100400002370001900,
+    "value": "Human Reform League Soldier"
+  },
+  {
+    "id": 100400002376000100,
+    "value": "Human Reform League Officer"
   },
   {
     "id": 100400002400000001,

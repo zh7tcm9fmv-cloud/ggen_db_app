@@ -84,6 +84,10 @@
     "value": "Story Events \"SD Gundam Side Story III: The Knights of Algas\""
   },
   {
+    "id": 250100000000200017,
+    "value": "Story Events \"Mobile Suit Gundam 00F\""
+  },
+  {
     "id": 250100000000210001,
     "value": "Map Event"
   },
@@ -214,5 +218,9 @@
   {
     "id": 250100000000300019,
     "value": "SEASON 16"
+  },
+  {
+    "id": 250100000000300020,
+    "value": "SEASON 17"
   }
 ]

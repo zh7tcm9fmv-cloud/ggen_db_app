@@ -2192,6 +2192,22 @@
     "value": "(Cond: HP & Vigor) HP Restoration LV 5"
   },
   {
+    "id": 140100000101740200,
+    "value": "(Cond: Combat) Increased ATK & DEF LV 2"
+  },
+  {
+    "id": 140100000101740300,
+    "value": "(Cond: Combat) Increased ATK & DEF LV 3"
+  },
+  {
+    "id": 140100000101750300,
+    "value": "(Cond: Vigor) Increased ATK & MOV LV 3"
+  },
+  {
+    "id": 140100000101760101,
+    "value": "(Range Condition) Increased ATK LV 1"
+  },
+  {
     "id": 140100000101780200,
     "value": "(Cond: HP) Increased ATK LV 2"
   },
@@ -5292,6 +5308,26 @@
     "value": "EX Character Ability"
   },
   {
+    "id": 140100000202880101,
+    "value": "(Cond: Series) Chance Step Increase LV 1"
+  },
+  {
+    "id": 140100000202900100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000202910100,
+    "value": "EX Character Ability"
+  },
+  {
+    "id": 140100000202920100,
+    "value": "(Cond: HP & Vigor & Tag) HP Restoration LV 1"
+  },
+  {
+    "id": 140100000202940101,
+    "value": "(Cond: Tag & Series) Support Defense LV 1"
+  },
+  {
     "id": 140100000300010101,
     "value": "Decreased ATK (1 turn(s)) LV 1"
   },
@@ -6266,6 +6302,18 @@
   {
     "id": 140100000300420301,
     "value": "Decreased DEF Effect Value Boost"
+  },
+  {
+    "id": 140100000300420401,
+    "value": "Piercing LV 4"
+  },
+  {
+    "id": 140100000300420501,
+    "value": "Piercing LV 5"
+  },
+  {
+    "id": 140100000300420601,
+    "value": "Piercing LV 6"
   },
   {
     "id": 140100000300430101,
@@ -11008,6 +11056,14 @@
     "value": "Limiter OFF SSR (Fierce Enemy Assault)"
   },
   {
+    "id": 140100000407140101,
+    "value": "Add-On Armor SR(Mobile Suit Gundam 00F)"
+  },
+  {
+    "id": 140100000407150101,
+    "value": "Limiter OFF SR(Mobile Suit Gundam 00F)"
+  },
+  {
     "id": 140100000510010101,
     "value": "Increased ATK LV 1"
   },
@@ -14366,6 +14422,26 @@
   {
     "id": 140100000612440101,
     "value": "(Cond: Character) Increased DEF"
+  },
+  {
+    "id": 140100000612450101,
+    "value": "Guaranteed Chance Step"
+  },
+  {
+    "id": 140100000612460101,
+    "value": "(Cond: Defeat) Increased ATK"
+  },
+  {
+    "id": 140100000612460102,
+    "value": "Increased ATK"
+  },
+  {
+    "id": 140100000612490101,
+    "value": "(Cond: Character) Increased DEF"
+  },
+  {
+    "id": 140100000612500101,
+    "value": "Increased DEF"
   },
   {
     "id": 140100000699000101,
