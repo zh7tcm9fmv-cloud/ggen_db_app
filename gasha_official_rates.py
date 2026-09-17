@@ -60,14 +60,36 @@ def _table_rows(content: str):
     return list(obj.get('rows') or [])
 
 
+def _pity_pull_count_from_title(title: str):
+    """Official guaranteed-UR section pull N: '50th Total' / 累計50回目 / 累計第50次."""
+    t = title or ''
+    m = re.search(r'(?:累計)?第?\s*(\d+)\s*(?:th|回目|次)', t, re.I)
+    if m:
+        try:
+            n = int(m.group(1))
+            return n if n > 0 else None
+        except ValueError:
+            return None
+    return None
+
+
 def _classify_section(title: str) -> str:
     """Map official EN/JA/TW/HK section titles → rate bucket keys."""
     t = title or ''
     low = t.lower()
-    # 100th guaranteed UR (JA 累計100回目 / TW·HK 累計第100次)
+    # Guaranteed UR at Nth total pull (50 or 100 — JA 累計N回目 / TW·HK 累計第N次).
+    # Bucket key stays pity_100 for API compatibility; pull N is stored separately.
     if (
-        re.search(r'100\s*(th|回目|次)', t, re.I)
-        or 'guaranteed ur' in low
+        _pity_pull_count_from_title(t) is not None
+        and (
+            'guaranteed' in low
+            or '保障獲得' in t
+            or '確定' in t
+            or re.search(r'\bur\b', low)
+            or 'UR' in t
+        )
+    ) or (
+        'guaranteed ur' in low
         or '保障獲得ur' in low
         or ('ur' in low and '確定' in t)
     ):
@@ -138,11 +160,18 @@ def parse_gasha_proportion(payload: dict) -> dict:
     by_name = {}
     section = ''
     entity_kind = ''  # unit | supporter
+    pity_count = None
 
     def _ensure_name(name: str):
         if name not in by_name:
             by_name[name] = {}
         return by_name[name]
+
+    def _note_pity_count(title: str):
+        nonlocal pity_count
+        n = _pity_pull_count_from_title(title)
+        if n:
+            pity_count = n
 
     for b in blocks:
         if not isinstance(b, dict):
@@ -155,6 +184,8 @@ def parse_gasha_proportion(payload: dict) -> dict:
         if typ == 1:
             # e.g. "Use 10 times (10th)Drop Rate" / 「10回引く(10回目)」提供割合
             section = _classify_section(content)
+            if section == 'pity_100':
+                _note_pity_count(content)
             entity_kind = ''
             continue
         if typ == 8:
@@ -165,6 +196,8 @@ def parse_gasha_proportion(payload: dict) -> dict:
                 continue
             # Category subsection headings
             section = _classify_section(title)
+            if section == 'pity_100':
+                _note_pity_count(title)
             entity_kind = ''
             continue
         if typ != 7:
@@ -222,11 +255,14 @@ def parse_gasha_proportion(payload: dict) -> dict:
             if entity_kind:
                 slot['kind'] = entity_kind
 
-    return {
+    out = {
         'notes': notes,
         'category': category,
         'by_name': by_name,
     }
+    if pity_count:
+        out['pity_count'] = int(pity_count)
+    return out
 
 
 def _official_gasha_dir() -> str:
@@ -395,13 +431,25 @@ def category_summary(rates: dict | None) -> dict:
     return out
 
 
-def build_pity_summary(rates: dict | None, featured_units=None, featured_chars=None, featured_supporters=None):
-    """Explain 100th pull: guaranteed UR, featured share split, other UR equal share."""
+def build_pity_summary(
+    rates: dict | None,
+    featured_units=None,
+    featured_chars=None,
+    featured_supporters=None,
+    fix_count=None,
+):
+    """Explain guaranteed-UR pull (50th / 100th): featured share split, other UR equal share."""
     if not rates:
         return None
     by_name = rates.get('by_name') or {}
     featured_rows = []
     matched_keys = set()
+    try:
+        pull_count = int(rates.get('pity_count') or fix_count or 100)
+    except (TypeError, ValueError):
+        pull_count = 100
+    if pull_count <= 0:
+        pull_count = 100
 
     def _add_featured(items, kind_hint=''):
         for it in items or []:
@@ -471,6 +519,7 @@ def build_pity_summary(rates: dict | None, featured_units=None, featured_chars=N
 
     return {
         'guaranteed_ur': True,
+        'pull_count': pull_count,
         'guaranteed_pct': float(guaranteed) if guaranteed is not None else 100.0,
         'featured_share_pct': feat_sum,
         'featured': featured_rows,

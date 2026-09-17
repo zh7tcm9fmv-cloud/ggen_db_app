@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import math
 
-HYBRID_FLOAT_FRAC = 0.09
+HYBRID_FLOAT_FRAC = 0.08
 
 
 def C(x: float) -> int:
@@ -76,6 +76,10 @@ def main() -> None:
     sandaime_aerial = dict(
         unit_atk=14577, char_atk=796, unit_def=17661, char_def=636, wpn=6720, di=15, vigor=0
     )
+    # Susanowo EX LB0 + Bushido vs Dark Gundam (stage map DEF pair, 40% Souten DEF down)
+    susa_dark = dict(
+        unit_atk=14056, char_atk=891, unit_def=18107, char_def=733, wpn=7920, di=30, vigor=10
+    )
 
     assert normal_dmg(**ge, mode="hybrid") == 218515
     assert normal_dmg(**ge, mode="float") == 218517
@@ -86,8 +90,9 @@ def main() -> None:
     assert normal_dmg(**wing, mode="hybrid") == 137807
     assert normal_dmg(**sandaime_aerial, mode="hybrid") == 62454
     assert normal_dmg(**sandaime_aerial, mode="away0") == 62452
+    assert normal_dmg(**susa_dark, mode="hybrid") == 82634
 
-    print("dc_correction_round_away_test: OK (Graze 218515, Xi 182303, Sandaime Aerial 62454)")
+    print("dc_correction_round_away_test: OK (Graze 218515, Xi 182303, Sandaime Aerial 62454, Susanowo Dark 82634)")
 
 
 if __name__ == "__main__":

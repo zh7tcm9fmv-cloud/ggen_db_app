@@ -8,9 +8,14 @@ Run: python scripts/dc_ms_stat_rounding_test.py
 from __future__ import annotations
 
 import math
+import struct
 
 C = math.ceil
 F = math.floor
+
+
+def _f32(x: float) -> float:
+    return struct.unpack("f", struct.pack("f", float(x)))[0]
 
 
 def ms_growth_from_pct(base: int | float, pct_sum: int | float, stat_name: str) -> int:
@@ -20,9 +25,12 @@ def ms_growth_from_pct(base: int | float, pct_sum: int | float, stat_name: str) 
     q = num // 100
     rem = num % 100
     if stat_name in ("Attack", "HP"):
-        if rem == 0:
+        if rem == 80 or rem == 20:
             return q
-        if rem >= 80 or rem == 20:
+        if rem == 0:
+            raw = _f32(b) * _f32(1.0 + p / 100.0)
+            if raw > q:
+                return q + 1
             return q
         return q + 1
     return q
@@ -60,7 +68,7 @@ def main() -> None:
     hyaku_atk = ms_growth_from_pct(10015, 15 + 12 + 40 + 5, "Attack") + 390
     assert hyaku_atk == 17615, hyaku_atk
 
-    # D Gundam Third LB0 +20% HP-tier CP ATK +12% OP +25% leader +2% SameGroup ATK/DEF +300 ATK flat
+    # D Gundam Third LB0 +20% HP-tier CP ATK +12% OP +25% leader +2% SameGroup ATK/DEF (Support-role only) +300 ATK flat
     dg_atk = ms_growth_from_pct(7580, 20 + 12 + 25 + 2, "Attack") + 300
     assert dg_atk == 12352, dg_atk
     dg_def = ms_growth_from_pct(6535, 25 + 2, "Defense")
@@ -69,6 +77,13 @@ def main() -> None:
     assert dg_hp == 95347, dg_hp
     dg_mob = ms_growth_from_pct(7192, 25, "Mobility")
     assert dg_mob == 8990, dg_mob
+
+    # Susanowo (EX) LB0 Attack-role: unit 15% + OP 12% + Sumeragi LB1 36% (no SameGroup +2) +240 ATK flat
+    assert ms_growth_from_pct(8476, 15 + 12 + 36, "Attack") + 240 == 14056
+    assert ms_growth_from_pct(6237, 36, "Defense") == 8482
+    # HP rem=0 + float32 epsilon → 98427 (not integer-exact 98426)
+    assert ms_growth_from_pct(69725, 36, "HP") + 3600 == 98427
+    assert ms_growth_from_pct(7238, 36, "Mobility") == 9843
 
     # Barbatos Lupus Rex (EX) LB2 + Atra LV50/1★: floor support ATK 191 (not half-up 192)
     assert supporter_flat(300, 6384) == 191
@@ -80,7 +95,7 @@ def main() -> None:
     assert int(round(9370 * 1.53)) + 240 == 14576
     assert int(round(8515 * 1.46)) == 12432
 
-    print("dc_ms_stat_rounding_test: OK (ceil MS ATK + floor supporter flat)")
+    print("dc_ms_stat_rounding_test: OK (ceil MS ATK + floor supporter flat + HP f32 rem0)")
 
 
 if __name__ == "__main__":

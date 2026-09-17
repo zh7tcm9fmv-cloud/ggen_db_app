@@ -27451,7 +27451,12 @@ def api_banner_timeline():
             attach_drop_rates_to_featured(featured_supporters, official_rates, kind_hint='supporter')
         drop_category = category_summary(official_rates)
         drop_pity = build_pity_summary(
-            official_rates, featured_units, featured_chars, featured_supporters)
+            official_rates,
+            featured_units,
+            featured_chars,
+            featured_supporters,
+            fix_count=(pity_out or {}).get('fix_count'),
+        )
 
         row = {
             'gasha_id': gasha_id,
