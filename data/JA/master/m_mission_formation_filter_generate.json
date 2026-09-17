@@ -276,6 +276,12 @@
     "Value": 1330003900
   },
   {
+    "Id": 13721101,
+    "MissionId": 310021000101,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000400
+  },
+  {
     "Id": 14145285,
     "MissionId": 260120031203,
     "MissionFormationFilterTypeIndex": 1,
@@ -388,6 +394,12 @@
     "MissionId": 310008100101,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1125000900
+  },
+  {
+    "Id": 20144810,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370000300
   },
   {
     "Id": 20653409,
@@ -648,6 +660,12 @@
     "Value": 1013000850
   },
   {
+    "Id": 30813663,
+    "MissionId": 260620031001,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000300
+  },
+  {
     "Id": 30990065,
     "MissionId": 310009500401,
     "MissionFormationFilterTypeIndex": 1,
@@ -874,6 +892,12 @@
     "MissionId": 260730120209,
     "MissionFormationFilterTypeIndex": 2,
     "Value": 1125000300
+  },
+  {
+    "Id": 43866353,
+    "MissionId": 260730120109,
+    "MissionFormationFilterTypeIndex": 2,
+    "Value": 1376000200
   },
   {
     "Id": 43899430,
@@ -1726,6 +1750,12 @@
     "MissionId": 260730120208,
     "MissionFormationFilterTypeIndex": 2,
     "Value": 1125001600
+  },
+  {
+    "Id": 85067284,
+    "MissionId": 260730120103,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001100
   },
   {
     "Id": 85216649,
@@ -2736,6 +2766,12 @@
     "Value": 1330003300
   },
   {
+    "Id": 136253885,
+    "MissionId": 260620031001,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000900
+  },
+  {
     "Id": 136704559,
     "MissionId": 260120031303,
     "MissionFormationFilterTypeIndex": 1,
@@ -2752,6 +2788,12 @@
     "MissionId": 260620030901,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1370011100
+  },
+  {
+    "Id": 138322048,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000700
   },
   {
     "Id": 138357629,
@@ -3022,6 +3064,12 @@
     "MissionId": 260120031103,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1009000510
+  },
+  {
+    "Id": 152740200,
+    "MissionId": 200010102501,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370010150
   },
   {
     "Id": 153068390,
@@ -3372,6 +3420,12 @@
     "Value": 1379000102
   },
   {
+    "Id": 169501279,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370001810
+  },
+  {
     "Id": 169607794,
     "MissionId": 310021000101,
     "MissionFormationFilterTypeIndex": 1,
@@ -3694,6 +3748,12 @@
     "MissionId": 310009500101,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1095004410
+  },
+  {
+    "Id": 184436734,
+    "MissionId": 310008100101,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001100
   },
   {
     "Id": 184714034,
@@ -4494,6 +4554,12 @@
     "Value": 1379000101
   },
   {
+    "Id": 219849301,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000400
+  },
+  {
     "Id": 219857332,
     "MissionId": 310009500601,
     "MissionFormationFilterTypeIndex": 1,
@@ -4590,10 +4656,22 @@
     "Value": 1013000510
   },
   {
+    "Id": 223874437,
+    "MissionId": 260620030901,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370008610
+  },
+  {
     "Id": 223995834,
     "MissionId": 310008100301,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1095004200
+  },
+  {
+    "Id": 224649558,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370008700
   },
   {
     "Id": 224726533,
@@ -5076,6 +5154,12 @@
     "Value": 1200005600
   },
   {
+    "Id": 250870337,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370008900
+  },
+  {
     "Id": 251323646,
     "MissionId": 260120031303,
     "MissionFormationFilterTypeIndex": 1,
@@ -5482,6 +5566,12 @@
     "MissionId": 310009500201,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1068000150
+  },
+  {
+    "Id": 269963843,
+    "MissionId": 310009500201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001400
   },
   {
     "Id": 270236806,
@@ -6444,6 +6534,12 @@
     "Value": 1370010700
   },
   {
+    "Id": 318002969,
+    "MissionId": 310008100101,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000300
+  },
+  {
     "Id": 318563339,
     "MissionId": 260120031203,
     "MissionFormationFilterTypeIndex": 1,
@@ -6592,6 +6688,12 @@
     "MissionId": 300010200201,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1705001510
+  },
+  {
+    "Id": 326699523,
+    "MissionId": 260620031001,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000400
   },
   {
     "Id": 327219181,
@@ -6858,6 +6960,12 @@
     "Value": 1431000550
   },
   {
+    "Id": 340658237,
+    "MissionId": 300010200802,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000700
+  },
+  {
     "Id": 340971237,
     "MissionId": 310008100601,
     "MissionFormationFilterTypeIndex": 1,
@@ -7078,6 +7186,12 @@
     "MissionId": 260120031109,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1155000700
+  },
+  {
+    "Id": 348870280,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000300
   },
   {
     "Id": 348906092,
@@ -7572,6 +7686,12 @@
     "Value": 1095001500
   },
   {
+    "Id": 371111077,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370001500
+  },
+  {
     "Id": 372120746,
     "MissionId": 260120031608,
     "MissionFormationFilterTypeIndex": 1,
@@ -7926,6 +8046,12 @@
     "Value": 1013000700
   },
   {
+    "Id": 388607969,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001400
+  },
+  {
     "Id": 388608812,
     "MissionId": 300010200301,
     "MissionFormationFilterTypeIndex": 1,
@@ -8020,6 +8146,12 @@
     "MissionId": 310008100601,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1060000100
+  },
+  {
+    "Id": 394225241,
+    "MissionId": 200010202301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000300
   },
   {
     "Id": 394385528,
@@ -8314,6 +8446,12 @@
     "MissionId": 260120031303,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1370009810
+  },
+  {
+    "Id": 406831425,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370001600
   },
   {
     "Id": 406977124,
@@ -9384,6 +9522,12 @@
     "Value": 1330002800
   },
   {
+    "Id": 463975470,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001200
+  },
+  {
     "Id": 464040837,
     "MissionId": 260620030901,
     "MissionFormationFilterTypeIndex": 1,
@@ -9550,6 +9694,12 @@
     "MissionId": 260730120208,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1144000550
+  },
+  {
+    "Id": 471944410,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000600
   },
   {
     "Id": 472086537,
@@ -10240,6 +10390,12 @@
     "MissionId": 260730120209,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1230004200
+  },
+  {
+    "Id": 503713159,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000100
   },
   {
     "Id": 503997760,
@@ -11814,6 +11970,12 @@
     "Value": 1060002110
   },
   {
+    "Id": 579549590,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375001550
+  },
+  {
     "Id": 579559568,
     "MissionId": 310021000101,
     "MissionFormationFilterTypeIndex": 1,
@@ -11922,6 +12084,12 @@
     "Value": 1013001200
   },
   {
+    "Id": 583504948,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370000100
+  },
+  {
     "Id": 583982372,
     "MissionId": 310021000101,
     "MissionFormationFilterTypeIndex": 1,
@@ -11932,6 +12100,12 @@
     "MissionId": 310008100301,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1080001000
+  },
+  {
+    "Id": 584352215,
+    "MissionId": 260620030901,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000900
   },
   {
     "Id": 584418300,
@@ -12396,6 +12570,12 @@
     "Value": 1431000100
   },
   {
+    "Id": 605884876,
+    "MissionId": 310021000101,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000700
+  },
+  {
     "Id": 606330396,
     "MissionId": 300010200201,
     "MissionFormationFilterTypeIndex": 1,
@@ -12520,6 +12700,12 @@
     "MissionId": 300010200802,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1370001300
+  },
+  {
+    "Id": 611287727,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370002100
   },
   {
     "Id": 611512245,
@@ -13146,6 +13332,12 @@
     "Value": 1330001200
   },
   {
+    "Id": 639564245,
+    "MissionId": 310008100101,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001400
+  },
+  {
     "Id": 640602830,
     "MissionId": 260120031303,
     "MissionFormationFilterTypeIndex": 1,
@@ -13426,6 +13618,18 @@
     "MissionId": 260550031001,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1430003300
+  },
+  {
+    "Id": 653072418,
+    "MissionId": 260120031602,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375001550
+  },
+  {
+    "Id": 653164483,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370006200
   },
   {
     "Id": 653304953,
@@ -13908,6 +14112,12 @@
     "Value": 1021000210
   },
   {
+    "Id": 677231059,
+    "MissionId": 260730120103,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001400
+  },
+  {
     "Id": 677329818,
     "MissionId": 260730120304,
     "MissionFormationFilterTypeIndex": 1,
@@ -13978,6 +14188,12 @@
     "MissionId": 310009500601,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1430006800
+  },
+  {
+    "Id": 680619077,
+    "MissionId": 310009500201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001200
   },
   {
     "Id": 680802321,
@@ -15498,6 +15714,12 @@
     "Value": 1300004650
   },
   {
+    "Id": 759525514,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000500
+  },
+  {
     "Id": 759623502,
     "MissionId": 260730120106,
     "MissionFormationFilterTypeIndex": 1,
@@ -16596,6 +16818,12 @@
     "Value": 1080004200
   },
   {
+    "Id": 811623597,
+    "MissionId": 260730120106,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1379000500
+  },
+  {
     "Id": 811735754,
     "MissionId": 260120031503,
     "MissionFormationFilterTypeIndex": 1,
@@ -16606,6 +16834,12 @@
     "MissionId": 310021000201,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1162000100
+  },
+  {
+    "Id": 813992040,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1379000102
   },
   {
     "Id": 815278395,
@@ -17094,6 +17328,12 @@
     "Value": 1330002700
   },
   {
+    "Id": 840278845,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370007410
+  },
+  {
     "Id": 840617936,
     "MissionId": 260120031604,
     "MissionFormationFilterTypeIndex": 1,
@@ -17238,6 +17478,12 @@
     "Value": 1095002800
   },
   {
+    "Id": 847547278,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1379000100
+  },
+  {
     "Id": 847548051,
     "MissionId": 260730120208,
     "MissionFormationFilterTypeIndex": 1,
@@ -17362,6 +17608,12 @@
     "MissionId": 260120031512,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1009000200
+  },
+  {
+    "Id": 853909864,
+    "MissionId": 300010201101,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000400
   },
   {
     "Id": 853960969,
@@ -17634,6 +17886,12 @@
     "Value": 1431000110
   },
   {
+    "Id": 864324897,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1379000101
+  },
+  {
     "Id": 865363049,
     "MissionId": 300010200101,
     "MissionFormationFilterTypeIndex": 1,
@@ -17698,6 +17956,12 @@
     "MissionId": 310008100601,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1013000350
+  },
+  {
+    "Id": 868785592,
+    "MissionId": 260730120105,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000700
   },
   {
     "Id": 869032530,
@@ -18214,6 +18478,12 @@
     "MissionId": 300010201101,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1400000150
+  },
+  {
+    "Id": 897147077,
+    "MissionId": 310009500201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000600
   },
   {
     "Id": 897428406,
@@ -19098,6 +19368,12 @@
     "Value": 1370002100
   },
   {
+    "Id": 932822012,
+    "MissionId": 300010200802,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000400
+  },
+  {
     "Id": 933051105,
     "MissionId": 260730120205,
     "MissionFormationFilterTypeIndex": 2,
@@ -19384,6 +19660,12 @@
     "MissionId": 260120031211,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1150000900
+  },
+  {
+    "Id": 948429171,
+    "MissionId": 310009500201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000300
   },
   {
     "Id": 948483119,
@@ -19926,6 +20208,12 @@
     "Value": 1009000410
   },
   {
+    "Id": 973956980,
+    "MissionId": 310008100101,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000700
+  },
+  {
     "Id": 974458402,
     "MissionId": 310009500401,
     "MissionFormationFilterTypeIndex": 1,
@@ -20248,6 +20536,12 @@
     "MissionId": 260120031404,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1031003200
+  },
+  {
+    "Id": 990979915,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370001400
   },
   {
     "Id": 991889139,
@@ -20602,6 +20896,12 @@
     "MissionId": 310021000501,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1219000400
+  },
+  {
+    "Id": 1008118800,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370005900
   },
   {
     "Id": 1008213095,
@@ -21048,6 +21348,12 @@
     "Value": 1370001900
   },
   {
+    "Id": 1027335608,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001000
+  },
+  {
     "Id": 1027791570,
     "MissionId": 260620031001,
     "MissionFormationFilterTypeIndex": 1,
@@ -21106,6 +21412,12 @@
     "MissionId": 300010200201,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1001000200
+  },
+  {
+    "Id": 1030937502,
+    "MissionId": 310008100601,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000400
   },
   {
     "Id": 1031200804,
@@ -21214,6 +21526,12 @@
     "MissionId": 300010201101,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1031001200
+  },
+  {
+    "Id": 1037414581,
+    "MissionId": 200010200201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1379002010
   },
   {
     "Id": 1038023586,
@@ -21540,6 +21858,12 @@
     "Value": 1003000200
   },
   {
+    "Id": 1050179252,
+    "MissionId": 200010202301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000700
+  },
+  {
     "Id": 1050747928,
     "MissionId": 260730120209,
     "MissionFormationFilterTypeIndex": 2,
@@ -21592,6 +21916,12 @@
     "MissionId": 260120031211,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1850002360
+  },
+  {
+    "Id": 1054154749,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370005900
   },
   {
     "Id": 1054324263,
@@ -21652,6 +21982,12 @@
     "MissionId": 260730120105,
     "MissionFormationFilterTypeIndex": 2,
     "Value": 1300002100
+  },
+  {
+    "Id": 1056740364,
+    "MissionId": 310009500201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375001550
   },
   {
     "Id": 1057229294,
@@ -21724,6 +22060,12 @@
     "MissionId": 260550031001,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1430004400
+  },
+  {
+    "Id": 1060454582,
+    "MissionId": 310008100101,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1379002010
   },
   {
     "Id": 1060803672,
@@ -21820,6 +22162,12 @@
     "MissionId": 260120031212,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1850002200
+  },
+  {
+    "Id": 1063819717,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370006400
   },
   {
     "Id": 1063861496,
@@ -22308,10 +22656,22 @@
     "Value": 1300003300
   },
   {
+    "Id": 1088549840,
+    "MissionId": 260120031404,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000700
+  },
+  {
     "Id": 1088614481,
     "MissionId": 200010102501,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1230000900
+  },
+  {
+    "Id": 1089162932,
+    "MissionId": 310021000601,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370010150
   },
   {
     "Id": 1089201678,
@@ -22342,6 +22702,12 @@
     "MissionId": 300010200802,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1155000100
+  },
+  {
+    "Id": 1090432303,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370008800
   },
   {
     "Id": 1090459553,
@@ -22654,6 +23020,12 @@
     "MissionId": 310009500501,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1125001250
+  },
+  {
+    "Id": 1106085105,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370000100
   },
   {
     "Id": 1106157706,
@@ -23400,6 +23772,12 @@
     "Value": 1300001600
   },
   {
+    "Id": 1136117357,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000410
+  },
+  {
     "Id": 1136211600,
     "MissionId": 310008100101,
     "MissionFormationFilterTypeIndex": 1,
@@ -23568,6 +23946,12 @@
     "Value": 1330003210
   },
   {
+    "Id": 1145474922,
+    "MissionId": 260120031409,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001200
+  },
+  {
     "Id": 1145538659,
     "MissionId": 260730120101,
     "MissionFormationFilterTypeIndex": 1,
@@ -23602,6 +23986,12 @@
     "MissionId": 260120031211,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1705001100
+  },
+  {
+    "Id": 1146941003,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370006100
   },
   {
     "Id": 1147467227,
@@ -24102,6 +24492,12 @@
     "Value": 1705005100
   },
   {
+    "Id": 1169245014,
+    "MissionId": 310021000101,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000100
+  },
+  {
     "Id": 1169422090,
     "MissionId": 310008100601,
     "MissionFormationFilterTypeIndex": 1,
@@ -24184,6 +24580,12 @@
     "MissionId": 310008100101,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1501004300
+  },
+  {
+    "Id": 1174181319,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370000160
   },
   {
     "Id": 1174723523,
@@ -24280,6 +24682,12 @@
     "MissionId": 310009500201,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1200005601
+  },
+  {
+    "Id": 1179240458,
+    "MissionId": 310008100101,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001500
   },
   {
     "Id": 1179287961,
@@ -24546,6 +24954,12 @@
     "Value": 1013001200
   },
   {
+    "Id": 1193504611,
+    "MissionId": 260730120203,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1379002010
+  },
+  {
     "Id": 1194865957,
     "MissionId": 260120031109,
     "MissionFormationFilterTypeIndex": 1,
@@ -24556,6 +24970,12 @@
     "MissionId": 260730120209,
     "MissionFormationFilterTypeIndex": 2,
     "Value": 1060001500
+  },
+  {
+    "Id": 1195382118,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370001810
   },
   {
     "Id": 1195478097,
@@ -24604,6 +25024,12 @@
     "MissionId": 200010200101,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1022000300
+  },
+  {
+    "Id": 1198097387,
+    "MissionId": 260120031404,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000500
   },
   {
     "Id": 1198778153,
@@ -25578,6 +26004,12 @@
     "Value": 1031001800
   },
   {
+    "Id": 1243373579,
+    "MissionId": 260730120109,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000900
+  },
+  {
     "Id": 1243405365,
     "MissionId": 260730120109,
     "MissionFormationFilterTypeIndex": 2,
@@ -26040,6 +26472,12 @@
     "Value": 1370007200
   },
   {
+    "Id": 1264767567,
+    "MissionId": 310009500201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001000
+  },
+  {
     "Id": 1264841395,
     "MissionId": 300010200101,
     "MissionFormationFilterTypeIndex": 1,
@@ -26494,6 +26932,12 @@
     "MissionId": 260120031409,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1370000500
+  },
+  {
+    "Id": 1286857482,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370005700
   },
   {
     "Id": 1286928075,
@@ -27666,6 +28110,12 @@
     "Value": 1430004000
   },
   {
+    "Id": 1343674004,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000700
+  },
+  {
     "Id": 1343680124,
     "MissionId": 260120031404,
     "MissionFormationFilterTypeIndex": 1,
@@ -27858,6 +28308,12 @@
     "Value": 1300004250
   },
   {
+    "Id": 1351508023,
+    "MissionId": 200010002501,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000500
+  },
+  {
     "Id": 1352187497,
     "MissionId": 260120031410,
     "MissionFormationFilterTypeIndex": 1,
@@ -27996,6 +28452,12 @@
     "Value": 1219000100
   },
   {
+    "Id": 1357639842,
+    "MissionId": 310008100101,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375001550
+  },
+  {
     "Id": 1357661385,
     "MissionId": 260120031303,
     "MissionFormationFilterTypeIndex": 1,
@@ -28102,6 +28564,12 @@
     "MissionId": 260120031211,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1081000110
+  },
+  {
+    "Id": 1363500302,
+    "MissionId": 300010201101,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375001550
   },
   {
     "Id": 1363638197,
@@ -28542,6 +29010,12 @@
     "Value": 1400000110
   },
   {
+    "Id": 1379872757,
+    "MissionId": 310009500201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000500
+  },
+  {
     "Id": 1379899517,
     "MissionId": 260730120109,
     "MissionFormationFilterTypeIndex": 1,
@@ -28636,6 +29110,12 @@
     "MissionId": 260550030901,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1022000210
+  },
+  {
+    "Id": 1383411693,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001000
   },
   {
     "Id": 1383521564,
@@ -29688,6 +30168,12 @@
     "Value": 1021000210
   },
   {
+    "Id": 1433862114,
+    "MissionId": 200010202301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375001550
+  },
+  {
     "Id": 1435191993,
     "MissionId": 200010200201,
     "MissionFormationFilterTypeIndex": 1,
@@ -29740,6 +30226,12 @@
     "MissionId": 260120031409,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1095001300
+  },
+  {
+    "Id": 1437297394,
+    "MissionId": 260730120102,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000400
   },
   {
     "Id": 1437868169,
@@ -30438,6 +30930,12 @@
     "Value": 1009000550
   },
   {
+    "Id": 1473715717,
+    "MissionId": 260620030901,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000300
+  },
+  {
     "Id": 1474024811,
     "MissionId": 300010200802,
     "MissionFormationFilterTypeIndex": 1,
@@ -30624,6 +31122,12 @@
     "Value": 1139000100
   },
   {
+    "Id": 1481295567,
+    "MissionId": 310009500201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000400
+  },
+  {
     "Id": 1481344662,
     "MissionId": 310009500101,
     "MissionFormationFilterTypeIndex": 1,
@@ -30634,6 +31138,12 @@
     "MissionId": 260550031001,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1210001510
+  },
+  {
+    "Id": 1481924961,
+    "MissionId": 260730120103,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000900
   },
   {
     "Id": 1482877942,
@@ -30700,6 +31210,12 @@
     "MissionId": 310021000101,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1144001700
+  },
+  {
+    "Id": 1487263376,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370009200
   },
   {
     "Id": 1487362563,
@@ -30898,6 +31414,12 @@
     "MissionId": 260730120105,
     "MissionFormationFilterTypeIndex": 2,
     "Value": 1080002800
+  },
+  {
+    "Id": 1494935780,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370001600
   },
   {
     "Id": 1495410110,
@@ -31512,6 +32034,12 @@
     "Value": 1008000210
   },
   {
+    "Id": 1519658663,
+    "MissionId": 260120031404,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001200
+  },
+  {
     "Id": 1519888919,
     "MissionId": 310009500601,
     "MissionFormationFilterTypeIndex": 1,
@@ -31846,6 +32374,12 @@
     "MissionId": 260730120208,
     "MissionFormationFilterTypeIndex": 2,
     "Value": 1095000202
+  },
+  {
+    "Id": 1537667372,
+    "MissionId": 310009500201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1379002010
   },
   {
     "Id": 1537734621,
@@ -32254,6 +32788,12 @@
     "MissionId": 300010200701,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1095001800
+  },
+  {
+    "Id": 1557525868,
+    "MissionId": 310009500601,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000100
   },
   {
     "Id": 1557613493,
@@ -33036,6 +33576,12 @@
     "Value": 1001001700
   },
   {
+    "Id": 1598000408,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000410
+  },
+  {
     "Id": 1598674921,
     "MissionId": 200010002501,
     "MissionFormationFilterTypeIndex": 1,
@@ -33600,6 +34146,12 @@
     "Value": 1370002710
   },
   {
+    "Id": 1627468323,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000100
+  },
+  {
     "Id": 1627565833,
     "MissionId": 260730120108,
     "MissionFormationFilterTypeIndex": 1,
@@ -33694,6 +34246,12 @@
     "MissionId": 310008100301,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1080001410
+  },
+  {
+    "Id": 1630833852,
+    "MissionId": 260730120109,
+    "MissionFormationFilterTypeIndex": 2,
+    "Value": 1376000500
   },
   {
     "Id": 1631475821,
@@ -34014,6 +34572,12 @@
     "Value": 1705000700
   },
   {
+    "Id": 1647968207,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370006600
+  },
+  {
     "Id": 1648072243,
     "MissionId": 260730120106,
     "MissionFormationFilterTypeIndex": 1,
@@ -34054,6 +34618,12 @@
     "MissionId": 300010200201,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1001001610
+  },
+  {
+    "Id": 1650896868,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370008900
   },
   {
     "Id": 1651354539,
@@ -34446,6 +35016,12 @@
     "Value": 1083000100
   },
   {
+    "Id": 1672034783,
+    "MissionId": 260730120103,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001000
+  },
+  {
     "Id": 1672689321,
     "MissionId": 260120032801,
     "MissionFormationFilterTypeIndex": 1,
@@ -34504,6 +35080,12 @@
     "MissionId": 310008100501,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1095000300
+  },
+  {
+    "Id": 1674802544,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000400
   },
   {
     "Id": 1675727037,
@@ -34842,6 +35424,12 @@
     "Value": 1125001450
   },
   {
+    "Id": 1690233595,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370000300
+  },
+  {
     "Id": 1690306196,
     "MissionId": 260120031212,
     "MissionFormationFilterTypeIndex": 1,
@@ -35176,6 +35764,12 @@
     "MissionId": 260120031103,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1001002110
+  },
+  {
+    "Id": 1708835060,
+    "MissionId": 260120031409,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001000
   },
   {
     "Id": 1709150107,
@@ -36228,6 +36822,12 @@
     "Value": 1021000200
   },
   {
+    "Id": 1758075204,
+    "MissionId": 260120031602,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000400
+  },
+  {
     "Id": 1758300381,
     "MissionId": 260120031403,
     "MissionFormationFilterTypeIndex": 1,
@@ -36304,6 +36904,12 @@
     "MissionId": 310009500601,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1230002600
+  },
+  {
+    "Id": 1762745874,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370002100
   },
   {
     "Id": 1763478683,
@@ -36756,6 +37362,12 @@
     "Value": 1705003700
   },
   {
+    "Id": 1787139973,
+    "MissionId": 260730120103,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000500
+  },
+  {
     "Id": 1787635520,
     "MissionId": 200010200301,
     "MissionFormationFilterTypeIndex": 1,
@@ -36766,6 +37378,12 @@
     "MissionId": 260120031110,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1159000110
+  },
+  {
+    "Id": 1788224859,
+    "MissionId": 260620031001,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001000
   },
   {
     "Id": 1788393285,
@@ -36808,6 +37426,12 @@
     "MissionId": 260730120108,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1012000110
+  },
+  {
+    "Id": 1791046404,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370000370
   },
   {
     "Id": 1791232634,
@@ -37464,6 +38088,12 @@
     "Value": 1200000500
   },
   {
+    "Id": 1819582097,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370007000
+  },
+  {
     "Id": 1819589200,
     "MissionId": 300010200802,
     "MissionFormationFilterTypeIndex": 1,
@@ -37726,6 +38356,12 @@
     "MissionId": 260730120106,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1001000410
+  },
+  {
+    "Id": 1832421852,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370000360
   },
   {
     "Id": 1832590064,
@@ -38322,6 +38958,12 @@
     "Value": 1310000400
   },
   {
+    "Id": 1862201382,
+    "MissionId": 260730120108,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000500
+  },
+  {
     "Id": 1862316045,
     "MissionId": 310008100601,
     "MissionFormationFilterTypeIndex": 1,
@@ -38670,6 +39312,12 @@
     "Value": 1017001000
   },
   {
+    "Id": 1882238130,
+    "MissionId": 260730120203,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000100
+  },
+  {
     "Id": 1882560149,
     "MissionId": 310008100101,
     "MissionFormationFilterTypeIndex": 1,
@@ -38866,6 +39514,12 @@
     "MissionId": 260730120106,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1400001600
+  },
+  {
+    "Id": 1891859213,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370000360
   },
   {
     "Id": 1891940521,
@@ -39390,6 +40044,12 @@
     "Value": 1431000500
   },
   {
+    "Id": 1914868161,
+    "MissionId": 200010002501,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000300
+  },
+  {
     "Id": 1914914635,
     "MissionId": 260120031604,
     "MissionFormationFilterTypeIndex": 1,
@@ -39822,6 +40482,12 @@
     "Value": 1400002900
   },
   {
+    "Id": 1933234661,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370000370
+  },
+  {
     "Id": 1933377323,
     "MissionId": 310021000201,
     "MissionFormationFilterTypeIndex": 1,
@@ -39988,6 +40654,12 @@
     "MissionId": 310009500201,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1430003450
+  },
+  {
+    "Id": 1941999080,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370009500
   },
   {
     "Id": 1942188384,
@@ -40782,6 +41454,12 @@
     "Value": 1307000400
   },
   {
+    "Id": 1977225151,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000900
+  },
+  {
     "Id": 1977381543,
     "MissionId": 310008100101,
     "MissionFormationFilterTypeIndex": 1,
@@ -41016,6 +41694,12 @@
     "Value": 1430003900
   },
   {
+    "Id": 1989218345,
+    "MissionId": 260620030901,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000400
+  },
+  {
     "Id": 1989241652,
     "MissionId": 260730120101,
     "MissionFormationFilterTypeIndex": 1,
@@ -41236,6 +41920,12 @@
     "MissionId": 310009500401,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1125001500
+  },
+  {
+    "Id": 1997564341,
+    "MissionId": 310008100101,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000400
   },
   {
     "Id": 1997666132,
@@ -41554,6 +42244,12 @@
     "MissionId": 260120031602,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1150000100
+  },
+  {
+    "Id": 2014587276,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370001100
   },
   {
     "Id": 2014617223,
@@ -41964,6 +42660,12 @@
     "Value": 1013001100
   },
   {
+    "Id": 2035701637,
+    "MissionId": 300010200201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000300
+  },
+  {
     "Id": 2035741864,
     "MissionId": 260120031110,
     "MissionFormationFilterTypeIndex": 1,
@@ -42088,6 +42790,12 @@
     "MissionId": 310009500401,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1100000210
+  },
+  {
+    "Id": 2042927684,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001400
   },
   {
     "Id": 2042963496,
@@ -42372,6 +43080,12 @@
     "Value": 1230005300
   },
   {
+    "Id": 2058911909,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000700
+  },
+  {
     "Id": 2059802078,
     "MissionId": 260120031410,
     "MissionFormationFilterTypeIndex": 1,
@@ -42640,6 +43354,12 @@
     "MissionId": 310021000101,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1144001000
+  },
+  {
+    "Id": 2073786613,
+    "MissionId": 200010202301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000400
   },
   {
     "Id": 2074643900,
@@ -43242,6 +43962,12 @@
     "Value": 1230000500
   },
   {
+    "Id": 2100888829,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370000500
+  },
+  {
     "Id": 2101308931,
     "MissionId": 260120031403,
     "MissionFormationFilterTypeIndex": 1,
@@ -43602,6 +44328,12 @@
     "Value": 1001001600
   },
   {
+    "Id": 2119580101,
+    "MissionId": 260730120105,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001000
+  },
+  {
     "Id": 2119883371,
     "MissionId": 310008100601,
     "MissionFormationFilterTypeIndex": 1,
@@ -43926,6 +44658,12 @@
     "Value": 1095002200
   },
   {
+    "Id": 2134987748,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1379000101
+  },
+  {
     "Id": 2135012671,
     "MissionId": 260120031309,
     "MissionFormationFilterTypeIndex": 1,
@@ -44050,6 +44788,12 @@
     "MissionId": 260120031303,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1230001700
+  },
+  {
+    "Id": 2141674358,
+    "MissionId": 310009500601,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000700
   },
   {
     "Id": 2141703696,
@@ -44290,6 +45034,12 @@
     "MissionId": 310021000201,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1060000200
+  },
+  {
+    "Id": 2151765367,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1379000100
   },
   {
     "Id": 2151826498,
@@ -44646,6 +45396,12 @@
     "Value": 1013001100
   },
   {
+    "Id": 2170548364,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370006400
+  },
+  {
     "Id": 2170820411,
     "MissionId": 260550031001,
     "MissionFormationFilterTypeIndex": 1,
@@ -44988,6 +45744,12 @@
     "Value": 1060000500
   },
   {
+    "Id": 2185320605,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1379000102
+  },
+  {
     "Id": 2185723524,
     "MissionId": 260120031411,
     "MissionFormationFilterTypeIndex": 1,
@@ -45162,6 +45924,12 @@
     "Value": 1330006900
   },
   {
+    "Id": 2192539777,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370001900
+  },
+  {
     "Id": 2192596323,
     "MissionId": 260550031001,
     "MissionFormationFilterTypeIndex": 1,
@@ -45208,6 +45976,12 @@
     "MissionId": 260120031211,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1080001800
+  },
+  {
+    "Id": 2195375914,
+    "MissionId": 300010200201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1379002010
   },
   {
     "Id": 2195503061,
@@ -46570,6 +47344,12 @@
     "MissionId": 310008100601,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1210000300
+  },
+  {
+    "Id": 2262173355,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000600
   },
   {
     "Id": 2263287025,
@@ -48300,6 +49080,12 @@
     "Value": 1300004300
   },
   {
+    "Id": 2350238979,
+    "MissionId": 260120031602,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000100
+  },
+  {
     "Id": 2350908749,
     "MissionId": 260120031403,
     "MissionFormationFilterTypeIndex": 1,
@@ -48382,6 +49168,12 @@
     "MissionId": 260730120103,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1017000200
+  },
+  {
+    "Id": 2355552723,
+    "MissionId": 310008100101,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001200
   },
   {
     "Id": 2355677286,
@@ -48526,6 +49318,12 @@
     "MissionId": 260120031303,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1008000110
+  },
+  {
+    "Id": 2362422346,
+    "MissionId": 260730120205,
+    "MissionFormationFilterTypeIndex": 2,
+    "Value": 1376000200
   },
   {
     "Id": 2362629018,
@@ -48738,6 +49536,12 @@
     "Value": 1210003300
   },
   {
+    "Id": 2371288463,
+    "MissionId": 260730120103,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000700
+  },
+  {
     "Id": 2371853231,
     "MissionId": 260730120102,
     "MissionFormationFilterTypeIndex": 1,
@@ -48790,6 +49594,12 @@
     "MissionId": 260730120205,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1031002100
+  },
+  {
+    "Id": 2373442666,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370009300
   },
   {
     "Id": 2374292084,
@@ -48880,6 +49690,12 @@
     "MissionId": 260120031409,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1211001100
+  },
+  {
+    "Id": 2378109454,
+    "MissionId": 260730120106,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370008610
   },
   {
     "Id": 2378217231,
@@ -48988,6 +49804,12 @@
     "MissionId": 300010200802,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1055000610
+  },
+  {
+    "Id": 2382942235,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370007200
   },
   {
     "Id": 2383059754,
@@ -49120,6 +49942,12 @@
     "MissionId": 310021000101,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1230003700
+  },
+  {
+    "Id": 2387390195,
+    "MissionId": 260730120105,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000500
   },
   {
     "Id": 2387398039,
@@ -49432,6 +50260,12 @@
     "MissionId": 260120031309,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1009000210
+  },
+  {
+    "Id": 2401548684,
+    "MissionId": 260120031410,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001200
   },
   {
     "Id": 2401713568,
@@ -49794,6 +50628,12 @@
     "Value": 1080002000
   },
   {
+    "Id": 2421986326,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370008800
+  },
+  {
     "Id": 2422161128,
     "MissionId": 260120031212,
     "MissionFormationFilterTypeIndex": 1,
@@ -49912,6 +50752,12 @@
     "MissionId": 260730120202,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1230002000
+  },
+  {
+    "Id": 2428498585,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370000150
   },
   {
     "Id": 2428602077,
@@ -50098,6 +50944,12 @@
     "MissionId": 260120031512,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1009000500
+  },
+  {
+    "Id": 2440877363,
+    "MissionId": 300010201101,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000500
   },
   {
     "Id": 2441054097,
@@ -50296,6 +51148,12 @@
     "MissionId": 310021000601,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1230003900
+  },
+  {
+    "Id": 2450821148,
+    "MissionId": 260730120203,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000300
   },
   {
     "Id": 2451056499,
@@ -50512,6 +51370,12 @@
     "MissionId": 310021000601,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1001002100
+  },
+  {
+    "Id": 2462642628,
+    "MissionId": 310008100101,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000400
   },
   {
     "Id": 2463447820,
@@ -51264,6 +52128,12 @@
     "Value": 1300003100
   },
   {
+    "Id": 2499016651,
+    "MissionId": 200010002501,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000100
+  },
+  {
     "Id": 2499056321,
     "MissionId": 260120031410,
     "MissionFormationFilterTypeIndex": 1,
@@ -51780,6 +52650,12 @@
     "Value": 1001003050
   },
   {
+    "Id": 2527381385,
+    "MissionId": 310009500201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000100
+  },
+  {
     "Id": 2527432341,
     "MissionId": 260120031412,
     "MissionFormationFilterTypeIndex": 1,
@@ -51814,6 +52690,12 @@
     "MissionId": 260120031410,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1230005200
+  },
+  {
+    "Id": 2529311394,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370000160
   },
   {
     "Id": 2529622665,
@@ -52006,6 +52888,12 @@
     "MissionId": 310021000101,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1085000910
+  },
+  {
+    "Id": 2538864900,
+    "MissionId": 200010202301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000400
   },
   {
     "Id": 2538957225,
@@ -52368,6 +53256,12 @@
     "Value": 1085001910
   },
   {
+    "Id": 2559723958,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001500
+  },
+  {
     "Id": 2560397801,
     "MissionId": 260120031412,
     "MissionFormationFilterTypeIndex": 1,
@@ -52468,6 +53362,12 @@
     "MissionId": 300010200901,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1336000700
+  },
+  {
+    "Id": 2566344977,
+    "MissionId": 260730120102,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000100
   },
   {
     "Id": 2568040673,
@@ -52734,6 +53634,12 @@
     "Value": 1850000610
   },
   {
+    "Id": 2579597097,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370000900
+  },
+  {
     "Id": 2579725000,
     "MissionId": 260730120208,
     "MissionFormationFilterTypeIndex": 1,
@@ -52744,6 +53650,12 @@
     "MissionId": 310009500601,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1375000410
+  },
+  {
+    "Id": 2581712831,
+    "MissionId": 310008100101,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000600
   },
   {
     "Id": 2581769254,
@@ -52960,6 +53872,12 @@
     "MissionId": 260120031309,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1850002360
+  },
+  {
+    "Id": 2589031490,
+    "MissionId": 260730120109,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375001550
   },
   {
     "Id": 2589563988,
@@ -53604,6 +54522,12 @@
     "Value": 1001000800
   },
   {
+    "Id": 2619850127,
+    "MissionId": 300010200201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000100
+  },
+  {
     "Id": 2619915163,
     "MissionId": 260620030901,
     "MissionFormationFilterTypeIndex": 1,
@@ -53758,6 +54682,12 @@
     "MissionId": 260730120105,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1211000300
+  },
+  {
+    "Id": 2627868599,
+    "MissionId": 260730120101,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370010150
   },
   {
     "Id": 2627918510,
@@ -53938,6 +54868,12 @@
     "MissionId": 260730120106,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1330002200
+  },
+  {
+    "Id": 2635091459,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001100
   },
   {
     "Id": 2635470135,
@@ -54396,6 +55332,12 @@
     "Value": 1400004400
   },
   {
+    "Id": 2657935103,
+    "MissionId": 200010202301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000600
+  },
+  {
     "Id": 2658210272,
     "MissionId": 260120031602,
     "MissionFormationFilterTypeIndex": 1,
@@ -54576,6 +55518,12 @@
     "Value": 1850003010
   },
   {
+    "Id": 2666514999,
+    "MissionId": 200010102501,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000400
+  },
+  {
     "Id": 2666898622,
     "MissionId": 260120031203,
     "MissionFormationFilterTypeIndex": 1,
@@ -54688,6 +55636,12 @@
     "MissionId": 260120031303,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1705001400
+  },
+  {
+    "Id": 2674342929,
+    "MissionId": 260730120209,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1379002010
   },
   {
     "Id": 2674671094,
@@ -54816,6 +55770,12 @@
     "Value": 1007000510
   },
   {
+    "Id": 2678760223,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370001710
+  },
+  {
     "Id": 2678986661,
     "MissionId": 310021000201,
     "MissionFormationFilterTypeIndex": 1,
@@ -54888,6 +55848,12 @@
     "Value": 1021000110
   },
   {
+    "Id": 2681350571,
+    "MissionId": 310009500601,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000400
+  },
+  {
     "Id": 2681651411,
     "MissionId": 260730120205,
     "MissionFormationFilterTypeIndex": 2,
@@ -54898,6 +55864,12 @@
     "MissionId": 260730120203,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1007000510
+  },
+  {
+    "Id": 2682501291,
+    "MissionId": 260730120203,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375001550
   },
   {
     "Id": 2682596114,
@@ -55218,6 +56190,12 @@
     "Value": 1031002200
   },
   {
+    "Id": 2697522768,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370005950
+  },
+  {
     "Id": 2697818748,
     "MissionId": 300010200201,
     "MissionFormationFilterTypeIndex": 1,
@@ -55312,6 +56290,12 @@
     "MissionId": 260550030901,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1031001500
+  },
+  {
+    "Id": 2703728591,
+    "MissionId": 260730120105,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001200
   },
   {
     "Id": 2703844431,
@@ -55542,6 +56526,24 @@
     "Value": 1001000150
   },
   {
+    "Id": 2713573012,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370007410
+  },
+  {
+    "Id": 2714300387,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370005951
+  },
+  {
+    "Id": 2714330605,
+    "MissionId": 200010200201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001500
+  },
+  {
     "Id": 2714353076,
     "MissionId": 260120032801,
     "MissionFormationFilterTypeIndex": 1,
@@ -55606,6 +56608,12 @@
     "MissionId": 260120031403,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1023000110
+  },
+  {
+    "Id": 2717300866,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000100
   },
   {
     "Id": 2717607787,
@@ -55984,6 +56992,12 @@
     "MissionId": 310021000601,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1017000610
+  },
+  {
+    "Id": 2733908502,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370006200
   },
   {
     "Id": 2734431759,
@@ -56926,6 +57940,12 @@
     "MissionId": 260730120108,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1144000200
+  },
+  {
+    "Id": 2777015790,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370006100
   },
   {
     "Id": 2777080098,
@@ -58926,6 +59946,12 @@
     "Value": 1031000500
   },
   {
+    "Id": 2872320949,
+    "MissionId": 300010201101,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000300
+  },
+  {
     "Id": 2872836317,
     "MissionId": 260120031409,
     "MissionFormationFilterTypeIndex": 1,
@@ -59026,6 +60052,12 @@
     "MissionId": 310008100101,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1230003800
+  },
+  {
+    "Id": 2877793458,
+    "MissionId": 260730120108,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000100
   },
   {
     "Id": 2878207625,
@@ -59224,6 +60256,12 @@
     "MissionId": 260730120109,
     "MissionFormationFilterTypeIndex": 2,
     "Value": 1003000100
+  },
+  {
+    "Id": 2888864796,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370000900
   },
   {
     "Id": 2889145832,
@@ -59880,6 +60918,12 @@
     "Value": 1330006010
   },
   {
+    "Id": 2924337930,
+    "MissionId": 200010002501,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375001550
+  },
+  {
     "Id": 2924483957,
     "MissionId": 260620031001,
     "MissionFormationFilterTypeIndex": 1,
@@ -60198,6 +61242,12 @@
     "Value": 1031002300
   },
   {
+    "Id": 2936802804,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370009100
+  },
+  {
     "Id": 2936819383,
     "MissionId": 260120031303,
     "MissionFormationFilterTypeIndex": 1,
@@ -60346,6 +61396,12 @@
     "MissionId": 310021000201,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1210001160
+  },
+  {
+    "Id": 2942785621,
+    "MissionId": 260620030901,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001000
   },
   {
     "Id": 2943010194,
@@ -60688,6 +61744,12 @@
     "MissionId": 260730120106,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1095001500
+  },
+  {
+    "Id": 2957175288,
+    "MissionId": 310009500201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001500
   },
   {
     "Id": 2957463372,
@@ -61062,6 +62124,12 @@
     "Value": 1200003310
   },
   {
+    "Id": 2976800030,
+    "MissionId": 300010200701,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370010150
+  },
+  {
     "Id": 2977389286,
     "MissionId": 310008100601,
     "MissionFormationFilterTypeIndex": 1,
@@ -61120,6 +62188,12 @@
     "MissionId": 260120031103,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1055000260
+  },
+  {
+    "Id": 2981090470,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370001710
   },
   {
     "Id": 2981841918,
@@ -61860,6 +62934,12 @@
     "Value": 1125001200
   },
   {
+    "Id": 3019174956,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370000150
+  },
+  {
     "Id": 3019212247,
     "MissionId": 310021000601,
     "MissionFormationFilterTypeIndex": 1,
@@ -62430,6 +63510,12 @@
     "Value": 1007000960
   },
   {
+    "Id": 3047754545,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370009100
+  },
+  {
     "Id": 3048108901,
     "MissionId": 260730120105,
     "MissionFormationFilterTypeIndex": 1,
@@ -62580,6 +63666,12 @@
     "Value": 1133000302
   },
   {
+    "Id": 3054806403,
+    "MissionId": 310008100101,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000100
+  },
+  {
     "Id": 3054920098,
     "MissionId": 260730120208,
     "MissionFormationFilterTypeIndex": 1,
@@ -62602,6 +63694,12 @@
     "MissionId": 310021000201,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1307000400
+  },
+  {
+    "Id": 3055442780,
+    "MissionId": 260730120106,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000900
   },
   {
     "Id": 3055939457,
@@ -62952,6 +64050,12 @@
     "Value": 1155000250
   },
   {
+    "Id": 3074121906,
+    "MissionId": 260730120209,
+    "MissionFormationFilterTypeIndex": 2,
+    "Value": 1370004501
+  },
+  {
     "Id": 3074238438,
     "MissionId": 300010200201,
     "MissionFormationFilterTypeIndex": 1,
@@ -63006,6 +64110,12 @@
     "Value": 1125002500
   },
   {
+    "Id": 3077822525,
+    "MissionId": 260120031404,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001000
+  },
+  {
     "Id": 3078324833,
     "MissionId": 260730120102,
     "MissionFormationFilterTypeIndex": 1,
@@ -63034,6 +64144,12 @@
     "MissionId": 260620030901,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1764000310
+  },
+  {
+    "Id": 3079110874,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370001400
   },
   {
     "Id": 3079174364,
@@ -63192,6 +64308,12 @@
     "Value": 1060001200
   },
   {
+    "Id": 3084715515,
+    "MissionId": 310021000601,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000400
+  },
+  {
     "Id": 3084734278,
     "MissionId": 300010201101,
     "MissionFormationFilterTypeIndex": 1,
@@ -63232,6 +64354,12 @@
     "MissionId": 260730120106,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1400003600
+  },
+  {
+    "Id": 3086644758,
+    "MissionId": 260730120209,
+    "MissionFormationFilterTypeIndex": 2,
+    "Value": 1376000301
   },
   {
     "Id": 3086747469,
@@ -63576,6 +64704,12 @@
     "Value": 1210002700
   },
   {
+    "Id": 3103422377,
+    "MissionId": 260730120209,
+    "MissionFormationFilterTypeIndex": 2,
+    "Value": 1376000300
+  },
+  {
     "Id": 3103972035,
     "MissionId": 260550030901,
     "MissionFormationFilterTypeIndex": 1,
@@ -63742,6 +64876,12 @@
     "MissionId": 300010200301,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1001001200
+  },
+  {
+    "Id": 3112334473,
+    "MissionId": 260120031409,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000700
   },
   {
     "Id": 3113196531,
@@ -64174,6 +65314,12 @@
     "MissionId": 260120031309,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1370002810
+  },
+  {
+    "Id": 3131028675,
+    "MissionId": 200010202301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000100
   },
   {
     "Id": 3131301758,
@@ -64770,6 +65916,12 @@
     "Value": 1430008060
   },
   {
+    "Id": 3161387150,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000210
+  },
+  {
     "Id": 3161737376,
     "MissionId": 260120031602,
     "MissionFormationFilterTypeIndex": 1,
@@ -64780,6 +65932,12 @@
     "MissionId": 260730120105,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1001000400
+  },
+  {
+    "Id": 3162095904,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370001500
   },
   {
     "Id": 3162154576,
@@ -65076,6 +66234,12 @@
     "Value": 1114000200
   },
   {
+    "Id": 3173703288,
+    "MissionId": 310009500201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000100
+  },
+  {
     "Id": 3173752677,
     "MissionId": 260730120203,
     "MissionFormationFilterTypeIndex": 1,
@@ -65226,6 +66390,12 @@
     "Value": 1400000100
   },
   {
+    "Id": 3181265139,
+    "MissionId": 310008100601,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000700
+  },
+  {
     "Id": 3181385905,
     "MissionId": 200010000301,
     "MissionFormationFilterTypeIndex": 5,
@@ -65272,6 +66442,12 @@
     "MissionId": 260120031309,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1008000300
+  },
+  {
+    "Id": 3182736612,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000400
   },
   {
     "Id": 3182761696,
@@ -66258,6 +67434,12 @@
     "Value": 1060002300
   },
   {
+    "Id": 3235293713,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000700
+  },
+  {
     "Id": 3235321350,
     "MissionId": 200010002501,
     "MissionFormationFilterTypeIndex": 1,
@@ -66376,6 +67558,12 @@
     "MissionId": 260120031309,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1850002910
+  },
+  {
+    "Id": 3244357968,
+    "MissionId": 310021000201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370010150
   },
   {
     "Id": 3244376712,
@@ -66628,6 +67816,12 @@
     "MissionId": 300010200501,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1009000550
+  },
+  {
+    "Id": 3256209877,
+    "MissionId": 260730120103,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001200
   },
   {
     "Id": 3256332216,
@@ -67324,6 +68518,12 @@
     "MissionId": 310009500301,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1750000302
+  },
+  {
+    "Id": 3287769071,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370008700
   },
   {
     "Id": 3288016010,
@@ -68484,6 +69684,12 @@
     "Value": 1080000100
   },
   {
+    "Id": 3345042703,
+    "MissionId": 260120031602,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000500
+  },
+  {
     "Id": 3345122403,
     "MissionId": 310009500601,
     "MissionFormationFilterTypeIndex": 1,
@@ -68536,6 +69742,12 @@
     "MissionId": 260620031001,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1336000300
+  },
+  {
+    "Id": 3349185209,
+    "MissionId": 260730120109,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370008610
   },
   {
     "Id": 3349323495,
@@ -69178,6 +70390,12 @@
     "MissionId": 260120031602,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1031000350
+  },
+  {
+    "Id": 3385230856,
+    "MissionId": 260730120103,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001500
   },
   {
     "Id": 3385348422,
@@ -70380,6 +71598,12 @@
     "Value": 1031002900
   },
   {
+    "Id": 3446376476,
+    "MissionId": 260730120108,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000300
+  },
+  {
     "Id": 3446523318,
     "MissionId": 260120031412,
     "MissionFormationFilterTypeIndex": 1,
@@ -70594,6 +71818,12 @@
     "MissionId": 260730120102,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1021000110
+  },
+  {
+    "Id": 3456469439,
+    "MissionId": 300010201101,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000100
   },
   {
     "Id": 3456537470,
@@ -70872,6 +72102,12 @@
     "Value": 1850000500
   },
   {
+    "Id": 3476269470,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370007200
+  },
+  {
     "Id": 3476604892,
     "MissionId": 310021000101,
     "MissionFormationFilterTypeIndex": 1,
@@ -70930,6 +72166,12 @@
     "MissionId": 260730120106,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1230002500
+  },
+  {
+    "Id": 3479725300,
+    "MissionId": 260120031410,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000500
   },
   {
     "Id": 3479807248,
@@ -71050,6 +72292,12 @@
     "MissionId": 260730120103,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1330003210
+  },
+  {
+    "Id": 3486886366,
+    "MissionId": 260730120106,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000700
   },
   {
     "Id": 3487312478,
@@ -71604,6 +72852,12 @@
     "Value": 1330002100
   },
   {
+    "Id": 3519654827,
+    "MissionId": 260620031001,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370008610
+  },
+  {
     "Id": 3519898761,
     "MissionId": 300010200101,
     "MissionFormationFilterTypeIndex": 1,
@@ -71704,6 +72958,12 @@
     "MissionId": 200010200101,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1060000300
+  },
+  {
+    "Id": 3522624012,
+    "MissionId": 200010002501,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000400
   },
   {
     "Id": 3522847169,
@@ -72064,6 +73324,12 @@
     "MissionId": 260620030901,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1162000100
+  },
+  {
+    "Id": 3538734611,
+    "MissionId": 260730120205,
+    "MissionFormationFilterTypeIndex": 2,
+    "Value": 1376000500
   },
   {
     "Id": 3538791820,
@@ -72486,6 +73752,12 @@
     "Value": 1330003500
   },
   {
+    "Id": 3554527682,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001100
+  },
+  {
     "Id": 3554559783,
     "MissionId": 310008100101,
     "MissionFormationFilterTypeIndex": 1,
@@ -72538,6 +73810,12 @@
     "MissionId": 260550031001,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1370003100
+  },
+  {
+    "Id": 3559493470,
+    "MissionId": 260620030901,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375001550
   },
   {
     "Id": 3559717325,
@@ -72786,6 +74064,12 @@
     "Value": 1430007200
   },
   {
+    "Id": 3572751138,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370001300
+  },
+  {
     "Id": 3572837650,
     "MissionId": 200010200201,
     "MissionFormationFilterTypeIndex": 1,
@@ -72942,6 +74226,12 @@
     "Value": 1031001250
   },
   {
+    "Id": 3579127832,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1379000300
+  },
+  {
     "Id": 3579393565,
     "MissionId": 260120031211,
     "MissionFormationFilterTypeIndex": 1,
@@ -73066,6 +74356,12 @@
     "MissionId": 200010000101,
     "MissionFormationFilterTypeIndex": 5,
     "Value": 3
+  },
+  {
+    "Id": 3586242489,
+    "MissionId": 260730120209,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001500
   },
   {
     "Id": 3586348589,
@@ -73440,6 +74736,12 @@
     "Value": 1095001300
   },
   {
+    "Id": 3605146874,
+    "MissionId": 310009500201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000700
+  },
+  {
     "Id": 3605195969,
     "MissionId": 310009500101,
     "MissionFormationFilterTypeIndex": 1,
@@ -73554,6 +74856,12 @@
     "Value": 1144001700
   },
   {
+    "Id": 3612708725,
+    "MissionId": 310008100601,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000100
+  },
+  {
     "Id": 3612999615,
     "MissionId": 260120031310,
     "MissionFormationFilterTypeIndex": 1,
@@ -73600,6 +74908,12 @@
     "MissionId": 300010200201,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1155000700
+  },
+  {
+    "Id": 3614163567,
+    "MissionId": 260120031410,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000700
   },
   {
     "Id": 3614561162,
@@ -73684,6 +74998,12 @@
     "MissionId": 310008100601,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1055000360
+  },
+  {
+    "Id": 3616860264,
+    "MissionId": 260620031001,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375001550
   },
   {
     "Id": 3617080814,
@@ -73992,6 +75312,12 @@
     "Value": 1210002100
   },
   {
+    "Id": 3629895183,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001500
+  },
+  {
     "Id": 3629930995,
     "MissionId": 260730120304,
     "MissionFormationFilterTypeIndex": 1,
@@ -74026,6 +75352,12 @@
     "MissionId": 260730120102,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1230000600
+  },
+  {
+    "Id": 3631903035,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370009300
   },
   {
     "Id": 3632140466,
@@ -74248,6 +75580,12 @@
     "MissionId": 260120031309,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1764000300
+  },
+  {
+    "Id": 3642940458,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370005951
   },
   {
     "Id": 3643349839,
@@ -74616,6 +75954,12 @@
     "Value": 1031002400
   },
   {
+    "Id": 3659718077,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370005950
+  },
+  {
     "Id": 3659924051,
     "MissionId": 310021000501,
     "MissionFormationFilterTypeIndex": 1,
@@ -74752,6 +76096,12 @@
     "MissionId": 310021000101,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1705002050
+  },
+  {
+    "Id": 3666051769,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370001100
   },
   {
     "Id": 3666084965,
@@ -74980,6 +76330,12 @@
     "MissionId": 310009500101,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1110000900
+  },
+  {
+    "Id": 3678056619,
+    "MissionId": 260730120108,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375001550
   },
   {
     "Id": 3678203167,
@@ -75732,6 +77088,12 @@
     "Value": 1764000202
   },
   {
+    "Id": 3710760414,
+    "MissionId": 310008100101,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000100
+  },
+  {
     "Id": 3711212447,
     "MissionId": 300010200901,
     "MissionFormationFilterTypeIndex": 1,
@@ -75978,6 +77340,12 @@
     "Value": 1031002400
   },
   {
+    "Id": 3728712226,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370006600
+  },
+  {
     "Id": 3729290738,
     "MissionId": 260730120102,
     "MissionFormationFilterTypeIndex": 1,
@@ -76012,6 +77380,12 @@
     "MissionId": 260730120203,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1370008100
+  },
+  {
+    "Id": 3730717581,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1379000300
   },
   {
     "Id": 3731012775,
@@ -76396,6 +77770,12 @@
     "MissionId": 260550030901,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1370003110
+  },
+  {
+    "Id": 3746384814,
+    "MissionId": 260120031409,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000500
   },
   {
     "Id": 3747782371,
@@ -77196,6 +78576,12 @@
     "Value": 1031001400
   },
   {
+    "Id": 3786982686,
+    "MissionId": 200010202301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000100
+  },
+  {
     "Id": 3787353407,
     "MissionId": 260120031411,
     "MissionFormationFilterTypeIndex": 1,
@@ -77416,6 +78802,12 @@
     "MissionId": 260120031411,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1009000550
+  },
+  {
+    "Id": 3798653851,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000500
   },
   {
     "Id": 3799763540,
@@ -77842,6 +79234,12 @@
     "MissionId": 260120031110,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1001001300
+  },
+  {
+    "Id": 3822661111,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375001550
   },
   {
     "Id": 3823181273,
@@ -78402,6 +79800,12 @@
     "Value": 1330001900
   },
   {
+    "Id": 3846348449,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000400
+  },
+  {
     "Id": 3846352687,
     "MissionId": 200010200101,
     "MissionFormationFilterTypeIndex": 1,
@@ -78580,6 +79984,12 @@
     "MissionId": 310008100101,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1604000150
+  },
+  {
+    "Id": 3852132439,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000210
   },
   {
     "Id": 3852276337,
@@ -79086,6 +80496,12 @@
     "Value": 1850001500
   },
   {
+    "Id": 3880386721,
+    "MissionId": 260730120103,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370010150
+  },
+  {
     "Id": 3881075012,
     "MissionId": 260120031412,
     "MissionFormationFilterTypeIndex": 1,
@@ -79138,6 +80554,12 @@
     "MissionId": 260120031211,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1080001710
+  },
+  {
+    "Id": 3883668520,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370000500
   },
   {
     "Id": 3883781292,
@@ -79518,6 +80940,12 @@
     "Value": 1307000400
   },
   {
+    "Id": 3905983697,
+    "MissionId": 300010200701,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000400
+  },
+  {
     "Id": 3906176075,
     "MissionId": 260620030901,
     "MissionFormationFilterTypeIndex": 1,
@@ -79558,6 +80986,12 @@
     "MissionId": 260120031303,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1370002410
+  },
+  {
+    "Id": 3908402841,
+    "MissionId": 260120031602,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000300
   },
   {
     "Id": 3909109858,
@@ -80008,6 +81442,12 @@
     "MissionId": 260120031412,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1017000610
+  },
+  {
+    "Id": 3934504937,
+    "MissionId": 310008100101,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001000
   },
   {
     "Id": 3935015216,
@@ -80520,6 +81960,12 @@
     "Value": 1125000250
   },
   {
+    "Id": 3959712546,
+    "MissionId": 260120031410,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001000
+  },
+  {
     "Id": 3959994386,
     "MissionId": 260730120204,
     "MissionFormationFilterTypeIndex": 2,
@@ -80530,6 +81976,12 @@
     "MissionId": 310009500401,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1095000900
+  },
+  {
+    "Id": 3960410165,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370009200
   },
   {
     "Id": 3960551307,
@@ -80782,6 +82234,12 @@
     "MissionId": 260120031110,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1159000900
+  },
+  {
+    "Id": 3972767364,
+    "MissionId": 310009500201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001100
   },
   {
     "Id": 3972841192,
@@ -81474,6 +82932,12 @@
     "Value": 1013001410
   },
   {
+    "Id": 4004194724,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370001900
+  },
+  {
     "Id": 4004617398,
     "MissionId": 200010201801,
     "MissionFormationFilterTypeIndex": 1,
@@ -81532,6 +82996,12 @@
     "MissionId": 300010200201,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1200001500
+  },
+  {
+    "Id": 4006841041,
+    "MissionId": 260730120108,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000400
   },
   {
     "Id": 4006986861,
@@ -82158,6 +83628,12 @@
     "Value": 1300003500
   },
   {
+    "Id": 4039629608,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370007000
+  },
+  {
     "Id": 4040101188,
     "MissionId": 300010200802,
     "MissionFormationFilterTypeIndex": 1,
@@ -82222,6 +83698,12 @@
     "MissionId": 260730120106,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1008000110
+  },
+  {
+    "Id": 4042558269,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370009500
   },
   {
     "Id": 4042872246,
@@ -82372,6 +83854,12 @@
     "MissionId": 260730120102,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1001000610
+  },
+  {
+    "Id": 4049610127,
+    "MissionId": 310008100101,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000500
   },
   {
     "Id": 4049886360,
@@ -82558,6 +84046,12 @@
     "MissionId": 260730120205,
     "MissionFormationFilterTypeIndex": 2,
     "Value": 1001004800
+  },
+  {
+    "Id": 4059689086,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000100
   },
   {
     "Id": 4059862505,
@@ -83040,6 +84534,12 @@
     "Value": 1125003310
   },
   {
+    "Id": 4084755056,
+    "MissionId": 260730120103,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1379000500
+  },
+  {
     "Id": 4084784550,
     "MissionId": 260120031409,
     "MissionFormationFilterTypeIndex": 1,
@@ -83092,6 +84592,12 @@
     "MissionId": 260120031203,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1159000500
+  },
+  {
+    "Id": 4087872554,
+    "MissionId": 310009500201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000400
   },
   {
     "Id": 4088024241,
@@ -83338,6 +84844,12 @@
     "MissionId": 260120031110,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1017001200
+  },
+  {
+    "Id": 4099426775,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376001200
   },
   {
     "Id": 4099724807,
@@ -83766,6 +85278,12 @@
     "Value": 1095002900
   },
   {
+    "Id": 4121479390,
+    "MissionId": 300010200201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375001550
+  },
+  {
     "Id": 4121483809,
     "MissionId": 260730120108,
     "MissionFormationFilterTypeIndex": 1,
@@ -83880,6 +85398,12 @@
     "Value": 1230000700
   },
   {
+    "Id": 4125832399,
+    "MissionId": 200010202301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000500
+  },
+  {
     "Id": 4126662409,
     "MissionId": 260730120104,
     "MissionFormationFilterTypeIndex": 1,
@@ -83950,6 +85474,12 @@
     "MissionId": 310008100501,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1144000200
+  },
+  {
+    "Id": 4129731719,
+    "MissionId": 260730120102,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000700
   },
   {
     "Id": 4129765951,
@@ -85080,6 +86610,12 @@
     "Value": 1501000150
   },
   {
+    "Id": 4186192914,
+    "MissionId": 200010200201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000300
+  },
+  {
     "Id": 4187064645,
     "MissionId": 260120031404,
     "MissionFormationFilterTypeIndex": 1,
@@ -85632,6 +87168,12 @@
     "Value": 2
   },
   {
+    "Id": 4212393990,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000900
+  },
+  {
     "Id": 4213412391,
     "MissionId": 310009500201,
     "MissionFormationFilterTypeIndex": 1,
@@ -85794,6 +87336,12 @@
     "Value": 1150000900
   },
   {
+    "Id": 4219828982,
+    "MissionId": 260730120209,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000300
+  },
+  {
     "Id": 4220008450,
     "MissionId": 310021000101,
     "MissionFormationFilterTypeIndex": 1,
@@ -85894,6 +87442,12 @@
     "MissionId": 310021000601,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1501001900
+  },
+  {
+    "Id": 4224970299,
+    "MissionId": 300010200802,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1375000100
   },
   {
     "Id": 4225160238,
@@ -86028,6 +87582,12 @@
     "Value": 1370002500
   },
   {
+    "Id": 4230097437,
+    "MissionId": 260930031201,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1376000300
+  },
+  {
     "Id": 4230362856,
     "MissionId": 260120031403,
     "MissionFormationFilterTypeIndex": 1,
@@ -86116,6 +87676,12 @@
     "MissionId": 310009500601,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1430007200
+  },
+  {
+    "Id": 4234634787,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370001300
   },
   {
     "Id": 4235101590,
@@ -86434,6 +88000,12 @@
     "MissionId": 260120031303,
     "MissionFormationFilterTypeIndex": 1,
     "Value": 1159000200
+  },
+  {
+    "Id": 4248878099,
+    "MissionId": 260930031301,
+    "MissionFormationFilterTypeIndex": 1,
+    "Value": 1370005700
   },
   {
     "Id": 4249105423,

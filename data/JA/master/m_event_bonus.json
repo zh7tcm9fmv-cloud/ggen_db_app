@@ -725,6 +725,61 @@
     "TargetId": 20001612
   },
   {
+    "Id": 20001701,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001701
+  },
+  {
+    "Id": 20001702,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001702
+  },
+  {
+    "Id": 20001703,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001703
+  },
+  {
+    "Id": 20001704,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001704
+  },
+  {
+    "Id": 20001705,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001705
+  },
+  {
+    "Id": 20001706,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001706
+  },
+  {
+    "Id": 20001707,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001707
+  },
+  {
+    "Id": 20001708,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001708
+  },
+  {
+    "Id": 20001709,
+    "EventBonusTargetTypeIndex": 1,
+    "TargetId": 20001709
+  },
+  {
+    "Id": 20001710,
+    "EventBonusTargetTypeIndex": 3,
+    "TargetId": 20001710
+  },
+  {
+    "Id": 20001711,
+    "EventBonusTargetTypeIndex": 3,
+    "TargetId": 20001711
+  },
+  {
     "Id": 25000101,
     "EventBonusTargetTypeIndex": 4,
     "TargetId": 25000101

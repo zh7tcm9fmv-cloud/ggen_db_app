@@ -4200,6 +4200,96 @@
     "SortOrder": 1375000020
   },
   {
+    "Id": 137600001,
+    "NameLanguageId": 300100000137600001,
+    "ResourceId": "bgm_3760_0001",
+    "IsPaid": false,
+    "ScheduleId": 2609309901,
+    "SeriesId": 3760,
+    "HasLyrics": false,
+    "SortOrder": 1376000010
+  },
+  {
+    "Id": 137600002,
+    "NameLanguageId": 300100000137600002,
+    "ResourceId": "bgm_3760_0002",
+    "IsPaid": false,
+    "ScheduleId": 2609309901,
+    "SeriesId": 3760,
+    "HasLyrics": false,
+    "SortOrder": 1376000020
+  },
+  {
+    "Id": 137600003,
+    "NameLanguageId": 300100000137600003,
+    "ResourceId": "bgm_3760_0003",
+    "IsPaid": false,
+    "ScheduleId": 2609309901,
+    "SeriesId": 3760,
+    "HasLyrics": false,
+    "SortOrder": 1376000030
+  },
+  {
+    "Id": 137600004,
+    "NameLanguageId": 300100000137600004,
+    "ResourceId": "bgm_3760_0004",
+    "IsPaid": false,
+    "ScheduleId": 2609309901,
+    "SeriesId": 3760,
+    "HasLyrics": false,
+    "SortOrder": 1376000040
+  },
+  {
+    "Id": 137600005,
+    "NameLanguageId": 300100000137600005,
+    "ResourceId": "bgm_3760_0005",
+    "IsPaid": false,
+    "ScheduleId": 2609309901,
+    "SeriesId": 3760,
+    "HasLyrics": false,
+    "SortOrder": 1376000050
+  },
+  {
+    "Id": 137600006,
+    "NameLanguageId": 300100000137600006,
+    "ResourceId": "bgm_3760_0006",
+    "IsPaid": false,
+    "ScheduleId": 2609309901,
+    "SeriesId": 3760,
+    "HasLyrics": false,
+    "SortOrder": 1376000060
+  },
+  {
+    "Id": 137600007,
+    "NameLanguageId": 300100000137600007,
+    "ResourceId": "bgm_3760_0007",
+    "IsPaid": false,
+    "ScheduleId": 2609309901,
+    "SeriesId": 3760,
+    "HasLyrics": false,
+    "SortOrder": 1376000070
+  },
+  {
+    "Id": 137600008,
+    "NameLanguageId": 300100000137600008,
+    "ResourceId": "bgm_3760_0008",
+    "IsPaid": false,
+    "ScheduleId": 2609309901,
+    "SeriesId": 3760,
+    "HasLyrics": false,
+    "SortOrder": 1376000080
+  },
+  {
+    "Id": 137600009,
+    "NameLanguageId": 300100000137600009,
+    "ResourceId": "bgm_3760_0009",
+    "IsPaid": false,
+    "ScheduleId": 2609309901,
+    "SeriesId": 3760,
+    "HasLyrics": false,
+    "SortOrder": 1376000090
+  },
+  {
     "Id": 140000001,
     "NameLanguageId": 0,
     "ResourceId": "bgm_4000_0001",

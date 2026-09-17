@@ -28,5 +28,15 @@
     "Id": 126062002,
     "CampaignEffectTargetSeriesSetId": 126062002,
     "SeriesId": 3360
+  },
+  {
+    "Id": 126093001,
+    "CampaignEffectTargetSeriesSetId": 126093001,
+    "SeriesId": 3760
+  },
+  {
+    "Id": 126093002,
+    "CampaignEffectTargetSeriesSetId": 126093002,
+    "SeriesId": 3760
   }
 ]

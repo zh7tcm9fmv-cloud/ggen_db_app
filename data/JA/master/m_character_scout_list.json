@@ -1477,6 +1477,41 @@
     "ScheduleId": 2603609901
   },
   {
+    "CharacterId": 1376000301,
+    "RegisterConditionTypeIndex": 1,
+    "TargetId": 0,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609309901
+  },
+  {
+    "CharacterId": 1376000400,
+    "RegisterConditionTypeIndex": 1,
+    "TargetId": 0,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609309901
+  },
+  {
+    "CharacterId": 1376000500,
+    "RegisterConditionTypeIndex": 1,
+    "TargetId": 0,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609309901
+  },
+  {
+    "CharacterId": 1376000600,
+    "RegisterConditionTypeIndex": 1,
+    "TargetId": 0,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609309901
+  },
+  {
+    "CharacterId": 1376000700,
+    "RegisterConditionTypeIndex": 1,
+    "TargetId": 0,
+    "ScoutCapital": 3000,
+    "ScheduleId": 2609309901
+  },
+  {
     "CharacterId": 1400001400,
     "RegisterConditionTypeIndex": 2,
     "TargetId": 40000504,

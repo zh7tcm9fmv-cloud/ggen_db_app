@@ -460,6 +460,16 @@
     "ScheduleId": 2603609901
   },
   {
+    "Id": 1376000100,
+    "ResourceId": "g3760u00100",
+    "NameLanguageId": 110100001376000100,
+    "ProfileLanguageId": 110200001376000100,
+    "AlphabetNameLanguageId": 0,
+    "SeriesId": 3760,
+    "ModelNumber": "GNY-001F",
+    "ScheduleId": 2609309901
+  },
+  {
     "Id": 1400000100,
     "ResourceId": "g4000u00100",
     "NameLanguageId": 110100001400000100,
