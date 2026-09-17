@@ -9020,6 +9020,7 @@ cEl.innerHTML='<div style="font-size:11px;color:var(--text-muted)">Select an SD 
 }else{
 cEl.innerHTML=`<button type="button" class="dc-pick-btn" onclick="openDcPicker('def_character')">${t('dc_pick_char')}</button>`;
 }
+renderDcDefSheetBuffToggles();
 renderDcDefOptionParts();
 renderDcDefSupporters();
 }
@@ -13423,7 +13424,22 @@ return`<div class="dc-sheet-buff-wrap" style="margin-top:10px;display:flex;flex-
 <div style="font-size:10px;color:var(--text-muted);line-height:1.35">${esc(t('dc_sheet_buff_hint'))}</div>
 </div>`;
 }
-function setDcMasterLeagueBuff(on){S.dc.masterLeagueBuff=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
+/** Defender Database only — same Master League sheet flag as attacker (no Grand Offensive on DEF). */
+function _dcHtmlDefMasterLeagueToggle(){
+const ml=!!S.dc.masterLeagueBuff;
+const kdMl='if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleDcMasterLeagueBuff();}';
+return`<div class="dc-sheet-buff-wrap" style="margin-top:10px;display:flex;flex-direction:column;gap:8px">
+<div class="conditional-toggle dc-dc-cond-toggle" style="font-size:12px;font-weight:500"><div class="toggle-clickable${ml?' active':''}" role="button" tabindex="0" onclick="toggleDcMasterLeagueBuff()" onkeydown="${kdMl}"><span class="toggle-switch"></span><span class="toggle-label">${esc(t('dc_toggle_master_league'))}</span></div></div>
+<div style="font-size:10px;color:var(--text-muted);line-height:1.35">${esc(t('dc_sheet_buff_hint'))}</div>
+</div>`;
+}
+function renderDcDefSheetBuffToggles(){
+const el=document.getElementById('dcDefSheetBuffSlot');
+if(!el)return;
+if((S.dc.defTargetMode||'preset')!=='database'){el.innerHTML='';return}
+el.innerHTML=_dcHtmlDefMasterLeagueToggle();
+}
+function setDcMasterLeagueBuff(on){S.dc.masterLeagueBuff=!!on;renderDcAtkUnit();renderDcAtkChar();if((S.dc.defTargetMode||'preset')==='database'){renderDcDefSheetBuffToggles();renderDcDefStats()}onDcParamChange()}
 function setDcGrandOffensiveBuff(on){S.dc.grandOffensiveBuff=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function toggleDcMasterLeagueBuff(){setDcMasterLeagueBuff(!S.dc.masterLeagueBuff)}
 function toggleDcGrandOffensiveBuff(){setDcGrandOffensiveBuff(!S.dc.grandOffensiveBuff)}
@@ -13594,16 +13610,48 @@ if(/敵方部隊中含有上述.*標籤/.test(s))return true;
 if(/敵ユニット.*指定.*タグ/.test(s))return true;
 return false;
 }
+/** Build a minimal unit-shaped object from a stage NPC blob for tag/series condition matching. */
+function _dcNpcBlobAsCondUnit(npc){
+if(!npc||!npc.unit)return null;
+const u=npc.unit;
+const tags=u.tags||(u.tag_ids||[]).map(id=>({id}));
+return{id:u.id||npc.npc_id,tags,series:u.series||[],role_id:u.role_id};
+}
 /** Defender MS for enemy-tag conditions: database pick, else preset NPC unit blob (needs tags). */
 function _dcDefenderUnitForCondMatch(){
 const ud=S.dc.defUnitData;
 if(ud&&!ud.error&&!ud._manual)return ud;
 const npc=S.dc.defNpc;
-if(npc&&npc.unit&&(npc.unit.tags||npc.unit.tag_ids)){
-const tags=npc.unit.tags||(npc.unit.tag_ids||[]).map(id=>({id}));
-return{id:npc.unit.id||npc.npc_id,tags,series:npc.unit.series||[]};
+return _dcNpcBlobAsCondUnit(npc);
 }
-return null;
+/**
+ * Battle-start "enemy unit with tags" — any on-map enemy counts (not only the selected target).
+ * Ex: Mr. Bushido MP+6 while targeting Patulia, because Dark Gundam (Gundam tag) is also on the stage.
+ */
+function _dcAnyStageEnemyMeetsConditionGroups(condGroups){
+if(!condGroups||!condGroups.length)return true;
+const seen=new Set();
+const tryUd=ud=>{
+if(!ud)return false;
+const key=String(ud.id||'')+'|'+(ud.tags||[]).map(t=>t&&(t.id!=null?t.id:t)).join(',');
+if(seen.has(key))return false;
+seen.add(key);
+return _dcAbilityCondContextMeetsGroups(ud,null,condGroups);
+};
+const list=S.dc.npcList||[];
+for(let i=0;i<list.length;i++){
+const n=list[i];
+if(n&&n.side&&String(n.side).toLowerCase()!=='enemy')continue;
+if(tryUd(_dcNpcBlobAsCondUnit(n)))return true;
+}
+if(tryUd(_dcDefenderUnitForCondMatch()))return true;
+return false;
+}
+function _dcEnemyTagCondGroupsMet(txt,condGroups,atkUd,atkCd){
+if(!condGroups||!condGroups.length)return true;
+if(_dcAbilityTextTargetsEnemyUnitTags(txt))return _dcAnyStageEnemyMeetsConditionGroups(condGroups);
+const ctx=_dcCondContextsForAbilityLine(txt,atkUd,atkCd);
+return _dcAbilityCondContextMeetsGroups(ctx.ud,ctx.cd,condGroups);
 }
 function _dcCondContextsForAbilityLine(txt,atkUd,atkCd){
 if(_dcAbilityTextTargetsEnemyUnitTags(txt)){
@@ -13766,7 +13814,7 @@ const txt=(ln.text||'').replace(/\n/g,' ');
 const condGroups=ln.condition_groups||[];
 const hasCond=condGroups.length>0;
 let condMet=false;
-if(hasCond){const _ctx=_dcCondContextsForAbilityLine(txt,ud,cd);condMet=_dcAbilityCondContextMeetsGroups(_ctx.ud,_ctx.cd,condGroups);}
+if(hasCond){condMet=_dcEnemyTagCondGroupsMet(txt,condGroups,ud,cd);}
 else if(_dcAbilityLineIsSuperchargedExSection(txt)&&S.dc.charCondPassive&&_dcNormMpLevel(S.dc.mpLevel)==='super')condMet=true;
 const isUnmet=hasCond&&!condMet;
 const spCharGate=src==='char'&&_dcPilotAbilitySpCharGateContext(resolved,li,txt);
@@ -14082,8 +14130,7 @@ if(!m)return;
 const v=parseInt(m[1],10);
 const condGroups=ln.condition_groups||[];
 const hasCond=condGroups.length>0;
-const ctx=_dcCondContextsForAbilityLine(txt,ud,cd);
-const condMet=!hasCond||_dcAbilityCondContextMeetsGroups(ctx.ud,ctx.cd,condGroups);
+const condMet=!hasCond||_dcEnemyTagCondGroupsMet(txt,condGroups,ud,cd);
 if(condMet)totalMp+=v;
 });
 return totalMp;
@@ -14680,9 +14727,10 @@ return MX(0,tot-base+kept);
 const DC_QUB_PLUS_ONE=false;
 /** Firered sheet: unitStatRatio = RoundUp((UnAtk/10)−(UnDef/10))/5000. Set false to use legacy floor−floor tenths (older Qubeley gold). */
 const DC_SHEET_UNIT_STAT_RATIO=true;
-/** ⑦ hybrid: combined float round-away when correction sum fraction ≥ this (Graze Ein ≪0.09 → per-slice; Sandaime vs Aerial 0.0945 → combined). */
-/** Soft-DEF combined float round-away when correction sum fraction ≥ this (Graze ≪0.08 → per-slice; Susanowo vs Dark Gundam ≈0.084 → combined → 82634; Sandaime Aerial ≈0.095). */
-const DC_CORR_HYBRID_FLOAT_FRAC=0.08;
+/** Soft-DEF combined float round-away when correction sum fraction ≥ this.
+ *  Graze Ein hard-DEF frac≈0.005 → per-slice (float overshoots final +2).
+ *  Patulia / Susanowo Dark / Sandaime Aerial soft-DEF fracs≈0.032–0.095 → combined. */
+const DC_CORR_HYBRID_FLOAT_FRAC=0.03;
 /** In-game super for some totalCritMult=125% hits (e.g. Exia vs Throne) matches ceil((combined−trim)×1.3) with trim=floor(max(0,B−W)/1181), only when ⑧ is high enough; avoids changing older BD rows that still use trim=0. */
 const DC_CRIT125_TRIM_MIN_BATTLE_DAMAGE=356500;
 const DC_CRIT125_TRIM_DIV=1181;
@@ -14736,7 +14784,19 @@ cArea.innerHTML=`<div class="dc-picked"><img class="dc-thum" src="${imgUrl(cThum
 }
 let h='';
 if(u){
-const {stats:us,bonuses:ub}=_dcDefNpcUnitMapStatsPair(u);
+/* Copy — never mutate defNpc.unit.stats_raw (prior ML apply permanently baked totals into the NPC object). */
+const _pair=_dcDefNpcUnitMapStatsPair(u);
+const us=Object.assign({},_pair.stats||{});
+const ub=Object.assign({},_pair.bonuses||{});
+const _defSheetMod=_dcDefModifiedUnitStatsFromMods();
+const sheetBuffOn=!!S.dc.masterLeagueBuff&&dbMode;
+if(_defSheetMod){
+/* OP / supporter / Master League sheet mods — match damage-calc path for database defenders. */
+if(_defSheetMod.unitHp!=null)us.HP=Math.max(0,_defSheetMod.unitHp|0);
+if(_defSheetMod.unitAtk!=null)us.Attack=Math.max(0,_defSheetMod.unitAtk|0);
+if(_defSheetMod.unitDefVal!=null)us.Defense=Math.max(0,_defSheetMod.unitDefVal|0);
+if(_defSheetMod.unitMob!=null)us.Mobility=Math.max(0,_defSheetMod.unitMob|0);
+}
 const defTotal=us.Defense||0;
 const defBon=ub.Defense||0;
 const defPair={val:defTotal,bonusLine:Math.max(0,Number(defBon)||0)};
@@ -14761,7 +14821,7 @@ if(s==='Defense'&&defDeb>0){unitGrid+=defCardEternal;continue}
 const pr={val:us[s]||0,bonusLine:Math.max(0,Number(ub[s])||0)};
 unitGrid+=_dcDefEternalStatCard(s,pr.val,pr.bonusLine,'unit');
 }
-h+=`<div class="dc-section-label" style="color:#f87171;font-size:12px;font-weight:600">${t('dc_defender_status')}</div><div style="font-size:10px;color:var(--text-muted);margin:-2px 0 6px;line-height:1.35">${t('dc_def_stats_map_note')}</div><div class="stats-grid dc-def-ers">${unitGrid}</div>`;
+h+=`<div class="dc-section-label" style="color:#f87171;font-size:12px;font-weight:600">${t('dc_defender_status')}</div><div style="font-size:10px;color:var(--text-muted);margin:-2px 0 6px;line-height:1.35">${t('dc_def_stats_map_note')}</div><div class="stats-grid dc-def-ers${sheetBuffOn?' dc-stats-mini--ml-buff':''}">${unitGrid}</div>`;
 }
 if(ch){
 const cs=ch.stats_raw||{},cb=ch.bonus_amounts||{};
@@ -15036,9 +15096,6 @@ function removeDcDefSupporter(i){if(!S.dc.defSupporters)S.dc.defSupporters=[];S.
 /** Apply defender OP/supporter sheet bonuses (DEF/HP/MOB) via the same growth path as attacker. */
 function _dcDefModifiedUnitStatsFromMods(){
 if(!_dcDefHasDatabaseUnit())return null;
-const hasOp=!!(S.dc.defOptionParts&&S.dc.defOptionParts.length);
-const hasSp=!!(S.dc.defSupporters&&S.dc.defSupporters.length);
-if(!hasOp&&!hasSp)return null;
 const ud=S.dc.defUnitData;
 const lb=ud.lb_data;
 const maxT=lb&&lb.length?lb.length-1:0;
@@ -15047,8 +15104,9 @@ const td=(lb&&lb[tier])||(ud.stats&&{stats_no_cond:ud.stats});
 const uCp=!!(ud.has_cond_stats&&S.dc.defUnitCondPassive);
 const uKey=uCp?'stats_with_cond':'stats_no_cond';
 const defUnitStats=td?(td[uKey]||td.stats_no_cond||td.stats||[]):[];
-const ctx={optionParts:S.dc.defOptionParts||[],supporters:S.dc.defSupporters||[],atkUnitData:ud};
-return _dcGetModifiedAttackerUnitStatsFromCtx(ctx,defUnitStats,false);
+/* Always run sheet formula for database defenders (ML / OP / supporter). forPanel skips attacker-only support-counter. */
+const ctx={optionParts:S.dc.defOptionParts||[],supporters:S.dc.defSupporters||[],atkUnitData:ud,masterLeagueBuff:!!S.dc.masterLeagueBuff,grandOffensiveBuff:false};
+return _dcGetModifiedAttackerUnitStatsFromCtx(ctx,defUnitStats,true);
 }
 
 function setDcLbTier(tier){S.dc.lbTier=tier;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
@@ -16462,7 +16520,7 @@ const offenseComponent=(10000/100)/(EXP(offExp)+1);
 const defenseComponent=(-4000/100)/(EXP(defExp)+1);
 /** ⑦ Correction rounding (Firered ⑦ + in-game spot checks):
  *  - Hard-DEF (Graze Ein): sum fraction ≪ 1 → round each slice away from 0, then add.
- *  - Soft-DEF (Versal vs Xi/Nu/Wing, Sandaime vs Aerial, Susanowo vs Dark Gundam): when float sum fraction ≥ DC_CORR_HYBRID_FLOAT_FRAC (0.08), round away on combined float. */
+ *  - Soft-DEF (Versal vs Xi/Nu/Wing, Sandaime vs Aerial, Susanowo vs Dark Gundam / Patulia): when float sum fraction ≥ DC_CORR_HYBRID_FLOAT_FRAC (0.03), round away on combined float. */
 const _dcRoundAway0=(x)=>x>=0?C(x):F(x);
 const _offCorrRaw=offenseComponent*baseDamage;
 const _defCorrRaw=defenseComponent*baseDamage;
@@ -16819,7 +16877,7 @@ h=_dcAppendWeaponTraitBattleStats(h,r);
 h+=_dcBattleStatsRow('Damage Dealt % Total',`${dmgPool}% (${r.userDmgIncreasePct|0}% passive + ${r.vigorDmgBonusPct|0}% vigor)`+_dcBattleStatsDeltaBadge(dmgPool,baseDmgPool),_dcBattleStatsDeltaRowClass(dmgPool,baseDmgPool));
 h+=_dcBattleStatsRow('Crit rate (weapon %)',String(r.critical)+'%');
 h+=_dcBattleStatsRow('Vigor state',esc(vigLbl));
-h+=_dcBattleStatsRow('Master League (attacker)',sl.masterLeagueBuff?'On (+50% unit sheet; not EN/Move; pilot unchanged)':'Off');
+h+=_dcBattleStatsRow('Master League',sl.masterLeagueBuff?'On (+50% unit sheet for attacker + database defender; not EN/Move; pilot unchanged)':'Off');
 h+=_dcBattleStatsRow('Grand Offensive (attacker)',sl.grandOffensiveBuff?'On (+100% unit sheet; not EN/Move; pilot unchanged)':'Off');
 h+=_dcFormatBattleStatsOptionParts(sl.optionParts||[]);
 h+=_dcFormatBattleStatsSupporters(sl.supporters||[]);

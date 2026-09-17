@@ -1,7 +1,7 @@
 """Regression: DC correction rounding (Firered ⑦ + in-game spot checks).
 
 Graze Ein (hard DEF): per-slice round-away — float-sum overshoots +2.
-Soft-DEF: combined float round-away when sum fraction ≥ HYBRID_FLOAT_FRAC (0.09).
+Soft-DEF: combined float round-away when sum fraction ≥ HYBRID_FLOAT_FRAC (0.03).
 
 Run: python scripts/dc_correction_round_away_test.py
 """
@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import math
 
-HYBRID_FLOAT_FRAC = 0.08
+HYBRID_FLOAT_FRAC = 0.03
 
 
 def C(x: float) -> int:
@@ -80,6 +80,10 @@ def main() -> None:
     susa_dark = dict(
         unit_atk=14056, char_atk=891, unit_def=18107, char_def=733, wpn=7920, di=30, vigor=10
     )
+    # Same kit vs Patulia (25% DEF down only — no Gundam tag; stage-squad DEF 20910 after debuff)
+    susa_patulia = dict(
+        unit_atk=14056, char_atk=891, unit_def=20910, char_def=709, wpn=7920, di=30, vigor=10
+    )
 
     assert normal_dmg(**ge, mode="hybrid") == 218515
     assert normal_dmg(**ge, mode="float") == 218517
@@ -91,8 +95,10 @@ def main() -> None:
     assert normal_dmg(**sandaime_aerial, mode="hybrid") == 62454
     assert normal_dmg(**sandaime_aerial, mode="away0") == 62452
     assert normal_dmg(**susa_dark, mode="hybrid") == 82634
+    assert normal_dmg(**susa_patulia, mode="hybrid") == 73177
+    assert normal_dmg(**susa_patulia, mode="away0") == 73176
 
-    print("dc_correction_round_away_test: OK (Graze 218515, Xi 182303, Sandaime Aerial 62454, Susanowo Dark 82634)")
+    print("dc_correction_round_away_test: OK (Graze 218515, Xi 182303, Sandaime Aerial 62454, Susanowo Dark 82634, Patulia 73177)")
 
 
 if __name__ == "__main__":
