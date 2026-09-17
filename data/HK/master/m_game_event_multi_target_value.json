@@ -58,5 +58,25 @@
     "Id": 26062003100103,
     "GameEventMultiTargetValueGroupId": 260620031001,
     "TargetValue": 126062003
+  },
+  {
+    "Id": 26093003120101,
+    "GameEventMultiTargetValueGroupId": 260930031201,
+    "TargetValue": 126093001
+  },
+  {
+    "Id": 26093003120103,
+    "GameEventMultiTargetValueGroupId": 260930031201,
+    "TargetValue": 126093003
+  },
+  {
+    "Id": 26093003130101,
+    "GameEventMultiTargetValueGroupId": 260930031301,
+    "TargetValue": 126093001
+  },
+  {
+    "Id": 26093003130103,
+    "GameEventMultiTargetValueGroupId": 260930031301,
+    "TargetValue": 126093003
   }
 ]

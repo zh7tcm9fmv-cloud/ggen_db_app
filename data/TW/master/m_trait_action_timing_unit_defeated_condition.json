@@ -100,5 +100,11 @@
     "AllyTypeIndex": 1,
     "MainUnitIds": "",
     "CharacterIds": "1009000200"
+  },
+  {
+    "Id": 100000018,
+    "AllyTypeIndex": 1,
+    "MainUnitIds": "",
+    "CharacterIds": "2370001500"
   }
 ]

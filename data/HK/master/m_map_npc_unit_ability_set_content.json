@@ -725,6 +725,16 @@
     "AbilityId": 1013202
   },
   {
+    "MapNpcUnitAbilitySetId": 10000001376000901,
+    "SortOrder": 1,
+    "AbilityId": 1013201
+  },
+  {
+    "MapNpcUnitAbilitySetId": 10000001376001401,
+    "SortOrder": 1,
+    "AbilityId": 1013201
+  },
+  {
     "MapNpcUnitAbilitySetId": 10000001430000101,
     "SortOrder": 1,
     "AbilityId": 1001501
@@ -6013,6 +6023,26 @@
     "MapNpcUnitAbilitySetId": 23700261370010101,
     "SortOrder": 2,
     "AbilityId": 1013202
+  },
+  {
+    "MapNpcUnitAbilitySetId": 23760501376001501,
+    "SortOrder": 1,
+    "AbilityId": 5112601
+  },
+  {
+    "MapNpcUnitAbilitySetId": 23760601376000301,
+    "SortOrder": 1,
+    "AbilityId": 6100703
+  },
+  {
+    "MapNpcUnitAbilitySetId": 23760601376000301,
+    "SortOrder": 2,
+    "AbilityId": 5107811
+  },
+  {
+    "MapNpcUnitAbilitySetId": 23760601376000401,
+    "SortOrder": 1,
+    "AbilityId": 6100703
   },
   {
     "MapNpcUnitAbilitySetId": 24000511408000501,

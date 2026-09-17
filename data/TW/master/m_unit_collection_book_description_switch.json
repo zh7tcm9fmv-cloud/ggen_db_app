@@ -78,5 +78,15 @@
     "UnitCollectionBookId": 37000054,
     "UnitId": 1370009220,
     "DescriptionLanguageId": 110200001370009220
+  },
+  {
+    "UnitCollectionBookId": 37600012,
+    "UnitId": 1376000800,
+    "DescriptionLanguageId": 110200001376000800
+  },
+  {
+    "UnitCollectionBookId": 37600012,
+    "UnitId": 1376000900,
+    "DescriptionLanguageId": 110200001376000900
   }
 ]

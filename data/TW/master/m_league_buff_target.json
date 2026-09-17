@@ -188,5 +188,15 @@
     "LeagueBuffTargetSetId": 300019,
     "LeagueBuffTargetTypeIndex": 2,
     "TargetId": 1133
+  },
+  {
+    "LeagueBuffTargetSetId": 300020,
+    "LeagueBuffTargetTypeIndex": 2,
+    "TargetId": 1084
+  },
+  {
+    "LeagueBuffTargetSetId": 300020,
+    "LeagueBuffTargetTypeIndex": 2,
+    "TargetId": 1133
   }
 ]

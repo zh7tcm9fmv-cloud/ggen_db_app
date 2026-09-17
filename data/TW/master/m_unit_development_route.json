@@ -5142,6 +5142,96 @@
     "RequiredLevel": 15
   },
   {
+    "Id": 23760100001,
+    "StartUnitDevelopmentPieceId": 237601000012,
+    "EndUnitDevelopmentPieceId": 237601004012,
+    "RequiredLevel": 15
+  },
+  {
+    "Id": 23760100002,
+    "StartUnitDevelopmentPieceId": 237601004012,
+    "EndUnitDevelopmentPieceId": 237601006012,
+    "RequiredLevel": 30
+  },
+  {
+    "Id": 23760100003,
+    "StartUnitDevelopmentPieceId": 237601000012,
+    "EndUnitDevelopmentPieceId": 237601002008,
+    "RequiredLevel": 5
+  },
+  {
+    "Id": 23760100004,
+    "StartUnitDevelopmentPieceId": 237601002008,
+    "EndUnitDevelopmentPieceId": 237601004006,
+    "RequiredLevel": 15
+  },
+  {
+    "Id": 23760100005,
+    "StartUnitDevelopmentPieceId": 237601002008,
+    "EndUnitDevelopmentPieceId": 237601004008,
+    "RequiredLevel": 15
+  },
+  {
+    "Id": 23760100006,
+    "StartUnitDevelopmentPieceId": 237601002008,
+    "EndUnitDevelopmentPieceId": 237601004010,
+    "RequiredLevel": 15
+  },
+  {
+    "Id": 23760100007,
+    "StartUnitDevelopmentPieceId": 237601004006,
+    "EndUnitDevelopmentPieceId": 237601006008,
+    "RequiredLevel": 30
+  },
+  {
+    "Id": 23760100008,
+    "StartUnitDevelopmentPieceId": 237601004008,
+    "EndUnitDevelopmentPieceId": 237601006008,
+    "RequiredLevel": 30
+  },
+  {
+    "Id": 23760100009,
+    "StartUnitDevelopmentPieceId": 237601004010,
+    "EndUnitDevelopmentPieceId": 237601006008,
+    "RequiredLevel": 30
+  },
+  {
+    "Id": 23760100010,
+    "StartUnitDevelopmentPieceId": 237601000000,
+    "EndUnitDevelopmentPieceId": 237601004000,
+    "RequiredLevel": 15
+  },
+  {
+    "Id": 23760100011,
+    "StartUnitDevelopmentPieceId": 237601000002,
+    "EndUnitDevelopmentPieceId": 237601004002,
+    "RequiredLevel": 15
+  },
+  {
+    "Id": 23760100012,
+    "StartUnitDevelopmentPieceId": 237601000004,
+    "EndUnitDevelopmentPieceId": 237601004004,
+    "RequiredLevel": 15
+  },
+  {
+    "Id": 23760100013,
+    "StartUnitDevelopmentPieceId": 237601004000,
+    "EndUnitDevelopmentPieceId": 237601006002,
+    "RequiredLevel": 30
+  },
+  {
+    "Id": 23760100014,
+    "StartUnitDevelopmentPieceId": 237601004002,
+    "EndUnitDevelopmentPieceId": 237601006002,
+    "RequiredLevel": 30
+  },
+  {
+    "Id": 23760100015,
+    "StartUnitDevelopmentPieceId": 237601004004,
+    "EndUnitDevelopmentPieceId": 237601006002,
+    "RequiredLevel": 30
+  },
+  {
     "Id": 24310100001,
     "StartUnitDevelopmentPieceId": 243101000000,
     "EndUnitDevelopmentPieceId": 243101002000,

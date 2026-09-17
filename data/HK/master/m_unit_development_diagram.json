@@ -583,6 +583,17 @@
     "ReleaseConditionDevelopmentDiagramId": 0
   },
   {
+    "Id": 237601,
+    "UnitDevelopmentSeriesId": 3760,
+    "BackgroundResourceId": "ui_developtree_tabbanner_01",
+    "LogoResourceId": "series_3760",
+    "NameLanguageId": 210100000000237601,
+    "ScheduleId": 2609309901,
+    "SortOrder": 1,
+    "IsUltimateDevelopmentDiagram": false,
+    "ReleaseConditionDevelopmentDiagramId": 0
+  },
+  {
     "Id": 243101,
     "UnitDevelopmentSeriesId": 4310,
     "BackgroundResourceId": "ui_developtree_tabbanner_01",

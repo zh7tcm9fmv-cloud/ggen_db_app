@@ -3126,6 +3126,12 @@
     "BattlePowerRatingPointRatePercent": 5
   },
   {
+    "Id": 109500346003,
+    "TargetWeaponId": 109500346090,
+    "WeaponTraitId": 320290501,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
     "Id": 109500350001,
     "TargetWeaponId": 109500350003,
     "WeaponTraitId": 310240101,
@@ -8628,6 +8634,18 @@
     "BattlePowerRatingPointRatePercent": 5
   },
   {
+    "Id": 137000861001,
+    "TargetWeaponId": 137000861002,
+    "WeaponTraitId": 320350501,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137000861003,
+    "TargetWeaponId": 137000861090,
+    "WeaponTraitId": 320350501,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
     "Id": 137000870003,
     "TargetWeaponId": 137000870090,
     "WeaponTraitId": 320190301,
@@ -8820,6 +8838,18 @@
     "BattlePowerRatingPointRatePercent": 5
   },
   {
+    "Id": 137500010001,
+    "TargetWeaponId": 137500010003,
+    "WeaponTraitId": 310220101,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137500010003,
+    "TargetWeaponId": 137500010090,
+    "WeaponTraitId": 320210301,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
     "Id": 137500021001,
     "TargetWeaponId": 137500021001,
     "WeaponTraitId": 320060501,
@@ -8850,6 +8880,138 @@
     "BattlePowerRatingPointRatePercent": 5
   },
   {
+    "Id": 137500060001,
+    "TargetWeaponId": 137500060002,
+    "WeaponTraitId": 310010101,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137500060003,
+    "TargetWeaponId": 137500060090,
+    "WeaponTraitId": 320350501,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137500070001,
+    "TargetWeaponId": 137500070002,
+    "WeaponTraitId": 310260101,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137500070003,
+    "TargetWeaponId": 137500070090,
+    "WeaponTraitId": 320060501,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137500080001,
+    "TargetWeaponId": 137500080001,
+    "WeaponTraitId": 310260101,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137500080003,
+    "TargetWeaponId": 137500080090,
+    "WeaponTraitId": 320060501,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137600010003,
+    "TargetWeaponId": 137600010090,
+    "WeaponTraitId": 320190301,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137600030001,
+    "TargetWeaponId": 137600030001,
+    "WeaponTraitId": 320390201,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137600030003,
+    "TargetWeaponId": 137600030090,
+    "WeaponTraitId": 320390301,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137600040003,
+    "TargetWeaponId": 137600040090,
+    "WeaponTraitId": 320310301,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137600050003,
+    "TargetWeaponId": 137600050090,
+    "WeaponTraitId": 320060501,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137600060003,
+    "TargetWeaponId": 137600060090,
+    "WeaponTraitId": 320060501,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137600070003,
+    "TargetWeaponId": 137600070090,
+    "WeaponTraitId": 320330501,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137600080003,
+    "TargetWeaponId": 137600080090,
+    "WeaponTraitId": 320250501,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137600090003,
+    "TargetWeaponId": 137600090090,
+    "WeaponTraitId": 320170501,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137600100003,
+    "TargetWeaponId": 137600100090,
+    "WeaponTraitId": 320120301,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137600110003,
+    "TargetWeaponId": 137600110090,
+    "WeaponTraitId": 320250501,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137600120003,
+    "TargetWeaponId": 137600120090,
+    "WeaponTraitId": 320210301,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137600130003,
+    "TargetWeaponId": 137600130090,
+    "WeaponTraitId": 320210301,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137600140001,
+    "TargetWeaponId": 137600140002,
+    "WeaponTraitId": 310320101,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137600140003,
+    "TargetWeaponId": 137600140090,
+    "WeaponTraitId": 320030501,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137600150003,
+    "TargetWeaponId": 137600150090,
+    "WeaponTraitId": 320350501,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
     "Id": 137800011001,
     "TargetWeaponId": 137800011005,
     "WeaponTraitId": 320030501,
@@ -8871,6 +9033,18 @@
     "Id": 137900030003,
     "TargetWeaponId": 137900030090,
     "WeaponTraitId": 320370501,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137900050001,
+    "TargetWeaponId": 137900050002,
+    "WeaponTraitId": 310180101,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137900050003,
+    "TargetWeaponId": 137900050090,
+    "WeaponTraitId": 320210301,
     "BattlePowerRatingPointRatePercent": 5
   },
   {
@@ -8901,6 +9075,12 @@
     "Id": 137900190003,
     "TargetWeaponId": 137900190090,
     "WeaponTraitId": 320270501,
+    "BattlePowerRatingPointRatePercent": 5
+  },
+  {
+    "Id": 137900201003,
+    "TargetWeaponId": 137900201090,
+    "WeaponTraitId": 320390301,
     "BattlePowerRatingPointRatePercent": 5
   },
   {
