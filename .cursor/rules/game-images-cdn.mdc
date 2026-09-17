@@ -37,4 +37,5 @@ When adding or changing game art under `/static/images/`:
 
 ## New assets
 
-- Add expected filenames to the CDN repo (`ggen_db_images`) and `image_index.json` when introducing new game images.
+- Confirm missing `.webp` under local CDN checkout `C:\Users\Mikew0911\Desktop\ggen_db_images`, **copy them into place**, update `image_index.json`, then **remind the owner to push that repo to GitHub** (see `images-cdn-first.mdc`).
+- Do not leave production depending on Railway `/static` for those files.

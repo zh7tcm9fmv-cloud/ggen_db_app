@@ -4735,6 +4735,7 @@ def trait_title_implies_conditional_stat_bonuses(name):
         '(hp conditions)', '(cond: hp)', '(cnd: hp)',
         '(vigor conditions)', '(cnd: vigor)', '(cond: vigor)', '(no. of battles conditions)',
         '(cond: combat - count)', '(cnd: combat - count)', '(no. of combats conditions)',
+        '(cond: damage taken)', '(cnd: damage taken)',
         '(when supporting)', '(map conditions)', '(ally conditions)',
         '(unit conditions)', '(unit condition)',
     )
@@ -4745,12 +4746,14 @@ def trait_title_implies_conditional_stat_bonuses(name):
         '（系列條件）', '（系列条件）', '（戰鬥次數條件）', '（战斗次数条件）',
         '（體力條件）', '（体力条件）', '（氣勢條件）', '（气势条件）',
         '（戰意條件）', '（战意条件）',
+        '（被ダメージ条件）', '（受到損傷條件）', '（受到损伤条件）',
+        '(被ダメージ条件)', '(受到損傷條件)', '(受到损伤条件)',
         '（支援時', '（選擇閃避開始戰鬥時）',
         '（機體條件）', '（机体条件）',
     )
     if any(m in name for m in cjk_markers):
         return True
-    if any(m in name for m in ('シリーズ条件', 'タグ条件', '戦闘条件', '戦闘回数条件', 'HP条件', '気力条件', 'テンション条件', '支援時', '機体条件')):
+    if any(m in name for m in ('シリーズ条件', 'タグ条件', '戦闘条件', '戦闘回数条件', '被ダメージ条件', '受到損傷條件', '受到损伤条件', 'HP条件', '気力条件', 'テンション条件', '支援時', '機体条件')):
         return True
     return False
 
@@ -5526,6 +5529,42 @@ def _collect_unit_combat_count_atk_meta(ac):
     return None
 
 
+def _collect_unit_damage_taken_def_meta(ac):
+    """Damage-taken stack DEF (e.g. +10% DEF per hit, up to 50%) for unit detail CP slider."""
+    for ab in ac or []:
+        name = (ab.get('name') or '').strip()
+        if not _ability_title_is_damage_taken_def_cond(name):
+            continue
+        for d2 in ab.get('details', []) or []:
+            txt = d2.get('text', '') if isinstance(d2, dict) else str(d2)
+            if not txt:
+                continue
+            m = re.search(
+                r'increase\s+DEF\s+by\s+(\d+)%[\s\S]{0,100}?\(up to\s+(\d+)%\)',
+                txt, re.IGNORECASE)
+            if not m:
+                m = re.search(
+                    r'自身の防御力が(\d+)%上昇[\(（]最大(\d+)%[\)）]', txt)
+            if not m:
+                m = re.search(
+                    r'自身防禦力提升(\d+)%[\(（]最高(\d+)%[\)）]', txt)
+            if not m:
+                continue
+            per = int(m.group(1))
+            mx = int(m.group(2))
+            if per <= 0 or mx <= 0:
+                continue
+            max_stacks = max(1, min(5, (mx + per - 1) // per))
+            return {
+                'per': per,
+                'max': mx,
+                'max_stacks': max_stacks,
+                'ability_id': str(ab.get('id') or ''),
+                'ability_name': name,
+            }
+    return None
+
+
 def _vigor_gate_tier_rank(gate_text):
     g = (gate_text or '').lower()
     raw = gate_text or ''
@@ -5577,6 +5616,22 @@ def _ability_title_is_combat_count_cond(name):
     if '(cond: combat - count)' in low or '(cnd: combat - count)' in low:
         return True
     if '戦闘回数条件' in name or '战斗次数条件' in name or '戰鬥次數條件' in name:
+        return True
+    return False
+
+
+def _ability_title_is_damage_taken_def_cond(name):
+    """(Cond: Damage taken) Increased DEF — per-hit DEF stack traits (not Decreased DEF)."""
+    if not name:
+        return False
+    low = name.lower()
+    if '(cond: damage taken)' in low or '(cnd: damage taken)' in low:
+        return 'increased def' in low
+    if '被ダメージ条件' in name and '防御力上昇' in name:
+        return True
+    if '受到損傷條件' in name and '防禦力提升' in name:
+        return True
+    if '受到损伤条件' in name and '防御力提升' in name:
         return True
     return False
 
@@ -30644,11 +30699,21 @@ def get_unit(unit_id):
         _is_sd_unit = _unit_has_sd_mechanism(info, unit_id)
         _unit_hp_atk_tiers = _collect_unit_hp_atk_tiers_meta(ac)
         _unit_combat_count_atk = _collect_unit_combat_count_atk_meta(ac)
+        _unit_damage_taken_def = _collect_unit_damage_taken_def_meta(ac)
         result = {'id': unit_id, 'name': un, 'rarity': RARITY_MAP.get(ri,"Unknown"), 'rarity_id': ri, 'rarity_icon': RARITY_ICON_MAP.get(ri,''), 'role': resolve_role_label(info.get('role', '0'), lc), 'role_id': info.get('role','0'), 'role_icon': ROLE_ICON_MAP.get(info.get('role','0'),''), 'model': info.get('model',''), 'stats': stats, 'lb_data': lb_data, 'terrain': terrain, 'terrain_ssp': terr_ssp, 'has_terrain_enhancement': has_terrain_enh, 'tags': resolve_tags(unit_lin_map, unit_id, lc, 'unit'), 'series': resolve_series(unit_ser_map.get(unit_id,''), lc), 'abilities': abilities, 'skills': skills, 'mechanisms': mechs, 'weapons': weapons, 'weapon_passive_pct': weapon_passive_pct, 'ability_passive_crit_dmg_pct': ability_passive_crit_dmg_pct, 'portrait': portrait, 'thum': thum or '', 'lang': lc, 'is_ultimate': info.get('is_ultimate', False), 'acquisition_route': acq, 'acquisition_icon': ai2 or ACQUISITION_ROUTE_ICONS.get(acq, ''), 'special_icons': sicons, 'has_sp': has_sp, 'has_cond_stats': hcond, 'has_cond_weapon_range': _has_cond_weapon_range, 'has_pilot_cond_passive': _has_pilot_cond, 'cp_weapon_range_mods': _cp_wpn_range_mods, 'pilot_weapon_effect_bonuses': _pilot_wpn_fx, 'pilot_tag_weapon_stat_bonuses': _pilot_tag_wpn, 'pilot_en_cost_reduction_pct': _pilot_en_red, 'weapon_en_cost_increase_pct': {'sp': en_cost_inc_b[0], 'ssp': en_cost_inc_sspb[0], 'sp_cond': en_cost_inc_c[0], 'ssp_cond': en_cost_inc_sspc[0]}, 'is_large': il, 'occupied_area_id': safe_int(info.get('occupied_area_id'), 1), 'is_sd': _is_sd_unit, 'recommend_character': recommend_character, 'body_type': info.get('body_type', '1'), 'is_limited_time': unit_id in LIMITED_TIME_UNIT_IDS, 'is_schedule_shell': is_shell, 'main_unit_id': _muid, 'is_transform_alternate': unit_id != _muid, 'limit_break_movie_id': _lb_movie_id, 'gacha_pull_movie_id': _gacha_pull_movie_id}
         if _unit_hp_atk_tiers:
             result['unit_hp_atk_tiers'] = _unit_hp_atk_tiers
         if _unit_combat_count_atk:
             result['unit_combat_count_atk'] = _unit_combat_count_atk
+        if _unit_damage_taken_def:
+            # Stat parse uses CALC_LANG ability cards; prefer display-locale name for UI labels.
+            _dd_aid = str(_unit_damage_taken_def.get('ability_id') or '')
+            for _ab in abilities or []:
+                if str(_ab.get('id') or '') == _dd_aid and (_ab.get('name') or '').strip():
+                    _unit_damage_taken_def = dict(_unit_damage_taken_def)
+                    _unit_damage_taken_def['ability_name'] = (_ab.get('name') or '').strip()
+                    break
+            result['unit_damage_taken_def'] = _unit_damage_taken_def
         if not view_ranking:
             ssp_mats = _build_unit_ssp_materials(unit_id, lc)
             if ssp_mats:

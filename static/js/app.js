@@ -511,7 +511,7 @@ function suppTableHeaderLabel(i18nKey){const full=t(i18nKey);let mob='';if(S.lan
 function tTerrain(name){const m=TERRAIN_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tRole(name){const m=ROLE_NAME_MAP[S.lang];return(m&&m[name])||name}
 function tRoleFilter(roleId){const m=ROLE_LABELS[S.lang]||ROLE_LABELS.EN;return m[roleId]||m['']}
-const S={lang:'EN',languages:[],currentTab:'characters',listView:{characters:'grid',units:'grid',supporters:'grid',stages:'grid',modifications:'grid'},characters:{page:1,sort:'rarity',dir:'desc',q:'',sortPriority:[]},units:{page:1,sort:'rarity',dir:'desc',q:'',sortPriority:[]},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc',source:'eternal',challengeSeries:'ALL'},modifications:{page:1,sort:'rarity',dir:'desc',q:'',effectFilter:'ALL'},_modEffectFilterIcons:null,ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,pilotConditionalPassiveActive:false,pilotCondCharData:null,_pilotCondCharFetchId:null,_pilotCondCharInflight:null,pilotCondStackCount:0,unitCondStackCount:0,unitHpAtkTierIndex:0,charSuperchargedExTier:0,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_tagModalMode:'tags',_seriesModalSid:'',_seriesModalName:'',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,stageMapReinforcementOnly:false,stageMapSpawnOrderVisible:false,stageMapBuffAreasVisible:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,cmpCpActive:false,cmpPepActive:false,cmpPepCharById:{},cmpLbByUnit:{},cmpMobilePickMode:false,listCharSp:false,listUnitSp:false,listUnitSsp:false,listCharCond:false,listUnitCond:false,listUnitPilotCond:false,listSelectedUnitId:null,listCharSource:'ALL',listUnitSource:'ALL',listMsyUnitSource:'ALL',listCharLineage:[],listCharSeries:[],listCharSkills:[],listCharAbilities:[],listUnitLineage:[],listUnitSeries:[],listUnitAbilities:[],listMsyUnitSeries:[],listMsyUnitLineage:[],listUnitTerrain:[],listUnitWeaponDebuff:[],listUnitWeaponRange:[],listUnitWeaponRangeNonMap:[],listUnitWeaponRangeNonMapSspExOnly:false,listUnitMapWeapon:false,listUnitMapWeaponRange:[],listUnitMechanism:[],listSuppLineage:[],listModLineage:[],browseCombCharLineage:'and',browseCombUnitLineage:'and',browseCombSuppLineage:'and',browseCombModLineage:'and',browseCombCharSeries:'or',browseCombUnitSeries:'or',browseCombMsyUnitSeries:'or',browseCombMsyUnitLineage:'and',browseCombCharSkill:'and',browseCombUnitAbil:'and',browseCombCharTrait:'and',browseCombTerrain:'and',browseCombWb:'and',browseCombWr:'and',browseCombWrNm:'and',browseCombMapWr:'and',browseCombMech:'and',listGridVariant:{characters:2,units:2},weaponDebuffPresentKeys:null,terrainPresentTokens:null,weaponRangeSspExPresent:null,weaponRangeNonMapPresent:null,mechanismPresentRows:null,lrCacheKey:null,lrCacheData:null,btCacheKey:null,btCacheData:null,btBannerSortDir:'desc',_browsePrimed:{},dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,defUnitData:null,defCharData:null,defLbTier:3,npcList:[],wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[],unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,dcSuperchargedExTier:0,masterLeagueBuff:false,grandOffensiveBuff:false,squadCondPct:0,squadCondAtkPct:0,squadCondDefPct:0,bigRangZeonSquadBuff:false,defNpcMapBonusesOn:true,_applicableOptionRows:null,_applicableSupporterRows:null},tb:null,_dcPickerType:null,_dcPickerCache:[],_searchRecallObs:null,_suspendRarityItemChange:false,ranking:{mode:'units',viewMode:'list',sortChar:'Ranged',sortUnit:'HP',dirChar:'desc',dirUnit:'desc',pageChar:1,pageUnit:1},listRankCharSource:'ALL',listRankUnitSource:'ALL',listRankCharLineage:[],listRankCharSeries:[],listRankCharSkills:[],listRankCharAbilities:[],listRankUnitLineage:[],listRankUnitSeries:[],listRankUnitAbilities:[],listRankUnitTerrain:[],listRankUnitWeaponDebuff:[],listRankUnitWeaponRange:[],listRankUnitWeaponRangeNonMap:[],listRankUnitWeaponRangeNonMapSspExOnly:false,listRankUnitMapWeapon:false,listRankUnitMapWeaponRange:[],listRankUnitMechanism:[],listRankCharSp:false,listRankCharCond:false,listRankUnitSp:false,listRankUnitSsp:false,listRankUnitCond:false,listRankUnitPilotCond:false,browseCombRankCharLineage:'and',browseCombRankUnitLineage:'and',browseCombRankCharSeries:'or',browseCombRankUnitSeries:'or',browseCombRankCharSkill:'and',browseCombRankUnitAbil:'and',browseCombRankCharTrait:'and',browseCombRankTerrain:'and',browseCombRankWb:'and',browseCombRankWr:'and',browseCombRankWrNm:'and',browseCombRankMapWr:'and',browseCombRankMech:'and'};
+const S={lang:'EN',languages:[],currentTab:'characters',listView:{characters:'grid',units:'grid',supporters:'grid',stages:'grid',modifications:'grid'},characters:{page:1,sort:'rarity',dir:'desc',q:'',sortPriority:[]},units:{page:1,sort:'rarity',dir:'desc',q:'',sortPriority:[]},supporters:{page:1,sort:'rarity',dir:'desc',q:''},stages:{page:1,q:'',difficultyFilter:'ALL',sort:'stage_number',dir:'asc',source:'eternal',challengeSeries:'ALL'},modifications:{page:1,sort:'rarity',dir:'desc',q:'',effectFilter:'ALL'},_modEffectFilterIcons:null,ft:null,currentDetailData:null,currentDetailType:null,conditionalPassiveActive:false,pilotConditionalPassiveActive:false,pilotCondCharData:null,_pilotCondCharFetchId:null,_pilotCondCharInflight:null,pilotCondStackCount:0,unitCondStackCount:0,unitHpAtkTierIndex:0,unitDamageTakenDefStacks:0,charSuperchargedExTier:0,spActive:false,sspActive:false,_tagRarityFilter:'ALL',_tagAcqFilter:'ALL',_tagTargetType:'unit',_tagModalMode:'tags',_seriesModalSid:'',_seriesModalName:'',_currentTagStr:'',_currentTagOp:'and',currentLbTier:3,currentWeaponLevels:{},stageMapExpanded:false,stageMapZoom:1,stageMapAutoFit:true,stageMapReinforcementOnly:false,stageMapSpawnOrderVisible:false,stageMapBuffAreasVisible:true,compareList:[],compareData:[],compareType:'unit',_cmpPickerCache:[],cmpSpActive:false,cmpSspActive:false,cmpCpActive:false,cmpPepActive:false,cmpPepCharById:{},cmpLbByUnit:{},cmpMobilePickMode:false,listCharSp:false,listUnitSp:false,listUnitSsp:false,listCharCond:false,listUnitCond:false,listUnitPilotCond:false,listSelectedUnitId:null,listCharSource:'ALL',listUnitSource:'ALL',listMsyUnitSource:'ALL',listCharLineage:[],listCharSeries:[],listCharSkills:[],listCharAbilities:[],listUnitLineage:[],listUnitSeries:[],listUnitAbilities:[],listMsyUnitSeries:[],listMsyUnitLineage:[],listUnitTerrain:[],listUnitWeaponDebuff:[],listUnitWeaponRange:[],listUnitWeaponRangeNonMap:[],listUnitWeaponRangeNonMapSspExOnly:false,listUnitMapWeapon:false,listUnitMapWeaponRange:[],listUnitMechanism:[],listSuppLineage:[],listModLineage:[],browseCombCharLineage:'and',browseCombUnitLineage:'and',browseCombSuppLineage:'and',browseCombModLineage:'and',browseCombCharSeries:'or',browseCombUnitSeries:'or',browseCombMsyUnitSeries:'or',browseCombMsyUnitLineage:'and',browseCombCharSkill:'and',browseCombUnitAbil:'and',browseCombCharTrait:'and',browseCombTerrain:'and',browseCombWb:'and',browseCombWr:'and',browseCombWrNm:'and',browseCombMapWr:'and',browseCombMech:'and',listGridVariant:{characters:2,units:2},weaponDebuffPresentKeys:null,terrainPresentTokens:null,weaponRangeSspExPresent:null,weaponRangeNonMapPresent:null,mechanismPresentRows:null,lrCacheKey:null,lrCacheData:null,btCacheKey:null,btCacheData:null,btBannerSortDir:'desc',_browsePrimed:{},dc:{atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,defNpc:null,defUnitData:null,defCharData:null,defLbTier:3,npcList:[],wpnIdx:0,wpnLv:0,lbTier:3,distance:1,terrain:0,mpLevel:'medium',defending:false,shield:false,optionParts:[],supporters:[],debuffs:[],unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,dcSuperchargedExTier:0,masterLeagueBuff:false,grandOffensiveBuff:false,squadCondPct:0,squadCondAtkPct:0,squadCondDefPct:0,bigRangZeonSquadBuff:false,defNpcMapBonusesOn:true,_applicableOptionRows:null,_applicableSupporterRows:null},tb:null,_dcPickerType:null,_dcPickerCache:[],_searchRecallObs:null,_suspendRarityItemChange:false,ranking:{mode:'units',viewMode:'list',sortChar:'Ranged',sortUnit:'HP',dirChar:'desc',dirUnit:'desc',pageChar:1,pageUnit:1},listRankCharSource:'ALL',listRankUnitSource:'ALL',listRankCharLineage:[],listRankCharSeries:[],listRankCharSkills:[],listRankCharAbilities:[],listRankUnitLineage:[],listRankUnitSeries:[],listRankUnitAbilities:[],listRankUnitTerrain:[],listRankUnitWeaponDebuff:[],listRankUnitWeaponRange:[],listRankUnitWeaponRangeNonMap:[],listRankUnitWeaponRangeNonMapSspExOnly:false,listRankUnitMapWeapon:false,listRankUnitMapWeaponRange:[],listRankUnitMechanism:[],listRankCharSp:false,listRankCharCond:false,listRankUnitSp:false,listRankUnitSsp:false,listRankUnitCond:false,listRankUnitPilotCond:false,browseCombRankCharLineage:'and',browseCombRankUnitLineage:'and',browseCombRankCharSeries:'or',browseCombRankUnitSeries:'or',browseCombRankCharSkill:'and',browseCombRankUnitAbil:'and',browseCombRankCharTrait:'and',browseCombRankTerrain:'and',browseCombRankWb:'and',browseCombRankWr:'and',browseCombRankWrNm:'and',browseCombRankMapWr:'and',browseCombRankMech:'and'};
 window.S=S;
 function primeBrowseTabIfNeeded(tab){reloadBrowseTab(tab)}
 function reloadBrowseTab(tab){const browseTabs={characters:1,units:1,supporters:1,stages:1,modifications:1};if(!browseTabs[tab])return;if(tab==='characters')loadCharacters(S.characters.page||1);else if(tab==='units')loadUnits(S.units.page||1);else if(tab==='supporters')loadSupporters(S.supporters.page||1);else if(tab==='stages')loadStages(S.stages.page||1);else if(tab==='modifications')loadModifications(S.modifications.page||1)}
@@ -3139,6 +3139,7 @@ S._pilotCondPrefetchUnitId=null;
 S.pilotCondStackCount=0;
 S.unitCondStackCount=0;
 S.unitHpAtkTierIndex=0;
+S.unitDamageTakenDefStacks=0;
 S.charSuperchargedExTier=0;
 S.spActive=false;
 S.sspActive=false;
@@ -4956,10 +4957,13 @@ function _detailInitUnitCondControls(ud){
 if(!ud)return;
 S.unitCondStackCount=0;
 S.unitHpAtkTierIndex=0;
+S.unitDamageTakenDefStacks=0;
 const hp=ud.unit_hp_atk_tiers;
 if(hp&&hp.tiers&&hp.tiers.length)S.unitHpAtkTierIndex=hp.tiers.length-1;
 const cc=ud.unit_combat_count_atk;
 if(cc&&cc.max_stacks)S.unitCondStackCount=cc.max_stacks|0;
+const dd=ud.unit_damage_taken_def;
+if(dd&&dd.max_stacks)S.unitDamageTakenDefStacks=dd.max_stacks|0;
 }
 function setUnitCondStackCount(n){
 const d=S.currentDetailData;
@@ -4974,6 +4978,14 @@ const d=S.currentDetailData;
 const hp=d&&d.unit_hp_atk_tiers;
 if(!hp||!hp.tiers||!hp.tiers.length)return;
 S.unitHpAtkTierIndex=Math.max(0,Math.min(hp.tiers.length-1,Number(i)||0));
+invalidateDetailRankingCachesForPerspectiveChange();
+updateDetailDynamicSections('unit');
+}
+function setUnitDamageTakenDefStacks(n){
+const d=S.currentDetailData;
+const dd=d&&d.unit_damage_taken_def;
+if(!dd)return;
+S.unitDamageTakenDefStacks=Math.max(1,Math.min(dd.max_stacks|0,Number(n)||0));
 invalidateDetailRankingCachesForPerspectiveChange();
 updateDetailDynamicSections('unit');
 }
@@ -4993,17 +5005,30 @@ const tier=hpMeta.tiers[ti];
 const lab=t('unit_hp_atk_tier_label')||'HP ATK tier';
 return`<div class="detail-pilot-stack-row is-open detail-unit-cond-stack-row dc-unit-hp-tier-row" onclick="event.stopPropagation()"><input type="range" class="detail-pilot-stack-slider" min="0" max="${max}" step="1" value="${ti}" aria-valuemin="0" aria-valuemax="${max}" aria-valuenow="${ti}" aria-label="${escAttr(lab)}" oninput="setUnitHpAtkTierIndex(this.value)"><span class="detail-pilot-stack-val">${esc(String(tier.hp_pct))}% +${esc(String(tier.atk_pct))}%</span></div>`;
 }
+function _detailUnitDamageTakenDefSliderHtml(dd){
+if(!S.conditionalPassiveActive||!dd)return'';
+const max=Math.max(1,dd.max_stacks|0);
+const cur=Math.max(1,Math.min(max,S.unitDamageTakenDefStacks|0||max));
+const pct=Math.min(dd.max|0,dd.per*cur);
+const stackLab=t('unit_damage_taken_def_label')||'Damage taken DEF stacks';
+return`<div class="detail-pilot-stack-row is-open detail-unit-cond-stack-row detail-unit-dmg-taken-def-row" onclick="event.stopPropagation()"><input type="range" class="detail-pilot-stack-slider" min="1" max="${max}" step="1" value="${cur}" aria-valuemin="1" aria-valuemax="${max}" aria-valuenow="${cur}" aria-label="${escAttr(stackLab)}" oninput="setUnitDamageTakenDefStacks(this.value)"><span class="detail-pilot-stack-val">+${pct}%</span></div>`;
+}
 function _detailAbilityCondControlHtml(ab,ud){
-/* HP ATK tier slider lives under Conditional Passive (detail-unit-cp-stack-slot), not under ability text. */
+/* HP ATK tier / combat / damage-taken DEF sliders live under Conditional Passive (detail-unit-cp-stack-slot), not under ability text. */
 return'';
 }
 function _detailApplyUnitCondAdjustRows(sr,bs,ud,cp){
 if(!cp||!ud||!sr||!sr.length||!bs||!bs.length)return sr;
 const cc=ud.unit_combat_count_atk;
 const hp=ud.unit_hp_atk_tiers;
-if(!cc&&!(hp&&hp.tiers&&hp.tiers.length))return sr;
+const dd=ud.unit_damage_taken_def;
+const hasAtk=!!(cc&&cc.per>0)||!!(hp&&hp.tiers&&hp.tiers.length>1);
+const hasDef=!!(dd&&dd.per>0);
+if(!hasAtk&&!hasDef)return sr;
+let out=sr;
+if(hasAtk){
 const atkNo=bs.find(s=>s.name==='Attack');
-if(!atkNo)return sr;
+if(atkNo){
 const base=atkNo.base|0;
 let passivePct=atkNo.passive_pct|0;
 if(cc&&cc.per>0){
@@ -5013,23 +5038,42 @@ passivePct=(atkNo.passive_pct|0)+cc.per*n;
 }else if(hp&&hp.tiers&&hp.tiers.length>1){
 const ti=Math.min(Math.max(0,S.unitHpAtkTierIndex|0),hp.tiers.length-1);
 passivePct=(atkNo.passive_pct|0)+(hp.tiers[ti].atk_pct|0);
-}else return sr;
+}
 const tot=Math.floor(base*(100+passivePct)/100);
-return sr.map(s=>{
+out=out.map(s=>{
 if(s.name!=='Attack')return s;
 return Object.assign({},s,{total:tot,bonus:Math.max(0,tot-base),passive_pct:passivePct});
 });
+}
+}
+if(hasDef){
+const defNo=bs.find(s=>s.name==='Defense');
+if(defNo){
+const base=defNo.base|0;
+const max=Math.max(1,dd.max_stacks|0);
+const n=Math.max(1,Math.min(max,S.unitDamageTakenDefStacks|0||max));
+const passivePct=(defNo.passive_pct|0)+dd.per*n;
+const tot=Math.floor(base*(100+passivePct)/100);
+out=out.map(s=>{
+if(s.name!=='Defense')return s;
+return Object.assign({},s,{total:tot,bonus:Math.max(0,tot-base),passive_pct:passivePct});
+});
+}
+}
+return out;
 }
 function syncUnitCondAbilityHighlights(){
 const on=!!(S.currentDetailType==='unit'&&S.conditionalPassiveActive&&S.currentDetailData);
 const ud=S.currentDetailData;
 const cc=on&&ud?ud.unit_combat_count_atk:null;
 const hp=on&&ud?ud.unit_hp_atk_tiers:null;
+const dd=on&&ud?ud.unit_damage_taken_def:null;
 document.querySelectorAll('#detailAbilitiesContainer .ability-item').forEach(item=>{
 const aid=item.getAttribute('data-ability-id')||'';
 let hit=false;
 if(cc&&(cc.ability_id&&String(cc.ability_id)===aid))hit=true;
 if(hp&&hp.tiers&&hp.tiers.length>1&&(hp.ability_id&&String(hp.ability_id)===aid))hit=true;
+if(dd&&(dd.ability_id&&String(dd.ability_id)===aid))hit=true;
 item.classList.toggle('ability-item--unit-cond-active',hit);
 });
 }
@@ -5188,7 +5232,7 @@ let prePilotSr=null;
 if(type==='unit'&&S.pilotConditionalPassiveActive&&S.pilotCondCharData){prePilotSr=sr.map(s=>Object.assign({},s));sr=_detailApplyPilotStatBonusRows(sr,d)}
 let th='';
 if(hcf||(type==='unit'&&d.has_pilot_cond_passive)){th=`<div class="detail-cond-toggle-stack">`;
-if(hcf){const cplab=t('conditional_passive');const unitCombatStack=(type==='unit'&&d.unit_combat_count_atk)?_detailUnitCombatStackSliderHtml(d.unit_combat_count_atk):'';const unitHpTier=(type==='unit'&&d.unit_hp_atk_tiers)?_detailAbilityHpTierRowHtml(d.unit_hp_atk_tiers):'';const unitCpExtras=unitCombatStack+unitHpTier;th+=`<div class="conditional-toggle detail-unit-cp-block"><div class="toggle-clickable ${S.conditionalPassiveActive?'active':''}" role="button" tabindex="0" onclick="toggleConditionalPassive(!S.conditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleConditionalPassive(!S.conditionalPassiveActive)}"><span class="toggle-control-slot"><span class="toggle-switch"></span></span><span class="toggle-label">${esc(cplab)}</span></div>${unitCpExtras?`<div class="detail-unit-cp-stack-slot">${unitCpExtras}</div>`:''}</div>`}
+if(hcf){const cplab=t('conditional_passive');const unitCombatStack=(type==='unit'&&d.unit_combat_count_atk)?_detailUnitCombatStackSliderHtml(d.unit_combat_count_atk):'';const unitHpTier=(type==='unit'&&d.unit_hp_atk_tiers)?_detailAbilityHpTierRowHtml(d.unit_hp_atk_tiers):'';const unitDmgDef=(type==='unit'&&d.unit_damage_taken_def)?_detailUnitDamageTakenDefSliderHtml(d.unit_damage_taken_def):'';const unitCpExtras=unitCombatStack+unitHpTier+unitDmgDef;th+=`<div class="conditional-toggle detail-unit-cp-block"><div class="toggle-clickable ${S.conditionalPassiveActive?'active':''}" role="button" tabindex="0" onclick="toggleConditionalPassive(!S.conditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleConditionalPassive(!S.conditionalPassiveActive)}"><span class="toggle-control-slot"><span class="toggle-switch"></span></span><span class="toggle-label">${esc(cplab)}</span></div>${unitCpExtras?`<div class="detail-unit-cp-stack-slot">${unitCpExtras}</div>`:''}</div>`}
 if(type==='unit'&&d.has_pilot_cond_passive){const pplab=t('pilot_exclusive_passive')||'Pilot Exclusive Passive';const stackHtml=_detailPilotStackSliderHtml(d);th+=`<div class="detail-pilot-ep-block"><div class="conditional-toggle detail-pilot-ep-toggle"><div class="toggle-clickable ${S.pilotConditionalPassiveActive?'active':''}" role="button" tabindex="0" title="${escAttr(pplab)}" aria-label="${escAttr(pplab)}" onclick="togglePilotConditionalPassive(!S.pilotConditionalPassiveActive)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();togglePilotConditionalPassive(!S.pilotConditionalPassiveActive)}"><span class="toggle-control-slot">${_detailPilotEpChipSpanHtml(!!S.pilotConditionalPassiveActive)}</span><div class="detail-pilot-ep-label-col"><span class="toggle-label">${esc(pplab)}</span>${stackHtml}</div></div></div></div>`}
 th+=`</div>`}
 let exRow='';
@@ -5219,7 +5263,7 @@ return`<div class="stat-card stat-card--ranking ${cardHi} ${loading?'is-loading'
 }).join('');
 return`${th}${exRow}<div class="${gridCls}">${body}</div>`
 }
-function toggleConditionalPassive(c){S.conditionalPassiveActive=c;if(!c){S.charSuperchargedExTier=0;S.unitCondStackCount=0;S.unitHpAtkTierIndex=0}else{const d=S.currentDetailData,arr=d&&d.ex_supercharged_tiers;if(arr&&arr.length>1)S.charSuperchargedExTier=arr.length-1;if(d)_detailInitUnitCondControls(d)}invalidateDetailRankingCachesForPerspectiveChange();updateDetailDynamicSections(S.currentDetailType);syncNpcUnitConditionHighlights()}
+function toggleConditionalPassive(c){S.conditionalPassiveActive=c;if(!c){S.charSuperchargedExTier=0;S.unitCondStackCount=0;S.unitHpAtkTierIndex=0;S.unitDamageTakenDefStacks=0}else{const d=S.currentDetailData,arr=d&&d.ex_supercharged_tiers;if(arr&&arr.length>1)S.charSuperchargedExTier=arr.length-1;if(d)_detailInitUnitCondControls(d)}invalidateDetailRankingCachesForPerspectiveChange();updateDetailDynamicSections(S.currentDetailType);syncNpcUnitConditionHighlights()}
 function setCharSuperchargedExTier(i){const d=S.currentDetailData,arr=d&&d.ex_supercharged_tiers;if(!arr||!arr.length)return;const n=arr.length;S.charSuperchargedExTier=Math.max(0,Math.min(Number(i)||0,n-1));updateDetailDynamicSections('character')}
 function renderStageRestrictionItem(it){
 const o=it&&typeof it==='object'?it:{};
@@ -8350,7 +8394,7 @@ function _dcCreateEmptyAttackerSlot(){
 return JSON.parse(JSON.stringify({
 atkUnit:null,atkChar:null,atkUnitData:null,atkCharData:null,
 lbTier:3,wpnIdx:0,wpnLv:0,
-unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,unitCondStackCount:0,unitHpAtkTierIndex:0,dcSuperchargedExTier:0,_dcSuperchargedExManual:false,
+unitStatMode:'normal',charStatMode:'normal',unitCondPassive:false,charCondPassive:false,unitCondStackCount:0,unitHpAtkTierIndex:0,unitDamageTakenDefStacks:0,dcSuperchargedExTier:0,_dcSuperchargedExManual:false,
 optionParts:[],supporters:[],
 _unitIsSD:false,
 _wpnTraitDistPow:0,_wpnTraitHpPow:0,_wpnTraits:{},
@@ -8369,7 +8413,7 @@ atkUnit:S.dc.atkUnit,atkChar:S.dc.atkChar,
 atkUnitData:S.dc.atkUnitData,atkCharData:S.dc.atkCharData,
 lbTier:S.dc.lbTier,wpnIdx:S.dc.wpnIdx,wpnLv:S.dc.wpnLv,
 unitStatMode:S.dc.unitStatMode||'normal',charStatMode:S.dc.charStatMode||'normal',
-unitCondPassive:!!S.dc.unitCondPassive,charCondPassive:!!S.dc.charCondPassive,unitCondStackCount:Math.max(0,S.dc.unitCondStackCount|0),unitHpAtkTierIndex:Math.max(0,S.dc.unitHpAtkTierIndex|0),dcSuperchargedExTier:Math.max(0,S.dc.dcSuperchargedExTier|0),_dcSuperchargedExManual:!!S.dc._dcSuperchargedExManual,
+unitCondPassive:!!S.dc.unitCondPassive,charCondPassive:!!S.dc.charCondPassive,unitCondStackCount:Math.max(0,S.dc.unitCondStackCount|0),unitHpAtkTierIndex:Math.max(0,S.dc.unitHpAtkTierIndex|0),unitDamageTakenDefStacks:Math.max(0,S.dc.unitDamageTakenDefStacks|0),dcSuperchargedExTier:Math.max(0,S.dc.dcSuperchargedExTier|0),_dcSuperchargedExManual:!!S.dc._dcSuperchargedExManual,
 optionParts:S.dc.optionParts||[],supporters:S.dc.supporters||[],
 _unitIsSD:!!S.dc._unitIsSD,
 _wpnTraitDistPow:S.dc._wpnTraitDistPow||0,_wpnTraitHpPow:S.dc._wpnTraitHpPow||0,
@@ -8398,7 +8442,7 @@ S.dc.atkUnit=slot.atkUnit;S.dc.atkChar=slot.atkChar;
 S.dc.atkUnitData=slot.atkUnitData;S.dc.atkCharData=slot.atkCharData;
 S.dc.lbTier=slot.lbTier;S.dc.wpnIdx=slot.wpnIdx;S.dc.wpnLv=slot.wpnLv;
 S.dc.unitStatMode=slot.unitStatMode||'normal';S.dc.charStatMode=slot.charStatMode||'normal';
-S.dc.unitCondPassive=!!slot.unitCondPassive;S.dc.charCondPassive=!!slot.charCondPassive;S.dc.unitCondStackCount=Math.max(0,slot.unitCondStackCount|0);S.dc.unitHpAtkTierIndex=Math.max(0,slot.unitHpAtkTierIndex|0);S.dc.dcSuperchargedExTier=Math.max(0,slot.dcSuperchargedExTier|0);S.dc._dcSuperchargedExManual=!!slot._dcSuperchargedExManual;
+S.dc.unitCondPassive=!!slot.unitCondPassive;S.dc.charCondPassive=!!slot.charCondPassive;S.dc.unitCondStackCount=Math.max(0,slot.unitCondStackCount|0);S.dc.unitHpAtkTierIndex=Math.max(0,slot.unitHpAtkTierIndex|0);S.dc.unitDamageTakenDefStacks=Math.max(0,slot.unitDamageTakenDefStacks|0);S.dc.dcSuperchargedExTier=Math.max(0,slot.dcSuperchargedExTier|0);S.dc._dcSuperchargedExManual=!!slot._dcSuperchargedExManual;
 S.dc.optionParts=Array.isArray(slot.optionParts)?slot.optionParts:[];S.dc.supporters=Array.isArray(slot.supporters)?slot.supporters:[];
 S.dc._unitIsSD=!!slot._unitIsSD;
 S.dc._wpnTraitDistPow=slot._wpnTraitDistPow||0;S.dc._wpnTraitHpPow=slot._wpnTraitHpPow||0;
@@ -8598,7 +8642,7 @@ if(_dcSlotNeedsAutoFit(S.dc.atkSlots[S.dc.atkSlotIndex|0]))_dcScheduleAutoFitOpt
 function initDmgCalc(){
 S._dcAtkPresetBackup=null;S._dcAtkManualPackBackup=null;S._dcDefPresetNpcBackup=null;S._dcDefDbBackup=null;S._dcDefCustomPackBackup=null;
 S.dc.atkUnit=null;S.dc.atkChar=null;S.dc.atkUnitData=null;S.dc.atkCharData=null;S.dc.lbTier=3;
-S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.bigRangZeonSquadBuff=false;S.dc.defNpcMapBonusesOn=true;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.applyZeonEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.unitCondStackCount=0;S.dc.unitHpAtkTierIndex=0;S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc.multiPctCompare=false;S.dc._dcAutoFitGen=0;S.dc._supportCntAtkPairSnapBySlot={};
+S.dc.defNpc=null;S.dc.defTargetMode='preset';S.dc.defUnitData=null;S.dc.defCharData=null;S.dc.defLbTier=3;S.dc.npcList=[];S.dc.wpnIdx=0;S.dc.wpnLv=0;S.dc.terrain=0;S.dc.mpLevel='medium';S.dc.defending=false;S.dc.shield=false;S.dc.finalWpnPow=0;S.dc.dmgIncrease=0;S.dc.critDmgUp=0;S.dc.exSquadAtkPct=0;S.dc.exSquadAtkPctExplicitZero=false;S.dc.squadCondPct=0;S.dc.squadCondAtkPct=0;S.dc.squadCondDefPct=0;S.dc.bigRangZeonSquadBuff=false;S.dc.defNpcMapBonusesOn=true;S.dc.atkCounterOwnAtk=false;S.dc.supportCounterAtk=false;S.dc._supportCounterAtkPct=0;S.dc.applyAdvantageEnemyTag=true;S.dc.applyZeonEnemyTag=true;S.dc.dmgTakenDownPilot=0;S.dc.dmgTakenDownUnit=0;S.dc.unitStatMode='normal';S.dc.charStatMode='normal';S.dc.unitCondPassive=false;S.dc.charCondPassive=false;S.dc.unitCondStackCount=0;S.dc.unitHpAtkTierIndex=0;S.dc.unitDamageTakenDefStacks=0;S.dc.dcSuperchargedExTier=0;S.dc._dcSuperchargedExManual=false;S.dc.optionParts=[];S.dc.supporters=[];S.dc._wpnTraitDistPow=0;S.dc._wpnTraitHpPow=0;S.dc._wpnTraits={};S.dc._wpnCritDmgUp=0;S.dc._integratedWpnCritDmgUp=0;S.dc._vigorCondThreshold=null;S.dc._activeSkills={};S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false;S.dc.masterLeagueBuff=false;S.dc.grandOffensiveBuff=false;S.dc.multiPctCompare=false;S.dc._dcAutoFitGen=0;S.dc._supportCntAtkPairSnapBySlot={};
 renderDcDefDbPicks();
 const _drp=document.getElementById('dcDefModePreset'),_drc=document.getElementById('dcDefModeCustom'),_ddb=document.getElementById('dcDefModeDatabase'),_dpw=document.getElementById('dcDefPresetWrap'),_dcw=document.getElementById('dcDefCustomWrap'),_ddbw=document.getElementById('dcDefDatabaseWrap');
 if(_drp)_drp.checked=true;if(_drc)_drc.checked=false;if(_ddb)_ddb.checked=false;if(_dpw)_dpw.style.display='';if(_dcw)_dcw.style.display='none';if(_ddbw)_ddbw.style.display='none';
@@ -9530,7 +9574,7 @@ const TB_FORMS_KEY='ggen_tb_forms';
 const TB_TRASH_ICON='/static/images/UI/UI_Common_BtnIcon_Trash.webp';
 const TB_LEADER_ICON='/static/images/UI/UI_Organization_Icon_SupporterLeader_Posi.webp';
 const TB_LONG_PORTRAIT_FACE_IDS=new Set(['1370000150']);
-function _tbEmptySlot(){return{unitId:null,unitData:null,charId:null,charData:null,optionParts:[],lbTier:3,unitStatMode:'normal',unitCondPassive:false,charCondPassive:false,unitCondStackCount:0,unitHpAtkTierIndex:0,unitTurnBuffAtk:false,unitTurnBuffDef:false,exSquadAtkPct:0}}
+function _tbEmptySlot(){return{unitId:null,unitData:null,charId:null,charData:null,optionParts:[],lbTier:3,unitStatMode:'normal',unitCondPassive:false,charCondPassive:false,unitCondStackCount:0,unitHpAtkTierIndex:0,unitDamageTakenDefStacks:0,unitTurnBuffAtk:false,unitTurnBuffDef:false,exSquadAtkPct:0}}
 function _tbTerrainItems(){return['Space','Atmospheric','Ground','Sea','Underwater']}
 function tbClearSupporter(side){
 initTeamBuilder();
@@ -9934,25 +9978,28 @@ if(sl&&String(sl.unitId)===uid)sl.unitData=d;
 }));
 }
 function _tbInitSlotUnitCondControls(sl){
-if(!sl||!sl.unitData){if(sl){sl.unitCondStackCount=0;sl.unitHpAtkTierIndex=0}return}
+if(!sl||!sl.unitData){if(sl){sl.unitCondStackCount=0;sl.unitHpAtkTierIndex=0;sl.unitDamageTakenDefStacks=0}return}
 const ud=sl.unitData;
 sl.unitCondStackCount=0;
 sl.unitHpAtkTierIndex=0;
+sl.unitDamageTakenDefStacks=0;
 const hp=ud.unit_hp_atk_tiers;
 if(hp&&hp.tiers&&hp.tiers.length)sl.unitHpAtkTierIndex=hp.tiers.length-1;
 const cc=ud.unit_combat_count_atk;
 if(cc&&cc.max_stacks)sl.unitCondStackCount=cc.max_stacks|0;
+const dd=ud.unit_damage_taken_def;
+if(dd&&dd.max_stacks)sl.unitDamageTakenDefStacks=dd.max_stacks|0;
 }
 /** Match Damage Calculator: auto-on unit/pilot Conditional Passive when gates pass (pair EX, HP-tier, etc.). */
 function _tbSyncSlotCondPassives(sl){
 if(!sl)return;
 const ud=sl.unitData;
 const cd=sl.charData;
-if(!ud||ud._manual){sl.unitCondPassive=false;sl.unitCondStackCount=0;sl.unitHpAtkTierIndex=0}
+if(!ud||ud._manual){sl.unitCondPassive=false;sl.unitCondStackCount=0;sl.unitHpAtkTierIndex=0;sl.unitDamageTakenDefStacks=0}
 else{
 sl.unitCondPassive=_dcShouldAutoUnitCondPassive(ud,'medium');
 if(sl.unitCondPassive)_tbInitSlotUnitCondControls(sl);
-else{sl.unitCondStackCount=0;sl.unitHpAtkTierIndex=0}
+else{sl.unitCondStackCount=0;sl.unitHpAtkTierIndex=0;sl.unitDamageTakenDefStacks=0}
 }
 if(!cd||cd._manual||!ud||ud._manual)sl.charCondPassive=false;
 else sl.charCondPassive=_dcShouldAutoCharCondPassive(cd,ud,'medium');
@@ -10304,7 +10351,7 @@ _scSquadBindingCache.set(key,found);
 return found;
 }
 function _tbWithSlotDcStatModes(sl,fn){
-const um=S.dc.unitStatMode,cm=S.dc.charStatMode,uc=S.dc.unitCondPassive,cc=S.dc.charCondPassive,usc=S.dc.unitCondStackCount,uhp=S.dc.unitHpAtkTierIndex;
+const um=S.dc.unitStatMode,cm=S.dc.charStatMode,uc=S.dc.unitCondPassive,cc=S.dc.charCondPassive,usc=S.dc.unitCondStackCount,uhp=S.dc.unitHpAtkTierIndex,udd=S.dc.unitDamageTakenDefStacks;
 try{
 S.dc.unitStatMode=(sl&&sl.unitStatMode)||'normal';
 S.dc.charStatMode=(sl&&sl.charStatMode)||'normal';
@@ -10312,9 +10359,10 @@ S.dc.unitCondPassive=!!(sl&&sl.unitCondPassive);
 S.dc.charCondPassive=!!(sl&&sl.charCondPassive);
 S.dc.unitCondStackCount=Math.max(0,(sl&&sl.unitCondStackCount)|0);
 S.dc.unitHpAtkTierIndex=Math.max(0,(sl&&sl.unitHpAtkTierIndex)|0);
+S.dc.unitDamageTakenDefStacks=Math.max(0,(sl&&sl.unitDamageTakenDefStacks)|0);
 return fn();
 }finally{
-S.dc.unitStatMode=um;S.dc.charStatMode=cm;S.dc.unitCondPassive=uc;S.dc.charCondPassive=cc;S.dc.unitCondStackCount=usc;S.dc.unitHpAtkTierIndex=uhp;
+S.dc.unitStatMode=um;S.dc.charStatMode=cm;S.dc.unitCondPassive=uc;S.dc.charCondPassive=cc;S.dc.unitCondStackCount=usc;S.dc.unitHpAtkTierIndex=uhp;S.dc.unitDamageTakenDefStacks=udd;
 }
 }
 function _tbCountSquadUnitsMatchingGroup(side,group){
@@ -11023,7 +11071,7 @@ const sl=_tbSquFromKey(key).slots[_tbIdxFromKey(key)];
 if(!sl||!sl.unitData||!sl.unitData.has_cond_stats)return;
 sl.unitCondPassive=!sl.unitCondPassive;
 if(sl.unitCondPassive)_tbInitSlotUnitCondControls(sl);
-else{sl.unitCondStackCount=0;sl.unitHpAtkTierIndex=0}
+else{sl.unitCondStackCount=0;sl.unitHpAtkTierIndex=0;sl.unitDamageTakenDefStacks=0}
 renderTeamBuilder();
 }
 function tbToggleSlotCharCondPassive(key,ev){
@@ -11948,10 +11996,10 @@ const squ=S.tb.rearrange.draft[sa];
 const ia=_tbIdxFromKey(a),ib=_tbIdxFromKey(b);
 const slotA=squ.slots[ia],slotB=squ.slots[ib];
 if(p==='unit'){
-const ua={unitId:slotA.unitId,unitData:slotA.unitData,optionParts:slotA.optionParts||[],lbTier:slotA.lbTier|0,unitStatMode:slotA.unitStatMode||'normal',unitCondPassive:!!slotA.unitCondPassive,unitCondStackCount:slotA.unitCondStackCount|0,unitHpAtkTierIndex:slotA.unitHpAtkTierIndex|0,unitTurnBuffAtk:!!slotA.unitTurnBuffAtk,unitTurnBuffDef:!!slotA.unitTurnBuffDef,exSquadAtkPct:slotA.exSquadAtkPct|0};
-const ub={unitId:slotB.unitId,unitData:slotB.unitData,optionParts:slotB.optionParts||[],lbTier:slotB.lbTier|0,unitStatMode:slotB.unitStatMode||'normal',unitCondPassive:!!slotB.unitCondPassive,unitCondStackCount:slotB.unitCondStackCount|0,unitHpAtkTierIndex:slotB.unitHpAtkTierIndex|0,unitTurnBuffAtk:!!slotB.unitTurnBuffAtk,unitTurnBuffDef:!!slotB.unitTurnBuffDef,exSquadAtkPct:slotB.exSquadAtkPct|0};
-slotA.unitId=ub.unitId;slotA.unitData=ub.unitData;slotA.optionParts=ub.optionParts;slotA.lbTier=ub.lbTier;slotA.unitStatMode=ub.unitStatMode;slotA.unitCondPassive=ub.unitCondPassive;slotA.unitCondStackCount=ub.unitCondStackCount;slotA.unitHpAtkTierIndex=ub.unitHpAtkTierIndex;slotA.unitTurnBuffAtk=ub.unitTurnBuffAtk;slotA.unitTurnBuffDef=ub.unitTurnBuffDef;slotA.exSquadAtkPct=ub.exSquadAtkPct;
-slotB.unitId=ua.unitId;slotB.unitData=ua.unitData;slotB.optionParts=ua.optionParts;slotB.lbTier=ua.lbTier;slotB.unitStatMode=ua.unitStatMode;slotB.unitCondPassive=ua.unitCondPassive;slotB.unitCondStackCount=ua.unitCondStackCount;slotB.unitHpAtkTierIndex=ua.unitHpAtkTierIndex;slotB.unitTurnBuffAtk=ua.unitTurnBuffAtk;slotB.unitTurnBuffDef=ua.unitTurnBuffDef;slotB.exSquadAtkPct=ua.exSquadAtkPct;
+const ua={unitId:slotA.unitId,unitData:slotA.unitData,optionParts:slotA.optionParts||[],lbTier:slotA.lbTier|0,unitStatMode:slotA.unitStatMode||'normal',unitCondPassive:!!slotA.unitCondPassive,unitCondStackCount:slotA.unitCondStackCount|0,unitHpAtkTierIndex:slotA.unitHpAtkTierIndex|0,unitDamageTakenDefStacks:slotA.unitDamageTakenDefStacks|0,unitTurnBuffAtk:!!slotA.unitTurnBuffAtk,unitTurnBuffDef:!!slotA.unitTurnBuffDef,exSquadAtkPct:slotA.exSquadAtkPct|0};
+const ub={unitId:slotB.unitId,unitData:slotB.unitData,optionParts:slotB.optionParts||[],lbTier:slotB.lbTier|0,unitStatMode:slotB.unitStatMode||'normal',unitCondPassive:!!slotB.unitCondPassive,unitCondStackCount:slotB.unitCondStackCount|0,unitHpAtkTierIndex:slotB.unitHpAtkTierIndex|0,unitDamageTakenDefStacks:slotB.unitDamageTakenDefStacks|0,unitTurnBuffAtk:!!slotB.unitTurnBuffAtk,unitTurnBuffDef:!!slotB.unitTurnBuffDef,exSquadAtkPct:slotB.exSquadAtkPct|0};
+slotA.unitId=ub.unitId;slotA.unitData=ub.unitData;slotA.optionParts=ub.optionParts;slotA.lbTier=ub.lbTier;slotA.unitStatMode=ub.unitStatMode;slotA.unitCondPassive=ub.unitCondPassive;slotA.unitCondStackCount=ub.unitCondStackCount;slotA.unitHpAtkTierIndex=ub.unitHpAtkTierIndex;slotA.unitDamageTakenDefStacks=ub.unitDamageTakenDefStacks;slotA.unitTurnBuffAtk=ub.unitTurnBuffAtk;slotA.unitTurnBuffDef=ub.unitTurnBuffDef;slotA.exSquadAtkPct=ub.exSquadAtkPct;
+slotB.unitId=ua.unitId;slotB.unitData=ua.unitData;slotB.optionParts=ua.optionParts;slotB.lbTier=ua.lbTier;slotB.unitStatMode=ua.unitStatMode;slotB.unitCondPassive=ua.unitCondPassive;slotB.unitCondStackCount=ua.unitCondStackCount;slotB.unitHpAtkTierIndex=ua.unitHpAtkTierIndex;slotB.unitDamageTakenDefStacks=ua.unitDamageTakenDefStacks;slotB.unitTurnBuffAtk=ua.unitTurnBuffAtk;slotB.unitTurnBuffDef=ua.unitTurnBuffDef;slotB.exSquadAtkPct=ua.exSquadAtkPct;
 }else{
 const ca={charId:slotA.charId,charData:slotA.charData,charCondPassive:!!slotA.charCondPassive};
 const cb={charId:slotB.charId,charData:slotB.charData,charCondPassive:!!slotB.charCondPassive};
@@ -12068,10 +12116,13 @@ function _dcInitUnitCondControls(ud){
 if(!ud)return;
 S.dc.unitCondStackCount=0;
 S.dc.unitHpAtkTierIndex=0;
+S.dc.unitDamageTakenDefStacks=0;
 const hp=ud.unit_hp_atk_tiers;
 if(hp&&hp.tiers&&hp.tiers.length)S.dc.unitHpAtkTierIndex=hp.tiers.length-1;
 const cc=ud.unit_combat_count_atk;
 if(cc&&cc.max_stacks)S.dc.unitCondStackCount=cc.max_stacks|0;
+const dd=ud.unit_damage_taken_def;
+if(dd&&dd.max_stacks)S.dc.unitDamageTakenDefStacks=dd.max_stacks|0;
 }
 function setDcUnitCondStackCount(n){
 const ud=S.dc.atkUnitData;
@@ -12086,6 +12137,14 @@ const ud=S.dc.atkUnitData;
 const hp=ud&&ud.unit_hp_atk_tiers;
 if(!hp||!hp.tiers||!hp.tiers.length)return;
 S.dc.unitHpAtkTierIndex=Math.max(0,Math.min(hp.tiers.length-1,Number(i)||0));
+_dcSyncUnitCondSliderLabels();
+onDcParamChange();
+}
+function setDcUnitDamageTakenDefStacks(n){
+const ud=S.dc.atkUnitData;
+const dd=ud&&ud.unit_damage_taken_def;
+if(!dd)return;
+S.dc.unitDamageTakenDefStacks=Math.max(1,Math.min(dd.max_stacks|0,Number(n)||0));
 _dcSyncUnitCondSliderLabels();
 onDcParamChange();
 }
@@ -12107,6 +12166,14 @@ const lab=`${tier.hp_pct}% +${tier.atk_pct}%`;
 document.querySelectorAll('.dc-unit-hp-tier-row .detail-pilot-stack-val').forEach(el=>{el.textContent=lab});
 document.querySelectorAll('.dc-unit-hp-tier-row input[type=range]').forEach(inp=>{inp.value=String(ti);inp.setAttribute('aria-valuenow',String(ti))});
 }
+const dd=ud&&ud.unit_damage_taken_def;
+if(dd){
+const max=Math.max(1,dd.max_stacks|0);
+const cur=Math.max(1,Math.min(max,S.dc.unitDamageTakenDefStacks|0||max));
+const pct=Math.min(dd.max|0,dd.per*cur);
+document.querySelectorAll('.dc-unit-dmg-taken-def-row .detail-pilot-stack-val').forEach(el=>{el.textContent='+'+pct+'%'});
+document.querySelectorAll('.dc-unit-dmg-taken-def-row input[type=range]').forEach(inp=>{inp.value=String(cur);inp.setAttribute('aria-valuenow',String(cur))});
+}
 }
 function _dcUnitCombatStackSliderHtml(cc){
 if(!S.dc.unitCondPassive||!cc)return'';
@@ -12124,6 +12191,14 @@ const tier=hp.tiers[ti];
 const lab=t('unit_hp_atk_tier_label')||'HP ATK tier';
 return`<div class="detail-pilot-stack-row is-open detail-unit-cond-stack-row dc-unit-hp-tier-row" onclick="event.stopPropagation()"><input type="range" class="detail-pilot-stack-slider" min="0" max="${max}" step="1" value="${ti}" aria-valuemin="0" aria-valuemax="${max}" aria-valuenow="${ti}" aria-label="${escAttr(lab)}" oninput="setDcUnitHpAtkTierIndex(this.value)"><span class="detail-pilot-stack-val">${esc(String(tier.hp_pct))}% +${esc(String(tier.atk_pct))}%</span></div>`;
 }
+function _dcUnitDamageTakenDefSliderHtml(dd){
+if(!S.dc.unitCondPassive||!dd)return'';
+const max=Math.max(1,dd.max_stacks|0);
+const cur=Math.max(1,Math.min(max,S.dc.unitDamageTakenDefStacks|0||max));
+const pct=Math.min(dd.max|0,dd.per*cur);
+const stackLab=t('unit_damage_taken_def_label')||'Damage taken DEF stacks';
+return`<div class="detail-pilot-stack-row is-open detail-unit-cond-stack-row dc-unit-dmg-taken-def-row" onclick="event.stopPropagation()"><input type="range" class="detail-pilot-stack-slider" min="1" max="${max}" step="1" value="${cur}" aria-valuemin="1" aria-valuemax="${max}" aria-valuenow="${cur}" aria-label="${escAttr(stackLab)}" oninput="setDcUnitDamageTakenDefStacks(this.value)"><span class="detail-pilot-stack-val">+${pct}%</span></div>`;
+}
 function _dcUnitCombatStackPassiveBonusRowHtml(cc){
 if(!S.dc.unitCondPassive||!cc)return'';
 const slider=_dcUnitCombatStackSliderHtml(cc);
@@ -12140,18 +12215,30 @@ const mainLab=t('unit_hp_atk_tier_label')||'HP ATK tier';
 const detail=hp.ability_name?String(hp.ability_name):'';
 return`<div class="dc-pilot-bonus-row dc-pilot-bonus-row--unit-combat-stack" onclick="event.stopPropagation()"><span class="dc-pilot-bonus-line"><span class="dc-pilot-bonus-main">${esc(mainLab)} <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--incl">(Included in unit stats)</span></span>${detail?`<span class="dc-pilot-bonus-detail">${esc(detail)}</span>`:''}</span>${slider}</div>`;
 }
+function _dcUnitDamageTakenDefPassiveBonusRowHtml(dd){
+if(!S.dc.unitCondPassive||!dd)return'';
+const slider=_dcUnitDamageTakenDefSliderHtml(dd);
+if(!slider)return'';
+const mainLab=`MS Defense +${dd.per|0}% per damage taken`;
+const detail=dd.ability_name?String(dd.ability_name):'';
+return`<div class="dc-pilot-bonus-row dc-pilot-bonus-row--unit-combat-stack" onclick="event.stopPropagation()"><span class="dc-pilot-bonus-line"><span class="dc-pilot-bonus-main">${esc(mainLab)} <span class="dc-pilot-bonus-tag dc-pilot-bonus-tag--incl">(Included in unit stats)</span></span>${detail?`<span class="dc-pilot-bonus-detail">${esc(detail)}</span>`:''}</span>${slider}</div>`;
+}
 function _dcUnitCondPassiveBonusRowsHtml(ud){
 if(!ud||!S.dc.unitCondPassive)return'';
-return _dcUnitCombatStackPassiveBonusRowHtml(ud.unit_combat_count_atk)+_dcUnitHpAtkPassiveBonusRowHtml(ud.unit_hp_atk_tiers);
+return _dcUnitCombatStackPassiveBonusRowHtml(ud.unit_combat_count_atk)+_dcUnitHpAtkPassiveBonusRowHtml(ud.unit_hp_atk_tiers)+_dcUnitDamageTakenDefPassiveBonusRowHtml(ud.unit_damage_taken_def);
 }
 function _dcApplyUnitCondStatAdjustments(stats,statsNoCond,ud,cpOn){
 if(!cpOn||!ud||!stats||!stats.length)return stats;
 const cc=ud.unit_combat_count_atk;
 const hp=ud.unit_hp_atk_tiers;
-if(!cc&&!(hp&&hp.tiers&&hp.tiers.length>1))return stats;
+const dd=ud.unit_damage_taken_def;
+const hasAtk=!!(cc&&cc.per>0)||!!(hp&&hp.tiers&&hp.tiers.length>1);
+const hasDef=!!(dd&&dd.per>0);
+if(!hasAtk&&!hasDef)return stats;
+let out=stats;
+if(hasAtk){
 const atkNo=(statsNoCond||[]).find(s=>s.name==='Attack');
-const atkRow=stats.find(s=>s.name==='Attack');
-if(!atkNo||!atkRow)return stats;
+if(atkNo){
 const base=atkNo.base|0;
 let passivePct=atkNo.passive_pct|0;
 if(cc&&cc.per>0){
@@ -12161,12 +12248,29 @@ passivePct=(atkNo.passive_pct|0)+cc.per*n;
 }else if(hp&&hp.tiers&&hp.tiers.length>1){
 const ti=Math.min(Math.max(0,S.dc.unitHpAtkTierIndex|0),hp.tiers.length-1);
 passivePct=(atkNo.passive_pct|0)+(hp.tiers[ti].atk_pct|0);
-}else return stats;
+}
 const tot=Math.floor(base*(100+passivePct)/100);
-return stats.map(s=>{
+out=out.map(s=>{
 if(s.name!=='Attack')return s;
 return Object.assign({},s,{total:tot,bonus:Math.max(0,tot-base),passive_pct:passivePct});
 });
+}
+}
+if(hasDef){
+const defNo=(statsNoCond||[]).find(s=>s.name==='Defense');
+if(defNo){
+const base=defNo.base|0;
+const max=Math.max(1,dd.max_stacks|0);
+const n=Math.max(1,Math.min(max,S.dc.unitDamageTakenDefStacks|0||max));
+const passivePct=(defNo.passive_pct|0)+dd.per*n;
+const tot=Math.floor(base*(100+passivePct)/100);
+out=out.map(s=>{
+if(s.name!=='Defense')return s;
+return Object.assign({},s,{total:tot,bonus:Math.max(0,tot-base),passive_pct:passivePct});
+});
+}
+}
+return out;
 }
 /** Default unit CP on for HP-tier ATK (stats_with_cond max tier). Combat-count units stay off unless toggled or share ucp=1. Vigor-gated cond stats still sync below. */
 function _dcShouldAutoUnitCondPassive(ud,mpOpt){
@@ -13012,7 +13116,7 @@ const atkS=uEff.unitAtk,defS=uEff.unitDefVal,mobS=uEff.unitMob,hpS=uEff.unitHp;
 const uMode=S.dc.unitStatMode||'normal';
 const uCp=!!(ud.has_cond_stats&&S.dc.unitCondPassive);
 let statsNoCp=statsNoCpBase;
-if(ud.has_cond_stats&&td&&!ud.unit_combat_count_atk&&!(ud.unit_hp_atk_tiers&&ud.unit_hp_atk_tiers.tiers&&ud.unit_hp_atk_tiers.tiers.length>1)){
+if(ud.has_cond_stats&&td&&!ud.unit_combat_count_atk&&!(ud.unit_hp_atk_tiers&&ud.unit_hp_atk_tiers.tiers&&ud.unit_hp_atk_tiers.tiers.length>1)&&!ud.unit_damage_taken_def){
 const kn=_dcGetUnitStatKeyForCp(false);
 statsNoCp=td[kn]||stats;
 }
@@ -13214,7 +13318,7 @@ if(S.dc._activeSkills)Object.keys(S.dc._activeSkills).forEach(k=>{if(!visIds.has
 renderDcAtkUnit();renderDcAtkChar();
 if(S.dc.atkCharData&&!S.dc.atkCharData._manual)_dcRecalcPilotBonuses(true);else onDcParamChange();
 }
-function setDcUnitCondPassive(on){S.dc.unitCondPassive=!!on;if(!on){S.dc.unitCondStackCount=0;S.dc.unitHpAtkTierIndex=0}else if(S.dc.atkUnitData)_dcInitUnitCondControls(S.dc.atkUnitData);renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
+function setDcUnitCondPassive(on){S.dc.unitCondPassive=!!on;if(!on){S.dc.unitCondStackCount=0;S.dc.unitHpAtkTierIndex=0;S.dc.unitDamageTakenDefStacks=0}else if(S.dc.atkUnitData)_dcInitUnitCondControls(S.dc.atkUnitData);renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function setDcUnitTurnBuffAtk(on){S.dc.unitTurnBuffAtk=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function setDcUnitTurnBuffDef(on){S.dc.unitTurnBuffDef=!!on;renderDcAtkUnit();renderDcAtkChar();onDcParamChange()}
 function _dcHtmlSheetBuffToggles(){
@@ -15062,7 +15166,7 @@ S.dc.unitStatMode='normal';S.dc.unitTurnBuffAtk=false;S.dc.unitTurnBuffDef=false
 _dcDetectVigorCondAbilities(d);
 S.dc.unitCondPassive=_dcShouldAutoUnitCondPassive(d);
 _dcSyncUnitCondPassiveFromVigor();
-if(S.dc.unitCondPassive)_dcInitUnitCondControls(d);else{S.dc.unitCondStackCount=0;S.dc.unitHpAtkTierIndex=0;}
+if(S.dc.unitCondPassive)_dcInitUnitCondControls(d);else{S.dc.unitCondStackCount=0;S.dc.unitHpAtkTierIndex=0;S.dc.unitDamageTakenDefStacks=0;}
 S.dc.optionParts=[];S.dc.supporters=[];
 const rec=d.recommend_character;const isSD=d.body_type==='3';
 S.dc._unitIsSD=isSD;

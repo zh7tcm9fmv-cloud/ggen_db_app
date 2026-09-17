@@ -1,0 +1,50 @@
+---
+description: All user-visible images must use IMAGE_CDN — cut Railway egress; performance bar
+alwaysApply: true
+---
+
+# Images — CDN first (Railway egress)
+
+Owner standard: **browsers must load images from `IMAGE_CDN` (jsDelivr / ggen_db_images), not from Railway.** Railway egress and cold bandwidth are scarce; CDN is the default for every user-visible raster (portraits, UI chrome, rarity/role icons, option-part thumbs, Special Design, CSS backgrounds, stage/ML art).
+
+Performance is the other half of the bar — see `snappy-static-cache.mdc` (eager-load budget, detail warm caps). This rule is specifically **where** bytes come from.
+
+## Hard rule
+
+1. **Never ship a new user-facing image that only resolves to `/static/images/…` on production** when `IMAGE_CDN` / `GAME_IMAGES_USE_CDN` are on.
+2. **Do not** hardcode absolute CDN hostnames in app code — use helpers so local/off-CDN still works.
+3. **Do not** reintroduce image proxying through the Flask app (same class of burn as `VIDEO_PROXY` for MP4s).
+4. Prefer **WebP** on CDN; keep `/static` only as fallback / local-dev path.
+
+## How (pointers — details in `game-images-cdn.mdc`)
+
+| Surface | Use |
+|---|---|
+| Python API / paths | `game_image_public_url()`, `convert_image_urls()` |
+| `app.js` HTML | `imgUrl` / `imgUrlPreferCdn` / `pictureRasterHtml()` |
+| Jinja | `{% if image_cdn %}…{% else %}/static/…{% endif %}` |
+| CSS `url(/static/images/…)` | Must rewrite to absolute CDN in the response path (or use CDN URLs at build time) — bare `/static` in CSS still hits Railway |
+
+## New / missing assets — agent duty
+
+Local CDN checkout (owner machine):
+
+`C:\Users\Mikew0911\Desktop\ggen_db_images`
+
+Whenever a needed **`.webp` is missing** there (CDN 404, Special Design / UI / OP / portrait, etc.):
+
+1. **List** every missing path (folder + filename).
+2. **Copy / move** the files into the matching folders under that repo (create folders if needed). Prefer `.webp`; convert from PNG/JPG in-app tree when only raster sources exist under `ggen_db_app/static/images/`.
+3. Update `image_index.json` in the CDN repo when new names/folders are introduced.
+4. **Remind the owner explicitly** to **commit + push `ggen_db_images` to GitHub** so jsDelivr picks them up — CDN is not live until that upload lands.
+5. Do **not** treat Railway `/static` fallback as the permanent fix.
+
+Reply pattern when assets were staged locally:
+
+> Staged N WebPs under `ggen_db_images\…`. Please push that repo to GitHub so CDN serves them.
+
+## Checklist before “done”
+
+- [ ] Live (or local with CDN env) Network panel: image hosts are CDN, not `*.up.railway.app/static/images`
+- [ ] No new hardcoded github.io / jsDelivr URLs in JS/Python
+- [ ] CSS backgrounds / badge plates included in the CDN path (not only `<img>` tags)
