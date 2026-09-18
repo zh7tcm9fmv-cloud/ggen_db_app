@@ -6768,7 +6768,7 @@
   {
     "Id": 37600801,
     "ScenarioStageSeriesId": 3760,
-    "ThumbnailResourceId": "thum_map_bg_0302_02",
+    "ThumbnailResourceId": "thum_map_bg_0302_01",
     "StageDifficultyTypeIndex": 2,
     "StageNumber": 1,
     "ScheduleId": 0,
@@ -6831,7 +6831,7 @@
     "ReleaseConditionScenarioStageId": 37601001,
     "IsSideStory": false,
     "AdvVoiceResourceId": "",
-    "StageAdditionalDisplayTypeIndex": 0
+    "StageAdditionalDisplayTypeIndex": 1
   },
   {
     "Id": 40000104,
