@@ -158,10 +158,10 @@ html.ggen-15[data-ui-lang="JA"] .dm-head-debuff-tip,
 html.ggen-15[data-ui-lang="TW"] .dm-head-debuff-tip,
 html.ggen-15[data-ui-lang="HK"] .dm-head-debuff-tip,
 html.ggen-15[data-ui-lang="JP"] .dm-head-debuff-tip{
-  font-size:12px;
-  font-weight:500;
+  font-size:14px;
+  font-weight:600;
   letter-spacing:.02em;
-  line-height:1.35;
+  line-height:1.4;
 }
 html.ggen-15 .dm-head-supp{color:#86efac}
 html.ggen-15 .dm-head-role--1{
