@@ -992,6 +992,31 @@
 .collections-census-vhist-col:last-child.is-hold .collections-census-vhist-detail{
   transform:translateX(0) translateY(0) scale(1);
 }
+/* In-column card is source markup only. The visible tip is a body portal so
+   page overflow-x:clip / chart edges cannot cut it off. */
+.collections-census-vhist-col .collections-census-vhist-detail{
+  display:none !important;
+}
+.collections-census-vhist-detail.collections-census-vhist-detail--portal{
+  position:fixed;
+  left:0;
+  top:0;
+  z-index:650;
+  display:flex;
+  margin:0;
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transform:none;
+}
+.collections-census-vhist-detail.collections-census-vhist-detail--portal.is-open{
+  opacity:1;
+  visibility:visible;
+  transform:none;
+}
+.collections-census-vhist-detail.collections-census-vhist-detail--portal[hidden]{
+  display:none !important;
+}
 .collections-census-vhist-detail-thumb{
   width:56px;height:56px;border-radius:6px;overflow:hidden;flex:0 0 auto;
   border:1px solid rgba(125,211,252,.35);background:#0b1220;

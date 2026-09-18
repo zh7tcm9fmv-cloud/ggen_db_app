@@ -4373,11 +4373,67 @@
     return 'rgb(' + r + ',' + g + ',' + bl + ')';
   }
 
+  var censusTipPortal = null;
+  var censusTipCol = null;
+
+  function ensureCensusTipPortal() {
+    if (censusTipPortal && censusTipPortal.isConnected) return censusTipPortal;
+    censusTipPortal = document.createElement('div');
+    censusTipPortal.className =
+      'collections-census-vhist-detail collections-census-vhist-detail--portal';
+    censusTipPortal.setAttribute('role', 'tooltip');
+    censusTipPortal.setAttribute('aria-hidden', 'true');
+    censusTipPortal.hidden = true;
+    document.body.appendChild(censusTipPortal);
+    return censusTipPortal;
+  }
+
+  function hideCensusTip() {
+    censusTipCol = null;
+    if (!censusTipPortal) return;
+    censusTipPortal.classList.remove('is-open');
+    censusTipPortal.hidden = true;
+    censusTipPortal.setAttribute('aria-hidden', 'true');
+  }
+
+  function placeCensusTip(col) {
+    if (!col || !col.isConnected) {
+      hideCensusTip();
+      return;
+    }
+    var src = col.querySelector('.collections-census-vhist-detail');
+    if (!src) return;
+    var card = ensureCensusTipPortal();
+    if (censusTipCol !== col) {
+      card.innerHTML = src.innerHTML;
+      censusTipCol = col;
+    }
+    card.hidden = false;
+    card.classList.add('is-open');
+    card.setAttribute('aria-hidden', 'false');
+    card.style.left = '0px';
+    card.style.top = '0px';
+    var rect = col.getBoundingClientRect();
+    var cr = card.getBoundingClientRect();
+    var pad = 8;
+    var vw = window.innerWidth || document.documentElement.clientWidth || 0;
+    var vh = window.innerHeight || document.documentElement.clientHeight || 0;
+    var left = rect.left + rect.width / 2 - cr.width / 2;
+    if (left < pad) left = pad;
+    if (left + cr.width > vw - pad) left = Math.max(pad, vw - cr.width - pad);
+    var top = rect.top - cr.height - 6;
+    if (top < pad) top = rect.bottom + 6;
+    if (top + cr.height > vh - pad) top = Math.max(pad, vh - cr.height - pad);
+    card.style.left = Math.round(left) + 'px';
+    card.style.top = Math.round(top) + 'px';
+  }
+
   function renderCensusOwn(rows, snapshots) {
     var host = document.getElementById('colCensusOwn');
     if (!host) return;
     var list = (rows || []).slice();
     if (!(snapshots > 0) || !list.length) {
+      hideCensusTip();
       host.innerHTML = '<p class="collections-census-empty">' + esc(t('census_empty')) + '</p>';
       return;
     }
@@ -4463,6 +4519,7 @@
     var ownTitle = document.getElementById('colCensusOwnTitle');
     if (ownTitle) ownTitle.textContent = t('census_own_title', { type: typeTitle() });
     host.setAttribute('aria-label', t('census_own_title', { type: typeTitle() }));
+    hideCensusTip();
     bindCensusOwnBarHold(host);
   }
 
@@ -4471,6 +4528,7 @@
     host._censusHoldBound = 1;
     var holdTimer = null;
     var holdCol = null;
+    var lastPtr = 'mouse';
     var clearHold = function () {
       if (holdTimer) {
         clearTimeout(holdTimer);
@@ -4483,18 +4541,50 @@
       host.querySelectorAll('.collections-census-vhist-col.is-hold').forEach(function (el) {
         el.classList.remove('is-hold');
       });
+      var hovered =
+        lastPtr === 'mouse' ? host.querySelector('.collections-census-vhist-col:hover') : null;
+      if (hovered) placeCensusTip(hovered);
+      else hideCensusTip();
     };
+    if (!host._censusTipFollow) {
+      host._censusTipFollow = 1;
+      var followTip = function () {
+        if (censusTipCol && censusTipCol.isConnected) placeCensusTip(censusTipCol);
+        else if (censusTipCol) hideCensusTip();
+      };
+      window.addEventListener('scroll', followTip, { passive: true, capture: true });
+      window.addEventListener('resize', followTip);
+    }
+    host.addEventListener(
+      'pointerover',
+      function (e) {
+        if (e.pointerType && e.pointerType !== 'mouse') return;
+        var col = e.target && e.target.closest ? e.target.closest('.collections-census-vhist-col') : null;
+        if (!col || !host.contains(col)) return;
+        placeCensusTip(col);
+      }
+    );
+    host.addEventListener('pointerout', function (e) {
+      var col = e.target && e.target.closest ? e.target.closest('.collections-census-vhist-col') : null;
+      if (!col || !host.contains(col)) return;
+      var next = e.relatedTarget;
+      if (next && col.contains(next)) return;
+      if (col.classList.contains('is-hold')) return;
+      if (censusTipCol === col) hideCensusTip();
+    });
     host.addEventListener(
       'pointerdown',
       function (e) {
         var col = e.target && e.target.closest ? e.target.closest('.collections-census-vhist-col') : null;
         if (!col || !host.contains(col)) return;
         if (e.pointerType === 'mouse' && e.button !== 0) return;
+        lastPtr = e.pointerType || 'mouse';
         clearHold();
         holdTimer = setTimeout(function () {
           holdTimer = null;
           holdCol = col;
           col.classList.add('is-hold');
+          placeCensusTip(col);
         }, 420);
       },
       { passive: true }
