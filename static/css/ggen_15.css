@@ -179,6 +179,22 @@ html.ggen-15 .nav-tab{
   letter-spacing:.06em;
   text-transform:uppercase;
 }
+/* CJK nav: HUD face is already medium/bold — avoid extra fat weight; bump size for stroke clarity */
+html.ggen-15[data-ui-lang="JA"] #navTabs .nav-tab,
+html.ggen-15[data-ui-lang="JP"] #navTabs .nav-tab,
+html.ggen-15[data-ui-lang="TW"] #navTabs .nav-tab,
+html.ggen-15[data-ui-lang="HK"] #navTabs .nav-tab,
+html.ggen-15[data-ui-lang="JA"] .nav-tab,
+html.ggen-15[data-ui-lang="JP"] .nav-tab,
+html.ggen-15[data-ui-lang="TW"] .nav-tab,
+html.ggen-15[data-ui-lang="HK"] .nav-tab{
+  font-family:var(--font-hud);
+  font-weight:500;
+  letter-spacing:.02em;
+  text-transform:none;
+  font-synthesis:none;
+  -webkit-font-smoothing:antialiased;
+}
 html.ggen-15 #navTabsShell .nav-tabs-edge-hint{
   position:absolute;top:0;bottom:0;z-index:3;
   display:flex;align-items:center;width:56px;border:none;cursor:pointer;
@@ -247,8 +263,9 @@ html.ggen-15[data-ui-lang="JP"] .tm-browse-shortcut-label{
   font-family:var(--font-hud);
   text-transform:none;
   letter-spacing:.02em;
-  font-weight:700;
-  font-size:12px;
+  font-weight:500;
+  font-size:13px;
+  font-synthesis:none;
 }
 html.ggen-15 .main-content .page-btn,
 html.ggen-15 .main-content .role-filter-btn,
@@ -460,6 +477,16 @@ html.ggen-15 .main-content .bt-feat-sub{
 html.ggen-15 #navTabs .nav-tab,
 html.ggen-15 .nav-tab{
   font-size:calc(18px * var(--g15-type-nudge));
+}
+html.ggen-15[data-ui-lang="JA"] #navTabs .nav-tab,
+html.ggen-15[data-ui-lang="JP"] #navTabs .nav-tab,
+html.ggen-15[data-ui-lang="TW"] #navTabs .nav-tab,
+html.ggen-15[data-ui-lang="HK"] #navTabs .nav-tab,
+html.ggen-15[data-ui-lang="JA"] .nav-tab,
+html.ggen-15[data-ui-lang="JP"] .nav-tab,
+html.ggen-15[data-ui-lang="TW"] .nav-tab,
+html.ggen-15[data-ui-lang="HK"] .nav-tab{
+  font-size:calc(17px * var(--g15-type-nudge));
 }
 html.ggen-15 .main-content .section-title{
   font-size:calc(19px * var(--g15-type-nudge));

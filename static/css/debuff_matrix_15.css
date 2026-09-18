@@ -1,0 +1,215 @@
+/* Debuff Matrix — 1.5 Special Design overlay (html.ggen-15 / body.dm-15) */
+
+html.ggen-15 .dm-page,
+body.dm-15{
+  --dm-four:#ff9d00;
+  --dm-six:#00d9ff;
+  --dm-new:#ff00e5;
+  --dm-other:#64748b;
+  --dm-series:#14b8a6;
+  --dm-taken:#ffd400;
+  --dm-stat:#ff9d00;
+  --dm-power:#2ed573;
+  --dm-range:#a78bfa;
+  --dm-pierce:#ff4757;
+}
+
+html.ggen-15 .dm-intro h1,
+html.ggen-15 .dm-eyebrow{
+  font-family:var(--font-teko),Teko,sans-serif;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+html.ggen-15 .dm-toolbar{
+  border:none;
+  border-radius:0;
+  clip-path:var(--g15-chamfer,polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px));
+  background:
+    linear-gradient(135deg,rgba(0,217,255,.08),rgba(0,140,255,.04)),
+    rgba(8,18,36,.88);
+  box-shadow:
+    inset 0 0 0 1px rgba(0,217,255,.35),
+    0 0 24px rgba(0,217,255,.06);
+  padding:4px 8px;
+}
+/* Toolbar — Teko HUD like Collections 1.5 (labels + chips + toggles) */
+html.ggen-15 .dm-filter-label{
+  font-family:var(--font-teko),Teko,sans-serif;
+  font-size:11px;font-weight:500;letter-spacing:.12em;
+  text-transform:uppercase;color:#7af0ff;
+}
+html.ggen-15 .dm-chip,
+html.ggen-15 .dm-role-btn,
+html.ggen-15 .dm-toggle,
+html.ggen-15 .dm-search{
+  font-family:var(--font-teko),Teko,sans-serif;
+  letter-spacing:.06em;text-transform:uppercase;font-weight:600;
+  border-radius:0;
+  clip-path:polygon(5px 0,100% 0,100% calc(100% - 5px),calc(100% - 5px) 100%,0 100%,0 5px);
+}
+html.ggen-15 .dm-chip{
+  font-size:13px;padding:4px 10px;
+}
+html.ggen-15 .dm-chip.is-active,
+html.ggen-15 .dm-role-btn.is-active{
+  background:linear-gradient(95deg,rgba(0,217,255,.28),rgba(0,140,255,.18));
+  border-color:#00d9ff;color:#fff;
+}
+html.ggen-15 .dm-toggle{
+  font-size:12px;letter-spacing:.05em;color:#cbd5e1;
+}
+html.ggen-15 .dm-search{
+  font-size:12px;letter-spacing:.04em;text-transform:none;font-weight:500;
+}
+/* JA/TW/HK: 1.5 uses --font-hud (ShinGo / UDShinGo). Classic keeps Noto-first --font-body. */
+html.ggen-15[data-ui-lang="JA"] .dm-intro h1,
+html.ggen-15[data-ui-lang="TW"] .dm-intro h1,
+html.ggen-15[data-ui-lang="HK"] .dm-intro h1,
+html.ggen-15[data-ui-lang="JP"] .dm-intro h1,
+html.ggen-15[data-ui-lang="JA"] .dm-eyebrow,
+html.ggen-15[data-ui-lang="TW"] .dm-eyebrow,
+html.ggen-15[data-ui-lang="HK"] .dm-eyebrow,
+html.ggen-15[data-ui-lang="JP"] .dm-eyebrow,
+html.ggen-15[data-ui-lang="JA"] .dm-chip,
+html.ggen-15[data-ui-lang="TW"] .dm-chip,
+html.ggen-15[data-ui-lang="HK"] .dm-chip,
+html.ggen-15[data-ui-lang="JP"] .dm-chip,
+html.ggen-15[data-ui-lang="JA"] .dm-toggle,
+html.ggen-15[data-ui-lang="TW"] .dm-toggle,
+html.ggen-15[data-ui-lang="HK"] .dm-toggle,
+html.ggen-15[data-ui-lang="JP"] .dm-toggle,
+html.ggen-15[data-ui-lang="JA"] .dm-filter-label,
+html.ggen-15[data-ui-lang="TW"] .dm-filter-label,
+html.ggen-15[data-ui-lang="HK"] .dm-filter-label,
+html.ggen-15[data-ui-lang="JP"] .dm-filter-label,
+html.ggen-15[data-ui-lang="JA"] .dm-search,
+html.ggen-15[data-ui-lang="TW"] .dm-search,
+html.ggen-15[data-ui-lang="HK"] .dm-search,
+html.ggen-15[data-ui-lang="JP"] .dm-search{
+  font-family:var(--font-hud);
+  text-transform:none;
+  letter-spacing:.02em;
+  font-weight:500;
+  font-synthesis:none;
+  -webkit-font-smoothing:antialiased;
+}
+html.ggen-15[data-ui-lang="JA"] .dm-chip,
+html.ggen-15[data-ui-lang="TW"] .dm-chip,
+html.ggen-15[data-ui-lang="HK"] .dm-chip,
+html.ggen-15[data-ui-lang="JP"] .dm-chip{
+  font-size:14px;
+}
+html.ggen-15[data-ui-lang="JA"] .dm-filter-label,
+html.ggen-15[data-ui-lang="TW"] .dm-filter-label,
+html.ggen-15[data-ui-lang="HK"] .dm-filter-label,
+html.ggen-15[data-ui-lang="JP"] .dm-filter-label{
+  font-size:12px;
+  font-weight:600;
+}
+html.ggen-15 .dm-matrix{
+  border-radius:0;
+  clip-path:var(--g15-chamfer,polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px));
+  border:none;
+  box-shadow:inset 0 0 0 1px rgba(0,217,255,.28);
+}
+html.ggen-15 .dm-board-wrap{
+  border-radius:0;
+  border:none;
+  box-shadow:none;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24.249' height='42' viewBox='0 0 24.249 42'%3E%3Cg fill='none' stroke='%2300d9ff' stroke-width='1' opacity='.07'%3E%3Cpath d='M12.124 0L24.249 7v14L12.124 28 0 21V7z'/%3E%3C/g%3E%3C/svg%3E"),
+    rgba(4,12,28,.72);
+  background-size:24px 42px;
+}
+html.ggen-15 .dm-sticky-head > *{
+  background:rgba(4,18,40,.97);
+  color:#7af0ff;
+  font-family:var(--font-teko),Teko,sans-serif;
+  font-size:12px;
+  letter-spacing:.08em;
+  border-bottom-color:rgba(0,217,255,.35);
+  padding:4px 3px;
+}
+html.ggen-15[data-ui-lang="JA"] .dm-sticky-head > *,
+html.ggen-15[data-ui-lang="TW"] .dm-sticky-head > *,
+html.ggen-15[data-ui-lang="HK"] .dm-sticky-head > *,
+html.ggen-15[data-ui-lang="JP"] .dm-sticky-head > *{
+  font-family:var(--font-hud);
+  text-transform:none;
+  letter-spacing:.02em;
+  font-weight:500;
+  font-size:13px;
+  font-synthesis:none;
+  -webkit-font-smoothing:antialiased;
+}
+html.ggen-15[data-ui-lang="JA"] .dm-head-group,
+html.ggen-15[data-ui-lang="TW"] .dm-head-group,
+html.ggen-15[data-ui-lang="HK"] .dm-head-group,
+html.ggen-15[data-ui-lang="JP"] .dm-head-group,
+html.ggen-15[data-ui-lang="JA"] .dm-head-group-label,
+html.ggen-15[data-ui-lang="TW"] .dm-head-group-label,
+html.ggen-15[data-ui-lang="HK"] .dm-head-group-label,
+html.ggen-15[data-ui-lang="JP"] .dm-head-group-label{
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:.02em;
+}
+html.ggen-15[data-ui-lang="JA"] .dm-head-debuff-tip,
+html.ggen-15[data-ui-lang="TW"] .dm-head-debuff-tip,
+html.ggen-15[data-ui-lang="HK"] .dm-head-debuff-tip,
+html.ggen-15[data-ui-lang="JP"] .dm-head-debuff-tip{
+  font-size:12px;
+  font-weight:500;
+  letter-spacing:.02em;
+  line-height:1.35;
+}
+html.ggen-15 .dm-head-supp{color:#86efac}
+html.ggen-15 .dm-head-role--1{
+  background:linear-gradient(180deg,rgba(255,80,80,.22),rgba(4,18,40,.97));
+}
+html.ggen-15 .dm-head-role--3{
+  background:linear-gradient(180deg,rgba(255,212,0,.2),rgba(4,18,40,.97));
+}
+html.ggen-15 .dm-head-role--2{
+  background:linear-gradient(180deg,rgba(0,217,255,.22),rgba(4,18,40,.97));
+}
+html.ggen-15 .dm-tag-name{
+  font-family:var(--font-teko),Teko,sans-serif;
+  font-size:13px;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  color:#fff;
+}
+html.ggen-15[data-ui-lang="JA"] .dm-tag-name,
+html.ggen-15[data-ui-lang="TW"] .dm-tag-name,
+html.ggen-15[data-ui-lang="HK"] .dm-tag-name,
+html.ggen-15[data-ui-lang="JP"] .dm-tag-name{
+  font-family:var(--font-hud);
+  text-transform:none;
+  letter-spacing:.02em;
+  font-size:13px;
+  font-weight:500;
+  font-synthesis:none;
+  -webkit-font-smoothing:antialiased;
+}
+html.ggen-15 .dm-rail-group-bar{
+  font-family:var(--font-teko),Teko,sans-serif;
+  font-size:10px;
+  font-weight:800;
+}
+html.ggen-15[data-ui-lang="JA"] .dm-rail-group-bar,
+html.ggen-15[data-ui-lang="TW"] .dm-rail-group-bar,
+html.ggen-15[data-ui-lang="HK"] .dm-rail-group-bar,
+html.ggen-15[data-ui-lang="JP"] .dm-rail-group-bar,
+html.ggen-15[data-ui-lang="JA"] .dm-rail-group-ch,
+html.ggen-15[data-ui-lang="TW"] .dm-rail-group-ch,
+html.ggen-15[data-ui-lang="HK"] .dm-rail-group-ch,
+html.ggen-15[data-ui-lang="JP"] .dm-rail-group-ch{
+  font-family:var(--font-hud);
+  text-transform:none;
+  font-weight:600;
+  font-size:11px;
+  font-synthesis:none;
+}
+/* No row enter stagger — it delayed paint and felt like empty gaps */
+html.ggen-15 .dm-row > *{animation:none!important}

@@ -1,0 +1,1248 @@
+/* Debuff Matrix — content-sized role columns, site-aligned page width */
+
+.dm-page{
+  --dm-four:#e8782a;
+  --dm-six:#3b82f6;
+  --dm-new:#a855f7;
+  --dm-other:#64748b;
+  --dm-series:#0d9488;
+  --dm-stat:#eab308;
+  --dm-power:#22c55e;
+  --dm-range:#8b5cf6;
+  --dm-special:#ef4444;
+  --dm-attack:rgba(239,68,68,.1);
+  --dm-support:rgba(234,179,8,.1);
+  --dm-durability:rgba(59,130,246,.1);
+  --dm-border:rgba(148,163,184,.2);
+  --dm-thumb:38px;
+  --dm-gap:2px;
+  --dm-rail-w:16px;
+  --dm-w-supp:88px;
+  --dm-w-tag:72px;
+  --dm-debuff-n:10;
+  --dm-debuff-min:0px;
+  /* JS sets --dm-cols / --dm-cols-body from visible debuff count — always fit viewport */
+  --dm-cols:var(--dm-rail-w) var(--dm-w-supp) var(--dm-w-tag) repeat(var(--dm-debuff-n),minmax(0,1fr));
+  --dm-cols-body:var(--dm-w-supp) var(--dm-w-tag) repeat(var(--dm-debuff-n),minmax(0,1fr));
+  --motion-quick:100ms;
+  --motion-ease:cubic-bezier(.2,0,0,1);
+  --dm-fixed-chrome-h:96px;
+  display:flex !important;
+  flex-direction:column !important;
+  max-width:100%;
+}
+/*
+  Debuff Matrix is body.dm-page. App shell / iOS rules set body{min-height:…} which
+  can beat max-height and let the DOCUMENT scroll — nav tabs leave the viewport
+  in landscape. Force a locked viewport shell; board-wrap is the only scroller.
+*/
+html:has(body.dm-page){
+  height:100dvh !important;
+  max-height:100dvh !important;
+  min-height:0 !important;
+  overflow:hidden !important;
+}
+body.dm-page{
+  height:100dvh !important;
+  max-height:100dvh !important;
+  min-height:0 !important;
+  overflow:hidden !important;
+}
+.dm-page > .app-header{
+  flex:0 0 auto;
+  position:relative;
+  z-index:300;
+  overflow:visible;
+}
+.dm-page > .app-header .header-inner{
+  overflow:visible;
+}
+.dm-page > .app-header .header-15-slot{
+  flex-shrink:0;
+}
+.dm-page > .dm-main{
+  flex:1 1 auto;
+  min-height:0 !important;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+/* Lang open: keep normal absolute dropdown, just lift stacking + stop chrome clip */
+body.dm-page.dm-lang-open > .app-header{
+  z-index:500;
+  overflow:visible;
+}
+body.dm-page.dm-lang-open > .app-header .header-inner,
+body.dm-page:has(#dmLangDropdown.active) > .app-header .header-inner{
+  overflow:visible !important;
+}
+body.dm-page.dm-lang-open .header-controls,
+body.dm-page.dm-lang-open .lang-selector{
+  position:relative;
+  z-index:520;
+}
+body.dm-page.dm-lang-open #dmLangDropdown,
+body.dm-page.dm-lang-open .lang-dropdown.active,
+body.dm-page #dmLangDropdown.active{
+  z-index:530 !important;
+  display:block !important;
+}
+
+/*
+  Landscape: keep header IN FLOW (not position:fixed).
+  Fixed + body overflow:hidden made touch pan feel broken — users swipe the
+  page (can't move) instead of the board. Flex shell already pins chrome;
+  only .dm-board-wrap scrolls.
+*/
+@media (orientation: landscape) and (max-height:520px){
+  body.dm-page > .dm-main{
+    padding-top:6px;
+    padding-bottom:8px;
+  }
+  body.dm-page .dm-toolbar{
+    margin-bottom:2px;
+    padding:2px 4px;
+  }
+  body.dm-page .dm-status{
+    margin-top:0;
+  }
+}
+/* CJK Exclusive rail needs room for 互斥 glyphs */
+html[data-ui-lang="JA"] .dm-page,
+html[data-ui-lang="JP"] .dm-page,
+html[data-ui-lang="TW"] .dm-page,
+html[data-ui-lang="HK"] .dm-page{
+  --dm-rail-w:22px;
+}
+.dm-page.dm-hide-supports{
+  --dm-rail-w:14px;
+  --dm-cols:var(--dm-rail-w) var(--dm-w-tag) repeat(var(--dm-debuff-n),minmax(0,1fr));
+  --dm-cols-body:var(--dm-w-tag) repeat(var(--dm-debuff-n),minmax(0,1fr));
+}
+.dm-page.dm-hide-supports .dm-head-supp{display:none}
+html[data-ui-lang="JA"] .dm-page.dm-hide-supports,
+html[data-ui-lang="JP"] .dm-page.dm-hide-supports,
+html[data-ui-lang="TW"] .dm-page.dm-hide-supports,
+html[data-ui-lang="HK"] .dm-page.dm-hide-supports{
+  --dm-rail-w:20px;
+}
+
+.dm-main{
+  width:100%;
+  max-width:1600px;
+  margin:0 auto;
+  padding:12px 20px 28px;
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+  min-height:0;
+  min-width:0;
+  box-sizing:border-box;
+  overflow-x:hidden;
+}
+
+/* Nav shell width matches header column; tab row layout comes from classic shell CSS */
+.dm-page .nav-tabs-shell{
+  max-width:1600px;
+  margin-left:auto;
+  margin-right:auto;
+  width:100%;
+  box-sizing:border-box;
+}
+
+/*
+  Nav tabs: match main browse (/c /u) — desktop wraps (full list), mobile = one-row scroll.
+  TM does not load mobile_layout.css; mirror that breakpoint here.
+*/
+body.dm-page .nav-tabs-shell,
+body.dm-page #navTabsShell{
+  min-height:44px;
+  overflow:hidden; /* allow auto-hide collapse; tabs themselves still scroll-x on mobile */
+  width:100%;
+  max-width:100%;
+  opacity:1;
+  transform:translateY(0);
+  transition:
+    opacity 180ms var(--motion-ease,cubic-bezier(.2,0,0,1)),
+    transform 180ms var(--motion-ease,cubic-bezier(.2,0,0,1));
+}
+body.dm-page .nav-tabs,
+body.dm-page #navTabs{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:stretch;
+  justify-content:flex-start;
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  box-sizing:border-box;
+  overflow-x:visible;
+  overflow-y:visible;
+  gap:0;
+  padding:0 24px;
+}
+body.dm-page .nav-tab{
+  flex:0 1 auto;
+  white-space:nowrap;
+}
+@media (max-width:768px), (orientation:landscape) and (max-height:520px){
+  body.dm-page .nav-tabs,
+  body.dm-page #navTabs{
+    flex-wrap:nowrap !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-x:contain;
+    touch-action:pan-x;
+    scroll-behavior:auto;
+    scrollbar-width:none;
+    -ms-overflow-style:none;
+    padding:6px 12px 0;
+    justify-content:flex-start;
+  }
+  body.dm-page .nav-tabs::-webkit-scrollbar,
+  body.dm-page #navTabs::-webkit-scrollbar{display:none}
+  body.dm-page .nav-tab{
+    flex:0 0 auto !important;
+    flex-shrink:0 !important;
+  }
+}
+@media (prefers-reduced-motion:reduce){
+  body.dm-page .nav-tabs,
+  body.dm-page #navTabs{
+    scroll-behavior:auto;
+  }
+}
+/* Board scroll: collapse nav tabs + filters; brand header stays */
+body.dm-page.dm-filters-collapsed #navTabsShell,
+body.dm-page.dm-filters-collapsed .nav-tabs-shell{
+  max-height:0 !important;
+  min-height:0 !important;
+  height:0 !important;
+  opacity:0;
+  border-bottom-width:0 !important;
+  border-color:transparent !important;
+  transform:translateY(-6px);
+  pointer-events:none;
+  margin:0 !important;
+  padding:0 !important;
+}
+@media (prefers-reduced-motion:reduce){
+  body.dm-page #navTabsShell,
+  body.dm-page .nav-tabs-shell{
+    transition:none !important;
+  }
+  body.dm-page.dm-filters-collapsed #navTabsShell,
+  body.dm-page.dm-filters-collapsed .nav-tabs-shell{
+    transform:none !important;
+  }
+}
+
+.dm-intro{display:none} /* reclaim vertical space — title is in the nav tab */
+.dm-legend{display:none}
+.dm-foot{display:none}
+.dm-status{margin:2px 0 0;font-size:9px;color:var(--text-muted,#94a3b8);flex:0 0 auto;line-height:1.2;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
+
+@media (max-width:768px), (orientation:landscape) and (max-height:520px){
+  .dm-main{padding:10px 12px 20px}
+  /* Compact brand chrome on narrow / short viewports (nav wrap vs scroll is separate @768) */
+  body.dm-page > .app-header .header-inner,
+  html.ggen-15 body.dm-page > .app-header .header-inner,
+  html.ggen-15 body.dm-page .app-header .header-inner:has(.header-15-slot),
+  body.dm-page .app-header .header-inner:has(.header-15-slot){
+    gap:8px;
+    padding:8px 12px;
+    overflow-x:auto;
+    overflow-y:hidden;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  body.dm-page > .app-header .header-inner::-webkit-scrollbar{display:none}
+  body.dm-page > .app-header .header-brand{
+    flex:0 1 auto;
+    min-width:0;
+    max-width:none;
+  }
+  body.dm-page > .app-header .brand-logo{
+    width:32px;
+    height:32px;
+  }
+  body.dm-page > .app-header .brand-text{
+    font-size:clamp(10px,2vw + 5px,13px);
+  }
+  /* Brand panel emblem — match classic mobile scale (1.5 desktop 108×58 is too large here) */
+  body.dm-page .brand-title-row::before,
+  html.ggen-15 body.dm-page .brand-title-row::before,
+  html.ggen-15 body.dm-page .app-header .brand-title-row::before{
+    width:64px !important;
+    height:34px !important;
+    opacity:.72 !important;
+    transform:translate(calc(-50% + var(--brand-emblem-optical-x, 0px)),-52%) !important;
+  }
+  body.dm-page > .app-header .brand-sub{
+    display:none;
+  }
+  body.dm-page > .app-header .header-15-toggle{
+    min-height:32px;
+    padding:3px 10px;
+    font-size:12px;
+  }
+  body.dm-page > .app-header .header-15-toggle--special{
+    max-width:min(160px,42vw);
+    min-height:32px;
+    padding:3px 6px;
+  }
+  body.dm-page > .app-header .header-15-toggle--special img{
+    display:block !important;
+    height:22px !important;
+    width:auto !important;
+    max-width:100% !important;
+  }
+  body.dm-page .nav-tab{
+    padding:10px 12px !important;
+    font-size:13px !important;
+    min-height:44px;
+  }
+  body.dm-page .nav-tab .nav-tab-icon,
+  body.dm-page .nav-tab .nav-tab-icon--svg{
+    width:22px !important;
+    height:22px !important;
+    margin-right:6px;
+  }
+  /* Debuff icon headers — tip reveals wording */
+  .dm-head-debuff-icon{width:22px;height:22px}
+  /* Compact landscape nudge — art + wording as one centered cluster in the HUD */
+  .dm-rotate-hint:not([hidden]){
+    flex-direction:row;flex-wrap:nowrap;align-items:center;justify-content:center;
+    gap:16px;
+    margin:0 0 6px;padding:12px 12px;
+    /* Do not use overflow-x:hidden — it forces overflow-y:auto and creates a scroller */
+    overflow:visible;
+    min-height:52px;
+    box-sizing:border-box;
+  }
+  .dm-rotate-art{
+    position:relative;
+    width:48px;height:44px;flex:0 0 48px;
+    overflow:visible;margin:0;
+  }
+  .dm-rotate-phone{
+    position:absolute;left:50%;top:50%;
+    width:30px;height:auto;max-width:none;
+    transform:translate(-50%,-50%) rotate(-90deg);
+    transform-origin:center center;
+  }
+  .dm-rotate-arrow{
+    position:absolute;left:50%;top:50%;
+    width:18px;height:auto;max-height:18px;
+    transform:translate(-50%,-50%);
+    animation:tm-rotate-nudge-m 1.6s var(--motion-ease,cubic-bezier(0.2,0,0,1)) infinite;
+  }
+  .dm-rotate-copy{
+    font-size:11px;text-align:left;
+    flex:0 1 auto;min-width:0;max-width:14em;margin:0;
+  }
+  @keyframes tm-rotate-nudge-m{
+    0%,100%{opacity:.7;transform:translate(-50%,-50%) scale(1)}
+    50%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}
+  }
+}
+
+.dm-toolbar{
+  display:flex;flex-wrap:wrap;gap:3px 6px;align-items:flex-end;
+  margin:0 0 2px;padding:3px 5px;
+  border:1px solid var(--dm-border);border-radius:5px;
+  background:rgba(15,23,42,.55);flex:0 0 auto;
+  max-height:220px;
+  opacity:1;
+  transform:translateY(0);
+  overflow:hidden;
+  transition:
+    max-height 220ms var(--motion-ease,cubic-bezier(.2,0,0,1)),
+    opacity 180ms var(--motion-ease,cubic-bezier(.2,0,0,1)),
+    transform 220ms var(--motion-ease,cubic-bezier(.2,0,0,1)),
+    margin 220ms var(--motion-ease,cubic-bezier(.2,0,0,1)),
+    padding 220ms var(--motion-ease,cubic-bezier(.2,0,0,1)),
+    border-color 180ms var(--motion-ease,cubic-bezier(.2,0,0,1));
+}
+/* Board scroll-down: collapse filters; header stays. Reveal on strong scroll-up. */
+body.dm-filters-collapsed .dm-toolbar{
+  max-height:0 !important;
+  height:0 !important;
+  min-height:0 !important;
+  opacity:0;
+  margin:0 !important;
+  padding:0 !important;
+  border:none !important;
+  transform:translateY(-8px);
+  pointer-events:none;
+  overflow:hidden;
+}
+@media (prefers-reduced-motion:reduce){
+  .dm-toolbar{
+    transition:none;
+  }
+  body.dm-filters-collapsed .dm-toolbar{
+    transform:none;
+  }
+}
+.dm-filter-block{display:flex;flex-direction:column;gap:2px;min-width:0}
+.dm-filter-label{font-size:8px;letter-spacing:.04em;text-transform:uppercase;color:var(--text-muted,#94a3b8)}
+.dm-chip-row,.dm-role-row{display:flex;flex-wrap:wrap;gap:2px;align-items:center}
+.dm-chip,.dm-role-btn{
+  appearance:none;border:1px solid var(--dm-border);background:rgba(30,41,59,.8);
+  color:var(--text-secondary,#cbd5e1);font:inherit;font-size:11px;
+  padding:3px 7px;border-radius:4px;cursor:pointer;line-height:1.1;
+}
+.dm-chip:hover,.dm-role-btn:hover{border-color:rgba(0,212,255,.45);color:#fff}
+.dm-chip.is-active,.dm-role-btn.is-active{
+  border-color:rgba(0,212,255,.7);background:rgba(0,212,255,.16);color:#fff;
+}
+.dm-role-btn{padding:2px 4px;display:inline-flex;align-items:center;justify-content:center}
+.dm-role-btn img{display:block;width:16px;height:16px}
+.dm-filter-block--toggles{flex-direction:row;flex-wrap:wrap;align-items:center;gap:4px 8px}
+.dm-rarity-row{align-items:center}
+.dm-rarity-btn{
+  padding:2px 4px;display:inline-flex;align-items:center;justify-content:center;
+  line-height:0;min-height:0;
+}
+.dm-rarity-btn-icons{
+  display:inline-flex;align-items:center;gap:1px;line-height:0;
+}
+.dm-rarity-btn .filter-inline-icon.rarity-filter-chip,
+.dm-rarity-btn img{
+  display:block;height:16px;width:auto;object-fit:contain;
+}
+.dm-toggle{display:inline-flex;align-items:center;gap:4px;font-size:10px;color:var(--text-secondary,#cbd5e1);cursor:pointer;user-select:none}
+.dm-toggle input{accent-color:#00d4ff}
+.dm-search{
+  min-width:110px;flex:1 1 130px;max-width:180px;padding:3px 6px;border-radius:4px;
+  border:1px solid var(--dm-border);background:rgba(15,23,42,.85);
+  color:var(--text-primary,#e2e8f0);font:inherit;font-size:11px;
+}
+.dm-search:focus{outline:none;border-color:rgba(0,212,255,.55)}
+.dm-search-hint{display:none}
+
+/* Mobile Squad multi-select — desktop keeps right-click */
+.dm-filter-block--squad{display:none}
+.dm-squad-btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:5px;
+  min-height:28px;padding:3px 8px;
+}
+.dm-squad-btn .dm-squad-ic{width:16px;height:16px;object-fit:contain;display:block}
+.dm-squad-btn.is-active{
+  border-color:rgba(0,212,255,.75);background:rgba(0,212,255,.18);color:#fff;
+  box-shadow:0 0 0 1px rgba(0,212,255,.25);
+}
+.dm-filter-block--squad .dm-squad-actions{
+  display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;
+}
+.dm-squad-clear{
+  display:none;min-height:28px;padding:3px 8px;
+  border-color:rgba(148,163,184,.45);
+}
+.dm-squad-clear:hover{border-color:rgba(0,212,255,.5);color:#fff}
+body.dm-squad-mode .dm-squad-clear{display:inline-flex}
+body.dm-squad-mode .dm-tile[data-kind="unit"]{outline:1px dashed transparent}
+@media (hover:none),(pointer:coarse){
+  .dm-filter-block--squad{display:flex}
+}
+@media (hover:hover) and (pointer:fine){
+  .dm-filter-block--squad{display:none!important}
+}
+
+.dm-rotate-hint{
+  display:none;
+  flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:center;gap:16px 18px;
+  margin:0 0 8px;padding:12px 14px;
+  border:1px solid rgba(0,212,255,.35);border-radius:8px;
+  background:rgba(8,14,28,.88);
+  overflow:visible;
+}
+.dm-rotate-hint:not([hidden]){display:flex}
+.dm-rotate-art{
+  position:relative;
+  width:56px;height:48px;
+  flex:0 0 56px;
+  overflow:visible;
+  margin:0;
+}
+.dm-rotate-phone{
+  position:absolute;left:50%;top:50%;
+  width:36px;height:auto;max-width:none;display:block;
+  transform:translate(-50%,-50%) rotate(-90deg);
+  transform-origin:center center;
+  filter:drop-shadow(0 4px 12px rgba(0,0,0,.45));
+}
+.dm-rotate-arrow{
+  position:absolute;left:50%;top:50%;
+  width:22px;height:auto;max-height:22px;display:block;z-index:1;
+  transform:translate(-50%,-50%);
+  opacity:.95;
+  filter:drop-shadow(0 1px 3px rgba(0,0,0,.65));
+  animation:tm-rotate-nudge 1.6s var(--motion-ease,cubic-bezier(0.2,0,0,1)) infinite;
+  pointer-events:none;
+}
+.dm-rotate-copy{
+  margin:0;font-size:12px;font-weight:700;line-height:1.35;
+  color:var(--text-primary,#e2e8f0);text-align:left;
+  flex:0 1 auto;max-width:22em;
+}
+@keyframes tm-rotate-nudge{
+  0%,100%{opacity:.7;transform:translate(-50%,-50%) scale(1)}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}
+}
+@media (prefers-reduced-motion:reduce){
+  .dm-rotate-arrow{animation:none!important}
+}
+
+.dm-legend{
+  display:none;
+}
+
+/* Head is OUTSIDE the scrollport — always frozen (Chrome overflow-x bug safe) */
+.dm-matrix{
+  flex:1 1 auto;
+  min-height:0;
+  width:100%;
+  max-width:100%;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  border:1px solid var(--dm-border);
+  border-radius:6px;
+  overflow:visible; /* allow debuff icon tip to paint over the board */
+  background:rgba(2,6,23,.35);
+}
+
+.dm-sticky-head{
+  flex:0 0 auto;
+  position:sticky;
+  top:0;
+  z-index:30;
+  display:flex;
+  flex-direction:column;
+  width:100%;
+  min-width:0;
+  box-sizing:border-box;
+  background:rgba(8,12,22,.98);
+  border-bottom:2px solid var(--dm-border);
+  box-shadow:0 2px 10px rgba(0,0,0,.4);
+  overflow:visible;
+}
+.dm-head-groups,
+.dm-head-keys{
+  display:grid;
+  grid-template-columns:var(--dm-cols);
+  width:100%;
+  min-width:0;
+  box-sizing:border-box;
+}
+.dm-head-groups{
+  border-bottom:1px solid rgba(148,163,184,.18);
+}
+.dm-sticky-head .dm-head-groups > *,
+.dm-sticky-head .dm-head-keys > *{
+  padding:5px 4px;font-size:10px;font-weight:700;
+  letter-spacing:.03em;text-transform:uppercase;
+  color:var(--text-muted,#94a3b8);
+  background:rgba(8,12,22,.98);
+  min-width:0;
+  display:flex;align-items:center;gap:4px;
+}
+html[data-ui-lang="JA"] .dm-sticky-head .dm-head-groups > *,
+html[data-ui-lang="JP"] .dm-sticky-head .dm-head-groups > *,
+html[data-ui-lang="TW"] .dm-sticky-head .dm-head-groups > *,
+html[data-ui-lang="HK"] .dm-sticky-head .dm-head-groups > *,
+html[data-ui-lang="JA"] .dm-sticky-head .dm-head-keys > *,
+html[data-ui-lang="JP"] .dm-sticky-head .dm-head-keys > *,
+html[data-ui-lang="TW"] .dm-sticky-head .dm-head-keys > *,
+html[data-ui-lang="HK"] .dm-sticky-head .dm-head-keys > *{
+  font-weight:500;
+  font-size:12px;
+  letter-spacing:.02em;
+  text-transform:none;
+  font-synthesis:none;
+  -webkit-font-smoothing:antialiased;
+}
+.dm-head-rail{/* auto-flow col 1 */}
+.dm-head-supp{
+  justify-content:center;
+  text-align:center;
+  color:#bbf7d0;
+  background:linear-gradient(180deg,rgba(134,239,172,.22),rgba(8,12,22,.98));
+}
+.dm-head-supp--pad,
+.dm-head-tag--pad{
+  background:rgba(8,12,22,.98);
+}
+.dm-head-tag{
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+.dm-head-group{
+  justify-content:center;
+  text-align:center;
+  font-size:10px;
+  letter-spacing:.06em;
+  border-left:1px solid rgba(148,163,184,.16);
+}
+.dm-head-group-label{display:block;white-space:nowrap}
+.dm-head-group--stat{background:linear-gradient(180deg,rgba(234,179,8,.32),rgba(8,12,22,.98));color:#fde68a}
+.dm-head-group--power{background:linear-gradient(180deg,rgba(34,197,94,.28),rgba(8,12,22,.98));color:#bbf7d0}
+.dm-head-group--range{background:linear-gradient(180deg,rgba(139,92,246,.28),rgba(8,12,22,.98));color:#ddd6fe}
+.dm-head-group--special{background:linear-gradient(180deg,rgba(239,68,68,.28),rgba(8,12,22,.98));color:#fecaca}
+.dm-head-debuff{
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  position:relative;
+  font-size:9px;
+  letter-spacing:0;
+  line-height:1.15;
+  white-space:normal;
+  overflow:visible;
+  text-transform:none;
+  font-weight:700;
+  padding:4px 2px !important;
+  border-left:1px solid rgba(148,163,184,.1);
+  border-top:none;
+  border-right:none;
+  border-bottom:none;
+  margin:0;
+  cursor:pointer;
+  appearance:none;
+  -webkit-appearance:none;
+  font:inherit;
+  color:inherit;
+  width:100%;
+  min-width:0;
+  box-sizing:border-box;
+}
+.dm-head-debuff:focus-visible{
+  outline:2px solid rgba(0,212,255,.65);
+  outline-offset:-2px;
+  z-index:2;
+}
+.dm-head-debuff-icon-wrap{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  flex:0 0 auto;
+  pointer-events:none;
+}
+.dm-head-debuff-icon{
+  display:block;
+  width:clamp(20px, 3.2vw, 28px);
+  height:clamp(20px, 3.2vw, 28px);
+  object-fit:contain;
+  flex:0 0 auto;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.55));
+  pointer-events:none;
+}
+.dm-head-debuff-badge{
+  position:absolute;
+  right:-3px;
+  bottom:-2px;
+  width:12px;
+  height:12px;
+  object-fit:contain;
+  filter:drop-shadow(0 0 1px rgba(0,0,0,.9));
+  pointer-events:none;
+}
+.dm-head-debuff-fallback{
+  display:block;
+  font-size:8px;
+  line-height:1.15;
+  overflow:hidden;
+  word-break:break-word;
+}
+.dm-head-debuff-tip{
+  position:absolute;
+  left:50%;
+  top:calc(100% + 4px);
+  bottom:auto;
+  transform:translateX(-50%) translateY(-2px);
+  z-index:80;
+  min-width:max(100%, 7.5em);
+  max-width:min(220px, 42vw);
+  padding:5px 7px;
+  border-radius:5px;
+  border:1px solid rgba(0,212,255,.45);
+  background:rgba(8,12,22,.96);
+  color:#f8fafc;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:0;
+  text-transform:none;
+  line-height:1.25;
+  text-align:center;
+  white-space:normal;
+  word-break:break-word;
+  box-shadow:0 6px 18px rgba(0,0,0,.45);
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:
+    opacity 140ms var(--motion-ease,cubic-bezier(.2,0,0,1)),
+    transform 140ms var(--motion-ease,cubic-bezier(.2,0,0,1)),
+    visibility 0s linear 140ms;
+}
+.dm-head-debuff-tip::before{
+  content:'';
+  position:absolute;
+  left:50%;
+  bottom:100%;
+  top:auto;
+  transform:translateX(-50%);
+  border:5px solid transparent;
+  border-bottom-color:rgba(0,212,255,.45);
+  border-top-color:transparent;
+}
+.dm-head-debuff:hover .dm-head-debuff-tip,
+.dm-head-debuff:focus-visible .dm-head-debuff-tip,
+.dm-head-debuff.is-tip-open .dm-head-debuff-tip{
+  opacity:1;
+  visibility:visible;
+  transform:translateX(-50%) translateY(0);
+  transition-delay:0s;
+}
+@media (hover:hover) and (pointer:fine){
+  /* Desktop: hover is enough; keep tap toggle for keyboard/touch hybrids. */
+  .dm-head-debuff:hover{z-index:40}
+}
+.dm-head-debuff.is-tip-open{z-index:50}
+.dm-head-debuff-label{
+  display:block;
+  overflow:hidden;
+  word-break:break-word;
+  overflow-wrap:anywhere;
+  hyphens:auto;
+}
+.dm-head-debuff--stat{background:linear-gradient(180deg,rgba(234,179,8,.18),rgba(8,12,22,.98));color:#fde68a}
+.dm-head-debuff--power{background:linear-gradient(180deg,rgba(34,197,94,.18),rgba(8,12,22,.98));color:#bbf7d0}
+.dm-head-debuff--range{background:linear-gradient(180deg,rgba(139,92,246,.18),rgba(8,12,22,.98));color:#ddd6fe}
+.dm-head-debuff--special{background:linear-gradient(180deg,rgba(239,68,68,.18),rgba(8,12,22,.98));color:#fecaca}
+@media (prefers-reduced-motion:reduce){
+  .dm-head-debuff-tip{transition:none}
+}
+@media (max-width:768px) and (orientation:portrait),
+       (orientation:landscape) and (max-height:520px){
+  .dm-sticky-head .dm-head-debuff{
+    justify-content:center;
+    align-items:center;
+    padding-left:1px;
+    padding-right:1px;
+    font-size:9px;
+  }
+  .dm-head-debuff-icon{
+    width:22px;
+    height:22px;
+  }
+}
+
+.dm-board-wrap{
+  flex:1 1 auto;
+  min-height:0;
+  min-width:0;
+  overflow-x:hidden;
+  overflow-y:scroll; /* scroll (not auto) — more reliable touch pan on iOS/Android */
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior-y:contain;
+  overscroll-behavior-x:none;
+  touch-action:pan-y;
+  /* JS momentum owns wheel smoothness; keep auto so continuous wheel isn’t delayed */
+  scroll-behavior:auto;
+}
+
+/*
+  Height rule: each .dm-row is ONLY as tall as its chips.
+  Never one board-grid with equal row tracks (11220/15 ≈ 748px empty).
+  Cache: tag_matrix.css is in app_js_version — hard-refresh after edits.
+*/
+.dm-board{
+  display:block;
+  width:100%;
+  min-width:0;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+}
+.dm-row{
+  display:grid;
+  grid-template-columns:var(--dm-cols-body);
+  grid-template-rows:max-content; /* single track = content, never 1fr */
+  grid-auto-rows:max-content;
+  width:100%;
+  min-width:0;
+  box-sizing:border-box;
+  height:max-content !important;
+  max-height:none;
+  align-items:stretch; /* cells share THAT content height; do not invent extra */
+  justify-items:stretch;
+}
+.dm-row > *{
+  border-bottom:1px solid rgba(148,163,184,.14);
+  border-right:1px solid rgba(148,163,184,.08);
+  padding:2px 3px;
+  min-width:0;
+  width:auto;
+  min-height:0;
+  height:auto !important;
+  max-height:none;
+  display:block; /* avoid flex column stretch games inside the cell */
+  box-sizing:border-box;
+  overflow:visible;
+}
+.dm-row--alt > *{background:rgba(148,163,184,.025)}
+
+/* One Exclusive rail spanning every tag in the same exclusive group */
+.dm-rail-group{
+  display:flex;
+  flex-direction:row;
+  align-items:stretch;
+  width:100%;
+  min-width:0;
+}
+/* Height follows unit rows only — never grow from letter stack (EXCLUSIVE gap bug) */
+.dm-rail-group-bar{
+  flex:0 0 var(--dm-rail-w);
+  width:var(--dm-rail-w);
+  align-self:stretch;
+  min-height:0;
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:1px;
+  padding:2px 0;
+  box-sizing:border-box;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:0;
+  color:#fff;
+  user-select:none;
+  overflow:hidden;
+  line-height:1;
+  text-shadow:
+    0 1px 2px rgba(0,0,0,.95),
+    0 0 2px rgba(0,0,0,.9),
+    0 2px 6px rgba(0,0,0,.75),
+    0 0 8px rgba(0,0,0,.45);
+  -webkit-font-smoothing:antialiased;
+}
+.dm-rail-group-ch{
+  display:block;
+  flex:0 0 auto;
+  text-align:center;
+  text-transform:uppercase;
+  font-weight:inherit;
+  font-size:inherit;
+  line-height:1;
+  max-height:1em;
+}
+html[data-ui-lang="JA"] .dm-rail-group-ch,
+html[data-ui-lang="JP"] .dm-rail-group-ch,
+html[data-ui-lang="TW"] .dm-rail-group-ch,
+html[data-ui-lang="HK"] .dm-rail-group-ch{
+  text-transform:none;
+  font-weight:600;
+}
+.dm-rail-group--four .dm-rail-group-bar{background:var(--dm-four)}
+.dm-rail-group--six .dm-rail-group-bar{background:var(--dm-six)}
+.dm-rail-group--new .dm-rail-group-bar{background:var(--dm-new)}
+.dm-rail-group--other .dm-rail-group-bar{background:var(--dm-other)}
+.dm-rail-group--series .dm-rail-group-bar{background:var(--dm-series)}
+.dm-rail-swatch--four{background:var(--dm-four)}
+.dm-rail-swatch--six{background:var(--dm-six)}
+.dm-rail-swatch--new{background:var(--dm-new)}
+.dm-rail-swatch--other{background:var(--dm-other)}
+.dm-rail-swatch--series{background:var(--dm-series)}
+
+.dm-pct-bands{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  width:100%;
+  min-width:0;
+}
+.dm-pct-band{
+  min-width:0;
+}
+.dm-pct-band-lab{
+  font-size:12px;
+  font-weight:800;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:.02em;
+  line-height:1.25;
+  margin:0 0 4px;
+  padding:3px 7px;
+  border-radius:4px;
+  display:inline-block;
+  max-width:100%;
+  /* Dark plate + outline so 3 vs 5 stays readable at matrix density */
+  border:1px solid rgba(255,255,255,.18);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08);
+  text-shadow:0 1px 0 rgba(0,0,0,.85),0 0 1px rgba(0,0,0,.9);
+}
+.dm-pct-band-lab--hi{
+  background:rgba(127,29,29,.92);
+  color:#fecaca;
+  border-color:rgba(248,113,113,.45);
+}
+.dm-pct-band-lab--mid{
+  background:rgba(113,63,18,.92);
+  color:#fde68a;
+  border-color:rgba(250,204,21,.4);
+}
+.dm-pct-band-lab--lo{
+  background:rgba(30,41,59,.95);
+  color:#e2e8f0;
+  border-color:rgba(148,163,184,.35);
+}
+.dm-pct-badge{
+  position:absolute;left:50%;bottom:0;z-index:6;
+  transform:translateX(-50%);
+  font-size:10px;font-weight:900;line-height:1.15;
+  font-variant-numeric:tabular-nums;
+  padding:1px 4px;border-radius:3px 3px 0 0;
+  background:rgba(0,0,0,.88);color:#fff;
+  pointer-events:none;white-space:nowrap;
+  text-shadow:0 1px 1px #000,0 0 1px #000;
+  border:1px solid rgba(255,255,255,.2);
+  border-bottom:none;
+}
+
+/* Impairing-Type (yellow) weapon chrome — same mask path as detail weapon cards */
+.dm-page-icon{
+  width:28px;height:28px;flex:0 0 28px;position:relative;
+  display:inline-flex;align-items:center;justify-content:center;
+}
+.dm-page-icon .weapon-icon-mask{
+  width:100%;height:100%;
+  -webkit-mask-size:contain;mask-size:contain;
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-position:center;mask-position:center;
+  filter:brightness(1.25) saturate(1.5) contrast(1.5);
+}
+.dm-page-icon .weapon-icon-mask.color-yellow{background-color:#ffd700}
+.dm-intro-title-row{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+.dm-intro{display:block!important;margin:0 0 8px}
+.dm-intro h1{margin:0;font-size:clamp(22px,2.4vw,30px);font-weight:800;letter-spacing:.02em}
+.dm-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#eab308}
+.dm-sub{margin:4px 0 0;font-size:12px;color:var(--text-secondary,#b4bfd4);max-width:62rem;line-height:1.45}
+.dm-note{margin:4px 0 0;font-size:11px;color:var(--text-muted,#8494ae);max-width:62rem;line-height:1.4}
+.dm-note code{font-size:10px;opacity:.9}
+.dm-rail-group-rows{
+  flex:1 1 auto;
+  width:auto;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+}
+
+.dm-rail{
+  display:none; /* legacy per-row rail — groups own the rail now */
+}
+.dm-rail-bar{display:none}
+
+.dm-tag-cell{
+  display:flex !important;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:3px 3px;
+  min-width:0;
+  max-width:100%;
+  box-sizing:border-box;
+  overflow:hidden;
+}
+.dm-tag-name{
+  display:block;
+  font-size:11px;font-weight:700;color:var(--text-primary,#e2e8f0);line-height:1.15;
+  overflow-wrap:anywhere;
+}
+
+.dm-chip-strip{
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+  gap:var(--dm-gap);
+  align-content:flex-start;
+  align-items:flex-start;
+  justify-content:flex-start;
+  width:100%;
+  min-width:0;
+  height:auto !important;
+  box-sizing:border-box;
+}
+.dm-chip-strip--supp{
+  width:100%;
+  max-width:100%;
+  justify-content:center;
+  align-content:flex-start;
+  gap:3px 4px;
+  flex-wrap:wrap;
+}
+
+.dm-supp{
+  display:flex !important;
+  align-items:flex-start;
+  justify-content:center;
+  background:rgba(134,239,172,.1);
+  min-width:0;
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box;
+  overflow:hidden;
+  position:relative;
+  z-index:2;
+}
+.dm-supp--empty{min-height:calc(var(--dm-thumb) + 4px)}
+.dm-supp--hit{
+  box-shadow:inset 0 0 0 2px rgba(0,212,255,.75);
+  background:rgba(0,212,255,.16);
+}
+.dm-supp-stack{display:inline-flex;align-items:center;gap:2px;line-height:0}
+.dm-supp-kind-badge{
+  width:14px;height:14px;object-fit:contain;flex:0 0 auto;
+  filter:drop-shadow(0 0 1px #000);
+}
+
+.dm-units{
+  min-width:0;
+  max-width:100%;
+  box-sizing:border-box;
+  overflow:hidden;
+}
+.dm-units--debuff.dm-units--stat{background:rgba(234,179,8,.06)}
+.dm-units--debuff.dm-units--power{background:rgba(34,197,94,.06)}
+.dm-units--debuff.dm-units--range{background:rgba(139,92,246,.06)}
+.dm-units--debuff.dm-units--special{background:rgba(239,68,68,.06)}
+.dm-empty{
+  display:block;padding:4px 2px;font-size:11px;color:var(--text-muted,#64748b);
+  text-align:center;opacity:.55;
+}
+
+.dm-page.dm-hide-supports .dm-supp{display:none}
+
+.dm-empty-board{
+  width:100%;padding:20px 12px;text-align:center;
+  font-size:13px;color:var(--text-muted,#94a3b8);
+}
+
+.dm-ft{
+  position:relative;display:inline-block;flex:0 0 auto;
+  width:var(--dm-thumb);height:var(--dm-thumb);line-height:0;
+  overflow:hidden;border-radius:2px;
+  background:rgba(15,23,42,.85);
+  box-shadow:0 0 0 1px rgba(134,239,172,.25);
+}
+.dm-ft--unit{box-shadow:0 0 0 1px rgba(148,163,184,.2)}
+.dm-ft--supp{box-shadow:0 0 0 1px rgba(134,239,172,.45)}
+.dm-ft-base,.dm-ft-frame{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;
+}
+.dm-ft-base{z-index:0}
+.dm-ft-port-wrap{
+  position:absolute;inset:8%;z-index:1;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+.dm-ft--framed .dm-ft-port-wrap{inset:11%}
+.dm-ft-portrait{width:100%;height:100%;object-fit:cover;display:block}
+.dm-ft-frame{z-index:2}
+.dm-ft-icons{
+  position:absolute;top:0;left:0;z-index:3;display:flex;flex-direction:column;gap:0;
+  pointer-events:none;
+}
+.dm-ft-ic{width:9px;height:9px;display:block;line-height:0}
+.dm-ft-ic img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 0 1px #000)}
+/* Official Limited plate (UI_Gasha_Label_UR_Base) — must stay grid so label sits on art */
+.dm-lim-badge{
+  display:inline-grid;place-items:center;
+  width:100%;max-width:100%;
+  pointer-events:none;line-height:0;
+  vertical-align:middle;
+}
+.dm-ft .dm-lim-badge,
+.dm-ft > .limited-ur-badge{
+  position:absolute;left:0;right:0;top:0;z-index:5;
+  width:100%;
+}
+.dm-lim-badge .limited-ur-badge-text,
+.dm-ft .limited-ur-badge-text{
+  font-size:5px;letter-spacing:.04em;font-weight:900;
+  text-transform:none;
+}
+.dm-ft-hit{position:absolute;inset:0;z-index:4}
+.dm-ft--supp .dm-ft-port-wrap{inset:6%}
+.dm-ft--tb .dm-ft-port-wrap{inset:12%}
+.dm-ft-tb{position:absolute;z-index:2;pointer-events:none;object-fit:fill}
+.dm-ft-tb--l{left:0;top:0;bottom:0;width:14%;height:100%}
+.dm-ft-tb--r{right:0;top:0;bottom:0;width:14%;height:100%;transform:scaleX(-1)}
+.dm-ft-tb--t{left:0;right:0;top:0;height:14%;width:100%}
+.dm-ft-tb--b{left:0;right:0;bottom:0;height:14%;width:100%;transform:scaleY(-1)}
+
+.dm-tile{
+  position:relative;
+  display:inline-flex;
+  flex:0 0 auto;
+  z-index:1;
+  width:var(--dm-thumb);
+  height:var(--dm-thumb);
+  line-height:0;
+  vertical-align:top;
+}
+.dm-tile--supp{
+  width:auto;
+  height:var(--dm-thumb);
+}
+.dm-tile:hover,.dm-tile:focus-within{z-index:30}
+.dm-tile--dim > .dm-ft,
+.dm-tile--dim > .dm-supp-stack,
+.dm-tile--dim > .dm-select-target{
+  opacity:.18;filter:grayscale(.35);
+}
+/* Dim only the thumb — hover cards stay full strength */
+.dm-tile--dim{opacity:1;filter:none}
+.dm-tile--selected{z-index:2}
+.dm-tile--supp-hit{
+  position:relative;z-index:3;border-radius:4px;
+}
+.dm-tile--supp-hit::after{
+  content:'';position:absolute;inset:-3px;z-index:6;pointer-events:none;border-radius:4px;
+  border:2px solid rgba(0,212,255,.95);
+  box-shadow:
+    0 0 0 2px rgba(255,215,0,.55),
+    0 0 14px rgba(0,212,255,.55),
+    inset 0 0 0 1px rgba(255,255,255,.12);
+}
+.dm-tile--supp-hit > .dm-supp-stack{
+  filter:brightness(1.12) saturate(1.08);
+}
+.dm-row--supp-shared .dm-supp{
+  box-shadow:inset 0 0 0 2px rgba(0,212,255,.8);
+  background:rgba(0,212,255,.2);
+}
+.dm-row--supp-shared .dm-tag-cell{
+  box-shadow:inset 3px 0 0 rgba(0,212,255,.85);
+  background:rgba(0,212,255,.08);
+}
+.dm-row--focus-out,
+.dm-rail-group--focus-out{display:none!important}
+.dm-select-target{
+  position:absolute;inset:-3px;z-index:5;pointer-events:none;
+  width:calc(100% + 6px);height:calc(100% + 6px);object-fit:fill;
+}
+
+.dm-hover-card{
+  position:fixed !important;left:0;top:0;z-index:650;
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  width:max-content;max-width:min(180px,78vw);
+  padding:8px 8px 6px;
+  border-radius:8px;border:1px solid rgba(255,215,0,.55);
+  background:rgba(8,12,22,.97);
+  box-shadow:0 10px 28px rgba(0,0,0,.55),0 0 0 1px rgba(168,85,247,.35);
+  opacity:0;visibility:hidden;pointer-events:none;
+  transform:scale(.96);
+  transform-origin:center center;
+  transition:opacity var(--motion-quick) var(--motion-ease),visibility 0s linear 80ms;
+}
+.dm-hover-card.dm-hover-card--open,
+.dm-tile.dm-hover-placed:hover .dm-hover-card,
+.dm-tile.dm-hover-placed:focus-within .dm-hover-card{
+  opacity:1;visibility:visible;
+  transform:scale(1);
+  transition-delay:0s;
+}
+.dm-hover-card--portal[hidden]{display:none!important}
+@media (hover:none),(pointer:coarse){
+  .dm-hover-card--portal.dm-hover-card--open{
+    pointer-events:auto;
+  }
+}
+
+.dm-hover-thumb{position:relative;line-height:0;display:flex;flex-direction:column;align-items:center}
+/* Collections Limited plate — above thumb; grid keeps “Limited” on the plate art */
+.dm-hover-lim{
+  position:relative;z-index:1;
+  width:56px;max-width:56px;margin:0 0 3px;padding:0;
+  text-align:center;border-radius:0;
+  box-shadow:none;background:transparent!important;
+  pointer-events:none;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  line-height:0;
+}
+.dm-hover-thumb--lt .dm-hover-lim .limited-ur-badge,
+.dm-hover-lim .limited-ur-badge,
+.dm-hover-lim .dm-lim-badge{
+  display:inline-grid;place-items:center;
+  width:100%;max-width:100%;
+  line-height:0;
+}
+.dm-hover-lim .limited-ur-badge-base{width:100%;height:auto;display:block;grid-area:1/1}
+.dm-hover-lim .limited-ur-badge-text{
+  grid-area:1/1;z-index:1;
+  font-size:7px;font-weight:900;letter-spacing:.06em;
+  text-transform:uppercase;color:#fff;
+  text-shadow:0 1px 2px rgba(0,0,0,.95),0 2px 6px rgba(0,0,0,.85),0 0 3px rgba(0,0,0,.9);
+  line-height:1;max-width:74%;padding:0 5%;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  box-sizing:border-box;text-align:center;
+}
+.dm-hover-thumb .dm-ft{
+  width:56px!important;height:56px!important;
+}
+.dm-hover-thumb .dm-ft-hit{display:none}
+.dm-hover-name{
+  font-size:10px;font-weight:800;line-height:1.2;color:var(--text-primary,#e2e8f0);
+  text-align:center;max-width:140px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;
+}
+.dm-hover-skills{display:flex;gap:4px;justify-content:center;align-items:center}
+.dm-hover-skill{
+  width:22px;height:22px;border-radius:4px;overflow:hidden;
+  border:1px solid rgba(125,211,252,.3);background:#0b1220;
+}
+.dm-hover-skill img{width:100%;height:100%;object-fit:contain;display:block}
+.dm-hover-meta{
+  font-size:9px;font-weight:700;line-height:1.25;color:var(--text-muted,#94a3b8);
+  text-align:center;max-width:140px;
+}
+.dm-hover-terrain{
+  display:flex;flex-wrap:nowrap;align-items:center;justify-content:center;gap:2px;
+  margin-top:2px;max-width:148px;
+}
+.dm-hover-terrain-item{
+  display:inline-flex;flex-direction:column;align-items:center;gap:0;
+  line-height:0;
+}
+.dm-hover-terrain-item--dim{opacity:.42}
+.dm-hover-terrain-type{
+  width:14px;height:14px;object-fit:contain;display:block;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.7));
+}
+.dm-hover-terrain-lv{
+  width:12px;height:10px;object-fit:contain;display:block;margin-top:-1px;
+}
+.dm-hover-card--portal.dm-hover-card--open{pointer-events:auto}
+.dm-focus-clear{
+  appearance:none;margin:0;padding:3px 8px;border-radius:4px;
+  border:1px solid rgba(148,163,184,.4);background:rgba(30,41,59,.85);
+  color:var(--text-secondary,#cbd5e1);font:inherit;font-size:10px;font-weight:700;
+  cursor:pointer;line-height:1.2;min-height:28px;
+}
+.dm-focus-clear:hover{border-color:rgba(0,212,255,.5);color:#fff}
+
+.dm-foot{display:none}
+
+@media (prefers-reduced-motion:reduce){
+  .dm-hover-card{transition:none!important}
+}

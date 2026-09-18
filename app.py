@@ -33,6 +33,7 @@ import secrets
 import time
 from datetime import date, datetime, timezone, timedelta
 from functools import lru_cache
+from collections import Counter, defaultdict
 try:
     from zoneinfo import ZoneInfo
 except ImportError:
@@ -149,6 +150,7 @@ def _app_js_bundle_version_tag():
         ('js', 'collections.js'),
         ('js', 'ggen_15.js'),
         ('js', 'tag_matrix.js'),
+        ('js', 'debuff_matrix.js'),
         ('css', 'app_shell.css'),
         ('css', 'app_shell_bundle.min.css'),
         ('css', 'unit_best_pilots.css'),
@@ -164,6 +166,8 @@ def _app_js_bundle_version_tag():
         ('css', 'ggen_15.css'),
         ('css', 'tag_matrix.css'),
         ('css', 'tag_matrix_15.css'),
+        ('css', 'debuff_matrix.css'),
+        ('css', 'debuff_matrix_15.css'),
     )
     # Include brand fonts so long-cache ?v= busts when an OTF/TTF is replaced.
     font_assets = (
@@ -3089,7 +3093,15 @@ def classify_unit_weapon_trait_debuff_keys(line):
         keys.add('enemy_def_atk')
         enemy_def_on_atk = True
 
-    if re.search(r'decrease\s+mp\s+by\s+1\.?', sl) or 'mpが1減少' in sl or re.search(r'mp減少1(?!\d)', sl) or re.search(r'decreased\s+mp\s+lv\s*1\b', sl) or re.search(r'mp減少\s*lv\s*1\b', sl):
+    # MP −1: short names ("Decreased MP LV 1") + descriptions ("Decrease enemy MP by 1 on hit.").
+    # EN descriptions put "enemy"/"target" between Decrease and MP — do not require adjacency.
+    if (
+        re.search(r'decrease(?:s|d)?(?:\s+(?:enemy|target))?\s+mp\s+by\s+1\b', sl)
+        or re.search(r'decreased\s+mp\s+lv\s*1\b', sl)
+        or 'mpが1減少' in sl
+        or re.search(r'mp減少\s*lv\s*1\b', sl)
+        or re.search(r'mp減少1(?!\d)', sl)
+    ):
         keys.add('mp_1')
 
     if (
@@ -6080,6 +6092,20 @@ _API_CACHE_PIN_PREFIXES = (
     'browse_filters_',
     'tag_matrix_v5_',
     'tag_matrix_v6_',
+    'tag_matrix_v7_',
+    'debuff_matrix_v1_',
+    'debuff_matrix_v2_',
+    'debuff_matrix_v3_',
+    'debuff_matrix_v4_',
+    'debuff_matrix_v5_',
+    'debuff_matrix_v6_',
+    'debuff_matrix_v7_',
+    'debuff_matrix_v8_',
+    'debuff_matrix_v9_',
+    'debuff_matrix_v10_',
+    'debuff_matrix_v11_',
+    'debuff_matrix_v12_',
+    'debuff_matrix_v13_',
 )
 
 
@@ -18307,7 +18333,7 @@ def api_tag_matrix():
     """One-shot board for /tm: major + Other-Series rows × supports + units by role."""
     try:
         lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-        ck = f'tag_matrix_v6_{lc}_{lr_schedule_cache_key_fragment()}'
+        ck = f'tag_matrix_v7_{lc}_{lr_schedule_cache_key_fragment()}'
         cached = get_cached_response(ck)
         if cached:
             return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=False)
@@ -18408,6 +18434,7 @@ def api_tag_matrix():
                 uid, name, ri, thum, acq,
                 is_ultimate=is_ult,
                 is_limited_time=uid in LIMITED_TIME_UNIT_IDS,
+                terrain=_debuff_matrix_unit_terrain_payload(info),
             )
             for lid in hit_lin:
                 buckets[lid]['units'][ri2].append(card)
@@ -18454,7 +18481,7 @@ def api_tag_matrix():
                 row['units'][r].sort(key=lambda x: (x.get('rarity_sort', 99), safe_int(x.get('id'), 0)))
             rows.append(row)
 
-        payload = {'lang': lc, 'rows': rows}
+        payload = {'lang': lc, 'v': 7, 'rows': rows}
         # Convert CDN URLs once at cache write — 304 path must not deep-copy again
         payload = convert_image_urls(payload)
         set_cached_response(ck, payload)
@@ -18464,6 +18491,629 @@ def api_tag_matrix():
         traceback.print_exc()
         return jsonify({'error': str(e), 'rows': []}), 500
 
+
+# Debuff Matrix — Inflict keys; group order: UP → Stats → Power → Range → Other → ATK pierce (last).
+# DEF Down sits under UP with Damage Taken Up (player request).
+# Column groups (UI): Stats → Power Type → Range Type → Special
+_DEBUFF_MATRIX_SPEC = (
+    ('stat', 'def_dn'),
+    ('stat', 'dmg_beam'),
+    ('stat', 'dmg_phys'),
+    ('stat', 'dmg_spec'),
+    ('stat', 'atk_dn'),
+    ('stat', 'mob_dn'),
+    ('stat', 'acc_dn'),
+    ('power', 'wp_beam'),
+    ('power', 'wp_phys'),
+    ('power', 'wp_spec'),
+    ('range', 'range_beam'),
+    ('range', 'range_phys'),
+    ('special', 'mp_1'),
+    ('special', 'enemy_def_atk'),
+)
+_DEBUFF_MATRIX_KEY_GROUP = {key: group for group, key in _DEBUFF_MATRIX_SPEC}
+_DEBUFF_MATRIX_KEYS = frozenset(_DEBUFF_MATRIX_KEY_GROUP)
+# Keys with no numeric % (single unlabeled band).
+_DEBUFF_MATRIX_NO_PCT_KEYS = frozenset({'mp_1'})
+
+
+def _debuff_matrix_exact_pct_label(pct):
+    """Exact kit % label for a column sub-band (e.g. 40 → '40%')."""
+    try:
+        p = int(pct or 0)
+    except Exception:
+        p = 0
+    return f'{p}%' if p > 0 else ''
+
+
+def _debuff_matrix_max_pct_by_key(uid, ld, lc):
+    """
+    Per Inflict key: max % from weapon trait lines (all enhance levels), then
+    add recommend-UR-pilot weapon-effect PEP when present (e.g. AGE-2 35→40).
+    """
+    uid = normalize_id(uid)
+    out = {}
+    ld_f, lc_f = _lang_data_for_weapon_debuff_filter(ld, lc)
+    for line in iter_unit_weapon_trait_texts(uid, ld_f, lc_f, stat_mode='normal'):
+        keys = set(classify_unit_weapon_trait_debuff_keys(line) or ()) & _DEBUFF_MATRIX_KEYS
+        if not keys:
+            continue
+        m = re.search(r'(\d+)\s*[%％]', str(line or ''))
+        pct = int(m.group(1)) if m else 0
+        for k in keys:
+            if k in _DEBUFF_MATRIX_NO_PCT_KEYS:
+                out[k] = max(int(out.get(k) or 0), 0)
+                continue
+            if pct > 0:
+                out[k] = max(int(out.get(k) or 0), pct)
+    try:
+        pep = _collect_pilot_weapon_effect_additive_bonuses(uid, ld_f, lc_f, stat_mode='normal') or {}
+    except Exception:
+        pep = {}
+    for k, add in pep.items():
+        if k not in out:
+            continue
+        try:
+            a = int(add or 0)
+        except Exception:
+            a = 0
+        if a > 0:
+            out[k] = int(out.get(k) or 0) + a
+    return out
+
+
+def _debuff_matrix_finalize_exact_pct_bands(band_map, debuff_key):
+    """
+    Collapse {pct_int: [units]} into ordered band list, highest % first.
+    One sub-category per exact max kit % (incl. pilot PEP).
+    """
+    if debuff_key in _DEBUFF_MATRIX_NO_PCT_KEYS:
+        units = []
+        for lst in (band_map or {}).values():
+            units.extend(lst or [])
+        units.sort(
+            key=lambda x: (
+                x.get('rarity_sort', 99),
+                safe_int(x.get('id'), 0),
+            )
+        )
+        return [{'tier': 'all', 'pct': None, 'label': '', 'units': units}] if units else []
+
+    bands = []
+    for pct in sorted((band_map or {}).keys(), reverse=True):
+        try:
+            p = int(pct)
+        except Exception:
+            continue
+        units = list(band_map.get(pct) or [])
+        if not units:
+            continue
+        units.sort(
+            key=lambda x: (
+                x.get('rarity_sort', 99),
+                safe_int(x.get('id'), 0),
+            )
+        )
+        bands.append({
+            'tier': str(p),
+            'pct': p,
+            'label': _debuff_matrix_exact_pct_label(p),
+            'units': units,
+        })
+    return bands
+
+
+# Fallback only if LANG scan misses a key (should be rare).
+_DEBUFF_MATRIX_LABELS_FALLBACK = {
+    'atk_dn': {
+        'EN': 'Decreased ATK (1 turn(s))', 'TW': '攻擊力減少(1回合)', 'HK': '攻擊力減少(1回合)', 'JA': '攻撃力ダウン(1ターン)',
+    },
+    'def_dn': {
+        'EN': 'Decreased DEF (1 turn(s))', 'TW': '防禦力減少(1回合)', 'HK': '防禦力減少(1回合)', 'JA': '防御力ダウン(1ターン)',
+    },
+    'enemy_def_atk': {
+        'EN': "When this unit attacks, reduce enemy's DEF for this attack.",
+        'TW': '自身攻擊時，以敵方防禦力減少的狀態攻擊',
+        'HK': '自身攻擊時，以敵方防禦力減少的狀態攻擊',
+        'JA': '自身の攻撃時、敵の防御力を減少させた状態で攻撃',
+    },
+    'mob_dn': {
+        'EN': 'Decreased MOB (1 turn(s))', 'TW': '機動力減少(1回合)', 'HK': '機動力減少(1回合)', 'JA': '機動力ダウン(1ターン)',
+    },
+    'acc_dn': {
+        'EN': 'Decreased ACC (1 turn(s))', 'TW': '命中率減少(1回合)', 'HK': '命中率減少(1回合)', 'JA': '命中率ダウン(1ターン)',
+    },
+    'dmg_phys': {
+        'EN': 'Increased Physical Damage Taken (1 turn(s))',
+        'TW': '物理損傷提升(1回合)', 'HK': '物理損傷提升(1回合)', 'JA': '物理ダメージ上昇(1ターン)',
+    },
+    'dmg_beam': {
+        'EN': 'Increased Beam Damage Taken (1 turn(s))',
+        'TW': '光束損傷提升(1回合)', 'HK': '鐳射損傷提升(1回合)', 'JA': 'ビームダメージ上昇(1ターン)',
+    },
+    'dmg_spec': {
+        'EN': 'Increased Special Damage Taken (1 turn(s))',
+        'TW': '特殊損傷提升(1回合)', 'HK': '特殊損傷提升(1回合)', 'JA': '特殊ダメージ上昇(1ターン)',
+    },
+    'wp_phys': {
+        'EN': 'Physical Weapon Power Down (1 turn(s))',
+        'TW': '物理武裝POWER下降(1回合)', 'HK': '物理武裝POWER下降(1回合)', 'JA': '物理武装パワーダウン(1ターン)',
+    },
+    'wp_beam': {
+        'EN': 'Beam Weapon Power Down (1 turn(s))',
+        'TW': '光束武裝POWER下降(1回合)', 'HK': '鐳射武裝POWER下降(1回合)', 'JA': 'ビーム武装パワーダウン(1ターン)',
+    },
+    'wp_spec': {
+        'EN': 'Special Weapon Power Down (1 turn(s))',
+        'TW': '特殊武裝POWER下降(1回合)', 'HK': '特殊武裝POWER下降(1回合)', 'JA': '特殊武装パワーダウン(1ターン)',
+    },
+    'range_beam': {
+        'EN': 'Beam Weapons Max Range Down (1 turn(s))',
+        'TW': '光束武裝最大射程減少(1回合)', 'HK': '鐳射武裝最大射程減少(1回合)', 'JA': 'ビーム武装最大射程ダウン(1ターン)',
+    },
+    'range_phys': {
+        'EN': 'Physical Weapons Max Range Down (1 turn(s))',
+        'TW': '物理武裝最大射程減少(1回合)', 'HK': '物理武裝最大射程減少(1回合)', 'JA': '物理武装最大射程ダウン(1ターン)',
+    },
+    'mp_1': {
+        'EN': 'Decreased MP', 'TW': 'MP減少', 'HK': 'MP減少', 'JA': 'MP減少',
+    },
+}
+_DEBUFF_MATRIX_INGAME_LABELS_CACHE = None
+
+
+def _debuff_matrix_strip_trait_lv(text):
+    return re.sub(r'\s*LV\s*\d+\s*$', '', str(text or ''), flags=re.I).strip()
+
+
+def _debuff_matrix_title_candidate_ok(title):
+    """Keep short in-game status titles; drop desc/boost/grant lines."""
+    t = str(title or '').strip()
+    if not t or '\n' in t or '\r' in t:
+        return False
+    if len(t) > 72:
+        return False
+    tl = t.lower()
+    bad_sub = (
+        'effect value',
+        'weapon effect value',
+        '効果値',
+        '效果值',
+        'when this unit',
+        'when vigor',
+        '自身の攻撃時',
+        '自身攻擊時',
+        '賦予敵方',
+        '敵に「',
+        'adds ',
+        '加算',
+        '付与',
+    )
+    for b in bad_sub:
+        if b in tl or b in t:
+            return False
+    return True
+
+
+def _debuff_matrix_title_rank(title):
+    """Prefer the common 1-turn status name over longer variants."""
+    t = str(title or '')
+    score = 0
+    if re.search(r'\(\s*1\s*turn', t, re.I) or '(1ターン)' in t or '(1回合)' in t:
+        score += 200
+    elif re.search(r'\(\s*2\s*turn', t, re.I) or '(2ターン)' in t or '(2回合)' in t:
+        score += 80
+    score += max(0, 80 - len(t))
+    return score
+
+
+def _debuff_matrix_template_enemy_def_line(desc):
+    """Collapse % variants into one representative in-game sentence."""
+    s = re.sub(r'\s+', ' ', str(desc or '').replace('\n', ' ')).strip()
+    if not s:
+        return ''
+    s = re.sub(r'\d+\s*[%％]', 'N%', s)
+    return s
+
+
+def _debuff_matrix_title_looks_range_beam(title):
+    t = str(title or '')
+    tl = t.lower()
+    return (
+        'beam' in tl
+        or 'ビーム' in t
+        or '光束' in t
+        or '鐳射' in t
+    )
+
+
+def _debuff_matrix_title_looks_range_phys(title):
+    t = str(title or '')
+    tl = t.lower()
+    return 'physical' in tl or '物理' in t
+
+
+def _debuff_matrix_build_ingame_labels():
+    """
+    Canonical header tip per debuff key = most common in-game weapon-trait
+    *name* from LANG (e.g. EN 'Increased Special Damage Taken (1 turn(s))').
+    Classified from name+description so every locale stays on official wording.
+    """
+    global _DEBUFF_MATRIX_INGAME_LABELS_CACHE
+    if _DEBUFF_MATRIX_INGAME_LABELS_CACHE is not None:
+        return _DEBUFF_MATRIX_INGAME_LABELS_CACHE
+
+    out = {key: {} for key in _DEBUFF_MATRIX_KEYS}
+    base_rows = extract_data_list(weapon_trait_base_data) if weapon_trait_base_data else []
+
+    for lc in ('EN', 'JA', 'TW', 'HK'):
+        text_map = {}
+        try:
+            lang_dir = (LANG_PATHS.get(lc) or {}).get('lang')
+        except Exception:
+            lang_dir = None
+        if lang_dir:
+            raw = load_json(os.path.join(lang_dir, 'm_weapon_trait.json'))
+            for item in extract_data_list(raw):
+                if not isinstance(item, dict):
+                    continue
+                lid = normalize_id(item.get('id') or item.get('Id'))
+                val = item.get('value') or item.get('Value')
+                if lid != '0' and val:
+                    text_map[lid] = str(val).replace('\\n', '\n')
+
+        title_counts = defaultdict(Counter)
+        enemy_def_counts = Counter()
+
+        for item in base_rows:
+            if not isinstance(item, dict):
+                continue
+            nid = normalize_id(item.get('NameLanguageId') or item.get('nameLanguageId'))
+            did = normalize_id(item.get('DescriptionLanguageId') or item.get('descriptionLanguageId'))
+            name = text_map.get(nid, '') if nid != '0' else ''
+            desc = text_map.get(did, '') if did != '0' else ''
+            if not name and not desc:
+                continue
+            keys = set()
+            title_keys = set(classify_unit_weapon_trait_debuff_keys(name) or ()) & _DEBUFF_MATRIX_KEYS
+            desc_keys = set(classify_unit_weapon_trait_debuff_keys(desc) or ()) & _DEBUFF_MATRIX_KEYS
+            keys |= title_keys
+            keys |= desc_keys
+            if not keys:
+                continue
+
+            title = _debuff_matrix_strip_trait_lv(name)
+            if 'enemy_def_atk' in keys:
+                templ = _debuff_matrix_template_enemy_def_line(desc or name)
+                if templ:
+                    enemy_def_counts[templ] += 1
+
+            if not _debuff_matrix_title_candidate_ok(title):
+                continue
+            # Prefer keys the title itself maps to; otherwise (JA short status names)
+            # fall back to keys from the description.
+            attrib = set(title_keys) if title_keys else (set(desc_keys) - {'enemy_def_atk'})
+            for k in attrib:
+                if k == 'enemy_def_atk':
+                    continue
+                if k == 'range_beam' and not _debuff_matrix_title_looks_range_beam(title):
+                    continue
+                if k == 'range_phys' and not _debuff_matrix_title_looks_range_phys(title):
+                    continue
+                title_counts[k][title] += 1
+
+        for key in _DEBUFF_MATRIX_KEYS:
+            chosen = ''
+            if key == 'enemy_def_atk':
+                if enemy_def_counts:
+                    chosen = max(
+                        enemy_def_counts.items(),
+                        key=lambda kv: (kv[1], _debuff_matrix_title_rank(kv[0]), -len(kv[0])),
+                    )[0]
+            else:
+                c = title_counts.get(key) or Counter()
+                if c:
+                    chosen = max(
+                        c.items(),
+                        key=lambda kv: (kv[1], _debuff_matrix_title_rank(kv[0]), -len(kv[0])),
+                    )[0]
+            if not chosen:
+                pack = _DEBUFF_MATRIX_LABELS_FALLBACK.get(key) or {}
+                chosen = pack.get(lc) or pack.get('EN') or key
+            out[key][lc] = chosen
+
+    _DEBUFF_MATRIX_INGAME_LABELS_CACHE = out
+    return out
+
+
+def _debuff_matrix_label(key, lc):
+    labels = _debuff_matrix_build_ingame_labels()
+    pack = labels.get(key) or {}
+    if pack.get(lc):
+        return pack[lc]
+    if pack.get('EN'):
+        return pack['EN']
+    fb = (_DEBUFF_MATRIX_LABELS_FALLBACK.get(key) or {})
+    return fb.get(lc) or fb.get('EN') or key
+
+
+@app.route('/dm')
+@app.route('/dm/')
+@app.route('/debuff-matrix')
+@app.route('/debuff-matrix/')
+def debuff_matrix_page():
+    """Debuff Matrix — lineage tags × units that Inflict weapon debuffs (by role)."""
+    ver = _app_js_bundle_version_tag()
+    r = make_response(render_template(
+        'debuff_matrix.html',
+        image_cdn=IMAGE_CDN or '',
+        game_images_use_cdn=GAME_IMAGES_USE_CDN,
+        app_js_version=ver,
+        font_cdn=FONT_CDN or '',
+        public_origin=_public_site_origin(),
+    ))
+    r.headers['Cache-Control'] = 'public, max-age=300'
+    return r
+
+
+def _debuff_matrix_names_all(key):
+    return {lc: _debuff_matrix_label(key, lc) for lc in ('EN', 'JA', 'TW', 'HK')}
+
+
+def _debuff_matrix_defs_payload(lc):
+    """Ordered debuff key defs for client chips / badges."""
+    out = []
+    for group, key in _DEBUFF_MATRIX_SPEC:
+        names_all = _debuff_matrix_names_all(key)
+        out.append({
+            'key': key,
+            'group': group,
+            'name': names_all.get(lc) or key,
+            'names': names_all,
+        })
+    return out
+
+
+def _debuff_matrix_unit_terrain_payload(info):
+    """Compact base terrain row for /dm and /tm hover cards (type + level icons)."""
+    levels = _unit_base_terrain_levels(info or {})
+    out = []
+    for tn in UNIT_TERRAIN_NAMES:
+        lv = _terrain_tier_norm(levels.get(tn, 1))
+        type_fn = TERRAIN_TYPE_ICON_MAP.get(tn, '')
+        level_fn = TERRAIN_LEVEL_ICON_MAP.get(lv, TERRAIN_LEVEL_ICON_MAP[1])
+        out.append({
+            'name': tn,
+            'level': lv,
+            'type_icon': f'/static/images/Terrain/{type_fn}' if type_fn else '',
+            'level_icon': f'/static/images/Terrain/{level_fn}' if level_fn else '',
+        })
+    return out
+
+
+# UI labels — kept as fallback; live tips come from LANG via _debuff_matrix_build_ingame_labels.
+@app.route('/api/debuff_matrix')
+def api_debuff_matrix():
+    """Tag rows (Four/Six/New/…) × supporters + units by Inflict debuff — same left axis as /tm."""
+    try:
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+        ck = f'debuff_matrix_v13_{lc}_{lr_schedule_cache_key_fragment()}'
+        cached = get_cached_response(ck)
+        if cached:
+            return jsonify_cacheable(cached, ck, public=True, max_age=3600, convert_images=False)
+        ld = get_lang_data(lc)
+        buckets = {}
+        row_order = []
+        fixed_spec_ids = {lid for _, lid in _TAG_MATRIX_SPEC}
+
+        def _add_lineage_bucket(group, lid):
+            if lid in buckets:
+                return
+            names_all = _tag_matrix_names_all_locales(lid)
+            buckets[lid] = _tag_matrix_empty_bucket(
+                row_id=lid,
+                group=group,
+                kind='lineage',
+                raw_id=lid,
+                names_all=names_all,
+                name=names_all.get(lc) or _tag_matrix_lineage_name(ld, lid),
+            )
+            row_order.append(lid)
+
+        def _add_series_bucket(series_id):
+            key = _tag_matrix_series_row_key(series_id)
+            if key in buckets:
+                return
+            names_all = _tag_matrix_series_names_all_locales(series_id)
+            buckets[key] = _tag_matrix_empty_bucket(
+                row_id=key,
+                group='series',
+                kind='series',
+                raw_id=normalize_id(series_id),
+                names_all=names_all,
+                name=names_all.get(lc) or _tag_matrix_series_name(ld, series_id),
+            )
+            row_order.append(key)
+
+        for group, lid in _TAG_MATRIX_SPEC:
+            _add_lineage_bucket(group, lid)
+
+        playable_supports = list(_tag_matrix_playable_supporter_iter(ld, lc))
+        discovered_series, discovered_other = _tag_matrix_discover_extra_rows(
+            ld, lc, playable=playable_supports
+        )
+        for lid in _TAG_MATRIX_SERIES_LINEAGE:
+            _add_lineage_bucket('series', lid)
+        for sid in discovered_series:
+            _add_series_bucket(sid)
+        for lid in discovered_other:
+            _add_lineage_bucket('other', lid)
+
+        lineage_keys = [k for k in row_order if buckets[k].get('kind') == 'lineage']
+        series_keys = [k for k in row_order if buckets[k].get('kind') == 'series']
+        lineage_want = {buckets[k]['raw_id'] for k in lineage_keys}
+        series_want = {buckets[k]['raw_id'] for k in series_keys}
+
+        wmap = UNIT_WEAPON_DEBUFF_KEYS_CACHE.get(lc) or UNIT_WEAPON_DEBUFF_KEYS_CACHE.get('EN')
+        want_keys = _DEBUFF_MATRIX_KEYS
+        key_order = [k for _, k in _DEBUFF_MATRIX_SPEC]
+        uim = ld.get('unit_id_map', {}) or {}
+        utm = ld.get('unit_text_map', {}) or {}
+        ssm = ld.get('ser_set_map', {}) or {}
+
+        for uid, info in unit_info_map.items():
+            if entity_hidden_by_lr_schedule_lock(info.get('schedule_id', '0')):
+                continue
+            if str(info.get('body_type', '1')) == '2':
+                continue
+            ri2 = str(info.get('role', '0'))
+            if ri2 not in ('1', '2', '3'):
+                continue
+            _muid = normalize_id(info.get('main_unit_id', uid))
+            if _muid == '0':
+                _muid = uid
+            if uid != _muid:
+                continue
+            if not unit_qualifies_for_unit_tag_series_modals(uid, lc):
+                continue
+            name_lid = uim.get(uid, '')
+            name = utm.get(name_lid, '') if name_lid else ''
+            if not name:
+                continue
+            # Live scan for matrix columns — do not trust UNIT_WEAPON_DEBUFF_KEYS_CACHE
+            # alone (built once at boot; classifier fixes would leave columns empty).
+            pct_by = _debuff_matrix_max_pct_by_key(uid, ld, lc)
+            hit = set(pct_by.keys()) & want_keys
+            if not hit and wmap is not None and uid in wmap:
+                hit = set(wmap[uid] or ()) & want_keys
+            if not hit:
+                continue
+            lids = [
+                str(x).strip()
+                for x in (unit_lin_map.get(uid) or [])
+                if str(x).strip() and str(x).strip() != '0'
+            ]
+            hit_lin = [x for x in lids if x in lineage_want]
+            ser_set = unit_ser_map.get(uid, '')
+            unit_sids = {
+                normalize_id(x)
+                for x in (ssm.get(ser_set) or [])
+                if normalize_id(x) and normalize_id(x) != '0'
+            }
+            hit_ser = [sid for sid in series_want if sid in unit_sids]
+            if not hit_lin and not hit_ser:
+                continue
+            ri = info.get('rarity', '1')
+            thum = find_list_thumb(info.get('resource_ids', []), uid, 'images/unit_portraits')
+            acq = info.get('acquisition_route', '0')
+            debuffs = [k for k in key_order if k in hit]
+            card = _tag_matrix_entity_card(
+                uid, name, ri, thum, acq,
+                is_ultimate=bool(info.get('is_ultimate', False)),
+                is_limited_time=uid in LIMITED_TIME_UNIT_IDS,
+                debuffs=debuffs,
+                debuff_pct=pct_by,
+                role=ri2,
+                terrain=_debuff_matrix_unit_terrain_payload(info),
+            )
+            for lid in hit_lin:
+                buckets[lid]['units'][ri2].append(card)
+            for sid in hit_ser:
+                buckets[_tag_matrix_series_row_key(sid)]['units'][ri2].append(card)
+
+        # Supporters — same placement as Tag Matrix (left column)
+        _skill_kind_rank = {'hp': 0, 'en': 1, 'hybrid': 2, '': 3}
+
+        def _supp_sort_key(x):
+            return (
+                _skill_kind_rank.get(str(x.get('skill_kind') or ''), 9),
+                x.get('rarity_sort', 99),
+                safe_int(x.get('id'), 0),
+            )
+
+        for sid, info, name, tag_ids, resolved in playable_supports:
+            hit_keys = []
+            for lid in lineage_want:
+                if _tag_id_list_matches_lineage_want(tag_ids, lid):
+                    hit_keys.append(lid)
+            for ser_id in series_want:
+                if _tag_id_list_matches_series_want(tag_ids, ser_id):
+                    hit_keys.append(_tag_matrix_series_row_key(ser_id))
+            if not hit_keys:
+                continue
+            card = _tag_matrix_build_supporter_card(
+                sid, info, name, ld, lc, resolved_tags=resolved
+            )
+            for key in hit_keys:
+                if key in buckets:
+                    buckets[key]['supports'].append(card)
+
+        rows = []
+        for key in row_order:
+            row = buckets[key]
+            has_u = any(row['units'][r] for r in ('1', '2', '3'))
+            if key not in fixed_spec_ids and not has_u and not row['supports']:
+                continue
+            if not has_u and key not in fixed_spec_ids:
+                continue
+            # Column buckets: one sub-band per exact max kit % (e.g. 40%, 35%, 30%)
+            by_debuff_map = {dk: {} for dk in key_order}
+            seen = {dk: set() for dk in key_order}
+            for r in ('1', '2', '3'):
+                row['units'][r].sort(key=lambda x: (x.get('rarity_sort', 99), safe_int(x.get('id'), 0)))
+                for card in row['units'][r]:
+                    pct_map = card.get('debuff_pct') or {}
+                    for dk in card.get('debuffs') or []:
+                        if dk not in by_debuff_map:
+                            continue
+                        cid = str(card.get('id') or '')
+                        if not cid or cid in seen[dk]:
+                            continue
+                        seen[dk].add(cid)
+                        try:
+                            max_pct = int(pct_map.get(dk) or 0)
+                        except Exception:
+                            max_pct = 0
+                        entry = dict(card)
+                        entry['max_pct'] = max_pct
+                        if dk in _DEBUFF_MATRIX_NO_PCT_KEYS:
+                            bucket_key = 0
+                        else:
+                            bucket_key = max_pct if max_pct > 0 else 0
+                        by_debuff_map[dk].setdefault(bucket_key, []).append(entry)
+            by_debuff = {
+                dk: _debuff_matrix_finalize_exact_pct_bands(by_debuff_map[dk], dk)
+                for dk in key_order
+            }
+            row['by_debuff'] = by_debuff
+            row['supports'].sort(key=_supp_sort_key)
+            # Keep units for role-filter fallback; primary render uses by_debuff
+            if not has_u and key not in fixed_spec_ids:
+                continue
+            if not has_u:
+                # Fixed major tags with no debuffers yet — still show supports/tag shell
+                pass
+            rows.append(row)
+
+        payload = {
+            'lang': lc,
+            'v': 13,
+            'debuff_defs': _debuff_matrix_defs_payload(lc),
+            'rows': rows,
+            'note': (
+                'Left = supporters + tag (same axis as /tm). '
+                'Columns = Stats / Power Type / Range Type / Special. '
+                'Inside each Inflict column: exact max kit % bands (e.g. 40%, 35%) + pilot PEP. '
+                'Column tips use in-game weapon-trait names from LANG.'
+            ),
+        }
+        payload = convert_image_urls(payload)
+        set_cached_response(ck, payload)
+        return jsonify_cacheable(payload, ck, public=True, max_age=3600, convert_images=False)
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        return jsonify({'error': str(e), 'rows': []}), 500
 
 
 _COLLECTIONS_SHARE_ALPHABET = '0123456789ABCDEFGHJKMNPQRSTVWXYZ'
@@ -30898,7 +31548,7 @@ def sitemap_xml():
         base = _public_site_origin()
         # Canonical public URLs only (aliases like /sp-list and /banners 301 elsewhere).
         paths = [
-            '/', '/ip', '/collections', '/game-news', '/tm', '/about', '/contact', '/privacy-policy',
+            '/', '/ip', '/collections', '/game-news', '/tm', '/dm', '/about', '/contact', '/privacy-policy',
             '/c', '/u', '/s', '/st', '/gtower', '/challenge', '/go', '/special',
             '/cal', '/tb', '/tl', '/ml', '/rk', '/op', '/new', '/esim',
         ]

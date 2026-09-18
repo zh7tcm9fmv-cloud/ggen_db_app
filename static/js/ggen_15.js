@@ -132,6 +132,10 @@
       document.body.classList.toggle('tm-15', on);
       document.body.classList.toggle('tm-classic', !on);
     }
+    if (document.body.classList.contains('dm-page')) {
+      document.body.classList.toggle('dm-15', on);
+      document.body.classList.toggle('dm-classic', !on);
+    }
     ensureTekoLink(on);
     var onBtn = document.getElementById('ggen15On');
     var offBtn = document.getElementById('ggen15Off');

@@ -8,6 +8,21 @@
   var cacheByLang = {};
   var rows = [];
   var loadSeq = 0;
+  var API_SV = 7;
+
+  var TERRAIN_TYPE_ICONS = {
+    Space: '/static/images/Terrain/UI_Common_TerrainIcon_Space.webp',
+    Atmospheric: '/static/images/Terrain/UI_Common_TerrainIcon_Sky.webp',
+    Ground: '/static/images/Terrain/UI_Common_TerrainIcon_Ground.webp',
+    Sea: '/static/images/Terrain/UI_Common_TerrainIcon_Aquatic.webp',
+    Underwater: '/static/images/Terrain/UI_Common_TerrainIcon_Underwater.webp'
+  };
+  var TERRAIN_LEVEL_ICONS = {
+    1: '/static/images/Terrain/UI_Common_TerrainIcon_Hyphen.webp',
+    2: '/static/images/Terrain/UI_Common_TerrainIcon_Triangle.webp',
+    3: '/static/images/Terrain/UI_Common_TerrainIcon_Circle.webp'
+  };
+  var TERRAIN_ORDER = ['Space', 'Atmospheric', 'Ground', 'Sea', 'Underwater'];
 
   var RARITY_BASE = {
     UR: '/static/images/UI/UI_Common_Tmb_Square_UR_Base.webp',
@@ -131,6 +146,8 @@
       navInvestment: 'Investment Priority',
       navCollections: 'Collections',
       navGameNews: 'Game News',
+      navTagMatrix: 'Tag Matrix',
+      navDebuffMatrix: 'Debuff Matrix',
       navSection: 'Section',
       tabUnits: 'Units',
       tabSupporters: 'Supporters',
@@ -209,6 +226,8 @@
       navInvestment: '投資優先度',
       navCollections: 'コレクション',
       navGameNews: 'ゲームニュース',
+      navTagMatrix: 'タグ対応表',
+      navDebuffMatrix: 'マイナス効果対応表',
       navSection: 'セクション',
       tabUnits: 'ユニット',
       tabSupporters: 'サポーター',
@@ -286,6 +305,8 @@
       navInvestment: '投資優先度',
       navCollections: '收藏',
       navGameNews: '遊戲公告',
+      navTagMatrix: '標籤對照表',
+      navDebuffMatrix: '負面效果對應表',
       navSection: '區塊',
       tabUnits: '單位',
       tabSupporters: '支援人員',
@@ -363,6 +384,8 @@
       navInvestment: '投資優先度',
       navCollections: '收藏',
       navGameNews: '遊戲公告',
+      navTagMatrix: '標籤對照表',
+      navDebuffMatrix: '負面效果對應表',
       navSection: '區塊',
       tabUnits: '單位',
       tabSupporters: '支援人員',
@@ -525,15 +548,25 @@
   }
 
   var BOARD_THUMB_PX = 38; /* was 33; +15% for tap targets */
+  var LIMITED_UR_LABEL_BASE = '/static/images/UI/UI_Gasha_Label_UR_Base.webp';
 
-  function limitedBadgeHtml(kind) {
-    var cls = kind === 'supporter' ? 'tm-lim--supp' : 'tm-lim--unit';
+  /** Official gacha Limited plate — same art as browse / detail / collections. */
+  function limitedBadgeHtml(kind, size) {
+    var lbl = t('limited');
+    var sz = size || 'tile';
+    var kindCls = kind === 'supporter' ? ' tm-lim-badge--supp' : ' tm-lim-badge--unit';
     return (
-      '<div class="tm-lim ' +
-      cls +
-      '" aria-hidden="true"><span class="tm-lim-inner">' +
-      esc(t('limited')) +
-      '</span></div>'
+      '<span class="limited-ur-badge limited-ur-badge--' +
+      escAttr(sz) +
+      ' tm-lim-badge' +
+      kindCls +
+      '" role="img" aria-label="' +
+      escAttr(lbl) +
+      '"><img class="limited-ur-badge-base" src="' +
+      escAttr(cdnPath(LIMITED_UR_LABEL_BASE)) +
+      '" alt="" loading="lazy" decoding="async" onerror="this.style.display=\'none\'"><span class="limited-ur-badge-text">' +
+      esc(lbl) +
+      '</span></span>'
     );
   }
 
@@ -649,11 +682,16 @@
   }
 
   function hoverCardInnerHtml(item, kind, tagId) {
-    var limBar = item.is_limited_time ? limitedBadgeHtml(kind) : '';
-    /* Popup: keep rarity frame; omit acquisition icon */
+    /* Limited = Collections plate style, stacked above the thumb (hover is too small to overlay). */
+    var limBar = item.is_limited_time
+      ? '<div class="bt-limited-topbar tm-hover-lim" aria-hidden="true">' +
+        limitedBadgeHtml(kind, 'tile') +
+        '</div>'
+      : '';
     var thumb = framedThumbHtml(item, kind, 56, { eager: true, skipAcqIcon: true });
     var metaBits = [];
     var skills = '';
+    var terrain = '';
     if (kind === 'supporter') {
       var sk = resolveSkillKind(item);
       var kindIc = sk ? SKILL_KIND_ICON[sk] : '';
@@ -677,9 +715,13 @@
       if (tags.length) {
         metaBits.push(tags.slice(0, 4).join(item.skill_tag_data && item.skill_tag_data[0] && item.skill_tag_data[0].separator === 'and' ? ' + ' : ' / '));
       }
+    } else {
+      terrain = terrainRowHtml(item);
     }
     return (
-      '<div class="tm-hover-thumb">' +
+      '<div class="tm-hover-thumb' +
+      (item.is_limited_time ? ' tm-hover-thumb--lt' : '') +
+      '">' +
       limBar +
       thumb +
       '</div>' +
@@ -687,10 +729,47 @@
       esc(item.name || '') +
       '</div>' +
       skills +
+      terrain +
       (metaBits.length
         ? '<div class="tm-hover-meta">' + metaBits.join(' · ') + '</div>'
         : '')
     );
+  }
+
+  function terrainRowHtml(item) {
+    var list = (item && item.terrain) || [];
+    if (!list.length) return '';
+    var parts = [];
+    for (var i = 0; i < list.length; i++) {
+      var tr = list[i] || {};
+      var name = String(tr.name || TERRAIN_ORDER[i] || '');
+      var lv = parseInt(tr.level, 10) || 1;
+      if (lv < 1) lv = 1;
+      if (lv > 3) lv = 3;
+      var typeIc = tr.type_icon || TERRAIN_TYPE_ICONS[name] || '';
+      var levelIc = tr.level_icon || TERRAIN_LEVEL_ICONS[lv] || '';
+      var dim = lv < 2 ? ' tm-hover-terrain-item--dim' : '';
+      parts.push(
+        '<span class="tm-hover-terrain-item' +
+          dim +
+          '" title="' +
+          escAttr(name) +
+          '">' +
+          (typeIc
+            ? '<img class="tm-hover-terrain-type" src="' +
+              escAttr(cdnPath(typeIc)) +
+              '" alt="" loading="lazy">'
+            : '') +
+          (levelIc
+            ? '<img class="tm-hover-terrain-lv" src="' +
+              escAttr(cdnPath(levelIc)) +
+              '" alt="" loading="lazy">'
+            : '') +
+          '</span>'
+      );
+    }
+    if (!parts.length) return '';
+    return '<div class="tm-hover-terrain" aria-label="Terrain">' + parts.join('') + '</div>';
   }
 
   function rebuildItemIndex() {
@@ -1577,6 +1656,31 @@
     hoverPortalKey = null;
   }
 
+  function hoverChromeTopInset(prefix) {
+    var bottom = 4;
+    var h = document.querySelector('.app-header');
+    if (h) bottom = Math.max(bottom, h.getBoundingClientRect().bottom);
+    var nav = document.getElementById('navTabsShell');
+    if (nav && !nav.hasAttribute('hidden')) {
+      bottom = Math.max(bottom, nav.getBoundingClientRect().bottom);
+    }
+    var tb = document.querySelector(prefix === 'dm' ? '.dm-toolbar' : '.tm-toolbar');
+    var collapsed =
+      prefix === 'dm'
+        ? document.body.classList.contains('dm-filters-collapsed')
+        : document.body.classList.contains('tm-filters-collapsed');
+    if (tb && !collapsed) {
+      var tbr = tb.getBoundingClientRect();
+      if (tbr.height > 2) bottom = Math.max(bottom, tbr.bottom);
+    }
+    var head = document.querySelector(prefix === 'dm' ? '.dm-sticky-head' : '.tm-sticky-head');
+    if (head) {
+      var hr = head.getBoundingClientRect();
+      if (hr.height > 2) bottom = Math.max(bottom, hr.bottom);
+    }
+    return Math.ceil(bottom) + 4;
+  }
+
   function placeHoverCard(tile) {
     if (!tile) return;
     var key = tile.getAttribute('data-item-key') || '';
@@ -1589,6 +1693,19 @@
     if (hoverPortalKey !== key) {
       card.innerHTML = hoverCardInnerHtml(item, kind, tagId);
       hoverPortalKey = key;
+      /* Remeasure after Limited / terrain images load — tall cards were clipped. */
+      card.querySelectorAll('img').forEach(function (img) {
+        if (img.complete) return;
+        img.addEventListener(
+          'load',
+          function () {
+            if (tile.classList.contains('tm-hover-placed') && hoverPortalKey === key) {
+              placeHoverCard(tile);
+            }
+          },
+          { once: true }
+        );
+      });
     }
     document.querySelectorAll('.tm-hover-placed').forEach(function (prev) {
       if (prev !== tile) {
@@ -1603,20 +1720,22 @@
     });
     tile._tmHoverCard = card;
     card.hidden = false;
+    card.classList.add('tm-hover-card--open');
     var tr = tile.getBoundingClientRect();
     var cw = card.offsetWidth || 150;
     var ch = card.offsetHeight || 120;
     var gap = 6;
-    var preferBelow = tr.top < ch + 24;
+    var topMin = hoverChromeTopInset('tm');
+    var preferBelow = tr.top < topMin + ch + gap + 8;
     var top = preferBelow ? tr.bottom + gap : tr.top - ch - gap;
     var left = tr.left + tr.width / 2 - cw / 2;
     left = Math.max(4, Math.min(left, window.innerWidth - cw - 4));
-    top = Math.max(4, Math.min(top, window.innerHeight - ch - 4));
+    top = Math.max(topMin, Math.min(top, window.innerHeight - ch - 4));
     card.style.left = Math.round(left) + 'px';
     card.style.top = Math.round(top) + 'px';
     if (preferBelow) tile.classList.add('tm-hover-below');
+    else tile.classList.remove('tm-hover-below');
     tile.classList.add('tm-hover-placed');
-    card.classList.add('tm-hover-card--open');
   }
 
   function bindBoardInteractions(board) {
@@ -1762,9 +1881,8 @@
   }
 
   /*
-    Smooth vertical board scrolling + forward wheel/touch from chrome
-    (toolbar, sticky head, margins, brand header) onto .tm-board-wrap.
-    Nav tab strip stays horizontal-only (excluded).
+    Forward wheel/touch from chrome onto .tm-board-wrap.
+    Board itself uses native scroll — do not intercept.
   */
   function bindBoardVerticalScroll() {
     var wrap = document.querySelector('.tm-board-wrap');
@@ -1772,48 +1890,16 @@
     if (!wrap || wrap._tmVertScroll) return;
     wrap._tmVertScroll = 1;
 
-    var reduceMotion = false;
-    try {
-      reduceMotion =
-        window.matchMedia &&
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    } catch (_) {}
-
-    var mom = 0;
-    var raf = 0;
-
     function maxScroll() {
       return Math.max(0, wrap.scrollHeight - wrap.clientHeight);
     }
 
-    function tick() {
-      raf = 0;
-      if (!mom) return;
-      var max = maxScroll();
-      if (max <= 2) {
-        mom = 0;
-        return;
-      }
-      wrap.scrollTop = Math.max(0, Math.min(max, wrap.scrollTop + mom));
-      mom *= 0.88;
-      if (Math.abs(mom) < 0.45) {
-        mom = 0;
-        return;
-      }
-      raf = requestAnimationFrame(tick);
-    }
-
-    function kick(dy) {
-      if (!dy) return;
+    /* 1:1 apply — no artificial momentum (tiny incremental steps). */
+    function applyDy(dy) {
+      if (!dy) return false;
       var max = maxScroll();
       if (max <= 2) return false;
-      if (reduceMotion) {
-        wrap.scrollTop = Math.max(0, Math.min(max, wrap.scrollTop + dy));
-        return true;
-      }
-      mom += dy * 0.7;
-      mom = Math.max(-80, Math.min(80, mom));
-      if (!raf) raf = requestAnimationFrame(tick);
+      wrap.scrollTop = Math.max(0, Math.min(max, wrap.scrollTop + dy));
       return true;
     }
 
@@ -1829,14 +1915,18 @@
       );
     }
 
-    function shouldOwnVerticalWheel(ev) {
+    function onBoard(el) {
+      return !!(el && el.closest && el.closest('.tm-board-wrap'));
+    }
+
+    function shouldForwardVerticalWheel(ev) {
       if (!document.body.classList.contains('tm-page')) return false;
       if (isEditable(ev.target)) return false;
       if (isNavStrip(ev.target)) return false;
+      if (onBoard(ev.target)) return false;
       var dy = ev.deltaY;
       var dx = ev.deltaX;
       if (!dy && !dx) return false;
-      /* Trackpads often report both; only claim clearly-vertical intent */
       if (Math.abs(dx) > Math.abs(dy) * 1.15) return false;
       return !!dy;
     }
@@ -1844,8 +1934,8 @@
     document.addEventListener(
       'wheel',
       function (ev) {
-        if (!shouldOwnVerticalWheel(ev)) return;
-        if (!kick(ev.deltaY)) return;
+        if (!shouldForwardVerticalWheel(ev)) return;
+        if (!applyDy(ev.deltaY)) return;
         ev.preventDefault();
       },
       { passive: false, capture: true }
@@ -1854,8 +1944,9 @@
     /* Touch pan on toolbar / sticky head / margins → board (board itself stays native) */
     var touch = null;
     function touchOnBoard(el) {
-      return !!(el && el.closest && el.closest('.tm-board-wrap'));
+      return onBoard(el);
     }
+
     function touchBlocked(el) {
       if (!el || !el.closest) return true;
       if (isNavStrip(el)) return true;
@@ -2038,7 +2129,9 @@
       '/tl': 'navBanner',
       '/ip': 'navInvestment',
       '/collections': 'navCollections',
-      '/game-news': 'navGameNews'
+      '/game-news': 'navGameNews',
+      '/tm': 'navTagMatrix',
+      '/dm': 'navDebuffMatrix'
     };
     document.querySelectorAll('#navTabs a.nav-tab[href]').forEach(function (a) {
       var path = String(a.getAttribute('href') || '').split('?')[0].replace(/\/+$/, '') || '/';
@@ -2184,7 +2277,7 @@
     }
     try {
       var res = await fetch(
-        '/api/tag_matrix?lang=' + encodeURIComponent(lang) + '&sv=6',
+        '/api/tag_matrix?lang=' + encodeURIComponent(lang) + '&sv=' + API_SV,
         { credentials: 'same-origin' }
       );
       if (!res.ok) throw new Error('HTTP ' + res.status);

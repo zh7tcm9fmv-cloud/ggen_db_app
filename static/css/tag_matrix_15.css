@@ -84,7 +84,22 @@ html.ggen-15[data-ui-lang="JP"] .tm-search{
   font-family:var(--font-hud);
   text-transform:none;
   letter-spacing:.02em;
-  font-weight:700;
+  font-weight:500;
+  font-synthesis:none;
+  -webkit-font-smoothing:antialiased;
+}
+html.ggen-15[data-ui-lang="JA"] .tm-chip,
+html.ggen-15[data-ui-lang="TW"] .tm-chip,
+html.ggen-15[data-ui-lang="HK"] .tm-chip,
+html.ggen-15[data-ui-lang="JP"] .tm-chip{
+  font-size:14px;
+}
+html.ggen-15[data-ui-lang="JA"] .tm-filter-label,
+html.ggen-15[data-ui-lang="TW"] .tm-filter-label,
+html.ggen-15[data-ui-lang="HK"] .tm-filter-label,
+html.ggen-15[data-ui-lang="JP"] .tm-filter-label{
+  font-size:12px;
+  font-weight:600;
 }
 html.ggen-15 .tm-matrix{
   border-radius:0;
@@ -117,8 +132,10 @@ html.ggen-15[data-ui-lang="JP"] .tm-sticky-head > *{
   font-family:var(--font-hud);
   text-transform:none;
   letter-spacing:.02em;
-  font-weight:700;
-  font-size:11px;
+  font-weight:500;
+  font-size:13px;
+  font-synthesis:none;
+  -webkit-font-smoothing:antialiased;
 }
 html.ggen-15 .tm-head-supp{color:#86efac}
 html.ggen-15 .tm-head-role--1{
@@ -144,8 +161,10 @@ html.ggen-15[data-ui-lang="JP"] .tm-tag-name{
   font-family:var(--font-hud);
   text-transform:none;
   letter-spacing:.02em;
-  font-size:12px;
-  font-weight:700;
+  font-size:13px;
+  font-weight:500;
+  font-synthesis:none;
+  -webkit-font-smoothing:antialiased;
 }
 html.ggen-15 .tm-rail-group-bar{
   font-family:var(--font-teko),Teko,sans-serif;
@@ -162,7 +181,9 @@ html.ggen-15[data-ui-lang="HK"] .tm-rail-group-ch,
 html.ggen-15[data-ui-lang="JP"] .tm-rail-group-ch{
   font-family:var(--font-hud);
   text-transform:none;
-  font-weight:800;
+  font-weight:600;
+  font-size:11px;
+  font-synthesis:none;
 }
 /* No row enter stagger — it delayed paint and felt like empty gaps */
 html.ggen-15 .tm-row > *{animation:none!important}
