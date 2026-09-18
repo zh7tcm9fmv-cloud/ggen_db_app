@@ -245,7 +245,8 @@ body.dm-page.dm-filters-collapsed .nav-tabs-shell{
 .dm-status{margin:2px 0 0;font-size:9px;color:var(--text-muted,#94a3b8);flex:0 0 auto;line-height:1.2;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px}
 
 @media (max-width:768px), (orientation:landscape) and (max-height:520px){
-  .dm-main{padding:10px 12px 20px}
+  .dm-main{padding:6px 8px 12px}
+  .dm-status{display:none}
   /* Compact brand chrome on narrow / short viewports (nav wrap vs scroll is separate @768) */
   body.dm-page > .app-header .header-inner,
   html.ggen-15 body.dm-page > .app-header .header-inner,
@@ -933,7 +934,8 @@ html[data-ui-lang="HK"] .dm-rail-group-ch{
 .dm-intro-title-row{
   display:flex;align-items:center;gap:10px;flex-wrap:wrap;
 }
-.dm-intro{display:block!important;margin:0 0 8px}
+/* Keep intro hidden like /tm — title lives in the nav tab; reclaim board height
+   (especially phone landscape). Do not re-force display:block. */
 .dm-intro h1{margin:0;font-size:clamp(22px,2.4vw,30px);font-weight:800;letter-spacing:.02em}
 .dm-eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#eab308}
 .dm-sub{margin:4px 0 0;font-size:12px;color:var(--text-secondary,#b4bfd4);max-width:62rem;line-height:1.45}
