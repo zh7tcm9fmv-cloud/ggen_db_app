@@ -377,4 +377,11 @@ body:not(.tm-page).nav-tabs-collapsed #navTabsShell{
     )!important;
     opacity:.55!important;
   }
+  #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .bt-lim-beam::before{
+    animation:none!important;
+    opacity:0!important;
+  }
+  #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .bt-lim-beam{
+    background:linear-gradient(90deg,#00d4ff,#ffd400)!important;
+  }
 }

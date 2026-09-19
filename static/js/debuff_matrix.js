@@ -196,6 +196,23 @@
 
   var I18N = {
     EN: {
+      navChar: 'Characters',
+      navUnit: 'Units',
+      navSupp: 'Supporters',
+      navRanking: 'Ranking',
+      navMod: 'Modifications',
+      navStage: 'Stages',
+      navMasterLeague: 'Master League',
+      navCalc: 'Damage Simulator',
+      navTb: 'Team Builder',
+      navLatest: 'Latest Release',
+      navBanner: 'Unit Assembly',
+      navInvestment: 'Investment Priority',
+      navCollections: 'Collections',
+      navGameNews: 'Game News',
+      navTagMatrix: 'Tag Matrix',
+      navDebuffMatrix: 'Debuff Matrix',
+      navSection: 'Section',
       eyebrow: 'Impairing Type · live',
       title: 'Debuff Matrix',
       sub: 'Supporters + lineage tags on the left; units by Inflict weapon effect. Default columns: Stats + Power Type (toggle Range Type / Special when needed).',
@@ -235,6 +252,23 @@
       legPower: 'Power Type'
     },
     JA: {
+      navChar: 'キャラクター',
+      navUnit: 'ユニット',
+      navSupp: 'サポーター',
+      navRanking: 'ランキング',
+      navMod: 'オプションパーツ',
+      navStage: 'ステージ',
+      navMasterLeague: 'マスターリーグ',
+      navCalc: 'ダメージシミュレーター',
+      navTb: 'チーム編成',
+      navLatest: '最新登場',
+      navBanner: 'ピックアップガシャ',
+      navInvestment: '投資優先度',
+      navCollections: 'コレクション',
+      navGameNews: 'ゲームニュース',
+      navTagMatrix: 'タグ対応表',
+      navDebuffMatrix: 'マイナス効果対応表',
+      navSection: 'セクション',
       eyebrow: '弱体系 · ライブ',
       title: 'マイナス効果対応表',
       sub: '左列はサポーター＋系統タグ。初期表示はステータス＋威力（射程／特殊は切替）。',
@@ -274,6 +308,23 @@
       legPower: '威力'
     },
     TW: {
+      navChar: '角色',
+      navUnit: '單位',
+      navSupp: '支援人員',
+      navRanking: '排行',
+      navMod: '選擇性零件',
+      navStage: '關卡',
+      navMasterLeague: '大師聯盟',
+      navCalc: '損傷模擬器',
+      navTb: '隊伍編成',
+      navLatest: '最新登場',
+      navBanner: '機體補給',
+      navInvestment: '投資優先度',
+      navCollections: '收藏',
+      navGameNews: '遊戲公告',
+      navTagMatrix: '標籤對照表',
+      navDebuffMatrix: '負面效果對應表',
+      navSection: '區塊',
       eyebrow: '弱化系 · 即時',
       title: '負面效果對應表',
       sub: '左欄為支援卡＋系統標籤。預設欄位：能力＋威力（射程／特殊可切換）。',
@@ -313,6 +364,23 @@
       legPower: '威力'
     },
     HK: {
+      navChar: '角色',
+      navUnit: '單位',
+      navSupp: '支援人員',
+      navRanking: '排行',
+      navMod: '選擇性零件',
+      navStage: '關卡',
+      navMasterLeague: '大師聯盟',
+      navCalc: '損傷模擬器',
+      navTb: '隊伍編成',
+      navLatest: '最新登場',
+      navBanner: '機體補給',
+      navInvestment: '投資優先度',
+      navCollections: '收藏',
+      navGameNews: '遊戲公告',
+      navTagMatrix: '標籤對照表',
+      navDebuffMatrix: '負面效果對應表',
+      navSection: '區塊',
       eyebrow: '弱化系 · 即時',
       title: '負面效果對應表',
       sub: '左欄為支援卡＋系統標籤。預設欄位：能力＋威力（射程／特殊可切換）。',
@@ -1481,6 +1549,36 @@
       .replace('{u}', String(u));
   }
 
+  function applyNavTabLabels() {
+    var map = {
+      '/c': 'navChar',
+      '/u': 'navUnit',
+      '/s': 'navSupp',
+      '/rk': 'navRanking',
+      '/op': 'navMod',
+      '/st': 'navStage',
+      '/ml': 'navMasterLeague',
+      '/cal': 'navCalc',
+      '/tb': 'navTb',
+      '/new': 'navLatest',
+      '/tl': 'navBanner',
+      '/ip': 'navInvestment',
+      '/collections': 'navCollections',
+      '/game-news': 'navGameNews',
+      '/tm': 'navTagMatrix',
+      '/dm': 'navDebuffMatrix'
+    };
+    document.querySelectorAll('#navTabs a.nav-tab[href]').forEach(function (a) {
+      var path = String(a.getAttribute('href') || '').split('?')[0].replace(/\/+$/, '') || '/';
+      var key = map[path];
+      if (!key) return;
+      var lab = a.querySelector('.nav-tab-label');
+      if (lab) lab.textContent = t(key);
+    });
+    var tabs = document.getElementById('navTabs');
+    if (tabs) tabs.setAttribute('aria-label', t('navSection'));
+  }
+
   function applyStaticI18n() {
     var map = {
       dmEyebrow: 'eyebrow',
@@ -1511,6 +1609,7 @@
       var el = document.getElementById(id);
       if (el) el.textContent = t(map[id]);
     });
+    applyNavTabLabels();
     var search = document.getElementById('dmSearch');
     if (search) {
       search.placeholder = t('searchPh');
@@ -1522,6 +1621,9 @@
     document.documentElement.setAttribute('data-ui-lang', state.lang);
     document.documentElement.lang =
       state.lang === 'JA' ? 'ja' : state.lang === 'TW' || state.lang === 'HK' ? 'zh-Hant' : 'en';
+    try {
+      document.title = t('navDebuffMatrix') + ' — GGen Eternal Database';
+    } catch (_) {}
   }
 
   function paintRarityIcons() {
@@ -2011,6 +2113,11 @@
   function init() {
     state.lang = readLang();
     applyStaticI18n();
+    try {
+      if (typeof window.__ggenInjectBrandFonts === 'function') {
+        window.__ggenInjectBrandFonts();
+      }
+    } catch (_) {}
     paintRarityIcons();
     syncChipUi();
     bindFilters();
