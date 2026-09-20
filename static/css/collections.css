@@ -383,10 +383,13 @@
 .collections-stat-lim-banner{
   flex:0 0 auto;
   display:inline-flex;align-items:center;justify-content:center;
-  max-width:7.5em;padding:0;background:transparent;box-shadow:none;
+  max-width:none;padding:0;background:transparent;box-shadow:none;
 }
-.collections-stat-lim-banner .limited-ur-badge--chip{width:92px}
-.collections-stat-lim-banner .limited-ur-badge-text{font-size:8px;letter-spacing:.06em;text-transform:uppercase}
+.collections-stat-lim-banner .limited-ur-badge--chip{width:108px}
+.collections-stat-lim-banner .limited-ur-badge-text{
+  font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;
+  max-width:86%;overflow:visible;text-overflow:clip;
+}
 .collections-stat-v{
   margin-top:6px;font-size:clamp(18px,2.1vw,22px);font-weight:800;font-variant-numeric:tabular-nums;line-height:1.15;
   color:var(--text-primary);
@@ -861,10 +864,10 @@
 }
 .col-card-lim .limited-ur-badge{width:100%;max-width:100%}
 .col-card-lim .limited-ur-badge-text{
-  font-size:8px;font-weight:900;letter-spacing:.08em;
+  font-size:10px;font-weight:900;letter-spacing:.04em;
   text-transform:uppercase;color:#fff;
   text-shadow:0 1px 2px rgba(0,0,0,.95),0 2px 6px rgba(0,0,0,.85),0 0 3px rgba(0,0,0,.9),0 0 8px rgba(0,0,0,.55);
-  line-height:1.1;
+  line-height:1.1;max-width:90%;overflow:visible;text-overflow:clip;
 }
 /* Grade icons — bottom-center of thumb, may extrude; name sits below with gap */
 .col-card-lb-icons{
@@ -1193,6 +1196,36 @@ html[data-ui-lang="JP"] .collections-stat-k,
 html[data-ui-lang="TW"] .collections-stat-k,
 html[data-ui-lang="HK"] .collections-stat-k{
   font-size:12px;
+}
+/* CJK Limited plate: 期間限定 is unreadable at EN tracking / 8–10px */
+html[data-ui-lang="JA"] .collections-stat-lim-banner .limited-ur-badge--chip,
+html[data-ui-lang="JP"] .collections-stat-lim-banner .limited-ur-badge--chip,
+html[data-ui-lang="TW"] .collections-stat-lim-banner .limited-ur-badge--chip,
+html[data-ui-lang="HK"] .collections-stat-lim-banner .limited-ur-badge--chip{
+  width:118px;
+}
+html[data-ui-lang="JA"] .collections-stat-lim-banner .limited-ur-badge-text,
+html[data-ui-lang="JP"] .collections-stat-lim-banner .limited-ur-badge-text,
+html[data-ui-lang="TW"] .collections-stat-lim-banner .limited-ur-badge-text,
+html[data-ui-lang="HK"] .collections-stat-lim-banner .limited-ur-badge-text,
+html[data-ui-lang="JA"] .col-card-lim .limited-ur-badge-text,
+html[data-ui-lang="JP"] .col-card-lim .limited-ur-badge-text,
+html[data-ui-lang="TW"] .col-card-lim .limited-ur-badge-text,
+html[data-ui-lang="HK"] .col-card-lim .limited-ur-badge-text{
+  font-family:var(--font-hud,var(--font-body,inherit));
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:0;
+  text-transform:none;
+  max-width:92%;
+  overflow:visible;
+  text-overflow:clip;
+}
+html[data-ui-lang="JA"] .col-card-lim .limited-ur-badge-text,
+html[data-ui-lang="JP"] .col-card-lim .limited-ur-badge-text,
+html[data-ui-lang="TW"] .col-card-lim .limited-ur-badge-text,
+html[data-ui-lang="HK"] .col-card-lim .limited-ur-badge-text{
+  font-size:11px;
 }
 html[data-ui-lang="JA"] .collections-btn,
 html[data-ui-lang="JP"] .collections-btn,

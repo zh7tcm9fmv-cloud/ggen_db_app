@@ -11,7 +11,6 @@
   --accent-cyan:rgb(var(--g15-cyan));
   --accent-blue:rgb(var(--g15-blue));
   --accent-gold:rgb(var(--g15-yellow));
-  --font-teko:"Teko",system-ui,sans-serif;
   background:
     radial-gradient(120% 70% at 50% -10%,rgba(0,217,255,.12),transparent 55%),
     radial-gradient(80% 50% at 100% 20%,rgba(0,140,255,.08),transparent 50%),
@@ -116,10 +115,26 @@
   font-size:clamp(26px,3vw,36px);color:rgb(var(--g15-blue));
 }
 
-/* HUD stat labels — same Teko display language as toolbar */
+/* HUD stat labels — --font-hud so JA/TW/HK use ShinGo / UDShinGo, not Teko */
 .collections-page.collections-15 .collections-stat-k{
-  font-family:var(--font-teko);
+  font-family:var(--font-hud);
   font-size:13px;font-weight:500;letter-spacing:.08em;
+}
+.collections-page.collections-15 .collections-stat-lim-banner .limited-ur-badge-text{
+  font-family:var(--font-hud);
+  font-size:12px;font-weight:600;letter-spacing:.04em;
+}
+html[data-ui-lang="JA"] .collections-page.collections-15 .collections-stat-k,
+html[data-ui-lang="JP"] .collections-page.collections-15 .collections-stat-k,
+html[data-ui-lang="TW"] .collections-page.collections-15 .collections-stat-k,
+html[data-ui-lang="HK"] .collections-page.collections-15 .collections-stat-k{
+  letter-spacing:.02em;text-transform:none;font-weight:500;
+}
+html[data-ui-lang="JA"] .collections-page.collections-15 .collections-stat-lim-banner .limited-ur-badge-text,
+html[data-ui-lang="JP"] .collections-page.collections-15 .collections-stat-lim-banner .limited-ur-badge-text,
+html[data-ui-lang="TW"] .collections-page.collections-15 .collections-stat-lim-banner .limited-ur-badge-text,
+html[data-ui-lang="HK"] .collections-page.collections-15 .collections-stat-lim-banner .limited-ur-badge-text{
+  font-size:13px;letter-spacing:0;font-weight:500;text-transform:none;
 }
 .collections-page.collections-15 .collections-stat--split .collections-stat-k{
   font-size:12px;letter-spacing:.06em;

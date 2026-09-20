@@ -176,7 +176,22 @@
       clear_slot_ok: 'Cleared slot {i}.',
       default_save_name: 'Collection {i}',
       special_design: 'Special Design',
-      classic: 'Classic'
+      classic: 'Classic',
+      nav_section: 'Section',
+      nav_char: 'Characters',
+      nav_unit: 'Units',
+      nav_supporter: 'Supporters',
+      nav_ranking: 'Ranking',
+      nav_mod: 'Modifications',
+      nav_stage: 'Stages',
+      nav_master_league: 'Master League',
+      nav_calc: 'Damage Simulator',
+      nav_tb: 'Team Builder',
+      nav_latest: 'Latest Release',
+      nav_banner: 'Unit Assembly',
+      nav_investment: 'Investment Priority',
+      nav_collections: 'Collections',
+      nav_game_news: 'Game News'
     },
     JA: {
       page_title: '格納庫コレクション — GGen Eternal Database',
@@ -295,7 +310,22 @@
       clear_slot_ok: 'スロット {i} をクリアしました。',
       default_save_name: 'コレクション {i}',
       special_design: '特設デザイン',
-      classic: 'Classic'
+      classic: 'Classic',
+      nav_section: 'セクション',
+      nav_char: 'キャラクター',
+      nav_unit: 'ユニット',
+      nav_supporter: 'サポーター',
+      nav_ranking: 'ランキング',
+      nav_mod: 'オプションパーツ',
+      nav_stage: 'ステージ',
+      nav_master_league: 'マスターリーグ',
+      nav_calc: 'ダメージシミュレーター',
+      nav_tb: 'チーム編成',
+      nav_latest: '最新登場',
+      nav_banner: 'ピックアップガシャ',
+      nav_investment: '投資優先度',
+      nav_collections: 'コレクション',
+      nav_game_news: 'ゲームニュース'
     },
     TW: {
       page_title: '格納庫收藏 — GGen Eternal Database',
@@ -413,7 +443,22 @@
       clear_slot_ok: '已清除欄位 {i}。',
       default_save_name: '收藏 {i}',
       special_design: '特別設計',
-      classic: 'Classic'
+      classic: 'Classic',
+      nav_section: '區塊',
+      nav_char: '角色',
+      nav_unit: '單位',
+      nav_supporter: '支援人員',
+      nav_ranking: '排行',
+      nav_mod: '選擇性零件',
+      nav_stage: '關卡',
+      nav_master_league: '大師聯盟',
+      nav_calc: '損傷模擬器',
+      nav_tb: '隊伍編成',
+      nav_latest: '最新登場',
+      nav_banner: '機體補給',
+      nav_investment: '投資優先度',
+      nav_collections: '收藏',
+      nav_game_news: '遊戲公告'
     },
     HK: {
       page_title: '格納庫收藏 — GGen Eternal Database',
@@ -531,7 +576,22 @@
       clear_slot_ok: '已清除欄位 {i}。',
       default_save_name: '收藏 {i}',
       special_design: '特別設計',
-      classic: 'Classic'
+      classic: 'Classic',
+      nav_section: '區塊',
+      nav_char: '角色',
+      nav_unit: '單位',
+      nav_supporter: '支援人員',
+      nav_ranking: '排行',
+      nav_mod: '選擇性零件',
+      nav_stage: '關卡',
+      nav_master_league: '大師聯盟',
+      nav_calc: '損傷模擬器',
+      nav_tb: '隊伍編成',
+      nav_latest: '最新登場',
+      nav_banner: '機體補給',
+      nav_investment: '投資優先度',
+      nav_collections: '收藏',
+      nav_game_news: '遊戲公告'
     }
   };
 
@@ -747,6 +807,56 @@
     if (el) el.textContent = text;
   }
 
+  var NAV_TAB_HREF = {
+    '/c': 'nav_char',
+    '/u': 'nav_unit',
+    '/s': 'nav_supporter',
+    '/rk': 'nav_ranking',
+    '/op': 'nav_mod',
+    '/st': 'nav_stage',
+    '/ml': 'nav_master_league',
+    '/cal': 'nav_calc',
+    '/tb': 'nav_tb',
+    '/new': 'nav_latest',
+    '/tl': 'nav_banner',
+    '/ip': 'nav_investment',
+    '/collections': 'nav_collections',
+    '/game-news': 'nav_game_news'
+  };
+  var NAV_TAB_ID = {
+    navCharTab: 'nav_char',
+    navUnitTab: 'nav_unit',
+    navSuppTab: 'nav_supporter',
+    navRankingTab: 'nav_ranking',
+    navModTab: 'nav_mod',
+    navStageTab: 'nav_stage',
+    navMasterLeagueTab: 'nav_master_league',
+    navCalcTab: 'nav_calc',
+    navTbTab: 'nav_tb',
+    navLatestTab: 'nav_latest',
+    navBannerTimelineTab: 'nav_banner',
+    navInvestmentTab: 'nav_investment',
+    navCollectionsTab: 'nav_collections',
+    navGameNewsTab: 'nav_game_news'
+  };
+
+  function applyNavTabLabels() {
+    document.querySelectorAll('#navTabs .nav-tab').forEach(function (el) {
+      var key = NAV_TAB_ID[el.id];
+      if (!key) {
+        var path = String(el.getAttribute('href') || '')
+          .split('?')[0]
+          .replace(/\/+$/, '');
+        key = NAV_TAB_HREF[path];
+      }
+      if (!key) return;
+      var lab = el.querySelector('.nav-tab-label');
+      if (lab) lab.textContent = t(key);
+    });
+    var tabs = document.getElementById('navTabs');
+    if (tabs) tabs.setAttribute('aria-label', t('nav_section'));
+  }
+
   /* Official X logo path (X Corp brand mark; viewBox 0 0 24 24). */
   var X_LOGO_SVG =
     '<svg class="collections-x-logo" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false">' +
@@ -785,6 +895,7 @@
       if (typeof window.__ggenInjectBrandFonts === 'function') window.__ggenInjectBrandFonts();
     } catch (e) {}
     document.title = t('page_title');
+    applyNavTabLabels();
     setText('colEyebrow', t('eyebrow'));
     setText('colTitle', t('title'));
     setText('colSub', t('sub'));

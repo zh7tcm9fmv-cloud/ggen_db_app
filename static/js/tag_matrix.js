@@ -2133,8 +2133,8 @@
       '/tm': 'navTagMatrix',
       '/dm': 'navDebuffMatrix'
     };
-    document.querySelectorAll('#navTabs a.nav-tab[href]').forEach(function (a) {
-      var path = String(a.getAttribute('href') || '').split('?')[0].replace(/\/+$/, '') || '/';
+    document.querySelectorAll('#navTabs .nav-tab').forEach(function (a) {
+      var path = String(a.getAttribute('href') || '').split('?')[0].replace(/\/+$/, '');
       var key = map[path];
       if (!key) return;
       var lab = a.querySelector('.nav-tab-label');
