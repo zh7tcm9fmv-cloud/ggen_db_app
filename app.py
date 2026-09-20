@@ -13955,6 +13955,29 @@ def _resolve_character_sp_badge_layers(item_id):
         game_image_public_url(_SP_SERIES_BADGE_FRAME),
     )
 
+
+def _specialize_target_row(item_id):
+    """Lineage (5) / series (2) / entity (1) SP Conversion chip or badge target.
+
+    Unit table first (MS chips), then character table (pilot badges). Type 4 generic
+    (no target) is skipped so ordinary items stay non-clickable.
+    """
+    iid = normalize_id(item_id)
+    if iid == '0':
+        return None
+    info = (unit_specialize_material_target_map or {}).get(iid)
+    table = 'unit'
+    if not info:
+        info = (character_specialize_material_target_map or {}).get(iid)
+        table = 'character'
+    if not info:
+        return None
+    ttype = normalize_id(info.get('target_type_index'))
+    tid = normalize_id(info.get('target_id'))
+    if ttype not in ('1', '2', '5') or not tid or tid == '0':
+        return None
+    return {'table': table, 'target_type_index': ttype, 'target_id': tid}
+
 def _resolve_unit_thumb_for_limit_break_material_item(item_id):
     uid = (limit_break_item_unit_map or {}).get(normalize_id(item_id), '')
     if not uid:
@@ -14162,6 +14185,11 @@ def _decorate_reward_rows(rows, lc):
                     lb_frames = _LB_FRAME_BY_RARITY.get(iri)
         else:
             reward_name = f"Reward {rid}"
+        detail_type = ('character' if rt == '2' else ('option_part' if rt == '8' else ('profile_title' if rt == '30' else ('unit' if rt == '3' else ''))))
+        detail_id = (tid if rt in ('2', '8', '30', '3') else '')
+        if not detail_type and _specialize_target_row(tid):
+            detail_type = 'item'
+            detail_id = tid
         out.append({
             'reward_id': rid,
             'reward_type_index': rt,
@@ -14170,8 +14198,8 @@ def _decorate_reward_rows(rows, lc):
             'description': reward_desc,
             'count': cnt,
             'icon': reward_icon,
-            'detail_type': ('character' if rt == '2' else ('option_part' if rt == '8' else ('profile_title' if rt == '30' else ('unit' if rt == '3' else '')))),
-            'detail_id': (tid if rt in ('2', '8', '30', '3') else ''),
+            'detail_type': detail_type,
+            'detail_id': detail_id,
             'thumb_type': ('char' if rt == '2' else ('option_part' if rt == '8' else ('unit' if rt == '3' else ''))),
             'thumb': (reward_icon if rt in ('2', '8', '3') else ''),
             'rarity': (RARITY_MAP.get(cri, 'N') if rt == '2' else (RARITY_MAP.get(ori, 'N') if rt == '8' else (RARITY_MAP.get(uri, 'N') if rt == '3' else ''))),
@@ -14186,6 +14214,77 @@ def _decorate_reward_rows(rows, lc):
             'sp_chip_frame': (sp_chip_frame if rt not in ('2', '3', '8', '30') else ''),
         })
     return out
+
+
+def _build_specialize_item_detail(item_id, lc):
+    """Detail payload for tag/series/entity SP Conversion chips and badges."""
+    iid = normalize_id(item_id)
+    spec = _specialize_target_row(iid)
+    if not spec:
+        return None
+    item = (item_info_map or {}).get(iid) or {}
+    ld = get_lang_data(lc)
+    item_text_map = ld.get('item_text_map') or {}
+    nlid = normalize_id(item.get('name_lang_id'))
+    dlid = normalize_id(item.get('desc_lang_id'))
+    name = str(item_text_map.get(nlid) or '').strip() if nlid != '0' else ''
+    desc = str(item_text_map.get(dlid) or '').strip() if dlid != '0' else ''
+    if not name:
+        name = f'Item {iid}'
+    vis_rows = _decorate_reward_rows([{
+        'reward_id': iid,
+        'reward_type_index': '23',
+        'target_id': iid,
+        'count': 1,
+    }], lc)
+    vis = vis_rows[0] if vis_rows else {}
+    default_target = 'character' if spec.get('table') == 'character' else 'unit'
+    tags = []
+    target_entity = None
+    ttype = spec.get('target_type_index')
+    tid = spec.get('target_id')
+    if ttype == '5':
+        tags = resolve_lineage_ids_to_tag_dicts([tid], ld, default_target)
+    elif ttype == '2':
+        ser = resolve_series_id_to_tag(tid, ld)
+        if ser:
+            tags = [ser]
+    elif ttype == '1':
+        if spec.get('table') == 'character':
+            c = get_npc_character_display(tid, {}, lc)
+            target_entity = {
+                'type': 'character',
+                'id': tid,
+                'name': str(c.get('name') or f'Character {tid}'),
+                'thum': str(c.get('thum') or ''),
+                'rarity': str(c.get('rarity') or 'N'),
+                'role_icon': str(c.get('role_icon') or ''),
+            }
+        else:
+            udisp = _resolve_unit_reward_display(tid, lc)
+            uinfo = (unit_info_map or {}).get(tid, {}) or {}
+            target_entity = {
+                'type': 'unit',
+                'id': tid,
+                'name': str(udisp.get('name') or f'Unit {tid}'),
+                'thum': str(udisp.get('thumb') or udisp.get('icon') or ''),
+                'rarity': str(udisp.get('rarity') or 'N'),
+                'role_icon': ROLE_ICON_MAP.get(normalize_id(uinfo.get('role', '0')), ''),
+            }
+    return {
+        'id': iid,
+        'name': name,
+        'description': desc,
+        'icon': vis.get('icon') or '',
+        'sp_chip_base': vis.get('sp_chip_base') or '',
+        'sp_chip_unit': vis.get('sp_chip_unit') or '',
+        'sp_chip_frame': vis.get('sp_chip_frame') or '',
+        'tag_default_target': default_target,
+        'tags': tags,
+        'target_entity': target_entity,
+        'target_kind': ('lineage' if ttype == '5' else ('series' if ttype == '2' else 'entity')),
+        'lang': lc,
+    }
 
 def resolve_tower_appeal_rewards(stage_id, lc):
     sid = normalize_id(stage_id)
@@ -27165,6 +27264,20 @@ def get_profile_title(profile_title_id):
         return jsonify({'error': str(e)}), 500
 
 
+@app.route('/api/item/<item_id>')
+def get_item(item_id):
+    try:
+        lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
+        row = _build_specialize_item_detail(item_id, lc)
+        if not row:
+            return jsonify({'error': 'Not found'}), 404
+        ck = f"item_{row['id']}_{lc}"
+        return jsonify_cacheable(row, ck, private=True, max_age=3600, convert_images=True)
+    except Exception as e:
+        import traceback; traceback.print_exc()
+        return jsonify({'error': str(e)}), 500
+
+
 @app.route('/api/supporters')
 def list_supporters():
     try:
@@ -31444,7 +31557,7 @@ _SPA_TAB_PATHS = frozenset({
     # Stage category deep-links (Stages tab sources)
     'gtower', 'gt', 'challenge', 'challenges', 'ch', 'go', 'score', 'score-attack', 'grand-offensive', 'special',
 })
-_SPA_DETAIL_PREFIXES = frozenset({'u', 'c', 's', 'op', 'pt', 'es'})
+_SPA_DETAIL_PREFIXES = frozenset({'u', 'c', 's', 'op', 'pt', 'es', 'item'})
 # Alternate public URLs that should never be self-canonical (301 elsewhere or map here).
 _SPA_CANONICAL_ALIASES = {
     '/banners': '/tl',

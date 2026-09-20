@@ -32,6 +32,7 @@ const REQUIRED_FUNCTIONS = [
   'renderModT',
   'renderModTable',
   'renderStageT',
+  'renderItemShell',
 ];
 
 const REQUIRED_CONSTS = ['TB_TRASH_ICON'];
