@@ -2488,7 +2488,7 @@ def _filter_non_guaranteed_crit(uid, pilot_ids, unit_wpn, lc, exclude):
     return out
 
 
-def _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc):
+def _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc, *, attach_skills=True):
     """Build super/crit/normal leaderboards using the correct vigor per mode."""
     rankings = {}
     for mode, dmg_key, vigor_key in _RANK_MODE_VIGOR:
@@ -2545,7 +2545,7 @@ def _rankings_from_multi_vigor_pairs(all_pairs, top_pilots, lc):
                 'vigor': vigor_key,
                 'active_skills': (
                     _msy_pilot_active_skills(cid, lc)
-                    if d.get('active_skills_on', True) else []
+                    if attach_skills and d.get('active_skills_on', True) else []
                 ),
                 'active_skills_on': bool(d.get('active_skills_on', True)),
                 'score': sc,
@@ -4165,7 +4165,8 @@ def attach_dc_skills_off_rankings(g, pairs_by_tier, pilot_ids, exclude, lc, top_
 
 
 def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, exclude, metric='super_crit',
-                                pairs_by_tier_no_cp=None, same_role_only=False, pairs_by_tier_no_skills=None):
+                                pairs_by_tier_no_cp=None, same_role_only=False, pairs_by_tier_no_skills=None,
+                                attach_skills=True):
     """Build one MSY unit group from Damage Simulator pair results."""
     A = _app()
     uid = A.normalize_id(uid)
@@ -4191,7 +4192,9 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
         if not allowed:
             return {}
         filtered = [(cid, bv) for cid, bv in all_pairs if A.normalize_id(cid) in allowed]
-        return _rankings_from_multi_vigor_pairs(filtered, store_top, lc) if filtered else {}
+        return _rankings_from_multi_vigor_pairs(
+            filtered, store_top, lc, attach_skills=attach_skills,
+        ) if filtered else {}
 
     def _filter_same_role(pilot_ids_in):
         return [cid for cid in pilot_ids_in if _pilot_role_matches_unit(uid, cid)]
@@ -4225,7 +4228,9 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
             return {}
         raw = pairs_by_tier_no_cp.get(dt) or pairs_by_tier_no_cp.get(str(dt)) or []
         filtered = _filter_pairs(raw)
-        return _rankings_from_multi_vigor_pairs(filtered, store_top, lc) if filtered else {}
+        return _rankings_from_multi_vigor_pairs(
+            filtered, store_top, lc, attach_skills=attach_skills,
+        ) if filtered else {}
 
     use_multi_tier = len(pairs_by_tier) > 1
     if use_multi_tier:
@@ -4240,7 +4245,7 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
             pairs = _filter_pairs(raw_pairs)
             if not pairs:
                 continue
-            rk = _rankings_from_multi_vigor_pairs(pairs, store_top, lc)
+            rk = _rankings_from_multi_vigor_pairs(pairs, store_top, lc, attach_skills=attach_skills)
             if rk:
                 rankings_by_tier[int(dt)] = rk
                 rankings_no_ur_by_tier[int(dt)] = _rankings_no_ur_for_tier(dt, pairs)
@@ -4264,7 +4269,7 @@ def assemble_unit_group_from_dc(uid, pairs_by_tier, pilot_ids, lc, top_pilots, e
         pairs = _filter_pairs(pairs_by_tier[dt])
         if not pairs:
             return None
-        rankings = _rankings_from_multi_vigor_pairs(pairs, store_top, lc)
+        rankings = _rankings_from_multi_vigor_pairs(pairs, store_top, lc, attach_skills=attach_skills)
         if not rankings:
             return None
         rankings_no_ur = _rankings_no_ur_for_tier(dt, pairs)
@@ -4555,10 +4560,35 @@ def _msy_dc_kwargs_from_request(args):
     }
 
 
+_DC_ASSEMBLE_MAX_PAIRS_PER_TIER = 160
+
+
+def _dc_pair_rank_score(by_vigor):
+    """Cheap sort key so a huge client dump cannot pin a worker."""
+    if not isinstance(by_vigor, dict):
+        return 0
+    best = 0
+    for row in by_vigor.values():
+        if not isinstance(row, dict):
+            continue
+        for key in ('super_crit_dmg', 'crit_dmg', 'peak_dmg', 'expected_dmg', 'normal_dmg'):
+            try:
+                best = max(best, int(row.get(key) or 0))
+            except (TypeError, ValueError):
+                continue
+    return best
+
+
 def _dc_pairs_from_json(raw):
-    """Convert client pairs_by_tier JSON to {int: [(cid, vigor_dict), ...]}."""
-    if not raw:
+    """Convert client pairs_by_tier JSON to {int: [(cid, vigor_dict), ...]}.
+
+    Keep only the strongest rows per defender tier. Live /cal fallbacks were
+    posting the full candidate matrix; parsing and ranking that on the only
+    gunicorn worker ran past the worker timeout and got the process SIGKILLed.
+    """
+    if not raw or not isinstance(raw, dict):
         return {}
+    cap = _DC_ASSEMBLE_MAX_PAIRS_PER_TIER
     out = {}
     for dt, pairs in raw.items():
         py_pairs = []
@@ -4566,10 +4596,16 @@ def _dc_pairs_from_json(raw):
             if not isinstance(item, (list, tuple)) or len(item) < 2:
                 continue
             cid, by_vigor = item[0], item[1]
-            if by_vigor:
+            if by_vigor and isinstance(by_vigor, dict):
                 py_pairs.append((str(cid), dict(by_vigor)))
+        if len(py_pairs) > cap:
+            py_pairs.sort(key=lambda row: (-_dc_pair_rank_score(row[1]), row[0]))
+            py_pairs = py_pairs[:cap]
         if py_pairs:
-            out[int(dt)] = py_pairs
+            try:
+                out[int(dt)] = py_pairs
+            except (TypeError, ValueError):
+                continue
     return out
 
 
@@ -6093,11 +6129,13 @@ def dc_assemble_payload(unit_id, pairs_by_tier, kwargs, *, pairs_by_tier_no_cp=N
         uid, by_tier, pilot_ids, lc, top_pilots, exclude,
         pairs_by_tier_no_cp=by_tier_no_cp,
         same_role_only=same_role_only,
+        # Client /cal rows already include char_atk. Skill text is loaded later
+        # by /api/meta_synergy_pilot_skills — building it here held the worker.
+        attach_skills=False,
     )
     if not g:
         return None
     g = _ensure_passive_variant_for_request(g, lc, rank_mode, def_tier, kwargs)
-    g = _backfill_pilot_formula_stats(g, lc, rank_mode, kwargs)
     row = _group_for_def_tier(g, def_tier) if g.get('rankings_by_tier') else g
     if not row:
         return None

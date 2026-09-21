@@ -1656,6 +1656,44 @@
     } catch (_) {}
   }
 
+  function slimDcByTier(byTier) {
+    var out = {};
+    var vigors = ['super', 'max', 'high'];
+    Object.keys(byTier || {}).forEach(function (dt) {
+      var rows = byTier[dt] || [];
+      var slim = [];
+      for (var i = 0; i < rows.length; i++) {
+        var item = rows[i];
+        var bv = item && item[1];
+        if (!bv) continue;
+        var next = {};
+        for (var vi = 0; vi < vigors.length; vi++) {
+          var v = vigors[vi];
+          var d = bv[v];
+          if (!d) continue;
+          next[v] = {
+            expected_dmg: d.expected_dmg | 0,
+            peak_dmg: d.peak_dmg | 0,
+            guaranteed_crit: !!d.guaranteed_crit,
+            crit_rate: d.crit_rate | 0,
+            pair_ok: !!d.pair_ok,
+            normal_dmg: d.normal_dmg | 0,
+            crit_dmg: d.crit_dmg | 0,
+            super_crit_dmg: d.super_crit_dmg | 0,
+            char_atk: d.char_atk | 0,
+            formula_stat: d.formula_stat || '',
+            dmg_dealt_pct: d.dmg_dealt_pct | 0,
+            vigor_dmg_pct: d.vigor_dmg_pct | 0,
+            active_skills_on: d.active_skills_on !== false
+          };
+        }
+        if (Object.keys(next).length) slim.push([String(item[0]), next]);
+      }
+      out[dt] = slim;
+    });
+    return out;
+  }
+
   async function loadRankingsViaDc(unitId, lang) {
     var engine = await ensureDcEngine();
     var bootRes = await fetch('/api/meta_synergy_dc/bootstrap?' + apiQuery(), {
@@ -1682,21 +1720,29 @@
       appJsVersion: bootstrap.cache_version || scriptVersion()
     });
     if (!raw || raw.error || !raw.byTier) throw new Error('eval failed');
-    var asmRes = await fetch('/api/meta_synergy_dc/assemble?' + apiQuery(), {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        unit_id: unitId,
-        pairs_by_tier: raw.byTier,
-        lang: lang,
-        top_pilots: 10,
-        rank_mode: 'super_crit',
-        def_tier: 3,
-        cp_on: true,
-        pep_on: true
-      })
-    });
+    var asmCtrl = typeof AbortController === 'function' ? new AbortController() : null;
+    var asmTimer = asmCtrl ? setTimeout(function () { asmCtrl.abort(); }, 20000) : null;
+    var asmRes;
+    try {
+      asmRes = await fetch('/api/meta_synergy_dc/assemble?' + apiQuery(), {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          unit_id: unitId,
+          pairs_by_tier: slimDcByTier(raw.byTier),
+          lang: lang,
+          top_pilots: 10,
+          rank_mode: 'super_crit',
+          def_tier: 3,
+          cp_on: true,
+          pep_on: true
+        }),
+        signal: asmCtrl ? asmCtrl.signal : undefined
+      });
+    } finally {
+      if (asmTimer) clearTimeout(asmTimer);
+    }
     if (!asmRes.ok) throw new Error('HTTP ' + asmRes.status);
     var payload = await asmRes.json();
     if (payload.error) throw new Error(payload.detail || payload.error);

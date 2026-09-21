@@ -17988,11 +17988,67 @@ def api_meta_synergy_dc_page_shells():
         return jsonify({'error': 'meta_synergy_dc_page_shells_failed', 'detail': str(e)}), 500
 
 
+def _msy_dc_json_body(max_bytes=1_500_000, read_timeout=15):
+    """Read a meta-synergy POST body without pinning the gunicorn worker.
+
+    Sync workers stop heartbeats for the whole request. A client that sends
+    headers and then stalls the DC pair dump left this process in sock.recv
+    until WORKER TIMEOUT, then the arbiter SIGKILLed it ("Perhaps out of memory?").
+    """
+    length = request.content_length
+    if length is not None and length > max_bytes:
+        return None, ('body_too_large', 413)
+    sock = request.environ.get('gunicorn.socket')
+    prev = None
+    if sock is not None:
+        try:
+            prev = sock.gettimeout()
+            sock.settimeout(read_timeout)
+        except Exception:
+            sock = None
+    try:
+        chunks = []
+        total = 0
+        while True:
+            try:
+                block = request.stream.read(65536)
+            except (TimeoutError, OSError):
+                return None, ('body_timeout', 408)
+            if not block:
+                break
+            total += len(block)
+            if total > max_bytes:
+                return None, ('body_too_large', 413)
+            chunks.append(block)
+        raw = b''.join(chunks)
+    finally:
+        if sock is not None:
+            try:
+                sock.settimeout(prev)
+            except Exception:
+                pass
+    if not raw:
+        return {}, None
+    try:
+        body = json.loads(raw)
+    except (ValueError, UnicodeDecodeError):
+        return None, ('bad_body', 400)
+    if not isinstance(body, dict):
+        return None, ('bad_body', 400)
+    return body, None
+
+
 @app.route('/api/meta_synergy_dc/assemble', methods=['POST'])
 def api_meta_synergy_dc_assemble():
     """Assemble one MSY unit group from client DC pair results."""
     import meta_synergy_rank as msr
-    body = request.get_json(silent=True) or {}
+    body, err = _msy_dc_json_body()
+    if err:
+        code, status = err
+        resp = jsonify({'error': code})
+        resp.status_code = status
+        resp.headers['Connection'] = 'close'
+        return resp
     kwargs = msr._msy_dc_kwargs_from_request(request.args)
     for key in ('lang', 'top_pilots', 'rank_mode', 'def_tier', 'same_role_only', 'cp_on', 'pep_on'):
         if key in body and body[key] is not None:

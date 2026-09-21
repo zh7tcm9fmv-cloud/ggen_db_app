@@ -1,3 +1,6 @@
 [deploy]
 healthcheckPath = "/health"
 healthcheckTimeout = 300
+# One stalled /api/meta_synergy_dc/assemble must not stop worker heartbeats.
+# Sync workers (gunicorn default) do that — keep the threaded worker explicit.
+startCommand = "gunicorn wsgi:application --bind 0.0.0.0:$PORT --timeout 120 --graceful-timeout 20 --workers 1 --worker-class gthread --threads 4"

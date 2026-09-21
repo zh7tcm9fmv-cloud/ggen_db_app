@@ -589,6 +589,44 @@
     return out;
   }
 
+  function slimDcByTier(byTier) {
+    var out = {};
+    var vigors = ['super', 'max', 'high'];
+    Object.keys(byTier || {}).forEach(function (dt) {
+      var rows = byTier[dt] || [];
+      var slim = [];
+      for (var i = 0; i < rows.length; i++) {
+        var item = rows[i];
+        var bv = item && item[1];
+        if (!bv) continue;
+        var next = {};
+        for (var vi = 0; vi < vigors.length; vi++) {
+          var v = vigors[vi];
+          var d = bv[v];
+          if (!d) continue;
+          next[v] = {
+            expected_dmg: d.expected_dmg | 0,
+            peak_dmg: d.peak_dmg | 0,
+            guaranteed_crit: !!d.guaranteed_crit,
+            crit_rate: d.crit_rate | 0,
+            pair_ok: !!d.pair_ok,
+            normal_dmg: d.normal_dmg | 0,
+            crit_dmg: d.crit_dmg | 0,
+            super_crit_dmg: d.super_crit_dmg | 0,
+            char_atk: d.char_atk | 0,
+            formula_stat: d.formula_stat || '',
+            dmg_dealt_pct: d.dmg_dealt_pct | 0,
+            vigor_dmg_pct: d.vigor_dmg_pct | 0,
+            active_skills_on: d.active_skills_on !== false
+          };
+        }
+        if (Object.keys(next).length) slim.push([String(item[0]), next]);
+      }
+      out[dt] = slim;
+    });
+    return out;
+  }
+
   async function assembleFromRaw(unitId, raw, rawNoCp) {
     if (!raw || !raw.byTier) return null;
     var lang = (global.S && global.S.lang) || 'EN';
@@ -596,7 +634,7 @@
     var pepOn = state.pilotCondPassiveOn;
     var asmBody = {
       unit_id: unitId,
-      pairs_by_tier: raw.byTier,
+      pairs_by_tier: slimDcByTier(raw.byTier),
       lang: lang,
       top_pilots: state.topPilots,
       rank_mode: state.rankMode,
@@ -605,13 +643,21 @@
       cp_on: cpOn,
       pep_on: pepOn
     };
-    if (rawNoCp && rawNoCp.byTier) asmBody.pairs_by_tier_no_cp = rawNoCp.byTier;
-    var asmRes = await fetch('/api/meta_synergy_dc/assemble?' + buildDcApiQuery(), {
-      method: 'POST',
-      credentials: 'same-origin',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(asmBody)
-    });
+    if (rawNoCp && rawNoCp.byTier) asmBody.pairs_by_tier_no_cp = slimDcByTier(rawNoCp.byTier);
+    var asmCtrl = typeof AbortController === 'function' ? new AbortController() : null;
+    var asmTimer = asmCtrl ? setTimeout(function () { asmCtrl.abort(); }, 20000) : null;
+    var asmRes;
+    try {
+      asmRes = await fetch('/api/meta_synergy_dc/assemble?' + buildDcApiQuery(), {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(asmBody),
+        signal: asmCtrl ? asmCtrl.signal : undefined
+      });
+    } finally {
+      if (asmTimer) clearTimeout(asmTimer);
+    }
     if (!asmRes.ok) return null;
     var asmData = await asmRes.json();
     return asmData && asmData.group ? asmData.group : null;
