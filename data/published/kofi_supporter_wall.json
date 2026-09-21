@@ -2,7 +2,7 @@
   "version": 1,
   "title": "Thank you to {n} Newtypes keeping this database alive.",
   "join_label": "Join the wall",
-  "count": 29,
+  "count": 32,
   "supporters": [
     {
       "name": "Fire Red",
@@ -15,8 +15,8 @@
       "crown": false
     },
     {
-      "name": "岳尚賢",
-      "thumb": "/static/images/KofiSupporters/yue_shangxian.webp",
+      "name": "Kamen Rider Decade",
+      "thumb": "/static/images/KofiSupporters/kamen_rider_decade.webp",
       "crown": false
     },
     {
@@ -25,8 +25,8 @@
       "crown": false
     },
     {
-      "name": "Kamen Rider Decade",
-      "thumb": "/static/images/KofiSupporters/kamen_rider_decade.webp",
+      "name": "岳尚賢",
+      "thumb": "/static/images/KofiSupporters/yue_shangxian.webp",
       "crown": false
     },
     {
@@ -45,8 +45,8 @@
       "crown": false
     },
     {
-      "name": "2PMgaming",
-      "thumb": "/static/images/KofiSupporters/2pmgaming.webp",
+      "name": "Ko-fi User",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
       "crown": false
     },
     {
@@ -55,8 +55,8 @@
       "crown": false
     },
     {
-      "name": "戳戳",
-      "thumb": "/static/images/KofiSupporters/chuochuo.webp",
+      "name": "2PMgaming",
+      "thumb": "/static/images/KofiSupporters/2pmgaming.webp",
       "crown": false
     },
     {
@@ -65,7 +65,32 @@
       "crown": false
     },
     {
+      "name": "dundun456",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": false
+    },
+    {
+      "name": "Unknown B",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": false
+    },
+    {
+      "name": "戳戳",
+      "thumb": "/static/images/KofiSupporters/chuochuo.webp",
+      "crown": false
+    },
+    {
+      "name": "老狗司機",
+      "thumb": "/static/images/KofiSupporters/laogou_siji.webp",
+      "crown": false
+    },
+    {
       "name": "Gdge Sdssfsf",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": false
+    },
+    {
+      "name": "Herman",
       "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
       "crown": false
     },
@@ -75,62 +100,17 @@
       "crown": false
     },
     {
-      "name": "Ko-fi User",
+      "name": "Lurker",
       "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
       "crown": false
     },
     {
-      "name": "SP",
+      "name": "rAyRaY",
       "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
       "crown": false
     },
     {
-      "name": "Supporter",
-      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
-      "crown": false
-    },
-    {
-      "name": "TheOtherMC",
-      "thumb": "/static/images/KofiSupporters/theothermc.webp",
-      "crown": false
-    },
-    {
-      "name": "ymca",
-      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
-      "crown": false
-    },
-    {
-      "name": "老狗司機",
-      "thumb": "/static/images/KofiSupporters/laogou_siji.webp",
-      "crown": false
-    },
-    {
-      "name": "Ko-fi Supporter",
-      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
-      "crown": false
-    },
-    {
-      "name": "Unknown",
-      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
-      "crown": false
-    },
-    {
-      "name": "vuca",
-      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
-      "crown": false
-    },
-    {
-      "name": "yoko",
-      "thumb": "/static/images/KofiSupporters/yoko.webp",
-      "crown": false
-    },
-    {
-      "name": "剎那",
-      "thumb": "/static/images/KofiSupporters/setsuna.webp",
-      "crown": false
-    },
-    {
-      "name": "dundun456",
+      "name": "Simon Ng",
       "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
       "crown": false
     },
@@ -140,13 +120,48 @@
       "crown": false
     },
     {
+      "name": "SP",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": false
+    },
+    {
+      "name": "TheOtherMC",
+      "thumb": "/static/images/KofiSupporters/theothermc.webp",
+      "crown": false
+    },
+    {
       "name": "Thierry",
       "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
       "crown": false
     },
     {
-      "name": "Lurker",
+      "name": "Unknown A",
       "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": false
+    },
+    {
+      "name": "vuca",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": false
+    },
+    {
+      "name": "YMCA",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": false
+    },
+    {
+      "name": "ymca",
+      "thumb": "/static/images/UI/UI_Home_Menu_Icon_Shop.webp",
+      "crown": false
+    },
+    {
+      "name": "剎那",
+      "thumb": "/static/images/KofiSupporters/setsuna.webp",
+      "crown": false
+    },
+    {
+      "name": "yoko",
+      "thumb": "/static/images/KofiSupporters/yoko.webp",
       "crown": false
     }
   ]

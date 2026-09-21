@@ -174,7 +174,7 @@
   var PROMO_TEXT_FALLBACK =
     'Thank you for visiting! \uD83D\uDC99\nIf you enjoy our site, please support us on Ko-fi to help keep it free. In return, you\u2019ll receive exclusive sneak peeks and bonus content.';
   var PROMO_NOTICE_LINE_FALLBACK =
-    'I have added a red notification dot that will appear when new exclusive content is available.';
+    'New exclusive sneak peeks are live right now \u2014 get an early look at what\u2019s coming before everyone else. Don\u2019t miss out!';
 
   var PERK_PHRASE_KEYS = [
     { key: 'kofi_promo_kw_sneak', fb: 'exclusive sneak peeks' },

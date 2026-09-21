@@ -1,12 +1,16 @@
 """
 Build public Ko-fi supporter wall JSON (names + thumbs only; no emails/amounts).
 
-Usage:
+Preferred (payments export — unique by email):
+  python scripts/build_kofi_supporter_wall.py \\
+    --transactions path/to/Transaction_All.csv
+
+Legacy (Supporters + Subscriber exports):
   python scripts/build_kofi_supporter_wall.py \\
     --supporters path/to/Supporters_*.csv \\
     --subscribers path/to/Subscriber_*.csv
 
-Defaults look in data/kofi/raw/supporters.csv and subscribers.csv.
+Defaults look in data/kofi/raw/ for transactions.csv, supporters.csv, subscribers.csv.
 Custom thumbs live under images/KofiSupporters/ on the image CDN (WebP).
 Local static/images/KofiSupporters/ copies are optional (build no longer requires them).
 """
@@ -15,7 +19,6 @@ from __future__ import annotations
 import argparse
 import csv
 import json
-import re
 import shutil
 import sys
 from pathlib import Path
@@ -28,16 +31,28 @@ CROWN_NAME = None  # crown = highest total after sort (not a fixed name)
 
 # When Ko-fi Supporters CSV lags behind payments, bump known totals here.
 TOTAL_OVERRIDES = {
-    "fire red": 60.0,  # CSV 30 + 2026-09-12 donations (~+30)
+    # Fire Red already $60 in Transaction_All as of 2026-09-21
 }
 
-# People present on payments but not yet in Supporters export
-EXTRA_SUPPORTERS = [
-    {"name": "Gdge Sdssfsf", "total": 5.0, "kinds": ["one_time"]},
-    {"name": "Jaime Lai", "total": 5.0, "kinds": ["one_time"]},
-]
+# People present on payments but not yet in Supporters export (legacy path only)
+EXTRA_SUPPORTERS = []
 
-# Display name (casefold) -> WebP filename under images/KofiSupporters/ (CDN + image_index)
+# Anonymous / placeholder From names that collide across people → Unknown A, Unknown B, …
+# (Leave "Ko-fi User" as-is when it maps to a single email.)
+GENERIC_FROM_NAMES = {
+    "ko-fi supporter",
+    "kofi supporter",
+    "supporter",
+}
+
+# Stale wall labels to drop when rebuilding (replaced by Unknown A–Z or real names)
+STALE_WALL_NAMES = {
+    "ko-fi supporter",
+    "supporter",
+    "unknown",  # bare "Unknown" from older exports
+}
+
+# Display name (casefold) → WebP filename under images/KofiSupporters/ (CDN + image_index)
 THUMB_FILES = {
     "phil": "phil.webp",
     "fortexfiend": "fortexfiend.webp",
@@ -66,6 +81,108 @@ def money(s) -> float:
 
 def truthy(s) -> bool:
     return str(s or "").strip().lower() in ("true", "1", "yes")
+
+
+def is_generic_from(name: str) -> bool:
+    return (name or "").strip().casefold() in GENERIC_FROM_NAMES
+
+
+def unknown_letter(index: int) -> str:
+    """0 → Unknown A … 25 → Unknown Z, then Unknown AA, etc."""
+    if index < 0:
+        index = 0
+    letters = []
+    n = index
+    while True:
+        letters.append(chr(ord("A") + (n % 26)))
+        n = n // 26 - 1
+        if n < 0:
+            break
+    return "Unknown " + "".join(reversed(letters))
+
+
+def apply_display_name_prefs(name: str) -> str:
+    key = name.casefold()
+    if key == "fire red":
+        return "Fire Red"
+    if key == "kamen rider decade":
+        return "Kamen Rider Decade"
+    if key == "a俊":
+        return "A俊"
+    # Do not collapse "YMCA" / "ymca" — those are different emails on the wall.
+    return name
+
+
+def load_from_transactions(transactions_csv: Path) -> list[dict]:
+    """One wall person per BuyerEmail; anonymous From names → Unknown A–Z by first gift."""
+    by_email: dict[str, dict] = {}
+    with transactions_csv.open(encoding="utf-8-sig", newline="") as f:
+        for row in csv.DictReader(f):
+            email = (row.get("BuyerEmail") or "").strip().lower()
+            if not email:
+                continue
+            name = (row.get("From") or "").strip()
+            amt = money(row.get("Received"))
+            dt = (row.get("DateTime (UTC)") or "").strip()
+            item = row.get("Item") or ""
+            tt = row.get("TransactionType") or ""
+            kind = "monthly" if ("Monthly" in tt or "Exclusive" in item) else "one_time"
+            if email not in by_email:
+                by_email[email] = {
+                    "email": email,
+                    "names": [],
+                    "total": 0.0,
+                    "kinds": set(),
+                    "first": dt or None,
+                }
+            e = by_email[email]
+            e["total"] += amt
+            e["kinds"].add(kind)
+            if name:
+                e["names"].append((dt, name))
+            if dt and (e["first"] is None or dt < e["first"]):
+                e["first"] = dt
+
+    # Anonymous emails in first-donation order → Unknown A, B, …
+    anon_emails = sorted(
+        (
+            e["email"]
+            for e in by_email.values()
+            if all(is_generic_from(n) for _, n in e["names"]) or not e["names"]
+        ),
+        key=lambda em: (by_email[em]["first"] or "", em),
+    )
+    anon_map = {em: unknown_letter(i) for i, em in enumerate(anon_emails)}
+
+    people: list[dict] = []
+    for e in by_email.values():
+        if e["email"] in anon_map:
+            display = anon_map[e["email"]]
+        else:
+            # Prefer the latest non-generic From name
+            non_generic = [(dt, n) for dt, n in e["names"] if not is_generic_from(n)]
+            if non_generic:
+                non_generic.sort(key=lambda x: x[0] or "")
+                display = non_generic[-1][1]
+            else:
+                display = e["names"][-1][1] if e["names"] else "Unknown"
+            display = apply_display_name_prefs(display)
+        people.append(
+            {
+                "name": display,
+                "total": float(e["total"]),
+                "kinds": sorted(e["kinds"]),
+                "first": e["first"],
+            }
+        )
+
+    for key, amt in TOTAL_OVERRIDES.items():
+        for p in people:
+            if p["name"].casefold() == key and float(amt) > float(p["total"]):
+                p["total"] = float(amt)
+
+    people.sort(key=lambda x: (-float(x["total"]), x["name"].casefold()))
+    return people
 
 
 def load_merged(supporters_csv: Path, subscribers_csv: Path) -> list[dict]:
@@ -112,28 +229,8 @@ def load_merged(supporters_csv: Path, subscribers_csv: Path) -> list[dict]:
                         "subscriber_active": active,
                     }
 
-    # Prefer canonical casing for known custom-thumb names
-    preferred = {}
-    for disp, _fn in THUMB_FILES.items():
-        # recover original casing from keys that match casefold of known names
-        for key, row in merged.items():
-            if key == disp:
-                # keep existing Unicode display names from CSV when possible
-                preferred[key] = row["name"]
     for key, row in merged.items():
-        if key in preferred:
-            row["name"] = preferred[key]
-        # Force known English display names
-        if key == "fire red":
-            row["name"] = "Fire Red"
-        elif key == "kamen rider decade":
-            row["name"] = "Kamen Rider Decade"
-        elif key == "a俊":
-            row["name"] = "A俊"
-        elif key == "剎那":
-            row["name"] = "剎那"
-        elif key == "戳戳":
-            row["name"] = "戳戳"
+        row["name"] = apply_display_name_prefs(row["name"])
 
     for key, amt in TOTAL_OVERRIDES.items():
         if key in merged and float(amt) > float(merged[key]["total"]):
@@ -156,30 +253,28 @@ def thumb_for(name: str) -> str:
     fn = THUMB_FILES.get(name.casefold())
     if not fn:
         return FALLBACK_THUMB
-    # CDN / image_index is source of truth — local PNG copies are optional.
     return f"/static/images/KofiSupporters/{fn}"
 
 
-def build(supporters_csv: Path, subscribers_csv: Path) -> dict:
-    people = load_merged(supporters_csv, subscribers_csv)
-    # Crown = current top total (first after sort)
+def build(people: list[dict], *, keep_prior: bool = True) -> dict:
     crown_key = people[0]["name"].casefold() if people else ""
 
     supporters = []
     seen = set()
     for p in people:
         key = p["name"].casefold()
+        # Same display name from different people: keep both, but track for prior-merge.
         seen.add(key)
         supporters.append(
             {
                 "name": p["name"],
                 "thumb": thumb_for(p["name"]),
-                "crown": key == crown_key,
+                "crown": key == crown_key and not any(s.get("crown") for s in supporters),
             }
         )
 
-    # Keep prior wall members missing from this CSV export (stale/partial downloads).
-    if PUB_PATH.is_file():
+    # Keep prior wall members missing from this export (e.g. custom thumbs / old gifts).
+    if keep_prior and PUB_PATH.is_file():
         try:
             prev = json.loads(PUB_PATH.read_text(encoding="utf-8"))
         except Exception:
@@ -189,7 +284,7 @@ def build(supporters_csv: Path, subscribers_csv: Path) -> dict:
             if not name:
                 continue
             key = name.casefold()
-            if key in seen:
+            if key in seen or key in STALE_WALL_NAMES:
                 continue
             seen.add(key)
             supporters.append(
@@ -209,31 +304,55 @@ def build(supporters_csv: Path, subscribers_csv: Path) -> dict:
     }
 
 
+def _copy_into_raw(src: Path, dest_name: str) -> Path:
+    RAW_DIR.mkdir(parents=True, exist_ok=True)
+    dest = RAW_DIR / dest_name
+    if src.is_file() and src.resolve() != dest.resolve():
+        shutil.copy2(src, dest)
+        return dest
+    return src if src.is_file() else dest
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--transactions", type=Path, default=RAW_DIR / "transactions.csv")
     ap.add_argument("--supporters", type=Path, default=RAW_DIR / "supporters.csv")
     ap.add_argument("--subscribers", type=Path, default=RAW_DIR / "subscribers.csv")
+    ap.add_argument(
+        "--no-prior",
+        action="store_true",
+        help="Do not keep previous wall members missing from this export",
+    )
     args = ap.parse_args(argv)
 
-    if not args.supporters.is_file() and not args.subscribers.is_file():
-        print("No CSV inputs found. Pass --supporters / --subscribers.", file=sys.stderr)
-        return 1
+    tx = args.transactions
+    if tx.is_file():
+        tx = _copy_into_raw(tx, "transactions.csv")
+        people = load_from_transactions(tx)
+        print(f"Loaded {len(people)} people from transactions ({tx})")
+    else:
+        if args.supporters.is_file():
+            args.supporters = _copy_into_raw(args.supporters, "supporters.csv")
+        if args.subscribers.is_file():
+            args.subscribers = _copy_into_raw(args.subscribers, "subscribers.csv")
+        if not args.supporters.is_file() and not args.subscribers.is_file():
+            print(
+                "No CSV inputs found. Pass --transactions and/or --supporters / --subscribers.",
+                file=sys.stderr,
+            )
+            return 1
+        people = load_merged(args.supporters, args.subscribers)
+        print(f"Loaded {len(people)} people from supporters/subscribers")
 
-    RAW_DIR.mkdir(parents=True, exist_ok=True)
-    # Keep local copies when paths are outside raw/
-    if args.supporters.is_file() and args.supporters.resolve() != (RAW_DIR / "supporters.csv").resolve():
-        shutil.copy2(args.supporters, RAW_DIR / "supporters.csv")
-        args.supporters = RAW_DIR / "supporters.csv"
-    if args.subscribers.is_file() and args.subscribers.resolve() != (RAW_DIR / "subscribers.csv").resolve():
-        shutil.copy2(args.subscribers, RAW_DIR / "subscribers.csv")
-        args.subscribers = RAW_DIR / "subscribers.csv"
-
-    payload = build(args.supporters, args.subscribers)
+    payload = build(people, keep_prior=not args.no_prior)
     PUB_PATH.parent.mkdir(parents=True, exist_ok=True)
     PUB_PATH.write_text(json.dumps(payload, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"Wrote {PUB_PATH} ({payload['count']} supporters)")
     crown = next((s["name"] for s in payload["supporters"] if s.get("crown")), None)
     print(f"Crown: {crown}")
+    unknowns = [s["name"] for s in payload["supporters"] if s["name"].startswith("Unknown ")]
+    if unknowns:
+        print("Anonymous:", ", ".join(unknowns))
     return 0
 
 
