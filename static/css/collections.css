@@ -516,6 +516,84 @@
   background:rgba(255,215,0,.12);border-color:rgba(255,215,0,.55);color:var(--accent-gold);
 }
 .collections-btn--save:hover{background:rgba(255,215,0,.2);border-color:var(--accent-gold);color:var(--accent-gold)}
+
+/* Save-as-image style picker — in-flow tray pushes Share on X (no overlap) */
+.col-save-fan{
+  position:relative;display:inline-flex;align-items:flex-end;justify-content:flex-start;
+  gap:10px;flex-wrap:wrap;z-index:5;max-width:100%;
+}
+.col-save-fan-menu{
+  display:none;flex-direction:row;align-items:center;gap:8px 10px;
+  margin:0;padding:6px 10px;
+  border:1px solid rgba(0,212,255,.4);
+  border-radius:var(--radius-sm);
+  background:linear-gradient(165deg,rgba(18,26,42,.98),rgba(10,14,24,.97));
+  box-shadow:0 10px 28px rgba(0,0,0,.45);
+}
+.col-save-fan.is-open .col-save-fan-menu{
+  display:inline-flex;
+  animation:col-save-fan-in .28s cubic-bezier(0.22,1,0.36,1) both;
+}
+.col-save-fan.col-save-fan--snap .col-save-fan-menu{animation:none}
+@keyframes col-save-fan-in{
+  from{opacity:0;transform:translateX(-6px)}
+  to{opacity:1;transform:none}
+}
+.col-save-fan-options{
+  display:flex;flex-direction:row;align-items:center;gap:8px;
+}
+.col-save-fan-item{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  min-width:92px;min-height:36px;padding:7px 12px;margin:0;
+  border:1px solid rgba(0,212,255,.5);
+  border-radius:var(--radius-sm);
+  background:linear-gradient(165deg,rgba(28,38,58,.98),rgba(16,22,36,.96));
+  color:var(--text-primary);
+  font:inherit;font-size:13px;font-weight:700;letter-spacing:.04em;
+  cursor:pointer;white-space:nowrap;
+  box-shadow:0 0 0 0 rgba(0,212,255,0);
+  transition:border-color .15s ease,background .15s ease,box-shadow .35s ease,transform .15s ease;
+}
+.col-save-fan.is-open .col-save-fan-item{
+  animation:col-save-fan-pulse 1.4s ease-in-out 2;
+}
+.col-save-fan.is-open .col-save-fan-item[data-save-mode="15"]{
+  animation-delay:.12s;
+}
+@keyframes col-save-fan-pulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(0,212,255,0)}
+  50%{box-shadow:0 0 0 3px rgba(0,212,255,.35)}
+}
+.col-save-fan-item-badge{
+  display:block;height:32px;width:auto;max-width:88px;object-fit:contain;
+}
+.col-save-fan-item--15{
+  min-width:0;padding:5px 10px;
+}
+.col-save-fan-item--15[hidden]{display:none!important}
+.col-save-fan-item--15 .col-save-fan-item-label[hidden]{display:none!important}
+.col-save-fan-item:hover,.col-save-fan-item:focus-visible{
+  border-color:var(--accent-cyan);color:#fff;outline:none;
+  background:linear-gradient(165deg,rgba(0,212,255,.2),rgba(14,18,30,.96));
+  transform:translateY(-1px);
+}
+.col-save-fan.is-open .collections-btn--save{
+  border-color:var(--accent-gold);color:var(--accent-gold);
+  box-shadow:0 0 0 1px rgba(255,215,0,.25);
+}
+.collections-share-bar{
+  display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:flex-start;gap:8px 10px;
+  margin:0 0 12px;
+  overflow:visible;
+}
+.collections-share-bar.is-save-picking .collections-btn--share{
+  opacity:.45;
+}
+@media (prefers-reduced-motion:reduce){
+  .col-save-fan.is-open .col-save-fan-menu{animation:none}
+  .col-save-fan.is-open .col-save-fan-item{animation:none}
+}
+
 .collections-btn--share{
   display:inline-flex;align-items:center;gap:6px;
   background:rgba(0,212,255,.08);border-color:rgba(0,212,255,.55);color:var(--accent-cyan);
@@ -527,10 +605,6 @@
 }
 .collections-btn:disabled{opacity:.55;cursor:wait}
 
-.collections-share-bar{
-  display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:flex-start;gap:8px 10px;
-  margin:0 0 12px;
-}
 .collections-code-row{
   display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px 10px;
   width:100%;margin-top:2px;

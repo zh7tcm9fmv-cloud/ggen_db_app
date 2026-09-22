@@ -82,6 +82,9 @@
       select_limited: 'Select All Limited (LB0)',
       reset_all: 'Reset All',
       save_image: 'Save as image',
+      save_image_choose: 'Choose a style',
+      save_image_regular: 'Regular',
+      save_image_15: '1.5',
       share_x: 'Share on {x}',
       share_code: 'Share code',
       share_code_ph: 'Paste code to import…',
@@ -216,6 +219,9 @@
       select_limited: '期間限定をすべて選択（LB0）',
       reset_all: 'すべてリセット',
       save_image: '画像で保存',
+      save_image_choose: 'デザインを選ぶ',
+      save_image_regular: '通常',
+      save_image_15: '1.5',
       share_x: '{x}でシェア',
       share_code: '共有コード',
       share_code_ph: 'コードを貼り付けてインポート…',
@@ -350,6 +356,9 @@
       select_limited: '全選期間限定（LB0）',
       reset_all: '全部重設',
       save_image: '儲存圖片',
+      save_image_choose: '選擇樣式',
+      save_image_regular: '一般',
+      save_image_15: '1.5',
       share_x: '分享至 {x}',
       share_code: '分享代碼',
       share_code_ph: '貼上代碼以匯入…',
@@ -483,6 +492,9 @@
       select_limited: '全選期間限定（LB0）',
       reset_all: '全部重設',
       save_image: '儲存圖片',
+      save_image_choose: '選擇樣式',
+      save_image_regular: '一般',
+      save_image_15: '1.5',
       share_x: '分享至 {x}',
       share_code: '分享代碼',
       share_code_ph: '貼上代碼以匯入…',
@@ -939,6 +951,23 @@
     setText('colSelectLimited', t('select_limited'));
     setText('colClearAll', t('reset_all'));
     setText('colSaveImage', t('save_image'));
+    setText('colSaveRegularLbl', t('save_image_regular'));
+    var save15Lbl = document.getElementById('colSave15Lbl');
+    if (save15Lbl) {
+      save15Lbl.textContent = '';
+      save15Lbl.hidden = true;
+    }
+    var save15Btn = document.getElementById('colSave15');
+    if (save15Btn) save15Btn.setAttribute('aria-label', t('special_design'));
+    var save15Badge = document.getElementById('colSave15Badge');
+    if (save15Badge) {
+      save15Badge.src = imgUrl('/static/images/UI/4edfa4b3577f.webp');
+      save15Badge.alt = t('special_design');
+    }
+    var saveFan = document.getElementById('colSaveFan');
+    if (saveFan && saveFan.classList.contains('is-open')) {
+      setText('colSaveImage', t('save_image_choose'));
+    }
     applyShareXBtnLabel();
     setText('colUsernameLabel', t('username'));
     setText('colShareCodeLabel', t('share_code'));
@@ -1072,6 +1101,9 @@
     } catch (e) {}
     closeLangDropdown();
     applyUiLang();
+    try {
+      loadImage(imgUrl(shareJourneyArtPath()));
+    } catch (_) {}
     loadCatalog();
   }
 
@@ -1507,7 +1539,7 @@
     });
   }
 
-  /** Full labels for share PNG — no truncation. */
+  /** Full labels for share PNG — role/skill + Max LB % only (matches live tip tone). */
   function drawShareDonutLegend(ctx, x, y, buckets) {
     var lbShort = t('max_lb');
     var rowH = 18;
@@ -1518,9 +1550,6 @@
     for (var i = 0; i < list.length; i++) {
       var b = list[i];
       var cy = y + i * rowH + rowH / 2;
-      var owned = b.value | 0;
-      var tot = b.total | 0;
-      var maxed = b.maxed | 0;
       var pct = donutMaxLbPct(b);
       ctx.beginPath();
       ctx.arc(x + 5, cy, 4, 0, Math.PI * 2);
@@ -1528,16 +1557,7 @@
       ctx.fill();
       ctx.fillStyle = '#f0f2f7';
       ctx.font = uiCanvasFont(13, '600');
-      var line =
-        String(b.label || '') +
-        ' ' +
-        owned +
-        (tot ? ' / ' + tot : '') +
-        ' · ' +
-        lbShort +
-        ' ' +
-        maxed +
-        (owned ? ' (' + pct + '%)' : '');
+      var line = String(b.label || '') + ' - ' + lbShort + ' (' + pct + '%)';
       ctx.fillText(line, x + 14, cy);
     }
     ctx.restore();
@@ -2209,9 +2229,21 @@
     return true;
   }
 
+  function syncSaveFanOptions() {
+    var fan = document.getElementById('colSaveFan');
+    var opt15 = document.getElementById('colSave15');
+    var unitsOnly = state.type !== 'supporters';
+    if (opt15) opt15.hidden = !unitsOnly;
+    if (fan) fan.classList.toggle('col-save-fan--units-only', unitsOnly);
+    if (!unitsOnly && fan && fan.classList.contains('is-open')) {
+      setSaveFanOpen(false, true);
+    }
+  }
+
   function refresh(opts) {
     opts = opts || {};
     renderStats();
+    syncSaveFanOptions();
     if (opts.patchId && patchCard(opts.patchId)) {
       syncRoleTabsVisibility();
       return;
@@ -2408,10 +2440,36 @@
       });
     }
 
+    var saveFan = document.getElementById('colSaveFan');
     var saveBtn = document.getElementById('colSaveImage');
-    if (saveBtn) {
-      saveBtn.addEventListener('click', function () {
-        saveAsImage(saveBtn);
+    if (saveBtn && saveFan) {
+      saveBtn.addEventListener('click', function (ev) {
+        ev.stopPropagation();
+        /* Supporters: Regular only until 1.5 supporter layout is designed */
+        if (state.type === 'supporters') {
+          setSaveFanOpen(false, true);
+          saveAsImage(saveBtn, 'regular');
+          return;
+        }
+        var open = !saveFan.classList.contains('is-open');
+        setSaveFanOpen(open);
+      });
+      saveFan.querySelectorAll('.col-save-fan-item').forEach(function (item) {
+        item.addEventListener('click', function (ev) {
+          ev.stopPropagation();
+          var mode = item.getAttribute('data-save-mode') || 'regular';
+          if (mode === '15' && state.type === 'supporters') mode = 'regular';
+          setSaveFanOpen(false, true);
+          saveAsImage(saveBtn, mode);
+        });
+      });
+      document.addEventListener('click', function (ev) {
+        if (!saveFan.classList.contains('is-open')) return;
+        if (saveFan.contains(ev.target)) return;
+        setSaveFanOpen(false);
+      });
+      document.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Escape') setSaveFanOpen(false);
       });
     }
 
@@ -2528,6 +2586,9 @@
         loadImage(imgUrl(paths[i]));
       } catch (_) {}
     }
+    try {
+      prefetchJourneyArts();
+    } catch (_) {}
     /* Warm list thumbs for export — same assets as live grid (already CDN-cached). */
     try {
       var rows = activeList();
@@ -3057,6 +3118,50 @@
     drawShareStatBar(ctx, x + padX, y + h - 18, w - padX * 2, 8, half.pct, tone);
   }
 
+  function drawShareLimitedBadge(ctx, x, y, img, text, targetW) {
+    /* Match live HUD `.limited-ur-badge--chip` — official parallelogram plate + label. */
+    var tw = targetW || 108;
+    var lim = String(text || limitedWord());
+    if (!isCjkUiLang()) lim = lim.toUpperCase();
+    var th = 22;
+    if (img && img.naturalWidth) {
+      th = Math.max(18, Math.round((tw * img.naturalHeight) / img.naturalWidth));
+      ctx.drawImage(img, x, y, tw, th);
+    } else {
+      var fallback = ctx.createLinearGradient(x, y, x + tw, y);
+      fallback.addColorStop(0, '#6b21a8');
+      fallback.addColorStop(0.55, '#7c3aed');
+      fallback.addColorStop(1, '#22d3ee');
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(x + 10, y);
+      ctx.lineTo(x + tw, y);
+      ctx.lineTo(x + tw - 10, y + th);
+      ctx.lineTo(x, y + th);
+      ctx.closePath();
+      ctx.fillStyle = fallback;
+      ctx.fill();
+      ctx.restore();
+    }
+    ctx.save();
+    ctx.font = uiCanvasFont(Math.max(9, Math.round(th * 0.42)), '800');
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#ffffff';
+    ctx.shadowColor = 'rgba(0,0,0,0.95)';
+    ctx.shadowBlur = 4;
+    ctx.shadowOffsetX = 0;
+    ctx.shadowOffsetY = 1;
+    var maxTxt = tw * 0.78;
+    var draw = lim;
+    while (draw.length > 1 && ctx.measureText(draw).width > maxTxt) {
+      draw = draw.slice(0, -1);
+    }
+    ctx.fillText(draw, x + tw / 2, y + th / 2 + 0.5);
+    ctx.restore();
+    return { w: tw, h: th };
+  }
+
   function drawShareStatCard(ctx, x, y, w, h, card, imgs, complete, perfect) {
     var padX = 10;
     var tone = card.tone || 'neutral';
@@ -3134,34 +3239,30 @@
     var leadX = x + padX;
     var leadY = y + 12;
     var labelX = leadX;
+    var headerBottom = leadY + 16;
     if (card.lead === 'owned' && imgs.owned) {
       ctx.drawImage(imgs.owned, leadX, leadY - 1, 18, 18);
       labelX = leadX + 22;
+      headerBottom = Math.max(headerBottom, leadY + 17);
     } else if (card.lead === 'max_lb' && imgs.maxLb) {
       var si;
       for (si = 0; si < 3; si++) {
         ctx.drawImage(imgs.maxLb, leadX + si * 15, leadY, 15, 15);
       }
       labelX = leadX + 3 * 15 + 5;
+      headerBottom = Math.max(headerBottom, leadY + 15);
     } else if (card.lead === 'limited') {
-      var lim = limitedWord();
-      ctx.font = uiCanvasFont(11, 'bold');
-      var limW = Math.min(96, Math.max(52, ctx.measureText(lim).width + 14));
-      var limH = 17;
-      var limGrad = ctx.createLinearGradient(leadX, leadY, leadX + limW, leadY);
-      limGrad.addColorStop(0, '#be185d');
-      limGrad.addColorStop(0.55, '#a855f7');
-      limGrad.addColorStop(1, '#1d4ed8');
-      drawRoundRect(ctx, leadX, leadY - 1, limW, limH, 3);
-      ctx.fillStyle = limGrad;
-      ctx.fill();
-      ctx.fillStyle = '#ffffff';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillText(lim, leadX + limW / 2, leadY - 1 + limH / 2 + 0.5);
-      ctx.textAlign = 'left';
-      ctx.textBaseline = 'top';
-      labelX = leadX + limW + 6;
+      /* Chip sized to leave room for POSSESSED + counts under it */
+      var limBadge = drawShareLimitedBadge(
+        ctx,
+        leadX,
+        leadY - 1,
+        imgs && imgs.limLabel,
+        limitedWord(),
+        Math.min(86, Math.max(64, w * 0.38))
+      );
+      labelX = leadX + limBadge.w + 6;
+      headerBottom = Math.max(headerBottom, leadY - 1 + limBadge.h);
     } else if (card.lead === 'role') {
       var roleImg =
         card.roleId === '1'
@@ -3172,6 +3273,7 @@
       if (roleImg) {
         ctx.drawImage(roleImg, leadX, leadY - 1, 17, 17);
         labelX = leadX + 22;
+        headerBottom = Math.max(headerBottom, leadY + 16);
       }
     } else if (card.lead === 'skill') {
       var skillImg =
@@ -3183,6 +3285,7 @@
       if (skillImg) {
         ctx.drawImage(skillImg, leadX, leadY - 1, 17, 17);
         labelX = leadX + 22;
+        headerBottom = Math.max(headerBottom, leadY + 16);
       }
     }
 
@@ -3199,25 +3302,82 @@
     if (label.length > 1 && ctx.measureText(label).width > labelMax) {
       label = label.slice(0, -1) + '…';
     }
-    ctx.fillText(label, labelX, leadY + 1);
+    /* Vertically center POSSESSED with the Limited chip when present */
+    var labelY =
+      card.lead === 'limited'
+        ? leadY - 1 + Math.max(0, (headerBottom - (leadY - 1) - 13) / 2)
+        : leadY + 1;
+    ctx.fillText(label, labelX, labelY);
+    headerBottom = Math.max(headerBottom, labelY + 14);
+
+    var numY = Math.max(y + 38, headerBottom + 4);
+    /* Keep bar clear — nudge numbers up if card is tight */
+    var barTop = y + h - 22;
+    if (numY + 28 > barTop) numY = Math.max(headerBottom + 2, barTop - 28);
 
     var nStr = String(card.n);
     var dStr = ' / ' + card.d;
     ctx.font = uiCanvasFont(24, '600');
     ctx.fillStyle = numColor;
-    ctx.fillText(nStr, x + padX, y + 38);
+    ctx.fillText(nStr, x + padX, numY);
     var nW = ctx.measureText(nStr).width;
     ctx.font = uiCanvasFont(16, '600');
     ctx.fillStyle = '#8494ae';
-    ctx.fillText(dStr, x + padX + nW, y + 44);
+    ctx.fillText(dStr, x + padX + nW, numY + 6);
     if (card.maxed != null) {
       var maxNote = t('max_lb') + ' ' + (card.maxed | 0);
       ctx.font = uiCanvasFont(11, '600');
       ctx.fillStyle = 'rgba(132,148,174,0.95)';
-      ctx.fillText(maxNote, x + padX, y + 62);
+      ctx.fillText(maxNote, x + padX, numY + 24);
     }
 
     drawShareStatBar(ctx, x + padX, y + h - 18, w - padX * 2, 8, card.pct, tone);
+  }
+
+  /* Locale “THE JOURNEY” plates for units 1.5 Save (EN / JA / TW·HK) */
+  var SHARE_JOURNEY = {
+    EN: '/static/images/UI/f655e384e9c3.webp',
+    JA: '/static/images/UI/80633a606adb.webp',
+    TW: '/static/images/UI/9b63143f41a6.webp',
+    HK: '/static/images/UI/9b63143f41a6.webp'
+  };
+
+  function shareJourneyArtPath() {
+    return SHARE_JOURNEY[normLang(state.lang)] || SHARE_JOURNEY.EN;
+  }
+
+  function prefetchJourneyArts() {
+    var keys = Object.keys(SHARE_JOURNEY);
+    for (var i = 0; i < keys.length; i++) {
+      try {
+        loadImage(imgUrl(SHARE_JOURNEY[keys[i]]));
+      } catch (_) {}
+    }
+  }
+
+  function drawShareJourneyBanner(ctx, img, W, bandTop, bandH, opts) {
+    if (!img || !bandH) return;
+    var iw = img.naturalWidth || img.width || 0;
+    var ih = img.naturalHeight || img.height || 0;
+    if (!iw || !ih) return;
+    opts = opts || {};
+    var boxX = opts.boxX != null ? opts.boxX : 0;
+    var boxW = opts.boxW != null ? opts.boxW : W;
+    if (boxW < 8) return;
+    var maxW = Math.min(boxW * (opts.wFrac != null ? opts.wFrac : 0.78), opts.maxW || 860);
+    var maxH = Math.min(
+      Math.max(bandH * (opts.hFrac != null ? opts.hFrac : 0.9), opts.minH || 200),
+      opts.maxH || 320
+    );
+    var s = Math.min(maxW / iw, maxH / ih);
+    var dw = Math.max(1, Math.round(iw * s));
+    var dh = Math.max(1, Math.round(ih * s));
+    var x = Math.round(boxX + (boxW - dw) / 2);
+    var y = Math.round(bandTop + Math.max(0, (bandH - dh) / 2));
+    ctx.save();
+    ctx.globalAlpha = opts.alpha != null ? opts.alpha : 0.96;
+    ctx.drawImage(img, x, y, dw, dh);
+    ctx.restore();
   }
 
   async function generateShareImage() {
@@ -3376,7 +3536,8 @@
       skillHp: packed[8],
       skillEn: packed[9],
       skillHybrid: packed[10],
-      lbNeutral: packed[12]
+      lbNeutral: packed[12],
+      limLabel: packed[20]
     };
     var iconNone = packed[11];
     var iconNeutral = packed[12];
@@ -3390,7 +3551,8 @@
     var limLabelImg = packed[20];
     var thumbs = packed[21];
 
-    drawShareHeaderSceneArt(ctx, sceneArt, W, Math.max(120, subY - 6));
+    var headerArtH = Math.max(120, subY - 6);
+    drawShareHeaderSceneArt(ctx, sceneArt, W, headerArtH);
 
     var logoSize = 64;
     var textX = pad + (logo ? logoSize + 16 : 0);
@@ -3697,12 +3859,635 @@
     return canvas;
   }
 
+  var SHARE15_BG = '/static/images/Background/ba12d723fcaa.webp';
+  var SHARE15_BADGE = '/static/images/UI/4edfa4b3577f.webp';
+
+  function drawShare15UnitBackdrop(ctx, img, x, y, w, h) {
+    if (!img || !w || !h) {
+      ctx.fillStyle = '#050810';
+      ctx.fillRect(x, y, w, h);
+      return;
+    }
+    var iw = img.naturalWidth || img.width || 0;
+    var ih = img.naturalHeight || img.height || 0;
+    if (!iw || !ih) {
+      ctx.fillStyle = '#050810';
+      ctx.fillRect(x, y, w, h);
+      return;
+    }
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(x, y, w, h);
+    ctx.clip();
+    /*
+      Original plate is only 831×720 — stretched cover looks muddy when zoomed.
+      Prefer sharp native-size tiles (or the baked hi plate) over heavy upscale.
+    */
+    var tw = iw;
+    var th = ih;
+    if (tw >= w && th >= h) {
+      var s = Math.max(w / tw, h / th);
+      var dw = tw * s;
+      var dh = th * s;
+      if (ctx.imageSmoothingEnabled != null) ctx.imageSmoothingEnabled = true;
+      try {
+        ctx.imageSmoothingQuality = 'high';
+      } catch (_) {}
+      ctx.drawImage(img, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh);
+    } else {
+      if (ctx.imageSmoothingEnabled != null) ctx.imageSmoothingEnabled = false;
+      var row = 0;
+      for (var ty = y - th; ty < y + h; ty += th, row++) {
+        var xOff = row % 2 ? -(tw >> 1) : 0;
+        for (var tx = x + xOff - tw; tx < x + w; tx += tw) {
+          ctx.drawImage(img, tx, ty, tw, th);
+        }
+      }
+      if (ctx.imageSmoothingEnabled != null) ctx.imageSmoothingEnabled = true;
+    }
+    ctx.fillStyle = 'rgba(0,0,0,0.16)';
+    ctx.fillRect(x, y, w, h);
+    ctx.restore();
+  }
+
+  function pyramidRowsForCount(n) {
+    n = Math.max(0, n | 0);
+    if (!n) return [];
+    if (n === 84) return [4, 5, 6, 7, 8, 9, 10, 11, 12, 12];
+    var rows = [];
+    var left = n;
+    var w = Math.max(3, Math.min(10, Math.ceil((-1 + Math.sqrt(1 + 8 * n)) / 2) - 2));
+    while (left > 0) {
+      var take = Math.min(w, left);
+      if (left - take > 0 && left - take < Math.max(2, w - 2)) take = left;
+      rows.push(take);
+      left -= take;
+      w += 1;
+    }
+    return rows;
+  }
+
+  function fitContain(sw, sh, mw, mh) {
+    var s = Math.min(mw / sw, mh / sh, 1);
+    return { w: Math.max(1, Math.round(sw * s)), h: Math.max(1, Math.round(sh * s)) };
+  }
+
+  function silhouetteUnit(src, dw, dh) {
+    var c = document.createElement('canvas');
+    c.width = dw;
+    c.height = dh;
+    var g = c.getContext('2d');
+    g.drawImage(src, 0, 0, dw, dh);
+    var id = g.getImageData(0, 0, dw, dh);
+    var d = id.data;
+    for (var i = 0; i < d.length; i += 4) {
+      if (d[i + 3] > 40) {
+        d[i] = 6;
+        d[i + 1] = 8;
+        d[i + 2] = 12;
+        d[i + 3] = 245;
+      } else {
+        d[i + 3] = 0;
+      }
+    }
+    g.putImageData(id, 0, 0);
+    return c;
+  }
+
+  function drawLbPipsTight(ctx, icons, lb, cx, footY, pipH) {
+    if (lb < 0) return;
+    var keys =
+      lb === 0
+        ? [icons.none, icons.none, icons.none]
+        : lb === 1
+          ? [icons.neutral, icons.none, icons.none]
+          : lb === 2
+            ? [icons.neutral, icons.neutral, icons.none]
+            : [icons.max, icons.max, icons.max];
+    var gap = 1;
+    var total = 0;
+    var sizes = [];
+    var i;
+    for (i = 0; i < keys.length; i++) {
+      var im = keys[i];
+      if (!im) {
+        sizes.push({ w: pipH, h: pipH, im: null });
+        total += pipH + (i ? gap : 0);
+        continue;
+      }
+      var s = pipH / im.naturalHeight;
+      var nw = Math.max(1, Math.round(im.naturalWidth * s));
+      sizes.push({ w: nw, h: pipH, im: im });
+      total += nw + (i ? gap : 0);
+    }
+    var x = cx - total / 2;
+    for (i = 0; i < sizes.length; i++) {
+      var slot = sizes[i];
+      if (slot.im) {
+        ctx.save();
+        ctx.shadowColor = 'rgba(0,0,0,0.75)';
+        ctx.shadowBlur = 3;
+        ctx.shadowOffsetX = 1;
+        ctx.shadowOffsetY = 2;
+        ctx.drawImage(slot.im, x, footY, slot.w, slot.h);
+        ctx.restore();
+      }
+      x += slot.w + gap;
+    }
+  }
+
+  async function generateShareImage15() {
+    /* Same report chrome as Regular — only unit layout (pyramid) + anniversary logo differ. */
+    var rows = activeList();
+    var st = computeStats(rows);
+    var complete = st.total > 0 && st.owned >= st.total;
+    var perfect = complete && st.maxed >= st.total;
+    var n = rows.length;
+    var pyramid = pyramidRowsForCount(n);
+    var cellW = 200;
+    var cellH = 224;
+    /* Dense stack like 1.5 anniv SD piles — sit into each other, not side-by-side */
+    var overlapX = 0.34;
+    var overlapY = 0.30;
+    var stepX = Math.round(cellW * (1 - overlapX));
+    var stepY = Math.round(cellH * (1 - overlapY));
+    var pad = 44;
+    var edge = 48;
+    var padBot = 56;
+    var maxCols = 1;
+    var ri;
+    for (ri = 0; ri < pyramid.length; ri++) maxCols = Math.max(maxCols, pyramid[ri]);
+    var contentW = (maxCols - 1) * stepX + cellW;
+    var contentH = (pyramid.length - 1) * stepY + cellH;
+    var gridW = Math.max(contentW + edge * 2, 640);
+    var W = gridW + pad * 2;
+    var playerName = currentUsername();
+    var titleBottom = pad + (playerName ? 110 : 96);
+    var emblemSize = Math.round(Math.min(236, Math.max(196, W * 0.32)));
+    var emblemTop = pad;
+    var pctStr = pctDisplayKey(st.pct);
+
+    try {
+      await ensureTekoForCanvas();
+      if (document.fonts && document.fonts.load) {
+        await Promise.all([
+          document.fonts.load('700 58px "' + GGEN_TEKO_FAM + '"'),
+          document.fonts.load('700 42px "' + GGEN_TEKO_FAM + '"'),
+          document.fonts.load('700 20px "' + GGEN_TEKO_FAM + '"'),
+          document.fonts.load('600 32px "' + GGEN_TEKO_FAM + '"')
+        ]);
+        if (isCjkUiLang()) {
+          try {
+            await Promise.all([
+              document.fonts.load('bold 14px "ShinGoPr6DeBold"'),
+              document.fonts.load('bold 16px "UDShinGoStdTCMed"'),
+              document.fonts.load('bold 26px "ShinGoPr6DeBold"'),
+              document.fonts.load('bold 42px "ShinGoPr6DeBold"'),
+              document.fonts.load('bold 58px "ShinGoPr6DeBold"')
+            ]);
+          } catch (_) {}
+        }
+      }
+    } catch (_) {}
+
+    var sharePctNumSize = Math.round(Math.min(64, Math.max(54, emblemSize * 0.28)));
+    var mctx = document.createElement('canvas').getContext('2d');
+    var pctBox = measureSharePossessionHead(mctx, pctStr, complete, perfect, sharePctNumSize);
+    var pctPanelY = titleBottom + 6;
+    var legendBlockH = 3 * 18 + 12;
+    var gaugeRowBottom = Math.max(
+      pctPanelY + pctBox.h,
+      emblemTop + emblemSize + legendBlockH
+    );
+    var subY = gaugeRowBottom + 16;
+    var cardColsLayout = 3;
+    var cardRowsLayout = 2;
+    var cardGapLayout = 10;
+    var cardHLayout = 96;
+    var subBlockH =
+      cardRowsLayout * cardHLayout + (cardRowsLayout - 1) * cardGapLayout;
+    var headerH = subY + subBlockH + 20;
+    var H = headerH + contentH + edge + padBot;
+
+    /* Same 2× scale as Regular — rim-free draw is already fast */
+    var scale = 2;
+    var canvas = document.createElement('canvas');
+    canvas.width = W * scale;
+    canvas.height = H * scale;
+    var ctx = canvas.getContext('2d');
+    if (ctx.imageSmoothingEnabled != null) ctx.imageSmoothingEnabled = true;
+    try {
+      ctx.imageSmoothingQuality = 'high';
+    } catch (_) {}
+    ctx.scale(scale, scale);
+
+    var bg = ctx.createLinearGradient(0, 0, W, H);
+    bg.addColorStop(0, perfect ? '#221808' : complete ? '#1a1610' : '#111827');
+    bg.addColorStop(0.4, '#111827');
+    bg.addColorStop(1, '#0a0e17');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+    if (complete) {
+      var glowCx = W - pad - emblemSize / 2;
+      var glowCy = emblemTop + emblemSize / 2;
+      var glow = ctx.createRadialGradient(glowCx, glowCy, 8, glowCx, glowCy, perfect ? 300 : 240);
+      glow.addColorStop(0, perfect ? 'rgba(255,215,0,0.22)' : 'rgba(255,215,0,0.14)');
+      glow.addColorStop(0.45, perfect ? 'rgba(255,180,40,0.1)' : 'rgba(0,212,255,0.06)');
+      glow.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, 0, W, headerH + 40);
+    }
+    if (perfect) {
+      var edgeStroke = ctx.createLinearGradient(0, 0, W, 0);
+      edgeStroke.addColorStop(0, 'rgba(255,215,0,0.55)');
+      edgeStroke.addColorStop(0.5, 'rgba(0,212,255,0.45)');
+      edgeStroke.addColorStop(1, 'rgba(255,215,0,0.55)');
+      ctx.strokeStyle = edgeStroke;
+      ctx.lineWidth = 3;
+      ctx.strokeRect(1.5, 1.5, W - 3, H - 3);
+      ctx.strokeStyle = 'rgba(255,215,0,0.25)';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(6.5, 6.5, W - 13, H - 13);
+    } else {
+      ctx.strokeStyle = complete ? 'rgba(255,215,0,0.45)' : '#1e293b';
+      ctx.lineWidth = 1;
+      ctx.strokeRect(0.5, 0.5, W - 1, H - 1);
+    }
+
+    var scenePick = pickShareSceneBg();
+    var typeIconPath =
+      state.type === 'supporters' ? TYPE_ICON_SUPP_FILL : TYPE_ICON_UNIT_FILL;
+
+    var packed = await Promise.all([
+      loadImage(imgUrl(scenePick)),
+      loadImage(imgUrl(SHARE15_BG)),
+      loadImage(imgUrl(SHARE15_BADGE)),
+      loadImage(imgUrl(shareJourneyArtPath())),
+      loadImage(imgUrl(typeIconPath)),
+      loadImage(imgUrl(STAT_ICON_OWNED)),
+      loadImage(imgUrl(STAT_ICON_LB_MAX)),
+      loadImage(imgUrl(ROLE_ICON['1'])),
+      loadImage(imgUrl(ROLE_ICON['3'])),
+      loadImage(imgUrl(ROLE_ICON['2'])),
+      loadImage(imgUrl(SKILL_ICON_HP)),
+      loadImage(imgUrl(SKILL_ICON_EN)),
+      loadImage(imgUrl(SKILL_ICON_HYBRID)),
+      loadImage(imgUrl(LB_ICONS.None)),
+      loadImage(imgUrl(LB_ICONS.Neutral)),
+      loadImage(imgUrl(LB_ICONS.Max)),
+      loadImage(imgUrl('/static/images/UI/UI_Common_MenuIcon_Language.webp')),
+      loadImage(imgUrl(LIMITED_UR_LABEL_BASE)),
+      Promise.all(
+        rows.map(function (row) {
+          return loadImage(imgUrl(row.art || row.thum || ''));
+        })
+      )
+    ]);
+    var sceneArt = packed[0];
+    var unitBg = packed[1];
+    var logo = packed[2];
+    var journeyArt = packed[3];
+    var typeIconImg = packed[4];
+    var shareStatImgs = {
+      owned: packed[5],
+      maxLb: packed[6],
+      role1: packed[7],
+      role3: packed[8],
+      role2: packed[9],
+      skillHp: packed[10],
+      skillEn: packed[11],
+      skillHybrid: packed[12],
+      lbNeutral: packed[14],
+      limLabel: packed[17]
+    };
+    var iconNone = packed[13];
+    var iconNeutral = packed[14];
+    var iconMax = packed[15];
+    var langIcon = packed[16];
+    var thumbs = packed[18];
+    var pipIcons = { none: iconNone, neutral: iconNeutral, max: iconMax };
+
+    var headerArtH = Math.max(120, subY - 6);
+    drawShareHeaderSceneArt(ctx, sceneArt, W, headerArtH);
+
+    var logoSize = 118;
+    var textX = pad + (logo ? logoSize + 16 : 0);
+    if (logo) {
+      var logoH = logoSize;
+      var logoW = (logo.naturalWidth * logoH) / Math.max(1, logo.naturalHeight);
+      if (logoW > 168) {
+        logoW = 168;
+        logoH = (logo.naturalHeight * logoW) / Math.max(1, logo.naturalWidth);
+      }
+      ctx.drawImage(logo, pad, pad - 4, logoW, logoH);
+      textX = pad + logoW + 16;
+    }
+
+    ctx.textBaseline = 'top';
+    ctx.fillStyle = '#f0f2f7';
+    var titleStr = isCjkUiLang() ? t('report_title') : String(t('report_title') || '').toUpperCase();
+    ctx.font = uiCanvasFont(32, '600');
+    ctx.fillText(titleStr, textX, pad + 2);
+
+    ctx.fillStyle = '#7af0ff';
+    ctx.font = uiCanvasFont(14, '600');
+    ctx.fillText(t('brand_line'), textX, pad + 38);
+
+    if (playerName) {
+      ctx.fillStyle = '#ffd700';
+      ctx.font = uiCanvasFont(18, '600');
+      ctx.fillText(playerName, textX, pad + 58);
+      ctx.fillStyle = '#00d9ff';
+      ctx.font = uiCanvasFont(16, '600');
+      ctx.fillText('UR ' + typeTitle(), textX, pad + 80);
+    } else {
+      ctx.fillStyle = '#00d9ff';
+      ctx.font = uiCanvasFont(16, '600');
+      ctx.fillText('UR ' + typeTitle(), textX, pad + 58);
+    }
+
+    drawSharePossessionHead(ctx, pad, pctPanelY, pctStr, complete, perfect, sharePctNumSize);
+
+    var shareBuckets = donutBucketsFromStats(st);
+    drawRoundedRoleDonut(
+      ctx,
+      W - pad - emblemSize / 2,
+      emblemTop + emblemSize / 2,
+      emblemSize,
+      shareBuckets,
+      {
+        complete: complete,
+        perfect: perfect,
+        iconImg: typeIconImg,
+        stroke: Math.max(8, emblemSize * 0.08),
+        gap: 0.16
+      }
+    );
+    drawShareDonutLegend(
+      ctx,
+      W - pad - emblemSize,
+      emblemTop + emblemSize + 10,
+      shareBuckets
+    );
+
+    var shareStatCards = [
+      {
+        label: t('owned'),
+        n: st.owned,
+        d: st.total,
+        pct: statBarPct(st.owned, st.total),
+        tone: 'accent',
+        lead: 'owned'
+      },
+      {
+        label: t('max_lb'),
+        n: st.maxed,
+        d: st.total,
+        pct: statBarPct(st.maxed, st.total),
+        tone: 'gold',
+        lead: 'max_lb',
+        splitRight: {
+          label: t('lb_progress'),
+          n: st.lbTotal,
+          d: st.lbMax,
+          pct: statBarPct(st.lbTotal, st.lbMax),
+          lead: 'lb_progress'
+        }
+      },
+      {
+        label: t('owned'),
+        n: st.limOwned,
+        d: st.limTotal,
+        pct: statBarPct(st.limOwned, st.limTotal),
+        tone: 'orange',
+        lead: 'limited'
+      }
+    ];
+    if (state.type !== 'supporters') {
+      ['1', '3', '2'].forEach(function (rid) {
+        var b = st.byRole[rid];
+        shareStatCards.push({
+          label: t('role_owned', { role: roleLabel(rid) }),
+          n: b.o,
+          d: b.t,
+          pct: statBarPct(b.o, b.t),
+          tone: 'role-' + rid,
+          lead: 'role',
+          roleId: rid,
+          maxed: b.m || 0
+        });
+      });
+    } else {
+      [
+        { id: 'hp', key: 'skill_hp' },
+        { id: 'en', key: 'skill_en' },
+        { id: 'hybrid', key: 'skill_hybrid' }
+      ].forEach(function (sk) {
+        var b = st.bySkill[sk.id] || { t: 0, o: 0, m: 0 };
+        shareStatCards.push({
+          label: t(sk.key),
+          n: b.o,
+          d: b.t,
+          pct: statBarPct(b.o, b.t),
+          tone: 'skill-' + sk.id,
+          lead: 'skill',
+          roleId: sk.id,
+          maxed: b.m || 0
+        });
+      });
+    }
+
+    var cardCols = 3;
+    var cardGap = 10;
+    var cardW = (gridW - cardGap * (cardCols - 1)) / cardCols;
+    var cardH = 96;
+    for (var sci = 0; sci < shareStatCards.length; sci++) {
+      var sc = shareStatCards[sci];
+      var scCol = sci % cardCols;
+      var scRow = Math.floor(sci / cardCols);
+      var scx = pad + scCol * (cardW + cardGap);
+      var scy = subY + scRow * (cardH + cardGap);
+      drawShareStatCard(ctx, scx, scy, cardW, cardH, sc, shareStatImgs, complete, perfect);
+    }
+
+    /* Anniversary starfield behind the pyramid units only */
+    drawShare15UnitBackdrop(ctx, unitBg, 0, headerH, W, H - headerH);
+
+    var slots = [];
+    var cursor = 0;
+    var y = headerH + edge / 2;
+    var originX = pad + (gridW - contentW) / 2;
+    for (ri = 0; ri < pyramid.length; ri++) {
+      var count = pyramid[ri];
+      var rowSpan = (count - 1) * stepX + cellW;
+      var xStart = originX + (contentW - rowSpan) / 2;
+      var rowScale = 0.86 + (0.14 * ri) / Math.max(1, pyramid.length - 1);
+      var mw = Math.round(cellW * rowScale);
+      var mh = Math.round(cellH * rowScale);
+      for (var j = 0; j < count; j++) {
+        var row = rows[cursor];
+        var thumb = thumbs[cursor];
+        var lb = row ? getLb(row.id) : -1;
+        var cx = xStart + j * stepX + cellW / 2;
+        var cy = y + cellH / 2;
+        var spin = (0.12 + cursor * 0.07) % 1;
+        slots.push({
+          row: row,
+          thumb: thumb,
+          lb: lb,
+          cx: cx,
+          cy: cy,
+          mw: mw,
+          mh: mh,
+          spin: spin,
+          rowIdx: ri,
+          colIdx: j
+        });
+        cursor += 1;
+      }
+      y += stepY;
+    }
+
+    function drawShare15Slot(slot) {
+      if (!slot.thumb) return;
+      var fit = fitContain(slot.thumb.naturalWidth, slot.thumb.naturalHeight, slot.mw - 4, slot.mh - 4);
+      var dw = fit.w;
+      var dh = fit.h;
+      var x0 = slot.cx - dw / 2;
+      var y0 = slot.cy - dh / 2;
+      if (slot.lb < 0) {
+        var ghost = silhouetteUnit(slot.thumb, dw, dh);
+        ctx.drawImage(ghost, x0, y0);
+      } else {
+        ctx.drawImage(slot.thumb, x0, y0, dw, dh);
+      }
+      if (slot.lb >= 0) {
+        var pipH = Math.max(16, Math.min(26, (dw / 7) | 0));
+        drawLbPipsTight(ctx, pipIcons, slot.lb, slot.cx, y0 + dh - pipH + 1, pipH);
+      }
+    }
+
+    var drawBatch = 24;
+    var drawn = 0;
+    for (ri = pyramid.length - 1; ri >= 0; ri--) {
+      for (var s = 0; s < slots.length; s++) {
+        if (slots[s].rowIdx !== ri) continue;
+        drawShare15Slot(slots[s]);
+        drawn += 1;
+        if (drawn % drawBatch === 0) {
+          await new Promise(function (r) {
+            if (typeof requestAnimationFrame === 'function') requestAnimationFrame(function () {
+              r();
+            });
+            else setTimeout(r, 0);
+          });
+        }
+      }
+    }
+
+    /* Top-right hangar — right of every unit that intersects this band */
+    var jTop = headerH + 6;
+    var jH = Math.min(Math.round(stepY * 2.4 + cellH * 0.35), 300);
+    var jBottom = jTop + jH;
+    var clearRight = originX;
+    var yScan = headerH + edge / 2;
+    for (ri = 0; ri < pyramid.length; ri++) {
+      var rowTop = yScan;
+      var rowBot = yScan + cellH;
+      if (rowBot > jTop && rowTop < jBottom) {
+        var rc = pyramid[ri];
+        var rSpan = (rc - 1) * stepX + cellW;
+        var rRight = originX + (contentW - rSpan) / 2 + rSpan;
+        if (rRight > clearRight) clearRight = rRight;
+      }
+      yScan += stepY;
+    }
+    var jBoxX = Math.round(clearRight + 14);
+    var jBoxW = Math.max(140, W - pad - jBoxX);
+    drawShareJourneyBanner(ctx, journeyArt, W, jTop, jH, {
+      boxX: jBoxX,
+      boxW: jBoxW,
+      wFrac: 1,
+      maxW: jBoxW,
+      hFrac: 1,
+      minH: 120,
+      maxH: jH,
+      alpha: 1
+    });
+
+    var footY = headerH + contentH + edge / 2 + 8;
+    ctx.strokeStyle = '#1e293b';
+    ctx.beginPath();
+    ctx.moveTo(pad, footY);
+    ctx.lineTo(W - pad, footY);
+    ctx.stroke();
+    ctx.fillStyle = '#00d4ff';
+    ctx.font = uiCanvasFont(14, 'bold');
+    var foot = siteUrl().replace(/^https?:\/\//, '');
+    var footIcon = 16;
+    var footGap = 6;
+    var footTextX = pad;
+    if (langIcon) {
+      ctx.drawImage(langIcon, pad, footY + 12, footIcon, footIcon);
+      footTextX = pad + footIcon + footGap;
+    }
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    ctx.fillText(foot, footTextX, footY + 14);
+
+    return canvas;
+  }
+
+  function setSaveFanOpen(open, instant) {
+    var fan = document.getElementById('colSaveFan');
+    var btn = document.getElementById('colSaveImage');
+    var menu = document.getElementById('colSaveFanMenu');
+    var bar = document.querySelector('.collections-share-bar');
+    if (!fan) return;
+    if (instant) fan.classList.add('col-save-fan--snap');
+    else fan.classList.remove('col-save-fan--snap');
+    if (open) {
+      if (menu) {
+        menu.hidden = false;
+        menu.setAttribute('aria-label', t('save_image_choose'));
+      }
+      fan.classList.add('is-open');
+      if (bar) bar.classList.add('is-save-picking');
+      if (btn) {
+        btn.textContent = t('save_image_choose');
+        btn.setAttribute('aria-expanded', 'true');
+      }
+      if (instant) {
+        void fan.offsetWidth;
+        fan.classList.remove('col-save-fan--snap');
+      }
+    } else {
+      fan.classList.remove('is-open');
+      if (bar) bar.classList.remove('is-save-picking');
+      if (btn) {
+        btn.textContent = t('save_image');
+        btn.setAttribute('aria-expanded', 'false');
+      }
+      if (instant) {
+        if (menu) menu.hidden = true;
+        void fan.offsetWidth;
+        fan.classList.remove('col-save-fan--snap');
+      } else if (menu) {
+        window.setTimeout(function () {
+          if (!fan.classList.contains('is-open')) menu.hidden = true;
+        }, 280);
+      }
+    }
+  }
+
   function closePreviewModal() {
     var modal = document.getElementById('colPreviewModal');
     if (modal) modal.hidden = true;
   }
 
-  async function saveAsImage(btn) {
+  async function saveAsImage(btn, mode) {
+    var exportMode =
+      mode === '15' && state.type !== 'supporters' ? '15' : 'regular';
     var original = t('save_image');
     if (btn) {
       btn.disabled = true;
@@ -3710,7 +4495,8 @@
     }
     var objectUrl = '';
     try {
-      var canvas = await generateShareImage();
+      var canvas =
+        exportMode === '15' ? await generateShareImage15() : await generateShareImage();
       /* toBlob is async — avoids long main-thread freeze of toDataURL on tall reports */
       var blob = await canvasToPngBlob(canvas);
       objectUrl = URL.createObjectURL(blob);
@@ -3729,7 +4515,8 @@
       if (link) {
         link.href = objectUrl;
         link.download =
-          'ggendb-collections-report-' +
+          'ggendb-collections-' +
+          (exportMode === '15' ? '15-' : 'report-') +
           state.type +
           '-' +
           String(computeStats(activeList()).pct).replace('.', '_') +

@@ -2379,6 +2379,7 @@
   }
 
   function init() {
+    try { localStorage.setItem('ggen_visited_tm', '1'); } catch (_) {}
     state.lang = readLang();
     syncHtmlLang(state.lang);
     try {

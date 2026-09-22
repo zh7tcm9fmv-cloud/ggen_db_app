@@ -296,3 +296,19 @@ html[data-ui-lang="HK"] .collections-page.collections-15 .collections-stat-lim-b
   .collections-page.collections-15 .collections-btn--save:hover,
   .collections-page.collections-15 .collections-btn--share:hover{animation:none}
 }
+
+/* Save-as-image fan — Teko like other 1.5 CTAs */
+.collections-page.collections-15 .col-save-fan-menu{
+  border-radius:0;
+  clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);
+}
+.collections-page.collections-15 .col-save-fan-item{
+  border-radius:0;
+  font-family:var(--font-teko),Teko,sans-serif;
+  letter-spacing:.06em;text-transform:uppercase;font-weight:600;font-size:14px;
+  clip-path:polygon(6px 0,100% 0,100% calc(100% - 6px),calc(100% - 6px) 100%,0 100%,0 6px);
+}
+.collections-page.collections-15 .col-save-fan-item:hover,
+.collections-page.collections-15 .col-save-fan-item:focus-visible{
+  border-color:rgba(0,217,255,.55);color:#fff;
+}

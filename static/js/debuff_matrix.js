@@ -2111,6 +2111,7 @@
   }
 
   function init() {
+    try { localStorage.setItem('ggen_visited_dm', '1'); } catch (_) {}
     state.lang = readLang();
     applyStaticI18n();
     try {

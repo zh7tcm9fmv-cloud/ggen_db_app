@@ -1137,6 +1137,7 @@ html.cmp-bar-open:has(#cmpFloat.visible) body:has(.search-recall-fab.visible) .s
 .list-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px;flex-wrap:wrap}
 .list-toolbar-left{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.list-toolbar-right{display:flex;align-items:center;gap:12px}
 .tm-browse-shortcut{
+  position:relative;
   display:inline-flex;align-items:center;justify-content:center;gap:6px;flex-shrink:0;
   box-sizing:border-box;
   height:42px;min-height:42px;padding:0 12px;margin:0;text-decoration:none;
@@ -1145,6 +1146,7 @@ html.cmp-bar-open:has(#cmpFloat.visible) body:has(.search-recall-fab.visible) .s
   font-size:12px;font-weight:700;letter-spacing:.06em;line-height:1;
   white-space:nowrap;transition:var(--transition);
   box-shadow:var(--toggle-depth-inset),var(--toggle-depth-rim);
+  isolation:isolate;
 }
 .tm-browse-shortcut:hover,.tm-browse-shortcut:focus-visible{
   border-color:var(--accent-cyan);color:#fff;background:rgba(0,212,255,.1);outline:none;

@@ -263,6 +263,54 @@ input[type=range].ui-range.ui-range-snap::-moz-range-thumb{
   animation:ggen-spotlight-beam-spin 2.8s linear infinite;
 }
 
+/* Browse Tag/Debuff Matrix shortcuts — unvisited nudge (same beam language as spotlight) */
+.tm-browse-shortcut.tm-browse-shortcut--beam::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  border-radius:inherit;
+  padding:1px;
+  box-sizing:border-box;
+  pointer-events:none;
+  z-index:2;
+  background:conic-gradient(
+    from var(--ggen-spotlight-beam-angle),
+    transparent 0%,
+    transparent 58%,
+    rgba(0,212,255,.14) 64%,
+    rgba(0,212,255,.7) 69%,
+    rgba(201,169,98,.85) 72%,
+    rgba(0,212,255,.7) 75%,
+    rgba(0,212,255,.14) 80%,
+    transparent 86%,
+    transparent 100%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite:exclude;
+  opacity:.95;
+  animation:ggen-spotlight-beam-spin 2.6s linear infinite;
+}
+.tm-browse-shortcut.dm-browse-shortcut.tm-browse-shortcut--beam::after{
+  background:conic-gradient(
+    from var(--ggen-spotlight-beam-angle),
+    transparent 0%,
+    transparent 58%,
+    rgba(234,179,8,.16) 64%,
+    rgba(234,179,8,.75) 69%,
+    rgba(0,212,255,.65) 72%,
+    rgba(234,179,8,.75) 75%,
+    rgba(234,179,8,.16) 80%,
+    transparent 86%,
+    transparent 100%
+  );
+}
+
 /* Browse: auto-hide #navTabsShell on scroll-down; brand header stays.
    Height collapses instantly (avoids scroll-anchoring fights); opacity fades.
    Tag Matrix (/tm) has its own board-scroll chrome hide in tag_matrix.css. */
@@ -376,6 +424,24 @@ body:not(.tm-page).nav-tabs-collapsed #navTabsShell{
       rgba(0,212,255,.35)
     )!important;
     opacity:.55!important;
+  }
+  .tm-browse-shortcut.tm-browse-shortcut--beam::after{
+    animation:none!important;
+    background:linear-gradient(
+      135deg,
+      rgba(0,212,255,.4),
+      rgba(201,169,98,.28),
+      rgba(0,212,255,.4)
+    )!important;
+    opacity:.65!important;
+  }
+  .tm-browse-shortcut.dm-browse-shortcut.tm-browse-shortcut--beam::after{
+    background:linear-gradient(
+      135deg,
+      rgba(234,179,8,.45),
+      rgba(0,212,255,.28),
+      rgba(234,179,8,.45)
+    )!important;
   }
   #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--limited > .bt-lim-beam::before{
     animation:none!important;

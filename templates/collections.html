@@ -222,7 +222,20 @@ Possessing a unit covers its character</p>
       <span id="colUsernameLabel">Player name</span>
       <input type="text" id="colUsername" maxlength="32" autocomplete="nickname" spellcheck="false" placeholder="Your in-game name">
     </label>
-    <button type="button" class="collections-btn collections-btn--save" id="colSaveImage">Save as image</button>
+    <div class="col-save-fan" id="colSaveFan">
+      <button type="button" class="collections-btn collections-btn--save" id="colSaveImage" aria-expanded="false" aria-controls="colSaveFanMenu" aria-haspopup="true">Save as image</button>
+      <div class="col-save-fan-menu" id="colSaveFanMenu" hidden role="group" aria-label="Choose a style">
+        <div class="col-save-fan-options">
+          <button type="button" class="col-save-fan-item" data-save-mode="regular" id="colSaveRegular">
+            <span class="col-save-fan-item-label" id="colSaveRegularLbl">Regular</span>
+          </button>
+          <button type="button" class="col-save-fan-item col-save-fan-item--15" data-save-mode="15" id="colSave15" aria-label="Special Design">
+            <img class="col-save-fan-item-badge" id="colSave15Badge" alt="" width="88" height="44" decoding="async" loading="lazy">
+            <span class="col-save-fan-item-label" id="colSave15Lbl" hidden></span>
+          </button>
+        </div>
+      </div>
+    </div>
     <button type="button" class="collections-btn collections-btn--share" id="colShareX" aria-label="Share on X">Share on <svg class="collections-x-logo" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" focusable="false"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></button>
     <div class="collections-code-row">
       <label class="collections-code-field">
