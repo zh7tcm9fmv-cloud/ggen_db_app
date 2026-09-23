@@ -32,28 +32,33 @@ html.ggen-15[data-ui-lang="HK"]{
   --font-brand:"Teko",var(--font-body);
 }
 
-/* Header toggle — sit just after brand / emblem in BOTH Special and Classic
-   (same spot when switching modes). */
+/* Pack brand + toggles left; support/lang right — always (not only ggen-15) */
+.app-header .header-inner:has(.header-15-slot){
+  justify-content:flex-start;
+  gap:8px;
+}
+/* Brand = content width only so 1.5/Classic stay immediately after the logo */
+.app-header .header-inner:has(.header-15-slot) .header-brand{
+  flex:0 1 auto !important;
+  min-width:0;
+  max-width:max-content;
+}
+.app-header .header-inner:has(.header-15-slot) .header-controls{
+  margin-left:auto;
+}
 .header-15-slot{
   display:inline-flex;
   flex:0 0 auto;
   min-width:min-content;
   justify-content:flex-start;
   align-items:center;
-  gap:8px;
-  margin:0 12px 0 4px;
+  gap:6px;
+  margin:0 8px 0 0;
   /* Empty flex gutter must not steal clicks from lang / support */
   pointer-events:none;
 }
 .header-15-slot .header-15-toggle{
   pointer-events:auto;
-}
-/* Pack brand + toggles left; support/lang right — always (not only ggen-15) */
-.app-header .header-inner:has(.header-15-slot){
-  justify-content:flex-start;
-}
-.app-header .header-inner:has(.header-15-slot) .header-controls{
-  margin-left:auto;
 }
 .header-15-toggle{
   appearance:none;border:1px solid rgba(0,217,255,.55);
@@ -674,6 +679,69 @@ html.ggen-15 #panel-banner_timeline .bt-gacha-hub-card-title{
     opacity:.75;
     transform:translate(calc(-50% + var(--brand-emblem-optical-x)),-50%);
   }
+  /*
+   * iPhone landscape: do NOT park Special/Classic on a full-width second row
+   * (portrait max-width:768 wrap). Keep them inline so nav can sit higher + hide on scroll.
+   */
+  .app-header .header-inner:has(.header-15-slot){
+    flex-wrap:nowrap !important;
+    align-items:center;
+    row-gap:0;
+    gap:6px;
+    padding-top:6px;
+    padding-bottom:6px;
+  }
+  .app-header .header-inner:has(.header-15-slot) .header-brand{
+    flex:0 1 auto !important;
+    min-width:0;
+    max-width:min(38vw, 240px);
+  }
+  .app-header .header-inner:has(.header-15-slot) .header-controls{
+    order:0;
+    margin-left:auto;
+    flex:0 0 auto;
+    max-width:none;
+  }
+  .header-15-slot{
+    order:0 !important;
+    flex:0 0 auto !important;
+    width:auto !important;
+    max-width:none !important;
+    margin:0 4px 0 0;
+    gap:4px;
+    justify-content:flex-start;
+  }
+  .header-15-toggle{
+    font-size:11px;
+    padding:2px 8px;
+    min-height:28px;
+    letter-spacing:.04em;
+  }
+  .header-15-toggle--special{
+    padding:2px 4px;
+    min-height:28px;
+    max-width:min(112px,26vw);
+  }
+  .header-15-toggle--special img{
+    height:18px !important;
+    width:auto !important;
+    max-width:100% !important;
+  }
+  /* Landscape: support chips side-by-side so header stays one row */
+  .header-support-btns{
+    flex-direction:row !important;
+    align-items:center;
+    max-width:none !important;
+    gap:4px;
+  }
+  .header-lang-col .header-support-btns .alipayhk-header-btn,
+  .header-lang-col .header-support-btns .kofi-header-link{
+    font-size:9px;
+    padding:3px 6px;
+    min-height:26px;
+    white-space:nowrap;
+  }
+  .brand-sub{display:none}
 }
 
 @media(max-width:420px){

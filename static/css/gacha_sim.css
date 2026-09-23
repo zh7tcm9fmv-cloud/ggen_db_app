@@ -362,9 +362,14 @@
       background-color var(--motion-dur-quick, 120ms) var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1));
   }
   .session-stat--ur-acq:hover,
-  .session-stat--ur-acq:focus-visible {
+  .session-stat--ur-acq:focus-visible,
+  .session-stat--ur-acq.is-ur-acq-open {
     border-color: rgba(200, 140, 255, 0.55);
     background: rgba(36, 16, 56, 0.85);
+  }
+  @media (hover: none), (pointer: coarse) {
+    .session-stat--ur-acq { cursor: pointer; }
+    .hit-row[data-draw-at] { cursor: pointer; }
   }
   .ur-acq-pop {
     position: fixed;
@@ -596,12 +601,14 @@
   .gc-new {
     position: absolute; right: 2%; top: 3%;
     z-index: 7;
-    padding: 2px 8px 3px;
+    /* Scale with card width so mobile/landscape shrinks don't leave an oversized badge */
+    padding: calc(var(--gc-w) * 0.009) calc(var(--gc-w) * 0.032) calc(var(--gc-w) * 0.012);
     background: linear-gradient(180deg, #ffe27a, #f0a010);
     color: #c41828;
     font-weight: 800;
-    font-size: 10px;
+    font-size: clamp(6px, calc(var(--gc-w) * 0.042), 10px);
     letter-spacing: 0.02em;
+    line-height: 1.1;
     clip-path: polygon(0 0, 100% 0, 100% 70%, 86% 100%, 0 100%);
     box-shadow: 0 1px 3px rgba(0,0,0,0.45);
   }
@@ -966,7 +973,11 @@
     position: absolute; inset: 0; z-index: 6;
     display: none;
     flex-direction: column;
-    padding: 18px 16px 96px;
+    padding:
+      max(10px, env(safe-area-inset-top, 0px))
+      max(12px, env(safe-area-inset-right, 0px))
+      max(10px, env(safe-area-inset-bottom, 0px))
+      max(12px, env(safe-area-inset-left, 0px));
     /* BG_Event_Story_RareBoss_Appear + dark veil so cards stay readable */
     background-color: #02040a;
     background-image:
@@ -976,17 +987,54 @@
     background-size: cover;
     background-repeat: no-repeat;
     overflow: auto;
+    /*
+     * Fluid card size: fit 4-wide middle row AND 3 stacked rows (title+foot reserved).
+     * Mobile caps + scale leave breathing room vs filling the whole screen.
+     */
+    --gs-strip-gap: clamp(4px, 1.2vw, 10px);
+    --gs-results-chrome: 112px;
+    --gs-safe-x: max(12px, env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
+    --gc-w-fit-x: calc((100vw - 2 * var(--gs-safe-x) - 3 * var(--gs-strip-gap) - 16px) / 4);
+    /* 3× (card height + label band) + row gaps ≈ strip budget */
+    --gc-w-fit-y: calc(
+      (100dvh - var(--gs-results-chrome) - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px))
+      / (3 * (219 / 446 + 0.26) + 0.1)
+    );
+    --gc-w: min(220px, var(--gc-w-fit-x), var(--gc-w-fit-y));
+    --gc-h: calc(var(--gc-w) * 219 / 446);
+  }
+  /* Tablets / phones: smaller than “max that still fits” so the strip isn’t edge-to-edge */
+  @media (max-width: 1100px) {
+    .results {
+      --gs-results-chrome: 100px;
+      --gc-w: min(168px, calc(0.86 * var(--gc-w-fit-x)), var(--gc-w-fit-y));
+    }
+  }
+  @media (max-width: 900px) {
+    .results {
+      --gs-strip-gap: clamp(3px, 1vw, 8px);
+      --gs-results-chrome: 92px;
+      --gc-w: min(140px, calc(0.78 * var(--gc-w-fit-x)), calc(0.95 * var(--gc-w-fit-y)));
+    }
+  }
+  @media (orientation: landscape) and (max-height: 520px) {
+    .results {
+      --gs-results-chrome: 78px;
+      --gs-strip-gap: 3px;
+      --gc-w: min(118px, calc(0.72 * var(--gc-w-fit-x)), calc(0.9 * var(--gc-w-fit-y)));
+    }
   }
   .stage.show-results .results { display: flex; }
   .results-title {
     /* 1.5 Special Design display face (Teko) — stage lives on body, so use --gs-hud from .stage */
     font-family: var(--gs-hud);
-    font-size: clamp(calc(28px * var(--gs-type)), calc(4vw * var(--gs-type)), calc(40px * var(--gs-type)));
+    font-size: clamp(calc(22px * var(--gs-type)), calc(3.6vw * var(--gs-type)), calc(40px * var(--gs-type)));
     font-weight: 600;
     font-style: normal;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    margin: 0 0 14px;
+    margin: 0 0 clamp(6px, 1.5vh, 14px);
+    flex: 0 0 auto;
     text-shadow: 0 2px 8px rgba(0,0,0,0.5);
     color: #e8f6ff;
   }
@@ -1000,27 +1048,33 @@
     clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
   }
 
-  /* In-game 3-4-3 staggered cluster */
+  /* In-game 3-4-3 staggered cluster — same on desktop + phone landscape */
   .strip-343 {
-    margin: auto 0;
+    margin: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 22px;
+    justify-content: center;
+    gap: clamp(8px, 2.2vh, 22px);
     width: 100%;
+    flex: 1 1 auto;
+    min-height: 0;
     overflow: visible;
-    padding: 16px 8px 28px;
+    padding: clamp(4px, 1vh, 16px) 0 clamp(8px, 1.5vh, 28px);
   }
   .strip-row {
     display: flex;
+    flex-wrap: nowrap;
     justify-content: center;
     align-items: flex-start;
-    gap: 10px;
+    gap: var(--gs-strip-gap, 10px);
     overflow: visible;
+    width: max-content;
+    max-width: 100%;
   }
-  .strip-row--3 { transform: translateX(18px); }
+  .strip-row--3 { transform: translateX(clamp(0px, 2.2vw, 18px)); }
   .strip-row--4 { }
-  .strip-row--3b { transform: translateX(-18px); }
+  .strip-row--3b { transform: translateX(clamp(-18px, -2.2vw, 0px)); }
   /*
    * Shared unit-height slot: unit + supporter share the same vertical midline
    * so taller supp plates don’t sit optically lower than units.
@@ -1029,7 +1083,7 @@
     position: relative;
     width: var(--gc-w);
     height: var(--gc-h);
-    margin: 14px 0 36px; /* bottom = Supporters label band */
+    margin: clamp(2px, 1vh, 14px) 0 clamp(14px, 3.5vh, 36px); /* bottom = Supporters label band */
     padding: 0;
     display: flex;
     flex-direction: column;
@@ -1037,6 +1091,7 @@
     justify-content: center;
     overflow: visible;
     box-sizing: border-box;
+    flex: 0 0 auto;
     cursor: pointer;
   }
   .result-card .gc {
@@ -1052,9 +1107,21 @@
   }
 
   .results-foot {
-    position: absolute; left: 16px; right: 16px; bottom: 14px;
-    display: flex; justify-content: space-between; align-items: end; gap: 12px; flex-wrap: wrap;
+    /* In-flow sticky — never cover the 3-4-3 strip (was absolute → overlap on short/landscape) */
+    position: sticky;
+    bottom: 0;
+    left: auto;
+    right: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 10px;
+    flex-wrap: wrap;
+    flex: 0 0 auto;
     z-index: 8;
+    margin-top: auto;
+    padding: 10px 0 max(6px, env(safe-area-inset-bottom, 0px));
+    background: linear-gradient(180deg, rgba(2, 6, 16, 0) 0%, rgba(2, 6, 16, 0.88) 28%, rgba(2, 6, 16, 0.96) 100%);
   }
   .results-meta { font-size: 12px; color: #9aabc4; line-height: 1.45; }
   .results-meta .pity-line { margin-bottom: 2px; }
@@ -1079,12 +1146,55 @@
   }
   .stage.show-results .skip { display: none; }
 
-  @media (max-width: 720px) {
-    :root { --gc-w: 150px; --gc-h: calc(var(--gc-w) * 219 / 446); }
-    .strip-343 { overflow: visible; }
-    .strip-row--3, .strip-row--3b { transform: none; }
-    .results-title { font-size: calc(24px * var(--gs-type)); }
+  /* Phone landscape / short viewports: keep desktop 3-4-3, tighten chrome */
+  @media (max-width: 900px) {
+    .strip-343 {
+      gap: clamp(6px, 1.6vh, 14px);
+      padding: clamp(2px, 0.6vh, 10px) 0 clamp(4px, 1vh, 16px);
+    }
+    .result-card {
+      margin: clamp(1px, 0.6vh, 8px) 0 clamp(12px, 2.8vh, 26px);
+    }
+    .results-actions .again { min-width: 140px; }
+    .gc--supp.gc--pull-result > .gc-supp-label {
+      font-size: 9px;
+      padding: 2px 8px 2px 6px;
+    }
   }
+  @media (orientation: landscape) and (max-height: 520px) {
+    .results-title {
+      font-size: calc(20px * var(--gs-type));
+      margin-bottom: 4px;
+    }
+    .results-title::after { height: 3px; margin-top: 2px; }
+    .strip-343 { gap: 4px; padding: 0 0 4px; }
+    .result-card { margin: 0 0 14px; }
+    .results-actions .btn-designline {
+      min-width: 110px;
+      height: 36px;
+      padding: 10px 14px 2px;
+      font-size: calc(14px * var(--gs-type));
+    }
+    .results-actions .again { min-width: 120px; }
+    .results-meta .pity-line b { font-size: calc(16px * var(--gs-type)); }
+    .gc--supp.gc--pull-result > .gc-supp-label {
+      font-size: 8px;
+      padding: 2px 6px 2px 5px;
+    }
+  }
+
+  /* Portrait phones: still 3-4-3 (scaled); soft-nudge stagger stays proportional via clamp */
+  @media (orientation: portrait) and (max-width: 520px) {
+    .results {
+      --gs-strip-gap: 4px;
+      --gc-w: min(128px, calc(0.74 * var(--gc-w-fit-x)), calc(0.92 * var(--gc-w-fit-y)));
+    }
+    .gc--supp.gc--pull-result > .gc-supp-label {
+      font-size: 9px;
+      padding: 2px 7px 2px 5px;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     /* Shorten motion — do NOT force cutin/hatch visible (that looked like “Sayla with no anim”). */
     .hatch i { transition-duration: 0.01ms !important; }

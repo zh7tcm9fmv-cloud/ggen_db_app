@@ -902,13 +902,28 @@ window.GgenGachaSim = (function () {
   }
 
   var hoverPop = document.getElementById("cardHoverPop");
+  var _cardHoverEl = null;
+  var _urAcqAnchor = null;
+
+  /* Phones / tablets: hover previews become tap-to-reveal (tap again / outside dismiss). */
+  function gsPreferTapReveal() {
+    try {
+      if (typeof window.matchMedia !== "function") return false;
+      if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) return false;
+      if (window.matchMedia("(pointer: coarse)").matches) return true;
+      if (window.matchMedia("(hover: none)").matches) return true;
+    } catch (_) {}
+    return false;
+  }
+
   function hideCardHover() {
     if (!hoverPop) return;
     hoverPop.hidden = true;
     hoverPop.setAttribute("aria-hidden", "true");
     hoverPop.innerHTML = "";
+    _cardHoverEl = null;
   }
-  function showCardHover(card, clientX, clientY) {
+  function showCardHover(card, clientX, clientY, anchorEl) {
     if (!hoverPop || !card) return;
     hideUrAcqPop();
     card = enrichArtFromPool(card);
@@ -926,6 +941,7 @@ window.GgenGachaSim = (function () {
     });
     hoverPop.hidden = false;
     hoverPop.setAttribute("aria-hidden", "false");
+    _cardHoverEl = anchorEl || null;
     var pad = 16;
     var w = 280;
     var h = 160;
@@ -938,11 +954,15 @@ window.GgenGachaSim = (function () {
   function bindHitHover(root) {
     if (!root) return;
     root.querySelectorAll("[data-draw-at]").forEach(function (el) {
+      if (el._gsHitBound) return;
+      el._gsHitBound = 1;
       el.addEventListener("mouseenter", function (ev) {
+        if (gsPreferTapReveal()) return;
         var card = lookupDrawCard(el.getAttribute("data-draw-at"), el.getAttribute("data-draw-id"));
-        showCardHover(card, ev.clientX, ev.clientY);
+        showCardHover(card, ev.clientX, ev.clientY, el);
       });
       el.addEventListener("mousemove", function (ev) {
+        if (gsPreferTapReveal()) return;
         if (hoverPop && !hoverPop.hidden) {
           var pad = 16;
           var w = 280;
@@ -952,11 +972,26 @@ window.GgenGachaSim = (function () {
           hoverPop.style.top = y + "px";
         }
       });
-      el.addEventListener("mouseleave", hideCardHover);
+      el.addEventListener("mouseleave", function () {
+        if (gsPreferTapReveal()) return;
+        hideCardHover();
+      });
       el.addEventListener("click", function (ev) {
         ev.preventDefault();
-        hideCardHover();
         var card = lookupDrawCard(el.getAttribute("data-draw-at"), el.getAttribute("data-draw-id"));
+        if (gsPreferTapReveal()) {
+          ev.stopPropagation();
+          /* First tap = preview; second tap on same row = open DB detail */
+          if (_cardHoverEl === el && hoverPop && !hoverPop.hidden) {
+            hideCardHover();
+            if (card && card.id) openDbDetail(card.kind, card.id);
+            return;
+          }
+          var r = el.getBoundingClientRect();
+          showCardHover(card, r.left + r.width / 2, Math.max(r.top, 24), el);
+          return;
+        }
+        hideCardHover();
         if (card && card.id) openDbDetail(card.kind, card.id);
       });
     });
@@ -1001,11 +1036,20 @@ window.GgenGachaSim = (function () {
 
   var urAcqPop = document.getElementById("urAcqPop");
   var _urAcqHideTimer = null;
+  function setUrAcqExpanded(on) {
+    document.querySelectorAll("[data-ur-acq]").forEach(function (el) {
+      var open = !!(on && _urAcqAnchor === el);
+      el.classList.toggle("is-ur-acq-open", open);
+      el.setAttribute("aria-expanded", open ? "true" : "false");
+    });
+  }
   function hideUrAcqPop() {
     if (_urAcqHideTimer) {
       clearTimeout(_urAcqHideTimer);
       _urAcqHideTimer = null;
     }
+    _urAcqAnchor = null;
+    setUrAcqExpanded(false);
     if (!urAcqPop) return;
     urAcqPop.hidden = true;
     urAcqPop.setAttribute("aria-hidden", "true");
@@ -1060,6 +1104,8 @@ window.GgenGachaSim = (function () {
     urAcqPop.innerHTML = "<strong>" + esc(head) + "</strong>" + body;
     urAcqPop.hidden = false;
     urAcqPop.setAttribute("aria-hidden", "false");
+    _urAcqAnchor = anchorEl;
+    setUrAcqExpanded(true);
     positionUrAcqPop(anchorEl);
   }
   function bindUrAcqHover() {
@@ -1067,12 +1113,14 @@ window.GgenGachaSim = (function () {
     if (!root || root._urAcqBound) return;
     root._urAcqBound = 1;
     root.addEventListener("mouseover", function (ev) {
+      if (gsPreferTapReveal()) return;
       var el = ev.target && ev.target.closest ? ev.target.closest("[data-ur-acq]") : null;
       if (!el || !root.contains(el)) return;
       if (ev.relatedTarget && el.contains(ev.relatedTarget)) return;
       showUrAcqPop(el.getAttribute("data-ur-acq") || "unit", el);
     });
     root.addEventListener("mouseout", function (ev) {
+      if (gsPreferTapReveal()) return;
       var el = ev.target && ev.target.closest ? ev.target.closest("[data-ur-acq]") : null;
       if (!el || !root.contains(el)) return;
       var to = ev.relatedTarget;
@@ -1083,16 +1131,32 @@ window.GgenGachaSim = (function () {
       }, 120);
     });
     root.addEventListener("focusin", function (ev) {
+      if (gsPreferTapReveal()) return;
       var el = ev.target && ev.target.closest ? ev.target.closest("[data-ur-acq]") : null;
       if (!el || !root.contains(el)) return;
       showUrAcqPop(el.getAttribute("data-ur-acq") || "unit", el);
     });
     root.addEventListener("focusout", function (ev) {
+      if (gsPreferTapReveal()) return;
       var el = ev.target && ev.target.closest ? ev.target.closest("[data-ur-acq]") : null;
       if (!el) return;
       var to = ev.relatedTarget;
       if (to && (el.contains(to) || (urAcqPop && urAcqPop.contains(to)))) return;
       hideUrAcqPop();
+    });
+    /* Mobile / coarse pointer: tap toggles the acquired-UR list */
+    root.addEventListener("click", function (ev) {
+      if (!gsPreferTapReveal()) return;
+      var el = ev.target && ev.target.closest ? ev.target.closest("[data-ur-acq]") : null;
+      if (!el || !root.contains(el)) return;
+      ev.preventDefault();
+      ev.stopPropagation();
+      var kind = el.getAttribute("data-ur-acq") || "unit";
+      if (_urAcqAnchor === el && urAcqPop && !urAcqPop.hidden) {
+        hideUrAcqPop();
+        return;
+      }
+      showUrAcqPop(kind, el);
     });
     if (urAcqPop && !urAcqPop._bound) {
       urAcqPop._bound = 1;
@@ -1102,7 +1166,10 @@ window.GgenGachaSim = (function () {
           _urAcqHideTimer = null;
         }
       });
-      urAcqPop.addEventListener("mouseleave", hideUrAcqPop);
+      urAcqPop.addEventListener("mouseleave", function () {
+        if (gsPreferTapReveal()) return;
+        hideUrAcqPop();
+      });
       urAcqPop.addEventListener("click", function (ev) {
         var li = ev.target && ev.target.closest ? ev.target.closest("li[data-ur-id]") : null;
         if (!li) return;
@@ -1114,6 +1181,27 @@ window.GgenGachaSim = (function () {
         }
       });
     }
+  }
+
+  /* Tap outside closes sticky mobile previews */
+  if (!window._ggenGsTapDismiss) {
+    window._ggenGsTapDismiss = 1;
+    document.addEventListener(
+      "pointerdown",
+      function (ev) {
+        var t = ev.target;
+        if (!t || !t.closest) return;
+        if (hoverPop && !hoverPop.hidden) {
+          if (t.closest("#cardHoverPop") || t.closest("[data-draw-at]")) return;
+          hideCardHover();
+        }
+        if (urAcqPop && !urAcqPop.hidden) {
+          if (t.closest("#urAcqPop") || t.closest("[data-ur-acq]")) return;
+          hideUrAcqPop();
+        }
+      },
+      true
+    );
   }
 
   function resolvePoolName(id) {
@@ -1207,7 +1295,7 @@ window.GgenGachaSim = (function () {
       urList.innerHTML = hits.map(function (c) {
         var rarLabel = (c.rarity || "").toUpperCase();
         return '<li class="hit-row" data-draw-at="' + c.at + '" data-draw-id="' + esc(c.id) +
-          '" title="' + esc(tt("gs_hover_preview")) + '">' +
+          '" title="' + esc(tt(gsPreferTapReveal() ? "gs_hover_preview_tap" : "gs_hover_preview")) + '">' +
           "#" + c.at + " · <b class=\"hit-" + c.rarity + "\">" + esc(c.name) + "</b>" +
           '<span class="ur-kind">' + rarLabel + (c.kind === "supp" ? " · " + tt("gs_supp_label") : " · " + tt("tab_unit")) + "</span>" +
           (c.pickup ? " · pickup" : "") +
@@ -1233,7 +1321,8 @@ window.GgenGachaSim = (function () {
     bindHitHover(log);
     bindUrAcqHover();
     document.querySelectorAll("[data-ur-acq]").forEach(function (el) {
-      el.title = tt("gs_ur_acq_hint");
+      el.title = tt(gsPreferTapReveal() ? "gs_ur_acq_hint_tap" : "gs_ur_acq_hint");
+      if (!el.hasAttribute("aria-expanded")) el.setAttribute("aria-expanded", "false");
     });
   }
   renderSession();
