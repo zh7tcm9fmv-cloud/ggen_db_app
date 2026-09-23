@@ -1,0 +1,1950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gacha sim mock — Unit Assembly Results</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&display=swap">
+<style>
+  /* Card plate = PSD Layer 6 frame (446×219) */
+  :root {
+    --bg: #070b14;
+    --cyan: #00d9ff;
+    --gold: #ffd24a;
+    --ease: cubic-bezier(0.05, 0.7, 0.1, 1);
+    --gc-w: 220px;
+    --gc-h: calc(var(--gc-w) * 219 / 446);
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; background: var(--bg); color: #e8eef8; font-family: "Segoe UI", system-ui, sans-serif; }
+  button { font: inherit; cursor: pointer; }
+  /* Hide scrollbars (keep scroll where overflow is needed) */
+  html {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  html::-webkit-scrollbar { width: 0; height: 0; display: none; }
+  .no-scrollbar,
+  .session-ur-hits,
+  .session-log,
+  .results,
+  .ref-strip {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar,
+  .session-ur-hits::-webkit-scrollbar,
+  .session-log::-webkit-scrollbar,
+  .results::-webkit-scrollbar,
+  .ref-strip::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+  }
+
+  .lobby {
+    min-height: 100%;
+    padding: 24px 16px 48px;
+    background:
+      radial-gradient(900px 420px at 50% 0%, rgba(0, 140, 255, 0.18), transparent 60%),
+      linear-gradient(180deg, #0c1424 0%, #070b14 55%);
+  }
+  .shell { width: min(1100px, 100%); margin: 0 auto; }
+  .kicker { font-family: Teko, sans-serif; letter-spacing: 0.18em; color: var(--cyan); font-size: 18px; margin: 0 0 8px; }
+  h1 { margin: 0 0 6px; font-size: 22px; font-weight: 650; }
+  h2 { margin: 28px 0 10px; font-family: Teko, sans-serif; font-size: 26px; letter-spacing: 0.06em; color: #cfefff; font-weight: 600; }
+  .note { margin: 0 0 16px; color: #8ea0bb; font-size: 13px; line-height: 1.45; max-width: 76ch; }
+  .disclaimer {
+    margin: 0 0 18px; padding: 8px 12px;
+    border: 1px solid rgba(255, 120, 80, 0.35);
+    background: rgba(80, 24, 12, 0.35);
+    color: #ffb39a; font-size: 12px; line-height: 1.4; max-width: 76ch;
+  }
+  .opt-row {
+    display: flex; align-items: center; gap: 8px;
+    margin: 12px 0 8px; font-size: 12px; color: #9eb0c8; cursor: pointer;
+  }
+  .opt-row input { accent-color: var(--cyan); }
+  .session {
+    margin: 10px 0 14px; padding: 10px 12px;
+    border: 1px solid rgba(100, 160, 220, 0.25);
+    background: rgba(10, 18, 32, 0.65);
+    font-size: 12px; color: #a8b8d0;
+  }
+  .session-head {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 16px;
+    margin-bottom: 6px;
+  }
+  .session-head strong { color: #dce8f8; font-family: Teko, sans-serif; font-size: 18px; letter-spacing: 0.06em; font-weight: 600; }
+  .session-head b { color: var(--gold); font-size: 16px; }
+  .linkish {
+    margin-left: auto; background: none; border: none; color: var(--cyan);
+    font-size: 12px; text-decoration: underline; padding: 0;
+  }
+  .session-pickup { margin-bottom: 6px; color: #cfe6ff; }
+  .session-ur-hits {
+    margin: 0 0 10px;
+    padding: 8px 10px;
+    border: 1px solid rgba(180, 120, 255, 0.28);
+    background: rgba(28, 12, 48, 0.45);
+    max-height: 220px;
+    overflow: auto;
+  }
+  .session-ur-hits > strong {
+    display: block;
+    margin-bottom: 6px;
+    color: #e0c0ff;
+    font-family: Teko, sans-serif;
+    font-size: 15px;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+  .session-ur-hits ol {
+    margin: 0;
+    padding-left: 18px;
+    color: #d4b8f0;
+  }
+  .session-ur-hits li { margin: 3px 0; line-height: 1.35; }
+  .session-ur-hits .ur-kind {
+    display: inline-block;
+    margin-left: 4px;
+    padding: 0 5px;
+    font-size: 10px;
+    color: #9eb0c8;
+    border: 1px solid rgba(140, 160, 200, 0.35);
+  }
+  .session-ur-hits .ur-new { color: #ffd56a; font-weight: 700; }
+  .session-ur-hits .hit-ur { color: #e0c0ff; }
+  .session-ur-hits .hit-ssr { color: #e8c878; }
+  .session-ur-hits .ur-empty { color: #7a8aa3; padding-left: 0; list-style: none; margin: 0; }
+  .session-ur-hits li.hit-row {
+    cursor: pointer;
+  }
+  .session-ur-hits li.hit-row:hover,
+  .session-log .hit-chip:hover {
+    color: #fff;
+  }
+  .session-log .hit-chip {
+    cursor: pointer;
+    text-decoration: underline dotted rgba(200, 220, 255, 0.35);
+    text-underline-offset: 2px;
+  }
+  .result-card {
+    cursor: pointer;
+  }
+  .result-card:focus-visible {
+    outline: 2px solid rgba(0, 217, 255, 0.65);
+    outline-offset: 4px;
+  }
+  .card-hover-pop {
+    position: fixed;
+    z-index: 10050;
+    pointer-events: none;
+    padding: 10px;
+    background: rgba(6, 12, 22, 0.92);
+    border: 1px solid rgba(100, 180, 255, 0.45);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55), 0 0 24px rgba(0, 160, 255, 0.2);
+    transform: translate(-50%, -100%);
+    margin-top: -12px;
+  }
+  .card-hover-pop[hidden] { display: none !important; }
+  .card-hover-pop .gc { --gc-w: 240px; --gc-h: calc(240px * 219 / 446); }
+  .card-hover-pop .gc--supp {
+    width: var(--gc-w);
+    height: calc(var(--gc-w) * 190 / 354);
+  }
+  .card-hover-pop .gc-supp-label { display: none !important; }
+  .session-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+    margin: 8px 0 10px;
+  }
+  .session-stat {
+    padding: 6px 8px;
+    border: 1px solid rgba(100, 160, 220, 0.22);
+    background: rgba(8, 14, 26, 0.7);
+    text-align: center;
+  }
+  .session-stat .tier {
+    display: block; font-family: Teko, sans-serif; font-size: 16px;
+    letter-spacing: 0.06em; font-weight: 600; color: #dce8f8;
+  }
+  .session-stat .pct {
+    display: block; font-size: 15px; font-weight: 700; color: var(--cyan);
+  }
+  .session-stat .cnt { display: block; font-size: 10px; color: #7a8aa3; margin-top: 2px; }
+  .session-stat--ur .pct { color: #d8a0ff; }
+  .session-stat--ssr .pct { color: var(--gold); }
+  .session-stat--sr .pct { color: #7eb6ff; }
+  .session-stat--r .pct { color: #c48a5a; }
+  .session-log-label {
+    margin: 0 0 4px;
+    color: #9eb0c8;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .session-log {
+    margin: 0; padding-left: 18px; max-height: 220px; overflow: auto;
+    color: #8ea0bb;
+  }
+  .session-log li { margin: 4px 0; line-height: 1.4; }
+  .session-log .hit-ur { color: #e0c0ff; font-weight: 600; }
+  .session-log .hit-ssr { color: #e8c878; }
+  .session-log .hit-sr { color: #8eb8ff; }
+  .session-log .hit-r { color: #a89078; }
+  .session-log .hit-supp::after {
+    content: " (S)";
+    font-size: 10px;
+    color: #7a9cc0;
+    font-weight: 400;
+  }
+  @media (max-width: 520px) {
+    .session-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+
+  .gc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px 14px;
+  }
+  .gc-slot { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  .gc-slot figcaption { font-size: 11px; color: #8ea0bb; text-align: center; line-height: 1.35; }
+  .gc-slot figcaption b { color: #dce8f8; }
+
+  /* —— In-game gain card —— */
+  /*
+   * New Project(2).psd — exact stack:
+   *   Layer 6 frame = 446×219 at card inset 0
+   *   Layer 5 base  = 452×237 at (−3, −16) relative to frame
+   *   Layer 4 glow  = behind base (SSR). No plate clip / no opaque bake.
+   */
+  .gc {
+    position: relative;
+    width: var(--gc-w);
+    height: var(--gc-h);
+    flex-shrink: 0;
+    overflow: visible;
+  }
+  .gc > img.gc-frame,
+  .gc > img.gc-bake {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: fill; pointer-events: none; user-select: none;
+  }
+  .gc--baked > img.gc-bake { object-fit: contain; }
+  .gc:not(.gc--supp) > img.gc-base {
+    position: absolute;
+    z-index: 2;
+    left: calc(100% * -3 / 446);
+    top: calc(100% * -16 / 219);
+    width: calc(100% * 452 / 446);
+    height: calc(100% * 237 / 219);
+    object-fit: fill;
+    pointer-events: none;
+    user-select: none;
+  }
+  .gc:not(.gc--supp) > img.gc-frame {
+    position: absolute; inset: 0; z-index: 4;
+    width: 100%; height: 100%;
+    object-fit: fill; pointer-events: none; user-select: none;
+  }
+  .gc > img.gc-frame { z-index: 4; }
+  /* Shared fx layer (unit Effect + supporter Gain) */
+  .gc > img.gc-fx {
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+  }
+  /* Unit glow — PSD Layer 4 / UR glow vs frame 446×219 */
+  .gc:not(.gc--supp) > img.gc-fx {
+    z-index: 1;
+    transform: none;
+    object-fit: fill;
+    mix-blend-mode: normal;
+    filter: none;
+    opacity: 1;
+  }
+  .gc--ssr:not(.gc--supp) > img.gc-fx {
+    left: calc(100% * -23 / 446);
+    top: calc(100% * -36 / 219);
+    width: calc(100% * 492 / 446);
+    height: calc(100% * 278 / 219);
+  }
+  .gc--ur:not(.gc--supp) > img.gc-fx {
+    left: calc(100% * -133 / 446);
+    top: calc(100% * -101 / 219);
+    width: calc(100% * 710 / 446);
+    height: calc(100% * 398 / 219);
+    /* PSD L2 glow is black-backed — screen knocks out residual black */
+    mix-blend-mode: screen;
+  }
+  /*
+   * Unit portrait — Collections Regular save-image crop (drawCoverArt15):
+   * object-fit cover, upper bias (~28%), full opening. No fade animation.
+   */
+  .gc-por-wrap {
+    position: absolute; z-index: 3;
+    left: 3.5%; right: 3.5%; top: 4%; bottom: 7%;
+    overflow: hidden;
+    display: block;
+  }
+  /* UR bottom bar is thicker — keep portrait above it */
+  .gc--ur:not(.gc--supp) .gc-por-wrap {
+    bottom: 16%;
+  }
+  .gc-por {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    object-fit: cover;
+    /* match collections.js drawCoverArt15: sy = (ih-sh)*0.28 → favor upper body */
+    object-position: 50% 28%;
+    display: block;
+    transform: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+    opacity: 1;
+    animation: none;
+    image-rendering: auto;
+    image-rendering: high-quality;
+  }
+  .gc--new .gc-por-wrap {
+    right: 24%;
+  }
+  .gc-frame { z-index: 4; }
+  .gc-hud {
+    position: absolute; z-index: 5; inset: 0; pointer-events: none;
+    overflow: hidden;
+  }
+  .gc-rarity {
+    position: absolute; left: 3.5%; top: 3%;
+    width: 17%; height: auto; aspect-ratio: 1;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.7));
+  }
+  .gc-role {
+    position: absolute; left: 5%; top: 48%;
+    width: 12%; height: auto; aspect-ratio: 1;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.7));
+  }
+  .gc-acq {
+    position: absolute; left: 5.5%; bottom: 10%;
+    width: 10%; height: auto; aspect-ratio: 1;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.65));
+  }
+  .gc-new {
+    position: absolute; right: 2%; top: 3%;
+    z-index: 7;
+    padding: 2px 8px 3px;
+    background: linear-gradient(180deg, #ffe27a, #f0a010);
+    color: #c41828;
+    font-weight: 800;
+    font-size: 10px;
+    letter-spacing: 0.02em;
+    clip-path: polygon(0 0, 100% 0, 100% 70%, 86% 100%, 0 100%);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.45);
+  }
+  /* NEW character — Square base + por + frame; face clipped inside HUD */
+  .gc-pilot {
+    position: absolute; right: 4%; bottom: 14%;
+    width: 22%; aspect-ratio: 1;
+    z-index: 6;
+    overflow: hidden;
+  }
+  .gc-pilot-inner {
+    position: relative; width: 100%; height: 100%;
+    overflow: hidden;
+  }
+  .gc-pilot-base,
+  .gc-pilot-frame {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: fill; display: block; pointer-events: none;
+  }
+  .gc-pilot-base { z-index: 0; }
+  .gc-pilot-por-wrap {
+    position: absolute; z-index: 1;
+    top: 11%; left: 11%; right: 11%; bottom: 11%;
+    overflow: hidden;
+  }
+  .gc-pilot-por {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: 50% 12%;
+    display: block;
+    image-rendering: auto;
+    image-rendering: high-quality;
+  }
+  .gc-pilot-frame { z-index: 2; }
+  /* In-game "Supporters" tab — ONLY under supporter pull results (never gallery demos) */
+  .gc-supp-label {
+    display: none;
+  }
+  .gc--supp.gc--pull-result > .gc-supp-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 2px);
+    bottom: auto;
+    transform: translateX(-50%);
+    padding: 3px 10px 3px 8px;
+    background: rgba(18, 72, 160, 0.95);
+    border: 1px solid rgba(120, 180, 255, 0.55);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    z-index: 8;
+    color: #fff;
+    line-height: 1;
+  }
+  .gc--supp.gc--pull-result > .gc-supp-label img {
+    width: 11px; height: 11px; display: block; flex-shrink: 0;
+  }
+  /*
+   * Supporter — exact owner PSDs (354×190). Same outer width as unit cards so
+   * result strips align; height follows PSD aspect (slightly taller than units).
+   * UR and SSR use DIFFERENT frame pieces. Only the PSD Gain layer.
+   */
+  .gc--supp {
+    width: var(--gc-w);
+    height: calc(var(--gc-w) * 190 / 354);
+    overflow: visible;
+  }
+  .gc--supp .gc-supp-plate {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    transform: none;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .gc--supp .gc-base {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: fill;
+    z-index: 0;
+  }
+  .gc--supp .gc-por-wrap {
+    position: absolute;
+    z-index: 1;
+    left: calc(100% * 50 / 354);
+    top: calc(100% * 21 / 190);
+    width: calc(100% * 260 / 354);
+    height: calc(100% * 145 / 190);
+    right: auto;
+    bottom: auto;
+    overflow: hidden;
+    display: block;
+  }
+  .gc--supp .gc-por {
+    position: absolute;
+    inset: 0;
+    left: auto; top: auto;
+    transform: none;
+    object-fit: cover;
+    object-position: 50% 42%;
+    width: 100%; height: 100%;
+    max-width: none;
+    max-height: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+    opacity: 1;
+    animation: none;
+    image-rendering: auto;
+    image-rendering: high-quality;
+  }
+  .gc--supp .gc-supp-side,
+  .gc--supp .gc-supp-end {
+    position: absolute; z-index: 4; pointer-events: none; margin: 0; border: 0; display: block;
+    transform: none;
+    object-fit: fill;
+  }
+
+  /* UR supporter (image.psd.psd) */
+  .gc--supp.gc--ur .gc-supp-side--l {
+    left: calc(100% * 6 / 354); top: 0;
+    width: calc(100% * 55 / 354); height: calc(100% * 186 / 190);
+  }
+  .gc--supp.gc--ur .gc-supp-side--r {
+    left: calc(100% * 297 / 354); top: calc(100% * 3 / 190);
+    width: calc(100% * 54 / 354); height: calc(100% * 182 / 190); right: auto;
+  }
+  .gc--supp.gc--ur .gc-supp-end--t {
+    left: calc(100% * 119 / 354); top: 0;
+    width: calc(100% * 116 / 354); height: calc(100% * 37 / 190);
+  }
+  .gc--supp.gc--ur .gc-supp-end--b {
+    left: calc(100% * 121 / 354); top: calc(100% * 148 / 190);
+    width: calc(100% * 111 / 354); height: calc(100% * 36 / 190); bottom: auto;
+  }
+  .gc--supp.gc--ur > img.gc-fx {
+    z-index: 6;
+    left: calc(100% * -12 / 354);
+    top: calc(100% * -12 / 190);
+    width: calc(100% * 382 / 354);
+    height: calc(100% * 215 / 190);
+    transform: none;
+    object-fit: fill;
+    mix-blend-mode: normal;
+    filter: none;
+    opacity: 1;
+    pointer-events: none;
+  }
+  .gc--supp.gc--ur .gc-rarity {
+    left: calc(100% * 23 / 354);
+    top: calc(100% * 19 / 190);
+    width: calc(100% * 61 / 354);
+    aspect-ratio: 61 / 63;
+  }
+
+  /* SSR supporter (image.psdssr.psd) — Layers 7–12 only */
+  .gc--supp.gc--ssr .gc-supp-side--l {
+    left: calc(100% * 15 / 354); top: calc(100% * 19 / 190);
+    width: calc(100% * 32 / 354); height: calc(100% * 153 / 190);
+  }
+  .gc--supp.gc--ssr .gc-supp-side--r {
+    left: calc(100% * 308 / 354); top: calc(100% * 21 / 190);
+    width: calc(100% * 31 / 354); height: calc(100% * 148 / 190); right: auto;
+  }
+  .gc--supp.gc--ssr .gc-supp-end--t {
+    left: calc(100% * 108 / 354); top: calc(100% * 11 / 190);
+    width: calc(100% * 138 / 354); height: calc(100% * 22 / 190);
+  }
+  .gc--supp.gc--ssr .gc-supp-end--b {
+    left: calc(100% * 114 / 354); top: calc(100% * 157 / 190);
+    width: calc(100% * 136 / 354); height: calc(100% * 22 / 190); bottom: auto;
+  }
+  .gc--supp.gc--ssr > img.gc-fx {
+    z-index: 6;
+    left: calc(100% * -12 / 354);
+    top: calc(100% * -12 / 190);
+    width: calc(100% * 379 / 354);
+    height: calc(100% * 214 / 190);
+    transform: none;
+    object-fit: fill;
+    mix-blend-mode: normal;
+    filter: none;
+    opacity: 1;
+    pointer-events: none;
+  }
+  .gc--supp.gc--ssr .gc-rarity {
+    left: calc(100% * 28 / 354);
+    top: calc(100% * 27 / 190);
+    width: calc(100% * 56 / 354);
+    aspect-ratio: 56 / 54;
+  }
+
+  .gc--supp .gc-role,
+  .gc--supp .gc-acq,
+  .gc--supp .gc-pilot,
+  .gc--supp .gc-new { display: none !important; }
+  .gc--supp .gc-hud { z-index: 7; overflow: visible; }
+  .gc-slot { overflow: visible; }
+  .gc--baked { width: var(--gc-w); height: var(--gc-h); }
+  .gc--baked .gc-bake { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+
+  .ref-strip {
+    display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 8px;
+  }
+  .ref-strip img {
+    height: 120px; width: auto; border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 4px;
+  }
+
+  .banner {
+    position: relative; height: 200px; border-radius: 6px; overflow: hidden;
+    background: #101828 center/cover no-repeat;
+    clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);
+    box-shadow: 0 0 0 1px rgba(0, 217, 255, 0.35), 0 18px 40px rgba(0, 0, 0, 0.35);
+  }
+  .banner::after {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(5, 10, 20, 0.72), rgba(5, 10, 20, 0.05) 55%);
+  }
+  .banner-copy { position: absolute; left: 22px; bottom: 18px; z-index: 1; }
+  .banner-copy strong { display: block; font-family: Teko, sans-serif; font-size: 34px; letter-spacing: 0.04em; line-height: 0.95; }
+  .banner-copy span { color: #9fdfff; font-size: 13px; }
+  .hud { margin-top: 14px; display: flex; justify-content: space-between; gap: 12px; align-items: end; flex-wrap: wrap; }
+  .pity { font-size: 12px; color: #9aabc4; }
+  .pity b { color: var(--gold); font-size: 18px; font-family: Teko, sans-serif; }
+  .actions { display: flex; gap: 10px; align-items: center; }
+  /* Shared in-game plate — UI_StageTop_Button_Lsize_DesignLine */
+  .btn-designline {
+    --btn-plate: url("https://cdn.jsdelivr.net/gh/zh7tcm9fmv-cloud/ggen_db_images@main/images/UI/UI_StageTop_Button_Lsize_DesignLine.webp");
+    position: relative;
+    min-width: 148px;
+    height: 48px;
+    /* navy fill sits slightly low in the plate — bias padding so label centers in it */
+    padding: 16px 22px 4px;
+    border: 0;
+    background: transparent var(--btn-plate) center / 100% 100% no-repeat;
+    color: #eef6ff;
+    font-family: Teko, sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    line-height: 1;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.65);
+    cursor: pointer;
+    filter: drop-shadow(0 2px 6px rgba(0, 40, 90, 0.45));
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  .btn-designline:hover {
+    filter: drop-shadow(0 0 10px rgba(80, 190, 255, 0.55)) brightness(1.08);
+  }
+  .btn-designline:active {
+    filter: brightness(0.92);
+  }
+  .btn-designline:disabled {
+    opacity: 0.55;
+    cursor: default;
+    filter: grayscale(0.25);
+  }
+  .pull.btn-designline {
+    min-width: 156px;
+    height: 64px;
+    padding: 18px 20px 8px;
+    gap: 1px;
+  }
+  .pull.btn-designline small {
+    display: block;
+    color: #9fdfff;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    line-height: 1.1;
+  }
+  .pull.btn-designline b {
+    font-family: Teko, sans-serif;
+    font-size: 26px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    line-height: 1;
+    color: #fff;
+  }
+  .pull--ten.btn-designline {
+    /* same plate; warm hint so 10-pull reads distinct */
+    filter: drop-shadow(0 2px 6px rgba(90, 60, 10, 0.45)) sepia(0.22) saturate(1.15);
+  }
+  .pull--ten.btn-designline:hover {
+    filter: drop-shadow(0 0 10px rgba(255, 200, 80, 0.45)) sepia(0.18) saturate(1.2) brightness(1.06);
+  }
+  .pull--ten.btn-designline small { color: #ffe29a; }
+  .log { margin-top: 18px; color: #7f90a8; font-size: 12px; min-height: 1.2em; }
+
+  /* —— Results stage (in-game) —— */
+  .stage {
+    position: fixed; inset: 0; z-index: 5;
+    background: #02040a;
+    display: none; overflow: hidden;
+  }
+  .stage.on { display: block; }
+  /* Hide lobby while results stage is up (prevents gallery frames bleeding through) */
+  body:has(.stage.on) .lobby { visibility: hidden; }
+  .sky {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(40, 60, 120, 0.45), transparent 55%),
+      radial-gradient(circle at 20% 10%, rgba(255,255,255,0.35) 0 1px, transparent 1.5px),
+      radial-gradient(circle at 70% 30%, rgba(255,255,255,0.25) 0 1px, transparent 1.5px),
+      radial-gradient(circle at 40% 60%, rgba(180,255,200,0.2) 0 1px, transparent 1.5px),
+      linear-gradient(180deg, #050814, #0a1628 55%, #0a1018);
+    background-size: auto, 180px 140px, 220px 160px, 140px 180px, auto;
+  }
+  .stage.is-ssr .sky { box-shadow: inset 0 0 120px rgba(255, 140, 40, 0.22); }
+  .stage.is-ur .sky { box-shadow: inset 0 0 140px rgba(180, 80, 255, 0.28); }
+  .mist {
+    position: absolute; inset: -10%;
+    background: conic-gradient(from 120deg, transparent, rgba(0,217,255,0.0), rgba(255,0,200,0.18), rgba(255,210,40,0.12), transparent);
+    opacity: 0; pointer-events: none; animation: spin 8s linear infinite;
+  }
+  .stage.is-ur .mist { opacity: 0.85; }
+  @keyframes spin { to { transform: rotate(1turn); } }
+
+  .hatch { position: absolute; inset: 0; z-index: 4; display: flex; pointer-events: none; }
+  .hatch i { flex: 1; background: linear-gradient(180deg, #1c2838, #0a1018); box-shadow: inset 0 0 40px #000; transition: transform 0.7s var(--ease); }
+  .hatch i:first-child { border-right: 2px solid rgba(0, 217, 255, 0.35); }
+  .stage.is-open .hatch i:first-child { transform: translateX(-105%); }
+  .stage.is-open .hatch i:last-child { transform: translateX(105%); }
+
+  .op { position: absolute; inset: 0; z-index: 3; display: grid; place-items: center; opacity: 0; pointer-events: none; }
+  .stage.show-op .op { opacity: 1; }
+  .op strong {
+    font-family: Teko, sans-serif; font-size: clamp(42px, 8vw, 84px); letter-spacing: 0.12em;
+    color: #d7f6ff; text-shadow: 0 0 18px rgba(0, 180, 255, 0.85);
+  }
+  .stage.is-ur .op strong {
+    background: linear-gradient(90deg, #7af0ff, #fff, #ff7ad9, #ffe27a, #7af0ff);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 0 12px rgba(255, 80, 200, 0.65));
+  }
+
+  .cutin {
+    position: absolute; left: 0; right: 0; top: 18%; z-index: 3;
+    display: flex; justify-content: flex-end;
+    transform: translateX(40%); opacity: 0; pointer-events: none;
+  }
+  .stage.show-cut .cutin { opacity: 1; transform: none; transition: transform 0.35s var(--ease), opacity 0.35s var(--ease); }
+  .cutin span {
+    padding: 10px 28px 10px 18px;
+    background: linear-gradient(90deg, transparent, rgba(0, 40, 80, 0.85));
+    border-right: 4px solid #3ecbff;
+    font-family: Teko, sans-serif; font-size: 32px; letter-spacing: 0.08em;
+  }
+  .stage.is-ur .cutin span { border-right-color: #ff4ad8; }
+
+  .crates { display: none !important; }
+
+  .results {
+    position: absolute; inset: 0; z-index: 6;
+    display: none;
+    flex-direction: column;
+    padding: 18px 16px 96px;
+    /* BG_Event_Story_RareBoss_Appear + dark veil so cards stay readable */
+    background-color: #02040a;
+    background-image:
+      linear-gradient(180deg, rgba(2, 6, 16, 0.55) 0%, rgba(2, 6, 16, 0.72) 100%),
+      url("https://cdn.jsdelivr.net/gh/zh7tcm9fmv-cloud/ggen_db_images@main/images/Background/BG_Event_Story_RareBoss_Appear.webp");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    overflow: auto;
+  }
+  .stage.show-results .results { display: flex; }
+  .results-title {
+    font-family: Teko, sans-serif;
+    font-size: clamp(28px, 4vw, 40px);
+    font-style: italic;
+    letter-spacing: 0.04em;
+    margin: 0 0 14px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  }
+  .results-title::after {
+    content: "";
+    display: block;
+    margin-top: 4px;
+    height: 4px;
+    width: min(420px, 70%);
+    background: linear-gradient(90deg, #7ec8ff 0 12%, #fff 12% 14%, #2a6a9a 14% 100%);
+    clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  }
+
+  /* In-game 3-4-3 staggered cluster */
+  .strip-343 {
+    margin: auto 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+    width: 100%;
+    overflow: visible;
+    padding: 16px 8px 28px;
+  }
+  .strip-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+    overflow: visible;
+  }
+  .strip-row--3 { transform: translateX(18px); }
+  .strip-row--4 { }
+  .strip-row--3b { transform: translateX(-18px); }
+  /*
+   * Shared unit-height slot: unit + supporter share the same vertical midline
+   * so taller supp plates don’t sit optically lower than units.
+   */
+  .result-card {
+    position: relative;
+    width: var(--gc-w);
+    height: var(--gc-h);
+    margin: 14px 0 36px; /* bottom = Supporters label band */
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+  .result-card .gc {
+    margin: 0;
+    flex-shrink: 0;
+  }
+  /*
+   * Unit base hangs above the frame (−16/219). After centering in the unit-height
+   * slot, nudge supporters up a touch so plate tops match unit optical tops.
+   */
+  .result-card .gc--supp {
+    transform: translateY(calc(var(--gc-h) * -10 / 219));
+  }
+
+  .results-foot {
+    position: absolute; left: 16px; right: 16px; bottom: 14px;
+    display: flex; justify-content: space-between; align-items: end; gap: 12px; flex-wrap: wrap;
+    z-index: 8;
+  }
+  .results-meta { font-size: 12px; color: #9aabc4; line-height: 1.45; }
+  .results-meta .pity-line { margin-bottom: 2px; }
+  .results-meta .pity-line b {
+    color: var(--gold); font-size: 22px; font-family: Teko, sans-serif;
+    letter-spacing: 0.04em; font-weight: 600;
+  }
+  .results-meta .warn { color: #ff6b6b; font-size: 11px; margin-top: 4px; }
+  .results-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .results-actions .btn-designline {
+    flex-direction: row;
+  }
+  .results-actions .again {
+    min-width: 168px;
+    color: #fff;
+  }
+
+  .skip {
+    position: absolute; z-index: 7; right: 16px; bottom: 16px;
+    padding: 8px 14px; color: #fff; background: rgba(0,0,0,0.45);
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+  .stage.show-results .skip { display: none; }
+
+  @media (max-width: 720px) {
+    :root { --gc-w: 150px; --gc-h: calc(var(--gc-w) * 219 / 446); }
+    .strip-343 { overflow: visible; }
+    .strip-row--3, .strip-row--3b { transform: none; }
+    .results-title { font-size: 24px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hatch i, .cutin, .mist { animation: none !important; transition: none !important; opacity: 1 !important; }
+  }
+</style>
+</head>
+<body>
+  <div class="lobby" id="lobby">
+    <div class="shell">
+      <p class="kicker">LOCAL MOCK</p>
+      <h1>Unit Assembly — card assemble</h1>
+      <p class="note">Simulator mock — not affiliated with Bandai Namco. Unit base/frame follow <code>New Project(2).psd</code> Layer 5 (−3,−16 / 452×237) under Layer 6 (446×219). Portraits use Collections Regular cover crop. No portrait fade animation.</p>
+      <p class="disclaimer" id="disclaimer">Sim only · rates = official published gasha proportion tables · New / owned can sync with Collections (<code>ggen_collections_v1</code>).</p>
+
+      <h2>IN-GAME REFS</h2>
+      <div class="ref-strip" id="refStrip"></div>
+
+      <h2>ASSEMBLED TIERS</h2>
+      <div class="gc-grid" id="unitGallery"></div>
+
+      <h2>SUPPORTERS</h2>
+      <div class="gc-grid" id="suppGallery"></div>
+
+      <h2>LIVE CSS STACK</h2>
+      <div class="gc-grid" id="liveGallery"></div>
+
+      <h2>PULL SIM</h2>
+      <div class="banner" id="banner">
+        <div class="banner-copy">
+          <strong>SAMPLE PICKUP</strong>
+          <span>Avalanche Astrea F Dash · Susanoo</span>
+        </div>
+      </div>
+      <div class="hud">
+        <div class="pity">Exchange pts <b id="pts">0</b></div>
+        <div class="actions">
+          <button class="pull btn-designline" type="button" id="one"><small>DRAW ONCE</small><b>1</b></button>
+          <button class="pull pull--ten btn-designline" type="button" id="ten"><small>DRAW 10</small><b>10</b></button>
+        </div>
+      </div>
+      <label class="opt-row" title="Read-only: uses /collections localStorage to decide New. Does not write pulls back to Collections.">
+        <input type="checkbox" id="optCollections" checked>
+        Use Collections owned for New (read /collections — does not sync pulls onto that page)
+      </label>
+      <label class="opt-row" title="Jump straight to Unit Assembly Results (no hatch / cut-in).">
+        <input type="checkbox" id="optSkipAnim">
+        Skip pull animation (instant results)
+      </label>
+      <div class="session" id="sessionPanel">
+        <div class="session-head">
+          <strong>Session</strong>
+          <span>Total pulls <b id="sessPulls">0</b></span>
+          <button type="button" class="linkish" id="sessReset">Reset session</button>
+        </div>
+        <div class="session-pickup" id="sessPickup">First pickup: —</div>
+        <div class="session-stats" id="sessStats" aria-label="Tier rates this session">
+          <div class="session-stat session-stat--ur"><span class="tier">UR</span><span class="pct" id="statUrPct">—</span><span class="cnt" id="statUrCnt">0</span></div>
+          <div class="session-stat session-stat--ssr"><span class="tier">SSR</span><span class="pct" id="statSsrPct">—</span><span class="cnt" id="statSsrCnt">0</span></div>
+          <div class="session-stat session-stat--sr"><span class="tier">SR</span><span class="pct" id="statSrPct">—</span><span class="cnt" id="statSrCnt">0</span></div>
+          <div class="session-stat session-stat--r"><span class="tier">R</span><span class="pct" id="statRPct">—</span><span class="cnt" id="statRCnt">0</span></div>
+        </div>
+        <div class="session-ur-hits" id="sessUrHits" aria-label="UR and SSR hits this session">
+          <strong>UR / SSR hits</strong>
+          <ol id="sessUrList"><li class="ur-empty">No UR/SSR yet.</li></ol>
+        </div>
+        <p class="session-log-label">Every multi (hover UR/SSR = card · click = DB detail)</p>
+        <ol class="session-log" id="sessLog"></ol>
+      </div>
+      <div class="log" id="log">Ready.</div>
+    </div>
+  </div>
+
+  <div id="cardHoverPop" class="card-hover-pop" hidden aria-hidden="true"></div>
+
+  <div class="stage" id="stage" aria-hidden="true">
+    <div class="sky"></div>
+    <div class="mist"></div>
+    <div class="op"><strong>作戦開始</strong></div>
+    <div class="cutin"><span id="cutLabel">AMURO</span></div>
+    <div class="hatch"><i></i><i></i></div>
+    <div class="results">
+      <h3 class="results-title">Unit Assembly Results</h3>
+      <div class="strip-343" id="strip"></div>
+      <div class="results-foot">
+        <div class="results-meta">
+          <div class="pity-line">Exchange pts <b id="ptsAfter">0</b></div>
+        </div>
+        <div class="results-actions">
+          <button type="button" class="btn-designline" id="shareStrip">Save Collections</button>
+          <button type="button" class="btn-designline" id="done">Back</button>
+          <button type="button" class="btn-designline again" id="again">Assemble Again</button>
+        </div>
+      </div>
+    </div>
+    <button class="skip" type="button" id="skip">Skip</button>
+  </div>
+
+<script>
+(function () {
+  var CDN = "https://cdn.jsdelivr.net/gh/zh7tcm9fmv-cloud/ggen_db_images@main/images/";
+  var GS = CDN + "UI/gasha_sim/";
+  var LOCAL = "gacha_card_assemble/";
+  var REFS = "gacha_card_refs/";
+
+  /* Browse /c+/u role icons (Attack / Durability / Support) — not Melee/Ranged */
+  /* Unit role icons only — never use Support role for Supporters (separate card kind) */
+  var ROLE = {
+    Attack: CDN + "UI/UI_Common_TypeIcon_Attack_M.webp",
+    Durability: CDN + "UI/UI_Common_TypeIcon_Defense_M.webp",
+    Defense: CDN + "UI/UI_Common_TypeIcon_Defense_M.webp",
+    Support: CDN + "UI/UI_Common_TypeIcon_Support_M.webp"
+  };
+  var RARITY_ICON = {
+    r: CDN + "UI/UI_Common_RarityIcon_R.webp",
+    sr: CDN + "UI/UI_Common_RarityIcon_SR.webp",
+    ssr: CDN + "UI/UI_Common_RarityIcon_SSR.webp",
+    ur: CDN + "UI/UI_Common_RarityIcon_UR.webp"
+  };
+  var CHAR_BASE = {
+    r: CDN + "UI/UI_Common_Tmb_Square_R_Base.webp",
+    sr: CDN + "UI/UI_Common_Tmb_Square_SR_Base.webp",
+    ssr: CDN + "UI/UI_Common_Tmb_Square_SSR_Base.webp",
+    ur: CDN + "UI/UI_Common_Tmb_Square_UR_Base.webp"
+  };
+  var CHAR_FRAME = {
+    r: CDN + "UI/UI_Common_Tmb_Square_R_Frame.webp",
+    sr: CDN + "UI/UI_Common_Tmb_Square_SR_Frame.webp",
+    ssr: CDN + "UI/UI_Common_Tmb_Square_SSR_Frame.webp",
+    ur: CDN + "UI/UI_Common_Tmb_Square_UR_Frame.webp"
+  };
+  var SUPP_FRAME = {
+    ssr: {
+      /* Exact image.psdssr.psd Layers 7–10 — distinct pieces, no flip */
+      l: LOCAL + "psd_SSR_Frame_L.webp",
+      r: LOCAL + "psd_SSR_Frame_R.webp",
+      t: LOCAL + "psd_SSR_Frame_T.webp",
+      b: LOCAL + "psd_SSR_Frame_B.webp",
+      mirror: false
+    },
+    ur: {
+      /* Exact image.psd.psd Layers 1–4 */
+      l: LOCAL + "psd_UR_Frame_L.webp",
+      r: LOCAL + "psd_UR_Frame_R.webp",
+      t: LOCAL + "psd_UR_Frame_T.webp",
+      b: LOCAL + "psd_UR_Frame_B.webp",
+      mirror: false
+    }
+  };
+  var ACQ = CDN + "UI/UI_Common_Icon_Source_Gasha.webp";
+  /* Gain = exact PSD layers only (SSR Layer 11 / UR Layer 5) — no extra CSS glow */
+  var SUPP_GAIN = {
+    ssr: LOCAL + "fx_SUPP_SSR_Gain.webp",
+    ur: LOCAL + "fx_SUPP_UR_Gain.webp"
+  };
+  var SUPP_BASE = {
+    ssr: LOCAL + "psd_SSR_Base.webp",
+    ur: LOCAL + "psd_UR_Base.webp"
+  };
+
+  function artUrl(path) {
+    if (!path) return "";
+    /* Prefer full bromides over list thumbs (sharp when zoomed) */
+    path = String(path)
+      .replace(/Trait\/thum\/thum_([^/.]+)\.(webp|png)/i, "portraits/cb_$1.webp")
+      .replace(/^\/static\/images\//, "");
+    if (/^https?:\/\//i.test(path)) return path;
+    return CDN + path;
+  }
+
+  /* Result portraits: CDN blip / missing ub_ → thum → soft keep visible */
+  window.__gachaPorErr = function (img) {
+    if (!img) return;
+    var step = Number(img.getAttribute("data-fb") || 0);
+    var art = img.getAttribute("data-art") || "";
+    if (step === 0 && /unit_portraits\/ub_/i.test(art)) {
+      img.setAttribute("data-fb", "1");
+      img.src = CDN + art.replace(/unit_portraits\/ub_/i, "Trait/thum/thum_");
+      return;
+    }
+    if (step <= 1) {
+      img.setAttribute("data-fb", "2");
+      var base = artUrl(art) || img.src;
+      img.src = base + (base.indexOf("?") >= 0 ? "&" : "?") + "retry=" + Date.now();
+      return;
+    }
+    img.style.opacity = "0.4";
+  };
+
+  function porImgHtml(art, delay, porY) {
+    if (!art) return "";
+    var src = artUrl(art);
+    var pri = delay != null && delay > 120 ? "" : ' fetchpriority="high"';
+    var y = porY || "28%";
+    return (
+      '<div class="gc-por-wrap"><img class="gc-por" alt="" src="' + src +
+      '" data-art="' + String(art).replace(/"/g, "&quot;") +
+      '" decoding="async"' + pri +
+      ' style="object-position:50% ' + y + '"' +
+      ' onerror="window.__gachaPorErr&&window.__gachaPorErr(this)"></div>'
+    );
+  }
+
+  document.getElementById("banner").style.backgroundImage =
+    "url('" + CDN + "Gasha/gasha_2609300302_en.webp')";
+
+  /* Ref strip */
+  var refHtml = "";
+  for (var ri = 1; ri <= 8; ri++) {
+    refHtml += '<img alt="ref ' + ri + '" src="' + REFS + "ref_" + ri + '.jpg" onerror="this.remove()">';
+  }
+  document.getElementById("refStrip").innerHTML = refHtml;
+
+  function charThumbHtml(rarity, charArt) {
+    if (!charArt) return "";
+    return (
+      '<div class="gc-pilot"><div class="gc-pilot-inner">' +
+        '<img class="gc-pilot-base" alt="" src="' + CHAR_BASE[rarity] + '">' +
+        '<div class="gc-pilot-por-wrap"><img class="gc-pilot-por" alt="" src="' + artUrl(charArt) + '" decoding="async" onerror="this.onerror=null;this.src=this.src.replace(/portraits\\/cb_/,\"Trait/thum/thum_\")"></div>' +
+        '<img class="gc-pilot-frame" alt="" src="' + CHAR_FRAME[rarity] + '">' +
+      "</div></div>"
+    );
+  }
+
+  function layerCard(opts) {
+    var r = opts.rarity;
+    var kind = opts.kind === "supp" ? "supp" : "unit";
+    var delay = opts.delay != null ? opts.delay : 0;
+    var fromPull = !!opts.fromPull;
+    var cls = "gc gc--" + r +
+      (kind === "supp" ? " gc--supp" : "") +
+      (opts.isNew && kind === "unit" ? " gc--new" : "") +
+      (fromPull ? " gc--pull-result" : "");
+    var fx = "", body = "", hudExtra = "";
+
+    if (kind === "supp") {
+      var sf = SUPP_FRAME[r] || SUPP_FRAME.ssr;
+      /* PSD order: plate (base+art+frames) then Gain rim, then rarity — no extras */
+      fx = '<img class="gc-fx" alt="" src="' + (SUPP_GAIN[r] || SUPP_GAIN.ssr) + '">';
+      body =
+        '<div class="gc-supp-plate">' +
+          '<img class="gc-base" alt="" src="' + (SUPP_BASE[r] || SUPP_BASE.ssr) + '">' +
+          (opts.art ? porImgHtml(opts.art, delay, opts.porY) : "") +
+          '<img class="gc-supp-side gc-supp-side--l" alt="" src="' + sf.l + '">' +
+          '<img class="gc-supp-side gc-supp-side--r" alt="" src="' + sf.r + '">' +
+          '<img class="gc-supp-end gc-supp-end--t" alt="" src="' + sf.t + '">' +
+          '<img class="gc-supp-end gc-supp-end--b" alt="" src="' + sf.b + '">' +
+        "</div>";
+      if (fromPull) {
+        hudExtra =
+          '<span class="gc-supp-label"><img alt="" src="' + CDN + 'UI/UI_Common_Icon_Category_Supporter_Main.webp">Supporters</span>';
+      }
+    } else {
+      var base = "", frame = "";
+      if (r === "r") {
+        base = '<img class="gc-base" alt="" src="' + LOCAL + 'layer_R_Base.webp">';
+        frame = '<img class="gc-frame" alt="" src="' + LOCAL + 'layer_R_Frame.webp">';
+      } else if (r === "sr") {
+        base = '<img class="gc-base" alt="" src="' + LOCAL + 'layer_SR_Base.webp">';
+        frame = '<img class="gc-frame" alt="" src="' + LOCAL + 'layer_SR_Frame.webp">';
+      } else if (r === "ssr") {
+        fx = '<img class="gc-fx" alt="" src="' + LOCAL + 'fx_unit_SSR_glow.webp">';
+        /* New Project(2).psd Layer 5 + Layer 6 exact */
+        base = '<img class="gc-base" alt="" src="' + LOCAL + 'psd_unit_base.webp">';
+        frame = '<img class="gc-frame" alt="" src="' + LOCAL + 'psd_unit_frame.webp">';
+      } else {
+        fx = '<img class="gc-fx" alt="" src="' + LOCAL + 'fx_unit_UR_glow.webp">';
+        base = '<img class="gc-base" alt="" src="' + LOCAL + 'layer_UR_Base.webp">';
+        frame = '<img class="gc-frame" alt="" src="' + LOCAL + 'layer_UR_Frame.webp">';
+      }
+      var por = porImgHtml(opts.art, delay, opts.porY);
+      body = base + por + frame;
+    }
+
+    var hud;
+    if (kind === "supp") {
+      /* PSD: rarity badge only — no type icon */
+      hud =
+        '<div class="gc-hud">' +
+          '<img class="gc-rarity" alt="" src="' + RARITY_ICON[r] + '">' +
+        "</div>";
+    } else {
+      var roleSrc = ROLE[opts.role] || ROLE.Attack;
+      hud =
+        '<div class="gc-hud">' +
+          '<img class="gc-rarity" alt="" src="' + RARITY_ICON[r] + '">' +
+          '<img class="gc-role" alt="" src="' + roleSrc + '">' +
+          '<img class="gc-acq" alt="" src="' + ACQ + '">' +
+          (opts.isNew ? '<span class="gc-new">New</span>' : "") +
+        "</div>";
+    }
+
+    var pilot = opts.isNew && kind === "unit" ? charThumbHtml(r, opts.charArt) : "";
+    /* Supporters: plate first, then Gain rim on top (PSD Layer 5 above frames) */
+    if (kind === "supp") {
+      return '<div class="' + cls + '">' + body + fx + hud + hudExtra + "</div>";
+    }
+    return '<div class="' + cls + '">' + fx + body + hud + pilot + hudExtra + "</div>";
+  }
+
+  function bakeCard(file, label) {
+    return (
+      '<figure class="gc-slot">' +
+        '<div class="gc gc--baked"><img class="gc-bake" alt="" src="' + LOCAL + file + '"></div>' +
+        "<figcaption>" + label + "</figcaption></figure>"
+    );
+  }
+
+  document.getElementById("unitGallery").innerHTML = [
+    bakeCard("assemble_R.webp", "<b>R</b> · Base + Frame"),
+    bakeCard("assemble_SR.webp", "<b>SR</b> · Pats + R_Frame (SR tone)"),
+    bakeCard("assemble_SSR.webp", "<b>SSR</b> · Effect_U + Base + Frame"),
+    bakeCard("assemble_UR.webp", "<b>UR</b> · Pats + Effect_Material")
+  ].join("");
+
+  document.getElementById("suppGallery").innerHTML = [
+    bakeCard("assemble_SUPP_SSR.webp", "<b>SSR Supporter</b> · image.psdssr.psd"),
+    bakeCard("assemble_SUPP_UR.webp", "<b>UR Supporter</b> · image.psd.psd"),
+    '<figure class="gc-slot"><div class="gc gc--baked"><img class="gc-bake" alt="" src="' + LOCAL + 'psd_supporter_SSR_ref.png"></div><figcaption><b>Your SSR PSD</b></figcaption></figure>',
+    '<figure class="gc-slot"><div class="gc gc--baked"><img class="gc-bake" alt="" src="' + LOCAL + 'psd_supporter_UR_ref.png"></div><figcaption><b>Your UR PSD</b></figcaption></figure>'
+  ].join("");
+
+  var NORMAL = [
+    ["URU", 3], ["URS", 1], ["SSRU", 15], ["SSRS", 3], ["SR", 30], ["R", 48]
+  ];
+  var TENTH = [
+    ["URU", 3], ["URS", 1], ["SSRU", 80], ["SSRS", 16]
+  ];
+  var POOL = { URU: [], URS: [], SSRU: [], SSRS: [], SR: [], R: [] };
+  var poolMeta = { gasha_id: "", source: "pending" };
+
+  function applyPoolData(data, source) {
+    if (!data || !data.pool) return;
+    POOL = data.pool;
+    if (data.normal && data.normal.length) NORMAL = data.normal;
+    if (data.tenth && data.tenth.length) TENTH = data.tenth;
+    poolMeta = { gasha_id: data.gasha_id || "", source: source || "json" };
+    var note = document.querySelector(".note");
+    if (note) {
+      note.textContent =
+        "Pool from " + poolMeta.source +
+        (poolMeta.gasha_id ? " · gasha " + poolMeta.gasha_id : "") +
+        " · " + Object.keys(POOL).map(function (k) { return k + "=" + (POOL[k] || []).length; }).join(" · ");
+    }
+    var logo = data.logo_resource_id || "";
+    if (logo) {
+      document.getElementById("banner").style.backgroundImage =
+        "url('" + CDN + "Gasha/" + logo + "_en.webp')";
+    }
+    renderLiveGallery();
+  }
+
+  function renderLiveGallery() {
+    var demos = [];
+    function first(bucket, rarity, kind) {
+      var list = POOL[bucket] || [];
+      var it = list.find(function (x) { return x.pickup; }) || list[0];
+      if (!it) return;
+      demos.push({
+        rarity: rarity,
+        kind: kind || "unit",
+        art: it.art,
+        role: it.role || "",
+        label: (kind === "supp" ? "Supp " : "") + rarity.toUpperCase() + " · " + (it.name || it.id),
+        isNew: false
+      });
+    }
+    first("R", "r");
+    first("SR", "sr");
+    first("SSRU", "ssr");
+    first("URU", "ur");
+    first("SSRS", "ssr", "supp");
+    first("URS", "ur", "supp");
+    document.getElementById("liveGallery").innerHTML = demos.map(function (o) {
+      return '<figure class="gc-slot">' + layerCard(o) + "<figcaption><b>" + o.label + "</b></figcaption></figure>";
+    }).join("");
+  }
+
+  /* Real masterdata: prefer local JSON built from official rates + master */
+  fetch("gacha_sim_pool.json")
+    .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+    .then(function (d) { applyPoolData(d, "master+official rates"); })
+    .catch(function () {
+      /* Fallback: live /api/banner_timeline when mock is served from Flask */
+      fetch("/api/banner_timeline?lang=EN")
+        .then(function (r) { return r.ok ? r.json() : Promise.reject(); })
+        .then(function (d) {
+          var banners = d.banners || [];
+          var b = banners.find(function (x) { return String(x.gasha_id) === "2609300302"; }) || banners[0];
+          if (!b) throw new Error("no banner");
+          var pool = { URU: [], URS: [], SSRU: [], SSRS: [], SR: [], R: [] };
+          function pushFeat(list, bucket, kind) {
+            (list || []).forEach(function (it) {
+              var art = it.thum || "";
+              if (kind === "supp" && art.indexOf("Trait/thum/thum_") >= 0) {
+                art = art.replace("Trait/thum/thum_", "Supporters/sb_");
+              }
+              if (kind === "unit" && art.indexOf("Trait/thum/thum_") >= 0) {
+                art = art.replace("Trait/thum/thum_", "unit_portraits/ub_");
+              }
+              /* strip CDN prefix for artUrl */
+              art = art.replace(/^https?:\/\/[^/]+\/gh\/[^/]+\/ggen_db_images@[^/]+\/images\//, "");
+              art = art.replace(/^\/static\/images\//, "");
+              pool[bucket].push({
+                id: String(it.id || ""),
+                name: it.name || "",
+                role: kind === "supp" ? "" : (it.role_icon && it.role_icon.indexOf("Defense") >= 0 ? "Durability" : it.role_icon && it.role_icon.indexOf("Support") >= 0 ? "Support" : "Attack"),
+                art: art,
+                charArt: "",
+                pickup: true,
+                w: Number(it.drop_pct) || 1
+              });
+            });
+          }
+          pushFeat(b.featured_units && b.featured_units.filter(function (u) { return u.rarity === "UR"; }), "URU", "unit");
+          pushFeat(b.featured_units && b.featured_units.filter(function (u) { return u.rarity === "SSR"; }), "SSRU", "unit");
+          pushFeat(b.featured_supporters && b.featured_supporters.filter(function (u) { return u.rarity === "UR"; }), "URS", "supp");
+          pushFeat(b.featured_supporters && b.featured_supporters.filter(function (u) { return u.rarity === "SSR"; }), "SSRS", "supp");
+          applyPoolData({
+            gasha_id: b.gasha_id,
+            logo_resource_id: (b.banner_url || "").split("/").pop().replace(/_en\.webp$/, "").replace(/\.webp$/, ""),
+            pool: pool,
+            normal: NORMAL,
+            tenth: TENTH
+          }, "api/banner_timeline featured only");
+        })
+        .catch(function () {
+          /* last-resort hardcoded so page still demos cards */
+          POOL = {
+            URU: [{ name: "Gundam Avalanche Astrea Type F Dash", id: "1080000150", role: "Attack", art: "unit_portraits/ub_g0800u00150.webp", charArt: "Trait/thum/thum_g0800c00101.webp", pickup: true, w: 3 }],
+            URS: [{ name: "Bright Noa & White Base", role: "", art: "Supporters/sb_g0310s00200.webp", pickup: true, w: 1 }],
+            SSRU: [{ name: "Jinx III (Federation)", role: "Durability", art: "unit_portraits/ub_g0600u00350.webp", charArt: "Trait/thum/thum_g0600c01500.webp", pickup: true, w: 2 }],
+            SSRS: [{ name: "Kati Mannequin & Virginia", role: "", art: "Supporters/sb_g0600s00100.webp", w: 2 }],
+            SR: [{ name: "Char's Zaku II", role: "Durability", art: "unit_portraits/ub_g0010u00100.webp", w: 1 }],
+            R: [{ name: "GM", role: "Attack", art: "unit_portraits/ub_g0010u00300.webp", w: 1 }]
+          };
+          renderLiveGallery();
+        });
+    });
+
+  var skip = false;
+  var timer = 0;
+  var runId = 0;
+  var lastN = 10;
+  var lastRows = [];
+  var SIM_KEY = "ggen_gacha_sim_v1";
+  var COL_KEY = "ggen_collections_v1";
+  var HIST_CAP = 120;   /* multi-pull batches kept */
+  var DRAW_CAP = 2500;  /* individual cards kept (full name log) */
+
+  function emptySim() {
+    return {
+      pulls: 0,
+      pts: 0,
+      history: [],
+      draws: [],
+      firstPickupAt: {},
+      simOwned: {},
+      tierCounts: { ur: 0, ssr: 0, sr: 0, r: 0 }
+    };
+  }
+
+  function normalizeCard(c, atFallback) {
+    if (!c || typeof c !== "object") return null;
+    return {
+      at: Number(c.at) || Number(atFallback) || 0,
+      id: String(c.id || ""),
+      name: String(c.name || c.id || "?"),
+      rarity: String(c.rarity || "").toLowerCase(),
+      kind: c.kind === "supp" ? "supp" : "unit",
+      art: String(c.art || ""),
+      role: String(c.role || ""),
+      charArt: String(c.charArt || ""),
+      porY: String(c.porY || c.por_y || ""),
+      pickup: !!c.pickup,
+      isNew: !!c.isNew
+    };
+  }
+
+  function loadSim() {
+    try {
+      var o = JSON.parse(localStorage.getItem(SIM_KEY) || "{}");
+      var history = Array.isArray(o.history) ? o.history.slice(0, HIST_CAP) : [];
+      var draws = [];
+      if (Array.isArray(o.draws)) {
+        draws = o.draws.map(function (c) { return normalizeCard(c); }).filter(Boolean).slice(0, DRAW_CAP);
+      } else {
+        history.forEach(function (h) {
+          if (!h || !Array.isArray(h.cards)) return;
+          h.cards.forEach(function (c) {
+            var n = normalizeCard(c, h.at);
+            if (n) draws.push(n);
+          });
+        });
+      }
+      return {
+        pulls: Number(o.pulls) || 0,
+        pts: Number(o.pts) || 0,
+        history: history,
+        draws: draws,
+        firstPickupAt: o.firstPickupAt && typeof o.firstPickupAt === "object" ? o.firstPickupAt : {},
+        simOwned: o.simOwned && typeof o.simOwned === "object" ? o.simOwned : {},
+        tierCounts: o.tierCounts && typeof o.tierCounts === "object"
+          ? {
+              ur: Number(o.tierCounts.ur) || 0,
+              ssr: Number(o.tierCounts.ssr) || 0,
+              sr: Number(o.tierCounts.sr) || 0,
+              r: Number(o.tierCounts.r) || 0
+            }
+          : { ur: 0, ssr: 0, sr: 0, r: 0 }
+      };
+    } catch (e) {
+      return emptySim();
+    }
+  }
+  var sim = loadSim();
+  var pts = Number(sim.pts) || 0;
+
+  function saveSim() {
+    try {
+      sim.pts = pts;
+      localStorage.setItem(SIM_KEY, JSON.stringify({
+        pulls: sim.pulls,
+        pts: pts,
+        history: sim.history.slice(0, HIST_CAP),
+        draws: (sim.draws || []).slice(0, DRAW_CAP),
+        firstPickupAt: sim.firstPickupAt,
+        simOwned: sim.simOwned,
+        tierCounts: sim.tierCounts
+      }));
+    } catch (e) {}
+  }
+
+  function syncPtsUi() {
+    document.getElementById("pts").textContent = String(pts);
+    document.getElementById("ptsAfter").textContent = String(pts);
+  }
+  syncPtsUi();
+
+  function useCollectionsOwned() {
+    var el = document.getElementById("optCollections");
+    return !el || el.checked;
+  }
+
+  function skipAnimPreferred() {
+    var el = document.getElementById("optSkipAnim");
+    return !!(el && el.checked);
+  }
+
+  var OPTS_KEY = "ggen_gacha_sim_opts_v1";
+  function loadOpts() {
+    try {
+      return JSON.parse(localStorage.getItem(OPTS_KEY) || "{}") || {};
+    } catch (e) {
+      return {};
+    }
+  }
+  function saveOpts() {
+    try {
+      localStorage.setItem(OPTS_KEY, JSON.stringify({
+        collections: useCollectionsOwned(),
+        skipAnim: skipAnimPreferred()
+      }));
+    } catch (e) {}
+  }
+  (function restoreOpts() {
+    var o = loadOpts();
+    var c = document.getElementById("optCollections");
+    var s = document.getElementById("optSkipAnim");
+    if (c && typeof o.collections === "boolean") c.checked = o.collections;
+    if (s && typeof o.skipAnim === "boolean") s.checked = o.skipAnim;
+  })();
+
+  function dbOrigin() {
+    if (location.protocol === "http:" || location.protocol === "https:") {
+      return location.origin;
+    }
+    return "https://ggendb.up.railway.app";
+  }
+  function detailUrl(kind, id) {
+    if (!id) return "";
+    var path = (kind === "supp" || kind === "supporter" ? "/s/" : "/u/") + encodeURIComponent(String(id));
+    return dbOrigin() + path;
+  }
+  function openDbDetail(kind, id) {
+    var url = detailUrl(kind, id);
+    if (!url) return;
+    /* Same tab — navigate like /u/{id} or /s/{id} */
+    location.assign(url);
+  }
+
+  function collectionsUnitOwned(uid) {
+    if (!uid) return false;
+    try {
+      var o = JSON.parse(localStorage.getItem(COL_KEY) || "{}");
+      var u = (o.units || {})[uid];
+      return u != null && u !== false && u !== "" && Number(u) !== -1;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function isAlreadyOwned(uid) {
+    if (!uid) return false;
+    if (sim.simOwned[uid]) return true;
+    if (useCollectionsOwned() && collectionsUnitOwned(uid)) return true;
+    return false;
+  }
+
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function formatCardChip(c, idx) {
+    var rar = (c.rarity || "").toLowerCase();
+    var cls = rar === "ur" ? "hit-ur" : rar === "ssr" ? "hit-ssr" : rar === "sr" ? "hit-sr" : "hit-r";
+    var name = rar === "ur" || rar === "ssr" ? (c.name || c.id || rar.toUpperCase()) : rar.toUpperCase();
+    var kindCls = c.kind === "supp" ? " hit-supp" : "";
+    if (rar === "ur" || rar === "ssr") {
+      return '<span class="hit-chip ' + cls + kindCls + '" data-draw-at="' + (c.at || "") +
+        '" data-draw-id="' + esc(c.id) + '">' + esc(name) + "</span>";
+    }
+    return '<span class="' + cls + kindCls + '">' + esc(name) + "</span>";
+  }
+
+  function highRarityHits() {
+    return (sim.draws || []).filter(function (c) {
+      return c.rarity === "ur" || c.rarity === "ssr";
+    });
+  }
+
+  function lookupDrawCard(at, id) {
+    var list = sim.draws || [];
+    for (var i = 0; i < list.length; i++) {
+      var c = list[i];
+      if (String(c.at) === String(at) && (!id || String(c.id) === String(id))) return c;
+    }
+    for (var j = 0; j < list.length; j++) {
+      if (String(list[j].id) === String(id) && (list[j].rarity === "ur" || list[j].rarity === "ssr")) {
+        return list[j];
+      }
+    }
+    return null;
+  }
+
+  function enrichArtFromPool(card) {
+    if (!card) return card;
+    if (card.art && card.porY) return card;
+    var buckets = card.kind === "supp" ? ["URS", "SSRS"] : ["URU", "SSRU", "SR", "R"];
+    for (var bi = 0; bi < buckets.length; bi++) {
+      var list = POOL[buckets[bi]] || [];
+      for (var i = 0; i < list.length; i++) {
+        if (String(list[i].id) === String(card.id)) {
+          card.art = card.art || list[i].art || "";
+          card.role = card.role || list[i].role || "";
+          card.charArt = card.charArt || list[i].charArt || "";
+          card.porY = card.porY || list[i].por_y || "";
+          return card;
+        }
+      }
+    }
+    return card;
+  }
+
+  var hoverPop = document.getElementById("cardHoverPop");
+  function hideCardHover() {
+    if (!hoverPop) return;
+    hoverPop.hidden = true;
+    hoverPop.setAttribute("aria-hidden", "true");
+    hoverPop.innerHTML = "";
+  }
+  function showCardHover(card, clientX, clientY) {
+    if (!hoverPop || !card) return;
+    card = enrichArtFromPool(card);
+    if (!card.art && !card.name) return;
+    hoverPop.innerHTML = layerCard({
+      rarity: card.rarity,
+      kind: card.kind,
+      art: card.art,
+      role: card.role,
+      charArt: card.charArt,
+      porY: card.porY,
+      isNew: !!card.isNew,
+      fromPull: false,
+      delay: 0
+    });
+    hoverPop.hidden = false;
+    hoverPop.setAttribute("aria-hidden", "false");
+    var pad = 16;
+    var w = 280;
+    var h = 160;
+    var x = Math.min(window.innerWidth - w / 2 - pad, Math.max(w / 2 + pad, clientX));
+    var y = Math.max(h + pad, clientY - 8);
+    hoverPop.style.left = x + "px";
+    hoverPop.style.top = y + "px";
+  }
+
+  function bindHitHover(root) {
+    if (!root) return;
+    root.querySelectorAll("[data-draw-at]").forEach(function (el) {
+      el.addEventListener("mouseenter", function (ev) {
+        var card = lookupDrawCard(el.getAttribute("data-draw-at"), el.getAttribute("data-draw-id"));
+        showCardHover(card, ev.clientX, ev.clientY);
+      });
+      el.addEventListener("mousemove", function (ev) {
+        if (hoverPop && !hoverPop.hidden) {
+          var pad = 16;
+          var w = 280;
+          var x = Math.min(window.innerWidth - w / 2 - pad, Math.max(w / 2 + pad, ev.clientX));
+          var y = Math.max(170, ev.clientY - 8);
+          hoverPop.style.left = x + "px";
+          hoverPop.style.top = y + "px";
+        }
+      });
+      el.addEventListener("mouseleave", hideCardHover);
+      el.addEventListener("click", function (ev) {
+        ev.preventDefault();
+        hideCardHover();
+        var card = lookupDrawCard(el.getAttribute("data-draw-at"), el.getAttribute("data-draw-id"));
+        if (card && card.id) openDbDetail(card.kind, card.id);
+      });
+    });
+  }
+
+  function renderSession() {
+    document.getElementById("sessPulls").textContent = String(sim.pulls);
+    var pickKeys = Object.keys(sim.firstPickupAt);
+    var pickupEl = document.getElementById("sessPickup");
+    if (!pickKeys.length) {
+      pickupEl.textContent = "First pickup: — (none yet this session)";
+    } else {
+      pickupEl.innerHTML = "First pickup @ pulls: " + pickKeys.map(function (id) {
+        var n = sim.firstPickupAt[id];
+        var name = id;
+        ["URU", "SSRU"].forEach(function (b) {
+          (POOL[b] || []).forEach(function (it) {
+            if (String(it.id) === String(id)) name = it.name || id;
+          });
+        });
+        return "<b>" + esc(name) + "</b> @" + n;
+      }).join(" · ");
+    }
+    var tc = sim.tierCounts || { ur: 0, ssr: 0, sr: 0, r: 0 };
+    var totalCards = tc.ur + tc.ssr + tc.sr + tc.r;
+    function setTier(key, pctEl, cntEl) {
+      var n = tc[key] || 0;
+      var pct = totalCards > 0 ? ((n / totalCards) * 100) : null;
+      document.getElementById(pctEl).textContent = pct == null ? "—" : (pct.toFixed(1) + "%");
+      document.getElementById(cntEl).textContent = n + " / " + totalCards;
+    }
+    setTier("ur", "statUrPct", "statUrCnt");
+    setTier("ssr", "statSsrPct", "statSsrCnt");
+    setTier("sr", "statSrPct", "statSrCnt");
+    setTier("r", "statRPct", "statRCnt");
+
+    var hits = highRarityHits();
+    var urList = document.getElementById("sessUrList");
+    var urHead = document.querySelector("#sessUrHits > strong");
+    var urN = hits.filter(function (c) { return c.rarity === "ur"; }).length;
+    var ssrN = hits.filter(function (c) { return c.rarity === "ssr"; }).length;
+    if (urHead) urHead.textContent = "UR / SSR hits (" + urN + " UR · " + ssrN + " SSR)";
+    if (!hits.length) {
+      urList.innerHTML = '<li class="ur-empty">No UR/SSR yet — hover names after pulls to preview cards.</li>';
+    } else {
+      urList.innerHTML = hits.map(function (c) {
+        var rarLabel = (c.rarity || "").toUpperCase();
+        return '<li class="hit-row" data-draw-at="' + c.at + '" data-draw-id="' + esc(c.id) +
+          '" title="Hover preview · click opens DB detail">' +
+          "#" + c.at + " · <b class=\"hit-" + c.rarity + "\">" + esc(c.name) + "</b>" +
+          '<span class="ur-kind">' + rarLabel + (c.kind === "supp" ? " · supporter" : " · unit") + "</span>" +
+          (c.pickup ? " · pickup" : "") +
+          (c.isNew ? ' · <span class="ur-new">New</span>' : "") +
+          "</li>";
+      }).join("");
+    }
+
+    var log = document.getElementById("sessLog");
+    log.innerHTML = sim.history.map(function (h) {
+      var cards = Array.isArray(h.cards) ? h.cards : null;
+      var body;
+      if (cards && cards.length) {
+        body = cards.map(formatCardChip).join(" · ");
+      } else {
+        body = esc(h.summary || "");
+      }
+      return "<li>#" + h.at + " · " + h.n + "p · " + body +
+        (h.firstPickup ? " · <b>first " + esc(h.firstPickup) + "</b>" : "") + "</li>";
+    }).join("") || "<li>No pulls yet.</li>";
+
+    bindHitHover(urList);
+    bindHitHover(log);
+  }
+  renderSession();
+
+  document.getElementById("sessReset").onclick = function () {
+    sim = emptySim();
+    pts = 0;
+    syncPtsUi();
+    saveSim();
+    renderSession();
+    hideCardHover();
+    document.getElementById("log").textContent = "Session reset.";
+  };
+  document.getElementById("optCollections").onchange = function () {
+    saveOpts();
+    document.getElementById("log").textContent =
+      useCollectionsOwned()
+        ? "Collections owned (read-only) → skip New if already possessed on /collections."
+        : "New uses sim session only (ignores /collections owned).";
+  };
+  document.getElementById("optSkipAnim").onchange = function () {
+    saveOpts();
+    document.getElementById("log").textContent =
+      skipAnimPreferred() ? "Pull animation off — instant results." : "Pull animation on.";
+  };
+
+  document.getElementById("strip").addEventListener("click", function (ev) {
+    var card = ev.target.closest(".result-card");
+    if (!card) return;
+    var id = card.getAttribute("data-id");
+    var kind = card.getAttribute("data-kind") || "unit";
+    if (id) openDbDetail(kind, id);
+  });
+  document.getElementById("strip").addEventListener("keydown", function (ev) {
+    if (ev.key !== "Enter" && ev.key !== " ") return;
+    var card = ev.target.closest(".result-card");
+    if (!card) return;
+    ev.preventDefault();
+    var id = card.getAttribute("data-id");
+    var kind = card.getAttribute("data-kind") || "unit";
+    if (id) openDbDetail(kind, id);
+  });
+
+  function pickWeighted(rows) {
+    var total = 0;
+    for (var i = 0; i < rows.length; i++) total += rows[i][1];
+    if (total <= 0) return rows[0] && rows[0][0];
+    var r = Math.random() * total;
+    for (var j = 0; j < rows.length; j++) {
+      r -= rows[j][1];
+      if (r <= 0) return rows[j][0];
+    }
+    return rows[rows.length - 1][0];
+  }
+
+  function pickItem(bucket) {
+    var list = POOL[bucket] || [];
+    if (!list.length) return { name: bucket, art: "", role: "", charArt: "", id: "" };
+    if (list[0].w) {
+      var rows = list.map(function (it, idx) { return [idx, it.w]; });
+      return list[pickWeighted(rows)];
+    }
+    return list[(Math.random() * list.length) | 0];
+  }
+
+  function unitKey(item) {
+    return String(item.id || item.art || item.name || "");
+  }
+
+  function roll(n) {
+    var out = [];
+    var seenThisPull = {};
+    var pullsBefore = sim.pulls;
+    for (var i = 0; i < n; i++) {
+      var table = n === 10 && i === 9 ? TENTH : NORMAL;
+      var bucket = pickWeighted(table);
+      var item = pickItem(bucket);
+      var rarity = bucket.indexOf("UR") === 0 ? "ur" : bucket.indexOf("SSR") === 0 ? "ssr" : bucket === "SR" ? "sr" : "r";
+      var kind = (bucket === "URS" || bucket === "SSRS") ? "supp" : "unit";
+      var uid = unitKey(item);
+      var pullIndex = pullsBefore + i + 1;
+      var canNew = kind === "unit" && (rarity === "ur" || rarity === "ssr") && !!item.pickup && !!item.charArt;
+      var isNew = canNew && uid && !isAlreadyOwned(uid) && !seenThisPull[uid];
+      if (isNew) {
+        seenThisPull[uid] = true;
+        if (sim.firstPickupAt[uid] == null) sim.firstPickupAt[uid] = pullIndex;
+      }
+      out.push({
+        id: uid,
+        name: item.name,
+        role: item.role || "",
+        art: item.art || "",
+        charArt: item.charArt || "",
+        porY: item.por_y || "",
+        limited: !!item.limited,
+        rarity: rarity,
+        kind: kind,
+        pickup: !!item.pickup,
+        isNew: isNew,
+        promo: rarity === "ur"
+      });
+    }
+    Object.keys(seenThisPull).forEach(function (id) { sim.simOwned[id] = true; });
+    return out;
+  }
+
+  function bestOf(rows) {
+    if (rows.some(function (r) { return r.rarity === "ur"; })) return "ur";
+    if (rows.some(function (r) { return r.rarity === "ssr"; })) return "ssr";
+    return "low";
+  }
+
+  function wait(ms, id) {
+    return new Promise(function (resolve) {
+      if (skip || id !== runId) { resolve(); return; }
+      timer = setTimeout(function () { resolve(); }, ms);
+    });
+  }
+
+  function render343(rows) {
+    /* Pad / trim to 10 for classic layout when n===10; otherwise wrap flex. */
+    var strip = document.getElementById("strip");
+    function cardHtml(r, delay) {
+      return '<div class="result-card" role="link" tabindex="0" title="Open detail" data-kind="' +
+        (r.kind === "supp" ? "supp" : "unit") + '" data-id="' + esc(r.id || "") + '">' +
+        layerCard({
+          rarity: r.rarity, kind: r.kind, art: r.art, role: r.role,
+          charArt: r.charArt, porY: r.porY, isNew: r.isNew, fromPull: true, delay: delay
+        }) + "</div>";
+    }
+    if (rows.length === 10) {
+      var rows343 = [rows.slice(0, 3), rows.slice(3, 7), rows.slice(7, 10)];
+      var cls = ["strip-row strip-row--3", "strip-row strip-row--4", "strip-row strip-row--3b"];
+      strip.className = "strip-343";
+      strip.innerHTML = rows343.map(function (chunk, ri) {
+        return '<div class="' + cls[ri] + '">' + chunk.map(function (r, i) {
+          return cardHtml(r, (ri * 4 + i) * 50);
+        }).join("") + "</div>";
+      }).join("");
+    } else {
+      strip.className = "strip-343";
+      strip.innerHTML = '<div class="strip-row">' + rows.map(function (r, i) {
+        return cardHtml(r, i * 60);
+      }).join("") + "</div>";
+    }
+  }
+
+  async function play(n) {
+    var id = ++runId;
+    skip = false;
+    lastN = n;
+    var rows = roll(n);
+    lastRows = rows;
+    var firstNames = rows.filter(function (r) { return r.isNew; }).map(function (r) { return r.name || r.id; });
+    sim.pulls += n;
+    if (!sim.tierCounts) sim.tierCounts = { ur: 0, ssr: 0, sr: 0, r: 0 };
+    rows.forEach(function (r) {
+      var k = r.rarity === "ur" ? "ur" : r.rarity === "ssr" ? "ssr" : r.rarity === "sr" ? "sr" : "r";
+      sim.tierCounts[k] = (sim.tierCounts[k] || 0) + 1;
+    });
+    if (!sim.draws) sim.draws = [];
+    var pullsBefore = sim.pulls - n;
+    var cardRecords = rows.map(function (r, i) {
+      return {
+        at: pullsBefore + i + 1,
+        id: r.id || "",
+        name: r.name || r.id || "?",
+        rarity: r.rarity,
+        kind: r.kind,
+        art: r.art || "",
+        role: r.role || "",
+        charArt: r.charArt || "",
+        porY: r.porY || "",
+        pickup: !!r.pickup,
+        isNew: !!r.isNew
+      };
+    });
+    /* newest pull index first */
+    sim.draws = cardRecords.slice().reverse().concat(sim.draws);
+    if (sim.draws.length > DRAW_CAP) sim.draws.length = DRAW_CAP;
+    sim.history.unshift({
+      at: sim.pulls,
+      n: n,
+      summary: rows.map(function (r) { return r.rarity.toUpperCase(); }).join(" "),
+      cards: cardRecords,
+      firstPickup: firstNames[0] || ""
+    });
+    if (sim.history.length > HIST_CAP) sim.history.length = HIST_CAP;
+    pts = pts + n;
+    syncPtsUi();
+    saveSim();
+    renderSession();
+    var best = bestOf(rows);
+    var stage = document.getElementById("stage");
+    stage.className = "stage on" + (best === "ur" ? " is-ur" : best === "ssr" ? " is-ssr" : "");
+    stage.setAttribute("aria-hidden", "false");
+    /* Sayla = featured/limited unit or supporter in this pull; else Amuro */
+    document.getElementById("cutLabel").textContent =
+      rows.some(function (r) { return r.limited || r.pickup; }) ? "SAYLA" : "AMURO";
+    render343(rows);
+
+    var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!reduced && !skipAnimPreferred()) {
+      await wait(280, id); if (id !== runId) return;
+      stage.classList.add("is-open");
+      await wait(720, id); if (id !== runId) return;
+      stage.classList.add("show-op");
+      await wait(best === "ur" ? 900 : 640, id); if (id !== runId) return;
+      stage.classList.remove("show-op");
+      if (best !== "low") {
+        stage.classList.add("show-cut");
+        await wait(700, id); if (id !== runId) return;
+        stage.classList.remove("show-cut");
+      }
+      await wait(280, id); if (id !== runId) return;
+    }
+    stage.classList.add("is-open", "show-results");
+    var ur = rows.filter(function (r) { return r.rarity === "ur"; }).length;
+    var fp = firstNames.length ? " · first New: " + firstNames.join(", ") : "";
+    document.getElementById("log").textContent =
+      n + " pull" + (n > 1 ? "s" : "") + " · total " + sim.pulls + " · UR " + ur + " · best " + best.toUpperCase() + fp +
+      (skipAnimPreferred() ? " · anim off" : "");
+  }
+
+  function closeStage() {
+    runId += 1;
+    skip = true;
+    clearTimeout(timer);
+    var stage = document.getElementById("stage");
+    stage.className = "stage";
+    stage.setAttribute("aria-hidden", "true");
+  }
+
+  function loadImg(src) {
+    return new Promise(function (resolve) {
+      if (!src) { resolve(null); return; }
+      var im = new Image();
+      im.crossOrigin = "anonymous";
+      im.onload = function () { resolve(im); };
+      im.onerror = function () { resolve(null); };
+      im.src = src;
+    });
+  }
+
+  async function shareResultStrip() {
+    var btn = document.getElementById("shareStrip");
+    if (btn) { btn.disabled = true; btn.textContent = "Saving…"; }
+    try {
+      var cards = lastRows.length ? lastRows : [];
+      if (!cards.length) throw new Error("No results to share");
+      var cw = 446, ch = 219, gap = 16, pad = 28;
+      var cols = cards.length <= 3 ? cards.length : cards.length <= 7 ? 4 : 5;
+      var rowsN = Math.ceil(cards.length / cols);
+      var W = pad * 2 + cols * cw + (cols - 1) * gap;
+      var H = pad * 2 + 48 + rowsN * ch + (rowsN - 1) * gap + 36;
+      var canvas = document.createElement("canvas");
+      canvas.width = W;
+      canvas.height = H;
+      var ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#070b14";
+      ctx.fillRect(0, 0, W, H);
+      ctx.fillStyle = "#e8eef8";
+      ctx.font = "600 28px Teko, Segoe UI, sans-serif";
+      ctx.fillText("Unit Assembly Results · sim", pad, pad + 28);
+      ctx.fillStyle = "#8ea0bb";
+      ctx.font = "12px Segoe UI, sans-serif";
+      ctx.fillText("Official published rates · not affiliated with Bandai Namco · pulls " + sim.pulls, pad, pad + 48);
+      for (var i = 0; i < cards.length; i++) {
+        var r = cards[i];
+        var col = i % cols;
+        var row = (i / cols) | 0;
+        var x = pad + col * (cw + gap);
+        var y = pad + 60 + row * (ch + gap);
+        var art = await loadImg(artUrl(r.art));
+        ctx.fillStyle = "#121a28";
+        ctx.fillRect(x, y, cw, ch);
+        if (art) {
+          /* Collections Regular drawCoverArt15 — cover + upper bias */
+          var sc = Math.max(cw / art.width, ch / art.height);
+          var sw = cw / sc, sh = ch / sc;
+          var sx = (art.width - sw) / 2;
+          var sy = Math.max(0, (art.height - sh) * 0.28);
+          ctx.drawImage(art, sx, sy, sw, sh, x, y, cw, ch);
+        }
+        ctx.strokeStyle = r.rarity === "ur" ? "#00d9ff" : r.rarity === "ssr" ? "#ffd24a" : r.rarity === "sr" ? "#7eb6ff" : "#c48a5a";
+        ctx.lineWidth = 4;
+        ctx.strokeRect(x + 2, y + 2, cw - 4, ch - 4);
+        ctx.fillStyle = "#fff";
+        ctx.font = "700 18px Teko, sans-serif";
+        ctx.fillText((r.rarity || "").toUpperCase(), x + 12, y + 28);
+        if (r.isNew) {
+          ctx.fillStyle = "#f0a010";
+          ctx.fillRect(x + cw - 64, y + 8, 52, 20);
+          ctx.fillStyle = "#c41828";
+          ctx.font = "700 12px Segoe UI";
+          ctx.fillText("New", x + cw - 52, y + 22);
+        }
+      }
+      var blob = await new Promise(function (res, rej) {
+        canvas.toBlob(function (b) { b ? res(b) : rej(new Error("toBlob failed")); }, "image/png");
+      });
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url;
+      a.download = "ggendb-gacha-sim-" + sim.pulls + ".png";
+      a.click();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+      document.getElementById("log").textContent = "Saved result strip PNG.";
+    } catch (err) {
+      document.getElementById("log").textContent = "Share failed: " + (err && err.message ? err.message : err);
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = "Save Collections"; }
+    }
+  }
+
+  document.getElementById("one").onclick = function () { play(1); };
+  document.getElementById("ten").onclick = function () { play(10); };
+  document.getElementById("again").onclick = function () { play(lastN); };
+  document.getElementById("shareStrip").onclick = shareResultStrip;
+  document.getElementById("skip").onclick = function () {
+    skip = true;
+    clearTimeout(timer);
+    document.getElementById("stage").classList.add("is-open", "show-results");
+  };
+  document.getElementById("done").onclick = closeStage;
+})();
+</script>
+</body>
+</html>

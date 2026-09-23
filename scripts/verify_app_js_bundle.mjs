@@ -33,6 +33,8 @@ const REQUIRED_FUNCTIONS = [
   'renderModTable',
   'renderStageT',
   'renderItemShell',
+  'loadGachaSim',
+  'ensureGachaSimLoaded',
 ];
 
 const REQUIRED_CONSTS = ['TB_TRASH_ICON'];

@@ -1,0 +1,113 @@
+{# Gacha Sim panel — Unit Assembly pull simulator #}
+<div class="gacha-sim-root" id="gachaSimRoot">
+<div class="lobby" id="lobby">
+    <div class="shell">
+      <p class="kicker">GACHA SIM</p>
+      <h1>Unit Assembly Simulator</h1>
+      <p class="disclaimer" id="disclaimer">Sim only · rates = official published gasha proportion tables</p>
+      <aside class="gs-rotate-hint" id="gsRotateHint" hidden aria-hidden="true" role="status">
+        <div class="gs-rotate-art" aria-hidden="true">
+          <img class="gs-rotate-phone" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Gallery_Comics_Navi_Smartphone.webp{% else %}/static/images/UI/UI_Gallery_Comics_Navi_Smartphone.webp{% endif %}" alt="" width="72" height="72" decoding="async">
+          <img class="gs-rotate-arrow" src="{% if image_cdn %}{{ image_cdn }}/images/UI/UI_Gallery_Comics_RotationArrow_Active.webp{% else %}/static/images/UI/UI_Gallery_Comics_RotationArrow_Active.webp{% endif %}" alt="" width="40" height="40" decoding="async">
+        </div>
+        <p class="gs-rotate-copy" id="gsRotateCopy">Rotate to landscape for a better viewing</p>
+      </aside>
+      <div class="banner" id="banner" aria-hidden="true">
+        <img class="banner-logo" id="bannerLogo" alt="" decoding="async">
+      </div>
+      <div class="hud">
+        <div class="pity">Exchange pts <b id="pts">0</b></div>
+        <div class="actions">
+          <button class="pull btn-designline" type="button" id="one"><small>DRAW ONCE</small></button>
+          <button class="pull pull--ten btn-designline" type="button" id="ten"><small>DRAW 10</small></button>
+        </div>
+      </div>
+      <label class="opt-row" title="Optional: hide New if the unit is already owned on /collections. Off by default so first sim acquire always shows New + pilot.">
+        <input type="checkbox" id="optCollections">
+        Use Collections owned for New (read /collections — does not sync pulls onto that page)
+      </label>
+      <label class="opt-row" title="Skip Unit Assembly pull videos (sortie → cut-in → reveal) and jump to results.">
+        <input type="checkbox" id="optSkipAnim">
+        Skip pull cinematic (instant results)
+      </label>
+      <div class="session" id="sessionPanel">
+        <div class="session-head">
+          <strong>Session</strong>
+          <span>Total pulls <b id="sessPulls">0</b></span>
+          <div class="session-actions">
+            <button type="button" class="btn-designline btn-designline--session" id="sessSave" title="Save full session as PNG (all pulls, 5 sets per row)">
+              <small>SAVE</small><b>COLLECTIONS</b>
+            </button>
+            <button type="button" class="btn-designline btn-designline--session" id="sessReset" title="Clear session pulls and exchange pts">
+              <small>RESET</small><b>SESSION</b>
+            </button>
+          </div>
+        </div>
+        <div class="session-stats" id="sessStats" aria-label="Tier rates this session">
+          <div class="session-stats-totals" id="sessStatsTotals" hidden>
+            <div class="session-stat session-stat--ur session-stat--total">
+              <span class="tier"><img class="tier-icon" alt="UR" data-rarity="ur" width="28" height="28"></span>
+              <span class="pct" id="statTotalUrPct">—</span>
+              <span class="cnt" id="statTotalUrCnt">0</span>
+            </div>
+            <div class="session-stat session-stat--ssr session-stat--total">
+              <span class="tier"><img class="tier-icon" alt="SSR" data-rarity="ssr" width="28" height="28"></span>
+              <span class="pct" id="statTotalSsrPct">—</span>
+              <span class="cnt" id="statTotalSsrCnt">0</span>
+            </div>
+          </div>
+          <div class="session-stats-panes" id="sessStatsPanes">
+          <div class="session-stats-pane session-stats-pane--units" id="sessStatsUnits">
+            <div class="session-stats-label" id="sessStatsUnitsLbl" hidden>Units</div>
+            <div class="session-stats-grid" id="sessStatsUnitsGrid">
+              <div class="session-stat session-stat--ur"><span class="tier"><img class="tier-icon" alt="UR" data-rarity="ur" width="24" height="24"></span><span class="pct" id="statUrPct">—</span><span class="cnt" id="statUrCnt">0</span></div>
+              <div class="session-stat session-stat--ssr"><span class="tier"><img class="tier-icon" alt="SSR" data-rarity="ssr" width="24" height="24"></span><span class="pct" id="statSsrPct">—</span><span class="cnt" id="statSsrCnt">0</span></div>
+              <div class="session-stat session-stat--sr"><span class="tier"><img class="tier-icon" alt="SR" data-rarity="sr" width="24" height="24"></span><span class="pct" id="statSrPct">—</span><span class="cnt" id="statSrCnt">0</span></div>
+              <div class="session-stat session-stat--r"><span class="tier"><img class="tier-icon" alt="R" data-rarity="r" width="24" height="24"></span><span class="pct" id="statRPct">—</span><span class="cnt" id="statRCnt">0</span></div>
+            </div>
+          </div>
+          <div class="session-stats-pane session-stats-pane--supp" id="sessStatsSupp" hidden>
+            <div class="session-stats-label">Supporters</div>
+            <div class="session-stats-grid session-stats-grid--supp">
+              <div class="session-stat session-stat--ur"><span class="tier"><img class="tier-icon" alt="UR" data-rarity="ur" width="24" height="24"></span><span class="pct" id="statSuppUrPct">—</span><span class="cnt" id="statSuppUrCnt">0</span></div>
+              <div class="session-stat session-stat--ssr"><span class="tier"><img class="tier-icon" alt="SSR" data-rarity="ssr" width="24" height="24"></span><span class="pct" id="statSuppSsrPct">—</span><span class="cnt" id="statSuppSsrCnt">0</span></div>
+            </div>
+          </div>
+          </div>
+        </div>
+        <div class="session-ur-hits" id="sessUrHits" aria-label="UR and SSR hits this session">
+          <strong>UR / SSR hits</strong>
+          <ol id="sessUrList"><li class="ur-empty">No UR/SSR yet.</li></ol>
+        </div>
+        <p class="session-log-label">Every multi (hover UR/SSR = card · click = DB detail)</p>
+        <ol class="session-log" id="sessLog"></ol>
+        <div class="session-pickup" id="sessPickup">First pickup: —</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="cardHoverPop" class="card-hover-pop" hidden aria-hidden="true"></div>
+
+  <div class="stage" id="stage" aria-hidden="true">
+    <div class="sky"></div>
+    <div class="mist"></div>
+    <div class="op"><strong>作戦開始</strong></div>
+    <div class="cutin"><span id="cutLabel">AMURO</span></div>
+    <div class="hatch"><i></i><i></i></div>
+    <div class="results">
+      <h3 class="results-title">Unit Assembly Results</h3>
+      <div class="strip-343" id="strip"></div>
+      <div class="results-foot">
+        <div class="results-meta">
+          <div class="pity-line">Exchange pts <b id="ptsAfter">0</b></div>
+        </div>
+        <div class="results-actions">
+          <button type="button" class="btn-designline" id="shareStrip" title="Save this pull only as PNG">Save Collections</button>
+          <button type="button" class="btn-designline" id="done">Back</button>
+          <button type="button" class="btn-designline again" id="again">Assemble Again</button>
+        </div>
+      </div>
+    </div>
+    <button class="skip" type="button" id="skip">Skip</button>
+  </div>
+</div>

@@ -730,3 +730,61 @@ html.ggen-15 #panel-banner_timeline .bt-gacha-hub-card-title{
 @media(prefers-reduced-motion:reduce){
   .header-15-toggle{transition:none}
 }
+
+/* —— Classic optical match to Special Design ——
+   Teko (1.5) reads ~12–15% smaller than Classic FOTK/body at equal CSS px.
+   Special Design bumps with --g15-type-nudge; Classic scales chrome down so
+   both modes share the same perceived proportion. */
+html.ggen-classic{
+  --classic-type-scale:0.875; /* ≈ 1 / 1.14 */
+  --font-teko:Teko,var(--font-body);
+  --font-hud:Teko,var(--font-body);
+}
+html.ggen-classic[data-ui-lang="JA"],
+html.ggen-classic[data-ui-lang="JP"]{
+  --font-hud:var(--font-body);
+}
+html.ggen-classic[data-ui-lang="TW"],
+html.ggen-classic[data-ui-lang="HK"]{
+  --font-hud:var(--font-body);
+}
+html.ggen-classic .nav-tab{
+  font-size:calc(18px * var(--classic-type-scale));
+}
+html.ggen-classic .brand-text{
+  font-size:clamp(
+    calc(10px * var(--classic-type-scale)),
+    calc((1.5vw + 6px) * var(--classic-type-scale)),
+    calc(16px * var(--classic-type-scale))
+  );
+}
+html.ggen-classic .brand-sub{
+  font-size:clamp(
+    calc(8px * var(--classic-type-scale)),
+    calc((1.1vw + 4px) * var(--classic-type-scale)),
+    calc(11px * var(--classic-type-scale))
+  );
+}
+html.ggen-classic .main-content .section-title{
+  font-size:calc(19px * var(--classic-type-scale));
+}
+html.ggen-classic .header-15-toggle{
+  font-size:calc(16px * var(--classic-type-scale));
+}
+@media(max-width:480px){
+  html.ggen-classic .nav-tab{
+    font-size:calc(14px * var(--classic-type-scale));
+  }
+  html.ggen-classic .brand-text{
+    font-size:clamp(
+      calc(9px * var(--classic-type-scale)),
+      calc((2.2vw + 4px) * var(--classic-type-scale)),
+      calc(13px * var(--classic-type-scale))
+    );
+  }
+}
+@media(max-width:360px){
+  html.ggen-classic .nav-tab{
+    font-size:calc(13px * var(--classic-type-scale));
+  }
+}

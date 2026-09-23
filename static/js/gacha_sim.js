@@ -1,0 +1,1788 @@
+window.GgenGachaSim = (function () {
+  function uiLang() {
+    try {
+      var l = (window.S && S.lang) || "EN";
+      if (l === "JP") return "JA";
+      return l;
+    } catch (e) {
+      return "EN";
+    }
+  }
+
+  function tt(key, vars) {
+    var s = "";
+    try {
+      if (typeof window.t === "function") s = window.t(key);
+    } catch (e) {}
+    if (!s || s === key) {
+      try {
+        var lang = uiLang();
+        var pack = (window.T && (T[lang] || T.EN)) || {};
+        s = pack[key] || (T && T.EN && T.EN[key]) || key;
+      } catch (e2) {
+        s = key;
+      }
+    }
+    if (vars && typeof s === "string") {
+      Object.keys(vars).forEach(function (k) {
+        s = s.split("{" + k + "}").join(String(vars[k]));
+      });
+    }
+    return s;
+  }
+
+  function logoLangSuffix() {
+    var l = uiLang();
+    if (l === "JA") return "ja";
+    if (l === "TW") return "tw";
+    if (l === "HK") return "hk";
+    return "en";
+  }
+
+  function resolveGashaId() {
+    try {
+      if (window.S && S.gashaSimGashaId) return String(S.gachaSimGashaId).trim();
+    } catch (e) {}
+    try {
+      var m = String(location.pathname || "").match(/\/gacha-sim\/([^/]+)/);
+      if (m && m[1]) return decodeURIComponent(m[1]);
+      var q = new URLSearchParams(location.search);
+      return String(q.get("gasha") || q.get("gasha_id") || "").trim();
+    } catch (e2) {}
+    return "";
+  }
+
+  function exportPageUrl() {
+    var gid = resolveGashaId() || (poolMeta && poolMeta.gasha_id) || "";
+    var base = "https://ggendb.up.railway.app/gacha-sim";
+    return gid ? base + "/" + encodeURIComponent(gid) : base;
+  }
+
+  function onTabShown() {
+    var gid = resolveGashaId();
+    if (gid && window.S) S.gachaSimGashaId = gid;
+    ensureTekoFont();
+    applyLang();
+    syncRotateHint();
+    if (gid !== String(poolMeta.gasha_id || "") || poolMeta.source === "pending" || poolMeta.lang !== uiLang()) {
+      loadPublishedPool(gid);
+    }
+    return Promise.resolve(window.GgenGachaSim);
+  }
+
+  /** Gacha HUD uses Teko (1.5 Special Design) even in Classic — load if 1.5 toggle did not. */
+  function ensureTekoFont() {
+    try {
+      if (document.getElementById("ggen15Fonts") || document.getElementById("gachaSimTekoFont")) return;
+      var l = document.createElement("link");
+      l.id = "gachaSimTekoFont";
+      l.rel = "stylesheet";
+      l.href = "https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&display=swap";
+      l.media = "print";
+      l.onload = function () { this.media = "all"; };
+      document.head.appendChild(l);
+    } catch (e) {}
+  }
+
+  function syncRotateHint() {
+    var el = document.getElementById("gsRotateHint");
+    if (!el) return;
+    var narrow = false;
+    var portrait = false;
+    try {
+      narrow = window.matchMedia("(max-width: 900px)").matches;
+      portrait = window.matchMedia("(orientation: portrait)").matches;
+    } catch (e) {
+      narrow = window.innerWidth <= 900;
+      portrait = window.innerHeight >= window.innerWidth;
+    }
+    var show = narrow && portrait;
+    el.hidden = !show;
+    el.setAttribute("aria-hidden", show ? "false" : "true");
+  }
+
+  function applyLang() {
+    var root = document.getElementById("gachaSimRoot");
+    if (!root) return;
+    var setTxt = function (sel, text) {
+      var el = root.querySelector(sel);
+      if (el) el.textContent = text;
+    };
+    var setHtml = function (sel, html) {
+      var el = root.querySelector(sel);
+      if (el) el.innerHTML = html;
+    };
+    setTxt(".kicker", tt("gs_kicker"));
+    setTxt(".shell > h1", tt("gs_title"));
+    setTxt("#disclaimer", tt("gs_disclaimer"));
+    setTxt("#gsRotateCopy", tt("gs_rotate_hint"));
+    var rot = document.getElementById("gsRotateHint");
+    if (rot) rot.setAttribute("aria-label", tt("gs_rotate_hint_aria"));
+    var pity = root.querySelector(".hud .pity");
+    if (pity) {
+      var pts = pity.querySelector("#pts");
+      var n = pts ? pts.textContent : "0";
+      pity.innerHTML = tt("gs_exchange_pts") + " <b id=\"pts\">" + n + "</b>";
+    }
+    var one = document.getElementById("one");
+    if (one) one.innerHTML = "<small>" + tt("gs_pull_once") + "</small>";
+    var ten = document.getElementById("ten");
+    if (ten) ten.innerHTML = "<small>" + tt("gs_pull_ten") + "</small>";
+    var optCol = root.querySelector("label.opt-row[for], label.opt-row");
+    var optRows = root.querySelectorAll("label.opt-row");
+    if (optRows[0]) {
+      var inp0 = optRows[0].querySelector("input");
+      optRows[0].childNodes.forEach(function (n) {
+        if (n.nodeType === 3 && String(n.textContent || "").trim()) n.textContent = " " + tt("gs_opt_collections");
+      });
+      if (!inp0) {/* keep */}
+      // Rebuild label text safely
+      var c0 = optRows[0].querySelector("input");
+      if (c0) {
+        optRows[0].innerHTML = "";
+        optRows[0].appendChild(c0);
+        optRows[0].appendChild(document.createTextNode(" " + tt("gs_opt_collections")));
+      }
+    }
+    if (optRows[1]) {
+      var c1 = optRows[1].querySelector("input");
+      if (c1) {
+        optRows[1].innerHTML = "";
+        optRows[1].appendChild(c1);
+        optRows[1].appendChild(document.createTextNode(" " + tt("gs_opt_skip_anim")));
+      }
+    }
+    var sessHead = root.querySelector(".session-head strong");
+    if (sessHead) sessHead.textContent = tt("gs_session");
+    var sessPullWrap = root.querySelector(".session-head > span");
+    if (sessPullWrap) {
+      var sp = sessPullWrap.querySelector("#sessPulls");
+      var sn = sp ? sp.textContent : "0";
+      sessPullWrap.innerHTML = tt("gs_total_pulls") + " <b id=\"sessPulls\">" + sn + "</b>";
+    }
+    var sessSave = document.getElementById("sessSave");
+    if (sessSave) sessSave.innerHTML = "<small>" + tt("gs_save") + "</small><b>" + tt("gs_collections_btn") + "</b>";
+    var sessReset = document.getElementById("sessReset");
+    if (sessReset) sessReset.innerHTML = "<small>" + tt("gs_reset") + "</small><b>" + tt("gs_session_btn") + "</b>";
+    var unitsLbl = document.getElementById("sessStatsUnitsLbl");
+    if (unitsLbl) unitsLbl.textContent = tt("tab_unit");
+    var suppLbl = root.querySelector(".session-stats-pane--supp .session-stats-label");
+    if (suppLbl) suppLbl.textContent = tt("gs_supp_label");
+    var urHits = root.querySelector(".session-ur-hits > strong");
+    if (urHits) urHits.textContent = tt("gs_ur_ssr_hits");
+    setTxt(".session-log-label", tt("gs_every_multi"));
+    setTxt(".results-title", tt("gs_results_title"));
+    var pityAfter = root.querySelector(".results-meta .pity-line");
+    if (pityAfter) {
+      var pa = pityAfter.querySelector("#ptsAfter");
+      var pn = pa ? pa.textContent : "0";
+      pityAfter.innerHTML = tt("gs_exchange_pts") + " <b id=\"ptsAfter\">" + pn + "</b>";
+    }
+    var share = document.getElementById("shareStrip");
+    if (share) share.textContent = tt("gs_save_collections");
+    var done = document.getElementById("done");
+    if (done) done.textContent = tt("gs_back");
+    var again = document.getElementById("again");
+    if (again) again.textContent = tt("gs_assemble_again");
+    var skipBtn = document.getElementById("skip");
+    if (skipBtn) skipBtn.textContent = tt("gs_skip");
+    var op = root.querySelector(".op strong");
+    if (op) op.textContent = tt("gs_sortie");
+    if (typeof renderSession === "function") {
+      try { renderSession(); } catch (e) {}
+    }
+    // Refresh banner logo locale
+    if (poolMeta && poolMeta.logo) {
+      var logoEl = document.getElementById("bannerLogo");
+      if (logoEl && poolMeta.logo) {
+        logoEl.src = CDN + "Gasha/" + poolMeta.logo + "_" + logoLangSuffix() + ".webp";
+      }
+    }
+  }
+
+  function onLangChange() {
+    applyLang();
+    var gid = resolveGashaId() || (poolMeta && poolMeta.gasha_id) || "";
+    loadPublishedPool(gid);
+  }
+
+  var CDN = (function () {
+    try {
+      if (window.__GGEN_IMAGE_CDN__ && window.__GGEN_GAME_IMAGES_USE_CDN__ !== false) {
+        return String(window.__GGEN_IMAGE_CDN__).replace(/\/?$/, '/') + 'images/';
+      }
+    } catch (e) {}
+    return "https://cdn.jsdelivr.net/gh/zh7tcm9fmv-cloud/ggen_db_images@main/images/";
+  })();
+  var GS = CDN + "UI/gasha_sim/";
+  var LOCAL = "/static/gacha_sim/";
+  var REFS = "/static/gacha_sim/refs/";
+  /* BromideHeightIndex → object-position Y (face-first; H2 is catalog majority). */
+  var POR_Y_BY_HEIGHT = { "0": "8%", "1": "12%", "2": "14%", "3": "24%", "4": "34%", "5": "44%" };
+  function porYFromItem(item) {
+    if (!item) return "14%";
+    var h = item.bromide_height != null ? item.bromide_height : item.bromideHeight;
+    if (h != null && h !== "" && POR_Y_BY_HEIGHT[String(h)] != null) {
+      return POR_Y_BY_HEIGHT[String(h)];
+    }
+    var y = String(item.por_y || item.porY || "").trim();
+    return y || "14%";
+  }
+
+  function findPoolItemById(id) {
+    var sid = String(id || "");
+    if (!sid) return null;
+    var keys = Object.keys(POOL);
+    for (var i = 0; i < keys.length; i++) {
+      var list = POOL[keys[i]] || [];
+      for (var j = 0; j < list.length; j++) {
+        if (String(list[j].id || "") === sid) return list[j];
+      }
+    }
+    return null;
+  }
+
+  function resolvePorY(card) {
+    if (!card) return "14%";
+    var fromPool = card.id ? findPoolItemById(card.id) : null;
+    if (fromPool) {
+      return porYFromItem({
+        bromide_height: fromPool.bromide_height != null ? fromPool.bromide_height : card.bromide_height,
+        bromideHeight: fromPool.bromideHeight != null ? fromPool.bromideHeight : card.bromideHeight,
+        por_y: fromPool.por_y || card.por_y || card.porY,
+        porY: fromPool.porY || card.porY || card.por_y
+      });
+    }
+    return porYFromItem(card);
+  }
+
+  /* Browse /c+/u role icons (Attack / Durability / Support) — not Melee/Ranged */
+  /* Unit role icons only — never use Support role for Supporters (separate card kind) */
+  var ROLE = {
+    Attack: CDN + "UI/UI_Common_TypeIcon_Attack_M.webp",
+    Durability: CDN + "UI/UI_Common_TypeIcon_Defense_M.webp",
+    Defense: CDN + "UI/UI_Common_TypeIcon_Defense_M.webp",
+    Support: CDN + "UI/UI_Common_TypeIcon_Support_M.webp"
+  };
+  var RARITY_ICON = {
+    r: CDN + "UI/UI_Common_RarityIcon_R.webp",
+    sr: CDN + "UI/UI_Common_RarityIcon_SR.webp",
+    ssr: CDN + "UI/UI_Common_RarityIcon_SSR.webp",
+    ur: CDN + "UI/UI_Common_RarityIcon_UR.webp"
+  };
+  (function wireSessionTierIcons() {
+    var root = document.getElementById("sessionPanel") || document;
+    root.querySelectorAll(".tier-icon[data-rarity]").forEach(function (img) {
+      var r = String(img.getAttribute("data-rarity") || "").toLowerCase();
+      if (RARITY_ICON[r]) {
+        img.src = RARITY_ICON[r];
+        img.decoding = "async";
+      }
+    });
+  })();
+  var CHAR_BASE = {
+    r: CDN + "UI/UI_Common_Tmb_Square_R_Base.webp",
+    sr: CDN + "UI/UI_Common_Tmb_Square_SR_Base.webp",
+    ssr: CDN + "UI/UI_Common_Tmb_Square_SSR_Base.webp",
+    ur: CDN + "UI/UI_Common_Tmb_Square_UR_Base.webp"
+  };
+  var CHAR_FRAME = {
+    r: CDN + "UI/UI_Common_Tmb_Square_R_Frame.webp",
+    sr: CDN + "UI/UI_Common_Tmb_Square_SR_Frame.webp",
+    ssr: CDN + "UI/UI_Common_Tmb_Square_SSR_Frame.webp",
+    ur: CDN + "UI/UI_Common_Tmb_Square_UR_Frame.webp"
+  };
+  var SUPP_FRAME = {
+    ssr: {
+      /* Exact image.psdssr.psd Layers 7–10 — distinct pieces, no flip */
+      l: LOCAL + "psd_SSR_Frame_L.webp",
+      r: LOCAL + "psd_SSR_Frame_R.webp",
+      t: LOCAL + "psd_SSR_Frame_T.webp",
+      b: LOCAL + "psd_SSR_Frame_B.webp",
+      mirror: false
+    },
+    ur: {
+      /* Exact image.psd.psd Layers 1–4 */
+      l: LOCAL + "psd_UR_Frame_L.webp",
+      r: LOCAL + "psd_UR_Frame_R.webp",
+      t: LOCAL + "psd_UR_Frame_T.webp",
+      b: LOCAL + "psd_UR_Frame_B.webp",
+      mirror: false
+    }
+  };
+  var ACQ = CDN + "UI/UI_Common_Icon_Source_Gasha.webp";
+  /* Gain = exact PSD layers only (SSR Layer 11 / UR Layer 5) — no extra CSS glow */
+  var SUPP_GAIN = {
+    ssr: LOCAL + "fx_SUPP_SSR_Gain.webp",
+    ur: LOCAL + "fx_SUPP_UR_Gain.webp"
+  };
+  var SUPP_BASE = {
+    ssr: LOCAL + "psd_SSR_Base.webp",
+    ur: LOCAL + "psd_UR_Base.webp"
+  };
+
+  function artUrl(path) {
+    if (!path) return "";
+    /* Prefer full bromides over list thumbs (sharp when zoomed) */
+    path = String(path)
+      .replace(/Trait\/thum\/thum_([^/.]+)\.(webp|png)/i, "portraits/cb_$1.webp")
+      .replace(/^\/static\/images\//, "");
+    if (/^https?:\/\//i.test(path)) return path;
+    return CDN + path;
+  }
+
+  /* Result portraits: CDN blip / missing ub_ → thum → soft keep visible */
+  window.__gachaPorErr = function (img) {
+    if (!img) return;
+    var step = Number(img.getAttribute("data-fb") || 0);
+    var art = img.getAttribute("data-art") || "";
+    if (step === 0 && /unit_portraits\/ub_/i.test(art)) {
+      img.setAttribute("data-fb", "1");
+      img.src = CDN + art.replace(/unit_portraits\/ub_/i, "Trait/thum/thum_");
+      return;
+    }
+    if (step <= 1) {
+      img.setAttribute("data-fb", "2");
+      var base = artUrl(art) || img.src;
+      img.src = base + (base.indexOf("?") >= 0 ? "&" : "?") + "retry=" + Date.now();
+      return;
+    }
+    img.style.opacity = "0.4";
+  };
+
+  function porImgHtml(art, delay, porY, cors) {
+    if (!art) return "";
+    var src = artUrl(art);
+    var y = porY || "14%";
+    var attrs = ' class="gc-por" alt="" src="' + src +
+      '" data-art="' + String(art).replace(/"/g, "&quot;") + '"' +
+      ' style="object-position:50% ' + y + '"' +
+      ' onerror="window.__gachaPorErr&&window.__gachaPorErr(this)"';
+    if (cors) {
+      attrs += ' crossorigin="anonymous" decoding="async"';
+    } else {
+      attrs += ' decoding="async"' + (delay != null && delay > 120 ? "" : ' fetchpriority="high"');
+    }
+    return '<div class="gc-por-wrap"><img' + attrs + "></div>";
+  }
+
+  /* Ref strip */
+  var refHtml = "";
+  for (var ri = 1; ri <= 8; ri++) {
+    refHtml += '<img alt="ref ' + ri + '" src="' + REFS + "ref_" + ri + '.jpg" onerror="this.remove()">';
+  }
+  var _refStrip = document.getElementById("refStrip");
+  if (_refStrip) _refStrip.innerHTML = refHtml;
+
+  function charThumbHtml(rarity, charArt) {
+    if (!charArt) return "";
+    return (
+      '<div class="gc-pilot"><div class="gc-pilot-inner">' +
+        '<img class="gc-pilot-base" alt="" src="' + CHAR_BASE[rarity] + '">' +
+        '<div class="gc-pilot-por-wrap"><img class="gc-pilot-por" alt="" src="' + artUrl(charArt) + '" decoding="async" onerror="this.onerror=null;this.src=this.src.replace(/portraits\\/cb_/,\"Trait/thum/thum_\")"></div>' +
+        '<img class="gc-pilot-frame" alt="" src="' + CHAR_FRAME[rarity] + '">' +
+      "</div></div>"
+    );
+  }
+
+  function layerCard(opts) {
+    var r = opts.rarity;
+    var kind = opts.kind === "supp" ? "supp" : "unit";
+    var delay = opts.delay != null ? opts.delay : 0;
+    var fromPull = !!opts.fromPull;
+    var cls = "gc gc--" + r +
+      (kind === "supp" ? " gc--supp" : "") +
+      (opts.isNew && kind === "unit" ? " gc--new" : "") +
+      (fromPull ? " gc--pull-result" : "");
+    var fx = "", body = "", hudExtra = "";
+
+    if (kind === "supp") {
+      var sf = SUPP_FRAME[r] || SUPP_FRAME.ssr;
+      /* PSD order: plate (base+art+frames) then Gain rim, then rarity — no extras */
+      fx = '<img class="gc-fx" alt="" src="' + (SUPP_GAIN[r] || SUPP_GAIN.ssr) + '">';
+      body =
+        '<div class="gc-supp-plate">' +
+          '<img class="gc-base" alt="" src="' + (SUPP_BASE[r] || SUPP_BASE.ssr) + '">' +
+          (opts.art ? porImgHtml(opts.art, delay, opts.porY, !!opts.export) : "") +
+          '<img class="gc-supp-side gc-supp-side--l" alt="" src="' + sf.l + '">' +
+          '<img class="gc-supp-side gc-supp-side--r" alt="" src="' + sf.r + '">' +
+          '<img class="gc-supp-end gc-supp-end--t" alt="" src="' + sf.t + '">' +
+          '<img class="gc-supp-end gc-supp-end--b" alt="" src="' + sf.b + '">' +
+        "</div>";
+      if (fromPull) {
+        hudExtra =
+          '<span class="gc-supp-label"><img alt="" src="' + CDN + 'UI/UI_Common_Icon_Category_Supporter_Main.webp">' + tt("gs_supp_label") + "</span>";
+      }
+    } else {
+      var base = "", frame = "";
+      if (r === "r") {
+        base = '<img class="gc-base" alt="" src="' + LOCAL + 'layer_R_Base.webp">';
+        frame = '<img class="gc-frame" alt="" src="' + LOCAL + 'layer_R_Frame.webp">';
+      } else if (r === "sr") {
+        base = '<img class="gc-base" alt="" src="' + LOCAL + 'layer_SR_Base.webp">';
+        frame = '<img class="gc-frame" alt="" src="' + LOCAL + 'layer_SR_Frame.webp">';
+      } else if (r === "ssr") {
+        fx = '<img class="gc-fx" alt="" src="' + LOCAL + 'fx_unit_SSR_glow.webp">';
+        /* New Project(2).psd Layer 5 + Layer 6 exact */
+        base = '<img class="gc-base" alt="" src="' + LOCAL + 'psd_unit_base.webp">';
+        frame = '<img class="gc-frame" alt="" src="' + LOCAL + 'psd_unit_frame.webp">';
+      } else {
+        fx = '<img class="gc-fx" alt="" src="' + LOCAL + 'fx_unit_UR_glow.webp">';
+        base = '<img class="gc-base" alt="" src="' + LOCAL + 'layer_UR_Base.webp">';
+        frame = '<img class="gc-frame" alt="" src="' + LOCAL + 'layer_UR_Frame.webp">';
+      }
+      var por = porImgHtml(opts.art, delay, opts.porY, !!opts.export);
+      body = base + por + frame;
+    }
+
+    var hud;
+    if (kind === "supp") {
+      /* PSD: rarity badge only — no type icon */
+      hud =
+        '<div class="gc-hud">' +
+          '<img class="gc-rarity" alt="" src="' + RARITY_ICON[r] + '">' +
+        "</div>";
+    } else {
+      var roleSrc = ROLE[opts.role] || ROLE.Attack;
+      hud =
+        '<div class="gc-hud">' +
+          '<img class="gc-rarity" alt="" src="' + RARITY_ICON[r] + '">' +
+          '<img class="gc-role" alt="" src="' + roleSrc + '">' +
+          '<img class="gc-acq" alt="" src="' + ACQ + '">' +
+          (opts.isNew ? '<span class="gc-new">' + tt("gs_new") + "</span>" : "") +
+        "</div>";
+    }
+
+    var pilot = opts.isNew && kind === "unit" ? charThumbHtml(r, opts.charArt) : "";
+    /* Supporters: plate first, then Gain rim on top (PSD Layer 5 above frames) */
+    if (kind === "supp") {
+      return '<div class="' + cls + '">' + body + fx + hud + hudExtra + "</div>";
+    }
+    return '<div class="' + cls + '">' + fx + body + hud + pilot + hudExtra + "</div>";
+  }
+
+  function bakeCard(file, label) {
+    return (
+      '<figure class="gc-slot">' +
+        '<div class="gc gc--baked"><img class="gc-bake" alt="" src="' + LOCAL + file + '"></div>' +
+        "<figcaption>" + label + "</figcaption></figure>"
+    );
+  }
+
+  (function fillDevGalleries() {
+    var ug = document.getElementById("unitGallery");
+    var sg = document.getElementById("suppGallery");
+    if (ug) {
+      ug.innerHTML = [
+        bakeCard("assemble_R.webp", "<b>R</b> · Base + Frame"),
+        bakeCard("assemble_SR.webp", "<b>SR</b> · Pats + R_Frame (SR tone)"),
+        bakeCard("assemble_SSR.webp", "<b>SSR</b> · Effect_U + Base + Frame"),
+        bakeCard("assemble_UR.webp", "<b>UR</b> · Pats + Effect_Material")
+      ].join("");
+    }
+    if (sg) {
+      sg.innerHTML = [
+        bakeCard("assemble_SUPP_SSR.webp", "<b>SSR Supporter</b> · image.psdssr.psd"),
+        bakeCard("assemble_SUPP_UR.webp", "<b>UR Supporter</b> · image.psd.psd"),
+        '<figure class="gc-slot"><div class="gc gc--baked"><img class="gc-bake" alt="" src="' + LOCAL + 'psd_supporter_SSR_ref.png"></div><figcaption><b>Your SSR PSD</b></figcaption></figure>',
+        '<figure class="gc-slot"><div class="gc gc--baked"><img class="gc-bake" alt="" src="' + LOCAL + 'psd_supporter_UR_ref.png"></div><figcaption><b>Your UR PSD</b></figcaption></figure>'
+      ].join("");
+    }
+  })();
+
+  var NORMAL = [
+    ["URU", 3], ["URS", 1], ["SSRU", 15], ["SSRS", 3], ["SR", 30], ["R", 48]
+  ];
+  var TENTH = [
+    ["URU", 3], ["URS", 1], ["SSRU", 80], ["SSRS", 16]
+  ];
+  var POOL = { URU: [], URS: [], SSRU: [], SSRS: [], SR: [], R: [] };
+  var poolMeta = { gasha_id: "", source: "pending" };
+
+  function poolBucketOk(pool) {
+    if (!pool) return false;
+    /* Featured-only banners omit SR/R — those pulls render empty frames. */
+    return (pool.SR || []).length > 0 && (pool.R || []).length > 0;
+  }
+
+  function applyPoolData(data, source) {
+    if (!data || !data.pool || !poolBucketOk(data.pool)) return false;
+    POOL = data.pool;
+    if (data.normal && data.normal.length) NORMAL = data.normal;
+    if (data.tenth && data.tenth.length) TENTH = data.tenth;
+    var logo = data.logo_resource_id || "";
+    if (!logo && data.gasha_id) logo = "gasha_logo_" + data.gasha_id;
+    poolMeta = {
+      gasha_id: data.gasha_id || "",
+      source: source || "json",
+      lang: uiLang(),
+      logo: logo || ""
+    };
+    var logoEl = document.getElementById("bannerLogo");
+    if (logoEl) {
+      if (logo) {
+        logoEl.src = CDN + "Gasha/" + logo + "_" + logoLangSuffix() + ".webp";
+        logoEl.onerror = function () {
+          this.onerror = null;
+          this.src = CDN + "Gasha/" + logo + "_en.webp";
+        };
+        logoEl.hidden = false;
+      } else {
+        logoEl.removeAttribute("src");
+        logoEl.hidden = true;
+      }
+    }
+    renderLiveGallery();
+    if (typeof rematchPorYInDom === "function") {
+      var stageEl = document.getElementById("stage");
+      if (stageEl) rematchPorYInDom(stageEl);
+    }
+    if (typeof renderSession === "function") renderSession();
+    return true;
+  }
+
+  function renderLiveGallery() {
+    var demos = [];
+    function first(bucket, rarity, kind) {
+      var list = POOL[bucket] || [];
+      var it = list.find(function (x) { return x.pickup; }) || list[0];
+      if (!it) return;
+      demos.push({
+        rarity: rarity,
+        kind: kind || "unit",
+        art: it.art,
+        role: it.role || "",
+        label: (kind === "supp" ? "Supp " : "") + rarity.toUpperCase() + " · " + (it.name || it.id),
+        isNew: false
+      });
+    }
+    first("R", "r");
+    first("SR", "sr");
+    first("SSRU", "ssr");
+    first("URU", "ur");
+    first("SSRS", "ssr", "supp");
+    first("URS", "ur", "supp");
+    var lg = document.getElementById("liveGallery");
+    if (!lg) return;
+    lg.innerHTML = demos.map(function (o) {
+      return '<figure class="gc-slot">' + layerCard(o) + "<figcaption><b>" + o.label + "</b></figcaption></figure>";
+    }).join("");
+  }
+
+  function applyDemoPool() {
+    /* Last resort only — keeps SR/R frames filled if published JSON is unreachable. */
+    POOL = {
+      URU: [{ name: "Gundam Avalanche Astrea Type F Dash", id: "1080000150", role: "Attack", art: "unit_portraits/ub_g0800u00150.webp", charArt: "Trait/thum/thum_g0800c00101.webp", pickup: true, w: 3 }],
+      URS: [{ name: "Bright Noa & White Base", role: "", art: "Supporters/sb_g0310s00200.webp", pickup: true, w: 1 }],
+      SSRU: [{ name: "Jinx III (Federation)", role: "Durability", art: "unit_portraits/ub_g0600u00350.webp", charArt: "Trait/thum/thum_g0600c01500.webp", pickup: true, w: 2 }],
+      SSRS: [{ name: "Kati Mannequin & Virginia", role: "", art: "Supporters/sb_g0600s00100.webp", w: 2 }],
+      SR: [{ name: "Char's Zaku II", role: "Durability", art: "unit_portraits/ub_g0010u00100.webp", w: 1 }],
+      R: [{ name: "GM", role: "Attack", art: "unit_portraits/ub_g0010u00300.webp", w: 1 }]
+    };
+    poolMeta = { gasha_id: "", source: "demo" };
+    renderLiveGallery();
+    if (typeof renderSession === "function") renderSession();
+  }
+
+  /* Published pool (full SR/R). Prefer API by gasha_id; static copy is default-banner fallback. */
+  function loadPublishedPool(gashaId) {
+    var gid = String(gashaId || resolveGashaId() || "").trim();
+    var lang = uiLang();
+    poolMeta = { gasha_id: gid, source: "pending", lang: lang, logo: poolMeta.logo || "" };
+    var langQ = "&lang=" + encodeURIComponent(lang);
+    var urls = [];
+    if (gid) urls.push("/api/gacha_sim/pool?gasha_id=" + encodeURIComponent(gid) + langQ);
+    urls.push("/api/gacha_sim/pool?lang=" + encodeURIComponent(lang));
+    urls.push("/static/gacha_sim/pool.json");
+    function tryAt(i) {
+      if (i >= urls.length) {
+        applyDemoPool();
+        return;
+      }
+      fetch(urls[i], { cache: "no-store" })
+        .then(function (r) {
+          if (!r.ok) return Promise.reject(new Error("pool_http_" + r.status));
+          return r.json();
+        })
+        .then(function (d) {
+          if (gid && d && d.gasha_id && String(d.gasha_id) !== gid && i === 0) {
+            tryAt(i + 1);
+            return;
+          }
+          if (!applyPoolData(d, i === 0 ? "master+official rates" : "static pool")) tryAt(i + 1);
+        })
+        .catch(function () { tryAt(i + 1); });
+    }
+    tryAt(0);
+  }
+  loadPublishedPool(resolveGashaId());
+
+  var skip = false;
+  var timer = 0;
+  var runId = 0;
+  var lastN = 10;
+  var lastRows = [];
+  function simStorageKey() {
+    var gid = resolveGashaId() || (poolMeta && poolMeta.gasha_id) || "";
+    return gid ? "ggen_gacha_sim_v1_" + gid : "ggen_gacha_sim_v1";
+  }
+  var COL_KEY = "ggen_collections_v1";
+  var HIST_CAP = 120;   /* multi-pull batches kept */
+  var DRAW_CAP = 2500;  /* individual cards kept (full name log) */
+
+  function emptySim() {
+    return {
+      pulls: 0,
+      pts: 0,
+      history: [],
+      draws: [],
+      firstPickupAt: {},
+      simOwned: {},
+      tierCounts: { ur: 0, ssr: 0, sr: 0, r: 0 }
+    };
+  }
+
+  function normalizeCard(c, atFallback) {
+    if (!c || typeof c !== "object") return null;
+    return {
+      at: Number(c.at) || Number(atFallback) || 0,
+      id: String(c.id || ""),
+      name: String(c.name || c.id || "?"),
+      rarity: String(c.rarity || "").toLowerCase(),
+      kind: c.kind === "supp" ? "supp" : "unit",
+      art: String(c.art || ""),
+      role: String(c.role || ""),
+      charArt: String(c.charArt || ""),
+      bromide_height: c.bromide_height != null ? c.bromide_height : c.bromideHeight,
+      porY: resolvePorY(c),
+      pickup: !!c.pickup,
+      isNew: !!c.isNew
+    };
+  }
+
+  function loadSim() {
+    try {
+      var o = JSON.parse(localStorage.getItem(simStorageKey()) || "{}");
+      var history = Array.isArray(o.history) ? o.history.slice(0, HIST_CAP) : [];
+      var draws = [];
+      if (Array.isArray(o.draws)) {
+        draws = o.draws.map(function (c) { return normalizeCard(c); }).filter(Boolean).slice(0, DRAW_CAP);
+      } else {
+        history.forEach(function (h) {
+          if (!h || !Array.isArray(h.cards)) return;
+          h.cards.forEach(function (c) {
+            var n = normalizeCard(c, h.at);
+            if (n) draws.push(n);
+          });
+        });
+      }
+      return {
+        pulls: Number(o.pulls) || 0,
+        pts: Number(o.pts) || 0,
+        history: history,
+        draws: draws,
+        firstPickupAt: o.firstPickupAt && typeof o.firstPickupAt === "object" ? o.firstPickupAt : {},
+        simOwned: o.simOwned && typeof o.simOwned === "object" ? o.simOwned : {},
+        tierCounts: o.tierCounts && typeof o.tierCounts === "object"
+          ? {
+              ur: Number(o.tierCounts.ur) || 0,
+              ssr: Number(o.tierCounts.ssr) || 0,
+              sr: Number(o.tierCounts.sr) || 0,
+              r: Number(o.tierCounts.r) || 0
+            }
+          : { ur: 0, ssr: 0, sr: 0, r: 0 }
+      };
+    } catch (e) {
+      return emptySim();
+    }
+  }
+  var sim = loadSim();
+  /* Reconcile owned set from every prior draw (not only cards that once got New). */
+  (function rebuildOwnedFromDraws() {
+    var owned = {};
+    (sim.draws || []).forEach(function (c) {
+      if (c && c.id) owned[String(c.id)] = true;
+    });
+    Object.keys(sim.simOwned || {}).forEach(function (id) { owned[id] = true; });
+    sim.simOwned = owned;
+  })();
+  var pts = Number(sim.pts) || 0;
+
+  function saveSim() {
+    try {
+      sim.pts = pts;
+      localStorage.setItem(simStorageKey(), JSON.stringify({
+        pulls: sim.pulls,
+        pts: pts,
+        history: sim.history.slice(0, HIST_CAP),
+        draws: (sim.draws || []).slice(0, DRAW_CAP),
+        firstPickupAt: sim.firstPickupAt,
+        simOwned: sim.simOwned,
+        tierCounts: sim.tierCounts
+      }));
+    } catch (e) {}
+  }
+
+  function syncPtsUi() {
+    document.getElementById("pts").textContent = String(pts);
+    document.getElementById("ptsAfter").textContent = String(pts);
+  }
+  syncPtsUi();
+
+  function useCollectionsOwned() {
+    var el = document.getElementById("optCollections");
+    return !el || el.checked;
+  }
+
+  function skipAnimPreferred() {
+    var el = document.getElementById("optSkipAnim");
+    return !!(el && el.checked);
+  }
+
+  var OPTS_KEY = "ggen_gacha_sim_opts_v2";
+  function loadOpts() {
+    try {
+      return JSON.parse(localStorage.getItem(OPTS_KEY) || "{}") || {};
+    } catch (e) {
+      return {};
+    }
+  }
+  function saveOpts() {
+    try {
+      localStorage.setItem(OPTS_KEY, JSON.stringify({
+        collections: useCollectionsOwned(),
+        skipAnim: skipAnimPreferred()
+      }));
+    } catch (e) {}
+  }
+  (function restoreOpts() {
+    var o = loadOpts();
+    var c = document.getElementById("optCollections");
+    var s = document.getElementById("optSkipAnim");
+    if (c && typeof o.collections === "boolean") c.checked = o.collections;
+    if (s && typeof o.skipAnim === "boolean") s.checked = o.skipAnim;
+  })();
+
+  function dbOrigin() {
+    if (location.protocol === "http:" || location.protocol === "https:") {
+      return location.origin;
+    }
+    return "https://ggendb.up.railway.app";
+  }
+  function detailUrl(kind, id) {
+    if (!id) return "";
+    var path = (kind === "supp" || kind === "supporter" ? "/s/" : "/u/") + encodeURIComponent(String(id));
+    return dbOrigin() + path;
+  }
+  function openDbDetail(kind, id) {
+    if (!id) return;
+    var type = (kind === "supp" || kind === "supporter") ? "supporter" : "unit";
+    /* Stay on /gacha-sim — open site detail modal (same UX as /u / /s) */
+    if (typeof window.openDetail === "function") {
+      window.openDetail(type, String(id), { skipHistory: true });
+      return;
+    }
+    var url = detailUrl(kind, id);
+    if (url) location.assign(url);
+  }
+
+  function collectionsUnitOwned(uid) {
+    if (!uid) return false;
+    try {
+      var o = JSON.parse(localStorage.getItem(COL_KEY) || "{}");
+      var u = (o.units || {})[uid];
+      return u != null && u !== false && u !== "" && Number(u) !== -1;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function isAlreadyOwned(uid) {
+    if (!uid) return false;
+    if (sim.simOwned[uid]) return true;
+    if (useCollectionsOwned() && collectionsUnitOwned(uid)) return true;
+    return false;
+  }
+
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function formatCardChip(c, idx) {
+    var rar = (c.rarity || "").toLowerCase();
+    var cls = rar === "ur" ? "hit-ur" : rar === "ssr" ? "hit-ssr" : rar === "sr" ? "hit-sr" : "hit-r";
+    var name = rar === "ur" || rar === "ssr" ? (c.name || c.id || rar.toUpperCase()) : rar.toUpperCase();
+    var kindCls = c.kind === "supp" ? " hit-supp" : "";
+    if (rar === "ur" || rar === "ssr") {
+      return '<span class="hit-chip ' + cls + kindCls + '" data-draw-at="' + (c.at || "") +
+        '" data-draw-id="' + esc(c.id) + '">' + esc(name) + "</span>";
+    }
+    return '<span class="' + cls + kindCls + '">' + esc(name) + "</span>";
+  }
+
+  function highRarityHits() {
+    return (sim.draws || []).filter(function (c) {
+      return c.rarity === "ur" || c.rarity === "ssr";
+    });
+  }
+
+  function lookupDrawCard(at, id) {
+    var list = sim.draws || [];
+    for (var i = 0; i < list.length; i++) {
+      var c = list[i];
+      if (String(c.at) === String(at) && (!id || String(c.id) === String(id))) return c;
+    }
+    for (var j = 0; j < list.length; j++) {
+      if (String(list[j].id) === String(id) && (list[j].rarity === "ur" || list[j].rarity === "ssr")) {
+        return list[j];
+      }
+    }
+    return null;
+  }
+
+  function enrichArtFromPool(card) {
+    if (!card) return card;
+    var needArt = !card.art;
+    var needChar = !card.charArt;
+    var needPor = !card.porY && card.bromide_height == null;
+    if (!needArt && !needChar && !needPor && card.porY) {
+      /* Still refresh porY from height map when pool is ready */
+      var hit = findPoolItemById(card.id);
+      if (hit) {
+        if (hit.bromide_height != null) card.bromide_height = hit.bromide_height;
+        card.porY = porYFromItem(hit);
+        if (!card.charArt && hit.charArt) card.charArt = hit.charArt;
+        if (!card.role && hit.role) card.role = hit.role;
+      }
+      return card;
+    }
+    var buckets = card.kind === "supp" ? ["URS", "SSRS"] : ["URU", "SSRU", "SR", "R"];
+    for (var bi = 0; bi < buckets.length; bi++) {
+      var list = POOL[buckets[bi]] || [];
+      for (var i = 0; i < list.length; i++) {
+        if (String(list[i].id) === String(card.id)) {
+          card.art = card.art || list[i].art || "";
+          card.role = card.role || list[i].role || "";
+          card.charArt = card.charArt || list[i].charArt || "";
+          if (list[i].bromide_height != null) card.bromide_height = list[i].bromide_height;
+          card.porY = porYFromItem(list[i]);
+          return card;
+        }
+      }
+    }
+    return card;
+  }
+
+  var hoverPop = document.getElementById("cardHoverPop");
+  function hideCardHover() {
+    if (!hoverPop) return;
+    hoverPop.hidden = true;
+    hoverPop.setAttribute("aria-hidden", "true");
+    hoverPop.innerHTML = "";
+  }
+  function showCardHover(card, clientX, clientY) {
+    if (!hoverPop || !card) return;
+    card = enrichArtFromPool(card);
+    if (!card.art && !card.name) return;
+    hoverPop.innerHTML = layerCard({
+      rarity: card.rarity,
+      kind: card.kind,
+      art: card.art,
+      role: card.role,
+      charArt: card.charArt,
+      porY: resolvePorY(card),
+      isNew: !!card.isNew,
+      fromPull: false,
+      delay: 0
+    });
+    hoverPop.hidden = false;
+    hoverPop.setAttribute("aria-hidden", "false");
+    var pad = 16;
+    var w = 280;
+    var h = 160;
+    var x = Math.min(window.innerWidth - w / 2 - pad, Math.max(w / 2 + pad, clientX));
+    var y = Math.max(h + pad, clientY - 8);
+    hoverPop.style.left = x + "px";
+    hoverPop.style.top = y + "px";
+  }
+
+  function bindHitHover(root) {
+    if (!root) return;
+    root.querySelectorAll("[data-draw-at]").forEach(function (el) {
+      el.addEventListener("mouseenter", function (ev) {
+        var card = lookupDrawCard(el.getAttribute("data-draw-at"), el.getAttribute("data-draw-id"));
+        showCardHover(card, ev.clientX, ev.clientY);
+      });
+      el.addEventListener("mousemove", function (ev) {
+        if (hoverPop && !hoverPop.hidden) {
+          var pad = 16;
+          var w = 280;
+          var x = Math.min(window.innerWidth - w / 2 - pad, Math.max(w / 2 + pad, ev.clientX));
+          var y = Math.max(170, ev.clientY - 8);
+          hoverPop.style.left = x + "px";
+          hoverPop.style.top = y + "px";
+        }
+      });
+      el.addEventListener("mouseleave", hideCardHover);
+      el.addEventListener("click", function (ev) {
+        ev.preventDefault();
+        hideCardHover();
+        var card = lookupDrawCard(el.getAttribute("data-draw-at"), el.getAttribute("data-draw-id"));
+        if (card && card.id) openDbDetail(card.kind, card.id);
+      });
+    });
+  }
+
+  function countTiersByKind() {
+    var unit = { ur: 0, ssr: 0, sr: 0, r: 0 };
+    var supp = { ur: 0, ssr: 0, sr: 0, r: 0 };
+    (sim.draws || []).forEach(function (c) {
+      if (!c) return;
+      var bag = c.kind === "supp" ? supp : unit;
+      var k = c.rarity === "ur" ? "ur" : c.rarity === "ssr" ? "ssr" : c.rarity === "sr" ? "sr" : "r";
+      bag[k] = (bag[k] || 0) + 1;
+    });
+    return { unit: unit, supp: supp };
+  }
+
+  function resolvePoolName(id) {
+    var sid = String(id || "");
+    if (!sid) return "";
+    var buckets = ["URU", "URS", "SSRU", "SSRS", "SR", "R"];
+    for (var i = 0; i < buckets.length; i++) {
+      var list = POOL[buckets[i]] || [];
+      for (var j = 0; j < list.length; j++) {
+        if (String(list[j].id) === sid) return list[j].name || "";
+      }
+    }
+    var draws = sim.draws || [];
+    for (var d = 0; d < draws.length; d++) {
+      if (draws[d] && String(draws[d].id) === sid && draws[d].name) return draws[d].name;
+    }
+    return "";
+  }
+
+  function renderSession() {
+    document.getElementById("sessPulls").textContent = String(sim.pulls);
+    var pickKeys = Object.keys(sim.firstPickupAt).sort(function (a, b) {
+      return (Number(sim.firstPickupAt[a]) || 0) - (Number(sim.firstPickupAt[b]) || 0);
+    });
+    var pickupEl = document.getElementById("sessPickup");
+    if (!pickKeys.length) {
+      pickupEl.textContent = tt("gs_first_pickup_none");
+    } else {
+      pickupEl.innerHTML = tt("gs_first_pickup_at") + " " + pickKeys.map(function (id) {
+        var n = sim.firstPickupAt[id];
+        var name = resolvePoolName(id) || id;
+        return "<b>" + esc(name) + "</b> @" + n;
+      }).join(" · ");
+    }
+    var bags = countTiersByKind();
+    var unitTc = bags.unit;
+    var suppTc = bags.supp;
+    var unitTotal = unitTc.ur + unitTc.ssr + unitTc.sr + unitTc.r;
+    var suppTotal = suppTc.ur + suppTc.ssr + suppTc.sr + suppTc.r;
+    var sessionTotal = unitTotal + suppTotal;
+    var hasSupp = suppTotal > 0;
+    var totalUr = (unitTc.ur || 0) + (suppTc.ur || 0);
+    var totalSsr = (unitTc.ssr || 0) + (suppTc.ssr || 0);
+
+    var statsRoot = document.getElementById("sessStats");
+    var unitsLbl = document.getElementById("sessStatsUnitsLbl");
+    var suppPane = document.getElementById("sessStatsSupp");
+    var totalsEl = document.getElementById("sessStatsTotals");
+    if (statsRoot) statsRoot.classList.toggle("session-stats--split", hasSupp);
+    if (unitsLbl) unitsLbl.hidden = !hasSupp;
+    if (suppPane) suppPane.hidden = !hasSupp;
+    if (totalsEl) totalsEl.hidden = !(sessionTotal > 0);
+
+    function setTierBag(n, total, pctEl, cntEl) {
+      var elP = document.getElementById(pctEl);
+      var elC = document.getElementById(cntEl);
+      if (!elP || !elC) return;
+      var pct = total > 0 ? ((n / total) * 100) : null;
+      elP.textContent = pct == null ? "—" : (pct.toFixed(1) + "%");
+      elC.textContent = n + " / " + total;
+    }
+    /* Denominator = all cards this session (same as overall pull rate). */
+    setTierBag(totalUr, sessionTotal, "statTotalUrPct", "statTotalUrCnt");
+    setTierBag(totalSsr, sessionTotal, "statTotalSsrPct", "statTotalSsrCnt");
+    setTierBag(unitTc.ur, sessionTotal, "statUrPct", "statUrCnt");
+    setTierBag(unitTc.ssr, sessionTotal, "statSsrPct", "statSsrCnt");
+    setTierBag(unitTc.sr, sessionTotal, "statSrPct", "statSrCnt");
+    setTierBag(unitTc.r, sessionTotal, "statRPct", "statRCnt");
+    if (hasSupp) {
+      setTierBag(suppTc.ur, sessionTotal, "statSuppUrPct", "statSuppUrCnt");
+      setTierBag(suppTc.ssr, sessionTotal, "statSuppSsrPct", "statSuppSsrCnt");
+    }
+
+    var hits = highRarityHits();
+    var urList = document.getElementById("sessUrList");
+    var urHead = document.querySelector("#sessUrHits > strong");
+    var urN = hits.filter(function (c) { return c.rarity === "ur"; }).length;
+    var ssrN = hits.filter(function (c) { return c.rarity === "ssr"; }).length;
+    var urU = hits.filter(function (c) { return c.rarity === "ur" && c.kind !== "supp"; }).length;
+    var urS = hits.filter(function (c) { return c.rarity === "ur" && c.kind === "supp"; }).length;
+    var ssrU = hits.filter(function (c) { return c.rarity === "ssr" && c.kind !== "supp"; }).length;
+    var ssrS = hits.filter(function (c) { return c.rarity === "ssr" && c.kind === "supp"; }).length;
+    if (urHead) {
+      urHead.textContent = hasSupp
+        ? tt("gs_hits_line_full", { uru: urU, urs: urS, ssru: ssrU, ssrs: ssrS })
+        : tt("gs_hits_line", { ur: urN, ssr: ssrN });
+    }
+    if (!hits.length) {
+      urList.innerHTML = '<li class="ur-empty">' + tt("gs_ur_ssr_empty") + "</li>";
+    } else {
+      urList.innerHTML = hits.map(function (c) {
+        var rarLabel = (c.rarity || "").toUpperCase();
+        return '<li class="hit-row" data-draw-at="' + c.at + '" data-draw-id="' + esc(c.id) +
+          '" title="' + esc(tt("gs_hover_preview")) + '">' +
+          "#" + c.at + " · <b class=\"hit-" + c.rarity + "\">" + esc(c.name) + "</b>" +
+          '<span class="ur-kind">' + rarLabel + (c.kind === "supp" ? " · " + tt("gs_supp_label") : " · " + tt("tab_unit")) + "</span>" +
+          (c.pickup ? " · pickup" : "") +
+          (c.isNew ? ' · <span class="ur-new">' + tt("gs_new") + "</span>" : "") +
+          "</li>";
+      }).join("");
+    }
+
+    var log = document.getElementById("sessLog");
+    log.innerHTML = sim.history.map(function (h) {
+      var cards = Array.isArray(h.cards) ? h.cards : null;
+      var body;
+      if (cards && cards.length) {
+        body = cards.map(formatCardChip).join(" · ");
+      } else {
+        body = esc(h.summary || "");
+      }
+      return "<li>#" + h.at + " · " + h.n + "p · " + body +
+        (h.firstPickup ? " · <b>first " + esc(h.firstPickup) + "</b>" : "") + "</li>";
+    }).join("") || "<li>No pulls yet.</li>";
+
+    bindHitHover(urList);
+    bindHitHover(log);
+  }
+  renderSession();
+
+  document.getElementById("sessReset").onclick = function () {
+    sim = emptySim();
+    pts = 0;
+    syncPtsUi();
+    saveSim();
+    renderSession();
+    hideCardHover();
+  };
+  document.getElementById("optCollections").onchange = function () {
+    saveOpts();
+  };
+  document.getElementById("optSkipAnim").onchange = function () {
+    saveOpts();
+  };
+
+  document.getElementById("strip").addEventListener("click", function (ev) {
+    var card = ev.target.closest(".result-card");
+    if (!card) return;
+    var id = card.getAttribute("data-id");
+    var kind = card.getAttribute("data-kind") || "unit";
+    if (id) openDbDetail(kind, id);
+  });
+  document.getElementById("strip").addEventListener("keydown", function (ev) {
+    if (ev.key !== "Enter" && ev.key !== " ") return;
+    var card = ev.target.closest(".result-card");
+    if (!card) return;
+    ev.preventDefault();
+    var id = card.getAttribute("data-id");
+    var kind = card.getAttribute("data-kind") || "unit";
+    if (id) openDbDetail(kind, id);
+  });
+
+  function pickWeighted(rows) {
+    var total = 0;
+    for (var i = 0; i < rows.length; i++) total += rows[i][1];
+    if (total <= 0) return rows[0] && rows[0][0];
+    var r = Math.random() * total;
+    for (var j = 0; j < rows.length; j++) {
+      r -= rows[j][1];
+      if (r <= 0) return rows[j][0];
+    }
+    return rows[rows.length - 1][0];
+  }
+
+  function pickItem(bucket) {
+    var list = POOL[bucket] || [];
+    if (!list.length) {
+      /* Same-tier unit↔supporter only (never SR↔R — wrong rarity chrome). */
+      var alt = { URU: "URS", URS: "URU", SSRU: "SSRS", SSRS: "SSRU" }[bucket];
+      list = (alt && POOL[alt]) || [];
+    }
+    if (!list.length) return { name: bucket, art: "", role: "", charArt: "", id: "" };
+    if (list[0].w) {
+      var rows = list.map(function (it, idx) { return [idx, it.w]; });
+      return list[pickWeighted(rows)];
+    }
+    return list[(Math.random() * list.length) | 0];
+  }
+
+  function unitKey(item) {
+    return String(item.id || item.art || item.name || "");
+  }
+
+  function roll(n) {
+    var out = [];
+    var seenThisPull = {};
+    var pullsBefore = sim.pulls;
+    for (var i = 0; i < n; i++) {
+      var table = n === 10 && i === 9 ? TENTH : NORMAL;
+      var bucket = pickWeighted(table);
+      var item = pickItem(bucket);
+      var rarity = bucket.indexOf("UR") === 0 ? "ur" : bucket.indexOf("SSR") === 0 ? "ssr" : bucket === "SR" ? "sr" : "r";
+      var kind = (bucket === "URS" || bucket === "SSRS") ? "supp" : "unit";
+      var uid = unitKey(item);
+      var pullIndex = pullsBefore + i + 1;
+      /* New = first acquire of a UR/SSR unit this session (pilot inset when charArt exists). */
+      var canNew = kind === "unit" && (rarity === "ur" || rarity === "ssr");
+      var isNew = canNew && uid && !isAlreadyOwned(uid) && !seenThisPull[uid];
+      if (uid) seenThisPull[uid] = true;
+      if (isNew && sim.firstPickupAt[uid] == null) sim.firstPickupAt[uid] = pullIndex;
+      out.push({
+        id: uid,
+        name: item.name,
+        role: item.role || "",
+        art: item.art || "",
+        charArt: item.charArt || "",
+        bromide_height: item.bromide_height != null ? item.bromide_height : item.bromideHeight,
+        porY: porYFromItem(item),
+        limited: !!item.limited,
+        rarity: rarity,
+        kind: kind,
+        pickup: !!item.pickup,
+        isNew: isNew,
+        promo: rarity === "ur"
+      });
+    }
+    Object.keys(seenThisPull).forEach(function (id) { sim.simOwned[id] = true; });
+    return out;
+  }
+
+  function bestOf(rows) {
+    if (rows.some(function (r) { return r.rarity === "ur"; })) return "ur";
+    if (rows.some(function (r) { return r.rarity === "ssr"; })) return "ssr";
+    return "low";
+  }
+
+  function wait(ms, id) {
+    return new Promise(function (resolve) {
+      if (skip || id !== runId) { resolve(); return; }
+      timer = setTimeout(function () { resolve(); }, ms);
+    });
+  }
+
+  function render343(rows) {
+    /* Pad / trim to 10 for classic layout when n===10; otherwise wrap flex. */
+    var strip = document.getElementById("strip");
+    function cardHtml(r, delay) {
+      r = enrichArtFromPool(r || {});
+      var showNew = !!r.isNew && r.kind !== "supp";
+      return '<div class="result-card" role="link" tabindex="0" title="' + esc(tt("gs_open_detail")) + '" data-kind="' +
+        (r.kind === "supp" ? "supp" : "unit") + '" data-id="' + esc(r.id || "") + '">' +
+        layerCard({
+          rarity: r.rarity, kind: r.kind, art: r.art, role: r.role,
+          charArt: r.charArt, porY: resolvePorY(r), isNew: showNew, fromPull: true, delay: delay
+        }) + "</div>";
+    }
+    if (rows.length === 10) {
+      var rows343 = [rows.slice(0, 3), rows.slice(3, 7), rows.slice(7, 10)];
+      var cls = ["strip-row strip-row--3", "strip-row strip-row--4", "strip-row strip-row--3b"];
+      strip.className = "strip-343";
+      strip.innerHTML = rows343.map(function (chunk, ri) {
+        return '<div class="' + cls[ri] + '">' + chunk.map(function (r, i) {
+          return cardHtml(r, (ri * 4 + i) * 50);
+        }).join("") + "</div>";
+      }).join("");
+    } else {
+      strip.className = "strip-343";
+      strip.innerHTML = '<div class="strip-row">' + rows.map(function (r, i) {
+        return cardHtml(r, i * 60);
+      }).join("") + "</div>";
+    }
+  }
+
+  async function play(n) {
+    var id = ++runId;
+    skip = false;
+    lastN = n;
+    var rows = roll(n);
+    lastRows = rows;
+    var firstNames = rows.filter(function (r) { return r.isNew; }).map(function (r) { return r.name || r.id; });
+    sim.pulls += n;
+    if (!sim.tierCounts) sim.tierCounts = { ur: 0, ssr: 0, sr: 0, r: 0 };
+    rows.forEach(function (r) {
+      var k = r.rarity === "ur" ? "ur" : r.rarity === "ssr" ? "ssr" : r.rarity === "sr" ? "sr" : "r";
+      sim.tierCounts[k] = (sim.tierCounts[k] || 0) + 1;
+    });
+    if (!sim.draws) sim.draws = [];
+    var pullsBefore = sim.pulls - n;
+    var cardRecords = rows.map(function (r, i) {
+      return {
+        at: pullsBefore + i + 1,
+        id: r.id || "",
+        name: r.name || r.id || "?",
+        rarity: r.rarity,
+        kind: r.kind,
+        art: r.art || "",
+        role: r.role || "",
+        charArt: r.charArt || "",
+        bromide_height: r.bromide_height != null ? r.bromide_height : r.bromideHeight,
+        porY: resolvePorY(r),
+        pickup: !!r.pickup,
+        isNew: !!r.isNew
+      };
+    });
+    /* newest pull index first */
+    sim.draws = cardRecords.slice().reverse().concat(sim.draws);
+    if (sim.draws.length > DRAW_CAP) sim.draws.length = DRAW_CAP;
+    sim.history.unshift({
+      at: sim.pulls,
+      n: n,
+      summary: rows.map(function (r) { return r.rarity.toUpperCase(); }).join(" "),
+      cards: cardRecords,
+      firstPickup: firstNames[0] || ""
+    });
+    if (sim.history.length > HIST_CAP) sim.history.length = HIST_CAP;
+    pts = pts + n;
+    syncPtsUi();
+    saveSim();
+    renderSession();
+    var best = bestOf(rows);
+    var hasUr = rows.some(function (r) { return r.rarity === "ur"; });
+    var hasSsr = rows.some(function (r) { return r.rarity === "ssr"; });
+    var hasFeaturedHigh = rows.some(function (r) {
+      return !!r.pickup && (r.rarity === "ur" || r.rarity === "ssr");
+    });
+    var hasLimitedFeaturedUr = rows.some(function (r) {
+      return !!r.limited && r.rarity === "ur";
+    });
+    var sayla = hasLimitedFeaturedUr;
+    var cutLabel = sayla ? "SAYLA" : (hasUr ? "NEWTYPE" : (hasSsr ? "AMURO·SSR" : "REGULAR"));
+    var stage = document.getElementById("stage");
+    var wantAnim = !skipAnimPreferred();
+    var usedVideo = false;
+
+    async function showResultsShell() {
+      if (stage && stage.parentElement !== document.body) {
+        document.body.appendChild(stage);
+      }
+      document.body.classList.add("gacha-sim-stage-open");
+      if (typeof window.updateScrollTopFabVisibility === "function") {
+        window.updateScrollTopFabVisibility();
+      }
+      stage.className = "stage on is-open show-results" +
+        (best === "ur" ? " is-ur" : best === "ssr" ? " is-ssr" : "");
+      stage.setAttribute("aria-hidden", "false");
+      document.getElementById("cutLabel").textContent = cutLabel;
+      render343(rows);
+    }
+
+    if (wantAnim && typeof window.playGachaSimPullCinematic === "function") {
+      usedVideo = await new Promise(function (resolve) {
+        var started = window.playGachaSimPullCinematic({
+          hasLimitedFeaturedUr: hasLimitedFeaturedUr,
+          hasUr: hasUr,
+          hasSsr: hasSsr,
+          hasFeaturedHigh: hasFeaturedHigh,
+          best: best,
+          onDone: function () { resolve(true); }
+        });
+        if (!started) resolve(false);
+      });
+      if (id !== runId) return;
+    }
+
+    if (wantAnim && !usedVideo) {
+      /* Fallback CSS hatch when Video CDN / player unavailable */
+      if (stage && stage.parentElement !== document.body) {
+        document.body.appendChild(stage);
+      }
+      document.body.classList.add("gacha-sim-stage-open");
+      if (typeof window.updateScrollTopFabVisibility === "function") {
+        window.updateScrollTopFabVisibility();
+      }
+      stage.className = "stage on" + (best === "ur" ? " is-ur" : best === "ssr" ? " is-ssr" : "");
+      stage.setAttribute("aria-hidden", "false");
+      document.getElementById("cutLabel").textContent = cutLabel;
+      render343(rows);
+      void stage.offsetWidth;
+      await wait(280, id); if (id !== runId) return;
+      stage.classList.add("is-open");
+      await wait(720, id); if (id !== runId) return;
+      stage.classList.add("show-op");
+      await wait(best === "ur" ? 900 : 640, id); if (id !== runId) return;
+      stage.classList.remove("show-op");
+      if (best !== "low") {
+        stage.classList.add("show-cut");
+        await wait(700, id); if (id !== runId) return;
+        stage.classList.remove("show-cut");
+      }
+      await wait(280, id); if (id !== runId) return;
+      stage.classList.add("show-results");
+    } else {
+      await showResultsShell();
+    }
+  }
+
+  function closeStage() {
+    runId += 1;
+    skip = true;
+    clearTimeout(timer);
+    var stage = document.getElementById("stage");
+    stage.className = "stage";
+    stage.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("gacha-sim-stage-open");
+    if (typeof window.updateScrollTopFabVisibility === "function") {
+      window.updateScrollTopFabVisibility();
+    }
+    var root = document.getElementById("gachaSimRoot");
+    if (root && stage && stage.parentElement === document.body) {
+      root.appendChild(stage);
+    }
+  }
+
+  function loadImg(src) {
+    return new Promise(function (resolve) {
+      if (!src) { resolve(null); return; }
+      var im = new Image();
+      im.crossOrigin = "anonymous";
+      im.onload = function () { resolve(im); };
+      im.onerror = function () { resolve(null); };
+      im.src = src;
+    });
+  }
+
+  function ensureHtml2Canvas() {
+    if (window.html2canvas) return Promise.resolve(window.html2canvas);
+    return new Promise(function (resolve, reject) {
+      var s = document.createElement("script");
+      s.src = "https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js";
+      s.async = true;
+      s.onload = function () {
+        if (window.html2canvas) resolve(window.html2canvas);
+        else reject(new Error("html2canvas missing"));
+      };
+      s.onerror = function () { reject(new Error("html2canvas load failed")); };
+      document.head.appendChild(s);
+    });
+  }
+
+  function waitImages(root) {
+    var imgs = Array.prototype.slice.call(root.querySelectorAll("img"));
+    return Promise.all(imgs.map(function (img) {
+      if (img.complete && img.naturalWidth) return Promise.resolve();
+      return new Promise(function (res) {
+        img.addEventListener("load", function () { res(); }, { once: true });
+        img.addEventListener("error", function () { res(); }, { once: true });
+      });
+    }));
+  }
+
+  function sessionMultisFromHistory() {
+    /* Each lobby pull (1× or 10×) is one set; history is newest-first → reverse for chrono. */
+    var hist = (sim.history || []).slice().reverse();
+    var out = [];
+    hist.forEach(function (h) {
+      if (!h || !Array.isArray(h.cards) || !h.cards.length) return;
+      out.push(h.cards.slice());
+    });
+    return out;
+  }
+
+  function exportCardHtml(r) {
+    var html = '<div class="result-card" data-id="' + esc(r.id || "") + '">' + layerCard({
+      rarity: r.rarity || "r",
+      kind: r.kind === "supp" ? "supp" : "unit",
+      art: r.art || "",
+      role: r.role || "",
+      charArt: r.charArt || "",
+      porY: resolvePorY(r),
+      isNew: !!r.isNew,
+      fromPull: true,
+      export: true,
+      delay: 0
+    }) + "</div>";
+    /* Ensure every raster is CORS-tagged before the browser starts the fetch. */
+    return html.replace(/<img(?![^>]*\bcrossorigin=)/g, '<img crossorigin="anonymous"');
+  }
+
+  function buildExport343(cards) {
+    if (cards.length === 10) {
+      var chunks = [cards.slice(0, 3), cards.slice(3, 7), cards.slice(7, 10)];
+      var cls = ["strip-row strip-row--3", "strip-row strip-row--4", "strip-row strip-row--3b"];
+      return '<div class="strip-343">' + chunks.map(function (chunk, ri) {
+        return '<div class="' + cls[ri] + '">' + chunk.map(exportCardHtml).join("") + "</div>";
+      }).join("") + "</div>";
+    }
+    return '<div class="strip-343"><div class="strip-row">' +
+      cards.map(exportCardHtml).join("") + "</div></div>";
+  }
+
+  var SITE_LOGO = CDN + "UI/IMG_Common_Logo_ETERNALBASE.webp";
+  var EXPORT_PAGE_URL = exportPageUrl();
+  /* Session PNG budget: 400 pulls ≈ 40×10 → keep latest 20 sets.
+     Card 112px @ h2c×2 ≈ ¼ the pixels of old 148px @ ×3 (main speed win). */
+  var EXPORT_SET_CAP = 20;
+  var EXPORT_SETS_PER_ROW = 5;
+  var EXPORT_SESSION_CARD_W = 112;
+  var EXPORT_SESSION_H2C_SCALE = 2;
+  var EXPORT_SESSION_BAKE_SCALE = 2;
+
+  function exportMetaHtml() {
+    return (
+      '<div class="gacha-export-meta">' +
+        '<img class="gacha-export-meta-logo" alt="GGen Eternal Database" src="' + SITE_LOGO +
+          '" width="22" height="22" crossorigin="anonymous">' +
+        '<span class="gacha-export-meta-text"> · official published rates · not affiliated with Bandai Namco</span>' +
+      "</div>"
+    );
+  }
+
+  function multisToRows(multis, perRow) {
+    var rows = [];
+    var n = perRow || EXPORT_SETS_PER_ROW;
+    for (var i = 0; i < multis.length; i += n) {
+      rows.push(multis.slice(i, i + n));
+    }
+    return rows;
+  }
+
+  function downloadCanvasPng(canvas, filename) {
+    return new Promise(function (res, rej) {
+      canvas.toBlob(function (b) {
+        if (!b) { rej(new Error("toBlob failed")); return; }
+        var url = URL.createObjectURL(b);
+        var a = document.createElement("a");
+        a.href = url;
+        a.download = filename;
+        a.click();
+        setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+        res();
+      }, "image/png");
+    });
+  }
+
+  function primeExportImages(root) {
+    /* Only force CORS reload when crossorigin is missing — avoid re-fetching hundreds of CDN portraits. */
+    root.querySelectorAll("img").forEach(function (img) {
+      var s = img.getAttribute("src");
+      if (!s || s.indexOf("data:") === 0) return;
+      if (img.getAttribute("crossorigin") === "anonymous") return;
+      img.setAttribute("crossorigin", "anonymous");
+      img.src = s;
+    });
+    return waitImages(root);
+  }
+
+  function parseObjectPositionFrac(img) {
+    var st = (img.getAttribute("style") || "").match(/object-position\s*:\s*([^;]+)/i);
+    var raw = st ? st[1].trim() : "";
+    if (!raw) {
+      try { raw = window.getComputedStyle(img).objectPosition || ""; } catch (e) { raw = ""; }
+    }
+    var parts = String(raw).trim().split(/\s+/);
+    var yTok = parts.length >= 2 ? parts[1] : (parts[0] || "14%");
+    if (yTok === "top") return 0;
+    if (yTok === "center" || yTok === "bottom" && parts.length < 2) return yTok === "bottom" ? 1 : 0.5;
+    if (yTok === "bottom") return 1;
+    var m = String(yTok).match(/([\d.]+)%/);
+    return m ? Math.min(1, Math.max(0, parseFloat(m[1]) / 100)) : 0.14;
+  }
+
+  /** Keep live + export crops on face-first por_y (pool / height map), not stale history. */
+  function rematchPorYInDom(root) {
+    if (!root) return;
+    root.querySelectorAll(".result-card[data-id]").forEach(function (cardEl) {
+      var id = cardEl.getAttribute("data-id");
+      if (!id) return;
+      var y = resolvePorY({ id: id });
+      cardEl.querySelectorAll("img.gc-por").forEach(function (img) {
+        img.style.objectPosition = "50% " + y;
+      });
+    });
+    if (Array.isArray(lastRows)) {
+      lastRows.forEach(function (r) {
+        if (!r) return;
+        r.porY = resolvePorY(r);
+      });
+    }
+  }
+
+  /**
+   * html2canvas often ignores object-fit/object-position — bake cover crops to canvas
+   * so Save Collections PNG matches the live results strip.
+   * @param {number} [bakeScale] — pixel ratio for baked portrait canvases (match h2c scale)
+   */
+  function bakeCoverObjectFitImages(root, bakeScale) {
+    var restores = [];
+    var scale = Math.max(1, Number(bakeScale) || 2);
+    var smooth = scale >= 2.5 ? "high" : "medium";
+    /* Portraits only — pilot thumbs are tiny; baking them costs more than it helps. */
+    var nodes = root.querySelectorAll("img.gc-por");
+    nodes.forEach(function (img) {
+      var wrap = img.parentElement;
+      if (!wrap || !img.naturalWidth || !img.naturalHeight) return;
+      var cw = wrap.clientWidth || img.clientWidth || 0;
+      var ch = wrap.clientHeight || img.clientHeight || 0;
+      if (!(cw > 0) || !(ch > 0)) return;
+      var iw = img.naturalWidth;
+      var ih = img.naturalHeight;
+      var sc = Math.max(cw / iw, ch / ih);
+      var sw = cw / sc;
+      var sh = ch / sc;
+      var yFrac = parseObjectPositionFrac(img);
+      var sx = (iw - sw) * 0.5;
+      var sy = Math.max(0, (ih - sh) * yFrac);
+      var canvas = document.createElement("canvas");
+      canvas.width = Math.max(1, Math.round(cw * scale));
+      canvas.height = Math.max(1, Math.round(ch * scale));
+      canvas.setAttribute("aria-hidden", "true");
+      canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;";
+      try {
+        var ctx = canvas.getContext("2d");
+        ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = smooth;
+        ctx.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+      } catch (err) {
+        return;
+      }
+      var prevDisplay = img.style.display;
+      img.style.display = "none";
+      wrap.insertBefore(canvas, img);
+      restores.push(function () {
+        if (canvas.parentNode) canvas.parentNode.removeChild(canvas);
+        img.style.display = prevDisplay;
+      });
+    });
+    return function restoreBaked() {
+      for (var i = restores.length - 1; i >= 0; i--) restores[i]();
+    };
+  }
+
+  /** Snapshot the on-screen results panel so PNG matches live scale/layout. */
+  async function shareLivePullResultsPng(btn) {
+    var stage = document.getElementById("stage");
+    var results = stage && stage.querySelector(".results");
+    if (!stage || !results || !stage.classList.contains("show-results")) {
+      throw new Error("Open a pull result first");
+    }
+    var prevLabel = btn ? btn.textContent : "";
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = tt("gs_saving");
+    }
+    var actions = results.querySelector(".results-actions");
+    var skipBtn = stage.querySelector(".skip");
+    var foot = null;
+    var prevActions = actions ? actions.style.display : "";
+    var prevSkip = skipBtn ? skipBtn.style.display : "";
+    try {
+      if (actions) actions.style.display = "none";
+      if (skipBtn) skipBtn.style.display = "none";
+      foot = document.createElement("div");
+      foot.className = "gacha-export-live-foot";
+      foot.innerHTML =
+        '<div class="gacha-export-foot">' + esc(exportPageUrl()) + "</div>" +
+        exportMetaHtml();
+      results.appendChild(foot);
+
+      var h2c = await ensureHtml2Canvas();
+      await document.fonts.ready.catch(function () {});
+      await primeExportImages(results);
+      rematchPorYInDom(results);
+      await new Promise(function (r) { requestAnimationFrame(function () { requestAnimationFrame(r); }); });
+      var restoreBake = bakeCoverObjectFitImages(results);
+      try {
+      var w = Math.max(1, results.clientWidth || results.offsetWidth);
+      var h = Math.max(1, results.scrollHeight || results.clientHeight);
+      var canvas = await h2c(results, {
+        backgroundColor: "#02040a",
+        scale: 2,
+        useCORS: true,
+        allowTaint: false,
+        logging: false,
+        width: w,
+        height: h,
+        windowWidth: w,
+        windowHeight: h
+      });
+      await downloadCanvasPng(canvas, "ggendb-gacha-sim-pull-" + sim.pulls + ".png");
+      } finally {
+        if (typeof restoreBake === "function") restoreBake();
+      }
+    } finally {
+      if (foot && foot.parentNode) foot.parentNode.removeChild(foot);
+      if (actions) actions.style.display = prevActions;
+      if (skipBtn) skipBtn.style.display = prevSkip;
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = prevLabel || tt("gs_save_collections");
+      }
+    }
+  }
+
+  async function shareSessionCollectionsPng(btn) {
+    var prevLabel = "";
+    if (btn) {
+      btn.disabled = true;
+      var lab = btn.querySelector("b");
+      if (lab) {
+        prevLabel = lab.textContent;
+        lab.textContent = tt("gs_saving_caps");
+      }
+    }
+    var mount = null;
+    try {
+      var multis = sessionMultisFromHistory();
+      if (!multis.length) throw new Error("No pulls in this session yet");
+      var truncated = false;
+      if (multis.length > EXPORT_SET_CAP) {
+        truncated = true;
+        multis = multis.slice(multis.length - EXPORT_SET_CAP);
+      }
+      var cardCount = multis.reduce(function (n, m) { return n + m.length; }, 0);
+      var h2c = await ensureHtml2Canvas();
+      await document.fonts.ready.catch(function () {});
+
+      mount = document.createElement("div");
+      mount.className = "gacha-export-mount gacha-export-mount--session";
+      mount.setAttribute("aria-hidden", "true");
+      var setCount = Math.min(EXPORT_SETS_PER_ROW, multis.length);
+      var cardW = EXPORT_SESSION_CARD_W;
+      /* Each multi ≈ 4 cards wide (middle row); pad + group chrome */
+      var multiW = cardW * 4.15 + 28;
+      var rowGap = 28;
+      mount.style.width = Math.max(720, setCount * multiW + (setCount - 1) * rowGap + 64) + "px";
+      mount.style.setProperty("--gc-w", cardW + "px");
+      mount.style.setProperty("--gc-h", "calc(var(--gc-w) * 219 / 446)");
+
+      var tc = sim.tierCounts || { ur: 0, ssr: 0, sr: 0, r: 0 };
+      var metaLine =
+        "Session · " + sim.pulls + " pulls · " + multis.length + " set" + (multis.length === 1 ? "" : "s") +
+        " · UR " + (tc.ur || 0) +
+        " · SSR " + (tc.ssr || 0) +
+        " · SR " + (tc.sr || 0) +
+        " · R " + (tc.r || 0) +
+        (truncated ? " · latest " + multis.length + " sets" : "");
+      var rows = multisToRows(multis, EXPORT_SETS_PER_ROW);
+      var bodyHtml =
+        '<div class="gacha-export-body gacha-export-body--session">' +
+        rows.map(function (row, rowIdx) {
+          return '<div class="gacha-export-row">' +
+            row.map(function (chunk, colIdx) {
+              var setNo = rowIdx * EXPORT_SETS_PER_ROW + colIdx + 1;
+              var nCards = chunk.length;
+              return '<div class="gacha-export-multi" data-set="' + setNo + '">' +
+                '<div class="gacha-export-multi-label">' + nCards + "× pull · set " + setNo + "</div>" +
+                buildExport343(chunk) +
+                "</div>";
+            }).join("") +
+            "</div>";
+        }).join("") +
+        "</div>";
+
+      mount.innerHTML =
+        '<div class="gacha-export-brand">' +
+          '<img alt="" src="' + SITE_LOGO + '" width="48" height="48" crossorigin="anonymous">' +
+          '<div class="gacha-export-brand-text">' +
+            "<strong>Gacha Sim Result</strong>" +
+            "<span>" + esc(metaLine) + "</span>" +
+          "</div>" +
+        "</div>" +
+        '<h2 class="gacha-export-title">' + tt("gs_export_title") + "</h2>" +
+        bodyHtml +
+        '<div class="gacha-export-foot">' + esc(exportPageUrl()) + "</div>" +
+        exportMetaHtml();
+
+      document.body.appendChild(mount);
+      await primeExportImages(mount);
+      rematchPorYInDom(mount);
+      await new Promise(function (r) { requestAnimationFrame(function () { requestAnimationFrame(r); }); });
+      var restoreBake = bakeCoverObjectFitImages(mount, EXPORT_SESSION_BAKE_SCALE);
+      try {
+      var canvas = await h2c(mount, {
+        backgroundColor: "#02040a",
+        scale: EXPORT_SESSION_H2C_SCALE,
+        useCORS: true,
+        allowTaint: false,
+        logging: false,
+        imageTimeout: 8000,
+        removeContainer: true
+      });
+      await downloadCanvasPng(canvas, "ggendb-gacha-sim-session-" + sim.pulls + ".png");
+      } finally {
+        if (typeof restoreBake === "function") restoreBake();
+      }
+    } finally {
+      if (mount && mount.parentNode) mount.parentNode.removeChild(mount);
+      if (btn) {
+        btn.disabled = false;
+        var bb = btn.querySelector("b");
+        if (bb) bb.textContent = prevLabel || tt("gs_collections_btn");
+      }
+    }
+  }
+
+  function shareCurrentPullCollections() {
+    var btn = document.getElementById("shareStrip");
+    return shareLivePullResultsPng(btn).catch(function (err) {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = tt("gs_save_collections");
+      }
+      try { console.warn("[gacha-sim] save pull failed", err); } catch (e) {}
+    });
+  }
+
+  function shareSessionCollections() {
+    var btn = document.getElementById("sessSave");
+    return shareSessionCollectionsPng(btn).catch(function (err) {
+      if (btn) {
+        btn.disabled = false;
+        var bb = btn.querySelector("b");
+        if (bb) bb.textContent = tt("gs_collections_btn");
+      }
+      try { console.warn("[gacha-sim] save session failed", err); } catch (e) {}
+    });
+  }
+
+  document.getElementById("one").onclick = function () { play(1); };
+  document.getElementById("ten").onclick = function () { play(10); };
+  document.getElementById("again").onclick = function () { play(lastN); };
+  document.getElementById("shareStrip").onclick = function () { shareCurrentPullCollections(); };
+  var sessSaveBtn = document.getElementById("sessSave");
+  if (sessSaveBtn) sessSaveBtn.onclick = function () { shareSessionCollections(); };
+  document.getElementById("skip").onclick = function () {
+    skip = true;
+    clearTimeout(timer);
+    /* Video cinematic: finish whole sequence (not clip-by-clip) */
+    if (typeof window.gachaVideoSkip === "function") {
+      try { window.gachaVideoSkip(); } catch (e) {}
+    }
+    var stage = document.getElementById("stage");
+    if (stage) stage.classList.add("is-open", "show-results");
+  };
+  document.getElementById("done").onclick = closeStage;
+
+  try { ensureTekoFont(); } catch (e0) {}
+  try { applyLang(); } catch (e) {}
+  try { syncRotateHint(); } catch (e2) {}
+  if (!window._gsRotateHintBound) {
+    window._gsRotateHintBound = 1;
+    window.addEventListener("resize", syncRotateHint, { passive: true });
+    window.addEventListener("orientationchange", function () {
+      setTimeout(syncRotateHint, 120);
+    });
+  }
+
+  return { onTabShown: onTabShown, openDbDetail: openDbDetail, applyLang: applyLang, onLangChange: onLangChange };
+})();

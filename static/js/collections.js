@@ -5660,10 +5660,17 @@
       btn.textContent = t('generating');
     }
     try {
-      var canvas = await generateShareImage();
+      /* Units → anniversary (1.5) report; supporters stay Regular (no 1.5 layout yet) */
+      var use15 = state.type !== 'supporters';
+      var canvas = use15 ? await generateShareImage15() : await generateShareImage();
       var blob = await canvasToPngBlob(canvas);
       var fileName =
-        'ggendb-collections-report-' + state.type + '-' + st.pct + 'pct.png';
+        'ggendb-collections-' +
+        (use15 ? '15-' : 'report-') +
+        state.type +
+        '-' +
+        st.pct +
+        'pct.png';
       var file = new File([blob], fileName, { type: 'image/png' });
 
       try {

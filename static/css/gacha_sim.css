@@ -1,0 +1,1203 @@
+/* Gacha Sim — Unit Assembly pull simulator */
+  /* Card plate = PSD Layer 6 frame (446×219) */
+  :root {
+    --bg: #070b14;
+    --cyan: #00d9ff;
+    --gold: #ffd24a;
+    --ease: cubic-bezier(0.05, 0.7, 0.1, 1);
+    --gc-w: 220px;
+    --gc-h: calc(var(--gc-w) * 219 / 446);
+  }
+  * { box-sizing: border-box; }
+  /* Body = site stack; HUD/display = --font-hud (Teko EN / ShinGo·UDShinGo CJK under 1.5) */
+  .gacha-sim-root,
+  .stage {
+    --gs-hud: var(--font-hud, var(--font-teko, Teko), Teko, "Segoe UI", sans-serif);
+    --gs-type: 1;
+  }
+  .gacha-sim-root {
+    color: #e8eef8;
+    font-family: var(--font-body, "Segoe UI", system-ui, sans-serif);
+  }
+  /* Classic: same optical proportion as 1.5 Teko HUD (FOTK/body fills larger at equal px) */
+  html.ggen-classic .gacha-sim-root,
+  html.ggen-classic .stage { --gs-type: 0.875; }
+  button { font: inherit; cursor: pointer; }
+  /* Hide scrollbars (keep scroll where overflow is needed) */
+  .no-scrollbar,
+  .session-ur-hits,
+  .session-log,
+  .results,
+  .ref-strip {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .no-scrollbar::-webkit-scrollbar,
+  .session-ur-hits::-webkit-scrollbar,
+  .session-log::-webkit-scrollbar,
+  .results::-webkit-scrollbar,
+  .ref-strip::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    display: none;
+  }
+
+  .lobby {
+    min-height: 100%;
+    padding: 24px 16px 48px;
+    background:
+      radial-gradient(900px 420px at 50% 0%, rgba(0, 140, 255, 0.18), transparent 60%),
+      linear-gradient(180deg, #0c1424 0%, #070b14 55%);
+  }
+  .shell { width: min(1100px, 100%); margin: 0 auto; }
+  .kicker { font-family: var(--gs-hud); letter-spacing: 0.18em; color: var(--cyan); font-size: calc(18px * var(--gs-type)); margin: 0 0 8px; }
+  h1 { margin: 0 0 6px; font-size: calc(22px * var(--gs-type)); font-weight: 650; }
+  h2 { margin: 28px 0 10px; font-family: var(--gs-hud); font-size: calc(26px * var(--gs-type)); letter-spacing: 0.06em; color: #cfefff; font-weight: 600; }
+  .note { margin: 0 0 16px; color: #8ea0bb; font-size: 13px; line-height: 1.45; max-width: 76ch; }
+  .disclaimer {
+    margin: 0 0 18px; padding: 8px 12px;
+    border: 1px solid rgba(255, 120, 80, 0.35);
+    background: rgba(80, 24, 12, 0.35);
+    color: #ffb39a; font-size: 12px; line-height: 1.4; max-width: 76ch;
+  }
+  /* Portrait mobile — same HUD as /tm rotate hint */
+  .gs-rotate-hint{
+    display:none;
+    flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:center;gap:16px 18px;
+    margin:0 0 14px;padding:12px 14px;
+    border:1px solid rgba(0,212,255,.35);border-radius:8px;
+    background:rgba(8,14,28,.88);
+    overflow:visible;
+    max-width:76ch;
+  }
+  .gs-rotate-hint:not([hidden]){display:flex}
+  .gs-rotate-art{
+    position:relative;
+    width:56px;height:48px;
+    flex:0 0 56px;
+    overflow:visible;
+    margin:0;
+  }
+  .gs-rotate-phone{
+    position:absolute;left:50%;top:50%;
+    width:36px;height:auto;max-width:none;display:block;
+    transform:translate(-50%,-50%) rotate(-90deg);
+    transform-origin:center center;
+    filter:drop-shadow(0 4px 12px rgba(0,0,0,.45));
+  }
+  .gs-rotate-arrow{
+    position:absolute;left:50%;top:50%;
+    width:22px;height:auto;max-height:22px;display:block;z-index:1;
+    transform:translate(-50%,-50%);
+    opacity:.95;
+    filter:drop-shadow(0 1px 3px rgba(0,0,0,.65));
+    animation:gs-rotate-nudge 1.6s var(--ease,cubic-bezier(0.2,0,0,1)) infinite;
+    pointer-events:none;
+  }
+  .gs-rotate-copy{
+    margin:0;font-size:12px;font-weight:700;line-height:1.35;
+    color:#e2e8f0;text-align:left;
+    flex:0 1 auto;max-width:22em;
+  }
+  @keyframes gs-rotate-nudge{
+    0%,100%{opacity:.7;transform:translate(-50%,-50%) scale(1)}
+    50%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .gs-rotate-arrow{animation:none!important}
+  }
+  @media (max-width:768px){
+    .gs-rotate-hint:not([hidden]){
+      flex-direction:row;flex-wrap:nowrap;align-items:center;justify-content:center;
+      gap:16px;
+      margin:0 0 12px;padding:12px 12px;
+      overflow:visible;
+      min-height:52px;
+      box-sizing:border-box;
+      max-width:none;
+    }
+    .gs-rotate-art{
+      position:relative;
+      width:48px;height:44px;flex:0 0 48px;
+      overflow:visible;margin:0;
+    }
+    .gs-rotate-phone{
+      position:absolute;left:50%;top:50%;
+      width:30px;height:auto;max-width:none;
+      transform:translate(-50%,-50%) rotate(-90deg);
+      transform-origin:center center;
+    }
+    .gs-rotate-arrow{
+      position:absolute;left:50%;top:50%;
+      width:18px;height:auto;max-height:18px;
+      transform:translate(-50%,-50%);
+      animation:gs-rotate-nudge-m 1.6s var(--ease,cubic-bezier(0.2,0,0,1)) infinite;
+    }
+    .gs-rotate-copy{
+      font-size:11px;text-align:left;
+      flex:0 1 auto;min-width:0;max-width:14em;margin:0;
+    }
+    @keyframes gs-rotate-nudge-m{
+      0%,100%{opacity:.7;transform:translate(-50%,-50%) scale(1)}
+      50%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}
+    }
+  }
+  .opt-row {
+    display: flex; align-items: center; gap: 8px;
+    margin: 12px 0 8px; font-size: 12px; color: #9eb0c8; cursor: pointer;
+  }
+  .opt-row input { accent-color: var(--cyan); }
+  .session {
+    margin: 10px 0 14px; padding: 10px 12px;
+    border: 1px solid rgba(100, 160, 220, 0.25);
+    background: rgba(10, 18, 32, 0.65);
+    font-size: 12px; color: #a8b8d0;
+  }
+  .session-head {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px;
+    margin-bottom: 6px;
+  }
+  .session-head strong { color: #dce8f8; font-family: var(--gs-hud); font-size: calc(18px * var(--gs-type)); letter-spacing: 0.06em; font-weight: 600; }
+  .session-head b { color: var(--gold); font-size: calc(16px * var(--gs-type)); }
+  .session-actions {
+    margin-left: auto;
+    display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  }
+  .btn-designline--session {
+    min-width: 128px;
+    height: 52px;
+    padding: 14px 16px 6px;
+    gap: 0;
+  }
+  .btn-designline--session small {
+    display: block;
+    color: #9fdfff;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    line-height: 1.1;
+  }
+  .btn-designline--session b {
+    font-family: var(--gs-hud);
+    font-size: calc(16px * var(--gs-type));
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    line-height: 1;
+    color: #fff;
+  }
+  .session-pickup {
+    margin: 10px 0 0;
+    padding: 8px 10px;
+    color: #cfe6ff;
+    border: 1px solid rgba(0, 180, 255, 0.22);
+    background: rgba(8, 18, 36, 0.55);
+    font-size: 12px;
+    line-height: 1.45;
+    max-height: 140px;
+    overflow: auto;
+  }
+  .session-ur-hits {
+    margin: 0 0 10px;
+    padding: 8px 10px;
+    border: 1px solid rgba(180, 120, 255, 0.28);
+    background: rgba(28, 12, 48, 0.45);
+    max-height: 220px;
+    overflow: auto;
+  }
+  .session-ur-hits > strong {
+    display: block;
+    margin-bottom: 6px;
+    color: #e0c0ff;
+    font-family: var(--gs-hud);
+    font-size: 15px;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+  }
+  .session-ur-hits ol {
+    margin: 0;
+    padding-left: 18px;
+    color: #d4b8f0;
+  }
+  .session-ur-hits li { margin: 3px 0; line-height: 1.35; }
+  .session-ur-hits .ur-kind {
+    display: inline-block;
+    margin-left: 4px;
+    padding: 0 5px;
+    font-size: 10px;
+    color: #9eb0c8;
+    border: 1px solid rgba(140, 160, 200, 0.35);
+  }
+  .session-ur-hits .ur-new { color: #ffd56a; font-weight: 700; }
+  .session-ur-hits .hit-ur { color: #e0c0ff; }
+  .session-ur-hits .hit-ssr { color: #e8c878; }
+  .session-ur-hits .ur-empty { color: #7a8aa3; padding-left: 0; list-style: none; margin: 0; }
+  .session-ur-hits li.hit-row {
+    cursor: pointer;
+  }
+  .session-ur-hits li.hit-row:hover,
+  .session-log .hit-chip:hover {
+    color: #fff;
+  }
+  .session-log .hit-chip {
+    cursor: pointer;
+    text-decoration: underline dotted rgba(200, 220, 255, 0.35);
+    text-underline-offset: 2px;
+  }
+  .result-card {
+    cursor: pointer;
+  }
+  .result-card:focus-visible {
+    outline: 2px solid rgba(0, 217, 255, 0.65);
+    outline-offset: 4px;
+  }
+  .card-hover-pop {
+    position: fixed;
+    z-index: 10050;
+    pointer-events: none;
+    padding: 10px;
+    background: rgba(6, 12, 22, 0.92);
+    border: 1px solid rgba(100, 180, 255, 0.45);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.55), 0 0 24px rgba(0, 160, 255, 0.2);
+    transform: translate(-50%, -100%);
+    margin-top: -12px;
+  }
+  .card-hover-pop[hidden] { display: none !important; }
+  .card-hover-pop .gc { --gc-w: 240px; --gc-h: calc(240px * 219 / 446); }
+  .card-hover-pop .gc--supp {
+    width: var(--gc-w);
+    height: calc(var(--gc-w) * 190 / 354);
+  }
+  .card-hover-pop .gc-supp-label { display: none !important; }
+  .session-stats {
+    display: block;
+    margin: 8px 0 10px;
+  }
+  .session-stats-totals {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+    margin-bottom: 8px;
+  }
+  .session-stats-totals[hidden] { display: none !important; }
+  .session-stat--total {
+    border-color: rgba(0, 217, 255, 0.35);
+    background: rgba(0, 40, 70, 0.35);
+  }
+  .session-stats-panes {
+    display: block;
+  }
+  .session-stats--split .session-stats-panes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    align-items: start;
+  }
+  .session-stats-pane {
+    min-width: 0;
+  }
+  .session-stats-pane[hidden] { display: none !important; }
+  .session-stats-label {
+    margin: 0 0 5px;
+    font-family: var(--gs-hud);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #9eb0c8;
+  }
+  .session-stats-pane--supp .session-stats-label {
+    color: #a8c4e0;
+  }
+  .session-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
+  }
+  .session-stats--split .session-stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .session-stats-grid--supp {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .session-stat {
+    padding: 6px 8px;
+    border: 1px solid rgba(100, 160, 220, 0.22);
+    background: rgba(8, 14, 26, 0.7);
+    text-align: center;
+  }
+  .session-stats-pane--supp .session-stat {
+    border-color: rgba(140, 180, 230, 0.28);
+    background: rgba(12, 20, 36, 0.75);
+  }
+  .session-stat .tier {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 28px;
+    margin-bottom: 2px;
+  }
+  .session-stat .tier-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    display: block;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.65));
+  }
+  .session-stat--total .tier-icon {
+    width: 30px;
+    height: 30px;
+  }
+  .session-stat .pct {
+    display: block; font-size: 15px; font-weight: 700; color: var(--cyan);
+  }
+  .session-stat .cnt { display: block; font-size: 10px; color: #7a8aa3; margin-top: 2px; }
+  .session-stat--ur .pct { color: #d8a0ff; }
+  .session-stat--ssr .pct { color: var(--gold); }
+  .session-stat--sr .pct { color: #7eb6ff; }
+  .session-stat--r .pct { color: #c48a5a; }
+  .session-log-label {
+    margin: 0 0 4px;
+    color: #9eb0c8;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .session-log {
+    margin: 0; padding-left: 18px; max-height: 220px; overflow: auto;
+    color: #8ea0bb;
+  }
+  .session-log li { margin: 4px 0; line-height: 1.4; }
+  .session-log .hit-ur { color: #e0c0ff; font-weight: 600; }
+  .session-log .hit-ssr { color: #e8c878; }
+  .session-log .hit-sr { color: #8eb8ff; }
+  .session-log .hit-r { color: #a89078; }
+  .session-log .hit-supp::after {
+    content: " (S)";
+    font-size: 10px;
+    color: #7a9cc0;
+    font-weight: 400;
+  }
+  @media (max-width: 640px) {
+    .session-stats--split .session-stats-panes { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 520px) {
+    .session-stats:not(.session-stats--split) .session-stats-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  .gc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 20px 14px;
+  }
+  .gc-slot { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  .gc-slot figcaption { font-size: 11px; color: #8ea0bb; text-align: center; line-height: 1.35; }
+  .gc-slot figcaption b { color: #dce8f8; }
+
+  /* —— In-game gain card —— */
+  /*
+   * New Project(2).psd — exact stack:
+   *   Layer 6 frame = 446×219 at card inset 0
+   *   Layer 5 base  = 452×237 at (−3, −16) relative to frame
+   *   Layer 4 glow  = behind base (SSR). No plate clip / no opaque bake.
+   */
+  .gc {
+    position: relative;
+    width: var(--gc-w);
+    height: var(--gc-h);
+    flex-shrink: 0;
+    overflow: visible;
+  }
+  .gc > img.gc-frame,
+  .gc > img.gc-bake {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: fill; pointer-events: none; user-select: none;
+  }
+  .gc--baked > img.gc-bake { object-fit: contain; }
+  .gc:not(.gc--supp) > img.gc-base {
+    position: absolute;
+    z-index: 2;
+    left: calc(100% * -3 / 446);
+    top: calc(100% * -16 / 219);
+    width: calc(100% * 452 / 446);
+    height: calc(100% * 237 / 219);
+    object-fit: fill;
+    pointer-events: none;
+    user-select: none;
+  }
+  .gc:not(.gc--supp) > img.gc-frame {
+    position: absolute; inset: 0; z-index: 4;
+    width: 100%; height: 100%;
+    object-fit: fill; pointer-events: none; user-select: none;
+  }
+  .gc > img.gc-frame { z-index: 4; }
+  /* Shared fx layer (unit Effect + supporter Gain) */
+  .gc > img.gc-fx {
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+  }
+  /* Unit glow — PSD Layer 4 / UR glow vs frame 446×219 */
+  .gc:not(.gc--supp) > img.gc-fx {
+    z-index: 1;
+    transform: none;
+    object-fit: fill;
+    mix-blend-mode: normal;
+    filter: none;
+    opacity: 1;
+  }
+  .gc--ssr:not(.gc--supp) > img.gc-fx {
+    left: calc(100% * -23 / 446);
+    top: calc(100% * -36 / 219);
+    width: calc(100% * 492 / 446);
+    height: calc(100% * 278 / 219);
+  }
+  .gc--ur:not(.gc--supp) > img.gc-fx {
+    left: calc(100% * -133 / 446);
+    top: calc(100% * -101 / 219);
+    width: calc(100% * 710 / 446);
+    height: calc(100% * 398 / 219);
+    /* PSD L2 glow is black-backed — screen knocks out residual black */
+    mix-blend-mode: screen;
+  }
+  /*
+   * Unit portrait — Collections Regular save-image crop (drawCoverArt15):
+   * object-fit cover, upper bias (~28%), full opening. No fade animation.
+   */
+  .gc-por-wrap {
+    position: absolute; z-index: 3;
+    left: 3.5%; right: 3.5%; top: 4%; bottom: 7%;
+    overflow: hidden;
+    display: block;
+  }
+  /* UR bottom bar is thicker — keep portrait above it */
+  .gc--ur:not(.gc--supp) .gc-por-wrap {
+    bottom: 16%;
+  }
+  .gc-por {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    max-height: none;
+    object-fit: cover;
+    /* match collections cover crop — face/upper bias; per-card Y from BromideHeightIndex */
+    object-position: 50% 14%;
+    display: block;
+    transform: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+    opacity: 1;
+    animation: none;
+    image-rendering: auto;
+    image-rendering: high-quality;
+  }
+  .gc--new .gc-por-wrap {
+    right: 24%;
+  }
+  .gc-frame { z-index: 4; }
+  .gc-hud {
+    position: absolute; z-index: 5; inset: 0; pointer-events: none;
+    overflow: hidden;
+  }
+  .gc-rarity {
+    position: absolute; left: 3.5%; top: 3%;
+    width: 17%; height: auto; aspect-ratio: 1;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.7));
+  }
+  .gc-role {
+    position: absolute; left: 5%; top: 48%;
+    width: 12%; height: auto; aspect-ratio: 1;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.7));
+  }
+  .gc-acq {
+    position: absolute; left: 5.5%; bottom: 10%;
+    width: 10%; height: auto; aspect-ratio: 1;
+    object-fit: contain;
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.65));
+  }
+  .gc-new {
+    position: absolute; right: 2%; top: 3%;
+    z-index: 7;
+    padding: 2px 8px 3px;
+    background: linear-gradient(180deg, #ffe27a, #f0a010);
+    color: #c41828;
+    font-weight: 800;
+    font-size: 10px;
+    letter-spacing: 0.02em;
+    clip-path: polygon(0 0, 100% 0, 100% 70%, 86% 100%, 0 100%);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.45);
+  }
+  /* NEW character — Square base + por + frame; face clipped inside HUD */
+  .gc-pilot {
+    position: absolute; right: 4%; bottom: 14%;
+    width: 22%; aspect-ratio: 1;
+    z-index: 6;
+    overflow: hidden;
+  }
+  .gc-pilot-inner {
+    position: relative; width: 100%; height: 100%;
+    overflow: hidden;
+  }
+  .gc-pilot-base,
+  .gc-pilot-frame {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: fill; display: block; pointer-events: none;
+  }
+  .gc-pilot-base { z-index: 0; }
+  .gc-pilot-por-wrap {
+    position: absolute; z-index: 1;
+    top: 11%; left: 11%; right: 11%; bottom: 11%;
+    overflow: hidden;
+  }
+  .gc-pilot-por {
+    width: 100%; height: 100%;
+    object-fit: cover; object-position: 50% 12%;
+    display: block;
+    image-rendering: auto;
+    image-rendering: high-quality;
+  }
+  .gc-pilot-frame { z-index: 2; }
+  /* In-game "Supporters" tab — ONLY under supporter pull results (never gallery demos) */
+  .gc-supp-label {
+    display: none;
+  }
+  .gc--supp.gc--pull-result > .gc-supp-label {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 2px);
+    bottom: auto;
+    transform: translateX(-50%);
+    padding: 3px 10px 3px 8px;
+    background: rgba(18, 72, 160, 0.95);
+    border: 1px solid rgba(120, 180, 255, 0.55);
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    z-index: 8;
+    color: #fff;
+    line-height: 1;
+  }
+  .gc--supp.gc--pull-result > .gc-supp-label img {
+    width: 11px; height: 11px; display: block; flex-shrink: 0;
+  }
+  /*
+   * Supporter — exact owner PSDs (354×190). Same outer width as unit cards so
+   * result strips align; height follows PSD aspect (slightly taller than units).
+   * UR and SSR use DIFFERENT frame pieces. Only the PSD Gain layer.
+   */
+  .gc--supp {
+    width: var(--gc-w);
+    height: calc(var(--gc-w) * 190 / 354);
+    overflow: visible;
+  }
+  .gc--supp .gc-supp-plate {
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    transform: none;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .gc--supp .gc-base {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: fill;
+    z-index: 0;
+  }
+  .gc--supp .gc-por-wrap {
+    position: absolute;
+    z-index: 1;
+    left: calc(100% * 50 / 354);
+    top: calc(100% * 21 / 190);
+    width: calc(100% * 260 / 354);
+    height: calc(100% * 145 / 190);
+    right: auto;
+    bottom: auto;
+    overflow: hidden;
+    display: block;
+  }
+  .gc--supp .gc-por {
+    position: absolute;
+    inset: 0;
+    left: auto; top: auto;
+    transform: none;
+    object-fit: cover;
+    object-position: 50% 42%;
+    width: 100%; height: 100%;
+    max-width: none;
+    max-height: none;
+    -webkit-mask-image: none;
+    mask-image: none;
+    opacity: 1;
+    animation: none;
+    image-rendering: auto;
+    image-rendering: high-quality;
+  }
+  .gc--supp .gc-supp-side,
+  .gc--supp .gc-supp-end {
+    position: absolute; z-index: 4; pointer-events: none; margin: 0; border: 0; display: block;
+    transform: none;
+    object-fit: fill;
+  }
+
+  /* UR supporter (image.psd.psd) */
+  .gc--supp.gc--ur .gc-supp-side--l {
+    left: calc(100% * 6 / 354); top: 0;
+    width: calc(100% * 55 / 354); height: calc(100% * 186 / 190);
+  }
+  .gc--supp.gc--ur .gc-supp-side--r {
+    left: calc(100% * 297 / 354); top: calc(100% * 3 / 190);
+    width: calc(100% * 54 / 354); height: calc(100% * 182 / 190); right: auto;
+  }
+  .gc--supp.gc--ur .gc-supp-end--t {
+    left: calc(100% * 119 / 354); top: 0;
+    width: calc(100% * 116 / 354); height: calc(100% * 37 / 190);
+  }
+  .gc--supp.gc--ur .gc-supp-end--b {
+    left: calc(100% * 121 / 354); top: calc(100% * 148 / 190);
+    width: calc(100% * 111 / 354); height: calc(100% * 36 / 190); bottom: auto;
+  }
+  .gc--supp.gc--ur > img.gc-fx {
+    z-index: 6;
+    left: calc(100% * -12 / 354);
+    top: calc(100% * -12 / 190);
+    width: calc(100% * 382 / 354);
+    height: calc(100% * 215 / 190);
+    transform: none;
+    object-fit: fill;
+    mix-blend-mode: normal;
+    filter: none;
+    opacity: 1;
+    pointer-events: none;
+  }
+  .gc--supp.gc--ur .gc-rarity {
+    left: calc(100% * 23 / 354);
+    top: calc(100% * 19 / 190);
+    width: calc(100% * 61 / 354);
+    aspect-ratio: 61 / 63;
+  }
+
+  /* SSR supporter (image.psdssr.psd) — Layers 7–12 only */
+  .gc--supp.gc--ssr .gc-supp-side--l {
+    left: calc(100% * 15 / 354); top: calc(100% * 19 / 190);
+    width: calc(100% * 32 / 354); height: calc(100% * 153 / 190);
+  }
+  .gc--supp.gc--ssr .gc-supp-side--r {
+    left: calc(100% * 308 / 354); top: calc(100% * 21 / 190);
+    width: calc(100% * 31 / 354); height: calc(100% * 148 / 190); right: auto;
+  }
+  .gc--supp.gc--ssr .gc-supp-end--t {
+    left: calc(100% * 108 / 354); top: calc(100% * 11 / 190);
+    width: calc(100% * 138 / 354); height: calc(100% * 22 / 190);
+  }
+  .gc--supp.gc--ssr .gc-supp-end--b {
+    left: calc(100% * 114 / 354); top: calc(100% * 157 / 190);
+    width: calc(100% * 136 / 354); height: calc(100% * 22 / 190); bottom: auto;
+  }
+  .gc--supp.gc--ssr > img.gc-fx {
+    z-index: 6;
+    left: calc(100% * -12 / 354);
+    top: calc(100% * -12 / 190);
+    width: calc(100% * 379 / 354);
+    height: calc(100% * 214 / 190);
+    transform: none;
+    object-fit: fill;
+    mix-blend-mode: normal;
+    filter: none;
+    opacity: 1;
+    pointer-events: none;
+  }
+  .gc--supp.gc--ssr .gc-rarity {
+    left: calc(100% * 28 / 354);
+    top: calc(100% * 27 / 190);
+    width: calc(100% * 56 / 354);
+    aspect-ratio: 56 / 54;
+  }
+
+  .gc--supp .gc-role,
+  .gc--supp .gc-acq,
+  .gc--supp .gc-pilot,
+  .gc--supp .gc-new { display: none !important; }
+  .gc--supp .gc-hud { z-index: 7; overflow: visible; }
+  .gc-slot { overflow: visible; }
+  .gc--baked { width: var(--gc-w); height: var(--gc-h); }
+  .gc--baked .gc-bake { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+
+  .ref-strip {
+    display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 8px;
+  }
+  .ref-strip img {
+    height: 120px; width: auto; border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 4px;
+  }
+
+  .banner {
+    position: relative; height: 200px; border-radius: 6px; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    background: #0a1220;
+    clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);
+    box-shadow: 0 0 0 1px rgba(0, 217, 255, 0.35), 0 18px 40px rgba(0, 0, 0, 0.35);
+  }
+  .banner-logo {
+    display: block;
+    max-width: 92%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    pointer-events: none;
+  }
+  .hud { margin-top: 14px; display: flex; justify-content: space-between; gap: 12px; align-items: end; flex-wrap: wrap; }
+  .pity { font-size: 12px; color: #9aabc4; }
+  .pity b { color: var(--gold); font-size: calc(18px * var(--gs-type)); font-family: var(--gs-hud); }
+  .actions { display: flex; gap: 10px; align-items: center; }
+  /* Shared in-game plate — UI_StageTop_Button_Lsize_DesignLine */
+  .btn-designline {
+    --btn-plate: url("https://cdn.jsdelivr.net/gh/zh7tcm9fmv-cloud/ggen_db_images@main/images/UI/UI_StageTop_Button_Lsize_DesignLine.webp");
+    position: relative;
+    min-width: 148px;
+    height: 48px;
+    /* navy fill sits slightly low in the plate — bias padding so label centers in it */
+    padding: 16px 22px 4px;
+    border: 0;
+    background: transparent var(--btn-plate) center / 100% 100% no-repeat;
+    color: #eef6ff;
+    font-family: var(--gs-hud);
+    font-size: calc(18px * var(--gs-type));
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    line-height: 1;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.65);
+    cursor: pointer;
+    filter: drop-shadow(0 2px 6px rgba(0, 40, 90, 0.45));
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  .btn-designline:hover {
+    filter: drop-shadow(0 0 10px rgba(80, 190, 255, 0.55)) brightness(1.08);
+  }
+  .btn-designline:active {
+    filter: brightness(0.92);
+  }
+  .btn-designline:disabled {
+    opacity: 0.55;
+    cursor: default;
+    filter: grayscale(0.25);
+  }
+  .pull.btn-designline {
+    min-width: 156px;
+    height: 52px;
+    padding: 14px 20px 6px;
+    gap: 0;
+  }
+  .pull.btn-designline small {
+    display: block;
+    color: #eef6ff;
+    font-family: var(--gs-hud);
+    font-size: calc(18px * var(--gs-type));
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    line-height: 1.1;
+  }
+  .pull--ten.btn-designline {
+    /* same plate; warm hint so 10-pull reads distinct */
+    filter: drop-shadow(0 2px 6px rgba(90, 60, 10, 0.45)) sepia(0.22) saturate(1.15);
+  }
+  .pull--ten.btn-designline:hover {
+    filter: drop-shadow(0 0 10px rgba(255, 200, 80, 0.45)) sepia(0.18) saturate(1.2) brightness(1.06);
+  }
+  .pull--ten.btn-designline small { color: #ffe29a; }
+
+  /* —— Results stage (in-game) —— */
+  .stage {
+    /* Above site chrome / Ko-fi (250); below detail modal (300) */
+    position: fixed; inset: 0; z-index: 290;
+    background: #02040a;
+    display: none; overflow: hidden;
+  }
+  .stage.on { display: block; }
+  /* Hide lobby while results stage is up (prevents gallery frames bleeding through) */
+  #gachaSimRoot:has(.stage.on) .lobby,
+  body.gacha-sim-stage-open #gachaSimRoot .lobby { visibility: hidden; }
+  .sky {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(40, 60, 120, 0.45), transparent 55%),
+      radial-gradient(circle at 20% 10%, rgba(255,255,255,0.35) 0 1px, transparent 1.5px),
+      radial-gradient(circle at 70% 30%, rgba(255,255,255,0.25) 0 1px, transparent 1.5px),
+      radial-gradient(circle at 40% 60%, rgba(180,255,200,0.2) 0 1px, transparent 1.5px),
+      linear-gradient(180deg, #050814, #0a1628 55%, #0a1018);
+    background-size: auto, 180px 140px, 220px 160px, 140px 180px, auto;
+  }
+  .stage.is-ssr .sky { box-shadow: inset 0 0 120px rgba(255, 140, 40, 0.22); }
+  .stage.is-ur .sky { box-shadow: inset 0 0 140px rgba(180, 80, 255, 0.28); }
+  .mist {
+    position: absolute; inset: -10%;
+    background: conic-gradient(from 120deg, transparent, rgba(0,217,255,0.0), rgba(255,0,200,0.18), rgba(255,210,40,0.12), transparent);
+    opacity: 0; pointer-events: none; animation: spin 8s linear infinite;
+  }
+  .stage.is-ur .mist { opacity: 0.85; }
+  @keyframes spin { to { transform: rotate(1turn); } }
+
+  .hatch { position: absolute; inset: 0; z-index: 4; display: flex; pointer-events: none; }
+  .hatch i { flex: 1; background: linear-gradient(180deg, #1c2838, #0a1018); box-shadow: inset 0 0 40px #000; transition: transform 0.7s var(--ease); }
+  .hatch i:first-child { border-right: 2px solid rgba(0, 217, 255, 0.35); }
+  .stage.is-open .hatch i:first-child { transform: translateX(-105%); }
+  .stage.is-open .hatch i:last-child { transform: translateX(105%); }
+
+  .op { position: absolute; inset: 0; z-index: 3; display: grid; place-items: center; opacity: 0; pointer-events: none; }
+  .stage.show-op .op { opacity: 1; }
+  .op strong {
+    font-family: var(--gs-hud);
+    font-size: clamp(calc(42px * var(--gs-type)), calc(8vw * var(--gs-type)), calc(84px * var(--gs-type)));
+    letter-spacing: 0.12em;
+    color: #d7f6ff; text-shadow: 0 0 18px rgba(0, 180, 255, 0.85);
+  }
+  .stage.is-ur .op strong {
+    background: linear-gradient(90deg, #7af0ff, #fff, #ff7ad9, #ffe27a, #7af0ff);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 0 12px rgba(255, 80, 200, 0.65));
+  }
+
+  .cutin {
+    position: absolute; left: 0; right: 0; top: 18%; z-index: 3;
+    display: flex; justify-content: flex-end;
+    transform: translateX(40%); opacity: 0; pointer-events: none;
+  }
+  .stage.show-cut .cutin { opacity: 1; transform: none; transition: transform 0.35s var(--ease), opacity 0.35s var(--ease); }
+  .cutin span {
+    padding: 10px 28px 10px 18px;
+    background: linear-gradient(90deg, transparent, rgba(0, 40, 80, 0.85));
+    border-right: 4px solid #3ecbff;
+    font-family: var(--gs-hud); font-size: calc(32px * var(--gs-type)); letter-spacing: 0.08em;
+  }
+  .stage.is-ur .cutin span { border-right-color: #ff4ad8; }
+
+  .crates { display: none !important; }
+
+  .results {
+    position: absolute; inset: 0; z-index: 6;
+    display: none;
+    flex-direction: column;
+    padding: 18px 16px 96px;
+    /* BG_Event_Story_RareBoss_Appear + dark veil so cards stay readable */
+    background-color: #02040a;
+    background-image:
+      linear-gradient(180deg, rgba(2, 6, 16, 0.55) 0%, rgba(2, 6, 16, 0.72) 100%),
+      url("https://cdn.jsdelivr.net/gh/zh7tcm9fmv-cloud/ggen_db_images@main/images/Background/BG_Event_Story_RareBoss_Appear.webp");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    overflow: auto;
+  }
+  .stage.show-results .results { display: flex; }
+  .results-title {
+    /* 1.5 Special Design display face (Teko) — stage lives on body, so use --gs-hud from .stage */
+    font-family: var(--gs-hud);
+    font-size: clamp(calc(28px * var(--gs-type)), calc(4vw * var(--gs-type)), calc(40px * var(--gs-type)));
+    font-weight: 600;
+    font-style: normal;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin: 0 0 14px;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    color: #e8f6ff;
+  }
+  .results-title::after {
+    content: "";
+    display: block;
+    margin-top: 4px;
+    height: 4px;
+    width: min(420px, 70%);
+    background: linear-gradient(90deg, #7ec8ff 0 12%, #fff 12% 14%, #2a6a9a 14% 100%);
+    clip-path: polygon(0 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
+  }
+
+  /* In-game 3-4-3 staggered cluster */
+  .strip-343 {
+    margin: auto 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+    width: 100%;
+    overflow: visible;
+    padding: 16px 8px 28px;
+  }
+  .strip-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+    overflow: visible;
+  }
+  .strip-row--3 { transform: translateX(18px); }
+  .strip-row--4 { }
+  .strip-row--3b { transform: translateX(-18px); }
+  /*
+   * Shared unit-height slot: unit + supporter share the same vertical midline
+   * so taller supp plates don’t sit optically lower than units.
+   */
+  .result-card {
+    position: relative;
+    width: var(--gc-w);
+    height: var(--gc-h);
+    margin: 14px 0 36px; /* bottom = Supporters label band */
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+    box-sizing: border-box;
+    cursor: pointer;
+  }
+  .result-card .gc {
+    margin: 0;
+    flex-shrink: 0;
+  }
+  /*
+   * Unit base hangs above the frame (−16/219). After centering in the unit-height
+   * slot, nudge supporters up a touch so plate tops match unit optical tops.
+   */
+  .result-card .gc--supp {
+    transform: translateY(calc(var(--gc-h) * -10 / 219));
+  }
+
+  .results-foot {
+    position: absolute; left: 16px; right: 16px; bottom: 14px;
+    display: flex; justify-content: space-between; align-items: end; gap: 12px; flex-wrap: wrap;
+    z-index: 8;
+  }
+  .results-meta { font-size: 12px; color: #9aabc4; line-height: 1.45; }
+  .results-meta .pity-line { margin-bottom: 2px; }
+  .results-meta .pity-line b {
+    color: var(--gold); font-size: calc(22px * var(--gs-type)); font-family: var(--gs-hud);
+    letter-spacing: 0.04em; font-weight: 600;
+  }
+  .results-meta .warn { color: #ff6b6b; font-size: 11px; margin-top: 4px; }
+  .results-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  .results-actions .btn-designline {
+    flex-direction: row;
+  }
+  .results-actions .again {
+    min-width: 168px;
+    color: #fff;
+  }
+
+  .skip {
+    position: absolute; z-index: 7; right: 16px; bottom: 16px;
+    padding: 8px 14px; color: #fff; background: rgba(0,0,0,0.45);
+    border: 1px solid rgba(255,255,255,0.3);
+  }
+  .stage.show-results .skip { display: none; }
+
+  @media (max-width: 720px) {
+    :root { --gc-w: 150px; --gc-h: calc(var(--gc-w) * 219 / 446); }
+    .strip-343 { overflow: visible; }
+    .strip-row--3, .strip-row--3b { transform: none; }
+    .results-title { font-size: calc(24px * var(--gs-type)); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    /* Shorten motion — do NOT force cutin/hatch visible (that looked like “Sayla with no anim”). */
+    .hatch i { transition-duration: 0.01ms !important; }
+    .mist { animation: none !important; }
+    .cutin { transition-duration: 0.01ms !important; }
+  }
+
+  /* Hide site back-to-top while pull results overlay is open */
+  body.gacha-sim-stage-open #bannerTimelineScrollTopFab,
+  body.gacha-sim-stage-open .scroll-top-fab,
+  body.gacha-sim-stage-open .banner-timeline-scroll-top-fab {
+    display: none !important;
+    visibility: hidden !important;
+  }
+  .gacha-export-mount {
+    position: fixed;
+    left: -10000px;
+    top: 0;
+    width: 1100px;
+    padding: 28px 28px 36px;
+    box-sizing: border-box;
+    background:
+      radial-gradient(ellipse at 50% 20%, rgba(40, 60, 120, 0.4), transparent 55%),
+      linear-gradient(180deg, #0a1220 0%, #02040a 70%);
+    color: #e8eef8;
+    font-family: "Segoe UI", system-ui, sans-serif;
+    z-index: -1;
+    pointer-events: none;
+  }
+  .gacha-export-brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+  .gacha-export-brand img {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    flex-shrink: 0;
+  }
+  .gacha-export-brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+  }
+  .gacha-export-brand-text strong {
+    font-family: var(--gs-hud);
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: #fff;
+    line-height: 1;
+  }
+  .gacha-export-brand-text span {
+    font-size: 12px;
+    color: #9aabc4;
+  }
+  .gacha-export-title {
+    margin: 8px 0 16px;
+    text-align: center;
+    font-family: var(--gs-hud);
+    font-size: 36px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: #fff;
+    text-shadow: 0 2px 12px rgba(0, 180, 255, 0.35);
+  }
+  .gacha-export-body {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .gacha-export-body--session {
+    gap: 22px;
+  }
+  .gacha-export-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 28px;
+  }
+  .gacha-export-multi {
+    flex: 0 0 auto;
+    min-width: 0;
+  }
+  .gacha-export-multi .strip-343 {
+    margin: 0;
+  }
+  .gacha-export-multi .strip-row {
+    justify-content: center;
+  }
+  /* Session PNG: each 10-pull is a framed cluster (tight inside, spaced between) */
+  .gacha-export-mount--session .gacha-export-multi {
+    padding: 10px 12px 14px;
+    border-radius: 10px;
+    background: rgba(8, 16, 32, 0.72);
+    border: 1px solid rgba(0, 180, 255, 0.22);
+    box-shadow:
+      0 0 0 1px rgba(0, 0, 0, 0.35) inset,
+      0 8px 20px rgba(0, 0, 0, 0.35);
+  }
+  .gacha-export-multi-label {
+    font-family: var(--gs-hud);
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    color: rgba(159, 223, 255, 0.75);
+    text-align: center;
+    margin: 0 0 6px;
+    line-height: 1.1;
+  }
+  .gacha-export-mount--session .gacha-export-multi .strip-343 {
+    gap: 6px;
+    padding: 4px 2px 8px;
+    width: auto;
+  }
+  .gacha-export-mount--session .gacha-export-multi .strip-row {
+    gap: 5px;
+  }
+  .gacha-export-mount--session .gacha-export-multi .strip-row--3,
+  .gacha-export-mount--session .gacha-export-multi .strip-row--3b {
+    transform: none;
+  }
+  .gacha-export-mount--session .gacha-export-multi .result-card {
+    margin: 2px 0 4px;
+  }
+  .gacha-export-mount--session .gacha-export-multi .gc-supp-label {
+    display: none;
+  }
+  .gacha-export-mount--session .gacha-export-title {
+    font-size: 30px;
+    margin-bottom: 12px;
+  }
+  .gacha-export-mount--pull .gacha-export-multi .strip-343 {
+    margin: 0 auto;
+  }
+  .gacha-export-foot {
+    margin-top: 22px;
+    text-align: center;
+    font-family: var(--gs-hud);
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: rgba(159, 223, 255, 0.55);
+    word-break: break-all;
+  }
+  .gacha-export-meta {
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    font-size: 11px;
+    color: rgba(142, 160, 187, 0.75);
+  }
+  .gacha-export-meta-logo {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    flex-shrink: 0;
+    display: block;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.45));
+  }
+  .gacha-export-meta-text {
+    line-height: 1.3;
+  }
+  /* Injected into live .results while capturing pull PNG */
+  .gacha-export-live-foot {
+    position: absolute;
+    left: 16px;
+    right: 16px;
+    bottom: 10px;
+    z-index: 9;
+    pointer-events: none;
+    text-align: center;
+  }
+  .gacha-export-live-foot .gacha-export-foot {
+    margin-top: 0;
+    font-size: 18px;
+    letter-spacing: 0.04em;
+  }
+  .gacha-export-live-foot .gacha-export-meta {
+    margin-top: 4px;
+  }

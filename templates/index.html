@@ -437,6 +437,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 <div class="tab-panel" id="panel-latest_release"><div id="latestReleaseLoading" class="loading-overlay" style="display:none"><div class="spinner"></div></div><div id="latestReleaseRoot" class="lr-root"></div></div>
 <div class="tab-panel" id="panel-banner_timeline"><div id="bannerTimelineLoading" class="loading-overlay" style="display:none"><div class="spinner"></div></div><div class="bt-wrap"><div id="bannerTimelineRoot" class="bt-root"></div></div></div>
+<div class="tab-panel" id="panel-gacha_sim">{% include '_gacha_sim_panel.html' %}</div>
 <div class="tab-panel" id="panel-investment_priority">{% with spi_embedded=true %}{% include '_sp_investment_panel.html' %}{% endwith %}</div>
 </main>
 <footer class="site-footer-links" role="contentinfo">
@@ -586,7 +587,8 @@ window.__GGEN_LAZY__=(function(){
     'unit_best_pilots': url_for('static', filename='css/unit_best_pilots.css'),
     'master_league': url_for('static', filename='css/master_league.css'),
     'craft_ui': url_for('static', filename='css/craft_ui.css'),
-    'sp_investment': url_for('static', filename='css/sp_investment.css')
+    'sp_investment': url_for('static', filename='css/sp_investment.css'),
+    'gacha_sim': url_for('static', filename='css/gacha_sim.css')
   } | tojson }};
   var js={{ {
     'e_simulator': url_for('static', filename='js/e_simulator.js'),
@@ -598,7 +600,8 @@ window.__GGEN_LAZY__=(function(){
     'content_notices': url_for('static', filename='js/content_notices.js'),
     'sp_investment_i18n': url_for('static', filename='js/sp_investment_i18n.js'),
     'sp_investment_i18n_guide': url_for('static', filename='js/sp_investment_i18n_guide.js'),
-    'sp_investment': url_for('static', filename='js/sp_investment.js')
+    'sp_investment': url_for('static', filename='js/sp_investment.js'),
+    'gacha_sim': url_for('static', filename='js/gacha_sim.js')
   } | tojson }};
   var cache={};
   function withV(url, bump){
@@ -650,6 +653,10 @@ window.__GGEN_LAZY__=(function(){
       loadJs('sp_investment')
     ]).then(function(){return window.GgenSpInvestment||null});
   }
+  function ensureGachaSim(){
+    if(window.GgenGachaSim)return Promise.resolve(window.GgenGachaSim);
+    return Promise.all([loadCss('gacha_sim'), loadJs('gacha_sim')]).then(function(){return window.GgenGachaSim||null});
+  }
   function ensureContentNotices(){
     if(window.GgenContentNotices)return Promise.resolve(window.GgenContentNotices);
     return loadJs('content_notices').then(function(){return window.GgenContentNotices||null});
@@ -689,6 +696,7 @@ window.__GGEN_LAZY__=(function(){
     ensureMasterLeagueCss:ensureMasterLeagueCss,
     ensureCraftUiCss:ensureCraftUiCss,
     ensureSpInvestment:ensureSpInvestment,
+    ensureGachaSim:ensureGachaSim,
     ensureContentNotices:ensureContentNotices
   };
 })();

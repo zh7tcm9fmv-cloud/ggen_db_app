@@ -20767,6 +20767,127 @@ def sp_investment_page():
     return _serve_index()
 
 
+@app.route('/gacha-sim')
+@app.route('/gacha-sim/')
+@app.route('/gacha-sim/<gasha_id>')
+@app.route('/gacha-sim/<gasha_id>/')
+def gacha_sim_page(gasha_id=None):
+    """Gacha Sim — Unit Assembly pull simulator (SPA tab; optional per-banner gasha_id)."""
+    return _serve_index()
+
+
+_GACHA_SIM_POOL_CACHE = {}
+
+
+@app.route('/api/gacha_sim/pool')
+def api_gacha_sim_pool():
+    """Gacha-sim pool for a banner (official rates + master ids).
+
+    Query: ?gasha_id= / ?gasha= — when omitted, serves published default pool JSON.
+    Query: ?lang=EN|JA|TW|HK — localized display names (match uses EN official tables).
+    """
+    gasha_id = (request.args.get('gasha_id') or request.args.get('gasha') or '').strip()
+    lang = (request.args.get('lang') or 'EN').strip().upper()
+    if lang == 'JP':
+        lang = 'JA'
+    if lang not in ('EN', 'JA', 'TW', 'HK'):
+        lang = 'EN'
+
+    if not gasha_id:
+        path = os.path.join(_APP_ROOT, 'data', 'published', 'gacha_sim_pool.json')
+        if not os.path.isfile(path):
+            path = os.path.join(_APP_ROOT, '_mocks', 'gacha_sim_pool.json')
+        if not os.path.isfile(path):
+            return jsonify({'error': 'pool_missing'}), 404
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+        except Exception as e:
+            return jsonify({'error': str(e)}), 500
+        if lang != 'EN' and str(data.get('lang') or 'EN') != lang:
+            # Rebuild default banner in requested locale when published file is EN-only
+            try:
+                import importlib.util
+
+                build_path = os.path.join(_APP_ROOT, '_mocks', 'build_gacha_sim_pool.py')
+                spec = importlib.util.spec_from_file_location('build_gacha_sim_pool', build_path)
+                mod = importlib.util.module_from_spec(spec)
+                assert spec and spec.loader
+                spec.loader.exec_module(mod)
+                gid = str(data.get('gasha_id') or '')
+                if gid:
+                    data = mod.build(gid, lang=lang)
+            except Exception:
+                pass
+        return jsonify_cacheable(data, f'gacha_sim_pool:{lang}:{os.path.getmtime(path)}', public=True, max_age=600)
+
+    pub_dir = os.path.join(_APP_ROOT, 'data', 'published', 'gacha_sim')
+    pub_path = os.path.join(pub_dir, f'pool_{gasha_id}_{lang}.json')
+    pub_path_legacy = os.path.join(pub_dir, f'pool_{gasha_id}.json')
+    if os.path.isfile(pub_path):
+        try:
+            with open(pub_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            return jsonify_cacheable(
+                data,
+                f'gacha_sim_pool:{gasha_id}:{lang}:{os.path.getmtime(pub_path)}',
+                public=True,
+                max_age=600,
+            )
+        except Exception:
+            pass
+    if lang == 'EN' and os.path.isfile(pub_path_legacy):
+        try:
+            with open(pub_path_legacy, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            return jsonify_cacheable(
+                data,
+                f'gacha_sim_pool:{gasha_id}:EN:{os.path.getmtime(pub_path_legacy)}',
+                public=True,
+                max_age=600,
+            )
+        except Exception:
+            pass
+
+    cache_key = f'{gasha_id}:{lang}'
+    cached = _GACHA_SIM_POOL_CACHE.get(cache_key)
+    if cached is not None:
+        return jsonify_cacheable(cached, f'gacha_sim_pool:mem:{cache_key}', public=True, max_age=300)
+
+    default_path = os.path.join(_APP_ROOT, 'data', 'published', 'gacha_sim_pool.json')
+    if os.path.isfile(default_path) and lang == 'EN':
+        try:
+            with open(default_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            if str(data.get('gasha_id') or '') == gasha_id:
+                _GACHA_SIM_POOL_CACHE[cache_key] = data
+                return jsonify_cacheable(
+                    data, f'gacha_sim_pool:{gasha_id}:default', public=True, max_age=600
+                )
+        except Exception:
+            pass
+
+    try:
+        import importlib.util
+
+        build_path = os.path.join(_APP_ROOT, '_mocks', 'build_gacha_sim_pool.py')
+        spec = importlib.util.spec_from_file_location('build_gacha_sim_pool', build_path)
+        mod = importlib.util.module_from_spec(spec)
+        assert spec and spec.loader
+        spec.loader.exec_module(mod)
+        data = mod.build(gasha_id, lang=lang)
+        _GACHA_SIM_POOL_CACHE[cache_key] = data
+        try:
+            os.makedirs(pub_dir, exist_ok=True)
+            with open(pub_path, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False)
+        except Exception:
+            pass
+        return jsonify_cacheable(data, f'gacha_sim_pool:built:{cache_key}', public=True, max_age=300)
+    except Exception as e:
+        return jsonify({'error': 'pool_build_failed', 'detail': str(e), 'gasha_id': gasha_id, 'lang': lang}), 500
+
+
 @app.route('/IP')
 @app.route('/investment-priority')
 @app.route('/investment-guide')
@@ -31610,6 +31731,7 @@ def get_unit(unit_id):
 # Client history short-paths (must stay in sync with parseBrowseShortPath in static/js/app.js).
 _SPA_TAB_PATHS = frozenset({
     'c', 'u', 's', 'new', 'tl', 'banners', 'st', 'esim', 'ml', 'cal', 'tb', 'op', 'pt', 'rk', 'msy', 'ip',
+    'gacha-sim',
     # Stage category deep-links (Stages tab sources)
     'gtower', 'gt', 'challenge', 'challenges', 'ch', 'go', 'score', 'score-attack', 'grand-offensive', 'special',
 })
@@ -31641,6 +31763,8 @@ def _is_spa_client_path(path):
         return True
     if len(parts) == 1:
         return parts[0].lower() in _SPA_TAB_PATHS
+    if len(parts) == 2 and parts[0].lower() == 'gacha-sim' and parts[1]:
+        return True
     if len(parts) == 2 and parts[0].lower() in _SPA_DETAIL_PREFIXES and parts[1]:
         return True
     return False
@@ -31719,7 +31843,7 @@ def sitemap_xml():
         paths = [
             '/', '/ip', '/collections', '/game-news', '/tm', '/dm', '/about', '/contact', '/privacy-policy',
             '/c', '/u', '/s', '/st', '/gtower', '/challenge', '/go', '/special',
-            '/cal', '/tb', '/tl', '/ml', '/rk', '/op', '/new', '/esim',
+            '/cal', '/tb', '/tl', '/ml', '/rk', '/op', '/new', '/esim', '/gacha-sim',
         ]
         today = date.today().isoformat()
         urls = ''.join(

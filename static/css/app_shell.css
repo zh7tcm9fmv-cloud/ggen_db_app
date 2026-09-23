@@ -504,21 +504,142 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
 #panel-banner_timeline .bt-table-wrap thead th{position:sticky;top:var(--list-thead-sticky-top);z-index:55;background:var(--bg-card);box-shadow:0 3px 4px -1px rgba(0,0,0,.45);background-clip:padding-box;color:var(--text-secondary);cursor:default;text-transform:none;letter-spacing:0;font-size:14px;line-height:1.25;font-weight:700;-webkit-user-select:none;user-select:none;white-space:normal;overflow:visible}
 #panel-banner_timeline .bt-table-wrap thead th:hover{color:var(--text-secondary)!important}
 #panel-banner_timeline .bt-table-wrap table.data-table thead th:not(.sort-active){cursor:default}
+/* Fan logos must paint above sticky thead + first body rows */
+#panel-banner_timeline .bt-table-wrap thead .bt-th-combo{z-index:90;overflow:visible}
 #panel-banner_timeline .bt-th-banner.bt-th-sortable{cursor:pointer;-webkit-user-select:none;user-select:none;text-decoration:none}
 #panel-banner_timeline .bt-th-banner.bt-th-sortable:hover{color:var(--accent-cyan)!important}
 #panel-banner_timeline .bt-sort-ind{font-size:11px;color:var(--accent-gold);margin-left:2px;font-weight:800}
 .bt-table thead .bt-th-combo{font-weight:700;padding:12px 10px 12px 8px;line-height:1.35;text-align:left;overflow:visible}
-#panel-banner_timeline .bt-table thead .bt-th-combo{position:sticky;top:var(--list-thead-sticky-top);z-index:56}
+#panel-banner_timeline .bt-table thead .bt-th-combo{position:sticky;top:var(--list-thead-sticky-top);z-index:90}
 #panel-banner_timeline .bt-table thead .bt-th-banner{position:sticky;top:var(--list-thead-sticky-top);z-index:56}
 .bt-th-combo-inner{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%}
 .bt-th-combo-label{flex-shrink:0}
 .bt-th-combo-vote-tools{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex:1;min-width:0;margin-left:auto}
+.bt-banner-title-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.bt-banner-title-row .bt-banner-title{flex:1 1 auto;min-width:0}
+.bt-banner-row-tools{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px}
+.bt-gacha-sim-tools{display:inline-flex;align-items:center;flex:0 0 auto;align-self:center;position:relative;z-index:80}
+.bt-gacha-sim-fan{position:relative;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;flex:0 0 auto;z-index:80;overflow:visible}
+.bt-gacha-sim-fan-check{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;appearance:none}
+/* Trigger — shared plate with .bt-vote-mode-btn (no extra grey) */
+.bt-vote-mode-btn,
+.bt-gacha-sim-btn,
+.bt-gacha-sim-fan-trigger{
+  box-sizing:border-box;
+  flex:0 0 auto;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:36px;
+  height:36px;
+  min-width:36px;
+  min-height:36px;
+  padding:0;
+  margin:0;
+  border:1px solid rgba(100,170,255,.45);
+  border-radius:var(--radius-sm);
+  background:rgba(12,20,36,.85);
+  cursor:pointer;
+  transition:var(--transition);
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+  overflow:hidden;
+  align-self:center;
+}
+.bt-vote-mode-btn:hover,
+.bt-vote-mode-btn[aria-pressed="true"],
+.bt-gacha-sim-fan-trigger:hover,
+.bt-gacha-sim-fan-check:checked + .bt-gacha-sim-fan-trigger{
+  border-color:rgba(0,212,255,.65);
+  box-shadow:0 0 0 1px rgba(0,212,255,.35),0 0 12px rgba(69,128,230,.25);
+}
+.bt-vote-mode-btn[aria-pressed="true"],
+.bt-gacha-sim-fan-check:checked + .bt-gacha-sim-fan-trigger{background:rgba(0,212,255,.12)}
+.bt-vote-mode-btn img,
+.bt-gacha-sim-btn img,
+.bt-gacha-sim-btn .bt-gacha-sim-btn-ic,
+.bt-gacha-sim-fan-trigger img,
+.bt-gacha-sim-fan-trigger .bt-gacha-sim-btn-ic{
+  width:26px;
+  height:26px;
+  object-fit:contain;
+  object-position:center;
+  display:block;
+  flex:0 0 auto;
+  pointer-events:none;
+}
+/* Fan options — gasha_logo chips; DOM: check, label, item×N → nth-child(3+) */
+.bt-gacha-sim-fan-item.item{
+  position:absolute;
+  left:50%;
+  top:50%;
+  width:56px;
+  height:56px;
+  margin:-28px 0 0 -28px;
+  padding:4px;
+  box-sizing:border-box;
+  border:1px solid rgba(100,170,255,.5);
+  border-radius:var(--radius-sm);
+  background:rgba(8,14,28,.94);
+  box-shadow:0 8px 22px rgba(0,0,0,.45);
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  opacity:0;
+  transform:scale(0.4);
+  transition:transform 0.5s cubic-bezier(0.34,1.56,0.64,1),opacity 0.3s;
+  pointer-events:none;
+  z-index:81;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+}
+.bt-gacha-sim-fan-item.item img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+  pointer-events:none;
+}
+.bt-gacha-sim-fan-item-fallback{
+  font-size:9px;
+  color:#9fdfff;
+  text-align:center;
+  line-height:1.2;
+  max-width:100%;
+  overflow:hidden;
+}
+.bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item{
+  opacity:1;
+  pointer-events:auto;
+}
+/* Fan opens to the LEFT of the trigger (vertical arc) */
+.bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(3){transform:translate(-58px,-54px);transition-delay:0.02s}
+.bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(4){transform:translate(-80px,0);transition-delay:0.07s}
+.bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(5){transform:translate(-58px,54px);transition-delay:0.12s}
+.bt-gacha-sim-fan[data-fan-count="1"] .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(3){transform:translate(-80px,0);transition-delay:0.02s}
+.bt-gacha-sim-fan[data-fan-count="2"] .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(3){transform:translate(-72px,-40px);transition-delay:0.02s}
+.bt-gacha-sim-fan[data-fan-count="2"] .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(4){transform:translate(-72px,40px);transition-delay:0.07s}
+@media (prefers-reduced-motion:reduce){
+  .bt-gacha-sim-fan-item.item{transition:opacity 0.2s !important;transform:none !important}
+  .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(3),
+  .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(4),
+  .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(5),
+  .bt-gacha-sim-fan[data-fan-count="1"] .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(3),
+  .bt-gacha-sim-fan[data-fan-count="2"] .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(3),
+  .bt-gacha-sim-fan[data-fan-count="2"] .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(4){
+    transition-delay:0s !important
+  }
+  .bt-gacha-sim-fan[data-fan-count="1"] .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(3){transform:translate(-80px,0) !important}
+  .bt-gacha-sim-fan[data-fan-count="2"] .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(3){transform:translate(-72px,-40px) !important}
+  .bt-gacha-sim-fan[data-fan-count="2"] .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(4){transform:translate(-72px,40px) !important}
+  .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(3){transform:translate(-58px,-54px) !important}
+  .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(4){transform:translate(-80px,0) !important}
+  .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(5){transform:translate(-58px,54px) !important}
+}
+.bt-th-combo-vote-tools .bt-gacha-sim-tools{margin-right:0}
 .bt-vote-mode-caption{margin:0;font-size:12px;font-weight:600;line-height:1.35;color:var(--accent-cyan);text-align:right;max-width:min(320px,48vw)}
 .bt-vote-mode-caption[hidden]{display:none!important}
-.bt-vote-mode-btn{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;padding:0;border:1px solid rgba(100,170,255,.45);border-radius:var(--radius-sm);background:rgba(12,20,36,.85);cursor:pointer;transition:var(--transition);-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-.bt-vote-mode-btn img{width:26px;height:26px;object-fit:contain;display:block}
-.bt-vote-mode-btn:hover,.bt-vote-mode-btn[aria-pressed="true"]{border-color:rgba(0,212,255,.65);box-shadow:0 0 0 1px rgba(0,212,255,.35),0 0 12px rgba(69,128,230,.25)}
-.bt-vote-mode-btn[aria-pressed="true"]{background:rgba(0,212,255,.12)}
 .ui-notice-anchor{position:relative;display:inline-flex;vertical-align:middle;overflow:visible}
 .ui-notice-flare{position:absolute;top:-4px;right:-4px;width:22px;height:22px;pointer-events:none;z-index:5;display:none;line-height:0;overflow:visible}
 .nav-tab .ui-notice-flare{top:4px;right:8px;width:24px;height:24px}
@@ -954,6 +1075,17 @@ html[data-ui-lang="HK"] #panel-banner_timeline .bt-strip .lr-card.bt-lr-tile--li
 #panel-banner_timeline .bt-table thead .bt-th-combo .bt-vote-mode-caption{display:none!important}
 #panel-banner_timeline .bt-table thead .bt-th-combo{padding:10px 8px}
 #panel-banner_timeline .bt-vote-mode-btn{width:40px;height:40px;min-width:40px;min-height:40px}
+#panel-banner_timeline .bt-gacha-sim-fan{width:40px;height:40px}
+#panel-banner_timeline .bt-gacha-sim-btn,
+#panel-banner_timeline .bt-gacha-sim-fan-trigger{width:40px;height:40px;min-width:40px;min-height:40px}
+#panel-banner_timeline .bt-vote-mode-btn img,
+#panel-banner_timeline .bt-gacha-sim-btn img,
+#panel-banner_timeline .bt-gacha-sim-fan-trigger img,
+#panel-banner_timeline .bt-gacha-sim-btn .bt-gacha-sim-btn-ic,
+#panel-banner_timeline .bt-gacha-sim-fan-trigger .bt-gacha-sim-btn-ic{width:26px !important;height:26px !important;object-fit:contain !important}
+#panel-banner_timeline .bt-table thead .bt-th-combo,
+#panel-banner_timeline .bt-th-combo-inner,
+#panel-banner_timeline .bt-th-combo-vote-tools{overflow:visible}
 #panel-banner_timeline .bt-table .bt-strip{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px!important;width:100%!important;max-width:100%!important}
 #panel-banner_timeline .bt-table .bt-strip .lr-card,#panel-banner_timeline .bt-table .bt-strip .bt-vote-extra-thumb{width:100%!important;max-width:100%!important;min-width:0!important;min-height:104px!important;padding:6px 4px!important;box-sizing:border-box!important}
 #panel-banner_timeline .bt-table .bt-strip .lr-card.bt-lr-tile--limited{padding:6px 4px!important;gap:0!important;align-items:stretch!important}
