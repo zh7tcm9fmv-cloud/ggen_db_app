@@ -215,8 +215,32 @@ window.GgenGachaSim = (function () {
     return "https://cdn.jsdelivr.net/gh/zh7tcm9fmv-cloud/ggen_db_images@main/images/";
   })();
   var GS = CDN + "UI/gasha_sim/";
-  var LOCAL = "/static/gacha_sim/";
-  var REFS = "/static/gacha_sim/refs/";
+  /* Card chrome on CDN (UI/gasha_sim); /static/gacha_sim only when CDN is off */
+  var LOCAL_FB = "/static/gacha_sim/";
+  var LOCAL = (function () {
+    try {
+      if (window.__GGEN_IMAGE_CDN__ && window.__GGEN_GAME_IMAGES_USE_CDN__ !== false) {
+        return GS;
+      }
+    } catch (e) {}
+    return LOCAL_FB;
+  })();
+  var REFS = LOCAL + "refs/";
+  function chromeUrl(file) {
+    return LOCAL + file;
+  }
+  /* Prefer CDN; fall back to Railway /static until ggen_db_images push propagates */
+  function chromeImg(cls, file) {
+    var src = chromeUrl(file);
+    var attrs =
+      ' class="' + cls + '" alt="" src="' + src + '" decoding="async"';
+    if (LOCAL !== LOCAL_FB) {
+      attrs +=
+        ' data-gs-fb="' + LOCAL_FB + file +
+        '" onerror="if(this.dataset.gsFb){var u=this.dataset.gsFb;delete this.dataset.gsFb;this.src=u}"';
+    }
+    return "<img" + attrs + ">";
+  }
   /* BromideHeightIndex → object-position Y (face-first; H2 is catalog majority). */
   var POR_Y_BY_HEIGHT = { "0": "8%", "1": "12%", "2": "14%", "3": "24%", "4": "34%", "5": "44%" };
   function porYFromItem(item) {
@@ -295,30 +319,30 @@ window.GgenGachaSim = (function () {
   var SUPP_FRAME = {
     ssr: {
       /* Exact image.psdssr.psd Layers 7–10 — distinct pieces, no flip */
-      l: LOCAL + "psd_SSR_Frame_L.webp",
-      r: LOCAL + "psd_SSR_Frame_R.webp",
-      t: LOCAL + "psd_SSR_Frame_T.webp",
-      b: LOCAL + "psd_SSR_Frame_B.webp",
+      l: "psd_SSR_Frame_L.webp",
+      r: "psd_SSR_Frame_R.webp",
+      t: "psd_SSR_Frame_T.webp",
+      b: "psd_SSR_Frame_B.webp",
       mirror: false
     },
     ur: {
       /* Exact image.psd.psd Layers 1–4 */
-      l: LOCAL + "psd_UR_Frame_L.webp",
-      r: LOCAL + "psd_UR_Frame_R.webp",
-      t: LOCAL + "psd_UR_Frame_T.webp",
-      b: LOCAL + "psd_UR_Frame_B.webp",
+      l: "psd_UR_Frame_L.webp",
+      r: "psd_UR_Frame_R.webp",
+      t: "psd_UR_Frame_T.webp",
+      b: "psd_UR_Frame_B.webp",
       mirror: false
     }
   };
   var ACQ = CDN + "UI/UI_Common_Icon_Source_Gasha.webp";
   /* Gain = exact PSD layers only (SSR Layer 11 / UR Layer 5) — no extra CSS glow */
   var SUPP_GAIN = {
-    ssr: LOCAL + "fx_SUPP_SSR_Gain.webp",
-    ur: LOCAL + "fx_SUPP_UR_Gain.webp"
+    ssr: "fx_SUPP_SSR_Gain.webp",
+    ur: "fx_SUPP_UR_Gain.webp"
   };
   var SUPP_BASE = {
-    ssr: LOCAL + "psd_SSR_Base.webp",
-    ur: LOCAL + "psd_UR_Base.webp"
+    ssr: "psd_SSR_Base.webp",
+    ur: "psd_UR_Base.webp"
   };
 
   function artUrl(path) {
@@ -399,15 +423,15 @@ window.GgenGachaSim = (function () {
     if (kind === "supp") {
       var sf = SUPP_FRAME[r] || SUPP_FRAME.ssr;
       /* PSD order: plate (base+art+frames) then Gain rim, then rarity — no extras */
-      fx = '<img class="gc-fx" alt="" src="' + (SUPP_GAIN[r] || SUPP_GAIN.ssr) + '">';
+      fx = chromeImg("gc-fx", SUPP_GAIN[r] || SUPP_GAIN.ssr);
       body =
         '<div class="gc-supp-plate">' +
-          '<img class="gc-base" alt="" src="' + (SUPP_BASE[r] || SUPP_BASE.ssr) + '">' +
+          chromeImg("gc-base", SUPP_BASE[r] || SUPP_BASE.ssr) +
           (opts.art ? porImgHtml(opts.art, delay, opts.porY, !!opts.export) : "") +
-          '<img class="gc-supp-side gc-supp-side--l" alt="" src="' + sf.l + '">' +
-          '<img class="gc-supp-side gc-supp-side--r" alt="" src="' + sf.r + '">' +
-          '<img class="gc-supp-end gc-supp-end--t" alt="" src="' + sf.t + '">' +
-          '<img class="gc-supp-end gc-supp-end--b" alt="" src="' + sf.b + '">' +
+          chromeImg("gc-supp-side gc-supp-side--l", sf.l) +
+          chromeImg("gc-supp-side gc-supp-side--r", sf.r) +
+          chromeImg("gc-supp-end gc-supp-end--t", sf.t) +
+          chromeImg("gc-supp-end gc-supp-end--b", sf.b) +
         "</div>";
       if (fromPull) {
         hudExtra =
@@ -416,20 +440,20 @@ window.GgenGachaSim = (function () {
     } else {
       var base = "", frame = "";
       if (r === "r") {
-        base = '<img class="gc-base" alt="" src="' + LOCAL + 'layer_R_Base.webp">';
-        frame = '<img class="gc-frame" alt="" src="' + LOCAL + 'layer_R_Frame.webp">';
+        base = chromeImg("gc-base", "layer_R_Base.webp");
+        frame = chromeImg("gc-frame", "layer_R_Frame.webp");
       } else if (r === "sr") {
-        base = '<img class="gc-base" alt="" src="' + LOCAL + 'layer_SR_Base.webp">';
-        frame = '<img class="gc-frame" alt="" src="' + LOCAL + 'layer_SR_Frame.webp">';
+        base = chromeImg("gc-base", "layer_SR_Base.webp");
+        frame = chromeImg("gc-frame", "layer_SR_Frame.webp");
       } else if (r === "ssr") {
-        fx = '<img class="gc-fx" alt="" src="' + LOCAL + 'fx_unit_SSR_glow.webp">';
+        fx = chromeImg("gc-fx", "fx_unit_SSR_glow.webp");
         /* New Project(2).psd Layer 5 + Layer 6 exact */
-        base = '<img class="gc-base" alt="" src="' + LOCAL + 'psd_unit_base.webp">';
-        frame = '<img class="gc-frame" alt="" src="' + LOCAL + 'psd_unit_frame.webp">';
+        base = chromeImg("gc-base", "psd_unit_base.webp");
+        frame = chromeImg("gc-frame", "psd_unit_frame.webp");
       } else {
-        fx = '<img class="gc-fx" alt="" src="' + LOCAL + 'fx_unit_UR_glow.webp">';
-        base = '<img class="gc-base" alt="" src="' + LOCAL + 'layer_UR_Base.webp">';
-        frame = '<img class="gc-frame" alt="" src="' + LOCAL + 'layer_UR_Frame.webp">';
+        fx = chromeImg("gc-fx", "fx_unit_UR_glow.webp");
+        base = chromeImg("gc-base", "layer_UR_Base.webp");
+        frame = chromeImg("gc-frame", "layer_UR_Frame.webp");
       }
       var por = porImgHtml(opts.art, delay, opts.porY, !!opts.export);
       body = base + por + frame;
@@ -464,7 +488,7 @@ window.GgenGachaSim = (function () {
   function bakeCard(file, label) {
     return (
       '<figure class="gc-slot">' +
-        '<div class="gc gc--baked"><img class="gc-bake" alt="" src="' + LOCAL + file + '"></div>' +
+        '<div class="gc gc--baked">' + chromeImg("gc-bake", file) + "</div>" +
         "<figcaption>" + label + "</figcaption></figure>"
     );
   }

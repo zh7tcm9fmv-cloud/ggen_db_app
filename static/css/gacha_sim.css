@@ -764,7 +764,8 @@
   .actions { display: flex; gap: 10px; align-items: center; }
   /* Shared in-game plate — UI_StageTop_Button_Lsize_DesignLine */
   .btn-designline {
-    --btn-plate: url("https://cdn.jsdelivr.net/gh/zh7tcm9fmv-cloud/ggen_db_images@main/images/UI/UI_StageTop_Button_Lsize_DesignLine.webp");
+    /* Served via CSS CDN rewrite (/static/images → IMAGE_CDN); no hardcoded host */
+    --btn-plate: url("/static/images/UI/UI_StageTop_Button_Lsize_DesignLine.webp");
     position: relative;
     min-width: 148px;
     height: 48px;
@@ -898,7 +899,7 @@
     background-color: #02040a;
     background-image:
       linear-gradient(180deg, rgba(2, 6, 16, 0.55) 0%, rgba(2, 6, 16, 0.72) 100%),
-      url("https://cdn.jsdelivr.net/gh/zh7tcm9fmv-cloud/ggen_db_images@main/images/Background/BG_Event_Story_RareBoss_Appear.webp");
+      url("/static/images/Background/BG_Event_Story_RareBoss_Appear.webp");
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
