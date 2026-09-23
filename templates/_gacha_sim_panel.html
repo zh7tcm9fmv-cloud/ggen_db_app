@@ -60,7 +60,7 @@
           <div class="session-stats-pane session-stats-pane--units" id="sessStatsUnits">
             <div class="session-stats-label" id="sessStatsUnitsLbl" hidden>Units</div>
             <div class="session-stats-grid" id="sessStatsUnitsGrid">
-              <div class="session-stat session-stat--ur"><span class="tier"><img class="tier-icon" alt="UR" data-rarity="ur" width="24" height="24"></span><span class="pct" id="statUrPct">—</span><span class="cnt" id="statUrCnt">0</span></div>
+              <div class="session-stat session-stat--ur session-stat--ur-acq" data-ur-acq="unit" tabindex="0" title=""><span class="tier"><img class="tier-icon" alt="UR" data-rarity="ur" width="24" height="24"></span><span class="pct" id="statUrPct">—</span><span class="cnt" id="statUrCnt">0</span></div>
               <div class="session-stat session-stat--ssr"><span class="tier"><img class="tier-icon" alt="SSR" data-rarity="ssr" width="24" height="24"></span><span class="pct" id="statSsrPct">—</span><span class="cnt" id="statSsrCnt">0</span></div>
               <div class="session-stat session-stat--sr"><span class="tier"><img class="tier-icon" alt="SR" data-rarity="sr" width="24" height="24"></span><span class="pct" id="statSrPct">—</span><span class="cnt" id="statSrCnt">0</span></div>
               <div class="session-stat session-stat--r"><span class="tier"><img class="tier-icon" alt="R" data-rarity="r" width="24" height="24"></span><span class="pct" id="statRPct">—</span><span class="cnt" id="statRCnt">0</span></div>
@@ -69,7 +69,7 @@
           <div class="session-stats-pane session-stats-pane--supp" id="sessStatsSupp" hidden>
             <div class="session-stats-label">Supporters</div>
             <div class="session-stats-grid session-stats-grid--supp">
-              <div class="session-stat session-stat--ur"><span class="tier"><img class="tier-icon" alt="UR" data-rarity="ur" width="24" height="24"></span><span class="pct" id="statSuppUrPct">—</span><span class="cnt" id="statSuppUrCnt">0</span></div>
+              <div class="session-stat session-stat--ur session-stat--ur-acq" data-ur-acq="supp" tabindex="0" title=""><span class="tier"><img class="tier-icon" alt="UR" data-rarity="ur" width="24" height="24"></span><span class="pct" id="statSuppUrPct">—</span><span class="cnt" id="statSuppUrCnt">0</span></div>
               <div class="session-stat session-stat--ssr"><span class="tier"><img class="tier-icon" alt="SSR" data-rarity="ssr" width="24" height="24"></span><span class="pct" id="statSuppSsrPct">—</span><span class="cnt" id="statSuppSsrCnt">0</span></div>
             </div>
           </div>
@@ -87,6 +87,7 @@
   </div>
 
   <div id="cardHoverPop" class="card-hover-pop" hidden aria-hidden="true"></div>
+  <div id="urAcqPop" class="ur-acq-pop" hidden aria-hidden="true" role="tooltip"></div>
 
   <div class="stage" id="stage" aria-hidden="true">
     <div class="sky"></div>

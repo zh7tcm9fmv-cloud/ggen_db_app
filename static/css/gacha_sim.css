@@ -356,6 +356,78 @@
   .session-stat--ssr .pct { color: var(--gold); }
   .session-stat--sr .pct { color: #7eb6ff; }
   .session-stat--r .pct { color: #c48a5a; }
+  .session-stat--ur-acq {
+    cursor: help;
+    transition: border-color var(--motion-dur-quick, 120ms) var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1)),
+      background-color var(--motion-dur-quick, 120ms) var(--motion-ease-standard, cubic-bezier(0.2, 0, 0, 1));
+  }
+  .session-stat--ur-acq:hover,
+  .session-stat--ur-acq:focus-visible {
+    border-color: rgba(200, 140, 255, 0.55);
+    background: rgba(36, 16, 56, 0.85);
+  }
+  .ur-acq-pop {
+    position: fixed;
+    z-index: 10055;
+    min-width: 180px;
+    max-width: min(320px, calc(100vw - 24px));
+    max-height: min(280px, 50vh);
+    overflow: auto;
+    padding: 10px 12px;
+    background: rgba(8, 10, 20, 0.96);
+    border: 1px solid rgba(180, 120, 255, 0.45);
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.55), 0 0 20px rgba(160, 80, 255, 0.18);
+    transform: translate(-50%, -100%);
+    margin-top: -10px;
+    pointer-events: auto;
+    color: #e8dff5;
+    font-size: 12px;
+    line-height: 1.35;
+  }
+  .ur-acq-pop[hidden] { display: none !important; }
+  .ur-acq-pop > strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #e0c0ff;
+    font-family: var(--gs-hud);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .ur-acq-pop ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .ur-acq-pop li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 3px 0;
+    border-top: 1px solid rgba(140, 120, 180, 0.18);
+    cursor: pointer;
+  }
+  .ur-acq-pop li:first-child { border-top: 0; }
+  .ur-acq-pop li:hover .ur-acq-name { color: #fff; }
+  .ur-acq-pop .ur-acq-name {
+    flex: 1;
+    min-width: 0;
+    color: #d8c4f0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .ur-acq-pop .ur-acq-mul {
+    flex-shrink: 0;
+    font-weight: 700;
+    color: #d8a0ff;
+    font-variant-numeric: tabular-nums;
+  }
+  .ur-acq-pop .ur-acq-empty {
+    color: #7a8aa3;
+    padding: 2px 0;
+  }
   .session-log-label {
     margin: 0 0 4px;
     color: #9eb0c8;

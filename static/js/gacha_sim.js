@@ -910,6 +910,7 @@ window.GgenGachaSim = (function () {
   }
   function showCardHover(card, clientX, clientY) {
     if (!hoverPop || !card) return;
+    hideUrAcqPop();
     card = enrichArtFromPool(card);
     if (!card.art && !card.name) return;
     hoverPop.innerHTML = layerCard({
@@ -971,6 +972,148 @@ window.GgenGachaSim = (function () {
       bag[k] = (bag[k] || 0) + 1;
     });
     return { unit: unit, supp: supp };
+  }
+
+  /* Aggregate UR draws by id — duplicates become x2 / x3… */
+  function aggregateUrAcquisitions(kind) {
+    var map = {};
+    (sim.draws || []).forEach(function (c) {
+      if (!c || c.rarity !== "ur") return;
+      var isSupp = c.kind === "supp";
+      if (kind === "unit" && isSupp) return;
+      if (kind === "supp" && !isSupp) return;
+      var id = String(c.id || "").trim();
+      var name = String(c.name || "").trim() || (id ? resolvePoolName(id) : "") || id || "?";
+      var key = id || ("name:" + name);
+      if (!map[key]) {
+        map[key] = { id: id, name: name, count: 0, kind: isSupp ? "supp" : "unit" };
+      }
+      map[key].count += 1;
+      if (!map[key].name && name) map[key].name = name;
+    });
+    return Object.keys(map)
+      .map(function (k) { return map[k]; })
+      .sort(function (a, b) {
+        if (b.count !== a.count) return b.count - a.count;
+        return String(a.name).localeCompare(String(b.name));
+      });
+  }
+
+  var urAcqPop = document.getElementById("urAcqPop");
+  var _urAcqHideTimer = null;
+  function hideUrAcqPop() {
+    if (_urAcqHideTimer) {
+      clearTimeout(_urAcqHideTimer);
+      _urAcqHideTimer = null;
+    }
+    if (!urAcqPop) return;
+    urAcqPop.hidden = true;
+    urAcqPop.setAttribute("aria-hidden", "true");
+    urAcqPop.innerHTML = "";
+  }
+  function positionUrAcqPop(anchorEl) {
+    if (!urAcqPop || !anchorEl) return;
+    var rect = anchorEl.getBoundingClientRect();
+    var pad = 10;
+    var w = urAcqPop.offsetWidth || 220;
+    var h = urAcqPop.offsetHeight || 120;
+    var x = rect.left + rect.width / 2;
+    x = Math.min(window.innerWidth - w / 2 - pad, Math.max(w / 2 + pad, x));
+    var y = rect.top - 8;
+    if (y - h < pad) {
+      /* Flip below if not enough room above */
+      urAcqPop.style.transform = "translate(-50%, 0)";
+      urAcqPop.style.marginTop = "8px";
+      y = rect.bottom;
+    } else {
+      urAcqPop.style.transform = "translate(-50%, -100%)";
+      urAcqPop.style.marginTop = "-10px";
+    }
+    urAcqPop.style.left = x + "px";
+    urAcqPop.style.top = y + "px";
+  }
+  function showUrAcqPop(kind, anchorEl) {
+    if (!urAcqPop || !anchorEl) return;
+    hideCardHover();
+    if (_urAcqHideTimer) {
+      clearTimeout(_urAcqHideTimer);
+      _urAcqHideTimer = null;
+    }
+    var rows = aggregateUrAcquisitions(kind);
+    var titleKey = kind === "supp" ? "gs_ur_acq_supp" : "gs_ur_acq_units";
+    var total = 0;
+    rows.forEach(function (r) { total += r.count; });
+    var head = tt(titleKey) + (total ? " (" + total + ")" : "");
+    var body;
+    if (!rows.length) {
+      body = '<div class="ur-acq-empty">' + esc(tt("gs_ur_acq_empty")) + "</div>";
+    } else {
+      body = "<ul>" + rows.map(function (r) {
+        var mul = r.count > 1
+          ? '<span class="ur-acq-mul">x' + r.count + "</span>"
+          : "";
+        return '<li data-ur-id="' + esc(r.id) + '" data-ur-kind="' + esc(r.kind) + '">' +
+          '<span class="ur-acq-name">' + esc(r.name) + "</span>" + mul +
+          "</li>";
+      }).join("") + "</ul>";
+    }
+    urAcqPop.innerHTML = "<strong>" + esc(head) + "</strong>" + body;
+    urAcqPop.hidden = false;
+    urAcqPop.setAttribute("aria-hidden", "false");
+    positionUrAcqPop(anchorEl);
+  }
+  function bindUrAcqHover() {
+    var root = document.getElementById("sessStats");
+    if (!root || root._urAcqBound) return;
+    root._urAcqBound = 1;
+    root.addEventListener("mouseover", function (ev) {
+      var el = ev.target && ev.target.closest ? ev.target.closest("[data-ur-acq]") : null;
+      if (!el || !root.contains(el)) return;
+      if (ev.relatedTarget && el.contains(ev.relatedTarget)) return;
+      showUrAcqPop(el.getAttribute("data-ur-acq") || "unit", el);
+    });
+    root.addEventListener("mouseout", function (ev) {
+      var el = ev.target && ev.target.closest ? ev.target.closest("[data-ur-acq]") : null;
+      if (!el || !root.contains(el)) return;
+      var to = ev.relatedTarget;
+      if (to && (el.contains(to) || (urAcqPop && urAcqPop.contains(to)))) return;
+      _urAcqHideTimer = setTimeout(function () {
+        if (urAcqPop && urAcqPop.matches(":hover")) return;
+        hideUrAcqPop();
+      }, 120);
+    });
+    root.addEventListener("focusin", function (ev) {
+      var el = ev.target && ev.target.closest ? ev.target.closest("[data-ur-acq]") : null;
+      if (!el || !root.contains(el)) return;
+      showUrAcqPop(el.getAttribute("data-ur-acq") || "unit", el);
+    });
+    root.addEventListener("focusout", function (ev) {
+      var el = ev.target && ev.target.closest ? ev.target.closest("[data-ur-acq]") : null;
+      if (!el) return;
+      var to = ev.relatedTarget;
+      if (to && (el.contains(to) || (urAcqPop && urAcqPop.contains(to)))) return;
+      hideUrAcqPop();
+    });
+    if (urAcqPop && !urAcqPop._bound) {
+      urAcqPop._bound = 1;
+      urAcqPop.addEventListener("mouseenter", function () {
+        if (_urAcqHideTimer) {
+          clearTimeout(_urAcqHideTimer);
+          _urAcqHideTimer = null;
+        }
+      });
+      urAcqPop.addEventListener("mouseleave", hideUrAcqPop);
+      urAcqPop.addEventListener("click", function (ev) {
+        var li = ev.target && ev.target.closest ? ev.target.closest("li[data-ur-id]") : null;
+        if (!li) return;
+        var id = li.getAttribute("data-ur-id");
+        var kind = li.getAttribute("data-ur-kind") || "unit";
+        if (id) {
+          hideUrAcqPop();
+          openDbDetail(kind, id);
+        }
+      });
+    }
   }
 
   function resolvePoolName(id) {
@@ -1088,6 +1231,10 @@ window.GgenGachaSim = (function () {
 
     bindHitHover(urList);
     bindHitHover(log);
+    bindUrAcqHover();
+    document.querySelectorAll("[data-ur-acq]").forEach(function (el) {
+      el.title = tt("gs_ur_acq_hint");
+    });
   }
   renderSession();
 
@@ -1098,6 +1245,7 @@ window.GgenGachaSim = (function () {
     saveSim();
     renderSession();
     hideCardHover();
+    hideUrAcqPop();
   };
   document.getElementById("optCollections").onchange = function () {
     saveOpts();
