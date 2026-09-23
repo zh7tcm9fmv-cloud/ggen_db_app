@@ -28,6 +28,7 @@ from urllib.parse import quote
 import base64
 import threading
 from urllib.error import HTTPError, URLError
+from http.client import IncompleteRead
 from urllib.request import Request, urlopen
 import secrets
 import time
@@ -29287,12 +29288,47 @@ def _banner_pool_votes_github_api_headers(token):
     }
 
 
+def _banner_pool_votes_http_get_bytes(url, *, headers=None, timeout=20, retries=2):
+    """
+    GET full response body with retries.
+    Railway↔GitHub often hits http.client.IncompleteRead on large vote JSON;
+    never leave that uncaught on request threads.
+    """
+    last_err = None
+    hdrs = headers or {}
+    attempts = max(0, int(retries)) + 1
+    for attempt in range(attempts):
+        try:
+            req = Request(url, headers=hdrs, method='GET')
+            with urlopen(req, timeout=timeout) as resp:
+                return resp.read()
+        except IncompleteRead as e:
+            last_err = e
+            print(f'banner_pool_votes: IncompleteRead (attempt {attempt + 1}/{attempts}): {e}')
+            time.sleep(0.2 * (attempt + 1))
+        except (URLError, OSError, TimeoutError) as e:
+            last_err = e
+            print(f'banner_pool_votes: HTTP get failed (attempt {attempt + 1}/{attempts}): {e}')
+            time.sleep(0.2 * (attempt + 1))
+    if last_err is not None:
+        raise last_err
+    return b''
+
+
+def _banner_pool_votes_http_get_json(url, *, headers=None, timeout=20, retries=2):
+    raw = _banner_pool_votes_http_get_bytes(
+        url, headers=headers, timeout=timeout, retries=retries
+    )
+    return json.loads(raw.decode('utf-8'))
+
+
 def _banner_pool_votes_github_branch_exists(token, repo, branch):
     url = f'https://api.github.com/repos/{repo}/git/ref/heads/{quote(branch, safe="")}'
-    req = Request(url, headers=_banner_pool_votes_github_api_headers(token), method='GET')
     try:
-        with urlopen(req, timeout=10) as resp:
-            return resp.status == 200
+        _banner_pool_votes_http_get_bytes(
+            url, headers=_banner_pool_votes_github_api_headers(token), timeout=10, retries=1
+        )
+        return True
     except HTTPError as e:
         if e.code == 404:
             return False
@@ -29301,18 +29337,18 @@ def _banner_pool_votes_github_branch_exists(token, repo, branch):
 
 def _banner_pool_votes_github_default_branch(token, repo):
     url = f'https://api.github.com/repos/{repo}'
-    req = Request(url, headers=_banner_pool_votes_github_api_headers(token), method='GET')
-    with urlopen(req, timeout=10) as resp:
-        meta = json.loads(resp.read().decode('utf-8'))
+    meta = _banner_pool_votes_http_get_json(
+        url, headers=_banner_pool_votes_github_api_headers(token), timeout=10, retries=1
+    )
     branch = (meta.get('default_branch') or 'main').strip() if isinstance(meta, dict) else 'main'
     return branch or 'main'
 
 
 def _banner_pool_votes_github_branch_tip_sha(token, repo, branch):
     url = f'https://api.github.com/repos/{repo}/git/ref/heads/{quote(branch, safe="")}'
-    req = Request(url, headers=_banner_pool_votes_github_api_headers(token), method='GET')
-    with urlopen(req, timeout=10) as resp:
-        meta = json.loads(resp.read().decode('utf-8'))
+    meta = _banner_pool_votes_http_get_json(
+        url, headers=_banner_pool_votes_github_api_headers(token), timeout=10, retries=1
+    )
     if not isinstance(meta, dict):
         return None
     ref = str(meta.get('object', {}).get('sha') or '').strip()
@@ -29330,13 +29366,17 @@ def _banner_pool_votes_ensure_github_branch():
     try:
         if _banner_pool_votes_github_branch_exists(token, repo, branch):
             return True
-    except (HTTPError, URLError, OSError, json.JSONDecodeError, ValueError) as e:
+    except (HTTPError, URLError, OSError, IncompleteRead, json.JSONDecodeError, ValueError, TimeoutError) as e:
         print(f'banner_pool_votes: GitHub branch check failed: {e}')
         return False
-    base = _banner_pool_votes_github_default_branch(token, repo)
+    try:
+        base = _banner_pool_votes_github_default_branch(token, repo)
+    except (HTTPError, URLError, OSError, IncompleteRead, json.JSONDecodeError, ValueError, TimeoutError) as e:
+        print(f'banner_pool_votes: GitHub default branch lookup failed: {e}')
+        return False
     try:
         sha = _banner_pool_votes_github_branch_tip_sha(token, repo, base)
-    except (HTTPError, URLError, OSError, json.JSONDecodeError, ValueError) as e:
+    except (HTTPError, URLError, OSError, IncompleteRead, json.JSONDecodeError, ValueError, TimeoutError) as e:
         print(f'banner_pool_votes: GitHub base ref lookup failed ({base}): {e}')
         return False
     if not sha:
@@ -29352,7 +29392,10 @@ def _banner_pool_votes_ensure_github_branch():
     )
     try:
         with urlopen(req, timeout=12) as resp:
-            resp.read()
+            try:
+                resp.read()
+            except IncompleteRead:
+                pass
         print(f'banner_pool_votes: created GitHub branch {branch} from {base}')
         return True
     except HTTPError as e:
@@ -29361,7 +29404,7 @@ def _banner_pool_votes_ensure_github_branch():
             return True
         print(f'banner_pool_votes: failed to create GitHub branch {branch}: {e}')
         return False
-    except (URLError, OSError, json.JSONDecodeError) as e:
+    except (URLError, OSError, IncompleteRead, json.JSONDecodeError, TimeoutError) as e:
         print(f'banner_pool_votes: failed to create GitHub branch {branch}: {e}')
         return False
 
@@ -29507,31 +29550,67 @@ def _banner_pool_votes_pick_richer(a, b):
 
 
 def _banner_pool_votes_fetch_url(url, *, headers=None, timeout=20):
-    req = Request(url, headers=headers or {}, method='GET')
-    with urlopen(req, timeout=timeout) as resp:
-        raw = resp.read().decode('utf-8')
-    data = json.loads(raw)
+    data = _banner_pool_votes_http_get_json(
+        url, headers=headers, timeout=timeout, retries=2
+    )
     return data if isinstance(data, dict) else None
 
 
+def _banner_pool_votes_refresh_github_sha(token, repo, path, branch):
+    """
+    Resolve Contents-API blob sha without downloading the vote file.
+    List the parent directory (small JSON) instead of GET-file (base64 envelope).
+    """
+    global _BANNER_VOTES_GITHUB_SHA
+    parent, name = path.rsplit('/', 1) if '/' in path else ('', path)
+    list_path = parent or ''
+    url = (
+        f'https://api.github.com/repos/{repo}/contents/{quote(list_path)}'
+        f'?ref={quote(branch)}'
+        if list_path
+        else f'https://api.github.com/repos/{repo}/contents?ref={quote(branch)}'
+    )
+    headers = _banner_pool_votes_github_api_headers(token)
+    listing = _banner_pool_votes_http_get_json(url, headers=headers, timeout=15, retries=2)
+    if not isinstance(listing, list):
+        return None
+    for ent in listing:
+        if isinstance(ent, dict) and str(ent.get('name') or '') == name:
+            sha = str(ent.get('sha') or '').strip()
+            if sha:
+                _BANNER_VOTES_GITHUB_SHA = sha
+                return sha
+    return None
+
+
 def _banner_pool_votes_fetch_github():
+    """
+    Load vote JSON from GitHub.
+
+    Prefer the *raw* file body (Accept: application/vnd.github.raw / raw.githubusercontent.com).
+    The Contents JSON+base64 envelope is ~33% larger and is what Railway was truncating
+    (IncompleteRead ~512KB). SHA for PUT comes from a directory listing, not the fat file GET.
+    """
     global _BANNER_VOTES_GITHUB_SHA
     cfg = _banner_pool_votes_github_config()
     if not cfg:
         return None
     token, repo, path, branch = cfg
-    url = f'https://api.github.com/repos/{repo}/contents/{quote(path)}?ref={quote(branch)}'
-    headers = _banner_pool_votes_github_api_headers(token)
+    data = None
+    raw_headers = {
+        'Authorization': f'Bearer {token}',
+        'Accept': 'application/vnd.github.raw',
+        'X-GitHub-Api-Version': '2022-11-28',
+        'User-Agent': 'ggen-db-app-banner-votes',
+    }
+    api_raw_url = f'https://api.github.com/repos/{repo}/contents/{quote(path)}?ref={quote(branch)}'
     try:
-        req = Request(url, headers=headers, method='GET')
-        with urlopen(req, timeout=10) as resp:
-            meta = json.loads(resp.read().decode('utf-8'))
-        if not isinstance(meta, dict) or meta.get('encoding') != 'base64':
-            return None
-        content = base64.b64decode(meta.get('content', '').replace('\n', '')).decode('utf-8')
-        data = json.loads(content)
-        _BANNER_VOTES_GITHUB_SHA = meta.get('sha')
-        return data if isinstance(data, dict) else None
+        raw = _banner_pool_votes_http_get_bytes(
+            api_raw_url, headers=raw_headers, timeout=25, retries=3
+        )
+        parsed = json.loads(raw.decode('utf-8'))
+        if isinstance(parsed, dict):
+            data = parsed
     except HTTPError as e:
         if e.code == 404:
             if _banner_pool_votes_ensure_github_branch():
@@ -29541,12 +29620,51 @@ def _banner_pool_votes_fetch_github():
                     f'banner_pool_votes: GitHub branch {branch} missing and could not be created — '
                     'votes will reset on deploy until the token can create refs.'
                 )
-        else:
-            print(f'banner_pool_votes: GitHub fetch failed: {e}')
+            return None
+        print(f'banner_pool_votes: GitHub raw API fetch failed: {e}')
+    except (URLError, OSError, IncompleteRead, json.JSONDecodeError, ValueError, TimeoutError) as e:
+        print(f'banner_pool_votes: GitHub raw API fetch failed: {e}')
+
+    if data is None:
+        # CDN raw URL — plain JSON, no API envelope
+        try:
+            cdn_url = f'https://raw.githubusercontent.com/{repo}/{quote(branch)}/{path}'
+            cdn_headers = {
+                'Authorization': f'Bearer {token}',
+                'User-Agent': 'ggen-db-app-banner-votes',
+                'Accept': 'application/json,text/plain,*/*',
+            }
+            data = _banner_pool_votes_fetch_url(cdn_url, headers=cdn_headers, timeout=25)
+        except (HTTPError, URLError, OSError, IncompleteRead, json.JSONDecodeError, TimeoutError) as e:
+            print(f'banner_pool_votes: raw.githubusercontent fetch failed: {e}')
+
+    if data is None:
+        # Legacy fallback: Contents JSON + base64 (larger; keep for odd media-type failures)
+        try:
+            meta_headers = _banner_pool_votes_github_api_headers(token)
+            meta = _banner_pool_votes_http_get_json(
+                api_raw_url, headers=meta_headers, timeout=25, retries=2
+            )
+            if isinstance(meta, dict) and meta.get('encoding') == 'base64':
+                content = base64.b64decode(meta.get('content', '').replace('\n', '')).decode('utf-8')
+                parsed = json.loads(content)
+                if isinstance(parsed, dict):
+                    data = parsed
+                    if meta.get('sha'):
+                        _BANNER_VOTES_GITHUB_SHA = meta.get('sha')
+        except (HTTPError, URLError, OSError, IncompleteRead, json.JSONDecodeError, ValueError, TimeoutError) as e:
+            print(f'banner_pool_votes: GitHub Contents fallback failed: {e}')
+            return None
+
+    if not isinstance(data, dict):
         return None
-    except (URLError, OSError, json.JSONDecodeError, ValueError) as e:
-        print(f'banner_pool_votes: GitHub fetch failed: {e}')
-        return None
+
+    # SHA for later PUT — directory listing is tiny vs downloading the blob again
+    try:
+        _banner_pool_votes_refresh_github_sha(token, repo, path, branch)
+    except (HTTPError, URLError, OSError, IncompleteRead, json.JSONDecodeError, ValueError, TimeoutError) as e:
+        print(f'banner_pool_votes: SHA refresh skipped: {e}')
+    return data
 
 
 def _banner_pool_votes_github_secs_since_last_commit():
@@ -29565,9 +29683,7 @@ def _banner_pool_votes_github_secs_since_last_commit():
         'X-GitHub-Api-Version': '2022-11-28',
     }
     try:
-        req = Request(url, headers=headers, method='GET')
-        with urlopen(req, timeout=12) as resp:
-            rows = json.loads(resp.read().decode('utf-8'))
+        rows = _banner_pool_votes_http_get_json(url, headers=headers, timeout=12, retries=2)
         if not isinstance(rows, list) or not rows:
             return None
         commit = rows[0].get('commit') if isinstance(rows[0], dict) else None
@@ -29578,7 +29694,7 @@ def _banner_pool_votes_github_secs_since_last_commit():
             return None
         dt = datetime.fromisoformat(date_s.replace('Z', '+00:00'))
         return max(0.0, (datetime.now(timezone.utc) - dt).total_seconds())
-    except (HTTPError, URLError, OSError, ValueError, json.JSONDecodeError, TypeError):
+    except (HTTPError, URLError, OSError, IncompleteRead, ValueError, json.JSONDecodeError, TypeError, TimeoutError):
         return None
 
 
@@ -29598,8 +29714,11 @@ def _banner_pool_votes_push_github(data, *, retries=2):
     with _BANNER_VOTES_GITHUB_PUSH_LOCK:
         for attempt in range(retries + 1):
             if attempt and not _BANNER_VOTES_GITHUB_SHA:
-                fresh = _banner_pool_votes_fetch_github()
-                if fresh is None and attempt < retries:
+                try:
+                    _banner_pool_votes_refresh_github_sha(token, repo, path, branch)
+                except (HTTPError, URLError, OSError, IncompleteRead, json.JSONDecodeError, ValueError, TimeoutError):
+                    pass
+                if not _BANNER_VOTES_GITHUB_SHA and attempt < retries:
                     continue
             body = {
                 'message': 'chore: snapshot banner pool votes before deploy',
@@ -29610,8 +29729,16 @@ def _banner_pool_votes_push_github(data, *, retries=2):
                 body['sha'] = _BANNER_VOTES_GITHUB_SHA
             try:
                 req = Request(url, data=json.dumps(body).encode('utf-8'), headers=headers, method='PUT')
-                with urlopen(req, timeout=12) as resp:
-                    meta = json.loads(resp.read().decode('utf-8'))
+                with urlopen(req, timeout=20) as resp:
+                    try:
+                        raw = resp.read()
+                    except IncompleteRead as e:
+                        print(f'banner_pool_votes: GitHub push IncompleteRead: {e}')
+                        if attempt < retries:
+                            time.sleep(0.25 * (attempt + 1))
+                            continue
+                        return False
+                    meta = json.loads(raw.decode('utf-8'))
                 content = meta.get('content') if isinstance(meta, dict) else None
                 if isinstance(content, dict) and content.get('sha'):
                     _BANNER_VOTES_GITHUB_SHA = content['sha']
@@ -29623,12 +29750,18 @@ def _banner_pool_votes_push_github(data, *, retries=2):
                         continue
                 if e.code == 409 and attempt < retries:
                     _BANNER_VOTES_GITHUB_SHA = None
-                    _banner_pool_votes_fetch_github()
+                    try:
+                        _banner_pool_votes_refresh_github_sha(token, repo, path, branch)
+                    except (HTTPError, URLError, OSError, IncompleteRead, json.JSONDecodeError, ValueError, TimeoutError):
+                        _banner_pool_votes_fetch_github()
                     continue
                 print(f'banner_pool_votes: GitHub push failed: {e}')
                 return False
-            except (URLError, OSError, json.JSONDecodeError) as e:
+            except (URLError, OSError, IncompleteRead, json.JSONDecodeError, TimeoutError) as e:
                 print(f'banner_pool_votes: GitHub push failed: {e}')
+                if attempt < retries:
+                    time.sleep(0.25 * (attempt + 1))
+                    continue
                 return False
     return False
 
@@ -29643,7 +29776,7 @@ def _banner_pool_votes_remote_fetch(*, prefer_github=True):
     try:
         data = _banner_pool_votes_fetch_url(url)
         return data if _banner_pool_votes_has_data(data) else None
-    except (HTTPError, URLError, OSError, json.JSONDecodeError) as e:
+    except (HTTPError, URLError, OSError, IncompleteRead, json.JSONDecodeError, TimeoutError) as e:
         print(f'banner_pool_votes: import URL fetch failed: {e}')
         return None
 
@@ -29662,14 +29795,18 @@ def _banner_pool_votes_hydrate_from_remote(*, force=False):
         if _banner_pool_votes_has_data(local) and elapsed < 900.0:
             return
     _BANNER_VOTES_LAST_REMOTE_PULL = now
-    remote = _banner_pool_votes_remote_fetch()
+    try:
+        remote = _banner_pool_votes_remote_fetch()
+    except Exception as e:
+        print(f'banner_pool_votes: remote fetch failed (keeping local): {e}')
+        remote = None
     raw_snap = None
     if not _banner_pool_votes_has_data(remote):
         import_url = _banner_pool_votes_import_url()
         if import_url:
             try:
                 raw_snap = _banner_pool_votes_fetch_url(import_url)
-            except (HTTPError, URLError, OSError, json.JSONDecodeError) as e:
+            except (HTTPError, URLError, OSError, IncompleteRead, json.JSONDecodeError, TimeoutError) as e:
                 print(f'banner_pool_votes: import URL fetch failed: {e}')
     merged = _banner_pool_votes_merge_snapshots(
         local,
@@ -29924,8 +30061,14 @@ def _banner_pool_votes_migrate():
 
 _banner_pool_votes_migrate()
 if _banner_pool_votes_github_config():
-    _banner_pool_votes_ensure_github_branch()
-_banner_pool_votes_hydrate_from_remote(force=True)
+    try:
+        _banner_pool_votes_ensure_github_branch()
+    except Exception as e:
+        print(f'banner_pool_votes: boot branch ensure failed: {e}')
+try:
+    _banner_pool_votes_hydrate_from_remote(force=True)
+except Exception as e:
+    print(f'banner_pool_votes: boot hydrate failed (continuing): {e}')
 _banner_pool_votes_register_shutdown_sync()
 _banner_pool_votes_storage_warning()
 _spi_votes_boot()
@@ -29979,7 +30122,11 @@ def _bt_vote_normalize_choice(raw):
 
 def _banner_pool_votes_load(*, hydrate=False):
     if hydrate:
-        _banner_pool_votes_hydrate_from_remote()
+        try:
+            _banner_pool_votes_hydrate_from_remote()
+        except Exception as e:
+            # Never 500 /api/banner_timeline/votes because GitHub truncated a body.
+            print(f'banner_pool_votes: hydrate failed (serving local): {e}')
     raw = load_json(BANNER_POOL_VOTES_FILE)
     if not isinstance(raw, dict):
         raw = load_json(BANNER_POOL_VOTES_BACKUP_FILE)
@@ -30101,7 +30248,15 @@ def _bt_vote_mine_for_voter(ballots, voter_id):
 
 @app.route('/api/banner_timeline/votes')
 def api_banner_timeline_votes():
-    data = _banner_pool_votes_load(hydrate=True)
+    try:
+        data = _banner_pool_votes_load(hydrate=True)
+    except Exception as e:
+        print(f'banner_pool_votes: votes API load failed: {e}')
+        data = load_json(BANNER_POOL_VOTES_FILE)
+        if not isinstance(data, dict):
+            data = load_json(BANNER_POOL_VOTES_BACKUP_FILE)
+        if not isinstance(data, dict):
+            data = {'totals': {}, 'ballots': {}}
     totals = data.get('totals') or {}
     voter_id = _bt_vote_voter_id()
     mine = _bt_vote_mine_for_voter(data.get('ballots') or {}, voter_id)
