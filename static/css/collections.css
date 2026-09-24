@@ -893,15 +893,15 @@
 }
 .col-card:hover{border-color:rgba(0,212,255,.45);background:var(--bg-card-hover)}
 .col-card:focus-visible{outline:2px solid rgba(0,212,255,.55);outline-offset:2px}
-/* Unowned: much darker so LB0 (full bright) is easy to spot */
+/* Unowned: dimmed so LB0 (full bright) is easy to spot — keep readable */
 .col-card.is-unowned{
-  opacity:.3;
-  filter:grayscale(.65) brightness(.45);
+  opacity:.36;
+  filter:grayscale(.58) brightness(.52);
 }
 .col-card.is-unowned .col-card-name{color:var(--text-muted)}
 .col-card.is-unowned:hover{
-  opacity:.52;
-  filter:grayscale(.35) brightness(.7);
+  opacity:.58;
+  filter:grayscale(.3) brightness(.74);
 }
 .col-card.lb-0{
   opacity:1;filter:none;

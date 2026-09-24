@@ -3686,8 +3686,8 @@
     }
 
     /* 1.5 page cells: hex glow bg + cover art + chamfer brackets */
-    var UNOWNED_ALPHA = 0.22;
-    var UNOWNED_VEIL = 'rgba(2,6,14,0.62)';
+    var UNOWNED_ALPHA = 0.28;
+    var UNOWNED_VEIL = 'rgba(2,6,14,0.55)';
     var gridY = headerH;
     var drawBatch = 20;
     var cellBgTile = buildArt15CellBg(cellW, cellH);
@@ -3726,7 +3726,7 @@
 
       ctx.save();
       if (!owned) {
-        ctx.filter = 'grayscale(0.72) brightness(0.38)';
+        ctx.filter = 'grayscale(0.65) brightness(0.44)';
         ctx.globalAlpha = UNOWNED_ALPHA;
       }
 

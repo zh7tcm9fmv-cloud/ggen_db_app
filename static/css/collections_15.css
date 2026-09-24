@@ -239,14 +239,14 @@ html[data-ui-lang="HK"] .collections-page.collections-15 .collections-stat-lim-b
   filter:brightness(1.04);
 }
 .collections-page.collections-15 .col-card.is-unowned{
-  opacity:.22;
-  filter:grayscale(.78) brightness(.32);
+  opacity:.28;
+  filter:grayscale(.68) brightness(.42);
   border-color:rgba(0,217,255,.16);
   background:rgba(6,10,18,.92);
 }
 .collections-page.collections-15 .col-card.is-unowned:hover{
-  opacity:.4;
-  filter:grayscale(.55) brightness(.48);
+  opacity:.46;
+  filter:grayscale(.48) brightness(.56);
   border-color:rgba(0,217,255,.28);
 }
 .collections-page.collections-15 .col-card:focus-visible{
