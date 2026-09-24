@@ -1656,6 +1656,20 @@ window.GgenGachaSim = (function () {
 
     if (wantAnim && typeof window.playGachaSimPullCinematic === "function") {
       usedVideo = await new Promise(function (resolve) {
+        var settled = false;
+        var finish = function (ok) {
+          if (settled) return;
+          settled = true;
+          clearTimeout(safetyTo);
+          resolve(!!ok);
+        };
+        /* Anniversary clips are large (~8–10MB on raw GitHub). Never block results forever. */
+        var safetyTo = setTimeout(function () {
+          try {
+            if (typeof window.gachaVideoSkip === "function") window.gachaVideoSkip();
+          } catch (eSk) {}
+          finish(false);
+        }, 55000);
         var started = window.playGachaSimPullCinematic({
           hasLimitedFeaturedUr: hasLimitedFeaturedUr,
           hasUr: hasUr,
@@ -1664,9 +1678,9 @@ window.GgenGachaSim = (function () {
           best: best,
           gashaMovieSettingId: (poolMeta && poolMeta.gasha_movie_setting_id) || "",
           gashaMovieSetting: (poolMeta && poolMeta.gasha_movie_setting) || null,
-          onDone: function () { resolve(true); }
+          onDone: function () { finish(true); }
         });
-        if (!started) resolve(false);
+        if (!started) finish(false);
       });
       if (id !== runId) return;
     }
