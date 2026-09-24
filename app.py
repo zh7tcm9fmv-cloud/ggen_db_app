@@ -17506,7 +17506,8 @@ def _roadmap_ui_asset_base():
     root = _roadmap_cdn_root()
     if root:
         return root + '/images/UI'
-    return '/static/images/UI'
+    # No CDN and no local checkout — leave empty (client skips) rather than /static egress.
+    return ''
 
 
 @app.route('/roadmap/assets/<path:filename>')
@@ -17533,13 +17534,14 @@ def roadmap_calendar_asset(filename):
 
 @app.route('/roadmap/ui/<path:filename>')
 def roadmap_calendar_ui_asset(filename):
-    """Serve UI chrome (e.g. Comingsoon) from local CDN checkout, else app static."""
+    """Dev-only: serve UI chrome from local CDN checkout. Production uses IMAGE_CDN."""
     name = (filename or '').replace('\\', '/').lstrip('/')
     if not name or '..' in name.split('/'):
         return ('', 404)
     base = name.split('/')[-1]
     if not re.match(r'^[A-Za-z0-9._-]+$', base):
         return ('', 404)
+    # Never fall through to Railway /static — that burns egress. CDN only in prod.
     for root in _roadmap_local_ui_dirs():
         cand = root / base
         try:
@@ -17549,16 +17551,6 @@ def roadmap_calendar_ui_asset(filename):
                 return r
         except Exception:
             continue
-    # Production safety net: old frames still request /roadmap/ui/* — serve from static.
-    static_ui = Path(app.static_folder) / 'images' / 'UI'
-    try:
-        cand = static_ui / base
-        if cand.is_file():
-            r = make_response(send_from_directory(str(static_ui), base))
-            r.headers['Cache-Control'] = 'public, max-age=86400'
-            return r
-    except Exception:
-        pass
     return ('', 404)
 
 
@@ -17592,7 +17584,6 @@ def roadmap_calendar_frame():
         'roadmap.html',
         roadmap_asset_base=asset_base,
         roadmap_ui_base=_roadmap_ui_asset_base(),
-        roadmap_ui_cdn=((_roadmap_cdn_root() + '/images/UI') if _roadmap_cdn_root() else ''),
         roadmap_embed=True,
         roadmap_chart_preload=chart_preload,
     ))
