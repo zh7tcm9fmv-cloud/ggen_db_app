@@ -1448,6 +1448,11 @@
     flex: 0 0 auto !important;
     min-height: auto !important;
     height: auto !important;
+    /* Live bulk strip pads for sticky foot — drop for PNG so no empty black band */
+    padding-bottom: 8px !important;
+  }
+  .results.gacha-export-capturing .results-foot {
+    display: none !important;
   }
   /* Off-screen bulk/session mounts: never inherit live --gc-w-fit-x / overflow clip */
   .gacha-export-mount .strip-343--bulk {

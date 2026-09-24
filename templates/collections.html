@@ -104,7 +104,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <img id="ggen15OnImg" src="{% if image_cdn %}{{ image_cdn }}/images/UI/collections_15_special_design_EN.webp{% else %}/static/images/UI/collections_15_special_design_EN.webp{% endif %}" alt="" height="36" decoding="async" loading="lazy">
         <span class="header-15-special-fallback" id="ggen15OnText">1.5</span>
       </button>
-      <button type="button" class="header-15-toggle" id="ggen15Off" data-design="classic">Classic</button>
+      <button type="button" class="header-15-toggle" id="ggen15Off" data-design="classic">Classic</button><span class="header-15-divider" aria-hidden="true"></span><button type="button" class="header-15-toggle header-15-toggle--special header-15-toggle--calendar" id="roadmapHeaderBtn" onclick="location.href='/roadmap'" title="1.5 Anniversary Calendar" aria-label="1.5 Anniversary Calendar"><img id="roadmapHeaderImg" class="header-15-calendar-img" src="{% if image_cdn %}{{ image_cdn }}/images/UI/4edfa4b3577f.webp{% else %}/static/images/UI/4edfa4b3577f.webp{% endif %}" alt="" height="36" decoding="async" loading="lazy" onerror="this.closest('.header-15-toggle--calendar')?.classList.add('is-img-failed')"><span class="header-15-special-fallback" id="roadmapHeaderFallback">Cal</span></button>
     </div>
     <div class="header-controls">
       <div class="header-lang-col">
@@ -118,6 +118,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               <img class="kofi-header-ic" src="https://storage.ko-fi.com/cdn/cup-border.png" alt="" width="18" height="18" loading="lazy" decoding="async" onerror="this.style.display='none'">
               <span id="kofiHeaderLabel">Support on Ko-fi</span>
             </a>
+            
           </div>
           <div class="lang-selector">
             <button type="button" class="lang-btn" id="colLangBtn" aria-haspopup="listbox" aria-expanded="false" aria-label="Language">

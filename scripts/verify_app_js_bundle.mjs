@@ -35,6 +35,7 @@ const REQUIRED_FUNCTIONS = [
   'renderItemShell',
   'loadGachaSim',
   'ensureGachaSimLoaded',
+  'openRoadmapCalendar',
 ];
 
 const REQUIRED_CONSTS = ['TB_TRASH_ICON'];

@@ -584,8 +584,12 @@ window.GgenGachaSim = (function () {
     } catch (e0) {}
     var actions = document.querySelector("#stage .results-actions");
     if (actions) actions.style.display = "";
+    var resultsFoot = document.querySelector("#stage .results-foot");
+    if (resultsFoot) resultsFoot.style.display = "";
     var skipBtn = document.querySelector("#stage .skip");
     if (skipBtn) skipBtn.style.display = "";
+    var results = document.querySelector("#stage .results");
+    if (results) results.classList.remove("gacha-export-capturing");
   }
 
   function syncPullButtons() {
@@ -2095,13 +2099,17 @@ window.GgenGachaSim = (function () {
     }
     var restoreBtn = setSaveBtnBusy(btn, true);
     var actions = results.querySelector(".results-actions");
+    var resultsFoot = results.querySelector(".results-foot");
     var skipBtn = stage.querySelector(".skip");
     var foot = null;
     var prevActions = actions ? actions.style.display : "";
+    var prevResultsFoot = resultsFoot ? resultsFoot.style.display : "";
     var prevSkip = skipBtn ? skipBtn.style.display : "";
     var capturing = false;
     try {
       if (actions) actions.style.display = "none";
+      /* Sticky dark foot gradient reads as a black bar under the card grid in PNGs */
+      if (resultsFoot) resultsFoot.style.display = "none";
       if (skipBtn) skipBtn.style.display = "none";
       /* Expand nested bulk scroll so html2canvas gets all cards, not one viewport. */
       if (results.querySelector(".strip-343--bulk")) {
@@ -2143,6 +2151,7 @@ window.GgenGachaSim = (function () {
       if (capturing) results.classList.remove("gacha-export-capturing");
       if (foot && foot.parentNode) foot.parentNode.removeChild(foot);
       if (actions) actions.style.display = prevActions;
+      if (resultsFoot) resultsFoot.style.display = prevResultsFoot;
       if (skipBtn) skipBtn.style.display = prevSkip;
       clearStuckExportChrome();
       restoreBtn();

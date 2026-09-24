@@ -14,6 +14,7 @@ except ImportError:
 from flask import Flask, render_template, jsonify, request, make_response, session, redirect, Response, stream_with_context, abort, send_from_directory
 from werkzeug.exceptions import NotFound
 from werkzeug.middleware.proxy_fix import ProxyFix
+from pathlib import Path
 import json
 import shutil
 import re
@@ -17437,6 +17438,121 @@ def banner_timeline_page():
     return _serve_index()
 
 
+@app.route('/roadmap')
+def roadmap_calendar_page():
+    """1.5 anniversary calendar — SPA shell; modal opens via client history."""
+    return _serve_index()
+
+
+def _roadmap_local_asset_dirs():
+    """Local checkout folders that hold 1.5 calendar WebPs (dev only)."""
+    out = []
+    for p in (
+        Path(r'C:\Users\Mikew0911\Desktop\ggen_db_images\images\UI\1.5 update'),
+        Path(r'C:\Users\Mikew0911\Desktop\1.5 update'),
+        Path(app.static_folder) / 'images' / 'UI' / '1.5 update',
+    ):
+        try:
+            if p.is_dir():
+                out.append(p)
+        except Exception:
+            pass
+    return out
+
+
+def _roadmap_local_ui_dirs():
+    """Local UI chrome folders (Comingsoon icon, etc.)."""
+    out = []
+    for p in (
+        Path(r'C:\Users\Mikew0911\Desktop\ggen_db_images\images\UI'),
+        Path(app.static_folder) / 'images' / 'UI',
+    ):
+        try:
+            if p.is_dir():
+                out.append(p)
+        except Exception:
+            pass
+    return out
+
+
+def _roadmap_ui_asset_base():
+    """Public base for UI/*.webp used by calendar badges (not notice hashes)."""
+    if _roadmap_local_ui_dirs():
+        return '/roadmap/ui'
+    cdn = (IMAGE_CDN or '').rstrip('/')
+    if GAME_IMAGES_USE_CDN and cdn and not _is_blocked_media_url(cdn):
+        return cdn + '/images/UI'
+    return '/static/images/UI'
+
+
+@app.route('/roadmap/assets/<path:filename>')
+def roadmap_calendar_asset(filename):
+    """Serve calendar notice art from the local CDN checkout (IS_LOCAL / pre-push)."""
+    name = (filename or '').replace('\\', '/').lstrip('/')
+    if not name or '..' in name.split('/'):
+        return ('', 404)
+    base = name.split('/')[-1]
+    if not re.match(r'^[A-Za-z0-9._-]+$', base):
+        return ('', 404)
+    for root in _roadmap_local_asset_dirs():
+        cand = root / base
+        try:
+            if cand.is_file():
+                r = make_response(send_from_directory(str(root), base))
+                # Content-addressed hashes — long cache OK (dev + CDN parity).
+                r.headers['Cache-Control'] = 'public, max-age=31536000, immutable'
+                return r
+        except Exception:
+            continue
+    return ('', 404)
+
+
+@app.route('/roadmap/ui/<path:filename>')
+def roadmap_calendar_ui_asset(filename):
+    """Serve UI chrome (e.g. Comingsoon) from local CDN checkout."""
+    name = (filename or '').replace('\\', '/').lstrip('/')
+    if not name or '..' in name.split('/'):
+        return ('', 404)
+    base = name.split('/')[-1]
+    if not re.match(r'^[A-Za-z0-9._-]+$', base):
+        return ('', 404)
+    for root in _roadmap_local_ui_dirs():
+        cand = root / base
+        try:
+            if cand.is_file():
+                r = make_response(send_from_directory(str(root), base))
+                r.headers['Cache-Control'] = 'public, max-age=31536000, immutable'
+                return r
+        except Exception:
+            continue
+    return ('', 404)
+
+
+@app.route('/roadmap/frame')
+def roadmap_calendar_frame():
+    """Calendar document for the detail-style iframe embed."""
+    # Prefer local /roadmap/assets whenever the CDN checkout exists so unpushed
+    # notice WebPs still load. Production without that folder falls back to IMAGE_CDN.
+    if _roadmap_local_asset_dirs():
+        asset_base = '/roadmap/assets'
+    else:
+        cdn = (IMAGE_CDN or '').rstrip('/')
+        if GAME_IMAGES_USE_CDN and cdn and not _is_blocked_media_url(cdn):
+            asset_base = cdn + '/images/UI/1.5%20update'
+        else:
+            asset_base = ''
+    r = make_response(render_template(
+        'roadmap.html',
+        roadmap_asset_base=asset_base,
+        roadmap_ui_base=_roadmap_ui_asset_base(),
+        roadmap_embed=True,
+    ))
+    # Notice art hashes change often during calendar edits — avoid sticky iframe HTML.
+    r.headers['Cache-Control'] = 'no-store'
+    r.headers['X-Frame-Options'] = 'SAMEORIGIN'
+    return r
+
+
 @app.route('/ml')
 def master_league_page():
     return _serve_index()
@@ -32065,6 +32181,7 @@ def get_unit(unit_id):
 _SPA_TAB_PATHS = frozenset({
     'c', 'u', 's', 'new', 'tl', 'banners', 'st', 'esim', 'ml', 'cal', 'tb', 'op', 'pt', 'rk', 'msy', 'ip',
     'gacha-sim',
+    'roadmap',
     # Stage category deep-links (Stages tab sources)
     'gtower', 'gt', 'challenge', 'challenges', 'ch', 'go', 'score', 'score-attack', 'grand-offensive', 'special',
 })

@@ -138,7 +138,7 @@ def _make_boot_app() -> Flask:
     @boot.route('/sitemap.xml')
     def sitemap():
         paths = (
-            '/', '/ip', '/game-news', '/about', '/contact', '/privacy-policy',
+            '/', '/ip', '/game-news', '/about', '/contact', '/privacy-policy', '/roadmap',
             '/c', '/u', '/s', '/st', '/cal', '/tb', '/tl', '/ml', '/rk', '/op', '/new', '/esim',
         )
         urls = ''.join(

@@ -93,7 +93,8 @@
   }
 
   .header-lang-col .header-support-btns .alipayhk-header-btn,
-  .header-lang-col .header-support-btns .kofi-header-link {
+  .header-lang-col .header-support-btns .kofi-header-link,
+  .header-lang-col .header-support-btns .roadmap-header-link {
     justify-content: center;
     white-space: normal;
     text-align: center;
@@ -607,7 +608,8 @@
   }
 
   .header-lang-col .header-support-btns .alipayhk-header-btn,
-  .header-lang-col .header-support-btns .kofi-header-link {
+  .header-lang-col .header-support-btns .kofi-header-link,
+  .header-lang-col .header-support-btns .roadmap-header-link {
     font-size: 9px;
     padding: 3px 6px;
   }

@@ -49,6 +49,7 @@ button,input,select,textarea,optgroup{font-family:inherit}
 }
 .header-lang-col .alipayhk-header-btn{margin:0;background:linear-gradient(135deg,rgba(0,200,255,.12),rgba(140,70,200,.14));border:1px solid rgba(100,170,255,.5);color:#e8f0ff!important;cursor:pointer;box-shadow:0 0 0 1px rgba(80,140,220,.35),0 2px 8px rgba(0,0,0,.25);transition:box-shadow .2s ease,border-color .2s ease;-webkit-appearance:none;appearance:none}.header-lang-col .alipayhk-header-btn:hover{box-shadow:0 0 0 1px rgba(0,220,255,.5),0 0 12px rgba(120,80,200,.3);border-color:rgba(0,212,255,.6)}
 .header-lang-col .kofi-header-link{background:rgba(69,128,230,.15);border:1px solid rgba(69,128,230,.45);color:#e8f0ff!important;text-decoration:none!important;cursor:pointer;box-shadow:0 0 0 1px rgba(69,128,230,.4),0 2px 8px rgba(0,0,0,.25);transition:box-shadow .2s ease,border-color .2s ease}.header-lang-col .kofi-header-link:hover{box-shadow:0 0 0 1px rgba(0,212,255,.45),0 0 12px rgba(69,128,230,.25);border-color:rgba(0,212,255,.55)}
+.header-lang-col .roadmap-header-link:hover{box-shadow:0 0 0 1px rgba(0,212,255,.5),0 0 12px rgba(0,217,255,.28);border-color:rgba(0,212,255,.65)}
 .header-lang-col .alipayhk-header-ic,.header-lang-col .kofi-header-ic{width:18px;height:18px;min-width:18px;min-height:18px;object-fit:contain;object-position:center;flex-shrink:0;display:block}
 .alipayhk-modal-card.whats-new-card{max-width:min(420px,96vw);min-height:0}
 .alipayhk-modal-body{padding:0 20px 20px;text-align:center}
