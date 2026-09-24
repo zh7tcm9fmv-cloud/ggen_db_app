@@ -711,6 +711,16 @@ STATIC_ROOT = os.path.join(os.path.dirname(__file__), 'static')
 # (mtime, merged filenames) per folder under static/images/* — invalidated when that folder changes
 _MERGED_IMAGE_FOLDER_CACHE = {}
 
+# Same-origin only: tiny brand/UI fonts. Multi-MB CJK OTFs/TTFs must never leave Railway as bytes
+# (bots + scrapers hitting /static/font/*.otf historically burned GB-scale egress).
+_RAILWAY_SAME_ORIGIN_FONTS = frozenset({
+    'FOTK-YoonGothic780_JP-brand.woff2',
+    'roboto_medium_numbers.ttf',
+    'Teko-Bold.ttf',
+    'Teko-SemiBold.ttf',
+    'Orbitron-Black.otf',
+})
+
 
 @app.route('/static/images/<path:filename>')
 def static_game_images_cdn_offload(filename):
@@ -725,6 +735,28 @@ def static_game_images_cdn_offload(filename):
         resp.headers['Cache-Control'] = 'public, max-age=300'
         return resp
     return send_from_directory(os.path.join(STATIC_ROOT, 'images'), filename)
+
+
+@app.route('/static/font/<path:filename>')
+def static_font_cdn_offload(filename):
+    """Serve only small allowlisted fonts from Railway; redirect multi-MB CJK faces to FONT_CDN."""
+    name = (filename or '').replace('\\', '/').lstrip('/')
+    if not name or any(seg == '..' for seg in name.split('/')):
+        abort(404)
+    leaf = name.rsplit('/', 1)[-1]
+    if name in _RAILWAY_SAME_ORIGIN_FONTS or leaf in _RAILWAY_SAME_ORIGIN_FONTS:
+        return send_from_directory(os.path.join(STATIC_ROOT, 'font'), name)
+    if FONT_CDN and not _is_blocked_media_url(FONT_CDN):
+        dest = FONT_CDN.rstrip('/') + '/font/' + name
+        qs = request.query_string.decode('utf-8', 'ignore') if request.query_string else ''
+        if qs:
+            dest = dest + '?' + qs
+        resp = redirect(dest, code=302)
+        resp.headers['Cache-Control'] = 'public, max-age=300'
+        resp.headers['X-Robots-Tag'] = 'noindex, nofollow'
+        return resp
+    # FONT_CDN disabled (local / explicit off) — allow disk fonts for development.
+    return send_from_directory(os.path.join(STATIC_ROOT, 'font'), name)
 
 
 def _list_disk_image_files(rel_path):
@@ -28529,7 +28561,7 @@ def _bt_banner_thumb_should_use_ver2_logo(appeal_resource_id, start_ms):
 def api_banner_timeline():
     """Gacha banner list with schedules, appeal art, and featured units/characters from master chains."""
     lc = validate_lang_code(request.args.get('lang', DEFAULT_LANG))
-    ck = f'banner_tl_v14_{lc}'
+    ck = f'banner_tl_v16_{lc}'
     cached = get_cached_response(ck)
     if cached:
         return jsonify_cacheable(cached, ck, public=True, max_age=1800, convert_images=True)
@@ -28778,6 +28810,15 @@ def api_banner_timeline():
             featured_supporters,
             fix_count=(pity_out or {}).get('fix_count'),
         )
+        drop_rate_labels = None
+        if official_rates:
+            _labs = official_rates.get('section_labels') or {}
+            if isinstance(_labs, dict) and _labs:
+                drop_rate_labels = {
+                    k: str(v)
+                    for k, v in _labs.items()
+                    if k in ('single_or_1to9', 'multi_10th') and str(v or '').strip()
+                } or None
 
         row = {
             'gasha_id': gasha_id,
@@ -28799,6 +28840,7 @@ def api_banner_timeline():
             'pity': pity_out,
             'point_exchange': exchange_out,
             'drop_rates': drop_category or None,
+            'drop_rate_labels': drop_rate_labels,
             'drop_pity': drop_pity,
         }
         rows_out.append(row)

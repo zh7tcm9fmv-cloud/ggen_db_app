@@ -75,6 +75,42 @@ def _pity_pull_count_from_title(title: str):
     return None
 
 
+def _clean_section_label(title: str) -> str:
+    """Strip official 'Drop Rate' / 提供割合 suffixes and decorative quotes for UI labels."""
+    t = (title or '').strip()
+    if not t:
+        return ''
+    t = re.sub(r'\s*Drop\s*Rates?\s*$', '', t, flags=re.I)
+    t = re.sub(r'(?:の)?提供割合\s*$', '', t)
+    t = re.sub(r'出現機率\s*$', '', t)
+    t = re.sub(r'出現確率\s*$', '', t)
+    t = t.strip()
+    # Keep inner 「」 quotes (JA/TW compound titles); only trim wrapping ASCII quotes.
+    if len(t) >= 2 and t[0] in "\"'" and t[-1] == t[0]:
+        t = t[1:-1].strip()
+    return t
+
+
+def _is_compound_pull_section_title(title: str) -> bool:
+    """Anniversary / multi-limit pools name several pull modes in one heading (47 + 20 + 10)."""
+    t = title or ''
+    low = t.lower()
+    hits = 0
+    if re.search(r'\b47\b|47回|補給47', t):
+        hits += 1
+    if re.search(r'\b20\b|20回|補給20', t):
+        hits += 1
+    if re.search(r'\b10\b|10回|補給10', t):
+        hits += 1
+    if hits >= 2:
+        return True
+    if 'および' in t or '及「' in t or '及"' in t:
+        return True
+    if ' and ' in low and ('pull' in low or '回' in t or '補給' in t):
+        return True
+    return False
+
+
 def _classify_section(title: str) -> str:
     """Map official EN/JA/TW/HK section titles → rate bucket keys."""
     t = title or ''
@@ -99,6 +135,15 @@ def _classify_section(title: str) -> str:
     # 1st–9th range must win over bare "10 times"
     if re.search(r'1\s*[-~～〜至到]\s*9', t) or '1st' in low:
         return 'single_or_1to9'
+    # Anniversary compound: "47 pull (46th-47th) and 20 pull (20th), 10 pull (10th)"
+    # — same rate table as multi_10th (UR 100%), not a separate pity_100 bucket.
+    if (
+        re.search(r'46\s*[-~～〜至到]\s*47', t)
+        or '46th-47th' in low
+        or '46~47' in t
+        or '第46' in t
+    ):
+        return 'multi_10th'
     if re.search(r'(?<!\d)10\s*(th|回目|次)', t, re.I):
         return 'multi_10th'
     if 'use 1 time' in low or re.search(r'(?<!\d)1\s*time', low) or '1回引く' in t or '補給1次' in t:
@@ -160,6 +205,7 @@ def parse_gasha_proportion(payload: dict) -> dict:
     notes = []
     category = {}
     by_name = {}
+    section_labels = {}
     section = ''
     entity_kind = ''  # unit | supporter
     pity_count = None
@@ -175,6 +221,18 @@ def parse_gasha_proportion(payload: dict) -> dict:
         if n:
             pity_count = n
 
+    def _note_section_label(title: str, sec: str):
+        if sec not in ('single_or_1to9', 'multi_10th'):
+            return
+        if not _is_compound_pull_section_title(title):
+            return
+        label = _clean_section_label(title)
+        if not label:
+            return
+        # Prefer first (usually typ=8 category heading); skip noisier typ=1 duplicates.
+        if sec not in section_labels:
+            section_labels[sec] = label
+
     for b in blocks:
         if not isinstance(b, dict):
             continue
@@ -188,6 +246,8 @@ def parse_gasha_proportion(payload: dict) -> dict:
             section = _classify_section(content)
             if section == 'pity_100':
                 _note_pity_count(content)
+            else:
+                _note_section_label(content, section)
             entity_kind = ''
             continue
         if typ == 8:
@@ -200,6 +260,8 @@ def parse_gasha_proportion(payload: dict) -> dict:
             section = _classify_section(title)
             if section == 'pity_100':
                 _note_pity_count(title)
+            else:
+                _note_section_label(title, section)
             entity_kind = ''
             continue
         if typ != 7:
@@ -264,6 +326,8 @@ def parse_gasha_proportion(payload: dict) -> dict:
     }
     if pity_count:
         out['pity_count'] = int(pity_count)
+    if section_labels:
+        out['section_labels'] = section_labels
     return out
 
 

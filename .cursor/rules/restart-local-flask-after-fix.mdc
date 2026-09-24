@@ -1,0 +1,42 @@
+---
+description: Restart local Flask after server-side fixes so /tl and APIs match the working tree
+alwaysApply: true
+---
+
+# Restart local Flask after fixes
+
+Owner lesson (**Sep 2026 — anniversary drop %**): code was correct in the tree, but `:5000` still ran an **old** `wsgi` process, so `/api/banner_timeline` returned stale fields (`drop_rate_labels: null`) and `/tl` looked “unfixed.” The owner had to ask why.
+
+## Hard rule
+
+After any change that affects the **running local app** (not CSS/JS-only client files the browser will pick up on hard-refresh alone), **restart local Flask before telling the owner to check** `http://127.0.0.1:5000` (or any local path).
+
+### Restart when you touched
+
+- `app.py` / `wsgi.py` / imported Python modules (`gasha_official_rates.py`, etc.)
+- Templates that Flask renders at request time
+- Master/published data the process loads at boot (or that only refresh after restart)
+- Env-dependent server behavior
+
+### Skip restart only when
+
+- Pure client change already verified via hard-refresh (`app.js` → minify + `verify_app_js_bundle.mjs`, CSS with cache bust), **and** no Python/API change in the same turn
+- Local Flask is not running and the owner is only testing Railway/live
+
+## How (Windows / this repo)
+
+```powershell
+$pids = (Get-NetTCPConnection -LocalPort 5000 -State Listen -ErrorAction SilentlyContinue).OwningProcess | Select-Object -Unique
+foreach ($p in $pids) { if ($p -and $p -ne 0) { Stop-Process -Id $p -Force -ErrorAction SilentlyContinue } }
+Start-Sleep -Seconds 2
+$env:PYTHONIOENCODING='utf-8'
+python wsgi.py
+```
+
+Run in background; wait until `Database ready` / `/health` shows `ok` and not booting; then spot-check the fixed API/path **on local** before saying they can refresh.
+
+## Reply habit
+
+- Say you **restarted local Flask** (or that it was already current) when the owner will check `:5000`.
+- Do **not** ask them to restart, or leave them debugging stale processes.
+- Still honor `verify-live-before-fixed.mdc` for Railway/live claims.

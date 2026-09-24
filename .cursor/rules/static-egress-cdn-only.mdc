@@ -1,0 +1,51 @@
+---
+description: Never serve heavy /static assets from Railway — CDN only; prevent egress spikes
+alwaysApply: true
+---
+
+# Railway `/static` egress — never burn bandwidth again
+
+Owner lesson (**Sep 2026**): multi‑MB fonts under `/static/font/` (Noto ~5.5MB, ShinGo ~5.3MB, UDShinGo ~5.8MB, full FOTK OTF ~3.8MB) were still **downloadable from Railway**. Legitimate UI already used `FONT_CDN`, but bots/scrapers hitting those URLs caused **GB-scale Network egress** spikes.
+
+Images already have CDN offload (`/static/images` → 302 + CSS rewrite). Fonts now allowlist-only + 302 (see `static_font_cdn_offload` in `app.py`). **Do not regress this.**
+
+## Hard rule
+
+1. **Never add a new production path that serves large binary bytes from Railway `/static/`** when a CDN exists (`IMAGE_CDN`, `FONT_CDN`, `VIDEO_CDN`).
+2. **Never** re-enable `VIDEO_PROXY_ENABLED` or any proxy that streams CDN/GitHub blobs through the Flask app.
+3. **Never** hardcode user-facing media as bare `/static/images/…` or `/static/font/….otf` (or multi‑MB `.ttf`) as the permanent production URL.
+4. Same-origin `/static` is allowed **only** for small, allowlisted assets (JS/CSS bundles, brand WOFF2 subset ~60KB, Roboto numbers, Teko, tiny UI chrome) — not catalogs of portraits or CJK faces.
+
+## What must stay on CDN
+
+| Asset class | Serve from | Railway |
+|---|---|---|
+| Game images / UI WebP / backgrounds | `IMAGE_CDN` (`game_image_public_url`, CSS rewrite, `/static/images` 302) | no body bytes |
+| Multi‑MB CJK fonts (Noto, ShinGo, UDShinGo, full FOTK OTF) | `FONT_CDN` (jsDelivr) | **302 only** via `static_font_cdn_offload` |
+| Gacha / unit MP4 | `VIDEO_CDN` direct | never proxy |
+| Brand Latin WOFF2, Roboto numbers, Teko | `/static/font/` allowlist OK | small only |
+
+## When adding assets
+
+1. Put rasters in local `ggen_db_images` → push GitHub (see `images-cdn-first.mdc`).
+2. Put large fonts under CDN `font/` — do **not** rely on Railway disk for production downloads.
+3. If you must keep a file in `ggen_db_app/static/font/` for local/dev, ensure production still **redirects** it when not on `_RAILWAY_SAME_ORIGIN_FONTS`.
+4. Prefer helpers (`imgUrl` / `game_image_public_url` / `fontUrl` in `_defer_brand_fonts.html`) — never invent absolute github.io / jsDelivr strings in app logic.
+
+## Forbidden patterns
+
+| Pattern | Why |
+|---|---|
+| New `<img src="/static/images/…">` without CDN helper | Railway image egress |
+| CSS `url(/static/images/…)` without response rewrite | same |
+| `@font-face` → `/static/font/*.otf` or `NotoSansJP.ttf` on production | multi‑MB egress |
+| Expanding `_RAILWAY_SAME_ORIGIN_FONTS` with multi‑MB faces | reopens the Sep 2026 burn |
+| `/api/video/*` proxy on by default | Range + loops double-bill Railway |
+| “Just leave it on `/static` until CDN is ready” as the ship path | bots find it |
+
+## Checklist before “done”
+
+- [ ] Live Network: images/fonts/video hosts are CDN (or tiny allowlisted `/static`), not multi‑MB from `*.up.railway.app/static/`
+- [ ] Heavy `/static/font/*` returns **302** to `FONT_CDN` (spot-check Noto / ShinGo)
+- [ ] `/static/images/*` still **302** when `GAME_IMAGES_USE_CDN` is on
+- [ ] No new VIDEO_PROXY / image proxy through Flask
