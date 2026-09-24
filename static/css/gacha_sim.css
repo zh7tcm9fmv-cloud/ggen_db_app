@@ -1431,6 +1431,33 @@
   .gacha-export-live-foot .gacha-export-meta {
     margin-top: 4px;
   }
+  /*
+   * While html2canvas runs on a 47-pull strip: unclip nested overflow so the
+   * PNG includes the full card grid (not one viewport + stray Supporters labels).
+   */
+  .results.gacha-export-capturing {
+    position: relative;
+    inset: auto;
+    width: min(1100px, 100%);
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+  .results.gacha-export-capturing .strip-343--bulk {
+    overflow: visible !important;
+    flex: 0 0 auto !important;
+    min-height: auto !important;
+    height: auto !important;
+  }
+  /* Off-screen bulk/session mounts: never inherit live --gc-w-fit-x / overflow clip */
+  .gacha-export-mount .strip-343--bulk {
+    overflow: visible !important;
+    flex: none !important;
+    min-height: auto !important;
+    height: auto !important;
+    --gc-w: 132px;
+    --gc-h: calc(132px * 219 / 446);
+  }
   /* Anniversary 47-ticket: no Exchange Pts on results */
   .gacha-sim-root.is-bulk-ticket .results-meta .pity-line {
     display: none !important;
