@@ -124,10 +124,7 @@ window.GgenGachaSim = (function () {
       var n = pts ? pts.textContent : "0";
       pity.innerHTML = tt("gs_exchange_pts") + " <b id=\"pts\">" + n + "</b>";
     }
-    var one = document.getElementById("one");
-    if (one) one.innerHTML = "<small>" + tt("gs_pull_once") + "</small>";
-    var ten = document.getElementById("ten");
-    if (ten) ten.innerHTML = "<small>" + tt("gs_pull_ten") + "</small>";
+    syncPullButtons();
     var optCol = root.querySelector("label.opt-row[for], label.opt-row");
     var optRows = root.querySelectorAll("label.opt-row");
     if (optRows[0]) {
@@ -529,6 +526,46 @@ window.GgenGachaSim = (function () {
     return (pool.SR || []).length > 0 && (pool.R || []).length > 0;
   }
 
+  function primaryPullN() {
+    var n = Number(poolMeta && poolMeta.display_pull_n) || 0;
+    return n > 0 ? n : 10;
+  }
+
+  function isBulkTicketPool() {
+    return !!(poolMeta && poolMeta.bulk_mode && primaryPullN() >= 20);
+  }
+
+  function guaranteeTailN() {
+    var t = Number(poolMeta && poolMeta.guarantee_tail);
+    if (t > 0) return t;
+    return isBulkTicketPool() ? 2 : 1;
+  }
+
+  function pullButtonLabel(n) {
+    if (n === 1) return tt("gs_pull_once");
+    if (n === 10) return tt("gs_pull_ten");
+    if (n === 47) return tt("gs_pull_47");
+    return (tt("gs_pull_n") || "Use {n} time(s)").replace(/\{n\}/g, String(n));
+  }
+
+  function syncPullButtons() {
+    var one = document.getElementById("one");
+    var ten = document.getElementById("ten");
+    var bulk = isBulkTicketPool();
+    var n = primaryPullN();
+    if (one) {
+      one.hidden = !!bulk;
+      one.setAttribute("aria-hidden", bulk ? "true" : "false");
+      if (!bulk) one.innerHTML = "<small>" + pullButtonLabel(1) + "</small>";
+    }
+    if (ten) {
+      ten.hidden = false;
+      ten.setAttribute("aria-hidden", "false");
+      ten.classList.toggle("pull--bulk", !!bulk);
+      ten.innerHTML = "<small>" + pullButtonLabel(bulk ? n : 10) + "</small>";
+    }
+  }
+
   function applyPoolData(data, source) {
     if (!data || !data.pool || !poolBucketOk(data.pool)) return false;
     POOL = data.pool;
@@ -540,8 +577,17 @@ window.GgenGachaSim = (function () {
       gasha_id: data.gasha_id || "",
       source: source || "json",
       lang: uiLang(),
-      logo: logo || ""
+      logo: logo || "",
+      gasha_movie_setting_id: data.gasha_movie_setting_id || "",
+      gasha_movie_setting: data.gasha_movie_setting || null,
+      once_roll_count: Number(data.once_roll_count) || 0,
+      fake_once_roll_count: Number(data.fake_once_roll_count) || 0,
+      display_pull_n: Number(data.display_pull_n) || 0,
+      required_tickets: Number(data.required_tickets) || 0,
+      guarantee_tail: Number(data.guarantee_tail) || 0,
+      bulk_mode: !!data.bulk_mode
     };
+    try { syncPullButtons(); } catch (e0) {}
     var logoEl = document.getElementById("bannerLogo");
     if (logoEl) {
       if (logo) {
@@ -603,7 +649,8 @@ window.GgenGachaSim = (function () {
       SR: [{ name: "Char's Zaku II", role: "Durability", art: "unit_portraits/ub_g0010u00100.webp", w: 1 }],
       R: [{ name: "GM", role: "Attack", art: "unit_portraits/ub_g0010u00300.webp", w: 1 }]
     };
-    poolMeta = { gasha_id: "", source: "demo" };
+    poolMeta = { gasha_id: "", source: "demo", bulk_mode: false, display_pull_n: 0 };
+    try { syncPullButtons(); } catch (e1) {}
     renderLiveGallery();
     if (typeof renderSession === "function") renderSession();
   }
@@ -1395,8 +1442,11 @@ window.GgenGachaSim = (function () {
     var out = [];
     var seenThisPull = {};
     var pullsBefore = sim.pulls;
+    var tail = guaranteeTailN();
+    var pityStart = Math.max(0, n - tail);
     for (var i = 0; i < n; i++) {
-      var table = n === 10 && i === 9 ? TENTH : NORMAL;
+      var usePity = (n === 10 && i === 9) || (n >= 20 && i >= pityStart);
+      var table = usePity ? TENTH : NORMAL;
       var bucket = pickWeighted(table);
       var item = pickItem(bucket);
       var rarity = bucket.indexOf("UR") === 0 ? "ur" : bucket.indexOf("SSR") === 0 ? "ssr" : bucket === "SR" ? "sr" : "r";
@@ -1442,7 +1492,7 @@ window.GgenGachaSim = (function () {
   }
 
   function render343(rows) {
-    /* Pad / trim to 10 for classic layout when n===10; otherwise wrap flex. */
+    /* Pad / trim to 10 for classic layout when n===10; 47-pull uses wrap grid. */
     var strip = document.getElementById("strip");
     function cardHtml(r, delay) {
       r = enrichArtFromPool(r || {});
@@ -1463,6 +1513,11 @@ window.GgenGachaSim = (function () {
           return cardHtml(r, (ri * 4 + i) * 50);
         }).join("") + "</div>";
       }).join("");
+    } else if (rows.length >= 20) {
+      strip.className = "strip-343 strip-343--bulk";
+      strip.innerHTML = '<div class="strip-row strip-row--wrap">' + rows.map(function (r, i) {
+        return cardHtml(r, Math.min(i * 18, 900));
+      }).join("") + "</div>";
     } else {
       strip.className = "strip-343";
       strip.innerHTML = '<div class="strip-row">' + rows.map(function (r, i) {
@@ -1555,6 +1610,8 @@ window.GgenGachaSim = (function () {
           hasSsr: hasSsr,
           hasFeaturedHigh: hasFeaturedHigh,
           best: best,
+          gashaMovieSettingId: (poolMeta && poolMeta.gasha_movie_setting_id) || "",
+          gashaMovieSetting: (poolMeta && poolMeta.gasha_movie_setting) || null,
           onDone: function () { resolve(true); }
         });
         if (!started) resolve(false);
@@ -1683,6 +1740,10 @@ window.GgenGachaSim = (function () {
       return '<div class="strip-343">' + chunks.map(function (chunk, ri) {
         return '<div class="' + cls[ri] + '">' + chunk.map(exportCardHtml).join("") + "</div>";
       }).join("") + "</div>";
+    }
+    if (cards.length >= 20) {
+      return '<div class="strip-343 strip-343--bulk"><div class="strip-row strip-row--wrap">' +
+        cards.map(exportCardHtml).join("") + "</div></div>";
     }
     return '<div class="strip-343"><div class="strip-row">' +
       cards.map(exportCardHtml).join("") + "</div></div>";
@@ -2017,8 +2078,12 @@ window.GgenGachaSim = (function () {
   }
 
   document.getElementById("one").onclick = function () { play(1); };
-  document.getElementById("ten").onclick = function () { play(10); };
-  document.getElementById("again").onclick = function () { play(lastN); };
+  document.getElementById("ten").onclick = function () {
+    play(isBulkTicketPool() ? primaryPullN() : 10);
+  };
+  document.getElementById("again").onclick = function () {
+    play(lastN || (isBulkTicketPool() ? primaryPullN() : 10));
+  };
   document.getElementById("shareStrip").onclick = function () { shareCurrentPullCollections(); };
   var sessSaveBtn = document.getElementById("sessSave");
   if (sessSaveBtn) sessSaveBtn.onclick = function () { shareSessionCollections(); };

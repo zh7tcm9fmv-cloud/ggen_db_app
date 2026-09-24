@@ -353,12 +353,60 @@ def build(gasha_id: str, lang: str = "EN") -> dict:
         # Timeline / CDN convention when master LogoResourceId is blank
         logo = f"gasha_logo_{gasha_id}"
     appeal_id = str(g.get("AppealBannerId") or "").strip()
+    movie_setting_id = str(g.get("GashaMovieSettingId") or "").strip()
+    if movie_setting_id in ("", "0"):
+        movie_setting_id = ""
+    movie_setting = None
+    if movie_setting_id:
+        for ms in _load("m_gasha_movie_setting.json", MASTER):
+            if str(ms.get("Id") or "") != movie_setting_id:
+                continue
+            movie_setting = {
+                "id": movie_setting_id,
+                "bgm_resource_id": str(ms.get("GashaBgmResourceId") or "").strip(),
+                "bgm_delay_ms": int(ms.get("GashaBgmDelayMilliseconds") or 0),
+                "sortie_movie_id": str(ms.get("SortieMovieResourceId") or "").strip(),
+                "fall_movie_id": str(ms.get("FallContainerMovieResourceId") or "").strip(),
+                "bonus_cutin_movie_id": str(ms.get("BonusCutInMovieResourceId") or "").strip(),
+                "bonus_special_movie_id": str(ms.get("BonusSpecialMovieResourceId") or "").strip(),
+                "should_use_special_assault_button": bool(ms.get("ShouldUseSpecialAssaultButton")),
+                "bonus_destroy_anim_index": int(ms.get("BonusGashaContainerDestroyAnimationTypeIndex") or 0),
+            }
+            break
+
+    # Primary ticket entry (slot 1): 47-ticket anniversary pools use OnceRollCount 47
+    # (FakeOnceRollCount when set = UI card count, e.g. 1st Anniv 48/47).
+    entry_rows = _load("m_gasha_entry.json", MASTER)
+    detail_rows = {str(d.get("Id")): d for d in _load("m_gasha_entry_detail.json", MASTER)}
+    primary_detail = None
+    for er in entry_rows:
+        if str(er.get("GashaId")) != str(gasha_id):
+            continue
+        if int(er.get("SlotNumber") or 0) != 1:
+            continue
+        primary_detail = detail_rows.get(str(er.get("GashaEntryDetailId") or ""))
+        break
+    once_roll = int((primary_detail or {}).get("OnceRollCount") or 0)
+    fake_once = int((primary_detail or {}).get("FakeOnceRollCount") or 0)
+    required_tickets = int((primary_detail or {}).get("RequiredCurrencyCount") or 0)
+    display_pull_n = fake_once if fake_once > 0 else once_roll
+    # Official 47-pull tables: pulls 1..(n-2) = single_or_1to9; last 2 = multi_10th (UR).
+    guarantee_tail = 2 if display_pull_n >= 47 else (1 if display_pull_n == 10 else 0)
+    bulk_mode = display_pull_n >= 20 and required_tickets >= display_pull_n
 
     return {
         "gasha_id": str(gasha_id),
         "lang": lang,
         "logo_resource_id": logo,
         "appeal_banner_id": appeal_id,
+        "gasha_movie_setting_id": movie_setting_id,
+        "gasha_movie_setting": movie_setting,
+        "once_roll_count": once_roll,
+        "fake_once_roll_count": fake_once,
+        "display_pull_n": display_pull_n,
+        "required_tickets": required_tickets,
+        "guarantee_tail": guarantee_tail,
+        "bulk_mode": bulk_mode,
         "normal": normal,
         "tenth": tenth,
         "pool": pool,
@@ -370,26 +418,54 @@ def build(gasha_id: str, lang: str = "EN") -> dict:
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--gasha", default="2609300302", help="GashaId")
+    ap.add_argument("--lang", default="EN", help="Locale EN|JA|TW|HK")
+    ap.add_argument(
+        "--as-default",
+        action="store_true",
+        help="Also overwrite published/static default gacha_sim_pool.json",
+    )
     args = ap.parse_args()
-    data = build(args.gasha)
+    data = build(args.gasha, lang=args.lang)
     OUT.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
     print("wrote", OUT)
+    if args.as_default or str(args.gasha) == "2609300302":
+        try:
+            PUBLISHED.parent.mkdir(parents=True, exist_ok=True)
+            PUBLISHED.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+            print("wrote", PUBLISHED)
+        except Exception as e:
+            print("published copy skipped:", e)
+        try:
+            STATIC_POOL.parent.mkdir(parents=True, exist_ok=True)
+            STATIC_POOL.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+            print("wrote", STATIC_POOL)
+        except Exception as e:
+            print("static pool copy skipped:", e)
     try:
-        PUBLISHED.parent.mkdir(parents=True, exist_ok=True)
-        PUBLISHED.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
-        print("wrote", PUBLISHED)
+        shard_dir = ROOT / "data" / "published" / "gacha_sim"
+        shard_dir.mkdir(parents=True, exist_ok=True)
+        shard = shard_dir / f"pool_{args.gasha}_{str(args.lang).upper()}.json"
+        shard_legacy = shard_dir / f"pool_{args.gasha}.json"
+        shard.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+        print("wrote", shard)
+        if str(args.lang).upper() in ("EN", ""):
+            shard_legacy.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+            print("wrote", shard_legacy)
     except Exception as e:
-        print("published copy skipped:", e)
-    try:
-        STATIC_POOL.parent.mkdir(parents=True, exist_ok=True)
-        STATIC_POOL.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
-        print("wrote", STATIC_POOL)
-    except Exception as e:
-        print("static pool copy skipped:", e)
+        print("gacha_sim shard skipped:", e)
     print("counts", data["counts"])
     print("normal", data["normal"])
     print("tenth", data["tenth"])
-
+    print(
+        "pull",
+        data.get("display_pull_n"),
+        "tickets",
+        data.get("required_tickets"),
+        "movie",
+        data.get("gasha_movie_setting_id"),
+        "bulk",
+        data.get("bulk_mode"),
+    )
 
 if __name__ == "__main__":
     main()

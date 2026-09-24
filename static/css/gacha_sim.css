@@ -1075,6 +1075,29 @@
   .strip-row--3 { transform: translateX(clamp(0px, 2.2vw, 18px)); }
   .strip-row--4 { }
   .strip-row--3b { transform: translateX(clamp(-18px, -2.2vw, 0px)); }
+  /* 47-ticket anniversary pools — wrap grid (scrollable results shell) */
+  .strip-343--bulk {
+    justify-content: flex-start;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: clamp(24px, 4vh, 48px);
+    --gc-w: min(132px, 18vw, var(--gc-w-fit-x));
+    --gc-h: calc(var(--gc-w) * 219 / 446);
+  }
+  .strip-row--wrap {
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    max-width: min(1100px, 96vw);
+    gap: clamp(6px, 1.2vw, 12px) clamp(4px, 1vw, 10px);
+  }
+  .strip-343--bulk .result-card {
+    margin: clamp(2px, 0.6vh, 8px) 0 clamp(10px, 2vh, 22px);
+  }
+  .pull.pull--bulk {
+    min-width: min(220px, 48vw);
+  }
   /*
    * Shared unit-height slot: unit + supporter share the same vertical midline
    * so taller supp plates don’t sit optically lower than units.

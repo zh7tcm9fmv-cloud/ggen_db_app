@@ -1,7 +1,16 @@
 {
   "gasha_id": "2609300302",
+  "lang": "EN",
   "logo_resource_id": "gasha_logo_2609300302",
   "appeal_banner_id": "2609300101",
+  "gasha_movie_setting_id": "",
+  "gasha_movie_setting": null,
+  "once_roll_count": 10,
+  "fake_once_roll_count": 0,
+  "display_pull_n": 10,
+  "required_tickets": 3000,
+  "guarantee_tail": 1,
+  "bulk_mode": false,
   "normal": [
     [
       "URU",
