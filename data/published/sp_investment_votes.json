@@ -13543,7 +13543,106 @@
     "ip_62e933e7a6f60c3c03f143f75093cad0:unit:1200005600:sp": "down",
     "ip_62e933e7a6f60c3c03f143f75093cad0:unit:1114000800:sp": "down",
     "ip_62e933e7a6f60c3c03f143f75093cad0:unit:1761000101:sp": "down",
-    "ip_62e933e7a6f60c3c03f143f75093cad0:unit:1761000100:sp": "down"
+    "ip_62e933e7a6f60c3c03f143f75093cad0:unit:1761000100:sp": "down",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1705003701:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1001001901:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1219000500:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1210000103:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1382100100:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1022000600:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1370003702:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1433000100:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1125000900:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1300001500:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1009000800:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1705003200:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1501001901:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1300001400:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1370000202:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1001003301:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1330001500:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1308000100:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1705001700:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1013000101:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1370000200:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1155000200:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1001000101:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1230000301:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1125001400:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1219000100:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1219000300:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1300001600:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1330001700:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1017000800:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1200000403:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1095003500:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1013000900:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1308000200:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1730000100:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1230000401:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1001000403:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1217000300:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1705003300:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1055001400:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1031001500:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1230001300:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1501000400:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1210001600:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1330000502:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1080001601:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1431000101:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1400002002:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1001004800:sp": "down",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1430005800:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1336000101:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1200000304:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1700000100:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1430000101:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1022000700:sp": "down",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1431001000:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1330000900:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1144000200:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1155000100:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1304000200:sp": "down",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1431001100:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1370003602:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1705000300:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1055000100:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1400002200:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1001000400:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1305001200:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1150000202:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1150000102:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1095001800:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1430002603:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1162000501:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1370000201:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1501002900:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1376000102:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1705002000:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1300001902:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1430000902:sp": "down",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1850003200:sp": "down",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1430002200:sp": "down",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1430000300:sp": "down",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1850001000:sp": "down",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1850002800:sp": "down",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1850001900:sp": "down",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1031002100:sp": "down",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1850003100:sp": "down",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1430001200:sp": "down",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1850002400:sp": "down",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1850002600:sp": "down",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1080003100:sp": "down",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1501002800:sp": "down",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1431000700:sp": "down",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1850002100:sp": "down",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1400002603:sp": "up",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1304000100:sp": "down",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1300001903:sp": "down",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1430000402:sp": "down",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1017000500:sp": "down",
+    "ip_62e933e7a6f60c3c03f143f75093cad0:character:1850000200:sp": "up"
   },
   "targets": {
     "unit:1155000700:sp": {
@@ -13627,7 +13726,7 @@
       "down": 1
     },
     "character:1080001601:sp": {
-      "up": 14,
+      "up": 15,
       "down": 0
     },
     "unit:1431000110:ssp": {
@@ -13775,11 +13874,11 @@
       "down": 4
     },
     "character:1150000202:sp": {
-      "up": 7,
+      "up": 8,
       "down": 2
     },
     "character:1700000100:sp": {
-      "up": 5,
+      "up": 6,
       "down": 1
     },
     "unit:1219000600:sp": {
@@ -13911,7 +14010,7 @@
       "down": 2
     },
     "character:1125000900:sp": {
-      "up": 8,
+      "up": 9,
       "down": 2
     },
     "unit:1370010800:sp": {
@@ -14011,7 +14110,7 @@
       "down": 3
     },
     "character:1230000401:sp": {
-      "up": 4,
+      "up": 5,
       "down": 2
     },
     "character:1705001900:sp": {
@@ -14043,7 +14142,7 @@
       "down": 2
     },
     "character:1300001902:sp": {
-      "up": 6,
+      "up": 7,
       "down": 2
     },
     "unit:1850001210:ssp": {
@@ -14079,7 +14178,7 @@
       "down": 2
     },
     "character:1013000101:sp": {
-      "up": 12,
+      "up": 13,
       "down": 8
     },
     "unit:1370008800:ssp": {
@@ -14135,7 +14234,7 @@
       "down": 2
     },
     "character:1382100100:sp": {
-      "up": 23,
+      "up": 24,
       "down": 4
     },
     "unit:1501004202:ssp": {
@@ -14323,7 +14422,7 @@
       "down": 5
     },
     "character:1200000403:sp": {
-      "up": 10,
+      "up": 11,
       "down": 1
     },
     "unit:1305000700:sp": {
@@ -14335,7 +14434,7 @@
       "down": 2
     },
     "character:1022000600:sp": {
-      "up": 8,
+      "up": 9,
       "down": 3
     },
     "unit:1125003800:sp": {
@@ -14367,7 +14466,7 @@
       "down": 0
     },
     "character:1095003500:sp": {
-      "up": 8,
+      "up": 9,
       "down": 5
     },
     "unit:1330006510:ssp": {
@@ -14399,7 +14498,7 @@
       "down": 1
     },
     "character:1013000900:sp": {
-      "up": 7,
+      "up": 8,
       "down": 5
     },
     "unit:1305000300:ssp": {
@@ -14419,7 +14518,7 @@
       "down": 3
     },
     "character:1055001400:sp": {
-      "up": 5,
+      "up": 6,
       "down": 2
     },
     "unit:1430003600:sp": {
@@ -14511,7 +14610,7 @@
       "down": 7
     },
     "character:1001003301:sp": {
-      "up": 7,
+      "up": 8,
       "down": 1
     },
     "unit:1098000610:ssp": {
@@ -14555,7 +14654,7 @@
       "down": 4
     },
     "character:1055000100:sp": {
-      "up": 4,
+      "up": 5,
       "down": 4
     },
     "unit:1110000600:ssp": {
@@ -14575,7 +14674,7 @@
       "down": 1
     },
     "character:1730000100:sp": {
-      "up": 6,
+      "up": 7,
       "down": 4
     },
     "unit:1400008110:ssp": {
@@ -14647,11 +14746,11 @@
       "down": 2
     },
     "character:1031001500:sp": {
-      "up": 5,
+      "up": 6,
       "down": 2
     },
     "character:1001000403:sp": {
-      "up": 16,
+      "up": 17,
       "down": 4
     },
     "unit:1133000402:sp": {
@@ -14691,7 +14790,7 @@
       "down": 1
     },
     "character:1501001901:sp": {
-      "up": 10,
+      "up": 11,
       "down": 4
     },
     "unit:1085001110:sp": {
@@ -14764,7 +14863,7 @@
     },
     "character:1001004800:sp": {
       "up": 10,
-      "down": 11
+      "down": 12
     },
     "unit:1850000610:ssp": {
       "up": 3,
@@ -14855,7 +14954,7 @@
       "down": 5
     },
     "character:1308000200:sp": {
-      "up": 7,
+      "up": 8,
       "down": 1
     },
     "unit:1085001210:ssp": {
@@ -14991,7 +15090,7 @@
       "down": 5
     },
     "character:1001001901:sp": {
-      "up": 34,
+      "up": 35,
       "down": 0
     },
     "unit:1210003600:sp": {
@@ -15063,7 +15162,7 @@
       "down": 1
     },
     "character:1200000304:sp": {
-      "up": 6,
+      "up": 7,
       "down": 2
     },
     "unit:1333000100:sp": {
@@ -15107,7 +15206,7 @@
       "down": 4
     },
     "character:1400002200:sp": {
-      "up": 2,
+      "up": 3,
       "down": 1
     },
     "character:1375000300:sp": {
@@ -15227,7 +15326,7 @@
       "down": 13
     },
     "character:1370000202:sp": {
-      "up": 8,
+      "up": 9,
       "down": 2
     },
     "unit:1379000102:ssp": {
@@ -15327,7 +15426,7 @@
       "down": 1
     },
     "character:1155000100:sp": {
-      "up": 5,
+      "up": 6,
       "down": 4
     },
     "unit:1350000210:ssp": {
@@ -15367,7 +15466,7 @@
       "down": 1
     },
     "character:1230000301:sp": {
-      "up": 12,
+      "up": 13,
       "down": 5
     },
     "unit:1217000110:ssp": {
@@ -15423,7 +15522,7 @@
       "down": 5
     },
     "character:1431000101:sp": {
-      "up": 2,
+      "up": 3,
       "down": 1
     },
     "unit:1850000200:ssp": {
@@ -15463,7 +15562,7 @@
       "down": 5
     },
     "character:1330000900:sp": {
-      "up": 4,
+      "up": 5,
       "down": 2
     },
     "unit:1060001410:sp": {
@@ -15564,7 +15663,7 @@
     },
     "character:1304000200:sp": {
       "up": 9,
-      "down": 12
+      "down": 13
     },
     "unit:1420004710:ssp": {
       "up": 1,
@@ -15703,7 +15802,7 @@
       "down": 6
     },
     "character:1144000200:sp": {
-      "up": 8,
+      "up": 9,
       "down": 1
     },
     "character:1060000101:sp": {
@@ -15807,7 +15906,7 @@
       "down": 4
     },
     "character:1210000103:sp": {
-      "up": 12,
+      "up": 13,
       "down": 3
     },
     "unit:1211000101:sp": {
@@ -15847,7 +15946,7 @@
       "down": 1
     },
     "character:1431001000:sp": {
-      "up": 7,
+      "up": 8,
       "down": 3
     },
     "character:1600000100:sp": {
@@ -15875,7 +15974,7 @@
       "down": 2
     },
     "character:1017000800:sp": {
-      "up": 15,
+      "up": 16,
       "down": 2
     },
     "unit:1017000610:sp": {
@@ -16067,7 +16166,7 @@
       "down": 1
     },
     "character:1705001700:sp": {
-      "up": 7,
+      "up": 8,
       "down": 5
     },
     "unit:1764000110:ssp": {
@@ -16075,7 +16174,7 @@
       "down": 2
     },
     "character:1155000200:sp": {
-      "up": 12,
+      "up": 13,
       "down": 4
     },
     "unit:1330004910:sp": {
@@ -16195,7 +16294,7 @@
       "down": 1
     },
     "character:1308000100:sp": {
-      "up": 9,
+      "up": 10,
       "down": 2
     },
     "unit:1017000200:ssp": {
@@ -16203,7 +16302,7 @@
       "down": 2
     },
     "character:1009000800:sp": {
-      "up": 11,
+      "up": 12,
       "down": 3
     },
     "unit:1764000310:sp": {
@@ -16287,11 +16386,11 @@
       "down": 2
     },
     "character:1210001600:sp": {
-      "up": 6,
+      "up": 7,
       "down": 2
     },
     "character:1431001100:sp": {
-      "up": 2,
+      "up": 3,
       "down": 1
     },
     "character:1501000102:sp": {
@@ -16335,7 +16434,7 @@
       "down": 0
     },
     "character:1162000501:sp": {
-      "up": 6,
+      "up": 7,
       "down": 0
     },
     "character:1021000800:sp": {
@@ -16407,11 +16506,11 @@
       "down": 1
     },
     "character:1219000500:sp": {
-      "up": 8,
+      "up": 9,
       "down": 6
     },
     "character:1001000101:sp": {
-      "up": 5,
+      "up": 6,
       "down": 2
     },
     "character:1336000200:sp": {
@@ -16423,7 +16522,7 @@
       "down": 2
     },
     "character:1219000100:sp": {
-      "up": 8,
+      "up": 9,
       "down": 1
     },
     "unit:1211000500:ssp": {
@@ -16471,7 +16570,7 @@
       "down": 2
     },
     "character:1370000201:sp": {
-      "up": 3,
+      "up": 4,
       "down": 2
     },
     "character:1095003401:sp": {
@@ -16496,7 +16595,7 @@
     },
     "character:1022000700:sp": {
       "up": 3,
-      "down": 2
+      "down": 3
     },
     "character:1430005500:sp": {
       "up": 2,
@@ -16511,7 +16610,7 @@
       "down": 2
     },
     "character:1430002603:sp": {
-      "up": 5,
+      "up": 6,
       "down": 0
     },
     "unit:1095000200:ssp": {
@@ -16527,7 +16626,7 @@
       "down": 3
     },
     "character:1330001500:sp": {
-      "up": 4,
+      "up": 5,
       "down": 3
     },
     "unit:1400002500:ssp": {
@@ -16563,7 +16662,7 @@
       "down": 3
     },
     "character:1095001800:sp": {
-      "up": 6,
+      "up": 7,
       "down": 1
     },
     "unit:1144001800:ssp": {
@@ -16667,15 +16766,15 @@
       "down": 1
     },
     "character:1125001400:sp": {
-      "up": 8,
+      "up": 9,
       "down": 2
     },
     "character:1219000300:sp": {
-      "up": 2,
+      "up": 3,
       "down": 2
     },
     "character:1300001400:sp": {
-      "up": 4,
+      "up": 5,
       "down": 2
     },
     "character:1200000700:sp": {
@@ -16747,19 +16846,19 @@
       "down": 8
     },
     "character:1433000100:sp": {
-      "up": 6,
+      "up": 7,
       "down": 2
     },
     "character:1217000300:sp": {
-      "up": 4,
+      "up": 5,
       "down": 3
     },
     "character:1336000101:sp": {
-      "up": 6,
+      "up": 7,
       "down": 1
     },
     "character:1370003702:sp": {
-      "up": 17,
+      "up": 18,
       "down": 0
     },
     "unit:1085001010:sp": {
@@ -17211,7 +17310,7 @@
       "down": 2
     },
     "character:1150000102:sp": {
-      "up": 3,
+      "up": 4,
       "down": 1
     },
     "character:1330000400:sp": {
@@ -17360,7 +17459,7 @@
     },
     "character:1850001900:sp": {
       "up": 1,
-      "down": 1
+      "down": 2
     },
     "character:1850000600:sp": {
       "up": 1,
@@ -17371,16 +17470,16 @@
       "down": 1
     },
     "character:1850000200:sp": {
-      "up": 1,
+      "up": 2,
       "down": 1
     },
     "character:1850002400:sp": {
       "up": 1,
-      "down": 1
+      "down": 2
     },
     "character:1850002100:sp": {
       "up": 1,
-      "down": 1
+      "down": 2
     },
     "character:1850002300:sp": {
       "up": 1,
@@ -17435,7 +17534,7 @@
       "down": 2
     },
     "character:1430000101:sp": {
-      "up": 4,
+      "up": 5,
       "down": 1
     },
     "character:1705002700:sp": {
@@ -17483,7 +17582,7 @@
       "down": 1
     },
     "character:1705000300:sp": {
-      "up": 4,
+      "up": 5,
       "down": 1
     },
     "unit:1705004400:sp": {
@@ -17539,35 +17638,35 @@
       "down": 1
     },
     "character:1300001600:sp": {
-      "up": 3,
+      "up": 4,
       "down": 2
     },
     "character:1300001500:sp": {
-      "up": 2,
+      "up": 3,
       "down": 1
     },
     "character:1230001300:sp": {
-      "up": 5,
+      "up": 6,
       "down": 1
     },
     "character:1330000502:sp": {
-      "up": 3,
-      "down": 1
-    },
-    "character:1400002002:sp": {
-      "up": 3,
-      "down": 0
-    },
-    "character:1430005800:sp": {
       "up": 4,
       "down": 1
     },
+    "character:1400002002:sp": {
+      "up": 4,
+      "down": 0
+    },
+    "character:1430005800:sp": {
+      "up": 5,
+      "down": 1
+    },
     "character:1370000200:sp": {
-      "up": 3,
+      "up": 4,
       "down": 1
     },
     "character:1501000400:sp": {
-      "up": 3,
+      "up": 4,
       "down": 0
     },
     "character:1162000103:sp": {
@@ -17587,11 +17686,11 @@
       "down": 0
     },
     "character:1330001700:sp": {
-      "up": 11,
+      "up": 12,
       "down": 0
     },
     "character:1501002900:sp": {
-      "up": 9,
+      "up": 10,
       "down": 0
     },
     "character:1095000101:sp": {
@@ -17672,18 +17771,18 @@
     },
     "character:1080003100:sp": {
       "up": 0,
-      "down": 2
+      "down": 3
     },
     "character:1501002800:sp": {
       "up": 0,
-      "down": 2
+      "down": 3
     },
     "character:1125000300:sp": {
       "up": 5,
       "down": 0
     },
     "character:1001000400:sp": {
-      "up": 4,
+      "up": 5,
       "down": 2
     },
     "character:1080000200:sp": {
@@ -18155,11 +18254,11 @@
       "down": 1
     },
     "character:1705003200:sp": {
-      "up": 4,
+      "up": 5,
       "down": 1
     },
     "character:1705003701:sp": {
-      "up": 9,
+      "up": 10,
       "down": 1
     },
     "character:1705001300:sp": {
@@ -18291,7 +18390,7 @@
       "down": 1
     },
     "character:1705003300:sp": {
-      "up": 3,
+      "up": 4,
       "down": 1
     },
     "unit:1305000810:sp": {
@@ -18515,7 +18614,7 @@
       "down": 2
     },
     "character:1305001200:sp": {
-      "up": 2,
+      "up": 3,
       "down": 2
     },
     "unit:1705004800:ssp": {
@@ -18676,7 +18775,7 @@
     },
     "character:1430002200:sp": {
       "up": 2,
-      "down": 1
+      "down": 2
     },
     "unit:1060000600:sp": {
       "up": 2,
@@ -19139,7 +19238,7 @@
       "down": 1
     },
     "character:1705002000:sp": {
-      "up": 0,
+      "up": 1,
       "down": 2
     },
     "character:1705003400:sp": {
@@ -21179,28 +21278,28 @@
       "down": 0
     },
     "character:1400002603:sp": {
-      "up": 1,
+      "up": 2,
       "down": 0
     },
     "character:1031002100:sp": {
       "up": 0,
-      "down": 1
+      "down": 2
     },
     "character:1430001200:sp": {
       "up": 0,
-      "down": 2
+      "down": 3
     },
     "character:1431000700:sp": {
       "up": 0,
-      "down": 1
+      "down": 2
     },
     "character:1300001903:sp": {
       "up": 0,
-      "down": 1
+      "down": 2
     },
     "character:1017000500:sp": {
       "up": 0,
-      "down": 1
+      "down": 2
     },
     "character:1430005200:sp": {
       "up": 0,
@@ -21264,7 +21363,7 @@
     },
     "character:1430000902:sp": {
       "up": 0,
-      "down": 2
+      "down": 3
     },
     "character:1095004300:sp": {
       "up": 0,
@@ -21288,7 +21387,7 @@
     },
     "character:1430000402:sp": {
       "up": 0,
-      "down": 1
+      "down": 2
     },
     "character:1400001800:sp": {
       "up": 0,
@@ -21332,7 +21431,7 @@
     },
     "character:1430000300:sp": {
       "up": 0,
-      "down": 1
+      "down": 2
     },
     "character:1400001900:sp": {
       "up": 0,
@@ -21612,15 +21711,15 @@
     },
     "character:1850002600:sp": {
       "up": 0,
-      "down": 1
+      "down": 2
     },
     "character:1850003100:sp": {
       "up": 0,
-      "down": 1
+      "down": 2
     },
     "character:1850003200:sp": {
       "up": 0,
-      "down": 1
+      "down": 2
     },
     "character:1850003300:sp": {
       "up": 0,
@@ -21628,11 +21727,11 @@
     },
     "character:1850001000:sp": {
       "up": 1,
-      "down": 1
+      "down": 2
     },
     "character:1850002800:sp": {
       "up": 0,
-      "down": 1
+      "down": 2
     },
     "character:1300001000:sp": {
       "up": 0,
@@ -21648,7 +21747,7 @@
     },
     "character:1304000100:sp": {
       "up": 0,
-      "down": 1
+      "down": 2
     },
     "character:1110000801:sp": {
       "up": 0,
@@ -21919,7 +22018,7 @@
       "down": 0
     },
     "character:1376000102:sp": {
-      "up": 3,
+      "up": 4,
       "down": 0
     },
     "unit:1379002010:sp": {
@@ -24147,6 +24246,10 @@
       "down": 1
     },
     "unit:1850003200:ssp": {
+      "up": 1,
+      "down": 0
+    },
+    "character:1370003602:sp": {
       "up": 1,
       "down": 0
     }
