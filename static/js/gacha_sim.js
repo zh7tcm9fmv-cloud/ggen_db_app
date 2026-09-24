@@ -175,6 +175,7 @@ window.GgenGachaSim = (function () {
       var pn = pa ? pa.textContent : "0";
       pityAfter.innerHTML = tt("gs_exchange_pts") + " <b id=\"ptsAfter\">" + pn + "</b>";
     }
+    try { syncBulkResultChrome(); } catch (ePity) {}
     var share = document.getElementById("shareStrip");
     if (share) share.textContent = tt("gs_save_collections");
     var done = document.getElementById("done");
@@ -554,6 +555,22 @@ window.GgenGachaSim = (function () {
     return (tt("gs_pull_n") || "Use {n} time(s)").replace(/\{n\}/g, String(n));
   }
 
+  function syncBulkResultChrome() {
+    var bulk = isBulkTicketPool();
+    var pityAfter = document.querySelector(".results-meta .pity-line");
+    if (pityAfter) {
+      pityAfter.hidden = !!bulk;
+      pityAfter.setAttribute("aria-hidden", bulk ? "true" : "false");
+      pityAfter.style.display = bulk ? "none" : "";
+    }
+    var sessSave = document.getElementById("sessSave");
+    if (sessSave) {
+      sessSave.title = bulk
+        ? "Save this pull only as PNG"
+        : "Save full session as PNG (all pulls, 5 sets per row)";
+    }
+  }
+
   function syncPullButtons() {
     var one = document.getElementById("one");
     var ten = document.getElementById("ten");
@@ -583,6 +600,7 @@ window.GgenGachaSim = (function () {
       again.classList.toggle("is-spent", !!spent);
       again.title = spent ? tt("gs_pull_limit_spent") : "";
     }
+    try { syncBulkResultChrome(); } catch (eB) {}
   }
 
   function applyPoolData(data, source) {
@@ -1963,10 +1981,17 @@ window.GgenGachaSim = (function () {
     if (!stage || !results || !stage.classList.contains("show-results")) {
       throw new Error("Open a pull result first");
     }
+    var isSessBtn = !!(btn && btn.id === "sessSave");
     var prevLabel = btn ? btn.textContent : "";
+    var prevHtml = btn ? btn.innerHTML : "";
     if (btn) {
       btn.disabled = true;
-      btn.textContent = tt("gs_saving");
+      if (isSessBtn) {
+        var lab = btn.querySelector("b");
+        if (lab) lab.textContent = tt("gs_saving_caps") || tt("gs_saving") || "SAVING…";
+      } else {
+        btn.textContent = tt("gs_saving");
+      }
     }
     var actions = results.querySelector(".results-actions");
     var skipBtn = stage.querySelector(".skip");
@@ -2013,9 +2038,30 @@ window.GgenGachaSim = (function () {
       if (skipBtn) skipBtn.style.display = prevSkip;
       if (btn) {
         btn.disabled = false;
-        btn.textContent = prevLabel || tt("gs_save_collections");
+        if (isSessBtn) {
+          btn.innerHTML = prevHtml || ("<small>" + tt("gs_save") + "</small><b>" + tt("gs_collections_btn") + "</b>");
+        } else {
+          btn.textContent = prevLabel || tt("gs_save_collections");
+        }
       }
     }
+  }
+
+  /** For bulk 47-pull: reopen last result strip if needed, then same PNG path as result Save. */
+  function ensureBulkResultsOpenForExport() {
+    if (!lastRows || !lastRows.length) return false;
+    var stage = document.getElementById("stage");
+    if (!stage) return false;
+    if (stage.classList.contains("show-results")) return true;
+    try { render343(lastRows); } catch (e) { return false; }
+    stage.className = "stage on is-open show-results";
+    stage.setAttribute("aria-hidden", "false");
+    document.body.classList.add("gacha-sim-stage-open");
+    var root = document.getElementById("gachaSimRoot");
+    if (root && stage.parentElement === root) {
+      /* keep stage in root; export works either way */
+    }
+    return true;
   }
 
   async function shareSessionCollectionsPng(btn) {
@@ -2133,6 +2179,20 @@ window.GgenGachaSim = (function () {
 
   function shareSessionCollections() {
     var btn = document.getElementById("sessSave");
+    /* Anniversary 47-ticket: only one multi per session — same PNG as result Save Collections */
+    if (isBulkTicketPool()) {
+      if (!ensureBulkResultsOpenForExport()) {
+        try { console.warn("[gacha-sim] no bulk pull to save yet"); } catch (e0) {}
+        return Promise.resolve();
+      }
+      return shareLivePullResultsPng(btn).catch(function (err) {
+        if (btn) {
+          btn.disabled = false;
+          btn.innerHTML = "<small>" + tt("gs_save") + "</small><b>" + tt("gs_collections_btn") + "</b>";
+        }
+        try { console.warn("[gacha-sim] save bulk pull failed", err); } catch (e) {}
+      });
+    }
     return shareSessionCollectionsPng(btn).catch(function (err) {
       if (btn) {
         btn.disabled = false;
