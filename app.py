@@ -48,6 +48,72 @@ from gasha_official_rates import (
     drop_rates_for_gasha,
 )
 
+
+# ---------------------------------------------------------------------------
+# Shared HTTP I/O — Railway↔GitHub/CDN often truncates large bodies
+# (http.client.IncompleteRead). Every GitHub sync / CDN fetch must use these.
+# ---------------------------------------------------------------------------
+def _http_read_all(resp):
+    """Read a full urllib response body (raises IncompleteRead if Content-Length unmet)."""
+    return resp.read()
+
+
+def _http_request_bytes(
+    url,
+    *,
+    headers=None,
+    timeout=20,
+    retries=2,
+    method='GET',
+    data=None,
+    log_prefix='http',
+    retry_http=(502, 503, 504),
+):
+    """
+    HTTP request with retries on IncompleteRead / transient network / selected 5xx.
+    HTTPError for other status codes is raised immediately (no silent swallow).
+    """
+    last_err = None
+    hdrs = dict(headers or {})
+    attempts = max(0, int(retries)) + 1
+    for attempt in range(attempts):
+        try:
+            req = Request(url, data=data, headers=hdrs, method=method)
+            with urlopen(req, timeout=timeout) as resp:
+                return _http_read_all(resp)
+        except IncompleteRead as e:
+            last_err = e
+            print(f'{log_prefix}: IncompleteRead (attempt {attempt + 1}/{attempts}): {e}')
+            time.sleep(0.2 * (attempt + 1))
+        except HTTPError as e:
+            if e.code in retry_http and attempt < attempts - 1:
+                last_err = e
+                print(f'{log_prefix}: HTTP {e.code} (attempt {attempt + 1}/{attempts})')
+                time.sleep(0.25 * (attempt + 1))
+                continue
+            raise
+        except (URLError, OSError, TimeoutError) as e:
+            last_err = e
+            print(f'{log_prefix}: request failed (attempt {attempt + 1}/{attempts}): {e}')
+            time.sleep(0.2 * (attempt + 1))
+    if last_err is not None:
+        raise last_err
+    return b''
+
+
+def _http_get_bytes(url, *, headers=None, timeout=20, retries=2, log_prefix='http'):
+    return _http_request_bytes(
+        url, headers=headers, timeout=timeout, retries=retries, method='GET', log_prefix=log_prefix
+    )
+
+
+def _http_get_json(url, *, headers=None, timeout=20, retries=2, log_prefix='http'):
+    raw = _http_get_bytes(
+        url, headers=headers, timeout=timeout, retries=retries, log_prefix=log_prefix
+    )
+    return json.loads(raw.decode('utf-8'))
+
+
 app = Flask(__name__)
 # Trust Railway / CDN client IP headers (required for IP-based vote ballots).
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
@@ -19828,49 +19894,41 @@ def _collections_github_http_error_body(err):
         return ''
 
 
-def _collections_github_resolve_blob_sha(token, repo, path, branch):
-    """Return (sha, size) without requiring full file download.
+def _collections_github_http_get_bytes(url, *, headers=None, timeout=20, retries=2):
+    """GET with IncompleteRead retries (Railway↔GitHub truncations on large bodies)."""
+    return _http_get_bytes(
+        url, headers=headers, timeout=timeout, retries=retries, log_prefix='collections'
+    )
 
-    Contents API refuses to return *content* for blobs >1MB; directory listing still
-    returns each file's git blob sha — required to update an existing large file.
+
+def _collections_github_resolve_blob_sha(token, repo, path, branch):
+    """Return (sha, size) via parent directory listing — never download the file.
+
+    Direct Contents GET embeds base64 for files under ~1MB. collections_share_v1.json
+    is already past that size class; Railway was IncompleteRead(~1.02MB) mid-body when
+    resolving sha that way. Directory listing returns each entry's blob sha in a tiny JSON.
     """
     headers = _banner_pool_votes_github_api_headers(token)
-    # 1) Direct contents GET (works for small files; also yields sha when content is present)
-    file_url = f'https://api.github.com/repos/{repo}/contents/{quote(path)}?ref={quote(branch)}'
-    try:
-        req = Request(file_url, headers=headers, method='GET')
-        with urlopen(req, timeout=20) as resp:
-            meta = json.loads(resp.read().decode('utf-8'))
-        if isinstance(meta, dict) and meta.get('sha'):
-            return str(meta['sha']), int(meta.get('size') or 0)
-    except HTTPError as e:
-        body = _collections_github_http_error_body(e)
-        # Too-large blob: fall through to parent listing
-        if e.code not in (403, 422) and e.code != 404:
-            print(f'collections: GitHub sha resolve failed ({path}): {e} {body}')
-            return None, 0
-        if e.code == 404:
-            return None, 0
-    except (URLError, OSError, json.JSONDecodeError, ValueError, NameError) as e:
-        print(f'collections: GitHub sha resolve failed ({path}): {e}')
-        return None, 0
-
     parent = path.rsplit('/', 1)[0] if '/' in path else ''
     name = path.rsplit('/', 1)[-1]
-    if not parent:
-        return None, 0
-    dir_url = f'https://api.github.com/repos/{repo}/contents/{quote(parent)}?ref={quote(branch)}'
+    if parent:
+        dir_url = f'https://api.github.com/repos/{repo}/contents/{quote(parent)}?ref={quote(branch)}'
+    else:
+        dir_url = f'https://api.github.com/repos/{repo}/contents?ref={quote(branch)}'
     try:
-        req = Request(dir_url, headers=headers, method='GET')
-        with urlopen(req, timeout=20) as resp:
-            listing = json.loads(resp.read().decode('utf-8'))
+        raw = _collections_github_http_get_bytes(dir_url, headers=headers, timeout=20, retries=2)
+        listing = json.loads(raw.decode('utf-8'))
         if not isinstance(listing, list):
             return None, 0
         for ent in listing:
             if isinstance(ent, dict) and ent.get('name') == name and ent.get('sha'):
                 return str(ent['sha']), int(ent.get('size') or 0)
-    except (HTTPError, URLError, OSError, json.JSONDecodeError, ValueError, NameError) as e:
-        print(f'collections: GitHub dir listing failed ({parent}): {e}')
+    except HTTPError as e:
+        if e.code == 404:
+            return None, 0
+        print(f'collections: GitHub dir listing failed ({parent or "/"}): {e}')
+    except (URLError, OSError, IncompleteRead, json.JSONDecodeError, ValueError, NameError, TimeoutError) as e:
+        print(f'collections: GitHub dir listing failed ({parent or "/"}): {e}')
     return None, 0
 
 
@@ -19918,15 +19976,24 @@ def _collections_github_api_json(method, url, token, body=None, *, timeout=45, s
     if body is not None:
         headers['Content-Type'] = 'application/json'
         data = json.dumps(body).encode('utf-8')
-    req = Request(url, data=data, headers=headers, method=method)
+    attempts = 3 if method.upper() == 'GET' else 1
+    label = f'{step}: ' if step else ''
     try:
-        with urlopen(req, timeout=timeout) as resp:
-            raw = resp.read().decode('utf-8')
+        raw = _http_request_bytes(
+            url,
+            headers=headers,
+            timeout=timeout,
+            retries=max(0, attempts - 1),
+            method=method,
+            data=data,
+            log_prefix=f'collections:{step or method.lower()}',
+        )
     except HTTPError as e:
         err_body = _collections_github_http_error_body(e)
-        label = f'{step}: ' if step else ''
         raise RuntimeError(f'{label}HTTP {e.code} [{method} {url}] {err_body}') from None
-    return json.loads(raw) if raw else {}
+    except IncompleteRead as e:
+        raise RuntimeError(f'{label}IncompleteRead [{method} {url}] {e}') from None
+    return json.loads(raw.decode('utf-8')) if raw else {}
 
 
 def _collections_github_branch_tip_sha(token, repo, branch):
@@ -19982,14 +20049,27 @@ def _collections_github_push_via_contents(token, repo, path, branch, payload_byt
         body['sha'] = remote_sha
     for attempt in range(3):
         try:
-            req = Request(url, data=json.dumps(body).encode('utf-8'), headers=headers, method='PUT')
-            with urlopen(req, timeout=45) as resp:
-                meta = json.loads(resp.read().decode('utf-8'))
+            raw = _http_request_bytes(
+                url,
+                headers=headers,
+                timeout=45,
+                retries=2,
+                method='PUT',
+                data=json.dumps(body).encode('utf-8'),
+                log_prefix='collections:contents-put',
+            )
+            meta = json.loads(raw.decode('utf-8'))
             content = meta.get('content') if isinstance(meta, dict) else None
             if isinstance(content, dict) and content.get('sha'):
                 globals()[sha_attr] = content['sha']
             print(f'collections: GitHub snapshot ({message.split(":")[0]}, {path}) via contents')
             return True
+        except IncompleteRead as e:
+            print(f'collections: Contents PUT IncompleteRead: {e}')
+            if attempt < 2:
+                time.sleep(0.3 * (attempt + 1))
+                continue
+            raise RuntimeError(f'contents-put: IncompleteRead [{url}] {e}') from None
         except HTTPError as e:
             err_body = _collections_github_http_error_body(e)
             if e.code == 422 and ('too large' in err_body.lower() or '1 MB' in err_body or '1MB' in err_body):
@@ -20158,12 +20238,14 @@ def _collections_github_push(data, path_env, default_path, sha_attr, message, *,
                 return _collections_github_push_via_git_data(
                     token, repo, path, branch, payload, message, sha_attr
                 )
-            except (HTTPError, URLError, OSError, json.JSONDecodeError, RuntimeError, NameError, ValueError) as e:
+            except (HTTPError, URLError, OSError, IncompleteRead, json.JSONDecodeError, RuntimeError, NameError, ValueError, TimeoutError) as e:
                 msg = str(e)
                 if attempt < max_attempts - 1 and (
                     'update-ref-stale' in msg or 'HTTP 409' in msg or 'HTTP 422' in msg
+                    or 'IncompleteRead' in msg
                 ):
                     # Quiet retry — tip moved by sibling shutdown snapshot; not an error.
+                    time.sleep(0.3 * (attempt + 1))
                     continue
                 print(f'collections: GitHub git-data push failed ({path}): {e}')
                 return False
@@ -20171,9 +20253,25 @@ def _collections_github_push(data, path_env, default_path, sha_attr, message, *,
 
 
 def _collections_github_fetch_blob_bytes(token, repo, blob_sha):
-    """Fetch blob bytes via Git Data API (works for files >1MB, up to 100MB)."""
+    """Fetch blob bytes via Git Data API (works for files >1MB, up to 100MB).
+
+    Prefer Accept: application/vnd.github.raw so the body is plain bytes (no base64
+    JSON envelope — same truncation class that broke Contents GET on Railway).
+    """
     url = f'https://api.github.com/repos/{repo}/git/blobs/{quote(blob_sha)}'
-    meta = _collections_github_api_json('GET', url, token, timeout=60, step='get-blob')
+    raw_headers = {
+        **_banner_pool_votes_github_api_headers(token),
+        'Accept': 'application/vnd.github.raw',
+    }
+    try:
+        return _collections_github_http_get_bytes(url, headers=raw_headers, timeout=90, retries=3)
+    except HTTPError as e:
+        # Fall back to JSON+base64 if raw media type unavailable
+        if e.code not in (406, 415):
+            raise
+    except (URLError, OSError, IncompleteRead, TimeoutError):
+        pass
+    meta = _collections_github_api_json('GET', url, token, timeout=90, step='get-blob')
     if not isinstance(meta, dict):
         return None
     enc = (meta.get('encoding') or '').lower()
@@ -20186,12 +20284,11 @@ def _collections_github_fetch_blob_bytes(token, repo, blob_sha):
 
 
 def _collections_github_fetch(path_env, default_path, sha_attr):
+    """Load census/share JSON from GitHub without Contents file GET (truncates past ~1MB)."""
     cfg = _collections_github_cfg(path_env, default_path)
     if not cfg:
         return None
     token, repo, path, branch = cfg
-    url = f'https://api.github.com/repos/{repo}/contents/{quote(path)}?ref={quote(branch)}'
-    headers = _banner_pool_votes_github_api_headers(token)
 
     def _parse_json_bytes(raw_bytes):
         data = json.loads(raw_bytes.decode('utf-8'))
@@ -20204,48 +20301,40 @@ def _collections_github_fetch(path_env, default_path, sha_attr):
                 return None
             print(f'collections: fetched {path} via git-data ({size_hint or len(raw)} bytes)')
             return _parse_json_bytes(raw)
-        except (HTTPError, URLError, OSError, json.JSONDecodeError, ValueError, NameError, RuntimeError) as e:
+        except (HTTPError, URLError, OSError, IncompleteRead, json.JSONDecodeError, ValueError, NameError, RuntimeError) as e:
             print(f'collections: Git Data blob fetch failed ({path}): {e}')
             return None
 
+    # 1) Directory listing → blob sha → Git Data (safe for multi-MB share files)
     try:
-        req = Request(url, headers=headers, method='GET')
-        with urlopen(req, timeout=20) as resp:
-            meta = json.loads(resp.read().decode('utf-8'))
-        if not isinstance(meta, dict):
-            return None
-        if meta.get('sha'):
-            globals()[sha_attr] = meta.get('sha')
-        size = int(meta.get('size') or 0)
-        # Large blobs: Contents API omits content / errors — use Git Data.
-        if meta.get('encoding') != 'base64' or not meta.get('content') or size > 1_000_000:
-            sha = meta.get('sha')
-            if not sha:
-                sha, size = _collections_github_resolve_blob_sha(token, repo, path, branch)
-                if sha:
-                    globals()[sha_attr] = sha
-            if sha:
-                return _fetch_via_git_data(sha, size)
-            return None
-        content = base64.b64decode(meta.get('content', '').replace('\n', '')).decode('utf-8')
-        data = json.loads(content)
-        return data if isinstance(data, dict) else None
+        sha, size = _collections_github_resolve_blob_sha(token, repo, path, branch)
+        if sha:
+            globals()[sha_attr] = sha
+            data = _fetch_via_git_data(sha, size)
+            if data is not None:
+                return data
+    except (HTTPError, URLError, OSError, IncompleteRead, json.JSONDecodeError, ValueError, NameError, RuntimeError) as e:
+        print(f'collections: GitHub sha/git-data fetch failed ({path}): {e}')
+
+    # 2) Authenticated raw Contents media type (plain file bytes, no base64 JSON wrap)
+    try:
+        raw_url = f'https://api.github.com/repos/{repo}/contents/{quote(path)}?ref={quote(branch)}'
+        raw_headers = {
+            **_banner_pool_votes_github_api_headers(token),
+            'Accept': 'application/vnd.github.raw',
+        }
+        raw = _collections_github_http_get_bytes(raw_url, headers=raw_headers, timeout=45, retries=3)
+        return _parse_json_bytes(raw)
     except HTTPError as e:
         body = _collections_github_http_error_body(e)
         if e.code == 404:
             print(f'collections: {path} not on {branch} yet (first save pending)')
             globals()[sha_attr] = None
             return None
-        # 403/422 "too large" — resolve sha via dir listing, then Git Data blob.
-        if e.code in (403, 422) and ('1 MB' in body or 'too large' in body.lower() or 'too_large' in body.lower()):
-            sha, size = _collections_github_resolve_blob_sha(token, repo, path, branch)
-            if sha:
-                globals()[sha_attr] = sha
-                return _fetch_via_git_data(sha, size)
-        print(f'collections: GitHub fetch failed ({path}): {e} {body}')
+        print(f'collections: GitHub raw fetch failed ({path}): {e} {body}')
         return None
-    except (URLError, OSError, json.JSONDecodeError, ValueError, NameError) as e:
-        print(f'collections: GitHub fetch failed ({default_path}): {e}')
+    except (URLError, OSError, IncompleteRead, json.JSONDecodeError, ValueError, NameError, TimeoutError) as e:
+        print(f'collections: GitHub raw fetch failed ({default_path}): {e}')
         return None
 
 
@@ -20450,6 +20539,23 @@ def _collections_share_push_from_disk(*, reason='manual', force=False):
     )
 
 
+def _collections_share_push_safe(reason):
+    """Background timer/thread wrapper — never let IncompleteRead kill the worker thread."""
+    try:
+        return _collections_share_push_from_disk(reason=reason, force=True)
+    except Exception as e:
+        print(f'collections: share push failed ({reason}): {e}')
+        return False
+
+
+def _collections_census_push_safe(reason):
+    try:
+        return _collections_census_push_from_disk(reason=reason, force=True)
+    except Exception as e:
+        print(f'collections: census push failed ({reason}): {e}')
+        return False
+
+
 def _collections_census_schedule_debounced_push():
     global _COLLECTIONS_CENSUS_DEBOUNCE_TIMER
     mode = _collections_github_sync_mode()
@@ -20459,13 +20565,13 @@ def _collections_census_schedule_debounced_push():
         return
     if mode == 'vote':
         threading.Thread(
-            target=lambda: _collections_census_push_from_disk(reason='submit', force=True),
+            target=lambda: _collections_census_push_safe('submit'),
             daemon=True,
         ).start()
         return
 
     def _run():
-        _collections_census_push_from_disk(reason='debounced', force=True)
+        _collections_census_push_safe('debounced')
 
     with _COLLECTIONS_CENSUS_DEBOUNCE_LOCK:
         if _COLLECTIONS_CENSUS_DEBOUNCE_TIMER:
@@ -20488,13 +20594,13 @@ def _collections_share_schedule_debounced_push():
         return
     if mode == 'vote':
         threading.Thread(
-            target=lambda: _collections_share_push_from_disk(reason='submit', force=True),
+            target=lambda: _collections_share_push_safe('submit'),
             daemon=True,
         ).start()
         return
 
     def _run():
-        _collections_share_push_from_disk(reason='debounced', force=True)
+        _collections_share_push_safe('debounced')
 
     with _COLLECTIONS_SHARE_DEBOUNCE_LOCK:
         if _COLLECTIONS_SHARE_DEBOUNCE_TIMER:
@@ -22079,12 +22185,59 @@ def _spi_votes_fetch_github():
     if not cfg:
         return None
     token, repo, path, branch = cfg
-    url = f'https://api.github.com/repos/{repo}/contents/{quote(path)}?ref={quote(branch)}'
-    headers = _banner_pool_votes_github_api_headers(token)
+    # Prefer raw body — Contents JSON+base64 truncates on Railway like banner/collections.
+    api_raw_url = f'https://api.github.com/repos/{repo}/contents/{quote(path)}?ref={quote(branch)}'
     try:
-        req = Request(url, headers=headers, method='GET')
-        with urlopen(req, timeout=10) as resp:
-            meta = json.loads(resp.read().decode('utf-8'))
+        raw = _banner_pool_votes_http_get_bytes(
+            api_raw_url,
+            headers={
+                **_banner_pool_votes_github_api_headers(token),
+                'Accept': 'application/vnd.github.raw',
+            },
+            timeout=25,
+            retries=3,
+        )
+        data = json.loads(raw.decode('utf-8'))
+        if isinstance(data, dict):
+            try:
+                parent = path.rsplit('/', 1)[0] if '/' in path else ''
+                name = path.rsplit('/', 1)[-1]
+                dir_url = (
+                    f'https://api.github.com/repos/{repo}/contents/{quote(parent)}?ref={quote(branch)}'
+                    if parent
+                    else f'https://api.github.com/repos/{repo}/contents?ref={quote(branch)}'
+                )
+                listing = json.loads(
+                    _banner_pool_votes_http_get_bytes(
+                        dir_url,
+                        headers=_banner_pool_votes_github_api_headers(token),
+                        timeout=15,
+                        retries=2,
+                    ).decode('utf-8')
+                )
+                if isinstance(listing, list):
+                    for ent in listing:
+                        if isinstance(ent, dict) and ent.get('name') == name and ent.get('sha'):
+                            _SPI_VOTES_GITHUB_SHA = str(ent['sha'])
+                            break
+            except Exception:
+                pass
+            return data
+    except HTTPError as e:
+        if e.code == 404:
+            print(f'spi_votes: vote file not on {branch} yet (first save pending)')
+        else:
+            print(f'spi_votes: GitHub raw fetch failed: {e}')
+    except (URLError, OSError, IncompleteRead, json.JSONDecodeError, ValueError, TimeoutError) as e:
+        print(f'spi_votes: GitHub raw fetch failed: {e}')
+    # Legacy Contents+base64 fallback
+    try:
+        meta = _banner_pool_votes_http_get_json(
+            api_raw_url,
+            headers=_banner_pool_votes_github_api_headers(token),
+            timeout=25,
+            retries=2,
+        )
         if not isinstance(meta, dict) or meta.get('encoding') != 'base64':
             return None
         content = base64.b64decode(meta.get('content', '').replace('\n', '')).decode('utf-8')
@@ -22097,7 +22250,7 @@ def _spi_votes_fetch_github():
         else:
             print(f'spi_votes: GitHub fetch failed: {e}')
         return None
-    except (URLError, OSError, json.JSONDecodeError, ValueError) as e:
+    except (URLError, OSError, IncompleteRead, json.JSONDecodeError, ValueError, TimeoutError) as e:
         print(f'spi_votes: GitHub fetch failed: {e}')
         return None
 
@@ -22127,9 +22280,16 @@ def _spi_votes_push_github(data, *, retries=2):
             if _SPI_VOTES_GITHUB_SHA:
                 body['sha'] = _SPI_VOTES_GITHUB_SHA
             try:
-                req = Request(url, data=json.dumps(body).encode('utf-8'), headers=headers, method='PUT')
-                with urlopen(req, timeout=12) as resp:
-                    meta = json.loads(resp.read().decode('utf-8'))
+                raw = _http_request_bytes(
+                    url,
+                    headers=headers,
+                    timeout=20,
+                    retries=2,
+                    method='PUT',
+                    data=json.dumps(body).encode('utf-8'),
+                    log_prefix='spi_votes:push',
+                )
+                meta = json.loads(raw.decode('utf-8'))
                 content = meta.get('content') if isinstance(meta, dict) else None
                 if isinstance(content, dict) and content.get('sha'):
                     _SPI_VOTES_GITHUB_SHA = content['sha']
@@ -22145,8 +22305,11 @@ def _spi_votes_push_github(data, *, retries=2):
                     continue
                 print(f'spi_votes: GitHub push failed: {e}')
                 return False
-            except (URLError, OSError, json.JSONDecodeError) as e:
+            except (URLError, OSError, IncompleteRead, json.JSONDecodeError, TimeoutError) as e:
                 print(f'spi_votes: GitHub push failed: {e}')
+                if attempt < retries:
+                    time.sleep(0.25 * (attempt + 1))
+                    continue
                 return False
     return False
 
@@ -22159,12 +22322,9 @@ def _spi_votes_remote_fetch():
     if not url:
         return None
     try:
-        req = Request(url, headers={}, method='GET')
-        with urlopen(req, timeout=20) as resp:
-            raw = resp.read().decode('utf-8')
-        data = json.loads(raw)
-        return data if isinstance(data, dict) and _spi_votes_has_data(data) else None
-    except (HTTPError, URLError, OSError, json.JSONDecodeError) as e:
+        parsed = _http_get_json(url, timeout=20, retries=2, log_prefix='spi_votes:import')
+        return parsed if isinstance(parsed, dict) and _spi_votes_has_data(parsed) else None
+    except (HTTPError, URLError, OSError, IncompleteRead, json.JSONDecodeError, TimeoutError) as e:
         print(f'spi_votes: import URL fetch failed: {e}')
         return None
 
@@ -22200,7 +22360,11 @@ def _spi_votes_hydrate_from_remote(*, force=False):
             _SPI_VOTES_HYDRATED = True
             return
         _SPI_VOTES_LAST_REMOTE_PULL = now
-        remote = _spi_votes_remote_fetch()
+        try:
+            remote = _spi_votes_remote_fetch()
+        except Exception as e:
+            print(f'spi_votes: remote fetch failed (keeping local): {e}')
+            remote = None
         merged = _spi_votes_merge_snapshots(local, remote, bundled)
         if needs_rev or _spi_votes_is_richer(merged, local or {}) or (
             not _spi_votes_has_data(local) and _spi_votes_has_data(merged)
@@ -22255,6 +22419,14 @@ def _spi_votes_cancel_debounced_push():
             _SPI_VOTES_DEBOUNCE_TIMER = None
 
 
+def _spi_votes_push_safe(reason):
+    try:
+        return _spi_votes_push_from_disk(reason=reason, force=True)
+    except Exception as e:
+        print(f'spi_votes: push failed ({reason}): {e}')
+        return False
+
+
 def _spi_votes_schedule_debounced_push():
     global _SPI_VOTES_DEBOUNCE_TIMER
     mode = _spi_votes_sync_mode()
@@ -22262,13 +22434,13 @@ def _spi_votes_schedule_debounced_push():
         return
     if mode == 'vote':
         threading.Thread(
-            target=lambda: _spi_votes_push_from_disk(reason='vote', force=True),
+            target=lambda: _spi_votes_push_safe('vote'),
             daemon=True,
         ).start()
         return
 
     def _run():
-        _spi_votes_push_from_disk(reason='debounced', force=True)
+        _spi_votes_push_safe('debounced')
 
     with _SPI_VOTES_DEBOUNCE_LOCK:
         if _SPI_VOTES_DEBOUNCE_TIMER:
@@ -22693,7 +22865,10 @@ def _site_feedback_forward_to_sheets(entry):
     )
     try:
         with urlopen(req, timeout=15) as resp:
-            body = resp.read().decode('utf-8', errors='replace')
+            try:
+                body = resp.read().decode('utf-8', errors='replace')
+            except IncompleteRead as e:
+                return False, f'incomplete_read: {e}'
             if resp.status >= 400:
                 return False, f'http_{resp.status}: {body[:200]}'
             try:
@@ -22880,9 +23055,10 @@ def _fetch_game_news_items(lang_code):
     lang_type = _game_news_lang_type(lang_code)
     web_base = GAME_NEWS_JP_WEB if lang_type == 1 else GAME_NEWS_GL_WEB
     url = f'{web_base}/server_assets/api/information_{GAME_NEWS_TAB_ALL}_{lang_type}_0.json'
-    req = Request(url, headers=_GAME_NEWS_HTTP_HEADERS)
-    with urlopen(req, timeout=15) as resp:
-        data = json.loads(resp.read().decode('utf-8'))
+    raw = _http_get_bytes(
+        url, headers=_GAME_NEWS_HTTP_HEADERS, timeout=15, retries=2, log_prefix='game_news'
+    )
+    data = json.loads(raw.decode('utf-8'))
     items = data.get('information_list') or []
     if not isinstance(items, list):
         items = []
@@ -22898,18 +23074,36 @@ def _game_news_status_payload(lang_code, last_seen_at=0, last_seen_fp=''):
     if cached and cached[0] > now:
         items, has_more, latest_at, fingerprint, content_fp = cached[1]
     else:
-        items, has_more = _fetch_game_news_items(lc)
-        latest_at = max((_game_news_item_ts(it) for it in items), default=0)
-        fingerprint = ','.join(
-            str(it.get('information_id'))
-            for it in items
-            if it.get('information_id') is not None
-        )
-        content_fp = _game_news_content_fp(items)
-        _game_news_status_cache[cache_key] = (
-            now + _GAME_NEWS_STATUS_CACHE_TTL,
-            (items, has_more, latest_at, fingerprint, content_fp),
-        )
+        try:
+            items, has_more = _fetch_game_news_items(lc)
+        except (HTTPError, URLError, OSError, IncompleteRead, json.JSONDecodeError, TimeoutError) as e:
+            print(f'game_news: fetch failed ({display}): {e}')
+            if cached:
+                items, has_more, latest_at, fingerprint, content_fp = cached[1]
+            else:
+                return {
+                    'lang': display,
+                    'latest_at': 0,
+                    'fingerprint': '',
+                    'content_fp': '',
+                    'item_count': 0,
+                    'has_more': False,
+                    'new_count': 0,
+                    'has_new': False,
+                    'error': 'fetch_failed',
+                }
+        else:
+            latest_at = max((_game_news_item_ts(it) for it in items), default=0)
+            fingerprint = ','.join(
+                str(it.get('information_id'))
+                for it in items
+                if it.get('information_id') is not None
+            )
+            content_fp = _game_news_content_fp(items)
+            _game_news_status_cache[cache_key] = (
+                now + _GAME_NEWS_STATUS_CACHE_TTL,
+                (items, has_more, latest_at, fingerprint, content_fp),
+            )
     try:
         seen_at = max(0, int(last_seen_at or 0))
     except (TypeError, ValueError):
@@ -29289,37 +29483,16 @@ def _banner_pool_votes_github_api_headers(token):
 
 
 def _banner_pool_votes_http_get_bytes(url, *, headers=None, timeout=20, retries=2):
-    """
-    GET full response body with retries.
-    Railway↔GitHub often hits http.client.IncompleteRead on large vote JSON;
-    never leave that uncaught on request threads.
-    """
-    last_err = None
-    hdrs = headers or {}
-    attempts = max(0, int(retries)) + 1
-    for attempt in range(attempts):
-        try:
-            req = Request(url, headers=hdrs, method='GET')
-            with urlopen(req, timeout=timeout) as resp:
-                return resp.read()
-        except IncompleteRead as e:
-            last_err = e
-            print(f'banner_pool_votes: IncompleteRead (attempt {attempt + 1}/{attempts}): {e}')
-            time.sleep(0.2 * (attempt + 1))
-        except (URLError, OSError, TimeoutError) as e:
-            last_err = e
-            print(f'banner_pool_votes: HTTP get failed (attempt {attempt + 1}/{attempts}): {e}')
-            time.sleep(0.2 * (attempt + 1))
-    if last_err is not None:
-        raise last_err
-    return b''
+    """GET full response body with IncompleteRead retries (banner vote GitHub sync)."""
+    return _http_get_bytes(
+        url, headers=headers, timeout=timeout, retries=retries, log_prefix='banner_pool_votes'
+    )
 
 
 def _banner_pool_votes_http_get_json(url, *, headers=None, timeout=20, retries=2):
-    raw = _banner_pool_votes_http_get_bytes(
-        url, headers=headers, timeout=timeout, retries=retries
+    return _http_get_json(
+        url, headers=headers, timeout=timeout, retries=retries, log_prefix='banner_pool_votes'
     )
-    return json.loads(raw.decode('utf-8'))
 
 
 def _banner_pool_votes_github_branch_exists(token, repo, branch):
@@ -29384,18 +29557,16 @@ def _banner_pool_votes_ensure_github_branch():
         return False
     url = f'https://api.github.com/repos/{repo}/git/refs'
     body = {'ref': f'refs/heads/{branch}', 'sha': sha}
-    req = Request(
-        url,
-        data=json.dumps(body).encode('utf-8'),
-        headers={**_banner_pool_votes_github_api_headers(token), 'Content-Type': 'application/json'},
-        method='POST',
-    )
     try:
-        with urlopen(req, timeout=12) as resp:
-            try:
-                resp.read()
-            except IncompleteRead:
-                pass
+        _http_request_bytes(
+            url,
+            headers={**_banner_pool_votes_github_api_headers(token), 'Content-Type': 'application/json'},
+            timeout=12,
+            retries=1,
+            method='POST',
+            data=json.dumps(body).encode('utf-8'),
+            log_prefix='banner_pool_votes:create-branch',
+        )
         print(f'banner_pool_votes: created GitHub branch {branch} from {base}')
         return True
     except HTTPError as e:
@@ -29728,17 +29899,16 @@ def _banner_pool_votes_push_github(data, *, retries=2):
             if _BANNER_VOTES_GITHUB_SHA:
                 body['sha'] = _BANNER_VOTES_GITHUB_SHA
             try:
-                req = Request(url, data=json.dumps(body).encode('utf-8'), headers=headers, method='PUT')
-                with urlopen(req, timeout=20) as resp:
-                    try:
-                        raw = resp.read()
-                    except IncompleteRead as e:
-                        print(f'banner_pool_votes: GitHub push IncompleteRead: {e}')
-                        if attempt < retries:
-                            time.sleep(0.25 * (attempt + 1))
-                            continue
-                        return False
-                    meta = json.loads(raw.decode('utf-8'))
+                raw = _http_request_bytes(
+                    url,
+                    headers=headers,
+                    timeout=20,
+                    retries=2,
+                    method='PUT',
+                    data=json.dumps(body).encode('utf-8'),
+                    log_prefix='banner_pool_votes:push',
+                )
+                meta = json.loads(raw.decode('utf-8'))
                 content = meta.get('content') if isinstance(meta, dict) else None
                 if isinstance(content, dict) and content.get('sha'):
                     _BANNER_VOTES_GITHUB_SHA = content['sha']
@@ -29867,6 +30037,14 @@ def _banner_pool_votes_cancel_debounced_push():
             _BANNER_VOTES_DEBOUNCE_TIMER = None
 
 
+def _banner_pool_votes_push_safe(reason):
+    try:
+        return _banner_pool_votes_push_from_disk(reason=reason, force=True)
+    except Exception as e:
+        print(f'banner_pool_votes: push failed ({reason}): {e}')
+        return False
+
+
 def _banner_pool_votes_schedule_debounced_push():
     """Persist ballots to GitHub soon after votes (survives deploy if SIGTERM snapshot misses)."""
     global _BANNER_VOTES_DEBOUNCE_TIMER
@@ -29875,13 +30053,13 @@ def _banner_pool_votes_schedule_debounced_push():
         return
     if mode == 'vote':
         threading.Thread(
-            target=lambda: _banner_pool_votes_push_from_disk(reason='vote', force=True),
+            target=lambda: _banner_pool_votes_push_safe('vote'),
             daemon=True,
         ).start()
         return
 
     def _run():
-        _banner_pool_votes_push_from_disk(reason='debounced', force=True)
+        _banner_pool_votes_push_safe('debounced')
 
     with _BANNER_VOTES_DEBOUNCE_LOCK:
         if _BANNER_VOTES_DEBOUNCE_TIMER:

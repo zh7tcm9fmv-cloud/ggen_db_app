@@ -4,6 +4,8 @@ from __future__ import annotations
 import json
 import os
 import re
+import time
+import http.client
 import urllib.error
 import urllib.request
 from functools import lru_cache
@@ -308,11 +310,18 @@ def fetch_official_proportion(gasha_id, lang_num: int, *, save=True):
     if not gid or gid == '0':
         return None
     url = official_proportion_api_url(gid, lang_num)
-    try:
-        req = urllib.request.Request(url, headers=_OFFICIAL_FETCH_HEADERS)
-        with urllib.request.urlopen(req, timeout=45) as resp:
-            raw = resp.read()
-    except (urllib.error.HTTPError, urllib.error.URLError, OSError, TimeoutError):
+    raw = None
+    for attempt in range(3):
+        try:
+            req = urllib.request.Request(url, headers=_OFFICIAL_FETCH_HEADERS)
+            with urllib.request.urlopen(req, timeout=45) as resp:
+                raw = resp.read()
+            break
+        except http.client.IncompleteRead:
+            time.sleep(0.2 * (attempt + 1))
+        except (urllib.error.HTTPError, urllib.error.URLError, OSError, TimeoutError):
+            time.sleep(0.2 * (attempt + 1))
+    if raw is None:
         return None
     try:
         payload = json.loads(raw.decode('utf-8'))

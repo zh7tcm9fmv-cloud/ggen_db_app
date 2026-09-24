@@ -18,9 +18,12 @@ The banner timeline also lazy-fetches missing proportion files on first view.
 from __future__ import annotations
 
 import argparse
+import http.client
 import json
 import os
 import sys
+import time
+import urllib.error
 import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -39,9 +42,21 @@ LANG_NUM = {'JA': 1, 'EN': 2, 'TW': 3, 'HK': 4}
 
 
 def fetch(url: str) -> bytes:
-    req = urllib.request.Request(url, headers=_OFFICIAL_FETCH_HEADERS)
-    with urllib.request.urlopen(req, timeout=60) as r:
-        return r.read()
+    last_err = None
+    for attempt in range(3):
+        try:
+            req = urllib.request.Request(url, headers=_OFFICIAL_FETCH_HEADERS)
+            with urllib.request.urlopen(req, timeout=60) as r:
+                return r.read()
+        except http.client.IncompleteRead as e:
+            last_err = e
+            time.sleep(0.2 * (attempt + 1))
+        except (urllib.error.HTTPError, urllib.error.URLError, OSError, TimeoutError) as e:
+            last_err = e
+            time.sleep(0.2 * (attempt + 1))
+    if last_err is not None:
+        raise last_err
+    return b''
 
 
 def _master_gasha_ids() -> set[str]:
