@@ -1011,12 +1011,12 @@
         "w": 0.0609756
       },
       {
-        "id": "1009000200",
+        "id": "1009000210",
         "name": "Hildolfr",
-        "role": "Support",
+        "role": "Attack",
         "art": "unit_portraits/ub_g0090u00200.webp",
-        "charArt": "",
-        "recommend_character_id": "",
+        "charArt": "portraits/cb_g0090c00800.webp",
+        "recommend_character_id": "1009000800",
         "por_y": "44%",
         "bromide_height": "5",
         "limited": false,
@@ -1024,12 +1024,12 @@
         "w": 0.0609756
       },
       {
-        "id": "1009000500",
+        "id": "1009000510",
         "name": "Big-Rang",
-        "role": "Attack",
+        "role": "Durability",
         "art": "unit_portraits/ub_g0090u00500.webp",
-        "charArt": "portraits/cb_g0090c00101.webp",
-        "recommend_character_id": "1009000101",
+        "charArt": "",
+        "recommend_character_id": "",
         "por_y": "12%",
         "bromide_height": "1",
         "limited": false,
@@ -1856,12 +1856,12 @@
         "w": 0.0609756
       },
       {
-        "id": "1307000400",
+        "id": "1307000410",
         "name": "Gundam Astray Red Frame Flight Unit",
         "role": "Durability",
         "art": "unit_portraits/ub_g3070u00400.webp",
-        "charArt": "",
-        "recommend_character_id": "",
+        "charArt": "portraits/cb_g3050c00100.webp",
+        "recommend_character_id": "1305000100",
         "por_y": "14%",
         "bromide_height": "2",
         "limited": false,
@@ -2530,45 +2530,6 @@
         "limited": false,
         "pickup": false,
         "w": 0.0609756
-      },
-      {
-        "id": "1009000800",
-        "name": "Herbert Von Kuspen's Gelgoog",
-        "role": "Durability",
-        "art": "unit_portraits/ub_g0090u00800.webp",
-        "charArt": "portraits/cb_g0090c01201.webp",
-        "recommend_character_id": "1009001201",
-        "por_y": "14%",
-        "bromide_height": "2",
-        "limited": false,
-        "pickup": false,
-        "w": 0.3260869
-      },
-      {
-        "id": "1370001900",
-        "name": "GN Arms Type-E",
-        "role": "Durability",
-        "art": "unit_portraits/ub_g3700u01900.webp",
-        "charArt": "",
-        "recommend_character_id": "",
-        "por_y": "24%",
-        "bromide_height": "3",
-        "limited": false,
-        "pickup": false,
-        "w": 0.3260869
-      },
-      {
-        "id": "1370002100",
-        "name": "GN Arms Type-D",
-        "role": "Support",
-        "art": "unit_portraits/ub_g3700u02100.webp",
-        "charArt": "",
-        "recommend_character_id": "",
-        "por_y": "24%",
-        "bromide_height": "3",
-        "limited": false,
-        "pickup": false,
-        "w": 0.3260869
       }
     ],
     "SSRS": [
@@ -2916,9 +2877,9 @@
         "w": 0.3260869
       },
       {
-        "id": "1009000300",
+        "id": "1009000310",
         "name": "Jormungand",
-        "role": "Attack",
+        "role": "Support",
         "art": "unit_portraits/ub_g0090u00300.webp",
         "charArt": "",
         "recommend_character_id": "",
@@ -2929,10 +2890,23 @@
         "w": 0.3260869
       },
       {
-        "id": "1009000400",
+        "id": "1009000410",
         "name": "Zudah",
-        "role": "Durability",
+        "role": "Support",
         "art": "unit_portraits/ub_g0090u00400.webp",
+        "charArt": "portraits/cb_g0090c00200.webp",
+        "recommend_character_id": "1009000200",
+        "por_y": "14%",
+        "bromide_height": "2",
+        "limited": false,
+        "pickup": false,
+        "w": 0.3260869
+      },
+      {
+        "id": "1009000710",
+        "name": "Ze'Gok",
+        "role": "Support",
+        "art": "unit_portraits/ub_g0090u00700.webp",
         "charArt": "",
         "recommend_character_id": "",
         "por_y": "14%",
@@ -2942,10 +2916,10 @@
         "w": 0.3260869
       },
       {
-        "id": "1009000700",
-        "name": "Ze'Gok",
+        "id": "1009000810",
+        "name": "Herbert Von Kuspen's Gelgoog",
         "role": "Attack",
-        "art": "unit_portraits/ub_g0090u00700.webp",
+        "art": "unit_portraits/ub_g0090u00800.webp",
         "charArt": "",
         "recommend_character_id": "",
         "por_y": "14%",
@@ -2968,9 +2942,9 @@
         "w": 0.3260869
       },
       {
-        "id": "1013000100",
+        "id": "1013000110",
         "name": "Gundam Ground Type (The 08th MS Team)",
-        "role": "Attack",
+        "role": "Support",
         "art": "unit_portraits/ub_g0130u00100.webp",
         "charArt": "",
         "recommend_character_id": "",
@@ -2981,9 +2955,9 @@
         "w": 0.3260869
       },
       {
-        "id": "1013000200",
+        "id": "1013000210",
         "name": "Gundam Ground Type (GM Head)",
-        "role": "Durability",
+        "role": "Attack",
         "art": "unit_portraits/ub_g0130u00200.webp",
         "charArt": "",
         "recommend_character_id": "",
@@ -2994,9 +2968,9 @@
         "w": 0.3260869
       },
       {
-        "id": "1013000500",
+        "id": "1013000510",
         "name": "GM Sniper",
-        "role": "Attack",
+        "role": "Support",
         "art": "unit_portraits/ub_g0130u00500.webp",
         "charArt": "",
         "recommend_character_id": "",
@@ -3431,6 +3405,32 @@
         "recommend_character_id": "",
         "por_y": "24%",
         "bromide_height": "3",
+        "limited": false,
+        "pickup": false,
+        "w": 0.3260869
+      },
+      {
+        "id": "1370001710",
+        "name": "GN Arms Type-E",
+        "role": "Attack",
+        "art": "unit_portraits/ub_g3700u01700.webp",
+        "charArt": "",
+        "recommend_character_id": "",
+        "por_y": "34%",
+        "bromide_height": "4",
+        "limited": false,
+        "pickup": false,
+        "w": 0.3260869
+      },
+      {
+        "id": "1370001810",
+        "name": "GN Arms Type-D",
+        "role": "Durability",
+        "art": "unit_portraits/ub_g3700u01800.webp",
+        "charArt": "",
+        "recommend_character_id": "",
+        "por_y": "34%",
+        "bromide_height": "4",
         "limited": false,
         "pickup": false,
         "w": 0.3260869
@@ -4101,9 +4101,9 @@
         "w": 0.7023809
       },
       {
-        "id": "1009000600",
+        "id": "1009000610",
         "name": "Oggo",
-        "role": "Support",
+        "role": "Attack",
         "art": "unit_portraits/ub_g0090u00600.webp",
         "charArt": "",
         "recommend_character_id": "",
@@ -4127,9 +4127,9 @@
         "w": 0.7023809
       },
       {
-        "id": "1013000600",
+        "id": "1013000610",
         "name": "GM Early Type",
-        "role": "Support",
+        "role": "Durability",
         "art": "unit_portraits/ub_g0130u00600.webp",
         "charArt": "",
         "recommend_character_id": "",
@@ -4153,9 +4153,9 @@
         "w": 0.7023809
       },
       {
-        "id": "1013001400",
+        "id": "1013001410",
         "name": "GM Ground Type",
-        "role": "Durability",
+        "role": "Support",
         "art": "unit_portraits/ub_g0130u01400.webp",
         "charArt": "",
         "recommend_character_id": "",
@@ -4582,9 +4582,9 @@
         "w": 0.7023809
       },
       {
-        "id": "1210001400",
+        "id": "1210001410",
         "name": "Leo Space Type",
-        "role": "Attack",
+        "role": "Durability",
         "art": "unit_portraits/ub_g2100u01400.webp",
         "charArt": "",
         "recommend_character_id": "",
@@ -5119,9 +5119,9 @@
   "counts": {
     "URU": 37,
     "URS": 38,
-    "SSRU": 126,
+    "SSRU": 123,
     "SSRS": 25,
-    "SR": 89,
+    "SR": 92,
     "R": 84
   }
 }

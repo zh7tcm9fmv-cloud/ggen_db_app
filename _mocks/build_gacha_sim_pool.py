@@ -110,11 +110,23 @@ def _is_transform_alt(row: dict) -> bool:
     return mid != uid
 
 
+def _is_unit_assembly(row: dict) -> bool:
+    """UnitAcquisitionRouteTypeIndex 1 = Units from Unit Assembly (gacha-pullable)."""
+    return str(row.get("UnitAcquisitionRouteTypeIndex") or "0") == "1"
+
+
+def _is_supporter_assembly(row: dict) -> bool:
+    """SupporterAcquisitionRouteTypeIndex 1 = assembly / gacha-pullable."""
+    return str(row.get("SupporterAcquisitionRouteTypeIndex") or "0") == "1"
+
+
 def _unit_name_to_id(units: list[dict], lang: dict[str, str]) -> dict[str, str]:
     """Map display name → unit id.
 
-    Official gasha tables use short names that collide (e.g. several \"Gundam F90\").
-    Prefer MainUnitId==Id rows (never escape/transform alts), then highest rarity.
+    Official gasha tables use short names that collide (e.g. several \"Gundam F90\",
+    or event/development SSR vs Unit Assembly SR of the same name).
+    Prefer Unit Assembly (route 1), then MainUnitId==Id (never escape/transform alts),
+    then highest rarity.
     """
     by_name: dict[str, list[dict]] = {}
     for row in units:
@@ -126,11 +138,18 @@ def _unit_name_to_id(units: list[dict], lang: dict[str, str]) -> dict[str, str]:
 
     out: dict[str, str] = {}
     for name, rows in by_name.items():
+        assembly = [u for u in rows if _is_unit_assembly(u) and not _is_transform_alt(u)]
+        if not assembly:
+            assembly = [u for u in rows if _is_unit_assembly(u)]
         mains = [u for u in rows if not _is_transform_alt(u)]
-        candidates = mains or rows
+        candidates = assembly or mains or rows
         best = max(
             candidates,
-            key=lambda u: (int(u.get("RarityTypeIndex") or 0), -int(u.get("Id") or 0)),
+            key=lambda u: (
+                1 if _is_unit_assembly(u) else 0,
+                int(u.get("RarityTypeIndex") or 0),
+                -int(u.get("Id") or 0),
+            ),
         )
         out[name] = str(best["Id"])
     return out
@@ -205,8 +224,27 @@ def build(gasha_id: str, lang: str = "EN") -> dict:
     unit_lang_en = {str(r["id"]): r["value"] for r in _load("m_unit.json", en_lang_dir)}
     unit_lang = {str(r["id"]): r["value"] for r in _load("m_unit.json", lang_dir)}
     unit_name_to_id = _unit_name_to_id(units, unit_lang_en)
-    # Supporter matching against official EN names
-    supp_name_to_id = _lang_map("m_supporter.json", "m_supporter.json", "Id", "NameLanguageId", master_folder=MASTER, lang_folder=en_lang_dir)
+    # Supporter matching against official EN names — prefer assembly route
+    supp_lang_en = {str(r["id"]): r["value"] for r in _load("m_supporter.json", en_lang_dir)}
+    supp_by_name: dict[str, list[dict]] = {}
+    for s in supps:
+        lid = str(s.get("NameLanguageId") or "")
+        nm = supp_lang_en.get(lid) if lid else ""
+        if nm:
+            supp_by_name.setdefault(nm, []).append(s)
+    supp_name_to_id: dict[str, str] = {}
+    for nm, rows in supp_by_name.items():
+        assembly = [x for x in rows if _is_supporter_assembly(x)]
+        candidates = assembly or rows
+        best = max(
+            candidates,
+            key=lambda x: (
+                1 if _is_supporter_assembly(x) else 0,
+                int(x.get("RarityTypeIndex") or 0),
+                -int(x.get("Id") or 0),
+            ),
+        )
+        supp_name_to_id[nm] = str(best["Id"])
     supp_lang = {str(r["id"]): r["value"] for r in _load("m_supporter.json", lang_dir)}
     limited_units = _limited_unit_ids()
     limited_supps = _limited_supporter_ids()
@@ -250,6 +288,9 @@ def build(gasha_id: str, lang: str = "EN") -> dict:
         u = unit_by_id.get(uid)
         if not u:
             return
+        # Gacha-sim results are Unit Assembly only — never development / other / event routes
+        if not _is_unit_assembly(u):
+            return
         # Escape / transform forms are not independently pullable
         if _is_transform_alt(u):
             return
@@ -281,6 +322,8 @@ def build(gasha_id: str, lang: str = "EN") -> dict:
     def add_supp(sid: str, w: float, bucket: str):
         s = supp_by_id.get(sid)
         if not s:
+            return
+        if not _is_supporter_assembly(s):
             return
         brom = _resource_of(s)
         name = next((n for n, i in supp_name_to_id.items() if i == sid), sid)

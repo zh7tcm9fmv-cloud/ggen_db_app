@@ -1,1 +1,75 @@
-{"gasha_id": "2509100101", "lang": "EN", "logo_resource_id": "gasha_logo_2509100101", "appeal_banner_id": "", "normal": [["URU", 0.0], ["URS", 0.0], ["SSRU", 0.0], ["SSRS", 0.0], ["SR", 0.0], ["R", 0.0]], "tenth": [["URU", 0.0], ["URS", 0.0], ["SSRU", 0.0], ["SSRS", 0.0]], "pool": {"URU": [], "URS": [], "SSRU": [], "SSRS": [], "SR": [], "R": []}, "pickup_ids": [], "counts": {"URU": 0, "URS": 0, "SSRU": 0, "SSRS": 0, "SR": 0, "R": 0}}
+{
+  "gasha_id": "2509100101",
+  "lang": "EN",
+  "logo_resource_id": "gasha_logo_2509100101",
+  "appeal_banner_id": "",
+  "gasha_movie_setting_id": "",
+  "gasha_movie_setting": null,
+  "once_roll_count": 0,
+  "fake_once_roll_count": 0,
+  "display_pull_n": 0,
+  "required_tickets": 0,
+  "guarantee_tail": 0,
+  "bulk_mode": false,
+  "normal": [
+    [
+      "URU",
+      0.0
+    ],
+    [
+      "URS",
+      0.0
+    ],
+    [
+      "SSRU",
+      0.0
+    ],
+    [
+      "SSRS",
+      0.0
+    ],
+    [
+      "SR",
+      0.0
+    ],
+    [
+      "R",
+      0.0
+    ]
+  ],
+  "tenth": [
+    [
+      "URU",
+      0.0
+    ],
+    [
+      "URS",
+      0.0
+    ],
+    [
+      "SSRU",
+      0.0
+    ],
+    [
+      "SSRS",
+      0.0
+    ]
+  ],
+  "pool": {
+    "URU": [],
+    "URS": [],
+    "SSRU": [],
+    "SSRS": [],
+    "SR": [],
+    "R": []
+  },
+  "pickup_ids": [],
+  "counts": {
+    "URU": 0,
+    "URS": 0,
+    "SSRU": 0,
+    "SSRS": 0,
+    "SR": 0,
+    "R": 0
+  }
+}
