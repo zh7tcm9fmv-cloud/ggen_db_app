@@ -6113,16 +6113,29 @@ def _extract_weapon_stat_percent_unit(text, skip_conditional=True):
 
 
 def _extract_weapon_en_cost_increase_pct(text, skip_conditional=True):
-    """Parse 'increase own EN Cost by N%' (weapon EN cost up; not Max EN)."""
+    """Parse weapon EN cost-up % (not Max EN). CALC_LANG is EN — cover official wordings.
+
+    EN examples:
+      - increase own EN Cost by 40%
+      - but weapon EN costs increase by 30%  (Destiny Impulse / Cond: Vigor)
+    JA: 武装の消費ENがN%増加 / 消費ENがN%増加
+    TW/HK: 武裝消耗EN增加N% / 消耗EN增加N%
+    """
     if skip_conditional and _is_conditional_stat_text(text):
         return 0
     s = (text or '').strip()
     if not s:
         return 0
-    m = re.search(r'increase(?:s)?\s+(?:own\s+)?EN\s+Cost\s+by\s+(\d+)\s*%', s, re.I)
+    # "increase [own] [weapon] EN Cost(s) by N%"
+    m = re.search(
+        r'increase(?:s)?\s+(?:own\s+)?(?:weapon\s+)?EN\s+[Cc]osts?\s+by\s+(\d+)\s*%',
+        s, re.I)
     if m:
         return int(m.group(1) or 0)
-    m = re.search(r'EN\s+Cost\s+(?:is\s+)?increased\s+by\s+(\d+)\s*%', s, re.I)
+    # "EN Cost is increased by N%" / "[weapon] EN cost(s) increase by N%"
+    m = re.search(
+        r'(?:weapon\s+)?EN\s+[Cc]osts?\s+(?:is\s+|are\s+)?increas(?:ed|e)\s+by\s+(\d+)\s*%',
+        s, re.I)
     if m:
         return int(m.group(1) or 0)
     m = re.search(r'武装の消費ENが(\d+)%増加', s)
@@ -31962,7 +31975,8 @@ def get_unit(unit_id):
         hcond = (any(spc.get(s, 0) != 0 for s in UNIT_STAT_ORDER) or
                  any(sspc.get(s, 0) != 0 for s in UNIT_STAT_ORDER) or
                  spc_move_flat[0] != 0 or sspc_move_flat[0] != 0 or
-                 spc_crit[0] != 0 or sspc_crit[0] != 0)
+                 spc_crit[0] != 0 or sspc_crit[0] != 0 or
+                 en_cost_inc_c[0] != 0 or en_cost_inc_sspc[0] != 0)
         ability_passive_crit_dmg_pct = {
             'no_cond': spb_crit[0],
             'cond_only': spc_crit[0],

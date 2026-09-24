@@ -574,10 +574,10 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
   position:absolute;
   left:50%;
   top:50%;
-  width:56px;
-  height:56px;
-  margin:-28px 0 0 -28px;
-  padding:4px;
+  width:84px;
+  height:84px;
+  margin:-42px 0 0 -42px;
+  padding:5px;
   box-sizing:border-box;
   border:1px solid rgba(100,170,255,.5);
   border-radius:var(--radius-sm);
@@ -603,7 +603,7 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
   pointer-events:none;
 }
 .bt-gacha-sim-fan-item-fallback{
-  font-size:9px;
+  font-size:14px;
   color:#9fdfff;
   text-align:center;
   line-height:1.2;
@@ -614,13 +614,13 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
   opacity:1;
   pointer-events:auto;
 }
-/* Fan opens to the LEFT of the trigger (vertical arc) */
-.bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(3){transform:translate(-58px,-54px);transition-delay:0.02s}
-.bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(4){transform:translate(-80px,0);transition-delay:0.07s}
-.bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(5){transform:translate(-58px,54px);transition-delay:0.12s}
-.bt-gacha-sim-fan[data-fan-count="1"] .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(3){transform:translate(-80px,0);transition-delay:0.02s}
-.bt-gacha-sim-fan[data-fan-count="2"] .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(3){transform:translate(-72px,-40px);transition-delay:0.02s}
-.bt-gacha-sim-fan[data-fan-count="2"] .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(4){transform:translate(-72px,40px);transition-delay:0.07s}
+/* Fan opens to the LEFT of the trigger (vertical arc; positions ×1.5 with 84px chips) */
+.bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(3){transform:translate(-87px,-81px);transition-delay:0.02s}
+.bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(4){transform:translate(-120px,0);transition-delay:0.07s}
+.bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(5){transform:translate(-87px,81px);transition-delay:0.12s}
+.bt-gacha-sim-fan[data-fan-count="1"] .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(3){transform:translate(-120px,0);transition-delay:0.02s}
+.bt-gacha-sim-fan[data-fan-count="2"] .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(3){transform:translate(-108px,-60px);transition-delay:0.02s}
+.bt-gacha-sim-fan[data-fan-count="2"] .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(4){transform:translate(-108px,60px);transition-delay:0.07s}
 @media (prefers-reduced-motion:reduce){
   .bt-gacha-sim-fan-item.item{transition:opacity 0.2s !important;transform:none !important}
   .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(3),
@@ -631,12 +631,12 @@ a.nav-tab:any-link:hover:not(.active),a.nav-tab:visited:hover:not(.active){color
   .bt-gacha-sim-fan[data-fan-count="2"] .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(4){
     transition-delay:0s !important
   }
-  .bt-gacha-sim-fan[data-fan-count="1"] .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(3){transform:translate(-80px,0) !important}
-  .bt-gacha-sim-fan[data-fan-count="2"] .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(3){transform:translate(-72px,-40px) !important}
-  .bt-gacha-sim-fan[data-fan-count="2"] .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(4){transform:translate(-72px,40px) !important}
-  .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(3){transform:translate(-58px,-54px) !important}
-  .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(4){transform:translate(-80px,0) !important}
-  .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(5){transform:translate(-58px,54px) !important}
+  .bt-gacha-sim-fan[data-fan-count="1"] .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(3){transform:translate(-120px,0) !important}
+  .bt-gacha-sim-fan[data-fan-count="2"] .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(3){transform:translate(-108px,-60px) !important}
+  .bt-gacha-sim-fan[data-fan-count="2"] .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(4){transform:translate(-108px,60px) !important}
+  .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(3){transform:translate(-87px,-81px) !important}
+  .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(4){transform:translate(-120px,0) !important}
+  .bt-gacha-sim-fan-check:checked ~ .bt-gacha-sim-fan-item.item:nth-child(5){transform:translate(-87px,81px) !important}
 }
 .bt-th-combo-vote-tools .bt-gacha-sim-tools{margin-right:0}
 .bt-vote-mode-caption{margin:0;font-size:12px;font-weight:600;line-height:1.35;color:var(--accent-cyan);text-align:right;max-width:min(320px,48vw)}
