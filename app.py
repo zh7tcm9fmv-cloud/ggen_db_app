@@ -17445,13 +17445,19 @@ def roadmap_calendar_page():
 
 
 def _roadmap_local_asset_dirs():
-    """Local checkout folders that hold 1.5 calendar WebPs (dev only)."""
+    """Local checkout folders that hold 1.5 calendar WebPs (dev only).
+
+    Never treat Railway ``static/images`` as the calendar asset root — that forces
+    ``/roadmap/assets`` / ``/roadmap/ui`` through the app instead of IMAGE_CDN.
+    """
     out = []
-    for p in (
+    candidates = [
         Path(r'C:\Users\Mikew0911\Desktop\ggen_db_images\images\UI\1.5 update'),
         Path(r'C:\Users\Mikew0911\Desktop\1.5 update'),
-        Path(app.static_folder) / 'images' / 'UI' / '1.5 update',
-    ):
+    ]
+    if IS_LOCAL:
+        candidates.append(Path(app.static_folder) / 'images' / 'UI' / '1.5 update')
+    for p in candidates:
         try:
             if p.is_dir():
                 out.append(p)
@@ -17461,12 +17467,14 @@ def _roadmap_local_asset_dirs():
 
 
 def _roadmap_local_ui_dirs():
-    """Local UI chrome folders (Comingsoon icon, etc.)."""
+    """Local UI chrome folders (Comingsoon icon, etc.) — Desktop CDN checkout only."""
     out = []
-    for p in (
+    candidates = [
         Path(r'C:\Users\Mikew0911\Desktop\ggen_db_images\images\UI'),
-        Path(app.static_folder) / 'images' / 'UI',
-    ):
+    ]
+    if IS_LOCAL:
+        candidates.append(Path(app.static_folder) / 'images' / 'UI')
+    for p in candidates:
         try:
             if p.is_dir():
                 out.append(p)
@@ -17475,13 +17483,29 @@ def _roadmap_local_ui_dirs():
     return out
 
 
+def _roadmap_cdn_root():
+    """CDN host for calendar notice art + UI chrome.
+
+    Prefer jsDelivr even when IMAGE_CDN is github.io — Pages is slower for large
+    calendar WebPs (same repo content).
+    """
+    if not GAME_IMAGES_USE_CDN:
+        return ''
+    cdn = (IMAGE_CDN or '').rstrip('/')
+    if not cdn or _is_blocked_media_url(cdn):
+        return ''
+    if 'github.io/ggen_db_images' in cdn:
+        return _DEFAULT_IMAGE_CDN.rstrip('/')
+    return cdn
+
+
 def _roadmap_ui_asset_base():
     """Public base for UI/*.webp used by calendar badges (not notice hashes)."""
     if _roadmap_local_ui_dirs():
         return '/roadmap/ui'
-    cdn = (IMAGE_CDN or '').rstrip('/')
-    if GAME_IMAGES_USE_CDN and cdn and not _is_blocked_media_url(cdn):
-        return cdn + '/images/UI'
+    root = _roadmap_cdn_root()
+    if root:
+        return root + '/images/UI'
     return '/static/images/UI'
 
 
@@ -17509,7 +17533,7 @@ def roadmap_calendar_asset(filename):
 
 @app.route('/roadmap/ui/<path:filename>')
 def roadmap_calendar_ui_asset(filename):
-    """Serve UI chrome (e.g. Comingsoon) from local CDN checkout."""
+    """Serve UI chrome (e.g. Comingsoon) from local CDN checkout, else app static."""
     name = (filename or '').replace('\\', '/').lstrip('/')
     if not name or '..' in name.split('/'):
         return ('', 404)
@@ -17525,30 +17549,56 @@ def roadmap_calendar_ui_asset(filename):
                 return r
         except Exception:
             continue
+    # Production safety net: old frames still request /roadmap/ui/* — serve from static.
+    static_ui = Path(app.static_folder) / 'images' / 'UI'
+    try:
+        cand = static_ui / base
+        if cand.is_file():
+            r = make_response(send_from_directory(str(static_ui), base))
+            r.headers['Cache-Control'] = 'public, max-age=86400'
+            return r
+    except Exception:
+        pass
     return ('', 404)
 
 
 @app.route('/roadmap/frame')
 def roadmap_calendar_frame():
     """Calendar document for the detail-style iframe embed."""
-    # Prefer local /roadmap/assets whenever the CDN checkout exists so unpushed
-    # notice WebPs still load. Production without that folder falls back to IMAGE_CDN.
+    # Prefer local /roadmap/assets whenever the Desktop CDN checkout exists so
+    # unpushed notice WebPs still load. Production falls back to IMAGE_CDN (jsDelivr).
     if _roadmap_local_asset_dirs():
         asset_base = '/roadmap/assets'
     else:
-        cdn = (IMAGE_CDN or '').rstrip('/')
-        if GAME_IMAGES_USE_CDN and cdn and not _is_blocked_media_url(cdn):
-            asset_base = cdn + '/images/UI/1.5%20update'
-        else:
-            asset_base = ''
+        root = _roadmap_cdn_root()
+        asset_base = (root + '/images/UI/1.5%20update') if root else ''
+    # Chart preload — same lang the iframe will paint (skip cold wait on first bytes).
+    lang = (request.args.get('lang') or 'EN').strip().upper()
+    if lang == 'JA':
+        lang = 'JP'
+    if lang not in ('EN', 'TW', 'HK', 'JP'):
+        lang = 'EN'
+    charts = {
+        'EN': '926aa02f327014dfd930d19027352ebb224f22b9.webp',
+        'TW': '7350a0af86d1fbe2b5d261181c158fcc41bbcfe9.webp',
+        'HK': '5e620a7a5b99a88d7bc1c8eb0603d8c7bb83f50f.webp',
+        'JP': '64f8d6a742abfcea07bf40638a2f7c889eea29d6.webp',
+    }
+    chart_name = charts.get(lang) or charts['EN']
+    chart_preload = ''
+    if asset_base:
+        chart_preload = asset_base.rstrip('/') + '/' + chart_name
     r = make_response(render_template(
         'roadmap.html',
         roadmap_asset_base=asset_base,
         roadmap_ui_base=_roadmap_ui_asset_base(),
+        roadmap_ui_cdn=((_roadmap_cdn_root() + '/images/UI') if _roadmap_cdn_root() else ''),
         roadmap_embed=True,
+        roadmap_chart_preload=chart_preload,
     ))
-    # Notice art hashes change often during calendar edits — avoid sticky iframe HTML.
-    r.headers['Cache-Control'] = 'no-store'
+    # Stable after ship — short browser cache beats no-store on every modal open.
+    # Bust with deploy via ASSET_VERSION query from the SPA when needed.
+    r.headers['Cache-Control'] = 'private, max-age=300'
     r.headers['X-Frame-Options'] = 'SAMEORIGIN'
     return r
 
