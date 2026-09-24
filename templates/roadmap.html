@@ -304,6 +304,9 @@
     max-width: 100%;
     align-items: center;
     justify-content: center;
+    position: relative;
+    min-width: min(280px, 70vw);
+    min-height: min(160px, 28vh);
   }
   .pop-viewer .slide.is-active {
     display: flex;
@@ -316,6 +319,34 @@
     display: block;
     object-fit: contain;
     background: #000;
+    opacity: 1;
+    transition: opacity 160ms cubic-bezier(0.05, 0.7, 0.1, 1);
+  }
+  .pop-viewer .slide img.is-loading,
+  .pop .title-art img.is-loading {
+    opacity: 0.15;
+  }
+  .pop-viewer .slide::before {
+    content: '';
+    position: absolute;
+    inset: 18% 22%;
+    border-radius: 4px;
+    background: linear-gradient(90deg, rgba(0,217,255,.06), rgba(0,217,255,.16), rgba(0,217,255,.06));
+    background-size: 200% 100%;
+    animation: rm-pop-shimmer 1.1s linear infinite;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 120ms ease;
+  }
+  .pop-viewer .slide.has-loading::before { opacity: 1; }
+  @keyframes rm-pop-shimmer {
+    0% { background-position: 100% 0; }
+    100% { background-position: -100% 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pop-viewer .slide img,
+    .pop .title-art img { transition: none; }
+    .pop-viewer .slide::before { animation: none; opacity: 0 !important; }
   }
   .pop-nav {
     position: absolute;
@@ -613,10 +644,12 @@
     const primary = useDisplay ? popAssetUrl(webp) : assetUrl(webp);
     const full = assetUrl(webp);
     const pngUrl = assetUrl(png);
+    const loadCls = useDisplay ? ' class="is-loading"' : '';
     const onerr = useDisplay
-      ? 'this.onerror=function(){this.onerror=null;this.src=\'' + pngUrl + '\'};this.src=\'' + full + '\';'
+      ? 'this.onerror=function(){this.onerror=function(){this.onerror=null;this.classList.remove(\'is-loading\');this.src=\'' + pngUrl + '\'};this.src=\'' + full + '\'};'
       : 'this.onerror=null;this.src=\'' + pngUrl + '\';';
-    return '<img src="' + primary + '" alt="" loading="' + loading + '" decoding="async"' + prio +
+    const onload = useDisplay ? ' onload="this.classList.remove(\'is-loading\')"' : '';
+    return '<img' + loadCls + ' src="' + primary + '" alt="" loading="' + loading + '" decoding="async"' + prio + onload +
       ' onerror="' + onerr + '">';
   }
 
@@ -703,21 +736,51 @@
   }
   let slideIndex = 0;
   let slideSrcList = [];
+  function markSlideLoading(on) {
+    const fig = pop.querySelector('.pop-viewer .slide');
+    if (fig) fig.classList.toggle('has-loading', !!on);
+  }
+  function bindPopImgLoad(img, primaryUrl, fullUrl, pngUrl) {
+    if (!img) return;
+    img.classList.add('is-loading');
+    markSlideLoading(true);
+    const reveal = function () {
+      img.classList.remove('is-loading');
+      markSlideLoading(false);
+      layoutPopMediaFromDom();
+    };
+    img.onload = function () { reveal(); };
+    img.onerror = function () {
+      if (fullUrl && img.src !== fullUrl) {
+        img.onerror = function () {
+          if (pngUrl && img.src !== pngUrl) {
+            img.onerror = function () { reveal(); };
+            img.src = pngUrl;
+            return;
+          }
+          reveal();
+        };
+        img.src = fullUrl;
+        return;
+      }
+      if (pngUrl && img.src !== pngUrl) {
+        img.onerror = function () { reveal(); };
+        img.src = pngUrl;
+        return;
+      }
+      reveal();
+    };
+    img.src = primaryUrl;
+    if (img.complete && img.naturalWidth) reveal();
+  }
   function paintActiveSlide() {
     const img = pop.querySelector('.pop-viewer .slide img');
     if (!img || !slideSrcList.length) return;
     const src = slideSrcList[slideIndex];
     const webp = webpName(src);
-    img.onerror = function () {
-      img.onerror = function () {
-        img.onerror = null;
-        img.src = assetUrl(pngFallback(webp));
-      };
-      img.src = assetUrl(webp);
-    };
-    img.src = popAssetUrl(webp);
+    bindPopImgLoad(img, popAssetUrl(webp), assetUrl(webp), assetUrl(pngFallback(webp)));
     img.loading = 'eager';
-    img.fetchPriority = 'high';
+    try { img.fetchPriority = 'high'; } catch (_) {}
     const counter = pop.querySelector('.pop-counter');
     if (counter) {
       counter.hidden = slideSrcList.length < 2;
@@ -727,7 +790,6 @@
     const next = pop.querySelector('#popNext');
     if (prev) prev.hidden = slideSrcList.length < 2;
     if (next) next.hidden = slideSrcList.length < 2;
-    layoutPopMediaFromDom();
     /* Prefetch neighbors only (display size). */
     [slideIndex + 1, slideIndex - 1].forEach(function (n) {
       if (n < 0 || n >= slideSrcList.length) return;
@@ -739,6 +801,41 @@
     if (!slideSrcList.length) return;
     slideIndex = (i + slideSrcList.length) % slideSrcList.length;
     paintActiveSlide();
+  }
+  function warmPriorityEvents() {
+    const now = Date.now();
+    const ranked = (data.events || []).filter(eventHasPopupContent).map(function (ev) {
+      const s = Date.parse(ev.start) || 0;
+      const e = ev.end ? (Date.parse(ev.end) || 0) : Number.POSITIVE_INFINITY;
+      let score = 1;
+      if (s && now >= s && now <= e) score = 4;
+      else if (s && s > now && (s - now) < 21 * 864e5) score = 3;
+      else if (e && e < now && (now - e) < 7 * 864e5) score = 2;
+      return { ev: ev, score: score };
+    }).sort(function (a, b) { return b.score - a.score; });
+    let i = 0;
+    function step() {
+      if (i >= ranked.length || i >= 14) return;
+      warmEvent(ranked[i++].ev);
+      if (window.requestIdleCallback) {
+        window.requestIdleCallback(step, { timeout: 900 });
+      } else {
+        window.setTimeout(step, 60);
+      }
+    }
+    step();
+  }
+  function requestCloseRoadmap() {
+    try {
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({ type: 'ggen-roadmap-close' }, window.location.origin);
+        return;
+      }
+    } catch (_) {}
+    try {
+      if (history.length > 1) { history.back(); return; }
+    } catch (_) {}
+    try { location.href = '/'; } catch (_) {}
   }
   function placeHotspots() {
     stage.querySelectorAll('.hotspot, .hotspot-badge').forEach(function (el) { el.remove(); });
@@ -793,9 +890,11 @@
         stage.appendChild(badge);
       }
     });
+    warmPriorityEvents();
   }
 
   let popHistoryPushed = false;
+  let ignoreNextPopForClose = false;
 
   function hidePop(fromPopstate) {
     openId = null;
@@ -807,7 +906,8 @@
     });
     if (popHistoryPushed && !fromPopstate) {
       popHistoryPushed = false;
-      try { history.back(); } catch (err) {}
+      ignoreNextPopForClose = true;
+      try { history.back(); } catch (err) { ignoreNextPopForClose = false; }
     } else {
       popHistoryPushed = false;
     }
@@ -911,30 +1011,12 @@
 
     function finishOpen() {
       setSlide(0);
+      const strip = pop.querySelector('.title-art');
+      if (strip) classifyTitleArt(strip);
+      layoutPopMediaFromDom();
     }
-    const strip = pop.querySelector('.title-art');
-    /* Only wait on visible first media — do not block open on lazy gallery slides. */
-    const firstMedia = pop.querySelector('.pop-viewer .slide.is-active img, .title-art img');
-    const waitImgs = firstMedia ? [firstMedia] : [];
-    let pending = waitImgs.length;
-    const doneOne = function () {
-      pending -= 1;
-      if (pending <= 0) {
-        if (strip) {
-          classifyTitleArt(strip).then(finishOpen);
-        } else finishOpen();
-      }
-    };
-    if (!pending) finishOpen();
-    waitImgs.forEach(function (img) {
-      if (img.complete && img.naturalWidth) doneOne();
-      else {
-        img.addEventListener('load', doneOne, { once: true });
-        img.addEventListener('error', doneOne, { once: true });
-      }
-      if (img.src) warmCache.set(img.src, Promise.resolve(img));
-    });
-    layoutPopMediaFromDom();
+    /* Open chrome immediately — never block the shell on first image bytes. */
+    finishOpen();
     if (!popHistoryPushed) {
       try {
         history.pushState({ calPop: ev.id }, '', '#event-' + encodeURIComponent(ev.id));
@@ -946,7 +1028,9 @@
   scrim.addEventListener('click', function () { hidePop(false); });
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
+      e.preventDefault();
       if (openId) hidePop(false);
+      else requestCloseRoadmap();
       return;
     }
     if (!openId || pop.hidden) return;
@@ -954,7 +1038,16 @@
     if (e.key === 'ArrowRight') { setSlide(slideIndex + 1); e.preventDefault(); }
   });
   window.addEventListener('popstate', function () {
-    if (openId) hidePop(true);
+    if (ignoreNextPopForClose) {
+      ignoreNextPopForClose = false;
+      return;
+    }
+    if (openId) {
+      hidePop(true);
+      return;
+    }
+    /* Back from /roadmap with no event open — exit calendar to previous page. */
+    requestCloseRoadmap();
   });
 
   const ROTATE_COPY = {

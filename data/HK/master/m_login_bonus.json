@@ -236,5 +236,19 @@
     "TargetUserTypeIndex": 1,
     "ScheduleId": 2608402201,
     "PrefabResourceId": "llb_426084001"
+  },
+  {
+    "Id": 426094001,
+    "NameLanguageId": 0,
+    "BackgroundImageResourceId": "login_bg_426094001",
+    "LogoImageResourceId": "login_bg_426094001",
+    "SortOrderInSameVisualizationType": 1,
+    "VisualizationTypeIndex": 2,
+    "NavigationCharacterId": 0,
+    "NavigationCharacterSetId": 0,
+    "IsReceiveRepeatWhenReceiveLimit": false,
+    "TargetUserTypeIndex": 1,
+    "ScheduleId": 2609402201,
+    "PrefabResourceId": "llb_426094001"
   }
 ]

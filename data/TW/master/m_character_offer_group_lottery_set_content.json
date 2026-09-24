@@ -258,5 +258,29 @@
   {
     "CharacterOfferGroupLotterySetId": 4,
     "CharacterId": 2850000900
+  },
+  {
+    "CharacterOfferGroupLotterySetId": 6,
+    "CharacterId": 2850000201
+  },
+  {
+    "CharacterOfferGroupLotterySetId": 6,
+    "CharacterId": 2850000301
+  },
+  {
+    "CharacterOfferGroupLotterySetId": 6,
+    "CharacterId": 2850000401
+  },
+  {
+    "CharacterOfferGroupLotterySetId": 6,
+    "CharacterId": 2850000501
+  },
+  {
+    "CharacterOfferGroupLotterySetId": 6,
+    "CharacterId": 2850000601
+  },
+  {
+    "CharacterOfferGroupLotterySetId": 6,
+    "CharacterId": 2850000701
   }
 ]

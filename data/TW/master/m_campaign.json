@@ -5082,6 +5082,50 @@
     "CampaignTargetUserTypeTargetId": 0
   },
   {
+    "Id": 126094001,
+    "TargetUserTypeIndex": 1,
+    "CampaignTargetSetId": 126094001,
+    "CampaignEffectId": 126094001,
+    "ScheduleId": 2609402101,
+    "SortOrder": 31,
+    "DescriptionLanguageId": 250200000126094001,
+    "CampaignTargetUserTypeIndex": 1,
+    "CampaignTargetUserTypeTargetId": 0
+  },
+  {
+    "Id": 126094002,
+    "TargetUserTypeIndex": 1,
+    "CampaignTargetSetId": 126094002,
+    "CampaignEffectId": 126094002,
+    "ScheduleId": 2609402101,
+    "SortOrder": 32,
+    "DescriptionLanguageId": 250200000126094002,
+    "CampaignTargetUserTypeIndex": 1,
+    "CampaignTargetUserTypeTargetId": 0
+  },
+  {
+    "Id": 126094003,
+    "TargetUserTypeIndex": 1,
+    "CampaignTargetSetId": 126094003,
+    "CampaignEffectId": 126094003,
+    "ScheduleId": 2609402101,
+    "SortOrder": 33,
+    "DescriptionLanguageId": 250200000126094003,
+    "CampaignTargetUserTypeIndex": 1,
+    "CampaignTargetUserTypeTargetId": 0
+  },
+  {
+    "Id": 126094004,
+    "TargetUserTypeIndex": 1,
+    "CampaignTargetSetId": 126094004,
+    "CampaignEffectId": 126094004,
+    "ScheduleId": 2609402101,
+    "SortOrder": 34,
+    "DescriptionLanguageId": 250200000126094004,
+    "CampaignTargetUserTypeIndex": 1,
+    "CampaignTargetUserTypeTargetId": 0
+  },
+  {
     "Id": 260140001,
     "TargetUserTypeIndex": 1,
     "CampaignTargetSetId": 260140001,

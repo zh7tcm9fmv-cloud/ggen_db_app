@@ -21140,6 +21140,20 @@
     "IsPrecious": false
   },
   {
+    "Id": 191400000011,
+    "ResourceId": "gtik_000034",
+    "ItemTypeIndex": 15,
+    "RarityTypeIndex": 5,
+    "NameLanguageId": 150100191400000011,
+    "DescriptionLanguageId": 150200191400000011,
+    "MaxCapacity": 9999,
+    "ScheduleId": 2609401701,
+    "EffectValue": 0,
+    "IsHiddenIfEmpty": false,
+    "SortOrder": 135260940,
+    "IsPrecious": false
+  },
+  {
     "Id": 200000000001,
     "ResourceId": "spm_0001",
     "ItemTypeIndex": 23,

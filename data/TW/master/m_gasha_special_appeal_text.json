@@ -43,5 +43,23 @@
     "OverrideCautionTextLanguageId": 0,
     "OverrideBalloonTextLanguageId": 0,
     "OverrideSnsShareMessageLanguageId": 0
+  },
+  {
+    "Id": 260940050501,
+    "GashaId": 2609400505,
+    "TextLanguageId": 221100260360060101,
+    "ScheduleId": 2609401704,
+    "OverrideCautionTextLanguageId": 0,
+    "OverrideBalloonTextLanguageId": 0,
+    "OverrideSnsShareMessageLanguageId": 0
+  },
+  {
+    "Id": 260940050502,
+    "GashaId": 2609400505,
+    "TextLanguageId": 221100260360060102,
+    "ScheduleId": 2609401703,
+    "OverrideCautionTextLanguageId": 220900000000000003,
+    "OverrideBalloonTextLanguageId": 220410002609400505,
+    "OverrideSnsShareMessageLanguageId": 221210260940050501
   }
 ]
