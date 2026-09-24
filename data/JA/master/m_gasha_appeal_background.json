@@ -3300,5 +3300,18 @@
     "GashaAppealDescriptionTypeIndex": 3,
     "TitleLanguageId": 220700000000000002,
     "DescriptionLanguageId": 220800021376000150
+  },
+  {
+    "GashaId": 2609400505,
+    "SortOrder": 1,
+    "GashaAppealBackgroundTypeIndex": 2,
+    "ResourceId": "2609400505",
+    "ExWeaponBromideResourceId": "2609400505",
+    "LimitBreakStep": 0,
+    "UnitId": 0,
+    "GashaContentDetailId": 0,
+    "GashaAppealDescriptionTypeIndex": 0,
+    "TitleLanguageId": 0,
+    "DescriptionLanguageId": 0
   }
 ]

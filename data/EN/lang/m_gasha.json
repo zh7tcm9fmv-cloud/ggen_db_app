@@ -252,6 +252,10 @@
     "value": "Featured Unit Assembly (9/17/2026 JST)"
   },
   {
+    "id": 220100002609400505,
+    "value": "1.5th Anniv. Unit Assembly (Up to 47 Free Pulls) (2 UR or more Units Guaranteed)"
+  },
+  {
     "id": 220400002504100101,
     "value": "Guaranteed SSR or Higher on Last Pull"
   },
@@ -272,6 +276,10 @@
     "value": "Pull on any Unit Assembly once"
   },
   {
+    "id": 220400002609400505,
+    "value": "Once Only"
+  },
+  {
     "id": 220900000000000001,
     "value": "*Units pulled cannot be developed. *Cannot get duplicate characters. (Excluding Linked Characters)"
   },
@@ -284,11 +292,19 @@
     "value": "*Pull on any Unit Assembly once.\n*After the availability period for the Unit Assembly ends, any unused Unit Assembly Tickets will be converted into Rare Medals."
   },
   {
+    "id": 220900000000000004,
+    "value": "*Available from September 30 at 12:00 PM JST.\n*After the availability period for the Unit Assembly ends, any unused Unit Assembly Tickets will be converted into Rare Medals."
+  },
+  {
     "id": 221200250960060101,
     "value": "[Obtainable in the \"Half Anniversary Unit Assembly (Up to 46 Free Pulls)\"!]\n\nCollect special tickets during the event to participate in this Premium Unit Assembly!\n\nhttps://ggetww.go.link/fpojU\n#GGeneration\n#GGen"
   },
   {
     "id": 221200260360060101,
     "value": "[Obtainable in the \"1st Anniv. Unit Assembly (up to 47 free pulls)\"!]\n\nCollect special tickets during the event to participate in this Unit Assembly!\nAt least 2 UR Units guaranteed! A chance to instantly get units with the 47-pull!\n\nhttps://ggetww.go.link/fpojU\n#GGenerationETERNAL \n#GGen"
+  },
+  {
+    "id": 221200260940050501,
+    "value": "[Obtainable in the \"1.5th Anniv. Unit Assembly (up to 47 free pulls)\"!]\n\nCollect special tickets during the event to participate in this Unit Assembly!\nAt least 2 UR Units guaranteed! A chance to instantly get units with the 47-pull!\n\nhttps://ggetww.go.link/fpojU\n#GGenerationETERNAL \n#GGen"
   }
 ]

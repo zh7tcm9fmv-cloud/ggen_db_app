@@ -7816,8 +7816,16 @@
     "value": "Clear Event Stages 6 times. Tactical Training will not count."
   },
   {
+    "id": 101302285000030011,
+    "value": "Clear any event stage 8 times. (Exc. Tactical Training / Instructor's Challenge)"
+  },
+  {
     "id": 101302285000040001,
     "value": "Destroy 8 units. Master League will not count."
+  },
+  {
+    "id": 101302285000040011,
+    "value": "Defeat 8 units. Master League will not count."
   },
   {
     "id": 101302285000050001,

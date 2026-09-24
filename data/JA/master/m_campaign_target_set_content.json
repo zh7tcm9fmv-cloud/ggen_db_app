@@ -3675,6 +3675,34 @@
     "TransitionId": 20000040000203
   },
   {
+    "Id": 12609400101,
+    "CampaignTargetSetId": 126094001,
+    "CampaignTargetTypeIndex": 4,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 12609400201,
+    "CampaignTargetSetId": 126094002,
+    "CampaignTargetTypeIndex": 5,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 12609400301,
+    "CampaignTargetSetId": 126094003,
+    "CampaignTargetTypeIndex": 6,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
+    "Id": 12609400401,
+    "CampaignTargetSetId": 126094004,
+    "CampaignTargetTypeIndex": 7,
+    "TargetId": 0,
+    "TransitionId": 35000000000000
+  },
+  {
     "Id": 42510500101,
     "CampaignTargetSetId": 425105001,
     "CampaignTargetTypeIndex": 4,

@@ -350,5 +350,53 @@
     "HomeBannerLanguageId": 180500026081001102,
     "InformationId": 2026080602,
     "TabResourceId": "pm_banner_260810011"
+  },
+  {
+    "Id": 260940011,
+    "NameLanguageId": 180500026094001103,
+    "DescriptionLanguageId": 180600000260940011,
+    "FullCompleteRewardResourceId": "pm_c_banner_260940011",
+    "AvailableScheduleId": 2609402701,
+    "ReceivableScheduleId": 2609402702,
+    "RewardSetId": 0,
+    "TabNameLanguageId": 180500026094001102,
+    "PanelMissionGroupSetId": 260940011,
+    "SortOrder": 5,
+    "HomeBannerResourceId": "thum_panel_mission_260940011",
+    "HomeBannerLanguageId": 180500026094001102,
+    "InformationId": 2026092405,
+    "TabResourceId": "pm_banner_260940011"
+  },
+  {
+    "Id": 260940012,
+    "NameLanguageId": 180500026094001104,
+    "DescriptionLanguageId": 180600000260940011,
+    "FullCompleteRewardResourceId": "pm_c_banner_260940021",
+    "AvailableScheduleId": 2609402701,
+    "ReceivableScheduleId": 2609402702,
+    "RewardSetId": 0,
+    "TabNameLanguageId": 180500026094001102,
+    "PanelMissionGroupSetId": 260940012,
+    "SortOrder": 6,
+    "HomeBannerResourceId": "thum_panel_mission_260940011",
+    "HomeBannerLanguageId": 180500026094001102,
+    "InformationId": 2026092405,
+    "TabResourceId": "pm_banner_260940021"
+  },
+  {
+    "Id": 260940013,
+    "NameLanguageId": 180500026094001105,
+    "DescriptionLanguageId": 180600000260940011,
+    "FullCompleteRewardResourceId": "pm_c_banner_260940031",
+    "AvailableScheduleId": 2609402701,
+    "ReceivableScheduleId": 2609402702,
+    "RewardSetId": 0,
+    "TabNameLanguageId": 180500026094001102,
+    "PanelMissionGroupSetId": 260940013,
+    "SortOrder": 7,
+    "HomeBannerResourceId": "thum_panel_mission_260940011",
+    "HomeBannerLanguageId": 180500026094001102,
+    "InformationId": 2026092405,
+    "TabResourceId": "pm_banner_260940031"
   }
 ]

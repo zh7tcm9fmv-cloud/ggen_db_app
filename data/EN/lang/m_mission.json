@@ -112,6 +112,114 @@
     "value": "Reach [SSR]Unicorn Gundam Ver. TWC Final level 90 or higher."
   },
   {
+    "id": 1801260940011101,
+    "value": "Develop 10 units."
+  },
+  {
+    "id": 1801260940011102,
+    "value": "Develop 30 units."
+  },
+  {
+    "id": 1801260940011103,
+    "value": "Develop 50 units."
+  },
+  {
+    "id": 1801260940011104,
+    "value": "Clear any Main Stage 10 times."
+  },
+  {
+    "id": 1801260940011105,
+    "value": "Clear any Main Stage 30 times."
+  },
+  {
+    "id": 1801260940011106,
+    "value": "Clear any Main Stage 50 times."
+  },
+  {
+    "id": 1801260940011107,
+    "value": "Clear any event stage 10 times. (Exc. Tactical Training / Instructor's Challenge)"
+  },
+  {
+    "id": 1801260940011108,
+    "value": "Clear any event stage 20 times. (Exc. Tactical Training / Instructor's Challenge)"
+  },
+  {
+    "id": 1801260940011109,
+    "value": "Clear any event stage 30 times. (Exc. Tactical Training / Instructor's Challenge)"
+  },
+  {
+    "id": 1801260940012101,
+    "value": "Use 500 AP."
+  },
+  {
+    "id": 1801260940012102,
+    "value": "Use 1,000 AP."
+  },
+  {
+    "id": 1801260940012103,
+    "value": "Use 2,000 AP."
+  },
+  {
+    "id": 1801260940012104,
+    "value": "Complete a character request 5 times."
+  },
+  {
+    "id": 1801260940012105,
+    "value": "Complete a character request 10 times."
+  },
+  {
+    "id": 1801260940012106,
+    "value": "Complete a character request 15 times."
+  },
+  {
+    "id": 1801260940012107,
+    "value": "Dismantle 10 unit(s)."
+  },
+  {
+    "id": 1801260940012108,
+    "value": "Dismantle 20 unit(s)."
+  },
+  {
+    "id": 1801260940012109,
+    "value": "Dismantle 30 unit(s)."
+  },
+  {
+    "id": 1801260940013101,
+    "value": "Raise unit levels by a total of 50."
+  },
+  {
+    "id": 1801260940013102,
+    "value": "Raise unit levels by a total of 100."
+  },
+  {
+    "id": 1801260940013103,
+    "value": "Raise unit levels by a total of 150."
+  },
+  {
+    "id": 1801260940013104,
+    "value": "Upgrade 5 weapons."
+  },
+  {
+    "id": 1801260940013105,
+    "value": "Upgrade 10 weapons."
+  },
+  {
+    "id": 1801260940013106,
+    "value": "Upgrade 20 weapons."
+  },
+  {
+    "id": 1801260940013107,
+    "value": "Clear Eternal Road on NORMAL difficulty or higher 1 time. (Incl. clearing stage again)"
+  },
+  {
+    "id": 1801260940013108,
+    "value": "Clear Eternal Road stages on HARD difficulty or higher 1 time (Incl. clearing stage again)"
+  },
+  {
+    "id": 1801260940013109,
+    "value": "Make an enemy capture 10 times."
+  },
+  {
     "id": 180001250950011101,
     "value": "Develop 10 units."
   },
@@ -1604,6 +1712,14 @@
     "value": "Register 1000 different types of units to the database."
   },
   {
+    "id": 180100110011900129,
+    "value": "Register 1050 different types of units to the database."
+  },
+  {
+    "id": 180100110011900130,
+    "value": "Register 1100 different types of units to the database."
+  },
+  {
     "id": 180100110012000101,
     "value": "Register 10 different types of characters to the database."
   },
@@ -1658,6 +1774,54 @@
   {
     "id": 180100110012000114,
     "value": "Register 200 different types of characters to the database."
+  },
+  {
+    "id": 180100110012000115,
+    "value": "Register 225 different types of characters to the database."
+  },
+  {
+    "id": 180100110012000116,
+    "value": "Register 250 different types of characters to the database."
+  },
+  {
+    "id": 180100110012000117,
+    "value": "Register 275 different types of characters to the database."
+  },
+  {
+    "id": 180100110012000118,
+    "value": "Register 300 different types of characters to the database."
+  },
+  {
+    "id": 180100110012000119,
+    "value": "Register 325 different types of characters to the database."
+  },
+  {
+    "id": 180100110012000120,
+    "value": "Register 350 different types of characters to the database."
+  },
+  {
+    "id": 180100110012000121,
+    "value": "Register 375 different types of characters to the database."
+  },
+  {
+    "id": 180100110012000122,
+    "value": "Register 400 different types of characters to the database."
+  },
+  {
+    "id": 180100110012000123,
+    "value": "Register 425 different types of characters to the database."
+  },
+  {
+    "id": 180100110012000124,
+    "value": "Register 450 different types of characters to the database."
+  },
+  {
+    "id": 180100110012000125,
+    "value": "Register 475 different types of characters to the database."
+  },
+  {
+    "id": 180100110012000126,
+    "value": "Register 500 different types of characters to the database."
   },
   {
     "id": 180100110012100101,
@@ -1916,6 +2080,26 @@
     "value": "Level up 700 unit type(s) to maximum"
   },
   {
+    "id": 180100110012500141,
+    "value": "Level up 720 unit type(s) to maximum"
+  },
+  {
+    "id": 180100110012500142,
+    "value": "Level up 740 unit type(s) to maximum"
+  },
+  {
+    "id": 180100110012500143,
+    "value": "Level up 760 unit type(s) to maximum"
+  },
+  {
+    "id": 180100110012500144,
+    "value": "Level up 780 unit type(s) to maximum"
+  },
+  {
+    "id": 180100110012500145,
+    "value": "Level up 800 unit type(s) to maximum"
+  },
+  {
     "id": 180100110012600101,
     "value": "Raise Limit Break to 3 or higher for 10 unit type(s)"
   },
@@ -2074,6 +2258,26 @@
   {
     "id": 180100110012600140,
     "value": "Raise Limit Break to 3 or higher for 700 unit type(s)"
+  },
+  {
+    "id": 180100110012600141,
+    "value": "Raise Limit Break to 3 or higher for 720 unit type(s)"
+  },
+  {
+    "id": 180100110012600142,
+    "value": "Raise Limit Break to 3 or higher for 740 unit type(s)"
+  },
+  {
+    "id": 180100110012600143,
+    "value": "Raise Limit Break to 3 or higher for 760 unit type(s)"
+  },
+  {
+    "id": 180100110012600144,
+    "value": "Raise Limit Break to 3 or higher for 780 unit type(s)"
+  },
+  {
+    "id": 180100110012600145,
+    "value": "Raise Limit Break to 3 or higher for 800 unit type(s)"
   },
   {
     "id": 180100200010000101,
